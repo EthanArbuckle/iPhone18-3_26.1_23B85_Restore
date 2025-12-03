@@ -1,50 +1,50 @@
 @interface RTTCall
-- (BOOL)_handleInitialGarbageTextFromTTY:(id)a3 device:(id)a4;
+- (BOOL)_handleInitialGarbageTextFromTTY:(id)y device:(id)device;
 - (NSString)description;
-- (RTTCall)initWithCall:(id)a3;
+- (RTTCall)initWithCall:(id)call;
 - (RTTCallDelegate)delegate;
-- (id)_processText:(id)a3 withDevice:(id)a4;
-- (id)formatMessage:(id)a3 withType:(int64_t)a4 isMe:(BOOL)a5;
-- (void)_postLocalNotificationForText:(id)a3;
-- (void)_sendTranslationForUtterance:(id)a3;
-- (void)audioSessionWasInterrupted:(id)a3;
-- (void)callDidReceiveText:(id)a3 forUtterance:(id)a4;
-- (void)callStatusDidChange:(id)a3;
+- (id)_processText:(id)text withDevice:(id)device;
+- (id)formatMessage:(id)message withType:(int64_t)type isMe:(BOOL)me;
+- (void)_postLocalNotificationForText:(id)text;
+- (void)_sendTranslationForUtterance:(id)utterance;
+- (void)audioSessionWasInterrupted:(id)interrupted;
+- (void)callDidReceiveText:(id)text forUtterance:(id)utterance;
+- (void)callStatusDidChange:(id)change;
 - (void)dealloc;
-- (void)device:(id)a3 didReceiveText:(id)a4;
-- (void)device:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)deviceDidStop:(id)a3;
+- (void)device:(id)device didReceiveText:(id)text;
+- (void)device:(id)device didStart:(BOOL)start error:(id)error;
+- (void)deviceDidStop:(id)stop;
 - (void)mediaServerDied;
-- (void)recreateTTYDevice:(id)a3;
+- (void)recreateTTYDevice:(id)device;
 - (void)registerNotifications;
-- (void)saveTranscribedTextForConversation:(id)a3 isNew:(BOOL)a4;
-- (void)saveTranslatedTranscribedTextForConversation:(id)a3 translatedText:(id)a4 isNew:(BOOL)a5;
-- (void)sendString:(id)a3;
-- (void)sendToTTYDeviceWithString:(id)a3;
-- (void)setTranslationLocalesWithLocal:(id)a3 remote:(id)a4;
+- (void)saveTranscribedTextForConversation:(id)conversation isNew:(BOOL)new;
+- (void)saveTranslatedTranscribedTextForConversation:(id)conversation translatedText:(id)text isNew:(BOOL)new;
+- (void)sendString:(id)string;
+- (void)sendToTTYDeviceWithString:(id)string;
+- (void)setTranslationLocalesWithLocal:(id)local remote:(id)remote;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation RTTCall
 
-- (RTTCall)initWithCall:(id)a3
+- (RTTCall)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v18.receiver = self;
   v18.super_class = RTTCall;
   v5 = [(RTTCall *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    [(RTTCall *)v5 setCall:v4];
+    [(RTTCall *)v5 setCall:callCopy];
     v7 = +[RTTDatabaseManager sharedManager];
-    v8 = [v4 callUUID];
-    v9 = [v7 conversationForCallUID:v8];
+    callUUID = [callCopy callUUID];
+    v9 = [v7 conversationForCallUID:callUUID];
 
     if (!v9)
     {
-      v9 = [RTTConversation conversationWithCall:v4];
+      v9 = [RTTConversation conversationWithCall:callCopy];
       v10 = +[RTTDatabaseManager sharedManager];
       [v10 saveConversation:v9];
     }
@@ -73,8 +73,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RTTCall *)self setDelegate:0];
   [(RTTCall *)self setCall:0];
@@ -87,41 +87,41 @@
 - (void)registerNotifications
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_recreateTTYDevice_ name:*MEMORY[0x277D6F0A8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_recreateTTYDevice_ name:*MEMORY[0x277D6F0A8] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_recreateTTYDevice_ name:*MEMORY[0x277D6F0B8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_recreateTTYDevice_ name:*MEMORY[0x277D6F0B8] object:0];
 
-  v5 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   v6 = MEMORY[0x277D26D40];
   v15[0] = *MEMORY[0x277D26D40];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  [v5 setAttribute:v7 forKey:*MEMORY[0x277D26DD0] error:0];
+  [mEMORY[0x277D26E58] setAttribute:v7 forKey:*MEMORY[0x277D26DD0] error:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *v6;
-  v10 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v8 addObserver:self selector:sel_mediaServerDied name:v9 object:v10];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter3 addObserver:self selector:sel_mediaServerDied name:v9 object:mEMORY[0x277D26E58]2];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:self selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x277CB8068] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x277CB8068] object:0];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x277D6EFF0] object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x277D6EFF0] object:0];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x277D6EFE0] object:0];
+  defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x277D6EFE0] object:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTranslationLocalesWithLocal:(id)a3 remote:(id)a4
+- (void)setTranslationLocalesWithLocal:(id)local remote:(id)remote
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 != v7 && v6 && v7)
+  localCopy = local;
+  remoteCopy = remote;
+  v8 = remoteCopy;
+  if (localCopy != remoteCopy && localCopy && remoteCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -162,7 +162,7 @@
 
     v13 = v12;
     _Block_object_dispose(&v20, 8);
-    v14 = [[v12 alloc] initWithSourceLocale:v6 targetLocale:v8];
+    v14 = [[v12 alloc] initWithSourceLocale:localCopy targetLocale:v8];
     [(RTTCall *)self setTranslationLocales:v14];
   }
 
@@ -173,19 +173,19 @@
   }
 }
 
-- (void)audioSessionWasInterrupted:(id)a3
+- (void)audioSessionWasInterrupted:(id)interrupted
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  interruptedCopy = interrupted;
   v4 = AXLogRTT();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v3;
+    v8 = interruptedCopy;
     _os_log_impl(&dword_261754000, v4, OS_LOG_TYPE_INFO, "Media server interrupted %@", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = interruptedCopy;
   AXPerformBlockOnMainThread();
 
   v6 = *MEMORY[0x277D85DE8];
@@ -214,8 +214,8 @@ void __38__RTTCall_audioSessionWasInterrupted___block_invoke(uint64_t a1)
     _os_log_impl(&dword_261754000, v3, OS_LOG_TYPE_INFO, "Media server died.", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RTTCall *)self performSelector:sel_registerNotifications withObject:0 afterDelay:2.0];
   [(RTTCall *)self recreateTTYDevice:0];
@@ -227,56 +227,56 @@ void __38__RTTCall_audioSessionWasInterrupted___block_invoke(uint64_t a1)
   v9.receiver = self;
   v9.super_class = RTTCall;
   v4 = [(RTTCall *)&v9 description];
-  v5 = [(RTTCall *)self call];
-  v6 = [(RTTCall *)self conversation];
-  v7 = [v3 stringWithFormat:@"%@ - %@ = %@", v4, v5, v6];
+  call = [(RTTCall *)self call];
+  conversation = [(RTTCall *)self conversation];
+  v7 = [v3 stringWithFormat:@"%@ - %@ = %@", v4, call, conversation];
 
   return v7;
 }
 
-- (void)callStatusDidChange:(id)a3
+- (void)callStatusDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [v7 callUUID];
-    v9 = [(RTTCall *)self call];
-    v10 = [v9 callUUID];
-    v11 = [v8 isEqualToString:v10];
+    object2 = [changeCopy object];
+    callUUID = [object2 callUUID];
+    call = [(RTTCall *)self call];
+    callUUID2 = [call callUUID];
+    v11 = [callUUID isEqualToString:callUUID2];
 
     if (v11)
     {
       v12 = AXLogRTT();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [(RTTCall *)self conversation];
+        conversation = [(RTTCall *)self conversation];
         v17 = 138412546;
-        v18 = v13;
+        v18 = conversation;
         v19 = 2112;
-        v20 = v7;
+        v20 = object2;
         _os_log_impl(&dword_261754000, v12, OS_LOG_TYPE_INFO, "Call status changed, saving conversation to database. %@ - %@", &v17, 0x16u);
       }
 
       v14 = +[RTTDatabaseManager sharedManager];
-      v15 = [(RTTCall *)self conversation];
-      [v14 saveConversation:v15];
+      conversation2 = [(RTTCall *)self conversation];
+      [v14 saveConversation:conversation2];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recreateTTYDevice:(id)a3
+- (void)recreateTTYDevice:(id)device
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  deviceCopy = device;
+  object = [deviceCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -285,11 +285,11 @@ void __38__RTTCall_audioSessionWasInterrupted___block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  v7 = [v4 object];
-  v8 = [v7 callUUID];
-  v9 = [(RTTCall *)self call];
-  v10 = [v9 callUUID];
-  v11 = [v8 isEqualToString:v10];
+  object2 = [deviceCopy object];
+  callUUID = [object2 callUUID];
+  call = [(RTTCall *)self call];
+  callUUID2 = [call callUUID];
+  v11 = [callUUID isEqualToString:callUUID2];
 
   v12 = AXLogRTT();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
@@ -301,78 +301,78 @@ void __38__RTTCall_audioSessionWasInterrupted___block_invoke(uint64_t a1)
       _os_log_impl(&dword_261754000, v12, OS_LOG_TYPE_INFO, "Recreating TTY device with updated call", buf, 2u);
     }
 
-    [(RTTCall *)self setCall:v7];
+    [(RTTCall *)self setCall:object2];
 LABEL_6:
     [MEMORY[0x277CE56E0] stopAudioSession];
-    v14 = [(RTTCall *)self ttyDevice];
-    [v14 stop];
+    ttyDevice = [(RTTCall *)self ttyDevice];
+    [ttyDevice stop];
 
     [(RTTCall *)self setTtyDevice:0];
-    v15 = [(RTTCall *)self call];
-    v16 = [v15 supportsTTYWithVoice];
+    call2 = [(RTTCall *)self call];
+    supportsTTYWithVoice = [call2 supportsTTYWithVoice];
 
-    if ((v16 & 1) == 0)
+    if ((supportsTTYWithVoice & 1) == 0)
     {
       [MEMORY[0x277CE56E0] setAudioSessionProperties:&unk_2873FFD48];
       [MEMORY[0x277CE56E0] startAudioSession];
     }
 
     self->_ttyMode = 0;
-    v17 = [(RTTCall *)self call];
-    v18 = [v17 supportsTTYWithVoice];
+    call3 = [(RTTCall *)self call];
+    supportsTTYWithVoice2 = [call3 supportsTTYWithVoice];
 
-    if (v18)
+    if (supportsTTYWithVoice2)
     {
       self->_ttyMode = 3;
-      v19 = [(RTTCall *)self call];
-      v20 = [v19 providerContext];
+      call4 = [(RTTCall *)self call];
+      providerContext = [call4 providerContext];
       v21 = AXTTYTextStreamToken();
-      v22 = [v20 objectForKey:v21];
-      v23 = [v22 integerValue];
+      v22 = [providerContext objectForKey:v21];
+      integerValue = [v22 integerValue];
     }
 
     else
     {
-      v24 = [(RTTCall *)self call];
-      v25 = [v24 isUsingBaseband];
+      call5 = [(RTTCall *)self call];
+      isUsingBaseband = [call5 isUsingBaseband];
 
-      if (v25)
+      if (isUsingBaseband)
       {
         self->_ttyMode = 1;
         goto LABEL_17;
       }
 
-      v23 = 0;
+      integerValue = 0;
     }
 
     if (self->_ttyMode == 3)
     {
       v36 = 0;
       v26 = &v36;
-      v27 = [objc_alloc(MEMORY[0x277CE5760]) initWithStreamToken:v23 error:&v36];
+      v27 = [objc_alloc(MEMORY[0x277CE5760]) initWithStreamToken:integerValue error:&v36];
 LABEL_18:
       v12 = v27;
-      v7 = *v26;
+      object2 = *v26;
       [v12 setDelegate:self];
       v30 = AXLogRTT();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         ttyMode = self->_ttyMode;
-        v32 = [(RTTCall *)self call];
+        call6 = [(RTTCall *)self call];
         *buf = 134218754;
         v38 = ttyMode;
         v39 = 2112;
-        v40 = v7;
+        v40 = object2;
         v41 = 2112;
-        v42 = v4;
+        v42 = deviceCopy;
         v43 = 2112;
-        v44 = v32;
+        v44 = call6;
         _os_log_impl(&dword_261754000, v30, OS_LOG_TYPE_INFO, "Creating TTY %ld, %@ = %@ = %@", buf, 0x2Au);
       }
 
       [(RTTCall *)self setTtyDevice:v12];
-      v33 = [(RTTCall *)self ttyDevice];
-      [v33 start];
+      ttyDevice2 = [(RTTCall *)self ttyDevice];
+      [ttyDevice2 start];
 
       goto LABEL_21;
     }
@@ -399,12 +399,12 @@ LABEL_21:
 
 - (void)start
 {
-  v3 = [(RTTCall *)self ttyDevice];
+  ttyDevice = [(RTTCall *)self ttyDevice];
 
-  if (v3)
+  if (ttyDevice)
   {
-    v4 = [(RTTCall *)self ttyDevice];
-    [v4 start];
+    ttyDevice2 = [(RTTCall *)self ttyDevice];
+    [ttyDevice2 start];
   }
 
   else
@@ -412,8 +412,8 @@ LABEL_21:
     [(RTTCall *)self recreateTTYDevice:0];
   }
 
-  v5 = [(RTTCall *)self call];
-  if ([v5 isEmergency])
+  call = [(RTTCall *)self call];
+  if ([call isEmergency])
   {
     v6 = +[RTTTelephonyUtilities isTTYSupported];
 
@@ -442,13 +442,13 @@ LABEL_21:
   {
   }
 
-  v9 = [(RTTCall *)self call];
-  if ([v9 isTTY])
+  call2 = [(RTTCall *)self call];
+  if ([call2 isTTY])
   {
-    v10 = [(RTTCall *)self call];
-    v11 = [v10 supportsTTYWithVoice];
+    call3 = [(RTTCall *)self call];
+    supportsTTYWithVoice = [call3 supportsTTYWithVoice];
 
-    if ((v11 & 1) == 0)
+    if ((supportsTTYWithVoice & 1) == 0)
     {
       [(RTTCall *)self toggleSystemOutputMute:1];
     }
@@ -460,8 +460,8 @@ LABEL_21:
 
 LABEL_16:
   v12 = +[RTTTelephonyUtilities sharedUtilityProvider];
-  v13 = [(RTTCall *)self call];
-  v14 = [v12 answerRTTCallAsMutedForCall:v13];
+  call4 = [(RTTCall *)self call];
+  v14 = [v12 answerRTTCallAsMutedForCall:call4];
 
   if ((v14 & 1) == 0)
   {
@@ -478,26 +478,26 @@ void __16__RTTCall_start__block_invoke(uint64_t a1)
 - (void)stop
 {
   [MEMORY[0x277CE56E0] stopAudioSession];
-  v3 = [(RTTCall *)self ttyDevice];
-  [v3 stop];
+  ttyDevice = [(RTTCall *)self ttyDevice];
+  [ttyDevice stop];
 
   [(RTTCall *)self setTtyDevice:0];
   v5 = +[RTTDatabaseManager sharedManager];
-  v4 = [(RTTCall *)self conversation];
-  [v5 saveConversation:v4];
+  conversation = [(RTTCall *)self conversation];
+  [v5 saveConversation:conversation];
 }
 
-- (void)sendString:(id)a3
+- (void)sendString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   callQueue = self->_callQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __22__RTTCall_sendString___block_invoke;
   v7[3] = &unk_279AE7760;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stringCopy;
+  v6 = stringCopy;
   dispatch_async(callQueue, v7);
 }
 
@@ -544,18 +544,18 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendToTTYDeviceWithString:(id)a3
+- (void)sendToTTYDeviceWithString:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   if (self->_ttyMode == 3)
   {
-    v6 = [(RTTCall *)self ttyDevice];
-    v7 = [v6 sendText:v5];
+    ttyDevice = [(RTTCall *)self ttyDevice];
+    v7 = [ttyDevice sendText:v5];
 
-    v8 = AXLogRTT();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    ttyDevice2 = AXLogRTT();
+    if (os_log_type_enabled(ttyDevice2, OS_LOG_TYPE_INFO))
     {
       v13 = 67109634;
       v14 = v7;
@@ -563,13 +563,13 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
       v16 = v5;
       v17 = 2048;
       v18 = [v5 length];
-      _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "TTY send string %d = |%@| %lu", &v13, 0x1Cu);
+      _os_log_impl(&dword_261754000, ttyDevice2, OS_LOG_TYPE_INFO, "TTY send string %d = |%@| %lu", &v13, 0x1Cu);
     }
   }
 
   else
   {
-    v9 = [v4 characterAtIndex:0];
+    v9 = [stringCopy characterAtIndex:0];
     v10 = AXLogRTT();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -580,46 +580,46 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
       _os_log_impl(&dword_261754000, v10, OS_LOG_TYPE_INFO, "TTY send %C, |%x|", &v13, 0xEu);
     }
 
-    v8 = [(RTTCall *)self ttyDevice];
-    v11 = [v8 sendCharacter:v9];
+    ttyDevice2 = [(RTTCall *)self ttyDevice];
+    v11 = [ttyDevice2 sendCharacter:v9];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formatMessage:(id)a3 withType:(int64_t)a4 isMe:(BOOL)a5
+- (id)formatMessage:(id)message withType:(int64_t)type isMe:(BOOL)me
 {
-  v6 = a5;
-  v9 = a3;
-  if ((a4 - 2) > 6)
+  meCopy = me;
+  messageCopy = message;
+  if ((type - 2) > 6)
   {
     v15 = @"%@";
   }
 
   else
   {
-    v10 = off_279AE7F88[a4 - 2];
-    v11 = [(RTTCall *)self translationLocales];
+    v10 = off_279AE7F88[type - 2];
+    translationLocales = [(RTTCall *)self translationLocales];
 
-    if (v11)
+    if (translationLocales)
     {
-      v12 = [(RTTCall *)self translationLocales];
-      v13 = v12;
-      if (v6)
+      translationLocales2 = [(RTTCall *)self translationLocales];
+      v13 = translationLocales2;
+      if (meCopy)
       {
-        v11 = [v12 targetLocale];
-        [v11 localeIdentifier];
+        translationLocales = [translationLocales2 targetLocale];
+        [translationLocales localeIdentifier];
       }
 
       else
       {
-        v5 = [v12 sourceLocale];
-        [v5 localeIdentifier];
+        sourceLocale = [translationLocales2 sourceLocale];
+        [sourceLocale localeIdentifier];
       }
       v14 = ;
       v15 = ttyLocStringAndLocale(v10, v14);
 
-      if (v6)
+      if (meCopy)
       {
       }
 
@@ -634,45 +634,45 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
     }
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:v15, v9];
+  messageCopy = [MEMORY[0x277CCACA8] stringWithFormat:v15, messageCopy];
 
-  return v16;
+  return messageCopy;
 }
 
-- (void)device:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)device:(id)device didStart:(BOOL)start error:(id)error
 {
-  v5 = a4;
+  startCopy = start;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  errorCopy = error;
   v7 = AXLogRTT();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9[0] = 67109378;
-    v9[1] = v5;
+    v9[1] = startCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = errorCopy;
     _os_log_impl(&dword_261754000, v7, OS_LOG_TYPE_INFO, "TTY Start %d %@", v9, 0x12u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceDidStop:(id)a3
+- (void)deviceDidStop:(id)stop
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = AXLogRTT();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(RTTCall *)self call];
+    call = [(RTTCall *)self call];
     v9[0] = 67109120;
-    v9[1] = [v5 status];
+    v9[1] = [call status];
     _os_log_impl(&dword_261754000, v4, OS_LOG_TYPE_INFO, "TTY Stop %d", v9, 8u);
   }
 
-  v6 = [(RTTCall *)self call];
-  v7 = [v6 status];
+  call2 = [(RTTCall *)self call];
+  status = [call2 status];
 
-  if ((v7 - 1) <= 1)
+  if ((status - 1) <= 1)
   {
     [(RTTCall *)self recreateTTYDevice:0];
   }
@@ -680,11 +680,11 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleInitialGarbageTextFromTTY:(id)a3 device:(id)a4
+- (BOOL)_handleInitialGarbageTextFromTTY:(id)y device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"O"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @";") && (-[NSMutableString isEqualToString:](self->_garbageCollection, "isEqualToString:", @"O") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"?") && -[NSMutableString isEqualToString:](self->_garbageCollection, "isEqualToString:", @"O;"))
+  yCopy = y;
+  deviceCopy = device;
+  if (([yCopy isEqualToString:@"O"] & 1) != 0 || objc_msgSend(yCopy, "isEqualToString:", @";") && (-[NSMutableString isEqualToString:](self->_garbageCollection, "isEqualToString:", @"O") & 1) != 0 || objc_msgSend(yCopy, "isEqualToString:", @"?") && -[NSMutableString isEqualToString:](self->_garbageCollection, "isEqualToString:", @"O;"))
   {
     if (!self->_garbageCharacterStripperTimer)
     {
@@ -692,12 +692,12 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
       garbageCharacterStripperTimer = self->_garbageCharacterStripperTimer;
       self->_garbageCharacterStripperTimer = v8;
 
-      v10 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       garbageCollection = self->_garbageCollection;
-      self->_garbageCollection = v10;
+      self->_garbageCollection = string;
     }
 
-    [(NSMutableString *)self->_garbageCollection appendString:v6];
+    [(NSMutableString *)self->_garbageCollection appendString:yCopy];
     v12 = [(NSMutableString *)self->_garbageCollection length];
     [(AXDispatchTimer *)self->_garbageCharacterStripperTimer cancel];
     if (v12 == 3)
@@ -714,7 +714,7 @@ void __22__RTTCall_sendString___block_invoke(uint64_t a1)
       v17[2] = __51__RTTCall__handleInitialGarbageTextFromTTY_device___block_invoke;
       v17[3] = &unk_279AE7760;
       v17[4] = self;
-      v18 = v7;
+      v18 = deviceCopy;
       [(AXDispatchTimer *)v15 afterDelay:v17 processBlock:1.0];
       v13 = v18;
     }
@@ -742,29 +742,29 @@ void __51__RTTCall__handleInitialGarbageTextFromTTY_device___block_invoke(uint64
   *(v4 + 24) = 0;
 }
 
-- (void)_sendTranslationForUtterance:(id)a3
+- (void)_sendTranslationForUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = [(RTTCall *)self translator];
-  if (v5)
+  utteranceCopy = utterance;
+  translator = [(RTTCall *)self translator];
+  if (translator)
   {
-    v6 = v5;
-    v7 = [(RTTCall *)self translationLocales];
-    if (v7)
+    v6 = translator;
+    translationLocales = [(RTTCall *)self translationLocales];
+    if (translationLocales)
     {
-      v8 = v7;
-      v9 = [v4 text];
-      v10 = [v9 length];
+      v8 = translationLocales;
+      text = [utteranceCopy text];
+      v10 = [text length];
 
       if (v10)
       {
-        v11 = [v4 text];
-        v12 = [v4 isMe];
-        v13 = [(RTTCall *)self translationLocales];
-        v14 = [v13 sourceLocale];
+        text2 = [utteranceCopy text];
+        isMe = [utteranceCopy isMe];
+        translationLocales2 = [(RTTCall *)self translationLocales];
+        sourceLocale = [translationLocales2 sourceLocale];
 
-        v15 = [(RTTCall *)self translationLocales];
-        v16 = [v15 targetLocale];
+        translationLocales3 = [(RTTCall *)self translationLocales];
+        targetLocale = [translationLocales3 targetLocale];
 
         v32 = 0;
         v33 = &v32;
@@ -785,28 +785,28 @@ void __51__RTTCall__handleInitialGarbageTextFromTTY_device___block_invoke(uint64
         v18 = v17;
         _Block_object_dispose(&v32, 8);
         v19 = [v17 alloc];
-        if (v12)
+        if (isMe)
         {
-          v20 = v14;
+          v20 = sourceLocale;
         }
 
         else
         {
-          v20 = v16;
+          v20 = targetLocale;
         }
 
-        if (v12)
+        if (isMe)
         {
-          v21 = v16;
+          v21 = targetLocale;
         }
 
         else
         {
-          v21 = v14;
+          v21 = sourceLocale;
         }
 
         v22 = [v19 initWithSourceLocale:v20 targetLocale:v21];
-        v23 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v11];
+        v23 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:text2];
         [v22 setText:v23];
 
         [v22 setTaskHint:5];
@@ -815,14 +815,14 @@ void __51__RTTCall__handleInitialGarbageTextFromTTY_device___block_invoke(uint64
         v26[1] = 3221225472;
         v26[2] = __40__RTTCall__sendTranslationForUtterance___block_invoke;
         v26[3] = &unk_279AE7CF0;
-        v24 = v11;
+        v24 = text2;
         v27 = v24;
         objc_copyWeak(&v29, location);
-        v30 = v12;
-        v28 = v4;
+        v30 = isMe;
+        v28 = utteranceCopy;
         [v22 setCompletionHandler:v26];
-        v25 = [(RTTCall *)self translator];
-        [v25 translate:v22];
+        translator2 = [(RTTCall *)self translator];
+        [translator2 translate:v22];
 
         objc_destroyWeak(&v29);
         objc_destroyWeak(location);
@@ -891,31 +891,31 @@ void __40__RTTCall__sendTranslationForUtterance___block_invoke(uint64_t a1, void
 LABEL_5:
 }
 
-- (id)_processText:(id)a3 withDevice:(id)a4
+- (id)_processText:(id)text withDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTTCall *)self conversation];
-  v9 = [v8 utterances];
-  v10 = [v9 count];
+  textCopy = text;
+  deviceCopy = device;
+  conversation = [(RTTCall *)self conversation];
+  utterances = [conversation utterances];
+  v10 = [utterances count];
 
   if (v10)
   {
 LABEL_9:
-    v6 = v6;
-    v12 = v6;
+    textCopy = textCopy;
+    v12 = textCopy;
     goto LABEL_10;
   }
 
-  if (![(RTTCall *)self _handleInitialGarbageTextFromTTY:v6 device:v7])
+  if (![(RTTCall *)self _handleInitialGarbageTextFromTTY:textCopy device:deviceCopy])
   {
     if ([(NSMutableString *)self->_garbageCollection length])
     {
-      [(NSMutableString *)self->_garbageCollection appendString:v6];
+      [(NSMutableString *)self->_garbageCollection appendString:textCopy];
       v13 = [(NSMutableString *)self->_garbageCollection copy];
 
-      v6 = v13;
+      textCopy = v13;
     }
 
     garbageCollection = self->_garbageCollection;
@@ -928,7 +928,7 @@ LABEL_9:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v6;
+    v18 = textCopy;
     _os_log_impl(&dword_261754000, v11, OS_LOG_TYPE_INFO, "not processing initial text because it looks like garbage: %@", &v17, 0xCu);
   }
 
@@ -940,42 +940,42 @@ LABEL_10:
   return v12;
 }
 
-- (void)callDidReceiveText:(id)a3 forUtterance:(id)a4
+- (void)callDidReceiveText:(id)text forUtterance:(id)utterance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  utteranceCopy = utterance;
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(RTTCall *)self delegate];
+    delegate = [(RTTCall *)self delegate];
     v12 = 138412802;
-    v13 = v9;
+    v13 = delegate;
     v14 = 2112;
-    v15 = v6;
+    v15 = textCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = utteranceCopy;
     _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "Delegate handling call did receive: %@ for [%@]->%@", &v12, 0x20u);
   }
 
-  v10 = [(RTTCall *)self delegate];
-  [v10 ttyCall:self didReceiveString:v6 forUtterance:v7];
+  delegate2 = [(RTTCall *)self delegate];
+  [delegate2 ttyCall:self didReceiveString:textCopy forUtterance:utteranceCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveTranscribedTextForConversation:(id)a3 isNew:(BOOL)a4
+- (void)saveTranscribedTextForConversation:(id)conversation isNew:(BOOL)new
 {
-  v6 = a3;
+  conversationCopy = conversation;
   callQueue = self->_callQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RTTCall_saveTranscribedTextForConversation_isNew___block_invoke;
   block[3] = &unk_279AE7D18;
-  v11 = a4;
+  newCopy = new;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = conversationCopy;
+  v8 = conversationCopy;
   dispatch_async(callQueue, block);
 }
 
@@ -1005,21 +1005,21 @@ uint64_t __52__RTTCall_saveTranscribedTextForConversation_isNew___block_invoke(u
   return [v10 _postLocalNotificationForText:v11];
 }
 
-- (void)saveTranslatedTranscribedTextForConversation:(id)a3 translatedText:(id)a4 isNew:(BOOL)a5
+- (void)saveTranslatedTranscribedTextForConversation:(id)conversation translatedText:(id)text isNew:(BOOL)new
 {
-  v8 = a3;
-  v9 = a4;
+  conversationCopy = conversation;
+  textCopy = text;
   callQueue = self->_callQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__RTTCall_saveTranslatedTranscribedTextForConversation_translatedText_isNew___block_invoke;
   v13[3] = &unk_279AE7D40;
-  v16 = a5;
+  newCopy = new;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = textCopy;
+  v15 = conversationCopy;
+  v11 = conversationCopy;
+  v12 = textCopy;
   dispatch_async(callQueue, v13);
 }
 
@@ -1050,10 +1050,10 @@ uint64_t __77__RTTCall_saveTranslatedTranscribedTextForConversation_translatedTe
   return [v11 _postLocalNotificationForText:v12];
 }
 
-- (void)_postLocalNotificationForText:(id)a3
+- (void)_postLocalNotificationForText:(id)text
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   if (![(RTTCall *)self isViewControllerVisible])
   {
     goto LABEL_11;
@@ -1068,7 +1068,7 @@ uint64_t __77__RTTCall_saveTranslatedTranscribedTextForConversation_translatedTe
   {
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
-    v46 = __getAXSpringBoardServerClass_block_invoke;
+    selfCopy = __getAXSpringBoardServerClass_block_invoke;
     v47 = &unk_279AE78F0;
     v48 = &v41;
     __getAXSpringBoardServerClass_block_invoke(&buf);
@@ -1077,9 +1077,9 @@ uint64_t __77__RTTCall_saveTranslatedTranscribedTextForConversation_translatedTe
 
   v6 = v5;
   _Block_object_dispose(&v41, 8);
-  v7 = [v5 server];
-  v8 = [v7 focusedApps];
-  v9 = [v8 ax_filteredArrayUsingBlock:&__block_literal_global_3];
+  server = [v5 server];
+  focusedApps = [server focusedApps];
+  v9 = [focusedApps ax_filteredArrayUsingBlock:&__block_literal_global_3];
   v10 = [v9 count];
 
   v11 = AXLogRTT();
@@ -1095,9 +1095,9 @@ uint64_t __77__RTTCall_saveTranslatedTranscribedTextForConversation_translatedTe
     if (![(RTTCall *)self isVisibleSent])
     {
       v12 = +[RTTSettings sharedInstance];
-      v13 = [v12 rttLiveTranscriptionsEnabled];
+      rttLiveTranscriptionsEnabled = [v12 rttLiveTranscriptionsEnabled];
 
-      if (v13)
+      if (rttLiveTranscriptionsEnabled)
       {
         [(RTTCall *)self setIsVisibleSent:1];
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1114,19 +1114,19 @@ LABEL_11:
     v15 = 0;
   }
 
-  v16 = [(RTTCall *)self call];
-  if ([v16 isIncoming])
+  call = [(RTTCall *)self call];
+  if ([call isIncoming])
   {
-    v17 = [(RTTCall *)self call];
-    v18 = [v17 isScreening];
+    call2 = [(RTTCall *)self call];
+    isScreening = [call2 isScreening];
 
-    if (v18)
+    if (isScreening)
     {
-      v19 = AXLogRTT();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      displayName = AXLogRTT();
+      if (os_log_type_enabled(displayName, OS_LOG_TYPE_INFO))
       {
         LOWORD(buf) = 0;
-        _os_log_impl(&dword_261754000, v19, OS_LOG_TYPE_INFO, "Skipping user notification for incoming call in screening state", &buf, 2u);
+        _os_log_impl(&dword_261754000, displayName, OS_LOG_TYPE_INFO, "Skipping user notification for incoming call in screening state", &buf, 2u);
       }
 
 LABEL_31:
@@ -1142,55 +1142,55 @@ LABEL_31:
   v20 = AXLogRTT();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [(RTTCall *)self call];
-    v22 = [v21 isEndpointOnCurrentDevice];
+    call3 = [(RTTCall *)self call];
+    isEndpointOnCurrentDevice = [call3 isEndpointOnCurrentDevice];
     LODWORD(buf) = 67109634;
-    DWORD1(buf) = v22;
+    DWORD1(buf) = isEndpointOnCurrentDevice;
     WORD4(buf) = 1024;
     *(&buf + 10) = v15 ^ 1;
     HIWORD(buf) = 2112;
-    v46 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261754000, v20, OS_LOG_TYPE_INFO, "Generating user notification based on whether device is endpoint %d of call and view control is hidden: %d [%@]", &buf, 0x18u);
   }
 
   if ((v15 & 1) == 0)
   {
-    v23 = [(RTTCall *)self call];
-    v24 = [v23 isEndpointOnCurrentDevice];
+    call4 = [(RTTCall *)self call];
+    isEndpointOnCurrentDevice2 = [call4 isEndpointOnCurrentDevice];
 
-    if (v24)
+    if (isEndpointOnCurrentDevice2)
     {
-      v25 = [(RTTCall *)self call];
-      v19 = [v25 displayName];
+      call5 = [(RTTCall *)self call];
+      displayName = [call5 displayName];
 
-      if (![v19 length])
+      if (![displayName length])
       {
         v26 = MEMORY[0x277CBDA78];
         v27 = MEMORY[0x277CBDA58];
-        v28 = [(RTTCall *)self conversation];
-        v29 = [v28 otherContactPath];
-        v30 = [v27 contactForPhoneNumber:v29];
+        conversation = [(RTTCall *)self conversation];
+        otherContactPath = [conversation otherContactPath];
+        v30 = [v27 contactForPhoneNumber:otherContactPath];
         v31 = [v26 stringFromContact:v30 style:0];
 
-        v19 = v31;
+        displayName = v31;
       }
 
-      v32 = [(RTTCall *)self conversation];
-      v33 = [v32 utterances];
-      v34 = [v33 lastObject];
+      conversation2 = [(RTTCall *)self conversation];
+      utterances = [conversation2 utterances];
+      lastObject = [utterances lastObject];
 
       v35 = AXLogRTT();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v34;
+        *(&buf + 4) = lastObject;
         _os_log_impl(&dword_261754000, v35, OS_LOG_TYPE_INFO, "Generating user notification with utterance: %@", &buf, 0xCu);
       }
 
-      v36 = [v34 isMe];
-      if (v34)
+      isMe = [lastObject isMe];
+      if (lastObject)
       {
-        v37 = v36;
+        v37 = isMe;
       }
 
       else
@@ -1200,9 +1200,9 @@ LABEL_31:
 
       if ((v37 & 1) == 0)
       {
-        v38 = [(RTTCall *)self call];
-        v39 = [v38 callUUID];
-        RTTGenerateUserNotificationForContact(v19, v4, v34, v39);
+        call6 = [(RTTCall *)self call];
+        callUUID = [call6 callUUID];
+        RTTGenerateUserNotificationForContact(displayName, textCopy, lastObject, callUUID);
       }
 
       goto LABEL_31;
@@ -1244,29 +1244,29 @@ uint64_t __41__RTTCall__postLocalNotificationForText___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)device:(id)a3 didReceiveText:(id)a4
+- (void)device:(id)device didReceiveText:(id)text
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  textCopy = text;
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 length];
+    v9 = [textCopy length];
     if (v9)
     {
-      LODWORD(v9) = [v7 characterAtIndex:0];
+      LODWORD(v9) = [textCopy characterAtIndex:0];
     }
 
     *buf = 138412546;
-    v22 = v7;
+    v22 = textCopy;
     v23 = 1024;
     v24 = v9;
     _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "TTY receive string '%@' [%d]", buf, 0x12u);
   }
 
-  v10 = [(RTTCall *)self substitutions];
-  v11 = [v10 objectForKey:v7];
+  substitutions = [(RTTCall *)self substitutions];
+  v11 = [substitutions objectForKey:textCopy];
 
   if (v11)
   {
@@ -1283,7 +1283,7 @@ uint64_t __41__RTTCall__postLocalNotificationForText___block_invoke(uint64_t a1,
 
   else
   {
-    v12 = v7;
+    v12 = textCopy;
   }
 
   callQueue = self->_callQueue;
@@ -1293,8 +1293,8 @@ uint64_t __41__RTTCall__postLocalNotificationForText___block_invoke(uint64_t a1,
   block[3] = &unk_279AE7D88;
   block[4] = self;
   v19 = v12;
-  v20 = v6;
-  v15 = v6;
+  v20 = deviceCopy;
+  v15 = deviceCopy;
   v16 = v12;
   dispatch_async(callQueue, block);
 

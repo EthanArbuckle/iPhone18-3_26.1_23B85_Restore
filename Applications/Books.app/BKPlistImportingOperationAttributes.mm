@@ -1,37 +1,37 @@
 @interface BKPlistImportingOperationAttributes
-- (BKPlistImportingOperationAttributes)initWithAssetID:(id)a3 contentType:(signed __int16)a4;
-- (BKPlistImportingOperationAttributes)initWithTemporaryAssetID:(id)a3 contentType:(signed __int16)a4;
+- (BKPlistImportingOperationAttributes)initWithAssetID:(id)d contentType:(signed __int16)type;
+- (BKPlistImportingOperationAttributes)initWithTemporaryAssetID:(id)d contentType:(signed __int16)type;
 @end
 
 @implementation BKPlistImportingOperationAttributes
 
-- (BKPlistImportingOperationAttributes)initWithAssetID:(id)a3 contentType:(signed __int16)a4
+- (BKPlistImportingOperationAttributes)initWithAssetID:(id)d contentType:(signed __int16)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BKPlistImportingOperationAttributes;
   v8 = [(BKPlistImportingOperationAttributes *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetID, a3);
-    v9->_contentType = a4;
+    objc_storeStrong(&v8->_assetID, d);
+    v9->_contentType = type;
   }
 
   return v9;
 }
 
-- (BKPlistImportingOperationAttributes)initWithTemporaryAssetID:(id)a3 contentType:(signed __int16)a4
+- (BKPlistImportingOperationAttributes)initWithTemporaryAssetID:(id)d contentType:(signed __int16)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BKPlistImportingOperationAttributes;
   v8 = [(BKPlistImportingOperationAttributes *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_temporaryAssetID, a3);
-    v9->_contentType = a4;
+    objc_storeStrong(&v8->_temporaryAssetID, d);
+    v9->_contentType = type;
   }
 
   return v9;

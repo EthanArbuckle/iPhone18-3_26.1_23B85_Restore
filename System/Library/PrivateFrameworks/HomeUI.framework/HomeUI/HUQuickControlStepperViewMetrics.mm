@@ -1,21 +1,21 @@
 @interface HUQuickControlStepperViewMetrics
-- (HUQuickControlStepperViewMetrics)initWithSizeDescriptor:(id)a3 orientation:(unint64_t)a4 cornerRadius:(double)a5;
+- (HUQuickControlStepperViewMetrics)initWithSizeDescriptor:(id)descriptor orientation:(unint64_t)orientation cornerRadius:(double)radius;
 @end
 
 @implementation HUQuickControlStepperViewMetrics
 
-- (HUQuickControlStepperViewMetrics)initWithSizeDescriptor:(id)a3 orientation:(unint64_t)a4 cornerRadius:(double)a5
+- (HUQuickControlStepperViewMetrics)initWithSizeDescriptor:(id)descriptor orientation:(unint64_t)orientation cornerRadius:(double)radius
 {
-  v9 = a3;
+  descriptorCopy = descriptor;
   v13.receiver = self;
   v13.super_class = HUQuickControlStepperViewMetrics;
   v10 = [(HUQuickControlStepperViewMetrics *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sizeDescriptor, a3);
-    v11->_orientation = a4;
-    v11->_cornerRadius = a5;
+    objc_storeStrong(&v10->_sizeDescriptor, descriptor);
+    v11->_orientation = orientation;
+    v11->_cornerRadius = radius;
   }
 
   return v11;

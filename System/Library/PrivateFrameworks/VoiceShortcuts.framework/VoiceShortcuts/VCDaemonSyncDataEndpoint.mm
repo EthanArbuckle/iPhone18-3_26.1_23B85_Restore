@@ -1,6 +1,6 @@
 @interface VCDaemonSyncDataEndpoint
 - (NSSet)syncDataHandlers;
-- (VCDaemonSyncDataEndpoint)initWithEventHandler:(id)a3;
+- (VCDaemonSyncDataEndpoint)initWithEventHandler:(id)handler;
 @end
 
 @implementation VCDaemonSyncDataEndpoint
@@ -13,14 +13,14 @@
   v10 = __Block_byref_object_copy__3474;
   v11 = __Block_byref_object_dispose__3475;
   v12 = 0;
-  v3 = [(VCDaemonSyncDataEndpoint *)self queue];
+  queue = [(VCDaemonSyncDataEndpoint *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__VCDaemonSyncDataEndpoint_syncDataHandlers__block_invoke;
   v6[3] = &unk_2789000D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -46,13 +46,13 @@ void __44__VCDaemonSyncDataEndpoint_syncDataHandlers__block_invoke(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (VCDaemonSyncDataEndpoint)initWithEventHandler:(id)a3
+- (VCDaemonSyncDataEndpoint)initWithEventHandler:(id)handler
 {
-  v6 = a3;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"VCDaemonSyncDataEndpoint.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"eventHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCDaemonSyncDataEndpoint.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"eventHandler"}];
   }
 
   v17.receiver = self;
@@ -67,7 +67,7 @@ void __44__VCDaemonSyncDataEndpoint_syncDataHandlers__block_invoke(uint64_t a1)
     queue = v7->_queue;
     v7->_queue = v10;
 
-    objc_storeStrong(&v7->_eventHandler, a3);
+    objc_storeStrong(&v7->_eventHandler, handler);
     v12 = objc_opt_new();
     mutableSyncDataHandlers = v7->_mutableSyncDataHandlers;
     v7->_mutableSyncDataHandlers = v12;

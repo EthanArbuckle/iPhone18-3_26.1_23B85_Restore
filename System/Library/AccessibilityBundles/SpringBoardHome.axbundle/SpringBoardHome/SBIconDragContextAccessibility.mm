@@ -1,21 +1,21 @@
 @interface SBIconDragContextAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)currentEnteredIconListViewDragDistance;
-- (void)setRecipientIconView:(id)a3;
+- (void)setRecipientIconView:(id)view;
 @end
 
 @implementation SBIconDragContextAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"recipientIconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"setRecipientIconView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isWidgetIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isWidgetStackIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"currentEnteredIconListViewDragDistance" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"recipientIconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"setRecipientIconView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isWidgetIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isWidgetStackIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"currentEnteredIconListViewDragDistance" withFullSignature:{"d", 0}];
 }
 
 - (double)currentEnteredIconListViewDragDistance
@@ -30,10 +30,10 @@
     return 1.79769313e308;
   }
 
-  v3 = [MEMORY[0x29EDBDFA8] server];
-  v4 = [v3 isVoiceControlRunning];
+  server = [MEMORY[0x29EDBDFA8] server];
+  isVoiceControlRunning = [server isVoiceControlRunning];
 
-  if (v4)
+  if (isVoiceControlRunning)
   {
     return 1.79769313e308;
   }
@@ -44,31 +44,31 @@
   return result;
 }
 
-- (void)setRecipientIconView:(id)a3
+- (void)setRecipientIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(SBIconDragContextAccessibility *)self safeValueForKey:@"recipientIconView"];
   v27.receiver = self;
   v27.super_class = SBIconDragContextAccessibility;
-  [(SBIconDragContextAccessibility *)&v27 setRecipientIconView:v4];
+  [(SBIconDragContextAccessibility *)&v27 setRecipientIconView:viewCopy];
   if ((SBAXIconCreatingFolder & 1) == 0 && (SBAXPerformingAXDrag & 1) == 0)
   {
     v6 = AXSBIconControllerSharedInstance();
-    v7 = [v6 _axDragManager];
-    v8 = [v7 _axIsIconDragging];
+    _axDragManager = [v6 _axDragManager];
+    _axIsIconDragging = [_axDragManager _axIsIconDragging];
 
-    if (v8)
+    if (_axIsIconDragging)
     {
-      if (v5 != v4)
+      if (v5 != viewCopy)
       {
-        if (v4 || !v5)
+        if (viewCopy || !v5)
         {
-          if (!v4)
+          if (!viewCopy)
           {
             goto LABEL_23;
           }
 
-          v18 = [v4 safeValueForKey:@"icon"];
+          v18 = [viewCopy safeValueForKey:@"icon"];
           if ([v18 safeBoolForKey:@"isWidgetStackIcon"])
           {
             v19 = accessibilityLocalizedString(@"will.add.to.stack");
@@ -98,8 +98,8 @@
             }
 
             v24 = accessibilityLocalizedString(v23);
-            v25 = [v4 accessibilityLabel];
-            v19 = [v22 stringWithFormat:v24, v25];
+            accessibilityLabel = [viewCopy accessibilityLabel];
+            v19 = [v22 stringWithFormat:v24, accessibilityLabel];
           }
 
           v21 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v19];
@@ -122,8 +122,8 @@
           v13 = MEMORY[0x29EDBA0F8];
           v14 = accessibilityLocalizedString(v12);
 
-          v15 = [v5 accessibilityLabel];
-          v16 = [v13 stringWithFormat:v14, v15];
+          accessibilityLabel2 = [v5 accessibilityLabel];
+          v16 = [v13 stringWithFormat:v14, accessibilityLabel2];
 
           v17 = MEMORY[0x29EDBA0F8];
           v18 = accessibilityLocalizedString(@"finished.moving.app");
@@ -142,7 +142,7 @@
   }
 
 LABEL_23:
-  if (v4)
+  if (viewCopy)
   {
     SBHAXCancelSBAXIconMoveSpeakTimer();
   }

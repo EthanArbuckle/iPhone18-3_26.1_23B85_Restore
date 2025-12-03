@@ -6,7 +6,7 @@
 
 - (uint64_t)pl_presentViewController:()PhotoLibrary animated:
 {
-  for (i = [a1 rootViewController]; ; i = objc_msgSend(v7, "presentedViewController"))
+  for (i = [self rootViewController]; ; i = objc_msgSend(v7, "presentedViewController"))
   {
     v7 = i;
     if (![i presentedViewController])

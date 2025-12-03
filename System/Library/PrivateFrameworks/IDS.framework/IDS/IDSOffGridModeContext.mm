@@ -1,6 +1,6 @@
 @interface IDSOffGridModeContext
 - (IDSOffGridModeContext)init;
-- (IDSOffGridModeContext)initWithCoder:(id)a3;
+- (IDSOffGridModeContext)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -24,17 +24,17 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSOffGridModeContext *)self error];
-  v5 = [v3 stringWithFormat:@"<IDSOffGridModeContext %p>: error %@", self, v4];
+  error = [(IDSOffGridModeContext *)self error];
+  v5 = [v3 stringWithFormat:@"<IDSOffGridModeContext %p>: error %@", self, error];
 
   return v5;
 }
 
-- (IDSOffGridModeContext)initWithCoder:(id)a3
+- (IDSOffGridModeContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(IDSOffGridModeContext);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   [(IDSOffGridModeContext *)v5 setError:v6];
   return v5;

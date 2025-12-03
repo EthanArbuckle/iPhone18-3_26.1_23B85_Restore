@@ -1,7 +1,7 @@
 @interface PICleanupAvailability
 + (BOOL)_deviceSupportsCleanup;
 + (id)_fetchCleanupAvailability;
-+ (id)ensureAvailability:(BOOL)a3;
++ (id)ensureAvailability:(BOOL)availability;
 + (int64_t)status;
 @end
 
@@ -9,15 +9,15 @@
 
 + (int64_t)status
 {
-  v2 = [a1 ensureAvailability:0];
-  v3 = [v2 status];
+  v2 = [self ensureAvailability:0];
+  status = [v2 status];
 
-  return v3;
+  return status;
 }
 
-+ (id)ensureAvailability:(BOOL)a3
++ (id)ensureAvailability:(BOOL)availability
 {
-  v3 = a3;
+  availabilityCopy = availability;
   if (ensureAvailability__once != -1)
   {
     dispatch_once(&ensureAvailability__once, &__block_literal_global_29685);
@@ -26,7 +26,7 @@
   v5 = ensureAvailability__availability;
   if (ensureAvailability__availability)
   {
-    v6 = !v3;
+    v6 = !availabilityCopy;
   }
 
   else
@@ -40,7 +40,7 @@
     block[1] = 3221225472;
     block[2] = __44__PICleanupAvailability_ensureAvailability___block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(ensureAvailability__availabilityQueue, block);
     v5 = ensureAvailability__availability;
   }
@@ -68,7 +68,7 @@ void __44__PICleanupAvailability_ensureAvailability___block_invoke()
 + (id)_fetchCleanupAvailability
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a1 _deviceSupportsCleanup])
+  if ([self _deviceSupportsCleanup])
   {
     domain_answer = os_eligibility_get_domain_answer();
     if (domain_answer)

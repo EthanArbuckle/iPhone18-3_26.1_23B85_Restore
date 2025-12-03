@@ -1,17 +1,17 @@
 @interface BTAudioSession
 - (BTAudioSession)init;
-- (BTAudioSession)initWithCoder:(id)a3;
+- (BTAudioSession)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
 - (void)_activate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation BTAudioSession
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (BTAudioSession)initWithCoder:(id)a3
+- (BTAudioSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BTAudioSession *)self init];
   if (v5)
   {
@@ -48,7 +48,7 @@
       v5->_clientID = 0;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -58,29 +58,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   category = self->_category;
-  v8 = v4;
+  v8 = coderCopy;
   if (category)
   {
-    [v4 encodeInteger:category forKey:@"cat"];
-    v4 = v8;
+    [coderCopy encodeInteger:category forKey:@"cat"];
+    coderCopy = v8;
   }
 
   clientID = self->_clientID;
   if (clientID)
   {
     [v8 encodeInt64:clientID forKey:@"cid"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   label = self->_label;
   if (label)
   {
     [v8 encodeObject:label forKey:@"label"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
@@ -113,26 +113,26 @@
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__BTAudioSession_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -208,10 +208,10 @@ LABEL_5:
   self->_timeoutSeconds;
   CUDispatchTimerSet();
   dispatch_activate(v7);
-  v9 = [(BTAudioSession *)self _ensureXPCStarted];
-  if (v9)
+  _ensureXPCStarted = [(BTAudioSession *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    [(BTAudioSession *)self _reportError:v9];
+    [(BTAudioSession *)self _reportError:_ensureXPCStarted];
   }
 
   else
@@ -540,9 +540,9 @@ void __28__BTAudioSession_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v9 = a3;
+  errorCopy = error;
   if (gLogCategory_BTAudioSession <= 90 && (gLogCategory_BTAudioSession != -1 || _LogCategory_Initialize()))
   {
     [BTAudioSession _reportError:];
@@ -563,7 +563,7 @@ void __28__BTAudioSession_invalidate__block_invoke(uint64_t a1)
 
   if (v7)
   {
-    (v7)[2](v7, v9);
+    (v7)[2](v7, errorCopy);
   }
 }
 

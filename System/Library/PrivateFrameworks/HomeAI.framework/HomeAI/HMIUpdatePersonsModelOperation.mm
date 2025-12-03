@@ -1,25 +1,25 @@
 @interface HMIUpdatePersonsModelOperation
-- (HMIUpdatePersonsModelOperation)initWithSourceUUID:(id)a3 homeUUID:(id)a4 external:(BOOL)a5;
+- (HMIUpdatePersonsModelOperation)initWithSourceUUID:(id)d homeUUID:(id)iD external:(BOOL)external;
 - (id)logIdentifier;
 - (void)main;
-- (void)updatePersonsModelWithRetryOnError:(BOOL)a3;
+- (void)updatePersonsModelWithRetryOnError:(BOOL)error;
 @end
 
 @implementation HMIUpdatePersonsModelOperation
 
-- (HMIUpdatePersonsModelOperation)initWithSourceUUID:(id)a3 homeUUID:(id)a4 external:(BOOL)a5
+- (HMIUpdatePersonsModelOperation)initWithSourceUUID:(id)d homeUUID:(id)iD external:(BOOL)external
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMIUpdatePersonsModelOperation;
   v11 = [(HMFOperation *)&v14 initWithTimeout:300.0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceUUID, a3);
-    objc_storeStrong(&v12->_homeUUID, a4);
-    v12->_external = a5;
+    objc_storeStrong(&v11->_sourceUUID, d);
+    objc_storeStrong(&v12->_homeUUID, iD);
+    v12->_external = external;
   }
 
   return v12;
@@ -33,18 +33,18 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)updatePersonsModelWithRetryOnError:(BOOL)a3
+- (void)updatePersonsModelWithRetryOnError:(BOOL)error
 {
   v27[4] = *MEMORY[0x277D85DE8];
   v5 = +[HMITaskService taskServiceClient];
   v27[0] = HMITaskTypeUpdatePersonsModelTask;
   v26[0] = @"taskType";
   v26[1] = @"sourceUUID";
-  v6 = [(HMIUpdatePersonsModelOperation *)self sourceUUID];
-  v27[1] = v6;
+  sourceUUID = [(HMIUpdatePersonsModelOperation *)self sourceUUID];
+  v27[1] = sourceUUID;
   v26[2] = @"homeUUID";
-  v7 = [(HMIUpdatePersonsModelOperation *)self homeUUID];
-  v27[2] = v7;
+  homeUUID = [(HMIUpdatePersonsModelOperation *)self homeUUID];
+  v27[2] = homeUUID;
   v26[3] = @"isExternal";
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMIUpdatePersonsModelOperation external](self, "external")}];
   v27[3] = v8;
@@ -56,10 +56,10 @@
   v16[2] = __69__HMIUpdatePersonsModelOperation_updatePersonsModelWithRetryOnError___block_invoke;
   v16[3] = &unk_278754F08;
   objc_copyWeak(&v17, &location);
-  v18 = a3;
+  errorCopy = error;
   v10 = [v5 submitTaskWithOptions:v9 progressHandler:0 completionHandler:v16];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -153,15 +153,15 @@ void __69__HMIUpdatePersonsModelOperation_updatePersonsModelWithRetryOnError___b
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIUpdatePersonsModelOperation *)self sourceUUID];
-  v5 = [(HMIUpdatePersonsModelOperation *)self external];
+  sourceUUID = [(HMIUpdatePersonsModelOperation *)self sourceUUID];
+  external = [(HMIUpdatePersonsModelOperation *)self external];
   v6 = @"home";
-  if (v5)
+  if (external)
   {
     v6 = @"external";
   }
 
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", sourceUUID, v6];
 
   return v7;
 }

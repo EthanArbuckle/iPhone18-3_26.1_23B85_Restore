@@ -7,12 +7,12 @@
 
 - (uint64_t)mf_BOOLForKey:()Goodies
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 uppercaseString];
-    v3 = [v2 isEqualToString:@"YES"];
+    uppercaseString = [v1 uppercaseString];
+    v3 = [uppercaseString isEqualToString:@"YES"];
   }
 
   else
@@ -36,19 +36,19 @@
 
 - (uint64_t)mf_integerForKey:()Goodies
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v2 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v2 = 0;
+    intValue = 0;
   }
 
-  return v2;
+  return intValue;
 }
 
 @end

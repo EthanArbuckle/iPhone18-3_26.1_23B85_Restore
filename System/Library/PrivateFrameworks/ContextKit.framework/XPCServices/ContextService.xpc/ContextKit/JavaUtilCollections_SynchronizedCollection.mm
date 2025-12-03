@@ -1,33 +1,33 @@
 @interface JavaUtilCollections_SynchronizedCollection
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
-- (JavaUtilCollections_SynchronizedCollection)initWithJavaUtilCollection:(id)a3 withId:(id)a4;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
+- (JavaUtilCollections_SynchronizedCollection)initWithJavaUtilCollection:(id)collection withId:(id)id;
 - (NSString)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)clear;
 - (void)dealloc;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedCollection
 
-- (JavaUtilCollections_SynchronizedCollection)initWithJavaUtilCollection:(id)a3 withId:(id)a4
+- (JavaUtilCollections_SynchronizedCollection)initWithJavaUtilCollection:(id)collection withId:(id)id
 {
-  JreStrongAssign(&self->c_, a3);
-  JreStrongAssign(&self->mutex_, a4);
+  JreStrongAssign(&self->c_, collection);
+  JreStrongAssign(&self->mutex_, id);
   return self;
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -37,12 +37,12 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c addWithId:a3];
+  v7 = [(JavaUtilCollection *)c addWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -52,7 +52,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c addAllWithJavaUtilCollection:a3];
+  v7 = [(JavaUtilCollection *)c addAllWithJavaUtilCollection:collection];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -72,7 +72,7 @@
   objc_sync_exit(mutex);
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -82,12 +82,12 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c containsWithId:a3];
+  v7 = [(JavaUtilCollection *)c containsWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -97,7 +97,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:a3];
+  v7 = [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:collection];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -112,9 +112,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilCollection *)c isEmpty];
+  isEmpty = [(JavaUtilCollection *)c isEmpty];
   objc_sync_exit(mutex);
-  return v5;
+  return isEmpty;
 }
 
 - (id)iterator
@@ -127,12 +127,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilCollection *)c iterator];
+  iterator = [(JavaUtilCollection *)c iterator];
   objc_sync_exit(mutex);
-  return v5;
+  return iterator;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -142,27 +142,12 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c removeWithId:a3];
-  objc_sync_exit(mutex);
-  return v7;
-}
-
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
-{
-  mutex = self->mutex_;
-  objc_sync_enter(mutex);
-  c = self->c_;
-  if (!c)
-  {
-    JreThrowNullPointerException();
-  }
-
-  v7 = [(JavaUtilCollection *)c removeAllWithJavaUtilCollection:a3];
+  v7 = [(JavaUtilCollection *)c removeWithId:id];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -172,7 +157,22 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c retainAllWithJavaUtilCollection:a3];
+  v7 = [(JavaUtilCollection *)c removeAllWithJavaUtilCollection:collection];
+  objc_sync_exit(mutex);
+  return v7;
+}
+
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
+{
+  mutex = self->mutex_;
+  objc_sync_enter(mutex);
+  c = self->c_;
+  if (!c)
+  {
+    JreThrowNullPointerException();
+  }
+
+  v7 = [(JavaUtilCollection *)c retainAllWithJavaUtilCollection:collection];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -202,9 +202,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilCollection *)c toArray];
+  toArray = [(JavaUtilCollection *)c toArray];
   objc_sync_exit(mutex);
-  return v5;
+  return toArray;
 }
 
 - (NSString)description
@@ -222,7 +222,7 @@
   return v5;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
@@ -232,21 +232,21 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c toArrayWithNSObjectArray:a3];
+  v7 = [(JavaUtilCollection *)c toArrayWithNSObjectArray:array];
   objc_sync_exit(mutex);
   return v7;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

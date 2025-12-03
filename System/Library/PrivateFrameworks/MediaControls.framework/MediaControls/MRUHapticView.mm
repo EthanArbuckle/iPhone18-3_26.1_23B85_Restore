@@ -1,14 +1,14 @@
 @interface MRUHapticView
-- (MRUHapticView)initWithContext:(unint64_t)a3 frame:(CGRect)a4;
+- (MRUHapticView)initWithContext:(unint64_t)context frame:(CGRect)frame;
 - (MRUHapticViewDelegate)delegate;
-- (void)_hapticImageTap:(id)a3;
-- (void)applyContext:(unint64_t)a3;
-- (void)handleDarkenSystemColorsNotification:(id)a3;
+- (void)_hapticImageTap:(id)tap;
+- (void)applyContext:(unint64_t)context;
+- (void)handleDarkenSystemColorsNotification:(id)notification;
 - (void)initializeSubviews;
 - (void)layoutSubviews;
-- (void)setArtworkImage:(id)a3;
-- (void)setHapticStatus:(unsigned int)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setArtworkImage:(id)image;
+- (void)setHapticStatus:(unsigned int)status;
+- (void)setStylingProvider:(id)provider;
 - (void)updateArtworkFilters;
 - (void)updateDimmed;
 - (void)updateHapticSymbol;
@@ -20,8 +20,8 @@
 
 - (void)updateDimmed
 {
-  v5 = [(MRUHapticView *)self traitCollection];
-  if ([v5 mr_shouldDim])
+  traitCollection = [(MRUHapticView *)self traitCollection];
+  if ([traitCollection mr_shouldDim])
   {
     v3 = 0.5;
   }
@@ -31,20 +31,20 @@
     v3 = 1.0;
   }
 
-  v4 = [(MRUHapticView *)self hapticImageView];
-  [v4 setAlpha:v3];
+  hapticImageView = [(MRUHapticView *)self hapticImageView];
+  [hapticImageView setAlpha:v3];
 }
 
-- (MRUHapticView)initWithContext:(unint64_t)a3 frame:(CGRect)a4
+- (MRUHapticView)initWithContext:(unint64_t)context frame:(CGRect)frame
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = MRUHapticView;
-  v5 = [(MRUHapticView *)&v14 initWithFrame:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v5 = [(MRUHapticView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_context = a3;
+    v5->_context = context;
     [(MRUHapticView *)v5 initializeSubviews];
     v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v6 action:sel__hapticImageTap_];
     [(MRUHapticView *)v6 addGestureRecognizer:v7];
@@ -57,14 +57,14 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     v11 = [(MRUHapticView *)v6 registerForTraitChanges:v10 withAction:sel_updateDimmed];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel_handleDarkenSystemColorsNotification_ name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_handleDarkenSystemColorsNotification_ name:*MEMORY[0x1E69DD8B8] object:0];
   }
 
   return v6;
 }
 
-- (void)handleDarkenSystemColorsNotification:(id)a3
+- (void)handleDarkenSystemColorsNotification:(id)notification
 {
   if (self->_hapticStatus == 2)
   {
@@ -88,8 +88,8 @@
   fillColor = self->_fillColor;
   self->_fillColor = v3;
 
-  v5 = [(MRUHapticView *)self layer];
-  [v5 setMasksToBounds:1];
+  layer = [(MRUHapticView *)self layer];
+  [layer setMasksToBounds:1];
 
   v6 = objc_alloc(MEMORY[0x1E6979378]);
   v7 = [v6 initWithType:*MEMORY[0x1E6979890]];
@@ -155,19 +155,19 @@
   hapticImageView = self->_hapticImageView;
   self->_hapticImageView = v27;
 
-  v29 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UIImageView *)self->_hapticImageView setTintColor:v29];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UIImageView *)self->_hapticImageView setTintColor:whiteColor];
 
-  v30 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIImageView *)self->_hapticImageView setBackgroundColor:v30];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIImageView *)self->_hapticImageView setBackgroundColor:clearColor];
 
   [(UIImageView *)self->_hapticImageView setContentMode:1];
-  v31 = [(UIImageView *)self->_hapticImageView layer];
-  [v31 setAllowsEdgeAntialiasing:1];
+  layer2 = [(UIImageView *)self->_hapticImageView layer];
+  [layer2 setAllowsEdgeAntialiasing:1];
 
   [(UIView *)self->_hapticImageViewHolder addSubview:self->_hapticImageView];
-  v32 = [(UIView *)self->_hapticContainerView layer];
-  [v32 addSublayer:self->_contentLayer];
+  layer3 = [(UIView *)self->_hapticContainerView layer];
+  [layer3 addSublayer:self->_contentLayer];
 
   [(UIView *)self->_hapticContainerView addSubview:self->_hapticImageViewHolder];
   [(MRUHapticView *)self addSubview:self->_hapticContainerView];
@@ -196,26 +196,26 @@
   [(CALayer *)self->_fallbackLayer setFrame:?];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  objc_storeStrong(&self->_stylingProvider, a3);
+  objc_storeStrong(&self->_stylingProvider, provider);
 
   [(MRUHapticView *)self updateVisualStyling];
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
-  objc_storeStrong(&self->_artworkImage, a3);
+  objc_storeStrong(&self->_artworkImage, image);
 
   [(MRUHapticView *)self updateLayers];
 }
 
-- (void)setHapticStatus:(unsigned int)a3
+- (void)setHapticStatus:(unsigned int)status
 {
-  if (self->_hapticStatus != a3)
+  if (self->_hapticStatus != status)
   {
-    self->_hapticStatus = a3;
-    [(MRUHapticView *)self setUserInteractionEnabled:a3 != 2];
+    self->_hapticStatus = status;
+    [(MRUHapticView *)self setUserInteractionEnabled:status != 2];
     [(MRUHapticView *)self updateHapticSymbol];
 
     [(MRUHapticView *)self updateVisualStyling];
@@ -347,15 +347,15 @@ void __29__MRUHapticView_updateLayers__block_invoke(uint64_t a1)
   [(CALayer *)hapticLayer setValue:v8 forKeyPath:@"filters.colorSaturate.inputAmount"];
 }
 
-- (void)applyContext:(unint64_t)a3
+- (void)applyContext:(unint64_t)context
 {
-  if (a3 == 2)
+  if (context == 2)
   {
     v5 = *MEMORY[0x1E69798E0];
     v6 = 464;
 LABEL_9:
-    v8 = [*(&self->super.super.super.isa + v6) layer];
-    [v8 setCompositingFilter:v5];
+    layer = [*(&self->super.super.super.isa + v6) layer];
+    [layer setCompositingFilter:v5];
 
     [(UIView *)self->_hapticContainerView setAlpha:1.0];
     LODWORD(v9) = 1.0;
@@ -365,15 +365,15 @@ LABEL_9:
     return;
   }
 
-  if (a3 != 1)
+  if (context != 1)
   {
-    if (a3)
+    if (context)
     {
       return;
     }
 
-    v4 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)self->_hapticImageViewHolder setBackgroundColor:v4];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)self->_hapticImageViewHolder setBackgroundColor:blackColor];
 
     v5 = *MEMORY[0x1E69798E8];
     v6 = 456;
@@ -386,7 +386,7 @@ LABEL_9:
   [(CALayer *)contentLayer setOpacity:0.0];
 }
 
-- (void)_hapticImageTap:(id)a3
+- (void)_hapticImageTap:(id)tap
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didTapHapticView:self];
@@ -396,8 +396,8 @@ LABEL_9:
 {
   stylingProvider = self->_stylingProvider;
   hapticImageView = self->_hapticImageView;
-  v4 = [(MRUHapticView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:2 toView:hapticImageView traitCollection:v4];
+  traitCollection = [(MRUHapticView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:2 toView:hapticImageView traitCollection:traitCollection];
 }
 
 - (MRUHapticViewDelegate)delegate

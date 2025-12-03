@@ -1,23 +1,23 @@
 @interface SBFlashlightActivityBannerAuthority
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6;
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change;
 @end
 
 @implementation SBFlashlightActivityBannerAuthority
 
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change
 {
-  v9 = a3;
-  v10 = [a4 lastObject];
+  presentableCopy = presentable;
+  lastObject = [presentables lastObject];
   v11 = +[SBFlashlightPreviewPresentableViewController requesterIdentifier];
-  v12 = [v10 requesterIdentifier];
-  if (([v12 isEqual:v11] & 1) == 0)
+  requesterIdentifier = [lastObject requesterIdentifier];
+  if (([requesterIdentifier isEqual:v11] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v13 = [v9 requesterIdentifier];
-  v14 = [v13 isEqual:v11];
+  requesterIdentifier2 = [presentableCopy requesterIdentifier];
+  v14 = [requesterIdentifier2 isEqual:v11];
 
   if (!v14)
   {
@@ -26,15 +26,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (responsiblePresentable)
   {
-    v15 = v10;
-    *a5 = v10;
+    v15 = lastObject;
+    *responsiblePresentable = lastObject;
   }
 
-  if (a6)
+  if (change)
   {
-    *a6 = MEMORY[0x277CBEC38];
+    *change = MEMORY[0x277CBEC38];
   }
 
   v16 = 1;

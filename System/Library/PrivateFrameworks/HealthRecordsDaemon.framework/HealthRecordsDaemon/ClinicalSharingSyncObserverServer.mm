@@ -4,7 +4,7 @@
 - (id)remoteInterface;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)remote_startObservingSyncStatusWithCompletion:(id)a3;
+- (void)remote_startObservingSyncStatusWithCompletion:(id)completion;
 @end
 
 @implementation ClinicalSharingSyncObserverServer
@@ -15,10 +15,10 @@
   v6 = *(&self->super.isa + OBJC_IVAR____TtC19HealthRecordsDaemon33ClinicalSharingSyncObserverServer_lock);
   sub_251B40DE8(0, &qword_2813E1D00, type metadata accessor for os_unfair_lock_s, MEMORY[0x277D83D58]);
   sub_251B3F1EC();
-  v4 = self;
+  selfCopy = self;
   sub_251C702C4();
   MEMORY[0x25308E2B0](*(&self->super.isa + v3), -1, -1);
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for ClinicalSharingSyncObserverServer();
   [(ClinicalSharingSyncObserverServer *)&v5 dealloc];
 }
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (void)remote_startObservingSyncStatusWithCompletion:(id)a3
+- (void)remote_startObservingSyncStatusWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
-  v5 = self;
+  v4 = _Block_copy(completion);
+  selfCopy = self;
   sub_251B402FC();
   v4[2](v4, 1, 0);
 
@@ -59,7 +59,7 @@
   v4 = *(&self->super.isa + OBJC_IVAR____TtC19HealthRecordsDaemon33ClinicalSharingSyncObserverServer_lock);
   sub_251B40DE8(0, &qword_2813E1D00, type metadata accessor for os_unfair_lock_s, MEMORY[0x277D83D58]);
   sub_251B3F1EC();
-  v3 = self;
+  selfCopy = self;
   sub_251C702C4();
 }
 

@@ -1,24 +1,24 @@
 @interface CalibrationModelManager
 - (BOOL)loadModel;
-- (CalibrationModelManager)initWithChunkSize:(unint64_t)a3 batchSize:(unint64_t)a4;
-- (id)batchPredict:(id)a3 documentEmbeddings:(id)a4 queryID:(int64_t)a5;
-- (id)convertEmbeddingToMLMultiArray:(id)a3 atIndex:(unint64_t)a4 queryID:(int64_t)a5;
-- (id)predict:(id)a3 documentEmbedding:(id)a4 queryID:(int64_t)a5;
+- (CalibrationModelManager)initWithChunkSize:(unint64_t)size batchSize:(unint64_t)batchSize;
+- (id)batchPredict:(id)predict documentEmbeddings:(id)embeddings queryID:(int64_t)d;
+- (id)convertEmbeddingToMLMultiArray:(id)array atIndex:(unint64_t)index queryID:(int64_t)d;
+- (id)predict:(id)predict documentEmbedding:(id)embedding queryID:(int64_t)d;
 - (void)clear;
-- (void)performBatchInferenceWithInputs:(id)a3 documentIndices:(id)a4 results:(id)a5 queryID:(int64_t)a6;
+- (void)performBatchInferenceWithInputs:(id)inputs documentIndices:(id)indices results:(id)results queryID:(int64_t)d;
 @end
 
 @implementation CalibrationModelManager
 
-- (CalibrationModelManager)initWithChunkSize:(unint64_t)a3 batchSize:(unint64_t)a4
+- (CalibrationModelManager)initWithChunkSize:(unint64_t)size batchSize:(unint64_t)batchSize
 {
   v7.receiver = self;
   v7.super_class = CalibrationModelManager;
   result = [(CalibrationModelManager *)&v7 init];
   if (result)
   {
-    result->_chunkSize = a3;
-    result->_batchSize = a4;
+    result->_chunkSize = size;
+    result->_batchSize = batchSize;
   }
 
   return result;
@@ -62,21 +62,21 @@
   return v6 == 0;
 }
 
-- (id)predict:(id)a3 documentEmbedding:(id)a4 queryID:(int64_t)a5
+- (id)predict:(id)predict documentEmbedding:(id)embedding queryID:(int64_t)d
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  predictCopy = predict;
+  embeddingCopy = embedding;
+  v10 = embeddingCopy;
+  if (predictCopy && embeddingCopy)
   {
-    v16[0] = v9;
+    v16[0] = embeddingCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v12 = [(CalibrationModelManager *)self batchPredict:v8 documentEmbeddings:v11 queryID:a5];
+    v12 = [(CalibrationModelManager *)self batchPredict:predictCopy documentEmbeddings:v11 queryID:d];
 
     if (v12 && [v12 count])
     {
-      v13 = [v12 firstObject];
+      firstObject = [v12 firstObject];
       goto LABEL_9;
     }
   }
@@ -90,19 +90,19 @@
     }
   }
 
-  v13 = 0;
+  firstObject = 0;
 LABEL_9:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return firstObject;
 }
 
-- (id)batchPredict:(id)a3 documentEmbeddings:(id)a4 queryID:(int64_t)a5
+- (id)batchPredict:(id)predict documentEmbeddings:(id)embeddings queryID:(int64_t)d
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  predictCopy = predict;
+  embeddingsCopy = embeddings;
   if (![(CalibrationModelManager *)self loaded])
   {
     v23 = SSGeneralLog();
@@ -114,7 +114,7 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  if (!v8 || !v9)
+  if (!predictCopy || !embeddingsCopy)
   {
     v23 = SSGeneralLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -130,19 +130,19 @@ LABEL_24:
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v9 count])
+  if ([embeddingsCopy count])
   {
     v11 = 0;
-    v28 = v9;
+    v28 = embeddingsCopy;
     while (1)
     {
       v30 = v11;
-      v31 = [v9 objectAtIndexedSubscript:v11];
-      v12 = [v31 vectors];
-      v13 = [v12 count];
+      v31 = [embeddingsCopy objectAtIndexedSubscript:v11];
+      vectors = [v31 vectors];
+      v13 = [vectors count];
 
-      v14 = [(CalibrationModelManager *)self chunkSize];
-      v15 = v13 >= v14 ? v14 : v13;
+      chunkSize = [(CalibrationModelManager *)self chunkSize];
+      v15 = v13 >= chunkSize ? chunkSize : v13;
       if (v15)
       {
         break;
@@ -151,7 +151,7 @@ LABEL_24:
 LABEL_16:
 
       v11 = v30 + 1;
-      v9 = v28;
+      embeddingsCopy = v28;
       if (v30 + 1 >= [v28 count])
       {
         goto LABEL_17;
@@ -161,8 +161,8 @@ LABEL_16:
     v16 = 0;
     while (1)
     {
-      v17 = [(CalibrationModelManager *)self convertEmbeddingToMLMultiArray:v8 atIndex:0 queryID:a5];
-      v18 = [(CalibrationModelManager *)self convertEmbeddingToMLMultiArray:v31 atIndex:v16 queryID:a5];
+      v17 = [(CalibrationModelManager *)self convertEmbeddingToMLMultiArray:predictCopy atIndex:0 queryID:d];
+      v18 = [(CalibrationModelManager *)self convertEmbeddingToMLMultiArray:v31 atIndex:v16 queryID:d];
       v19 = v18;
       if (!v17 || !v18)
       {
@@ -177,7 +177,7 @@ LABEL_16:
       v22 = [v10 count];
       if (v22 == [(CalibrationModelManager *)self batchSize])
       {
-        [(CalibrationModelManager *)self performBatchInferenceWithInputs:v10 documentIndices:v32 results:v29 queryID:a5];
+        [(CalibrationModelManager *)self performBatchInferenceWithInputs:v10 documentIndices:v32 results:v29 queryID:d];
         [v10 removeAllObjects];
         [v32 removeAllObjects];
       }
@@ -192,7 +192,7 @@ LABEL_16:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v34 = a5;
+      dCopy = d;
       v35 = 2048;
       v36 = v30;
       v37 = 2048;
@@ -201,7 +201,7 @@ LABEL_16:
     }
 
     v24 = 0;
-    v9 = v28;
+    embeddingsCopy = v28;
     v23 = v29;
   }
 
@@ -211,7 +211,7 @@ LABEL_17:
     v23 = v29;
     if ([v10 count])
     {
-      [(CalibrationModelManager *)self performBatchInferenceWithInputs:v10 documentIndices:v32 results:v29 queryID:a5];
+      [(CalibrationModelManager *)self performBatchInferenceWithInputs:v10 documentIndices:v32 results:v29 queryID:d];
     }
 
     v24 = v29;
@@ -223,15 +223,15 @@ LABEL_29:
   return v24;
 }
 
-- (void)performBatchInferenceWithInputs:(id)a3 documentIndices:(id)a4 results:(id)a5 queryID:(int64_t)a6
+- (void)performBatchInferenceWithInputs:(id)inputs documentIndices:(id)indices results:(id)results queryID:(int64_t)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CalibrationModelManager *)self model];
+  inputsCopy = inputs;
+  indicesCopy = indices;
+  resultsCopy = results;
+  model = [(CalibrationModelManager *)self model];
   v14 = objc_alloc_init(MEMORY[0x1E695FF08]);
   v32 = 0;
-  v15 = [v13 predictionsFromInputs:v10 options:v14 error:&v32];
+  v15 = [model predictionsFromInputs:inputsCopy options:v14 error:&v32];
   v16 = v32;
 
   if (v16 || !v15)
@@ -239,7 +239,7 @@ LABEL_29:
     v31 = SSGeneralLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      [CalibrationModelManager performBatchInferenceWithInputs:v16 documentIndices:a6 results:? queryID:?];
+      [CalibrationModelManager performBatchInferenceWithInputs:v16 documentIndices:d results:? queryID:?];
     }
   }
 
@@ -248,24 +248,24 @@ LABEL_29:
     v17 = 0;
     do
     {
-      v18 = [v11 objectAtIndexedSubscript:v17];
+      v18 = [indicesCopy objectAtIndexedSubscript:v17];
       v19 = [v15 objectAtIndexedSubscript:v17];
-      v20 = [v19 output];
-      v21 = [v20 objectAtIndexedSubscript:0];
+      output = [v19 output];
+      v21 = [output objectAtIndexedSubscript:0];
       [v21 floatValue];
       v23 = v22;
 
-      v24 = [v18 unsignedIntegerValue];
-      if (v24 >= [v12 count])
+      unsignedIntegerValue = [v18 unsignedIntegerValue];
+      if (unsignedIntegerValue >= [resultsCopy count])
       {
         *&v25 = v23;
         v30 = [MEMORY[0x1E696AD98] numberWithFloat:v25];
-        [v12 addObject:v30];
+        [resultsCopy addObject:v30];
       }
 
       else
       {
-        v26 = [v12 objectAtIndexedSubscript:{objc_msgSend(v18, "unsignedIntegerValue")}];
+        v26 = [resultsCopy objectAtIndexedSubscript:{objc_msgSend(v18, "unsignedIntegerValue")}];
         [v26 floatValue];
         v28 = v27;
 
@@ -280,7 +280,7 @@ LABEL_29:
         }
 
         v30 = [MEMORY[0x1E696AD98] numberWithFloat:v29];
-        [v12 setObject:v30 atIndexedSubscript:{objc_msgSend(v18, "unsignedIntegerValue")}];
+        [resultsCopy setObject:v30 atIndexedSubscript:{objc_msgSend(v18, "unsignedIntegerValue")}];
       }
 
       ++v17;
@@ -290,12 +290,12 @@ LABEL_29:
   }
 }
 
-- (id)convertEmbeddingToMLMultiArray:(id)a3 atIndex:(unint64_t)a4 queryID:(int64_t)a5
+- (id)convertEmbeddingToMLMultiArray:(id)array atIndex:(unint64_t)index queryID:(int64_t)d
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  arrayCopy = array;
+  v8 = arrayCopy;
+  if (!arrayCopy)
   {
     v12 = SSGeneralLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -306,10 +306,10 @@ LABEL_29:
     goto LABEL_13;
   }
 
-  v9 = [v7 vectors];
-  v10 = [v9 count];
+  vectors = [arrayCopy vectors];
+  v10 = [vectors count];
 
-  if (v10 <= a4)
+  if (v10 <= index)
   {
     v12 = SSGeneralLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -322,8 +322,8 @@ LABEL_13:
     goto LABEL_28;
   }
 
-  v11 = [v8 vectors];
-  v12 = [v11 objectAtIndexedSubscript:a4];
+  vectors2 = [v8 vectors];
+  v12 = [vectors2 objectAtIndexedSubscript:index];
 
   if (!v12)
   {
@@ -336,8 +336,8 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v13 = [v8 dimension];
-  if (v13 >= 3)
+  dimension = [v8 dimension];
+  if (dimension >= 3)
   {
     v17 = SSGeneralLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -348,10 +348,10 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v14 = v13;
+  v14 = dimension;
   v15 = 65552;
-  v16 = [v8 format];
-  if (!v16)
+  format = [v8 format];
+  if (!format)
   {
     v15 = 65568;
 LABEL_20:
@@ -369,7 +369,7 @@ LABEL_20:
       v23 = SSGeneralLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [CalibrationModelManager convertEmbeddingToMLMultiArray:v17 atIndex:a5 queryID:?];
+        [CalibrationModelManager convertEmbeddingToMLMultiArray:v17 atIndex:d queryID:?];
       }
 
       v18 = 0;
@@ -384,7 +384,7 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  if (v16 == 1)
+  if (format == 1)
   {
     goto LABEL_20;
   }

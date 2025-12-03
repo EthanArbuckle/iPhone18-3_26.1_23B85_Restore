@@ -1,19 +1,19 @@
 @interface SearchUIRequestAppClipInstallHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIRequestAppClipInstallHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 identifyingResult];
-  v6 = [v4 punchouts];
-  v7 = [v6 firstObject];
+  modelCopy = model;
+  identifyingResult = [modelCopy identifyingResult];
+  punchouts = [modelCopy punchouts];
+  firstObject = [punchouts firstObject];
 
-  v8 = [v7 preferredOpenableURL];
-  if (!v8 || ![v7 hasClip])
+  preferredOpenableURL = [firstObject preferredOpenableURL];
+  if (!preferredOpenableURL || ![firstObject hasClip])
   {
     v12 = 0;
 LABEL_9:
@@ -21,25 +21,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v5 isLocalApplicationResult] & 1) == 0)
+  if (([identifyingResult isLocalApplicationResult] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v5 applicationBundleIdentifier];
+  applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
   v10 = [SearchUIUtilities bundleIdentifierForApp:0];
-  v11 = [v9 isEqualToString:v10];
+  v11 = [applicationBundleIdentifier isEqualToString:v10];
 
   v12 = 0;
   if ((v11 & 1) == 0)
   {
 LABEL_8:
     v12 = objc_opt_new();
-    v8 = [v4 punchouts];
-    v13 = [v8 firstObject];
-    v14 = [v13 preferredOpenableURL];
-    [v12 setUrl:v14];
+    preferredOpenableURL = [modelCopy punchouts];
+    firstObject2 = [preferredOpenableURL firstObject];
+    preferredOpenableURL2 = [firstObject2 preferredOpenableURL];
+    [v12 setUrl:preferredOpenableURL2];
 
     goto LABEL_9;
   }
@@ -49,9 +49,9 @@ LABEL_10:
   return v12;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v5 = [a3 url];
+  v5 = [command url];
   [SearchUIUtilities requestClipInstallWithURL:v5 completion:0];
 }
 

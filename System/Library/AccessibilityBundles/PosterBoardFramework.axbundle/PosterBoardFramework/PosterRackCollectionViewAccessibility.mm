@@ -1,5 +1,5 @@
 @interface PosterRackCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsPosterSwitcher;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
@@ -17,76 +17,76 @@
 
 @implementation PosterRackCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
 }
 
 - (id)accessibilityValue
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityLabel];
-    v5 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v8 = [v5 accessibilityValue];
-    v6 = __UIAXStringForVariables();
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityLabel = [_axCenteredPoster accessibilityLabel];
+    _axCenteredPoster2 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityValue = [_axCenteredPoster2 accessibilityValue];
+    accessibilityValue2 = __UIAXStringForVariables();
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PosterRackCollectionViewAccessibility;
-    v6 = [(PosterRackCollectionViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue2 = [(PosterRackCollectionViewAccessibility *)&v9 accessibilityValue];
   }
 
-  return v6;
+  return accessibilityValue2;
 }
 
 - (id)accessibilityHint
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityHint];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityHint = [_axCenteredPoster accessibilityHint];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PosterRackCollectionViewAccessibility;
-    v4 = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityHint];
+    accessibilityHint = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (id)accessibilityIdentifier
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityIdentifier];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityIdentifier = [_axCenteredPoster accessibilityIdentifier];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PosterRackCollectionViewAccessibility;
-    v4 = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityIdentifier];
+    accessibilityIdentifier = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityIdentifier];
   }
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (BOOL)isAccessibilityElement
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self accessibilityElements];
-    v4 = v3 == 0;
+    accessibilityElements = [(PosterRackCollectionViewAccessibility *)self accessibilityElements];
+    v4 = accessibilityElements == 0;
   }
 
   else
@@ -103,8 +103,8 @@
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    [v3 accessibilityFrame];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    [_axCenteredPoster accessibilityFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -137,46 +137,46 @@
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityPath];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityPath = [_axCenteredPoster accessibilityPath];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PosterRackCollectionViewAccessibility;
-    v4 = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityPath];
+    accessibilityPath = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityPath];
   }
 
-  return v4;
+  return accessibilityPath;
 }
 
 - (id)accessibilityCustomActions
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityCustomActions];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityCustomActions = [_axCenteredPoster accessibilityCustomActions];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PosterRackCollectionViewAccessibility;
-    v4 = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityCustomActions];
+    accessibilityCustomActions = [(PosterRackCollectionViewAccessibility *)&v6 accessibilityCustomActions];
   }
 
-  return v4;
+  return accessibilityCustomActions;
 }
 
 - (unint64_t)accessibilityTraits
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 accessibilityTraits];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    accessibilityTraits = [_axCenteredPoster accessibilityTraits];
 
-    return v4;
+    return accessibilityTraits;
   }
 
   else
@@ -197,12 +197,12 @@
     if (v3)
     {
       v9[0] = v3;
-      v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
+      accessibilityElements = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
     }
 
     else
     {
-      v5 = 0;
+      accessibilityElements = 0;
     }
   }
 
@@ -210,12 +210,12 @@
   {
     v8.receiver = self;
     v8.super_class = PosterRackCollectionViewAccessibility;
-    v5 = [(PosterRackCollectionViewAccessibility *)&v8 accessibilityElements];
+    accessibilityElements = [(PosterRackCollectionViewAccessibility *)&v8 accessibilityElements];
   }
 
   v6 = *MEMORY[0x29EDCA608];
 
-  return v5;
+  return accessibilityElements;
 }
 
 uint64_t __62__PosterRackCollectionViewAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)
@@ -241,18 +241,18 @@ uint64_t __62__PosterRackCollectionViewAccessibility_accessibilityElements__bloc
 {
   if ([(PosterRackCollectionViewAccessibility *)self _axIsPosterSwitcher])
   {
-    v3 = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
-    v4 = [v3 _accessibilitySupplementaryFooterViews];
+    _axCenteredPoster = [(PosterRackCollectionViewAccessibility *)self _axCenteredPoster];
+    _accessibilitySupplementaryFooterViews = [_axCenteredPoster _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PosterRackCollectionViewAccessibility;
-    v4 = [(PosterRackCollectionViewAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(PosterRackCollectionViewAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
-  return v4;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (id)_axCollectionViewController
@@ -260,7 +260,7 @@ uint64_t __62__PosterRackCollectionViewAccessibility_accessibilityElements__bloc
   objc_opt_class();
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 dataSource];
+  dataSource = [v2 dataSource];
   v4 = __UIAccessibilityCastAsClass();
 
   return v4;
@@ -268,8 +268,8 @@ uint64_t __62__PosterRackCollectionViewAccessibility_accessibilityElements__bloc
 
 - (BOOL)_axIsPosterSwitcher
 {
-  v2 = [(PosterRackCollectionViewAccessibility *)self _axCollectionViewController];
-  v3 = [v2 safeSwiftValueForKey:@"layoutMode"];
+  _axCollectionViewController = [(PosterRackCollectionViewAccessibility *)self _axCollectionViewController];
+  v3 = [_axCollectionViewController safeSwiftValueForKey:@"layoutMode"];
   v4 = AXConvertToLayoutMode();
 
   return v4 == 1;

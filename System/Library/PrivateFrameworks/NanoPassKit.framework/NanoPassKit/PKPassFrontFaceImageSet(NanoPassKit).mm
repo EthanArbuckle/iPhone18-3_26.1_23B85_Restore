@@ -12,73 +12,73 @@
 - (void)memoryMapImageData
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 faceImage];
-  v4 = [v3 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-faceImage"];
-  [a1 setFaceImage:v4];
+  faceImage = [self faceImage];
+  v4 = [faceImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-faceImage"];
+  [self setFaceImage:v4];
 
-  v5 = [a1 faceShadowImage];
-  v6 = [v5 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-faceShadowImage"];
-  [a1 setFaceShadowImage:v6];
+  faceShadowImage = [self faceShadowImage];
+  v6 = [faceShadowImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-faceShadowImage"];
+  [self setFaceShadowImage:v6];
 
-  v7 = [a1 footerImage];
-  v8 = [v7 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-footerImage"];
-  [a1 setFooterImage:v8];
+  footerImage = [self footerImage];
+  v8 = [footerImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-footerImage"];
+  [self setFooterImage:v8];
 
-  v9 = [a1 dynamicLayerStaticFallbackImage];
-  v10 = [v9 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-dynamicLayerStaticFallbackImage"];
-  [a1 setDynamicLayerStaticFallbackImage:v10];
+  dynamicLayerStaticFallbackImage = [self dynamicLayerStaticFallbackImage];
+  v10 = [dynamicLayerStaticFallbackImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-dynamicLayerStaticFallbackImage"];
+  [self setDynamicLayerStaticFallbackImage:v10];
 
-  v11 = [a1 backgroundParallaxEmitterImage];
-  v12 = [v11 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxEmitterImage"];
-  [a1 setBackgroundParallaxEmitterImage:v12];
+  backgroundParallaxEmitterImage = [self backgroundParallaxEmitterImage];
+  v12 = [backgroundParallaxEmitterImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxEmitterImage"];
+  [self setBackgroundParallaxEmitterImage:v12];
 
-  v13 = [a1 backgroundParallaxImage];
-  v14 = [v13 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxImage"];
-  [a1 setBackgroundParallaxImage:v14];
+  backgroundParallaxImage = [self backgroundParallaxImage];
+  v14 = [backgroundParallaxImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxImage"];
+  [self setBackgroundParallaxImage:v14];
 
-  v15 = [a1 backgroundParallaxCrossDissolveImage];
-  v16 = [v15 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxCrossDissolveImage"];
-  [a1 setBackgroundParallaxCrossDissolveImage:v16];
+  backgroundParallaxCrossDissolveImage = [self backgroundParallaxCrossDissolveImage];
+  v16 = [backgroundParallaxCrossDissolveImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-backgroundParallaxCrossDissolveImage"];
+  [self setBackgroundParallaxCrossDissolveImage:v16];
 
-  v17 = [a1 neutralEmitterImage];
-  v18 = [v17 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-neutralEmitterImage"];
-  [a1 setNeutralEmitterImage:v18];
+  neutralEmitterImage = [self neutralEmitterImage];
+  v18 = [neutralEmitterImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-neutralEmitterImage"];
+  [self setNeutralEmitterImage:v18];
 
-  v19 = [a1 neutralImage];
-  v20 = [v19 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-neutralImage"];
-  [a1 setNeutralImage:v20];
+  neutralImage = [self neutralImage];
+  v20 = [neutralImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-neutralImage"];
+  [self setNeutralImage:v20];
 
-  v21 = [a1 foregroundParallaxEmitterImage];
-  v22 = [v21 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxEmitterImage"];
-  [a1 setForegroundParallaxEmitterImage:v22];
+  foregroundParallaxEmitterImage = [self foregroundParallaxEmitterImage];
+  v22 = [foregroundParallaxEmitterImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxEmitterImage"];
+  [self setForegroundParallaxEmitterImage:v22];
 
-  v23 = [a1 foregroundParallaxImage];
-  v24 = [v23 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxImage"];
-  [a1 setForegroundParallaxImage:v24];
+  foregroundParallaxImage = [self foregroundParallaxImage];
+  v24 = [foregroundParallaxImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxImage"];
+  [self setForegroundParallaxImage:v24];
 
-  v25 = [a1 foregroundParallaxCrossDissolveImage];
-  v26 = [v25 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxCrossDissolveImage"];
-  [a1 setForegroundParallaxCrossDissolveImage:v26];
+  foregroundParallaxCrossDissolveImage = [self foregroundParallaxCrossDissolveImage];
+  v26 = [foregroundParallaxCrossDissolveImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-foregroundParallaxCrossDissolveImage"];
+  [self setForegroundParallaxCrossDissolveImage:v26];
 
-  v27 = [a1 staticOverlayEmitterImage];
-  v28 = [v27 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-staticOverlayEmitterImage"];
-  [a1 setStaticOverlayEmitterImage:v28];
+  staticOverlayEmitterImage = [self staticOverlayEmitterImage];
+  v28 = [staticOverlayEmitterImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-staticOverlayEmitterImage"];
+  [self setStaticOverlayEmitterImage:v28];
 
-  v29 = [a1 staticOverlayImage];
-  v30 = [v29 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-staticOverlayImage"];
-  [a1 setStaticOverlayImage:v30];
+  staticOverlayImage = [self staticOverlayImage];
+  v30 = [staticOverlayImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-staticOverlayImage"];
+  [self setStaticOverlayImage:v30];
 
-  v31 = [a1 transactionEffectEmitterImage];
-  v32 = [v31 npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-transactionEffectEmitterImage"];
-  [a1 setTransactionEffectEmitterImage:v32];
+  transactionEffectEmitterImage = [self transactionEffectEmitterImage];
+  v32 = [transactionEffectEmitterImage npkImageByMemoryMappingDataWithTemporaryFilePrefix:@"npkFrontFaceImage-transactionEffectEmitterImage"];
+  [self setTransactionEffectEmitterImage:v32];
 
   objc_autoreleasePoolPop(v2);
 }
 
 + (uint64_t)isDrawnUsingAssetOptions:()NanoPassKit forPass:
 {
-  v6 = [a1 _bundleForPass:a4];
-  v7 = [a1 isDrawnUsingAssetOptions:a3 fromBundle:v6];
+  v6 = [self _bundleForPass:a4];
+  v7 = [self isDrawnUsingAssetOptions:a3 fromBundle:v6];
 
   return v7;
 }
@@ -87,7 +87,7 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  [a1 _assetNamesForAssetOption:a3];
+  [self _assetNamesForAssetOption:a3];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -107,7 +107,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if (![a1 _containsAssetForImageName:*(*(&v15 + 1) + 8 * v11) fromBundle:{v6, v15}])
+        if (![self _containsAssetForImageName:*(*(&v15 + 1) + 8 * v11) fromBundle:{v6, v15}])
         {
           v12 = 0;
           goto LABEL_11;

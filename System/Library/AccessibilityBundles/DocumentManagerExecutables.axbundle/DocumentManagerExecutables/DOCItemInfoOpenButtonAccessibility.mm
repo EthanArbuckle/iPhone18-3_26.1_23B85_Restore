@@ -1,16 +1,16 @@
 @interface DOCItemInfoOpenButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation DOCItemInfoOpenButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DOCItemInfoOpenButton" hasInstanceMethod:@"openButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DOCItemInfoOpenButton" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DOCItemInfoOpenButton" hasInstanceMethod:@"openButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DOCItemInfoOpenButton" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -1,28 +1,28 @@
 @interface AXSpringBoardServer
 - (BOOL)gaxIsSystemAppShowingTransientOverlay;
-- (BOOL)gaxIsWebAppAndForegroundRunning:(id)a3;
-- (BOOL)gaxLaunchApplication:(id)a3 withConfiguration:(unsigned int)a4 appLaunchGeneration:(unint64_t)a5 enqueueError:(id *)a6;
+- (BOOL)gaxIsWebAppAndForegroundRunning:(id)running;
+- (BOOL)gaxLaunchApplication:(id)application withConfiguration:(unsigned int)configuration appLaunchGeneration:(unint64_t)generation enqueueError:(id *)error;
 - (BOOL)gaxServerIsReady;
 - (id)_windowsToHost;
-- (id)appNameForDisplayID:(id)a3;
+- (id)appNameForDisplayID:(id)d;
 - (void)acquireSystemApertureInertAssertion;
-- (void)activateApp:(id)a3;
+- (void)activateApp:(id)app;
 - (void)animateWallpaperStyleToNormal;
 - (void)animateWallpaperStyleToOriginal;
 - (void)beginRequiringWallpaper;
-- (void)gaxBackboardStateDidChange:(id *)a3;
-- (void)gaxBackboardStateDidChange:(id *)a3 completion:(id)a4;
+- (void)gaxBackboardStateDidChange:(id *)change;
+- (void)gaxBackboardStateDidChange:(id *)change completion:(id)completion;
 - (void)gaxDisconnectAllCalls;
 - (void)gaxEndRequiringWallpaper;
-- (void)gaxFrontmostAppDidCheckIn:(id)a3;
-- (void)gaxGetDisplayNameForBundleId:(id)a3 completion:(id)a4;
-- (void)gaxGetNewPasscodeLengthWithCompletion:(id)a3;
-- (void)gaxPrepareForTransitionToWorkspaceWithAppID:(id)a3 completion:(id)a4;
+- (void)gaxFrontmostAppDidCheckIn:(id)in;
+- (void)gaxGetDisplayNameForBundleId:(id)id completion:(id)completion;
+- (void)gaxGetNewPasscodeLengthWithCompletion:(id)completion;
+- (void)gaxPrepareForTransitionToWorkspaceWithAppID:(id)d completion:(id)completion;
 - (void)gaxPreventPotentialAppLaunches;
-- (void)gaxTerminateRunningApplicationsOtherThan:(id)a3 forReason:(id)a4;
+- (void)gaxTerminateRunningApplicationsOtherThan:(id)than forReason:(id)reason;
 - (void)gaxTimeRestrictionStatusDidChange;
 - (void)gaxUnlockDevice;
-- (void)gaxUpdateStateOfHostedApplicationWithIdentifier:(id)a3 scaleFactorNumber:(id)a4 centerStringRepresentation:(id)a5 animationDurationNumber:(id)a6;
+- (void)gaxUpdateStateOfHostedApplicationWithIdentifier:(id)identifier scaleFactorNumber:(id)number centerStringRepresentation:(id)representation animationDurationNumber:(id)durationNumber;
 - (void)invalidateSystemApertureInertAssertion;
 - (void)quitTopApplication;
 - (void)stopHostingWorkspaceApplicationImmediately;
@@ -31,10 +31,10 @@
 
 @implementation AXSpringBoardServer
 
-- (void)gaxFrontmostAppDidCheckIn:(id)a3
+- (void)gaxFrontmostAppDidCheckIn:(id)in
 {
-  v4 = a3;
-  if (v4)
+  inCopy = in;
+  if (inCopy)
   {
     if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
     {
@@ -45,7 +45,7 @@
     {
       v5 = [AXIPCMessage alloc];
       v8 = @"GAXIPCPayloadKeyFrontmostAppIdentifier";
-      v9 = v4;
+      v9 = inCopy;
       v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
       v7 = [v5 initWithKey:4800 payload:v6];
       [(AXSpringBoardServer *)self sendSimpleMessage:v7];
@@ -53,9 +53,9 @@
   }
 }
 
-- (BOOL)gaxIsWebAppAndForegroundRunning:(id)a3
+- (BOOL)gaxIsWebAppAndForegroundRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -65,7 +65,7 @@
   else
   {
     v9 = @"GAXIPCPayloadKeyApplicationIdentifier";
-    v10 = v4;
+    v10 = runningCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v7 = [[AXIPCMessage alloc] initWithKey:4802 payload:v6];
     v5 = [(AXSpringBoardServer *)self sendSimpleMessageWithResult:v7];
@@ -91,16 +91,16 @@
   }
 }
 
-- (void)gaxBackboardStateDidChange:(id *)a3
+- (void)gaxBackboardStateDidChange:(id *)change
 {
-  v3[0] = *&a3->var0;
-  *(v3 + 12) = *&a3->var3;
+  v3[0] = *&change->var0;
+  *(v3 + 12) = *&change->var3;
   [(AXSpringBoardServer *)self gaxBackboardStateDidChange:v3 completion:&stru_2CF98];
 }
 
-- (void)gaxBackboardStateDidChange:(id *)a3 completion:(id)a4
+- (void)gaxBackboardStateDidChange:(id *)change completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -108,8 +108,8 @@
 
   else
   {
-    v12[0] = *&a3->var0;
-    *(v12 + 12) = *&a3->var3;
+    v12[0] = *&change->var0;
+    *(v12 + 12) = *&change->var3;
     v7 = serializeGAXBackboardState(v12);
     v13 = @"GAXIPCPayloadKeyGAXBackboardState";
     v14 = v7;
@@ -119,15 +119,15 @@
     v10[1] = 3221225472;
     v10[2] = sub_CADC;
     v10[3] = &unk_2CFC0;
-    v11 = v6;
+    v11 = completionCopy;
     [(AXSpringBoardServer *)self sendAsynchronousMessage:v9 replyOnQueue:&_dispatch_main_q handler:v10];
   }
 }
 
-- (void)gaxPrepareForTransitionToWorkspaceWithAppID:(id)a3 completion:(id)a4
+- (void)gaxPrepareForTransitionToWorkspaceWithAppID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -135,16 +135,16 @@
     v20 = 3221225472;
     v21 = sub_CD4C;
     v22 = &unk_2C720;
-    v23 = v7;
+    v23 = completionCopy;
     AXPerformBlockAsynchronouslyOnMainThread();
     v8 = v23;
   }
 
-  else if (v6)
+  else if (dCopy)
   {
     v9 = [AXIPCMessage alloc];
     v24 = @"GAXIPCPayloadKeyFrontmostAppIdentifier";
-    v25 = v6;
+    v25 = dCopy;
     v10 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v8 = [v9 initWithKey:4803 payload:v10];
 
@@ -152,7 +152,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_CD74;
     v12[3] = &unk_2CFC0;
-    v13 = v7;
+    v13 = completionCopy;
     [(AXSpringBoardServer *)self sendAsynchronousMessage:v8 replyOnQueue:&_dispatch_main_q handler:v12];
   }
 
@@ -168,31 +168,31 @@
     v15 = 3221225472;
     v16 = sub_CD60;
     v17 = &unk_2C720;
-    v18 = v7;
+    v18 = completionCopy;
     AXPerformBlockAsynchronouslyOnMainThread();
     v8 = v18;
   }
 }
 
-- (BOOL)gaxLaunchApplication:(id)a3 withConfiguration:(unsigned int)a4 appLaunchGeneration:(unint64_t)a5 enqueueError:(id *)a6
+- (BOOL)gaxLaunchApplication:(id)application withConfiguration:(unsigned int)configuration appLaunchGeneration:(unint64_t)generation enqueueError:(id *)error
 {
-  v11 = a3;
+  applicationCopy = application;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
-    if (a6)
+    if (error)
     {
       v12 = NSStringFromSelector(a2);
-      *a6 = [AXSubsystemSBServer errorWithDescription:@"Can't call %@ locally", v12];
+      *error = [AXSubsystemSBServer errorWithDescription:@"Can't call %@ locally", v12];
 
 LABEL_9:
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (!v11)
+    if (!applicationCopy)
     {
       v17 = GAXLogAppLaunching();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -204,34 +204,34 @@ LABEL_9:
     }
 
     v19[0] = @"GAXIPCPayloadKeyProfileConfiguration";
-    v13 = [NSNumber numberWithUnsignedInteger:a4];
+    v13 = [NSNumber numberWithUnsignedInteger:configuration];
     v20[0] = v13;
-    v20[1] = v11;
+    v20[1] = applicationCopy;
     v19[1] = @"GAXIPCPayloadKeyApplicationIdentifier";
     v19[2] = @"GAXIPCPayloadKeyAppLaunchGeneration";
-    v14 = [NSNumber numberWithUnsignedInteger:a5];
+    v14 = [NSNumber numberWithUnsignedInteger:generation];
     v20[2] = v14;
     v15 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
 
     v16 = [[AXIPCMessage alloc] initWithKey:4805 payload:v15];
-    LOBYTE(a6) = [(AXSpringBoardServer *)self sendSimpleMessage:v16 enqueueError:a6];
+    LOBYTE(error) = [(AXSpringBoardServer *)self sendSimpleMessage:v16 enqueueError:error];
   }
 
-  return a6;
+  return error;
 }
 
 - (void)gaxEndRequiringWallpaper
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 endRequiringWallpaperWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate endRequiringWallpaperWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4806 payload:0];
+    _gax_axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4806 payload:0];
     [(AXSpringBoardServer *)self sendSimpleMessage:?];
   }
 }
@@ -272,12 +272,12 @@ LABEL_9:
   [(AXSpringBoardServer *)self sendSimpleMessageWithResult:v4];
 }
 
-- (void)gaxUpdateStateOfHostedApplicationWithIdentifier:(id)a3 scaleFactorNumber:(id)a4 centerStringRepresentation:(id)a5 animationDurationNumber:(id)a6
+- (void)gaxUpdateStateOfHostedApplicationWithIdentifier:(id)identifier scaleFactorNumber:(id)number centerStringRepresentation:(id)representation animationDurationNumber:(id)durationNumber
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  numberCopy = number;
+  representationCopy = representation;
+  durationNumberCopy = durationNumber;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -285,15 +285,15 @@ LABEL_9:
 
   else
   {
-    v13 = [[NSDictionary alloc] initWithObjectsAndKeys:{v12, @"GAXIPCPayloadKeyAnimationDuration", v10, @"GAXIPCPayloadKeyHostedApplicationScaleFactor", v11, @"GAXIPCPayloadKeyHostedApplicationCenter", v15, @"GAXIPCPayloadKeyApplicationIdentifier", 0}];
+    v13 = [[NSDictionary alloc] initWithObjectsAndKeys:{durationNumberCopy, @"GAXIPCPayloadKeyAnimationDuration", numberCopy, @"GAXIPCPayloadKeyHostedApplicationScaleFactor", representationCopy, @"GAXIPCPayloadKeyHostedApplicationCenter", identifierCopy, @"GAXIPCPayloadKeyApplicationIdentifier", 0}];
     v14 = [[AXIPCMessage alloc] initWithKey:4807 payload:v13];
     [(AXSpringBoardServer *)self sendSimpleMessage:v14];
   }
 }
 
-- (void)gaxGetNewPasscodeLengthWithCompletion:(id)a3
+- (void)gaxGetNewPasscodeLengthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -306,7 +306,7 @@ LABEL_9:
     v6[1] = 3221225472;
     v6[2] = sub_D508;
     v6[3] = &unk_2CFC0;
-    v7 = v4;
+    v7 = completionCopy;
     [(AXSpringBoardServer *)self sendAsynchronousMessage:v5 replyOnQueue:&_dispatch_main_q handler:v6];
   }
 }
@@ -326,20 +326,20 @@ LABEL_9:
   }
 }
 
-- (void)gaxGetDisplayNameForBundleId:(id)a3 completion:(id)a4
+- (void)gaxGetDisplayNameForBundleId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
   }
 
-  else if (v6)
+  else if (idCopy)
   {
     v8 = [AXIPCMessage alloc];
     v15 = @"GAXIPCPayloadKeyBundleIdentifier";
-    v16 = v6;
+    v16 = idCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v10 = [v8 initWithKey:4813 payload:v9];
 
@@ -347,7 +347,7 @@ LABEL_9:
     v11[1] = 3221225472;
     v11[2] = sub_D874;
     v11[3] = &unk_2CFE8;
-    v12 = v7;
+    v12 = completionCopy;
     [(AXSpringBoardServer *)self sendAsynchronousMessage:v10 replyOnQueue:&_dispatch_main_q objectResultHandler:v11];
   }
 
@@ -357,7 +357,7 @@ LABEL_9:
     block[1] = 3221225472;
     block[2] = sub_D860;
     block[3] = &unk_2C720;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
@@ -392,10 +392,10 @@ LABEL_9:
   }
 }
 
-- (void)gaxTerminateRunningApplicationsOtherThan:(id)a3 forReason:(id)a4
+- (void)gaxTerminateRunningApplicationsOtherThan:(id)than forReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  thanCopy = than;
+  reasonCopy = reason;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     _AXAssert();
@@ -405,8 +405,8 @@ LABEL_9:
   {
     v10[0] = @"GAXIPCPayloadKeyAppsNotToTerminate";
     v10[1] = @"GAXIPCPayloadKeyAppTerminationReason";
-    v11[0] = v6;
-    v11[1] = v7;
+    v11[0] = thanCopy;
+    v11[1] = reasonCopy;
     v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
     v9 = [[AXIPCMessage alloc] initWithKey:4814 payload:v8];
     [(AXSpringBoardServer *)self sendSimpleMessage:v9];
@@ -460,14 +460,14 @@ LABEL_9:
   }
 }
 
-- (id)appNameForDisplayID:(id)a3
+- (id)appNameForDisplayID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 serverInstance:v6 appNameForDisplayID:v4];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_gax_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance appNameForDisplayID:dCopy];
   }
 
   else
@@ -479,14 +479,14 @@ LABEL_9:
   return v7;
 }
 
-- (void)activateApp:(id)a3
+- (void)activateApp:(id)app
 {
-  v6 = a3;
+  appCopy = app;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 serverInstance:v5 activateApp:v6];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance activateApp:appCopy];
   }
 
   else
@@ -499,9 +499,9 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 quitTopApplicationWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate quitTopApplicationWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -515,9 +515,9 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 updateLockAndIdleTimersWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate updateLockAndIdleTimersWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -531,9 +531,9 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 beginRequiringWallpaperWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate beginRequiringWallpaperWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -547,9 +547,9 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 animateWallpaperStyleToNormalWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate animateWallpaperStyleToNormalWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -563,9 +563,9 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v4 animateWallpaperStyleToOriginalWithServerInstance:v3];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_gax_axSpringBoardServerInstanceDelegate animateWallpaperStyleToOriginalWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -579,17 +579,17 @@ LABEL_9:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
-    v4 = [v3 _windowsToHost];
+    _gax_axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _gax_axSpringBoardServerInstanceDelegate];
+    _windowsToHost = [_gax_axSpringBoardServerInstanceDelegate _windowsToHost];
   }
 
   else
   {
     _AXAssert();
-    v4 = 0;
+    _windowsToHost = 0;
   }
 
-  return v4;
+  return _windowsToHost;
 }
 
 @end

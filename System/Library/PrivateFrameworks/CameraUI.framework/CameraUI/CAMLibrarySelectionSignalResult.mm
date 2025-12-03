@@ -1,43 +1,43 @@
 @interface CAMLibrarySelectionSignalResult
-+ (BOOL)currentLocation:(id)a3 isContainedInCircularRegions:(id)a4;
-+ (CAMLibrarySelectionSignalResult)librarySelectionSignalResultWithIdentitiesInProximity:(id)a3 currentLocation:(id)a4 locationAuthorizationStatus:(int)a5 homeLocations:(id)a6 frequentLocations:(id)a7;
-+ (double)distanceBetweenLocation:(id)a3 andCircularRegion:(id)a4 atDate:(id)a5;
++ (BOOL)currentLocation:(id)location isContainedInCircularRegions:(id)regions;
++ (CAMLibrarySelectionSignalResult)librarySelectionSignalResultWithIdentitiesInProximity:(id)proximity currentLocation:(id)location locationAuthorizationStatus:(int)status homeLocations:(id)locations frequentLocations:(id)frequentLocations;
++ (double)distanceBetweenLocation:(id)location andCircularRegion:(id)region atDate:(id)date;
 - (BOOL)currentLocationCloseToHome;
 - (BOOL)isOnTrip;
 - (BOOL)suggestsSharing;
-- (CAMLibrarySelectionSignalResult)initWithIdentitiesInProximity:(id)a3 currentLocation:(id)a4 locationAuthorizationStatus:(int)a5 homeLocations:(id)a6 frequentLocations:(id)a7;
-- (id)_diagnosticsForRegions:(id)a3;
+- (CAMLibrarySelectionSignalResult)initWithIdentitiesInProximity:(id)proximity currentLocation:(id)location locationAuthorizationStatus:(int)status homeLocations:(id)locations frequentLocations:(id)frequentLocations;
+- (id)_diagnosticsForRegions:(id)regions;
 - (id)description;
-- (id)frequentLocationRegionContainingLocation:(id)a3;
+- (id)frequentLocationRegionContainingLocation:(id)location;
 - (id)resultDiagnostics;
 @end
 
 @implementation CAMLibrarySelectionSignalResult
 
-+ (CAMLibrarySelectionSignalResult)librarySelectionSignalResultWithIdentitiesInProximity:(id)a3 currentLocation:(id)a4 locationAuthorizationStatus:(int)a5 homeLocations:(id)a6 frequentLocations:(id)a7
++ (CAMLibrarySelectionSignalResult)librarySelectionSignalResultWithIdentitiesInProximity:(id)proximity currentLocation:(id)location locationAuthorizationStatus:(int)status homeLocations:(id)locations frequentLocations:(id)frequentLocations
 {
-  v8 = *&a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithIdentitiesInProximity:v15 currentLocation:v14 locationAuthorizationStatus:v8 homeLocations:v13 frequentLocations:v12];
+  v8 = *&status;
+  frequentLocationsCopy = frequentLocations;
+  locationsCopy = locations;
+  locationCopy = location;
+  proximityCopy = proximity;
+  v16 = [[self alloc] initWithIdentitiesInProximity:proximityCopy currentLocation:locationCopy locationAuthorizationStatus:v8 homeLocations:locationsCopy frequentLocations:frequentLocationsCopy];
 
   return v16;
 }
 
-- (CAMLibrarySelectionSignalResult)initWithIdentitiesInProximity:(id)a3 currentLocation:(id)a4 locationAuthorizationStatus:(int)a5 homeLocations:(id)a6 frequentLocations:(id)a7
+- (CAMLibrarySelectionSignalResult)initWithIdentitiesInProximity:(id)proximity currentLocation:(id)location locationAuthorizationStatus:(int)status homeLocations:(id)locations frequentLocations:(id)frequentLocations
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  proximityCopy = proximity;
+  locationCopy = location;
+  locationsCopy = locations;
+  frequentLocationsCopy = frequentLocations;
   v26.receiver = self;
   v26.super_class = CAMLibrarySelectionSignalResult;
   v16 = [(CAMLibrarySelectionSignalResult *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [proximityCopy copy];
     v18 = v17;
     v19 = MEMORY[0x1E695E0F0];
     if (v17)
@@ -52,11 +52,11 @@
 
     objc_storeStrong(&v16->_identitiesInProximity, v20);
 
-    objc_storeStrong(&v16->_currentLocation, a4);
-    v16->_locationAuthorizationStatus = a5;
-    if (v14)
+    objc_storeStrong(&v16->_currentLocation, location);
+    v16->_locationAuthorizationStatus = status;
+    if (locationsCopy)
     {
-      v21 = v14;
+      v21 = locationsCopy;
     }
 
     else
@@ -65,9 +65,9 @@
     }
 
     objc_storeStrong(&v16->_homeLocations, v21);
-    if (v15)
+    if (frequentLocationsCopy)
     {
-      v22 = v15;
+      v22 = frequentLocationsCopy;
     }
 
     else
@@ -75,7 +75,7 @@
       v22 = v19;
     }
 
-    v23 = [v14 arrayByAddingObjectsFromArray:v22];
+    v23 = [locationsCopy arrayByAddingObjectsFromArray:v22];
     frequentAndHomeLocations = v16->_frequentAndHomeLocations;
     v16->_frequentAndHomeLocations = v23;
   }
@@ -97,16 +97,16 @@
 - (BOOL)isOnTrip
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
-  if (![v3 count])
+  frequentAndHomeLocations = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
+  if (![frequentAndHomeLocations count])
   {
 
     return 0;
   }
 
-  v4 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+  currentLocation = [(CAMLibrarySelectionSignalResult *)self currentLocation];
 
-  if (!v4)
+  if (!currentLocation)
   {
     return 0;
   }
@@ -115,8 +115,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  frequentAndHomeLocations2 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
+  v6 = [frequentAndHomeLocations2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -127,13 +127,13 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(frequentAndHomeLocations2);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = objc_opt_class();
-        v12 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
-        [v11 distanceBetweenLocation:v12 andCircularRegion:v10 atDate:0];
+        currentLocation2 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+        [v11 distanceBetweenLocation:currentLocation2 andCircularRegion:v10 atDate:0];
         v14 = v13;
 
         if (v14 < 50000.0)
@@ -143,7 +143,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [frequentAndHomeLocations2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -162,23 +162,23 @@ LABEL_15:
 - (BOOL)currentLocationCloseToHome
 {
   v3 = objc_opt_class();
-  v4 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
-  v5 = [(CAMLibrarySelectionSignalResult *)self homeLocations];
-  LOBYTE(v3) = [v3 currentLocation:v4 isContainedInCircularRegions:v5];
+  currentLocation = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+  homeLocations = [(CAMLibrarySelectionSignalResult *)self homeLocations];
+  LOBYTE(v3) = [v3 currentLocation:currentLocation isContainedInCircularRegions:homeLocations];
 
   return v3;
 }
 
-- (id)frequentLocationRegionContainingLocation:(id)a3
+- (id)frequentLocationRegionContainingLocation:(id)location
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  frequentAndHomeLocations = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
+  v6 = [frequentAndHomeLocations countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -189,14 +189,14 @@ LABEL_15:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(frequentAndHomeLocations);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = objc_opt_class();
         v19 = v10;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-        LOBYTE(v11) = [v11 currentLocation:v4 isContainedInCircularRegions:v12];
+        LOBYTE(v11) = [v11 currentLocation:locationCopy isContainedInCircularRegions:v12];
 
         if (v11)
         {
@@ -205,7 +205,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [frequentAndHomeLocations countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -231,10 +231,10 @@ LABEL_11:
   }
 
   v4 = +[CAMUserPreferences preferences];
-  v5 = [(CAMLibrarySelectionSignalResult *)self locationAuthorizationStatus];
-  if (v5)
+  locationAuthorizationStatus = [(CAMLibrarySelectionSignalResult *)self locationAuthorizationStatus];
+  if (locationAuthorizationStatus)
   {
-    v6 = v5 == -1;
+    v6 = locationAuthorizationStatus == -1;
   }
 
   else
@@ -247,18 +247,18 @@ LABEL_11:
   {
     v15 = 0;
     v16 = 0;
-    LODWORD(v13) = 0;
+    LODWORD(currentLocation2) = 0;
   }
 
   else
   {
-    v8 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
-    [v8 coordinate];
+    currentLocation = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+    [currentLocation coordinate];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
-    if (v13)
+    currentLocation2 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+    if (currentLocation2)
     {
       v36.latitude = v10;
       v36.longitude = v12;
@@ -266,14 +266,14 @@ LABEL_11:
 
       if (v14)
       {
-        LODWORD(v13) = [(CAMLibrarySelectionSignalResult *)self currentLocationCloseToHome];
+        LODWORD(currentLocation2) = [(CAMLibrarySelectionSignalResult *)self currentLocationCloseToHome];
         v15 = 1;
       }
 
       else
       {
         v15 = 0;
-        LODWORD(v13) = 0;
+        LODWORD(currentLocation2) = 0;
       }
     }
 
@@ -285,9 +285,9 @@ LABEL_11:
     v16 = 1;
   }
 
-  v17 = [v4 shareWhenAtHomeEnabled] & v13;
-  v18 = [(CAMLibrarySelectionSignalResult *)self identitiesInProximity];
-  v19 = [v18 count];
+  v17 = [v4 shareWhenAtHomeEnabled] & currentLocation2;
+  identitiesInProximity = [(CAMLibrarySelectionSignalResult *)self identitiesInProximity];
+  v19 = [identitiesInProximity count];
 
   if ((v17 & 1) == 0 && v19)
   {
@@ -296,19 +296,19 @@ LABEL_11:
       if (v7)
       {
 LABEL_25:
-        v17 = v15 & (v13 ^ 1);
+        v17 = v15 & (currentLocation2 ^ 1);
         goto LABEL_28;
       }
     }
 
     else
     {
-      v20 = [(CAMLibrarySelectionSignalResult *)self homeLocations];
-      if ([v20 count])
+      homeLocations = [(CAMLibrarySelectionSignalResult *)self homeLocations];
+      if ([homeLocations count])
       {
-        v21 = [v4 shareWhenAtHomeEnabled];
+        shareWhenAtHomeEnabled = [v4 shareWhenAtHomeEnabled];
 
-        if (v21)
+        if (shareWhenAtHomeEnabled)
         {
           goto LABEL_27;
         }
@@ -332,7 +332,7 @@ LABEL_28:
     v29 = 1024;
     v30 = v16;
     v31 = 1024;
-    v32 = v13;
+    v32 = currentLocation2;
     v33 = 1024;
     v34 = v19 != 0;
     _os_log_impl(&dword_1A3640000, v22, OS_LOG_TYPE_INFO, "[CAMLibrarySelectionSignalResult] suggestsSharing: %d, cameraLocationAuthorizationPending: %d, cameraHasAccessToLocation: %d, currentLocationCloseToHome: %d, hasIdentitiesInProximity: %d", v26, 0x20u);
@@ -351,20 +351,20 @@ LABEL_28:
   v31[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CAMLibrarySelectionSignalResult *)self identitiesInProximity];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  identitiesInProximity = [(CAMLibrarySelectionSignalResult *)self identitiesInProximity];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(identitiesInProximity, "count")}];
   [v3 setObject:v6 forKeyedSubscript:@"countOfIdentitiesInProximity"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAMLibrarySelectionSignalResult suggestsSharing](self, "suggestsSharing")}];
   [v3 setObject:v7 forKeyedSubscript:@"suggestsSharing"];
 
-  v8 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
-  v9 = v8;
-  if (v8)
+  currentLocation = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+  v9 = currentLocation;
+  if (currentLocation)
   {
     v30[0] = @"coordinateIsValid";
     v10 = MEMORY[0x1E696AD98];
-    [v8 coordinate];
+    [currentLocation coordinate];
     v11 = [v10 numberWithBool:CLLocationCoordinate2DIsValid(v33)];
     v30[1] = @"horizontalAccuracy";
     v31[0] = v11;
@@ -384,24 +384,24 @@ LABEL_28:
   v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMLibrarySelectionSignalResult locationAuthorizationStatus](self, "locationAuthorizationStatus")}];
   [v3 setObject:v15 forKeyedSubscript:@"locationAuthorizationStatus"];
 
-  v16 = [(CAMLibrarySelectionSignalResult *)self homeLocations];
-  v17 = [(CAMLibrarySelectionSignalResult *)self _diagnosticsForRegions:v16];
+  homeLocations = [(CAMLibrarySelectionSignalResult *)self homeLocations];
+  v17 = [(CAMLibrarySelectionSignalResult *)self _diagnosticsForRegions:homeLocations];
   [v3 setObject:v17 forKeyedSubscript:@"homeLocationsDiagnostics"];
 
-  v18 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
-  v19 = [(CAMLibrarySelectionSignalResult *)self _diagnosticsForRegions:v18];
+  frequentAndHomeLocations = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
+  v19 = [(CAMLibrarySelectionSignalResult *)self _diagnosticsForRegions:frequentAndHomeLocations];
   [v3 setObject:v19 forKeyedSubscript:@"frequentLocationsDiagnostics"];
 
   v20 = objc_opt_class();
-  v21 = [(CAMLibrarySelectionSignalResult *)self homeLocations];
-  v22 = [v20 currentLocation:v9 isContainedInCircularRegions:v21];
+  homeLocations2 = [(CAMLibrarySelectionSignalResult *)self homeLocations];
+  v22 = [v20 currentLocation:v9 isContainedInCircularRegions:homeLocations2];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:v22];
   [v3 setObject:v23 forKeyedSubscript:@"closeToHomeLocation"];
 
   v24 = objc_opt_class();
-  v25 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
-  v26 = [v24 currentLocation:v9 isContainedInCircularRegions:v25];
+  frequentAndHomeLocations2 = [(CAMLibrarySelectionSignalResult *)self frequentAndHomeLocations];
+  v26 = [v24 currentLocation:v9 isContainedInCircularRegions:frequentAndHomeLocations2];
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:v26];
   [v3 setObject:v27 forKeyedSubscript:@"closeToFrequentLocation"];
@@ -412,17 +412,17 @@ LABEL_28:
   return v3;
 }
 
-- (id)_diagnosticsForRegions:(id)a3
+- (id)_diagnosticsForRegions:(id)regions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(CAMLibrarySelectionSignalResult *)self currentLocation];
+  regionsCopy = regions;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(regionsCopy, "count")}];
+  currentLocation = [(CAMLibrarySelectionSignalResult *)self currentLocation];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = regionsCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v7)
   {
@@ -440,9 +440,9 @@ LABEL_28:
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = v10;
-        if (v6)
+        if (currentLocation)
         {
-          [objc_opt_class() distanceBetweenLocation:v6 andCircularRegion:v12 atDate:0];
+          [objc_opt_class() distanceBetweenLocation:currentLocation andCircularRegion:v12 atDate:0];
           v13 = v14;
         }
 
@@ -472,13 +472,13 @@ LABEL_28:
   return v5;
 }
 
-+ (double)distanceBetweenLocation:(id)a3 andCircularRegion:(id)a4 atDate:(id)a5
++ (double)distanceBetweenLocation:(id)location andCircularRegion:(id)region atDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 coordinate];
-  if (v7 && CLLocationCoordinate2DIsValid(*&v10) && (!v9 ? (v15 = 0.0) : ([v7 timestamp], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timeIntervalSinceDate:", v12), v14 = v13, v12, v14 <= 60.0) ? (v15 = 0.0) : (v15 = v14 * 30.0), objc_msgSend(v7, "horizontalAccuracy"), v17 = v16, objc_msgSend(v8, "center"), CLLocationCoordinate2DIsValid(v21)))
+  locationCopy = location;
+  regionCopy = region;
+  dateCopy = date;
+  [locationCopy coordinate];
+  if (locationCopy && CLLocationCoordinate2DIsValid(*&v10) && (!dateCopy ? (v15 = 0.0) : ([locationCopy timestamp], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dateCopy, "timeIntervalSinceDate:", v12), v14 = v13, v12, v14 <= 60.0) ? (v15 = 0.0) : (v15 = v14 * 30.0), objc_msgSend(locationCopy, "horizontalAccuracy"), v17 = v16, objc_msgSend(regionCopy, "center"), CLLocationCoordinate2DIsValid(v21)))
   {
     CLLocationCoordinate2DGetDistanceFrom();
     v19 = fmin(v18, fmax(v18 - (v15 + v17), 0.0));
@@ -492,16 +492,16 @@ LABEL_28:
   return v19;
 }
 
-+ (BOOL)currentLocation:(id)a3 isContainedInCircularRegions:(id)a4
++ (BOOL)currentLocation:(id)location isContainedInCircularRegions:(id)regions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  locationCopy = location;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  regionsCopy = regions;
+  v8 = [regionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -512,11 +512,11 @@ LABEL_28:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(regionsCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        [a1 distanceBetweenLocation:v6 andCircularRegion:v12 atDate:{0, v18}];
+        [self distanceBetweenLocation:locationCopy andCircularRegion:v12 atDate:{0, v18}];
         v14 = v13;
         [v12 radius];
         if (v14 < fmin(fmax(v15, 50.0), 750.0))
@@ -526,7 +526,7 @@ LABEL_28:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [regionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;

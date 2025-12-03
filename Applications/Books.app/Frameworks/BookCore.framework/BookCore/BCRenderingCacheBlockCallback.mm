@@ -1,33 +1,33 @@
 @interface BCRenderingCacheBlockCallback
-- (BCRenderingCacheBlockCallback)initWithCompletion:(id)a3;
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4;
+- (BCRenderingCacheBlockCallback)initWithCompletion:(id)completion;
+- (void)renderingCacheCallbackImage:(id)image context:(id)context;
 @end
 
 @implementation BCRenderingCacheBlockCallback
 
-- (BCRenderingCacheBlockCallback)initWithCompletion:(id)a3
+- (BCRenderingCacheBlockCallback)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8.receiver = self;
   v8.super_class = BCRenderingCacheBlockCallback;
   v5 = [(BCRenderingCacheBlockCallback *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BCRenderingCacheBlockCallback *)v5 setCompletion:v4];
+    [(BCRenderingCacheBlockCallback *)v5 setCompletion:completionCopy];
   }
 
   return v6;
 }
 
-- (void)renderingCacheCallbackImage:(id)a3 context:(id)a4
+- (void)renderingCacheCallbackImage:(id)image context:(id)context
 {
-  v7 = a3;
-  v5 = [(BCRenderingCacheBlockCallback *)self completion];
-  v6 = v5;
-  if (v5)
+  imageCopy = image;
+  completion = [(BCRenderingCacheBlockCallback *)self completion];
+  v6 = completion;
+  if (completion)
   {
-    (*(v5 + 16))(v5, v7);
+    (*(completion + 16))(completion, imageCopy);
   }
 
   [(BCRenderingCacheBlockCallback *)self setCompletion:0];

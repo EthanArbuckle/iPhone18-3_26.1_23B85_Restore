@@ -1,14 +1,14 @@
 @interface NPKFidoAuthCoordinator
 - (void)clearContext;
-- (void)requestAuthorizationWithCompletion:(id)a3;
+- (void)requestAuthorizationWithCompletion:(id)completion;
 @end
 
 @implementation NPKFidoAuthCoordinator
 
-- (void)requestAuthorizationWithCompletion:(id)a3
+- (void)requestAuthorizationWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -17,7 +17,7 @@
     v7 = pk_General_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(completionCopy);
       *buf = 138412290;
       v23 = v8;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKFidoAuthCoordinator: request authorization with completion: %@", buf, 0xCu);
@@ -40,7 +40,7 @@
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1004 userInfo:0];
-    (*(v4 + 2))(v4, 0, 1, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 1, 0, v12);
   }
 
   else
@@ -70,8 +70,8 @@
     v18[2] = __61__NPKFidoAuthCoordinator_requestAuthorizationWithCompletion___block_invoke;
     v18[3] = &unk_279948D58;
     v19 = v13;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = completionCopy;
     v12 = v13;
     [v12 evaluatePolicy:1023 options:0 reply:v18];
   }

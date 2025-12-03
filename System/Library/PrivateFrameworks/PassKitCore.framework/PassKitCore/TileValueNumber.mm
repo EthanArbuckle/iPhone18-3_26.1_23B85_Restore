@@ -1,26 +1,26 @@
 @interface TileValueNumber
-+ (id)_predicateForBaseValue:(id)a3;
-+ (id)insertValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
-+ (void)deleteEntitiesForBaseValue:(id)a3 inDatabase:(id)a4;
-+ (void)inflateValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
-- (TileValueNumber)initWithValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5;
++ (id)_predicateForBaseValue:(id)value;
++ (id)insertValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
++ (void)deleteEntitiesForBaseValue:(id)value inDatabase:(id)database;
++ (void)inflateValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
+- (TileValueNumber)initWithValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database;
 @end
 
 @implementation TileValueNumber
 
-- (TileValueNumber)initWithValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
+- (TileValueNumber)initWithValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  valueCopy = value;
+  databaseCopy = database;
+  baseValueCopy = baseValue;
   v11 = objc_alloc_init(NSMutableDictionary);
-  [v11 setEntityPIDOrNull:v10 forKey:@"value_pid"];
+  [v11 setEntityPIDOrNull:baseValueCopy forKey:@"value_pid"];
 
-  v12 = [v8 content];
-  v13 = [v8 currencyCode];
-  if (v12)
+  content = [valueCopy content];
+  currencyCode = [valueCopy currencyCode];
+  if (content)
   {
-    [v12 decimalValue];
+    [content decimalValue];
   }
 
   else
@@ -31,42 +31,42 @@
   }
 
   v14 = [NSDecimalNumber decimalNumberWithDecimal:v19];
-  if (!v13 || ([v13 isEqualToString:PKNoCurrencyCode] & 1) != 0)
+  if (!currencyCode || ([currencyCode isEqualToString:PKNoCurrencyCode] & 1) != 0)
   {
     [v11 setObject:v14 forKey:@"decimal_content"];
 LABEL_9:
-    [v8 numberStyle];
+    [valueCopy numberStyle];
     v17 = _PKEnumValueToString();
     [v11 setObjectOrNull:v17 forKey:{@"number_style", 1, 1, 3, 3, 4, 4, 5, 5}];
 
-    self = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v9];
-    v15 = self;
+    self = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  v15 = PKFormattedCurrencyStringFromNumber();
+  selfCopy = PKFormattedCurrencyStringFromNumber();
 
-  if (v15)
+  if (selfCopy)
   {
     v16 = PKCurrencyDecimalToStorageNumber();
     [v11 setObject:v16 forKey:@"currency_content"];
-    [v11 setObject:v13 forKey:@"currency_code"];
+    [v11 setObject:currencyCode forKey:@"currency_code"];
 
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
-+ (id)insertValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
++ (id)insertValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  baseValueCopy = baseValue;
+  databaseCopy = database;
   v11 = 0;
-  if (v8 && v9)
+  if (valueCopy && baseValueCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -79,10 +79,10 @@ LABEL_10:
     v13[2] = sub_10018888C;
     v13[3] = &unk_10083F200;
     v17 = &v19;
-    v18 = a1;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    selfCopy = self;
+    v14 = valueCopy;
+    v15 = baseValueCopy;
+    v16 = databaseCopy;
     sub_1005D4424(v16, v13);
     v11 = v20[5];
 
@@ -92,14 +92,14 @@ LABEL_10:
   return v11;
 }
 
-+ (void)inflateValue:(id)a3 forBaseValue:(id)a4 inDatabase:(id)a5
++ (void)inflateValue:(id)value forBaseValue:(id)baseValue inDatabase:(id)database
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v9 = a5;
-    v10 = [a1 _predicateForBaseValue:a4];
-    v11 = [(SQLiteEntity *)TileValueNumber queryWithDatabase:v9 predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
+    databaseCopy = database;
+    v10 = [self _predicateForBaseValue:baseValue];
+    v11 = [(SQLiteEntity *)TileValueNumber queryWithDatabase:databaseCopy predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
 
     v15[0] = @"currency_content";
     v15[1] = @"decimal_content";
@@ -110,23 +110,23 @@ LABEL_10:
     v13[1] = 3221225472;
     v13[2] = sub_100188A64;
     v13[3] = &unk_100840B08;
-    v14 = v8;
+    v14 = valueCopy;
     [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v13];
   }
 }
 
-+ (void)deleteEntitiesForBaseValue:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForBaseValue:(id)value inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForBaseValue:a3];
-  v7 = [(SQLiteEntity *)TileValueNumber queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForBaseValue:value];
+  v7 = [(SQLiteEntity *)TileValueNumber queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForBaseValue:(id)a3
++ (id)_predicateForBaseValue:(id)value
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [value persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"value_pid" equalToValue:v3];
 
   return v4;

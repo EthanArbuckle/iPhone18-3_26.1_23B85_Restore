@@ -5,31 +5,31 @@
 - (BOOL)_shouldShowAutoTranslate;
 - (BOOL)_shouldShowEightDotBraille;
 - (BRLTTableEnumerator)tableEnumerator;
-- (id)autoActivateOnTextFields:(id)a3;
-- (id)brailleGestureControl:(id)a3;
-- (id)brailleGesturesSoundOption:(id)a3;
-- (id)displaysEnteredText:(id)a3;
-- (id)gradeTwoAutoTranslatedEnabled:(id)a3;
-- (id)learnsDotPositionsEnabled:(id)a3;
-- (id)shouldReverseDotsEnabled:(id)a3;
+- (id)autoActivateOnTextFields:(id)fields;
+- (id)brailleGestureControl:(id)control;
+- (id)brailleGesturesSoundOption:(id)option;
+- (id)displaysEnteredText:(id)text;
+- (id)gradeTwoAutoTranslatedEnabled:(id)enabled;
+- (id)learnsDotPositionsEnabled:(id)enabled;
+- (id)shouldReverseDotsEnabled:(id)enabled;
 - (id)specifiers;
-- (id)useActivationGestureEnabled:(id)a3;
-- (id)usesHapticFeedback:(id)a3;
-- (id)usesSingleHandDotNumbersFeedback:(id)a3;
-- (id)usesTypingSoundFeedback:(id)a3;
-- (void)jumpToVoiceOverCommandsSettings:(id)a3;
-- (void)setAutoActivateOnTextFields:(id)a3 specifier:(id)a4;
-- (void)setBrailleGestureControl:(id)a3 specifier:(id)a4;
-- (void)setDisplaysEnteredText:(id)a3 specifier:(id)a4;
-- (void)setGradeTwoAutoTransateEnabled:(id)a3 specifier:(id)a4;
-- (void)setLearnsDotPositions:(id)a3 specifier:(id)a4;
-- (void)setShouldReverseDotsEnabled:(id)a3 specifier:(id)a4;
-- (void)setUseActivationGestureEnabled:(id)a3 specifier:(id)a4;
-- (void)setUsesHapticsFeedback:(id)a3 specifier:(id)a4;
-- (void)setUsesSingleHandDotNumbersFeedback:(id)a3 specifier:(id)a4;
-- (void)setUsesTypingSoundFeedback:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)useActivationGestureEnabled:(id)enabled;
+- (id)usesHapticFeedback:(id)feedback;
+- (id)usesSingleHandDotNumbersFeedback:(id)feedback;
+- (id)usesTypingSoundFeedback:(id)feedback;
+- (void)jumpToVoiceOverCommandsSettings:(id)settings;
+- (void)setAutoActivateOnTextFields:(id)fields specifier:(id)specifier;
+- (void)setBrailleGestureControl:(id)control specifier:(id)specifier;
+- (void)setDisplaysEnteredText:(id)text specifier:(id)specifier;
+- (void)setGradeTwoAutoTransateEnabled:(id)enabled specifier:(id)specifier;
+- (void)setLearnsDotPositions:(id)positions specifier:(id)specifier;
+- (void)setShouldReverseDotsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUseActivationGestureEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUsesHapticsFeedback:(id)feedback specifier:(id)specifier;
+- (void)setUsesSingleHandDotNumbersFeedback:(id)feedback specifier:(id)specifier;
+- (void)setUsesTypingSoundFeedback:(id)feedback specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -78,8 +78,8 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
 - (BOOL)_isDisplayInput
 {
-  v2 = [(VoiceOverBrailleInputOutputController *)self specifier];
-  v3 = [v2 propertyForKey:PSIDKey];
+  specifier = [(VoiceOverBrailleInputOutputController *)self specifier];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"BrailleDisplayInput"];
 
   return v4;
@@ -87,8 +87,8 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
 - (BOOL)_isActivityMode
 {
-  v2 = [(VoiceOverBrailleInputOutputController *)self specifier];
-  v3 = [v2 propertyForKey:PSIDKey];
+  specifier = [(VoiceOverBrailleInputOutputController *)self specifier];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"VoiceOverBrailleActivityModeID"];
 
   return v4;
@@ -96,8 +96,8 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
 - (BOOL)_isGesturesInput
 {
-  v2 = [(VoiceOverBrailleInputOutputController *)self specifier];
-  v3 = [v2 propertyForKey:PSIDKey];
+  specifier = [(VoiceOverBrailleInputOutputController *)self specifier];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"BrailleGesturesInput"];
 
   return v4;
@@ -115,18 +115,18 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
     v98 = OBJC_IVAR___PSListController__specifiers;
     v4 = +[NSMutableArray array];
     v5 = AXValidationManager_ptr;
-    v102 = v2;
+    v102 = selfCopy;
     v99 = v4;
-    if (VOSCustomBrailleEnabled() && [(VoiceOverBrailleInputOutputController *)v2 _isGesturesInput])
+    if (VOSCustomBrailleEnabled() && [(VoiceOverBrailleInputOutputController *)selfCopy _isGesturesInput])
     {
-      v6 = [(VoiceOverBrailleInputOutputController *)v2 loadSpecifiersFromPlistName:@"BrailleScreenInput" target:v2];
+      v6 = [(VoiceOverBrailleInputOutputController *)selfCopy loadSpecifiersFromPlistName:@"BrailleScreenInput" target:selfCopy];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -161,7 +161,7 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
       [v4 addObject:v11];
       v14 = settingsLocString(@"USE_ACTIVATION_GESTURES", @"BrailleScreenInput");
-      v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:v2 set:"setUseActivationGestureEnabled:specifier:" get:"useActivationGestureEnabled:" detail:0 cell:6 edit:0];
+      v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:selfCopy set:"setUseActivationGestureEnabled:specifier:" get:"useActivationGestureEnabled:" detail:0 cell:6 edit:0];
 
       v16 = PSIDKey;
       [v15 setProperty:@"USE_ACTIVATION_GESTURES" forKey:PSIDKey];
@@ -217,7 +217,7 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
       v34 = settingsLocString(@"SHOULD_REVERSE_DOTS", @"VoiceOverBrailleOptions");
       v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:v102 set:"setShouldReverseDotsEnabled:specifier:" get:"shouldReverseDotsEnabled:" detail:0 cell:6 edit:0];
 
-      v2 = v102;
+      selfCopy = v102;
       [v35 setProperty:@"SHOULD_REVERSE_DOTS" forKey:v16];
       [v99 addObject:v35];
       v36 = +[PSSpecifier emptyGroupSpecifier];
@@ -307,12 +307,12 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
       v5 = AXValidationManager_ptr;
     }
 
-    else if ([(VoiceOverBrailleInputOutputController *)v2 _isGesturesInput])
+    else if ([(VoiceOverBrailleInputOutputController *)selfCopy _isGesturesInput])
     {
       v65 = +[AXSettings sharedInstance];
-      v66 = [v65 voiceOverBrailleGesturesEnabled];
+      voiceOverBrailleGesturesEnabled = [v65 voiceOverBrailleGesturesEnabled];
 
-      if ((v66 & 1) == 0)
+      if ((voiceOverBrailleGesturesEnabled & 1) == 0)
       {
         v67 = +[PSSpecifier emptyGroupSpecifier];
         v68 = settingsLocString(@"BRAILLE_GESTURES_PROMPT", @"VoiceOverBrailleOptions");
@@ -323,26 +323,26 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
     }
 
     v100 = objc_opt_new();
-    if ([(VoiceOverBrailleInputOutputController *)v2 _isGesturesInput])
+    if ([(VoiceOverBrailleInputOutputController *)selfCopy _isGesturesInput])
     {
       v69 = settingsLocString(@"BSI_TABLES", @"VoiceOverBrailleOptions");
-      v70 = [PSSpecifier preferenceSpecifierNamed:v69 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+      v70 = [PSSpecifier preferenceSpecifierNamed:v69 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
 
       [v70 setProperty:@"BSI_TABLES" forKey:PSIDKey];
       [v100 addObject:v70];
     }
 
-    v71 = [v5[375] sharedInstance];
-    v72 = [v71 voiceOverBrailleLanguageRotorItems];
+    sharedInstance = [v5[375] sharedInstance];
+    voiceOverBrailleLanguageRotorItems = [sharedInstance voiceOverBrailleLanguageRotorItems];
 
     v73 = +[AXLanguageManager sharedInstance];
-    v74 = [v73 userLocale];
+    userLocale = [v73 userLocale];
 
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = v72;
+    obj = voiceOverBrailleLanguageRotorItems;
     v75 = [obj countByEnumeratingWithState:&v103 objects:v111 count:16];
     if (v75)
     {
@@ -359,13 +359,13 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
           v79 = *(*(&v103 + 1) + 8 * j);
           v80 = [v79 objectForKeyedSubscript:@"Default"];
-          v81 = [v80 BOOLValue];
+          bOOLValue = [v80 BOOLValue];
 
-          if (v81)
+          if (bOOLValue)
           {
             v82 = [v79 objectForKeyedSubscript:@"LanguageDefaults"];
-            v83 = [v74 localeIdentifier];
-            v84 = [v82 objectForKeyedSubscript:v83];
+            localeIdentifier = [userLocale localeIdentifier];
+            v84 = [v82 objectForKeyedSubscript:localeIdentifier];
 
             if (v84)
             {
@@ -374,8 +374,8 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
 
             else
             {
-              v87 = [(VoiceOverBrailleInputOutputController *)v102 tableEnumerator];
-              v85 = [objc_opt_class() defaultTableForLocale:v74];
+              tableEnumerator = [(VoiceOverBrailleInputOutputController *)v102 tableEnumerator];
+              v85 = [objc_opt_class() defaultTableForLocale:userLocale];
             }
           }
 
@@ -386,18 +386,18 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
             v85 = [v86 initWithIdentifier:v82];
           }
 
-          v88 = [v85 replacements];
-          v89 = [v88 count];
+          replacements = [v85 replacements];
+          v89 = [replacements count];
 
           if (!v89 && (-[VoiceOverBrailleInputOutputController _shouldShowEightDotBraille](v102, "_shouldShowEightDotBraille") || ([v85 supportsTranslationMode8Dot] & 1) == 0))
           {
-            v90 = [v85 localizedNameWithService];
-            v91 = [PSSpecifier preferenceSpecifierNamed:v90 target:v102 set:0 get:0 detail:0 cell:3 edit:0];
+            localizedNameWithService = [v85 localizedNameWithService];
+            v91 = [PSSpecifier preferenceSpecifierNamed:localizedNameWithService target:v102 set:0 get:0 detail:0 cell:3 edit:0];
 
             [v91 setProperty:&__kCFBooleanTrue forKey:@"IsLanguage"];
             [v91 setProperty:v85 forKey:@"Table"];
-            v92 = [v85 identifier];
-            [v91 setProperty:v92 forKey:@"TableIdentifier"];
+            identifier = [v85 identifier];
+            [v91 setProperty:identifier forKey:@"TableIdentifier"];
 
             [v100 addObject:v91];
           }
@@ -414,15 +414,15 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
     if ([(VoiceOverBrailleInputOutputController *)v102 _isDisplayInput])
     {
       v93 = +[AXSettings sharedInstance];
-      v94 = [v93 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+      voiceOverTouchBrailleDisplaySyncInputOutputTables = [v93 voiceOverTouchBrailleDisplaySyncInputOutputTables];
     }
 
     else
     {
-      v94 = 0;
+      voiceOverTouchBrailleDisplaySyncInputOutputTables = 0;
     }
 
-    v95 = [(VoiceOverBrailleInputOutputController *)v102 specifiersByRemovingDetailItemsFromOriginalSpecifiers:v99 ifHidden:v94];
+    v95 = [(VoiceOverBrailleInputOutputController *)v102 specifiersByRemovingDetailItemsFromOriginalSpecifiers:v99 ifHidden:voiceOverTouchBrailleDisplaySyncInputOutputTables];
     v96 = *&v102->AXUISettingsBaseListController_opaque[v98];
     *&v102->AXUISettingsBaseListController_opaque[v98] = v95;
 
@@ -444,24 +444,24 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   v5 = v4;
   if (v3)
   {
-    v6 = [v4 voiceOverTouchBrailleDisplayInputTableIdentifier];
+    voiceOverTouchBrailleDisplayInputTableIdentifier = [v4 voiceOverTouchBrailleDisplayInputTableIdentifier];
 
-    v7 = [[BRLTTable alloc] initWithIdentifier:v6];
-    v8 = [v7 candidateSelectionLanguage];
-    v2 = [v8 length] == 0;
+    v7 = [[BRLTTable alloc] initWithIdentifier:voiceOverTouchBrailleDisplayInputTableIdentifier];
+    candidateSelectionLanguage = [v7 candidateSelectionLanguage];
+    v2 = [candidateSelectionLanguage length] == 0;
   }
 
   else
   {
-    v9 = [v4 voiceOverTouchBrailleDisplayInputMode];
+    voiceOverTouchBrailleDisplayInputMode = [v4 voiceOverTouchBrailleDisplayInputMode];
 
-    return (v9 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    return (voiceOverTouchBrailleDisplayInputMode & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
   return v2;
 }
 
-- (id)gradeTwoAutoTranslatedEnabled:(id)a3
+- (id)gradeTwoAutoTranslatedEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverBrailleGradeTwoAutoTranslateEnabled]);
@@ -469,14 +469,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setGradeTwoAutoTransateEnabled:(id)a3 specifier:(id)a4
+- (void)setGradeTwoAutoTransateEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverBrailleGradeTwoAutoTranslateEnabled:v4];
+  [v5 setVoiceOverBrailleGradeTwoAutoTranslateEnabled:bOOLValue];
 }
 
-- (id)learnsDotPositionsEnabled:(id)a3
+- (id)learnsDotPositionsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesLearnsDotPositions]);
@@ -484,16 +484,16 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setLearnsDotPositions:(id)a3 specifier:(id)a4
+- (void)setLearnsDotPositions:(id)positions specifier:(id)specifier
 {
-  v4 = a3;
+  positionsCopy = positions;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [positionsCopy BOOLValue];
 
-  [v6 setVoiceOverTouchBrailleGesturesLearnsDotPositions:v5];
+  [v6 setVoiceOverTouchBrailleGesturesLearnsDotPositions:bOOLValue];
 }
 
-- (id)shouldReverseDotsEnabled:(id)a3
+- (id)shouldReverseDotsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleShouldReverseDots]);
@@ -501,16 +501,16 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setShouldReverseDotsEnabled:(id)a3 specifier:(id)a4
+- (void)setShouldReverseDotsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setVoiceOverTouchBrailleShouldReverseDots:v5];
+  [v6 setVoiceOverTouchBrailleShouldReverseDots:bOOLValue];
 }
 
-- (id)useActivationGestureEnabled:(id)a3
+- (id)useActivationGestureEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesActivationGestureEnabled]);
@@ -518,16 +518,16 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setUseActivationGestureEnabled:(id)a3 specifier:(id)a4
+- (void)setUseActivationGestureEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setVoiceOverTouchBrailleGesturesActivationGestureEnabled:v5];
+  [v6 setVoiceOverTouchBrailleGesturesActivationGestureEnabled:bOOLValue];
 }
 
-- (id)brailleGestureControl:(id)a3
+- (id)brailleGestureControl:(id)control
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGestureControl]);
@@ -535,14 +535,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setBrailleGestureControl:(id)a3 specifier:(id)a4
+- (void)setBrailleGestureControl:(id)control specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [control BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGestureControl:v4];
+  [v5 setVoiceOverTouchBrailleGestureControl:bOOLValue];
 }
 
-- (id)usesHapticFeedback:(id)a3
+- (id)usesHapticFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesUsesHapticFeedback]);
@@ -550,14 +550,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setUsesHapticsFeedback:(id)a3 specifier:(id)a4
+- (void)setUsesHapticsFeedback:(id)feedback specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [feedback BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGesturesUsesHapticFeedback:v4];
+  [v5 setVoiceOverTouchBrailleGesturesUsesHapticFeedback:bOOLValue];
 }
 
-- (id)usesSingleHandDotNumbersFeedback:(id)a3
+- (id)usesSingleHandDotNumbersFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback]);
@@ -565,14 +565,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setUsesSingleHandDotNumbersFeedback:(id)a3 specifier:(id)a4
+- (void)setUsesSingleHandDotNumbersFeedback:(id)feedback specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [feedback BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:v4];
+  [v5 setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:bOOLValue];
 }
 
-- (id)usesTypingSoundFeedback:(id)a3
+- (id)usesTypingSoundFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesUsesTypingSoundFeedback]);
@@ -580,14 +580,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setUsesTypingSoundFeedback:(id)a3 specifier:(id)a4
+- (void)setUsesTypingSoundFeedback:(id)feedback specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [feedback BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:v4];
+  [v5 setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:bOOLValue];
 }
 
-- (id)displaysEnteredText:(id)a3
+- (id)displaysEnteredText:(id)text
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesDisplaysEnteredText]);
@@ -595,14 +595,14 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setDisplaysEnteredText:(id)a3 specifier:(id)a4
+- (void)setDisplaysEnteredText:(id)text specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [text BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGesturesDisplaysEnteredText:v4];
+  [v5 setVoiceOverTouchBrailleGesturesDisplaysEnteredText:bOOLValue];
 }
 
-- (id)autoActivateOnTextFields:(id)a3
+- (id)autoActivateOnTextFields:(id)fields
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleGesturesAutoActivateOnTextFields]);
@@ -610,25 +610,25 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v4;
 }
 
-- (void)setAutoActivateOnTextFields:(id)a3 specifier:(id)a4
+- (void)setAutoActivateOnTextFields:(id)fields specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [fields BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:v4];
+  [v5 setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:bOOLValue];
 }
 
-- (id)brailleGesturesSoundOption:(id)a3
+- (id)brailleGesturesSoundOption:(id)option
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverTouchBrailleGesturesSoundOption];
+  voiceOverTouchBrailleGesturesSoundOption = [v3 voiceOverTouchBrailleGesturesSoundOption];
 
   v5 = @"SOUND_OPTION_SPEAK_AND_SOUND";
-  if (v4 == &dword_0 + 1)
+  if (voiceOverTouchBrailleGesturesSoundOption == &dword_0 + 1)
   {
     v5 = @"SOUND_OPTION_SOUND";
   }
 
-  if (v4)
+  if (voiceOverTouchBrailleGesturesSoundOption)
   {
     v6 = v5;
   }
@@ -643,39 +643,39 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
   return v7;
 }
 
-- (void)jumpToVoiceOverCommandsSettings:(id)a3
+- (void)jumpToVoiceOverCommandsSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=ACCESSIBILITY&path=VOICEOVER_TITLE/CustomizeCommands/BrailleKeyboardInput"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
   [v3 openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v23 = a4;
-  v7 = [(VoiceOverBrailleInputOutputController *)self specifierForIndexPath:a5];
-  v8 = [v23 specifier];
-  v9 = [v8 propertyForKey:@"AXSVoiceOverBrailleGesturesSingleHandStyle"];
+  cellCopy = cell;
+  v7 = [(VoiceOverBrailleInputOutputController *)self specifierForIndexPath:path];
+  specifier = [cellCopy specifier];
+  v9 = [specifier propertyForKey:@"AXSVoiceOverBrailleGesturesSingleHandStyle"];
 
   if (v9)
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 voiceOverTouchBrailleGesturesSingleHandStyle];
+    voiceOverTouchBrailleGesturesSingleHandStyle = [v10 voiceOverTouchBrailleGesturesSingleHandStyle];
 
-    [v23 setChecked:{objc_msgSend(v9, "integerValue") == v11}];
+    [cellCopy setChecked:{objc_msgSend(v9, "integerValue") == voiceOverTouchBrailleGesturesSingleHandStyle}];
   }
 
   else
   {
-    v12 = [v23 specifier];
-    v13 = [v12 propertyForKey:@"AXSVoiceOverTouchBrailleGesturesSoundOption"];
+    specifier2 = [cellCopy specifier];
+    v13 = [specifier2 propertyForKey:@"AXSVoiceOverTouchBrailleGesturesSoundOption"];
 
     if (v13)
     {
       v14 = +[AXSettings sharedInstance];
-      v15 = [v14 voiceOverTouchBrailleGesturesSoundOption];
+      voiceOverTouchBrailleGesturesSoundOption = [v14 voiceOverTouchBrailleGesturesSoundOption];
 
-      [v23 setChecked:{objc_msgSend(v13, "integerValue") == v15}];
+      [cellCopy setChecked:{objc_msgSend(v13, "integerValue") == voiceOverTouchBrailleGesturesSoundOption}];
     }
 
     else
@@ -684,15 +684,15 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
       if ([(VoiceOverBrailleInputOutputController *)self _isDisplayInput])
       {
         v17 = +[AXSettings sharedInstance];
-        v18 = [v17 voiceOverTouchBrailleDisplayInputTableIdentifier];
+        voiceOverTouchBrailleDisplayInputTableIdentifier = [v17 voiceOverTouchBrailleDisplayInputTableIdentifier];
       }
 
       else
       {
-        v19 = [(VoiceOverBrailleInputOutputController *)self _isGesturesInput];
+        _isGesturesInput = [(VoiceOverBrailleInputOutputController *)self _isGesturesInput];
         v20 = +[AXSettings sharedInstance];
         v17 = v20;
-        if (v19)
+        if (_isGesturesInput)
         {
           [v20 voiceOverTouchBrailleGesturesInputTableIdentifier];
         }
@@ -701,10 +701,10 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
         {
           [v20 voiceOverTouchBrailleDisplayOutputTableIdentifier];
         }
-        v18 = ;
+        voiceOverTouchBrailleDisplayInputTableIdentifier = ;
       }
 
-      v21 = v18;
+      v21 = voiceOverTouchBrailleDisplayInputTableIdentifier;
 
       if (v21 && ([v16 isEqualToString:v21] & 1) != 0)
       {
@@ -716,18 +716,18 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
         v22 = 0;
       }
 
-      [v23 setAccessoryType:v22];
+      [cellCopy setAccessoryType:v22];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v22.receiver = self;
   v22.super_class = VoiceOverBrailleInputOutputController;
-  v6 = a4;
-  [(VoiceOverBrailleInputOutputController *)&v22 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(VoiceOverBrailleInputOutputController *)self specifierForIndexPath:v6, v22.receiver, v22.super_class];
+  pathCopy = path;
+  [(VoiceOverBrailleInputOutputController *)&v22 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(VoiceOverBrailleInputOutputController *)self specifierForIndexPath:pathCopy, v22.receiver, v22.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVoiceOverBrailleGesturesSingleHandStyle"];
   v9 = v8;
@@ -737,9 +737,9 @@ void __52__VoiceOverBrailleInputOutputController_viewDidLoad__block_invoke_2(uin
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v15 = +[AXSettings sharedInstance];
-      [v15 setVoiceOverTouchBrailleGesturesSoundOption:v14];
+      [v15 setVoiceOverTouchBrailleGesturesSoundOption:integerValue];
 
       [(VoiceOverBrailleInputOutputController *)self reload];
 LABEL_11:
@@ -750,10 +750,10 @@ LABEL_11:
     v16 = [v7 propertyForKey:@"TableIdentifier"];
     if (![(VoiceOverBrailleInputOutputController *)self _isDisplayInput])
     {
-      v18 = [(VoiceOverBrailleInputOutputController *)self _isGesturesInput];
+      _isGesturesInput = [(VoiceOverBrailleInputOutputController *)self _isGesturesInput];
       v19 = +[AXSettings sharedInstance];
       v17 = v19;
-      if (v18)
+      if (_isGesturesInput)
       {
         [v19 setVoiceOverTouchBrailleGesturesInputTableIdentifier:v16];
         goto LABEL_9;
@@ -762,9 +762,9 @@ LABEL_11:
       [v19 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:v16];
 
       v20 = +[AXSettings sharedInstance];
-      v21 = [v20 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+      voiceOverTouchBrailleDisplaySyncInputOutputTables = [v20 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
-      if (!v21)
+      if (!voiceOverTouchBrailleDisplaySyncInputOutputTables)
       {
         goto LABEL_10;
       }
@@ -780,9 +780,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v8 integerValue];
+  integerValue2 = [v8 integerValue];
   v11 = +[AXSettings sharedInstance];
-  [v11 setVoiceOverTouchBrailleGesturesSingleHandStyle:v10];
+  [v11 setVoiceOverTouchBrailleGesturesSingleHandStyle:integerValue2];
 
   [(VoiceOverBrailleInputOutputController *)self reload];
 LABEL_12:

@@ -1,25 +1,25 @@
 @interface PKApplyWebServiceApplyResponse
-- (PKApplyWebServiceApplyResponse)initWithCoder:(id)a3;
-- (PKApplyWebServiceApplyResponse)initWithData:(id)a3;
+- (PKApplyWebServiceApplyResponse)initWithCoder:(id)coder;
+- (PKApplyWebServiceApplyResponse)initWithData:(id)data;
 - (id)nextStepInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceApplyResponse
 
-- (PKApplyWebServiceApplyResponse)initWithData:(id)a3
+- (PKApplyWebServiceApplyResponse)initWithData:(id)data
 {
   v17.receiver = self;
   v17.super_class = PKApplyWebServiceApplyResponse;
-  v3 = [(PKWebServiceResponse *)&v17 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v17 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKDictionaryForKey:@"application"];
       if (v7)
       {
@@ -56,56 +56,56 @@
 - (id)nextStepInfo
 {
   v3 = [PKApplyWebServiceApplyStepInfo alloc];
-  v4 = [(PKWebServiceResponse *)self JSONObject];
-  v5 = [(PKApplyWebServiceApplyStepInfo *)v3 initWithJSONObject:v4 featureApplication:self->_featureApplication];
+  jSONObject = [(PKWebServiceResponse *)self JSONObject];
+  v5 = [(PKApplyWebServiceApplyStepInfo *)v3 initWithJSONObject:jSONObject featureApplication:self->_featureApplication];
 
-  v6 = [(PKApplyWebServiceResponse *)self conversationIdentifier];
-  [(PKApplyWebServiceApplyStepInfo *)v5 setConversationIdentifier:v6];
+  conversationIdentifier = [(PKApplyWebServiceResponse *)self conversationIdentifier];
+  [(PKApplyWebServiceApplyStepInfo *)v5 setConversationIdentifier:conversationIdentifier];
 
   return v5;
 }
 
-- (PKApplyWebServiceApplyResponse)initWithCoder:(id)a3
+- (PKApplyWebServiceApplyResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKApplyWebServiceApplyResponse;
-  v5 = [(PKWebServiceResponse *)&v16 initWithCoder:v4];
+  v5 = [(PKWebServiceResponse *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureApplication"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureApplication"];
     featureApplication = v5->_featureApplication;
     v5->_featureApplication = v8;
 
-    v5->_requiredDeviceMetadataFields = [v4 decodeIntegerForKey:@"requiredDeviceMetadataFields"];
+    v5->_requiredDeviceMetadataFields = [coderCopy decodeIntegerForKey:@"requiredDeviceMetadataFields"];
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
     v11 = objc_opt_class();
     v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"actionIdentifiersRequiringAuthentication"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"actionIdentifiersRequiringAuthentication"];
     actionIdentifiersRequiringAuthentication = v5->_actionIdentifiersRequiringAuthentication;
     v5->_actionIdentifiersRequiringAuthentication = v13;
 
-    v5->_requiresODIAssessment = [v4 decodeBoolForKey:@"requiresODIAssessment"];
+    v5->_requiresODIAssessment = [coderCopy decodeBoolForKey:@"requiresODIAssessment"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceApplyResponse;
-  v4 = a3;
-  [(PKWebServiceResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_featureApplication forKey:{@"featureApplication", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_account forKey:@"account"];
-  [v4 encodeInteger:self->_requiredDeviceMetadataFields forKey:@"requiredDeviceMetadataFields"];
-  [v4 encodeObject:self->_actionIdentifiersRequiringAuthentication forKey:@"actionIdentifiersRequiringAuthentication"];
-  [v4 encodeBool:self->_requiresODIAssessment forKey:@"requiresODIAssessment"];
+  coderCopy = coder;
+  [(PKWebServiceResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_featureApplication forKey:{@"featureApplication", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
+  [coderCopy encodeInteger:self->_requiredDeviceMetadataFields forKey:@"requiredDeviceMetadataFields"];
+  [coderCopy encodeObject:self->_actionIdentifiersRequiringAuthentication forKey:@"actionIdentifiersRequiringAuthentication"];
+  [coderCopy encodeBool:self->_requiresODIAssessment forKey:@"requiresODIAssessment"];
 }
 
 @end

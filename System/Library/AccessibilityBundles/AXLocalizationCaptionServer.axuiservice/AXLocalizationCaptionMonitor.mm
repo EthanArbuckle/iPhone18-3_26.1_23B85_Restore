@@ -1,7 +1,7 @@
 @interface AXLocalizationCaptionMonitor
 + (id)monitor;
 - (AXLocalizationCaptionMonitor)init;
-- (void)_handleTouchEvent:(id)a3;
+- (void)_handleTouchEvent:(id)event;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (void)_handleTouchEvent:(id)a3
+- (void)_handleTouchEvent:(id)event
 {
-  v21 = a3;
-  v4 = [v21 handInfo];
-  v5 = [v4 eventType];
+  eventCopy = event;
+  handInfo = [eventCopy handInfo];
+  eventType = [handInfo eventType];
 
-  if (v5 == 1)
+  if (eventType == 1)
   {
     v6 = [AXDispatchTimer alloc];
     v7 = dispatch_get_global_queue(0, 0);
@@ -53,44 +53,44 @@
     [(AXDispatchTimer *)self->_downTimer afterDelay:&stru_82D0 processBlock:1.0];
   }
 
-  else if (([v21 isLift] & 1) != 0 || (objc_msgSend(v21, "isCancel") & 1) != 0 || objc_msgSend(v21, "isInRangeLift"))
+  else if (([eventCopy isLift] & 1) != 0 || (objc_msgSend(eventCopy, "isCancel") & 1) != 0 || objc_msgSend(eventCopy, "isInRangeLift"))
   {
     [(AXDispatchTimer *)self->_downTimer cancel];
     v10 = self->_downTimer;
     self->_downTimer = 0;
   }
 
-  v11 = [v21 handInfo];
-  if ([v11 eventType] == 1)
+  handInfo2 = [eventCopy handInfo];
+  if ([handInfo2 eventType] == 1)
   {
   }
 
   else
   {
-    v12 = [v21 handInfo];
-    v13 = [v12 eventType];
+    handInfo3 = [eventCopy handInfo];
+    eventType2 = [handInfo3 eventType];
 
-    if (v13 != 2)
+    if (eventType2 != 2)
     {
-      v20 = v21;
+      v20 = eventCopy;
       goto LABEL_14;
     }
   }
 
-  v14 = [v21 denormalizedEventRepresentation:0 descale:1];
+  v14 = [eventCopy denormalizedEventRepresentation:0 descale:1];
 
   _AXShouldDispatchNonMainThreadCallbacksOnMainThreadPushReason();
-  v15 = [v14 handInfo];
-  v16 = [v15 paths];
-  v17 = [v16 firstPath];
-  [v17 pathLocation];
+  handInfo4 = [v14 handInfo];
+  paths = [handInfo4 paths];
+  firstPath = [paths firstPath];
+  [firstPath pathLocation];
   v18 = [AXElement elementAtCoordinate:0 withVisualPadding:?];
 
   _AXShouldDispatchNonMainThreadCallbacksOnMainThreadPopReason();
   if (v18)
   {
-    v19 = [(AXLocalizationCaptionMonitor *)self elementCallback];
-    (v19)[2](v19, v18);
+    elementCallback = [(AXLocalizationCaptionMonitor *)self elementCallback];
+    (elementCallback)[2](elementCallback, v18);
   }
 
   v20 = v14;
@@ -99,9 +99,9 @@ LABEL_14:
 
 - (void)startMonitoring
 {
-  v3 = [(AXLocalizationCaptionMonitor *)self processor];
+  processor = [(AXLocalizationCaptionMonitor *)self processor];
 
-  if (!v3)
+  if (!processor)
   {
     [(AXLocalizationCaptionMonitor *)self _initializeAccessibility];
     v4 = [[AXEventProcessor alloc] initWithHIDTapIdentifier:@"LocQACaptions" HIDEventTapPriority:70 systemEventTapIdentifier:0 systemEventTapPriority:10];
@@ -112,26 +112,26 @@ LABEL_14:
     v5 = [(AXLocalizationCaptionMonitor *)self processor:_NSConcreteStackBlock];
     [v5 setHIDEventHandler:&v8];
 
-    v6 = [(AXLocalizationCaptionMonitor *)self processor];
-    [v6 setHIDEventFilterMask:1];
+    processor2 = [(AXLocalizationCaptionMonitor *)self processor];
+    [processor2 setHIDEventFilterMask:1];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  v7 = [(AXLocalizationCaptionMonitor *)self processor];
-  [v7 beginHandlingHIDEventsForReason:@"LocQACaptions"];
+  processor3 = [(AXLocalizationCaptionMonitor *)self processor];
+  [processor3 beginHandlingHIDEventsForReason:@"LocQACaptions"];
 }
 
 - (void)stopMonitoring
 {
-  v3 = [(AXLocalizationCaptionMonitor *)self processor];
-  v4 = [v3 isHandlingHIDEvents];
+  processor = [(AXLocalizationCaptionMonitor *)self processor];
+  isHandlingHIDEvents = [processor isHandlingHIDEvents];
 
-  if (v4)
+  if (isHandlingHIDEvents)
   {
-    v5 = [(AXLocalizationCaptionMonitor *)self processor];
-    [v5 endHandlingHIDEventsForReason:@"LocQACaptions"];
+    processor2 = [(AXLocalizationCaptionMonitor *)self processor];
+    [processor2 endHandlingHIDEventsForReason:@"LocQACaptions"];
 
     [(AXLocalizationCaptionMonitor *)self _endAccessibility];
   }

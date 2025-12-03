@@ -1,7 +1,7 @@
 @interface NPNotePreviewProviderInternal
 + (NPNotePreviewProviderInternal)shared;
 - (NPNotePreviewProviderInternal)init;
-- (id)previewForUserActivity:(id)a3 error:(id *)a4;
+- (id)previewForUserActivity:(id)activity error:(id *)error;
 @end
 
 @implementation NPNotePreviewProviderInternal
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (id)previewForUserActivity:(id)a3 error:(id *)a4
+- (id)previewForUserActivity:(id)activity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  NotePreviewProvider.preview(for:)(v5, &v11);
+  activityCopy = activity;
+  selfCopy = self;
+  NotePreviewProvider.preview(for:)(activityCopy, &v11);
   v7 = v12;
   v8 = v13;
   sub_25C770D14();
@@ -38,10 +38,10 @@
 {
   ObjectType = swift_getObjectType();
   v4 = OBJC_IVAR___NPNotePreviewProviderInternal_cache;
-  v5 = [objc_opt_self() defaultManager];
+  defaultManager = [objc_opt_self() defaultManager];
   type metadata accessor for PersistedThumbnailCache();
   v6 = swift_allocObject();
-  *(v6 + 2) = v5;
+  *(v6 + 2) = defaultManager;
   *(&self->super.isa + v4) = v6;
   v8.receiver = self;
   v8.super_class = ObjectType;

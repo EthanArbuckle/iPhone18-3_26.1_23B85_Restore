@@ -1,32 +1,32 @@
 @interface CPUISongDetailsView
-+ (double)maximumHeightForTrackInfoFontStyle:(unint64_t)a3;
-+ (double)minimumHeightForTrackInfoFontStyle:(unint64_t)a3;
++ (double)maximumHeightForTrackInfoFontStyle:(unint64_t)style;
++ (double)minimumHeightForTrackInfoFontStyle:(unint64_t)style;
 - (CGSize)intrinsicContentSize;
 - (CGSize)maximumTitleViewSize;
 - (CPUIModernButton)attributionButton;
-- (CPUISongDetailsView)initWithFrame:(CGRect)a3;
+- (CPUISongDetailsView)initWithFrame:(CGRect)frame;
 - (NSString)attributionName;
 - (UIImage)attributionArtwork;
 - (id)_attributedTitle;
 - (void)_updateFont;
 - (void)_updateNumberOfLines;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setAlbumTitle:(id)a3;
-- (void)setArtistName:(id)a3;
-- (void)setAttributionArtwork:(id)a3;
-- (void)setAttributionName:(id)a3;
-- (void)setMaximumTitleViewSize:(CGSize)a3;
-- (void)setTrackTitle:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setAlbumTitle:(id)title;
+- (void)setArtistName:(id)name;
+- (void)setAttributionArtwork:(id)artwork;
+- (void)setAttributionName:(id)name;
+- (void)setMaximumTitleViewSize:(CGSize)size;
+- (void)setTrackTitle:(id)title;
 @end
 
 @implementation CPUISongDetailsView
 
-- (CPUISongDetailsView)initWithFrame:(CGRect)a3
+- (CPUISongDetailsView)initWithFrame:(CGRect)frame
 {
   v56[4] = *MEMORY[0x277D85DE8];
   v55.receiver = self;
   v55.super_class = CPUISongDetailsView;
-  v3 = [(CPUISongDetailsView *)&v55 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUISongDetailsView *)&v55 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75A68]);
@@ -71,8 +71,8 @@
     artistLabel = v3->_artistLabel;
     v3->_artistLabel = v20;
 
-    v22 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_artistLabel setTextColor:v22];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_artistLabel setTextColor:labelColor];
 
     LODWORD(v23) = 1144750080;
     [(UILabel *)v3->_artistLabel setContentCompressionResistancePriority:1 forAxis:v23];
@@ -85,24 +85,24 @@
     v3->_albumArtistLabelButton = v25;
 
     [(CPUIModernButton *)v3->_albumArtistLabelButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [(CPUIModernButton *)v3->_albumArtistLabelButton titleLabel];
-    [v27 setLineBreakMode:4];
+    titleLabel = [(CPUIModernButton *)v3->_albumArtistLabelButton titleLabel];
+    [titleLabel setLineBreakMode:4];
 
     [(CPUIModernButton *)v3->_albumArtistLabelButton setEnabled:0];
     [(CPUIModernButton *)v3->_albumArtistLabelButton setTintAdjustmentMode:1];
     [(CPUIModernButton *)v3->_albumArtistLabelButton setContentEdgeInsets:0.0, 5.0, 0.0, 4.0];
     [(CPUIModernButton *)v3->_albumArtistLabelButton _setContinuousCornerRadius:4.0];
     [(CPUIModernButton *)v3->_albumArtistLabelButton setAccessibilityIdentifier:@"CPNowPlayingSongAlbum"];
-    v28 = [(CPUIModernButton *)v3->_albumArtistLabelButton layer];
-    [v28 setCompositingFilter:0];
+    layer = [(CPUIModernButton *)v3->_albumArtistLabelButton layer];
+    [layer setCompositingFilter:0];
 
-    v29 = [(CPUIModernButton *)v3->_albumArtistLabelButton layer];
-    [v29 setAllowsGroupBlending:0];
+    layer2 = [(CPUIModernButton *)v3->_albumArtistLabelButton layer];
+    [layer2 setAllowsGroupBlending:0];
 
     v30 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v31 = [(CPUIModernButton *)v3->_albumArtistLabelButton _titleView];
-    v32 = [v31 layer];
-    [v32 setCompositingFilter:v30];
+    _titleView = [(CPUIModernButton *)v3->_albumArtistLabelButton _titleView];
+    layer3 = [_titleView layer];
+    [layer3 setCompositingFilter:v30];
 
     v33 = [[_CPUIAlbumContainer alloc] initWithButton:v3->_albumArtistLabelButton];
     albumContainer = v3->_albumContainer;
@@ -110,21 +110,21 @@
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_albumContainer];
     v50 = MEMORY[0x277CCAAD0];
-    v54 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v53 = [(CPUISongDetailsView *)v3 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    leadingAnchor = [(UIStackView *)v3->_stackView leadingAnchor];
+    leadingAnchor2 = [(CPUISongDetailsView *)v3 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v56[0] = v52;
-    v51 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v35 = [(CPUISongDetailsView *)v3 trailingAnchor];
-    v36 = [v51 constraintEqualToAnchor:v35];
+    trailingAnchor = [(UIStackView *)v3->_stackView trailingAnchor];
+    trailingAnchor2 = [(CPUISongDetailsView *)v3 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v56[1] = v36;
-    v37 = [(UIStackView *)v3->_stackView topAnchor];
-    v38 = [(CPUISongDetailsView *)v3 topAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor2 = [(CPUISongDetailsView *)v3 topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v56[2] = v39;
-    v40 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v41 = [(CPUISongDetailsView *)v3 bottomAnchor];
-    v42 = [v40 constraintLessThanOrEqualToAnchor:v41];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor2 = [(CPUISongDetailsView *)v3 bottomAnchor];
+    v42 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v56[3] = v42;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:4];
     [v50 activateConstraints:v43];
@@ -132,15 +132,15 @@
     LODWORD(v44) = 1148846080;
     [(CPUISongDetailsView *)v3 setContentHuggingPriority:1 forAxis:v44];
     [(CPUISongDetailsView *)v3 _updateFont];
-    v45 = [(CPUISongDetailsView *)v3 layer];
-    [v45 setAllowsGroupBlending:0];
+    layer4 = [(CPUISongDetailsView *)v3 layer];
+    [layer4 setAllowsGroupBlending:0];
 
-    v46 = [(CPUISongDetailsView *)v3 stackView];
-    v47 = [v46 layer];
-    [v47 setAllowsGroupBlending:0];
+    stackView = [(CPUISongDetailsView *)v3 stackView];
+    layer5 = [stackView layer];
+    [layer5 setAllowsGroupBlending:0];
 
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v48 addObserver:v3 selector:sel__updateFont name:*MEMORY[0x277D81C78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updateFont name:*MEMORY[0x277D81C78] object:0];
   }
 
   return v3;
@@ -148,8 +148,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CPUISongDetailsView *)self stackView];
-  [v2 intrinsicContentSize];
+  stackView = [(CPUISongDetailsView *)self stackView];
+  [stackView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -160,31 +160,31 @@
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
   albumArtistLabelButton = self->_albumArtistLabelButton;
 
-  if (v5 == albumArtistLabelButton)
+  if (nextFocusedItem == albumArtistLabelButton)
   {
-    v10 = [(CPUIModernButton *)self->_albumArtistLabelButton _titleView];
-    v11 = [v10 layer];
-    [v11 setCompositingFilter:0];
+    _titleView = [(CPUIModernButton *)self->_albumArtistLabelButton _titleView];
+    layer = [_titleView layer];
+    [layer setCompositingFilter:0];
 
-    v13 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v12 = [(_CPUIAlbumContainer *)self->_albumContainer layer];
-    [v12 setCompositingFilter:v13];
+    layer4 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
+    layer2 = [(_CPUIAlbumContainer *)self->_albumContainer layer];
+    [layer2 setCompositingFilter:layer4];
   }
 
   else
   {
     v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v8 = [(CPUIModernButton *)self->_albumArtistLabelButton _titleView];
-    v9 = [v8 layer];
-    [v9 setCompositingFilter:v7];
+    _titleView2 = [(CPUIModernButton *)self->_albumArtistLabelButton _titleView];
+    layer3 = [_titleView2 layer];
+    [layer3 setCompositingFilter:v7];
 
-    v13 = [(_CPUIAlbumContainer *)self->_albumContainer layer];
-    [v13 setCompositingFilter:0];
+    layer4 = [(_CPUIAlbumContainer *)self->_albumContainer layer];
+    [layer4 setCompositingFilter:0];
   }
 }
 
@@ -203,9 +203,9 @@
     v7 = *MEMORY[0x277D740A8];
     v13[0] = v6;
     v13[1] = v7;
-    v8 = [(CPUISongDetailsView *)self titleView];
-    v9 = [v8 font];
-    v14[1] = v9;
+    titleView = [(CPUISongDetailsView *)self titleView];
+    font = [titleView font];
+    v14[1] = font;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
     v11 = [v4 initWithString:trackTitle attributes:v10];
   }
@@ -218,49 +218,49 @@
   return v11;
 }
 
-- (void)setTrackTitle:(id)a3
+- (void)setTrackTitle:(id)title
 {
-  objc_storeStrong(&self->_trackTitle, a3);
-  v4 = [(CPUISongDetailsView *)self _attributedTitle];
-  v5 = [(CPUISongDetailsView *)self titleView];
-  v6 = [v5 titleLabel];
-  [v6 setAttributedText:v4];
+  objc_storeStrong(&self->_trackTitle, title);
+  _attributedTitle = [(CPUISongDetailsView *)self _attributedTitle];
+  titleView = [(CPUISongDetailsView *)self titleView];
+  titleLabel = [titleView titleLabel];
+  [titleLabel setAttributedText:_attributedTitle];
 
   [(CPUISongDetailsView *)self _updateNumberOfLines];
 }
 
-- (void)setAlbumTitle:(id)a3
+- (void)setAlbumTitle:(id)title
 {
-  objc_storeStrong(&self->_albumTitle, a3);
-  v5 = a3;
-  v6 = [(CPUISongDetailsView *)self albumArtistLabelButton];
-  [v6 setTitle:v5 forState:0];
+  objc_storeStrong(&self->_albumTitle, title);
+  titleCopy = title;
+  albumArtistLabelButton = [(CPUISongDetailsView *)self albumArtistLabelButton];
+  [albumArtistLabelButton setTitle:titleCopy forState:0];
 
   [(CPUISongDetailsView *)self _updateNumberOfLines];
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  objc_storeStrong(&self->_artistName, a3);
-  v5 = a3;
-  [(UILabel *)self->_artistLabel setText:v5];
+  objc_storeStrong(&self->_artistName, name);
+  nameCopy = name;
+  [(UILabel *)self->_artistLabel setText:nameCopy];
 
   [(CPUISongDetailsView *)self _updateNumberOfLines];
 }
 
-- (void)setMaximumTitleViewSize:(CGSize)a3
+- (void)setMaximumTitleViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CPUISongDetailsView *)self maximumTitleViewSize];
   if (v7 != width || v6 != height)
   {
     self->_maximumTitleViewSize.width = width;
     self->_maximumTitleViewSize.height = height;
-    v9 = [(CPUISongDetailsView *)self titleView];
-    v10 = [v9 titleLabel];
+    titleView = [(CPUISongDetailsView *)self titleView];
+    titleLabel = [titleView titleLabel];
     [(CPUISongDetailsView *)self maximumTitleViewSize];
-    [v10 setPreferredMaxLayoutWidth:?];
+    [titleLabel setPreferredMaxLayoutWidth:?];
   }
 
   [(CPUISongDetailsView *)self _updateNumberOfLines];
@@ -268,54 +268,54 @@
 
 - (CPUIModernButton)attributionButton
 {
-  v2 = [(CPUISongDetailsView *)self attributionView];
-  v3 = [v2 button];
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  button = [attributionView button];
 
-  return v3;
+  return button;
 }
 
 - (NSString)attributionName
 {
-  v2 = [(CPUISongDetailsView *)self attributionView];
-  v3 = [v2 name];
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  name = [attributionView name];
 
-  return v3;
+  return name;
 }
 
-- (void)setAttributionName:(id)a3
+- (void)setAttributionName:(id)name
 {
-  v4 = a3;
-  v5 = [(CPUISongDetailsView *)self attributionView];
-  [v5 setName:v4];
+  nameCopy = name;
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  [attributionView setName:nameCopy];
 
   [(CPUISongDetailsView *)self _updateNumberOfLines];
 }
 
 - (UIImage)attributionArtwork
 {
-  v2 = [(CPUISongDetailsView *)self attributionView];
-  v3 = [v2 artwork];
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  artwork = [attributionView artwork];
 
-  return v3;
+  return artwork;
 }
 
-- (void)setAttributionArtwork:(id)a3
+- (void)setAttributionArtwork:(id)artwork
 {
-  v4 = a3;
-  v5 = [(CPUISongDetailsView *)self attributionView];
-  [v5 setArtwork:v4];
+  artworkCopy = artwork;
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  [attributionView setArtwork:artworkCopy];
 }
 
 - (void)_updateNumberOfLines
 {
-  v3 = [(CPUISongDetailsView *)self attributionName];
+  attributionName = [(CPUISongDetailsView *)self attributionName];
 
-  v4 = 424;
-  v5 = [(UILabel *)self->_artistLabel text];
-  v6 = [v5 length] == 0;
+  font = 424;
+  text = [(UILabel *)self->_artistLabel text];
+  v6 = [text length] == 0;
 
   [(UILabel *)self->_artistLabel setHidden:v6];
-  if (v3)
+  if (attributionName)
   {
     v7 = 1;
   }
@@ -327,9 +327,9 @@
   }
 
   [(_CPUIAlbumContainer *)self->_albumContainer setHidden:v7];
-  [(CPUISongAttributionView *)self->_attributionView setHidden:v3 == 0];
-  v9 = [(CPUITitleView *)self->_titleView titleLabel];
-  [v9 setNumberOfLines:1];
+  [(CPUISongAttributionView *)self->_attributionView setHidden:attributionName == 0];
+  titleLabel = [(CPUITitleView *)self->_titleView titleLabel];
+  [titleLabel setNumberOfLines:1];
 
   if (![(NSString *)self->_trackTitle length])
   {
@@ -342,8 +342,8 @@
     goto LABEL_28;
   }
 
-  v13 = [(CPUISongDetailsView *)self _attributedTitle];
-  v14 = [v13 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+  _attributedTitle = [(CPUISongDetailsView *)self _attributedTitle];
+  v14 = [_attributedTitle attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
   [(CPUISongDetailsView *)self maximumTitleViewSize];
   v16 = v15;
   v18 = v17;
@@ -359,17 +359,17 @@
 
   [v14 lineHeight];
   v21 = v20;
-  [v13 boundingRectWithSize:1 options:0 context:{v19, v18}];
+  [_attributedTitle boundingRectWithSize:1 options:0 context:{v19, v18}];
   v43 = CGRectIntegral(v42);
   v22 = CGRectGetHeight(v43) / v21;
-  v23 = [(CPUISongDetailsView *)self stackView];
-  [v23 spacing];
+  stackView = [(CPUISongDetailsView *)self stackView];
+  [stackView spacing];
   v25 = v18 - v24 - v21;
   v26 = [(NSString *)self->_artistName length];
   if (v26)
   {
-    v4 = [(UILabel *)self->_artistLabel font];
-    [v4 lineHeight];
+    font = [(UILabel *)self->_artistLabel font];
+    [font lineHeight];
   }
 
   else
@@ -381,7 +381,7 @@
   v29 = v25 - v27;
   if (![(NSString *)self->_albumTitle length])
   {
-    if (!v3)
+    if (!attributionName)
     {
       v33 = 0.0;
       goto LABEL_20;
@@ -390,7 +390,7 @@
     goto LABEL_19;
   }
 
-  if (v3)
+  if (attributionName)
   {
 LABEL_19:
     [(CPUISongAttributionView *)self->_attributionView frame];
@@ -400,9 +400,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v30 = [(CPUIModernButton *)self->_albumArtistLabelButton titleLabel];
-  v31 = [v30 font];
-  [v31 lineHeight];
+  titleLabel2 = [(CPUIModernButton *)self->_albumArtistLabelButton titleLabel];
+  font2 = [titleLabel2 font];
+  [font2 lineHeight];
   v33 = v32;
 
 LABEL_20:
@@ -414,13 +414,13 @@ LABEL_20:
 
   if (v36 >= 2 && v37 >= v21 + v21)
   {
-    v39 = [(CPUITitleView *)self->_titleView titleLabel];
-    [v39 setNumberOfLines:2];
+    titleLabel3 = [(CPUITitleView *)self->_titleView titleLabel];
+    [titleLabel3 setNumberOfLines:2];
   }
 
 LABEL_28:
-  v40 = [(CPUISongDetailsView *)self titleView];
-  [v40 invalidateIntrinsicContentSize];
+  titleView = [(CPUISongDetailsView *)self titleView];
+  [titleView invalidateIntrinsicContentSize];
 
   [(CPUISongDetailsView *)self setNeedsLayout];
 }
@@ -453,20 +453,20 @@ LABEL_28:
   v7 = v5;
   v8 = v6;
   v9 = MEMORY[0x277D74310];
-  v10 = [(CPUISongDetailsView *)self traitCollection];
+  traitCollection = [(CPUISongDetailsView *)self traitCollection];
   v83 = v7;
-  v11 = [v9 preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:v10];
+  v11 = [v9 preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:traitCollection];
 
   v12 = MEMORY[0x277D74300];
-  v13 = [(CPUISongDetailsView *)self traitCollection];
-  v14 = [v12 preferredFontForTextStyle:v8 compatibleWithTraitCollection:v13];
-  v15 = [v14 fontDescriptor];
+  traitCollection2 = [(CPUISongDetailsView *)self traitCollection];
+  v14 = [v12 preferredFontForTextStyle:v8 compatibleWithTraitCollection:traitCollection2];
+  fontDescriptor = [v14 fontDescriptor];
 
   v16 = MEMORY[0x277D74300];
-  v17 = [(CPUISongDetailsView *)self traitCollection];
+  traitCollection3 = [(CPUISongDetailsView *)self traitCollection];
   v84 = v8;
-  v18 = [v16 preferredFontForTextStyle:v8 compatibleWithTraitCollection:v17];
-  v19 = [v18 fontDescriptor];
+  v18 = [v16 preferredFontForTextStyle:v8 compatibleWithTraitCollection:traitCollection3];
+  fontDescriptor2 = [v18 fontDescriptor];
 
   v20 = [v11 fontDescriptorWithSymbolicTraits:{objc_msgSend(v11, "symbolicTraits") | 0x8002}];
 
@@ -487,90 +487,90 @@ LABEL_28:
   v26 = v87;
   v88 = v25;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-  v28 = [v15 fontDescriptorByAddingAttributes:v27];
+  v28 = [fontDescriptor fontDescriptorByAddingAttributes:v27];
 
   v85 = v26;
   v86 = v25;
   v82 = v25;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-  v30 = [v19 fontDescriptorByAddingAttributes:v29];
+  v30 = [fontDescriptor2 fontDescriptorByAddingAttributes:v29];
 
   v31 = v20;
   v32 = [MEMORY[0x277D74300] fontWithDescriptor:v20 size:0.0];
-  v33 = [(CPUISongDetailsView *)self titleView];
-  [v33 setFont:v32];
+  titleView = [(CPUISongDetailsView *)self titleView];
+  [titleView setFont:v32];
 
   v34 = [MEMORY[0x277D74300] fontWithDescriptor:v30 size:0.0];
-  v35 = [(CPUISongDetailsView *)self albumArtistLabelButton];
-  v36 = [v35 titleLabel];
-  [v36 setFont:v34];
+  albumArtistLabelButton = [(CPUISongDetailsView *)self albumArtistLabelButton];
+  titleLabel = [albumArtistLabelButton titleLabel];
+  [titleLabel setFont:v34];
 
   v37 = [MEMORY[0x277D74300] fontWithDescriptor:v30 size:0.0];
-  v38 = [(CPUISongDetailsView *)self attributionView];
-  v39 = [v38 button];
-  v40 = [v39 titleLabel];
-  [v40 setFont:v37];
+  attributionView = [(CPUISongDetailsView *)self attributionView];
+  button = [attributionView button];
+  titleLabel2 = [button titleLabel];
+  [titleLabel2 setFont:v37];
 
   v81 = v28;
   v41 = [MEMORY[0x277D74300] fontWithDescriptor:v28 size:0.0];
-  v42 = [(CPUISongDetailsView *)self artistLabel];
-  [v42 setFont:v41];
+  artistLabel = [(CPUISongDetailsView *)self artistLabel];
+  [artistLabel setFont:v41];
 
   if (_os_feature_enabled_impl())
   {
-    v43 = [(CPUISongDetailsView *)self titleView];
-    v44 = [v43 titleLabel];
-    [v44 setAdjustsFontForContentSizeCategory:1];
+    titleView2 = [(CPUISongDetailsView *)self titleView];
+    titleLabel3 = [titleView2 titleLabel];
+    [titleLabel3 setAdjustsFontForContentSizeCategory:1];
 
     v45 = [MEMORY[0x277D75520] metricsForTextStyle:v83];
-    v46 = [(CPUISongDetailsView *)self titleView];
-    v47 = [v46 titleLabel];
-    v48 = [v47 font];
-    v49 = [v45 scaledFontForFont:v48 maximumPointSize:20.0];
+    titleView3 = [(CPUISongDetailsView *)self titleView];
+    titleLabel4 = [titleView3 titleLabel];
+    font = [titleLabel4 font];
+    v49 = [v45 scaledFontForFont:font maximumPointSize:20.0];
     [(CPUISongDetailsView *)self titleView];
     v50 = v80 = v31;
-    v51 = [v50 titleLabel];
-    [v51 setFont:v49];
+    titleLabel5 = [v50 titleLabel];
+    [titleLabel5 setFont:v49];
 
-    v52 = [(CPUISongDetailsView *)self albumArtistLabelButton];
-    v53 = [v52 titleLabel];
-    [v53 setAdjustsFontForContentSizeCategory:1];
+    albumArtistLabelButton2 = [(CPUISongDetailsView *)self albumArtistLabelButton];
+    titleLabel6 = [albumArtistLabelButton2 titleLabel];
+    [titleLabel6 setAdjustsFontForContentSizeCategory:1];
 
     v54 = [MEMORY[0x277D75520] metricsForTextStyle:v84];
-    v55 = [(CPUISongDetailsView *)self albumArtistLabelButton];
-    v56 = [v55 titleLabel];
-    v57 = [v56 font];
-    v58 = [v54 scaledFontForFont:v57 maximumPointSize:16.0];
-    v59 = [(CPUISongDetailsView *)self albumArtistLabelButton];
-    v60 = [v59 titleLabel];
-    [v60 setFont:v58];
+    albumArtistLabelButton3 = [(CPUISongDetailsView *)self albumArtistLabelButton];
+    titleLabel7 = [albumArtistLabelButton3 titleLabel];
+    font2 = [titleLabel7 font];
+    v58 = [v54 scaledFontForFont:font2 maximumPointSize:16.0];
+    albumArtistLabelButton4 = [(CPUISongDetailsView *)self albumArtistLabelButton];
+    titleLabel8 = [albumArtistLabelButton4 titleLabel];
+    [titleLabel8 setFont:v58];
 
-    v61 = [(CPUISongDetailsView *)self attributionView];
-    v62 = [v61 button];
-    v63 = [v62 titleLabel];
-    [v63 setAdjustsFontForContentSizeCategory:1];
+    attributionView2 = [(CPUISongDetailsView *)self attributionView];
+    button2 = [attributionView2 button];
+    titleLabel9 = [button2 titleLabel];
+    [titleLabel9 setAdjustsFontForContentSizeCategory:1];
 
     v64 = [MEMORY[0x277D75520] metricsForTextStyle:v84];
-    v65 = [(CPUISongDetailsView *)self attributionView];
-    v66 = [v65 button];
-    v67 = [v66 titleLabel];
-    v68 = [v67 font];
-    v69 = [v64 scaledFontForFont:v68 maximumPointSize:16.0];
-    v70 = [(CPUISongDetailsView *)self attributionView];
-    v71 = [v70 button];
-    [v71 titleLabel];
+    attributionView3 = [(CPUISongDetailsView *)self attributionView];
+    button3 = [attributionView3 button];
+    titleLabel10 = [button3 titleLabel];
+    font3 = [titleLabel10 font];
+    v69 = [v64 scaledFontForFont:font3 maximumPointSize:16.0];
+    attributionView4 = [(CPUISongDetailsView *)self attributionView];
+    button4 = [attributionView4 button];
+    [button4 titleLabel];
     v72 = v79 = v30;
     [v72 setFont:v69];
 
-    v73 = [(CPUISongDetailsView *)self artistLabel];
-    [v73 setAdjustsFontForContentSizeCategory:1];
+    artistLabel2 = [(CPUISongDetailsView *)self artistLabel];
+    [artistLabel2 setAdjustsFontForContentSizeCategory:1];
 
     v74 = [MEMORY[0x277D75520] metricsForTextStyle:v84];
-    v75 = [(CPUISongDetailsView *)self artistLabel];
-    v76 = [v75 font];
-    v77 = [v74 scaledFontForFont:v76 maximumPointSize:16.0];
-    v78 = [(CPUISongDetailsView *)self artistLabel];
-    [v78 setFont:v77];
+    artistLabel3 = [(CPUISongDetailsView *)self artistLabel];
+    font4 = [artistLabel3 font];
+    v77 = [v74 scaledFontForFont:font4 maximumPointSize:16.0];
+    artistLabel4 = [(CPUISongDetailsView *)self artistLabel];
+    [artistLabel4 setFont:v77];
 
     v31 = v80;
     v30 = v79;
@@ -579,10 +579,10 @@ LABEL_28:
   [(CPUISongDetailsView *)self _updateNumberOfLines];
 }
 
-+ (double)minimumHeightForTrackInfoFontStyle:(unint64_t)a3
++ (double)minimumHeightForTrackInfoFontStyle:(unint64_t)style
 {
   result = 44.0;
-  if (a3 == 1)
+  if (style == 1)
   {
     return 66.0;
   }
@@ -590,10 +590,10 @@ LABEL_28:
   return result;
 }
 
-+ (double)maximumHeightForTrackInfoFontStyle:(unint64_t)a3
++ (double)maximumHeightForTrackInfoFontStyle:(unint64_t)style
 {
   result = 72.0;
-  if (a3 == 1)
+  if (style == 1)
   {
     return 106.0;
   }

@@ -1,9 +1,9 @@
 @interface WiFiRoamManager
 + (id)sharedWiFiRoamManager;
-+ (id)stringRepresentationWithHostReason:(int64_t)a3;
-+ (id)stringRepresentationWithReason:(int)a3;
-+ (id)stringRepresentationWithStatus:(int)a3;
-- (BOOL)allowRoam:(signed __int16)a3;
++ (id)stringRepresentationWithHostReason:(int64_t)reason;
++ (id)stringRepresentationWithReason:(int)reason;
++ (id)stringRepresentationWithStatus:(int)status;
+- (BOOL)allowRoam:(signed __int16)roam;
 - (BOOL)canSubmitMetrics;
 - (BOOL)detectLateRoam;
 - (BOOL)isLastRoamCacheValid;
@@ -14,14 +14,14 @@
 - (unint64_t)detectPingPong;
 - (void)dealloc;
 - (void)reset;
-- (void)setBTState:(int64_t)a3 type:(int64_t)a4;
-- (void)setDeviceMotionState:(unsigned __int16)a3;
+- (void)setBTState:(int64_t)state type:(int64_t)type;
+- (void)setDeviceMotionState:(unsigned __int16)state;
 - (void)setLinkDown;
-- (void)setRealtimeSessionNotification:(id)a3 forInterface:(id)a4;
-- (void)setRoamEndState:(id)a3 forInterface:(id)a4;
-- (void)setRoamPrep:(id)a3 forInterface:(id)a4;
-- (void)setRoamStart:(id)a3 forInterface:(id)a4;
-- (void)setRoamStatus:(id)a3 withBeaconCache:(id)a4 forInterface:(id)a5;
+- (void)setRealtimeSessionNotification:(id)notification forInterface:(id)interface;
+- (void)setRoamEndState:(id)state forInterface:(id)interface;
+- (void)setRoamPrep:(id)prep forInterface:(id)interface;
+- (void)setRoamStart:(id)start forInterface:(id)interface;
+- (void)setRoamStatus:(id)status withBeaconCache:(id)cache forInterface:(id)interface;
 @end
 
 @implementation WiFiRoamManager
@@ -49,7 +49,7 @@
   v4 = qword_100298488;
   if (!qword_100298488)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     qword_100298488 = v4;
   }
 
@@ -114,7 +114,7 @@
   [(WiFiRoamManager *)&v3 dealloc];
 }
 
-- (void)setRoamStart:(id)a3 forInterface:(id)a4
+- (void)setRoamStart:(id)start forInterface:(id)interface
 {
   v7 = objc_autoreleasePoolPush();
   if (([(WiFiRoamManager *)self stateFlags]& 1) == 0)
@@ -125,7 +125,7 @@
     {
     }
 
-    self->_roamScanStart = [a3 copy];
+    self->_roamScanStart = [start copy];
     +[NSDate timeIntervalSinceReferenceDate];
     self->_roamScanStartTimestamp = v9;
     self->_roamScanEndTimestamp = 0.0;
@@ -143,13 +143,13 @@
 
     objc_autoreleasePoolPop(v12);
     [(WiFiRoamManager *)self setLastRoamOriginChannelScore:[(WiFiRoamManager *)self lastChannelScore]];
-    -[WiFiUsageMonitor setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:](+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor, "sharedInstance"), "setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:", self->_roamingState, [v11 unsignedIntValue], objc_msgSend(v13 + 340, "stringRepresentationWithReason:", objc_msgSend(v11, "unsignedIntValue")), objc_msgSend(v10, "unsignedIntValue"), objc_msgSend(v13 + 340, "stringRepresentationWithStatus:", objc_msgSend(v10, "unsignedIntValue")), 0, self->_roamScanStart, 0, a4);
+    -[WiFiUsageMonitor setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:](+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor, "sharedInstance"), "setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:", self->_roamingState, [v11 unsignedIntValue], objc_msgSend(v13 + 340, "stringRepresentationWithReason:", objc_msgSend(v11, "unsignedIntValue")), objc_msgSend(v10, "unsignedIntValue"), objc_msgSend(v13 + 340, "stringRepresentationWithStatus:", objc_msgSend(v10, "unsignedIntValue")), 0, self->_roamScanStart, 0, interface);
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setRoamEndState:(id)a3 forInterface:(id)a4
+- (void)setRoamEndState:(id)state forInterface:(id)interface
 {
   v7 = objc_autoreleasePoolPush();
   if (([(WiFiRoamManager *)self stateFlags]& 2) == 0)
@@ -160,12 +160,12 @@
     {
     }
 
-    v32 = a4;
-    self->_roamState = [a3 copy];
+    interfaceCopy = interface;
+    self->_roamState = [state copy];
     +[NSDate timeIntervalSinceReferenceDate];
     [(WiFiRoamManager *)self setLastRoamStateTs:?];
     v35 = +[NSMutableString string];
-    v31 = self;
+    selfCopy = self;
     v9 = [(NSDictionary *)self->_roamState objectForKey:@"ROAM_CACHE"];
     v30 = [v9 count];
     obj = v9;
@@ -202,33 +202,33 @@
     v33 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAM_LAST_STATUS"];
     v14 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAM_SCAN_REASON"];
     v15 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_FLAGS"];
-    v16 = [(NSDictionary *)v31->_roamStatus objectForKey:@"ROAMEDEVENT_TIME_STARTED"];
-    v28 = [(NSDictionary *)v31->_roamStatus objectForKey:@"ROAMEDEVENT_TIME_ENDED"];
-    v17 = [v28 unsignedLongValue];
+    v16 = [(NSDictionary *)selfCopy->_roamStatus objectForKey:@"ROAMEDEVENT_TIME_STARTED"];
+    v28 = [(NSDictionary *)selfCopy->_roamStatus objectForKey:@"ROAMEDEVENT_TIME_ENDED"];
+    unsignedLongValue = [v28 unsignedLongValue];
     v29 = v16;
-    v18 = [v16 unsignedLongValue];
+    unsignedLongValue2 = [v16 unsignedLongValue];
     v19 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: Rssi: %d Count: %d Age: %d LastStatus: %d Reason: %d Flags:%lX RoamCache: %lu - %@", "-[WiFiRoamManager setRoamEndState:forInterface:]", objc_msgSend(-[NSDictionary objectForKey:](v31->_roamState, "objectForKey:", @"RSSI", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](v31->_roamState, "objectForKey:", @"ROAM_SCAN_COUNT", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](v31->_roamState, "objectForKey:", @"ROAM_SCAN_AGE", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](v31->_roamState, "objectForKey:", @"ROAM_LAST_STATUS", "unsignedIntValue") & 0x1FF, objc_msgSend(-[NSDictionary objectForKey:](v31->_roamState, "objectForKey:", @"ROAM_SCAN_REASON", "unsignedIntValue") & 0x1FF, objc_msgSend(v15, "unsignedIntegerValue"), v30, v35}];
+      [off_100298C40 WFLog:3 message:{"%s: Rssi: %d Count: %d Age: %d LastStatus: %d Reason: %d Flags:%lX RoamCache: %lu - %@", "-[WiFiRoamManager setRoamEndState:forInterface:]", objc_msgSend(-[NSDictionary objectForKey:](selfCopy->_roamState, "objectForKey:", @"RSSI", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](selfCopy->_roamState, "objectForKey:", @"ROAM_SCAN_COUNT", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](selfCopy->_roamState, "objectForKey:", @"ROAM_SCAN_AGE", "unsignedIntValue"), objc_msgSend(-[NSDictionary objectForKey:](selfCopy->_roamState, "objectForKey:", @"ROAM_LAST_STATUS", "unsignedIntValue") & 0x1FF, objc_msgSend(-[NSDictionary objectForKey:](selfCopy->_roamState, "objectForKey:", @"ROAM_SCAN_REASON", "unsignedIntValue") & 0x1FF, objc_msgSend(v15, "unsignedIntegerValue"), v30, v35}];
     }
 
     objc_autoreleasePoolPop(v19);
-    [(WiFiRoamManager *)v31 detectLateRoam];
+    [(WiFiRoamManager *)selfCopy detectLateRoam];
     if (obj)
     {
-      [+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor updateRoamCache:"updateRoamCache:forInterface:" forInterface:obj, v32];
+      [+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor updateRoamCache:"updateRoamCache:forInterface:" forInterface:obj, interfaceCopy];
     }
 
     if ([v33 unsignedIntValue])
     {
-      v36 = v17 - v18;
-      v31->_roamingState = 0;
+      v36 = unsignedLongValue - unsignedLongValue2;
+      selfCopy->_roamingState = 0;
       v20 = +[WiFiUsageMonitor sharedInstance];
-      roamingState = v31->_roamingState;
-      v22 = [v14 unsignedIntValue];
+      roamingState = selfCopy->_roamingState;
+      unsignedIntValue = [v14 unsignedIntValue];
       v23 = +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", [v14 unsignedIntValue]);
-      v24 = [v33 unsignedIntValue];
+      unsignedIntValue2 = [v33 unsignedIntValue];
       v25 = +[WiFiRoamManager stringRepresentationWithStatus:](WiFiRoamManager, "stringRepresentationWithStatus:", [v33 unsignedIntValue]);
       if (v28)
       {
@@ -250,14 +250,14 @@
         v27 = v36;
       }
 
-      [(WiFiUsageMonitor *)v20 setRoamingState:roamingState withReason:v22 asString:v23 andStatus:v24 asString:v25 andLatency:v27 andRoamData:v31->_roamState andPingPongSequence:0 forInterface:v32];
+      [(WiFiUsageMonitor *)v20 setRoamingState:roamingState withReason:unsignedIntValue asString:v23 andStatus:unsignedIntValue2 asString:v25 andLatency:v27 andRoamData:selfCopy->_roamState andPingPongSequence:0 forInterface:interfaceCopy];
     }
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setRoamPrep:(id)a3 forInterface:(id)a4
+- (void)setRoamPrep:(id)prep forInterface:(id)interface
 {
   v7 = objc_autoreleasePoolPush();
   if (([(WiFiRoamManager *)self stateFlags]& 4) == 0)
@@ -268,11 +268,11 @@
     {
     }
 
-    v9 = [a3 copy];
+    v9 = [prep copy];
     self->_roamPrep = v9;
     self->_roamingState = 1;
     v10 = [(NSDictionary *)v9 objectForKey:@"ROAM_SCAN_REASON"];
-    -[WiFiUsageMonitor setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:](+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor, "sharedInstance"), "setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:", self->_roamingState, [v10 unsignedIntValue], +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", objc_msgSend(v10, "unsignedIntValue")), 0x7FFFFFFFFFFFFFFFLL, 0, 0, self->_roamPrep, 0, a4);
+    -[WiFiUsageMonitor setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:](+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor, "sharedInstance"), "setRoamingState:withReason:asString:andStatus:asString:andLatency:andRoamData:andPingPongSequence:forInterface:", self->_roamingState, [v10 unsignedIntValue], +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", objc_msgSend(v10, "unsignedIntValue")), 0x7FFFFFFFFFFFFFFFLL, 0, 0, self->_roamPrep, 0, interface);
     v11 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
@@ -285,7 +285,7 @@
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setRoamStatus:(id)a3 withBeaconCache:(id)a4 forInterface:(id)a5
+- (void)setRoamStatus:(id)status withBeaconCache:(id)cache forInterface:(id)interface
 {
   v9 = objc_autoreleasePoolPush();
   if (([(WiFiRoamManager *)self stateFlags]& 8) == 0)
@@ -296,13 +296,13 @@
     {
     }
 
-    v33 = a5;
-    self->_roamStatus = [a3 copy];
+    interfaceCopy = interface;
+    self->_roamStatus = [status copy];
     +[NSDate timeIntervalSinceReferenceDate];
     self->_roamScanEndTimestamp = v11;
     v12 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_TIME_STARTED"];
     v13 = [-[NSDictionary objectForKey:](self->_roamStatus objectForKey:{@"ROAMEDEVENT_TIME_ENDED", "unsignedLongValue"}];
-    v14 = [v12 unsignedLongValue];
+    unsignedLongValue = [v12 unsignedLongValue];
     v15 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_STATUS"];
     v35 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_REASON"];
     v16 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_FLAGS"];
@@ -312,28 +312,28 @@
     {
       v30 = 0;
       v31 = 0;
-      v18 = 0;
+      detectPingPong = 0;
     }
 
     else
     {
-      v18 = [(WiFiRoamManager *)self detectPingPong];
-      self->_pingPongNth = v18;
+      detectPingPong = [(WiFiRoamManager *)self detectPingPong];
+      self->_pingPongNth = detectPingPong;
       v31 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAM_SCAN_SUMMARY"];
       v30 = [(NSDictionary *)self->_roamStatus objectForKey:@"ROAM_PKT_LOSS_INFO"];
     }
 
-    v34 = v13 - v14;
+    v34 = v13 - unsignedLongValue;
     v19 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
       context = v19;
-      [off_100298C40 WFLog:3 message:{"%s: Latency:%ld Status:%u (%@) Reason:%d (%@) ScannedChannelCount:%lu Flags:%lX PingPongNth:%lu scanSummary:%@ lossSummary:%@", "-[WiFiRoamManager setRoamStatus:withBeaconCache:forInterface:]", v34, objc_msgSend(v15, "unsignedIntValue") & 0x1FF, +[WiFiRoamManager stringRepresentationWithStatus:](WiFiRoamManager, "stringRepresentationWithStatus:", objc_msgSend(v15, "unsignedIntValue")), objc_msgSend(v35, "unsignedIntValue") & 0x1FF, +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", objc_msgSend(v35, "unsignedIntValue")), objc_msgSend(v32, "unsignedIntegerValue"), objc_msgSend(v16, "unsignedIntegerValue"), v18, v31, v30}];
+      [off_100298C40 WFLog:3 message:{"%s: Latency:%ld Status:%u (%@) Reason:%d (%@) ScannedChannelCount:%lu Flags:%lX PingPongNth:%lu scanSummary:%@ lossSummary:%@", "-[WiFiRoamManager setRoamStatus:withBeaconCache:forInterface:]", v34, objc_msgSend(v15, "unsignedIntValue") & 0x1FF, +[WiFiRoamManager stringRepresentationWithStatus:](WiFiRoamManager, "stringRepresentationWithStatus:", objc_msgSend(v15, "unsignedIntValue")), objc_msgSend(v35, "unsignedIntValue") & 0x1FF, +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", objc_msgSend(v35, "unsignedIntValue")), objc_msgSend(v32, "unsignedIntegerValue"), objc_msgSend(v16, "unsignedIntegerValue"), detectPingPong, v31, v30}];
       v19 = context;
     }
 
     objc_autoreleasePoolPop(v19);
-    if (v18)
+    if (detectPingPong)
     {
       v20 = objc_autoreleasePoolPush();
       if (off_100298C40)
@@ -349,17 +349,17 @@
     +[NSDate timeIntervalSinceReferenceDate];
     [(WiFiRoamManager *)self setLastRoamStatusTs:?];
     -[WiFiRoamManager setLastRoamTargetRssi:](self, "setLastRoamTargetRssi:", [v17 intValue]);
-    if (a4)
+    if (cache)
     {
-      [+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor updateBeaconCache:"updateBeaconCache:afterRoamAttempt:whileCurrentBSSID:forInterface:" afterRoamAttempt:a4 whileCurrentBSSID:self->_roamStatus forInterface:[(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_ORIGIN_ADDR"], a5];
+      [+[WiFiUsageMonitor sharedInstance](WiFiUsageMonitor updateBeaconCache:"updateBeaconCache:afterRoamAttempt:whileCurrentBSSID:forInterface:" afterRoamAttempt:cache whileCurrentBSSID:self->_roamStatus forInterface:[(NSDictionary *)self->_roamStatus objectForKey:@"ROAMEDEVENT_ORIGIN_ADDR"], interface];
     }
 
     self->_roamingState = 0;
     v21 = +[WiFiUsageMonitor sharedInstance];
     roamingState = self->_roamingState;
-    v23 = [v35 unsignedIntValue];
+    unsignedIntValue = [v35 unsignedIntValue];
     v24 = +[WiFiRoamManager stringRepresentationWithReason:](WiFiRoamManager, "stringRepresentationWithReason:", [v35 unsignedIntValue]);
-    v25 = [v15 unsignedIntValue];
+    unsignedIntValue2 = [v15 unsignedIntValue];
     v26 = +[WiFiRoamManager stringRepresentationWithStatus:](WiFiRoamManager, "stringRepresentationWithStatus:", [v15 unsignedIntValue]);
     v27 = self->_roamStatus;
     if (self->_pingPongNth)
@@ -372,7 +372,7 @@
       v28 = 0;
     }
 
-    [(WiFiUsageMonitor *)v21 setRoamingState:roamingState withReason:v23 asString:v24 andStatus:v25 asString:v26 andLatency:v34 andRoamData:v27 andPingPongSequence:v28 forInterface:v33];
+    [(WiFiUsageMonitor *)v21 setRoamingState:roamingState withReason:unsignedIntValue asString:v24 andStatus:unsignedIntValue2 asString:v26 andLatency:v34 andRoamData:v27 andPingPongSequence:v28 forInterface:interfaceCopy];
   }
 
   objc_autoreleasePoolPop(v9);
@@ -386,19 +386,19 @@
   return v4;
 }
 
-- (void)setRealtimeSessionNotification:(id)a3 forInterface:(id)a4
+- (void)setRealtimeSessionNotification:(id)notification forInterface:(id)interface
 {
-  if ([a3 objectForKeyedSubscript:{@"QUAL_SCORE", a4}])
+  if ([notification objectForKeyedSubscript:{@"QUAL_SCORE", interface}])
   {
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"QUAL_SCORE", "objectForKeyedSubscript:", @"CHANQUAL_SCORE"}])
+    if ([objc_msgSend(notification objectForKeyedSubscript:{@"QUAL_SCORE", "objectForKeyedSubscript:", @"CHANQUAL_SCORE"}])
     {
-      v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"QUAL_SCORE", "objectForKeyedSubscript:", @"CHANQUAL_SCORE"}];
+      v6 = [objc_msgSend(notification objectForKeyedSubscript:{@"QUAL_SCORE", "objectForKeyedSubscript:", @"CHANQUAL_SCORE"}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 shortValue];
+        shortValue = [v6 shortValue];
 
-        [(WiFiRoamManager *)self setLastChannelScore:v7];
+        [(WiFiRoamManager *)self setLastChannelScore:shortValue];
       }
 
       else
@@ -409,13 +409,13 @@
 
     else
     {
-      sub_10013B9CC(a3);
+      sub_10013B9CC(notification);
     }
   }
 
   else
   {
-    sub_10013BA50(a3);
+    sub_10013BA50(notification);
   }
 }
 
@@ -458,24 +458,24 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)setBTState:(int64_t)a3 type:(int64_t)a4
+- (void)setBTState:(int64_t)state type:(int64_t)type
 {
   v7 = objc_autoreleasePoolPush();
-  [(WiFiRoamManager *)self setBtState:a3];
-  [(WiFiRoamManager *)self setBtType:a4];
+  [(WiFiRoamManager *)self setBtState:state];
+  [(WiFiRoamManager *)self setBtType:type];
   +[NSDate timeIntervalSinceReferenceDate];
   [(WiFiRoamManager *)self setBtStateChangeTimestamp:?];
   if ([(WiFiRoamManager *)self btType]== 102)
   {
-    v8 = [(WiFiRoamManager *)self btState];
-    if (v8 == 1)
+    btState = [(WiFiRoamManager *)self btState];
+    if (btState == 1)
     {
       v9 = 1;
     }
 
     else
     {
-      if (v8 != 2)
+      if (btState != 2)
       {
         goto LABEL_8;
       }
@@ -494,14 +494,14 @@ LABEL_8:
   objc_autoreleasePoolPop(v7);
 }
 
-- (BOOL)allowRoam:(signed __int16)a3
+- (BOOL)allowRoam:(signed __int16)roam
 {
-  v3 = a3;
+  roamCopy = roam;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(WiFiRoamManager *)self bssEnvironment];
-  v7 = (v6 < 5) & (0x1Au >> v6);
-  v8 = [(WiFiRoamManager *)self bssEnvironment];
-  if ((v7 & 1) == 0 && (v8 - 5) >= 2)
+  bssEnvironment = [(WiFiRoamManager *)self bssEnvironment];
+  v7 = (bssEnvironment < 5) & (0x1Au >> bssEnvironment);
+  bssEnvironment2 = [(WiFiRoamManager *)self bssEnvironment];
+  if ((v7 & 1) == 0 && (bssEnvironment2 - 5) >= 2)
   {
     sub_10013BACC(self);
     goto LABEL_11;
@@ -535,10 +535,10 @@ LABEL_8:
   {
     if ([(WiFiRoamManager *)self roamingState])
     {
-      v20 = [(WiFiRoamManager *)self isLastRoamDueToLowRssi];
-      if (v3 == 6)
+      isLastRoamDueToLowRssi = [(WiFiRoamManager *)self isLastRoamDueToLowRssi];
+      if (roamCopy == 6)
       {
-        if (v20)
+        if (isLastRoamDueToLowRssi)
         {
           v21 = objc_autoreleasePoolPush();
           if (off_100298C40)
@@ -587,8 +587,8 @@ LABEL_8:
 
     else
     {
-      v26 = [(WiFiRoamManager *)self roamAttemptCount];
-      if (v26 >= [(WiFiRoamManager *)self paramMaxRoamRetriesInWindow])
+      roamAttemptCount = [(WiFiRoamManager *)self roamAttemptCount];
+      if (roamAttemptCount >= [(WiFiRoamManager *)self paramMaxRoamRetriesInWindow])
       {
         v15 = objc_autoreleasePoolPush();
         v41 = off_100298C40;
@@ -769,22 +769,22 @@ LABEL_29:
   return v20;
 }
 
-- (void)setDeviceMotionState:(unsigned __int16)a3
+- (void)setDeviceMotionState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = objc_autoreleasePoolPush();
   [(WiFiRoamManager *)self linkUpTimestamp];
   if (v6 != 0.0)
   {
-    [(WiFiRoamManager *)self setDeviceStationary:v3 == 1];
+    [(WiFiRoamManager *)self setDeviceStationary:stateCopy == 1];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-+ (id)stringRepresentationWithStatus:(int)a3
++ (id)stringRepresentationWithStatus:(int)status
 {
-  if (!a3)
+  if (!status)
   {
     return @"Success";
   }
@@ -794,23 +794,23 @@ LABEL_29:
   return [NSString stringWithCString:v3 encoding:4];
 }
 
-+ (id)stringRepresentationWithReason:(int)a3
++ (id)stringRepresentationWithReason:(int)reason
 {
   v3 = convertApple80211ReturnToString();
 
   return [NSString stringWithCString:v3 encoding:4];
 }
 
-+ (id)stringRepresentationWithHostReason:(int64_t)a3
++ (id)stringRepresentationWithHostReason:(int64_t)reason
 {
-  if (a3 >= 7)
+  if (reason >= 7)
   {
-    return [NSString stringWithFormat:@"Unknown=%ld", a3];
+    return [NSString stringWithFormat:@"Unknown=%ld", reason];
   }
 
   else
   {
-    return *(&off_10025ECB8 + a3);
+    return *(&off_10025ECB8 + reason);
   }
 }
 

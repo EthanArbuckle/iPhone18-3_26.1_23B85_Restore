@@ -1,5 +1,5 @@
 @interface SBHVisualStylingView
-- (SBHVisualStylingView)initWithFrame:(CGRect)a3;
+- (SBHVisualStylingView)initWithFrame:(CGRect)frame;
 - (void)_updateVisualStyling;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
@@ -7,12 +7,12 @@
 
 @implementation SBHVisualStylingView
 
-- (SBHVisualStylingView)initWithFrame:(CGRect)a3
+- (SBHVisualStylingView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = SBHVisualStylingView;
-  v3 = [(SBHVisualStylingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHVisualStylingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_self();
@@ -29,9 +29,9 @@
   v4.receiver = self;
   v4.super_class = SBHVisualStylingView;
   [(SBHVisualStylingView *)&v4 didMoveToSuperview];
-  v3 = [(SBHVisualStylingView *)self superview];
+  superview = [(SBHVisualStylingView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(SBHVisualStylingView *)self _updateVisualStyling];
   }
@@ -50,10 +50,10 @@
 
 - (void)_updateVisualStyling
 {
-  v3 = [(SBHVisualStylingView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SBHVisualStylingView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v11 = [objc_opt_class() visualStyleSetNameForUserInterfaceStyle:v4];
+  v11 = [objc_opt_class() visualStyleSetNameForUserInterfaceStyle:userInterfaceStyle];
   v5 = MEMORY[0x1E69AE170];
   v6 = SBHBundle();
   v7 = [v5 _visualStylingProviderForStyleSetNamed:v11 inBundle:v6];

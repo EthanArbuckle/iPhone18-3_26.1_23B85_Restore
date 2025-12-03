@@ -1,7 +1,7 @@
 @interface HMDCompositeStringSetting
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualValue:(id)a3;
-- (HMDCompositeStringSetting)initWithValue:(id)a3 readVersion:(id)a4 writeVersion:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualValue:(id)value;
+- (HMDCompositeStringSetting)initWithValue:(id)value readVersion:(id)version writeVersion:(id)writeVersion;
 - (id)attributeDescriptions;
 @end
 
@@ -12,23 +12,23 @@
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HMDCompositeStringSetting;
-  v3 = [(HMDCompositeSetting *)&v11 attributeDescriptions];
+  attributeDescriptions = [(HMDCompositeSetting *)&v11 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDCompositeStringSetting *)self stringValue];
-  v6 = [v4 initWithName:@"value" value:v5];
+  stringValue = [(HMDCompositeStringSetting *)self stringValue];
+  v6 = [v4 initWithName:@"value" value:stringValue];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [v7 arrayByAddingObjectsFromArray:v3];
+  v8 = [v7 arrayByAddingObjectsFromArray:attributeDescriptions];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -64,18 +64,18 @@
   return v8;
 }
 
-- (BOOL)isEqualValue:(id)a3
+- (BOOL)isEqualValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(HMDCompositeStringSetting *)v4 conformsToProtocol:&unk_28667C610])
+    if ([(HMDCompositeStringSetting *)valueCopy conformsToProtocol:&unk_28667C610])
     {
       v6 = v5;
     }
@@ -86,24 +86,24 @@
     }
 
     v7 = v6;
-    v8 = [(HMDCompositeStringSetting *)v7 stringValue];
+    stringValue = [(HMDCompositeStringSetting *)v7 stringValue];
 
-    v9 = [(HMDCompositeStringSetting *)self stringValue];
-    v10 = [v8 isEqualToString:v9];
+    stringValue2 = [(HMDCompositeStringSetting *)self stringValue];
+    v10 = [stringValue isEqualToString:stringValue2];
   }
 
   return v10;
 }
 
-- (HMDCompositeStringSetting)initWithValue:(id)a3 readVersion:(id)a4 writeVersion:(id)a5
+- (HMDCompositeStringSetting)initWithValue:(id)value readVersion:(id)version writeVersion:(id)writeVersion
 {
-  v8 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = HMDCompositeStringSetting;
-  v9 = [(HMDCompositeSetting *)&v13 initWithReadVersion:a4 writeVersion:a5];
+  v9 = [(HMDCompositeSetting *)&v13 initWithReadVersion:version writeVersion:writeVersion];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [valueCopy copy];
     stringValue = v9->_stringValue;
     v9->_stringValue = v10;
   }

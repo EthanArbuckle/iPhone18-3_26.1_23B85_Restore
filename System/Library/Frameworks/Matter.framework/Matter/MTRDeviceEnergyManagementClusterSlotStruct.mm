@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterSlotStruct
 - (MTRDeviceEnergyManagementClusterSlotStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -72,62 +72,62 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterSlotStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minDuration];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinDuration:v5];
+  minDuration = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minDuration];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinDuration:minDuration];
 
-  v6 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxDuration];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxDuration:v6];
+  maxDuration = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxDuration];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxDuration:maxDuration];
 
-  v7 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self defaultDuration];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setDefaultDuration:v7];
+  defaultDuration = [(MTRDeviceEnergyManagementClusterSlotStruct *)self defaultDuration];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setDefaultDuration:defaultDuration];
 
-  v8 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self elapsedSlotTime];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setElapsedSlotTime:v8];
+  elapsedSlotTime = [(MTRDeviceEnergyManagementClusterSlotStruct *)self elapsedSlotTime];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setElapsedSlotTime:elapsedSlotTime];
 
-  v9 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self remainingSlotTime];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setRemainingSlotTime:v9];
+  remainingSlotTime = [(MTRDeviceEnergyManagementClusterSlotStruct *)self remainingSlotTime];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setRemainingSlotTime:remainingSlotTime];
 
-  v10 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self slotIsPausable];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setSlotIsPausable:v10];
+  slotIsPausable = [(MTRDeviceEnergyManagementClusterSlotStruct *)self slotIsPausable];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setSlotIsPausable:slotIsPausable];
 
-  v11 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPauseDuration];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPauseDuration:v11];
+  minPauseDuration = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPauseDuration];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPauseDuration:minPauseDuration];
 
-  v12 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPauseDuration];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPauseDuration:v12];
+  maxPauseDuration = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPauseDuration];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPauseDuration:maxPauseDuration];
 
-  v13 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self manufacturerESAState];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setManufacturerESAState:v13];
+  manufacturerESAState = [(MTRDeviceEnergyManagementClusterSlotStruct *)self manufacturerESAState];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setManufacturerESAState:manufacturerESAState];
 
-  v14 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self nominalPower];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setNominalPower:v14];
+  nominalPower = [(MTRDeviceEnergyManagementClusterSlotStruct *)self nominalPower];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setNominalPower:nominalPower];
 
-  v15 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPower];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPower:v15];
+  minPower = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPower];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPower:minPower];
 
-  v16 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPower];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPower:v16];
+  maxPower = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPower];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPower:maxPower];
 
-  v17 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self nominalEnergy];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setNominalEnergy:v17];
+  nominalEnergy = [(MTRDeviceEnergyManagementClusterSlotStruct *)self nominalEnergy];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setNominalEnergy:nominalEnergy];
 
-  v18 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self costs];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setCosts:v18];
+  costs = [(MTRDeviceEnergyManagementClusterSlotStruct *)self costs];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setCosts:costs];
 
-  v19 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPowerAdjustment];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPowerAdjustment:v19];
+  minPowerAdjustment = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minPowerAdjustment];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinPowerAdjustment:minPowerAdjustment];
 
-  v20 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPowerAdjustment];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPowerAdjustment:v20];
+  maxPowerAdjustment = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxPowerAdjustment];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxPowerAdjustment:maxPowerAdjustment];
 
-  v21 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minDurationAdjustment];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinDurationAdjustment:v21];
+  minDurationAdjustment = [(MTRDeviceEnergyManagementClusterSlotStruct *)self minDurationAdjustment];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMinDurationAdjustment:minDurationAdjustment];
 
-  v22 = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxDurationAdjustment];
-  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxDurationAdjustment:v22];
+  maxDurationAdjustment = [(MTRDeviceEnergyManagementClusterSlotStruct *)self maxDurationAdjustment];
+  [(MTRDeviceEnergyManagementClusterSlotStruct *)v4 setMaxDurationAdjustment:maxDurationAdjustment];
 
   return v4;
 }

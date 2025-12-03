@@ -195,7 +195,7 @@ LABEL_40:
   v7[1] = 3221225472;
   v7[2] = sub_100081570;
   v7[3] = &unk_1002850C8;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 sharedInstanceWithIdentifier:v3 andCreationBlock:v7];
 
   return v5;

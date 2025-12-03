@@ -5,13 +5,13 @@
 - (UITapGestureRecognizer)gestureRecognizer;
 - (id)_bluePillColor;
 - (id)_greenPillColor;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)loadConstraintsForButton;
-- (void)setDelegate:(id)a3;
-- (void)setTheme:(unint64_t)a3;
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4 theme:(unint64_t)a5;
+- (void)setDelegate:(id)delegate;
+- (void)setTheme:(unint64_t)theme;
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text theme:(unint64_t)theme;
 - (void)updateTheme;
-- (void)updateTitleFont:(id)a3;
+- (void)updateTitleFont:(id)font;
 @end
 
 @implementation CKComposeSubscriptionSelectorButton
@@ -27,8 +27,8 @@
   {
     [(CKComposeSubscriptionSelectorButton *)v2 setShowsMenuAsPrimaryAction:1];
     [(CKComposeSubscriptionSelectorButton *)v3 setContextMenuInteractionEnabled:1];
-    v4 = [(CKComposeSubscriptionSelectorButton *)v3 gestureRecognizer];
-    [v4 setEnabled:0];
+    gestureRecognizer = [(CKComposeSubscriptionSelectorButton *)v3 gestureRecognizer];
+    [gestureRecognizer setEnabled:0];
 
     [(CKComposeSubscriptionSelectorButton *)v3 setTitle:&stru_1F04268F8];
     [(CKComposeSubscriptionSelectorButton *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -37,12 +37,12 @@
     v3->_buttonTitleLabel = v5;
 
     [(UILabel *)v3->_buttonTitleLabel setUserInteractionEnabled:0];
-    v7 = [(CKComposeSubscriptionSelectorButton *)v3 badgeView];
+    badgeView = [(CKComposeSubscriptionSelectorButton *)v3 badgeView];
 
-    if (v7)
+    if (badgeView)
     {
-      v8 = [(CKComposeSubscriptionSelectorButton *)v3 badgeView];
-      v16[0] = v8;
+      badgeView2 = [(CKComposeSubscriptionSelectorButton *)v3 badgeView];
+      v16[0] = badgeView2;
       v16[1] = v3->_buttonTitleLabel;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     }
@@ -90,85 +90,85 @@
   return gestureRecognizer;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  v5 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
-  v6 = [v5 isEnabled];
+  objc_storeWeak(&self->_delegate, delegate);
+  gestureRecognizer = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
+  isEnabled = [gestureRecognizer isEnabled];
 
-  if (a3)
+  if (delegate)
   {
-    if (!v6)
+    if (!isEnabled)
     {
       return;
     }
 
-    v7 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
-    [v7 setEnabled:0];
+    gestureRecognizer2 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
+    [gestureRecognizer2 setEnabled:0];
 
-    v9 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
+    gestureRecognizer3 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
     [(CKComposeSubscriptionSelectorButton *)self addGestureRecognizer:?];
   }
 
   else
   {
-    if (v6)
+    if (isEnabled)
     {
       return;
     }
 
-    v8 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
-    [v8 setEnabled:1];
+    gestureRecognizer4 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
+    [gestureRecognizer4 setEnabled:1];
 
-    v9 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
+    gestureRecognizer3 = [(CKComposeSubscriptionSelectorButton *)self gestureRecognizer];
     [(CKComposeSubscriptionSelectorButton *)self removeGestureRecognizer:?];
   }
 }
 
 - (void)loadConstraintsForButton
 {
-  v3 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v4 = [v3 topAnchor];
-  v5 = [(CKComposeSubscriptionSelectorButton *)self topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  stackView = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  topAnchor = [stackView topAnchor];
+  topAnchor2 = [(CKComposeSubscriptionSelectorButton *)self topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v6 setActive:1];
 
-  v7 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v8 = [v7 bottomAnchor];
-  v9 = [(CKComposeSubscriptionSelectorButton *)self bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  stackView2 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  bottomAnchor = [stackView2 bottomAnchor];
+  bottomAnchor2 = [(CKComposeSubscriptionSelectorButton *)self bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v10 setActive:1];
 
-  v11 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v12 = [v11 leadingAnchor];
-  v13 = [(CKComposeSubscriptionSelectorButton *)self leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  stackView3 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  leadingAnchor = [stackView3 leadingAnchor];
+  leadingAnchor2 = [(CKComposeSubscriptionSelectorButton *)self leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v14 setActive:1];
 
-  v15 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v16 = [v15 trailingAnchor];
-  v17 = [(CKComposeSubscriptionSelectorButton *)self trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  stackView4 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  trailingAnchor = [stackView4 trailingAnchor];
+  trailingAnchor2 = [(CKComposeSubscriptionSelectorButton *)self trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v18 setActive:1];
 
-  v19 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v20 = [v19 centerYAnchor];
-  v21 = [(CKComposeSubscriptionSelectorButton *)self centerYAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  stackView5 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  centerYAnchor = [stackView5 centerYAnchor];
+  centerYAnchor2 = [(CKComposeSubscriptionSelectorButton *)self centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v22 setActive:1];
 
-  v23 = [(CKComposeSubscriptionSelectorButton *)self badgeView];
-  v24 = [v23 centerYAnchor];
-  v25 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v26 = [v25 centerYAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  badgeView = [(CKComposeSubscriptionSelectorButton *)self badgeView];
+  centerYAnchor3 = [badgeView centerYAnchor];
+  stackView6 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  centerYAnchor4 = [stackView6 centerYAnchor];
+  v27 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v27 setActive:1];
 
-  v32 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
-  v28 = [v32 centerYAnchor];
-  v29 = [(CKComposeSubscriptionSelectorButton *)self stackView];
-  v30 = [v29 centerYAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  buttonTitleLabel = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
+  centerYAnchor5 = [buttonTitleLabel centerYAnchor];
+  stackView7 = [(CKComposeSubscriptionSelectorButton *)self stackView];
+  centerYAnchor6 = [stackView7 centerYAnchor];
+  v31 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v31 setActive:1];
 }
 
@@ -206,33 +206,33 @@ uint64_t __48__CKComposeSubscriptionSelectorButton_badgeView__block_invoke()
   return result;
 }
 
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4 theme:(unint64_t)a5
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text theme:(unint64_t)theme
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
-  [v10 setText:v9];
+  textCopy = text;
+  titleCopy = title;
+  buttonTitleLabel = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
+  [buttonTitleLabel setText:titleCopy];
 
-  v11 = [(CKComposeSubscriptionSelectorButton *)self badgeView];
-  [v11 setTitle:v8];
+  badgeView = [(CKComposeSubscriptionSelectorButton *)self badgeView];
+  [badgeView setTitle:textCopy];
 
-  v12 = [(CKComposeSubscriptionSelectorButton *)self badgeView];
-  [v12 setTheme:0];
+  badgeView2 = [(CKComposeSubscriptionSelectorButton *)self badgeView];
+  [badgeView2 setTheme:0];
 
-  [(CKComposeSubscriptionSelectorButton *)self setTheme:a5];
+  [(CKComposeSubscriptionSelectorButton *)self setTheme:theme];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v4 = [(CKComposeSubscriptionSelectorButton *)self delegate];
+    delegate = [(CKComposeSubscriptionSelectorButton *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CKComposeSubscriptionSelectorButton *)self delegate];
-      [v6 CKComposeSubscriptionSelectorButtonWasTapped:self];
+      delegate2 = [(CKComposeSubscriptionSelectorButton *)self delegate];
+      [delegate2 CKComposeSubscriptionSelectorButtonWasTapped:self];
     }
   }
 }
@@ -274,47 +274,47 @@ uint64_t __48__CKComposeSubscriptionSelectorButton_badgeView__block_invoke()
 
 - (void)updateTheme
 {
-  v3 = [(CKComposeSubscriptionSelectorButton *)self theme];
-  if (v3 == 2)
+  theme = [(CKComposeSubscriptionSelectorButton *)self theme];
+  if (theme == 2)
   {
-    v7 = [(CKComposeSubscriptionSelectorButton *)self _greenPillColor];
-    v8 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
-    [v8 setTextColor:v7];
+    _greenPillColor = [(CKComposeSubscriptionSelectorButton *)self _greenPillColor];
+    buttonTitleLabel = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
+    [buttonTitleLabel setTextColor:_greenPillColor];
 
-    v6 = [(CKComposeSubscriptionSelectorButton *)self _greenPillColor];
+    _greenPillColor2 = [(CKComposeSubscriptionSelectorButton *)self _greenPillColor];
   }
 
   else
   {
-    if (v3 != 1)
+    if (theme != 1)
     {
       return;
     }
 
-    v4 = [(CKComposeSubscriptionSelectorButton *)self _bluePillColor];
-    v5 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
-    [v5 setTextColor:v4];
+    _bluePillColor = [(CKComposeSubscriptionSelectorButton *)self _bluePillColor];
+    buttonTitleLabel2 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
+    [buttonTitleLabel2 setTextColor:_bluePillColor];
 
-    v6 = [(CKComposeSubscriptionSelectorButton *)self _bluePillColor];
+    _greenPillColor2 = [(CKComposeSubscriptionSelectorButton *)self _bluePillColor];
   }
 
-  v10 = v6;
-  v9 = [(CKComposeSubscriptionSelectorButton *)self badgeView];
-  [v9 setBackgroundColor:v10];
+  v10 = _greenPillColor2;
+  badgeView = [(CKComposeSubscriptionSelectorButton *)self badgeView];
+  [badgeView setBackgroundColor:v10];
 }
 
-- (void)updateTitleFont:(id)a3
+- (void)updateTitleFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  buttonTitleLabel = [(CKComposeSubscriptionSelectorButton *)self buttonTitleLabel];
+  [buttonTitleLabel setFont:fontCopy];
 }
 
-- (void)setTheme:(unint64_t)a3
+- (void)setTheme:(unint64_t)theme
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
+    self->_theme = theme;
     [(CKComposeSubscriptionSelectorButton *)self updateTheme];
   }
 }

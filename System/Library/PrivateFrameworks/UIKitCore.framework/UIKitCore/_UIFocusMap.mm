@@ -1,31 +1,31 @@
 @interface _UIFocusMap
-- (BOOL)verifyFocusabilityForItem:(id)a3;
+- (BOOL)verifyFocusabilityForItem:(id)item;
 - (CGRect)minimumSearchArea;
 - (UICoordinateSpace)coordinateSpace;
 - (UIFocusSystem)focusSystem;
 - (_UIFocusMap)init;
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootContainer:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7;
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootEnvironment:(id)a4;
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootEnvironment:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7;
+- (_UIFocusMap)initWithFocusSystem:(id)system rootContainer:(id)container coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect;
+- (_UIFocusMap)initWithFocusSystem:(id)system rootEnvironment:(id)environment;
+- (_UIFocusMap)initWithFocusSystem:(id)system rootEnvironment:(id)environment coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect;
 - (_UIFocusRegionContainer)rootContainer;
-- (id)_allRegionsInContainer:(id)a3 intersectingRegion:(id)a4;
-- (id)_closestFocusableItemToPoint:(CGPoint)a3 inRect:(CGRect)a4 itemFilter:(id)a5 distanceMeasuringUnitPoint:(CGPoint)a6;
+- (id)_allRegionsInContainer:(id)container intersectingRegion:(id)region;
+- (id)_closestFocusableItemToPoint:(CGPoint)point inRect:(CGRect)rect itemFilter:(id)filter distanceMeasuringUnitPoint:(CGPoint)unitPoint;
 - (id)_defaultMapSnapshotter;
-- (id)_inferredDefaultFocusItemInEnvironment:(id)a3;
-- (id)_linearlySortedFocusItemsForItems:(id)a3 groupFilter:(int64_t)a4 itemStandInMap:(id)a5;
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3;
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 inRegions:(id)a4 withSnapshot:(id)a5;
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 startingFromRegion:(id)a4;
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6;
-- (id)_nextFocusedItemForLinearFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6;
-- (id)_nextFocusedItemForNonLinearFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6;
+- (id)_inferredDefaultFocusItemInEnvironment:(id)environment;
+- (id)_linearlySortedFocusItemsForItems:(id)items groupFilter:(int64_t)filter itemStandInMap:(id)map;
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request;
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request inRegions:(id)regions withSnapshot:(id)snapshot;
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request startingFromRegion:(id)region;
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot;
+- (id)_nextFocusedItemForLinearFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot;
+- (id)_nextFocusedItemForNonLinearFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot;
 - (id)_stopTrackingSearches;
 - (void)_beginTrackingDefaultItemSearchInfoIfNecessary;
 - (void)_beginTrackingFocusMovementSearchInfoIfNecessary;
 - (void)_beginTrackingSearches;
-- (void)_trackExternalSnapshot:(id)a3;
-- (void)diagnoseFocusabilityForItem:(id)a3 report:(id)a4;
-- (void)setMinimumSearchArea:(CGRect)a3;
+- (void)_trackExternalSnapshot:(id)snapshot;
+- (void)diagnoseFocusabilityForItem:(id)item report:(id)report;
+- (void)setMinimumSearchArea:(CGRect)area;
 @end
 
 @implementation _UIFocusMap
@@ -48,29 +48,29 @@
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
   v5 = objc_loadWeakRetained(&self->_rootContainer);
   v6 = objc_loadWeakRetained(&self->_coordinateSpace);
-  v7 = [(_UIFocusMap *)self searchInfo];
-  v8 = [(_UIFocusMapSnapshotter *)v3 initWithFocusSystem:WeakRetained rootContainer:v5 coordinateSpace:v6 searchInfo:v7 ignoresRootContainerClippingRect:self->_ignoresRootContainerClippingRect];
+  searchInfo = [(_UIFocusMap *)self searchInfo];
+  v8 = [(_UIFocusMapSnapshotter *)v3 initWithFocusSystem:WeakRetained rootContainer:v5 coordinateSpace:v6 searchInfo:searchInfo ignoresRootContainerClippingRect:self->_ignoresRootContainerClippingRect];
 
   return v8;
 }
 
 - (_UIFocusMap)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:85 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:85 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootEnvironment:(id)a4
+- (_UIFocusMap)initWithFocusSystem:(id)system rootEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  systemCopy = system;
+  environmentCopy = environment;
+  v9 = environmentCopy;
+  if (!systemCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
 
     if (v9)
     {
@@ -78,39 +78,39 @@
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"rootEnvironment"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"rootEnvironment"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!environmentCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [(_UIFocusMap *)self initWithFocusSystem:v7 rootEnvironment:v9 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
+  v10 = [(_UIFocusMap *)self initWithFocusSystem:systemCopy rootEnvironment:v9 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
 
   return v10;
 }
 
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootEnvironment:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7
+- (_UIFocusMap)initWithFocusSystem:(id)system rootEnvironment:(id)environment coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 focusItemContainer];
-  if (!v14)
+  spaceCopy = space;
+  environmentCopy = environment;
+  systemCopy = system;
+  focusItemContainer = [environmentCopy focusItemContainer];
+  if (!focusItemContainer)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:99 description:@"The environment does not provide an item container."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:99 description:@"The environment does not provide an item container."];
   }
 
-  v15 = _UIFocusRegionContainerFromEnvironmentAndContainer(v12, v14);
-  v16 = [(_UIFocusMap *)self initWithFocusSystem:v13 rootContainer:v15 coordinateSpace:v11 searchInfo:0 ignoresRootContainerClippingRect:0];
+  v15 = _UIFocusRegionContainerFromEnvironmentAndContainer(environmentCopy, focusItemContainer);
+  v16 = [(_UIFocusMap *)self initWithFocusSystem:systemCopy rootContainer:v15 coordinateSpace:spaceCopy searchInfo:0 ignoresRootContainerClippingRect:0];
 
-  if (v15 != v12 && v16)
+  if (v15 != environmentCopy && v16)
   {
     objc_storeStrong(&v16->_rootContainerProxy, v15);
   }
@@ -118,15 +118,15 @@ LABEL_3:
   return v16;
 }
 
-- (_UIFocusMap)initWithFocusSystem:(id)a3 rootContainer:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7
+- (_UIFocusMap)initWithFocusSystem:(id)system rootContainer:(id)container coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v13)
+  systemCopy = system;
+  containerCopy = container;
+  spaceCopy = space;
+  infoCopy = info;
+  if (systemCopy)
   {
-    if (v14)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
@@ -134,17 +134,17 @@ LABEL_3:
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
 
-    if (v14)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"rootContainer"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"rootContainer"}];
 
 LABEL_3:
   v26.receiver = self;
@@ -153,28 +153,28 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_focusSystem, v13);
-    objc_storeWeak(&v18->_rootContainer, v14);
-    if (!v15)
+    objc_storeWeak(&v17->_focusSystem, systemCopy);
+    objc_storeWeak(&v18->_rootContainer, containerCopy);
+    if (!spaceCopy)
     {
-      v15 = [v14 _preferredFocusRegionCoordinateSpace];
-      if (!v15)
+      spaceCopy = [containerCopy _preferredFocusRegionCoordinateSpace];
+      if (!spaceCopy)
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v25 handleFailureInMethod:a2 object:v18 file:@"_UIFocusMap.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:v18 file:@"_UIFocusMap.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
 
-        v15 = 0;
+        spaceCopy = 0;
       }
     }
 
-    objc_storeWeak(&v18->_coordinateSpace, v15);
+    objc_storeWeak(&v18->_coordinateSpace, spaceCopy);
     v19 = *(MEMORY[0x1E695F058] + 16);
     v18->_minimumSearchArea.origin = *MEMORY[0x1E695F058];
     v18->_minimumSearchArea.size = v19;
     v18->_minimumSearchAreaIsEmpty = 1;
-    if (v16)
+    if (infoCopy)
     {
-      v20 = v16;
+      v20 = infoCopy;
     }
 
     else
@@ -185,19 +185,19 @@ LABEL_3:
     searchInfo = v18->_searchInfo;
     v18->_searchInfo = v20;
 
-    v18->_ignoresRootContainerClippingRect = a7;
+    v18->_ignoresRootContainerClippingRect = rect;
   }
 
   return v18;
 }
 
-- (void)setMinimumSearchArea:(CGRect)a3
+- (void)setMinimumSearchArea:(CGRect)area
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_minimumSearchArea, a3))
+  height = area.size.height;
+  width = area.size.width;
+  y = area.origin.y;
+  x = area.origin.x;
+  if (!CGRectEqualToRect(self->_minimumSearchArea, area))
   {
     self->_minimumSearchArea.origin.x = x;
     self->_minimumSearchArea.origin.y = y;
@@ -211,31 +211,31 @@ LABEL_3:
   }
 }
 
-- (id)_inferredDefaultFocusItemInEnvironment:(id)a3
+- (id)_inferredDefaultFocusItemInEnvironment:(id)environment
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  environmentCopy = environment;
   [(_UIFocusMap *)self _beginTrackingDefaultItemSearchInfoIfNecessary];
-  v66 = v4;
-  if (v4)
+  v66 = environmentCopy;
+  if (environmentCopy)
   {
-    v67 = self;
-    v61 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    [v61 setFocusedRegion:0];
-    v5 = [v61 captureSnapshot];
-    v6 = [(_UIFocusMap *)self _defaultItemSearchContext];
-    [v6 addSnapshot:v5];
+    selfCopy = self;
+    _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    [_defaultMapSnapshotter setFocusedRegion:0];
+    captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
+    _defaultItemSearchContext = [(_UIFocusMap *)self _defaultItemSearchContext];
+    [_defaultItemSearchContext addSnapshot:captureSnapshot];
 
     v65 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
     v63 = objc_opt_new();
-    v64 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v62 = objc_alloc_init(MEMORY[0x1E696AB50]);
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v7 = [v5 regions];
-    v8 = [v7 countByEnumeratingWithState:&v80 objects:v85 count:16];
+    regions = [captureSnapshot regions];
+    v8 = [regions countByEnumeratingWithState:&v80 objects:v85 count:16];
     if (v8)
     {
       v9 = *v81;
@@ -245,19 +245,19 @@ LABEL_4:
       {
         if (*v81 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(regions);
         }
 
         v11 = *(*(&v80 + 1) + 8 * v10);
-        v12 = [v11 _defaultFocusItem];
-        if (v12)
+        _defaultFocusItem = [v11 _defaultFocusItem];
+        if (_defaultFocusItem)
         {
-          v13 = [(_UIFocusMap *)v67 searchInfo];
-          v14 = [v13 shouldIncludeFocusItem:v12];
+          searchInfo = [(_UIFocusMap *)selfCopy searchInfo];
+          v14 = [searchInfo shouldIncludeFocusItem:_defaultFocusItem];
 
           if (v14)
           {
-            if (v12 == v66)
+            if (_defaultFocusItem == v66)
             {
               v34 = v11;
 
@@ -269,7 +269,7 @@ LABEL_4:
               goto LABEL_43;
             }
 
-            if (([v65 containsObject:v12] & 1) == 0)
+            if (([v65 containsObject:_defaultFocusItem] & 1) == 0)
             {
               v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
               v76 = 0;
@@ -284,12 +284,12 @@ LABEL_4:
               v73 = v16;
               v74 = v66;
               v75 = &v76;
-              _UIFocusEnvironmentEnumerateAncestorEnvironments(v12, v72);
+              _UIFocusEnvironmentEnumerateAncestorEnvironments(_defaultFocusItem, v72);
               if (*(v77 + 24) == 1)
               {
-                [v65 addObject:v12];
+                [v65 addObject:_defaultFocusItem];
                 [v63 addObject:v11];
-                [v64 setObject:v11 forKey:v12];
+                [weakToWeakObjectsMapTable setObject:v11 forKey:_defaultFocusItem];
                 [v62 unionSet:v16];
               }
 
@@ -300,7 +300,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v80 objects:v85 count:16];
+          v8 = [regions countByEnumeratingWithState:&v80 objects:v85 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -311,20 +311,20 @@ LABEL_4:
       }
     }
 
-    if ([v65 count] != 1 || (objc_msgSend(v65, "anyObject"), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([v65 count] != 1 || (objc_msgSend(v65, "anyObject"), (_defaultFocusItem = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if ([v65 count] < 2)
       {
-        v12 = 0;
+        _defaultFocusItem = 0;
       }
 
       else
       {
-        WeakRetained = objc_loadWeakRetained(&v67->_focusSystem);
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_focusSystem);
         v18 = [WeakRetained _shouldReverseLayoutDirectionForEnvironment:v66];
 
-        v19 = [v5 mapArea];
-        [v19 frame];
+        mapArea = [captureSnapshot mapArea];
+        [mapArea frame];
         v21 = v20;
         v23 = v22;
         v25 = v24;
@@ -374,10 +374,10 @@ LABEL_4:
               }
 
               v44 = *(*(&v68 + 1) + 8 * i);
-              v45 = [v44 _defaultFocusItem];
-              if (v45)
+              _defaultFocusItem2 = [v44 _defaultFocusItem];
+              if (_defaultFocusItem2)
               {
-                v46 = _UIFocusMapDistanceToRegionBoundary(v44, [v44 _effectiveFocusableBoundariesForHeading:{-[_UIFocusMovementInfo heading](v36, "heading")}], v36, objc_msgSend(v44, "_preferredDistanceComparisonType"), 1, v5, MaxX, v40, 1.0, 1.0);
+                v46 = _UIFocusMapDistanceToRegionBoundary(v44, [v44 _effectiveFocusableBoundariesForHeading:{-[_UIFocusMovementInfo heading](v36, "heading")}], v36, objc_msgSend(v44, "_preferredDistanceComparisonType"), 1, captureSnapshot, MaxX, v40, 1.0, 1.0);
                 v47 = v46;
                 if (v46 <= v42)
                 {
@@ -386,7 +386,7 @@ LABEL_4:
                     [v37 removeAllObjects];
                   }
 
-                  [v37 addObject:v45];
+                  [v37 addObject:_defaultFocusItem2];
                   v42 = v47;
                 }
               }
@@ -398,88 +398,88 @@ LABEL_4:
           while (v39);
         }
 
-        v12 = [v37 firstObject];
-        v48 = objc_loadWeakRetained(&v67->_focusSystem);
-        v49 = [v48 behavior];
-        v50 = [v49 focusGroupMovementBehavior];
+        _defaultFocusItem = [v37 firstObject];
+        v48 = objc_loadWeakRetained(&selfCopy->_focusSystem);
+        behavior = [v48 behavior];
+        focusGroupMovementBehavior = [behavior focusGroupMovementBehavior];
 
-        if (((v12 != 0) & (v50 >> 4)) != 0)
+        if (((_defaultFocusItem != 0) & (focusGroupMovementBehavior >> 4)) != 0)
         {
           v51 = [_UIFocusGroupMap alloc];
-          v52 = [(_UIFocusMap *)v67 coordinateSpace];
-          v53 = [(_UIFocusGroupMap *)v51 initWithItems:v65 coordinateSpace:v52];
-          focusGroupMap = v67->_focusGroupMap;
-          v67->_focusGroupMap = v53;
+          coordinateSpace = [(_UIFocusMap *)selfCopy coordinateSpace];
+          v53 = [(_UIFocusGroupMap *)v51 initWithItems:v65 coordinateSpace:coordinateSpace];
+          focusGroupMap = selfCopy->_focusGroupMap;
+          selfCopy->_focusGroupMap = v53;
 
-          v55 = [(_UIFocusGroupMap *)v67->_focusGroupMap focusGroupForItem:v12];
-          v56 = [v55 primaryItem];
-          v57 = v56;
-          if (v56)
+          v55 = [(_UIFocusGroupMap *)selfCopy->_focusGroupMap focusGroupForItem:_defaultFocusItem];
+          primaryItem = [v55 primaryItem];
+          v57 = primaryItem;
+          if (primaryItem)
           {
-            v58 = v56;
+            v58 = primaryItem;
 
-            v12 = v58;
+            _defaultFocusItem = v58;
           }
         }
       }
     }
 
 LABEL_43:
-    v34 = [v64 objectForKey:v12];
+    v34 = [weakToWeakObjectsMapTable objectForKey:_defaultFocusItem];
 LABEL_44:
-    v59 = [(_UIFocusMap *)v67 _defaultItemSearchContext];
-    [v59 addDestinationRegion:v34];
+    _defaultItemSearchContext2 = [(_UIFocusMap *)selfCopy _defaultItemSearchContext];
+    [_defaultItemSearchContext2 addDestinationRegion:v34];
   }
 
   else
   {
-    v12 = 0;
+    _defaultFocusItem = 0;
   }
 
-  return v12;
+  return _defaultFocusItem;
 }
 
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
-  v6 = [v5 focusSystem];
+  focusSystem = [requestCopy focusSystem];
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
 
-  if (v6 != WeakRetained)
+  if (focusSystem != WeakRetained)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:293 description:@"Submitted a focus movement request to a focus map with a mismatched focus system."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:293 description:@"Submitted a focus movement request to a focus map with a mismatched focus system."];
   }
 
   [(_UIFocusMap *)self _beginTrackingFocusMovementSearchInfoIfNecessary];
-  v8 = [v5 movementInfo];
-  v9 = [v8 heading];
+  movementInfo = [requestCopy movementInfo];
+  heading = [movementInfo heading];
 
-  if (!v9)
+  if (!heading)
   {
     v13 = 0;
     goto LABEL_18;
   }
 
-  v10 = [v5 focusedItemInfo];
-  v11 = [v10 item];
+  focusedItemInfo = [requestCopy focusedItemInfo];
+  item = [focusedItemInfo item];
 
-  if (v11)
+  if (item)
   {
-    v12 = [v10 focusedRegion];
-    v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:v5 startingFromRegion:v12];
+    focusedRegion = [focusedItemInfo focusedRegion];
+    v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:requestCopy startingFromRegion:focusedRegion];
   }
 
   else
   {
-    v14 = [v5 movementInfo];
-    [v14 _fallbackMovementOriginatingFrame];
+    movementInfo2 = [requestCopy movementInfo];
+    [movementInfo2 _fallbackMovementOriginatingFrame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -498,10 +498,10 @@ LABEL_44:
       if (!CGRectIsEmpty(v56))
       {
         v23 = [_UIFocusRegion alloc];
-        v24 = [(_UIFocusMap *)self coordinateSpace];
-        v25 = [(_UIFocusRegion *)v23 initWithFrame:v24 coordinateSpace:v16, v18, v20, v22];
+        coordinateSpace = [(_UIFocusMap *)self coordinateSpace];
+        v25 = [(_UIFocusRegion *)v23 initWithFrame:coordinateSpace coordinateSpace:v16, v18, v20, v22];
 
-        v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:v5 startingFromRegion:v25];
+        v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:requestCopy startingFromRegion:v25];
 
         if (v13)
         {
@@ -512,8 +512,8 @@ LABEL_44:
 
     if (self->_minimumSearchAreaIsEmpty)
     {
-      v26 = [(_UIFocusMap *)self coordinateSpace];
-      [v26 bounds];
+      coordinateSpace2 = [(_UIFocusMap *)self coordinateSpace];
+      [coordinateSpace2 bounds];
       v28 = v27;
       v30 = v29;
       v32 = v31;
@@ -529,29 +529,29 @@ LABEL_44:
       v34 = v38;
     }
 
-    v12 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    v39 = [v10 focusedRegion];
-    [v12 setFocusedRegion:v39];
+    focusedRegion = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    focusedRegion2 = [focusedItemInfo focusedRegion];
+    [focusedRegion setFocusedRegion:focusedRegion2];
 
-    [v12 setSnapshotFrame:{v28, v30, v32, v34}];
-    v40 = [v5 movementInfo];
-    [v12 setClipToSnapshotRect:{objc_msgSend(v40, "_isLinearMovement") ^ 1}];
+    [focusedRegion setSnapshotFrame:{v28, v30, v32, v34}];
+    movementInfo3 = [requestCopy movementInfo];
+    [focusedRegion setClipToSnapshotRect:{objc_msgSend(movementInfo3, "_isLinearMovement") ^ 1}];
 
-    v41 = [v5 movementInfo];
-    [v12 setMovementInfo:v41];
+    movementInfo4 = [requestCopy movementInfo];
+    [focusedRegion setMovementInfo:movementInfo4];
 
-    v42 = [v12 captureSnapshot];
-    v43 = [(_UIFocusMap *)self _focusMovementSearchContext];
-    [v43 addSnapshot:v42];
+    captureSnapshot = [focusedRegion captureSnapshot];
+    _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
+    [_focusMovementSearchContext addSnapshot:captureSnapshot];
 
-    v44 = _UIRectDeparturePointAlongFocusHeading((v9 >> 1) & 0x14 | (2 * v9) & 0x28 | (__rbit32(v9) >> 30), v28, v30, v32, v34);
+    v44 = _UIRectDeparturePointAlongFocusHeading((heading >> 1) & 0x14 | (2 * heading) & 0x28 | (__rbit32(heading) >> 30), v28, v30, v32, v34);
     v46 = v45;
     v47 = [_UIFocusRegion alloc];
-    v48 = [(_UIFocusMap *)self coordinateSpace];
-    v49 = [(_UIFocusRegion *)v47 initWithFrame:v48 coordinateSpace:v44, v46, 1.0, 1.0];
+    coordinateSpace3 = [(_UIFocusMap *)self coordinateSpace];
+    v49 = [(_UIFocusRegion *)v47 initWithFrame:coordinateSpace3 coordinateSpace:v44, v46, 1.0, 1.0];
 
-    v50 = [v42 regions];
-    v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:v5 startingFromRegion:v49 inRegions:v50 withSnapshot:v42];
+    regions = [captureSnapshot regions];
+    v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:requestCopy startingFromRegion:v49 inRegions:regions withSnapshot:captureSnapshot];
   }
 
 LABEL_17:
@@ -560,22 +560,22 @@ LABEL_18:
   return v13;
 }
 
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 startingFromRegion:(id)a4
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request startingFromRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  regionCopy = region;
   [(_UIFocusMap *)self _beginTrackingFocusMovementSearchInfoIfNecessary];
-  v8 = [v6 movementInfo];
-  v9 = [v8 heading];
+  movementInfo = [requestCopy movementInfo];
+  heading = [movementInfo heading];
 
-  v10 = [(_UIFocusMap *)self coordinateSpace];
-  [_UIFocusRegionEvaluator frameForRegion:v7 inCoordinateSpace:v10];
+  coordinateSpace = [(_UIFocusMap *)self coordinateSpace];
+  [_UIFocusRegionEvaluator frameForRegion:regionCopy inCoordinateSpace:coordinateSpace];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  if (!v9)
+  if (!heading)
   {
     goto LABEL_46;
   }
@@ -591,8 +591,8 @@ LABEL_18:
 
   if (self->_minimumSearchAreaIsEmpty)
   {
-    v19 = [(_UIFocusMap *)self coordinateSpace];
-    [v19 bounds];
+    coordinateSpace2 = [(_UIFocusMap *)self coordinateSpace];
+    [coordinateSpace2 bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -706,7 +706,7 @@ LABEL_18:
     v50 = v49;
   }
 
-  if ((v9 & 4) != 0)
+  if ((heading & 4) != 0)
   {
     v51 = rect_8;
   }
@@ -717,7 +717,7 @@ LABEL_18:
   }
 
   recta = v43;
-  if (v9)
+  if (heading)
   {
     v52 = rect_16;
   }
@@ -727,7 +727,7 @@ LABEL_18:
     v52 = v43;
   }
 
-  if ((v9 & 0xC) == 0)
+  if ((heading & 0xC) == 0)
   {
     v99.origin.x = v12;
     v99.origin.y = v14;
@@ -736,7 +736,7 @@ LABEL_18:
     v51 = CGRectGetMaxX(v99);
   }
 
-  if ((v9 & 3) == 0)
+  if ((heading & 3) == 0)
   {
     v100.origin.x = v12;
     v100.origin.y = v14;
@@ -746,7 +746,7 @@ LABEL_18:
   }
 
   v53 = v51;
-  if ((v9 & 0xC) == 0 || (v9 & 4) != 0)
+  if ((heading & 0xC) == 0 || (heading & 4) != 0)
   {
     v102.origin.x = v12;
     v102.origin.y = v14;
@@ -765,7 +765,7 @@ LABEL_18:
   }
 
   v55 = v54;
-  if (v9 & 3) == 0 || (v9)
+  if (heading & 3) == 0 || (heading)
   {
     v104.origin.x = v12;
     v104.origin.y = v14;
@@ -784,10 +784,10 @@ LABEL_18:
   }
 
   v57 = MinY;
-  v58 = [v6 movementInfo];
-  v59 = [v58 _isLinearMovement];
+  movementInfo2 = [requestCopy movementInfo];
+  _isLinearMovement = [movementInfo2 _isLinearMovement];
 
-  if (v59)
+  if (_isLinearMovement)
   {
     v60 = v50;
   }
@@ -798,7 +798,7 @@ LABEL_18:
   }
 
   v61 = rect_8;
-  if (v59)
+  if (_isLinearMovement)
   {
     v62 = recta;
   }
@@ -808,13 +808,13 @@ LABEL_18:
     v62 = v52;
   }
 
-  if (!v59)
+  if (!_isLinearMovement)
   {
     v61 = v55;
   }
 
   v63 = rect_16;
-  if (!v59)
+  if (!_isLinearMovement)
   {
     v63 = v57;
   }
@@ -828,21 +828,21 @@ LABEL_18:
   height = v105.size.height;
   if (fabs(CGRectGetWidth(v105)) >= 0.0001 && (v106.origin.x = x, v106.origin.y = y, v106.size.width = width, v106.size.height = height, fabs(CGRectGetWidth(v106)) >= 0.0001))
   {
-    v72 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    [v72 setFocusedRegion:v7];
-    [v72 setSnapshotFrame:{x, y, width, height}];
-    v73 = [v6 movementInfo];
-    [v72 setClipToSnapshotRect:{objc_msgSend(v73, "_isLinearMovement") ^ 1}];
+    _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    [_defaultMapSnapshotter setFocusedRegion:regionCopy];
+    [_defaultMapSnapshotter setSnapshotFrame:{x, y, width, height}];
+    movementInfo3 = [requestCopy movementInfo];
+    [_defaultMapSnapshotter setClipToSnapshotRect:{objc_msgSend(movementInfo3, "_isLinearMovement") ^ 1}];
 
-    v74 = [v6 movementInfo];
-    [v72 setMovementInfo:v74];
+    movementInfo4 = [requestCopy movementInfo];
+    [_defaultMapSnapshotter setMovementInfo:movementInfo4];
 
-    v75 = [v72 captureSnapshot];
-    v76 = [(_UIFocusMap *)self _focusMovementSearchContext];
-    [v76 addSnapshot:v75];
+    captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
+    _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
+    [_focusMovementSearchContext addSnapshot:captureSnapshot];
 
-    v77 = [v75 regions];
-    v70 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:v6 startingFromRegion:v7 inRegions:v77 withSnapshot:v75];
+    regions = [captureSnapshot regions];
+    v70 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:requestCopy startingFromRegion:regionCopy inRegions:regions withSnapshot:captureSnapshot];
   }
 
   else
@@ -854,61 +854,61 @@ LABEL_46:
   return v70;
 }
 
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 inRegions:(id)a4 withSnapshot:(id)a5
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request inRegions:(id)regions withSnapshot:(id)snapshot
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 focusedItemInfo];
-  v12 = [v11 focusedRegion];
+  snapshotCopy = snapshot;
+  regionsCopy = regions;
+  requestCopy = request;
+  focusedItemInfo = [requestCopy focusedItemInfo];
+  focusedRegion = [focusedItemInfo focusedRegion];
 
-  v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:v10 startingFromRegion:v12 inRegions:v9 withSnapshot:v8];
+  v13 = [(_UIFocusMap *)self _nextFocusedItemForFocusMovementRequest:requestCopy startingFromRegion:focusedRegion inRegions:regionsCopy withSnapshot:snapshotCopy];
 
   return v13;
 }
 
-- (id)_nextFocusedItemForFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6
+- (id)_nextFocusedItemForFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 movementInfo];
-  v15 = [v14 _isLinearMovement];
+  snapshotCopy = snapshot;
+  regionsCopy = regions;
+  regionCopy = region;
+  requestCopy = request;
+  movementInfo = [requestCopy movementInfo];
+  _isLinearMovement = [movementInfo _isLinearMovement];
 
-  if (v15)
+  if (_isLinearMovement)
   {
-    [(_UIFocusMap *)self _nextFocusedItemForLinearFocusMovementRequest:v13 startingFromRegion:v12 inRegions:v11 withSnapshot:v10];
+    [(_UIFocusMap *)self _nextFocusedItemForLinearFocusMovementRequest:requestCopy startingFromRegion:regionCopy inRegions:regionsCopy withSnapshot:snapshotCopy];
   }
 
   else
   {
-    [(_UIFocusMap *)self _nextFocusedItemForNonLinearFocusMovementRequest:v13 startingFromRegion:v12 inRegions:v11 withSnapshot:v10];
+    [(_UIFocusMap *)self _nextFocusedItemForNonLinearFocusMovementRequest:requestCopy startingFromRegion:regionCopy inRegions:regionsCopy withSnapshot:snapshotCopy];
   }
   v16 = ;
 
   return v16;
 }
 
-- (id)_nextFocusedItemForNonLinearFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6
+- (id)_nextFocusedItemForNonLinearFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot
 {
   v215 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v149 = a5;
-  v12 = a6;
+  requestCopy = request;
+  regionCopy = region;
+  regionsCopy = regions;
+  snapshotCopy = snapshot;
   [(_UIFocusMap *)self _beginTrackingFocusMovementSearchInfoIfNecessary];
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
-  v13 = [v10 movementInfo];
-  v161 = v10;
-  v150 = [v10 focusedItemInfo];
-  v192 = [v13 heading];
-  v14 = [v13 _groupFilter];
+  movementInfo = [requestCopy movementInfo];
+  v161 = requestCopy;
+  focusedItemInfo = [requestCopy focusedItemInfo];
+  heading = [movementInfo heading];
+  _groupFilter = [movementInfo _groupFilter];
   v15 = MEMORY[0x1E695F050];
-  v148 = v11;
-  if (v11)
+  v148 = regionCopy;
+  if (regionCopy)
   {
-    [v12 snapshotFrameForRegion:v11];
+    [snapshotCopy snapshotFrameForRegion:regionCopy];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -931,16 +931,16 @@ LABEL_46:
     v17 = *MEMORY[0x1E695F050];
   }
 
-  v28 = [v150 item];
-  v151 = v28;
+  item = [focusedItemInfo item];
+  v151 = item;
   v188 = v25;
   v190 = v24;
   v182 = v27;
   v184 = v26;
-  if (v28 && (v29 = v28, (objc_opt_respondsToSelector() & 1) != 0))
+  if (item && (v29 = item, (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v30 = [v12 coordinateSpace];
-    [v29 _focusCastingFrameForHeading:v192 inCoordinateSpace:v30];
+    coordinateSpace = [snapshotCopy coordinateSpace];
+    [v29 _focusCastingFrameForHeading:heading inCoordinateSpace:coordinateSpace];
     v24 = v31;
     v25 = v32;
     v26 = v33;
@@ -949,16 +949,16 @@ LABEL_46:
 
   else
   {
-    v35 = [WeakRetained _focusCasting];
+    _focusCasting = [WeakRetained _focusCasting];
 
-    if (!v35)
+    if (!_focusCasting)
     {
       goto LABEL_10;
     }
 
-    v30 = [WeakRetained _focusCasting];
-    v36 = [v12 coordinateSpace];
-    [v30 castingFrameForFocusedItem:v151 heading:v192 inCoordinateSpace:v36];
+    coordinateSpace = [WeakRetained _focusCasting];
+    coordinateSpace2 = [snapshotCopy coordinateSpace];
+    [coordinateSpace castingFrameForFocusedItem:v151 heading:heading inCoordinateSpace:coordinateSpace2];
     v24 = v37;
     v25 = v38;
     v26 = v39;
@@ -966,11 +966,11 @@ LABEL_46:
   }
 
 LABEL_10:
-  if (v151 && v14 == 1)
+  if (v151 && _groupFilter == 1)
   {
     v41 = [_UIDynamicFocusGroupMap alloc];
-    v42 = [(_UIFocusMap *)self coordinateSpace];
-    v43 = [(_UIDynamicFocusGroupMap *)v41 initWithCoordinateSpace:v42];
+    coordinateSpace3 = [(_UIFocusMap *)self coordinateSpace];
+    v43 = [(_UIDynamicFocusGroupMap *)v41 initWithCoordinateSpace:coordinateSpace3];
 
     v152 = v43;
     v44 = [(_UIDynamicFocusGroupMap *)v43 focusGroupIdentifierForItem:v151];
@@ -978,7 +978,7 @@ LABEL_10:
 
   else
   {
-    if (v14 == 2)
+    if (_groupFilter == 2)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Primary item focus group filtering is not available for non linear focus movement."];
     }
@@ -1003,25 +1003,25 @@ LABEL_10:
     v17 = v24;
   }
 
-  if (!v192 || ![v149 count] || (v218.origin.x = v17, v218.origin.y = v19, v218.size.width = v21, v218.size.height = v23, CGRectIsEmpty(v218)))
+  if (!heading || ![regionsCopy count] || (v218.origin.x = v17, v218.origin.y = v19, v218.size.width = v21, v218.size.height = v23, CGRectIsEmpty(v218)))
   {
-    v45 = 0;
+    lastObject = 0;
     goto LABEL_22;
   }
 
   v154 = v44;
-  v47 = [v10 focusedItemInfo];
-  v48 = [v47 inheritedFocusMovementStyle];
+  focusedItemInfo2 = [requestCopy focusedItemInfo];
+  inheritedFocusMovementStyle = [focusedItemInfo2 inheritedFocusMovementStyle];
 
   v49 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v189 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+  weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
   v203 = 0u;
   v204 = 0u;
   v205 = 0u;
   v206 = 0u;
-  obj = v149;
-  v191 = v12;
-  v157 = self;
+  obj = regionsCopy;
+  v191 = snapshotCopy;
+  selfCopy = self;
   v159 = [obj countByEnumeratingWithState:&v203 objects:v213 count:16];
   if (!v159)
   {
@@ -1041,9 +1041,9 @@ LABEL_10:
   v169 = v23;
   v166 = v17;
   v167 = v19;
-  v163 = v13;
+  v163 = movementInfo;
   v170 = v49;
-  v171 = v48;
+  v171 = inheritedFocusMovementStyle;
   do
   {
     v52 = 0;
@@ -1055,9 +1055,9 @@ LABEL_10:
       }
 
       v53 = *(*(&v203 + 1) + 8 * v52);
-      v183 = [v53 _effectiveFocusableBoundariesForHeading:v192];
+      v183 = [v53 _effectiveFocusableBoundariesForHeading:heading];
       v181 = [v53 _effectiveBoundariesBlockingFocusMovementRequest:v161];
-      v177 = [v53 _preferredDistanceComparisonType];
+      _preferredDistanceComparisonType = [v53 _preferredDistanceComparisonType];
       [v53 _focusPriority];
       v55 = v54;
       v199 = 0u;
@@ -1085,23 +1085,23 @@ LABEL_32:
         }
 
         v57 = *(*(&v199 + 1) + 8 * v56);
-        v58 = [v57 unsignedIntegerValue];
-        v59 = v58 & v183;
-        v60 = v58 & v181;
-        if (!(v58 & v183 | v58 & v181))
+        unsignedIntegerValue = [v57 unsignedIntegerValue];
+        v59 = unsignedIntegerValue & v183;
+        v60 = unsignedIntegerValue & v181;
+        if (!(unsignedIntegerValue & v183 | unsignedIntegerValue & v181))
         {
           goto LABEL_93;
         }
 
-        v61 = v58;
-        v62 = _UIFocusMapDistanceToRegionBoundary(v179, v58, v13, 1, v48, v12, v17, v19, v21, v23);
+        v61 = unsignedIntegerValue;
+        v62 = _UIFocusMapDistanceToRegionBoundary(v179, unsignedIntegerValue, movementInfo, 1, inheritedFocusMovementStyle, snapshotCopy, v17, v19, v21, v23);
         v178 = v62;
-        if (!v177)
+        if (!_preferredDistanceComparisonType)
         {
-          v62 = _UIFocusMapDistanceToRegionBoundary(v179, v61, v13, 0, v48, v12, v17, v19, v21, v23);
+          v62 = _UIFocusMapDistanceToRegionBoundary(v179, v61, movementInfo, 0, inheritedFocusMovementStyle, snapshotCopy, v17, v19, v21, v23);
         }
 
-        v63 = [v179 _ignoresSpeedBumpEdges];
+        _ignoresSpeedBumpEdges = [v179 _ignoresSpeedBumpEdges];
         if (v62 < 0.0)
         {
           goto LABEL_93;
@@ -1114,7 +1114,7 @@ LABEL_32:
 
         else
         {
-          v64 = v63;
+          v64 = _ignoresSpeedBumpEdges;
         }
 
         if (v64 != 1)
@@ -1122,8 +1122,8 @@ LABEL_32:
           goto LABEL_124;
         }
 
-        [v12 snapshotFrameForRegion:v179];
-        v175 = _UIRectIntersectsRectAlongFocusHeading(v192, v65, v66, v67, v68, v17, v19, v21, v23);
+        [snapshotCopy snapshotFrameForRegion:v179];
+        v175 = _UIRectIntersectsRectAlongFocusHeading(heading, v65, v66, v67, v68, v17, v19, v21, v23);
         v195 = 0u;
         v196 = 0u;
         v197 = 0u;
@@ -1142,18 +1142,18 @@ LABEL_32:
                 objc_enumerationMutation(v69);
               }
 
-              v73 = [v189 objectForKey:*(*(&v195 + 1) + 8 * i)];
-              [v12 snapshotFrameForRegion:v73];
-              v78 = _UIRectIntersectsRectAlongFocusHeading(v192, v74, v75, v76, v77, v17, v19, v21, v23);
+              v73 = [weakToWeakObjectsMapTable objectForKey:*(*(&v195 + 1) + 8 * i)];
+              [snapshotCopy snapshotFrameForRegion:v73];
+              v78 = _UIRectIntersectsRectAlongFocusHeading(heading, v74, v75, v76, v77, v17, v19, v21, v23);
 
               if (v78)
               {
                 LODWORD(v70) = 1;
-                v12 = v191;
+                snapshotCopy = v191;
                 goto LABEL_53;
               }
 
-              v12 = v191;
+              snapshotCopy = v191;
             }
 
             v70 = [v69 countByEnumeratingWithState:&v195 objects:v211 count:16];
@@ -1166,7 +1166,7 @@ LABEL_32:
           }
 
 LABEL_53:
-          v13 = v163;
+          movementInfo = v163;
         }
 
         v79 = v62;
@@ -1205,7 +1205,7 @@ LABEL_53:
           }
         }
 
-        v48 = v171;
+        inheritedFocusMovementStyle = v171;
         if (v176)
         {
           v176 = 1;
@@ -1348,8 +1348,8 @@ LABEL_114:
         }
 
 LABEL_103:
-        v96 = [v191 _cachedNextFocusedItemForRegion:v179 withFocusMovementRequest:v161 inMap:v157];
-        if (v96 && ([(_UIFocusMap *)v157 searchInfo], v97 = objc_claimAutoreleasedReturnValue(), IsFocusableInFocusSystemWithSearchInfo = _UIFocusItemIsFocusableInFocusSystemWithSearchInfo(v96, WeakRetained, v97), v97, IsFocusableInFocusSystemWithSearchInfo))
+        v96 = [v191 _cachedNextFocusedItemForRegion:v179 withFocusMovementRequest:v161 inMap:selfCopy];
+        if (v96 && ([(_UIFocusMap *)selfCopy searchInfo], v97 = objc_claimAutoreleasedReturnValue(), IsFocusableInFocusSystemWithSearchInfo = _UIFocusItemIsFocusableInFocusSystemWithSearchInfo(v96, WeakRetained, v97), v97, IsFocusableInFocusSystemWithSearchInfo))
         {
           if (v154)
           {
@@ -1359,9 +1359,9 @@ LABEL_103:
             if (!v100)
             {
 
-              v12 = v191;
+              snapshotCopy = v191;
               v49 = v170;
-              v48 = v171;
+              inheritedFocusMovementStyle = v171;
               goto LABEL_124;
             }
           }
@@ -1369,15 +1369,15 @@ LABEL_103:
           if (v92 == 2)
           {
             [v69 removeAllObjects];
-            [v189 removeAllObjects];
+            [weakToWeakObjectsMapTable removeAllObjects];
           }
 
           [v69 addObject:v96];
-          [v189 setObject:v179 forKey:v96];
+          [weakToWeakObjectsMapTable setObject:v179 forKey:v96];
           v176 = 1;
           v50 = v55;
           v173 = v91;
-          v48 = v171;
+          inheritedFocusMovementStyle = v171;
           v51 = v178;
         }
 
@@ -1389,7 +1389,7 @@ LABEL_103:
 
         v162 = v94;
 LABEL_115:
-        v12 = v191;
+        snapshotCopy = v191;
         if (v60)
         {
           break;
@@ -1425,7 +1425,7 @@ LABEL_124:
       if (v173 >= v91)
       {
         [v69 removeAllObjects];
-        [v189 removeAllObjects];
+        [weakToWeakObjectsMapTable removeAllObjects];
       }
 
       v153 = 1;
@@ -1445,40 +1445,40 @@ LABEL_131:
 
   if ([v49 count] < 2)
   {
-    v45 = [v49 lastObject];
+    lastObject = [v49 lastObject];
   }
 
   else
   {
-    v103 = [v150 focusedRegion];
-    v104 = v103;
-    if (v151 && v103 == v148 && fabs(v173) < 0.0001 && [v49 containsObject:v151])
+    focusedRegion = [focusedItemInfo focusedRegion];
+    v104 = focusedRegion;
+    if (v151 && focusedRegion == v148 && fabs(v173) < 0.0001 && [v49 containsObject:v151])
     {
-      v45 = v151;
+      lastObject = v151;
       goto LABEL_181;
     }
 
-    v45 = [WeakRetained _previousFocusedItem];
-    if (([v49 containsObject:v45] & 1) == 0)
+    lastObject = [WeakRetained _previousFocusedItem];
+    if (([v49 containsObject:lastObject] & 1) == 0)
     {
 
       goto LABEL_142;
     }
 
-    if (!v45)
+    if (!lastObject)
     {
 LABEL_142:
-      v105 = [v161 movementInfo];
-      v106 = [v105 heading];
+      movementInfo2 = [v161 movementInfo];
+      heading2 = [movementInfo2 heading];
 
-      v107 = objc_loadWeakRetained(&v157->_coordinateSpace);
+      v107 = objc_loadWeakRetained(&selfCopy->_coordinateSpace);
       v108 = WeakRetained;
       v109 = v49;
       v110 = v107;
       v111 = [v108 _shouldReverseLayoutDirectionForEnvironment:v108];
-      if ((v106 & 3) != 0)
+      if ((heading2 & 3) != 0)
       {
-        v164 = v13;
+        v164 = movementInfo;
         v193 = v104;
         v186 = v109;
         if (v111)
@@ -1517,7 +1517,7 @@ LABEL_142:
                   v118 = v122;
                 }
 
-                v12 = v191;
+                snapshotCopy = v191;
               }
 
               v115 = [v112 countByEnumeratingWithState:&v207 objects:v214 count:16];
@@ -1569,7 +1569,7 @@ LABEL_175:
               v138 = v142;
             }
 
-            v12 = v191;
+            snapshotCopy = v191;
           }
 
           v136 = [v112 countByEnumeratingWithState:&v207 objects:v214 count:16];
@@ -1578,16 +1578,16 @@ LABEL_175:
         while (v136);
 LABEL_176:
 
-        v45 = v116;
-        v13 = v164;
+        lastObject = v116;
+        movementInfo = v164;
         v104 = v193;
         v109 = v186;
       }
 
-      else if ((v106 & 0xC) != 0)
+      else if ((heading2 & 0xC) != 0)
       {
         v194 = v104;
-        v165 = v13;
+        v165 = movementInfo;
         v187 = v109;
         v124 = v109;
         v125 = v110;
@@ -1599,7 +1599,7 @@ LABEL_176:
         if (v126)
         {
           v127 = v126;
-          v45 = 0;
+          lastObject = 0;
           v128 = *v208;
           v129 = 1.79769313e308;
           do
@@ -1619,11 +1619,11 @@ LABEL_176:
                 v133 = MinY;
                 v134 = v131;
 
-                v45 = v134;
+                lastObject = v134;
                 v129 = v133;
               }
 
-              v12 = v191;
+              snapshotCopy = v191;
             }
 
             v127 = [v124 countByEnumeratingWithState:&v207 objects:v214 count:16];
@@ -1634,17 +1634,17 @@ LABEL_176:
 
         else
         {
-          v45 = 0;
+          lastObject = 0;
         }
 
-        v13 = v165;
+        movementInfo = v165;
         v104 = v194;
         v109 = v187;
       }
 
       else
       {
-        v45 = [v109 lastObject];
+        lastObject = [v109 lastObject];
       }
     }
 
@@ -1652,66 +1652,66 @@ LABEL_181:
   }
 
   v144 = v49;
-  v145 = [(_UIFocusMap *)v157 _focusMovementSearchContext];
-  v146 = [v189 objectForKey:v45];
-  [v145 addDestinationRegion:v146];
+  _focusMovementSearchContext = [(_UIFocusMap *)selfCopy _focusMovementSearchContext];
+  v146 = [weakToWeakObjectsMapTable objectForKey:lastObject];
+  [_focusMovementSearchContext addDestinationRegion:v146];
 
-  v147 = [(_UIFocusMap *)v157 _focusMovementSearchContext];
-  [v147 setDidFindFocusBlockingBoundary:(v45 == 0) & v153];
+  _focusMovementSearchContext2 = [(_UIFocusMap *)selfCopy _focusMovementSearchContext];
+  [_focusMovementSearchContext2 setDidFindFocusBlockingBoundary:(lastObject == 0) & v153];
 
   v44 = v154;
 LABEL_22:
 
-  return v45;
+  return lastObject;
 }
 
-- (id)_nextFocusedItemForLinearFocusMovementRequest:(id)a3 startingFromRegion:(id)a4 inRegions:(id)a5 withSnapshot:(id)a6
+- (id)_nextFocusedItemForLinearFocusMovementRequest:(id)request startingFromRegion:(id)region inRegions:(id)regions withSnapshot:(id)snapshot
 {
   v99 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  regionCopy = region;
+  regionsCopy = regions;
+  snapshotCopy = snapshot;
   [(_UIFocusMap *)self _beginTrackingFocusMovementSearchInfoIfNecessary];
-  if (!v11)
+  if (!regionCopy)
   {
-    v15 = 0;
+    heading = 0;
     goto LABEL_52;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
-  v14 = [v10 movementInfo];
-  v15 = [v14 heading];
-  [v13 snapshotFrameForRegion:v11];
-  if (v15)
+  movementInfo = [requestCopy movementInfo];
+  heading = [movementInfo heading];
+  [snapshotCopy snapshotFrameForRegion:regionCopy];
+  if (heading)
   {
     v20 = v16;
     v21 = v17;
     v22 = v18;
     v23 = v19;
-    if (![v12 count] || (v101.origin.x = v20, v101.origin.y = v21, v101.size.width = v22, v101.size.height = v23, CGRectIsEmpty(v101)))
+    if (![regionsCopy count] || (v101.origin.x = v20, v101.origin.y = v21, v101.size.width = v22, v101.size.height = v23, CGRectIsEmpty(v101)))
     {
-      v15 = 0;
+      heading = 0;
       goto LABEL_51;
     }
 
-    v75 = v12;
-    v76 = v14;
-    v72 = v11;
-    v78 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    v75 = regionsCopy;
+    v76 = movementInfo;
+    v72 = regionCopy;
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v79 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-    v24 = [v14 _linearHeading];
-    v25 = [v10 focusedItemInfo];
-    v83 = [v25 item];
+    _linearHeading = [movementInfo _linearHeading];
+    focusedItemInfo = [requestCopy focusedItemInfo];
+    item = [focusedItemInfo item];
 
-    v74 = v24;
-    if (v24)
+    v74 = _linearHeading;
+    if (_linearHeading)
     {
-      v15 = v24;
+      heading = _linearHeading;
     }
 
-    v26 = [v10 movementInfo];
-    if (([v26 _linearHeading] & 0x110) != 0)
+    movementInfo2 = [requestCopy movementInfo];
+    if (([movementInfo2 _linearHeading] & 0x110) != 0)
     {
       v27 = 256;
     }
@@ -1722,51 +1722,51 @@ LABEL_22:
     }
 
     v28 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:WeakRetained];
-    v29 = [v10 movementInfo];
-    v30 = +[_UIFocusRegionMovementInfo _movementWithHeading:linearHeading:originatingHeading:isInitial:inputType:](_UIFocusRegionMovementInfo, "_movementWithHeading:linearHeading:originatingHeading:isInitial:inputType:", v27, v27, v15, 1, [v29 _inputType]);
+    movementInfo3 = [requestCopy movementInfo];
+    v30 = +[_UIFocusRegionMovementInfo _movementWithHeading:linearHeading:originatingHeading:isInitial:inputType:](_UIFocusRegionMovementInfo, "_movementWithHeading:linearHeading:originatingHeading:isInitial:inputType:", v27, v27, heading, 1, [movementInfo3 _inputType]);
     [(_UIFocusMovementRequest *)v28 setMovementInfo:v30];
 
-    v31 = [v10 focusedItemInfo];
+    focusedItemInfo2 = [requestCopy focusedItemInfo];
     v84 = v28;
-    [(_UIFocusMovementRequest *)v28 setFocusedItemInfo:v31];
+    [(_UIFocusMovementRequest *)v28 setFocusedItemInfo:focusedItemInfo2];
 
-    v77 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v73 = v10;
-    if (([v14 _linearHeading] & 0x100) != 0)
+    v73 = requestCopy;
+    if (([movementInfo _linearHeading] & 0x100) != 0)
     {
-      v32 = [v75 reverseObjectEnumerator];
+      reverseObjectEnumerator = [v75 reverseObjectEnumerator];
     }
 
     else
     {
-      v32 = v75;
+      reverseObjectEnumerator = v75;
     }
 
-    v33 = v32;
-    v34 = [v32 countByEnumeratingWithState:&v92 objects:v98 count:16];
-    v82 = self;
+    v33 = reverseObjectEnumerator;
+    v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v92 objects:v98 count:16];
+    selfCopy = self;
     if (!v34)
     {
 LABEL_46:
 
-      v50 = [v79 allObjects];
+      allObjects = [v79 allObjects];
       v89[0] = MEMORY[0x1E69E9820];
       v89[1] = 3221225472;
       v89[2] = __103___UIFocusMap__nextFocusedItemForLinearFocusMovementRequest_startingFromRegion_inRegions_withSnapshot___block_invoke;
       v89[3] = &unk_1E71089E0;
       v90 = WeakRetained;
-      v91 = self;
-      v51 = [v50 bs_filter:v89];
+      selfCopy2 = self;
+      v51 = [allObjects bs_filter:v89];
 
-      v10 = v73;
-      v52 = [v73 movementInfo];
-      v53 = [v52 _groupFilter];
+      requestCopy = v73;
+      movementInfo4 = [v73 movementInfo];
+      _groupFilter = [movementInfo4 _groupFilter];
 
-      v54 = [(_UIFocusMap *)self _linearlySortedFocusItemsForItems:v51 groupFilter:v53 itemStandInMap:v77];
+      v54 = [(_UIFocusMap *)self _linearlySortedFocusItemsForItems:v51 groupFilter:_groupFilter itemStandInMap:strongToStrongObjectsMapTable];
       if (*__UILogGetCategoryCachedImpl("UIFocus", &_MergedGlobals_1093))
       {
         v88[0] = MEMORY[0x1E69E9820];
@@ -1797,45 +1797,45 @@ LABEL_46:
           }
         }
 
-        self = v82;
+        self = selfCopy;
       }
 
-      v14 = v76;
-      v15 = _UIFocusGetNextItemFromList(v83, v54, v74, [v76 _isLooping]);
-      v55 = [v78 objectForKey:v15];
-      v56 = [(_UIFocusMap *)self _focusMovementSearchContext];
-      [v56 addDestinationRegion:v55];
+      movementInfo = v76;
+      heading = _UIFocusGetNextItemFromList(item, v54, v74, [v76 _isLooping]);
+      v55 = [weakToWeakObjectsMapTable objectForKey:heading];
+      _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
+      [_focusMovementSearchContext addDestinationRegion:v55];
 
-      if (v15 && ([v55 _shouldUseNextFocusedItemForLinearSorting] & 1) == 0)
+      if (heading && ([v55 _shouldUseNextFocusedItemForLinearSorting] & 1) == 0)
       {
-        v57 = [v78 objectForKey:v15];
-        v58 = [v13 _cachedNextFocusedItemForRegion:v57 withFocusMovementRequest:v84 inMap:self];
+        v57 = [weakToWeakObjectsMapTable objectForKey:heading];
+        v58 = [snapshotCopy _cachedNextFocusedItemForRegion:v57 withFocusMovementRequest:v84 inMap:self];
 
-        v15 = v58;
+        heading = v58;
       }
 
-      v59 = [(_UIFocusMap *)self _defaultItemSearchContext];
-      [v59 setLinearSortedFocusItems:v54];
+      _defaultItemSearchContext = [(_UIFocusMap *)self _defaultItemSearchContext];
+      [_defaultItemSearchContext setLinearSortedFocusItems:v54];
 
-      v60 = [(_UIFocusMap *)self _focusMovementSearchContext];
-      [v60 setLinearSortedFocusItems:v54];
+      _focusMovementSearchContext2 = [(_UIFocusMap *)self _focusMovementSearchContext];
+      [_focusMovementSearchContext2 setLinearSortedFocusItems:v54];
 
       focusGroupMap = self->_focusGroupMap;
-      v62 = [(_UIFocusMap *)self _defaultItemSearchContext];
-      [v62 setFocusGroupMap:focusGroupMap];
+      _defaultItemSearchContext2 = [(_UIFocusMap *)self _defaultItemSearchContext];
+      [_defaultItemSearchContext2 setFocusGroupMap:focusGroupMap];
 
       v63 = self->_focusGroupMap;
-      v64 = [(_UIFocusMap *)self _focusMovementSearchContext];
-      [v64 setFocusGroupMap:v63];
+      _focusMovementSearchContext3 = [(_UIFocusMap *)self _focusMovementSearchContext];
+      [_focusMovementSearchContext3 setFocusGroupMap:v63];
 
-      v11 = v72;
-      v12 = v75;
+      regionCopy = v72;
+      regionsCopy = v75;
       goto LABEL_51;
     }
 
     v35 = v34;
     v36 = *v93;
-    v38 = (v74 & 0x300) == 0 && v83 != 0;
+    v38 = (v74 & 0x300) == 0 && item != 0;
     obj = v33;
 LABEL_23:
     v39 = 0;
@@ -1847,11 +1847,11 @@ LABEL_23:
       }
 
       v40 = *(*(&v92 + 1) + 8 * v39);
-      v41 = [v13 _cachedNextFocusedItemForRegion:v40 withFocusMovementRequest:v84 inMap:self];
+      v41 = [snapshotCopy _cachedNextFocusedItemForRegion:v40 withFocusMovementRequest:v84 inMap:self];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = [v40 item];
+        item2 = [v40 item];
         if (!v41)
         {
           goto LABEL_30;
@@ -1860,7 +1860,7 @@ LABEL_23:
 
       else
       {
-        v42 = 0;
+        item2 = 0;
         if (!v41)
         {
 LABEL_30:
@@ -1870,17 +1870,17 @@ LABEL_30:
       }
 
       [(_UIFocusMap *)self searchInfo];
-      v44 = v43 = v13;
+      v44 = v43 = snapshotCopy;
       IsFocusableInFocusSystemWithSearchInfo = _UIFocusItemIsFocusableInFocusSystemWithSearchInfo(v41, WeakRetained, v44);
 
-      v13 = v43;
+      snapshotCopy = v43;
 LABEL_31:
-      v46 = v42 == v83 && v38;
+      v46 = item2 == item && v38;
       if ((IsFocusableInFocusSystemWithSearchInfo & 1) != 0 || v46)
       {
         if (v46)
         {
-          v48 = v42;
+          v48 = item2;
         }
 
         else
@@ -1890,18 +1890,18 @@ LABEL_31:
 
         v47 = v48;
 
-        self = v82;
+        self = selfCopy;
         if (([v40 _shouldUseNextFocusedItemForLinearSorting] & 1) == 0)
         {
-          v49 = [v40 _focusedItemForLinearSorting:v84 inMap:v82 withSnapshot:v13];
-          [v77 setObject:v47 forKey:v49];
+          v49 = [v40 _focusedItemForLinearSorting:v84 inMap:selfCopy withSnapshot:snapshotCopy];
+          [strongToStrongObjectsMapTable setObject:v47 forKey:v49];
 
           v47 = v49;
         }
 
         if (([v79 containsObject:v47] & 1) == 0)
         {
-          [v78 setObject:v40 forKey:v47];
+          [weakToWeakObjectsMapTable setObject:v40 forKey:v47];
           [v79 addObject:v47];
         }
       }
@@ -1909,7 +1909,7 @@ LABEL_31:
       else
       {
         v47 = v41;
-        self = v82;
+        self = selfCopy;
       }
 
       if (v35 == ++v39)
@@ -1930,53 +1930,53 @@ LABEL_51:
 
 LABEL_52:
 
-  return v15;
+  return heading;
 }
 
-- (id)_allRegionsInContainer:(id)a3 intersectingRegion:(id)a4
+- (id)_allRegionsInContainer:(id)container intersectingRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIFocusMap *)self coordinateSpace];
-  [_UIFocusRegionEvaluator frameForRegion:v7 inCoordinateSpace:v8];
+  containerCopy = container;
+  regionCopy = region;
+  coordinateSpace = [(_UIFocusMap *)self coordinateSpace];
+  [_UIFocusRegionEvaluator frameForRegion:regionCopy inCoordinateSpace:coordinateSpace];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  if (v6 && (v24.origin.x = v10, v24.origin.y = v12, v24.size.width = v14, v24.size.height = v16, !CGRectIsEmpty(v24)))
+  if (containerCopy && (v24.origin.x = v10, v24.origin.y = v12, v24.size.width = v14, v24.size.height = v16, !CGRectIsEmpty(v24)))
   {
-    v18 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    [v18 setRegionsContainer:v6];
-    [v18 setSnapshotFrame:{v10, v12, v14, v16}];
-    v19 = [v18 captureSnapshot];
-    v20 = [(_UIFocusMap *)self _defaultItemSearchContext];
-    [v20 addSnapshot:v19];
+    _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    [_defaultMapSnapshotter setRegionsContainer:containerCopy];
+    [_defaultMapSnapshotter setSnapshotFrame:{v10, v12, v14, v16}];
+    captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
+    _defaultItemSearchContext = [(_UIFocusMap *)self _defaultItemSearchContext];
+    [_defaultItemSearchContext addSnapshot:captureSnapshot];
 
-    v21 = [(_UIFocusMap *)self _focusMovementSearchContext];
-    [v21 addSnapshot:v19];
+    _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
+    [_focusMovementSearchContext addSnapshot:captureSnapshot];
 
-    v17 = [v19 regions];
+    regions = [captureSnapshot regions];
   }
 
   else
   {
-    v17 = MEMORY[0x1E695E0F0];
+    regions = MEMORY[0x1E695E0F0];
   }
 
-  return v17;
+  return regions;
 }
 
-- (id)_closestFocusableItemToPoint:(CGPoint)a3 inRect:(CGRect)a4 itemFilter:(id)a5 distanceMeasuringUnitPoint:(CGPoint)a6
+- (id)_closestFocusableItemToPoint:(CGPoint)point inRect:(CGRect)rect itemFilter:(id)filter distanceMeasuringUnitPoint:(CGPoint)unitPoint
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v10 = a4.origin.y;
-  v11 = a4.origin.x;
+  y = unitPoint.y;
+  x = unitPoint.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v71 = *MEMORY[0x1E69E9840];
-  v13 = a5;
+  filterCopy = filter;
   v73.origin.x = v11;
   v73.origin.y = v10;
   v73.size.width = width;
@@ -1988,19 +1988,19 @@ LABEL_52:
 
   else
   {
-    v15 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    [v15 setSnapshotFrame:{v11, v10, width, height}];
-    v55 = v15;
-    v16 = [v15 captureSnapshot];
+    _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    [_defaultMapSnapshotter setSnapshotFrame:{v11, v10, width, height}];
+    v55 = _defaultMapSnapshotter;
+    captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v58 = self;
+    selfCopy = self;
     WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v18 = [v16 regions];
-    v19 = [v18 countByEnumeratingWithState:&v65 objects:v70 count:16];
+    regions = [captureSnapshot regions];
+    v19 = [regions countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2011,25 +2011,25 @@ LABEL_52:
         {
           if (*v66 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(regions);
           }
 
           v23 = *(*(&v65 + 1) + 8 * i);
-          v24 = [v23 _defaultFocusItem];
-          v25 = v24;
-          if (v24 && _UIFocusItemIsFocusableInFocusSystem(v24, WeakRetained) && (!v13 || v13[2](v13, v25)))
+          _defaultFocusItem = [v23 _defaultFocusItem];
+          v25 = _defaultFocusItem;
+          if (_defaultFocusItem && _UIFocusItemIsFocusableInFocusSystem(_defaultFocusItem, WeakRetained) && (!filterCopy || filterCopy[2](filterCopy, v25)))
           {
             [v17 addObject:v23];
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v65 objects:v70 count:16];
+        v20 = [regions countByEnumeratingWithState:&v65 objects:v70 count:16];
       }
 
       while (v20);
     }
 
-    v56 = v13;
+    v56 = filterCopy;
 
     v63 = 0u;
     v64 = 0u;
@@ -2057,16 +2057,16 @@ LABEL_52:
           }
 
           v36 = *(*(&v61 + 1) + 8 * j);
-          v37 = [v36 _defaultFocusItem];
-          if (v37)
+          _defaultFocusItem2 = [v36 _defaultFocusItem];
+          if (_defaultFocusItem2)
           {
-            v38 = [v16 originalRegionForRegion:v36];
-            [v16 snapshotFrameForRegion:v38];
+            v38 = [captureSnapshot originalRegionForRegion:v36];
+            [captureSnapshot snapshotFrameForRegion:v38];
             v40 = v39;
             v42 = v41;
             v44 = v43;
             v46 = v45;
-            v47 = objc_loadWeakRetained(&v58->_coordinateSpace);
+            v47 = objc_loadWeakRetained(&selfCopy->_coordinateSpace);
             [v47 bounds];
             v75.origin.x = v40;
             v75.origin.y = v42;
@@ -2074,10 +2074,10 @@ LABEL_52:
             v75.size.height = v46;
             v48 = CGRectContainsRect(v74, v75);
 
-            v49 = (a3.x - (v40 + v30 * v44)) * (a3.x - (v40 + v30 * v44)) + (a3.y - (v42 + v31 * v46)) * (a3.y - (v42 + v31 * v46));
+            v49 = (point.x - (v40 + v30 * v44)) * (point.x - (v40 + v30 * v44)) + (point.y - (v42 + v31 * v46)) * (point.y - (v42 + v31 * v46));
             if (v49 <= v34)
             {
-              v50 = v37;
+              v50 = _defaultFocusItem2;
 
               v34 = v49;
               v29 = v50;
@@ -2085,7 +2085,7 @@ LABEL_52:
 
             if (v49 <= v33 && v48)
             {
-              v52 = v37;
+              v52 = _defaultFocusItem2;
 
               v28 = v52;
               v33 = v49;
@@ -2117,73 +2117,73 @@ LABEL_52:
 
     v14 = v53;
 
-    v13 = v56;
+    filterCopy = v56;
   }
 
   return v14;
 }
 
-- (id)_linearlySortedFocusItemsForItems:(id)a3 groupFilter:(int64_t)a4 itemStandInMap:(id)a5
+- (id)_linearlySortedFocusItemsForItems:(id)items groupFilter:(int64_t)filter itemStandInMap:(id)map
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  itemsCopy = items;
+  mapCopy = map;
+  if (filter == 1)
   {
-    v15 = [(_UIFocusMap *)self focusSystem];
-    v16 = [v15 focusedItem];
+    focusSystem = [(_UIFocusMap *)self focusSystem];
+    focusedItem = [focusSystem focusedItem];
 
-    if (v16)
+    if (focusedItem)
     {
-      v17 = [v8 arrayByAddingObject:v16];
+      v17 = [itemsCopy arrayByAddingObject:focusedItem];
       v18 = [_UIFocusGroupMap alloc];
-      v19 = [(_UIFocusMap *)self coordinateSpace];
-      v20 = [(_UIFocusGroupMap *)v18 initWithItems:v17 standInItemsMap:v9 coordinateSpace:v19];
+      coordinateSpace = [(_UIFocusMap *)self coordinateSpace];
+      v20 = [(_UIFocusGroupMap *)v18 initWithItems:v17 standInItemsMap:mapCopy coordinateSpace:coordinateSpace];
       focusGroupMap = self->_focusGroupMap;
       self->_focusGroupMap = v20;
 
-      v22 = [(_UIFocusGroupMap *)self->_focusGroupMap focusGroupForItem:v16];
+      v22 = [(_UIFocusGroupMap *)self->_focusGroupMap focusGroupForItem:focusedItem];
       v23 = MEMORY[0x1E696AE18];
       v30 = MEMORY[0x1E69E9820];
       v31 = 3221225472;
       v32 = __76___UIFocusMap__linearlySortedFocusItemsForItems_groupFilter_itemStandInMap___block_invoke;
       v33 = &unk_1E7108A58;
-      v34 = self;
+      selfCopy = self;
       v35 = v22;
       v24 = v22;
       v25 = [v23 predicateWithBlock:&v30];
-      v26 = [v8 filteredArrayUsingPredicate:{v25, v30, v31, v32, v33, v34}];
+      v26 = [itemsCopy filteredArrayUsingPredicate:{v25, v30, v31, v32, v33, selfCopy}];
 
-      v8 = v26;
+      itemsCopy = v26;
     }
   }
 
-  else if (a4 == 2)
+  else if (filter == 2)
   {
     v10 = [_UIFocusGroupMap alloc];
-    v11 = [(_UIFocusMap *)self coordinateSpace];
-    v12 = [(_UIFocusGroupMap *)v10 initWithItems:v8 standInItemsMap:v9 coordinateSpace:v11];
+    coordinateSpace2 = [(_UIFocusMap *)self coordinateSpace];
+    v12 = [(_UIFocusGroupMap *)v10 initWithItems:itemsCopy standInItemsMap:mapCopy coordinateSpace:coordinateSpace2];
     v13 = self->_focusGroupMap;
     self->_focusGroupMap = v12;
 
-    v14 = [(_UIFocusGroupMap *)self->_focusGroupMap focusItems];
+    focusItems = [(_UIFocusGroupMap *)self->_focusGroupMap focusItems];
     goto LABEL_8;
   }
 
-  v27 = [v8 sortedArrayUsingComparator:&__block_literal_global_227];
+  v27 = [itemsCopy sortedArrayUsingComparator:&__block_literal_global_227];
 
-  v14 = v27;
-  v8 = v14;
+  focusItems = v27;
+  itemsCopy = focusItems;
 LABEL_8:
-  v28 = v14;
+  v28 = focusItems;
 
   return v28;
 }
 
-- (BOOL)verifyFocusabilityForItem:(id)a3
+- (BOOL)verifyFocusabilityForItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [_UIFocusItemInfo infoWithItem:v4];
+  itemCopy = item;
+  v5 = [_UIFocusItemInfo infoWithItem:itemCopy];
   [v5 ancestorEnvironmentScrollableContainers];
   v27 = 0u;
   v28 = 0u;
@@ -2203,14 +2203,14 @@ LABEL_8:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v27 + 1) + 8 * i) scrollableContainer];
-        v12 = [(_UIFocusMap *)self focusSystem];
-        v13 = [v12 _isScrollingScrollableContainer:v11 targetContentOffset:0];
+        scrollableContainer = [*(*(&v27 + 1) + 8 * i) scrollableContainer];
+        focusSystem = [(_UIFocusMap *)self focusSystem];
+        v13 = [focusSystem _isScrollingScrollableContainer:scrollableContainer targetContentOffset:0];
 
         if (v13)
         {
           LOBYTE(v18) = 1;
-          v14 = v6;
+          _defaultMapSnapshotter = v6;
           goto LABEL_21;
         }
       }
@@ -2225,18 +2225,18 @@ LABEL_8:
     }
   }
 
-  v14 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-  [v14 setFocusedRegion:0];
-  v15 = [v14 coordinateSpace];
-  [v14 setSnapshotFrame:{_UIFocusItemFrameInCoordinateSpace(v4, v15)}];
+  _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+  [_defaultMapSnapshotter setFocusedRegion:0];
+  coordinateSpace = [_defaultMapSnapshotter coordinateSpace];
+  [_defaultMapSnapshotter setSnapshotFrame:{_UIFocusItemFrameInCoordinateSpace(itemCopy, coordinateSpace)}];
 
-  v16 = [v14 captureSnapshot];
+  captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [v16 regions];
-  v18 = [v17 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  regions = [captureSnapshot regions];
+  v18 = [regions countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v18)
   {
     v19 = *v24;
@@ -2246,19 +2246,19 @@ LABEL_8:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(regions);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * j) _defaultFocusItem];
+        _defaultFocusItem = [*(*(&v23 + 1) + 8 * j) _defaultFocusItem];
 
-        if (v21 == v4)
+        if (_defaultFocusItem == itemCopy)
         {
           LOBYTE(v18) = 1;
           goto LABEL_20;
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v18 = [regions countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v18)
       {
         continue;
@@ -2278,8 +2278,8 @@ LABEL_21:
 {
   if (self->_trackingSearchInfo)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1109 description:@"Attempted to begin tracking focus map searches  without finishing previous tracking."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1109 description:@"Attempted to begin tracking focus map searches  without finishing previous tracking."];
   }
 
   *&self->_trackingSearchInfo = 257;
@@ -2290,19 +2290,19 @@ LABEL_21:
   if (self->_trackingSearchInfo)
   {
     *&self->_trackingSearchInfo = 0;
-    v3 = [(_UIFocusMap *)self _defaultItemSearchContext];
-    v4 = v3;
-    if (v3)
+    _defaultItemSearchContext = [(_UIFocusMap *)self _defaultItemSearchContext];
+    v4 = _defaultItemSearchContext;
+    if (_defaultItemSearchContext)
     {
-      v5 = v3;
+      _focusMovementSearchContext = _defaultItemSearchContext;
     }
 
     else
     {
-      v5 = [(_UIFocusMap *)self _focusMovementSearchContext];
+      _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
     }
 
-    v6 = v5;
+    v6 = _focusMovementSearchContext;
 
     defaultItemSearchInfo = self->_defaultItemSearchInfo;
     self->_defaultItemSearchInfo = 0;
@@ -2331,25 +2331,25 @@ LABEL_21:
   }
 }
 
-- (void)_trackExternalSnapshot:(id)a3
+- (void)_trackExternalSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(_UIFocusMap *)self _defaultItemSearchContext];
-  [v5 addSnapshot:v4];
+  snapshotCopy = snapshot;
+  _defaultItemSearchContext = [(_UIFocusMap *)self _defaultItemSearchContext];
+  [_defaultItemSearchContext addSnapshot:snapshotCopy];
 
-  v6 = [(_UIFocusMap *)self _focusMovementSearchContext];
-  [v6 addSnapshot:v4];
+  _focusMovementSearchContext = [(_UIFocusMap *)self _focusMovementSearchContext];
+  [_focusMovementSearchContext addSnapshot:snapshotCopy];
 }
 
-- (void)diagnoseFocusabilityForItem:(id)a3 report:(id)a4
+- (void)diagnoseFocusabilityForItem:(id)item report:(id)report
 {
   v69 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  reportCopy = report;
+  v9 = reportCopy;
+  if (itemCopy)
   {
-    if (v8)
+    if (reportCopy)
     {
       goto LABEL_3;
     }
@@ -2357,8 +2357,8 @@ LABEL_21:
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
     if (v9)
     {
@@ -2366,23 +2366,23 @@ LABEL_21:
     }
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"report"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMap.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"report"}];
 
 LABEL_3:
-  if ([v7 canBecomeFocused])
+  if ([itemCopy canBecomeFocused])
   {
-    v10 = [(_UIFocusMap *)self _defaultMapSnapshotter];
-    [v10 setFocusedRegion:0];
-    v11 = [v10 captureSnapshot];
+    _defaultMapSnapshotter = [(_UIFocusMap *)self _defaultMapSnapshotter];
+    [_defaultMapSnapshotter setFocusedRegion:0];
+    captureSnapshot = [_defaultMapSnapshotter captureSnapshot];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v50 = v11;
-    v13 = [v11 originalRegions];
-    v14 = [v13 countByEnumeratingWithState:&v62 objects:v68 count:16];
+    v50 = captureSnapshot;
+    originalRegions = [captureSnapshot originalRegions];
+    v14 = [originalRegions countByEnumeratingWithState:&v62 objects:v68 count:16];
     if (v14)
     {
       v15 = v14;
@@ -2393,15 +2393,15 @@ LABEL_3:
         {
           if (*v63 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(originalRegions);
           }
 
           v18 = *(*(&v62 + 1) + 8 * i);
-          v19 = [v18 _defaultFocusItem];
-          v20 = v19;
-          if (v19)
+          _defaultFocusItem = [v18 _defaultFocusItem];
+          v20 = _defaultFocusItem;
+          if (_defaultFocusItem)
           {
-            v21 = v19 == v7;
+            v21 = _defaultFocusItem == itemCopy;
           }
 
           else
@@ -2417,7 +2417,7 @@ LABEL_3:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v62 objects:v68 count:16];
+        v15 = [originalRegions countByEnumeratingWithState:&v62 objects:v68 count:16];
         if (v15)
         {
           continue;
@@ -2441,11 +2441,11 @@ LABEL_18:
       if (v24)
       {
         v26 = v24;
-        v45 = v10;
+        v45 = _defaultMapSnapshotter;
         v27 = *v59;
         v48 = v23;
         v49 = v9;
-        v46 = v7;
+        v46 = itemCopy;
         v47 = *v59;
         do
         {
@@ -2484,13 +2484,13 @@ LABEL_18:
                       objc_enumerationMutation(v32);
                     }
 
-                    v37 = [*(*(&v54 + 1) + 8 * j) _debugAssociatedObject];
-                    if (v37)
+                    _debugAssociatedObject = [*(*(&v54 + 1) + 8 * j) _debugAssociatedObject];
+                    if (_debugAssociatedObject)
                     {
                       v38 = MEMORY[0x1E696AEC0];
                       v39 = objc_opt_class();
                       v40 = NSStringFromClass(v39);
-                      v41 = [v38 stringWithFormat:@"<%@: %p>", v40, v37];
+                      v41 = [v38 stringWithFormat:@"<%@: %p>", v40, _debugAssociatedObject];
 
                       v42 = [_UIDebugIssue issueWithDescription:v41];
 
@@ -2524,8 +2524,8 @@ LABEL_18:
         }
 
         while (v26);
-        v10 = v45;
-        v7 = v46;
+        _defaultMapSnapshotter = v45;
+        itemCopy = v46;
       }
     }
 

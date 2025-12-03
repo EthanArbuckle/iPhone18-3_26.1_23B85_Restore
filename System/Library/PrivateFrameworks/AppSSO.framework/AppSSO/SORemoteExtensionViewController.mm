@@ -1,25 +1,25 @@
 @interface SORemoteExtensionViewController
 - (SORemoteExtensionViewControllerDelegate)delegate;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SORemoteExtensionViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = SORemoteExtensionViewController;
-  [(_UIRemoteViewController *)&v12 viewServiceDidTerminateWithError:v4];
-  if (v4)
+  [(_UIRemoteViewController *)&v12 viewServiceDidTerminateWithError:errorCopy];
+  if (errorCopy)
   {
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:*MEMORY[0x1E69DEAE8]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x1E69DEAE8]])
     {
-      v6 = [v4 code];
+      code = [errorCopy code];
 
-      if (v6 == 1)
+      if (code == 1)
       {
         goto LABEL_12;
       }
@@ -38,17 +38,17 @@
     if (os_log_type_enabled(SO_LOG_SORemoteExtensionViewController_log, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_INFO, "viewServiceDidTerminateWithError: %{public}@", buf, 0xCu);
     }
 
-    v8 = [(SORemoteExtensionViewController *)self delegate];
+    delegate = [(SORemoteExtensionViewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(SORemoteExtensionViewController *)self delegate];
-      [v10 viewServiceDidTerminateWithError:v4];
+      delegate2 = [(SORemoteExtensionViewController *)self delegate];
+      [delegate2 viewServiceDidTerminateWithError:errorCopy];
     }
   }
 

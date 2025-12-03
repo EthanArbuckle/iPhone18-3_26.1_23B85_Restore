@@ -1,52 +1,52 @@
 @interface BMStreamConfiguration
-+ (id)_libraryStreamConfigurationWithUUID:(id)a3 streamIdentifier:(id)a4 eventClass:(Class)a5 storeConfig:(id)a6 syncPolicy:(id)a7 legacyNames:(id)a8 internalMetadata:(id)a9 enableSubscriptions:(BOOL)a10 enableSubscriptionSubstream:(BOOL)a11 enableTombstoneSubstream:(BOOL)a12 allowedClients:(id)a13 pruningTriggers:(id)a14 spaceAttributionOwner:(id)a15;
-- (BMStreamConfiguration)initWithStreamIdentifier:(id)a3 eventClass:(Class)a4 storeConfig:(id)a5;
++ (id)_libraryStreamConfigurationWithUUID:(id)d streamIdentifier:(id)identifier eventClass:(Class)class storeConfig:(id)config syncPolicy:(id)policy legacyNames:(id)names internalMetadata:(id)metadata enableSubscriptions:(BOOL)self0 enableSubscriptionSubstream:(BOOL)self1 enableTombstoneSubstream:(BOOL)self2 allowedClients:(id)self3 pruningTriggers:(id)self4 spaceAttributionOwner:(id)self5;
+- (BMStreamConfiguration)initWithStreamIdentifier:(id)identifier eventClass:(Class)class storeConfig:(id)config;
 - (id)description;
 @end
 
 @implementation BMStreamConfiguration
 
-- (BMStreamConfiguration)initWithStreamIdentifier:(id)a3 eventClass:(Class)a4 storeConfig:(id)a5
+- (BMStreamConfiguration)initWithStreamIdentifier:(id)identifier eventClass:(Class)class storeConfig:(id)config
 {
-  v8 = a5;
-  v9 = a3;
+  configCopy = config;
+  identifierCopy = identifier;
   BYTE2(v12) = 1;
   LOWORD(v12) = 1;
-  v10 = [objc_opt_class() _libraryStreamConfigurationWithUUID:0 streamIdentifier:v9 eventClass:a4 storeConfig:v8 syncPolicy:0 legacyNames:MEMORY[0x1E695E0F0] internalMetadata:0 enableSubscriptions:v12 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v10 = [objc_opt_class() _libraryStreamConfigurationWithUUID:0 streamIdentifier:identifierCopy eventClass:class storeConfig:configCopy syncPolicy:0 legacyNames:MEMORY[0x1E695E0F0] internalMetadata:0 enableSubscriptions:v12 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v10;
 }
 
-+ (id)_libraryStreamConfigurationWithUUID:(id)a3 streamIdentifier:(id)a4 eventClass:(Class)a5 storeConfig:(id)a6 syncPolicy:(id)a7 legacyNames:(id)a8 internalMetadata:(id)a9 enableSubscriptions:(BOOL)a10 enableSubscriptionSubstream:(BOOL)a11 enableTombstoneSubstream:(BOOL)a12 allowedClients:(id)a13 pruningTriggers:(id)a14 spaceAttributionOwner:(id)a15
++ (id)_libraryStreamConfigurationWithUUID:(id)d streamIdentifier:(id)identifier eventClass:(Class)class storeConfig:(id)config syncPolicy:(id)policy legacyNames:(id)names internalMetadata:(id)metadata enableSubscriptions:(BOOL)self0 enableSubscriptionSubstream:(BOOL)self1 enableTombstoneSubstream:(BOOL)self2 allowedClients:(id)self3 pruningTriggers:(id)self4 spaceAttributionOwner:(id)self5
 {
-  v34 = a3;
-  v20 = a4;
-  v33 = a6;
-  v29 = a7;
-  v32 = a7;
-  v30 = a8;
-  v31 = a8;
-  v21 = a9;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
+  dCopy = d;
+  identifierCopy = identifier;
+  configCopy = config;
+  policyCopy = policy;
+  policyCopy2 = policy;
+  namesCopy = names;
+  namesCopy2 = names;
+  metadataCopy = metadata;
+  clientsCopy = clients;
+  triggersCopy = triggers;
+  ownerCopy = owner;
   v25 = [BMStreamConfiguration alloc];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_streamUUID, a3);
-    objc_storeStrong(&v26->_streamIdentifier, a4);
-    objc_storeStrong(&v26->_eventClass, a5);
-    objc_storeStrong(&v26->_storeConfig, a6);
-    objc_storeStrong(&v26->_syncPolicy, v29);
-    objc_storeStrong(&v26->_legacyNames, v30);
-    objc_storeStrong(&v26->_internalMetadata, a9);
-    v26->_enableSubscriptions = a10;
-    v26->_enableSubscriptionSubstream = a11;
-    v26->_enableTombstoneSubstream = a12;
-    objc_storeStrong(&v26->_allowedClients, a13);
-    objc_storeStrong(&v26->_pruningTriggers, a14);
-    objc_storeStrong(&v26->_spaceAttribution, a15);
+    objc_storeStrong(&v25->_streamUUID, d);
+    objc_storeStrong(&v26->_streamIdentifier, identifier);
+    objc_storeStrong(&v26->_eventClass, class);
+    objc_storeStrong(&v26->_storeConfig, config);
+    objc_storeStrong(&v26->_syncPolicy, policyCopy);
+    objc_storeStrong(&v26->_legacyNames, namesCopy);
+    objc_storeStrong(&v26->_internalMetadata, metadata);
+    v26->_enableSubscriptions = subscriptions;
+    v26->_enableSubscriptionSubstream = substream;
+    v26->_enableTombstoneSubstream = tombstoneSubstream;
+    objc_storeStrong(&v26->_allowedClients, clients);
+    objc_storeStrong(&v26->_pruningTriggers, triggers);
+    objc_storeStrong(&v26->_spaceAttribution, owner);
   }
 
   return v26;

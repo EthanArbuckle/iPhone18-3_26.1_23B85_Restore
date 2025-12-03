@@ -1,12 +1,12 @@
 @interface CRLiOSTitlesPageControlScrollView
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 @end
 
 @implementation CRLiOSTitlesPageControlScrollView
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -17,7 +17,7 @@
   {
     v7.receiver = self;
     v7.super_class = CRLiOSTitlesPageControlScrollView;
-    v5 = [(CRLiOSTitlesPageControlScrollView *)&v7 touchesShouldCancelInContentView:v4];
+    v5 = [(CRLiOSTitlesPageControlScrollView *)&v7 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v5;

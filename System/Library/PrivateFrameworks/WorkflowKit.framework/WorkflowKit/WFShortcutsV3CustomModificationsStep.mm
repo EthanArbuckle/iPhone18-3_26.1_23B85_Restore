@@ -1,13 +1,13 @@
 @interface WFShortcutsV3CustomModificationsStep
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4;
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error;
 @end
 
 @implementation WFShortcutsV3CustomModificationsStep
 
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v39 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Shortcut"];
   [v5 setFetchLimit:5];
@@ -18,9 +18,9 @@
   [v5 setSortDescriptors:v7];
 
   v66 = 0;
-  v45 = v4;
+  v45 = contextCopy;
   v42 = v5;
-  v8 = [v4 executeFetchRequest:v5 error:&v66];
+  v8 = [contextCopy executeFetchRequest:v5 error:&v66];
   v9 = v66;
   while ([v8 count])
   {
@@ -157,10 +157,10 @@
   }
 
   objc_autoreleasePoolPop(v40);
-  if (a4)
+  if (error)
   {
     v36 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
   v37 = *MEMORY[0x1E69E9840];

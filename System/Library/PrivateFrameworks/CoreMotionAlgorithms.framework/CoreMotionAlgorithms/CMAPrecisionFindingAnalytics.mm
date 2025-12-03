@@ -2,12 +2,12 @@
 - (CMAPrecisionFindingAnalytics)init;
 - (id)analyticsDictionary;
 - (void)dealloc;
-- (void)feedAcceptedRange:(CMARangeType *)a3;
-- (void)feedDeviceMotion:(CMADeviceMotionType *)a3;
+- (void)feedAcceptedRange:(CMARangeType *)range;
+- (void)feedDeviceMotion:(CMADeviceMotionType *)motion;
 - (void)feedEstimatedHeight:(double)maxEstimatedHeight;
-- (void)feedFractionAboveThreshold:(double)a3;
-- (void)feedRange:(CMARangeType *)a3;
-- (void)feedRevokeReason:(int)a3;
+- (void)feedFractionAboveThreshold:(double)threshold;
+- (void)feedRange:(CMARangeType *)range;
+- (void)feedRevokeReason:(int)reason;
 @end
 
 @implementation CMAPrecisionFindingAnalytics
@@ -46,9 +46,9 @@
   [(CMAPrecisionFindingAnalytics *)&v3 dealloc];
 }
 
-- (void)feedDeviceMotion:(CMADeviceMotionType *)a3
+- (void)feedDeviceMotion:(CMADeviceMotionType *)motion
 {
-  var0 = a3->var0;
+  var0 = motion->var0;
   if (self->_timestampOfFirstDMSample == -1.0)
   {
     self->_timestampOfFirstDMSample = var0;
@@ -58,8 +58,8 @@
   if (self->_crown && self->_wrist)
   {
     ++self->_countDM;
-    v6 = *&a3->var1.var2;
-    v31 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->var1.var0), v6);
+    v6 = *&motion->var1.var2;
+    v31 = vcvt_hight_f32_f64(vcvt_f32_f64(*&motion->var1.var0), v6);
     sub_245F24EC0(&v31, v6);
     v7 = sub_245F24C20(v31.f32);
     v9 = v8;
@@ -97,7 +97,7 @@
       timestampOfPreviousDMSample = self->_timestampOfPreviousDMSample;
       if (timestampOfPreviousDMSample > 0.0)
       {
-        v30 = a3->var0 - timestampOfPreviousDMSample;
+        v30 = motion->var0 - timestampOfPreviousDMSample;
         if (v30 > 0.0)
         {
           self->_totalTimeDuringRevoke = v30 + self->_totalTimeDuringRevoke;
@@ -105,24 +105,24 @@
       }
     }
 
-    self->_timestampOfPreviousDMSample = a3->var0;
+    self->_timestampOfPreviousDMSample = motion->var0;
   }
 }
 
-- (void)feedRange:(CMARangeType *)a3
+- (void)feedRange:(CMARangeType *)range
 {
   timestampOfFirstRawRange = self->_timestampOfFirstRawRange;
   if (timestampOfFirstRawRange == -1.0)
   {
-    timestampOfFirstRawRange = a3->timestamp;
-    self->_timestampOfFirstRawRange = a3->timestamp;
+    timestampOfFirstRawRange = range->timestamp;
+    self->_timestampOfFirstRawRange = range->timestamp;
   }
 
   v6 = self->_countRawRange + 1;
   self->_countRawRange = v6;
   if (self->_timestampOfFirstDMSample > 0.0)
   {
-    v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, a3, v3, v6 / (self->_timestampOfRecentDMSample - timestampOfFirstRawRange));
+    v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, range, v3, v6 / (self->_timestampOfRecentDMSample - timestampOfFirstRawRange));
     objc_msgSend_setMeanRawRangeFrequencyThroughoutSession_(self, v8, v7, v9);
     if (self->_wasFirstRangeAccepted && !self->_wasFirstArcShown)
     {
@@ -147,15 +147,15 @@
   }
 }
 
-- (void)feedAcceptedRange:(CMARangeType *)a3
+- (void)feedAcceptedRange:(CMARangeType *)range
 {
   if (self->_timestampOfFirstAcceptedRange == -1.0)
   {
-    timestamp = a3->timestamp;
-    self->_timestampOfFirstAcceptedRange = a3->timestamp;
-    v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, a3, v3, timestamp - self->_timestampOfFirstRawRange);
+    timestamp = range->timestamp;
+    self->_timestampOfFirstAcceptedRange = range->timestamp;
+    v7 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, range, v3, timestamp - self->_timestampOfFirstRawRange);
     objc_msgSend_setTimeFromFirstRangeToFirstAcceptedRange_(self, v8, v7, v9);
-    v13 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v10, v11, v12, a3->range);
+    v13 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v10, v11, v12, range->range);
     objc_msgSend_setFirstAcceptedRange_(self, v14, v13, v15);
     self->_wasFirstRangeAccepted = 1;
   }
@@ -164,7 +164,7 @@
   self->_countAcceptedRange = v16;
   if (self->_timestampOfFirstDMSample > 0.0)
   {
-    v17 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, a3, v3, v16 / (self->_timestampOfRecentDMSample - self->_timestampOfFirstAcceptedRange));
+    v17 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, range, v3, v16 / (self->_timestampOfRecentDMSample - self->_timestampOfFirstAcceptedRange));
     objc_msgSend_setMeanAcceptedRangeFrequencyThroughoutSession_(self, v18, v17, v19);
     if (self->_wasFirstRangeAccepted && !self->_wasFirstArcShown)
     {
@@ -189,10 +189,10 @@
   }
 }
 
-- (void)feedRevokeReason:(int)a3
+- (void)feedRevokeReason:(int)reason
 {
-  self->_revokeReason = a3;
-  if (!a3)
+  self->_revokeReason = reason;
+  if (!reason)
   {
     self->_wasFirstArcShown = 1;
   }
@@ -218,7 +218,7 @@
   MEMORY[0x2821F9670](self, sel_setMaxEstimatedDeltaHeightOverSession_, v7, v8);
 }
 
-- (void)feedFractionAboveThreshold:(double)a3
+- (void)feedFractionAboveThreshold:(double)threshold
 {
   v7 = objc_msgSend_maxPercentParticlesAboveHeightThreshold(self, a2, v3, v4);
   v11 = MEMORY[0x277CCABB0];
@@ -226,13 +226,13 @@
   {
     v12 = objc_msgSend_maxPercentParticlesAboveHeightThreshold(self, v8, v9, v10);
     objc_msgSend_doubleValue(v12, v13, v14, v15);
-    if (v16 >= a3)
+    if (v16 >= threshold)
     {
-      a3 = v16;
+      threshold = v16;
     }
   }
 
-  v17 = objc_msgSend_numberWithDouble_(v11, v8, v9, v10, a3);
+  v17 = objc_msgSend_numberWithDouble_(v11, v8, v9, v10, threshold);
 
   MEMORY[0x2821F9670](self, sel_setMaxPercentParticlesAboveHeightThreshold_, v17, v18);
 }

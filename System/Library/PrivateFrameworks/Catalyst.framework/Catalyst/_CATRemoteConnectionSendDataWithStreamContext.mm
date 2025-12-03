@@ -1,18 +1,18 @@
 @interface _CATRemoteConnectionSendDataWithStreamContext
 - (BOOL)hasBytesRemaining;
-- (_CATRemoteConnectionSendDataWithStreamContext)initWithStream:(id)a3 length:(unint64_t)a4 bufferSize:(unint64_t)a5 userInfo:(id)a6;
-- (id)bufferedDataWithError:(id *)a3;
+- (_CATRemoteConnectionSendDataWithStreamContext)initWithStream:(id)stream length:(unint64_t)length bufferSize:(unint64_t)size userInfo:(id)info;
+- (id)bufferedDataWithError:(id *)error;
 - (unint64_t)clientBytesWritten;
 - (void)dealloc;
 @end
 
 @implementation _CATRemoteConnectionSendDataWithStreamContext
 
-- (_CATRemoteConnectionSendDataWithStreamContext)initWithStream:(id)a3 length:(unint64_t)a4 bufferSize:(unint64_t)a5 userInfo:(id)a6
+- (_CATRemoteConnectionSendDataWithStreamContext)initWithStream:(id)stream length:(unint64_t)length bufferSize:(unint64_t)size userInfo:(id)info
 {
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  streamCopy = stream;
+  infoCopy = info;
+  if (!streamCopy)
   {
     [_CATRemoteConnectionSendDataWithStreamContext initWithStream:length:bufferSize:userInfo:];
   }
@@ -23,15 +23,15 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_stream, a3);
-    v14->_dataLength = a4;
-    v14->_bufferSize = a5;
-    objc_storeStrong(&v14->_userInfo, a6);
-    v15 = [CATHTTPMessageParser responseHeaderForContentWithLength:a4];
+    objc_storeStrong(&v13->_stream, stream);
+    v14->_dataLength = length;
+    v14->_bufferSize = size;
+    objc_storeStrong(&v14->_userInfo, info);
+    v15 = [CATHTTPMessageParser responseHeaderForContentWithLength:length];
     mHeaderData = v14->mHeaderData;
     v14->mHeaderData = v15;
 
-    [v11 open];
+    [streamCopy open];
   }
 
   return v14;
@@ -54,23 +54,23 @@
 
 - (unint64_t)clientBytesWritten
 {
-  v3 = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
-  if (v3 <= [(NSData *)self->mHeaderData length])
+  bytesWritten = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
+  if (bytesWritten <= [(NSData *)self->mHeaderData length])
   {
     return 0;
   }
 
-  v4 = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
-  return v4 - [(NSData *)self->mHeaderData length];
+  bytesWritten2 = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
+  return bytesWritten2 - [(NSData *)self->mHeaderData length];
 }
 
-- (id)bufferedDataWithError:(id *)a3
+- (id)bufferedDataWithError:(id *)error
 {
   mBytesRead = self->mBytesRead;
   v6 = [(NSData *)self->mHeaderData length]+ mBytesRead;
-  v7 = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
-  v8 = v6 - v7;
-  if (v6 - v7 >= [(_CATRemoteConnectionSendDataWithStreamContext *)self bufferSize])
+  bytesWritten = [(_CATRemoteConnectionSendDataWithStreamContext *)self bytesWritten];
+  v8 = v6 - bytesWritten;
+  if (v6 - bytesWritten >= [(_CATRemoteConnectionSendDataWithStreamContext *)self bufferSize])
   {
     goto LABEL_19;
   }
@@ -89,14 +89,14 @@
   v10 = self->mBuffer;
   if (v10)
   {
-    if (v6 == v7)
+    if (v6 == bytesWritten)
     {
       goto LABEL_12;
     }
 
     v11 = [(NSMutableData *)v10 length]- v8;
     v12 = self->mBuffer;
-    v13 = ([(NSMutableData *)v12 bytes]+ v11);
+    bytes = ([(NSMutableData *)v12 bytes]+ v11);
     v14 = v12;
     v15 = v8;
   }
@@ -105,17 +105,17 @@
   {
 LABEL_7:
     v16 = MEMORY[0x277CBEB28];
-    v17 = [(_CATRemoteConnectionSendDataWithStreamContext *)self bufferSize];
+    bufferSize = [(_CATRemoteConnectionSendDataWithStreamContext *)self bufferSize];
     v18 = [(NSData *)self->mHeaderData length];
-    v19 = [(_CATRemoteConnectionSendDataWithStreamContext *)self dataLength];
-    if (v17 >= v19 + v18)
+    dataLength = [(_CATRemoteConnectionSendDataWithStreamContext *)self dataLength];
+    if (bufferSize >= dataLength + v18)
     {
-      v20 = v19 + v18;
+      v20 = dataLength + v18;
     }
 
     else
     {
-      v20 = v17;
+      v20 = bufferSize;
     }
 
     v21 = [v16 dataWithLength:v20];
@@ -124,12 +124,12 @@ LABEL_7:
 
     v23 = self->mBuffer;
     v24 = [(NSData *)self->mHeaderData length];
-    v13 = [(NSData *)self->mHeaderData bytes];
+    bytes = [(NSData *)self->mHeaderData bytes];
     v14 = v23;
     v15 = v24;
   }
 
-  [(NSMutableData *)v14 replaceBytesInRange:0 withBytes:v15, v13];
+  [(NSMutableData *)v14 replaceBytesInRange:0 withBytes:v15, bytes];
 LABEL_12:
   v25 = self->mBytesRead;
   if (v25 >= [(_CATRemoteConnectionSendDataWithStreamContext *)self dataLength])
@@ -139,13 +139,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v26 = [(_CATRemoteConnectionSendDataWithStreamContext *)self stream];
-  v27 = [(NSMutableData *)self->mBuffer mutableBytes];
+  stream = [(_CATRemoteConnectionSendDataWithStreamContext *)self stream];
+  mutableBytes = [(NSMutableData *)self->mBuffer mutableBytes];
   v28 = [(NSMutableData *)self->mBuffer length]- v8;
-  v29 = [(_CATRemoteConnectionSendDataWithStreamContext *)self dataLength];
-  if (v28 >= v29 - self->mBytesRead)
+  dataLength2 = [(_CATRemoteConnectionSendDataWithStreamContext *)self dataLength];
+  if (v28 >= dataLength2 - self->mBytesRead)
   {
-    v30 = v29 - self->mBytesRead;
+    v30 = dataLength2 - self->mBytesRead;
   }
 
   else
@@ -153,7 +153,7 @@ LABEL_18:
     v30 = v28;
   }
 
-  v31 = [v26 read:&v27[v8] maxLength:v30];
+  v31 = [stream read:&mutableBytes[v8] maxLength:v30];
 
   if ((v31 & 0x8000000000000000) == 0)
   {
@@ -169,10 +169,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3)
+  if (error)
   {
-    v34 = [(_CATRemoteConnectionSendDataWithStreamContext *)self stream];
-    *a3 = [v34 streamError];
+    stream2 = [(_CATRemoteConnectionSendDataWithStreamContext *)self stream];
+    *error = [stream2 streamError];
   }
 
   v32 = 0;

@@ -1,5 +1,5 @@
 @interface QOSControllerViewController
-- (_TtC17ContinuityDisplay27QOSControllerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17ContinuityDisplay27QOSControllerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E178();
 }
 
-- (_TtC17ContinuityDisplay27QOSControllerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17ContinuityDisplay27QOSControllerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100057A50();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10000E6D8();
 }
 

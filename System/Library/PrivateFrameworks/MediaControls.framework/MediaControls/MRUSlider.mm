@@ -1,33 +1,33 @@
 @interface MRUSlider
 - (BOOL)fluidTrackHidden;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (MRUSlider)initWithStyle:(unint64_t)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (MRUSlider)initWithStyle:(unint64_t)style;
 - (MRUSliderDelegate)delegate;
 - (UIEdgeInsets)hitRectInset;
 - (UIView)maximumValueView;
 - (UIView)minimumValueView;
 - (double)expansionFactor;
 - (double)stretchLimit;
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillEnd:(id)a3;
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4;
-- (void)setEqualizing:(BOOL)a3;
-- (void)setExpansionFactor:(double)a3;
-- (void)setFluidTrackHidden:(BOOL)a3;
-- (void)setMaximumValueView:(id)a3;
-- (void)setMinimumTrackVisible:(BOOL)a3;
-- (void)setMinimumValueView:(id)a3;
-- (void)setStretchLimit:(double)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillEnd:(id)end;
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets;
+- (void)setEqualizing:(BOOL)equalizing;
+- (void)setExpansionFactor:(double)factor;
+- (void)setFluidTrackHidden:(BOOL)hidden;
+- (void)setMaximumValueView:(id)view;
+- (void)setMinimumTrackVisible:(BOOL)visible;
+- (void)setMinimumValueView:(id)view;
+- (void)setStretchLimit:(double)limit;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUSlider
 
-- (MRUSlider)initWithStyle:(unint64_t)a3
+- (MRUSlider)initWithStyle:(unint64_t)style
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -35,16 +35,16 @@
   v4 = [(MRUSlider *)&v18 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v4->_observers;
-    v4->_observers = v5;
+    v4->_observers = weakObjectsHashTable;
 
     [(MRUSlider *)v4 setMinimumValue:0.0];
     LODWORD(v7) = 1.0;
     [(MRUSlider *)v4 setMaximumValue:v7];
     v4->_minimumTrackVisible = 1;
     v8 = +[MRUFeatureFlagProvider isNewVolumeControlsMediaControlsEnabled];
-    if (a3)
+    if (style)
     {
       v9 = 111;
     }
@@ -73,8 +73,8 @@
     [(MRUSlider *)v4 _setSliderConfiguration:v4->_configuration];
   }
 
-  v13 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-  v14 = [(MRUSlider *)v4 registerForTraitChanges:v13 withAction:sel_colorAffectingTraitsChanged];
+  systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+  v14 = [(MRUSlider *)v4 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_colorAffectingTraitsChanged];
 
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
@@ -84,12 +84,12 @@
   return v4;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
+  height = bounds.size.height;
   v8.receiver = self;
   v8.super_class = MRUSlider;
-  [(MRUSlider *)&v8 trackRectForBounds:a3.origin.x, a3.origin.y, a3.size.width];
+  [(MRUSlider *)&v8 trackRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width];
   v6 = 0.0;
   v7 = height;
   result.size.height = v7;
@@ -99,66 +99,66 @@
   return result;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUSlider *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
 - (double)expansionFactor
 {
-  v2 = [(MRUSlider *)self configuration];
-  [v2 expansionFactor];
+  configuration = [(MRUSlider *)self configuration];
+  [configuration expansionFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setExpansionFactor:(double)a3
+- (void)setExpansionFactor:(double)factor
 {
-  v5 = [(MRUSlider *)self configuration];
-  [v5 setExpansionFactor:a3];
-  [(MRUSlider *)self _setSliderConfiguration:v5];
+  configuration = [(MRUSlider *)self configuration];
+  [configuration setExpansionFactor:factor];
+  [(MRUSlider *)self _setSliderConfiguration:configuration];
 }
 
 - (double)stretchLimit
 {
-  v2 = [(MRUSlider *)self configuration];
-  [v2 stretchLimit];
+  configuration = [(MRUSlider *)self configuration];
+  [configuration stretchLimit];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setStretchLimit:(double)a3
+- (void)setStretchLimit:(double)limit
 {
-  v5 = [(MRUSlider *)self configuration];
-  [v5 setStretchLimit:a3];
-  [(MRUSlider *)self _setSliderConfiguration:v5];
+  configuration = [(MRUSlider *)self configuration];
+  [configuration setStretchLimit:limit];
+  [(MRUSlider *)self _setSliderConfiguration:configuration];
 }
 
-- (void)setMinimumTrackVisible:(BOOL)a3
+- (void)setMinimumTrackVisible:(BOOL)visible
 {
-  if (self->_minimumTrackVisible != a3)
+  if (self->_minimumTrackVisible != visible)
   {
-    self->_minimumTrackVisible = a3;
+    self->_minimumTrackVisible = visible;
     [(MRUSlider *)self _setMinimumTrackVisible:0.0 withDuration:?];
   }
 }
 
-- (void)setEqualizing:(BOOL)a3
+- (void)setEqualizing:(BOOL)equalizing
 {
-  if (self->_equalizing != a3)
+  if (self->_equalizing != equalizing)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_equalizing = a3;
+    self->_equalizing = equalizing;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __27__MRUSlider_setEqualizing___block_invoke;
@@ -170,37 +170,37 @@
 
 - (UIView)minimumValueView
 {
-  v2 = [(MRUSlider *)self configuration];
-  v3 = [v2 minimumValueView];
+  configuration = [(MRUSlider *)self configuration];
+  minimumValueView = [configuration minimumValueView];
 
-  return v3;
+  return minimumValueView;
 }
 
-- (void)setMinimumValueView:(id)a3
+- (void)setMinimumValueView:(id)view
 {
-  v4 = a3;
-  v5 = [(MRUSlider *)self configuration];
-  [v5 setMinimumValueView:v4];
+  viewCopy = view;
+  configuration = [(MRUSlider *)self configuration];
+  [configuration setMinimumValueView:viewCopy];
 
-  [(MRUSlider *)self _setSliderConfiguration:v5];
+  [(MRUSlider *)self _setSliderConfiguration:configuration];
   [(MRUSlider *)self updateVisualStyling];
 }
 
 - (UIView)maximumValueView
 {
-  v2 = [(MRUSlider *)self configuration];
-  v3 = [v2 maximumValueView];
+  configuration = [(MRUSlider *)self configuration];
+  maximumValueView = [configuration maximumValueView];
 
-  return v3;
+  return maximumValueView;
 }
 
-- (void)setMaximumValueView:(id)a3
+- (void)setMaximumValueView:(id)view
 {
-  v4 = a3;
-  v5 = [(MRUSlider *)self configuration];
-  [v5 setMaximumValueView:v4];
+  viewCopy = view;
+  configuration = [(MRUSlider *)self configuration];
+  [configuration setMaximumValueView:viewCopy];
 
-  [(MRUSlider *)self _setSliderConfiguration:v5];
+  [(MRUSlider *)self _setSliderConfiguration:configuration];
   [(MRUSlider *)self updateVisualStyling];
 }
 
@@ -214,21 +214,21 @@
   return [(MRUSlider *)self _fluidTrackHidden];
 }
 
-- (void)setFluidTrackHidden:(BOOL)a3
+- (void)setFluidTrackHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (objc_opt_respondsToSelector())
   {
-    [(MRUSlider *)self _setFluidTrackHidden:v3];
+    [(MRUSlider *)self _setFluidTrackHidden:hiddenCopy];
 
     [(MRUSlider *)self updateVisualStyling];
   }
 }
 
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v19 = *MEMORY[0x1E69E9840];
   [(MRUSlider *)self sendActionsForControlEvents:1];
   v16 = 0u;
@@ -290,10 +290,10 @@ uint64_t __59__MRUSlider__sliderFluidInteractionWillBegin_withLocation___block_i
   return [v4 updateVisualStyling];
 }
 
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
@@ -332,12 +332,12 @@ uint64_t __59__MRUSlider__sliderFluidInteractionWillBegin_withLocation___block_i
   }
 }
 
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
@@ -376,7 +376,7 @@ uint64_t __59__MRUSlider__sliderFluidInteractionWillBegin_withLocation___block_i
   }
 }
 
-- (void)_sliderFluidInteractionWillEnd:(id)a3
+- (void)_sliderFluidInteractionWillEnd:(id)end
 {
   v16 = *MEMORY[0x1E69E9840];
   [(MRUSlider *)self sendActionsForControlEvents:64];
@@ -457,10 +457,10 @@ uint64_t __44__MRUSlider__sliderFluidInteractionWillEnd___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MRUSlider *)self hitRect];
   v10 = x;
   v11 = y;
@@ -485,10 +485,10 @@ uint64_t __44__MRUSlider__sliderFluidInteractionWillEnd___block_invoke(uint64_t 
 
   else
   {
-    v9 = [(MRUSlider *)self traitCollection];
-    v10 = [v9 mr_shouldDim];
+    traitCollection = [(MRUSlider *)self traitCollection];
+    mr_shouldDim = [traitCollection mr_shouldDim];
 
-    if (v10)
+    if (mr_shouldDim)
     {
       v8 = 2;
     }
@@ -511,8 +511,8 @@ uint64_t __44__MRUSlider__sliderFluidInteractionWillEnd___block_invoke(uint64_t 
     v16 = 3;
   }
 
-  v17 = [(MRUSlider *)self traitCollection];
-  v30 = [v17 _traitCollectionByRemovingTrait:objc_opt_class()];
+  traitCollection2 = [(MRUSlider *)self traitCollection];
+  v30 = [traitCollection2 _traitCollectionByRemovingTrait:objc_opt_class()];
 
   v18 = [(MRUVisualStylingProvider *)self->_stylingProvider blendColorForStyle:v8];
   v19 = [v18 resolvedColorWithTraitCollection:v30];
@@ -522,28 +522,28 @@ uint64_t __44__MRUSlider__sliderFluidInteractionWillEnd___block_invoke(uint64_t 
 
   [(MRUSlider *)self setMinimumTrackTintColor:v19];
   [(MRUSlider *)self setMaximumTrackTintColor:v21];
-  v22 = [(MRUSlider *)self minimumValueView];
+  minimumValueView = [(MRUSlider *)self minimumValueView];
 
-  if (v22)
+  if (minimumValueView)
   {
     stylingProvider = self->_stylingProvider;
-    v24 = [(MRUSlider *)self minimumValueView];
-    [(MRUVisualStylingProvider *)stylingProvider applyBlendModeToView:v24];
+    minimumValueView2 = [(MRUSlider *)self minimumValueView];
+    [(MRUVisualStylingProvider *)stylingProvider applyBlendModeToView:minimumValueView2];
 
-    v25 = [(MRUSlider *)self minimumValueView];
-    [v25 setTintColor:v19];
+    minimumValueView3 = [(MRUSlider *)self minimumValueView];
+    [minimumValueView3 setTintColor:v19];
   }
 
-  v26 = [(MRUSlider *)self maximumValueView];
+  maximumValueView = [(MRUSlider *)self maximumValueView];
 
-  if (v26)
+  if (maximumValueView)
   {
     v27 = self->_stylingProvider;
-    v28 = [(MRUSlider *)self maximumValueView];
-    [(MRUVisualStylingProvider *)v27 applyBlendModeToView:v28];
+    maximumValueView2 = [(MRUSlider *)self maximumValueView];
+    [(MRUVisualStylingProvider *)v27 applyBlendModeToView:maximumValueView2];
 
-    v29 = [(MRUSlider *)self maximumValueView];
-    [v29 setTintColor:v21];
+    maximumValueView3 = [(MRUSlider *)self maximumValueView];
+    [maximumValueView3 setTintColor:v21];
   }
 }
 

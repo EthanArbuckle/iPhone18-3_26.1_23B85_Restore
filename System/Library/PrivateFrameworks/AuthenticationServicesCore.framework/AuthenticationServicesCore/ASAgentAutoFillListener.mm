@@ -1,24 +1,24 @@
 @interface ASAgentAutoFillListener
-- (ASAgentAutoFillListener)initWithPublicKeyCredentialManager:(id)a3 signInEventCollector:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 authenticatorData:(id)a5 signature:(id)a6 userHandle:(id)a7 credentialID:(id)a8;
-- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 authenticatorData:(id)a5 signature:(id)a6 userHandle:(id)a7 credentialID:(id)a8;
-- (void)didFillCredentialForUsername:(id)a3 forURL:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inBrowserWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7;
-- (void)getPasskeysForRunningAssertionWithApplicationIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getPasskeysForRunningAssertionWithWebFrameIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)isOrigin:(id)a3 relatedToRelyingPartyIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)newPasskeysAvailableForApplicationIdentifier:(id)a3;
-- (void)test_createPasskeyWithUserName:(id)a3 displayName:(id)a4 relyingPartyIdentifier:(id)a5 userHandle:(id)a6 completionHandler:(id)a7;
-- (void)userSelectedAutoFillNearbyDevice:(id)a3 completionHandler:(id)a4;
-- (void)userSelectedAutoFillPasskey:(id)a3 authenticatedLAContext:(id)a4 savedAccountContext:(id)a5 completionHandler:(id)a6;
+- (ASAgentAutoFillListener)initWithPublicKeyCredentialManager:(id)manager signInEventCollector:(id)collector;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle credentialID:(id)d;
+- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle credentialID:(id)d;
+- (void)didFillCredentialForUsername:(id)username forURL:(id)l fromProviderWithBundleIdentifier:(id)identifier inBrowserWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint;
+- (void)getPasskeysForRunningAssertionWithApplicationIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getPasskeysForRunningAssertionWithWebFrameIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)isOrigin:(id)origin relatedToRelyingPartyIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)newPasskeysAvailableForApplicationIdentifier:(id)identifier;
+- (void)test_createPasskeyWithUserName:(id)name displayName:(id)displayName relyingPartyIdentifier:(id)identifier userHandle:(id)handle completionHandler:(id)handler;
+- (void)userSelectedAutoFillNearbyDevice:(id)device completionHandler:(id)handler;
+- (void)userSelectedAutoFillPasskey:(id)passkey authenticatedLAContext:(id)context savedAccountContext:(id)accountContext completionHandler:(id)handler;
 @end
 
 @implementation ASAgentAutoFillListener
 
-- (ASAgentAutoFillListener)initWithPublicKeyCredentialManager:(id)a3 signInEventCollector:(id)a4
+- (ASAgentAutoFillListener)initWithPublicKeyCredentialManager:(id)manager signInEventCollector:(id)collector
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  collectorCopy = collector;
   v18.receiver = self;
   v18.super_class = ASAgentAutoFillListener;
   v9 = [(ASAgentAutoFillListener *)&v18 init];
@@ -31,14 +31,14 @@
     v9->_listener = v12;
 
     [(NSXPCListener *)v9->_listener setDelegate:v9];
-    objc_storeStrong(&v9->_publicKeyCredentialManager, a3);
-    [v7 setPasskeyAutoFillManagerDelegate:v9];
-    v14 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v9->_publicKeyCredentialManager, manager);
+    [managerCopy setPasskeyAutoFillManagerDelegate:v9];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     weakActiveConnections = v9->_weakActiveConnections;
-    v9->_weakActiveConnections = v14;
+    v9->_weakActiveConnections = weakObjectsHashTable;
 
     v9->_internalLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_signInEventCollector, a4);
+    objc_storeStrong(&v9->_signInEventCollector, collector);
     [(NSXPCListener *)v9->_listener resume];
     v16 = v9;
   }
@@ -46,16 +46,16 @@
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v14 = 0u;
   v15 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v13[0] = v14;
@@ -79,15 +79,15 @@
   return v9;
 }
 
-- (void)getPasskeysForRunningAssertionWithApplicationIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getPasskeysForRunningAssertionWithApplicationIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v9 = currentConnection;
+  if (currentConnection)
   {
-    [v8 auditToken];
+    [currentConnection auditToken];
     if ((WBSAuditTokenHasEntitlement() & 1) == 0)
     {
       [v9 auditToken];
@@ -95,18 +95,18 @@
     }
 
 LABEL_7:
-    v10 = [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager autoFillOperationUUIDForApplicationIdentifier:v6, v15, v16];
+    v10 = [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager autoFillOperationUUIDForApplicationIdentifier:identifierCopy, v15, v16];
     if (v10)
     {
       v11 = [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager autoFillPasskeysForOperationUUID:v10];
-      v12 = [v11 first];
-      v13 = [v11 second];
-      v7[2](v7, v12, v13);
+      first = [v11 first];
+      second = [v11 second];
+      handlerCopy[2](handlerCopy, first, second);
     }
 
     else
     {
-      v7[2](v7, MEMORY[0x1E695E0F0], 0);
+      handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], 0);
     }
 
     goto LABEL_14;
@@ -134,19 +134,19 @@ LABEL_6:
     _os_log_impl(&dword_1C20AD000, v14, OS_LOG_TYPE_DEFAULT, "Rejecting unentitled process from requesting passkeys.", &v15, 2u);
   }
 
-  v7[2](v7, MEMORY[0x1E695E0F0], 0);
+  handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], 0);
 LABEL_14:
 }
 
-- (void)getPasskeysForRunningAssertionWithWebFrameIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getPasskeysForRunningAssertionWithWebFrameIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v9 = currentConnection;
+  if (currentConnection)
   {
-    [v8 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -156,19 +156,19 @@ LABEL_14:
 
   if (isClientWithAuditTokenProperlyEntitled(v16))
   {
-    v10 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:v6];
+    v10 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:identifierCopy];
     v11 = [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager autoFillOperationUUIDForWebFrameIdentifier:v10];
     if (v11)
     {
       v12 = [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager autoFillPasskeysForOperationUUID:v11];
-      v13 = [v12 first];
-      v14 = [v12 second];
-      v7[2](v7, v13, v14);
+      first = [v12 first];
+      second = [v12 second];
+      handlerCopy[2](handlerCopy, first, second);
     }
 
     else
     {
-      v7[2](v7, MEMORY[0x1E695E0F0], 0);
+      handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], 0);
     }
   }
 
@@ -181,46 +181,46 @@ LABEL_14:
       _os_log_impl(&dword_1C20AD000, v15, OS_LOG_TYPE_DEFAULT, "Rejecting unentitled process from requesting passkeys.", v16, 2u);
     }
 
-    v7[2](v7, MEMORY[0x1E695E0F0], 0);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], 0);
   }
 }
 
-- (void)userSelectedAutoFillPasskey:(id)a3 authenticatedLAContext:(id)a4 savedAccountContext:(id)a5 completionHandler:(id)a6
+- (void)userSelectedAutoFillPasskey:(id)passkey authenticatedLAContext:(id)context savedAccountContext:(id)accountContext completionHandler:(id)handler
 {
   publicKeyCredentialManager = self->_publicKeyCredentialManager;
-  v15 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 identifier];
-  v14 = [v12 operationUUID];
+  handlerCopy = handler;
+  accountContextCopy = accountContext;
+  contextCopy = context;
+  passkeyCopy = passkey;
+  identifier = [passkeyCopy identifier];
+  operationUUID = [passkeyCopy operationUUID];
 
-  [(ASPublicKeyCredentialManagerInterface *)publicKeyCredentialManager assertUsingAutoFillPasskeyWithIdentifier:v13 authenticatedContext:v11 savedAccountContext:v10 forOperationUUID:v14];
-  v15[2]();
+  [(ASPublicKeyCredentialManagerInterface *)publicKeyCredentialManager assertUsingAutoFillPasskeyWithIdentifier:identifier authenticatedContext:contextCopy savedAccountContext:accountContextCopy forOperationUUID:operationUUID];
+  handlerCopy[2]();
 }
 
-- (void)userSelectedAutoFillNearbyDevice:(id)a3 completionHandler:(id)a4
+- (void)userSelectedAutoFillNearbyDevice:(id)device completionHandler:(id)handler
 {
   publicKeyCredentialManager = self->_publicKeyCredentialManager;
-  v6 = a4;
-  v7 = [a3 operationUUID];
-  [(ASPublicKeyCredentialManagerInterface *)publicKeyCredentialManager presentCABLESheetForOperationUUID:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  operationUUID = [device operationUUID];
+  [(ASPublicKeyCredentialManagerInterface *)publicKeyCredentialManager presentCABLESheetForOperationUUID:operationUUID withCompletionHandler:handlerCopy];
 }
 
-- (void)test_createPasskeyWithUserName:(id)a3 displayName:(id)a4 relyingPartyIdentifier:(id)a5 userHandle:(id)a6 completionHandler:(id)a7
+- (void)test_createPasskeyWithUserName:(id)name displayName:(id)displayName relyingPartyIdentifier:(id)identifier userHandle:(id)handle completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v37 = a4;
-  v36 = a5;
-  v35 = a6;
-  v14 = a7;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  handlerCopy = handler;
   v15 = +[ASFeatureManager sharedManager];
-  v16 = [MEMORY[0x1E696B0B8] currentConnection];
-  v17 = v16;
-  if (v16)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v17 = currentConnection;
+  if (currentConnection)
   {
-    [v16 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -233,25 +233,25 @@ LABEL_14:
   if (v18)
   {
     v19 = [ASCPublicKeyCredentialCreationOptions alloc];
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v20 UUIDString];
-    v22 = [v21 dataUsingEncoding:4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v22 = [uUIDString dataUsingEncoding:4];
     v41[0] = &unk_1F41ABBB0;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
     v23 = v34 = self;
-    v25 = v36;
-    v24 = v37;
-    v26 = v13;
-    v27 = v13;
-    v28 = v35;
-    v29 = [(ASCPublicKeyCredentialCreationOptions *)v19 initWithChallenge:v22 clientDataJSON:0 clientDataHash:0 relyingPartyIdentifier:v36 userName:v27 userIdentifier:v35 userDisplayName:v37 supportedAlgorithmIdentifiers:v23 attestationPreference:@"none" userVerificationPreference:0 excludedCredentials:0 extensions:0 origin:0];
+    v25 = identifierCopy;
+    v24 = displayNameCopy;
+    v26 = nameCopy;
+    v27 = nameCopy;
+    v28 = handleCopy;
+    v29 = [(ASCPublicKeyCredentialCreationOptions *)v19 initWithChallenge:v22 clientDataJSON:0 clientDataHash:0 relyingPartyIdentifier:identifierCopy userName:v27 userIdentifier:handleCopy userDisplayName:displayNameCopy supportedAlgorithmIdentifiers:v23 attestationPreference:@"none" userVerificationPreference:0 excludedCredentials:0 extensions:0 origin:0];
 
     v30 = objc_alloc_init(ASPublicKeyCredentialOperationTestDelegate);
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __122__ASAgentAutoFillListener_test_createPasskeyWithUserName_displayName_relyingPartyIdentifier_userHandle_completionHandler___block_invoke;
     v38[3] = &unk_1E815FA38;
-    v39 = v14;
+    v39 = handlerCopy;
     [(ASPublicKeyCredentialOperationTestDelegate *)v30 setDidCompletionRegistrationCallback:v38];
     v31 = [(ASPublicKeyCredentialManagerInterface *)v34->_publicKeyCredentialManager createNewPlatformCredentialWithOptions:v29 authenticatedContext:0 delegate:v30 webFrameIdentifier:0 parentActivity:MEMORY[0x1E69E9C00] isConditionalRegistration:0 testOptions:0];
   }
@@ -264,11 +264,11 @@ LABEL_14:
       [ASAgentAutoFillListener test_createPasskeyWithUserName:v32 displayName:a2 relyingPartyIdentifier:? userHandle:? completionHandler:?];
     }
 
-    (*(v14 + 2))(v14, 0);
-    v26 = v13;
-    v25 = v36;
-    v24 = v37;
-    v28 = v35;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v26 = nameCopy;
+    v25 = identifierCopy;
+    v24 = displayNameCopy;
+    v28 = handleCopy;
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -294,41 +294,41 @@ void __122__ASAgentAutoFillListener_test_createPasskeyWithUserName_displayName_r
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 authenticatorData:(id)a5 signature:(id)a6 userHandle:(id)a7 credentialID:(id)a8
+- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle credentialID:(id)d
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  dCopy = d;
+  handleCopy = handle;
+  signatureCopy = signature;
+  dataCopy = data;
+  partyIdentifierCopy = partyIdentifier;
+  identifierCopy = identifier;
   LOBYTE(v20) = 1;
-  v21 = [[ASCPlatformPublicKeyCredentialAssertion alloc] initWithRelyingPartyIdentifier:v18 authenticatorData:v17 signature:v16 userHandle:v15 rawClientDataJSON:0 credentialID:v14 extensions:0 attachment:@"platform" isExternal:v20];
+  v21 = [[ASCPlatformPublicKeyCredentialAssertion alloc] initWithRelyingPartyIdentifier:partyIdentifierCopy authenticatorData:dataCopy signature:signatureCopy userHandle:handleCopy rawClientDataJSON:0 credentialID:dCopy extensions:0 attachment:@"platform" isExternal:v20];
 
-  [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager completeAssertionWithExternalPasskeyForWebFrameIdentifier:v19 usingCredential:v21];
+  [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager completeAssertionWithExternalPasskeyForWebFrameIdentifier:identifierCopy usingCredential:v21];
 }
 
-- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 authenticatorData:(id)a5 signature:(id)a6 userHandle:(id)a7 credentialID:(id)a8
+- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle credentialID:(id)d
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  dCopy = d;
+  handleCopy = handle;
+  signatureCopy = signature;
+  dataCopy = data;
+  partyIdentifierCopy = partyIdentifier;
+  identifierCopy = identifier;
   LOBYTE(v20) = 1;
-  v21 = [[ASCPlatformPublicKeyCredentialAssertion alloc] initWithRelyingPartyIdentifier:v18 authenticatorData:v17 signature:v16 userHandle:v15 rawClientDataJSON:0 credentialID:v14 extensions:0 attachment:@"platform" isExternal:v20];
+  v21 = [[ASCPlatformPublicKeyCredentialAssertion alloc] initWithRelyingPartyIdentifier:partyIdentifierCopy authenticatorData:dataCopy signature:signatureCopy userHandle:handleCopy rawClientDataJSON:0 credentialID:dCopy extensions:0 attachment:@"platform" isExternal:v20];
 
-  [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager completeAssertionWithExternalPasskeyForApplicationIdentifier:v19 usingCredential:v21];
+  [(ASPublicKeyCredentialManagerInterface *)self->_publicKeyCredentialManager completeAssertionWithExternalPasskeyForApplicationIdentifier:identifierCopy usingCredential:v21];
 }
 
-- (void)didFillCredentialForUsername:(id)a3 forURL:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inBrowserWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7
+- (void)didFillCredentialForUsername:(id)username forURL:(id)l fromProviderWithBundleIdentifier:(id)identifier inBrowserWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint
 {
-  if (a4)
+  if (l)
   {
     signInEventCollector = self->_signInEventCollector;
 
-    [ASPasswordSignInEventCollector didUseCredentialForUsername:"didUseCredentialForUsername:forURL:fromProviderWithBundleIdentifier:inBrowserWithBundleIdentifier:listenerEndpoint:" forURL:a3 fromProviderWithBundleIdentifier:? inBrowserWithBundleIdentifier:? listenerEndpoint:?];
+    [ASPasswordSignInEventCollector didUseCredentialForUsername:"didUseCredentialForUsername:forURL:fromProviderWithBundleIdentifier:inBrowserWithBundleIdentifier:listenerEndpoint:" forURL:username fromProviderWithBundleIdentifier:? inBrowserWithBundleIdentifier:? listenerEndpoint:?];
   }
 
   else
@@ -341,30 +341,30 @@ void __122__ASAgentAutoFillListener_test_createPasskeyWithUserName_displayName_r
   }
 }
 
-- (void)isOrigin:(id)a3 relatedToRelyingPartyIdentifier:(id)a4 completionHandler:(id)a5
+- (void)isOrigin:(id)origin relatedToRelyingPartyIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  originCopy = origin;
   v10 = objc_alloc_init(_TtC26AuthenticationServicesCore23ASCRelatedOriginFetcher);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__ASAgentAutoFillListener_isOrigin_relatedToRelyingPartyIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E815FA60;
-  v13 = v7;
-  v11 = v7;
-  [(ASCRelatedOriginFetcher *)v10 isOrigin:v9 relatedToRelyingPartyIdentifier:v8 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(ASCRelatedOriginFetcher *)v10 isOrigin:originCopy relatedToRelyingPartyIdentifier:identifierCopy completionHandler:v12];
 }
 
-- (void)newPasskeysAvailableForApplicationIdentifier:(id)a3
+- (void)newPasskeysAvailableForApplicationIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v4;
+    v19 = identifierCopy;
     _os_log_impl(&dword_1C20AD000, v5, OS_LOG_TYPE_INFO, "Passkeys loaded for %{public}@", buf, 0xCu);
   }
 
@@ -389,8 +389,8 @@ void __122__ASAgentAutoFillListener_test_createPasskeyWithUserName_displayName_r
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) remoteObjectProxy];
-        [v11 newPasskeysAvailableForApplicationIdentifier:v4];
+        remoteObjectProxy = [*(*(&v13 + 1) + 8 * v10) remoteObjectProxy];
+        [remoteObjectProxy newPasskeysAvailableForApplicationIdentifier:identifierCopy];
 
         ++v10;
       }

@@ -1,22 +1,22 @@
 @interface HMHearingProtectionViewController
-- (BOOL)isCurrentNoiseModeOffWithDevice:(id)a3;
+- (BOOL)isCurrentNoiseModeOffWithDevice:(id)device;
 - (BOOL)isPPEEnabled;
 - (BOOL)reduceLoudNoiseEnabled;
 - (BOOL)shouldShowPPE;
 - (id)getHeadphoneAudioSpecifierFooter;
 - (id)getSafetyDeviceType;
 - (id)reduceLoudNoiseEnabledString;
-- (id)setupListenerWithDevice:(id)a3;
+- (id)setupListenerWithDevice:(id)device;
 - (id)specifiers;
 - (void)disablePPE;
 - (void)enablePPE;
 - (void)jumpToHeadphoneSafety;
 - (void)openSafetyInformation;
-- (void)presentFitTestController:(id)a3;
-- (void)setReduceLoudNoiseEnabled:(id)a3;
+- (void)presentFitTestController:(id)controller;
+- (void)setReduceLoudNoiseEnabled:(id)enabled;
 - (void)setupPPE;
-- (void)submitHPDeviceAnalyticsWithPid:(int64_t)a3 lsrValue:(BOOL)a4;
-- (void)userDidTapLoudSoundReductionLink:(id)a3;
+- (void)submitHPDeviceAnalyticsWithPid:(int64_t)pid lsrValue:(BOOL)value;
+- (void)userDidTapLoudSoundReductionLink:(id)link;
 - (void)viewDidLoad;
 @end
 
@@ -25,57 +25,57 @@
 - (id)specifiers
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CF3248] sharedInstance];
-  v5 = [v4 deviceFromAddressString:self->_address];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  v5 = [mEMORY[0x277CF3248] deviceFromAddressString:self->_address];
   btDevice = self->_btDevice;
   self->_btDevice = v5;
 
-  v7 = [(HMHearingProtectionViewController *)self loudSoundSpecifier];
-  [v3 addObjectsFromArray:v7];
+  loudSoundSpecifier = [(HMHearingProtectionViewController *)self loudSoundSpecifier];
+  [v3 addObjectsFromArray:loudSoundSpecifier];
 
   v8 = [_TtC21HearingModeSettingsUI32AnyHearingFeatureContentProvider alloc];
-  v9 = [(HMHearingProtectionViewController *)self headphoneDevice];
-  v10 = [(AnyHearingFeatureContentProvider *)v8 initWithDevice:v9];
+  headphoneDevice = [(HMHearingProtectionViewController *)self headphoneDevice];
+  v10 = [(AnyHearingFeatureContentProvider *)v8 initWithDevice:headphoneDevice];
 
   if ([(AnyHearingFeatureContentProvider *)v10 featureFlag])
   {
-    v34 = [(AnyHearingFeatureContentProvider *)v10 deviceMarketingName];
+    deviceMarketingName = [(AnyHearingFeatureContentProvider *)v10 deviceMarketingName];
   }
 
   else
   {
-    v34 = @"AirPods Pro";
+    deviceMarketingName = @"AirPods Pro";
   }
 
   if ([(AnyHearingFeatureContentProvider *)v10 featureFlag])
   {
-    v33 = [(AnyHearingFeatureContentProvider *)v10 devicePlatformName];
+    devicePlatformName = [(AnyHearingFeatureContentProvider *)v10 devicePlatformName];
   }
 
   else
   {
-    v33 = @"AirPods";
+    devicePlatformName = @"AirPods";
   }
 
   v11 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"FIT_TEST_GROUP_ID"];
-  v12 = [(AnyHearingFeatureContentProvider *)v10 featureTitleSettings];
-  if (!v12)
+  featureTitleSettings = [(AnyHearingFeatureContentProvider *)v10 featureTitleSettings];
+  if (!featureTitleSettings)
   {
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v13 localizedStringForKey:@"Ear Tip Fit Test" value:&stru_28643BDD8 table:0];
+    featureTitleSettings = [v13 localizedStringForKey:@"Ear Tip Fit Test" value:&stru_28643BDD8 table:0];
   }
 
-  v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:featureTitleSettings target:self set:0 get:0 detail:0 cell:13 edit:0];
   v15 = MEMORY[0x277CCACA8];
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:@"Test the fit of your %@ ear tips to determine which size provides the best protection and sound quality. Properly fitting and functioning %@ are required for Hearing Protection to work as intended." value:&stru_28643BDD8 table:0];
-  v18 = [v15 localizedStringWithFormat:v17, v34, v33];
+  v18 = [v15 localizedStringWithFormat:v17, deviceMarketingName, devicePlatformName];
 
-  v19 = [(AnyHearingFeatureContentProvider *)v10 featureFooterSettings];
-  v20 = v19;
-  if (v19)
+  featureFooterSettings = [(AnyHearingFeatureContentProvider *)v10 featureFooterSettings];
+  v20 = featureFooterSettings;
+  if (featureFooterSettings)
   {
-    v21 = v19;
+    v21 = featureFooterSettings;
   }
 
   else
@@ -93,24 +93,24 @@
   [v3 addObject:v14];
   if (![(HMHearingProtectionViewController *)self isPPEEnabled]&& [(HMHearingProtectionViewController *)self shouldShowPPE])
   {
-    v24 = [(HMHearingProtectionViewController *)self safetySetupSpecifiers];
-    [v3 addObjectsFromArray:v24];
+    safetySetupSpecifiers = [(HMHearingProtectionViewController *)self safetySetupSpecifiers];
+    [v3 addObjectsFromArray:safetySetupSpecifiers];
   }
 
-  v25 = [(HMHearingProtectionViewController *)self aboutSpecifiers];
-  [v3 addObjectsFromArray:v25];
+  aboutSpecifiers = [(HMHearingProtectionViewController *)self aboutSpecifiers];
+  [v3 addObjectsFromArray:aboutSpecifiers];
 
-  v26 = [(HMHearingProtectionViewController *)self lineSeparatorSpecifiers];
-  [v3 addObjectsFromArray:v26];
+  lineSeparatorSpecifiers = [(HMHearingProtectionViewController *)self lineSeparatorSpecifiers];
+  [v3 addObjectsFromArray:lineSeparatorSpecifiers];
 
   v27 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HEADPHONE_SAFETY_GROUP_ID"];
-  v28 = [(HMHearingProtectionViewController *)self getHeadphoneAudioSpecifierFooter];
-  [v27 setObject:v28 forKeyedSubscript:v23];
+  getHeadphoneAudioSpecifierFooter = [(HMHearingProtectionViewController *)self getHeadphoneAudioSpecifierFooter];
+  [v27 setObject:getHeadphoneAudioSpecifierFooter forKeyedSubscript:v23];
 
   [v3 addObject:v27];
   v29 = MEMORY[0x277D3FAD8];
-  v30 = [(HMHearingProtectionViewController *)self getSafetyDeviceType];
-  v31 = [v29 preferenceSpecifierNamed:v30 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  getSafetyDeviceType = [(HMHearingProtectionViewController *)self getSafetyDeviceType];
+  v31 = [v29 preferenceSpecifierNamed:getSafetyDeviceType target:self set:0 get:0 detail:0 cell:13 edit:0];
 
   [v31 setButtonAction:sel_jumpToHeadphoneSafety];
   [v3 addObject:v31];
@@ -121,12 +121,12 @@
 
 - (id)getHeadphoneAudioSpecifierFooter
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"Loud headphone audio can affect your hearing over time. Your iPad can analyze headphone audio and reduce any sound that is over a set decibel level.";
   }
@@ -143,12 +143,12 @@
 
 - (id)getSafetyDeviceType
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"Headphone Safety on iPad";
   }
@@ -163,15 +163,15 @@
   return v7;
 }
 
-- (void)presentFitTestController:(id)a3
+- (void)presentFitTestController:(id)controller
 {
   v4 = [_TtC21HearingModeSettingsUI32AnyHearingFeatureContentProvider alloc];
-  v5 = [(HMHearingProtectionViewController *)self headphoneDevice];
-  v18 = [(AnyHearingFeatureContentProvider *)v4 initWithDevice:v5];
+  headphoneDevice = [(HMHearingProtectionViewController *)self headphoneDevice];
+  v18 = [(AnyHearingFeatureContentProvider *)v4 initWithDevice:headphoneDevice];
 
   btDevice = self->_btDevice;
-  v7 = [(HMHearingProtectionViewController *)self headphoneDevice];
-  v8 = [(AnyHearingFeatureContentProvider *)v18 fitWelcomeControllerWithBluetoothDevice:btDevice contentProvider:v7];
+  headphoneDevice2 = [(HMHearingProtectionViewController *)self headphoneDevice];
+  v8 = [(AnyHearingFeatureContentProvider *)v18 fitWelcomeControllerWithBluetoothDevice:btDevice contentProvider:headphoneDevice2];
 
   v9 = [[HMFitTestWelcomeController alloc] initWithHeadphoneDevice:self->_headphoneDevice];
   [(HMFitTestWelcomeController *)v9 setCurrentDevice:self->_btDevice];
@@ -188,49 +188,49 @@
   v11 = v10;
 
   v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelFitTest];
-  v13 = [(HMFitTestWelcomeController *)v11 navigationItem];
-  [v13 setLeftBarButtonItem:v12];
+  navigationItem = [(HMFitTestWelcomeController *)v11 navigationItem];
+  [navigationItem setLeftBarButtonItem:v12];
 
   v14 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v11];
-  v15 = [v14 navigationBar];
-  v16 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v15 setBackgroundColor:v16];
+  navigationBar = [v14 navigationBar];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [navigationBar setBackgroundColor:systemBackgroundColor];
 
-  v17 = [v14 navigationBar];
-  [v17 _setHidesShadow:1];
+  navigationBar2 = [v14 navigationBar];
+  [navigationBar2 _setHidesShadow:1];
 
   [v14 setModalPresentationStyle:2];
   [(HMHearingProtectionViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)setReduceLoudNoiseEnabled:(id)a3
+- (void)setReduceLoudNoiseEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = "Off";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = "On";
   }
 
   NSLog(&cfstr_HearingProtect.isa, v5);
-  v6 = [MEMORY[0x277D12DF8] sharedInstance];
-  [v6 setActiveHearingProtectionEnabled:v4 forAddress:self->_address];
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+  [mEMORY[0x277D12DF8] setActiveHearingProtectionEnabled:bOOLValue forAddress:self->_address];
 }
 
 - (BOOL)reduceLoudNoiseEnabled
 {
-  v3 = [MEMORY[0x277D12DF8] sharedInstance];
-  LOBYTE(self) = [v3 activeHearingProtectionEnabledForAddress:self->_address];
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+  LOBYTE(self) = [mEMORY[0x277D12DF8] activeHearingProtectionEnabledForAddress:self->_address];
 
   return self;
 }
 
 - (id)reduceLoudNoiseEnabledString
 {
-  v3 = [(HMHearingProtectionViewController *)self reduceLoudNoiseEnabled];
-  v4 = v3;
+  reduceLoudNoiseEnabled = [(HMHearingProtectionViewController *)self reduceLoudNoiseEnabled];
+  v4 = reduceLoudNoiseEnabled;
   v5 = "Off";
-  if (v3)
+  if (reduceLoudNoiseEnabled)
   {
     v5 = "On";
   }
@@ -273,22 +273,22 @@ LABEL_10:
 
 - (void)jumpToHeadphoneSafety
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Sounds&path=HEADPHONE_LEVEL_LIMIT_SETTING"];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 - (void)viewDidLoad
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"bt-address"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"bt-address"];
   address = self->_address;
   self->_address = v4;
 
   v6 = [(NSString *)self->_address stringByReplacingOccurrencesOfString:@":" withString:@"-"];
-  v7 = [MEMORY[0x277D0FC08] shared];
-  v8 = [v7 connectedHeadphones];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  mEMORY[0x277D0FC08] = [MEMORY[0x277D0FC08] shared];
+  connectedHeadphones = [mEMORY[0x277D0FC08] connectedHeadphones];
+  v9 = [connectedHeadphones objectForKeyedSubscript:v6];
   headphoneDevice = self->_headphoneDevice;
   self->_headphoneDevice = v9;
 
@@ -305,22 +305,22 @@ LABEL_10:
   [(HMHearingProtectionViewController *)&v13 viewDidLoad];
 }
 
-- (void)userDidTapLoudSoundReductionLink:(id)a3
+- (void)userDidTapLoudSoundReductionLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/guide/airpods/customize-transparency-mode-turn-conversation-dev966f5f818/web"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (BOOL)isCurrentNoiseModeOffWithDevice:(id)a3
+- (BOOL)isCurrentNoiseModeOffWithDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = sub_252003E70();
 
   return v4 == 1;
 }
 
-- (void)submitHPDeviceAnalyticsWithPid:(int64_t)a3 lsrValue:(BOOL)a4
+- (void)submitHPDeviceAnalyticsWithPid:(int64_t)pid lsrValue:(BOOL)value
 {
   v6 = [objc_allocWithZone(sub_252003D10()) init];
   v4 = sub_252004860();
@@ -332,10 +332,10 @@ LABEL_10:
   sub_252003CD0();
 }
 
-- (id)setupListenerWithDevice:(id)a3
+- (id)setupListenerWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
+  deviceCopy = device;
+  selfCopy = self;
   HMHearingProtectionViewController.setupListener(device:)(v14);
 
   v6 = v15;
@@ -362,7 +362,7 @@ LABEL_10:
 
 - (void)openSafetyInformation
 {
-  v2 = self;
+  selfCopy = self;
   HMHearingProtectionViewController.openSafetyInformation()();
 }
 
@@ -372,15 +372,15 @@ LABEL_10:
   v7 = sub_251FD6770(0, &qword_27F4C6940, off_2796F16C8);
   v8 = &off_28643AF98;
   *&v6 = self;
-  v5 = self;
+  selfCopy = self;
   sub_251FE9B20(&v6);
   v4 = v3;
-  [(HMHearingProtectionViewController *)v5 presentViewController:v3 animated:1 completion:0];
+  [(HMHearingProtectionViewController *)selfCopy presentViewController:v3 animated:1 completion:0];
 }
 
 - (BOOL)shouldShowPPE
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HMHearingProtectionViewController.shouldShowPPE()();
 
   return v3;
@@ -388,11 +388,11 @@ LABEL_10:
 
 - (BOOL)isPPEEnabled
 {
-  v2 = self;
-  v3 = [(HMHearingProtectionViewController *)v2 headphoneDevice];
-  if (v3)
+  selfCopy = self;
+  headphoneDevice = [(HMHearingProtectionViewController *)selfCopy headphoneDevice];
+  if (headphoneDevice)
   {
-    v4 = v3;
+    v4 = headphoneDevice;
     v5 = sub_252003E60();
 
     LODWORD(v4) = sub_252004190();
@@ -408,13 +408,13 @@ LABEL_10:
 
 - (void)disablePPE
 {
-  v2 = self;
+  selfCopy = self;
   HMHearingProtectionViewController.disablePPE()();
 }
 
 - (void)enablePPE
 {
-  v2 = self;
+  selfCopy = self;
   HMHearingProtectionViewController.enablePPE()();
 }
 

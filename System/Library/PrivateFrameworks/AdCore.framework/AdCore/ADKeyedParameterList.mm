@@ -1,13 +1,13 @@
 @interface ADKeyedParameterList
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addParameterList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameterList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADKeyedParameterList
@@ -30,22 +30,22 @@ void __31__ADKeyedParameterList_options__block_invoke()
   options_sOptions_4 = &unk_285104CE0;
 }
 
-- (void)addParameterList:(id)a3
+- (void)addParameterList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   parameterLists = self->_parameterLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!parameterLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_parameterLists;
     self->_parameterLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     parameterLists = self->_parameterLists;
   }
 
-  [(NSMutableArray *)parameterLists addObject:v4];
+  [(NSMutableArray *)parameterLists addObject:listCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@ void __31__ADKeyedParameterList_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADKeyedParameterList;
   v4 = [(ADKeyedParameterList *)&v8 description];
-  v5 = [(ADKeyedParameterList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADKeyedParameterList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -63,12 +63,12 @@ void __31__ADKeyedParameterList_options__block_invoke()
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   if ([(NSMutableArray *)self->_parameterLists count])
@@ -93,8 +93,8 @@ void __31__ADKeyedParameterList_options__block_invoke()
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -111,16 +111,16 @@ void __31__ADKeyedParameterList_options__block_invoke()
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     [ADKeyedParameterList writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -157,31 +157,31 @@ void __31__ADKeyedParameterList_options__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setKey:self->_key];
+  toCopy = to;
+  [toCopy setKey:self->_key];
   if ([(ADKeyedParameterList *)self parameterListsCount])
   {
-    [v8 clearParameterLists];
-    v4 = [(ADKeyedParameterList *)self parameterListsCount];
-    if (v4)
+    [toCopy clearParameterLists];
+    parameterListsCount = [(ADKeyedParameterList *)self parameterListsCount];
+    if (parameterListsCount)
     {
-      v5 = v4;
+      v5 = parameterListsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ADKeyedParameterList *)self parameterListAtIndex:i];
-        [v8 addParameterList:v7];
+        [toCopy addParameterList:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -205,7 +205,7 @@ void __31__ADKeyedParameterList_options__block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addParameterList:v13];
 
         ++v12;
@@ -222,13 +222,13 @@ void __31__ADKeyedParameterList_options__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[1])) || -[NSString isEqual:](key, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[1])) || -[NSString isEqual:](key, "isEqual:")))
   {
     parameterLists = self->_parameterLists;
-    if (parameterLists | v4[2])
+    if (parameterLists | equalCopy[2])
     {
       v7 = [(NSMutableArray *)parameterLists isEqual:?];
     }
@@ -247,11 +247,11 @@ void __31__ADKeyedParameterList_options__block_invoke()
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(ADKeyedParameterList *)self setKey:?];
   }
@@ -260,7 +260,7 @@ void __31__ADKeyedParameterList_options__block_invoke()
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

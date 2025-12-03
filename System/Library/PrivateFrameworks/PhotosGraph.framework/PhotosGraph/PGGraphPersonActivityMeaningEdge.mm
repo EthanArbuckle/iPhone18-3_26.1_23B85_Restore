@@ -1,7 +1,7 @@
 @interface PGGraphPersonActivityMeaningEdge
 + (id)filter;
 - (id)edgeDescription;
-- (id)initFromMomentNode:(id)a3 toPersonActivityMeaningNode:(id)a4;
+- (id)initFromMomentNode:(id)node toPersonActivityMeaningNode:(id)meaningNode;
 - (id)meaningLabel;
 @end
 
@@ -9,10 +9,10 @@
 
 - (id)meaningLabel
 {
-  v2 = [(MAEdge *)self targetNode];
-  v3 = [v2 label];
+  targetNode = [(MAEdge *)self targetNode];
+  label = [targetNode label];
 
-  return v3;
+  return label;
 }
 
 - (id)edgeDescription
@@ -20,18 +20,18 @@
   v3 = MEMORY[0x277CCACA8];
   v8.receiver = self;
   v8.super_class = PGGraphPersonActivityMeaningEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v8 edgeDescription];
-  v5 = [(PGGraphPersonActivityMeaningEdge *)self meaningLabel];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v8 edgeDescription];
+  meaningLabel = [(PGGraphPersonActivityMeaningEdge *)self meaningLabel];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", edgeDescription, meaningLabel];
 
   return v6;
 }
 
-- (id)initFromMomentNode:(id)a3 toPersonActivityMeaningNode:(id)a4
+- (id)initFromMomentNode:(id)node toPersonActivityMeaningNode:(id)meaningNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPersonActivityMeaningEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:meaningNode];
 }
 
 + (id)filter

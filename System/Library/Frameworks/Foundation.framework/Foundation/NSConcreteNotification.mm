@@ -1,5 +1,5 @@
 @interface NSConcreteNotification
-- (NSConcreteNotification)initWithName:(id)a3 object:(id)a4 userInfo:(id)a5;
+- (NSConcreteNotification)initWithName:(id)name object:(id)object userInfo:(id)info;
 - (id)name;
 - (id)userInfo;
 - (void)dealloc;
@@ -30,14 +30,14 @@
   return v2;
 }
 
-- (NSConcreteNotification)initWithName:(id)a3 object:(id)a4 userInfo:(id)a5
+- (NSConcreteNotification)initWithName:(id)name object:(id)object userInfo:(id)info
 {
-  v5 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    self->name = [a3 copy];
-    v5->object = a4;
-    v5->userInfo = a5;
+    self->name = [name copy];
+    selfCopy->object = object;
+    selfCopy->userInfo = info;
   }
 
   else
@@ -46,7 +46,7 @@
     return 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

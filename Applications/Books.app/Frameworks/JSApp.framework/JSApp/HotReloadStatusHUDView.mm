@@ -1,7 +1,7 @@
 @interface HotReloadStatusHUDView
 - (CGRect)frame;
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA222HotReloadStatusHUDView)initWithCoder:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA222HotReloadStatusHUDView)initWithCoder:(id)coder;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation HotReloadStatusHUDView
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HotReloadStatusHUDView();
   v7 = v8.receiver;
@@ -31,7 +31,7 @@
   sub_5CD30();
 }
 
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA222HotReloadStatusHUDView)initWithCoder:(id)a3
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA222HotReloadStatusHUDView)initWithCoder:(id)coder
 {
   result = sub_84AFC();
   __break(1u);

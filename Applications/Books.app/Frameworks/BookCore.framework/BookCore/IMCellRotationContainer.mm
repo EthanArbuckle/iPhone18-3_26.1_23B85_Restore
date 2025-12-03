@@ -1,11 +1,11 @@
 @interface IMCellRotationContainer
-- (void)crossfadeWithDuration:(double)a3;
+- (void)crossfadeWithDuration:(double)duration;
 - (void)dealloc;
 - (void)didFinishRotation;
 - (void)prepareToCrossfade;
-- (void)setEndCell:(id)a3;
-- (void)setOrigin:(CGPoint)a3;
-- (void)setStartCell:(id)a3;
+- (void)setEndCell:(id)cell;
+- (void)setOrigin:(CGPoint)origin;
+- (void)setStartCell:(id)cell;
 @end
 
 @implementation IMCellRotationContainer
@@ -19,18 +19,18 @@
   [(IMCellRotationContainer *)&v3 dealloc];
 }
 
-- (void)setStartCell:(id)a3
+- (void)setStartCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   startCell = self->_startCell;
-  v8 = v5;
-  if (startCell != v5)
+  v8 = cellCopy;
+  if (startCell != cellCopy)
   {
     [(IMGridViewCell *)startCell removeFromSuperview];
     v7 = self->_startCell;
     self->_startCell = 0;
 
-    objc_storeStrong(&self->_startCell, a3);
+    objc_storeStrong(&self->_startCell, cell);
     if (self->_startCell)
     {
       [(IMCellRotationContainer *)self addSubview:?];
@@ -40,18 +40,18 @@
   }
 }
 
-- (void)setEndCell:(id)a3
+- (void)setEndCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   endCell = self->_endCell;
-  v8 = v5;
-  if (endCell != v5)
+  v8 = cellCopy;
+  if (endCell != cellCopy)
   {
     [(IMGridViewCell *)endCell removeFromSuperview];
     v7 = self->_endCell;
     self->_endCell = 0;
 
-    objc_storeStrong(&self->_endCell, a3);
+    objc_storeStrong(&self->_endCell, cell);
     if (self->_endCell)
     {
       [(IMCellRotationContainer *)self addSubview:?];
@@ -61,10 +61,10 @@
   }
 }
 
-- (void)setOrigin:(CGPoint)a3
+- (void)setOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(IMCellRotationContainer *)self frame];
 
   [(IMCellRotationContainer *)self setFrame:x, y];
@@ -72,35 +72,35 @@
 
 - (void)prepareToCrossfade
 {
-  v3 = [(IMGridViewCell *)self->_startCell layer];
-  [v3 setShouldRasterize:1];
+  layer = [(IMGridViewCell *)self->_startCell layer];
+  [layer setShouldRasterize:1];
 
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v6 = v5;
-  v7 = [(IMGridViewCell *)self->_startCell layer];
-  [v7 setRasterizationScale:v6];
+  layer2 = [(IMGridViewCell *)self->_startCell layer];
+  [layer2 setRasterizationScale:v6];
 
-  v8 = [(IMGridViewCell *)self->_startCell layer];
-  [v8 setPreloadsCache:1];
+  layer3 = [(IMGridViewCell *)self->_startCell layer];
+  [layer3 setPreloadsCache:1];
 
-  v9 = [(IMGridViewCell *)self->_startCell layer];
-  [v9 setFrozen:1];
+  layer4 = [(IMGridViewCell *)self->_startCell layer];
+  [layer4 setFrozen:1];
 
-  v10 = [(IMGridViewCell *)self->_endCell layer];
-  [v10 setShouldRasterize:1];
+  layer5 = [(IMGridViewCell *)self->_endCell layer];
+  [layer5 setShouldRasterize:1];
 
   v11 = +[UIScreen mainScreen];
   [v11 scale];
   v13 = v12;
-  v14 = [(IMGridViewCell *)self->_endCell layer];
-  [v14 setRasterizationScale:v13];
+  layer6 = [(IMGridViewCell *)self->_endCell layer];
+  [layer6 setRasterizationScale:v13];
 
-  v15 = [(IMGridViewCell *)self->_endCell layer];
-  [v15 setPreloadsCache:1];
+  layer7 = [(IMGridViewCell *)self->_endCell layer];
+  [layer7 setPreloadsCache:1];
 
-  v16 = [(IMGridViewCell *)self->_endCell layer];
-  [v16 setFrozen:1];
+  layer8 = [(IMGridViewCell *)self->_endCell layer];
+  [layer8 setFrozen:1];
 
   [(IMGridViewCell *)self->_startCell setAlpha:1.0];
   endCell = self->_endCell;
@@ -110,32 +110,32 @@
 
 - (void)didFinishRotation
 {
-  v3 = [(IMGridViewCell *)self->_startCell layer];
-  [v3 setShouldRasterize:0];
+  layer = [(IMGridViewCell *)self->_startCell layer];
+  [layer setShouldRasterize:0];
 
-  v4 = [(IMGridViewCell *)self->_startCell layer];
-  [v4 setRasterizationScale:1.0];
+  layer2 = [(IMGridViewCell *)self->_startCell layer];
+  [layer2 setRasterizationScale:1.0];
 
-  v5 = [(IMGridViewCell *)self->_startCell layer];
-  [v5 setPreloadsCache:0];
+  layer3 = [(IMGridViewCell *)self->_startCell layer];
+  [layer3 setPreloadsCache:0];
 
-  v6 = [(IMGridViewCell *)self->_startCell layer];
-  [v6 setFrozen:0];
+  layer4 = [(IMGridViewCell *)self->_startCell layer];
+  [layer4 setFrozen:0];
 
-  v7 = [(IMGridViewCell *)self->_endCell layer];
-  [v7 setShouldRasterize:0];
+  layer5 = [(IMGridViewCell *)self->_endCell layer];
+  [layer5 setShouldRasterize:0];
 
-  v8 = [(IMGridViewCell *)self->_endCell layer];
-  [v8 setRasterizationScale:1.0];
+  layer6 = [(IMGridViewCell *)self->_endCell layer];
+  [layer6 setRasterizationScale:1.0];
 
-  v9 = [(IMGridViewCell *)self->_endCell layer];
-  [v9 setPreloadsCache:0];
+  layer7 = [(IMGridViewCell *)self->_endCell layer];
+  [layer7 setPreloadsCache:0];
 
-  v10 = [(IMGridViewCell *)self->_endCell layer];
-  [v10 setFrozen:0];
+  layer8 = [(IMGridViewCell *)self->_endCell layer];
+  [layer8 setFrozen:0];
 }
 
-- (void)crossfadeWithDuration:(double)a3
+- (void)crossfadeWithDuration:(double)duration
 {
   v3 = 1.0;
   if (!self->_endCell)
@@ -148,7 +148,7 @@
   v4[2] = sub_73828;
   v4[3] = &unk_2C7D40;
   v4[4] = self;
-  [UIView animateWithDuration:v4 animations:v3 * a3];
+  [UIView animateWithDuration:v4 animations:v3 * duration];
 }
 
 @end

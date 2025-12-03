@@ -1,17 +1,17 @@
 @interface _UISingleFingerTapExtensionGesture
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
 - (int64_t)_modifierFlags;
 - (void)_resetGestureRecognizer;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UISingleFingerTapExtensionGesture
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UISingleFingerTapExtensionGesture;
-  [(UITapGestureRecognizer *)&v5 touchesBegan:a3 withEvent:a4];
+  [(UITapGestureRecognizer *)&v5 touchesBegan:began withEvent:event];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self setState:3];
@@ -26,9 +26,9 @@
   [(NSMutableSet *)self->_trackedEvents removeAllObjects];
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   trackedEvents = self->_trackedEvents;
   if (!trackedEvents)
   {
@@ -39,7 +39,7 @@
     trackedEvents = self->_trackedEvents;
   }
 
-  [(NSMutableSet *)trackedEvents addObject:v5];
+  [(NSMutableSet *)trackedEvents addObject:eventCopy];
 
   return 1;
 }
@@ -49,7 +49,7 @@
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = _UISingleFingerTapExtensionGesture;
-  v3 = [(UIGestureRecognizer *)&v14 _modifierFlags];
+  _modifierFlags = [(UIGestureRecognizer *)&v14 _modifierFlags];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -70,7 +70,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v3 |= [*(*(&v10 + 1) + 8 * v8++) _modifierFlags];
+        _modifierFlags |= [*(*(&v10 + 1) + 8 * v8++) _modifierFlags];
       }
 
       while (v6 != v8);
@@ -80,7 +80,7 @@
     while (v6);
   }
 
-  return v3;
+  return _modifierFlags;
 }
 
 @end

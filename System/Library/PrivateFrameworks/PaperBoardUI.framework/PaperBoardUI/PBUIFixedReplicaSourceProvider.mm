@@ -1,8 +1,8 @@
 @interface PBUIFixedReplicaSourceProvider
 - (PBUIFixedReplicaSourceProvider)init;
 - (void)dealloc;
-- (void)setPortalSource:(id)a3;
-- (void)setSnapshotSource:(id)a3;
+- (void)setPortalSource:(id)source;
+- (void)setSnapshotSource:(id)source;
 @end
 
 @implementation PBUIFixedReplicaSourceProvider
@@ -30,22 +30,22 @@
   [(PBUIFixedReplicaSourceProvider *)&v3 dealloc];
 }
 
-- (void)setPortalSource:(id)a3
+- (void)setPortalSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_portalSource, a3);
+    objc_storeStrong(&self->_portalSource, source);
     [(PBUIReplicaSourceObserverBox *)self->_observers setNeedsSourceUpdate];
   }
 }
 
-- (void)setSnapshotSource:(id)a3
+- (void)setSnapshotSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_snapshotSource, a3);
+    objc_storeStrong(&self->_snapshotSource, source);
     [(PBUIReplicaSourceObserverBox *)self->_observers setNeedsSourceUpdate];
   }
 }

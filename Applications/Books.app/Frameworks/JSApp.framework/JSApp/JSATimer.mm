@@ -2,17 +2,17 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)schedule;
-- (void)setOnTimeout:(id)a3;
+- (void)setOnTimeout:(id)timeout;
 @end
 
 @implementation JSATimer
 
 - (void)dealloc
 {
-  v3 = [(JSManagedValue *)self->_onTimeoutManagedValue value];
-  v4 = [v3 context];
-  v5 = [v4 virtualMachine];
-  [v5 removeManagedReference:self->_onTimeoutManagedValue withOwner:self];
+  value = [(JSManagedValue *)self->_onTimeoutManagedValue value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:self->_onTimeoutManagedValue withOwner:self];
 
   v6.receiver = self;
   v6.super_class = JSATimer;
@@ -45,27 +45,27 @@
 
 - (void)cancel
 {
-  v3 = [(JSATimer *)self source];
+  source = [(JSATimer *)self source];
 
-  if (v3)
+  if (source)
   {
-    v4 = [(JSATimer *)self source];
-    dispatch_source_cancel(v4);
+    source2 = [(JSATimer *)self source];
+    dispatch_source_cancel(source2);
 
     [(JSATimer *)self setSource:0];
   }
 }
 
-- (void)setOnTimeout:(id)a3
+- (void)setOnTimeout:(id)timeout
 {
   onTimeoutManagedValue = self->_onTimeoutManagedValue;
-  v5 = a3;
-  v6 = [(JSManagedValue *)onTimeoutManagedValue value];
-  v7 = [v6 context];
-  v8 = [v7 virtualMachine];
-  [v8 removeManagedReference:self->_onTimeoutManagedValue withOwner:self];
+  timeoutCopy = timeout;
+  value = [(JSManagedValue *)onTimeoutManagedValue value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:self->_onTimeoutManagedValue withOwner:self];
 
-  v9 = [JSManagedValue managedValueWithValue:v5 andOwner:self];
+  v9 = [JSManagedValue managedValueWithValue:timeoutCopy andOwner:self];
 
   v10 = self->_onTimeoutManagedValue;
   self->_onTimeoutManagedValue = v9;

@@ -1,19 +1,19 @@
 @interface WebHighlightLayer
-- (WebHighlightLayer)initWithHighlightView:(id)a3 webView:(id)a4;
+- (WebHighlightLayer)initWithHighlightView:(id)view webView:(id)webView;
 - (void)layoutSublayers;
 @end
 
 @implementation WebHighlightLayer
 
-- (WebHighlightLayer)initWithHighlightView:(id)a3 webView:(id)a4
+- (WebHighlightLayer)initWithHighlightView:(id)view webView:(id)webView
 {
   v7.receiver = self;
   v7.super_class = WebHighlightLayer;
   result = [(WebHighlightLayer *)&v7 init];
   if (result)
   {
-    result->_view = a3;
-    result->_webView = a4;
+    result->_view = view;
+    result->_webView = webView;
   }
 
   return result;

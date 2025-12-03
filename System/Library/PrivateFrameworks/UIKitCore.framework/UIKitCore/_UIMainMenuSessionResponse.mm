@@ -1,51 +1,51 @@
 @interface _UIMainMenuSessionResponse
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuSessionResponse)initWithCoder:(id)a3;
-- (id)_initWithSession:(id)a3 menuStateResponse:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuSessionResponse)initWithCoder:(id)coder;
+- (id)_initWithSession:(id)session menuStateResponse:(id)response;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuSessionResponse
 
-- (id)_initWithSession:(id)a3 menuStateResponse:(id)a4
+- (id)_initWithSession:(id)session menuStateResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  responseCopy = response;
   v12.receiver = self;
   v12.super_class = _UIMainMenuSessionResponse;
   v9 = [(_UIMainMenuSessionResponse *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(p_isa + 2, response);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   session = self->_session;
-  v5 = a3;
-  [v5 encodeObject:session forKey:@"Session"];
-  [v5 encodeObject:self->_menuStateResponse forKey:@"MenuStateResponse"];
+  coderCopy = coder;
+  [coderCopy encodeObject:session forKey:@"Session"];
+  [coderCopy encodeObject:self->_menuStateResponse forKey:@"MenuStateResponse"];
 }
 
-- (_UIMainMenuSessionResponse)initWithCoder:(id)a3
+- (_UIMainMenuSessionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuSessionResponse *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"Session"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Session"];
     session = v5->_session;
     v5->_session = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"MenuStateResponse"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"MenuStateResponse"];
     menuStateResponse = v5->_menuStateResponse;
     v5->_menuStateResponse = v10;
   }
@@ -53,10 +53,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -68,7 +68,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       session = v7->_session;
       v9 = self->_session;
       v10 = session;
@@ -131,9 +131,9 @@ LABEL_18:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_session withName:@"session" skipIfNil:1];
   v5 = [v3 appendObject:self->_menuStateResponse withName:@"menuStateResponse" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

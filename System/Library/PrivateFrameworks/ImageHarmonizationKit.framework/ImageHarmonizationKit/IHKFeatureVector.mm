@@ -1,23 +1,23 @@
 @interface IHKFeatureVector
-+ (id)addFeatureVectorA:(id)a3 B:(id)a4;
-+ (id)copy:(id)a3;
-- (IHKFeatureVector)initWithCoder:(id)a3;
-- (IHKFeatureVector)initWithData:(id)a3;
-- (IHKFeatureVector)initWithTensor:(EspressoTensor *)a3;
-- (float)cosineSimilarity:(id)a3;
-- (float)l2Distance:(id)a3;
++ (id)addFeatureVectorA:(id)a B:(id)b;
++ (id)copy:(id)copy;
+- (IHKFeatureVector)initWithCoder:(id)coder;
+- (IHKFeatureVector)initWithData:(id)data;
+- (IHKFeatureVector)initWithTensor:(EspressoTensor *)tensor;
+- (float)cosineSimilarity:(id)similarity;
+- (float)l2Distance:(id)distance;
 - (id).cxx_construct;
-- (id)featureVectorByAppendingFeatureVector:(id)a3;
+- (id)featureVectorByAppendingFeatureVector:(id)vector;
 - (unint64_t)size;
-- (void)debugPrintTensor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToBinaryFile:(id)a3;
-- (void)saveToTextFile:(id)a3;
+- (void)debugPrintTensor:(id)tensor;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToBinaryFile:(id)file;
+- (void)saveToTextFile:(id)file;
 @end
 
 @implementation IHKFeatureVector
 
-- (IHKFeatureVector)initWithTensor:(EspressoTensor *)a3
+- (IHKFeatureVector)initWithTensor:(EspressoTensor *)tensor
 {
   v20.receiver = self;
   v20.super_class = IHKFeatureVector;
@@ -25,12 +25,12 @@
   if (v7)
   {
     v13 = &unk_2866F58E8;
-    type = a3->type_;
+    type = tensor->type_;
     v16 = 0;
     v17 = 0;
     __p = 0;
-    begin = a3->shape_.sizes_.__begin_;
-    end = a3->shape_.sizes_.__end_;
+    begin = tensor->shape_.sizes_.__begin_;
+    end = tensor->shape_.sizes_.__end_;
     if (end != begin)
     {
       if (((end - begin) & 0x8000000000000000) == 0)
@@ -41,8 +41,8 @@
       sub_254ACE59C();
     }
 
-    cntrl = a3->storage_.__cntrl_;
-    ptr = a3->storage_.__ptr_;
+    cntrl = tensor->storage_.__cntrl_;
+    ptr = tensor->storage_.__ptr_;
     v19 = cntrl;
     if (cntrl)
     {
@@ -69,14 +69,14 @@
   return v7;
 }
 
-- (IHKFeatureVector)initWithData:(id)a3
+- (IHKFeatureVector)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = IHKFeatureVector;
   if ([(IHKFeatureVector *)&v11 init])
   {
-    objc_msgSend_length(v4, v5, v6, v7, v8);
+    objc_msgSend_length(dataCopy, v5, v6, v7, v8);
     v10 = 4;
     operator new();
   }
@@ -169,20 +169,20 @@ LABEL_13:
   return v8;
 }
 
-- (id)featureVectorByAppendingFeatureVector:(id)a3
+- (id)featureVectorByAppendingFeatureVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   objc_msgSend_size(self, v5, v6, v7, v8);
-  objc_msgSend_size(v4, v9, v10, v11, v12);
+  objc_msgSend_size(vectorCopy, v9, v10, v11, v12);
   v14 = 4;
   operator new();
 }
 
-- (void)saveToTextFile:(id)a3
+- (void)saveToTextFile:(id)file
 {
   v39[19] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  fileCopy = file;
+  v5 = fileCopy;
   objc_msgSend_UTF8String(v5, v6, v7, v8, v9);
   sub_254ACACE4(&v37);
   objc_msgSend_tensor(self, v10, v11, v12, v13);
@@ -272,10 +272,10 @@ LABEL_13:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveToBinaryFile:(id)a3
+- (void)saveToBinaryFile:(id)file
 {
-  v4 = a3;
-  v5 = v4;
+  fileCopy = file;
+  v5 = fileCopy;
   v10 = objc_msgSend_UTF8String(v5, v6, v7, v8, v9);
   v11 = fopen(v10, "wb");
   objc_msgSend_tensor(self, v12, v13, v14, v15);
@@ -363,10 +363,10 @@ LABEL_10:
   fclose(v11);
 }
 
-- (void)debugPrintTensor:(id)a3
+- (void)debugPrintTensor:(id)tensor
 {
-  v4 = a3;
-  v40 = v4;
+  tensorCopy = tensor;
+  v40 = tensorCopy;
   objc_msgSend_tensor(self, v5, v6, v7, v8);
   if (v41 != 4)
   {
@@ -388,7 +388,7 @@ LABEL_10:
     operator delete(__p);
   }
 
-  v10 = v4;
+  v10 = tensorCopy;
   v15 = objc_msgSend_UTF8String(v10, v11, v12, v13, v14);
   printf("DEBUG>> %s = [", v15);
   v20 = 0;
@@ -497,9 +497,9 @@ LABEL_21:
   puts("]");
 }
 
-- (float)cosineSimilarity:(id)a3
+- (float)cosineSimilarity:(id)similarity
 {
-  v4 = a3;
+  similarityCopy = similarity;
   objc_msgSend_tensor(self, v5, v6, v7, v8);
   if (v37 != 4)
   {
@@ -521,14 +521,14 @@ LABEL_21:
     operator delete(__p);
   }
 
-  if (!v4)
+  if (!similarityCopy)
   {
     v36 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v36, "Incorrect data type requested.");
     __cxa_throw(v36, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  objc_msgSend_tensor(v4, v9, v10, v11, v12, &unk_2866F58E8);
+  objc_msgSend_tensor(similarityCopy, v9, v10, v11, v12, &unk_2866F58E8);
   v15 = (*(*v39 + 24))();
   if (v40 && !atomic_fetch_add(&v40->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
   {
@@ -612,9 +612,9 @@ LABEL_24:
   return v16;
 }
 
-- (float)l2Distance:(id)a3
+- (float)l2Distance:(id)distance
 {
-  v4 = a3;
+  distanceCopy = distance;
   objc_msgSend_tensor(self, v5, v6, v7, v8);
   if (v37 != 4)
   {
@@ -636,14 +636,14 @@ LABEL_24:
     operator delete(__p);
   }
 
-  if (!v4)
+  if (!distanceCopy)
   {
     v36 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v36, "Incorrect data type requested.");
     __cxa_throw(v36, MEMORY[0x277D82760], MEMORY[0x277D82600]);
   }
 
-  objc_msgSend_tensor(v4, v9, v10, v11, v12, &unk_2866F58E8);
+  objc_msgSend_tensor(distanceCopy, v9, v10, v11, v12, &unk_2866F58E8);
   v15 = (*(*v39 + 24))();
   if (v40 && !atomic_fetch_add(&v40->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
   {
@@ -710,26 +710,26 @@ LABEL_21:
   return v33;
 }
 
-+ (id)copy:(id)a3
++ (id)copy:(id)copy
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3)
+  copyCopy = copy;
+  v8 = copyCopy;
+  if (copyCopy)
   {
-    objc_msgSend_tensor(v3, v4, v5, v6, v7);
+    objc_msgSend_tensor(copyCopy, v4, v5, v6, v7);
     objc_msgSend_tensor(v8, v9, v10, v11, v12);
   }
 
   sub_254ACDCBC();
 }
 
-+ (id)addFeatureVectorA:(id)a3 B:(id)a4
++ (id)addFeatureVectorA:(id)a B:(id)b
 {
-  v5 = a3;
-  v10 = a4;
-  if (v5)
+  aCopy = a;
+  bCopy = b;
+  if (aCopy)
   {
-    objc_msgSend_tensor(v5, v6, v7, v8, v9);
+    objc_msgSend_tensor(aCopy, v6, v7, v8, v9);
     if (v22 == 4)
     {
       (*(*v24 + 24))();
@@ -744,9 +744,9 @@ LABEL_21:
         operator delete(__p);
       }
 
-      if (v10)
+      if (bCopy)
       {
-        objc_msgSend_tensor(v10, v11, v12, v13, v14);
+        objc_msgSend_tensor(bCopy, v11, v12, v13, v14);
         (*(*v24 + 24))();
         if (v25 && !atomic_fetch_add(&v25->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
         {
@@ -759,7 +759,7 @@ LABEL_21:
           operator delete(__p);
         }
 
-        objc_msgSend_tensor(v5, v15, v16, v17, v18);
+        objc_msgSend_tensor(aCopy, v15, v16, v17, v18);
         sub_254ACDCBC();
       }
 
@@ -774,9 +774,9 @@ LABEL_21:
   __cxa_throw(v19, MEMORY[0x277D82760], MEMORY[0x277D82600]);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_msgSend_tensor(self, v5, v6, v7, v8);
   if (v40 != __p)
   {
@@ -799,8 +799,8 @@ LABEL_21:
     operator delete(__p);
   }
 
-  objc_msgSend_encodeInt_forKey_(v4, v9, 0, @"kTensorNDims", v10);
-  objc_msgSend_encodeBytes_length_forKey_(v4, v11, 0, 0, @"kTensorDimensions");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v9, 0, @"kTensorNDims", v10);
+  objc_msgSend_encodeBytes_length_forKey_(coderCopy, v11, 0, 0, @"kTensorDimensions");
   objc_msgSend_tensor(self, v12, v13, v14, v15);
   v16 = (*(*v41 + 24))();
   objc_msgSend_tensor(self, v17, v18, v19, v20);
@@ -854,11 +854,11 @@ LABEL_21:
 
     while (v24 != v37);
 LABEL_17:
-    objc_msgSend_encodeBytes_length_forKey_(v4, v21, v16, 4 * v23, @"kTensorValues");
+    objc_msgSend_encodeBytes_length_forKey_(coderCopy, v21, v16, 4 * v23, @"kTensorValues");
     goto LABEL_18;
   }
 
-  objc_msgSend_encodeBytes_length_forKey_(v4, v21, v16, 0, @"kTensorValues");
+  objc_msgSend_encodeBytes_length_forKey_(coderCopy, v21, v16, 0, @"kTensorValues");
 LABEL_18:
   if (v38 && !atomic_fetch_add(&v38->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
   {
@@ -883,10 +883,10 @@ LABEL_18:
   }
 }
 
-- (IHKFeatureVector)initWithCoder:(id)a3
+- (IHKFeatureVector)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v8 = objc_msgSend_decodeIntForKey_(v4, v5, @"kTensorNDims", v6, v7);
+  coderCopy = coder;
+  v8 = objc_msgSend_decodeIntForKey_(coderCopy, v5, @"kTensorNDims", v6, v7);
   if (v8)
   {
     if ((v8 & 0x80000000) == 0)

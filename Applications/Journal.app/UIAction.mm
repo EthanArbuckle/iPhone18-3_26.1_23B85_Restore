@@ -1,14 +1,14 @@
 @interface UIAction
-- (void)journal_performWithSender:(id)a3;
+- (void)journal_performWithSender:(id)sender;
 @end
 
 @implementation UIAction
 
-- (void)journal_performWithSender:(id)a3
+- (void)journal_performWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -17,7 +17,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1003D0308(v6);

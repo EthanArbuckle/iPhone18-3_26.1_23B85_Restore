@@ -15,8 +15,8 @@
 
   v5 = [safari_folderTypeForRecordName__builtInRecordNamesToRecordTypes objectForKeyedSubscript:v4];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 @end

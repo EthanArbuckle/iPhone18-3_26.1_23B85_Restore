@@ -1,14 +1,14 @@
 @interface PLCloudSharedCommentsJob
-+ (void)assetsdLocallyProcessAddedComments:(id)a3 assetGUID:(id)a4 albumGUID:(id)a5 info:(id)a6 libraryServicesManager:(id)a7;
-+ (void)deleteSharedCommentFromServer:(id)a3;
-+ (void)locallyProcessAddedComments:(id)a3 assetGUID:(id)a4 albumGUID:(id)a5 info:(id)a6;
-+ (void)locallyProcessDeletedComments:(id)a3 info:(id)a4;
-+ (void)publishCommentToServer:(id)a3;
++ (void)assetsdLocallyProcessAddedComments:(id)comments assetGUID:(id)d albumGUID:(id)iD info:(id)info libraryServicesManager:(id)manager;
++ (void)deleteSharedCommentFromServer:(id)server;
++ (void)locallyProcessAddedComments:(id)comments assetGUID:(id)d albumGUID:(id)iD info:(id)info;
++ (void)locallyProcessDeletedComments:(id)comments info:(id)info;
++ (void)publishCommentToServer:(id)server;
 - (BOOL)shouldArchiveXPCToDisk;
 - (id)_operationQueueForJob;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)encodeToXPCObject:(id)object;
 - (void)executeDeleteCommentFromServer;
 - (void)executeProcessServerNotificationOfCommentChanges;
 - (void)executePublishCommentToServer;
@@ -19,8 +19,8 @@
 
 - (void)executeDeleteCommentFromServer
 {
-  v2 = [(PLCloudSharedCommentsJob *)self commentGUID];
-  [PLPhotoSharingHelper deleteCommentWithGUIDFromServer:v2];
+  commentGUID = [(PLCloudSharedCommentsJob *)self commentGUID];
+  [PLPhotoSharingHelper deleteCommentWithGUIDFromServer:commentGUID];
 }
 
 - (void)executePublishCommentToServer
@@ -32,16 +32,16 @@
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "executePublishCommentToServer", buf, 2u);
   }
 
-  v4 = [(PLCloudSharingJob *)self transientPhotoLibrary];
-  v5 = [(PLCloudSharedCommentsJob *)self commentGUID];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  commentGUID = [(PLCloudSharedCommentsJob *)self commentGUID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__PLCloudSharedCommentsJob_executePublishCommentToServer__block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = commentGUID;
+  v10 = transientPhotoLibrary;
+  v6 = transientPhotoLibrary;
+  v7 = commentGUID;
   [v6 performTransactionAndWait:v8];
 }
 
@@ -81,24 +81,24 @@ LABEL_6:
   v3 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLCloudSharedCommentsJob *)self msASComments];
+    msASComments = [(PLCloudSharedCommentsJob *)self msASComments];
     *buf = 138412290;
-    v14 = v4;
+    v14 = msASComments;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "executeProcessServerNotificationOfCommentAdditions %@", buf, 0xCu);
   }
 
-  v5 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v6 = [(PLCloudSharedCommentsJob *)self jobType]== 1;
-  v7 = [(PLCloudSharedCommentsJob *)self jobType];
+  jobType = [(PLCloudSharedCommentsJob *)self jobType];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__PLCloudSharedCommentsJob_executeProcessServerNotificationOfCommentChanges__block_invoke;
   v9[3] = &unk_1E7573260;
   v9[4] = self;
-  v10 = v5;
+  v10 = transientPhotoLibrary;
   v11 = v6;
-  v12 = v7 == 2;
-  v8 = v5;
+  v12 = jobType == 2;
+  v8 = transientPhotoLibrary;
   [v8 performTransactionAndWait:v9];
 }
 
@@ -434,21 +434,21 @@ LABEL_62:
 
 - (id)_operationQueueForJob
 {
-  v2 = [(PLCloudSharedCommentsJob *)self jobType];
-  if ((v2 - 1) >= 3)
+  jobType = [(PLCloudSharedCommentsJob *)self jobType];
+  if ((jobType - 1) >= 3)
   {
-    if ((v2 - 4) < 2)
+    if ((jobType - 4) < 2)
     {
-      v2 = [objc_opt_class() highPriorityOperationQueue];
+      jobType = [objc_opt_class() highPriorityOperationQueue];
     }
   }
 
   else
   {
-    v2 = [objc_opt_class() lowPriorityOperationQueue];
+    jobType = [objc_opt_class() lowPriorityOperationQueue];
   }
 
-  return v2;
+  return jobType;
 }
 
 - (void)runDaemonSide
@@ -460,13 +460,13 @@ LABEL_62:
     *buf = 138412546;
     v11 = objc_opt_class();
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ : runDaemonSide %@", buf, 0x16u);
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharedCommentsJob runDaemonSide]"];
-  v6 = [(PLCloudSharedCommentsJob *)self _operationQueueForJob];
+  _operationQueueForJob = [(PLCloudSharedCommentsJob *)self _operationQueueForJob];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__PLCloudSharedCommentsJob_runDaemonSide__block_invoke;
@@ -474,7 +474,7 @@ LABEL_62:
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 addOperationWithBlock:v8];
+  [_operationQueueForJob addOperationWithBlock:v8];
 }
 
 void __41__PLCloudSharedCommentsJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -522,8 +522,8 @@ LABEL_12:
 
 - (BOOL)shouldArchiveXPCToDisk
 {
-  v2 = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
-  v3 = v2 != 0;
+  mstreamdInfoDictionary = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
+  v3 = mstreamdInfoDictionary != 0;
 
   return v3;
 }
@@ -543,22 +543,22 @@ LABEL_12:
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = [(PLCloudSharedCommentsJob *)self msASComments];
-  v8 = [(PLCloudSharedCommentsJob *)self commentGUID];
-  v9 = [(PLCloudSharedCommentsJob *)self assetGUID];
-  v10 = [(PLCloudSharedCommentsJob *)self albumGUID];
-  v11 = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
-  v12 = [v5 stringWithFormat:@"%@ (%@ MSASComments=%@ commmentGUID=%@ assetGUID=%@ albumGUID=%@ info=%@) ", v6, v4, v7, v8, v9, v10, v11];
+  msASComments = [(PLCloudSharedCommentsJob *)self msASComments];
+  commentGUID = [(PLCloudSharedCommentsJob *)self commentGUID];
+  assetGUID = [(PLCloudSharedCommentsJob *)self assetGUID];
+  albumGUID = [(PLCloudSharedCommentsJob *)self albumGUID];
+  mstreamdInfoDictionary = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
+  v12 = [v5 stringWithFormat:@"%@ (%@ MSASComments=%@ commmentGUID=%@ assetGUID=%@ albumGUID=%@ info=%@) ", v6, v4, msASComments, commentGUID, assetGUID, albumGUID, mstreamdInfoDictionary];
 
   return v12;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = PLCloudSharedCommentsJob;
-  v7 = [(PLCloudSharingJob *)&v19 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v19 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
     v8 = PLDataFromXPCDictionary();
@@ -585,23 +585,23 @@ LABEL_12:
     v17 = PLDictionaryFromXPCDictionary();
     [v7 setMstreamdInfoDictionary:v17];
 
-    [v7 setJobType:{xpc_dictionary_get_int64(v6, propertyKeyCommentJobType)}];
+    [v7 setJobType:{xpc_dictionary_get_int64(objectCopy, propertyKeyCommentJobType)}];
   }
 
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PLCloudSharedCommentsJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v15 encodeToXPCObject:v4];
+  objectCopy = object;
+  [(PLDaemonJob *)&v15 encodeToXPCObject:objectCopy];
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [(PLCloudSharedCommentsJob *)self msASComments];
+  msASComments = [(PLCloudSharedCommentsJob *)self msASComments];
   v14 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+  v7 = [v5 archivedDataWithRootObject:msASComments requiringSecureCoding:1 error:&v14];
   v8 = v14;
 
   if (!v7)
@@ -616,43 +616,43 @@ LABEL_12:
   }
 
   PLXPCDictionarySetData();
-  v10 = [(PLCloudSharedCommentsJob *)self commentGUID];
+  commentGUID = [(PLCloudSharedCommentsJob *)self commentGUID];
   PLXPCDictionarySetString();
 
-  v11 = [(PLCloudSharedCommentsJob *)self assetGUID];
+  assetGUID = [(PLCloudSharedCommentsJob *)self assetGUID];
   PLXPCDictionarySetString();
 
-  v12 = [(PLCloudSharedCommentsJob *)self albumGUID];
+  albumGUID = [(PLCloudSharedCommentsJob *)self albumGUID];
   PLXPCDictionarySetString();
 
-  v13 = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
+  mstreamdInfoDictionary = [(PLCloudSharedCommentsJob *)self mstreamdInfoDictionary];
   PLXPCDictionarySetDictionary();
 
-  xpc_dictionary_set_int64(v4, propertyKeyCommentJobType, [(PLCloudSharedCommentsJob *)self jobType]);
+  xpc_dictionary_set_int64(objectCopy, propertyKeyCommentJobType, [(PLCloudSharedCommentsJob *)self jobType]);
 }
 
-+ (void)locallyProcessDeletedComments:(id)a3 info:(id)a4
++ (void)locallyProcessDeletedComments:(id)comments info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commentsCopy = comments;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setJobType:2];
-  [v7 setMsASComments:v6];
+  [v7 setMsASComments:commentsCopy];
 
-  [v7 setMstreamdInfoDictionary:v5];
+  [v7 setMstreamdInfoDictionary:infoCopy];
   [v7 runAndWaitForMessageToBeSent];
 }
 
-+ (void)assetsdLocallyProcessAddedComments:(id)a3 assetGUID:(id)a4 albumGUID:(id)a5 info:(id)a6 libraryServicesManager:(id)a7
++ (void)assetsdLocallyProcessAddedComments:(id)comments assetGUID:(id)d albumGUID:(id)iD info:(id)info libraryServicesManager:(id)manager
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  managerCopy = manager;
+  infoCopy = info;
+  iDCopy = iD;
+  dCopy = d;
+  commentsCopy = comments;
   if (PLIsAssetsd())
   {
-    if (v13)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -660,77 +660,77 @@ LABEL_12:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLCloudSharedCommentsJob.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudSharedCommentsJob.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
 
-    if (v13)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PLCloudSharedCommentsJob.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLCloudSharedCommentsJob.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
 
 LABEL_3:
   v20 = objc_alloc_init(objc_opt_class());
   [v20 setJobType:1];
-  [v20 setMsASComments:v17];
+  [v20 setMsASComments:commentsCopy];
 
-  [v20 setAssetGUID:v16];
-  [v20 setAlbumGUID:v15];
+  [v20 setAssetGUID:dCopy];
+  [v20 setAlbumGUID:iDCopy];
 
-  [v20 setMstreamdInfoDictionary:v14];
-  [v20 setLibraryServicesManager:v13];
+  [v20 setMstreamdInfoDictionary:infoCopy];
+  [v20 setLibraryServicesManager:managerCopy];
 
   [v20 runDaemonSide];
 }
 
-+ (void)locallyProcessAddedComments:(id)a3 assetGUID:(id)a4 albumGUID:(id)a5 info:(id)a6
++ (void)locallyProcessAddedComments:(id)comments assetGUID:(id)d albumGUID:(id)iD info:(id)info
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  infoCopy = info;
+  iDCopy = iD;
+  dCopy = d;
+  commentsCopy = comments;
   v13 = objc_alloc_init(objc_opt_class());
   [v13 setJobType:1];
-  [v13 setMsASComments:v12];
+  [v13 setMsASComments:commentsCopy];
 
-  [v13 setAssetGUID:v11];
-  [v13 setAlbumGUID:v10];
+  [v13 setAssetGUID:dCopy];
+  [v13 setAlbumGUID:iDCopy];
 
-  [v13 setMstreamdInfoDictionary:v9];
+  [v13 setMstreamdInfoDictionary:infoCopy];
   [v13 runAndWaitForMessageToBeSent];
 }
 
-+ (void)deleteSharedCommentFromServer:(id)a3
++ (void)deleteSharedCommentFromServer:(id)server
 {
-  v3 = a3;
+  serverCopy = server;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setJobType:5];
-  v4 = [v3 cloudGUID];
-  [v7 setCommentGUID:v4];
+  cloudGUID = [serverCopy cloudGUID];
+  [v7 setCommentGUID:cloudGUID];
 
-  v5 = [v3 asset];
+  asset = [serverCopy asset];
 
-  v6 = [v5 cloudAssetGUID];
-  [v7 setAssetGUID:v6];
+  cloudAssetGUID = [asset cloudAssetGUID];
+  [v7 setAssetGUID:cloudAssetGUID];
 
   [v7 run];
 }
 
-+ (void)publishCommentToServer:(id)a3
++ (void)publishCommentToServer:(id)server
 {
-  v3 = a3;
+  serverCopy = server;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setJobType:4];
-  v4 = [v3 cloudGUID];
-  [v7 setCommentGUID:v4];
+  cloudGUID = [serverCopy cloudGUID];
+  [v7 setCommentGUID:cloudGUID];
 
-  v5 = [v3 asset];
+  asset = [serverCopy asset];
 
-  v6 = [v5 cloudAssetGUID];
-  [v7 setAssetGUID:v6];
+  cloudAssetGUID = [asset cloudAssetGUID];
+  [v7 setAssetGUID:cloudAssetGUID];
 
   [v7 run];
 }

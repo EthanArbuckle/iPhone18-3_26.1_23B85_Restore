@@ -1,13 +1,13 @@
 @interface FallbackTabSnapshotCacheProvider
 + (FallbackTabSnapshotCacheProvider)defaultProvider;
-- (BOOL)tabSnapshotCache:(id)a3 canAcceptRequestForIdentifier:(id)a4;
+- (BOOL)tabSnapshotCache:(id)cache canAcceptRequestForIdentifier:(id)identifier;
 - (FallbackTabSnapshotCacheProvider)init;
 - (id)URLProvider;
 - (id)sizingProviders;
-- (void)setURLProviderWithTabGroupManager:(id)a3;
-- (void)tabSnapshotCache:(id)a3 requestSnapshotWithIdentifier:(id)a4 completion:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(void *)a3 didFailNavigation:(void *)a4 withError:(void *)a5;
+- (void)setURLProviderWithTabGroupManager:(id)manager;
+- (void)tabSnapshotCache:(id)cache requestSnapshotWithIdentifier:(id)identifier completion:(id)completion;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(void *)view didFailNavigation:(void *)navigation withError:(void *)error;
 @end
 
 @implementation FallbackTabSnapshotCacheProvider
@@ -41,10 +41,10 @@
   return [(FallbackTabSnapshotCacheProvider *)&v7 init];
 }
 
-- (void)setURLProviderWithTabGroupManager:(id)a3
+- (void)setURLProviderWithTabGroupManager:(id)manager
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = manager;
   v9[4] = sub_215A26120;
   v9[5] = v5;
   v9[0] = MEMORY[0x277D85DD0];
@@ -52,21 +52,21 @@
   v9[2] = sub_215A21444;
   v9[3] = &block_descriptor_9;
   v6 = _Block_copy(v9);
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
 
-  [(FallbackTabSnapshotCacheProvider *)v8 setURLProvider:v6];
+  [(FallbackTabSnapshotCacheProvider *)selfCopy setURLProvider:v6];
 
   _Block_release(v6);
 }
 
-- (void)webView:(void *)a3 didFailNavigation:(void *)a4 withError:(void *)a5
+- (void)webView:(void *)view didFailNavigation:(void *)navigation withError:(void *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = a1;
-  sub_215A25C7C(v8, 0);
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_215A25C7C(viewCopy, 0);
 }
 
 - (id)URLProvider
@@ -97,7 +97,7 @@
   return v3;
 }
 
-- (void)tabSnapshotCache:(id)a3 requestSnapshotWithIdentifier:(id)a4 completion:(id)a5
+- (void)tabSnapshotCache:(id)cache requestSnapshotWithIdentifier:(id)identifier completion:(id)completion
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA7E060);
   MEMORY[0x28223BE20](v8 - 8);
@@ -109,8 +109,8 @@
   v15 = &v29 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v14);
   v17 = &v29 - v16;
-  v18 = _Block_copy(a5);
-  if (a4)
+  v18 = _Block_copy(completion);
+  if (identifier)
   {
     sub_215A6F950();
     v19 = sub_215A6F960();
@@ -129,7 +129,7 @@
   (*(*(v22 - 8) + 56))(v10, 1, 1, v22);
   sub_215A07074(v17, v15, &unk_27CA7DF80);
   sub_215A706C0();
-  v23 = self;
+  selfCopy = self;
 
   v24 = sub_215A706B0();
   v25 = (*(v12 + 80) + 40) & ~*(v12 + 80);
@@ -137,7 +137,7 @@
   v27 = MEMORY[0x277D85700];
   v26[2] = v24;
   v26[3] = v27;
-  v26[4] = v23;
+  v26[4] = selfCopy;
   sub_215A26130(v15, v26 + v25, &unk_27CA7DF80);
   v28 = (v26 + ((v13 + v25 + 7) & 0xFFFFFFFFFFFFFFF8));
   *v28 = sub_215A180C4;
@@ -147,12 +147,12 @@
   sub_21583F14C(v17, &unk_27CA7DF80);
 }
 
-- (BOOL)tabSnapshotCache:(id)a3 canAcceptRequestForIdentifier:(id)a4
+- (BOOL)tabSnapshotCache:(id)cache canAcceptRequestForIdentifier:(id)identifier
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA7DF80);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  if (a4)
+  if (identifier)
   {
     sub_215A6F950();
     v10 = sub_215A6F960();
@@ -165,20 +165,20 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = a3;
-  v13 = self;
+  cacheCopy = cache;
+  selfCopy = self;
   v14 = sub_215A259A8(v9);
 
   sub_21583F14C(v9, &unk_27CA7DF80);
   return v14 & 1;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_215A25C7C(v6, 1);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  sub_215A25C7C(viewCopy, 1);
 }
 
 @end

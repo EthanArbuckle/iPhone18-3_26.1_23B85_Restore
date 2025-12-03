@@ -11,7 +11,7 @@
     return *MEMORY[0x1E696AA88];
   }
 
-  [a1 boundingRectWithSize:1 options:a5 attributes:0 context:{v5, v6}];
+  [self boundingRectWithSize:1 options:a5 attributes:0 context:{v5, v6}];
   return v7;
 }
 

@@ -10,7 +10,7 @@
 
 - (id)abStringAtRange:()ABDataAdditions inEncoding:
 {
-  v6 = [a1 subdataWithRange:?];
+  v6 = [self subdataWithRange:?];
   if (a5 == 4000100)
   {
 
@@ -27,7 +27,7 @@
 
 - (BOOL)abIsUTF16EntourageVCard
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 >= 0x16)
   {
     v3 = 22;
@@ -45,7 +45,7 @@
     v8 = 0;
     do
     {
-      [a1 getBytes:&v8 range:{v4, 1}];
+      [self getBytes:&v8 range:{v4, 1}];
       if (!v8)
       {
         ++v5;
@@ -68,7 +68,7 @@
 
 - (uint64_t)abEncodeVCardBase64DataWithInitialLength:()ABDataAdditions
 {
-  v5 = 4 * [a1 length] / 3uLL;
+  v5 = 4 * [self length] / 3uLL;
   v6 = NSZoneMalloc(0, 0x10uLL);
   if (v5 <= 1)
   {
@@ -78,8 +78,8 @@
   *v6 = NSZoneMalloc(0, v5);
   v6[2] = 0;
   v6[3] = v5;
-  v7 = [a1 bytes];
-  v8 = [a1 length];
+  bytes = [self bytes];
+  v8 = [self length];
   if (v8 >= 1)
   {
     v9 = v8;
@@ -89,30 +89,30 @@
     {
       if (v10 % 3 == 2)
       {
-        a3 = appendToBufferWithLineFolding(v6, Encode64Table[((*v7 | (*(v7 - 1) << 8)) >> 6) & 0x3F], a3);
-        v12 = *v7 & 0x3F;
+        a3 = appendToBufferWithLineFolding(v6, Encode64Table[((*bytes | (*(bytes - 1) << 8)) >> 6) & 0x3F], a3);
+        v12 = *bytes & 0x3F;
       }
 
       else if (v10 % 3 == 1)
       {
-        v12 = ((*v7 | (*(v7 - 1) << 8)) >> 4) & 0x3F;
+        v12 = ((*bytes | (*(bytes - 1) << 8)) >> 4) & 0x3F;
       }
 
       else
       {
-        v12 = *v7 >> 2;
+        v12 = *bytes >> 2;
       }
 
       a3 = appendToBufferWithLineFolding(v6, Encode64Table[v12], a3);
       ++v10;
-      ++v7;
+      ++bytes;
       --v11;
     }
 
     while (v11);
     if (v9 % 3 == 2)
     {
-      v15 = Encode64Table[4 * (*(v7 - 1) & 0xF)];
+      v15 = Encode64Table[4 * (*(bytes - 1) & 0xF)];
       v14 = v6;
       v13 = a3;
       goto LABEL_15;
@@ -120,7 +120,7 @@
 
     if (v9 % 3 == 1)
     {
-      v13 = appendToBufferWithLineFolding(v6, Encode64Table[16 * (*(v7 - 1) & 3)], a3);
+      v13 = appendToBufferWithLineFolding(v6, Encode64Table[16 * (*(bytes - 1) & 3)], a3);
       v14 = v6;
       v15 = 61;
 LABEL_15:
@@ -136,17 +136,17 @@ LABEL_15:
 
 - (char)abDecodedUTF7
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v14 = 0;
-    v3 = [a1 bytes];
+    bytes = [self bytes];
     v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v2];
     v5 = 0;
     v6 = 0;
     while (1)
     {
-      v8 = *v3++;
+      v8 = *bytes++;
       v7 = v8;
       v15 = v8;
       if (v6)
@@ -206,9 +206,9 @@ LABEL_22:
 
 - (void)abDecodeVCardBase64
 {
-  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(a1, "length")) >> 2}];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  v2 = [MEMORY[0x1E695DF88] dataWithCapacity:{(3 * objc_msgSend(self, "length")) >> 2}];
+  bytes = [self bytes];
+  v4 = [self length];
   if (v4 < 1)
   {
     return v2;
@@ -217,8 +217,8 @@ LABEL_22:
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  v8 = v3 + v4;
-  v9 = v3 + 1;
+  v8 = bytes + v4;
+  v9 = bytes + 1;
   do
   {
     v10 = Decode64Table[*(v9 - 1) & 0x7F];

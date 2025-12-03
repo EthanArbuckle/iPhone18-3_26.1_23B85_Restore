@@ -6,16 +6,16 @@
 
 - (BOOL)isDragging
 {
-  v3 = [(QLMediaUIScrollViewAccessibility *)self accessibilityIdentification];
-  if (![v3 isEqualToString:@"MediaScrubber"])
+  accessibilityIdentification = [(QLMediaUIScrollViewAccessibility *)self accessibilityIdentification];
+  if (![accessibilityIdentification isEqualToString:@"MediaScrubber"])
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(QLMediaUIScrollViewAccessibility *)self _axIsDragging];
+  _axIsDragging = [(QLMediaUIScrollViewAccessibility *)self _axIsDragging];
 
-  if (!v4)
+  if (!_axIsDragging)
   {
 LABEL_7:
     v6.receiver = self;

@@ -1,22 +1,22 @@
 @interface CAMNebulaUtilities
-+ (id)locationFromJPEGAtPath:(id)a3;
++ (id)locationFromJPEGAtPath:(id)path;
 @end
 
 @implementation CAMNebulaUtilities
 
-+ (id)locationFromJPEGAtPath:(id)a3
++ (id)locationFromJPEGAtPath:(id)path
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
   v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:1 error:0];
   if ([(__CFData *)v4 length])
   {
-    v5 = [*MEMORY[0x1E6982E58] identifier];
-    v6 = v5;
-    if (v5)
+    identifier = [*MEMORY[0x1E6982E58] identifier];
+    v6 = identifier;
+    if (identifier)
     {
       v13 = *MEMORY[0x1E696E118];
-      v14[0] = v5;
+      v14[0] = identifier;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     }
 

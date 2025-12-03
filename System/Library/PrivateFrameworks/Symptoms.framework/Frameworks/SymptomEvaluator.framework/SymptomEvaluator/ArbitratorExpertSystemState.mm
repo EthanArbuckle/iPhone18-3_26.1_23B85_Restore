@@ -1,14 +1,14 @@
 @interface ArbitratorExpertSystemState
-+ (id)createStateWithLabel:(id)a3 rank:(unint64_t)a4 entryPreds:(id)a5;
++ (id)createStateWithLabel:(id)label rank:(unint64_t)rank entryPreds:(id)preds;
 @end
 
 @implementation ArbitratorExpertSystemState
 
-+ (id)createStateWithLabel:(id)a3 rank:(unint64_t)a4 entryPreds:(id)a5
++ (id)createStateWithLabel:(id)label rank:(unint64_t)rank entryPreds:(id)preds
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(ExpertSystemStateCore *)[ArbitratorExpertSystemState alloc] initStateWithLabel:v8 rank:a4 entryPreds:v7];
+  predsCopy = preds;
+  labelCopy = label;
+  v9 = [(ExpertSystemStateCore *)[ArbitratorExpertSystemState alloc] initStateWithLabel:labelCopy rank:rank entryPreds:predsCopy];
 
   return v9;
 }

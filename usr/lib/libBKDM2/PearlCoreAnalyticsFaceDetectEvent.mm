@@ -1,6 +1,6 @@
 @interface PearlCoreAnalyticsFaceDetectEvent
 - (PearlCoreAnalyticsFaceDetectEvent)init;
-- (PearlCoreAnalyticsFaceDetectEvent)initWithName:(id)a3;
+- (PearlCoreAnalyticsFaceDetectEvent)initWithName:(id)name;
 @end
 
 @implementation PearlCoreAnalyticsFaceDetectEvent
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (PearlCoreAnalyticsFaceDetectEvent)initWithName:(id)a3
+- (PearlCoreAnalyticsFaceDetectEvent)initWithName:(id)name
 {
   v13[1] = *MEMORY[0x29EDCA608];
   v12.receiver = self;
   v12.super_class = PearlCoreAnalyticsFaceDetectEvent;
-  v3 = [(PearlCoreAnalyticsEvent *)&v12 initWithName:a3];
+  v3 = [(PearlCoreAnalyticsEvent *)&v12 initWithName:name];
   v4 = v3;
   if (v3)
   {

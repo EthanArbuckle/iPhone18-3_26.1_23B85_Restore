@@ -1,40 +1,40 @@
 @interface WBSSharedFeatureAvailability
 + (BOOL)areLocalSiriSuggestionsEnabled;
 + (BOOL)areSiriSearchSuggestionsEnabled;
-+ (void)setLocalSiriSuggestionsEnabled:(BOOL)a3;
++ (void)setLocalSiriSuggestionsEnabled:(BOOL)enabled;
 @end
 
 @implementation WBSSharedFeatureAvailability
 
 + (BOOL)areSiriSearchSuggestionsEnabled
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  if ([v3 BOOLForKey:*MEMORY[0x1E69C8D90]])
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  if ([safari_browserDefaults BOOLForKey:*MEMORY[0x1E69C8D90]])
   {
-    v4 = [a1 areLocalSiriSuggestionsEnabled];
+    areLocalSiriSuggestionsEnabled = [self areLocalSiriSuggestionsEnabled];
   }
 
   else
   {
-    v4 = 0;
+    areLocalSiriSuggestionsEnabled = 0;
   }
 
-  return v4;
+  return areLocalSiriSuggestionsEnabled;
 }
 
 + (BOOL)areLocalSiriSuggestionsEnabled
 {
-  v2 = [a1 safariApplicationPlatformBundleIdentifier];
+  safariApplicationPlatformBundleIdentifier = [self safariApplicationPlatformBundleIdentifier];
   v3 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
-  v4 = [v3 containsObject:v2];
+  v4 = [v3 containsObject:safariApplicationPlatformBundleIdentifier];
 
   return v4 ^ 1;
 }
 
-+ (void)setLocalSiriSuggestionsEnabled:(BOOL)a3
++ (void)setLocalSiriSuggestionsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v9 = [a1 safariApplicationPlatformBundleIdentifier];
+  enabledCopy = enabled;
+  safariApplicationPlatformBundleIdentifier = [self safariApplicationPlatformBundleIdentifier];
   v4 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   v5 = v4;
   if (v4)
@@ -48,14 +48,14 @@
   }
 
   v7 = v6;
-  if (v3)
+  if (enabledCopy)
   {
-    [v6 removeObject:v9];
+    [v6 removeObject:safariApplicationPlatformBundleIdentifier];
   }
 
-  else if (([v6 containsObject:v9] & 1) == 0)
+  else if (([v6 containsObject:safariApplicationPlatformBundleIdentifier] & 1) == 0)
   {
-    [v7 addObject:v9];
+    [v7 addObject:safariApplicationPlatformBundleIdentifier];
   }
 
   CFPreferencesSetAppValue(@"AppCanShowSiriSuggestionsBlacklist", v7, @"com.apple.suggestions");

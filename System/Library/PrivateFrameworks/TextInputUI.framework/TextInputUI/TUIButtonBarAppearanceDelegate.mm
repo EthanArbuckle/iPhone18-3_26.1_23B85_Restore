@@ -1,5 +1,5 @@
 @interface TUIButtonBarAppearanceDelegate
-- (TUIButtonBarAppearanceDelegate)initWithSystemInputAssistantView:(id)a3;
+- (TUIButtonBarAppearanceDelegate)initWithSystemInputAssistantView:(id)view;
 - (TUISystemInputAssistantView)systemInputAssistantView;
 - (UIColor)tintColor;
 - (UIImageSymbolConfiguration)imageSymbolConfiguration;
@@ -16,57 +16,57 @@
 
 - (UIImageSymbolConfiguration)imageSymbolConfiguration
 {
-  v3 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
-  v4 = [v3 style];
-  v5 = [v4 barButtonImageSymbolConfiguration];
+  systemInputAssistantView = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
+  style = [systemInputAssistantView style];
+  barButtonImageSymbolConfiguration = [style barButtonImageSymbolConfiguration];
 
-  v6 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
-  v7 = [v6 locale];
+  systemInputAssistantView2 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
+  locale = [systemInputAssistantView2 locale];
 
-  if (v7)
+  if (locale)
   {
-    v8 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
-    v9 = [v8 locale];
-    v10 = [v5 configurationWithLocale:v9];
+    systemInputAssistantView3 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
+    locale2 = [systemInputAssistantView3 locale];
+    v10 = [barButtonImageSymbolConfiguration configurationWithLocale:locale2];
 
-    v5 = v10;
+    barButtonImageSymbolConfiguration = v10;
   }
 
-  return v5;
+  return barButtonImageSymbolConfiguration;
 }
 
 - (UIColor)tintColor
 {
-  v3 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
-  v4 = [v3 style];
-  v5 = [v4 enableButtonTintColor];
+  systemInputAssistantView = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
+  style = [systemInputAssistantView style];
+  enableButtonTintColor = [style enableButtonTintColor];
 
-  if (v5)
+  if (enableButtonTintColor)
   {
-    v6 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
-    v7 = [v6 leftButtonBar];
-    v8 = [v7 visualProvider];
-    v9 = [v8 tintColor];
+    systemInputAssistantView2 = [(TUIButtonBarAppearanceDelegate *)self systemInputAssistantView];
+    leftButtonBar = [systemInputAssistantView2 leftButtonBar];
+    visualProvider = [leftButtonBar visualProvider];
+    tintColor = [visualProvider tintColor];
   }
 
   else
   {
-    v9 = 0;
+    tintColor = 0;
   }
 
-  return v9;
+  return tintColor;
 }
 
-- (TUIButtonBarAppearanceDelegate)initWithSystemInputAssistantView:(id)a3
+- (TUIButtonBarAppearanceDelegate)initWithSystemInputAssistantView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = TUIButtonBarAppearanceDelegate;
   v5 = [(TUIButtonBarAppearanceDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_systemInputAssistantView, v4);
+    objc_storeWeak(&v5->_systemInputAssistantView, viewCopy);
   }
 
   return v6;

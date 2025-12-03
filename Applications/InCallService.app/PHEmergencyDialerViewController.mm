@@ -1,9 +1,9 @@
 @interface PHEmergencyDialerViewController
-+ (BOOL)isEmergencyNumber:(id)a3;
-- (BOOL)shouldShowAirplaneEmergencyCallAlertForDialRequest:(id)a3;
-- (BOOL)shouldShowRTTAlertForDialRequest:(id)a3;
++ (BOOL)isEmergencyNumber:(id)number;
+- (BOOL)shouldShowAirplaneEmergencyCallAlertForDialRequest:(id)request;
+- (BOOL)shouldShowRTTAlertForDialRequest:(id)request;
 - (BOOL)shouldShowUseRTTButton;
-- (PHEmergencyDialerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHEmergencyDialerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TUSenderIdentityClient)senderIdentityClient;
 - (UIButton)useRTTButton;
 - (double)bottomToCancelBaselineOffset;
@@ -12,46 +12,46 @@
 - (id)digits;
 - (void)alertWillInvoke;
 - (void)attemptToDialEmergencyCall;
-- (void)backButtonTapped:(id)a3;
-- (void)callButtonTapped:(id)a3;
-- (void)callStatusChangedNotification:(id)a3;
+- (void)backButtonTapped:(id)tapped;
+- (void)callButtonTapped:(id)tapped;
+- (void)callStatusChangedNotification:(id)notification;
 - (void)continueCyclingEmergencyTitleLabel;
 - (void)dealloc;
-- (void)dialEmergencyCallForDialRequest:(id)a3;
-- (void)dialerViewTextDidChange:(id)a3;
+- (void)dialEmergencyCallForDialRequest:(id)request;
+- (void)dialerViewTextDidChange:(id)change;
 - (void)dismissMedicalIDViewControllerIfNecessary;
-- (void)emergencyCallbackModeChangedNotification:(id)a3;
-- (void)endButtonTapped:(id)a3;
-- (void)handleAlertInvokedNotification:(id)a3;
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3;
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3;
-- (void)handleUseRTTActionForButtonSender:(id)a3 event:(id)a4;
+- (void)emergencyCallbackModeChangedNotification:(id)notification;
+- (void)endButtonTapped:(id)tapped;
+- (void)handleAlertInvokedNotification:(id)notification;
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification;
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification;
+- (void)handleUseRTTActionForButtonSender:(id)sender event:(id)event;
 - (void)loadConstraints;
 - (void)loadView;
-- (void)medicalIDButtonTapped:(id)a3;
-- (void)noteTintColorForBackgroundStyleChanged:(id)a3;
+- (void)medicalIDButtonTapped:(id)tapped;
+- (void)noteTintColorForBackgroundStyleChanged:(id)changed;
 - (void)noteViewMovedOffscreenTemporarily;
-- (void)phonePad:(id)a3 appendString:(id)a4;
-- (void)phonePad:(id)a3 keyDown:(char)a4;
-- (void)phonePadDeleteLastDigit:(id)a3;
+- (void)phonePad:(id)pad appendString:(id)string;
+- (void)phonePad:(id)pad keyDown:(char)down;
+- (void)phonePadDeleteLastDigit:(id)digit;
 - (void)refreshUseRTTButton;
-- (void)setCurrentState:(signed __int16)a3 animated:(BOOL)a4;
-- (void)stewieAlertButtonTapped:(id)a3;
+- (void)setCurrentState:(signed __int16)state animated:(BOOL)animated;
+- (void)stewieAlertButtonTapped:(id)tapped;
 - (void)updateCurrentState;
 - (void)updateEmergencyTitleLabelForCallDuration;
-- (void)updatePresentationStateWithAllowed:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHEmergencyDialerViewController
 
-- (PHEmergencyDialerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHEmergencyDialerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PHEmergencyDialerViewController;
-  v4 = [(PHEmergencyDialerViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(PHEmergencyDialerViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -69,9 +69,9 @@
 - (void)loadView
 {
   v3 = +[PHInCallUtilities sharedInstance];
-  v4 = [v3 isSetupAssistantRunning];
+  isSetupAssistantRunning = [v3 isSetupAssistantRunning];
 
-  if (v4)
+  if (isSetupAssistantRunning)
   {
     v5 = 4;
   }
@@ -92,12 +92,12 @@
 
   [v10 setOpaque:0];
   [(PHEmergencyDialerViewController *)self setView:v10];
-  v12 = [[PHEmergencyHandsetDialerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[PHEmergencyHandsetDialerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   dialerView = self->_dialerView;
-  self->_dialerView = v12;
+  self->_dialerView = height;
 
-  v14 = [(PHEmergencyHandsetDialerView *)self->_dialerView phonePadView];
-  [v14 setPlaysSounds:1];
+  phonePadView = [(PHEmergencyHandsetDialerView *)self->_dialerView phonePadView];
+  [phonePadView setPlaysSounds:1];
 
   [(PHEmergencyHandsetDialerView *)self->_dialerView setAutoresizingMask:18];
   [(PHEmergencyHandsetDialerView *)self->_dialerView setDelegate:self];
@@ -105,14 +105,14 @@
   v58 = v10;
   [v10 setFrame:?];
   [v10 addSubview:self->_dialerView];
-  v15 = [(PHEmergencyHandsetDialerView *)self->_dialerView callButton];
-  [v15 addTarget:self action:"callButtonTapped:" forEvents:64];
+  callButton = [(PHEmergencyHandsetDialerView *)self->_dialerView callButton];
+  [callButton addTarget:self action:"callButtonTapped:" forEvents:64];
 
-  v16 = [(PHEmergencyHandsetDialerView *)self->_dialerView deleteButton];
-  [v16 addTarget:self action:"deleteButtonTapped:" forEvents:64];
+  deleteButton = [(PHEmergencyHandsetDialerView *)self->_dialerView deleteButton];
+  [deleteButton addTarget:self action:"deleteButtonTapped:" forEvents:64];
 
-  v17 = [(PHEmergencyHandsetDialerView *)self->_dialerView phonePadView];
-  [v17 setDelegate:self];
+  phonePadView2 = [(PHEmergencyHandsetDialerView *)self->_dialerView phonePadView];
+  [phonePadView2 setDelegate:self];
 
   v18 = [PHEdgeInsetButton buttonWithType:1];
   [v18 setTouchAreaEdgeInsets:{-15.0, -15.0, -15.0, -15.0}];
@@ -125,7 +125,7 @@
   v21 = +[UIColor blackColor];
   [v18 setTitleColor:v21 forState:0];
 
-  v22 = [v18 titleLabel];
+  titleLabel = [v18 titleLabel];
   if (+[PHUIConfiguration handsetDialerSpacing])
   {
     v23 = 16.0;
@@ -137,18 +137,18 @@
   }
 
   v24 = [UIFont systemFontOfSize:v23];
-  [v22 setFont:v24];
+  [titleLabel setFont:v24];
 
-  v25 = [v18 titleLabel];
-  [v25 setTextAlignment:1];
+  titleLabel2 = [v18 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v26 = [(PHEmergencyDialerViewController *)self view];
-  [v26 addSubview:v18];
+  view = [(PHEmergencyDialerViewController *)self view];
+  [view addSubview:v18];
 
   [(PHEmergencyDialerViewController *)self setBackButton:v18];
-  v27 = [(PHEmergencyDialerViewController *)self view];
-  v28 = [(PHEmergencyDialerViewController *)self useRTTButton];
-  [v27 addSubview:v28];
+  view2 = [(PHEmergencyDialerViewController *)self view];
+  useRTTButton = [(PHEmergencyDialerViewController *)self useRTTButton];
+  [view2 addSubview:useRTTButton];
 
   [(PHEmergencyDialerViewController *)self refreshUseRTTButton];
   v29 = [PHEdgeInsetButton buttonWithType:1];
@@ -162,7 +162,7 @@
   v32 = +[UIColor systemRedColor];
   [v29 setTitleColor:v32 forState:0];
 
-  v33 = [v29 titleLabel];
+  titleLabel3 = [v29 titleLabel];
   if (+[PHUIConfiguration handsetDialerSpacing])
   {
     v34 = 16.0;
@@ -174,7 +174,7 @@
   }
 
   v35 = [UIFont systemFontOfSize:v34];
-  [v33 setFont:v35];
+  [titleLabel3 setFont:v35];
 
   v36 = [UIImage tpImageForSymbolType:38 pointSize:10.0];
   [v29 setImage:v36 forState:0];
@@ -183,9 +183,9 @@
   [v29 _setImageColor:v37 forState:0];
 
   v38 = +[UIApplication sharedApplication];
-  v39 = [v38 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v38 userInterfaceLayoutDirection];
 
-  if (v39 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v40 = -3.0;
   }
@@ -195,7 +195,7 @@
     v40 = 3.0;
   }
 
-  if (v39 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v41 = 3.0;
   }
@@ -208,25 +208,25 @@
   [v29 setTitleEdgeInsets:{0.0, v40, 0.0, v41}];
   [v29 setImageEdgeInsets:{-0.5, v41, 0.5, v40}];
   [v29 setHidden:1];
-  v42 = [(PHEmergencyDialerViewController *)self view];
-  [v42 addSubview:v29];
+  view3 = [(PHEmergencyDialerViewController *)self view];
+  [view3 addSubview:v29];
 
   [(PHEmergencyDialerViewController *)self setMedicalIDButton:v29];
-  v43 = [(PHEmergencyDialerViewController *)self healthStore];
+  healthStore = [(PHEmergencyDialerViewController *)self healthStore];
   v59[0] = _NSConcreteStackBlock;
   v59[1] = 3221225472;
   v59[2] = sub_1000BED94;
   v59[3] = &unk_100358D00;
   v59[4] = self;
-  [v43 fetchMedicalIDDataWithCompletion:v59];
+  [healthStore fetchMedicalIDDataWithCompletion:v59];
 
   v57 = [[PHBottomBarButtonConfiguration alloc] initWithAction:15];
   v44 = [[PHBottomBarButton alloc] initWithConfiguration:v57 appType:2];
   [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v44 addTarget:self action:"endButtonTapped:" forControlEvents:64];
   [v44 setAlpha:0.0];
-  v45 = [(PHEmergencyDialerViewController *)self view];
-  [v45 addSubview:v44];
+  view4 = [(PHEmergencyDialerViewController *)self view];
+  [view4 addSubview:v44];
 
   [(PHEmergencyDialerViewController *)self setEndButton:v44];
   v46 = [[PHBottomBarButtonConfiguration alloc] initWithAction:38];
@@ -234,26 +234,26 @@
   [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v47 addTarget:self action:"stewieAlertButtonTapped:" forControlEvents:64];
   [v47 setAlpha:0.0];
-  v48 = [(PHEmergencyDialerViewController *)self view];
-  [v48 addSubview:v47];
+  view5 = [(PHEmergencyDialerViewController *)self view];
+  [view5 addSubview:v47];
 
   [(PHEmergencyDialerViewController *)self setStewieAlertButton:v47];
-  v49 = [(PHEmergencyDialerViewController *)self stewieAlertButton];
+  stewieAlertButton = [(PHEmergencyDialerViewController *)self stewieAlertButton];
   v50 = +[UIColor blackColor];
-  [v49 setTitleColor:v50 forState:0];
+  [stewieAlertButton setTitleColor:v50 forState:0];
 
   v51 = [[PHBottomBarButtonConfiguration alloc] initWithAction:39];
   v52 = [[PHBottomBarButton alloc] initWithConfiguration:v51 appType:2];
   [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v52 addTarget:self action:"endButtonTapped:" forControlEvents:64];
   [v52 setAlpha:0.0];
-  v53 = [(PHEmergencyDialerViewController *)self view];
-  [v53 addSubview:v52];
+  view6 = [(PHEmergencyDialerViewController *)self view];
+  [view6 addSubview:v52];
 
   [(PHEmergencyDialerViewController *)self setStewieEndCallButton:v52];
-  v54 = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
+  stewieEndCallButton = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
   v55 = +[UIColor blackColor];
-  [v54 setTitleColor:v55 forState:0];
+  [stewieEndCallButton setTitleColor:v55 forState:0];
 
   v56 = objc_alloc_init(UINotificationFeedbackGenerator);
   [(PHEmergencyDialerViewController *)self setAlertFeedbackGenerator:v56];
@@ -264,111 +264,111 @@
 
 - (void)loadConstraints
 {
-  v3 = [(PHEmergencyDialerViewController *)self dialerView];
-  v4 = [v3 phonePadView];
-  v5 = [v4 centerXAnchor];
-  v6 = [(PHEmergencyDialerViewController *)self medicalIDButton];
-  v7 = [v6 centerXAnchor];
+  dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+  phonePadView = [dialerView phonePadView];
+  centerXAnchor = [phonePadView centerXAnchor];
+  medicalIDButton = [(PHEmergencyDialerViewController *)self medicalIDButton];
+  centerXAnchor2 = [medicalIDButton centerXAnchor];
   +[TPNumberPadLightStyleButton defaultSize];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:?];
 
   LODWORD(v9) = 1144750080;
   [v8 setPriority:v9];
   [v8 setActive:1];
-  v10 = [(PHEmergencyDialerViewController *)self medicalIDButton];
-  v11 = [v10 leadingAnchor];
-  v12 = [(PHEmergencyDialerViewController *)self dialerView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13 constant:15.0];
+  medicalIDButton2 = [(PHEmergencyDialerViewController *)self medicalIDButton];
+  leadingAnchor = [medicalIDButton2 leadingAnchor];
+  dialerView2 = [(PHEmergencyDialerViewController *)self dialerView];
+  leadingAnchor2 = [dialerView2 leadingAnchor];
+  v14 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:15.0];
 
   [v14 setActive:1];
-  v15 = [(PHEmergencyDialerViewController *)self medicalIDButton];
-  v16 = [v15 centerYAnchor];
-  v17 = [(PHEmergencyDialerViewController *)self backButton];
-  v18 = [v17 centerYAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  medicalIDButton3 = [(PHEmergencyDialerViewController *)self medicalIDButton];
+  centerYAnchor = [medicalIDButton3 centerYAnchor];
+  backButton = [(PHEmergencyDialerViewController *)self backButton];
+  centerYAnchor2 = [backButton centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   [v19 setActive:1];
-  v20 = [(PHEmergencyDialerViewController *)self endButton];
-  v21 = [v20 centerXAnchor];
-  v22 = [(PHEmergencyDialerViewController *)self dialerView];
-  v23 = [v22 callButton];
-  v24 = [v23 centerXAnchor];
-  v25 = [v21 constraintEqualToAnchor:v24];
+  endButton = [(PHEmergencyDialerViewController *)self endButton];
+  centerXAnchor3 = [endButton centerXAnchor];
+  dialerView3 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton = [dialerView3 callButton];
+  centerXAnchor4 = [callButton centerXAnchor];
+  v25 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
   [v25 setActive:1];
-  v26 = [(PHEmergencyDialerViewController *)self endButton];
-  v27 = [v26 centerYAnchor];
-  v28 = [(PHEmergencyDialerViewController *)self dialerView];
-  v29 = [v28 callButton];
-  v30 = [v29 centerYAnchor];
-  v31 = [v27 constraintEqualToAnchor:v30];
+  endButton2 = [(PHEmergencyDialerViewController *)self endButton];
+  centerYAnchor3 = [endButton2 centerYAnchor];
+  dialerView4 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton2 = [dialerView4 callButton];
+  centerYAnchor4 = [callButton2 centerYAnchor];
+  v31 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
   [v31 setActive:1];
-  v32 = [(PHEmergencyDialerViewController *)self stewieAlertButton];
-  v33 = [v32 centerYAnchor];
-  v34 = [(PHEmergencyDialerViewController *)self dialerView];
-  v35 = [v34 callButton];
-  v36 = [v35 centerYAnchor];
-  v37 = [v33 constraintEqualToAnchor:v36];
+  stewieAlertButton = [(PHEmergencyDialerViewController *)self stewieAlertButton];
+  centerYAnchor5 = [stewieAlertButton centerYAnchor];
+  dialerView5 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton3 = [dialerView5 callButton];
+  centerYAnchor6 = [callButton3 centerYAnchor];
+  v37 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
 
   [v37 setActive:1];
-  v38 = [(PHEmergencyDialerViewController *)self stewieAlertButton];
-  v39 = [v38 leadingAnchor];
-  v40 = [(PHEmergencyDialerViewController *)self dialerView];
-  v41 = [v40 callButton];
-  v42 = [v41 trailingAnchor];
-  v43 = [v39 constraintEqualToAnchor:v42];
+  stewieAlertButton2 = [(PHEmergencyDialerViewController *)self stewieAlertButton];
+  leadingAnchor3 = [stewieAlertButton2 leadingAnchor];
+  dialerView6 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton4 = [dialerView6 callButton];
+  trailingAnchor = [callButton4 trailingAnchor];
+  v43 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
 
   [v43 setActive:1];
-  v44 = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
-  v45 = [v44 centerYAnchor];
-  v46 = [(PHEmergencyDialerViewController *)self dialerView];
-  v47 = [v46 callButton];
-  v48 = [v47 centerYAnchor];
-  v49 = [v45 constraintEqualToAnchor:v48];
+  stewieEndCallButton = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
+  centerYAnchor7 = [stewieEndCallButton centerYAnchor];
+  dialerView7 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton5 = [dialerView7 callButton];
+  centerYAnchor8 = [callButton5 centerYAnchor];
+  v49 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
 
   [v49 setActive:1];
-  v50 = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
-  v51 = [v50 trailingAnchor];
-  v52 = [(PHEmergencyDialerViewController *)self dialerView];
-  v53 = [v52 callButton];
-  v54 = [v53 leadingAnchor];
-  v55 = [v51 constraintEqualToAnchor:v54];
+  stewieEndCallButton2 = [(PHEmergencyDialerViewController *)self stewieEndCallButton];
+  trailingAnchor2 = [stewieEndCallButton2 trailingAnchor];
+  dialerView8 = [(PHEmergencyDialerViewController *)self dialerView];
+  callButton6 = [dialerView8 callButton];
+  leadingAnchor4 = [callButton6 leadingAnchor];
+  v55 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
 
   [v55 setActive:1];
-  v56 = [(PHEmergencyDialerViewController *)self backButton];
-  v57 = [v56 centerXAnchor];
-  v58 = [(PHEmergencyDialerViewController *)self dialerView];
-  v59 = [v58 phonePadView];
-  v60 = [v59 centerXAnchor];
+  backButton2 = [(PHEmergencyDialerViewController *)self backButton];
+  centerXAnchor5 = [backButton2 centerXAnchor];
+  dialerView9 = [(PHEmergencyDialerViewController *)self dialerView];
+  phonePadView2 = [dialerView9 phonePadView];
+  centerXAnchor6 = [phonePadView2 centerXAnchor];
   +[TPNumberPadLightStyleButton defaultSize];
-  v61 = [v57 constraintEqualToAnchor:v60 constant:?];
+  v61 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:?];
 
   [v61 setActive:1];
-  v62 = [(PHEmergencyDialerViewController *)self view];
-  v63 = [v62 bottomAnchor];
-  v64 = [(PHEmergencyDialerViewController *)self backButton];
-  v65 = [v64 lastBaselineAnchor];
+  view = [(PHEmergencyDialerViewController *)self view];
+  bottomAnchor = [view bottomAnchor];
+  backButton3 = [(PHEmergencyDialerViewController *)self backButton];
+  lastBaselineAnchor = [backButton3 lastBaselineAnchor];
   [(PHEmergencyDialerViewController *)self bottomToCancelBaselineOffset];
-  v66 = [v63 constraintEqualToAnchor:v65 constant:?];
+  v66 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
 
   [v66 setActive:1];
-  v67 = [(PHEmergencyDialerViewController *)self useRTTButton];
-  v68 = [v67 centerXAnchor];
-  v69 = [(PHEmergencyDialerViewController *)self dialerView];
-  v70 = [v69 phonePadView];
-  v71 = [v70 centerXAnchor];
+  useRTTButton = [(PHEmergencyDialerViewController *)self useRTTButton];
+  centerXAnchor7 = [useRTTButton centerXAnchor];
+  dialerView10 = [(PHEmergencyDialerViewController *)self dialerView];
+  phonePadView3 = [dialerView10 phonePadView];
+  centerXAnchor8 = [phonePadView3 centerXAnchor];
   +[TPNumberPadLightStyleButton defaultSize];
-  v72 = [v68 constraintEqualToAnchor:v71 constant:?];
+  v72 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8 constant:?];
 
   [v72 setActive:1];
-  v73 = [(PHEmergencyDialerViewController *)self view];
-  v74 = [v73 bottomAnchor];
-  v75 = [(PHEmergencyDialerViewController *)self useRTTButton];
-  v76 = [v75 lastBaselineAnchor];
+  view2 = [(PHEmergencyDialerViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  useRTTButton2 = [(PHEmergencyDialerViewController *)self useRTTButton];
+  lastBaselineAnchor2 = [useRTTButton2 lastBaselineAnchor];
   [(PHEmergencyDialerViewController *)self bottomToCancelBaselineOffset];
-  v77 = [v74 constraintEqualToAnchor:v76 constant:?];
+  v77 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
 
   [v77 setActive:1];
 }
@@ -408,14 +408,14 @@
   return senderIdentityClient;
 }
 
-- (void)endButtonTapped:(id)a3
+- (void)endButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v21 = [(PHEmergencyDialerViewController *)self currentState];
+    currentState = [(PHEmergencyDialerViewController *)self currentState];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[PHEmergencyDialerViewController endButtonTapped:] current state is %d", buf, 8u);
   }
 
@@ -427,15 +427,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[PHEmergencyDialerViewController endButtonTapped:] endbutton setEnabled:NO", buf, 2u);
   }
 
-  [v4 setEnabled:0];
+  [tappedCopy setEnabled:0];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [v7 currentAudioAndVideoCalls];
+  currentAudioAndVideoCalls = [v7 currentAudioAndVideoCalls];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -447,7 +447,7 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(currentAudioAndVideoCalls);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -458,7 +458,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -467,7 +467,7 @@
   [(PHEmergencyDialerViewController *)self updateEmergencyTitleLabelForCallDuration];
 }
 
-- (void)callButtonTapped:(id)a3
+- (void)callButtonTapped:(id)tapped
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -490,7 +490,7 @@
   }
 }
 
-- (void)backButtonTapped:(id)a3
+- (void)backButtonTapped:(id)tapped
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -500,46 +500,46 @@
   }
 
   +[TUCallCapabilities endEmergencyCallbackMode];
-  v5 = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
-  [v5 dismiss];
+  _remoteViewControllerProxy = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 }
 
-- (void)medicalIDButtonTapped:(id)a3
+- (void)medicalIDButtonTapped:(id)tapped
 {
   v4 = [UINavigationController alloc];
-  v5 = [(PHEmergencyDialerViewController *)self medicalIDViewController];
-  v10 = [v4 initWithRootViewController:v5];
+  medicalIDViewController = [(PHEmergencyDialerViewController *)self medicalIDViewController];
+  v10 = [v4 initWithRootViewController:medicalIDViewController];
 
-  v6 = [v10 navigationBar];
-  [v6 setPrefersLargeTitles:1];
+  navigationBar = [v10 navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   [v10 setModalPresentationStyle:6];
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissMedicalIDViewControllerIfNecessary"];
-  v8 = [(PHEmergencyDialerViewController *)self medicalIDViewController];
-  v9 = [v8 navigationItem];
-  [v9 setRightBarButtonItem:v7];
+  medicalIDViewController2 = [(PHEmergencyDialerViewController *)self medicalIDViewController];
+  navigationItem = [medicalIDViewController2 navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
   [(PHEmergencyDialerViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
 - (void)dismissMedicalIDViewControllerIfNecessary
 {
-  v3 = [(PHEmergencyDialerViewController *)self presentedViewController];
-  v4 = [(PHEmergencyDialerViewController *)self medicalIDViewController];
-  v5 = [v4 navigationController];
+  presentedViewController = [(PHEmergencyDialerViewController *)self presentedViewController];
+  medicalIDViewController = [(PHEmergencyDialerViewController *)self medicalIDViewController];
+  navigationController = [medicalIDViewController navigationController];
 
-  if (v3 == v5)
+  if (presentedViewController == navigationController)
   {
 
     [(PHEmergencyDialerViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PHEmergencyDialerViewController;
-  [(PHEmergencyDialerViewController *)&v6 viewWillAppear:a3];
+  [(PHEmergencyDialerViewController *)&v6 viewWillAppear:appear];
   if ([(PHEmergencyDialerViewController *)self shouldSetPresenceToken])
   {
     PHSetEmergencyDialerPresenceTokenValue();
@@ -556,11 +556,11 @@
   [(PHEmergencyDialerViewController *)self updateCurrentState];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = PHEmergencyDialerViewController;
-  [(PHEmergencyDialerViewController *)&v12 viewDidDisappear:a3];
+  [(PHEmergencyDialerViewController *)&v12 viewDidDisappear:disappear];
   if ([(PHEmergencyDialerViewController *)self shouldSetPresenceToken])
   {
     PHSetEmergencyDialerPresenceTokenValue();
@@ -574,15 +574,15 @@
   v5 = +[NSNotification PHAlertInvoked];
   [v4 removeObserver:self name:v5 object:0];
 
-  v6 = [(PHEmergencyDialerViewController *)self callDurationTimer];
-  [v6 invalidate];
+  callDurationTimer = [(PHEmergencyDialerViewController *)self callDurationTimer];
+  [callDurationTimer invalidate];
 
   [(PHEmergencyDialerViewController *)self setCallDurationTimer:0];
   [(PHEmergencyDialerViewController *)self setCurrentState:0];
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [v7 currentCallCount];
+  currentCallCount = [v7 currentCallCount];
 
-  if (!v8)
+  if (!currentCallCount)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -599,11 +599,11 @@
   [v10 stopSuppressingInCallStatusBarForReason:@"PHSuppressInCallStatusBarForBuddyEmergencyCallReason"];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PHEmergencyDialerViewController;
-  [(PHEmergencyDialerViewController *)&v4 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PHEmergencyDialerViewController *)&v4 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
 }
 
 - (void)updateCurrentState
@@ -612,19 +612,19 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = +[TUCallCenter sharedInstance];
-    v5 = [v4 currentCalls];
+    currentCalls = [v4 currentCalls];
     v6 = +[TUCallCenter sharedInstance];
     v16 = 138412546;
-    v17 = v5;
+    v17 = currentCalls;
     v18 = 2048;
-    v19 = [v6 currentCallCount];
+    currentCallCount = [v6 currentCallCount];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "updateCurrentState: Calls are: %@. Count is %lu.", &v16, 0x16u);
   }
 
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [v7 currentCallCount];
+  currentCallCount2 = [v7 currentCallCount];
 
-  if (v8)
+  if (currentCallCount2)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -634,9 +634,9 @@
     }
 
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 frontmostCall];
+    frontmostCall = [v10 frontmostCall];
 
-    if ([v11 canDisplayAlertUI:[(PHEmergencyDialerViewController *)self shouldPresentAlertButton]])
+    if ([frontmostCall canDisplayAlertUI:[(PHEmergencyDialerViewController *)self shouldPresentAlertButton]])
     {
       v12 = sub_100004F84();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -657,14 +657,14 @@
   else
   {
     v14 = +[TUCallCapabilities isEmergencyCallbackModeEnabled];
-    v11 = sub_100004F84();
-    v15 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+    frontmostCall = sub_100004F84();
+    v15 = os_log_type_enabled(frontmostCall, OS_LOG_TYPE_DEFAULT);
     if (v14)
     {
       if (v15)
       {
         LOWORD(v16) = 0;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "updateCurrentState: emergency callback mode is active, so setting state to PHEmergencyDialerStateEmergencyCallBackMode", &v16, 2u);
+        _os_log_impl(&_mh_execute_header, frontmostCall, OS_LOG_TYPE_DEFAULT, "updateCurrentState: emergency callback mode is active, so setting state to PHEmergencyDialerStateEmergencyCallBackMode", &v16, 2u);
       }
 
       v13 = 3;
@@ -675,7 +675,7 @@
       if (v15)
       {
         LOWORD(v16) = 0;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "updateCurrentState: setting state to PHEmergencyDialerStateIdle", &v16, 2u);
+        _os_log_impl(&_mh_execute_header, frontmostCall, OS_LOG_TYPE_DEFAULT, "updateCurrentState: setting state to PHEmergencyDialerStateIdle", &v16, 2u);
       }
 
       v13 = 0;
@@ -685,47 +685,47 @@
   [(PHEmergencyDialerViewController *)self setCurrentState:v13];
 }
 
-- (void)setCurrentState:(signed __int16)a3 animated:(BOOL)a4
+- (void)setCurrentState:(signed __int16)state animated:(BOOL)animated
 {
-  v4 = a3;
-  if (self->_currentState != a3)
+  stateCopy = state;
+  if (self->_currentState != state)
   {
-    v6 = a4;
+    animatedCopy = animated;
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v4;
+      *&buf[4] = stateCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Set Current State %d", buf, 8u);
     }
 
-    if (v4 > 1)
+    if (stateCopy > 1)
     {
-      if (v4 == 2)
+      if (stateCopy == 2)
       {
-        v34 = [(PHEmergencyDialerViewController *)self alertFeedbackGenerator];
-        [v34 notificationOccurred:0];
+        alertFeedbackGenerator = [(PHEmergencyDialerViewController *)self alertFeedbackGenerator];
+        [alertFeedbackGenerator notificationOccurred:0];
 
         v35 = +[NSBundle mainBundle];
         v36 = [v35 localizedStringForKey:@"ALERT_ERROR_LABEL" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-        v37 = [(PHEmergencyDialerViewController *)self dialerView];
-        v38 = [v37 emergencyTitleLabel];
-        [v38 setText:v36];
+        dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+        emergencyTitleLabel = [dialerView emergencyTitleLabel];
+        [emergencyTitleLabel setText:v36];
 
-        v39 = [(PHEmergencyDialerViewController *)self dialerView];
+        dialerView2 = [(PHEmergencyDialerViewController *)self dialerView];
         objc_opt_class();
         LOBYTE(v36) = objc_opt_isKindOfClass();
 
         if (v36)
         {
-          v40 = [(PHEmergencyDialerViewController *)self dialerView];
-          if ([v40 numberOfLinesInEmergencyTitleLabel] >= 3)
+          dialerView3 = [(PHEmergencyDialerViewController *)self dialerView];
+          if ([dialerView3 numberOfLinesInEmergencyTitleLabel] >= 3)
           {
             v41 = +[NSBundle mainBundle];
             v42 = [v41 localizedStringForKey:@"ALERT_ERROR_LABEL_NO_LINE_BREAK" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-            v43 = [(PHEmergencyDialerViewController *)self dialerView];
-            v44 = [v43 emergencyTitleLabel];
-            [v44 setText:v42];
+            dialerView4 = [(PHEmergencyDialerViewController *)self dialerView];
+            emergencyTitleLabel2 = [dialerView4 emergencyTitleLabel];
+            [emergencyTitleLabel2 setText:v42];
           }
         }
 
@@ -738,7 +738,7 @@
           v49[4] = self;
           v45 = objc_retainBlock(v49);
           v46 = v45;
-          if (v6)
+          if (animatedCopy)
           {
             v47 = sub_100004F84();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -767,18 +767,18 @@
         }
       }
 
-      else if (v4 == 3)
+      else if (stateCopy == 3)
       {
-        v23 = [(PHEmergencyDialerViewController *)self callDurationTimer];
-        [v23 invalidate];
+        callDurationTimer = [(PHEmergencyDialerViewController *)self callDurationTimer];
+        [callDurationTimer invalidate];
 
         [(PHEmergencyDialerViewController *)self setCallDurationTimer:0];
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"continueCyclingEmergencyTitleLabel" object:0];
         v24 = +[NSBundle mainBundle];
         v25 = [v24 localizedStringForKey:@"EMERGENCY_CALL_MODE" value:&stru_100361FD0 table:@"EmergencyCallStrings"];
-        v26 = [(PHEmergencyDialerViewController *)self dialerView];
-        v27 = [v26 emergencyTitleLabel];
-        [v27 setText:v25];
+        dialerView5 = [(PHEmergencyDialerViewController *)self dialerView];
+        emergencyTitleLabel3 = [dialerView5 emergencyTitleLabel];
+        [emergencyTitleLabel3 setText:v25];
 
         v50[0] = _NSConcreteStackBlock;
         v50[1] = 3221225472;
@@ -787,7 +787,7 @@
         v50[4] = self;
         v28 = objc_retainBlock(v50);
         v29 = v28;
-        if (v6)
+        if (animatedCopy)
         {
           [UIView animateWithDuration:v28 animations:0 completion:0.5];
         }
@@ -799,9 +799,9 @@
       }
     }
 
-    else if (v4)
+    else if (stateCopy)
     {
-      if (v4 == 1)
+      if (stateCopy == 1)
       {
         v53 = 0;
         v54 = &v53;
@@ -834,20 +834,20 @@
         [v11 startSuppressingInCallStatusBarForReason:@"PHSuppressInCallStatusBarForBuddyEmergencyCallReason"];
 
         v12 = +[TUCallCenter sharedInstance];
-        v13 = [v12 displayedCall];
+        displayedCall = [v12 displayedCall];
 
-        if (v13 && [v13 isEmergency])
+        if (displayedCall && [displayedCall isEmergency])
         {
-          v14 = [(PHEmergencyDialerViewController *)self dialerView];
-          v15 = [v14 lcdView];
-          v16 = [v13 handle];
-          v17 = [v16 value];
-          [v15 setText:v17 needsFormat:1];
+          dialerView6 = [(PHEmergencyDialerViewController *)self dialerView];
+          lcdView = [dialerView6 lcdView];
+          handle = [displayedCall handle];
+          value = [handle value];
+          [lcdView setText:value needsFormat:1];
         }
 
         [(PHEmergencyDialerViewController *)self updateEmergencyTitleLabelForCallDuration];
-        v18 = [(PHEmergencyDialerViewController *)self callDurationTimer];
-        [v18 invalidate];
+        callDurationTimer2 = [(PHEmergencyDialerViewController *)self callDurationTimer];
+        [callDurationTimer2 invalidate];
 
         [(PHEmergencyDialerViewController *)self setCallDurationTimer:0];
         v19 = [NSTimer scheduledTimerWithTimeInterval:self target:"updateEmergencyTitleLabelForCallDuration" selector:0 userInfo:1 repeats:1.0];
@@ -861,7 +861,7 @@
         v51[4] = self;
         v20 = objc_retainBlock(v51);
         v21 = v20;
-        if (v6)
+        if (animatedCopy)
         {
           v22 = sub_100004F84();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -886,8 +886,8 @@
       v30 = +[PHInCallUtilities sharedInstance];
       [v30 stopSuppressingInCallStatusBarForReason:@"PHSuppressInCallStatusBarForBuddyEmergencyCallReason"];
 
-      v31 = [(PHEmergencyDialerViewController *)self callDurationTimer];
-      [v31 invalidate];
+      callDurationTimer3 = [(PHEmergencyDialerViewController *)self callDurationTimer];
+      [callDurationTimer3 invalidate];
 
       [(PHEmergencyDialerViewController *)self setCallDurationTimer:0];
       [(PHEmergencyDialerViewController *)self continueCyclingEmergencyTitleLabel];
@@ -898,7 +898,7 @@
       v52[4] = self;
       v32 = objc_retainBlock(v52);
       v33 = v32;
-      if (v6)
+      if (animatedCopy)
       {
         [UIView animateWithDuration:v32 animations:0 completion:0.5];
       }
@@ -910,70 +910,70 @@
     }
   }
 
-  self->_currentState = v4;
+  self->_currentState = stateCopy;
 }
 
 - (void)continueCyclingEmergencyTitleLabel
 {
-  v3 = [(PHEmergencyDialerViewController *)self dialerView];
-  v2 = [v3 emergencyTitleLabel];
-  [v2 startCyclingStrings];
+  dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+  emergencyTitleLabel = [dialerView emergencyTitleLabel];
+  [emergencyTitleLabel startCyclingStrings];
 }
 
-- (void)callStatusChangedNotification:(id)a3
+- (void)callStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v25 = 138412546;
     *&v25[4] = objc_opt_class();
     *&v25[12] = 2112;
-    *&v25[14] = v4;
+    *&v25[14] = notificationCopy;
     v6 = *&v25[4];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", v25, 0x16u);
   }
 
   [(PHEmergencyDialerViewController *)self setCallEnding:0];
-  v7 = [v4 object];
-  if ([v7 status] == 3)
+  object = [notificationCopy object];
+  if ([object status] == 3)
   {
     [(PHEmergencyDialerViewController *)self dismissMedicalIDViewControllerIfNecessary];
     [(PHEmergencyDialerViewController *)self setShouldPresentAlertButton:0];
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 delegate];
-    v10 = [v9 alertCoordinator];
+    delegate = [v8 delegate];
+    alertCoordinator = [delegate alertCoordinator];
 
-    if (!v10)
+    if (!alertCoordinator)
     {
       v11 = objc_alloc_init(_TtC13InCallService16AlertCoordinator);
       v12 = +[UIApplication sharedApplication];
-      v13 = [v12 delegate];
-      [v13 setAlertCoordinator:v11];
+      delegate2 = [v12 delegate];
+      [delegate2 setAlertCoordinator:v11];
     }
 
     v14 = [UIApplication sharedApplication:*v25];
-    v15 = [v14 delegate];
-    v16 = [v15 alertCoordinator];
-    [v16 setDelegate:self];
+    delegate3 = [v14 delegate];
+    alertCoordinator2 = [delegate3 alertCoordinator];
+    [alertCoordinator2 setDelegate:self];
 
     v17 = +[UIApplication sharedApplication];
-    v18 = [v17 delegate];
-    v19 = [v18 alertCoordinator];
-    v20 = [v19 isMonitoring];
+    delegate4 = [v17 delegate];
+    alertCoordinator3 = [delegate4 alertCoordinator];
+    isMonitoring = [alertCoordinator3 isMonitoring];
 
     v21 = +[UIApplication sharedApplication];
-    v22 = [v21 delegate];
-    v23 = [v22 alertCoordinator];
-    v24 = v23;
-    if (v20)
+    delegate5 = [v21 delegate];
+    alertCoordinator4 = [delegate5 alertCoordinator];
+    v24 = alertCoordinator4;
+    if (isMonitoring)
     {
-      [v23 refreshDelegateWithState];
+      [alertCoordinator4 refreshDelegateWithState];
     }
 
     else
     {
-      [v23 startMonitoring];
+      [alertCoordinator4 startMonitoring];
     }
   }
 
@@ -981,21 +981,21 @@
   [(PHEmergencyDialerViewController *)self updateCurrentState];
 }
 
-- (void)emergencyCallbackModeChangedNotification:(id)a3
+- (void)emergencyCallbackModeChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Emergency callback mode changed notification %@", &v6, 0xCu);
   }
 
   [(PHEmergencyDialerViewController *)self updateCurrentState];
 }
 
-- (void)handleAlertInvokedNotification:(id)a3
+- (void)handleAlertInvokedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1005,70 +1005,70 @@
   }
 
   +[TUCallCapabilities endEmergencyCallbackMode];
-  v5 = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
-  [v5 dismiss];
+  _remoteViewControllerProxy = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 }
 
-- (void)phonePad:(id)a3 appendString:(id)a4
+- (void)phonePad:(id)pad appendString:(id)string
 {
   dialerView = self->_dialerView;
-  v6 = a4;
-  v7 = [(PHEmergencyHandsetDialerView *)dialerView lcdView];
-  [v7 insertStringAtCurrentPosition:v6];
+  stringCopy = string;
+  lcdView = [(PHEmergencyHandsetDialerView *)dialerView lcdView];
+  [lcdView insertStringAtCurrentPosition:stringCopy];
 
-  v8 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
-  [v8 setName:0 numberLabel:0 suggestion:0];
+  lcdView2 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
+  [lcdView2 setName:0 numberLabel:0 suggestion:0];
 }
 
-- (void)phonePadDeleteLastDigit:(id)a3
+- (void)phonePadDeleteLastDigit:(id)digit
 {
-  v4 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
-  [v4 deleteCharacter];
+  lcdView = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
+  [lcdView deleteCharacter];
 
-  v5 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
-  [v5 setName:0 numberLabel:0 suggestion:0];
+  lcdView2 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
+  [lcdView2 setName:0 numberLabel:0 suggestion:0];
 }
 
-- (void)phonePad:(id)a3 keyDown:(char)a4
+- (void)phonePad:(id)pad keyDown:(char)down
 {
   v5 = +[TUCallCenter sharedInstance];
-  v6 = [v5 currentCalls];
-  v9 = [v6 firstObject];
+  currentCalls = [v5 currentCalls];
+  firstObject = [currentCalls firstObject];
 
-  v8 = v9;
-  if (v9)
+  v8 = firstObject;
+  if (firstObject)
   {
-    v7 = [v9 shouldPlayDTMFTone];
-    v8 = v9;
-    if (v7)
+    shouldPlayDTMFTone = [firstObject shouldPlayDTMFTone];
+    v8 = firstObject;
+    if (shouldPlayDTMFTone)
     {
-      v7 = [v9 playDTMFToneForKey:a4];
-      v8 = v9;
+      shouldPlayDTMFTone = [firstObject playDTMFToneForKey:down];
+      v8 = firstObject;
     }
   }
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(shouldPlayDTMFTone, v8);
 }
 
-- (void)dialerViewTextDidChange:(id)a3
+- (void)dialerViewTextDidChange:(id)change
 {
-  v3 = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
-  [v3 setName:0 numberLabel:0 suggestion:0];
+  lcdView = [(PHEmergencyHandsetDialerView *)self->_dialerView lcdView];
+  [lcdView setName:0 numberLabel:0 suggestion:0];
 }
 
 - (id)currentCallStatusStringForDisplay
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 displayedCall];
+  displayedCall = [v2 displayedCall];
 
-  if (!v3)
+  if (!displayedCall)
   {
     v10 = &stru_100361FD0;
     goto LABEL_15;
   }
 
-  v4 = [v3 status];
-  if (v4 == 4)
+  status = [displayedCall status];
+  if (status == 4)
   {
     v7 = +[NSBundle conversationKit];
     v8 = v7;
@@ -1077,13 +1077,13 @@
 
   else
   {
-    v5 = v4;
-    if (v4 == 3)
+    v5 = status;
+    if (status == 3)
     {
-      v6 = [v3 hasBeenRedirected];
+      hasBeenRedirected = [displayedCall hasBeenRedirected];
       v7 = +[NSBundle conversationKit];
       v8 = v7;
-      if (v6)
+      if (hasBeenRedirected)
       {
         v9 = @"REDIRECTED";
       }
@@ -1094,7 +1094,7 @@
       }
     }
 
-    else if ([v3 isOnHold])
+    else if ([displayedCall isOnHold])
     {
       v7 = +[NSBundle conversationKit];
       v8 = v7;
@@ -1105,12 +1105,12 @@
     {
       if (v5 != 6)
       {
-        v16 = [v3 callDurationString];
-        v8 = v16;
+        callDurationString = [displayedCall callDurationString];
+        v8 = callDurationString;
         v17 = @"00:00";
-        if (v16)
+        if (callDurationString)
         {
-          v17 = v16;
+          v17 = callDurationString;
         }
 
         v11 = v17;
@@ -1139,26 +1139,26 @@ LABEL_15:
 {
   if ([(PHEmergencyDialerViewController *)self currentState]== 1)
   {
-    v5 = [(PHEmergencyDialerViewController *)self currentCallStatusStringForDisplay];
-    v3 = [(PHEmergencyDialerViewController *)self dialerView];
-    v4 = [v3 emergencyTitleLabel];
-    [v4 setText:v5];
+    currentCallStatusStringForDisplay = [(PHEmergencyDialerViewController *)self currentCallStatusStringForDisplay];
+    dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+    emergencyTitleLabel = [dialerView emergencyTitleLabel];
+    [emergencyTitleLabel setText:currentCallStatusStringForDisplay];
   }
 }
 
-- (void)noteTintColorForBackgroundStyleChanged:(id)a3
+- (void)noteTintColorForBackgroundStyleChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v8.receiver = self;
   v8.super_class = PHEmergencyDialerViewController;
-  [(PHEmergencyDialerViewController *)&v8 noteTintColorForBackgroundStyleChanged:v4];
+  [(PHEmergencyDialerViewController *)&v8 noteTintColorForBackgroundStyleChanged:changedCopy];
   v5 = +[PHInCallUtilities sharedInstance];
-  v6 = [v5 isSetupAssistantRunning];
+  isSetupAssistantRunning = [v5 isSetupAssistantRunning];
 
-  if (v6)
+  if (isSetupAssistantRunning)
   {
-    v7 = [(PHEmergencyDialerViewController *)self view];
-    [v7 setBackgroundColor:v4];
+    view = [(PHEmergencyDialerViewController *)self view];
+    [view setBackgroundColor:changedCopy];
   }
 }
 
@@ -1167,9 +1167,9 @@ LABEL_15:
   v5.receiver = self;
   v5.super_class = PHEmergencyDialerViewController;
   [(PHEmergencyDialerViewController *)&v5 noteViewMovedOffscreenTemporarily];
-  v3 = [(PHEmergencyDialerViewController *)self dialerView];
-  v4 = [v3 lcdView];
-  [v4 setText:&stru_100361FD0 needsFormat:0];
+  dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+  lcdView = [dialerView lcdView];
+  [lcdView setText:&stru_100361FD0 needsFormat:0];
 
   [(PHEmergencyDialerViewController *)self dismissMedicalIDViewControllerIfNecessary];
 }
@@ -1211,41 +1211,41 @@ LABEL_15:
 
 - (id)digits
 {
-  v2 = [(PHEmergencyDialerViewController *)self dialerView];
-  v3 = [v2 lcdView];
-  v4 = [v3 text];
+  dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+  lcdView = [dialerView lcdView];
+  text = [lcdView text];
 
-  v5 = [v4 stringByApplyingTransform:NSStringTransformToLatin reverse:0];
+  v5 = [text stringByApplyingTransform:NSStringTransformToLatin reverse:0];
   if (v5)
   {
     v6 = TUNetworkCountryCode();
     v7 = [TUPhoneNumber phoneNumberWithDigits:v5 countryCode:v6];
 
-    v8 = [v7 digits];
+    digits = [v7 digits];
 
-    if (![v8 length])
+    if (![digits length])
     {
       v9 = v5;
 
-      v8 = v9;
+      digits = v9;
     }
 
-    v4 = v8;
+    text = digits;
   }
 
-  return v4;
+  return text;
 }
 
-+ (BOOL)isEmergencyNumber:(id)a3
++ (BOOL)isEmergencyNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[PHApplicationServices sharedInstance];
-  v5 = [v4 callProviderManager];
-  v6 = [v5 emergencyProvider];
+  callProviderManager = [v4 callProviderManager];
+  emergencyProvider = [callProviderManager emergencyProvider];
 
   v7 = objc_alloc_init(TUSenderIdentityClient);
-  v8 = [v6 prioritizedSenderIdentities];
-  v9 = [v8 count];
+  prioritizedSenderIdentities = [emergencyProvider prioritizedSenderIdentities];
+  v9 = [prioritizedSenderIdentities count];
   v10 = sub_100004F84();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -1253,7 +1253,7 @@ LABEL_15:
     if (v11)
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = numberCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Checking whether the digits %@ are an emergency telephone number.", buf, 0xCu);
     }
 
@@ -1261,11 +1261,11 @@ LABEL_15:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = v8;
+    v12 = prioritizedSenderIdentities;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v13)
     {
-      v20 = v6;
+      v20 = emergencyProvider;
       v14 = *v22;
       while (2)
       {
@@ -1277,8 +1277,8 @@ LABEL_15:
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v16 UUID];
-          v18 = [v7 isEmergencyNumberForDigits:v3 senderIdentityUUID:v17];
+          uUID = [v16 UUID];
+          v18 = [v7 isEmergencyNumberForDigits:numberCopy senderIdentityUUID:uUID];
 
           if (v18)
           {
@@ -1286,7 +1286,7 @@ LABEL_15:
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v26 = v3;
+              v26 = numberCopy;
               v27 = 2112;
               v28 = v16;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Digits %@ are an emergency telephone number for sender identity %@.", buf, 0x16u);
@@ -1307,7 +1307,7 @@ LABEL_15:
       }
 
 LABEL_16:
-      v6 = v20;
+      emergencyProvider = v20;
     }
   }
 
@@ -1316,26 +1316,26 @@ LABEL_16:
     if (v11)
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = numberCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Checking whether the digits %@ is an emergency telephone number for nil sender identity.", buf, 0xCu);
     }
 
-    LOBYTE(v13) = [v7 isEmergencyNumberForDigits:v3 senderIdentityUUID:0];
+    LOBYTE(v13) = [v7 isEmergencyNumberForDigits:numberCopy senderIdentityUUID:0];
   }
 
   return v13;
 }
 
-- (BOOL)shouldShowAirplaneEmergencyCallAlertForDialRequest:(id)a3
+- (BOOL)shouldShowAirplaneEmergencyCallAlertForDialRequest:(id)request
 {
-  v3 = a3;
-  if (PHIsInAirplaneMode() && [v3 isValid] && objc_msgSend(v3, "dialType") == 1 && (objc_msgSend(v3, "isSOS") & 1) == 0)
+  requestCopy = request;
+  if (PHIsInAirplaneMode() && [requestCopy isValid] && objc_msgSend(requestCopy, "dialType") == 1 && (objc_msgSend(requestCopy, "isSOS") & 1) == 0)
   {
-    v6 = [v3 localSenderIdentityUUID];
-    if (v6)
+    localSenderIdentityUUID = [requestCopy localSenderIdentityUUID];
+    if (localSenderIdentityUUID)
     {
-      v7 = [v3 localSenderIdentityUUID];
-      if ([TUCallCapabilities canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:v7])
+      localSenderIdentityUUID2 = [requestCopy localSenderIdentityUUID];
+      if ([TUCallCapabilities canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:localSenderIdentityUUID2])
       {
         v4 = +[TUCallCapabilities supportsPrimaryCalling];
       }
@@ -1367,9 +1367,9 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = +[TUCallCenter sharedInstance];
-    v5 = [v4 currentCallCount];
+    currentCallCount = [v4 currentCallCount];
     v6 = @"NO";
-    if (!v5)
+    if (!currentCallCount)
     {
       v6 = @"YES";
     }
@@ -1380,28 +1380,28 @@ LABEL_16:
   }
 
   v7 = +[TUCallCenter sharedInstance];
-  v8 = [v7 currentCallCount];
+  currentCallCount2 = [v7 currentCallCount];
 
-  if (!v8)
+  if (!currentCallCount2)
   {
-    v9 = [(PHEmergencyDialerViewController *)self digits];
+    digits = [(PHEmergencyDialerViewController *)self digits];
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v9;
+      v39 = digits;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "dialEmergencyCall: digits to dial is %@", buf, 0xCu);
     }
 
-    if ([(__CFString *)v9 length])
+    if ([(__CFString *)digits length])
     {
       v11 = +[ICSApplicationServices sharedInstance];
-      v12 = [v11 callProviderManager];
+      callProviderManager = [v11 callProviderManager];
 
-      v13 = [v12 emergencyProvider];
+      emergencyProvider = [callProviderManager emergencyProvider];
       v14 = sub_100004F84();
       v15 = v14;
-      if (v13)
+      if (emergencyProvider)
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -1409,24 +1409,24 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "dialEmergencyCall: dialing non-TTY emergency call", buf, 2u);
         }
 
-        v16 = [[TUDialRequest alloc] initWithProvider:v13];
-        v17 = [TUHandle handleWithDestinationID:v9];
+        v16 = [[TUDialRequest alloc] initWithProvider:emergencyProvider];
+        v17 = [TUHandle handleWithDestinationID:digits];
         [v16 setHandle:v17];
 
         [v16 setPerformDialAssist:0];
         [v16 setOriginatingUIType:1];
-        v18 = [v13 prioritizedSenderIdentities];
-        v19 = [v18 firstObject];
-        v20 = [v19 UUID];
-        [v16 setLocalSenderIdentityUUID:v20];
+        prioritizedSenderIdentities = [emergencyProvider prioritizedSenderIdentities];
+        firstObject = [prioritizedSenderIdentities firstObject];
+        uUID = [firstObject UUID];
+        [v16 setLocalSenderIdentityUUID:uUID];
 
-        v21 = [v13 prioritizedSenderIdentities];
-        v22 = [v21 firstObject];
-        v23 = [v22 accountUUID];
-        [v16 setLocalSenderIdentityAccountUUID:v23];
+        prioritizedSenderIdentities2 = [emergencyProvider prioritizedSenderIdentities];
+        firstObject2 = [prioritizedSenderIdentities2 firstObject];
+        accountUUID = [firstObject2 accountUUID];
+        [v16 setLocalSenderIdentityAccountUUID:accountUUID];
 
-        v24 = [(PHEmergencyDialerViewController *)self senderIdentityClient];
-        v15 = [v16 dialRequestByResolvingDialTypeUsingSenderIdentityClient:v24];
+        senderIdentityClient = [(PHEmergencyDialerViewController *)self senderIdentityClient];
+        v15 = [v16 dialRequestByResolvingDialTypeUsingSenderIdentityClient:senderIdentityClient];
 
         if ([(PHEmergencyDialerViewController *)self shouldShowAirplaneEmergencyCallAlertForDialRequest:v15])
         {
@@ -1442,11 +1442,11 @@ LABEL_16:
           v33 = 3221225472;
           v34 = sub_1000C2454;
           v35 = &unk_100356D10;
-          v36 = self;
+          selfCopy = self;
           v15 = v15;
           v37 = v15;
           v27 = [(PHAirplaneEmergencyCallAlert *)v26 initWithDialAction:&v32];
-          [(PHAirplaneEmergencyCallAlert *)v27 showOnViewController:self, v32, v33, v34, v35, v36];
+          [(PHAirplaneEmergencyCallAlert *)v27 showOnViewController:self, v32, v33, v34, v35, selfCopy];
         }
 
         else
@@ -1472,7 +1472,7 @@ LABEL_16:
               sub_10025636C(v30);
             }
 
-            v31 = [UIAlertController networkUnavailableAlertControllerWithCallProvider:v13 dialType:1 senderIdentityUUID:0];
+            v31 = [UIAlertController networkUnavailableAlertControllerWithCallProvider:emergencyProvider dialType:1 senderIdentityUUID:0];
             if (v31)
             {
               [(PHEmergencyDialerViewController *)self presentViewController:v31 animated:1 completion:0];
@@ -1483,16 +1483,16 @@ LABEL_16:
 
       else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_1002563B0(v12, v15);
+        sub_1002563B0(callProviderManager, v15);
       }
     }
   }
 }
 
-- (void)dialEmergencyCallForDialRequest:(id)a3
+- (void)dialEmergencyCallForDialRequest:(id)request
 {
-  v4 = a3;
-  if (![(PHEmergencyDialerViewController *)self shouldShowRTTAlertForDialRequest:v4])
+  requestCopy = request;
+  if (![(PHEmergencyDialerViewController *)self shouldShowRTTAlertForDialRequest:requestCopy])
   {
     goto LABEL_6;
   }
@@ -1504,15 +1504,15 @@ LABEL_16:
   }
 
   v6 = v5;
-  v7 = [v4 handle];
-  v8 = [v7 value];
+  handle = [requestCopy handle];
+  value = [handle value];
 
-  if ([v8 destinationIdIsPhoneNumber])
+  if ([value destinationIdIsPhoneNumber])
   {
     v9 = TUHomeCountryCode();
     v10 = TUFormattedPhoneNumber();
 
-    v8 = v10;
+    value = v10;
   }
 
   *&buf = 0;
@@ -1524,11 +1524,11 @@ LABEL_16:
   v51[1] = 3221225472;
   v51[2] = sub_1000C2B50;
   v51[3] = &unk_100358D28;
-  v52 = v4;
+  v52 = requestCopy;
   p_buf = &buf;
   v12 = v11;
   v53 = v12;
-  [v6 displayCallPromptForContact:v8 withCompletion:v51];
+  [v6 displayCallPromptForContact:value withCompletion:v51];
   v13 = dispatch_time(0, 15000000000);
   dispatch_semaphore_wait(v12, v13);
   [v6 cancelCallPromptDisplay];
@@ -1538,8 +1538,8 @@ LABEL_16:
   if (v14)
   {
 LABEL_6:
-    v15 = [v4 handle];
-    v16 = [v15 value];
+    handle2 = [requestCopy handle];
+    value2 = [handle2 value];
     v17 = TUIsMMIOrUSSDNumber();
 
     if (v17)
@@ -1555,12 +1555,12 @@ LABEL_6:
       v47 = 3221225472;
       v48 = sub_1000C2BD0;
       v49 = &unk_1003569B0;
-      v19 = v4;
+      v19 = requestCopy;
       v50 = v19;
       v20 = objc_retainBlock(&v46);
-      v21 = [v19 handle];
-      v22 = [v21 value];
-      v23 = [PHInCallUIUtilities shouldRequestPasscodeUnlockForMMICode:v22];
+      handle3 = [v19 handle];
+      value3 = [handle3 value];
+      v23 = [PHInCallUIUtilities shouldRequestPasscodeUnlockForMMICode:value3];
 
       if (v23)
       {
@@ -1579,18 +1579,18 @@ LABEL_6:
     else
     {
       v25 = +[PHInCallUtilities sharedInstance];
-      v26 = [v25 isSetupAssistantRunning];
+      isSetupAssistantRunning = [v25 isSetupAssistantRunning];
 
       v27 = +[UIApplication sharedApplication];
-      v28 = [v27 isPasscodeRequiredToUnlock];
+      isPasscodeRequiredToUnlock = [v27 isPasscodeRequiredToUnlock];
 
       v29 = PHPreferencesGetValueInDomain();
       LOBYTE(v27) = [v29 BOOLValue];
 
-      if (!(v27 & 1 | (((v26 | v28 | +[APApplication isPhoneAppLocked]) & 1) == 0)))
+      if (!(v27 & 1 | (((isSetupAssistantRunning | isPasscodeRequiredToUnlock | +[APApplication isPhoneAppLocked]) & 1) == 0)))
       {
-        [v4 setDialType:1];
-        if (v28)
+        [requestCopy setDialType:1];
+        if (isPasscodeRequiredToUnlock)
         {
           v30 = 2;
         }
@@ -1600,19 +1600,19 @@ LABEL_6:
           v30 = 0;
         }
 
-        [v4 setOriginatingUIType:v30];
+        [requestCopy setOriginatingUIType:v30];
       }
 
       v31 = sub_100004F84();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = requestCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "dialEmergencyCall: preparing to dial request %@", &buf, 0xCu);
       }
 
       v32 = +[TUCallCenter sharedInstance];
-      v33 = [v32 dialWithRequest:v4];
+      v33 = [v32 dialWithRequest:requestCopy];
 
       v34 = sub_100004F84();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1637,8 +1637,8 @@ LABEL_6:
         }
 
         v36 = +[UIApplication sharedApplication];
-        v37 = [v36 delegate];
-        [v37 requestPresentationForCall:v33 dialRequest:v4];
+        delegate = [v36 delegate];
+        [delegate requestPresentationForCall:v33 dialRequest:requestCopy];
 
         v38 = sub_100004F84();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -1648,8 +1648,8 @@ LABEL_6:
         }
 
         +[TUCallCapabilities endEmergencyCallbackMode];
-        v39 = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
-        [v39 dismiss];
+        _remoteViewControllerProxy = [(PHEmergencyDialerViewController *)self _remoteViewControllerProxy];
+        [_remoteViewControllerProxy dismiss];
       }
 
       if ([v33 status] == 6)
@@ -1657,13 +1657,13 @@ LABEL_6:
 LABEL_28:
         v40 = +[NSBundle mainBundle];
         v41 = [v40 localizedStringForKey:@"EMERGENCY_CALLS_ONLY" value:&stru_100361FD0 table:@"EmergencyCallStrings"];
-        v42 = [(PHEmergencyDialerViewController *)self dialerView];
-        v43 = [v42 emergencyTitleLabel];
-        [v43 setText:v41];
+        dialerView = [(PHEmergencyDialerViewController *)self dialerView];
+        emergencyTitleLabel = [dialerView emergencyTitleLabel];
+        [emergencyTitleLabel setText:v41];
 
-        v44 = [(PHEmergencyDialerViewController *)self dialerView];
-        v45 = [v44 lcdView];
-        [v45 setText:&stru_100361FD0 needsFormat:0];
+        dialerView2 = [(PHEmergencyDialerViewController *)self dialerView];
+        lcdView = [dialerView2 lcdView];
+        [lcdView setText:&stru_100361FD0 needsFormat:0];
 
         [(PHEmergencyDialerViewController *)self performSelector:"continueCyclingEmergencyTitleLabel" withObject:0 afterDelay:3.0];
       }
@@ -1671,71 +1671,71 @@ LABEL_28:
   }
 }
 
-- (void)handleUseRTTActionForButtonSender:(id)a3 event:(id)a4
+- (void)handleUseRTTActionForButtonSender:(id)sender event:(id)event
 {
-  v5 = a3;
-  v6 = [(PHEmergencyDialerViewController *)self useRTTButton];
+  senderCopy = sender;
+  useRTTButton = [(PHEmergencyDialerViewController *)self useRTTButton];
 
-  if (v6 == v5)
+  if (useRTTButton == senderCopy)
   {
     v9 = +[TUCallCenter sharedInstance];
     v7 = +[TUCallCenter sharedInstance];
-    v8 = [v7 frontmostCall];
-    [v9 setTTYType:1 forCall:v8];
+    frontmostCall = [v7 frontmostCall];
+    [v9 setTTYType:1 forCall:frontmostCall];
   }
 }
 
 - (void)refreshUseRTTButton
 {
-  v3 = [(PHEmergencyDialerViewController *)self shouldShowUseRTTButton];
-  v4 = [(PHEmergencyDialerViewController *)self useRTTButton];
-  [v4 setAlpha:v3];
+  shouldShowUseRTTButton = [(PHEmergencyDialerViewController *)self shouldShowUseRTTButton];
+  useRTTButton = [(PHEmergencyDialerViewController *)self useRTTButton];
+  [useRTTButton setAlpha:shouldShowUseRTTButton];
 
-  v5 = [(PHEmergencyDialerViewController *)self shouldShowUseRTTButton];
-  v6 = [(PHEmergencyDialerViewController *)self useRTTButton];
-  [v6 setEnabled:v5];
+  shouldShowUseRTTButton2 = [(PHEmergencyDialerViewController *)self shouldShowUseRTTButton];
+  useRTTButton2 = [(PHEmergencyDialerViewController *)self useRTTButton];
+  [useRTTButton2 setEnabled:shouldShowUseRTTButton2];
 }
 
-- (BOOL)shouldShowRTTAlertForDialRequest:(id)a3
+- (BOOL)shouldShowRTTAlertForDialRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[TUCallCenter sharedInstance];
-  if ([v4 currentCallCount] || !objc_msgSend(v3, "isValid"))
+  if ([v4 currentCallCount] || !objc_msgSend(requestCopy, "isValid"))
   {
-    v6 = 0;
+    isTTYAvailable = 0;
   }
 
   else
   {
-    v5 = [v3 provider];
-    if ([v5 isTelephonyProvider])
+    provider = [requestCopy provider];
+    if ([provider isTelephonyProvider])
     {
-      if ([v3 isRTTAvailable])
+      if ([requestCopy isRTTAvailable])
       {
-        v6 = 1;
+        isTTYAvailable = 1;
       }
 
       else
       {
-        v6 = [v3 isTTYAvailable];
+        isTTYAvailable = [requestCopy isTTYAvailable];
       }
     }
 
     else
     {
-      v6 = 0;
+      isTTYAvailable = 0;
     }
   }
 
-  return v6;
+  return isTTYAvailable;
 }
 
 - (BOOL)shouldShowUseRTTButton
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 frontmostCall];
+  frontmostCall = [v2 frontmostCall];
 
-  if (v3 && [v3 status] == 1 && (objc_msgSend(v3, "isRTT") & 1) == 0 && (objc_msgSend(v3, "isTTY") & 1) == 0 && objc_msgSend(v3, "supportsTTYWithVoice"))
+  if (frontmostCall && [frontmostCall status] == 1 && (objc_msgSend(frontmostCall, "isRTT") & 1) == 0 && (objc_msgSend(frontmostCall, "isTTY") & 1) == 0 && objc_msgSend(frontmostCall, "supportsTTYWithVoice"))
   {
     v4 = +[TUCallCenter sharedInstance];
     v5 = [v4 currentCallCount] == 1;
@@ -1758,7 +1758,7 @@ LABEL_28:
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v3;
+    v12 = frontmostCall;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Determined that the Use RTT button %@ be presented during the emergency call %@.", &v9, 0x16u);
   }
 
@@ -1772,14 +1772,14 @@ LABEL_28:
   {
     v4 = sub_10001A58C();
     v5 = +[TUCallCenter sharedInstance];
-    v6 = [v5 frontmostCall];
+    frontmostCall = [v5 frontmostCall];
 
     v7 = [PHEdgeInsetButton buttonWithType:1];
     [(UIButton *)v7 setTouchAreaEdgeInsets:-15.0, -15.0, -15.0, -15.0];
     [(UIButton *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v7 addTarget:self action:"handleUseRTTActionForButtonSender:event:" forControlEvents:64];
-    v8 = [v6 localSenderIdentityUUID];
-    v9 = [v4 rttDisplayName:1 forSubscriptionContextUUID:v8];
+    localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+    v9 = [v4 rttDisplayName:1 forSubscriptionContextUUID:localSenderIdentityUUID];
     [(UIButton *)v7 setTitle:v9 forState:0];
 
     v10 = +[UIColor blackColor];
@@ -1793,11 +1793,11 @@ LABEL_28:
     }
 
     v13 = [UIFont systemFontOfSize:v12];
-    v14 = [(UIButton *)v7 titleLabel];
-    [v14 setFont:v13];
+    titleLabel = [(UIButton *)v7 titleLabel];
+    [titleLabel setFont:v13];
 
-    v15 = [(UIButton *)v7 titleLabel];
-    [v15 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)v7 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
     v16 = self->_useRTTButton;
     self->_useRTTButton = v7;
@@ -1808,50 +1808,50 @@ LABEL_28:
   return useRTTButton;
 }
 
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(PHEmergencyDialerViewController *)self refreshUseRTTButton];
 }
 
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(PHEmergencyDialerViewController *)self refreshUseRTTButton];
 }
 
-- (void)stewieAlertButtonTapped:(id)a3
+- (void)stewieAlertButtonTapped:(id)tapped
 {
   v5 = +[UIApplication sharedApplication];
-  v3 = [v5 delegate];
-  v4 = [v3 alertCoordinator];
-  [v4 invokeAlertWithRequestUnlock:1 automaticallyInvoked:0];
+  delegate = [v5 delegate];
+  alertCoordinator = [delegate alertCoordinator];
+  [alertCoordinator invokeAlertWithRequestUnlock:1 automaticallyInvoked:0];
 }
 
 - (void)alertWillInvoke
@@ -1860,12 +1860,12 @@ LABEL_28:
   [v2 postNotificationName:@"PHAlertDisconnectingCallsNotification" object:0];
 }
 
-- (void)updatePresentationStateWithAllowed:(BOOL)a3
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  if ([(PHEmergencyDialerViewController *)self shouldPresentAlertButton]!= a3)
+  allowedCopy = allowed;
+  if ([(PHEmergencyDialerViewController *)self shouldPresentAlertButton]!= allowed)
   {
-    [(PHEmergencyDialerViewController *)self setShouldPresentAlertButton:v3];
+    [(PHEmergencyDialerViewController *)self setShouldPresentAlertButton:allowedCopy];
 
     [(PHEmergencyDialerViewController *)self updateCurrentState];
   }

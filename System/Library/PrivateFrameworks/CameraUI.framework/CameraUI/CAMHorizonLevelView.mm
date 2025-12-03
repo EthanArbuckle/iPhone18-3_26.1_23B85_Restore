@@ -1,31 +1,31 @@
 @interface CAMHorizonLevelView
-- (CAMHorizonLevelView)initWithViewModel:(id)a3;
+- (CAMHorizonLevelView)initWithViewModel:(id)model;
 - (CAMHorizonLevelViewDelegate)delegate;
-- (id)_createStrechableLineImage:(id)a3 lineHeight:(double)a4 shadowWidth:(double)a5 shadowHorizontalEdges:(unint64_t)a6;
-- (void)_drawHorizonLineInContext:(CGContext *)a3 withBounds:(CGRect)a4 color:(id)a5;
-- (void)_layoutLineViewsWithMode:(int64_t)a3 rotationAngle:(double)a4;
-- (void)_updateSubViewsAlphaWithAlpha:(double)a3 indicatorMode:(int64_t)a4 rotationAngle:(double)a5;
+- (id)_createStrechableLineImage:(id)image lineHeight:(double)height shadowWidth:(double)width shadowHorizontalEdges:(unint64_t)edges;
+- (void)_drawHorizonLineInContext:(CGContext *)context withBounds:(CGRect)bounds color:(id)color;
+- (void)_layoutLineViewsWithMode:(int64_t)mode rotationAngle:(double)angle;
+- (void)_updateSubViewsAlphaWithAlpha:(double)alpha indicatorMode:(int64_t)mode rotationAngle:(double)angle;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didPublishChange:(unint64_t)a4 withContext:(void *)a5;
+- (void)observable:(id)observable didPublishChange:(unint64_t)change withContext:(void *)context;
 @end
 
 @implementation CAMHorizonLevelView
 
-- (CAMHorizonLevelView)initWithViewModel:(id)a3
+- (CAMHorizonLevelView)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v29.receiver = self;
   v29.super_class = CAMHorizonLevelView;
   v6 = [(CAMHorizonLevelView *)&v29 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(CAMObservable *)v7->_viewModel registerChangeObserver:v7 context:0];
     v8 = +[CAMCaptureCapabilities capabilities];
-    v9 = [v8 allowHaptics];
+    allowHaptics = [v8 allowHaptics];
 
-    if (v9)
+    if (allowHaptics)
     {
       v10 = +[CAMFeedbackController sharedController];
       feedbackController = v7->__feedbackController;
@@ -34,17 +34,17 @@
 
     [(CAMHorizonLevelView *)v7 _shadowWidth];
     v13 = v12;
-    v14 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v15 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:v14 lineHeight:2 shadowWidth:1.0 shadowHorizontalEdges:v13];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v15 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:systemYellowColor lineHeight:2 shadowWidth:1.0 shadowHorizontalEdges:v13];
 
-    v16 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v17 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:v16 lineHeight:8 shadowWidth:1.0 shadowHorizontalEdges:v13];
+    systemYellowColor2 = [MEMORY[0x1E69DC888] systemYellowColor];
+    v17 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:systemYellowColor2 lineHeight:8 shadowWidth:1.0 shadowHorizontalEdges:v13];
 
-    v18 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v19 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:v18 lineHeight:0 shadowWidth:1.0 shadowHorizontalEdges:v13];
+    systemYellowColor3 = [MEMORY[0x1E69DC888] systemYellowColor];
+    v19 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:systemYellowColor3 lineHeight:0 shadowWidth:1.0 shadowHorizontalEdges:v13];
 
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    v21 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:v20 lineHeight:10 shadowWidth:1.0 shadowHorizontalEdges:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v21 = [(CAMHorizonLevelView *)v7 _createStrechableLineImage:whiteColor lineHeight:10 shadowWidth:1.0 shadowHorizontalEdges:v13];
 
     v22 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v21 highlightedImage:v19];
     horizonLineView = v7->__horizonLineView;
@@ -67,43 +67,43 @@
   return v7;
 }
 
-- (void)_drawHorizonLineInContext:(CGContext *)a3 withBounds:(CGRect)a4 color:(id)a5
+- (void)_drawHorizonLineInContext:(CGContext *)context withBounds:(CGRect)bounds color:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSetFillColorWithColor(a3, [a5 CGColor]);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSetFillColorWithColor(context, [color CGColor]);
   v10 = x;
   v11 = y;
   v12 = width;
   v13 = height;
 
-  CGContextFillRect(a3, *&v10);
+  CGContextFillRect(context, *&v10);
 }
 
-- (id)_createStrechableLineImage:(id)a3 lineHeight:(double)a4 shadowWidth:(double)a5 shadowHorizontalEdges:(unint64_t)a6
+- (id)_createStrechableLineImage:(id)image lineHeight:(double)height shadowWidth:(double)width shadowHorizontalEdges:(unint64_t)edges
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  edgesCopy = edges;
+  imageCopy = image;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = 3.0;
-  v15 = 0.0;
-  if ((v6 & 8) != 0)
+  widthCopy = 0.0;
+  if ((edgesCopy & 8) != 0)
   {
-    v15 = a5;
+    widthCopy = width;
   }
 
-  if ((v6 & 2) != 0)
+  if ((edgesCopy & 2) != 0)
   {
-    v14 = a5 + 3.0;
+    v14 = width + 3.0;
   }
 
-  v16 = v14 + v15;
-  v17 = a4 + a5 + a5;
+  v16 = v14 + widthCopy;
+  v17 = height + width + width;
   UIRectInsetEdges();
   v19 = v18;
   v21 = v20;
@@ -113,14 +113,14 @@
   v33.height = v17;
   UIGraphicsBeginImageContextWithOptions(v33, 0, v13);
   v26 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.15];
-  v27 = v10;
+  v27 = imageCopy;
   CurrentContext = UIGraphicsGetCurrentContext();
   [(CAMHorizonLevelView *)self _drawHorizonLineInContext:CurrentContext withBounds:v26 color:0.0, 0.0, v16, v17];
   [(CAMHorizonLevelView *)self _drawHorizonLineInContext:CurrentContext withBounds:v27 color:v19, v21, v23, v25];
 
   v29 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v30 = [v29 resizableImageWithCapInsets:{0.0, a5 + 1.0, 0.0, a5 + 1.0}];
+  v30 = [v29 resizableImageWithCapInsets:{0.0, width + 1.0, 0.0, width + 1.0}];
 
   return v30;
 }
@@ -130,18 +130,18 @@
   v16.receiver = self;
   v16.super_class = CAMHorizonLevelView;
   [(CAMHorizonLevelView *)&v16 layoutSubviews];
-  v3 = [(CAMHorizonLevelView *)self viewModel];
-  v4 = [v3 currentIndicatorMode];
-  [v3 currentIndicatorRotationAngle];
+  viewModel = [(CAMHorizonLevelView *)self viewModel];
+  currentIndicatorMode = [viewModel currentIndicatorMode];
+  [viewModel currentIndicatorRotationAngle];
   v6 = v5;
   [(CAMHorizonLevelView *)self bounds];
   UIRectGetCenter();
   [(CAMHorizonLevelView *)self _shadowWidth];
   v8 = v7;
   v9 = v7 * 2.0 + 1.0;
-  if (v4 >= 3)
+  if (currentIndicatorMode >= 3)
   {
-    if (v4 == 3)
+    if (currentIndicatorMode == 3)
     {
       [(CAMHorizonLevelView *)self bounds];
       CGRectGetHeight(v18);
@@ -168,8 +168,8 @@
     v14 = v11 + (2.0 - v8) * -2.0;
   }
 
-  v15 = [(CAMHorizonLevelView *)self traitCollection];
-  [v15 displayScale];
+  traitCollection = [(CAMHorizonLevelView *)self traitCollection];
+  [traitCollection displayScale];
 
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
@@ -183,102 +183,102 @@
   UIRectGetCenter();
   [(UIImageView *)self->__referenceLineRight setCenter:?];
   [(UIImageView *)self->__referenceLineRight setBounds:0.0, 0.0, v13, v9];
-  if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((currentIndicatorMode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(CAMHorizonLevelView *)self _layoutLineViewsWithMode:v4 rotationAngle:v6];
+    [(CAMHorizonLevelView *)self _layoutLineViewsWithMode:currentIndicatorMode rotationAngle:v6];
   }
 
-  [v3 currentIndicatorAlpha];
-  [CAMHorizonLevelView _updateSubViewsAlphaWithAlpha:"_updateSubViewsAlphaWithAlpha:indicatorMode:rotationAngle:" indicatorMode:v4 rotationAngle:?];
+  [viewModel currentIndicatorAlpha];
+  [CAMHorizonLevelView _updateSubViewsAlphaWithAlpha:"_updateSubViewsAlphaWithAlpha:indicatorMode:rotationAngle:" indicatorMode:currentIndicatorMode rotationAngle:?];
 }
 
-- (void)_layoutLineViewsWithMode:(int64_t)a3 rotationAngle:(double)a4
+- (void)_layoutLineViewsWithMode:(int64_t)mode rotationAngle:(double)angle
 {
-  v7 = [(CAMHorizonLevelView *)self _horizonLineView];
-  if (a3 == 2)
+  _horizonLineView = [(CAMHorizonLevelView *)self _horizonLineView];
+  if (mode == 2)
   {
     CGAffineTransformMakeRotation(&v9, 0.0);
     v10 = v9;
     [(CAMHorizonLevelView *)self setTransform:&v10];
   }
 
-  else if (a3 == 3)
+  else if (mode == 3)
   {
     CGAffineTransformMakeRotation(&v11, 1.57079633);
     v10 = v11;
     [(CAMHorizonLevelView *)self setTransform:&v10];
-    a4 = -a4;
+    angle = -angle;
   }
 
-  CGAffineTransformMakeRotation(&v8, a4);
+  CGAffineTransformMakeRotation(&v8, angle);
   v10 = v8;
-  [v7 setTransform:&v10];
+  [_horizonLineView setTransform:&v10];
 }
 
-- (void)_updateSubViewsAlphaWithAlpha:(double)a3 indicatorMode:(int64_t)a4 rotationAngle:(double)a5
+- (void)_updateSubViewsAlphaWithAlpha:(double)alpha indicatorMode:(int64_t)mode rotationAngle:(double)angle
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    a3 = 0.0;
+    alpha = 0.0;
   }
 
-  v8 = [(CAMHorizonLevelView *)self _horizonLineView];
-  [v8 setAlpha:a3];
+  _horizonLineView = [(CAMHorizonLevelView *)self _horizonLineView];
+  [_horizonLineView setAlpha:alpha];
 
-  v9 = [(CAMHorizonLevelView *)self _referenceLineLeft];
-  [v9 setAlpha:a3];
+  _referenceLineLeft = [(CAMHorizonLevelView *)self _referenceLineLeft];
+  [_referenceLineLeft setAlpha:alpha];
 
-  v10 = [(CAMHorizonLevelView *)self _referenceLineRight];
-  [v10 setAlpha:a3];
+  _referenceLineRight = [(CAMHorizonLevelView *)self _referenceLineRight];
+  [_referenceLineRight setAlpha:alpha];
 
-  v11 = [(CAMHorizonLevelView *)self _horizonLineView];
-  [v11 setHighlighted:a5 == 0.0];
+  _horizonLineView2 = [(CAMHorizonLevelView *)self _horizonLineView];
+  [_horizonLineView2 setHighlighted:angle == 0.0];
 
-  v12 = [(CAMHorizonLevelView *)self _referenceLineLeft];
-  [v12 setHighlighted:a5 == 0.0];
+  _referenceLineLeft2 = [(CAMHorizonLevelView *)self _referenceLineLeft];
+  [_referenceLineLeft2 setHighlighted:angle == 0.0];
 
-  v13 = [(CAMHorizonLevelView *)self _referenceLineRight];
-  [v13 setHighlighted:a5 == 0.0];
+  _referenceLineRight2 = [(CAMHorizonLevelView *)self _referenceLineRight];
+  [_referenceLineRight2 setHighlighted:angle == 0.0];
 }
 
-- (void)observable:(id)a3 didPublishChange:(unint64_t)a4 withContext:(void *)a5
+- (void)observable:(id)observable didPublishChange:(unint64_t)change withContext:(void *)context
 {
-  if (a5)
+  if (context)
   {
     return;
   }
 
-  v5 = a4;
-  v7 = a3;
-  [v7 currentIndicatorAlpha];
+  changeCopy = change;
+  observableCopy = observable;
+  [observableCopy currentIndicatorAlpha];
   v9 = v8;
-  v10 = [v7 currentIndicatorMode];
-  [v7 currentIndicatorRotationAngle];
+  currentIndicatorMode = [observableCopy currentIndicatorMode];
+  [observableCopy currentIndicatorRotationAngle];
   v12 = v11;
 
-  if ((v5 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
     if (fabs(v12) <= 0.08)
     {
-      v13 = [(CAMHorizonLevelView *)self delegate];
-      v14 = [v13 horizonLevelViewCanPlayHaptics:self];
+      delegate = [(CAMHorizonLevelView *)self delegate];
+      v14 = [delegate horizonLevelViewCanPlayHaptics:self];
 
       if (v14)
       {
-        v15 = [(CAMHorizonLevelView *)self _feedbackController];
-        [v15 prepareDiscreteFeedback:1];
+        _feedbackController = [(CAMHorizonLevelView *)self _feedbackController];
+        [_feedbackController prepareDiscreteFeedback:1];
 
         if (v12 == 0.0)
         {
-          v16 = [(CAMHorizonLevelView *)self _feedbackController];
-          [v16 performDiscreteFeedback:1];
+          _feedbackController2 = [(CAMHorizonLevelView *)self _feedbackController];
+          [_feedbackController2 performDiscreteFeedback:1];
         }
       }
     }
 
 LABEL_10:
     [(CAMHorizonLevelView *)self setNeedsLayout];
-    if ((v5 & 4) == 0)
+    if ((changeCopy & 4) == 0)
     {
       return;
     }
@@ -286,19 +286,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v5)
+  if (changeCopy)
   {
     goto LABEL_10;
   }
 
-  if ((v5 & 4) == 0)
+  if ((changeCopy & 4) == 0)
   {
     return;
   }
 
 LABEL_11:
 
-  [(CAMHorizonLevelView *)self _updateSubViewsAlphaWithAlpha:v10 indicatorMode:v9 rotationAngle:v12];
+  [(CAMHorizonLevelView *)self _updateSubViewsAlphaWithAlpha:currentIndicatorMode indicatorMode:v9 rotationAngle:v12];
 }
 
 - (CAMHorizonLevelViewDelegate)delegate

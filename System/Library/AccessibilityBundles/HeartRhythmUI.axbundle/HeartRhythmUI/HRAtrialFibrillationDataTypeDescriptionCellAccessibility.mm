@@ -1,17 +1,17 @@
 @interface HRAtrialFibrillationDataTypeDescriptionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupDescriptionTextView;
 @end
 
 @implementation HRAtrialFibrillationDataTypeDescriptionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceVariable:@"_descriptionTextView" withType:"UITextView"];
-  [v3 validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceVariable:@"_settingsDescriptionTextView" withType:"UITextView"];
-  [v3 validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceMethod:@"_setupDescriptionTextView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceVariable:@"_descriptionTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceVariable:@"_settingsDescriptionTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"HRAtrialFibrillationDataTypeDescriptionCell" hasInstanceMethod:@"_setupDescriptionTextView" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

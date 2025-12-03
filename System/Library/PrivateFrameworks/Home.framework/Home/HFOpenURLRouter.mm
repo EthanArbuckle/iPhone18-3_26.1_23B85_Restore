@@ -1,9 +1,9 @@
 @interface HFOpenURLRouter
 + (HFOpenURLRouter)sharedInstance;
 - (HFApplicationURLHandling)applicationURLHandler;
-- (id)openSensitiveURL:(id)a3;
-- (id)openURL:(id)a3;
-- (void)_sendAnalyticsEventForURL:(id)a3;
+- (id)openSensitiveURL:(id)l;
+- (id)openURL:(id)l;
+- (void)_sendAnalyticsEventForURL:(id)l;
 @end
 
 @implementation HFOpenURLRouter
@@ -27,15 +27,15 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
   qword_280E02C98 = v0;
 }
 
-- (id)openURL:(id)a3
+- (id)openURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = HFLogForCategory(0x4DuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = lCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "HFOpenURLRouter received request to open URL: %@.", buf, 0xCu);
   }
 
@@ -43,12 +43,12 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:-1002 userInfo:MEMORY[0x277CBEC10]];
   v8 = [v6 futureWithError:v7];
 
-  v9 = [(HFOpenURLRouter *)self applicationURLHandler];
+  applicationURLHandler = [(HFOpenURLRouter *)self applicationURLHandler];
 
-  if (v9)
+  if (applicationURLHandler)
   {
-    v10 = [(HFOpenURLRouter *)self applicationURLHandler];
-    v11 = [v10 openApplicationURL:v4];
+    applicationURLHandler2 = [(HFOpenURLRouter *)self applicationURLHandler];
+    v11 = [applicationURLHandler2 openApplicationURL:lCopy];
 
     v8 = v11;
   }
@@ -58,8 +58,8 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
   v16[2] = __27__HFOpenURLRouter_openURL___block_invoke;
   v16[3] = &unk_277DF2D30;
   v16[4] = self;
-  v17 = v4;
-  v12 = v4;
+  v17 = lCopy;
+  v12 = lCopy;
   v13 = [v8 recover:v16];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -67,26 +67,26 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
   return v13;
 }
 
-- (id)openSensitiveURL:(id)a3
+- (id)openSensitiveURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = HFLogForCategory(0x4DuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = lCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "HFOpenURLRouter received request to open sensitive URL: %@.", buf, 0xCu);
   }
 
-  if ([HFURLComponents isHomeAppURL:v4])
+  if ([HFURLComponents isHomeAppURL:lCopy])
   {
     v6 = +[HFExecutionEnvironment sharedInstance];
-    v7 = [v6 hostProcess];
+    hostProcess = [v6 hostProcess];
 
-    if (!v7)
+    if (!hostProcess)
     {
-      NSLog(&cfstr_TryingToOpenHo.isa, v4);
+      NSLog(&cfstr_TryingToOpenHo.isa, lCopy);
     }
   }
 
@@ -99,15 +99,15 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
     v17[1] = 3221225472;
     v17[2] = __36__HFOpenURLRouter_openSensitiveURL___block_invoke;
     v17[3] = &unk_277DF2C90;
-    v18 = v4;
-    v10 = [v9 futureWithCompletionHandlerAdapterBlock:v17];
+    v18 = lCopy;
+    futureWithNoResult = [v9 futureWithCompletionHandlerAdapterBlock:v17];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v16 = 0;
-    [v11 openSensitiveURL:v4 withOptions:v8 error:&v16];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:v8 error:&v16];
     v12 = v16;
 
     if (v12)
@@ -116,25 +116,25 @@ void __33__HFOpenURLRouter_sharedInstance__block_invoke_2()
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v20 = v4;
+        v20 = lCopy;
         v21 = 2112;
         v22 = v12;
         _os_log_error_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_ERROR, "Failed to open URL: %@, error: %@", buf, 0x16u);
       }
 
-      v10 = [MEMORY[0x277D2C900] futureWithError:v12];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithError:v12];
     }
 
     else
     {
-      [(HFOpenURLRouter *)self _sendAnalyticsEventForURL:v4];
-      v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+      [(HFOpenURLRouter *)self _sendAnalyticsEventForURL:lCopy];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __36__HFOpenURLRouter_openSensitiveURL___block_invoke(uint64_t a1, void *a2)
@@ -145,12 +145,12 @@ void __36__HFOpenURLRouter_openSensitiveURL___block_invoke(uint64_t a1, void *a2
   [v5 openURL:*(a1 + 32) configuration:0 completionHandler:v4];
 }
 
-- (void)_sendAnalyticsEventForURL:(id)a3
+- (void)_sendAnalyticsEventForURL:(id)l
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
-  v5 = [v3 hf_photosLibraryPeopleAlbumURL];
-  v6 = [v4 isEqual:v5];
+  lCopy = l;
+  hf_photosLibraryPeopleAlbumURL = [v3 hf_photosLibraryPeopleAlbumURL];
+  v6 = [lCopy isEqual:hf_photosLibraryPeopleAlbumURL];
 
   if (v6)
   {

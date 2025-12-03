@@ -1,12 +1,12 @@
 @interface MUIHighlightedMessage
 - (BOOL)isGeneratedSummary;
 - (EMMessageListItem)messageListItem;
-- (MUIHighlightedMessage)initWithTopLine:(id)a3 isGeneratedSummary:(BOOL)a4 messageListItem:(id)a5;
+- (MUIHighlightedMessage)initWithTopLine:(id)line isGeneratedSummary:(BOOL)summary messageListItem:(id)item;
 - (NSAttributedString)topLine;
 - (NSString)description;
 - (NSString)sender;
 - (int64_t)hash;
-- (void)setSender:(id)a3;
+- (void)setSender:(id)sender;
 @end
 
 @implementation MUIHighlightedMessage
@@ -51,24 +51,24 @@
   return v5;
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](sender);
   MEMORY[0x277D82BE0](self);
   v4 = sub_214CCF564();
   sub_214C10290(v4, v5);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](sender);
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIHighlightedMessage)initWithTopLine:(id)a3 isGeneratedSummary:(BOOL)a4 messageListItem:(id)a5
+- (MUIHighlightedMessage)initWithTopLine:(id)line isGeneratedSummary:(BOOL)summary messageListItem:(id)item
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](line);
   swift_unknownObjectRetain();
   v5 = sub_214CCD394();
-  return sub_214C10D74(a3, v5 & 1, a5);
+  return sub_214C10D74(line, v5 & 1, item);
 }
 
 - (int64_t)hash

@@ -1,17 +1,17 @@
 @interface NLProbabilityInfo
-- (BOOL)isEqual:(id)a3;
-- (NLProbabilityInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLProbabilityInfo)initWithCoder:(id)coder;
 - (NLProbabilityInfo)initWithInvalidProbability;
-- (NLProbabilityInfo)initWithLog10Probability:(double)a3 flags:(unint64_t)a4;
-- (NLProbabilityInfo)initWithProbability:(double)a3 flags:(unint64_t)a4;
+- (NLProbabilityInfo)initWithLog10Probability:(double)probability flags:(unint64_t)flags;
+- (NLProbabilityInfo)initWithProbability:(double)probability flags:(unint64_t)flags;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NLProbabilityInfo
 
-- (NLProbabilityInfo)initWithProbability:(double)a3 flags:(unint64_t)a4
+- (NLProbabilityInfo)initWithProbability:(double)probability flags:(unint64_t)flags
 {
   v9.receiver = self;
   v9.super_class = NLProbabilityInfo;
@@ -19,26 +19,26 @@
   v7 = v6;
   if (v6)
   {
-    v6->_probability = a3;
-    v6->_log10Probability = log10(a3);
+    v6->_probability = probability;
+    v6->_log10Probability = log10(probability);
     v7->_isValid = 1;
-    v7->_probabilityFlags = a4;
+    v7->_probabilityFlags = flags;
   }
 
   return v7;
 }
 
-- (NLProbabilityInfo)initWithLog10Probability:(double)a3 flags:(unint64_t)a4
+- (NLProbabilityInfo)initWithLog10Probability:(double)probability flags:(unint64_t)flags
 {
   v8.receiver = self;
   v8.super_class = NLProbabilityInfo;
   v6 = [(NLProbabilityInfo *)&v8 init];
   if (v6)
   {
-    v6->_probability = __exp10(a3);
-    v6->_log10Probability = a3;
+    v6->_probability = __exp10(probability);
+    v6->_log10Probability = probability;
     v6->_isValid = 1;
-    v6->_probabilityFlags = a4;
+    v6->_probabilityFlags = flags;
   }
 
   return v6;
@@ -81,14 +81,14 @@
   return v5 ^ [(NLProbabilityInfo *)self probabilityFlags]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   v11 = 1;
-  if (v4 != self)
+  if (equalCopy != self)
   {
-    if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v6 = [(NLProbabilityInfo *)self isValid], v6 != [(NLProbabilityInfo *)v5 isValid]) || (v7 = [(NLProbabilityInfo *)self probabilityFlags], v7 != [(NLProbabilityInfo *)v5 probabilityFlags]) || ([(NLProbabilityInfo *)self log10Probability], v9 = v8, [(NLProbabilityInfo *)v5 log10Probability], v9 != v10))
+    if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v6 = [(NLProbabilityInfo *)self isValid], v6 != [(NLProbabilityInfo *)v5 isValid]) || (v7 = [(NLProbabilityInfo *)self probabilityFlags], v7 != [(NLProbabilityInfo *)v5 probabilityFlags]) || ([(NLProbabilityInfo *)self log10Probability], v9 = v8, [(NLProbabilityInfo *)v5 log10Probability], v9 != v10))
     {
       v11 = 0;
     }
@@ -97,45 +97,45 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NLProbabilityInfo requires keyed coding" userInfo:0];
     objc_exception_throw(v4);
   }
 
   [(NLProbabilityInfo *)self log10Probability];
-  [v5 encodeDouble:@"NLLog10Probability" forKey:?];
-  [v5 encodeBool:-[NLProbabilityInfo isValid](self forKey:{"isValid"), @"NLIsValid"}];
-  [v5 encodeInteger:-[NLProbabilityInfo probabilityFlags](self forKey:{"probabilityFlags"), @"NLProbabilityFlags"}];
+  [coderCopy encodeDouble:@"NLLog10Probability" forKey:?];
+  [coderCopy encodeBool:-[NLProbabilityInfo isValid](self forKey:{"isValid"), @"NLIsValid"}];
+  [coderCopy encodeInteger:-[NLProbabilityInfo probabilityFlags](self forKey:{"probabilityFlags"), @"NLProbabilityFlags"}];
 }
 
-- (NLProbabilityInfo)initWithCoder:(id)a3
+- (NLProbabilityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NLProbabilityInfo requires keyed coding" userInfo:0];
     objc_exception_throw(v12);
   }
 
-  [v4 decodeDoubleForKey:@"NLLog10Probability"];
+  [coderCopy decodeDoubleForKey:@"NLLog10Probability"];
   v6 = v5;
-  v7 = [v4 decodeBoolForKey:@"NLIsValid"];
-  v8 = [v4 decodeIntegerForKey:@"NLProbabilityFlags"];
+  v7 = [coderCopy decodeBoolForKey:@"NLIsValid"];
+  v8 = [coderCopy decodeIntegerForKey:@"NLProbabilityFlags"];
   if (v7)
   {
-    v9 = [(NLProbabilityInfo *)self initWithLog10Probability:v8 flags:v6];
+    initWithInvalidProbability = [(NLProbabilityInfo *)self initWithLog10Probability:v8 flags:v6];
   }
 
   else
   {
-    v9 = [(NLProbabilityInfo *)self initWithInvalidProbability];
+    initWithInvalidProbability = [(NLProbabilityInfo *)self initWithInvalidProbability];
   }
 
-  v10 = v9;
+  v10 = initWithInvalidProbability;
 
   return v10;
 }

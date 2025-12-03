@@ -1,6 +1,6 @@
 @interface _CKAddressBookMonogrammerProvider
 + (id)sharedInstance;
-- (id)monogrammerForStyle:(int64_t)a3 diameter:(double)a4;
+- (id)monogrammerForStyle:(int64_t)style diameter:(double)diameter;
 @end
 
 @implementation _CKAddressBookMonogrammerProvider
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __51___CKAddressBookMonogrammerProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_9 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_9, block);
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)monogrammerForStyle:(int64_t)a3 diameter:(double)a4
+- (id)monogrammerForStyle:(int64_t)style diameter:(double)diameter
 {
-  v4 = [objc_alloc(MEMORY[0x1E695D188]) initWithStyle:a3 diameter:a4];
+  v4 = [objc_alloc(MEMORY[0x1E695D188]) initWithStyle:style diameter:diameter];
 
   return v4;
 }

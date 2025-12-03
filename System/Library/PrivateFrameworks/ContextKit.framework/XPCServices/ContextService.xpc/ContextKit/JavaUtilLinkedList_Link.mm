@@ -1,16 +1,16 @@
 @interface JavaUtilLinkedList_Link
-- (JavaUtilLinkedList_Link)initWithId:(id)a3 withJavaUtilLinkedList_Link:(id)a4 withJavaUtilLinkedList_Link:(id)a5;
+- (JavaUtilLinkedList_Link)initWithId:(id)id withJavaUtilLinkedList_Link:(id)link withJavaUtilLinkedList_Link:(id)list_Link;
 - (void)__javaClone;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilLinkedList_Link
 
-- (JavaUtilLinkedList_Link)initWithId:(id)a3 withJavaUtilLinkedList_Link:(id)a4 withJavaUtilLinkedList_Link:(id)a5
+- (JavaUtilLinkedList_Link)initWithId:(id)id withJavaUtilLinkedList_Link:(id)link withJavaUtilLinkedList_Link:(id)list_Link
 {
-  JreStrongAssign(&self->data_, a3);
-  objc_storeWeak(&self->previous_, a4);
-  JreStrongAssign(&self->next_, a5);
+  JreStrongAssign(&self->data_, id);
+  objc_storeWeak(&self->previous_, link);
+  JreStrongAssign(&self->next_, list_Link);
   return self;
 }
 

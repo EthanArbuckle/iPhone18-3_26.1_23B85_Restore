@@ -1,58 +1,58 @@
 @interface ChipManager
-+ (BOOL)isErrorFatalFromSource:(unsigned int)a3 errorCode:(unsigned int)a4 arg:(unint64_t)a5;
-+ (BOOL)shouldHaltForError:(id)a3;
-+ (BOOL)shouldPanicForError:(id)a3;
-+ (BOOL)shouldUseFWReasonForErrorFromSource:(unsigned int)a3 errorCode:(unsigned int)a4 arg:(unint64_t)a5;
-+ (id)centauriDebugErrorCodeAsString:(int)a3;
-+ (id)controllerErrorCodeAsString:(int)a3;
-+ (id)errorSourceAsString:(int)a3;
-+ (id)linkTrainingTimeoutArgAsString:(int)a3;
-+ (id)subsystemIDAsString:(int)a3;
-+ (void)panicWithMessage:(id)a3;
++ (BOOL)isErrorFatalFromSource:(unsigned int)source errorCode:(unsigned int)code arg:(unint64_t)arg;
++ (BOOL)shouldHaltForError:(id)error;
++ (BOOL)shouldPanicForError:(id)error;
++ (BOOL)shouldUseFWReasonForErrorFromSource:(unsigned int)source errorCode:(unsigned int)code arg:(unint64_t)arg;
++ (id)centauriDebugErrorCodeAsString:(int)string;
++ (id)controllerErrorCodeAsString:(int)string;
++ (id)errorSourceAsString:(int)string;
++ (id)linkTrainingTimeoutArgAsString:(int)string;
++ (id)subsystemIDAsString:(int)string;
++ (void)panicWithMessage:(id)message;
 - (BOOL)bootChip;
-- (BOOL)bootChipInMode:(int64_t)a3 withLPMData:(id)a4 bootAttempts:(unint64_t)a5 failureReason:(id *)a6;
+- (BOOL)bootChipInMode:(int64_t)mode withLPMData:(id)data bootAttempts:(unint64_t)attempts failureReason:(id *)reason;
 - (BOOL)handleChipBooted;
-- (BOOL)readyForNewPowerTableValidationWithReason:(id *)a3;
-- (BOOL)validateNewPowerTables:(id *)a3;
-- (ChipManager)initWithQueue:(id)a3;
-- (id)bootPerformanceDataForHostTimestamps:(id)a3 firmwareTimestamps:(id)a4;
+- (BOOL)readyForNewPowerTableValidationWithReason:(id *)reason;
+- (BOOL)validateNewPowerTables:(id *)tables;
+- (ChipManager)initWithQueue:(id)queue;
+- (id)bootPerformanceDataForHostTimestamps:(id)timestamps firmwareTimestamps:(id)firmwareTimestamps;
 - (id)contextForAnalytics;
 - (void)activate;
-- (void)castPowerTableVoteForSession:(id)a3 client:(int64_t)a4 vote:(BOOL)a5 completion:(id)a6;
-- (void)checkForNewPowerTables:(id)a3;
-- (void)chipHasCrashlogAvailable:(id)a3;
-- (void)chipStateDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)collectLogs:(id)a3 fatal:(BOOL)a4 completion:(id)a5;
+- (void)castPowerTableVoteForSession:(id)session client:(int64_t)client vote:(BOOL)vote completion:(id)completion;
+- (void)checkForNewPowerTables:(id)tables;
+- (void)chipHasCrashlogAvailable:(id)available;
+- (void)chipStateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)collectLogs:(id)logs fatal:(BOOL)fatal completion:(id)completion;
 - (void)createPowerAssertion;
 - (void)createTransaction;
 - (void)dealloc;
-- (void)getPMUFaultInfo:(id)a3;
-- (void)getPowerStats:(BOOL)a3 completion:(id)a4;
-- (void)getSiKPublicKey:(id)a3;
-- (void)handleFatalError:(id)a3;
-- (void)helloCommand:(id)a3;
+- (void)getPMUFaultInfo:(id)info;
+- (void)getPowerStats:(BOOL)stats completion:(id)completion;
+- (void)getSiKPublicKey:(id)key;
+- (void)handleFatalError:(id)error;
+- (void)helloCommand:(id)command;
 - (void)invalidate;
 - (void)log;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preflightQuery:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preflightQuery:(id)query;
 - (void)processBootPerformanceStats;
-- (void)rawCommand:(id)a3 gid:(unsigned __int8)a4 oid:(unsigned __int8)a5 completion:(id)a6;
-- (void)rebootIntoLowPowerMode:(id)a3 debugMode:(BOOL)a4 completion:(id)a5;
+- (void)rawCommand:(id)command gid:(unsigned __int8)gid oid:(unsigned __int8)oid completion:(id)completion;
+- (void)rebootIntoLowPowerMode:(id)mode debugMode:(BOOL)debugMode completion:(id)completion;
 - (void)releasePowerAssertion;
 - (void)releaseTransaction;
 - (void)reloadPowerTables;
 - (void)resetChip;
-- (void)setActivateRetryCount:(unint64_t)a3;
-- (void)setBootRetryCount:(unint64_t)a3;
-- (void)setPowerTableEvaluationReadinessForSession:(id)a3 client:(int64_t)a4 ready:(BOOL)a5 completion:(id)a6;
-- (void)shellCommand:(id)a3 completion:(id)a4;
+- (void)setActivateRetryCount:(unint64_t)count;
+- (void)setBootRetryCount:(unint64_t)count;
+- (void)setPowerTableEvaluationReadinessForSession:(id)session client:(int64_t)client ready:(BOOL)ready completion:(id)completion;
+- (void)shellCommand:(id)command completion:(id)completion;
 @end
 
 @implementation ChipManager
 
-- (ChipManager)initWithQueue:(id)a3
+- (ChipManager)initWithQueue:(id)queue
 {
-  v6 = a3;
+  queueCopy = queue;
   v53.receiver = self;
   v53.super_class = ChipManager;
   v7 = [(ChipManager *)&v53 init];
@@ -62,8 +62,8 @@
     goto LABEL_30;
   }
 
-  objc_storeStrong(&v7->_dispatchQueue, a3);
-  v9 = [[Chip alloc] initWithQueue:v6 delegate:v8];
+  objc_storeStrong(&v7->_dispatchQueue, queue);
+  v9 = [[Chip alloc] initWithQueue:queueCopy delegate:v8];
   chip = v8->_chip;
   v8->_chip = v9;
 
@@ -92,7 +92,7 @@
 
   if ([(Chip *)v8->_chip builtIn])
   {
-    v18 = [[PowerTableManager alloc] initWithQueue:v6 delegate:v8];
+    v18 = [[PowerTableManager alloc] initWithQueue:queueCopy delegate:v8];
     powerTableManager = v8->_powerTableManager;
     v8->_powerTableManager = v18;
   }
@@ -216,11 +216,11 @@ LABEL_23:
     {
       v48 = [objc_opt_class() description];
       v49 = NSStringFromSelector(a2);
-      v50 = [(Chip *)v8->_chip hasFirmware];
+      hasFirmware = [(Chip *)v8->_chip hasFirmware];
       v51 = "failure";
       *buf = 138543874;
       v55 = v48;
-      if (v50)
+      if (hasFirmware)
       {
         v51 = "success";
       }
@@ -258,16 +258,16 @@ LABEL_30:
   [(ChipManager *)v6 setActivateRetryCount:v7, v8];
 }
 
-- (void)setActivateRetryCount:(unint64_t)a3
+- (void)setActivateRetryCount:(unint64_t)count
 {
-  self->_activateRetryCount = a3;
+  self->_activateRetryCount = count;
   if (_os_feature_enabled_impl())
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = v4;
-    if (a3)
+    if (count)
     {
-      [v4 setInteger:a3 forKey:@"ActivateRetryCount"];
+      [v4 setInteger:count forKey:@"ActivateRetryCount"];
 
       v7 = +[NSUserDefaults standardUserDefaults];
       v6 = +[NSDate now];
@@ -521,13 +521,13 @@ LABEL_33:
       goto LABEL_88;
     }
 
-    v53 = [(Chip *)self->_chip powerOff];
-    if (!v53)
+    powerOff = [(Chip *)self->_chip powerOff];
+    if (!powerOff)
     {
       goto LABEL_88;
     }
 
-    v54 = v53;
+    v54 = powerOff;
     v55 = sub_100025204();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
@@ -594,13 +594,13 @@ LABEL_57:
       goto LABEL_88;
     }
 
-    v76 = [(Chip *)self->_chip powerOff];
-    if (!v76)
+    powerOff2 = [(Chip *)self->_chip powerOff];
+    if (!powerOff2)
     {
       goto LABEL_88;
     }
 
-    v77 = v76;
+    v77 = powerOff2;
     v78 = sub_100025204();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
     {
@@ -647,14 +647,14 @@ LABEL_57:
   [(Chip *)self->_chip addObserver:self forKeyPath:@"state" options:7 context:objc_opt_class()];
   if (!self->_lowPowerMode)
   {
-    v73 = [(Chip *)self->_chip state];
-    if (v73 > 2)
+    state = [(Chip *)self->_chip state];
+    if (state > 2)
     {
-      if (v73 == 3)
+      if (state == 3)
       {
-        v88 = [(Chip *)self->_chip ping];
+        ping = [(Chip *)self->_chip ping];
 
-        if (v88)
+        if (ping)
         {
           goto LABEL_88;
         }
@@ -663,13 +663,13 @@ LABEL_57:
         goto LABEL_86;
       }
 
-      if (v73 == 4)
+      if (state == 4)
       {
         [(ChipManager *)self handleFatalError:@"CCPUFWCrash" useFWReason:1];
         goto LABEL_88;
       }
 
-      if (v73 != 5)
+      if (state != 5)
       {
         goto LABEL_88;
       }
@@ -677,7 +677,7 @@ LABEL_57:
 
     else
     {
-      if (!v73)
+      if (!state)
       {
         v74 = @"UnknownInitialState";
 LABEL_86:
@@ -685,9 +685,9 @@ LABEL_86:
         goto LABEL_88;
       }
 
-      if (v73 != 1)
+      if (state != 1)
       {
-        if (v73 != 2)
+        if (state != 2)
         {
           goto LABEL_88;
         }
@@ -740,9 +740,9 @@ LABEL_89:
   [(Chip *)self->_chip invalidate];
 }
 
-- (void)helloCommand:(id)a3
+- (void)helloCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   objc_initWeak(&location, self);
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -764,18 +764,18 @@ LABEL_89:
   objc_copyWeak(v13, &location);
   v13[1] = a2;
   block[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = commandCopy;
+  v10 = commandCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)rawCommand:(id)a3 gid:(unsigned __int8)a4 oid:(unsigned __int8)a5 completion:(id)a6
+- (void)rawCommand:(id)command gid:(unsigned __int8)gid oid:(unsigned __int8)oid completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
+  commandCopy = command;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13 = sub_100025204();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -796,23 +796,23 @@ LABEL_89:
   block[3] = &unk_10005CB90;
   objc_copyWeak(v22, &location);
   block[4] = self;
-  v20 = v11;
-  v23 = a4;
-  v24 = a5;
+  v20 = commandCopy;
+  gidCopy = gid;
+  oidCopy = oid;
   v22[1] = a2;
-  v21 = v12;
-  v17 = v12;
-  v18 = v11;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = commandCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
 }
 
-- (void)shellCommand:(id)a3 completion:(id)a4
+- (void)shellCommand:(id)command completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9 = sub_100025204();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -833,20 +833,20 @@ LABEL_89:
   v15[3] = &unk_10005CBB8;
   objc_copyWeak(v18, &location);
   v15[4] = self;
-  v16 = v7;
+  v16 = commandCopy;
   v18[1] = a2;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = commandCopy;
   dispatch_async(dispatchQueue, v15);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
 }
 
-- (void)getPowerStats:(BOOL)a3 completion:(id)a4
+- (void)getPowerStats:(BOOL)stats completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = sub_100025204();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -867,19 +867,19 @@ LABEL_89:
   v13[3] = &unk_10005CBE0;
   objc_copyWeak(v15, &location);
   v15[1] = a2;
-  v16 = a3;
+  statsCopy = stats;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   dispatch_async(dispatchQueue, v13);
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
 }
 
-- (void)getPMUFaultInfo:(id)a3
+- (void)getPMUFaultInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -901,18 +901,18 @@ LABEL_89:
   objc_copyWeak(v13, &location);
   v13[1] = a2;
   block[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = infoCopy;
+  v10 = infoCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)collectLogs:(id)a3 fatal:(BOOL)a4 completion:(id)a5
+- (void)collectLogs:(id)logs fatal:(BOOL)fatal completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  logsCopy = logs;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = sub_100025204();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -926,29 +926,29 @@ LABEL_89:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", buf, 0x16u);
   }
 
-  v14 = [NSString stringWithFormat:@"ClientRequested-%@", v9];
+  logsCopy = [NSString stringWithFormat:@"ClientRequested-%@", logsCopy];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F43C;
   block[3] = &unk_10005CC08;
   objc_copyWeak(v21, &location);
-  v22 = a4;
+  fatalCopy = fatal;
   block[4] = self;
-  v19 = v14;
+  v19 = logsCopy;
   v21[1] = a2;
-  v20 = v10;
-  v16 = v10;
-  v17 = v14;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = logsCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
 }
 
-- (void)preflightQuery:(id)a3
+- (void)preflightQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   objc_initWeak(&location, self);
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -970,18 +970,18 @@ LABEL_89:
   objc_copyWeak(v13, &location);
   v13[1] = a2;
   block[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = queryCopy;
+  v10 = queryCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)rebootIntoLowPowerMode:(id)a3 debugMode:(BOOL)a4 completion:(id)a5
+- (void)rebootIntoLowPowerMode:(id)mode debugMode:(BOOL)debugMode completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  modeCopy = mode;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = sub_100025204();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1001,22 +1001,22 @@ LABEL_89:
   block[2] = sub_10001FBAC;
   block[3] = &unk_10005CC08;
   objc_copyWeak(v20, &location);
-  v21 = a4;
+  debugModeCopy = debugMode;
   block[4] = self;
-  v18 = v9;
+  v18 = modeCopy;
   v20[1] = a2;
-  v19 = v10;
-  v15 = v10;
-  v16 = v9;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = modeCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(&location);
 }
 
-- (void)getSiKPublicKey:(id)a3
+- (void)getSiKPublicKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1038,17 +1038,17 @@ LABEL_89:
   objc_copyWeak(v13, &location);
   v13[1] = a2;
   block[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = keyCopy;
+  v10 = keyCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)checkForNewPowerTables:(id)a3
+- (void)checkForNewPowerTables:(id)tables
 {
-  v5 = a3;
+  tablesCopy = tables;
   objc_initWeak(&location, self);
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1070,18 +1070,18 @@ LABEL_89:
   objc_copyWeak(v13, &location);
   v13[1] = a2;
   block[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = tablesCopy;
+  v10 = tablesCopy;
   dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)setPowerTableEvaluationReadinessForSession:(id)a3 client:(int64_t)a4 ready:(BOOL)a5 completion:(id)a6
+- (void)setPowerTableEvaluationReadinessForSession:(id)session client:(int64_t)client ready:(BOOL)ready completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
+  sessionCopy = session;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13 = sub_100025204();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1102,23 +1102,23 @@ LABEL_89:
   v19[3] = &unk_10005CC30;
   objc_copyWeak(v22, &location);
   v19[4] = self;
-  v20 = v11;
+  v20 = sessionCopy;
   v22[1] = a2;
-  v22[2] = a4;
-  v23 = a5;
-  v21 = v12;
-  v17 = v12;
-  v18 = v11;
+  v22[2] = client;
+  readyCopy = ready;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = sessionCopy;
   dispatch_async(dispatchQueue, v19);
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
 }
 
-- (void)castPowerTableVoteForSession:(id)a3 client:(int64_t)a4 vote:(BOOL)a5 completion:(id)a6
+- (void)castPowerTableVoteForSession:(id)session client:(int64_t)client vote:(BOOL)vote completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
+  sessionCopy = session;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13 = sub_100025204();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1139,36 +1139,36 @@ LABEL_89:
   v19[3] = &unk_10005CC30;
   objc_copyWeak(v22, &location);
   v19[4] = self;
-  v20 = v11;
+  v20 = sessionCopy;
   v22[1] = a2;
-  v22[2] = a4;
-  v23 = a5;
-  v21 = v12;
-  v17 = v12;
-  v18 = v11;
+  v22[2] = client;
+  voteCopy = vote;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = sessionCopy;
   dispatch_async(dispatchQueue, v19);
 
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
 }
 
-- (void)handleFatalError:(id)a3
+- (void)handleFatalError:(id)error
 {
   chip = self->_chip;
-  v5 = a3;
-  [(ChipManager *)self handleFatalError:v5 useFWReason:0 driverInstance:[(Chip *)chip driverInstance] collectLogsAndReset:1];
+  errorCopy = error;
+  [(ChipManager *)self handleFatalError:errorCopy useFWReason:0 driverInstance:[(Chip *)chip driverInstance] collectLogsAndReset:1];
 }
 
-- (void)setBootRetryCount:(unint64_t)a3
+- (void)setBootRetryCount:(unint64_t)count
 {
-  self->_bootRetryCount = a3;
+  self->_bootRetryCount = count;
   if (_os_feature_enabled_impl())
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = v4;
-    if (a3)
+    if (count)
     {
-      [v4 setInteger:a3 forKey:@"BootRetryCount"];
+      [v4 setInteger:count forKey:@"BootRetryCount"];
 
       v7 = +[NSUserDefaults standardUserDefaults];
       v6 = +[NSDate now];
@@ -1387,10 +1387,10 @@ LABEL_34:
     objc_destroyWeak(buf);
   }
 
-  v55 = [(Chip *)self->_chip powerOff];
-  if (v55)
+  powerOff = [(Chip *)self->_chip powerOff];
+  if (powerOff)
   {
-    v56 = v55;
+    v56 = powerOff;
     v57 = sub_100025204();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
     {
@@ -1434,14 +1434,14 @@ LABEL_25:
   return v29;
 }
 
-- (BOOL)bootChipInMode:(int64_t)a3 withLPMData:(id)a4 bootAttempts:(unint64_t)a5 failureReason:(id *)a6
+- (BOOL)bootChipInMode:(int64_t)mode withLPMData:(id)data bootAttempts:(unint64_t)attempts failureReason:(id *)reason
 {
-  v10 = a4;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_bootMode = a3;
-  if (a5)
+  self->_bootMode = mode;
+  if (attempts)
   {
-    if (a3)
+    if (mode)
     {
       v11 = @"LPMBootFailure";
     }
@@ -1466,21 +1466,21 @@ LABEL_25:
         v30 = 2048;
         v31 = v12;
         v32 = 2048;
-        v33 = a5;
+        attemptsCopy = attempts;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: attempt %lu of %lu", buf, 0x2Au);
       }
 
       chip = self->_chip;
-      v17 = [(PowerTableManager *)self->_powerTableManager pathsToUse];
-      if ([(Chip *)chip bootInMode:a3 lpmData:v10 powerTablePaths:v17 failureReason:a6])
+      pathsToUse = [(PowerTableManager *)self->_powerTableManager pathsToUse];
+      if ([(Chip *)chip bootInMode:mode lpmData:dataCopy powerTablePaths:pathsToUse failureReason:reason])
       {
-        v18 = [(ChipManager *)self handleChipBooted];
+        handleChipBooted = [(ChipManager *)self handleChipBooted];
 
-        if (v18)
+        if (handleChipBooted)
         {
           analyticsReporter = self->_analyticsReporter;
-          v22 = v12 + self->_bootRetryCount * a5;
-          v23 = [Chip bootModeAsString:a3];
+          v22 = v12 + self->_bootRetryCount * attempts;
+          v23 = [Chip bootModeAsString:mode];
           v24 = 1;
           [(AnalyticsReporter *)analyticsReporter reportBootSuccess:1 afterAttempts:v22 mode:v23 failureReason:&stru_10005D038];
 
@@ -1504,10 +1504,10 @@ LABEL_25:
         break;
       }
 
-      [(Chip *)self->_chip collectLogsWithReason:v19 fatal:1 useFWReason:1 lpm:a3 == 1];
+      [(Chip *)self->_chip collectLogsWithReason:v19 fatal:1 useFWReason:1 lpm:mode == 1];
       [(ChipManager *)self resetChip];
 
-      if (++v12 > a5)
+      if (++v12 > attempts)
       {
         goto LABEL_18;
       }
@@ -1523,10 +1523,10 @@ LABEL_19:
   return v24;
 }
 
-- (id)bootPerformanceDataForHostTimestamps:(id)a3 firmwareTimestamps:(id)a4
+- (id)bootPerformanceDataForHostTimestamps:(id)timestamps firmwareTimestamps:(id)firmwareTimestamps
 {
-  v108 = a3;
-  v124 = a4;
+  timestampsCopy = timestamps;
+  firmwareTimestampsCopy = firmwareTimestamps;
   v160[0] = @"prepareChipForResetDuration";
   obja = [NSString stringWithUTF8String:"prepareChipForResetStart"];
   v160[1] = obja;
@@ -1706,7 +1706,7 @@ LABEL_19:
   v141[5] = v21;
   v107 = [NSArray arrayWithObjects:v141 count:6];
 
-  v22 = v108;
+  v22 = timestampsCopy;
   v114 = objc_alloc_init(NSMutableDictionary);
   v129 = 0u;
   v130 = 0u;
@@ -1743,11 +1743,11 @@ LABEL_19:
         {
           v32 = [v27 objectAtIndexedSubscript:2];
           v33 = [v22 objectForKeyedSubscript:v32];
-          v34 = [v33 longLongValue];
+          longLongValue = [v33 longLongValue];
           v17 = [v27 objectAtIndexedSubscript:1];
           [v22 objectForKeyedSubscript:v17];
           v36 = v35 = v22;
-          v37 = v34 - [v36 longLongValue];
+          v37 = longLongValue - [v36 longLongValue];
 
           v22 = v35;
           if (v37 >= 1)
@@ -1798,10 +1798,10 @@ LABEL_10:
       v41 = [v40 objectAtIndexedSubscript:1];
       v42 = +[NSNull null];
       v43 = [v41 isEqual:v42];
-      if ((v43 & 1) != 0 || ([v40 objectAtIndexedSubscript:1], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v124, "objectForKeyedSubscript:", v17), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ((v43 & 1) != 0 || ([v40 objectAtIndexedSubscript:1], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(firmwareTimestampsCopy, "objectForKeyedSubscript:", v17), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v44 = [v40 objectAtIndexedSubscript:2];
-        v45 = [v124 objectForKeyedSubscript:v44];
+        v45 = [firmwareTimestampsCopy objectForKeyedSubscript:v44];
         v46 = v45 != 0;
 
         if (v43)
@@ -1828,8 +1828,8 @@ LABEL_10:
 
 LABEL_26:
       v47 = [v40 objectAtIndexedSubscript:2];
-      v48 = [v124 objectForKeyedSubscript:v47];
-      v49 = [v48 longLongValue];
+      v48 = [firmwareTimestampsCopy objectForKeyedSubscript:v47];
+      longLongValue2 = [v48 longLongValue];
 
       v50 = [v40 objectAtIndexedSubscript:1];
       v51 = +[NSNull null];
@@ -1838,13 +1838,13 @@ LABEL_26:
       if ((v52 & 1) == 0)
       {
         v53 = [v40 objectAtIndexedSubscript:1];
-        v54 = [v124 objectForKeyedSubscript:v53];
-        v49 -= [v54 longLongValue];
+        v54 = [firmwareTimestampsCopy objectForKeyedSubscript:v53];
+        longLongValue2 -= [v54 longLongValue];
       }
 
-      if (v49 >= 1)
+      if (longLongValue2 >= 1)
       {
-        v55 = [NSNumber numberWithDouble:v49 / 1000.0];
+        v55 = [NSNumber numberWithDouble:longLongValue2 / 1000.0];
         v56 = [v40 objectAtIndexedSubscript:0];
         [v114 setObject:v55 forKey:v56];
       }
@@ -1856,7 +1856,7 @@ LABEL_26:
   while (v120);
 LABEL_32:
 
-  v22 = v108;
+  v22 = timestampsCopy;
 LABEL_33:
 
   return v114;
@@ -1866,20 +1866,20 @@ LABEL_33:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(Chip *)self->_chip getFirmwareBootTimestamps];
-    if (v3)
+    getFirmwareBootTimestamps = [(Chip *)self->_chip getFirmwareBootTimestamps];
+    if (getFirmwareBootTimestamps)
     {
-      [(Chip *)self->_chip storeFirmwareBootTimestamps:v3];
+      [(Chip *)self->_chip storeFirmwareBootTimestamps:getFirmwareBootTimestamps];
     }
   }
 
   else
   {
-    v3 = 0;
+    getFirmwareBootTimestamps = 0;
   }
 
-  v7 = [(Chip *)self->_chip getHostBootTimestamps];
-  v4 = [(ChipManager *)self bootPerformanceDataForHostTimestamps:v7 firmwareTimestamps:v3];
+  getHostBootTimestamps = [(Chip *)self->_chip getHostBootTimestamps];
+  v4 = [(ChipManager *)self bootPerformanceDataForHostTimestamps:getHostBootTimestamps firmwareTimestamps:getFirmwareBootTimestamps];
   analyticsReporter = self->_analyticsReporter;
   v6 = [Chip bootModeAsString:self->_bootMode];
   [(AnalyticsReporter *)analyticsReporter reportBootPerformanceStats:v4 mode:v6];
@@ -1903,9 +1903,9 @@ LABEL_33:
       sub_100030044();
     }
 
-    v6 = [(Chip *)self->_chip powerCycle];
-    [(AnalyticsReporter *)self->_analyticsReporter reportChipResetSuccess:v6 == 0 afterPowerCycle:1 errorCode:v6];
-    if (v6)
+    powerCycle = [(Chip *)self->_chip powerCycle];
+    [(AnalyticsReporter *)self->_analyticsReporter reportChipResetSuccess:powerCycle == 0 afterPowerCycle:1 errorCode:powerCycle];
+    if (powerCycle)
     {
       v7 = sub_100025204();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1917,13 +1917,13 @@ LABEL_33:
         v24 = 2114;
         v25 = v19;
         v26 = 1024;
-        v27 = v6;
+        v27 = powerCycle;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: power cycle failure: 0x%08x, power cycle reason: reset failure", buf, 0x1Cu);
       }
 
       if (sub_10002529C())
       {
-        v15 = sub_100030D78("power cycle failure: 0x%08x, power cycle reason: reset failure", v8, v9, v10, v11, v12, v13, v14, v6);
+        v15 = sub_100030D78("power cycle failure: 0x%08x, power cycle reason: reset failure", v8, v9, v10, v11, v12, v13, v14, powerCycle);
         if (v15)
         {
           v16 = v15;
@@ -2088,15 +2088,15 @@ LABEL_33:
   }
 }
 
-- (void)chipStateDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)chipStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
   v7 = sub_100025204();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [objc_opt_class() description];
     v9 = NSStringFromSelector(a2);
-    v10 = [Chip stateAsString:a3];
-    v11 = [Chip stateAsString:a4];
+    v10 = [Chip stateAsString:from];
+    v11 = [Chip stateAsString:to];
     v12 = 138544130;
     v13 = v8;
     v14 = 2114;
@@ -2154,16 +2154,16 @@ LABEL_33:
   [(PowerTableManager *)self->_powerTableManager log];
 }
 
-+ (id)subsystemIDAsString:(int)a3
++ (id)subsystemIDAsString:(int)string
 {
-  if (a3 > 1)
+  if (string > 1)
   {
-    if (a3 == 2)
+    if (string == 2)
     {
       return @"BT";
     }
 
-    if (a3 == 3)
+    if (string == 3)
     {
       v4 = sub_100025204();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -2177,12 +2177,12 @@ LABEL_33:
 
   else
   {
-    if (!a3)
+    if (!string)
     {
       return @"Control";
     }
 
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"WiFi";
     }
@@ -2201,13 +2201,13 @@ LABEL_13:
   return [(ChipManager *)v5 errorSourceAsString:v6, v7];
 }
 
-+ (id)errorSourceAsString:(int)a3
++ (id)errorSourceAsString:(int)string
 {
-  if (a3 <= 1)
+  if (string <= 1)
   {
-    if (a3)
+    if (string)
     {
-      if (a3 != 1)
+      if (string != 1)
       {
         goto LABEL_13;
       }
@@ -2223,14 +2223,14 @@ LABEL_13:
 
   else
   {
-    if (a3 != 2)
+    if (string != 2)
     {
-      if (a3 == 1000)
+      if (string == 1000)
       {
         return @"Controller";
       }
 
-      if (a3 == 1001)
+      if (string == 1001)
       {
         v4 = sub_100025204();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -2259,9 +2259,9 @@ LABEL_15:
   }
 }
 
-+ (id)centauriDebugErrorCodeAsString:(int)a3
++ (id)centauriDebugErrorCodeAsString:(int)string
 {
-  switch(a3)
+  switch(string)
   {
     case 0:
       return @"CRStateChangeFailed";
@@ -2290,11 +2290,11 @@ LABEL_9:
   return [(ChipManager *)v5 controllerErrorCodeAsString:v6, v7];
 }
 
-+ (id)controllerErrorCodeAsString:(int)a3
++ (id)controllerErrorCodeAsString:(int)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
-    switch(a3)
+    switch(string)
     {
       case 3:
         return @"S2REntry";
@@ -2313,7 +2313,7 @@ LABEL_9:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 0:
         return @"DextTerminated";
@@ -2337,16 +2337,16 @@ LABEL_17:
   return [(ChipManager *)v5 linkTrainingTimeoutArgAsString:v6, v7];
 }
 
-+ (id)linkTrainingTimeoutArgAsString:(int)a3
++ (id)linkTrainingTimeoutArgAsString:(int)string
 {
-  if (a3 <= 1)
+  if (string <= 1)
   {
-    if (!a3)
+    if (!string)
     {
       return @"None";
     }
 
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"ROM";
     }
@@ -2354,7 +2354,7 @@ LABEL_17:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 2:
         return @"Hibernation";
@@ -2384,15 +2384,15 @@ LABEL_15:
   return [(ChipManager *)v5 errorDescriptionForSource:v6 errorCode:v7 arg:v8, v9];
 }
 
-+ (BOOL)shouldUseFWReasonForErrorFromSource:(unsigned int)a3 errorCode:(unsigned int)a4 arg:(unint64_t)a5
++ (BOOL)shouldUseFWReasonForErrorFromSource:(unsigned int)source errorCode:(unsigned int)code arg:(unint64_t)arg
 {
-  v5 = (a4 >> 3) & 1;
-  if (a3 != 1)
+  v5 = (code >> 3) & 1;
+  if (source != 1)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a4 | a3)
+  if (code | source)
   {
     return v5;
   }
@@ -2403,20 +2403,20 @@ LABEL_15:
   }
 }
 
-+ (BOOL)isErrorFatalFromSource:(unsigned int)a3 errorCode:(unsigned int)a4 arg:(unint64_t)a5
++ (BOOL)isErrorFatalFromSource:(unsigned int)source errorCode:(unsigned int)code arg:(unint64_t)arg
 {
-  v5 = a4 == 3;
-  if ((a4 & 0xFFFFFFFB) == 0)
+  v5 = code == 3;
+  if ((code & 0xFFFFFFFB) == 0)
   {
     v5 = 1;
   }
 
-  if (a3 == 1000 && v5 || (a4 != 16 ? (v6 = a4 - 9 >= 2) : (v6 = 0), v6 ? (v7 = 0) : (v7 = 1), (result = 1, !a3) && v7))
+  if (source == 1000 && v5 || (code != 16 ? (v6 = code - 9 >= 2) : (v6 = 0), v6 ? (v7 = 0) : (v7 = 1), (result = 1, !source) && v7))
   {
     result = 0;
   }
 
-  if (!a3 && (a4 & 0xFFFFFFFB) == 2 || !a3 && a4 == 11 && !a5)
+  if (!source && (code & 0xFFFFFFFB) == 2 || !source && code == 11 && !arg)
   {
     return 0;
   }
@@ -2424,9 +2424,9 @@ LABEL_15:
   return result;
 }
 
-+ (BOOL)shouldHaltForError:(id)a3
++ (BOOL)shouldHaltForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!sub_10002529C())
   {
     goto LABEL_10;
@@ -2447,9 +2447,9 @@ LABEL_15:
       v17 = 2114;
       v18 = v9;
       v19 = 2080;
-      v20 = [@"HaltOnAnyFailure" UTF8String];
+      uTF8String = [@"HaltOnAnyFailure" UTF8String];
       v21 = 2080;
-      v22 = [v4 UTF8String];
+      uTF8String2 = [errorCopy UTF8String];
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: halting due to %s preference: %s", &v15, 0x2Au);
 
@@ -2461,7 +2461,7 @@ LABEL_8:
 
   v10 = +[NSUserDefaults standardUserDefaults];
   v11 = [v10 stringArrayForKey:@"HaltOnSpecificFailures"];
-  v12 = [v11 containsObject:v4];
+  v12 = [v11 containsObject:errorCopy];
 
   if (!v12)
   {
@@ -2480,9 +2480,9 @@ LABEL_10:
     v17 = 2114;
     v18 = v9;
     v19 = 2080;
-    v20 = [@"HaltOnSpecificFailures" UTF8String];
+    uTF8String = [@"HaltOnSpecificFailures" UTF8String];
     v21 = 2080;
-    v22 = [v4 UTF8String];
+    uTF8String2 = [errorCopy UTF8String];
     goto LABEL_8;
   }
 
@@ -2494,9 +2494,9 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)shouldPanicForError:(id)a3
++ (BOOL)shouldPanicForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!sub_10002529C())
   {
     goto LABEL_10;
@@ -2517,9 +2517,9 @@ LABEL_11:
       v17 = 2114;
       v18 = v9;
       v19 = 2080;
-      v20 = [@"PanicOnAnyFailure" UTF8String];
+      uTF8String = [@"PanicOnAnyFailure" UTF8String];
       v21 = 2080;
-      v22 = [v4 UTF8String];
+      uTF8String2 = [errorCopy UTF8String];
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: panicking due to %s preference: %s", &v15, 0x2Au);
 
@@ -2531,7 +2531,7 @@ LABEL_8:
 
   v10 = +[NSUserDefaults standardUserDefaults];
   v11 = [v10 stringArrayForKey:@"PanicOnSpecificFailures"];
-  v12 = [v11 containsObject:v4];
+  v12 = [v11 containsObject:errorCopy];
 
   if (!v12)
   {
@@ -2550,9 +2550,9 @@ LABEL_10:
     v17 = 2114;
     v18 = v9;
     v19 = 2080;
-    v20 = [@"PanicOnSpecificFailures" UTF8String];
+    uTF8String = [@"PanicOnSpecificFailures" UTF8String];
     v21 = 2080;
-    v22 = [v4 UTF8String];
+    uTF8String2 = [errorCopy UTF8String];
     goto LABEL_8;
   }
 
@@ -2564,9 +2564,9 @@ LABEL_11:
   return v13;
 }
 
-+ (void)panicWithMessage:(id)a3
++ (void)panicWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -2577,19 +2577,19 @@ LABEL_11:
     v14 = 2114;
     v15 = v11;
     v16 = 2114;
-    v17 = v5;
+    v17 = messageCopy;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: %{public}@", buf, 0x20u);
   }
 
-  v7 = [NSString stringWithFormat:@"Centauri fatal error: %@", v5];
-  v8 = reboot_np(3072, [v7 UTF8String]);
+  messageCopy = [NSString stringWithFormat:@"Centauri fatal error: %@", messageCopy];
+  v8 = reboot_np(3072, [messageCopy UTF8String]);
 
   if (v8)
   {
     v9 = sub_100025204();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100030804(a1, a2);
+      sub_100030804(self, a2);
     }
   }
 }
@@ -2631,11 +2631,11 @@ LABEL_11:
   v14[5] = @"chipsetFusing";
   v15[5] = &stru_10005D038;
   v14[6] = @"wifiOTAPowerTableVersion";
-  v10 = [(PowerTableManager *)self->_powerTableManager wifiAssetVersion];
-  v15[6] = v10;
+  wifiAssetVersion = [(PowerTableManager *)self->_powerTableManager wifiAssetVersion];
+  v15[6] = wifiAssetVersion;
   v14[7] = @"btOTAPowerTableVersion";
-  v11 = [(PowerTableManager *)self->_powerTableManager btAssetVersion];
-  v15[7] = v11;
+  btAssetVersion = [(PowerTableManager *)self->_powerTableManager btAssetVersion];
+  v15[7] = btAssetVersion;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:8];
 
   if (!v7)
@@ -2653,9 +2653,9 @@ LABEL_11:
   return v12;
 }
 
-- (void)chipHasCrashlogAvailable:(id)a3
+- (void)chipHasCrashlogAvailable:(id)available
 {
-  v6 = a3;
+  availableCopy = available;
   v7 = os_transaction_create();
   if (!v7)
   {
@@ -2689,62 +2689,62 @@ LABEL_9:
     }
   }
 
-  v10 = [v6 getCrashlogs];
-  if (v10)
+  getCrashlogs = [availableCopy getCrashlogs];
+  if (getCrashlogs)
   {
-    v11 = v10;
-    [(CrashReporter *)self->_crashReporter processCrashes:v10 completion:v4];
+    v11 = getCrashlogs;
+    [(CrashReporter *)self->_crashReporter processCrashes:getCrashlogs completion:v4];
 LABEL_6:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (objc_opt_class() != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (objc_opt_class() != context)
   {
     v27.receiver = self;
     v27.super_class = ChipManager;
-    [(ChipManager *)&v27 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(ChipManager *)&v27 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_7:
 
     return;
   }
 
-  v14 = [v13 objectForKeyedSubscript:NSKeyValueChangeKindKey];
-  v15 = [v14 unsignedIntegerValue];
+  v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeKindKey];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  if (([v11 isEqualToString:@"state"] & 1) == 0)
+  if (([pathCopy isEqualToString:@"state"] & 1) == 0)
   {
-    sub_100030B18(self, a2, v11);
+    sub_100030B18(self, a2, pathCopy);
     goto LABEL_9;
   }
 
-  if (self->_chip != v12)
+  if (self->_chip != objectCopy)
   {
 LABEL_9:
     sub_100030BF8(self);
     goto LABEL_10;
   }
 
-  if (v15 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v21 = [v13 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-    v22 = [v21 integerValue];
-    v23 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
-    -[ChipManager chipStateDidChangeFrom:to:](self, "chipStateDidChangeFrom:to:", v22, [v23 integerValue]);
+    v21 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+    integerValue = [v21 integerValue];
+    v23 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    -[ChipManager chipStateDidChangeFrom:to:](self, "chipStateDidChangeFrom:to:", integerValue, [v23 integerValue]);
 
     goto LABEL_7;
   }
 
 LABEL_10:
-  v24 = sub_100030CB0(self, a2, v15, v16, v17, v18, v19, v20, v27.receiver);
+  v24 = sub_100030CB0(self, a2, unsignedIntegerValue, v16, v17, v18, v19, v20, v27.receiver);
   [(ChipManager *)v24 readyForNewPowerTableValidationWithReason:v25, v26];
 }
 
-- (BOOL)readyForNewPowerTableValidationWithReason:(id *)a3
+- (BOOL)readyForNewPowerTableValidationWithReason:(id *)reason
 {
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2780,11 +2780,11 @@ LABEL_10:
   }
 
   result = 0;
-  *a3 = v11;
+  *reason = v11;
   return result;
 }
 
-- (BOOL)validateNewPowerTables:(id *)a3
+- (BOOL)validateNewPowerTables:(id *)tables
 {
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2799,7 +2799,7 @@ LABEL_10:
   }
 
   [(ChipManager *)self resetChip];
-  return [(ChipManager *)self bootChipInMode:0 withLPMData:0 bootAttempts:1 failureReason:a3];
+  return [(ChipManager *)self bootChipInMode:0 withLPMData:0 bootAttempts:1 failureReason:tables];
 }
 
 - (void)reloadPowerTables
@@ -2812,23 +2812,23 @@ LABEL_10:
 
 - (BOOL)handleChipBooted
 {
-  v3 = [(Chip *)self->_chip ping];
+  ping = [(Chip *)self->_chip ping];
 
-  if (v3)
+  if (ping)
   {
     if (!self->_pmuErrorDetected)
     {
 LABEL_5:
       [(ChipManager *)self processBootPerformanceStats];
-      LOBYTE(v4) = 1;
-      return v4;
+      LOBYTE(getPMUFaultInfo) = 1;
+      return getPMUFaultInfo;
     }
 
-    v4 = [(Chip *)self->_chip getPMUFaultInfo];
-    if (v4)
+    getPMUFaultInfo = [(Chip *)self->_chip getPMUFaultInfo];
+    if (getPMUFaultInfo)
     {
-      v5 = v4;
-      [(AnalyticsReporter *)self->_analyticsReporter reportPMUError:v4];
+      v5 = getPMUFaultInfo;
+      [(AnalyticsReporter *)self->_analyticsReporter reportPMUError:getPMUFaultInfo];
       v6 = [NSString stringWithFormat:@"ErrorDetectGPIO-%@", v5];
       [(Chip *)self->_chip collectLogsWithReason:v6 fatal:0 useFWReason:0 lpm:0];
       self->_pmuErrorDetected = 0;
@@ -2839,10 +2839,10 @@ LABEL_5:
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(getPMUFaultInfo) = 0;
   }
 
-  return v4;
+  return getPMUFaultInfo;
 }
 
 @end

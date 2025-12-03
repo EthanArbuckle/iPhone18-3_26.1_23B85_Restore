@@ -1,60 +1,60 @@
 @interface PHCloudSharedAssetExportRequest
 + (id)_resourceRetrievingQueue;
-+ (id)exportRequestForAsset:(id)a3 error:(id *)a4;
-+ (id)variantsForAsset:(id)a3 asUnmodifiedOriginal:(BOOL)a4 error:(id *)a5;
-- (PHCloudSharedAssetExportRequest)initWithAsset:(id)a3 variants:(id)a4;
-- (int)_requestImageURLForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7;
-- (int)_requestVideoURLForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7;
-- (void)_handleImageManagerResultForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progress:(id)a5 processingUnitCount:(unint64_t)a6 options:(id)a7 withFileUrls:(id)a8 info:(id)a9 completionHandler:(id)a10;
-- (void)_requestFileURLsForAsset:(id)a3 withOptions:(id)a4 networkAccessAllowed:(BOOL)a5 progressHandler:(id)a6 resultHandler:(id)a7 resultHandlerQueue:(id)a8;
-- (void)_requestLivePhotoURLsForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7;
-- (void)exportWithOptions:(id)a3 networkAccessAllowed:(BOOL)a4 completionHandler:(id)a5;
-- (void)preflightExportWithOptions:(id)a3 assetAvailability:(int64_t *)a4 isProcessingRequired:(BOOL *)a5 fileURLs:(id *)a6 info:(id *)a7;
++ (id)exportRequestForAsset:(id)asset error:(id *)error;
++ (id)variantsForAsset:(id)asset asUnmodifiedOriginal:(BOOL)original error:(id *)error;
+- (PHCloudSharedAssetExportRequest)initWithAsset:(id)asset variants:(id)variants;
+- (int)_requestImageURLForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue;
+- (int)_requestVideoURLForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue;
+- (void)_handleImageManagerResultForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progress:(id)progress processingUnitCount:(unint64_t)count options:(id)options withFileUrls:(id)urls info:(id)info completionHandler:(id)self0;
+- (void)_requestFileURLsForAsset:(id)asset withOptions:(id)options networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue;
+- (void)_requestLivePhotoURLsForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue;
+- (void)exportWithOptions:(id)options networkAccessAllowed:(BOOL)allowed completionHandler:(id)handler;
+- (void)preflightExportWithOptions:(id)options assetAvailability:(int64_t *)availability isProcessingRequired:(BOOL *)required fileURLs:(id *)ls info:(id *)info;
 @end
 
 @implementation PHCloudSharedAssetExportRequest
 
-- (void)_handleImageManagerResultForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progress:(id)a5 processingUnitCount:(unint64_t)a6 options:(id)a7 withFileUrls:(id)a8 info:(id)a9 completionHandler:(id)a10
+- (void)_handleImageManagerResultForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progress:(id)progress processingUnitCount:(unint64_t)count options:(id)options withFileUrls:(id)urls info:(id)info completionHandler:(id)self0
 {
-  v35 = a4;
+  allowedCopy = allowed;
   v43 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = [v18 objectForKeyedSubscript:@"PHImageCancelledKey"];
+  assetCopy = asset;
+  progressCopy = progress;
+  optionsCopy = options;
+  urlsCopy = urls;
+  infoCopy = info;
+  handlerCopy = handler;
+  v20 = [infoCopy objectForKeyedSubscript:@"PHImageCancelledKey"];
   if (v20)
   {
-    v21 = [v18 objectForKeyedSubscript:@"PHImageCancelledKey"];
-    v22 = [v21 BOOLValue];
+    v21 = [infoCopy objectForKeyedSubscript:@"PHImageCancelledKey"];
+    bOOLValue = [v21 BOOLValue];
   }
 
   else
   {
-    v22 = 0;
+    bOOLValue = 0;
   }
 
-  v23 = [v18 objectForKeyedSubscript:@"PHImageErrorKey"];
+  v23 = [infoCopy objectForKeyedSubscript:@"PHImageErrorKey"];
   v24 = v23;
-  if (!v17 || v23 || ![v17 count])
+  if (!urlsCopy || v23 || ![urlsCopy count])
   {
-    v34 = a6;
-    v25 = [v18 objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
-    v26 = [v25 BOOLValue];
+    countCopy = count;
+    v25 = [infoCopy objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
+    bOOLValue2 = [v25 BOOLValue];
 
     v27 = PLPhotoKitGetLog();
     v28 = v27;
-    if (v35 || !v26)
+    if (allowedCopy || !bOOLValue2)
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v33 = @"NO";
         *buf = 138412802;
-        v38 = v14;
+        v38 = assetCopy;
         v39 = 2112;
-        if (v35)
+        if (allowedCopy)
         {
           v33 = @"YES";
         }
@@ -73,7 +73,7 @@
     else if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v38 = v14;
+      v38 = assetCopy;
       v39 = 2112;
       v40 = v24;
       v29 = "[PHCloudSharedAssetExportRequest] Asset available in cloud, but export request options specified no network access. Export: %@, error: %@";
@@ -84,19 +84,19 @@ LABEL_15:
       _os_log_impl(&dword_19C86F000, v30, v31, v29, buf, v32);
     }
 
-    a6 = v34;
+    count = countCopy;
   }
 
-  [(PHAssetExportRequest *)self handleResultWithFileURLs:v17 cancelled:v22 withError:v24 forAsset:v14 withOptions:v16 progress:v15 processingUnitCount:a6 completionHandler:v19];
+  [(PHAssetExportRequest *)self handleResultWithFileURLs:urlsCopy cancelled:bOOLValue withError:v24 forAsset:assetCopy withOptions:optionsCopy progress:progressCopy processingUnitCount:count completionHandler:handlerCopy];
 }
 
-- (void)_requestLivePhotoURLsForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7
+- (void)_requestLivePhotoURLsForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue
 {
-  v30 = a4;
-  v11 = a3;
-  v12 = a5;
-  v29 = a6;
-  v13 = a7;
+  allowedCopy = allowed;
+  assetCopy = asset;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  queueCopy = queue;
   v75[0] = 0;
   v75[1] = v75;
   v75[2] = 0x2020000000;
@@ -135,7 +135,7 @@ LABEL_15:
   aBlock[3] = &unk_1E75A9068;
   v64 = v75;
   v65 = v74;
-  v14 = v12;
+  v14 = handlerCopy;
   v63 = v14;
   v15 = _Block_copy(aBlock);
   v16 = dispatch_group_create();
@@ -164,8 +164,8 @@ LABEL_15:
   v52 = &unk_1E75A90E0;
   v21 = v20;
   v53 = v21;
-  v31 = v13;
-  self->_imageManagerImageRequestId = [PHCloudSharedAssetExportRequest _requestImageURLForAsset:"_requestImageURLForAsset:networkAccessAllowed:progressHandler:resultHandler:resultHandlerQueue:" networkAccessAllowed:v11 progressHandler:? resultHandler:? resultHandlerQueue:?];
+  v31 = queueCopy;
+  self->_imageManagerImageRequestId = [PHCloudSharedAssetExportRequest _requestImageURLForAsset:"_requestImageURLForAsset:networkAccessAllowed:progressHandler:resultHandler:resultHandlerQueue:" networkAccessAllowed:assetCopy progressHandler:? resultHandler:? resultHandlerQueue:?];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __135__PHCloudSharedAssetExportRequest__requestLivePhotoURLsForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke_5;
@@ -191,7 +191,7 @@ LABEL_15:
   v39[3] = &unk_1E75A90E0;
   v26 = v25;
   v40 = v26;
-  self->_imageManagerVideoRequestId = [(PHCloudSharedAssetExportRequest *)self _requestVideoURLForAsset:v11 networkAccessAllowed:v30 progressHandler:v23 resultHandler:v39 resultHandlerQueue:v13];
+  self->_imageManagerVideoRequestId = [(PHCloudSharedAssetExportRequest *)self _requestVideoURLForAsset:assetCopy networkAccessAllowed:allowedCopy progressHandler:v23 resultHandler:v39 resultHandlerQueue:queueCopy];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __135__PHCloudSharedAssetExportRequest__requestLivePhotoURLsForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke_8;
@@ -201,8 +201,8 @@ LABEL_15:
   v37 = v68;
   v38 = v66;
   v33 = v14;
-  v34 = v29;
-  v27 = v29;
+  v34 = resultHandlerCopy;
+  v27 = resultHandlerCopy;
   v28 = v14;
   dispatch_group_notify(v24, MEMORY[0x1E69E96A0], block);
 
@@ -346,37 +346,37 @@ void __135__PHCloudSharedAssetExportRequest__requestLivePhotoURLsForAsset_networ
   (*(a1[5] + 16))();
 }
 
-- (int)_requestVideoURLForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7
+- (int)_requestVideoURLForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue
 {
-  v9 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
+  allowedCopy = allowed;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  queueCopy = queue;
+  assetCopy = asset;
   v15 = objc_alloc_init(PHVideoRequestOptions);
   [(PHVideoRequestOptions *)v15 setVersion:0];
   [(PHVideoRequestOptions *)v15 setRestrictToPlayableOnCurrentDevice:1];
   [(PHVideoRequestOptions *)v15 setDeliveryMode:1];
-  [(PHVideoRequestOptions *)v15 setNetworkAccessAllowed:v9];
+  [(PHVideoRequestOptions *)v15 setNetworkAccessAllowed:allowedCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __130__PHCloudSharedAssetExportRequest__requestVideoURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke;
   v22[3] = &unk_1E75A9368;
-  v23 = v11;
-  v16 = v11;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
   [(PHVideoRequestOptions *)v15 setProgressHandler:v22];
-  [(PHVideoRequestOptions *)v15 setResultHandlerQueue:v13];
+  [(PHVideoRequestOptions *)v15 setResultHandlerQueue:queueCopy];
 
   v17 = +[PHImageManager defaultManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __130__PHCloudSharedAssetExportRequest__requestVideoURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke_2;
   v20[3] = &unk_1E75A9040;
-  v21 = v12;
-  v18 = v12;
-  LODWORD(v9) = [v17 requestURLForVideo:v14 options:v15 resultHandler:v20];
+  v21 = resultHandlerCopy;
+  v18 = resultHandlerCopy;
+  LODWORD(allowedCopy) = [v17 requestURLForVideo:assetCopy options:v15 resultHandler:v20];
 
-  return v9;
+  return allowedCopy;
 }
 
 uint64_t __130__PHCloudSharedAssetExportRequest__requestVideoURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke(uint64_t a1)
@@ -410,37 +410,37 @@ void __130__PHCloudSharedAssetExportRequest__requestVideoURLForAsset_networkAcce
   (*(*(a1 + 32) + 16))();
 }
 
-- (int)_requestImageURLForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 progressHandler:(id)a5 resultHandler:(id)a6 resultHandlerQueue:(id)a7
+- (int)_requestImageURLForAsset:(id)asset networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue
 {
-  v9 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
+  allowedCopy = allowed;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  queueCopy = queue;
+  assetCopy = asset;
   v15 = objc_alloc_init(PHImageRequestOptions);
   [(PHImageRequestOptions *)v15 setVersion:0];
   [(PHImageRequestOptions *)v15 setDeliveryMode:1];
-  [(PHImageRequestOptions *)v15 setNetworkAccessAllowed:v9];
+  [(PHImageRequestOptions *)v15 setNetworkAccessAllowed:allowedCopy];
   [(PHImageRequestOptions *)v15 setLoadingMode:0x10000];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __130__PHCloudSharedAssetExportRequest__requestImageURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke;
   v22[3] = &unk_1E75A9368;
-  v23 = v11;
-  v16 = v11;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
   [(PHImageRequestOptions *)v15 setProgressHandler:v22];
-  [(PHImageRequestOptions *)v15 setResultHandlerQueue:v13];
+  [(PHImageRequestOptions *)v15 setResultHandlerQueue:queueCopy];
 
   v17 = +[PHImageManager defaultManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __130__PHCloudSharedAssetExportRequest__requestImageURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke_2;
   v20[3] = &unk_1E75A9018;
-  v21 = v12;
-  v18 = v12;
-  LODWORD(v9) = [v17 requestImageForAsset:v14 targetSize:0 contentMode:v15 options:v20 resultHandler:{-1.0, -1.0}];
+  v21 = resultHandlerCopy;
+  v18 = resultHandlerCopy;
+  LODWORD(allowedCopy) = [v17 requestImageForAsset:assetCopy targetSize:0 contentMode:v15 options:v20 resultHandler:{-1.0, -1.0}];
 
-  return v9;
+  return allowedCopy;
 }
 
 uint64_t __130__PHCloudSharedAssetExportRequest__requestImageURLForAsset_networkAccessAllowed_progressHandler_resultHandler_resultHandlerQueue___block_invoke(uint64_t a1)
@@ -463,103 +463,103 @@ void __130__PHCloudSharedAssetExportRequest__requestImageURLForAsset_networkAcce
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_requestFileURLsForAsset:(id)a3 withOptions:(id)a4 networkAccessAllowed:(BOOL)a5 progressHandler:(id)a6 resultHandler:(id)a7 resultHandlerQueue:(id)a8
+- (void)_requestFileURLsForAsset:(id)asset withOptions:(id)options networkAccessAllowed:(BOOL)allowed progressHandler:(id)handler resultHandler:(id)resultHandler resultHandlerQueue:(id)queue
 {
-  v11 = a5;
-  v21 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v21 playbackStyle];
-  if ((v18 - 1) < 2)
+  allowedCopy = allowed;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  queueCopy = queue;
+  playbackStyle = [assetCopy playbackStyle];
+  if ((playbackStyle - 1) < 2)
   {
     goto LABEL_7;
   }
 
-  if ((v18 - 4) < 2)
+  if ((playbackStyle - 4) < 2)
   {
-    v19 = [(PHCloudSharedAssetExportRequest *)self _requestVideoURLForAsset:v21 networkAccessAllowed:v11 progressHandler:v15 resultHandler:v16 resultHandlerQueue:v17];
+    v19 = [(PHCloudSharedAssetExportRequest *)self _requestVideoURLForAsset:assetCopy networkAccessAllowed:allowedCopy progressHandler:handlerCopy resultHandler:resultHandlerCopy resultHandlerQueue:queueCopy];
     v20 = 140;
 LABEL_8:
     *(&self->super.super.isa + v20) = v19;
     goto LABEL_9;
   }
 
-  if (v18 != 3)
+  if (playbackStyle != 3)
   {
     goto LABEL_9;
   }
 
-  if (!v14 || ([v14 treatLivePhotoAsStill] & 1) != 0)
+  if (!optionsCopy || ([optionsCopy treatLivePhotoAsStill] & 1) != 0)
   {
 LABEL_7:
-    v19 = [(PHCloudSharedAssetExportRequest *)self _requestImageURLForAsset:v21 networkAccessAllowed:v11 progressHandler:v15 resultHandler:v16 resultHandlerQueue:v17];
+    v19 = [(PHCloudSharedAssetExportRequest *)self _requestImageURLForAsset:assetCopy networkAccessAllowed:allowedCopy progressHandler:handlerCopy resultHandler:resultHandlerCopy resultHandlerQueue:queueCopy];
     v20 = 136;
     goto LABEL_8;
   }
 
-  [(PHCloudSharedAssetExportRequest *)self _requestLivePhotoURLsForAsset:v21 networkAccessAllowed:v11 progressHandler:v15 resultHandler:v16 resultHandlerQueue:v17];
+  [(PHCloudSharedAssetExportRequest *)self _requestLivePhotoURLsForAsset:assetCopy networkAccessAllowed:allowedCopy progressHandler:handlerCopy resultHandler:resultHandlerCopy resultHandlerQueue:queueCopy];
 LABEL_9:
 }
 
-- (void)exportWithOptions:(id)a3 networkAccessAllowed:(BOOL)a4 completionHandler:(id)a5
+- (void)exportWithOptions:(id)options networkAccessAllowed:(BOOL)allowed completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
-  if ([v9 variant] != 1)
+  if ([optionsCopy variant] != 1)
   {
-    v11 = [(PHAssetExportRequest *)self variants];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "variant")}];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    variants = [(PHAssetExportRequest *)self variants];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(optionsCopy, "variant")}];
+    v13 = [variants objectForKeyedSubscript:v12];
 
     if (!v13)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"(options.variant == PHAssetExportRequestVariantCurrent) || self.variants[@(options.variant)]"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"(options.variant == PHAssetExportRequestVariantCurrent) || self.variants[@(options.variant)]"}];
     }
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v15 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(PHAssetExportRequest *)self asset];
-    v17 = [v16 uuid];
-    v18 = [(PHAssetExportRequest *)self asset];
+    asset = [(PHAssetExportRequest *)self asset];
+    uuid = [asset uuid];
+    asset2 = [(PHAssetExportRequest *)self asset];
     *buf = 138543874;
-    v29 = v17;
+    v29 = uuid;
     v30 = 2112;
-    v31 = v18;
+    v31 = asset2;
     v32 = 2112;
-    v33 = v9;
+    v33 = optionsCopy;
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEFAULT, "[PHCloudSharedAssetExportRequest] Will export asset (%{public}@): %@, options: %@", buf, 0x20u);
   }
 
-  v19 = [objc_opt_class() _resourceRetrievingQueue];
+  _resourceRetrievingQueue = [objc_opt_class() _resourceRetrievingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__PHCloudSharedAssetExportRequest_exportWithOptions_networkAccessAllowed_completionHandler___block_invoke;
   block[3] = &unk_1E75A8FF0;
   block[4] = self;
-  v25 = v9;
-  v27 = a4;
-  v26 = v10;
-  v20 = v10;
-  v21 = v9;
-  dispatch_async(v19, block);
+  v25 = optionsCopy;
+  allowedCopy = allowed;
+  v26 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = optionsCopy;
+  dispatch_async(_resourceRetrievingQueue, block);
 }
 
 void __92__PHCloudSharedAssetExportRequest_exportWithOptions_networkAccessAllowed_completionHandler___block_invoke(uint64_t a1)
@@ -674,40 +674,40 @@ void __92__PHCloudSharedAssetExportRequest_exportWithOptions_networkAccessAllowe
   [v3 cancelImageRequest:*(*(a1 + 32) + 140)];
 }
 
-- (void)preflightExportWithOptions:(id)a3 assetAvailability:(int64_t *)a4 isProcessingRequired:(BOOL *)a5 fileURLs:(id *)a6 info:(id *)a7
+- (void)preflightExportWithOptions:(id)options assetAvailability:(int64_t *)availability isProcessingRequired:(BOOL *)required fileURLs:(id *)ls info:(id *)info
 {
-  v13 = a3;
-  if (!v13)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
-  if (!(a4 | a5))
+  if (!(availability | required))
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"assetAvailability || isProcessingRequired"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"assetAvailability || isProcessingRequired"}];
   }
 
-  if ([v13 variant] != 1)
+  if ([optionsCopy variant] != 1)
   {
-    v14 = [(PHAssetExportRequest *)self variants];
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "variant")}];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    variants = [(PHAssetExportRequest *)self variants];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(optionsCopy, "variant")}];
+    v16 = [variants objectForKeyedSubscript:v15];
 
     if (!v16)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"(options.variant == PHAssetExportRequestVariantCurrent) || self.variants[@(options.variant)]"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"(options.variant == PHAssetExportRequestVariantCurrent) || self.variants[@(options.variant)]"}];
     }
   }
 
-  if (a5)
+  if (required)
   {
-    *a5 = 0;
+    *required = 0;
   }
 
-  if (a4 || a6 || a7)
+  if (availability || ls || info)
   {
     v18 = dispatch_semaphore_create(0);
     v40 = 0;
@@ -726,7 +726,7 @@ void __92__PHCloudSharedAssetExportRequest_exportWithOptions_networkAccessAllowe
     v31 = __Block_byref_object_copy__37358;
     v32 = __Block_byref_object_dispose__37359;
     v33 = 0;
-    v19 = [(PHAssetExportRequest *)self asset];
+    asset = [(PHAssetExportRequest *)self asset];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __115__PHCloudSharedAssetExportRequest_preflightExportWithOptions_assetAvailability_isProcessingRequired_fileURLs_info___block_invoke;
@@ -736,22 +736,22 @@ void __92__PHCloudSharedAssetExportRequest_exportWithOptions_networkAccessAllowe
     v27 = &v28;
     v20 = v18;
     v24 = v20;
-    [(PHCloudSharedAssetExportRequest *)self _requestFileURLsForAsset:v19 withOptions:v13 networkAccessAllowed:0 progressHandler:0 resultHandler:v23 resultHandlerQueue:self->_imageManagerResultHandlerQueue];
+    [(PHCloudSharedAssetExportRequest *)self _requestFileURLsForAsset:asset withOptions:optionsCopy networkAccessAllowed:0 progressHandler:0 resultHandler:v23 resultHandlerQueue:self->_imageManagerResultHandlerQueue];
 
     dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (availability)
     {
-      *a4 = v41[3];
+      *availability = v41[3];
     }
 
-    if (a6)
+    if (ls)
     {
-      *a6 = v35[5];
+      *ls = v35[5];
     }
 
-    if (a7)
+    if (info)
     {
-      *a7 = v29[5];
+      *info = v29[5];
     }
 
     _Block_object_dispose(&v28, 8);
@@ -784,11 +784,11 @@ void __115__PHCloudSharedAssetExportRequest_preflightExportWithOptions_assetAvai
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (PHCloudSharedAssetExportRequest)initWithAsset:(id)a3 variants:(id)a4
+- (PHCloudSharedAssetExportRequest)initWithAsset:(id)asset variants:(id)variants
 {
   v9.receiver = self;
   v9.super_class = PHCloudSharedAssetExportRequest;
-  v4 = [(PHAssetExportRequest *)&v9 initWithAsset:a3 variants:a4];
+  v4 = [(PHAssetExportRequest *)&v9 initWithAsset:asset variants:variants];
   if (v4)
   {
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
@@ -800,32 +800,32 @@ void __115__PHCloudSharedAssetExportRequest_preflightExportWithOptions_assetAvai
   return v4;
 }
 
-+ (id)variantsForAsset:(id)a3 asUnmodifiedOriginal:(BOOL)a4 error:(id *)a5
++ (id)variantsForAsset:(id)asset asUnmodifiedOriginal:(BOOL)original error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PHCloudSharedAssetExportRequest.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCloudSharedAssetExportRequest.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v12 = &unk_1F102D568;
-  v8 = [v7 uniformTypeIdentifier];
-  v13[0] = v8;
+  uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+  v13[0] = uniformTypeIdentifier;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
   return v9;
 }
 
-+ (id)exportRequestForAsset:(id)a3 error:(id *)a4
++ (id)exportRequestForAsset:(id)asset error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && (([(PHCloudSharedAssetExportRequest *)v6 isCloudSharedAsset]& 1) != 0 || ([(PHCloudSharedAssetExportRequest *)v7 isStreamedVideo]& 1) != 0))
+  assetCopy = asset;
+  v7 = assetCopy;
+  if (assetCopy && (([(PHCloudSharedAssetExportRequest *)assetCopy isCloudSharedAsset]& 1) != 0 || ([(PHCloudSharedAssetExportRequest *)v7 isStreamedVideo]& 1) != 0))
   {
-    v8 = [a1 variantsForAsset:v7 asUnmodifiedOriginal:0 error:0];
+    v8 = [self variantsForAsset:v7 asUnmodifiedOriginal:0 error:0];
     v9 = [[PHCloudSharedAssetExportRequest alloc] initWithAsset:v7 variants:v8];
     v10 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -857,11 +857,11 @@ void __115__PHCloudSharedAssetExportRequest_preflightExportWithOptions_assetAvai
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_ERROR, "[PHCloudSharedAssetExportRequest] Failed to create export request for asset: %@, error: %@", &v17, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v8;
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else

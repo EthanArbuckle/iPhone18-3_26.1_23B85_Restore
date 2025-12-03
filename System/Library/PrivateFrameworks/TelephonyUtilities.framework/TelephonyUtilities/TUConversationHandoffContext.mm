@@ -1,12 +1,12 @@
 @interface TUConversationHandoffContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandoffContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandoffContext:(id)context;
 - (TUConversationHandoffContext)init;
-- (TUConversationHandoffContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationHandoffContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationHandoffContext
@@ -33,67 +33,67 @@
   return v3;
 }
 
-- (TUConversationHandoffContext)initWithCoder:(id)a3
+- (TUConversationHandoffContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = TUConversationHandoffContext;
   v5 = [(TUConversationHandoffContext *)&v19 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_prefersToPlayDuringWombat);
-    v5->_prefersToPlayDuringWombat = [v4 decodeBoolForKey:v6];
+    v5->_prefersToPlayDuringWombat = [coderCopy decodeBoolForKey:v6];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
     v10 = NSStringFromSelector(sel_invitationPreferences);
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
     invitationPreferences = v5->_invitationPreferences;
     v5->_invitationPreferences = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_presentationContext);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     presentationContext = v5->_presentationContext;
     v5->_presentationContext = v15;
 
     v17 = NSStringFromSelector(sel_setUplinkMuted);
-    v5->_setUplinkMuted = [v4 decodeBoolForKey:v17];
+    v5->_setUplinkMuted = [coderCopy decodeBoolForKey:v17];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationHandoffContext *)self prefersToPlayDuringWombat];
+  coderCopy = coder;
+  prefersToPlayDuringWombat = [(TUConversationHandoffContext *)self prefersToPlayDuringWombat];
   v6 = NSStringFromSelector(sel_prefersToPlayDuringWombat);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:prefersToPlayDuringWombat forKey:v6];
 
-  v7 = [(TUConversationHandoffContext *)self invitationPreferences];
+  invitationPreferences = [(TUConversationHandoffContext *)self invitationPreferences];
   v8 = NSStringFromSelector(sel_invitationPreferences);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:invitationPreferences forKey:v8];
 
-  v9 = [(TUConversationHandoffContext *)self presentationContext];
+  presentationContext = [(TUConversationHandoffContext *)self presentationContext];
   v10 = NSStringFromSelector(sel_presentationContext);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:presentationContext forKey:v10];
 
-  v11 = [(TUConversationHandoffContext *)self setUplinkMuted];
+  setUplinkMuted = [(TUConversationHandoffContext *)self setUplinkMuted];
   v12 = NSStringFromSelector(sel_setUplinkMuted);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:setUplinkMuted forKey:v12];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPrefersToPlayDuringWombat:{-[TUConversationHandoffContext prefersToPlayDuringWombat](self, "prefersToPlayDuringWombat")}];
-  v5 = [(TUConversationHandoffContext *)self invitationPreferences];
-  [v4 setInvitationPreferences:v5];
+  invitationPreferences = [(TUConversationHandoffContext *)self invitationPreferences];
+  [v4 setInvitationPreferences:invitationPreferences];
 
-  v6 = [(TUConversationHandoffContext *)self presentationContext];
-  [v4 setPresentationContext:v6];
+  presentationContext = [(TUConversationHandoffContext *)self presentationContext];
+  [v4 setPresentationContext:presentationContext];
 
   [v4 setSetUplinkMuted:{-[TUConversationHandoffContext setUplinkMuted](self, "setUplinkMuted")}];
   return v4;
@@ -103,20 +103,20 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@" prefersToPlayDuringWombat=%d", -[TUConversationHandoffContext prefersToPlayDuringWombat](self, "prefersToPlayDuringWombat")];
-  v4 = [(TUConversationHandoffContext *)self invitationPreferences];
+  invitationPreferences = [(TUConversationHandoffContext *)self invitationPreferences];
 
-  if (v4)
+  if (invitationPreferences)
   {
-    v5 = [(TUConversationHandoffContext *)self invitationPreferences];
-    [v3 appendFormat:@" invitationPreferences=%@", v5];
+    invitationPreferences2 = [(TUConversationHandoffContext *)self invitationPreferences];
+    [v3 appendFormat:@" invitationPreferences=%@", invitationPreferences2];
   }
 
-  v6 = [(TUConversationHandoffContext *)self presentationContext];
+  presentationContext = [(TUConversationHandoffContext *)self presentationContext];
 
-  if (v6)
+  if (presentationContext)
   {
-    v7 = [(TUConversationHandoffContext *)self presentationContext];
-    [v3 appendFormat:@" presentationContext=%@", v7];
+    presentationContext2 = [(TUConversationHandoffContext *)self presentationContext];
+    [v3 appendFormat:@" presentationContext=%@", presentationContext2];
   }
 
   [v3 appendFormat:@" setUplinkMuted=%d", -[TUConversationHandoffContext setUplinkMuted](self, "setUplinkMuted")];
@@ -138,10 +138,10 @@
     v3 = 1237;
   }
 
-  v4 = [(TUConversationHandoffContext *)self invitationPreferences];
-  v5 = [v4 hash];
-  v6 = [(TUConversationHandoffContext *)self presentationContext];
-  v7 = v5 ^ [v6 hash] ^ v3;
+  invitationPreferences = [(TUConversationHandoffContext *)self invitationPreferences];
+  v5 = [invitationPreferences hash];
+  presentationContext = [(TUConversationHandoffContext *)self presentationContext];
+  v7 = v5 ^ [presentationContext hash] ^ v3;
   if ([(TUConversationHandoffContext *)self setUplinkMuted])
   {
     v8 = 1231;
@@ -155,10 +155,10 @@
   return v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -166,28 +166,28 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationHandoffContext *)self isEqualToHandoffContext:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationHandoffContext *)self isEqualToHandoffContext:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHandoffContext:(id)a3
+- (BOOL)isEqualToHandoffContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUConversationHandoffContext *)self prefersToPlayDuringWombat];
-  if (v5 == [v4 prefersToPlayDuringWombat])
+  contextCopy = context;
+  prefersToPlayDuringWombat = [(TUConversationHandoffContext *)self prefersToPlayDuringWombat];
+  if (prefersToPlayDuringWombat == [contextCopy prefersToPlayDuringWombat])
   {
-    v7 = [(TUConversationHandoffContext *)self invitationPreferences];
-    v8 = [v4 invitationPreferences];
-    if (TUObjectsAreEqualOrNil(v7, v8))
+    invitationPreferences = [(TUConversationHandoffContext *)self invitationPreferences];
+    invitationPreferences2 = [contextCopy invitationPreferences];
+    if (TUObjectsAreEqualOrNil(invitationPreferences, invitationPreferences2))
     {
-      v9 = [(TUConversationHandoffContext *)self presentationContext];
-      v10 = [v4 presentationContext];
-      if (TUObjectsAreEqualOrNil(v9, v10))
+      presentationContext = [(TUConversationHandoffContext *)self presentationContext];
+      presentationContext2 = [contextCopy presentationContext];
+      if (TUObjectsAreEqualOrNil(presentationContext, presentationContext2))
       {
-        v11 = [(TUConversationHandoffContext *)self setUplinkMuted];
-        v6 = v11 ^ [v4 setUplinkMuted] ^ 1;
+        setUplinkMuted = [(TUConversationHandoffContext *)self setUplinkMuted];
+        v6 = setUplinkMuted ^ [contextCopy setUplinkMuted] ^ 1;
       }
 
       else

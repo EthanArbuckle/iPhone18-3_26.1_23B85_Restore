@@ -1,13 +1,13 @@
 @interface PLBatteryUIGraphViewInternal
-- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)a3;
-- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)a3 andData:(id)a4;
-- (void)drawErrorText:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawGrid:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawPoints:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawRect:(CGRect)a3;
+- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)frame;
+- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)frame andData:(id)data;
+- (void)drawErrorText:(CGContext *)text andRect:(CGRect)rect;
+- (void)drawGrid:(CGContext *)grid andRect:(CGRect)rect;
+- (void)drawPoints:(CGContext *)points andRect:(CGRect)rect;
+- (void)drawRect:(CGRect)rect;
 - (void)setDefaultRange;
-- (void)setInputData:(id)a3;
-- (void)setRangesFromArray:(id)a3;
+- (void)setInputData:(id)data;
+- (void)setRangesFromArray:(id)array;
 @end
 
 @implementation PLBatteryUIGraphViewInternal
@@ -27,9 +27,9 @@
   _objc_release_x1();
 }
 
-- (void)setRangesFromArray:(id)a3
+- (void)setRangesFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   p_startDate = &self->startDate;
   startDate = self->startDate;
   self->startDate = 0;
@@ -42,7 +42,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v4;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
@@ -166,10 +166,10 @@
   }
 }
 
-- (void)setInputData:(id)a3
+- (void)setInputData:(id)data
 {
   self->_errValue = 0;
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   inputData = self->_inputData;
   self->_inputData = v4;
 
@@ -188,30 +188,30 @@
   }
 }
 
-- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)a3 andData:(id)a4
+- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)frame andData:(id)data
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = PLBatteryUIGraphViewInternal;
-  v10 = [(PLBatteryUIGraphViewInternal *)&v13 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(PLBatteryUIGraphViewInternal *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 mutableCopy];
-    [(PLBatteryUIGraphViewInternal *)v10 setInputData:v11];
+    v11 = [dataCopy mutableCopy];
+    [(PLBatteryUIGraphViewInternal *)height setInputData:v11];
   }
 
-  return v10;
+  return height;
 }
 
-- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)a3
+- (PLBatteryUIGraphViewInternal)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLBatteryUIGraphViewInternal;
-  v3 = [(PLBatteryUIGraphViewInternal *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLBatteryUIGraphViewInternal *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -221,20 +221,20 @@
   return v4;
 }
 
-- (void)drawGrid:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawGrid:(CGContext *)grid andRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v8 = a4.size.width + -20.0;
-  v9 = a4.size.height + -15.0;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.size.width + -20.0;
+  v9 = rect.size.height + -15.0;
   v10 = +[UIColor lightGrayColor];
-  CGContextSetFillColorWithColor(a3, [v10 CGColor]);
+  CGContextSetFillColorWithColor(grid, [v10 CGColor]);
 
   v62.size.width = v8;
   v62.origin.x = 20.0;
   v62.origin.y = 0.0;
   v62.size.height = v9;
-  CGContextFillRect(a3, v62);
+  CGContextFillRect(grid, v62);
   v11 = [UIFont systemFontOfSize:10.0];
   v12 = objc_alloc_init(NSDateFormatter);
   [(NSDate *)self->endDate timeIntervalSinceDate:self->startDate];
@@ -250,12 +250,12 @@
   }
 
   [v12 setDateFormat:v15];
-  CGContextSetLineWidth(a3, 0.6);
+  CGContextSetLineWidth(grid, 0.6);
   v16 = +[UIColor grayColor];
-  CGContextSetStrokeColorWithColor(a3, [v16 CGColor]);
+  CGContextSetStrokeColorWithColor(grid, [v16 CGColor]);
 
   *lengths = xmmword_124510;
-  CGContextSetLineDash(a3, 0.0, lengths, 2uLL);
+  CGContextSetLineDash(grid, 0.0, lengths, 2uLL);
   v17 = (v8 * 0.125);
   v18 = (v9 / 10.0);
   v19 = v18;
@@ -264,28 +264,28 @@
   v21 = 20;
   do
   {
-    CGContextMoveToPoint(a3, v21, 0.0);
-    CGContextAddLineToPoint(a3, v21, v9);
+    CGContextMoveToPoint(grid, v21, 0.0);
+    CGContextAddLineToPoint(grid, v21, v9);
     v21 += v17;
     --v20;
   }
 
   while (v20);
   v51 = v12;
-  v22 = self;
+  selfCopy = self;
   v23 = v14 * 0.125;
   v24 = 11;
   do
   {
-    CGContextMoveToPoint(a3, 20.0, (v9 - v20));
-    CGContextAddLineToPoint(a3, width, (v9 - v20));
+    CGContextMoveToPoint(grid, 20.0, (v9 - v20));
+    CGContextAddLineToPoint(grid, width, (v9 - v20));
     v20 += v18;
     --v24;
   }
 
   while (v24);
-  CGContextStrokePath(a3);
-  CGContextSetLineDash(a3, 0.0, 0, 0);
+  CGContextStrokePath(grid);
+  CGContextSetLineDash(grid, 0.0, 0, 0);
   v25 = 0;
   v52 = 2 * v17;
   v26 = -2;
@@ -294,7 +294,7 @@
   {
     v28 = v25;
     v26 += 2;
-    v29 = [NSDate dateWithTimeInterval:v22->startDate sinceDate:(v23 * v26)];
+    v29 = [NSDate dateWithTimeInterval:selfCopy->startDate sinceDate:(v23 * v26)];
     v25 = [v51 stringFromDate:v29];
 
     v59 = NSFontAttributeName;
@@ -320,7 +320,7 @@
   for (i = 1; i != 10; ++i)
   {
     v41 = v25;
-    v25 = [NSString stringWithFormat:@"%d", (v22->minPower + (i * (v50 / 10.0)))];
+    v25 = [NSString stringWithFormat:@"%d", (selfCopy->minPower + (i * (v50 / 10.0)))];
 
     v55 = NSFontAttributeName;
     v56 = v11;
@@ -340,10 +340,10 @@
   }
 }
 
-- (void)drawErrorText:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawErrorText:(CGContext *)text andRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   errValue = self->_errValue;
   v7 = @"Not Enough Data Points";
   if (errValue != 2)
@@ -376,15 +376,15 @@
   [(__CFString *)v9 drawInRect:v16 withAttributes:(width - v13) * 0.5, (height - v15) * 0.5, v13, v15];
 }
 
-- (void)drawPoints:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawPoints:(CGContext *)points andRect:(CGRect)rect
 {
   if (self->_inputData)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    CGContextSetLineWidth(a3, 2.0);
+    height = rect.size.height;
+    width = rect.size.width;
+    CGContextSetLineWidth(points, 2.0);
     v8 = +[UIColor blueColor];
-    CGContextSetStrokeColorWithColor(a3, [v8 CGColor]);
+    CGContextSetStrokeColorWithColor(points, [v8 CGColor]);
 
     maxPower = self->maxPower;
     minPower = self->minPower;
@@ -430,20 +430,20 @@
           v21 = *&v30 + 20.0;
           if (v15)
           {
-            v32 = [(PLBatteryUIGraphViewInternal *)self graphType];
+            graphType = [(PLBatteryUIGraphViewInternal *)self graphType];
             *&v33 = v23;
             *&v34 = v31;
-            if (v32 == 2 || (v35 = [(PLBatteryUIGraphViewInternal *)self graphType:v33], *&v33 = v21, *&v34 = v23, v35 == 1))
+            if (graphType == 2 || (v35 = [(PLBatteryUIGraphViewInternal *)self graphType:v33], *&v33 = v21, *&v34 = v23, v35 == 1))
             {
-              CGContextAddLineToPoint(a3, *&v33, *&v34);
+              CGContextAddLineToPoint(points, *&v33, *&v34);
             }
 
-            CGContextAddLineToPoint(a3, v21, v31);
+            CGContextAddLineToPoint(points, v21, v31);
           }
 
           else
           {
-            CGContextMoveToPoint(a3, v21, v31);
+            CGContextMoveToPoint(points, v21, v31);
           }
 
           if ([(PLBatteryUIGraphViewInternal *)self graphType]!= 2)
@@ -471,16 +471,16 @@
       while (v14);
     }
 
-    CGContextStrokePath(a3);
+    CGContextStrokePath(points);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v9 = +[UIColor whiteColor];
   CGContextSetFillColorWithColor(CurrentContext, [v9 CGColor]);

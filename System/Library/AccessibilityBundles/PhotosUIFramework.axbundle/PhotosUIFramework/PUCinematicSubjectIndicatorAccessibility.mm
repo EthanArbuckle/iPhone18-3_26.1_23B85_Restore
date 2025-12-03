@@ -1,5 +1,5 @@
 @interface PUCinematicSubjectIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axVideoEditOverlayViewController;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
@@ -10,12 +10,12 @@
 
 @implementation PUCinematicSubjectIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUVideoEditOverlayViewController"];
-  [v3 validateClass:@"PUVideoEditOverlayViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PUCinematicSubjectIndicator" hasInstanceMethod:@"shape" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUVideoEditOverlayViewController"];
+  [validationsCopy validateClass:@"PUVideoEditOverlayViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PUCinematicSubjectIndicator" hasInstanceMethod:@"shape" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityValue
@@ -53,9 +53,9 @@
 - (id)_axVideoEditOverlayViewController
 {
   v2 = [(PUCinematicSubjectIndicatorAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_2 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __77__PUCinematicSubjectIndicatorAccessibility__axVideoEditOverlayViewController__block_invoke(uint64_t a1, void *a2)
@@ -72,14 +72,14 @@ uint64_t __77__PUCinematicSubjectIndicatorAccessibility__axVideoEditOverlayViewC
   v9.receiver = self;
   v9.super_class = PUCinematicSubjectIndicatorAccessibility;
   [(PUCinematicSubjectIndicatorAccessibility *)&v9 accessibilityElementDidBecomeFocused];
-  v3 = [(PUCinematicSubjectIndicatorAccessibility *)self _axVideoEditOverlayViewController];
-  [v3 _axSetCinematicSubjectIndicatorDidBecomeFocused:1];
-  v4 = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
-  if (!v4)
+  _axVideoEditOverlayViewController = [(PUCinematicSubjectIndicatorAccessibility *)self _axVideoEditOverlayViewController];
+  [_axVideoEditOverlayViewController _axSetCinematicSubjectIndicatorDidBecomeFocused:1];
+  _axCountdownTimer = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
+  if (!_axCountdownTimer)
   {
     v5 = objc_alloc(MEMORY[0x29EDBD6A0]);
-    v4 = [v5 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-    [(PUCinematicSubjectIndicatorAccessibility *)self _setAXCountdownTimer:v4];
+    _axCountdownTimer = [v5 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+    [(PUCinematicSubjectIndicatorAccessibility *)self _setAXCountdownTimer:_axCountdownTimer];
   }
 
   objc_initWeak(&location, self);
@@ -88,7 +88,7 @@ uint64_t __77__PUCinematicSubjectIndicatorAccessibility__axVideoEditOverlayViewC
   v6[2] = __80__PUCinematicSubjectIndicatorAccessibility_accessibilityElementDidBecomeFocused__block_invoke;
   v6[3] = &unk_29F2E81A0;
   objc_copyWeak(&v7, &location);
-  [v4 afterDelay:v6 processBlock:0.05];
+  [_axCountdownTimer afterDelay:v6 processBlock:0.05];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -101,23 +101,23 @@ void __80__PUCinematicSubjectIndicatorAccessibility_accessibilityElementDidBecom
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v3 = [(PUCinematicSubjectIndicatorAccessibility *)self _axVideoEditOverlayViewController];
-  [v3 _axSetCinematicSubjectIndicatorDidBecomeFocused:0];
+  _axVideoEditOverlayViewController = [(PUCinematicSubjectIndicatorAccessibility *)self _axVideoEditOverlayViewController];
+  [_axVideoEditOverlayViewController _axSetCinematicSubjectIndicatorDidBecomeFocused:0];
   v5.receiver = self;
   v5.super_class = PUCinematicSubjectIndicatorAccessibility;
   [(PUCinematicSubjectIndicatorAccessibility *)&v5 accessibilityElementDidLoseFocus];
-  v4 = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
-  [v4 cancel];
+  _axCountdownTimer = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
+  [_axCountdownTimer cancel];
 }
 
 - (void)_axUpdateElementFrame
 {
-  v3 = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
-  if (!v3)
+  _axCountdownTimer = [(PUCinematicSubjectIndicatorAccessibility *)self _axCountdownTimer];
+  if (!_axCountdownTimer)
   {
     v4 = objc_alloc(MEMORY[0x29EDBD6A0]);
-    v3 = [v4 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-    [(PUCinematicSubjectIndicatorAccessibility *)self _setAXCountdownTimer:v3];
+    _axCountdownTimer = [v4 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+    [(PUCinematicSubjectIndicatorAccessibility *)self _setAXCountdownTimer:_axCountdownTimer];
   }
 
   if ([(PUCinematicSubjectIndicatorAccessibility *)self accessibilityElementIsFocused])
@@ -129,7 +129,7 @@ void __80__PUCinematicSubjectIndicatorAccessibility_accessibilityElementDidBecom
     v5[2] = __65__PUCinematicSubjectIndicatorAccessibility__axUpdateElementFrame__block_invoke;
     v5[3] = &unk_29F2E81A0;
     objc_copyWeak(&v6, &location);
-    [v3 afterDelay:v5 processBlock:0.05];
+    [_axCountdownTimer afterDelay:v5 processBlock:0.05];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }

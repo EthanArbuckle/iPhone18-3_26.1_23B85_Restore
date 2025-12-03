@@ -1,32 +1,32 @@
 @interface CloudKeepLocalUtilities
-+ (void)downPinCollectionsForClasses:(id)a3 configuration:(id)a4;
-+ (void)rePinCollectionsForClasses:(id)a3 configuration:(id)a4;
++ (void)downPinCollectionsForClasses:(id)classes configuration:(id)configuration;
++ (void)rePinCollectionsForClasses:(id)classes configuration:(id)configuration;
 @end
 
 @implementation CloudKeepLocalUtilities
 
-+ (void)rePinCollectionsForClasses:(id)a3 configuration:(id)a4
++ (void)rePinCollectionsForClasses:(id)classes configuration:(id)configuration
 {
-  v5 = a3;
-  v28 = a4;
+  classesCopy = classes;
+  configurationCopy = configuration;
   v6 = os_log_create("com.apple.amp.itunescloudd", "Downloads");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = classesCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v28;
+    *&buf[14] = configurationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "RePinning collection classes %{public}@ and configuration %{public}@", buf, 0x16u);
   }
 
-  v7 = [v28 userIdentity];
-  v33 = [ML3MusicLibrary musicLibraryForUserAccount:v7];
+  userIdentity = [configurationCopy userIdentity];
+  v33 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
+  obj = classesCopy;
   v31 = [obj countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v31)
   {
@@ -80,9 +80,9 @@
               }
 
               v17 = *(*(&v40 + 1) + 8 * i);
-              v18 = [objc_opt_class() trackForeignPersistentID];
+              trackForeignPersistentID = [objc_opt_class() trackForeignPersistentID];
               v19 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 persistentID]);
-              v20 = [ML3ComparisonPredicate predicateWithProperty:v18 value:v19 comparison:1];
+              v20 = [ML3ComparisonPredicate predicateWithProperty:trackForeignPersistentID value:v19 comparison:1];
               v58[0] = v20;
               v21 = [ML3ComparisonPredicate predicateWithProperty:v38 equalToInt64:0];
               v58[1] = v21;
@@ -152,29 +152,29 @@
   }
 }
 
-+ (void)downPinCollectionsForClasses:(id)a3 configuration:(id)a4
++ (void)downPinCollectionsForClasses:(id)classes configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  classesCopy = classes;
+  configurationCopy = configuration;
   v7 = os_log_create("com.apple.amp.itunescloudd", "Downloads");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v64 = v5;
+    v64 = classesCopy;
     v65 = 2114;
-    v66 = v6;
+    v66 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "DownPinning collection classes %{public}@ and configuration %{public}@", buf, 0x16u);
   }
 
-  v32 = v6;
-  v8 = [v6 userIdentity];
-  v35 = [ML3MusicLibrary musicLibraryForUserAccount:v8];
+  v32 = configurationCopy;
+  userIdentity = [configurationCopy userIdentity];
+  v35 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v5;
+  obj = classesCopy;
   v36 = [obj countByEnumeratingWithState:&v55 objects:v62 count:16];
   if (v36)
   {
@@ -239,9 +239,9 @@
               }
 
               v23 = objc_opt_new();
-              v24 = [objc_opt_class() trackForeignPersistentID];
+              trackForeignPersistentID = [objc_opt_class() trackForeignPersistentID];
               v25 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v21 persistentID]);
-              v26 = [ML3ComparisonPredicate predicateWithProperty:v24 value:v25 comparison:1];
+              v26 = [ML3ComparisonPredicate predicateWithProperty:trackForeignPersistentID value:v25 comparison:1];
               v27 = [ML3Track queryWithLibrary:v15 predicate:v26];
 
               v59 = v40;

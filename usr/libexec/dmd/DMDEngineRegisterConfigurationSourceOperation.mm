@@ -1,6 +1,6 @@
 @interface DMDEngineRegisterConfigurationSourceOperation
 - (DMDEngineRegisterConfigurationSourceOperationDelegate)delegate;
-- (void)delegateUpdatedDeclarationSourceAndEndOperation:(id)a3;
+- (void)delegateUpdatedDeclarationSourceAndEndOperation:(id)operation;
 - (void)main;
 @end
 
@@ -8,31 +8,31 @@
 
 - (void)main
 {
-  v3 = [(DMDEngineDatabaseOperation *)self database];
-  v4 = [v3 newBackgroundContext];
+  database = [(DMDEngineDatabaseOperation *)self database];
+  newBackgroundContext = [database newBackgroundContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100040418;
   v6[3] = &unk_1000CDC38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = newBackgroundContext;
+  v5 = newBackgroundContext;
   [v5 performBlockAndWait:v6];
 }
 
-- (void)delegateUpdatedDeclarationSourceAndEndOperation:(id)a3
+- (void)delegateUpdatedDeclarationSourceAndEndOperation:(id)operation
 {
-  v6 = a3;
+  operationCopy = operation;
   if (!+[NSThread isMainThread])
   {
     sub_100083C30(a2, self);
   }
 
-  v5 = [(DMDEngineRegisterConfigurationSourceOperation *)self delegate];
+  delegate = [(DMDEngineRegisterConfigurationSourceOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 registerConfigurationSourceOperation:self didUpdateRegistrationForConfigurationSource:v6];
+    [delegate registerConfigurationSourceOperation:self didUpdateRegistrationForConfigurationSource:operationCopy];
   }
 
   [(DMDEngineRegisterConfigurationSourceOperation *)self setResultObject:0];

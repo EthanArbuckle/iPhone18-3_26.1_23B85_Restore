@@ -1,13 +1,13 @@
 @interface ActionBarToastButton
 - (CGSize)intrinsicContentSize;
-- (_TtC10MapsDesign20ActionBarToastButton)initWithFrame:(CGRect)a3;
+- (_TtC10MapsDesign20ActionBarToastButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ActionBarToastButton
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ActionBarToastButton.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC10MapsDesign20ActionBarToastButton)initWithFrame:(CGRect)a3
+- (_TtC10MapsDesign20ActionBarToastButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

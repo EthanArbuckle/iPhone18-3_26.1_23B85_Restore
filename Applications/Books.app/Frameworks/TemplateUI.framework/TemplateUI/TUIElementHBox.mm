@@ -1,8 +1,8 @@
 @interface TUIElementHBox
 + (id)containerAttributes;
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementHBox
@@ -31,39 +31,39 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 stringForAttribute:96 node:var0];
-  [v9 setHalign:{+[TUIBox halignFromString:](TUIBox, "halignFromString:", v10)}];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  v10 = [attributesCopy stringForAttribute:96 node:var0];
+  [boxCopy setHalign:{+[TUIBox halignFromString:](TUIBox, "halignFromString:", v10)}];
 
-  v11 = [v8 stringForAttribute:120 node:var0];
+  v11 = [attributesCopy stringForAttribute:120 node:var0];
 
-  [v9 setLayoutMode:{+[TUIBox layoutModeFromString:](TUIBox, "layoutModeFromString:", v11)}];
+  [boxCopy setLayoutMode:{+[TUIBox layoutModeFromString:](TUIBox, "layoutModeFromString:", v11)}];
 }
 
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context
 {
-  v14 = a5;
-  v9 = a3;
-  v10 = [v14 stringForAttribute:97 node:a4.var0];
-  [v9 setHcompressed:{+[TUIBox compressedFromString:](TUIBox, "compressedFromString:", v10)}];
+  attributesCopy = attributes;
+  boxCopy = box;
+  v10 = [attributesCopy stringForAttribute:97 node:node.var0];
+  [boxCopy setHcompressed:{+[TUIBox compressedFromString:](TUIBox, "compressedFromString:", v10)}];
 
-  v11 = [v14 lengthForAttribute:167 node:a4.var0];
-  [v9 setRelativeWidth:{v11, v12}];
-  v13 = [v9 dynamicArrayWindowingBox];
+  v11 = [attributesCopy lengthForAttribute:167 node:node.var0];
+  [boxCopy setRelativeWidth:{v11, v12}];
+  dynamicArrayWindowingBox = [boxCopy dynamicArrayWindowingBox];
 
-  if (v13)
+  if (dynamicArrayWindowingBox)
   {
-    [v14 floatForAttribute:79 node:a4.var0];
-    [v13 setEstimatedWidth:?];
-    [v14 floatForAttribute:77 node:a4.var0];
-    [v13 setEstimatedHeight:?];
-    [v13 estimatedHeight];
-    [v14 floatForAttribute:78 withDefault:a4.var0 node:?];
-    [v13 setEstimatedHeightAbovePivot:?];
+    [attributesCopy floatForAttribute:79 node:node.var0];
+    [dynamicArrayWindowingBox setEstimatedWidth:?];
+    [attributesCopy floatForAttribute:77 node:node.var0];
+    [dynamicArrayWindowingBox setEstimatedHeight:?];
+    [dynamicArrayWindowingBox estimatedHeight];
+    [attributesCopy floatForAttribute:78 withDefault:node.var0 node:?];
+    [dynamicArrayWindowingBox setEstimatedHeightAbovePivot:?];
   }
 }
 

@@ -1,82 +1,82 @@
 @interface CMLSimilarityScore
-+ (id)scoreWithIdentifier:(unint64_t)a3 score:(float)a4;
-+ (id)scoreWithIdentifier:(unint64_t)a3 score:(float)a4 metadata:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSimilarityScore:(id)a3;
-- (CMLSimilarityScore)initWithCoder:(id)a3;
-- (CMLSimilarityScore)initWithIdentifier:(unint64_t)a3 score:(float)a4 metadata:(id)a5;
++ (id)scoreWithIdentifier:(unint64_t)identifier score:(float)score;
++ (id)scoreWithIdentifier:(unint64_t)identifier score:(float)score metadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSimilarityScore:(id)score;
+- (CMLSimilarityScore)initWithCoder:(id)coder;
+- (CMLSimilarityScore)initWithIdentifier:(unint64_t)identifier score:(float)score metadata:(id)metadata;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMLSimilarityScore
 
-- (CMLSimilarityScore)initWithIdentifier:(unint64_t)a3 score:(float)a4 metadata:(id)a5
+- (CMLSimilarityScore)initWithIdentifier:(unint64_t)identifier score:(float)score metadata:(id)metadata
 {
-  v9 = a5;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = CMLSimilarityScore;
   v10 = [(CMLSimilarityScore *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_identifier = a3;
-    v10->_score = a4;
-    objc_storeStrong(&v10->_metadata, a5);
+    v10->_identifier = identifier;
+    v10->_score = score;
+    objc_storeStrong(&v10->_metadata, metadata);
   }
 
   return v11;
 }
 
-+ (id)scoreWithIdentifier:(unint64_t)a3 score:(float)a4
++ (id)scoreWithIdentifier:(unint64_t)identifier score:(float)score
 {
   v6 = objc_alloc(objc_opt_class());
-  *&v7 = a4;
-  v8 = [v6 initWithIdentifier:a3 score:0 metadata:v7];
+  *&v7 = score;
+  v8 = [v6 initWithIdentifier:identifier score:0 metadata:v7];
 
   return v8;
 }
 
-+ (id)scoreWithIdentifier:(unint64_t)a3 score:(float)a4 metadata:(id)a5
++ (id)scoreWithIdentifier:(unint64_t)identifier score:(float)score metadata:(id)metadata
 {
-  v7 = a5;
+  metadataCopy = metadata;
   v8 = objc_alloc(objc_opt_class());
-  *&v9 = a4;
-  v10 = [v8 initWithIdentifier:a3 score:v7 metadata:v9];
+  *&v9 = score;
+  v10 = [v8 initWithIdentifier:identifier score:metadataCopy metadata:v9];
 
   return v10;
 }
 
-- (BOOL)isEqualToSimilarityScore:(id)a3
+- (BOOL)isEqualToSimilarityScore:(id)score
 {
-  v4 = a3;
-  v5 = [(CMLSimilarityScore *)self metadata];
-  if (v5)
+  scoreCopy = score;
+  metadata = [(CMLSimilarityScore *)self metadata];
+  if (metadata)
   {
 
 LABEL_4:
-    v7 = [(CMLSimilarityScore *)self metadata];
-    v8 = [v4 metadata];
-    v9 = [v7 isEqual:v8];
+    metadata2 = [(CMLSimilarityScore *)self metadata];
+    metadata3 = [scoreCopy metadata];
+    v9 = [metadata2 isEqual:metadata3];
 
     goto LABEL_5;
   }
 
-  v6 = [v4 metadata];
+  metadata4 = [scoreCopy metadata];
 
-  if (v6)
+  if (metadata4)
   {
     goto LABEL_4;
   }
 
   v9 = 1;
 LABEL_5:
-  v10 = [(CMLSimilarityScore *)self identifier];
-  if (v10 == [v4 identifier])
+  identifier = [(CMLSimilarityScore *)self identifier];
+  if (identifier == [scoreCopy identifier])
   {
     [(CMLSimilarityScore *)self score];
     v12 = v11;
-    [v4 score];
+    [scoreCopy score];
     if (v12 == v13)
     {
       v14 = v9;
@@ -96,18 +96,18 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLSimilarityScore *)self isEqualToSimilarityScore:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLSimilarityScore *)self isEqualToSimilarityScore:v5];
   }
 
   return v6;
@@ -121,19 +121,19 @@ LABEL_5:
   [(CMLSimilarityScore *)self score];
   v6 = [v5 numberWithFloat:?];
   v7 = [v6 hash] ^ v4;
-  v8 = [(CMLSimilarityScore *)self metadata];
-  v9 = [v8 hash];
+  metadata = [(CMLSimilarityScore *)self metadata];
+  v9 = [metadata hash];
 
   return v7 ^ v9;
 }
 
-- (CMLSimilarityScore)initWithCoder:(id)a3
+- (CMLSimilarityScore)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"identifier"];
-  [v4 decodeFloatForKey:@"score"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"identifier"];
+  [coderCopy decodeFloatForKey:@"score"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
 
   LODWORD(v9) = v7;
   v10 = [(CMLSimilarityScore *)self initWithIdentifier:v5 score:v8 metadata:v9];
@@ -141,14 +141,14 @@ LABEL_5:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[CMLSimilarityScore identifier](self forKey:{"identifier"), @"identifier"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[CMLSimilarityScore identifier](self forKey:{"identifier"), @"identifier"}];
   [(CMLSimilarityScore *)self score];
-  [v4 encodeFloat:@"score" forKey:?];
-  v5 = [(CMLSimilarityScore *)self metadata];
-  [v4 encodeObject:v5 forKey:@"metadata"];
+  [coderCopy encodeFloat:@"score" forKey:?];
+  metadata = [(CMLSimilarityScore *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
 @end

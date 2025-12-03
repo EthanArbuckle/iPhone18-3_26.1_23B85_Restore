@@ -1,14 +1,14 @@
 @interface TitleValueTableViewCell
-- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)tintColorDidChange;
 @end
 
 @implementation TitleValueTableViewCell
 
-- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v5 = self + OBJC_IVAR____TtC18HealthExperienceUI23TitleValueTableViewCell_item;
@@ -34,7 +34,7 @@
   return v8;
 }
 
-- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23TitleValueTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI23TitleValueTableViewCell_item;
   *v3 = 0u;
@@ -51,11 +51,11 @@
   v6.super_class = type metadata accessor for TitleValueTableViewCell();
   v2 = v6.receiver;
   [(TitleValueTableViewCell *)&v6 tintColorDidChange];
-  v3 = [v2 detailTextLabel];
-  if (v3)
+  detailTextLabel = [v2 detailTextLabel];
+  if (detailTextLabel)
   {
-    v4 = v3;
-    v5 = [v2 tintColor];
+    v4 = detailTextLabel;
+    tintColor = [v2 tintColor];
     [v4 setTextColor_];
   }
 }

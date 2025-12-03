@@ -1,6 +1,6 @@
 @interface MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct
 - (MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct);
-  v5 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self energy];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEnergy:v5];
+  energy = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self energy];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEnergy:energy];
 
-  v6 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self startTimestamp];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setStartTimestamp:v6];
+  startTimestamp = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self startTimestamp];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setStartTimestamp:startTimestamp];
 
-  v7 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self endTimestamp];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEndTimestamp:v7];
+  endTimestamp = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self endTimestamp];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEndTimestamp:endTimestamp];
 
-  v8 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self startSystime];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setStartSystime:v8];
+  startSystime = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self startSystime];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setStartSystime:startSystime];
 
-  v9 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self endSystime];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEndSystime:v9];
+  endSystime = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self endSystime];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setEndSystime:endSystime];
 
-  v10 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self apparentEnergy];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setApparentEnergy:v10];
+  apparentEnergy = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self apparentEnergy];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setApparentEnergy:apparentEnergy];
 
-  v11 = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self reactiveEnergy];
-  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setReactiveEnergy:v11];
+  reactiveEnergy = [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)self reactiveEnergy];
+  [(MTRElectricalEnergyMeasurementClusterEnergyMeasurementStruct *)v4 setReactiveEnergy:reactiveEnergy];
 
   return v4;
 }

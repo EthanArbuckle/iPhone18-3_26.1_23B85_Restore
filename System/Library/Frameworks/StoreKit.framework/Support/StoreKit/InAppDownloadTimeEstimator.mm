@@ -1,13 +1,13 @@
 @interface InAppDownloadTimeEstimator
-- (InAppDownloadTimeEstimator)initWithMaxValue:(unint64_t)a3;
+- (InAppDownloadTimeEstimator)initWithMaxValue:(unint64_t)value;
 - (double)estimatedTimeRemaining;
 - (void)_updateStatisticsFromSnapshots;
-- (void)setCurrentValue:(unint64_t)a3;
+- (void)setCurrentValue:(unint64_t)value;
 @end
 
 @implementation InAppDownloadTimeEstimator
 
-- (InAppDownloadTimeEstimator)initWithMaxValue:(unint64_t)a3
+- (InAppDownloadTimeEstimator)initWithMaxValue:(unint64_t)value
 {
   v12.receiver = self;
   v12.super_class = InAppDownloadTimeEstimator;
@@ -21,7 +21,7 @@
     v4->_changeRate = -1.0;
     v4->_currentValue = 0;
     v4->_estimatedTimeRemaining = -1.0;
-    v4->_maxValue = a3;
+    v4->_maxValue = value;
     v7 = objc_opt_new();
     times = v4->_times;
     v4->_times = v7;
@@ -53,7 +53,7 @@
   return v3;
 }
 
-- (void)setCurrentValue:(unint64_t)a3
+- (void)setCurrentValue:(unint64_t)value
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@
   v4[2] = sub_10000466C;
   v4[3] = &unk_10037F7F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = value;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -88,9 +88,9 @@
       v13 = v10 - v12;
 
       v14 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:i];
-      v15 = [v14 longLongValue];
+      longLongValue = [v14 longLongValue];
       v16 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:i - 1];
-      v17 = v15 - [v16 longLongValue];
+      v17 = longLongValue - [v16 longLongValue];
 
       v6 = v6 + v17 / v13;
     }

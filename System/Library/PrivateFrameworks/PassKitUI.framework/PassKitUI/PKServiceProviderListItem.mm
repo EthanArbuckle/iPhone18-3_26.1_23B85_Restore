@@ -6,10 +6,10 @@
 
 - (NSCopying)identifier
 {
-  v2 = [(PKPaymentSetupServiceProviderProductWithItem *)self->_itemPair item];
-  v3 = [v2 identifier];
+  item = [(PKPaymentSetupServiceProviderProductWithItem *)self->_itemPair item];
+  identifier = [item identifier];
 
-  return v3;
+  return identifier;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface CKConversationListCollectionViewCompositionalLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation CKConversationListCollectionViewCompositionalLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   v27 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = CKConversationListCollectionViewCompositionalLayout;
-  [(CKConversationListCollectionViewCompositionalLayout *)&v25 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CKConversationListCollectionViewCompositionalLayout *)&v25 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -20,7 +20,7 @@
   {
     v5 = v4;
     v6 = *v22;
-    v19 = v3;
+    v19 = selfCopy;
     do
     {
       for (i = 0; i != v5; ++i)
@@ -31,24 +31,24 @@
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
-        v9 = [(CKConversationListCollectionViewCompositionalLayout *)v3 collectionView];
-        v10 = [v8 indexPath];
-        v11 = [v9 cellForItemAtIndexPath:v10];
+        collectionView = [(CKConversationListCollectionViewCompositionalLayout *)selfCopy collectionView];
+        indexPath = [v8 indexPath];
+        v11 = [collectionView cellForItemAtIndexPath:indexPath];
 
         if (v11)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 configurationState];
-            if (v12)
+            configurationState = [v11 configurationState];
+            if (configurationState)
             {
               v13 = +[CKUIBehavior sharedBehaviors];
               v14 = v5;
               v15 = v6;
-              v16 = [v13 suppressPinActivityForState:v12];
+              v16 = [v13 suppressPinActivityForState:configurationState];
 
-              v3 = v19;
+              selfCopy = v19;
               v17 = v16 ^ 1u;
               v6 = v15;
               v5 = v14;

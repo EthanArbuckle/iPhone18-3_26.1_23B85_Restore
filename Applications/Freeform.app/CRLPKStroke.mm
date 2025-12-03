@@ -1,39 +1,39 @@
 @interface CRLPKStroke
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)_transform;
 - (CGPath)newPathRepresentation;
 - (CGPoint)_clipNormal;
 - (CGPoint)_clipOrigin;
-- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)a3 t:(double)a4;
-- (CGPoint)_splineControlPoint:(int64_t)a3;
+- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)segment t:(double)t;
+- (CGPoint)_splineControlPoint:(int64_t)point;
 - (CGPoint)clipNormal;
 - (CGPoint)clipOrigin;
 - (CGRect)_bounds;
 - (CRLPKCompressedStrokePoint)_completedPoints;
 - (CRLPKStroke)init;
-- (CRLPKStroke)initWithStroke:(id)a3 hidden:(BOOL)a4 version:(_CRLPKStrokeID *)a5;
-- (CRLPKStroke)initWithStroke:(id)a3 hidden:(BOOL)a4 version:(_CRLPKStrokeID *)a5 transform:(CGAffineTransform *)a6;
-- (CRLPKStroke)initWithStroke:(id)a3 points:(CRLPKCompressedStrokePoint *)a4 count:(unint64_t)a5 copy:(BOOL)a6;
+- (CRLPKStroke)initWithStroke:(id)stroke hidden:(BOOL)hidden version:(_CRLPKStrokeID *)version;
+- (CRLPKStroke)initWithStroke:(id)stroke hidden:(BOOL)hidden version:(_CRLPKStrokeID *)version transform:(CGAffineTransform *)transform;
+- (CRLPKStroke)initWithStroke:(id)stroke points:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy;
 - (_CRLPKInflightStrokePoint)_inflightPoints;
 - (_CRLPKStrokePoint)_baseValues;
-- (double)_interpolatedTimeForSplineSegment:(int64_t)a3 t:(double)a4;
-- (double)_lengthOfSplineSegment:(unint64_t)a3;
+- (double)_interpolatedTimeForSplineSegment:(int64_t)segment t:(double)t;
+- (double)_lengthOfSplineSegment:(unint64_t)segment;
 - (double)_strokeLength;
 - (id)description;
 - (id)descriptionExtended;
 - (id)p_points;
-- (int64_t)compareToStroke:(id)a3;
-- (void)_applyTransform:(CGAffineTransform *)a3;
-- (void)_insertStrokePoint:(void *)a3 atIndex:(unint64_t)a4;
+- (int64_t)compareToStroke:(id)stroke;
+- (void)_applyTransform:(CGAffineTransform *)transform;
+- (void)_insertStrokePoint:(void *)point atIndex:(unint64_t)index;
 - (void)_invalidateBounds;
-- (void)_removeStrokePointAtIndex:(unint64_t)a3;
-- (void)_replaceStrokePointAtIndex:(unint64_t)a3 withStrokePoint:(void *)a4;
-- (void)_setBaseValues:(_CRLPKStrokePoint *)a3;
-- (void)_setPoints:(CRLPKCompressedStrokePoint *)a3 count:(unint64_t)a4 copy:(BOOL)a5;
-- (void)_setStrokeID:(_CRLPKStrokeID *)a3;
-- (void)_setTransform:(CGAffineTransform *)a3;
-- (void)_strokePointAtIndex:(unint64_t)a3;
-- (void)set_version:(_CRLPKStrokeID *)a3;
+- (void)_removeStrokePointAtIndex:(unint64_t)index;
+- (void)_replaceStrokePointAtIndex:(unint64_t)index withStrokePoint:(void *)point;
+- (void)_setBaseValues:(_CRLPKStrokePoint *)values;
+- (void)_setPoints:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy;
+- (void)_setStrokeID:(_CRLPKStrokeID *)d;
+- (void)_setTransform:(CGAffineTransform *)transform;
+- (void)_strokePointAtIndex:(unint64_t)index;
+- (void)set_version:(_CRLPKStrokeID *)set_version;
 @end
 
 @implementation CRLPKStroke
@@ -59,14 +59,14 @@
   return v2;
 }
 
-- (CRLPKStroke)initWithStroke:(id)a3 points:(CRLPKCompressedStrokePoint *)a4 count:(unint64_t)a5 copy:(BOOL)a6
+- (CRLPKStroke)initWithStroke:(id)stroke points:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [v10 _isHidden];
-  if (v10)
+  copyCopy = copy;
+  strokeCopy = stroke;
+  _isHidden = [strokeCopy _isHidden];
+  if (strokeCopy)
   {
-    [v10 _version];
+    [strokeCopy _version];
   }
 
   else
@@ -74,43 +74,43 @@
     memset(v16, 0, sizeof(v16));
   }
 
-  v12 = [(CRLPKStroke *)self initWithStroke:v10 hidden:v11 version:v16];
-  v13 = [[_CRLPKStrokeData alloc] initWithPoints:a4 count:a5 copy:v6];
+  v12 = [(CRLPKStroke *)self initWithStroke:strokeCopy hidden:_isHidden version:v16];
+  v13 = [[_CRLPKStrokeData alloc] initWithPoints:points count:count copy:copyCopy];
   strokeData = v12->_strokeData;
   v12->_strokeData = v13;
 
-  v12->_inputType = [v10 _inputType];
+  v12->_inputType = [strokeCopy _inputType];
   return v12;
 }
 
-- (CRLPKStroke)initWithStroke:(id)a3 hidden:(BOOL)a4 version:(_CRLPKStrokeID *)a5
+- (CRLPKStroke)initWithStroke:(id)stroke hidden:(BOOL)hidden version:(_CRLPKStrokeID *)version
 {
-  v8 = *a5;
+  v8 = *version;
   v5 = *&CGAffineTransformIdentity.c;
   v7[0] = *&CGAffineTransformIdentity.a;
   v7[1] = v5;
   v7[2] = *&CGAffineTransformIdentity.tx;
-  return [(CRLPKStroke *)self initWithStroke:a3 hidden:a4 version:&v8 transform:v7];
+  return [(CRLPKStroke *)self initWithStroke:stroke hidden:hidden version:&v8 transform:v7];
 }
 
-- (CRLPKStroke)initWithStroke:(id)a3 hidden:(BOOL)a4 version:(_CRLPKStrokeID *)a5 transform:(CGAffineTransform *)a6
+- (CRLPKStroke)initWithStroke:(id)stroke hidden:(BOOL)hidden version:(_CRLPKStrokeID *)version transform:(CGAffineTransform *)transform
 {
-  v10 = a3;
+  strokeCopy = stroke;
   v23.receiver = self;
   v23.super_class = CRLPKStroke;
   v11 = [(CRLPKStroke *)&v23 init];
   v11[225] = 0;
-  *(v11 + 30) = [v10 _inputType];
-  v11[224] = a4;
-  v12 = *&a5->clock;
-  *(v11 + 33) = *&a5->replicaUUID[12];
+  *(v11 + 30) = [strokeCopy _inputType];
+  v11[224] = hidden;
+  v12 = *&version->clock;
+  *(v11 + 33) = *&version->replicaUUID[12];
   *(v11 + 248) = v12;
-  if (v10)
+  if (strokeCopy)
   {
-    [v10 _strokeID];
+    [strokeCopy _strokeID];
     *(v11 + 24) = v24;
     *(v11 + 5) = v25;
-    [v10 _baseValues];
+    [strokeCopy _baseValues];
   }
 
   else
@@ -133,18 +133,18 @@
   v15 = v25;
   *(v11 + 3) = v24;
   *(v11 + 4) = v15;
-  v16 = [v10 _strokeData];
+  _strokeData = [strokeCopy _strokeData];
   v17 = *(v11 + 1);
-  *(v11 + 1) = v16;
+  *(v11 + 1) = _strokeData;
 
   size = CGRectNull.size;
   *(v11 + 17) = CGRectNull.origin;
   *(v11 + 18) = size;
-  [v10 timestamp];
+  [strokeCopy timestamp];
   *(v11 + 29) = v19;
-  v20 = *&a6->a;
-  v21 = *&a6->c;
-  *(v11 + 200) = *&a6->tx;
+  v20 = *&transform->a;
+  v21 = *&transform->c;
+  *(v11 + 200) = *&transform->tx;
   *(v11 + 184) = v21;
   *(v11 + 168) = v20;
 
@@ -153,8 +153,8 @@
 
 - (CGPath)newPathRepresentation
 {
-  v2 = [(CRLPKStroke *)self p_points];
-  v3 = sub_1003D6768(v2, 0);
+  p_points = [(CRLPKStroke *)self p_points];
+  v3 = sub_1003D6768(p_points, 0);
 
   return v3;
 }
@@ -174,9 +174,9 @@
   return pointsArray;
 }
 
-- (void)_setPoints:(CRLPKCompressedStrokePoint *)a3 count:(unint64_t)a4 copy:(BOOL)a5
+- (void)_setPoints:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy
 {
-  v6 = [[_CRLPKStrokeData alloc] initWithPoints:a3 count:a4 copy:a5];
+  v6 = [[_CRLPKStrokeData alloc] initWithPoints:points count:count copy:copy];
   strokeData = self->_strokeData;
   self->_strokeData = v6;
 }
@@ -207,9 +207,9 @@
   }
 }
 
-- (void)_strokePointAtIndex:(unint64_t)a3
+- (void)_strokePointAtIndex:(unint64_t)index
 {
-  if (self->_strokeData->_pointsCount <= a3)
+  if (self->_strokeData->_pointsCount <= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -250,14 +250,14 @@
     v11 = 80;
   }
 
-  return &self->_strokeData->_points[a3 * v11];
+  return &self->_strokeData->_points[index * v11];
 }
 
-- (void)_insertStrokePoint:(void *)a3 atIndex:(unint64_t)a4
+- (void)_insertStrokePoint:(void *)point atIndex:(unint64_t)index
 {
   strokeData = self->_strokeData;
   pointsCount = strokeData->_pointsCount;
-  if (pointsCount < a4)
+  if (pointsCount < index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -314,16 +314,16 @@
     pointsCount = strokeData->_pointsCount;
   }
 
-  memmove(&strokeData->_points[v15 * a4 + v15], &strokeData->_points[v15 * a4], (pointsCount - a4) * v15);
-  [(CRLPKStroke *)self _replaceStrokePointAtIndex:a4 withStrokePoint:a3];
+  memmove(&strokeData->_points[v15 * index + v15], &strokeData->_points[v15 * index], (pointsCount - index) * v15);
+  [(CRLPKStroke *)self _replaceStrokePointAtIndex:index withStrokePoint:point];
   ++self->_strokeData->_pointsCount;
 }
 
-- (void)_removeStrokePointAtIndex:(unint64_t)a3
+- (void)_removeStrokePointAtIndex:(unint64_t)index
 {
   strokeData = self->_strokeData;
   pointsCount = strokeData->_pointsCount;
-  if (pointsCount <= a3)
+  if (pointsCount <= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -367,21 +367,21 @@
     v13 = 80;
   }
 
-  memmove(&strokeData->_points[v13 * a3], &strokeData->_points[v13 * a3 + v13], (pointsCount + ~a3) * v13);
+  memmove(&strokeData->_points[v13 * index], &strokeData->_points[v13 * index + v13], (pointsCount + ~index) * v13);
   --self->_strokeData->_pointsCount;
 }
 
-- (void)_replaceStrokePointAtIndex:(unint64_t)a3 withStrokePoint:(void *)a4
+- (void)_replaceStrokePointAtIndex:(unint64_t)index withStrokePoint:(void *)point
 {
   points = self->_strokeData->_points;
   if (self->_inflight)
   {
-    v5 = &points[80 * a3];
-    *v5 = *a4;
-    v6 = *(a4 + 1);
-    v7 = *(a4 + 2);
-    v8 = *(a4 + 4);
-    *(v5 + 3) = *(a4 + 3);
+    v5 = &points[80 * index];
+    *v5 = *point;
+    v6 = *(point + 1);
+    v7 = *(point + 2);
+    v8 = *(point + 4);
+    *(v5 + 3) = *(point + 3);
     *(v5 + 4) = v8;
     *(v5 + 1) = v6;
     *(v5 + 2) = v7;
@@ -389,32 +389,32 @@
 
   else
   {
-    v9 = *a4;
-    v10 = &points[24 * a3];
-    *(v10 + 2) = *(a4 + 2);
+    v9 = *point;
+    v10 = &points[24 * index];
+    *(v10 + 2) = *(point + 2);
     *v10 = v9;
   }
 }
 
-- (void)_applyTransform:(CGAffineTransform *)a3
+- (void)_applyTransform:(CGAffineTransform *)transform
 {
-  v5 = [(CRLPKStroke *)self _completedPoints];
-  v6 = *&a3->c;
-  v15[0] = *&a3->a;
+  _completedPoints = [(CRLPKStroke *)self _completedPoints];
+  v6 = *&transform->c;
+  v15[0] = *&transform->a;
   v15[1] = v6;
-  v15[2] = *&a3->tx;
+  v15[2] = *&transform->tx;
   v7 = sub_100139980(v15);
-  v8 = [(CRLPKStroke *)self _pointsCount];
-  if (v8 >= 1)
+  _pointsCount = [(CRLPKStroke *)self _pointsCount];
+  if (_pointsCount >= 1)
   {
-    v9 = v8;
+    v9 = _pointsCount;
     do
     {
-      v10 = sub_10013593C(v5);
-      v12 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v11), *&a3->a, v10));
-      *&v13 = sub_10013592C(v5, v12.f64[0], v12.f64[1]);
-      v14 = sub_1001359D4(v5, v13);
-      sub_10013598C(v5++, v7 + v14);
+      v10 = sub_10013593C(_completedPoints);
+      v12 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v11), *&transform->a, v10));
+      *&v13 = sub_10013592C(_completedPoints, v12.f64[0], v12.f64[1]);
+      v14 = sub_1001359D4(_completedPoints, v13);
+      sub_10013598C(_completedPoints++, v7 + v14);
       --v9;
     }
 
@@ -424,22 +424,22 @@
   [(CRLPKStroke *)self _invalidateBounds];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ((v12 = *&self->_strokeID.clock, v13 = *&self->_strokeID.replicaUUID[12], !v4) ? (v5 = 0, v9 = 0, v10 = 0, v11 = 0) : ([v4 _strokeID], v5 = v8), v12 == v5 && !sub_1004A262C(&v12 + 4, &v9)) && HIDWORD(v13) == HIDWORD(v11);
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ((v12 = *&self->_strokeID.clock, v13 = *&self->_strokeID.replicaUUID[12], !equalCopy) ? (v5 = 0, v9 = 0, v10 = 0, v11 = 0) : ([equalCopy _strokeID], v5 = v8), v12 == v5 && !sub_1004A262C(&v12 + 4, &v9)) && HIDWORD(v13) == HIDWORD(v11);
 
   return v6;
 }
 
-- (void)_setBaseValues:(_CRLPKStrokePoint *)a3
+- (void)_setBaseValues:(_CRLPKStrokePoint *)values
 {
-  *&self->_baseValues.timestamp = *&a3->timestamp;
-  v3 = *&a3->location.y;
-  v4 = *&a3->aspectRatio;
-  v5 = *&a3->altitude;
-  *&self->_baseValues.force = *&a3->force;
+  *&self->_baseValues.timestamp = *&values->timestamp;
+  v3 = *&values->location.y;
+  v4 = *&values->aspectRatio;
+  v5 = *&values->altitude;
+  *&self->_baseValues.force = *&values->force;
   *&self->_baseValues.altitude = v5;
   *&self->_baseValues.location.y = v3;
   *&self->_baseValues.aspectRatio = v4;
@@ -549,10 +549,10 @@
   self->_bounds.size = size;
 }
 
-- (void)_setStrokeID:(_CRLPKStrokeID *)a3
+- (void)_setStrokeID:(_CRLPKStrokeID *)d
 {
-  v3 = *&a3->clock;
-  *&self->_strokeID.replicaUUID[12] = *&a3->replicaUUID[12];
+  v3 = *&d->clock;
+  *&self->_strokeID.replicaUUID[12] = *&d->replicaUUID[12];
   *&self->_strokeID.clock = v3;
 }
 
@@ -562,11 +562,11 @@
   v4 = [[NSUUID alloc] initWithUUIDBytes:self->_version.replicaUUID];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
   clock = self->_strokeID.clock;
   subclock = self->_strokeID.subclock;
-  v10 = [v4 UUIDString];
-  v11 = v10;
+  uUIDString2 = [v4 UUIDString];
+  v11 = uUIDString2;
   if (self->_hidden)
   {
     v12 = @" hidden";
@@ -577,7 +577,7 @@
     v12 = &stru_1018BCA28;
   }
 
-  v13 = [NSString stringWithFormat:@"<%@: %p id=%@:%d.%d v=%@:%d.%d%@>", v6, self, v7, clock, subclock, v10, self->_version.clock, self->_version.subclock, v12];
+  v13 = [NSString stringWithFormat:@"<%@: %p id=%@:%d.%d v=%@:%d.%d%@>", v6, self, uUIDString, clock, subclock, uUIDString2, self->_version.clock, self->_version.subclock, v12];
 
   return v13;
 }
@@ -648,13 +648,13 @@
   return v19;
 }
 
-- (int64_t)compareToStroke:(id)a3
+- (int64_t)compareToStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   [(CRLPKStroke *)self _strokeID];
-  if (v4)
+  if (strokeCopy)
   {
-    [v4 _strokeID];
+    [strokeCopy _strokeID];
   }
 
   else
@@ -667,9 +667,9 @@
   return v5;
 }
 
-- (CGPoint)_splineControlPoint:(int64_t)a3
+- (CGPoint)_splineControlPoint:(int64_t)point
 {
-  if (a3 < -1 || (strokeData = self->_strokeData, strokeData->_pointsCount < a3))
+  if (point < -1 || (strokeData = self->_strokeData, strokeData->_pointsCount < point))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -697,14 +697,14 @@
 
     v7 = [NSString stringWithUTF8String:"[CRLPKStroke _splineControlPoint:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/PencilKit/CRLPKStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:427 isFatal:0 description:"%ld is out of bounds", a3];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:427 isFatal:0 description:"%ld is out of bounds", point];
 
     strokeData = self->_strokeData;
   }
 
   points = strokeData->_points;
-  v10 = [(CRLPKStroke *)self _pointsCount];
-  if (a3 < 0)
+  _pointsCount = [(CRLPKStroke *)self _pointsCount];
+  if (point < 0)
   {
     v16 = sub_10013593C(points);
     v41 = v17;
@@ -724,9 +724,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = v10;
-  v12 = v10;
-  if ((v10 & 0x8000000000000000) != 0)
+  v11 = _pointsCount;
+  v12 = _pointsCount;
+  if ((_pointsCount & 0x8000000000000000) != 0)
   {
     v31 = sub_1013868B0(v47, &v44);
     v32 = v44.f64[0];
@@ -744,7 +744,7 @@ LABEL_18:
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v12 <= a3)
+  if (v12 <= point)
   {
     v20 = points + 24 * v11;
     v21 = sub_10013593C(v20 - 24);
@@ -761,7 +761,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v13 = sub_10013593C(points + 24 * a3);
+  v13 = sub_10013593C(points + 24 * point);
   v40 = v14;
   v42 = v13;
   [(CRLPKStroke *)self _transform];
@@ -773,9 +773,9 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)a3 t:(double)a4
+- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)segment t:(double)t
 {
-  if (a3 < 0 || [(CRLPKStroke *)self _pointsCount]- 2 < a3)
+  if (segment < 0 || [(CRLPKStroke *)self _pointsCount]- 2 < segment)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -803,12 +803,12 @@ LABEL_19:
 
     v8 = [NSString stringWithUTF8String:"[CRLPKStroke _interpolatedPointForSplineSegment:t:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/PencilKit/CRLPKStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:454 isFatal:0 description:"Segment index %ld is out of bounds", a3];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:454 isFatal:0 description:"Segment index %ld is out of bounds", segment];
   }
 
   x = CGPointZero.x;
   y = CGPointZero.y;
-  v12 = a3 - 1;
+  v12 = segment - 1;
   v13 = 0.0;
   v14 = -2;
   v15 = 4;
@@ -817,7 +817,7 @@ LABEL_19:
     [(CRLPKStroke *)self _splineControlPoint:v12];
     v17 = v16;
     v19 = v18;
-    v20 = sub_1003D605C(v14, a4);
+    v20 = sub_1003D605C(v14, t);
     x = x + v20 * v17;
     y = y + v20 * v19;
     v13 = v13 + v20;
@@ -834,9 +834,9 @@ LABEL_19:
   return result;
 }
 
-- (double)_interpolatedTimeForSplineSegment:(int64_t)a3 t:(double)a4
+- (double)_interpolatedTimeForSplineSegment:(int64_t)segment t:(double)t
 {
-  if (a3 < 0 || [(CRLPKStroke *)self _pointsCount]- 2 < a3)
+  if (segment < 0 || [(CRLPKStroke *)self _pointsCount]- 2 < segment)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -864,20 +864,20 @@ LABEL_19:
 
     v7 = [NSString stringWithUTF8String:"[CRLPKStroke _interpolatedTimeForSplineSegment:t:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/PencilKit/CRLPKStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:473 isFatal:0 description:"Segment index %ld is out of bounds", a3];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:473 isFatal:0 description:"Segment index %ld is out of bounds", segment];
   }
 
   points = self->_strokeData->_points;
   [(CRLPKStroke *)self timestamp];
-  v10 = &points[24 * a3];
+  v10 = &points[24 * segment];
   v12 = sub_10013591C(v10, v11);
   [(CRLPKStroke *)self timestamp];
-  return v12 + (sub_10013591C(v10 + 6, v13) - v12) * a3;
+  return v12 + (sub_10013591C(v10 + 6, v13) - v12) * segment;
 }
 
-- (double)_lengthOfSplineSegment:(unint64_t)a3
+- (double)_lengthOfSplineSegment:(unint64_t)segment
 {
-  if ([(CRLPKStroke *)self _pointsCount]- 2 < a3)
+  if ([(CRLPKStroke *)self _pointsCount]- 2 < segment)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -905,19 +905,19 @@ LABEL_19:
 
     v6 = [NSString stringWithUTF8String:"[CRLPKStroke _lengthOfSplineSegment:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/PencilKit/CRLPKStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:484 isFatal:0 description:"Segment index %ld is out of bounds", a3];
+    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:484 isFatal:0 description:"Segment index %ld is out of bounds", segment];
   }
 
-  [(CRLPKStroke *)self _splineControlPoint:a3 - 1];
+  [(CRLPKStroke *)self _splineControlPoint:segment - 1];
   v9 = v8;
   v11 = v10;
-  [(CRLPKStroke *)self _splineControlPoint:a3];
+  [(CRLPKStroke *)self _splineControlPoint:segment];
   v13 = v12;
   v15 = v14;
-  [(CRLPKStroke *)self _splineControlPoint:a3 + 1];
+  [(CRLPKStroke *)self _splineControlPoint:segment + 1];
   v17 = v16;
   v19 = v18;
-  [(CRLPKStroke *)self _splineControlPoint:a3 + 2];
+  [(CRLPKStroke *)self _splineControlPoint:segment + 2];
   return sub_1003D61F8(v9, v11, v13, v15, v17, v19, v20, v21);
 }
 
@@ -941,10 +941,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)set_version:(_CRLPKStrokeID *)a3
+- (void)set_version:(_CRLPKStrokeID *)set_version
 {
-  v3 = *&a3->clock;
-  *&self->_version.replicaUUID[12] = *&a3->replicaUUID[12];
+  v3 = *&set_version->clock;
+  *&self->_version.replicaUUID[12] = *&set_version->replicaUUID[12];
   *&self->_version.clock = v3;
 }
 
@@ -957,11 +957,11 @@ LABEL_19:
   return self;
 }
 
-- (void)_setTransform:(CGAffineTransform *)a3
+- (void)_setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }

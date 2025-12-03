@@ -1,23 +1,23 @@
 @interface AMDColdstartURL
-+ (id)deleteAllColdstartUrls:(id *)a3;
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4;
-+ (id)fetchAll:(id *)a3;
-+ (id)getColdstartURLForModel:(id)a3 error:(id *)a4;
++ (id)deleteAllColdstartUrls:(id *)urls;
++ (id)deleteWithPredicate:(id)predicate error:(id *)error;
++ (id)fetchAll:(id *)all;
++ (id)getColdstartURLForModel:(id)model error:(id *)error;
 + (id)getCurrentURLInfoByModelId;
-+ (void)deleteColdstartURLs:(id)a3 error:(id *)a4;
-+ (void)saveColdstartURL:(id)a3 error:(id *)a4;
++ (void)deleteColdstartURLs:(id)ls error:(id *)error;
++ (void)saveColdstartURL:(id)l error:(id *)error;
 @end
 
 @implementation AMDColdstartURL
 
-+ (id)getColdstartURLForModel:(id)a3 error:(id *)a4
++ (id)getColdstartURLForModel:(id)model error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v38 = a4;
+  objc_storeStrong(location, model);
+  errorCopy = error;
   v31 = 0;
   v32 = &v31;
   v33 = 838860800;
@@ -33,16 +33,16 @@
   v29 = __Block_byref_object_dispose__3;
   v30 = 0;
   v11 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v23 = [v11 getManagedObjectContext];
+  getManagedObjectContext = [v11 getManagedObjectContext];
   MEMORY[0x277D82BD8](v11);
-  v10 = v23;
+  v10 = getManagedObjectContext;
   v16 = MEMORY[0x277D85DD0];
   v17 = -1073741824;
   v18 = 0;
   v19 = __49__AMDColdstartURL_getColdstartURLForModel_error___block_invoke;
   v20 = &unk_278CB5A80;
   v21 = MEMORY[0x277D82BE0](location[0]);
-  v22[0] = MEMORY[0x277D82BE0](v23);
+  v22[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v22[1] = &v31;
   v22[2] = &v24;
   [v10 performBlockAndWait:&v16];
@@ -50,17 +50,17 @@
   {
     v9 = v32[5];
     v4 = v9;
-    *v38 = v9;
+    *errorCopy = v9;
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       v8 = location[0];
-      v7 = [*v38 localizedDescription];
-      v13 = MEMORY[0x277D82BE0](v7);
+      localizedDescription = [*errorCopy localizedDescription];
+      v13 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_2_8_64_8_64(v41, v8, v13);
       _os_log_error_impl(&dword_240CB9000, oslog, type, "Error fetching coldstart urls for model: %@ %@", v41, 0x16u);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v13, 0);
     }
 
@@ -75,7 +75,7 @@
 
   objc_storeStrong(v22, 0);
   objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v24, 8);
   objc_storeStrong(&v30, 0);
   _Block_object_dispose(&v31, 8);
@@ -134,7 +134,7 @@ void __49__AMDColdstartURL_getColdstartURLForModel_error___block_invoke(void *a1
 + (id)getCurrentURLInfoByModelId
 {
   v24 = *MEMORY[0x277D85DE8];
-  v21[2] = a1;
+  v21[2] = self;
   v21[1] = a2;
   v21[0] = 0;
   v19 = 0;
@@ -200,12 +200,12 @@ void __49__AMDColdstartURL_getColdstartURLForModel_error___block_invoke(void *a1
   return v2;
 }
 
-+ (id)fetchAll:(id *)a3
++ (id)fetchAll:(id *)all
 {
   v39 = *MEMORY[0x277D85DE8];
-  v36 = a1;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
+  allCopy = all;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -221,32 +221,32 @@ void __49__AMDColdstartURL_getColdstartURLForModel_error___block_invoke(void *a1
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
   v9 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v19 = [v9 getManagedObjectContext];
+  getManagedObjectContext = [v9 getManagedObjectContext];
   MEMORY[0x277D82BD8](v9);
-  v8 = v19;
+  v8 = getManagedObjectContext;
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
   v16 = __28__AMDColdstartURL_fetchAll___block_invoke;
   v17 = &unk_278CB5AD0;
   v18[1] = &v20;
-  v18[0] = MEMORY[0x277D82BE0](v19);
+  v18[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v18[2] = &v27;
   [v8 performBlockAndWait:&v13];
   if (v28[5])
   {
     v7 = v28[5];
     v3 = v7;
-    *v34 = v7;
+    *allCopy = v7;
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v6 = [*v34 localizedDescription];
-      location = MEMORY[0x277D82BE0](v6);
+      localizedDescription = [*allCopy localizedDescription];
+      location = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v38, location);
       _os_log_error_impl(&dword_240CB9000, oslog, type, "Error fetching all the coldstart urls. %@", v38, 0xCu);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&location, 0);
     }
 
@@ -260,7 +260,7 @@ void __49__AMDColdstartURL_getColdstartURLForModel_error___block_invoke(void *a1
   }
 
   objc_storeStrong(v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
   _Block_object_dispose(&v27, 8);
@@ -294,13 +294,13 @@ void __28__AMDColdstartURL_fetchAll___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (void)deleteColdstartURLs:(id)a3 error:(id *)a4
++ (void)deleteColdstartURLs:(id)ls error:(id *)error
 {
-  v26 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, ls);
+  errorCopy = error;
   v17 = 0;
   v18 = &v17;
   v19 = 838860800;
@@ -309,15 +309,15 @@ void __28__AMDColdstartURL_fetchAll___block_invoke(void *a1)
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   v16 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v16 getManagedObjectContext];
-  v6 = v15;
+  getManagedObjectContext = [v16 getManagedObjectContext];
+  v6 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __45__AMDColdstartURL_deleteColdstartURLs_error___block_invoke;
   v12 = &unk_278CB5DB0;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14[2] = v26;
+  v14[2] = selfCopy;
   v14[1] = &v17;
   v14[0] = MEMORY[0x277D82BE0](v16);
   [v6 performBlockAndWait:&v8];
@@ -325,12 +325,12 @@ void __28__AMDColdstartURL_fetchAll___block_invoke(void *a1)
   {
     v5 = v18[5];
     v4 = v5;
-    *v24 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v16, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
@@ -406,13 +406,13 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-+ (void)saveColdstartURL:(id)a3 error:(id *)a4
++ (void)saveColdstartURL:(id)l error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, l);
+  errorCopy = error;
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -421,14 +421,14 @@ LABEL_8:
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
   v17 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v16 = [v17 getManagedObjectContext];
-  v6 = v16;
+  getManagedObjectContext = [v17 getManagedObjectContext];
+  v6 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __42__AMDColdstartURL_saveColdstartURL_error___block_invoke;
   v12 = &unk_278CB5DD8;
-  v13 = MEMORY[0x277D82BE0](v16);
+  v13 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15[1] = &v18;
   v15[0] = MEMORY[0x277D82BE0](v17);
@@ -437,13 +437,13 @@ LABEL_8:
   {
     v5 = v19[5];
     v4 = v5;
-    *v25 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v15, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v17, 0);
   _Block_object_dispose(&v18, 8);
   objc_storeStrong(&v24, 0);
@@ -506,11 +506,11 @@ void __42__AMDColdstartURL_saveColdstartURL_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteAllColdstartUrls:(id *)a3
++ (id)deleteAllColdstartUrls:(id *)urls
 {
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  urlsCopy = urls;
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -526,14 +526,14 @@ void __42__AMDColdstartURL_saveColdstartURL_error___block_invoke(uint64_t a1)
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   v16 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v16 getManagedObjectContext];
-  v7 = v15;
+  getManagedObjectContext = [v16 getManagedObjectContext];
+  v7 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __42__AMDColdstartURL_deleteAllColdstartUrls___block_invoke;
   v12 = &unk_278CB5AA8;
-  v13 = MEMORY[0x277D82BE0](v15);
+  v13 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[1] = &v24;
   v14[0] = MEMORY[0x277D82BE0](v16);
   v14[2] = &v17;
@@ -542,7 +542,7 @@ void __42__AMDColdstartURL_saveColdstartURL_error___block_invoke(uint64_t a1)
   {
     v6 = v25[5];
     v3 = v6;
-    *v31 = v6;
+    *urlsCopy = v6;
     v34 = 0;
   }
 
@@ -553,7 +553,7 @@ void __42__AMDColdstartURL_saveColdstartURL_error___block_invoke(uint64_t a1)
 
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v16, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
@@ -607,13 +607,13 @@ void __42__AMDColdstartURL_deleteAllColdstartUrls___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4
++ (id)deleteWithPredicate:(id)predicate error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicate);
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -629,15 +629,15 @@ void __42__AMDColdstartURL_deleteAllColdstartUrls___block_invoke(void *a1)
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __45__AMDColdstartURL_deleteWithPredicate_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -646,7 +646,7 @@ void __42__AMDColdstartURL_deleteAllColdstartUrls___block_invoke(void *a1)
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -658,7 +658,7 @@ void __42__AMDColdstartURL_deleteAllColdstartUrls___block_invoke(void *a1)
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);

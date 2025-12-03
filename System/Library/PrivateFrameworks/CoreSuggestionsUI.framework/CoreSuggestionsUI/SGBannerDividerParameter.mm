@@ -1,29 +1,29 @@
 @interface SGBannerDividerParameter
-- (SGBannerDividerParameter)initWithPosition:(int)a3 color:(id)a4;
+- (SGBannerDividerParameter)initWithPosition:(int)position color:(id)color;
 @end
 
 @implementation SGBannerDividerParameter
 
-- (SGBannerDividerParameter)initWithPosition:(int)a3 color:(id)a4
+- (SGBannerDividerParameter)initWithPosition:(int)position color:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = [(SGBannerDividerParameter *)self init];
   v8 = v7;
   if (v7)
   {
-    v7->_position = a3;
-    if (v6)
+    v7->_position = position;
+    if (colorCopy)
     {
-      v9 = v6;
+      blackColor = colorCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
     color = v8->_color;
-    v8->_color = v9;
+    v8->_color = blackColor;
   }
 
   return v8;

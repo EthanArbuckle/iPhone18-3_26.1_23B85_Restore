@@ -1,6 +1,6 @@
 @interface StocksListWeeAppTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (StocksListWeeAppTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (StocksListWeeAppTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_accessibilityBoxButtonLabel;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -9,21 +9,21 @@
 
 @implementation StocksListWeeAppTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"StocksListWeeAppTableViewCell" hasInstanceMethod:@"stock" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"StocksListWeeAppTableViewCell" hasInstanceVariable:@"_priceLabel" withType:"UILabel"];
-  [v3 validateClass:@"StocksListWeeAppTableViewCell" hasInstanceMethod:@"boxButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"companyName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"StocksListWeeAppTableViewCell" hasInstanceVariable:@"_boxLabel" withType:"UILabel"];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"marketcap" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasClassMethod:@"BlankValueString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"changeIsNegative" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"changeIsZero" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Stock" hasClassMethod:@"formattedStringForString: fractionDigits: percentStyle:" withFullSignature:{"@", "@", "I", "B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"formattedChangePercent:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"change" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"StocksListWeeAppTableViewCell" hasInstanceMethod:@"stock" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"StocksListWeeAppTableViewCell" hasInstanceVariable:@"_priceLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"StocksListWeeAppTableViewCell" hasInstanceMethod:@"boxButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"companyName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"StocksListWeeAppTableViewCell" hasInstanceVariable:@"_boxLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"marketcap" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasClassMethod:@"BlankValueString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"changeIsNegative" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"changeIsZero" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Stock" hasClassMethod:@"formattedStringForString: fractionDigits: percentStyle:" withFullSignature:{"@", "@", "I", "B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"formattedChangePercent:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"change" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityBoxButtonLabel
@@ -152,8 +152,8 @@ void __74__StocksListWeeAppTableViewCellAccessibility__accessibilityBoxButtonLab
 
   v6 = [(StocksListWeeAppTableViewCellAccessibility *)self safeValueForKey:@"boxButton"];
   v7 = [v3 safeValueForKey:@"companyName"];
-  v8 = [v5 accessibilityLabel];
-  v11 = [v6 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v9 = __UIAXStringForVariables();
 
   return v9;
@@ -166,8 +166,8 @@ void __74__StocksListWeeAppTableViewCellAccessibility__accessibilityBoxButtonLab
   [(StocksListWeeAppTableViewCellAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(StocksListWeeAppTableViewCellAccessibility *)self safeValueForKey:@"boxButton"];
   [v3 setIsAccessibilityElement:0];
-  v4 = [(StocksListWeeAppTableViewCellAccessibility *)self _accessibilityBoxButtonLabel];
-  [v3 setAccessibilityLabel:v4];
+  _accessibilityBoxButtonLabel = [(StocksListWeeAppTableViewCellAccessibility *)self _accessibilityBoxButtonLabel];
+  [v3 setAccessibilityLabel:_accessibilityBoxButtonLabel];
 }
 
 - (void)updateValues
@@ -178,11 +178,11 @@ void __74__StocksListWeeAppTableViewCellAccessibility__accessibilityBoxButtonLab
   [(StocksListWeeAppTableViewCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (StocksListWeeAppTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (StocksListWeeAppTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = StocksListWeeAppTableViewCellAccessibility;
-  v4 = [(StocksListWeeAppTableViewCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(StocksListWeeAppTableViewCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(StocksListWeeAppTableViewCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

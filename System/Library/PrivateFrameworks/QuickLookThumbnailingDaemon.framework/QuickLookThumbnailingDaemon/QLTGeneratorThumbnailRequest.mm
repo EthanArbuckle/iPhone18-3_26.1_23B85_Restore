@@ -2,15 +2,15 @@
 - (BOOL)cacheEnabled;
 - (BOOL)hasHandledAllRequestedTypesOrMostRepresentativeType;
 - (BOOL)needsLowQualityThumbnailGeneration;
-- (QLTGeneratorThumbnailRequest)initWithRequest:(id)a3 generationHandler:(id)a4;
+- (QLTGeneratorThumbnailRequest)initWithRequest:(id)request generationHandler:(id)handler;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (unint64_t)_requestedTypesForRepresentationType:(int64_t)a3;
+- (int64_t)compare:(id)compare;
+- (unint64_t)_requestedTypesForRepresentationType:(int64_t)type;
 - (void)_adjustRequestInformationIfNeeded;
 - (void)cancel;
-- (void)computeUbiquitousnessWithCompletionHandler:(id)a3;
-- (void)fetchFPItemWithCompletionHandler:(id)a3;
-- (void)fetchURLWithCompletionHandler:(id)a3;
+- (void)computeUbiquitousnessWithCompletionHandler:(id)handler;
+- (void)fetchFPItemWithCompletionHandler:(id)handler;
+- (void)fetchURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation QLTGeneratorThumbnailRequest
@@ -20,15 +20,15 @@
   self->_badgeType = 0;
   if ([(QLThumbnailGenerationRequest *)self->_request badgeType]== 1)
   {
-    v3 = [(QLThumbnailGenerationRequest *)self->_request contentType];
-    if ([v3 conformsToType:*MEMORY[0x277CE1EA0]])
+    contentType = [(QLThumbnailGenerationRequest *)self->_request contentType];
+    if ([contentType conformsToType:*MEMORY[0x277CE1EA0]])
     {
     }
 
     else
     {
-      v4 = [(QLThumbnailGenerationRequest *)self->_request contentType];
-      v5 = [v4 conformsToType:*MEMORY[0x277CE1E60]];
+      contentType2 = [(QLThumbnailGenerationRequest *)self->_request contentType];
+      v5 = [contentType2 conformsToType:*MEMORY[0x277CE1E60]];
 
       if (!v5)
       {
@@ -38,9 +38,9 @@
 
     v6 = +[QLThumbnailExtensionMonitor shared];
     v7 = [v6 bestExtensionFor:self->_request matching:3];
-    v8 = [v7 supportsInteractiveThumbnailBadges];
+    supportsInteractiveThumbnailBadges = [v7 supportsInteractiveThumbnailBadges];
 
-    if (v8)
+    if (supportsInteractiveThumbnailBadges)
     {
       self->_badgeType = [(QLThumbnailGenerationRequest *)self->_request badgeType];
     }
@@ -49,26 +49,26 @@
 
 - (BOOL)cacheEnabled
 {
-  v3 = [(QLTGeneratorThumbnailRequest *)self diskStore];
+  diskStore = [(QLTGeneratorThumbnailRequest *)self diskStore];
 
-  if (!v3)
+  if (!diskStore)
   {
     return ([(QLThumbnailGenerationRequest *)self->_request isDataBased]& 1) == 0;
   }
 
-  v4 = [(QLTGeneratorThumbnailRequest *)self request];
-  if ([v4 isFileBased])
+  request = [(QLTGeneratorThumbnailRequest *)self request];
+  if ([request isFileBased])
   {
-    v5 = [(QLTGeneratorThumbnailRequest *)self diskStore];
-    v6 = [v5 hasThumbnailCache];
+    diskStore2 = [(QLTGeneratorThumbnailRequest *)self diskStore];
+    hasThumbnailCache = [diskStore2 hasThumbnailCache];
   }
 
   else
   {
-    v6 = 0;
+    hasThumbnailCache = 0;
   }
 
-  return v6;
+  return hasThumbnailCache;
 }
 
 - (BOOL)hasHandledAllRequestedTypesOrMostRepresentativeType
@@ -76,12 +76,12 @@
   v3 = [(QLThumbnailGenerationRequest *)self->_request representationTypes]& 6;
   handledRequestedTypes = self->_handledRequestedTypes;
   v6 = handledRequestedTypes >= v3 || v3 < 2 * handledRequestedTypes;
-  v7 = [(QLTGeneratorThumbnailRequest *)self request];
-  if ([v7 provideCachedResultsOnly])
+  request = [(QLTGeneratorThumbnailRequest *)self request];
+  if ([request provideCachedResultsOnly])
   {
-    v8 = [(QLTGeneratorThumbnailRequest *)self didCheckCache];
+    didCheckCache = [(QLTGeneratorThumbnailRequest *)self didCheckCache];
 
-    v6 |= v8;
+    v6 |= didCheckCache;
   }
 
   else
@@ -93,39 +93,39 @@
 
 - (BOOL)needsLowQualityThumbnailGeneration
 {
-  v3 = [(QLThumbnailGenerationRequest *)self->_request provideLowQualityThumbnail];
-  if (v3)
+  provideLowQualityThumbnail = [(QLThumbnailGenerationRequest *)self->_request provideLowQualityThumbnail];
+  if (provideLowQualityThumbnail)
   {
-    LOBYTE(v3) = self->_handledRequestedTypes == *MEMORY[0x277CDAB60];
+    LOBYTE(provideLowQualityThumbnail) = self->_handledRequestedTypes == *MEMORY[0x277CDAB60];
   }
 
-  return v3;
+  return provideLowQualityThumbnail;
 }
 
-- (QLTGeneratorThumbnailRequest)initWithRequest:(id)a3 generationHandler:(id)a4
+- (QLTGeneratorThumbnailRequest)initWithRequest:(id)request generationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = QLTGeneratorThumbnailRequest;
   v9 = [(QLTGeneratorThumbnailRequest *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_generationHandler, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_generationHandler, handler);
     v10->_handledRequestedTypes = *MEMORY[0x277CDAB60];
-    v11 = [v7 quicklookSandboxWrapper];
-    v12 = [v11 url];
+    quicklookSandboxWrapper = [requestCopy quicklookSandboxWrapper];
+    v12 = [quicklookSandboxWrapper url];
 
     if (v12)
     {
-      v13 = [v12 startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [v12 startAccessingSecurityScopedResource];
       v14 = [QLDiskStore diskStoreForURL:v12];
       diskStore = v10->_diskStore;
       v10->_diskStore = v14;
 
-      if (v13)
+      if (startAccessingSecurityScopedResource)
       {
         [v12 stopAccessingSecurityScopedResource];
       }
@@ -137,15 +137,15 @@
   return v10;
 }
 
-- (unint64_t)_requestedTypesForRepresentationType:(int64_t)a3
+- (unint64_t)_requestedTypesForRepresentationType:(int64_t)type
 {
   v3 = 1;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 4;
   }
@@ -160,15 +160,15 @@
 {
   [(QLTGeneratorThumbnailRequest *)self setCancelled:1];
   [(QLThumbnailGenerationRequest *)self->_request cancel];
-  v3 = [(QLTGeneratorThumbnailRequest *)self generator];
-  [v3 cancel];
+  generator = [(QLTGeneratorThumbnailRequest *)self generator];
+  [generator cancel];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   request = self->_request;
-  v4 = [a3 request];
-  v5 = [(QLThumbnailGenerationRequest *)request compare:v4];
+  request = [compare request];
+  v5 = [(QLThumbnailGenerationRequest *)request compare:request];
 
   return v5;
 }
@@ -192,53 +192,53 @@
     v10 = &stru_2873E31F0;
   }
 
-  v11 = [(QLTGeneratorThumbnailRequest *)self clientApplicationIdentifier];
-  v12 = [v3 initWithFormat:@"<%@: %@, url: %@, item: %@, ht:%lu bt:%lu %@ client:%@>", v4, request, taggedLogicalURL, item, handledRequestedTypes, badgeType, v10, v11];
+  clientApplicationIdentifier = [(QLTGeneratorThumbnailRequest *)self clientApplicationIdentifier];
+  v12 = [v3 initWithFormat:@"<%@: %@, url: %@, item: %@, ht:%lu bt:%lu %@ client:%@>", v4, request, taggedLogicalURL, item, handledRequestedTypes, badgeType, v10, clientApplicationIdentifier];
 
   return v12;
 }
 
-- (void)fetchURLWithCompletionHandler:(id)a3
+- (void)fetchURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLTGeneratorThumbnailRequest *)self request];
-  v6 = [v5 isDataBased];
+  handlerCopy = handler;
+  request = [(QLTGeneratorThumbnailRequest *)self request];
+  isDataBased = [request isDataBased];
 
-  if (v6)
+  if (isDataBased)
   {
     goto LABEL_4;
   }
 
-  v7 = [(QLTGeneratorThumbnailRequest *)self request];
-  v8 = [v7 quicklookSandboxWrapper];
+  request2 = [(QLTGeneratorThumbnailRequest *)self request];
+  quicklookSandboxWrapper = [request2 quicklookSandboxWrapper];
 
-  v9 = [(QLTGeneratorThumbnailRequest *)self request];
-  v10 = v9;
-  if (v8)
+  request3 = [(QLTGeneratorThumbnailRequest *)self request];
+  v10 = request3;
+  if (quicklookSandboxWrapper)
   {
-    v11 = [v9 quicklookSandboxWrapper];
-    v12 = [v11 url];
+    quicklookSandboxWrapper2 = [request3 quicklookSandboxWrapper];
+    v12 = [quicklookSandboxWrapper2 url];
     [(QLTGeneratorThumbnailRequest *)self setTaggedLogicalURL:v12];
 
 LABEL_4:
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_5;
   }
 
-  v13 = [v9 item];
+  item = [request3 item];
 
-  if (v13)
+  if (item)
   {
-    v14 = [MEMORY[0x277CC6408] defaultManager];
-    v15 = [(QLTGeneratorThumbnailRequest *)self request];
-    v16 = [v15 item];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    request4 = [(QLTGeneratorThumbnailRequest *)self request];
+    item2 = [request4 item];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __62__QLTGeneratorThumbnailRequest_fetchURLWithCompletionHandler___block_invoke;
     v23[3] = &unk_279ADD658;
     v23[4] = self;
-    v24 = v4;
-    [v14 fetchURLForItem:v16 completionHandler:v23];
+    v24 = handlerCopy;
+    [defaultManager fetchURLForItem:item2 completionHandler:v23];
   }
 
   else
@@ -249,16 +249,16 @@ LABEL_4:
       [(QLTGeneratorThumbnailRequest *)self fetchURLWithCompletionHandler:v17];
     }
 
-    v18 = [(QLTGeneratorThumbnailRequest *)self request];
-    if (([v18 isDataBased] & 1) == 0)
+    request5 = [(QLTGeneratorThumbnailRequest *)self request];
+    if (([request5 isDataBased] & 1) == 0)
     {
-      v19 = [(QLTGeneratorThumbnailRequest *)self request];
-      v20 = [v19 quicklookSandboxWrapper];
-      if (!v20)
+      request6 = [(QLTGeneratorThumbnailRequest *)self request];
+      quicklookSandboxWrapper3 = [request6 quicklookSandboxWrapper];
+      if (!quicklookSandboxWrapper3)
       {
-        v21 = [(QLTGeneratorThumbnailRequest *)self request];
-        v22 = [v21 item];
-        if (!v22)
+        request7 = [(QLTGeneratorThumbnailRequest *)self request];
+        item3 = [request7 item];
+        if (!item3)
         {
           [QLTGeneratorThumbnailRequest fetchURLWithCompletionHandler:];
         }
@@ -277,41 +277,41 @@ void __62__QLTGeneratorThumbnailRequest_fetchURLWithCompletionHandler___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)computeUbiquitousnessWithCompletionHandler:(id)a3
+- (void)computeUbiquitousnessWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLTGeneratorThumbnailRequest *)self request];
-  v6 = [v5 item];
+  handlerCopy = handler;
+  request = [(QLTGeneratorThumbnailRequest *)self request];
+  item = [request item];
 
-  v7 = [(QLTGeneratorThumbnailRequest *)self request];
-  v8 = v7;
-  if (v6)
+  request2 = [(QLTGeneratorThumbnailRequest *)self request];
+  v8 = request2;
+  if (item)
   {
-    v9 = [v7 item];
+    item2 = [request2 item];
 
-    v10 = 1;
+    isDownloaded = 1;
     [(QLTGeneratorThumbnailRequest *)self setIsUbiquitous:1];
     [(QLTGeneratorThumbnailRequest *)self setIsUbiquitousKnown:1];
     [(QLTGeneratorThumbnailRequest *)self setIsDownloadedKnown:1];
-    if ([v9 isCloudItem])
+    if ([item2 isCloudItem])
     {
-      v10 = [v9 isDownloaded];
+      isDownloaded = [item2 isDownloaded];
     }
 
-    [(QLTGeneratorThumbnailRequest *)self setIsDownloaded:v10];
-    v11 = [v9 fileURL];
+    [(QLTGeneratorThumbnailRequest *)self setIsDownloaded:isDownloaded];
+    fileURL = [item2 fileURL];
 
-    if (v11)
+    if (fileURL)
     {
-      v12 = [v9 fileURL];
-      [(QLTGeneratorThumbnailRequest *)self setTaggedLogicalURL:v12];
+      fileURL2 = [item2 fileURL];
+      [(QLTGeneratorThumbnailRequest *)self setTaggedLogicalURL:fileURL2];
 
-      v13 = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
+      taggedLogicalURL = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
       v22 = 0;
-      LODWORD(v12) = [v13 _QLIsThumbnailableWithError:&v22];
+      LODWORD(fileURL2) = [taggedLogicalURL _QLIsThumbnailableWithError:&v22];
       v14 = v22;
 
-      if (v12)
+      if (fileURL2)
       {
         v15 = 0;
       }
@@ -321,38 +321,38 @@ void __62__QLTGeneratorThumbnailRequest_fetchURLWithCompletionHandler___block_in
         v15 = v14;
       }
 
-      (v4)[2](v4, v15);
+      (handlerCopy)[2](handlerCopy, v15);
     }
 
     else if ([(QLTGeneratorThumbnailRequest *)self isDownloaded])
     {
-      v17 = [MEMORY[0x277CC6408] defaultManager];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __75__QLTGeneratorThumbnailRequest_computeUbiquitousnessWithCompletionHandler___block_invoke;
       v20[3] = &unk_279ADD658;
       v20[4] = self;
-      v21 = v4;
-      [v17 fetchURLForItem:v9 completionHandler:v20];
+      v21 = handlerCopy;
+      [defaultManager fetchURLForItem:item2 completionHandler:v20];
     }
 
     else
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v16 = [v7 isDataBased];
+    isDataBased = [request2 isDataBased];
 
-    if (v16)
+    if (isDataBased)
     {
       [(QLTGeneratorThumbnailRequest *)self setIsDownloaded:1];
       [(QLTGeneratorThumbnailRequest *)self setIsDownloadedKnown:1];
       [(QLTGeneratorThumbnailRequest *)self setIsUbiquitous:0];
       [(QLTGeneratorThumbnailRequest *)self setIsUbiquitousKnown:0];
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -362,7 +362,7 @@ void __62__QLTGeneratorThumbnailRequest_fetchURLWithCompletionHandler___block_in
       v18[2] = __75__QLTGeneratorThumbnailRequest_computeUbiquitousnessWithCompletionHandler___block_invoke_2;
       v18[3] = &unk_279ADD188;
       v18[4] = self;
-      v19 = v4;
+      v19 = handlerCopy;
       [(QLTGeneratorThumbnailRequest *)self fetchURLWithCompletionHandler:v18];
     }
   }
@@ -468,55 +468,55 @@ LABEL_5:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchFPItemWithCompletionHandler:(id)a3
+- (void)fetchFPItemWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLTGeneratorThumbnailRequest *)self item];
+  handlerCopy = handler;
+  item = [(QLTGeneratorThumbnailRequest *)self item];
 
-  if (v5)
+  if (item)
   {
     goto LABEL_4;
   }
 
-  v6 = [(QLTGeneratorThumbnailRequest *)self request];
-  v7 = [v6 item];
+  request = [(QLTGeneratorThumbnailRequest *)self request];
+  item2 = [request item];
 
-  v8 = [(QLTGeneratorThumbnailRequest *)self request];
-  v9 = v8;
-  if (v7)
+  request2 = [(QLTGeneratorThumbnailRequest *)self request];
+  v9 = request2;
+  if (item2)
   {
-    v10 = [v8 item];
-    [(QLTGeneratorThumbnailRequest *)self setItem:v10];
+    item3 = [request2 item];
+    [(QLTGeneratorThumbnailRequest *)self setItem:item3];
 
 LABEL_4:
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_5;
   }
 
-  if ([v8 isDataBased])
+  if ([request2 isDataBased])
   {
     [QLTGeneratorThumbnailRequest fetchFPItemWithCompletionHandler:];
   }
 
-  v11 = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
+  taggedLogicalURL = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
 
-  if (!v11)
+  if (!taggedLogicalURL)
   {
-    v12 = [(QLTGeneratorThumbnailRequest *)self request];
-    v13 = [v12 quicklookSandboxWrapper];
-    v14 = [v13 url];
+    request3 = [(QLTGeneratorThumbnailRequest *)self request];
+    quicklookSandboxWrapper = [request3 quicklookSandboxWrapper];
+    v14 = [quicklookSandboxWrapper url];
     [(QLTGeneratorThumbnailRequest *)self setTaggedLogicalURL:v14];
   }
 
-  v15 = [MEMORY[0x277CC6408] defaultManager];
-  v16 = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  taggedLogicalURL2 = [(QLTGeneratorThumbnailRequest *)self taggedLogicalURL];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__QLTGeneratorThumbnailRequest_fetchFPItemWithCompletionHandler___block_invoke;
   v17[3] = &unk_279ADD680;
   v17[4] = self;
-  v18 = v4;
-  [v15 fetchItemForURL:v16 completionHandler:v17];
+  v18 = handlerCopy;
+  [defaultManager fetchItemForURL:taggedLogicalURL2 completionHandler:v17];
 
 LABEL_5:
 }

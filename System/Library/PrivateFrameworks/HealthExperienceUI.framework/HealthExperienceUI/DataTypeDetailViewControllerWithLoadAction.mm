@@ -1,5 +1,5 @@
 @interface DataTypeDetailViewControllerWithLoadAction
-- (_TtC18HealthExperienceUI42DataTypeDetailViewControllerWithLoadAction)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI42DataTypeDetailViewControllerWithLoadAction)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA18FF24();
 }
 
-- (_TtC18HealthExperienceUI42DataTypeDetailViewControllerWithLoadAction)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI42DataTypeDetailViewControllerWithLoadAction)initWithCoder:(id)coder
 {
   v5 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI42DataTypeDetailViewControllerWithLoadAction_onLoadAction);
   *v5 = 0;
@@ -22,8 +22,8 @@
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
   v11.receiver = self;
   v11.super_class = type metadata accessor for DataTypeDetailViewControllerWithLoadAction(0);
-  v8 = a3;
-  v9 = [(DataTypeDetailViewController *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(DataTypeDetailViewController *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

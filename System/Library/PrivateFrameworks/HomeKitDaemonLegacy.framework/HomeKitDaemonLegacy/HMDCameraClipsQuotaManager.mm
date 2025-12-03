@@ -1,14 +1,14 @@
 @interface HMDCameraClipsQuotaManager
 + (HMDCameraClipsQuotaManager)defaultManager;
-+ (id)_quotaErrorFromServerError:(id)a3;
-+ (id)_quotaServerErrorFromServerError:(id)a3;
++ (id)_quotaErrorFromServerError:(id)error;
++ (id)_quotaServerErrorFromServerError:(id)error;
 + (id)logCategory;
 - (HMDCameraClipsQuotaManager)init;
-- (HMDCameraClipsQuotaManager)initWithDatabase:(id)a3;
-- (id)_addCodeOperationWithFunctionName:(id)a3 request:(id)a4 responseClass:(Class)a5;
-- (id)database:(id)a3 willRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5;
-- (id)disableCloudStorageForZoneWithName:(id)a3;
-- (id)enableCloudStorageForZoneWithName:(id)a3;
+- (HMDCameraClipsQuotaManager)initWithDatabase:(id)database;
+- (id)_addCodeOperationWithFunctionName:(id)name request:(id)request responseClass:(Class)class;
+- (id)database:(id)database willRemoveZoneWithName:(id)name isPrivate:(BOOL)private;
+- (id)disableCloudStorageForZoneWithName:(id)name;
+- (id)enableCloudStorageForZoneWithName:(id)name;
 - (id)fetchNamesForZonesWithEnabledCloudStorage;
 - (id)logIdentifier;
 - (void)synchronize;
@@ -18,23 +18,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraClipsQuotaManager *)self database];
-  v3 = [v2 cloudDatabase];
-  v4 = [v3 containerID];
-  v5 = [v4 containerIdentifier];
+  database = [(HMDCameraClipsQuotaManager *)self database];
+  cloudDatabase = [database cloudDatabase];
+  containerID = [cloudDatabase containerID];
+  containerIdentifier = [containerID containerIdentifier];
 
-  return v5;
+  return containerIdentifier;
 }
 
-- (id)database:(id)a3 willRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (id)database:(id)database willRemoveZoneWithName:(id)name isPrivate:(BOOL)private
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 hasPrefix:*MEMORY[0x277CCF500]] && a5)
+  databaseCopy = database;
+  nameCopy = name;
+  if ([nameCopy hasPrefix:*MEMORY[0x277CCF500]] && private)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -42,33 +42,33 @@
       v18 = 138543618;
       v19 = v13;
       v20 = 2112;
-      v21 = v9;
+      v21 = nameCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Disabling cloud storage before removing zone with name %@", &v18, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMDCameraClipsQuotaManager *)v11 disableCloudStorageForZoneWithName:v9];
+    futureWithNoResult = [(HMDCameraClipsQuotaManager *)selfCopy disableCloudStorageForZoneWithName:nameCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  v15 = v14;
+  v15 = futureWithNoResult;
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)_addCodeOperationWithFunctionName:(id)a3 request:(id)a4 responseClass:(Class)a5
+- (id)_addCodeOperationWithFunctionName:(id)name request:(id)request responseClass:(Class)class
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HMDCameraClipsQuotaManager *)self database];
-  v11 = [v10 cloudDatabase];
-  v12 = [v11 performCodeOperationWithServiceName:@"HomeQuota" functionName:v9 request:v8 responseClass:a5];
+  requestCopy = request;
+  nameCopy = name;
+  database = [(HMDCameraClipsQuotaManager *)self database];
+  cloudDatabase = [database cloudDatabase];
+  v12 = [cloudDatabase performCodeOperationWithServiceName:@"HomeQuota" functionName:nameCopy request:requestCopy responseClass:class];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -91,14 +91,14 @@ id __86__HMDCameraClipsQuotaManager__addCodeOperationWithFunctionName_request_re
   return v5;
 }
 
-- (id)disableCloudStorageForZoneWithName:(id)a3
+- (id)disableCloudStorageForZoneWithName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(HMDCameraClipsQuotaDisableCameraMessage);
-  [(HMDCameraClipsQuotaDisableCameraMessage *)v5 setZoneName:v4];
+  [(HMDCameraClipsQuotaDisableCameraMessage *)v5 setZoneName:nameCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -108,23 +108,23 @@ id __86__HMDCameraClipsQuotaManager__addCodeOperationWithFunctionName_request_re
     v19 = 2112;
     v20 = v5;
     v21 = 2112;
-    v22 = v4;
+    v22 = nameCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Sending disable camera message %@ for zone with name %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraClipsQuotaManager *)v7 _addCodeOperationWithFunctionName:@"disableCamera" request:v5 responseClass:objc_opt_class()];
+  v10 = [(HMDCameraClipsQuotaManager *)selfCopy _addCodeOperationWithFunctionName:@"disableCamera" request:v5 responseClass:objc_opt_class()];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__HMDCameraClipsQuotaManager_disableCloudStorageForZoneWithName___block_invoke;
   v16[3] = &unk_279725E10;
-  v16[4] = v7;
+  v16[4] = selfCopy;
   v11 = [v10 flatMap:v16];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HMDCameraClipsQuotaManager_disableCloudStorageForZoneWithName___block_invoke_28;
   v15[3] = &unk_2797300A8;
-  v15[4] = v7;
+  v15[4] = selfCopy;
   v12 = [v11 recover:v15];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -198,14 +198,14 @@ LABEL_8:
   return v11;
 }
 
-- (id)enableCloudStorageForZoneWithName:(id)a3
+- (id)enableCloudStorageForZoneWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(HMDCameraClipsQuotaEnableCameraMessage);
-  [(HMDCameraClipsQuotaEnableCameraMessage *)v5 setZoneName:v4];
+  [(HMDCameraClipsQuotaEnableCameraMessage *)v5 setZoneName:nameCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -215,17 +215,17 @@ LABEL_8:
     v17 = 2112;
     v18 = v5;
     v19 = 2112;
-    v20 = v4;
+    v20 = nameCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Sending enable camera message %@ for zone with name %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraClipsQuotaManager *)v7 _addCodeOperationWithFunctionName:@"enableCamera" request:v5 responseClass:objc_opt_class()];
+  v10 = [(HMDCameraClipsQuotaManager *)selfCopy _addCodeOperationWithFunctionName:@"enableCamera" request:v5 responseClass:objc_opt_class()];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__HMDCameraClipsQuotaManager_enableCloudStorageForZoneWithName___block_invoke;
   v14[3] = &unk_279725E10;
-  v14[4] = v7;
+  v14[4] = selfCopy;
   v11 = [v10 flatMap:v14];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -263,7 +263,7 @@ id __64__HMDCameraClipsQuotaManager_enableCloudStorageForZoneWithName___block_in
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(HMDCameraClipsQuotaGetActiveCamerasMessage);
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -276,12 +276,12 @@ id __64__HMDCameraClipsQuotaManager_enableCloudStorageForZoneWithName___block_in
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCameraClipsQuotaManager *)v5 _addCodeOperationWithFunctionName:@"getActiveCameras" request:v3 responseClass:objc_opt_class()];
+  v8 = [(HMDCameraClipsQuotaManager *)selfCopy _addCodeOperationWithFunctionName:@"getActiveCameras" request:v3 responseClass:objc_opt_class()];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__HMDCameraClipsQuotaManager_fetchNamesForZonesWithEnabledCloudStorage__block_invoke;
   v12[3] = &unk_279725E10;
-  v12[4] = v5;
+  v12[4] = selfCopy;
   v9 = [v8 flatMap:v12];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -367,15 +367,15 @@ id __71__HMDCameraClipsQuotaManager_fetchNamesForZonesWithEnabledCloudStorage__b
 
 - (void)synchronize
 {
-  v3 = [(HMDCameraClipsQuotaManager *)self database];
-  v4 = [v3 cloudDatabase];
-  v5 = [v4 performInitialCloudSync];
+  database = [(HMDCameraClipsQuotaManager *)self database];
+  cloudDatabase = [database cloudDatabase];
+  performInitialCloudSync = [cloudDatabase performInitialCloudSync];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HMDCameraClipsQuotaManager_synchronize__block_invoke;
   v7[3] = &unk_279733BC0;
   v7[4] = self;
-  v6 = [v5 addCompletionBlock:v7];
+  v6 = [performInitialCloudSync addCompletionBlock:v7];
 }
 
 void __41__HMDCameraClipsQuotaManager_synchronize__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -398,17 +398,17 @@ void __41__HMDCameraClipsQuotaManager_synchronize__block_invoke(uint64_t a1, voi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraClipsQuotaManager)initWithDatabase:(id)a3
+- (HMDCameraClipsQuotaManager)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = HMDCameraClipsQuotaManager;
   v6 = [(HMDCameraClipsQuotaManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
-    [v5 addDelegate:v7];
+    objc_storeStrong(&v6->_database, database);
+    [databaseCopy addDelegate:v7];
   }
 
   return v7;
@@ -444,15 +444,15 @@ uint64_t __41__HMDCameraClipsQuotaManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)_quotaErrorFromServerError:(id)a3
++ (id)_quotaErrorFromServerError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _quotaServerErrorFromServerError:v4];
+  errorCopy = error;
+  v5 = [self _quotaServerErrorFromServerError:errorCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -465,15 +465,15 @@ uint64_t __41__HMDCameraClipsQuotaManager_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [v5 code];
-    if (v10 == 1003)
+    code = [v5 code];
+    if (code == 1003)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = 2 * (v10 == 1002);
+      v11 = 2 * (code == 1002);
     }
   }
 
@@ -489,11 +489,11 @@ uint64_t __41__HMDCameraClipsQuotaManager_logCategory__block_invoke()
   return v12;
 }
 
-+ (id)_quotaServerErrorFromServerError:(id)a3
++ (id)_quotaServerErrorFromServerError:(id)error
 {
-  v3 = [a3 userInfo];
+  userInfo = [error userInfo];
   v4 = *MEMORY[0x277CCA7E8];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -508,9 +508,9 @@ uint64_t __41__HMDCameraClipsQuotaManager_logCategory__block_invoke()
 
   v7 = v6;
 
-  v8 = [v7 userInfo];
+  userInfo2 = [v7 userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [userInfo2 objectForKeyedSubscript:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -525,8 +525,8 @@ uint64_t __41__HMDCameraClipsQuotaManager_logCategory__block_invoke()
 
   v11 = v10;
 
-  v12 = [v11 domain];
-  if ([v12 isEqualToString:@"HomeQuotaError"])
+  domain = [v11 domain];
+  if ([domain isEqualToString:@"HomeQuotaError"])
   {
     v13 = v11;
   }

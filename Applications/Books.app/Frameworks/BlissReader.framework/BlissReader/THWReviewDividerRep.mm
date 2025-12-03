@@ -1,7 +1,7 @@
 @interface THWReviewDividerRep
 - (CGRect)layerFrameInScaledCanvas;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 @end
 
 @implementation THWReviewDividerRep
@@ -13,12 +13,12 @@
   [(THWReviewDividerRep *)&v2 dealloc];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = THWReviewDividerRep;
   [(THWReviewDividerRep *)&v4 didUpdateLayer:?];
-  [a3 setBackgroundColor:{objc_msgSend(objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "colorWithAlphaComponent:", 0.150000006), "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "colorWithAlphaComponent:", 0.150000006), "CGColor")}];
 }
 
 - (CGRect)layerFrameInScaledCanvas

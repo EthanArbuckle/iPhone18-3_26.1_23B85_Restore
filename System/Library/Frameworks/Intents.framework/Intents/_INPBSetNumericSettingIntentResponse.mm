@@ -1,43 +1,43 @@
 @interface _INPBSetNumericSettingIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetNumericSettingIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetNumericSettingIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setErrorDetail:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setErrorDetail:(id)detail;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetNumericSettingIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_errorDetail)
   {
-    v4 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"errorDetail"];
+    errorDetail = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
+    v5 = [errorDetail copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorDetail"];
   }
 
-  v6 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"maxValue"];
+  maxValue = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+  dictionaryRepresentation = [maxValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"maxValue"];
 
-  v8 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"minValue"];
+  minValue = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+  dictionaryRepresentation2 = [minValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"minValue"];
 
-  v10 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"oldValue"];
+  oldValue = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+  dictionaryRepresentation3 = [oldValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"oldValue"];
 
-  v12 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"updatedValue"];
+  updatedValue = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+  dictionaryRepresentation4 = [updatedValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"updatedValue"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -49,28 +49,28 @@
   return v6 ^ [(_INPBNumericSettingValue *)self->_updatedValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
-  v6 = [v4 errorDetail];
-  if ((v5 != 0) == (v6 == 0))
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
+  errorDetail2 = [equalCopy errorDetail];
+  if ((errorDetail != 0) == (errorDetail2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
-  if (v7)
+  errorDetail3 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
+  if (errorDetail3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
-    v10 = [v4 errorDetail];
-    v11 = [v9 isEqual:v10];
+    v8 = errorDetail3;
+    errorDetail4 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
+    errorDetail5 = [equalCopy errorDetail];
+    v11 = [errorDetail4 isEqual:errorDetail5];
 
     if (!v11)
     {
@@ -82,20 +82,20 @@
   {
   }
 
-  v5 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
-  v6 = [v4 maxValue];
-  if ((v5 != 0) == (v6 == 0))
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+  errorDetail2 = [equalCopy maxValue];
+  if ((errorDetail != 0) == (errorDetail2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
-  if (v12)
+  maxValue = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+  if (maxValue)
   {
-    v13 = v12;
-    v14 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
-    v15 = [v4 maxValue];
-    v16 = [v14 isEqual:v15];
+    v13 = maxValue;
+    maxValue2 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+    maxValue3 = [equalCopy maxValue];
+    v16 = [maxValue2 isEqual:maxValue3];
 
     if (!v16)
     {
@@ -107,20 +107,20 @@
   {
   }
 
-  v5 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
-  v6 = [v4 minValue];
-  if ((v5 != 0) == (v6 == 0))
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+  errorDetail2 = [equalCopy minValue];
+  if ((errorDetail != 0) == (errorDetail2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
-  if (v17)
+  minValue = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+  if (minValue)
   {
-    v18 = v17;
-    v19 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
-    v20 = [v4 minValue];
-    v21 = [v19 isEqual:v20];
+    v18 = minValue;
+    minValue2 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+    minValue3 = [equalCopy minValue];
+    v21 = [minValue2 isEqual:minValue3];
 
     if (!v21)
     {
@@ -132,20 +132,20 @@
   {
   }
 
-  v5 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
-  v6 = [v4 oldValue];
-  if ((v5 != 0) == (v6 == 0))
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+  errorDetail2 = [equalCopy oldValue];
+  if ((errorDetail != 0) == (errorDetail2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
-  if (v22)
+  oldValue = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+  if (oldValue)
   {
-    v23 = v22;
-    v24 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
-    v25 = [v4 oldValue];
-    v26 = [v24 isEqual:v25];
+    v23 = oldValue;
+    oldValue2 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+    oldValue3 = [equalCopy oldValue];
+    v26 = [oldValue2 isEqual:oldValue3];
 
     if (!v26)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
-  v6 = [v4 updatedValue];
-  if ((v5 != 0) != (v6 == 0))
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+  errorDetail2 = [equalCopy updatedValue];
+  if ((errorDetail != 0) != (errorDetail2 == 0))
   {
-    v27 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
-    if (!v27)
+    updatedValue = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+    if (!updatedValue)
     {
 
 LABEL_30:
@@ -170,10 +170,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
-    v30 = [v4 updatedValue];
-    v31 = [v29 isEqual:v30];
+    v28 = updatedValue;
+    updatedValue2 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+    updatedValue3 = [equalCopy updatedValue];
+    v31 = [updatedValue2 isEqual:updatedValue3];
 
     if (v31)
     {
@@ -193,101 +193,101 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetNumericSettingIntentResponse allocWithZone:](_INPBSetNumericSettingIntentResponse init];
-  v6 = [(NSString *)self->_errorDetail copyWithZone:a3];
+  v6 = [(NSString *)self->_errorDetail copyWithZone:zone];
   [(_INPBSetNumericSettingIntentResponse *)v5 setErrorDetail:v6];
 
-  v7 = [(_INPBNumericSettingValue *)self->_maxValue copyWithZone:a3];
+  v7 = [(_INPBNumericSettingValue *)self->_maxValue copyWithZone:zone];
   [(_INPBSetNumericSettingIntentResponse *)v5 setMaxValue:v7];
 
-  v8 = [(_INPBNumericSettingValue *)self->_minValue copyWithZone:a3];
+  v8 = [(_INPBNumericSettingValue *)self->_minValue copyWithZone:zone];
   [(_INPBSetNumericSettingIntentResponse *)v5 setMinValue:v8];
 
-  v9 = [(_INPBNumericSettingValue *)self->_oldValue copyWithZone:a3];
+  v9 = [(_INPBNumericSettingValue *)self->_oldValue copyWithZone:zone];
   [(_INPBSetNumericSettingIntentResponse *)v5 setOldValue:v9];
 
-  v10 = [(_INPBNumericSettingValue *)self->_updatedValue copyWithZone:a3];
+  v10 = [(_INPBNumericSettingValue *)self->_updatedValue copyWithZone:zone];
   [(_INPBSetNumericSettingIntentResponse *)v5 setUpdatedValue:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetNumericSettingIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetNumericSettingIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetNumericSettingIntentResponse)initWithCoder:(id)a3
+- (_INPBSetNumericSettingIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetNumericSettingIntentResponse *)self initWithData:v6];
+    self = [(_INPBSetNumericSettingIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
+  toCopy = to;
+  errorDetail = [(_INPBSetNumericSettingIntentResponse *)self errorDetail];
 
-  if (v4)
+  if (errorDetail)
   {
     errorDetail = self->_errorDetail;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+  maxValue = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
 
-  if (v6)
+  if (maxValue)
   {
-    v7 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
+    maxValue2 = [(_INPBSetNumericSettingIntentResponse *)self maxValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+  minValue = [(_INPBSetNumericSettingIntentResponse *)self minValue];
 
-  if (v8)
+  if (minValue)
   {
-    v9 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
+    minValue2 = [(_INPBSetNumericSettingIntentResponse *)self minValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+  oldValue = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
 
-  if (v10)
+  if (oldValue)
   {
-    v11 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
+    oldValue2 = [(_INPBSetNumericSettingIntentResponse *)self oldValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+  updatedValue = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (updatedValue)
   {
-    v14 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
+    updatedValue2 = [(_INPBSetNumericSettingIntentResponse *)self updatedValue];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setErrorDetail:(id)a3
+- (void)setErrorDetail:(id)detail
 {
-  v4 = [a3 copy];
+  v4 = [detail copy];
   errorDetail = self->_errorDetail;
   self->_errorDetail = v4;
 

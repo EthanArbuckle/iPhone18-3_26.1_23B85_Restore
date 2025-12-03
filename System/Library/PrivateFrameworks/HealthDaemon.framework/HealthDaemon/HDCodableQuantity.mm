@@ -1,12 +1,12 @@
 @interface HDCodableQuantity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableQuantity
@@ -17,68 +17,68 @@
   v8.receiver = self;
   v8.super_class = HDCodableQuantity;
   v4 = [(HDCodableQuantity *)&v8 description];
-  v5 = [(HDCodableQuantity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableQuantity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_value];
-    [v3 setObject:v4 forKey:@"value"];
+    [dictionary setObject:v4 forKey:@"value"];
   }
 
   unitString = self->_unitString;
   if (unitString)
   {
-    [v3 setObject:unitString forKey:@"unitString"];
+    [dictionary setObject:unitString forKey:@"unitString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     value = self->_value;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_unitString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_value;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = *&self->_value;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_unitString)
   {
-    v5 = v4;
-    [v4 setUnitString:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setUnitString:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -86,31 +86,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_unitString copyWithZone:a3];
+  v7 = [(NSString *)self->_unitString copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_value != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_value != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -118,7 +118,7 @@ LABEL_9:
   }
 
   unitString = self->_unitString;
-  if (unitString | *(v4 + 2))
+  if (unitString | *(equalCopy + 2))
   {
     v7 = [(NSString *)unitString isEqual:?];
   }
@@ -171,20 +171,20 @@ LABEL_10:
   return [(NSString *)self->_unitString hash]^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
-    self->_value = v4[1];
+    self->_value = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(HDCodableQuantity *)self setUnitString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

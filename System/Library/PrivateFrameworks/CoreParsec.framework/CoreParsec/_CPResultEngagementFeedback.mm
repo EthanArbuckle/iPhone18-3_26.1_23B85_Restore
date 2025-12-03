@@ -1,9 +1,9 @@
 @interface _CPResultEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPResultEngagementFeedback)init;
-- (_CPResultEngagementFeedback)initWithFacade:(id)a3;
+- (_CPResultEngagementFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPResultEngagementFeedback
@@ -16,58 +16,58 @@
   return v3 ^ v5 ^ [(NSString *)self->_titleText hash]^ (2654435761 * self->_matchesUnengagedSuggestion);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_17;
   }
 
   actionEngaged = self->_actionEngaged;
-  if (actionEngaged != [v4 actionEngaged])
+  if (actionEngaged != [equalCopy actionEngaged])
   {
     goto LABEL_17;
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_17;
   }
 
   destination = self->_destination;
-  if (destination != [v4 destination])
+  if (destination != [equalCopy destination])
   {
     goto LABEL_17;
   }
 
   actionTarget = self->_actionTarget;
-  if (actionTarget != [v4 actionTarget])
+  if (actionTarget != [equalCopy actionTarget])
   {
     goto LABEL_17;
   }
 
-  v10 = [(_CPResultEngagementFeedback *)self result];
-  v11 = [v4 result];
-  if ((v10 != 0) == (v11 == 0))
+  result = [(_CPResultEngagementFeedback *)self result];
+  result2 = [equalCopy result];
+  if ((result != 0) == (result2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_CPResultEngagementFeedback *)self result];
-  if (v12)
+  result3 = [(_CPResultEngagementFeedback *)self result];
+  if (result3)
   {
-    v13 = v12;
-    v14 = [(_CPResultEngagementFeedback *)self result];
-    v15 = [v4 result];
-    v16 = [v14 isEqual:v15];
+    v13 = result3;
+    result4 = [(_CPResultEngagementFeedback *)self result];
+    result5 = [equalCopy result];
+    v16 = [result4 isEqual:result5];
 
     if (!v16)
     {
@@ -79,24 +79,24 @@
   {
   }
 
-  v10 = [(_CPResultEngagementFeedback *)self titleText];
-  v11 = [v4 titleText];
-  if ((v10 != 0) != (v11 == 0))
+  result = [(_CPResultEngagementFeedback *)self titleText];
+  result2 = [equalCopy titleText];
+  if ((result != 0) != (result2 == 0))
   {
-    v17 = [(_CPResultEngagementFeedback *)self titleText];
-    if (!v17)
+    titleText = [(_CPResultEngagementFeedback *)self titleText];
+    if (!titleText)
     {
 
 LABEL_20:
       matchesUnengagedSuggestion = self->_matchesUnengagedSuggestion;
-      v22 = matchesUnengagedSuggestion == [v4 matchesUnengagedSuggestion];
+      v22 = matchesUnengagedSuggestion == [equalCopy matchesUnengagedSuggestion];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_CPResultEngagementFeedback *)self titleText];
-    v20 = [v4 titleText];
-    v21 = [v19 isEqual:v20];
+    v18 = titleText;
+    titleText2 = [(_CPResultEngagementFeedback *)self titleText];
+    titleText3 = [equalCopy titleText];
+    v21 = [titleText2 isEqual:titleText3];
 
     if (v21)
     {
@@ -116,9 +116,9 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(_CPResultEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -149,17 +149,17 @@ LABEL_18:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_CPResultEngagementFeedback *)self result];
+  result = [(_CPResultEngagementFeedback *)self result];
 
-  if (v9)
+  if (result)
   {
-    v10 = [(_CPResultEngagementFeedback *)self result];
+    result2 = [(_CPResultEngagementFeedback *)self result];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_CPResultEngagementFeedback *)self titleText];
+  titleText = [(_CPResultEngagementFeedback *)self titleText];
 
-  if (v11)
+  if (titleText)
   {
     titleText = self->_titleText;
     PBDataWriterWriteStringField();
@@ -186,35 +186,35 @@ LABEL_18:
   return v2;
 }
 
-- (_CPResultEngagementFeedback)initWithFacade:(id)a3
+- (_CPResultEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v15.receiver = self;
   v15.super_class = _CPResultEngagementFeedback;
   v5 = [(_CPResultEngagementFeedback *)&v15 init];
   if (v5)
   {
-    -[_CPResultEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    -[_CPResultEngagementFeedback setActionEngaged:](v5, "setActionEngaged:", [v4 actionEngaged]);
-    -[_CPResultEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPResultEngagementFeedback setDestination:](v5, "setDestination:", [v4 destination]);
-    -[_CPResultEngagementFeedback setActionTarget:](v5, "setActionTarget:", [v4 actionTarget]);
-    v6 = [v4 result];
+    -[_CPResultEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    -[_CPResultEngagementFeedback setActionEngaged:](v5, "setActionEngaged:", [facadeCopy actionEngaged]);
+    -[_CPResultEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPResultEngagementFeedback setDestination:](v5, "setDestination:", [facadeCopy destination]);
+    -[_CPResultEngagementFeedback setActionTarget:](v5, "setActionTarget:", [facadeCopy actionTarget]);
+    result = [facadeCopy result];
 
-    if (v6)
+    if (result)
     {
       v7 = [_CPSearchResultForFeedback alloc];
-      v8 = [v4 result];
-      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:v8];
+      result2 = [facadeCopy result];
+      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:result2];
       [(_CPResultEngagementFeedback *)v5 setResult:v9];
     }
 
-    v10 = [v4 result];
-    v11 = [v10 title];
-    v12 = [v11 text];
-    [(_CPResultEngagementFeedback *)v5 setTitleText:v12];
+    result3 = [facadeCopy result];
+    title = [result3 title];
+    text = [title text];
+    [(_CPResultEngagementFeedback *)v5 setTitleText:text];
 
-    -[_CPResultEngagementFeedback setMatchesUnengagedSuggestion:](v5, "setMatchesUnengagedSuggestion:", [v4 matchesUnengagedSuggestion]);
+    -[_CPResultEngagementFeedback setMatchesUnengagedSuggestion:](v5, "setMatchesUnengagedSuggestion:", [facadeCopy matchesUnengagedSuggestion]);
     v13 = v5;
   }
 

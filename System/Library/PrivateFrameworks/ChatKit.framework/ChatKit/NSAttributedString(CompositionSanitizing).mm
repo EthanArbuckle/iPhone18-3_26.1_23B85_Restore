@@ -19,10 +19,10 @@
 
 - (id)ck_attributedStringByRemovingUnsupportedCompositionAttributes
 {
-  v2 = [MEMORY[0x1E696AAB0] ck_defaultAllowedAttributesForComposition];
-  v3 = [v2 allObjects];
+  ck_defaultAllowedAttributesForComposition = [MEMORY[0x1E696AAB0] ck_defaultAllowedAttributesForComposition];
+  allObjects = [ck_defaultAllowedAttributesForComposition allObjects];
 
-  v4 = [a1 __ck_attributedStringByRemovingAllAttributesExcept:v3];
+  v4 = [self __ck_attributedStringByRemovingAllAttributesExcept:allObjects];
 
   return v4;
 }

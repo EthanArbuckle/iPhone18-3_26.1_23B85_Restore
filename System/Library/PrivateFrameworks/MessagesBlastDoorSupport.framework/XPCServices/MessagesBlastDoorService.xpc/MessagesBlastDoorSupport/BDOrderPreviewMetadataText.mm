@@ -1,23 +1,23 @@
 @interface BDOrderPreviewMetadataText
-- (id)_initWithText:(id)a3;
+- (id)_initWithText:(id)text;
 - (void)dealloc;
 @end
 
 @implementation BDOrderPreviewMetadataText
 
-- (id)_initWithText:(id)a3
+- (id)_initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = BDOrderPreviewMetadataText;
   v5 = [(BDOrderPreviewMetadataText *)&v9 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [textCopy text];
     text = v5->_text;
-    v5->_text = v6;
+    v5->_text = text;
 
-    v5->_overrideColor = CGColorRetain([v4 overrideColor]);
+    v5->_overrideColor = CGColorRetain([textCopy overrideColor]);
   }
 
   return v5;

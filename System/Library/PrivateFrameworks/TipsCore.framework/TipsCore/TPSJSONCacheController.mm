@@ -1,10 +1,10 @@
 @interface TPSJSONCacheController
 + (id)sharedInstance;
-- (BOOL)isURLValid:(id)a3;
-- (id)formattedDataWithData:(id)a3;
-- (id)formattedDataWithFileURL:(id)a3;
+- (BOOL)isURLValid:(id)valid;
+- (id)formattedDataWithData:(id)data;
+- (id)formattedDataWithFileURL:(id)l;
 - (id)newDataCache;
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4;
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation TPSJSONCacheController
@@ -40,28 +40,28 @@ uint64_t __40__TPSJSONCacheController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)formattedDataWithFileURL:(id)a3
+- (id)formattedDataWithFileURL:(id)l
 {
   v4 = MEMORY[0x1E695DEF0];
-  v5 = [a3 path];
-  v6 = [v4 dataWithContentsOfFile:v5];
+  path = [l path];
+  v6 = [v4 dataWithContentsOfFile:path];
 
   v7 = [(TPSJSONCacheController *)self formattedDataWithData:v6];
 
   return v7;
 }
 
-- (id)formattedDataWithData:(id)a3
+- (id)formattedDataWithData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:1 error:&v10];
+    v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:1 error:&v10];
     v5 = v10;
     if (v5)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
+      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       v7 = +[TPSLogger data];
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
       if (v6)
@@ -87,31 +87,31 @@ uint64_t __40__TPSJSONCacheController_sharedInstance__block_invoke()
   return v4;
 }
 
-- (BOOL)isURLValid:(id)a3
+- (BOOL)isURLValid:(id)valid
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  validCopy = valid;
+  defaultManager = [v3 defaultManager];
+  path = [validCopy path];
 
-  LOBYTE(v4) = [v5 fileExistsAtPath:v6];
-  return v4;
+  LOBYTE(validCopy) = [defaultManager fileExistsAtPath:path];
+  return validCopy;
 }
 
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(TPSJSONCacheController *)self isURLValid:v6])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([(TPSJSONCacheController *)self isURLValid:lCopy])
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__TPSJSONCacheController_formattedDataWithFileURL_completionHandler___block_invoke;
     block[3] = &unk_1E81017C0;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = lCopy;
+    selfCopy = self;
+    v12 = handlerCopy;
     dispatch_async(v8, block);
   }
 }

@@ -1,17 +1,17 @@
 @interface PKRewardsEducationHeaderFooterView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKRewardsEducationHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKRewardsEducationHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation PKRewardsEducationHeaderFooterView
 
-- (PKRewardsEducationHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (PKRewardsEducationHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = PKRewardsEducationHeaderFooterView;
-  v3 = [(PKRewardsEducationHeaderFooterView *)&v11 initWithReuseIdentifier:a3];
+  v3 = [(PKRewardsEducationHeaderFooterView *)&v11 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKRewardsEducationHeaderFooterView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKRewardsEducationHeaderFooterView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -52,14 +52,14 @@
   [(PKRewardsEducationHeaderFooterView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = a3.size.width + -40.0;
-  v8 = a3.size.height + -20.0;
-  [(UILabel *)self->_labelView sizeThatFits:a3.size.width + -40.0, a3.size.height + -20.0];
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = bounds.size.width + -40.0;
+  v8 = bounds.size.height + -20.0;
+  [(UILabel *)self->_labelView sizeThatFits:bounds.size.width + -40.0, bounds.size.height + -20.0];
   v10 = v9;
   if (!self->_isTemplateLayout)
   {

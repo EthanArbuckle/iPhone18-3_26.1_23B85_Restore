@@ -1,10 +1,10 @@
 @interface VCCaptionsUtilities
-+ (id)formattedTextWithTranscription:(id)a3;
++ (id)formattedTextWithTranscription:(id)transcription;
 @end
 
 @implementation VCCaptionsUtilities
 
-+ (id)formattedTextWithTranscription:(id)a3
++ (id)formattedTextWithTranscription:(id)transcription
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
@@ -12,8 +12,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 segments];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  segments = [transcription segments];
+  v6 = [segments countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,7 +25,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(segments);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -39,7 +39,7 @@
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [segments countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);

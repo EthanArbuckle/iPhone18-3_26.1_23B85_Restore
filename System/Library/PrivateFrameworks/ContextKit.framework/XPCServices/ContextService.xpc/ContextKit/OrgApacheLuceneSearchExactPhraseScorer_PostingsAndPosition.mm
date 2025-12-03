@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition
-- (OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition)initWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition)initWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition
 
-- (OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition)initWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneSearchExactPhraseScorer_PostingsAndPosition)initWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int
 {
-  JreStrongAssign(&self->postings_, a3);
-  self->offset_ = a4;
+  JreStrongAssign(&self->postings_, enum);
+  self->offset_ = int;
   return self;
 }
 

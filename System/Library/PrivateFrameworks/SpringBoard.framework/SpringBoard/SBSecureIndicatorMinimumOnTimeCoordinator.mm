@@ -1,15 +1,15 @@
 @interface SBSecureIndicatorMinimumOnTimeCoordinator
-- (BOOL)isMinimumOnTimeSatisfiedForIndicators:(int64_t)a3;
+- (BOOL)isMinimumOnTimeSatisfiedForIndicators:(int64_t)indicators;
 - (SBSecureIndicatorMinimumOnTimeCoordinator)init;
-- (SBSecureIndicatorMinimumOnTimeCoordinator)initWithMinimumOnTimeProvider:(id)a3;
-- (_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration)_addRegistrationForIndicators:(void *)a3 block:;
-- (id)performWhenMinimumOnTimeIsSatisfiedForIndicators:(int64_t)a3 block:(id)a4;
-- (uint64_t)_normalizedIndicatorMaskForMask:(uint64_t)a1;
-- (void)_cancelTimerForIndicators:(uint64_t)a1;
-- (void)_removeRegistration:(uint64_t)a1;
-- (void)_scheduleTimerWithRemainingTime:(double)a3 forIndicators:;
+- (SBSecureIndicatorMinimumOnTimeCoordinator)initWithMinimumOnTimeProvider:(id)provider;
+- (_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration)_addRegistrationForIndicators:(void *)indicators block:;
+- (id)performWhenMinimumOnTimeIsSatisfiedForIndicators:(int64_t)indicators block:(id)block;
+- (uint64_t)_normalizedIndicatorMaskForMask:(uint64_t)mask;
+- (void)_cancelTimerForIndicators:(uint64_t)indicators;
+- (void)_removeRegistration:(uint64_t)registration;
+- (void)_scheduleTimerWithRemainingTime:(double)time forIndicators:;
 - (void)dealloc;
-- (void)registrationDidInvalidate:(id)a3;
+- (void)registrationDidInvalidate:(id)invalidate;
 @end
 
 @implementation SBSecureIndicatorMinimumOnTimeCoordinator
@@ -22,34 +22,34 @@
   return v4;
 }
 
-- (SBSecureIndicatorMinimumOnTimeCoordinator)initWithMinimumOnTimeProvider:(id)a3
+- (SBSecureIndicatorMinimumOnTimeCoordinator)initWithMinimumOnTimeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = SBSecureIndicatorMinimumOnTimeCoordinator;
   v6 = [(SBSecureIndicatorMinimumOnTimeCoordinator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_minimumOnTimeProvider, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_minimumOnTimeProvider, provider);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     blockRegistrationsByIndicatorMask = v7->_blockRegistrationsByIndicatorMask;
-    v7->_blockRegistrationsByIndicatorMask = v8;
+    v7->_blockRegistrationsByIndicatorMask = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     minimumOnTimeTimersByIndicatorMask = v7->_minimumOnTimeTimersByIndicatorMask;
-    v7->_minimumOnTimeTimersByIndicatorMask = v10;
+    v7->_minimumOnTimeTimersByIndicatorMask = dictionary2;
   }
 
   return v7;
 }
 
-- (id)performWhenMinimumOnTimeIsSatisfiedForIndicators:(int64_t)a3 block:(id)a4
+- (id)performWhenMinimumOnTimeIsSatisfiedForIndicators:(int64_t)indicators block:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (!blockCopy)
   {
     goto LABEL_8;
   }
@@ -57,23 +57,23 @@
   if (!self)
   {
 LABEL_7:
-    v6[2](v6);
+    blockCopy[2](blockCopy);
 LABEL_8:
     v9 = 0;
     goto LABEL_17;
   }
 
-  if ((~a3 & 3) != 0)
+  if ((~indicators & 3) != 0)
   {
-    if (a3)
+    if (indicators)
     {
       v8 = 1;
       goto LABEL_11;
     }
 
-    if ((a3 & 2) != 0)
+    if ((indicators & 2) != 0)
     {
-      v8 = a3 & 2;
+      v8 = indicators & 2;
       goto LABEL_11;
     }
 
@@ -92,7 +92,7 @@ LABEL_11:
     v21 = SBLogStatusBarish();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = SBSecureIndicatorMaskDescription(a3);
+      v22 = SBSecureIndicatorMaskDescription(indicators);
       v24 = 138412290;
       v25 = v22;
       _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "[Recording Indicator][MOT]: scheduling operation with existing MOT timer for indicators: %@", &v24, 0xCu);
@@ -112,7 +112,7 @@ LABEL_11:
     {
       if (v18)
       {
-        v19 = SBSecureIndicatorMaskDescription(a3);
+        v19 = SBSecureIndicatorMaskDescription(indicators);
         v24 = 138412290;
         v25 = v19;
         _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[Recording Indicator][MOT]: executing operation immediately for indicators: %@", &v24, 0xCu);
@@ -126,7 +126,7 @@ LABEL_11:
     {
       if (v18)
       {
-        v23 = SBSecureIndicatorMaskDescription(a3);
+        v23 = SBSecureIndicatorMaskDescription(indicators);
         v24 = 138412290;
         v25 = v23;
         _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[Recording Indicator][MOT]: scheduling operation with new MOT timer for indicators: %@", &v24, 0xCu);
@@ -142,22 +142,22 @@ LABEL_17:
   return v9;
 }
 
-- (void)_scheduleTimerWithRemainingTime:(double)a3 forIndicators:
+- (void)_scheduleTimerWithRemainingTime:(double)time forIndicators:
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v6 = SBSecureIndicatorMaskDescription(a2);
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBSecureIndicatorMinimumOnTimeCoordinator:%@", v6];
     v8 = [objc_alloc(MEMORY[0x277CF0BD8]) initWithIdentifier:v7];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
-    [a1[3] setObject:v8 forKey:v9];
-    objc_initWeak(&location, a1);
+    [self[3] setObject:v8 forKey:v9];
+    objc_initWeak(&location, self);
     v10 = SBLogStatusBarish();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v20 = a3;
+      timeCopy = time;
       v21 = 2112;
       v22 = v6;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[Recording Indicator][MOT]: scheduling MOT timer with duration: %f for indicators: %@", buf, 0x16u);
@@ -174,7 +174,7 @@ LABEL_17:
     v15 = v12;
     v13 = v9;
     v16 = v13;
-    [v8 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v14 queue:a3 handler:0.5];
+    [v8 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v14 queue:time handler:0.5];
 
     objc_destroyWeak(v17);
     objc_destroyWeak(&location);
@@ -183,7 +183,7 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
@@ -194,8 +194,8 @@ LABEL_17:
     self = self->_minimumOnTimeTimersByIndicatorMask;
   }
 
-  v3 = [(SBSecureIndicatorMinimumOnTimeCoordinator *)self allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(SBSecureIndicatorMinimumOnTimeCoordinator *)self allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -206,36 +206,36 @@ LABEL_17:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * i) invalidate];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8.receiver = v2;
+  v8.receiver = selfCopy;
   v8.super_class = SBSecureIndicatorMinimumOnTimeCoordinator;
   [(SBSecureIndicatorMinimumOnTimeCoordinator *)&v8 dealloc];
 }
 
-- (BOOL)isMinimumOnTimeSatisfiedForIndicators:(int64_t)a3
+- (BOOL)isMinimumOnTimeSatisfiedForIndicators:(int64_t)indicators
 {
   if (self)
   {
     self = self->_minimumOnTimeProvider;
   }
 
-  [(SBSecureIndicatorMinimumOnTimeCoordinator *)self remainingTimeToSatisfyMinimumOnTimeForIndicators:a3 error:0];
+  [(SBSecureIndicatorMinimumOnTimeCoordinator *)self remainingTimeToSatisfyMinimumOnTimeForIndicators:indicators error:0];
 
   return BSFloatEqualToFloat();
 }
 
-- (uint64_t)_normalizedIndicatorMaskForMask:(uint64_t)a1
+- (uint64_t)_normalizedIndicatorMaskForMask:(uint64_t)mask
 {
   v2 = a2 & 2;
   if (a2)
@@ -249,7 +249,7 @@ LABEL_17:
     v3 = v2;
   }
 
-  if (a1)
+  if (mask)
   {
     return v3;
   }
@@ -260,24 +260,24 @@ LABEL_17:
   }
 }
 
-- (_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration)_addRegistrationForIndicators:(void *)a3 block:
+- (_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration)_addRegistrationForIndicators:(void *)indicators block:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v6 = [[_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration alloc] initWithIndicators:a2 block:v5];
+    indicatorsCopy = indicators;
+    v6 = [[_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration alloc] initWithIndicators:a2 block:indicatorsCopy];
 
-    [(_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration *)v6 setDelegate:a1];
-    v7 = *(a1 + 16);
+    [(_SBSecureIndicatorMinimumOnTimeCoordinatedBlockRegistration *)v6 setDelegate:self];
+    v7 = *(self + 16);
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
-    v9 = [v7 objectForKey:v8];
-    if (!v9)
+    array = [v7 objectForKey:v8];
+    if (!array)
     {
-      v9 = [MEMORY[0x277CBEB18] array];
-      [v7 setObject:v9 forKey:v8];
+      array = [MEMORY[0x277CBEB18] array];
+      [v7 setObject:array forKey:v8];
     }
 
-    [v9 addObject:v6];
+    [array addObject:v6];
   }
 
   else
@@ -288,13 +288,13 @@ LABEL_17:
   return v6;
 }
 
-- (void)registrationDidInvalidate:(id)a3
+- (void)registrationDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  [(SBSecureIndicatorMinimumOnTimeCoordinator *)self _removeRegistration:v4];
-  v5 = [v4 indicators];
+  invalidateCopy = invalidate;
+  [(SBSecureIndicatorMinimumOnTimeCoordinator *)self _removeRegistration:invalidateCopy];
+  indicators = [invalidateCopy indicators];
 
-  v6 = SBSecureIndicatorMaskDescription(v5);
+  v6 = SBSecureIndicatorMaskDescription(indicators);
   v7 = SBLogStatusBarish();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -313,7 +313,7 @@ LABEL_17:
 
   v15 = MEMORY[0x277CCABB0];
   v16 = blockRegistrationsByIndicatorMask;
-  v17 = [v15 numberWithInteger:v5];
+  v17 = [v15 numberWithInteger:indicators];
   v18 = [(NSMutableDictionary *)v16 objectForKey:v17];
 
   v19 = [v18 count];
@@ -325,15 +325,15 @@ LABEL_17:
       OUTLINED_FUNCTION_0_30(&dword_21ED4E000, v21, v22, "[Recording Indicator][MOT]: canceling MOT timer for indicators: %@", v23, v24, v25, v26, 2u);
     }
 
-    [(SBSecureIndicatorMinimumOnTimeCoordinator *)self _cancelTimerForIndicators:v5];
+    [(SBSecureIndicatorMinimumOnTimeCoordinator *)self _cancelTimerForIndicators:indicators];
   }
 }
 
-- (void)_removeRegistration:(uint64_t)a1
+- (void)_removeRegistration:(uint64_t)registration
 {
-  if (a1)
+  if (registration)
   {
-    v7 = *(a1 + 16);
+    v7 = *(registration + 16);
     v3 = MEMORY[0x277CCABB0];
     v4 = a2;
     v5 = [v3 numberWithInteger:{objc_msgSend(v4, "indicators")}];
@@ -347,12 +347,12 @@ LABEL_17:
   }
 }
 
-- (void)_cancelTimerForIndicators:(uint64_t)a1
+- (void)_cancelTimerForIndicators:(uint64_t)indicators
 {
-  if (a1)
+  if (indicators)
   {
     v3 = MEMORY[0x277CCABB0];
-    v4 = *(a1 + 24);
+    v4 = *(indicators + 24);
     v6 = [v3 numberWithInteger:a2];
     v5 = [v4 objectForKey:v6];
     [v5 invalidate];

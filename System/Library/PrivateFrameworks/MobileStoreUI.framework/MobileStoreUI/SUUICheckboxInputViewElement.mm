@@ -1,31 +1,31 @@
 @interface SUUICheckboxInputViewElement
-- (SUUICheckboxInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUICheckboxInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUICheckboxInputViewElement
 
-- (SUUICheckboxInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICheckboxInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUICheckboxInputViewElement;
-  v9 = [(SUUIInputViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIInputViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"disabled"];
+    v10 = [elementCopy getAttribute:@"disabled"];
     if ([v10 length])
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v11 = -1;
+      bOOLValue = -1;
     }
 
-    v9->_disabled = v11;
-    v12 = [v8 getAttribute:@"selected"];
+    v9->_disabled = bOOLValue;
+    v12 = [elementCopy getAttribute:@"selected"];
 
     if ([v12 length])
     {
@@ -36,17 +36,17 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUICheckboxInputViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_disabled = v4->_disabled;
-    self->_selected = [(SUUICheckboxInputViewElement *)v4 isSelected];
+    self->_disabled = elementCopy->_disabled;
+    self->_selected = [(SUUICheckboxInputViewElement *)elementCopy isSelected];
   }
 
   return v6;

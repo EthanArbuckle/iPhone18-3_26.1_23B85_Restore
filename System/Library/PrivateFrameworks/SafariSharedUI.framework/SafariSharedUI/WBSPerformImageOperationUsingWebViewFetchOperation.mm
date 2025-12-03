@@ -1,5 +1,5 @@
 @interface WBSPerformImageOperationUsingWebViewFetchOperation
-- (WBSPerformImageOperationUsingWebViewFetchOperation)initWithRequest:(id)a3 completionHandler:(id)a4;
+- (WBSPerformImageOperationUsingWebViewFetchOperation)initWithRequest:(id)request completionHandler:(id)handler;
 - (void)_fetchOperationFinished;
 - (void)_getImageInfoUsingWebView;
 - (void)_getMultiResolutionImageDataUsingWebView;
@@ -8,15 +8,15 @@
 
 @implementation WBSPerformImageOperationUsingWebViewFetchOperation
 
-- (WBSPerformImageOperationUsingWebViewFetchOperation)initWithRequest:(id)a3 completionHandler:(id)a4
+- (WBSPerformImageOperationUsingWebViewFetchOperation)initWithRequest:(id)request completionHandler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = WBSPerformImageOperationUsingWebViewFetchOperation;
-  v5 = a4;
-  v6 = [(WBSSiteMetadataFetchOperation *)&v11 initWithRequest:a3];
+  handlerCopy = handler;
+  v6 = [(WBSSiteMetadataFetchOperation *)&v11 initWithRequest:request];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [handlerCopy copy];
 
     completionHandler = v6->_completionHandler;
     v6->_completionHandler = v7;
@@ -26,7 +26,7 @@
 
   else
   {
-    (*(v5 + 2))(v5, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   return v6;
@@ -36,9 +36,9 @@
 {
   v3 = _Block_copy(self->_completionHandler);
   objc_initWeak(&location, self);
-  v4 = [(WBSWebViewMetadataFetchOperation *)self webView];
-  v5 = [(WBSSiteMetadataFetchOperation *)self request];
-  v6 = [v5 imageData];
+  webView = [(WBSWebViewMetadataFetchOperation *)self webView];
+  request = [(WBSSiteMetadataFetchOperation *)self request];
+  imageData = [request imageData];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__WBSPerformImageOperationUsingWebViewFetchOperation__getImageInfoUsingWebView__block_invoke;
@@ -46,7 +46,7 @@
   objc_copyWeak(&v10, &location);
   v7 = v3;
   v9 = v7;
-  [v4 _getInformationFromImageData:v6 completionHandler:v8];
+  [webView _getInformationFromImageData:imageData completionHandler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -111,11 +111,11 @@ LABEL_12:
 - (void)_getMultiResolutionImageDataUsingWebView
 {
   v3 = _Block_copy(self->_completionHandler);
-  v4 = [(WBSSiteMetadataFetchOperation *)self request];
-  v5 = [v4 imageData];
+  request = [(WBSSiteMetadataFetchOperation *)self request];
+  imageData = [request imageData];
 
   objc_initWeak(&location, self);
-  v6 = [(WBSWebViewMetadataFetchOperation *)self webView];
+  webView = [(WBSWebViewMetadataFetchOperation *)self webView];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__WBSPerformImageOperationUsingWebViewFetchOperation__getMultiResolutionImageDataUsingWebView__block_invoke;
@@ -123,9 +123,9 @@ LABEL_12:
   objc_copyWeak(&v12, &location);
   v7 = v3;
   v11 = v7;
-  v8 = v5;
+  v8 = imageData;
   v10 = v8;
-  [v6 _getInformationFromImageData:v8 completionHandler:v9];
+  [webView _getInformationFromImageData:v8 completionHandler:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -288,16 +288,16 @@ void __94__WBSPerformImageOperationUsingWebViewFetchOperation__getMultiResolutio
 
 - (void)startOffscreenFetching
 {
-  v3 = [(WBSSiteMetadataFetchOperation *)self request];
-  v4 = [v3 requestType];
+  request = [(WBSSiteMetadataFetchOperation *)self request];
+  requestType = [request requestType];
 
-  if (v4 == 1)
+  if (requestType == 1)
   {
 
     [(WBSPerformImageOperationUsingWebViewFetchOperation *)self _getMultiResolutionImageDataUsingWebView];
   }
 
-  else if (!v4)
+  else if (!requestType)
   {
 
     [(WBSPerformImageOperationUsingWebViewFetchOperation *)self _getImageInfoUsingWebView];

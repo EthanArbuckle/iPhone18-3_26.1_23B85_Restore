@@ -2,7 +2,7 @@
 - (NSData)destination;
 - (NSData)gateway;
 - (NSData)mask;
-- (NWSRouteSnapshot)initWithCounts:(const nstat_counts *)a3 routeDescriptor:(nstat_route_descriptor *)a4 sourceIdent:(unint64_t)a5 seqno:(unint64_t)a6;
+- (NWSRouteSnapshot)initWithCounts:(const nstat_counts *)counts routeDescriptor:(nstat_route_descriptor *)descriptor sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno;
 - (double)rttAverage;
 - (double)rttMinimum;
 - (double)rttVariation;
@@ -13,7 +13,7 @@
 - (unsigned)rxDuplicateBytes;
 - (unsigned)rxOutOfOrderBytes;
 - (unsigned)txRetransmittedBytes;
-- (void)_initWithDescriptor:(nstat_route_descriptor *)a3;
+- (void)_initWithDescriptor:(nstat_route_descriptor *)descriptor;
 @end
 
 @implementation NWSRouteSnapshot
@@ -220,33 +220,33 @@
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_descriptor.gateway_id];
     [v4 setObject:v8 forKeyedSubscript:kNStatSrcKeyRouteGatewayID];
 
-    v9 = [(NWSRouteSnapshot *)self destination];
+    destination = [(NWSRouteSnapshot *)self destination];
 
-    if (v9)
+    if (destination)
     {
       v10 = MEMORY[0x277CBEA90];
-      v11 = [(NWSRouteSnapshot *)self destination];
-      v12 = [v10 dataWithData:v11];
+      destination2 = [(NWSRouteSnapshot *)self destination];
+      v12 = [v10 dataWithData:destination2];
       [v4 setObject:v12 forKeyedSubscript:kNStatSrcKeyRouteDestination];
     }
 
-    v13 = [(NWSRouteSnapshot *)self mask];
+    mask = [(NWSRouteSnapshot *)self mask];
 
-    if (v13)
+    if (mask)
     {
       v14 = MEMORY[0x277CBEA90];
-      v15 = [(NWSRouteSnapshot *)self mask];
-      v16 = [v14 dataWithData:v15];
+      mask2 = [(NWSRouteSnapshot *)self mask];
+      v16 = [v14 dataWithData:mask2];
       [v4 setObject:v16 forKeyedSubscript:kNStatSrcKeyRouteMask];
     }
 
-    v17 = [(NWSRouteSnapshot *)self gateway];
+    gateway = [(NWSRouteSnapshot *)self gateway];
 
-    if (v17)
+    if (gateway)
     {
       v18 = MEMORY[0x277CBEA90];
-      v19 = [(NWSRouteSnapshot *)self gateway];
-      v20 = [v18 dataWithData:v19];
+      gateway2 = [(NWSRouteSnapshot *)self gateway];
+      v20 = [v18 dataWithData:gateway2];
       [v4 setObject:v20 forKeyedSubscript:kNStatSrcKeyRouteGateway];
     }
 
@@ -262,33 +262,33 @@
   return v4;
 }
 
-- (void)_initWithDescriptor:(nstat_route_descriptor *)a3
+- (void)_initWithDescriptor:(nstat_route_descriptor *)descriptor
 {
-  v3 = *(&a3->dst.sa + 24);
-  v5 = *&a3->id;
-  v4 = *&a3->gateway_id;
-  *&self->_descriptor.dst.sa.sa_data[6] = *&a3->dst.sa.sa_data[6];
+  v3 = *(&descriptor->dst.sa + 24);
+  v5 = *&descriptor->id;
+  v4 = *&descriptor->gateway_id;
+  *&self->_descriptor.dst.sa.sa_data[6] = *&descriptor->dst.sa.sa_data[6];
   *(&self->_descriptor.dst.sa + 24) = v3;
   *&self->_descriptor.id = v5;
   *&self->_descriptor.gateway_id = v4;
-  v7 = a3->gateway.v4;
-  v6 = *(&a3->gateway.sa + 1);
-  v8 = *&a3->mask.sa.sa_data[10];
-  *&self->_descriptor.flags = *&a3->flags;
+  v7 = descriptor->gateway.v4;
+  v6 = *(&descriptor->gateway.sa + 1);
+  v8 = *&descriptor->mask.sa.sa_data[10];
+  *&self->_descriptor.flags = *&descriptor->flags;
   self->_descriptor.gateway.v4 = v7;
   *(&self->_descriptor.gateway.sa + 1) = v6;
   *&self->_descriptor.mask.sa.sa_data[10] = v8;
 }
 
-- (NWSRouteSnapshot)initWithCounts:(const nstat_counts *)a3 routeDescriptor:(nstat_route_descriptor *)a4 sourceIdent:(unint64_t)a5 seqno:(unint64_t)a6
+- (NWSRouteSnapshot)initWithCounts:(const nstat_counts *)counts routeDescriptor:(nstat_route_descriptor *)descriptor sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno
 {
   v10.receiver = self;
   v10.super_class = NWSRouteSnapshot;
-  v7 = [(NWSSnapshot *)&v10 _initWithCounts:a3 sourceIdent:a5 seqno:a6];
+  v7 = [(NWSSnapshot *)&v10 _initWithCounts:counts sourceIdent:ident seqno:seqno];
   v8 = v7;
   if (v7)
   {
-    [(NWSRouteSnapshot *)v7 _initWithDescriptor:a4];
+    [(NWSRouteSnapshot *)v7 _initWithDescriptor:descriptor];
   }
 
   return v8;

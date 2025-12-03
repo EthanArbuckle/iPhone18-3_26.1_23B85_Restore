@@ -2,37 +2,37 @@
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
 - (_SWRemoveParticipantAlertRemoteControllerDelegate)delegate;
-- (void)_promptToRemoveParticipant:(id)a3 fromHighlight:(id)a4 preferredStyle:(int64_t)a5;
+- (void)_promptToRemoveParticipant:(id)participant fromHighlight:(id)highlight preferredStyle:(int64_t)style;
 - (void)dismissAlert;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _SWRemoveParticipantAlertRemoteController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v3 = [(_SWRemoveParticipantAlertRemoteController *)self delegate];
-  [v3 dismissAlert];
+  delegate = [(_SWRemoveParticipantAlertRemoteController *)self delegate];
+  [delegate dismissAlert];
 }
 
-- (void)_promptToRemoveParticipant:(id)a3 fromHighlight:(id)a4 preferredStyle:(int64_t)a5
+- (void)_promptToRemoveParticipant:(id)participant fromHighlight:(id)highlight preferredStyle:(int64_t)style
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  participantCopy = participant;
+  highlightCopy = highlight;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v11 promptToRemoveParticipant:v12 fromHighlight:v8 usingPreferredStyle:a5];
+    serviceViewControllerProxy2 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy2 promptToRemoveParticipant:participantCopy fromHighlight:highlightCopy usingPreferredStyle:style];
   }
 }
 
 - (void)dismissAlert
 {
-  v2 = [(_SWRemoveParticipantAlertRemoteController *)self delegate];
-  [v2 dismissAlert];
+  delegate = [(_SWRemoveParticipantAlertRemoteController *)self delegate];
+  [delegate dismissAlert];
 }
 
 + (id)serviceViewControllerInterface

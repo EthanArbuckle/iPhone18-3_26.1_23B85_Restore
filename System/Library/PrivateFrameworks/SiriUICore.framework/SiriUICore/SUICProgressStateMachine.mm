@@ -1,13 +1,13 @@
 @interface SUICProgressStateMachine
 - (NSPointerArray)_stateMachineObservers;
 - (SUICProgressStateMachine)init;
-- (void)_ignoreEvent:(unint64_t)a3;
-- (void)_transitionToState:(unint64_t)a3 forEvent:(unint64_t)a4;
-- (void)addObserver:(id)a3;
-- (void)addObservers:(id)a3;
+- (void)_ignoreEvent:(unint64_t)event;
+- (void)_transitionToState:(unint64_t)state forEvent:(unint64_t)event;
+- (void)addObserver:(id)observer;
+- (void)addObservers:(id)observers;
 - (void)dealloc;
-- (void)handleEvent:(unint64_t)a3;
-- (void)setObservers:(id)a3;
+- (void)handleEvent:(unint64_t)event;
+- (void)setObservers:(id)observers;
 @end
 
 @implementation SUICProgressStateMachine
@@ -331,48 +331,48 @@ LABEL_7:
   [(SUICProgressStateMachine *)&v3 dealloc];
 }
 
-- (void)handleEvent:(unint64_t)a3
+- (void)handleEvent:(unint64_t)event
 {
   underlyingStateMachine = self->_underlyingStateMachine;
   v5 = objc_alloc(MEMORY[0x1E6999530]);
-  if (a3 + 1 > 5)
+  if (event + 1 > 5)
   {
     v6 = @"Start";
   }
 
   else
   {
-    v6 = off_1E81E7F10[a3 + 1];
+    v6 = off_1E81E7F10[event + 1];
   }
 
   v7 = [v5 initWithName:v6 userInfo:0];
   [(CUStateMachine *)underlyingStateMachine dispatchEvent:v7];
 }
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
   stateMachineObservers = self->_stateMachineObservers;
   self->_stateMachineObservers = 0;
-  v5 = a3;
+  observersCopy = observers;
 
-  [(SUICProgressStateMachine *)self addObservers:v5];
+  [(SUICProgressStateMachine *)self addObservers:observersCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SUICProgressStateMachine *)self _stateMachineObservers];
-  [v5 addPointer:v4];
+  observerCopy = observer;
+  _stateMachineObservers = [(SUICProgressStateMachine *)self _stateMachineObservers];
+  [_stateMachineObservers addPointer:observerCopy];
 }
 
-- (void)addObservers:(id)a3
+- (void)addObservers:(id)observers
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__SUICProgressStateMachine_addObservers___block_invoke;
   v3[3] = &unk_1E81E7EF0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [observers enumerateObjectsUsingBlock:v3];
 }
 
 - (NSPointerArray)_stateMachineObservers
@@ -380,9 +380,9 @@ LABEL_7:
   stateMachineObservers = self->_stateMachineObservers;
   if (!stateMachineObservers)
   {
-    v4 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     v5 = self->_stateMachineObservers;
-    self->_stateMachineObservers = v4;
+    self->_stateMachineObservers = weakObjectsPointerArray;
 
     stateMachineObservers = self->_stateMachineObservers;
   }
@@ -394,17 +394,17 @@ LABEL_7:
   return v6;
 }
 
-- (void)_transitionToState:(unint64_t)a3 forEvent:(unint64_t)a4
+- (void)_transitionToState:(unint64_t)state forEvent:(unint64_t)event
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SUICProgressStateMachine *)self _stateMachineObservers];
-  v8 = [v7 allObjects];
+  _stateMachineObservers = [(SUICProgressStateMachine *)self _stateMachineObservers];
+  allObjects = [_stateMachineObservers allObjects];
 
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -415,46 +415,46 @@ LABEL_7:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v16 + 1) + 8 * i) progressStateMachine:self didTransitionToState:a3 fromState:-[SUICProgressStateMachine state](self forEvent:{"state"), a4}];
+        [*(*(&v16 + 1) + 8 * i) progressStateMachine:self didTransitionToState:state fromState:-[SUICProgressStateMachine state](self forEvent:{"state"), event}];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
   underlyingStateMachine = self->_underlyingStateMachine;
-  if (a3 + 1 > 4)
+  if (state + 1 > 4)
   {
     v14 = @"None";
   }
 
   else
   {
-    v14 = off_1E81E7F40[a3 + 1];
+    v14 = off_1E81E7F40[state + 1];
   }
 
   v15 = [(NSDictionary *)self->_stateForStateName objectForKey:v14];
   [(CUStateMachine *)underlyingStateMachine transitionToState:v15];
 
-  self->_currentState = a3;
+  self->_currentState = state;
 }
 
-- (void)_ignoreEvent:(unint64_t)a3
+- (void)_ignoreEvent:(unint64_t)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SUICProgressStateMachine *)self _stateMachineObservers];
-  v6 = [v5 allObjects];
+  _stateMachineObservers = [(SUICProgressStateMachine *)self _stateMachineObservers];
+  allObjects = [_stateMachineObservers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -466,14 +466,14 @@ LABEL_7:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) progressStateMachine:self ignoredEvent:a3];
+        [*(*(&v11 + 1) + 8 * v10++) progressStateMachine:self ignoredEvent:event];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

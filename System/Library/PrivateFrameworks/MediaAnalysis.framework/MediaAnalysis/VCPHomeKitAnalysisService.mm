@@ -2,12 +2,12 @@
 + (id)analysisService;
 - (VCPHomeKitAnalysisService)init;
 - (id)connection;
-- (int)requestAnalysis:(unint64_t)a3 ofAssetData:(id)a4 withProperties:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestAnalysis:(unint64_t)a3 ofAssetSurface:(id)a4 withProperties:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestResidentMaintenanceWithOptions:(id)a3 andCompletionHandler:(id)a4;
+- (int)requestAnalysis:(unint64_t)analysis ofAssetData:(id)data withProperties:(id)properties progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestAnalysis:(unint64_t)analysis ofAssetSurface:(id)surface withProperties:(id)properties progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestResidentMaintenanceWithOptions:(id)options andCompletionHandler:(id)handler;
 - (void)cancelAllRequests;
-- (void)cancelRequest:(int)a3;
-- (void)reportProgress:(double)a3 forRequest:(int)a4;
+- (void)cancelRequest:(int)request;
+- (void)reportProgress:(double)progress forRequest:(int)request;
 @end
 
 @implementation VCPHomeKitAnalysisService
@@ -31,9 +31,9 @@
     handlerQueue = v3->_handlerQueue;
     v3->_handlerQueue = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     progressBlocks = v3->_progressBlocks;
-    v3->_progressBlocks = v9;
+    v3->_progressBlocks = dictionary;
 
     v3->_nextRequestID = 1;
     v11 = v3;
@@ -79,12 +79,12 @@
     v8 = v7;
     _Block_object_dispose(&v24, 8);
     v9 = objc_alloc_init(v7);
-    v10 = [v9 expectedClasses];
+    expectedClasses = [v9 expectedClasses];
 
-    [v6 setClasses:v10 forSelector:sel_requestAnalysis_ofFragmentData_withRequestID_properties_andReply_ argumentIndex:3 ofReply:0];
-    [v6 setClasses:v10 forSelector:sel_requestAnalysis_ofFragmentData_withRequestID_properties_andReply_ argumentIndex:0 ofReply:1];
-    [v6 setClasses:v10 forSelector:sel_requestAnalysis_ofFragmentSurface_withRequestID_properties_andReply_ argumentIndex:3 ofReply:0];
-    [v6 setClasses:v10 forSelector:sel_requestAnalysis_ofFragmentSurface_withRequestID_properties_andReply_ argumentIndex:0 ofReply:1];
+    [v6 setClasses:expectedClasses forSelector:sel_requestAnalysis_ofFragmentData_withRequestID_properties_andReply_ argumentIndex:3 ofReply:0];
+    [v6 setClasses:expectedClasses forSelector:sel_requestAnalysis_ofFragmentData_withRequestID_properties_andReply_ argumentIndex:0 ofReply:1];
+    [v6 setClasses:expectedClasses forSelector:sel_requestAnalysis_ofFragmentSurface_withRequestID_properties_andReply_ argumentIndex:3 ofReply:0];
+    [v6 setClasses:expectedClasses forSelector:sel_requestAnalysis_ofFragmentSurface_withRequestID_properties_andReply_ argumentIndex:0 ofReply:1];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -103,8 +103,8 @@
 
     v12 = v11;
     _Block_object_dispose(&v24, 8);
-    v13 = [v11 allowedClasses];
-    [v6 setClasses:v13 forSelector:sel_requestResidentMaintenance_withOptions_andReply_ argumentIndex:0 ofReply:1];
+    allowedClasses = [v11 allowedClasses];
+    [v6 setClasses:allowedClasses forSelector:sel_requestResidentMaintenance_withOptions_andReply_ argumentIndex:0 ofReply:1];
 
     [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
     v14 = self->_connection;
@@ -149,12 +149,12 @@ void __39__VCPHomeKitAnalysisService_connection__block_invoke_210(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (int)requestAnalysis:(unint64_t)a3 ofAssetData:(id)a4 withProperties:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestAnalysis:(unint64_t)analysis ofAssetData:(id)data withProperties:(id)properties progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -164,22 +164,22 @@ void __39__VCPHomeKitAnalysisService_connection__block_invoke_210(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __109__VCPHomeKitAnalysisService_requestAnalysis_ofAssetData_withProperties_progressHandler_andCompletionHandler___block_invoke;
   block[3] = &unk_1E83516F0;
-  v26 = v15;
+  v26 = completionHandlerCopy;
   v27 = &v29;
-  v28 = a3;
+  analysisCopy = analysis;
   block[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v23 = dataCopy;
+  v24 = propertiesCopy;
+  v25 = handlerCopy;
+  v17 = propertiesCopy;
+  v18 = dataCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(a3) = *(v30 + 6);
+  LODWORD(analysis) = *(v30 + 6);
 
   _Block_object_dispose(&v29, 8);
-  return a3;
+  return analysis;
 }
 
 void __109__VCPHomeKitAnalysisService_requestAnalysis_ofAssetData_withProperties_progressHandler_andCompletionHandler___block_invoke(uint64_t a1)
@@ -306,12 +306,12 @@ void __109__VCPHomeKitAnalysisService_requestAnalysis_ofAssetData_withProperties
   dispatch_async(v4, block);
 }
 
-- (int)requestAnalysis:(unint64_t)a3 ofAssetSurface:(id)a4 withProperties:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestAnalysis:(unint64_t)analysis ofAssetSurface:(id)surface withProperties:(id)properties progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -321,22 +321,22 @@ void __109__VCPHomeKitAnalysisService_requestAnalysis_ofAssetData_withProperties
   block[1] = 3221225472;
   block[2] = __112__VCPHomeKitAnalysisService_requestAnalysis_ofAssetSurface_withProperties_progressHandler_andCompletionHandler___block_invoke;
   block[3] = &unk_1E83516F0;
-  v26 = v15;
+  v26 = completionHandlerCopy;
   v27 = &v29;
-  v28 = a3;
+  analysisCopy = analysis;
   block[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v23 = surfaceCopy;
+  v24 = propertiesCopy;
+  v25 = handlerCopy;
+  v17 = propertiesCopy;
+  v18 = surfaceCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(a3) = *(v30 + 6);
+  LODWORD(analysis) = *(v30 + 6);
 
   _Block_object_dispose(&v29, 8);
-  return a3;
+  return analysis;
 }
 
 void __112__VCPHomeKitAnalysisService_requestAnalysis_ofAssetSurface_withProperties_progressHandler_andCompletionHandler___block_invoke(uint64_t a1)
@@ -463,15 +463,15 @@ void __112__VCPHomeKitAnalysisService_requestAnalysis_ofAssetSurface_withPropert
   dispatch_async(v4, block);
 }
 
-- (void)reportProgress:(double)a3 forRequest:(int)a4
+- (void)reportProgress:(double)progress forRequest:(int)request
 {
   v14 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    v11 = a4;
+    requestCopy = request;
     v12 = 2048;
-    v13 = a3;
+    progressCopy = progress;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[HomeKitAnalysis] Request %d is %.2f%% complete", buf, 0x12u);
   }
 
@@ -481,8 +481,8 @@ void __112__VCPHomeKitAnalysisService_requestAnalysis_ofAssetSurface_withPropert
   block[2] = __55__VCPHomeKitAnalysisService_reportProgress_forRequest___block_invoke;
   block[3] = &unk_1E8351740;
   block[4] = self;
-  v9 = a4;
-  *&block[5] = a3;
+  requestCopy2 = request;
+  *&block[5] = progress;
   dispatch_async(managementQueue, block);
 }
 
@@ -505,7 +505,7 @@ void __55__VCPHomeKitAnalysisService_reportProgress_forRequest___block_invoke(ui
   }
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
   managementQueue = self->_managementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -513,7 +513,7 @@ void __55__VCPHomeKitAnalysisService_reportProgress_forRequest___block_invoke(ui
   v4[2] = __43__VCPHomeKitAnalysisService_cancelRequest___block_invoke;
   v4[3] = &unk_1E8351768;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_sync(managementQueue, v4);
 }
 
@@ -585,10 +585,10 @@ void __46__VCPHomeKitAnalysisService_cancelAllRequests__block_invoke_2()
   }
 }
 
-- (int)requestResidentMaintenanceWithOptions:(id)a3 andCompletionHandler:(id)a4
+- (int)requestResidentMaintenanceWithOptions:(id)options andCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -598,17 +598,17 @@ void __46__VCPHomeKitAnalysisService_cancelAllRequests__block_invoke_2()
   v12[1] = 3221225472;
   v12[2] = __98__VCPHomeKitAnalysisService_Resident__requestResidentMaintenanceWithOptions_andCompletionHandler___block_invoke;
   v12[3] = &unk_1E83517B8;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(optionsCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return optionsCopy;
 }
 
 void __98__VCPHomeKitAnalysisService_Resident__requestResidentMaintenanceWithOptions_andCompletionHandler___block_invoke(uint64_t a1)

@@ -1,7 +1,7 @@
 @interface ICSettingsRankingStrategyController
 - (id)specifiers;
-- (id)stateSpecifierNamed:(id)a3 state:(unint64_t)a4 group:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)stateSpecifierNamed:(id)named state:(unint64_t)state group:(id)group;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ICSettingsRankingStrategyController
@@ -45,16 +45,16 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = ICSettingsRankingStrategyController;
-  v7 = a4;
-  [(ICSettingsRankingStrategyController *)&v15 tableView:a3 didSelectRowAtIndexPath:v7];
-  v8 = [(ICSettingsRankingStrategyController *)self specifierAtIndexPath:v7, v15.receiver, v15.super_class];
+  pathCopy = path;
+  [(ICSettingsRankingStrategyController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v8 = [(ICSettingsRankingStrategyController *)self specifierAtIndexPath:pathCopy, v15.receiver, v15.super_class];
 
   objc_opt_class();
-  v9 = [v8 userInfo];
+  userInfo = [v8 userInfo];
   v10 = ICDynamicCast();
 
   objc_opt_class();
@@ -79,28 +79,28 @@
   [(ICSettingsRankingStrategyController *)self reloadSpecifiers];
 }
 
-- (id)stateSpecifierNamed:(id)a3 state:(unint64_t)a4 group:(id)a5
+- (id)stateSpecifierNamed:(id)named state:(unint64_t)state group:(id)group
 {
-  v8 = a5;
-  v9 = [PSSpecifier preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  groupCopy = group;
+  v9 = [PSSpecifier preferenceSpecifierNamed:named target:self set:0 get:0 detail:0 cell:3 edit:0];
   v10 = kICSearchRankingCurrentStrategyKey;
   v17 = kICSearchRankingCurrentStrategyKey;
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  v11 = [NSNumber numberWithUnsignedInteger:state];
   v18 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   [v9 setUserInfo:v12];
 
-  v13 = +[ICSearchRankingStrategySwitch defaultStrategy];
+  unsignedIntegerValue = +[ICSearchRankingStrategySwitch defaultStrategy];
   v14 = [ICSettingsUtilities objectForKey:v10];
   v15 = v14;
   if (v14)
   {
-    v13 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
   }
 
-  if (v13 == a4)
+  if (unsignedIntegerValue == state)
   {
-    [v8 setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
+    [groupCopy setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
   return v9;

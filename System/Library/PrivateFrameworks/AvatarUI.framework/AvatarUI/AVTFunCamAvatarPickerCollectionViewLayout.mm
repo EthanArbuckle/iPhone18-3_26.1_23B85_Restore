@@ -1,23 +1,23 @@
 @interface AVTFunCamAvatarPickerCollectionViewLayout
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3;
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds;
 @end
 
 @implementation AVTFunCamAvatarPickerCollectionViewLayout
 
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds
 {
-  v4 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout:a3.width];
+  v4 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout:bounds.width];
   [v4 defaultCellSize];
   v6 = v5;
-  v7 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v7 engagedCellSize];
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout engagedCellSize];
   v9 = v8 + v6 * 2.0;
-  v10 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  v11 = [v10 interItemSpacingProvider];
-  v12 = v9 + v11[2](1.0) * 2.0;
+  engagementLayout2 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  interItemSpacingProvider = [engagementLayout2 interItemSpacingProvider];
+  v12 = v9 + interItemSpacingProvider[2](1.0) * 2.0;
 
-  v13 = [(AVTFunCamAvatarPickerCollectionViewLayout *)self collectionView];
-  [v13 bounds];
+  collectionView = [(AVTFunCamAvatarPickerCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v15 = (v14 - v12) * 0.5;
 
   v16 = 0.0;

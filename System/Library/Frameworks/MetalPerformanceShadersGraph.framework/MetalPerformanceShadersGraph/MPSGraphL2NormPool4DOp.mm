@@ -1,25 +1,25 @@
 @interface MPSGraphL2NormPool4DOp
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphL2NormPool4DOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v24 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphL2NormPool4DOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphPoolingOps.mm", __p);
-  v11 = v24;
+  v11 = nameCopy;
   v32 = 260;
   v31[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v31);
+  StringAttr = mlir::Builder::getStringAttr(builder, v31);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x34Bu, 0);
   if (v11)
   {
     v15 = v11;
-    v16 = [v11 UTF8String];
-    v17 = strlen(v16);
+    uTF8String = [v11 UTF8String];
+    v17 = strlen(uTF8String);
     if (v17 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -34,7 +34,7 @@
     v30[4] = v17;
     if (v17)
     {
-      memmove(__dst, v16, v17);
+      memmove(__dst, uTF8String, v17);
     }
 
     v19 = &__dst[v18];
@@ -48,7 +48,7 @@
   }
 
   *v19 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v13, &v28);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v13, &v28);
   v20 = v28.__r_.__value_.__r.__words[0];
   if ((v28.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -64,7 +64,7 @@
   }
 
   LOBYTE(v32) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v31);
+  v22 = mlir::Builder::getStringAttr(builder, v31);
   mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v28.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -89,26 +89,26 @@ LABEL_16:
   }
 
   [(MPSGraphPooling4DOpDescriptor *)self->super._desc returnIndicesDataType];
-  if (*(a5 + 1) != *a5)
+  if (*(values + 1) != *values)
   {
-    v25 = [(MPSGraphPooling4DOpDescriptor *)self->super._desc kernelSizes];
-    nsArrayToAttr(v25, a3);
+    kernelSizes = [(MPSGraphPooling4DOpDescriptor *)self->super._desc kernelSizes];
+    nsArrayToAttr(kernelSizes, builder);
   }
 
   std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(MPSGraphOperation *)self name];
-  v14 = [v12 stringWithFormat:@"%@/%@/L2NormPool4DGradient", v11, v13];
+  name = [(MPSGraphOperation *)self name];
+  v14 = [v12 stringWithFormat:@"%@/%@/L2NormPool4DGradient", nameCopy, name];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._graph);
-  v16 = [WeakRetained L2NormPooling4DGradientWithGradientTensor:v10 sourceTensor:v9 descriptor:self->super._desc name:v14];
+  v16 = [WeakRetained L2NormPooling4DGradientWithGradientTensor:gradientCopy sourceTensor:tensorCopy descriptor:self->super._desc name:v14];
 
   return v16;
 }

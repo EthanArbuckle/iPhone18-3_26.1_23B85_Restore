@@ -1,26 +1,26 @@
 @interface BMLocalAuthenticationEvaluationsMechanism
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocalAuthenticationEvaluationsMechanism)initWithAvailable:(id)a3 started:(id)a4 success:(id)a5 lockout:(id)a6 generation:(id)a7;
-- (BMLocalAuthenticationEvaluationsMechanism)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLocalAuthenticationEvaluationsMechanism)initWithAvailable:(id)available started:(id)started success:(id)success lockout:(id)lockout generation:(id)generation;
+- (BMLocalAuthenticationEvaluationsMechanism)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocalAuthenticationEvaluationsMechanism
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMLocalAuthenticationEvaluationsMechanism hasAvailable](self, "hasAvailable") || [v5 hasAvailable])
     {
       if (![(BMLocalAuthenticationEvaluationsMechanism *)self hasAvailable])
@@ -33,8 +33,8 @@
         goto LABEL_28;
       }
 
-      v6 = [(BMLocalAuthenticationEvaluationsMechanism *)self available];
-      if (v6 != [v5 available])
+      available = [(BMLocalAuthenticationEvaluationsMechanism *)self available];
+      if (available != [v5 available])
       {
         goto LABEL_28;
       }
@@ -52,8 +52,8 @@
         goto LABEL_28;
       }
 
-      v7 = [(BMLocalAuthenticationEvaluationsMechanism *)self started];
-      if (v7 != [v5 started])
+      started = [(BMLocalAuthenticationEvaluationsMechanism *)self started];
+      if (started != [v5 started])
       {
         goto LABEL_28;
       }
@@ -71,8 +71,8 @@
         goto LABEL_28;
       }
 
-      v8 = [(BMLocalAuthenticationEvaluationsMechanism *)self success];
-      if (v8 != [v5 success])
+      success = [(BMLocalAuthenticationEvaluationsMechanism *)self success];
+      if (success != [v5 success])
       {
         goto LABEL_28;
       }
@@ -90,8 +90,8 @@
         goto LABEL_28;
       }
 
-      v9 = [(BMLocalAuthenticationEvaluationsMechanism *)self lockout];
-      if (v9 != [v5 lockout])
+      lockout = [(BMLocalAuthenticationEvaluationsMechanism *)self lockout];
+      if (lockout != [v5 lockout])
       {
         goto LABEL_28;
       }
@@ -105,8 +105,8 @@
 
     if (-[BMLocalAuthenticationEvaluationsMechanism hasGeneration](self, "hasGeneration") && [v5 hasGeneration])
     {
-      v10 = [(BMLocalAuthenticationEvaluationsMechanism *)self generation];
-      v11 = v10 == [v5 generation];
+      generation = [(BMLocalAuthenticationEvaluationsMechanism *)self generation];
+      v11 = generation == [v5 generation];
     }
 
     else
@@ -181,45 +181,45 @@ LABEL_30:
 
   v16 = v3;
   v18[0] = @"available";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v8;
+  v19[0] = null;
   v18[1] = @"started";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v9;
+  v19[1] = null2;
   v18[2] = @"success";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v10;
+  v19[2] = null3;
   v18[3] = @"lockout";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v11;
+  v19[3] = null4;
   v18[4] = @"generation";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v12;
+  v19[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:{5, v16}];
   if (v7)
   {
@@ -274,29 +274,29 @@ LABEL_30:
   return v13;
 }
 
-- (BMLocalAuthenticationEvaluationsMechanism)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocalAuthenticationEvaluationsMechanism)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"available"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"available"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"started"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v33 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v46 = *MEMORY[0x1E696A578];
@@ -305,7 +305,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         v39 = 0;
         v16 = 0;
-        *v33 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -317,22 +317,22 @@ LABEL_4:
       v39 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"success"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"success"];
     v36 = v8;
-    v38 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v44 = *MEMORY[0x1E696A578];
@@ -341,10 +341,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v37 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v38;
+        self = selfCopy;
         v8 = v36;
 LABEL_19:
 
@@ -359,13 +359,13 @@ LABEL_19:
       v37 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"lockout"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"lockout"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -375,34 +375,34 @@ LABEL_19:
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v42 = *MEMORY[0x1E696A578];
-        v28 = a4;
+        errorCopy3 = error;
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"lockout"];
         v43 = v15;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v29 = [v34 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v28 = v29;
+        *errorCopy3 = v29;
         goto LABEL_17;
       }
 
-      v12 = a4;
+      errorCopy5 = error;
       v13 = v11;
     }
 
     else
     {
-      v12 = a4;
+      errorCopy5 = error;
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"generation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"generation"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy5)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v32 = *MEMORY[0x1E698F240];
@@ -410,7 +410,7 @@ LABEL_19:
           v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"generation"];
           v41 = v30;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-          *v12 = [v35 initWithDomain:v32 code:2 userInfo:v31];
+          *errorCopy5 = [v35 initWithDomain:v32 code:2 userInfo:v31];
         }
 
         v15 = 0;
@@ -426,8 +426,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMLocalAuthenticationEvaluationsMechanism *)v38 initWithAvailable:v36 started:v39 success:v37 lockout:v13 generation:v15];
-    v38 = v16;
+    v16 = [(BMLocalAuthenticationEvaluationsMechanism *)selfCopy initWithAvailable:v36 started:v39 success:v37 lockout:v13 generation:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -440,14 +440,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy6 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v48 = *MEMORY[0x1E696A578];
@@ -456,7 +456,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy6 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -468,14 +468,14 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMLocalAuthenticationEvaluationsMechanism *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_hasAvailable)
   {
     available = self->_available;
@@ -507,9 +507,9 @@ LABEL_21:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v52.receiver = self;
   v52.super_class = BMLocalAuthenticationEvaluationsMechanism;
   v5 = [(BMEventBase *)&v52 init];
@@ -518,12 +518,12 @@ LABEL_21:
     goto LABEL_87;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_85;
       }
@@ -534,18 +534,18 @@ LABEL_21:
       while (1)
       {
         v53 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v53 & 0x7F) << v7;
@@ -563,9 +563,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_85;
       }
@@ -582,18 +582,18 @@ LABEL_16:
           while (1)
           {
             v53 = 0;
-            v45 = [v4 position] + 1;
-            if (v45 >= [v4 position] && (v46 = objc_msgSend(v4, "position") + 1, v46 <= objc_msgSend(v4, "length")))
+            v45 = [fromCopy position] + 1;
+            if (v45 >= [fromCopy position] && (v46 = objc_msgSend(fromCopy, "position") + 1, v46 <= objc_msgSend(fromCopy, "length")))
             {
-              v47 = [v4 data];
-              [v47 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v44 |= (v53 & 0x7F) << v42;
@@ -611,7 +611,7 @@ LABEL_16:
             }
           }
 
-          v29 = (v44 != 0) & ~[v4 hasError];
+          v29 = (v44 != 0) & ~[fromCopy hasError];
 LABEL_76:
           v48 = 16;
         }
@@ -636,18 +636,18 @@ LABEL_69:
           while (1)
           {
             v53 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v53 & 0x7F) << v23;
@@ -665,7 +665,7 @@ LABEL_69:
             }
           }
 
-          v29 = (v25 != 0) & ~[v4 hasError];
+          v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_82:
           v48 = 18;
         }
@@ -687,18 +687,18 @@ LABEL_82:
         while (1)
         {
           v53 = 0;
-          v39 = [v4 position] + 1;
-          if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+          v39 = [fromCopy position] + 1;
+          if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
           {
-            v41 = [v4 data];
-            [v41 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 |= (v53 & 0x7F) << v36;
@@ -716,7 +716,7 @@ LABEL_82:
           }
         }
 
-        v29 = (v38 != 0) & ~[v4 hasError];
+        v29 = (v38 != 0) & ~[fromCopy hasError];
 LABEL_74:
         v48 = 22;
 LABEL_83:
@@ -736,18 +736,18 @@ LABEL_83:
       while (1)
       {
         v53 = 0;
-        v19 = [v4 position] + 1;
-        if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+        v19 = [fromCopy position] + 1;
+        if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
         {
-          v21 = [v4 data];
-          [v21 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v18 |= (v53 & 0x7F) << v16;
@@ -765,7 +765,7 @@ LABEL_83:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v22 = 0;
       }
@@ -778,8 +778,8 @@ LABEL_83:
 LABEL_80:
       v5->_generation = v22;
 LABEL_84:
-      v49 = [v4 position];
-      if (v49 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_85;
       }
@@ -792,18 +792,18 @@ LABEL_84:
     while (1)
     {
       v53 = 0;
-      v33 = [v4 position] + 1;
-      if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+      v33 = [fromCopy position] + 1;
+      if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
       {
-        v35 = [v4 data];
-        [v35 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+        data6 = [fromCopy data];
+        [data6 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v32 |= (v53 & 0x7F) << v30;
@@ -821,14 +821,14 @@ LABEL_84:
       }
     }
 
-    v29 = (v32 != 0) & ~[v4 hasError];
+    v29 = (v32 != 0) & ~[fromCopy hasError];
 LABEL_72:
     v48 = 20;
     goto LABEL_83;
   }
 
 LABEL_85:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_86:
     v50 = 0;
@@ -856,23 +856,23 @@ LABEL_87:
   return v9;
 }
 
-- (BMLocalAuthenticationEvaluationsMechanism)initWithAvailable:(id)a3 started:(id)a4 success:(id)a5 lockout:(id)a6 generation:(id)a7
+- (BMLocalAuthenticationEvaluationsMechanism)initWithAvailable:(id)available started:(id)started success:(id)success lockout:(id)lockout generation:(id)generation
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  availableCopy = available;
+  startedCopy = started;
+  successCopy = success;
+  lockoutCopy = lockout;
+  generationCopy = generation;
   v20.receiver = self;
   v20.super_class = BMLocalAuthenticationEvaluationsMechanism;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (availableCopy)
     {
       v17->_hasAvailable = 1;
-      v17->_available = [v12 BOOLValue];
+      v17->_available = [availableCopy BOOLValue];
     }
 
     else
@@ -881,10 +881,10 @@ LABEL_87:
       v17->_available = 0;
     }
 
-    if (v13)
+    if (startedCopy)
     {
       v17->_hasStarted = 1;
-      v17->_started = [v13 BOOLValue];
+      v17->_started = [startedCopy BOOLValue];
     }
 
     else
@@ -893,10 +893,10 @@ LABEL_87:
       v17->_started = 0;
     }
 
-    if (v14)
+    if (successCopy)
     {
       v17->_hasSuccess = 1;
-      v17->_success = [v14 BOOLValue];
+      v17->_success = [successCopy BOOLValue];
     }
 
     else
@@ -905,10 +905,10 @@ LABEL_87:
       v17->_success = 0;
     }
 
-    if (v15)
+    if (lockoutCopy)
     {
       v17->_hasLockout = 1;
-      v17->_lockout = [v15 BOOLValue];
+      v17->_lockout = [lockoutCopy BOOLValue];
     }
 
     else
@@ -917,19 +917,19 @@ LABEL_87:
       v17->_lockout = 0;
     }
 
-    if (v16)
+    if (generationCopy)
     {
       v17->_hasGeneration = 1;
-      v18 = [v16 unsignedIntValue];
+      unsignedIntValue = [generationCopy unsignedIntValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntValue = 0;
       v17->_hasGeneration = 0;
     }
 
-    v17->_generation = v18;
+    v17->_generation = unsignedIntValue;
   }
 
   return v17;
@@ -974,9 +974,9 @@ LABEL_87:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -984,8 +984,8 @@ LABEL_87:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocalAuthenticationEvaluationsMechanism alloc] initByReadFrom:v7];
     v4 = v8;

@@ -2,17 +2,17 @@
 + (id)classIdentifier;
 - (BOOL)isEmpty;
 - (TUMetadataCacheDataProvider)init;
-- (TUMetadataCacheDataProvider)initWithQueue:(id)a3;
+- (TUMetadataCacheDataProvider)initWithQueue:(id)queue;
 - (TUMetadataCacheDataProviderDelegate)delegate;
 - (id)description;
-- (id)metadataDictForDestinationID:(id)a3;
-- (id)metadataForDestinationID:(id)a3;
+- (id)metadataDictForDestinationID:(id)d;
+- (id)metadataForDestinationID:(id)d;
 - (void)_invalidateCache;
 - (void)invalidateCache;
 - (void)refresh;
-- (void)setDelegate:(id)a3;
-- (void)setMetadataDict:(id)a3 forDestinationID:(id)a4;
-- (void)setObject:(id)a3 forDestinationID:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setMetadataDict:(id)dict forDestinationID:(id)d;
+- (void)setObject:(id)object forDestinationID:(id)d;
 @end
 
 @implementation TUMetadataCacheDataProvider
@@ -20,9 +20,9 @@
 - (TUMetadataCacheDataProvider)init
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() classIdentifier];
+  classIdentifier = [objc_opt_class() classIdentifier];
   v5 = NSStringFromSelector(sel_queue);
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@.%@", classIdentifier, v5];
 
   v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
   v8 = dispatch_queue_create([v6 UTF8String], v7);
@@ -36,30 +36,30 @@
   v2 = objc_opt_class();
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:v2];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
   v6 = NSStringFromClass(v2);
-  v7 = [v3 stringWithFormat:@"%@.%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@.%@", bundleIdentifier, v6];
 
   return v7;
 }
 
-- (TUMetadataCacheDataProvider)initWithQueue:(id)a3
+- (TUMetadataCacheDataProvider)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = TUMetadataCacheDataProvider;
   v6 = [(TUMetadataCacheDataProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_queue, queue);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     providerCache = v7->_providerCache;
-    v7->_providerCache = v8;
+    v7->_providerCache = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     providerDictCache = v7->_providerDictCache;
-    v7->_providerDictCache = v10;
+    v7->_providerDictCache = dictionary2;
   }
 
   return v7;
@@ -73,14 +73,14 @@
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__TUMetadataCacheDataProvider_delegate__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -98,39 +98,39 @@ uint64_t __39__TUMetadataCacheDataProvider_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUMetadataCacheDataProvider *)self queue];
+  delegateCopy = delegate;
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__TUMetadataCacheDataProvider_setDelegate___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)metadataForDestinationID:(id)a3
+- (id)metadataForDestinationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__6;
   v16 = __Block_byref_object_dispose__6;
   v17 = 0;
-  v5 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__TUMetadataCacheDataProvider_metadataForDestinationID___block_invoke;
   block[3] = &unk_1E7425390;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -148,25 +148,25 @@ void __56__TUMetadataCacheDataProvider_metadataForDestinationID___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (id)metadataDictForDestinationID:(id)a3
+- (id)metadataDictForDestinationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__6;
   v16 = __Block_byref_object_dispose__6;
   v17 = 0;
-  v5 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__TUMetadataCacheDataProvider_metadataDictForDestinationID___block_invoke;
   block[3] = &unk_1E7425390;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -184,21 +184,21 @@ void __60__TUMetadataCacheDataProvider_metadataDictForDestinationID___block_invo
   *(v4 + 40) = v3;
 }
 
-- (void)setObject:(id)a3 forDestinationID:(id)a4
+- (void)setObject:(id)object forDestinationID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMetadataCacheDataProvider *)self queue];
+  objectCopy = object;
+  dCopy = d;
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__TUMetadataCacheDataProvider_setObject_forDestinationID___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__TUMetadataCacheDataProvider_setObject_forDestinationID___block_invoke(uint64_t a1)
@@ -208,21 +208,21 @@ void __58__TUMetadataCacheDataProvider_setObject_forDestinationID___block_invoke
   [v2 setObject:v3 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)setMetadataDict:(id)a3 forDestinationID:(id)a4
+- (void)setMetadataDict:(id)dict forDestinationID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMetadataCacheDataProvider *)self queue];
+  dictCopy = dict;
+  dCopy = d;
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__TUMetadataCacheDataProvider_setMetadataDict_forDestinationID___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = dictCopy;
+  v9 = dictCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __64__TUMetadataCacheDataProvider_setMetadataDict_forDestinationID___block_invoke(uint64_t a1)
@@ -234,13 +234,13 @@ void __64__TUMetadataCacheDataProvider_setMetadataDict_forDestinationID___block_
 
 - (void)refresh
 {
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__TUMetadataCacheDataProvider_refresh__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __38__TUMetadataCacheDataProvider_refresh__block_invoke(uint64_t a1)
@@ -260,43 +260,43 @@ void __38__TUMetadataCacheDataProvider_refresh__block_invoke(uint64_t a1)
 
 - (void)invalidateCache
 {
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__TUMetadataCacheDataProvider_invalidateCache__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_invalidateCache
 {
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUMetadataCacheDataProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(TUMetadataCacheDataProvider *)self providerCache];
-  [v4 removeAllObjects];
+  providerCache = [(TUMetadataCacheDataProvider *)self providerCache];
+  [providerCache removeAllObjects];
 }
 
 - (BOOL)isEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__TUMetadataCacheDataProvider_isEmpty__block_invoke;
   v5[3] = &unk_1E7425318;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __38__TUMetadataCacheDataProvider_isEmpty__block_invoke(uint64_t a1)
@@ -313,14 +313,14 @@ void __38__TUMetadataCacheDataProvider_isEmpty__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(TUMetadataCacheDataProvider *)self queue];
+  queue = [(TUMetadataCacheDataProvider *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__TUMetadataCacheDataProvider_description__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

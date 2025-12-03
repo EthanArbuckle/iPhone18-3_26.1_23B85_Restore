@@ -1,8 +1,8 @@
 @interface NSSExternalAnalyticsEvent
 - (NSSExternalAnalyticsEvent)init;
-- (NSSExternalAnalyticsEvent)initWithSession:(id)a3 requestQueryParameters:(id)a4;
+- (NSSExternalAnalyticsEvent)initWithSession:(id)session requestQueryParameters:(id)parameters;
 - (id)copy;
-- (id)requestMetadataWithExternalAnalyticsIdentifier:(id)a3;
+- (id)requestMetadataWithExternalAnalyticsIdentifier:(id)identifier;
 @end
 
 @implementation NSSExternalAnalyticsEvent
@@ -33,20 +33,20 @@
   objc_exception_throw(v6);
 }
 
-- (NSSExternalAnalyticsEvent)initWithSession:(id)a3 requestQueryParameters:(id)a4
+- (NSSExternalAnalyticsEvent)initWithSession:(id)session requestQueryParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  sessionCopy = session;
+  parametersCopy = parameters;
+  if (!sessionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSExternalAnalyticsEvent initWithSession:requestQueryParameters:];
-    if (v7)
+    if (parametersCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (parametersCopy)
   {
     goto LABEL_6;
   }
@@ -62,11 +62,11 @@ LABEL_6:
   v8 = [(NSSExternalAnalyticsEvent *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [sessionCopy copy];
     session = v8->_session;
     v8->_session = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     requestQueryParameters = v8->_requestQueryParameters;
     v8->_requestQueryParameters = v11;
   }
@@ -81,24 +81,24 @@ LABEL_6:
   return [(NSSExternalAnalyticsEvent *)&v3 copy];
 }
 
-- (id)requestMetadataWithExternalAnalyticsIdentifier:(id)a3
+- (id)requestMetadataWithExternalAnalyticsIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSExternalAnalyticsEvent requestMetadataWithExternalAnalyticsIdentifier:];
   }
 
-  v5 = [(NSSExternalAnalyticsEvent *)self requestQueryParameters];
-  v6 = [v5 objectForKey:@"udid"];
-  v7 = [v5 objectForKey:@"articleID"];
-  v8 = [v5 objectForKey:@"pub"];
-  v9 = [v5 objectForKey:@"event"];
+  requestQueryParameters = [(NSSExternalAnalyticsEvent *)self requestQueryParameters];
+  v6 = [requestQueryParameters objectForKey:@"udid"];
+  v7 = [requestQueryParameters objectForKey:@"articleID"];
+  v8 = [requestQueryParameters objectForKey:@"pub"];
+  v9 = [requestQueryParameters objectForKey:@"event"];
   v10 = NTPBExternalAnalyticsEventTypeFromExternalEventURLQueryParameter(v9);
 
   v11 = [NSSExternalAnalyticsRequestMetadata alloc];
-  v12 = [(NSSExternalAnalyticsEvent *)self session];
-  v13 = [(NSSExternalAnalyticsRequestMetadata *)v11 initWithSession:v12 eventIdentifier:v6 externalAnalyticsIdentifier:v4 contentViewedIdentifier:v7 publisherIdentifier:v8 eventType:v10];
+  session = [(NSSExternalAnalyticsEvent *)self session];
+  v13 = [(NSSExternalAnalyticsRequestMetadata *)v11 initWithSession:session eventIdentifier:v6 externalAnalyticsIdentifier:identifierCopy contentViewedIdentifier:v7 publisherIdentifier:v8 eventType:v10];
 
   return v13;
 }

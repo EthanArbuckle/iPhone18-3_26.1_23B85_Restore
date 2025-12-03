@@ -1,6 +1,6 @@
 @interface AGXG18PFamilyBuffer
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5;
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
 - (void)dealloc;
 @end
 
@@ -19,25 +19,25 @@
   [(AGXBuffer *)&v4 dealloc];
 }
 
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error
 {
-  if (![a3 validateWithBuffer:self offset:a4 error:a5])
+  if (![descriptor validateWithBuffer:self offset:offset error:error])
   {
     return 0;
   }
 
-  v8 = [a3 dataType];
-  if (v8 <= 36)
+  dataType = [descriptor dataType];
+  if (dataType <= 36)
   {
-    if (v8 > 28)
+    if (dataType > 28)
     {
-      if (v8 == 29)
+      if (dataType == 29)
       {
         v9 = 7u;
         goto LABEL_25;
       }
 
-      if (v8 == 33)
+      if (dataType == 33)
       {
         v9 = 8u;
         goto LABEL_25;
@@ -46,13 +46,13 @@
 
     else
     {
-      if (v8 == 3)
+      if (dataType == 3)
       {
         v9 = 0;
         goto LABEL_25;
       }
 
-      if (v8 == 16)
+      if (dataType == 16)
       {
         v9 = 1u;
         goto LABEL_25;
@@ -60,15 +60,15 @@
     }
   }
 
-  else if (v8 <= 44)
+  else if (dataType <= 44)
   {
-    if (v8 == 37)
+    if (dataType == 37)
     {
       v9 = 5u;
       goto LABEL_25;
     }
 
-    if (v8 == 41)
+    if (dataType == 41)
     {
       v9 = 6u;
       goto LABEL_25;
@@ -77,7 +77,7 @@
 
   else
   {
-    switch(v8)
+    switch(dataType)
     {
       case '-':
         v9 = 3u;
@@ -93,24 +93,24 @@
 
   v9 = 0xFFu;
 LABEL_25:
-  v11 = a4 / AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[v9];
+  v11 = offset / AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[v9];
   v12 = [AGXG18PFamilyTensor alloc];
-  v13 = [(IOGPUMetalResource *)self device];
-  v14 = [objc_msgSend(a3 "dimensions")];
-  v15 = [objc_msgSend(a3 "dimensions")];
-  v16 = [objc_msgSend(a3 "strides")];
-  v17 = [a3 dataType];
-  if (v17 <= 36)
+  device = [(IOGPUMetalResource *)self device];
+  v14 = [objc_msgSend(descriptor "dimensions")];
+  v15 = [objc_msgSend(descriptor "dimensions")];
+  v16 = [objc_msgSend(descriptor "strides")];
+  dataType2 = [descriptor dataType];
+  if (dataType2 <= 36)
   {
-    if (v17 > 28)
+    if (dataType2 > 28)
     {
-      if (v17 == 29)
+      if (dataType2 == 29)
       {
         v18 = 7;
         goto LABEL_47;
       }
 
-      if (v17 == 33)
+      if (dataType2 == 33)
       {
         v18 = 8;
         goto LABEL_47;
@@ -119,13 +119,13 @@ LABEL_25:
 
     else
     {
-      if (v17 == 3)
+      if (dataType2 == 3)
       {
         v18 = 0;
         goto LABEL_47;
       }
 
-      if (v17 == 16)
+      if (dataType2 == 16)
       {
         v18 = 1;
         goto LABEL_47;
@@ -137,15 +137,15 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if (v17 <= 44)
+  if (dataType2 <= 44)
   {
-    if (v17 == 37)
+    if (dataType2 == 37)
     {
       v18 = 5;
       goto LABEL_47;
     }
 
-    if (v17 == 41)
+    if (dataType2 == 41)
     {
       v18 = 6;
       goto LABEL_47;
@@ -154,19 +154,19 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (v17 == 45)
+  if (dataType2 == 45)
   {
     v18 = 3;
     goto LABEL_47;
   }
 
-  if (v17 == 49)
+  if (dataType2 == 49)
   {
     v18 = 4;
     goto LABEL_47;
   }
 
-  if (v17 != 121)
+  if (dataType2 != 121)
   {
     goto LABEL_46;
   }
@@ -174,18 +174,18 @@ LABEL_46:
   v18 = 2;
 LABEL_47:
   LOBYTE(v19) = v18;
-  return -[AGXG18PFamilyTensor initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:](v12, "initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:", self, v13, v14, v15 + 8, v16 + 8, v11, v19, [a3 usage], objc_msgSend(a3, "resourceIndex"));
+  return -[AGXG18PFamilyTensor initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:](v12, "initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:", self, device, v14, v15 + 8, v16 + 8, v11, v19, [descriptor usage], objc_msgSend(descriptor, "resourceIndex"));
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
-  result = [(AGXTexture *)[AGXG18PFamilyTexture alloc] initWithBuffer:self desc:a3 offset:a4 bytesPerRow:a5];
+  result = [(AGXTexture *)[AGXG18PFamilyTexture alloc] initWithBuffer:self desc:descriptor offset:offset bytesPerRow:row];
   if (result)
   {
     v7 = result;
-    v8 = [(IOGPUMetalResource *)self device];
+    device = [(IOGPUMetalResource *)self device];
     result = v7;
-    atomic_fetch_or(v8 + 107, 0x80000uLL);
+    atomic_fetch_or(device + 107, 0x80000uLL);
   }
 
   return result;

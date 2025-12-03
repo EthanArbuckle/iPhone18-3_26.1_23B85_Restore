@@ -4,7 +4,7 @@
 - (id)cancelAction;
 - (void)alternateResponse;
 - (void)defaultResponse;
-- (void)setCancelAction:(id)a3;
+- (void)setCancelAction:(id)action;
 - (void)show;
 @end
 
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setCancelAction:(id)a3
+- (void)setCancelAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -47,13 +47,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_100179714(v4, v5);
 }
 
 - (NSString)message
 {
-  v2 = self;
+  selfCopy = self;
   sub_100179B6C();
   v4 = v3;
 
@@ -72,7 +72,7 @@
 
 - (NSString)alternateButtonTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_100179E10();
   v4 = v3;
 
@@ -91,19 +91,19 @@
 
 - (void)defaultResponse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100179E28();
 }
 
 - (void)alternateResponse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017A0AC();
 }
 
 - (void)show
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017A160();
 }
 

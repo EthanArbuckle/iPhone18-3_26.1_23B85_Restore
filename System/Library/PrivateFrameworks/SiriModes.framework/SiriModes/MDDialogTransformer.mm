@@ -1,41 +1,41 @@
 @interface MDDialogTransformer
 + (BOOL)_alwaysPrintSiriResponse;
-+ (BOOL)supportsTransformationForAceCommand:(id)a3;
-+ (id)_addViewsForAddDialogs:(id)a3 views:(id)a4;
++ (BOOL)supportsTransformationForAceCommand:(id)command;
++ (id)_addViewsForAddDialogs:(id)dialogs views:(id)views;
 + (id)_configurationDictionary;
-+ (id)_firstSnippetInViews:(id)a3;
++ (id)_firstSnippetInViews:(id)views;
 + (id)_redundantDUCIds;
-+ (id)_removeRedundantUtteranceViewsFromAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (id)_removeSpeakableTextFromAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (id)_removeUtteranceViewsFromAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (id)_sayItForDialog:(id)a3;
-+ (id)_speakableTextForDialog:(id)a3 mode:(unint64_t)a4;
-+ (id)_transformDialogAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (id)_transformLegacyAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (id)_utteranceViewForDialog:(id)a3 mode:(unint64_t)a4 printedOnly:(BOOL)a5;
-+ (id)transformAddDialogs:(id)a3 forMode:(unint64_t)a4;
-+ (id)transformAddViews:(id)a3 forMode:(unint64_t)a4;
-+ (unint64_t)typeOfAddViews:(id)a3;
-+ (void)_logModeComputationForAceCommand:(id)a3 mode:(unint64_t)a4;
++ (id)_removeRedundantUtteranceViewsFromAddViews:(id)views forMode:(unint64_t)mode;
++ (id)_removeSpeakableTextFromAddViews:(id)views forMode:(unint64_t)mode;
++ (id)_removeUtteranceViewsFromAddViews:(id)views forMode:(unint64_t)mode;
++ (id)_sayItForDialog:(id)dialog;
++ (id)_speakableTextForDialog:(id)dialog mode:(unint64_t)mode;
++ (id)_transformDialogAddViews:(id)views forMode:(unint64_t)mode;
++ (id)_transformLegacyAddViews:(id)views forMode:(unint64_t)mode;
++ (id)_utteranceViewForDialog:(id)dialog mode:(unint64_t)mode printedOnly:(BOOL)only;
++ (id)transformAddDialogs:(id)dialogs forMode:(unint64_t)mode;
++ (id)transformAddViews:(id)views forMode:(unint64_t)mode;
++ (unint64_t)typeOfAddViews:(id)views;
++ (void)_logModeComputationForAceCommand:(id)command mode:(unint64_t)mode;
 @end
 
 @implementation MDDialogTransformer
 
-+ (id)transformAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)transformAddViews:(id)views forMode:(unint64_t)mode
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  [a1 _logModeComputationForAceCommand:v7 mode:a4];
-  v8 = [a1 typeOfAddViews:v7];
+  viewsCopy = views;
+  [self _logModeComputationForAceCommand:viewsCopy mode:mode];
+  v8 = [self typeOfAddViews:viewsCopy];
   if (v8 == 2)
   {
     v16 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [MDDialogTransformer transformAddViews:v16 forMode:v7];
+      [MDDialogTransformer transformAddViews:v16 forMode:viewsCopy];
     }
 
-    v4 = [v7 copy];
+    v4 = [viewsCopy copy];
     [v4 setViews:MEMORY[0x277CBEBF8]];
   }
 
@@ -47,15 +47,15 @@
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [v7 aceId];
+        aceId = [viewsCopy aceId];
         v19 = 136315394;
         v20 = "+[MDDialogTransformer transformAddViews:forMode:]";
         v21 = 2112;
-        v22 = v15;
+        v22 = aceId;
         _os_log_impl(&dword_26807E000, v14, OS_LOG_TYPE_DEFAULT, "%s #modes Found dialog AddViews (aceId = %@)", &v19, 0x16u);
       }
 
-      v12 = [a1 _transformDialogAddViews:v7 forMode:a4];
+      v12 = [self _transformDialogAddViews:viewsCopy forMode:mode];
     }
 
     else
@@ -69,15 +69,15 @@
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v7 aceId];
+        aceId2 = [viewsCopy aceId];
         v19 = 136315394;
         v20 = "+[MDDialogTransformer transformAddViews:forMode:]";
         v21 = 2112;
-        v22 = v11;
+        v22 = aceId2;
         _os_log_impl(&dword_26807E000, v10, OS_LOG_TYPE_DEFAULT, "%s #modes Found legacy AddViews (aceId = %@)", &v19, 0x16u);
       }
 
-      v12 = [a1 _transformLegacyAddViews:v7 forMode:a4];
+      v12 = [self _transformLegacyAddViews:viewsCopy forMode:mode];
     }
 
     v4 = v12;
@@ -90,31 +90,31 @@ LABEL_14:
   return v4;
 }
 
-+ (id)transformAddDialogs:(id)a3 forMode:(unint64_t)a4
++ (id)transformAddDialogs:(id)dialogs forMode:(unint64_t)mode
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [a1 _logModeComputationForAceCommand:v6 mode:a4];
+  dialogsCopy = dialogs;
+  [self _logModeComputationForAceCommand:dialogsCopy mode:mode];
   v7 = MEMORY[0x277CEF098];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 aceId];
-    v11 = [v6 dialogs];
+    aceId = [dialogsCopy aceId];
+    dialogs = [dialogsCopy dialogs];
     *buf = 136315650;
     v39 = "+[MDDialogTransformer transformAddDialogs:forMode:]";
     v40 = 2112;
-    v41 = v10;
+    v41 = aceId;
     v42 = 2048;
-    v43 = [v11 count];
+    v43 = [dialogs count];
     _os_log_impl(&dword_26807E000, v9, OS_LOG_TYPE_DEFAULT, "%s #modes AddDialogs (aceId = %@) contains %tu dialogs", buf, 0x20u);
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [a1 _alwaysPrintSiriResponse];
-  if (v13)
+  _alwaysPrintSiriResponse = [self _alwaysPrintSiriResponse];
+  if (_alwaysPrintSiriResponse)
   {
     v14 = *v7;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -129,8 +129,8 @@ LABEL_14:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = [v6 dialogs];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  dialogs2 = [dialogsCopy dialogs];
+  v16 = [dialogs2 countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v16)
   {
     v17 = v16;
@@ -141,24 +141,24 @@ LABEL_14:
       {
         if (*v35 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(dialogs2);
         }
 
         v20 = *(*(&v34 + 1) + 8 * i);
-        if ((v13 | [v20 spokenOnly] ^ 1) == 1)
+        if ((_alwaysPrintSiriResponse | [v20 spokenOnly] ^ 1) == 1)
         {
-          v21 = [a1 _utteranceViewForDialog:v20 mode:a4 printedOnly:1];
+          v21 = [self _utteranceViewForDialog:v20 mode:mode printedOnly:1];
           [v12 addObject:v21];
         }
 
-        if (([v20 printedOnly] & 1) == 0 && a4 <= 3 && a4 != 2)
+        if (([v20 printedOnly] & 1) == 0 && mode <= 3 && mode != 2)
         {
-          v22 = [a1 _sayItForDialog:v20];
+          v22 = [self _sayItForDialog:v20];
           [v33 addObject:v22];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v17 = [dialogs2 countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v17);
@@ -168,13 +168,13 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v24 = v23;
-    v25 = [v32 aceId];
+    aceId2 = [v32 aceId];
     v26 = [v12 count];
     v27 = [v33 count];
     *buf = 136315906;
     v39 = "+[MDDialogTransformer transformAddDialogs:forMode:]";
     v40 = 2112;
-    v41 = v25;
+    v41 = aceId2;
     v42 = 2048;
     v43 = v26;
     v44 = 2048;
@@ -185,7 +185,7 @@ LABEL_14:
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([v12 count])
   {
-    v29 = [a1 _addViewsForAddDialogs:v32 views:v12];
+    v29 = [self _addViewsForAddDialogs:v32 views:v12];
     [v28 addObject:v29];
   }
 
@@ -199,9 +199,9 @@ LABEL_14:
   return v28;
 }
 
-+ (BOOL)supportsTransformationForAceCommand:(id)a3
++ (BOOL)supportsTransformationForAceCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -217,15 +217,15 @@ LABEL_14:
   return isKindOfClass & 1;
 }
 
-+ (unint64_t)typeOfAddViews:(id)a3
++ (unint64_t)typeOfAddViews:(id)views
 {
   v24 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [a3 views];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  views = [views views];
+  v4 = [views countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -238,19 +238,19 @@ LABEL_14:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(views);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         objc_opt_class();
         v7 |= objc_opt_isKindOfClass();
-        v11 = [v10 dialog];
-        LODWORD(v10) = v11 != 0;
+        dialog = [v10 dialog];
+        LODWORD(v10) = dialog != 0;
 
         v6 |= v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v5 = [views countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v5);
@@ -302,20 +302,20 @@ LABEL_20:
   return result;
 }
 
-+ (id)_transformLegacyAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)_transformLegacyAddViews:(id)views forMode:(unint64_t)mode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (([a1 _shouldTransformLegacyAddViews] & 1) == 0)
+  viewsCopy = views;
+  if (([self _shouldTransformLegacyAddViews] & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  if (a4 < 2 || a4 == 3)
+  if (mode < 2 || mode == 3)
   {
-    if (![a1 _alwaysPrintSiriResponse])
+    if (![self _alwaysPrintSiriResponse])
     {
-      v11 = [a1 _removeUtteranceViewsFromAddViews:v7 forMode:a4];
+      v11 = [self _removeUtteranceViewsFromAddViews:viewsCopy forMode:mode];
       goto LABEL_13;
     }
 
@@ -328,15 +328,15 @@ LABEL_20:
     }
 
 LABEL_12:
-    v11 = v7;
+    v11 = viewsCopy;
 LABEL_13:
     v4 = v11;
     goto LABEL_14;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
-    if ([a1 _alwaysPrintSiriResponse])
+    if ([self _alwaysPrintSiriResponse])
     {
       v8 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -346,16 +346,16 @@ LABEL_13:
         _os_log_impl(&dword_26807E000, v8, OS_LOG_TYPE_DEFAULT, "%s #modes alwaysPrintSiriResponse = YES", &v15, 0xCu);
       }
 
-      v9 = v7;
+      v9 = viewsCopy;
     }
 
     else
     {
-      v9 = [a1 _removeRedundantUtteranceViewsFromAddViews:v7 forMode:2];
+      v9 = [self _removeRedundantUtteranceViewsFromAddViews:viewsCopy forMode:2];
     }
 
     v14 = v9;
-    v4 = [a1 _removeSpeakableTextFromAddViews:v9 forMode:2];
+    v4 = [self _removeSpeakableTextFromAddViews:v9 forMode:2];
   }
 
 LABEL_14:
@@ -371,7 +371,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __47__MDDialogTransformer__configurationDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_configurationDictionary_onceToken != -1)
   {
     dispatch_once(&_configurationDictionary_onceToken, block);
@@ -410,7 +410,7 @@ void __47__MDDialogTransformer__configurationDictionary__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __39__MDDialogTransformer__redundantDUCIds__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_redundantDUCIds_onceToken != -1)
   {
     dispatch_once(&_redundantDUCIds_onceToken, block);
@@ -470,21 +470,21 @@ void __39__MDDialogTransformer__redundantDUCIds__block_invoke(uint64_t a1)
 
 + (BOOL)_alwaysPrintSiriResponse
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 siriResponseShouldAlwaysPrint];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  siriResponseShouldAlwaysPrint = [mEMORY[0x277CEF368] siriResponseShouldAlwaysPrint];
 
-  return v3;
+  return siriResponseShouldAlwaysPrint;
 }
 
-+ (id)_firstSnippetInViews:(id)a3
++ (id)_firstSnippetInViews:(id)views
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  viewsCopy = views;
+  v4 = [viewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -494,7 +494,7 @@ void __39__MDDialogTransformer__redundantDUCIds__block_invoke(uint64_t a1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -506,7 +506,7 @@ void __39__MDDialogTransformer__redundantDUCIds__block_invoke(uint64_t a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [viewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -523,24 +523,24 @@ LABEL_11:
   return v4;
 }
 
-+ (id)_removeRedundantUtteranceViewsFromAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)_removeRedundantUtteranceViewsFromAddViews:(id)views forMode:(unint64_t)mode
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 views];
-  v7 = [a1 _firstSnippetInViews:v6];
+  viewsCopy = views;
+  views = [viewsCopy views];
+  v7 = [self _firstSnippetInViews:views];
 
   if (v7)
   {
     v28 = v7;
-    v30 = [a1 _redundantDUCIds];
+    _redundantDUCIds = [self _redundantDUCIds];
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [v5 views];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    views2 = [viewsCopy views];
+    v10 = [views2 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v10)
     {
       v11 = v10;
@@ -551,7 +551,7 @@ LABEL_11:
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(views2);
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
@@ -559,18 +559,18 @@ LABEL_11:
           if (objc_opt_isKindOfClass())
           {
             v15 = v14;
-            v16 = [v15 dialogIdentifier];
-            v17 = v16;
+            dialogIdentifier = [v15 dialogIdentifier];
+            v17 = dialogIdentifier;
             v18 = &stru_2878F0090;
-            if (v16)
+            if (dialogIdentifier)
             {
-              v18 = v16;
+              v18 = dialogIdentifier;
             }
 
             v19 = v18;
 
-            v20 = [(__CFString *)v19 lowercaseString];
-            v21 = [v30 containsObject:v20];
+            lowercaseString = [(__CFString *)v19 lowercaseString];
+            v21 = [_redundantDUCIds containsObject:lowercaseString];
 
             if (v21)
             {
@@ -578,7 +578,7 @@ LABEL_11:
               if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
               {
                 v23 = v22;
-                v24 = MDModeGetName(a4);
+                v24 = MDModeGetName(mode);
                 *buf = 136315650;
                 v36 = "+[MDDialogTransformer _removeRedundantUtteranceViewsFromAddViews:forMode:]";
                 v37 = 2112;
@@ -601,13 +601,13 @@ LABEL_11:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v11 = [views2 countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v11);
     }
 
-    v25 = [v5 copy];
+    v25 = [viewsCopy copy];
     [v25 setViews:v8];
 
     v7 = v28;
@@ -615,7 +615,7 @@ LABEL_11:
 
   else
   {
-    v25 = v5;
+    v25 = viewsCopy;
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -623,11 +623,11 @@ LABEL_11:
   return v25;
 }
 
-+ (id)_removeSpeakableTextFromAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)_removeSpeakableTextFromAddViews:(id)views forMode:(unint64_t)mode
 {
   v82 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  [v57 views];
+  viewsCopy = views;
+  [viewsCopy views];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
@@ -651,12 +651,12 @@ LABEL_11:
         }
 
         v9 = *(*(&v68 + 1) + 8 * v8);
-        v10 = [v9 speakableText];
+        speakableText = [v9 speakableText];
 
-        if (v10)
+        if (speakableText)
         {
-          v11 = [v9 speakableText];
-          v12 = [v11 length];
+          speakableText2 = [v9 speakableText];
+          v12 = [speakableText2 length];
 
           if (v12)
           {
@@ -664,15 +664,15 @@ LABEL_11:
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v14 = v13;
-              v15 = [v9 speakableText];
-              v16 = [v9 aceId];
-              v17 = MDModeGetName(a4);
+              speakableText3 = [v9 speakableText];
+              aceId = [v9 aceId];
+              v17 = MDModeGetName(mode);
               *buf = 136315906;
               v74 = "+[MDDialogTransformer _removeSpeakableTextFromAddViews:forMode:]";
               v75 = 2112;
-              v76 = v15;
+              v76 = speakableText3;
               v77 = 2112;
-              v78 = v16;
+              v78 = aceId;
               v79 = 2112;
               v80 = v17;
               _os_log_impl(&dword_26807E000, v14, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing speakableText '%@' from view %@ for current mode: %@", buf, 0x2Au);
@@ -687,8 +687,8 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v19 = v9;
-          v20 = [v19 speakableSuffix];
-          v21 = [v20 length];
+          speakableSuffix = [v19 speakableSuffix];
+          v21 = [speakableSuffix length];
 
           if (v21)
           {
@@ -696,15 +696,15 @@ LABEL_11:
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v23 = v22;
-              v24 = [v19 speakableSuffix];
-              v25 = [v19 aceId];
-              v26 = MDModeGetName(a4);
+              speakableSuffix2 = [v19 speakableSuffix];
+              aceId2 = [v19 aceId];
+              v26 = MDModeGetName(mode);
               *buf = 136315906;
               v74 = "+[MDDialogTransformer _removeSpeakableTextFromAddViews:forMode:]";
               v75 = 2112;
-              v76 = v24;
+              v76 = speakableSuffix2;
               v77 = 2112;
-              v78 = v25;
+              v78 = aceId2;
               v79 = 2112;
               v80 = v26;
               _os_log_impl(&dword_26807E000, v23, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing speakableSuffix '%@' from SAUIDisambiguationList %@ for current mode: %@", buf, 0x2Au);
@@ -712,8 +712,8 @@ LABEL_11:
           }
 
           [v19 setSpeakableSuffix:0];
-          v27 = [v19 speakableDelimiter];
-          v28 = [v27 length];
+          speakableDelimiter = [v19 speakableDelimiter];
+          v28 = [speakableDelimiter length];
 
           if (v28)
           {
@@ -721,15 +721,15 @@ LABEL_11:
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v30 = v29;
-              v31 = [v19 speakableDelimiter];
-              v32 = [v19 aceId];
-              v33 = MDModeGetName(a4);
+              speakableDelimiter2 = [v19 speakableDelimiter];
+              aceId3 = [v19 aceId];
+              v33 = MDModeGetName(mode);
               *buf = 136315906;
               v74 = "+[MDDialogTransformer _removeSpeakableTextFromAddViews:forMode:]";
               v75 = 2112;
-              v76 = v31;
+              v76 = speakableDelimiter2;
               v77 = 2112;
-              v78 = v32;
+              v78 = aceId3;
               v79 = 2112;
               v80 = v33;
               _os_log_impl(&dword_26807E000, v30, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing speakableDelimiter '%@' from SAUIDisambiguationList %@ for current mode: %@", buf, 0x2Au);
@@ -738,8 +738,8 @@ LABEL_11:
 
           v62 = v8;
           [v19 setSpeakableDelimiter:0];
-          v34 = [v19 speakableFinalDelimiter];
-          v35 = [v34 length];
+          speakableFinalDelimiter = [v19 speakableFinalDelimiter];
+          v35 = [speakableFinalDelimiter length];
 
           if (v35)
           {
@@ -747,15 +747,15 @@ LABEL_11:
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v37 = v36;
-              v38 = [v19 speakableFinalDelimiter];
-              v39 = [v19 aceId];
-              v40 = MDModeGetName(a4);
+              speakableFinalDelimiter2 = [v19 speakableFinalDelimiter];
+              aceId4 = [v19 aceId];
+              v40 = MDModeGetName(mode);
               *buf = 136315906;
               v74 = "+[MDDialogTransformer _removeSpeakableTextFromAddViews:forMode:]";
               v75 = 2112;
-              v76 = v38;
+              v76 = speakableFinalDelimiter2;
               v77 = 2112;
-              v78 = v39;
+              v78 = aceId4;
               v79 = 2112;
               v80 = v40;
               _os_log_impl(&dword_26807E000, v37, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing speakableFinalDelimiter '%@' from SAUIDisambiguationList %@ for current mode: %@", buf, 0x2Au);
@@ -764,12 +764,12 @@ LABEL_11:
 
           [v19 setSpeakableFinalDelimiter:0];
           v61 = v19;
-          v41 = [v19 items];
+          items = [v19 items];
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v42 = [v41 countByEnumeratingWithState:&v64 objects:v72 count:16];
+          v42 = [items countByEnumeratingWithState:&v64 objects:v72 count:16];
           if (v42)
           {
             v43 = v42;
@@ -780,12 +780,12 @@ LABEL_11:
               {
                 if (*v65 != v44)
                 {
-                  objc_enumerationMutation(v41);
+                  objc_enumerationMutation(items);
                 }
 
                 v46 = *(*(&v64 + 1) + 8 * i);
-                v47 = [v46 speakableText];
-                v48 = [v47 length];
+                speakableText4 = [v46 speakableText];
+                v48 = [speakableText4 length];
 
                 if (v48)
                 {
@@ -793,15 +793,15 @@ LABEL_11:
                   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
                   {
                     v50 = v49;
-                    v51 = [v46 speakableText];
-                    v52 = [v46 aceId];
-                    v53 = MDModeGetName(a4);
+                    speakableText5 = [v46 speakableText];
+                    aceId5 = [v46 aceId];
+                    v53 = MDModeGetName(mode);
                     *buf = 136315906;
                     v74 = "+[MDDialogTransformer _removeSpeakableTextFromAddViews:forMode:]";
                     v75 = 2112;
-                    v76 = v51;
+                    v76 = speakableText5;
                     v77 = 2112;
-                    v78 = v52;
+                    v78 = aceId5;
                     v79 = 2112;
                     v80 = v53;
                     _os_log_impl(&dword_26807E000, v50, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing speakableText '%@' from SAUIListItem %@ for current mode: %@", buf, 0x2Au);
@@ -811,13 +811,13 @@ LABEL_11:
                 [v46 setSpeakableText:0];
               }
 
-              v43 = [v41 countByEnumeratingWithState:&v64 objects:v72 count:16];
+              v43 = [items countByEnumeratingWithState:&v64 objects:v72 count:16];
             }
 
             while (v43);
           }
 
-          [v61 setItems:v41];
+          [v61 setItems:items];
 
           v6 = v58;
           v5 = v59;
@@ -835,7 +835,7 @@ LABEL_11:
     while (v5);
   }
 
-  v54 = [v57 copy];
+  v54 = [viewsCopy copy];
   [v54 setViews:obj];
 
   v55 = *MEMORY[0x277D85DE8];
@@ -843,29 +843,29 @@ LABEL_11:
   return v54;
 }
 
-+ (id)_removeUtteranceViewsFromAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)_removeUtteranceViewsFromAddViews:(id)views forMode:(unint64_t)mode
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 views];
-  v7 = [a1 _firstSnippetInViews:v6];
+  viewsCopy = views;
+  views = [viewsCopy views];
+  v7 = [self _firstSnippetInViews:views];
   if (v7)
   {
-    v39 = a1;
-    v43 = v5;
+    selfCopy = self;
+    v43 = viewsCopy;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v41 = v7;
-    v9 = [v7 listenAfterSpeaking];
-    [v9 BOOLValue];
+    listenAfterSpeaking = [v7 listenAfterSpeaking];
+    [listenAfterSpeaking BOOLValue];
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v42 = v6;
-    v10 = v6;
+    v42 = views;
+    v10 = views;
     v11 = [v10 countByEnumeratingWithState:&v48 objects:v60 count:16];
     v45 = v8;
     if (v11)
@@ -888,37 +888,37 @@ LABEL_11:
           if (objc_opt_isKindOfClass())
           {
             v18 = v17;
-            v19 = [v18 speakableText];
+            speakableText = [v18 speakableText];
 
-            if (v19)
+            if (speakableText)
             {
-              v20 = [v18 speakableText];
-              [v8 addObject:v20];
+              speakableText2 = [v18 speakableText];
+              [v8 addObject:speakableText2];
 
               v14 &= [v18 canUseServerTTS];
             }
 
-            v21 = [v18 dialogIdentifier];
+            dialogIdentifier = [v18 dialogIdentifier];
 
-            if (v21)
+            if (dialogIdentifier)
             {
-              v22 = [v18 dialogIdentifier];
-              [v15 addObject:v22];
+              dialogIdentifier2 = [v18 dialogIdentifier];
+              [v15 addObject:dialogIdentifier2];
             }
 
-            v23 = [v18 listenAfterSpeaking];
-            [v23 BOOLValue];
+            listenAfterSpeaking2 = [v18 listenAfterSpeaking];
+            [listenAfterSpeaking2 BOOLValue];
 
             v24 = *MEMORY[0x277CEF098];
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v25 = v24;
-              v26 = [v18 dialogIdentifier];
-              v27 = MDModeGetName(a4);
+              dialogIdentifier3 = [v18 dialogIdentifier];
+              v27 = MDModeGetName(mode);
               *buf = 136315650;
               v55 = "+[MDDialogTransformer _removeUtteranceViewsFromAddViews:forMode:]";
               v56 = 2112;
-              v57 = v26;
+              v57 = dialogIdentifier3;
               v58 = 2112;
               v59 = v27;
               _os_log_impl(&dword_26807E000, v25, OS_LOG_TYPE_DEFAULT, "%s #modes Suppressing AssistantUtteranceView (%@) for current mode: %@", buf, 0x20u);
@@ -946,12 +946,12 @@ LABEL_11:
     }
 
     v7 = v41;
-    v29 = [v41 speakableText];
+    speakableText3 = [v41 speakableText];
 
-    if (v29)
+    if (speakableText3)
     {
-      v30 = [v41 speakableText];
-      [v8 addObject:v30];
+      speakableText4 = [v41 speakableText];
+      [v8 addObject:speakableText4];
     }
 
     if ([v8 count])
@@ -963,15 +963,15 @@ LABEL_11:
 
     if (v46)
     {
-      v32 = [v41 aceId];
+      aceId = [v41 aceId];
 
-      if (v32)
+      if (aceId)
       {
         v33 = MEMORY[0x277CBEB38];
         v52[0] = @"snippetAceId";
-        v34 = [v41 aceId];
+        aceId2 = [v41 aceId];
         v52[1] = @"dialogIdentifiers";
-        v53[0] = v34;
+        v53[0] = aceId2;
         v53[1] = v46;
         v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
         v36 = [v33 dictionaryWithDictionary:v35];
@@ -979,16 +979,16 @@ LABEL_11:
       }
     }
 
-    v5 = v43;
+    viewsCopy = v43;
     v28 = [v43 copy];
     [v28 setViews:v47];
 
-    v6 = v42;
+    views = v42;
   }
 
   else
   {
-    v28 = v5;
+    v28 = viewsCopy;
   }
 
   v37 = *MEMORY[0x277D85DE8];
@@ -996,23 +996,23 @@ LABEL_11:
   return v28;
 }
 
-+ (id)_transformDialogAddViews:(id)a3 forMode:(unint64_t)a4
++ (id)_transformDialogAddViews:(id)views forMode:(unint64_t)mode
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewsCopy = views;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = v6;
-  v8 = [v6 views];
-  v9 = [v8 countByEnumeratingWithState:&v41 objects:v54 count:16];
+  v36 = viewsCopy;
+  views = [viewsCopy views];
+  v9 = [views countByEnumeratingWithState:&v41 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v42;
-    v40 = v8;
+    v40 = views;
     do
     {
       v12 = 0;
@@ -1020,18 +1020,18 @@ LABEL_11:
       {
         if (*v42 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(views);
         }
 
         v13 = *(*(&v41 + 1) + 8 * v12);
-        v14 = [v13 dialog];
-        if (!v14)
+        dialog = [v13 dialog];
+        if (!dialog)
         {
           [v7 addObject:v13];
           goto LABEL_16;
         }
 
-        if ([a1 _alwaysPrintSiriResponse])
+        if ([self _alwaysPrintSiriResponse])
         {
           v15 = *MEMORY[0x277CEF098];
           if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1041,7 +1041,7 @@ LABEL_11:
             _os_log_impl(&dword_26807E000, v15, OS_LOG_TYPE_DEFAULT, "%s #modes alwaysPrintSiriResponse = YES", buf, 0xCu);
           }
 
-          v16 = [a1 _utteranceViewForDialog:v14 mode:a4 printedOnly:{objc_msgSend(v14, "printedOnly")}];
+          v16 = [self _utteranceViewForDialog:dialog mode:mode printedOnly:{objc_msgSend(dialog, "printedOnly")}];
           v53[0] = v16;
           v53[1] = v13;
           v17 = MEMORY[0x277CBEA60];
@@ -1052,7 +1052,7 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v16 = [a1 _utteranceViewForDialog:v14 mode:a4 printedOnly:0];
+          v16 = [self _utteranceViewForDialog:dialog mode:mode printedOnly:0];
           v52[0] = v16;
           v52[1] = v13;
           v17 = MEMORY[0x277CBEA60];
@@ -1064,74 +1064,74 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if (a4 < 2 || a4 == 3)
+        if (mode < 2 || mode == 3)
         {
-          if ([v14 printedOnly])
+          if ([dialog printedOnly])
           {
             v23 = v13;
-            v24 = [a1 _utteranceViewForDialog:v14 mode:a4 printedOnly:1];
+            v24 = [self _utteranceViewForDialog:dialog mode:mode printedOnly:1];
             [v7 addObject:v24];
           }
 
           else
           {
             v23 = [v13 copy];
-            v25 = [a1 _speakableTextForDialog:v14 mode:a4];
+            v25 = [self _speakableTextForDialog:dialog mode:mode];
             [v23 setSpeakableText:v25];
 
-            [v23 setCanUseServerTTS:{objc_msgSend(v14, "canUseServerTTS")}];
-            v26 = [v14 dialogIdentifier];
-            if (v26)
+            [v23 setCanUseServerTTS:{objc_msgSend(dialog, "canUseServerTTS")}];
+            dialogIdentifier = [dialog dialogIdentifier];
+            if (dialogIdentifier)
             {
-              v27 = v26;
-              v28 = [v23 aceId];
+              v27 = dialogIdentifier;
+              aceId = [v23 aceId];
 
-              if (v28)
+              if (aceId)
               {
                 v29 = MEMORY[0x277CBEB38];
                 v46[0] = @"snippetAceId";
-                v39 = [v23 aceId];
+                aceId2 = [v23 aceId];
                 v46[1] = @"dialogIdentifiers";
-                v47[0] = v39;
-                v38 = [v14 dialogIdentifier];
-                v45 = v38;
+                v47[0] = aceId2;
+                dialogIdentifier2 = [dialog dialogIdentifier];
+                v45 = dialogIdentifier2;
                 v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
                 v47[1] = v37;
                 v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
                 v31 = [v29 dictionaryWithDictionary:v30];
-                [a1 setDialogIdentifiers:v31];
+                [self setDialogIdentifiers:v31];
               }
 
-              v8 = v40;
+              views = v40;
             }
           }
 
           goto LABEL_34;
         }
 
-        if (a4 == 2)
+        if (mode == 2)
         {
-          if ([v14 spokenOnly])
+          if ([dialog spokenOnly])
           {
             v20 = *MEMORY[0x277CEF098];
             if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
             {
               v21 = v20;
-              v22 = [v14 dialogIdentifier];
+              dialogIdentifier3 = [dialog dialogIdentifier];
               *buf = 136315394;
               v49 = "+[MDDialogTransformer _transformDialogAddViews:forMode:]";
               v50 = 2112;
-              v51 = v22;
+              v51 = dialogIdentifier3;
               _os_log_impl(&dword_26807E000, v21, OS_LOG_TYPE_DEFAULT, "%s #modes IGNORING Dialog (%@) for DisplayOnly Mode since it is Spoken Only", buf, 0x16u);
 
-              v8 = v40;
+              views = v40;
               goto LABEL_32;
             }
           }
 
           else
           {
-            v21 = [a1 _utteranceViewForDialog:v14 mode:2 printedOnly:0];
+            v21 = [self _utteranceViewForDialog:dialog mode:2 printedOnly:0];
             [v7 addObject:v21];
 LABEL_32:
           }
@@ -1149,7 +1149,7 @@ LABEL_16:
       }
 
       while (v10 != v12);
-      v32 = [v8 countByEnumeratingWithState:&v41 objects:v54 count:16];
+      v32 = [views countByEnumeratingWithState:&v41 objects:v54 count:16];
       v10 = v32;
     }
 
@@ -1164,127 +1164,127 @@ LABEL_16:
   return v33;
 }
 
-+ (id)_utteranceViewForDialog:(id)a3 mode:(unint64_t)a4 printedOnly:(BOOL)a5
++ (id)_utteranceViewForDialog:(id)dialog mode:(unint64_t)mode printedOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dialogCopy = dialog;
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 dialogIdentifier];
-    v12 = MDModeGetName(a4);
+    dialogIdentifier = [dialogCopy dialogIdentifier];
+    v12 = MDModeGetName(mode);
     v37 = 136315650;
     v38 = "+[MDDialogTransformer _utteranceViewForDialog:mode:printedOnly:]";
     v39 = 2112;
-    v40 = v11;
+    v40 = dialogIdentifier;
     v41 = 2112;
     v42 = v12;
     _os_log_impl(&dword_26807E000, v10, OS_LOG_TYPE_DEFAULT, "%s #modes Transforming Dialog (%@) into an Utterance View for current mode: %@", &v37, 0x20u);
   }
 
   v13 = objc_alloc_init(MEMORY[0x277D47A00]);
-  v14 = [v8 aceId];
-  [v13 setAceId:v14];
+  aceId = [dialogCopy aceId];
+  [v13 setAceId:aceId];
 
-  v15 = [v8 refId];
-  [v13 setRefId:v15];
+  refId = [dialogCopy refId];
+  [v13 setRefId:refId];
 
-  [v13 setCanUseServerTTS:{objc_msgSend(v8, "canUseServerTTS")}];
-  v16 = [v8 configuration];
-  v17 = [v16 context];
-  [v13 setContext:v17];
+  [v13 setCanUseServerTTS:{objc_msgSend(dialogCopy, "canUseServerTTS")}];
+  configuration = [dialogCopy configuration];
+  context = [configuration context];
+  [v13 setContext:context];
 
-  v18 = [v8 dialogIdentifier];
-  [v13 setDialogIdentifier:v18];
+  dialogIdentifier2 = [dialogCopy dialogIdentifier];
+  [v13 setDialogIdentifier:dialogIdentifier2];
 
-  v19 = [v8 metricsContext];
-  [v13 setMetricsContext:v19];
+  metricsContext = [dialogCopy metricsContext];
+  [v13 setMetricsContext:metricsContext];
 
-  v20 = [v8 dialogCategory];
-  [v13 setDialogCategory:v20];
+  dialogCategory = [dialogCopy dialogCategory];
+  [v13 setDialogCategory:dialogCategory];
 
-  if (v5)
+  if (onlyCopy)
   {
-    v21 = [v8 content];
-    v22 = [v21 text];
+    content = [dialogCopy content];
+    text = [content text];
 LABEL_5:
 
     v23 = 0;
     goto LABEL_19;
   }
 
-  v22 = 0;
-  if (a4 <= 1)
+  text = 0;
+  if (mode <= 1)
   {
-    if (a4)
+    if (mode)
     {
       v23 = 0;
-      if (a4 != 1)
+      if (mode != 1)
       {
         goto LABEL_19;
       }
 
-      v24 = [v8 caption];
-      v25 = [v24 text];
-      v26 = v25;
-      if (v25)
+      caption = [dialogCopy caption];
+      text2 = [caption text];
+      v26 = text2;
+      if (text2)
       {
-        v22 = v25;
+        text = text2;
       }
 
       else
       {
-        v33 = [v8 content];
-        v22 = [v33 text];
+        content2 = [dialogCopy content];
+        text = [content2 text];
       }
 
-      v30 = a1;
-      v31 = v8;
-      v32 = 1;
+      selfCopy2 = self;
+      v31 = dialogCopy;
+      modeCopy = 1;
       goto LABEL_18;
     }
 
 LABEL_15:
-    v29 = [v8 content];
-    v22 = [v29 text];
+    content3 = [dialogCopy content];
+    text = [content3 text];
 
-    v30 = a1;
-    v31 = v8;
-    v32 = a4;
+    selfCopy2 = self;
+    v31 = dialogCopy;
+    modeCopy = mode;
 LABEL_18:
-    v23 = [v30 _speakableTextForDialog:v31 mode:v32];
+    v23 = [selfCopy2 _speakableTextForDialog:v31 mode:modeCopy];
     goto LABEL_19;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
     goto LABEL_15;
   }
 
   v23 = 0;
-  if (a4 == 2)
+  if (mode == 2)
   {
-    v21 = [v8 caption];
-    v27 = [v21 text];
-    v28 = v27;
-    if (v27)
+    content = [dialogCopy caption];
+    text3 = [content text];
+    v28 = text3;
+    if (text3)
     {
-      v22 = v27;
+      text = text3;
     }
 
     else
     {
-      v36 = [v8 content];
-      v22 = [v36 text];
+      content4 = [dialogCopy content];
+      text = [content4 text];
     }
 
     goto LABEL_5;
   }
 
 LABEL_19:
-  [v13 setText:v22];
+  [v13 setText:text];
   [v13 setSpeakableText:v23];
 
   v34 = *MEMORY[0x277D85DE8];
@@ -1292,45 +1292,45 @@ LABEL_19:
   return v13;
 }
 
-+ (id)_speakableTextForDialog:(id)a3 mode:(unint64_t)a4
++ (id)_speakableTextForDialog:(id)dialog mode:(unint64_t)mode
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 1)
+  dialogCopy = dialog;
+  v7 = dialogCopy;
+  if (mode <= 1)
   {
-    if (a4)
+    if (mode)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
         goto LABEL_22;
       }
 
-      v8 = [v6 caption];
+      caption = [dialogCopy caption];
 
       v9 = *MEMORY[0x277CEF098];
       v10 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
-      if (v8)
+      if (caption)
       {
         if (v10)
         {
           v11 = v9;
-          v12 = [v7 dialogIdentifier];
+          dialogIdentifier = [v7 dialogIdentifier];
           *v26 = 136315394;
           *&v26[4] = "+[MDDialogTransformer _speakableTextForDialog:mode:]";
           *&v26[12] = 2112;
-          *&v26[14] = v12;
+          *&v26[14] = dialogIdentifier;
           _os_log_impl(&dword_26807E000, v11, OS_LOG_TYPE_DEFAULT, "%s #modes Transforming Dialog (%@) CAPTION into speakable text for DisplayForward Mode", v26, 0x16u);
         }
 
-        v13 = [v7 caption];
-        v14 = [v13 speakableTextOverride];
-        if (!v14)
+        caption2 = [v7 caption];
+        speakableTextOverride = [caption2 speakableTextOverride];
+        if (!speakableTextOverride)
         {
-          v15 = [v7 caption];
+          caption3 = [v7 caption];
 LABEL_20:
-          v23 = v15;
-          v4 = [v15 text];
+          v23 = caption3;
+          text = [caption3 text];
 
           goto LABEL_21;
         }
@@ -1341,27 +1341,27 @@ LABEL_20:
       if (!v10)
       {
 LABEL_17:
-        v13 = [v7 content];
-        v14 = [v13 speakableTextOverride];
-        if (!v14)
+        caption2 = [v7 content];
+        speakableTextOverride = [caption2 speakableTextOverride];
+        if (!speakableTextOverride)
         {
-          v15 = [v7 content];
+          caption3 = [v7 content];
           goto LABEL_20;
         }
 
 LABEL_18:
-        v4 = v14;
+        text = speakableTextOverride;
 LABEL_21:
 
         goto LABEL_22;
       }
 
       v20 = v9;
-      v21 = [v7 dialogIdentifier];
+      dialogIdentifier2 = [v7 dialogIdentifier];
       *v26 = 136315394;
       *&v26[4] = "+[MDDialogTransformer _speakableTextForDialog:mode:]";
       *&v26[12] = 2112;
-      *&v26[14] = v21;
+      *&v26[14] = dialogIdentifier2;
       v22 = "%s #modes Transforming Dialog (%@) CONTENT into speakable text for DisplayForward Mode (Caption is nil)";
 LABEL_16:
       _os_log_impl(&dword_26807E000, v20, OS_LOG_TYPE_DEFAULT, v22, v26, 0x16u);
@@ -1377,171 +1377,171 @@ LABEL_14:
     }
 
     v20 = v19;
-    v21 = [v7 dialogIdentifier];
+    dialogIdentifier2 = [v7 dialogIdentifier];
     *v26 = 136315394;
     *&v26[4] = "+[MDDialogTransformer _speakableTextForDialog:mode:]";
     *&v26[12] = 2112;
-    *&v26[14] = v21;
+    *&v26[14] = dialogIdentifier2;
     v22 = "%s #modes Transforming Dialog (%@) CONTENT into speakable text for VoiceOnly Mode";
     goto LABEL_16;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
     goto LABEL_14;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     v16 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [v7 dialogIdentifier];
+      dialogIdentifier3 = [v7 dialogIdentifier];
       *v26 = 136315394;
       *&v26[4] = "+[MDDialogTransformer _speakableTextForDialog:mode:]";
       *&v26[12] = 2112;
-      *&v26[14] = v18;
+      *&v26[14] = dialogIdentifier3;
       _os_log_impl(&dword_26807E000, v17, OS_LOG_TYPE_DEFAULT, "%s #modes IGNORING Dialog (%@) speakable text for DisplayOnly Mode", v26, 0x16u);
     }
 
-    v4 = 0;
+    text = 0;
   }
 
 LABEL_22:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return text;
 }
 
-+ (id)_sayItForDialog:(id)a3
++ (id)_sayItForDialog:(id)dialog
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dialogCopy = dialog;
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 dialogIdentifier];
+    dialogIdentifier = [dialogCopy dialogIdentifier];
     v24 = 136315394;
     v25 = "+[MDDialogTransformer _sayItForDialog:]";
     v26 = 2112;
-    v27 = v6;
+    v27 = dialogIdentifier;
     _os_log_impl(&dword_26807E000, v5, OS_LOG_TYPE_DEFAULT, "%s #modes Transforming Dialog (%@) into a SayIt", &v24, 0x16u);
   }
 
   v7 = objc_alloc_init(MEMORY[0x277D47B10]);
-  v8 = [v3 aceId];
-  [v7 setAceId:v8];
+  aceId = [dialogCopy aceId];
+  [v7 setAceId:aceId];
 
-  v9 = [v3 refId];
-  [v7 setRefId:v9];
+  refId = [dialogCopy refId];
+  [v7 setRefId:refId];
 
-  [v7 setCanUseServerTTS:{objc_msgSend(v3, "canUseServerTTS")}];
-  v10 = [v3 configuration];
-  v11 = [v10 context];
-  [v7 setContext:v11];
+  [v7 setCanUseServerTTS:{objc_msgSend(dialogCopy, "canUseServerTTS")}];
+  configuration = [dialogCopy configuration];
+  context = [configuration context];
+  [v7 setContext:context];
 
-  v12 = [v3 dialogIdentifier];
-  [v7 setDialogIdentifier:v12];
+  dialogIdentifier2 = [dialogCopy dialogIdentifier];
+  [v7 setDialogIdentifier:dialogIdentifier2];
 
-  v13 = [v3 configuration];
-  v14 = [v13 gender];
-  [v7 setGender:v14];
+  configuration2 = [dialogCopy configuration];
+  gender = [configuration2 gender];
+  [v7 setGender:gender];
 
-  v15 = [v3 configuration];
-  v16 = [v15 languageCode];
-  [v7 setLanguageCode:v16];
+  configuration3 = [dialogCopy configuration];
+  languageCode = [configuration3 languageCode];
+  [v7 setLanguageCode:languageCode];
 
-  v17 = [v3 content];
-  v18 = [v17 speakableTextOverride];
-  if (v18)
+  content = [dialogCopy content];
+  speakableTextOverride = [content speakableTextOverride];
+  if (speakableTextOverride)
   {
-    [v7 setMessage:v18];
+    [v7 setMessage:speakableTextOverride];
   }
 
   else
   {
-    v19 = [v3 content];
-    v20 = [v19 text];
-    [v7 setMessage:v20];
+    content2 = [dialogCopy content];
+    text = [content2 text];
+    [v7 setMessage:text];
   }
 
-  v21 = [v3 metricsContext];
-  [v7 setMetricsContext:v21];
+  metricsContext = [dialogCopy metricsContext];
+  [v7 setMetricsContext:metricsContext];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)_addViewsForAddDialogs:(id)a3 views:(id)a4
++ (id)_addViewsForAddDialogs:(id)dialogs views:(id)views
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dialogsCopy = dialogs;
+  viewsCopy = views;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v5 aceId];
+    aceId = [dialogsCopy aceId];
     v21 = 136315394;
     v22 = "+[MDDialogTransformer _addViewsForAddDialogs:views:]";
     v23 = 2112;
-    v24 = v9;
+    v24 = aceId;
     _os_log_impl(&dword_26807E000, v8, OS_LOG_TYPE_DEFAULT, "%s #modes Transforming AddDialog (aceId = %@) into an AddViews", &v21, 0x16u);
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D479E8]);
-  v11 = [v5 aceId];
-  [v10 setAceId:v11];
+  aceId2 = [dialogsCopy aceId];
+  [v10 setAceId:aceId2];
 
-  v12 = [v5 refId];
-  [v10 setRefId:v12];
+  refId = [dialogsCopy refId];
+  [v10 setRefId:refId];
 
-  v13 = [v5 metricsContext];
-  [v10 setMetricsContext:v13];
+  metricsContext = [dialogsCopy metricsContext];
+  [v10 setMetricsContext:metricsContext];
 
-  v14 = [v5 listenAfterSpeaking];
+  listenAfterSpeaking = [dialogsCopy listenAfterSpeaking];
 
-  if (v14)
+  if (listenAfterSpeaking)
   {
-    v15 = [v6 lastObject];
-    v16 = [v5 listenAfterSpeaking];
-    [v15 setListenAfterSpeaking:v16];
+    lastObject = [viewsCopy lastObject];
+    listenAfterSpeaking2 = [dialogsCopy listenAfterSpeaking];
+    [lastObject setListenAfterSpeaking:listenAfterSpeaking2];
 
-    v17 = [v6 lastObject];
-    v18 = [v5 listenAfterSpeakingBehavior];
-    [v17 setListenAfterSpeakingBehavior:v18];
+    lastObject2 = [viewsCopy lastObject];
+    listenAfterSpeakingBehavior = [dialogsCopy listenAfterSpeakingBehavior];
+    [lastObject2 setListenAfterSpeakingBehavior:listenAfterSpeakingBehavior];
   }
 
-  [v10 setViews:v6];
+  [v10 setViews:viewsCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-+ (void)_logModeComputationForAceCommand:(id)a3 mode:(unint64_t)a4
++ (void)_logModeComputationForAceCommand:(id)command mode:(unint64_t)mode
 {
-  v12 = a3;
-  v6 = [v12 aceId];
+  commandCopy = command;
+  aceId = [commandCopy aceId];
 
-  if (v6)
+  if (aceId)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = [v12 aceId];
-    [v7 setObject:v8 forKey:@"aceId"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    aceId2 = [commandCopy aceId];
+    [dictionary setObject:aceId2 forKey:@"aceId"];
 
-    v9 = MDModeGetNameForAnalytics(a4);
-    [v7 setObject:v9 forKey:@"mode"];
+    v9 = MDModeGetNameForAnalytics(mode);
+    [dictionary setObject:v9 forKey:@"mode"];
 
-    v10 = [v12 encodedClassName];
-    [v7 setObject:v10 forKey:@"aceClass"];
+    encodedClassName = [commandCopy encodedClassName];
+    [dictionary setObject:encodedClassName forKey:@"aceClass"];
 
-    v11 = [a1 _analytics];
-    [v11 logEventWithType:5602 context:v7];
+    _analytics = [self _analytics];
+    [_analytics logEventWithType:5602 context:dictionary];
   }
 }
 

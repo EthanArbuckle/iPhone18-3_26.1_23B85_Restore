@@ -1,27 +1,27 @@
 @interface NWPVarValueItem
-- (NWPVarValueItem)initWithCoder:(id)a3;
+- (NWPVarValueItem)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWPVarValueItem
 
-- (NWPVarValueItem)initWithCoder:(id)a3
+- (NWPVarValueItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NWPVarValueItem;
   v5 = [(NWPVarValueItem *)&v11 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_armPullCount = [v4 decodeInt64ForKey:@"armPullCount"];
-    v5->_armObservedCount = [v4 decodeInt64ForKey:@"armObservedCount"];
-    [v4 decodeDoubleForKey:@"sampleRewardMean"];
+    v5->_armPullCount = [coderCopy decodeInt64ForKey:@"armPullCount"];
+    v5->_armObservedCount = [coderCopy decodeInt64ForKey:@"armObservedCount"];
+    [coderCopy decodeDoubleForKey:@"sampleRewardMean"];
     v5->_sampleRewardMean = v7;
-    [v4 decodeDoubleForKey:@"sampleRewardSum"];
+    [coderCopy decodeDoubleForKey:@"sampleRewardSum"];
     v5->_sampleRewardSum = v8;
-    [v4 decodeDoubleForKey:@"sampleRewardSumSquares"];
+    [coderCopy decodeDoubleForKey:@"sampleRewardSumSquares"];
     v5->_sampleRewardSumSquares = v9;
     objc_autoreleasePoolPop(v6);
   }
@@ -29,18 +29,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeInt64:-[NWPVarValueItem armPullCount](self forKey:{"armPullCount"), @"armPullCount"}];
-  [v5 encodeInt64:-[NWPVarValueItem armObservedCount](self forKey:{"armObservedCount"), @"armObservedCount"}];
+  [coderCopy encodeInt64:-[NWPVarValueItem armPullCount](self forKey:{"armPullCount"), @"armPullCount"}];
+  [coderCopy encodeInt64:-[NWPVarValueItem armObservedCount](self forKey:{"armObservedCount"), @"armObservedCount"}];
   [(NWPVarValueItem *)self sampleRewardMean];
-  [v5 encodeDouble:@"sampleRewardMean" forKey:?];
+  [coderCopy encodeDouble:@"sampleRewardMean" forKey:?];
   [(NWPVarValueItem *)self sampleRewardSum];
-  [v5 encodeDouble:@"sampleRewardSum" forKey:?];
+  [coderCopy encodeDouble:@"sampleRewardSum" forKey:?];
   [(NWPVarValueItem *)self sampleRewardSumSquares];
-  [v5 encodeDouble:@"sampleRewardSumSquares" forKey:?];
+  [coderCopy encodeDouble:@"sampleRewardSumSquares" forKey:?];
   objc_autoreleasePoolPop(v4);
 }
 

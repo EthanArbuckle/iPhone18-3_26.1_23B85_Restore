@@ -32,35 +32,35 @@
 
 - (uint64_t)pr_editingAcceptButtonType
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20770];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20770];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)pr_editingVariant
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20764];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20764];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)pr_editingContext
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20765];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20765];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)pr_leadingTopButtonFrame
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20766];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20766];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -92,8 +92,8 @@
 
 - (double)pr_trailingTopButtonFrame
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20767];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20767];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -125,41 +125,41 @@
 
 - (uint64_t)pr_usesEditingLayout
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20769];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20769];
 
   return v2;
 }
 
 - (uint64_t)pr_focusedComplicationElement
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20772];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20772];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)pr_areControlsHidden
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20768];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20768];
 
   return v2;
 }
 
 - (uint64_t)pr_areComplicationsDisallowed
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20771];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20771];
 
   return v2;
 }
 
 - (void)pr_titleString
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20773];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20773];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -183,8 +183,8 @@
 
 - (void)pr_overrideDate
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20774];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20774];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -208,125 +208,125 @@
 
 - (uint64_t)pr_focusedQuickActionElementPosition
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20776];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20776];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)pr_setEditingModalVariant:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20778];
+  [otherSettings setObject:v4 forSetting:20778];
 }
 
 - (void)pr_setEditingVariant:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20764];
+  [otherSettings setObject:v4 forSetting:20764];
 }
 
 - (void)pr_setEditingAcceptButtonType:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20770];
+  [otherSettings setObject:v4 forSetting:20770];
 }
 
 - (void)pr_setEditingContext:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20765];
+  [otherSettings setObject:v4 forSetting:20765];
 }
 
 - (void)pr_setLeadingTopButtonFrame:()PREditingScene
 {
-  v9 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v11 = a2;
   *&v11[1] = a3;
   *&v11[2] = a4;
   *&v11[3] = a5;
   v10 = [MEMORY[0x1E696B098] valueWithBytes:v11 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v9 setObject:v10 forSetting:20766];
+  [otherSettings setObject:v10 forSetting:20766];
 }
 
 - (void)pr_setTrailingTopButtonFrame:()PREditingScene
 {
-  v9 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v11 = a2;
   *&v11[1] = a3;
   *&v11[2] = a4;
   *&v11[3] = a5;
   v10 = [MEMORY[0x1E696B098] valueWithBytes:v11 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v9 setObject:v10 forSetting:20767];
+  [otherSettings setObject:v10 forSetting:20767];
 }
 
 - (void)pr_setUsesEditingLayout:()PREditingScene
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20769];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20769];
 }
 
 - (void)pr_setFocusedComplicationElement:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20772];
+  [otherSettings setObject:v4 forSetting:20772];
 }
 
 - (void)pr_setControlsHidden:()PREditingScene
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20768];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20768];
 }
 
 - (void)pr_setComplicationsDisallowed:()PREditingScene
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20771];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20771];
 }
 
 - (void)pr_setTitleString:()PREditingScene
 {
   v4 = a3;
-  v6 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v5 = [v4 copy];
 
-  [v6 setObject:v5 forSetting:20773];
+  [otherSettings setObject:v5 forSetting:20773];
 }
 
 - (void)pr_setOverrideDate:()PREditingScene
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20774];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20774];
 }
 
 - (void)pr_setFocusedQuickActionElementPosition:()PREditingScene
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20776];
+  [otherSettings setObject:v4 forSetting:20776];
 }
 
 - (void)pr_setInjectedEditingSettings:()PREditingScene
 {
   v4 = a3;
-  v6 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v5 = [v4 copy];
 
-  [v6 setObject:v5 forSetting:20777];
+  [otherSettings setObject:v5 forSetting:20777];
 }
 
 - (void)pr_setUserInterfaceStyleLuminanceThreshold:()PREditingScene
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20779];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20779];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface HFDemoModeFaceRecognitionDataSource
 - (HFDemoModeFaceRecognitionDataSource)init;
-- (id)arrayFromPlistArray:(id)a3;
+- (id)arrayFromPlistArray:(id)array;
 @end
 
 @implementation HFDemoModeFaceRecognitionDataSource
@@ -23,9 +23,9 @@
 
     v7 = +[HFUtilities demoModeDirectoryURL];
     v8 = [MEMORY[0x277CBEBC0] URLWithString:@"FaceRecognition.plist" relativeToURL:v7];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v8 path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
@@ -100,17 +100,17 @@
   return v3;
 }
 
-- (id)arrayFromPlistArray:(id)a3
+- (id)arrayFromPlistArray:(id)array
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v31 = +[HFUtilities demoModeDirectoryURL];
-  v32 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v32 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v4 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v4)
   {
@@ -169,18 +169,18 @@
             if (v17)
             {
               v21 = objc_alloc(MEMORY[0x277CD1A30]);
-              v22 = [MEMORY[0x277CCAD78] UUID];
-              v19 = [v21 initWithUUID:v22 dataRepresentation:v17 dateCreated:v20 faceBoundingBox:{0.0, 0.0, 1.0, 1.0}];
+              uUID = [MEMORY[0x277CCAD78] UUID];
+              v19 = [v21 initWithUUID:uUID dataRepresentation:v17 dateCreated:v20 faceBoundingBox:{0.0, 0.0, 1.0, 1.0}];
             }
 
             else
             {
-              v22 = HFLogForCategory(0x21uLL);
-              if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+              uUID = HFLogForCategory(0x21uLL);
+              if (os_log_type_enabled(uUID, OS_LOG_TYPE_ERROR))
               {
                 *buf = v29;
                 v39 = v13;
-                _os_log_error_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_ERROR, "Filename %@ specified but no data was found for image", buf, 0xCu);
+                _os_log_error_impl(&dword_20D9BF000, uUID, OS_LOG_TYPE_ERROR, "Filename %@ specified but no data was found for image", buf, 0xCu);
               }
 
               v19 = 0;
@@ -193,8 +193,8 @@
           }
 
           v23 = objc_alloc(MEMORY[0x277CD1C70]);
-          v24 = [MEMORY[0x277CCAD78] UUID];
-          v25 = [v23 initWithUUID:v24];
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          v25 = [v23 initWithUUID:uUID2];
 
           [v25 setName:v12];
           v26 = [[HFDemoModeFaceRecognitionRecentsData alloc] initWithPerson:v25 faceCrop:v19];

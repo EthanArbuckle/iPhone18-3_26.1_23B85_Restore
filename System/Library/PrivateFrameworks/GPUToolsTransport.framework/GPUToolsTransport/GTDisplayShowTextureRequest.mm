@@ -1,20 +1,20 @@
 @interface GTDisplayShowTextureRequest
-- (GTDisplayShowTextureRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTDisplayShowTextureRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTDisplayShowTextureRequest
 
-- (GTDisplayShowTextureRequest)initWithCoder:(id)a3
+- (GTDisplayShowTextureRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = GTDisplayShowTextureRequest;
-  v5 = [(GTDisplayRequest *)&v13 initWithCoder:v4];
+  v5 = [(GTDisplayRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_replayServicePort = [v4 decodeInt64ForKey:@"replayServicePort"];
-    v6 = v4;
+    v5->_replayServicePort = [coderCopy decodeInt64ForKey:@"replayServicePort"];
+    v6 = coderCopy;
     v7 = [@"dispatchUID" stringByAppendingString:@".dispatchIndex"];
     v8 = [v6 decodeInt32ForKey:v7];
 
@@ -36,16 +36,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GTDisplayShowTextureRequest;
-  [(GTDisplayRequest *)&v10 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_replayServicePort forKey:@"replayServicePort"];
+  [(GTDisplayRequest *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_replayServicePort forKey:@"replayServicePort"];
   dispatchIndex = self->_dispatchUID.var0.dispatchIndex;
   dispatchICBIndex = self->_dispatchUID.var0.dispatchICBIndex;
-  v7 = v4;
+  v7 = coderCopy;
   v8 = [@"dispatchUID" stringByAppendingString:@".dispatchIndex"];
   [v7 encodeInt32:dispatchIndex forKey:v8];
 

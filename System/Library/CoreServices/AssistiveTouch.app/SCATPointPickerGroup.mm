@@ -1,49 +1,49 @@
 @interface SCATPointPickerGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)scatFrame;
-- (SCATPointPickerGroup)initWithSelectionPath:(id)a3 generatorDelegate:(id)a4;
+- (SCATPointPickerGroup)initWithSelectionPath:(id)path generatorDelegate:(id)delegate;
 - (SCATPointPickerGroupDelegate)delegate;
 - (unint64_t)hash;
 @end
 
 @implementation SCATPointPickerGroup
 
-- (SCATPointPickerGroup)initWithSelectionPath:(id)a3 generatorDelegate:(id)a4
+- (SCATPointPickerGroup)initWithSelectionPath:(id)path generatorDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SCATPointPickerGroup;
-  v9 = [(SCATPointPickerGroup *)&v12 initWithGenerator:v8];
+  v9 = [(SCATPointPickerGroup *)&v12 initWithGenerator:delegateCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_selectionPath, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_selectionPath, path);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 selectionPath];
-    v7 = [(SCATPointPickerGroup *)self selectionPath];
-    if (v6 == v7)
+    v5 = equalCopy;
+    selectionPath = [v5 selectionPath];
+    selectionPath2 = [(SCATPointPickerGroup *)self selectionPath];
+    if (selectionPath == selectionPath2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v5 selectionPath];
-      v9 = [(SCATPointPickerGroup *)self selectionPath];
-      v10 = [v8 isEqual:v9];
+      selectionPath3 = [v5 selectionPath];
+      selectionPath4 = [(SCATPointPickerGroup *)self selectionPath];
+      v10 = [selectionPath3 isEqual:selectionPath4];
     }
   }
 
@@ -57,16 +57,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SCATPointPickerGroup *)self selectionPath];
-  v3 = [v2 hash];
+  selectionPath = [(SCATPointPickerGroup *)self selectionPath];
+  v3 = [selectionPath hash];
 
   return v3;
 }
 
 - (CGRect)scatFrame
 {
-  v3 = [(SCATPointPickerGroup *)self delegate];
-  [v3 scannerFrameForPointPickerGroup:self];
+  delegate = [(SCATPointPickerGroup *)self delegate];
+  [delegate scannerFrameForPointPickerGroup:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;

@@ -1,43 +1,43 @@
 @interface CKDDiscoverAllUserIdentitiesOperation
-- (CKDDiscoverAllUserIdentitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (void)_discoverIdentitiesBatched:(id)a3;
-- (void)_handleDiscoveredIdentity:(id)a3 lookupInfo:(id)a4 responseCode:(id)a5;
-- (void)_populateFakeUnitTestLookupInfos:(id)a3;
+- (CKDDiscoverAllUserIdentitiesOperation)initWithOperationInfo:(id)info container:(id)container;
+- (void)_discoverIdentitiesBatched:(id)batched;
+- (void)_handleDiscoveredIdentity:(id)identity lookupInfo:(id)info responseCode:(id)code;
+- (void)_populateFakeUnitTestLookupInfos:(id)infos;
 - (void)_populateRealUserIdentityLookupInfos;
 - (void)_populateUserIdentityLookupInfos;
 @end
 
 @implementation CKDDiscoverAllUserIdentitiesOperation
 
-- (CKDDiscoverAllUserIdentitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDDiscoverAllUserIdentitiesOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v5.receiver = self;
   v5.super_class = CKDDiscoverAllUserIdentitiesOperation;
-  return [(CKDDiscoverUserIdentitiesOperation *)&v5 initWithOperationInfo:a3 container:a4];
+  return [(CKDDiscoverUserIdentitiesOperation *)&v5 initWithOperationInfo:info container:container];
 }
 
-- (void)_discoverIdentitiesBatched:(id)a3
+- (void)_discoverIdentitiesBatched:(id)batched
 {
-  v4 = a3;
-  v7 = objc_msgSend_count(v4, v5, v6);
+  batchedCopy = batched;
+  v7 = objc_msgSend_count(batchedCopy, v5, v6);
   if (v7 >= 0x15E)
   {
     v9 = 350;
-    objc_msgSend_subarrayWithRange_(v4, v8, 0, 350);
+    objc_msgSend_subarrayWithRange_(batchedCopy, v8, 0, 350);
   }
 
   else
   {
     v9 = v7;
-    objc_msgSend_subarrayWithRange_(v4, v8, 0, v7);
+    objc_msgSend_subarrayWithRange_(batchedCopy, v8, 0, v7);
   }
   v10 = ;
-  v15 = objc_msgSend_count(v4, v11, v12);
+  v15 = objc_msgSend_count(batchedCopy, v11, v12);
   v16 = 0;
   if (v9 < v15)
   {
-    v17 = objc_msgSend_count(v4, v13, v14);
-    v16 = objc_msgSend_subarrayWithRange_(v4, v18, v9, v17 - v9);
+    v17 = objc_msgSend_count(batchedCopy, v13, v14);
+    v16 = objc_msgSend_subarrayWithRange_(batchedCopy, v18, v9, v17 - v9);
   }
 
   v21[0] = MEMORY[0x277D85DD0];
@@ -50,10 +50,10 @@
   objc_msgSend__discoverIdentitiesWithLookupInfos_completionBlock_(self, v20, v10, v21);
 }
 
-- (void)_populateFakeUnitTestLookupInfos:(id)a3
+- (void)_populateFakeUnitTestLookupInfos:(id)infos
 {
   v34 = *MEMORY[0x277D85DE8];
-  objc_msgSend_lookupInfosWithEmails_(MEMORY[0x277CBC7C8], a2, a3);
+  objc_msgSend_lookupInfosWithEmails_(MEMORY[0x277CBC7C8], a2, infos);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -115,7 +115,7 @@
   v26[3] = &unk_27854B440;
   v12 = v3;
   v27 = v12;
-  v28 = self;
+  selfCopy = self;
   Request_error_usingBlock = objc_msgSend_enumerateContactsWithFetchRequest_error_usingBlock_(v4, v13, v10, &v29, v26);
   v15 = v29;
   if ((Request_error_usingBlock & 1) == 0)
@@ -182,12 +182,12 @@
   }
 }
 
-- (void)_handleDiscoveredIdentity:(id)a3 lookupInfo:(id)a4 responseCode:(id)a5
+- (void)_handleDiscoveredIdentity:(id)identity lookupInfo:(id)info responseCode:(id)code
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  infoCopy = info;
+  codeCopy = code;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -197,19 +197,19 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v46 = v8;
+    v46 = identityCopy;
     _os_log_impl(&dword_22506F000, v11, OS_LOG_TYPE_INFO, "Found user identity %@", buf, 0xCu);
   }
 
-  if (objc_msgSend_code(v10, v12, v13) == 1)
+  if (objc_msgSend_code(codeCopy, v12, v13) == 1)
   {
-    if (v8)
+    if (identityCopy)
     {
-      objc_msgSend_setLookupInfo_(v8, v14, 0);
+      objc_msgSend_setLookupInfo_(identityCopy, v14, 0);
       v17 = objc_msgSend_contactIdentifiersByLookupInfo(self, v15, v16);
-      v19 = objc_msgSend_objectForKeyedSubscript_(v17, v18, v9);
+      v19 = objc_msgSend_objectForKeyedSubscript_(v17, v18, infoCopy);
       v22 = objc_msgSend_allObjects(v19, v20, v21);
-      objc_msgSend_setContactIdentifiers_(v8, v23, v22);
+      objc_msgSend_setContactIdentifiers_(identityCopy, v23, v22);
 
       v26 = objc_msgSend_callbackQueue(self, v24, v25);
       v43[0] = MEMORY[0x277D85DD0];
@@ -217,7 +217,7 @@
       v43[2] = sub_2252621D8;
       v43[3] = &unk_278545898;
       v43[4] = self;
-      v44 = v8;
+      v44 = identityCopy;
       dispatch_async(v26, v43);
     }
   }
@@ -226,9 +226,9 @@
   {
     v27 = MEMORY[0x277CBC560];
     v28 = *MEMORY[0x277CBC120];
-    v29 = sub_2253962A4(v10);
+    v29 = sub_2253962A4(codeCopy);
     v32 = objc_msgSend_request(self, v30, v31);
-    v33 = sub_225395734(v32, v10);
+    v33 = sub_225395734(v32, codeCopy);
     v35 = objc_msgSend_errorWithDomain_code_userInfo_format_(v27, v34, v28, v29, v33, @"Error discovering user identities");
     objc_msgSend_setError_(self, v36, v35);
 

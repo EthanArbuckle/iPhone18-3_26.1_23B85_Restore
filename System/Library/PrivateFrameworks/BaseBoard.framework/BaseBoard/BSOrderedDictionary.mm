@@ -1,22 +1,22 @@
 @interface BSOrderedDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSOrderedDictionary)init;
-- (BSOrderedDictionary)initWithCoder:(id)a3;
-- (BSOrderedDictionary)initWithDictionary:(id)a3 keyOrderingStrategy:(id)a4;
-- (BSOrderedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (BSOrderedDictionary)initWithCoder:(id)coder;
+- (BSOrderedDictionary)initWithDictionary:(id)dictionary keyOrderingStrategy:(id)strategy;
+- (BSOrderedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)_initTabulaRasa;
 - (id)allKeys;
 - (id)allValues;
-- (id)filter:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sortedDictionaryUsingComparator:(id)a3;
-- (id)subdictionaryWithRange:(_NSRange)a3;
+- (id)filter:(id)filter;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sortedDictionaryUsingComparator:(id)comparator;
+- (id)subdictionaryWithRange:(_NSRange)range;
 - (id)unorderedDictionary;
-- (uint64_t)_initWithCopyOfOrderedDictionary:(void *)a1;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)enumerateKeysAndObjectsWithIndexesUsingBlock:(id)a3;
+- (uint64_t)_initWithCopyOfOrderedDictionary:(void *)dictionary;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)enumerateKeysAndObjectsWithIndexesUsingBlock:(id)block;
 @end
 
 @implementation BSOrderedDictionary
@@ -103,47 +103,47 @@
   return v3;
 }
 
-- (uint64_t)_initWithCopyOfOrderedDictionary:(void *)a1
+- (uint64_t)_initWithCopyOfOrderedDictionary:(void *)dictionary
 {
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v3 = [a1 _initTabulaRasa];
-  if (v3)
+  _initTabulaRasa = [dictionary _initTabulaRasa];
+  if (_initTabulaRasa)
   {
     v4 = [a2[1] copy];
-    v5 = *(v3 + 8);
-    *(v3 + 8) = v4;
+    v5 = *(_initTabulaRasa + 8);
+    *(_initTabulaRasa + 8) = v4;
 
     v6 = [a2[2] copy];
-    v7 = *(v3 + 16);
-    *(v3 + 16) = v6;
+    v7 = *(_initTabulaRasa + 16);
+    *(_initTabulaRasa + 16) = v6;
 
-    objc_storeStrong((v3 + 24), a2[3]);
+    objc_storeStrong((_initTabulaRasa + 24), a2[3]);
   }
 
-  return v3;
+  return _initTabulaRasa;
 }
 
-- (BSOrderedDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (BSOrderedDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
-  v6 = [[BSMutableOrderedDictionary alloc] initWithObjects:a3 forKeys:a4 count:a5];
+  v6 = [[BSMutableOrderedDictionary alloc] initWithObjects:objects forKeys:keys count:count];
   v7 = [(BSMutableOrderedDictionary *)v6 copy];
 
   return v7;
 }
 
-- (BSOrderedDictionary)initWithDictionary:(id)a3 keyOrderingStrategy:(id)a4
+- (BSOrderedDictionary)initWithDictionary:(id)dictionary keyOrderingStrategy:(id)strategy
 {
-  v5 = [[BSMutableOrderedDictionary alloc] initWithDictionary:a3 keyOrderingStrategy:a4];
+  v5 = [[BSMutableOrderedDictionary alloc] initWithDictionary:dictionary keyOrderingStrategy:strategy];
   v6 = [(BSMutableOrderedDictionary *)v5 copy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -151,10 +151,10 @@
     return 0;
   }
 
-  v5 = a3;
-  if (([(NSArray *)self->_keys isEqual:v5[1]]& 1) != 0)
+  equalCopy = equal;
+  if (([(NSArray *)self->_keys isEqual:equalCopy[1]]& 1) != 0)
   {
-    v6 = [(NSDictionary *)self->_values isEqual:v5[2]];
+    v6 = [(NSDictionary *)self->_values isEqual:equalCopy[2]];
   }
 
   else
@@ -165,17 +165,17 @@
   return v6;
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__BSOrderedDictionary_enumerateKeysAndObjectsUsingBlock___block_invoke;
   v3[3] = &unk_1E72CC5A0;
-  v3[4] = a3;
+  v3[4] = block;
   [(BSOrderedDictionary *)self enumerateKeysAndObjectsWithIndexesUsingBlock:v3];
 }
 
-- (void)enumerateKeysAndObjectsWithIndexesUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsWithIndexesUsingBlock:(id)block
 {
   v5 = [(BSOrderedDictionary *)self count];
   v6 = v5 - 1;
@@ -187,7 +187,7 @@
       v8 = [(NSArray *)self->_keys objectAtIndex:v7];
       v9 = [(NSDictionary *)self->_values objectForKey:v8];
       v12 = 0;
-      (*(a3 + 2))(a3, v8, v9, v7, &v12);
+      (*(block + 2))(block, v8, v9, v7, &v12);
       v10 = v12;
 
       if (v10)
@@ -200,7 +200,7 @@
   }
 }
 
-- (id)filter:(id)a3
+- (id)filter:(id)filter
 {
   v5 = [(BSOrderedDictionary *)self count];
   v6 = [[BSMutableOrderedDictionary alloc] initWithCapacity:v5 keyOrderingStrategy:self->_keyOrderingStrategy];
@@ -210,7 +210,7 @@
     {
       v8 = [(NSArray *)self->_keys objectAtIndex:i];
       v9 = [(NSDictionary *)self->_values objectForKey:v8];
-      if ((*(a3 + 2))(a3, v8, v9, i))
+      if ((*(filter + 2))(filter, v8, v9, i))
       {
         [(BSMutableOrderedDictionary *)v6 setObject:v8 forKey:v9];
       }
@@ -242,12 +242,12 @@
   return v2;
 }
 
-- (id)sortedDictionaryUsingComparator:(id)a3
+- (id)sortedDictionaryUsingComparator:(id)comparator
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(BSMutableOrderedDictionary);
-  v6 = [(BSOrderedDictionary *)self allKeys];
-  v7 = [v6 sortedArrayUsingComparator:a3];
+  allKeys = [(BSOrderedDictionary *)self allKeys];
+  v7 = [allKeys sortedArrayUsingComparator:comparator];
 
   v18 = 0u;
   v19 = 0u;
@@ -283,17 +283,17 @@
   return v14;
 }
 
-- (id)subdictionaryWithRange:(_NSRange)a3
+- (id)subdictionaryWithRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL || a3.length == 0)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL || range.length == 0)
   {
     v4 = +[_BSEmptyOrderedDictionary emptyDictionary];
   }
 
   else
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v8 = objc_alloc_init(BSMutableOrderedDictionary);
     v9 = v8;
     if (location < location + length)
@@ -317,22 +317,22 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BSMutableOrderedDictionary alloc];
 
   return [(BSOrderedDictionary *)v4 _initWithCopyOfOrderedDictionary:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_keys forKey:@"k"];
+  [coder encodeObject:self->_keys forKey:@"k"];
   values = self->_values;
 
-  [a3 encodeObject:values forKey:@"v"];
+  [coder encodeObject:values forKey:@"v"];
 }
 
-- (BSOrderedDictionary)initWithCoder:(id)a3
+- (BSOrderedDictionary)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = BSOrderedDictionary;
@@ -343,19 +343,19 @@
     objc_opt_class();
     v5 = objc_opt_class();
     v6 = objc_opt_class();
-    v7 = [a3 allowedClasses];
-    v8 = [v7 mutableCopy];
+    allowedClasses = [coder allowedClasses];
+    v8 = [allowedClasses mutableCopy];
 
     [v8 addObject:v5];
-    v9 = [a3 allowedClasses];
-    v10 = [v9 mutableCopy];
+    allowedClasses2 = [coder allowedClasses];
+    v10 = [allowedClasses2 mutableCopy];
 
     [v10 addObject:v6];
-    v11 = [a3 decodeObjectOfClasses:v8 forKey:@"k"];
+    v11 = [coder decodeObjectOfClasses:v8 forKey:@"k"];
     keys = v4->_keys;
     v4->_keys = v11;
 
-    v13 = [a3 decodeObjectOfClasses:v10 forKey:@"v"];
+    v13 = [coder decodeObjectOfClasses:v10 forKey:@"v"];
     values = v4->_values;
     v4->_values = v13;
   }
@@ -363,15 +363,15 @@
   return v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52__BSOrderedDictionary_appendDescriptionToFormatter___block_invoke;
   v3[3] = &unk_1E72CACC0;
-  v3[4] = a3;
+  v3[4] = formatter;
   v3[5] = self;
-  [a3 appendProem:self block:v3];
+  [formatter appendProem:self block:v3];
 }
 
 void __52__BSOrderedDictionary_appendDescriptionToFormatter___block_invoke(uint64_t a1)

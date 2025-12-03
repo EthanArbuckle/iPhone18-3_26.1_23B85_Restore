@@ -45,16 +45,16 @@
 
 - (id)fp_realpath
 {
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  selfCopy = self;
+  v2 = selfCopy;
+  if (selfCopy)
   {
     v3 = &stru_1F1F94B20;
-    v4 = v1;
+    v4 = selfCopy;
     while ([v4 length])
     {
-      v5 = [v4 fileSystemRepresentation];
-      if (!v5)
+      fileSystemRepresentation = [v4 fileSystemRepresentation];
+      if (!fileSystemRepresentation)
       {
         break;
       }
@@ -63,7 +63,7 @@
       if (v6)
       {
         v12 = v6;
-        if ([(__CFString *)v3 length]|| strcmp(v5, v12))
+        if ([(__CFString *)v3 length]|| strcmp(fileSystemRepresentation, v12))
         {
           v13 = [MEMORY[0x1E696AEC0] _fpd_pathWithFileSystemRepresentation:v12];
           v10 = [v13 stringByAppendingPathComponent:v3];
@@ -87,14 +87,14 @@
         break;
       }
 
-      v7 = [v4 lastPathComponent];
-      v8 = [v7 stringByAppendingPathComponent:v3];
+      lastPathComponent = [v4 lastPathComponent];
+      v8 = [lastPathComponent stringByAppendingPathComponent:v3];
 
-      v9 = [v4 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
 
-      v4 = v9;
+      v4 = stringByDeletingLastPathComponent;
       v3 = v8;
-      if (!v9)
+      if (!stringByDeletingLastPathComponent)
       {
         v3 = v8;
         break;
@@ -118,7 +118,7 @@ LABEL_12:
 {
   shouldObfuscateFilenames = fp_shouldObfuscateFilenames();
 
-  return [a1 fp_prettyPathWithObfuscation:shouldObfuscateFilenames];
+  return [self fp_prettyPathWithObfuscation:shouldObfuscateFilenames];
 }
 
 - (id)fp_obfuscatedProviderDomainID
@@ -126,45 +126,45 @@ LABEL_12:
   if (fp_shouldObfuscateFilenames())
   {
     v2 = MEMORY[0x1E696AEC0];
-    v3 = [a1 fp_toProviderID];
-    v4 = [a1 fp_toDomainIdentifier];
-    v5 = [v4 fp_obfuscatedFilename];
-    v6 = [v2 stringWithFormat:@"%@/%@", v3, v5];
+    fp_toProviderID = [self fp_toProviderID];
+    fp_toDomainIdentifier = [self fp_toDomainIdentifier];
+    fp_obfuscatedFilename = [fp_toDomainIdentifier fp_obfuscatedFilename];
+    selfCopy = [v2 stringWithFormat:@"%@/%@", fp_toProviderID, fp_obfuscatedFilename];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)fp_obfuscatedFilename
 {
-  v1 = a1;
-  v2 = [a1 fp_alwaysObfuscatedFilename];
+  selfCopy = self;
+  fp_alwaysObfuscatedFilename = [self fp_alwaysObfuscatedFilename];
   if (fp_shouldObfuscateFilenames())
   {
-    v1 = v2;
+    selfCopy = fp_alwaysObfuscatedFilename;
   }
 
-  v3 = v1;
+  v3 = selfCopy;
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)fp_alwaysObfuscatedFilename
 {
-  if (![a1 length])
+  if (![self length])
   {
-    v5 = a1;
+    selfCopy2 = self;
     goto LABEL_14;
   }
 
   v16 = 0;
   v17 = 0;
-  v2 = [a1 fp_stringByDeletingPathBounceNo:&v17 andPathExtension:&v16];
+  v2 = [self fp_stringByDeletingPathBounceNo:&v17 andPathExtension:&v16];
   v3 = v17;
   v4 = v16;
   if ([v2 length] > 2)
@@ -174,7 +174,7 @@ LABEL_12:
     if (v4 && v3)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v14 = [v3 intValue];
+      intValue = [v3 intValue];
       v15 = v4;
       v13 = v7;
       v9 = @"%@ %u.%@";
@@ -186,7 +186,7 @@ LABEL_12:
       {
         v10 = MEMORY[0x1E696AEC0];
         v13 = v7;
-        v14 = v4;
+        intValue = v4;
         v9 = @"%@.%@";
         goto LABEL_11;
       }
@@ -199,92 +199,92 @@ LABEL_12:
 
       v8 = MEMORY[0x1E696AEC0];
       v13 = v6;
-      v14 = [v3 intValue];
+      intValue = [v3 intValue];
       v9 = @"%@ %u";
     }
 
     v10 = v8;
 LABEL_11:
-    v11 = [v10 stringWithFormat:v9, v13, v14, v15];
+    v11 = [v10 stringWithFormat:v9, v13, intValue, v15];
 LABEL_12:
-    v5 = v11;
+    selfCopy2 = v11;
 
     goto LABEL_13;
   }
 
-  v5 = a1;
+  selfCopy2 = self;
 LABEL_13:
 
 LABEL_14:
 
-  return v5;
+  return selfCopy2;
 }
 
 - (uint64_t)fp_isiCloudDriveIdentifier
 {
-  if ([a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
+  if ([self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
   {
     return 1;
   }
 
-  return [a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+  return [self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
 }
 
 - (__CFString)fp_fpIdentifier
 {
-  if ([a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
+  if ([self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
   {
-    v2 = @"icloud";
+    selfCopy = @"icloud";
   }
 
-  else if ([a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"])
+  else if ([self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"])
   {
-    v2 = @"icloudmanaged";
+    selfCopy = @"icloudmanaged";
   }
 
-  else if ([a1 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+  else if ([self isEqualToString:@"com.apple.FileProvider.LocalStorage"])
   {
-    v2 = @"localstorage";
+    selfCopy = @"localstorage";
   }
 
-  else if ([a1 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
+  else if ([self isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
   {
-    v2 = @"userfs";
+    selfCopy = @"userfs";
   }
 
-  else if ([a1 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
+  else if ([self isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
   {
-    v2 = @"smbfs";
+    selfCopy = @"smbfs";
   }
 
-  else if ([a1 hasPrefix:@"com.getdropbox.Dropbox.FileProvider"])
+  else if ([self hasPrefix:@"com.getdropbox.Dropbox.FileProvider"])
   {
-    v2 = @"dropbox";
+    selfCopy = @"dropbox";
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)fp_isiCloudDriveOrCloudDocsIdentifier
 {
-  if ([a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged") & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"com.apple.CloudDocs.MobileDocumentsFileProvider"))
+  if ([self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged") & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"com.apple.CloudDocs.MobileDocumentsFileProvider"))
   {
     return 1;
   }
 
-  return [a1 isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProviderManaged"];
+  return [self isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProviderManaged"];
 }
 
 - (uint64_t)fp_getParsedDiskIdentifier:()FPAdditions
 {
-  if ([a1 hasPrefix:@"__fp/fs/"])
+  if ([self hasPrefix:@"__fp/fs/"])
   {
-    v5 = [a1 substringFromIndex:8];
+    v5 = [self substringFromIndex:8];
     if ([v5 isEqualToString:@"root"])
     {
       *a3 = 0;
@@ -306,10 +306,10 @@ LABEL_8:
       if ([v5 hasPrefix:@"docID("]
       {
         v8 = [v5 substringWithRange:{6, objc_msgSend(v5, "length") - 7}];
-        v9 = [v8 integerValue];
-        if (v9 >= 1)
+        integerValue = [v8 integerValue];
+        if (integerValue >= 1)
         {
-          *a3 = -v9;
+          *a3 = -integerValue;
 LABEL_17:
 
           goto LABEL_7;
@@ -323,10 +323,10 @@ LABEL_18:
       if ([v5 hasPrefix:@"fileID("]
       {
         v8 = [v5 substringWithRange:{7, objc_msgSend(v5, "length") - 8}];
-        v10 = [v8 integerValue];
-        if (v10 >= 1)
+        integerValue2 = [v8 integerValue];
+        if (integerValue2 >= 1)
         {
-          *a3 = v10;
+          *a3 = integerValue2;
           goto LABEL_17;
         }
 
@@ -385,22 +385,22 @@ LABEL_10:
     [NSString(FPAdditions) fp_getCrashDate];
   }
 
-  v2 = [fp_getCrashDate_regexp firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v2 = [fp_getCrashDate_regexp firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
   v3 = v2;
   if (v2)
   {
     v4 = [v2 rangeAtIndex:1];
-    v6 = [a1 substringWithRange:{v4, v5}];
+    v6 = [self substringWithRange:{v4, v5}];
     v7 = [v3 rangeAtIndex:2];
-    v9 = [a1 substringWithRange:{v7, v8}];
+    v9 = [self substringWithRange:{v7, v8}];
     v10 = [v3 rangeAtIndex:3];
-    v12 = [a1 substringWithRange:{v10, v11}];
+    v12 = [self substringWithRange:{v10, v11}];
     v13 = [v3 rangeAtIndex:4];
-    v15 = [a1 substringWithRange:{v13, v14}];
+    v15 = [self substringWithRange:{v13, v14}];
     v16 = [v3 rangeAtIndex:5];
-    v18 = [a1 substringWithRange:{v16, v17}];
+    v18 = [self substringWithRange:{v16, v17}];
     v19 = [v3 rangeAtIndex:6];
-    v21 = [a1 substringWithRange:{v19, v20}];
+    v21 = [self substringWithRange:{v19, v20}];
     v22 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v22 setYear:{objc_msgSend(v6, "longLongValue")}];
     [v22 setMonth:{objc_msgSend(v9, "longLongValue")}];
@@ -408,8 +408,8 @@ LABEL_10:
     [v22 setHour:{objc_msgSend(v15, "longLongValue")}];
     [v22 setMinute:{objc_msgSend(v18, "longLongValue")}];
     [v22 setSecond:{objc_msgSend(v21, "longLongValue")}];
-    v23 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v24 = [v23 dateFromComponents:v22];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v24 = [currentCalendar dateFromComponents:v22];
   }
 
   else
@@ -425,8 +425,8 @@ LABEL_10:
   v3 = a3;
   if (a3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v4 stringWithFileSystemRepresentation:v3 length:strlen(v3)];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager stringWithFileSystemRepresentation:v3 length:strlen(v3)];
   }
 
   return v3;
@@ -434,13 +434,13 @@ LABEL_10:
 
 - (id)fp_displayNameFromFilenameWithHiddenPathExtension:()FPAdditions isFolder:
 {
-  v6 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   if (a3 && (a4 & 1) == 0)
   {
-    v8 = [v6 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [selfCopy stringByDeletingPathExtension];
 
-    v7 = v8;
+    v7 = stringByDeletingPathExtension;
   }
 
   v9 = [v7 stringByReplacingOccurrencesOfString:@":" withString:@"/"];
@@ -451,7 +451,7 @@ LABEL_10:
 - (id)fp_filenameFromDisplayNameWithExtension:()FPAdditions
 {
   v4 = a3;
-  v5 = [a1 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+  v5 = [self stringByReplacingOccurrencesOfString:@"/" withString:@":"];
   if (v4)
   {
     v6 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
@@ -469,8 +469,8 @@ LABEL_10:
   v3 = a3;
   if (a3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v4 stringWithFileSystemRepresentation:v3 length:strlen(v3)];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager stringWithFileSystemRepresentation:v3 length:strlen(v3)];
   }
 
   return v3;
@@ -488,9 +488,9 @@ LABEL_10:
     v37 = __Block_byref_object_copy__12;
     v38 = __Block_byref_object_dispose__12;
     v21 = v3;
-    v4 = [v3 firstObject];
-    v5 = [v4 URLByDeletingLastPathComponent];
-    v39 = [v5 pathComponents];
+    firstObject = [v3 firstObject];
+    uRLByDeletingLastPathComponent = [firstObject URLByDeletingLastPathComponent];
+    pathComponents = [uRLByDeletingLastPathComponent pathComponents];
 
     v32 = 0u;
     v33 = 0u;
@@ -510,7 +510,7 @@ LABEL_10:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) pathComponents];
+          pathComponents2 = [*(*(&v30 + 1) + 8 * i) pathComponents];
           v26 = 0;
           v27 = &v26;
           v28 = 0x2020000000;
@@ -521,7 +521,7 @@ LABEL_10:
           v22[3] = &unk_1E793BDD8;
           v24 = &v34;
           v25 = &v26;
-          v11 = v10;
+          v11 = pathComponents2;
           v23 = v11;
           [v11 enumerateObjectsUsingBlock:v22];
           if ((v27[3] & 1) == 0)
@@ -578,9 +578,9 @@ LABEL_10:
 
 - (id)fp_stringByDeletingPathBounceNo:()FPAdditions andPathExtension:isFolder:
 {
-  v9 = [a1 fileSystemRepresentation];
-  v10 = v9;
-  if ((a5 & 1) != 0 || (v11 = _extensionInFilename(v9, 0)) == 0)
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  v10 = fileSystemRepresentation;
+  if ((a5 & 1) != 0 || (v11 = _extensionInFilename(fileSystemRepresentation, 0)) == 0)
   {
     if (a4)
     {
@@ -691,13 +691,13 @@ LABEL_21:
   {
     if (v10[v14])
     {
-      v27 = [MEMORY[0x1E696AC08] defaultManager];
-      v28 = [v27 stringWithFileSystemRepresentation:v10 length:v14];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      selfCopy = [defaultManager stringWithFileSystemRepresentation:v10 length:v14];
     }
 
     else
     {
-      v28 = a1;
+      selfCopy = self;
     }
   }
 
@@ -705,32 +705,32 @@ LABEL_21:
   {
     v33 = 0;
     asprintf(&v33, "%.*s.%s", v14, v10, v12);
-    v28 = [MEMORY[0x1E696AEC0] fp_pathWithFileSystemRepresentation:v33];
+    selfCopy = [MEMORY[0x1E696AEC0] fp_pathWithFileSystemRepresentation:v33];
     free(v33);
   }
 
-  return v28;
+  return selfCopy;
 }
 
 - (void)fp_obfuscatedDotSeparatedComponents
 {
-  v1 = a1;
-  v2 = [a1 fp_alwaysObfuscatedDotSeparatedComponents];
+  selfCopy = self;
+  fp_alwaysObfuscatedDotSeparatedComponents = [self fp_alwaysObfuscatedDotSeparatedComponents];
   if (fp_shouldObfuscateFilenames())
   {
-    v1 = v2;
+    selfCopy = fp_alwaysObfuscatedDotSeparatedComponents;
   }
 
-  v3 = v1;
+  v3 = selfCopy;
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)fp_alwaysObfuscatedDotSeparatedComponents
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 componentsSeparatedByString:@"."];
+    v2 = [self componentsSeparatedByString:@"."];
     v3 = [v2 mutableCopy];
 
     if ([v3 count])
@@ -748,51 +748,51 @@ LABEL_21:
       while (v4 < [v3 count]);
     }
 
-    v7 = [v3 componentsJoinedByString:@"."];
+    selfCopy = [v3 componentsJoinedByString:@"."];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)fp_obfuscatedExtendedAttributeName
 {
-  v1 = a1;
-  v2 = [a1 fp_alwaysObfuscatedExtendedAttributeName];
+  selfCopy = self;
+  fp_alwaysObfuscatedExtendedAttributeName = [self fp_alwaysObfuscatedExtendedAttributeName];
   if (fp_shouldObfuscateFilenames())
   {
-    v1 = v2;
+    selfCopy = fp_alwaysObfuscatedExtendedAttributeName;
   }
 
-  v3 = v1;
+  v3 = selfCopy;
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)fp_alwaysObfuscatedExtendedAttributeName
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 rangeOfString:@"#" options:5];
+    v2 = [self rangeOfString:@"#" options:5];
     v4 = v3;
-    v5 = [a1 length];
+    v5 = [self length];
     v6 = &stru_1F1F94B20;
     if (v4)
     {
       if (v2)
       {
-        [a1 rangeOfComposedCharacterSequenceAtIndex:v2];
+        [self rangeOfComposedCharacterSequenceAtIndex:v2];
         v8 = v7 + v2;
-        if (v7 + v2 < [a1 length])
+        if (v7 + v2 < [self length])
         {
           v9 = 0;
           while (1)
           {
-            v10 = [a1 characterAtIndex:v8];
+            v10 = [self characterAtIndex:v8];
             if (v10 > 97)
             {
               if (v10 <= 109)
@@ -875,9 +875,9 @@ LABEL_26:
             }
 
             v9 |= v11;
-            if (++v8 >= [a1 length])
+            if (++v8 >= [self length])
             {
-              v6 = [a1 substringWithRange:{v2, objc_msgSend(a1, "length") - v2}];
+              v6 = [self substringWithRange:{v2, objc_msgSend(self, "length") - v2}];
               v5 = v2;
               break;
             }
@@ -886,19 +886,19 @@ LABEL_26:
       }
     }
 
-    v12 = [a1 rangeOfString:@":" options:5 range:{0, v5}];
+    v12 = [self rangeOfString:@":" options:5 range:{0, v5}];
     if (v13 && (v14 = v12) != 0)
     {
-      v15 = [a1 rangeOfComposedCharacterSequenceAtIndex:v12];
+      v15 = [self rangeOfComposedCharacterSequenceAtIndex:v12];
       if (v5 == v15 + v16)
       {
-        v17 = 0;
+        fp_alwaysObfuscatedDotSeparatedComponents = 0;
       }
 
       else
       {
-        v19 = [a1 substringWithRange:{v15 + v16, v5 - (v15 + v16)}];
-        v17 = [v19 fp_alwaysObfuscatedDotSeparatedComponents];
+        v19 = [self substringWithRange:{v15 + v16, v5 - (v15 + v16)}];
+        fp_alwaysObfuscatedDotSeparatedComponents = [v19 fp_alwaysObfuscatedDotSeparatedComponents];
 
         v5 = v14;
       }
@@ -906,42 +906,42 @@ LABEL_26:
 
     else
     {
-      v17 = 0;
+      fp_alwaysObfuscatedDotSeparatedComponents = 0;
     }
 
-    v20 = [a1 substringWithRange:{0, v5}];
-    v21 = [v20 fp_alwaysObfuscatedDotSeparatedComponents];
+    v20 = [self substringWithRange:{0, v5}];
+    fp_alwaysObfuscatedDotSeparatedComponents2 = [v20 fp_alwaysObfuscatedDotSeparatedComponents];
 
-    if (v17)
+    if (fp_alwaysObfuscatedDotSeparatedComponents)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@%@", v21, v17, v6];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@%@", fp_alwaysObfuscatedDotSeparatedComponents2, fp_alwaysObfuscatedDotSeparatedComponents, v6];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v21, v6, v23];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", fp_alwaysObfuscatedDotSeparatedComponents2, v6, v23];
     }
-    v18 = ;
+    selfCopy = ;
   }
 
   else
   {
-    v18 = a1;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)fp_prettyPathWithObfuscation:()FPAdditions
 {
-  if (([a1 hasPrefix:@"/Applications/"] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"/System/Library/") & 1) != 0 || objc_msgSend(a1, "hasPrefix:", @"/AppleInternal/"))
+  if (([self hasPrefix:@"/Applications/"] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"/System/Library/") & 1) != 0 || objc_msgSend(self, "hasPrefix:", @"/AppleInternal/"))
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 mutableCopy];
+    v7 = [self mutableCopy];
     if (fp_prettyPathWithObfuscation__onceToken != -1)
     {
       [NSString(FPAdditions) fp_prettyPathWithObfuscation:];
@@ -998,72 +998,72 @@ LABEL_26:
       v20 = v7;
     }
 
-    v5 = v20;
+    selfCopy = v20;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)fp_obfuscatedPath
 {
   if (fp_shouldObfuscateFilenames())
   {
-    v2 = [a1 fp_alwaysObfuscatedPath];
+    selfCopy = [self fp_alwaysObfuscatedPath];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)fp_bouncedNameWithIndex:()FPAdditions isDir:
 {
   if (a4)
   {
-    v7 = [a1 lastPathComponent];
-    v8 = 0;
+    lastPathComponent = [self lastPathComponent];
+    fp_pathExtension = 0;
   }
 
   else
   {
-    v7 = [a1 fp_stringByDeletingPathExtension];
-    v8 = [a1 fp_pathExtension];
+    lastPathComponent = [self fp_stringByDeletingPathExtension];
+    fp_pathExtension = [self fp_pathExtension];
   }
 
-  if ([v8 isEqualToString:@"icloud"])
+  if ([fp_pathExtension isEqualToString:@"icloud"])
   {
-    v9 = [v7 fp_pathExtension];
-    v10 = [v7 fp_stringByDeletingPathExtension];
+    fp_pathExtension2 = [lastPathComponent fp_pathExtension];
+    fp_stringByDeletingPathExtension = [lastPathComponent fp_stringByDeletingPathExtension];
 
-    if (v9)
+    if (fp_pathExtension2)
     {
-      v11 = [v9 stringByAppendingPathExtension:v8];
+      v11 = [fp_pathExtension2 stringByAppendingPathExtension:fp_pathExtension];
 
-      v8 = v11;
+      fp_pathExtension = v11;
     }
 
-    v7 = v10;
+    lastPathComponent = fp_stringByDeletingPathExtension;
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v13 = [v7 fp_representableHFSFileNameWithNumber:v12 addedExtension:v8 makeDotFile:0 isDir:a4];
+  v13 = [lastPathComponent fp_representableHFSFileNameWithNumber:v12 addedExtension:fp_pathExtension makeDotFile:0 isDir:a4];
 
   return v13;
 }
 
 - (const)fp_fileSystemRepresentation
 {
-  if (![a1 length])
+  if (![self length])
   {
     return ".";
   }
 
-  v2 = a1;
+  selfCopy = self;
 
-  return [v2 fileSystemRepresentation];
+  return [selfCopy fileSystemRepresentation];
 }
 
 + (id)fp_representableHFSFileNameWithBase:()FPAdditions suffix:extension:makeDotFile:
@@ -1153,9 +1153,9 @@ LABEL_17:
     [NSString(FPAdditions) fp_representableHFSFileNameWithBase:v9 suffix:v24 extension:? makeDotFile:?];
   }
 
-  v25 = [MEMORY[0x1E696AFB0] UUID];
-  v26 = [v25 UUIDString];
-  v22 = v23 + snprintf(v33 + v23, 254 - v22, "com-apple-bird-recovered-%s", [v26 UTF8String]);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v22 = v23 + snprintf(v33 + v23, 254 - v22, "com-apple-bird-recovered-%s", [uUIDString UTF8String]);
 
   if (v15)
   {
@@ -1182,37 +1182,37 @@ LABEL_24:
   v11 = a4;
   v12 = [v10 length];
   v13 = [v11 length];
-  if ((a5 & 1) != 0 || v12 || v13 || [a1 lengthOfBytesUsingEncoding:4] >= 0x100)
+  if ((a5 & 1) != 0 || v12 || v13 || [self lengthOfBytesUsingEncoding:4] >= 0x100)
   {
     if (v11 || a6)
     {
-      v14 = v11;
-      v15 = a1;
+      fp_pathExtension = v11;
+      selfCopy = self;
     }
 
     else
     {
-      v14 = [a1 fp_pathExtension];
-      v15 = [a1 fp_stringByDeletingPathExtension];
+      fp_pathExtension = [self fp_pathExtension];
+      selfCopy = [self fp_stringByDeletingPathExtension];
     }
 
-    v16 = v15;
-    v17 = [MEMORY[0x1E696AEC0] fp_representableHFSFileNameWithBase:v15 suffix:v10 extension:v14 makeDotFile:a5];
+    v16 = selfCopy;
+    selfCopy2 = [MEMORY[0x1E696AEC0] fp_representableHFSFileNameWithBase:selfCopy suffix:v10 extension:fp_pathExtension makeDotFile:a5];
   }
 
   else
   {
-    v17 = a1;
+    selfCopy2 = self;
   }
 
-  return v17;
+  return selfCopy2;
 }
 
 - (id)fp_representableHFSFileNameWithNumber:()FPAdditions addedExtension:makeDotFile:isDir:
 {
   v10 = a4;
-  v11 = [a3 stringValue];
-  v12 = [a1 fp_representableHFSFileNameWithSuffix:v11 addedExtension:v10 makeDotFile:a5 isDir:a6];
+  stringValue = [a3 stringValue];
+  v12 = [self fp_representableHFSFileNameWithSuffix:stringValue addedExtension:v10 makeDotFile:a5 isDir:a6];
 
   return v12;
 }
@@ -1220,15 +1220,15 @@ LABEL_24:
 - (id)fp_representableHFSFileNameWithNumber:()FPAdditions addedExtension:makeDotFile:
 {
   v8 = a4;
-  v9 = [a3 stringValue];
-  v10 = [a1 fp_representableHFSFileNameWithSuffix:v9 addedExtension:v8 makeDotFile:a5 isDir:0];
+  stringValue = [a3 stringValue];
+  v10 = [self fp_representableHFSFileNameWithSuffix:stringValue addedExtension:v8 makeDotFile:a5 isDir:0];
 
   return v10;
 }
 
 - (id)fp_pathExtension
 {
-  v1 = _extensionInFilename([a1 fileSystemRepresentation], 0);
+  v1 = _extensionInFilename([self fileSystemRepresentation], 0);
   v2 = v1;
   if (v1)
   {
@@ -1236,8 +1236,8 @@ LABEL_24:
     if (v3)
     {
       v4 = v3;
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
-      v2 = [v5 stringWithFileSystemRepresentation:v2 length:v4];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v2 = [defaultManager stringWithFileSystemRepresentation:v2 length:v4];
     }
 
     else
@@ -1251,21 +1251,21 @@ LABEL_24:
 
 - (id)fp_stringByDeletingPathExtension
 {
-  v2 = [a1 fileSystemRepresentation];
-  v3 = _extensionInFilename(v2, 0);
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  v3 = _extensionInFilename(fileSystemRepresentation, 0);
   if (v3)
   {
     v4 = v3;
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 stringWithFileSystemRepresentation:v2 length:&v4[~v2]];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    selfCopy = [defaultManager stringWithFileSystemRepresentation:fileSystemRepresentation length:&v4[~fileSystemRepresentation]];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 + (uint64_t)fp_wordTokenizer
@@ -1283,12 +1283,12 @@ LABEL_24:
   v11 = a6;
   if (!a5)
   {
-    [NSString(FPAdditions) fp_enumerateTokensInRange:a2 tokenizer:a1 usingBlock:?];
+    [NSString(FPAdditions) fp_enumerateTokensInRange:a2 tokenizer:self usingBlock:?];
   }
 
   v17.location = a3;
   v17.length = a4;
-  CFStringTokenizerSetString(a5, a1, v17);
+  CFStringTokenizerSetString(a5, self, v17);
   do
   {
     if (!CFStringTokenizerAdvanceToNextToken(a5))
@@ -1298,7 +1298,7 @@ LABEL_24:
 
     v12 = objc_autoreleasePoolPush();
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(a5);
-    v14 = [(__CFString *)a1 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+    v14 = [(__CFString *)self substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
     v16 = 0;
     v11[2](v11, v14, CurrentTokenRange.location, CurrentTokenRange.length, &v16);
     v15 = v16;
@@ -1318,7 +1318,7 @@ LABEL_24:
 
   v2 = fp_isCJKLanguageIdentifier_cjkLanguages;
 
-  return [v2 containsObject:a1];
+  return [v2 containsObject:self];
 }
 
 + (id)fp_hashForToken:()FPAdditions
@@ -1330,10 +1330,10 @@ LABEL_24:
     v3 = a3;
     CC_SHA1_Init(&v12);
     v4 = v3;
-    v5 = [v4 bytes];
+    bytes = [v4 bytes];
     v6 = [v3 length];
 
-    CC_SHA1_Update(&v12, v5, v6);
+    CC_SHA1_Update(&v12, bytes, v6);
     *md = 0;
     v14 = 0;
     v15 = 0;
@@ -1420,19 +1420,19 @@ LABEL_24:
 
 - (uint64_t)fp_splitKeyPathInProperty:()FPAdditions remainder:
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v8 = result;
-    result = [a1 rangeOfString:@"."];
+    result = [self rangeOfString:@"."];
     if (result)
     {
       v9 = result;
       if (result == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = a1;
+        selfCopy = self;
         v11 = 0;
-        *a3 = a1;
+        *a3 = self;
       }
 
       else
@@ -1442,8 +1442,8 @@ LABEL_24:
           return 0;
         }
 
-        *a3 = [a1 substringWithRange:{0, result}];
-        v11 = [a1 substringWithRange:{v9 + 1, v8 + ~v9}];
+        *a3 = [self substringWithRange:{0, result}];
+        v11 = [self substringWithRange:{v9 + 1, v8 + ~v9}];
       }
 
       *a4 = v11;
@@ -1458,15 +1458,15 @@ LABEL_24:
 {
   if ([a3 isEqual:@"pathExtension"])
   {
-    v4 = [a1 pathExtension];
+    pathExtension = [self pathExtension];
   }
 
   else
   {
-    v4 = 0;
+    pathExtension = 0;
   }
 
-  return v4;
+  return pathExtension;
 }
 
 - (__CFString)fp_relativePathWithRealpath:()FPAdditions
@@ -1478,16 +1478,16 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  if ([v4 hasPrefix:a1])
+  if ([v4 hasPrefix:self])
   {
     v6 = [v5 length];
-    if (v6 == [a1 length])
+    if (v6 == [self length])
     {
       v7 = &stru_1F1F94B20;
       goto LABEL_15;
     }
 
-    v8 = [v5 substringFromIndex:{objc_msgSend(a1, "length")}];
+    v8 = [v5 substringFromIndex:{objc_msgSend(self, "length")}];
     if ([v8 length] && (objc_msgSend(v8, "isEqualToString:", @"/") & 1) == 0)
     {
       if ([v8 hasPrefix:@"/"])
@@ -1509,14 +1509,14 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (![a1 hasPrefix:v5])
+  if (![self hasPrefix:v5])
   {
 LABEL_10:
     v7 = 0;
     goto LABEL_15;
   }
 
-  v8 = [a1 substringFromIndex:{objc_msgSend(v5, "length")}];
+  v8 = [self substringFromIndex:{objc_msgSend(v5, "length")}];
   v7 = &stru_1F1F94B20;
   if ([v8 length] && !objc_msgSend(v8, "isEqualToString:", @"/"))
   {
@@ -1535,7 +1535,7 @@ LABEL_15:
   v10 = *MEMORY[0x1E69E9840];
   v4 = *__error();
   v6 = 138412546;
-  v7 = a1;
+  selfCopy = self;
   v8 = 1024;
   v9 = v4;
   _os_log_debug_impl(&dword_1AAAE1000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] realpath(%@) failed: %{errno}d", &v6, 0x12u);

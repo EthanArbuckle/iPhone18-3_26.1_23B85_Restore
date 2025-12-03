@@ -1,15 +1,15 @@
 @interface HLPURLSessionTask
-+ (HLPURLSessionDelegateResponds)delegateRespondsWithDelegate:(id)a3;
++ (HLPURLSessionDelegateResponds)delegateRespondsWithDelegate:(id)delegate;
 - (HLPURLSessionDelegate)networkDelegate;
-- (HLPURLSessionTask)initWithSessionTask:(id)a3 identifier:(id)a4;
+- (HLPURLSessionTask)initWithSessionTask:(id)task identifier:(id)identifier;
 - (NSString)identifier;
 - (NSURL)URL;
 - (void)cancel;
 - (void)dealloc;
-- (void)didCompleteWithError:(id)a3;
-- (void)registerDelegate:(id)a3;
-- (void)setPriority:(float)a3;
-- (void)unregisterDelegate:(id)a3;
+- (void)didCompleteWithError:(id)error;
+- (void)registerDelegate:(id)delegate;
+- (void)setPriority:(float)priority;
+- (void)unregisterDelegate:(id)delegate;
 @end
 
 @implementation HLPURLSessionTask
@@ -22,18 +22,18 @@
   [(HLPURLSessionTask *)&v3 dealloc];
 }
 
-- (HLPURLSessionTask)initWithSessionTask:(id)a3 identifier:(id)a4
+- (HLPURLSessionTask)initWithSessionTask:(id)task identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = HLPURLSessionTask;
   v9 = [(HLPURLSessionTask *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a4);
-    objc_storeStrong(&v10->_task, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_task, task);
     v11 = dispatch_queue_create("com.apple.tipsd.urlsessionQueue", 0);
     sessionTaskDelegateQueue = v10->_sessionTaskDelegateQueue;
     v10->_sessionTaskDelegateQueue = v11;
@@ -61,41 +61,41 @@ void __52__HLPURLSessionTask_initWithSessionTask_identifier___block_invoke(uint6
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    lastPathComponent = identifier;
   }
 
   else
   {
     v4 = [(HLPURLSessionTask *)self URL];
-    v3 = [v4 lastPathComponent];
+    lastPathComponent = [v4 lastPathComponent];
   }
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (NSURL)URL
 {
-  v2 = [(NSURLSessionTask *)self->_task originalRequest];
-  v3 = [v2 URL];
+  originalRequest = [(NSURLSessionTask *)self->_task originalRequest];
+  v3 = [originalRequest URL];
 
   return v3;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
   [(NSURLSessionTask *)self->_task priority];
-  if (*&v5 != a3)
+  if (*&v5 != priority)
   {
     task = self->_task;
-    *&v5 = a3;
+    *&v5 = priority;
 
     [(NSURLSessionTask *)task setPriority:v5];
   }
 }
 
-+ (HLPURLSessionDelegateResponds)delegateRespondsWithDelegate:(id)a3
++ (HLPURLSessionDelegateResponds)delegateRespondsWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_opt_respondsToSelector();
   v5 = objc_opt_respondsToSelector();
   v6 = objc_opt_respondsToSelector();
@@ -136,10 +136,10 @@ void __52__HLPURLSessionTask_initWithSessionTask_identifier___block_invoke(uint6
   return ((v12 | v10) & 0xFFFFFFFFFFFFFFFELL | v6 & 1 | v14 | v13 | v11);
 }
 
-- (void)didCompleteWithError:(id)a3
+- (void)didCompleteWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = [(NSHashTable *)self->_sessionTaskDelegates copy];
   v14 = 0u;
   v15 = 0u;
@@ -161,7 +161,7 @@ void __52__HLPURLSessionTask_initWithSessionTask_identifier___block_invoke(uint6
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v14 + 1) + 8 * v10++) URLSessionSessionTask:self didCompleteWithError:v4];
+        [*(*(&v14 + 1) + 8 * v10++) URLSessionSessionTask:self didCompleteWithError:errorCopy];
       }
 
       while (v8 != v10);
@@ -188,10 +188,10 @@ void __42__HLPURLSessionTask_didCompleteWithError___block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4 && ![(NSHashTable *)self->_sessionTaskDelegates containsObject:v4])
+  delegateCopy = delegate;
+  if (delegateCopy && ![(NSHashTable *)self->_sessionTaskDelegates containsObject:delegateCopy])
   {
     sessionTaskDelegateQueue = self->_sessionTaskDelegateQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -199,7 +199,7 @@ void __42__HLPURLSessionTask_didCompleteWithError___block_invoke(uint64_t a1)
     v6[2] = __38__HLPURLSessionTask_registerDelegate___block_invoke;
     v6[3] = &unk_279706F08;
     v6[4] = self;
-    v7 = v4;
+    v7 = delegateCopy;
     dispatch_sync(sessionTaskDelegateQueue, v6);
   }
 }
@@ -210,16 +210,16 @@ void __38__HLPURLSessionTask_registerDelegate___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   sessionTaskDelegateQueue = self->_sessionTaskDelegateQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __40__HLPURLSessionTask_unregisterDelegate___block_invoke;
   v10 = &unk_279706F08;
-  v11 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = delegateCopy;
   v12 = v6;
   dispatch_sync(sessionTaskDelegateQueue, &v7);
   if (![(NSHashTable *)self->_sessionTaskDelegates count:v7])

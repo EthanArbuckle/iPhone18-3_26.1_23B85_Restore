@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __29__FSSettings_defaultSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSettings_onceToken != -1)
   {
     dispatch_once(&defaultSettings_onceToken, block);
@@ -80,16 +80,16 @@ void __31__FSSettings_settingsContainer__block_invoke()
 
 - (NSURL)probeOrderArray
 {
-  v2 = [(FSSettings *)self settingsContainer];
-  v3 = [v2 URLByAppendingPathComponent:@"probeOrder.plist" isDirectory:0];
+  settingsContainer = [(FSSettings *)self settingsContainer];
+  v3 = [settingsContainer URLByAppendingPathComponent:@"probeOrder.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)enabledModulesArray
 {
-  v2 = [(FSSettings *)self settingsContainer];
-  v3 = [v2 URLByAppendingPathComponent:@"enabledModules.plist" isDirectory:0];
+  settingsContainer = [(FSSettings *)self settingsContainer];
+  v3 = [settingsContainer URLByAppendingPathComponent:@"enabledModules.plist" isDirectory:0];
 
   return v3;
 }

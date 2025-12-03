@@ -1,21 +1,21 @@
 @interface PLModelMigrationAction_PopulateInitialActiveLibraryScopeParticipationState
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_PopulateInitialActiveLibraryScopeParticipationState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v66[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K != nil", @"libraryScope"];
   v65 = @"activeLibraryScopeParticipationState";
   v66[0] = &unk_1F0FBC070;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:&v65 count:1];
   v10 = +[PLManagedAsset entityName];
   v29 = 0;
-  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:v7 error:&v29];
+  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:contextCopy error:&v29];
 
   v12 = v29;
   if (v11)
@@ -32,9 +32,9 @@
 
     if (v16)
     {
-      v17 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v17)
+      if (logger)
       {
         v63 = 0u;
         v64 = 0u;
@@ -105,9 +105,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v26 = v12;
-    if (a4)
+    if (error)
     {
-      *a4 = v26;
+      *error = v26;
     }
 
     v14 = 3;

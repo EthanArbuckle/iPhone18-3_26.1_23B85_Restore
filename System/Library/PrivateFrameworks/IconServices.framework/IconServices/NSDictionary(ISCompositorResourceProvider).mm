@@ -8,7 +8,7 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   v6 = [MEMORY[0x1E695DFA8] setWithObject:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -26,7 +26,7 @@
       }
 
       [v6 addObject:v5];
-      v7 = [a1 objectForKey:v5];
+      v7 = [self objectForKey:v5];
       if (!v7)
       {
         goto LABEL_8;

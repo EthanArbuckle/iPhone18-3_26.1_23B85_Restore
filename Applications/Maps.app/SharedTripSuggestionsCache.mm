@@ -7,13 +7,13 @@
 - (id)suggestions;
 - (void)_prepareForSuggestionsIfNeeded;
 - (void)_provideAbandonmentFeedback;
-- (void)_provideFeedbackForContact:(id)a3;
-- (void)_refreshFreshSuggestions:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_provideFeedbackForContact:(id)contact;
+- (void)_refreshFreshSuggestions:(id)suggestions;
+- (void)addObserver:(id)observer;
 - (void)provideAbandonmentFeedback;
-- (void)provideFeedbackForContact:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)requestFreshSuggestionsWithSeedContacts:(id)a3;
+- (void)provideFeedbackForContact:(id)contact;
+- (void)removeObserver:(id)observer;
+- (void)requestFreshSuggestionsWithSeedContacts:(id)contacts;
 @end
 
 @implementation SharedTripSuggestionsCache
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_100FF1A38;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195FA18 != -1)
   {
     dispatch_once(&qword_10195FA18, block);
@@ -106,13 +106,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_provideFeedbackForContact:(id)a3
+- (void)_provideFeedbackForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_V2(self->_requestQueue);
   recipientsByHandle = self->_recipientsByHandle;
-  v6 = [v4 handleForIDS];
-  v7 = [(NSDictionary *)recipientsByHandle objectForKeyedSubscript:v6];
+  handleForIDS = [contactCopy handleForIDS];
+  v7 = [(NSDictionary *)recipientsByHandle objectForKeyedSubscript:handleForIDS];
 
   v8 = sub_1000946AC();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -125,10 +125,10 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsCache providing feedback: engagement with suggestion %@", &v16, 0xCu);
     }
 
-    v10 = [v7 contact];
-    v11 = [v10 identifier];
-    v12 = [v7 handle];
-    v13 = [_PSMapsFeedbackAction engagementWithSuggestionWithContactIdentifier:v11 handle:v12];
+    contact = [v7 contact];
+    identifier = [contact identifier];
+    handle = [v7 handle];
+    v13 = [_PSMapsFeedbackAction engagementWithSuggestionWithContactIdentifier:identifier handle:handle];
   }
 
   else
@@ -136,14 +136,14 @@
     if (v9)
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = contactCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsCache providing feedback: engagement with non suggestion %@", &v16, 0xCu);
     }
 
-    v10 = [v4 contact];
-    v11 = [v10 identifier];
-    v12 = [v4 stringValue];
-    v13 = [_PSMapsFeedbackAction engagementWithNonSuggestionWithContactIdentifier:v11 handle:v12];
+    contact = [contactCopy contact];
+    identifier = [contact identifier];
+    handle = [contactCopy stringValue];
+    v13 = [_PSMapsFeedbackAction engagementWithNonSuggestionWithContactIdentifier:identifier handle:handle];
   }
 
   v14 = v13;
@@ -152,9 +152,9 @@
   [(_PSMapsSuggester *)self->_suggester provideMapsFeedback:v15];
 }
 
-- (void)provideFeedbackForContact:(id)a3
+- (void)provideFeedbackForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_not_V2(self->_requestQueue);
   objc_initWeak(&location, self);
   requestQueue = self->_requestQueue;
@@ -163,26 +163,26 @@
   block[2] = sub_100FF0B70;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = contactCopy;
+  v6 = contactCopy;
   dispatch_async(requestQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_refreshFreshSuggestions:(id)a3
+- (void)_refreshFreshSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   dispatch_assert_queue_V2(self->_requestQueue);
   [(GEOObserverHashTable *)self->_observers suggestionsWillUpdateInCache:self];
   [(SharedTripSuggestionsCache *)self _prepareForSuggestionsIfNeeded];
   v5 = +[NSDate date];
   [(_PSMapsPredictionContext *)self->_predictionContext setSuggestionDate:v5];
 
-  v6 = sub_100021DB0(v4, &stru_101661210);
-  v56 = v4;
-  if (v4)
+  v6 = sub_100021DB0(suggestionsCopy, &stru_101661210);
+  v56 = suggestionsCopy;
+  if (suggestionsCopy)
   {
     [(_PSMapsPredictionContext *)self->_predictionContext setSeedContactIdentifiers:v6];
   }
@@ -194,15 +194,15 @@
   v8 = sub_1000946AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(_PSMapsPredictionContext *)self->_predictionContext seedContactIdentifiers];
+    seedContactIdentifiers = [(_PSMapsPredictionContext *)self->_predictionContext seedContactIdentifiers];
     *buf = 134218242;
     v68 = UInteger;
     v69 = 2112;
-    v70 = v9;
+    v70 = seedContactIdentifiers;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "SharedTripSuggestionsCache starting to fetch max %lu suggestions with seed contacts: %@", buf, 0x16u);
   }
 
-  v55 = self;
+  selfCopy = self;
   v10 = [(_PSMapsSuggester *)self->_suggester suggestionsFromContext:self->_predictionContext maxSuggestions:UInteger];
   v11 = sub_1000946AC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -216,8 +216,8 @@
   }
 
   v13 = +[MSPSharedTripService sharedInstance];
-  v14 = [v13 sharingIdentity];
-  v15 = [v14 aliases];
+  sharingIdentity = [v13 sharingIdentity];
+  aliases = [sharingIdentity aliases];
 
   v64 = 0u;
   v65 = 0u;
@@ -240,26 +240,26 @@
         }
 
         v21 = *(*(&v62 + 1) + 8 * i);
-        v22 = [v21 groupName];
+        groupName = [v21 groupName];
 
-        if (!v22)
+        if (!groupName)
         {
-          v23 = [v21 recipients];
-          v24 = [v23 firstObject];
+          recipients = [v21 recipients];
+          firstObject = [recipients firstObject];
 
-          v25 = [v24 handle];
-          v26 = [v15 containsObject:v25];
+          handle = [firstObject handle];
+          v26 = [aliases containsObject:handle];
 
           if ((v26 & 1) == 0)
           {
-            v27 = [v24 handle];
+            handle2 = [firstObject handle];
 
-            if (v27)
+            if (handle2)
             {
               v28 = [MSPSharedTripContact alloc];
-              v29 = [v24 contact];
-              v30 = [v24 handle];
-              v31 = [v28 initWithContact:v29 handle:v30];
+              contact = [firstObject contact];
+              handle3 = [firstObject handle];
+              firstObject2 = [v28 initWithContact:contact handle:handle3];
 
               goto LABEL_23;
             }
@@ -268,20 +268,20 @@
             v60[1] = 3221225472;
             v60[2] = sub_100FF12E4;
             v60[3] = &unk_101661238;
-            v32 = v24;
+            v32 = firstObject;
             v61 = v32;
             v33 = [v57 indexOfObjectWithOptions:2 passingTest:v60];
             if (v33 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v34 = [v32 contact];
-              v35 = [MSPSharedTripContact contactsFromCNContact:v34];
-              v31 = [v35 firstObject];
+              contact2 = [v32 contact];
+              v35 = [MSPSharedTripContact contactsFromCNContact:contact2];
+              firstObject2 = [v35 firstObject];
 
               v36 = sub_1000946AC();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v68 = v31;
+                v68 = firstObject2;
                 v37 = v36;
                 v38 = "Recipient suggestion did not come with a handle; using first handle in contact page: %@";
                 goto LABEL_21;
@@ -290,12 +290,12 @@
 
             else
             {
-              v31 = [v56 objectAtIndex:v33];
+              firstObject2 = [v56 objectAtIndex:v33];
               v36 = sub_1000946AC();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v68 = v31;
+                v68 = firstObject2;
                 v37 = v36;
                 v38 = "Recipient suggestion did not come with a handle; using last seeded contact: %@";
 LABEL_21:
@@ -303,14 +303,14 @@ LABEL_21:
               }
             }
 
-            v29 = v61;
+            contact = v61;
 LABEL_23:
 
-            if (v31)
+            if (firstObject2)
             {
-              [v58 addObject:v31];
-              v39 = [v31 handleForIDS];
-              [v59 setObject:v24 forKeyedSubscript:v39];
+              [v58 addObject:firstObject2];
+              handleForIDS = [firstObject2 handleForIDS];
+              [v59 setObject:firstObject forKeyedSubscript:handleForIDS];
             }
           }
 
@@ -332,22 +332,22 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "SharedTripSuggestionsCache resolved suggested contacts: %@", buf, 0xCu);
   }
 
-  os_unfair_lock_lock(&v55->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v41 = +[NSDate date];
-  lastFreshRequestDate = v55->_lastFreshRequestDate;
-  v55->_lastFreshRequestDate = v41;
+  lastFreshRequestDate = selfCopy->_lastFreshRequestDate;
+  selfCopy->_lastFreshRequestDate = v41;
 
-  objc_storeStrong(&v55->_suggestions, obj);
+  objc_storeStrong(&selfCopy->_suggestions, obj);
   v43 = [v58 copy];
-  suggestedContacts = v55->_suggestedContacts;
-  v55->_suggestedContacts = v43;
+  suggestedContacts = selfCopy->_suggestedContacts;
+  selfCopy->_suggestedContacts = v43;
 
   v45 = [v59 copy];
-  recipientsByHandle = v55->_recipientsByHandle;
-  v55->_recipientsByHandle = v45;
+  recipientsByHandle = selfCopy->_recipientsByHandle;
+  selfCopy->_recipientsByHandle = v45;
 
-  v55->_requestInProgress = 0;
-  os_unfair_lock_unlock(&v55->_lock);
+  selfCopy->_requestInProgress = 0;
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v47 = v58;
   v48 = GEOConfigGetUInteger();
   v49 = v47;
@@ -371,12 +371,12 @@ LABEL_23:
   v53 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
   [v53 requestCapabilityLevelsForContacts:v49];
 
-  [(GEOObserverHashTable *)v55->_observers suggestionsDidUpdateInCache:v55];
+  [(GEOObserverHashTable *)selfCopy->_observers suggestionsDidUpdateInCache:selfCopy];
 }
 
-- (void)requestFreshSuggestionsWithSeedContacts:(id)a3
+- (void)requestFreshSuggestionsWithSeedContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   os_unfair_lock_lock(&self->_lock);
   requestInProgress = self->_requestInProgress;
   v6 = self->_lastFreshRequestDate;
@@ -407,7 +407,7 @@ LABEL_23:
       v13[2] = sub_100FF1560;
       v13[3] = &unk_101661340;
       objc_copyWeak(&v15, &location);
-      v14 = v4;
+      v14 = contactsCopy;
       dispatch_async(requestQueue, v13);
 
       objc_destroyWeak(&v15);
@@ -416,13 +416,13 @@ LABEL_23:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_1000946AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = v4;
+    v6 = observerCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -452,16 +452,16 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsCache remove observer: %@", buf, 0xCu);
   }
 
-  [(GEOObserverHashTable *)self->_observers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_1000946AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = v4;
+    v6 = observerCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -491,7 +491,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "SharedTripSuggestionsCache add observer: %@", buf, 0xCu);
   }
 
-  [(GEOObserverHashTable *)self->_observers registerObserver:v4];
+  [(GEOObserverHashTable *)self->_observers registerObserver:observerCopy];
 }
 
 - (NSDictionary)recipientsByHandle

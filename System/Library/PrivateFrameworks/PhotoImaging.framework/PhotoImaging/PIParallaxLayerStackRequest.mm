@@ -1,9 +1,9 @@
 @interface PIParallaxLayerStackRequest
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)time;
 - (BOOL)shouldUseVideoFrame;
-- (PIParallaxLayerStackRequest)initWithComposition:(id)a3;
-- (PIParallaxLayerStackRequest)initWithSegmentationItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIParallaxLayerStackRequest)initWithComposition:(id)composition;
+- (PIParallaxLayerStackRequest)initWithSegmentationItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (int64_t)mediaComponentType;
 @end
@@ -60,39 +60,39 @@
   return [(_PIParallaxLayerStackJob *)v3 initWithParallaxLayerStackRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19.receiver = self;
   v19.super_class = PIParallaxLayerStackRequest;
-  v4 = [(NURenderRequest *)&v19 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v19 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxLayerStackRequest *)self segmentationItem];
+    segmentationItem = [(PIParallaxLayerStackRequest *)self segmentationItem];
     v6 = v4[21];
-    v4[21] = v5;
+    v4[21] = segmentationItem;
 
-    v7 = [(PIParallaxLayerStackRequest *)self layout];
+    layout = [(PIParallaxLayerStackRequest *)self layout];
     v8 = v4[23];
-    v4[23] = v7;
+    v4[23] = layout;
 
-    v9 = [(PIParallaxLayerStackRequest *)self auxiliaryLayout];
+    auxiliaryLayout = [(PIParallaxLayerStackRequest *)self auxiliaryLayout];
     v10 = v4[24];
-    v4[24] = v9;
+    v4[24] = auxiliaryLayout;
 
-    v11 = [(PIParallaxLayerStackRequest *)self style];
+    style = [(PIParallaxLayerStackRequest *)self style];
     v12 = v4[22];
-    v4[22] = v11;
+    v4[22] = style;
 
     v4[25] = [(PIParallaxLayerStackRequest *)self layerStackMode];
-    v13 = [(PIParallaxLayerStackRequest *)self cache];
+    cache = [(PIParallaxLayerStackRequest *)self cache];
     v14 = v4[27];
-    v4[27] = v13;
+    v4[27] = cache;
 
     *(v4 + 163) = [(PIParallaxLayerStackRequest *)self isSettlingEffectEnabled];
     *(v4 + 164) = [(PIParallaxLayerStackRequest *)self isSpatialPhotoEnabled];
     *(v4 + 165) = [(PIParallaxLayerStackRequest *)self userAdjustedVisibleFrame];
-    v15 = [(PIParallaxLayerStackRequest *)self spatialPhotoProgressHandler];
-    v16 = [v15 copy];
+    spatialPhotoProgressHandler = [(PIParallaxLayerStackRequest *)self spatialPhotoProgressHandler];
+    v16 = [spatialPhotoProgressHandler copy];
     v17 = v4[28];
     v4[28] = v16;
 
@@ -106,10 +106,10 @@
   return v4;
 }
 
-- (PIParallaxLayerStackRequest)initWithComposition:(id)a3
+- (PIParallaxLayerStackRequest)initWithComposition:(id)composition
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  compositionCopy = composition;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -147,8 +147,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -175,8 +175,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -192,11 +192,11 @@ LABEL_14:
   }
 }
 
-- (PIParallaxLayerStackRequest)initWithSegmentationItem:(id)a3
+- (PIParallaxLayerStackRequest)initWithSegmentationItem:(id)item
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v10 = NUAssertLogger_21137();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -218,8 +218,8 @@ LABEL_14:
         v18 = dispatch_get_specific(*v12);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v18;
         v26 = 2114;
@@ -230,8 +230,8 @@ LABEL_14:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v17;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -240,11 +240,11 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(PISegmentationItem *)v4 composition];
+  v5 = itemCopy;
+  composition = [(PISegmentationItem *)itemCopy composition];
   v23.receiver = self;
   v23.super_class = PIParallaxLayerStackRequest;
-  v7 = [(NURenderRequest *)&v23 initWithComposition:v6];
+  v7 = [(NURenderRequest *)&v23 initWithComposition:composition];
 
   segmentationItem = v7->_segmentationItem;
   v7->_segmentationItem = v5;

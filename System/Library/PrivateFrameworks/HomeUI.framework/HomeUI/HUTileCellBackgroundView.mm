@@ -1,10 +1,10 @@
 @interface HUTileCellBackgroundView
 - (HUBackgroundEffectViewGrouping)effectGrouper;
-- (HUTileCellBackgroundView)initWithEffectIdentifier:(id)a3 effectGrouper:(id)a4 materialStyle:(int64_t)a5;
+- (HUTileCellBackgroundView)initWithEffectIdentifier:(id)identifier effectGrouper:(id)grouper materialStyle:(int64_t)style;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)updateWithEffectIdentifier:(id)a3 materialStyle:(int64_t)a4;
+- (void)updateWithEffectIdentifier:(id)identifier materialStyle:(int64_t)style;
 @end
 
 @implementation HUTileCellBackgroundView
@@ -17,16 +17,16 @@
   return Strong;
 }
 
-- (HUTileCellBackgroundView)initWithEffectIdentifier:(id)a3 effectGrouper:(id)a4 materialStyle:(int64_t)a5
+- (HUTileCellBackgroundView)initWithEffectIdentifier:(id)identifier effectGrouper:(id)grouper materialStyle:(int64_t)style
 {
-  v7 = a3;
+  identifierCopy = identifier;
   swift_unknownObjectRetain();
   v8 = [(HUTileCellBackgroundView *)self initWithFrame:0.0, 0.0, 0.0, 0.0];
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   Strong = swift_unknownObjectWeakLoadStrong();
   v10 = v8;
-  sub_20CFFE02C(v7, Strong, a5);
+  sub_20CFFE02C(identifierCopy, Strong, style);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -35,16 +35,16 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20CFFCF14();
-  v4 = [v3 _captureSource];
+  _captureSource = [v3 _captureSource];
 
-  if (v4)
+  if (_captureSource)
   {
-    [v4 _removeCaptureDependent_];
+    [_captureSource _removeCaptureDependent_];
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for TileCellBackgroundView();
   [(HUTileCellBackgroundView *)&v5 dealloc];
 }
@@ -72,17 +72,17 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFFDD34();
 }
 
-- (void)updateWithEffectIdentifier:(id)a3 materialStyle:(int64_t)a4
+- (void)updateWithEffectIdentifier:(id)identifier materialStyle:(int64_t)style
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v8 = a3;
-  v9 = self;
-  sub_20CFFE02C(v8, Strong, a4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_20CFFE02C(identifierCopy, Strong, style);
   swift_unknownObjectRelease();
 }
 

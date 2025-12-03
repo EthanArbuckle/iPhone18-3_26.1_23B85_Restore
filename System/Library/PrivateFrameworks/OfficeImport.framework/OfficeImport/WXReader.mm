@@ -8,16 +8,16 @@
 {
   v3 = objc_autoreleasePoolPush();
   [(OCDEncryptedReader *)self useUnencryptedDocument];
-  v4 = [(OCXReader *)self zipPackage];
+  zipPackage = [(OCXReader *)self zipPackage];
 
-  if (!v4)
+  if (!zipPackage)
   {
     [(OCXReader *)self verifyFileFormat];
   }
 
-  v5 = [(OCXReader *)self zipPackage];
-  v6 = [(OCDReader *)self cancelDelegate];
-  v10 = [WXDocument documentFrom:v5 reader:self cancel:v6 asThumbnail:[(OCDReader *)self isThumbnail]];
+  zipPackage2 = [(OCXReader *)self zipPackage];
+  cancelDelegate = [(OCDReader *)self cancelDelegate];
+  v10 = [WXDocument documentFrom:zipPackage2 reader:self cancel:cancelDelegate asThumbnail:[(OCDReader *)self isThumbnail]];
 
   objc_autoreleasePoolPop(v3);
   v7 = v9;

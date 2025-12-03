@@ -1,18 +1,18 @@
 @interface HDClinicalIngestionTaskPerAccountInfo
-- (HDClinicalIngestionTaskPerAccountInfo)initWithAccountIdentifier:(id)a3;
+- (HDClinicalIngestionTaskPerAccountInfo)initWithAccountIdentifier:(id)identifier;
 @end
 
 @implementation HDClinicalIngestionTaskPerAccountInfo
 
-- (HDClinicalIngestionTaskPerAccountInfo)initWithAccountIdentifier:(id)a3
+- (HDClinicalIngestionTaskPerAccountInfo)initWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HDClinicalIngestionTaskPerAccountInfo;
   v5 = [(HDClinicalIngestionTaskPerAccountInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
   }

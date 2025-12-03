@@ -1,31 +1,31 @@
 @interface TIUserModelDataStoreEntry
-- (TIUserModelDataStoreEntry)initWithTimestamp:(id)a3 withKey:(id)a4 withInputMode:(id)a5 withValue:(id)a6 withSecondaryValue:(id)a7 withRealValue:(id)a8 withProperties:(id)a9;
+- (TIUserModelDataStoreEntry)initWithTimestamp:(id)timestamp withKey:(id)key withInputMode:(id)mode withValue:(id)value withSecondaryValue:(id)secondaryValue withRealValue:(id)realValue withProperties:(id)properties;
 @end
 
 @implementation TIUserModelDataStoreEntry
 
-- (TIUserModelDataStoreEntry)initWithTimestamp:(id)a3 withKey:(id)a4 withInputMode:(id)a5 withValue:(id)a6 withSecondaryValue:(id)a7 withRealValue:(id)a8 withProperties:(id)a9
+- (TIUserModelDataStoreEntry)initWithTimestamp:(id)timestamp withKey:(id)key withInputMode:(id)mode withValue:(id)value withSecondaryValue:(id)secondaryValue withRealValue:(id)realValue withProperties:(id)properties
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  timestampCopy = timestamp;
+  keyCopy = key;
+  modeCopy = mode;
+  valueCopy = value;
+  secondaryValueCopy = secondaryValue;
+  realValueCopy = realValue;
+  propertiesCopy = properties;
   v25.receiver = self;
   v25.super_class = TIUserModelDataStoreEntry;
   v22 = [(TIUserModelDataStoreEntry *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    [(TIUserModelDataStoreEntry *)v22 setTimestamp:v15];
-    [(TIUserModelDataStoreEntry *)v23 setKey:v16];
-    [(TIUserModelDataStoreEntry *)v23 setInputMode:v17];
-    [(TIUserModelDataStoreEntry *)v23 setValue:v18];
-    [(TIUserModelDataStoreEntry *)v23 setSecondaryValue:v19];
-    [(TIUserModelDataStoreEntry *)v23 setRealValue:v20];
-    [(TIUserModelDataStoreEntry *)v23 setProperties:v21];
+    [(TIUserModelDataStoreEntry *)v22 setTimestamp:timestampCopy];
+    [(TIUserModelDataStoreEntry *)v23 setKey:keyCopy];
+    [(TIUserModelDataStoreEntry *)v23 setInputMode:modeCopy];
+    [(TIUserModelDataStoreEntry *)v23 setValue:valueCopy];
+    [(TIUserModelDataStoreEntry *)v23 setSecondaryValue:secondaryValueCopy];
+    [(TIUserModelDataStoreEntry *)v23 setRealValue:realValueCopy];
+    [(TIUserModelDataStoreEntry *)v23 setProperties:propertiesCopy];
   }
 
   return v23;

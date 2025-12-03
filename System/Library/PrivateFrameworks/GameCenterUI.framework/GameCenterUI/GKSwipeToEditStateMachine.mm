@@ -1,42 +1,42 @@
 @interface GKSwipeToEditStateMachine
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (GKSwipeToEditStateMachine)initWithCollectionView:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (GKSwipeToEditStateMachine)initWithCollectionView:(id)view;
 - (void)didEnterAnimatingOpenState;
 - (void)didEnterAnimatingShutState;
 - (void)didEnterEditingState;
 - (void)didEnterNothingState;
 - (void)didExitAnimatingOpenState;
 - (void)didExitNothingState;
-- (void)handlePan:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)shutActionPaneForEditingCellAnimated:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handlePan:(id)pan;
+- (void)setDelegate:(id)delegate;
+- (void)shutActionPaneForEditingCellAnimated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation GKSwipeToEditStateMachine
 
-- (GKSwipeToEditStateMachine)initWithCollectionView:(id)a3
+- (GKSwipeToEditStateMachine)initWithCollectionView:(id)view
 {
   v50[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v41.receiver = self;
   v41.super_class = GKSwipeToEditStateMachine;
   v5 = [(_GKStateMachine *)&v41 init];
   v6 = v5;
   if (v5)
   {
-    [(GKSwipeToEditStateMachine *)v5 setCollectionView:v4];
-    v7 = [v4 dataSource];
+    [(GKSwipeToEditStateMachine *)v5 setCollectionView:viewCopy];
+    dataSource = [viewCopy dataSource];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 dataSource];
-      [(GKSwipeToEditStateMachine *)v6 setGkDataSource:v9];
+      dataSource2 = [viewCopy dataSource];
+      [(GKSwipeToEditStateMachine *)v6 setGkDataSource:dataSource2];
     }
 
-    v32 = v4;
+    v32 = viewCopy;
     [(_GKStateMachine *)v6 setCurrentState:@"NothingState"];
     v48 = @"TrackingState";
     v49[0] = @"NothingState";
@@ -85,8 +85,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v19 = [(UICollectionView *)v6->_collectionView gestureRecognizers];
-    v20 = [v19 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    gestureRecognizers = [(UICollectionView *)v6->_collectionView gestureRecognizers];
+    v20 = [gestureRecognizers countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v20)
     {
       v21 = v20;
@@ -98,7 +98,7 @@
         {
           if (*v38 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v24 = *(*(&v37 + 1) + 8 * v23);
@@ -112,20 +112,20 @@
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v21 = [gestureRecognizers countByEnumeratingWithState:&v37 objects:v43 count:16];
       }
 
       while (v21);
     }
 
-    v4 = v32;
+    viewCopy = v32;
     [v32 addGestureRecognizer:v6->_panGestureRecognizer];
-    v25 = [(UICollectionView *)v6->_collectionView gestureRecognizers];
+    gestureRecognizers2 = [(UICollectionView *)v6->_collectionView gestureRecognizers];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v26 = [v25 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    v26 = [gestureRecognizers2 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v26)
     {
       v27 = v26;
@@ -137,14 +137,14 @@
         {
           if (*v34 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(gestureRecognizers2);
           }
 
           [*(*(&v33 + 1) + 8 * v29++) requireGestureRecognizerToFail:v6->_editModeCancelRecognizer];
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v27 = [gestureRecognizers2 countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v27);
@@ -156,31 +156,31 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"you're not the boss of me"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewController+GKSwipeToEdit.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKSwipeToEditStateMachine setDelegate:]", objc_msgSend(v6, "UTF8String"), 112];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKSwipeToEditStateMachine setDelegate:]", objc_msgSend(lastPathComponent, "UTF8String"), 112];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == 4)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state == 4)
   {
     goto LABEL_13;
   }
 
-  if (v5 != 3)
+  if (state != 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
-      [v4 translationInView:self->_editingCell];
+      [panCopy translationInView:self->_editingCell];
       [(GKSwipeToEditStateMachine *)self xPositionForTranslation:?];
       [(GKCollectionViewCell *)self->_editingCell setEditingContentOriginX:?];
       [(_GKStateMachine *)self setCurrentState:@"TrackingState"];
@@ -189,7 +189,7 @@
     goto LABEL_14;
   }
 
-  [v4 velocityInView:self->_editingCell];
+  [panCopy velocityInView:self->_editingCell];
   v7 = v6;
   [(GKCollectionViewCell *)self->_editingCell editingContentOriginX];
   v9 = v8;
@@ -257,20 +257,20 @@ uint64_t __39__GKSwipeToEditStateMachine_handlePan___block_invoke_2(uint64_t res
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_panGestureRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_panGestureRecognizer == beginCopy)
   {
-    v9 = [(_GKStateMachine *)self currentState];
-    if (([v9 isEqualToString:@"NothingState"] & 1) == 0)
+    currentState = [(_GKStateMachine *)self currentState];
+    if (([currentState isEqualToString:@"NothingState"] & 1) == 0)
     {
-      v10 = [(_GKStateMachine *)self currentState];
-      if (![v10 isEqualToString:@"EditingState"])
+      currentState2 = [(_GKStateMachine *)self currentState];
+      if (![currentState2 isEqualToString:@"EditingState"])
       {
-        v18 = [(_GKStateMachine *)self currentState];
-        v19 = [v18 isEqualToString:@"AnimatingOpenState"];
+        currentState3 = [(_GKStateMachine *)self currentState];
+        v19 = [currentState3 isEqualToString:@"AnimatingOpenState"];
 
         if ((v19 & 1) == 0)
         {
@@ -280,16 +280,16 @@ uint64_t __39__GKSwipeToEditStateMachine_handlePan___block_invoke_2(uint64_t res
 LABEL_10:
         collectionView = self->_collectionView;
         [(UIPanGestureRecognizer *)self->_panGestureRecognizer locationInView:collectionView];
-        v6 = [(UICollectionView *)collectionView indexPathForItemAtPoint:?];
+        currentState5 = [(UICollectionView *)collectionView indexPathForItemAtPoint:?];
         [(UIPanGestureRecognizer *)self->_panGestureRecognizer velocityInView:self->_collectionView];
         v13 = v12;
         v15 = v14;
-        v16 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v6];
+        v16 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:currentState5];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [(_GKStateMachine *)self currentState];
-          if ([v17 isEqualToString:@"NothingState"])
+          currentState4 = [(_GKStateMachine *)self currentState];
+          if ([currentState4 isEqualToString:@"NothingState"])
           {
           }
 
@@ -303,8 +303,8 @@ LABEL_10:
             }
           }
 
-          v21 = [(GKCollectionViewCell *)v16 editActions];
-          v22 = [v21 count];
+          editActions = [(GKCollectionViewCell *)v16 editActions];
+          v22 = [editActions count];
 
           v23 = fabs(v15);
           v24 = fabs(v13);
@@ -338,23 +338,23 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  if (self->_editModeCancelRecognizer != v4)
+  if (self->_editModeCancelRecognizer != beginCopy)
   {
 LABEL_26:
     v28 = 1;
     goto LABEL_27;
   }
 
-  v6 = [(_GKStateMachine *)self currentState];
-  if ([v6 isEqualToString:@"EditingState"])
+  currentState5 = [(_GKStateMachine *)self currentState];
+  if ([currentState5 isEqualToString:@"EditingState"])
   {
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v7 = [(_GKStateMachine *)self currentState];
-  v8 = [v7 isEqualToString:@"AnimatingOpenState"];
+  currentState6 = [(_GKStateMachine *)self currentState];
+  v8 = [currentState6 isEqualToString:@"AnimatingOpenState"];
 
   if (v8)
   {
@@ -362,8 +362,8 @@ LABEL_25:
   }
 
 LABEL_21:
-  v26 = [(_GKStateMachine *)self currentState];
-  v27 = [v26 isEqualToString:@"NothingState"];
+  currentState7 = [(_GKStateMachine *)self currentState];
+  v27 = [currentState7 isEqualToString:@"NothingState"];
 
   if ((v27 & 1) == 0)
   {
@@ -426,9 +426,9 @@ LABEL_27:
   [(GKSwipeToEditStateMachine *)self setOpenAnimation:0];
 }
 
-- (void)shutActionPaneForEditingCellAnimated:(BOOL)a3
+- (void)shutActionPaneForEditingCellAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -481,10 +481,10 @@ uint64_t __66__GKSwipeToEditStateMachine_shutActionPaneForEditingCellAnimated___
   return [v2 setCurrentState:@"NothingState"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = [(_GKStateMachine *)self currentState];
-  v5 = [v4 isEqualToString:@"NothingState"];
+  currentState = [(_GKStateMachine *)self currentState];
+  v5 = [currentState isEqualToString:@"NothingState"];
 
   if ((v5 & 1) == 0)
   {

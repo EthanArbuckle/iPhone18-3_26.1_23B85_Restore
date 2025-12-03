@@ -5,8 +5,8 @@
 - (unint64_t)osTransactionsActive;
 - (void)_executeTimerBlock;
 - (void)debugTimer;
-- (void)osTransactionComplete:(id)a3;
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4;
+- (void)osTransactionComplete:(id)complete;
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction;
 @end
 
 @implementation W5ActivityManager
@@ -41,9 +41,9 @@ uint64_t __42__W5ActivityManager_sharedActivityManager__block_invoke()
     eagerExitTimeout = v2->_eagerExitTimeout;
     v2->_eagerExitTimeout = 0;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     active_transactions = v3->_active_transactions;
-    v3->_active_transactions = v5;
+    v3->_active_transactions = array;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("W5ActivityManager", v7);
@@ -62,22 +62,22 @@ uint64_t __42__W5ActivityManager_sharedActivityManager__block_invoke()
 
 - (BOOL)debugTimerEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.wifivelocity"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.wifivelocity"];
 
   v4 = [v3 objectForKey:@"eager-exit-debug"];
   if (v4)
   {
     NSLog(&cfstr_SFoundPreferen.isa, "[W5ActivityManager debugTimerEnabled]", @"com.apple.wifivelocity", @"eager-exit-debug");
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)debugTimer
@@ -185,18 +185,18 @@ void __31__W5ActivityManager_debugTimer__block_invoke_3(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction
 {
-  v6 = a4;
+  transactionCopy = transaction;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__W5ActivityManager_osTransactionCreate_transaction___block_invoke;
   block[3] = &unk_279ECD4A0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = transactionCopy;
+  createCopy = create;
+  v8 = transactionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -259,9 +259,9 @@ void __53__W5ActivityManager_osTransactionCreate_transaction___block_invoke(void
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)osTransactionComplete:(id)a3
+- (void)osTransactionComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -271,9 +271,9 @@ void __53__W5ActivityManager_osTransactionCreate_transaction___block_invoke(void
   block[1] = 3221225472;
   block[2] = __43__W5ActivityManager_osTransactionComplete___block_invoke;
   block[3] = &unk_279ECD518;
-  v6 = v4;
+  v6 = completeCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   dispatch_sync(queue, block);
   if (*(v13 + 24) == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -439,12 +439,12 @@ void __43__W5ActivityManager_osTransactionComplete___block_invoke_2(uint64_t a1,
 
 - (void)_executeTimerBlock
 {
-  v3 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
+  alternateExecutionBlockForCleanExit = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
 
-  if (v3)
+  if (alternateExecutionBlockForCleanExit)
   {
-    v4 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
-    v4[2]();
+    alternateExecutionBlockForCleanExit2 = [(W5ActivityManager *)self alternateExecutionBlockForCleanExit];
+    alternateExecutionBlockForCleanExit2[2]();
   }
 }
 

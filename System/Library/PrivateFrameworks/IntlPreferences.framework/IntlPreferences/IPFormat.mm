@@ -8,23 +8,23 @@
 + (id)localeFromDeviceLocale
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277CBEAF8] preferredLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [v2 localeWithLocaleIdentifier:v4];
+  preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+  localeIdentifier = [preferredLocale localeIdentifier];
+  v5 = [v2 localeWithLocaleIdentifier:localeIdentifier];
 
   return v5;
 }
 
 + (id)localeFromDeviceLanguage
 {
-  v2 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v2];
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  v3 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:_deviceLanguage];
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x277CBEAF8];
-  v6 = [MEMORY[0x277CBEAF8] preferredLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [v5 componentsFromLocaleIdentifier:v7];
+  preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+  localeIdentifier = [preferredLocale localeIdentifier];
+  v8 = [v5 componentsFromLocaleIdentifier:localeIdentifier];
 
   v9 = [v8 objectForKeyedSubscript:@"numbers"];
   [v4 setObject:v9 forKeyedSubscript:@"numbers"];

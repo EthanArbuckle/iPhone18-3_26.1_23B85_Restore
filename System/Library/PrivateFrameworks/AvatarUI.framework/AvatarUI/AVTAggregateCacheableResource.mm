@@ -1,21 +1,21 @@
 @interface AVTAggregateCacheableResource
-- (AVTAggregateCacheableResource)initWithCacheableResources:(id)a3;
+- (AVTAggregateCacheableResource)initWithCacheableResources:(id)resources;
 - (BOOL)requiresEncryption;
-- (id)identifierForScope:(id)a3 persistent:(BOOL)a4;
+- (id)identifierForScope:(id)scope persistent:(BOOL)persistent;
 @end
 
 @implementation AVTAggregateCacheableResource
 
-- (AVTAggregateCacheableResource)initWithCacheableResources:(id)a3
+- (AVTAggregateCacheableResource)initWithCacheableResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = AVTAggregateCacheableResource;
   v6 = [(AVTAggregateCacheableResource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheableResources, a3);
+    objc_storeStrong(&v6->_cacheableResources, resources);
   }
 
   return v7;
@@ -28,8 +28,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AVTAggregateCacheableResource *)self cacheableResources];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  cacheableResources = [(AVTAggregateCacheableResource *)self cacheableResources];
+  v3 = [cacheableResources countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -39,7 +39,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cacheableResources);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) requiresEncryption])
@@ -49,7 +49,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [cacheableResources countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -64,18 +64,18 @@ LABEL_11:
   return v3;
 }
 
-- (id)identifierForScope:(id)a3 persistent:(BOOL)a4
+- (id)identifierForScope:(id)scope persistent:(BOOL)persistent
 {
-  v4 = a4;
+  persistentCopy = persistent;
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = [MEMORY[0x1E696AD60] string];
+  scopeCopy = scope;
+  string = [MEMORY[0x1E696AD60] string];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(AVTAggregateCacheableResource *)self cacheableResources];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  cacheableResources = [(AVTAggregateCacheableResource *)self cacheableResources];
+  v8 = [cacheableResources countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -86,11 +86,11 @@ LABEL_11:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cacheableResources);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (persistentCopy && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v13 = [v12 persistentIdentifierForScope:0];
         }
@@ -101,27 +101,27 @@ LABEL_11:
         }
 
         v14 = v13;
-        [v6 appendFormat:@"%@_", v13];
+        [string appendFormat:@"%@_", v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [cacheableResources countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  if ([v6 length])
+  if ([string length])
   {
-    [v6 deleteCharactersInRange:{objc_msgSend(v6, "length") - 1, 1}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
   }
 
-  if (v18)
+  if (scopeCopy)
   {
-    v15 = [v18 cacheableResourceAssociatedIdentifier];
-    [v6 appendString:v15];
+    cacheableResourceAssociatedIdentifier = [scopeCopy cacheableResourceAssociatedIdentifier];
+    [string appendString:cacheableResourceAssociatedIdentifier];
   }
 
-  v16 = [v6 copy];
+  v16 = [string copy];
 
   return v16;
 }

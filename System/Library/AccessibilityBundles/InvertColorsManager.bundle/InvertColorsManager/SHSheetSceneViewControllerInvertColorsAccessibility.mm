@@ -9,23 +9,23 @@
   v10.receiver = self;
   v10.super_class = SHSheetSceneViewControllerInvertColorsAccessibility;
   [(SHSheetSceneViewControllerInvertColorsAccessibility *)&v10 viewWillLayoutSubviews];
-  v3 = [(SHSheetSceneViewControllerInvertColorsAccessibility *)self view];
-  v4 = [v3 window];
-  v5 = [AXInvertColorsAppHelper hasInvertFilter:v4];
+  view = [(SHSheetSceneViewControllerInvertColorsAccessibility *)self view];
+  window = [view window];
+  v5 = [AXInvertColorsAppHelper hasInvertFilter:window];
 
   if (v5)
   {
-    v6 = [v3 traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection = [view traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v7 == &dword_0 + 1)
+    if (userInterfaceStyle == &dword_0 + 1)
     {
-      [v3 setAccessibilityInvertColorsIsolatedTree:1];
+      [view setAccessibilityInvertColorsIsolatedTree:1];
       v8 = _AXSInvertColorsEnabled();
-      v9 = [v3 layer];
+      layer = [view layer];
       if (v8)
       {
-        [AXInvertColorsAppHelper applyInvertFilterToLayer:v9];
+        [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
 LABEL_7:
 
         goto LABEL_8;
@@ -34,11 +34,11 @@ LABEL_7:
 
     else
     {
-      [v3 setAccessibilityInvertColorsIsolatedTree:0];
-      v9 = [v3 layer];
+      [view setAccessibilityInvertColorsIsolatedTree:0];
+      layer = [view layer];
     }
 
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v9];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
     goto LABEL_7;
   }
 

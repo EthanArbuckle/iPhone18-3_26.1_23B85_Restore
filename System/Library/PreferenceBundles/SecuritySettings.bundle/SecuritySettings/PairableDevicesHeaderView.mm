@@ -1,16 +1,16 @@
 @interface PairableDevicesHeaderView
 - (NSString)name;
-- (PairableDevicesHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (PairableDevicesHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation PairableDevicesHeaderView
 
-- (PairableDevicesHeaderView)initWithSpecifier:(id)a3
+- (PairableDevicesHeaderView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v19.receiver = self;
   v19.super_class = PairableDevicesHeaderView;
   v5 = [(PairableDevicesHeaderView *)&v19 init];
@@ -28,8 +28,8 @@
     v10 = [UITableViewHeaderFooterView _defaultTextColorForTableViewStyle:1 isSectionHeader:1];
     [(UILabel *)v6->_text setColor:v10];
 
-    v11 = [v4 name];
-    [(UILabel *)v6->_text setText:v11];
+    name = [specifierCopy name];
+    [(UILabel *)v6->_text setText:name];
 
     v12 = v6->_text;
     v18.receiver = v6;
@@ -51,25 +51,25 @@
 
 - (NSString)name
 {
-  v2 = [(PairableDevicesHeaderView *)self text];
-  v3 = [v2 text];
+  text = [(PairableDevicesHeaderView *)self text];
+  v2Text = [text text];
 
-  return v3;
+  return v2Text;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(PairableDevicesHeaderView *)self text];
-  [v5 setText:v4];
+  nameCopy = name;
+  text = [(PairableDevicesHeaderView *)self text];
+  [text setText:nameCopy];
 
   [(PairableDevicesHeaderView *)self setNeedsLayout];
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  v3 = [(PairableDevicesHeaderView *)self spinner];
-  [v3 frame];
+  spinner = [(PairableDevicesHeaderView *)self spinner];
+  [spinner frame];
   v5 = v4 + 24.0;
 
   return v5;
@@ -80,41 +80,41 @@
   v26.receiver = self;
   v26.super_class = PairableDevicesHeaderView;
   [(PairableDevicesHeaderView *)&v26 layoutSubviews];
-  v3 = [UIApp userInterfaceLayoutDirection];
-  v4 = [(PairableDevicesHeaderView *)self superview];
-  v5 = [(PairableDevicesHeaderView *)self text];
-  [v5 sizeToFit];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
+  superview = [(PairableDevicesHeaderView *)self superview];
+  text = [(PairableDevicesHeaderView *)self text];
+  [text sizeToFit];
 
-  v6 = [(PairableDevicesHeaderView *)self text];
-  [v6 frame];
+  text2 = [(PairableDevicesHeaderView *)self text];
+  [text2 frame];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PairableDevicesHeaderView *)self spinner];
-  [v11 frame];
+  spinner = [(PairableDevicesHeaderView *)self spinner];
+  [spinner frame];
   v13 = v12;
   v15 = v14;
 
-  if (v3)
+  if (userInterfaceLayoutDirection)
   {
     [(PairableDevicesHeaderView *)self bounds];
     v17 = v16;
-    [v4 separatorInset];
+    [superview separatorInset];
     v19 = v17 - v18 - v8;
   }
 
   else
   {
-    [v4 separatorInset];
+    [superview separatorInset];
     v19 = v20;
   }
 
   [(PairableDevicesHeaderView *)self frame];
   v22 = v21 - v10 + -6.0;
-  v23 = [(PairableDevicesHeaderView *)self text];
-  [v23 setFrame:{v19, v22, v8, v10}];
+  text3 = [(PairableDevicesHeaderView *)self text];
+  [text3 setFrame:{v19, v22, v8, v10}];
 
-  if (v3)
+  if (userInterfaceLayoutDirection)
   {
     v24 = v19 - v13 + -10.0;
   }
@@ -124,8 +124,8 @@
     v24 = v8 + v19 + 10.0;
   }
 
-  v25 = [(PairableDevicesHeaderView *)self spinner];
-  [v25 setFrame:{v24, floor(v10 * 0.5 + v22 - v15 * 0.5), v13, v15}];
+  spinner2 = [(PairableDevicesHeaderView *)self spinner];
+  [spinner2 setFrame:{v24, floor(v10 * 0.5 + v22 - v15 * 0.5), v13, v15}];
 }
 
 @end

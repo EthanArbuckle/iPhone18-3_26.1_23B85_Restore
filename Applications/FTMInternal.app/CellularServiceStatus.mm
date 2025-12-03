@@ -1,28 +1,28 @@
 @interface CellularServiceStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoamStatus:(id)a3;
-- (int)StringAsSrvDomain:(id)a3;
-- (int)StringAsSrvStatus:(id)a3;
-- (int)StringAsSysMode:(id)a3;
+- (int)StringAsRoamStatus:(id)status;
+- (int)StringAsSrvDomain:(id)domain;
+- (int)StringAsSrvStatus:(id)status;
+- (int)StringAsSysMode:(id)mode;
 - (int)roamStatus;
 - (int)srvDomain;
 - (int)srvStatus;
 - (int)sysMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasRoamStatus:(BOOL)a3;
-- (void)setHasSrvDomain:(BOOL)a3;
-- (void)setHasSrvStatus:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasSysMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasRoamStatus:(BOOL)status;
+- (void)setHasSrvDomain:(BOOL)domain;
+- (void)setHasSrvStatus:(BOOL)status;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasSysMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularServiceStatus
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)setHasSysMode:(BOOL)a3
+- (void)setHasSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 256;
   }
@@ -55,75 +55,75 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsSysMode:(id)a3
+- (int)StringAsSysMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([modeCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
@@ -149,9 +149,9 @@
   }
 }
 
-- (void)setHasSrvStatus:(BOOL)a3
+- (void)setHasSrvStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 64;
   }
@@ -164,50 +164,50 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsSrvStatus:(id)a3
+- (int)StringAsSrvStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_SRV_STATUS_NONE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_NO_SRV"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LIMITED"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LIMITED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_SRV"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_SRV"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LIMITED_REGIONAL"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LIMITED_REGIONAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_PWR_SAVE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_PWR_SAVE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_MAX"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_MAX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_LOW_POWER_MODE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_LOW_POWER_MODE"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_STATUS_CMAS_ONLY_MODE"])
+  else if ([statusCopy isEqualToString:@"SYS_SRV_STATUS_CMAS_ONLY_MODE"])
   {
     v4 = 101;
   }
@@ -233,9 +233,9 @@
   }
 }
 
-- (void)setHasSrvDomain:(BOOL)a3
+- (void)setHasSrvDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 32;
   }
@@ -248,40 +248,40 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsSrvDomain:(id)a3
+- (int)StringAsSrvDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_NONE"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_NO_SRV"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CS_ONLY"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CS_ONLY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_PS_ONLY"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_PS_ONLY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CS_PS"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CS_PS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_CAMPED"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_CAMPED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_SRV_DOMAIN_MAX"])
+  else if ([domainCopy isEqualToString:@"SYS_SRV_DOMAIN_MAX"])
   {
     v4 = 5;
   }
@@ -307,9 +307,9 @@
   }
 }
 
-- (void)setHasRoamStatus:(BOOL)a3
+- (void)setHasRoamStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -322,80 +322,80 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsRoamStatus:(id)a3
+- (int)StringAsRoamStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_ROAM_STATUS_NONE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_NONE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OFF"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OFF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_ON"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_ON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BLINK"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BLINK"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_NEIGHBORHOOD"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_NEIGHBORHOOD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_BLDG"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_OUT_OF_BLDG"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PREF_SYS"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PREF_SYS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_AVAIL_SYS"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_AVAIL_SYS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_ALLIANCE_PARTNER"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_ALLIANCE_PARTNER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PREMIUM_PARTNER"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PREMIUM_PARTNER"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_FULL_SVC"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_FULL_SVC"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_PARTIAL_SVC"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_PARTIAL_SVC"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BANNER_ON"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BANNER_ON"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_BANNER_OFF"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_BANNER_OFF"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_ROAM_STATUS_HOME_SYSTEM"])
+  else if ([statusCopy isEqualToString:@"SYS_ROAM_STATUS_HOME_SYSTEM"])
   {
     v4 = 64;
   }
@@ -408,9 +408,9 @@
   return v4;
 }
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -423,9 +423,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 128;
   }
@@ -438,9 +438,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -453,9 +453,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 8;
   }
@@ -473,8 +473,8 @@
   v7.receiver = self;
   v7.super_class = CellularServiceStatus;
   v3 = [(CellularServiceStatus *)&v7 description];
-  v4 = [(CellularServiceStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularServiceStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -757,16 +757,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v16 = v4;
+  v16 = toCopy;
   if (has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v16;
+    toCopy = v16;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -787,7 +787,7 @@ LABEL_3:
 
   sysMode = self->_sysMode;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -803,7 +803,7 @@ LABEL_4:
 LABEL_21:
   srvStatus = self->_srvStatus;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -819,7 +819,7 @@ LABEL_5:
 LABEL_22:
   srvDomain = self->_srvDomain;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -835,20 +835,20 @@ LABEL_6:
 LABEL_23:
   roamStatus = self->_roamStatus;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     durationMs = self->_durationMs;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_8:
   if (self->_simHplmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v16;
+    toCopy = v16;
   }
 
   v7 = self->_has;
@@ -856,7 +856,7 @@ LABEL_8:
   {
     subsId = self->_subsId;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
     v7 = self->_has;
     if ((v7 & 4) == 0)
     {
@@ -877,31 +877,31 @@ LABEL_12:
 
   numSubs = self->_numSubs;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
     psPref = self->_psPref;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_14:
   if (self->_plmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v16;
+    toCopy = v16;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -920,8 +920,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 15) = self->_sysMode;
-  *(v4 + 32) |= 0x100u;
+  *(toCopy + 15) = self->_sysMode;
+  *(toCopy + 32) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -935,8 +935,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  *(v4 + 13) = self->_srvStatus;
-  *(v4 + 32) |= 0x40u;
+  *(toCopy + 13) = self->_srvStatus;
+  *(toCopy + 32) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -950,8 +950,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(v4 + 12) = self->_srvDomain;
-  *(v4 + 32) |= 0x20u;
+  *(toCopy + 12) = self->_srvDomain;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -965,28 +965,28 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(v4 + 9) = self->_roamStatus;
-  *(v4 + 32) |= 0x10u;
+  *(toCopy + 9) = self->_roamStatus;
+  *(toCopy + 32) |= 0x10u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = self->_durationMs;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 4) = self->_durationMs;
+    *(toCopy + 32) |= 2u;
   }
 
 LABEL_8:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_simHplmn)
   {
-    [v4 setSimHplmn:?];
-    v4 = v7;
+    [toCopy setSimHplmn:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x80) != 0)
   {
-    *(v4 + 14) = self->_subsId;
-    *(v4 + 32) |= 0x80u;
+    *(toCopy + 14) = self->_subsId;
+    *(toCopy + 32) |= 0x80u;
     v6 = self->_has;
     if ((v6 & 4) == 0)
     {
@@ -1005,26 +1005,26 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  *(v4 + 5) = self->_numSubs;
-  *(v4 + 32) |= 4u;
+  *(toCopy + 5) = self->_numSubs;
+  *(toCopy + 32) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
-    *(v4 + 8) = self->_psPref;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 8) = self->_psPref;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_14:
   if (self->_plmn)
   {
     [v7 setPlmn:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1104,7 +1104,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(NSData *)self->_simHplmn copyWithZone:a3];
+  v8 = [(NSData *)self->_simHplmn copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
@@ -1144,26 +1144,26 @@ LABEL_11:
   }
 
 LABEL_12:
-  v11 = [(NSData *)self->_plmn copyWithZone:a3];
+  v11 = [(NSData *)self->_plmn copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_52;
     }
@@ -1176,20 +1176,20 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 32) & 0x100) == 0 || self->_sysMode != *(v4 + 15))
+    if ((*(equalCopy + 32) & 0x100) == 0 || self->_sysMode != *(equalCopy + 15))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 32) & 0x100) != 0)
+  else if ((*(equalCopy + 32) & 0x100) != 0)
   {
     goto LABEL_52;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_srvStatus != *(v4 + 13))
+    if ((v6 & 0x40) == 0 || self->_srvStatus != *(equalCopy + 13))
     {
       goto LABEL_52;
     }
@@ -1202,7 +1202,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_srvDomain != *(v4 + 12))
+    if ((v6 & 0x20) == 0 || self->_srvDomain != *(equalCopy + 12))
     {
       goto LABEL_52;
     }
@@ -1215,7 +1215,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_roamStatus != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_roamStatus != *(equalCopy + 9))
     {
       goto LABEL_52;
     }
@@ -1228,7 +1228,7 @@ LABEL_12:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_durationMs != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_durationMs != *(equalCopy + 4))
     {
       goto LABEL_52;
     }
@@ -1240,7 +1240,7 @@ LABEL_12:
   }
 
   simHplmn = self->_simHplmn;
-  if (simHplmn | *(v4 + 5))
+  if (simHplmn | *(equalCopy + 5))
   {
     if (![(NSData *)simHplmn isEqual:?])
     {
@@ -1252,10 +1252,10 @@ LABEL_52:
     has = self->_has;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_subsId != *(v4 + 14))
+    if ((v8 & 0x80) == 0 || self->_subsId != *(equalCopy + 14))
     {
       goto LABEL_52;
     }
@@ -1268,7 +1268,7 @@ LABEL_52:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_numSubs != *(v4 + 5))
+    if ((v8 & 4) == 0 || self->_numSubs != *(equalCopy + 5))
     {
       goto LABEL_52;
     }
@@ -1281,7 +1281,7 @@ LABEL_52:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_psPref != *(v4 + 8))
+    if ((v8 & 8) == 0 || self->_psPref != *(equalCopy + 8))
     {
       goto LABEL_52;
     }
@@ -1293,7 +1293,7 @@ LABEL_52:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3))
+  if (plmn | *(equalCopy + 3))
   {
     v10 = [(NSData *)plmn isEqual:?];
   }
@@ -1429,15 +1429,15 @@ LABEL_17:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12 ^ v13 ^ v14 ^ v10 ^ [(NSData *)self->_plmn hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1450,14 +1450,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x100) == 0)
+  else if ((*(fromCopy + 32) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sysMode = *(v4 + 15);
+  self->_sysMode = *(fromCopy + 15);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -1470,9 +1470,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_srvStatus = *(v4 + 13);
+  self->_srvStatus = *(fromCopy + 13);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1485,9 +1485,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_srvDomain = *(v4 + 12);
+  self->_srvDomain = *(fromCopy + 12);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -1500,29 +1500,29 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_roamStatus = *(v4 + 9);
+  self->_roamStatus = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
 LABEL_7:
-    self->_durationMs = *(v4 + 4);
+    self->_durationMs = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_8:
-  v7 = v4;
-  if (*(v4 + 5))
+  v7 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(CellularServiceStatus *)self setSimHplmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x80) != 0)
   {
-    self->_subsId = *(v4 + 14);
+    self->_subsId = *(fromCopy + 14);
     *&self->_has |= 0x80u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
     if ((v6 & 4) == 0)
     {
 LABEL_12:
@@ -1540,20 +1540,20 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_numSubs = *(v4 + 5);
+  self->_numSubs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_13:
-    self->_psPref = *(v4 + 8);
+    self->_psPref = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 
 LABEL_14:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(CellularServiceStatus *)self setPlmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

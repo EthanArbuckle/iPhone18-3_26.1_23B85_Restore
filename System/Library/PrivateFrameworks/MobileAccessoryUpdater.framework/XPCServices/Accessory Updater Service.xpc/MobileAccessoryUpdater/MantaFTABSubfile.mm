@@ -1,6 +1,6 @@
 @interface MantaFTABSubfile
-- (MantaFTABSubfile)initWithTag:(id)a3 data:(id)a4;
-- (MantaFTABSubfile)initWithTag:(id)a3 dataPointer:(const void *)a4 dataLength:(unsigned int)a5;
+- (MantaFTABSubfile)initWithTag:(id)tag data:(id)data;
+- (MantaFTABSubfile)initWithTag:(id)tag dataPointer:(const void *)pointer dataLength:(unsigned int)length;
 - (NSString)dumpString;
 - (id)generateHashSHA256;
 - (id)generateHashSHA384;
@@ -23,39 +23,39 @@
   return v6;
 }
 
-- (MantaFTABSubfile)initWithTag:(id)a3 dataPointer:(const void *)a4 dataLength:(unsigned int)a5
+- (MantaFTABSubfile)initWithTag:(id)tag dataPointer:(const void *)pointer dataLength:(unsigned int)length
 {
-  v8 = a3;
+  tagCopy = tag;
   v13.receiver = self;
   v13.super_class = MantaFTABSubfile;
   v9 = [(MantaFTABSubfile *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [tagCopy copy];
     tag = v9->_tag;
     v9->_tag = v10;
 
-    v9->_dataPointer = a4;
-    v9->_dataLength = a5;
+    v9->_dataPointer = pointer;
+    v9->_dataLength = length;
   }
 
   return v9;
 }
 
-- (MantaFTABSubfile)initWithTag:(id)a3 data:(id)a4
+- (MantaFTABSubfile)initWithTag:(id)tag data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = MantaFTABSubfile;
   v8 = [(MantaFTABSubfile *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [tagCopy copy];
     tag = v8->_tag;
     v8->_tag = v9;
 
-    v11 = [v7 copy];
+    v11 = [dataCopy copy];
     data = v8->_data;
     v8->_data = v11;
 

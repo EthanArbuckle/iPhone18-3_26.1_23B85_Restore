@@ -1,42 +1,42 @@
 @interface VUILibraryMenuItemViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUILibraryMenuItemViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUILibraryMenuItemViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImageName:(id)a3;
-- (void)setTopSeparatorView:(id)a3;
+- (void)setImageName:(id)name;
+- (void)setTopSeparatorView:(id)view;
 @end
 
 @implementation VUILibraryMenuItemViewCell
 
-- (VUILibraryMenuItemViewCell)initWithFrame:(CGRect)a3
+- (VUILibraryMenuItemViewCell)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = VUILibraryMenuItemViewCell;
-  v3 = [(VUILibraryMenuItemViewCell *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryMenuItemViewCell *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v4 setTextStyle:2];
     [(VUITextLayout *)v4 setFontWeight:0];
-    v5 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(VUITextLayout *)v4 setColor:v5];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(VUITextLayout *)v4 setColor:vui_keyColor];
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [(VUITextLayout *)v4 setHighlightOrSelectedColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(VUITextLayout *)v4 setHighlightOrSelectedColor:whiteColor];
 
     v7 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v4 existingLabel:0];
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v7;
 
-    v9 = [(VUILibraryMenuItemViewCell *)v3 contentView];
-    [v9 addSubview:v3->_titleLabel];
+    contentView = [(VUILibraryMenuItemViewCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v10 = objc_alloc_init(VUISeparatorView);
     bottomSeparatorView = v3->_bottomSeparatorView;
     v3->_bottomSeparatorView = v10;
 
-    v12 = [(VUILibraryMenuItemViewCell *)v3 contentView];
-    [v12 addSubview:v3->_bottomSeparatorView];
+    contentView2 = [(VUILibraryMenuItemViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_bottomSeparatorView];
 
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
     v14 = [VUIVideosImageView alloc];
@@ -49,31 +49,31 @@
     v3->_accessoryView = v19;
 
     v21 = v3->_accessoryView;
-    v22 = [MEMORY[0x1E69DC888] lightGrayColor];
-    v23 = [v13 imageWithTintColor:v22 renderingMode:1];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    v23 = [v13 imageWithTintColor:lightGrayColor renderingMode:1];
     [(VUIVideosImageView *)v21 setImage:v23];
 
     v24 = v3->_accessoryView;
-    v25 = [MEMORY[0x1E69DC888] whiteColor];
-    v26 = [v13 imageWithTintColor:v25 renderingMode:1];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v26 = [v13 imageWithTintColor:whiteColor2 renderingMode:1];
     [(VUIVideosImageView *)v24 setHighlightOrSelectedImage:v26];
 
-    v27 = [(VUILibraryMenuItemViewCell *)v3 contentView];
-    [v27 addSubview:v3->_accessoryView];
+    contentView3 = [(VUILibraryMenuItemViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_accessoryView];
 
     v28 = [[VUIVideosImageView alloc] initWithFrame:v15, v16, v17, v18];
     imageView = v3->_imageView;
     v3->_imageView = v28;
 
     [(VUIVideosImageView *)v3->_imageView setContentMode:2];
-    v30 = [(VUILibraryMenuItemViewCell *)v3 contentView];
-    [v30 addSubview:v3->_imageView];
+    contentView4 = [(VUILibraryMenuItemViewCell *)v3 contentView];
+    [contentView4 addSubview:v3->_imageView];
 
-    v31 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUIListCollectionViewCell *)v3 setBackgroundColor:v31];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUIListCollectionViewCell *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-    v32 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:v32];
+    vui_keyColor2 = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:vui_keyColor2];
 
     [(VUILibraryMenuItemViewCell *)v3 setHideChevron:0];
   }
@@ -81,65 +81,65 @@
   return v3;
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v5 = a3;
-  if (self->_imageName != v5)
+  nameCopy = name;
+  if (self->_imageName != nameCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_imageName, a3);
-    v6 = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
-    v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v13 withConfiguration:v6];
+    v13 = nameCopy;
+    objc_storeStrong(&self->_imageName, name);
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
+    v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v13 withConfiguration:configurationPreferringMonochrome];
     if (!v7)
     {
       v8 = MEMORY[0x1E69DCAB8];
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
-      v7 = [v8 imageNamed:v13 inBundle:v9 withConfiguration:0];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v7 = [v8 imageNamed:v13 inBundle:mainBundle withConfiguration:0];
     }
 
     [(VUIVideosImageView *)self->_imageView setImage:v7];
     imageView = self->_imageView;
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
-    v12 = [v7 imageWithTintColor:v11 renderingMode:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v12 = [v7 imageWithTintColor:whiteColor renderingMode:1];
     [(VUIVideosImageView *)imageView setHighlightOrSelectedImage:v12];
 
     [(VUILibraryMenuItemViewCell *)self setNeedsLayout];
-    v5 = v13;
+    nameCopy = v13;
   }
 }
 
-- (void)setTopSeparatorView:(id)a3
+- (void)setTopSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   topSeparatorView = self->_topSeparatorView;
-  if (topSeparatorView != v5)
+  if (topSeparatorView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(VUISeparatorView *)topSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_topSeparatorView, a3);
+    objc_storeStrong(&self->_topSeparatorView, view);
     if (self->_topSeparatorView)
     {
       [(VUILibraryMenuItemViewCell *)self addSubview:?];
     }
 
     [(VUILibraryMenuItemViewCell *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [MEMORY[0x1E69DD2E8] vui_padding];
   v6 = v5;
   v8 = v7;
   v9 = MEMORY[0x1E69DF6D0];
-  v10 = [(VUILibraryMenuItemViewCell *)self vuiTraitCollection];
-  [v9 scaleContentSizeValue:v10 forTraitCollection:20.0];
+  vuiTraitCollection = [(VUILibraryMenuItemViewCell *)self vuiTraitCollection];
+  [v9 scaleContentSizeValue:vuiTraitCollection forTraitCollection:20.0];
   v12 = v11;
 
-  v13 = [(VUIVideosImageView *)self->_accessoryView image];
-  [v13 size];
+  image = [(VUIVideosImageView *)self->_accessoryView image];
+  [image size];
   v15 = v14;
 
   [(VUILabel *)self->_titleLabel sizeThatFits:width - v6 - v8 + -10.0 + -10.0 - v15 - v12, 1.79769313e308];
@@ -166,11 +166,11 @@
   [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:Width];
   v6 = v5;
   v49 = v7;
-  v8 = [(VUILibraryMenuItemViewCell *)self contentView];
-  v9 = [v8 effectiveUserInterfaceLayoutDirection];
+  contentView = [(VUILibraryMenuItemViewCell *)self contentView];
+  effectiveUserInterfaceLayoutDirection = [contentView effectiveUserInterfaceLayoutDirection];
 
-  v10 = [(VUILibraryMenuItemViewCell *)self contentView];
-  [v10 bounds];
+  contentView2 = [(VUILibraryMenuItemViewCell *)self contentView];
+  [contentView2 bounds];
 
   topSeparatorView = self->_topSeparatorView;
   if (topSeparatorView)
@@ -180,7 +180,7 @@
     v15 = v14;
     v16 = 0.0;
     v17 = v6;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       VUIRectWithFlippedOriginRelativeToBoundingRect();
     }
@@ -196,7 +196,7 @@
     v22 = v21;
     v23 = Height - v21;
     v24 = v6;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       VUIRectWithFlippedOriginRelativeToBoundingRect();
     }
@@ -205,8 +205,8 @@
   }
 
   v25 = MEMORY[0x1E69DF6D0];
-  v26 = [(VUILibraryMenuItemViewCell *)self vuiTraitCollection];
-  [v25 scaleContentSizeValue:v26 forTraitCollection:20.0];
+  vuiTraitCollection = [(VUILibraryMenuItemViewCell *)self vuiTraitCollection];
+  [v25 scaleContentSizeValue:vuiTraitCollection forTraitCollection:20.0];
   v28 = v27;
 
   if ([(VUILibraryMenuItemViewCell *)self hasImage])
@@ -215,7 +215,7 @@
     v30 = v6;
     v31 = v28;
     v32 = v28;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       VUIRectWithFlippedOriginRelativeToBoundingRect();
     }
@@ -223,8 +223,8 @@
     [(VUIVideosImageView *)self->_imageView setFrame:v30, v29, v31, v32];
   }
 
-  v33 = [(VUIVideosImageView *)self->_accessoryView image];
-  [v33 size];
+  image = [(VUIVideosImageView *)self->_accessoryView image];
+  [image size];
   v35 = v34;
   v37 = v36;
 
@@ -233,7 +233,7 @@
     v38 = Width - v49 - v35;
     v39 = (Height - v37) * 0.5;
     v40 = v35;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       VUIRectWithFlippedOriginRelativeToBoundingRect();
       v37 = v41;
@@ -257,7 +257,7 @@
   }
 
   [(VUILabel *)self->_titleLabel sizeThatFits:v44, 1.79769313e308];
-  if (v9 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     VUIRectWithFlippedOriginRelativeToBoundingRect();
     v6 = v45;

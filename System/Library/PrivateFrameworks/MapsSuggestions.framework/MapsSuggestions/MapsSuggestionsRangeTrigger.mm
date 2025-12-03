@@ -1,18 +1,18 @@
 @interface MapsSuggestionsRangeTrigger
-- (BOOL)withinRange:(id)a3;
-- (MapsSuggestionsRangeTrigger)initWithLocation:(id)a3 radius:(double)a4 onEnter:(BOOL)a5 minUpdateTime:(double)a6 locationUpdater:(id)a7 forcingLocationUpdater:(id)a8;
+- (BOOL)withinRange:(id)range;
+- (MapsSuggestionsRangeTrigger)initWithLocation:(id)location radius:(double)radius onEnter:(BOOL)enter minUpdateTime:(double)time locationUpdater:(id)updater forcingLocationUpdater:(id)locationUpdater;
 - (void)didAddFirstObserver;
-- (void)didUpdateLocation:(id)a3;
+- (void)didUpdateLocation:(id)location;
 - (void)stop;
 @end
 
 @implementation MapsSuggestionsRangeTrigger
 
-- (MapsSuggestionsRangeTrigger)initWithLocation:(id)a3 radius:(double)a4 onEnter:(BOOL)a5 minUpdateTime:(double)a6 locationUpdater:(id)a7 forcingLocationUpdater:(id)a8
+- (MapsSuggestionsRangeTrigger)initWithLocation:(id)location radius:(double)radius onEnter:(BOOL)enter minUpdateTime:(double)time locationUpdater:(id)updater forcingLocationUpdater:(id)locationUpdater
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  locationCopy = location;
+  updaterCopy = updater;
+  locationUpdaterCopy = locationUpdater;
   v22.receiver = self;
   v22.super_class = MapsSuggestionsRangeTrigger;
   v18 = [(MapsSuggestionsBaseTrigger *)&v22 initWithName:@"MapsSuggestionsRangeTrigger"];
@@ -22,12 +22,12 @@
     queue = v18->_queue;
     v18->_queue = v19;
 
-    objc_storeStrong(&v18->_destinationLocation, a3);
-    v18->_radius = a4;
-    v18->_onEnter = a5;
-    v18->_forceUpdateTime = a6;
-    objc_storeStrong(&v18->_locationUpdater, a7);
-    objc_storeStrong(&v18->_forcingLocationUpdater, a8);
+    objc_storeStrong(&v18->_destinationLocation, location);
+    v18->_radius = radius;
+    v18->_onEnter = enter;
+    v18->_forceUpdateTime = time;
+    objc_storeStrong(&v18->_locationUpdater, updater);
+    objc_storeStrong(&v18->_forcingLocationUpdater, locationUpdater);
   }
 
   return v18;
@@ -53,35 +53,35 @@ uint64_t __35__MapsSuggestionsRangeTrigger_stop__block_invoke(uint64_t a1)
   return [v2 stopLocationUpdatesForDelegate:?];
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v8 = v4;
-    [v4 horizontalAccuracy];
-    v4 = v8;
+    v8 = locationCopy;
+    [locationCopy horizontalAccuracy];
+    locationCopy = v8;
     if (v5 <= 100.0)
     {
       [(MapsSuggestionsCanKicker *)self->_locationForceUpdate kickCanByTime:self->_forceUpdateTime];
       [(MapsSuggestionsLocationUpdater *)self->_forcingLocationUpdater stopLocationUpdatesForDelegate:self];
       onEnter = self->_onEnter;
       v7 = onEnter == [(MapsSuggestionsRangeTrigger *)self withinRange:v8];
-      v4 = v8;
+      locationCopy = v8;
       if (v7)
       {
         [(MapsSuggestionsLocationUpdater *)self->_locationUpdater stopLocationUpdatesForDelegate:self];
         [(MapsSuggestionsBaseTrigger *)self triggerMyObservers];
-        v4 = v8;
+        locationCopy = v8;
       }
     }
   }
 }
 
-- (BOOL)withinRange:(id)a3
+- (BOOL)withinRange:(id)range
 {
   radius = self->_radius;
-  [a3 distanceFromLocation:self->_destinationLocation];
+  [range distanceFromLocation:self->_destinationLocation];
   return radius > v4;
 }
 
@@ -89,13 +89,13 @@ uint64_t __35__MapsSuggestionsRangeTrigger_stop__block_invoke(uint64_t a1)
 {
   objc_initWeak(&location, self);
   v3 = [MapsSuggestionsCanKicker alloc];
-  v4 = [(MapsSuggestionsQueue *)self->_queue innerQueue];
+  innerQueue = [(MapsSuggestionsQueue *)self->_queue innerQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __50__MapsSuggestionsRangeTrigger_didAddFirstObserver__block_invoke;
   v11 = &unk_1E81F53E8;
   objc_copyWeak(&v12, &location);
-  v5 = [(MapsSuggestionsCanKicker *)v3 initWithName:@"MapsSuggestionsRangeTriggerCanKicker" queue:v4 block:&v8];
+  v5 = [(MapsSuggestionsCanKicker *)v3 initWithName:@"MapsSuggestionsRangeTriggerCanKicker" queue:innerQueue block:&v8];
   locationForceUpdate = self->_locationForceUpdate;
   self->_locationForceUpdate = v5;
 

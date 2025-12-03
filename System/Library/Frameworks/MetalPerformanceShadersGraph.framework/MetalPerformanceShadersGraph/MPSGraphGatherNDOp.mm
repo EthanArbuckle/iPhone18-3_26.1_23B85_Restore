@@ -1,33 +1,33 @@
 @interface MPSGraphGatherNDOp
-- (MPSGraphGatherNDOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 batchDimensions:(unint64_t)a6 name:(id)a7;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphGatherNDOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies batchDimensions:(unint64_t)dimensions name:(id)name;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphGatherNDOp
 
-- (MPSGraphGatherNDOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 batchDimensions:(unint64_t)a6 name:(id)a7
+- (MPSGraphGatherNDOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies batchDimensions:(unint64_t)dimensions name:(id)name
 {
-  self->_batchDims = a6;
+  self->_batchDims = dimensions;
   self->_allowNegativeIndices = 0;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a7];
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphGatherNDOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphGatherOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v47 = 260;
   v46[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v46);
+  StringAttr = mlir::Builder::getStringAttr(builder, v46);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x30u, 0);
   if (v12)
   {
     v16 = v12;
-    v17 = [v12 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v12 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -42,7 +42,7 @@
     v45 = v18;
     if (v18)
     {
-      memmove(__dst, v17, v18);
+      memmove(__dst, uTF8String, v18);
     }
 
     v20 = &__dst[v19];
@@ -56,7 +56,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v14, &v40);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v14, &v40);
   v21 = v40.__r_.__value_.__r.__words[0];
   if ((v40.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -72,7 +72,7 @@
   }
 
   LOBYTE(v47) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v46);
+  v23 = mlir::Builder::getStringAttr(builder, v46);
   v24 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v40.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -96,8 +96,8 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  v25 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -116,8 +116,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v46, v24, v27);
-  mlir::mps::GatherNDOp::build(a3, v46, *v25, v25[1], self->_batchDims, self->_allowNegativeIndices);
-  v29 = mlir::OpBuilder::create(a3, v46);
+  mlir::mps::GatherNDOp::build(builder, v46, *v25, v25[1], self->_batchDims, self->_allowNegativeIndices);
+  v29 = mlir::OpBuilder::create(builder, v46);
   v30 = *(*(v29 + 48) + 16);
   mlir::OperationState::~OperationState(v46);
   if (v30 == &mlir::detail::TypeIDResolver<mlir::mps::GatherNDOp,void>::id)
@@ -136,14 +136,14 @@ LABEL_16:
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(MPSGraphOperation *)self inputTensors];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  if (v13 != v9)
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
+  inputTensors = [(MPSGraphOperation *)self inputTensors];
+  v13 = [inputTensors objectAtIndexedSubscript:0];
+  if (v13 != tensorCopy)
   {
     v14 = 0;
 LABEL_5:
@@ -151,23 +151,23 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v15 = [v9 shape];
-  v16 = isStaticShape(v15);
+  shape = [tensorCopy shape];
+  v16 = isStaticShape(shape);
 
   if (v16)
   {
-    v12 = v10;
-    v17 = [(MPSGraphOperation *)self inputTensors];
-    v13 = [v17 objectAtIndexedSubscript:1];
+    inputTensors = gradientCopy;
+    inputTensors2 = [(MPSGraphOperation *)self inputTensors];
+    v13 = [inputTensors2 objectAtIndexedSubscript:1];
 
     WeakRetained = objc_loadWeakRetained(&self->super._graph);
-    v18 = [v9 shape];
+    shape2 = [tensorCopy shape];
     batchDims = self->_batchDims;
     v20 = MEMORY[0x1E696AEC0];
-    v24 = v18;
-    v21 = [(MPSGraphOperation *)self name];
-    v22 = [v20 stringWithFormat:@"%@/%@/scatterND", v11, v21];
-    v14 = [WeakRetained scatterNDWithUpdatesTensor:v12 indicesTensor:v13 shape:v24 batchDimensions:batchDims name:v22];
+    v24 = shape2;
+    name = [(MPSGraphOperation *)self name];
+    v22 = [v20 stringWithFormat:@"%@/%@/scatterND", nameCopy, name];
+    v14 = [WeakRetained scatterNDWithUpdatesTensor:inputTensors indicesTensor:v13 shape:v24 batchDimensions:batchDims name:v22];
 
     goto LABEL_5;
   }

@@ -1,5 +1,5 @@
 @interface ZWRootViewController
-- ($2F34F6A4A708D3F7715AC605E075D30F)currentUIContextForEventProcessor:(SEL)a3;
+- ($2F34F6A4A708D3F7715AC605E075D30F)currentUIContextForEventProcessor:(SEL)processor;
 - (AXUIService)axuiService;
 - (BOOL)_inSpeakUnderFingerMode;
 - (BOOL)_pipLensIsNearBottomOfScreen;
@@ -8,155 +8,155 @@
 - (BOOL)_shouldBlockShowControlCenterGesture;
 - (BOOL)_shouldBlockShowNotificationGesture;
 - (BOOL)_smartZoomFocusedElementIsBeingSampled;
-- (BOOL)attemptOrbZoomIfAppropriateWithSlugViewController:(id)a3;
-- (BOOL)eventProcessor:(id)a3 didGetWheelEventWithDelta:(int64_t)a4;
-- (BOOL)fullscreenEventHandler:(id)a3 autopanShouldStartWithPoint:(CGPoint)a4 speedFactor:(double *)a5 initialSingleFingerLocation:(CGPoint)a6 fingerCount:(double)a7 pointHasBeenMapped:(BOOL)a8;
-- (BOOL)fullscreenEventHandler:(id)a3 autopanWithLocation:(CGPoint)a4 initialSingleFingerLocation:(CGPoint)a5 distance:(double)a6 animationDuration:(double)a7 useGutterDistance:(BOOL)a8 pointHasBeenMapped:(BOOL)a9;
-- (BOOL)inDockedModeForMenuViewController:(id)a3;
-- (BOOL)inFullscreenModeForMenuViewController:(id)a3;
-- (BOOL)inPIPModeForMenuViewController:(id)a3;
-- (BOOL)inStandByForMenuViewController:(id)a3;
-- (BOOL)isZoomInStandByModeWithSmartZoom:(id)a3;
+- (BOOL)attemptOrbZoomIfAppropriateWithSlugViewController:(id)controller;
+- (BOOL)eventProcessor:(id)processor didGetWheelEventWithDelta:(int64_t)delta;
+- (BOOL)fullscreenEventHandler:(id)handler autopanShouldStartWithPoint:(CGPoint)point speedFactor:(double *)factor initialSingleFingerLocation:(CGPoint)location fingerCount:(double)count pointHasBeenMapped:(BOOL)mapped;
+- (BOOL)fullscreenEventHandler:(id)handler autopanWithLocation:(CGPoint)location initialSingleFingerLocation:(CGPoint)fingerLocation distance:(double)distance animationDuration:(double)duration useGutterDistance:(BOOL)gutterDistance pointHasBeenMapped:(BOOL)mapped;
+- (BOOL)inDockedModeForMenuViewController:(id)controller;
+- (BOOL)inFullscreenModeForMenuViewController:(id)controller;
+- (BOOL)inPIPModeForMenuViewController:(id)controller;
+- (BOOL)inStandByForMenuViewController:(id)controller;
+- (BOOL)isZoomInStandByModeWithSmartZoom:(id)zoom;
 - (BOOL)isZoomLensVisible;
 - (BOOL)isZoomSlugVisible;
-- (BOOL)shouldBeginAutopanningLensWithSlugViewController:(id)a3;
-- (BOOL)shouldSendTapEventWithATVEventProcessor:(id)a3;
-- (BOOL)shouldShowSlugWithSlugViewController:(id)a3;
-- (BOOL)togglePeekZoomWithMenuViewController:(id)a3;
-- (BOOL)toggleSlugVisibilityWithMenuViewController:(id)a3;
-- (BOOL)touchTrapView:(id)a3 shouldReportSelfInHitTestAtLocation:(CGPoint)a4;
-- (BOOL)userIsInteractingWithSlugWithDockedLensViewController:(id)a3;
-- (CGPoint)_convertPointFromNormalizedToWindow:(CGPoint)a3;
-- (CGPoint)_denormalizePoint:(CGPoint)a3 withRespectToFrame:(CGRect)a4;
-- (CGPoint)_denormalizePointForCurrentOrientation:(CGPoint)a3;
-- (CGPoint)_normalizePoint:(CGPoint)a3 withRespectToFrame:(CGRect)a4;
-- (CGPoint)_physicalScreenPointForVirtualScreenPoint:(CGPoint)a3;
+- (BOOL)shouldBeginAutopanningLensWithSlugViewController:(id)controller;
+- (BOOL)shouldSendTapEventWithATVEventProcessor:(id)processor;
+- (BOOL)shouldShowSlugWithSlugViewController:(id)controller;
+- (BOOL)togglePeekZoomWithMenuViewController:(id)controller;
+- (BOOL)toggleSlugVisibilityWithMenuViewController:(id)controller;
+- (BOOL)touchTrapView:(id)view shouldReportSelfInHitTestAtLocation:(CGPoint)location;
+- (BOOL)userIsInteractingWithSlugWithDockedLensViewController:(id)controller;
+- (CGPoint)_convertPointFromNormalizedToWindow:(CGPoint)window;
+- (CGPoint)_denormalizePoint:(CGPoint)point withRespectToFrame:(CGRect)frame;
+- (CGPoint)_denormalizePointForCurrentOrientation:(CGPoint)orientation;
+- (CGPoint)_normalizePoint:(CGPoint)point withRespectToFrame:(CGRect)frame;
+- (CGPoint)_physicalScreenPointForVirtualScreenPoint:(CGPoint)point;
 - (CGPoint)_slugNormalizedPositionForCurrentPosition;
-- (CGPoint)_slugOriginForNormalizedPosition:(CGPoint)a3;
-- (CGPoint)_virtualScreenPointForPhysicalScreenPoint:(CGPoint)a3;
+- (CGPoint)_slugOriginForNormalizedPosition:(CGPoint)position;
+- (CGPoint)_virtualScreenPointForPhysicalScreenPoint:(CGPoint)point;
 - (CGPoint)lastOrbLocation;
 - (CGPoint)lastPointerLocation;
-- (CGPoint)mirrorPanOffsetForRTLIfNecessary:(CGPoint)a3;
-- (CGPoint)pointerLocationToZoomInToWithZoomFactor:(double)a3;
+- (CGPoint)mirrorPanOffsetForRTLIfNecessary:(CGPoint)necessary;
+- (CGPoint)pointerLocationToZoomInToWithZoomFactor:(double)factor;
 - (CGPoint)redirectPointerLocation;
-- (CGPoint)zoomLocationWithFullscreenEventHandler:(id)a3;
+- (CGPoint)zoomLocationWithFullscreenEventHandler:(id)handler;
 - (CGPoint)zoomPanOffset;
 - (CGRect)_determineSuitableLensFrame;
 - (CGRect)zoomFrame;
-- (CGRect)zoomFrameForPanningContinuouslyToPoint:(CGPoint)a3 zoomFactor:(double)a4;
+- (CGRect)zoomFrameForPanningContinuouslyToPoint:(CGPoint)point zoomFactor:(double)factor;
 - (CGSize)_lensDefaultSize;
 - (CGSize)_lensMaximumSize;
 - (CGSize)_lensMinimumSize;
 - (CGSize)_screenSizeForCurrentOrientation;
-- (CGSize)currentScreenSizeForEventProcessor:(id)a3;
+- (CGSize)currentScreenSizeForEventProcessor:(id)processor;
 - (UIScreen)screen;
-- (ZWRootViewController)initWithAXUIService:(id)a3 onScreen:(id)a4 isMainDisplay:(BOOL)a5;
-- (double)_interfaceAwareAdjustedAngleForScreenAngle:(double)a3;
+- (ZWRootViewController)initWithAXUIService:(id)service onScreen:(id)screen isMainDisplay:(BOOL)display;
+- (double)_interfaceAwareAdjustedAngleForScreenAngle:(double)angle;
 - (double)reachabilityScaleFactor;
-- (double)setZoomFactorRespectingUserPreferredMaximumZoom:(double)a3;
-- (double)storedZoomLevelWithFullscreenEventHandler:(id)a3;
+- (double)setZoomFactorRespectingUserPreferredMaximumZoom:(double)zoom;
+- (double)storedZoomLevelWithFullscreenEventHandler:(id)handler;
 - (double)zoomFactor;
-- (double)zoomFactorForMenuViewController:(id)a3;
-- (double)zoomFactorRespectingUserPreferredMaximumZoom:(double)a3;
-- (double)zoomLevelWithFullscreenEventHandler:(id)a3;
+- (double)zoomFactorForMenuViewController:(id)controller;
+- (double)zoomFactorRespectingUserPreferredMaximumZoom:(double)zoom;
+- (double)zoomLevelWithFullscreenEventHandler:(id)handler;
 - (id)activeZoomMode;
 - (id)getLastSpeakUnderFingerPhrase;
-- (int64_t)currentInterfaceOrientationForEventProcessor:(id)a3;
-- (int64_t)interfaceOrientationWithFullscreenEventHandler:(id)a3;
-- (unsigned)currentDisplayIdForEventProcessor:(id)a3;
-- (unsigned)currentWindowContextIdForEventProcessor:(id)a3;
-- (void)_applyInitialConstraintsForLensViewController:(id)a3;
-- (void)_beginObservingValuesForLens:(id)a3;
+- (int64_t)currentInterfaceOrientationForEventProcessor:(id)processor;
+- (int64_t)interfaceOrientationWithFullscreenEventHandler:(id)handler;
+- (unsigned)currentDisplayIdForEventProcessor:(id)processor;
+- (unsigned)currentWindowContextIdForEventProcessor:(id)processor;
+- (void)_applyInitialConstraintsForLensViewController:(id)controller;
+- (void)_beginObservingValuesForLens:(id)lens;
 - (void)_disableZoomWindowHitTesting;
-- (void)_dismissMenuAnimated:(BOOL)a3;
+- (void)_dismissMenuAnimated:(BOOL)animated;
 - (void)_enableZoomWindowHitTesting;
-- (void)_endObservingValuesForLens:(id)a3;
+- (void)_endObservingValuesForLens:(id)lens;
 - (void)_exitStandbyIfNecessary;
-- (void)_focusLensOnRect:(CGRect)a3 panLensContent:(BOOL)a4 recentreLens:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)_handleKeyboardCommand:(int64_t)a3 isRepeatCommand:(BOOL)a4;
-- (void)_handlePanWheelEventWithDelta:(int64_t)a3 animated:(BOOL)a4 animationDuration:(double)a5;
-- (void)_handleSlugAction:(int64_t)a3;
-- (void)_handleZoomLevelAdjustmentViaGesture:(CGPoint)a3;
-- (void)_handleZoomWheelEventWithDelta:(int64_t)a3;
-- (void)_initializeEventUIContext:(id *)a3;
+- (void)_focusLensOnRect:(CGRect)rect panLensContent:(BOOL)content recentreLens:(BOOL)lens animated:(BOOL)animated completion:(id)completion;
+- (void)_handleKeyboardCommand:(int64_t)command isRepeatCommand:(BOOL)repeatCommand;
+- (void)_handlePanWheelEventWithDelta:(int64_t)delta animated:(BOOL)animated animationDuration:(double)duration;
+- (void)_handleSlugAction:(int64_t)action;
+- (void)_handleZoomLevelAdjustmentViaGesture:(CGPoint)gesture;
+- (void)_handleZoomWheelEventWithDelta:(int64_t)delta;
+- (void)_initializeEventUIContext:(id *)context;
 - (void)_initializeZoomSettingsIfNeeded;
 - (void)_loadZoomTouchExtras;
 - (void)_menuDidDisappear;
-- (void)_moveZoomItemWithController:(id)a3 byDelta:(CGPoint)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6 shouldUseFullDeltaForDockedMode:(BOOL)a7 shouldPan:(BOOL)a8;
-- (void)_moveZoomItemWithControllerToDodgeJindo:(id)a3 byDelta:(CGPoint)a4;
+- (void)_moveZoomItemWithController:(id)controller byDelta:(CGPoint)delta animated:(BOOL)animated userInitiated:(BOOL)initiated shouldUseFullDeltaForDockedMode:(BOOL)mode shouldPan:(BOOL)pan;
+- (void)_moveZoomItemWithControllerToDodgeJindo:(id)jindo byDelta:(CGPoint)delta;
 - (void)_prepareToHandleZoomLevelAdjustmentViaGesture;
-- (void)_presentMenuWithAnchorView:(id)a3 animated:(BOOL)a4 ignoreCooldown:(BOOL)a5;
+- (void)_presentMenuWithAnchorView:(id)view animated:(BOOL)animated ignoreCooldown:(BOOL)cooldown;
 - (void)_removeAllSystemGestureDisablingAssertions;
 - (void)_removeFullscreenSystemGestureDisablingAssertions;
 - (void)_removePIPSystemGestureDisablingAssertions;
-- (void)_resizeZoomLensByDelta:(CGPoint)a3;
-- (void)_resizeZoomLensWithAdjustment:(CGPoint)a3 lensPositionCompensation:(CGPoint)a4;
+- (void)_resizeZoomLensByDelta:(CGPoint)delta;
+- (void)_resizeZoomLensWithAdjustment:(CGPoint)adjustment lensPositionCompensation:(CGPoint)compensation;
 - (void)_rezoomDueToAppTransitionIfNeeded;
 - (void)_rezoomDueToDockIfNeeded;
-- (void)_setDockResizingEnabled:(BOOL)a3;
-- (void)_setPIPLensResizingEnabled:(BOOL)a3;
+- (void)_setDockResizingEnabled:(BOOL)enabled;
+- (void)_setPIPLensResizingEnabled:(BOOL)enabled;
 - (void)_toggleZoomStandby;
-- (void)_transitionToLens:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_transitionToLensForMode:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_transitionToLens:(id)lens animated:(BOOL)animated completion:(id)completion;
+- (void)_transitionToLensForMode:(id)mode animated:(BOOL)animated completion:(id)completion;
 - (void)_unzoomDueToAppTransitionIfNeeded;
 - (void)_updateEventUIContextForSpeakFingerStateChange;
-- (void)_updateKeyboardFrame:(CGRect)a3;
-- (void)_updateLensEdgeMaskForZoomController:(id)a3;
+- (void)_updateKeyboardFrame:(CGRect)frame;
+- (void)_updateLensEdgeMaskForZoomController:(id)controller;
 - (void)_updateLensLayout;
-- (void)_updateOrbLocation:(CGPoint)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_updateSlugConstraintsForOrientation:(int64_t)a3;
-- (void)_updateSlugLayoutAnimated:(BOOL)a3;
+- (void)_updateOrbLocation:(CGPoint)location animated:(BOOL)animated completion:(id)completion;
+- (void)_updateSlugConstraintsForOrientation:(int64_t)orientation;
+- (void)_updateSlugLayoutAnimated:(BOOL)animated;
 - (void)_updateSystemGestureDisablingAssertions;
 - (void)_updateSystemGestureDisablingAssertionsForFullscreenZoom;
 - (void)_updateSystemGestureDisablingAssertionsForPipLensPosition;
-- (void)_updateZoomFactor:(double)a3 animated:(BOOL)a4;
+- (void)_updateZoomFactor:(double)factor animated:(BOOL)animated;
 - (void)_updateZoomListeners;
 - (void)_zoomMovementHeartbeat;
-- (void)_zoomMovementHeartbeat:(double)a3 fullscreenEventHandler:(id)a4;
-- (void)atvEventProcessor:(id)a3 adjustZoomLevelWithDelta:(CGPoint)a4;
-- (void)autopanner:(id)a3 didAutopanByDelta:(CGPoint)a4;
-- (void)blockControlCenterGestureIfNeededWithFullscreenEventHandler:(id)a3;
-- (void)blockHomeGestureIfNeededWithEventProcessor:(id)a3;
-- (void)blockNotificationCenterGestureIfNeededWithFullscreenEventHandler:(id)a3;
+- (void)_zoomMovementHeartbeat:(double)heartbeat fullscreenEventHandler:(id)handler;
+- (void)atvEventProcessor:(id)processor adjustZoomLevelWithDelta:(CGPoint)delta;
+- (void)autopanner:(id)autopanner didAutopanByDelta:(CGPoint)delta;
+- (void)blockControlCenterGestureIfNeededWithFullscreenEventHandler:(id)handler;
+- (void)blockHomeGestureIfNeededWithEventProcessor:(id)processor;
+- (void)blockNotificationCenterGestureIfNeededWithFullscreenEventHandler:(id)handler;
 - (void)dealloc;
-- (void)didAnimateForReachabilityToOffset:(double)a3;
+- (void)didAnimateForReachabilityToOffset:(double)offset;
 - (void)didEndAnimation;
-- (void)didFinishAutopanningLensWithAutopanner:(id)a3;
-- (void)didGetSpeakContentGestureWithATVEventProcessor:(id)a3;
-- (void)didGetTogglePanningModeGestureWithATVEventProcessor:(id)a3;
-- (void)didGetToggleZoomGestureWithEventProcessor:(id)a3;
-- (void)didGetTouchOutsideLensChromeWithEventProcessor:(id)a3;
-- (void)didGetTouchOutsideZoomMenuWithEventProcessor:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didFinishAutopanningLensWithAutopanner:(id)autopanner;
+- (void)didGetSpeakContentGestureWithATVEventProcessor:(id)processor;
+- (void)didGetTogglePanningModeGestureWithATVEventProcessor:(id)processor;
+- (void)didGetToggleZoomGestureWithEventProcessor:(id)processor;
+- (void)didGetTouchOutsideLensChromeWithEventProcessor:(id)processor;
+- (void)didGetTouchOutsideZoomMenuWithEventProcessor:(id)processor;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didStartAnimation;
-- (void)dockedLensViewController:(id)a3 zoomRegionVisibilityWasChanged:(BOOL)a4;
-- (void)endOrbZoomWithSlugViewController:(id)a3;
-- (void)endZoomMovementWithFullscreenEventHandler:(id)a3;
-- (void)eventProcessor:(id)a3 didGetFirstTouchAtLocation:(CGPoint)a4;
-- (void)eventProcessor:(id)a3 didGetPanEventWithDelta:(int64_t)a4;
-- (void)eventProcessor:(id)a3 didGetPointerEventAtLocation:(CGPoint)a4 withEventRep:(id)a5;
-- (void)eventProcessor:(id)a3 didGetTouchInSpeakFingerMode:(CGPoint)a4 firstTouchWentIntoLens:(BOOL)a5;
-- (void)externalClientSetZoomFactor:(double)a3;
-- (void)externalClientSetZoomPanOffset:(CGPoint)a3;
-- (void)externalClientWantsToAutopan:(CGPoint)a3 withPanningStyle:(unint64_t)a4;
-- (void)fullscreenEventHandler:(id)a3 continueZoomMovementWithVelocity:(double)a4 angle:(double)a5;
-- (void)fullscreenEventHandler:(id)a3 didEndOrbAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didReceiveOneFingerDownAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerDoubleTapAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerSingleTapAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerTripleTapAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didStartOrbAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 didThreeFingerOrbAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 setZoomLevel:(double)a4 duration:(double)a5;
-- (void)fullscreenEventHandler:(id)a3 setZoomLevelFromTrackpadGesture:(double)a4;
-- (void)fullscreenEventHandler:(id)a3 storeZoomLevel:(double)a4 location:(CGPoint)a5 zoomed:(BOOL)a6 forKey:(id)a7;
-- (void)fullscreenEventHandler:(id)a3 updateOrbMovementAtLocation:(CGPoint)a4;
-- (void)fullscreenEventHandler:(id)a3 updateZoomMovementWithPoint:(CGPoint)a4;
+- (void)dockedLensViewController:(id)controller zoomRegionVisibilityWasChanged:(BOOL)changed;
+- (void)endOrbZoomWithSlugViewController:(id)controller;
+- (void)endZoomMovementWithFullscreenEventHandler:(id)handler;
+- (void)eventProcessor:(id)processor didGetFirstTouchAtLocation:(CGPoint)location;
+- (void)eventProcessor:(id)processor didGetPanEventWithDelta:(int64_t)delta;
+- (void)eventProcessor:(id)processor didGetPointerEventAtLocation:(CGPoint)location withEventRep:(id)rep;
+- (void)eventProcessor:(id)processor didGetTouchInSpeakFingerMode:(CGPoint)mode firstTouchWentIntoLens:(BOOL)lens;
+- (void)externalClientSetZoomFactor:(double)factor;
+- (void)externalClientSetZoomPanOffset:(CGPoint)offset;
+- (void)externalClientWantsToAutopan:(CGPoint)autopan withPanningStyle:(unint64_t)style;
+- (void)fullscreenEventHandler:(id)handler continueZoomMovementWithVelocity:(double)velocity angle:(double)angle;
+- (void)fullscreenEventHandler:(id)handler didEndOrbAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didReceiveOneFingerDownAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerDoubleTapAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerSingleTapAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerTripleTapAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didStartOrbAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler didThreeFingerOrbAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler setZoomLevel:(double)level duration:(double)duration;
+- (void)fullscreenEventHandler:(id)handler setZoomLevelFromTrackpadGesture:(double)gesture;
+- (void)fullscreenEventHandler:(id)handler storeZoomLevel:(double)level location:(CGPoint)location zoomed:(BOOL)zoomed forKey:(id)key;
+- (void)fullscreenEventHandler:(id)handler updateOrbMovementAtLocation:(CGPoint)location;
+- (void)fullscreenEventHandler:(id)handler updateZoomMovementWithPoint:(CGPoint)point;
 - (void)handleAppActivationAnimationDidFinish;
 - (void)handleAppActivationAnimationWillBegin;
 - (void)handleAppDeactivationAnimationWillBegin;
-- (void)handleAppDidBecomeActiveWithID:(id)a3 initialKeyboardFrame:(CGRect)a4;
-- (void)handleAppDidEnterBackgroundWithID:(id)a3;
+- (void)handleAppDidBecomeActiveWithID:(id)d initialKeyboardFrame:(CGRect)frame;
+- (void)handleAppDidEnterBackgroundWithID:(id)d;
 - (void)handleAppSwitcherRevealAnimationWillBegin;
 - (void)handleCarouselLockBegan;
 - (void)handleDeviceReturnedToClockAtIdle;
@@ -166,62 +166,62 @@
 - (void)handleFluidSwitcherGestureDidFinish;
 - (void)handleFluidSwitcherGestureDidFinishWithDock;
 - (void)handleFluidSwitcherGestureWillBegin;
-- (void)handleFocusChangedWithType:(int64_t)a3 rect:(CGRect)a4 keyboardFrame:(CGRect)a5 contextId:(unsigned int)a6 appID:(id)a7;
-- (void)handleKeyboardWillAppearWithFrame:(CGRect)a3 inAppWithBundleID:(id)a4;
-- (void)handleKeyboardWillHideInAppWithBundleID:(id)a3;
+- (void)handleFocusChangedWithType:(int64_t)type rect:(CGRect)rect keyboardFrame:(CGRect)frame contextId:(unsigned int)id appID:(id)d;
+- (void)handleKeyboardWillAppearWithFrame:(CGRect)frame inAppWithBundleID:(id)d;
+- (void)handleKeyboardWillHideInAppWithBundleID:(id)d;
 - (void)handleLockButtonWasPressed;
-- (void)handleReachabilityToggled:(double)a3;
-- (void)handleSettingsAppDidUpdateIdleSlugOpacity:(double)a3;
-- (void)handleSettingsAppDidUpdatePreferredDockPosition:(id)a3;
+- (void)handleReachabilityToggled:(double)toggled;
+- (void)handleSettingsAppDidUpdateIdleSlugOpacity:(double)opacity;
+- (void)handleSettingsAppDidUpdatePreferredDockPosition:(id)position;
 - (void)handleSubstantialAppTransition;
-- (void)hideZoomSlugAndLens:(BOOL)a3 completion:(id)a4;
-- (void)lastFingerWasLiftedWithEventProcessor:(id)a3 firstTouchWentIntoSlug:(BOOL)a4;
+- (void)hideZoomSlugAndLens:(BOOL)lens completion:(id)completion;
+- (void)lastFingerWasLiftedWithEventProcessor:(id)processor firstTouchWentIntoSlug:(BOOL)slug;
 - (void)loadView;
-- (void)menuDidAppear:(id)a3;
-- (void)menuViewController:(id)a3 adjustZoomFactor:(double)a4 animated:(BOOL)a5;
-- (void)menuViewController:(id)a3 didChooseDockPosition:(id)a4 withCompletion:(id)a5;
-- (void)menuViewController:(id)a3 didChooseLensEffect:(id)a4;
-- (void)menuViewController:(id)a3 didChooseZoomMode:(id)a4 withCompletion:(id)a5;
-- (void)menuViewController:(id)a3 finishedAdjustingZoomFactor:(double)a4;
+- (void)menuDidAppear:(id)appear;
+- (void)menuViewController:(id)controller adjustZoomFactor:(double)factor animated:(BOOL)animated;
+- (void)menuViewController:(id)controller didChooseDockPosition:(id)position withCompletion:(id)completion;
+- (void)menuViewController:(id)controller didChooseLensEffect:(id)effect;
+- (void)menuViewController:(id)controller didChooseZoomMode:(id)mode withCompletion:(id)completion;
+- (void)menuViewController:(id)controller finishedAdjustingZoomFactor:(double)factor;
 - (void)moveCursorToCurrentFakeCursorLocation;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)sendUserEventOccurred;
-- (void)setActiveLensViewController:(id)a3;
-- (void)setGutterDistanceForUnitTests:(double)a3 scaleFactor:(double)a4;
-- (void)setTestingScreenSize:(CGSize)a3;
-- (void)setZoomFactor:(double)a3;
-- (void)setZoomPanOffset:(CGPoint)a3;
-- (void)showZoomSlugAndLens:(BOOL)a3 completion:(id)a4;
-- (void)slugWasDoubleTappedWithSlugViewController:(id)a3;
-- (void)slugWasSingleTappedWithSlugViewController:(id)a3;
-- (void)slugWasTripleTappedWithSlugViewController:(id)a3;
-- (void)stopZoomMovementWithVelocityWithFullscreenEventHandler:(id)a3;
-- (void)toggleLensResizeModeWithMenuViewController:(id)a3;
-- (void)toggleLensVisibilityWithMenuViewController:(id)a3;
+- (void)setActiveLensViewController:(id)controller;
+- (void)setGutterDistanceForUnitTests:(double)tests scaleFactor:(double)factor;
+- (void)setTestingScreenSize:(CGSize)size;
+- (void)setZoomFactor:(double)factor;
+- (void)setZoomPanOffset:(CGPoint)offset;
+- (void)showZoomSlugAndLens:(BOOL)lens completion:(id)completion;
+- (void)slugWasDoubleTappedWithSlugViewController:(id)controller;
+- (void)slugWasSingleTappedWithSlugViewController:(id)controller;
+- (void)slugWasTripleTappedWithSlugViewController:(id)controller;
+- (void)stopZoomMovementWithVelocityWithFullscreenEventHandler:(id)handler;
+- (void)toggleLensResizeModeWithMenuViewController:(id)controller;
+- (void)toggleLensVisibilityWithMenuViewController:(id)controller;
 - (void)toggleZoomMenu;
-- (void)touchTrapView:(id)a3 didTrapTouches:(id)a4 withEvent:(id)a5;
-- (void)touchTrapViewActivated:(id)a3;
-- (void)updateDockedZoomRegionVisibility:(BOOL)a3;
-- (void)updateFocusWithSmartZoom:(id)a3;
-- (void)updateOrbZoomAtPoint:(CGPoint)a3 withSlugViewController:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)touchTrapView:(id)view didTrapTouches:(id)touches withEvent:(id)event;
+- (void)touchTrapViewActivated:(id)activated;
+- (void)updateDockedZoomRegionVisibility:(BOOL)visibility;
+- (void)updateFocusWithSmartZoom:(id)zoom;
+- (void)updateOrbZoomAtPoint:(CGPoint)point withSlugViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wantsToStartAutopannerWithATVEventProcessor:(id)a3;
-- (void)wantsToStartAutopannerWithSlugViewController:(id)a3;
-- (void)wantsToStopAutopannerWithATVEventProcessor:(id)a3;
-- (void)wantsToStopAutopannerWithSlugViewController:(id)a3;
-- (void)willBeginAutopanningLensWithAutopanner:(id)a3;
-- (void)zoomInToPoint:(CGPoint)a3 withZoomFactor:(double)a4 animated:(BOOL)a5;
-- (void)zoomLensViewController:(id)a3 didMoveLens:(id)a4 withDelta:(CGPoint)a5;
-- (void)zoomLensViewControllerDidChangeStandbyMode:(id)a3;
-- (void)zoomLensViewControllerUpdateUIForStandby:(id)a3 completion:(id)a4;
-- (void)zoomListenerRegisteredForAllAttributeUpdatesCoalesced:(BOOL)a3 clientIdentifier:(id)a4;
-- (void)zoomListenerRegisteredForAttributeUpdatesImmediately:(id)a3 registered:(BOOL)a4 clientIdentifier:(id)a5;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wantsToStartAutopannerWithATVEventProcessor:(id)processor;
+- (void)wantsToStartAutopannerWithSlugViewController:(id)controller;
+- (void)wantsToStopAutopannerWithATVEventProcessor:(id)processor;
+- (void)wantsToStopAutopannerWithSlugViewController:(id)controller;
+- (void)willBeginAutopanningLensWithAutopanner:(id)autopanner;
+- (void)zoomInToPoint:(CGPoint)point withZoomFactor:(double)factor animated:(BOOL)animated;
+- (void)zoomLensViewController:(id)controller didMoveLens:(id)lens withDelta:(CGPoint)delta;
+- (void)zoomLensViewControllerDidChangeStandbyMode:(id)mode;
+- (void)zoomLensViewControllerUpdateUIForStandby:(id)standby completion:(id)completion;
+- (void)zoomListenerRegisteredForAllAttributeUpdatesCoalesced:(BOOL)coalesced clientIdentifier:(id)identifier;
+- (void)zoomListenerRegisteredForAttributeUpdatesImmediately:(id)immediately registered:(BOOL)registered clientIdentifier:(id)identifier;
 @end
 
 @implementation ZWRootViewController
@@ -233,11 +233,11 @@
   return WeakRetained;
 }
 
-- (ZWRootViewController)initWithAXUIService:(id)a3 onScreen:(id)a4 isMainDisplay:(BOOL)a5
+- (ZWRootViewController)initWithAXUIService:(id)service onScreen:(id)screen isMainDisplay:(BOOL)display
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  displayCopy = display;
+  serviceCopy = service;
+  screenCopy = screen;
   v107.receiver = self;
   v107.super_class = ZWRootViewController;
   v10 = [(ZWRootViewController *)&v107 initWithNibName:0 bundle:0];
@@ -245,25 +245,25 @@
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, kAXSZoomTouchReadyForObserversNotification, 0, 0, 1u);
-    objc_storeWeak(&v10->_axuiService, v8);
+    objc_storeWeak(&v10->_axuiService, serviceCopy);
     [(ZWRootViewController *)v10 _loadZoomTouchExtras];
     [(ZWRootViewController *)v10 _initializeZoomSettingsIfNeeded];
     v12 = objc_alloc_init(ZWAlertManager);
     [(ZWRootViewController *)v10 setZoomAlertManager:v12];
 
-    [(ZWRootViewController *)v10 setIsMainDisplay:v5];
-    [(ZWRootViewController *)v10 setScreen:v9];
+    [(ZWRootViewController *)v10 setIsMainDisplay:displayCopy];
+    [(ZWRootViewController *)v10 setScreen:screenCopy];
     v13 = +[ZWEventProcessor defaultEventProcessor];
     [(ZWRootViewController *)v10 setEventManager:v13];
-    if (v5)
+    if (displayCopy)
     {
       [v13 setMainDisplayDelegate:v10];
     }
 
     else
     {
-      v14 = [v13 externalDisplayDelegates];
-      [v14 addPointer:v10];
+      externalDisplayDelegates = [v13 externalDisplayDelegates];
+      [externalDisplayDelegates addPointer:v10];
     }
 
     v10->_cachedIsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
@@ -302,10 +302,10 @@
     [v26 zoomPanOffset];
     v28 = v27;
     v30 = v29;
-    v76 = v8;
+    v76 = serviceCopy;
 
     v31 = +[AXSettings sharedInstance];
-    v81 = [v31 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v31 zoomCurrentLensEffect];
 
     v32 = +[AXSettings sharedInstance];
     v33 = objc_alloc_init(ZWKeyboardContext);
@@ -318,40 +318,40 @@
     [(ZWRootViewController *)v10 setLensAutopanner:v34];
     [(ZWLensAutopanner *)v34 setDelegate:v10];
     v75 = v34;
-    v35 = [(ZWZoomLensViewController *)[ZWZoomPIPLensViewController alloc] initWithZoomFactor:v81 zoomPanOffset:v9 lensEffect:v25 screen:v28, v30];
+    v35 = [(ZWZoomLensViewController *)[ZWZoomPIPLensViewController alloc] initWithZoomFactor:zoomCurrentLensEffect zoomPanOffset:screenCopy lensEffect:v25 screen:v28, v30];
     [(ZWRootViewController *)v10 setPipLensViewController:v35];
     [(ZWZoomLensViewController *)v35 setDelegate:v10];
     [(ZWZoomPIPLensViewController *)v35 setPipDelegate:v10];
-    v36 = [(ZWZoomLensViewController *)[ZWZoomDockedLensViewController alloc] initWithZoomFactor:v81 zoomPanOffset:v9 lensEffect:v25 screen:v28, v30];
+    v36 = [(ZWZoomLensViewController *)[ZWZoomDockedLensViewController alloc] initWithZoomFactor:zoomCurrentLensEffect zoomPanOffset:screenCopy lensEffect:v25 screen:v28, v30];
     [(ZWRootViewController *)v10 setDockedLensViewController:v36];
     [(ZWZoomLensViewController *)v36 setDelegate:v10];
     [(ZWZoomDockedLensViewController *)v36 setDockedDelegate:v10];
-    v37 = [(ZWZoomLensViewController *)[ZWZoomFullscreenLensViewController alloc] initWithZoomFactor:v81 zoomPanOffset:v9 lensEffect:v25 screen:v28, v30];
+    v37 = [(ZWZoomLensViewController *)[ZWZoomFullscreenLensViewController alloc] initWithZoomFactor:zoomCurrentLensEffect zoomPanOffset:screenCopy lensEffect:v25 screen:v28, v30];
     [(ZWRootViewController *)v10 setFullscreenLensViewController:v37];
     [(ZWZoomLensViewController *)v37 setDelegate:v10];
     v74 = v37;
     v80 = [[ZWMenuViewController alloc] initWithNibName:0 bundle:0];
     [(ZWRootViewController *)v10 setMenuViewController:v80];
-    v38 = [(ZWRootViewController *)v10 menuViewController];
-    [v38 setModalPresentationStyle:7];
+    menuViewController = [(ZWRootViewController *)v10 menuViewController];
+    [menuViewController setModalPresentationStyle:7];
 
-    v39 = [(ZWRootViewController *)v10 menuViewController];
-    v40 = [v39 popoverPresentationController];
-    [v40 setDelegate:v10];
+    menuViewController2 = [(ZWRootViewController *)v10 menuViewController];
+    popoverPresentationController = [menuViewController2 popoverPresentationController];
+    [popoverPresentationController setDelegate:v10];
 
     [(ZWMenuViewController *)v80 setDelegate:v10];
     [(ZWRootViewController *)v10 eventManager];
-    if (v5)
+    if (displayCopy)
       v41 = {;
-      v42 = [v41 fullscreenEventHandler];
-      [v42 setZoomDelegate:v10];
+      fullscreenEventHandler = [v41 fullscreenEventHandler];
+      [fullscreenEventHandler setZoomDelegate:v10];
     }
 
     else
       v41 = {;
-      v42 = [v41 fullscreenEventHandler];
-      v43 = [v42 externalDisplayZoomDelegates];
-      [v43 addPointer:v10];
+      fullscreenEventHandler = [v41 fullscreenEventHandler];
+      externalDisplayZoomDelegates = [fullscreenEventHandler externalDisplayZoomDelegates];
+      [externalDisplayZoomDelegates addPointer:v10];
     }
 
     v44 = +[AXSettings sharedInstance];
@@ -462,15 +462,15 @@
     if (v63)
     {
       v57 = +[AXVoiceOverServer server];
-      v64 = [v57 isBrailleInputUIShowing];
+      isBrailleInputUIShowing = [v57 isBrailleInputUIShowing];
     }
 
     else
     {
-      v64 = 0;
+      isBrailleInputUIShowing = 0;
     }
 
-    [(ZWRootViewController *)v10 setBrailleInputUIIsShowing:v64];
+    [(ZWRootViewController *)v10 setBrailleInputUIIsShowing:isBrailleInputUIShowing];
     if (v63)
     {
     }
@@ -499,8 +499,8 @@
     v69 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(ZWRootViewController *)v10 setKeyRepeatTimer:v69];
 
-    v70 = [(ZWRootViewController *)v10 keyRepeatTimer];
-    [v70 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    keyRepeatTimer = [(ZWRootViewController *)v10 keyRepeatTimer];
+    [keyRepeatTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
     [(ZWRootViewController *)v10 setLastKeyboardCommand:16];
     v71 = [[ZWFakeLaserViewController alloc] initWithZoomRootVC:v10];
@@ -515,7 +515,7 @@
     objc_destroyWeak(&v105);
     objc_destroyWeak(&location);
 
-    v8 = v76;
+    serviceCopy = v76;
   }
 
   return v10;
@@ -666,15 +666,15 @@ void __67__ZWRootViewController_initWithAXUIService_onScreen_isMainDisplay___blo
 
 - (void)dealloc
 {
-  v3 = [(ZWRootViewController *)self eventManager];
-  [v3 cleanup];
+  eventManager = [(ZWRootViewController *)self eventManager];
+  [eventManager cleanup];
 
   [(ZWRootViewController *)self _removeAllSystemGestureDisablingAssertions];
-  v4 = [(ZWRootViewController *)self smartZoom];
-  [v4 disableSmartZoom];
+  smartZoom = [(ZWRootViewController *)self smartZoom];
+  [smartZoom disableSmartZoom];
 
-  v5 = [(ZWRootViewController *)self smartZoom];
-  [v5 setDelegate:0];
+  smartZoom2 = [(ZWRootViewController *)self smartZoom];
+  [smartZoom2 setDelegate:0];
 
   if (self->_voiceOverStatusChangedNotificationObserverToken)
   {
@@ -687,44 +687,44 @@ void __67__ZWRootViewController_initWithAXUIService_onScreen_isMainDisplay___blo
 
   if ([(ZWRootViewController *)self isViewLoaded])
   {
-    v8 = [(ZWRootViewController *)self slugViewController];
-    [v8 removeObserver:self forKeyPath:@"slugRingView.bounds" context:&ZWZoomItemObserverContextID];
+    slugViewController = [(ZWRootViewController *)self slugViewController];
+    [slugViewController removeObserver:self forKeyPath:@"slugRingView.bounds" context:&ZWZoomItemObserverContextID];
 
-    v9 = [(ZWRootViewController *)self slugViewController];
-    [v9 removeObserver:self forKeyPath:@"view.center" context:&ZWZoomItemObserverContextID];
+    slugViewController2 = [(ZWRootViewController *)self slugViewController];
+    [slugViewController2 removeObserver:self forKeyPath:@"view.center" context:&ZWZoomItemObserverContextID];
 
-    v10 = [(ZWRootViewController *)self slugViewController];
-    [v10 removeObserver:self forKeyPath:@"userIsInteractingWithSlug" context:&ZWZoomItemObserverContextID];
+    slugViewController3 = [(ZWRootViewController *)self slugViewController];
+    [slugViewController3 removeObserver:self forKeyPath:@"userIsInteractingWithSlug" context:&ZWZoomItemObserverContextID];
 
-    v11 = [(ZWRootViewController *)self menuViewController];
-    [v11 removeObserver:self forKeyPath:@"userIsInteractingWithMenu" context:&ZWZoomItemObserverContextID];
+    menuViewController = [(ZWRootViewController *)self menuViewController];
+    [menuViewController removeObserver:self forKeyPath:@"userIsInteractingWithMenu" context:&ZWZoomItemObserverContextID];
   }
 
-  v12 = [(ZWRootViewController *)self lensAutopanner];
-  [v12 setDelegate:0];
+  lensAutopanner = [(ZWRootViewController *)self lensAutopanner];
+  [lensAutopanner setDelegate:0];
 
-  LOBYTE(v12) = [(ZWRootViewController *)self isMainDisplay];
-  v13 = [(ZWRootViewController *)self eventManager];
-  v14 = v13;
-  if (v12)
+  LOBYTE(lensAutopanner) = [(ZWRootViewController *)self isMainDisplay];
+  eventManager2 = [(ZWRootViewController *)self eventManager];
+  eventManager5 = eventManager2;
+  if (lensAutopanner)
   {
-    [v13 setMainDisplayDelegate:0];
+    [eventManager2 setMainDisplayDelegate:0];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v15 = [v13 externalDisplayDelegates];
-  v16 = [v15 count];
+  externalDisplayDelegates = [eventManager2 externalDisplayDelegates];
+  v16 = [externalDisplayDelegates count];
 
   if (v16)
   {
     v17 = 0;
     while (1)
     {
-      v18 = [(ZWRootViewController *)self eventManager];
-      v19 = [v18 externalDisplayDelegates];
-      v20 = [v19 pointerAtIndex:v17];
+      eventManager3 = [(ZWRootViewController *)self eventManager];
+      externalDisplayDelegates2 = [eventManager3 externalDisplayDelegates];
+      v20 = [externalDisplayDelegates2 pointerAtIndex:v17];
 
       if (v20 == self)
       {
@@ -732,9 +732,9 @@ LABEL_13:
       }
 
       ++v17;
-      v21 = [(ZWRootViewController *)self eventManager];
-      v22 = [v21 externalDisplayDelegates];
-      v23 = [v22 count];
+      eventManager4 = [(ZWRootViewController *)self eventManager];
+      externalDisplayDelegates3 = [eventManager4 externalDisplayDelegates];
+      v23 = [externalDisplayDelegates3 count];
 
       if (v23 <= v17)
       {
@@ -742,31 +742,31 @@ LABEL_13:
       }
     }
 
-    v14 = [(ZWRootViewController *)self eventManager];
-    v24 = [v14 externalDisplayDelegates];
-    [v24 removePointerAtIndex:v17];
+    eventManager5 = [(ZWRootViewController *)self eventManager];
+    externalDisplayDelegates4 = [eventManager5 externalDisplayDelegates];
+    [externalDisplayDelegates4 removePointerAtIndex:v17];
 
     goto LABEL_13;
   }
 
 LABEL_14:
-  v25 = [(ZWRootViewController *)self pipLensViewController];
-  [v25 setDelegate:0];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  [pipLensViewController setDelegate:0];
 
-  v26 = [(ZWRootViewController *)self dockedLensViewController];
-  [v26 setDelegate:0];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  [dockedLensViewController setDelegate:0];
 
-  v27 = [(ZWRootViewController *)self fullscreenLensViewController];
-  [v27 setDelegate:0];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
+  [fullscreenLensViewController setDelegate:0];
 
-  v28 = [(ZWRootViewController *)self slugViewController];
-  [v28 setDelegate:0];
+  slugViewController4 = [(ZWRootViewController *)self slugViewController];
+  [slugViewController4 setDelegate:0];
 
-  v29 = [(ZWRootViewController *)self keyRepeatTimer];
-  [v29 cancel];
+  keyRepeatTimer = [(ZWRootViewController *)self keyRepeatTimer];
+  [keyRepeatTimer cancel];
 
-  v30 = [(ZWRootViewController *)self hitTestCategoryAssertion];
-  [v30 invalidate];
+  hitTestCategoryAssertion = [(ZWRootViewController *)self hitTestCategoryAssertion];
+  [hitTestCategoryAssertion invalidate];
 
   v31.receiver = self;
   v31.super_class = ZWRootViewController;
@@ -797,10 +797,10 @@ LABEL_14:
 
 - (void)_updateSystemGestureDisablingAssertions
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v3 != v4 && ([(ZWRootViewController *)self activeLensViewController], v5 = objc_claimAutoreleasedReturnValue(), [(ZWRootViewController *)self pipLensViewController], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+  if (activeLensViewController != fullscreenLensViewController && ([(ZWRootViewController *)self activeLensViewController], v5 = objc_claimAutoreleasedReturnValue(), [(ZWRootViewController *)self pipLensViewController], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
 
     [(ZWRootViewController *)self _updateSystemGestureDisablingAssertionsForPipLensPosition];
@@ -817,9 +817,9 @@ LABEL_14:
 {
   if ([(ZWRootViewController *)self _pipLensIsNearTopOfScreen])
   {
-    v3 = [(ZWRootViewController *)self disableNotificationCenterAssertionPIPLens];
+    disableNotificationCenterAssertionPIPLens = [(ZWRootViewController *)self disableNotificationCenterAssertionPIPLens];
 
-    if (!v3)
+    if (!disableNotificationCenterAssertionPIPLens)
     {
       v4 = [AXAssertion assertionWithType:AXAssertionTypeDisableNotificationCenterGesture identifier:@"Zoom: Lens on screeen edge"];
       [(ZWRootViewController *)self setDisableNotificationCenterAssertionPIPLens:v4];
@@ -852,9 +852,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v5 = [(ZWRootViewController *)self disableControlCenterAssertionPIPLens];
+  disableControlCenterAssertionPIPLens = [(ZWRootViewController *)self disableControlCenterAssertionPIPLens];
 
-  if (!v5)
+  if (!disableControlCenterAssertionPIPLens)
   {
     v6 = [AXAssertion assertionWithType:AXAssertionTypeDisableControlCenterGesture identifier:@"Zoom: Lens on screeen edge"];
     [(ZWRootViewController *)self setDisableControlCenterAssertionPIPLens:v6];
@@ -932,8 +932,8 @@ LABEL_14:
 
   if ([v4 zoomInStandby])
   {
-    v13 = [v3 zoomPreferredCurrentLensMode];
-    v14 = [v13 isEqualToString:AXZoomLensModeWindow];
+    zoomPreferredCurrentLensMode = [v3 zoomPreferredCurrentLensMode];
+    v14 = [zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeWindow];
 
     if (v14)
     {
@@ -965,95 +965,95 @@ LABEL_14:
     v8 = 16;
   }
 
-  v9 = [v45 layer];
-  [v9 setDisableUpdateMask:v8];
+  layer = [v45 layer];
+  [layer setDisableUpdateMask:v8];
 
   [(ZWRootViewController *)self setView:v45];
   v10 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(ZWRootViewController *)self setContainerView:v10];
 
-  v11 = [(ZWRootViewController *)self containerView];
-  [v11 setAutoresizingMask:18];
+  containerView = [(ZWRootViewController *)self containerView];
+  [containerView setAutoresizingMask:18];
 
-  v12 = [(ZWRootViewController *)self containerView];
-  [v45 addSubview:v12];
+  containerView2 = [(ZWRootViewController *)self containerView];
+  [v45 addSubview:containerView2];
 
-  v13 = [[ZWTouchTrapView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWRootViewController *)self setTouchTrapView:v13];
+  height = [[ZWTouchTrapView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWRootViewController *)self setTouchTrapView:height];
 
-  v14 = [(ZWRootViewController *)self touchTrapView];
-  [v14 setAutoresizingMask:18];
+  touchTrapView = [(ZWRootViewController *)self touchTrapView];
+  [touchTrapView setAutoresizingMask:18];
 
-  v15 = [(ZWRootViewController *)self touchTrapView];
-  [v45 addSubview:v15];
+  touchTrapView2 = [(ZWRootViewController *)self touchTrapView];
+  [v45 addSubview:touchTrapView2];
 
-  v16 = [(ZWRootViewController *)self touchTrapView];
-  [v16 setDelegate:self];
+  touchTrapView3 = [(ZWRootViewController *)self touchTrapView];
+  [touchTrapView3 setDelegate:self];
 
-  v17 = [(ZWRootViewController *)self fakeLaserVC];
-  [(ZWRootViewController *)self addChildViewController:v17];
+  fakeLaserVC = [(ZWRootViewController *)self fakeLaserVC];
+  [(ZWRootViewController *)self addChildViewController:fakeLaserVC];
 
-  v18 = [(ZWRootViewController *)self containerView];
-  v19 = [(ZWRootViewController *)self fakeLaserVC];
-  v20 = [v19 view];
-  [v18 addSubview:v20];
+  containerView3 = [(ZWRootViewController *)self containerView];
+  fakeLaserVC2 = [(ZWRootViewController *)self fakeLaserVC];
+  view = [fakeLaserVC2 view];
+  [containerView3 addSubview:view];
 
-  v21 = [(ZWRootViewController *)self containerView];
-  v22 = [(ZWRootViewController *)self fakeLaserVC];
-  v23 = [v22 view];
-  [v21 bringSubviewToFront:v23];
+  containerView4 = [(ZWRootViewController *)self containerView];
+  fakeLaserVC3 = [(ZWRootViewController *)self fakeLaserVC];
+  view2 = [fakeLaserVC3 view];
+  [containerView4 bringSubviewToFront:view2];
 
   v24 = objc_alloc_init(UIScrollView);
   v25 = [[UIView alloc] initWithFrame:{0.0, 0.0, 10000.0, 10000.0}];
   [(ZWRootViewController *)self setScrollTrapView:v25];
 
   v26 = +[UIColor clearColor];
-  v27 = [(ZWRootViewController *)self scrollTrapView];
-  [v27 setBackgroundColor:v26];
+  scrollTrapView = [(ZWRootViewController *)self scrollTrapView];
+  [scrollTrapView setBackgroundColor:v26];
 
-  v28 = [(ZWRootViewController *)self scrollTrapView];
-  [v28 setAlpha:0.0];
+  scrollTrapView2 = [(ZWRootViewController *)self scrollTrapView];
+  [scrollTrapView2 setAlpha:0.0];
 
-  v29 = [(ZWRootViewController *)self scrollTrapView];
-  v30 = [v29 layer];
-  [v30 setHitTestsAsOpaque:1];
+  scrollTrapView3 = [(ZWRootViewController *)self scrollTrapView];
+  layer2 = [scrollTrapView3 layer];
+  [layer2 setHitTestsAsOpaque:1];
 
-  v31 = [(ZWRootViewController *)self containerView];
-  [v31 addSubview:v24];
+  containerView5 = [(ZWRootViewController *)self containerView];
+  [containerView5 addSubview:v24];
 
-  v32 = [(ZWRootViewController *)self containerView];
-  v33 = [(ZWRootViewController *)self scrollTrapView];
-  [v32 addSubview:v33];
+  containerView6 = [(ZWRootViewController *)self containerView];
+  scrollTrapView4 = [(ZWRootViewController *)self scrollTrapView];
+  [containerView6 addSubview:scrollTrapView4];
 
   [v24 setDelegate:self];
   [v24 setBounces:0];
   [v24 setHidden:1];
   [v24 setContentSize:{10000.0, 10000.0}];
   [v24 setContentOffset:{5000.0, 5000.0}];
-  v34 = [(ZWRootViewController *)self containerView];
-  v35 = [v24 panGestureRecognizer];
-  [v34 addGestureRecognizer:v35];
+  containerView7 = [(ZWRootViewController *)self containerView];
+  panGestureRecognizer = [v24 panGestureRecognizer];
+  [containerView7 addGestureRecognizer:panGestureRecognizer];
 
   [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v36 = [(ZWRootViewController *)self containerView];
-  v37 = [v24 ax_pinConstraintsInAllDimensionsToView:v36];
+  containerView8 = [(ZWRootViewController *)self containerView];
+  v37 = [v24 ax_pinConstraintsInAllDimensionsToView:containerView8];
 
-  v38 = [(ZWRootViewController *)self scrollTrapView];
-  v39 = [(ZWRootViewController *)self containerView];
-  v40 = [v38 ax_pinConstraintsInAllDimensionsToView:v39];
+  scrollTrapView5 = [(ZWRootViewController *)self scrollTrapView];
+  containerView9 = [(ZWRootViewController *)self containerView];
+  v40 = [scrollTrapView5 ax_pinConstraintsInAllDimensionsToView:containerView9];
 
   [v45 setHidden:1];
-  v41 = [(ZWRootViewController *)self slugViewController];
-  [v41 addObserver:self forKeyPath:@"view.center" options:1 context:&ZWZoomItemObserverContextID];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [slugViewController addObserver:self forKeyPath:@"view.center" options:1 context:&ZWZoomItemObserverContextID];
 
-  v42 = [(ZWRootViewController *)self slugViewController];
-  [v42 addObserver:self forKeyPath:@"slugRingView.bounds" options:1 context:&ZWZoomItemObserverContextID];
+  slugViewController2 = [(ZWRootViewController *)self slugViewController];
+  [slugViewController2 addObserver:self forKeyPath:@"slugRingView.bounds" options:1 context:&ZWZoomItemObserverContextID];
 
-  v43 = [(ZWRootViewController *)self slugViewController];
-  [v43 addObserver:self forKeyPath:@"userIsInteractingWithSlug" options:1 context:&ZWZoomItemObserverContextID];
+  slugViewController3 = [(ZWRootViewController *)self slugViewController];
+  [slugViewController3 addObserver:self forKeyPath:@"userIsInteractingWithSlug" options:1 context:&ZWZoomItemObserverContextID];
 
-  v44 = [(ZWRootViewController *)self menuViewController];
-  [v44 addObserver:self forKeyPath:@"userIsInteractingWithMenu" options:1 context:&ZWZoomItemObserverContextID];
+  menuViewController = [(ZWRootViewController *)self menuViewController];
+  [menuViewController addObserver:self forKeyPath:@"userIsInteractingWithMenu" options:1 context:&ZWZoomItemObserverContextID];
 }
 
 - (void)viewDidLoad
@@ -1062,23 +1062,23 @@ LABEL_14:
   v47.super_class = ZWRootViewController;
   [(ZWRootViewController *)&v47 viewDidLoad];
   [(ZWRootViewController *)self _updateZoomListeners];
-  v3 = [(ZWRootViewController *)self slugViewController];
-  [(ZWRootViewController *)self addChildViewController:v3];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [(ZWRootViewController *)self addChildViewController:slugViewController];
 
-  v4 = [(ZWRootViewController *)self containerView];
-  v5 = [(ZWRootViewController *)self slugViewController];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  containerView = [(ZWRootViewController *)self containerView];
+  slugViewController2 = [(ZWRootViewController *)self slugViewController];
+  view = [slugViewController2 view];
+  [containerView addSubview:view];
 
-  v7 = [(ZWRootViewController *)self slugViewController];
-  [v7 didMoveToParentViewController:self];
+  slugViewController3 = [(ZWRootViewController *)self slugViewController];
+  [slugViewController3 didMoveToParentViewController:self];
 
-  v46 = [(ZWRootViewController *)self containerView];
-  v8 = [(ZWRootViewController *)self slugViewController];
-  v9 = [v8 view];
+  containerView2 = [(ZWRootViewController *)self containerView];
+  slugViewController4 = [(ZWRootViewController *)self slugViewController];
+  view2 = [slugViewController4 view];
 
-  v10 = [(ZWRootViewController *)self slugViewController];
-  v11 = [v10 slugRingView];
+  slugViewController5 = [(ZWRootViewController *)self slugViewController];
+  slugRingView = [slugViewController5 slugRingView];
 
   v12 = AXResistAllCompressingAndStretching[0];
   v13 = AXResistAllCompressingAndStretching[1];
@@ -1088,25 +1088,25 @@ LABEL_14:
   LODWORD(v17) = v13;
   LODWORD(v18) = v14;
   LODWORD(v19) = v15;
-  [v9 ax_setContentHuggingAndCompressionResistance:{v16, v17, v18, v19}];
+  [view2 ax_setContentHuggingAndCompressionResistance:{v16, v17, v18, v19}];
   LODWORD(v20) = v12;
   LODWORD(v21) = v13;
   LODWORD(v22) = v14;
   LODWORD(v23) = v15;
-  [v11 ax_setContentHuggingAndCompressionResistance:{v20, v21, v22, v23}];
-  v24 = [v46 safeAreaLayoutGuide];
-  v25 = [v11 leadingAnchor];
-  v26 = [v24 leadingAnchor];
-  v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26];
+  [slugRingView ax_setContentHuggingAndCompressionResistance:{v20, v21, v22, v23}];
+  safeAreaLayoutGuide = [containerView2 safeAreaLayoutGuide];
+  leadingAnchor = [slugRingView leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v27 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   [(ZWRootViewController *)self setSlugRingLeadingConstraint:v27];
 
-  v28 = [v11 trailingAnchor];
-  v29 = [v24 trailingAnchor];
-  v30 = [v28 constraintLessThanOrEqualToAnchor:v29];
+  trailingAnchor = [slugRingView trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v30 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [(ZWRootViewController *)self setSlugRingTrailingConstraint:v30];
 
-  v31 = [v11 topAnchor];
-  v32 = [v24 topAnchor];
+  topAnchor = [slugRingView topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
   HasJindo = AXDeviceHasJindo();
   v34 = 0.0;
   if (HasJindo)
@@ -1114,70 +1114,70 @@ LABEL_14:
     v34 = 5.0;
   }
 
-  v35 = [v31 constraintGreaterThanOrEqualToAnchor:v32 constant:v34];
+  v35 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:v34];
   [(ZWRootViewController *)self setSlugRingTopConstraint:v35];
 
-  v36 = [v11 bottomAnchor];
-  v37 = [v24 bottomAnchor];
-  v38 = [v36 constraintLessThanOrEqualToAnchor:v37];
+  bottomAnchor = [slugRingView bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v38 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   [(ZWRootViewController *)self setSlugRingBottomConstraint:v38];
 
-  v39 = [(ZWRootViewController *)self slugRingLeadingConstraint];
-  v48[0] = v39;
-  v40 = [(ZWRootViewController *)self slugRingTrailingConstraint];
-  v48[1] = v40;
-  v41 = [(ZWRootViewController *)self slugRingTopConstraint];
-  v48[2] = v41;
-  v42 = [(ZWRootViewController *)self slugRingBottomConstraint];
-  v48[3] = v42;
+  slugRingLeadingConstraint = [(ZWRootViewController *)self slugRingLeadingConstraint];
+  v48[0] = slugRingLeadingConstraint;
+  slugRingTrailingConstraint = [(ZWRootViewController *)self slugRingTrailingConstraint];
+  v48[1] = slugRingTrailingConstraint;
+  slugRingTopConstraint = [(ZWRootViewController *)self slugRingTopConstraint];
+  v48[2] = slugRingTopConstraint;
+  slugRingBottomConstraint = [(ZWRootViewController *)self slugRingBottomConstraint];
+  v48[3] = slugRingBottomConstraint;
   v43 = [NSArray arrayWithObjects:v48 count:4];
   [NSLayoutConstraint activateConstraints:v43];
 
   v44 = +[AXSettings sharedInstance];
-  v45 = [v44 zoomPreferredCurrentLensMode];
-  [(ZWRootViewController *)self _transitionToLensForMode:v45 animated:0 completion:0];
+  zoomPreferredCurrentLensMode = [v44 zoomPreferredCurrentLensMode];
+  [(ZWRootViewController *)self _transitionToLensForMode:zoomPreferredCurrentLensMode animated:0 completion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ZWRootViewController;
-  [(ZWRootViewController *)&v4 viewDidAppear:a3];
+  [(ZWRootViewController *)&v4 viewDidAppear:appear];
   [(ZWRootViewController *)self focusZoomOnPreferenceSwitchIfNecessary];
   [(ZWRootViewController *)self _updateZoomListeners];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ZWRootViewController;
-  [(ZWRootViewController *)&v4 viewWillDisappear:a3];
+  [(ZWRootViewController *)&v4 viewWillDisappear:disappear];
   [(ZWRootViewController *)self _removeAllSystemGestureDisablingAssertions];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = ZWRootViewController;
-  [(ZWRootViewController *)&v10 viewWillAppear:a3];
-  v4 = [(ZWRootViewController *)self containerView];
-  v5 = [(ZWRootViewController *)self slugViewController];
-  v6 = [v5 view];
-  [v4 bringSubviewToFront:v6];
+  [(ZWRootViewController *)&v10 viewWillAppear:appear];
+  containerView = [(ZWRootViewController *)self containerView];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  view = [slugViewController view];
+  [containerView bringSubviewToFront:view];
 
   [(ZWRootViewController *)self _updateSlugLayoutAnimated:0];
-  v7 = [(ZWRootViewController *)self containerView];
-  v8 = [(ZWRootViewController *)self fakeLaserVC];
-  v9 = [v8 view];
-  [v7 bringSubviewToFront:v9];
+  containerView2 = [(ZWRootViewController *)self containerView];
+  fakeLaserVC = [(ZWRootViewController *)self fakeLaserVC];
+  view2 = [fakeLaserVC view];
+  [containerView2 bringSubviewToFront:view2];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = ZWRootViewController;
-  [(ZWRootViewController *)&v39 didMoveToParentViewController:v4];
+  [(ZWRootViewController *)&v39 didMoveToParentViewController:controllerCopy];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -1195,7 +1195,7 @@ LABEL_14:
   block[12] = v38;
   block[13] = v36;
   AXPerformBlockSynchronouslyOnMainThread();
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __54__ZWRootViewController_didMoveToParentViewController___block_invoke_2;
@@ -1203,24 +1203,24 @@ LABEL_14:
   block[4] = self;
   block[5] = v38;
   block[6] = v36;
-  dispatch_sync(v5, block);
+  dispatch_sync(cachedValuesSerialQueue, block);
 
-  v6 = [v4 view];
-  v7 = [v6 window];
+  view = [controllerCopy view];
+  window = [view window];
 
-  v8 = [v7 _contextId];
-  v9 = [NSNumber numberWithUnsignedInt:v8];
+  _contextId = [window _contextId];
+  v9 = [NSNumber numberWithUnsignedInt:_contextId];
   v41 = v9;
   v10 = [NSArray arrayWithObjects:&v41 count:1];
   BKSHIDServicesExcludeCAContextsFromHitTestingForZoomSenders();
 
-  v11 = [(ZWRootViewController *)self hitTestCategoryAssertion];
-  [v11 invalidate];
+  hitTestCategoryAssertion = [(ZWRootViewController *)self hitTestCategoryAssertion];
+  [hitTestCategoryAssertion invalidate];
 
-  if (v8)
+  if (_contextId)
   {
     v12 = +[BKSTouchEventService sharedInstance];
-    v13 = [NSNumber numberWithUnsignedInt:v8];
+    v13 = [NSNumber numberWithUnsignedInt:_contextId];
     v40 = v13;
     v14 = [NSArray arrayWithObjects:&v40 count:1];
     v15 = [v12 setContextIDs:v14 forHitTestContextCategory:1];
@@ -1229,47 +1229,47 @@ LABEL_14:
 
   if (ZWLaserIsEnabled())
   {
-    if (v7 && v8)
+    if (window && _contextId)
     {
       if (self->_pointerEventStream)
       {
-        v16 = [(ZWRootViewController *)self pointerEventStream];
-        [v16 invalidate];
+        pointerEventStream = [(ZWRootViewController *)self pointerEventStream];
+        [pointerEventStream invalidate];
       }
 
       v30 = +[BKSMousePointerService sharedInstance];
-      v17 = [(ZWRootViewController *)self view];
-      v18 = [v17 window];
-      v19 = [v18 screen];
-      v20 = [v19 displayConfiguration];
-      v21 = [v20 hardwareIdentifier];
-      v22 = [v30 requestGlobalMouseEventsForDisplay:v21 targetContextID:v8];
+      view2 = [(ZWRootViewController *)self view];
+      window2 = [view2 window];
+      screen = [window2 screen];
+      displayConfiguration = [screen displayConfiguration];
+      hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+      v22 = [v30 requestGlobalMouseEventsForDisplay:hardwareIdentifier targetContextID:_contextId];
       [(ZWRootViewController *)self setPointerEventStream:v22];
 
-      v23 = [(ZWRootViewController *)self view];
-      v24 = [v23 window];
-      v25 = [v24 screen];
-      v26 = [v25 displayIdentity];
-      LODWORD(v17) = [v26 displayID];
+      view3 = [(ZWRootViewController *)self view];
+      window3 = [view3 window];
+      screen2 = [window3 screen];
+      displayIdentity = [screen2 displayIdentity];
+      LODWORD(view2) = [displayIdentity displayID];
 
-      v27 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+      cachedValuesSerialQueue2 = [(ZWRootViewController *)self cachedValuesSerialQueue];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = __54__ZWRootViewController_didMoveToParentViewController___block_invoke_3;
       v32[3] = &unk_78E98;
       v32[4] = self;
-      v33 = v8;
-      v34 = v17;
+      v33 = _contextId;
+      v34 = view2;
       v28 = v32;
     }
 
     else
     {
-      v29 = [(ZWRootViewController *)self pointerEventStream];
-      [v29 invalidate];
+      pointerEventStream2 = [(ZWRootViewController *)self pointerEventStream];
+      [pointerEventStream2 invalidate];
 
       [(ZWRootViewController *)self setPointerEventStream:0];
-      v27 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+      cachedValuesSerialQueue2 = [(ZWRootViewController *)self cachedValuesSerialQueue];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = __54__ZWRootViewController_didMoveToParentViewController___block_invoke_4;
@@ -1278,7 +1278,7 @@ LABEL_14:
       v28 = v31;
     }
 
-    dispatch_sync(v27, v28);
+    dispatch_sync(cachedValuesSerialQueue2, v28);
   }
 
   _Block_object_dispose(v36, 8);
@@ -1331,10 +1331,10 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
 
 - (void)_prepareToHandleZoomLevelAdjustmentViaGesture
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if (v4)
+  if (inStandbyMode)
   {
     v5 = AXZoomMinimumZoomLevel;
   }
@@ -1347,11 +1347,11 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
   self->_zoomFactorBeforeUserAdjustingGesture = v5;
 }
 
-- (void)_handleZoomLevelAdjustmentViaGesture:(CGPoint)a3
+- (void)_handleZoomLevelAdjustmentViaGesture:(CGPoint)gesture
 {
-  if (self->_zoomFactorBeforeUserAdjustingGesture + a3.y * -0.02 >= AXZoomMinimumZoomLevel)
+  if (self->_zoomFactorBeforeUserAdjustingGesture + gesture.y * -0.02 >= AXZoomMinimumZoomLevel)
   {
-    v4 = self->_zoomFactorBeforeUserAdjustingGesture + a3.y * -0.02;
+    v4 = self->_zoomFactorBeforeUserAdjustingGesture + gesture.y * -0.02;
   }
 
   else
@@ -1376,19 +1376,19 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
   [(ZWRootViewController *)self _updateZoomFactor:0 animated:v8];
 }
 
-- (void)_updateSlugConstraintsForOrientation:(int64_t)a3
+- (void)_updateSlugConstraintsForOrientation:(int64_t)orientation
 {
   if ((AXDeviceHasHomeButton() & 1) == 0 && (AXDeviceIsPad() & 1) == 0)
   {
-    v5 = [(ZWRootViewController *)self view];
-    [v5 safeAreaInsets];
+    view = [(ZWRootViewController *)self view];
+    [view safeAreaInsets];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    if ((a3 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
-      if (a3 == 3)
+      if (orientation == 3)
       {
         v20 = ZOOMLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -1402,18 +1402,18 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
           v7 = 0.0;
         }
 
-        v21 = [(ZWRootViewController *)self slugRingLeadingConstraint];
-        [v21 setConstant:v7];
+        slugRingLeadingConstraint = [(ZWRootViewController *)self slugRingLeadingConstraint];
+        [slugRingLeadingConstraint setConstant:v7];
 
-        v22 = [(ZWRootViewController *)self slugRingTrailingConstraint];
-        [v22 setConstant:-5.0];
+        slugRingTrailingConstraint = [(ZWRootViewController *)self slugRingTrailingConstraint];
+        [slugRingTrailingConstraint setConstant:-5.0];
 
         v14 = 5.0 - v7;
       }
 
       else
       {
-        if (a3 != 4)
+        if (orientation != 4)
         {
           return;
         }
@@ -1435,11 +1435,11 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
           v17 = 0.0;
         }
 
-        v18 = [(ZWRootViewController *)self slugRingLeadingConstraint];
-        [v18 setConstant:5.0];
+        slugRingLeadingConstraint2 = [(ZWRootViewController *)self slugRingLeadingConstraint];
+        [slugRingLeadingConstraint2 setConstant:5.0];
 
-        v19 = [(ZWRootViewController *)self slugRingTrailingConstraint];
-        [v19 setConstant:v17];
+        slugRingTrailingConstraint2 = [(ZWRootViewController *)self slugRingTrailingConstraint];
+        [slugRingTrailingConstraint2 setConstant:v17];
 
         v14 = v17 + 5.0;
       }
@@ -1454,12 +1454,12 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Updating slug constraints for portrait orientaiton", buf, 2u);
       }
 
-      v13 = [(ZWRootViewController *)self slugRingLeadingConstraint];
+      slugRingLeadingConstraint3 = [(ZWRootViewController *)self slugRingLeadingConstraint];
       v14 = 0.0;
-      [v13 setConstant:0.0];
+      [slugRingLeadingConstraint3 setConstant:0.0];
 
-      v15 = [(ZWRootViewController *)self slugRingTrailingConstraint];
-      [v15 setConstant:0.0];
+      slugRingTrailingConstraint3 = [(ZWRootViewController *)self slugRingTrailingConstraint];
+      [slugRingTrailingConstraint3 setConstant:0.0];
 
       if (AXDeviceHasJindo())
       {
@@ -1467,59 +1467,59 @@ uint64_t __54__ZWRootViewController_didMoveToParentViewController___block_invoke
       }
     }
 
-    v23 = [(ZWRootViewController *)self slugRingTopConstraint];
-    [v23 setConstant:v14];
+    slugRingTopConstraint = [(ZWRootViewController *)self slugRingTopConstraint];
+    [slugRingTopConstraint setConstant:v14];
   }
 }
 
 - (BOOL)isZoomLensVisible
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 isViewLoaded];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  isViewLoaded = [activeLensViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = [(ZWRootViewController *)self activeLensViewController];
-    v6 = [v5 view];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    view = [activeLensViewController2 view];
 
-    v7 = [v6 window];
-    if (v7 && ([v6 alpha], v8 > 0.0))
+    window = [view window];
+    if (window && ([view alpha], v8 > 0.0))
     {
-      v4 = [v6 isHidden] ^ 1;
+      isViewLoaded = [view isHidden] ^ 1;
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(isViewLoaded) = 0;
     }
   }
 
-  return v4;
+  return isViewLoaded;
 }
 
 - (BOOL)isZoomSlugVisible
 {
-  v3 = [(ZWRootViewController *)self slugViewController];
-  v4 = [v3 isViewLoaded];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  isViewLoaded = [slugViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = [(ZWRootViewController *)self slugViewController];
-    v6 = [v5 view];
+    slugViewController2 = [(ZWRootViewController *)self slugViewController];
+    view = [slugViewController2 view];
 
-    v7 = [v6 window];
-    if (v7 && ([v6 alpha], v8 > 0.0))
+    window = [view window];
+    if (window && ([view alpha], v8 > 0.0))
     {
-      v4 = [v6 isHidden] ^ 1;
+      isViewLoaded = [view isHidden] ^ 1;
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(isViewLoaded) = 0;
     }
   }
 
-  return v4;
+  return isViewLoaded;
 }
 
 - (double)zoomFactor
@@ -1548,7 +1548,7 @@ double __34__ZWRootViewController_zoomFactor__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
   cachedValuesSerialQueue = self->_cachedValuesSerialQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -1556,17 +1556,17 @@ double __34__ZWRootViewController_zoomFactor__block_invoke(uint64_t a1)
   v11[2] = __38__ZWRootViewController_setZoomFactor___block_invoke;
   v11[3] = &unk_78E98;
   v11[4] = self;
-  *&v11[5] = a3;
+  *&v11[5] = factor;
   dispatch_sync(cachedValuesSerialQueue, v11);
-  v5 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomPanOffset];
-  [v5 validPanOffsetForProposedOffset:? proposedZoomFactor:?];
+  [activeLensViewController validPanOffsetForProposedOffset:? proposedZoomFactor:?];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomPanOffset];
-  [v10 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:? useFullDelta:?];
+  [activeLensViewController2 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:? useFullDelta:?];
 
   [(ZWRootViewController *)self setZoomPanOffset:v7, v9];
   [(ZWRootViewController *)self _updateZoomListeners];
@@ -1579,23 +1579,23 @@ double __38__ZWRootViewController_setZoomFactor___block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)zoomFactorRespectingUserPreferredMaximumZoom:(double)a3
+- (double)zoomFactorRespectingUserPreferredMaximumZoom:(double)zoom
 {
   v4 = +[AXSettings sharedInstance];
   [v4 zoomPreferredMaximumZoomScale];
   v6 = v5;
 
-  return fmin(a3, v6);
+  return fmin(zoom, v6);
 }
 
-- (double)setZoomFactorRespectingUserPreferredMaximumZoom:(double)a3
+- (double)setZoomFactorRespectingUserPreferredMaximumZoom:(double)zoom
 {
-  if (AXZoomMinimumZoomLevel > a3)
+  if (AXZoomMinimumZoomLevel > zoom)
   {
-    a3 = AXZoomMinimumZoomLevel;
+    zoom = AXZoomMinimumZoomLevel;
   }
 
-  [(ZWRootViewController *)self zoomFactorRespectingUserPreferredMaximumZoom:a3];
+  [(ZWRootViewController *)self zoomFactorRespectingUserPreferredMaximumZoom:zoom];
   v5 = v4;
   [(ZWRootViewController *)self setZoomFactor:?];
   return v5;
@@ -1635,7 +1635,7 @@ __n128 __37__ZWRootViewController_zoomPanOffset__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setZoomPanOffset:(CGPoint)a3
+- (void)setZoomPanOffset:(CGPoint)offset
 {
   cachedValuesSerialQueue = self->_cachedValuesSerialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1643,7 +1643,7 @@ __n128 __37__ZWRootViewController_zoomPanOffset__block_invoke(uint64_t a1)
   block[2] = __41__ZWRootViewController_setZoomPanOffset___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v6 = a3;
+  offsetCopy = offset;
   dispatch_sync(cachedValuesSerialQueue, block);
   [(ZWRootViewController *)self _updateZoomListeners];
 }
@@ -1657,16 +1657,16 @@ __n128 __41__ZWRootViewController_setZoomPanOffset___block_invoke(uint64_t a1)
 
 - (BOOL)_smartZoomFocusedElementIsBeingSampled
 {
-  v3 = [(ZWRootViewController *)self smartZoom];
-  [v3 focusRect];
+  smartZoom = [(ZWRootViewController *)self smartZoom];
+  [smartZoom focusRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ZWRootViewController *)self activeLensViewController];
-  v13 = [v12 lensZoomView];
-  [v13 sampleRect];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  lensZoomView = [activeLensViewController lensZoomView];
+  [lensZoomView sampleRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1684,26 +1684,26 @@ __n128 __41__ZWRootViewController_setZoomPanOffset___block_invoke(uint64_t a1)
   return CGRectIntersectsRect(*&v22, *&v26);
 }
 
-- (void)showZoomSlugAndLens:(BOOL)a3 completion:(id)a4
+- (void)showZoomSlugAndLens:(BOOL)lens completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ZWRootViewController *)self view];
-  [v7 setHidden:0];
+  completionCopy = completion;
+  view = [(ZWRootViewController *)self view];
+  [view setHidden:0];
 
-  v8 = [(ZWRootViewController *)self zoomAlertManager];
-  [v8 showZoomEnabledAlertIfAppropriate];
+  zoomAlertManager = [(ZWRootViewController *)self zoomAlertManager];
+  [zoomAlertManager showZoomEnabledAlertIfAppropriate];
 
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 zoomPreferredCurrentLensMode];
+  zoomPreferredCurrentLensMode = [v9 zoomPreferredCurrentLensMode];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __55__ZWRootViewController_showZoomSlugAndLens_completion___block_invoke;
   v12[3] = &unk_78F80;
-  v14 = a3;
+  lensCopy = lens;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [(ZWRootViewController *)self _transitionToLensForMode:v10 animated:1 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(ZWRootViewController *)self _transitionToLensForMode:zoomPreferredCurrentLensMode animated:1 completion:v12];
 }
 
 void __55__ZWRootViewController_showZoomSlugAndLens_completion___block_invoke(uint64_t a1)
@@ -1812,25 +1812,25 @@ void __62__ZWRootViewController_focusZoomOnPreferenceSwitchIfNecessary__block_in
   }
 }
 
-- (void)hideZoomSlugAndLens:(BOOL)a3 completion:(id)a4
+- (void)hideZoomSlugAndLens:(BOOL)lens completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(ZWRootViewController *)self _removeAllSystemGestureDisablingAssertions];
-  v7 = [(ZWRootViewController *)self zoomAlertManager];
-  [v7 showZoomDisabledAlertIfAppropriate];
+  zoomAlertManager = [(ZWRootViewController *)self zoomAlertManager];
+  [zoomAlertManager showZoomDisabledAlertIfAppropriate];
 
   v8 = +[ZWCoalescedSettings sharedInstance];
-  v9 = [v8 zoomInStandby];
+  zoomInStandby = [v8 zoomInStandby];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invoke;
   v11[3] = &unk_79338;
-  v13 = v9;
-  v14 = a3;
+  v13 = zoomInStandby;
+  lensCopy = lens;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(ZWRootViewController *)self _transitionToLens:0 animated:1 completion:v11];
 }
 
@@ -1854,17 +1854,17 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   return v6();
 }
 
-- (void)handleKeyboardWillAppearWithFrame:(CGRect)a3 inAppWithBundleID:(id)a4
+- (void)handleKeyboardWillAppearWithFrame:(CGRect)frame inAppWithBundleID:(id)d
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dCopy = d;
   v10 = +[AXSubsystemZoom sharedInstance];
-  v11 = [v10 ignoreLogging];
+  ignoreLogging = [v10 ignoreLogging];
 
-  if ((v11 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v12 = +[AXSubsystemZoom identifier];
     v13 = AXLoggerForFacility();
@@ -1878,7 +1878,7 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
       v25.size.width = width;
       v25.size.height = height;
       v21 = NSStringFromCGRect(v25);
-      v22 = v9;
+      v22 = dCopy;
       v16 = _AXStringForArgs();
 
       if (os_log_type_enabled(v13, v14))
@@ -1891,7 +1891,7 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   }
 
   v17 = [(ZWRootViewController *)self deactivatedAppIDs:v21];
-  v18 = [v17 containsObject:v9];
+  v18 = [v17 containsObject:dCopy];
 
   if ((v18 & 1) == 0)
   {
@@ -1903,13 +1903,13 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   }
 }
 
-- (void)handleKeyboardWillHideInAppWithBundleID:(id)a3
+- (void)handleKeyboardWillHideInAppWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[AXSubsystemZoom sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemZoom identifier];
     v8 = AXLoggerForFacility();
@@ -1918,7 +1918,7 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v15 = v4;
+      v15 = dCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -1929,8 +1929,8 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
     }
   }
 
-  v12 = [(ZWRootViewController *)self deactivatedAppIDs];
-  v13 = [v12 containsObject:v4];
+  deactivatedAppIDs = [(ZWRootViewController *)self deactivatedAppIDs];
+  v13 = [deactivatedAppIDs containsObject:dCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -1940,14 +1940,14 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   }
 }
 
-- (void)zoomListenerRegisteredForAllAttributeUpdatesCoalesced:(BOOL)a3 clientIdentifier:(id)a4
+- (void)zoomListenerRegisteredForAllAttributeUpdatesCoalesced:(BOOL)coalesced clientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  coalescedCopy = coalesced;
+  identifierCopy = identifier;
   v7 = +[AXSubsystemZoom sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemZoom identifier];
     v10 = AXLoggerForFacility();
@@ -1956,8 +1956,8 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
     if (os_log_type_enabled(v10, v11))
     {
       v12 = AXColorizeFormatLog();
-      v14 = v6;
-      v15 = v4;
+      v14 = identifierCopy;
+      v15 = coalescedCopy;
       v13 = _AXStringForArgs();
       if (os_log_type_enabled(v10, v11))
       {
@@ -1972,14 +1972,14 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   [(ZWRootViewController *)self _updateZoomListeners];
 }
 
-- (void)zoomListenerRegisteredForAttributeUpdatesImmediately:(id)a3 registered:(BOOL)a4 clientIdentifier:(id)a5
+- (void)zoomListenerRegisteredForAttributeUpdatesImmediately:(id)immediately registered:(BOOL)registered clientIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a3;
+  registeredCopy = registered;
+  immediatelyCopy = immediately;
   v8 = +[AXSubsystemZoom sharedInstance];
-  v9 = [v8 ignoreLogging];
+  ignoreLogging = [v8 ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v10 = +[AXSubsystemZoom identifier];
     v11 = AXLoggerForFacility();
@@ -1988,8 +1988,8 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
     if (os_log_type_enabled(v11, v12))
     {
       v13 = AXColorizeFormatLog();
-      v15 = v7;
-      v16 = v5;
+      v15 = immediatelyCopy;
+      v16 = registeredCopy;
       v14 = _AXStringForArgs();
       if (os_log_type_enabled(v11, v12))
       {
@@ -2004,51 +2004,51 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
   [(ZWRootViewController *)self _updateZoomListeners];
 }
 
-- (void)handleFocusChangedWithType:(int64_t)a3 rect:(CGRect)a4 keyboardFrame:(CGRect)a5 contextId:(unsigned int)a6 appID:(id)a7
+- (void)handleFocusChangedWithType:(int64_t)type rect:(CGRect)rect keyboardFrame:(CGRect)frame contextId:(unsigned int)id appID:(id)d
 {
-  v7 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
-  v18 = a7;
-  if (v18)
+  v7 = *&id;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  v14 = rect.origin.y;
+  v15 = rect.origin.x;
+  dCopy = d;
+  if (dCopy)
   {
-    v19 = [(ZWRootViewController *)self deactivatedAppIDs];
-    v20 = [v19 containsObject:v18];
+    deactivatedAppIDs = [(ZWRootViewController *)self deactivatedAppIDs];
+    v20 = [deactivatedAppIDs containsObject:dCopy];
 
     if ((v20 & 1) == 0)
     {
       if (v7)
       {
         v21 = +[AXBackBoardServer server];
-        v22 = [(ZWRootViewController *)self view];
-        v23 = [v22 window];
-        [v21 convertFrame:v7 fromContextId:objc_msgSend(v23 toContextId:{"_contextId"), v15, v14, v13, v12}];
+        view = [(ZWRootViewController *)self view];
+        window = [view window];
+        [v21 convertFrame:v7 fromContextId:objc_msgSend(window toContextId:{"_contextId"), v15, v14, v13, v12}];
 
-        v24 = [(ZWRootViewController *)self view];
-        v25 = [v24 window];
+        view2 = [(ZWRootViewController *)self view];
+        window2 = [view2 window];
         AXUIConvertRectFromContextToScreenSpace();
         v27 = v26;
         v29 = v28;
         v31 = v30;
         v33 = v32;
 
-        v34 = [(ZWRootViewController *)self view];
-        v35 = [v34 window];
-        [v35 convertRect:0 fromWindow:{v27, v29, v31, v33}];
+        view3 = [(ZWRootViewController *)self view];
+        window3 = [view3 window];
+        [window3 convertRect:0 fromWindow:{v27, v29, v31, v33}];
         v37 = v36;
         v39 = v38;
         v41 = v40;
         v43 = v42;
 
-        v44 = [(ZWRootViewController *)self view];
-        v45 = [v44 window];
-        [v45 _convertRectToSceneReferenceSpace:{v37, v39, v41, v43}];
+        view4 = [(ZWRootViewController *)self view];
+        window4 = [view4 window];
+        [window4 _convertRectToSceneReferenceSpace:{v37, v39, v41, v43}];
         v15 = v46;
         v14 = v47;
         v13 = v48;
@@ -2056,9 +2056,9 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
       }
 
       v50 = +[AXSubsystemZoom sharedInstance];
-      v51 = [v50 ignoreLogging];
+      ignoreLogging = [v50 ignoreLogging];
 
-      if ((v51 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v52 = +[AXSubsystemZoom identifier];
         v53 = AXLoggerForFacility();
@@ -2078,7 +2078,7 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
           v77.size.height = height;
           NSStringFromCGRect(v77);
           v73 = v72 = v56;
-          v71 = a3;
+          typeCopy = type;
           v57 = _AXStringForArgs();
 
           if (os_log_type_enabled(v53, v54))
@@ -2099,9 +2099,9 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
         [(ZWRootViewController *)self _updateKeyboardFrame:x, y, width, height];
       }
 
-      if ((a3 - 1) > 1 || _AXSVoiceOverTouchEnabled())
+      if ((type - 1) > 1 || _AXSVoiceOverTouchEnabled())
       {
-        if (a3 == 5)
+        if (type == 5)
         {
           if (!_AXSFullKeyboardAccessEnabled())
           {
@@ -2109,34 +2109,34 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
           }
         }
 
-        else if (a3 == 3 && !_AXSAssistiveTouchScannerEnabled())
+        else if (type == 3 && !_AXSAssistiveTouchScannerEnabled())
         {
           goto LABEL_34;
         }
 
-        v58 = [(ZWRootViewController *)self eventManager:v71];
-        v59 = [v58 fullscreenEventHandler];
-        v60 = [v59 anyFingerDown];
+        v58 = [(ZWRootViewController *)self eventManager:typeCopy];
+        fullscreenEventHandler = [v58 fullscreenEventHandler];
+        anyFingerDown = [fullscreenEventHandler anyFingerDown];
 
-        if (!a3 || (v60 & 1) == 0)
+        if (!type || (anyFingerDown & 1) == 0)
         {
-          v61 = [(ZWRootViewController *)self view];
-          v62 = [v61 window];
-          v63 = [v62 _contextId];
+          view5 = [(ZWRootViewController *)self view];
+          window5 = [view5 window];
+          _contextId = [window5 _contextId];
 
-          if (v63 != v7)
+          if (_contextId != v7)
           {
-            v64 = [(ZWRootViewController *)self activeLensViewController];
-            v65 = [v64 inStandbyMode];
+            activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+            inStandbyMode = [activeLensViewController inStandbyMode];
 
             +[NSDate timeIntervalSinceReferenceDate];
             v67 = v66;
-            if (a3)
+            if (type)
             {
-              v65 |= vabdd_f64(v66, self->_lastTypingFocusChangeTime) < 0.2;
-              if (a3 == 2 && [(ZWKeyboardContext *)self->_kbContext isKeyboardVisible])
+              inStandbyMode |= vabdd_f64(v66, self->_lastTypingFocusChangeTime) < 0.2;
+              if (type == 2 && [(ZWKeyboardContext *)self->_kbContext isKeyboardVisible])
               {
-                if (([(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard]| v65))
+                if (([(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard]| inStandbyMode))
                 {
                   goto LABEL_34;
                 }
@@ -2145,24 +2145,24 @@ uint64_t __55__ZWRootViewController_hideZoomSlugAndLens_completion___block_invok
               }
 
 LABEL_32:
-              if (v65)
+              if (inStandbyMode)
               {
                 goto LABEL_34;
               }
 
 LABEL_33:
-              [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:a3 != 0 recentreLens:a3 == 0 animated:0 completion:v15, v14, v13, v12];
+              [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:type != 0 recentreLens:type == 0 animated:0 completion:v15, v14, v13, v12];
               goto LABEL_34;
             }
 
             self->_lastTypingFocusChangeTime = v66;
-            v68 = [(ZWRootViewController *)self activeLensViewController];
-            v69 = [(ZWRootViewController *)self fullscreenLensViewController];
-            if (v68 == v69 && ![(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard])
+            activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+            fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
+            if (activeLensViewController2 == fullscreenLensViewController && ![(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard])
             {
-              v70 = [(ZWKeyboardContext *)self->_kbContext zoomFollowsFocus];
+              zoomFollowsFocus = [(ZWKeyboardContext *)self->_kbContext zoomFollowsFocus];
 
-              LOBYTE(v65) = v70 ^ 1 | v65;
+              LOBYTE(inStandbyMode) = zoomFollowsFocus ^ 1 | inStandbyMode;
             }
 
             else
@@ -2185,9 +2185,9 @@ LABEL_34:
 - (void)handleLockButtonWasPressed
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2206,20 +2206,20 @@ LABEL_34:
     }
   }
 
-  v10 = [(ZWRootViewController *)self activeLensViewController];
-  v11 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v10 == v11)
+  if (activeLensViewController == pipLensViewController)
   {
     [(ZWRootViewController *)self _setPIPLensResizingEnabled:0];
   }
 
   else
   {
-    v12 = [(ZWRootViewController *)self activeLensViewController];
-    v13 = [(ZWRootViewController *)self dockedLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (v12 == v13)
+    if (activeLensViewController2 == dockedLensViewController)
     {
       [(ZWRootViewController *)self _setDockResizingEnabled:0];
     }
@@ -2230,57 +2230,57 @@ LABEL_34:
 
 - (void)handleDeviceWillWake
 {
-  v2 = [(ZWRootViewController *)self slugViewController];
-  [v2 wakeSlug];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [slugViewController wakeSlug];
 }
 
-- (void)handleSettingsAppDidUpdatePreferredDockPosition:(id)a3
+- (void)handleSettingsAppDidUpdatePreferredDockPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self dockedLensViewController];
-  [v5 setDockPositionIsTransitioning:1];
+  positionCopy = position;
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  [dockedLensViewController setDockPositionIsTransitioning:1];
 
-  v6 = [(ZWRootViewController *)self dockedLensViewController];
-  v7 = [v6 stringForCurrentDockPosition];
-  v8 = [v7 isEqualToString:v4];
+  dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+  stringForCurrentDockPosition = [dockedLensViewController2 stringForCurrentDockPosition];
+  v8 = [stringForCurrentDockPosition isEqualToString:positionCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(ZWRootViewController *)self activeLensViewController];
-    v10 = [v9 inStandbyMode];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode = [activeLensViewController inStandbyMode];
 
-    if (v10)
+    if (inStandbyMode)
     {
-      v11 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = __72__ZWRootViewController_handleSettingsAppDidUpdatePreferredDockPosition___block_invoke_5;
       v23[3] = &unk_78D00;
       v23[4] = self;
-      [v11 transitionToDockPosition:v4 completion:v23];
+      [dockedLensViewController3 transitionToDockPosition:positionCopy completion:v23];
     }
 
     else
     {
-      v12 = [(ZWRootViewController *)self activeLensViewController];
-      v13 = [(ZWRootViewController *)self activeLensViewController];
-      [v13 zoomFactor];
+      activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+      activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController3 zoomFactor];
       v15 = v14;
-      v16 = [(ZWRootViewController *)self activeLensViewController];
-      [v16 zoomPanOffset];
+      activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController4 zoomPanOffset];
       v18 = v17;
       v20 = v19;
       v21 = +[AXSettings sharedInstance];
-      v22 = [v21 zoomCurrentLensEffect];
+      zoomCurrentLensEffect = [v21 zoomCurrentLensEffect];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = __72__ZWRootViewController_handleSettingsAppDidUpdatePreferredDockPosition___block_invoke;
       v24[3] = &unk_79170;
       v24[4] = self;
-      v25 = v4;
-      [v12 updateStandbyMode:1 zoomFactor:v22 panOffset:1 lensEffect:v24 animated:v15 completion:{v18, v20}];
+      v25 = positionCopy;
+      [activeLensViewController2 updateStandbyMode:1 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v24 animated:v15 completion:{v18, v20}];
 
-      v11 = v25;
+      dockedLensViewController3 = v25;
     }
   }
 }
@@ -2359,18 +2359,18 @@ void __72__ZWRootViewController_handleSettingsAppDidUpdatePreferredDockPosition_
   *(*(a1 + 32) + 352) = [v2 dockPosition];
 }
 
-- (void)handleSettingsAppDidUpdateIdleSlugOpacity:(double)a3
+- (void)handleSettingsAppDidUpdateIdleSlugOpacity:(double)opacity
 {
-  v4 = [(ZWRootViewController *)self slugViewController];
-  [v4 updateIdleSlugOpacityAndPreviewImmediately:a3];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [slugViewController updateIdleSlugOpacityAndPreviewImmediately:opacity];
 }
 
 - (void)handleFluidSwitcherGestureWillBegin
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2389,33 +2389,33 @@ void __72__ZWRootViewController_handleSettingsAppDidUpdatePreferredDockPosition_
     }
   }
 
-  v10 = [(ZWRootViewController *)self activeLensViewController];
-  [v10 handleFluidSwitcherGestureWillBegin];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController handleFluidSwitcherGestureWillBegin];
 
-  v11 = [(ZWRootViewController *)self activeLensViewController];
-  if ([v11 inStandbyMode])
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  if ([activeLensViewController2 inStandbyMode])
   {
   }
 
   else
   {
-    v12 = [(ZWRootViewController *)self activeLensViewController];
-    v13 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v12 == v13)
+    if (activeLensViewController3 == fullscreenLensViewController)
     {
-      v14 = [(ZWRootViewController *)self activeLensViewController];
-      [v14 zoomFactor];
+      activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController4 zoomFactor];
       v16 = v15;
 
-      v17 = [(ZWRootViewController *)self activeLensViewController];
-      [v17 zoomPanOffset];
+      activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController5 zoomPanOffset];
       v19 = v18;
       v21 = v20;
 
-      v22 = [(ZWRootViewController *)self activeLensViewController];
-      v23 = [v22 lensZoomView];
-      [v23 zw_convertBoundsToScreenCoordinates];
+      activeLensViewController6 = [(ZWRootViewController *)self activeLensViewController];
+      lensZoomView = [activeLensViewController6 lensZoomView];
+      [lensZoomView zw_convertBoundsToScreenCoordinates];
       v25 = v24;
       v27 = v26;
       v29 = v28;
@@ -2456,9 +2456,9 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleAppActivationAnimationWillBegin
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2483,9 +2483,9 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleAppDeactivationAnimationWillBegin
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2510,9 +2510,9 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleFluidSwitcherGestureDidFinish
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2538,9 +2538,9 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleFluidSwitcherGestureDidFinishWithDock
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2566,9 +2566,9 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleAppActivationAnimationDidFinish
 {
   v3 = +[AXSubsystemZoom sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemZoom identifier];
     v6 = AXLoggerForFacility();
@@ -2593,23 +2593,23 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 - (void)handleDeviceReturnedToClockAtIdle
 {
   [(ZWRootViewController *)self setZoomWasUnzoomedDueToAppTransition:0];
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  [v3 updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:0 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:0 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
 }
 
 - (void)handleCarouselLockBegan
 {
   [(ZWRootViewController *)self setCarouselLockActive:1];
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  [v3 updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:0 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:0 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
 }
 
 - (void)handleSubstantialAppTransition
 {
   v2 = +[AXSubsystemZoom sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemZoom identifier];
     v5 = AXLoggerForFacility();
@@ -2629,22 +2629,22 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
   }
 }
 
-- (void)handleAppDidBecomeActiveWithID:(id)a3 initialKeyboardFrame:(CGRect)a4
+- (void)handleAppDidBecomeActiveWithID:(id)d initialKeyboardFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dCopy = d;
   if ([(ZWRootViewController *)self isViewLoaded])
   {
-    v10 = [(ZWRootViewController *)self deactivatedAppIDs];
-    [v10 removeObject:v9];
+    deactivatedAppIDs = [(ZWRootViewController *)self deactivatedAppIDs];
+    [deactivatedAppIDs removeObject:dCopy];
 
     v11 = +[AXSubsystemZoom sharedInstance];
-    v12 = [v11 ignoreLogging];
+    ignoreLogging = [v11 ignoreLogging];
 
-    if ((v12 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v13 = +[AXSubsystemZoom identifier];
       v14 = AXLoggerForFacility();
@@ -2658,7 +2658,7 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
         v22.size.width = width;
         v22.size.height = height;
         NSStringFromCGRect(v22);
-        v19 = v18 = v9;
+        v19 = v18 = dCopy;
         v17 = _AXStringForArgs();
 
         if (os_log_type_enabled(v14, v15))
@@ -2682,13 +2682,13 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
   }
 }
 
-- (void)handleAppDidEnterBackgroundWithID:(id)a3
+- (void)handleAppDidEnterBackgroundWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[AXSubsystemZoom sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemZoom identifier];
     v8 = AXLoggerForFacility();
@@ -2697,7 +2697,7 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v15 = v4;
+      v15 = dCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -2711,16 +2711,16 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
   if ([(ZWRootViewController *)self isViewLoaded])
   {
     [(ZWRootViewController *)self _rezoomDueToAppTransitionIfNeeded];
-    v12 = [(ZWRootViewController *)self deactivatedAppIDs];
-    v13 = [v12 containsObject:v4];
+    deactivatedAppIDs = [(ZWRootViewController *)self deactivatedAppIDs];
+    v13 = [deactivatedAppIDs containsObject:dCopy];
 
     if ((v13 & 1) == 0)
     {
       [(ZWRootViewController *)self _updateKeyboardFrame:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
     }
 
-    v14 = [(ZWRootViewController *)self deactivatedAppIDs];
-    [v14 addObject:v4];
+    deactivatedAppIDs2 = [(ZWRootViewController *)self deactivatedAppIDs];
+    [deactivatedAppIDs2 addObject:dCopy];
   }
 }
 
@@ -2736,30 +2736,30 @@ __n128 __59__ZWRootViewController_handleFluidSwitcherGestureWillBegin__block_inv
 
 - (id)activeZoomMode
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v3 == v4)
+  if (activeLensViewController == fullscreenLensViewController)
   {
     v10 = &AXZoomLensModeFullscreen;
   }
 
   else
   {
-    v5 = [(ZWRootViewController *)self activeLensViewController];
-    v6 = [(ZWRootViewController *)self pipLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-    if (v5 == v6)
+    if (activeLensViewController2 == pipLensViewController)
     {
       v10 = &AXZoomLensModeWindow;
     }
 
     else
     {
-      v7 = [(ZWRootViewController *)self activeLensViewController];
-      v8 = [(ZWRootViewController *)self dockedLensViewController];
+      activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+      dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-      if (v7 != v8)
+      if (activeLensViewController3 != dockedLensViewController)
       {
         v9 = &stru_796F8;
         goto LABEL_9;
@@ -2799,23 +2799,23 @@ LABEL_9:
 
 - (CGRect)zoomFrame
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 lensZoomView];
-  [v4 effectiveZoomViewFrame];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  lensZoomView = [activeLensViewController lensZoomView];
+  [lensZoomView effectiveZoomViewFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ZWRootViewController *)self activeLensViewController];
-  v14 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v13 == v14)
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v24 = [(ZWRootViewController *)self view];
-    v26 = [(ZWRootViewController *)self pipLensViewController];
-    v27 = [v26 lensChromeView];
-    [v24 convertRect:v27 fromView:{v6, v8, v10, v12}];
+    view = [(ZWRootViewController *)self view];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView = [pipLensViewController2 lensChromeView];
+    [view convertRect:lensChromeView fromView:{v6, v8, v10, v12}];
     v6 = v28;
     v8 = v29;
     v10 = v30;
@@ -2824,65 +2824,65 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v15 = [(ZWRootViewController *)self activeLensViewController];
-  v16 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v15 == v16)
+  if (activeLensViewController3 == dockedLensViewController)
   {
-    v17 = [(ZWRootViewController *)self dockedLensViewController];
-    [v17 zoomRegionFrame];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController2 zoomRegionFrame];
     v6 = v18;
     v8 = v19;
     v10 = v20;
     v12 = v21;
 
-    v22 = [(ZWRootViewController *)self dockedLensViewController];
-    v23 = [v22 dockPosition];
+    dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+    dockPosition = [dockedLensViewController3 dockPosition];
 
-    if (v23 > 1)
+    if (dockPosition > 1)
     {
-      if (v23 == &dword_0 + 2)
+      if (dockPosition == &dword_0 + 2)
       {
-        v24 = [(ZWRootViewController *)self dockedLensViewController];
-        v36 = [v24 dockedLensView];
-        [v36 bounds];
+        view = [(ZWRootViewController *)self dockedLensViewController];
+        dockedLensView = [view dockedLensView];
+        [dockedLensView bounds];
         v43 = v42;
-        v39 = [(ZWRootViewController *)self dockedLensViewController];
-        [v39 screenShift];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        [dockedLensViewController4 screenShift];
         v6 = v6 + v43 - v44;
       }
 
       else
       {
-        if (v23 != &dword_0 + 3)
+        if (dockPosition != &dword_0 + 3)
         {
           goto LABEL_9;
         }
 
-        v24 = [(ZWRootViewController *)self dockedLensViewController];
-        v36 = [v24 dockedLensView];
-        [v36 bounds];
+        view = [(ZWRootViewController *)self dockedLensViewController];
+        dockedLensView = [view dockedLensView];
+        [dockedLensView bounds];
         v38 = v37;
-        v39 = [(ZWRootViewController *)self dockedLensViewController];
-        [v39 screenShift];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        [dockedLensViewController4 screenShift];
         v8 = v8 + v38 - v40;
       }
 
       goto LABEL_8;
     }
 
-    if (!v23)
+    if (!dockPosition)
     {
-      v24 = [(ZWRootViewController *)self dockedLensViewController];
-      [v24 screenShift];
+      view = [(ZWRootViewController *)self dockedLensViewController];
+      [view screenShift];
       v8 = v8 - v41;
       goto LABEL_8;
     }
 
-    if (v23 == &dword_0 + 1)
+    if (dockPosition == &dword_0 + 1)
     {
-      v24 = [(ZWRootViewController *)self dockedLensViewController];
-      [v24 screenShift];
+      view = [(ZWRootViewController *)self dockedLensViewController];
+      [view screenShift];
       v6 = v6 - v25;
 LABEL_8:
     }
@@ -2902,10 +2902,10 @@ LABEL_9:
 
 - (double)reachabilityScaleFactor
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
   v5 = 1.0;
-  if (v3 == v4)
+  if (activeLensViewController == fullscreenLensViewController)
   {
     v6 = +[ZWCoalescedSettings sharedInstance];
     if (([v6 zoomInStandby] & 1) == 0)
@@ -2918,46 +2918,46 @@ LABEL_9:
   return v5;
 }
 
-- (void)_focusLensOnRect:(CGRect)a3 panLensContent:(BOOL)a4 recentreLens:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_focusLensOnRect:(CGRect)rect panLensContent:(BOOL)content recentreLens:(BOOL)lens animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a7;
-  v16 = [(ZWRootViewController *)self containerView];
-  [v16 zw_convertRectFromScreenCoordinates:{x, y, width, height}];
+  animatedCopy = animated;
+  lensCopy = lens;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  containerView = [(ZWRootViewController *)self containerView];
+  [containerView zw_convertRectFromScreenCoordinates:{x, y, width, height}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
   v25 = +[AXSettings sharedInstance];
-  v26 = [v25 zoomDebugShowExternalFocusRect];
+  zoomDebugShowExternalFocusRect = [v25 zoomDebugShowExternalFocusRect];
 
-  if (v26)
+  if (zoomDebugShowExternalFocusRect)
   {
-    v27 = [(ZWRootViewController *)self debugFocusView];
+    debugFocusView = [(ZWRootViewController *)self debugFocusView];
 
-    if (!v27)
+    if (!debugFocusView)
     {
       v28 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [(ZWRootViewController *)self setDebugFocusView:v28];
-      v29 = [(ZWRootViewController *)self containerView];
-      [v29 addSubview:v28];
+      containerView2 = [(ZWRootViewController *)self containerView];
+      [containerView2 addSubview:v28];
 
       v30 = +[UIColor greenColor];
       [v28 setBackgroundColor:v30];
     }
 
-    v31 = [(ZWRootViewController *)self debugFocusView];
-    [v31 setFrame:{v18, v20, v22, v24}];
+    debugFocusView2 = [(ZWRootViewController *)self debugFocusView];
+    [debugFocusView2 setFrame:{v18, v20, v22, v24}];
 
-    v32 = [(ZWRootViewController *)self containerView];
-    v33 = [(ZWRootViewController *)self debugFocusView];
-    [v32 bringSubviewToFront:v33];
+    containerView3 = [(ZWRootViewController *)self containerView];
+    debugFocusView3 = [(ZWRootViewController *)self debugFocusView];
+    [containerView3 bringSubviewToFront:debugFocusView3];
   }
 
   [(ZWRootViewController *)self activeLensViewController];
@@ -2965,49 +2965,49 @@ LABEL_9:
   v95[1] = 3221225472;
   v95[2] = __89__ZWRootViewController__focusLensOnRect_panLensContent_recentreLens_animated_completion___block_invoke;
   v95[3] = &unk_79388;
-  v34 = v103 = a4;
+  v34 = v103 = content;
   v96 = v34;
-  v97 = self;
+  selfCopy = self;
   v99 = v18;
   v100 = v20;
   v101 = v22;
   v102 = v24;
-  v104 = v7;
-  v35 = v15;
+  v104 = animatedCopy;
+  v35 = completionCopy;
   v98 = v35;
-  v105 = v8;
+  v105 = lensCopy;
   v36 = objc_retainBlock(v95);
   v92 = v22;
   v93 = v24;
   v94 = v20;
   if ([(ZWKeyboardContext *)self->_kbContext isKeyboardVisible])
   {
-    v37 = [(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard];
+    zoomRepositionsForKeyboard = [(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard];
   }
 
   else
   {
-    v37 = 0;
+    zoomRepositionsForKeyboard = 0;
   }
 
-  v38 = [v34 view];
-  v39 = [v34 view];
-  [v39 bounds];
+  view = [v34 view];
+  view2 = [v34 view];
+  [view2 bounds];
   v41 = v40;
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [(ZWRootViewController *)self containerView];
-  [v38 convertRect:v48 toView:{v41, v43, v45, v47}];
+  containerView4 = [(ZWRootViewController *)self containerView];
+  [view convertRect:containerView4 toView:{v41, v43, v45, v47}];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
 
-  v57 = [(ZWRootViewController *)self activeLensViewController];
-  v58 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v57 == v58)
+  if (activeLensViewController == pipLensViewController)
   {
     UIRectInset();
     v50 = v59;
@@ -3018,7 +3018,7 @@ LABEL_9:
 
   v63 = CGPointZero.x;
   v64 = CGPointZero.y;
-  if (((v37 | !v8) & 1) == 0)
+  if (((zoomRepositionsForKeyboard | !lensCopy) & 1) == 0)
   {
     v90 = CGPointZero.y;
     v91 = CGPointZero.x;
@@ -3042,9 +3042,9 @@ LABEL_9:
     v110.size.width = v92;
     v110.size.height = v93;
     v69 = CGRectGetMidY(v110);
-    v70 = [(ZWRootViewController *)self fullscreenLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v34 == v70)
+    if (v34 == fullscreenLensViewController)
     {
       [(ZWRootViewController *)self zoomPanOffset];
       v63 = v68 - MidX - v79;
@@ -3053,9 +3053,9 @@ LABEL_9:
 
     else
     {
-      v71 = [(ZWRootViewController *)self pipLensViewController];
+      pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
 
-      if (v34 == v71)
+      if (v34 == pipLensViewController2)
       {
         [(ZWRootViewController *)self zoomFrame];
         v81 = CGRectGetMidX(v111);
@@ -3066,20 +3066,20 @@ LABEL_9:
 
       else
       {
-        v72 = [(ZWRootViewController *)self dockedLensViewController];
+        dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
         v64 = v90;
         v63 = CGPointZero.x;
-        if (v34 == v72)
+        if (v34 == dockedLensViewController)
         {
-          v73 = [(ZWRootViewController *)self dockedLensViewController];
-          v74 = v73;
+          dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+          v74 = dockedLensViewController2;
           v75 = v18;
           v76 = v94;
           v77 = v92;
           v78 = v93;
 LABEL_29:
-          [v73 deltaForDockedZoomMovementToRect:{v75, v76, v77, v78, *&v90, *&v91}];
+          [dockedLensViewController2 deltaForDockedZoomMovementToRect:{v75, v76, v77, v78, *&v90, *&v91}];
           v63 = v88;
           v64 = v89;
         }
@@ -3087,12 +3087,12 @@ LABEL_29:
     }
 
 LABEL_30:
-    [(ZWRootViewController *)self _moveZoomItemWithController:v34 byDelta:v7 animated:1 userInitiated:1 shouldUseFullDeltaForDockedMode:1 shouldPan:v63, v64, *&v90, *&v91];
+    [(ZWRootViewController *)self _moveZoomItemWithController:v34 byDelta:animatedCopy animated:1 userInitiated:1 shouldUseFullDeltaForDockedMode:1 shouldPan:v63, v64, *&v90, *&v91];
     goto LABEL_31;
   }
 
   v65 = v94;
-  if ((v37 & 1) == 0)
+  if ((zoomRepositionsForKeyboard & 1) == 0)
   {
     v106.origin.x = v50;
     v106.origin.y = v52;
@@ -3172,15 +3172,15 @@ LABEL_30:
         v64 = v65 - v52;
       }
 
-      v87 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
 
-      if (v34 != v87)
+      if (v34 != dockedLensViewController3)
       {
         goto LABEL_30;
       }
 
-      v73 = [(ZWRootViewController *)self dockedLensViewController];
-      v74 = v73;
+      dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      v74 = dockedLensViewController2;
       v75 = v18;
       v76 = v65;
       v77 = v92;
@@ -3241,59 +3241,59 @@ id __89__ZWRootViewController__focusLensOnRect_panLensContent_recentreLens_anima
   return result;
 }
 
-- (void)zoomInToPoint:(CGPoint)a3 withZoomFactor:(double)a4 animated:(BOOL)a5
+- (void)zoomInToPoint:(CGPoint)point withZoomFactor:(double)factor animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v10 = [(ZWRootViewController *)self activeLensViewController];
-  v11 = [(ZWRootViewController *)self fullscreenLensViewController];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v10 == v11)
+  if (activeLensViewController == fullscreenLensViewController)
   {
-    v26 = [(ZWRootViewController *)self view];
-    [v26 frame];
+    view = [(ZWRootViewController *)self view];
+    [view frame];
     AX_CGRectGetCenter();
     v28 = v27;
     v30 = v29;
 
     [(ZWRootViewController *)self setZoomPanOffset:x - v28, y - v30];
-    [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:a4];
+    [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:factor];
     v32 = v31;
     v33 = +[AXSettings sharedInstance];
-    v34 = [v33 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v33 zoomCurrentLensEffect];
 
-    v35 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
     [(ZWRootViewController *)self zoomPanOffset];
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = __62__ZWRootViewController_zoomInToPoint_withZoomFactor_animated___block_invoke;
     v54[3] = &unk_78D00;
     v54[4] = self;
-    [v35 updateStandbyMode:0 zoomFactor:v34 panOffset:v5 lensEffect:v54 animated:v32 completion:{v36, v37}];
+    [activeLensViewController2 updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:animatedCopy lensEffect:v54 animated:v32 completion:{v36, v37}];
 
     [(ZWRootViewController *)self _updateZoomListeners];
     v38 = +[ZWCoalescedSettings sharedInstance];
     [v38 setZoomInStandby:0];
 
-    v39 = [(ZWRootViewController *)self containerView];
-    v40 = [(ZWRootViewController *)self minimapView];
-    [v39 bringSubviewToFront:v40];
+    containerView = [(ZWRootViewController *)self containerView];
+    minimapView = [(ZWRootViewController *)self minimapView];
+    [containerView bringSubviewToFront:minimapView];
 
-    v41 = [(ZWRootViewController *)self kbContext];
-    [v41 keyboardFrame];
+    kbContext = [(ZWRootViewController *)self kbContext];
+    [kbContext keyboardFrame];
     [(ZWRootViewController *)self _updateKeyboardFrame:?];
   }
 
   else
   {
-    v12 = [(ZWRootViewController *)self activeLensViewController];
-    v13 = [(ZWRootViewController *)self pipLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-    if (v12 == v13)
+    if (activeLensViewController3 == pipLensViewController)
     {
-      v42 = [(ZWRootViewController *)self view];
-      [v42 zw_convertRectToScreenCoordinates:{x, y, 2.0, 2.0}];
+      view2 = [(ZWRootViewController *)self view];
+      [view2 zw_convertRectToScreenCoordinates:{x, y, 2.0, 2.0}];
       v44 = v43;
       v46 = v45;
       v48 = v47;
@@ -3308,35 +3308,35 @@ id __89__ZWRootViewController__focusLensOnRect_panLensContent_recentreLens_anima
       *&v52[6] = v46;
       *&v52[7] = v48;
       *&v52[8] = v50;
-      *&v52[9] = a4;
-      v53 = v5;
+      *&v52[9] = factor;
+      v53 = animatedCopy;
       [(ZWRootViewController *)self _focusLensOnRect:0 panLensContent:1 recentreLens:0 animated:v52 completion:v44, v46, v48, v50];
     }
 
     else
     {
-      v14 = [(ZWRootViewController *)self activeLensViewController];
-      v15 = [(ZWRootViewController *)self dockedLensViewController];
+      activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+      dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-      if (v14 == v15)
+      if (activeLensViewController4 == dockedLensViewController)
       {
         [(ZWRootViewController *)self _physicalScreenPointForVirtualScreenPoint:x, y];
         v17 = v16;
         v19 = v18;
-        v20 = [(ZWRootViewController *)self dockedLensViewController];
-        [v20 moveDockedZoomToPhysicalScreenPoint:0 animated:{v17, v19}];
+        dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+        [dockedLensViewController2 moveDockedZoomToPhysicalScreenPoint:0 animated:{v17, v19}];
 
         v21 = +[AXSettings sharedInstance];
-        v22 = [v21 zoomCurrentLensEffect];
+        zoomCurrentLensEffect2 = [v21 zoomCurrentLensEffect];
 
-        v23 = [(ZWRootViewController *)self activeLensViewController];
+        activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
         [(ZWRootViewController *)self zoomPanOffset];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = __62__ZWRootViewController_zoomInToPoint_withZoomFactor_animated___block_invoke_4;
         v51[3] = &unk_78D00;
         v51[4] = self;
-        [v23 updateStandbyMode:0 zoomFactor:v22 panOffset:1 lensEffect:v51 animated:a4 completion:{v24, v25}];
+        [activeLensViewController5 updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect2 panOffset:1 lensEffect:v51 animated:factor completion:{v24, v25}];
       }
     }
   }
@@ -3396,25 +3396,25 @@ id __62__ZWRootViewController_zoomInToPoint_withZoomFactor_animated___block_invo
   return [v2 _updateMinimapStatus];
 }
 
-- (void)_initializeEventUIContext:(id *)a3
+- (void)_initializeEventUIContext:(id *)context
 {
-  v5 = [(ZWRootViewController *)self screen];
-  [v5 bounds];
+  screen = [(ZWRootViewController *)self screen];
+  [screen bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ZWRootViewController *)self interfaceOrientation];
-  v11 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  interfaceOrientation = [(ZWRootViewController *)self interfaceOrientation];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__ZWRootViewController__initializeEventUIContext___block_invoke;
   block[3] = &unk_79068;
   block[6] = v7;
   block[7] = v9;
-  block[8] = v10;
+  block[8] = interfaceOrientation;
   block[4] = self;
-  block[5] = a3;
-  dispatch_sync(v11, block);
+  block[5] = context;
+  dispatch_sync(cachedValuesSerialQueue, block);
 }
 
 void __50__ZWRootViewController__initializeEventUIContext___block_invoke(uint64_t a1)
@@ -3536,24 +3536,24 @@ LABEL_17:
   *(*(a1 + 40) + 296) &= ~0x4000u;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 != &ZWZoomItemObserverContextID)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context != &ZWZoomItemObserverContextID)
   {
     goto LABEL_2;
   }
 
-  v13 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
 
-  if (v13 == v11)
+  if (activeLensViewController == objectCopy)
   {
-    if (([v10 isEqualToString:@"view.center"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"lensZoomView.center") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"lensZoomView.bounds") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"zoomPanOffset") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"zoomFactor") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"zoomRegionFrame") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"zoomRegionVisible"))
+    if (([pathCopy isEqualToString:@"view.center"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"lensZoomView.center") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"lensZoomView.bounds") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"zoomPanOffset") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"zoomFactor") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"zoomRegionFrame") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"zoomRegionVisible"))
     {
-      v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-      v17 = v16;
+      cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+      v17 = cachedValuesSerialQueue;
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
@@ -3563,10 +3563,10 @@ LABEL_17:
       goto LABEL_19;
     }
 
-    if ([v10 isEqualToString:@"userIsInteractingWithLens"])
+    if ([pathCopy isEqualToString:@"userIsInteractingWithLens"])
     {
-      v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-      v17 = v16;
+      cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+      v17 = cachedValuesSerialQueue;
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
@@ -3576,10 +3576,10 @@ LABEL_17:
       goto LABEL_19;
     }
 
-    if ([v10 isEqualToString:@"inStandbyMode"])
+    if ([pathCopy isEqualToString:@"inStandbyMode"])
     {
-      v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-      v17 = v16;
+      cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+      v17 = cachedValuesSerialQueue;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_3;
@@ -3592,14 +3592,14 @@ LABEL_17:
 
   else
   {
-    v14 = [(ZWRootViewController *)self slugViewController];
+    slugViewController = [(ZWRootViewController *)self slugViewController];
 
-    if (v14 == v11)
+    if (slugViewController == objectCopy)
     {
-      if (([v10 isEqualToString:@"view.center"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"slugRingView.bounds"))
+      if (([pathCopy isEqualToString:@"view.center"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"slugRingView.bounds"))
       {
-        v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-        v17 = v16;
+        cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+        v17 = cachedValuesSerialQueue;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_4;
@@ -3609,10 +3609,10 @@ LABEL_17:
         goto LABEL_19;
       }
 
-      if ([v10 isEqualToString:@"userIsInteractingWithSlug"])
+      if ([pathCopy isEqualToString:@"userIsInteractingWithSlug"])
       {
-        v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-        v17 = v16;
+        cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+        v17 = cachedValuesSerialQueue;
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_5;
@@ -3625,12 +3625,12 @@ LABEL_17:
 
     else
     {
-      v15 = [(ZWRootViewController *)self menuViewController];
+      menuViewController = [(ZWRootViewController *)self menuViewController];
 
-      if (v15 == v11 && [v10 isEqualToString:@"userIsInteractingWithMenu"])
+      if (menuViewController == objectCopy && [pathCopy isEqualToString:@"userIsInteractingWithMenu"])
       {
-        v16 = [(ZWRootViewController *)self cachedValuesSerialQueue];
-        v17 = v16;
+        cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
+        v17 = cachedValuesSerialQueue;
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
         v20[2] = __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_6;
@@ -3638,7 +3638,7 @@ LABEL_17:
         v20[4] = self;
         v18 = v20;
 LABEL_19:
-        dispatch_sync(v16, v18);
+        dispatch_sync(cachedValuesSerialQueue, v18);
 
         goto LABEL_20;
       }
@@ -3648,7 +3648,7 @@ LABEL_19:
 LABEL_2:
   v19.receiver = self;
   v19.super_class = ZWRootViewController;
-  [(ZWRootViewController *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(ZWRootViewController *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_20:
 }
 
@@ -3794,69 +3794,69 @@ void __71__ZWRootViewController_observeValueForKeyPath_ofObject_change_context__
 
 - (void)_disableZoomWindowHitTesting
 {
-  v4 = [(ZWRootViewController *)self view];
-  v2 = [v4 window];
-  v3 = [v2 layer];
-  [v3 setAllowsHitTesting:0];
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  layer = [window layer];
+  [layer setAllowsHitTesting:0];
 }
 
 - (void)_enableZoomWindowHitTesting
 {
-  v4 = [(ZWRootViewController *)self view];
-  v2 = [v4 window];
-  v3 = [v2 layer];
-  [v3 setAllowsHitTesting:1];
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  layer = [window layer];
+  [layer setAllowsHitTesting:1];
 }
 
-- (void)_transitionToLensForMode:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_transitionToLensForMode:(id)mode animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v18 = a3;
-  v8 = a5;
-  if ([v18 isEqualToString:AXZoomLensModeFullscreen])
+  animatedCopy = animated;
+  modeCopy = mode;
+  completionCopy = completion;
+  if ([modeCopy isEqualToString:AXZoomLensModeFullscreen])
   {
-    v9 = [(ZWRootViewController *)self fullscreenLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 LABEL_7:
-    v10 = v9;
+    v10 = fullscreenLensViewController;
     goto LABEL_8;
   }
 
-  if ([v18 isEqualToString:AXZoomLensModeWindow])
+  if ([modeCopy isEqualToString:AXZoomLensModeWindow])
   {
-    v9 = [(ZWRootViewController *)self pipLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self pipLensViewController];
     goto LABEL_7;
   }
 
-  if ([v18 isEqualToString:AXZoomLensModeWindowAnchored])
+  if ([modeCopy isEqualToString:AXZoomLensModeWindowAnchored])
   {
-    v9 = [(ZWRootViewController *)self dockedLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self dockedLensViewController];
     goto LABEL_7;
   }
 
-  v17 = v18;
+  v17 = modeCopy;
   _AXAssert();
   v10 = 0;
 LABEL_8:
   v11 = +[AXSettings sharedInstance];
-  v12 = [v11 zoomPreferredCurrentLensMode];
-  v13 = [v10 identifier];
-  v14 = [v12 isEqualToString:v13];
+  zoomPreferredCurrentLensMode = [v11 zoomPreferredCurrentLensMode];
+  identifier = [v10 identifier];
+  v14 = [zoomPreferredCurrentLensMode isEqualToString:identifier];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [v10 identifier];
+    identifier2 = [v10 identifier];
     v16 = +[AXSettings sharedInstance];
-    [v16 setZoomPreferredCurrentLensMode:v15];
+    [v16 setZoomPreferredCurrentLensMode:identifier2];
   }
 
-  [(ZWRootViewController *)self _transitionToLens:v10 animated:v6 completion:v8];
+  [(ZWRootViewController *)self _transitionToLens:v10 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_transitionToLens:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_transitionToLens:(id)lens animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  lensCopy = lens;
+  completionCopy = completion;
   if (([(ZWRootViewController *)self isViewLoaded]& 1) != 0)
   {
     [(ZWRootViewController *)self _setPIPLensResizingEnabled:0];
@@ -3864,61 +3864,61 @@ LABEL_8:
     if (![(ZWRootViewController *)self isActiveLensTransitioning])
     {
       [(ZWRootViewController *)self setActiveLensTransitioning:1];
-      v10 = [(ZWRootViewController *)self activeLensViewController];
+      activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
       v54[0] = _NSConcreteStackBlock;
       v54[1] = 3221225472;
       v54[2] = __62__ZWRootViewController__transitionToLens_animated_completion___block_invoke;
       v54[3] = &unk_79018;
       v54[4] = self;
-      v55 = v9;
+      v55 = completionCopy;
       v11 = objc_retainBlock(v54);
-      v12 = [(ZWRootViewController *)self pipLensViewController];
+      pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-      if (v12 != v8)
+      if (pipLensViewController != lensCopy)
       {
         [(ZWRootViewController *)self _removePIPSystemGestureDisablingAssertions];
       }
 
-      v13 = [(ZWRootViewController *)self fullscreenLensViewController];
+      fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-      if (v13 != v8)
+      if (fullscreenLensViewController != lensCopy)
       {
         [(ZWRootViewController *)self _removeFullscreenSystemGestureDisablingAssertions];
       }
 
-      v14 = [(ZWRootViewController *)self view];
-      [v14 setUserInteractionEnabled:0];
+      view = [(ZWRootViewController *)self view];
+      [view setUserInteractionEnabled:0];
 
-      if (v10 == v8)
+      if (activeLensViewController == lensCopy)
       {
         (v11[2])(v11);
       }
 
       else
       {
-        v15 = [(ZWRootViewController *)self pipLensViewController];
+        pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
 
-        if (v10 == v15)
+        if (activeLensViewController == pipLensViewController2)
         {
           [(ZWRootViewController *)self _removePIPSystemGestureDisablingAssertions];
         }
 
-        v16 = [(ZWRootViewController *)self fullscreenLensViewController];
+        fullscreenLensViewController2 = [(ZWRootViewController *)self fullscreenLensViewController];
 
-        if (v10 == v16)
+        if (activeLensViewController == fullscreenLensViewController2)
         {
           [(ZWRootViewController *)self _removeFullscreenSystemGestureDisablingAssertions];
         }
 
         v17 = +[AXSettings sharedInstance];
-        v18 = [v17 zoomCurrentLensEffect];
+        zoomCurrentLensEffect = [v17 zoomCurrentLensEffect];
 
         y = CGPointZero.y;
         [(ZWRootViewController *)self zoomFactor];
         [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:?];
         v21 = v20;
         v22 = +[ZWCoalescedSettings sharedInstance];
-        v23 = [v22 zoomInStandby];
+        zoomInStandby = [v22 zoomInStandby];
 
         [(ZWRootViewController *)self setZoomPanOffset:CGPointZero.x, y];
         v44[0] = _NSConcreteStackBlock;
@@ -3926,15 +3926,15 @@ LABEL_8:
         v44[2] = __62__ZWRootViewController__transitionToLens_animated_completion___block_invoke_3;
         v44[3] = &unk_79400;
         v44[4] = self;
-        v45 = v8;
-        v52 = v23;
+        v45 = lensCopy;
+        v52 = zoomInStandby;
         v49 = v21;
         x = CGPointZero.x;
         v51 = y;
-        v24 = v18;
+        v24 = zoomCurrentLensEffect;
         v46 = v24;
-        v53 = v6;
-        v25 = v10;
+        v53 = animatedCopy;
+        v25 = activeLensViewController;
         v47 = v25;
         v48 = v11;
         v26 = objc_retainBlock(v44);
@@ -3952,9 +3952,9 @@ LABEL_8:
           v41 = CGPointZero.x;
           v42 = y;
           v38 = v24;
-          v43 = v6;
+          v43 = animatedCopy;
           v39 = v27;
-          [v37 updateLensEffect:v28 animated:v6 completion:v36];
+          [v37 updateLensEffect:v28 animated:animatedCopy completion:v36];
         }
 
         else
@@ -3970,9 +3970,9 @@ LABEL_8:
   else
   {
     v29 = +[AXSubsystemZoom sharedInstance];
-    v30 = [v29 ignoreLogging];
+    ignoreLogging = [v29 ignoreLogging];
 
-    if ((v30 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v31 = +[AXSubsystemZoom identifier];
       v32 = AXLoggerForFacility();
@@ -3992,9 +3992,9 @@ LABEL_8:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_26:
@@ -4311,59 +4311,59 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
   return v3();
 }
 
-- (void)_beginObservingValuesForLens:(id)a3
+- (void)_beginObservingValuesForLens:(id)lens
 {
-  v6 = a3;
-  [v6 addObserver:self forKeyPath:@"lensZoomView.bounds" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"view.center" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"lensZoomView.center" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"userIsInteractingWithLens" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"inStandbyMode" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"zoomPanOffset" options:1 context:&ZWZoomItemObserverContextID];
-  [v6 addObserver:self forKeyPath:@"zoomFactor" options:1 context:&ZWZoomItemObserverContextID];
-  v4 = [(ZWRootViewController *)self dockedLensViewController];
+  lensCopy = lens;
+  [lensCopy addObserver:self forKeyPath:@"lensZoomView.bounds" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"view.center" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"lensZoomView.center" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"userIsInteractingWithLens" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"inStandbyMode" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"zoomPanOffset" options:1 context:&ZWZoomItemObserverContextID];
+  [lensCopy addObserver:self forKeyPath:@"zoomFactor" options:1 context:&ZWZoomItemObserverContextID];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  v5 = v6;
-  if (v4 == v6)
+  v5 = lensCopy;
+  if (dockedLensViewController == lensCopy)
   {
-    [v6 addObserver:self forKeyPath:@"zoomRegionFrame" options:1 context:&ZWZoomItemObserverContextID];
-    [v6 addObserver:self forKeyPath:@"zoomRegionVisible" options:1 context:&ZWZoomItemObserverContextID];
-    v5 = v6;
+    [lensCopy addObserver:self forKeyPath:@"zoomRegionFrame" options:1 context:&ZWZoomItemObserverContextID];
+    [lensCopy addObserver:self forKeyPath:@"zoomRegionVisible" options:1 context:&ZWZoomItemObserverContextID];
+    v5 = lensCopy;
   }
 }
 
-- (void)_endObservingValuesForLens:(id)a3
+- (void)_endObservingValuesForLens:(id)lens
 {
-  v6 = a3;
-  [v6 removeObserver:self forKeyPath:@"lensZoomView.bounds" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"view.center" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"lensZoomView.center" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"userIsInteractingWithLens" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"inStandbyMode" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"zoomPanOffset" context:&ZWZoomItemObserverContextID];
-  [v6 removeObserver:self forKeyPath:@"zoomFactor" context:&ZWZoomItemObserverContextID];
-  v4 = [(ZWRootViewController *)self dockedLensViewController];
+  lensCopy = lens;
+  [lensCopy removeObserver:self forKeyPath:@"lensZoomView.bounds" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"view.center" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"lensZoomView.center" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"userIsInteractingWithLens" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"inStandbyMode" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"zoomPanOffset" context:&ZWZoomItemObserverContextID];
+  [lensCopy removeObserver:self forKeyPath:@"zoomFactor" context:&ZWZoomItemObserverContextID];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  v5 = v6;
-  if (v4 == v6)
+  v5 = lensCopy;
+  if (dockedLensViewController == lensCopy)
   {
-    [v6 removeObserver:self forKeyPath:@"zoomRegionFrame" context:&ZWZoomItemObserverContextID];
-    [v6 removeObserver:self forKeyPath:@"zoomRegionVisible" context:&ZWZoomItemObserverContextID];
-    v5 = v6;
+    [lensCopy removeObserver:self forKeyPath:@"zoomRegionFrame" context:&ZWZoomItemObserverContextID];
+    [lensCopy removeObserver:self forKeyPath:@"zoomRegionVisible" context:&ZWZoomItemObserverContextID];
+    v5 = lensCopy;
   }
 }
 
-- (void)_applyInitialConstraintsForLensViewController:(id)a3
+- (void)_applyInitialConstraintsForLensViewController:(id)controller
 {
-  v44 = a3;
-  v4 = [(ZWRootViewController *)self containerView];
-  v5 = [(ZWRootViewController *)self pipLensViewController];
+  controllerCopy = controller;
+  containerView = [(ZWRootViewController *)self containerView];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  v6 = [v44 view];
-  if (v5 == v44)
+  view = [controllerCopy view];
+  if (pipLensViewController == controllerCopy)
   {
-    v13 = [v44 lensZoomView];
-    v14 = [v44 lensChromeView];
+    lensZoomView = [controllerCopy lensZoomView];
+    lensChromeView = [controllerCopy lensChromeView];
     v15 = AXResistAllCompressingAndStretching[0];
     v16 = AXResistAllCompressingAndStretching[1];
     v17 = AXResistAllCompressingAndStretching[2];
@@ -4372,55 +4372,55 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
     LODWORD(v20) = v16;
     LODWORD(v21) = v17;
     LODWORD(v22) = v18;
-    [v6 ax_setContentHuggingAndCompressionResistance:{v19, v20, v21, v22}];
+    [view ax_setContentHuggingAndCompressionResistance:{v19, v20, v21, v22}];
     LODWORD(v23) = v15;
     LODWORD(v24) = v16;
     LODWORD(v25) = v17;
     LODWORD(v26) = v18;
-    [v13 ax_setContentHuggingAndCompressionResistance:{v23, v24, v25, v26}];
+    [lensZoomView ax_setContentHuggingAndCompressionResistance:{v23, v24, v25, v26}];
     LODWORD(v27) = v15;
     LODWORD(v28) = v16;
     LODWORD(v29) = v17;
     LODWORD(v30) = v18;
-    [v14 ax_setContentHuggingAndCompressionResistance:{v27, v28, v29, v30}];
-    v31 = [NSLayoutConstraint constraintWithItem:v14 attribute:3 relatedBy:1 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v31];
+    [lensChromeView ax_setContentHuggingAndCompressionResistance:{v27, v28, v29, v30}];
+    v31 = [NSLayoutConstraint constraintWithItem:lensChromeView attribute:3 relatedBy:1 toItem:containerView attribute:3 multiplier:1.0 constant:0.0];
+    [containerView addConstraint:v31];
 
-    v32 = [NSLayoutConstraint constraintWithItem:v14 attribute:4 relatedBy:-1 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v32];
+    v32 = [NSLayoutConstraint constraintWithItem:lensChromeView attribute:4 relatedBy:-1 toItem:containerView attribute:4 multiplier:1.0 constant:0.0];
+    [containerView addConstraint:v32];
 
-    v33 = [NSLayoutConstraint constraintWithItem:v14 attribute:1 relatedBy:1 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v33];
+    v33 = [NSLayoutConstraint constraintWithItem:lensChromeView attribute:1 relatedBy:1 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
+    [containerView addConstraint:v33];
 
-    v34 = [NSLayoutConstraint constraintWithItem:v14 attribute:2 relatedBy:-1 toItem:v4 attribute:2 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v34];
+    v34 = [NSLayoutConstraint constraintWithItem:lensChromeView attribute:2 relatedBy:-1 toItem:containerView attribute:2 multiplier:1.0 constant:0.0];
+    [containerView addConstraint:v34];
 
-    v35 = [NSLayoutConstraint constraintWithItem:v6 attribute:1 relatedBy:0 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
+    v35 = [NSLayoutConstraint constraintWithItem:view attribute:1 relatedBy:0 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
     LODWORD(v36) = 1148780544;
     [v35 setPriority:v36];
     [(ZWRootViewController *)self setLensDragXConstraint:v35];
-    [v4 addConstraint:v35];
-    v37 = [NSLayoutConstraint constraintWithItem:v6 attribute:3 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
+    [containerView addConstraint:v35];
+    v37 = [NSLayoutConstraint constraintWithItem:view attribute:3 relatedBy:0 toItem:containerView attribute:3 multiplier:1.0 constant:0.0];
 
     LODWORD(v38) = 1148780544;
     [v37 setPriority:v38];
     [(ZWRootViewController *)self setLensDragYConstraint:v37];
-    [v4 addConstraint:v37];
-    v39 = [(ZWRootViewController *)self lensWidthConstraint];
+    [containerView addConstraint:v37];
+    lensWidthConstraint = [(ZWRootViewController *)self lensWidthConstraint];
 
-    if (!v39)
+    if (!lensWidthConstraint)
     {
-      v40 = [NSLayoutConstraint constraintWithItem:v13 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+      v40 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
       [(ZWRootViewController *)self setLensWidthConstraint:v40];
 
-      v41 = [(ZWRootViewController *)self lensWidthConstraint];
-      [v6 addConstraint:v41];
+      lensWidthConstraint2 = [(ZWRootViewController *)self lensWidthConstraint];
+      [view addConstraint:lensWidthConstraint2];
 
-      v42 = [NSLayoutConstraint constraintWithItem:v13 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+      v42 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
       [(ZWRootViewController *)self setLensHeightConstraint:v42];
 
-      v43 = [(ZWRootViewController *)self lensHeightConstraint];
-      [v6 addConstraint:v43];
+      lensHeightConstraint = [(ZWRootViewController *)self lensHeightConstraint];
+      [view addConstraint:lensHeightConstraint];
     }
 
     [(ZWRootViewController *)self _updateLensLayout];
@@ -4428,7 +4428,7 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
 
   else
   {
-    if (!v6 || !v4)
+    if (!view || !containerView)
     {
       _AXAssert();
     }
@@ -4442,26 +4442,26 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
       LODWORD(v8) = AXResistAllCompressingAndStretching[1];
       LODWORD(v9) = AXResistAllCompressingAndStretching[2];
       LODWORD(height) = AXResistAllCompressingAndStretching[3];
-      [v6 ax_setContentHuggingAndCompressionResistance:{v7, v8, v9, height}];
-      v12 = [v6 ax_pinConstraintsInAllDimensionsToView:v4];
+      [view ax_setContentHuggingAndCompressionResistance:{v7, v8, v9, height}];
+      v12 = [view ax_pinConstraintsInAllDimensionsToView:containerView];
     }
   }
 }
 
-- (void)setActiveLensViewController:(id)a3
+- (void)setActiveLensViewController:(id)controller
 {
-  objc_storeStrong(&self->_activeLensViewController, a3);
-  v4 = [(ZWRootViewController *)self menuViewController];
-  [v4 lensModeDidChange];
+  objc_storeStrong(&self->_activeLensViewController, controller);
+  menuViewController = [(ZWRootViewController *)self menuViewController];
+  [menuViewController lensModeDidChange];
 }
 
-- (void)_updateKeyboardFrame:(CGRect)a3
+- (void)_updateKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  IsEmpty = CGRectIsEmpty(frame);
   v10 = IsEmpty;
   if (IsEmpty)
   {
@@ -4473,8 +4473,8 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
 
   else
   {
-    v3 = [(ZWRootViewController *)self view];
-    [v3 zw_convertRectFromScreenCoordinates:{x, y, width, height}];
+    view = [(ZWRootViewController *)self view];
+    [view zw_convertRectFromScreenCoordinates:{x, y, width, height}];
   }
 
   [(ZWKeyboardContext *)self->_kbContext setKeyboardFrame:v11, v12, v13, v14];
@@ -4484,9 +4484,9 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
 
   [(ZWKeyboardContext *)self->_kbContext setUserMovedKeyboardLens:0];
   v15 = +[AXSubsystemZoom sharedInstance];
-  v16 = [v15 ignoreLogging];
+  ignoreLogging = [v15 ignoreLogging];
 
-  if ((v16 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v17 = +[AXSubsystemZoom identifier];
     v18 = AXLoggerForFacility();
@@ -4508,10 +4508,10 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
     }
   }
 
-  v22 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   if ([(ZWKeyboardContext *)self->_kbContext isKeyboardVisible]&& ![(ZWKeyboardContext *)self->_kbContext userMovedKeyboardLens])
   {
-    if (([v22 inStandbyMode] & 1) == 0 && !-[ZWRootViewController _isZoomedToMinimum](self, "_isZoomedToMinimum"))
+    if (([activeLensViewController inStandbyMode] & 1) == 0 && !-[ZWRootViewController _isZoomedToMinimum](self, "_isZoomedToMinimum"))
     {
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
@@ -4519,10 +4519,10 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
       v33[3] = &unk_78D00;
       v33[4] = self;
       v25 = objc_retainBlock(v33);
-      v26 = [(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard];
-      v27 = [(ZWRootViewController *)self pipLensViewController];
+      zoomRepositionsForKeyboard = [(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard];
+      pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-      if (v22 == v27)
+      if (activeLensViewController == pipLensViewController)
       {
         if ([(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard])
         {
@@ -4530,15 +4530,15 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
         }
       }
 
-      else if (v26)
+      else if (zoomRepositionsForKeyboard)
       {
-        v28 = [(ZWRootViewController *)self pipLensViewController];
+        pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = __45__ZWRootViewController__updateKeyboardFrame___block_invoke_2;
         v31[3] = &unk_78D50;
         v32 = v25;
-        [(ZWRootViewController *)self _transitionToLens:v28 animated:0 completion:v31];
+        [(ZWRootViewController *)self _transitionToLens:pipLensViewController2 animated:0 completion:v31];
       }
     }
   }
@@ -4546,14 +4546,14 @@ uint64_t __62__ZWRootViewController__transitionToLens_animated_completion___bloc
   else
   {
     v23 = +[AXSettings sharedInstance];
-    v24 = [v23 zoomPreferredCurrentLensMode];
+    zoomPreferredCurrentLensMode = [v23 zoomPreferredCurrentLensMode];
 
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3;
     v30[3] = &unk_78D00;
     v30[4] = self;
-    [(ZWRootViewController *)self _transitionToLensForMode:v24 animated:1 completion:v30];
+    [(ZWRootViewController *)self _transitionToLensForMode:zoomPreferredCurrentLensMode animated:1 completion:v30];
   }
 
   [(ZWRootViewController *)self _updateSlugLayoutAnimated:1];
@@ -4580,28 +4580,28 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWRootViewController *)self lensDragXConstraint];
-  [v11 setConstant:v4];
+  lensDragXConstraint = [(ZWRootViewController *)self lensDragXConstraint];
+  [lensDragXConstraint setConstant:v4];
 
-  v12 = [(ZWRootViewController *)self lensDragYConstraint];
-  [v12 setConstant:v6];
+  lensDragYConstraint = [(ZWRootViewController *)self lensDragYConstraint];
+  [lensDragYConstraint setConstant:v6];
 
-  v13 = [(ZWRootViewController *)self lensWidthConstraint];
-  [v13 setConstant:v8];
+  lensWidthConstraint = [(ZWRootViewController *)self lensWidthConstraint];
+  [lensWidthConstraint setConstant:v8];
 
-  v14 = [(ZWRootViewController *)self lensHeightConstraint];
-  [v14 setConstant:v10];
+  lensHeightConstraint = [(ZWRootViewController *)self lensHeightConstraint];
+  [lensHeightConstraint setConstant:v10];
 }
 
 - (CGRect)_determineSuitableLensFrame
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v3 == v4)
+  if (activeLensViewController == fullscreenLensViewController)
   {
-    v33 = [(ZWRootViewController *)self containerView];
-    [v33 bounds];
+    containerView = [(ZWRootViewController *)self containerView];
+    [containerView bounds];
     v17 = v34;
     v19 = v35;
     v21 = v36;
@@ -4613,17 +4613,17 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
   else if ([(ZWKeyboardContext *)self->_kbContext isKeyboardVisible]&& ![(ZWKeyboardContext *)self->_kbContext userMovedKeyboardLens]&& [(ZWKeyboardContext *)self->_kbContext zoomRepositionsForKeyboard])
   {
     [(ZWKeyboardContext *)self->_kbContext keyboardFrame];
-    v5 = [(ZWRootViewController *)self containerView];
-    [v5 frame];
+    containerView2 = [(ZWRootViewController *)self containerView];
+    [containerView2 frame];
     AX_CGRectBySubtractingRect();
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [v3 view];
-    v15 = [v3 lensZoomView];
-    [v14 convertRect:v15 toView:{v7, v9, v11, v13}];
+    view = [activeLensViewController view];
+    lensZoomView = [activeLensViewController lensZoomView];
+    [view convertRect:lensZoomView toView:{v7, v9, v11, v13}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -4694,8 +4694,8 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
     v47 = v46;
   }
 
-  v48 = [(ZWRootViewController *)self containerView];
-  [v48 bounds];
+  containerView3 = [(ZWRootViewController *)self containerView];
+  [containerView3 bounds];
   v50 = v49 - v45;
 
   if (v17 >= v50)
@@ -4718,8 +4718,8 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
     v52 = v51;
   }
 
-  v53 = [(ZWRootViewController *)self containerView];
-  [v53 bounds];
+  containerView4 = [(ZWRootViewController *)self containerView];
+  [containerView4 bounds];
   v55 = v54 - v47;
 
   if (v19 >= v55)
@@ -4756,9 +4756,9 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
 - (CGSize)_lensDefaultSize
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomPreferredCurrentLensMode];
+  zoomPreferredCurrentLensMode = [v3 zoomPreferredCurrentLensMode];
 
-  if ([v4 isEqualToString:AXZoomLensModeWindowAnchored])
+  if ([zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeWindowAnchored])
   {
     [(ZWRootViewController *)self _lensMaximumSize];
     v6 = v5;
@@ -4798,28 +4798,28 @@ void __45__ZWRootViewController__updateKeyboardFrame___block_invoke_3(uint64_t a
 
 - (CGSize)_lensMinimumSize
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
   v5 = 90.0;
   v6 = 90.0;
-  if (v3 == v4)
+  if (activeLensViewController == dockedLensViewController)
   {
-    v7 = [(ZWRootViewController *)self dockedLensViewController];
-    if ([v7 dockPosition])
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    if ([dockedLensViewController2 dockPosition])
     {
-      v8 = [(ZWRootViewController *)self dockedLensViewController];
-      v9 = [v8 dockPosition];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+      dockPosition = [dockedLensViewController3 dockPosition];
 
-      if (v9 != &dword_0 + 3)
+      if (dockPosition != &dword_0 + 3)
       {
-        v10 = [(ZWRootViewController *)self dockedLensViewController];
-        v11 = [v10 view];
-        [v11 bounds];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        view = [dockedLensViewController4 view];
+        [view bounds];
         v5 = v12 * 0.1;
-        v13 = [(ZWRootViewController *)self dockedLensViewController];
-        v14 = [v13 view];
-        [v14 bounds];
+        dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+        view2 = [dockedLensViewController5 view];
+        [view2 bounds];
         v6 = v15;
 LABEL_7:
 
@@ -4831,13 +4831,13 @@ LABEL_7:
     {
     }
 
-    v10 = [(ZWRootViewController *)self dockedLensViewController];
-    v11 = [v10 view];
-    [v11 bounds];
+    dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+    view = [dockedLensViewController4 view];
+    [view bounds];
     v5 = v16;
-    v13 = [(ZWRootViewController *)self dockedLensViewController];
-    v14 = [v13 view];
-    [v14 bounds];
+    dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+    view2 = [dockedLensViewController5 view];
+    [view2 bounds];
     v6 = v17 * 0.1;
     goto LABEL_7;
   }
@@ -4852,26 +4852,26 @@ LABEL_8:
 
 - (CGSize)_lensMaximumSize
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v3 == v4)
+  if (activeLensViewController == dockedLensViewController)
   {
-    v7 = [(ZWRootViewController *)self dockedLensViewController];
-    if ([v7 dockPosition])
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    if ([dockedLensViewController2 dockPosition])
     {
-      v8 = [(ZWRootViewController *)self dockedLensViewController];
-      v9 = [v8 dockPosition];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+      dockPosition = [dockedLensViewController3 dockPosition];
 
-      if (v9 != &dword_0 + 3)
+      if (dockPosition != &dword_0 + 3)
       {
-        v10 = [(ZWRootViewController *)self dockedLensViewController];
-        v11 = [v10 view];
-        [v11 bounds];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        view = [dockedLensViewController4 view];
+        [view bounds];
         v13 = v12 * 0.5;
-        v14 = [(ZWRootViewController *)self dockedLensViewController];
-        v15 = [v14 view];
-        [v15 bounds];
+        dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+        view2 = [dockedLensViewController5 view];
+        [view2 bounds];
         v17 = v16;
 LABEL_10:
 
@@ -4885,13 +4885,13 @@ LABEL_10:
     {
     }
 
-    v10 = [(ZWRootViewController *)self dockedLensViewController];
-    v11 = [v10 view];
-    [v11 bounds];
+    dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+    view = [dockedLensViewController4 view];
+    [view bounds];
     v13 = v18;
-    v14 = [(ZWRootViewController *)self dockedLensViewController];
-    v15 = [v14 view];
-    [v15 bounds];
+    dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+    view2 = [dockedLensViewController5 view];
+    [view2 bounds];
     v17 = v19 * 0.5;
     goto LABEL_10;
   }
@@ -4903,18 +4903,18 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)_slugOriginForNormalizedPosition:(CGPoint)a3
+- (CGPoint)_slugOriginForNormalizedPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ZWRootViewController *)self view];
-  [v6 bounds];
+  y = position.y;
+  x = position.x;
+  view = [(ZWRootViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(ZWRootViewController *)self slugViewController];
-  v12 = [v11 view];
-  [v12 bounds];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  view2 = [slugViewController view];
+  [view2 bounds];
   v14 = v13;
   v16 = v15;
 
@@ -4927,14 +4927,14 @@ LABEL_11:
 
 - (CGPoint)_slugNormalizedPositionForCurrentPosition
 {
-  v3 = [(ZWRootViewController *)self view];
-  [v3 bounds];
+  view = [(ZWRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(ZWRootViewController *)self slugViewController];
-  v9 = [v8 view];
-  [v9 frame];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  view2 = [slugViewController view];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -4947,16 +4947,16 @@ LABEL_11:
   return result;
 }
 
-- (void)_updateSlugLayoutAnimated:(BOOL)a3
+- (void)_updateSlugLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ZWRootViewController *)self viewIfLoaded];
+  animatedCopy = animated;
+  viewIfLoaded = [(ZWRootViewController *)self viewIfLoaded];
 
-  if (v5)
+  if (viewIfLoaded)
   {
-    v6 = [(ZWRootViewController *)self containerView];
-    v7 = [(ZWRootViewController *)self slugViewController];
-    v8 = [v7 view];
+    containerView = [(ZWRootViewController *)self containerView];
+    slugViewController = [(ZWRootViewController *)self slugViewController];
+    view = [slugViewController view];
 
     v9 = +[AXSettings sharedInstance];
     if ([v9 zoomShouldShowSlug])
@@ -4969,23 +4969,23 @@ LABEL_11:
       v10 = 1;
     }
 
-    [v8 setHidden:v10];
+    [view setHidden:v10];
 
-    v11 = [(ZWRootViewController *)self slugRingDragXConstraint];
+    slugRingDragXConstraint = [(ZWRootViewController *)self slugRingDragXConstraint];
 
-    if (!v11)
+    if (!slugRingDragXConstraint)
     {
-      v12 = [NSLayoutConstraint constraintWithItem:v8 attribute:1 relatedBy:0 toItem:v6 attribute:1 multiplier:1.0 constant:0.0];
+      v12 = [NSLayoutConstraint constraintWithItem:view attribute:1 relatedBy:0 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
       LODWORD(v13) = 1148780544;
       [v12 setPriority:v13];
       [(ZWRootViewController *)self setSlugRingDragXConstraint:v12];
-      [v6 addConstraint:v12];
-      v14 = [NSLayoutConstraint constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v6 attribute:3 multiplier:1.0 constant:0.0];
+      [containerView addConstraint:v12];
+      v14 = [NSLayoutConstraint constraintWithItem:view attribute:3 relatedBy:0 toItem:containerView attribute:3 multiplier:1.0 constant:0.0];
 
       LODWORD(v15) = 1148780544;
       [v14 setPriority:v15];
       [(ZWRootViewController *)self setSlugRingDragYConstraint:v14];
-      [v6 addConstraint:v14];
+      [containerView addConstraint:v14];
     }
 
     v16 = +[ZWCoalescedSettings sharedInstance];
@@ -5004,7 +5004,7 @@ LABEL_11:
       v32.y = v24;
       if (CGRectContainsPoint(v33, v32))
       {
-        [v8 bounds];
+        [view bounds];
         v24 = y - v26;
       }
     }
@@ -5020,14 +5020,14 @@ LABEL_11:
       v24 = 0.0;
     }
 
-    v27 = [(ZWRootViewController *)self slugRingDragXConstraint];
-    [v27 setConstant:v22];
+    slugRingDragXConstraint2 = [(ZWRootViewController *)self slugRingDragXConstraint];
+    [slugRingDragXConstraint2 setConstant:v22];
 
-    v28 = [(ZWRootViewController *)self slugRingDragYConstraint];
-    [v28 setConstant:v24];
+    slugRingDragYConstraint = [(ZWRootViewController *)self slugRingDragYConstraint];
+    [slugRingDragYConstraint setConstant:v24];
 
     v29 = 0.3;
-    if (!v3)
+    if (!animatedCopy)
     {
       v29 = 0.0;
     }
@@ -5098,30 +5098,30 @@ __n128 __50__ZWRootViewController__updateSlugLayoutAnimated___block_invoke_3(uin
   return result;
 }
 
-- (void)_updateZoomFactor:(double)a3 animated:(BOOL)a4
+- (void)_updateZoomFactor:(double)factor animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(ZWRootViewController *)self setZoomFactor:?];
-  v7 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomPanOffset];
   v9 = v8;
   v11 = v10;
   v12 = +[AXSettings sharedInstance];
-  v13 = [v12 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v12 zoomCurrentLensEffect];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __51__ZWRootViewController__updateZoomFactor_animated___block_invoke;
   v14[3] = &unk_78D00;
   v14[4] = self;
-  [v7 updateStandbyMode:0 zoomFactor:v13 panOffset:v4 lensEffect:v14 animated:a3 completion:{v9, v11}];
+  [activeLensViewController updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:animatedCopy lensEffect:v14 animated:factor completion:{v9, v11}];
 }
 
-- (void)zoomLensViewControllerDidChangeStandbyMode:(id)a3
+- (void)zoomLensViewControllerDidChangeStandbyMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self slugViewController];
-  +[ZWZoomSlugViewController longPressDurationForStandByMode:](ZWZoomSlugViewController, "longPressDurationForStandByMode:", [v4 inStandbyMode]);
-  [v5 updateLongPressDuration:?];
+  modeCopy = mode;
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  +[ZWZoomSlugViewController longPressDurationForStandByMode:](ZWZoomSlugViewController, "longPressDurationForStandByMode:", [modeCopy inStandbyMode]);
+  [slugViewController updateLongPressDuration:?];
 
   [(ZWRootViewController *)self _setPIPLensResizingEnabled:0];
   [(ZWRootViewController *)self _setDockResizingEnabled:0];
@@ -5129,20 +5129,20 @@ __n128 __50__ZWRootViewController__updateSlugLayoutAnimated___block_invoke_3(uin
   [(ZWRootViewController *)self currentUIContextForEventProcessor:0];
   if (!CGRectIsNull(v15))
   {
-    v6 = [(ZWRootViewController *)self menuViewController];
-    [v6 standbyModeDidChange];
+    menuViewController = [(ZWRootViewController *)self menuViewController];
+    [menuViewController standbyModeDidChange];
   }
 
-  v7 = [(ZWRootViewController *)self activeLensViewController];
-  v8 = v7;
-  if (v7 == v4)
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  v8 = activeLensViewController;
+  if (activeLensViewController == modeCopy)
   {
-    v9 = [(ZWRootViewController *)self activeLensViewController];
-    v10 = [(ZWRootViewController *)self pipLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-    if (v9 == v10)
+    if (activeLensViewController2 == pipLensViewController)
     {
-      if ([v4 inStandbyMode])
+      if ([modeCopy inStandbyMode])
       {
         [(ZWRootViewController *)self _removePIPSystemGestureDisablingAssertions];
       }
@@ -5158,16 +5158,16 @@ __n128 __50__ZWRootViewController__updateSlugLayoutAnimated___block_invoke_3(uin
   {
   }
 
-  v11 = [(ZWRootViewController *)self activeLensViewController];
-  v12 = v11;
-  if (v11 == v4)
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  v12 = activeLensViewController3;
+  if (activeLensViewController3 == modeCopy)
   {
-    v13 = [(ZWRootViewController *)self activeLensViewController];
-    v14 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v13 == v14)
+    if (activeLensViewController4 == fullscreenLensViewController)
     {
-      if ([v4 inStandbyMode])
+      if ([modeCopy inStandbyMode])
       {
         [(ZWRootViewController *)self _removeFullscreenSystemGestureDisablingAssertions];
       }
@@ -5184,21 +5184,21 @@ __n128 __50__ZWRootViewController__updateSlugLayoutAnimated___block_invoke_3(uin
   }
 }
 
-- (void)zoomLensViewControllerUpdateUIForStandby:(id)a3 completion:(id)a4
+- (void)zoomLensViewControllerUpdateUIForStandby:(id)standby completion:(id)completion
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(ZWRootViewController *)self dockedLensViewController];
+  completionCopy = completion;
+  standbyCopy = standby;
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v7 == v6)
+  if (dockedLensViewController == standbyCopy)
   {
-    v8 = [(ZWRootViewController *)self activeLensViewController];
-    v9 = [(ZWRootViewController *)self dockedLensViewController];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (v8 == v9)
+    if (activeLensViewController == dockedLensViewController2)
     {
-      v10 = [(ZWRootViewController *)self dockedLensViewController];
-      [v10 showOrHideUIForStandbyModeWithCompletion:v11];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+      [dockedLensViewController3 showOrHideUIForStandbyModeWithCompletion:completionCopy];
 
       goto LABEL_7;
     }
@@ -5208,9 +5208,9 @@ __n128 __50__ZWRootViewController__updateSlugLayoutAnimated___block_invoke_3(uin
   {
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2]();
+    completionCopy[2]();
   }
 
 LABEL_7:
@@ -5233,9 +5233,9 @@ LABEL_7:
 
 - (BOOL)_pipLensIsNearTopOfScreen
 {
-  v2 = [(ZWRootViewController *)self pipLensViewController];
-  v3 = [v2 view];
-  [v3 frame];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  view = [pipLensViewController view];
+  [view frame];
   v5 = v4;
 
   return v5 < 30.0;
@@ -5243,16 +5243,16 @@ LABEL_7:
 
 - (BOOL)_pipLensIsNearRightOfScreen
 {
-  v3 = [(ZWRootViewController *)self pipLensViewController];
-  v4 = [v3 view];
-  [v4 frame];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  view = [pipLensViewController view];
+  [view frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ZWRootViewController *)self view];
-  [v13 bounds];
+  view2 = [(ZWRootViewController *)self view];
+  [view2 bounds];
   v15 = v14;
 
   v17.origin.x = v6;
@@ -5264,48 +5264,48 @@ LABEL_7:
 
 - (BOOL)_pipLensIsNearBottomOfScreen
 {
-  v3 = [(ZWRootViewController *)self pipLensViewController];
-  v4 = [v3 view];
-  [v4 frame];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  view = [pipLensViewController view];
+  [view frame];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(ZWRootViewController *)self view];
-  [v9 bounds];
+  view2 = [(ZWRootViewController *)self view];
+  [view2 bounds];
   v11 = v10;
 
   return vabdd_f64(v6 + v8, v11) < 30.0;
 }
 
-- (void)_resizeZoomLensByDelta:(CGPoint)a3
+- (void)_resizeZoomLensByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
-  v18 = [(ZWRootViewController *)self activeLensViewController];
-  v6 = [(ZWRootViewController *)self pipLensViewController];
-  if (v18 == v6)
+  y = delta.y;
+  x = delta.x;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if (activeLensViewController == pipLensViewController)
   {
   }
 
   else
   {
-    v7 = [(ZWRootViewController *)self dockedLensViewController];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (!v7)
+    if (!dockedLensViewController)
     {
       _AXAssert();
     }
   }
 
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v8 != v9)
+  if (activeLensViewController2 != pipLensViewController2)
   {
-    v10 = [(ZWRootViewController *)self activeLensViewController];
-    v11 = [(ZWRootViewController *)self dockedLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (v10 != v11)
+    if (activeLensViewController3 != dockedLensViewController2)
     {
 LABEL_7:
       v12 = x;
@@ -5315,14 +5315,14 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v15 = [(ZWRootViewController *)self dockedLensViewController];
-    v16 = [v15 dockPosition];
+    dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+    dockPosition = [dockedLensViewController3 dockPosition];
 
-    if (v16 <= 1)
+    if (dockPosition <= 1)
     {
-      if (v16)
+      if (dockPosition)
       {
-        if (v16 != &dword_0 + 1)
+        if (dockPosition != &dword_0 + 1)
         {
           goto LABEL_7;
         }
@@ -5338,9 +5338,9 @@ LABEL_36:
       goto LABEL_29;
     }
 
-    if (v16 != &dword_0 + 2)
+    if (dockPosition != &dword_0 + 2)
     {
-      if (v16 != &dword_0 + 3)
+      if (dockPosition != &dword_0 + 3)
       {
         goto LABEL_7;
       }
@@ -5351,12 +5351,12 @@ LABEL_36:
     goto LABEL_30;
   }
 
-  v14 = [v18 activeResizeHandle];
-  if (v14 > 4)
+  activeResizeHandle = [activeLensViewController activeResizeHandle];
+  if (activeResizeHandle > 4)
   {
-    if (v14 <= 6)
+    if (activeResizeHandle <= 6)
     {
-      if (v14 == (&dword_4 + 1))
+      if (activeResizeHandle == (&dword_4 + 1))
       {
         v12 = x;
         x = CGPointZero.x;
@@ -5368,7 +5368,7 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    if (v14 == (&dword_4 + 3))
+    if (activeResizeHandle == (&dword_4 + 3))
     {
 LABEL_29:
       v13 = y;
@@ -5378,14 +5378,14 @@ LABEL_29:
       goto LABEL_8;
     }
 
-    if (v14 == &dword_8)
+    if (activeResizeHandle == &dword_8)
     {
       v12 = -x;
       v13 = y;
       goto LABEL_39;
     }
 
-    if (v14 == (&dword_8 + 1))
+    if (activeResizeHandle == (&dword_8 + 1))
     {
 LABEL_30:
       v12 = -x;
@@ -5398,9 +5398,9 @@ LABEL_39:
 
   else
   {
-    if (v14 > 2)
+    if (activeResizeHandle > 2)
     {
-      if (v14 != (&dword_0 + 3))
+      if (activeResizeHandle != (&dword_0 + 3))
       {
         v13 = -y;
         v12 = x;
@@ -5415,12 +5415,12 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (v14 < 2)
+    if (activeResizeHandle < 2)
     {
       goto LABEL_7;
     }
 
-    if (v14 == (&dword_0 + 2))
+    if (activeResizeHandle == (&dword_0 + 2))
     {
       v12 = -x;
       v13 = -y;
@@ -5428,36 +5428,36 @@ LABEL_33:
     }
   }
 
-  v17 = [NSNumber numberWithInteger:v14];
+  v17 = [NSNumber numberWithInteger:activeResizeHandle];
   _AXAssert();
 
 LABEL_9:
 }
 
-- (void)_resizeZoomLensWithAdjustment:(CGPoint)a3 lensPositionCompensation:(CGPoint)a4
+- (void)_resizeZoomLensWithAdjustment:(CGPoint)adjustment lensPositionCompensation:(CGPoint)compensation
 {
-  y = a4.y;
-  x = a4.x;
-  v5 = a3.y;
-  v6 = a3.x;
-  v70 = [(ZWRootViewController *)self activeLensViewController];
-  v8 = [(ZWRootViewController *)self pipLensViewController];
-  if (v70 == v8)
+  y = compensation.y;
+  x = compensation.x;
+  v5 = adjustment.y;
+  v6 = adjustment.x;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if (activeLensViewController == pipLensViewController)
   {
   }
 
   else
   {
-    v9 = [(ZWRootViewController *)self dockedLensViewController];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (!v9)
+    if (!dockedLensViewController)
     {
       _AXAssert();
     }
   }
 
-  v10 = [v70 lensZoomView];
-  [v10 bounds];
+  lensZoomView = [activeLensViewController lensZoomView];
+  [lensZoomView bounds];
   v12 = v11;
   v14 = v13;
 
@@ -5512,10 +5512,10 @@ LABEL_9:
   [(ZWRootViewController *)self zoomPanOffset];
   v30 = v29;
   v32 = v31;
-  v33 = [(ZWRootViewController *)self activeLensViewController];
-  v34 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v33 == v34)
+  if (activeLensViewController2 == dockedLensViewController2)
   {
     v49 = v30;
     [(ZWRootViewController *)self zoomFrame];
@@ -5523,35 +5523,35 @@ LABEL_9:
     v53 = v52;
     v55 = v54;
     v69 = v56;
-    v57 = [(ZWRootViewController *)self dockedLensViewController];
-    [v57 resizeDock:0 animated:{v24, v26}];
+    dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController3 resizeDock:0 animated:{v24, v26}];
 
     [(ZWRootViewController *)self zoomFrame];
     v59 = v58;
     [(ZWRootViewController *)self zoomFrame];
     v61 = v60;
-    v62 = [(ZWRootViewController *)self dockedLensViewController];
-    v63 = [v62 dockPosition];
+    dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+    dockPosition = [dockedLensViewController4 dockPosition];
 
-    if (v63 == &dword_0 + 2)
+    if (dockPosition == &dword_0 + 2)
     {
       v51 = v51 + v55 - v59;
     }
 
     else
     {
-      v64 = [(ZWRootViewController *)self dockedLensViewController];
-      v65 = [v64 dockPosition];
+      dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+      dockPosition2 = [dockedLensViewController5 dockPosition];
 
-      if (v65 == &dword_0 + 3)
+      if (dockPosition2 == &dword_0 + 3)
       {
         v53 = v53 + v69 - v61;
       }
     }
 
-    [v70 updateZoomFactor:0 panOffset:0 animated:v28 animationDuration:v49 completion:{v32, -1.0}];
-    v66 = [(ZWRootViewController *)self view];
-    [v66 zw_convertRectToScreenCoordinates:{v51, v53, v59, v61}];
+    [activeLensViewController updateZoomFactor:0 panOffset:0 animated:v28 animationDuration:v49 completion:{v32, -1.0}];
+    view = [(ZWRootViewController *)self view];
+    [view zw_convertRectToScreenCoordinates:{v51, v53, v59, v61}];
     [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:1 recentreLens:0 animated:0 completion:?];
   }
 
@@ -5606,42 +5606,42 @@ LABEL_9:
     v46 = +[ZWCoalescedSettings sharedInstance];
     [v46 setZoomWindowFrame:{v43, v45, v24, v26}];
 
-    v47 = [(ZWRootViewController *)self lensWidthConstraint];
-    [v47 setConstant:v24];
+    lensWidthConstraint = [(ZWRootViewController *)self lensWidthConstraint];
+    [lensWidthConstraint setConstant:v24];
 
-    v48 = [(ZWRootViewController *)self lensHeightConstraint];
-    [v48 setConstant:v26];
+    lensHeightConstraint = [(ZWRootViewController *)self lensHeightConstraint];
+    [lensHeightConstraint setConstant:v26];
 
-    [v70 updateZoomFactor:0 panOffset:0 animated:v28 animationDuration:v30 completion:{v32, -1.0}];
-    [(ZWRootViewController *)self _moveZoomItemWithController:v70 byDelta:0 animated:1 userInitiated:0 shouldUseFullDeltaForDockedMode:0 shouldPan:v40, v67];
+    [activeLensViewController updateZoomFactor:0 panOffset:0 animated:v28 animationDuration:v30 completion:{v32, -1.0}];
+    [(ZWRootViewController *)self _moveZoomItemWithController:activeLensViewController byDelta:0 animated:1 userInitiated:0 shouldUseFullDeltaForDockedMode:0 shouldPan:v40, v67];
   }
 }
 
-- (void)_moveZoomItemWithControllerToDodgeJindo:(id)a3 byDelta:(CGPoint)a4
+- (void)_moveZoomItemWithControllerToDodgeJindo:(id)jindo byDelta:(CGPoint)delta
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = v7;
+  y = delta.y;
+  x = delta.x;
+  jindoCopy = jindo;
+  v8 = jindoCopy;
   if (y >= 0.0)
   {
-    v9 = [v7 view];
-    [v9 frame];
+    view = [jindoCopy view];
+    [view frame];
     v11 = x + v10;
-    v12 = [(ZWRootViewController *)self slugRingDragXConstraint];
-    [v12 setConstant:v11];
+    slugRingDragXConstraint = [(ZWRootViewController *)self slugRingDragXConstraint];
+    [slugRingDragXConstraint setConstant:v11];
 
-    [v9 frame];
+    [view frame];
     v14 = y + v13;
-    v15 = [(ZWRootViewController *)self slugRingDragYConstraint];
-    [v15 setConstant:v14];
+    slugRingDragYConstraint = [(ZWRootViewController *)self slugRingDragYConstraint];
+    [slugRingDragYConstraint setConstant:v14];
 
-    [v9 setNeedsLayout];
+    [view setNeedsLayout];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __72__ZWRootViewController__moveZoomItemWithControllerToDodgeJindo_byDelta___block_invoke;
     v19[3] = &unk_78D28;
-    v20 = v9;
+    v20 = view;
     v21 = x;
     v22 = y;
     v17[0] = _NSConcreteStackBlock;
@@ -5650,7 +5650,7 @@ LABEL_9:
     v17[3] = &unk_79478;
     v17[4] = self;
     v18 = v8;
-    v16 = v9;
+    v16 = view;
     [UIView animateWithDuration:v19 animations:v17 completion:0.2];
   }
 }
@@ -5683,23 +5683,23 @@ id __72__ZWRootViewController__moveZoomItemWithControllerToDodgeJindo_byDelta___
   return [v7 _updateLensEdgeMaskForZoomController:v8];
 }
 
-- (void)_moveZoomItemWithController:(id)a3 byDelta:(CGPoint)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6 shouldUseFullDeltaForDockedMode:(BOOL)a7 shouldPan:(BOOL)a8
+- (void)_moveZoomItemWithController:(id)controller byDelta:(CGPoint)delta animated:(BOOL)animated userInitiated:(BOOL)initiated shouldUseFullDeltaForDockedMode:(BOOL)mode shouldPan:(BOOL)pan
 {
-  v8 = a8;
-  v9 = a7;
-  v79 = a5;
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v14 = [v13 view];
-  v15 = [(ZWRootViewController *)self activeLensViewController];
+  panCopy = pan;
+  modeCopy = mode;
+  animatedCopy = animated;
+  y = delta.y;
+  x = delta.x;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
 
-  v78 = v15 == v13;
-  if (v15 != v13)
+  v78 = activeLensViewController == controllerCopy;
+  if (activeLensViewController != controllerCopy)
   {
-    v16 = v14;
-    v17 = [(ZWRootViewController *)self slugRingDragXConstraint];
-    v18 = [(ZWRootViewController *)self slugRingDragYConstraint];
+    v16 = view;
+    slugRingDragXConstraint = [(ZWRootViewController *)self slugRingDragXConstraint];
+    slugRingDragYConstraint = [(ZWRootViewController *)self slugRingDragYConstraint];
     LOBYTE(v19) = 0;
     goto LABEL_29;
   }
@@ -5709,39 +5709,39 @@ id __72__ZWRootViewController__moveZoomItemWithControllerToDodgeJindo_byDelta___
     [(ZWKeyboardContext *)self->_kbContext setUserMovedKeyboardLens:1];
   }
 
-  v20 = [(ZWRootViewController *)self activeLensViewController];
-  v21 = [(ZWRootViewController *)self pipLensViewController];
-  if (v20 == v21)
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v22 = [(ZWRootViewController *)self pipLensEdgeMask];
+    pipLensEdgeMask = [(ZWRootViewController *)self pipLensEdgeMask];
   }
 
   else
   {
-    v22 = 15;
+    pipLensEdgeMask = 15;
   }
 
   [(ZWRootViewController *)self zoomPanOffset];
-  if (!v8)
+  if (!panCopy)
   {
     goto LABEL_17;
   }
 
   v25 = v23;
   v26 = v24;
-  v27 = [(ZWRootViewController *)self activeLensViewController];
-  v8 = [v27 shouldPanZoomContentForAxis:2 delta:v22 edgeMask:{x, y}];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  panCopy = [activeLensViewController3 shouldPanZoomContentForAxis:2 delta:pipLensEdgeMask edgeMask:{x, y}];
 
-  if (v8)
+  if (panCopy)
   {
-    v28 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
     [(ZWRootViewController *)self zoomFactor];
-    [v28 offsetByPanningWithDelta:2 axis:x zoomFactor:{y, v29}];
+    [activeLensViewController4 offsetByPanningWithDelta:2 axis:x zoomFactor:{y, v29}];
     v31 = v30;
 
-    v32 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
     [(ZWRootViewController *)self zoomFactor];
-    [v32 offsetIgnoringValidOffsetConstraintsByPanningWithDelta:2 axis:x zoomFacotr:{y, v33}];
+    [activeLensViewController5 offsetIgnoringValidOffsetConstraintsByPanningWithDelta:2 axis:x zoomFacotr:{y, v33}];
     v25 = v34;
   }
 
@@ -5750,14 +5750,14 @@ id __72__ZWRootViewController__moveZoomItemWithControllerToDodgeJindo_byDelta___
     v31 = v25;
   }
 
-  v35 = [(ZWRootViewController *)self activeLensViewController];
-  v19 = [v35 shouldPanZoomContentForAxis:4 delta:v22 edgeMask:{x, y}];
+  activeLensViewController6 = [(ZWRootViewController *)self activeLensViewController];
+  v19 = [activeLensViewController6 shouldPanZoomContentForAxis:4 delta:pipLensEdgeMask edgeMask:{x, y}];
 
   if (!v19)
   {
-    if (v8)
+    if (panCopy)
     {
-      LOBYTE(v8) = 1;
+      LOBYTE(panCopy) = 1;
       v42 = v26;
       goto LABEL_16;
     }
@@ -5767,40 +5767,40 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v36 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController7 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomFactor];
-  [v36 offsetByPanningWithDelta:4 axis:x zoomFactor:{y, v37}];
+  [activeLensViewController7 offsetByPanningWithDelta:4 axis:x zoomFactor:{y, v37}];
   v26 = v38;
 
-  v39 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController8 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomFactor];
-  [v39 offsetIgnoringValidOffsetConstraintsByPanningWithDelta:4 axis:x zoomFacotr:{y, v40}];
+  [activeLensViewController8 offsetIgnoringValidOffsetConstraintsByPanningWithDelta:4 axis:x zoomFacotr:{y, v40}];
   v42 = v41;
 
 LABEL_16:
-  v43 = [(ZWRootViewController *)self activeLensViewController];
-  [v43 handleAdditionalPanOffsetFromOriginalOffset:v9 validOffset:v25 useFullDelta:{v42, v31, v26}];
+  activeLensViewController9 = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController9 handleAdditionalPanOffsetFromOriginalOffset:modeCopy validOffset:v25 useFullDelta:{v42, v31, v26}];
 
   [(ZWRootViewController *)self setZoomPanOffset:v31, v26];
-  v44 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController10 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomFactor];
-  [v44 updateZoomFactor:v79 panOffset:0 animated:? animationDuration:? completion:?];
+  [activeLensViewController10 updateZoomFactor:animatedCopy panOffset:0 animated:? animationDuration:? completion:?];
 
 LABEL_18:
-  v17 = [(ZWRootViewController *)self lensDragXConstraint];
-  v18 = [(ZWRootViewController *)self lensDragYConstraint];
+  slugRingDragXConstraint = [(ZWRootViewController *)self lensDragXConstraint];
+  slugRingDragYConstraint = [(ZWRootViewController *)self lensDragYConstraint];
   if (![(ZWKeyboardContext *)self->_kbContext isKeyboardVisible]|| [(ZWKeyboardContext *)self->_kbContext userMovedKeyboardLens])
   {
-    if (v8)
+    if (panCopy)
     {
       goto LABEL_21;
     }
 
 LABEL_28:
-    v16 = v14;
+    v16 = view;
 LABEL_29:
-    [v17 constant];
-    [v17 setConstant:x + v68];
+    [slugRingDragXConstraint constant];
+    [slugRingDragXConstraint setConstant:x + v68];
     v46 = 1;
     if (v19)
     {
@@ -5809,16 +5809,16 @@ LABEL_29:
     }
 
 LABEL_31:
-    [v18 constant];
-    [v18 setConstant:y + v69];
+    [slugRingDragYConstraint constant];
+    [slugRingDragYConstraint setConstant:y + v69];
     v45 = 1;
     goto LABEL_32;
   }
 
-  v47 = v8;
+  v47 = panCopy;
   v48 = +[AXSettings sharedInstance];
-  v49 = [v48 zoomPreferredCurrentLensMode];
-  v50 = [v49 isEqual:AXZoomLensModeWindow];
+  zoomPreferredCurrentLensMode = [v48 zoomPreferredCurrentLensMode];
+  v50 = [zoomPreferredCurrentLensMode isEqual:AXZoomLensModeWindow];
 
   if (v50)
   {
@@ -5827,25 +5827,25 @@ LABEL_31:
     v53 = v52;
     v55 = v54;
 
-    v56 = [(ZWRootViewController *)self lensWidthConstraint];
-    [v56 setConstant:v53];
+    lensWidthConstraint = [(ZWRootViewController *)self lensWidthConstraint];
+    [lensWidthConstraint setConstant:v53];
 
-    v57 = [(ZWRootViewController *)self lensHeightConstraint];
-    [v57 setConstant:v55];
+    lensHeightConstraint = [(ZWRootViewController *)self lensHeightConstraint];
+    [lensHeightConstraint setConstant:v55];
 
-    v58 = [(ZWRootViewController *)self activeLensViewController];
-    v59 = [v58 view];
-    [v59 frame];
+    activeLensViewController11 = [(ZWRootViewController *)self activeLensViewController];
+    view2 = [activeLensViewController11 view];
+    [view2 frame];
     v61 = (v60 - v53) * 0.5;
-    [v17 constant];
-    [v17 setConstant:v62 + v61];
+    [slugRingDragXConstraint constant];
+    [slugRingDragXConstraint setConstant:v62 + v61];
 
-    v63 = [(ZWRootViewController *)self activeLensViewController];
-    v64 = [v63 view];
-    [v64 frame];
+    activeLensViewController12 = [(ZWRootViewController *)self activeLensViewController];
+    view3 = [activeLensViewController12 view];
+    [view3 frame];
     v66 = v65 - v55;
-    [v18 constant];
-    [v18 setConstant:v67 + v66];
+    [slugRingDragYConstraint constant];
+    [slugRingDragYConstraint setConstant:v67 + v66];
 
     if ((v47 & 1) == 0)
     {
@@ -5859,7 +5859,7 @@ LABEL_31:
   }
 
 LABEL_21:
-  v16 = v14;
+  v16 = view;
   v45 = 0;
   if ((v19 & 1) == 0)
   {
@@ -5870,28 +5870,28 @@ LABEL_21:
   v78 = 1;
   v46 = 0;
 LABEL_32:
-  v70 = [(ZWRootViewController *)self pipLensViewController];
-  v71 = [v70 lensChromeView];
-  [v71 updateCornerRadii];
+  pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+  lensChromeView = [pipLensViewController2 lensChromeView];
+  [lensChromeView updateCornerRadii];
 
-  v72 = [(ZWRootViewController *)self activeLensViewController];
-  v73 = [v72 lensZoomView];
-  [v73 updateCornerRadii];
+  activeLensViewController13 = [(ZWRootViewController *)self activeLensViewController];
+  lensZoomView = [activeLensViewController13 lensZoomView];
+  [lensZoomView updateCornerRadii];
 
   v86[0] = _NSConcreteStackBlock;
   v86[1] = 3221225472;
   v86[2] = __125__ZWRootViewController__moveZoomItemWithController_byDelta_animated_userInitiated_shouldUseFullDeltaForDockedMode_shouldPan___block_invoke;
   v86[3] = &unk_78EE8;
-  v74 = v13;
+  v74 = controllerCopy;
   v87 = v74;
-  v88 = self;
-  v89 = a6;
+  selfCopy = self;
+  initiatedCopy = initiated;
   v75 = objc_retainBlock(v86);
   v76 = v75;
   if ((v45 & 1) != 0 || v46)
   {
     [v16 setNeedsLayout];
-    if (v79)
+    if (animatedCopy)
     {
       v77 = 0.4;
     }
@@ -6004,55 +6004,55 @@ id __125__ZWRootViewController__moveZoomItemWithController_byDelta_animated_user
   return result;
 }
 
-- (void)_updateLensEdgeMaskForZoomController:(id)a3
+- (void)_updateLensEdgeMaskForZoomController:(id)controller
 {
-  v50 = a3;
-  v4 = [(ZWRootViewController *)self containerView];
-  [v4 bounds];
+  controllerCopy = controller;
+  containerView = [(ZWRootViewController *)self containerView];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ZWRootViewController *)self pipLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v13 == v50)
+  if (pipLensViewController == controllerCopy)
   {
-    v23 = [v50 lensChromeView];
-    [v23 bounds];
+    lensChromeView = [controllerCopy lensChromeView];
+    [lensChromeView bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v25 = [(ZWRootViewController *)self containerView];
-    v24 = v25;
+    containerView2 = [(ZWRootViewController *)self containerView];
+    view2 = containerView2;
     v26 = v32;
     v27 = v34;
     v28 = v36;
     v29 = v38;
-    v30 = v23;
+    v30 = lensChromeView;
   }
 
   else
   {
-    v14 = [v50 view];
-    [v14 bounds];
+    view = [controllerCopy view];
+    [view bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(ZWRootViewController *)self containerView];
-    v24 = [v50 view];
-    v25 = v23;
+    lensChromeView = [(ZWRootViewController *)self containerView];
+    view2 = [controllerCopy view];
+    containerView2 = lensChromeView;
     v26 = v16;
     v27 = v18;
     v28 = v20;
     v29 = v22;
-    v30 = v24;
+    v30 = view2;
   }
 
-  [v25 convertRect:v30 fromView:{v26, v27, v28, v29}];
+  [containerView2 convertRect:v30 fromView:{v26, v27, v28, v29}];
   v40 = v39;
   v42 = v41;
   v44 = v43;
@@ -6060,9 +6060,9 @@ id __125__ZWRootViewController__moveZoomItemWithController_byDelta_animated_user
 
   v47 = vabdd_f64(v42, v12 - v46);
   v48 = (vabdd_f64(v42, v8) < 1.0) | (8 * (vabdd_f64(v40, v6) < 1.0)) | (2 * (vabdd_f64(v40, v10 - v44) < 1.0)) | (4 * (v47 < 1.0));
-  v49 = [(ZWRootViewController *)self pipLensViewController];
+  pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v49 == v50)
+  if (pipLensViewController2 == controllerCopy)
   {
     [(ZWRootViewController *)self setPipLensEdgeMask:v48];
   }
@@ -6079,26 +6079,26 @@ id __125__ZWRootViewController__moveZoomItemWithController_byDelta_animated_user
   {
     +[NSDate timeIntervalSinceReferenceDate];
     v4 = vabdd_f64(v3, self->_lastDeviceUnlockTime);
-    v5 = [(ZWRootViewController *)self activeLensViewController];
-    v6 = v5;
-    if (v4 >= 0.5 && ([v5 inStandbyMode] & 1) == 0)
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    v6 = activeLensViewController;
+    if (v4 >= 0.5 && ([activeLensViewController inStandbyMode] & 1) == 0)
     {
-      v7 = [(ZWRootViewController *)self activeLensViewController];
-      v8 = [(ZWRootViewController *)self fullscreenLensViewController];
+      activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+      fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-      if (v7 == v8)
+      if (activeLensViewController2 == fullscreenLensViewController)
       {
         [(ZWRootViewController *)self setZoomWasUnzoomedDueToAppTransition:1];
         [(ZWRootViewController *)self setZoomIsAnimatingDueToTransition:1];
         [(ZWRootViewController *)self zoomPanOffset];
         [(ZWRootViewController *)self setPanOffsetXBeforeTransition:?];
-        v9 = [(ZWRootViewController *)self activeLensViewController];
+        activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
         v10[0] = _NSConcreteStackBlock;
         v10[1] = 3221225472;
         v10[2] = __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke;
         v10[3] = &unk_78D00;
         v10[4] = self;
-        [v9 updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:v10 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
+        [activeLensViewController3 updateStandbyMode:1 zoomFactor:AXZoomLensEffectNone panOffset:1 lensEffect:v10 animated:AXZoomMinimumZoomLevel completion:{CGPointZero.x, CGPointZero.y}];
       }
     }
   }
@@ -6128,13 +6128,13 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     v6 = v5;
     [(ZWRootViewController *)self zoomFactor];
     v8 = v7;
-    v9 = [(ZWRootViewController *)self activeLensViewController];
-    v10 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v9 == v10)
+    if (activeLensViewController == fullscreenLensViewController)
     {
-      v11 = [(ZWRootViewController *)self fullscreenLensViewController];
-      [v11 maximumPanOffsetWithZoomFactor:v8];
+      fullscreenLensViewController2 = [(ZWRootViewController *)self fullscreenLensViewController];
+      [fullscreenLensViewController2 maximumPanOffsetWithZoomFactor:v8];
       v13 = v12;
 
       v6 = -v13;
@@ -6143,10 +6143,10 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     }
 
     v14 = +[AXSettings sharedInstance];
-    v16 = [v14 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v14 zoomCurrentLensEffect];
 
-    v15 = [(ZWRootViewController *)self activeLensViewController];
-    [v15 updateStandbyMode:0 zoomFactor:v16 panOffset:1 lensEffect:0 animated:v8 completion:{v4, v6}];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController2 updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:0 animated:v8 completion:{v4, v6}];
   }
 }
 
@@ -6164,9 +6164,9 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     {
       [(ZWRootViewController *)self setTriedToRezoomForDockTransition:0];
       v3 = +[AXSpringBoardServer server];
-      v4 = [v3 isDockVisible];
+      isDockVisible = [v3 isDockVisible];
 
-      if (v4)
+      if (isDockVisible)
       {
         if ([(ZWRootViewController *)self zoomWasUnzoomedDueToAppTransition])
         {
@@ -6176,13 +6176,13 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
           v8 = v7;
           [(ZWRootViewController *)self zoomFactor];
           v10 = v9;
-          v11 = [(ZWRootViewController *)self activeLensViewController];
-          v12 = [(ZWRootViewController *)self fullscreenLensViewController];
+          activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+          fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-          if (v11 == v12)
+          if (activeLensViewController == fullscreenLensViewController)
           {
-            v13 = [(ZWRootViewController *)self fullscreenLensViewController];
-            [v13 maximumPanOffsetWithZoomFactor:v10];
+            fullscreenLensViewController2 = [(ZWRootViewController *)self fullscreenLensViewController];
+            [fullscreenLensViewController2 maximumPanOffsetWithZoomFactor:v10];
             v8 = v14;
 
             [(ZWRootViewController *)self panOffsetXBeforeTransition];
@@ -6191,10 +6191,10 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
           }
 
           v16 = +[AXSettings sharedInstance];
-          v18 = [v16 zoomCurrentLensEffect];
+          zoomCurrentLensEffect = [v16 zoomCurrentLensEffect];
 
-          v17 = [(ZWRootViewController *)self activeLensViewController];
-          [v17 updateStandbyMode:0 zoomFactor:v18 panOffset:1 lensEffect:0 animated:v10 completion:{v6, v8}];
+          activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+          [activeLensViewController2 updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:0 animated:v10 completion:{v6, v8}];
         }
       }
 
@@ -6220,7 +6220,7 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     [(ZWRootViewController *)self setTriedToToggleStandbyDuringAnimation:0];
     [(ZWRootViewController *)self setZoomIsAnimatingDueToStandbyToggle:1];
     [(ZWRootViewController *)self _updateZoomListeners];
-    v3 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
     [(ZWRootViewController *)self zoomFactor];
     v5 = v4;
     if ([(ZWRootViewController *)self _isZoomFactorAtMinimum:?])
@@ -6239,15 +6239,15 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     [(ZWRootViewController *)self zoomPanOffset];
     v9 = v8;
     v11 = v10;
-    if ([v3 inStandbyMode])
+    if ([activeLensViewController inStandbyMode])
     {
-      v12 = [(ZWRootViewController *)self smartZoom];
-      v13 = [v12 isEnabled];
+      smartZoom = [(ZWRootViewController *)self smartZoom];
+      isEnabled = [smartZoom isEnabled];
 
-      if (v13)
+      if (isEnabled)
       {
-        v14 = [(ZWRootViewController *)self smartZoom];
-        [v14 focusRect];
+        smartZoom2 = [(ZWRootViewController *)self smartZoom];
+        [smartZoom2 focusRect];
         v16 = v15;
         v18 = v17;
         v20 = v19;
@@ -6259,14 +6259,14 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
         v38.size.height = v22;
         if (!CGRectIsEmpty(v38))
         {
-          v23 = [(ZWRootViewController *)self containerView];
-          [v23 zw_convertRectFromScreenCoordinates:{v16, v18, v20, v22}];
+          containerView = [(ZWRootViewController *)self containerView];
+          [containerView zw_convertRectFromScreenCoordinates:{v16, v18, v20, v22}];
           v25 = v24;
           v27 = v26;
           v29 = v28;
           v31 = v30;
 
-          [v3 offsetByPanningToRect:v25 zoomFactor:{v27, v29, v31, v5}];
+          [activeLensViewController offsetByPanningToRect:v25 zoomFactor:{v27, v29, v31, v5}];
           v9 = v32;
           v11 = v33;
         }
@@ -6274,7 +6274,7 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     }
 
     v34 = +[AXSettings sharedInstance];
-    v35 = [v34 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v34 zoomCurrentLensEffect];
 
     [(ZWRootViewController *)self _updateLensLayout];
     v36[0] = _NSConcreteStackBlock;
@@ -6282,7 +6282,7 @@ id __57__ZWRootViewController__unzoomDueToAppTransitionIfNeeded__block_invoke(ui
     v36[2] = __42__ZWRootViewController__toggleZoomStandby__block_invoke;
     v36[3] = &unk_78D00;
     v36[4] = self;
-    [v3 updateStandbyMode:objc_msgSend(v3 zoomFactor:"inStandbyMode") ^ 1 panOffset:v35 lensEffect:1 animated:v36 completion:{v5, v9, v11}];
+    [activeLensViewController updateStandbyMode:objc_msgSend(activeLensViewController zoomFactor:"inStandbyMode") ^ 1 panOffset:zoomCurrentLensEffect lensEffect:1 animated:v36 completion:{v5, v9, v11}];
   }
 }
 
@@ -6302,54 +6302,54 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setPIPLensResizingEnabled:(BOOL)a3
+- (void)_setPIPLensResizingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(ZWRootViewController *)self touchTrapView];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  touchTrapView = [(ZWRootViewController *)self touchTrapView];
+  [touchTrapView setEnabled:enabledCopy];
 
-  v6 = [(ZWRootViewController *)self pipLensViewController];
-  [v6 setInLensResizingMode:v3];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  [pipLensViewController setInLensResizingMode:enabledCopy];
 
-  v7 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __51__ZWRootViewController__setPIPLensResizingEnabled___block_invoke;
   v8[3] = &unk_78BD0;
   v8[4] = self;
-  v9 = v3;
-  dispatch_sync(v7, v8);
+  v9 = enabledCopy;
+  dispatch_sync(cachedValuesSerialQueue, v8);
 }
 
-- (void)_setDockResizingEnabled:(BOOL)a3
+- (void)_setDockResizingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(ZWRootViewController *)self touchTrapView];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  touchTrapView = [(ZWRootViewController *)self touchTrapView];
+  [touchTrapView setEnabled:enabledCopy];
 
-  v6 = [(ZWRootViewController *)self dockedLensViewController];
-  [v6 setInDockResizingMode:v3];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  [dockedLensViewController setInDockResizingMode:enabledCopy];
 
-  v7 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __48__ZWRootViewController__setDockResizingEnabled___block_invoke;
   v8[3] = &unk_78BD0;
   v8[4] = self;
-  v9 = v3;
-  dispatch_sync(v7, v8);
+  v9 = enabledCopy;
+  dispatch_sync(cachedValuesSerialQueue, v8);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = ZOOMLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ZWRootViewController *)self view];
-    [v9 bounds];
+    view = [(ZWRootViewController *)self view];
+    [view bounds];
     v52.width = v10;
     v52.height = v11;
     v12 = NSStringFromCGSize(v52);
@@ -6363,23 +6363,23 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Zoom window will transition from size %@ to %@", buf, 0x16u);
   }
 
-  v14 = [(ZWRootViewController *)self activeLensViewController];
-  v15 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  v16 = v14 == v15;
-  if (v14 == v15)
+  v16 = activeLensViewController == fullscreenLensViewController;
+  if (activeLensViewController == fullscreenLensViewController)
   {
     [UIView setAnimationsEnabled:0];
   }
 
-  v17 = [(ZWRootViewController *)self slugViewController];
-  v18 = [v17 view];
-  [v18 alpha];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  view2 = [slugViewController view];
+  [view2 alpha];
   v20 = v19;
 
-  v21 = [(ZWRootViewController *)self slugViewController];
-  v22 = [v21 view];
-  [v22 setAlpha:0.0];
+  slugViewController2 = [(ZWRootViewController *)self slugViewController];
+  view3 = [slugViewController2 view];
+  [view3 setAlpha:0.0];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
@@ -6393,18 +6393,18 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
   v46 = v16;
   v45[4] = self;
   v45[5] = v20;
-  [v7 animateAlongsideTransition:v47 completion:v45];
+  [coordinatorCopy animateAlongsideTransition:v47 completion:v45];
 
-  v23 = [(ZWRootViewController *)self activeLensViewController];
-  v24 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v23 == v24)
+  if (activeLensViewController2 == pipLensViewController)
   {
     v43 = width;
     v44 = height;
-    v25 = [(ZWRootViewController *)self activeLensViewController];
-    v26 = [v25 view];
-    [v26 frame];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    view4 = [activeLensViewController3 view];
+    [view4 frame];
 
     UIRectInset();
     x = v54.origin.x;
@@ -6412,8 +6412,8 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
     v29 = v54.size.width;
     v30 = v54.size.height;
     MinX = CGRectGetMinX(v54);
-    v32 = [(ZWRootViewController *)self view];
-    [v32 frame];
+    view5 = [(ZWRootViewController *)self view];
+    [view5 frame];
     v34 = v33;
     v55.origin.x = x;
     v55.origin.y = y;
@@ -6426,8 +6426,8 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
     v56.size.width = v29;
     v56.size.height = v30;
     MinY = CGRectGetMinY(v56);
-    v37 = [(ZWRootViewController *)self view];
-    [v37 frame];
+    view6 = [(ZWRootViewController *)self view];
+    [view6 frame];
     v39 = v38;
     v57.origin.x = x;
     v57.origin.y = y;
@@ -6437,14 +6437,14 @@ id __42__ZWRootViewController__toggleZoomStandby__block_invoke(uint64_t a1)
 
     if (MinX + v35 > 0.5)
     {
-      v41 = [(ZWRootViewController *)self lensDragXConstraint];
-      [v41 setConstant:MinX * (v43 - v29) / (MinX + v35) + -18.0];
+      lensDragXConstraint = [(ZWRootViewController *)self lensDragXConstraint];
+      [lensDragXConstraint setConstant:MinX * (v43 - v29) / (MinX + v35) + -18.0];
     }
 
     if (MinY + v40 > 0.5)
     {
-      v42 = [(ZWRootViewController *)self lensDragYConstraint];
-      [v42 setConstant:(v44 - v30) * MinY / (MinY + v40) + -18.0];
+      lensDragYConstraint = [(ZWRootViewController *)self lensDragYConstraint];
+      [lensDragYConstraint setConstant:(v44 - v30) * MinY / (MinY + v40) + -18.0];
     }
   }
 }
@@ -6589,11 +6589,11 @@ __n128 __75__ZWRootViewController_viewWillTransitionToSize_withTransitionCoordin
   return result;
 }
 
-- (void)setTestingScreenSize:(CGSize)a3
+- (void)setTestingScreenSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  ZWSetTestingScreenSize(a3.width, a3.height);
+  height = size.height;
+  width = size.width;
+  ZWSetTestingScreenSize(size.width, size.height);
   if (width == CGSizeZero.width && height == CGSizeZero.height)
   {
     v7 = +[UIScreen mainScreen];
@@ -6602,19 +6602,19 @@ __n128 __75__ZWRootViewController_viewWillTransitionToSize_withTransitionCoordin
     height = v9;
   }
 
-  v10 = [(ZWRootViewController *)self containerView];
-  [v10 setFrame:{0.0, 0.0, width, height}];
+  containerView = [(ZWRootViewController *)self containerView];
+  [containerView setFrame:{0.0, 0.0, width, height}];
 
-  v11 = [(ZWRootViewController *)self activeLensViewController];
-  [(ZWRootViewController *)self _applyInitialConstraintsForLensViewController:v11];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [(ZWRootViewController *)self _applyInitialConstraintsForLensViewController:activeLensViewController];
 }
 
 - (CGSize)_screenSizeForCurrentOrientation
 {
   if (!self->_inUnitTestingMode || (ZWGetTestingScreenSize() == CGSizeZero.width ? (v4 = v3 == CGSizeZero.height) : (v4 = 0), v4))
   {
-    v7 = [(ZWRootViewController *)self screen];
-    [v7 bounds];
+    screen = [(ZWRootViewController *)self screen];
+    [screen bounds];
     v9 = v8;
     v11 = v10;
 
@@ -6633,10 +6633,10 @@ __n128 __75__ZWRootViewController_viewWillTransitionToSize_withTransitionCoordin
   return result;
 }
 
-- (CGPoint)_denormalizePointForCurrentOrientation:(CGPoint)a3
+- (CGPoint)_denormalizePointForCurrentOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = orientation.y;
+  x = orientation.x;
   [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
   v6 = x * v5;
   v8 = y * v7;
@@ -6645,37 +6645,37 @@ __n128 __75__ZWRootViewController_viewWillTransitionToSize_withTransitionCoordin
   return result;
 }
 
-- (CGPoint)_denormalizePoint:(CGPoint)a3 withRespectToFrame:(CGRect)a4
+- (CGPoint)_denormalizePoint:(CGPoint)point withRespectToFrame:(CGRect)frame
 {
-  v4 = a4.origin.x + a3.x * a4.size.width;
-  v5 = a4.origin.y + a3.y * a4.size.height;
+  v4 = frame.origin.x + point.x * frame.size.width;
+  v5 = frame.origin.y + point.y * frame.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_normalizePoint:(CGPoint)a3 withRespectToFrame:(CGRect)a4
+- (CGPoint)_normalizePoint:(CGPoint)point withRespectToFrame:(CGRect)frame
 {
-  v4 = (a3.x - a4.origin.x) / a4.size.width;
-  v5 = (a3.y - a4.origin.y) / a4.size.height;
+  v4 = (point.x - frame.origin.x) / frame.size.width;
+  v5 = (point.y - frame.origin.y) / frame.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_physicalScreenPointForVirtualScreenPoint:(CGPoint)a3
+- (CGPoint)_physicalScreenPointForVirtualScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(ZWRootViewController *)self zoomFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(ZWRootViewController *)self activeLensViewController];
-  v15 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v14 == v15)
+  if (activeLensViewController == fullscreenLensViewController)
   {
     [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
     [(ZWRootViewController *)self _normalizePoint:x withRespectToFrame:y, v7, v9, v11, v13];
@@ -6685,20 +6685,20 @@ __n128 __75__ZWRootViewController_viewWillTransitionToSize_withTransitionCoordin
     goto LABEL_11;
   }
 
-  v16 = [(ZWRootViewController *)self activeLensViewController];
-  v17 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v16 == v17)
+  if (activeLensViewController2 == pipLensViewController)
   {
     [(ZWRootViewController *)self _normalizePoint:x withRespectToFrame:y, v7, v9, v11, v13];
     v27 = v26;
     v29 = v28;
-    v30 = [(ZWRootViewController *)self pipLensViewController];
-    v31 = [v30 lensChromeView];
-    v32 = [(ZWRootViewController *)self pipLensViewController];
-    v33 = [v32 lensChromeView];
-    [v33 bounds];
-    [v31 convertRect:0 toView:?];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView = [pipLensViewController2 lensChromeView];
+    pipLensViewController3 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView2 = [pipLensViewController3 lensChromeView];
+    [lensChromeView2 bounds];
+    [lensChromeView convertRect:0 toView:?];
     [(ZWRootViewController *)self _denormalizePoint:v27 withRespectToFrame:v29, v34, v35, v36, v37];
     x = v38;
     y = v39;
@@ -6707,61 +6707,61 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v18 = [(ZWRootViewController *)self activeLensViewController];
-  v19 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v18 != v19)
+  if (activeLensViewController3 != dockedLensViewController)
   {
     goto LABEL_11;
   }
 
-  v20 = [(ZWRootViewController *)self dockedLensViewController];
-  v21 = [v20 dockPosition];
+  dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+  dockPosition = [dockedLensViewController2 dockPosition];
 
-  if (v21 > 1)
+  if (dockPosition > 1)
   {
-    if (v21 == &dword_0 + 2)
+    if (dockPosition == &dword_0 + 2)
     {
-      v30 = [(ZWRootViewController *)self dockedLensViewController];
-      [v30 screenShift];
+      pipLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      [pipLensViewController2 screenShift];
       v49 = v48;
-      v44 = [(ZWRootViewController *)self dockedLensViewController];
-      v45 = [v44 dockedLensView];
-      [v45 bounds];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensView = [dockedLensViewController3 dockedLensView];
+      [dockedLensView bounds];
       x = x + v49 - v50;
     }
 
     else
     {
-      if (v21 != &dword_0 + 3)
+      if (dockPosition != &dword_0 + 3)
       {
         goto LABEL_11;
       }
 
-      v30 = [(ZWRootViewController *)self dockedLensViewController];
-      [v30 screenShift];
+      pipLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      [pipLensViewController2 screenShift];
       v43 = v42;
-      v44 = [(ZWRootViewController *)self dockedLensViewController];
-      v45 = [v44 dockedLensView];
-      [v45 bounds];
+      dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensView = [dockedLensViewController3 dockedLensView];
+      [dockedLensView bounds];
       y = y + v43 - v46;
     }
 
     goto LABEL_10;
   }
 
-  if (!v21)
+  if (!dockPosition)
   {
-    v22 = [(ZWRootViewController *)self dockedLensViewController];
-    [v22 screenShift];
+    dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController4 screenShift];
     y = y + v47;
     goto LABEL_16;
   }
 
-  if (v21 == &dword_0 + 1)
+  if (dockPosition == &dword_0 + 1)
   {
-    v22 = [(ZWRootViewController *)self dockedLensViewController];
-    [v22 screenShift];
+    dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController4 screenShift];
     x = x + v23;
 LABEL_16:
   }
@@ -6774,39 +6774,39 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)_virtualScreenPointForPhysicalScreenPoint:(CGPoint)a3
+- (CGPoint)_virtualScreenPointForPhysicalScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(ZWRootViewController *)self zoomFrame];
   v7 = v6;
   v9 = v8;
-  v10 = [(ZWRootViewController *)self activeLensViewController];
-  v11 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v10 == v11)
+  if (activeLensViewController == fullscreenLensViewController)
   {
     [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
     [(ZWRootViewController *)self _normalizePoint:x withRespectToFrame:y, 0.0, 0.0, v20, v21];
-    v22 = self;
+    selfCopy2 = self;
 LABEL_10:
-    [(ZWRootViewController *)v22 _denormalizePoint:v49 withRespectToFrame:v50];
+    [(ZWRootViewController *)selfCopy2 _denormalizePoint:v49 withRespectToFrame:v50];
     x = v35;
     y = v36;
     goto LABEL_11;
   }
 
-  v12 = [(ZWRootViewController *)self activeLensViewController];
-  v13 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v12 == v13)
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v23 = [(ZWRootViewController *)self pipLensViewController];
-    v24 = [v23 lensChromeView];
-    v25 = [(ZWRootViewController *)self pipLensViewController];
-    v26 = [v25 lensChromeView];
-    [v26 bounds];
-    [v24 convertRect:0 toView:?];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView = [pipLensViewController2 lensChromeView];
+    pipLensViewController3 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView2 = [pipLensViewController3 lensChromeView];
+    [lensChromeView2 bounds];
+    [lensChromeView convertRect:0 toView:?];
     v28 = v27;
     v30 = v29;
     v49 = v7;
@@ -6815,62 +6815,62 @@ LABEL_10:
     v34 = v33;
 
     [(ZWRootViewController *)self _normalizePoint:x withRespectToFrame:y, v28, v30, v32, v34];
-    v22 = self;
+    selfCopy2 = self;
     goto LABEL_10;
   }
 
-  v14 = [(ZWRootViewController *)self activeLensViewController];
-  v15 = [(ZWRootViewController *)self dockedLensViewController];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v14 == v15)
+  if (activeLensViewController3 == dockedLensViewController)
   {
-    v16 = [(ZWRootViewController *)self dockedLensViewController];
-    v17 = [v16 dockPosition];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    dockPosition = [dockedLensViewController2 dockPosition];
 
-    if (v17 > 1)
+    if (dockPosition > 1)
     {
-      if (v17 == &dword_0 + 2)
+      if (dockPosition == &dword_0 + 2)
       {
-        v39 = [(ZWRootViewController *)self dockedLensViewController];
-        [v39 screenShift];
+        dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+        [dockedLensViewController3 screenShift];
         v47 = v46;
-        v42 = [(ZWRootViewController *)self dockedLensViewController];
-        v43 = [v42 dockedLensView];
-        [v43 bounds];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        dockedLensView = [dockedLensViewController4 dockedLensView];
+        [dockedLensView bounds];
         x = x - (v47 - v48);
       }
 
       else
       {
-        if (v17 != &dword_0 + 3)
+        if (dockPosition != &dword_0 + 3)
         {
           goto LABEL_11;
         }
 
-        v39 = [(ZWRootViewController *)self dockedLensViewController];
-        [v39 screenShift];
+        dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+        [dockedLensViewController3 screenShift];
         v41 = v40;
-        v42 = [(ZWRootViewController *)self dockedLensViewController];
-        v43 = [v42 dockedLensView];
-        [v43 bounds];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        dockedLensView = [dockedLensViewController4 dockedLensView];
+        [dockedLensView bounds];
         y = y - (v41 - v44);
       }
 
       goto LABEL_11;
     }
 
-    if (!v17)
+    if (!dockPosition)
     {
-      v18 = [(ZWRootViewController *)self dockedLensViewController];
-      [v18 screenShift];
+      dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+      [dockedLensViewController5 screenShift];
       y = y - v45;
       goto LABEL_16;
     }
 
-    if (v17 == &dword_0 + 1)
+    if (dockPosition == &dword_0 + 1)
     {
-      v18 = [(ZWRootViewController *)self dockedLensViewController];
-      [v18 screenShift];
+      dockedLensViewController5 = [(ZWRootViewController *)self dockedLensViewController];
+      [dockedLensViewController5 screenShift];
       x = x - v19;
 LABEL_16:
     }
@@ -6884,33 +6884,33 @@ LABEL_11:
   return result;
 }
 
-- (void)_presentMenuWithAnchorView:(id)a3 animated:(BOOL)a4 ignoreCooldown:(BOOL)a5
+- (void)_presentMenuWithAnchorView:(id)view animated:(BOOL)animated ignoreCooldown:(BOOL)cooldown
 {
-  v7 = a3;
-  v8 = [(ZWRootViewController *)self presentedViewController];
-  v9 = [(ZWRootViewController *)self menuViewController];
+  viewCopy = view;
+  presentedViewController = [(ZWRootViewController *)self presentedViewController];
+  menuViewController = [(ZWRootViewController *)self menuViewController];
 
-  if (v8 != v9)
+  if (presentedViewController != menuViewController)
   {
     +[NSDate timeIntervalSinceReferenceDate];
-    if (a5 || vabdd_f64(v10, self->_lastMenuDismissalTime) >= 0.75)
+    if (cooldown || vabdd_f64(v10, self->_lastMenuDismissalTime) >= 0.75)
     {
-      v11 = [(ZWRootViewController *)self traitCollection];
-      if (![v11 userInterfaceIdiom])
+      traitCollection = [(ZWRootViewController *)self traitCollection];
+      if (![traitCollection userInterfaceIdiom])
       {
-        v12 = [(ZWRootViewController *)self view];
+        view = [(ZWRootViewController *)self view];
 
-        v7 = v12;
+        viewCopy = view;
       }
 
-      [v7 bounds];
+      [viewCopy bounds];
       v14 = v13;
       MidY = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(ZWRootViewController *)self view];
+      view2 = [(ZWRootViewController *)self view];
 
-      if (v7 == v21)
+      if (viewCopy == view2)
       {
         v51.origin.x = v14;
         v51.origin.y = MidY;
@@ -6941,65 +6941,65 @@ LABEL_11:
         v53.size.width = v18;
         v53.size.height = v20;
         v25 = NSStringFromCGRect(v53);
-        v26 = [(ZWRootViewController *)self view];
-        [v26 bounds];
+        view3 = [(ZWRootViewController *)self view];
+        [view3 bounds];
         v27 = NSStringFromCGRect(v54);
         *buf = 138412802;
         v46 = v25;
         v47 = 2112;
-        v48 = v7;
+        v48 = viewCopy;
         v49 = 2112;
         v50 = v27;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "Displaying Zoom Menu at popover rect: %@, anchor view: %@, view bounds: %@", buf, 0x20u);
       }
 
-      v28 = [(ZWRootViewController *)self slugViewController];
-      v29 = [v28 view];
-      v30 = [v29 window];
+      slugViewController = [(ZWRootViewController *)self slugViewController];
+      view4 = [slugViewController view];
+      window = [view4 window];
 
-      if (v30)
+      if (window)
       {
-        v31 = [(ZWRootViewController *)self slugViewController];
-        v32 = [v31 view];
-        v44 = v32;
+        slugViewController2 = [(ZWRootViewController *)self slugViewController];
+        view5 = [slugViewController2 view];
+        v44 = view5;
         v33 = [NSArray arrayWithObjects:&v44 count:1];
-        v34 = [(ZWRootViewController *)self menuViewController];
-        v35 = [v34 popoverPresentationController];
-        [v35 setPassthroughViews:v33];
+        menuViewController2 = [(ZWRootViewController *)self menuViewController];
+        popoverPresentationController = [menuViewController2 popoverPresentationController];
+        [popoverPresentationController setPassthroughViews:v33];
       }
 
-      v36 = [(ZWRootViewController *)self menuViewController];
-      v37 = [v36 popoverPresentationController];
-      [v37 setSourceRect:{v14, MidY, v18, v20}];
+      menuViewController3 = [(ZWRootViewController *)self menuViewController];
+      popoverPresentationController2 = [menuViewController3 popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v14, MidY, v18, v20}];
 
-      v38 = [(ZWRootViewController *)self menuViewController];
-      v39 = [v38 popoverPresentationController];
-      [v39 setSourceView:v7];
+      menuViewController4 = [(ZWRootViewController *)self menuViewController];
+      popoverPresentationController3 = [menuViewController4 popoverPresentationController];
+      [popoverPresentationController3 setSourceView:viewCopy];
 
-      v40 = [(ZWRootViewController *)self menuViewController];
-      v41 = [v40 popoverPresentationController];
-      [v41 setPermittedArrowDirections:v22];
+      menuViewController5 = [(ZWRootViewController *)self menuViewController];
+      popoverPresentationController4 = [menuViewController5 popoverPresentationController];
+      [popoverPresentationController4 setPermittedArrowDirections:v22];
 
-      v42 = [(ZWRootViewController *)self menuViewController];
-      v43 = [(ZWRootViewController *)self zoomMenuVisibilityChangedUnitTestCallback];
-      [(ZWRootViewController *)self presentViewController:v42 animated:1 completion:v43];
+      menuViewController6 = [(ZWRootViewController *)self menuViewController];
+      zoomMenuVisibilityChangedUnitTestCallback = [(ZWRootViewController *)self zoomMenuVisibilityChangedUnitTestCallback];
+      [(ZWRootViewController *)self presentViewController:menuViewController6 animated:1 completion:zoomMenuVisibilityChangedUnitTestCallback];
     }
   }
 }
 
-- (void)_dismissMenuAnimated:(BOOL)a3
+- (void)_dismissMenuAnimated:(BOOL)animated
 {
-  v4 = [(ZWRootViewController *)self presentedViewController];
-  v5 = [(ZWRootViewController *)self menuViewController];
+  presentedViewController = [(ZWRootViewController *)self presentedViewController];
+  menuViewController = [(ZWRootViewController *)self menuViewController];
 
-  if (v4 == v5)
+  if (presentedViewController == menuViewController)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     self->_lastMenuDismissalTime = v6;
-    v7 = [(ZWRootViewController *)self menuViewController];
-    v8 = [v7 presentingViewController];
-    v9 = [(ZWRootViewController *)self zoomMenuVisibilityChangedUnitTestCallback];
-    [v8 dismissViewControllerAnimated:1 completion:v9];
+    menuViewController2 = [(ZWRootViewController *)self menuViewController];
+    presentingViewController = [menuViewController2 presentingViewController];
+    zoomMenuVisibilityChangedUnitTestCallback = [(ZWRootViewController *)self zoomMenuVisibilityChangedUnitTestCallback];
+    [presentingViewController dismissViewControllerAnimated:1 completion:zoomMenuVisibilityChangedUnitTestCallback];
 
     [(ZWRootViewController *)self _menuDidDisappear];
   }
@@ -7007,18 +7007,18 @@ LABEL_11:
 
 - (void)_menuDidDisappear
 {
-  v3 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __41__ZWRootViewController__menuDidDisappear__block_invoke;
   block[3] = &unk_78D00;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(cachedValuesSerialQueue, block);
 
-  LODWORD(v3) = UIAccessibilityLayoutChangedNotification;
-  v4 = [(ZWRootViewController *)self menuViewController];
-  v5 = [v4 view];
-  UIAccessibilityPostNotification(v3, v5);
+  LODWORD(cachedValuesSerialQueue) = UIAccessibilityLayoutChangedNotification;
+  menuViewController = [(ZWRootViewController *)self menuViewController];
+  view = [menuViewController view];
+  UIAccessibilityPostNotification(cachedValuesSerialQueue, view);
 }
 
 __n128 __41__ZWRootViewController__menuDidDisappear__block_invoke(uint64_t a1)
@@ -7031,7 +7031,7 @@ __n128 __41__ZWRootViewController__menuDidDisappear__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)willBeginAutopanningLensWithAutopanner:(id)a3
+- (void)willBeginAutopanningLensWithAutopanner:(id)autopanner
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -7053,7 +7053,7 @@ void __63__ZWRootViewController_willBeginAutopanningLensWithAutopanner___block_i
   }
 }
 
-- (void)didFinishAutopanningLensWithAutopanner:(id)a3
+- (void)didFinishAutopanningLensWithAutopanner:(id)autopanner
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -7075,14 +7075,14 @@ void __63__ZWRootViewController_didFinishAutopanningLensWithAutopanner___block_i
   }
 }
 
-- (void)autopanner:(id)a3 didAutopanByDelta:(CGPoint)a4
+- (void)autopanner:(id)autopanner didAutopanByDelta:(CGPoint)delta
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v5 = a4;
+  deltaCopy = delta;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -7118,23 +7118,23 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
 
 - (void)_updateEventUIContextForSpeakFingerStateChange
 {
-  v3 = [(ZWRootViewController *)self _inSpeakUnderFingerMode];
-  v4 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  _inSpeakUnderFingerMode = [(ZWRootViewController *)self _inSpeakUnderFingerMode];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __70__ZWRootViewController__updateEventUIContextForSpeakFingerStateChange__block_invoke;
   v5[3] = &unk_78BD0;
   v5[4] = self;
-  v6 = v3;
-  dispatch_sync(v4, v5);
+  v6 = _inSpeakUnderFingerMode;
+  dispatch_sync(cachedValuesSerialQueue, v5);
 }
 
 - (void)toggleZoomMenu
 {
-  v3 = [(ZWRootViewController *)self presentedViewController];
-  v4 = [(ZWRootViewController *)self menuViewController];
+  presentedViewController = [(ZWRootViewController *)self presentedViewController];
+  menuViewController = [(ZWRootViewController *)self menuViewController];
 
-  if (v3 == v4)
+  if (presentedViewController == menuViewController)
   {
 
     [(ZWRootViewController *)self _dismissMenuAnimated:1];
@@ -7144,40 +7144,40 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
   {
     if ([(ZWRootViewController *)self isZoomSlugVisible])
     {
-      v5 = [(ZWRootViewController *)self slugViewController];
-      v6 = [v5 slugRingView];
+      slugViewController = [(ZWRootViewController *)self slugViewController];
+      slugRingView = [slugViewController slugRingView];
     }
 
     else
     {
-      v6 = [(ZWRootViewController *)self view];
+      slugRingView = [(ZWRootViewController *)self view];
     }
 
-    [(ZWRootViewController *)self _presentMenuWithAnchorView:v6 animated:1 ignoreCooldown:0];
+    [(ZWRootViewController *)self _presentMenuWithAnchorView:slugRingView animated:1 ignoreCooldown:0];
   }
 }
 
-- (void)_handleSlugAction:(int64_t)a3
+- (void)_handleSlugAction:(int64_t)action
 {
-  switch(a3)
+  switch(action)
   {
     case 3:
       if (!UIAccessibilityIsVoiceOverRunning())
       {
-        v18 = [(ZWRootViewController *)self presentedViewController];
-        v19 = [(ZWRootViewController *)self menuViewController];
+        presentedViewController = [(ZWRootViewController *)self presentedViewController];
+        menuViewController = [(ZWRootViewController *)self menuViewController];
 
-        if (v18 == v19)
+        if (presentedViewController == menuViewController)
         {
           [(ZWRootViewController *)self _dismissMenuAnimated:1];
         }
 
         v20 = +[AXSpeakFingerManager sharedInstance];
-        v21 = [v20 speakFingerState];
+        speakFingerState = [v20 speakFingerState];
 
         v22 = +[AXSpeakFingerManager sharedInstance];
-        v26 = v22;
-        if (v21 == &dword_0 + 2)
+        slugViewController = v22;
+        if (speakFingerState == &dword_0 + 2)
         {
           [v22 speakUnderFingerModeStarted];
         }
@@ -7191,9 +7191,9 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
       }
 
       v11 = +[AXSubsystemZoom sharedInstance];
-      v12 = [v11 ignoreLogging];
+      ignoreLogging = [v11 ignoreLogging];
 
-      if ((v12 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v13 = +[AXSubsystemZoom identifier];
         v14 = AXLoggerForFacility();
@@ -7214,10 +7214,10 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
 
       break;
     case 2:
-      v9 = [(ZWRootViewController *)self presentedViewController];
-      v10 = [(ZWRootViewController *)self menuViewController];
+      presentedViewController2 = [(ZWRootViewController *)self presentedViewController];
+      menuViewController2 = [(ZWRootViewController *)self menuViewController];
 
-      if (v9 == v10)
+      if (presentedViewController2 == menuViewController2)
       {
         [(ZWRootViewController *)self _dismissMenuAnimated:1];
       }
@@ -7225,20 +7225,20 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
       [(ZWRootViewController *)self _toggleZoomStandby];
       break;
     case 1:
-      v4 = [(ZWRootViewController *)self presentedViewController];
-      v5 = [(ZWRootViewController *)self menuViewController];
+      presentedViewController3 = [(ZWRootViewController *)self presentedViewController];
+      menuViewController3 = [(ZWRootViewController *)self menuViewController];
 
-      if (v4 != v5)
+      if (presentedViewController3 != menuViewController3)
       {
-        v6 = [(ZWRootViewController *)self activeLensViewController];
-        v7 = [(ZWRootViewController *)self pipLensViewController];
-        v8 = v7;
-        if (v6 == v7)
+        activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+        pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+        v8 = pipLensViewController;
+        if (activeLensViewController == pipLensViewController)
         {
-          v23 = [(ZWRootViewController *)self pipLensViewController];
-          v24 = [v23 isInLensResizingMode];
+          pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+          isInLensResizingMode = [pipLensViewController2 isInLensResizingMode];
 
-          if (v24)
+          if (isInLensResizingMode)
           {
             [(ZWRootViewController *)self toggleLensResizeModeWithMenuViewController:0];
           }
@@ -7248,9 +7248,9 @@ void __53__ZWRootViewController_autopanner_didAutopanByDelta___block_invoke(uint
         {
         }
 
-        v26 = [(ZWRootViewController *)self slugViewController];
-        v25 = [v26 slugRingView];
-        [(ZWRootViewController *)self _presentMenuWithAnchorView:v25 animated:1 ignoreCooldown:0];
+        slugViewController = [(ZWRootViewController *)self slugViewController];
+        slugRingView = [slugViewController slugRingView];
+        [(ZWRootViewController *)self _presentMenuWithAnchorView:slugRingView animated:1 ignoreCooldown:0];
 
 LABEL_31:
 
@@ -7264,12 +7264,12 @@ LABEL_31:
   }
 }
 
-- (void)slugWasSingleTappedWithSlugViewController:(id)a3
+- (void)slugWasSingleTappedWithSlugViewController:(id)controller
 {
   v4 = +[AXSpeakFingerManager sharedInstance];
-  v5 = [v4 speakFingerState];
+  speakFingerState = [v4 speakFingerState];
 
-  if (v5 == &dword_0 + 2)
+  if (speakFingerState == &dword_0 + 2)
   {
     v6 = +[AXSettings sharedInstance];
     -[ZWRootViewController _handleSlugAction:](self, "_handleSlugAction:", [v6 zoomSlugSingleTapAction]);
@@ -7282,122 +7282,122 @@ LABEL_31:
   }
 }
 
-- (void)slugWasDoubleTappedWithSlugViewController:(id)a3
+- (void)slugWasDoubleTappedWithSlugViewController:(id)controller
 {
   v4 = +[AXSettings sharedInstance];
   -[ZWRootViewController _handleSlugAction:](self, "_handleSlugAction:", [v4 zoomSlugDoubleTapAction]);
 }
 
-- (void)slugWasTripleTappedWithSlugViewController:(id)a3
+- (void)slugWasTripleTappedWithSlugViewController:(id)controller
 {
   v4 = +[AXSettings sharedInstance];
   -[ZWRootViewController _handleSlugAction:](self, "_handleSlugAction:", [v4 zoomSlugTripleTapAction]);
 }
 
-- (BOOL)shouldBeginAutopanningLensWithSlugViewController:(id)a3
+- (BOOL)shouldBeginAutopanningLensWithSlugViewController:(id)controller
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  return v4 ^ 1;
+  return inStandbyMode ^ 1;
 }
 
-- (void)wantsToStartAutopannerWithSlugViewController:(id)a3
+- (void)wantsToStartAutopannerWithSlugViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self lensAutopanner];
-  [v5 setDataSource:v4];
+  controllerCopy = controller;
+  lensAutopanner = [(ZWRootViewController *)self lensAutopanner];
+  [lensAutopanner setDataSource:controllerCopy];
 
-  v6 = [(ZWRootViewController *)self lensAutopanner];
-  [v6 start];
+  lensAutopanner2 = [(ZWRootViewController *)self lensAutopanner];
+  [lensAutopanner2 start];
 }
 
-- (void)wantsToStopAutopannerWithSlugViewController:(id)a3
+- (void)wantsToStopAutopannerWithSlugViewController:(id)controller
 {
-  v4 = [(ZWRootViewController *)self lensAutopanner];
-  [v4 stop];
+  lensAutopanner = [(ZWRootViewController *)self lensAutopanner];
+  [lensAutopanner stop];
 
-  v5 = [(ZWRootViewController *)self lensAutopanner];
-  [v5 setDataSource:0];
+  lensAutopanner2 = [(ZWRootViewController *)self lensAutopanner];
+  [lensAutopanner2 setDataSource:0];
 
   [(ZWRootViewController *)self _updateSystemGestureDisablingAssertions];
 }
 
-- (BOOL)shouldShowSlugWithSlugViewController:(id)a3
+- (BOOL)shouldShowSlugWithSlugViewController:(id)controller
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 userIsMovingLens];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  userIsMovingLens = [activeLensViewController userIsMovingLens];
 
-  return v4 ^ 1;
+  return userIsMovingLens ^ 1;
 }
 
-- (BOOL)attemptOrbZoomIfAppropriateWithSlugViewController:(id)a3
+- (BOOL)attemptOrbZoomIfAppropriateWithSlugViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self activeLensViewController];
-  v6 = [v5 inStandbyMode];
+  controllerCopy = controller;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if (v6)
+  if (inStandbyMode)
   {
-    v7 = [(ZWRootViewController *)self view];
-    v8 = [v4 view];
-    [v8 center];
-    [v7 zw_convertPointToScreenCoordinates:?];
+    view = [(ZWRootViewController *)self view];
+    view2 = [controllerCopy view];
+    [view2 center];
+    [view zw_convertPointToScreenCoordinates:?];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(ZWRootViewController *)self screen];
-    [v13 scale];
+    screen = [(ZWRootViewController *)self screen];
+    [screen scale];
     v15 = v10 * v14;
 
-    v16 = [(ZWRootViewController *)self screen];
-    [v16 scale];
+    screen2 = [(ZWRootViewController *)self screen];
+    [screen2 scale];
     v18 = v12 * v17;
 
     *(&self->_eventUIContext + 148) |= 0x800u;
     [(ZWRootViewController *)self fullscreenEventHandler:0 didStartOrbAtLocation:v15, v18];
   }
 
-  return v6;
+  return inStandbyMode;
 }
 
-- (void)updateOrbZoomAtPoint:(CGPoint)a3 withSlugViewController:(id)a4
+- (void)updateOrbZoomAtPoint:(CGPoint)point withSlugViewController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(ZWRootViewController *)self view];
-  [v7 zw_convertPointToScreenCoordinates:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(ZWRootViewController *)self view];
+  [view zw_convertPointToScreenCoordinates:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ZWRootViewController *)self screen];
-  [v12 scale];
+  screen = [(ZWRootViewController *)self screen];
+  [screen scale];
   v14 = v9 * v13;
 
-  v15 = [(ZWRootViewController *)self screen];
-  [v15 scale];
+  screen2 = [(ZWRootViewController *)self screen];
+  [screen2 scale];
   v17 = v11 * v16;
 
   [(ZWRootViewController *)self fullscreenEventHandler:0 updateOrbMovementAtLocation:v14, v17];
 }
 
-- (void)endOrbZoomWithSlugViewController:(id)a3
+- (void)endOrbZoomWithSlugViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self view];
-  v6 = [v4 view];
+  controllerCopy = controller;
+  view = [(ZWRootViewController *)self view];
+  view2 = [controllerCopy view];
 
-  [v6 center];
-  [v5 zw_convertPointToScreenCoordinates:?];
+  [view2 center];
+  [view zw_convertPointToScreenCoordinates:?];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(ZWRootViewController *)self screen];
-  [v11 scale];
+  screen = [(ZWRootViewController *)self screen];
+  [screen scale];
   v13 = v8 * v12;
 
-  v14 = [(ZWRootViewController *)self screen];
-  [v14 scale];
+  screen2 = [(ZWRootViewController *)self screen];
+  [screen2 scale];
   v16 = v10 * v15;
 
   *(&self->_eventUIContext + 148) &= ~0x800u;
@@ -7405,24 +7405,24 @@ LABEL_31:
   [(ZWRootViewController *)self fullscreenEventHandler:0 didEndOrbAtLocation:v13, v16];
 }
 
-- (void)zoomLensViewController:(id)a3 didMoveLens:(id)a4 withDelta:(CGPoint)a5
+- (void)zoomLensViewController:(id)controller didMoveLens:(id)lens withDelta:(CGPoint)delta
 {
-  x = a5.x;
-  y = a5.y;
-  v13 = a3;
+  x = delta.x;
+  y = delta.y;
+  controllerCopy = controller;
   v6.f64[0] = x;
   v6.f64[1] = y;
   self->_lensDeltaSinceInitialMove = vaddq_f64(v6, self->_lensDeltaSinceInitialMove);
-  v7 = [(ZWRootViewController *)self pipLensViewController];
-  if (v7 == v13)
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if (pipLensViewController == controllerCopy)
   {
-    v8 = [v13 isInLensResizingMode];
+    isInLensResizingMode = [controllerCopy isInLensResizingMode];
 
-    if (v8)
+    if (isInLensResizingMode)
     {
-      if ([v13 activeResizeHandle] == &dword_0 + 1)
+      if ([controllerCopy activeResizeHandle] == &dword_0 + 1)
       {
-        [(ZWRootViewController *)self _moveZoomItemWithController:v13 byDelta:0 animated:1 userInitiated:x, y];
+        [(ZWRootViewController *)self _moveZoomItemWithController:controllerCopy byDelta:0 animated:1 userInitiated:x, y];
 LABEL_10:
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
         goto LABEL_12;
@@ -7438,12 +7438,12 @@ LABEL_9:
   {
   }
 
-  v9 = [(ZWRootViewController *)self dockedLensViewController];
-  if (v9 == v13)
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  if (dockedLensViewController == controllerCopy)
   {
-    v10 = [v13 isInDockResizingMode];
+    isInDockResizingMode = [controllerCopy isInDockResizingMode];
 
-    if (!v10)
+    if (!isInDockResizingMode)
     {
       goto LABEL_11;
     }
@@ -7452,79 +7452,79 @@ LABEL_9:
   }
 
 LABEL_11:
-  [(ZWRootViewController *)self _moveZoomItemWithController:v13 byDelta:0 animated:1 userInitiated:x, y];
+  [(ZWRootViewController *)self _moveZoomItemWithController:controllerCopy byDelta:0 animated:1 userInitiated:x, y];
 LABEL_12:
 }
 
-- (void)dockedLensViewController:(id)a3 zoomRegionVisibilityWasChanged:(BOOL)a4
+- (void)dockedLensViewController:(id)controller zoomRegionVisibilityWasChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  changedCopy = changed;
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __80__ZWRootViewController_dockedLensViewController_zoomRegionVisibilityWasChanged___block_invoke;
   v8[3] = &unk_78BD0;
   v8[4] = self;
-  v9 = v4;
-  dispatch_sync(v6, v8);
+  v9 = changedCopy;
+  dispatch_sync(cachedValuesSerialQueue, v8);
 
-  v7 = [(ZWRootViewController *)self axuiService];
-  [v7 notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:v4];
+  axuiService = [(ZWRootViewController *)self axuiService];
+  [axuiService notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:changedCopy];
 }
 
-- (BOOL)userIsInteractingWithSlugWithDockedLensViewController:(id)a3
+- (BOOL)userIsInteractingWithSlugWithDockedLensViewController:(id)controller
 {
-  v3 = [(ZWRootViewController *)self slugViewController];
-  v4 = [v3 userIsInteractingWithSlug];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  userIsInteractingWithSlug = [slugViewController userIsInteractingWithSlug];
 
-  return v4;
+  return userIsInteractingWithSlug;
 }
 
-- (void)updateDockedZoomRegionVisibility:(BOOL)a3
+- (void)updateDockedZoomRegionVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  v5 = [(ZWRootViewController *)self dockedLensViewController];
-  v6 = [v5 zoomRegionVisible];
+  visibilityCopy = visibility;
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  zoomRegionVisible = [dockedLensViewController zoomRegionVisible];
 
-  if (v6 != v3)
+  if (zoomRegionVisible != visibilityCopy)
   {
-    v7 = [(ZWRootViewController *)self dockedLensViewController];
-    [v7 toggleZoomRegionVisibility];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController2 toggleZoomRegionVisibility];
   }
 }
 
-- (void)menuViewController:(id)a3 finishedAdjustingZoomFactor:(double)a4
+- (void)menuViewController:(id)controller finishedAdjustingZoomFactor:(double)factor
 {
-  v7 = a3;
-  if (![(ZWRootViewController *)self _isZoomFactorAtMinimum:a4])
+  controllerCopy = controller;
+  if (![(ZWRootViewController *)self _isZoomFactorAtMinimum:factor])
   {
     v6 = +[ZWCoalescedSettings sharedInstance];
-    [v6 setZoomFactor:a4];
+    [v6 setZoomFactor:factor];
   }
 
-  [(ZWRootViewController *)self menuViewController:v7 adjustZoomFactor:0 animated:a4];
+  [(ZWRootViewController *)self menuViewController:controllerCopy adjustZoomFactor:0 animated:factor];
 }
 
-- (void)menuViewController:(id)a3 adjustZoomFactor:(double)a4 animated:(BOOL)a5
+- (void)menuViewController:(id)controller adjustZoomFactor:(double)factor animated:(BOOL)animated
 {
-  v5 = a5;
-  [(ZWRootViewController *)self _updateZoomFactor:a5 animated:?];
-  v14 = [(ZWRootViewController *)self activeLensViewController];
-  v8 = [(ZWRootViewController *)self dockedLensViewController];
-  if (v14 == v8)
+  animatedCopy = animated;
+  [(ZWRootViewController *)self _updateZoomFactor:animated animated:?];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  if (activeLensViewController == dockedLensViewController)
   {
-    v9 = [(ZWRootViewController *)self dockedLensViewController];
-    v10 = [v9 zoomRegionVisible];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    zoomRegionVisible = [dockedLensViewController2 zoomRegionVisible];
 
-    if (!v10)
+    if (!zoomRegionVisible)
     {
       return;
     }
 
-    v14 = [(ZWRootViewController *)self dockedLensViewController];
-    v8 = [(ZWRootViewController *)self dockedLensViewController];
-    [v8 zoomPanOffset];
-    if (v5)
+    activeLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+    [dockedLensViewController zoomPanOffset];
+    if (animatedCopy)
     {
       v13 = 0.3;
     }
@@ -7534,36 +7534,36 @@ LABEL_12:
       v13 = -1.0;
     }
 
-    [v14 updateZoomFactor:v5 panOffset:0 animated:a4 animationDuration:v11 completion:{v12, v13}];
+    [activeLensViewController updateZoomFactor:animatedCopy panOffset:0 animated:factor animationDuration:v11 completion:{v12, v13}];
   }
 }
 
-- (void)menuViewController:(id)a3 didChooseLensEffect:(id)a4
+- (void)menuViewController:(id)controller didChooseLensEffect:(id)effect
 {
-  v17 = a4;
+  effectCopy = effect;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 zoomCurrentLensEffect];
-  v7 = [v6 isEqualToString:v17];
+  zoomCurrentLensEffect = [v5 zoomCurrentLensEffect];
+  v7 = [zoomCurrentLensEffect isEqualToString:effectCopy];
 
   if ((v7 & 1) == 0)
   {
     v8 = +[AXSettings sharedInstance];
-    [v8 setZoomCurrentLensEffect:v17];
+    [v8 setZoomCurrentLensEffect:effectCopy];
   }
 
-  v9 = [(ZWRootViewController *)self activeLensViewController];
-  if ([v9 inStandbyMode])
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  if ([activeLensViewController inStandbyMode])
   {
-    v10 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
     pipLensViewController = self->_pipLensViewController;
 
-    if (v10 == pipLensViewController)
+    if (activeLensViewController2 == pipLensViewController)
     {
-      v12 = [(ZWRootViewController *)self activeLensViewController];
+      activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
       [(ZWRootViewController *)self zoomFactor];
       v14 = v13;
       [(ZWRootViewController *)self zoomPanOffset];
-      [v12 updateStandbyMode:0 zoomFactor:v17 panOffset:1 lensEffect:0 animated:v14 completion:{v15, v16}];
+      [activeLensViewController3 updateStandbyMode:0 zoomFactor:effectCopy panOffset:1 lensEffect:0 animated:v14 completion:{v15, v16}];
       goto LABEL_8;
     }
   }
@@ -7572,86 +7572,86 @@ LABEL_12:
   {
   }
 
-  v12 = [(ZWRootViewController *)self activeLensViewController];
-  [v12 updateLensEffect:v17 animated:1 completion:0];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController3 updateLensEffect:effectCopy animated:1 completion:0];
 LABEL_8:
 }
 
-- (void)menuViewController:(id)a3 didChooseZoomMode:(id)a4 withCompletion:(id)a5
+- (void)menuViewController:(id)controller didChooseZoomMode:(id)mode withCompletion:(id)completion
 {
-  v11 = a4;
-  v6 = a5;
+  modeCopy = mode;
+  completionCopy = completion;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 zoomCurrentLensMode];
-  v9 = [v8 isEqualToString:v11];
+  zoomCurrentLensMode = [v7 zoomCurrentLensMode];
+  v9 = [zoomCurrentLensMode isEqualToString:modeCopy];
 
   if ((v9 & 1) == 0)
   {
     v10 = +[AXSettings sharedInstance];
-    [v10 setZoomPreferredCurrentLensMode:v11];
+    [v10 setZoomPreferredCurrentLensMode:modeCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)menuViewController:(id)a3 didChooseDockPosition:(id)a4 withCompletion:(id)a5
+- (void)menuViewController:(id)controller didChooseDockPosition:(id)position withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(ZWRootViewController *)self dockedLensViewController];
-  [v9 setDockPositionIsTransitioning:1];
+  positionCopy = position;
+  completionCopy = completion;
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  [dockedLensViewController setDockPositionIsTransitioning:1];
 
   +[CATransaction begin];
-  [CATransaction setCompletionBlock:v8];
+  [CATransaction setCompletionBlock:completionCopy];
 
   v10 = +[AXSettings sharedInstance];
-  v11 = [v10 zoomPreferredCurrentDockPosition];
-  v12 = [v11 isEqualToString:v7];
+  zoomPreferredCurrentDockPosition = [v10 zoomPreferredCurrentDockPosition];
+  v12 = [zoomPreferredCurrentDockPosition isEqualToString:positionCopy];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [(ZWRootViewController *)self activeLensViewController];
-    v14 = [v13 inStandbyMode];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode = [activeLensViewController inStandbyMode];
 
-    if (v14)
+    if (inStandbyMode)
     {
-      v15 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCompletion___block_invoke_5;
       v28[3] = &unk_78D00;
       v28[4] = self;
-      [v15 transitionToDockPosition:v7 completion:v28];
+      [dockedLensViewController2 transitionToDockPosition:positionCopy completion:v28];
     }
 
     else
     {
-      v16 = [(ZWRootViewController *)self activeLensViewController];
-      v17 = [(ZWRootViewController *)self activeLensViewController];
-      [v17 zoomFactor];
+      activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+      activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController3 zoomFactor];
       v19 = v18;
-      v20 = [(ZWRootViewController *)self activeLensViewController];
-      [v20 zoomPanOffset];
+      activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController4 zoomPanOffset];
       v22 = v21;
       v24 = v23;
       v25 = +[AXSettings sharedInstance];
-      v26 = [v25 zoomCurrentLensEffect];
+      zoomCurrentLensEffect = [v25 zoomCurrentLensEffect];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCompletion___block_invoke;
       v29[3] = &unk_79170;
       v29[4] = self;
-      v30 = v7;
-      [v16 updateStandbyMode:1 zoomFactor:v26 panOffset:1 lensEffect:v29 animated:v19 completion:{v22, v24}];
+      v30 = positionCopy;
+      [activeLensViewController2 updateStandbyMode:1 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v29 animated:v19 completion:{v22, v24}];
 
-      v15 = v30;
+      dockedLensViewController2 = v30;
     }
 
     v27 = +[AXSettings sharedInstance];
-    [v27 setZoomPreferredCurrentDockPosition:v7];
+    [v27 setZoomPreferredCurrentDockPosition:positionCopy];
   }
 
   +[CATransaction commit];
@@ -7731,22 +7731,22 @@ void __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCom
   *(*(a1 + 32) + 352) = [v2 dockPosition];
 }
 
-- (BOOL)toggleSlugVisibilityWithMenuViewController:(id)a3
+- (BOOL)toggleSlugVisibilityWithMenuViewController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomShouldShowSlug];
-  v5 = v4;
-  [v3 setZoomShouldShowSlug:v4 ^ 1];
+  zoomShouldShowSlug = [v3 zoomShouldShowSlug];
+  v5 = zoomShouldShowSlug;
+  [v3 setZoomShouldShowSlug:zoomShouldShowSlug ^ 1];
 
   return v5 ^ 1;
 }
 
-- (BOOL)togglePeekZoomWithMenuViewController:(id)a3
+- (BOOL)togglePeekZoomWithMenuViewController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomPeekZoomEnabled];
-  v5 = v4;
-  [v3 setZoomPeekZoomEnabled:v4 ^ 1];
+  zoomPeekZoomEnabled = [v3 zoomPeekZoomEnabled];
+  v5 = zoomPeekZoomEnabled;
+  [v3 setZoomPeekZoomEnabled:zoomPeekZoomEnabled ^ 1];
 
   return v5 ^ 1;
 }
@@ -7754,11 +7754,11 @@ void __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCom
 - (void)_exitStandbyIfNecessary
 {
   v3 = +[ZWCoalescedSettings sharedInstance];
-  v4 = [v3 zoomInStandby];
+  zoomInStandby = [v3 zoomInStandby];
 
-  if (v4)
+  if (zoomInStandby)
   {
-    v5 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
     v6 = +[ZWCoalescedSettings sharedInstance];
     [v6 zoomFactor];
     v8 = v7;
@@ -7766,17 +7766,17 @@ void __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCom
     v10 = v9;
     v12 = v11;
     v13 = +[AXSettings sharedInstance];
-    v14 = [v13 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v13 zoomCurrentLensEffect];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __47__ZWRootViewController__exitStandbyIfNecessary__block_invoke;
     v15[3] = &unk_78D00;
     v15[4] = self;
-    [v5 updateStandbyMode:0 zoomFactor:v14 panOffset:1 lensEffect:v15 animated:v8 completion:{v10, v12}];
+    [activeLensViewController updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v15 animated:v8 completion:{v10, v12}];
   }
 }
 
-- (void)toggleLensVisibilityWithMenuViewController:(id)a3
+- (void)toggleLensVisibilityWithMenuViewController:(id)controller
 {
   [(ZWRootViewController *)self zoomPanOffset];
   v5 = v4;
@@ -7787,89 +7787,89 @@ void __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCom
 
   [(ZWRootViewController *)self _dismissMenuAnimated:1];
   v11 = +[AXSettings sharedInstance];
-  v12 = [v11 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v11 zoomCurrentLensEffect];
 
   v13 = +[ZWCoalescedSettings sharedInstance];
-  v14 = [v13 zoomInStandby];
+  zoomInStandby = [v13 zoomInStandby];
 
   v15 = +[ZWCoalescedSettings sharedInstance];
-  [v15 setZoomInStandby:v14 ^ 1];
+  [v15 setZoomInStandby:zoomInStandby ^ 1];
 
   [(ZWRootViewController *)self setZoomFactor:v10];
-  v16 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = __67__ZWRootViewController_toggleLensVisibilityWithMenuViewController___block_invoke;
   v18[3] = &unk_78D00;
   v18[4] = self;
-  [v16 updateStandbyMode:v14 ^ 1 zoomFactor:v12 panOffset:1 lensEffect:v18 animated:v10 completion:{v5, v7}];
+  [activeLensViewController updateStandbyMode:zoomInStandby ^ 1 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v18 animated:v10 completion:{v5, v7}];
 
-  v17 = [(ZWRootViewController *)self kbContext];
-  [v17 keyboardFrame];
+  kbContext = [(ZWRootViewController *)self kbContext];
+  [kbContext keyboardFrame];
   [(ZWRootViewController *)self _updateKeyboardFrame:?];
 }
 
-- (void)toggleLensResizeModeWithMenuViewController:(id)a3
+- (void)toggleLensResizeModeWithMenuViewController:(id)controller
 {
   [(ZWRootViewController *)self _dismissMenuAnimated:1];
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v4 == v5)
+  if (activeLensViewController == pipLensViewController)
   {
-    v6 = [(ZWRootViewController *)self pipLensViewController];
-    v7 = [v6 isInLensResizingMode];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    isInLensResizingMode = [pipLensViewController2 isInLensResizingMode];
 
-    [(ZWRootViewController *)self _setPIPLensResizingEnabled:v7 ^ 1];
+    [(ZWRootViewController *)self _setPIPLensResizingEnabled:isInLensResizingMode ^ 1];
 
     [(ZWRootViewController *)self _exitStandbyIfNecessary];
   }
 }
 
-- (BOOL)inFullscreenModeForMenuViewController:(id)a3
+- (BOOL)inFullscreenModeForMenuViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [(ZWRootViewController *)v3 fullscreenLensViewController];
-  LOBYTE(v3) = v4 == v5;
+  selfCopy = self;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)selfCopy fullscreenLensViewController];
+  LOBYTE(selfCopy) = activeLensViewController == fullscreenLensViewController;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)inPIPModeForMenuViewController:(id)a3
+- (BOOL)inPIPModeForMenuViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [(ZWRootViewController *)v3 pipLensViewController];
-  LOBYTE(v3) = v4 == v5;
+  selfCopy = self;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)selfCopy pipLensViewController];
+  LOBYTE(selfCopy) = activeLensViewController == pipLensViewController;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)inDockedModeForMenuViewController:(id)a3
+- (BOOL)inDockedModeForMenuViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [(ZWRootViewController *)v3 dockedLensViewController];
-  LOBYTE(v3) = v4 == v5;
+  selfCopy = self;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)selfCopy dockedLensViewController];
+  LOBYTE(selfCopy) = activeLensViewController == dockedLensViewController;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)inStandByForMenuViewController:(id)a3
+- (BOOL)inStandByForMenuViewController:(id)controller
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  return v4;
+  return inStandbyMode;
 }
 
-- (double)zoomFactorForMenuViewController:(id)a3
+- (double)zoomFactorForMenuViewController:(id)controller
 {
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [v4 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if (v5)
+  if (inStandbyMode)
   {
     return AXZoomMinimumZoomLevel;
   }
@@ -7878,22 +7878,22 @@ void __80__ZWRootViewController_menuViewController_didChooseDockPosition_withCom
   return result;
 }
 
-- (void)menuDidAppear:(id)a3
+- (void)menuDidAppear:(id)appear
 {
-  v4 = a3;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  appearCopy = appear;
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = __38__ZWRootViewController_menuDidAppear___block_invoke;
   v11 = &unk_79170;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  dispatch_sync(v5, &v8);
+  selfCopy = self;
+  v13 = appearCopy;
+  v6 = appearCopy;
+  dispatch_sync(cachedValuesSerialQueue, &v8);
 
-  LODWORD(v5) = UIAccessibilityLayoutChangedNotification;
-  v7 = [v6 view];
-  UIAccessibilityPostNotification(v5, v7);
+  LODWORD(cachedValuesSerialQueue) = UIAccessibilityLayoutChangedNotification;
+  view = [v6 view];
+  UIAccessibilityPostNotification(cachedValuesSerialQueue, view);
 
   [(ZWRootViewController *)self _setPIPLensResizingEnabled:0];
   [(ZWRootViewController *)self _setDockResizingEnabled:0];
@@ -7910,14 +7910,14 @@ void __38__ZWRootViewController_menuDidAppear___block_invoke(uint64_t a1)
   v1[15] = v5;
 }
 
-- (void)externalClientSetZoomFactor:(double)a3
+- (void)externalClientSetZoomFactor:(double)factor
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __52__ZWRootViewController_externalClientSetZoomFactor___block_invoke;
   v7[3] = &unk_78E98;
   v7[4] = self;
-  *&v7[5] = a3;
+  *&v7[5] = factor;
   v4 = objc_retainBlock(v7);
   v5 = v4;
   if (self->_inUnitTestingMode)
@@ -7947,10 +7947,10 @@ id __52__ZWRootViewController_externalClientSetZoomFactor___block_invoke(uint64_
   return [v5 menuViewController:0 adjustZoomFactor:1 animated:v3];
 }
 
-- (void)externalClientSetZoomPanOffset:(CGPoint)a3
+- (void)externalClientSetZoomPanOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(ZWRootViewController *)self zoomPanOffset];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -7986,12 +7986,12 @@ void __55__ZWRootViewController_externalClientSetZoomPanOffset___block_invoke(ui
   }
 }
 
-- (void)externalClientWantsToAutopan:(CGPoint)a3 withPanningStyle:(unint64_t)a4
+- (void)externalClientWantsToAutopan:(CGPoint)autopan withPanningStyle:(unint64_t)style
 {
-  v5 = [(ZWRootViewController *)self activeLensViewController];
-  v6 = [v5 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if ((v6 & 1) == 0)
+  if ((inStandbyMode & 1) == 0)
   {
     [(ZWRootViewController *)self zoomFrame];
     AXPerformBlockAsynchronouslyOnMainThread();
@@ -8097,19 +8097,19 @@ LABEL_10:
   [v61 zoomMovementDidEnd];
 }
 
-- (CGRect)zoomFrameForPanningContinuouslyToPoint:(CGPoint)a3 zoomFactor:(double)a4
+- (CGRect)zoomFrameForPanningContinuouslyToPoint:(CGPoint)point zoomFactor:(double)factor
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [v8 inStandbyMode];
+  y = point.y;
+  x = point.x;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
   v10 = 1.0;
-  if ((v9 & 1) == 0)
+  if ((inStandbyMode & 1) == 0)
   {
     [(ZWRootViewController *)self zoomFactor];
   }
 
-  v11 = v10 / a4;
+  v11 = v10 / factor;
 
   [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
   v13 = v12;
@@ -8126,7 +8126,7 @@ LABEL_10:
   return result;
 }
 
-- ($2F34F6A4A708D3F7715AC605E075D30F)currentUIContextForEventProcessor:(SEL)a3
+- ($2F34F6A4A708D3F7715AC605E075D30F)currentUIContextForEventProcessor:(SEL)processor
 {
   v6 = a4;
   v13 = 0;
@@ -8154,26 +8154,26 @@ LABEL_10:
   v35 = 0u;
   if (self->_inStandbyForFluidSwitcherGesture)
   {
-    v7 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+    cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __58__ZWRootViewController_currentUIContextForEventProcessor___block_invoke;
     block[3] = &unk_79310;
     block[4] = self;
     block[5] = &v13;
-    dispatch_sync(v7, block);
+    dispatch_sync(cachedValuesSerialQueue, block);
   }
 
   else
   {
-    v8 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+    cachedValuesSerialQueue2 = [(ZWRootViewController *)self cachedValuesSerialQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __58__ZWRootViewController_currentUIContextForEventProcessor___block_invoke_2;
     v11[3] = &unk_79310;
     v11[4] = self;
     v11[5] = &v13;
-    dispatch_sync(v8, v11);
+    dispatch_sync(cachedValuesSerialQueue2, v11);
 
     v9 = v14;
     if ((v14[41] & 0x80) != 0)
@@ -8189,21 +8189,21 @@ LABEL_10:
   return result;
 }
 
-- (int64_t)currentInterfaceOrientationForEventProcessor:(id)a3
+- (int64_t)currentInterfaceOrientationForEventProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __69__ZWRootViewController_currentInterfaceOrientationForEventProcessor___block_invoke;
   v8[3] = &unk_79310;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(cachedValuesSerialQueue, v8);
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -8211,22 +8211,22 @@ LABEL_10:
   return v6;
 }
 
-- (CGSize)currentScreenSizeForEventProcessor:(id)a3
+- (CGSize)currentScreenSizeForEventProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3010000000;
   v14 = &unk_6F53D;
   v15 = CGSizeZero;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __59__ZWRootViewController_currentScreenSizeForEventProcessor___block_invoke;
   v10[3] = &unk_79310;
   v10[4] = self;
   v10[5] = &v11;
-  dispatch_sync(v5, v10);
+  dispatch_sync(cachedValuesSerialQueue, v10);
 
   v6 = v12[4];
   v7 = v12[5];
@@ -8246,21 +8246,21 @@ __n128 __59__ZWRootViewController_currentScreenSizeForEventProcessor___block_inv
   return result;
 }
 
-- (unsigned)currentWindowContextIdForEventProcessor:(id)a3
+- (unsigned)currentWindowContextIdForEventProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __64__ZWRootViewController_currentWindowContextIdForEventProcessor___block_invoke;
   v7[3] = &unk_79310;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v5, v7);
+  dispatch_sync(cachedValuesSerialQueue, v7);
 
   LODWORD(self) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -8268,21 +8268,21 @@ __n128 __59__ZWRootViewController_currentScreenSizeForEventProcessor___block_inv
   return self;
 }
 
-- (unsigned)currentDisplayIdForEventProcessor:(id)a3
+- (unsigned)currentDisplayIdForEventProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __58__ZWRootViewController_currentDisplayIdForEventProcessor___block_invoke;
   v7[3] = &unk_79310;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v5, v7);
+  dispatch_sync(cachedValuesSerialQueue, v7);
 
   LODWORD(self) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -8290,14 +8290,14 @@ __n128 __59__ZWRootViewController_currentScreenSizeForEventProcessor___block_inv
   return self;
 }
 
-- (void)eventProcessor:(id)a3 didGetFirstTouchAtLocation:(CGPoint)a4
+- (void)eventProcessor:(id)processor didGetFirstTouchAtLocation:(CGPoint)location
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __66__ZWRootViewController_eventProcessor_didGetFirstTouchAtLocation___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v5 = a4;
+  locationCopy = location;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -8325,22 +8325,22 @@ void __66__ZWRootViewController_eventProcessor_didGetFirstTouchAtLocation___bloc
   [v11 userInteractionHasBecomeActiveWithFirstTouchAtLocation:?];
 }
 
-- (void)eventProcessor:(id)a3 didGetTouchInSpeakFingerMode:(CGPoint)a4 firstTouchWentIntoLens:(BOOL)a5
+- (void)eventProcessor:(id)processor didGetTouchInSpeakFingerMode:(CGPoint)mode firstTouchWentIntoLens:(BOOL)lens
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = [(ZWRootViewController *)self activeLensViewController];
-  v10 = [(ZWRootViewController *)self pipLensViewController];
-  if (v9 != v10 || v5)
+  lensCopy = lens;
+  y = mode.y;
+  x = mode.x;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if (activeLensViewController != pipLensViewController || lensCopy)
   {
     goto LABEL_6;
   }
 
-  v11 = [(ZWRootViewController *)self activeLensViewController];
-  v12 = [v11 inStandbyMode];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController2 inStandbyMode];
 
-  if ((v12 & 1) == 0)
+  if ((inStandbyMode & 1) == 0)
   {
     [(ZWRootViewController *)self _determineSuitableLensFrame];
     v20.x = x;
@@ -8349,9 +8349,9 @@ void __66__ZWRootViewController_eventProcessor_didGetFirstTouchAtLocation___bloc
     {
       self->_pipWasOnBeforeSpeakFingerStarted = 1;
       v13 = +[AXSettings sharedInstance];
-      v9 = [v13 zoomCurrentLensEffect];
+      activeLensViewController = [v13 zoomCurrentLensEffect];
 
-      v10 = [(ZWRootViewController *)self activeLensViewController];
+      pipLensViewController = [(ZWRootViewController *)self activeLensViewController];
       [(ZWRootViewController *)self zoomFactor];
       v15 = v14;
       [(ZWRootViewController *)self zoomPanOffset];
@@ -8360,7 +8360,7 @@ void __66__ZWRootViewController_eventProcessor_didGetFirstTouchAtLocation___bloc
       v19[2] = __91__ZWRootViewController_eventProcessor_didGetTouchInSpeakFingerMode_firstTouchWentIntoLens___block_invoke;
       v19[3] = &unk_78D00;
       v19[4] = self;
-      [v10 updateStandbyMode:1 zoomFactor:v9 panOffset:0 lensEffect:v19 animated:v15 completion:{v16, v17}];
+      [pipLensViewController updateStandbyMode:1 zoomFactor:activeLensViewController panOffset:0 lensEffect:v19 animated:v15 completion:{v16, v17}];
 LABEL_6:
     }
   }
@@ -8369,7 +8369,7 @@ LABEL_6:
   [v18 speakElementAtLocation:{x, y}];
 }
 
-- (BOOL)eventProcessor:(id)a3 didGetWheelEventWithDelta:(int64_t)a4
+- (BOOL)eventProcessor:(id)processor didGetWheelEventWithDelta:(int64_t)delta
 {
   [(ZWRootViewController *)self zoomFactor];
   if (v6 <= AXZoomMinimumZoomLevel)
@@ -8379,8 +8379,8 @@ LABEL_6:
 
   else
   {
-    v7 = [(ZWRootViewController *)self activeLensViewController];
-    v8 = [v7 inStandbyMode] ^ 1;
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    v8 = [activeLensViewController inStandbyMode] ^ 1;
   }
 
   v9 = self->_snarfingWheelEventsForZoom || [(ZWRootViewController *)self lastKeyboardCommand]== &dword_C + 2;
@@ -8425,7 +8425,7 @@ LABEL_13:
   v17[3] = &unk_79518;
   v18 = v9;
   v17[4] = self;
-  v17[5] = a4;
+  v17[5] = delta;
   v12 = objc_retainBlock(v17);
   v13 = v12;
   if (self->_inUnitTestingMode)
@@ -8470,14 +8470,14 @@ id __65__ZWRootViewController_eventProcessor_didGetWheelEventWithDelta___block_i
   return [v5 _updateMinimapStatus];
 }
 
-- (void)eventProcessor:(id)a3 didGetPanEventWithDelta:(int64_t)a4
+- (void)eventProcessor:(id)processor didGetPanEventWithDelta:(int64_t)delta
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __63__ZWRootViewController_eventProcessor_didGetPanEventWithDelta___block_invoke;
   v4[3] = &unk_78E98;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = delta;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -8495,15 +8495,15 @@ id __63__ZWRootViewController_eventProcessor_didGetPanEventWithDelta___block_inv
 
 - (void)moveCursorToCurrentFakeCursorLocation
 {
-  v3 = [(ZWRootViewController *)self fakeLaserVC];
-  v4 = [v3 fingerController];
-  v5 = [v4 fingerContainerView];
-  v6 = [(ZWRootViewController *)self fakeLaserVC];
-  v7 = [v6 fingerController];
-  v8 = [v7 fingerModels];
-  v9 = [v8 firstObject];
-  [v9 location];
-  [v5 convertPoint:0 toView:?];
+  fakeLaserVC = [(ZWRootViewController *)self fakeLaserVC];
+  fingerController = [fakeLaserVC fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  fakeLaserVC2 = [(ZWRootViewController *)self fakeLaserVC];
+  fingerController2 = [fakeLaserVC2 fingerController];
+  fingerModels = [fingerController2 fingerModels];
+  firstObject = [fingerModels firstObject];
+  [firstObject location];
+  [fingerContainerView convertPoint:0 toView:?];
   v11 = v10;
   v13 = v12;
 
@@ -8512,16 +8512,16 @@ id __63__ZWRootViewController_eventProcessor_didGetPanEventWithDelta___block_inv
   v17 = v16;
   v22 = +[BKSMousePointerService sharedInstance];
   v18 = [BKSContextRelativePoint alloc];
-  v19 = [(ZWRootViewController *)self view];
-  v20 = [v19 window];
-  v21 = [v18 initWithPoint:objc_msgSend(v20 contextID:{"_contextId"), v15, v17}];
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  v21 = [v18 initWithPoint:objc_msgSend(window contextID:{"_contextId"), v15, v17}];
   [v22 setContextRelativePointerPosition:v21 onDisplay:0 withAnimationParameters:0 restrictingToPID:0xFFFFFFFFLL];
 }
 
-- (void)eventProcessor:(id)a3 didGetPointerEventAtLocation:(CGPoint)a4 withEventRep:(id)a5
+- (void)eventProcessor:(id)processor didGetPointerEventAtLocation:(CGPoint)location withEventRep:(id)rep
 {
-  v6 = a5;
-  v5 = v6;
+  repCopy = rep;
+  v5 = repCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -9019,31 +9019,31 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   [(ZWRootViewController *)self setScrollBeganWhileSnarfingScrolls:[(ZWRootViewController *)self lastKeyboardCommand]== &dword_C + 2];
   [(ZWRootViewController *)self setLastScrollTrapOffset:5000.0];
-  [v4 setContentOffset:{5000.0, 5000.0}];
+  [draggingCopy setContentOffset:{5000.0, 5000.0}];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v13 = a3;
+  scrollCopy = scroll;
   if ([(ZWRootViewController *)self scrollBeganWhileSnarfingScrolls])
   {
-    [v13 contentOffset];
+    [scrollCopy contentOffset];
     v5 = v4;
     [(ZWRootViewController *)self lastScrollTrapOffset];
     v7 = v5 - v6;
-    [v13 contentOffset];
+    [scrollCopy contentOffset];
     [(ZWRootViewController *)self setLastScrollTrapOffset:v8];
     v9 = +[BKSMousePointerService sharedInstance];
-    v10 = [v9 globalDevicePreferences];
-    v11 = [v10 enableNaturalScrolling];
+    globalDevicePreferences = [v9 globalDevicePreferences];
+    enableNaturalScrolling = [globalDevicePreferences enableNaturalScrolling];
 
     v12 = -v7;
-    if (v11)
+    if (enableNaturalScrolling)
     {
       v12 = v7;
     }
@@ -9052,15 +9052,15 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
   }
 }
 
-- (CGPoint)pointerLocationToZoomInToWithZoomFactor:(double)a3
+- (CGPoint)pointerLocationToZoomInToWithZoomFactor:(double)factor
 {
   [(ZWRootViewController *)self lastPointerLocation];
   v6 = v5;
   v8 = v7;
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 laserZoomPanningStyle];
+  laserZoomPanningStyle = [v9 laserZoomPanningStyle];
 
-  if (v10)
+  if (laserZoomPanningStyle)
   {
     v11 = v6;
     v12 = v8;
@@ -9068,7 +9068,7 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
 
   else
   {
-    [(ZWRootViewController *)self zoomFrameForPanningContinuouslyToPoint:v6 zoomFactor:v8, a3];
+    [(ZWRootViewController *)self zoomFrameForPanningContinuouslyToPoint:v6 zoomFactor:v8, factor];
 
     AX_CGRectGetCenter();
   }
@@ -9078,18 +9078,18 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
   return result;
 }
 
-- (void)_handleZoomWheelEventWithDelta:(int64_t)a3
+- (void)_handleZoomWheelEventWithDelta:(int64_t)delta
 {
-  v5 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   v6 = 1.0;
-  if (([v5 inStandbyMode] & 1) == 0)
+  if (([activeLensViewController inStandbyMode] & 1) == 0)
   {
     [(ZWRootViewController *)self zoomFactor];
     v6 = v7;
   }
 
   [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
-  v9 = v6 * (v8 / (v8 - a3));
+  v9 = v6 * (v8 / (v8 - delta));
   if (v9 < AXZoomMinimumZoomLevel)
   {
     v9 = AXZoomMinimumZoomLevel;
@@ -9098,13 +9098,13 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
   [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:v9];
   [(ZWRootViewController *)self pointerLocationToZoomInToWithZoomFactor:?];
   [ZWRootViewController zoomInToPoint:"zoomInToPoint:withZoomFactor:animated:" withZoomFactor:0 animated:?];
-  self->_lastWheelDelta = a3;
+  self->_lastWheelDelta = delta;
 }
 
-- (void)_handlePanWheelEventWithDelta:(int64_t)a3 animated:(BOOL)a4 animationDuration:(double)a5
+- (void)_handlePanWheelEventWithDelta:(int64_t)delta animated:(BOOL)animated animationDuration:(double)duration
 {
-  v5 = a4;
-  v7 = (a3 * 0.7);
+  animatedCopy = animated;
+  v7 = (delta * 0.7);
   lastWheelDelta = self->_lastWheelDelta;
   if (lastWheelDelta > 0.0 && v7 < 0 || (lastWheelDelta < 0.0 ? (v9 = v7 < 1) : (v9 = 1), !v9))
   {
@@ -9120,15 +9120,15 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
   v14 = v13;
   [(ZWRootViewController *)self zoomFactor];
   v16 = v15;
-  v17 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self zoomFactor];
-  [v17 maximumPanOffsetWithZoomFactor:?];
+  [activeLensViewController maximumPanOffsetWithZoomFactor:?];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(ZWRootViewController *)self activeLensViewController];
-  v23 = [v22 view];
-  [v23 bounds];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  view = [activeLensViewController2 view];
+  [view bounds];
   v25 = v24;
   [(ZWRootViewController *)self zoomFactor];
   v27 = v25 / v26 * 0.67;
@@ -9166,16 +9166,16 @@ BOOL __81__ZWRootViewController_eventProcessor_didGetPointerEventAtLocation_with
         {
           v43 = v34;
           v47 = +[AXElement systemWideElement];
-          v48 = [v47 systemApplication];
-          v49 = [v48 currentApplications];
-          v68 = [v49 firstObject];
+          systemApplication = [v47 systemApplication];
+          currentApplications = [systemApplication currentApplications];
+          firstObject = [currentApplications firstObject];
 
-          v50 = [v68 uiElement];
+          uiElement = [firstObject uiElement];
           v73 = @"scrollAmount";
           v51 = [NSNumber numberWithDouble:v28 * v43];
           v74 = v51;
           v52 = [NSDictionary dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-          v53 = [v50 performAXAction:2047 withValue:v52];
+          v53 = [uiElement performAXAction:2047 withValue:v52];
 
           if (!v53)
           {
@@ -9251,16 +9251,16 @@ LABEL_50:
     {
       v46 = v34;
       v61 = +[AXElement systemWideElement];
-      v62 = [v61 systemApplication];
-      v63 = [v62 currentApplications];
-      v68 = [v63 firstObject];
+      systemApplication2 = [v61 systemApplication];
+      currentApplications2 = [systemApplication2 currentApplications];
+      firstObject = [currentApplications2 firstObject];
 
-      v64 = [v68 uiElement];
+      uiElement2 = [firstObject uiElement];
       v71 = @"scrollAmount";
       v65 = [NSNumber numberWithDouble:-(v46 * v28)];
       v72 = v65;
       v66 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-      v67 = [v64 performAXAction:2047 withValue:v66];
+      v67 = [uiElement2 performAXAction:2047 withValue:v66];
 
       if (!v67)
       {
@@ -9280,9 +9280,9 @@ LABEL_38:
     goto LABEL_53;
   }
 
-  v29 = [(ZWRootViewController *)self activeLensViewController];
-  v30 = [v29 view];
-  [v30 bounds];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  view2 = [activeLensViewController3 view];
+  [view2 bounds];
   v32 = v27 / v31;
 
   v12 = v12 - v10 * 4.0;
@@ -9321,27 +9321,27 @@ LABEL_55:
   }
 
 LABEL_56:
-  v54 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self mirrorPanOffsetForRTLIfNecessary:v12, v14];
-  [v54 validPanOffsetForProposedOffset:? proposedZoomFactor:?];
+  [activeLensViewController4 validPanOffsetForProposedOffset:? proposedZoomFactor:?];
   v56 = v55;
   v58 = v57;
 
-  v59 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
   [(ZWRootViewController *)self mirrorPanOffsetForRTLIfNecessary:v12, v14];
-  [v59 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:? useFullDelta:?];
+  [activeLensViewController5 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:? useFullDelta:?];
 
   [(ZWRootViewController *)self setZoomPanOffset:v56, v58];
-  v60 = [(ZWRootViewController *)self activeLensViewController];
-  [v60 updateZoomFactor:v5 panOffset:0 animated:v16 animationDuration:v56 completion:{v58, a5}];
+  activeLensViewController6 = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController6 updateZoomFactor:animatedCopy panOffset:0 animated:v16 animationDuration:v56 completion:{v58, duration}];
 
   self->_lastWheelDelta = v69;
 }
 
-- (void)_handleKeyboardCommand:(int64_t)a3 isRepeatCommand:(BOOL)a4
+- (void)_handleKeyboardCommand:(int64_t)command isRepeatCommand:(BOOL)repeatCommand
 {
-  v4 = a4;
-  if (!a4)
+  repeatCommandCopy = repeatCommand;
+  if (!repeatCommand)
   {
     [(AXDispatchTimer *)self->_keyRepeatTimer cancel];
   }
@@ -9355,8 +9355,8 @@ LABEL_56:
   if ([(ZWRootViewController *)self lastKeyboardCommand]== &dword_C + 2)
   {
     self->_lastWheelDelta = 0.0;
-    v7 = [(ZWRootViewController *)self scrollTrapView];
-    [v7 setAlpha:0.0];
+    scrollTrapView = [(ZWRootViewController *)self scrollTrapView];
+    [scrollTrapView setAlpha:0.0];
 
     cachedValuesSerialQueue = self->_cachedValuesSerialQueue;
     block[0] = _NSConcreteStackBlock;
@@ -9367,27 +9367,27 @@ LABEL_56:
     dispatch_sync(cachedValuesSerialQueue, block);
   }
 
-  if (a3 > 9)
+  if (command > 9)
   {
-    if ((a3 - 10) >= 4)
+    if ((command - 10) >= 4)
     {
-      if ((a3 - 15) < 2)
+      if ((command - 15) < 2)
       {
-        v29 = [(ZWRootViewController *)self keyRepeatTimer];
-        [v29 cancel];
+        keyRepeatTimer = [(ZWRootViewController *)self keyRepeatTimer];
+        [keyRepeatTimer cancel];
 LABEL_80:
 
         goto LABEL_81;
       }
 
-      v9 = v4;
-      if (a3 != 14)
+      v9 = repeatCommandCopy;
+      if (command != 14)
       {
         goto LABEL_82;
       }
 
-      v43 = [(ZWRootViewController *)self scrollTrapView];
-      [v43 setAlpha:0.01];
+      scrollTrapView2 = [(ZWRootViewController *)self scrollTrapView];
+      [scrollTrapView2 setAlpha:0.01];
 
       v44 = self->_cachedValuesSerialQueue;
       v64[0] = _NSConcreteStackBlock;
@@ -9396,14 +9396,14 @@ LABEL_80:
       v64[3] = &unk_78D00;
       v64[4] = self;
       dispatch_sync(v44, v64);
-      a3 = 14;
+      command = 14;
 LABEL_81:
-      v9 = v4;
+      v9 = repeatCommandCopy;
       goto LABEL_82;
     }
 
-    v12 = [(ZWRootViewController *)self activeLensViewController];
-    if ([v12 inStandbyMode])
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    if ([activeLensViewController inStandbyMode])
     {
 
 LABEL_77:
@@ -9411,38 +9411,38 @@ LABEL_77:
       goto LABEL_82;
     }
 
-    v35 = [(ZWRootViewController *)self activeLensViewController];
-    v36 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v35 == v36)
+    if (activeLensViewController2 == fullscreenLensViewController)
     {
       goto LABEL_77;
     }
 
-    v37 = [(ZWRootViewController *)self activeLensViewController];
-    v38 = [(ZWRootViewController *)self dockedLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-    if (v37 == v38)
+    if (activeLensViewController3 == dockedLensViewController)
     {
-      v51 = [(ZWRootViewController *)self dockedLensViewController];
-      v52 = [v51 dockPosition];
+      dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      dockPosition = [dockedLensViewController2 dockPosition];
 
-      if (v52)
+      if (dockPosition)
       {
-        v53 = [(ZWRootViewController *)self dockedLensViewController];
-        v54 = [v53 dockPosition];
+        dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+        dockPosition2 = [dockedLensViewController3 dockPosition];
 
-        if (v54 == &dword_0 + 2)
+        if (dockPosition2 == &dword_0 + 2)
         {
-          if (a3 == 12)
+          if (command == 12)
           {
             [(ZWRootViewController *)self _lensMinimumSize];
             v42 = 0.0;
-            a3 = 10;
+            command = 10;
             goto LABEL_76;
           }
 
-          if (a3 == 10)
+          if (command == 10)
           {
             [(ZWRootViewController *)self _lensMinimumSize];
             goto LABEL_75;
@@ -9452,14 +9452,14 @@ LABEL_77:
 
       else
       {
-        if (a3 == 13)
+        if (command == 13)
         {
           [(ZWRootViewController *)self _lensMinimumSize];
           v41 = v62;
           goto LABEL_55;
         }
 
-        if (a3 == 11)
+        if (command == 11)
         {
           [(ZWRootViewController *)self _lensMinimumSize];
           v41 = v61;
@@ -9470,10 +9470,10 @@ LABEL_77:
 
     [(ZWRootViewController *)self _lensMinimumSize];
     v41 = v40;
-    if (a3 <= 11)
+    if (command <= 11)
     {
       v42 = 0.0;
-      if (a3 == 10)
+      if (command == 10)
       {
 LABEL_76:
         [(ZWRootViewController *)self _resizeZoomLensWithAdjustment:v39 lensPositionCompensation:v42, v39 * -0.5, v42 * -0.5];
@@ -9482,33 +9482,33 @@ LABEL_76:
 
 LABEL_55:
       v39 = 0.0;
-      a3 = 11;
+      command = 11;
       v42 = v41;
       goto LABEL_76;
     }
 
-    if (a3 == 13)
+    if (command == 13)
     {
 LABEL_67:
       v42 = -v41;
       v39 = 0.0;
-      a3 = 13;
+      command = 13;
       goto LABEL_76;
     }
 
 LABEL_75:
     v39 = -v39;
     v42 = 0.0;
-    a3 = 12;
+    command = 12;
     goto LABEL_76;
   }
 
-  if (a3 > 5)
+  if (command > 5)
   {
-    v13 = [(ZWRootViewController *)self activeLensViewController];
-    v14 = [v13 inStandbyMode];
+    activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode = [activeLensViewController4 inStandbyMode];
 
-    if ((v14 & 1) == 0)
+    if ((inStandbyMode & 1) == 0)
     {
       [(ZWRootViewController *)self zoomFrame];
       y = CGPointZero.y;
@@ -9535,7 +9535,7 @@ LABEL_75:
         v21 = y + v19;
       }
 
-      if (a3 == 8)
+      if (command == 8)
       {
         v21 = v20;
       }
@@ -9553,12 +9553,12 @@ LABEL_75:
         v24 = v23;
       }
 
-      if (a3 == 6)
+      if (command == 6)
       {
         v24 = v22;
       }
 
-      if (a3 <= 7)
+      if (command <= 7)
       {
         v25 = CGPointZero.y;
       }
@@ -9568,7 +9568,7 @@ LABEL_75:
         v25 = v21;
       }
 
-      if (a3 <= 7)
+      if (command <= 7)
       {
         x = v24;
       }
@@ -9578,12 +9578,12 @@ LABEL_75:
         x = CGPointZero.x;
       }
 
-      v27 = [(ZWRootViewController *)self activeLensViewController];
+      activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
       v9 = 1;
-      [(ZWRootViewController *)self _moveZoomItemWithController:v27 byDelta:0 animated:1 userInitiated:1 shouldUseFullDeltaForDockedMode:1 shouldPan:x, v25];
+      [(ZWRootViewController *)self _moveZoomItemWithController:activeLensViewController5 byDelta:0 animated:1 userInitiated:1 shouldUseFullDeltaForDockedMode:1 shouldPan:x, v25];
 
-      v28 = [(ZWRootViewController *)self activeLensViewController];
-      [v28 zoomMovementDidEnd];
+      activeLensViewController6 = [(ZWRootViewController *)self activeLensViewController];
+      [activeLensViewController6 zoomMovementDidEnd];
 
       goto LABEL_82;
     }
@@ -9591,12 +9591,12 @@ LABEL_75:
     goto LABEL_81;
   }
 
-  if (a3 > 2)
+  if (command > 2)
   {
-    if ((a3 - 4) >= 2)
+    if ((command - 4) >= 2)
     {
-      v9 = v4;
-      if (a3 == 3)
+      v9 = repeatCommandCopy;
+      if (command == 3)
       {
         if (![(ZWRootViewController *)self zoomIsAnimatingDueToStandbyToggle])
         {
@@ -9604,25 +9604,25 @@ LABEL_75:
           [(ZWRootViewController *)self _toggleZoomStandby];
         }
 
-        a3 = 3;
+        command = 3;
         goto LABEL_81;
       }
 
       goto LABEL_82;
     }
 
-    v30 = [(ZWRootViewController *)self activeLensViewController];
-    v31 = [v30 inStandbyMode];
+    activeLensViewController7 = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode2 = [activeLensViewController7 inStandbyMode];
 
-    if ((v31 & 1) == 0)
+    if ((inStandbyMode2 & 1) == 0)
     {
-      v29 = AXZoomUserSelectableLensModes();
-      v32 = [(ZWRootViewController *)self activeZoomMode];
-      v33 = [v29 indexOfObject:v32];
+      keyRepeatTimer = AXZoomUserSelectableLensModes();
+      activeZoomMode = [(ZWRootViewController *)self activeZoomMode];
+      v33 = [keyRepeatTimer indexOfObject:activeZoomMode];
 
-      if (a3 == 4)
+      if (command == 4)
       {
-        if (v33 + 1 < [v29 count])
+        if (v33 + 1 < [keyRepeatTimer count])
         {
           v34 = v33 + 1;
         }
@@ -9640,10 +9640,10 @@ LABEL_75:
 
       else
       {
-        v34 = [v29 count] - 1;
+        v34 = [keyRepeatTimer count] - 1;
       }
 
-      v55 = [v29 objectAtIndex:v34];
+      v55 = [keyRepeatTimer objectAtIndex:v34];
       [(ZWRootViewController *)self _transitionToLensForMode:v55 animated:1 completion:0];
 
       goto LABEL_80;
@@ -9652,44 +9652,44 @@ LABEL_75:
     goto LABEL_81;
   }
 
-  if (!a3)
+  if (!command)
   {
     [(ZWRootViewController *)self zoomFactor];
     v47 = v46;
-    v48 = [(ZWRootViewController *)self activeLensViewController];
-    v49 = [v48 inStandbyMode];
+    activeLensViewController8 = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode3 = [activeLensViewController8 inStandbyMode];
 
     v50 = AXZoomMinimumZoomLevel;
-    if (!v49)
+    if (!inStandbyMode3)
     {
       v50 = v47;
     }
 
     [(ZWRootViewController *)self fullscreenEventHandler:0 setZoomLevel:v50 * 1.1 duration:0.0];
-    a3 = 0;
+    command = 0;
     goto LABEL_77;
   }
 
-  if (a3 == 1)
+  if (command == 1)
   {
     [(ZWRootViewController *)self zoomFactor];
     [(ZWRootViewController *)self fullscreenEventHandler:0 setZoomLevel:v45 * 0.9 duration:0.0];
     goto LABEL_77;
   }
 
-  v9 = v4;
-  if (a3 == 2)
+  v9 = repeatCommandCopy;
+  if (command == 2)
   {
-    v10 = [(ZWRootViewController *)self presentedViewController];
-    v11 = [(ZWRootViewController *)self menuViewController];
+    presentedViewController = [(ZWRootViewController *)self presentedViewController];
+    menuViewController = [(ZWRootViewController *)self menuViewController];
 
-    if (v10 == v11)
+    if (presentedViewController == menuViewController)
     {
       [(ZWRootViewController *)self _dismissMenuAnimated:1];
     }
 
     [(ZWRootViewController *)self _toggleZoomStandby];
-    a3 = 2;
+    command = 2;
     goto LABEL_81;
   }
 
@@ -9697,7 +9697,7 @@ LABEL_82:
   v56 = _AXSKeyRepeatEnabled();
   if (v9 && v56)
   {
-    if (v4)
+    if (repeatCommandCopy)
     {
       _AXSKeyRepeatInterval();
     }
@@ -9708,33 +9708,33 @@ LABEL_82:
     }
 
     v58 = v57;
-    v59 = [(ZWRootViewController *)self keyRepeatTimer];
+    keyRepeatTimer2 = [(ZWRootViewController *)self keyRepeatTimer];
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
     v63[2] = __63__ZWRootViewController__handleKeyboardCommand_isRepeatCommand___block_invoke_3;
     v63[3] = &unk_78E98;
     v63[4] = self;
-    v63[5] = a3;
-    [v59 afterDelay:v63 processBlock:v58];
+    v63[5] = command;
+    [keyRepeatTimer2 afterDelay:v63 processBlock:v58];
   }
 
-  v60 = [(ZWRootViewController *)self shouldSuppressKeyCommandHUD];
-  [(ZWRootViewController *)self setShouldSuppressKeyCommandHUD:a3 != 16];
-  if (v60 != [(ZWRootViewController *)self shouldSuppressKeyCommandHUD])
+  shouldSuppressKeyCommandHUD = [(ZWRootViewController *)self shouldSuppressKeyCommandHUD];
+  [(ZWRootViewController *)self setShouldSuppressKeyCommandHUD:command != 16];
+  if (shouldSuppressKeyCommandHUD != [(ZWRootViewController *)self shouldSuppressKeyCommandHUD])
   {
     [(ZWRootViewController *)self _updateZoomListeners];
   }
 
-  [(ZWRootViewController *)self setLastKeyboardCommand:a3];
+  [(ZWRootViewController *)self setLastKeyboardCommand:command];
 }
 
-- (CGPoint)mirrorPanOffsetForRTLIfNecessary:(CGPoint)a3
+- (CGPoint)mirrorPanOffsetForRTLIfNecessary:(CGPoint)necessary
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [UIApp userInterfaceLayoutDirection];
+  y = necessary.y;
+  x = necessary.x;
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
   v6 = -x;
-  if (v5 != &dword_0 + 1)
+  if (userInterfaceLayoutDirection != &dword_0 + 1)
   {
     v6 = x;
   }
@@ -9745,14 +9745,14 @@ LABEL_82:
   return result;
 }
 
-- (void)lastFingerWasLiftedWithEventProcessor:(id)a3 firstTouchWentIntoSlug:(BOOL)a4
+- (void)lastFingerWasLiftedWithEventProcessor:(id)processor firstTouchWentIntoSlug:(BOOL)slug
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __85__ZWRootViewController_lastFingerWasLiftedWithEventProcessor_firstTouchWentIntoSlug___block_invoke;
   v4[3] = &unk_78BD0;
   v4[4] = self;
-  v5 = a4;
+  slugCopy = slug;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -9864,7 +9864,7 @@ __n128 __85__ZWRootViewController_lastFingerWasLiftedWithEventProcessor_firstTou
   return result;
 }
 
-- (void)didGetToggleZoomGestureWithEventProcessor:(id)a3
+- (void)didGetToggleZoomGestureWithEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -9874,7 +9874,7 @@ __n128 __85__ZWRootViewController_lastFingerWasLiftedWithEventProcessor_firstTou
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didGetTogglePanningModeGestureWithATVEventProcessor:(id)a3
+- (void)didGetTogglePanningModeGestureWithATVEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -9884,15 +9884,15 @@ __n128 __85__ZWRootViewController_lastFingerWasLiftedWithEventProcessor_firstTou
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)wantsToStartAutopannerWithATVEventProcessor:(id)a3
+- (void)wantsToStartAutopannerWithATVEventProcessor:(id)processor
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __68__ZWRootViewController_wantsToStartAutopannerWithATVEventProcessor___block_invoke;
   v4[3] = &unk_79170;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  processorCopy = processor;
+  v3 = processorCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -9906,7 +9906,7 @@ void __68__ZWRootViewController_wantsToStartAutopannerWithATVEventProcessor___bl
   [v4 start];
 }
 
-- (void)wantsToStopAutopannerWithATVEventProcessor:(id)a3
+- (void)wantsToStopAutopannerWithATVEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -9925,7 +9925,7 @@ void __67__ZWRootViewController_wantsToStopAutopannerWithATVEventProcessor___blo
   [v3 setDataSource:0];
 }
 
-- (void)didGetSpeakContentGestureWithATVEventProcessor:(id)a3
+- (void)didGetSpeakContentGestureWithATVEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -9941,48 +9941,48 @@ void __71__ZWRootViewController_didGetSpeakContentGestureWithATVEventProcessor__
   [v1 speakContent];
 }
 
-- (void)atvEventProcessor:(id)a3 adjustZoomLevelWithDelta:(CGPoint)a4
+- (void)atvEventProcessor:(id)processor adjustZoomLevelWithDelta:(CGPoint)delta
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __67__ZWRootViewController_atvEventProcessor_adjustZoomLevelWithDelta___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v5 = a4;
+  deltaCopy = delta;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)shouldSendTapEventWithATVEventProcessor:(id)a3
+- (BOOL)shouldSendTapEventWithATVEventProcessor:(id)processor
 {
-  if (-[ZWRootViewController _isZoomedToMinimum](self, "_isZoomedToMinimum", a3) || (-[ZWRootViewController activeLensViewController](self, "activeLensViewController"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 inStandbyMode], v4, (v5 & 1) != 0) || -[ZWRootViewController _smartZoomFocusedElementIsBeingSampled](self, "_smartZoomFocusedElementIsBeingSampled"))
+  if (-[ZWRootViewController _isZoomedToMinimum](self, "_isZoomedToMinimum", processor) || (-[ZWRootViewController activeLensViewController](self, "activeLensViewController"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 inStandbyMode], v4, (v5 & 1) != 0) || -[ZWRootViewController _smartZoomFocusedElementIsBeingSampled](self, "_smartZoomFocusedElementIsBeingSampled"))
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    v8 = [(ZWRootViewController *)self smartZoom];
-    v9 = [(ZWRootViewController *)self activeLensViewController];
-    v10 = [v9 lensZoomView];
-    [v10 sampleRect];
-    v6 = [v8 setNativeFocusOnBestElementNearRect:?] ^ 1;
+    smartZoom = [(ZWRootViewController *)self smartZoom];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    lensZoomView = [activeLensViewController lensZoomView];
+    [lensZoomView sampleRect];
+    v6 = [smartZoom setNativeFocusOnBestElementNearRect:?] ^ 1;
   }
 
   return v6;
 }
 
-- (void)blockHomeGestureIfNeededWithEventProcessor:(id)a3
+- (void)blockHomeGestureIfNeededWithEventProcessor:(id)processor
 {
-  v4 = [(ZWRootViewController *)self disableHomeGestureAssertion];
+  disableHomeGestureAssertion = [(ZWRootViewController *)self disableHomeGestureAssertion];
 
-  if (!v4)
+  if (!disableHomeGestureAssertion)
   {
     v5 = [AXAssertion assertionWithType:AXAssertionTypeDisableSystemGestures identifier:@"Interacting with Zoom UI"];
     [(ZWRootViewController *)self setDisableHomeGestureAssertion:v5];
   }
 }
 
-- (void)didGetTouchOutsideZoomMenuWithEventProcessor:(id)a3
+- (void)didGetTouchOutsideZoomMenuWithEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -9992,7 +9992,7 @@ void __71__ZWRootViewController_didGetSpeakContentGestureWithATVEventProcessor__
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didGetTouchOutsideLensChromeWithEventProcessor:(id)a3
+- (void)didGetTouchOutsideLensChromeWithEventProcessor:(id)processor
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -10010,20 +10010,20 @@ id __71__ZWRootViewController_didGetTouchOutsideLensChromeWithEventProcessor___b
   return [v2 _setPIPLensResizingEnabled:0];
 }
 
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerDoubleTapAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerDoubleTapAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(ZWRootViewController *)self _dismissMenuAnimated:1];
   [(ZWRootViewController *)self zoomFactor];
   v8 = v7;
-  v9 = [(ZWRootViewController *)self activeLensViewController];
-  v10 = v9;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  v10 = activeLensViewController;
   v11 = y == -1.0 && x == -1.0;
-  v12 = [v9 inStandbyMode];
-  v13 = [(ZWRootViewController *)self fullscreenLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v10 == v13 && vabdd_f64(v8, AXZoomMinimumZoomLevel) < 0.0001)
+  if (v10 == fullscreenLensViewController && vabdd_f64(v8, AXZoomMinimumZoomLevel) < 0.0001)
   {
     v14 = +[ZWCoalescedSettings sharedInstance];
     [v14 zoomFactor];
@@ -10034,16 +10034,16 @@ id __71__ZWRootViewController_didGetTouchOutsideLensChromeWithEventProcessor___b
       v8 = AXZoomDefaultZoomLevel;
     }
 
-    v12 = 1;
+    inStandbyMode = 1;
   }
 
   if (!v11)
   {
-    v34 = [(ZWRootViewController *)self view];
-    v17 = ZWConvertPointInScreenPixelsToViewCoordinates(v34, x, y);
+    view = [(ZWRootViewController *)self view];
+    v17 = ZWConvertPointInScreenPixelsToViewCoordinates(view, x, y);
     v19 = v35;
 
-    if (!v12)
+    if (!inStandbyMode)
     {
       goto LABEL_11;
     }
@@ -10056,55 +10056,55 @@ LABEL_16:
   [(ZWRootViewController *)self pointerLocationToZoomInToWithZoomFactor:v8];
   v17 = v16;
   v19 = v18;
-  if (v12)
+  if (inStandbyMode)
   {
     goto LABEL_16;
   }
 
 LABEL_11:
-  v20 = [(ZWRootViewController *)self fullscreenLensViewController];
+  fullscreenLensViewController2 = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v10 == v20)
+  if (v10 == fullscreenLensViewController2)
   {
     [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:v8];
     v37 = v36;
     v38 = +[AXSettings sharedInstance];
-    v24 = [v38 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v38 zoomCurrentLensEffect];
 
-    v39 = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
     [(ZWRootViewController *)self zoomPanOffset];
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDoubleTapAtLocation___block_invoke;
     v51[3] = &unk_78D00;
     v51[4] = self;
-    [v39 updateStandbyMode:1 zoomFactor:v24 panOffset:1 lensEffect:v51 animated:v37 completion:{v40, v41}];
+    [activeLensViewController2 updateStandbyMode:1 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v51 animated:v37 completion:{v40, v41}];
 
     v42 = +[ZWCoalescedSettings sharedInstance];
     [v42 setZoomInStandby:1];
 
-    v43 = [(ZWRootViewController *)self containerView];
-    v44 = [(ZWRootViewController *)self minimapView];
-    [v43 bringSubviewToFront:v44];
+    containerView = [(ZWRootViewController *)self containerView];
+    minimapView = [(ZWRootViewController *)self minimapView];
+    [containerView bringSubviewToFront:minimapView];
 
-    v25 = [(ZWRootViewController *)self kbContext];
-    [v25 keyboardFrame];
+    kbContext = [(ZWRootViewController *)self kbContext];
+    [kbContext keyboardFrame];
     [(ZWRootViewController *)self _updateKeyboardFrame:?];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v21 = [(ZWRootViewController *)self pipLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v10 == v21)
+  if (v10 == pipLensViewController)
   {
     v45 = +[AXSettings sharedInstance];
-    v24 = [v45 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v45 zoomCurrentLensEffect];
 
-    v25 = [(ZWRootViewController *)self activeLensViewController];
-    v26 = [(ZWRootViewController *)self activeLensViewController];
-    v46 = [v26 inStandbyMode];
+    kbContext = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode2 = [activeLensViewController3 inStandbyMode];
     [(ZWRootViewController *)self zoomPanOffset];
     v29 = v47;
     v31 = v48;
@@ -10113,21 +10113,21 @@ LABEL_20:
     v50[2] = __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDoubleTapAtLocation___block_invoke_2;
     v50[3] = &unk_78D00;
     v50[4] = self;
-    v32 = v46 ^ 1;
+    v32 = inStandbyMode2 ^ 1;
     v33 = v50;
     goto LABEL_19;
   }
 
-  v22 = [(ZWRootViewController *)self dockedLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-  if (v10 == v22)
+  if (v10 == dockedLensViewController)
   {
     v23 = +[AXSettings sharedInstance];
-    v24 = [v23 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v23 zoomCurrentLensEffect];
 
-    v25 = [(ZWRootViewController *)self activeLensViewController];
-    v26 = [(ZWRootViewController *)self activeLensViewController];
-    v27 = [v26 inStandbyMode];
+    kbContext = [(ZWRootViewController *)self activeLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    inStandbyMode3 = [activeLensViewController3 inStandbyMode];
     [(ZWRootViewController *)self zoomPanOffset];
     v29 = v28;
     v31 = v30;
@@ -10136,10 +10136,10 @@ LABEL_20:
     v49[2] = __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDoubleTapAtLocation___block_invoke_3;
     v49[3] = &unk_78D00;
     v49[4] = self;
-    v32 = v27 ^ 1;
+    v32 = inStandbyMode3 ^ 1;
     v33 = v49;
 LABEL_19:
-    [v25 updateStandbyMode:v32 zoomFactor:v24 panOffset:1 lensEffect:v33 animated:v8 completion:{v29, v31}];
+    [kbContext updateStandbyMode:v32 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v33 animated:v8 completion:{v29, v31}];
 
     goto LABEL_20;
   }
@@ -10171,7 +10171,7 @@ id __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDouble
   return [v2 _updateMinimapStatus];
 }
 
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerTripleTapAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerTripleTapAtLocation:(CGPoint)location
 {
   if ((AXDeviceIsTV() & 1) == 0)
   {
@@ -10180,29 +10180,29 @@ id __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDouble
   }
 }
 
-- (void)_updateOrbLocation:(CGPoint)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_updateOrbLocation:(CGPoint)location animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  animatedCopy = animated;
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
   *(&self->_eventUIContext + 148) |= 0x200u;
-  v10 = [(ZWRootViewController *)self slugViewController];
-  [v10 setShouldHideWhileOrbing:1];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [slugViewController setShouldHideWhileOrbing:1];
 
-  v11 = [(ZWRootViewController *)self activeLensViewController];
-  v12 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v11 == v12)
+  if (activeLensViewController == pipLensViewController)
   {
-    v30 = [(ZWRootViewController *)self screen];
-    [v30 scale];
+    screen = [(ZWRootViewController *)self screen];
+    [screen scale];
     v32 = ZWConvertPointInScreenPixelsToScreenCoordinates(x, y, v31);
     v34 = v33;
 
-    v35 = [(ZWRootViewController *)self pipLensViewController];
-    v36 = [v35 lensChromeView];
-    [v36 bounds];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    lensChromeView = [pipLensViewController2 lensChromeView];
+    [lensChromeView bounds];
     v38 = v37 * 0.5 - ZWZoomEdgeSlackAmount();
 
     v39 = v34 - v38;
@@ -10218,25 +10218,25 @@ id __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDouble
       __asm { FMOV            V0.2D, #2.0 }
 
       v49 = _Q0;
-      v46 = v9;
-      [(ZWRootViewController *)self _focusLensOnRect:0 panLensContent:1 recentreLens:v5 animated:v45 completion:v32, v39, 2.0, 2.0];
+      v46 = completionCopy;
+      [(ZWRootViewController *)self _focusLensOnRect:0 panLensContent:1 recentreLens:animatedCopy animated:v45 completion:v32, v39, 2.0, 2.0];
     }
 
     else
     {
-      [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:1 recentreLens:v5 animated:v9 completion:v32, v39, 2.0, 2.0];
+      [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:1 recentreLens:animatedCopy animated:completionCopy completion:v32, v39, 2.0, 2.0];
     }
   }
 
   else
   {
-    v13 = [(ZWRootViewController *)self view];
-    v14 = ZWConvertPointInScreenPixelsToViewCoordinates(v13, x, y);
+    view = [(ZWRootViewController *)self view];
+    v14 = ZWConvertPointInScreenPixelsToViewCoordinates(view, x, y);
     v16 = v15;
 
-    v17 = [(ZWRootViewController *)self slugViewController];
-    v18 = [v17 view];
-    [v18 frame];
+    slugViewController2 = [(ZWRootViewController *)self slugViewController];
+    view2 = [slugViewController2 view];
+    [view2 frame];
     AX_CGRectGetCenter();
     v20 = v19;
     v22 = v21;
@@ -10250,13 +10250,13 @@ id __88__ZWRootViewController_fullscreenEventHandler_didReceiveThreeFingerDouble
     [(ZWRootViewController *)self setLastOrbLocation:v23, v24];
     if ((*(&self->_eventUIContext + 148) & 0x400) == 0)
     {
-      v29 = [(ZWRootViewController *)self activeLensViewController];
-      [(ZWRootViewController *)self _moveZoomItemWithController:v29 byDelta:0 animated:1 userInitiated:v23 - v26, v24 - v28];
+      activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+      [(ZWRootViewController *)self _moveZoomItemWithController:activeLensViewController2 byDelta:0 animated:1 userInitiated:v23 - v26, v24 - v28];
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -10279,37 +10279,37 @@ uint64_t __63__ZWRootViewController__updateOrbLocation_animated_completion___blo
   return result;
 }
 
-- (void)fullscreenEventHandler:(id)a3 didStartOrbAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didStartOrbAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
   *(&self->_eventUIContext + 148) |= 0x400u;
-  v7 = [(ZWRootViewController *)self activeLensViewController];
-  [(ZWRootViewController *)self _transitionToLens:v7 animated:1 completion:&__block_literal_global_547];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [(ZWRootViewController *)self _transitionToLens:activeLensViewController animated:1 completion:&__block_literal_global_547];
 
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [(ZWRootViewController *)self pipLensViewController];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v8 == v9)
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v10 = [(ZWRootViewController *)self pipLensViewController];
-    [v10 setOffsetZoomWindow:1];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    [pipLensViewController2 setOffsetZoomWindow:1];
   }
 
   v11 = CGPointZero.y;
   [(ZWRootViewController *)self setLastOrbLocation:CGPointZero.x, v11];
   [(ZWRootViewController *)self setZoomPanOffset:CGPointZero.x, v11];
   v12 = +[AXSettings sharedInstance];
-  v13 = [v12 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v12 zoomCurrentLensEffect];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __69__ZWRootViewController_fullscreenEventHandler_didStartOrbAtLocation___block_invoke_2;
   v15[3] = &unk_79170;
   v15[4] = self;
-  v16 = v13;
-  v14 = v13;
+  v16 = zoomCurrentLensEffect;
+  v14 = zoomCurrentLensEffect;
   [(ZWRootViewController *)self _updateOrbLocation:0 animated:v15 completion:x, y];
 }
 
@@ -10329,16 +10329,16 @@ void __69__ZWRootViewController_fullscreenEventHandler_didStartOrbAtLocation___b
   [v2 updateStandbyMode:0 zoomFactor:v6 panOffset:1 lensEffect:v9 animated:v5 completion:{v7, v8}];
 }
 
-- (void)fullscreenEventHandler:(id)a3 didEndOrbAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didEndOrbAtLocation:(CGPoint)location
 {
-  [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred:a3];
+  [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred:handler];
   *(&self->_eventUIContext + 148) &= ~0x200u;
-  v5 = [(ZWRootViewController *)self slugViewController];
-  [v5 setShouldHideWhileOrbing:0];
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  [slugViewController setShouldHideWhileOrbing:0];
 
-  v6 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v7 zoomCurrentLensEffect];
 
   [(ZWRootViewController *)self zoomFactor];
   v10 = v9;
@@ -10348,49 +10348,49 @@ void __69__ZWRootViewController_fullscreenEventHandler_didStartOrbAtLocation___b
   v16[2] = __67__ZWRootViewController_fullscreenEventHandler_didEndOrbAtLocation___block_invoke;
   v16[3] = &unk_78D00;
   v16[4] = self;
-  [v6 updateStandbyMode:1 zoomFactor:v8 panOffset:1 lensEffect:v16 animated:v10 completion:{v11, v12}];
-  v13 = [(ZWRootViewController *)self activeLensViewController];
-  v14 = [(ZWRootViewController *)self pipLensViewController];
+  [activeLensViewController updateStandbyMode:1 zoomFactor:zoomCurrentLensEffect panOffset:1 lensEffect:v16 animated:v10 completion:{v11, v12}];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-  if (v13 == v14)
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v15 = [(ZWRootViewController *)self pipLensViewController];
-    [v15 setOffsetZoomWindow:0];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    [pipLensViewController2 setOffsetZoomWindow:0];
   }
 }
 
-- (void)fullscreenEventHandler:(id)a3 updateOrbMovementAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler updateOrbMovementAtLocation:(CGPoint)location
 {
   if ((*(&self->_eventUIContext + 148) & 0x400) == 0)
   {
-    [(ZWRootViewController *)self _updateOrbLocation:1 animated:0 completion:a4.x, a4.y];
+    [(ZWRootViewController *)self _updateOrbLocation:1 animated:0 completion:location.x, location.y];
   }
 }
 
-- (void)fullscreenEventHandler:(id)a3 didThreeFingerOrbAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didThreeFingerOrbAtLocation:(CGPoint)location
 {
-  v5 = [AXSettings sharedInstance:a3];
-  v6 = [v5 zoomPeekZoomEnabled];
+  v5 = [AXSettings sharedInstance:handler];
+  zoomPeekZoomEnabled = [v5 zoomPeekZoomEnabled];
 
   v7 = +[AXSettings sharedInstance];
-  [v7 setZoomPeekZoomEnabled:v6 ^ 1];
+  [v7 setZoomPeekZoomEnabled:zoomPeekZoomEnabled ^ 1];
 
-  v8 = [(ZWRootViewController *)self zoomAlertManager];
-  v9 = v8;
-  if (v6)
+  zoomAlertManager = [(ZWRootViewController *)self zoomAlertManager];
+  v9 = zoomAlertManager;
+  if (zoomPeekZoomEnabled)
   {
-    [v8 showOrbZoomToggleOff];
+    [zoomAlertManager showOrbZoomToggleOff];
   }
 
   else
   {
-    [v8 showOrbZoomToggleOn];
+    [zoomAlertManager showOrbZoomToggleOn];
   }
 }
 
-- (void)fullscreenEventHandler:(id)a3 didReceiveThreeFingerSingleTapAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didReceiveThreeFingerSingleTapAtLocation:(CGPoint)location
 {
-  v8 = [(ZWRootViewController *)self activeLensViewController:a3];
+  v8 = [(ZWRootViewController *)self activeLensViewController:handler];
   if ([v8 inStandbyMode])
   {
   }
@@ -10409,14 +10409,14 @@ void __69__ZWRootViewController_fullscreenEventHandler_didStartOrbAtLocation___b
   }
 }
 
-- (void)fullscreenEventHandler:(id)a3 didReceiveOneFingerDownAtLocation:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler didReceiveOneFingerDownAtLocation:(CGPoint)location
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __81__ZWRootViewController_fullscreenEventHandler_didReceiveOneFingerDownAtLocation___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v5 = a4;
+  locationCopy = location;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -10491,12 +10491,12 @@ void __81__ZWRootViewController_fullscreenEventHandler_didReceiveOneFingerDownAt
   *(*(a1 + 32) + 376) = *(*(a1 + 32) + 376) & 0xFFBF | v2;
 }
 
-- (double)zoomLevelWithFullscreenEventHandler:(id)a3
+- (double)zoomLevelWithFullscreenEventHandler:(id)handler
 {
-  v4 = [(ZWRootViewController *)self activeLensViewController];
-  v5 = [v4 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if (v5)
+  if (inStandbyMode)
   {
     return AXZoomMinimumZoomLevel;
   }
@@ -10505,56 +10505,56 @@ void __81__ZWRootViewController_fullscreenEventHandler_didReceiveOneFingerDownAt
   return result;
 }
 
-- (void)fullscreenEventHandler:(id)a3 setZoomLevel:(double)a4 duration:(double)a5
+- (void)fullscreenEventHandler:(id)handler setZoomLevel:(double)level duration:(double)duration
 {
-  [(ZWRootViewController *)self setZoomFactor:a3, a4, a5];
+  [(ZWRootViewController *)self setZoomFactor:handler, level, duration];
   [(ZWRootViewController *)self zoomPanOffset];
   x = v7;
   y = v9;
-  if (vabdd_f64(a4, AXZoomMinimumZoomLevel) <= 0.0001 || AXZoomMinimumZoomLevel >= a4)
+  if (vabdd_f64(level, AXZoomMinimumZoomLevel) <= 0.0001 || AXZoomMinimumZoomLevel >= level)
   {
     x = CGPointZero.x;
     y = CGPointZero.y;
     [(ZWRootViewController *)self setZoomPanOffset:CGPointZero.x, y];
   }
 
-  [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:a4];
+  [(ZWRootViewController *)self setZoomFactorRespectingUserPreferredMaximumZoom:level];
   v13 = v12;
-  v14 = [(ZWRootViewController *)self activeLensViewController];
-  if ([v14 inStandbyMode])
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  if ([activeLensViewController inStandbyMode])
   {
     v15 = +[AXSettings sharedInstance];
-    v16 = [v15 zoomCurrentLensEffect];
+    zoomCurrentLensEffect = [v15 zoomCurrentLensEffect];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __69__ZWRootViewController_fullscreenEventHandler_setZoomLevel_duration___block_invoke;
     v17[3] = &unk_78D00;
     v17[4] = self;
-    [v14 updateStandbyMode:0 zoomFactor:v16 panOffset:0 lensEffect:v17 animated:v13 completion:{x, y}];
+    [activeLensViewController updateStandbyMode:0 zoomFactor:zoomCurrentLensEffect panOffset:0 lensEffect:v17 animated:v13 completion:{x, y}];
   }
 
   else
   {
-    [v14 updateZoomFactor:0 panOffset:0 animated:v13 animationDuration:x completion:{y, -1.0}];
+    [activeLensViewController updateZoomFactor:0 panOffset:0 animated:v13 animationDuration:x completion:{y, -1.0}];
   }
 }
 
-- (void)fullscreenEventHandler:(id)a3 setZoomLevelFromTrackpadGesture:(double)a4
+- (void)fullscreenEventHandler:(id)handler setZoomLevelFromTrackpadGesture:(double)gesture
 {
-  [(ZWRootViewController *)self zoomFactorRespectingUserPreferredMaximumZoom:a3, a4];
+  [(ZWRootViewController *)self zoomFactorRespectingUserPreferredMaximumZoom:handler, gesture];
   [(ZWRootViewController *)self pointerLocationToZoomInToWithZoomFactor:?];
 
   [ZWRootViewController zoomInToPoint:"zoomInToPoint:withZoomFactor:animated:" withZoomFactor:0 animated:?];
 }
 
-- (void)fullscreenEventHandler:(id)a3 updateZoomMovementWithPoint:(CGPoint)a4
+- (void)fullscreenEventHandler:(id)handler updateZoomMovementWithPoint:(CGPoint)point
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __75__ZWRootViewController_fullscreenEventHandler_updateZoomMovementWithPoint___block_invoke;
   block[3] = &unk_78D28;
   block[4] = self;
-  v5 = a4;
+  pointCopy = point;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -10631,7 +10631,7 @@ void __75__ZWRootViewController_fullscreenEventHandler_updateZoomMovementWithPoi
 LABEL_11:
 }
 
-- (void)stopZoomMovementWithVelocityWithFullscreenEventHandler:(id)a3
+- (void)stopZoomMovementWithVelocityWithFullscreenEventHandler:(id)handler
 {
   movementTimer = self->_movementTimer;
   if (movementTimer)
@@ -10646,24 +10646,24 @@ LABEL_11:
   [(ZWRootViewController *)self _updateSystemGestureDisablingAssertions];
 }
 
-- (void)endZoomMovementWithFullscreenEventHandler:(id)a3
+- (void)endZoomMovementWithFullscreenEventHandler:(id)handler
 {
   self->_fullScreenZoomStartPosition = CGPointZero;
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  [v3 zoomMovementDidEnd];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController zoomMovementDidEnd];
 }
 
-- (void)fullscreenEventHandler:(id)a3 continueZoomMovementWithVelocity:(double)a4 angle:(double)a5
+- (void)fullscreenEventHandler:(id)handler continueZoomMovementWithVelocity:(double)velocity angle:(double)angle
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithVelocity_angle___block_invoke;
   v8[3] = &unk_795A8;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v7 = v9;
+  handlerCopy = handler;
+  velocityCopy = velocity;
+  angleCopy = angle;
+  v7 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
@@ -10715,14 +10715,14 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   }
 }
 
-- (void)blockNotificationCenterGestureIfNeededWithFullscreenEventHandler:(id)a3
+- (void)blockNotificationCenterGestureIfNeededWithFullscreenEventHandler:(id)handler
 {
-  v4 = [(ZWRootViewController *)self _shouldBlockShowNotificationGesture];
-  v5 = [(ZWRootViewController *)self disableNotificationCenterAssertionFullscreenLens];
+  _shouldBlockShowNotificationGesture = [(ZWRootViewController *)self _shouldBlockShowNotificationGesture];
+  disableNotificationCenterAssertionFullscreenLens = [(ZWRootViewController *)self disableNotificationCenterAssertionFullscreenLens];
 
-  if (!v4 || v5)
+  if (!_shouldBlockShowNotificationGesture || disableNotificationCenterAssertionFullscreenLens)
   {
-    if ((v4 & 1) == 0)
+    if ((_shouldBlockShowNotificationGesture & 1) == 0)
     {
 
       [(ZWRootViewController *)self setDisableNotificationCenterAssertionFullscreenLens:0];
@@ -10736,14 +10736,14 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   }
 }
 
-- (void)blockControlCenterGestureIfNeededWithFullscreenEventHandler:(id)a3
+- (void)blockControlCenterGestureIfNeededWithFullscreenEventHandler:(id)handler
 {
-  v4 = [(ZWRootViewController *)self _shouldBlockShowControlCenterGesture];
-  v5 = [(ZWRootViewController *)self disableControlCenterAssertionFullscreenLens];
+  _shouldBlockShowControlCenterGesture = [(ZWRootViewController *)self _shouldBlockShowControlCenterGesture];
+  disableControlCenterAssertionFullscreenLens = [(ZWRootViewController *)self disableControlCenterAssertionFullscreenLens];
 
-  if (!v4 || v5)
+  if (!_shouldBlockShowControlCenterGesture || disableControlCenterAssertionFullscreenLens)
   {
-    if ((v4 & 1) == 0)
+    if ((_shouldBlockShowControlCenterGesture & 1) == 0)
     {
 
       [(ZWRootViewController *)self setDisableControlCenterAssertionFullscreenLens:0];
@@ -10757,7 +10757,7 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   }
 }
 
-- (double)storedZoomLevelWithFullscreenEventHandler:(id)a3
+- (double)storedZoomLevelWithFullscreenEventHandler:(id)handler
 {
   v3 = +[ZWCoalescedSettings sharedInstance];
   [v3 zoomFactor];
@@ -10766,7 +10766,7 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   return v5;
 }
 
-- (CGPoint)zoomLocationWithFullscreenEventHandler:(id)a3
+- (CGPoint)zoomLocationWithFullscreenEventHandler:(id)handler
 {
   v3 = +[ZWCoalescedSettings sharedInstance];
   [v3 zoomPanOffset];
@@ -10780,14 +10780,14 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   return result;
 }
 
-- (void)fullscreenEventHandler:(id)a3 storeZoomLevel:(double)a4 location:(CGPoint)a5 zoomed:(BOOL)a6 forKey:(id)a7
+- (void)fullscreenEventHandler:(id)handler storeZoomLevel:(double)level location:(CGPoint)location zoomed:(BOOL)zoomed forKey:(id)key
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = [ZWCoalescedSettings sharedInstance:a3];
-  v11 = [v10 zoomInStandby];
+  y = location.y;
+  x = location.x;
+  v10 = [ZWCoalescedSettings sharedInstance:handler];
+  zoomInStandby = [v10 zoomInStandby];
 
-  if ((v11 & 1) == 0)
+  if ((zoomInStandby & 1) == 0)
   {
     [(ZWRootViewController *)self zoomFactor];
     v12 = [(ZWRootViewController *)self _isZoomFactorAtMinimum:?];
@@ -10813,25 +10813,25 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
   [v17 setZoomPanOffset:{x, y}];
 }
 
-- (void)setGutterDistanceForUnitTests:(double)a3 scaleFactor:(double)a4
+- (void)setGutterDistanceForUnitTests:(double)tests scaleFactor:(double)factor
 {
   if (self->_inUnitTestingMode)
   {
-    ZOTSetGutterDistanceForUnitTests(a3);
+    ZOTSetGutterDistanceForUnitTests(tests);
 
-    ZOTSetUnitTestScaleFactor(a4);
+    ZOTSetUnitTestScaleFactor(factor);
   }
 }
 
-- (BOOL)fullscreenEventHandler:(id)a3 autopanWithLocation:(CGPoint)a4 initialSingleFingerLocation:(CGPoint)a5 distance:(double)a6 animationDuration:(double)a7 useGutterDistance:(BOOL)a8 pointHasBeenMapped:(BOOL)a9
+- (BOOL)fullscreenEventHandler:(id)handler autopanWithLocation:(CGPoint)location initialSingleFingerLocation:(CGPoint)fingerLocation distance:(double)distance animationDuration:(double)duration useGutterDistance:(BOOL)gutterDistance pointHasBeenMapped:(BOOL)mapped
 {
-  v9 = a9;
-  v10 = a8;
-  v99 = a7;
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  if (v9)
+  mappedCopy = mapped;
+  gutterDistanceCopy = gutterDistance;
+  durationCopy = duration;
+  y = location.y;
+  x = location.x;
+  handlerCopy = handler;
+  if (mappedCopy)
   {
     [(ZWRootViewController *)self zoomFrame];
     v17 = v16;
@@ -10844,10 +10844,10 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
 
   else
   {
-    v30 = [(ZWRootViewController *)self activeLensViewController];
-    v31 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v30 == v31)
+    if (activeLensViewController == fullscreenLensViewController)
     {
       [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
       width = v36;
@@ -10860,22 +10860,22 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
       goto LABEL_12;
     }
 
-    v32 = [(ZWRootViewController *)self activeLensViewController];
-    v33 = [(ZWRootViewController *)self pipLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-    if (v32 == v33)
+    if (activeLensViewController2 == pipLensViewController)
     {
-      v40 = [(ZWRootViewController *)self pipLensViewController];
-      v41 = [v40 view];
-      v42 = [(ZWRootViewController *)self pipLensViewController];
-      v43 = [v42 view];
-      [v43 bounds];
+      pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+      view = [pipLensViewController2 view];
+      pipLensViewController3 = [(ZWRootViewController *)self pipLensViewController];
+      view2 = [pipLensViewController3 view];
+      [view2 bounds];
       v45 = v44;
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      v52 = [(ZWRootViewController *)self containerView];
-      [v41 convertRect:v52 toView:{v45, v47, v49, v51}];
+      containerView = [(ZWRootViewController *)self containerView];
+      [view convertRect:containerView toView:{v45, v47, v49, v51}];
 
       UIRectInset();
       v17 = v53;
@@ -10886,10 +10886,10 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
 
     else
     {
-      v34 = [(ZWRootViewController *)self activeLensViewController];
-      v35 = [(ZWRootViewController *)self dockedLensViewController];
+      activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+      dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-      if (v34 != v35)
+      if (activeLensViewController3 != dockedLensViewController)
       {
         v17 = CGRectZero.origin.x;
         v19 = CGRectZero.origin.y;
@@ -10898,22 +10898,22 @@ void __86__ZWRootViewController_fullscreenEventHandler_continueZoomMovementWithV
         goto LABEL_12;
       }
 
-      v57 = [(ZWRootViewController *)self dockedLensViewController];
-      v58 = [v57 dockedLensView];
-      [v58 frame];
+      dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      dockedLensView = [dockedLensViewController2 dockedLensView];
+      [dockedLensView frame];
       v17 = v59;
       v19 = v60;
       width = v61;
       height = v62;
     }
 
-    [(ZWRootViewController *)self _denormalizePointForCurrentOrientation:x, y, *&v99];
+    [(ZWRootViewController *)self _denormalizePointForCurrentOrientation:x, y, *&durationCopy];
   }
 
   x = v28;
   y = v29;
 LABEL_12:
-  v63 = ZOTScreenRegionForPoint(v10, x, y, v17, v19, width, height);
+  v63 = ZOTScreenRegionForPoint(gutterDistanceCopy, x, y, v17, v19, width, height);
   if (self->_usingRelativePushPanning)
   {
     v63 = ZOTScreenRegionForRelativePushPan([(ZWRootViewController *)self interfaceOrientation]);
@@ -10922,13 +10922,13 @@ LABEL_12:
   if (v63)
   {
     v64 = CGPointZero.y;
-    v65 = v64 - a6;
+    v65 = v64 - distance;
     if ((v63 & 4) == 0)
     {
       v65 = CGPointZero.y;
     }
 
-    v66 = v64 + a6;
+    v66 = v64 + distance;
     if ((v63 & 8) != 0)
     {
       v67 = 1;
@@ -10949,7 +10949,7 @@ LABEL_12:
       v68 = v65;
     }
 
-    v69 = CGPointZero.x - a6;
+    v69 = CGPointZero.x - distance;
     if ((v63 & 1) == 0)
     {
       v69 = CGPointZero.x;
@@ -10958,7 +10958,7 @@ LABEL_12:
     v70 = (v63 & 2) == 0 && (v63 & 1) == 0;
     if ((v63 & 2) != 0)
     {
-      v71 = CGPointZero.x + a6;
+      v71 = CGPointZero.x + distance;
     }
 
     else
@@ -10966,23 +10966,23 @@ LABEL_12:
       v71 = v69;
     }
 
-    [(ZWRootViewController *)self zoomFactor:CGPointZero.x + a6];
+    [(ZWRootViewController *)self zoomFactor:CGPointZero.x + distance];
     v73 = v72;
     [(ZWRootViewController *)self zoomPanOffset];
     v75 = v71 + v74;
     v77 = v68 + v76;
-    v78 = [(ZWRootViewController *)self activeLensViewController];
-    [v78 validPanOffsetForProposedOffset:v75 proposedZoomFactor:{v77, v73}];
+    activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController4 validPanOffsetForProposedOffset:v75 proposedZoomFactor:{v77, v73}];
     v80 = v79;
     v82 = v81;
 
-    v83 = [(ZWRootViewController *)self activeLensViewController];
-    [v83 handleAdditionalPanOffsetFromOriginalOffset:1 validOffset:v75 useFullDelta:{v77, v80, v82}];
+    activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController5 handleAdditionalPanOffsetFromOriginalOffset:1 validOffset:v75 useFullDelta:{v77, v80, v82}];
 
     v84 = vabdd_f64(v80, v75);
     v85 = vabdd_f64(v82, v77);
-    v86 = [(ZWRootViewController *)self activeLensViewController];
-    [v86 offsetByPanningWithDelta:6 axis:v71 zoomFactor:{v68, v73}];
+    activeLensViewController6 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController6 offsetByPanningWithDelta:6 axis:v71 zoomFactor:{v68, v73}];
     v88 = v87;
     v90 = v89;
 
@@ -11051,17 +11051,17 @@ id __159__ZWRootViewController_fullscreenEventHandler_autopanWithLocation_initia
   return [v6 _updateMinimapStatus];
 }
 
-- (BOOL)fullscreenEventHandler:(id)a3 autopanShouldStartWithPoint:(CGPoint)a4 speedFactor:(double *)a5 initialSingleFingerLocation:(CGPoint)a6 fingerCount:(double)a7 pointHasBeenMapped:(BOOL)a8
+- (BOOL)fullscreenEventHandler:(id)handler autopanShouldStartWithPoint:(CGPoint)point speedFactor:(double *)factor initialSingleFingerLocation:(CGPoint)location fingerCount:(double)count pointHasBeenMapped:(BOOL)mapped
 {
-  v8 = a8;
-  y = a6.y;
-  x = a6.x;
-  v12 = a4.y;
-  v13 = a4.x;
+  mappedCopy = mapped;
+  y = location.y;
+  x = location.x;
+  v12 = point.y;
+  v13 = point.x;
   [(ZWRootViewController *)self zoomFactor];
   v63 = v15;
-  v16 = [(ZWRootViewController *)self activeLensViewController];
-  if (v8)
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  if (mappedCopy)
   {
     [(ZWRootViewController *)self zoomFrame];
     v18 = v17;
@@ -11076,10 +11076,10 @@ id __159__ZWRootViewController_fullscreenEventHandler_autopanWithLocation_initia
 
   else
   {
-    v29 = [(ZWRootViewController *)self activeLensViewController];
-    v30 = [(ZWRootViewController *)self fullscreenLensViewController];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-    if (v29 == v30)
+    if (activeLensViewController2 == fullscreenLensViewController)
     {
       [(ZWRootViewController *)self _screenSizeForCurrentOrientation];
       width = v33;
@@ -11095,10 +11095,10 @@ id __159__ZWRootViewController_fullscreenEventHandler_autopanWithLocation_initia
       goto LABEL_8;
     }
 
-    v31 = [(ZWRootViewController *)self activeLensViewController];
-    v32 = [(ZWRootViewController *)self pipLensViewController];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-    if (v31 != v32)
+    if (activeLensViewController3 != pipLensViewController)
     {
       v18 = CGRectZero.origin.x;
       v20 = CGRectZero.origin.y;
@@ -11107,17 +11107,17 @@ id __159__ZWRootViewController_fullscreenEventHandler_autopanWithLocation_initia
       goto LABEL_8;
     }
 
-    v43 = [(ZWRootViewController *)self pipLensViewController];
-    v44 = [v43 view];
-    v45 = [(ZWRootViewController *)self pipLensViewController];
-    v46 = [v45 view];
-    [v46 bounds];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    view = [pipLensViewController2 view];
+    pipLensViewController3 = [(ZWRootViewController *)self pipLensViewController];
+    view2 = [pipLensViewController3 view];
+    [view2 bounds];
     v48 = v47;
     v50 = v49;
     v52 = v51;
     v54 = v53;
-    v55 = [(ZWRootViewController *)self containerView];
-    [v44 convertRect:v55 toView:{v48, v50, v52, v54}];
+    containerView = [(ZWRootViewController *)self containerView];
+    [view convertRect:containerView toView:{v48, v50, v52, v54}];
 
     UIRectInset();
     v18 = v56;
@@ -11134,31 +11134,31 @@ id __159__ZWRootViewController_fullscreenEventHandler_autopanWithLocation_initia
   y = v28;
 LABEL_8:
   started = 0;
-  if (([v16 inStandbyMode] & 1) == 0 && v63 > AXZoomMinimumZoomLevel)
+  if (([activeLensViewController inStandbyMode] & 1) == 0 && v63 > AXZoomMinimumZoomLevel)
   {
     usingRelativePushPanning = self->_usingRelativePushPanning;
-    started = ZOTShouldStartAutopan(a5, &usingRelativePushPanning, v13, v12, a7, x, y, v63, v39, v40, v18, v20, width, height);
+    started = ZOTShouldStartAutopan(factor, &usingRelativePushPanning, v13, v12, count, x, y, v63, v39, v40, v18, v20, width, height);
     self->_usingRelativePushPanning = usingRelativePushPanning;
   }
 
   return started;
 }
 
-- (int64_t)interfaceOrientationWithFullscreenEventHandler:(id)a3
+- (int64_t)interfaceOrientationWithFullscreenEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __71__ZWRootViewController_interfaceOrientationWithFullscreenEventHandler___block_invoke;
   v8[3] = &unk_79310;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(cachedValuesSerialQueue, v8);
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -11166,57 +11166,57 @@ LABEL_8:
   return v6;
 }
 
-- (void)touchTrapView:(id)a3 didTrapTouches:(id)a4 withEvent:(id)a5
+- (void)touchTrapView:(id)view didTrapTouches:(id)touches withEvent:(id)event
 {
-  v9 = a3;
-  v6 = [(ZWRootViewController *)self pipLensViewController];
-  if ([v6 isInLensResizingMode])
+  viewCopy = view;
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  if ([pipLensViewController isInLensResizingMode])
   {
   }
 
   else
   {
-    v7 = [(ZWRootViewController *)self dockedLensViewController];
-    v8 = [v7 isInDockResizingMode];
+    dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+    isInDockResizingMode = [dockedLensViewController isInDockResizingMode];
 
-    if ((v8 & 1) == 0)
+    if ((isInDockResizingMode & 1) == 0)
     {
       _AXAssert();
     }
   }
 
-  [(ZWRootViewController *)self touchTrapViewActivated:v9];
+  [(ZWRootViewController *)self touchTrapViewActivated:viewCopy];
 }
 
-- (void)touchTrapViewActivated:(id)a3
+- (void)touchTrapViewActivated:(id)activated
 {
   [(ZWRootViewController *)self _setPIPLensResizingEnabled:0];
 
   [(ZWRootViewController *)self _setDockResizingEnabled:0];
 }
 
-- (BOOL)touchTrapView:(id)a3 shouldReportSelfInHitTestAtLocation:(CGPoint)a4
+- (BOOL)touchTrapView:(id)view shouldReportSelfInHitTestAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [(ZWRootViewController *)self fullscreenLensViewController];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v8 == v9)
+  if (activeLensViewController == fullscreenLensViewController)
   {
     goto LABEL_12;
   }
 
-  v10 = [(ZWRootViewController *)self activeLensViewController];
-  v11 = [(ZWRootViewController *)self pipLensViewController];
-  v12 = v11;
-  if (v10 == v11)
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
+  v12 = pipLensViewController;
+  if (activeLensViewController2 == pipLensViewController)
   {
-    v13 = [(ZWRootViewController *)self pipLensViewController];
-    v14 = [v13 isInLensResizingMode];
+    pipLensViewController2 = [(ZWRootViewController *)self pipLensViewController];
+    isInLensResizingMode = [pipLensViewController2 isInLensResizingMode];
 
-    if (!v14)
+    if (!isInLensResizingMode)
     {
       goto LABEL_12;
     }
@@ -11226,15 +11226,15 @@ LABEL_8:
   {
   }
 
-  v15 = [(ZWRootViewController *)self activeLensViewController];
-  v16 = [(ZWRootViewController *)self dockedLensViewController];
-  v17 = v16;
-  if (v15 == v16)
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
+  v17 = dockedLensViewController;
+  if (activeLensViewController3 == dockedLensViewController)
   {
-    v18 = [(ZWRootViewController *)self dockedLensViewController];
-    v19 = [v18 isInDockResizingMode];
+    dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+    isInDockResizingMode = [dockedLensViewController2 isInDockResizingMode];
 
-    if (!v19)
+    if (!isInDockResizingMode)
     {
       goto LABEL_12;
     }
@@ -11244,24 +11244,24 @@ LABEL_8:
   {
   }
 
-  v20 = [(ZWRootViewController *)self activeLensViewController];
-  v21 = [v20 view];
-  [v7 convertPoint:v21 toView:{x, y}];
+  activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+  view = [activeLensViewController4 view];
+  [viewCopy convertPoint:view toView:{x, y}];
   v23 = v22;
   v25 = v24;
 
-  v26 = [(ZWRootViewController *)self activeLensViewController];
-  v27 = [(ZWRootViewController *)self dockedLensViewController];
-  v28 = v27;
-  if (v26 != v27)
+  activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
+  dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+  v28 = dockedLensViewController3;
+  if (activeLensViewController5 != dockedLensViewController3)
   {
 
     goto LABEL_11;
   }
 
-  v29 = [(ZWRootViewController *)self dockedLensViewController];
-  v30 = [v29 toggleZoomRegionButton];
-  [v30 frame];
+  dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+  toggleZoomRegionButton = [dockedLensViewController4 toggleZoomRegionButton];
+  [toggleZoomRegionButton frame];
   v43.x = v23;
   v43.y = v25;
   v31 = CGRectContainsPoint(v44, v43);
@@ -11274,17 +11274,17 @@ LABEL_12:
   }
 
 LABEL_11:
-  v32 = [(ZWRootViewController *)self pipLensViewController];
-  v33 = [v32 lensEdgeForTouchAtLocation:{v23, v25}];
+  pipLensViewController3 = [(ZWRootViewController *)self pipLensViewController];
+  v33 = [pipLensViewController3 lensEdgeForTouchAtLocation:{v23, v25}];
 
   if (v33 > 1)
   {
     goto LABEL_12;
   }
 
-  v36 = [(ZWRootViewController *)self slugViewController];
-  v37 = [v36 view];
-  if ([v37 isHidden])
+  slugViewController = [(ZWRootViewController *)self slugViewController];
+  view2 = [slugViewController view];
+  if ([view2 isHidden])
   {
 
     v34 = 1;
@@ -11292,12 +11292,12 @@ LABEL_11:
 
   else
   {
-    v38 = [(ZWRootViewController *)self slugViewController];
-    v39 = [v38 view];
-    v40 = [(ZWRootViewController *)self slugViewController];
-    v41 = [v40 view];
-    [v7 convertPoint:v41 toView:{x, y}];
-    v42 = [v39 pointInside:0 withEvent:?];
+    slugViewController2 = [(ZWRootViewController *)self slugViewController];
+    view3 = [slugViewController2 view];
+    slugViewController3 = [(ZWRootViewController *)self slugViewController];
+    view4 = [slugViewController3 view];
+    [viewCopy convertPoint:view4 toView:{x, y}];
+    v42 = [view3 pointInside:0 withEvent:?];
 
     v34 = v42 ^ 1;
   }
@@ -11321,15 +11321,15 @@ LABEL_13:
   [(ZWRootViewController *)self _zoomMovementHeartbeat:0 fullscreenEventHandler:v3];
 }
 
-- (void)_zoomMovementHeartbeat:(double)a3 fullscreenEventHandler:(id)a4
+- (void)_zoomMovementHeartbeat:(double)heartbeat fullscreenEventHandler:(id)handler
 {
-  v41 = a4;
+  handlerCopy = handler;
   [(ZWRootViewController *)self zoomFactor];
   v7 = v6;
   [(ZWRootViewController *)self zoomPanOffset];
   v9 = v8;
   v11 = v10;
-  ZOTDistanceForTimeAndVelocityWithMaxDistance(a3);
+  ZOTDistanceForTimeAndVelocityWithMaxDistance(heartbeat);
   v13 = v12;
   v15 = v14;
   v16 = fabs(v14);
@@ -11338,31 +11338,31 @@ LABEL_13:
     self->_validatePanOffsetWithFullscreen = 1;
     v18 = v9 + v12;
     v19 = v11 + v15;
-    v20 = [(ZWRootViewController *)self activeLensViewController];
-    [v20 validPanOffsetForProposedOffset:v18 proposedZoomFactor:{v11 + v15, v7}];
+    activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController validPanOffsetForProposedOffset:v18 proposedZoomFactor:{v11 + v15, v7}];
     v22 = v21;
     v24 = v23;
 
-    v25 = [(ZWRootViewController *)self activeLensViewController];
-    [v25 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:v18 useFullDelta:{v19, v22, v24}];
+    activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController2 handleAdditionalPanOffsetFromOriginalOffset:0 validOffset:v18 useFullDelta:{v19, v22, v24}];
 
-    v26 = [(ZWRootViewController *)self activeLensViewController];
-    [v26 offsetByPanningWithDelta:6 axis:v13 zoomFactor:{v15, v7}];
+    activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController3 offsetByPanningWithDelta:6 axis:v13 zoomFactor:{v15, v7}];
     v28 = v27;
     v30 = v29;
 
     [(ZWRootViewController *)self setZoomPanOffset:v28, v30];
-    v31 = [(ZWRootViewController *)self activeLensViewController];
-    [v31 updateZoomFactor:0 panOffset:0 animated:v7 animationDuration:v28 completion:{v30, -1.0}];
+    activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+    [activeLensViewController4 updateZoomFactor:0 panOffset:0 animated:v7 animationDuration:v28 completion:{v30, -1.0}];
 
     self->_validatePanOffsetWithFullscreen = 0;
     if (v22 == v28 && v24 == v30)
     {
       v33 = vabdd_f64(v24, v19);
-      v34 = [(ZWRootViewController *)self activeLensViewController];
-      v35 = [(ZWRootViewController *)self dockedLensViewController];
+      activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
+      dockedLensViewController = [(ZWRootViewController *)self dockedLensViewController];
 
-      if (v34 != v35)
+      if (activeLensViewController5 != dockedLensViewController)
       {
 LABEL_22:
         if ((v33 < 2.22044605e-16 || !self->_careBorderY) && (vabdd_f64(v22, v18) < 2.22044605e-16 || !self->_careBorderX))
@@ -11373,13 +11373,13 @@ LABEL_22:
         goto LABEL_9;
       }
 
-      v36 = [(ZWRootViewController *)self dockedLensViewController];
-      if ([v36 dockPosition])
+      dockedLensViewController2 = [(ZWRootViewController *)self dockedLensViewController];
+      if ([dockedLensViewController2 dockPosition])
       {
-        v37 = [(ZWRootViewController *)self dockedLensViewController];
-        v38 = [v37 dockPosition];
+        dockedLensViewController3 = [(ZWRootViewController *)self dockedLensViewController];
+        dockPosition = [dockedLensViewController3 dockPosition];
 
-        if (v38 != &dword_0 + 3)
+        if (dockPosition != &dword_0 + 3)
         {
           v39 = 752;
           goto LABEL_19;
@@ -11394,8 +11394,8 @@ LABEL_22:
 LABEL_19:
       if (*(&self->super.super.super.isa + v39))
       {
-        v40 = [(ZWRootViewController *)self dockedLensViewController];
-        *(&self->super.super.super.isa + v39) = [v40 zoomRegionOnScreenReplicatorEdge];
+        dockedLensViewController4 = [(ZWRootViewController *)self dockedLensViewController];
+        *(&self->super.super.super.isa + v39) = [dockedLensViewController4 zoomRegionOnScreenReplicatorEdge];
       }
 
       else
@@ -11408,44 +11408,44 @@ LABEL_19:
   }
 
 LABEL_9:
-  [(ZWRootViewController *)self stopZoomMovementWithVelocityWithFullscreenEventHandler:v41];
+  [(ZWRootViewController *)self stopZoomMovementWithVelocityWithFullscreenEventHandler:handlerCopy];
 LABEL_10:
 }
 
 - (BOOL)_shouldBlockShowNotificationGesture
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
-  if (v3 != v4)
+  if (activeLensViewController != fullscreenLensViewController)
   {
     return 0;
   }
 
-  v5 = [(ZWRootViewController *)self activeLensViewController];
-  if ([v5 inStandbyMode])
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  if ([activeLensViewController2 inStandbyMode])
   {
 
     return 0;
   }
 
-  v6 = [(ZWRootViewController *)self _isZoomedToMinimum];
+  _isZoomedToMinimum = [(ZWRootViewController *)self _isZoomedToMinimum];
 
-  if (v6)
+  if (_isZoomedToMinimum)
   {
     return 0;
   }
 
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [v8 lensZoomView];
-  v10 = [v9 zoomReplicatorLayer];
-  [v10 position];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  lensZoomView = [activeLensViewController3 lensZoomView];
+  zoomReplicatorLayer = [lensZoomView zoomReplicatorLayer];
+  [zoomReplicatorLayer position];
   v12 = v11;
 
-  v13 = [(ZWRootViewController *)self activeLensViewController];
-  v14 = [v13 lensZoomView];
-  v15 = [v14 zoomReplicatorLayer];
-  [v15 bounds];
+  activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+  lensZoomView2 = [activeLensViewController4 lensZoomView];
+  zoomReplicatorLayer2 = [lensZoomView2 zoomReplicatorLayer];
+  [zoomReplicatorLayer2 bounds];
   v17 = v16;
 
   return v12 + v17 * -0.5 >= 15.0;
@@ -11453,28 +11453,28 @@ LABEL_10:
 
 - (BOOL)_shouldBlockShowControlCenterGesture
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  if ([v3 inStandbyMode])
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  if ([activeLensViewController inStandbyMode])
   {
 
     return 0;
   }
 
-  v4 = [(ZWRootViewController *)self _isZoomedToMinimum];
+  _isZoomedToMinimum = [(ZWRootViewController *)self _isZoomedToMinimum];
 
-  if (v4)
+  if (_isZoomedToMinimum)
   {
     return 0;
   }
 
-  v5 = [(ZWRootViewController *)self activeLensViewController];
-  [v5 zoomPanOffset];
+  activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController2 zoomPanOffset];
   v7 = v6;
 
-  v8 = [(ZWRootViewController *)self activeLensViewController];
-  v9 = [(ZWRootViewController *)self activeLensViewController];
-  [v9 zoomFactor];
-  [v8 maximumPanOffsetWithZoomFactor:?];
+  activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+  activeLensViewController4 = [(ZWRootViewController *)self activeLensViewController];
+  [activeLensViewController4 zoomFactor];
+  [activeLensViewController3 maximumPanOffsetWithZoomFactor:?];
   v11 = v10;
 
   if (!AXDeviceHasHomeButton() || !AXDeviceIsPhoneIdiom())
@@ -11482,11 +11482,11 @@ LABEL_10:
     return v7 + v11 >= 30.0;
   }
 
-  v12 = [(ZWRootViewController *)self activeLensViewController];
-  v13 = [(ZWRootViewController *)self fullscreenLensViewController];
+  activeLensViewController5 = [(ZWRootViewController *)self activeLensViewController];
+  fullscreenLensViewController = [(ZWRootViewController *)self fullscreenLensViewController];
 
   result = 0;
-  if (v12 == v13 && v11 - v7 >= 30.0)
+  if (activeLensViewController5 == fullscreenLensViewController && v11 - v7 >= 30.0)
   {
     return 1;
   }
@@ -11494,52 +11494,52 @@ LABEL_10:
   return result;
 }
 
-- (double)_interfaceAwareAdjustedAngleForScreenAngle:(double)a3
+- (double)_interfaceAwareAdjustedAngleForScreenAngle:(double)angle
 {
-  v4 = [(ZWRootViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 interfaceOrientation];
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
   result = 0.0;
-  if (v6 > 2)
+  if (interfaceOrientation > 2)
   {
-    if (v6 == (&dword_0 + 3))
+    if (interfaceOrientation == (&dword_0 + 3))
     {
-      result = a3 + -270.0;
-      if (a3 + -270.0 >= 0.0)
+      result = angle + -270.0;
+      if (angle + -270.0 >= 0.0)
       {
         return result;
       }
 
       v8 = 90.0;
-      return a3 + v8;
+      return angle + v8;
     }
 
-    if (v6 == &dword_4)
+    if (interfaceOrientation == &dword_4)
     {
-      result = a3 + -90.0;
-      if (a3 + -90.0 < 0.0)
+      result = angle + -90.0;
+      if (angle + -90.0 < 0.0)
       {
         v8 = 270.0;
-        return a3 + v8;
+        return angle + v8;
       }
     }
   }
 
   else
   {
-    if (v6 < 2)
+    if (interfaceOrientation < 2)
     {
-      return a3;
+      return angle;
     }
 
-    if (v6 == (&dword_0 + 2))
+    if (interfaceOrientation == (&dword_0 + 2))
     {
-      result = a3 + -180.0;
-      if (a3 + -180.0 < 0.0)
+      result = angle + -180.0;
+      if (angle + -180.0 < 0.0)
       {
         v8 = 180.0;
-        return a3 + v8;
+        return angle + v8;
       }
     }
   }
@@ -11547,13 +11547,13 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)_convertPointFromNormalizedToWindow:(CGPoint)a3
+- (CGPoint)_convertPointFromNormalizedToWindow:(CGPoint)window
 {
-  v4 = ZOTDenormalizePoint(a3.x);
+  v4 = ZOTDenormalizePoint(window.x);
   v6 = v5;
-  v7 = [(ZWRootViewController *)self view];
-  v8 = [v7 window];
-  v9 = ZWConvertPointInScreenPixelsToViewCoordinates(v8, v4, v6);
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  v9 = ZWConvertPointInScreenPixelsToViewCoordinates(window, v4, v6);
   v11 = v10;
 
   v12 = v9;
@@ -11563,40 +11563,40 @@ LABEL_10:
   return result;
 }
 
-- (void)handleReachabilityToggled:(double)a3
+- (void)handleReachabilityToggled:(double)toggled
 {
-  v5 = [(ZWRootViewController *)self activeLensViewController];
-  v6 = [v5 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  if ((v6 & 1) == 0)
+  if ((inStandbyMode & 1) == 0)
   {
     [(ZWRootViewController *)self reachabilityOffset];
     v8 = v7;
-    if (vabdd_f64(a3, v7) >= 0.00000011920929)
+    if (vabdd_f64(toggled, v7) >= 0.00000011920929)
     {
-      v9 = [(ZWRootViewController *)self activeLensViewController];
-      v10 = [(ZWRootViewController *)self pipLensViewController];
+      activeLensViewController2 = [(ZWRootViewController *)self activeLensViewController];
+      pipLensViewController = [(ZWRootViewController *)self pipLensViewController];
 
-      if (v9 == v10)
+      if (activeLensViewController2 == pipLensViewController)
       {
-        v11 = [(ZWRootViewController *)self activeLensViewController];
-        [(ZWRootViewController *)self _moveZoomItemWithController:v11 byDelta:0 animated:0 userInitiated:0.0, a3 - v8];
+        activeLensViewController3 = [(ZWRootViewController *)self activeLensViewController];
+        [(ZWRootViewController *)self _moveZoomItemWithController:activeLensViewController3 byDelta:0 animated:0 userInitiated:0.0, toggled - v8];
       }
 
-      [(ZWRootViewController *)self setReachabilityOffset:a3];
+      [(ZWRootViewController *)self setReachabilityOffset:toggled];
     }
   }
 }
 
-- (void)didAnimateForReachabilityToOffset:(double)a3
+- (void)didAnimateForReachabilityToOffset:(double)offset
 {
-  v4 = [(ZWRootViewController *)self cachedValuesSerialQueue];
+  cachedValuesSerialQueue = [(ZWRootViewController *)self cachedValuesSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__ZWRootViewController_didAnimateForReachabilityToOffset___block_invoke;
   block[3] = &unk_78D00;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(cachedValuesSerialQueue, block);
 }
 
 void __58__ZWRootViewController_didAnimateForReachabilityToOffset___block_invoke(uint64_t a1)
@@ -11717,66 +11717,66 @@ void __58__ZWRootViewController_didAnimateForReachabilityToOffset___block_invoke
   v17 = NSStringFromCGRect(v25);
   v24[5] = v17;
   v23[6] = ZWAttributeKeyActiveZoomMode;
-  v16 = [(ZWRootViewController *)self activeZoomMode];
-  v24[6] = v16;
+  activeZoomMode = [(ZWRootViewController *)self activeZoomMode];
+  v24[6] = activeZoomMode;
   v23[7] = ZWAttributeKeyInStandbyMode;
-  v15 = [(ZWRootViewController *)self activeLensViewController];
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v15 inStandbyMode]);
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activeLensViewController inStandbyMode]);
   v24[7] = v14;
   v23[8] = ZWAttributeKeyShouldSuppressKeyCommandHUD;
   v3 = [NSNumber numberWithBool:[(ZWRootViewController *)self shouldSuppressKeyCommandHUD]];
   v24[8] = v3;
   v23[9] = ZWAttributeKeyIsAnimating;
-  v4 = [(ZWRootViewController *)self zoomIsAnimatingDueToTransition]|| [(ZWRootViewController *)self zoomIsAnimatingDueToStandbyToggle]|| [(ZWRootViewController *)self zoomIsAnimating];
-  v5 = [NSNumber numberWithInt:v4];
+  zoomIsAnimating = [(ZWRootViewController *)self zoomIsAnimatingDueToTransition]|| [(ZWRootViewController *)self zoomIsAnimatingDueToStandbyToggle]|| [(ZWRootViewController *)self zoomIsAnimating];
+  v5 = [NSNumber numberWithInt:zoomIsAnimating];
   v24[9] = v5;
   v23[10] = ZWAttributeKeyDisplayID;
-  v6 = [(ZWRootViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  v9 = [v8 displayIdentity];
-  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v9 displayID]);
+  view = [(ZWRootViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  displayIdentity = [screen displayIdentity];
+  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [displayIdentity displayID]);
   v24[10] = v10;
   v23[11] = ZWAttributeKeyIsMainDisplay;
   v11 = [NSNumber numberWithBool:[(ZWRootViewController *)self isMainDisplay]];
   v24[11] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:12];
 
-  v13 = [(ZWRootViewController *)self axuiService];
-  [v13 updateZoomListeners:v12];
+  axuiService = [(ZWRootViewController *)self axuiService];
+  [axuiService updateZoomListeners:v12];
 }
 
-- (void)updateFocusWithSmartZoom:(id)a3
+- (void)updateFocusWithSmartZoom:(id)zoom
 {
-  v6 = a3;
+  zoomCopy = zoom;
   AXDeviceIsTV();
   if ([(ZWKeyboardContext *)self->_kbContext zoomFollowsFocus])
   {
-    v4 = [(ZWRootViewController *)self lensAutopanner];
-    v5 = [v4 isAutomovingLens];
+    lensAutopanner = [(ZWRootViewController *)self lensAutopanner];
+    isAutomovingLens = [lensAutopanner isAutomovingLens];
 
-    if ((v5 & 1) == 0)
+    if ((isAutomovingLens & 1) == 0)
     {
-      [v6 focusRect];
+      [zoomCopy focusRect];
       [(ZWRootViewController *)self _focusLensOnRect:1 panLensContent:1 recentreLens:0 animated:0 completion:?];
     }
   }
 }
 
-- (BOOL)isZoomInStandByModeWithSmartZoom:(id)a3
+- (BOOL)isZoomInStandByModeWithSmartZoom:(id)zoom
 {
-  v3 = [(ZWRootViewController *)self activeLensViewController];
-  v4 = [v3 inStandbyMode];
+  activeLensViewController = [(ZWRootViewController *)self activeLensViewController];
+  inStandbyMode = [activeLensViewController inStandbyMode];
 
-  return v4;
+  return inStandbyMode;
 }
 
 - (id)getLastSpeakUnderFingerPhrase
 {
   v2 = +[AXSpeakFingerManager sharedInstance];
-  v3 = [v2 getLastSpeakUnderFingerPhrase];
+  getLastSpeakUnderFingerPhrase = [v2 getLastSpeakUnderFingerPhrase];
 
-  return v3;
+  return getLastSpeakUnderFingerPhrase;
 }
 
 - (AXUIService)axuiService

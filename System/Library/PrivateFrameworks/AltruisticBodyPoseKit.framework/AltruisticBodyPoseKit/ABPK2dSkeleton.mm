@@ -1,18 +1,18 @@
 @interface ABPK2dSkeleton
 - (ABPK2dSkeleton)init;
-- (ABPK2dSkeleton)initWithType:(int64_t)a3;
+- (ABPK2dSkeleton)initWithType:(int64_t)type;
 - (CGRect)boundingBox;
 - (CGSize)imageRes;
 - (id).cxx_construct;
 - (id)description;
 - (id)toDictionary;
-- (int)overlaySkeletonOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:;
+- (int)overlaySkeletonOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:;
 - (void)computeBoundingBox;
 - (void)printData;
-- (void)setJointConfidences:(const float *)a3;
-- (void)setJointVisibility:(const unsigned int *)a3;
-- (void)setKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)a2;
-- (void)setNormalizedKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)a2;
+- (void)setJointConfidences:(const float *)confidences;
+- (void)setJointVisibility:(const unsigned int *)visibility;
+- (void)setKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)res;
+- (void)setNormalizedKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)res;
 @end
 
 @implementation ABPK2dSkeleton
@@ -28,8 +28,8 @@
     v4 = *(v2 + 15);
     *(v2 + 15) = v3;
 
-    v5 = [v2 skeletonDefinition];
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v26, [v5 jointCount]);
+    skeletonDefinition = [v2 skeletonDefinition];
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v26, [skeletonDefinition jointCount]);
     v7 = v2 + 8;
     v6 = *(v2 + 1);
     if (v6)
@@ -46,8 +46,8 @@
     v26 = 0uLL;
     v27 = 0;
 
-    v8 = [v2 skeletonDefinition];
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v26, [v8 jointCount]);
+    skeletonDefinition2 = [v2 skeletonDefinition];
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v26, [skeletonDefinition2 jointCount]);
     v10 = v2 + 32;
     v9 = *(v2 + 4);
     if (v9)
@@ -69,10 +69,10 @@
 
     while (1)
     {
-      v17 = [v2 skeletonDefinition];
-      v18 = [v17 jointCount];
+      skeletonDefinition3 = [v2 skeletonDefinition];
+      jointCount = [skeletonDefinition3 jointCount];
 
-      if (v18 <= v11)
+      if (jointCount <= v11)
       {
         break;
       }
@@ -85,8 +85,8 @@
 
     *(v2 + 136) = _Q0;
     *(v2 + 16) = 0;
-    v20 = [v2 skeletonDefinition];
-    std::vector<float>::vector[abi:ne200100](&v26, [v20 jointCount]);
+    skeletonDefinition4 = [v2 skeletonDefinition];
+    std::vector<float>::vector[abi:ne200100](&v26, [skeletonDefinition4 jointCount]);
     v21 = *(v2 + 7);
     if (v21)
     {
@@ -102,8 +102,8 @@
     v27 = 0;
     v26 = 0uLL;
 
-    v22 = [v2 skeletonDefinition];
-    std::vector<unsigned int>::vector[abi:ne200100](&v26, [v22 jointCount]);
+    skeletonDefinition5 = [v2 skeletonDefinition];
+    std::vector<unsigned int>::vector[abi:ne200100](&v26, [skeletonDefinition5 jointCount]);
     v23 = *(v2 + 10);
     if (v23)
     {
@@ -126,16 +126,16 @@
   return v2;
 }
 
-- (ABPK2dSkeleton)initWithType:(int64_t)a3
+- (ABPK2dSkeleton)initWithType:(int64_t)type
 {
   v20.receiver = self;
   v20.super_class = ABPK2dSkeleton;
   v4 = [(ABPK2dSkeleton *)&v20 init];
   v5 = v4;
-  if (v4 && (v4->_skeletonType = a3, v6 = [[ABPKSkeletonDefinition alloc] initWithType:a3], skeletonDefinition = v5->_skeletonDefinition, v5->_skeletonDefinition = v6, skeletonDefinition, v5->_skeletonDefinition))
+  if (v4 && (v4->_skeletonType = type, v6 = [[ABPKSkeletonDefinition alloc] initWithType:type], skeletonDefinition = v5->_skeletonDefinition, v5->_skeletonDefinition = v6, skeletonDefinition, v5->_skeletonDefinition))
   {
-    v8 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v18, [v8 jointCount]);
+    skeletonDefinition = [(ABPK2dSkeleton *)v5 skeletonDefinition];
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v18, [skeletonDefinition jointCount]);
     v9 = *v5->_anon_8;
     if (v9)
     {
@@ -151,8 +151,8 @@
     v18 = 0uLL;
     v19 = 0;
 
-    v10 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v18, [v10 jointCount]);
+    skeletonDefinition2 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v18, [skeletonDefinition2 jointCount]);
     v11 = *v5->_anon_20;
     if (v11)
     {
@@ -168,8 +168,8 @@
     v19 = 0;
     v18 = 0uLL;
 
-    v12 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
-    std::vector<float>::vector[abi:ne200100](&v18, [v12 jointCount]);
+    skeletonDefinition3 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
+    std::vector<float>::vector[abi:ne200100](&v18, [skeletonDefinition3 jointCount]);
     begin = v5->_confidences.__begin_;
     if (begin)
     {
@@ -185,8 +185,8 @@
     v19 = 0;
     v18 = 0uLL;
 
-    v14 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
-    std::vector<unsigned int>::vector[abi:ne200100](&v18, [v14 jointCount]);
+    skeletonDefinition4 = [(ABPK2dSkeleton *)v5 skeletonDefinition];
+    std::vector<unsigned int>::vector[abi:ne200100](&v18, [skeletonDefinition4 jointCount]);
     v15 = v5->_visibility.__begin_;
     if (v15)
     {
@@ -227,17 +227,17 @@
   return v3;
 }
 
-- (void)setNormalizedKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)a2
+- (void)setNormalizedKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)res
 {
   v22 = v3;
   v23 = v4;
   v5 = v2;
   v27 = *MEMORY[0x277D85DE8];
-  v7 = [(ABPK2dSkeleton *)self skeletonDefinition];
-  v8 = [v7 jointCount];
-  if (v8)
+  skeletonDefinition = [(ABPK2dSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(*self->_anon_20, v5, 8 * v8);
+    memmove(*self->_anon_20, v5, 8 * jointCount);
   }
 
   v9 = 0;
@@ -249,10 +249,10 @@
 
   while (1)
   {
-    v16 = [(ABPK2dSkeleton *)self skeletonDefinition];
-    v17 = [v16 jointCount];
+    skeletonDefinition2 = [(ABPK2dSkeleton *)self skeletonDefinition];
+    jointCount2 = [skeletonDefinition2 jointCount];
 
-    if (v17 <= v9)
+    if (jointCount2 <= v9)
     {
       break;
     }
@@ -286,16 +286,16 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)a2
+- (void)setKeypoints2d:(ABPK2dSkeleton *)self withImageRes:(SEL)res
 {
   v20 = v3;
   v21 = v4;
   v5 = v2;
-  v7 = [(ABPK2dSkeleton *)self skeletonDefinition];
-  v8 = [v7 jointCount];
-  if (v8)
+  skeletonDefinition = [(ABPK2dSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(*self->_anon_8, v5, 8 * v8);
+    memmove(*self->_anon_8, v5, 8 * jointCount);
   }
 
   v9 = 0;
@@ -306,10 +306,10 @@
 
   while (1)
   {
-    v15 = [(ABPK2dSkeleton *)self skeletonDefinition];
-    v16 = [v15 jointCount];
+    skeletonDefinition2 = [(ABPK2dSkeleton *)self skeletonDefinition];
+    jointCount2 = [skeletonDefinition2 jointCount];
 
-    if (v16 <= v9)
+    if (jointCount2 <= v9)
     {
       break;
     }
@@ -340,10 +340,10 @@
   v7 = 3.4028e38;
   while (1)
   {
-    v8 = [(ABPK2dSkeleton *)self skeletonDefinition];
-    v9 = [v8 jointCount];
+    skeletonDefinition = [(ABPK2dSkeleton *)self skeletonDefinition];
+    jointCount = [skeletonDefinition jointCount];
 
-    if (v9 <= v3)
+    if (jointCount <= v3)
     {
       break;
     }
@@ -395,23 +395,23 @@
   self->_boundingBox.size.height = ((v4 - v5) + 1.0);
 }
 
-- (void)setJointConfidences:(const float *)a3
+- (void)setJointConfidences:(const float *)confidences
 {
-  v6 = [(ABPK2dSkeleton *)self skeletonDefinition];
-  v5 = [v6 jointCount];
-  if (v5)
+  skeletonDefinition = [(ABPK2dSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(self->_confidences.__begin_, a3, 4 * v5);
+    memmove(self->_confidences.__begin_, confidences, 4 * jointCount);
   }
 }
 
-- (void)setJointVisibility:(const unsigned int *)a3
+- (void)setJointVisibility:(const unsigned int *)visibility
 {
-  v6 = [(ABPK2dSkeleton *)self skeletonDefinition];
-  v5 = [v6 jointCount];
-  if (v5)
+  skeletonDefinition = [(ABPK2dSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(self->_visibility.__begin_, a3, 4 * v5);
+    memmove(self->_visibility.__begin_, visibility, 4 * jointCount);
   }
 }
 
@@ -520,9 +520,9 @@
   return v3;
 }
 
-- (int)overlaySkeletonOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:
+- (int)overlaySkeletonOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:
 {
-  if (!a4)
+  if (!result)
   {
     v10 = v4;
     v8 = __ABPKLogSharedInstance();
@@ -535,7 +535,7 @@
     v4 = v10;
   }
 
-  return overlay2dResultOnImage(self, a3, a4, v4);
+  return overlay2dResultOnImage(self, image, result, v4);
 }
 
 - (CGRect)boundingBox

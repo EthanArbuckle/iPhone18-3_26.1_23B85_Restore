@@ -1,16 +1,16 @@
 @interface PBFCompressionHelper
-+ (BOOL)unarchiveFileAtURL:(id)a3 toURL:(id)a4;
-+ (int)unTarFileWithFd:(id)a3 toPath:(id)a4;
-+ (int)unpackageTarData:(void *)a3 size:(unint64_t)a4 parentDir:(const char *)a5;
++ (BOOL)unarchiveFileAtURL:(id)l toURL:(id)rL;
++ (int)unTarFileWithFd:(id)fd toPath:(id)path;
++ (int)unpackageTarData:(void *)data size:(unint64_t)size parentDir:(const char *)dir;
 @end
 
 @implementation PBFCompressionHelper
 
-+ (int)unpackageTarData:(void *)a3 size:(unint64_t)a4 parentDir:(const char *)a5
++ (int)unpackageTarData:(void *)data size:(unint64_t)size parentDir:(const char *)dir
 {
   v19 = *MEMORY[0x277D85DE8];
   memset(&v17, 0, sizeof(v17));
-  if (stat(a5, &v17) == -1 && mkdir(a5, 0x1C0u))
+  if (stat(dir, &v17) == -1 && mkdir(dir, 0x1C0u))
   {
     return -1;
   }
@@ -87,12 +87,12 @@ LABEL_9:
   return result;
 }
 
-+ (int)unTarFileWithFd:(id)a3 toPath:(id)a4
++ (int)unTarFileWithFd:(id)fd toPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = dup([v6 fileDescriptor]);
+  fdCopy = fd;
+  pathCopy = path;
+  v8 = dup([fdCopy fileDescriptor]);
   if (v8 < 0)
   {
     v13 = -1;
@@ -105,14 +105,14 @@ LABEL_9:
     if (fstat(v8, &v18))
     {
       close(v9);
-      v10 = PBFLogCommon();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      availableData = PBFLogCommon();
+      if (os_log_type_enabled(availableData, OS_LOG_TYPE_INFO))
       {
         v11 = __error();
         v12 = strerror(*v11);
         *buf = 136315138;
         v20 = v12;
-        _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_INFO, "failed stat %s", buf, 0xCu);
+        _os_log_impl(&dword_21B526000, availableData, OS_LOG_TYPE_INFO, "failed stat %s", buf, 0xCu);
       }
 
       v13 = -1;
@@ -120,8 +120,8 @@ LABEL_9:
 
     else
     {
-      v10 = [v6 availableData];
-      v14 = [a1 unpackageTarData:-[NSObject bytes](v10 size:"bytes") parentDir:{v18.st_size, objc_msgSend(v7, "UTF8String")}];
+      availableData = [fdCopy availableData];
+      v14 = [self unpackageTarData:-[NSObject bytes](availableData size:"bytes") parentDir:{v18.st_size, objc_msgSend(pathCopy, "UTF8String")}];
       v15 = PBFLogCommon();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
       if (v14)
@@ -151,17 +151,17 @@ LABEL_9:
   return v13;
 }
 
-+ (BOOL)unarchiveFileAtURL:(id)a3 toURL:(id)a4
++ (BOOL)unarchiveFileAtURL:(id)l toURL:(id)rL
 {
   v6 = MEMORY[0x277CCA9F8];
-  v7 = a4;
-  v8 = [a3 path];
-  v9 = [v6 fileHandleForReadingAtPath:v8];
+  rLCopy = rL;
+  path = [l path];
+  v9 = [v6 fileHandleForReadingAtPath:path];
 
-  v10 = [v7 path];
+  path2 = [rLCopy path];
 
-  LOBYTE(a1) = [a1 unTarFileWithFd:v9 toPath:v10] == 0;
-  return a1;
+  LOBYTE(self) = [self unTarFileWithFd:v9 toPath:path2] == 0;
+  return self;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface SleepingWristTemperatureHelpTileViewController
-- (_TtC24MenstrualCyclesAppPlugin46SleepingWristTemperatureHelpTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin46SleepingWristTemperatureHelpTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -8,9 +8,9 @@
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_29E0E0908();
-  [(SleepingWristTemperatureHelpTileViewController *)v3 setView:v2];
+  [(SleepingWristTemperatureHelpTileViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
@@ -27,9 +27,9 @@
   }
 }
 
-- (_TtC24MenstrualCyclesAppPlugin46SleepingWristTemperatureHelpTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin46SleepingWristTemperatureHelpTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v7 = v6;
@@ -41,8 +41,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29E0E170C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29E0E170C(v5, v7, bundle);
 }
 
 @end

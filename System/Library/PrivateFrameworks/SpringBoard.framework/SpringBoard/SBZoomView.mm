@@ -1,24 +1,24 @@
 @interface SBZoomView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (SBZoomView)initWithFrame:(CGRect)a3;
-- (id)_initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (SBZoomView)initWithFrame:(CGRect)frame;
+- (id)_initWithFrame:(CGRect)frame;
 @end
 
 @implementation SBZoomView
 
-- (SBZoomView)initWithFrame:(CGRect)a3
+- (SBZoomView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBZoomView.m" lineNumber:41 description:@"call to abstract base class initializer"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBZoomView.m" lineNumber:41 description:@"call to abstract base class initializer"];
 
   return 0;
 }
 
-- (id)_initWithFrame:(CGRect)a3
+- (id)_initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SBZoomView;
-  v3 = [(SBZoomView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBZoomView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,10 +35,10 @@
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -47,7 +47,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBZoomView;
-    v5 = [(SBZoomView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBZoomView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

@@ -1,10 +1,10 @@
 @interface EDBatchingMessageQueryIterator
-- (EDBatchingMessageQueryIterator)initWithMessagePersistence:(id)a3 query:(id)a4 batchSize:(int64_t)a5 firstBatchSize:(int64_t)a6 limit:(int64_t)a7 handler:(id)a8;
-- (id)_deduplicateMessages:(id)a3;
-- (void)_callHandlerWithError:(id)a3;
-- (void)_callHandlerWithMessages:(id)a3;
-- (void)_processMessages:(id)a3 forceFlush:(BOOL)a4;
-- (void)addMessage:(id)a3 withDatabaseID:(int64_t)a4;
+- (EDBatchingMessageQueryIterator)initWithMessagePersistence:(id)persistence query:(id)query batchSize:(int64_t)size firstBatchSize:(int64_t)batchSize limit:(int64_t)limit handler:(id)handler;
+- (id)_deduplicateMessages:(id)messages;
+- (void)_callHandlerWithError:(id)error;
+- (void)_callHandlerWithMessages:(id)messages;
+- (void)_processMessages:(id)messages forceFlush:(BOOL)flush;
+- (void)addMessage:(id)message withDatabaseID:(int64_t)d;
 - (void)flush;
 @end
 
@@ -14,10 +14,10 @@
 {
   if (([(EFManualCancelationToken *)self->_cancelationToken isCanceled]& 1) == 0)
   {
-    v4 = [(EFQueue *)self->_messageQueue drain];
-    if ([v4 count])
+    drain = [(EFQueue *)self->_messageQueue drain];
+    if ([drain count])
     {
-      [(EDBatchingMessageQueryIterator *)self _processMessages:v4 forceFlush:1];
+      [(EDBatchingMessageQueryIterator *)self _processMessages:drain forceFlush:1];
     }
 
     else if (self->_batchedMessages)
@@ -34,22 +34,22 @@
   }
 }
 
-- (EDBatchingMessageQueryIterator)initWithMessagePersistence:(id)a3 query:(id)a4 batchSize:(int64_t)a5 firstBatchSize:(int64_t)a6 limit:(int64_t)a7 handler:(id)a8
+- (EDBatchingMessageQueryIterator)initWithMessagePersistence:(id)persistence query:(id)query batchSize:(int64_t)size firstBatchSize:(int64_t)batchSize limit:(int64_t)limit handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  persistenceCopy = persistence;
+  queryCopy = query;
+  handlerCopy = handler;
   v45.receiver = self;
   v45.super_class = EDBatchingMessageQueryIterator;
   v18 = [(EDBatchingMessageQueryIterator *)&v45 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_messagePersistence, a3);
+    objc_storeStrong(&v18->_messagePersistence, persistence);
     v20 = MEMORY[0x1E699ADA0];
-    v21 = [v16 predicate];
-    v22 = [v15 mailboxPersistence];
-    v23 = [v20 mailboxScopeForPredicate:v21 withMailboxTypeResolver:v22];
+    predicate = [queryCopy predicate];
+    mailboxPersistence = [persistenceCopy mailboxPersistence];
+    v23 = [v20 mailboxScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
     mailboxScope = v19->_mailboxScope;
     v19->_mailboxScope = v23;
 
@@ -57,27 +57,27 @@
     cancelationToken = v19->_cancelationToken;
     v19->_cancelationToken = v25;
 
-    v19->_remaining = a7;
+    v19->_remaining = limit;
     v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     seenGlobalMessages = v19->_seenGlobalMessages;
     v19->_seenGlobalMessages = v27;
 
-    v29 = _Block_copy(v17);
+    v29 = _Block_copy(handlerCopy);
     handler = v19->_handler;
     v19->_handler = v29;
 
     v19->_handlerLock._os_unfair_lock_opaque = 0;
-    if (a5 >= a7)
+    if (size >= limit)
     {
-      v31 = a7;
+      sizeCopy = limit;
     }
 
     else
     {
-      v31 = a5;
+      sizeCopy = size;
     }
 
-    v19->_batchSize = v31;
+    v19->_batchSize = sizeCopy;
     objc_initWeak(&location, v19);
     v32 = MEMORY[0x1E699B798];
     v42[0] = MEMORY[0x1E69E9820];
@@ -86,19 +86,19 @@
     v42[3] = &unk_1E8250808;
     objc_copyWeak(&v43, &location);
     v33 = [v32 tokenWithCancelationBlock:v42];
-    if (a6 <= 0)
+    if (batchSize <= 0)
     {
-      v34 = a5;
+      batchSizeCopy = size;
     }
 
     else
     {
-      v34 = a6;
+      batchSizeCopy = batchSize;
     }
 
-    if (v34 < a7)
+    if (batchSizeCopy < limit)
     {
-      a7 = v34;
+      limit = batchSizeCopy;
     }
 
     v35 = v19->_cancelationToken;
@@ -110,7 +110,7 @@
     v40[2] = __106__EDBatchingMessageQueryIterator_initWithMessagePersistence_query_batchSize_firstBatchSize_limit_handler___block_invoke_2;
     v40[3] = &unk_1E8250830;
     objc_copyWeak(&v41, &location);
-    v37 = [v36 bufferedQueueWithCapacity:a7 batchHandler:v40];
+    v37 = [v36 bufferedQueueWithCapacity:limit batchHandler:v40];
     messageQueue = v19->_messageQueue;
     v19->_messageQueue = v37;
 
@@ -150,10 +150,10 @@ void __106__EDBatchingMessageQueryIterator_initWithMessagePersistence_query_batc
   }
 }
 
-- (void)_processMessages:(id)a3 forceFlush:(BOOL)a4
+- (void)_processMessages:(id)messages forceFlush:(BOOL)flush
 {
-  v6 = a3;
-  v7 = [(EDBatchingMessageQueryIterator *)self _deduplicateMessages:v6];
+  messagesCopy = messages;
+  v7 = [(EDBatchingMessageQueryIterator *)self _deduplicateMessages:messagesCopy];
   v8 = v7;
   if (self->_remaining && [v7 count] > self->_remaining)
   {
@@ -183,7 +183,7 @@ void __106__EDBatchingMessageQueryIterator_initWithMessagePersistence_query_batc
       if (batchedMessages)
       {
         [(NSMutableArray *)batchedMessages addObjectsFromArray:v10];
-        if (a4 || [(NSMutableArray *)self->_batchedMessages count]>= self->_batchSize || self->_remaining <= 0)
+        if (flush || [(NSMutableArray *)self->_batchedMessages count]>= self->_batchSize || self->_remaining <= 0)
         {
           [(EDBatchingMessageQueryIterator *)self _callHandlerWithMessages:self->_batchedMessages];
           [(NSMutableArray *)self->_batchedMessages removeAllObjects];
@@ -230,30 +230,30 @@ uint64_t __62__EDBatchingMessageQueryIterator__processMessages_forceFlush___bloc
   return v6 ^ 1u;
 }
 
-- (void)addMessage:(id)a3 withDatabaseID:(int64_t)a4
+- (void)addMessage:(id)message withDatabaseID:(int64_t)d
 {
-  v9 = a3;
+  messageCopy = message;
   if (([(EFManualCancelationToken *)self->_cancelationToken isCanceled]& 1) == 0)
   {
     v6 = MEMORY[0x1E699B848];
-    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
-    v8 = [v6 pairWithFirst:v7 second:v9];
+    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
+    v8 = [v6 pairWithFirst:v7 second:messageCopy];
 
     [(EFQueue *)self->_messageQueue enqueue:v8];
   }
 }
 
-- (id)_deduplicateMessages:(id)a3
+- (id)_deduplicateMessages:(id)messages
 {
   v27 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  messagesCopy = messages;
   v3 = objc_opt_new();
   v21 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = v20;
+  v4 = messagesCopy;
   v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -269,9 +269,9 @@ uint64_t __62__EDBatchingMessageQueryIterator__processMessages_forceFlush___bloc
 
         v8 = *(*(&v22 + 1) + 8 * i);
         v9 = MEMORY[0x1E696AD98];
-        v10 = [v8 second];
-        v11 = [v10 objectID];
-        v12 = [v9 numberWithLongLong:{objc_msgSend(v11, "globalMessageID")}];
+        second = [v8 second];
+        objectID = [second objectID];
+        v12 = [v9 numberWithLongLong:{objc_msgSend(objectID, "globalMessageID")}];
 
         v13 = [v3 objectForKeyedSubscript:v12];
         if (!v13)
@@ -282,9 +282,9 @@ uint64_t __62__EDBatchingMessageQueryIterator__processMessages_forceFlush___bloc
           [v21 addObject:v14];
         }
 
-        v15 = [v8 second];
-        v16 = [v8 first];
-        [v13 addMessage:v15 withDatabaseID:{objc_msgSend(v16, "longLongValue")}];
+        second2 = [v8 second];
+        first = [v8 first];
+        [v13 addMessage:second2 withDatabaseID:{objc_msgSend(first, "longLongValue")}];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -307,27 +307,27 @@ id __55__EDBatchingMessageQueryIterator__deduplicateMessages___block_invoke(uint
   return v2;
 }
 
-- (void)_callHandlerWithMessages:(id)a3
+- (void)_callHandlerWithMessages:(id)messages
 {
-  v5 = a3;
+  messagesCopy = messages;
   os_unfair_lock_lock(&self->_handlerLock);
   v4 = _Block_copy(self->_handler);
   os_unfair_lock_unlock(&self->_handlerLock);
   if (v4)
   {
-    v4[2](v4, v5, 0);
+    v4[2](v4, messagesCopy, 0);
   }
 }
 
-- (void)_callHandlerWithError:(id)a3
+- (void)_callHandlerWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_handlerLock);
   v4 = _Block_copy(self->_handler);
   os_unfair_lock_unlock(&self->_handlerLock);
   if (v4)
   {
-    v4[2](v4, 0, v5);
+    v4[2](v4, 0, errorCopy);
   }
 }
 

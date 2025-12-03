@@ -1,91 +1,91 @@
 @interface REMRemindersDataViewInvocation_fetchByPredicateDescriptor
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithPredicateDescriptor:(id)a3 sortDescriptors:(id)a4 options:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors options:(id)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchByPredicateDescriptor
 
-- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithPredicateDescriptor:(id)a3 sortDescriptors:(id)a4 options:(id)a5
+- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = REMRemindersDataViewInvocation_fetchByPredicateDescriptor;
   v12 = [(REMStoreInvocationValueStorage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_predicateDescriptor, a3);
-    objc_storeStrong(&v13->_sortDescriptors, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_predicateDescriptor, descriptor);
+    objc_storeStrong(&v13->_sortDescriptors, descriptors);
+    objc_storeStrong(&v13->_options, options);
   }
 
   return v13;
 }
 
-- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchByPredicateDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicateDescriptor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicateDescriptor"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"sortDescriptors"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"sortDescriptors"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
 
   if (v5)
   {
     self = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self initWithPredicateDescriptor:v5 sortDescriptors:v9 options:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
-  [v4 encodeObject:v5 forKey:@"predicateDescriptor"];
+  coderCopy = coder;
+  predicateDescriptor = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
+  [coderCopy encodeObject:predicateDescriptor forKey:@"predicateDescriptor"];
 
-  v6 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
-  [v4 encodeObject:v6 forKey:@"sortDescriptors"];
+  sortDescriptors = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
+  [coderCopy encodeObject:sortDescriptors forKey:@"sortDescriptors"];
 
-  v7 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
-  [v4 encodeObject:v7 forKey:@"options"];
+  options = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
-  v6 = [v4 predicateDescriptor];
-  v7 = v6;
-  if (v5 == v6)
+  predicateDescriptor = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
+  predicateDescriptor2 = [equalCopy predicateDescriptor];
+  v7 = predicateDescriptor2;
+  if (predicateDescriptor == predicateDescriptor2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
-    v9 = [v4 predicateDescriptor];
-    v10 = [v8 isEqual:v9];
+    predicateDescriptor3 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
+    predicateDescriptor4 = [equalCopy predicateDescriptor];
+    v10 = [predicateDescriptor3 isEqual:predicateDescriptor4];
 
     if (!v10)
     {
@@ -93,18 +93,18 @@
     }
   }
 
-  v11 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
-  v12 = [v4 sortDescriptors];
-  v13 = v12;
-  if (v11 == v12)
+  sortDescriptors = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
+  sortDescriptors2 = [equalCopy sortDescriptors];
+  v13 = sortDescriptors2;
+  if (sortDescriptors == sortDescriptors2)
   {
   }
 
   else
   {
-    v14 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
-    v15 = [v4 sortDescriptors];
-    v16 = [v14 isEqual:v15];
+    sortDescriptors3 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self sortDescriptors];
+    sortDescriptors4 = [equalCopy sortDescriptors];
+    v16 = [sortDescriptors3 isEqual:sortDescriptors4];
 
     if (!v16)
     {
@@ -114,18 +114,18 @@ LABEL_8:
     }
   }
 
-  v18 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
-  v19 = [v4 options];
-  if (v18 == v19)
+  options = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
+  options2 = [equalCopy options];
+  if (options == options2)
   {
     v17 = 1;
   }
 
   else
   {
-    v20 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
-    v21 = [v4 options];
-    v17 = [v20 isEqual:v21];
+    options3 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self options];
+    options4 = [equalCopy options];
+    v17 = [options3 isEqual:options4];
   }
 
 LABEL_14:
@@ -134,8 +134,8 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v2 = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
-  v3 = [v2 hash];
+  predicateDescriptor = [(REMRemindersDataViewInvocation_fetchByPredicateDescriptor *)self predicateDescriptor];
+  v3 = [predicateDescriptor hash];
 
   return v3;
 }

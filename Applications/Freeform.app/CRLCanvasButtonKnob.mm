@@ -1,53 +1,53 @@
 @interface CRLCanvasButtonKnob
-+ (double)p_radiusFromImage:(id)a3;
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5;
-- (CRLCanvasButtonKnob)initWithImage:(id)a3 highlightedImage:(id)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7;
++ (double)p_radiusFromImage:(id)image;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance;
+- (CRLCanvasButtonKnob)initWithImage:(id)image highlightedImage:(id)highlightedImage radius:(double)radius tag:(unint64_t)tag onRep:(id)rep;
 - (id)knobImage;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightedImage:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightedImage:(id)image;
+- (void)setImage:(id)image;
 - (void)updateRenderableImage;
 @end
 
 @implementation CRLCanvasButtonKnob
 
-- (CRLCanvasButtonKnob)initWithImage:(id)a3 highlightedImage:(id)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7
+- (CRLCanvasButtonKnob)initWithImage:(id)image highlightedImage:(id)highlightedImage radius:(double)radius tag:(unint64_t)tag onRep:(id)rep
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if (a5 == 0.0)
+  imageCopy = image;
+  highlightedImageCopy = highlightedImage;
+  repCopy = rep;
+  if (radius == 0.0)
   {
-    [objc_opt_class() p_radiusFromImage:v13];
-    a5 = v16;
+    [objc_opt_class() p_radiusFromImage:imageCopy];
+    radius = v16;
   }
 
   v23.receiver = self;
   v23.super_class = CRLCanvasButtonKnob;
-  v17 = [(CRLCanvasKnob *)&v23 initWithType:0 position:a6 radius:v15 tag:CGPointZero.x onRep:CGPointZero.y, a5];
-  v18 = v17;
-  if (v17)
+  radius = [(CRLCanvasKnob *)&v23 initWithType:0 position:tag radius:repCopy tag:CGPointZero.x onRep:CGPointZero.y, radius];
+  v18 = radius;
+  if (radius)
   {
-    objc_storeStrong(&v17->_image, a3);
-    objc_storeStrong(&v18->_highlightedImage, a4);
+    objc_storeStrong(&radius->_image, image);
+    objc_storeStrong(&v18->_highlightedImage, highlightedImage);
     v18->_enabled = 1;
     v19 = +[CRLCanvasRenderable renderable];
     imageRenderable = v18->_imageRenderable;
     v18->_imageRenderable = v19;
 
-    v21 = [(CRLCanvasKnob *)v18 renderable];
-    [v21 addSubrenderable:v18->_imageRenderable];
+    renderable = [(CRLCanvasKnob *)v18 renderable];
+    [renderable addSubrenderable:v18->_imageRenderable];
   }
 
   return v18;
 }
 
-+ (double)p_radiusFromImage:(id)a3
++ (double)p_radiusFromImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    [a3 size];
+    [image size];
   }
 
   else
@@ -59,12 +59,12 @@
   return fmax(width, height) * 0.5;
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = [(CRLCanvasKnob *)self renderable];
-  if (([v10 isHidden] & 1) != 0 || (objc_msgSend(v10, "opacity"), v11 <= 0.0))
+  y = point.y;
+  x = point.x;
+  renderable = [(CRLCanvasKnob *)self renderable];
+  if (([renderable isHidden] & 1) != 0 || (objc_msgSend(renderable, "opacity"), v11 <= 0.0))
   {
     v12 = 0;
   }
@@ -73,7 +73,7 @@
   {
     v14.receiver = self;
     v14.super_class = CRLCanvasButtonKnob;
-    v12 = [(CRLCanvasKnob *)&v14 isHitByUnscaledPoint:a4 inputType:a5 returningDistance:x, y];
+    v12 = [(CRLCanvasKnob *)&v14 isHitByUnscaledPoint:type inputType:distance returningDistance:x, y];
   }
 
   return v12;
@@ -90,9 +90,9 @@
 
   if ([(CRLCanvasButtonKnob *)self isHighlighted])
   {
-    v3 = [(CRLCanvasButtonKnob *)self highlightedImage];
-    v4 = v3;
-    if (!v3)
+    highlightedImage = [(CRLCanvasButtonKnob *)self highlightedImage];
+    v4 = highlightedImage;
+    if (!highlightedImage)
     {
       v8 = +[CRLColor blackColor];
       v6 = [(CRLImage *)self->_image compositedImageWithColor:v8 alpha:20 blendMode:0.466666669];
@@ -100,7 +100,7 @@
       goto LABEL_7;
     }
 
-    v5 = v3;
+    v5 = highlightedImage;
 LABEL_6:
     v6 = v5;
 LABEL_7:
@@ -114,13 +114,13 @@ LABEL_9:
   return v6;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(CRLCanvasKnob *)self radius];
     if (v7 && v6 == 0.0)
     {
@@ -130,56 +130,56 @@ LABEL_9:
     }
 
     [(CRLCanvasButtonKnob *)self updateRenderableImage];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setHighlightedImage:(id)a3
+- (void)setHighlightedImage:(id)image
 {
-  v5 = a3;
-  if (self->_highlightedImage != v5)
+  imageCopy = image;
+  if (self->_highlightedImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightedImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_highlightedImage, image);
     [(CRLCanvasButtonKnob *)self updateRenderableImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(CRLCanvasButtonKnob *)self updateRenderableImage];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(CRLCanvasButtonKnob *)self updateRenderableImage];
   }
 }
 
 - (void)updateRenderableImage
 {
-  v3 = [(CRLCanvasButtonKnob *)self knobImage];
+  knobImage = [(CRLCanvasButtonKnob *)self knobImage];
   v4 = [(CRLCanvasKnob *)self rep];
-  v5 = [v4 canvas];
-  [v5 contentsScale];
-  v6 = [v3 CGImageForContentsScale:?];
+  canvas = [v4 canvas];
+  [canvas contentsScale];
+  v6 = [knobImage CGImageForContentsScale:?];
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v8 = [(CRLCanvasButtonKnob *)self imageRenderable];
-  v7 = [(CRLCanvasButtonKnob *)self knobImage];
-  [v7 size];
-  [v8 setBounds:sub_10011ECB4()];
+  imageRenderable = [(CRLCanvasButtonKnob *)self imageRenderable];
+  knobImage2 = [(CRLCanvasButtonKnob *)self knobImage];
+  [knobImage2 size];
+  [imageRenderable setBounds:sub_10011ECB4()];
 
-  [v8 setContents:v6];
+  [imageRenderable setContents:v6];
   +[CATransaction commit];
 }
 

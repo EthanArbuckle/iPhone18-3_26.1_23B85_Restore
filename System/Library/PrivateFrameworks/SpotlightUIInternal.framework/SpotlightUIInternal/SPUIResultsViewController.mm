@@ -1,31 +1,31 @@
 @interface SPUIResultsViewController
 - (BOOL)_hasRealSuggestions;
-- (BOOL)isResultOriginalSearchSuggestion:(id)a3;
-- (BOOL)searchAgentHasWindow:(id)a3;
+- (BOOL)isResultOriginalSearchSuggestion:(id)suggestion;
+- (BOOL)searchAgentHasWindow:(id)window;
 - (CGSize)contentSize;
 - (CGSize)oldContentSize;
 - (SFSearchResult)actualSearchSuggestionResult;
-- (SPUIResultsViewController)initWithSearchModel:(id)a3 searchEntity:(id)a4;
+- (SPUIResultsViewController)initWithSearchModel:(id)model searchEntity:(id)entity;
 - (SearchUIBackgroundColorDelegate)backgroundColorDelegate;
 - (UISearchToken)searchToken;
 - (id)asTypedSearchResult;
-- (id)makeAsYouTypeSuggestionSearchResultWithSearchString:(id)a3 detailText:(id)a4 suggestionIdentifier:(id)a5 queryContext:(id)a6;
+- (id)makeAsYouTypeSuggestionSearchResultWithSearchString:(id)string detailText:(id)text suggestionIdentifier:(id)identifier queryContext:(id)context;
 - (id)restorationContext;
 - (id)searchUIBackgroundColor;
 - (unint64_t)currentDeviceAuthenticationState;
 - (void)_pushSectionsUpdate;
-- (void)changeTextFieldsReturnKeyType:(int64_t)a3 withGoTakeoverResult:(id)a4;
-- (void)forceHighlightForResult:(id)a3;
+- (void)changeTextFieldsReturnKeyType:(int64_t)type withGoTakeoverResult:(id)result;
+- (void)forceHighlightForResult:(id)result;
 - (void)highlightResultAfterUnmarkingText;
 - (void)invalidateContentHeight;
 - (void)purgeMemory;
-- (void)removeCompletionAndHighlightAsTyped:(BOOL)a3;
-- (void)reportFinalResults:(id)a3;
-- (void)searchAgentClearedResults:(id)a3;
-- (void)searchAgentUpdatedResults:(id)a3;
-- (void)searchUpdatedWithString:(id)a3 tokenEntity:(id)a4 queryId:(unint64_t)a5 wantsCompletions:(BOOL)a6 keyboardLanguage:(id)a7;
-- (void)setRestorationContext:(id)a3;
-- (void)setUseLoadingView:(BOOL)a3;
+- (void)removeCompletionAndHighlightAsTyped:(BOOL)typed;
+- (void)reportFinalResults:(id)results;
+- (void)searchAgentClearedResults:(id)results;
+- (void)searchAgentUpdatedResults:(id)results;
+- (void)searchUpdatedWithString:(id)string tokenEntity:(id)entity queryId:(unint64_t)id wantsCompletions:(BOOL)completions keyboardLanguage:(id)language;
+- (void)setRestorationContext:(id)context;
+- (void)setUseLoadingView:(BOOL)view;
 - (void)unhideLoadingView;
 @end
 
@@ -33,10 +33,10 @@
 
 - (id)searchUIBackgroundColor
 {
-  v2 = [(SPUIResultsViewController *)self searchEntity];
-  v3 = [v2 entityBackgroundColor];
+  searchEntity = [(SPUIResultsViewController *)self searchEntity];
+  entityBackgroundColor = [searchEntity entityBackgroundColor];
 
-  return v3;
+  return entityBackgroundColor;
 }
 
 - (void)purgeMemory
@@ -51,8 +51,8 @@
 - (unint64_t)currentDeviceAuthenticationState
 {
   v2 = MEMORY[0x277D65D88];
-  v3 = [(SPUIResultsViewController *)self view];
-  v4 = [v2 deviceAuthenticationStateForView:v3];
+  view = [(SPUIResultsViewController *)self view];
+  v4 = [v2 deviceAuthenticationStateForView:view];
 
   return v4;
 }
@@ -60,31 +60,31 @@
 - (void)_pushSectionsUpdate
 {
   v79 = *MEMORY[0x277D85DE8];
-  v3 = [(SPUIResultsViewController *)self resultSections];
-  v4 = [v3 firstObject];
+  resultSections = [(SPUIResultsViewController *)self resultSections];
+  firstObject = [resultSections firstObject];
 
-  v5 = [v4 results];
-  v6 = [v5 firstObject];
+  results = [firstObject results];
+  firstObject2 = [results firstObject];
 
-  v7 = SPBlueButtonBehavior();
-  v8 = [v4 bundleIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D65CC8]];
+  delegate = SPBlueButtonBehavior();
+  bundleIdentifier = [firstObject bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:*MEMORY[0x277D65CC8]];
 
-  v10 = [v4 results];
-  if ([v10 count] == 1)
+  results2 = [firstObject results];
+  if ([results2 count] == 1)
   {
-    v11 = 1;
+    renderHorizontallyWithOtherResultsInCategory = 1;
   }
 
   else
   {
-    v11 = [v6 renderHorizontallyWithOtherResultsInCategory];
+    renderHorizontallyWithOtherResultsInCategory = [firstObject2 renderHorizontallyWithOtherResultsInCategory];
   }
 
-  v12 = [v6 noGoTakeover];
-  if (v7 != 1 && ((v7 == 0) & v11) == 0)
+  noGoTakeover = [firstObject2 noGoTakeover];
+  if (delegate != 1 && ((delegate == 0) & renderHorizontallyWithOtherResultsInCategory) == 0)
   {
-    if (v7 == 2)
+    if (delegate == 2)
     {
       goto LABEL_22;
     }
@@ -100,7 +100,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [(SearchUIResultsViewController *)self delegate];
+  delegate = [(SearchUIResultsViewController *)self delegate];
   v13 = objc_opt_respondsToSelector();
   if (v13 & 1) != 0 && (-[SearchUIResultsViewController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), ([v9 optOutOfGoButton]))
   {
@@ -110,7 +110,7 @@ LABEL_12:
 
   else
   {
-    if ((v12 & 1) == 0)
+    if ((noGoTakeover & 1) == 0)
     {
       if (v13)
       {
@@ -123,8 +123,8 @@ LABEL_12:
   }
 
 LABEL_13:
-  v15 = [(SPUIResultsViewController *)self asTypedSearchResult];
-  v16 = v6 == v15 && [v6 type] == 29;
+  asTypedSearchResult = [(SPUIResultsViewController *)self asTypedSearchResult];
+  v16 = firstObject2 == asTypedSearchResult && [firstObject2 type] == 29;
 
   if (v13)
   {
@@ -139,8 +139,8 @@ LABEL_13:
     }
 
 LABEL_22:
-    v17 = [(SPUIResultsViewController *)self asTypedSearchResult];
-    v18 = self;
+    asTypedSearchResult2 = [(SPUIResultsViewController *)self asTypedSearchResult];
+    selfCopy2 = self;
     v19 = 6;
     v20 = 0;
     goto LABEL_29;
@@ -152,44 +152,44 @@ LABEL_22:
   }
 
 LABEL_28:
-  v17 = v6;
-  v18 = self;
+  asTypedSearchResult2 = firstObject2;
+  selfCopy2 = self;
   v19 = 1;
-  v20 = v17;
+  v20 = asTypedSearchResult2;
 LABEL_29:
-  [(SPUIResultsViewController *)v18 changeTextFieldsReturnKeyType:v19 withGoTakeoverResult:v20];
+  [(SPUIResultsViewController *)selfCopy2 changeTextFieldsReturnKeyType:v19 withGoTakeoverResult:v20];
   if ([(SPUIResultsViewController *)self hasResultsWaitingToUpdate])
   {
-    v21 = [(SearchUIResultsViewController *)self delegate];
-    [v21 willUpdateFromResultsWithHighlightedResult:v17 viewController:self];
+    delegate2 = [(SearchUIResultsViewController *)self delegate];
+    [delegate2 willUpdateFromResultsWithHighlightedResult:asTypedSearchResult2 viewController:self];
 
     [(SPUIResultsViewController *)self setHasResultsWaitingToUpdate:0];
   }
 
-  v22 = [(SPUIResultsViewController *)self resultSections];
-  v23 = v22;
+  resultSections2 = [(SPUIResultsViewController *)self resultSections];
+  v23 = resultSections2;
   v24 = MEMORY[0x277CBEBF8];
-  if (v22)
+  if (resultSections2)
   {
-    v24 = v22;
+    v24 = resultSections2;
   }
 
   v25 = v24;
 
-  v26 = [(SearchUIResultsViewController *)self searchField];
-  v27 = [v26 searchText];
+  searchField = [(SearchUIResultsViewController *)self searchField];
+  searchText = [searchField searchText];
 
-  v62 = v6;
-  v63 = v4;
-  v60 = v17;
-  v61 = self;
-  v59 = v27;
-  if (v6)
+  v62 = firstObject2;
+  v63 = firstObject;
+  v60 = asTypedSearchResult2;
+  selfCopy3 = self;
+  v59 = searchText;
+  if (firstObject2)
   {
-    v28 = [v6 queryId];
-    if ([v27 length])
+    queryId = [firstObject2 queryId];
+    if ([searchText length])
     {
-      v29 = v28 != [(SPUIResultsViewController *)self previousQueryId];
+      v29 = queryId != [(SPUIResultsViewController *)self previousQueryId];
     }
 
     else
@@ -198,7 +198,7 @@ LABEL_29:
     }
 
     v58 = v29;
-    [(SPUIResultsViewController *)self setPreviousQueryId:v28];
+    [(SPUIResultsViewController *)self setPreviousQueryId:queryId];
   }
 
   else
@@ -230,8 +230,8 @@ LABEL_29:
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v33 = [v32 results];
-        v34 = [v33 countByEnumeratingWithState:&v67 objects:v77 count:16];
+        results3 = [v32 results];
+        v34 = [results3 countByEnumeratingWithState:&v67 objects:v77 count:16];
         if (v34)
         {
           v35 = v34;
@@ -242,26 +242,26 @@ LABEL_29:
             {
               if (*v68 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(results3);
               }
 
               v38 = [MEMORY[0x277D4C898] cardSectionsForRenderingResult:*(*(&v67 + 1) + 8 * j)];
-              v39 = [v38 firstObject];
+              firstObject3 = [v38 firstObject];
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v40 = [v39 suggestionType];
-                v41 = v30 != 1 || v40 == 0;
+                suggestionType = [firstObject3 suggestionType];
+                v41 = v30 != 1 || suggestionType == 0;
                 v42 = !v41;
                 if (!v30 || v42)
                 {
-                  [v39 setDetailText:0];
+                  [firstObject3 setDetailText:0];
                 }
               }
             }
 
-            v35 = [v33 countByEnumeratingWithState:&v67 objects:v77 count:16];
+            v35 = [results3 countByEnumeratingWithState:&v67 objects:v77 count:16];
           }
 
           while (v35);
@@ -275,35 +275,35 @@ LABEL_29:
   }
 
   v43 = [MEMORY[0x277D4C898] cardForRenderingResult:v62];
-  v44 = [v43 backgroundColor];
+  backgroundColor = [v43 backgroundColor];
 
-  if (v44)
+  if (backgroundColor)
   {
-    v45 = [(SPUIResultsViewController *)v61 searchEntity];
-    v46 = [v45 entityBackgroundColor];
+    searchEntity = [(SPUIResultsViewController *)selfCopy3 searchEntity];
+    entityBackgroundColor = [searchEntity entityBackgroundColor];
 
-    if (!v46)
+    if (!entityBackgroundColor)
     {
-      v47 = [(SPUIResultsViewController *)v61 searchEntity];
-      [v47 setEntityBackgroundColor:v44];
+      searchEntity2 = [(SPUIResultsViewController *)selfCopy3 searchEntity];
+      [searchEntity2 setEntityBackgroundColor:backgroundColor];
 
-      v48 = [(SPUIResultsViewController *)v61 backgroundColorDelegate];
-      [v48 didUpdateBackgroundColorForViewController:v61];
+      backgroundColorDelegate = [(SPUIResultsViewController *)selfCopy3 backgroundColorDelegate];
+      [backgroundColorDelegate didUpdateBackgroundColorForViewController:selfCopy3];
     }
   }
 
-  [(SearchUIResultsViewController *)v61 updateWithResultSections:obj resetScrollPoint:v58 animated:[(SPUIResultsViewController *)v61 shouldAnimateUpdates]];
-  v49 = [(SearchUIResultsViewController *)v61 searchField];
-  v50 = [v49 isFirstResponder];
+  [(SearchUIResultsViewController *)selfCopy3 updateWithResultSections:obj resetScrollPoint:v58 animated:[(SPUIResultsViewController *)selfCopy3 shouldAnimateUpdates]];
+  searchField2 = [(SearchUIResultsViewController *)selfCopy3 searchField];
+  isFirstResponder = [searchField2 isFirstResponder];
 
   v51 = v60;
-  if ((v50 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
 
     v51 = 0;
   }
 
-  [(SPUIResultsViewController *)v61 forceHighlightForResult:v51];
+  [(SPUIResultsViewController *)selfCopy3 forceHighlightForResult:v51];
   v52 = [obj count];
   v53 = MEMORY[0x277D65D40];
   v54 = *(MEMORY[0x277D65D40] + 40);
@@ -350,10 +350,10 @@ LABEL_29:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SPUIResultsViewController *)self suggestionsSection];
-  v3 = [v2 results];
+  suggestionsSection = [(SPUIResultsViewController *)self suggestionsSection];
+  results = [suggestionsSection results];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [results countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -363,7 +363,7 @@ LABEL_29:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(results);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -374,7 +374,7 @@ LABEL_29:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [results countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -393,10 +393,10 @@ LABEL_11:
 
 - (void)unhideLoadingView
 {
-  v3 = [(SPUIResultsViewController *)self loadingView];
-  v4 = [v3 loadingState];
+  loadingView = [(SPUIResultsViewController *)self loadingView];
+  loadingState = [loadingView loadingState];
 
-  if (!v4)
+  if (!loadingState)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -413,56 +413,56 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
   [v1 setAlpha:1.0];
 }
 
-- (SPUIResultsViewController)initWithSearchModel:(id)a3 searchEntity:(id)a4
+- (SPUIResultsViewController)initWithSearchModel:(id)model searchEntity:(id)entity
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  entityCopy = entity;
   v14.receiver = self;
   v14.super_class = SPUIResultsViewController;
   v9 = [(SPUIResultsViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v11 = [(SPUIResultsViewController *)v9 view];
-    v12 = [v11 layer];
-    [v12 setAllowsGroupOpacity:0];
+    view = [(SPUIResultsViewController *)v9 view];
+    layer = [view layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(SearchUIResultsViewController *)v10 setShouldUseInsetRoundedSections:0];
     [(SPUIResultsViewController *)v10 setHasResultsWaitingToUpdate:0];
-    [v7 setDelegate:v10];
-    [v7 setMaxUISuggestions:0x7FFFFFFFFFFFFFFFLL];
-    objc_storeStrong(&v10->_model, a3);
-    [(SPUIResultsViewController *)v10 setSearchEntity:v8];
+    [modelCopy setDelegate:v10];
+    [modelCopy setMaxUISuggestions:0x7FFFFFFFFFFFFFFFLL];
+    objc_storeStrong(&v10->_model, model);
+    [(SPUIResultsViewController *)v10 setSearchEntity:entityCopy];
     [(SearchUIResultsViewController *)v10 setRestorationContextClass:objc_opt_class()];
   }
 
   return v10;
 }
 
-- (void)setUseLoadingView:(BOOL)a3
+- (void)setUseLoadingView:(BOOL)view
 {
-  self->_useLoadingView = a3;
-  if (a3 && ([(SPUIResultsViewController *)self loadingView], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  self->_useLoadingView = view;
+  if (view && ([(SPUIResultsViewController *)self loadingView], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v6 = objc_opt_new();
     [(SPUIResultsViewController *)self setLoadingView:v6];
 
-    v7 = [(SPUIResultsViewController *)self view];
-    v8 = [(SPUIResultsViewController *)self loadingView];
-    [v7 insertSubview:v8 atIndex:0];
+    view = [(SPUIResultsViewController *)self view];
+    loadingView = [(SPUIResultsViewController *)self loadingView];
+    [view insertSubview:loadingView atIndex:0];
 
     v9 = MEMORY[0x277D4C828];
-    v10 = [(SPUIResultsViewController *)self loadingView];
-    [v9 fillContainerWithView:v10];
+    loadingView2 = [(SPUIResultsViewController *)self loadingView];
+    [v9 fillContainerWithView:loadingView2];
 
-    v11 = [(SearchUIResultsViewController *)self contentScrollView];
-    [v11 setAlpha:0.0];
+    contentScrollView = [(SearchUIResultsViewController *)self contentScrollView];
+    [contentScrollView setAlpha:0.0];
   }
 
   else
   {
-    v5 = [(SPUIResultsViewController *)self loadingView];
-    [v5 removeFromSuperview];
+    loadingView3 = [(SPUIResultsViewController *)self loadingView];
+    [loadingView3 removeFromSuperview];
 
     [(SPUIResultsViewController *)self setLoadingView:0];
   }
@@ -470,37 +470,37 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
 
 - (UISearchToken)searchToken
 {
-  v3 = [(SPUIResultsViewController *)self searchEntity];
-  v4 = [SPUISearchHeader tokenFromSearchEntity:v3];
+  searchEntity = [(SPUIResultsViewController *)self searchEntity];
+  v4 = [SPUISearchHeader tokenFromSearchEntity:searchEntity];
 
-  v5 = [(SPUIResultsViewController *)self searchEntity];
-  v6 = [v5 tokenText];
-  [v4 setRepresentedObject:v6];
+  searchEntity2 = [(SPUIResultsViewController *)self searchEntity];
+  tokenText = [searchEntity2 tokenText];
+  [v4 setRepresentedObject:tokenText];
 
   return v4;
 }
 
-- (BOOL)isResultOriginalSearchSuggestion:(id)a3
+- (BOOL)isResultOriginalSearchSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(SPUIResultsViewController *)self actualSearchSuggestionResult];
+  suggestionCopy = suggestion;
+  actualSearchSuggestionResult = [(SPUIResultsViewController *)self actualSearchSuggestionResult];
 
-  return v5 == v4;
+  return actualSearchSuggestionResult == suggestionCopy;
 }
 
-- (BOOL)searchAgentHasWindow:(id)a3
+- (BOOL)searchAgentHasWindow:(id)window
 {
-  v3 = [(SPUIResultsViewController *)self view];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  view = [(SPUIResultsViewController *)self view];
+  window = [view window];
+  v5 = window != 0;
 
   return v5;
 }
 
-- (void)searchAgentUpdatedResults:(id)a3
+- (void)searchAgentUpdatedResults:(id)results
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = MEMORY[0x277D65D40];
   v6 = *(MEMORY[0x277D65D40] + 32);
   if (!v6)
@@ -526,7 +526,7 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
     _os_signpost_emit_with_name_impl(&dword_26B837000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v7, "tableUpdate", "", buf, 2u);
   }
 
-  if ([v4 queryPartiallyComplete])
+  if ([resultsCopy queryPartiallyComplete])
   {
     if (self->_startTime)
     {
@@ -536,7 +536,7 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
     self->_startTime = 0;
   }
 
-  else if ([v4 queryComplete])
+  else if ([resultsCopy queryComplete])
   {
     [(SPUIResultsViewController *)self finishedGettingResults:1];
   }
@@ -546,8 +546,8 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
     sp_analytics_log_timing();
   }
 
-  v12 = [v4 sections];
-  if ([v4 wantsCompletions])
+  sections = [resultsCopy sections];
+  if ([resultsCopy wantsCompletions])
   {
     v28 = v7 - 1;
     v29 = v7;
@@ -556,8 +556,8 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v12;
-    v13 = v12;
+    v27 = sections;
+    v13 = sections;
     v14 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v14)
     {
@@ -574,8 +574,8 @@ void __46__SPUIResultsViewController_unhideLoadingView__block_invoke(uint64_t a1
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          v20 = [v19 bundleIdentifier];
-          v21 = [v20 isEqualToString:v17];
+          bundleIdentifier = [v19 bundleIdentifier];
+          v21 = [bundleIdentifier isEqualToString:v17];
 
           if (v21)
           {
@@ -599,7 +599,7 @@ LABEL_28:
     v11 = v28;
     v7 = v29;
     v5 = MEMORY[0x277D65D40];
-    v12 = v27;
+    sections = v27;
   }
 
   else
@@ -607,11 +607,11 @@ LABEL_28:
     [(SPUIResultsViewController *)self clearSuggestionSection];
   }
 
-  -[SPUIResultsViewController setQueryJustHasTopHits:](self, "setQueryJustHasTopHits:", [v4 queryJustHasTopHits]);
-  if ([v4 queryPartiallyComplete] & 1) != 0 || (objc_msgSend(v4, "queryComplete"))
+  -[SPUIResultsViewController setQueryJustHasTopHits:](self, "setQueryJustHasTopHits:", [resultsCopy queryJustHasTopHits]);
+  if ([resultsCopy queryPartiallyComplete] & 1) != 0 || (objc_msgSend(resultsCopy, "queryComplete"))
   {
-    v22 = [v4 searchThroughSection];
-    [(SPUIResultsViewController *)self setSearchThroughSection:v22];
+    searchThroughSection = [resultsCopy searchThroughSection];
+    [(SPUIResultsViewController *)self setSearchThroughSection:searchThroughSection];
   }
 
   else
@@ -619,12 +619,12 @@ LABEL_28:
     [(SPUIResultsViewController *)self setSearchThroughSection:0];
   }
 
-  [(SPUIResultsViewController *)self setResultSections:v12];
+  [(SPUIResultsViewController *)self setResultSections:sections];
   [(SPUIResultsViewController *)self setHasResultsWaitingToUpdate:1];
   [(SPUIResultsViewController *)self _pushSectionsUpdate];
-  if ([v4 queryComplete])
+  if ([resultsCopy queryComplete])
   {
-    [(SPUIResultsViewController *)self reportFinalResults:v4];
+    [(SPUIResultsViewController *)self reportFinalResults:resultsCopy];
   }
 
   v23 = *(v5 + 32);
@@ -661,14 +661,14 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
   return [v3 setLoadingView:0];
 }
 
-- (void)reportFinalResults:(id)a3
+- (void)reportFinalResults:(id)results
 {
-  v4 = a3;
-  v7 = [(SearchUIResultsViewController *)self sections];
-  v5 = [v4 queryTask];
+  resultsCopy = results;
+  sections = [(SearchUIResultsViewController *)self sections];
+  queryTask = [resultsCopy queryTask];
 
-  v6 = [v5 searchString];
-  [SPUIFeedbackManager resultsDidFinishWithSections:v7 withQueryString:v6];
+  searchString = [queryTask searchString];
+  [SPUIFeedbackManager resultsDidFinishWithSections:sections withQueryString:searchString];
 }
 
 - (void)invalidateContentHeight
@@ -680,7 +680,7 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
   [(SPUIResultsViewController *)self setOldContentSize:v3, v4];
 }
 
-- (void)searchAgentClearedResults:(id)a3
+- (void)searchAgentClearedResults:(id)results
 {
   [(SearchUIResultsViewController *)self updateWithResultSections:MEMORY[0x277CBEBF8] resetScrollPoint:1];
   [(SPUIResultsViewController *)self setSuggestionsSection:0];
@@ -694,21 +694,21 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
 
 - (SFSearchResult)actualSearchSuggestionResult
 {
-  v2 = [(SPUIResultsViewController *)self suggestionsSection];
-  v3 = [v2 results];
-  v4 = [v3 firstObject];
+  suggestionsSection = [(SPUIResultsViewController *)self suggestionsSection];
+  results = [suggestionsSection results];
+  firstObject = [results firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)makeAsYouTypeSuggestionSearchResultWithSearchString:(id)a3 detailText:(id)a4 suggestionIdentifier:(id)a5 queryContext:(id)a6
+- (id)makeAsYouTypeSuggestionSearchResultWithSearchString:(id)string detailText:(id)text suggestionIdentifier:(id)identifier queryContext:(id)context
 {
   v9 = *MEMORY[0x277D4BF28];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  if ([v11 isEqualToString:v9])
+  contextCopy = context;
+  identifierCopy = identifier;
+  textCopy = text;
+  stringCopy = string;
+  if ([identifierCopy isEqualToString:v9])
   {
     v14 = 6;
   }
@@ -718,27 +718,27 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
     v14 = 14;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D4C5D8]) initWithIdentifier:v11 suggestion:v13 query:v13 score:v14 type:1.0];
+  v15 = [objc_alloc(MEMORY[0x277D4C5D8]) initWithIdentifier:identifierCopy suggestion:stringCopy query:stringCopy score:v14 type:1.0];
 
-  [v15 setDetailText:v12];
-  v16 = [MEMORY[0x277D65D58] buildResultWithSuggestion:v15 queryContext:v10];
+  [v15 setDetailText:textCopy];
+  v16 = [MEMORY[0x277D65D58] buildResultWithSuggestion:v15 queryContext:contextCopy];
 
   return v16;
 }
 
-- (void)searchUpdatedWithString:(id)a3 tokenEntity:(id)a4 queryId:(unint64_t)a5 wantsCompletions:(BOOL)a6 keyboardLanguage:(id)a7
+- (void)searchUpdatedWithString:(id)string tokenEntity:(id)entity queryId:(unint64_t)id wantsCompletions:(BOOL)completions keyboardLanguage:(id)language
 {
-  v8 = a6;
+  completionsCopy = completions;
   v82 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  stringCopy = string;
+  entityCopy = entity;
+  languageCopy = language;
   self->_startTime = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  [(SearchUIResultsViewController *)self setQueryString:v12];
-  if (![v12 length])
+  [(SearchUIResultsViewController *)self setQueryString:stringCopy];
+  if (![stringCopy length])
   {
-    v15 = [v13 tokenText];
-    v16 = [v15 length];
+    tokenText = [entityCopy tokenText];
+    v16 = [tokenText length];
 
     if (!v16)
     {
@@ -750,32 +750,32 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
     }
   }
 
-  if (!v8)
+  if (!completionsCopy)
   {
     [(SPUIResultsViewController *)self clearSuggestionSection];
     goto LABEL_43;
   }
 
   v17 = objc_opt_new();
-  [v17 setSearchString:v12];
-  [v17 setKeyboardLanguage:v14];
-  [v17 setQueryIdent:a5];
-  v18 = [(SPUIResultsViewController *)self makeAsYouTypeSuggestionSearchResultWithSearchString:v12 detailText:0 suggestionIdentifier:*MEMORY[0x277D4BF28] queryContext:v17];
+  [v17 setSearchString:stringCopy];
+  [v17 setKeyboardLanguage:languageCopy];
+  [v17 setQueryIdent:id];
+  v18 = [(SPUIResultsViewController *)self makeAsYouTypeSuggestionSearchResultWithSearchString:stringCopy detailText:0 suggestionIdentifier:*MEMORY[0x277D4BF28] queryContext:v17];
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"SUGGESTION_DETAIL_WEB" value:&stru_287C49600 table:@"Search"];
 
-  v75 = [(SPUIResultsViewController *)self makeAsYouTypeSuggestionSearchResultWithSearchString:v12 detailText:v20 suggestionIdentifier:*MEMORY[0x277D4BF30] queryContext:v17];
-  v21 = [(SPUIResultsViewController *)self suggestionsSection];
+  v75 = [(SPUIResultsViewController *)self makeAsYouTypeSuggestionSearchResultWithSearchString:stringCopy detailText:v20 suggestionIdentifier:*MEMORY[0x277D4BF30] queryContext:v17];
+  suggestionsSection = [(SPUIResultsViewController *)self suggestionsSection];
 
-  if (!v21)
+  if (!suggestionsSection)
   {
     v49 = 1;
     goto LABEL_39;
   }
 
-  v22 = [(SPUIResultsViewController *)self suggestionsSection];
-  v23 = [v22 results];
-  v24 = [v23 mutableCopy];
+  suggestionsSection2 = [(SPUIResultsViewController *)self suggestionsSection];
+  results = [suggestionsSection2 results];
+  v24 = [results mutableCopy];
 
   v25 = [v24 count];
   v73 = v18;
@@ -804,10 +804,10 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
   v28 = v27;
   obj = v26;
   v65 = v20;
-  v66 = self;
-  v67 = v14;
-  v68 = v13;
-  v64 = v12;
+  selfCopy = self;
+  v67 = languageCopy;
+  v68 = entityCopy;
+  v64 = stringCopy;
   v29 = 0;
   v30 = *v78;
   v31 = *MEMORY[0x277D4BF00];
@@ -826,8 +826,8 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
       }
 
       v35 = *(*(&v77 + 1) + 8 * v34);
-      v36 = [v35 resultBundleId];
-      v37 = [v36 isEqualToString:v31];
+      resultBundleId = [v35 resultBundleId];
+      v37 = [resultBundleId isEqualToString:v31];
 
       if (v37)
       {
@@ -836,16 +836,16 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
 
       else
       {
-        v38 = [v35 resultBundleId];
-        v39 = [v38 isEqualToString:v74];
+        resultBundleId2 = [v35 resultBundleId];
+        v39 = [resultBundleId2 isEqualToString:v74];
 
         if (v39)
         {
           v40 = [MEMORY[0x277D4C898] cardSectionsForRenderingResult:v35];
-          v41 = [v40 firstObject];
+          firstObject = [v40 firstObject];
 
           v42 = [MEMORY[0x277D4C898] cardSectionsForRenderingResult:v75];
-          v43 = [v42 firstObject];
+          firstObject2 = [v42 firstObject];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -853,11 +853,11 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v44 = [v41 detailText];
-              v45 = [v44 text];
+              detailText = [firstObject detailText];
+              text = [detailText text];
 
-              v46 = [v43 detailText];
-              [v46 setText:v45];
+              detailText2 = [firstObject2 detailText];
+              [detailText2 setText:text];
             }
           }
 
@@ -869,8 +869,8 @@ uint64_t __52__SPUIResultsViewController_finishedGettingResults___block_invoke_2
       {
         v47 = obj;
 
-        self = v66;
-        v14 = v67;
+        self = selfCopy;
+        languageCopy = v67;
         v17 = v70;
         v48 = v73;
         v20 = v65;
@@ -878,17 +878,17 @@ LABEL_28:
         v50 = [v47 objectAtIndexedSubscript:v33];
         [(SearchUIResultsViewController *)self replaceResult:v50 withResult:v48];
 
-        v51 = [(SPUIResultsViewController *)self highlightedResult];
+        highlightedResult = [(SPUIResultsViewController *)self highlightedResult];
         [v47 objectAtIndexedSubscript:v33];
         v53 = v52 = v48;
 
-        if (v51 == v53)
+        if (highlightedResult == v53)
         {
           [(SPUIResultsViewController *)self forceHighlightForResult:v52];
         }
 
         [v47 replaceObjectAtIndex:v33 withObject:v52];
-        v13 = v68;
+        entityCopy = v68;
         goto LABEL_31;
       }
 
@@ -909,10 +909,10 @@ LABEL_28:
 
   v47 = obj;
 
-  v14 = v67;
-  v13 = v68;
+  languageCopy = v67;
+  entityCopy = v68;
   v20 = v65;
-  self = v66;
+  self = selfCopy;
   v17 = v70;
   v48 = v73;
   if ((v33 & 0x8000000000000000) == 0)
@@ -921,7 +921,7 @@ LABEL_28:
   }
 
 LABEL_31:
-  v12 = v64;
+  stringCopy = v64;
   if ((v32 & 0x8000000000000000) == 0)
   {
     v54 = [obj objectAtIndexedSubscript:v32];
@@ -932,22 +932,22 @@ LABEL_31:
 
 LABEL_35:
   v55 = v20;
-  v56 = [(SPUIResultsViewController *)self suggestionsSection];
+  suggestionsSection3 = [(SPUIResultsViewController *)self suggestionsSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v57 = [(SPUIResultsViewController *)self suggestionsSection];
-    v58 = [v57 mutableDeepCopy];
+    suggestionsSection4 = [(SPUIResultsViewController *)self suggestionsSection];
+    mutableDeepCopy = [suggestionsSection4 mutableDeepCopy];
   }
 
   else
   {
     v59 = objc_alloc(MEMORY[0x277D65848]);
-    v57 = [(SPUIResultsViewController *)self suggestionsSection];
-    v58 = [v59 initWithSection:v57];
+    suggestionsSection4 = [(SPUIResultsViewController *)self suggestionsSection];
+    mutableDeepCopy = [v59 initWithSection:suggestionsSection4];
   }
 
-  v60 = v58;
+  v60 = mutableDeepCopy;
 
   [v60 setResults:v71];
   [(SPUIResultsViewController *)self setSuggestionsSection:v60];
@@ -956,10 +956,10 @@ LABEL_35:
   v20 = v55;
   v49 = v72;
 LABEL_39:
-  v61 = [MEMORY[0x277D75128] sharedApplication];
-  v62 = [v61 isRunningTest];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  isRunningTest = [mEMORY[0x277D75128] isRunningTest];
 
-  if (v49 && !v62)
+  if (v49 && !isRunningTest)
   {
     [(SPUIResultsViewController *)self _pushSectionsUpdate];
   }
@@ -978,8 +978,8 @@ LABEL_43:
 
   else
   {
-    v5 = [(SearchUIResultsViewController *)self sections];
-    v6 = [v5 count];
+    sections = [(SearchUIResultsViewController *)self sections];
+    v6 = [sections count];
 
     if (v6)
     {
@@ -1005,19 +1005,19 @@ LABEL_43:
 
 - (BOOL)_hasRealSuggestions
 {
-  v2 = [(SPUIResultsViewController *)self suggestionsSection];
-  v3 = [v2 results];
-  v4 = [v3 count] != 0;
+  suggestionsSection = [(SPUIResultsViewController *)self suggestionsSection];
+  results = [suggestionsSection results];
+  v4 = [results count] != 0;
 
   return v4;
 }
 
-- (void)removeCompletionAndHighlightAsTyped:(BOOL)a3
+- (void)removeCompletionAndHighlightAsTyped:(BOOL)typed
 {
-  if (a3)
+  if (typed)
   {
-    v4 = [(SPUIResultsViewController *)self asTypedSearchResult];
-    [(SPUIResultsViewController *)self forceHighlightForResult:v4];
+    asTypedSearchResult = [(SPUIResultsViewController *)self asTypedSearchResult];
+    [(SPUIResultsViewController *)self forceHighlightForResult:asTypedSearchResult];
   }
 
   else
@@ -1028,23 +1028,23 @@ LABEL_43:
   [(SPUIResultsViewController *)self changeTextFieldsReturnKeyType:6 withGoTakeoverResult:0];
 }
 
-- (void)setRestorationContext:(id)a3
+- (void)setRestorationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SPUIResultsViewController;
-  [(SearchUIResultsViewController *)&v8 setRestorationContext:v4];
+  [(SearchUIResultsViewController *)&v8 setRestorationContext:contextCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 sections];
-    [(SearchUIResultsViewController *)self setSections:v5];
+    sections = [contextCopy sections];
+    [(SearchUIResultsViewController *)self setSections:sections];
 
-    v6 = [v4 searchEntity];
-    [(SPUIResultsViewController *)self setSearchEntity:v6];
+    searchEntity = [contextCopy searchEntity];
+    [(SPUIResultsViewController *)self setSearchEntity:searchEntity];
 
-    v7 = [v4 searchString];
-    [(SearchUIResultsViewController *)self setQueryString:v7];
+    searchString = [contextCopy searchString];
+    [(SearchUIResultsViewController *)self setQueryString:searchString];
   }
 }
 
@@ -1052,58 +1052,58 @@ LABEL_43:
 {
   v8.receiver = self;
   v8.super_class = SPUIResultsViewController;
-  v3 = [(SearchUIResultsViewController *)&v8 restorationContext];
-  v4 = [(SearchUIResultsViewController *)self sections];
-  [v3 setSections:v4];
+  restorationContext = [(SearchUIResultsViewController *)&v8 restorationContext];
+  sections = [(SearchUIResultsViewController *)self sections];
+  [restorationContext setSections:sections];
 
-  v5 = [(SPUIResultsViewController *)self searchEntity];
-  [v3 setSearchEntity:v5];
+  searchEntity = [(SPUIResultsViewController *)self searchEntity];
+  [restorationContext setSearchEntity:searchEntity];
 
-  v6 = [(SearchUIResultsViewController *)self queryString];
-  [v3 setSearchString:v6];
+  queryString = [(SearchUIResultsViewController *)self queryString];
+  [restorationContext setSearchString:queryString];
 
-  return v3;
+  return restorationContext;
 }
 
 - (void)highlightResultAfterUnmarkingText
 {
-  v3 = [(SPUIResultsViewController *)self highlightedResult];
-  [(SPUIResultsViewController *)self forceHighlightForResult:v3];
+  highlightedResult = [(SPUIResultsViewController *)self highlightedResult];
+  [(SPUIResultsViewController *)self forceHighlightForResult:highlightedResult];
 }
 
-- (void)forceHighlightForResult:(id)a3
+- (void)forceHighlightForResult:(id)result
 {
-  v8 = a3;
+  resultCopy = result;
   if (-[SPUIResultsViewController allowHighlightingWhenInactive](self, "allowHighlightingWhenInactive") || (-[SearchUIResultsViewController delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isActiveViewController:self], v4, v5))
   {
     self->_isHighlighting = 1;
-    v6 = [(SearchUIResultsViewController *)self searchField];
-    v7 = [v6 hasMarkedText];
+    searchField = [(SearchUIResultsViewController *)self searchField];
+    hasMarkedText = [searchField hasMarkedText];
 
-    if ((v7 & 1) == 0)
+    if ((hasMarkedText & 1) == 0)
     {
-      [(SearchUIResultsViewController *)self highlightResult:v8];
+      [(SearchUIResultsViewController *)self highlightResult:resultCopy];
     }
 
-    [(SPUIResultsViewController *)self setHighlightedResult:v8];
+    [(SPUIResultsViewController *)self setHighlightedResult:resultCopy];
     self->_isHighlighting = 0;
   }
 }
 
-- (void)changeTextFieldsReturnKeyType:(int64_t)a3 withGoTakeoverResult:(id)a4
+- (void)changeTextFieldsReturnKeyType:(int64_t)type withGoTakeoverResult:(id)result
 {
-  v12 = a4;
+  resultCopy = result;
   if (-[SPUIResultsViewController allowHighlightingWhenInactive](self, "allowHighlightingWhenInactive") || (-[SearchUIResultsViewController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isActiveViewController:self], v6, v7))
   {
-    v8 = a3 == 1 ? v12 : 0;
+    v8 = type == 1 ? resultCopy : 0;
     [(SPUIResultsViewController *)self setGoTakeoverResult:v8];
-    v9 = [(SearchUIResultsViewController *)self searchField];
-    v10 = [v9 returnKeyType];
+    searchField = [(SearchUIResultsViewController *)self searchField];
+    returnKeyType = [searchField returnKeyType];
 
-    if (v10 != a3)
+    if (returnKeyType != type)
     {
-      v11 = [(SearchUIResultsViewController *)self searchField];
-      [v11 setReturnKeyType:a3];
+      searchField2 = [(SearchUIResultsViewController *)self searchField];
+      [searchField2 setReturnKeyType:type];
 
       +[SPUITextField updateBlueButton];
     }

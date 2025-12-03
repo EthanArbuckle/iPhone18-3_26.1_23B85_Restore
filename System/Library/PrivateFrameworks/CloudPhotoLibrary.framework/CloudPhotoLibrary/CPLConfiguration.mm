@@ -3,32 +3,32 @@
 - (BOOL)isComputeStateTaskUploadEnabled;
 - (BOOL)shouldCheckEPPCapability;
 - (BOOL)shouldDisableEPP;
-- (CPLConfiguration)initWithClientLibraryBaseURL:(id)a3 configurationURL:(id)a4 minUpdateInterval:(double)a5 updateIntervalKey:(id)a6;
-- (CPLConfiguration)initWithClientLibraryBaseURL:(id)a3 minUpdateInterval:(double)a4 updateIntervalKey:(id)a5;
+- (CPLConfiguration)initWithClientLibraryBaseURL:(id)l configurationURL:(id)rL minUpdateInterval:(double)interval updateIntervalKey:(id)key;
+- (CPLConfiguration)initWithClientLibraryBaseURL:(id)l minUpdateInterval:(double)interval updateIntervalKey:(id)key;
 - (CPLConfigurationDictionary)configurationDictionary;
 - (NSDate)lastUpdateDate;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (int64_t)maximumComputeStatesToUploadPerBatch;
 - (void)_load;
 - (void)_save;
-- (void)_updateConfigurationDictionary:(id)a3;
+- (void)_updateConfigurationDictionary:(id)dictionary;
 - (void)check;
-- (void)configurationFetcher:(id)a3 didUpdateConfigurationDictionary:(id)a4 configurationHasChanged:(BOOL)a5;
+- (void)configurationFetcher:(id)fetcher didUpdateConfigurationDictionary:(id)dictionary configurationHasChanged:(BOOL)changed;
 - (void)invalidate;
 - (void)refetchFromDisk;
-- (void)setIsComputeStateTaskUploadEnabled:(BOOL)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)updateConfigurationDictionary:(id)a3;
+- (void)setIsComputeStateTaskUploadEnabled:(BOOL)enabled;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)updateConfigurationDictionary:(id)dictionary;
 @end
 
 @implementation CPLConfiguration
 
 - (NSDate)lastUpdateDate
 {
-  v2 = [(CPLConfiguration *)self configurationDictionary];
-  v3 = [v2 lastUpdateDate];
+  configurationDictionary = [(CPLConfiguration *)self configurationDictionary];
+  lastUpdateDate = [configurationDictionary lastUpdateDate];
 
-  return v3;
+  return lastUpdateDate;
 }
 
 - (void)invalidate
@@ -50,18 +50,18 @@ void __30__CPLConfiguration_invalidate__block_invoke(uint64_t a1)
   *(v2 + 32) = 0;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   lock = self->_lock;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __36__CPLConfiguration_setValue_forKey___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = keyCopy;
+  v16 = valueCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -69,8 +69,8 @@ void __30__CPLConfiguration_invalidate__block_invoke(uint64_t a1)
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = lock;
-  v11 = v6;
-  v12 = v7;
+  v11 = valueCopy;
+  v12 = keyCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -82,9 +82,9 @@ void __36__CPLConfiguration_setValue_forKey___block_invoke(uint64_t a1)
   [*(a1 + 32) _updateConfigurationDictionary:v2];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -96,10 +96,10 @@ void __36__CPLConfiguration_setValue_forKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__CPLConfiguration_valueForKey___block_invoke;
   block[3] = &unk_1E861F868;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(lock, block);
   v7 = v13[5];
 
@@ -145,17 +145,17 @@ void __35__CPLConfiguration_refetchFromDisk__block_invoke(uint64_t a1)
   *(v1 + 8) = 0;
 }
 
-- (void)updateConfigurationDictionary:(id)a3
+- (void)updateConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CPLConfiguration_updateConfigurationDictionary___block_invoke;
   v7[3] = &unk_1E861B290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -190,21 +190,21 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
   objc_storeStrong(v3, v2);
 }
 
-- (void)_updateConfigurationDictionary:(id)a3
+- (void)_updateConfigurationDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   dispatch_assert_queue_V2(self->_lock);
-  v5 = [(CPLConfigurationDictionary *)self->_configurationDictionary lastUpdateDate];
+  lastUpdateDate = [(CPLConfigurationDictionary *)self->_configurationDictionary lastUpdateDate];
   configurationDictionaryUniquifier = self->_configurationDictionaryUniquifier;
   if (configurationDictionaryUniquifier)
   {
-    v7 = configurationDictionaryUniquifier[2](configurationDictionaryUniquifier, v4);
+    v7 = configurationDictionaryUniquifier[2](configurationDictionaryUniquifier, dictionaryCopy);
   }
 
   else
   {
-    v7 = v4;
+    v7 = dictionaryCopy;
   }
 
   configurationDictionary = self->_configurationDictionary;
@@ -216,10 +216,10 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = self->_configurationDictionary;
-      v11 = [(NSURL *)self->_configurationFileURL path];
-      if (v5)
+      path = [(NSURL *)self->_configurationFileURL path];
+      if (lastUpdateDate)
       {
-        v12 = [CPLDateFormatter stringFromDateAgo:v5 now:0];
+        v12 = [CPLDateFormatter stringFromDateAgo:lastUpdateDate now:0];
       }
 
       else
@@ -230,11 +230,11 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
       v14 = 134218498;
       v15 = v10;
       v16 = 2112;
-      v17 = v11;
+      v17 = path;
       v18 = 2114;
       v19 = v12;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Updated configuration %p at %@. Last update was %{public}@", &v14, 0x20u);
-      if (v5)
+      if (lastUpdateDate)
       {
       }
     }
@@ -247,31 +247,31 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
 
 - (void)_load
 {
-  v3 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_lock);
-  if (!*(v3 + 8))
+  if (!*(selfCopy + 8))
   {
     v4 = [CPLConfigurationDictionary alloc];
-    v5 = *(v3 + 16);
-    v6 = *(v3 + 72);
-    v7 = *(v3 + 64);
+    v5 = *(selfCopy + 16);
+    v6 = *(selfCopy + 72);
+    v7 = *(selfCopy + 64);
     v34 = 0;
     v8 = [(CPLConfigurationDictionary *)v4 initWithContentsOfURL:v5 refreshIntervalKey:v6 minRefreshInterval:&v34 error:v7];
     v9 = v34;
-    v10 = *(v3 + 8);
-    *(v3 + 8) = v8;
+    v10 = *(selfCopy + 8);
+    *(selfCopy + 8) = v8;
 
-    if (*(v3 + 8))
+    if (*(selfCopy + 8))
     {
-      v11 = *(v3 + 80);
+      v11 = *(selfCopy + 80);
       if (v11)
       {
         v12 = (*(v11 + 16))();
-        v13 = *(v3 + 8);
-        *(v3 + 8) = v12;
+        v13 = *(selfCopy + 8);
+        *(selfCopy + 8) = v12;
 
-        if (!*(v3 + 8))
+        if (!*(selfCopy + 8))
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -283,9 +283,9 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
             }
           }
 
-          v32 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLConfiguration.m"];
-          [v32 handleFailureInMethod:a2 object:v3 file:v33 lineNumber:209 description:@"Uniquifying configuration dictionary returned a nil value"];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:v33 lineNumber:209 description:@"Uniquifying configuration dictionary returned a nil value"];
 
           abort();
         }
@@ -296,16 +296,16 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
         goto LABEL_24;
       }
 
-      v14 = __CPLConfigurationOSLogDomain();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      lastPathComponent = __CPLConfigurationOSLogDomain();
+      if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = *(v3 + 8);
-        v16 = [*(v3 + 16) path];
-        v17 = [*(v3 + 8) lastUpdateDate];
-        if (v17)
+        v15 = *(selfCopy + 8);
+        path = [*(selfCopy + 16) path];
+        lastUpdateDate = [*(selfCopy + 8) lastUpdateDate];
+        if (lastUpdateDate)
         {
-          v3 = [*(v3 + 8) lastUpdateDate];
-          v18 = [CPLDateFormatter stringFromDateAgo:v3 now:0];
+          selfCopy = [*(selfCopy + 8) lastUpdateDate];
+          v18 = [CPLDateFormatter stringFromDateAgo:selfCopy now:0];
         }
 
         else
@@ -316,11 +316,11 @@ void __43__CPLConfiguration_configurationDictionary__block_invoke(uint64_t a1)
         *buf = 134218498;
         v36 = v15;
         v37 = 2112;
-        v38 = v16;
+        v38 = path;
         v39 = 2114;
         v40 = v18;
-        _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Loaded configuration %p at %@. Last update was %{public}@", buf, 0x20u);
-        if (v17)
+        _os_log_impl(&dword_1DC05A000, lastPathComponent, OS_LOG_TYPE_DEFAULT, "Loaded configuration %p at %@. Last update was %{public}@", buf, 0x20u);
+        if (lastUpdateDate)
         {
         }
       }
@@ -331,8 +331,8 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    v20 = [v19 cplIsFileDoesNotExistError:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v20 = [defaultManager cplIsFileDoesNotExistError:v9];
 
     if (v20)
     {
@@ -341,9 +341,9 @@ LABEL_24:
         v21 = __CPLConfigurationOSLogDomain();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [*(v3 + 16) path];
+          path2 = [*(selfCopy + 16) path];
           *buf = 138412290;
-          v36 = v22;
+          v36 = path2;
           v23 = "Configuration does not exist at %@ - will use built-in one";
           v24 = v21;
           v25 = OS_LOG_TYPE_DEFAULT;
@@ -363,9 +363,9 @@ LABEL_16:
       v21 = __CPLConfigurationOSLogDomain();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [*(v3 + 16) path];
+        path2 = [*(selfCopy + 16) path];
         *buf = 138412546;
-        v36 = v22;
+        v36 = path2;
         v37 = 2112;
         v38 = v9;
         v23 = "Failed to load saved configuration at %@ - will use built-in one: %@";
@@ -379,10 +379,10 @@ LABEL_17:
     }
 
     v27 = [CPLConfigurationDictionary alloc];
-    v14 = [*(v3 + 56) lastPathComponent];
-    v28 = [(CPLConfigurationDictionary *)v27 initWithConfigurationName:v14 refreshIntervalKey:*(v3 + 72) minRefreshInterval:*(v3 + 64)];
-    v29 = *(v3 + 8);
-    *(v3 + 8) = v28;
+    lastPathComponent = [*(selfCopy + 56) lastPathComponent];
+    v28 = [(CPLConfigurationDictionary *)v27 initWithConfigurationName:lastPathComponent refreshIntervalKey:*(selfCopy + 72) minRefreshInterval:*(selfCopy + 64)];
+    v29 = *(selfCopy + 8);
+    *(selfCopy + 8) = v28;
 
     goto LABEL_23;
   }
@@ -395,9 +395,9 @@ LABEL_25:
 {
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_lock);
-  v3 = [(CPLConfigurationDictionary *)self->_configurationDictionary lastUpdateDate];
+  lastUpdateDate = [(CPLConfigurationDictionary *)self->_configurationDictionary lastUpdateDate];
 
-  if (v3)
+  if (lastUpdateDate)
   {
     configurationDictionary = self->_configurationDictionary;
     configurationFileURL = self->_configurationFileURL;
@@ -408,14 +408,14 @@ LABEL_25:
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
-        v8 = __CPLConfigurationOSLogDomain();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        path2 = __CPLConfigurationOSLogDomain();
+        if (os_log_type_enabled(path2, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(NSURL *)self->_configurationFileURL path];
+          path = [(NSURL *)self->_configurationFileURL path];
           *buf = 138412290;
-          v17 = v9;
+          v17 = path;
           v10 = "Wrote configuration to %@";
-          v11 = v8;
+          v11 = path2;
           v12 = OS_LOG_TYPE_DEFAULT;
           v13 = 12;
 LABEL_12:
@@ -430,16 +430,16 @@ LABEL_12:
 
     else if ((_CPLSilentLogging & 1) == 0)
     {
-      v8 = __CPLConfigurationOSLogDomain();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      path2 = __CPLConfigurationOSLogDomain();
+      if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(NSURL *)self->_configurationFileURL path];
+        path = [(NSURL *)self->_configurationFileURL path];
         *buf = 138412546;
-        v17 = v9;
+        v17 = path;
         v18 = 2112;
         v19 = v7;
         v10 = "Failed to write configuration to %@: %@";
-        v11 = v8;
+        v11 = path2;
         v12 = OS_LOG_TYPE_ERROR;
         v13 = 22;
         goto LABEL_12;
@@ -458,9 +458,9 @@ LABEL_14:
     v7 = __CPLConfigurationOSLogDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NSURL *)self->_configurationFileURL path];
+      path2 = [(NSURL *)self->_configurationFileURL path];
       *buf = 138412290;
-      v17 = v8;
+      v17 = path2;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Not saving built-in configuration to %@", buf, 0xCu);
       goto LABEL_13;
     }
@@ -472,17 +472,17 @@ LABEL_15:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configurationFetcher:(id)a3 didUpdateConfigurationDictionary:(id)a4 configurationHasChanged:(BOOL)a5
+- (void)configurationFetcher:(id)fetcher didUpdateConfigurationDictionary:(id)dictionary configurationHasChanged:(BOOL)changed
 {
-  v11 = a4;
+  dictionaryCopy = dictionary;
   lock = self->_lock;
-  v8 = a3;
+  fetcherCopy = fetcher;
   dispatch_assert_queue_V2(lock);
   configurationFetcher = self->_configurationFetcher;
 
-  if (configurationFetcher == v8)
+  if (configurationFetcher == fetcherCopy)
   {
-    [(CPLConfiguration *)self _updateConfigurationDictionary:v11];
+    [(CPLConfiguration *)self _updateConfigurationDictionary:dictionaryCopy];
     v10 = self->_configurationFetcher;
     self->_configurationFetcher = 0;
   }
@@ -545,32 +545,32 @@ uint64_t __25__CPLConfiguration_check__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CPLConfiguration)initWithClientLibraryBaseURL:(id)a3 minUpdateInterval:(double)a4 updateIntervalKey:(id)a5
+- (CPLConfiguration)initWithClientLibraryBaseURL:(id)l minUpdateInterval:(double)interval updateIntervalKey:(id)key
 {
-  v8 = a5;
-  v9 = a3;
+  keyCopy = key;
+  lCopy = l;
   v10 = _CPLConfigurationDefaultURL();
-  v11 = [(CPLConfiguration *)self initWithClientLibraryBaseURL:v9 configurationURL:v10 minUpdateInterval:v8 updateIntervalKey:a4];
+  v11 = [(CPLConfiguration *)self initWithClientLibraryBaseURL:lCopy configurationURL:v10 minUpdateInterval:keyCopy updateIntervalKey:interval];
 
   return v11;
 }
 
-- (CPLConfiguration)initWithClientLibraryBaseURL:(id)a3 configurationURL:(id)a4 minUpdateInterval:(double)a5 updateIntervalKey:(id)a6
+- (CPLConfiguration)initWithClientLibraryBaseURL:(id)l configurationURL:(id)rL minUpdateInterval:(double)interval updateIntervalKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  keyCopy = key;
   v22.receiver = self;
   v22.super_class = CPLConfiguration;
   v13 = [(CPLConfiguration *)&v22 init];
   if (v13)
   {
-    v14 = [v11 lastPathComponent];
-    v15 = [v10 URLByAppendingPathComponent:v14 isDirectory:0];
+    lastPathComponent = [rLCopy lastPathComponent];
+    v15 = [lCopy URLByAppendingPathComponent:lastPathComponent isDirectory:0];
     configurationFileURL = v13->_configurationFileURL;
     v13->_configurationFileURL = v15;
 
-    v17 = [v11 copy];
+    v17 = [rLCopy copy];
     configurationURL = v13->_configurationURL;
     v13->_configurationURL = v17;
 
@@ -578,8 +578,8 @@ uint64_t __25__CPLConfiguration_check__block_invoke(uint64_t a1)
     lock = v13->_lock;
     v13->_lock = v19;
 
-    v13->_minUpdateInterval = a5;
-    objc_storeStrong(&v13->_updateIntervalKey, a6);
+    v13->_minUpdateInterval = interval;
+    objc_storeStrong(&v13->_updateIntervalKey, key);
   }
 
   return v13;
@@ -587,8 +587,8 @@ uint64_t __25__CPLConfiguration_check__block_invoke(uint64_t a1)
 
 - (BOOL)shouldCheckEPPCapability
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"CPLDisableEPPCapabilityCheck"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"CPLDisableEPPCapabilityCheck"];
 
   if (v4)
   {
@@ -609,9 +609,9 @@ uint64_t __25__CPLConfiguration_check__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setIsComputeStateTaskUploadEnabled:(BOOL)a3
+- (void)setIsComputeStateTaskUploadEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = 2;
   }
@@ -639,15 +639,15 @@ uint64_t __25__CPLConfiguration_check__block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 350;
+    integerValue = 350;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)allowsLocalConflictResolutionWhenOverQuota

@@ -1,36 +1,36 @@
 @interface DADREMShareResponseDelegate
-- (DADREMShareResponseDelegate)initWithAccountID:(id)a3 calendarID:(id)a4;
-- (void)_doResponseWithBlock:(id)a3;
-- (void)finishWithError:(id)a3;
+- (DADREMShareResponseDelegate)initWithAccountID:(id)d calendarID:(id)iD;
+- (void)_doResponseWithBlock:(id)block;
+- (void)finishWithError:(id)error;
 - (void)reportAsJunk;
-- (void)respondToShareRequestWithResponse:(int64_t)a3;
+- (void)respondToShareRequestWithResponse:(int64_t)response;
 @end
 
 @implementation DADREMShareResponseDelegate
 
-- (DADREMShareResponseDelegate)initWithAccountID:(id)a3 calendarID:(id)a4
+- (DADREMShareResponseDelegate)initWithAccountID:(id)d calendarID:(id)iD
 {
-  v6 = a4;
+  iDCopy = iD;
   v10.receiver = self;
   v10.super_class = DADREMShareResponseDelegate;
-  v7 = [(DADREMXPCPerformerDelegate *)&v10 initWithAccountID:a3];
+  v7 = [(DADREMXPCPerformerDelegate *)&v10 initWithAccountID:d];
   v8 = v7;
   if (v7)
   {
-    [(DADREMShareResponseDelegate *)v7 setCalendarID:v6];
+    [(DADREMShareResponseDelegate *)v7 setCalendarID:iDCopy];
   }
 
   return v8;
 }
 
-- (void)respondToShareRequestWithResponse:(int64_t)a3
+- (void)respondToShareRequestWithResponse:(int64_t)response
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __65__DADREMShareResponseDelegate_respondToShareRequestWithResponse___block_invoke;
   v3[3] = &unk_278D52C48;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = response;
   [(DADREMShareResponseDelegate *)self _doResponseWithBlock:v3];
 }
 
@@ -44,17 +44,17 @@
   [(DADREMShareResponseDelegate *)self _doResponseWithBlock:v2];
 }
 
-- (void)_doResponseWithBlock:(id)a3
+- (void)_doResponseWithBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = +[DADAgentManager sharedManager];
-  v6 = [(DADREMXPCPerformerDelegate *)self accountID];
-  v7 = [v5 accountWithAccountID:v6 andClassName:@"MobileCalDAVAccount"];
+  accountID = [(DADREMXPCPerformerDelegate *)self accountID];
+  v7 = [v5 accountWithAccountID:accountID andClassName:@"MobileCalDAVAccount"];
 
   if (v7)
   {
-    v8 = v4[2](v4, v7);
+    v8 = blockCopy[2](blockCopy, v7);
     [(DADREMShareResponseDelegate *)self setShareID:v8];
   }
 
@@ -64,9 +64,9 @@
     v10 = *(MEMORY[0x277CF3AF0] + 3);
     if (os_log_type_enabled(v9, v10))
     {
-      v11 = [(DADREMXPCPerformerDelegate *)self accountID];
+      accountID2 = [(DADREMXPCPerformerDelegate *)self accountID];
       v13 = 138412290;
-      v14 = v11;
+      v14 = accountID2;
       _os_log_impl(&dword_2424DF000, v9, v10, "DADREMShareResponseDelegate: Could not get an account with the ID %@", &v13, 0xCu);
     }
 
@@ -77,10 +77,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(DADREMXPCPerformerDelegate *)self finished])
   {
     goto LABEL_15;
@@ -93,46 +93,46 @@
   if (os_log_type_enabled(v5, v7))
   {
     v19 = 138412290;
-    v20 = v4;
+    v20 = errorCopy;
     _os_log_impl(&dword_2424DF000, v5, v7, "DADREMShareResponseDelegate finished with optional error %@", &v19, 0xCu);
   }
 
-  v8 = [(DADREMShareResponseDelegate *)self shareID];
-  if (v8)
+  shareID = [(DADREMShareResponseDelegate *)self shareID];
+  if (shareID)
   {
-    v9 = v8;
-    v10 = [v4 domain];
-    if (![v10 isEqualToString:*MEMORY[0x277CF3AB0]])
+    v9 = shareID;
+    domain = [errorCopy domain];
+    if (![domain isEqualToString:*MEMORY[0x277CF3AB0]])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v11 = [v4 code];
+    code = [errorCopy code];
 
-    if (v11 == -1)
+    if (code == -1)
     {
       v12 = +[DADAgentManager sharedManager];
-      v13 = [(DADREMXPCPerformerDelegate *)self accountID];
-      v9 = [v12 accountWithAccountID:v13];
+      accountID = [(DADREMXPCPerformerDelegate *)self accountID];
+      v9 = [v12 accountWithAccountID:accountID];
 
       if (v9)
       {
-        v10 = [(DADREMShareResponseDelegate *)self shareID];
-        [v9 cancelShareResponseInstance:v10 error:0];
+        domain = [(DADREMShareResponseDelegate *)self shareID];
+        [v9 cancelShareResponseInstance:domain error:0];
       }
 
       else
       {
-        v10 = DALoggingwithCategory();
+        domain = DALoggingwithCategory();
         v14 = *(v6 + 3);
-        if (os_log_type_enabled(v10, v14))
+        if (os_log_type_enabled(domain, v14))
         {
-          v15 = [(DADREMXPCPerformerDelegate *)self accountID];
+          accountID2 = [(DADREMXPCPerformerDelegate *)self accountID];
           v19 = 138412290;
-          v20 = v15;
-          _os_log_impl(&dword_2424DF000, v10, v14, "DADREMShareResponseDelegate finished, but could not find an account with the ID %@", &v19, 0xCu);
+          v20 = accountID2;
+          _os_log_impl(&dword_2424DF000, domain, v14, "DADREMShareResponseDelegate finished, but could not find an account with the ID %@", &v19, 0xCu);
         }
       }
 
@@ -141,11 +141,11 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(DADREMXPCPerformerDelegate *)self remXPCCompletion];
-  v17 = v16;
-  if (v16)
+  remXPCCompletion = [(DADREMXPCPerformerDelegate *)self remXPCCompletion];
+  v17 = remXPCCompletion;
+  if (remXPCCompletion)
   {
-    (*(v16 + 16))(v16, v4);
+    (*(remXPCCompletion + 16))(remXPCCompletion, errorCopy);
   }
 
 LABEL_15:

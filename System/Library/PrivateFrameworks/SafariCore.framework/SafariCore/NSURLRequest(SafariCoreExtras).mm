@@ -8,7 +8,7 @@
 
 + (id)safari_nonAppInitiatedRequestWithURL:()SafariCoreExtras
 {
-  v1 = [a1 requestWithURL:?];
+  v1 = [self requestWithURL:?];
   v2 = [v1 safari_requestBySettingIsUserInitiated:1];
 
   return v2;
@@ -16,33 +16,33 @@
 
 - (id)safari_requestBySettingIsUserInitiated:()SafariCoreExtras
 {
-  if (([a1 attribution] != 1) == a3)
+  if (([self attribution] != 1) == a3)
   {
-    v5 = [a1 mutableCopy];
-    [v5 setAttribution:a3];
+    selfCopy = [self mutableCopy];
+    [selfCopy setAttribution:a3];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)safari_requestBySettingAdvancedPrivacyProtectionsFlagIsEnabled:()SafariCoreExtras
 {
-  v4 = a1;
-  v5 = [a1 mutableCopy];
+  selfCopy = self;
+  v5 = [self mutableCopy];
   if ([v5 _useEnhancedPrivacyMode] != a3)
   {
     [v5 _setUseEnhancedPrivacyMode:a3];
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v6 = v4;
+  v6 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
 @end

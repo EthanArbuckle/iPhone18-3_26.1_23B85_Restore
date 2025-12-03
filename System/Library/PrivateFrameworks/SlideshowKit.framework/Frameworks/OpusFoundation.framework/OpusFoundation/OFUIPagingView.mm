@@ -1,28 +1,28 @@
 @interface OFUIPagingView
-- (CGRect)frameForPageAtIndex:(unint64_t)a3;
+- (CGRect)frameForPageAtIndex:(unint64_t)index;
 - (CGRect)frameForScrollView;
-- (OFUIPagingView)initWithCoder:(id)a3;
-- (OFUIPagingView)initWithFrame:(CGRect)a3;
+- (OFUIPagingView)initWithCoder:(id)coder;
+- (OFUIPagingView)initWithFrame:(CGRect)frame;
 - (id)dequeueReusablePage;
-- (id)viewForPageAtIndex:(unint64_t)a3;
+- (id)viewForPageAtIndex:(unint64_t)index;
 - (int64_t)firstVisiblePageIndex;
 - (int64_t)lastVisiblePageIndex;
 - (void)commonInit;
-- (void)configurePage:(id)a3 forIndex:(int64_t)a4;
+- (void)configurePage:(id)page forIndex:(int64_t)index;
 - (void)configurePages;
 - (void)dealloc;
 - (void)didRotate;
 - (void)knownToBeIdle;
 - (void)knownToBeMoving;
 - (void)layoutSubviews;
-- (void)recyclePage:(id)a3;
+- (void)recyclePage:(id)page;
 - (void)reloadData;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setCurrentPageIndex:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGapBetweenPages:(double)a3;
-- (void)setPagesToPreload:(int64_t)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setCurrentPageIndex:(int64_t)index;
+- (void)setFrame:(CGRect)frame;
+- (void)setGapBetweenPages:(double)pages;
+- (void)setPagesToPreload:(int64_t)preload;
 - (void)willAnimateRotation;
 @end
 
@@ -62,11 +62,11 @@
   [(OFUIPagingView *)self addSubview:self->_scrollView];
 }
 
-- (OFUIPagingView)initWithFrame:(CGRect)a3
+- (OFUIPagingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFUIPagingView;
-  v3 = [(OFViewProxy *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFViewProxy *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,11 +76,11 @@
   return v4;
 }
 
-- (OFUIPagingView)initWithCoder:(id)a3
+- (OFUIPagingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUIPagingView;
-  v3 = [(OFViewProxy *)&v6 initWithCoder:a3];
+  v3 = [(OFViewProxy *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -124,28 +124,28 @@
   [(OFUIView *)&v6 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingView;
-  [(OFUIPagingView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(OFUIPagingView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(OFUIPagingView *)self configurePages];
 }
 
-- (void)setGapBetweenPages:(double)a3
+- (void)setGapBetweenPages:(double)pages
 {
-  if (self->_gapBetweenPages != a3)
+  if (self->_gapBetweenPages != pages)
   {
-    self->_gapBetweenPages = a3;
+    self->_gapBetweenPages = pages;
     [(OFUIPagingView *)self setNeedsLayout];
   }
 }
 
-- (void)setPagesToPreload:(int64_t)a3
+- (void)setPagesToPreload:(int64_t)preload
 {
-  if (self->_pagesToPreload != a3)
+  if (self->_pagesToPreload != preload)
   {
-    self->_pagesToPreload = a3;
+    self->_pagesToPreload = preload;
     [(OFUIPagingView *)self configurePages];
   }
 }
@@ -153,22 +153,22 @@
 - (void)reloadData
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(OFUIPagingView *)self delegate];
-  if (v3)
+  delegate = [(OFUIPagingView *)self delegate];
+  if (delegate)
   {
     [(OFUIPagingView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(OFUIPagingViewDelegate *)self->_delegate numberOfPagesInPagingView:self];
+      delegate = [(OFUIPagingViewDelegate *)self->_delegate numberOfPagesInPagingView:self];
     }
 
     else
     {
-      v3 = 0;
+      delegate = 0;
     }
   }
 
-  self->_pageCount = v3;
+  self->_pageCount = delegate;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -201,7 +201,7 @@
   [(OFUIPagingView *)self configurePages];
 }
 
-- (id)viewForPageAtIndex:(unint64_t)a3
+- (id)viewForPageAtIndex:(unint64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -227,7 +227,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 tag] == a3)
+    if ([v9 tag] == index)
     {
       return v9;
     }
@@ -294,23 +294,23 @@ LABEL_3:
     }
 
     v21 = pageCount & ~(pageCount >> 63);
-    v22 = [(OFUIPagingView *)self firstVisiblePageIndex];
-    v23 = [(OFUIPagingView *)self lastVisiblePageIndex];
+    firstVisiblePageIndex = [(OFUIPagingView *)self firstVisiblePageIndex];
+    lastVisiblePageIndex = [(OFUIPagingView *)self lastVisiblePageIndex];
     pagesToPreload = self->_pagesToPreload;
     v25 = v21 - pagesToPreload;
-    v41 = v22;
+    v41 = firstVisiblePageIndex;
     v42 = v21;
-    if (v22 < v21 - pagesToPreload)
+    if (firstVisiblePageIndex < v21 - pagesToPreload)
     {
-      v25 = v22;
+      v25 = firstVisiblePageIndex;
     }
 
     v26 = v25 & ~(v25 >> 63);
     v27 = v21 + pagesToPreload;
-    v44 = v23;
-    if (v23 > v27)
+    v44 = lastVisiblePageIndex;
+    if (lastVisiblePageIndex > v27)
     {
-      v27 = v23;
+      v27 = lastVisiblePageIndex;
     }
 
     if (self->_pageCount - 1 >= v27)
@@ -430,13 +430,13 @@ LABEL_55:
   }
 }
 
-- (void)configurePage:(id)a3 forIndex:(int64_t)a4
+- (void)configurePage:(id)page forIndex:(int64_t)index
 {
-  [a3 setTag:a4];
-  [(OFUIPagingView *)self frameForPageAtIndex:a4];
-  [a3 setFrame:?];
+  [page setTag:index];
+  [(OFUIPagingView *)self frameForPageAtIndex:index];
+  [page setFrame:?];
 
-  [a3 setNeedsDisplay];
+  [page setNeedsDisplay];
 }
 
 - (void)willAnimateRotation
@@ -524,7 +524,7 @@ LABEL_55:
   [(OFUIPagingView *)self configurePages];
 }
 
-- (void)setCurrentPageIndex:(int64_t)a3
+- (void)setCurrentPageIndex:(int64_t)index
 {
   [(UIScrollView *)self->_scrollView frame];
   if (v5 > 0.0)
@@ -533,11 +533,11 @@ LABEL_55:
     if (fabs(v6 + self->_gapBetweenPages * 0.5) < 0.000001)
     {
       [(UIScrollView *)self->_scrollView frame];
-      [(UIScrollView *)self->_scrollView setContentOffset:v7 * a3, 0.0];
+      [(UIScrollView *)self->_scrollView setContentOffset:v7 * index, 0.0];
     }
   }
 
-  self->_currentPageIndex = a3;
+  self->_currentPageIndex = index;
 }
 
 - (void)layoutSubviews
@@ -637,12 +637,12 @@ LABEL_55:
   return result;
 }
 
-- (CGRect)frameForPageAtIndex:(unint64_t)a3
+- (CGRect)frameForPageAtIndex:(unint64_t)index
 {
   [(UIScrollView *)self->_scrollView frame];
   v6 = v5;
   [(OFUIPagingView *)self bounds];
-  v9 = self->_gapBetweenPages * 0.5 + v6 * a3;
+  v9 = self->_gapBetweenPages * 0.5 + v6 * index;
   v10 = 0.0;
   result.size.height = v8;
   result.size.width = v7;
@@ -651,34 +651,34 @@ LABEL_55:
   return result;
 }
 
-- (void)recyclePage:(id)a3
+- (void)recyclePage:(id)page
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 prepareForReuse];
+    [page prepareForReuse];
   }
 
   if (self->_recyclingEnabled)
   {
-    [(NSMutableSet *)self->_recycledPages addObject:a3];
+    [(NSMutableSet *)self->_recycledPages addObject:page];
   }
 
-  [a3 removeFromSuperview];
+  [page removeFromSuperview];
 }
 
 - (id)dequeueReusablePage
 {
-  v3 = [(NSMutableSet *)self->_recycledPages anyObject];
-  v4 = v3;
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_recycledPages anyObject];
+  v4 = anyObject;
+  if (anyObject)
   {
-    [(NSMutableSet *)self->_recycledPages removeObject:v3];
+    [(NSMutableSet *)self->_recycledPages removeObject:anyObject];
   }
 
   return v4;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (!self->_rotationInProgress)
   {
@@ -686,9 +686,9 @@ LABEL_55:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(OFUIPagingView *)self knownToBeIdle];
   }
@@ -704,9 +704,9 @@ LABEL_55:
       [(OFUIPagingView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v3 = [(OFUIPagingView *)self delegate];
+        delegate = [(OFUIPagingView *)self delegate];
 
-        [(OFUIPagingViewDelegate *)v3 pagingViewWillBeginMoving:self];
+        [(OFUIPagingViewDelegate *)delegate pagingViewWillBeginMoving:self];
       }
     }
   }
@@ -727,9 +727,9 @@ LABEL_55:
       [(OFUIPagingView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v3 = [(OFUIPagingView *)self delegate];
+        delegate = [(OFUIPagingView *)self delegate];
 
-        [(OFUIPagingViewDelegate *)v3 pagingViewDidEndMoving:self];
+        [(OFUIPagingViewDelegate *)delegate pagingViewDidEndMoving:self];
       }
     }
   }

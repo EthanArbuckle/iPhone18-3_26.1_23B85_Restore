@@ -3,18 +3,18 @@
 - (CGPoint)locationInSlideAtStart;
 - (CGPoint)locationInViewAtStart;
 - (CGPoint)slideCenterAtStart;
-- (MRGesture)initWithHitBlob:(id)a3;
+- (MRGesture)initWithHitBlob:(id)blob;
 - (void)dealloc;
 @end
 
 @implementation MRGesture
 
-- (MRGesture)initWithHitBlob:(id)a3
+- (MRGesture)initWithHitBlob:(id)blob
 {
   v4 = [(MRGesture *)self init];
   if (v4)
   {
-    v4->_hitBlob = a3;
+    v4->_hitBlob = blob;
   }
 
   return v4;

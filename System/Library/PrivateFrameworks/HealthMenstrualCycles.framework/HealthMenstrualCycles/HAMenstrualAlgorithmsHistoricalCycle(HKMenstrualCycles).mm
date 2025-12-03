@@ -11,34 +11,34 @@
   v14 = a5;
   v15 = a6;
   v38 = a7;
-  v16 = +[HKMCCycleSegment _menstruationSegmentWithDays:](HKMCCycleSegment, "_menstruationSegmentWithDays:", [a1 julianDayOfMenstruationStart], objc_msgSend(a1, "julianDayOfMenstruationEnd") - objc_msgSend(a1, "julianDayOfMenstruationStart") + 1);
-  if (a4 && ([a1 fertilityStartJulianDay], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v16 = +[HKMCCycleSegment _menstruationSegmentWithDays:](HKMCCycleSegment, "_menstruationSegmentWithDays:", [self julianDayOfMenstruationStart], objc_msgSend(self, "julianDayOfMenstruationEnd") - objc_msgSend(self, "julianDayOfMenstruationStart") + 1);
+  if (a4 && ([self fertilityStartJulianDay], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    v19 = [a1 fertilityEndJulianDay];
+    fertilityEndJulianDay = [self fertilityEndJulianDay];
 
-    if (v19)
+    if (fertilityEndJulianDay)
     {
-      v20 = [a1 fertilityStartJulianDay];
-      v21 = [v20 integerValue];
+      fertilityStartJulianDay = [self fertilityStartJulianDay];
+      integerValue = [fertilityStartJulianDay integerValue];
 
-      v22 = [a1 fertilityEndJulianDay];
-      v23 = [v22 integerValue];
+      fertilityEndJulianDay2 = [self fertilityEndJulianDay];
+      integerValue2 = [fertilityEndJulianDay2 integerValue];
 
-      v19 = [HKMCCycleSegment _fertileWindowSegmentWithDays:v21, v23 - v21 + 1];
+      fertilityEndJulianDay = [HKMCCycleSegment _fertileWindowSegmentWithDays:integerValue, integerValue2 - integerValue + 1];
     }
   }
 
   else
   {
-    v19 = 0;
+    fertilityEndJulianDay = 0;
   }
 
-  v24 = [a1 phases];
-  v25 = [v24 hk_map:&__block_literal_global_337];
+  phases = [self phases];
+  v25 = [phases hk_map:&__block_literal_global_337];
 
-  v26 = [a1 predictionPrimarySource];
-  if (v26 == 2)
+  predictionPrimarySource = [self predictionPrimarySource];
+  if (predictionPrimarySource == 2)
   {
     v27 = a8;
   }
@@ -48,7 +48,7 @@
     v27 = 0;
   }
 
-  if (v26 == 3)
+  if (predictionPrimarySource == 3)
   {
     v28 = 2;
   }
@@ -58,10 +58,10 @@
     v28 = v27;
   }
 
-  v29 = [a1 ovulationConfirmationFailure];
-  if (a8 && (v29 - 1) <= 3u)
+  ovulationConfirmationFailure = [self ovulationConfirmationFailure];
+  if (a8 && (ovulationConfirmationFailure - 1) <= 3u)
   {
-    v30 = qword_25192B388[(v29 - 1)];
+    v30 = qword_25192B388[(ovulationConfirmationFailure - 1)];
   }
 
   else
@@ -69,14 +69,14 @@
     v30 = 0;
   }
 
-  v31 = [a1 dailyEligibleWristTemperatureCount];
+  dailyEligibleWristTemperatureCount = [self dailyEligibleWristTemperatureCount];
   if (v14)
   {
     v32 = v38;
     if (v15 && v38)
     {
-      v33 = [v14 integerValue];
-      if (v33 == 2)
+      integerValue3 = [v14 integerValue];
+      if (integerValue3 == 2)
       {
         v34 = a8;
       }
@@ -86,7 +86,7 @@
         v34 = 0;
       }
 
-      if (v33 == 3)
+      if (integerValue3 == 3)
       {
         v28 = 2;
       }
@@ -96,10 +96,10 @@
         v28 = v34;
       }
 
-      v35 = [v15 integerValue];
-      if (a8 && (v35 - 1) <= 3u)
+      integerValue4 = [v15 integerValue];
+      if (a8 && (integerValue4 - 1) <= 3u)
       {
-        v30 = qword_25192B388[(v35 - 1)];
+        v30 = qword_25192B388[(integerValue4 - 1)];
       }
 
       else
@@ -107,7 +107,7 @@
         v30 = 0;
       }
 
-      v31 = [v38 integerValue];
+      dailyEligibleWristTemperatureCount = [v38 integerValue];
     }
   }
 
@@ -116,7 +116,7 @@
     v32 = v38;
   }
 
-  v36 = [HKMCCycle _cycleWithMenstruationSegment:v16 fertileWindowSegment:v19 lastDayIndex:v39 ovulationConfirmationType:v28 ovulationConfirmationFailure:v30 dailyEligibleWristTemperatureCount:v31 cycleFactors:v25];
+  v36 = [HKMCCycle _cycleWithMenstruationSegment:v16 fertileWindowSegment:fertilityEndJulianDay lastDayIndex:v39 ovulationConfirmationType:v28 ovulationConfirmationFailure:v30 dailyEligibleWristTemperatureCount:dailyEligibleWristTemperatureCount cycleFactors:v25];
 
   return v36;
 }
@@ -124,12 +124,12 @@
 - (id)hkmc_description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "julianDayOfMenstruationStart")}];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "julianDayOfMenstruationEnd")}];
-  v5 = [a1 fertilityStartJulianDay];
-  v6 = [a1 fertilityEndJulianDay];
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isDeterminant")}];
-  v8 = [v2 stringWithFormat:@"<menstruation: %@ - %@, fertile window: %@ - %@, determinant: %@>", v3, v4, v5, v6, v7];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "julianDayOfMenstruationStart")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "julianDayOfMenstruationEnd")}];
+  fertilityStartJulianDay = [self fertilityStartJulianDay];
+  fertilityEndJulianDay = [self fertilityEndJulianDay];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isDeterminant")}];
+  v8 = [v2 stringWithFormat:@"<menstruation: %@ - %@, fertile window: %@ - %@, determinant: %@>", v3, v4, fertilityStartJulianDay, fertilityEndJulianDay, v7];
 
   return v8;
 }

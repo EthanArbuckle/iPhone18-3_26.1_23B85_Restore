@@ -1,5 +1,5 @@
 @interface PRInlineComplicationGalleryItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomContent;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation PRInlineComplicationGalleryItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHUISWidgetHostViewController" hasInstanceVariable:@"_descriptor" withType:"CHSWidgetDescriptor"];
-  [v3 validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"showsCheckmark" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHUISWidgetHostViewController" hasInstanceVariable:@"_descriptor" withType:"CHSWidgetDescriptor"];
+  [validationsCopy validateClass:@"PRInlineComplicationGalleryItemCell" hasInstanceMethod:@"showsCheckmark" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -52,17 +52,17 @@
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    accessibilityCustomContent = v5;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PRInlineComplicationGalleryItemCellAccessibility;
-    v7 = [(PRInlineComplicationGalleryItemCellAccessibility *)&v10 accessibilityCustomContent];
+    accessibilityCustomContent = [(PRInlineComplicationGalleryItemCellAccessibility *)&v10 accessibilityCustomContent];
   }
 
-  v8 = v7;
+  v8 = accessibilityCustomContent;
 
   return v8;
 }

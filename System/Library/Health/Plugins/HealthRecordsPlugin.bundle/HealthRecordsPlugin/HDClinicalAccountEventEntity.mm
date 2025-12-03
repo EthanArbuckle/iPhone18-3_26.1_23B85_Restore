@@ -1,15 +1,15 @@
 @interface HDClinicalAccountEventEntity
-+ (BOOL)_pruneEventsIfNeededInDatabase:(id)a3 error:(id *)a4;
-+ (BOOL)_pruneEventsInDatabase:(id)a3 error:(id *)a4;
-+ (BOOL)insertEvent:(id)a3 database:(id)a4 error:(id *)a5;
-+ (BOOL)insertEvent:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)journalEvent:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)_fetchEventsForAccountWithIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
++ (BOOL)_pruneEventsIfNeededInDatabase:(id)database error:(id *)error;
++ (BOOL)_pruneEventsInDatabase:(id)database error:(id *)error;
++ (BOOL)insertEvent:(id)event database:(id)database error:(id *)error;
++ (BOOL)insertEvent:(id)event profile:(id)profile error:(id *)error;
++ (BOOL)journalEvent:(id)event database:(id)database error:(id *)error;
++ (id)_fetchEventsForAccountWithIdentifier:(id)identifier database:(id)database error:(id *)error;
 + (id)_propertiesForModel;
-+ (id)_wrapHKOptionalClinicalAccountCredentialStateInNSNumber:(int64_t)a3;
-+ (id)fetchEventsForAccountWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (int64_t)_unwrapHKClinicalAccountCredentialStateFromNSNumber:(id)a3;
-- (id)_eventInDatabase:(id)a3 error:(id *)a4;
++ (id)_wrapHKOptionalClinicalAccountCredentialStateInNSNumber:(int64_t)number;
++ (id)fetchEventsForAccountWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (int64_t)_unwrapHKClinicalAccountCredentialStateFromNSNumber:(id)number;
+- (id)_eventInDatabase:(id)database error:(id *)error;
 @end
 
 @implementation HDClinicalAccountEventEntity
@@ -28,67 +28,67 @@
   return v2;
 }
 
-+ (BOOL)insertEvent:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)insertEvent:(id)event profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  eventCopy = event;
+  profileCopy = profile;
+  database = [profileCopy database];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_25030;
   v18[3] = &unk_106990;
-  v20 = a1;
-  v19 = v8;
+  selfCopy = self;
+  v19 = eventCopy;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_250DC;
   v14[3] = &unk_106800;
-  v16 = v9;
-  v17 = a1;
+  v16 = profileCopy;
+  selfCopy2 = self;
   v15 = v19;
-  v11 = v9;
+  v11 = profileCopy;
   v12 = v19;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v18 inaccessibilityHandler:v14];
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v18 inaccessibilityHandler:v14];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)insertEvent:(id)a3 database:(id)a4 error:(id *)a5
++ (BOOL)insertEvent:(id)event database:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _propertiesForModel];
+  eventCopy = event;
+  databaseCopy = database;
+  _propertiesForModel = [self _propertiesForModel];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_25230;
   v14[3] = &unk_105B80;
-  v15 = v8;
-  v11 = v8;
-  v12 = [a1 insertOrReplaceEntity:0 database:v9 properties:v10 error:a5 bindingHandler:v14];
+  v15 = eventCopy;
+  v11 = eventCopy;
+  v12 = [self insertOrReplaceEntity:0 database:databaseCopy properties:_propertiesForModel error:error bindingHandler:v14];
 
   return v12 != 0;
 }
 
-+ (BOOL)journalEvent:(id)a3 database:(id)a4 error:(id *)a5
++ (BOOL)journalEvent:(id)event database:(id)database error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HDClinicalAccountEventInsertJournalEntry alloc] initWithEvent:v8];
+  databaseCopy = database;
+  eventCopy = event;
+  v9 = [[HDClinicalAccountEventInsertJournalEntry alloc] initWithEvent:eventCopy];
 
-  LOBYTE(a5) = [v7 addJournalEntry:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [databaseCopy addJournalEntry:v9 error:error];
+  return error;
 }
 
-- (id)_eventInDatabase:(id)a3 error:(id *)a4
+- (id)_eventInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_255E4;
   v18 = sub_255F4;
   v19 = 0;
-  v7 = [objc_opt_class() _propertiesForModel];
+  _propertiesForModel = [objc_opt_class() _propertiesForModel];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_255FC;
@@ -96,7 +96,7 @@
   v12[4] = self;
   v12[5] = &v14;
   v13 = 0;
-  v8 = [(HDClinicalAccountEventEntity *)self getValuesForProperties:v7 database:v6 error:&v13 handler:v12];
+  v8 = [(HDClinicalAccountEventEntity *)self getValuesForProperties:_propertiesForModel database:databaseCopy error:&v13 handler:v12];
   v9 = v13;
 
   if (v8)
@@ -106,7 +106,7 @@
 
   else
   {
-    [NSError hk_assignError:a4 code:100 description:@"Unable to create account event model from row." underlyingError:v9];
+    [NSError hk_assignError:error code:100 description:@"Unable to create account event model from row." underlyingError:v9];
     v10 = 0;
   }
 
@@ -115,28 +115,28 @@
   return v10;
 }
 
-+ (id)fetchEventsForAccountWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)fetchEventsForAccountWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_255E4;
   v23 = sub_255F4;
   v24 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_2591C;
   v15[3] = &unk_1067B0;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v16 = v11;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v15];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -153,10 +153,10 @@
   return v13;
 }
 
-+ (id)_fetchEventsForAccountWithIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_fetchEventsForAccountWithIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  databaseCopy = database;
   v11 = objc_alloc_init(NSMutableArray);
   v34 = 0;
   v35 = &v34;
@@ -168,21 +168,21 @@
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 1;
-  v12 = [HDSQLiteComparisonPredicate predicateWithProperty:HDClinicalAccountEventEntityPropertyAccountIdentifier equalToValue:v9];
-  v28 = a1;
+  v12 = [HDSQLiteComparisonPredicate predicateWithProperty:HDClinicalAccountEventEntityPropertyAccountIdentifier equalToValue:identifierCopy];
+  selfCopy = self;
   v29 = 0;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_25C24;
   v22[3] = &unk_1069E0;
   v27 = a2;
-  v13 = v10;
+  v13 = databaseCopy;
   v23 = v13;
   v25 = &v34;
   v26 = &v30;
   v14 = v11;
   v24 = v14;
-  v15 = [a1 enumerateEntitiesInDatabase:v13 predicate:v12 error:&v29 enumerationHandler:v22];
+  v15 = [self enumerateEntitiesInDatabase:v13 predicate:v12 error:&v29 enumerationHandler:v22];
   v16 = v29;
   v17 = v16;
   if (v31[3])
@@ -196,7 +196,7 @@
     v19 = v16;
     if (v19)
     {
-      if (a5)
+      if (error)
       {
         goto LABEL_9;
       }
@@ -211,11 +211,11 @@ LABEL_6:
     v19 = v35[5];
     if (v19)
     {
-      if (a5)
+      if (error)
       {
 LABEL_9:
         v20 = v19;
-        *a5 = v19;
+        *error = v19;
         goto LABEL_10;
       }
 
@@ -234,29 +234,29 @@ LABEL_11:
   return v18;
 }
 
-+ (id)_wrapHKOptionalClinicalAccountCredentialStateInNSNumber:(int64_t)a3
++ (id)_wrapHKOptionalClinicalAccountCredentialStateInNSNumber:(int64_t)number
 {
-  if ((a3 - 1) > 2)
+  if ((number - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_106A00[a3 - 1];
+    return off_106A00[number - 1];
   }
 }
 
-+ (int64_t)_unwrapHKClinicalAccountCredentialStateFromNSNumber:(id)a3
++ (int64_t)_unwrapHKClinicalAccountCredentialStateFromNSNumber:(id)number
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy)
   {
-    v5 = [v3 integerValue];
-    if (v5 < 3)
+    integerValue = [numberCopy integerValue];
+    if (integerValue < 3)
     {
-      v6 = v5 + 1;
+      v6 = integerValue + 1;
     }
 
     else
@@ -273,9 +273,9 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)_pruneEventsIfNeededInDatabase:(id)a3 error:(id *)a4
++ (BOOL)_pruneEventsIfNeededInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = +[NSUserDefaults standardUserDefaults];
   [v7 doubleForKey:@"HDClinicalAccountEventEntity_HealthRecordsPlugin_LastPrune"];
   v9 = v8;
@@ -287,7 +287,7 @@ LABEL_11:
   v13 = v9 + 604800.0;
   if (v9 <= 0.0 || v13 < v12)
   {
-    if (![a1 _pruneEventsInDatabase:v6 error:{a4, v13}])
+    if (![self _pruneEventsInDatabase:databaseCopy error:{error, v13}])
     {
       v16 = 0;
       goto LABEL_10;
@@ -303,9 +303,9 @@ LABEL_10:
   return v16;
 }
 
-+ (BOOL)_pruneEventsInDatabase:(id)a3 error:(id *)a4
++ (BOOL)_pruneEventsInDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = HDClinicalAccountEntityPropertyIdentifier;
   v8 = +[HDClinicalAccountEntity disambiguatedDatabaseTable];
   v9 = [NSString stringWithFormat:@"SELECT %@ FROM %@", v7, v8];
@@ -316,10 +316,10 @@ LABEL_10:
   v27[3] = &unk_1064D8;
   v10 = objc_alloc_init(NSMutableArray);
   v28 = v10;
-  if ([v6 executeUncachedSQL:v9 error:a4 bindingHandler:0 enumerationHandler:v27])
+  if ([databaseCopy executeUncachedSQL:v9 error:error bindingHandler:0 enumerationHandler:v27])
   {
-    v11 = [a1 disambiguatedDatabaseTable];
-    v12 = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=? ORDER BY %@ DESC LIMIT -1 OFFSET 50", v11, HDClinicalAccountEventEntityPropertyAccountIdentifier, HDClinicalAccountEventEntityPropertyTimestamp];;
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    hDClinicalAccountEventEntityPropertyTimestamp = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=? ORDER BY %@ DESC LIMIT -1 OFFSET 50", disambiguatedDatabaseTable, HDClinicalAccountEventEntityPropertyAccountIdentifier, HDClinicalAccountEventEntityPropertyTimestamp];;
 
     v25 = 0u;
     v26 = 0u;
@@ -347,7 +347,7 @@ LABEL_10:
           v22[2] = sub_26160;
           v22[3] = &unk_105DB8;
           v22[4] = v18;
-          if (![v6 executeUncachedSQL:v12 error:a4 bindingHandler:v22 enumerationHandler:0])
+          if (![databaseCopy executeUncachedSQL:hDClinicalAccountEventEntityPropertyTimestamp error:error bindingHandler:v22 enumerationHandler:0])
           {
             v19 = 0;
             goto LABEL_13;

@@ -9,17 +9,17 @@
 - (id)wf_filteredCollectionUsingBlock:()WorkflowEditor
 {
   v4 = a3;
-  v5 = [a1 sections];
+  sections = [self sections];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__INObjectCollection_WorkflowEditor__wf_filteredCollectionUsingBlock___block_invoke;
   v10[3] = &unk_279EDBB28;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 if_compactMap:v10];
+  v7 = [sections if_compactMap:v10];
 
   v8 = [objc_alloc(objc_opt_class()) initWithSections:v7];
-  [v8 setUsesIndexedCollation:{objc_msgSend(a1, "usesIndexedCollation")}];
+  [v8 setUsesIndexedCollation:{objc_msgSend(self, "usesIndexedCollation")}];
 
   return v8;
 }
@@ -28,11 +28,11 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 section];
-  v6 = [a1 sections];
-  v7 = [v6 count];
+  section = [v4 section];
+  sections = [self sections];
+  v7 = [sections count];
 
-  if (v5 >= v7)
+  if (section >= v7)
   {
     v9 = getWFEditorLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -47,17 +47,17 @@
 
   else
   {
-    v8 = [a1 sections];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+    sections2 = [self sections];
+    v9 = [sections2 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
 
-    v10 = [v4 item];
-    v11 = [v9 items];
-    v12 = [v11 count];
+    item = [v4 item];
+    items = [v9 items];
+    v12 = [items count];
 
-    if (v10 < v12)
+    if (item < v12)
     {
-      v13 = [v9 items];
-      v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+      items2 = [v9 items];
+      v14 = [items2 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
 
       goto LABEL_10;
     }
@@ -85,13 +85,13 @@ LABEL_10:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v1 = [a1 sections];
+  sections = [self sections];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__INObjectCollection_WorkflowEditor__wf_objectCount__block_invoke;
   v4[3] = &unk_279EDBB00;
   v4[4] = &v5;
-  [v1 enumerateObjectsUsingBlock:v4];
+  [sections enumerateObjectsUsingBlock:v4];
 
   v2 = v6[3];
   _Block_object_dispose(&v5, 8);

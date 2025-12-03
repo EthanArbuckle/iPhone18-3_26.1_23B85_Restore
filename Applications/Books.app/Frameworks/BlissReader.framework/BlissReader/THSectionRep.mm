@@ -1,13 +1,13 @@
 @interface THSectionRep
-- (void)drawInLayerContext:(CGContext *)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)drawInLayerContext:(CGContext *)context;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 @end
 
 @implementation THSectionRep
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  if (!CGRectIsEmpty(a3))
+  if (!CGRectIsEmpty(rect))
   {
     v3 = +[TSUAssertionHandler currentHandler];
     v4 = [NSString stringWithUTF8String:"[THSectionRep setNeedsDisplayInRect:]"];
@@ -17,7 +17,7 @@
   }
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THSectionRep drawInLayerContext:]"];

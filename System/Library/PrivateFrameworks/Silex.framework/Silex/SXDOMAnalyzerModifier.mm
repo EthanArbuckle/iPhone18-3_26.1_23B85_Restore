@@ -1,38 +1,38 @@
 @interface SXDOMAnalyzerModifier
-- (void)analyzeButtonComponent:(id)a3 analysis:(id)a4;
-- (void)analyzeComponents:(id)a3 parent:(id)a4 DOM:(id)a5;
-- (void)analyzeDataTableCellStyle:(id)a3 component:(id)a4 analysis:(id)a5;
-- (void)analyzeDataTableComponent:(id)a3 DOM:(id)a4;
-- (void)analyzeDataTableStyle:(id)a3 component:(id)a4 analysis:(id)a5;
-- (void)analyzeFormattedText:(id)a3 component:(id)a4 analysis:(id)a5;
-- (void)analyzeGalleryComponent:(id)a3 analysis:(id)a4;
-- (void)analyzeInlineTextStyle:(id)a3 component:(id)a4 analysis:(id)a5;
-- (void)analyzeScalableImageComponent:(id)a3 analysis:(id)a4;
-- (void)analyzeTextComponent:(id)a3 analysis:(id)a4;
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (void)analyzeButtonComponent:(id)component analysis:(id)analysis;
+- (void)analyzeComponents:(id)components parent:(id)parent DOM:(id)m;
+- (void)analyzeDataTableCellStyle:(id)style component:(id)component analysis:(id)analysis;
+- (void)analyzeDataTableComponent:(id)component DOM:(id)m;
+- (void)analyzeDataTableStyle:(id)style component:(id)component analysis:(id)analysis;
+- (void)analyzeFormattedText:(id)text component:(id)component analysis:(id)analysis;
+- (void)analyzeGalleryComponent:(id)component analysis:(id)analysis;
+- (void)analyzeInlineTextStyle:(id)style component:(id)component analysis:(id)analysis;
+- (void)analyzeScalableImageComponent:(id)component analysis:(id)analysis;
+- (void)analyzeTextComponent:(id)component analysis:(id)analysis;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXDOMAnalyzerModifier
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 components];
-  [(SXDOMAnalyzerModifier *)self analyzeComponents:v6 parent:0 DOM:v5];
+  mCopy = m;
+  components = [mCopy components];
+  [(SXDOMAnalyzerModifier *)self analyzeComponents:components parent:0 DOM:mCopy];
 }
 
-- (void)analyzeComponents:(id)a3 parent:(id)a4 DOM:(id)a5
+- (void)analyzeComponents:(id)components parent:(id)parent DOM:(id)m
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
-  v9 = [v25 analysis];
+  componentsCopy = components;
+  parentCopy = parent;
+  mCopy = m;
+  analysis = [mCopy analysis];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = v7;
+  v10 = componentsCopy;
   v27 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v27)
   {
@@ -47,18 +47,18 @@
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [v12 type];
-        [v9 addComponent:v13 type:v14 role:{objc_msgSend(v12, "role")}];
+        identifier = [v12 identifier];
+        type = [v12 type];
+        [analysis addComponent:identifier type:type role:{objc_msgSend(v12, "role")}];
 
         v31 = 0u;
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v15 = [v12 classification];
-        v16 = [v15 defaultComponentStyleIdentifiers];
+        classification = [v12 classification];
+        defaultComponentStyleIdentifiers = [classification defaultComponentStyleIdentifiers];
 
-        v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v17 = [defaultComponentStyleIdentifiers countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v17)
         {
           v18 = v17;
@@ -69,30 +69,30 @@
             {
               if (*v30 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(defaultComponentStyleIdentifiers);
               }
 
-              [v9 addComponentStyle:*(*(&v29 + 1) + 8 * j) component:v13];
+              [analysis addComponentStyle:*(*(&v29 + 1) + 8 * j) component:identifier];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v18 = [defaultComponentStyleIdentifiers countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v18);
         }
 
-        v21 = [v12 style];
+        style = [v12 style];
 
-        if (v21)
+        if (style)
         {
-          v22 = [v12 style];
-          [v9 addComponentStyle:v22 component:v13];
+          style2 = [v12 style];
+          [analysis addComponentStyle:style2 component:identifier];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(SXDOMAnalyzerModifier *)self analyzeTextComponent:v12 analysis:v9];
+          [(SXDOMAnalyzerModifier *)self analyzeTextComponent:v12 analysis:analysis];
         }
 
         else
@@ -100,7 +100,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(SXDOMAnalyzerModifier *)self analyzeScalableImageComponent:v12 analysis:v9];
+            [(SXDOMAnalyzerModifier *)self analyzeScalableImageComponent:v12 analysis:analysis];
           }
 
           else
@@ -108,7 +108,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(SXDOMAnalyzerModifier *)self analyzeButtonComponent:v12 analysis:v9];
+              [(SXDOMAnalyzerModifier *)self analyzeButtonComponent:v12 analysis:analysis];
             }
 
             else
@@ -116,7 +116,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(SXDOMAnalyzerModifier *)self analyzeGalleryComponent:v12 analysis:v9];
+                [(SXDOMAnalyzerModifier *)self analyzeGalleryComponent:v12 analysis:analysis];
               }
 
               else
@@ -124,23 +124,23 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(SXDOMAnalyzerModifier *)self analyzeDataTableComponent:v12 DOM:v25];
+                  [(SXDOMAnalyzerModifier *)self analyzeDataTableComponent:v12 DOM:mCopy];
                 }
               }
             }
           }
         }
 
-        v23 = [v10 componentsForContainerComponentWithIdentifier:v13];
+        v23 = [v10 componentsForContainerComponentWithIdentifier:identifier];
         if (v23)
         {
-          [(SXDOMAnalyzerModifier *)self analyzeComponents:v23 parent:v12 DOM:v25];
+          [(SXDOMAnalyzerModifier *)self analyzeComponents:v23 parent:v12 DOM:mCopy];
         }
 
-        if (v8)
+        if (parentCopy)
         {
-          v24 = [v8 identifier];
-          [v9 addComponent:v13 parent:v24];
+          identifier2 = [parentCopy identifier];
+          [analysis addComponent:identifier parent:identifier2];
         }
       }
 
@@ -151,20 +151,20 @@
   }
 }
 
-- (void)analyzeTextComponent:(id)a3 analysis:(id)a4
+- (void)analyzeTextComponent:(id)component analysis:(id)analysis
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  componentCopy = component;
+  analysisCopy = analysis;
+  identifier = [componentCopy identifier];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v6 classification];
-  v10 = [v9 defaultTextStyleIdentifiers];
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v11 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -176,33 +176,33 @@
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
-        [v7 addComponentTextStyle:*(*(&v26 + 1) + 8 * v14++) component:v8];
+        [analysisCopy addComponentTextStyle:*(*(&v26 + 1) + 8 * v14++) component:identifier];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v12 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [v6 textStyle];
+  textStyle = [componentCopy textStyle];
 
-  if (v15)
+  if (textStyle)
   {
-    v16 = [v6 textStyle];
-    [v7 addComponentTextStyle:v16 component:v8];
+    textStyle2 = [componentCopy textStyle];
+    [analysisCopy addComponentTextStyle:textStyle2 component:identifier];
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = [v6 inlineTextStyles];
-  v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  inlineTextStyles = [componentCopy inlineTextStyles];
+  v18 = [inlineTextStyles countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v18)
   {
     v19 = v18;
@@ -214,34 +214,34 @@
       {
         if (*v23 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(inlineTextStyles);
         }
 
-        [(SXDOMAnalyzerModifier *)self analyzeInlineTextStyle:*(*(&v22 + 1) + 8 * v21++) component:v6 analysis:v7];
+        [(SXDOMAnalyzerModifier *)self analyzeInlineTextStyle:*(*(&v22 + 1) + 8 * v21++) component:componentCopy analysis:analysisCopy];
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v19 = [inlineTextStyles countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v19);
   }
 }
 
-- (void)analyzeButtonComponent:(id)a3 analysis:(id)a4
+- (void)analyzeButtonComponent:(id)component analysis:(id)analysis
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
+  componentCopy = component;
+  analysisCopy = analysis;
+  identifier = [componentCopy identifier];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v5 classification];
-  v9 = [v8 defaultTextStyleIdentifiers];
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -253,47 +253,47 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
-        [v6 addComponentTextStyle:*(*(&v15 + 1) + 8 * v13++) component:v7];
+        [analysisCopy addComponentTextStyle:*(*(&v15 + 1) + 8 * v13++) component:identifier];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [v5 textStyle];
-  [v6 addComponentTextStyle:v14 component:v7];
+  textStyle = [componentCopy textStyle];
+  [analysisCopy addComponentTextStyle:textStyle component:identifier];
 }
 
-- (void)analyzeScalableImageComponent:(id)a3 analysis:(id)a4
+- (void)analyzeScalableImageComponent:(id)component analysis:(id)analysis
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 captionComponent];
+  componentCopy = component;
+  analysisCopy = analysis;
+  captionComponent = [componentCopy captionComponent];
 
-  if (v7)
+  if (captionComponent)
   {
-    v8 = [v9 captionComponent];
-    [(SXDOMAnalyzerModifier *)self analyzeFormattedText:v8 component:v9 analysis:v6];
+    captionComponent2 = [componentCopy captionComponent];
+    [(SXDOMAnalyzerModifier *)self analyzeFormattedText:captionComponent2 component:componentCopy analysis:analysisCopy];
   }
 }
 
-- (void)analyzeGalleryComponent:(id)a3 analysis:(id)a4
+- (void)analyzeGalleryComponent:(id)component analysis:(id)analysis
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  analysisCopy = analysis;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 items];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [componentCopy items];
+  v9 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -305,52 +305,52 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(items);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) captionComponent];
-        [(SXDOMAnalyzerModifier *)self analyzeFormattedText:v13 component:v6 analysis:v7];
+        captionComponent = [*(*(&v14 + 1) + 8 * v12) captionComponent];
+        [(SXDOMAnalyzerModifier *)self analyzeFormattedText:captionComponent component:componentCopy analysis:analysisCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)analyzeDataTableComponent:(id)a3 DOM:(id)a4
+- (void)analyzeDataTableComponent:(id)component DOM:(id)m
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v7 style];
-  v8 = [v6 componentStyles];
-  v9 = [v8 objectForKey:v12];
+  mCopy = m;
+  componentCopy = component;
+  style = [componentCopy style];
+  componentStyles = [mCopy componentStyles];
+  v9 = [componentStyles objectForKey:style];
 
-  v10 = [v9 tableStyle];
-  v11 = [v6 analysis];
+  tableStyle = [v9 tableStyle];
+  analysis = [mCopy analysis];
 
-  [(SXDOMAnalyzerModifier *)self analyzeDataTableStyle:v10 component:v7 analysis:v11];
+  [(SXDOMAnalyzerModifier *)self analyzeDataTableStyle:tableStyle component:componentCopy analysis:analysis];
 }
 
-- (void)analyzeFormattedText:(id)a3 component:(id)a4 analysis:(id)a5
+- (void)analyzeFormattedText:(id)text component:(id)component analysis:(id)analysis
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 identifier];
+  textCopy = text;
+  componentCopy = component;
+  analysisCopy = analysis;
+  identifier = [componentCopy identifier];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = [v9 classification];
-  v13 = [v12 defaultTextStyleIdentifiers];
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v14 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v14 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v14)
   {
     v15 = v14;
@@ -362,33 +362,33 @@
       {
         if (*v30 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
-        [v10 addComponentTextStyle:*(*(&v29 + 1) + 8 * v17++) component:v11];
+        [analysisCopy addComponentTextStyle:*(*(&v29 + 1) + 8 * v17++) component:identifier];
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v15 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [v8 textStyle];
+  textStyle = [textCopy textStyle];
 
-  if (v18)
+  if (textStyle)
   {
-    v19 = [v8 textStyle];
-    [v10 addComponentTextStyle:v19 component:v11];
+    textStyle2 = [textCopy textStyle];
+    [analysisCopy addComponentTextStyle:textStyle2 component:identifier];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = [v8 inlineTextStyles];
-  v21 = [v20 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  inlineTextStyles = [textCopy inlineTextStyles];
+  v21 = [inlineTextStyles countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v21)
   {
     v22 = v21;
@@ -400,44 +400,44 @@
       {
         if (*v26 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(inlineTextStyles);
         }
 
-        [(SXDOMAnalyzerModifier *)self analyzeInlineTextStyle:*(*(&v25 + 1) + 8 * v24++) component:v9 analysis:v10];
+        [(SXDOMAnalyzerModifier *)self analyzeInlineTextStyle:*(*(&v25 + 1) + 8 * v24++) component:componentCopy analysis:analysisCopy];
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v22 = [inlineTextStyles countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v22);
   }
 }
 
-- (void)analyzeInlineTextStyle:(id)a3 component:(id)a4 analysis:(id)a5
+- (void)analyzeInlineTextStyle:(id)style component:(id)component analysis:(id)analysis
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [a3 textStyle];
-  v9 = [v8 identifier];
+  analysisCopy = analysis;
+  componentCopy = component;
+  textStyle = [style textStyle];
+  identifier = [componentCopy identifier];
 
-  [v7 addTextStyle:v10 component:v9];
+  [analysisCopy addTextStyle:textStyle component:identifier];
 }
 
-- (void)analyzeDataTableStyle:(id)a3 component:(id)a4 analysis:(id)a5
+- (void)analyzeDataTableStyle:(id)style component:(id)component analysis:(id)analysis
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  analysisCopy = analysis;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [v9 classification];
-  v12 = [v11 defaultTextStyleIdentifiers];
+  classification = [componentCopy classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v13 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -449,41 +449,41 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
-        v18 = [v9 identifier];
-        [v10 addComponentTextStyle:v17 component:v18];
+        identifier = [componentCopy identifier];
+        [analysisCopy addComponentTextStyle:v17 component:identifier];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
   }
 
-  v19 = [v8 cells];
-  [(SXDOMAnalyzerModifier *)self analyzeDataTableCellStyle:v19 component:v9 analysis:v10];
+  cells = [styleCopy cells];
+  [(SXDOMAnalyzerModifier *)self analyzeDataTableCellStyle:cells component:componentCopy analysis:analysisCopy];
 
-  v20 = [v8 headerCells];
-  [(SXDOMAnalyzerModifier *)self analyzeDataTableCellStyle:v20 component:v9 analysis:v10];
+  headerCells = [styleCopy headerCells];
+  [(SXDOMAnalyzerModifier *)self analyzeDataTableCellStyle:headerCells component:componentCopy analysis:analysisCopy];
 }
 
-- (void)analyzeDataTableCellStyle:(id)a3 component:(id)a4 analysis:(id)a5
+- (void)analyzeDataTableCellStyle:(id)style component:(id)component analysis:(id)analysis
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  componentCopy = component;
+  analysisCopy = analysis;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [a3 textStyles];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  textStyles = [style textStyles];
+  v10 = [textStyles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -495,14 +495,14 @@
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(textStyles);
         }
 
-        [v8 addComponentTextStyle:*(*(&v14 + 1) + 8 * v13++) component:v7];
+        [analysisCopy addComponentTextStyle:*(*(&v14 + 1) + 8 * v13++) component:componentCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [textStyles countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);

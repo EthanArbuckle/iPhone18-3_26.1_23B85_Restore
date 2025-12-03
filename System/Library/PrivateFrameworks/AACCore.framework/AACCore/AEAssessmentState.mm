@@ -1,98 +1,98 @@
 @interface AEAssessmentState
-- (AEAssessmentState)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AEAssessmentState)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)isEqualToState:(void *)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)isEqualToState:(void *)state;
 @end
 
 @implementation AEAssessmentState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[AEAssessmentState isEnabled](self, "isEnabled")}];
-  [v5 encodeObject:v6 forKey:@"enabled"];
+  [coderCopy encodeObject:v6 forKey:@"enabled"];
 
-  v7 = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
-  [v5 encodeObject:v7 forKey:@"configurationsByApplicationDescriptor"];
+  configurationsByApplicationDescriptor = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
+  [coderCopy encodeObject:configurationsByApplicationDescriptor forKey:@"configurationsByApplicationDescriptor"];
 
-  v8 = [(AEAssessmentState *)self mainIndividualConfiguration];
-  [v5 encodeObject:v8 forKey:@"mainIndividualConfiguration"];
+  mainIndividualConfiguration = [(AEAssessmentState *)self mainIndividualConfiguration];
+  [coderCopy encodeObject:mainIndividualConfiguration forKey:@"mainIndividualConfiguration"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAutoCorrection](self, "allowsAutoCorrection")}];
-  [v5 encodeObject:v9 forKey:@"allowsAutoCorrection"];
+  [coderCopy encodeObject:v9 forKey:@"allowsAutoCorrection"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsSmartPunctuation](self, "allowsSmartPunctuation")}];
-  [v5 encodeObject:v10 forKey:@"allowsSmartPunctuation"];
+  [coderCopy encodeObject:v10 forKey:@"allowsSmartPunctuation"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsSpellCheck](self, "allowsSpellCheck")}];
-  [v5 encodeObject:v11 forKey:@"allowsSpellCheck"];
+  [coderCopy encodeObject:v11 forKey:@"allowsSpellCheck"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsPredictiveKeyboard](self, "allowsPredictiveKeyboard")}];
-  [v5 encodeObject:v12 forKey:@"allowsPredictiveKeyboard"];
+  [coderCopy encodeObject:v12 forKey:@"allowsPredictiveKeyboard"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsActivityContinuation](self, "allowsActivityContinuation")}];
-  [v5 encodeObject:v13 forKey:@"allowsActivityContinuation"];
+  [coderCopy encodeObject:v13 forKey:@"allowsActivityContinuation"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsDictation](self, "allowsDictation")}];
-  [v5 encodeObject:v14 forKey:@"allowsDictation"];
+  [coderCopy encodeObject:v14 forKey:@"allowsDictation"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAccessibilityKeyboard](self, "allowsAccessibilityKeyboard")}];
-  [v5 encodeObject:v15 forKey:@"allowsAccessibilityKeyboard"];
+  [coderCopy encodeObject:v15 forKey:@"allowsAccessibilityKeyboard"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAccessibilityLiveCaptions](self, "allowsAccessibilityLiveCaptions")}];
-  [v5 encodeObject:v16 forKey:@"allowsAccessibilityLiveCaptions"];
+  [coderCopy encodeObject:v16 forKey:@"allowsAccessibilityLiveCaptions"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAccessibilityReader](self, "allowsAccessibilityReader")}];
-  [v5 encodeObject:v17 forKey:@"allowsAccessibilityReader"];
+  [coderCopy encodeObject:v17 forKey:@"allowsAccessibilityReader"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAccessibilitySpeech](self, "allowsAccessibilitySpeech")}];
-  [v5 encodeObject:v18 forKey:@"allowsAccessibilitySpeech"];
+  [coderCopy encodeObject:v18 forKey:@"allowsAccessibilitySpeech"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAccessibilityTypingFeedback](self, "allowsAccessibilityTypingFeedback")}];
-  [v5 encodeObject:v19 forKey:@"allowsAccessibilityTypingFeedback"];
+  [coderCopy encodeObject:v19 forKey:@"allowsAccessibilityTypingFeedback"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsPasswordAutoFill](self, "allowsPasswordAutoFill")}];
-  [v5 encodeObject:v20 forKey:@"allowsPasswordAutoFill"];
+  [coderCopy encodeObject:v20 forKey:@"allowsPasswordAutoFill"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsContinuousPathKeyboard](self, "allowsContinuousPathKeyboard")}];
-  [v5 encodeObject:v21 forKey:@"allowsContinuousPathKeyboard"];
+  [coderCopy encodeObject:v21 forKey:@"allowsContinuousPathKeyboard"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsKeyboardShortcuts](self, "allowsKeyboardShortcuts")}];
-  [v5 encodeObject:v22 forKey:@"allowsKeyboardShortcuts"];
+  [coderCopy encodeObject:v22 forKey:@"allowsKeyboardShortcuts"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsKeyboardMathSolving](self, "allowsKeyboardMathSolving")}];
-  [v5 encodeObject:v23 forKey:@"allowsKeyboardMathSolving"];
+  [coderCopy encodeObject:v23 forKey:@"allowsKeyboardMathSolving"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsMathPaperSolving](self, "allowsMathPaperSolving")}];
-  [v5 encodeObject:v24 forKey:@"allowsMathPaperSolving"];
+  [coderCopy encodeObject:v24 forKey:@"allowsMathPaperSolving"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsScreenshots](self, "allowsScreenshots")}];
-  [v5 encodeObject:v25 forKey:@"allowsScreenshots"];
+  [coderCopy encodeObject:v25 forKey:@"allowsScreenshots"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState _allowsNetworkAccess](self, "_allowsNetworkAccess")}];
-  [v5 encodeObject:v26 forKey:@"_allowsNetworkAccess"];
+  [coderCopy encodeObject:v26 forKey:@"_allowsNetworkAccess"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState _allowsContentCapture](self, "_allowsContentCapture")}];
-  [v5 encodeObject:v27 forKey:@"_allowsContentCapture"];
+  [coderCopy encodeObject:v27 forKey:@"_allowsContentCapture"];
 }
 
-- (AEAssessmentState)initWithCoder:(id)a3
+- (AEAssessmentState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = AEAssessmentState;
   v5 = [(AEAssessmentState *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
     v5->_enabled = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mainIndividualConfiguration"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mainIndividualConfiguration"];
     mainIndividualConfiguration = v5->_mainIndividualConfiguration;
     v5->_mainIndividualConfiguration = v7;
 
@@ -100,65 +100,65 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"configurationsByApplicationDescriptor"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"configurationsByApplicationDescriptor"];
     configurationsByApplicationDescriptor = v5->_configurationsByApplicationDescriptor;
     v5->_configurationsByApplicationDescriptor = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAutoCorrection"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAutoCorrection"];
     v5->_allowsAutoCorrection = [v15 BOOLValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsSmartPunctuation"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsSmartPunctuation"];
     v5->_allowsSmartPunctuation = [v16 BOOLValue];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsSpellCheck"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsSpellCheck"];
     v5->_allowsSpellCheck = [v17 BOOLValue];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsPredictiveKeyboard"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsPredictiveKeyboard"];
     v5->_allowsPredictiveKeyboard = [v18 BOOLValue];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsActivityContinuation"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsActivityContinuation"];
     v5->_allowsActivityContinuation = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsDictation"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsDictation"];
     v5->_allowsDictation = [v20 BOOLValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityKeyboard"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityKeyboard"];
     v5->_allowsAccessibilityKeyboard = [v21 BOOLValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityLiveCaptions"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityLiveCaptions"];
     v5->_allowsAccessibilityLiveCaptions = [v22 BOOLValue];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityReader"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityReader"];
     v5->_allowsAccessibilityReader = [v23 BOOLValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilitySpeech"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilitySpeech"];
     v5->_allowsAccessibilitySpeech = [v24 BOOLValue];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityTypingFeedback"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAccessibilityTypingFeedback"];
     v5->_allowsAccessibilityTypingFeedback = [v25 BOOLValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsPasswordAutoFill"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsPasswordAutoFill"];
     v5->_allowsPasswordAutoFill = [v26 BOOLValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsContinuousPathKeyboard"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsContinuousPathKeyboard"];
     v5->_allowsContinuousPathKeyboard = [v27 BOOLValue];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsKeyboardShortcuts"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsKeyboardShortcuts"];
     v5->_allowsKeyboardShortcuts = [v28 BOOLValue];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsKeyboardMathSolving"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsKeyboardMathSolving"];
     v5->_allowsKeyboardMathSolving = [v29 BOOLValue];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsMathPaperSolving"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsMathPaperSolving"];
     v5->_allowsMathPaperSolving = [v30 BOOLValue];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsScreenshots"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsScreenshots"];
     v5->_allowsScreenshots = [v31 BOOLValue];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_allowsNetworkAccess"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_allowsNetworkAccess"];
     v5->__allowsNetworkAccess = [v32 BOOLValue];
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_allowsContentCapture"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_allowsContentCapture"];
     v5->__allowsContentCapture = [v33 BOOLValue];
   }
 
@@ -169,10 +169,10 @@
 {
   v47 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState isEnabled](self, "isEnabled")}];
   v3 = [v47 hash];
-  v46 = [(AEAssessmentState *)self mainIndividualConfiguration];
-  v4 = [v46 hash];
-  v45 = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
-  v5 = v4 ^ [v45 hash] ^ v3;
+  mainIndividualConfiguration = [(AEAssessmentState *)self mainIndividualConfiguration];
+  v4 = [mainIndividualConfiguration hash];
+  configurationsByApplicationDescriptor = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
+  v5 = v4 ^ [configurationsByApplicationDescriptor hash] ^ v3;
   v44 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsAutoCorrection](self, "allowsAutoCorrection")}];
   v6 = [v44 hash];
   v43 = [MEMORY[0x277CCABB0] numberWithBool:{-[AEAssessmentState allowsSmartPunctuation](self, "allowsSmartPunctuation")}];
@@ -215,13 +215,13 @@
   return v33 ^ v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
@@ -256,8 +256,8 @@ LABEL_6:
   }
 
   v38 = v3;
-  v37 = [(AEAssessmentState *)self mainIndividualConfiguration];
-  v36 = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
+  mainIndividualConfiguration = [(AEAssessmentState *)self mainIndividualConfiguration];
+  configurationsByApplicationDescriptor = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
   if ([(AEAssessmentState *)self allowsAutoCorrection])
   {
     v4 = @"Yes";
@@ -459,20 +459,20 @@ LABEL_6:
     v22 = @"No";
   }
 
-  v23 = [v40 stringWithFormat:@"<%@: %p { isEnabled = %@, mainIndividualConfiguration = %@, configurationsByApplicationDescriptor = %@, allowsAutoCorrection = %@, allowsSmartPunctuation = %@, allowsSpellCheck = %@, allowsPredictiveKeyboard = %@, allowsActivityContinuation = %@, allowsDictation = %@, allowsAccessibilityKeyboard = %@, allowsAccessibilityLiveCaptions = %@, allowsAccessibilityReader = %@, allowsAccessibilitySpeech = %@, allowsAccessibilityTypingFeedback = %@, allowsPasswordAutoFill = %@, allowsContinuousPathKeyboard = %@, allowsKeyboardShortcuts = %@, allowsKeyboardMathSolving = %@, allowsMathPaperSolving = %@, allowsScreenshots = %@, _allowsNetworkAccess = %@, _allowsContentCapture = %@}>", v39, self, v38, v37, v36, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v15, v16, v17, v18, v19, v20, v21, v22];
+  v23 = [v40 stringWithFormat:@"<%@: %p { isEnabled = %@, mainIndividualConfiguration = %@, configurationsByApplicationDescriptor = %@, allowsAutoCorrection = %@, allowsSmartPunctuation = %@, allowsSpellCheck = %@, allowsPredictiveKeyboard = %@, allowsActivityContinuation = %@, allowsDictation = %@, allowsAccessibilityKeyboard = %@, allowsAccessibilityLiveCaptions = %@, allowsAccessibilityReader = %@, allowsAccessibilitySpeech = %@, allowsAccessibilityTypingFeedback = %@, allowsPasswordAutoFill = %@, allowsContinuousPathKeyboard = %@, allowsKeyboardShortcuts = %@, allowsKeyboardMathSolving = %@, allowsMathPaperSolving = %@, allowsScreenshots = %@, _allowsNetworkAccess = %@, _allowsContentCapture = %@}>", v39, self, v38, mainIndividualConfiguration, configurationsByApplicationDescriptor, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v15, v16, v17, v18, v19, v20, v21, v22];
 
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setEnabled:{-[AEAssessmentState isEnabled](self, "isEnabled")}];
-  v5 = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
-  [v4 setConfigurationsByApplicationDescriptor:v5];
+  configurationsByApplicationDescriptor = [(AEAssessmentState *)self configurationsByApplicationDescriptor];
+  [v4 setConfigurationsByApplicationDescriptor:configurationsByApplicationDescriptor];
 
-  v6 = [(AEAssessmentState *)self mainIndividualConfiguration];
-  [v4 setMainIndividualConfiguration:v6];
+  mainIndividualConfiguration = [(AEAssessmentState *)self mainIndividualConfiguration];
+  [v4 setMainIndividualConfiguration:mainIndividualConfiguration];
 
   [v4 setAllowsAutoCorrection:{-[AEAssessmentState allowsAutoCorrection](self, "allowsAutoCorrection")}];
   [v4 setAllowsSmartPunctuation:{-[AEAssessmentState allowsSmartPunctuation](self, "allowsSmartPunctuation")}];
@@ -496,30 +496,30 @@ LABEL_6:
   return v4;
 }
 
-- (void)isEqualToState:(void *)a1
+- (void)isEqualToState:(void *)state
 {
   v8 = a2;
-  if (!a1)
+  if (!state)
   {
     goto LABEL_44;
   }
 
-  v9 = [a1 isEnabled];
-  if (v9 != [v8 isEnabled])
+  isEnabled = [state isEnabled];
+  if (isEnabled != [v8 isEnabled])
   {
-    a1 = 0;
+    state = 0;
     goto LABEL_44;
   }
 
-  v10 = [a1 mainIndividualConfiguration];
-  if (v10 || ([v8 mainIndividualConfiguration], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  mainIndividualConfiguration = [state mainIndividualConfiguration];
+  if (mainIndividualConfiguration || ([v8 mainIndividualConfiguration], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v2 = [a1 mainIndividualConfiguration];
-    v3 = [v8 mainIndividualConfiguration];
-    if (([v2 isEqual:v3] & 1) == 0)
+    mainIndividualConfiguration2 = [state mainIndividualConfiguration];
+    mainIndividualConfiguration3 = [v8 mainIndividualConfiguration];
+    if (([mainIndividualConfiguration2 isEqual:mainIndividualConfiguration3] & 1) == 0)
     {
 
-      a1 = 0;
+      state = 0;
       goto LABEL_41;
     }
 
@@ -531,16 +531,16 @@ LABEL_6:
     v11 = 0;
   }
 
-  v12 = [a1 configurationsByApplicationDescriptor];
-  if (v12 || ([v8 configurationsByApplicationDescriptor], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  configurationsByApplicationDescriptor = [state configurationsByApplicationDescriptor];
+  if (configurationsByApplicationDescriptor || ([v8 configurationsByApplicationDescriptor], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [a1 configurationsByApplicationDescriptor];
-    v6 = [v8 configurationsByApplicationDescriptor];
-    if (([v5 isEqual:v6] & 1) == 0)
+    configurationsByApplicationDescriptor2 = [state configurationsByApplicationDescriptor];
+    configurationsByApplicationDescriptor3 = [v8 configurationsByApplicationDescriptor];
+    if (([configurationsByApplicationDescriptor2 isEqual:configurationsByApplicationDescriptor3] & 1) == 0)
     {
 
-      a1 = 0;
-      if (v12)
+      state = 0;
+      if (configurationsByApplicationDescriptor)
       {
         goto LABEL_39;
       }
@@ -566,71 +566,71 @@ LABEL_15:
     v16 = 0;
   }
 
-  [a1 allowsAutoCorrection];
+  [state allowsAutoCorrection];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsAutoCorrection])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsSmartPunctuation];
+  [state allowsSmartPunctuation];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsSmartPunctuation])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsSpellCheck];
+  [state allowsSpellCheck];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsSpellCheck])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsPredictiveKeyboard];
+  [state allowsPredictiveKeyboard];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsPredictiveKeyboard])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsActivityContinuation];
+  [state allowsActivityContinuation];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsActivityContinuation])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsDictation];
+  [state allowsDictation];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsDictation])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsAccessibilityKeyboard];
+  [state allowsAccessibilityKeyboard];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilityKeyboard])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsAccessibilityLiveCaptions];
+  [state allowsAccessibilityLiveCaptions];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilityLiveCaptions])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsAccessibilityReader];
+  [state allowsAccessibilityReader];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilityReader])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsAccessibilitySpeech];
+  [state allowsAccessibilitySpeech];
   if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilitySpeech])
   {
     goto LABEL_36;
   }
 
-  [a1 allowsAccessibilityTypingFeedback];
-  if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilityTypingFeedback] || (objc_msgSend(a1, "allowsPasswordAutoFill"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsPasswordAutoFill")) || (objc_msgSend(a1, "allowsContinuousPathKeyboard"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsContinuousPathKeyboard")) || (objc_msgSend(a1, "allowsKeyboardShortcuts"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsKeyboardShortcuts")) || (objc_msgSend(a1, "allowsKeyboardMathSolving"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsKeyboardMathSolving")) || (objc_msgSend(a1, "allowsMathPaperSolving"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsMathPaperSolving")) || (objc_msgSend(a1, "allowsScreenshots"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsScreenshots")) || (objc_msgSend(a1, "_allowsNetworkAccess"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "_allowsNetworkAccess")))
+  [state allowsAccessibilityTypingFeedback];
+  if (v4 != [OUTLINED_FUNCTION_0_0() allowsAccessibilityTypingFeedback] || (objc_msgSend(state, "allowsPasswordAutoFill"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsPasswordAutoFill")) || (objc_msgSend(state, "allowsContinuousPathKeyboard"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsContinuousPathKeyboard")) || (objc_msgSend(state, "allowsKeyboardShortcuts"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsKeyboardShortcuts")) || (objc_msgSend(state, "allowsKeyboardMathSolving"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsKeyboardMathSolving")) || (objc_msgSend(state, "allowsMathPaperSolving"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsMathPaperSolving")) || (objc_msgSend(state, "allowsScreenshots"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "allowsScreenshots")) || (objc_msgSend(state, "_allowsNetworkAccess"), v4 != objc_msgSend(OUTLINED_FUNCTION_0_0(), "_allowsNetworkAccess")))
   {
 LABEL_36:
-    a1 = 0;
+    state = 0;
     if (!v16)
     {
       goto LABEL_38;
@@ -639,8 +639,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v14 = [a1 _allowsContentCapture];
-  a1 = (v14 ^ [v8 _allowsContentCapture] ^ 1);
+  _allowsContentCapture = [state _allowsContentCapture];
+  state = (_allowsContentCapture ^ [v8 _allowsContentCapture] ^ 1);
   if (v16)
   {
 LABEL_37:
@@ -648,7 +648,7 @@ LABEL_37:
 
 LABEL_38:
   v4 = v17;
-  if (!v12)
+  if (!configurationsByApplicationDescriptor)
   {
     goto LABEL_15;
   }
@@ -661,12 +661,12 @@ LABEL_40:
   }
 
 LABEL_41:
-  if (!v10)
+  if (!mainIndividualConfiguration)
   {
   }
 
 LABEL_44:
-  return a1;
+  return state;
 }
 
 @end

@@ -8,7 +8,7 @@
 - (id)pu_fontWithMonospacedNumbers
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
   v14 = *MEMORY[0x1E69DB8B0];
   v3 = *MEMORY[0x1E69DB900];
   v11[0] = *MEMORY[0x1E69DB908];
@@ -20,10 +20,10 @@
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   v15[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v7 = [v2 fontDescriptorByAddingAttributes:v6];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v8 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v9 = [v8 fontWithDescriptor:v7 size:?];
 
   return v9;
@@ -34,11 +34,11 @@
   v5 = a4;
   v6 = v5;
   v7 = 0.0;
-  v8 = a1 == 0.0 || v5 == 0;
+  v8 = self == 0.0 || v5 == 0;
   if (!v8 && [v5 length])
   {
     v9 = [v6 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
-    [v9 _scaledValueForValue:a1];
+    [v9 _scaledValueForValue:self];
     v11 = v10;
     if (PUMainScreenScale_onceToken != -1)
     {

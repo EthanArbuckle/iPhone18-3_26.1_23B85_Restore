@@ -1,5 +1,5 @@
 @interface CKEntryViewButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityElementHelpForCatalyst;
 - (id)_accessibilityHint;
 - (id)_accessibilityLabel;
@@ -8,11 +8,11 @@
 
 @implementation CKEntryViewButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKEntryViewButton" hasInstanceMethod:@"entryViewButtonType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CKEntryViewButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKEntryViewButton" hasInstanceMethod:@"entryViewButtonType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CKEntryViewButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,11 +21,11 @@
   v9.super_class = CKEntryViewButtonAccessibility;
   [(CKEntryViewButtonAccessibility *)&v9 _accessibilityLoadAccessibilityInformation];
   v3 = [(CKEntryViewButtonAccessibility *)self safeUIViewForKey:@"button"];
-  v4 = [(CKEntryViewButtonAccessibility *)self _accessibilityLabel];
-  [v3 setAccessibilityLabel:v4];
+  _accessibilityLabel = [(CKEntryViewButtonAccessibility *)self _accessibilityLabel];
+  [v3 setAccessibilityLabel:_accessibilityLabel];
 
-  v5 = [(CKEntryViewButtonAccessibility *)self _accessibilityHint];
-  [v3 setAccessibilityHint:v5];
+  _accessibilityHint = [(CKEntryViewButtonAccessibility *)self _accessibilityHint];
+  [v3 setAccessibilityHint:_accessibilityHint];
 
   objc_initWeak(&location, v3);
   v6[0] = MEMORY[0x29EDCA5F8];
@@ -48,15 +48,15 @@ uint64_t __76__CKEntryViewButtonAccessibility__accessibilityLoadAccessibilityInf
 
 - (id)_accessibilityLabel
 {
-  v2 = [(CKEntryViewButtonAccessibility *)self _axButtonType];
-  if (v2 > 3)
+  _axButtonType = [(CKEntryViewButtonAccessibility *)self _axButtonType];
+  if (_axButtonType > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = accessibilityLocalizedString(off_29F2B0D28[v2]);
+    v3 = accessibilityLocalizedString(off_29F2B0D28[_axButtonType]);
   }
 
   return v3;

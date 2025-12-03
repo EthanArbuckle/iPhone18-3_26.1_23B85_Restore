@@ -1,60 +1,60 @@
 @interface HFCharacteristicValueDisplayMetadata
-+ (id)displayMetadataForAccessory:(id)a3 withContextProvider:(id)a4;
-+ (id)displayMetadataForMediaProfile:(id)a3 withContextProvider:(id)a4;
-+ (id)displayMetadataForService:(id)a3 characteristicReadResponse:(id)a4;
-+ (int64_t)_unknownStatePriorityForServiceDescriptor:(id)a3 characteristicReadResponse:(id)a4;
-+ (void)_displayAppleIDSplitErrorForMediaProfile:(id)a3 havingMetadata:(id)a4 withContextProvider:(id)a5;
-+ (void)_overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:(id)a3 withAccessory:(id)a4;
-+ (void)_populateSplitMediaAccountErrorForMedatadata:(id)a3 withContextProvider:(id)a4;
++ (id)displayMetadataForAccessory:(id)accessory withContextProvider:(id)provider;
++ (id)displayMetadataForMediaProfile:(id)profile withContextProvider:(id)provider;
++ (id)displayMetadataForService:(id)service characteristicReadResponse:(id)response;
++ (int64_t)_unknownStatePriorityForServiceDescriptor:(id)descriptor characteristicReadResponse:(id)response;
++ (void)_displayAppleIDSplitErrorForMediaProfile:(id)profile havingMetadata:(id)metadata withContextProvider:(id)provider;
++ (void)_overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:(id)metadata withAccessory:(id)accessory;
++ (void)_populateSplitMediaAccountErrorForMedatadata:(id)medatadata withContextProvider:(id)provider;
 - (void)dealloc;
-- (void)parseActiveStateForServiceType:(id)a3 response:(id)a4;
-- (void)parseAirPurifierResponse:(id)a3;
-- (void)parseCurrentTargetPositionForServiceType:(id)a3 response:(id)a4;
-- (void)parseGarageDoorOpenerResponse:(id)a3;
-- (void)parseHumidifierDehumidifierResponse:(id)a3;
-- (void)parseInformationalSensorWithServiceType:(id)a3 response:(id)a4;
-- (void)parseLockMechanismResponse:(id)a3;
-- (void)parsePowerStateForServiceType:(id)a3 response:(id)a4;
-- (void)parseProgammableSwitchOfType:(id)a3 response:(id)a4;
-- (void)parseSecuritySystemResponse:(id)a3;
-- (void)parseThermostatResponse:(id)a3 serviceType:(id)a4;
-- (void)parseWarningSensorWithServiceType:(id)a3 response:(id)a4;
+- (void)parseActiveStateForServiceType:(id)type response:(id)response;
+- (void)parseAirPurifierResponse:(id)response;
+- (void)parseCurrentTargetPositionForServiceType:(id)type response:(id)response;
+- (void)parseGarageDoorOpenerResponse:(id)response;
+- (void)parseHumidifierDehumidifierResponse:(id)response;
+- (void)parseInformationalSensorWithServiceType:(id)type response:(id)response;
+- (void)parseLockMechanismResponse:(id)response;
+- (void)parsePowerStateForServiceType:(id)type response:(id)response;
+- (void)parseProgammableSwitchOfType:(id)type response:(id)response;
+- (void)parseSecuritySystemResponse:(id)response;
+- (void)parseThermostatResponse:(id)response serviceType:(id)type;
+- (void)parseWarningSensorWithServiceType:(id)type response:(id)response;
 @end
 
 @implementation HFCharacteristicValueDisplayMetadata
 
 - (void)dealloc
 {
-  v3 = [(HFCharacteristicValueDisplayMetadata *)self splitAccountFuture];
-  [v3 cancel];
+  splitAccountFuture = [(HFCharacteristicValueDisplayMetadata *)self splitAccountFuture];
+  [splitAccountFuture cancel];
 
   v4.receiver = self;
   v4.super_class = HFCharacteristicValueDisplayMetadata;
   [(HFCharacteristicValueDisplayMetadata *)&v4 dealloc];
 }
 
-+ (id)displayMetadataForService:(id)a3 characteristicReadResponse:(id)a4
++ (id)displayMetadataForService:(id)service characteristicReadResponse:(id)response
 {
   v101 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v78 = v6;
-  v8 = [v6 hf_serviceDescriptor];
-  v9 = [v8 serviceType];
-  v75 = a1;
-  v72 = v8;
-  v79 = v7;
+  serviceCopy = service;
+  responseCopy = response;
+  v78 = serviceCopy;
+  hf_serviceDescriptor = [serviceCopy hf_serviceDescriptor];
+  serviceType = [hf_serviceDescriptor serviceType];
+  selfCopy = self;
+  v72 = hf_serviceDescriptor;
+  v79 = responseCopy;
   v76 = objc_alloc_init(HFCharacteristicValueDisplayMetadata);
-  -[HFCharacteristicValueDisplayMetadata setPriority:](v76, "setPriority:", [a1 _unknownStatePriorityForServiceDescriptor:v8 characteristicReadResponse:v7]);
-  v70 = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
+  -[HFCharacteristicValueDisplayMetadata setPriority:](v76, "setPriority:", [self _unknownStatePriorityForServiceDescriptor:hf_serviceDescriptor characteristicReadResponse:responseCopy]);
+  hf_sensorServiceTypes = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
   v69 = __HFSimplePowerStateServices_block_invoke();
   v68 = __HFSimpleActiveStateServices_block_invoke();
   v73 = __HFCurrentTargetPositionServices_block_invoke();
-  v71 = v9;
-  v10 = [MEMORY[0x277CD1D90] hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:v9];
-  v11 = [v10 allObjects];
-  v12 = [MEMORY[0x277CD1970] hf_characteristicSortComparator];
-  v13 = [v11 sortedArrayUsingComparator:v12];
+  v71 = serviceType;
+  v10 = [MEMORY[0x277CD1D90] hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:serviceType];
+  allObjects = [v10 allObjects];
+  hf_characteristicSortComparator = [MEMORY[0x277CD1970] hf_characteristicSortComparator];
+  v13 = [allObjects sortedArrayUsingComparator:hf_characteristicSortComparator];
 
   v84 = 0u;
   v85 = 0u;
@@ -78,11 +78,11 @@
 
         v19 = *(*(&v82 + 1) + 8 * i);
         v20 = [v79 responseForCharacteristicType:v19];
-        v21 = [v20 error];
-        v22 = v21;
+        error = [v20 error];
+        v22 = error;
         if (v20)
         {
-          v23 = [v21 hf_isHFErrorWithCode:4];
+          v23 = [error hf_isHFErrorWithCode:4];
         }
 
         else
@@ -95,7 +95,7 @@
         {
           v31 = NSStringFromSelector(a2);
           *buf = 138413826;
-          v87 = v75;
+          v87 = selfCopy;
           v88 = 2112;
           v89 = v31;
           v90 = 2112;
@@ -114,10 +114,10 @@
         v17 &= v20 != 0;
         if (v23)
         {
-          v25 = [v78 accessory];
-          v26 = [v25 hf_isHomePod];
+          accessory = [v78 accessory];
+          hf_isHomePod = [accessory hf_isHomePod];
 
-          v17 &= v26;
+          v17 &= hf_isHomePod;
         }
 
         if ([v22 hf_isHFErrorWithCode:103])
@@ -128,14 +128,14 @@
 
         else if (v22)
         {
-          v27 = [v20 readTraits];
-          v28 = [v79 contextProvider];
-          v29 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v22 readTraits:v27 contextProvider:v28];
+          readTraits = [v20 readTraits];
+          contextProvider = [v79 contextProvider];
+          v29 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v22 readTraits:readTraits contextProvider:contextProvider];
           [(HFCharacteristicValueDisplayMetadata *)v76 setError:v29];
 
-          v30 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
+          error2 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
 
-          if (v30)
+          if (error2)
           {
 
             goto LABEL_22;
@@ -160,9 +160,9 @@
 
 LABEL_22:
 
-  v32 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
+  error3 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
 
-  if (!v32 && (v17 & 1) == 0)
+  if (!error3 && (v17 & 1) == 0)
   {
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
@@ -171,8 +171,8 @@ LABEL_22:
     v33 = v79;
     v81 = v33;
     v34 = [obj na_any:v80];
-    v35 = [v33 allCharacteristics];
-    v36 = [v35 count];
+    allCharacteristics = [v33 allCharacteristics];
+    v36 = [allCharacteristics count];
 
     if (v36)
     {
@@ -190,56 +190,56 @@ LABEL_31:
       v37 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v67 = [v78 accessory];
+        accessory2 = [v78 accessory];
         *buf = 138412546;
         v87 = v78;
         v88 = 2112;
-        v89 = v67;
+        v89 = accessory2;
         _os_log_error_impl(&dword_20D9BF000, v37, OS_LOG_TYPE_ERROR, "Read response empty for service %@ in accessory %@", buf, 0x16u);
       }
     }
 
     v38 = [MEMORY[0x277CCA9B8] hf_errorWithCode:35];
     v39 = [MEMORY[0x277CBEB98] set];
-    v40 = [v33 contextProvider];
-    v41 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v38 readTraits:v39 contextProvider:v40];
+    contextProvider2 = [v33 contextProvider];
+    v41 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v38 readTraits:v39 contextProvider:contextProvider2];
     [(HFCharacteristicValueDisplayMetadata *)v76 setError:v41];
 
     goto LABEL_31;
   }
 
 LABEL_32:
-  v42 = [v78 accessory];
-  v43 = [v42 hf_siriEndpointProfile];
-  if (v43)
+  accessory3 = [v78 accessory];
+  hf_siriEndpointProfile = [accessory3 hf_siriEndpointProfile];
+  if (hf_siriEndpointProfile)
   {
-    v44 = v43;
-    v45 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
+    v44 = hf_siriEndpointProfile;
+    error4 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
 
-    v47 = v70;
+    v47 = hf_sensorServiceTypes;
     v46 = v71;
     v49 = v68;
     v48 = v69;
-    if (v45)
+    if (error4)
     {
       goto LABEL_38;
     }
 
-    v50 = [v78 accessory];
-    v42 = [v50 hf_errorForCurrentSessionState];
+    accessory4 = [v78 accessory];
+    accessory3 = [accessory4 hf_errorForCurrentSessionState];
 
-    if (v42)
+    if (accessory3)
     {
       v51 = [MEMORY[0x277CBEB98] set];
-      v52 = [v79 contextProvider];
-      v53 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v42 readTraits:v51 contextProvider:v52];
+      contextProvider3 = [v79 contextProvider];
+      v53 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:accessory3 readTraits:v51 contextProvider:contextProvider3];
       [(HFCharacteristicValueDisplayMetadata *)v76 setError:v53];
     }
   }
 
   else
   {
-    v47 = v70;
+    v47 = hf_sensorServiceTypes;
     v46 = v71;
     v49 = v68;
     v48 = v69;
@@ -248,19 +248,19 @@ LABEL_32:
 LABEL_38:
   if ((_os_feature_enabled_impl() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"MatteriPhoneOnlyPairingEnabled", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
-    v54 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
+    error5 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
 
-    if (v54)
+    if (error5)
     {
-      v55 = [v78 accessory];
-      [v75 _overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:v76 withAccessory:v55];
+      accessory5 = [v78 accessory];
+      [selfCopy _overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:v76 withAccessory:accessory5];
     }
   }
 
-  v56 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
-  v57 = [v56 isPersistentError];
+  error6 = [(HFCharacteristicValueDisplayMetadata *)v76 error];
+  isPersistentError = [error6 isPersistentError];
 
-  if (v57)
+  if (isPersistentError)
   {
     [(HFCharacteristicValueDisplayMetadata *)v76 setPriority:0];
   }
@@ -276,23 +276,23 @@ LABEL_38:
       -[HFCharacteristicValueDisplayMetadata setPriority:](v76, "setPriority:", [v59 priority]);
       if ([v59 isTransitioning])
       {
-        v60 = [v59 primaryState];
-        if (v60 == 2)
+        primaryState = [v59 primaryState];
+        if (primaryState == 2)
         {
           v61 = 1;
         }
 
         else
         {
-          v61 = 2 * (v60 == 1);
+          v61 = 2 * (primaryState == 1);
         }
 
         [(HFCharacteristicValueDisplayMetadata *)v76 setTransitioningPrimaryState:v61];
       }
 
       v62 = MEMORY[0x277CD1D90];
-      v63 = [v72 serviceType];
-      v64 = [v62 localizedDescriptionForServiceType:v63];
+      serviceType2 = [v72 serviceType];
+      v64 = [v62 localizedDescriptionForServiceType:serviceType2];
       [(HFCharacteristicValueDisplayMetadata *)v76 setSortKey:v64];
     }
 
@@ -468,36 +468,36 @@ void __93__HFCharacteristicValueDisplayMetadata_displayMetadataForService_charac
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)displayMetadataForAccessory:(id)a3 withContextProvider:(id)a4
++ (id)displayMetadataForAccessory:(id)accessory withContextProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  providerCopy = provider;
   v8 = objc_alloc_init(HFCharacteristicValueDisplayMetadata);
   [(HFCharacteristicValueDisplayMetadata *)v8 setPrimaryState:1];
   [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:-1];
-  if (([v6 isReachable] & 1) == 0)
+  if (([accessoryCopy isReachable] & 1) == 0)
   {
     [(HFCharacteristicValueDisplayMetadata *)v8 setPrimaryState:0];
     [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:1];
     v9 = [MEMORY[0x277CCA9B8] hf_errorWithCode:35];
     v10 = [MEMORY[0x277CBEB98] set];
-    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v9 readTraits:v10 contextProvider:v7];
+    v11 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v9 readTraits:v10 contextProvider:providerCopy];
     [(HFCharacteristicValueDisplayMetadata *)v8 setError:v11];
   }
 
-  v12 = [v6 hf_siriEndpointProfile];
-  if (v12)
+  hf_siriEndpointProfile = [accessoryCopy hf_siriEndpointProfile];
+  if (hf_siriEndpointProfile)
   {
-    v13 = v12;
-    v14 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+    v13 = hf_siriEndpointProfile;
+    error = [(HFCharacteristicValueDisplayMetadata *)v8 error];
 
-    if (!v14)
+    if (!error)
     {
-      v15 = [v6 hf_errorForCurrentSessionState];
-      if (v15)
+      hf_errorForCurrentSessionState = [accessoryCopy hf_errorForCurrentSessionState];
+      if (hf_errorForCurrentSessionState)
       {
         v16 = [MEMORY[0x277CBEB98] set];
-        v17 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v15 readTraits:v16 contextProvider:v7];
+        v17 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:hf_errorForCurrentSessionState readTraits:v16 contextProvider:providerCopy];
         [(HFCharacteristicValueDisplayMetadata *)v8 setError:v17];
       }
     }
@@ -505,30 +505,30 @@ void __93__HFCharacteristicValueDisplayMetadata_displayMetadataForService_charac
 
   if ((_os_feature_enabled_impl() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"MatteriPhoneOnlyPairingEnabled", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
-    v18 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+    error2 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
 
-    if (v18)
+    if (error2)
     {
-      [a1 _overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:v8 withAccessory:v6];
+      [self _overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:v8 withAccessory:accessoryCopy];
     }
   }
 
-  v19 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+  error3 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
 
-  if (!v19)
+  if (!error3)
   {
     v20 = +[HFSymptomFixManager sharedManager];
-    v21 = [v20 anySymptomIsBeingFixedForFixableObject:v6];
+    v21 = [v20 anySymptomIsBeingFixedForFixableObject:accessoryCopy];
 
-    v22 = [v6 symptomsHandler];
-    v23 = [a1 _errorForSymptomHandler:v22 isFixingCurrently:v21 withContextProvider:v7];
+    symptomsHandler = [accessoryCopy symptomsHandler];
+    v23 = [self _errorForSymptomHandler:symptomsHandler isFixingCurrently:v21 withContextProvider:providerCopy];
     [(HFCharacteristicValueDisplayMetadata *)v8 setError:v23];
   }
 
-  v24 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
-  v25 = [v24 isPersistentError];
+  error4 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+  isPersistentError = [error4 isPersistentError];
 
-  if (v25)
+  if (isPersistentError)
   {
     [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:0];
   }
@@ -536,50 +536,50 @@ void __93__HFCharacteristicValueDisplayMetadata_displayMetadataForService_charac
   return v8;
 }
 
-+ (void)_overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:(id)a3 withAccessory:(id)a4
++ (void)_overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:(id)metadata withAccessory:(id)accessory
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v6 supportsCHIP] || !objc_msgSend(v6, "requiresThreadRouter"))
+  metadataCopy = metadata;
+  accessoryCopy = accessory;
+  if (![accessoryCopy supportsCHIP] || !objc_msgSend(accessoryCopy, "requiresThreadRouter"))
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 error];
-  if ([v7 category] == 1)
+  error = [metadataCopy error];
+  if ([error category] == 1)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v5 error];
-  v9 = [v8 category];
+  error2 = [metadataCopy error];
+  category = [error2 category];
 
-  if (v9)
+  if (category)
   {
 LABEL_6:
     v10 = HFLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 supportsCHIP];
-      v12 = [v6 requiresThreadRouter];
+      supportsCHIP = [accessoryCopy supportsCHIP];
+      requiresThreadRouter = [accessoryCopy requiresThreadRouter];
       v13 = +[HFUtilities supportsThreadService];
-      v14 = [v6 home];
-      v15 = [v14 hf_hasResident];
-      v16 = [v5 error];
+      home = [accessoryCopy home];
+      hf_hasResident = [home hf_hasResident];
+      error3 = [metadataCopy error];
       v27 = 136316418;
       v28 = "+[HFCharacteristicValueDisplayMetadata _overrideDisplayErrorCategoryWithThreadNetworkErrorForDisplayMetadata:withAccessory:]";
       v29 = 1024;
-      v30 = v11;
+      v30 = supportsCHIP;
       v31 = 1024;
-      v32 = v12;
+      v32 = requiresThreadRouter;
       v33 = 1024;
       v34 = v13;
       v35 = 1024;
-      v36 = v15;
+      v36 = hf_hasResident;
       v37 = 2048;
-      v38 = [v16 category];
+      category2 = [error3 category];
       _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "%s not overriding error category due to no thread network: [accessory supportsCHIP = %d, requiresThreadRouter = %d], [HFUtilities supportsThreadService] = %d, hasResident = %d, displayMetadata.error.category = %lu", &v27, 0x2Eu);
     }
 
@@ -597,16 +597,16 @@ LABEL_8:
       _os_log_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_DEFAULT, "%s overriding error category to HFCharacteristicValueDisplayErrorCategoryUnreachableCurrentDeviceNoThreadNetwork", &v27, 0xCu);
     }
 
-    v22 = [v5 error];
-    v10 = v22;
+    error4 = [metadataCopy error];
+    v10 = error4;
     v23 = 5;
     goto LABEL_20;
   }
 
-  v17 = [v6 home];
-  v18 = [v17 hf_hasResident];
+  home2 = [accessoryCopy home];
+  hf_hasResident2 = [home2 hf_hasResident];
 
-  if ((v18 & 1) == 0)
+  if ((hf_hasResident2 & 1) == 0)
   {
     v25 = HFLogForCategory(0);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -616,16 +616,16 @@ LABEL_8:
       _os_log_impl(&dword_20D9BF000, v25, OS_LOG_TYPE_DEFAULT, "%s overriding error category to HFCharacteristicValueDisplayErrorCategoryUnreachableNoThreadNetworkNoResident", &v27, 0xCu);
     }
 
-    v22 = [v5 error];
-    v10 = v22;
+    error4 = [metadataCopy error];
+    v10 = error4;
     v23 = 3;
     goto LABEL_20;
   }
 
-  v19 = [v6 home];
-  v20 = [v19 hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter];
+  home3 = [accessoryCopy home];
+  hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter = [home3 hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter];
 
-  if ((v20 & 1) == 0)
+  if ((hf_hasResidentDeviceCapableOfSupportingThreadBorderRouter & 1) == 0)
   {
     v21 = HFLogForCategory(0);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -635,35 +635,35 @@ LABEL_8:
       _os_log_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_DEFAULT, "%s overriding error category to HFCharacteristicValueDisplayErrorCategoryUnreachableNoThreadNetworkResidentWithoutThread", &v27, 0xCu);
     }
 
-    v22 = [v5 error];
-    v10 = v22;
+    error4 = [metadataCopy error];
+    v10 = error4;
     v23 = 4;
 LABEL_20:
-    [v22 setCategory:v23];
+    [error4 setCategory:v23];
 LABEL_21:
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)displayMetadataForMediaProfile:(id)a3 withContextProvider:(id)a4
++ (id)displayMetadataForMediaProfile:(id)profile withContextProvider:(id)provider
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  providerCopy = provider;
   v8 = objc_alloc_init(HFCharacteristicValueDisplayMetadata);
   [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:-1];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __91__HFCharacteristicValueDisplayMetadata_displayMetadataForMediaProfile_withContextProvider___block_invoke;
   v61[3] = &unk_277DFA520;
-  v9 = v6;
+  v9 = profileCopy;
   v62 = v9;
   [(HFCharacteristicValueDisplayMetadata *)v8 setPrimaryState:__91__HFCharacteristicValueDisplayMetadata_displayMetadataForMediaProfile_withContextProvider___block_invoke(v61)];
-  v10 = [v9 hf_mediaValueSource];
-  v11 = [v9 hf_mediaRouteIdentifier];
-  v58 = v10;
-  v12 = [v10 cachedPlaybackStateWriteErrorForRouteID:v11];
+  hf_mediaValueSource = [v9 hf_mediaValueSource];
+  hf_mediaRouteIdentifier = [v9 hf_mediaRouteIdentifier];
+  v58 = hf_mediaValueSource;
+  v12 = [hf_mediaValueSource cachedPlaybackStateWriteErrorForRouteID:hf_mediaRouteIdentifier];
 
   if (![v9 hf_isReachable] || v12)
   {
@@ -679,27 +679,27 @@ LABEL_21:
       v17 = [MEMORY[0x277CCA9B8] hf_errorWithCode:35];
     }
 
-    v16 = v17;
+    hf_errorForCurrentSessionState = v17;
 LABEL_10:
     v18 = [MEMORY[0x277CBEB98] set];
-    v19 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v16 readTraits:v18 contextProvider:v7];
+    v19 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:hf_errorForCurrentSessionState readTraits:v18 contextProvider:providerCopy];
     [(HFCharacteristicValueDisplayMetadata *)v8 setError:v19];
 
     goto LABEL_11;
   }
 
-  v13 = [v9 hf_backingAccessory];
-  v14 = [v13 hf_siriEndpointProfile];
+  hf_backingAccessory = [v9 hf_backingAccessory];
+  hf_siriEndpointProfile = [hf_backingAccessory hf_siriEndpointProfile];
 
-  if (!v14)
+  if (!hf_siriEndpointProfile)
   {
     goto LABEL_12;
   }
 
-  v15 = [v9 hf_backingAccessory];
-  v16 = [v15 hf_errorForCurrentSessionState];
+  hf_backingAccessory2 = [v9 hf_backingAccessory];
+  hf_errorForCurrentSessionState = [hf_backingAccessory2 hf_errorForCurrentSessionState];
 
-  if (v16)
+  if (hf_errorForCurrentSessionState)
   {
     goto LABEL_10;
   }
@@ -707,25 +707,25 @@ LABEL_10:
 LABEL_11:
 
 LABEL_12:
-  v20 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
-  if (v20)
+  error = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+  if (error)
   {
 
     goto LABEL_14;
   }
 
-  v23 = [v9 symptomsHandler];
+  symptomsHandler = [v9 symptomsHandler];
 
-  if (!v23)
+  if (!symptomsHandler)
   {
 LABEL_14:
-    v21 = [v9 symptoms];
+    symptoms = [v9 symptoms];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __91__HFCharacteristicValueDisplayMetadata_displayMetadataForMediaProfile_withContextProvider___block_invoke_2;
     v59[3] = &unk_277DFA548;
     v60 = v9;
-    v22 = [v21 na_any:v59];
+    v22 = [symptoms na_any:v59];
 
     if (!v22)
     {
@@ -736,59 +736,59 @@ LABEL_14:
   v24 = +[HFSymptomFixManager sharedManager];
   v25 = [v24 anySymptomIsBeingFixedForFixableObject:v9];
 
-  v26 = [v9 symptomsHandler];
-  v27 = [a1 _errorForSymptomHandler:v26 isFixingCurrently:v25 withContextProvider:v7];
+  symptomsHandler2 = [v9 symptomsHandler];
+  v27 = [self _errorForSymptomHandler:symptomsHandler2 isFixingCurrently:v25 withContextProvider:providerCopy];
   [(HFCharacteristicValueDisplayMetadata *)v8 setError:v27];
 
 LABEL_18:
   if ([v9 hf_homePodIsCapableOfShowingSplitAccountError])
   {
-    v28 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
-    v29 = [v28 underlyingSymptom];
+    error2 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+    underlyingSymptom = [error2 underlyingSymptom];
 
-    if (!v29)
+    if (!underlyingSymptom)
     {
-      [a1 _displayAppleIDSplitErrorForMediaProfile:v9 havingMetadata:v8 withContextProvider:v7];
+      [self _displayAppleIDSplitErrorForMediaProfile:v9 havingMetadata:v8 withContextProvider:providerCopy];
     }
   }
 
-  v30 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
-  v31 = [v30 isPersistentError];
+  error3 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+  isPersistentError = [error3 isPersistentError];
 
-  if (v31)
+  if (isPersistentError)
   {
     [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:0];
   }
 
   v32 = +[HFMediaAccessoryUtility sharedInstance];
-  v33 = [v9 uniqueIdentifier];
-  v34 = [v33 UUIDString];
-  v35 = [v32 isHomePodRestartingCurrently:v34];
+  uniqueIdentifier = [v9 uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v35 = [v32 isHomePodRestartingCurrently:uUIDString];
 
   v36 = +[HFMediaAccessoryUtility sharedInstance];
-  v37 = [v9 hf_backingAccessory];
-  v38 = [v37 uniqueIdentifier];
-  v39 = [v38 UUIDString];
-  v40 = [v36 isHomePodRestartingCurrently:v39];
+  hf_backingAccessory3 = [v9 hf_backingAccessory];
+  uniqueIdentifier2 = [hf_backingAccessory3 uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
+  v40 = [v36 isHomePodRestartingCurrently:uUIDString2];
 
   if ((v35 & 1) != 0 || v40)
   {
     v41 = HFLogForCategory(0);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v9 hf_backingAccessory];
-      v43 = [v42 uniqueIdentifier];
-      v44 = [v9 uniqueIdentifier];
-      v45 = [v9 hf_backingAccessory];
-      v46 = [v45 hf_isHomePod];
+      hf_backingAccessory4 = [v9 hf_backingAccessory];
+      uniqueIdentifier3 = [hf_backingAccessory4 uniqueIdentifier];
+      uniqueIdentifier4 = [v9 uniqueIdentifier];
+      hf_backingAccessory5 = [v9 hf_backingAccessory];
+      hf_isHomePod = [hf_backingAccessory5 hf_isHomePod];
       *buf = 136316418;
       v64 = "+[HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:withContextProvider:]";
       v65 = 2112;
-      v66 = v43;
+      v66 = uniqueIdentifier3;
       v67 = 2112;
-      v68 = v44;
+      v68 = uniqueIdentifier4;
       v69 = 1024;
-      v70 = v46;
+      v70 = hf_isHomePod;
       v71 = 1024;
       v72 = v35;
       v73 = 1024;
@@ -797,21 +797,21 @@ LABEL_18:
     }
   }
 
-  v47 = [v9 uniqueIdentifier];
-  v48 = (v47 != 0) & v35;
+  uniqueIdentifier5 = [v9 uniqueIdentifier];
+  v48 = (uniqueIdentifier5 != 0) & v35;
 
   if ((v48 & 1) == 0)
   {
-    v49 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
-    if (((v49 == 0) & v40) != 1)
+    error4 = [(HFCharacteristicValueDisplayMetadata *)v8 error];
+    if (((error4 == 0) & v40) != 1)
     {
       goto LABEL_35;
     }
 
-    v52 = [v9 hf_backingAccessory];
-    v53 = [v52 hf_isHomePod];
+    hf_backingAccessory6 = [v9 hf_backingAccessory];
+    hf_isHomePod2 = [hf_backingAccessory6 hf_isHomePod];
 
-    if (!v53)
+    if (!hf_isHomePod2)
     {
       goto LABEL_36;
     }
@@ -825,9 +825,9 @@ LABEL_18:
     }
   }
 
-  v49 = [MEMORY[0x277CCA9B8] hf_errorWithCode:58];
+  error4 = [MEMORY[0x277CCA9B8] hf_errorWithCode:58];
   v50 = [MEMORY[0x277CBEB98] set];
-  v51 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v49 readTraits:v50 contextProvider:v7];
+  v51 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:error4 readTraits:v50 contextProvider:providerCopy];
   [(HFCharacteristicValueDisplayMetadata *)v8 setError:v51];
 
   [(HFCharacteristicValueDisplayMetadata *)v8 setPriority:0];
@@ -876,34 +876,34 @@ uint64_t __91__HFCharacteristicValueDisplayMetadata_displayMetadataForMediaProfi
   return result;
 }
 
-+ (void)_displayAppleIDSplitErrorForMediaProfile:(id)a3 havingMetadata:(id)a4 withContextProvider:(id)a5
++ (void)_displayAppleIDSplitErrorForMediaProfile:(id)profile havingMetadata:(id)metadata withContextProvider:(id)provider
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 hf_settingsValueManager];
-  v13 = [v12 valueForSettingAtKeyPath:@"root.home.dismissedHomePodHasNonMemberMediaAccountWarning"];
-  v14 = [v13 BOOLValue];
+  profileCopy = profile;
+  metadataCopy = metadata;
+  providerCopy = provider;
+  hf_settingsValueManager = [profileCopy hf_settingsValueManager];
+  v13 = [hf_settingsValueManager valueForSettingAtKeyPath:@"root.home.dismissedHomePodHasNonMemberMediaAccountWarning"];
+  bOOLValue = [v13 BOOLValue];
 
   v15 = HFLogForCategory(5uLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v27 = a1;
+    selfCopy = self;
     v28 = 2112;
     v29 = v16;
     v30 = 1024;
-    v31 = v14;
+    v31 = bOOLValue;
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@ Was the Split Account warning dismissed? [%d]", buf, 0x1Cu);
   }
 
-  objc_initWeak(buf, a1);
-  v17 = [v9 hf_homePodSupportsMultiUserLanguage];
-  if (v17)
+  objc_initWeak(buf, self);
+  hf_homePodSupportsMultiUserLanguage = [profileCopy hf_homePodSupportsMultiUserLanguage];
+  if (hf_homePodSupportsMultiUserLanguage)
   {
-    v18 = v14;
+    v18 = bOOLValue;
   }
 
   else
@@ -918,11 +918,11 @@ uint64_t __91__HFCharacteristicValueDisplayMetadata_displayMetadataForMediaProfi
     v21[2] = __116__HFCharacteristicValueDisplayMetadata__displayAppleIDSplitErrorForMediaProfile_havingMetadata_withContextProvider___block_invoke;
     v21[3] = &unk_277DFA598;
     objc_copyWeak(v25, buf);
-    v22 = v10;
-    v23 = v9;
-    v24 = v11;
+    v22 = metadataCopy;
+    v23 = profileCopy;
+    v24 = providerCopy;
     v25[1] = a2;
-    v19 = [v17 addCompletionBlock:v21];
+    v19 = [hf_homePodSupportsMultiUserLanguage addCompletionBlock:v21];
 
     objc_destroyWeak(v25);
   }
@@ -1035,30 +1035,30 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_populateSplitMediaAccountErrorForMedatadata:(id)a3 withContextProvider:(id)a4
++ (void)_populateSplitMediaAccountErrorForMedatadata:(id)medatadata withContextProvider:(id)provider
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  medatadataCopy = medatadata;
   v10 = [v5 hf_errorWithCode:56];
   v8 = [MEMORY[0x277CBEB98] set];
-  v9 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v10 readTraits:v8 contextProvider:v6];
+  v9 = [HFCharacteristicValueDisplayError errorWithUnderlyingError:v10 readTraits:v8 contextProvider:providerCopy];
 
-  [v7 setError:v9];
+  [medatadataCopy setError:v9];
 }
 
-+ (int64_t)_unknownStatePriorityForServiceDescriptor:(id)a3 characteristicReadResponse:(id)a4
++ (int64_t)_unknownStatePriorityForServiceDescriptor:(id)descriptor characteristicReadResponse:(id)response
 {
-  v5 = a3;
-  v6 = a4;
+  descriptorCopy = descriptor;
+  responseCopy = response;
   if (qword_280E02F50 != -1)
   {
     dispatch_once(&qword_280E02F50, &__block_literal_global_139_2);
   }
 
   v7 = qword_280E02F58;
-  v8 = [v5 serviceType];
-  v9 = [v7 containsObject:v8];
+  serviceType = [descriptorCopy serviceType];
+  v9 = [v7 containsObject:serviceType];
 
   if (v9)
   {
@@ -1068,13 +1068,13 @@ LABEL_9:
   else
   {
     v11 = MEMORY[0x277CD1D90];
-    v12 = [v5 serviceType];
-    v13 = [v11 hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:v12];
+    serviceType2 = [descriptorCopy serviceType];
+    v13 = [v11 hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:serviceType2];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForServiceDescriptor_characteristicReadResponse___block_invoke_3;
     v16[3] = &unk_277DF3130;
-    v17 = v6;
+    v17 = responseCopy;
     v14 = [v13 na_any:v16];
 
     if (v14)
@@ -1146,17 +1146,17 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
   return v4;
 }
 
-- (void)parseGarageDoorOpenerResponse:(id)a3
+- (void)parseGarageDoorOpenerResponse:(id)response
 {
   v4 = *MEMORY[0x277CCF800];
-  v5 = a3;
-  v6 = [v5 responseForCharacteristicType:v4];
+  responseCopy = response;
+  v6 = [responseCopy responseForCharacteristicType:v4];
   v20 = [v6 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFB08]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB08]];
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
-  v9 = [v5 responseForCharacteristicType:*MEMORY[0x277CCF9A0]];
+  v9 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF9A0]];
 
   v10 = [v9 valueWithExpectedClass:objc_opt_class()];
 
@@ -1172,20 +1172,20 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
 
   if (!v11)
   {
-    v12 = [v20 integerValue];
-    v13 = [v8 integerValue];
-    if (v12 > 4)
+    integerValue = [v20 integerValue];
+    integerValue2 = [v8 integerValue];
+    if (integerValue > 4)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = qword_20DD973F0[v12];
+      v14 = qword_20DD973F0[integerValue];
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:v14];
-    if (v13 == v12)
+    if (integerValue2 == integerValue)
     {
       if ([(HFCharacteristicValueDisplayMetadata *)self primaryState]== 1)
       {
@@ -1200,14 +1200,14 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
 
     else
     {
-      if (v13 > 4)
+      if (integerValue2 > 4)
       {
         v16 = 0;
       }
 
       else
       {
-        v16 = qword_20DD973F0[v13];
+        v16 = qword_20DD973F0[integerValue2];
       }
 
       [(HFCharacteristicValueDisplayMetadata *)self setTransitioningPrimaryState:v16];
@@ -1220,15 +1220,15 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
   if ([v10 BOOLValue])
   {
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-    v17 = [(HFCharacteristicValueDisplayMetadata *)self priority];
-    if (v17 <= 1)
+    priority = [(HFCharacteristicValueDisplayMetadata *)self priority];
+    if (priority <= 1)
     {
       v18 = 1;
     }
 
     else
     {
-      v18 = v17;
+      v18 = priority;
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v18];
@@ -1238,14 +1238,14 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
   [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v19];
 }
 
-- (void)parseLockMechanismResponse:(id)a3
+- (void)parseLockMechanismResponse:(id)response
 {
   v4 = *MEMORY[0x277CCF838];
-  v5 = a3;
-  v6 = [v5 responseForCharacteristicType:v4];
+  responseCopy = response;
+  v6 = [responseCopy responseForCharacteristicType:v4];
   v17 = [v6 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFB40]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB40]];
 
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
@@ -1261,20 +1261,20 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
 
   if (!v9)
   {
-    v10 = [v17 integerValue];
-    v11 = [v8 integerValue];
-    if (v10 > 3)
+    integerValue = [v17 integerValue];
+    integerValue2 = [v8 integerValue];
+    if (integerValue > 3)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = qword_20DD97418[v10];
+      v12 = qword_20DD97418[integerValue];
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:v12];
-    if (v11 == v10 || (v10 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if (integerValue2 == integerValue || (integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       if ([(HFCharacteristicValueDisplayMetadata *)self primaryState]== 1)
       {
@@ -1289,14 +1289,14 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
 
     else
     {
-      if (v11 > 3)
+      if (integerValue2 > 3)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = qword_20DD97418[v11];
+        v15 = qword_20DD97418[integerValue2];
       }
 
       [(HFCharacteristicValueDisplayMetadata *)self setTransitioningPrimaryState:v15];
@@ -1310,20 +1310,20 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
   [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v16];
 }
 
-- (void)parseSecuritySystemResponse:(id)a3
+- (void)parseSecuritySystemResponse:(id)response
 {
   v4 = *MEMORY[0x277CCF858];
-  v5 = a3;
-  v6 = [v5 responseForCharacteristicType:v4];
+  responseCopy = response;
+  v6 = [responseCopy responseForCharacteristicType:v4];
   v22 = [v6 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFB60]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB60]];
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
-  v9 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFAB0]];
+  v9 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFAB0]];
   v10 = [v9 valueWithExpectedClass:objc_opt_class()];
 
-  v11 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFA98]];
+  v11 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFA98]];
 
   v12 = [v11 valueWithExpectedClass:objc_opt_class()];
 
@@ -1342,18 +1342,18 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
     goto LABEL_27;
   }
 
-  v14 = [v22 integerValue];
-  v15 = [v8 integerValue];
-  if (v14 >= 3)
+  integerValue = [v22 integerValue];
+  integerValue2 = [v8 integerValue];
+  if (integerValue >= 3)
   {
-    if (v14 == 3)
+    if (integerValue == 3)
     {
       v17 = 1;
     }
 
     else
     {
-      if (v14 == 4)
+      if (integerValue == 4)
       {
         goto LABEL_8;
       }
@@ -1368,33 +1368,33 @@ uint64_t __109__HFCharacteristicValueDisplayMetadata__unknownStatePriorityForSer
 LABEL_8:
   v16 = 2;
   [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-  if (v14 != 4)
+  if (integerValue != 4)
   {
 LABEL_13:
-    if (v15 != v14)
+    if (integerValue2 != integerValue)
     {
-      if (v15 > 4)
+      if (integerValue2 > 4)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = qword_20DD97438[v15];
+        v18 = qword_20DD97438[integerValue2];
       }
 
       [(HFCharacteristicValueDisplayMetadata *)self setTransitioningPrimaryState:v18];
-      v14 = v15;
+      integerValue = integerValue2;
     }
 
-    if (v14 == 4)
+    if (integerValue == 4)
     {
       v16 = 2;
     }
 
     else
     {
-      v16 = v14 == 3;
+      v16 = integerValue == 3;
     }
   }
 
@@ -1402,15 +1402,15 @@ LABEL_13:
   if ([v10 integerValue] || objc_msgSend(v12, "integerValue"))
   {
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-    v19 = [(HFCharacteristicValueDisplayMetadata *)self priority];
-    if (v19 <= 2)
+    priority = [(HFCharacteristicValueDisplayMetadata *)self priority];
+    if (priority <= 2)
     {
       v20 = 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = priority;
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v20];
@@ -1421,19 +1421,19 @@ LABEL_27:
   [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v21];
 }
 
-- (void)parseInformationalSensorWithServiceType:(id)a3 response:(id)a4
+- (void)parseInformationalSensorWithServiceType:(id)type response:(id)response
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 responseForCharacteristicType:*MEMORY[0x277CCFAB0]];
+  typeCopy = type;
+  responseCopy = response;
+  v8 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFAB0]];
   v9 = [v8 valueWithExpectedClass:objc_opt_class()];
 
-  v10 = [v7 responseForCharacteristicType:*MEMORY[0x277CCFA98]];
+  v10 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFA98]];
   v11 = [v10 valueWithExpectedClass:objc_opt_class()];
 
   v12 = *MEMORY[0x277CD0F28];
-  v13 = [v6 isEqualToString:*MEMORY[0x277CD0F28]];
+  v13 = [typeCopy isEqualToString:*MEMORY[0x277CD0F28]];
   v14 = MEMORY[0x277CD0E98];
   if (v13)
   {
@@ -1443,22 +1443,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CD0E98]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0E98]])
   {
     v15 = MEMORY[0x277CCF830];
     goto LABEL_7;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CD0E70]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0E70]])
   {
     v15 = MEMORY[0x277CCF850];
     goto LABEL_7;
   }
 
-  NSLog(&cfstr_ServiceTypeNot.isa, v6);
+  NSLog(&cfstr_ServiceTypeNot.isa, typeCopy);
   v16 = 0;
 LABEL_8:
-  v17 = [v7 responseForCharacteristicType:v16];
+  v17 = [responseCopy responseForCharacteristicType:v16];
   v18 = [v17 valueWithExpectedClass:objc_opt_class()];
 
   if (v18)
@@ -1468,20 +1468,20 @@ LABEL_8:
     v26[0] = v12;
     v26[1] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-    -[HFCharacteristicValueDisplayMetadata setPriority:](self, "setPriority:", [v20 containsObject:v6] - 1);
+    -[HFCharacteristicValueDisplayMetadata setPriority:](self, "setPriority:", [v20 containsObject:typeCopy] - 1);
 
     if ([v9 integerValue] || objc_msgSend(v11, "integerValue"))
     {
       [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-      v21 = [(HFCharacteristicValueDisplayMetadata *)self priority];
-      if (v21 <= 1)
+      priority = [(HFCharacteristicValueDisplayMetadata *)self priority];
+      if (priority <= 1)
       {
         v22 = 1;
       }
 
       else
       {
-        v22 = v21;
+        v22 = priority;
       }
 
       [(HFCharacteristicValueDisplayMetadata *)self setPriority:v22];
@@ -1495,7 +1495,7 @@ LABEL_8:
     v19 = *MEMORY[0x277CD0E70];
   }
 
-  if ([v6 isEqualToString:v19])
+  if ([typeCopy isEqualToString:v19])
   {
     v23 = @"HFStatusSortKeyHumiditySensor";
 LABEL_23:
@@ -1505,13 +1505,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v6 isEqualToString:*v14])
+  if ([typeCopy isEqualToString:*v14])
   {
     v23 = @"HFStatusSortKeyLightSensor";
     goto LABEL_23;
   }
 
-  if ([v6 isEqualToString:v12])
+  if ([typeCopy isEqualToString:v12])
   {
     v23 = @"HFStatusSortKeyTemperatureSensor";
     goto LABEL_23;
@@ -1522,23 +1522,23 @@ LABEL_24:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseWarningSensorWithServiceType:(id)a3 response:(id)a4
+- (void)parseWarningSensorWithServiceType:(id)type response:(id)response
 {
-  v20 = a3;
+  typeCopy = type;
   v6 = *MEMORY[0x277CCFAB0];
-  v7 = a4;
-  v8 = [v7 responseForCharacteristicType:v6];
+  responseCopy = response;
+  v8 = [responseCopy responseForCharacteristicType:v6];
   v9 = [v8 valueWithExpectedClass:objc_opt_class()];
 
-  v10 = [v7 responseForCharacteristicType:*MEMORY[0x277CCFA98]];
+  v10 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFA98]];
   v11 = [v10 valueWithExpectedClass:objc_opt_class()];
 
-  v12 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:v20];
-  v13 = [v7 responseForCharacteristicType:v12];
+  v12 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:typeCopy];
+  v13 = [responseCopy responseForCharacteristicType:v12];
 
-  v14 = [v13 value];
+  value = [v13 value];
 
-  if (!v14)
+  if (!value)
   {
     goto LABEL_16;
   }
@@ -1549,7 +1549,7 @@ LABEL_24:
   {
     if (([v12 isEqualToString:*MEMORY[0x277CCF978]] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCF9A8]) & 1) != 0 || objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCF7E8]))
     {
-      if (([v14 BOOLValue] & 1) == 0)
+      if (([value BOOLValue] & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -1562,7 +1562,7 @@ LABEL_24:
         goto LABEL_10;
       }
 
-      if (([v14 integerValue] & 0xFFFFFFFFFFFFFFFELL) != 4)
+      if (([value integerValue] & 0xFFFFFFFFFFFFFFFELL) != 4)
       {
         v15 = 0;
         goto LABEL_9;
@@ -1577,7 +1577,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v14 BOOLValue])
+  if ([value BOOLValue])
   {
     v15 = 2;
     goto LABEL_8;
@@ -1587,59 +1587,59 @@ LABEL_10:
   if ([v9 integerValue] || objc_msgSend(v11, "integerValue"))
   {
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-    v16 = [(HFCharacteristicValueDisplayMetadata *)self priority];
-    if (v16 <= 1)
+    priority = [(HFCharacteristicValueDisplayMetadata *)self priority];
+    if (priority <= 1)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = v16;
+      v17 = priority;
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v17];
   }
 
 LABEL_16:
-  if ([v20 isEqualToString:*MEMORY[0x277CD0DE0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0DE0]])
   {
     v18 = @"HFStatusSortKeyAirQualitySensor";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0E10]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0E10]])
   {
     v18 = @"HFStatusSortKeyCO2Alarm";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0E18]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0E18]])
   {
     v18 = @"HFStatusSortKeyCOAlarm";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0E20]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0E20]])
   {
     v18 = @"HFStatusSortKeyContactSensor";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0E90]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0E90]])
   {
     v18 = @"HFStatusSortKeyLeakAlarm";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0EC0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0EC0]])
   {
     v18 = @"HFStatusSortKeyMotionAlarm";
   }
 
-  else if ([v20 isEqualToString:*MEMORY[0x277CD0EC8]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0EC8]])
   {
     v18 = @"HFStatusSortKeyOccupancyAlarm";
   }
 
   else
   {
-    if (![v20 isEqualToString:*MEMORY[0x277CD0EE8]])
+    if (![typeCopy isEqualToString:*MEMORY[0x277CD0EE8]])
     {
       goto LABEL_38;
     }
@@ -1653,10 +1653,10 @@ LABEL_16:
 LABEL_38:
 }
 
-- (void)parsePowerStateForServiceType:(id)a3 response:(id)a4
+- (void)parsePowerStateForServiceType:(id)type response:(id)response
 {
-  v12 = a3;
-  v6 = [a4 responseForCharacteristicType:*MEMORY[0x277CCF9F0]];
+  typeCopy = type;
+  v6 = [response responseForCharacteristicType:*MEMORY[0x277CCF9F0]];
   v7 = [v6 valueWithExpectedClass:objc_opt_class()];
 
   if (v7)
@@ -1685,24 +1685,24 @@ LABEL_38:
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v9];
   }
 
-  if ([v12 isEqualToString:*MEMORY[0x277CD0E40]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0E40]])
   {
     v10 = @"HFStatusSortKeyFan";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x277CD0EA0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0EA0]])
   {
     v10 = @"HFStatusSortKeyLightbulb";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x277CD0ED0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CD0ED0]])
   {
     v10 = @"HFStatusSortKeyOutlet";
   }
 
   else
   {
-    if (![v12 isEqualToString:*MEMORY[0x277CD0F08]])
+    if (![typeCopy isEqualToString:*MEMORY[0x277CD0F08]])
     {
       goto LABEL_18;
     }
@@ -1716,10 +1716,10 @@ LABEL_38:
 LABEL_18:
 }
 
-- (void)parseActiveStateForServiceType:(id)a3 response:(id)a4
+- (void)parseActiveStateForServiceType:(id)type response:(id)response
 {
-  v11 = a3;
-  v6 = [a4 responseForCharacteristicType:*MEMORY[0x277CCF748]];
+  typeCopy = type;
+  v6 = [response responseForCharacteristicType:*MEMORY[0x277CCF748]];
   v7 = [v6 valueWithExpectedClass:objc_opt_class()];
 
   if (v7)
@@ -1748,34 +1748,34 @@ LABEL_18:
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v9];
   }
 
-  if ([v11 isEqualToString:*MEMORY[0x277CD0F40]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0F40]])
   {
     v10 = _HFLocalizedStringWithDefaultValue(@"HFStatusSortKeyFan", @"HFStatusSortKeyFan", 1);
     [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v10];
   }
 }
 
-- (void)parseThermostatResponse:(id)a3 serviceType:(id)a4
+- (void)parseThermostatResponse:(id)response serviceType:(id)type
 {
-  v23 = a3;
+  responseCopy = response;
   v6 = *MEMORY[0x277CCF868];
-  v7 = a4;
-  v8 = [v23 responseForCharacteristicType:v6];
+  typeCopy = type;
+  v8 = [responseCopy responseForCharacteristicType:v6];
   v9 = [v8 valueWithExpectedClass:objc_opt_class()];
 
-  v10 = [v23 responseForCharacteristicType:*MEMORY[0x277CCFB68]];
+  v10 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB68]];
   v11 = [v10 valueWithExpectedClass:objc_opt_class()];
 
-  v12 = [HFTemperatureItemUtilities currentHeatingCoolingModeValueInResponse:v23];
-  v13 = [HFTemperatureItemUtilities targetHeatingCoolingModeValueInResponse:v23];
-  v14 = [v7 isEqualToString:*MEMORY[0x277CD0F30]];
+  v12 = [HFTemperatureItemUtilities currentHeatingCoolingModeValueInResponse:responseCopy];
+  v13 = [HFTemperatureItemUtilities targetHeatingCoolingModeValueInResponse:responseCopy];
+  v14 = [typeCopy isEqualToString:*MEMORY[0x277CD0F30]];
 
-  v15 = [v23 allServices];
-  v16 = [v15 na_firstObjectPassingTest:&__block_literal_global_202];
+  allServices = [responseCopy allServices];
+  v16 = [allServices na_firstObjectPassingTest:&__block_literal_global_202];
 
   if (v16)
   {
-    v17 = [v23 responseForCharacteristicType:*MEMORY[0x277CCF748] inService:v16];
+    v17 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748] inService:v16];
     v18 = [v17 valueWithExpectedClass:objc_opt_class()];
 
     if (!v9)
@@ -1821,13 +1821,13 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    v20 = [v13 integerValue];
-    if ((v20 - 1) < 3)
+    integerValue = [v13 integerValue];
+    if ((integerValue - 1) < 3)
     {
       goto LABEL_14;
     }
 
-    if (v20)
+    if (integerValue)
     {
       goto LABEL_16;
     }
@@ -1861,9 +1861,9 @@ uint64_t __76__HFCharacteristicValueDisplayMetadata_parseThermostatResponse_serv
   return v3;
 }
 
-- (void)parseAirPurifierResponse:(id)a3
+- (void)parseAirPurifierResponse:(id)response
 {
-  v4 = [a3 responseForCharacteristicType:*MEMORY[0x277CCF748]];
+  v4 = [response responseForCharacteristicType:*MEMORY[0x277CCF748]];
   v8 = [v4 valueWithExpectedClass:objc_opt_class()];
 
   if (v8)
@@ -1896,20 +1896,20 @@ uint64_t __76__HFCharacteristicValueDisplayMetadata_parseThermostatResponse_serv
   [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v7];
 }
 
-- (void)parseHumidifierDehumidifierResponse:(id)a3
+- (void)parseHumidifierDehumidifierResponse:(id)response
 {
   v4 = *MEMORY[0x277CCF850];
-  v5 = a3;
-  v6 = [v5 responseForCharacteristicType:v4];
+  responseCopy = response;
+  v6 = [responseCopy responseForCharacteristicType:v4];
   v18 = [v6 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v5 responseForCharacteristicType:*MEMORY[0x277CCF828]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF828]];
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
-  v9 = [v5 responseForCharacteristicType:*MEMORY[0x277CCFB30]];
+  v9 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB30]];
   v10 = [v9 valueWithExpectedClass:objc_opt_class()];
 
-  v11 = [v5 responseForCharacteristicType:*MEMORY[0x277CCF748]];
+  v11 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748]];
 
   v12 = [v11 valueWithExpectedClass:objc_opt_class()];
 
@@ -1951,27 +1951,27 @@ LABEL_17:
   [(HFCharacteristicValueDisplayMetadata *)self setSortKey:v17];
 }
 
-- (void)parseCurrentTargetPositionForServiceType:(id)a3 response:(id)a4
+- (void)parseCurrentTargetPositionForServiceType:(id)type response:(id)response
 {
-  v28 = a3;
+  typeCopy = type;
   v7 = *MEMORY[0x277CD0F60];
-  v8 = a4;
-  v9 = [v28 isEqualToString:v7];
+  responseCopy = response;
+  v9 = [typeCopy isEqualToString:v7];
   v10 = MEMORY[0x277CD0E30];
   v11 = MEMORY[0x277CD0F58];
-  if ((v9 & 1) == 0 && ([v28 isEqualToString:*MEMORY[0x277CD0F58]] & 1) == 0 && (objc_msgSend(v28, "isEqualToString:", *v10) & 1) == 0)
+  if ((v9 & 1) == 0 && ([typeCopy isEqualToString:*MEMORY[0x277CD0F58]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *v10) & 1) == 0)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueDisplayMetadata.m" lineNumber:1320 description:{@"Invalid parameter not satisfying: %@", @"[serviceType isEqualToString:HMServiceTypeWindowCovering] || [serviceType isEqualToString:HMServiceTypeWindow] || [serviceType isEqualToString:HMServiceTypeDoor]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueDisplayMetadata.m" lineNumber:1320 description:{@"Invalid parameter not satisfying: %@", @"[serviceType isEqualToString:HMServiceTypeWindowCovering] || [serviceType isEqualToString:HMServiceTypeWindow] || [serviceType isEqualToString:HMServiceTypeDoor]"}];
   }
 
-  v12 = [v8 responseForCharacteristicType:*MEMORY[0x277CCF848]];
+  v12 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF848]];
   v13 = [v12 valueWithExpectedClass:objc_opt_class()];
 
-  v14 = [v8 responseForCharacteristicType:*MEMORY[0x277CCFB50]];
+  v14 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB50]];
   v15 = [v14 valueWithExpectedClass:objc_opt_class()];
 
-  v16 = [v8 responseForCharacteristicType:*MEMORY[0x277CCF9A0]];
+  v16 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF9A0]];
 
   v17 = [v16 valueWithExpectedClass:objc_opt_class()];
 
@@ -1998,7 +1998,7 @@ LABEL_17:
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:v19];
-    v20 = [v28 isEqualToString:v7] ^ 1;
+    v20 = [typeCopy isEqualToString:v7] ^ 1;
     if (([v17 BOOLValue] & 1) != 0 || (v21 = objc_msgSend(v15, "integerValue"), v21 == objc_msgSend(v13, "integerValue")))
     {
       if ([(HFCharacteristicValueDisplayMetadata *)self primaryState]!= 2)
@@ -2028,33 +2028,33 @@ LABEL_17:
   if ([v17 BOOLValue])
   {
     [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:2];
-    v23 = [(HFCharacteristicValueDisplayMetadata *)self priority];
-    if (v23 <= 1)
+    priority = [(HFCharacteristicValueDisplayMetadata *)self priority];
+    if (priority <= 1)
     {
       v24 = 1;
     }
 
     else
     {
-      v24 = v23;
+      v24 = priority;
     }
 
     [(HFCharacteristicValueDisplayMetadata *)self setPriority:v24];
   }
 
-  if ([v28 isEqualToString:*v10])
+  if ([typeCopy isEqualToString:*v10])
   {
     v25 = @"HFStatusSortKeyDoor";
   }
 
-  else if ([v28 isEqualToString:*v11])
+  else if ([typeCopy isEqualToString:*v11])
   {
     v25 = @"HFStatusSortKeyWindow";
   }
 
   else
   {
-    if (![v28 isEqualToString:v7])
+    if (![typeCopy isEqualToString:v7])
     {
       goto LABEL_34;
     }
@@ -2068,13 +2068,13 @@ LABEL_17:
 LABEL_34:
 }
 
-- (void)parseProgammableSwitchOfType:(id)a3 response:(id)a4
+- (void)parseProgammableSwitchOfType:(id)type response:(id)response
 {
-  v7 = a3;
-  if (([v7 isEqualToString:*MEMORY[0x277CD0EF8]] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CD0F00]) & 1) == 0)
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x277CD0EF8]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0F00]) & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueDisplayMetadata.m" lineNumber:1361 description:{@"Invalid parameter not satisfying: %@", @"[serviceType isEqualToString:HMServiceTypeStatefulProgrammableSwitch] || [serviceType isEqualToString:HMServiceTypeStatelessProgrammableSwitch]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueDisplayMetadata.m" lineNumber:1361 description:{@"Invalid parameter not satisfying: %@", @"[serviceType isEqualToString:HMServiceTypeStatefulProgrammableSwitch] || [serviceType isEqualToString:HMServiceTypeStatelessProgrammableSwitch]"}];
   }
 
   [(HFCharacteristicValueDisplayMetadata *)self setPrimaryState:1];

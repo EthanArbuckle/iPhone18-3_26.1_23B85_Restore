@@ -3,8 +3,8 @@
 - (ISInternationalLocaleRepresentation)init;
 - (NSString)calendarIdentifier;
 - (unint64_t)calendarDirectionality;
-- (void)setCalendarDirectionality:(unint64_t)a3;
-- (void)setCalendarIdentifier:(id)a3;
+- (void)setCalendarDirectionality:(unint64_t)directionality;
+- (void)setCalendarIdentifier:(id)identifier;
 @end
 
 @implementation ISInternationalLocaleRepresentation
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (void)setCalendarIdentifier:(id)a3
+- (void)setCalendarIdentifier:(id)identifier
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 localeIdentifier];
+  localeIdentifier = [v4 localeIdentifier];
 
-  v6 = [NSLocale componentsFromLocaleIdentifier:v5];
+  v6 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
   v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
-  v8 = [IntlUtility defaultCalendarForLocaleID:v5];
-  if ([v8 isEqual:v10])
+  v8 = [IntlUtility defaultCalendarForLocaleID:localeIdentifier];
+  if ([v8 isEqual:identifierCopy])
   {
     [v7 removeObjectForKey:@"calendar"];
   }
 
   else
   {
-    [v7 setObject:v10 forKey:@"calendar"];
+    [v7 setObject:identifierCopy forKey:@"calendar"];
   }
 
   if (([v6 isEqual:v7] & 1) == 0)
@@ -60,47 +60,47 @@
 
     [NSLocale setLocaleOnly:v9];
     +[InternationalSettingsController syncPreferencesForLanguageOrLocaleChange];
-    v5 = v9;
+    localeIdentifier = v9;
   }
 
-  [(ISInternationalLocaleRepresentation *)self setCurrentlySelectedCalendarIdentifier:v10];
+  [(ISInternationalLocaleRepresentation *)self setCurrentlySelectedCalendarIdentifier:identifierCopy];
 }
 
 - (NSString)calendarIdentifier
 {
-  v3 = [(ISInternationalLocaleRepresentation *)self currentlySelectedCalendarIdentifier];
+  currentlySelectedCalendarIdentifier = [(ISInternationalLocaleRepresentation *)self currentlySelectedCalendarIdentifier];
 
-  if (v3)
+  if (currentlySelectedCalendarIdentifier)
   {
-    v4 = [(ISInternationalLocaleRepresentation *)self currentlySelectedCalendarIdentifier];
+    currentlySelectedCalendarIdentifier2 = [(ISInternationalLocaleRepresentation *)self currentlySelectedCalendarIdentifier];
   }
 
   else
   {
     v5 = +[NSLocale currentLocale];
-    v6 = [v5 localeIdentifier];
+    localeIdentifier = [v5 localeIdentifier];
 
-    v7 = [NSLocale componentsFromLocaleIdentifier:v6];
-    v4 = [v7 objectForKey:@"calendar"];
-    if (!v4)
+    v7 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
+    currentlySelectedCalendarIdentifier2 = [v7 objectForKey:@"calendar"];
+    if (!currentlySelectedCalendarIdentifier2)
     {
-      v4 = [IntlUtility defaultCalendarForLocaleID:v6];
+      currentlySelectedCalendarIdentifier2 = [IntlUtility defaultCalendarForLocaleID:localeIdentifier];
     }
   }
 
-  return v4;
+  return currentlySelectedCalendarIdentifier2;
 }
 
-- (void)setCalendarDirectionality:(unint64_t)a3
+- (void)setCalendarDirectionality:(unint64_t)directionality
 {
   v3 = &kCFBooleanTrue;
-  if (a3 != 2)
+  if (directionality != 2)
   {
     v3 = &kCFBooleanFalse;
   }
 
   v4 = *v3;
-  if (a3)
+  if (directionality)
   {
     v5 = v4;
   }
@@ -116,9 +116,9 @@
 - (unint64_t)calendarDirectionality
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 _calendarDirection];
+  _calendarDirection = [v2 _calendarDirection];
 
-  if (v3 == &dword_0 + 1)
+  if (_calendarDirection == &dword_0 + 1)
   {
     return 2;
   }

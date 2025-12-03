@@ -1,42 +1,42 @@
 @interface FCFeedTransformationFilter
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5;
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5 ignoreMutedTagIDs:(id)a6;
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5 otherArticleIDs:(id)a6;
-+ (id)transformationWithFilterOptions:(unint64_t)a3 otherArticleIDs:(id)a4 otherClusterIDs:(id)a5 subscribedTagIDs:(id)a6 mutedTagIDs:(id)a7 readingHistoryItems:(id)a8 playlistArticleIDs:(id)a9 downloadedArticleIDs:(id)a10 briefingsTagID:(id)a11 paidAccessChecker:(id)a12 bundleSubscription:(id)a13 paywalledArticlesMaxCount:(unint64_t)a14;
-- (id)transformFeedItems:(id)a3;
-- (id)transformFeedItemsWithResults:(id)a3;
-- (id)transformHeadline:(id)a3;
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context;
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context ignoreMutedTagIDs:(id)ds;
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context otherArticleIDs:(id)ds;
++ (id)transformationWithFilterOptions:(unint64_t)options otherArticleIDs:(id)ds otherClusterIDs:(id)iDs subscribedTagIDs:(id)tagIDs mutedTagIDs:(id)mutedTagIDs readingHistoryItems:(id)items playlistArticleIDs:(id)articleIDs downloadedArticleIDs:(id)self0 briefingsTagID:(id)self1 paidAccessChecker:(id)self2 bundleSubscription:(id)self3 paywalledArticlesMaxCount:(unint64_t)self4;
+- (id)transformFeedItems:(id)items;
+- (id)transformFeedItemsWithResults:(id)results;
+- (id)transformHeadline:(id)headline;
 @end
 
 @implementation FCFeedTransformationFilter
 
-+ (id)transformationWithFilterOptions:(unint64_t)a3 otherArticleIDs:(id)a4 otherClusterIDs:(id)a5 subscribedTagIDs:(id)a6 mutedTagIDs:(id)a7 readingHistoryItems:(id)a8 playlistArticleIDs:(id)a9 downloadedArticleIDs:(id)a10 briefingsTagID:(id)a11 paidAccessChecker:(id)a12 bundleSubscription:(id)a13 paywalledArticlesMaxCount:(unint64_t)a14
++ (id)transformationWithFilterOptions:(unint64_t)options otherArticleIDs:(id)ds otherClusterIDs:(id)iDs subscribedTagIDs:(id)tagIDs mutedTagIDs:(id)mutedTagIDs readingHistoryItems:(id)items playlistArticleIDs:(id)articleIDs downloadedArticleIDs:(id)self0 briefingsTagID:(id)self1 paidAccessChecker:(id)self2 bundleSubscription:(id)self3 paywalledArticlesMaxCount:(unint64_t)self4
 {
-  v40 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v42 = a13;
-  v41 = a12;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  tagIDsCopy = tagIDs;
+  mutedTagIDsCopy = mutedTagIDs;
+  itemsCopy = items;
+  articleIDsCopy = articleIDs;
+  downloadedArticleIDsCopy = downloadedArticleIDs;
+  dCopy = d;
+  subscriptionCopy = subscription;
+  checkerCopy = checker;
   v25 = objc_opt_new();
   v27 = v25;
   if (v25)
   {
-    v25[1] = a3;
-    objc_setProperty_nonatomic_copy(v25, v26, v40, 16);
-    objc_setProperty_nonatomic_copy(v27, v28, v18, 24);
-    objc_setProperty_nonatomic_copy(v27, v29, v19, 40);
-    objc_setProperty_nonatomic_copy(v27, v30, v20, 32);
-    objc_setProperty_nonatomic_copy(v27, v31, v21, 48);
+    v25[1] = options;
+    objc_setProperty_nonatomic_copy(v25, v26, dsCopy, 16);
+    objc_setProperty_nonatomic_copy(v27, v28, iDsCopy, 24);
+    objc_setProperty_nonatomic_copy(v27, v29, tagIDsCopy, 40);
+    objc_setProperty_nonatomic_copy(v27, v30, mutedTagIDsCopy, 32);
+    objc_setProperty_nonatomic_copy(v27, v31, itemsCopy, 48);
   }
 
-  if (v22)
+  if (articleIDsCopy)
   {
-    v32 = v22;
+    v32 = articleIDsCopy;
   }
 
   else
@@ -50,12 +50,12 @@
   {
     objc_setProperty_nonatomic_copy(v27, v34, v33, 56);
 
-    objc_setProperty_nonatomic_copy(v27, v36, v23, 64);
-    objc_setProperty_nonatomic_copy(v27, v37, v24, 72);
-    objc_storeStrong(v27 + 10, a12);
+    objc_setProperty_nonatomic_copy(v27, v36, downloadedArticleIDsCopy, 64);
+    objc_setProperty_nonatomic_copy(v27, v37, dCopy, 72);
+    objc_storeStrong(v27 + 10, checker);
 
-    objc_storeStrong(v27 + 11, a13);
-    v27[12] = a14;
+    objc_storeStrong(v27 + 11, subscription);
+    v27[12] = count;
   }
 
   else
@@ -65,94 +65,94 @@
   return v27;
 }
 
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5 otherArticleIDs:(id)a6
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context otherArticleIDs:(id)ds
 {
   v9 = MEMORY[0x1E695DFD8];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 setWithArray:a6];
-  v29 = [v10 subscriptionList];
-  v23 = [v29 subscribedTagIDs];
-  v28 = [v10 subscriptionList];
-  v22 = [v28 mutedTagIDs];
-  v27 = [v10 readingHistory];
-  v20 = [v27 readingHistoryItemsByArticleID];
-  v26 = [v10 audioPlaylist];
-  v13 = [v26 articleIDs];
-  v21 = [v10 offlineArticleManager];
-  v14 = [v21 readableArticleIDs];
-  v15 = [v11 briefingsTagID];
+  contextCopy = context;
+  configurationCopy = configuration;
+  v12 = [v9 setWithArray:ds];
+  subscriptionList = [contextCopy subscriptionList];
+  subscribedTagIDs = [subscriptionList subscribedTagIDs];
+  subscriptionList2 = [contextCopy subscriptionList];
+  mutedTagIDs = [subscriptionList2 mutedTagIDs];
+  readingHistory = [contextCopy readingHistory];
+  readingHistoryItemsByArticleID = [readingHistory readingHistoryItemsByArticleID];
+  audioPlaylist = [contextCopy audioPlaylist];
+  articleIDs = [audioPlaylist articleIDs];
+  offlineArticleManager = [contextCopy offlineArticleManager];
+  readableArticleIDs = [offlineArticleManager readableArticleIDs];
+  briefingsTagID = [configurationCopy briefingsTagID];
 
-  v16 = [v10 paidAccessChecker];
-  v17 = [v10 bundleSubscriptionManager];
+  paidAccessChecker = [contextCopy paidAccessChecker];
+  bundleSubscriptionManager = [contextCopy bundleSubscriptionManager];
 
-  v18 = [v17 cachedSubscription];
-  v25 = [a1 transformationWithFilterOptions:a3 otherArticleIDs:v12 otherClusterIDs:0 subscribedTagIDs:v23 mutedTagIDs:v22 readingHistoryItems:v20 playlistArticleIDs:v13 downloadedArticleIDs:v14 briefingsTagID:v15 paidAccessChecker:v16 bundleSubscription:v18 paywalledArticlesMaxCount:0];
+  cachedSubscription = [bundleSubscriptionManager cachedSubscription];
+  v25 = [self transformationWithFilterOptions:options otherArticleIDs:v12 otherClusterIDs:0 subscribedTagIDs:subscribedTagIDs mutedTagIDs:mutedTagIDs readingHistoryItems:readingHistoryItemsByArticleID playlistArticleIDs:articleIDs downloadedArticleIDs:readableArticleIDs briefingsTagID:briefingsTagID paidAccessChecker:paidAccessChecker bundleSubscription:cachedSubscription paywalledArticlesMaxCount:0];
 
   return v25;
 }
 
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v25 = [v7 subscriptionList];
-  v9 = [v25 subscribedTagIDs];
-  v24 = [v7 subscriptionList];
-  v10 = [v24 mutedTagIDs];
-  v23 = [v7 readingHistory];
-  v19 = [v23 readingHistoryItemsByArticleID];
-  v20 = [v7 audioPlaylist];
-  v11 = [v20 articleIDs];
-  v12 = [v7 offlineArticleManager];
-  v13 = [v12 readableArticleIDs];
-  v14 = [v8 briefingsTagID];
+  contextCopy = context;
+  configurationCopy = configuration;
+  subscriptionList = [contextCopy subscriptionList];
+  subscribedTagIDs = [subscriptionList subscribedTagIDs];
+  subscriptionList2 = [contextCopy subscriptionList];
+  mutedTagIDs = [subscriptionList2 mutedTagIDs];
+  readingHistory = [contextCopy readingHistory];
+  readingHistoryItemsByArticleID = [readingHistory readingHistoryItemsByArticleID];
+  audioPlaylist = [contextCopy audioPlaylist];
+  articleIDs = [audioPlaylist articleIDs];
+  offlineArticleManager = [contextCopy offlineArticleManager];
+  readableArticleIDs = [offlineArticleManager readableArticleIDs];
+  briefingsTagID = [configurationCopy briefingsTagID];
 
-  v15 = [v7 paidAccessChecker];
-  v16 = [v7 bundleSubscriptionManager];
+  paidAccessChecker = [contextCopy paidAccessChecker];
+  bundleSubscriptionManager = [contextCopy bundleSubscriptionManager];
 
-  v17 = [v16 cachedSubscription];
-  v22 = [a1 transformationWithFilterOptions:a3 otherArticleIDs:0 otherClusterIDs:0 subscribedTagIDs:v9 mutedTagIDs:v10 readingHistoryItems:v19 playlistArticleIDs:v11 downloadedArticleIDs:v13 briefingsTagID:v14 paidAccessChecker:v15 bundleSubscription:v17 paywalledArticlesMaxCount:0];
+  cachedSubscription = [bundleSubscriptionManager cachedSubscription];
+  v22 = [self transformationWithFilterOptions:options otherArticleIDs:0 otherClusterIDs:0 subscribedTagIDs:subscribedTagIDs mutedTagIDs:mutedTagIDs readingHistoryItems:readingHistoryItemsByArticleID playlistArticleIDs:articleIDs downloadedArticleIDs:readableArticleIDs briefingsTagID:briefingsTagID paidAccessChecker:paidAccessChecker bundleSubscription:cachedSubscription paywalledArticlesMaxCount:0];
 
   return v22;
 }
 
-+ (id)transformationWithFilterOptions:(unint64_t)a3 configuration:(id)a4 context:(id)a5 ignoreMutedTagIDs:(id)a6
++ (id)transformationWithFilterOptions:(unint64_t)options configuration:(id)configuration context:(id)context ignoreMutedTagIDs:(id)ds
 {
   v8 = MEMORY[0x1E695DFA8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  dsCopy = ds;
+  contextCopy = context;
+  configurationCopy = configuration;
   v12 = [v8 alloc];
-  v13 = [v10 subscriptionList];
-  v14 = [v13 mutedTagIDs];
-  v15 = [v12 initWithSet:v14];
+  subscriptionList = [contextCopy subscriptionList];
+  mutedTagIDs = [subscriptionList mutedTagIDs];
+  v15 = [v12 initWithSet:mutedTagIDs];
 
   v27 = v15;
-  [v15 fc_safelyMinusSet:v9];
+  [v15 fc_safelyMinusSet:dsCopy];
 
-  v31 = [v10 subscriptionList];
-  v16 = [v31 subscribedTagIDs];
-  v29 = [v10 readingHistory];
-  v17 = [v29 readingHistoryItemsByArticleID];
-  v28 = [v10 audioPlaylist];
-  v18 = [v28 articleIDs];
-  v19 = [v10 offlineArticleManager];
-  v20 = [v19 readableArticleIDs];
-  v21 = [v11 briefingsTagID];
+  subscriptionList2 = [contextCopy subscriptionList];
+  subscribedTagIDs = [subscriptionList2 subscribedTagIDs];
+  readingHistory = [contextCopy readingHistory];
+  readingHistoryItemsByArticleID = [readingHistory readingHistoryItemsByArticleID];
+  audioPlaylist = [contextCopy audioPlaylist];
+  articleIDs = [audioPlaylist articleIDs];
+  offlineArticleManager = [contextCopy offlineArticleManager];
+  readableArticleIDs = [offlineArticleManager readableArticleIDs];
+  briefingsTagID = [configurationCopy briefingsTagID];
 
-  v22 = [v10 paidAccessChecker];
-  v23 = [v10 bundleSubscriptionManager];
+  paidAccessChecker = [contextCopy paidAccessChecker];
+  bundleSubscriptionManager = [contextCopy bundleSubscriptionManager];
 
-  v24 = [v23 cachedSubscription];
-  v25 = [a1 transformationWithFilterOptions:a3 otherArticleIDs:0 otherClusterIDs:0 subscribedTagIDs:v16 mutedTagIDs:v15 readingHistoryItems:v17 playlistArticleIDs:v18 downloadedArticleIDs:v20 briefingsTagID:v21 paidAccessChecker:v22 bundleSubscription:v24 paywalledArticlesMaxCount:0];
+  cachedSubscription = [bundleSubscriptionManager cachedSubscription];
+  v25 = [self transformationWithFilterOptions:options otherArticleIDs:0 otherClusterIDs:0 subscribedTagIDs:subscribedTagIDs mutedTagIDs:v15 readingHistoryItems:readingHistoryItemsByArticleID playlistArticleIDs:articleIDs downloadedArticleIDs:readableArticleIDs briefingsTagID:briefingsTagID paidAccessChecker:paidAccessChecker bundleSubscription:cachedSubscription paywalledArticlesMaxCount:0];
 
   return v25;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v3 = [(FCFeedTransformationFilter *)self transformFeedItemsWithResults:a3];
+  v3 = [(FCFeedTransformationFilter *)self transformFeedItemsWithResults:items];
   v4 = [v3 fc_arrayByTransformingWithBlock:&__block_literal_global_134];
 
   return v4;
@@ -174,34 +174,34 @@ id __49__FCFeedTransformationFilter_transformFeedItems___block_invoke(uint64_t a
   return v3;
 }
 
-- (id)transformHeadline:(id)a3
+- (id)transformHeadline:(id)headline
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (headline)
   {
-    v11 = a3;
+    headlineCopy = headline;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v11 count:1];
+    headlineCopy2 = headline;
+    v6 = [v4 arrayWithObjects:&headlineCopy count:1];
 
-    v7 = [(FCFeedTransformationFilter *)self transformFeedItems:v6, v11, v12];
-    v8 = [v7 firstObject];
+    v7 = [(FCFeedTransformationFilter *)self transformFeedItems:v6, headlineCopy, v12];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)transformFeedItemsWithResults:(id)a3
+- (id)transformFeedItemsWithResults:(id)results
 {
-  v4 = a3;
-  v5 = v4;
+  resultsCopy = results;
+  v5 = resultsCopy;
   if (!self)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -218,7 +218,7 @@ LABEL_5:
     v11 = otherArticleIDs;
     v12 = [v10 setWithSet:v11];
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = MEMORY[0x1E695DFA8];
     if (self)
     {
@@ -247,7 +247,7 @@ LABEL_5:
     v24[4] = self;
     v7 = v12;
     v25 = v7;
-    v19 = v13;
+    v19 = dictionary;
     v26 = v19;
     v20 = v17;
     v30 = v16;
@@ -267,7 +267,7 @@ LABEL_5:
   v31[5] = 3221225472;
   v31[6] = __60__FCFeedTransformationFilter_transformFeedItemsWithResults___block_invoke;
   v31[7] = &unk_1E7C3B578;
-  v32 = v4;
+  v32 = resultsCopy;
   v6 = [v32 fc_arrayByTransformingWithBlock:&__block_literal_global_35_2];
   v7 = v32;
 LABEL_8:

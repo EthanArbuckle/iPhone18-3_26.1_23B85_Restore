@@ -1,20 +1,20 @@
 @interface DADiagnosticsLauncher
 - (BOOL)_establishConnection;
-- (DADiagnosticsLauncher)initWithDelegate:(id)a3;
+- (DADiagnosticsLauncher)initWithDelegate:(id)delegate;
 - (void)_deinitProcessMonitor;
 - (void)_establishConnection;
 - (void)_initProcessMonitor;
 - (void)dealloc;
-- (void)diagnosticsAppLaunchedWithResult:(int64_t)a3;
-- (void)diagnosticsExitingForReason:(int64_t)a3;
+- (void)diagnosticsAppLaunchedWithResult:(int64_t)result;
+- (void)diagnosticsExitingForReason:(int64_t)reason;
 - (void)launchDiagnostics;
 @end
 
 @implementation DADiagnosticsLauncher
 
-- (DADiagnosticsLauncher)initWithDelegate:(id)a3
+- (DADiagnosticsLauncher)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = DADiagnosticsLauncher;
   v6 = [(DADiagnosticsLauncher *)&v12 init];
@@ -32,7 +32,7 @@
     v7->_processMonitor = 0;
 
     v7->_exitReason = -1;
-    objc_storeStrong(&v7->_delegate, a3);
+    objc_storeStrong(&v7->_delegate, delegate);
   }
 
   return v7;
@@ -40,15 +40,15 @@
 
 - (void)dealloc
 {
-  v3 = [(DADiagnosticsLauncher *)self xpcConnection];
+  xpcConnection = [(DADiagnosticsLauncher *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
-    v4 = [(DADiagnosticsLauncher *)self xpcConnection];
-    [v4 suspend];
+    xpcConnection2 = [(DADiagnosticsLauncher *)self xpcConnection];
+    [xpcConnection2 suspend];
 
-    v5 = [(DADiagnosticsLauncher *)self xpcConnection];
-    [v5 invalidate];
+    xpcConnection3 = [(DADiagnosticsLauncher *)self xpcConnection];
+    [xpcConnection3 invalidate];
 
     [(DADiagnosticsLauncher *)self setXpcConnection:0];
   }
@@ -74,16 +74,16 @@
 
   else
   {
-    v4 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-    v5 = v4;
-    if (v4)
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    v5 = serviceWithDefaultShellEndpoint;
+    if (serviceWithDefaultShellEndpoint)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __42__DADiagnosticsLauncher_launchDiagnostics__block_invoke;
       v7[3] = &unk_27A66EDB8;
-      v8 = v4;
-      v9 = self;
+      v8 = serviceWithDefaultShellEndpoint;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v7);
     }
 
@@ -186,25 +186,25 @@ LABEL_10:
   return [*(a1 + 48) diagnosticsAppLaunchedWithResult:v4];
 }
 
-- (void)diagnosticsExitingForReason:(int64_t)a3
+- (void)diagnosticsExitingForReason:(int64_t)reason
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_275BB3000, v5, OS_LOG_TYPE_DEFAULT, "Diagnostics app is exiting for %ld", &v9, 0xCu);
   }
 
   [(DADiagnosticsLauncher *)self setIsDiagsRunning:0];
   [(DADiagnosticsLauncher *)self _deinitProcessMonitor];
-  v6 = [(DADiagnosticsLauncher *)self delegate];
+  delegate = [(DADiagnosticsLauncher *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(DADiagnosticsLauncher *)self delegate];
-    [v7 diagnosticsAppDidExitWithReason:a3];
+    delegate2 = [(DADiagnosticsLauncher *)self delegate];
+    [delegate2 diagnosticsAppDidExitWithReason:reason];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -275,8 +275,8 @@ LABEL_10:
     v12 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v21[5] localizedDescription];
-      [(DADiagnosticsLauncher *)v13 _establishConnection];
+      localizedDescription = [v21[5] localizedDescription];
+      [(DADiagnosticsLauncher *)localizedDescription _establishConnection];
     }
 
     v10 = 0;
@@ -299,21 +299,21 @@ void __45__DADiagnosticsLauncher__establishConnection__block_invoke(uint64_t a1,
 
 - (void)_initProcessMonitor
 {
-  v3 = [(DADiagnosticsLauncher *)self processMonitor];
+  processMonitor = [(DADiagnosticsLauncher *)self processMonitor];
 
-  if (!v3)
+  if (!processMonitor)
   {
     v4 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:@"com.apple.Diagnostics"];
-    v5 = [MEMORY[0x277D46FB0] descriptor];
+    descriptor = [MEMORY[0x277D46FB0] descriptor];
     v6 = MEMORY[0x277D46F80];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__DADiagnosticsLauncher__initProcessMonitor__block_invoke;
     v10[3] = &unk_27A66EE08;
     v11 = v4;
-    v12 = v5;
-    v13 = self;
-    v7 = v5;
+    v12 = descriptor;
+    selfCopy = self;
+    v7 = descriptor;
     v8 = v4;
     v9 = [v6 monitorWithConfiguration:v10];
     [(DADiagnosticsLauncher *)self setProcessMonitor:v9];
@@ -386,25 +386,25 @@ void __44__DADiagnosticsLauncher__initProcessMonitor__block_invoke_2(uint64_t a1
 
 - (void)_deinitProcessMonitor
 {
-  v3 = [(DADiagnosticsLauncher *)self processMonitor];
+  processMonitor = [(DADiagnosticsLauncher *)self processMonitor];
 
-  if (v3)
+  if (processMonitor)
   {
-    v4 = [(DADiagnosticsLauncher *)self processMonitor];
-    [v4 invalidate];
+    processMonitor2 = [(DADiagnosticsLauncher *)self processMonitor];
+    [processMonitor2 invalidate];
 
     [(DADiagnosticsLauncher *)self setProcessMonitor:0];
   }
 }
 
-- (void)diagnosticsAppLaunchedWithResult:(int64_t)a3
+- (void)diagnosticsAppLaunchedWithResult:(int64_t)result
 {
-  v5 = [(DADiagnosticsLauncher *)self delegate];
+  delegate = [(DADiagnosticsLauncher *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(DADiagnosticsLauncher *)self delegate];
-    [v6 diagnosticsAppLaunchedWithResult:a3];
+    delegate2 = [(DADiagnosticsLauncher *)self delegate];
+    [delegate2 diagnosticsAppLaunchedWithResult:result];
   }
 }
 
@@ -422,7 +422,7 @@ void __42__DADiagnosticsLauncher_launchDiagnostics__block_invoke_3_cold_2(id *a1
 - (void)_establishConnection
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_275BB3000, log, OS_LOG_TYPE_ERROR, "Failed to connect to Diagnostics launcher server with error: %@", buf, 0xCu);
 }
 

@@ -1,7 +1,7 @@
 @interface WXTableCellProperties
 + (id)verticalAlignmentEnumMap;
-+ (unint64_t)bitfieldForCnfStyleFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (unint64_t)bitfieldForCnfStyleFrom:(_xmlNode *)from state:(id)state;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 + (void)verticalAlignmentEnumMap;
 @end
 
@@ -30,164 +30,164 @@ void __49__WXTableCellProperties_verticalAlignmentEnumMap__block_invoke()
   +[WXTableCellProperties verticalAlignmentEnumMap]::sVerticalAlignmentEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 WXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "tcPrChange");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v11 = OCXFindChild(from, wXMainNamespace, "tcPrChange");
 
   if (v11)
   {
-    v12 = [v9 WXMainNamespace];
-    v13 = OCXFindChild(v11, v12, "tcPr");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v13 = OCXFindChild(v11, wXMainNamespace2, "tcPr");
 
     if (v13)
     {
-      [a1 readFrom:v13 to:v8 state:v9];
+      [self readFrom:v13 to:toCopy state:stateCopy];
     }
 
-    [v8 setResolveMode:1];
-    [v8 setFormattingChanged:1];
+    [toCopy setResolveMode:1];
+    [toCopy setFormattingChanged:1];
     v14 = wmxmlGetDateProperty(v11);
-    [v8 setFormattingChangeDate:v14];
+    [toCopy setFormattingChangeDate:v14];
 
-    v15 = [v9 document];
+    document = [stateCopy document];
     v16 = wmxmlGetAuthorProperty(v11);
-    [v8 setIndexToAuthorIDOfFormattingChange:{objc_msgSend(v15, "revisionAuthorAddLookup:", v16)}];
+    [toCopy setIndexToAuthorIDOfFormattingChange:{objc_msgSend(document, "revisionAuthorAddLookup:", v16)}];
   }
 
   v85 = 0;
   v84 = 0;
-  v17 = [v9 WXMainNamespace];
-  v18 = OCXFindChild(a3, v17, "tcW");
+  wXMainNamespace3 = [stateCopy WXMainNamespace];
+  v18 = OCXFindChild(from, wXMainNamespace3, "tcW");
 
-  v19 = [v9 WXMainNamespace];
-  LODWORD(v18) = WXOptionalTableWidthAttribute(v18, v19, "w", &v85, &v84);
+  wXMainNamespace4 = [stateCopy WXMainNamespace];
+  LODWORD(v18) = WXOptionalTableWidthAttribute(v18, wXMainNamespace4, "w", &v85, &v84);
 
   if (v18)
   {
-    [v8 setWidth:v85];
-    [v8 setWidthType:v84];
+    [toCopy setWidth:v85];
+    [toCopy setWidthType:v84];
   }
 
-  v20 = [v9 WXMainNamespace];
-  v21 = OCXFindChild(a3, v20, "tcMar");
+  wXMainNamespace5 = [stateCopy WXMainNamespace];
+  v21 = OCXFindChild(from, wXMainNamespace5, "tcMar");
 
   if (v21)
   {
-    v22 = [v9 WXMainNamespace];
-    v23 = OCXFindChild(v21, v22, "top");
+    wXMainNamespace6 = [stateCopy WXMainNamespace];
+    v23 = OCXFindChild(v21, wXMainNamespace6, "top");
 
-    v24 = [v9 WXMainNamespace];
-    LODWORD(v23) = WXOptionalTableWidthAttribute(v23, v24, "w", &v85, &v84);
+    wXMainNamespace7 = [stateCopy WXMainNamespace];
+    LODWORD(v23) = WXOptionalTableWidthAttribute(v23, wXMainNamespace7, "w", &v85, &v84);
 
     if (v23)
     {
-      [v8 setTopMargin:v85];
-      [v8 setTopMarginType:v84];
+      [toCopy setTopMargin:v85];
+      [toCopy setTopMarginType:v84];
     }
 
-    v25 = [v9 WXMainNamespace];
-    v26 = OCXFindChild(v21, v25, "bottom");
+    wXMainNamespace8 = [stateCopy WXMainNamespace];
+    v26 = OCXFindChild(v21, wXMainNamespace8, "bottom");
 
-    v27 = [v9 WXMainNamespace];
-    LODWORD(v26) = WXOptionalTableWidthAttribute(v26, v27, "w", &v85, &v84);
+    wXMainNamespace9 = [stateCopy WXMainNamespace];
+    LODWORD(v26) = WXOptionalTableWidthAttribute(v26, wXMainNamespace9, "w", &v85, &v84);
 
     if (v26)
     {
-      [v8 setBottomMargin:v85];
-      [v8 setBottomMarginType:v84];
+      [toCopy setBottomMargin:v85];
+      [toCopy setBottomMarginType:v84];
     }
 
-    v28 = [v9 WXMainNamespace];
-    v29 = OCXFindChild(v21, v28, "left");
+    wXMainNamespace10 = [stateCopy WXMainNamespace];
+    v29 = OCXFindChild(v21, wXMainNamespace10, "left");
 
     if (!v29)
     {
-      v30 = [v9 WXMainNamespace];
-      v29 = OCXFindChild(v21, v30, "start");
+      wXMainNamespace11 = [stateCopy WXMainNamespace];
+      v29 = OCXFindChild(v21, wXMainNamespace11, "start");
     }
 
-    v31 = [v9 WXMainNamespace];
-    v32 = WXOptionalTableWidthAttribute(v29, v31, "w", &v85, &v84);
+    wXMainNamespace12 = [stateCopy WXMainNamespace];
+    v32 = WXOptionalTableWidthAttribute(v29, wXMainNamespace12, "w", &v85, &v84);
 
     if (v32)
     {
-      [v8 setLeftMargin:v85];
-      [v8 setLeftMarginType:v84];
+      [toCopy setLeftMargin:v85];
+      [toCopy setLeftMarginType:v84];
     }
 
-    v33 = [v9 WXMainNamespace];
-    v34 = OCXFindChild(v21, v33, "right");
+    wXMainNamespace13 = [stateCopy WXMainNamespace];
+    v34 = OCXFindChild(v21, wXMainNamespace13, "right");
 
     if (!v34)
     {
-      v35 = [v9 WXMainNamespace];
-      v34 = OCXFindChild(0, v35, "end");
+      wXMainNamespace14 = [stateCopy WXMainNamespace];
+      v34 = OCXFindChild(0, wXMainNamespace14, "end");
     }
 
-    v36 = [v9 WXMainNamespace];
-    v37 = WXOptionalTableWidthAttribute(v34, v36, "w", &v85, &v84);
+    wXMainNamespace15 = [stateCopy WXMainNamespace];
+    v37 = WXOptionalTableWidthAttribute(v34, wXMainNamespace15, "w", &v85, &v84);
 
     if (v37)
     {
-      [v8 setRightMargin:v85];
-      [v8 setRightMarginType:v84];
+      [toCopy setRightMargin:v85];
+      [toCopy setRightMarginType:v84];
     }
   }
 
   v83 = 0;
-  v38 = [v9 WXMainNamespace];
-  v39 = OCXFindChild(a3, v38, "noWrap");
+  wXMainNamespace16 = [stateCopy WXMainNamespace];
+  v39 = OCXFindChild(from, wXMainNamespace16, "noWrap");
 
-  v40 = [v9 WXMainNamespace];
-  LODWORD(v39) = CXOptionalBoolAttribute(v39, v40, "val", &v83);
+  wXMainNamespace17 = [stateCopy WXMainNamespace];
+  LODWORD(v39) = CXOptionalBoolAttribute(v39, wXMainNamespace17, "val", &v83);
 
   if (v39)
   {
-    [v8 setNoWrap:v83];
+    [toCopy setNoWrap:v83];
   }
 
-  v41 = [v9 WXMainNamespace];
-  v42 = OCXFindChild(a3, v41, "vMerge");
+  wXMainNamespace18 = [stateCopy WXMainNamespace];
+  v42 = OCXFindChild(from, wXMainNamespace18, "vMerge");
 
   if (v42)
   {
-    [v8 setVerticallyMergedCell:1];
+    [toCopy setVerticallyMergedCell:1];
     Prop = xmlGetProp(v42, "val");
     v44 = Prop;
     if (Prop)
     {
-      [v8 setFirstInSetOfVerticallyMergedCells:{xmlStrcmp(Prop, "restart") == 0}];
+      [toCopy setFirstInSetOfVerticallyMergedCells:{xmlStrcmp(Prop, "restart") == 0}];
       free(v44);
     }
 
     else
     {
-      [v8 setFirstInSetOfVerticallyMergedCells:0];
+      [toCopy setFirstInSetOfVerticallyMergedCells:0];
     }
   }
 
   v82 = 0;
-  v45 = [a1 verticalAlignmentEnumMap];
-  v46 = readEnumProperty<WDVerticalAlignment>(a3, "vAlign", "val", v45, &v82, v9);
+  verticalAlignmentEnumMap = [self verticalAlignmentEnumMap];
+  v46 = readEnumProperty<WDVerticalAlignment>(from, "vAlign", "val", verticalAlignmentEnumMap, &v82, stateCopy);
 
   if (v46)
   {
-    [v8 setVerticalAlignment:v82];
+    [toCopy setVerticalAlignment:v82];
   }
 
   v81 = 0;
   v47 = +[WXCommon textDirectionEnumMap];
-  if (readEnumProperty<WDTextDirection>(a3, "textDirection", "val", v47, &v81, v9))
+  if (readEnumProperty<WDTextDirection>(from, "textDirection", "val", v47, &v81, stateCopy))
   {
   }
 
   else
   {
     v48 = +[WXCommon strictTextDirectionEnumMap];
-    v49 = readEnumProperty<WDTextDirection>(a3, "textDirection", "val", v48, &v81, v9);
+    v49 = readEnumProperty<WDTextDirection>(from, "textDirection", "val", v48, &v81, stateCopy);
 
     if (!v49)
     {
@@ -195,109 +195,109 @@ void __49__WXTableCellProperties_verticalAlignmentEnumMap__block_invoke()
     }
   }
 
-  [v8 setTextDirection:v81];
+  [toCopy setTextDirection:v81];
 LABEL_32:
-  v50 = [v9 WXMainNamespace];
-  v51 = OCXFindChild(a3, v50, "shd");
+  wXMainNamespace19 = [stateCopy WXMainNamespace];
+  v51 = OCXFindChild(from, wXMainNamespace19, "shd");
 
   if (v51)
   {
-    v52 = [v8 mutableShading];
-    [WXShading readFrom:v51 to:v52 state:v9];
+    mutableShading = [toCopy mutableShading];
+    [WXShading readFrom:v51 to:mutableShading state:stateCopy];
   }
 
-  v53 = [v9 WXMainNamespace];
-  v54 = OCXFindChild(a3, v53, "tcBorders");
+  wXMainNamespace20 = [stateCopy WXMainNamespace];
+  v54 = OCXFindChild(from, wXMainNamespace20, "tcBorders");
 
   if (v54)
   {
-    v55 = [v9 WXMainNamespace];
-    v56 = OCXFindChild(v54, v55, "top");
+    wXMainNamespace21 = [stateCopy WXMainNamespace];
+    v56 = OCXFindChild(v54, wXMainNamespace21, "top");
 
     if (v56)
     {
-      v57 = [v8 mutableTopBorder];
-      [WXBorder readFrom:v56 to:v57 state:v9];
+      mutableTopBorder = [toCopy mutableTopBorder];
+      [WXBorder readFrom:v56 to:mutableTopBorder state:stateCopy];
     }
 
-    v58 = [v9 WXMainNamespace];
-    v59 = OCXFindChild(v54, v58, "left");
+    wXMainNamespace22 = [stateCopy WXMainNamespace];
+    v59 = OCXFindChild(v54, wXMainNamespace22, "left");
 
-    if (v59 || ([v9 WXMainNamespace], v60 = objc_claimAutoreleasedReturnValue(), v59 = OCXFindChild(v54, v60, "start"), v60, v59))
+    if (v59 || ([stateCopy WXMainNamespace], v60 = objc_claimAutoreleasedReturnValue(), v59 = OCXFindChild(v54, v60, "start"), v60, v59))
     {
-      v61 = [v8 mutableLeftBorder];
-      [WXBorder readFrom:v59 to:v61 state:v9];
+      mutableLeftBorder = [toCopy mutableLeftBorder];
+      [WXBorder readFrom:v59 to:mutableLeftBorder state:stateCopy];
     }
 
-    v62 = [v9 WXMainNamespace];
-    v63 = OCXFindChild(v54, v62, "bottom");
+    wXMainNamespace23 = [stateCopy WXMainNamespace];
+    v63 = OCXFindChild(v54, wXMainNamespace23, "bottom");
 
     if (v63)
     {
-      v64 = [v8 mutableBottomBorder];
-      [WXBorder readFrom:v63 to:v64 state:v9];
+      mutableBottomBorder = [toCopy mutableBottomBorder];
+      [WXBorder readFrom:v63 to:mutableBottomBorder state:stateCopy];
     }
 
-    v65 = [v9 WXMainNamespace];
-    v66 = OCXFindChild(v54, v65, "right");
+    wXMainNamespace24 = [stateCopy WXMainNamespace];
+    v66 = OCXFindChild(v54, wXMainNamespace24, "right");
 
-    if (v66 || ([v9 WXMainNamespace], v67 = objc_claimAutoreleasedReturnValue(), v66 = OCXFindChild(v54, v67, "end"), v67, v66))
+    if (v66 || ([stateCopy WXMainNamespace], v67 = objc_claimAutoreleasedReturnValue(), v66 = OCXFindChild(v54, v67, "end"), v67, v66))
     {
-      v68 = [v8 mutableRightBorder];
-      [WXBorder readFrom:v66 to:v68 state:v9];
+      mutableRightBorder = [toCopy mutableRightBorder];
+      [WXBorder readFrom:v66 to:mutableRightBorder state:stateCopy];
     }
 
-    v69 = [v9 WXMainNamespace];
-    v70 = OCXFindChild(v54, v69, "insideH");
+    wXMainNamespace25 = [stateCopy WXMainNamespace];
+    v70 = OCXFindChild(v54, wXMainNamespace25, "insideH");
 
     if (v70)
     {
-      v71 = [v8 mutableInsideHorizontalBorder];
-      [WXBorder readFrom:v70 to:v71 state:v9];
+      mutableInsideHorizontalBorder = [toCopy mutableInsideHorizontalBorder];
+      [WXBorder readFrom:v70 to:mutableInsideHorizontalBorder state:stateCopy];
     }
 
-    v72 = [v9 WXMainNamespace];
-    v73 = OCXFindChild(v54, v72, "insideV");
+    wXMainNamespace26 = [stateCopy WXMainNamespace];
+    v73 = OCXFindChild(v54, wXMainNamespace26, "insideV");
 
     if (v73)
     {
-      v74 = [v8 mutableInsideVerticalBorder];
-      [WXBorder readFrom:v73 to:v74 state:v9];
+      mutableInsideVerticalBorder = [toCopy mutableInsideVerticalBorder];
+      [WXBorder readFrom:v73 to:mutableInsideVerticalBorder state:stateCopy];
     }
 
-    v75 = [v9 WXMainNamespace];
-    v76 = OCXFindChild(v54, v75, "tl2br");
+    wXMainNamespace27 = [stateCopy WXMainNamespace];
+    v76 = OCXFindChild(v54, wXMainNamespace27, "tl2br");
 
     if (v76)
     {
-      v77 = [v8 mutableDiagonalDownBorder];
-      [WXBorder readFrom:v76 to:v77 state:v9];
+      mutableDiagonalDownBorder = [toCopy mutableDiagonalDownBorder];
+      [WXBorder readFrom:v76 to:mutableDiagonalDownBorder state:stateCopy];
     }
 
-    v78 = [v9 WXMainNamespace];
-    v79 = OCXFindChild(v54, v78, "tr2bl");
+    wXMainNamespace28 = [stateCopy WXMainNamespace];
+    v79 = OCXFindChild(v54, wXMainNamespace28, "tr2bl");
 
     if (v79)
     {
-      v80 = [v8 mutableDiagonalUpBorder];
-      [WXBorder readFrom:v79 to:v80 state:v9];
+      mutableDiagonalUpBorder = [toCopy mutableDiagonalUpBorder];
+      [WXBorder readFrom:v79 to:mutableDiagonalUpBorder state:stateCopy];
     }
   }
 
-  [v9 setCurrentCellCNFStyle:{objc_msgSend(a1, "bitfieldForCnfStyleFrom:state:", a3, v9)}];
+  [stateCopy setCurrentCellCNFStyle:{objc_msgSend(self, "bitfieldForCnfStyleFrom:state:", from, stateCopy)}];
 }
 
-+ (unint64_t)bitfieldForCnfStyleFrom:(_xmlNode *)a3 state:(id)a4
++ (unint64_t)bitfieldForCnfStyleFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 WXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "cnfStyle");
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v7 = OCXFindChild(from, wXMainNamespace, "cnfStyle");
 
   if (v7)
   {
-    v8 = [v5 WXMainNamespace];
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
     v50 = 0;
-    v9 = CXOptionalStringAttribute(v7, v8, "val", &v50);
+    v9 = CXOptionalStringAttribute(v7, wXMainNamespace2, "val", &v50);
     v10 = v50;
 
     if (v9)
@@ -320,11 +320,11 @@ LABEL_32:
     else
     {
       v49 = 0;
-      v12 = [v5 WXMainNamespace];
-      v13 = CXOptionalBoolAttribute(v7, v12, "firstRow", &v49) && v49;
+      wXMainNamespace3 = [stateCopy WXMainNamespace];
+      v13 = CXOptionalBoolAttribute(v7, wXMainNamespace3, "firstRow", &v49) && v49;
 
-      v14 = [v5 WXMainNamespace];
-      v15 = CXOptionalBoolAttribute(v7, v14, "lastRow", &v49);
+      wXMainNamespace4 = [stateCopy WXMainNamespace];
+      v15 = CXOptionalBoolAttribute(v7, wXMainNamespace4, "lastRow", &v49);
       v16 = v49;
 
       if (v15 && v16)
@@ -332,8 +332,8 @@ LABEL_32:
         v13 |= 2uLL;
       }
 
-      v17 = [v5 WXMainNamespace];
-      v18 = CXOptionalBoolAttribute(v7, v17, "firstColumn", &v49);
+      wXMainNamespace5 = [stateCopy WXMainNamespace];
+      v18 = CXOptionalBoolAttribute(v7, wXMainNamespace5, "firstColumn", &v49);
       v19 = v49;
 
       if (v18 && v19)
@@ -341,8 +341,8 @@ LABEL_32:
         v13 |= 4uLL;
       }
 
-      v20 = [v5 WXMainNamespace];
-      v21 = CXOptionalBoolAttribute(v7, v20, "lastColumn", &v49);
+      wXMainNamespace6 = [stateCopy WXMainNamespace];
+      v21 = CXOptionalBoolAttribute(v7, wXMainNamespace6, "lastColumn", &v49);
       v22 = v49;
 
       if (v21 && v22)
@@ -350,8 +350,8 @@ LABEL_32:
         v13 |= 8uLL;
       }
 
-      v23 = [v5 WXMainNamespace];
-      v24 = CXOptionalBoolAttribute(v7, v23, "oddVBand", &v49);
+      wXMainNamespace7 = [stateCopy WXMainNamespace];
+      v24 = CXOptionalBoolAttribute(v7, wXMainNamespace7, "oddVBand", &v49);
       v25 = v49;
 
       if (v24 && v25)
@@ -359,8 +359,8 @@ LABEL_32:
         v13 |= 0x10uLL;
       }
 
-      v26 = [v5 WXMainNamespace];
-      v27 = CXOptionalBoolAttribute(v7, v26, "evenVBand", &v49);
+      wXMainNamespace8 = [stateCopy WXMainNamespace];
+      v27 = CXOptionalBoolAttribute(v7, wXMainNamespace8, "evenVBand", &v49);
       v28 = v49;
 
       if (v27 && v28)
@@ -368,8 +368,8 @@ LABEL_32:
         v13 |= 0x20uLL;
       }
 
-      v29 = [v5 WXMainNamespace];
-      v30 = CXOptionalBoolAttribute(v7, v29, "oddHBand", &v49);
+      wXMainNamespace9 = [stateCopy WXMainNamespace];
+      v30 = CXOptionalBoolAttribute(v7, wXMainNamespace9, "oddHBand", &v49);
       v31 = v49;
 
       if (v30 && v31)
@@ -377,8 +377,8 @@ LABEL_32:
         v13 |= 0x40uLL;
       }
 
-      v32 = [v5 WXMainNamespace];
-      v33 = CXOptionalBoolAttribute(v7, v32, "evenHBand", &v49);
+      wXMainNamespace10 = [stateCopy WXMainNamespace];
+      v33 = CXOptionalBoolAttribute(v7, wXMainNamespace10, "evenHBand", &v49);
       v34 = v49;
 
       if (v33 && v34)
@@ -386,8 +386,8 @@ LABEL_32:
         v13 |= 0x80uLL;
       }
 
-      v35 = [v5 WXMainNamespace];
-      v36 = CXOptionalBoolAttribute(v7, v35, "firstRowFirstColumn", &v49);
+      wXMainNamespace11 = [stateCopy WXMainNamespace];
+      v36 = CXOptionalBoolAttribute(v7, wXMainNamespace11, "firstRowFirstColumn", &v49);
       v37 = v49;
 
       if (v36 && v37)
@@ -395,8 +395,8 @@ LABEL_32:
         v13 |= 0x200uLL;
       }
 
-      v38 = [v5 WXMainNamespace];
-      v39 = CXOptionalBoolAttribute(v7, v38, "firstRowLastColumn", &v49);
+      wXMainNamespace12 = [stateCopy WXMainNamespace];
+      v39 = CXOptionalBoolAttribute(v7, wXMainNamespace12, "firstRowLastColumn", &v49);
       v40 = v49;
 
       if (v39 && v40)
@@ -404,8 +404,8 @@ LABEL_32:
         v13 |= 0x100uLL;
       }
 
-      v41 = [v5 WXMainNamespace];
-      v42 = CXOptionalBoolAttribute(v7, v41, "lastRowFirstColumn", &v49);
+      wXMainNamespace13 = [stateCopy WXMainNamespace];
+      v42 = CXOptionalBoolAttribute(v7, wXMainNamespace13, "lastRowFirstColumn", &v49);
       v43 = v49;
 
       if (v42 && v43)
@@ -418,8 +418,8 @@ LABEL_32:
         v44 = v13;
       }
 
-      v45 = [v5 WXMainNamespace];
-      v46 = CXOptionalBoolAttribute(v7, v45, "lastRowLastColumn", &v49);
+      wXMainNamespace14 = [stateCopy WXMainNamespace];
+      v46 = CXOptionalBoolAttribute(v7, wXMainNamespace14, "lastRowLastColumn", &v49);
       v47 = v49;
 
       if (v46 && v47)

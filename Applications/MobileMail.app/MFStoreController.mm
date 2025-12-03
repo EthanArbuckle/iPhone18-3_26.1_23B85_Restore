@@ -1,10 +1,10 @@
 @interface MFStoreController
 + (OS_os_log)log;
-+ (id)_canLoadAsStoreURL:(id)a3;
-+ (id)_presentStoreURL:(id)a3 from:(id)a4;
-+ (id)openPossibleStoreURL:(id)a3 presentingFrom:(id)a4;
++ (id)_canLoadAsStoreURL:(id)l;
++ (id)_presentStoreURL:(id)l from:(id)from;
++ (id)openPossibleStoreURL:(id)l presentingFrom:(id)from;
 - (MFStoreController)init;
-- (id)_presentStoreURL:(id)a3 from:(id)a4;
+- (id)_presentStoreURL:(id)l from:(id)from;
 @end
 
 @implementation MFStoreController
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100217450;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD678 != -1)
   {
     dispatch_once(&qword_1006DD678, block);
@@ -26,26 +26,26 @@
   return v2;
 }
 
-+ (id)openPossibleStoreURL:(id)a3 presentingFrom:(id)a4
++ (id)openPossibleStoreURL:(id)l presentingFrom:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  fromCopy = from;
   v8 = +[EFScheduler mainThreadScheduler];
-  v9 = [v7 view];
-  v10 = [v9 isUserInteractionEnabled];
+  view = [fromCopy view];
+  isUserInteractionEnabled = [view isUserInteractionEnabled];
 
-  v11 = [v7 view];
-  [v11 setUserInteractionEnabled:0];
+  view2 = [fromCopy view];
+  [view2 setUserInteractionEnabled:0];
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100217850;
   v33[3] = &unk_10064D9D8;
-  v12 = v7;
+  v12 = fromCopy;
   v34 = v12;
-  v35 = v10;
+  v35 = isUserInteractionEnabled;
   v13 = [EFDeallocInvocationToken tokenWithLabel:@"MFStoreController Interaction Resumer" invocationBlock:v33];
-  v14 = [a1 _canLoadAsStoreURL:v6];
+  v14 = [self _canLoadAsStoreURL:lCopy];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100217980;
@@ -60,8 +60,8 @@
   v25[2] = sub_1002179BC;
   v17 = v25[3] = &unk_100655AD0;
   v26 = v17;
-  v29 = a1;
-  v18 = v6;
+  selfCopy = self;
+  v18 = lCopy;
   v27 = v18;
   v19 = v12;
   v28 = v19;
@@ -77,9 +77,9 @@
   return v20;
 }
 
-+ (id)_canLoadAsStoreURL:(id)a3
++ (id)_canLoadAsStoreURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   +[EFPromise promise];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -90,7 +90,7 @@
   v6 = sub_100217BF8();
   if (v6)
   {
-    [v6 getCanLoadURL:v3 completionBlock:v5];
+    [v6 getCanLoadURL:lCopy completionBlock:v5];
   }
 
   else
@@ -98,17 +98,17 @@
     (v5[2])(v5, 0);
   }
 
-  v7 = [v4 future];
+  future = [v4 future];
 
-  return v7;
+  return future;
 }
 
-+ (id)_presentStoreURL:(id)a3 from:(id)a4
++ (id)_presentStoreURL:(id)l from:(id)from
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  fromCopy = from;
   v7 = objc_alloc_init(MFStoreController);
-  v8 = [(MFStoreController *)v7 _presentStoreURL:v5 from:v6];
+  v8 = [(MFStoreController *)v7 _presentStoreURL:lCopy from:fromCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100217DFC;
@@ -139,18 +139,18 @@
   return v2;
 }
 
-- (id)_presentStoreURL:(id)a3 from:(id)a4
+- (id)_presentStoreURL:(id)l from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  fromCopy = from;
   storeViewController = self->_storeViewController;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100218014;
   v14[3] = &unk_100655AF8;
-  v9 = v6;
+  v9 = lCopy;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   [(SKStoreProductViewController *)storeViewController loadProductWithURL:v9 completionBlock:v14];
   v10 = self->_storeViewController;
   v13[0] = _NSConcreteStackBlock;
@@ -158,10 +158,10 @@
   v13[2] = sub_10021817C;
   v13[3] = &unk_10064C7E8;
   v13[4] = self;
-  [v7 presentViewController:v10 animated:1 completion:v13];
-  v11 = [(EFPromise *)self->_promise future];
+  [fromCopy presentViewController:v10 animated:1 completion:v13];
+  future = [(EFPromise *)self->_promise future];
 
-  return v11;
+  return future;
 }
 
 @end

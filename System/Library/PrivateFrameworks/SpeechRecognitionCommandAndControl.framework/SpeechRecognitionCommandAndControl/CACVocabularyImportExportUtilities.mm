@@ -1,7 +1,7 @@
 @interface CACVocabularyImportExportUtilities
 + (id)defaultExportURL;
-+ (id)exportToURL:(id)a3;
-+ (id)importFromURL:(id)a3;
++ (id)exportToURL:(id)l;
++ (id)importFromURL:(id)l;
 @end
 
 @implementation CACVocabularyImportExportUtilities
@@ -12,19 +12,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = [CACLocaleUtilities localizedUIStringForKey:@"VocabularyImportExport.defaultExportedFileName"];
   v5 = [v3 stringWithFormat:@"~/%@", v4];
-  v6 = [v5 stringByExpandingTildeInPath];
-  v7 = [v6 stringByAppendingPathExtension:kCACVocabularyFileExtensionVCVocabulary];
+  stringByExpandingTildeInPath = [v5 stringByExpandingTildeInPath];
+  v7 = [stringByExpandingTildeInPath stringByAppendingPathExtension:kCACVocabularyFileExtensionVCVocabulary];
   v8 = [v2 fileURLWithPath:v7 isDirectory:0];
 
   return v8;
 }
 
-+ (id)importFromURL:(id)a3
++ (id)importFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v14 = 0;
-    v3 = [VCVocabularyObjC importFrom:a3 error:&v14];
+    v3 = [VCVocabularyObjC importFrom:l error:&v14];
     v4 = v14;
     v5 = [CACImportExportResult alloc];
     v6 = v5;
@@ -62,16 +62,16 @@
   return v7;
 }
 
-+ (id)exportToURL:(id)a3
++ (id)exportToURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = +[CACPreferences sharedPreferences];
-    v5 = [v4 bestLocaleIdentifier];
+    bestLocaleIdentifier = [v4 bestLocaleIdentifier];
 
     v14 = 0;
-    v6 = [VCVocabularyObjC exportTo:v3 localeIdentifier:v5 error:&v14];
+    v6 = [VCVocabularyObjC exportTo:lCopy localeIdentifier:bestLocaleIdentifier error:&v14];
     v7 = v14;
     if (v7)
     {

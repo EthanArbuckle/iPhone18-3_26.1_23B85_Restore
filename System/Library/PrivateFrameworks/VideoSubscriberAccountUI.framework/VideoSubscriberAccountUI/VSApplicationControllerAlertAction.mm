@@ -1,18 +1,18 @@
 @interface VSApplicationControllerAlertAction
-+ (int64_t)styleFromString:(id)a3;
++ (int64_t)styleFromString:(id)string;
 @end
 
 @implementation VSApplicationControllerAlertAction
 
-+ (int64_t)styleFromString:(id)a3
++ (int64_t)styleFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqual:@"cancel"])
+  stringCopy = string;
+  if ([stringCopy isEqual:@"cancel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"destructive"])
+  else if ([stringCopy isEqual:@"destructive"])
   {
     v4 = 2;
   }

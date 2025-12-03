@@ -1,12 +1,12 @@
 @interface ModelMonitoringDataTrialIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModelMonitoringDataTrialIdentifier
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = ModelMonitoringDataTrialIdentifier;
   v3 = [(ModelMonitoringDataTrialIdentifier *)&v7 description];
-  v4 = [(ModelMonitoringDataTrialIdentifier *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModelMonitoringDataTrialIdentifier *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -47,77 +47,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_treatment)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deployment)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_treatment)
   {
     [v5 setTreatment:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deployment)
   {
     [v5 setDeployment:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_task copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_treatment copyWithZone:a3];
+  v8 = [(NSString *)self->_treatment copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_deployment copyWithZone:a3];
+  v10 = [(NSString *)self->_deployment copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | v4[2])) || -[NSString isEqual:](task, "isEqual:")) && ((treatment = self->_treatment, !(treatment | v4[3])) || -[NSString isEqual:](treatment, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | equalCopy[2])) || -[NSString isEqual:](task, "isEqual:")) && ((treatment = self->_treatment, !(treatment | equalCopy[3])) || -[NSString isEqual:](treatment, "isEqual:")))
   {
     deployment = self->_deployment;
-    if (deployment | v4[1])
+    if (deployment | equalCopy[1])
     {
       v8 = [(NSString *)deployment isEqual:?];
     }
@@ -143,26 +143,26 @@
   return v4 ^ [(NSString *)self->_deployment hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(ModelMonitoringDataTrialIdentifier *)self setTask:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(ModelMonitoringDataTrialIdentifier *)self setTreatment:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(ModelMonitoringDataTrialIdentifier *)self setDeployment:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

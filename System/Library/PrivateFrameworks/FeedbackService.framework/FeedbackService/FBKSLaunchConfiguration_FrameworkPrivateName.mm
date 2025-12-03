@@ -1,15 +1,15 @@
 @interface FBKSLaunchConfiguration_FrameworkPrivateName
-+ (id)fromJSONWithData:(id)a3;
++ (id)fromJSONWithData:(id)data;
 - (NSData)asJSON;
 - (int64_t)promptStyle;
-- (void)setPromptStyle:(int64_t)a3;
+- (void)setPromptStyle:(int64_t)style;
 @end
 
 @implementation FBKSLaunchConfiguration_FrameworkPrivateName
 
 - (NSData)asJSON
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FBKSLaunchConfiguration.asJSON.getter();
   v5 = v4;
 
@@ -19,9 +19,9 @@
   return v6;
 }
 
-+ (id)fromJSONWithData:(id)a3
++ (id)fromJSONWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_1B014CA8C();
   v6 = v5;
 
@@ -38,11 +38,11 @@
   return *(self + v3);
 }
 
-- (void)setPromptStyle:(int64_t)a3
+- (void)setPromptStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___FBKSLaunchConfiguration_FrameworkPrivateName_promptStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 @end

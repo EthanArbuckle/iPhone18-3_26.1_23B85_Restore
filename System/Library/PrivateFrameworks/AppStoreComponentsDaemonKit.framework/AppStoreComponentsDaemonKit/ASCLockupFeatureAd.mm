@@ -1,31 +1,31 @@
 @interface ASCLockupFeatureAd
-- (ASCLockupFeatureAd)initWithCoder:(id)a3;
-- (ASCLockupFeatureAd)initWithEditorsChoice:(BOOL)a3 productRating:(float)a4 productRatingBadge:(id)a5 productDescription:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureAd)initWithCoder:(id)coder;
+- (ASCLockupFeatureAd)initWithEditorsChoice:(BOOL)choice productRating:(float)rating productRatingBadge:(id)badge productDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureAd
 
-- (ASCLockupFeatureAd)initWithEditorsChoice:(BOOL)a3 productRating:(float)a4 productRatingBadge:(id)a5 productDescription:(id)a6
+- (ASCLockupFeatureAd)initWithEditorsChoice:(BOOL)choice productRating:(float)rating productRatingBadge:(id)badge productDescription:(id)description
 {
-  v10 = a5;
-  v11 = a6;
+  badgeCopy = badge;
+  descriptionCopy = description;
   v19.receiver = self;
   v19.super_class = ASCLockupFeatureAd;
   v12 = [(ASCLockupFeatureAd *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_isEditorsChoice = a3;
-    v12->_productRating = a4;
-    v14 = [v10 copy];
+    v12->_isEditorsChoice = choice;
+    v12->_productRating = rating;
+    v14 = [badgeCopy copy];
     productRatingBadge = v13->_productRatingBadge;
     v13->_productRatingBadge = v14;
 
-    v16 = [v11 copy];
+    v16 = [descriptionCopy copy];
     productDescription = v13->_productDescription;
     v13->_productDescription = v16;
   }
@@ -33,20 +33,20 @@
   return v13;
 }
 
-- (ASCLockupFeatureAd)initWithCoder:(id)a3
+- (ASCLockupFeatureAd)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isEditorsChoice"];
-  if ([v4 containsValueForKey:@"productRating"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isEditorsChoice"];
+  if ([coderCopy containsValueForKey:@"productRating"])
   {
-    [v4 decodeFloatForKey:@"productRating"];
+    [coderCopy decodeFloatForKey:@"productRating"];
     v7 = v6;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productRatingBadge"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productRatingBadge"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productDescription"];
     LODWORD(v10) = v7;
     self = [(ASCLockupFeatureAd *)self initWithEditorsChoice:v5 productRating:v8 productRatingBadge:v9 productDescription:v10];
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -56,23 +56,23 @@
       [ASCLockupFeatureAd initWithCoder:];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[ASCLockupFeatureAd isEditorsChoice](self forKey:{"isEditorsChoice"), @"isEditorsChoice"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[ASCLockupFeatureAd isEditorsChoice](self forKey:{"isEditorsChoice"), @"isEditorsChoice"}];
   [(ASCLockupFeatureAd *)self productRating];
-  [v4 encodeFloat:@"productRating" forKey:?];
-  v5 = [(ASCLockupFeatureAd *)self productRatingBadge];
-  [v4 encodeObject:v5 forKey:@"productRatingBadge"];
+  [coderCopy encodeFloat:@"productRating" forKey:?];
+  productRatingBadge = [(ASCLockupFeatureAd *)self productRatingBadge];
+  [coderCopy encodeObject:productRatingBadge forKey:@"productRatingBadge"];
 
-  v6 = [(ASCLockupFeatureAd *)self productDescription];
-  [v4 encodeObject:v6 forKey:@"productDescription"];
+  productDescription = [(ASCLockupFeatureAd *)self productDescription];
+  [coderCopy encodeObject:productDescription forKey:@"productDescription"];
 }
 
 - (unint64_t)hash
@@ -81,23 +81,23 @@
   [(ASCHasher *)v3 combineBool:[(ASCLockupFeatureAd *)self isEditorsChoice]];
   [(ASCLockupFeatureAd *)self productRating];
   [(ASCHasher *)v3 combineDouble:v4];
-  v5 = [(ASCLockupFeatureAd *)self productRatingBadge];
-  [(ASCHasher *)v3 combineObject:v5];
+  productRatingBadge = [(ASCLockupFeatureAd *)self productRatingBadge];
+  [(ASCHasher *)v3 combineObject:productRatingBadge];
 
-  v6 = [(ASCLockupFeatureAd *)self productDescription];
-  [(ASCHasher *)v3 combineObject:v6];
+  productDescription = [(ASCLockupFeatureAd *)self productDescription];
+  [(ASCHasher *)v3 combineObject:productDescription];
 
-  v7 = [(ASCHasher *)v3 finalizeHash];
-  return v7;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -126,31 +126,31 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v13 = [(ASCLockupFeatureAd *)self productRatingBadge];
-    v14 = [(ASCLockupFeatureAd *)v8 productRatingBadge];
-    v15 = v14;
-    if (v13 && v14)
+    productRatingBadge = [(ASCLockupFeatureAd *)self productRatingBadge];
+    productRatingBadge2 = [(ASCLockupFeatureAd *)v8 productRatingBadge];
+    v15 = productRatingBadge2;
+    if (productRatingBadge && productRatingBadge2)
     {
-      if ([v13 isEqual:v14])
+      if ([productRatingBadge isEqual:productRatingBadge2])
       {
         goto LABEL_14;
       }
     }
 
-    else if (v13 == v14)
+    else if (productRatingBadge == productRatingBadge2)
     {
 LABEL_14:
-      v16 = [(ASCLockupFeatureAd *)self productDescription];
-      v17 = [(ASCLockupFeatureAd *)v8 productDescription];
-      v18 = v17;
-      if (v16 && v17)
+      productDescription = [(ASCLockupFeatureAd *)self productDescription];
+      productDescription2 = [(ASCLockupFeatureAd *)v8 productDescription];
+      v18 = productDescription2;
+      if (productDescription && productDescription2)
       {
-        v7 = [v16 isEqual:v17];
+        v7 = [productDescription isEqual:productDescription2];
       }
 
       else
       {
-        v7 = v16 == v17;
+        v7 = productDescription == productDescription2;
       }
 
       goto LABEL_24;
@@ -174,15 +174,15 @@ LABEL_19:
   [(ASCDescriber *)v3 addBool:[(ASCLockupFeatureAd *)self isEditorsChoice] withName:@"isEditorsChoice"];
   [(ASCLockupFeatureAd *)self productRating];
   [(ASCDescriber *)v3 addDouble:@"productRating" withName:v4];
-  v5 = [(ASCLockupFeatureAd *)self productRatingBadge];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"productRatingBadge"];
+  productRatingBadge = [(ASCLockupFeatureAd *)self productRatingBadge];
+  [(ASCDescriber *)v3 addObject:productRatingBadge withName:@"productRatingBadge"];
 
-  v6 = [(ASCLockupFeatureAd *)self productDescription];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"productDescription"];
+  productDescription = [(ASCLockupFeatureAd *)self productDescription];
+  [(ASCDescriber *)v3 addObject:productDescription withName:@"productDescription"];
 
-  v7 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v7;
+  return finalizeDescription;
 }
 
 @end

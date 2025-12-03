@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (FMFAppStateObserver)init;
 - (void)dealloc;
-- (void)detectedAppInstallStateChanged:(id)a3;
+- (void)detectedAppInstallStateChanged:(id)changed;
 @end
 
 @implementation FMFAppStateObserver
@@ -43,27 +43,27 @@
   [(FMFAppStateObserver *)&v4 dealloc];
 }
 
-- (void)detectedAppInstallStateChanged:(id)a3
+- (void)detectedAppInstallStateChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bundleIDs"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"isPlaceholder"];
-  v8 = [v7 BOOLValue];
+  v7 = [userInfo2 objectForKeyedSubscript:@"isPlaceholder"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (([v5 fm_any:&stru_10005DE10] & 1) != 0 || !v8)
+  if (([v5 fm_any:&stru_10005DE10] & 1) != 0 || !bOOLValue)
   {
     v9 = +[SystemConfig sharedInstance];
-    v10 = [v9 isFMFAppRemoved];
+    isFMFAppRemoved = [v9 isFMFAppRemoved];
 
     v11 = sub_100002830();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12[0] = 67109120;
-      v12[1] = v10 ^ 1;
+      v12[1] = isFMFAppRemoved ^ 1;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "FMFAppStateObserver: Detected install state change event for Find My app - installed: %d.", v12, 8u);
     }
   }

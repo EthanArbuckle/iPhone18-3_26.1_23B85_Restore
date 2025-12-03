@@ -1,16 +1,16 @@
 @interface SCATVisualScrollerView
 + (CGSize)scrollerSize;
 - (BOOL)scatHidesGroupCursorWhenFocused;
-- (BOOL)scatPerformAction:(int)a3;
-- (BOOL)updateFocusState:(int64_t)a3;
-- (SCATVisualScrollerView)initWithTriangle:(unint64_t)a3;
+- (BOOL)scatPerformAction:(int)action;
+- (BOOL)updateFocusState:(int64_t)state;
+- (SCATVisualScrollerView)initWithTriangle:(unint64_t)triangle;
 - (id)description;
 - (void)layoutSubviews;
 @end
 
 @implementation SCATVisualScrollerView
 
-- (SCATVisualScrollerView)initWithTriangle:(unint64_t)a3
+- (SCATVisualScrollerView)initWithTriangle:(unint64_t)triangle
 {
   v14.receiver = self;
   v14.super_class = SCATVisualScrollerView;
@@ -19,17 +19,17 @@
   if (v4)
   {
     [(SCATVisualScrollerView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(SCATVisualScrollerView *)v5 setTriangle:a3];
-    v6 = [(SCATVisualScrollerView *)v5 layer];
-    [v6 setMasksToBounds:1];
+    [(SCATVisualScrollerView *)v5 setTriangle:triangle];
+    layer = [(SCATVisualScrollerView *)v5 layer];
+    [layer setMasksToBounds:1];
 
     v7 = +[CAShapeLayer layer];
     [v7 setLineWidth:1.0];
-    v8 = [(SCATVisualScrollerView *)v5 triangleKnockoutLayer];
-    [v8 setFillRule:kCAFillRuleEvenOdd];
+    triangleKnockoutLayer = [(SCATVisualScrollerView *)v5 triangleKnockoutLayer];
+    [triangleKnockoutLayer setFillRule:kCAFillRuleEvenOdd];
 
-    v9 = [(SCATVisualScrollerView *)v5 layer];
-    [v9 addSublayer:v7];
+    layer2 = [(SCATVisualScrollerView *)v5 layer];
+    [layer2 addSublayer:v7];
 
     [(SCATVisualScrollerView *)v5 setTriangleKnockoutLayer:v7];
     [v7 setLineCap:kCALineCapRound];
@@ -38,8 +38,8 @@
     v11 = +[UIColor clearColor];
     [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
 
-    v12 = [(SCATVisualScrollerView *)v5 layer];
-    [v12 addSublayer:v10];
+    layer3 = [(SCATVisualScrollerView *)v5 layer];
+    [layer3 addSublayer:v10];
 
     [(SCATVisualScrollerView *)v5 setTriangleStrokeLayer:v10];
     [v10 setLineCap:kCALineCapRound];
@@ -88,11 +88,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  triangleKnockoutLayer = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+  [triangleKnockoutLayer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  triangleStrokeLayer = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+  [triangleStrokeLayer setFrame:{v4, v6, v8, v10}];
 
   if (v8 >= v10)
   {
@@ -107,10 +107,10 @@
   v14 = [UIBezierPath bezierPathWithRect:v4, v6, v8, v10];
   v15 = +[UIBezierPath bezierPath];
   v16 = v13 * 0.5 + -4.0;
-  v17 = [(SCATVisualScrollerView *)self triangle];
-  if (v17 > 1)
+  triangle = [(SCATVisualScrollerView *)self triangle];
+  if (triangle > 1)
   {
-    if (v17 == 2)
+    if (triangle == 2)
     {
       v72.size.width = v16 + v16;
       v72.origin.x = 4.0;
@@ -151,7 +151,7 @@
       goto LABEL_14;
     }
 
-    if (v17 == 3)
+    if (triangle == 3)
     {
       v60.size.width = v16 + v16;
       v60.origin.x = 4.0;
@@ -195,7 +195,7 @@
 
   else
   {
-    if (!v17)
+    if (!triangle)
     {
       v66.size.width = v16 + v16;
       v66.origin.x = 4.0;
@@ -234,7 +234,7 @@
       goto LABEL_12;
     }
 
-    if (v17 == 1)
+    if (triangle == 1)
     {
       v54.size.width = v16 + v16;
       v54.origin.x = 0.0;
@@ -283,19 +283,19 @@ LABEL_14:
 
   [v14 appendPath:v15];
   [v14 setUsesEvenOddFillRule:1];
-  v48 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-  [v48 setFillRule:kCAFillRuleEvenOdd];
+  triangleKnockoutLayer2 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+  [triangleKnockoutLayer2 setFillRule:kCAFillRuleEvenOdd];
 
-  v49 = [v14 CGPath];
-  v50 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-  [v50 setPath:v49];
+  cGPath = [v14 CGPath];
+  triangleKnockoutLayer3 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+  [triangleKnockoutLayer3 setPath:cGPath];
 
-  v51 = [v15 CGPath];
-  v52 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
-  [v52 setPath:v51];
+  cGPath2 = [v15 CGPath];
+  triangleStrokeLayer2 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+  [triangleStrokeLayer2 setPath:cGPath2];
 }
 
-- (BOOL)updateFocusState:(int64_t)a3
+- (BOOL)updateFocusState:(int64_t)state
 {
   v28.receiver = self;
   v28.super_class = SCATVisualScrollerView;
@@ -305,52 +305,52 @@ LABEL_14:
     return v5;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0:
       v17 = +[UIColor clearColor];
-      v18 = [v17 CGColor];
-      v19 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-      [v19 setFillColor:v18];
+      cGColor = [v17 CGColor];
+      triangleKnockoutLayer = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+      [triangleKnockoutLayer setFillColor:cGColor];
 
-      v16 = [objc_opt_class() unfocusedStateColor];
+      unfocusedStateColor = [objc_opt_class() unfocusedStateColor];
       goto LABEL_8;
     case 2:
       v13 = +[UIColor clearColor];
-      v14 = [v13 CGColor];
-      v15 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-      [v15 setFillColor:v14];
+      cGColor2 = [v13 CGColor];
+      triangleKnockoutLayer2 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+      [triangleKnockoutLayer2 setFillColor:cGColor2];
 
-      v16 = [objc_opt_class() focusedGroupStateColor];
+      unfocusedStateColor = [objc_opt_class() focusedGroupStateColor];
 LABEL_8:
-      v20 = v16;
-      v21 = [v16 CGColor];
-      v22 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
-      [v22 setStrokeColor:v21];
+      v20 = unfocusedStateColor;
+      cGColor3 = [unfocusedStateColor CGColor];
+      triangleStrokeLayer = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+      [triangleStrokeLayer setStrokeColor:cGColor3];
 
       [objc_opt_class() unfocusedStateBorderThickness];
       v24 = v23;
-      v9 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
-      [v9 setLineWidth:v24];
+      triangleStrokeLayer2 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+      [triangleStrokeLayer2 setLineWidth:v24];
       v12 = 0.4;
       goto LABEL_9;
     case 1:
-      v6 = [objc_opt_class() focusedStateColor];
-      v7 = [v6 CGColor];
-      v8 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
-      [v8 setFillColor:v7];
+      focusedStateColor = [objc_opt_class() focusedStateColor];
+      cGColor4 = [focusedStateColor CGColor];
+      triangleKnockoutLayer3 = [(SCATVisualScrollerView *)self triangleKnockoutLayer];
+      [triangleKnockoutLayer3 setFillColor:cGColor4];
 
-      v9 = +[UIColor clearColor];
-      v10 = [v9 CGColor];
-      v11 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
-      [v11 setStrokeColor:v10];
+      triangleStrokeLayer2 = +[UIColor clearColor];
+      cGColor5 = [triangleStrokeLayer2 CGColor];
+      triangleStrokeLayer3 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+      [triangleStrokeLayer3 setStrokeColor:cGColor5];
 
       v12 = 1.0;
 LABEL_9:
 
-      v25 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
+      triangleStrokeLayer4 = [(SCATVisualScrollerView *)self triangleStrokeLayer];
       *&v26 = v12;
-      [v25 setOpacity:v26];
+      [triangleStrokeLayer4 setOpacity:v26];
 
       break;
   }
@@ -358,15 +358,15 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
-  v3 = *&a3;
-  v5 = [(SCATVisualScrollerView *)self activateActionHandler];
+  v3 = *&action;
+  activateActionHandler = [(SCATVisualScrollerView *)self activateActionHandler];
 
-  if (v5)
+  if (activateActionHandler)
   {
-    v6 = [(SCATVisualScrollerView *)self activateActionHandler];
-    v6[2]();
+    activateActionHandler2 = [(SCATVisualScrollerView *)self activateActionHandler];
+    activateActionHandler2[2]();
 
     return 1;
   }
@@ -381,17 +381,17 @@ LABEL_9:
 
 - (BOOL)scatHidesGroupCursorWhenFocused
 {
-  v3 = [(SCATVisualScrollerView *)self scatAuxiliaryElementManager];
+  scatAuxiliaryElementManager = [(SCATVisualScrollerView *)self scatAuxiliaryElementManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   result = 0;
   if (isKindOfClass)
   {
-    v5 = [(SCATVisualScrollerView *)self scatAuxiliaryElementManager];
-    v6 = [v5 isTopLevel];
+    scatAuxiliaryElementManager2 = [(SCATVisualScrollerView *)self scatAuxiliaryElementManager];
+    isTopLevel = [scatAuxiliaryElementManager2 isTopLevel];
 
-    if (v6)
+    if (isTopLevel)
     {
       return 1;
     }

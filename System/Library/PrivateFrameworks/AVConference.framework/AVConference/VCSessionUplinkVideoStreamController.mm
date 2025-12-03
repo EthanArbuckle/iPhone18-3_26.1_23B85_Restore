@@ -2,35 +2,35 @@
 - (BOOL)filterPendingTemporalStreams;
 - (BOOL)pauseStreams;
 - (BOOL)resumeStreams;
-- (BOOL)setStreamsUseRTCPWithStreamInfos:(id)a3;
-- (BOOL)shouldGenerateIDRWithStreamSchedule:(id)a3;
+- (BOOL)setStreamsUseRTCPWithStreamInfos:(id)infos;
+- (BOOL)shouldGenerateIDRWithStreamSchedule:(id)schedule;
 - (NSDictionary)activeVideoStreams;
-- (VCSessionUplinkVideoStreamController)initWithVideoStreams:(id)a3 streamInfos:(id)a4 reportingAgent:(opaqueRTCReporting *)a5 delegate:(id)a6;
-- (id)anchorStreamIDWithCappedVideoStreamIDs:(id)a3;
-- (id)getMultiwayConfigForStreamID:(id)a3;
-- (id)newVideoStreamKeyFrameScheduleWithStreamIDs:(id)a3;
-- (id)schedulerStreamWithVideoStream:(id)a3;
-- (id)videoStreamPendingKeyFrameGenerationWithStreamID:(id)a3 shouldRemoveFromPendingArray:(BOOL *)a4;
+- (VCSessionUplinkVideoStreamController)initWithVideoStreams:(id)streams streamInfos:(id)infos reportingAgent:(opaqueRTCReporting *)agent delegate:(id)delegate;
+- (id)anchorStreamIDWithCappedVideoStreamIDs:(id)ds;
+- (id)getMultiwayConfigForStreamID:(id)d;
+- (id)newVideoStreamKeyFrameScheduleWithStreamIDs:(id)ds;
+- (id)schedulerStreamWithVideoStream:(id)stream;
+- (id)videoStreamPendingKeyFrameGenerationWithStreamID:(id)d shouldRemoveFromPendingArray:(BOOL *)array;
 - (void)dealloc;
-- (void)generateKeyFrameWithStreamID:(id)a3 firType:(int)a4;
+- (void)generateKeyFrameWithStreamID:(id)d firType:(int)type;
 - (void)handleStreamsPendingKeyFrameGeneration;
 - (void)handleStreamsResetIDR;
-- (void)initilizeStreamInfoMapWithStreamInfos:(id)a3;
-- (void)printPendingKeyFrameWarningOnThresholdTimeElapsedWithCurrentFrameTime:(float)a3;
+- (void)initilizeStreamInfoMapWithStreamInfos:(id)infos;
+- (void)printPendingKeyFrameWarningOnThresholdTimeElapsedWithCurrentFrameTime:(float)time;
 - (void)restart;
 - (void)resumeStreams;
 - (void)selectVideoStreamForVideoPriority;
-- (void)setCurrentFrameTime:(float)a3;
-- (void)setIsLocalOnCellular:(BOOL)a3 cappedVideoStreamIDs:(id)a4;
-- (void)setPendingVideoStreams:(id)a3;
-- (void)setPendingVideoStreamsInternal:(id)a3;
-- (void)setStreamIDsCell:(id)a3;
-- (void)setStreamIDsWifi:(id)a3;
+- (void)setCurrentFrameTime:(float)time;
+- (void)setIsLocalOnCellular:(BOOL)cellular cappedVideoStreamIDs:(id)ds;
+- (void)setPendingVideoStreams:(id)streams;
+- (void)setPendingVideoStreamsInternal:(id)internal;
+- (void)setStreamIDsCell:(id)cell;
+- (void)setStreamIDsWifi:(id)wifi;
 @end
 
 @implementation VCSessionUplinkVideoStreamController
 
-- (VCSessionUplinkVideoStreamController)initWithVideoStreams:(id)a3 streamInfos:(id)a4 reportingAgent:(opaqueRTCReporting *)a5 delegate:(id)a6
+- (VCSessionUplinkVideoStreamController)initWithVideoStreams:(id)streams streamInfos:(id)infos reportingAgent:(opaqueRTCReporting *)agent delegate:(id)delegate
 {
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -42,11 +42,11 @@
     goto LABEL_7;
   }
 
-  objc_storeWeak(&v10->_delegate, a6);
-  *(v11 + 24) = [a3 mutableCopy];
-  v12 = [a3 count];
+  objc_storeWeak(&v10->_delegate, delegate);
+  *(v11 + 24) = [streams mutableCopy];
+  v12 = [streams count];
   *(v11 + 32) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v12];
-  [v11 initilizeStreamInfoMapWithStreamInfos:a4];
+  [v11 initilizeStreamInfoMapWithStreamInfos:infos];
   *(v11 + 64) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v12];
   *(v11 + 72) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v12];
   v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v12];
@@ -62,9 +62,9 @@
   pthread_mutex_init((v11 + 120), &v17);
   pthread_mutexattr_destroy(&v17);
   *(v11 + 8) = 0;
-  if (a5)
+  if (agent)
   {
-    v14 = CFRetain(a5);
+    v14 = CFRetain(agent);
   }
 
   else
@@ -73,7 +73,7 @@
   }
 
   *(v11 + 240) = v14;
-  if (([v11 setStreamsUseRTCPWithStreamInfos:a4] & 1) == 0)
+  if (([v11 setStreamsUseRTCPWithStreamInfos:infos] & 1) == 0)
   {
     [VCSessionUplinkVideoStreamController initWithVideoStreams:v11 streamInfos:? reportingAgent:? delegate:?];
 LABEL_7:
@@ -109,11 +109,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)setStreamIDsCell:(id)a3
+- (void)setStreamIDsCell:(id)cell
 {
   v78 = *MEMORY[0x1E69E9840];
   [(VCSessionUplinkVideoStreamController *)self lock];
-  if (![a3 count])
+  if (![cell count])
   {
     if (objc_opt_class() == self)
     {
@@ -217,7 +217,7 @@ LABEL_7:
   streamScheduleCell = self->_streamScheduleCell;
   currentStreamSchedule = self->_currentStreamSchedule;
 
-  self->_streamIDsCell = [a3 copy];
+  self->_streamIDsCell = [cell copy];
   self->_streamScheduleCell = [(VCSessionUplinkVideoStreamController *)self newVideoStreamKeyFrameScheduleWithStreamIDs:self->_streamIDsCell];
 
   self->_schedulerCell = [[VCIDRScheduler alloc] initWithStreams:[(NSMutableDictionary *)self->_streamScheduleCell allValues] captureFramerate:self->_captureFrameRate];
@@ -225,8 +225,8 @@ LABEL_7:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v5 = [(NSMutableDictionary *)self->_streamScheduleCell allValues];
-  v6 = [v5 countByEnumeratingWithState:&v74 objects:v73 count:16];
+  allValues = [(NSMutableDictionary *)self->_streamScheduleCell allValues];
+  v6 = [allValues countByEnumeratingWithState:&v74 objects:v73 count:16];
   if (!v6)
   {
     goto LABEL_27;
@@ -234,7 +234,7 @@ LABEL_7:
 
   v7 = v6;
   v8 = *v75;
-  v57 = v5;
+  v57 = allValues;
   do
   {
     v9 = 0;
@@ -242,7 +242,7 @@ LABEL_7:
     {
       if (*v75 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v74 + 1) + 8 * v9);
@@ -263,8 +263,8 @@ LABEL_7:
             goto LABEL_22;
           }
 
-          v23 = [(NSMutableDictionary *)v10 framePosition];
-          v24 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+          framePosition = [(NSMutableDictionary *)v10 framePosition];
+          framesPerIdrPeriod = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
           *buf = 136316418;
           v59 = v20;
           v60 = 2080;
@@ -274,9 +274,9 @@ LABEL_7:
           v64 = 2112;
           v65 = v10;
           v66 = 1024;
-          *v67 = v23;
+          *v67 = framePosition;
           *&v67[4] = 1024;
-          *&v67[6] = v24;
+          *&v67[6] = framesPerIdrPeriod;
           v17 = v21;
           v18 = " [%s] %s:%d Cell stream %@ position %d, framesPerIdrPeriod %d";
           v19 = 50;
@@ -285,8 +285,8 @@ LABEL_7:
 
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          v30 = [(NSMutableDictionary *)v10 framePosition];
-          v31 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+          framePosition2 = [(NSMutableDictionary *)v10 framePosition];
+          framesPerIdrPeriod2 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
           *buf = 136316418;
           v59 = v20;
           v60 = 2080;
@@ -296,9 +296,9 @@ LABEL_7:
           v64 = 2112;
           v65 = v10;
           v66 = 1024;
-          *v67 = v30;
+          *v67 = framePosition2;
           *&v67[4] = 1024;
-          *&v67[6] = v31;
+          *&v67[6] = framesPerIdrPeriod2;
           v27 = v21;
           v28 = " [%s] %s:%d Cell stream %@ position %d, framesPerIdrPeriod %d";
           v29 = 50;
@@ -326,8 +326,8 @@ LABEL_7:
               goto LABEL_22;
             }
 
-            v15 = [(NSMutableDictionary *)v10 framePosition];
-            v16 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+            framePosition3 = [(NSMutableDictionary *)v10 framePosition];
+            framesPerIdrPeriod3 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
             *buf = 136316930;
             v59 = v12;
             v60 = 2080;
@@ -341,10 +341,10 @@ LABEL_7:
             *&v67[8] = 2112;
             v68 = v10;
             v69 = 1024;
-            v70 = v15;
-            v5 = v57;
+            v70 = framePosition3;
+            allValues = v57;
             v71 = 1024;
-            v72 = v16;
+            v72 = framesPerIdrPeriod3;
             v17 = v13;
             v18 = " [%s] %s:%d %@(%p) Cell stream %@ position %d, framesPerIdrPeriod %d";
             v19 = 70;
@@ -355,8 +355,8 @@ LABEL_18:
 
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v25 = [(NSMutableDictionary *)v10 framePosition];
-            v26 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+            framePosition4 = [(NSMutableDictionary *)v10 framePosition];
+            framesPerIdrPeriod4 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
             *buf = 136316930;
             v59 = v12;
             v60 = 2080;
@@ -370,10 +370,10 @@ LABEL_18:
             *&v67[8] = 2112;
             v68 = v10;
             v69 = 1024;
-            v70 = v25;
-            v5 = v57;
+            v70 = framePosition4;
+            allValues = v57;
             v71 = 1024;
-            v72 = v26;
+            v72 = framesPerIdrPeriod4;
             v27 = v13;
             v28 = " [%s] %s:%d %@(%p) Cell stream %@ position %d, framesPerIdrPeriod %d";
             v29 = 70;
@@ -388,7 +388,7 @@ LABEL_22:
     }
 
     while (v7 != v9);
-    v32 = [v5 countByEnumeratingWithState:&v74 objects:v73 count:16];
+    v32 = [allValues countByEnumeratingWithState:&v74 objects:v73 count:16];
     v7 = v32;
   }
 
@@ -536,11 +536,11 @@ LABEL_51:
   [(VCSessionUplinkVideoStreamController *)self unlock:streamScheduleCell];
 }
 
-- (void)setStreamIDsWifi:(id)a3
+- (void)setStreamIDsWifi:(id)wifi
 {
   v78 = *MEMORY[0x1E69E9840];
   [(VCSessionUplinkVideoStreamController *)self lock];
-  if (![a3 count])
+  if (![wifi count])
   {
     if (objc_opt_class() == self)
     {
@@ -644,7 +644,7 @@ LABEL_51:
   streamScheduleWifi = self->_streamScheduleWifi;
   currentStreamSchedule = self->_currentStreamSchedule;
 
-  self->_streamIDsWifi = [a3 copy];
+  self->_streamIDsWifi = [wifi copy];
   self->_streamScheduleWifi = [(VCSessionUplinkVideoStreamController *)self newVideoStreamKeyFrameScheduleWithStreamIDs:self->_streamIDsWifi];
 
   self->_schedulerWifi = [[VCIDRScheduler alloc] initWithStreams:[(NSMutableDictionary *)self->_streamScheduleWifi allValues] captureFramerate:self->_captureFrameRate];
@@ -652,8 +652,8 @@ LABEL_51:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v5 = [(NSMutableDictionary *)self->_streamScheduleWifi allValues];
-  v6 = [v5 countByEnumeratingWithState:&v74 objects:v73 count:16];
+  allValues = [(NSMutableDictionary *)self->_streamScheduleWifi allValues];
+  v6 = [allValues countByEnumeratingWithState:&v74 objects:v73 count:16];
   if (!v6)
   {
     goto LABEL_27;
@@ -661,7 +661,7 @@ LABEL_51:
 
   v7 = v6;
   v8 = *v75;
-  v57 = v5;
+  v57 = allValues;
   do
   {
     v9 = 0;
@@ -669,7 +669,7 @@ LABEL_51:
     {
       if (*v75 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v74 + 1) + 8 * v9);
@@ -690,8 +690,8 @@ LABEL_51:
             goto LABEL_22;
           }
 
-          v23 = [(NSMutableDictionary *)v10 framePosition];
-          v24 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+          framePosition = [(NSMutableDictionary *)v10 framePosition];
+          framesPerIdrPeriod = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
           *buf = 136316418;
           v59 = v20;
           v60 = 2080;
@@ -701,9 +701,9 @@ LABEL_51:
           v64 = 2112;
           v65 = v10;
           v66 = 1024;
-          *v67 = v23;
+          *v67 = framePosition;
           *&v67[4] = 1024;
-          *&v67[6] = v24;
+          *&v67[6] = framesPerIdrPeriod;
           v17 = v21;
           v18 = " [%s] %s:%d Wifi stream %@, position %d, framesPerIdrPeriod %d";
           v19 = 50;
@@ -712,8 +712,8 @@ LABEL_51:
 
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          v30 = [(NSMutableDictionary *)v10 framePosition];
-          v31 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+          framePosition2 = [(NSMutableDictionary *)v10 framePosition];
+          framesPerIdrPeriod2 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
           *buf = 136316418;
           v59 = v20;
           v60 = 2080;
@@ -723,9 +723,9 @@ LABEL_51:
           v64 = 2112;
           v65 = v10;
           v66 = 1024;
-          *v67 = v30;
+          *v67 = framePosition2;
           *&v67[4] = 1024;
-          *&v67[6] = v31;
+          *&v67[6] = framesPerIdrPeriod2;
           v27 = v21;
           v28 = " [%s] %s:%d Wifi stream %@, position %d, framesPerIdrPeriod %d";
           v29 = 50;
@@ -753,8 +753,8 @@ LABEL_51:
               goto LABEL_22;
             }
 
-            v15 = [(NSMutableDictionary *)v10 framePosition];
-            v16 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+            framePosition3 = [(NSMutableDictionary *)v10 framePosition];
+            framesPerIdrPeriod3 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
             *buf = 136316930;
             v59 = v12;
             v60 = 2080;
@@ -768,10 +768,10 @@ LABEL_51:
             *&v67[8] = 2112;
             v68 = v10;
             v69 = 1024;
-            v70 = v15;
-            v5 = v57;
+            v70 = framePosition3;
+            allValues = v57;
             v71 = 1024;
-            v72 = v16;
+            v72 = framesPerIdrPeriod3;
             v17 = v13;
             v18 = " [%s] %s:%d %@(%p) Wifi stream %@, position %d, framesPerIdrPeriod %d";
             v19 = 70;
@@ -782,8 +782,8 @@ LABEL_18:
 
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v25 = [(NSMutableDictionary *)v10 framePosition];
-            v26 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
+            framePosition4 = [(NSMutableDictionary *)v10 framePosition];
+            framesPerIdrPeriod4 = [(NSMutableDictionary *)v10 framesPerIdrPeriod];
             *buf = 136316930;
             v59 = v12;
             v60 = 2080;
@@ -797,10 +797,10 @@ LABEL_18:
             *&v67[8] = 2112;
             v68 = v10;
             v69 = 1024;
-            v70 = v25;
-            v5 = v57;
+            v70 = framePosition4;
+            allValues = v57;
             v71 = 1024;
-            v72 = v26;
+            v72 = framesPerIdrPeriod4;
             v27 = v13;
             v28 = " [%s] %s:%d %@(%p) Wifi stream %@, position %d, framesPerIdrPeriod %d";
             v29 = 70;
@@ -815,7 +815,7 @@ LABEL_22:
     }
 
     while (v7 != v9);
-    v32 = [v5 countByEnumeratingWithState:&v74 objects:v73 count:16];
+    v32 = [allValues countByEnumeratingWithState:&v74 objects:v73 count:16];
     v7 = v32;
   }
 
@@ -963,9 +963,9 @@ LABEL_51:
   [(VCSessionUplinkVideoStreamController *)self unlock:streamScheduleWifi];
 }
 
-- (void)setPendingVideoStreamsInternal:(id)a3
+- (void)setPendingVideoStreamsInternal:(id)internal
 {
-  v5 = [a3 mutableCopy];
+  v5 = [internal mutableCopy];
   self->_pendingVideoStreams = v5;
   if ([(NSMutableDictionary *)v5 count])
   {
@@ -987,7 +987,7 @@ LABEL_51:
   self->_pendingStreamsUpdated = v6;
 }
 
-- (void)setPendingVideoStreams:(id)a3
+- (void)setPendingVideoStreams:(id)streams
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1005,7 +1005,7 @@ LABEL_51:
         *&v13[22] = 1024;
         LODWORD(v14) = 172;
         WORD2(v14) = 2112;
-        *(&v14 + 6) = [a3 allKeys];
+        *(&v14 + 6) = [streams allKeys];
         v8 = " [%s] %s:%d Setting pending streams %@";
         v9 = v7;
         v10 = 38;
@@ -1042,9 +1042,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 2112;
-        *(&v16 + 2) = [a3 allKeys];
+        *(&v16 + 2) = [streams allKeys];
         v8 = " [%s] %s:%d %@(%p) Setting pending streams %@";
         v9 = v12;
         v10 = 58;
@@ -1054,7 +1054,7 @@ LABEL_11:
   }
 
   [(VCSessionUplinkVideoStreamController *)self lock:*v13];
-  [(VCSessionUplinkVideoStreamController *)self setPendingVideoStreamsInternal:a3];
+  [(VCSessionUplinkVideoStreamController *)self setPendingVideoStreamsInternal:streams];
   [(VCSessionUplinkVideoStreamController *)self unlock];
 }
 
@@ -1067,8 +1067,8 @@ LABEL_11:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v3 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
-    v4 = [v3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+    allValues = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
+    v4 = [allValues countByEnumeratingWithState:&v21 objects:v20 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1080,7 +1080,7 @@ LABEL_11:
         {
           if (*v22 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = [objc_msgSend(objc_msgSend(*(*(&v21 + 1) + 8 * i) "defaultStreamConfig")];
@@ -1090,7 +1090,7 @@ LABEL_11:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v21 objects:v20 count:16];
       }
 
       while (v5);
@@ -1105,8 +1105,8 @@ LABEL_11:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
+    v11 = [allValues2 countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1117,13 +1117,13 @@ LABEL_11:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v16 + 1) + 8 * j) setEncodingMode:{v7 == objc_msgSend(objc_msgSend(objc_msgSend(*(*(&v16 + 1) + 8 * j), "defaultStreamConfig"), "multiwayConfig"), "qualityIndex")}];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v12 = [allValues2 countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v12);
@@ -1131,7 +1131,7 @@ LABEL_11:
   }
 }
 
-- (void)setCurrentFrameTime:(float)a3
+- (void)setCurrentFrameTime:(float)time
 {
   v27 = *MEMORY[0x1E69E9840];
   [(VCSessionUplinkVideoStreamController *)self lock];
@@ -1159,7 +1159,7 @@ LABEL_11:
       *&v23[22] = 1024;
       LODWORD(v24) = 204;
       WORD2(v24) = 2048;
-      *(&v24 + 6) = a3;
+      *(&v24 + 6) = time;
       v9 = " [%s] %s:%d FrameTime is %f";
       v10 = v7;
       v11 = 38;
@@ -1207,9 +1207,9 @@ LABEL_13:
         WORD2(v24) = 2112;
         *(&v24 + 6) = v5;
         HIWORD(v24) = 2048;
-        v25 = self;
+        selfCopy2 = self;
         LOWORD(v26) = 2048;
-        *(&v26 + 2) = a3;
+        *(&v26 + 2) = time;
         v9 = " [%s] %s:%d %@(%p) FrameTime is %f";
         v10 = v13;
         v11 = 58;
@@ -1227,9 +1227,9 @@ LABEL_13:
         WORD2(v24) = 2112;
         *(&v24 + 6) = v5;
         HIWORD(v24) = 2048;
-        v25 = self;
+        selfCopy2 = self;
         LOWORD(v26) = 2048;
-        *(&v26 + 2) = a3;
+        *(&v26 + 2) = time;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) FrameTime is %f", v23, 0x3Au);
       }
     }
@@ -1238,13 +1238,13 @@ LABEL_13:
 LABEL_18:
   if (self->_startTime == 0.0)
   {
-    self->_startTime = a3;
+    self->_startTime = time;
   }
 
-  self->_currentFrameTime = a3;
+  self->_currentFrameTime = time;
   if (self->_pendingStreamsUpdated)
   {
-    v15 = [(VCSessionUplinkVideoStreamController *)self filterPendingTemporalStreams];
+    filterPendingTemporalStreams = [(VCSessionUplinkVideoStreamController *)self filterPendingTemporalStreams];
     v16 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSMutableDictionary allKeys](self->_pendingVideoStreams, "allKeys")}];
     v17 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSMutableDictionary allKeys](self->_activeVideoStreams, "allKeys")}];
     v18 = [v16 mutableCopy];
@@ -1255,9 +1255,9 @@ LABEL_18:
     self->_streamToPause = v19;
     self->_streamToResume = v18;
     LOBYTE(v16) = [(VCSessionUplinkVideoStreamController *)self pauseStreams];
-    v20 = [(VCSessionUplinkVideoStreamController *)self resumeStreams];
+    resumeStreams = [(VCSessionUplinkVideoStreamController *)self resumeStreams];
     self->_pendingStreamsUpdated = 0;
-    if ((v16 & 1) != 0 || v20 || v15)
+    if ((v16 & 1) != 0 || resumeStreams || filterPendingTemporalStreams)
     {
 LABEL_27:
       v21 = [(VCSessionUplinkVideoStreamController *)self delegate:*v23];
@@ -1275,7 +1275,7 @@ LABEL_27:
     [(VCSessionUplinkVideoStreamController *)self handleStreamsPendingKeyFrameGeneration];
   }
 
-  *&v22 = a3;
+  *&v22 = time;
   [(VCSessionUplinkVideoStreamController *)self printPendingKeyFrameWarningOnThresholdTimeElapsedWithCurrentFrameTime:v22];
   if ([(NSMutableArray *)self->_streamResetIDR count])
   {
@@ -1285,9 +1285,9 @@ LABEL_27:
   [(VCSessionUplinkVideoStreamController *)self unlock];
 }
 
-- (void)setIsLocalOnCellular:(BOOL)a3 cappedVideoStreamIDs:(id)a4
+- (void)setIsLocalOnCellular:(BOOL)cellular cappedVideoStreamIDs:(id)ds
 {
-  v5 = a3;
+  cellularCopy = cellular;
   v32 = *MEMORY[0x1E69E9840];
   [(VCSessionUplinkVideoStreamController *)self lock];
   if (objc_opt_class() == self)
@@ -1305,9 +1305,9 @@ LABEL_27:
         *&v28[22] = 1024;
         *v29 = 256;
         *&v29[4] = 1024;
-        *&v29[6] = v5;
+        *&v29[6] = cellularCopy;
         *&v29[10] = 2112;
-        *&v29[12] = a4;
+        *&v29[12] = ds;
         v10 = " [%s] %s:%d Current interface isLocalOnCellular %d %@";
         v11 = v9;
         v12 = 44;
@@ -1346,9 +1346,9 @@ LABEL_11:
         *&v29[14] = 2048;
         *&v29[16] = self;
         LOWORD(v30) = 1024;
-        *(&v30 + 2) = v5;
+        *(&v30 + 2) = cellularCopy;
         HIWORD(v30) = 2112;
-        v31 = a4;
+        dsCopy = ds;
         v10 = " [%s] %s:%d %@(%p) Current interface isLocalOnCellular %d %@";
         v11 = v14;
         v12 = 64;
@@ -1358,17 +1358,17 @@ LABEL_11:
   }
 
   v15 = 64;
-  if (v5)
+  if (cellularCopy)
   {
     v15 = 72;
   }
 
   self->_currentStreamSchedule = *(&self->super.isa + v15);
-  v16 = [(VCSessionUplinkVideoStreamController *)self anchorStreamIDWithCappedVideoStreamIDs:a4, *v28, *&v28[16], *v29, *&v29[16], v30, v31];
-  if (v16)
+  dsCopy = [(VCSessionUplinkVideoStreamController *)self anchorStreamIDWithCappedVideoStreamIDs:ds, *v28, *&v28[16], *v29, *&v29[16], v30, dsCopy];
+  if (dsCopy)
   {
-    v17 = v16;
-    v18 = [(NSMutableDictionary *)self->_streamScheduleWifi objectForKeyedSubscript:v16];
+    v17 = dsCopy;
+    v18 = [(NSMutableDictionary *)self->_streamScheduleWifi objectForKeyedSubscript:dsCopy];
     if (v18)
     {
       v19 = v18;
@@ -1376,12 +1376,12 @@ LABEL_11:
       if (v20)
       {
         v21 = v20;
-        v22 = [v19 framePosition];
-        v23 = v22 / [v19 framesPerIdrPeriod];
-        v24 = [v21 framePosition];
-        v25 = v24 / [v21 framesPerIdrPeriod];
+        framePosition = [v19 framePosition];
+        v23 = framePosition / [v19 framesPerIdrPeriod];
+        framePosition2 = [v21 framePosition];
+        v25 = framePosition2 / [v21 framesPerIdrPeriod];
         v26 = [v19 keyFrameInterval] / 0x3E8;
-        if (v5)
+        if (cellularCopy)
         {
           v27 = v23 - v25;
         }
@@ -1414,16 +1414,16 @@ LABEL_11:
   [(VCSessionUplinkVideoStreamController *)self unlock];
 }
 
-- (void)generateKeyFrameWithStreamID:(id)a3 firType:(int)a4
+- (void)generateKeyFrameWithStreamID:(id)d firType:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v19 = *MEMORY[0x1E69E9840];
   [(VCSessionUplinkVideoStreamController *)self lock];
   if (self->_shouldSkipIDRScheduler)
   {
-    if ([(NSMutableDictionary *)self->_activeVideoStreams objectForKeyedSubscript:a3])
+    if ([(NSMutableDictionary *)self->_activeVideoStreams objectForKeyedSubscript:d])
     {
-      v7 = [(NSMutableDictionary *)self->_activeVideoStreams objectForKeyedSubscript:a3];
+      v7 = [(NSMutableDictionary *)self->_activeVideoStreams objectForKeyedSubscript:d];
 LABEL_16:
       [v7 generateKeyFrameWithFIRType:v4];
     }
@@ -1434,8 +1434,8 @@ LABEL_16:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      allValues = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
+      v9 = [allValues countByEnumeratingWithState:&v15 objects:v14 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1446,7 +1446,7 @@ LABEL_16:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allValues);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
@@ -1457,7 +1457,7 @@ LABEL_16:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
+          v10 = [allValues countByEnumeratingWithState:&v15 objects:v14 count:16];
           if (v10)
           {
             continue;
@@ -1469,18 +1469,18 @@ LABEL_16:
     }
   }
 
-  else if (([(NSMutableArray *)self->_streamsPendingKeyFrameGeneration containsObject:a3]& 1) == 0)
+  else if (([(NSMutableArray *)self->_streamsPendingKeyFrameGeneration containsObject:d]& 1) == 0)
   {
-    [(NSMutableArray *)self->_streamsPendingKeyFrameGeneration addObject:a3];
+    [(NSMutableArray *)self->_streamsPendingKeyFrameGeneration addObject:d];
   }
 
   [(VCSessionUplinkVideoStreamController *)self unlock];
 }
 
-- (BOOL)setStreamsUseRTCPWithStreamInfos:(id)a3
+- (BOOL)setStreamsUseRTCPWithStreamInfos:(id)infos
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 count] || !objc_msgSend(objc_msgSend(a3, "firstObject"), "streamConfigs") || !objc_msgSend(objc_msgSend(objc_msgSend(a3, "firstObject"), "streamConfigs"), "count"))
+  if (!infos || ![infos count] || !objc_msgSend(objc_msgSend(infos, "firstObject"), "streamConfigs") || !objc_msgSend(objc_msgSend(objc_msgSend(infos, "firstObject"), "streamConfigs"), "count"))
   {
     if (objc_opt_class() != self)
     {
@@ -1545,12 +1545,12 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "firstObject")];
+  v5 = [objc_msgSend(objc_msgSend(objc_msgSend(infos "firstObject")];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v48 objects:v47 count:16];
+  v6 = [infos countByEnumeratingWithState:&v48 objects:v47 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1561,7 +1561,7 @@ LABEL_7:
     {
       if (*v49 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(infos);
       }
 
       v10 = *(*(&v48 + 1) + 8 * v9);
@@ -1570,8 +1570,8 @@ LABEL_7:
       v45 = 0u;
       v46 = 0u;
       v29 = v10;
-      v11 = [v10 streamConfigs];
-      v12 = [v11 countByEnumeratingWithState:&v43 objects:v42 count:16];
+      streamConfigs = [v10 streamConfigs];
+      v12 = [streamConfigs countByEnumeratingWithState:&v43 objects:v42 count:16];
       if (v12)
       {
         break;
@@ -1580,7 +1580,7 @@ LABEL_7:
 LABEL_18:
       if (++v9 == v7)
       {
-        v7 = [a3 countByEnumeratingWithState:&v48 objects:v47 count:16];
+        v7 = [infos countByEnumeratingWithState:&v48 objects:v47 count:16];
         LOBYTE(v16) = 1;
         if (v7)
         {
@@ -1599,7 +1599,7 @@ LABEL_12:
     {
       if (*v44 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(streamConfigs);
       }
 
       if (v5 != [*(*(&v43 + 1) + 8 * v15) isRTCPEnabled])
@@ -1609,7 +1609,7 @@ LABEL_12:
 
       if (v13 == ++v15)
       {
-        v13 = [v11 countByEnumeratingWithState:&v43 objects:v42 count:16];
+        v13 = [streamConfigs countByEnumeratingWithState:&v43 objects:v42 count:16];
         if (v13)
         {
           goto LABEL_12;
@@ -1686,7 +1686,7 @@ LABEL_12:
     v38 = 1024;
     v39 = v5;
     v40 = 2048;
-    v41 = [v29 stream];
+    stream = [v29 stream];
     v23 = " [%s] %s:%d %@(%p) Invalid RTCP config. firstStreamRTCPEnabled=%d but stream=%p has a different value. All streams must have matching isRTCPEnabled values.";
     v24 = v27;
     v25 = 64;
@@ -1699,23 +1699,23 @@ LABEL_45:
   return v16;
 }
 
-- (id)anchorStreamIDWithCappedVideoStreamIDs:(id)a3
+- (id)anchorStreamIDWithCappedVideoStreamIDs:(id)ds
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DFA8] setWithArray:{-[NSMutableDictionary allKeys](self->_activeVideoStreams, "allKeys")}];
-  [v5 intersectSet:{objc_msgSend(MEMORY[0x1E695DFA8], "setWithArray:", a3)}];
+  [v5 intersectSet:{objc_msgSend(MEMORY[0x1E695DFA8], "setWithArray:", ds)}];
   if ([v5 count])
   {
-    v6 = [v5 allObjects];
+    allObjects = [v5 allObjects];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
-      v9 = 0;
+      maxNetworkBitrate = 0;
       v10 = 0;
       v11 = *v20;
       do
@@ -1724,26 +1724,26 @@ LABEL_45:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
           v14 = [objc_msgSend(objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamInfoMap objectForKeyedSubscript:{v13), "streamConfigs"), "objectAtIndexedSubscript:", 0), "multiwayConfig"}];
-          if ([v14 maxNetworkBitrate] > v9)
+          if ([v14 maxNetworkBitrate] > maxNetworkBitrate)
           {
-            v9 = [v14 maxNetworkBitrate];
+            maxNetworkBitrate = [v14 maxNetworkBitrate];
             v10 = v13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v8);
       if (v10)
       {
 
-        v15 = [v6 mutableCopy];
+        v15 = [allObjects mutableCopy];
         self->_streamResetIDR = v15;
         [(NSMutableArray *)v15 removeObject:v10];
       }
@@ -1764,14 +1764,14 @@ LABEL_45:
   return v10;
 }
 
-- (void)initilizeStreamInfoMapWithStreamInfos:(id)a3
+- (void)initilizeStreamInfoMapWithStreamInfos:(id)infos
 {
   v45 = *MEMORY[0x1E69E9840];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v17 = [a3 countByEnumeratingWithState:&v41 objects:v40 count:16];
+  v17 = [infos countByEnumeratingWithState:&v41 objects:v40 count:16];
   if (v17)
   {
     v16 = *v42;
@@ -1784,7 +1784,7 @@ LABEL_45:
       {
         if (*v42 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
         v18 = v6;
@@ -1793,8 +1793,8 @@ LABEL_45:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v20 = [v7 streamConfigs];
-        v22 = [v20 countByEnumeratingWithState:&v36 objects:v35 count:16];
+        streamConfigs = [v7 streamConfigs];
+        v22 = [streamConfigs countByEnumeratingWithState:&v36 objects:v35 count:16];
         if (v22)
         {
           v21 = *v37;
@@ -1805,7 +1805,7 @@ LABEL_45:
             {
               if (*v37 != v21)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(streamConfigs);
               }
 
               -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamInfoMap, "setObject:forKeyedSubscript:", v7, [*(v4 + 3480) numberWithUnsignedShort:{objc_msgSend(objc_msgSend(*(*(&v36 + 1) + 8 * i), "multiwayConfig"), "idsStreamID")}]);
@@ -1853,7 +1853,7 @@ LABEL_45:
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v36 objects:v35 count:16];
+            v22 = [streamConfigs countByEnumeratingWithState:&v36 objects:v35 count:16];
           }
 
           while (v22);
@@ -1863,7 +1863,7 @@ LABEL_45:
       }
 
       while (v18 + 1 != v17);
-      v17 = [a3 countByEnumeratingWithState:&v41 objects:v40 count:16];
+      v17 = [infos countByEnumeratingWithState:&v41 objects:v40 count:16];
     }
 
     while (v17);
@@ -2068,14 +2068,14 @@ LABEL_33:
   return v7;
 }
 
-- (BOOL)shouldGenerateIDRWithStreamSchedule:(id)a3
+- (BOOL)shouldGenerateIDRWithStreamSchedule:(id)schedule
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = self->_currentFrameTime - self->_startTime;
-  v6 = [a3 keyFrameInterval];
-  v7 = (v5 - ((v5 / (v6 / 0x3E8)) * (v6 / 0x3E8))) / (v6 / 0x3E8);
-  v8 = [a3 framePosition];
-  v9 = v8 / [a3 framesPerIdrPeriod];
+  keyFrameInterval = [schedule keyFrameInterval];
+  v7 = (v5 - ((v5 / (keyFrameInterval / 0x3E8)) * (keyFrameInterval / 0x3E8))) / (keyFrameInterval / 0x3E8);
+  framePosition = [schedule framePosition];
+  v9 = framePosition / [schedule framesPerIdrPeriod];
   if (v7 < v9 && [(NSMutableArray *)self->_streamsPendingKeyFrameGeneration count])
   {
     if (objc_opt_class() == self)
@@ -2356,15 +2356,15 @@ LABEL_22:
   }
 }
 
-- (id)videoStreamPendingKeyFrameGenerationWithStreamID:(id)a3 shouldRemoveFromPendingArray:(BOOL *)a4
+- (id)videoStreamPendingKeyFrameGenerationWithStreamID:(id)d shouldRemoveFromPendingArray:(BOOL *)array
 {
   v60 = *MEMORY[0x1E69E9840];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v7 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
-  v8 = [v7 countByEnumeratingWithState:&v56 objects:v55 count:16];
+  allValues = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
+  v8 = [allValues countByEnumeratingWithState:&v56 objects:v55 count:16];
   if (!v8)
   {
     goto LABEL_9;
@@ -2378,7 +2378,7 @@ LABEL_3:
   {
     if (*v57 != v10)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(allValues);
     }
 
     v12 = *(*(&v56 + 1) + 8 * v11);
@@ -2389,7 +2389,7 @@ LABEL_3:
 
     if (v9 == ++v11)
     {
-      v9 = [v7 countByEnumeratingWithState:&v56 objects:v55 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v56 objects:v55 count:16];
       if (v9)
       {
         goto LABEL_3;
@@ -2433,11 +2433,11 @@ LABEL_9:
             v43 = 1024;
             v44 = 483;
             v45 = 2112;
-            v46 = v13;
+            dCopy4 = v13;
             v47 = 2048;
-            v48 = self;
+            selfCopy3 = self;
             v49 = 2112;
-            v50 = a3;
+            dCopy5 = d;
             _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Requesting a streamID %@ that is not in any of the compound streamIDs", &v39, 0x3Au);
           }
         }
@@ -2476,11 +2476,11 @@ LABEL_30:
       v43 = 1024;
       v44 = 485;
       v45 = 2112;
-      v46 = a3;
+      dCopy4 = d;
       v47 = 2112;
-      v48 = v14;
+      selfCopy3 = v14;
       v49 = 2112;
-      v50 = activeVideoStreams;
+      dCopy5 = activeVideoStreams;
       v25 = " [%s] %s:%d  Stream is nil for streamID %@, sendingStreamID %@ activeVideoStreams %@";
       v26 = v23;
       v27 = 58;
@@ -2518,11 +2518,11 @@ LABEL_30:
       v43 = 1024;
       v44 = 485;
       v45 = 2112;
-      v46 = v19;
+      dCopy4 = v19;
       v47 = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2112;
-      v50 = a3;
+      dCopy5 = d;
       v51 = 2112;
       v52 = v14;
       v53 = 2112;
@@ -2561,9 +2561,9 @@ LABEL_30:
       v43 = 1024;
       v44 = 489;
       v45 = 2112;
-      v46 = a3;
+      dCopy4 = d;
       v47 = 2112;
-      v48 = v14;
+      selfCopy3 = v14;
       v34 = " [%s] %s:%d Non temporal stream's schedule is nil for streamID %@, sendingStreamID %@";
       v35 = v33;
       v36 = 48;
@@ -2600,11 +2600,11 @@ LABEL_30:
       v43 = 1024;
       v44 = 489;
       v45 = 2112;
-      v46 = v28;
+      dCopy4 = v28;
       v47 = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2112;
-      v50 = a3;
+      dCopy5 = d;
       v51 = 2112;
       v52 = v14;
       v34 = " [%s] %s:%d %@(%p) Non temporal stream's schedule is nil for streamID %@, sendingStreamID %@";
@@ -2614,7 +2614,7 @@ LABEL_30:
 
     _os_log_error_impl(&dword_1DB56E000, v35, OS_LOG_TYPE_ERROR, v34, &v39, v36);
 LABEL_17:
-    *a4 = 1;
+    *array = 1;
     goto LABEL_18;
   }
 
@@ -2630,7 +2630,7 @@ LABEL_18:
 
 - (void)handleStreamsResetIDR
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -2668,7 +2668,7 @@ LABEL_10:
   }
 }
 
-- (id)getMultiwayConfigForStreamID:(id)a3
+- (id)getMultiwayConfigForStreamID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = [(NSMutableDictionary *)self->_streamInfoMap objectForKeyedSubscript:?];
@@ -2676,8 +2676,8 @@ LABEL_10:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 streamConfigs];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  streamConfigs = [v4 streamConfigs];
+  v6 = [streamConfigs countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (!v6)
   {
     return [objc_msgSend(objc_msgSend(v4 "streamConfigs")];
@@ -2691,19 +2691,19 @@ LABEL_3:
   {
     if (*v15 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(streamConfigs);
     }
 
-    v10 = [*(*(&v14 + 1) + 8 * v9) multiwayConfig];
-    v11 = [a3 intValue];
-    if (v11 == [v10 idsStreamID])
+    multiwayConfig = [*(*(&v14 + 1) + 8 * v9) multiwayConfig];
+    intValue = [d intValue];
+    if (intValue == [multiwayConfig idsStreamID])
     {
       break;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [streamConfigs countByEnumeratingWithState:&v14 objects:v13 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -2713,15 +2713,15 @@ LABEL_3:
     }
   }
 
-  if (!v10)
+  if (!multiwayConfig)
   {
     return [objc_msgSend(objc_msgSend(v4 "streamConfigs")];
   }
 
-  return v10;
+  return multiwayConfig;
 }
 
-- (id)newVideoStreamKeyFrameScheduleWithStreamIDs:(id)a3
+- (id)newVideoStreamKeyFrameScheduleWithStreamIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2729,7 +2729,7 @@ LABEL_3:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v6 = [ds countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2740,7 +2740,7 @@ LABEL_3:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -2751,7 +2751,7 @@ LABEL_3:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [ds countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);
@@ -2760,23 +2760,23 @@ LABEL_3:
   return v5;
 }
 
-- (id)schedulerStreamWithVideoStream:(id)a3
+- (id)schedulerStreamWithVideoStream:(id)stream
 {
   v4 = 1000;
-  if ([a3 keyFrameInterval])
+  if ([stream keyFrameInterval])
   {
-    v4 = 1000 * [a3 keyFrameInterval];
+    v4 = 1000 * [stream keyFrameInterval];
   }
 
-  v5 = [a3 framerate];
-  v6 = [a3 maxNetworkBitrate];
+  framerate = [stream framerate];
+  maxNetworkBitrate = [stream maxNetworkBitrate];
 
-  return [VCIDRSchedulerStream schedulerStreamWithKeyFrameInterval:v4 framerate:v5 weightFactor:v6];
+  return [VCIDRSchedulerStream schedulerStreamWithKeyFrameInterval:v4 framerate:framerate weightFactor:maxNetworkBitrate];
 }
 
 - (void)restart
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -2816,25 +2816,25 @@ LABEL_10:
 
 - (BOOL)filterPendingTemporalStreams
 {
-  v2 = self;
+  selfCopy = self;
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
-  pendingVideoStreams = v2->_pendingVideoStreams;
+  allValues = [(NSMutableDictionary *)self->_activeVideoStreams allValues];
+  pendingVideoStreams = selfCopy->_pendingVideoStreams;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams__block_invoke;
   v6[3] = &unk_1E85F5368;
-  v6[4] = v3;
-  v6[5] = v2;
+  v6[4] = allValues;
+  v6[5] = selfCopy;
   v6[6] = &v7;
   [(NSMutableDictionary *)pendingVideoStreams enumerateKeysAndObjectsUsingBlock:v6];
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2892,7 +2892,7 @@ uint64_t __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams
   return result;
 }
 
-- (void)printPendingKeyFrameWarningOnThresholdTimeElapsedWithCurrentFrameTime:(float)a3
+- (void)printPendingKeyFrameWarningOnThresholdTimeElapsedWithCurrentFrameTime:(float)time
 {
   v29 = *MEMORY[0x1E69E9840];
   if (![(NSMutableArray *)self->_streamsPendingKeyFrameGeneration count])
@@ -2902,15 +2902,15 @@ uint64_t __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams
   }
 
   pendingKeyFrameGenerationStartTime = self->_pendingKeyFrameGenerationStartTime;
-  v6 = a3;
+  timeCopy = time;
   if (pendingKeyFrameGenerationStartTime == 0.0)
   {
-    self->_pendingKeyFrameGenerationStartTime = v6;
+    self->_pendingKeyFrameGenerationStartTime = timeCopy;
     return;
   }
 
-  v7 = v6 - pendingKeyFrameGenerationStartTime;
-  if (v6 - pendingKeyFrameGenerationStartTime > 3.0)
+  v7 = timeCopy - pendingKeyFrameGenerationStartTime;
+  if (timeCopy - pendingKeyFrameGenerationStartTime > 3.0)
   {
     if (objc_opt_class() == self)
     {
@@ -2933,7 +2933,7 @@ uint64_t __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams
       v21 = 2048;
       v22 = v7;
       v23 = 2112;
-      v24 = v10;
+      selfCopy = v10;
       v11 = " [%s] %s:%d _streamsPendingKeyFrameGeneration array has been non zero for %5.2f seconds, streams=%@";
       v12 = v9;
       v13 = 48;
@@ -2971,7 +2971,7 @@ uint64_t __68__VCSessionUplinkVideoStreamController_filterPendingTemporalStreams
       v21 = 2112;
       v22 = *&v8;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2048;
       v26 = v7;
       v27 = 2112;

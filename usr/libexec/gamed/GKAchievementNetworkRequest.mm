@@ -1,52 +1,52 @@
 @interface GKAchievementNetworkRequest
-- (GKAchievementNetworkRequest)initWithAchievements:(id)a3 bundleID:(id)a4;
-- (GKAchievementNetworkRequest)initWithTask:(id)a3;
+- (GKAchievementNetworkRequest)initWithAchievements:(id)achievements bundleID:(id)d;
+- (GKAchievementNetworkRequest)initWithTask:(id)task;
 - (NSString)description;
-- (id)mergeRequestData:(id)a3 additional:(id)a4;
+- (id)mergeRequestData:(id)data additional:(id)additional;
 - (id)postBody;
 - (id)taskInfo;
 - (int64_t)numberOfRequests;
-- (void)removeFromStore:(id)a3;
-- (void)updateWithTaskInfo:(id)a3;
+- (void)removeFromStore:(id)store;
+- (void)updateWithTaskInfo:(id)info;
 @end
 
 @implementation GKAchievementNetworkRequest
 
-- (GKAchievementNetworkRequest)initWithTask:(id)a3
+- (GKAchievementNetworkRequest)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = GKAchievementNetworkRequest;
   v5 = [(GKAchievementNetworkRequest *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(GKAchievementNetworkRequest *)v5 setNsurlTask:v4];
-    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:v4];
+    [(GKAchievementNetworkRequest *)v5 setNsurlTask:taskCopy];
+    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
     [(GKAchievementNetworkRequest *)v6 updateWithTaskInfo:v7];
   }
 
   return v6;
 }
 
-- (GKAchievementNetworkRequest)initWithAchievements:(id)a3 bundleID:(id)a4
+- (GKAchievementNetworkRequest)initWithAchievements:(id)achievements bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  achievementsCopy = achievements;
+  dCopy = d;
   v32.receiver = self;
   v32.super_class = GKAchievementNetworkRequest;
   v8 = [(GKAchievementNetworkRequest *)&v32 init];
   if (v8)
   {
     v9 = +[NSUUID UUID];
-    v10 = [v9 UUIDString];
-    [(GKAchievementNetworkRequest *)v8 setUuid:v10];
+    uUIDString = [v9 UUIDString];
+    [(GKAchievementNetworkRequest *)v8 setUuid:uUIDString];
 
     v11 = _localPlayerID();
     [(GKAchievementNetworkRequest *)v8 setPlayerID:v11];
 
-    v26 = v7;
-    [(GKAchievementNetworkRequest *)v8 setBundleID:v7];
+    v26 = dCopy;
+    [(GKAchievementNetworkRequest *)v8 setBundleID:dCopy];
     v12 = objc_alloc_init(NSMutableDictionary);
     [(GKAchievementNetworkRequest *)v8 setRequestData:v12];
 
@@ -54,8 +54,8 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v27 = v6;
-    v13 = v6;
+    v27 = achievementsCopy;
+    v13 = achievementsCopy;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v14)
     {
@@ -71,17 +71,17 @@
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
-          v19 = [v18 identifier];
+          identifier = [v18 identifier];
 
-          if (v19)
+          if (identifier)
           {
-            v20 = [(GKAchievementNetworkRequest *)v8 requestData];
-            v21 = [v18 identifier];
-            v33 = v21;
-            v22 = [v18 serverRepresentation];
-            v34 = v22;
+            requestData = [(GKAchievementNetworkRequest *)v8 requestData];
+            identifier2 = [v18 identifier];
+            v33 = identifier2;
+            serverRepresentation = [v18 serverRepresentation];
+            v34 = serverRepresentation;
             v23 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-            v24 = mergeValuesForKeyWithDictionary(v20, v23);
+            v24 = mergeValuesForKeyWithDictionary(requestData, v23);
             [(GKAchievementNetworkRequest *)v8 setRequestData:v24];
           }
         }
@@ -92,8 +92,8 @@
       while (v15);
     }
 
-    v7 = v26;
-    v6 = v27;
+    dCopy = v26;
+    achievementsCopy = v27;
   }
 
   return v8;
@@ -101,28 +101,28 @@
 
 - (int64_t)numberOfRequests
 {
-  v2 = [(GKAchievementNetworkRequest *)self requestData];
-  v3 = [v2 allKeys];
-  v4 = [v3 count];
+  requestData = [(GKAchievementNetworkRequest *)self requestData];
+  allKeys = [requestData allKeys];
+  v4 = [allKeys count];
 
   return v4;
 }
 
-- (void)updateWithTaskInfo:(id)a3
+- (void)updateWithTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(GKAchievementNetworkRequest *)self setCoalescingAgent:0];
   [(GKAchievementNetworkRequest *)self setIssueRequests:0];
-  v5 = [v4 objectForKeyedSubscript:@"UUIDKey"];
+  v5 = [infoCopy objectForKeyedSubscript:@"UUIDKey"];
   [(GKAchievementNetworkRequest *)self setUuid:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"PlayerIDKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"PlayerIDKey"];
   [(GKAchievementNetworkRequest *)self setPlayerID:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"BundleIDKey"];
+  v7 = [infoCopy objectForKeyedSubscript:@"BundleIDKey"];
   [(GKAchievementNetworkRequest *)self setBundleID:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"RequestDataKey"];
+  v8 = [infoCopy objectForKeyedSubscript:@"RequestDataKey"];
   v9 = objc_alloc_init(NSMutableDictionary);
   v17 = 0u;
   v18 = 0u;
@@ -160,11 +160,11 @@
   [(GKAchievementNetworkRequest *)self setRequestData:v9];
 }
 
-- (id)mergeRequestData:(id)a3 additional:(id)a4
+- (id)mergeRequestData:(id)data additional:(id)additional
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  dataCopy = data;
+  additionalCopy = additional;
+  if (!additionalCopy)
   {
     if (!os_log_GKGeneral)
     {
@@ -179,16 +179,16 @@
     }
 
     v26 = &__NSDictionary0__struct;
-    if (v5)
+    if (dataCopy)
     {
-      v26 = v5;
+      v26 = dataCopy;
     }
 
     v27 = v26;
     goto LABEL_30;
   }
 
-  if (!v5)
+  if (!dataCopy)
   {
     if (!os_log_GKGeneral)
     {
@@ -202,20 +202,20 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "GKAchievementNetworkRequest invalid original dictionary", buf, 2u);
     }
 
-    v27 = [v6 copy];
+    v27 = [additionalCopy copy];
 LABEL_30:
     v23 = v27;
     goto LABEL_31;
   }
 
-  v32 = v5;
-  v7 = [v5 mutableCopy];
+  v32 = dataCopy;
+  v7 = [dataCopy mutableCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v31 = v6;
-  obj = [v6 allValues];
+  v31 = additionalCopy;
+  obj = [additionalCopy allValues];
   v8 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v8)
   {
@@ -245,8 +245,8 @@ LABEL_30:
             v18 = [v15 objectForKeyedSubscript:@"achievement-pct"];
             v19 = [v13 objectForKeyedSubscript:@"achievement-pct"];
             v20 = v7;
-            v21 = [v19 longValue];
-            v22 = v21 <= [v18 longValue];
+            longValue = [v19 longValue];
+            v22 = longValue <= [v18 longValue];
             v7 = v20;
             if (!v22)
             {
@@ -274,8 +274,8 @@ LABEL_30:
   }
 
   v23 = [v7 copy];
-  v6 = v31;
-  v5 = v32;
+  additionalCopy = v31;
+  dataCopy = v32;
 LABEL_31:
 
   return v23;
@@ -284,29 +284,29 @@ LABEL_31:
 - (id)postBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKAchievementNetworkRequest *)self requestData];
-  v5 = [v4 allValues];
-  [v3 setObject:v5 forKeyedSubscript:@"achievement-ids"];
+  requestData = [(GKAchievementNetworkRequest *)self requestData];
+  allValues = [requestData allValues];
+  [v3 setObject:allValues forKeyedSubscript:@"achievement-ids"];
 
   return v3;
 }
 
-- (void)removeFromStore:(id)a3
+- (void)removeFromStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 currentTasks];
-  v6 = [(GKAchievementNetworkRequest *)self bundleID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  storeCopy = store;
+  currentTasks = [storeCopy currentTasks];
+  bundleID = [(GKAchievementNetworkRequest *)self bundleID];
+  v7 = [currentTasks objectForKeyedSubscript:bundleID];
 
   if (v7 && ([v7 requestData], v8 = objc_claimAutoreleasedReturnValue(), -[GKAchievementNetworkRequest requestData](self, "requestData"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToDictionary:", v9), v9, v8, v10))
   {
-    v11 = [v4 currentTasks];
-    v12 = [(GKAchievementNetworkRequest *)self bundleID];
-    [v11 removeObjectForKey:v12];
+    currentTasks2 = [storeCopy currentTasks];
+    bundleID2 = [(GKAchievementNetworkRequest *)self bundleID];
+    [currentTasks2 removeObjectForKey:bundleID2];
 
-    v13 = [v4 pendingRequests];
-    v14 = [(GKAchievementNetworkRequest *)self bundleID];
-    [v13 removeObjectForKey:v14];
+    pendingRequests = [storeCopy pendingRequests];
+    bundleID3 = [(GKAchievementNetworkRequest *)self bundleID];
+    [pendingRequests removeObjectForKey:bundleID3];
   }
 
   else
@@ -328,21 +328,21 @@ LABEL_31:
 - (id)taskInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKAchievementNetworkRequest *)self playerID];
-  [v3 setObject:v4 forKeyedSubscript:@"PlayerIDKey"];
+  playerID = [(GKAchievementNetworkRequest *)self playerID];
+  [v3 setObject:playerID forKeyedSubscript:@"PlayerIDKey"];
 
-  v5 = [(GKAchievementNetworkRequest *)self requestData];
-  v6 = [v5 allValues];
-  [v3 setObject:v6 forKeyedSubscript:@"RequestDataKey"];
+  requestData = [(GKAchievementNetworkRequest *)self requestData];
+  allValues = [requestData allValues];
+  [v3 setObject:allValues forKeyedSubscript:@"RequestDataKey"];
 
-  v7 = [objc_opt_class() bagKey];
-  [v3 setObject:v7 forKeyedSubscript:@"BagKeyKey"];
+  bagKey = [objc_opt_class() bagKey];
+  [v3 setObject:bagKey forKeyedSubscript:@"BagKeyKey"];
 
-  v8 = [(GKAchievementNetworkRequest *)self uuid];
-  [v3 setObject:v8 forKeyedSubscript:@"UUIDKey"];
+  uuid = [(GKAchievementNetworkRequest *)self uuid];
+  [v3 setObject:uuid forKeyedSubscript:@"UUIDKey"];
 
-  v9 = [(GKAchievementNetworkRequest *)self bundleID];
-  [v3 setObject:v9 forKeyedSubscript:@"BundleIDKey"];
+  bundleID = [(GKAchievementNetworkRequest *)self bundleID];
+  [v3 setObject:bundleID forKeyedSubscript:@"BundleIDKey"];
 
   return v3;
 }
@@ -350,9 +350,9 @@ LABEL_31:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(GKAchievementNetworkRequest *)self playerID];
+  playerID = [(GKAchievementNetworkRequest *)self playerID];
   v5 = [NSNumber numberWithInteger:[(GKAchievementNetworkRequest *)self numberOfRequests]];
-  v6 = [NSString stringWithFormat:@"%@: PlayerID: %@ Achievement Count: %@", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"%@: PlayerID: %@ Achievement Count: %@", v3, playerID, v5];
 
   return v6;
 }

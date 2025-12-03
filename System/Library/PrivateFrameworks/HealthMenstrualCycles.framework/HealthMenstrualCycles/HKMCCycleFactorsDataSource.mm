@@ -1,37 +1,37 @@
 @interface HKMCCycleFactorsDataSource
-- (HKMCCycleFactorsDataSource)initWithHealthStore:(id)a3 pregnancyModelProvider:(id)a4 queue:(id)a5;
+- (HKMCCycleFactorsDataSource)initWithHealthStore:(id)store pregnancyModelProvider:(id)provider queue:(id)queue;
 - (HKMCCycleFactorsDataSourceDelegate)delegate;
-- (void)_handleCycleFactorsAdded:(void *)a3 deletedObjects:;
+- (void)_handleCycleFactorsAdded:(void *)added deletedObjects:;
 - (void)_startPregnancyModelObservationIfNeeded;
 - (void)dealloc;
-- (void)pregnancyModelDidUpdate:(id)a3;
-- (void)startObservingCycleFactorsInDayIndexRange:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
+- (void)startObservingCycleFactorsInDayIndexRange:(id)range;
 - (void)stopObserving;
 @end
 
 @implementation HKMCCycleFactorsDataSource
 
-- (HKMCCycleFactorsDataSource)initWithHealthStore:(id)a3 pregnancyModelProvider:(id)a4 queue:(id)a5
+- (HKMCCycleFactorsDataSource)initWithHealthStore:(id)store pregnancyModelProvider:(id)provider queue:(id)queue
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  providerCopy = provider;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = HKMCCycleFactorsDataSource;
   v12 = [(HKMCCycleFactorsDataSource *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_queue, queue);
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     cycleFactors = v13->_cycleFactors;
     v13->_cycleFactors = v14;
 
-    if (v10)
+    if (providerCopy)
     {
-      v16 = v10;
+      v16 = providerCopy;
       pregnancyModelProvider = v13->_pregnancyModelProvider;
       v13->_pregnancyModelProvider = v16;
       v18 = 1;
@@ -39,7 +39,7 @@
 
     else
     {
-      v19 = [[HKMCPregnancyModelProvider alloc] initWithHealthStore:v9 startQueryImmediately:0];
+      v19 = [[HKMCPregnancyModelProvider alloc] initWithHealthStore:storeCopy startQueryImmediately:0];
       v18 = 0;
       pregnancyModelProvider = v13->_pregnancyModelProvider;
       v13->_pregnancyModelProvider = v19;
@@ -67,10 +67,10 @@
   return v13;
 }
 
-- (void)startObservingCycleFactorsInDayIndexRange:(id)a3
+- (void)startObservingCycleFactorsInDayIndexRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v52 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCC2E8];
   if (!self->_observerQuery)
@@ -91,7 +91,7 @@ LABEL_19:
       *buf = 138543874;
       v47 = v26;
       v48 = 2048;
-      v49 = self;
+      selfCopy5 = self;
       v50 = 2112;
       v51 = v30;
       _os_log_impl(&dword_2518FC000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Starting cycle factors fetch for range: %@", buf, 0x20u);
@@ -108,15 +108,15 @@ LABEL_19:
     v41 = 3221225472;
     v42 = __72__HKMCCycleFactorsDataSource_startObservingCycleFactorsInDayIndexRange___block_invoke;
     v43 = &unk_2796D52E8;
-    v44 = self;
+    selfCopy2 = self;
     objc_copyWeak(&v45, buf);
     v35 = MEMORY[0x253087260](&v40);
     v36 = [objc_alloc(MEMORY[0x277CCCFF0]) initWithQueryDescriptors:v34 anchor:0 limit:0 resultsHandler:v35];
     observerQuery = self->_observerQuery;
     self->_observerQuery = v36;
 
-    v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p Cycle Factors Query>", objc_opt_class(), self, v40, v41, v42, v43, v44];
-    [(HKAnchoredObjectQuery *)self->_observerQuery setDebugIdentifier:v38];
+    selfCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p Cycle Factors Query>", objc_opt_class(), self, v40, v41, v42, v43, selfCopy2];
+    [(HKAnchoredObjectQuery *)self->_observerQuery setDebugIdentifier:selfCopy2];
 
     [(HKAnchoredObjectQuery *)self->_observerQuery setUpdateHandler:v35];
     [(HKHealthStore *)self->_healthStore executeQuery:self->_observerQuery];
@@ -135,7 +135,7 @@ LABEL_19:
     *buf = 138543618;
     v47 = objc_opt_class();
     v48 = 2048;
-    v49 = self;
+    selfCopy5 = self;
     v9 = v47;
     _os_log_impl(&dword_2518FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] We're already running a cycle factors query", buf, 0x16u);
   }
@@ -165,7 +165,7 @@ LABEL_19:
           *buf = 138543618;
           v47 = v18;
           v48 = 2048;
-          v49 = self;
+          selfCopy5 = self;
           v19 = v18;
           _os_log_impl(&dword_2518FC000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Skipping restarting query, new dayIndexRange is already covered", buf, 0x16u);
         }
@@ -187,7 +187,7 @@ LABEL_19:
     *buf = 138543618;
     v47 = v22;
     v48 = 2048;
-    v49 = self;
+    selfCopy5 = self;
     v23 = v22;
     _os_log_impl(&dword_2518FC000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Skipping restarting query, due to identical day index ranges", buf, 0x16u);
   }
@@ -250,10 +250,10 @@ uint64_t __70__HKMCCycleFactorsDataSource__handleCycleFactorsAdded_deletedObject
   return v6;
 }
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if (HKShowSensitiveLogItems())
   {
     _HKInitializeLogging();
@@ -264,13 +264,13 @@ uint64_t __70__HKMCCycleFactorsDataSource__handleCycleFactorsAdded_deletedObject
       *buf = 138543618;
       v19 = objc_opt_class();
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v7 = v19;
       _os_log_impl(&dword_2518FC000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Received pregnancy model update", buf, 0x16u);
     }
   }
 
-  if (self->_pregnancyModel == v4)
+  if (self->_pregnancyModel == updateCopy)
   {
     if (HKShowSensitiveLogItems())
     {
@@ -283,7 +283,7 @@ uint64_t __70__HKMCCycleFactorsDataSource__handleCycleFactorsAdded_deletedObject
         *buf = 138543618;
         v19 = v11;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v12 = v11;
         _os_log_impl(&dword_2518FC000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Skipping notifying delegate due to identical pregnancy model", buf, 0x16u);
       }
@@ -298,7 +298,7 @@ uint64_t __70__HKMCCycleFactorsDataSource__handleCycleFactorsAdded_deletedObject
     block[2] = __54__HKMCCycleFactorsDataSource_pregnancyModelDidUpdate___block_invoke;
     block[3] = &unk_2796D4BD0;
     block[4] = self;
-    v17 = v4;
+    v17 = updateCopy;
     dispatch_async(queue, block);
   }
 
@@ -378,7 +378,7 @@ void *__54__HKMCCycleFactorsDataSource_pregnancyModelDidUpdate___block_invoke_30
     *buf = 138543618;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v5 = v9;
     _os_log_impl(&dword_2518FC000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Dealloc", buf, 0x16u);
   }
@@ -400,20 +400,20 @@ void *__54__HKMCCycleFactorsDataSource_pregnancyModelDidUpdate___block_invoke_30
 - (void)_startPregnancyModelObservationIfNeeded
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_16;
   }
 
-  if (*(a1 + 72) != 1)
+  if (*(self + 72) != 1)
   {
-    v23 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v24 = [v23 showSensitiveLogItems];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    showSensitiveLogItems = [mEMORY[0x277CCDD30] showSensitiveLogItems];
 
     _HKInitializeLogging();
     v25 = *MEMORY[0x277CCC2E8];
     v26 = os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT);
-    if (v24)
+    if (showSensitiveLogItems)
     {
       if (v26)
       {
@@ -435,10 +435,10 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v39 = *(a1 + 80);
+    v39 = *(self + 80);
     [v39 startQuery];
-    [*(a1 + 80) registerObserver:a1 isUserInitiated:1];
-    *(a1 + 72) = 257;
+    [*(self + 80) registerObserver:self isUserInitiated:1];
+    *(self + 72) = 257;
 
     goto LABEL_16;
   }
@@ -454,7 +454,7 @@ LABEL_14:
     OUTLINED_FUNCTION_1_3(&dword_2518FC000, v7, v8, "[%{public}@:%p] Skipping starting query", v9, v10, v11, v12, v41);
   }
 
-  if ((*(a1 + 73) & 1) == 0)
+  if ((*(self + 73) & 1) == 0)
   {
     _HKInitializeLogging();
     v13 = *v2;
@@ -466,20 +466,20 @@ LABEL_14:
       OUTLINED_FUNCTION_1_3(&dword_2518FC000, v17, v18, "[%{public}@:%p] Registering for updates", v19, v20, v21, v22, v41);
     }
 
-    [*(a1 + 80) registerObserver:a1 isUserInitiated:1];
-    *(a1 + 73) = 1;
+    [*(self + 80) registerObserver:self isUserInitiated:1];
+    *(self + 73) = 1;
   }
 
 LABEL_16:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCycleFactorsAdded:(void *)a3 deletedObjects:
+- (void)_handleCycleFactorsAdded:(void *)added deletedObjects:
 {
   v57 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v35 = a3;
-  if (a1)
+  addedCopy = added;
+  if (self)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2E8];
@@ -491,15 +491,15 @@ LABEL_16:
       v34 = v7;
       v9 = [v8 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
       v10 = HKSensitiveLogItem();
-      [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v35, "count")}];
+      [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(addedCopy, "count")}];
       v12 = v11 = v5;
       v13 = HKSensitiveLogItem();
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(a1 + 40), "count")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(self + 40), "count")}];
       v15 = HKSensitiveLogItem();
       *buf = 138544386;
       v48 = v7;
       v49 = 2048;
-      v50 = a1;
+      selfCopy = self;
       v51 = 2112;
       v52 = v10;
       v53 = 2112;
@@ -512,7 +512,7 @@ LABEL_16:
     }
 
     v16 = v5;
-    if ([*(a1 + 40) count])
+    if ([*(self + 40) count])
     {
       v43 = 0u;
       v44 = 0u;
@@ -533,7 +533,7 @@ LABEL_16:
               objc_enumerationMutation(v17);
             }
 
-            [*(a1 + 40) addObject:{*(*(&v41 + 1) + 8 * i), log}];
+            [*(self + 40) addObject:{*(*(&v41 + 1) + 8 * i), log}];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -546,15 +546,15 @@ LABEL_16:
     else
     {
       v22 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v16];
-      v17 = *(a1 + 40);
-      *(a1 + 40) = v22;
+      v17 = *(self + 40);
+      *(self + 40) = v22;
     }
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v23 = v35;
+    v23 = addedCopy;
     v24 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v24)
     {
@@ -570,7 +570,7 @@ LABEL_16:
           }
 
           v28 = *(*(&v37 + 1) + 8 * j);
-          v29 = *(a1 + 40);
+          v29 = *(self + 40);
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __70__HKMCCycleFactorsDataSource__handleCycleFactorsAdded_deletedObjects___block_invoke;
@@ -585,9 +585,9 @@ LABEL_16:
       while (v25);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v31 = [*(a1 + 40) allObjects];
-    [WeakRetained cycleFactorsDataSource:a1 didFetchCycleFactors:v31];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    allObjects = [*(self + 40) allObjects];
+    [WeakRetained cycleFactorsDataSource:self didFetchCycleFactors:allObjects];
   }
 
   v32 = *MEMORY[0x277D85DE8];

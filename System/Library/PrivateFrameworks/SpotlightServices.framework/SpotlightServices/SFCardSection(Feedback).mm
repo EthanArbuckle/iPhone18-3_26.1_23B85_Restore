@@ -6,18 +6,18 @@
 
 - (id)copyForFeedback
 {
-  v1 = [a1 nextCard];
+  nextCard = [self nextCard];
 
-  if (v1)
+  if (nextCard)
   {
 
-    return [a1 copy];
+    return [self copy];
   }
 
   else
   {
 
-    return a1;
+    return self;
   }
 }
 

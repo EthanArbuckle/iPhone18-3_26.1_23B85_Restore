@@ -4,37 +4,37 @@
 - (BOOL)useAccessibleLayout;
 - (CGRect)latestKeyboardFrame;
 - (CGSize)avatarSize;
-- (CNAutocompleteSuggestionsViewController)initWithOptions:(id)a3;
-- (CNAutocompleteSuggestionsViewController)initWithSearchType:(unint64_t)a3;
+- (CNAutocompleteSuggestionsViewController)initWithOptions:(id)options;
+- (CNAutocompleteSuggestionsViewController)initWithSearchType:(unint64_t)type;
 - (CNAutocompleteSuggestionsViewControllerDelegate)delegate;
 - (NSDirectionalEdgeInsets)additionalContentInsets;
 - (id)compositionalLayout;
-- (id)contactsForAvatarForRecipient:(id)a3;
+- (id)contactsForAvatarForRecipient:(id)recipient;
 - (id)selectedRecipientHandles;
-- (id)unknownContactForRecipient:(id)a3;
-- (void)adjustInsetsForKeyboardFrame:(CGRect)a3;
+- (id)unknownContactForRecipient:(id)recipient;
+- (void)adjustInsetsForKeyboardFrame:(CGRect)frame;
 - (void)buildCollectionView;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)conformResultsForDeselection:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)conformResultsForDeselection:(id)deselection;
 - (void)conformResultsForSelection;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
 - (void)dealloc;
 - (void)fetchRecipients;
 - (void)fetchRecipientsIfNeeded;
-- (void)fetchSuggestedRecipientsWithCompletionBlock:(id)a3;
-- (void)finishedTaskWithID:(id)a3;
-- (void)imageForRecipient:(id)a3 imageUpdateBlock:(id)a4;
+- (void)fetchSuggestedRecipientsWithCompletionBlock:(id)block;
+- (void)finishedTaskWithID:(id)d;
+- (void)imageForRecipient:(id)recipient imageUpdateBlock:(id)block;
 - (void)invalidateSelectedRecipients;
 - (void)prepareForReuse;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setAdditionalContentInset:(NSDirectionalEdgeInsets)a3;
-- (void)setOtherRecipientAddresses:(id)a3;
-- (void)setRecipients:(id)a3 animated:(BOOL)a4;
-- (void)titleLabelTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setAdditionalContentInset:(NSDirectionalEdgeInsets)inset;
+- (void)setOtherRecipientAddresses:(id)addresses;
+- (void)setRecipients:(id)recipients animated:(BOOL)animated;
+- (void)titleLabelTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNAutocompleteSuggestionsViewController
@@ -58,25 +58,25 @@ uint64_t __49__CNAutocompleteSuggestionsViewController_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNAutocompleteSuggestionsViewController)initWithSearchType:(unint64_t)a3
+- (CNAutocompleteSuggestionsViewController)initWithSearchType:(unint64_t)type
 {
   v5 = objc_alloc_init(CNAutocompleteSuggestionsViewControllerOptions);
-  [(CNAutocompleteSuggestionsViewControllerOptions *)v5 setSearchType:a3];
+  [(CNAutocompleteSuggestionsViewControllerOptions *)v5 setSearchType:type];
   [(CNAutocompleteSuggestionsViewControllerOptions *)v5 setMaxNumberOfSuggestions:8];
   v6 = [(CNAutocompleteSuggestionsViewController *)self initWithOptions:v5];
 
   return v6;
 }
 
-- (CNAutocompleteSuggestionsViewController)initWithOptions:(id)a3
+- (CNAutocompleteSuggestionsViewController)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = CNAutocompleteSuggestionsViewController;
   v5 = [(CNAutocompleteSuggestionsViewController *)&v10 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
@@ -88,12 +88,12 @@ uint64_t __49__CNAutocompleteSuggestionsViewController_os_log__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [(CNAutocompleteSuggestionsViewController *)self keyboardWillShowNotificationObserver];
-  [v3 removeObserver:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  keyboardWillShowNotificationObserver = [(CNAutocompleteSuggestionsViewController *)self keyboardWillShowNotificationObserver];
+  [defaultCenter removeObserver:keyboardWillShowNotificationObserver];
 
-  v5 = [(CNAutocompleteSuggestionsViewController *)self keyboardWillHideNotificationObserver];
-  [v3 removeObserver:v5];
+  keyboardWillHideNotificationObserver = [(CNAutocompleteSuggestionsViewController *)self keyboardWillHideNotificationObserver];
+  [defaultCenter removeObserver:keyboardWillHideNotificationObserver];
 
   v6.receiver = self;
   v6.super_class = CNAutocompleteSuggestionsViewController;
@@ -105,20 +105,20 @@ uint64_t __49__CNAutocompleteSuggestionsViewController_os_log__block_invoke()
   v17.receiver = self;
   v17.super_class = CNAutocompleteSuggestionsViewController;
   [(CNAutocompleteSuggestionsViewController *)&v17 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v5 setInsetsLayoutMarginsFromSafeArea:0];
+  view2 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view2 setInsetsLayoutMarginsFromSafeArea:0];
 
-  v6 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view3 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view3 setClipsToBounds:1];
 
   [(CNAutocompleteSuggestionsViewController *)self buildCollectionView];
   [(CNAutocompleteSuggestionsViewController *)self setSuggestionPreWarmCompletionBlock:0];
   [(CNAutocompleteSuggestionsViewController *)self fetchRecipients];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   objc_initWeak(&location, self);
   v8 = *MEMORY[0x1E69DE080];
   v14[0] = MEMORY[0x1E69E9820];
@@ -126,7 +126,7 @@ uint64_t __49__CNAutocompleteSuggestionsViewController_os_log__block_invoke()
   v14[2] = __54__CNAutocompleteSuggestionsViewController_viewDidLoad__block_invoke;
   v14[3] = &unk_1E7CD1EA8;
   objc_copyWeak(&v15, &location);
-  v9 = [v7 addObserverForName:v8 object:0 queue:0 usingBlock:v14];
+  v9 = [defaultCenter addObserverForName:v8 object:0 queue:0 usingBlock:v14];
   [(CNAutocompleteSuggestionsViewController *)self setKeyboardWillShowNotificationObserver:v9];
 
   v10 = *MEMORY[0x1E69DE078];
@@ -135,7 +135,7 @@ uint64_t __49__CNAutocompleteSuggestionsViewController_os_log__block_invoke()
   v12[2] = __54__CNAutocompleteSuggestionsViewController_viewDidLoad__block_invoke_2;
   v12[3] = &unk_1E7CD1EA8;
   objc_copyWeak(&v13, &location);
-  v11 = [v7 addObserverForName:v10 object:0 queue:0 usingBlock:v12];
+  v11 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v12];
   [(CNAutocompleteSuggestionsViewController *)self setKeyboardWillHideNotificationObserver:v11];
 
   objc_destroyWeak(&v13);
@@ -171,86 +171,86 @@ void __54__CNAutocompleteSuggestionsViewController_viewDidLoad__block_invoke_2(u
   [WeakRetained adjustInsetsForKeyboardFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNAutocompleteSuggestionsViewController;
-  [(CNAutocompleteSuggestionsViewController *)&v4 viewWillAppear:a3];
+  [(CNAutocompleteSuggestionsViewController *)&v4 viewWillAppear:appear];
   [(CNAutocompleteSuggestionsViewController *)self fetchRecipientsIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = CNAutocompleteSuggestionsViewController;
-  v4 = a3;
-  [(CNAutocompleteSuggestionsViewController *)&v12 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CNAutocompleteSuggestionsViewController *)&v12 traitCollectionDidChange:changeCopy];
   v5 = [(CNAutocompleteSuggestionsViewController *)self traitCollection:v12.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(CNAutocompleteSuggestionsViewController *)self compositionalLayout];
-    [(CNAutocompleteSuggestionsViewController *)self setLayout:v8];
+    compositionalLayout = [(CNAutocompleteSuggestionsViewController *)self compositionalLayout];
+    [(CNAutocompleteSuggestionsViewController *)self setLayout:compositionalLayout];
 
-    v9 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-    v10 = [(CNAutocompleteSuggestionsViewController *)self layout];
-    [v9 setCollectionViewLayout:v10 animated:1];
+    collectionView = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+    layout = [(CNAutocompleteSuggestionsViewController *)self layout];
+    [collectionView setCollectionViewLayout:layout animated:1];
 
-    v11 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-    [v11 reloadData];
+    collectionView2 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+    [collectionView2 reloadData];
   }
 }
 
 - (BOOL)useAccessibleLayout
 {
-  v2 = [(CNAutocompleteSuggestionsViewController *)self traitCollection];
-  v3 = isTraitCollectionAccessible(v2);
+  traitCollection = [(CNAutocompleteSuggestionsViewController *)self traitCollection];
+  v3 = isTraitCollectionAccessible(traitCollection);
 
   return v3;
 }
 
 - (BOOL)isZoomedLayout
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 nativeScale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 nativeScale];
   v7 = v4 < v6;
 
   return v7;
 }
 
-- (void)adjustInsetsForKeyboardFrame:(CGRect)a3
+- (void)adjustInsetsForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v48 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  v8 = [v48 window];
-  [v8 convertRect:0 fromWindow:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  collectionView = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  window = [collectionView window];
+  [window convertRect:0 fromWindow:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  [v48 convertRect:0 fromView:{v10, v12, v14, v16}];
+  [collectionView convertRect:0 fromView:{v10, v12, v14, v16}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v48 frame];
+  [collectionView frame];
   v52.origin.x = v18;
   v52.origin.y = v20;
   v52.size.width = v22;
   v52.size.height = v24;
   v51 = CGRectIntersection(v50, v52);
   v25 = CGRectGetHeight(v51);
-  v26 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  [v26 contentInset];
+  collectionView2 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  [collectionView2 contentInset];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -259,33 +259,33 @@ void __54__CNAutocompleteSuggestionsViewController_viewDidLoad__block_invoke_2(u
   v34 = v28 + v33;
   [(CNAutocompleteSuggestionsViewController *)self additionalContentInsets];
   v36 = v25 + v35;
-  v37 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  [v37 setContentInset:{v34, v30, v36, v32}];
+  collectionView3 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  [collectionView3 setContentInset:{v34, v30, v36, v32}];
 
-  v38 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  [v38 contentInset];
+  collectionView4 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  [collectionView4 contentInset];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  [v47 setVerticalScrollIndicatorInsets:{v40, v42, v44, v46}];
+  collectionView5 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  [collectionView5 setVerticalScrollIndicatorInsets:{v40, v42, v44, v46}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CNAutocompleteSuggestionsViewController;
-  v7 = a4;
-  [(CNAutocompleteSuggestionsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CNAutocompleteSuggestionsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7CD1ED0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -294,25 +294,25 @@ void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_with
   [v1 reloadData];
 }
 
-- (void)setAdditionalContentInset:(NSDirectionalEdgeInsets)a3
+- (void)setAdditionalContentInset:(NSDirectionalEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.leading;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_additionalContentInsets.top, v3), vceqq_f64(*&self->_additionalContentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_additionalContentInsets = a3;
+    self->_additionalContentInsets = inset;
     [(CNAutocompleteSuggestionsViewController *)self latestKeyboardFrame];
 
     [(CNAutocompleteSuggestionsViewController *)self adjustInsetsForKeyboardFrame:?];
   }
 }
 
-- (void)titleLabelTapped:(id)a3
+- (void)titleLabelTapped:(id)tapped
 {
-  v4 = [(CNAutocompleteSuggestionsViewController *)self delegate];
-  [v4 suggestionsControllerTitleLabelWasTapped:self];
+  delegate = [(CNAutocompleteSuggestionsViewController *)self delegate];
+  [delegate suggestionsControllerTitleLabelWasTapped:self];
 }
 
 - (void)prepareForReuse
@@ -329,7 +329,7 @@ void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_with
 - (id)compositionalLayout
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout];
+  useAccessibleLayout = [(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout];
   if ([(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout])
   {
     v4 = 96.0;
@@ -346,7 +346,7 @@ void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_with
   }
 
   v5 = 0.25;
-  if (v3)
+  if (useAccessibleLayout)
   {
     v5 = 1.0;
   }
@@ -389,24 +389,24 @@ void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_with
 
 - (void)buildCollectionView
 {
-  v3 = [(CNAutocompleteSuggestionsViewController *)self compositionalLayout];
-  [(CNAutocompleteSuggestionsViewController *)self setLayout:v3];
+  compositionalLayout = [(CNAutocompleteSuggestionsViewController *)self compositionalLayout];
+  [(CNAutocompleteSuggestionsViewController *)self setLayout:compositionalLayout];
 
   v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v5 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v5 bounds];
+  view = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view bounds];
   v7 = v6 + 0.0;
-  v8 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v8 bounds];
+  view2 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view2 bounds];
   v10 = v9;
-  v11 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v11 bounds];
+  view3 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view3 bounds];
   v13 = v12;
-  v14 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v14 bounds];
+  view4 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view4 bounds];
   v16 = v15;
-  v17 = [(CNAutocompleteSuggestionsViewController *)self layout];
-  v18 = [v4 initWithFrame:v17 collectionViewLayout:{v7, v10, v13, v16}];
+  layout = [(CNAutocompleteSuggestionsViewController *)self layout];
+  v18 = [v4 initWithFrame:layout collectionViewLayout:{v7, v10, v13, v16}];
 
   [v18 setDelegate:self];
   v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -438,16 +438,16 @@ void __94__CNAutocompleteSuggestionsViewController_viewWillTransitionToSize_with
   v26 = +[CNAutocompleteSuggestionsViewSectionHeader reuseIdentifier];
   [v18 registerClass:v25 forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v26];
 
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [v18 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v18 setBackgroundColor:clearColor];
 
   [v18 setAlwaysBounceVertical:0];
   [v18 setShowsVerticalScrollIndicator:0];
   [v18 setShowsHorizontalScrollIndicator:0];
   [v18 setContentInsetAdjustmentBehavior:2];
   [v18 setAutomaticallyAdjustsScrollIndicatorInsets:0];
-  v28 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v28 addSubview:v18];
+  view5 = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view5 addSubview:v18];
 
   [v18 setAutoresizingMask:18];
   [(CNAutocompleteSuggestionsViewController *)self setCollectionView:v18];
@@ -516,21 +516,21 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
 
 - (void)fetchRecipientsIfNeeded
 {
-  v3 = [(CNAutocompleteSuggestionsViewController *)self recipients];
+  recipients = [(CNAutocompleteSuggestionsViewController *)self recipients];
 
-  if (!v3)
+  if (!recipients)
   {
 
     [(CNAutocompleteSuggestionsViewController *)self fetchRecipients];
   }
 }
 
-- (void)setOtherRecipientAddresses:(id)a3
+- (void)setOtherRecipientAddresses:(id)addresses
 {
-  v5 = a3;
+  addressesCopy = addresses;
   if (([(NSArray *)self->_otherRecipientAddresses isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_otherRecipientAddresses, a3);
+    objc_storeStrong(&self->_otherRecipientAddresses, addresses);
     if ([(CNAutocompleteSuggestionsViewController *)self isViewLoaded])
     {
       [(CNAutocompleteSuggestionsViewController *)self fetchRecipients];
@@ -541,37 +541,37 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
 - (void)fetchRecipients
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(CNAutocompleteSuggestionsViewController *)self taskID];
+  taskID = [(CNAutocompleteSuggestionsViewController *)self taskID];
 
-  if (v3)
+  if (taskID)
   {
-    v4 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B8106000, v4, OS_LOG_TYPE_INFO, "Suggestions fetchRecipients called while fetch already in flight, ignoring", buf, 2u);
+      _os_log_impl(&dword_1B8106000, os_log, OS_LOG_TYPE_INFO, "Suggestions fetchRecipients called while fetch already in flight, ignoring", buf, 2u);
     }
   }
 
   else
   {
-    v5 = [(CNAutocompleteSuggestionsViewController *)self searchManager];
+    searchManager = [(CNAutocompleteSuggestionsViewController *)self searchManager];
 
-    if (!v5)
+    if (!searchManager)
     {
       v6 = [CNAutocompleteSearchManager alloc];
-      v7 = [(CNAutocompleteSuggestionsViewController *)self options];
-      v8 = -[CNAutocompleteSearchManager initWithAutocompleteSearchType:](v6, "initWithAutocompleteSearchType:", [v7 searchType]);
+      options = [(CNAutocompleteSuggestionsViewController *)self options];
+      v8 = -[CNAutocompleteSearchManager initWithAutocompleteSearchType:](v6, "initWithAutocompleteSearchType:", [options searchType]);
       [(CNAutocompleteSuggestionsViewController *)self setSearchManager:v8];
     }
 
-    v4 = [MEMORY[0x1E695DF70] array];
+    os_log = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [(CNAutocompleteSuggestionsViewController *)self otherRecipientAddresses];
-    v10 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    otherRecipientAddresses = [(CNAutocompleteSuggestionsViewController *)self otherRecipientAddresses];
+    v10 = [otherRecipientAddresses countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -583,14 +583,14 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
         {
           if (*v30 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(otherRecipientAddresses);
           }
 
-          [v4 addObject:*(*(&v29 + 1) + 8 * v13++)];
+          [os_log addObject:*(*(&v29 + 1) + 8 * v13++)];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v11 = [otherRecipientAddresses countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v11);
@@ -600,8 +600,8 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [(CNAutocompleteSuggestionsViewController *)self selectedRecipients];
-    v15 = [v14 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    selectedRecipients = [(CNAutocompleteSuggestionsViewController *)self selectedRecipients];
+    v15 = [selectedRecipients countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -613,90 +613,90 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
         {
           if (*v26 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(selectedRecipients);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * v18) address];
-          [v4 addObject:v19];
+          address = [*(*(&v25 + 1) + 8 * v18) address];
+          [os_log addObject:address];
 
           ++v18;
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v16 = [selectedRecipients countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v16);
     }
 
     v20 = objc_alloc_init(MEMORY[0x1E6996330]);
-    v21 = [v4 copy];
+    v21 = [os_log copy];
     [v20 setOtherAddressesAlreadyChosen:v21];
 
-    v22 = [MEMORY[0x1E695DF70] array];
-    [(CNAutocompleteSuggestionsViewController *)self setFetchedRecipients:v22];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CNAutocompleteSuggestionsViewController *)self setFetchedRecipients:array];
 
-    v23 = [(CNAutocompleteSuggestionsViewController *)self searchManager];
-    v24 = [v23 searchForText:&stru_1F3002C60 withAutocompleteFetchContext:v20 consumer:self];
+    searchManager2 = [(CNAutocompleteSuggestionsViewController *)self searchManager];
+    v24 = [searchManager2 searchForText:&stru_1F3002C60 withAutocompleteFetchContext:v20 consumer:self];
     [(CNAutocompleteSuggestionsViewController *)self setTaskID:v24];
   }
 }
 
-- (void)fetchSuggestedRecipientsWithCompletionBlock:(id)a3
+- (void)fetchSuggestedRecipientsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(CNAutocompleteSuggestionsViewController *)self setTaskID:&unk_1F300DE00];
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   [(CNAutocompleteSuggestionsViewController *)self setSuggestionPreWarmCompletionBlock:v5];
 
   [(CNAutocompleteSuggestionsViewController *)self fetchRecipients];
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v15 = a3;
-  v6 = a4;
-  if ([v6 integerValue] == -1 && (-[CNAutocompleteSuggestionsViewController suggestionPreWarmCompletionBlock](self, "suggestionPreWarmCompletionBlock"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  resultsCopy = results;
+  dCopy = d;
+  if ([dCopy integerValue] == -1 && (-[CNAutocompleteSuggestionsViewController suggestionPreWarmCompletionBlock](self, "suggestionPreWarmCompletionBlock"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [(CNAutocompleteSuggestionsViewController *)self suggestionPreWarmCompletionBlock];
-    (v14)[2](v14, v15);
+    suggestionPreWarmCompletionBlock = [(CNAutocompleteSuggestionsViewController *)self suggestionPreWarmCompletionBlock];
+    (suggestionPreWarmCompletionBlock)[2](suggestionPreWarmCompletionBlock, resultsCopy);
 
     [(CNAutocompleteSuggestionsViewController *)self setSuggestionPreWarmCompletionBlock:0];
   }
 
   else
   {
-    v7 = [(CNAutocompleteSuggestionsViewController *)self taskID];
-    v8 = [v7 isEqualToNumber:v6];
+    taskID = [(CNAutocompleteSuggestionsViewController *)self taskID];
+    v8 = [taskID isEqualToNumber:dCopy];
 
     if (v8)
     {
-      v9 = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
-      [v9 addObjectsFromArray:v15];
+      fetchedRecipients = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
+      [fetchedRecipients addObjectsFromArray:resultsCopy];
 
-      v10 = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
-      v11 = [v10 _cn_take:8];
+      fetchedRecipients2 = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
+      v11 = [fetchedRecipients2 _cn_take:8];
       v12 = [v11 copy];
       [(CNAutocompleteSuggestionsViewController *)self setRecipients:v12];
     }
   }
 }
 
-- (void)finishedTaskWithID:(id)a3
+- (void)finishedTaskWithID:(id)d
 {
-  v10 = a3;
-  v4 = [(CNAutocompleteSuggestionsViewController *)self taskID];
-  if (v4)
+  dCopy = d;
+  taskID = [(CNAutocompleteSuggestionsViewController *)self taskID];
+  if (taskID)
   {
-    v5 = v4;
-    v6 = [(CNAutocompleteSuggestionsViewController *)self taskID];
-    v7 = [v10 isEqualToNumber:v6];
+    v5 = taskID;
+    taskID2 = [(CNAutocompleteSuggestionsViewController *)self taskID];
+    v7 = [dCopy isEqualToNumber:taskID2];
 
     if (v7)
     {
-      v8 = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
-      v9 = [v8 count];
+      fetchedRecipients = [(CNAutocompleteSuggestionsViewController *)self fetchedRecipients];
+      v9 = [fetchedRecipients count];
 
       if (!v9)
       {
@@ -708,35 +708,35 @@ id __62__CNAutocompleteSuggestionsViewController_buildCollectionView__block_invo
   }
 }
 
-- (void)setRecipients:(id)a3 animated:(BOOL)a4
+- (void)setRecipients:(id)recipients animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (self->_recipients != v7)
+  recipientsCopy = recipients;
+  if (self->_recipients != recipientsCopy)
   {
-    objc_storeStrong(&self->_recipients, a3);
-    v8 = [(NSArray *)v7 _cn_map:&__block_literal_global_143];
+    objc_storeStrong(&self->_recipients, recipients);
+    v8 = [(NSArray *)recipientsCopy _cn_map:&__block_literal_global_143];
     [(CNAutocompleteSuggestionsViewController *)self setItems:v8];
 
     v9 = objc_alloc_init(MEMORY[0x1E69955A0]);
-    if ([(NSArray *)v7 count])
+    if ([(NSArray *)recipientsCopy count])
     {
       v14[0] = @"Main";
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       [v9 appendSectionsWithIdentifiers:v10];
 
-      v11 = [(CNAutocompleteSuggestionsViewController *)self items];
-      [v9 appendItemsWithIdentifiers:v11];
+      items = [(CNAutocompleteSuggestionsViewController *)self items];
+      [v9 appendItemsWithIdentifiers:items];
     }
 
-    v12 = [(CNAutocompleteSuggestionsViewController *)self diffableDataSource];
+    diffableDataSource = [(CNAutocompleteSuggestionsViewController *)self diffableDataSource];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__CNAutocompleteSuggestionsViewController_setRecipients_animated___block_invoke_2;
     v13[3] = &unk_1E7CD1F90;
     v13[4] = self;
-    [v12 applySnapshot:v9 animatingDifferences:v4 completion:v13];
+    [diffableDataSource applySnapshot:v9 animatingDifferences:animatedCopy completion:v13];
   }
 
   [(CNAutocompleteSuggestionsViewController *)self setSuggestionsAreUpdating:0];
@@ -752,9 +752,9 @@ CNSuggestedRecipientItem *__66__CNAutocompleteSuggestionsViewController_setRecip
 
 - (CGSize)avatarSize
 {
-  v3 = [(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout];
-  v4 = [(CNAutocompleteSuggestionsViewController *)self view];
-  [v4 bounds];
+  useAccessibleLayout = [(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout];
+  view = [(CNAutocompleteSuggestionsViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v12);
 
   if ([(CNAutocompleteSuggestionsViewController *)self useAccessibleLayout])
@@ -764,16 +764,16 @@ CNSuggestedRecipientItem *__66__CNAutocompleteSuggestionsViewController_setRecip
 
   else
   {
-    v7 = [(CNAutocompleteSuggestionsViewController *)self isZoomedLayout];
+    isZoomedLayout = [(CNAutocompleteSuggestionsViewController *)self isZoomedLayout];
     v6 = 80.0;
-    if (v7)
+    if (isZoomedLayout)
     {
       v6 = 60.0;
     }
   }
 
   v8 = 4.0;
-  if (v3)
+  if (useAccessibleLayout)
   {
     v8 = 1.0;
   }
@@ -790,13 +790,13 @@ CNSuggestedRecipientItem *__66__CNAutocompleteSuggestionsViewController_setRecip
   return result;
 }
 
-- (void)imageForRecipient:(id)a3 imageUpdateBlock:(id)a4
+- (void)imageForRecipient:(id)recipient imageUpdateBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAutocompleteSuggestionsViewController *)self avatarRenderer];
+  recipientCopy = recipient;
+  blockCopy = block;
+  avatarRenderer = [(CNAutocompleteSuggestionsViewController *)self avatarRenderer];
 
-  if (!v8)
+  if (!avatarRenderer)
   {
     v9 = objc_alloc(MEMORY[0x1E695D098]);
     v10 = [MEMORY[0x1E695D0A8] defaultSettingsWithCacheSize:8];
@@ -807,60 +807,60 @@ CNSuggestedRecipientItem *__66__CNAutocompleteSuggestionsViewController_setRecip
   [(CNAutocompleteSuggestionsViewController *)self avatarSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(CNAutocompleteSuggestionsViewController *)self view];
-  v17 = [v16 window];
-  v18 = [v17 screen];
-  [v18 scale];
+  view = [(CNAutocompleteSuggestionsViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen scale];
   v20 = v19;
 
-  v21 = [(CNAutocompleteSuggestionsViewController *)self delegate];
-  LOBYTE(v17) = objc_opt_respondsToSelector();
+  delegate = [(CNAutocompleteSuggestionsViewController *)self delegate];
+  LOBYTE(window) = objc_opt_respondsToSelector();
 
-  if ((v17 & 1) == 0 || (v43[0] = MEMORY[0x1E69E9820], v43[1] = 3221225472, v43[2] = __78__CNAutocompleteSuggestionsViewController_imageForRecipient_imageUpdateBlock___block_invoke, v43[3] = &unk_1E7CD1FE0, v45 = v13, v46 = v15, v47 = v20, v44 = v7, v22 = MEMORY[0x1B8CB9350](v43), -[CNAutocompleteSuggestionsViewController delegate](self, "delegate"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 suggestionsController:self imageDataForRecipient:v6 imageUpdateBlock:v22], v23, v22, v44, (v24 & 1) == 0))
+  if ((window & 1) == 0 || (v43[0] = MEMORY[0x1E69E9820], v43[1] = 3221225472, v43[2] = __78__CNAutocompleteSuggestionsViewController_imageForRecipient_imageUpdateBlock___block_invoke, v43[3] = &unk_1E7CD1FE0, v45 = v13, v46 = v15, v47 = v20, v44 = blockCopy, v22 = MEMORY[0x1B8CB9350](v43), -[CNAutocompleteSuggestionsViewController delegate](self, "delegate"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 suggestionsController:self imageDataForRecipient:recipientCopy imageUpdateBlock:v22], v23, v22, v44, (v24 & 1) == 0))
   {
-    if ([v6 isGroup])
+    if ([recipientCopy isGroup])
     {
       v25 = objc_alloc_init(CNAUIMessagesImagesFacade);
-      v26 = [v6 autocompleteResult];
-      v27 = [(CNAUIMessagesImagesFacade *)v25 imageForResult:v26];
+      autocompleteResult = [recipientCopy autocompleteResult];
+      v27 = [(CNAUIMessagesImagesFacade *)v25 imageForResult:autocompleteResult];
 
       if (v27)
       {
         v28 = [CNUIImage resizeImage:v27 toFitWidth:v13 scale:v20];
 
-        v29 = [MEMORY[0x1E69966E8] currentEnvironment];
-        v30 = [v29 schedulerProvider];
-        v31 = [v30 mainThreadScheduler];
+        currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+        schedulerProvider = [currentEnvironment schedulerProvider];
+        mainThreadScheduler = [schedulerProvider mainThreadScheduler];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __78__CNAutocompleteSuggestionsViewController_imageForRecipient_imageUpdateBlock___block_invoke_3;
         v40[3] = &unk_1E7CD1FB8;
         v32 = &v42;
         v41 = v28;
-        v42 = v7;
+        v42 = blockCopy;
         v33 = v28;
-        [v31 performBlock:v40];
+        [mainThreadScheduler performBlock:v40];
 
-        v34 = v41;
+        avatarRenderer2 = v41;
 LABEL_10:
 
         goto LABEL_11;
       }
     }
 
-    v25 = [(CNAutocompleteSuggestionsViewController *)self contactsForAvatarForRecipient:v6];
-    v35 = [(CNAutocompleteSuggestionsViewController *)self traitCollection];
-    v36 = [v35 layoutDirection] == 1;
+    v25 = [(CNAutocompleteSuggestionsViewController *)self contactsForAvatarForRecipient:recipientCopy];
+    traitCollection = [(CNAutocompleteSuggestionsViewController *)self traitCollection];
+    v36 = [traitCollection layoutDirection] == 1;
 
     v33 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v36 scale:0 rightToLeft:v13 style:{v15, v20}];
-    v34 = [(CNAutocompleteSuggestionsViewController *)self avatarRenderer];
+    avatarRenderer2 = [(CNAutocompleteSuggestionsViewController *)self avatarRenderer];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __78__CNAutocompleteSuggestionsViewController_imageForRecipient_imageUpdateBlock___block_invoke_4;
     v38[3] = &unk_1E7CD2008;
     v32 = &v39;
-    v39 = v7;
-    v37 = [v34 renderAvatarsForContacts:v25 scope:v33 imageHandler:v38];
+    v39 = blockCopy;
+    v37 = [avatarRenderer2 renderAvatarsForContacts:v25 scope:v33 imageHandler:v38];
     goto LABEL_10;
   }
 
@@ -903,40 +903,40 @@ void __78__CNAutocompleteSuggestionsViewController_imageForRecipient_imageUpdate
   [v6 performBlock:v9];
 }
 
-- (id)contactsForAvatarForRecipient:(id)a3
+- (id)contactsForAvatarForRecipient:(id)recipient
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientCopy = recipient;
   v5 = objc_alloc_init(MEMORY[0x1E695CD58]);
   v17[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
 
-  if (v4)
+  if (recipientCopy)
   {
-    if ([v4 isGroup])
+    if ([recipientCopy isGroup])
     {
-      v7 = [v4 children];
+      children = [recipientCopy children];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __73__CNAutocompleteSuggestionsViewController_contactsForAvatarForRecipient___block_invoke;
       v14[3] = &unk_1E7CD2030;
       v14[4] = self;
-      v8 = [v7 _cn_map:v14];
+      v8 = [children _cn_map:v14];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695D098] descriptorForRequiredKeys];
-      v16 = v9;
+      descriptorForRequiredKeys = [MEMORY[0x1E695D098] descriptorForRequiredKeys];
+      v16 = descriptorForRequiredKeys;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-      v7 = [v4 contactWithKeysToFetch:v10];
+      children = [recipientCopy contactWithKeysToFetch:v10];
 
-      if (!v7)
+      if (!children)
       {
-        v7 = [(CNAutocompleteSuggestionsViewController *)self unknownContactForRecipient:v4];
+        children = [(CNAutocompleteSuggestionsViewController *)self unknownContactForRecipient:recipientCopy];
       }
 
-      v15 = v7;
+      v15 = children;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     }
 
@@ -967,33 +967,33 @@ id __73__CNAutocompleteSuggestionsViewController_contactsForAvatarForRecipient__
   return v6;
 }
 
-- (id)unknownContactForRecipient:(id)a3
+- (id)unknownContactForRecipient:(id)recipient
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recipientCopy = recipient;
   v4 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  v5 = [v3 compositeName];
-  v6 = [v3 address];
-  v7 = [v5 isEqualToString:v6];
+  compositeName = [recipientCopy compositeName];
+  address = [recipientCopy address];
+  v7 = [compositeName isEqualToString:address];
 
   if ((v7 & 1) == 0)
   {
     v8 = MEMORY[0x1E6996790];
-    v9 = [v3 displayString];
-    v10 = [v8 componentsFromString:v9];
+    displayString = [recipientCopy displayString];
+    v10 = [v8 componentsFromString:displayString];
 
-    v11 = [v10 givenName];
-    [v4 setGivenName:v11];
+    givenName = [v10 givenName];
+    [v4 setGivenName:givenName];
 
-    v12 = [v10 familyName];
-    [v4 setFamilyName:v12];
+    familyName = [v10 familyName];
+    [v4 setFamilyName:familyName];
   }
 
-  if ([v3 kind] == 1)
+  if ([recipientCopy kind] == 1)
   {
     v13 = MEMORY[0x1E695CF50];
-    v14 = [v3 normalizedAddress];
-    v15 = [v13 phoneNumberWithStringValue:v14];
+    normalizedAddress = [recipientCopy normalizedAddress];
+    v15 = [v13 phoneNumberWithStringValue:normalizedAddress];
 
     v16 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v15];
     v22[0] = v16;
@@ -1003,14 +1003,14 @@ id __73__CNAutocompleteSuggestionsViewController_contactsForAvatarForRecipient__
 
   else
   {
-    if ([v3 kind])
+    if ([recipientCopy kind])
     {
       goto LABEL_8;
     }
 
     v18 = MEMORY[0x1E695CEE0];
-    v19 = [v3 normalizedAddress];
-    v15 = [v18 labeledValueWithLabel:0 value:v19];
+    normalizedAddress2 = [recipientCopy normalizedAddress];
+    v15 = [v18 labeledValueWithLabel:0 value:normalizedAddress2];
 
     v21 = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
@@ -1022,41 +1022,41 @@ LABEL_8:
   return v4;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNAutocompleteSuggestionsViewController *)self items];
-  v10 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+  pathCopy = path;
+  items = [(CNAutocompleteSuggestionsViewController *)self items];
+  v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   [v10 setIsSelected:1];
-  v7 = [(CNAutocompleteSuggestionsViewController *)self delegate];
-  v8 = [v10 recipient];
-  [v7 suggestionsController:self didSelectRecipient:v8];
+  delegate = [(CNAutocompleteSuggestionsViewController *)self delegate];
+  recipient = [v10 recipient];
+  [delegate suggestionsController:self didSelectRecipient:recipient];
 
-  v9 = [(CNAutocompleteSuggestionsViewController *)self collectionView];
-  [v9 deselectItemAtIndexPath:v5 animated:1];
+  collectionView = [(CNAutocompleteSuggestionsViewController *)self collectionView];
+  [collectionView deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(CNAutocompleteSuggestionsViewController *)self delegate];
+  delegate = [(CNAutocompleteSuggestionsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAutocompleteSuggestionsViewController *)self delegate];
-    [v6 suggestionsControllerWillBeginScroll:self];
+    delegate2 = [(CNAutocompleteSuggestionsViewController *)self delegate];
+    [delegate2 suggestionsControllerWillBeginScroll:self];
   }
 }
 
 - (void)invalidateSelectedRecipients
 {
-  v3 = [(CNAutocompleteSuggestionsViewController *)self suggestionsFetchDebounceTimer];
+  suggestionsFetchDebounceTimer = [(CNAutocompleteSuggestionsViewController *)self suggestionsFetchDebounceTimer];
 
-  if (v3)
+  if (suggestionsFetchDebounceTimer)
   {
-    v4 = [(CNAutocompleteSuggestionsViewController *)self suggestionsFetchDebounceTimer];
-    dispatch_source_cancel(v4);
+    suggestionsFetchDebounceTimer2 = [(CNAutocompleteSuggestionsViewController *)self suggestionsFetchDebounceTimer];
+    dispatch_source_cancel(suggestionsFetchDebounceTimer2);
 
     [(CNAutocompleteSuggestionsViewController *)self setSuggestionsFetchDebounceTimer:0];
   }
@@ -1083,8 +1083,8 @@ void __71__CNAutocompleteSuggestionsViewController_invalidateSelectedRecipients_
 - (id)selectedRecipientHandles
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(CNAutocompleteSuggestionsViewController *)self delegate];
-  v4 = [v3 selectedRecipientsForSuggestionsController:self];
+  delegate = [(CNAutocompleteSuggestionsViewController *)self delegate];
+  v4 = [delegate selectedRecipientsForSuggestionsController:self];
 
   v5 = [MEMORY[0x1E695DFA8] set];
   v13 = 0u;
@@ -1106,8 +1106,8 @@ void __71__CNAutocompleteSuggestionsViewController_invalidateSelectedRecipients_
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) normalizedAddress];
-        [v5 addObject:v11];
+        normalizedAddress = [*(*(&v13 + 1) + 8 * i) normalizedAddress];
+        [v5 addObject:normalizedAddress];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1121,16 +1121,16 @@ void __71__CNAutocompleteSuggestionsViewController_invalidateSelectedRecipients_
 
 - (void)conformResultsForSelection
 {
-  v3 = [(CNAutocompleteSuggestionsViewController *)self selectedRecipientHandles];
-  v4 = [(CNAutocompleteSuggestionsViewController *)self items];
+  selectedRecipientHandles = [(CNAutocompleteSuggestionsViewController *)self selectedRecipientHandles];
+  items = [(CNAutocompleteSuggestionsViewController *)self items];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__CNAutocompleteSuggestionsViewController_conformResultsForSelection__block_invoke;
   v6[3] = &unk_1E7CD2058;
-  v7 = v3;
-  v8 = self;
-  v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v6];
+  v7 = selectedRecipientHandles;
+  selfCopy = self;
+  v5 = selectedRecipientHandles;
+  [items enumerateObjectsUsingBlock:v6];
 }
 
 void __69__CNAutocompleteSuggestionsViewController_conformResultsForSelection__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1146,18 +1146,18 @@ void __69__CNAutocompleteSuggestionsViewController_conformResultsForSelection__b
   }
 }
 
-- (void)conformResultsForDeselection:(id)a3
+- (void)conformResultsForDeselection:(id)deselection
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteSuggestionsViewController *)self items];
+  deselectionCopy = deselection;
+  items = [(CNAutocompleteSuggestionsViewController *)self items];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__CNAutocompleteSuggestionsViewController_conformResultsForDeselection___block_invoke;
   v7[3] = &unk_1E7CD2058;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = deselectionCopy;
+  selfCopy = self;
+  v6 = deselectionCopy;
+  [items enumerateObjectsUsingBlock:v7];
 }
 
 void __72__CNAutocompleteSuggestionsViewController_conformResultsForDeselection___block_invoke(uint64_t a1, void *a2, uint64_t a3)

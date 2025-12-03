@@ -1,14 +1,14 @@
 @interface SBCPlaybackPositionEntity
-- (SBCPlaybackPositionEntity)initWithCoder:(id)a3;
-- (SBCPlaybackPositionEntity)initWithPlaybackPositionDomain:(id)a3 ubiquitousIdentifier:(id)a4 foreignDatabaseEntityID:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBCPlaybackPositionEntity)initWithCoder:(id)coder;
+- (SBCPlaybackPositionEntity)initWithPlaybackPositionDomain:(id)domain ubiquitousIdentifier:(id)identifier foreignDatabaseEntityID:(int64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iTunesCloudEntity;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBCPlaybackPositionEntity
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithPlaybackPositionDomain:self->_playbackPositionDomain ubiquitousIdentifier:self->_ubiquitousIdentifier foreignDatabaseEntityID:self->_foreignDatabaseEntityID];
   v5 = v4;
@@ -20,28 +20,28 @@
     [v5 setHasBeenPlayed:self->_hasBeenPlayed];
   }
 
-  v6 = self;
+  selfCopy = self;
 
-  return v6;
+  return selfCopy;
 }
 
-- (SBCPlaybackPositionEntity)initWithCoder:(id)a3
+- (SBCPlaybackPositionEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"SBCPlaybackPositionDomain"];
-  v6 = [v4 decodeObjectForKey:@"SBCUbiquitousIdentifier"];
-  v7 = -[SBCPlaybackPositionEntity initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:](self, "initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:", v5, v6, [v4 decodeInt64ForKey:@"SBCForeignDatabaseEntityID"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"SBCPlaybackPositionDomain"];
+  v6 = [coderCopy decodeObjectForKey:@"SBCUbiquitousIdentifier"];
+  v7 = -[SBCPlaybackPositionEntity initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:](self, "initWithPlaybackPositionDomain:ubiquitousIdentifier:foreignDatabaseEntityID:", v5, v6, [coderCopy decodeInt64ForKey:@"SBCForeignDatabaseEntityID"]);
   if (v7)
   {
-    [v4 decodeDoubleForKey:@"SBCBookmarkTimestamp"];
+    [coderCopy decodeDoubleForKey:@"SBCBookmarkTimestamp"];
     v7->_bookmarkTimestamp = v8;
-    [v4 decodeDoubleForKey:@"SBCBookmarkTime"];
+    [coderCopy decodeDoubleForKey:@"SBCBookmarkTime"];
     v7->_bookmarkTime = v9;
-    v7->_userPlayCount = [v4 decodeIntegerForKey:@"SBCUserPlayCount"];
-    v7->_hasBeenPlayed = [v4 decodeBoolForKey:@"SBCHasBeenPlayed"];
-    v10 = [v4 decodeBoolForKey:@"SBCBookmarkTimeModified"];
+    v7->_userPlayCount = [coderCopy decodeIntegerForKey:@"SBCUserPlayCount"];
+    v7->_hasBeenPlayed = [coderCopy decodeBoolForKey:@"SBCHasBeenPlayed"];
+    v10 = [coderCopy decodeBoolForKey:@"SBCBookmarkTimeModified"];
     propertyMonitor_0 = propertyMonitor_0 & 0xFE | v10;
-    if ([v4 decodeBoolForKey:@"SBCHasBeenPlayedModified"])
+    if ([coderCopy decodeBoolForKey:@"SBCHasBeenPlayedModified"])
     {
       v11 = 8;
     }
@@ -52,7 +52,7 @@
     }
 
     propertyMonitor_0 = propertyMonitor_0 & 0xF7 | v11;
-    if ([v4 decodeBoolForKey:@"SBCUserPlayCountModified"])
+    if ([coderCopy decodeBoolForKey:@"SBCUserPlayCountModified"])
     {
       v12 = 4;
     }
@@ -63,7 +63,7 @@
     }
 
     propertyMonitor_0 = propertyMonitor_0 & 0xFB | v12;
-    if ([v4 decodeBoolForKey:@"SBCBookmarkTimestampModified"])
+    if ([coderCopy decodeBoolForKey:@"SBCBookmarkTimestampModified"])
     {
       v13 = 2;
     }
@@ -79,41 +79,41 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   playbackPositionDomain = self->_playbackPositionDomain;
-  v5 = a3;
-  [v5 encodeObject:playbackPositionDomain forKey:@"SBCPlaybackPositionDomain"];
-  [v5 encodeObject:self->_ubiquitousIdentifier forKey:@"SBCUbiquitousIdentifier"];
-  [v5 encodeInt64:self->_foreignDatabaseEntityID forKey:@"SBCForeignDatabaseEntityID"];
-  [v5 encodeDouble:@"SBCBookmarkTimestamp" forKey:self->_bookmarkTimestamp];
-  [v5 encodeDouble:@"SBCBookmarkTime" forKey:self->_bookmarkTime];
-  [v5 encodeInteger:self->_userPlayCount forKey:@"SBCUserPlayCount"];
-  [v5 encodeBool:self->_hasBeenPlayed forKey:@"SBCHasBeenPlayed"];
-  [v5 encodeBool:propertyMonitor_0 & 1 forKey:@"SBCBookmarkTimeModified"];
-  [v5 encodeBool:(propertyMonitor_0 >> 3) & 1 forKey:@"SBCHasBeenPlayedModified"];
-  [v5 encodeBool:(propertyMonitor_0 >> 2) & 1 forKey:@"SBCUserPlayCountModified"];
-  [v5 encodeBool:(propertyMonitor_0 >> 1) & 1 forKey:@"SBCBookmarkTimestampModified"];
+  coderCopy = coder;
+  [coderCopy encodeObject:playbackPositionDomain forKey:@"SBCPlaybackPositionDomain"];
+  [coderCopy encodeObject:self->_ubiquitousIdentifier forKey:@"SBCUbiquitousIdentifier"];
+  [coderCopy encodeInt64:self->_foreignDatabaseEntityID forKey:@"SBCForeignDatabaseEntityID"];
+  [coderCopy encodeDouble:@"SBCBookmarkTimestamp" forKey:self->_bookmarkTimestamp];
+  [coderCopy encodeDouble:@"SBCBookmarkTime" forKey:self->_bookmarkTime];
+  [coderCopy encodeInteger:self->_userPlayCount forKey:@"SBCUserPlayCount"];
+  [coderCopy encodeBool:self->_hasBeenPlayed forKey:@"SBCHasBeenPlayed"];
+  [coderCopy encodeBool:propertyMonitor_0 & 1 forKey:@"SBCBookmarkTimeModified"];
+  [coderCopy encodeBool:(propertyMonitor_0 >> 3) & 1 forKey:@"SBCHasBeenPlayedModified"];
+  [coderCopy encodeBool:(propertyMonitor_0 >> 2) & 1 forKey:@"SBCUserPlayCountModified"];
+  [coderCopy encodeBool:(propertyMonitor_0 >> 1) & 1 forKey:@"SBCBookmarkTimestampModified"];
 }
 
 - (id)iTunesCloudEntity
 {
-  v3 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
-  v4 = v3;
+  domainIdentifier = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
+  v4 = domainIdentifier;
   v5 = *MEMORY[0x277D7F948];
-  if (v3)
+  if (domainIdentifier)
   {
-    v5 = v3;
+    v5 = domainIdentifier;
   }
 
   v6 = v5;
 
   v7 = [objc_alloc(MEMORY[0x277D7FBB8]) initWithDomain:v6];
   [v7 setPlaybackPositionKey:self->_ubiquitousIdentifier];
-  v8 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain foreignDatabasePath];
-  v9 = SBCPathWithScrubbedMount(v8);
+  foreignDatabasePath = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain foreignDatabasePath];
+  v9 = SBCPathWithScrubbedMount(foreignDatabasePath);
 
-  v10 = [MEMORY[0x277D2B5F8] allLibraries];
+  allLibraries = [MEMORY[0x277D2B5F8] allLibraries];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __46__SBCPlaybackPositionEntity_iTunesCloudEntity__block_invoke;
@@ -122,7 +122,7 @@
   v25 = v11;
   v12 = v7;
   v26 = v12;
-  [v10 enumerateObjectsUsingBlock:&v21];
+  [allLibraries enumerateObjectsUsingBlock:&v21];
 
   if (self->_foreignDatabaseEntityID)
   {
@@ -176,17 +176,17 @@ void __46__SBCPlaybackPositionEntity_iTunesCloudEntity__block_invoke(uint64_t a1
   }
 }
 
-- (SBCPlaybackPositionEntity)initWithPlaybackPositionDomain:(id)a3 ubiquitousIdentifier:(id)a4 foreignDatabaseEntityID:(int64_t)a5
+- (SBCPlaybackPositionEntity)initWithPlaybackPositionDomain:(id)domain ubiquitousIdentifier:(id)identifier foreignDatabaseEntityID:(int64_t)d
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SBCPlaybackPositionEntity;
   v9 = [(SBCPlaybackPositionEntity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ubiquitousIdentifier, a4);
-    v10->_foreignDatabaseEntityID = a5;
+    objc_storeStrong(&v9->_ubiquitousIdentifier, identifier);
+    v10->_foreignDatabaseEntityID = d;
     propertyMonitor_0 = 0;
   }
 

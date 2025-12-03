@@ -1,19 +1,19 @@
 @interface _UIDragAnimatingWrapper
-- (_UIDragAnimatingWrapper)initWithPropertyAnimator:(id)a3;
+- (_UIDragAnimatingWrapper)initWithPropertyAnimator:(id)animator;
 @end
 
 @implementation _UIDragAnimatingWrapper
 
-- (_UIDragAnimatingWrapper)initWithPropertyAnimator:(id)a3
+- (_UIDragAnimatingWrapper)initWithPropertyAnimator:(id)animator
 {
-  v5 = a3;
+  animatorCopy = animator;
   v9.receiver = self;
   v9.super_class = _UIDragAnimatingWrapper;
   v6 = [(_UIDragAnimatingWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animator, a3);
+    objc_storeStrong(&v6->_animator, animator);
   }
 
   return v7;

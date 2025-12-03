@@ -1,17 +1,17 @@
 @interface JavaLangEnum_$1
-- (id)createWithId:(id)a3;
+- (id)createWithId:(id)id;
 @end
 
 @implementation JavaLangEnum_$1
 
-- (id)createWithId:(id)a3
+- (id)createWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  if (![a3 isEnum])
+  if (![id isEnum])
   {
     return 0;
   }
@@ -21,7 +21,7 @@
     objc_opt_class();
   }
 
-  v4 = [a3 getDeclaredMethod:@"values" parameterTypes:LibcoreUtilEmptyArray_CLASS_];
+  v4 = [id getDeclaredMethod:@"values" parameterTypes:LibcoreUtilEmptyArray_CLASS_];
   v5 = v4;
   if (!v4)
   {

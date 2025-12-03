@@ -1,74 +1,74 @@
 @interface PKApplePayTrustKey
-- (PKApplePayTrustKey)initWithCoder:(id)a3;
-- (PKApplePayTrustKey)initWithKey:(id)a3;
+- (PKApplePayTrustKey)initWithCoder:(id)coder;
+- (PKApplePayTrustKey)initWithKey:(id)key;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplePayTrustKey
 
-- (PKApplePayTrustKey)initWithKey:(id)a3
+- (PKApplePayTrustKey)initWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = PKApplePayTrustKey;
   v5 = [(PKApplePayTrustKey *)&v18 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [keyCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v8 = [v4 keyAttestation];
-    v9 = [v8 pk_decodeHexadecimal];
+    keyAttestation = [keyCopy keyAttestation];
+    pk_decodeHexadecimal = [keyAttestation pk_decodeHexadecimal];
     signedEnrollmentData = v5->_signedEnrollmentData;
-    v5->_signedEnrollmentData = v9;
+    v5->_signedEnrollmentData = pk_decodeHexadecimal;
 
-    v11 = [v4 publicKey];
-    v12 = [v11 SHA256Hash];
+    publicKey = [keyCopy publicKey];
+    sHA256Hash = [publicKey SHA256Hash];
     publicKeyHash = v5->_publicKeyHash;
-    v5->_publicKeyHash = v12;
+    v5->_publicKeyHash = sHA256Hash;
 
-    v14 = [v4 keyAttestationAuthority];
-    v15 = [v14 pk_decodeHexadecimal];
+    keyAttestationAuthority = [keyCopy keyAttestationAuthority];
+    pk_decodeHexadecimal2 = [keyAttestationAuthority pk_decodeHexadecimal];
     certificate = v5->_certificate;
-    v5->_certificate = v15;
+    v5->_certificate = pk_decodeHexadecimal2;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   signedEnrollmentData = self->_signedEnrollmentData;
-  v5 = a3;
-  [v5 encodeObject:signedEnrollmentData forKey:@"signedEnrollmentData"];
-  [v5 encodeObject:self->_publicKeyHash forKey:@"publicKeyHash"];
-  [v5 encodeObject:self->_certificate forKey:@"certificate"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:signedEnrollmentData forKey:@"signedEnrollmentData"];
+  [coderCopy encodeObject:self->_publicKeyHash forKey:@"publicKeyHash"];
+  [coderCopy encodeObject:self->_certificate forKey:@"certificate"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (PKApplePayTrustKey)initWithCoder:(id)a3
+- (PKApplePayTrustKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKApplePayTrustKey;
   v5 = [(PKApplePayTrustKey *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedEnrollmentData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedEnrollmentData"];
     signedEnrollmentData = v5->_signedEnrollmentData;
     v5->_signedEnrollmentData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
     publicKeyHash = v5->_publicKeyHash;
     v5->_publicKeyHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certificate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certificate"];
     certificate = v5->_certificate;
     v5->_certificate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
   }

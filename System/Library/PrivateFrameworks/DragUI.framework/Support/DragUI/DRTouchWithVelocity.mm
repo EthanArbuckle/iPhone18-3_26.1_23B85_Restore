@@ -1,6 +1,6 @@
 @interface DRTouchWithVelocity
 - ($FC8E855C3CECF01FD7639B5D7F67724F)velocity;
-- (void)setVelocity:(id)a3;
+- (void)setVelocity:(id)velocity;
 @end
 
 @implementation DRTouchWithVelocity
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (void)setVelocity:(id)a3
+- (void)setVelocity:(id)velocity
 {
   v4 = v3[1];
   *&self->_velocity.var0.x = *v3;

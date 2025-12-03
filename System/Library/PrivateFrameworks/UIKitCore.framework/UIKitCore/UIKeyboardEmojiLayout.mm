@@ -1,12 +1,12 @@
 @interface UIKeyboardEmojiLayout
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)_setAttributes:(id)a3 forSection:(int64_t)a4;
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)_setAttributes:(id)attributes forSection:(int64_t)section;
 - (void)dealloc;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
@@ -25,21 +25,21 @@
   [(UIKeyboardEmojiLayout *)&v5 dealloc];
 }
 
-- (void)_setAttributes:(id)a3 forSection:(int64_t)a4
+- (void)_setAttributes:(id)attributes forSection:(int64_t)section
 {
-  v12 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v8 = [(NSMutableDictionary *)attributes objectForKeyedSubscript:v7];
 
-  v9 = v12;
-  if (v8 != v12)
+  v9 = attributesCopy;
+  if (v8 != attributesCopy)
   {
     v10 = self->_attributes;
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    if (v12)
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+    if (attributesCopy)
     {
-      [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)v10 setObject:attributesCopy forKeyedSubscript:v11];
     }
 
     else
@@ -47,7 +47,7 @@
       [(NSMutableDictionary *)v10 removeObjectForKey:v11];
     }
 
-    v9 = v12;
+    v9 = attributesCopy;
   }
 }
 
@@ -56,40 +56,40 @@
   v10.receiver = self;
   v10.super_class = UIKeyboardEmojiLayout;
   [(UICollectionViewFlowLayout *)&v10 prepareLayout];
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
   if (!self->_attributes)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v4];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:numberOfSections];
     attributes = self->_attributes;
     self->_attributes = v5;
   }
 
   if (!self->_headerWidths)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:numberOfSections];
     headerWidths = self->_headerWidths;
     self->_headerWidths = v7;
   }
 
-  if (v4)
+  if (numberOfSections)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       [(NSMutableArray *)self->_headerWidths setObject:&unk_1EFE2E768 atIndexedSubscript:i];
     }
   }
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = UIKeyboardEmojiLayout;
-  [(UICollectionViewFlowLayout *)&v20 invalidateLayoutWithContext:v4];
-  if (([v4 invalidateDataSourceCounts] & 1) != 0 || objc_msgSend(v4, "invalidateEverything"))
+  [(UICollectionViewFlowLayout *)&v20 invalidateLayoutWithContext:contextCopy];
+  if (([contextCopy invalidateDataSourceCounts] & 1) != 0 || objc_msgSend(contextCopy, "invalidateEverything"))
   {
     if (self->_attributes)
     {
@@ -113,7 +113,7 @@
 
   else
   {
-    [v4 invalidatedSupplementaryIndexPaths];
+    [contextCopy invalidatedSupplementaryIndexPaths];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -134,13 +134,13 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v11) section];
-          [(UIKeyboardEmojiLayout *)self _setAttributes:0 forSection:v12];
-          [v4 preferredWidthForHeaderInSection:v12];
+          section = [*(*(&v16 + 1) + 8 * v11) section];
+          [(UIKeyboardEmojiLayout *)self _setAttributes:0 forSection:section];
+          [contextCopy preferredWidthForHeaderInSection:section];
           if (v13 > 0.0)
           {
             v14 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-            [(NSMutableArray *)self->_headerWidths setObject:v14 atIndexedSubscript:v12];
+            [(NSMutableArray *)self->_headerWidths setObject:v14 atIndexedSubscript:section];
           }
 
           ++v11;
@@ -155,21 +155,21 @@
   }
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v41.receiver = self;
   v41.super_class = UIKeyboardEmojiLayout;
   v8 = [(UICollectionViewFlowLayout *)&v41 layoutAttributesForElementsInRect:?];
   v9 = [v8 mutableCopy];
 
-  v10 = [(UICollectionViewLayout *)self collectionView];
-  v11 = [v10 numberOfSections];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v11 >= 1)
+  if (numberOfSections >= 1)
   {
     v12 = 0;
     v38 = *(MEMORY[0x1E695F058] + 8);
@@ -243,29 +243,29 @@
       ++v12;
     }
 
-    while (v11 != v12);
+    while (numberOfSections != v12);
   }
 
   return v9;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v112[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   if ([(UICollectionViewFlowLayout *)self scrollDirection])
   {
-    v8 = [(UICollectionViewLayout *)self collectionView];
-    [v8 bounds];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    [collectionView bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [v7 section];
-    v18 = [(UICollectionViewLayout *)self collectionView];
-    v19 = [v18 numberOfItemsInSection:v17];
+    section = [pathCopy section];
+    collectionView2 = [(UICollectionViewLayout *)self collectionView];
+    v19 = [collectionView2 numberOfItemsInSection:section];
 
     if (!v19)
     {
@@ -274,41 +274,41 @@
       v86 = *(MEMORY[0x1E695F058] + 16);
       v85 = *(MEMORY[0x1E695F058] + 24);
 LABEL_22:
-      v73 = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v6 withIndexPath:v7];
+      v73 = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kindCopy withIndexPath:pathCopy];
       [v73 setFrame:{v83, v84, v86, v85}];
       goto LABEL_23;
     }
 
-    v20 = [(UICollectionViewLayout *)self collectionView];
-    v21 = [v20 emojiGraphicsTraits];
+    collectionView3 = [(UICollectionViewLayout *)self collectionView];
+    emojiGraphicsTraits = [collectionView3 emojiGraphicsTraits];
 
-    v22 = [(NSMutableArray *)self->_headerWidths objectAtIndexedSubscript:v17];
+    v22 = [(NSMutableArray *)self->_headerWidths objectAtIndexedSubscript:section];
     [v22 doubleValue];
     v24 = v23;
 
     if (v24 == 0.0)
     {
-      v25 = [UIKeyboardEmojiCategory displayName:[UIKeyboardEmojiCategory categoryTypeForCategoryIndex:v17]];
-      v26 = [MEMORY[0x1E695DF58] currentLocale];
-      v27 = [v25 uppercaseStringWithLocale:v26];
+      v25 = [UIKeyboardEmojiCategory displayName:[UIKeyboardEmojiCategory categoryTypeForCategoryIndex:section]];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v27 = [v25 uppercaseStringWithLocale:currentLocale];
 
-      [v21 categoryHeaderFontSize];
+      [emojiGraphicsTraits categoryHeaderFontSize];
       v28 = MEMORY[0x1E696AD98];
       v111 = *off_1E70EC918;
       v29 = [off_1E70ECC18 boldSystemFontOfSize:?];
       v112[0] = v29;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v112 forKeys:&v111 count:1];
-      v31 = v30 = v6;
-      v108 = v7;
+      v31 = v30 = kindCopy;
+      v108 = pathCopy;
       v32 = v27;
       [v27 sizeWithAttributes:v31];
-      v33 = [(UICollectionViewLayout *)self collectionView];
-      UICeilToViewScale(v33);
+      collectionView4 = [(UICollectionViewLayout *)self collectionView];
+      UICeilToViewScale(collectionView4);
       v34 = [v28 numberWithDouble:?];
-      [(NSMutableArray *)self->_headerWidths setObject:v34 atIndexedSubscript:v17];
+      [(NSMutableArray *)self->_headerWidths setObject:v34 atIndexedSubscript:section];
 
-      v6 = v30;
-      v7 = v108;
+      kindCopy = v30;
+      pathCopy = v108;
     }
 
     v106 = v16;
@@ -316,20 +316,20 @@ LABEL_22:
     v102 = v14;
     v103 = v12;
     [(UICollectionViewFlowLayout *)self _calculateAttributesForRect:v10, v12, v14, v16];
-    v35 = [(UICollectionViewLayout *)self collectionView];
-    v36 = [v35 layoutAttributesForItemAtIndexPath:v7];
+    collectionView5 = [(UICollectionViewLayout *)self collectionView];
+    v36 = [collectionView5 layoutAttributesForItemAtIndexPath:pathCopy];
     [v36 frame];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
 
-    v45 = [(UICollectionViewLayout *)self collectionView];
-    v46 = [v45 numberOfItemsInSection:v17] - 1;
+    collectionView6 = [(UICollectionViewLayout *)self collectionView];
+    v46 = [collectionView6 numberOfItemsInSection:section] - 1;
 
-    v47 = [(UICollectionViewLayout *)self collectionView];
-    v48 = [MEMORY[0x1E696AC88] indexPathForItem:v46 inSection:v17];
-    v49 = [v47 layoutAttributesForItemAtIndexPath:v48];
+    collectionView7 = [(UICollectionViewLayout *)self collectionView];
+    v48 = [MEMORY[0x1E696AC88] indexPathForItem:v46 inSection:section];
+    v49 = [collectionView7 layoutAttributesForItemAtIndexPath:v48];
     [v49 frame];
     v51 = v50;
     v53 = v52;
@@ -351,24 +351,24 @@ LABEL_22:
     y = v115.origin.y;
     width = v115.size.width;
     height = v115.size.height;
-    v62 = [(NSMutableArray *)self->_headerWidths objectAtIndexedSubscript:v17];
+    v62 = [(NSMutableArray *)self->_headerWidths objectAtIndexedSubscript:section];
     [v62 doubleValue];
     v64 = v63;
 
-    [v21 categoryHeaderHeight];
+    [emojiGraphicsTraits categoryHeaderHeight];
     v105 = v65;
-    [v21 columnOffset];
+    [emojiGraphicsTraits columnOffset];
     v67 = v66;
-    [v21 inputViewLeftMostPadding];
+    [emojiGraphicsTraits inputViewLeftMostPadding];
     v104 = v64;
     v99 = height;
     v100 = width;
     if (v68 <= 50.0)
     {
-      [v21 categoryHeaderLeftPadding];
+      [emojiGraphicsTraits categoryHeaderLeftPadding];
       v97 = v87 + v87;
       v72 = v67;
-      if (v17)
+      if (section)
       {
 LABEL_16:
         v109 = v72;
@@ -388,7 +388,7 @@ LABEL_16:
           v121.size.width = v101;
           v121.size.height = v58;
           v92 = CGRectGetMinX(v121);
-          [v21 categoryHeaderLeftPadding];
+          [emojiGraphicsTraits categoryHeaderLeftPadding];
           v83 = v92 + v93;
           v86 = v104;
         }
@@ -412,7 +412,7 @@ LABEL_16:
             v122.size.width = v102;
             v122.size.height = v106;
             v94 = v109 + CGRectGetMinX(v122);
-            [v21 categoryHeaderLeftPadding];
+            [emojiGraphicsTraits categoryHeaderLeftPadding];
             v83 = v94 + v95;
           }
 
@@ -423,7 +423,7 @@ LABEL_16:
             v120.size.height = v99;
             v120.size.width = v100;
             v90 = CGRectGetMaxX(v120) - v104;
-            [v21 categoryHeaderLeftPadding];
+            [emojiGraphicsTraits categoryHeaderLeftPadding];
             v83 = v90 - v91;
           }
         }
@@ -436,34 +436,34 @@ LABEL_16:
 
     else
     {
-      [v21 inputViewLeftMostPadding];
+      [emojiGraphicsTraits inputViewLeftMostPadding];
       v70 = v69;
-      [v21 categoryHeaderLeftPadding];
+      [emojiGraphicsTraits categoryHeaderLeftPadding];
       v72 = v70 - (v71 + v71);
       v97 = v72;
     }
 
-    [v21 inputViewLeftMostPadding];
+    [emojiGraphicsTraits inputViewLeftMostPadding];
     goto LABEL_16;
   }
 
   v110.receiver = self;
   v110.super_class = UIKeyboardEmojiLayout;
-  v73 = [(UICollectionViewFlowLayout *)&v110 layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7];
-  if (![v7 item] && !objc_msgSend(v7, "section"))
+  v73 = [(UICollectionViewFlowLayout *)&v110 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
+  if (![pathCopy item] && !objc_msgSend(pathCopy, "section"))
   {
-    v74 = [(UICollectionViewLayout *)self collectionView];
-    v75 = [v74 emojiGraphicsTraits];
-    v76 = v75;
-    if (v75 && (v75[8] & 1) != 0)
+    collectionView8 = [(UICollectionViewLayout *)self collectionView];
+    emojiGraphicsTraits2 = [collectionView8 emojiGraphicsTraits];
+    v76 = emojiGraphicsTraits2;
+    if (emojiGraphicsTraits2 && (emojiGraphicsTraits2[8] & 1) != 0)
     {
-      v77 = [v6 isEqualToString:@"UICollectionElementKindSectionHeader"];
+      v77 = [kindCopy isEqualToString:@"UICollectionElementKindSectionHeader"];
 
       if (v77)
       {
-        v78 = [(UICollectionViewLayout *)self collectionView];
-        v79 = [v78 superview];
-        [v79 frame];
+        collectionView9 = [(UICollectionViewLayout *)self collectionView];
+        superview = [collectionView9 superview];
+        [superview frame];
         [UIKBResizableKeyplaneTransformation estimatedProgressForHeight:v80];
         v82 = v81;
 
@@ -481,18 +481,18 @@ LABEL_23:
   return v73;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = UIKeyboardEmojiLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v11 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(UICollectionViewLayout *)self collectionView];
-  v6 = [v5 numberOfSections];
+  v4 = [(UICollectionViewFlowLayout *)&v11 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v6 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v8 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:i];
       v12[0] = v8;
@@ -504,12 +504,12 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
-  v5 = a4;
-  [a3 frame];
+  originalAttributesCopy = originalAttributes;
+  [attributes frame];
   Width = CGRectGetWidth(v16);
-  [v5 frame];
+  [originalAttributesCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -522,20 +522,20 @@ LABEL_23:
   return Width != CGRectGetWidth(v17);
 }
 
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
   v23 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = UIKeyboardEmojiLayout;
-  v5 = [(UICollectionViewFlowLayout *)&v20 invalidationContextForPreferredLayoutAttributes:a3 withOriginalAttributes:a4];
-  v6 = [(UICollectionViewLayout *)self collectionView];
-  v7 = [v6 indexPathsForVisibleItems];
+  v5 = [(UICollectionViewFlowLayout *)&v20 invalidationContextForPreferredLayoutAttributes:attributes withOriginalAttributes:originalAttributes];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = indexPathsForVisibleItems;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v9)
   {

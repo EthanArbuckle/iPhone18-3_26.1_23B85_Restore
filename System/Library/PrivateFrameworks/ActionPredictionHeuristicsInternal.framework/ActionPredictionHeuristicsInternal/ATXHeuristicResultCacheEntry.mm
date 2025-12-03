@@ -1,7 +1,7 @@
 @interface ATXHeuristicResultCacheEntry
-- (ATXHeuristicResultCacheEntry)initWithHeuristic:(id)a3 cache:(id)a4;
+- (ATXHeuristicResultCacheEntry)initWithHeuristic:(id)heuristic cache:(id)cache;
 - (void)dealloc;
-- (void)setActions:(id)a3 expirers:(id)a4;
+- (void)setActions:(id)actions expirers:(id)expirers;
 @end
 
 @implementation ATXHeuristicResultCacheEntry
@@ -50,18 +50,18 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (ATXHeuristicResultCacheEntry)initWithHeuristic:(id)a3 cache:(id)a4
+- (ATXHeuristicResultCacheEntry)initWithHeuristic:(id)heuristic cache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  heuristicCopy = heuristic;
+  cacheCopy = cache;
   v15.receiver = self;
   v15.super_class = ATXHeuristicResultCacheEntry;
   v9 = [(ATXHeuristicResultCacheEntry *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_heuristicName, a3);
-    objc_storeWeak(&v10->_cache, v8);
+    objc_storeStrong(&v9->_heuristicName, heuristic);
+    objc_storeWeak(&v10->_cache, cacheCopy);
     actions = v10->_actions;
     v10->_actions = MEMORY[0x277CBEBF8];
 
@@ -73,14 +73,14 @@
   return v10;
 }
 
-- (void)setActions:(id)a3 expirers:(id)a4
+- (void)setActions:(id)actions expirers:(id)expirers
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_actions, a3);
+  actionsCopy = actions;
+  expirersCopy = expirers;
+  objc_storeStrong(&self->_actions, actions);
   v9 = [(NSSet *)self->_expirers mutableCopy];
-  [v9 minusSet:v8];
+  [v9 minusSet:expirersCopy];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -116,7 +116,7 @@
     while (v12);
   }
 
-  v18 = [(NSSet *)v8 mutableCopy];
+  v18 = [(NSSet *)expirersCopy mutableCopy];
   [v18 minusSet:self->_expirers];
   v31 = 0u;
   v32 = 0u;
@@ -154,7 +154,7 @@
   }
 
   expirers = self->_expirers;
-  self->_expirers = v8;
+  self->_expirers = expirersCopy;
 
   v28 = *MEMORY[0x277D85DE8];
 }

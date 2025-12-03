@@ -1,34 +1,34 @@
 @interface FPXEnumeratorAlternateContentsItem
-- (FPXEnumeratorAlternateContentsItem)initWithOriginalDocumentItem:(id)a3 alternateContentsURL:(id)a4;
+- (FPXEnumeratorAlternateContentsItem)initWithOriginalDocumentItem:(id)item alternateContentsURL:(id)l;
 - (NSDate)contentModificationDate;
 - (NSNumber)documentSize;
 @end
 
 @implementation FPXEnumeratorAlternateContentsItem
 
-- (FPXEnumeratorAlternateContentsItem)initWithOriginalDocumentItem:(id)a3 alternateContentsURL:(id)a4
+- (FPXEnumeratorAlternateContentsItem)initWithOriginalDocumentItem:(id)item alternateContentsURL:(id)l
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = FPXEnumeratorAlternateContentsItem;
   v9 = [(FPXEnumeratorAlternateContentsItem *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_documentItem, a3);
+    objc_storeStrong(&v9->_documentItem, item);
     v11 = *MEMORY[0x1E695DA98];
     v22[0] = *MEMORY[0x1E695DB50];
     v22[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-    v13 = [v8 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
     v20 = 0;
-    v14 = [v8 resourceValuesForKeys:v12 error:&v20];
+    v14 = [lCopy resourceValuesForKeys:v12 error:&v20];
     v15 = v20;
-    if (v13)
+    if (startAccessingSecurityScopedResource)
     {
-      [v8 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
 
     if (v14)
@@ -43,7 +43,7 @@
       p_super = fp_current_or_default_log();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        [(FPXEnumeratorAlternateContentsItem *)v8 initWithOriginalDocumentItem:v15 alternateContentsURL:p_super];
+        [(FPXEnumeratorAlternateContentsItem *)lCopy initWithOriginalDocumentItem:v15 alternateContentsURL:p_super];
       }
     }
   }

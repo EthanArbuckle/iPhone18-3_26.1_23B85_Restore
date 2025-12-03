@@ -1,7 +1,7 @@
 @interface SavedFeedScrollTestCase
 - (NSString)testName;
 - (_TtC7NewsUI223SavedFeedScrollTestCase)init;
-- (id)scrollViewWithContext:(id)a3;
+- (id)scrollViewWithContext:(id)context;
 @end
 
 @implementation SavedFeedScrollTestCase
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (id)scrollViewWithContext:(id)a3
+- (id)scrollViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_21911A82C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_21911A82C(contextCopy);
   v7 = v6;
 
   return v7;

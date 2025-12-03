@@ -7,10 +7,10 @@
 
 - (BOOL)_bd_lp_isHTTPFamilyURL
 {
-  v1 = [a1 scheme];
-  if ([v1 compare:@"http" options:3])
+  scheme = [self scheme];
+  if ([scheme compare:@"http" options:3])
   {
-    v2 = [v1 compare:@"https" options:3] == 0;
+    v2 = [scheme compare:@"https" options:3] == 0;
   }
 
   else
@@ -23,11 +23,11 @@
 
 - (BOOL)_bd_lp_hasAllowedNonHTTPScheme
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    v3 = ![v1 caseInsensitiveCompare:@"shoebox"] || !objc_msgSend(v2, "caseInsensitiveCompare:", @"wallet") || objc_msgSend(v2, "caseInsensitiveCompare:", @"prefs") == 0;
+    v3 = ![scheme caseInsensitiveCompare:@"shoebox"] || !objc_msgSend(v2, "caseInsensitiveCompare:", @"wallet") || objc_msgSend(v2, "caseInsensitiveCompare:", @"prefs") == 0;
   }
 
   else

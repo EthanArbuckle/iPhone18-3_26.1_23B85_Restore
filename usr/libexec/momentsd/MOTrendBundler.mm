@@ -1,10 +1,10 @@
 @interface MOTrendBundler
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOTrendBundler)init;
-- (MOTrendBundler)initWithPredicate:(id)a3 andAnnotator:(id)a4;
-- (id)processPatternEvents:(id)a3 withEvents:(id)a4;
-- (void)setAnnotator:(id)a3;
-- (void)setPredicate:(id)a3;
+- (MOTrendBundler)initWithPredicate:(id)predicate andAnnotator:(id)annotator;
+- (id)processPatternEvents:(id)events withEvents:(id)withEvents;
+- (void)setAnnotator:(id)annotator;
+- (void)setPredicate:(id)predicate;
 @end
 
 @implementation MOTrendBundler
@@ -30,10 +30,10 @@
   return v2;
 }
 
-- (MOTrendBundler)initWithPredicate:(id)a3 andAnnotator:(id)a4
+- (MOTrendBundler)initWithPredicate:(id)predicate andAnnotator:(id)annotator
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  annotatorCopy = annotator;
   v12.receiver = self;
   v12.super_class = MOTrendBundler;
   v8 = [(MOTrendBundler *)&v12 init];
@@ -43,30 +43,30 @@
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    [(MOTrendBundler *)v8 setPredicate:v6];
-    [(MOTrendBundler *)v8 setAnnotator:v7];
+    [(MOTrendBundler *)v8 setPredicate:predicateCopy];
+    [(MOTrendBundler *)v8 setAnnotator:annotatorCopy];
   }
 
   return v8;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  objc_storeStrong(&self->_predicate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_predicate, predicate);
+  predicateCopy = predicate;
   [(MOTrendBundlerPredicate *)self->_predicate configure:self->_configuration];
 }
 
-- (void)setAnnotator:(id)a3
+- (void)setAnnotator:(id)annotator
 {
-  objc_storeStrong(&self->_annotator, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_annotator, annotator);
+  annotatorCopy = annotator;
   [(MOTrendBundlerAnnotator *)self->_annotator configure:self->_configuration];
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = [a3 copy];
+  v4 = [configure copy];
   configuration = self->_configuration;
   self->_configuration = v4;
 
@@ -92,10 +92,10 @@
   return v7;
 }
 
-- (id)processPatternEvents:(id)a3 withEvents:(id)a4
+- (id)processPatternEvents:(id)events withEvents:(id)withEvents
 {
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  withEventsCopy = withEvents;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -143,8 +143,8 @@
     [(MOTrendBundlerAnnotator *)self->_annotator reset];
   }
 
-  v17 = [(MOTrendBundlerPredicate *)self->_predicate filterEvents:v7];
-  v18 = [(MOTrendBundlerAnnotator *)self->_annotator createTrendBundlesFrom:v17 withEvents:v8];
+  v17 = [(MOTrendBundlerPredicate *)self->_predicate filterEvents:eventsCopy];
+  v18 = [(MOTrendBundlerAnnotator *)self->_annotator createTrendBundlesFrom:v17 withEvents:withEventsCopy];
 
   if (v18 && [v18 count])
   {

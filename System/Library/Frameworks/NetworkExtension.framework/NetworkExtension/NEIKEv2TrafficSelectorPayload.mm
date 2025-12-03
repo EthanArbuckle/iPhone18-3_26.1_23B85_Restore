@@ -1,16 +1,16 @@
 @interface NEIKEv2TrafficSelectorPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2TrafficSelectorPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   *&v41[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 3)
+  dataCopy = data;
+  if ([dataCopy length] <= 3)
   {
     v30 = ne_log_obj();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -20,25 +20,25 @@
       _os_log_error_impl(&dword_1BA83C000, v30, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_ts_hdr_t))", buf, 0xCu);
     }
 
-    v22 = 0;
+    hasRequiredFields = 0;
     goto LABEL_32;
   }
 
   selfa = self;
   v37 = 0;
-  [v4 getBytes:&v37 length:4];
+  [dataCopy getBytes:&v37 length:4];
   v35 = v37;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v37];
-  v6 = [v4 bytes];
-  v36 = v4;
-  v7 = [v4 length] - 4;
+  bytes = [dataCopy bytes];
+  v36 = dataCopy;
+  v7 = [dataCopy length] - 4;
   if (v7 < 8)
   {
 LABEL_26:
     if ([v5 count] != v35)
     {
       v31 = ne_log_obj();
-      v4 = v36;
+      dataCopy = v36;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v33 = [v5 count];
@@ -49,11 +49,11 @@ LABEL_26:
         _os_log_error_impl(&dword_1BA83C000, v31, OS_LOG_TYPE_ERROR, "Failed to process all traffic selectors (%zu/%u)", buf, 0x12u);
       }
 
-      v22 = 0;
+      hasRequiredFields = 0;
       goto LABEL_31;
     }
 
-    v4 = v36;
+    dataCopy = v36;
     if (v7)
     {
       v32 = ne_log_obj();
@@ -73,7 +73,7 @@ LABEL_26:
     else if (!selfa)
     {
 LABEL_30:
-      v22 = [(NEIKEv2TrafficSelectorPayload *)selfa hasRequiredFields];
+      hasRequiredFields = [(NEIKEv2TrafficSelectorPayload *)selfa hasRequiredFields];
       goto LABEL_31;
     }
 
@@ -81,7 +81,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v8 = (v6 + 4);
+  v8 = (bytes + 4);
   while (1)
   {
     v9 = *(v8 + 1);
@@ -225,13 +225,13 @@ LABEL_48:
   _os_log_error_impl(&dword_1BA83C000, v28, OS_LOG_TYPE_ERROR, v27, buf, v29);
 LABEL_36:
 
-  v22 = 0;
-  v4 = v36;
+  hasRequiredFields = 0;
+  dataCopy = v36;
 LABEL_31:
 
 LABEL_32:
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return hasRequiredFields;
 }
 
 - (BOOL)generatePayloadData
@@ -257,7 +257,7 @@ LABEL_32:
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v45 = self;
+      selfCopy = self;
       if (self)
       {
         v9 = objc_getProperty(self, v7, 32, 1);
@@ -289,22 +289,22 @@ LABEL_32:
             v16 = *(*(&v46 + 1) + 8 * v15);
             if ([(NEIKEv2TrafficSelector *)v16 type])
             {
-              v17 = [(NEIKEv2TrafficSelector *)v16 type];
-              v18 = [v16 startAddress];
-              v19 = [v16 endAddress];
-              v20 = [v18 addressFamily];
-              if (v17 == 7)
+              type = [(NEIKEv2TrafficSelector *)v16 type];
+              startAddress = [v16 startAddress];
+              endAddress = [v16 endAddress];
+              addressFamily = [startAddress addressFamily];
+              if (type == 7)
               {
-                if (v20 == 2)
+                if (addressFamily == 2)
                 {
-                  if ([v19 addressFamily] == 2)
+                  if ([endAddress addressFamily] == 2)
                   {
-                    v21 = [v18 address];
-                    v22 = [v19 address];
-                    if (v21)
+                    address = [startAddress address];
+                    address2 = [endAddress address];
+                    if (address)
                     {
-                      v23 = v22;
-                      if (v22)
+                      v23 = address2;
+                      if (address2)
                       {
                         *buf = 0;
                         *&buf[8] = 0;
@@ -323,7 +323,7 @@ LABEL_32:
                         }
 
                         *&buf[6] = v24;
-                        *&buf[8] = *(v21 + 4);
+                        *&buf[8] = *(address + 4);
                         *&buf[12] = *(v23 + 4);
                         v29 = objc_alloc(MEMORY[0x1E695DEF0]);
                         v30 = 16;
@@ -363,9 +363,9 @@ LABEL_35:
                     goto LABEL_35;
                   }
 
-                  v36 = [v19 addressFamily];
+                  addressFamily2 = [endAddress addressFamily];
                   *buf = v44;
-                  *&buf[4] = v36;
+                  *&buf[4] = addressFamily2;
                   v33 = v31;
                   v34 = "IPv4 traffic selector end address is wrong family %zu";
                 }
@@ -378,9 +378,9 @@ LABEL_35:
                     goto LABEL_35;
                   }
 
-                  v32 = [v18 addressFamily];
+                  addressFamily3 = [startAddress addressFamily];
                   *buf = v44;
-                  *&buf[4] = v32;
+                  *&buf[4] = addressFamily3;
                   v33 = v31;
                   v34 = "IPv4 traffic selector start address is wrong family %zu";
                 }
@@ -391,7 +391,7 @@ LABEL_46:
 
               else
               {
-                if (v20 != 30)
+                if (addressFamily != 30)
                 {
                   v31 = ne_log_obj();
                   if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -399,15 +399,15 @@ LABEL_46:
                     goto LABEL_35;
                   }
 
-                  v35 = [v18 addressFamily];
+                  addressFamily4 = [startAddress addressFamily];
                   *buf = v44;
-                  *&buf[4] = v35;
+                  *&buf[4] = addressFamily4;
                   v33 = v31;
                   v34 = "IPv6 traffic selector start address is wrong family %zu";
                   goto LABEL_46;
                 }
 
-                if ([v19 addressFamily] != 30)
+                if ([endAddress addressFamily] != 30)
                 {
                   v31 = ne_log_obj();
                   if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -415,17 +415,17 @@ LABEL_46:
                     goto LABEL_35;
                   }
 
-                  v37 = [v19 addressFamily];
+                  addressFamily5 = [endAddress addressFamily];
                   *buf = v44;
-                  *&buf[4] = v37;
+                  *&buf[4] = addressFamily5;
                   v33 = v31;
                   v34 = "IPv6 traffic selector end address is wrong family %zu";
                   goto LABEL_46;
                 }
 
-                v25 = [v18 address];
-                v26 = [v19 address];
-                if (!v25)
+                address3 = [startAddress address];
+                address4 = [endAddress address];
+                if (!address3)
                 {
                   v31 = ne_log_obj();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -439,8 +439,8 @@ LABEL_46:
                   goto LABEL_35;
                 }
 
-                v27 = v26;
-                if (v26)
+                v27 = address4;
+                if (address4)
                 {
                   memset(buf, 0, 40);
                   buf[0] = [(NEIKEv2TrafficSelector *)v16 type];
@@ -458,7 +458,7 @@ LABEL_46:
                   }
 
                   *&buf[6] = v28;
-                  *&buf[8] = *(v25 + 8);
+                  *&buf[8] = *(address3 + 8);
                   *&buf[24] = *(v27 + 8);
                   v29 = objc_alloc(MEMORY[0x1E695DEF0]);
                   v30 = 40;
@@ -485,11 +485,11 @@ LABEL_55:
               goto LABEL_35;
             }
 
-            v18 = ne_log_obj();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            startAddress = ne_log_obj();
+            if (os_log_type_enabled(startAddress, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&dword_1BA83C000, v18, OS_LOG_TYPE_ERROR, "Traffic selector invalid", buf, 2u);
+              _os_log_error_impl(&dword_1BA83C000, startAddress, OS_LOG_TYPE_ERROR, "Traffic selector invalid", buf, 2u);
             }
 
 LABEL_36:
@@ -510,9 +510,9 @@ LABEL_36:
         *buf = 0;
         buf[0] = [v8 count];
         v40 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:buf length:4];
-        [(NEIKEv2Payload *)v45 setPayloadSubHeader:v40];
+        [(NEIKEv2Payload *)selfCopy setPayloadSubHeader:v40];
 
-        [(NEIKEv2KeyExchangeHandler *)v45 setSharedSecret:v8];
+        [(NEIKEv2KeyExchangeHandler *)selfCopy setSharedSecret:v8];
         v3 = 1;
 LABEL_63:
 

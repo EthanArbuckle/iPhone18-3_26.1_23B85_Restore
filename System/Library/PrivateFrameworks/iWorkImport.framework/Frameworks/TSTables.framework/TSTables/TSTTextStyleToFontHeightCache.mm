@@ -1,9 +1,9 @@
 @interface TSTTextStyleToFontHeightCache
 - (TSTTextStyleToFontHeightCache)init;
-- (double)heightForTextStyle:(id)a3;
+- (double)heightForTextStyle:(id)style;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)setHeight:(double)a3 forTextStyle:(id)a4;
+- (void)setHeight:(double)height forTextStyle:(id)style;
 @end
 
 @implementation TSTTextStyleToFontHeightCache
@@ -37,21 +37,21 @@
   [(TSTTextStyleToFontHeightCache *)&v3 dealloc];
 }
 
-- (void)setHeight:(double)a3 forTextStyle:(id)a4
+- (void)setHeight:(double)height forTextStyle:(id)style
 {
   pthread_rwlock_wrlock(&self->_rwLock);
-  v11 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v7, v8, v9, v10, a3);
-  objc_msgSend_setObject_forKeyedSubscript_(self->_textStyleToFontHeight, v12, v11, a4, v13);
+  v11 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v7, v8, v9, v10, height);
+  objc_msgSend_setObject_forKeyedSubscript_(self->_textStyleToFontHeight, v12, v11, style, v13);
 
-  objc_msgSend_addObject_(self->_textStyleReferences, v14, a4, v15, v16);
+  objc_msgSend_addObject_(self->_textStyleReferences, v14, style, v15, v16);
 
   pthread_rwlock_unlock(&self->_rwLock);
 }
 
-- (double)heightForTextStyle:(id)a3
+- (double)heightForTextStyle:(id)style
 {
   pthread_rwlock_rdlock(&self->_rwLock);
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_textStyleToFontHeight, v5, a3, v6, v7);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_textStyleToFontHeight, v5, style, v6, v7);
   v13 = v8;
   if (v8)
   {

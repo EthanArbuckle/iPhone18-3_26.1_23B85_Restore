@@ -1,12 +1,12 @@
 @interface AVAssetTrackSegment
 - (AVAssetTrackSegment)init;
-- (AVAssetTrackSegment)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVAssetTrackSegment)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeMapping)timeMapping;
-- (id)_initWithTimeMapping:(id *)a3;
+- (id)_initWithTimeMapping:(id *)mapping;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAssetTrackSegment
@@ -25,20 +25,20 @@
   return [(AVAssetTrackSegment *)self _initWithTimeMapping:v6];
 }
 
-- (id)_initWithTimeMapping:(id *)a3
+- (id)_initWithTimeMapping:(id *)mapping
 {
   v9.receiver = self;
   v9.super_class = AVAssetTrackSegment;
   result = [(AVAssetTrackSegment *)&v9 init];
   if (result)
   {
-    v5 = *&a3->var0.var0.var0;
-    *(result + 24) = *&a3->var0.var0.var3;
+    v5 = *&mapping->var0.var0.var0;
+    *(result + 24) = *&mapping->var0.var0.var3;
     *(result + 8) = v5;
-    v6 = *&a3->var0.var1.var1;
-    v7 = *&a3->var1.var0.var0;
-    v8 = *&a3->var1.var0.var3;
-    *(result + 88) = *&a3->var1.var1.var1;
+    v6 = *&mapping->var0.var1.var1;
+    v7 = *&mapping->var1.var0.var0;
+    v8 = *&mapping->var1.var0.var3;
+    *(result + 88) = *&mapping->var1.var1.var1;
     *(result + 72) = v8;
     *(result + 56) = v7;
     *(result + 40) = v6;
@@ -52,9 +52,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AVAssetTrackSegment *)self isEmpty];
+  isEmpty = [(AVAssetTrackSegment *)self isEmpty];
   v7 = *MEMORY[0x1E695E480];
-  if (v6)
+  if (isEmpty)
   {
     v8 = @"empty";
   }
@@ -75,9 +75,9 @@
   return [v3 stringWithFormat:@"<%@: %p, %@, target = %@>", v5, self, v8, CMTimeRangeCopyDescription(v7, &range)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -90,7 +90,7 @@
     return 0;
   }
 
-  if (-[AVAssetTrackSegment isEmpty](self, "isEmpty") && ([a3 isEmpty] & 1) != 0)
+  if (-[AVAssetTrackSegment isEmpty](self, "isEmpty") && ([equal isEmpty] & 1) != 0)
   {
     return 1;
   }
@@ -109,9 +109,9 @@
   *&v12.start.value = v7;
   *&v11.start.value = v7;
   *&v11.start.epoch = v7;
-  if (a3)
+  if (equal)
   {
-    [a3 timeMapping];
+    [equal timeMapping];
   }
 
   range1 = v13[0];
@@ -155,7 +155,7 @@
   return v5 ^ v6 ^ CMTimeHash(&v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -167,7 +167,7 @@
     memset(&v4, 0, sizeof(v4));
   }
 
-  [a3 encodeObject:CMTimeMappingCopyAsDictionary(&v4 forKey:{*MEMORY[0x1E695E480]), @"timeMapping"}];
+  [coder encodeObject:CMTimeMappingCopyAsDictionary(&v4 forKey:{*MEMORY[0x1E695E480]), @"timeMapping"}];
 }
 
 - (CMTimeMapping)timeMapping
@@ -184,12 +184,12 @@
   return self;
 }
 
-- (AVAssetTrackSegment)initWithCoder:(id)a3
+- (AVAssetTrackSegment)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"timeMapping"}];
+  v8 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, objc_opt_class(), 0), @"timeMapping"}];
   memset(&__src, 0, sizeof(__src));
   CMTimeMappingMakeFromDictionary(&__src, v8);
   v12.receiver = self;

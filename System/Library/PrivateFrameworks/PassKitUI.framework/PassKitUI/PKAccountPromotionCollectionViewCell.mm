@@ -1,32 +1,32 @@
 @interface PKAccountPromotionCollectionViewCell
-- (BOOL)configureWithPromotion:(id)a3 remoteImagePreparer:(id)a4 actionHandler:(id)a5;
-- (PKAccountPromotionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (BOOL)configureWithPromotion:(id)promotion remoteImagePreparer:(id)preparer actionHandler:(id)handler;
+- (PKAccountPromotionCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PKAccountPromotionCollectionViewCell
 
-- (BOOL)configureWithPromotion:(id)a3 remoteImagePreparer:(id)a4 actionHandler:(id)a5
+- (BOOL)configureWithPromotion:(id)promotion remoteImagePreparer:(id)preparer actionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  LOBYTE(self) = PKAccountPromotionCollectionViewCell.configure(promotion:remoteImagePreparer:actionHandler:)(v10, v11, sub_1BD56E97C, v9);
+  promotionCopy = promotion;
+  preparerCopy = preparer;
+  selfCopy = self;
+  LOBYTE(self) = PKAccountPromotionCollectionViewCell.configure(promotion:remoteImagePreparer:actionHandler:)(promotionCopy, preparerCopy, sub_1BD56E97C, v9);
 
   return self & 1;
 }
 
-- (PKAccountPromotionCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKAccountPromotionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKAccountPromotionCollectionViewCell;
-  v3 = [(PKAccountPromotionCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAccountPromotionCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKAccountPromotionCollectionViewCell *)v3 layer];
+    layer = [(PKAccountPromotionCollectionViewCell *)v3 layer];
     v6 = _UISolariumFeatureFlagEnabled();
     v7 = 10.0;
     if (v6)
@@ -34,7 +34,7 @@
       v7 = 26.0;
     }
 
-    [v5 setCornerRadius:v7];
+    [layer setCornerRadius:v7];
 
     v8 = PKRewardsHubCellBackgroundColor();
     [(PKAccountPromotionCollectionViewCell *)v4 setBackgroundColor:v8];

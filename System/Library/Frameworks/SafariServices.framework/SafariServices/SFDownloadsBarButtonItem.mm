@@ -1,22 +1,22 @@
 @interface SFDownloadsBarButtonItem
-- (SFDownloadsBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)setEnabled:(BOOL)a3;
+- (SFDownloadsBarButtonItem)initWithTarget:(id)target action:(SEL)action;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SFDownloadsBarButtonItem
 
-- (SFDownloadsBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4
+- (SFDownloadsBarButtonItem)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v19.receiver = self;
   v19.super_class = SFDownloadsBarButtonItem;
   v7 = [(SFDownloadsBarButtonItem *)&v19 init];
   if (v7)
   {
     v8 = MEMORY[0x1E69DB978];
-    v9 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v10 = MEMORY[0x1E69DB970];
-    if (!v9)
+    if (!isSolariumEnabled)
     {
       v10 = v8;
     }
@@ -26,8 +26,8 @@
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.down.circle" withConfiguration:v12];
     [(SFDownloadsBarButtonItem *)v7 setImage:v13];
 
-    [(SFDownloadsBarButtonItem *)v7 setTarget:v6];
-    [(SFDownloadsBarButtonItem *)v7 setAction:a4];
+    [(SFDownloadsBarButtonItem *)v7 setTarget:targetCopy];
+    [(SFDownloadsBarButtonItem *)v7 setAction:action];
     v14 = SFAccessibilityTitleForBarItem();
     [(SFDownloadsBarButtonItem *)v7 setTitle:v14];
 
@@ -43,13 +43,13 @@
   return v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = SFDownloadsBarButtonItem;
   [(SFDownloadsBarButtonItem *)&v5 setEnabled:?];
-  [(SFDownloadsBarButtonItemView *)self->_buttonView setEnabled:v3];
+  [(SFDownloadsBarButtonItemView *)self->_buttonView setEnabled:enabledCopy];
 }
 
 @end

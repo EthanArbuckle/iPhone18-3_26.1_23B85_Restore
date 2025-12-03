@@ -1,24 +1,24 @@
 @interface MicroPaymentProductDiscount
-- (MicroPaymentProductDiscount)initWithDictionary:(id)a3;
+- (MicroPaymentProductDiscount)initWithDictionary:(id)dictionary;
 - (id)copyProductDiscount;
 @end
 
 @implementation MicroPaymentProductDiscount
 
-- (MicroPaymentProductDiscount)initWithDictionary:(id)a3
+- (MicroPaymentProductDiscount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(MicroPaymentProductDiscount *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"price"];
+    v6 = [dictionaryCopy objectForKey:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MicroPaymentProductDiscount *)v5 setPrice:v6];
     }
 
-    v7 = [v4 objectForKey:@"modeType"];
+    v7 = [dictionaryCopy objectForKey:@"modeType"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -46,7 +46,7 @@
       [(MicroPaymentProductDiscount *)v5 setPaymentMode:v8];
     }
 
-    v9 = [v4 objectForKey:@"numOfPeriods"];
+    v9 = [dictionaryCopy objectForKey:@"numOfPeriods"];
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -57,7 +57,7 @@
     {
       -[MicroPaymentProductDiscount setNumberOfPeriods:](v5, "setNumberOfPeriods:", [v9 unsignedIntegerValue]);
 LABEL_15:
-      v10 = [v4 objectForKey:@"recurringSubscriptionPeriod"];
+      v10 = [dictionaryCopy objectForKey:@"recurringSubscriptionPeriod"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -66,7 +66,7 @@ LABEL_15:
         [(MicroPaymentProductDiscount *)v5 setSubscriptionPeriod:v11];
       }
 
-      v12 = [v4 objectForKey:@"recurringSubscriptionPeriod"];
+      v12 = [dictionaryCopy objectForKey:@"recurringSubscriptionPeriod"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -75,7 +75,7 @@ LABEL_15:
         [(MicroPaymentProductDiscount *)v5 setSubscriptionPeriod:v13];
       }
 
-      v14 = [v4 objectForKey:@"type"];
+      v14 = [dictionaryCopy objectForKey:@"type"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -100,7 +100,7 @@ LABEL_15:
 
       [(MicroPaymentProductDiscount *)v5 setType:v15];
 LABEL_25:
-      v7 = [v4 objectForKey:@"id"];
+      v7 = [dictionaryCopy objectForKey:@"id"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -124,21 +124,21 @@ LABEL_29:
 - (id)copyProductDiscount
 {
   v3 = objc_alloc_init(sub_1001FA270());
-  v4 = [(MicroPaymentProductDiscount *)self price];
-  v5 = [v4 stringValue];
-  v6 = [NSDecimalNumber decimalNumberWithString:v5];
+  price = [(MicroPaymentProductDiscount *)self price];
+  stringValue = [price stringValue];
+  v6 = [NSDecimalNumber decimalNumberWithString:stringValue];
   [v3 _setPrice:v6];
 
   [v3 _setPaymentMode:{-[MicroPaymentProductDiscount paymentMode](self, "paymentMode")}];
   [v3 _setNumberOfPeriods:{-[MicroPaymentProductDiscount numberOfPeriods](self, "numberOfPeriods")}];
-  v7 = [(MicroPaymentProductDiscount *)self identifier];
-  [v3 _setIdentifier:v7];
+  identifier = [(MicroPaymentProductDiscount *)self identifier];
+  [v3 _setIdentifier:identifier];
 
   [v3 _setType:{-[MicroPaymentProductDiscount type](self, "type")}];
   v8 = objc_alloc_init(sub_1001FA258());
   [v8 _setUnit:{-[MicroPaymentProductSubscriptionPeriod unit](self->_subscriptionPeriod, "unit")}];
-  v9 = [(MicroPaymentProductDiscount *)self subscriptionPeriod];
-  [v8 _setNumberOfUnits:{objc_msgSend(v9, "numberOfUnits")}];
+  subscriptionPeriod = [(MicroPaymentProductDiscount *)self subscriptionPeriod];
+  [v8 _setNumberOfUnits:{objc_msgSend(subscriptionPeriod, "numberOfUnits")}];
 
   [v3 _setSubscriptionPeriod:v8];
   return v3;

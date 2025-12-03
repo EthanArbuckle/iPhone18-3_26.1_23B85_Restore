@@ -1,20 +1,20 @@
 @interface THModelStorageRange
-+ (id)storageRangeWithStorage:(id)a3 range:(_NSRange)a4 context:(id)a5;
-- (THModelStorageRange)initWithStorage:(id)a3 range:(_NSRange)a4 context:(id)a5;
++ (id)storageRangeWithStorage:(id)storage range:(_NSRange)range context:(id)context;
+- (THModelStorageRange)initWithStorage:(id)storage range:(_NSRange)range context:(id)context;
 - (_NSRange)range;
 - (void)dealloc;
-- (void)setRange:(_NSRange)a3;
-- (void)setStorage:(id)a3;
+- (void)setRange:(_NSRange)range;
+- (void)setStorage:(id)storage;
 @end
 
 @implementation THModelStorageRange
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
   [(THModelStorageRange *)self willModify];
-  v5 = a3;
+  storageCopy = storage;
 
-  self->mStorage = a3;
+  self->mStorage = storage;
 }
 
 - (_NSRange)range
@@ -27,39 +27,39 @@
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(THModelStorageRange *)self willModify];
   self->mRange.location = location;
   self->mRange.length = length;
 }
 
-+ (id)storageRangeWithStorage:(id)a3 range:(_NSRange)a4 context:(id)a5
++ (id)storageRangeWithStorage:(id)storage range:(_NSRange)range context:(id)context
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithStorage:a3 range:a4.location context:{a4.length, a5}];
+  v5 = [objc_alloc(objc_opt_class()) initWithStorage:storage range:range.location context:{range.length, context}];
 
   return v5;
 }
 
-- (THModelStorageRange)initWithStorage:(id)a3 range:(_NSRange)a4 context:(id)a5
+- (THModelStorageRange)initWithStorage:(id)storage range:(_NSRange)range context:(id)context
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v12.receiver = self;
   v12.super_class = THModelStorageRange;
-  v8 = [(THModelStorageRange *)&v12 initWithContext:a5];
+  v8 = [(THModelStorageRange *)&v12 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    v10 = [(THModelStorageRange *)v8 context];
-    if (v10 != [a3 context])
+    context = [(THModelStorageRange *)v8 context];
+    if (context != [storage context])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v9->mStorage = a3;
+    v9->mStorage = storage;
     v9->mRange.location = location;
     v9->mRange.length = length;
   }

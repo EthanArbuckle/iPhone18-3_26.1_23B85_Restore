@@ -1,25 +1,25 @@
 @interface AKRectangularPageSizedAnnotationEventHandler
-- (CGRect)_validateAnnotationRectForDrag:(CGRect)a3;
-- (CGRect)_validateAnnotationRectForResize:(CGRect)a3;
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (CGRect)_validateAnnotationRectForDrag:(CGRect)drag;
+- (CGRect)_validateAnnotationRectForResize:(CGRect)resize;
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKRectangularPageSizedAnnotationEventHandler
 
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(AKAnnotationEventHandler *)self annotation];
+  eventCopy = event;
+  recognizerCopy = recognizer;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 20)
   {
-    [v14 rectangle];
+    [annotation rectangle];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    [(AKAnnotationEventHandler *)self windowPointFromEvent:v12 orRecognizer:v13];
+    [(AKAnnotationEventHandler *)self windowPointFromEvent:eventCopy orRecognizer:recognizerCopy];
     [(AKAnnotationEventHandler *)self modelPointFromPointInWindow:?];
     v24 = v23;
     v26 = v25;
@@ -33,34 +33,34 @@
     v31.size.width = v20;
     v31.size.height = v22;
     MidY = CGRectGetMidY(v31);
-    a3->x = v24;
-    a3->y = v26;
-    a4->x = MidX;
-    a4->y = MidY;
-    a5->x = MidX;
-    a5->y = MidY;
+    point->x = v24;
+    point->y = v26;
+    otherPoint->x = MidX;
+    otherPoint->y = MidY;
+    center->x = MidX;
+    center->y = MidY;
   }
 
   else
   {
     v29.receiver = self;
     v29.super_class = AKRectangularPageSizedAnnotationEventHandler;
-    [(AKRectangularAnnotationEventHandler *)&v29 getInitialDraggedPoint:a3 otherPoint:a4 center:a5 forEvent:v12 orRecognizer:v13];
+    [(AKRectangularAnnotationEventHandler *)&v29 getInitialDraggedPoint:point otherPoint:otherPoint center:center forEvent:eventCopy orRecognizer:recognizerCopy];
   }
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AKAnnotationEventHandler *)self annotation];
+  y = point.y;
+  x = point.x;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 20)
   {
-    v9 = [(AKAnnotationEventHandler *)self pageController];
+    pageController = [(AKAnnotationEventHandler *)self pageController];
     [(AKAnnotationEventHandler *)self initialDraggedPoint];
     v11 = x - v10;
     v13 = y - v12;
-    [v8 rectangle];
+    [annotation rectangle];
     v14 = v50.origin.x;
     v15 = v50.origin.y;
     width = v50.size.width;
@@ -74,8 +74,8 @@
     [(AKAnnotationEventHandler *)self initialCenter];
     v22 = v14 + v11 - (MidX - v20);
     v23 = v15 + v13 - (MidY - v21);
-    v24 = [v9 geometryHelper];
-    [v24 contentAlignedPointForPoint:{v22, v23}];
+    geometryHelper = [pageController geometryHelper];
+    [geometryHelper contentAlignedPointForPoint:{v22, v23}];
     v26 = v25;
     v28 = v27;
 
@@ -84,14 +84,14 @@
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    [v8 rectangle];
+    [annotation rectangle];
     v54.origin.x = v30;
     v54.origin.y = v32;
     v54.size.width = v34;
     v54.size.height = v36;
     if (!CGRectEqualToRect(v52, v54))
     {
-      [v8 setRectangle:{v30, v32, v34, v36}];
+      [annotation setRectangle:{v30, v32, v34, v36}];
     }
   }
 
@@ -99,8 +99,8 @@
   {
     v49.receiver = self;
     v49.super_class = AKRectangularPageSizedAnnotationEventHandler;
-    [(AKRectangularAnnotationEventHandler *)&v49 updateModelWithCurrentPoint:a4 options:x, y];
-    [v8 rectangle];
+    [(AKRectangularAnnotationEventHandler *)&v49 updateModelWithCurrentPoint:options options:x, y];
+    [annotation rectangle];
     v38 = v37;
     v40 = v39;
     v42 = v41;
@@ -116,19 +116,19 @@
     v55.size.height = v44;
     if (!CGRectEqualToRect(v53, v55))
     {
-      [v8 setRectangle:{v45, v46, v47, v48}];
+      [annotation setRectangle:{v45, v46, v47, v48}];
     }
   }
 }
 
-- (CGRect)_validateAnnotationRectForResize:(CGRect)a3
+- (CGRect)_validateAnnotationRectForResize:(CGRect)resize
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(AKAnnotationEventHandler *)self pageController];
-  [v7 maxPageRect];
+  height = resize.size.height;
+  width = resize.size.width;
+  y = resize.origin.y;
+  x = resize.origin.x;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  [pageController maxPageRect];
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
@@ -155,14 +155,14 @@
   return result;
 }
 
-- (CGRect)_validateAnnotationRectForDrag:(CGRect)a3
+- (CGRect)_validateAnnotationRectForDrag:(CGRect)drag
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(AKAnnotationEventHandler *)self pageController];
-  [v7 maxPageRect];
+  height = drag.size.height;
+  width = drag.size.width;
+  y = drag.origin.y;
+  x = drag.origin.x;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  [pageController maxPageRect];
   v8 = v30.origin.x;
   v9 = v30.origin.y;
   v10 = v30.size.width;

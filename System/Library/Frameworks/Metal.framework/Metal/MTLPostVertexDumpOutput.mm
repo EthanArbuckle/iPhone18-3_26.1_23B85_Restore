@@ -1,8 +1,8 @@
 @interface MTLPostVertexDumpOutput
-- (BOOL)isEqual:(id)a3;
-- (MTLPostVertexDumpOutput)initWithAirMDType:(id)a3 dataType:(unint64_t)a4 pixelFormat:(unint64_t)a5 aluType:(unint64_t)a6 name:(id)a7 offset:(unint64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (MTLPostVertexDumpOutput)initWithAirMDType:(id)type dataType:(unint64_t)dataType pixelFormat:(unint64_t)format aluType:(unint64_t)aluType name:(id)name offset:(unint64_t)offset;
 - (id)description;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
@@ -15,26 +15,26 @@
   [(MTLPostVertexDumpOutput *)&v3 dealloc];
 }
 
-- (MTLPostVertexDumpOutput)initWithAirMDType:(id)a3 dataType:(unint64_t)a4 pixelFormat:(unint64_t)a5 aluType:(unint64_t)a6 name:(id)a7 offset:(unint64_t)a8
+- (MTLPostVertexDumpOutput)initWithAirMDType:(id)type dataType:(unint64_t)dataType pixelFormat:(unint64_t)format aluType:(unint64_t)aluType name:(id)name offset:(unint64_t)offset
 {
   v18.receiver = self;
   v18.super_class = MTLPostVertexDumpOutput;
   v14 = [(MTLPostVertexDumpOutput *)&v18 init];
-  v14->_airMDType = a3;
-  v15 = a3;
-  v14->_dataType = a4;
-  v14->_pixelFormat = a5;
-  v14->_aluType = a6;
-  v14->_name = a7;
-  v16 = a7;
-  v14->_offset = a8;
+  v14->_airMDType = type;
+  typeCopy = type;
+  v14->_dataType = dataType;
+  v14->_pixelFormat = format;
+  v14->_aluType = aluType;
+  v14->_name = name;
+  nameCopy = name;
+  v14->_offset = offset;
   return v14;
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v15[18] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v14.receiver = self;
   v14.super_class = MTLPostVertexDumpOutput;
@@ -84,7 +84,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -92,18 +92,18 @@
     goto LABEL_2;
   }
 
-  v6 = [objc_msgSend(a3 "airMDType")];
+  v6 = [objc_msgSend(equal "airMDType")];
   if (!v6)
   {
     return v6;
   }
 
-  if ([a3 dataType] == self->_dataType && objc_msgSend(a3, "pixelFormat") == self->_pixelFormat)
+  if ([equal dataType] == self->_dataType && objc_msgSend(equal, "pixelFormat") == self->_pixelFormat)
   {
-    v6 = [objc_msgSend(a3 "name")];
+    v6 = [objc_msgSend(equal "name")];
     if (v6)
     {
-      LOBYTE(v6) = [a3 offset] == self->_offset;
+      LOBYTE(v6) = [equal offset] == self->_offset;
     }
   }
 

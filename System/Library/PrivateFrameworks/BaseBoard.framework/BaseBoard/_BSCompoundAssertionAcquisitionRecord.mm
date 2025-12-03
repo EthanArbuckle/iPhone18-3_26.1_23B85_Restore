@@ -1,6 +1,6 @@
 @interface _BSCompoundAssertionAcquisitionRecord
 - (id)assertion;
-- (void)setContext:(uint64_t)a1;
+- (void)setContext:(uint64_t)context;
 @end
 
 @implementation _BSCompoundAssertionAcquisitionRecord
@@ -16,11 +16,11 @@
   return WeakRetained;
 }
 
-- (void)setContext:(uint64_t)a1
+- (void)setContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((context + 32), a2);
   }
 }
 

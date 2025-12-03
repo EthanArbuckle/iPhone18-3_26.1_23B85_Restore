@@ -1,85 +1,85 @@
 @interface CBPeripheralManager
 + (CBPeripheralManagerAuthorizationStatus)authorizationStatus;
 + (void)authorizationStatus;
-- (BOOL)isMsgAllowedAlways:(unsigned __int16)a3;
-- (BOOL)isMsgAllowedWhenOff:(unsigned __int16)a3;
+- (BOOL)isMsgAllowedAlways:(unsigned __int16)always;
+- (BOOL)isMsgAllowedWhenOff:(unsigned __int16)off;
 - (BOOL)supportsMultipleAdvertising;
 - (BOOL)updateValue:(NSData *)value forCharacteristic:(CBMutableCharacteristic *)characteristic onSubscribedCentrals:(NSArray *)centrals;
 - (CBPeripheralManager)initWithDelegate:(id)delegate queue:(dispatch_queue_t)queue;
 - (CBPeripheralManager)initWithDelegate:(id)delegate queue:(dispatch_queue_t)queue options:(NSDictionary *)options;
-- (id)addXPCDelayTiming:(id)a3 args:(id)a4;
-- (id)centralWithInfo:(id)a3;
+- (id)addXPCDelayTiming:(id)timing args:(id)args;
+- (id)centralWithInfo:(id)info;
 - (id)delegate;
 - (id)getNonConnectableIdentity;
-- (id)l2capChannelForPeer:(id)a3 withCID:(unsigned __int16)a4;
-- (id)l2capChannelForPeer:(id)a3 withPsm:(unsigned __int16)a4;
-- (void)HandleControllerPeripheralBTClockUpdateMsg:(id)a3;
-- (void)HandleOfflineAdvPayloadRequestedWithReason:(id)a3;
+- (id)l2capChannelForPeer:(id)peer withCID:(unsigned __int16)d;
+- (id)l2capChannelForPeer:(id)peer withPsm:(unsigned __int16)psm;
+- (void)HandleControllerPeripheralBTClockUpdateMsg:(id)msg;
+- (void)HandleOfflineAdvPayloadRequestedWithReason:(id)reason;
 - (void)addService:(CBMutableService *)service;
-- (void)addressRotationState:(id)a3;
+- (void)addressRotationState:(id)state;
 - (void)dealloc;
-- (void)disconnectCISPeripheral:(id)a3;
-- (void)forEachCentral:(id)a3;
-- (void)handleAdvertisingStarted:(id)a3;
-- (void)handleAdvertisingStopped:(id)a3;
-- (void)handleCSProcedureEventMsg:(id)a3;
-- (void)handleCentralDidUpdateANCSAuthorization:(id)a3;
-- (void)handleConnectCISPeripheralComplete:(id)a3;
-- (void)handleConnectionParametersUpdated:(id)a3;
-- (void)handleDisconnectCISPeripheralComplete:(id)a3;
-- (void)handleGetAttributeValue:(id)a3;
-- (void)handleIncomingCISConnectionRequest:(id)a3;
-- (void)handleL2CAPChannelClosed:(id)a3;
-- (void)handleL2CAPChannelDidReceiveData:(id)a3;
-- (void)handleL2CAPChannelOpened:(id)a3;
-- (void)handleL2CAPChannelPublished:(id)a3;
-- (void)handleL2CAPChannelUnpublished:(id)a3;
-- (void)handleNotificationAdded:(id)a3;
-- (void)handleNotificationRemoved:(id)a3;
-- (void)handlePeriodicAdvertisingStarted:(id)a3;
-- (void)handlePeriodicAdvertisingStopped:(id)a3;
-- (void)handleReadyForUpdates:(id)a3;
-- (void)handleRestoringState:(id)a3;
-- (void)handleServiceAdded:(id)a3;
-- (void)handleSetAttributeValues:(id)a3;
-- (void)handleSolicitedServicesFound:(id)a3;
-- (void)handleSupportedFeatures:(id)a3;
-- (void)incomingAddress:(id)a3;
-- (void)initCISPeripheral:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overrideLocalLeAddress:(id)a3;
+- (void)disconnectCISPeripheral:(id)peripheral;
+- (void)forEachCentral:(id)central;
+- (void)handleAdvertisingStarted:(id)started;
+- (void)handleAdvertisingStopped:(id)stopped;
+- (void)handleCSProcedureEventMsg:(id)msg;
+- (void)handleCentralDidUpdateANCSAuthorization:(id)authorization;
+- (void)handleConnectCISPeripheralComplete:(id)complete;
+- (void)handleConnectionParametersUpdated:(id)updated;
+- (void)handleDisconnectCISPeripheralComplete:(id)complete;
+- (void)handleGetAttributeValue:(id)value;
+- (void)handleIncomingCISConnectionRequest:(id)request;
+- (void)handleL2CAPChannelClosed:(id)closed;
+- (void)handleL2CAPChannelDidReceiveData:(id)data;
+- (void)handleL2CAPChannelOpened:(id)opened;
+- (void)handleL2CAPChannelPublished:(id)published;
+- (void)handleL2CAPChannelUnpublished:(id)unpublished;
+- (void)handleNotificationAdded:(id)added;
+- (void)handleNotificationRemoved:(id)removed;
+- (void)handlePeriodicAdvertisingStarted:(id)started;
+- (void)handlePeriodicAdvertisingStopped:(id)stopped;
+- (void)handleReadyForUpdates:(id)updates;
+- (void)handleRestoringState:(id)state;
+- (void)handleServiceAdded:(id)added;
+- (void)handleSetAttributeValues:(id)values;
+- (void)handleSolicitedServicesFound:(id)found;
+- (void)handleSupportedFeatures:(id)features;
+- (void)incomingAddress:(id)address;
+- (void)initCISPeripheral:(id)peripheral completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overrideLocalLeAddress:(id)address;
 - (void)removeAllServices;
 - (void)removeService:(CBMutableService *)service;
-- (void)requestStableAddress:(id)a3;
-- (void)respondToCISConnectionRequest:(id)a3;
+- (void)requestStableAddress:(id)address;
+- (void)respondToCISConnectionRequest:(id)request;
 - (void)respondToRequest:(CBATTRequest *)request withResult:(CBATTError)result;
-- (void)respondToTransaction:(id)a3 value:(id)a4 attributeID:(id)a5 result:(int64_t)a6;
-- (void)retrieveBluetoothUsageStatistics:(id)a3 completion:(id)a4;
+- (void)respondToTransaction:(id)transaction value:(id)value attributeID:(id)d result:(int64_t)result;
+- (void)retrieveBluetoothUsageStatistics:(id)statistics completion:(id)completion;
 - (void)setDesiredConnectionLatency:(CBPeripheralManagerConnectionLatency)latency forCentral:(CBCentral *)central;
 - (void)startAdvertising:(NSDictionary *)advertisementData;
-- (void)startPeriodicAdvertising:(id)a3;
-- (void)stopPeriodicAdvertising:(id)a3;
+- (void)startPeriodicAdvertising:(id)advertising;
+- (void)stopPeriodicAdvertising:(id)advertising;
 - (void)supportsMultipleAdvertising;
 @end
 
 @implementation CBPeripheralManager
 
-- (id)centralWithInfo:(id)a3
+- (id)centralWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   centrals = self->_centrals;
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v6 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v7 = [(NSMapTable *)centrals objectForKey:v6];
 
   if (!v7)
   {
-    v7 = [(CBPeer *)[CBCentral alloc] initWithInfo:v4 manager:self];
+    v7 = [(CBPeer *)[CBCentral alloc] initWithInfo:infoCopy manager:self];
     v8 = self->_centrals;
-    v9 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+    v9 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
     [(NSMapTable *)v8 setObject:v7 forKey:v9];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
+  v10 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
   v11 = v10;
   if (v10)
   {
@@ -89,23 +89,23 @@
   return v7;
 }
 
-- (void)forEachCentral:(id)a3
+- (void)forEachCentral:(id)central
 {
-  v8 = a3;
-  v4 = [(NSMapTable *)self->_centrals objectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  centralCopy = central;
+  objectEnumerator = [(NSMapTable *)self->_centrals objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
-      v8[2](v8, v6);
-      v7 = [v4 nextObject];
+      centralCopy[2](centralCopy, v6);
+      nextObject2 = [objectEnumerator nextObject];
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 }
 
@@ -130,10 +130,10 @@
   [(CBManager *)&v4 dealloc];
 }
 
-- (void)overrideLocalLeAddress:(id)a3
+- (void)overrideLocalLeAddress:(id)address
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -145,8 +145,8 @@
   }
 
   v9 = @"kCBMsgArgAddressString";
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v6 = [addressCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v10[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   [(CBManager *)self sendMsg:66 args:v7];
@@ -154,15 +154,15 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addressRotationState:(id)a3
+- (void)addressRotationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__CBPeripheralManager_addressRotationState___block_invoke;
   v6[3] = &unk_1E811CFC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(CBManager *)self sendMsg:52 args:MEMORY[0x1E695E0F8] withReply:v6];
 }
 
@@ -183,11 +183,11 @@ void __44__CBPeripheralManager_addressRotationState___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)l2capChannelForPeer:(id)a3 withPsm:(unsigned __int16)a4
+- (id)l2capChannelForPeer:(id)peer withPsm:(unsigned __int16)psm
 {
-  v4 = a4;
+  psmCopy = psm;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  peerCopy = peer;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -208,12 +208,12 @@ LABEL_4:
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 peer];
-      if ([v13 isEqual:v6])
+      peer = [v12 peer];
+      if ([peer isEqual:peerCopy])
       {
         v14 = [v12 PSM];
 
-        if (v14 == v4)
+        if (v14 == psmCopy)
         {
           v15 = v12;
 
@@ -256,11 +256,11 @@ LABEL_17:
   return v15;
 }
 
-- (id)l2capChannelForPeer:(id)a3 withCID:(unsigned __int16)a4
+- (id)l2capChannelForPeer:(id)peer withCID:(unsigned __int16)d
 {
-  v4 = a4;
+  dCopy = d;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  peerCopy = peer;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -281,12 +281,12 @@ LABEL_4:
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 peer];
-      if ([v13 isEqual:v6])
+      peer = [v12 peer];
+      if ([peer isEqual:peerCopy])
       {
         v14 = [v12 cid];
 
-        if (v14 == v4)
+        if (v14 == dCopy)
         {
           v15 = v12;
 
@@ -329,43 +329,43 @@ LABEL_17:
   return v15;
 }
 
-- (void)initCISPeripheral:(id)a3 completion:(id)a4
+- (void)initCISPeripheral:(id)peripheral completion:(id)completion
 {
-  v5 = MEMORY[0x1C68DF720](a4, a2, a3);
+  v5 = MEMORY[0x1C68DF720](completion, a2, peripheral);
   incomingConnectionRequestCompletion = self->_incomingConnectionRequestCompletion;
   self->_incomingConnectionRequestCompletion = v5;
 
   [(CBManager *)self sendMsg:155 args:0];
 }
 
-- (void)respondToCISConnectionRequest:(id)a3
+- (void)respondToCISConnectionRequest:(id)request
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"kCBMsgArgOptions", 0}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{request, @"kCBMsgArgOptions", 0}];
   [(CBManager *)self sendMsg:170 args:v4];
 }
 
-- (void)disconnectCISPeripheral:(id)a3
+- (void)disconnectCISPeripheral:(id)peripheral
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"kCBMsgArgOptions";
-  v9[0] = a3;
+  v9[0] = peripheral;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  peripheralCopy = peripheral;
   v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   [(CBManager *)self sendMsg:166 args:v6];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestStableAddress:(id)a3
+- (void)requestStableAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__CBPeripheralManager_requestStableAddress___block_invoke;
   v6[3] = &unk_1E811CFC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = addressCopy;
+  v5 = addressCopy;
   [(CBManager *)self sendMsg:51 args:MEMORY[0x1E695E0F8] withReply:v6];
 }
 
@@ -444,9 +444,9 @@ void __44__CBPeripheralManager_requestStableAddress___block_invoke(uint64_t a1, 
   v9 = delegate;
   v10 = queue;
   v11 = options;
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 environment];
-  v14 = [v13 objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v14 = [environment objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
   if (v14)
   {
 
@@ -458,11 +458,11 @@ LABEL_3:
 
   if (v27)
   {
-    v28 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v28 objectForInfoDictionaryKey:@"NSAccessorySetupKitSupports"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    processInfo = [mainBundle objectForInfoDictionaryKey:@"NSAccessorySetupKitSupports"];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 containsObject:@"Bluetooth"] && +[CBManager tccAvailable](CBManager, "tccAvailable") && +[CBManager preflightCheckForTCC](CBManager, "preflightCheckForTCC") == 2)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [processInfo containsObject:@"Bluetooth"] && +[CBManager tccAvailable](CBManager, "tccAvailable") && +[CBManager preflightCheckForTCC](CBManager, "preflightCheckForTCC") == 2)
     {
       if (CBLogInitOnce != -1)
       {
@@ -518,8 +518,8 @@ LABEL_4:
     *&self->_readyForUpdates = 1;
     self->_attributeIDGenerator = 1;
     [(CBManager *)self setTccComplete:0];
-    v26 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v26 objectForInfoDictionaryKey:@"UIBackgroundModes"];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    processInfo = [mainBundle2 objectForInfoDictionaryKey:@"UIBackgroundModes"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -527,21 +527,21 @@ LABEL_4:
       goto LABEL_19;
     }
 
-    if ([v12 containsObject:@"bluetooth-peripheral"])
+    if ([processInfo containsObject:@"bluetooth-peripheral"])
     {
       v15 = 0;
       goto LABEL_19;
     }
 
 LABEL_18:
-    v15 = [v12 containsObject:@"bluetooth"] ^ 1;
+    v15 = [processInfo containsObject:@"bluetooth"] ^ 1;
 LABEL_19:
     v29 = [(NSDictionary *)v11 objectForKeyedSubscript:@"kCBInitOptionRestoreIdentifier"];
 
     delegateFlags = self->_delegateFlags;
     v31 = [*(a2 + 498) dictionaryWithDictionary:v11];
-    v32 = [(CBManager *)self getCBPrivacySupported];
-    v33 = [MEMORY[0x1E696AD98] numberWithBool:v32];
+    getCBPrivacySupported = [(CBManager *)self getCBPrivacySupported];
+    v33 = [MEMORY[0x1E696AD98] numberWithBool:getCBPrivacySupported];
     [v31 setObject:v33 forKey:@"kCBManagerPrivacySupported"];
 
     if (!v29)
@@ -592,28 +592,28 @@ LABEL_29:
   return self;
 }
 
-- (void)incomingAddress:(id)a3
+- (void)incomingAddress:(id)address
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"kCBMsgArgAddressBytes";
-  v9[0] = a3;
+  v9[0] = address;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  addressCopy = address;
   v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   [(CBManager *)self sendMsg:50 args:v6];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v72 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (objc_opt_class() == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (objc_opt_class() == context)
   {
-    if ([v10 isEqualToString:@"state"])
+    if ([pathCopy isEqualToString:@"state"])
     {
       if ([(CBManager *)self state]== CBManagerStatePoweredOn || [(CBManager *)self state]== 10)
       {
@@ -668,16 +668,16 @@ LABEL_29:
         }
       }
 
-      v13 = [(CBPeripheralManager *)self delegate];
-      [v13 peripheralManagerDidUpdateState:self];
+      delegate = [(CBPeripheralManager *)self delegate];
+      [delegate peripheralManagerDidUpdateState:self];
     }
 
-    else if ([v10 isEqualToString:@"delegate"])
+    else if ([pathCopy isEqualToString:@"delegate"])
     {
-      v14 = [(CBPeripheralManager *)self delegate];
+      delegate2 = [(CBPeripheralManager *)self delegate];
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFFE | objc_opt_respondsToSelector() & 1);
 
-      v15 = [(CBPeripheralManager *)self delegate];
+      delegate3 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v16 = 2;
@@ -690,7 +690,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFFD | v16);
 
-      v17 = [(CBPeripheralManager *)self delegate];
+      delegate4 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v18 = 4;
@@ -703,7 +703,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFFB | v18);
 
-      v19 = [(CBPeripheralManager *)self delegate];
+      delegate5 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v20 = 8;
@@ -716,7 +716,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFF7 | v20);
 
-      v21 = [(CBPeripheralManager *)self delegate];
+      delegate6 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v22 = 16;
@@ -729,7 +729,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFEF | v22);
 
-      v23 = [(CBPeripheralManager *)self delegate];
+      delegate7 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v24 = 32;
@@ -742,7 +742,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFDF | v24);
 
-      v25 = [(CBPeripheralManager *)self delegate];
+      delegate8 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v26 = 64;
@@ -755,7 +755,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFBF | v26);
 
-      v27 = [(CBPeripheralManager *)self delegate];
+      delegate9 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v28 = 128;
@@ -768,7 +768,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFF7F | v28);
 
-      v29 = [(CBPeripheralManager *)self delegate];
+      delegate10 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v30 = 256;
@@ -781,7 +781,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFEFF | v30);
 
-      v31 = [(CBPeripheralManager *)self delegate];
+      delegate11 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v32 = 512;
@@ -794,7 +794,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFDFF | v32);
 
-      v33 = [(CBPeripheralManager *)self delegate];
+      delegate12 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v34 = 1024;
@@ -807,7 +807,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFBFF | v34);
 
-      v35 = [(CBPeripheralManager *)self delegate];
+      delegate13 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v36 = 2048;
@@ -820,7 +820,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFF7FF | v36);
 
-      v37 = [(CBPeripheralManager *)self delegate];
+      delegate14 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v38 = 4096;
@@ -833,7 +833,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFEFFF | v38);
 
-      v39 = [(CBPeripheralManager *)self delegate];
+      delegate15 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v40 = 0x2000;
@@ -846,7 +846,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFDFFF | v40);
 
-      v41 = [(CBPeripheralManager *)self delegate];
+      delegate16 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v42 = 0x4000;
@@ -859,7 +859,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFBFFF | v42);
 
-      v43 = [(CBPeripheralManager *)self delegate];
+      delegate17 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v44 = 0x8000;
@@ -872,7 +872,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFF7FFF | v44);
 
-      v45 = [(CBPeripheralManager *)self delegate];
+      delegate18 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v46 = 0x10000;
@@ -885,7 +885,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFEFFFF | v46);
 
-      v47 = [(CBPeripheralManager *)self delegate];
+      delegate19 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v48 = 0x20000;
@@ -898,7 +898,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFDFFFF | v48);
 
-      v49 = [(CBPeripheralManager *)self delegate];
+      delegate20 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v50 = 0x40000;
@@ -911,7 +911,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFFBFFFF | v50);
 
-      v51 = [(CBPeripheralManager *)self delegate];
+      delegate21 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v52 = 0x80000;
@@ -924,7 +924,7 @@ LABEL_29:
 
       self->_delegateFlags = (*&self->_delegateFlags & 0xFFF7FFFF | v52);
 
-      v53 = [(CBPeripheralManager *)self delegate];
+      delegate22 = [(CBPeripheralManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v54 = 0x100000;
@@ -969,7 +969,7 @@ LABEL_29:
   {
     v66.receiver = self;
     v66.super_class = CBPeripheralManager;
-    [(CBPeripheralManager *)&v66 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CBPeripheralManager *)&v66 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v59 = *MEMORY[0x1E69E9840];
@@ -985,9 +985,9 @@ LABEL_29:
   }
 
   v11[0] = @"kCBMsgArgDeviceUUID";
-  v7 = [(CBPeer *)v6 identifier];
+  identifier = [(CBPeer *)v6 identifier];
   v11[1] = @"kCBMsgArgConnectionLatency";
-  v12[0] = v7;
+  v12[0] = identifier;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:latency];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
@@ -1004,8 +1004,8 @@ LABEL_29:
   v48 = 0u;
   v49 = 0u;
   v23 = advertisementData;
-  v3 = [(NSDictionary *)v23 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  allKeys = [(NSDictionary *)v23 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1017,7 +1017,7 @@ LABEL_29:
       {
         if (*v47 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v46 + 1) + 8 * i);
@@ -1129,9 +1129,9 @@ LABEL_27:
         else if ([v8 isEqualToString:@"kCBAdvDataIsConnectable"])
         {
           v9 = [(NSDictionary *)v23 objectForKeyedSubscript:@"kCBMsgArgIsPrivilegedDaemon"];
-          v10 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
 
-          if (v10)
+          if (bOOLValue)
           {
             continue;
           }
@@ -1158,9 +1158,9 @@ LABEL_32:
         else if (([v8 isEqualToString:@"kCBAdvDataIsExtended"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"kCBAdvDataIsExtendedConnectable"))
         {
           v11 = [(NSDictionary *)v23 objectForKeyedSubscript:@"kCBMsgArgIsPrivilegedDaemon"];
-          v12 = [v11 BOOLValue];
+          bOOLValue2 = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue2)
           {
             continue;
           }
@@ -1187,9 +1187,9 @@ LABEL_38:
         else if ([v8 isEqualToString:@"kCBAdvDataIsTDS"])
         {
           v13 = [(NSDictionary *)v23 objectForKeyedSubscript:@"kCBMsgArgIsPrivilegedDaemon"];
-          v14 = [v13 BOOLValue];
+          bOOLValue3 = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue3)
           {
             continue;
           }
@@ -1216,9 +1216,9 @@ LABEL_43:
         else if (([v8 isEqualToString:@"kCBAdvDataTDSData"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"kCBAdvertisementTDSTypeKey"))
         {
           v15 = [(NSDictionary *)v23 objectForKeyedSubscript:@"kCBMsgArgIsPrivilegedDaemon"];
-          v16 = [v15 BOOLValue];
+          bOOLValue4 = [v15 BOOLValue];
 
-          if (v16)
+          if (bOOLValue4)
           {
             continue;
           }
@@ -1245,9 +1245,9 @@ LABEL_49:
         else if (([v8 isEqualToString:@"kCBAdvDataRawBytesData"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"kCBAdvDataRawBytesDataAdvInd") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"kCBAdvDataRawBytesDataScanRsp"))
         {
           v17 = [(NSDictionary *)v23 objectForKeyedSubscript:@"kCBMsgArgIsPrivilegedDaemon"];
-          v18 = [v17 BOOLValue];
+          bOOLValue5 = [v17 BOOLValue];
 
-          if (v18)
+          if (bOOLValue5)
           {
             continue;
           }
@@ -1298,7 +1298,7 @@ LABEL_66:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v46 objects:v50 count:16];
     }
 
     while (v5);
@@ -1319,34 +1319,34 @@ LABEL_66:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPeriodicAdvertising:(id)a3
+- (void)startPeriodicAdvertising:(id)advertising
 {
-  if (a3)
+  if (advertising)
   {
-    v3 = a3;
+    advertisingCopy = advertising;
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    advertisingCopy = MEMORY[0x1E695E0F8];
   }
 
-  [(CBManager *)self sendMsg:40 args:v3];
+  [(CBManager *)self sendMsg:40 args:advertisingCopy];
 }
 
-- (void)stopPeriodicAdvertising:(id)a3
+- (void)stopPeriodicAdvertising:(id)advertising
 {
-  if (a3)
+  if (advertising)
   {
-    v3 = a3;
+    advertisingCopy = advertising;
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    advertisingCopy = MEMORY[0x1E695E0F8];
   }
 
-  [(CBManager *)self sendMsg:41 args:v3];
+  [(CBManager *)self sendMsg:41 args:advertisingCopy];
 }
 
 - (void)addService:(CBMutableService *)service
@@ -1360,25 +1360,25 @@ LABEL_66:
     v3 = 0;
   }
 
-  v4 = [(CBAttribute *)v3 UUID];
-  v5 = [v4 data];
-  if ([v5 length] == 2)
+  uUID = [(CBAttribute *)v3 UUID];
+  data = [uUID data];
+  if ([data length] == 2)
   {
   }
 
   else
   {
-    v6 = [(CBAttribute *)v61 UUID];
-    v7 = [v6 data];
-    v8 = [v7 length];
+    uUID2 = [(CBAttribute *)v61 UUID];
+    data2 = [uUID2 data];
+    v8 = [data2 length];
 
     if (v8 == 16)
     {
       goto LABEL_8;
     }
 
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:547 description:{@"Invalid parameter not satisfying: %@", @"service.UUID.data.length == 2 || service.UUID.data.length == 16"}];
+    uUID = [MEMORY[0x1E696AAA8] currentHandler];
+    [uUID handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:547 description:{@"Invalid parameter not satisfying: %@", @"service.UUID.data.length == 2 || service.UUID.data.length == 16"}];
   }
 
 LABEL_8:
@@ -1386,8 +1386,8 @@ LABEL_8:
   objc_sync_enter(v59);
   if ([(NSMutableArray *)self->_services indexOfObject:v61]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v58 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:551 description:@"Services cannot be added more than once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:551 description:@"Services cannot be added more than once"];
   }
 
   v9 = MEMORY[0x1E696AD98];
@@ -1397,9 +1397,9 @@ LABEL_8:
 
   v11 = objc_alloc(MEMORY[0x1E695DF90]);
   v12 = [(CBMutableService *)v61 ID];
-  v13 = [(CBAttribute *)v61 UUID];
+  uUID3 = [(CBAttribute *)v61 UUID];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[CBService isPrimary](v61, "isPrimary")}];
-  v60 = [v11 initWithObjectsAndKeys:{v12, @"kCBMsgArgAttributeID", v13, @"kCBMsgArgUUID", v14, @"kCBMsgArgType", 0}];
+  v60 = [v11 initWithObjectsAndKeys:{v12, @"kCBMsgArgAttributeID", uUID3, @"kCBMsgArgUUID", v14, @"kCBMsgArgType", 0}];
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v60 setObject:v15 forKeyedSubscript:@"kCBMsgArgAttributeIDs"];
@@ -1408,8 +1408,8 @@ LABEL_8:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v16 = [(CBService *)v61 includedServices];
-  v17 = [v16 countByEnumeratingWithState:&v84 objects:v91 count:16];
+  includedServices = [(CBService *)v61 includedServices];
+  v17 = [includedServices countByEnumeratingWithState:&v84 objects:v91 count:16];
   if (v17)
   {
     v18 = *v85;
@@ -1419,21 +1419,21 @@ LABEL_8:
       {
         if (*v85 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(includedServices);
         }
 
         v20 = *(*(&v84 + 1) + 8 * i);
         if ([(NSMutableArray *)self->_services indexOfObject:v20]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v22 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:566 description:{@"Included services must be published before the service(s) that reference them (%@)", v20}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:566 description:{@"Included services must be published before the service(s) that reference them (%@)", v20}];
         }
 
         v21 = [v20 ID];
         [v70 addObject:v21];
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v84 objects:v91 count:16];
+      v17 = [includedServices countByEnumeratingWithState:&v84 objects:v91 count:16];
     }
 
     while (v17);
@@ -1445,12 +1445,12 @@ LABEL_8:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v23 = [(CBService *)v61 characteristics];
-  v66 = [v23 countByEnumeratingWithState:&v80 objects:v90 count:16];
+  characteristics = [(CBService *)v61 characteristics];
+  v66 = [characteristics countByEnumeratingWithState:&v80 objects:v90 count:16];
   if (v66)
   {
     v64 = *v81;
-    obj = v23;
+    obj = characteristics;
     do
     {
       for (j = 0; j != v66; ++j)
@@ -1461,15 +1461,15 @@ LABEL_8:
         }
 
         v24 = *(*(&v80 + 1) + 8 * j);
-        v25 = [v24 value];
-        if (v25)
+        value = [v24 value];
+        if (value)
         {
           if ([v24 properties] != 2 || (objc_msgSend(v24, "permissions") & 2) != 0)
           {
 
 LABEL_30:
-            v27 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v27 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:576 description:@"Characteristics with cached values must be read-only"];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:576 description:@"Characteristics with cached values must be read-only"];
 
             goto LABEL_31;
           }
@@ -1488,8 +1488,8 @@ LABEL_31:
 
         if (!v29)
         {
-          v49 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v49 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:580 description:@"Characteristics cannot be added more than once"];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:580 description:@"Characteristics cannot be added more than once"];
         }
 
         v30 = MEMORY[0x1E696AD98];
@@ -1499,19 +1499,19 @@ LABEL_31:
 
         v32 = objc_alloc(MEMORY[0x1E695DF90]);
         v33 = [v24 ID];
-        v34 = [v24 UUID];
+        uUID4 = [v24 UUID];
         v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v24, "properties")}];
         v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v24, "permissions")}];
-        v37 = [v24 value];
-        v38 = v37;
-        if (!v37)
+        value2 = [v24 value];
+        v38 = value2;
+        if (!value2)
         {
-          v67 = [MEMORY[0x1E695DFB0] null];
-          v38 = v67;
+          null = [MEMORY[0x1E695DFB0] null];
+          v38 = null;
         }
 
-        v69 = [v32 initWithObjectsAndKeys:{v33, @"kCBMsgArgAttributeID", v34, @"kCBMsgArgUUID", v35, @"kCBMsgArgCharacteristicProperties", v36, @"kCBMsgArgAttributePermissions", v38, @"kCBMsgArgData", 0}];
-        if (!v37)
+        v69 = [v32 initWithObjectsAndKeys:{v33, @"kCBMsgArgAttributeID", uUID4, @"kCBMsgArgUUID", v35, @"kCBMsgArgCharacteristicProperties", v36, @"kCBMsgArgAttributePermissions", v38, @"kCBMsgArgData", 0}];
+        if (!value2)
         {
         }
 
@@ -1521,8 +1521,8 @@ LABEL_31:
         v79 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v40 = [v24 descriptors];
-        v41 = [v40 countByEnumeratingWithState:&v76 objects:v89 count:16];
+        descriptors = [v24 descriptors];
+        v41 = [descriptors countByEnumeratingWithState:&v76 objects:v89 count:16];
         if (v41)
         {
           v42 = *v77;
@@ -1532,19 +1532,19 @@ LABEL_31:
             {
               if (*v77 != v42)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(descriptors);
               }
 
               v44 = *(*(&v76 + 1) + 8 * k);
               v45 = objc_alloc(MEMORY[0x1E695DF90]);
-              v46 = [v44 UUID];
-              v47 = [v44 value];
-              v48 = [v45 initWithObjectsAndKeys:{v46, @"kCBMsgArgUUID", v47, @"kCBMsgArgData", 0}];
+              uUID5 = [v44 UUID];
+              value3 = [v44 value];
+              v48 = [v45 initWithObjectsAndKeys:{uUID5, @"kCBMsgArgUUID", value3, @"kCBMsgArgData", 0}];
 
               [v39 addObject:v48];
             }
 
-            v41 = [v40 countByEnumeratingWithState:&v76 objects:v89 count:16];
+            v41 = [descriptors countByEnumeratingWithState:&v76 objects:v89 count:16];
           }
 
           while (v41);
@@ -1553,7 +1553,7 @@ LABEL_31:
         [v65 addObject:v69];
       }
 
-      v23 = obj;
+      characteristics = obj;
       v66 = [obj countByEnumeratingWithState:&v80 objects:v90 count:16];
     }
 
@@ -1567,8 +1567,8 @@ LABEL_31:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v50 = [(CBService *)v61 characteristics];
-    v51 = [v50 countByEnumeratingWithState:&v72 objects:v88 count:16];
+    characteristics2 = [(CBService *)v61 characteristics];
+    v51 = [characteristics2 countByEnumeratingWithState:&v72 objects:v88 count:16];
     if (v51)
     {
       v52 = *v73;
@@ -1578,7 +1578,7 @@ LABEL_31:
         {
           if (*v73 != v52)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(characteristics2);
           }
 
           v54 = *(*(&v72 + 1) + 8 * m);
@@ -1587,7 +1587,7 @@ LABEL_31:
           [(NSMutableDictionary *)characteristicIDs setObject:v54 forKeyedSubscript:v56];
         }
 
-        v51 = [v50 countByEnumeratingWithState:&v72 objects:v88 count:16];
+        v51 = [characteristics2 countByEnumeratingWithState:&v72 objects:v88 count:16];
       }
 
       while (v51);
@@ -1652,8 +1652,8 @@ LABEL_31:
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v13 = [v12 includedServices];
-          v14 = [v13 countByEnumeratingWithState:&v41 objects:v54 count:16];
+          includedServices = [v12 includedServices];
+          v14 = [includedServices countByEnumeratingWithState:&v41 objects:v54 count:16];
           if (v14)
           {
             v15 = *v42;
@@ -1663,7 +1663,7 @@ LABEL_31:
               {
                 if (*v42 != v15)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(includedServices);
                 }
 
                 v17 = [*(*(&v41 + 1) + 8 * j) ID];
@@ -1673,13 +1673,13 @@ LABEL_31:
                 if (v19)
                 {
 
-                  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-                  [v20 handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:644 description:@"Cannot remove a service that is still included by one or more published services"];
+                  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                  [currentHandler handleFailureInMethod:a2 object:self file:@"CBPeripheralManager.m" lineNumber:644 description:@"Cannot remove a service that is still included by one or more published services"];
                   goto LABEL_22;
                 }
               }
 
-              v14 = [v13 countByEnumeratingWithState:&v41 objects:v54 count:16];
+              v14 = [includedServices countByEnumeratingWithState:&v41 objects:v54 count:16];
               if (v14)
               {
                 continue;
@@ -1696,7 +1696,7 @@ LABEL_31:
       while (v10);
     }
 
-    v20 = obj;
+    currentHandler = obj;
 LABEL_22:
 
     v52 = @"kCBMsgArgAttributeID";
@@ -1711,8 +1711,8 @@ LABEL_22:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v24 = [v8 characteristics];
-      v25 = [v24 countByEnumeratingWithState:&v37 objects:v51 count:16];
+      characteristics = [v8 characteristics];
+      v25 = [characteristics countByEnumeratingWithState:&v37 objects:v51 count:16];
       if (v25)
       {
         v26 = *v38;
@@ -1722,7 +1722,7 @@ LABEL_22:
           {
             if (*v38 != v26)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(characteristics);
             }
 
             characteristicIDs = self->_characteristicIDs;
@@ -1730,7 +1730,7 @@ LABEL_22:
             [(NSMutableDictionary *)characteristicIDs removeObjectForKey:v29];
           }
 
-          v25 = [v24 countByEnumeratingWithState:&v37 objects:v51 count:16];
+          v25 = [characteristics countByEnumeratingWithState:&v37 objects:v51 count:16];
         }
 
         while (v25);
@@ -1784,33 +1784,33 @@ uint64_t __37__CBPeripheralManager_removeService___block_invoke(uint64_t a1, voi
   if (([0 ignoreResponse] & 1) == 0)
   {
 LABEL_3:
-    v7 = [(CBATTRequest *)v11 transactionID];
-    v8 = [(CBATTRequest *)v11 value];
-    v9 = [(CBATTRequest *)v11 characteristic];
-    v10 = [v9 ID];
-    [(CBPeripheralManager *)self respondToTransaction:v7 value:v8 attributeID:v10 result:result];
+    transactionID = [(CBATTRequest *)v11 transactionID];
+    value = [(CBATTRequest *)v11 value];
+    characteristic = [(CBATTRequest *)v11 characteristic];
+    v10 = [characteristic ID];
+    [(CBPeripheralManager *)self respondToTransaction:transactionID value:value attributeID:v10 result:result];
   }
 
 LABEL_4:
 }
 
-- (void)respondToTransaction:(id)a3 value:(id)a4 attributeID:(id)a5 result:(int64_t)a6
+- (void)respondToTransaction:(id)transaction value:(id)value attributeID:(id)d result:(int64_t)result
 {
   v10 = MEMORY[0x1E695DF90];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  dCopy = d;
+  valueCopy = value;
+  transactionCopy = transaction;
   v14 = [v10 alloc];
-  v15 = v12;
-  if (!v12)
+  null = valueCopy;
+  if (!valueCopy)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-  v17 = [v14 initWithObjectsAndKeys:{v13, @"kCBMsgArgTransactionID", v15, @"kCBMsgArgData", v11, @"kCBMsgArgAttributeID", v16, @"kCBMsgArgResult", 0}];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:result];
+  v17 = [v14 initWithObjectsAndKeys:{transactionCopy, @"kCBMsgArgTransactionID", null, @"kCBMsgArgData", dCopy, @"kCBMsgArgAttributeID", v16, @"kCBMsgArgResult", 0}];
 
-  if (!v12)
+  if (!valueCopy)
   {
   }
 
@@ -1869,8 +1869,8 @@ LABEL_3:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v25 + 1) + 8 * i) identifier];
-          [v12 addObject:v18];
+          identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+          [v12 addObject:identifier];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1899,13 +1899,13 @@ LABEL_3:
 
 - (BOOL)supportsMultipleAdvertising
 {
-  v3 = [(CBPeripheralManager *)self multipleAdvertisingSupported];
+  multipleAdvertisingSupported = [(CBPeripheralManager *)self multipleAdvertisingSupported];
 
-  if (!v3)
+  if (!multipleAdvertisingSupported)
   {
     v4 = [(CBManager *)self sendSyncMsg:47 args:0];
     v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgData"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     if (CBLogInitOnce != -1)
     {
@@ -1917,25 +1917,25 @@ LABEL_3:
       [CBPeripheralManager supportsMultipleAdvertising];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
     [(CBPeripheralManager *)self setMultipleAdvertisingSupported:v7];
   }
 
-  v8 = [(CBPeripheralManager *)self multipleAdvertisingSupported];
-  v9 = [v8 BOOLValue];
+  multipleAdvertisingSupported2 = [(CBPeripheralManager *)self multipleAdvertisingSupported];
+  bOOLValue2 = [multipleAdvertisingSupported2 BOOLValue];
 
-  return v9;
+  return bOOLValue2;
 }
 
-- (void)retrieveBluetoothUsageStatistics:(id)a3 completion:(id)a4
+- (void)retrieveBluetoothUsageStatistics:(id)statistics completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___block_invoke;
   v7[3] = &unk_1E811CFC8;
-  v8 = v5;
-  v6 = v5;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CBManager *)self sendMsg:230 args:&unk_1F4021068 withReply:v7];
 }
 
@@ -1960,20 +1960,20 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)handleRestoringState:(id)a3
+- (void)handleRestoringState:(id)state
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if ((*&self->_delegateFlags & 1) == 0)
   {
     [CBPeripheralManager handleRestoringState:];
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v63 = [v4 objectForKeyedSubscript:@"kCBMsgArgSubscribedHandles"];
+  v63 = [stateCopy objectForKeyedSubscript:@"kCBMsgArgSubscribedHandles"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgAdvertisementData"];
+  v7 = [stateCopy objectForKeyedSubscript:@"kCBMsgArgAdvertisementData"];
   if (v7)
   {
     [v5 setObject:v7 forKeyedSubscript:@"kCBRestoredAdvertisement"];
@@ -1986,9 +1986,9 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v55 = v4;
-  obj = [v4 objectForKeyedSubscript:@"kCBMsgArgServices"];
-  v65 = self;
+  v55 = stateCopy;
+  obj = [stateCopy objectForKeyedSubscript:@"kCBMsgArgServices"];
+  selfCopy = self;
   v60 = v6;
   v58 = [obj countByEnumeratingWithState:&v89 objects:v99 count:16];
   if (v58)
@@ -2010,10 +2010,10 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
         v10 = [[CBMutableService alloc] initWithDictionary:v9];
         [(NSMutableArray *)self->_services addObject:v10];
         v11 = [(CBMutableService *)v10 ID];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         attributeIDGenerator = self->_attributeIDGenerator;
 
-        if (v12 > attributeIDGenerator)
+        if (unsignedIntegerValue > attributeIDGenerator)
         {
           v14 = [(CBMutableService *)v10 ID];
           self->_attributeIDGenerator = [v14 unsignedIntegerValue];
@@ -2059,7 +2059,7 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
         v81 = 0u;
         v82 = 0u;
         v61 = [v9 objectForKeyedSubscript:@"kCBMsgArgCharacteristics"];
-        self = v65;
+        self = selfCopy;
         v23 = v66;
         v67 = [v61 countByEnumeratingWithState:&v81 objects:v95 count:16];
         if (v67)
@@ -2082,10 +2082,10 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
               [(NSMutableDictionary *)characteristicIDs setObject:v27 forKeyedSubscript:v29];
 
               v30 = [(CBMutableCharacteristic *)v27 ID];
-              v31 = [v30 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v30 unsignedIntegerValue];
               v32 = self->_attributeIDGenerator;
 
-              if (v31 > v32)
+              if (unsignedIntegerValue2 > v32)
               {
                 v33 = [(CBMutableCharacteristic *)v27 ID];
                 self->_attributeIDGenerator = [v33 unsignedIntegerValue];
@@ -2136,7 +2136,7 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
               v23 = v66;
               [v66 addObject:v34];
 
-              self = v65;
+              self = selfCopy;
             }
 
             v67 = [v61 countByEnumeratingWithState:&v81 objects:v95 count:16];
@@ -2204,11 +2204,11 @@ void __67__CBPeripheralManager_retrieveBluetoothUsageStatistics_completion___blo
   if ([v60 count])
   {
     [v54 setObject:v60 forKeyedSubscript:@"kCBRestoredServices"];
-    v65->_attributeIDGenerator += 16;
+    selfCopy->_attributeIDGenerator += 16;
   }
 
-  v51 = [(CBPeripheralManager *)v65 delegate];
-  [v51 peripheralManager:v65 willRestoreState:v54];
+  delegate = [(CBPeripheralManager *)selfCopy delegate];
+  [delegate peripheralManager:selfCopy willRestoreState:v54];
 
   v52 = *MEMORY[0x1E69E9840];
 }
@@ -2257,12 +2257,12 @@ void __44__CBPeripheralManager_handleRestoringState___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)handleServiceAdded:(id)a3
+- (void)handleServiceAdded:(id)added
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v19 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+  addedCopy = added;
+  v19 = [MEMORY[0x1E696ABC0] errorWithInfo:addedCopy];
+  v5 = [addedCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
   v6 = self->_services;
   objc_sync_enter(v6);
   services = self->_services;
@@ -2283,8 +2283,8 @@ void __44__CBPeripheralManager_handleRestoringState___block_invoke_2(uint64_t a1
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v17 characteristics];
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      characteristics = [v17 characteristics];
+      v10 = [characteristics countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v10)
       {
         v11 = *v21;
@@ -2294,7 +2294,7 @@ void __44__CBPeripheralManager_handleRestoringState___block_invoke_2(uint64_t a1
           {
             if (*v21 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(characteristics);
             }
 
             characteristicIDs = self->_characteristicIDs;
@@ -2302,7 +2302,7 @@ void __44__CBPeripheralManager_handleRestoringState___block_invoke_2(uint64_t a1
             [(NSMutableDictionary *)characteristicIDs removeObjectForKey:v14];
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+          v10 = [characteristics countByEnumeratingWithState:&v20 objects:v26 count:16];
         }
 
         while (v10);
@@ -2311,8 +2311,8 @@ void __44__CBPeripheralManager_handleRestoringState___block_invoke_2(uint64_t a1
 
     if ((*&self->_delegateFlags & 2) != 0)
     {
-      v15 = [(CBPeripheralManager *)self delegate];
-      [v15 peripheralManager:self didAddService:v17 error:v19];
+      delegate = [(CBPeripheralManager *)self delegate];
+      [delegate peripheralManager:self didAddService:v17 error:v19];
     }
   }
 
@@ -2328,27 +2328,27 @@ uint64_t __42__CBPeripheralManager_handleServiceAdded___block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)handleGetAttributeValue:(id)a3
+- (void)handleGetAttributeValue:(id)value
 {
-  v14 = a3;
-  v4 = [v14 objectForKeyedSubscript:@"kCBMsgArgTransactionID"];
-  v5 = [v14 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
-  v6 = [v14 objectForKeyedSubscript:@"kCBMsgArgOffset"];
+  valueCopy = value;
+  v4 = [valueCopy objectForKeyedSubscript:@"kCBMsgArgTransactionID"];
+  v5 = [valueCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+  v6 = [valueCopy objectForKeyedSubscript:@"kCBMsgArgOffset"];
   v7 = self->_services;
   objc_sync_enter(v7);
   v8 = [CBATTRequest alloc];
-  v9 = [(CBPeripheralManager *)self centralWithInfo:v14];
+  v9 = [(CBPeripheralManager *)self centralWithInfo:valueCopy];
   v10 = [(NSMutableDictionary *)self->_characteristicIDs objectForKeyedSubscript:v5];
   v11 = -[CBATTRequest initWithCentral:characteristic:offset:transactionID:](v8, "initWithCentral:characteristic:offset:transactionID:", v9, v10, [v6 unsignedIntegerValue], v4);
 
-  v12 = [(CBATTRequest *)v11 characteristic];
+  characteristic = [(CBATTRequest *)v11 characteristic];
 
-  if (v12)
+  if (characteristic)
   {
     if ((*&self->_delegateFlags & 4) != 0)
     {
-      v13 = [(CBPeripheralManager *)self delegate];
-      [v13 peripheralManager:self didReceiveReadRequest:v11];
+      delegate = [(CBPeripheralManager *)self delegate];
+      [delegate peripheralManager:self didReceiveReadRequest:v11];
     }
 
     else
@@ -2365,13 +2365,13 @@ uint64_t __42__CBPeripheralManager_handleServiceAdded___block_invoke(uint64_t a1
   objc_sync_exit(v7);
 }
 
-- (void)handleSetAttributeValues:(id)a3
+- (void)handleSetAttributeValues:(id)values
 {
   v35 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  valuesCopy = values;
   v26 = [(CBPeripheralManager *)self centralWithInfo:?];
-  v27 = [v24 objectForKeyedSubscript:@"kCBMsgArgTransactionID"];
-  v4 = [v24 objectForKeyedSubscript:@"kCBMsgArgATTWrites"];
+  v27 = [valuesCopy objectForKeyedSubscript:@"kCBMsgArgTransactionID"];
+  v4 = [valuesCopy objectForKeyedSubscript:@"kCBMsgArgATTWrites"];
   v5 = self->_services;
   objc_sync_enter(v5);
   v23 = v5;
@@ -2399,13 +2399,13 @@ LABEL_3:
       v10 = [v9 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
       v11 = [(NSMutableDictionary *)self->_characteristicIDs objectForKeyedSubscript:v10];
       v12 = [v9 objectForKeyedSubscript:@"kCBMsgArgOffset"];
-      v13 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-      v14 = [(CBATTRequest *)v6 characteristic];
-      v15 = v14;
-      if (v11 == v14)
+      characteristic = [(CBATTRequest *)v6 characteristic];
+      v15 = characteristic;
+      if (v11 == characteristic)
       {
-        v16 = v13 == [(CBATTRequest *)v6 endOffset];
+        v16 = unsignedIntegerValue == [(CBATTRequest *)v6 endOffset];
 
         if (v16)
         {
@@ -2417,7 +2417,7 @@ LABEL_3:
       {
       }
 
-      v17 = [[CBATTRequest alloc] initWithCentral:v26 characteristic:v11 offset:v13 transactionID:v27];
+      v17 = [[CBATTRequest alloc] initWithCentral:v26 characteristic:v11 offset:unsignedIntegerValue transactionID:v27];
 
       [v28 addObject:v17];
       v6 = v17;
@@ -2428,8 +2428,8 @@ LABEL_10:
       v19 = [v9 objectForKeyedSubscript:@"kCBMsgArgIgnoreResponse"];
       -[CBATTRequest setIgnoreResponse:](v6, "setIgnoreResponse:", [v19 BOOLValue]);
 
-      v20 = [(CBATTRequest *)v6 characteristic];
-      LODWORD(v19) = v20 == 0;
+      characteristic2 = [(CBATTRequest *)v6 characteristic];
+      LODWORD(v19) = characteristic2 == 0;
 
       if (v19)
       {
@@ -2446,7 +2446,7 @@ LABEL_10:
         [(CBPeripheralManager *)self respondToRequest:v6 withResult:6];
 LABEL_18:
 
-        v21 = obj;
+        delegate = obj;
         goto LABEL_19;
       }
 
@@ -2463,38 +2463,38 @@ LABEL_18:
     }
   }
 
-  v21 = [(CBPeripheralManager *)self delegate];
-  [v21 peripheralManager:self didReceiveWriteRequests:v28];
+  delegate = [(CBPeripheralManager *)self delegate];
+  [delegate peripheralManager:self didReceiveWriteRequests:v28];
 LABEL_19:
 
   objc_sync_exit(v23);
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNotificationAdded:(id)a3
+- (void)handleNotificationAdded:(id)added
 {
-  v9 = a3;
-  v4 = [(CBPeripheralManager *)self centralWithInfo:v9];
-  v5 = [v9 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+  addedCopy = added;
+  v4 = [(CBPeripheralManager *)self centralWithInfo:addedCopy];
+  v5 = [addedCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
   v6 = self->_services;
   objc_sync_enter(v6);
   v7 = [(NSMutableDictionary *)self->_characteristicIDs objectForKeyedSubscript:v5];
   if ([v7 handleCentralSubscribed:v4] && (*&self->_delegateFlags & 0x10) != 0)
   {
-    v8 = [(CBPeripheralManager *)self delegate];
-    [v8 peripheralManager:self central:v4 didSubscribeToCharacteristic:v7];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self central:v4 didSubscribeToCharacteristic:v7];
   }
 
   objc_sync_exit(v6);
 }
 
-- (void)handleNotificationRemoved:(id)a3
+- (void)handleNotificationRemoved:(id)removed
 {
   v47 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v27 = self;
-  v4 = [(CBPeripheralManager *)self centralWithInfo:v26];
-  v25 = [v26 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+  removedCopy = removed;
+  selfCopy = self;
+  v4 = [(CBPeripheralManager *)self centralWithInfo:removedCopy];
+  v25 = [removedCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
   v24 = self->_services;
   objc_sync_enter(v24);
   v5 = [(NSMutableDictionary *)self->_characteristicIDs objectForKeyedSubscript:v25];
@@ -2542,8 +2542,8 @@ LABEL_31:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v11 = [v10 characteristics];
-      v12 = [v11 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      characteristics = [v10 characteristics];
+      v12 = [characteristics countByEnumeratingWithState:&v36 objects:v45 count:16];
       if (v12)
       {
         v13 = *v37;
@@ -2553,7 +2553,7 @@ LABEL_31:
           {
             if (*v37 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(characteristics);
             }
 
             v15 = *(*(&v36 + 1) + 8 * j);
@@ -2561,8 +2561,8 @@ LABEL_31:
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v16 = [v15 subscribedCentrals];
-            v17 = [v16 countByEnumeratingWithState:&v32 objects:v44 count:16];
+            subscribedCentrals = [v15 subscribedCentrals];
+            v17 = [subscribedCentrals countByEnumeratingWithState:&v32 objects:v44 count:16];
             if (v17)
             {
               v18 = *v33;
@@ -2572,7 +2572,7 @@ LABEL_31:
                 {
                   if (*v33 != v18)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(subscribedCentrals);
                   }
 
                   if ([*(*(&v32 + 1) + 8 * k) isEqual:v4])
@@ -2582,7 +2582,7 @@ LABEL_31:
                   }
                 }
 
-                v17 = [v16 countByEnumeratingWithState:&v32 objects:v44 count:16];
+                v17 = [subscribedCentrals countByEnumeratingWithState:&v32 objects:v44 count:16];
                 if (v17)
                 {
                   continue;
@@ -2595,7 +2595,7 @@ LABEL_31:
 LABEL_24:
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v36 objects:v45 count:16];
+          v12 = [characteristics countByEnumeratingWithState:&v36 objects:v45 count:16];
         }
 
         while (v12);
@@ -2613,26 +2613,26 @@ LABEL_24:
   }
 
 LABEL_32:
-  if ((v22 & 1) == 0 && (*&v27->_delegateFlags & 0x20) != 0)
+  if ((v22 & 1) == 0 && (*&selfCopy->_delegateFlags & 0x20) != 0)
   {
-    v20 = [(CBPeripheralManager *)v27 delegate];
-    [v20 peripheralManager:v27 central:v4 didUnsubscribeFromCharacteristic:v23];
+    delegate = [(CBPeripheralManager *)selfCopy delegate];
+    [delegate peripheralManager:selfCopy central:v4 didUnsubscribeFromCharacteristic:v23];
   }
 
   objc_sync_exit(v24);
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAdvertisingStarted:(id)a3
+- (void)handleAdvertisingStarted:(id)started
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  startedCopy = started;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:startedCopy];
   if (!v5)
   {
     [(CBPeripheralManager *)self setIsAdvertising:1];
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgResult"];
+  v6 = [startedCopy objectForKeyedSubscript:@"kCBMsgArgResult"];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:341];
   v8 = [v6 isEqualToNumber:v7];
 
@@ -2657,7 +2657,7 @@ LABEL_32:
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:@"kCBMsgArgResult"];
+    v9 = [startedCopy objectForKeyedSubscript:@"kCBMsgArgResult"];
     v10 = [MEMORY[0x1E696AD98] numberWithInt:348];
     v11 = [v9 isEqualToNumber:v10];
 
@@ -2684,51 +2684,51 @@ LABEL_32:
   if ((*&self->_delegateFlags & 0x40) != 0)
   {
 LABEL_14:
-    v12 = [(CBPeripheralManager *)self delegate];
-    [v12 peripheralManagerDidStartAdvertising:self error:v5];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManagerDidStartAdvertising:self error:v5];
   }
 
 LABEL_15:
 }
 
-- (void)handleAdvertisingStopped:(id)a3
+- (void)handleAdvertisingStopped:(id)stopped
 {
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:a3];
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:stopped];
   [(CBPeripheralManager *)self setIsAdvertising:0];
   if ((*(&self->_delegateFlags + 1) & 0x80) != 0)
   {
-    v4 = [(CBPeripheralManager *)self delegate];
-    [v4 peripheralManager:self didStopAdvertisingWithError:v5];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didStopAdvertisingWithError:v5];
   }
 }
 
-- (void)handlePeriodicAdvertisingStarted:(id)a3
+- (void)handlePeriodicAdvertisingStarted:(id)started
 {
-  v4 = [MEMORY[0x1E696ABC0] errorWithInfo:a3];
+  v4 = [MEMORY[0x1E696ABC0] errorWithInfo:started];
   if ((*&self->_delegateFlags & 0x80) != 0)
   {
     v6 = v4;
-    v5 = [(CBPeripheralManager *)self delegate];
-    [v5 peripheralManager:self didStartPeriodicAdvertising:v6];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didStartPeriodicAdvertising:v6];
 
     v4 = v6;
   }
 }
 
-- (void)handlePeriodicAdvertisingStopped:(id)a3
+- (void)handlePeriodicAdvertisingStopped:(id)stopped
 {
-  v4 = [MEMORY[0x1E696ABC0] errorWithInfo:a3];
+  v4 = [MEMORY[0x1E696ABC0] errorWithInfo:stopped];
   if (*(&self->_delegateFlags + 1))
   {
     v6 = v4;
-    v5 = [(CBPeripheralManager *)self delegate];
-    [v5 peripheralManager:self didStopPeriodicAdvertising:v6];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didStopPeriodicAdvertising:v6];
 
     v4 = v6;
   }
 }
 
-- (void)handleReadyForUpdates:(id)a3
+- (void)handleReadyForUpdates:(id)updates
 {
   [(NSLock *)self->_updateLock lock];
   self->_readyForUpdates = 1;
@@ -2737,43 +2737,43 @@ LABEL_15:
   [(NSLock *)self->_updateLock unlock];
   if (waitingForReady && (*(&self->_delegateFlags + 1) & 2) != 0)
   {
-    v5 = [(CBPeripheralManager *)self delegate];
-    [v5 peripheralManagerIsReadyToUpdateSubscribers:self];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManagerIsReadyToUpdateSubscribers:self];
   }
 }
 
-- (void)handleSolicitedServicesFound:(id)a3
+- (void)handleSolicitedServicesFound:(id)found
 {
-  v4 = a3;
-  v7 = [(CBPeripheralManager *)self centralWithInfo:v4];
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgUUIDs"];
+  foundCopy = found;
+  v7 = [(CBPeripheralManager *)self centralWithInfo:foundCopy];
+  v5 = [foundCopy objectForKeyedSubscript:@"kCBMsgArgUUIDs"];
 
   if ((*(&self->_delegateFlags + 1) & 4) != 0)
   {
-    v6 = [(CBPeripheralManager *)self delegate];
-    [v6 peripheralManager:self central:v7 didConnectWithServiceUUIDs:v5];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self central:v7 didConnectWithServiceUUIDs:v5];
   }
 }
 
-- (void)handleConnectionParametersUpdated:(id)a3
+- (void)handleConnectionParametersUpdated:(id)updated
 {
-  v4 = a3;
-  v9 = [(CBPeripheralManager *)self centralWithInfo:v4];
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgConnectionInterval"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgConnectionLatency"];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgSupervisionTimeout"];
+  updatedCopy = updated;
+  v9 = [(CBPeripheralManager *)self centralWithInfo:updatedCopy];
+  v5 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgConnectionInterval"];
+  v6 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgConnectionLatency"];
+  v7 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgSupervisionTimeout"];
 
   if (v9 && (*(&self->_delegateFlags + 1) & 8) != 0)
   {
-    v8 = [(CBPeripheralManager *)self delegate];
-    [v8 peripheralManager:self didUpdateConnectionParameters:v9 interval:v5 latency:v6 supervisionTimeout:v7];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didUpdateConnectionParameters:v9 interval:v5 latency:v6 supervisionTimeout:v7];
   }
 }
 
-- (void)handleSupportedFeatures:(id)a3
+- (void)handleSupportedFeatures:(id)features
 {
   gSupportedFeatures_0 = 0;
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgSupportedFeatures"];
+  v4 = [features objectForKeyedSubscript:@"kCBMsgArgSupportedFeatures"];
   v3 = [v4 objectForKey:@"kCBMsgArgSupportsExtendedAdvertising"];
 
   if (v3)
@@ -2782,9 +2782,9 @@ LABEL_15:
   }
 }
 
-- (void)handleL2CAPChannelOpened:(id)a3
+- (void)handleL2CAPChannelOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2795,7 +2795,7 @@ LABEL_15:
     [CBPeripheralManager handleL2CAPChannelOpened:];
   }
 
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:openedCopy];
   if (v5)
   {
     if (CBLogInitOnce == -1)
@@ -2830,14 +2830,14 @@ LABEL_8:
     }
 
 LABEL_15:
-    v12 = [(CBPeripheralManager *)self delegate];
-    [v12 peripheralManager:self didOpenL2CAPChannel:v6 error:v5];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didOpenL2CAPChannel:v6 error:v5];
 
     goto LABEL_16;
   }
 
   centrals = self->_centrals;
-  v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v8 = [openedCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v9 = [(NSMapTable *)centrals objectForKey:v8];
 
   if (!v9)
@@ -2847,9 +2847,9 @@ LABEL_15:
       if (!os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
       {
 LABEL_13:
-        v9 = [(CBPeer *)[CBCentral alloc] initWithInfo:v4 manager:self];
+        v9 = [(CBPeer *)[CBCentral alloc] initWithInfo:openedCopy manager:self];
         v10 = self->_centrals;
-        v11 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+        v11 = [openedCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
         [(NSMapTable *)v10 setObject:v9 forKey:v11];
 
         goto LABEL_14;
@@ -2870,7 +2870,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v6 = [[CBL2CAPChannel alloc] initWithPeer:v9 manager:self info:v4];
+  v6 = [[CBL2CAPChannel alloc] initWithPeer:v9 manager:self info:openedCopy];
   [(NSHashTable *)self->_l2capChannels addObject:v6];
 
   if ((*(&self->_delegateFlags + 1) & 0x40) != 0)
@@ -2881,30 +2881,30 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)handleL2CAPChannelClosed:(id)a3
+- (void)handleL2CAPChannelClosed:(id)closed
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
-  v6 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v7 = [v6 intValue];
+  closedCopy = closed;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:closedCopy];
+  v6 = [closedCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKey:@"kCBMsgArgCID"];
-  v9 = [v8 intValue];
+  v8 = [closedCopy objectForKey:@"kCBMsgArgCID"];
+  intValue2 = [v8 intValue];
 
   centrals = self->_centrals;
-  v11 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v11 = [closedCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v12 = [(NSMapTable *)centrals objectForKey:v11];
 
-  v13 = [(CBPeripheralManager *)self l2capChannelForPeer:v12 withCID:v9];
-  if (v13 || ([(CBPeripheralManager *)self l2capChannelForPeer:v12 withPsm:v7], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  v13 = [(CBPeripheralManager *)self l2capChannelForPeer:v12 withCID:intValue2];
+  if (v13 || ([(CBPeripheralManager *)self l2capChannelForPeer:v12 withPsm:intValue], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
-    [v13 handleChannelClosed:v4];
+    [v13 handleChannelClosed:closedCopy];
     if ((*(&self->_delegateFlags + 2) & 0x20) != 0)
     {
-      v15 = [(CBPeripheralManager *)self delegate];
-      [v15 peripheralManager:self didCloseL2CAPChannel:v14];
+      delegate = [(CBPeripheralManager *)self delegate];
+      [delegate peripheralManager:self didCloseL2CAPChannel:v14];
     }
 
     [(NSHashTable *)self->_l2capChannels removeObject:v14];
@@ -2921,9 +2921,9 @@ LABEL_16:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
       v18[0] = 67109634;
-      v18[1] = v7;
+      v18[1] = intValue;
       v19 = 1024;
-      v20 = v9;
+      v20 = intValue2;
       v21 = 2112;
       v22 = v5;
       _os_log_error_impl(&dword_1C0AC1000, v17, OS_LOG_TYPE_ERROR, "Cannot find l2CAP channel closed with psm:%u cid:%u and result:%@", v18, 0x18u);
@@ -2933,13 +2933,13 @@ LABEL_16:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleL2CAPChannelPublished:(id)a3
+- (void)handleL2CAPChannelPublished:(id)published
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v6 = [v5 intValue];
+  publishedCopy = published;
+  v5 = [publishedCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v5 intValue];
 
-  v7 = [v4 objectForKey:@"kCBMsgArgResult"];
+  v7 = [publishedCopy objectForKey:@"kCBMsgArgResult"];
   [v7 intValue];
 
   if (CBLogInitOnce != -1)
@@ -2952,21 +2952,21 @@ LABEL_16:
     [CBPeripheralManager handleL2CAPChannelPublished:];
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  v8 = [MEMORY[0x1E696ABC0] errorWithInfo:publishedCopy];
   if ((*(&self->_delegateFlags + 1) & 0x10) != 0)
   {
-    v9 = [(CBPeripheralManager *)self delegate];
-    [v9 peripheralManager:self didPublishL2CAPChannel:v6 error:v8];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didPublishL2CAPChannel:intValue error:v8];
   }
 }
 
-- (void)handleL2CAPChannelUnpublished:(id)a3
+- (void)handleL2CAPChannelUnpublished:(id)unpublished
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v6 = [v5 intValue];
+  unpublishedCopy = unpublished;
+  v5 = [unpublishedCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v5 intValue];
 
-  v7 = [v4 objectForKey:@"kCBMsgArgResult"];
+  v7 = [unpublishedCopy objectForKey:@"kCBMsgArgResult"];
   [v7 intValue];
 
   if (CBLogInitOnce != -1)
@@ -2979,34 +2979,34 @@ LABEL_16:
     [CBPeripheralManager handleL2CAPChannelUnpublished:];
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  v8 = [MEMORY[0x1E696ABC0] errorWithInfo:unpublishedCopy];
   if ((*(&self->_delegateFlags + 1) & 0x20) != 0)
   {
-    v9 = [(CBPeripheralManager *)self delegate];
-    [v9 peripheralManager:self didUnpublishL2CAPChannel:v6 error:v8];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didUnpublishL2CAPChannel:intValue error:v8];
   }
 }
 
-- (void)handleL2CAPChannelDidReceiveData:(id)a3
+- (void)handleL2CAPChannelDidReceiveData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
-  v6 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v7 = [v6 intValue];
+  dataCopy = data;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:dataCopy];
+  v6 = [dataCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKey:@"kCBMsgArgCID"];
-  v9 = [v8 intValue];
+  v8 = [dataCopy objectForKey:@"kCBMsgArgCID"];
+  intValue2 = [v8 intValue];
 
   centrals = self->_centrals;
-  v11 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v11 = [dataCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v12 = [(NSMapTable *)centrals objectForKey:v11];
 
-  v13 = [(CBPeripheralManager *)self l2capChannelForPeer:v12 withCID:v9];
-  if (v13 || ([(CBPeripheralManager *)self l2capChannelForPeer:v12 withPsm:v7], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  v13 = [(CBPeripheralManager *)self l2capChannelForPeer:v12 withCID:intValue2];
+  if (v13 || ([(CBPeripheralManager *)self l2capChannelForPeer:v12 withPsm:intValue], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
-    [v13 handleDataReceived:v4];
+    [v13 handleDataReceived:dataCopy];
   }
 
   else
@@ -3020,9 +3020,9 @@ LABEL_16:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
       v17[0] = 67109634;
-      v17[1] = v7;
+      v17[1] = intValue;
       v18 = 1024;
-      v19 = v9;
+      v19 = intValue2;
       v20 = 2112;
       v21 = v5;
       _os_log_error_impl(&dword_1C0AC1000, v16, OS_LOG_TYPE_ERROR, "Cannot find l2CAP channel received Data with psm:%u cid:%u and result:%@", v17, 0x18u);
@@ -3032,11 +3032,11 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleCentralDidUpdateANCSAuthorization:(id)a3
+- (void)handleCentralDidUpdateANCSAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   centrals = self->_centrals;
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v6 = [authorizationCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v7 = [(NSMapTable *)centrals objectForKey:v6];
 
   if (!v7)
@@ -3048,61 +3048,61 @@ LABEL_16:
 
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
-      [(CBPeripheralManager *)v4 handleCentralDidUpdateANCSAuthorization:?];
+      [(CBPeripheralManager *)authorizationCopy handleCentralDidUpdateANCSAuthorization:?];
     }
 
-    v7 = [(CBPeripheralManager *)self centralWithInfo:v4];
+    v7 = [(CBPeripheralManager *)self centralWithInfo:authorizationCopy];
   }
 
-  v8 = [v4 objectForKey:@"kCBMsgArgAncsAuthorization"];
-  v9 = [v8 BOOLValue];
+  v8 = [authorizationCopy objectForKey:@"kCBMsgArgAncsAuthorization"];
+  bOOLValue = [v8 BOOLValue];
 
   if (*(&self->_delegateFlags + 2))
   {
-    v10 = [(CBPeripheralManager *)self delegate];
-    [v10 peripheralManager:self central:v7 didUpdateANCSAuthorization:v9];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self central:v7 didUpdateANCSAuthorization:bOOLValue];
   }
 }
 
-- (void)HandleControllerPeripheralBTClockUpdateMsg:(id)a3
+- (void)HandleControllerPeripheralBTClockUpdateMsg:(id)msg
 {
-  v12 = a3;
-  v4 = [v12 objectForKeyedSubscript:@"kCBGetControllerBTClockSeconds"];
-  v5 = [v12 objectForKeyedSubscript:@"kCBGetControllerBTClockMicroSeconds"];
-  v6 = [v12 objectForKeyedSubscript:@"kCBGetControllerBTClockEventType"];
-  v7 = [v12 objectForKeyedSubscript:@"kCBGetControllerBTLocalClock"];
-  v8 = [v12 objectForKeyedSubscript:@"kCBGetControllerBTRemoteClock"];
+  msgCopy = msg;
+  v4 = [msgCopy objectForKeyedSubscript:@"kCBGetControllerBTClockSeconds"];
+  v5 = [msgCopy objectForKeyedSubscript:@"kCBGetControllerBTClockMicroSeconds"];
+  v6 = [msgCopy objectForKeyedSubscript:@"kCBGetControllerBTClockEventType"];
+  v7 = [msgCopy objectForKeyedSubscript:@"kCBGetControllerBTLocalClock"];
+  v8 = [msgCopy objectForKeyedSubscript:@"kCBGetControllerBTRemoteClock"];
   delegateFlags = self->_delegateFlags;
   if ((*&delegateFlags & 0x20000) != 0)
   {
-    v10 = [(CBPeripheralManager *)self delegate];
-    [v10 peripheralManager:self didUpdateControllerBTClock:v6 seconds:v4 microseconds:v5 localClock:v7 remoteClock:v8];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didUpdateControllerBTClock:v6 seconds:v4 microseconds:v5 localClock:v7 remoteClock:v8];
 
     delegateFlags = self->_delegateFlags;
   }
 
   if ((*&delegateFlags & 0x40000) != 0)
   {
-    v11 = [(CBPeripheralManager *)self delegate];
-    [v11 peripheralManager:self didUpdateControllerBTClockDict:v12];
+    delegate2 = [(CBPeripheralManager *)self delegate];
+    [delegate2 peripheralManager:self didUpdateControllerBTClockDict:msgCopy];
   }
 }
 
-- (void)HandleOfflineAdvPayloadRequestedWithReason:(id)a3
+- (void)HandleOfflineAdvPayloadRequestedWithReason:(id)reason
 {
-  v4 = [a3 objectForKey:@"kCBMsgArgReason"];
-  v5 = [v4 intValue];
+  v4 = [reason objectForKey:@"kCBMsgArgReason"];
+  intValue = [v4 intValue];
 
   if ((*(&self->_delegateFlags + 2) & 8) != 0)
   {
-    v6 = [(CBPeripheralManager *)self delegate];
-    [v6 peripheralManager:self offlineAdvPayloadRequestedWithReason:v5];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self offlineAdvPayloadRequestedWithReason:intValue];
   }
 }
 
-- (void)handleIncomingCISConnectionRequest:(id)a3
+- (void)handleIncomingCISConnectionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -3122,21 +3122,21 @@ LABEL_16:
   if (self->_incomingConnectionRequestCompletion)
   {
 LABEL_5:
-    v5 = [v4 objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
-    v6 = [v4 objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
+    v5 = [requestCopy objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
+    v6 = [requestCopy objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
     (*(self->_incomingConnectionRequestCompletion + 2))();
   }
 
 LABEL_6:
 }
 
-- (void)handleConnectCISPeripheralComplete:(id)a3
+- (void)handleConnectCISPeripheralComplete:(id)complete
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
-  v9 = [v4 errorWithInfo:v5];
-  v6 = [v5 objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
-  v7 = [v5 objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
+  completeCopy = complete;
+  v9 = [v4 errorWithInfo:completeCopy];
+  v6 = [completeCopy objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
+  v7 = [completeCopy objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
 
   cisPeripheralConnectEvent = self->_cisPeripheralConnectEvent;
   if (cisPeripheralConnectEvent)
@@ -3145,13 +3145,13 @@ LABEL_6:
   }
 }
 
-- (void)handleDisconnectCISPeripheralComplete:(id)a3
+- (void)handleDisconnectCISPeripheralComplete:(id)complete
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
-  v9 = [v4 errorWithInfo:v5];
-  v6 = [v5 objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
-  v7 = [v5 objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
+  completeCopy = complete;
+  v9 = [v4 errorWithInfo:completeCopy];
+  v6 = [completeCopy objectForKeyedSubscript:@"kCBLEAudioArgCigId"];
+  v7 = [completeCopy objectForKeyedSubscript:@"kCBLEAudioArgCisId"];
 
   cisPeripheralDisconnectEvent = self->_cisPeripheralDisconnectEvent;
   if (cisPeripheralDisconnectEvent)
@@ -3160,10 +3160,10 @@ LABEL_6:
   }
 }
 
-- (void)handleCSProcedureEventMsg:(id)a3
+- (void)handleCSProcedureEventMsg:(id)msg
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  msgCopy = msg;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -3173,15 +3173,15 @@ LABEL_6:
   if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = msgCopy;
     _os_log_impl(&dword_1C0AC1000, v5, OS_LOG_TYPE_DEFAULT, "CBPeripheralManager: handleCSProcedureEventMsg for args %@", &v13, 0xCu);
   }
 
   centrals = self->_centrals;
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v7 = [msgCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
   v8 = [(NSMapTable *)centrals objectForKey:v7];
 
-  v9 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  v9 = [MEMORY[0x1E696ABC0] errorWithInfo:msgCopy];
   if (!v8)
   {
     if (CBLogInitOnce == -1)
@@ -3204,15 +3204,15 @@ LABEL_6:
     }
 
     v13 = 138412290;
-    v14 = v4;
+    v14 = msgCopy;
     _os_log_impl(&dword_1C0AC1000, v11, OS_LOG_TYPE_DEFAULT, "No peripheral found in handleCSProcedureEventMsg for args %@", &v13, 0xCu);
     goto LABEL_11;
   }
 
   if ((*(&self->_delegateFlags + 2) & 0x10) != 0)
   {
-    v10 = [(CBPeripheralManager *)self delegate];
-    [v10 peripheralManager:self didChannelSoundingProcedureEvent:v8 results:v4 error:v9];
+    delegate = [(CBPeripheralManager *)self delegate];
+    [delegate peripheralManager:self didChannelSoundingProcedureEvent:v8 results:msgCopy error:v9];
   }
 
 LABEL_11:
@@ -3220,19 +3220,19 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isMsgAllowedWhenOff:(unsigned __int16)a3
+- (BOOL)isMsgAllowedWhenOff:(unsigned __int16)off
 {
-  if (a3 - 16) < 0x1D && ((0x1CC00001u >> (a3 - 16)))
+  if (off - 16) < 0x1D && ((0x1CC00001u >> (off - 16)))
   {
     return 1;
   }
 
-  return a3 == 12 || a3 == 49;
+  return off == 12 || off == 49;
 }
 
-- (BOOL)isMsgAllowedAlways:(unsigned __int16)a3
+- (BOOL)isMsgAllowedAlways:(unsigned __int16)always
 {
-  if (a3 <= 0x2Fu && ((1 << a3) & 0x800000000C00) != 0)
+  if (always <= 0x2Fu && ((1 << always) & 0x800000000C00) != 0)
   {
     return 1;
   }
@@ -3244,50 +3244,50 @@ LABEL_11:
   return [(CBManager *)&v6 isMsgAllowedAlways:?];
 }
 
-- (id)addXPCDelayTiming:(id)a3 args:(id)a4
+- (id)addXPCDelayTiming:(id)timing args:(id)args
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  timingCopy = timing;
+  argsCopy = args;
+  if (!timingCopy)
   {
     goto LABEL_9;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"kCBOptionUseCase"];
+  v7 = [timingCopy objectForKeyedSubscript:@"kCBOptionUseCase"];
   if (!v7)
   {
     goto LABEL_9;
   }
 
   v8 = v7;
-  v9 = [v5 objectForKeyedSubscript:@"kCBOptionUseCase"];
+  v9 = [timingCopy objectForKeyedSubscript:@"kCBOptionUseCase"];
   if ([v9 unsignedLongValue] != 22)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
+  v10 = [timingCopy objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
 
   if (!v10)
   {
 LABEL_9:
-    v11 = v5;
+    v11 = timingCopy;
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!argsCopy)
   {
-    v6 = @"Unknown Timestamp";
+    argsCopy = @"Unknown Timestamp";
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v5];
+  v11 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:timingCopy];
   v12 = MEMORY[0x1E695DF90];
   v13 = [v11 objectForKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];
   v14 = [v12 dictionaryWithDictionary:v13];
 
-  v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC) / 0xF4240];
-  [v14 setObject:v15 forKeyedSubscript:v6];
+  0xF4240 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC) / 0xF4240];
+  [v14 setObject:0xF4240 forKeyedSubscript:argsCopy];
 
   v16 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v14];
   [v11 setObject:v16 forKeyedSubscript:@"kCBMsgArgTimeXpcTimestampsTracking"];

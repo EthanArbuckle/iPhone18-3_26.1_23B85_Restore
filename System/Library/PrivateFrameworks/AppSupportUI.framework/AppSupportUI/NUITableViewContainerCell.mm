@@ -1,8 +1,8 @@
 @interface NUITableViewContainerCell
 + (Class)containerViewClass;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (NUITableViewContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (NUITableViewContainerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation NUITableViewContainerCell
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (NUITableViewContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NUITableViewContainerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = NUITableViewContainerCell;
-  v4 = [(NUITableViewContainerCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(NUITableViewContainerCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc([objc_opt_class() containerViewClass]);
-    v6 = [(NUITableViewContainerCell *)v4 contentView];
-    [v6 bounds];
+    contentView = [(NUITableViewContainerCell *)v4 contentView];
+    [contentView bounds];
     v7 = [v5 initWithFrame:?];
     containerView = v4->_containerView;
     v4->_containerView = v7;
@@ -36,8 +36,8 @@
     [(NUIContainerView *)v4->_containerView setPreservesSuperviewLayoutMargins:1];
     [(NUIContainerView *)v4->_containerView setLayoutMarginsRelativeArrangement:1];
     [(NUIContainerView *)v4->_containerView setAutoresizingMask:18];
-    v9 = [(NUITableViewContainerCell *)v4 contentView];
-    [v9 addSubview:v4->_containerView];
+    contentView2 = [(NUITableViewContainerCell *)v4 contentView];
+    [contentView2 addSubview:v4->_containerView];
 
     [(UIView *)v4->_containerView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     v10 = v4->_containerView;
@@ -52,32 +52,32 @@
   return v4;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  if (a4 <= 50.0)
+  if (priority <= 50.0)
   {
-    a3.width = 0.0;
+    size.width = 0.0;
   }
 
-  if (a5 <= 50.0)
+  if (fittingPriority <= 50.0)
   {
-    a3.height = 0.0;
+    size.height = 0.0;
   }
 
   v7.receiver = self;
   v7.super_class = NUITableViewContainerCell;
-  [(NUITableViewContainerCell *)&v7 systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(NUITableViewContainerCell *)&v7 systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NUITableViewContainerCell *)self contentView];
-  [v6 bounds];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(NUITableViewContainerCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
 
   if (width >= v8)

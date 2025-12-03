@@ -1,29 +1,29 @@
 @interface ULMapLabelMO
-+ (id)createFromDO:(const void *)a3 withLabelMO:(id)a4 modelMO:(id)a5 inManagedObjectContext:(id)a6;
++ (id)createFromDO:(const void *)o withLabelMO:(id)mO modelMO:(id)modelMO inManagedObjectContext:(id)context;
 - (optional<ULMapLabelDO>)convertToDO;
 @end
 
 @implementation ULMapLabelMO
 
-+ (id)createFromDO:(const void *)a3 withLabelMO:(id)a4 modelMO:(id)a5 inManagedObjectContext:(id)a6
++ (id)createFromDO:(const void *)o withLabelMO:(id)mO modelMO:(id)modelMO inManagedObjectContext:(id)context
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [[ULMapLabelMO alloc] initWithContext:v11];
-  [(ULMapLabelMO *)v12 setTimestamp:*(a3 + 10)];
-  if (*(a3 + 12) == 1)
+  mOCopy = mO;
+  modelMOCopy = modelMO;
+  contextCopy = context;
+  v12 = [[ULMapLabelMO alloc] initWithContext:contextCopy];
+  [(ULMapLabelMO *)v12 setTimestamp:*(o + 10)];
+  if (*(o + 12) == 1)
   {
-    LODWORD(v13) = *a3;
+    LODWORD(v13) = *o;
     v14 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
     [(ULMapLabelMO *)v12 setX:v14];
 
-    if (*(a3 + 12) != 1 || (LODWORD(v15) = *(a3 + 1), [MEMORY[0x277CCABB0] numberWithFloat:v15], v16 = objc_claimAutoreleasedReturnValue(), -[ULMapLabelMO setY:](v12, "setY:", v16), v16, (*(a3 + 12) & 1) == 0))
+    if (*(o + 12) != 1 || (LODWORD(v15) = *(o + 1), [MEMORY[0x277CCABB0] numberWithFloat:v15], v16 = objc_claimAutoreleasedReturnValue(), -[ULMapLabelMO setY:](v12, "setY:", v16), v16, (*(o + 12) & 1) == 0))
     {
       std::__throw_bad_optional_access[abi:ne200100]();
     }
 
-    LODWORD(v17) = *(a3 + 2);
+    LODWORD(v17) = *(o + 2);
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
     [(ULMapLabelMO *)v12 setZ:v18];
   }
@@ -35,10 +35,10 @@
     [(ULMapLabelMO *)v12 setZ:0];
   }
 
-  if (*(a3 + 40) == 1)
+  if (*(o + 40) == 1)
   {
     v19 = MEMORY[0x277CBEA90];
-    v20 = [MEMORY[0x277CBEA60] fromFloatVector:a3 + 16];
+    v20 = [MEMORY[0x277CBEA60] fromFloatVector:o + 16];
     v21 = [v19 fromNSArray:v20];
     [(ULMapLabelMO *)v12 setProbabilityVector:v21];
   }
@@ -48,10 +48,10 @@
     [(ULMapLabelMO *)v12 setProbabilityVector:0];
   }
 
-  if (*(a3 + 72) == 1)
+  if (*(o + 72) == 1)
   {
     v22 = MEMORY[0x277CBEA90];
-    v23 = ULDBUtils::NSStringArrayFromBoostUUIDs(a3 + 6);
+    v23 = ULDBUtils::NSStringArrayFromBoostUUIDs(o + 6);
     v24 = [v22 fromNSArray:v23];
     [(ULMapLabelMO *)v12 setImageIdentifiersVector:v24];
   }
@@ -61,8 +61,8 @@
     [(ULMapLabelMO *)v12 setImageIdentifiersVector:0];
   }
 
-  [(ULMapLabelMO *)v12 setLabel:v9];
-  [(ULMapLabelMO *)v12 setModel:v10];
+  [(ULMapLabelMO *)v12 setLabel:mOCopy];
+  [(ULMapLabelMO *)v12 setModel:modelMOCopy];
 
   return v12;
 }
@@ -70,12 +70,12 @@
 - (optional<ULMapLabelDO>)convertToDO
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = [(ULMapLabelMO *)self model];
-  v5 = [v4 modelUUID];
-  v6 = v5;
-  if (v5)
+  model = [(ULMapLabelMO *)self model];
+  modelUUID = [model modelUUID];
+  v6 = modelUUID;
+  if (modelUUID)
   {
-    [v5 boostUUID];
+    [modelUUID boostUUID];
   }
 
   else
@@ -87,11 +87,11 @@
 
   if (v61)
   {
-    v7 = [(ULMapLabelMO *)self label];
-    v8 = v7;
-    if (v7)
+    label = [(ULMapLabelMO *)self label];
+    v8 = label;
+    if (label)
     {
-      [v7 convertToDO];
+      [label convertToDO];
     }
 
     else
@@ -162,14 +162,14 @@ LABEL_18:
 LABEL_19:
     LOBYTE(v39[0]) = 0;
     v40 = 0;
-    v22 = [(ULMapLabelMO *)self probabilityVector];
-    v23 = v22 == 0;
+    probabilityVector = [(ULMapLabelMO *)self probabilityVector];
+    v23 = probabilityVector == 0;
 
     if (!v23)
     {
       v24 = MEMORY[0x277CBEA60];
-      v25 = [(ULMapLabelMO *)self probabilityVector];
-      v26 = [v25 toNSArrayWithElementType:objc_opt_class()];
+      probabilityVector2 = [(ULMapLabelMO *)self probabilityVector];
+      v26 = [probabilityVector2 toNSArrayWithElementType:objc_opt_class()];
       [v24 toFloatVector:v26];
       std::optional<std::vector<float>>::operator=[abi:ne200100]<std::vector<float>,void>(v39, &buf);
       if (buf.n128_u64[0])
@@ -181,13 +181,13 @@ LABEL_19:
 
     LOBYTE(v37[0]) = 0;
     v38 = 0;
-    v27 = [(ULMapLabelMO *)self imageIdentifiersVector];
-    v28 = v27 == 0;
+    imageIdentifiersVector = [(ULMapLabelMO *)self imageIdentifiersVector];
+    v28 = imageIdentifiersVector == 0;
 
     if (!v28)
     {
-      v29 = [(ULMapLabelMO *)self imageIdentifiersVector];
-      v30 = [v29 toNSArrayWithElementType:objc_opt_class()];
+      imageIdentifiersVector2 = [(ULMapLabelMO *)self imageIdentifiersVector];
+      v30 = [imageIdentifiersVector2 toNSArrayWithElementType:objc_opt_class()];
       ULDBUtils::boostUUIDsFromNSStringArray(v30, &buf);
       std::optional<std::vector<float>>::operator=[abi:ne200100]<std::vector<float>,void>(v37, &buf);
       if (buf.n128_u64[0])

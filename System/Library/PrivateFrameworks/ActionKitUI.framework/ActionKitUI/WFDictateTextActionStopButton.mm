@@ -4,10 +4,10 @@
 - (UIView)redSquare;
 - (WFDictateTextActionStopButton)init;
 - (id)accessibilityLabel;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRecording:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRecording:(BOOL)recording animated:(BOOL)animated;
 @end
 
 @implementation WFDictateTextActionStopButton
@@ -52,15 +52,15 @@
   return result;
 }
 
-- (void)setRecording:(BOOL)a3 animated:(BOOL)a4
+- (void)setRecording:(BOOL)recording animated:(BOOL)animated
 {
-  if (self->_recording != a3)
+  if (self->_recording != recording)
   {
     v7[5] = v4;
     v7[6] = v5;
-    self->_recording = a3;
+    self->_recording = recording;
     v6 = 0.3;
-    if (!a4)
+    if (!animated)
     {
       v6 = 0.0;
     }
@@ -100,25 +100,25 @@ uint64_t __55__WFDictateTextActionStopButton_setRecording_animated___block_invok
     v6 = v4 + v4;
   }
 
-  v7 = [(WFDictateTextActionStopButton *)self redSquareWidthConstraint];
-  [v7 setConstant:v6];
+  redSquareWidthConstraint = [(WFDictateTextActionStopButton *)self redSquareWidthConstraint];
+  [redSquareWidthConstraint setConstant:v6];
 
   if ([(WFDictateTextActionStopButton *)self recording])
   {
     v4 = 5.0;
   }
 
-  v8 = [(WFDictateTextActionStopButton *)self redSquare];
-  v9 = [v8 layer];
-  [v9 setCornerRadius:v4];
+  redSquare = [(WFDictateTextActionStopButton *)self redSquare];
+  layer = [redSquare layer];
+  [layer setCornerRadius:v4];
 
   v10 = *MEMORY[0x277CDA138];
-  v11 = [(WFDictateTextActionStopButton *)self redSquare];
-  v12 = [v11 layer];
-  [v12 setCornerCurve:v10];
+  redSquare2 = [(WFDictateTextActionStopButton *)self redSquare];
+  layer2 = [redSquare2 layer];
+  [layer2 setCornerCurve:v10];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = WFDictateTextActionStopButton;
@@ -128,7 +128,7 @@ uint64_t __55__WFDictateTextActionStopButton_setRecording_animated___block_invok
   v5[2] = __48__WFDictateTextActionStopButton_setHighlighted___block_invoke;
   v5[3] = &unk_278C373E0;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.2];
 }
 
@@ -152,13 +152,13 @@ void __48__WFDictateTextActionStopButton_setHighlighted___block_invoke(uint64_t 
   [v3 setTransform:&v4];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v16.receiver = self;
   v16.super_class = WFDictateTextActionStopButton;
-  [(WFDictateTextActionStopButton *)&v16 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(WFDictateTextActionStopButton *)self redSquare];
-  [v4 center];
+  [(WFDictateTextActionStopButton *)&v16 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  redSquare = [(WFDictateTextActionStopButton *)self redSquare];
+  [redSquare center];
   v6 = v5;
   v8 = v7;
 
@@ -168,8 +168,8 @@ void __48__WFDictateTextActionStopButton_setHighlighted___block_invoke(uint64_t 
   v12 = v11;
   v13 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v6 startAngle:v8 endAngle:(v10 - v11) * 0.5 clockwise:{0.0, 6.28318531}];
   [v13 setLineWidth:v12];
-  v14 = [MEMORY[0x277D75348] labelColor];
-  v15 = [v14 colorWithAlphaComponent:0.25];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v15 = [labelColor colorWithAlphaComponent:0.25];
   [v15 setStroke];
 
   [v13 stroke];
@@ -187,28 +187,28 @@ void __48__WFDictateTextActionStopButton_setHighlighted___block_invoke(uint64_t 
     v5 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.231372549 blue:0.188235294 alpha:1.0];
     [v4 setBackgroundColor:v5];
 
-    v6 = [v4 layer];
-    [v6 setMasksToBounds:1];
+    layer = [v4 layer];
+    [layer setMasksToBounds:1];
 
     [v4 setUserInteractionEnabled:0];
     [(WFDictateTextActionStopButton *)v3 addSubview:v4];
     [(WFDictateTextActionStopButton *)v3 setRedSquare:v4];
-    v7 = [v4 widthAnchor];
-    v20 = [v7 constraintEqualToConstant:0.0];
+    widthAnchor = [v4 widthAnchor];
+    v20 = [widthAnchor constraintEqualToConstant:0.0];
 
     v19 = MEMORY[0x277CCAAD0];
-    v22 = [v4 centerXAnchor];
-    v21 = [(WFDictateTextActionStopButton *)v3 centerXAnchor];
-    v8 = [v22 constraintEqualToAnchor:v21];
+    centerXAnchor = [v4 centerXAnchor];
+    centerXAnchor2 = [(WFDictateTextActionStopButton *)v3 centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v23[0] = v8;
-    v9 = [v4 centerYAnchor];
-    v10 = [(WFDictateTextActionStopButton *)v3 centerYAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    centerYAnchor = [v4 centerYAnchor];
+    centerYAnchor2 = [(WFDictateTextActionStopButton *)v3 centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v23[1] = v11;
     v23[2] = v20;
-    v12 = [v4 heightAnchor];
-    v13 = [v4 widthAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    heightAnchor = [v4 heightAnchor];
+    widthAnchor2 = [v4 widthAnchor];
+    v14 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v23[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
     [v19 activateConstraints:v15];

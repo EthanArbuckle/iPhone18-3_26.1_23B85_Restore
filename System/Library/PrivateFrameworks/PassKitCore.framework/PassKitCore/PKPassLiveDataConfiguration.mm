@@ -1,35 +1,35 @@
 @interface PKPassLiveDataConfiguration
-+ (id)_defaultEligibleSemanticsForPassStyle:(int64_t)a3;
-+ (id)configurationForPassStyle:(int64_t)a3 excludingSemantics:(id)a4;
-- (PKPassLiveDataConfiguration)initWithCoder:(id)a3;
-- (id)_initWithEligibleSemantics:(id)a3;
++ (id)_defaultEligibleSemanticsForPassStyle:(int64_t)style;
++ (id)configurationForPassStyle:(int64_t)style excludingSemantics:(id)semantics;
+- (PKPassLiveDataConfiguration)initWithCoder:(id)coder;
+- (id)_initWithEligibleSemantics:(id)semantics;
 - (id)description;
 @end
 
 @implementation PKPassLiveDataConfiguration
 
-- (id)_initWithEligibleSemantics:(id)a3
+- (id)_initWithEligibleSemantics:(id)semantics
 {
-  v5 = a3;
+  semanticsCopy = semantics;
   v9.receiver = self;
   v9.super_class = PKPassLiveDataConfiguration;
   v6 = [(PKPassLiveDataConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eligibleSemantics, a3);
+    objc_storeStrong(&v6->_eligibleSemantics, semantics);
   }
 
   return v7;
 }
 
-+ (id)configurationForPassStyle:(int64_t)a3 excludingSemantics:(id)a4
++ (id)configurationForPassStyle:(int64_t)style excludingSemantics:(id)semantics
 {
-  if (a3 == 10)
+  if (style == 10)
   {
-    v5 = a4;
-    v6 = [a1 _defaultEligibleSemanticsForPassStyle:10];
-    [v6 minusSet:v5];
+    semanticsCopy = semantics;
+    v6 = [self _defaultEligibleSemanticsForPassStyle:10];
+    [v6 minusSet:semanticsCopy];
 
     v7 = [PKPassLiveDataConfiguration alloc];
     v8 = [v6 copy];
@@ -44,10 +44,10 @@
   return v9;
 }
 
-+ (id)_defaultEligibleSemanticsForPassStyle:(int64_t)a3
++ (id)_defaultEligibleSemanticsForPassStyle:(int64_t)style
 {
   v7[7] = *MEMORY[0x1E69E9840];
-  if (a3 == 10)
+  if (style == 10)
   {
     v3 = MEMORY[0x1E695DFA8];
     v7[0] = @"departureGate";
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (PKPassLiveDataConfiguration)initWithCoder:(id)a3
+- (PKPassLiveDataConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassLiveDataConfiguration;
   v5 = [(PKPassLiveDataConfiguration *)&v12 init];
@@ -80,7 +80,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"eligibleSemantics"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"eligibleSemantics"];
     eligibleSemantics = v5->_eligibleSemantics;
     v5->_eligibleSemantics = v9;
   }

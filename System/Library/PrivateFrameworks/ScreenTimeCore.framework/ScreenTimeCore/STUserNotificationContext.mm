@@ -1,10 +1,10 @@
 @interface STUserNotificationContext
 - (STUserNotificationContext)init;
-- (STUserNotificationContext)initWithCoder:(id)a3;
-- (STUserNotificationContext)initWithIdentifier:(id)a3;
+- (STUserNotificationContext)initWithCoder:(id)coder;
+- (STUserNotificationContext)initWithIdentifier:(id)identifier;
 - (UNMutableNotificationContent)notificationContent;
-- (void)encodeWithCoder:(id)a3;
-- (void)notificationContentWithCompletionBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)notificationContentWithCompletionBlock:(id)block;
 @end
 
 @implementation STUserNotificationContext
@@ -12,36 +12,36 @@
 - (STUserNotificationContext)init
 {
   v3 = objc_opt_new();
-  v4 = [v3 UUIDString];
-  v5 = [(STUserNotificationContext *)self initWithIdentifier:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [(STUserNotificationContext *)self initWithIdentifier:uUIDString];
 
   return v5;
 }
 
-- (STUserNotificationContext)initWithIdentifier:(id)a3
+- (STUserNotificationContext)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = STUserNotificationContext;
   v6 = [(STUserNotificationContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (STUserNotificationContext)initWithCoder:(id)a3
+- (STUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = STUserNotificationContext;
   v5 = [(STUserNotificationContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -54,7 +54,7 @@
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"localizedUserNotificationBodyArguments"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"localizedUserNotificationBodyArguments"];
     localizedUserNotificationBodyArguments = v5->_localizedUserNotificationBodyArguments;
     v5->_localizedUserNotificationBodyArguments = v11;
   }
@@ -65,19 +65,19 @@ LABEL_6:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_localizedUserNotificationBodyArguments forKey:@"localizedUserNotificationBodyArguments"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_localizedUserNotificationBodyArguments forKey:@"localizedUserNotificationBodyArguments"];
 }
 
 - (UNMutableNotificationContent)notificationContent
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x1E69832B8] defaultSound];
-  [v2 setSound:v3];
+  defaultSound = [MEMORY[0x1E69832B8] defaultSound];
+  [v2 setSound:defaultSound];
 
   v4 = objc_opt_new();
   [v4 setScheme:@"prefs"];
@@ -90,12 +90,12 @@ LABEL_6:
   return v2;
 }
 
-- (void)notificationContentWithCompletionBlock:(id)a3
+- (void)notificationContentWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E69832B8] defaultSound];
-  [v5 setSound:v6];
+  defaultSound = [MEMORY[0x1E69832B8] defaultSound];
+  [v5 setSound:defaultSound];
 
   v7 = objc_opt_new();
   [v7 setScheme:@"prefs"];
@@ -109,9 +109,9 @@ LABEL_6:
   v11[2] = __68__STUserNotificationContext_notificationContentWithCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6948;
   v12 = v5;
-  v13 = v4;
+  v13 = blockCopy;
   v9 = v5;
-  v10 = v4;
+  v10 = blockCopy;
   [(STUserNotificationContext *)self customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

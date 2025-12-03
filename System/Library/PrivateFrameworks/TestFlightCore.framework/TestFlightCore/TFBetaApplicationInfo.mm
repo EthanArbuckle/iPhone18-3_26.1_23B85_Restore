@@ -1,50 +1,50 @@
 @interface TFBetaApplicationInfo
-- (BOOL)isEqual:(id)a3;
-- (TFBetaApplicationInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TFBetaApplicationInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TFBetaApplicationInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_shortVersionString copyWithZone:a3];
+  v8 = [(NSString *)self->_shortVersionString copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSDictionary *)self->_localizedDisplayNames copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_localizedDisplayNames copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSDictionary *)self->_localizedTestNotes copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_localizedTestNotes copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_primaryLocaleKey copyWithZone:a3];
+  v14 = [(NSString *)self->_primaryLocaleKey copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSString *)self->_testerEmail copyWithZone:a3];
+  v16 = [(NSString *)self->_testerEmail copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(NSString *)self->_developerName copyWithZone:a3];
+  v18 = [(NSString *)self->_developerName copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
-  v20 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   v21 = *(v5 + 72);
   *(v5 + 72) = v20;
 
-  v22 = [(NSString *)self->_iconUrlTemplate copyWithZone:a3];
+  v22 = [(NSString *)self->_iconUrlTemplate copyWithZone:zone];
   v23 = *(v5 + 80);
   *(v5 + 80) = v22;
 
@@ -52,13 +52,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSString *)self->_bundleVersion isEqual:v5[2]]&& [(NSString *)self->_shortVersionString isEqual:v5[3]]&& [(NSDictionary *)self->_localizedDisplayNames isEqual:v5[4]]&& [(NSDictionary *)self->_localizedTestNotes isEqual:v5[5]]&& [(NSString *)self->_primaryLocaleKey isEqual:v5[6]]&& [(NSString *)self->_testerEmail isEqual:v5[7]]&& [(NSString *)self->_developerName isEqual:v5[8]]&& [(NSDate *)self->_expirationDate isEqual:v5[9]]&& [(NSString *)self->_iconUrlTemplate isEqual:v5[10]]&& self->_iconNeedsMask == *(v5 + 8);
   }
 
@@ -87,70 +87,70 @@
   return v9 ^ v13;
 }
 
-- (TFBetaApplicationInfo)initWithCoder:(id)a3
+- (TFBetaApplicationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TFBetaApplicationInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_version"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_short_version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_short_version"];
     shortVersionString = v5->_shortVersionString;
     v5->_shortVersionString = v8;
 
     v10 = objc_opt_class();
-    v11 = [v4 decodeDictionaryWithKeysOfClass:v10 objectsOfClass:objc_opt_class() forKey:@"app_localized_display_names"];
+    v11 = [coderCopy decodeDictionaryWithKeysOfClass:v10 objectsOfClass:objc_opt_class() forKey:@"app_localized_display_names"];
     localizedDisplayNames = v5->_localizedDisplayNames;
     v5->_localizedDisplayNames = v11;
 
     v13 = objc_opt_class();
-    v14 = [v4 decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"app_localized_test_notes"];
+    v14 = [coderCopy decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"app_localized_test_notes"];
     localizedTestNotes = v5->_localizedTestNotes;
     v5->_localizedTestNotes = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_primary_locale"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_primary_locale"];
     primaryLocaleKey = v5->_primaryLocaleKey;
     v5->_primaryLocaleKey = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_tester_email"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_tester_email"];
     testerEmail = v5->_testerEmail;
     v5->_testerEmail = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_developer_name"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_developer_name"];
     developerName = v5->_developerName;
     v5->_developerName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_expiration_date"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_expiration_date"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app_icon_url"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app_icon_url"];
     iconUrlTemplate = v5->_iconUrlTemplate;
     v5->_iconUrlTemplate = v24;
 
-    v5->_iconNeedsMask = [v4 decodeBoolForKey:@"app_icon_needs_mask"];
+    v5->_iconNeedsMask = [coderCopy decodeBoolForKey:@"app_icon_needs_mask"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleVersion = self->_bundleVersion;
-  v5 = a3;
-  [v5 encodeObject:bundleVersion forKey:@"app_version"];
-  [v5 encodeObject:self->_shortVersionString forKey:@"app_short_version"];
-  [v5 encodeObject:self->_localizedDisplayNames forKey:@"app_localized_display_names"];
-  [v5 encodeObject:self->_localizedTestNotes forKey:@"app_localized_test_notes"];
-  [v5 encodeObject:self->_primaryLocaleKey forKey:@"app_primary_locale"];
-  [v5 encodeObject:self->_testerEmail forKey:@"app_tester_email"];
-  [v5 encodeObject:self->_developerName forKey:@"app_developer_name"];
-  [v5 encodeObject:self->_expirationDate forKey:@"app_expiration_date"];
-  [v5 encodeObject:self->_iconUrlTemplate forKey:@"app_icon_url"];
-  [v5 encodeBool:self->_iconNeedsMask forKey:@"app_icon_needs_mask"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleVersion forKey:@"app_version"];
+  [coderCopy encodeObject:self->_shortVersionString forKey:@"app_short_version"];
+  [coderCopy encodeObject:self->_localizedDisplayNames forKey:@"app_localized_display_names"];
+  [coderCopy encodeObject:self->_localizedTestNotes forKey:@"app_localized_test_notes"];
+  [coderCopy encodeObject:self->_primaryLocaleKey forKey:@"app_primary_locale"];
+  [coderCopy encodeObject:self->_testerEmail forKey:@"app_tester_email"];
+  [coderCopy encodeObject:self->_developerName forKey:@"app_developer_name"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"app_expiration_date"];
+  [coderCopy encodeObject:self->_iconUrlTemplate forKey:@"app_icon_url"];
+  [coderCopy encodeBool:self->_iconNeedsMask forKey:@"app_icon_needs_mask"];
 }
 
 - (id)description

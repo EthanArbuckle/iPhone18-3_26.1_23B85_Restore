@@ -1,21 +1,21 @@
 @interface DMCEnrollmentFlowRestoreViewController
-- (DMCEnrollmentFlowRestoreViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 restoreSnapshot:(id)a5 conflictingApps:(id)a6;
+- (DMCEnrollmentFlowRestoreViewController)initWithDelegate:(id)delegate managedAppleID:(id)d restoreSnapshot:(id)snapshot conflictingApps:(id)apps;
 - (DMCEnrollmentFlowRestoreViewControllerDelegate)delegate;
-- (id)_appNamesFromBunldeIDs:(id)a3;
+- (id)_appNamesFromBunldeIDs:(id)ds;
 - (void)loadView;
 - (void)updateContinueButtonStatus;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentFlowRestoreViewController
 
-- (DMCEnrollmentFlowRestoreViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 restoreSnapshot:(id)a5 conflictingApps:(id)a6
+- (DMCEnrollmentFlowRestoreViewController)initWithDelegate:(id)delegate managedAppleID:(id)d restoreSnapshot:(id)snapshot conflictingApps:(id)apps
 {
   v46[3] = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v36 = a4;
-  v10 = a5;
-  v11 = a6;
+  obj = delegate;
+  dCopy = d;
+  snapshotCopy = snapshot;
+  appsCopy = apps;
   v38 = [MEMORY[0x277D755B8] _systemImageNamed:@"clock.arrow.circlepath"];
   v12 = DMCLocalizedString();
   v42.receiver = self;
@@ -25,16 +25,16 @@
   if (v13)
   {
     objc_storeWeak(&v13->_delegate, obj);
-    objc_storeStrong(&v13->_restoreSnapshot, a5);
-    v35 = [v10 date];
-    v34 = [MEMORY[0x277CCA968] localizedStringFromDate:v35 dateStyle:2 timeStyle:1];
+    objc_storeStrong(&v13->_restoreSnapshot, snapshot);
+    date = [snapshotCopy date];
+    v34 = [MEMORY[0x277CCA968] localizedStringFromDate:date dateStyle:2 timeStyle:1];
     v14 = [DMCEnrollmentTableViewTextCell alloc];
     v15 = DMCLocalizedFormat();
-    v16 = [(DMCEnrollmentTableViewTextCell *)v14 initWithText:v15 bold:0, v36, v34];
+    v16 = [(DMCEnrollmentTableViewTextCell *)v14 initWithText:v15 bold:0, dCopy, v34];
     v46[0] = v16;
     v17 = [DMCEnrollmentTableViewTextCell alloc];
-    v18 = [v10 deviceName];
-    v19 = [(DMCEnrollmentTableViewTextCell *)v17 initWithText:v18 bold:1];
+    deviceName = [snapshotCopy deviceName];
+    v19 = [(DMCEnrollmentTableViewTextCell *)v17 initWithText:deviceName bold:1];
     v46[1] = v19;
     v20 = [DMCEnrollmentTableViewTextCell alloc];
     v21 = DMCLocalizedString();
@@ -43,9 +43,9 @@
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
 
     [(DMCEnrollmentTemplateTableViewController *)v13 addCellData:v33 animated:0];
-    if ([v11 count])
+    if ([appsCopy count])
     {
-      [v11 count];
+      [appsCopy count];
       v23 = DMCLocalizedStringByDevice();
       v24 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:v23 bold:0];
       v45 = v24;
@@ -53,7 +53,7 @@
       [(DMCEnrollmentTemplateTableViewController *)v13 addCellData:v25 animated:0];
 
       v26 = [DMCEnrollmentNameListCell alloc];
-      v27 = [(DMCEnrollmentFlowRestoreViewController *)v13 _appNamesFromBunldeIDs:v11];
+      v27 = [(DMCEnrollmentFlowRestoreViewController *)v13 _appNamesFromBunldeIDs:appsCopy];
       v28 = [(DMCEnrollmentNameListCell *)v26 initWithNames:v27 numberOfColumns:2];
       v44 = v28;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
@@ -154,34 +154,34 @@ void __50__DMCEnrollmentFlowRestoreViewController_loadView__block_invoke_32(uint
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DMCEnrollmentFlowRestoreViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v5 viewWillAppear:a3];
-  v4 = [(DMCEnrollmentFlowRestoreViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  [(DMCEnrollmentTemplateTableViewController *)&v5 viewWillAppear:appear];
+  navigationItem = [(DMCEnrollmentFlowRestoreViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(DMCEnrollmentFlowRestoreViewController *)self setModalInPresentation:1];
 }
 
 - (void)updateContinueButtonStatus
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
-  v4 = [(DMCEnrollmentFlowRestoreViewController *)self confirmationView];
-  [v4 setInProgress:v3];
+  inProgress = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
+  confirmationView = [(DMCEnrollmentFlowRestoreViewController *)self confirmationView];
+  [confirmationView setInProgress:inProgress];
 }
 
-- (id)_appNamesFromBunldeIDs:(id)a3
+- (id)_appNamesFromBunldeIDs:(id)ds
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v6)
   {
@@ -216,19 +216,19 @@ void __50__DMCEnrollmentFlowRestoreViewController_loadView__block_invoke_32(uint
           }
         }
 
-        v16 = [v13 localizedShortName];
-        v17 = v16;
-        if (v16)
+        localizedShortName = [v13 localizedShortName];
+        v17 = localizedShortName;
+        if (localizedShortName)
         {
-          v18 = v16;
+          localizedName = localizedShortName;
         }
 
         else
         {
-          v18 = [v13 localizedName];
+          localizedName = [v13 localizedName];
         }
 
-        v19 = v18;
+        v19 = localizedName;
 
         if (v19)
         {
@@ -240,7 +240,7 @@ void __50__DMCEnrollmentFlowRestoreViewController_loadView__block_invoke_32(uint
           v20 = v11;
         }
 
-        [v4 addObject:v20];
+        [array addObject:v20];
       }
 
       v8 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -249,7 +249,7 @@ void __50__DMCEnrollmentFlowRestoreViewController_loadView__block_invoke_32(uint
     while (v8);
   }
 
-  return v4;
+  return array;
 }
 
 - (DMCEnrollmentFlowRestoreViewControllerDelegate)delegate

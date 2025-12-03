@@ -1,31 +1,31 @@
 @interface PFCloudKitExporter
-- (PFCloudKitExporter)initWithOptions:(id)a3 request:(id)a4 monitor:(id)a5 workQueue:(id)a6;
-- (uint64_t)updateMetadataForSavedZones:(void *)a3 error:;
+- (PFCloudKitExporter)initWithOptions:(id)options request:(id)request monitor:(id)monitor workQueue:(id)queue;
+- (uint64_t)updateMetadataForSavedZones:(void *)zones error:;
 - (void)checkForZonesNeedingExport;
 - (void)dealloc;
 - (void)exportIfNecessary;
-- (void)exportIfNecessaryWithCompletion:(void *)a1;
-- (void)finishExportWithResult:(void *)a1;
+- (void)exportIfNecessaryWithCompletion:(void *)completion;
+- (void)finishExportWithResult:(void *)result;
 @end
 
 @implementation PFCloudKitExporter
 
-- (PFCloudKitExporter)initWithOptions:(id)a3 request:(id)a4 monitor:(id)a5 workQueue:(id)a6
+- (PFCloudKitExporter)initWithOptions:(id)options request:(id)request monitor:(id)monitor workQueue:(id)queue
 {
   v12.receiver = self;
   v12.super_class = PFCloudKitExporter;
   v10 = [(PFCloudKitExporter *)&v12 init];
   if (v10)
   {
-    v10->_monitor = a5;
-    v10->_options = [a3 copy];
-    v10->_workQueue = a6;
-    if (a6)
+    v10->_monitor = monitor;
+    v10->_options = [options copy];
+    v10->_workQueue = queue;
+    if (queue)
     {
-      dispatch_retain(a6);
+      dispatch_retain(queue);
     }
 
-    v10->_request = a4;
+    v10->_request = request;
     objc_storeWeak(&v10->_delegate, 0);
     v10->_exportContext = [[PFCloudKitExportContext alloc] initWithOptions:v10->_options];
     v10->_operationIDToResult = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -48,12 +48,12 @@
   [(PFCloudKitExporter *)&v4 dealloc];
 }
 
-- (void)exportIfNecessaryWithCompletion:(void *)a1
+- (void)exportIfNecessaryWithCompletion:(void *)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (completion)
   {
-    if (a1[2])
+    if (completion[2])
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -70,8 +70,8 @@
       }
 
       v6 = [NSCloudKitMirroringResult alloc];
-      v7 = a1[5];
-      v8 = a1[8];
+      v7 = completion[5];
+      v8 = completion[8];
       if (v8)
       {
         v9 = *(v8 + 48);
@@ -91,10 +91,10 @@
 
     else
     {
-      a1[2] = [a2 copy];
+      completion[2] = [a2 copy];
     }
 
-    [(PFCloudKitExporter *)a1 checkForZonesNeedingExport];
+    [(PFCloudKitExporter *)completion checkForZonesNeedingExport];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -120,8 +120,8 @@
   v44 = __Block_byref_object_dispose__34;
   v45 = 0;
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = *(a1 + 64);
-  v4 = *(a1 + 40);
+  v3 = *(self + 64);
+  v4 = *(self + 40);
   if (v4 && (([*(v4 + 64) shouldDefer] & 1) != 0 || (*(v4 + 40) & 1) != 0))
   {
     *(v53 + 24) = 0;
@@ -140,7 +140,7 @@
     v39[2] = __48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke;
     v39[3] = &unk_1E6EC3D50;
     v39[4] = v3;
-    v39[5] = a1;
+    v39[5] = self;
     v39[6] = v2;
     v39[7] = &v46;
     v39[8] = &v52;
@@ -151,7 +151,7 @@
   if (*(v53 + 24) != 1)
   {
     v18 = [NSCloudKitMirroringResult alloc];
-    v19 = *(a1 + 64);
+    v19 = *(self + 64);
     if (v19)
     {
       v20 = *(v19 + 48);
@@ -162,8 +162,8 @@
       v20 = 0;
     }
 
-    v21 = [(NSCloudKitMirroringResult *)v18 initWithRequest:*(a1 + 40) storeIdentifier:v20 success:*(v53 + 24) madeChanges:0 error:v47[5]];
-    [(PFCloudKitExporter *)a1 finishExportWithResult:v21];
+    v21 = [(NSCloudKitMirroringResult *)v18 initWithRequest:*(self + 40) storeIdentifier:v20 success:*(v53 + 24) madeChanges:0 error:v47[5]];
+    [(PFCloudKitExporter *)self finishExportWithResult:v21];
 
     goto LABEL_19;
   }
@@ -172,7 +172,7 @@
   {
     if (![v2 count])
     {
-      [(PFCloudKitExporter *)a1 exportIfNecessary];
+      [(PFCloudKitExporter *)self exportIfNecessary];
       goto LABEL_19;
     }
 
@@ -192,14 +192,14 @@
       *&buf[12] = 1024;
       *&buf[14] = 1010;
       *&buf[18] = 2112;
-      *&buf[20] = a1;
+      *&buf[20] = self;
       *&buf[28] = 2112;
       *&buf[30] = v2;
       _os_log_impl(&dword_18565F000, v26, v27, "CoreData+CloudKit: %s(%d): %@: Fetching record zones: %@", buf, 0x26u);
     }
 
     objc_autoreleasePoolPop(v24);
-    v28 = *(a1 + 40);
+    v28 = *(self + 40);
     if (v28 && (([*(v28 + 64) shouldDefer] & 1) != 0 || (*(v28 + 40) & 1) != 0))
     {
       v29 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -211,20 +211,20 @@
 
     else
     {
-      objc_initWeak(location, a1);
+      objc_initWeak(location, self);
       v36 = [objc_alloc(getCloudKitCKFetchRecordZonesOperationClass()) initWithRecordZoneIDs:v2];
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __39__PFCloudKitExporter_fetchRecordZones___block_invoke;
       *&buf[24] = &unk_1E6EC4510;
       objc_copyWeak(&v57, location);
-      *&buf[32] = a1;
+      *&buf[32] = self;
       [v36 setFetchRecordZonesCompletionBlock:buf];
       objc_destroyWeak(&v57);
       objc_destroyWeak(location);
       if (v36)
       {
-        v37 = *(a1 + 24);
+        v37 = *(self + 24);
         if (v37)
         {
           v38 = *(v37 + 8);
@@ -244,7 +244,7 @@
     }
 
     v32 = [NSCloudKitMirroringResult alloc];
-    v33 = *(a1 + 64);
+    v33 = *(self + 64);
     if (v33)
     {
       v34 = *(v33 + 48);
@@ -255,8 +255,8 @@
       v34 = 0;
     }
 
-    v35 = [(NSCloudKitMirroringResult *)v32 initWithRequest:*(a1 + 40) storeIdentifier:v34 success:0 madeChanges:0 error:v31];
-    [(PFCloudKitExporter *)a1 finishExportWithResult:v35];
+    v35 = [(NSCloudKitMirroringResult *)v32 initWithRequest:*(self + 40) storeIdentifier:v34 success:0 madeChanges:0 error:v31];
+    [(PFCloudKitExporter *)self finishExportWithResult:v35];
 
     v36 = 0;
 LABEL_34:
@@ -279,29 +279,29 @@ LABEL_34:
 
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = *(a1 + 40);
+    v12 = *(self + 40);
     v13 = v41[5];
-    v14 = [v13 recordZonesToSave];
-    v15 = [v41[5] recordZoneIDsToDelete];
+    recordZonesToSave = [v13 recordZonesToSave];
+    recordZoneIDsToDelete = [v41[5] recordZoneIDsToDelete];
     *buf = 136316674;
     *&buf[4] = "[PFCloudKitExporter checkForZonesNeedingExport]";
     *&buf[12] = 1024;
     *&buf[14] = 251;
     *&buf[18] = 2112;
-    *&buf[20] = a1;
+    *&buf[20] = self;
     *&buf[28] = 2112;
     *&buf[30] = v12;
     *&buf[38] = 2112;
     v57 = v13;
     v58 = 2112;
-    v59 = v14;
+    v59 = recordZonesToSave;
     v60 = 2112;
-    v61 = v15;
+    v61 = recordZoneIDsToDelete;
     _os_log_impl(&dword_18565F000, v10, v11, "CoreData+CloudKit: %s(%d): %@: Scheduling modifyRecordZonesOperation in response to request: %@ operation: %@\n%@\n%@", buf, 0x44u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v16 = *(a1 + 24);
+  v16 = *(self + 24);
   if (v16)
   {
     v17 = *(v16 + 8);
@@ -632,7 +632,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
 - (void)exportIfNecessary
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v20 = 0;
     v21 = &v20;
@@ -644,8 +644,8 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
     v17 = __Block_byref_object_copy__34;
     v18 = __Block_byref_object_dispose__34;
     v19 = 0;
-    v2 = *(a1 + 64);
-    v3 = *(a1 + 40);
+    v2 = *(self + 64);
+    v3 = *(self + 40);
     if (v3 && (([*(v3 + 64) shouldDefer] & 1) != 0 || (*(v3 + 40) & 1) != 0))
     {
       *(v21 + 24) = 0;
@@ -664,7 +664,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
       v13[2] = __39__PFCloudKitExporter_exportIfNecessary__block_invoke;
       v13[3] = &unk_1E6EC1A00;
       v13[4] = v2;
-      v13[5] = a1;
+      v13[5] = self;
       v13[6] = &v20;
       v13[7] = &v14;
       [(PFCloudKitStoreMonitor *)v2 performBlock:v13];
@@ -673,7 +673,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
     if ((v21[3] & 1) == 0)
     {
       v7 = [NSCloudKitMirroringResult alloc];
-      v8 = *(a1 + 64);
+      v8 = *(self + 64);
       if (v8)
       {
         v9 = *(v8 + 48);
@@ -684,8 +684,8 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
         v9 = 0;
       }
 
-      v10 = [(NSCloudKitMirroringResult *)v7 initWithRequest:*(a1 + 40) storeIdentifier:v9 success:0 madeChanges:0 error:v15[5]];
-      [(PFCloudKitExporter *)a1 finishExportWithResult:v10];
+      v10 = [(NSCloudKitMirroringResult *)v7 initWithRequest:*(self + 40) storeIdentifier:v9 success:0 madeChanges:0 error:v15[5]];
+      [(PFCloudKitExporter *)self finishExportWithResult:v10];
     }
 
     v11 = v15[5];
@@ -698,19 +698,19 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishExportWithResult:(void *)a1
+- (void)finishExportWithResult:(void *)result
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (result)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v36 = 0;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = a1;
-    v4 = a1[7];
+    resultCopy = result;
+    v4 = result[7];
     if (v4)
     {
       v5 = *(v4 + 40);
@@ -737,7 +737,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          if (([v3 removeItemAtURL:v11 error:&v36] & 1) == 0 && (!objc_msgSend(objc_msgSend(v36, "domain"), "isEqualToString:", v9) || objc_msgSend(v36, "code") != 4))
+          if (([defaultManager removeItemAtURL:v11 error:&v36] & 1) == 0 && (!objc_msgSend(objc_msgSend(v36, "domain"), "isEqualToString:", v9) || objc_msgSend(v36, "code") != 4))
           {
             v12 = objc_autoreleasePoolPush();
             Stream = __PFCloudKitLoggingGetStream();
@@ -776,7 +776,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
     }
 
     v16 = [PFCloudKitExportedRecordBytesMetric alloc];
-    v17 = v31[3];
+    v17 = resultCopy[3];
     if (v17)
     {
       v18 = *(v17 + 16);
@@ -789,7 +789,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
 
     v19 = -[PFCloudKitSizeMetric initWithContainerIdentifier:](v16, "initWithContainerIdentifier:", [v18 containerIdentifier]);
     v20 = v19;
-    v21 = v31[7];
+    v21 = resultCopy[7];
     if (v21)
     {
       v22 = *(v21 + 16);
@@ -801,7 +801,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
     }
 
     [(PFCloudKitSizeMetric *)v19 addByteSize:v22];
-    v23 = v31[3];
+    v23 = resultCopy[3];
     if (v23 && (v24 = *(v23 + 16)) != 0)
     {
       v25 = *(v24 + 72);
@@ -814,11 +814,11 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
 
     [(PFMetricsClient *)v25 logMetric:v20];
 
-    v26 = v31[2];
+    v26 = resultCopy[2];
     if (v26)
     {
       (*(v26 + 16))(v26, v30);
-      v27 = v31[2];
+      v27 = resultCopy[2];
     }
 
     else
@@ -826,7 +826,7 @@ void *__48__PFCloudKitExporter_checkForZonesNeedingExport__block_invoke_2_20(voi
       v27 = 0;
     }
 
-    v31[2] = 0;
+    resultCopy[2] = 0;
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -2202,7 +2202,7 @@ LABEL_55:
   return result;
 }
 
-- (uint64_t)updateMetadataForSavedZones:(void *)a3 error:
+- (uint64_t)updateMetadataForSavedZones:(void *)zones error:
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -2215,8 +2215,8 @@ LABEL_55:
   v21 = __Block_byref_object_copy__34;
   v22 = __Block_byref_object_dispose__34;
   v23 = 0;
-  v6 = *(a1 + 64);
-  v7 = *(a1 + 40);
+  v6 = *(self + 64);
+  v7 = *(self + 40);
   if (v7 && (([*(v7 + 64) shouldDefer] & 1) != 0 || (*(v7 + 40) & 1) != 0))
   {
     *(v25 + 24) = 0;
@@ -2236,7 +2236,7 @@ LABEL_55:
     v17[3] = &unk_1E6EC1900;
     v17[4] = v6;
     v17[5] = a2;
-    v17[6] = a1;
+    v17[6] = self;
     v17[7] = &v18;
     v17[8] = &v24;
     [(PFCloudKitStoreMonitor *)v6 performBlock:v17];
@@ -2247,9 +2247,9 @@ LABEL_55:
     v14 = v19[5];
     if (v14)
     {
-      if (a3)
+      if (zones)
       {
-        *a3 = v14;
+        *zones = v14;
       }
     }
 

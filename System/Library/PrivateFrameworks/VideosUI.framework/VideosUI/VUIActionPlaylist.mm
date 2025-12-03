@@ -1,51 +1,51 @@
 @interface VUIActionPlaylist
-- (VUIActionPlaylist)initWithContextData:(id)a3 appContext:(id)a4;
+- (VUIActionPlaylist)initWithContextData:(id)data appContext:(id)context;
 - (VUIAppContext)appContext;
 - (id)_maxContentRating;
 - (id)_ratingDomain;
 - (id)_ratingValue;
-- (void)_presentViewControllerAllowingCellular:(BOOL)a3 completion:(id)a4;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)_presentViewControllerAllowingCellular:(BOOL)cellular completion:(id)completion;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionPlaylist
 
-- (VUIActionPlaylist)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionPlaylist)initWithContextData:(id)data appContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = VUIActionPlaylist;
   v9 = [(VUIActionPlaylist *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextData, a3);
-    objc_storeWeak(&v10->_appContext, v8);
-    v11 = [v7 vui_arrayForKey:@"videosPlayables"];
-    v12 = [v7 vui_dictionaryForKey:@"contentMetadata"];
+    objc_storeStrong(&v9->_contextData, data);
+    objc_storeWeak(&v10->_appContext, contextCopy);
+    v11 = [dataCopy vui_arrayForKey:@"videosPlayables"];
+    v12 = [dataCopy vui_dictionaryForKey:@"contentMetadata"];
     v13 = [VUIVideosPlayable videosPlayablesFromDictionaries:v11 andMetadataDictionary:v12];
     videosPlayable = v10->_videosPlayable;
     v10->_videosPlayable = v13;
     v15 = v13;
 
-    v16 = [v7 vui_numberForKey:@"index"];
+    v16 = [dataCopy vui_numberForKey:@"index"];
     v10->_index = [v16 integerValue];
 
-    v17 = [v7 vui_arrayForKey:@"clipItems"];
+    v17 = [dataCopy vui_arrayForKey:@"clipItems"];
     clipItems = v10->_clipItems;
     v10->_clipItems = v17;
 
-    v19 = [v7 vui_arrayForKey:@"metadataViewModels"];
+    v19 = [dataCopy vui_arrayForKey:@"metadataViewModels"];
     metadataViewModels = v10->_metadataViewModels;
     v10->_metadataViewModels = v19;
 
-    v10->_requiresAuthentication = [v7 vui_BOOLForKey:@"requiresAuthentication" defaultValue:0];
-    v21 = [v7 vui_stringForKey:@"nextToken"];
+    v10->_requiresAuthentication = [dataCopy vui_BOOLForKey:@"requiresAuthentication" defaultValue:0];
+    v21 = [dataCopy vui_stringForKey:@"nextToken"];
     nextToken = v10->_nextToken;
     v10->_nextToken = v21;
 
-    v23 = [v7 vui_stringForKey:@"trailerEndpoint"];
+    v23 = [dataCopy vui_stringForKey:@"trailerEndpoint"];
     trailerEndpoint = v10->_trailerEndpoint;
     v10->_trailerEndpoint = v23;
   }
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIActionPlaylist *)self clipItems];
-  if ([v8 count])
+  responderCopy = responder;
+  handlerCopy = handler;
+  clipItems = [(VUIActionPlaylist *)self clipItems];
+  if ([clipItems count])
   {
     v9 = 9;
   }
@@ -69,13 +69,13 @@
   }
 
   v10 = [VUIMediaInfo alloc];
-  v11 = [(VUIActionPlaylist *)self videosPlayable];
-  v12 = [(VUIMediaInfo *)v10 initWithPlaybackContext:v9 videosPlayables:v11 imageProxies:0 storeDictionary:0];
+  videosPlayable = [(VUIActionPlaylist *)self videosPlayable];
+  v12 = [(VUIMediaInfo *)v10 initWithPlaybackContext:v9 videosPlayables:videosPlayable imageProxies:0 storeDictionary:0];
 
   v13 = +[VUIPlaybackManager sharedInstance];
-  LODWORD(v11) = [v13 isFullscreenPlaybackUIBeingShown];
+  LODWORD(videosPlayable) = [v13 isFullscreenPlaybackUIBeingShown];
 
-  if (v11)
+  if (videosPlayable)
   {
     v14 = 2;
   }
@@ -86,28 +86,28 @@
   }
 
   v15 = [VUIPlaybackStartupCoordinator startupCoordinatorWithMediaInfo:v12 watchType:v14 isRentAndWatchNow:0];
-  v16 = [(VUIActionPlaylist *)self videosPlayable];
-  v17 = [v16 firstObject];
+  videosPlayable2 = [(VUIActionPlaylist *)self videosPlayable];
+  firstObject = [videosPlayable2 firstObject];
 
-  v18 = [v17 sharedWatchUrl];
-  if (v18)
+  sharedWatchUrl = [firstObject sharedWatchUrl];
+  if (sharedWatchUrl)
   {
-    v19 = 1;
+    useSharedPlayableForCowatching = 1;
   }
 
   else
   {
-    v19 = [v17 useSharedPlayableForCowatching];
+    useSharedPlayableForCowatching = [firstObject useSharedPlayableForCowatching];
   }
 
-  if (+[VUIGroupActivitiesManagerObjC isEligibleForSession]&& v19)
+  if (+[VUIGroupActivitiesManagerObjC isEligibleForSession]&& useSharedPlayableForCowatching)
   {
     [(VUIMediaInfo *)v12 setIntent:1];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __66__VUIActionPlaylist_performWithTargetResponder_completionHandler___block_invoke;
     v27[3] = &unk_1E872D7E0;
-    v28 = v7;
+    v28 = handlerCopy;
     [VUIActionPlay playMediaInfo:v12 watchType:0 isRentAndWatchNow:0 completion:v27];
   }
 
@@ -120,8 +120,8 @@
     v20[3] = &unk_1E872EA18;
     v21 = v15;
     v22 = v12;
-    v23 = v6;
-    v24 = v7;
+    v23 = responderCopy;
+    v24 = handlerCopy;
     objc_copyWeak(&v25, &location);
     [v21 performPlaybackStartupFlowWithCompletion:v20];
     objc_destroyWeak(&v25);
@@ -206,14 +206,14 @@ uint64_t __66__VUIActionPlaylist_performWithTargetResponder_completionHandler___
 
 - (id)_ratingDomain
 {
-  v2 = [(VUIActionPlaylist *)self videosPlayable];
-  v3 = [v2 firstObject];
-  v4 = [v3 metadata];
-  v5 = [v4 ratingDomain];
+  videosPlayable = [(VUIActionPlaylist *)self videosPlayable];
+  firstObject = [videosPlayable firstObject];
+  metadata = [firstObject metadata];
+  ratingDomain = [metadata ratingDomain];
 
-  if ([v5 length])
+  if ([ratingDomain length])
   {
-    if ([v5 isEqualToString:@"Show"])
+    if ([ratingDomain isEqualToString:@"Show"])
     {
       v6 = MEMORY[0x1E69D5B18];
 LABEL_6:
@@ -221,7 +221,7 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    if ([v5 isEqualToString:@"Movie"])
+    if ([ratingDomain isEqualToString:@"Movie"])
     {
       v6 = MEMORY[0x1E69D5B10];
       goto LABEL_6;
@@ -236,38 +236,38 @@ LABEL_8:
 
 - (id)_ratingValue
 {
-  v2 = [(VUIActionPlaylist *)self videosPlayable];
-  v3 = [v2 firstObject];
-  v4 = [v3 metadata];
-  v5 = [v4 ratingValue];
+  videosPlayable = [(VUIActionPlaylist *)self videosPlayable];
+  firstObject = [videosPlayable firstObject];
+  metadata = [firstObject metadata];
+  ratingValue = [metadata ratingValue];
 
-  return v5;
+  return ratingValue;
 }
 
 - (id)_maxContentRating
 {
-  v3 = [(VUIActionPlaylist *)self _ratingDomain];
-  v4 = [(VUIActionPlaylist *)self _ratingValue];
-  if (![v3 length])
+  _ratingDomain = [(VUIActionPlaylist *)self _ratingDomain];
+  _ratingValue = [(VUIActionPlaylist *)self _ratingValue];
+  if (![_ratingDomain length])
   {
     goto LABEL_18;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69D5B10]])
+  if ([_ratingDomain isEqualToString:*MEMORY[0x1E69D5B10]])
   {
     v5 = +[VUISettingsManager sharedInstance];
-    v6 = [v5 maxMovieRank];
+    maxMovieRank = [v5 maxMovieRank];
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69D5B18]])
+  if ([_ratingDomain isEqualToString:*MEMORY[0x1E69D5B18]])
   {
     v5 = +[VUISettingsManager sharedInstance];
-    v6 = [v5 maxTVShowRank];
+    maxMovieRank = [v5 maxTVShowRank];
 LABEL_6:
-    v7 = v6;
+    v7 = maxMovieRank;
 
-    if (!v4)
+    if (!_ratingValue)
     {
       if (!v7)
       {
@@ -285,27 +285,27 @@ LABEL_6:
   v7 = 0;
   v8 = 0;
   v9 = 0;
-  if (!v4)
+  if (!_ratingValue)
   {
     goto LABEL_20;
   }
 
 LABEL_10:
-  if (![v4 integerValue] && v7)
+  if (![_ratingValue integerValue] && v7)
   {
 LABEL_12:
 
-    v4 = &unk_1F5E5C9F0;
+    _ratingValue = &unk_1F5E5C9F0;
 LABEL_14:
-    v10 = [v4 integerValue];
-    if (v10 <= [v7 integerValue])
+    integerValue = [_ratingValue integerValue];
+    if (integerValue <= [v7 integerValue])
     {
       v11 = v7;
     }
 
     else
     {
-      v11 = v4;
+      v11 = _ratingValue;
     }
 
     v8 = v11;
@@ -321,56 +321,56 @@ LABEL_14:
 LABEL_18:
   v8 = 0;
 LABEL_19:
-  v9 = v4;
+  v9 = _ratingValue;
 LABEL_20:
 
   return v8;
 }
 
-- (void)_presentViewControllerAllowingCellular:(BOOL)a3 completion:(id)a4
+- (void)_presentViewControllerAllowingCellular:(BOOL)cellular completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  cellularCopy = cellular;
+  completionCopy = completion;
   v7 = +[VUIPlaybackManager sharedInstance];
-  v8 = [v7 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v7 isFullscreenPlaybackUIBeingShown];
 
   v9 = +[VUIApplicationRouter currentNavigationController];
-  v10 = [v9 topViewController];
-  v11 = [v10 presentedViewController];
-  v12 = v11;
-  if (v8)
+  topViewController = [v9 topViewController];
+  presentedViewController = [topViewController presentedViewController];
+  rootViewController = presentedViewController;
+  if (isFullscreenPlaybackUIBeingShown)
   {
-    v13 = [v11 presentingViewController];
+    presentingViewController = [presentedViewController presentingViewController];
   }
 
-  else if (v11)
+  else if (presentedViewController)
   {
     goto LABEL_6;
   }
 
   v14 = +[VUITVAppLauncher sharedInstance];
-  v15 = [v14 appWindow];
+  appWindow = [v14 appWindow];
 
-  v12 = [v15 rootViewController];
+  rootViewController = [appWindow rootViewController];
 
-  if (!v12)
+  if (!rootViewController)
   {
     v16 = +[VUIInterfaceFactory sharedInstance];
-    v12 = [v16 controllerPresenter];
+    rootViewController = [v16 controllerPresenter];
   }
 
 LABEL_6:
-  v17 = [(VUIActionPlaylist *)self videosPlayable];
-  v18 = [v17 firstObject];
+  videosPlayable = [(VUIActionPlaylist *)self videosPlayable];
+  firstObject = [videosPlayable firstObject];
 
-  if (([v18 isKeyPlayAvailable] & 1) != 0 || (-[VUIActionPlaylist clipItems](self, "clipItems"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, v20))
+  if (([firstObject isKeyPlayAvailable] & 1) != 0 || (-[VUIActionPlaylist clipItems](self, "clipItems"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, v20))
   {
     v21 = +[VUIPlaybackManager sharedInstance];
     if ([v21 isFullscreenPlaybackUIBeingShown])
     {
-      v22 = [(VUIActionPlaylist *)self videosPlayable];
+      videosPlayable2 = [(VUIActionPlaylist *)self videosPlayable];
 
-      if (!v22)
+      if (!videosPlayable2)
       {
         objc_initWeak(location, self);
         v23 = +[VUIPlaybackManager sharedInstance];
@@ -380,7 +380,7 @@ LABEL_6:
         v55[3] = &unk_1E872EA40;
         objc_copyWeak(&v57, location);
         v55[4] = self;
-        v56 = v6;
+        v56 = completionCopy;
         [v23 transferPlaybackToBackgroundMediaController:v55];
 
         v24 = &v57;
@@ -408,13 +408,13 @@ LABEL_18:
     aBlock[2] = __71__VUIActionPlaylist__presentViewControllerAllowingCellular_completion___block_invoke_41;
     aBlock[3] = &unk_1E872DE00;
     objc_copyWeak(&v54, location);
-    v52 = v12;
-    v53 = v6;
+    v52 = rootViewController;
+    v53 = completionCopy;
     v26 = _Block_copy(aBlock);
     v27 = +[VUIPlaybackManager sharedInstance];
-    v28 = [v27 isFullscreenPlaybackUIBeingShown];
+    isFullscreenPlaybackUIBeingShown2 = [v27 isFullscreenPlaybackUIBeingShown];
 
-    if (v28)
+    if (isFullscreenPlaybackUIBeingShown2)
     {
       v29 = +[VUIPlaybackManager sharedInstance];
       [v29 dismissPlaybackAnimated:1 leaveGroupActivitySession:1 completion:v26];
@@ -436,58 +436,58 @@ LABEL_18:
     _os_log_impl(&dword_1E323F000, v30, OS_LOG_TYPE_DEFAULT, "VUIActionPlaylist:: no clip items, so assuming standard playlist", location, 2u);
   }
 
-  v31 = [(VUIActionPlaylist *)self _ratingDomain];
-  v32 = [v31 isEqualToString:*MEMORY[0x1E69D5B18]];
+  _ratingDomain = [(VUIActionPlaylist *)self _ratingDomain];
+  v32 = [_ratingDomain isEqualToString:*MEMORY[0x1E69D5B18]];
 
-  v48 = v4;
+  v48 = cellularCopy;
   if (v32)
   {
     v33 = +[VUISettingsManager sharedInstance];
-    v50 = [v33 maxMovieRank];
+    maxMovieRank = [v33 maxMovieRank];
 
-    v49 = [(VUIActionPlaylist *)self _maxContentRating];
+    _maxContentRating = [(VUIActionPlaylist *)self _maxContentRating];
   }
 
   else
   {
-    v34 = [(VUIActionPlaylist *)self _ratingDomain];
-    v35 = [v34 isEqualToString:*MEMORY[0x1E69D5B10]];
+    _ratingDomain2 = [(VUIActionPlaylist *)self _ratingDomain];
+    v35 = [_ratingDomain2 isEqualToString:*MEMORY[0x1E69D5B10]];
 
     if (v35)
     {
-      v50 = [(VUIActionPlaylist *)self _maxContentRating];
+      maxMovieRank = [(VUIActionPlaylist *)self _maxContentRating];
     }
 
     else
     {
       v36 = +[VUISettingsManager sharedInstance];
-      v50 = [v36 maxMovieRank];
+      maxMovieRank = [v36 maxMovieRank];
     }
 
     v37 = +[VUISettingsManager sharedInstance];
-    v49 = [v37 maxTVShowRank];
+    _maxContentRating = [v37 maxTVShowRank];
   }
 
-  v38 = [(VUIActionPlaylist *)self trailerEndpoint];
-  v39 = [v38 length];
+  trailerEndpoint = [(VUIActionPlaylist *)self trailerEndpoint];
+  v39 = [trailerEndpoint length];
 
   v40 = +[VUIInterfaceFactory sharedInstance];
-  v41 = [v40 documentCreator];
-  v42 = [(VUIActionPlaylist *)self index];
+  documentCreator = [v40 documentCreator];
+  index = [(VUIActionPlaylist *)self index];
   if (v39)
   {
-    v43 = [(VUIActionPlaylist *)self trailerEndpoint];
-    [v41 clipsViewControllerWithIndex:v42 trailerEndpoint:v43 maxMovieContentRating:v50 maxTVContentRating:v49 allowsCellular:v48];
+    trailerEndpoint2 = [(VUIActionPlaylist *)self trailerEndpoint];
+    [documentCreator clipsViewControllerWithIndex:index trailerEndpoint:trailerEndpoint2 maxMovieContentRating:maxMovieRank maxTVContentRating:_maxContentRating allowsCellular:v48];
   }
 
   else
   {
-    v43 = [(VUIActionPlaylist *)self collectionViewModel];
-    [v41 clipsViewControllerWithIndex:v42 collectionData:v43 maxMovieContentRating:v50 maxTVContentRating:v49 allowsCellular:v48];
+    trailerEndpoint2 = [(VUIActionPlaylist *)self collectionViewModel];
+    [documentCreator clipsViewControllerWithIndex:index collectionData:trailerEndpoint2 maxMovieContentRating:maxMovieRank maxTVContentRating:_maxContentRating allowsCellular:v48];
   }
   v44 = ;
 
-  if (v12 && v44)
+  if (rootViewController && v44)
   {
     v45 = +[VUIPlaybackManager sharedInstance];
     [v45 dismissPlaybackAnimated:1 leaveGroupActivitySession:1 completion:0];
@@ -499,8 +499,8 @@ LABEL_18:
     v59[1] = 3221225472;
     v59[2] = __71__VUIActionPlaylist__presentViewControllerAllowingCellular_completion___block_invoke;
     v59[3] = &unk_1E872D7E0;
-    v60 = v6;
-    [v12 presentViewController:v44 animated:1 completion:v59];
+    v60 = completionCopy;
+    [rootViewController presentViewController:v44 animated:1 completion:v59];
   }
 
   else
@@ -511,9 +511,9 @@ LABEL_18:
       [VUIActionPlaylist _presentViewControllerAllowingCellular:v47 completion:?];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 

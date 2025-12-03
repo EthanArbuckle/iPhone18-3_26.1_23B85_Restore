@@ -1,10 +1,10 @@
 @interface MPSExternalCNNBinary
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 primaryTexture:(id)a6 primaryInfo:(id *)a7 secondaryTexture:(id)a8 secondaryInfo:(id *)a9 destinationTexture:(id)a10 destinationInfo:(id *)a11;
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options primaryTexture:(id)texture primaryInfo:(id *)info secondaryTexture:(id)secondaryTexture secondaryInfo:(id *)secondaryInfo destinationTexture:(id)self0 destinationInfo:(id *)self1;
 @end
 
 @implementation MPSExternalCNNBinary
 
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 primaryTexture:(id)a6 primaryInfo:(id *)a7 secondaryTexture:(id)a8 secondaryInfo:(id *)a9 destinationTexture:(id)a10 destinationInfo:(id *)a11
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options primaryTexture:(id)texture primaryInfo:(id *)info secondaryTexture:(id)secondaryTexture secondaryInfo:(id *)secondaryInfo destinationTexture:(id)self0 destinationInfo:(id *)self1
 {
   if (MTLReportFailureTypeEnabled())
   {

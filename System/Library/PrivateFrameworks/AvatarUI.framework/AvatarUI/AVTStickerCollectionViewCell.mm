@@ -1,31 +1,31 @@
 @interface AVTStickerCollectionViewCell
-+ (CGPath)selectionPathInBounds:(CGRect)a3;
-+ (double)imageInsetForWidth:(double)a3;
-- (AVTStickerCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGPath)selectionPathInBounds:(CGRect)bounds;
++ (double)imageInsetForWidth:(double)width;
+- (AVTStickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (AVTStickerCollectionViewCellDelegate)delegate;
 - (AVTStickerDisclosureValidationDelegate)disclosureValidationDelegate;
 - (CGRect)clippingRect;
-- (CGRect)stickerViewFrameForImageSize:(CGSize)a3 clippingRect:(CGRect)a4;
+- (CGRect)stickerViewFrameForImageSize:(CGSize)size clippingRect:(CGRect)rect;
 - (CGSize)fullImageSize;
-- (CGSize)imageSizeFromURL:(id)a3;
+- (CGSize)imageSizeFromURL:(id)l;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)purgeImageContents;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setDisclosureValidationDelegate:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowPrereleaseSticker:(BOOL)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setDisclosureValidationDelegate:(id)delegate;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowPrereleaseSticker:(BOOL)sticker;
 - (void)setupPrereleaseLabelIfNeeded;
-- (void)stickerViewDidBeginPeel:(id)a3;
-- (void)stickerViewWasTapped:(id)a3;
-- (void)updateWithImage:(id)a3 sticker:(id)a4 animated:(BOOL)a5;
+- (void)stickerViewDidBeginPeel:(id)peel;
+- (void)stickerViewWasTapped:(id)tapped;
+- (void)updateWithImage:(id)image sticker:(id)sticker animated:(BOOL)animated;
 @end
 
 @implementation AVTStickerCollectionViewCell
 
-+ (double)imageInsetForWidth:(double)a3
++ (double)imageInsetForWidth:(double)width
 {
-  v3 = a3 <= 120.0;
+  v3 = width <= 120.0;
   result = 5.0;
   if (!v3)
   {
@@ -35,35 +35,35 @@
   return result;
 }
 
-+ (CGPath)selectionPathInBounds:(CGRect)a3
++ (CGPath)selectionPathInBounds:(CGRect)bounds
 {
-  v6 = CGRectInset(a3, 6.0, 6.0);
+  v6 = CGRectInset(bounds, 6.0, 6.0);
   v3 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v6.origin.x cornerRadius:{v6.origin.y, v6.size.width, v6.size.height, 16.0}];
-  v4 = [v3 CGPath];
+  cGPath = [v3 CGPath];
 
-  return v4;
+  return cGPath;
 }
 
-- (AVTStickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (AVTStickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v41.receiver = self;
   v41.super_class = AVTStickerCollectionViewCell;
-  v4 = [(AVTStickerCollectionViewCell *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(AVTStickerCollectionViewCell *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AVTStickerCollectionViewCell *)v4 contentView];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:12.0];
+    contentView = [(AVTStickerCollectionViewCell *)v4 contentView];
+    layer = [contentView layer];
+    [layer setCornerRadius:12.0];
 
-    v8 = [(AVTStickerCollectionViewCell *)v5 contentView];
-    [v8 setClipsToBounds:1];
+    contentView2 = [(AVTStickerCollectionViewCell *)v5 contentView];
+    [contentView2 setClipsToBounds:1];
 
     [objc_opt_class() imageInsetForWidth:width];
     v10 = v9;
-    v11 = [(AVTStickerCollectionViewCell *)v5 contentView];
-    [v11 bounds];
+    contentView3 = [(AVTStickerCollectionViewCell *)v5 contentView];
+    [contentView3 bounds];
     v43 = CGRectInset(v42, v10, v10);
     x = v43.origin.x;
     y = v43.origin.y;
@@ -77,19 +77,19 @@
     v17 = +[AVTUIColorRepository stickerPlaceholderBackgroundColor];
     [v16 setTintColor:v17];
 
-    v18 = [(AVTStickerCollectionViewCell *)v5 contentView];
-    [v18 addSubview:v16];
+    contentView4 = [(AVTStickerCollectionViewCell *)v5 contentView];
+    [contentView4 addSubview:v16];
 
     objc_storeStrong(&v5->_imageView, v16);
     v19 = [AVTMSStickerView alloc];
-    v20 = [(AVTStickerCollectionViewCell *)v5 contentView];
-    [v20 bounds];
+    contentView5 = [(AVTStickerCollectionViewCell *)v5 contentView];
+    [contentView5 bounds];
     v21 = [(AVTMSStickerView *)v19 initWithFrame:?];
 
     [(AVTMSStickerView *)v21 setDelegate:v5];
     [(AVTMSStickerView *)v21 setAlpha:0.0];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(AVTMSStickerView *)v21 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(AVTMSStickerView *)v21 setBackgroundColor:clearColor];
 
     [(AVTMSStickerView *)v21 setAutoresizingMask:18];
     if (objc_opt_respondsToSelector())
@@ -116,21 +116,21 @@
     v5->_clippingRect.origin = *MEMORY[0x1E695F058];
     v5->_clippingRect.size = v26;
     v27 = objc_alloc_init(MEMORY[0x1E69794A0]);
-    v28 = [MEMORY[0x1E69DC888] systemGray3Color];
-    -[CAShapeLayer setStrokeColor:](v27, "setStrokeColor:", [v28 CGColor]);
+    systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+    -[CAShapeLayer setStrokeColor:](v27, "setStrokeColor:", [systemGray3Color CGColor]);
 
     [(CAShapeLayer *)v27 setLineWidth:3.0];
-    v29 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v27, "setFillColor:", [v29 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v27, "setFillColor:", [clearColor2 CGColor]);
 
     [(CAShapeLayer *)v27 setHidden:1];
     selectionLayer = v5->_selectionLayer;
     v5->_selectionLayer = v27;
     v31 = v27;
 
-    v32 = [(AVTStickerCollectionViewCell *)v5 contentView];
-    v33 = [v32 layer];
-    [v33 addSublayer:v31];
+    contentView6 = [(AVTStickerCollectionViewCell *)v5 contentView];
+    layer2 = [contentView6 layer];
+    [layer2 addSublayer:v31];
   }
 
   return v5;
@@ -153,27 +153,27 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setShowPrereleaseSticker:(BOOL)a3
+- (void)setShowPrereleaseSticker:(BOOL)sticker
 {
-  if (self->_showPrereleaseSticker != a3)
+  if (self->_showPrereleaseSticker != sticker)
   {
-    v4 = a3;
-    self->_showPrereleaseSticker = a3;
-    if (a3)
+    stickerCopy = sticker;
+    self->_showPrereleaseSticker = sticker;
+    if (sticker)
     {
       [(AVTStickerCollectionViewCell *)self setupPrereleaseLabelIfNeeded];
     }
 
-    v6 = [(AVTStickerCollectionViewCell *)self prereleaseLabel];
-    [v6 setHidden:!v4];
+    prereleaseLabel = [(AVTStickerCollectionViewCell *)self prereleaseLabel];
+    [prereleaseLabel setHidden:!stickerCopy];
   }
 }
 
 - (void)setupPrereleaseLabelIfNeeded
 {
-  v3 = [(AVTStickerCollectionViewCell *)self prereleaseLabel];
+  prereleaseLabel = [(AVTStickerCollectionViewCell *)self prereleaseLabel];
 
-  if (!v3)
+  if (!prereleaseLabel)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
     [(AVTStickerCollectionViewCell *)self bounds];
@@ -188,11 +188,11 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
     [(UILabel *)v7 setUserInteractionEnabled:0];
     [(UILabel *)v7 setTextAlignment:1];
     [(UILabel *)v7 setAdjustsFontSizeToFitWidth:1];
-    v10 = [MEMORY[0x1E69DC888] systemRedColor];
-    [(UILabel *)v7 setTextColor:v10];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [(UILabel *)v7 setTextColor:systemRedColor];
 
-    v11 = [(AVTStickerCollectionViewCell *)self contentView];
-    [v11 addSubview:v7];
+    contentView = [(AVTStickerCollectionViewCell *)self contentView];
+    [contentView addSubview:v7];
 
     prereleaseLabel = self->_prereleaseLabel;
     self->_prereleaseLabel = v7;
@@ -201,27 +201,27 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
 
 - (AVTStickerDisclosureValidationDelegate)disclosureValidationDelegate
 {
-  v2 = [(AVTStickerCollectionViewCell *)self stickerView];
-  v3 = [v2 disclosureValidationDelegate];
+  stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
+  disclosureValidationDelegate = [stickerView disclosureValidationDelegate];
 
-  return v3;
+  return disclosureValidationDelegate;
 }
 
-- (void)setDisclosureValidationDelegate:(id)a3
+- (void)setDisclosureValidationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AVTStickerCollectionViewCell *)self stickerView];
-  [v5 setDisclosureValidationDelegate:v4];
+  delegateCopy = delegate;
+  stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
+  [stickerView setDisclosureValidationDelegate:delegateCopy];
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_clippingRect = &self->_clippingRect;
-  if (!CGRectEqualToRect(a3, self->_clippingRect))
+  if (!CGRectEqualToRect(rect, self->_clippingRect))
   {
     p_clippingRect->origin.x = x;
     p_clippingRect->origin.y = y;
@@ -237,9 +237,9 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
   v36.receiver = self;
   v36.super_class = AVTStickerCollectionViewCell;
   [(AVTStickerCollectionViewCell *)&v36 layoutSubviews];
-  v3 = [(AVTStickerCollectionViewCell *)self stickerView];
+  stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
 
-  if (v3)
+  if (stickerView)
   {
     [(AVTStickerCollectionViewCell *)self fullImageSize];
     v5 = v4;
@@ -250,20 +250,20 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(AVTStickerCollectionViewCell *)self stickerView];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    stickerView2 = [(AVTStickerCollectionViewCell *)self stickerView];
+    [stickerView2 setFrame:{v13, v15, v17, v19}];
 
-    v21 = [MEMORY[0x1E69DC888] systemGray3Color];
-    v22 = [v21 CGColor];
-    v23 = [(AVTStickerCollectionViewCell *)self selectionLayer];
-    [v23 setStrokeColor:v22];
+    systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+    cGColor = [systemGray3Color CGColor];
+    selectionLayer = [(AVTStickerCollectionViewCell *)self selectionLayer];
+    [selectionLayer setStrokeColor:cGColor];
 
     v24 = objc_opt_class();
-    v25 = [(AVTStickerCollectionViewCell *)self contentView];
-    [v25 bounds];
+    contentView = [(AVTStickerCollectionViewCell *)self contentView];
+    [contentView bounds];
     v26 = [v24 selectionPathInBounds:?];
-    v27 = [(AVTStickerCollectionViewCell *)self selectionLayer];
-    [v27 setPath:v26];
+    selectionLayer2 = [(AVTStickerCollectionViewCell *)self selectionLayer];
+    [selectionLayer2 setPath:v26];
 
     if ([(AVTStickerCollectionViewCell *)self showSelectionLayer])
     {
@@ -278,40 +278,40 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
         v29 = 20.0;
       }
 
-      v30 = [(AVTStickerCollectionViewCell *)self contentView];
-      [v30 bounds];
+      contentView2 = [(AVTStickerCollectionViewCell *)self contentView];
+      [contentView2 bounds];
       v38 = CGRectInset(v37, v29, v29);
       x = v38.origin.x;
       y = v38.origin.y;
       width = v38.size.width;
       height = v38.size.height;
 
-      v35 = [(AVTStickerCollectionViewCell *)self imageView];
-      [v35 setFrame:{x, y, width, height}];
+      imageView = [(AVTStickerCollectionViewCell *)self imageView];
+      [imageView setFrame:{x, y, width, height}];
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = AVTStickerCollectionViewCell;
   [(AVTStickerCollectionViewCell *)&v6 setSelected:?];
   if ([(AVTStickerCollectionViewCell *)self showSelectionLayer])
   {
-    v5 = [(AVTStickerCollectionViewCell *)self selectionLayer];
-    [v5 setHidden:!v3];
+    selectionLayer = [(AVTStickerCollectionViewCell *)self selectionLayer];
+    [selectionLayer setHidden:!selectedCopy];
   }
 }
 
-- (CGRect)stickerViewFrameForImageSize:(CGSize)a3 clippingRect:(CGRect)a4
+- (CGRect)stickerViewFrameForImageSize:(CGSize)size clippingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(AVTStickerCollectionViewCell *)self contentView:a3.width];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(AVTStickerCollectionViewCell *)self contentView:size.width];
   [v9 frame];
   v11 = v10;
   v13 = v12;
@@ -346,9 +346,9 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)imageSizeFromURL:(id)a3
+- (CGSize)imageSizeFromURL:(id)l
 {
-  v3 = CGImageSourceCreateWithURL(a3, 0);
+  v3 = CGImageSourceCreateWithURL(l, 0);
   if (v3 && (v4 = v3, v5 = CGImageSourceCopyPropertiesAtIndex(v3, 0, 0), CFRelease(v4), v5))
   {
     v6 = *MEMORY[0x1E696DEC8];
@@ -377,65 +377,65 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)updateWithImage:(id)a3 sticker:(id)a4 animated:(BOOL)a5
+- (void)updateWithImage:(id)image sticker:(id)sticker animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  animatedCopy = animated;
+  imageCopy = image;
+  stickerCopy = sticker;
+  if (stickerCopy)
   {
-    v10 = [(AVTStickerCollectionViewCell *)self stickerView];
-    v11 = [v10 sticker];
+    stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
+    sticker = [stickerView sticker];
 
-    if (v11 == v9)
+    if (sticker == stickerCopy)
     {
       goto LABEL_12;
     }
 
-    v12 = [(AVTStickerCollectionViewCell *)self layer];
-    [v12 removeAllAnimations];
+    layer = [(AVTStickerCollectionViewCell *)self layer];
+    [layer removeAllAnimations];
 
-    if (v8)
+    if (imageCopy)
     {
-      [v8 size];
+      [imageCopy size];
       v14 = v13;
-      [v8 scale];
+      [imageCopy scale];
       v16 = v14 * v15;
-      [v8 size];
+      [imageCopy size];
       v18 = v17;
-      [v8 scale];
+      [imageCopy scale];
       [(AVTStickerCollectionViewCell *)self setFullImageSize:v16, v18 * v19];
     }
 
     else
     {
-      v22 = [v9 imageFileURL];
-      [(AVTStickerCollectionViewCell *)self imageSizeFromURL:v22];
+      imageFileURL = [stickerCopy imageFileURL];
+      [(AVTStickerCollectionViewCell *)self imageSizeFromURL:imageFileURL];
       [(AVTStickerCollectionViewCell *)self setFullImageSize:?];
     }
 
-    v23 = [(AVTStickerCollectionViewCell *)self stickerView];
-    [v23 setHidden:0];
+    stickerView2 = [(AVTStickerCollectionViewCell *)self stickerView];
+    [stickerView2 setHidden:0];
 
-    v24 = [(AVTStickerCollectionViewCell *)self stickerView];
-    [v24 setSticker:v9];
+    stickerView3 = [(AVTStickerCollectionViewCell *)self stickerView];
+    [stickerView3 setSticker:stickerCopy];
 
     [(AVTStickerCollectionViewCell *)self setNeedsLayout];
   }
 
   else
   {
-    v20 = [(AVTStickerCollectionViewCell *)self layer];
-    [v20 removeAllAnimations];
+    layer2 = [(AVTStickerCollectionViewCell *)self layer];
+    [layer2 removeAllAnimations];
 
-    if (v8)
+    if (imageCopy)
     {
-      v21 = [(AVTStickerCollectionViewCell *)self imageView];
-      [v21 setImage:v8];
+      imageView = [(AVTStickerCollectionViewCell *)self imageView];
+      [imageView setImage:imageCopy];
     }
   }
 
-  v25 = [(AVTStickerCollectionViewCell *)self stickerViewIsAnimating]| v5;
+  v25 = [(AVTStickerCollectionViewCell *)self stickerViewIsAnimating]| animatedCopy;
   [(AVTStickerCollectionViewCell *)self setStickerViewIsAnimating:v25];
   v26 = 0.3;
   if (!v25)
@@ -448,8 +448,8 @@ id __46__AVTStickerCollectionViewCell_initWithFrame___block_invoke(uint64_t a1)
   v28[2] = __65__AVTStickerCollectionViewCell_updateWithImage_sticker_animated___block_invoke;
   v28[3] = &unk_1E7F3B1F8;
   v28[4] = self;
-  v29 = v9 != 0;
-  v30 = v8 != 0;
+  v29 = stickerCopy != 0;
+  v30 = imageCopy != 0;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __65__AVTStickerCollectionViewCell_updateWithImage_sticker_animated___block_invoke_2;
@@ -520,11 +520,11 @@ void __65__AVTStickerCollectionViewCell_updateWithImage_sticker_animated___block
 
 - (void)purgeImageContents
 {
-  v3 = [(AVTStickerCollectionViewCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(AVTStickerCollectionViewCell *)self imageView];
+  [imageView setImage:0];
 
-  v4 = [(AVTStickerCollectionViewCell *)self stickerView];
-  [v4 setSticker:0];
+  stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
+  [stickerView setSticker:0];
 }
 
 - (void)prepareForReuse
@@ -532,46 +532,46 @@ void __65__AVTStickerCollectionViewCell_updateWithImage_sticker_animated___block
   v9.receiver = self;
   v9.super_class = AVTStickerCollectionViewCell;
   [(AVTStickerCollectionViewCell *)&v9 prepareForReuse];
-  v3 = [(AVTStickerCollectionViewCell *)self imageView];
-  [v3 setHidden:0];
+  imageView = [(AVTStickerCollectionViewCell *)self imageView];
+  [imageView setHidden:0];
 
-  v4 = [(AVTStickerCollectionViewCell *)self imageView];
-  [v4 setImage:0];
+  imageView2 = [(AVTStickerCollectionViewCell *)self imageView];
+  [imageView2 setImage:0];
 
-  v5 = [(AVTStickerCollectionViewCell *)self imageView];
-  [v5 setAlpha:0.0];
+  imageView3 = [(AVTStickerCollectionViewCell *)self imageView];
+  [imageView3 setAlpha:0.0];
 
   [(AVTStickerCollectionViewCell *)self setClippingRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(AVTStickerCollectionViewCell *)self setFullImageSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-  v6 = [(AVTStickerCollectionViewCell *)self stickerView];
-  [v6 setSticker:0];
+  stickerView = [(AVTStickerCollectionViewCell *)self stickerView];
+  [stickerView setSticker:0];
 
-  v7 = [(AVTStickerCollectionViewCell *)self stickerView];
-  [v7 setHidden:1];
+  stickerView2 = [(AVTStickerCollectionViewCell *)self stickerView];
+  [stickerView2 setHidden:1];
 
-  v8 = [(AVTStickerCollectionViewCell *)self stickerView];
-  [v8 setAlpha:0.0];
+  stickerView3 = [(AVTStickerCollectionViewCell *)self stickerView];
+  [stickerView3 setAlpha:0.0];
 }
 
-- (void)stickerViewDidBeginPeel:(id)a3
+- (void)stickerViewDidBeginPeel:(id)peel
 {
-  v4 = [(AVTStickerCollectionViewCell *)self delegate];
+  delegate = [(AVTStickerCollectionViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(AVTStickerCollectionViewCell *)self delegate];
-    [v5 stickerCellDidPeelSticker:self];
+    delegate2 = [(AVTStickerCollectionViewCell *)self delegate];
+    [delegate2 stickerCellDidPeelSticker:self];
   }
 }
 
-- (void)stickerViewWasTapped:(id)a3
+- (void)stickerViewWasTapped:(id)tapped
 {
-  v4 = [(AVTStickerCollectionViewCell *)self delegate];
+  delegate = [(AVTStickerCollectionViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(AVTStickerCollectionViewCell *)self delegate];
-    [v5 stickerCellDidTapSticker:self];
+    delegate2 = [(AVTStickerCollectionViewCell *)self delegate];
+    [delegate2 stickerCellDidTapSticker:self];
   }
 }
 

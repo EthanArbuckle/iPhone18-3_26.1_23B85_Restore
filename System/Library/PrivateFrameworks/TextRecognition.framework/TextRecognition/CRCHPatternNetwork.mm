@@ -1,49 +1,49 @@
 @interface CRCHPatternNetwork
-+ (BOOL)isFinalCursor:(id)a3 inNetwork:(id)a4;
-+ (id)cursorByAdvancingWithString:(id)a3 fromCursor:(id)a4 inNetwork:(id)a5;
-+ (id)rootCursorForContentType:(int)a3 inNetwork:(id)a4;
-- (CRCHPatternNetwork)initWithFile:(id)a3;
-- (id)advanceCursor:(id)a3 withSymbol:(unint64_t)a4;
++ (BOOL)isFinalCursor:(id)cursor inNetwork:(id)network;
++ (id)cursorByAdvancingWithString:(id)string fromCursor:(id)cursor inNetwork:(id)network;
++ (id)rootCursorForContentType:(int)type inNetwork:(id)network;
+- (CRCHPatternNetwork)initWithFile:(id)file;
+- (id)advanceCursor:(id)cursor withSymbol:(unint64_t)symbol;
 - (void)dealloc;
 @end
 
 @implementation CRCHPatternNetwork
 
-+ (id)rootCursorForContentType:(int)a3 inNetwork:(id)a4
++ (id)rootCursorForContentType:(int)type inNetwork:(id)network
 {
-  if (!a4)
+  if (!network)
   {
     return 0;
   }
 
-  v4 = *(a4 + 4);
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = *(network + 4);
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:*&type];
 
   return [v4 objectForKey:v5];
 }
 
-+ (id)cursorByAdvancingWithString:(id)a3 fromCursor:(id)a4 inNetwork:(id)a5
++ (id)cursorByAdvancingWithString:(id)string fromCursor:(id)cursor inNetwork:(id)network
 {
   result = 0;
-  if (a4)
+  if (cursor)
   {
-    if (a5)
+    if (network)
     {
-      result = [a4 edgeIndexCount];
+      result = [cursor edgeIndexCount];
       if (result)
       {
-        if ([a3 length])
+        if ([string length])
         {
-          v9 = [a3 rangeOfComposedCharacterSequenceAtIndex:0];
+          v9 = [string rangeOfComposedCharacterSequenceAtIndex:0];
           if (v10 <= 1)
           {
             v11 = v9;
             v12 = v10;
-            v13 = [a3 substringWithRange:{v9, v10}];
-            v14 = [a3 substringFromIndex:v11 + v12];
-            v15 = [a5 advanceCursor:a4 withSymbol:{objc_msgSend(v13, "characterAtIndex:", 0)}];
+            v13 = [string substringWithRange:{v9, v10}];
+            v14 = [string substringFromIndex:v11 + v12];
+            v15 = [network advanceCursor:cursor withSymbol:{objc_msgSend(v13, "characterAtIndex:", 0)}];
 
-            return [CRCHPatternNetwork cursorByAdvancingWithString:v14 fromCursor:v15 inNetwork:a5];
+            return [CRCHPatternNetwork cursorByAdvancingWithString:v14 fromCursor:v15 inNetwork:network];
           }
 
           else
@@ -54,7 +54,7 @@
 
         else
         {
-          return a4;
+          return cursor;
         }
       }
     }
@@ -63,15 +63,15 @@
   return result;
 }
 
-- (id)advanceCursor:(id)a3 withSymbol:(unint64_t)a4
+- (id)advanceCursor:(id)cursor withSymbol:(unint64_t)symbol
 {
   v14 = objc_alloc_init(CRCHNetworkCursor);
-  if ([a3 edgeIndexCount])
+  if ([cursor edgeIndexCount])
   {
     v7 = 0;
     do
     {
-      NetworkEdge::NetworkEdge(v19, (*(self->_network + 11) + 80 * [a3 edgeIndexAtPosition:v7]));
+      NetworkEdge::NetworkEdge(v19, (*(self->_network + 11) + 80 * [cursor edgeIndexAtPosition:v7]));
       v8 = v20;
       v9 = *(*(self->_network + 5) + 56 * v20);
       if (v9)
@@ -82,7 +82,7 @@
         while (1)
         {
           NetworkEdge::NetworkEdge(v15, (*(self->_network + 11) + 80 * *(*(self->_network + 5) + 56 * v8 + 16) + v10));
-          if (v16 == a4)
+          if (v16 == symbol)
           {
             break;
           }
@@ -119,24 +119,24 @@ LABEL_12:
       ++v7;
     }
 
-    while (v7 < [a3 edgeIndexCount]);
+    while (v7 < [cursor edgeIndexCount]);
   }
 
   return v14;
 }
 
-+ (BOOL)isFinalCursor:(id)a3 inNetwork:(id)a4
++ (BOOL)isFinalCursor:(id)cursor inNetwork:(id)network
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (cursor && network)
   {
-    if ([a3 edgeIndexCount])
+    if ([cursor edgeIndexCount])
     {
       v7 = 0;
       do
       {
-        NetworkEdge::NetworkEdge(v9, (*(*(a4 + 1) + 88) + 80 * [a3 edgeIndexAtPosition:v7]));
-        v4 = *(*(*(a4 + 1) + 40) + 56 * v9[1] + 48);
+        NetworkEdge::NetworkEdge(v9, (*(*(network + 1) + 88) + 80 * [cursor edgeIndexAtPosition:v7]));
+        v4 = *(*(*(network + 1) + 40) + 56 * v9[1] + 48);
         if (__p)
         {
           v11 = __p;
@@ -151,7 +151,7 @@ LABEL_12:
         ++v7;
       }
 
-      while (v7 < [a3 edgeIndexCount]);
+      while (v7 < [cursor edgeIndexCount]);
     }
 
     else
@@ -163,19 +163,19 @@ LABEL_12:
   return v4;
 }
 
-- (CRCHPatternNetwork)initWithFile:(id)a3
+- (CRCHPatternNetwork)initWithFile:(id)file
 {
   v63 = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = CRCHPatternNetwork;
   v4 = [(CRCHPatternNetwork *)&v57 init];
-  if (pathForResource([a3 UTF8String], 0, __s))
+  if (pathForResource([file UTF8String], 0, __s))
   {
     operator new();
   }
 
   v4->_symbols = +[CRCHPatternNetwork patternToSymbolMap];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = *(v4->_network + 11);
   if (*(v4->_network + 12) != v6)
   {
@@ -189,7 +189,7 @@ LABEL_12:
         v9 = -[NSDictionary objectForKey:](v4->_symbols, "objectForKey:", [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%07lx", v53]);
         if (v9)
         {
-          [v5 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLong:", v8), v9}];
+          [dictionary setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLong:", v8), v9}];
         }
       }
 
@@ -207,8 +207,8 @@ LABEL_12:
     while (v8 < 0xCCCCCCCCCCCCCCCDLL * ((*(v4->_network + 12) - v6) >> 4));
   }
 
-  v4->_startEdges = v5;
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  v4->_startEdges = dictionary;
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v11 = objc_alloc_init(CRCHNetworkCursor);
   v50 = 0u;
   v51 = 0u;
@@ -241,7 +241,7 @@ LABEL_12:
     while (v13);
   }
 
-  [v10 setObject:v11 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 1)}];
+  [dictionary2 setObject:v11 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 1)}];
   v17 = objc_alloc_init(CRCHNetworkCursor);
   v46 = 0u;
   v47 = 0u;
@@ -274,7 +274,7 @@ LABEL_12:
     while (v19);
   }
 
-  [v10 setObject:v17 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 0)}];
+  [dictionary2 setObject:v17 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 0)}];
   v23 = objc_alloc_init(CRCHNetworkCursor);
   v42 = 0u;
   v43 = 0u;
@@ -307,7 +307,7 @@ LABEL_12:
     while (v25);
   }
 
-  [v10 setObject:v23 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 2)}];
+  [dictionary2 setObject:v23 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 2)}];
   v29 = objc_alloc_init(CRCHNetworkCursor);
   v38 = 0u;
   v39 = 0u;
@@ -340,8 +340,8 @@ LABEL_12:
     while (v31);
   }
 
-  [v10 setObject:v29 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 3)}];
-  v4->_startCursorForContentTypes = v10;
+  [dictionary2 setObject:v29 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", 3)}];
+  v4->_startCursorForContentTypes = dictionary2;
   return v4;
 }
 

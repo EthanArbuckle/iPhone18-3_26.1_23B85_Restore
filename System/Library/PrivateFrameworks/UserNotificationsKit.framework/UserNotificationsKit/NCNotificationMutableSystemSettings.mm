@@ -1,12 +1,12 @@
 @interface NCNotificationMutableSystemSettings
-- (void)setScheduledDeliveryTimes:(id)a3;
+- (void)setScheduledDeliveryTimes:(id)times;
 @end
 
 @implementation NCNotificationMutableSystemSettings
 
-- (void)setScheduledDeliveryTimes:(id)a3
+- (void)setScheduledDeliveryTimes:(id)times
 {
-  self->super._scheduledDeliveryTimes = [a3 copy];
+  self->super._scheduledDeliveryTimes = [times copy];
 
   MEMORY[0x2821F96F8]();
 }

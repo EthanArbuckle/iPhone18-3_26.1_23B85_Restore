@@ -1,22 +1,22 @@
 @interface PXMockDisplayAsset
-+ (id)propertiesForImageWithSize:(CGSize)a3;
-+ (id)propertiesForLivePhotoWithSize:(CGSize)a3;
-+ (id)propertiesForVideoWithSize:(CGSize)a3;
++ (id)propertiesForImageWithSize:(CGSize)size;
++ (id)propertiesForLivePhotoWithSize:(CGSize)size;
++ (id)propertiesForVideoWithSize:(CGSize)size;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)livePhotoVideoDuration;
-- (BOOL)_BOOLValueForKey:(id)a3;
+- (BOOL)_BOOLValueForKey:(id)key;
 - (CGRect)acceptableCropRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (Class)defaultImageProviderClass;
 - (PXMockDisplayAsset)init;
-- (PXMockDisplayAsset)initWithProperties:(id)a3;
-- (double)_doubleValueForKey:(id)a3;
-- (float)_floatValueForKey:(id)a3;
-- (id)_dateValueForKey:(id)a3;
-- (id)_stringValueForKey:(id)a3;
-- (int64_t)_integerValueForKey:(id)a3;
-- (int64_t)isContentEqualTo:(id)a3;
-- (unint64_t)_unsignedIntegerValueForKey:(id)a3;
+- (PXMockDisplayAsset)initWithProperties:(id)properties;
+- (double)_doubleValueForKey:(id)key;
+- (float)_floatValueForKey:(id)key;
+- (id)_dateValueForKey:(id)key;
+- (id)_stringValueForKey:(id)key;
+- (int64_t)_integerValueForKey:(id)key;
+- (int64_t)isContentEqualTo:(id)to;
+- (unint64_t)_unsignedIntegerValueForKey:(id)key;
 @end
 
 @implementation PXMockDisplayAsset
@@ -75,10 +75,10 @@
   return result;
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  v4 = a3;
-  if (self == v4)
+  toCopy = to;
+  if (self == toCopy)
   {
     v8 = 2;
   }
@@ -88,15 +88,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXMockDisplayAsset *)self backingDictionary];
-      v7 = [(PXMockDisplayAsset *)v5 backingDictionary];
-      if (v6 == v7)
+      v5 = toCopy;
+      backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+      backingDictionary2 = [(PXMockDisplayAsset *)v5 backingDictionary];
+      if (backingDictionary == backingDictionary2)
       {
         v8 = 2;
       }
 
-      else if ([v6 isEqual:v7])
+      else if ([backingDictionary isEqual:backingDictionary2])
       {
         v8 = 2;
       }
@@ -116,11 +116,11 @@
   return v8;
 }
 
-- (id)_stringValueForKey:(id)a3
+- (id)_stringValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
@@ -130,19 +130,19 @@
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v7 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:122 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v11, v13}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:122 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:122 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:122 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v11}];
   }
 
 LABEL_3:
@@ -150,11 +150,11 @@ LABEL_3:
   return v7;
 }
 
-- (id)_dateValueForKey:(id)a3
+- (id)_dateValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
@@ -164,19 +164,19 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v7 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v11, v13}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v11}];
   }
 
 LABEL_3:
@@ -184,18 +184,18 @@ LABEL_3:
   return v7;
 }
 
-- (float)_floatValueForKey:(id)a3
+- (float)_floatValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v13}];
 LABEL_6:
 
     goto LABEL_3;
@@ -204,11 +204,11 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v7 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v13, v15}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v13, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -220,18 +220,18 @@ LABEL_3:
   return v9;
 }
 
-- (double)_doubleValueForKey:(id)a3
+- (double)_doubleValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v13}];
 LABEL_6:
 
     goto LABEL_3;
@@ -240,11 +240,11 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v7 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v13, v15}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v13, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -256,18 +256,18 @@ LABEL_3:
   return v9;
 }
 
-- (BOOL)_BOOLValueForKey:(id)a3
+- (BOOL)_BOOLValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:102 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:102 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
 LABEL_6:
 
     goto LABEL_3;
@@ -276,33 +276,33 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:102 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, v14}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:102 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (unint64_t)_unsignedIntegerValueForKey:(id)a3
+- (unint64_t)_unsignedIntegerValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
 LABEL_6:
 
     goto LABEL_3;
@@ -311,33 +311,33 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, v14}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (int64_t)_integerValueForKey:(id)a3
+- (int64_t)_integerValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = [(PXMockDisplayAsset *)self backingDictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  backingDictionary = [(PXMockDisplayAsset *)self backingDictionary];
+  v7 = [backingDictionary objectForKeyedSubscript:keyCopy];
 
   if (!v7)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.backingDictionary[key]", v12}];
 LABEL_6:
 
     goto LABEL_3;
@@ -346,28 +346,28 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, v14}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.backingDictionary[key]", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-- (PXMockDisplayAsset)initWithProperties:(id)a3
+- (PXMockDisplayAsset)initWithProperties:(id)properties
 {
-  v5 = a3;
-  if (!v5)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"properties"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockDisplayAsset.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"properties"}];
   }
 
   v11.receiver = self;
@@ -375,7 +375,7 @@ LABEL_3:
   v6 = [(PXMockDisplayAsset *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [propertiesCopy copy];
     backingDictionary = v6->_backingDictionary;
     v6->_backingDictionary = v7;
   }
@@ -385,22 +385,22 @@ LABEL_3:
 
 - (PXMockDisplayAsset)init
 {
-  v3 = [MEMORY[0x1E695DF20] dictionary];
-  v4 = [(PXMockDisplayAsset *)self initWithProperties:v3];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
+  v4 = [(PXMockDisplayAsset *)self initWithProperties:dictionary];
 
   return v4;
 }
 
-+ (id)propertiesForVideoWithSize:(CGSize)a3
++ (id)propertiesForVideoWithSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v9[4] = *MEMORY[0x1E69E9840];
   v8[0] = @"PXMockDisplayAssetMediaTypeKey";
   v8[1] = @"PXMockDisplayAssetPlaybackStyleKey";
   v9[0] = &unk_1F1909E98;
   v9[1] = &unk_1F1909EB0;
   v8[2] = @"PXMockDisplayAssetPixelWidthKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3.width];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size.width];
   v9[2] = v4;
   v8[3] = @"PXMockDisplayAssetPixelHeightKey";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:height];
@@ -410,9 +410,9 @@ LABEL_3:
   return v6;
 }
 
-+ (id)propertiesForLivePhotoWithSize:(CGSize)a3
++ (id)propertiesForLivePhotoWithSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v9[5] = *MEMORY[0x1E69E9840];
   v8[0] = @"PXMockDisplayAssetMediaTypeKey";
   v8[1] = @"PXMockDisplayAssetMediaSubtypesKey";
@@ -421,7 +421,7 @@ LABEL_3:
   v9[2] = &unk_1F1909E80;
   v8[2] = @"PXMockDisplayAssetPlaybackStyleKey";
   v8[3] = @"PXMockDisplayAssetPixelWidthKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3.width];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size.width];
   v9[3] = v4;
   v8[4] = @"PXMockDisplayAssetPixelHeightKey";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:height];
@@ -431,16 +431,16 @@ LABEL_3:
   return v6;
 }
 
-+ (id)propertiesForImageWithSize:(CGSize)a3
++ (id)propertiesForImageWithSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v9[4] = *MEMORY[0x1E69E9840];
   v8[0] = @"PXMockDisplayAssetMediaTypeKey";
   v8[1] = @"PXMockDisplayAssetPlaybackStyleKey";
   v9[0] = &unk_1F1909E50;
   v9[1] = &unk_1F1909E50;
   v8[2] = @"PXMockDisplayAssetPixelWidthKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3.width];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size.width];
   v9[2] = v4;
   v8[3] = @"PXMockDisplayAssetPixelHeightKey";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:height];

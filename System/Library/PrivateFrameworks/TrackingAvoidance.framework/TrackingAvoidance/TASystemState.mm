@@ -1,13 +1,13 @@
 @interface TASystemState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TASystemState)initWithCoder:(id)a3;
-- (TASystemState)initWithSystemStateType:(unint64_t)a3 isOn:(BOOL)a4 date:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TASystemState)initWithCoder:(id)coder;
+- (TASystemState)initWithSystemStateType:(unint64_t)type isOn:(BOOL)on date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TASystemState
@@ -26,9 +26,9 @@
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isOn];
   v13[2] = v6;
   v12[3] = @"Date";
-  v7 = [(TASystemState *)self date];
-  v8 = [v7 getDateString];
-  v13[3] = v8;
+  date = [(TASystemState *)self date];
+  getDateString = [date getDateString];
+  v13[3] = getDateString;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -38,9 +38,9 @@
 
 - (NSString)description
 {
-  v3 = [(TASystemState *)self descriptionDictionary];
+  descriptionDictionary = [(TASystemState *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -50,37 +50,37 @@
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (TASystemState)initWithSystemStateType:(unint64_t)a3 isOn:(BOOL)a4 date:(id)a5
+- (TASystemState)initWithSystemStateType:(unint64_t)type isOn:(BOOL)on date:(id)date
 {
-  v8 = a5;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = TASystemState;
   v9 = [(TASystemState *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    if (!v8)
+    if (!dateCopy)
     {
       v13 = 0;
       goto LABEL_6;
     }
 
-    v9->_systemStateType = a3;
-    v9->_isOn = a4;
-    v11 = [v8 copy];
+    v9->_systemStateType = type;
+    v9->_isOn = on;
+    v11 = [dateCopy copy];
     date = v10->_date;
     v10->_date = v11;
   }
@@ -93,18 +93,18 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(TASystemState *)self systemStateType];
-  v4 = [(TASystemState *)self isOn];
-  v5 = [(TASystemState *)self date];
-  v6 = v3 ^ [v5 hash];
+  systemStateType = [(TASystemState *)self systemStateType];
+  isOn = [(TASystemState *)self isOn];
+  date = [(TASystemState *)self date];
+  v6 = systemStateType ^ [date hash];
 
-  return v6 ^ v4;
+  return v6 ^ isOn;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -114,22 +114,22 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TASystemState *)self systemStateType];
-      if (v6 == [(TASystemState *)v5 systemStateType]&& (v7 = [(TASystemState *)self isOn], v7 == [(TASystemState *)v5 isOn]))
+      v5 = equalCopy;
+      systemStateType = [(TASystemState *)self systemStateType];
+      if (systemStateType == [(TASystemState *)v5 systemStateType]&& (v7 = [(TASystemState *)self isOn], v7 == [(TASystemState *)v5 isOn]))
       {
-        v9 = [(TASystemState *)self date];
-        v10 = [(TASystemState *)v5 date];
-        if (v9 == v10)
+        date = [(TASystemState *)self date];
+        date2 = [(TASystemState *)v5 date];
+        if (date == date2)
         {
           v8 = 1;
         }
 
         else
         {
-          v11 = [(TASystemState *)self date];
-          v12 = [(TASystemState *)v5 date];
-          v8 = [v11 isEqual:v12];
+          date3 = [(TASystemState *)self date];
+          date4 = [(TASystemState *)v5 date];
+          v8 = [date3 isEqual:date4];
         }
       }
 
@@ -148,7 +148,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TASystemState alloc];
   isOn = self->_isOn;
@@ -158,32 +158,32 @@ LABEL_6:
   return [(TASystemState *)v4 initWithSystemStateType:systemStateType isOn:isOn date:date];
 }
 
-- (TASystemState)initWithCoder:(id)a3
+- (TASystemState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"SystemStateType"];
-  v6 = [v4 decodeBoolForKey:@"IsOn"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"SystemStateType"];
+  v6 = [coderCopy decodeBoolForKey:@"IsOn"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
 
   v8 = [(TASystemState *)self initWithSystemStateType:v5 isOn:v6 date:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   systemStateType = self->_systemStateType;
-  v5 = a3;
-  [v5 encodeInteger:systemStateType forKey:@"SystemStateType"];
-  [v5 encodeBool:self->_isOn forKey:@"IsOn"];
-  [v5 encodeObject:self->_date forKey:@"Date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:systemStateType forKey:@"SystemStateType"];
+  [coderCopy encodeBool:self->_isOn forKey:@"IsOn"];
+  [coderCopy encodeObject:self->_date forKey:@"Date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }

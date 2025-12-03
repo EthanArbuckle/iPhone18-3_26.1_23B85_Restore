@@ -1,7 +1,7 @@
 @interface NotificationConsentViewController
-- (_TtC9SeymourUI33NotificationConsentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI33NotificationConsentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTapContinueButton;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -9,27 +9,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   NotificationConsentViewController.viewDidLoad()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   NotificationConsentViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)didTapContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BFCB4A4();
 }
 
-- (_TtC9SeymourUI33NotificationConsentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI33NotificationConsentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

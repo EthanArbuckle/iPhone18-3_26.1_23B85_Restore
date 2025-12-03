@@ -1,5 +1,5 @@
 @interface MKPlaceCollectionImageDownloadOperation
-- (MKPlaceCollectionImageDownloadOperation)initWithUrl:(id)a3 downloadCache:(id)a4 cacheId:(id)a5;
+- (MKPlaceCollectionImageDownloadOperation)initWithUrl:(id)url downloadCache:(id)cache cacheId:(id)id;
 - (NSCache)downloadCache;
 - (void)cancel;
 - (void)main;
@@ -18,8 +18,8 @@
 
 - (void)cancel
 {
-  v3 = [(MKPlaceCollectionImageDownloadOperation *)self downloadTask];
-  [v3 cancel];
+  downloadTask = [(MKPlaceCollectionImageDownloadOperation *)self downloadTask];
+  [downloadTask cancel];
 
   v4.receiver = self;
   v4.super_class = MKPlaceCollectionImageDownloadOperation;
@@ -32,9 +32,9 @@
   v3 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MKPlaceCollectionImageDownloadOperation *)self name];
+    name = [(MKPlaceCollectionImageDownloadOperation *)self name];
     v5 = 138412290;
-    v6 = v4;
+    v6 = name;
     _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_DEBUG, "Download operation finished %@", &v5, 0xCu);
   }
 
@@ -49,18 +49,18 @@
 - (void)main
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlaceCollectionImageDownloadOperation *)self downloadCache];
-  v4 = [(MKPlaceCollectionImageDownloadOperation *)self cacheId];
-  v5 = [v3 objectForKey:v4];
+  downloadCache = [(MKPlaceCollectionImageDownloadOperation *)self downloadCache];
+  cacheId = [(MKPlaceCollectionImageDownloadOperation *)self cacheId];
+  v5 = [downloadCache objectForKey:cacheId];
 
   if (v5)
   {
     v6 = MKGetCuratedCollectionsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(MKPlaceCollectionImageDownloadOperation *)self name];
+      name = [(MKPlaceCollectionImageDownloadOperation *)self name];
       *buf = 138412290;
-      v23 = v7;
+      v23 = name;
       _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "[!]Download cache already has image: %@", buf, 0xCu);
     }
 
@@ -74,16 +74,16 @@
     v10 = [v8 initWithURL:v9 cachePolicy:2 timeoutInterval:15.0];
 
     objc_initWeak(&location, self);
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [MEMORY[0x1E696AF78] sharedSession];
+    date = [MEMORY[0x1E695DF00] date];
+    mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __47__MKPlaceCollectionImageDownloadOperation_main__block_invoke;
     v18[3] = &unk_1E76C8C28;
     objc_copyWeak(&v20, &location);
-    v13 = v11;
+    v13 = date;
     v19 = v13;
-    v14 = [v12 dataTaskWithRequest:v10 completionHandler:v18];
+    v14 = [mEMORY[0x1E696AF78] dataTaskWithRequest:v10 completionHandler:v18];
     downloadTask = self->_downloadTask;
     self->_downloadTask = v14;
 
@@ -92,9 +92,9 @@
       v16 = MKGetCuratedCollectionsLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [(MKPlaceCollectionImageDownloadOperation *)self cacheId];
+        cacheId2 = [(MKPlaceCollectionImageDownloadOperation *)self cacheId];
         *buf = 138412290;
-        v23 = v17;
+        v23 = cacheId2;
         _os_log_impl(&dword_1A2EA0000, v16, OS_LOG_TYPE_DEBUG, "Download Operation is cancelled for: %@", buf, 0xCu);
       }
     }
@@ -211,21 +211,21 @@ LABEL_13:
   }
 }
 
-- (MKPlaceCollectionImageDownloadOperation)initWithUrl:(id)a3 downloadCache:(id)a4 cacheId:(id)a5
+- (MKPlaceCollectionImageDownloadOperation)initWithUrl:(id)url downloadCache:(id)cache cacheId:(id)id
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  urlCopy = url;
+  cacheCopy = cache;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = MKPlaceCollectionImageDownloadOperation;
   v12 = [(MKPlaceCollectionImageDownloadOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeWeak(&v13->_downloadCache, v10);
-    objc_storeStrong(&v13->_cacheId, a5);
-    [(MKPlaceCollectionImageDownloadOperation *)v13 setName:v11];
+    objc_storeStrong(&v12->_url, url);
+    objc_storeWeak(&v13->_downloadCache, cacheCopy);
+    objc_storeStrong(&v13->_cacheId, id);
+    [(MKPlaceCollectionImageDownloadOperation *)v13 setName:idCopy];
     v13->_executing = 0;
     v13->_finished = 0;
   }

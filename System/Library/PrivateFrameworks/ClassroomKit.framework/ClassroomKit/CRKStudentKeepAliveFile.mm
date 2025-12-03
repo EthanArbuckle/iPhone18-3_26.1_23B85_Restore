@@ -1,7 +1,7 @@
 @interface CRKStudentKeepAliveFile
 + (id)fileURL;
-- (BOOL)createWithError:(id *)a3;
-- (BOOL)deleteWithError:(id *)a3;
+- (BOOL)createWithError:(id *)error;
+- (BOOL)deleteWithError:(id *)error;
 - (BOOL)exists;
 - (CRKStudentKeepAliveFile)init;
 @end
@@ -16,8 +16,8 @@
   if (v2)
   {
     v3 = [CRKFileBackedMarker alloc];
-    v4 = [objc_opt_class() fileURL];
-    v5 = [(CRKFileBackedMarker *)v3 initWithFileURL:v4];
+    fileURL = [objc_opt_class() fileURL];
+    v5 = [(CRKFileBackedMarker *)v3 initWithFileURL:fileURL];
     fileMarker = v2->_fileMarker;
     v2->_fileMarker = v5;
   }
@@ -27,32 +27,32 @@
 
 - (BOOL)exists
 {
-  v2 = [(CRKStudentKeepAliveFile *)self fileMarker];
-  v3 = [v2 exists];
+  fileMarker = [(CRKStudentKeepAliveFile *)self fileMarker];
+  exists = [fileMarker exists];
 
-  return v3;
+  return exists;
 }
 
-- (BOOL)createWithError:(id *)a3
+- (BOOL)createWithError:(id *)error
 {
-  v4 = [(CRKStudentKeepAliveFile *)self fileMarker];
-  LOBYTE(a3) = [v4 createWithError:a3];
+  fileMarker = [(CRKStudentKeepAliveFile *)self fileMarker];
+  LOBYTE(error) = [fileMarker createWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
-  v4 = [(CRKStudentKeepAliveFile *)self fileMarker];
-  LOBYTE(a3) = [v4 deleteWithError:a3];
+  fileMarker = [(CRKStudentKeepAliveFile *)self fileMarker];
+  LOBYTE(error) = [fileMarker deleteWithError:error];
 
-  return a3;
+  return error;
 }
 
 + (id)fileURL
 {
-  v2 = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Library/studentd/isConnected"];
+  crk_nonContainerizedHomeDirectoryURL = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
+  v3 = [crk_nonContainerizedHomeDirectoryURL URLByAppendingPathComponent:@"Library/studentd/isConnected"];
 
   return v3;
 }

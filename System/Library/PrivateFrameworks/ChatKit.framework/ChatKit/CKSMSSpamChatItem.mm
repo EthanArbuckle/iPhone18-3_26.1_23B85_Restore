@@ -1,27 +1,27 @@
 @interface CKSMSSpamChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (id)getTranscriptTextForExtensionName:(id)a3;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (id)getTranscriptTextForExtensionName:(id)name;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKSMSSpamChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [(CKSMSSpamChatItem *)self loadTranscriptText];
-  [v9 boundingRectWithSize:1 options:0 context:{width, height}];
+  loadTranscriptText = [(CKSMSSpamChatItem *)self loadTranscriptText];
+  [loadTranscriptText boundingRectWithSize:1 options:0 context:{width, height}];
   v11 = v10;
 
   [v8 transcriptBoldTextAlignmentInsets];
-  if (a4)
+  if (insets)
   {
-    a4->top = v12;
-    a4->left = v13;
-    a4->bottom = v14;
-    a4->right = v15;
+    insets->top = v12;
+    insets->left = v13;
+    insets->bottom = v14;
+    insets->right = v15;
   }
 
   v16 = 0.0;
@@ -34,32 +34,32 @@
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v3 transcriptEmphasizedFontAttributes];
 
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 extensionName];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  extensionName = [iMChatItem extensionName];
 
-  v7 = [(CKSMSSpamChatItem *)self getTranscriptTextForExtensionName:v6];
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v4];
+  v7 = [(CKSMSSpamChatItem *)self getTranscriptTextForExtensionName:extensionName];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:transcriptEmphasizedFontAttributes];
 
   return v8;
 }
 
-- (id)getTranscriptTextForExtensionName:(id)a3
+- (id)getTranscriptTextForExtensionName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = CKFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"FILTERED_BY_APP_NAME" value:&stru_1F04268F8 table:@"ChatKit"];
     v8 = [v5 stringWithFormat:v7, v4];
 
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v11 = @"\u200F";
     }

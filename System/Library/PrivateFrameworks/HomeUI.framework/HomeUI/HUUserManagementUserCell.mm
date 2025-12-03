@@ -1,26 +1,26 @@
 @interface HUUserManagementUserCell
-- (HUUserManagementUserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUUserManagementUserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setDisplayName:(id)a3;
-- (void)setInvitationStatusString:(id)a3;
+- (void)setDisplayName:(id)name;
+- (void)setInvitationStatusString:(id)string;
 @end
 
 @implementation HUUserManagementUserCell
 
-- (HUUserManagementUserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUUserManagementUserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = HUUserManagementUserCell;
-  v4 = [(HUUserManagementUserCell *)&v10 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HUUserManagementUserCell *)&v10 initWithStyle:1 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] labelColor];
-    v6 = [(HUUserManagementUserCell *)v4 textLabel];
-    [v6 setTextColor:v5];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    textLabel = [(HUUserManagementUserCell *)v4 textLabel];
+    [textLabel setTextColor:labelColor];
 
-    v7 = [MEMORY[0x277D75348] systemLightGrayColor];
-    v8 = [(HUUserManagementUserCell *)v4 detailTextLabel];
-    [v8 setTextColor:v7];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    detailTextLabel = [(HUUserManagementUserCell *)v4 detailTextLabel];
+    [detailTextLabel setTextColor:systemLightGrayColor];
 
     [(HUUserManagementUserCell *)v4 setAccessoryType:1];
     [(HUUserManagementUserCell *)v4 setSelectionStyle:3];
@@ -29,31 +29,31 @@
   return v4;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v5 = a3;
-  if (self->_displayName != v5)
+  nameCopy = name;
+  if (self->_displayName != nameCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_displayName, a3);
-    v6 = [(HUUserManagementUserCell *)self textLabel];
-    [v6 setText:v7];
+    v7 = nameCopy;
+    objc_storeStrong(&self->_displayName, name);
+    textLabel = [(HUUserManagementUserCell *)self textLabel];
+    [textLabel setText:v7];
 
-    v5 = v7;
+    nameCopy = v7;
   }
 }
 
-- (void)setInvitationStatusString:(id)a3
+- (void)setInvitationStatusString:(id)string
 {
-  v5 = a3;
-  if (self->_invitationStatusString != v5)
+  stringCopy = string;
+  if (self->_invitationStatusString != stringCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_invitationStatusString, a3);
-    v6 = [(HUUserManagementUserCell *)self detailTextLabel];
-    [v6 setText:v7];
+    v7 = stringCopy;
+    objc_storeStrong(&self->_invitationStatusString, string);
+    detailTextLabel = [(HUUserManagementUserCell *)self detailTextLabel];
+    [detailTextLabel setText:v7];
 
-    v5 = v7;
+    stringCopy = v7;
   }
 }
 
@@ -62,15 +62,15 @@
   v13.receiver = self;
   v13.super_class = HUUserManagementUserCell;
   [(HUUserManagementUserCell *)&v13 layoutSubviews];
-  v3 = [(HUUserManagementUserCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(HUUserManagementUserCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(HUUserManagementUserCell *)self textLabel];
-  [v12 setFrame:{v5, v7 + -1.0, v9, v11}];
+  textLabel2 = [(HUUserManagementUserCell *)self textLabel];
+  [textLabel2 setFrame:{v5, v7 + -1.0, v9, v11}];
 }
 
 @end

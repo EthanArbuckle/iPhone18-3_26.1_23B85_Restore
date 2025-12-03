@@ -1,8 +1,8 @@
 @interface _POJWTBodyBase
 - (NSString)description;
 - (_POJWTBodyBase)init;
-- (_POJWTBodyBase)initWithDictionary:(id)a3;
-- (_POJWTBodyBase)initWithJWTData:(id)a3;
+- (_POJWTBodyBase)initWithDictionary:(id)dictionary;
+- (_POJWTBodyBase)initWithJWTData:(id)data;
 - (id)dataRepresentation;
 @end
 
@@ -23,16 +23,16 @@
   return v2;
 }
 
-- (_POJWTBodyBase)initWithJWTData:(id)a3
+- (_POJWTBodyBase)initWithJWTData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = _POJWTBodyBase;
   v5 = [(_POJWTBodyBase *)&v17 init];
   if (v5)
   {
     v16 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:17 error:&v16];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:17 error:&v16];
     v7 = v16;
     v8 = v7;
     if (!v6)
@@ -59,15 +59,15 @@ LABEL_6:
   return v10;
 }
 
-- (_POJWTBodyBase)initWithDictionary:(id)a3
+- (_POJWTBodyBase)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _POJWTBodyBase;
   v5 = [(_POJWTBodyBase *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     data = v5->_data;
     v5->_data = v6;
   }

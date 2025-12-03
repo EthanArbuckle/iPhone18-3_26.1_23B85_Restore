@@ -1,17 +1,17 @@
 @interface MBErrorInjectorDrive
-+ (id)keysFromDictionary:(id)a3 toIndex:(unint64_t)a4;
-+ (id)subdictionary:(id)a3 toIndex:(unint64_t)a4;
-+ (id)subdictionary:(id)a3 withKeys:(id)a4;
-+ (unint64_t)subcountForOperation:(id)a3;
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)createDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)keysFromDictionary:(id)dictionary toIndex:(unint64_t)index;
++ (id)subdictionary:(id)subdictionary toIndex:(unint64_t)index;
++ (id)subdictionary:(id)subdictionary withKeys:(id)keys;
++ (unint64_t)subcountForOperation:(id)operation;
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)createDirectoryAtPath:(id)path options:(id)options error:(id *)error;
 - (BOOL)done;
-- (BOOL)downloadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)moveItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)removeItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)uploadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (MBErrorInjectorDrive)initWithScript:(id)a3 delegate:(id)a4 index:(unint64_t)a5 subindex:(unint64_t)a6;
-- (id)contentsOfDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)downloadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)moveItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)removeItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)uploadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (MBErrorInjectorDrive)initWithScript:(id)script delegate:(id)delegate index:(unint64_t)index subindex:(unint64_t)subindex;
+- (id)contentsOfDirectoryAtPath:(id)path options:(id)options error:(id *)error;
 - (unint64_t)nextIndex;
 - (unint64_t)nextSubindex;
 - (unint64_t)subcount;
@@ -19,14 +19,14 @@
 
 @implementation MBErrorInjectorDrive
 
-+ (unint64_t)subcountForOperation:(id)a3
++ (unint64_t)subcountForOperation:(id)operation
 {
-  v5 = a3;
-  v6 = [v5 type];
-  if (v6 > 6)
+  operationCopy = operation;
+  type = [operationCopy type];
+  if (type > 6)
   {
     v9 = +[NSAssertionHandler currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"MBErrorInjectorDrive.m" lineNumber:38 description:{@"Unexpected operation type: %d", objc_msgSend(v5, "type")}];
+    [v9 handleFailureInMethod:a2 object:self file:@"MBErrorInjectorDrive.m" lineNumber:38 description:{@"Unexpected operation type: %d", objc_msgSend(operationCopy, "type")}];
 
     v7 = 0;
   }
@@ -34,11 +34,11 @@
   else
   {
     v7 = 1;
-    if (((1 << v6) & 0x43) == 0)
+    if (((1 << type) & 0x43) == 0)
     {
-      if (((1 << v6) & 0xC) != 0)
+      if (((1 << type) & 0xC) != 0)
       {
-        v7 = 2 * [v5 count];
+        v7 = 2 * [operationCopy count];
         if (v7 <= 1)
         {
           v7 = 1;
@@ -47,7 +47,7 @@
 
       else
       {
-        v8 = [v5 count];
+        v8 = [operationCopy count];
         if (v8 <= 1)
         {
           v7 = 1;
@@ -66,32 +66,32 @@
   return v10;
 }
 
-+ (id)keysFromDictionary:(id)a3 toIndex:(unint64_t)a4
++ (id)keysFromDictionary:(id)dictionary toIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([v5 count] <= a4)
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count] <= index)
   {
     sub_10009EDAC();
   }
 
-  v6 = [v5 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:"compare:"];
+  allKeys = [dictionaryCopy allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:"compare:"];
 
-  v8 = [v7 subarrayWithRange:{0, a4}];
+  v8 = [v7 subarrayWithRange:{0, index}];
 
   return v8;
 }
 
-+ (id)subdictionary:(id)a3 withKeys:(id)a4
++ (id)subdictionary:(id)subdictionary withKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
+  subdictionaryCopy = subdictionary;
+  keysCopy = keys;
+  v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [keysCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -107,7 +107,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:{v13, v16}];
+        v14 = [subdictionaryCopy objectForKeyedSubscript:{v13, v16}];
         [v7 setObject:v14 forKeyedSubscript:v13];
       }
 
@@ -120,35 +120,35 @@
   return v7;
 }
 
-+ (id)subdictionary:(id)a3 toIndex:(unint64_t)a4
++ (id)subdictionary:(id)subdictionary toIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [MBErrorInjectorDrive keysFromDictionary:v5 toIndex:a4];
-  v7 = [MBErrorInjectorDrive subdictionary:v5 withKeys:v6];
+  subdictionaryCopy = subdictionary;
+  v6 = [MBErrorInjectorDrive keysFromDictionary:subdictionaryCopy toIndex:index];
+  v7 = [MBErrorInjectorDrive subdictionary:subdictionaryCopy withKeys:v6];
 
   return v7;
 }
 
-- (MBErrorInjectorDrive)initWithScript:(id)a3 delegate:(id)a4 index:(unint64_t)a5 subindex:(unint64_t)a6
+- (MBErrorInjectorDrive)initWithScript:(id)script delegate:(id)delegate index:(unint64_t)index subindex:(unint64_t)subindex
 {
-  v11 = a3;
-  v12 = a4;
+  scriptCopy = script;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = MBErrorInjectorDrive;
   v13 = [(MBErrorInjectorDrive *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_script, a3);
-    objc_storeStrong(&v14->_delegate, a4);
-    v14->_index = a5;
-    if ([(MBErrorInjectorDrive *)v14 count]<= a5)
+    objc_storeStrong(&v13->_script, script);
+    objc_storeStrong(&v14->_delegate, delegate);
+    v14->_index = index;
+    if ([(MBErrorInjectorDrive *)v14 count]<= index)
     {
       sub_10009EE18();
     }
 
-    v14->_subindex = a6;
-    if ([(MBErrorInjectorDrive *)v14 subcount]<= a6)
+    v14->_subindex = subindex;
+    if ([(MBErrorInjectorDrive *)v14 subcount]<= subindex)
     {
       sub_10009EE74();
     }
@@ -159,22 +159,22 @@
 
 - (BOOL)done
 {
-  v3 = [(MBErrorInjectorDrive *)self index];
-  if (v3 != [(MBErrorInjectorDrive *)self count]- 1)
+  index = [(MBErrorInjectorDrive *)self index];
+  if (index != [(MBErrorInjectorDrive *)self count]- 1)
   {
     return 0;
   }
 
-  v4 = [(MBErrorInjectorDrive *)self subindex];
-  return v4 == [(MBErrorInjectorDrive *)self subcount]- 1;
+  subindex = [(MBErrorInjectorDrive *)self subindex];
+  return subindex == [(MBErrorInjectorDrive *)self subcount]- 1;
 }
 
 - (unint64_t)nextIndex
 {
-  v3 = [(MBErrorInjectorDrive *)self subindex];
+  subindex = [(MBErrorInjectorDrive *)self subindex];
   v4 = [(MBErrorInjectorDrive *)self subcount]- 1;
   result = [(MBErrorInjectorDrive *)self index];
-  if (v3 == v4)
+  if (subindex == v4)
   {
     ++result;
   }
@@ -184,8 +184,8 @@
 
 - (unint64_t)nextSubindex
 {
-  v3 = [(MBErrorInjectorDrive *)self subindex];
-  if (v3 == [(MBErrorInjectorDrive *)self subcount]- 1)
+  subindex = [(MBErrorInjectorDrive *)self subindex];
+  if (subindex == [(MBErrorInjectorDrive *)self subcount]- 1)
   {
     return 0;
   }
@@ -204,16 +204,16 @@
   return v3;
 }
 
-- (BOOL)createDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)createDirectoryAtPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
-    if (a5)
+    if (error)
     {
       [MBError errorWithCode:100 format:@"Simulated I/O error"];
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -224,22 +224,22 @@
 
   else
   {
-    v10 = [(MBDrive *)self->_delegate createDirectoryAtPath:v8 options:v9 error:a5];
+    v10 = [(MBDrive *)self->_delegate createDirectoryAtPath:pathCopy options:optionsCopy error:error];
   }
 
   return v10;
 }
 
-- (id)contentsOfDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (id)contentsOfDirectoryAtPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
-    if (a5)
+    if (error)
     {
       [MBError errorWithCode:100 format:@"Simulated I/O error"];
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -250,23 +250,23 @@
 
   else
   {
-    v10 = [(MBDrive *)self->_delegate contentsOfDirectoryAtPath:v8 options:v9 error:a5];
+    v10 = [(MBDrive *)self->_delegate contentsOfDirectoryAtPath:pathCopy options:optionsCopy error:error];
   }
 
   return v10;
 }
 
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  toPathCopy = toPath;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
-    if (a6)
+    if (error)
     {
       [MBError errorWithCode:100 format:@"Simulated I/O error"];
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -277,45 +277,45 @@
 
   else
   {
-    v13 = [(MBDrive *)self->_delegate copyItemAtPath:v10 toPath:v11 options:v12 error:a6];
+    v13 = [(MBDrive *)self->_delegate copyItemAtPath:pathCopy toPath:toPathCopy options:optionsCopy error:error];
   }
 
   return v13;
 }
 
-- (BOOL)uploadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)uploadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pathsCopy = paths;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
     subindex = self->_subindex;
-    if (subindex >= 2 * [v10 count])
+    if (subindex >= 2 * [pathsCopy count])
     {
       sub_10009EED0();
     }
 
-    v13 = [v10 allKeys];
-    v14 = [v13 sortedArrayUsingSelector:"compare:"];
+    allKeys = [pathsCopy allKeys];
+    v14 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     v15 = [v14 subarrayWithRange:{0, self->_subindex >> 1}];
-    v16 = [MBErrorInjectorDrive subdictionary:v10 withKeys:v15];
+    v16 = [MBErrorInjectorDrive subdictionary:pathsCopy withKeys:v15];
     v17 = self->_subindex;
     if (v17)
     {
       [v14 objectAtIndexedSubscript:v17 >> 1];
-      v18 = v24 = a5;
-      v19 = [v10 objectForKeyedSubscript:v18];
+      v18 = v24 = results;
+      v19 = [pathsCopy objectForKeyedSubscript:v18];
       v20 = [v19 stringByAppendingPathExtension:kMBUploadFileExtension];
 
       [v16 setObject:v20 forKeyedSubscript:v18];
-      a5 = v24;
+      results = v24;
     }
 
-    v21 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v16 options:v11 results:a5 error:a6];
-    if (a6 && v21)
+    v21 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v16 options:optionsCopy results:results error:error];
+    if (error && v21)
     {
-      *a6 = [MBError errorWithCode:100 format:@"Simulated I/O error"];
+      *error = [MBError errorWithCode:100 format:@"Simulated I/O error"];
     }
 
     v22 = 0;
@@ -323,29 +323,29 @@
 
   else
   {
-    v22 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v10 options:v11 results:a5 error:a6];
+    v22 = [(MBDrive *)self->_delegate uploadFilesAtPaths:pathsCopy options:optionsCopy results:results error:error];
   }
 
   return v22;
 }
 
-- (BOOL)downloadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)downloadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pathsCopy = paths;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
     subindex = self->_subindex;
-    if (subindex >= [v10 count])
+    if (subindex >= [pathsCopy count])
     {
       sub_10009EF3C();
     }
 
-    v13 = [MBErrorInjectorDrive subdictionary:v10 toIndex:self->_subindex];
-    v14 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v13 options:v11 results:a5 error:a6];
-    if (a6 && v14)
+    v13 = [MBErrorInjectorDrive subdictionary:pathsCopy toIndex:self->_subindex];
+    v14 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v13 options:optionsCopy results:results error:error];
+    if (error && v14)
     {
-      *a6 = [MBError errorWithCode:100 format:@"Simulated I/O error"];
+      *error = [MBError errorWithCode:100 format:@"Simulated I/O error"];
     }
 
     v15 = 0;
@@ -353,29 +353,29 @@
 
   else
   {
-    v15 = [(MBDrive *)self->_delegate uploadFilesAtPaths:v10 options:v11 results:a5 error:a6];
+    v15 = [(MBDrive *)self->_delegate uploadFilesAtPaths:pathsCopy options:optionsCopy results:results error:error];
   }
 
   return v15;
 }
 
-- (BOOL)moveItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)moveItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pathsCopy = paths;
+  optionsCopy = options;
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
     subindex = self->_subindex;
-    if (subindex >= [v10 count])
+    if (subindex >= [pathsCopy count])
     {
       sub_10009EFA8();
     }
 
-    v13 = [MBErrorInjectorDrive subdictionary:v10 toIndex:self->_subindex];
-    v14 = [(MBDrive *)self->_delegate moveItemsAtPaths:v13 options:v11 results:a5 error:a6];
-    if (a6 && v14)
+    v13 = [MBErrorInjectorDrive subdictionary:pathsCopy toIndex:self->_subindex];
+    v14 = [(MBDrive *)self->_delegate moveItemsAtPaths:v13 options:optionsCopy results:results error:error];
+    if (error && v14)
     {
-      *a6 = [MBError errorWithCode:100 format:@"Simulated I/O error"];
+      *error = [MBError errorWithCode:100 format:@"Simulated I/O error"];
     }
 
     v15 = 0;
@@ -383,54 +383,54 @@
 
   else
   {
-    v15 = [(MBDrive *)self->_delegate moveItemsAtPaths:v10 options:v11 results:a5 error:a6];
+    v15 = [(MBDrive *)self->_delegate moveItemsAtPaths:pathsCopy options:optionsCopy results:results error:error];
   }
 
   return v15;
 }
 
-- (BOOL)removeItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)removeItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pathsCopy = paths;
+  optionsCopy = options;
   v12 = MBGetDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(MBDriveScript *)self->_script index];
+    index = [(MBDriveScript *)self->_script index];
     index = self->_index;
     subindex = self->_subindex;
     *buf = 138413058;
-    v27 = v10;
+    v27 = pathsCopy;
     v28 = 2048;
-    v29 = v13;
+    v29 = index;
     v30 = 2048;
     v31 = index;
     v32 = 2048;
     v33 = subindex;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[MBErrorInjectorDrive remoteItemsAtPath:%@]: %lu %lu %lu", buf, 0x2Au);
-    v16 = [(MBDriveScript *)self->_script index];
+    index2 = [(MBDriveScript *)self->_script index];
     v24 = self->_index;
     v25 = self->_subindex;
-    v22 = v10;
-    v23 = v16;
+    v22 = pathsCopy;
+    v23 = index2;
     _MBLog();
   }
 
   if ([(MBDriveScript *)self->_script index]== self->_index)
   {
-    if ([v10 count])
+    if ([pathsCopy count])
     {
       v17 = self->_subindex;
-      if (v17 >= [v10 count])
+      if (v17 >= [pathsCopy count])
       {
         sub_10009F014();
       }
 
-      v18 = [v10 subarrayWithRange:{0, self->_subindex, v22, v23, v24, v25}];
-      v19 = [(MBDrive *)self->_delegate removeItemsAtPaths:v18 options:v11 results:a5 error:a6];
-      if (a6 && v19)
+      v18 = [pathsCopy subarrayWithRange:{0, self->_subindex, v22, v23, v24, v25}];
+      v19 = [(MBDrive *)self->_delegate removeItemsAtPaths:v18 options:optionsCopy results:results error:error];
+      if (error && v19)
       {
-        *a6 = [MBError errorWithCode:100 format:@"Simulated I/O error"];
+        *error = [MBError errorWithCode:100 format:@"Simulated I/O error"];
       }
 
       v20 = 0;
@@ -444,7 +444,7 @@
 
   else
   {
-    v20 = [(MBDrive *)self->_delegate removeItemsAtPaths:v10 options:v11 results:a5 error:a6];
+    v20 = [(MBDrive *)self->_delegate removeItemsAtPaths:pathsCopy options:optionsCopy results:results error:error];
   }
 
   return v20;

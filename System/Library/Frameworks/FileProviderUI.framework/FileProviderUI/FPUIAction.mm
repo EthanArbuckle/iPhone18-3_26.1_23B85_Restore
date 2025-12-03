@@ -1,17 +1,17 @@
 @interface FPUIAction
-- (FPUIAction)initWithIdentifier:(id)a3 uiActionProviderIdentifier:(id)a4 fileProviderIdentifier:(id)a5 displayName:(id)a6 predicate:(id)a7 displayInline:(BOOL)a8 isNonUIAction:(BOOL)a9;
+- (FPUIAction)initWithIdentifier:(id)identifier uiActionProviderIdentifier:(id)providerIdentifier fileProviderIdentifier:(id)fileProviderIdentifier displayName:(id)name predicate:(id)predicate displayInline:(BOOL)inline isNonUIAction:(BOOL)action;
 @end
 
 @implementation FPUIAction
 
-- (FPUIAction)initWithIdentifier:(id)a3 uiActionProviderIdentifier:(id)a4 fileProviderIdentifier:(id)a5 displayName:(id)a6 predicate:(id)a7 displayInline:(BOOL)a8 isNonUIAction:(BOOL)a9
+- (FPUIAction)initWithIdentifier:(id)identifier uiActionProviderIdentifier:(id)providerIdentifier fileProviderIdentifier:(id)fileProviderIdentifier displayName:(id)name predicate:(id)predicate displayInline:(BOOL)inline isNonUIAction:(BOOL)action
 {
   v10.receiver = self;
   v10.super_class = FPUIAction;
-  result = [(UIDocumentBrowserActionDescriptor *)&v10 initWithIdentifier:a3 uiActionProviderIdentifier:a4 fileProviderIdentifier:a5 displayName:a6 predicate:a7 displayInline:a6 != 0];
+  result = [(UIDocumentBrowserActionDescriptor *)&v10 initWithIdentifier:identifier uiActionProviderIdentifier:providerIdentifier fileProviderIdentifier:fileProviderIdentifier displayName:name predicate:predicate displayInline:name != 0];
   if (result)
   {
-    result->_isNonUIAction = a9;
+    result->_isNonUIAction = action;
   }
 
   return result;

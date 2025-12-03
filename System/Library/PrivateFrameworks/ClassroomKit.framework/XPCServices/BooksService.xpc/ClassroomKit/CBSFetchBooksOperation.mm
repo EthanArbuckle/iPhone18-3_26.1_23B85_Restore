@@ -1,23 +1,23 @@
 @interface CBSFetchBooksOperation
-- (CBSFetchBooksOperation)initWithRequest:(id)a3;
+- (CBSFetchBooksOperation)initWithRequest:(id)request;
 - (void)finishOperation;
-- (void)parseBookMetadataOperationDidFail:(id)a3;
-- (void)parsePDFMetadataOperationDidFail:(id)a3;
+- (void)parseBookMetadataOperationDidFail:(id)fail;
+- (void)parsePDFMetadataOperationDidFail:(id)fail;
 - (void)run;
 @end
 
 @implementation CBSFetchBooksOperation
 
-- (CBSFetchBooksOperation)initWithRequest:(id)a3
+- (CBSFetchBooksOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CBSFetchBooksOperation;
   v6 = [(CBSFetchBooksOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mRequest, a3);
+    objc_storeStrong(&v6->mRequest, request);
   }
 
   return v7;
@@ -86,11 +86,11 @@ LABEL_8:
       }
 
       v15 = objc_opt_new();
-      v16 = [v13 title];
-      [v15 setTitle:v16];
+      title = [v13 title];
+      [v15 setTitle:title];
 
-      v17 = [v13 author];
-      [v15 setAuthor:v17];
+      author = [v13 author];
+      [v15 setAuthor:author];
 
       [v15 setType:{objc_msgSend(v13, "type")}];
       if ([v13 type])
@@ -104,73 +104,73 @@ LABEL_8:
       }
 
       [v15 setHasChapters:v18];
-      v19 = [v13 path];
-      [v15 setPath:v19];
+      path = [v13 path];
+      [v15 setPath:path];
 
       if ([(CRKFetchBooksRequest *)self->mRequest includeImages])
       {
-        v20 = [v13 path];
-        v21 = [v20 stringByAppendingPathComponent:@"iTunesArtwork"];
+        path2 = [v13 path];
+        v21 = [path2 stringByAppendingPathComponent:@"iTunesArtwork"];
         v22 = [NSData dataWithContentsOfFile:v21];
         [v15 setImage:v22];
       }
 
-      v23 = [v13 storeIdentifier];
-      v24 = [v23 length];
+      storeIdentifier = [v13 storeIdentifier];
+      v24 = [storeIdentifier length];
 
       if (v24)
       {
         break;
       }
 
-      v26 = [v13 identifier];
-      v27 = [v26 length];
+      identifier = [v13 identifier];
+      v27 = [identifier length];
 
       if (v27)
       {
-        v25 = [v13 identifier];
-        [NSString stringWithFormat:@"ibooks://assetid/%@", v25];
+        identifier2 = [v13 identifier];
+        [NSString stringWithFormat:@"ibooks://assetid/%@", identifier2];
         goto LABEL_24;
       }
 
-      v41 = [v13 legacyUniqueIdentifier];
-      v42 = [v41 length];
+      legacyUniqueIdentifier = [v13 legacyUniqueIdentifier];
+      v42 = [legacyUniqueIdentifier length];
 
       if (v42)
       {
-        v25 = [v13 legacyUniqueIdentifier];
-        v28 = [NSString stringWithFormat:@"ibooks://assetid/%@", v25];
+        identifier2 = [v13 legacyUniqueIdentifier];
+        lastPathComponent = [NSString stringWithFormat:@"ibooks://assetid/%@", identifier2];
         goto LABEL_25;
       }
 
-      v25 = [v13 path];
-      v28 = [v25 lastPathComponent];
-      v43 = [NSString stringWithFormat:@"ibooks://filename/%@", v28];
+      identifier2 = [v13 path];
+      lastPathComponent = [identifier2 lastPathComponent];
+      v43 = [NSString stringWithFormat:@"ibooks://filename/%@", lastPathComponent];
       v29 = [NSURL URLWithString:v43];
 
 LABEL_26:
       [v15 setWebURL:v29];
       [(NSMutableArray *)self->mBooks addObject:v15];
-      v30 = [v15 title];
-      if (!v30)
+      title2 = [v15 title];
+      if (!title2)
       {
         goto LABEL_32;
       }
 
-      v31 = v30;
-      v32 = [v15 author];
-      if (!v32)
+      v31 = title2;
+      author2 = [v15 author];
+      if (!author2)
       {
 
 LABEL_32:
         if ([v13 type] && objc_msgSend(v13, "type") != 1)
         {
           v38 = [CBSParsePDFMetadataOperation alloc];
-          v39 = [v13 path];
-          v31 = [(CBSParsePDFMetadataOperation *)v38 initWithPDFBook:v15 filePath:v39 parseImage:[(CRKFetchBooksRequest *)self->mRequest includeImages]];
+          path3 = [v13 path];
+          v31 = [(CBSParsePDFMetadataOperation *)v38 initWithPDFBook:v15 filePath:path3 parseImage:[(CRKFetchBooksRequest *)self->mRequest includeImages]];
 
           v35 = v31;
-          v36 = self;
+          selfCopy2 = self;
           v37 = "parsePDFMetadataOperationDidFail:";
         }
 
@@ -178,11 +178,11 @@ LABEL_32:
         {
           v35 = [[CBSParseBookMetadataOperation alloc] initWithBook:v15 parseImage:[(CRKFetchBooksRequest *)self->mRequest includeImages]];
           v31 = v35;
-          v36 = self;
+          selfCopy2 = self;
           v37 = "parseBookMetadataOperationDidFail:";
         }
 
-        [(CBSParseBookMetadataOperation *)v35 addTarget:v36 selector:v37 forOperationEvents:4];
+        [(CBSParseBookMetadataOperation *)v35 addTarget:selfCopy2 selector:v37 forOperationEvents:4];
         v40 = +[CATOperationQueue crk_backgroundQueue];
         [v40 addOperation:v31];
 
@@ -202,16 +202,16 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v33 = v32;
+      v33 = author2;
       if (![(CRKFetchBooksRequest *)self->mRequest includeImages])
       {
 
         goto LABEL_40;
       }
 
-      v34 = [v15 image];
+      image = [v15 image];
 
-      if (!v34)
+      if (!image)
       {
         goto LABEL_32;
       }
@@ -243,11 +243,11 @@ LABEL_52:
       }
     }
 
-    v25 = [v13 storeIdentifier];
-    [NSString stringWithFormat:@"ibooks://storeid/%@", v25];
-    v28 = LABEL_24:;
+    identifier2 = [v13 storeIdentifier];
+    [NSString stringWithFormat:@"ibooks://storeid/%@", identifier2];
+    lastPathComponent = LABEL_24:;
 LABEL_25:
-    v29 = [NSURL URLWithString:v28];
+    v29 = [NSURL URLWithString:lastPathComponent];
     goto LABEL_26;
   }
 
@@ -271,18 +271,18 @@ LABEL_53:
   [(CBSFetchBooksOperation *)self endOperationWithResultObject:v4];
 }
 
-- (void)parseBookMetadataOperationDidFail:(id)a3
+- (void)parseBookMetadataOperationDidFail:(id)fail
 {
   mBooks = self->mBooks;
-  v4 = [a3 book];
-  [(NSMutableArray *)mBooks removeObject:v4];
+  book = [fail book];
+  [(NSMutableArray *)mBooks removeObject:book];
 }
 
-- (void)parsePDFMetadataOperationDidFail:(id)a3
+- (void)parsePDFMetadataOperationDidFail:(id)fail
 {
   mBooks = self->mBooks;
-  v4 = [a3 book];
-  [(NSMutableArray *)mBooks removeObject:v4];
+  book = [fail book];
+  [(NSMutableArray *)mBooks removeObject:book];
 }
 
 @end

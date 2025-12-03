@@ -1,11 +1,11 @@
 @interface MessageListCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityDeleteAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityDeleteAction:(id)action;
 - (BOOL)_accessibilityIsThreadedChildCell;
-- (BOOL)_accessibilityRemoveHighImpactAction:(id)a3;
-- (BOOL)_accessibilityToggleFlagAction:(id)a3;
-- (BOOL)_accessibilityToggleReadAction:(id)a3;
-- (BOOL)_accessibilityToggleThreadAction:(id)a3;
+- (BOOL)_accessibilityRemoveHighImpactAction:(id)action;
+- (BOOL)_accessibilityToggleFlagAction:(id)action;
+- (BOOL)_accessibilityToggleReadAction:(id)action;
+- (BOOL)_accessibilityToggleThreadAction:(id)action;
 - (id)_accessibilityCustomActionGroupIdentifier;
 - (id)_accessibilityEquivalenceTag;
 - (id)_accessibilityLabelWithoutAttributes;
@@ -22,9 +22,9 @@
 - (unint64_t)_accessibilityThreadCount;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityPerformCellAction:(int64_t)a3;
+- (void)_accessibilityPerformCellAction:(int64_t)action;
 - (void)_axPostAnnouncementForActionCompletionIfNecessary;
-- (void)_axProcessMailLabel:(id)a3 children:(id)a4;
+- (void)_axProcessMailLabel:(id)label children:(id)children;
 - (void)_axSetDisclosureButtonTraits;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)layoutSubviews;
@@ -33,63 +33,63 @@
 
 @implementation MessageListCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"_didTapDisclosureButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"cellHelper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"messageListItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellHelper" hasInstanceMethod:@"messageListItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellHelper" hasInstanceMethod:@"cellView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellHelper" hasInstanceMethod:@"disclosureEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"dateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"disclosureButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"tertiaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"disclosureButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"chevronType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageListCellView" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isRead" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isFlagged" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isReplied" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isForwarded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isVIP" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isNotify" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isMute" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isBlockedSender" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageItemViewModel" hasInstanceMethod:@"flagColors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"_isExpandedIndexPath:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"_swipeActionForTriageAction:indexPath:" withFullSignature:{"@", "q", "@", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"messageListSelectionModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"state" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"messageListPositionHelper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"undoManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"_shouldShowClearHighImpactForMessageListItem:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"MessageListSelectionModel" hasInstanceMethod:@"isSelectedItemID:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"count"];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"shouldArchiveByDefault"];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"displayMessageObjectID"];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"hasAttachments"];
-  [v3 validateClass:@"EMObjectID" hasInstanceMethod:@"stringHash" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EFFuture" hasInstanceMethod:@"result" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MessageListCellLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"MessageListPositionHelper" hasInstanceMethod:@"recalculateFirstVisibleIndex" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MessageListDataSource" hasInstanceMethod:@"messageListItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"MessageListDataSource" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFReadLaterTriageInteraction"];
-  [v3 validateClass:@"MFReadLaterTriageInteraction" hasClassMethod:@"interactionWithMessageListItems:undoManager:origin:actor:" withFullSignature:{"@", "@", "@", "q", "q", 0}];
-  [v3 validateClass:@"MFReadLaterTriageInteraction" hasInstanceMethod:@"_performInteractionAfterPreparation:completion:" withFullSignature:{"v", "@?", "@?", 0}];
-  [v3 validateClass:@"MFReadLaterTriageInteraction" isKindOfClass:@"MFTriageInteraction"];
-  [v3 validateClass:@"MFTriageInteraction" hasInstanceMethod:@"setDelegate:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessageListViewControllerState" hasInstanceMethod:@"containsDraftsOrOutbox" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EMCategory" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"_didTapDisclosureButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"cellHelper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCollectionViewCell" hasInstanceMethod:@"messageListItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellHelper" hasInstanceMethod:@"messageListItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellHelper" hasInstanceMethod:@"cellView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellHelper" hasInstanceMethod:@"disclosureEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"dateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"disclosureButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"tertiaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"disclosureButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"chevronType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageListCellView" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isRead" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isFlagged" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isReplied" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isForwarded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isVIP" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isNotify" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isMute" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"isBlockedSender" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageItemViewModel" hasInstanceMethod:@"flagColors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"_isExpandedIndexPath:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"_swipeActionForTriageAction:indexPath:" withFullSignature:{"@", "q", "@", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"messageListSelectionModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"state" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"messageListPositionHelper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"undoManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"_shouldShowClearHighImpactForMessageListItem:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"MessageListSelectionModel" hasInstanceMethod:@"isSelectedItemID:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"count"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"shouldArchiveByDefault"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"displayMessageObjectID"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"hasAttachments"];
+  [validationsCopy validateClass:@"EMObjectID" hasInstanceMethod:@"stringHash" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EFFuture" hasInstanceMethod:@"result" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MessageListCellLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"MessageListPositionHelper" hasInstanceMethod:@"recalculateFirstVisibleIndex" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MessageListDataSource" hasInstanceMethod:@"messageListItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"MessageListDataSource" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFReadLaterTriageInteraction"];
+  [validationsCopy validateClass:@"MFReadLaterTriageInteraction" hasClassMethod:@"interactionWithMessageListItems:undoManager:origin:actor:" withFullSignature:{"@", "@", "@", "q", "q", 0}];
+  [validationsCopy validateClass:@"MFReadLaterTriageInteraction" hasInstanceMethod:@"_performInteractionAfterPreparation:completion:" withFullSignature:{"v", "@?", "@?", 0}];
+  [validationsCopy validateClass:@"MFReadLaterTriageInteraction" isKindOfClass:@"MFTriageInteraction"];
+  [validationsCopy validateClass:@"MFTriageInteraction" hasInstanceMethod:@"setDelegate:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessageListViewControllerState" hasInstanceMethod:@"containsDraftsOrOutbox" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EMCategory" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -110,43 +110,43 @@
 {
   v7.receiver = self;
   v7.super_class = MessageListCollectionViewCellAccessibility;
-  v2 = [(MessageListCollectionViewCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(MessageListCollectionViewCellAccessibility *)&v7 accessibilityTraits];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 isSelected];
+  isSelected = [v3 isSelected];
 
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v4)
+  if (!isSelected)
   {
     v5 = 0;
   }
 
-  return v5 | v2;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
   v72.receiver = self;
   v72.super_class = MessageListCollectionViewCellAccessibility;
-  v3 = [(MessageListCollectionViewCellAccessibility *)&v72 accessibilityLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityLabel = [(MessageListCollectionViewCellAccessibility *)&v72 accessibilityLabel];
+  v4 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v5 = v3;
+    v5 = accessibilityLabel;
     goto LABEL_41;
   }
 
   v6 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView"];
   v7 = [v6 safeValueForKey:@"primaryLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
 
   v9 = [v6 safeValueForKey:@"secondaryLabel"];
-  v64 = [v9 accessibilityLabel];
+  accessibilityLabel3 = [v9 accessibilityLabel];
 
   v10 = [v6 safeValueForKey:@"tertiaryLabel"];
-  v63 = [v10 accessibilityLabel];
+  accessibilityLabel4 = [v10 accessibilityLabel];
 
-  v11 = [v8 componentsSeparatedByString:{@", "}];
+  v11 = [accessibilityLabel2 componentsSeparatedByString:{@", "}];
   v12 = [v11 count];
   if (v12 >= 3)
   {
@@ -181,7 +181,7 @@
   v24 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.messageListItem"];
   v48 = [v24 safeBoolForKey:@"hasAttachments"];
 
-  v25 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityIsThreadedChildCell];
+  _accessibilityIsThreadedChildCell = [(MessageListCollectionViewCellAccessibility *)self _accessibilityIsThreadedChildCell];
   if (v16)
   {
     v61 = 0;
@@ -290,9 +290,9 @@ LABEL_24:
   v71 = 0;
   if (v18)
   {
-    v26 = [MEMORY[0x29EDBA050] string];
+    string = [MEMORY[0x29EDBA050] string];
     v27 = v67[5];
-    v67[5] = v26;
+    v67[5] = string;
 
     v65[0] = MEMORY[0x29EDCA5F8];
     v65[1] = 3221225472;
@@ -306,14 +306,14 @@ LABEL_24:
   v29 = [v28 safeIntForKey:@"type"] - 1;
   if (v29 >= 3)
   {
-    v30 = v25;
+    v30 = _accessibilityIsThreadedChildCell;
     v52 = 0;
   }
 
   else
   {
     v52 = accessibilityLocalizedString(off_29F2D4318[v29]);
-    v30 = v25;
+    v30 = _accessibilityIsThreadedChildCell;
   }
 
   if ([(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount]< 2)
@@ -350,10 +350,10 @@ LABEL_24:
     v35 = 0;
   }
 
-  v36 = v64;
+  v36 = accessibilityLabel3;
   if (v30)
   {
-    v36 = v63;
+    v36 = accessibilityLabel4;
   }
 
   v37 = v36;
@@ -365,11 +365,11 @@ LABEL_24:
 
   v41 = v67[5];
   v42 = [v49 safeValueForKey:@"dateLabel"];
-  v45 = [v42 accessibilityLabel];
+  accessibilityLabel5 = [v42 accessibilityLabel];
   v44 = v41;
   v5 = __UIAXStringForVariables();
 
-  [(MessageListCollectionViewCellAccessibility *)self setAccessibilityLabel:v5, v60, v56, v53, v44, v62, v37, v45, v52, v59, v58, v57, v54, v51, v34, v35, v40, @"__AXStringForVariablesSentinel"];
+  [(MessageListCollectionViewCellAccessibility *)self setAccessibilityLabel:v5, v60, v56, v53, v44, v62, v37, accessibilityLabel5, v52, v59, v58, v57, v54, v51, v34, v35, v40, @"__AXStringForVariablesSentinel"];
   _Block_object_dispose(&v66, 8);
 
   v4 = 0;
@@ -396,9 +396,9 @@ void __64__MessageListCollectionViewCellAccessibility_accessibilityLabel__block_
   v4 = __UIAccessibilityCastAsClass();
   if ([v4 isEditing])
   {
-    v5 = [v4 delegate];
-    v6 = [v5 safeValueForKey:@"messageListSelectionModel"];
-    v7 = [v5 safeValueForKeyPath:@"dataSource.collectionViewDataSource"];
+    delegate = [v4 delegate];
+    v6 = [delegate safeValueForKey:@"messageListSelectionModel"];
+    v7 = [delegate safeValueForKeyPath:@"dataSource.collectionViewDataSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -431,7 +431,7 @@ void __64__MessageListCollectionViewCellAccessibility_accessibilityLabel__block_
         v13 = @"message.select.hint";
       }
 
-      v14 = accessibilityLocalizedString(v13);
+      accessibilityHint = accessibilityLocalizedString(v13);
 
       goto LABEL_9;
     }
@@ -439,10 +439,10 @@ void __64__MessageListCollectionViewCellAccessibility_accessibilityLabel__block_
 
   v16.receiver = self;
   v16.super_class = MessageListCollectionViewCellAccessibility;
-  v14 = [(MessageListCollectionViewCellAccessibility *)&v16 accessibilityHint];
+  accessibilityHint = [(MessageListCollectionViewCellAccessibility *)&v16 accessibilityHint];
 LABEL_9:
 
-  return v14;
+  return accessibilityHint;
 }
 
 uint64_t __63__MessageListCollectionViewCellAccessibility_accessibilityHint__block_invoke(uint64_t a1, void *a2)
@@ -463,7 +463,7 @@ uint64_t __63__MessageListCollectionViewCellAccessibility_accessibilityHint__blo
 - (id)accessibilityUserInputLabels
 {
   v2 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.secondaryLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
   v4 = MEMORY[0x29C2DF8C0]();
 
   return v4;
@@ -476,18 +476,18 @@ uint64_t __63__MessageListCollectionViewCellAccessibility_accessibilityHint__blo
   return NSStringFromClass(v2);
 }
 
-- (void)_accessibilityPerformCellAction:(int64_t)a3
+- (void)_accessibilityPerformCellAction:(int64_t)action
 {
   v5 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_607 startWithSelf:0];
   LOBYTE(v26) = 0;
   objc_opt_class();
   v6 = __UIAccessibilityCastAsClass();
   v7 = [v6 indexPathForCell:self];
-  v8 = [v6 delegate];
-  v9 = v8;
-  if (a3 == 3)
+  delegate = [v6 delegate];
+  v9 = delegate;
+  if (action == 3)
   {
-    v10 = [v8 safeValueForKey:@"dataSource"];
+    v10 = [delegate safeValueForKey:@"dataSource"];
     v11 = [v6 indexPathForCell:self];
     v26 = 0;
     v27 = &v26;
@@ -607,43 +607,43 @@ uint64_t __78__MessageListCollectionViewCellAccessibility__accessibilityPerformC
   return [v2 executeHandlerWithView:v3 completionHandler:&__block_literal_global_612];
 }
 
-- (BOOL)_accessibilityToggleReadAction:(id)a3
+- (BOOL)_accessibilityToggleReadAction:(id)action
 {
-  v4 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  [v4 _axSetTriageActionForAnnouncement:2];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  [_accessibilityMailboxController _axSetTriageActionForAnnouncement:2];
 
   [(MessageListCollectionViewCellAccessibility *)self _accessibilityPerformCellAction:2];
   return 1;
 }
 
-- (BOOL)_accessibilityToggleFlagAction:(id)a3
+- (BOOL)_accessibilityToggleFlagAction:(id)action
 {
-  v4 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  [v4 _axSetTriageActionForAnnouncement:6];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  [_accessibilityMailboxController _axSetTriageActionForAnnouncement:6];
 
   [(MessageListCollectionViewCellAccessibility *)self _accessibilityPerformCellAction:6];
   return 1;
 }
 
-- (BOOL)_accessibilityRemoveHighImpactAction:(id)a3
+- (BOOL)_accessibilityRemoveHighImpactAction:(id)action
 {
-  v4 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  [v4 _axSetTriageActionForAnnouncement:21];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  [_accessibilityMailboxController _axSetTriageActionForAnnouncement:21];
 
   [(MessageListCollectionViewCellAccessibility *)self _accessibilityPerformCellAction:21];
   return 1;
 }
 
-- (BOOL)_accessibilityDeleteAction:(id)a3
+- (BOOL)_accessibilityDeleteAction:(id)action
 {
-  v4 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v5 = [v4 voiceOverSpeakActionConfirmation];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverSpeakActionConfirmation = [mEMORY[0x29EDBDFA0] voiceOverSpeakActionConfirmation];
 
-  if (v5)
+  if (voiceOverSpeakActionConfirmation)
   {
-    v6 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
+    _accessibilityThreadCount = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
     v7 = *MEMORY[0x29EDC7EA8];
-    if (v6 < 2)
+    if (_accessibilityThreadCount < 2)
     {
       v10 = accessibilityLocalizedString(@"message.deleted");
       UIAccessibilityPostNotification(v7, v10);
@@ -651,7 +651,7 @@ uint64_t __78__MessageListCollectionViewCellAccessibility__accessibilityPerformC
 
     else
     {
-      v8 = v6;
+      v8 = _accessibilityThreadCount;
       v9 = MEMORY[0x29EDBA0F8];
       v10 = accessibilityLocalizedString(@"thread.message.deleted");
       v11 = [v9 localizedStringWithFormat:v10, v8];
@@ -665,20 +665,20 @@ uint64_t __78__MessageListCollectionViewCellAccessibility__accessibilityPerformC
 
 - (void)_axPostAnnouncementForActionCompletionIfNecessary
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v4 = [v3 voiceOverSpeakActionConfirmation];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverSpeakActionConfirmation = [mEMORY[0x29EDBDFA0] voiceOverSpeakActionConfirmation];
 
-  if (!v4)
+  if (!voiceOverSpeakActionConfirmation)
   {
     return;
   }
 
-  v5 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  v6 = [v5 _axGetTriageActionForAnnouncement];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  _axGetTriageActionForAnnouncement = [_accessibilityMailboxController _axGetTriageActionForAnnouncement];
 
-  if (v6 != 2)
+  if (_axGetTriageActionForAnnouncement != 2)
   {
-    if (v6 != 6)
+    if (_axGetTriageActionForAnnouncement != 6)
     {
       return;
     }
@@ -723,9 +723,9 @@ LABEL_12:
 - (id)_accessibilityMailboxController
 {
   v2 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_630 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __77__MessageListCollectionViewCellAccessibility__accessibilityMailboxController__block_invoke(uint64_t a1, void *a2)
@@ -737,24 +737,24 @@ uint64_t __77__MessageListCollectionViewCellAccessibility__accessibilityMailboxC
   return isKindOfClass & 1;
 }
 
-- (BOOL)_accessibilityToggleThreadAction:(id)a3
+- (BOOL)_accessibilityToggleThreadAction:(id)action
 {
   v13 = MEMORY[0x29EDCA5F8];
   AXPerformSafeBlock();
-  v4 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v5 = [v4 voiceOverSpeakActionConfirmation];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverSpeakActionConfirmation = [mEMORY[0x29EDBDFA0] voiceOverSpeakActionConfirmation];
 
-  if (v5)
+  if (voiceOverSpeakActionConfirmation)
   {
     v6 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKey:@"cellHelper"];
     v7 = [v6 safeBoolForKey:@"disclosureEnabled"];
 
     if (v7)
     {
-      v8 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
+      _accessibilityThreadCount = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
       v9 = MEMORY[0x29EDBA0F8];
       v10 = accessibilityLocalizedString(@"num.messages");
-      v11 = [v9 localizedStringWithFormat:v10, v8, v13, 3221225472, __79__MessageListCollectionViewCellAccessibility__accessibilityToggleThreadAction___block_invoke, &unk_29F2D3E70, self];
+      v11 = [v9 localizedStringWithFormat:v10, _accessibilityThreadCount, v13, 3221225472, __79__MessageListCollectionViewCellAccessibility__accessibilityToggleThreadAction___block_invoke, &unk_29F2D3E70, self];
       UIAccessibilitySpeak();
     }
   }
@@ -786,7 +786,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.viewModel"];
   v5 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.messageListItem"];
   v6 = [v5 safeBoolForKey:@"shouldArchiveByDefault"];
@@ -794,7 +794,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
   v7 = MEMORY[0x29EDC72F8];
   if (v6)
   {
-    v8 = [v3 indexOfObjectPassingTest:&__block_literal_global_639];
+    v8 = [array indexOfObjectPassingTest:&__block_literal_global_639];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -802,12 +802,12 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
       v11 = [v9 initWithName:v10 target:self selector:sel__accessibilityArchiveAction_];
 
       [v11 _accessibilitySetInternalCustomActionIdentifier:@"AX_ARCHIVE"];
-      [v3 addObject:v11];
+      [array addObject:v11];
     }
 
     else
     {
-      v11 = [v3 objectAtIndex:v8];
+      v11 = [array objectAtIndex:v8];
       [v11 _accessibilitySetInternalCustomActionIdentifier:@"AX_ARCHIVE"];
       v12 = accessibilityLocalizedString(@"archive.button");
       [v11 setName:v12];
@@ -832,7 +832,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
 
   v15 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v13 target:self selector:sel__accessibilityToggleReadAction_];
   [v15 _accessibilitySetInternalCustomActionIdentifier:@"AX_READ"];
-  [v3 addObject:v15];
+  [array addObject:v15];
   if ([v4 safeBoolForKey:@"isFlagged"])
   {
     v16 = @"message.action.unflag";
@@ -847,13 +847,13 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
 
   v18 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v17 target:self selector:sel__accessibilityToggleFlagAction_];
   [v18 _accessibilitySetInternalCustomActionIdentifier:@"AX_FLAG"];
-  [v3 addObject:v18];
+  [array addObject:v18];
   v19 = accessibilityLocalizedString(@"message.action.delete");
-  v20 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
+  _accessibilityThreadCount = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadCount];
   v51 = v4;
-  if (v20 >= 2)
+  if (_accessibilityThreadCount >= 2)
   {
-    v21 = v20;
+    v21 = _accessibilityThreadCount;
     v22 = MEMORY[0x29EDBA0F8];
     v23 = accessibilityLocalizedString(@"message.action.delete.thread");
     v24 = [v22 localizedStringWithFormat:v23, v21, v4];
@@ -882,11 +882,11 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
     v30 = accessibilityLocalizedString(v29);
     v31 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v30 target:self selector:sel__accessibilityToggleThreadAction_];
     [v31 _accessibilitySetInternalCustomActionIdentifier:@"AX_TOGGLE_THREAD"];
-    [v3 addObject:v31];
+    [array addObject:v31];
   }
 
-  v32 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  v33 = [v32 safeValueForKey:@"state"];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  v33 = [_accessibilityMailboxController safeValueForKey:@"state"];
   v34 = [v33 safeBoolForKey:@"containsDraftsOrOutbox"];
 
   if ((v34 & 1) == 0)
@@ -896,7 +896,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
     v37 = [v35 initWithName:v36 target:self selector:sel__accessibilityMoreAction_];
 
     [v37 _accessibilitySetInternalCustomActionIdentifier:@"AX_MORE"];
-    [v3 addObject:v37];
+    [array addObject:v37];
     v18 = v37;
   }
 
@@ -907,13 +907,13 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
 
   [v38 setSortPriority:*v7];
   [v38 _accessibilitySetInternalCustomActionIdentifier:@"AX_DELETE"];
-  [v3 addObject:v38];
+  [array addObject:v38];
   v40 = objc_alloc(MEMORY[0x29EDC78E0]);
   v41 = accessibilityLocalizedString(@"message.action.read.later");
   v42 = [v40 initWithName:v41 target:self selector:sel__accessibilityLaterAction_];
 
   [v42 _accessibilitySetInternalCustomActionIdentifier:@"AX_READ_LATER"];
-  [v3 addObject:v42];
+  [array addObject:v42];
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
@@ -924,7 +924,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
   v61 = 3221225472;
   v62 = __80__MessageListCollectionViewCellAccessibility__privateAccessibilityCustomActions__block_invoke_2;
   v63 = &unk_29F2D42D0;
-  v64 = self;
+  selfCopy = self;
   v65 = &v66;
   AXPerformSafeBlock();
   v43 = v67[5];
@@ -939,7 +939,7 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
   v55 = __80__MessageListCollectionViewCellAccessibility__privateAccessibilityCustomActions__block_invoke_3;
   v56 = &unk_29F2D3FE8;
   v59 = &v66;
-  v44 = v32;
+  v44 = _accessibilityMailboxController;
   v57 = v44;
   v45 = v43;
   v58 = v45;
@@ -954,16 +954,16 @@ void __82__MessageListCollectionViewCellAccessibility_accessibilityElementDidBec
     v48 = [v46 initWithName:v47 target:self selector:sel__accessibilityRemoveHighImpactAction_];
 
     [v48 _accessibilitySetInternalCustomActionIdentifier:@"AX_REMOVE_HIGH_IMPACT"];
-    [v3 addObject:v48];
+    [array addObject:v48];
     v42 = v48;
   }
 
   v52.receiver = self;
   v52.super_class = MessageListCollectionViewCellAccessibility;
-  v49 = [(MessageListCollectionViewCellAccessibility *)&v52 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v49];
+  accessibilityCustomActions = [(MessageListCollectionViewCellAccessibility *)&v52 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
-  return v3;
+  return array;
 }
 
 uint64_t __80__MessageListCollectionViewCellAccessibility__privateAccessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -995,7 +995,7 @@ uint64_t __80__MessageListCollectionViewCellAccessibility__privateAccessibilityC
 {
   v9.receiver = self;
   v9.super_class = MessageListCollectionViewCellAccessibility;
-  v3 = [(MessageListCollectionViewCellAccessibility *)&v9 _accessibilityScrollStatus];
+  _accessibilityScrollStatus = [(MessageListCollectionViewCellAccessibility *)&v9 _accessibilityScrollStatus];
   objc_opt_class();
   v4 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.tertiaryLabel"];
   v5 = __UIAccessibilityCastAsClass();
@@ -1009,8 +1009,8 @@ uint64_t __80__MessageListCollectionViewCellAccessibility__privateAccessibilityC
 
 - (id)_accessibilityLinkedUIElements
 {
-  v3 = [(MessageListCollectionViewCellAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FC0] & v3) != 0)
+  accessibilityTraits = [(MessageListCollectionViewCellAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FC0] & accessibilityTraits) != 0)
   {
     v12 = 0;
     v13 = &v12;
@@ -1024,7 +1024,7 @@ uint64_t __80__MessageListCollectionViewCellAccessibility__privateAccessibilityC
     v10 = &unk_29F2D42F8;
     v11 = &v12;
     AXPerformSafeBlock();
-    v4 = v13[5];
+    _accessibilityLinkedUIElements = v13[5];
     _Block_object_dispose(&v12, 8);
   }
 
@@ -1032,10 +1032,10 @@ uint64_t __80__MessageListCollectionViewCellAccessibility__privateAccessibilityC
   {
     v6.receiver = self;
     v6.super_class = MessageListCollectionViewCellAccessibility;
-    v4 = [(MessageListCollectionViewCellAccessibility *)&v6 _accessibilityLinkedUIElements];
+    _accessibilityLinkedUIElements = [(MessageListCollectionViewCellAccessibility *)&v6 _accessibilityLinkedUIElements];
   }
 
-  return v4;
+  return _accessibilityLinkedUIElements;
 }
 
 void __76__MessageListCollectionViewCellAccessibility__accessibilityLinkedUIElements__block_invoke(uint64_t a1)
@@ -1140,16 +1140,16 @@ uint64_t __79__MessageListCollectionViewCellAccessibility__accessibilityIsThread
   return v4;
 }
 
-- (void)_axProcessMailLabel:(id)a3 children:(id)a4
+- (void)_axProcessMailLabel:(id)label children:(id)children
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"cellHelper.cellView.%@", v6];
-  v9 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:v8];
+  labelCopy = label;
+  childrenCopy = children;
+  labelCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"cellHelper.cellView.%@", labelCopy];
+  v9 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:labelCopy];
   v10 = __UIAccessibilitySafeClass();
 
   [v10 setAccessibilityExposeLabelAsValue:1];
-  [v7 axSafelyAddObject:v10];
+  [childrenCopy axSafelyAddObject:v10];
 }
 
 - (id)_accessibilityThreadedDisclosureButton
@@ -1174,27 +1174,27 @@ uint64_t __79__MessageListCollectionViewCellAccessibility__accessibilityIsThread
 {
   v10.receiver = self;
   v10.super_class = MessageListCollectionViewCellAccessibility;
-  v3 = [(MessageListCollectionViewCellAccessibility *)&v10 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(MessageListCollectionViewCellAccessibility *)&v10 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   [(MessageListCollectionViewCellAccessibility *)self _axProcessMailLabel:@"secondaryLabel" children:v7];
   [(MessageListCollectionViewCellAccessibility *)self _axProcessMailLabel:@"dateLabel" children:v7];
   [(MessageListCollectionViewCellAccessibility *)self _axProcessMailLabel:@"primaryLabel" children:v7];
   [(MessageListCollectionViewCellAccessibility *)self _axProcessMailLabel:@"tertiaryLabel" children:v7];
-  v8 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadedDisclosureButton];
-  [v7 axSafelyAddObject:v8];
+  _accessibilityThreadedDisclosureButton = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadedDisclosureButton];
+  [v7 axSafelyAddObject:_accessibilityThreadedDisclosureButton];
 
   return v7;
 }
@@ -1202,29 +1202,29 @@ uint64_t __79__MessageListCollectionViewCellAccessibility__accessibilityIsThread
 - (id)_accessibilityEquivalenceTag
 {
   v3 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.messageListItem.displayMessageObjectID.stringHash"];
-  v4 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityLabelWithoutAttributes];
+  _accessibilityLabelWithoutAttributes = [(MessageListCollectionViewCellAccessibility *)self _accessibilityLabelWithoutAttributes];
   v5 = [v3 description];
 
   if (v5)
   {
     v6 = [v3 description];
-    v7 = [v4 stringByAppendingString:v6];
+    v7 = [_accessibilityLabelWithoutAttributes stringByAppendingString:v6];
 
-    v4 = v7;
+    _accessibilityLabelWithoutAttributes = v7;
   }
 
-  return v4;
+  return _accessibilityLabelWithoutAttributes;
 }
 
 - (id)_accessibilityLabelWithoutAttributes
 {
   v3 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.secondaryLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.primaryLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
-  v7 = [v6 componentsSeparatedByString:{@", "}];
+  v7 = [accessibilityLabel2 componentsSeparatedByString:{@", "}];
   v8 = [v7 count];
   if (v8 >= 3)
   {
@@ -1241,7 +1241,7 @@ uint64_t __79__MessageListCollectionViewCellAccessibility__accessibilityIsThread
   v11 = [v10 componentsJoinedByString:{@", "}];
 
   v12 = [(MessageListCollectionViewCellAccessibility *)self safeValueForKeyPath:@"cellHelper.cellView.dateLabel"];
-  v15 = [v12 accessibilityLabel];
+  accessibilityLabel3 = [v12 accessibilityLabel];
   v13 = __UIAXStringForVariables();
 
   return v13;
@@ -1254,18 +1254,18 @@ uint64_t __79__MessageListCollectionViewCellAccessibility__accessibilityIsThread
   [(MessageListCollectionViewCellAccessibility *)&v7 layoutSubviews];
   [(MessageListCollectionViewCellAccessibility *)self setAccessibilityLabel:0];
   [(MessageListCollectionViewCellAccessibility *)self _axSetDisclosureButtonTraits];
-  v3 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-  v4 = [v3 _axGetTriageActionForAnnouncement];
+  _accessibilityMailboxController = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+  _axGetTriageActionForAnnouncement = [_accessibilityMailboxController _axGetTriageActionForAnnouncement];
 
-  if (v4)
+  if (_axGetTriageActionForAnnouncement)
   {
     [(MessageListCollectionViewCellAccessibility *)self _axPostAnnouncementForActionCompletionIfNecessary];
-    v5 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
-    [v5 _axSetTriageActionForAnnouncement:0];
+    _accessibilityMailboxController2 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityMailboxController];
+    [_accessibilityMailboxController2 _axSetTriageActionForAnnouncement:0];
   }
 
-  v6 = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadedDisclosureButton];
-  [v6 setAccessibilityIdentifier:@"DisclosureButton"];
+  _accessibilityThreadedDisclosureButton = [(MessageListCollectionViewCellAccessibility *)self _accessibilityThreadedDisclosureButton];
+  [_accessibilityThreadedDisclosureButton setAccessibilityIdentifier:@"DisclosureButton"];
 }
 
 - (void)prepareForReuse

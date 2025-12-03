@@ -1,53 +1,53 @@
 @interface CallHistoryDBClientHandle
 + (id)createForClient;
 + (id)createForServer;
-- (BOOL)createCallRecord:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (BOOL)createCallRecords:(id)a3 error:(id *)a4;
-- (BOOL)deleteAll:(id *)a3;
-- (BOOL)deleteObjectWithUniqueId:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (BOOL)deleteObjectsWithUniqueIds:(id)a3 error:(id *)a4;
-- (BOOL)moveCallRecordsFromDatabaseAtURL:(id)a3;
+- (BOOL)createCallRecord:(id)record error:(id *)error save:(BOOL)save;
+- (BOOL)createCallRecords:(id)records error:(id *)error;
+- (BOOL)deleteAll:(id *)all;
+- (BOOL)deleteObjectWithUniqueId:(id)id error:(id *)error save:(BOOL)save;
+- (BOOL)deleteObjectsWithUniqueIds:(id)ids error:(id *)error;
+- (BOOL)moveCallRecordsFromDatabaseAtURL:(id)l;
 - (BOOL)resetAllTimers;
-- (BOOL)saveDatabase:(id *)a3;
-- (BOOL)updateCallRecord_sync:(id)a3 withCall:(id)a4;
-- (BOOL)updateCallRecord_sync:(id)a3 withChangeDict:(id)a4;
-- (BOOL)willHandleNotification_sync:(id)a3;
+- (BOOL)saveDatabase:(id *)database;
+- (BOOL)updateCallRecord_sync:(id)record_sync withCall:(id)call;
+- (BOOL)updateCallRecord_sync:(id)record_sync withChangeDict:(id)dict;
+- (BOOL)willHandleNotification_sync:(id)notification_sync;
 - (CallDBManager)manager;
 - (CallHistoryDBHandle)dbStoreHandle;
-- (id)convertToCHRecentCalls_sync:(id)a3;
-- (id)convertToCHRecentCalls_sync:(id)a3 limit:(unint64_t)a4;
+- (id)convertToCHRecentCalls_sync:(id)calls_sync;
+- (id)convertToCHRecentCalls_sync:(id)calls_sync limit:(unint64_t)limit;
 - (id)fetchAll;
 - (id)fetchAllNoLimit;
-- (id)fetchAllObjectsWithUniqueId:(id)a3;
-- (id)fetchCallIdentifiersWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7;
-- (id)fetchCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7;
-- (id)fetchCoalescedCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7;
-- (id)fetchObjectWithUniqueId:(id)a3;
-- (id)fetchObjectsWithPredicate:(id)a3;
-- (id)fetchObjectsWithUniqueIds:(id)a3;
-- (id)fetchWithCallTypes:(unsigned int)a3;
-- (id)init:(BOOL)a3;
+- (id)fetchAllObjectsWithUniqueId:(id)id;
+- (id)fetchCallIdentifiersWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchCoalescedCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchObjectWithUniqueId:(id)id;
+- (id)fetchObjectsWithPredicate:(id)predicate;
+- (id)fetchObjectsWithUniqueIds:(id)ids;
+- (id)fetchWithCallTypes:(unsigned int)types;
+- (id)init:(BOOL)init;
 - (id)timerIncoming;
 - (id)timerLastReset;
 - (id)timerLifetime;
 - (id)timerOutgoing;
-- (id)updateAllCallRecords:(id)a3 error:(id *)a4;
-- (id)updateAllCallRecords_sync:(id)a3 error:(id *)a4;
-- (id)updateCallRecords:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (id)updateCallRecordsWithCalls:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (id)updateCallRecordsWithCalls_sync:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (id)updateCallRecords_sync:(id)a3 error:(id *)a4 save:(BOOL)a5;
-- (id)updateCallsWithPredicate:(id)a3 propertiesToUpdate:(id)a4 error:(id *)a5;
-- (int64_t)deleteCallsWithPredicate:(id)a3;
-- (unint64_t)fetchCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4;
-- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4;
-- (unsigned)getCallStatus_sync:(id)a3 isOriginated:(id)a4 isAnswered:(id)a5;
+- (id)updateAllCallRecords:(id)records error:(id *)error;
+- (id)updateAllCallRecords_sync:(id)records_sync error:(id *)error;
+- (id)updateCallRecords:(id)records error:(id *)error save:(BOOL)save;
+- (id)updateCallRecordsWithCalls:(id)calls error:(id *)error save:(BOOL)save;
+- (id)updateCallRecordsWithCalls_sync:(id)calls_sync error:(id *)error save:(BOOL)save;
+- (id)updateCallRecords_sync:(id)records_sync error:(id *)error save:(BOOL)save;
+- (id)updateCallsWithPredicate:(id)predicate propertiesToUpdate:(id)update error:(id *)error;
+- (int64_t)deleteCallsWithPredicate:(id)predicate;
+- (unint64_t)fetchCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors;
+- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors;
+- (unsigned)getCallStatus_sync:(id)status_sync isOriginated:(id)originated isAnswered:(id)answered;
 - (void)dealloc;
-- (void)handleCallTimersSave_sync:(id)a3;
-- (void)parseCallStatus_sync:(unsigned int)a3 isAnswered:(BOOL *)a4 isOriginated:(BOOL *)a5;
+- (void)handleCallTimersSave_sync:(id)save_sync;
+- (void)parseCallStatus_sync:(unsigned int)status_sync isAnswered:(BOOL *)answered isOriginated:(BOOL *)originated;
 - (void)registerForNotifications;
 - (void)resetTimers;
-- (void)setStoreObject_sync:(id)a3 withClientObject:(id)a4;
+- (void)setStoreObject_sync:(id)object_sync withClientObject:(id)object;
 - (void)unRegisterForNotifications;
 @end
 
@@ -63,13 +63,13 @@
 - (void)registerForNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__CallHistoryDBClientHandle_registerForNotifications__block_invoke;
   v6[3] = &unk_1E81DC7F8;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 addObserverForName:@"kCallHistoryTimersDistributedSaveNotification" object:0 queue:0 usingBlock:v6];
+  v4 = [defaultCenter addObserverForName:@"kCallHistoryTimersDistributedSaveNotification" object:0 queue:0 usingBlock:v6];
   observerCallTimersRef = self->_observerCallTimersRef;
   self->_observerCallTimersRef = v4;
 
@@ -77,27 +77,27 @@
   objc_destroyWeak(&location);
 }
 
-- (void)parseCallStatus_sync:(unsigned int)a3 isAnswered:(BOOL *)a4 isOriginated:(BOOL *)a5
+- (void)parseCallStatus_sync:(unsigned int)status_sync isAnswered:(BOOL *)answered isOriginated:(BOOL *)originated
 {
-  if (a4 && a5)
+  if (answered && originated)
   {
-    *a4 = 0;
-    *a5 = 0;
-    switch(a3)
+    *answered = 0;
+    *originated = 0;
+    switch(status_sync)
     {
       case 1u:
 LABEL_12:
-        *a4 = 1;
+        *answered = 1;
         return;
       case 2u:
-        a4 = a5;
+        answered = originated;
         goto LABEL_12;
       case 4u:
         goto LABEL_12;
     }
 
-    v5 = a3 != 8 && a3 == 16;
-    a4 = a5;
+    v5 = status_sync != 8 && status_sync == 16;
+    answered = originated;
     if (v5)
     {
       goto LABEL_12;
@@ -105,175 +105,175 @@ LABEL_12:
   }
 }
 
-- (unsigned)getCallStatus_sync:(id)a3 isOriginated:(id)a4 isAnswered:(id)a5
+- (unsigned)getCallStatus_sync:(id)status_sync isOriginated:(id)originated isAnswered:(id)answered
 {
-  if (!a3 || !a4 || !a5)
+  if (!status_sync || !originated || !answered)
   {
     return 0;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 BOOLValue];
-  v10 = [v7 BOOLValue];
+  originatedCopy = originated;
+  status_syncCopy = status_sync;
+  bOOLValue = [answered BOOLValue];
+  bOOLValue2 = [originatedCopy BOOLValue];
 
-  [v8 doubleValue];
+  [status_syncCopy doubleValue];
   v12 = v11;
 
-  return [CHManager CHCallStatusForCallWithDuration:v10 isOriginated:v9 isAnswered:v12];
+  return [CHManager CHCallStatusForCallWithDuration:bOOLValue2 isOriginated:bOOLValue isAnswered:v12];
 }
 
-- (void)setStoreObject_sync:(id)a3 withClientObject:(id)a4
+- (void)setStoreObject_sync:(id)object_sync withClientObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  object_syncCopy = object_sync;
+  objectCopy = object;
   v53 = 0;
-  -[CallHistoryDBClientHandle parseCallStatus_sync:isAnswered:isOriginated:](self, "parseCallStatus_sync:isAnswered:isOriginated:", [v7 callStatus], &v53 + 1, &v53);
+  -[CallHistoryDBClientHandle parseCallStatus_sync:isAnswered:isOriginated:](self, "parseCallStatus_sync:isAnswered:isOriginated:", [objectCopy callStatus], &v53 + 1, &v53);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:HIBYTE(v53)];
-  [v6 setAnswered:v8];
+  [object_syncCopy setAnswered:v8];
 
-  v9 = [v7 date];
-  [v6 setDate:v9];
+  date = [objectCopy date];
+  [object_syncCopy setDate:date];
 
-  v10 = [v7 disconnectedCause];
-  [v6 setDisconnected_cause:v10];
+  disconnectedCause = [objectCopy disconnectedCause];
+  [object_syncCopy setDisconnected_cause:disconnectedCause];
 
   v11 = MEMORY[0x1E696AD98];
-  [v7 duration];
+  [objectCopy duration];
   v12 = [v11 numberWithDouble:?];
-  [v6 setDuration:v12];
+  [object_syncCopy setDuration:v12];
 
-  v13 = [v7 bytesOfDataUsed];
-  [v6 setFace_time_data:v13];
+  bytesOfDataUsed = [objectCopy bytesOfDataUsed];
+  [object_syncCopy setFace_time_data:bytesOfDataUsed];
 
-  v14 = [v7 filteredOutReason];
-  [v6 setFiltered_out_reason:v14];
+  filteredOutReason = [objectCopy filteredOutReason];
+  [object_syncCopy setFiltered_out_reason:filteredOutReason];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "handleType")}];
-  [v6 setHandle_type:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "handleType")}];
+  [object_syncCopy setHandle_type:v15];
 
-  v16 = [v7 imageURL];
-  [v6 setImageURL:v16];
+  imageURL = [objectCopy imageURL];
+  [object_syncCopy setImageURL:imageURL];
 
-  v17 = [v7 isoCountryCode];
-  [v6 setIso_country_code:v17];
+  isoCountryCode = [objectCopy isoCountryCode];
+  [object_syncCopy setIso_country_code:isoCountryCode];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "junkConfidence")}];
-  [v6 setJunkConfidence:v18];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "junkConfidence")}];
+  [object_syncCopy setJunkConfidence:v18];
 
-  v19 = [v7 junkIdentificationCategory];
-  [v6 setJunkIdentificationCategory:v19];
+  junkIdentificationCategory = [objectCopy junkIdentificationCategory];
+  [object_syncCopy setJunkIdentificationCategory:junkIdentificationCategory];
 
-  v20 = [CHRecentCall getLocationForCall:v7];
-  [v6 setLocation:v20];
+  v20 = [CHRecentCall getLocationForCall:objectCopy];
+  [object_syncCopy setLocation:v20];
 
-  v21 = [v7 localParticipantUUID];
-  [v6 setLocalParticipantUUID:v21];
+  localParticipantUUID = [objectCopy localParticipantUUID];
+  [object_syncCopy setLocalParticipantUUID:localParticipantUUID];
 
-  v22 = [v7 name];
-  [v6 setName:v22];
+  name = [objectCopy name];
+  [object_syncCopy setName:name];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v7, "callerIdAvailability")}];
-  [v6 setNumber_availability:v23];
+  v23 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(objectCopy, "callerIdAvailability")}];
+  [object_syncCopy setNumber_availability:v23];
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:v53];
-  [v6 setOriginated:v24];
+  [object_syncCopy setOriginated:v24];
 
-  v25 = [v7 outgoingLocalParticipantUUID];
-  [v6 setOutgoingLocalParticipantUUID:v25];
+  outgoingLocalParticipantUUID = [objectCopy outgoingLocalParticipantUUID];
+  [object_syncCopy setOutgoingLocalParticipantUUID:outgoingLocalParticipantUUID];
 
-  v26 = [v7 participantGroupUUID];
-  [v6 setParticipantGroupUUID:v26];
+  participantGroupUUID = [objectCopy participantGroupUUID];
+  [object_syncCopy setParticipantGroupUUID:participantGroupUUID];
 
-  v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "read")}];
-  [v6 setRead:v27];
+  v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(objectCopy, "read")}];
+  [object_syncCopy setRead:v27];
 
-  v28 = [v7 serviceProvider];
-  [v6 setService_provider:v28];
+  serviceProvider = [objectCopy serviceProvider];
+  [object_syncCopy setService_provider:serviceProvider];
 
-  v29 = [v7 uniqueId];
-  [v6 setUnique_id:v29];
+  uniqueId = [objectCopy uniqueId];
+  [object_syncCopy setUnique_id:uniqueId];
 
-  v30 = [v7 conversationID];
-  [v6 setConversationID:v30];
+  conversationID = [objectCopy conversationID];
+  [object_syncCopy setConversationID:conversationID];
 
-  v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "verificationStatus")}];
-  [v6 setVerificationStatus:v31];
+  v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "verificationStatus")}];
+  [object_syncCopy setVerificationStatus:v31];
 
-  v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "autoAnsweredReason")}];
-  [v6 setAutoAnsweredReason:v32];
+  v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "autoAnsweredReason")}];
+  [object_syncCopy setAutoAnsweredReason:v32];
 
-  [v6 setUsedEmergencyVideoStreaming:{objc_msgSend(v7, "usedEmergencyVideoStreaming")}];
-  [v6 setWasEmergencyCall:{objc_msgSend(v7, "wasEmergencyCall")}];
-  v33 = [v7 blockedByExtension];
-  [v6 setBlockedByExtension:v33];
+  [object_syncCopy setUsedEmergencyVideoStreaming:{objc_msgSend(objectCopy, "usedEmergencyVideoStreaming")}];
+  [object_syncCopy setWasEmergencyCall:{objc_msgSend(objectCopy, "wasEmergencyCall")}];
+  blockedByExtension = [objectCopy blockedByExtension];
+  [object_syncCopy setBlockedByExtension:blockedByExtension];
 
-  v34 = [v7 blockedByExtensionName];
-  [v6 setBlockedByExtensionName:v34];
+  blockedByExtensionName = [objectCopy blockedByExtensionName];
+  [object_syncCopy setBlockedByExtensionName:blockedByExtensionName];
 
-  v35 = [v7 identityExtension];
-  [v6 setIdentityExtension:v35];
+  identityExtension = [objectCopy identityExtension];
+  [object_syncCopy setIdentityExtension:identityExtension];
 
-  v36 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "callDirectoryIdentityType")}];
-  [v6 setCallDirectoryIdentityType:v36];
+  v36 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "callDirectoryIdentityType")}];
+  [object_syncCopy setCallDirectoryIdentityType:v36];
 
-  v37 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "screenSharingType")}];
-  [v6 setScreenSharingType:v37];
+  v37 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "screenSharingType")}];
+  [object_syncCopy setScreenSharingType:v37];
 
-  v38 = [v7 reminderUUID];
-  [v6 setReminderUUID:v38];
+  reminderUUID = [objectCopy reminderUUID];
+  [object_syncCopy setReminderUUID:reminderUUID];
 
-  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "communicationTrustScore")}];
-  [v6 setCommunicationTrustScore:v39];
+  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "communicationTrustScore")}];
+  [object_syncCopy setCommunicationTrustScore:v39];
 
-  v40 = [v6 managedObjectContext];
-  v41 = [v7 initiator];
+  managedObjectContext = [object_syncCopy managedObjectContext];
+  initiator = [objectCopy initiator];
 
-  if (v41 && v40)
+  if (initiator && managedObjectContext)
   {
-    v42 = [v7 initiator];
-    v43 = [CHManagedHandle managedHandleForHandle:v42 inManagedObjectContext:v40];
-    [v6 setInitiator:v43];
+    initiator2 = [objectCopy initiator];
+    v43 = [CHManagedHandle managedHandleForHandle:initiator2 inManagedObjectContext:managedObjectContext];
+    [object_syncCopy setInitiator:v43];
   }
 
-  v44 = [v7 remoteParticipantHandles];
+  remoteParticipantHandles = [objectCopy remoteParticipantHandles];
 
-  if (v44 && v40)
+  if (remoteParticipantHandles && managedObjectContext)
   {
-    v45 = [v7 remoteParticipantHandles];
-    v46 = [CHManagedHandle managedHandlesForHandles:v45 inManagedObjectContext:v40];
-    [v6 setRemoteParticipantHandles:v46];
+    remoteParticipantHandles2 = [objectCopy remoteParticipantHandles];
+    v46 = [CHManagedHandle managedHandlesForHandles:remoteParticipantHandles2 inManagedObjectContext:managedObjectContext];
+    [object_syncCopy setRemoteParticipantHandles:v46];
   }
 
-  v47 = [v7 emergencyMediaItems];
+  emergencyMediaItems = [objectCopy emergencyMediaItems];
 
-  if (v47 && v40)
+  if (emergencyMediaItems && managedObjectContext)
   {
-    v48 = [v7 emergencyMediaItems];
-    v49 = [EmergencyMediaItem managedEmergencyMediaItemsForEmergencyMediaItems:v48 inManagedObjectContext:v40];
-    [v6 setEmergencyMediaItems:v49];
+    emergencyMediaItems2 = [objectCopy emergencyMediaItems];
+    v49 = [EmergencyMediaItem managedEmergencyMediaItemsForEmergencyMediaItems:emergencyMediaItems2 inManagedObjectContext:managedObjectContext];
+    [object_syncCopy setEmergencyMediaItems:v49];
   }
 
-  v50 = [v7 callerId];
-  [v6 setAddress:v50];
+  callerId = [objectCopy callerId];
+  [object_syncCopy setAddress:callerId];
 
-  v51 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "callCategory")}];
-  [v6 setCall_category:v51];
+  v51 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "callCategory")}];
+  [object_syncCopy setCall_category:v51];
 
-  v52 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "callType")}];
-  [v6 setCalltype:v52];
+  v52 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objectCopy, "callType")}];
+  [object_syncCopy setCalltype:v52];
 }
 
-- (id)convertToCHRecentCalls_sync:(id)a3
+- (id)convertToCHRecentCalls_sync:(id)calls_sync
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  calls_syncCopy = calls_sync;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = calls_syncCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -288,8 +288,8 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) chRecentCall];
-        [v4 addObject:v10];
+        chRecentCall = [*(*(&v13 + 1) + 8 * i) chRecentCall];
+        [v4 addObject:chRecentCall];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -303,16 +303,16 @@ LABEL_12:
   return v4;
 }
 
-- (id)convertToCHRecentCalls_sync:(id)a3 limit:(unint64_t)a4
+- (id)convertToCHRecentCalls_sync:(id)calls_sync limit:(unint64_t)limit
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+  calls_syncCopy = calls_sync;
+  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:limit];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v5;
+  v6 = calls_syncCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   obj = v6;
   if (v7)
@@ -332,16 +332,16 @@ LABEL_12:
 
         v12 = *(*(&v24 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 chRecentCall];
-        v15 = v14;
+        chRecentCall = [v12 chRecentCall];
+        v15 = chRecentCall;
         if (v11)
         {
-          v16 = [v11 coalescedCallWithCall:v14 usingStrategy:@"kCHCoalescingStrategyRecents"];
+          v16 = [v11 coalescedCallWithCall:chRecentCall usingStrategy:@"kCHCoalescingStrategyRecents"];
         }
 
         else
         {
-          v16 = v14;
+          v16 = chRecentCall;
         }
 
         v17 = v16;
@@ -350,11 +350,11 @@ LABEL_12:
         {
           [v23 addObject:v11];
           v18 = v15;
-          if (a4)
+          if (limit)
           {
             v19 = [v23 count];
             v18 = v15;
-            if (v19 == a4)
+            if (v19 == limit)
             {
 
               objc_autoreleasePoolPop(v13);
@@ -402,7 +402,7 @@ LABEL_17:
   return v2;
 }
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
   v21.receiver = self;
   v21.super_class = CallHistoryDBClientHandle;
@@ -412,13 +412,13 @@ LABEL_17:
     objc_initWeak(&location, v4);
     v5 = [CHNotifyObserver alloc];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.callhistory.notification.calls-changed"];
-    v7 = [(CHSynchronizedLoggable *)v4 queue];
+    queue = [(CHSynchronizedLoggable *)v4 queue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __34__CallHistoryDBClientHandle_init___block_invoke;
     v18[3] = &unk_1E81DBF80;
     objc_copyWeak(&v19, &location);
-    v8 = [(CHNotifyObserver *)v5 initWithName:v6 queue:v7 callback:v18];
+    v8 = [(CHNotifyObserver *)v5 initWithName:v6 queue:queue callback:v18];
     callsDidChangeNotifyObserver = v4->_callsDidChangeNotifyObserver;
     v4->_callsDidChangeNotifyObserver = v8;
 
@@ -426,7 +426,7 @@ LABEL_17:
     v13 = 3221225472;
     v14 = __34__CallHistoryDBClientHandle_init___block_invoke_2;
     v15 = &unk_1E81DC7D0;
-    v17 = a3;
+    initCopy = init;
     v10 = v4;
     v16 = v10;
     [(CHSynchronizedLoggable *)v10 execute:&v12];
@@ -494,13 +494,13 @@ void __53__CallHistoryDBClientHandle_registerForNotifications__block_invoke(uint
 
 - (void)unRegisterForNotifications
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self->_observerCallTimersRef name:@"kCallHistoryTimersDistributedSaveNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self->_observerCallTimersRef name:@"kCallHistoryTimersDistributedSaveNotification" object:0];
 }
 
-- (int64_t)deleteCallsWithPredicate:(id)a3
+- (int64_t)deleteCallsWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -511,7 +511,7 @@ void __53__CallHistoryDBClientHandle_registerForNotifications__block_invoke(uint
   v8[3] = &unk_1E81DC2D0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = predicateCopy;
   v9 = v5;
   [(CHSynchronizedLoggable *)self executeSync:v8];
   v6 = v12[3];
@@ -536,10 +536,10 @@ uint64_t __54__CallHistoryDBClientHandle_deleteCallsWithPredicate___block_invoke
   return result;
 }
 
-- (unint64_t)fetchCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4
+- (unint64_t)fetchCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -550,9 +550,9 @@ uint64_t __54__CallHistoryDBClientHandle_deleteCallsWithPredicate___block_invoke
   v12[3] = &unk_1E81DC820;
   v15 = &v16;
   v12[4] = self;
-  v8 = v6;
+  v8 = predicateCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = descriptorsCopy;
   v14 = v9;
   [(CHSynchronizedLoggable *)self executeSync:v12];
   v10 = v17[3];
@@ -568,10 +568,10 @@ uint64_t __73__CallHistoryDBClientHandle_fetchCallCountWithPredicate_sortDescrip
   return result;
 }
 
-- (id)fetchCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7
+- (id)fetchCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v12 = a3;
-  v13 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -583,12 +583,12 @@ uint64_t __73__CallHistoryDBClientHandle_fetchCallCountWithPredicate_sortDescrip
   v18[2] = __92__CallHistoryDBClientHandle_fetchCallsWithPredicate_sortDescriptors_limit_offset_batchSize___block_invoke;
   v18[3] = &unk_1E81DC848;
   v18[4] = self;
-  v14 = v12;
+  v14 = predicateCopy;
   v19 = v14;
-  v15 = v13;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
+  v15 = descriptorsCopy;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   v20 = v15;
   v21 = &v25;
   [(CHSynchronizedLoggable *)self executeSync:v18];
@@ -614,10 +614,10 @@ void __92__CallHistoryDBClientHandle_fetchCallsWithPredicate_sortDescriptors_lim
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)fetchCallIdentifiersWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7
+- (id)fetchCallIdentifiersWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v12 = a3;
-  v13 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -630,13 +630,13 @@ void __92__CallHistoryDBClientHandle_fetchCallsWithPredicate_sortDescriptors_lim
   v18[3] = &unk_1E81DC870;
   v21 = &v25;
   v18[4] = self;
-  v14 = v12;
+  v14 = predicateCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = descriptorsCopy;
   v20 = v15;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   [(CHSynchronizedLoggable *)self executeSync:v18];
   v16 = v26[5];
 
@@ -656,10 +656,10 @@ void __102__CallHistoryDBClientHandle_fetchCallIdentifiersWithPredicate_sortDesc
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4
+- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -669,9 +669,9 @@ void __102__CallHistoryDBClientHandle_fetchCallIdentifiersWithPredicate_sortDesc
   v12[2] = __82__CallHistoryDBClientHandle_fetchCoalescedCallCountWithPredicate_sortDescriptors___block_invoke;
   v12[3] = &unk_1E81DC898;
   v12[4] = self;
-  v8 = v6;
+  v8 = predicateCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = descriptorsCopy;
   v14 = v9;
   v15 = &v16;
   [(CHSynchronizedLoggable *)self executeSync:v12];
@@ -736,10 +736,10 @@ void __82__CallHistoryDBClientHandle_fetchCoalescedCallCountWithPredicate_sortDe
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchCoalescedCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6 batchSize:(unint64_t)a7
+- (id)fetchCoalescedCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v12 = a3;
-  v13 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -751,14 +751,14 @@ void __82__CallHistoryDBClientHandle_fetchCoalescedCallCountWithPredicate_sortDe
   v18[2] = __101__CallHistoryDBClientHandle_fetchCoalescedCallsWithPredicate_sortDescriptors_limit_offset_batchSize___block_invoke;
   v18[3] = &unk_1E81DC848;
   v18[4] = self;
-  v14 = v12;
+  v14 = predicateCopy;
   v19 = v14;
-  v15 = v13;
-  v22 = a6;
-  v23 = a7;
+  v15 = descriptorsCopy;
+  offsetCopy = offset;
+  sizeCopy = size;
   v20 = v15;
   v21 = &v25;
-  v24 = a5;
+  limitCopy = limit;
   [(CHSynchronizedLoggable *)self executeSync:v18];
   v16 = v26[5];
 
@@ -782,10 +782,10 @@ void __101__CallHistoryDBClientHandle_fetchCoalescedCallsWithPredicate_sortDescr
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)updateCallsWithPredicate:(id)a3 propertiesToUpdate:(id)a4 error:(id *)a5
+- (id)updateCallsWithPredicate:(id)predicate propertiesToUpdate:(id)update error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  updateCopy = update;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -803,19 +803,19 @@ void __101__CallHistoryDBClientHandle_fetchCoalescedCallsWithPredicate_sortDescr
   v15[2] = __79__CallHistoryDBClientHandle_updateCallsWithPredicate_propertiesToUpdate_error___block_invoke;
   v15[3] = &unk_1E81DC8C0;
   v15[4] = self;
-  v10 = v8;
+  v10 = predicateCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = updateCopy;
   v17 = v11;
   v18 = &v20;
   v19 = &v26;
   [(CHSynchronizedLoggable *)self executeSync:v15];
-  if (a5)
+  if (error)
   {
     v12 = v21[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -909,14 +909,14 @@ id __44__CallHistoryDBClientHandle_fetchAllNoLimit__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)fetchWithCallTypes:(unsigned int)a3
+- (id)fetchWithCallTypes:(unsigned int)types
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__CallHistoryDBClientHandle_fetchWithCallTypes___block_invoke;
   v5[3] = &unk_1E81DC8E8;
   v5[4] = self;
-  v6 = a3;
+  typesCopy = types;
   v3 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v5];
 
   return v3;
@@ -933,16 +933,16 @@ id __48__CallHistoryDBClientHandle_fetchWithCallTypes___block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)fetchObjectsWithPredicate:(id)a3
+- (id)fetchObjectsWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__CallHistoryDBClientHandle_fetchObjectsWithPredicate___block_invoke;
   v8[3] = &unk_1E81DC910;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = predicateCopy;
+  v5 = predicateCopy;
   v6 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v8];
 
   return v6;
@@ -977,16 +977,16 @@ id __55__CallHistoryDBClientHandle_fetchObjectsWithPredicate___block_invoke(uint
   return v5;
 }
 
-- (id)fetchAllObjectsWithUniqueId:(id)a3
+- (id)fetchAllObjectsWithUniqueId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__CallHistoryDBClientHandle_fetchAllObjectsWithUniqueId___block_invoke;
   v8[3] = &unk_1E81DC938;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = idCopy;
+  v5 = idCopy;
   v6 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v8];
 
   return v6;
@@ -1032,16 +1032,16 @@ id __57__CallHistoryDBClientHandle_fetchAllObjectsWithUniqueId___block_invoke(ui
   return v3;
 }
 
-- (id)fetchObjectWithUniqueId:(id)a3
+- (id)fetchObjectWithUniqueId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__CallHistoryDBClientHandle_fetchObjectWithUniqueId___block_invoke;
   v8[3] = &unk_1E81DC960;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = idCopy;
+  v5 = idCopy;
   v6 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v8];
 
   return v6;
@@ -1058,16 +1058,16 @@ id __53__CallHistoryDBClientHandle_fetchObjectWithUniqueId___block_invoke(uint64
   return v4;
 }
 
-- (id)fetchObjectsWithUniqueIds:(id)a3
+- (id)fetchObjectsWithUniqueIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__CallHistoryDBClientHandle_fetchObjectsWithUniqueIds___block_invoke;
   v8[3] = &unk_1E81DC910;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = idsCopy;
+  v5 = idsCopy;
   v6 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v8];
 
   return v6;
@@ -1084,7 +1084,7 @@ id __55__CallHistoryDBClientHandle_fetchObjectsWithUniqueIds___block_invoke(uint
   return v4;
 }
 
-- (BOOL)deleteAll:(id *)a3
+- (BOOL)deleteAll:(id *)all
 {
   ct_green_tea_logger_create_static();
   v5 = getCTGreenTeaOsLogHandle();
@@ -1100,7 +1100,7 @@ id __55__CallHistoryDBClientHandle_fetchObjectsWithUniqueIds___block_invoke(uint
   v8[2] = __39__CallHistoryDBClientHandle_deleteAll___block_invoke;
   v8[3] = &unk_1E81DC988;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = all;
   return [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v8];
 }
 
@@ -1113,9 +1113,9 @@ uint64_t __39__CallHistoryDBClientHandle_deleteAll___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)deleteObjectWithUniqueId:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (BOOL)deleteObjectWithUniqueId:(id)id error:(id *)error save:(BOOL)save
 {
-  v8 = a3;
+  idCopy = id;
   ct_green_tea_logger_create_static();
   v9 = getCTGreenTeaOsLogHandle();
   v10 = v9;
@@ -1130,10 +1130,10 @@ uint64_t __39__CallHistoryDBClientHandle_deleteAll___block_invoke(uint64_t a1)
   v14[2] = __65__CallHistoryDBClientHandle_deleteObjectWithUniqueId_error_save___block_invoke;
   v14[3] = &unk_1E81DC9B0;
   v14[4] = self;
-  v15 = v8;
-  v17 = a5;
-  v16 = a4;
-  v11 = v8;
+  v15 = idCopy;
+  saveCopy = save;
+  errorCopy = error;
+  v11 = idCopy;
   v12 = [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v14];
 
   return v12;
@@ -1157,9 +1157,9 @@ uint64_t __65__CallHistoryDBClientHandle_deleteObjectWithUniqueId_error_save___b
   return v3;
 }
 
-- (BOOL)deleteObjectsWithUniqueIds:(id)a3 error:(id *)a4
+- (BOOL)deleteObjectsWithUniqueIds:(id)ids error:(id *)error
 {
-  v6 = a3;
+  idsCopy = ids;
   ct_green_tea_logger_create_static();
   v7 = getCTGreenTeaOsLogHandle();
   v8 = v7;
@@ -1174,9 +1174,9 @@ uint64_t __65__CallHistoryDBClientHandle_deleteObjectWithUniqueId_error_save___b
   v12[2] = __62__CallHistoryDBClientHandle_deleteObjectsWithUniqueIds_error___block_invoke;
   v12[3] = &unk_1E81DC9D8;
   v12[4] = self;
-  v13 = v6;
-  v14 = a4;
-  v9 = v6;
+  v13 = idsCopy;
+  errorCopy = error;
+  v9 = idsCopy;
   v10 = [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v12];
 
   return v10;
@@ -1191,9 +1191,9 @@ uint64_t __62__CallHistoryDBClientHandle_deleteObjectsWithUniqueIds_error___bloc
   return v3;
 }
 
-- (BOOL)createCallRecord:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (BOOL)createCallRecord:(id)record error:(id *)error save:(BOOL)save
 {
-  v8 = a3;
+  recordCopy = record;
   ct_green_tea_logger_create_static();
   v9 = getCTGreenTeaOsLogHandle();
   v10 = v9;
@@ -1208,10 +1208,10 @@ uint64_t __62__CallHistoryDBClientHandle_deleteObjectsWithUniqueIds_error___bloc
   v14[2] = __57__CallHistoryDBClientHandle_createCallRecord_error_save___block_invoke;
   v14[3] = &unk_1E81DC9B0;
   v14[4] = self;
-  v15 = v8;
-  v17 = a5;
-  v16 = a4;
-  v11 = v8;
+  v15 = recordCopy;
+  saveCopy = save;
+  errorCopy = error;
+  v11 = recordCopy;
   v12 = [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v14];
 
   return v12;
@@ -1236,9 +1236,9 @@ uint64_t __57__CallHistoryDBClientHandle_createCallRecord_error_save___block_inv
   return v4;
 }
 
-- (BOOL)createCallRecords:(id)a3 error:(id *)a4
+- (BOOL)createCallRecords:(id)records error:(id *)error
 {
-  v6 = a3;
+  recordsCopy = records;
   ct_green_tea_logger_create_static();
   v7 = getCTGreenTeaOsLogHandle();
   v8 = v7;
@@ -1248,15 +1248,15 @@ uint64_t __57__CallHistoryDBClientHandle_createCallRecord_error_save___block_inv
     _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_INFO, "Insert", buf, 2u);
   }
 
-  if ([v6 count])
+  if ([recordsCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__CallHistoryDBClientHandle_createCallRecords_error___block_invoke;
     v11[3] = &unk_1E81DC9D8;
-    v12 = v6;
-    v13 = self;
-    v14 = a4;
+    v12 = recordsCopy;
+    selfCopy = self;
+    errorCopy = error;
     v9 = [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v11];
   }
 
@@ -1323,18 +1323,18 @@ LABEL_12:
   return result;
 }
 
-- (id)updateCallRecords:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (id)updateCallRecords:(id)records error:(id *)error save:(BOOL)save
 {
-  v8 = a3;
+  recordsCopy = records;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__CallHistoryDBClientHandle_updateCallRecords_error_save___block_invoke;
   v12[3] = &unk_1E81DCA00;
   v12[4] = self;
-  v13 = v8;
-  v14 = a4;
-  v15 = a5;
-  v9 = v8;
+  v13 = recordsCopy;
+  errorCopy = error;
+  saveCopy = save;
+  v9 = recordsCopy;
   v10 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v12];
 
   return v10;
@@ -1349,18 +1349,18 @@ id __58__CallHistoryDBClientHandle_updateCallRecords_error_save___block_invoke(u
   return v3;
 }
 
-- (id)updateCallRecordsWithCalls:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (id)updateCallRecordsWithCalls:(id)calls error:(id *)error save:(BOOL)save
 {
-  v8 = a3;
+  callsCopy = calls;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__CallHistoryDBClientHandle_updateCallRecordsWithCalls_error_save___block_invoke;
   v12[3] = &unk_1E81DCA00;
   v12[4] = self;
-  v13 = v8;
-  v14 = a4;
-  v15 = a5;
-  v9 = v8;
+  v13 = callsCopy;
+  errorCopy = error;
+  saveCopy = save;
+  v9 = callsCopy;
   v10 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v12];
 
   return v10;
@@ -1375,17 +1375,17 @@ id __67__CallHistoryDBClientHandle_updateCallRecordsWithCalls_error_save___block
   return v3;
 }
 
-- (id)updateAllCallRecords:(id)a3 error:(id *)a4
+- (id)updateAllCallRecords:(id)records error:(id *)error
 {
-  v6 = a3;
+  recordsCopy = records;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__CallHistoryDBClientHandle_updateAllCallRecords_error___block_invoke;
   v10[3] = &unk_1E81DC348;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = recordsCopy;
+  errorCopy = error;
+  v7 = recordsCopy;
   v8 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v10];
 
   return v8;
@@ -1470,8 +1470,8 @@ id __56__CallHistoryDBClientHandle_updateAllCallRecords_error___block_invoke(uin
 
 - (CallHistoryDBHandle)dbStoreHandle
 {
-  v3 = [(CHSynchronizedLoggable *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CHSynchronizedLoggable *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   dbStoreHandle = self->dbStoreHandle;
 
@@ -1480,9 +1480,9 @@ id __56__CallHistoryDBClientHandle_updateAllCallRecords_error___block_invoke(uin
 
 - (CallDBManager)manager
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  manager = v2->_manager;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  manager = selfCopy->_manager;
   if (!manager)
   {
     v7 = 0;
@@ -1495,17 +1495,17 @@ id __56__CallHistoryDBClientHandle_updateAllCallRecords_error___block_invoke(uin
     v6[1] = 3221225472;
     v6[2] = __36__CallHistoryDBClientHandle_manager__block_invoke;
     v6[3] = &unk_1E81DC2F8;
-    v6[4] = v2;
+    v6[4] = selfCopy;
     v6[5] = &v7;
-    [(CHSynchronizedLoggable *)v2 executeSync:v6];
-    objc_storeStrong(&v2->_manager, v8[5]);
+    [(CHSynchronizedLoggable *)selfCopy executeSync:v6];
+    objc_storeStrong(&selfCopy->_manager, v8[5]);
     _Block_object_dispose(&v7, 8);
 
-    manager = v2->_manager;
+    manager = selfCopy->_manager;
   }
 
   v4 = manager;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -1519,43 +1519,43 @@ void __36__CallHistoryDBClientHandle_manager__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)handleCallTimersSave_sync:(id)a3
+- (void)handleCallTimersSave_sync:(id)save_sync
 {
-  if ([(CallHistoryDBClientHandle *)self willHandleNotification_sync:a3])
+  if ([(CallHistoryDBClientHandle *)self willHandleNotification_sync:save_sync])
   {
     [(CallHistoryDBHandle *)self->dbStoreHandle mergeCallDBPropChangesFromRemoteAppSave];
     [(CallHistoryDBHandle *)self->dbStoreHandle postTimersChangedNotification];
-    v4 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_1C3E90000, v4, OS_LOG_TYPE_DEFAULT, "Got timers save notification from other app", v5, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Got timers save notification from other app", v5, 2u);
     }
   }
 }
 
-- (BOOL)willHandleNotification_sync:(id)a3
+- (BOOL)willHandleNotification_sync:(id)notification_sync
 {
-  v3 = [a3 object];
+  object = [notification_sync object];
   v4 = +[CallHistoryDBHandle objectId];
-  v5 = [v3 isEqual:v4];
+  v5 = [object isEqual:v4];
 
   return v5 ^ 1;
 }
 
-- (id)updateCallRecords_sync:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (id)updateCallRecords_sync:(id)records_sync error:(id *)error save:(BOOL)save
 {
-  v5 = a5;
+  saveCopy = save;
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  records_syncCopy = records_sync;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v33 = v8;
-  v10 = [v8 allKeys];
+  v33 = records_syncCopy;
+  allKeys = [records_syncCopy allKeys];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1566,13 +1566,13 @@ void __36__CallHistoryDBClientHandle_manager__block_invoke(uint64_t a1)
       {
         if (*v39 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         [v9 addObject:*(*(&v38 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
     }
 
     while (v12);
@@ -1580,26 +1580,26 @@ void __36__CallHistoryDBClientHandle_manager__block_invoke(uint64_t a1)
 
   if (![v9 count])
   {
-    v16 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "No calls to update", buf, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "No calls to update", buf, 2u);
     }
 
     goto LABEL_32;
   }
 
   v15 = [(CallHistoryDBHandle *)self->dbStoreHandle fetchObjectsWithUniqueIds:v9];
-  v16 = v15;
+  logHandle = v15;
   if (!v15 || ![v15 count])
   {
-    v27 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v44 = v9;
-      _os_log_impl(&dword_1C3E90000, v27, OS_LOG_TYPE_DEFAULT, "Objects with given uniqueIds: %{public}@ to update do not exist", buf, 0xCu);
+      _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Objects with given uniqueIds: %{public}@ to update do not exist", buf, 0xCu);
     }
 
 LABEL_32:
@@ -1607,15 +1607,15 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v30 = a4;
-  v31 = v5;
+  errorCopy = error;
+  v31 = saveCopy;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = v16;
-  v17 = [v16 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  logHandle = logHandle;
+  v17 = [logHandle countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v17)
   {
     goto LABEL_24;
@@ -1625,7 +1625,7 @@ LABEL_32:
   v19 = *v35;
   do
   {
-    v20 = v16;
+    v20 = logHandle;
     for (j = 0; j != v18; ++j)
     {
       if (*v35 != v19)
@@ -1634,8 +1634,8 @@ LABEL_32:
       }
 
       v22 = *(*(&v34 + 1) + 8 * j);
-      v23 = [v22 unique_id];
-      v24 = [v33 objectForKey:v23];
+      unique_id = [v22 unique_id];
+      v24 = [v33 objectForKey:unique_id];
 
       if (v24)
       {
@@ -1644,26 +1644,26 @@ LABEL_32:
           goto LABEL_22;
         }
 
-        v25 = [v22 chRecentCall];
-        [v32 addObject:v25];
+        chRecentCall = [v22 chRecentCall];
+        [v32 addObject:chRecentCall];
       }
 
       else
       {
-        v25 = [(CHSynchronizedLoggable *)self logHandle];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        chRecentCall = [(CHSynchronizedLoggable *)self logHandle];
+        if (os_log_type_enabled(chRecentCall, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v22 unique_id];
+          unique_id2 = [v22 unique_id];
           *buf = 138543362;
-          v44 = v26;
-          _os_log_impl(&dword_1C3E90000, v25, OS_LOG_TYPE_DEFAULT, "Properties dict not found for call with uniqueId: %{public}@", buf, 0xCu);
+          v44 = unique_id2;
+          _os_log_impl(&dword_1C3E90000, chRecentCall, OS_LOG_TYPE_DEFAULT, "Properties dict not found for call with uniqueId: %{public}@", buf, 0xCu);
         }
       }
 
 LABEL_22:
     }
 
-    v16 = v20;
+    logHandle = v20;
     v18 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
   }
 
@@ -1672,7 +1672,7 @@ LABEL_24:
 
   if ([v32 count] && v31)
   {
-    [(CallHistoryDBHandle *)self->dbStoreHandle save:v30];
+    [(CallHistoryDBHandle *)self->dbStoreHandle save:errorCopy];
   }
 
 LABEL_33:
@@ -1682,19 +1682,19 @@ LABEL_33:
   return v32;
 }
 
-- (id)updateCallRecordsWithCalls_sync:(id)a3 error:(id *)a4 save:(BOOL)a5
+- (id)updateCallRecordsWithCalls_sync:(id)calls_sync error:(id *)error save:(BOOL)save
 {
-  v5 = a5;
+  saveCopy = save;
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  calls_syncCopy = calls_sync;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v33 = v8;
-  v10 = [v8 allKeys];
+  v33 = calls_syncCopy;
+  allKeys = [calls_syncCopy allKeys];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1705,13 +1705,13 @@ LABEL_33:
       {
         if (*v39 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         [v9 addObject:*(*(&v38 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
     }
 
     while (v12);
@@ -1719,26 +1719,26 @@ LABEL_33:
 
   if (![v9 count])
   {
-    v16 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "No calls to update", buf, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "No calls to update", buf, 2u);
     }
 
     goto LABEL_32;
   }
 
   v15 = [(CallHistoryDBHandle *)self->dbStoreHandle fetchObjectsWithUniqueIds:v9];
-  v16 = v15;
+  logHandle = v15;
   if (!v15 || ![v15 count])
   {
-    v27 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v44 = v9;
-      _os_log_impl(&dword_1C3E90000, v27, OS_LOG_TYPE_DEFAULT, "Objects with given uniqueIds:%@ to update do not exist", buf, 0xCu);
+      _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Objects with given uniqueIds:%@ to update do not exist", buf, 0xCu);
     }
 
 LABEL_32:
@@ -1746,15 +1746,15 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v30 = a4;
-  v31 = v5;
+  errorCopy = error;
+  v31 = saveCopy;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = v16;
-  v17 = [v16 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  logHandle = logHandle;
+  v17 = [logHandle countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v17)
   {
     goto LABEL_24;
@@ -1764,7 +1764,7 @@ LABEL_32:
   v19 = *v35;
   do
   {
-    v20 = v16;
+    v20 = logHandle;
     for (j = 0; j != v18; ++j)
     {
       if (*v35 != v19)
@@ -1773,8 +1773,8 @@ LABEL_32:
       }
 
       v22 = *(*(&v34 + 1) + 8 * j);
-      v23 = [v22 unique_id];
-      v24 = [v33 objectForKey:v23];
+      unique_id = [v22 unique_id];
+      v24 = [v33 objectForKey:unique_id];
 
       if (v24)
       {
@@ -1783,26 +1783,26 @@ LABEL_32:
           goto LABEL_22;
         }
 
-        v25 = [v22 chRecentCall];
-        [v32 addObject:v25];
+        chRecentCall = [v22 chRecentCall];
+        [v32 addObject:chRecentCall];
       }
 
       else
       {
-        v25 = [(CHSynchronizedLoggable *)self logHandle];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        chRecentCall = [(CHSynchronizedLoggable *)self logHandle];
+        if (os_log_type_enabled(chRecentCall, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v22 unique_id];
+          unique_id2 = [v22 unique_id];
           *buf = 138412290;
-          v44 = v26;
-          _os_log_impl(&dword_1C3E90000, v25, OS_LOG_TYPE_DEFAULT, "Updated call not found for call with uniqueId: %@", buf, 0xCu);
+          v44 = unique_id2;
+          _os_log_impl(&dword_1C3E90000, chRecentCall, OS_LOG_TYPE_DEFAULT, "Updated call not found for call with uniqueId: %@", buf, 0xCu);
         }
       }
 
 LABEL_22:
     }
 
-    v16 = v20;
+    logHandle = v20;
     v18 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
   }
 
@@ -1811,7 +1811,7 @@ LABEL_24:
 
   if ([v32 count] && v31)
   {
-    [(CallHistoryDBHandle *)self->dbStoreHandle save:v30];
+    [(CallHistoryDBHandle *)self->dbStoreHandle save:errorCopy];
   }
 
 LABEL_33:
@@ -1821,17 +1821,17 @@ LABEL_33:
   return v32;
 }
 
-- (id)updateAllCallRecords_sync:(id)a3 error:(id *)a4
+- (id)updateAllCallRecords_sync:(id)records_sync error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  records_syncCopy = records_sync;
   v7 = objc_opt_new();
-  v8 = [(CallHistoryDBHandle *)self->dbStoreHandle fetchAll];
+  fetchAll = [(CallHistoryDBHandle *)self->dbStoreHandle fetchAll];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v9 = [fetchAll countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1842,18 +1842,18 @@ LABEL_33:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(fetchAll);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        if ([(CallHistoryDBClientHandle *)self updateCallRecord_sync:v13 withChangeDict:v6])
+        if ([(CallHistoryDBClientHandle *)self updateCallRecord_sync:v13 withChangeDict:records_syncCopy])
         {
-          v14 = [v13 chRecentCall];
-          [v7 addObject:v14];
+          chRecentCall = [v13 chRecentCall];
+          [v7 addObject:chRecentCall];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v10 = [fetchAll countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v10);
@@ -1861,14 +1861,14 @@ LABEL_33:
 
   if ([v7 count])
   {
-    [(CallHistoryDBHandle *)self->dbStoreHandle save:a4];
+    [(CallHistoryDBHandle *)self->dbStoreHandle save:error];
     ct_green_tea_logger_create_static();
     v15 = getCTGreenTeaOsLogHandle();
     v16 = v15;
     if (v15 && os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v6;
+      v24 = records_syncCopy;
       _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_INFO, "Modify: %@", buf, 0xCu);
     }
   }
@@ -1878,11 +1878,11 @@ LABEL_33:
   return v7;
 }
 
-- (BOOL)updateCallRecord_sync:(id)a3 withChangeDict:(id)a4
+- (BOOL)updateCallRecord_sync:(id)record_sync withChangeDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:kCallUpdatePropertyOutgoingLocalParticipantUUID];
+  record_syncCopy = record_sync;
+  dictCopy = dict;
+  v8 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyOutgoingLocalParticipantUUID];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1891,10 +1891,10 @@ LABEL_33:
   }
 
   v9 = v8;
-  v10 = [v6 outgoingLocalParticipantUUID];
+  outgoingLocalParticipantUUID = [record_syncCopy outgoingLocalParticipantUUID];
   v11 = v9;
   v12 = v11;
-  if (!(v11 | v10))
+  if (!(v11 | outgoingLocalParticipantUUID))
   {
     goto LABEL_5;
   }
@@ -1905,12 +1905,12 @@ LABEL_33:
     goto LABEL_8;
   }
 
-  v13 = [v10 isEqual:v11];
+  v13 = [outgoingLocalParticipantUUID isEqual:v11];
 
   if ((v13 & 1) == 0)
   {
 LABEL_8:
-    [v6 setOutgoingLocalParticipantUUID:v12];
+    [record_syncCopy setOutgoingLocalParticipantUUID:v12];
     v14 = 1;
     goto LABEL_9;
   }
@@ -1920,7 +1920,7 @@ LABEL_5:
 LABEL_9:
 
 LABEL_10:
-  v15 = [v7 objectForKeyedSubscript:kCallUpdatePropertyRead];
+  v15 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyRead];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1929,14 +1929,14 @@ LABEL_10:
   }
 
   v16 = v15;
-  v17 = [v6 read];
+  read = [record_syncCopy read];
   v18 = v16;
   v19 = v18;
-  if (v18 | v17)
+  if (v18 | read)
   {
     if (v18)
     {
-      v20 = [v17 isEqual:v18];
+      v20 = [read isEqual:v18];
 
       if (v20)
       {
@@ -1948,14 +1948,14 @@ LABEL_10:
     {
     }
 
-    [v6 setRead:v19];
+    [record_syncCopy setRead:v19];
     v14 = 1;
   }
 
 LABEL_17:
 
 LABEL_18:
-  v21 = [v7 objectForKeyedSubscript:kCallUpdatePropertyBytesUsed];
+  v21 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyBytesUsed];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1964,14 +1964,14 @@ LABEL_18:
   }
 
   v22 = v21;
-  v23 = [v6 face_time_data];
+  face_time_data = [record_syncCopy face_time_data];
   v24 = v22;
   v25 = v24;
-  if (v24 | v23)
+  if (v24 | face_time_data)
   {
     if (v24)
     {
-      v26 = [v23 isEqual:v24];
+      v26 = [face_time_data isEqual:v24];
 
       if (v26)
       {
@@ -1983,59 +1983,59 @@ LABEL_18:
     {
     }
 
-    [v6 setFace_time_data:v25];
+    [record_syncCopy setFace_time_data:v25];
     v14 = 1;
   }
 
 LABEL_25:
 
 LABEL_26:
-  v27 = [v7 objectForKeyedSubscript:kCallUpdatePropertyCallStatus];
+  v27 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyCallStatus];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v60 = 0;
     -[CallHistoryDBClientHandle parseCallStatus_sync:isAnswered:isOriginated:](self, "parseCallStatus_sync:isAnswered:isOriginated:", [v27 integerValue], &v60 + 1, &v60);
-    v28 = [v6 answered];
-    v29 = [v28 BOOLValue];
+    answered = [record_syncCopy answered];
+    bOOLValue = [answered BOOLValue];
     v30 = HIBYTE(v60);
 
-    if (v30 != v29)
+    if (v30 != bOOLValue)
     {
       v31 = [MEMORY[0x1E696AD98] numberWithBool:HIBYTE(v60)];
-      [v6 setAnswered:v31];
+      [record_syncCopy setAnswered:v31];
 
       v14 = 1;
     }
 
-    v32 = [v6 originated];
-    v33 = [v32 BOOLValue];
+    originated = [record_syncCopy originated];
+    bOOLValue2 = [originated BOOLValue];
     v34 = v60;
 
-    if (v34 != v33)
+    if (v34 != bOOLValue2)
     {
       v35 = [MEMORY[0x1E696AD98] numberWithBool:v60];
-      [v6 setOriginated:v35];
+      [record_syncCopy setOriginated:v35];
 
       v14 = 1;
     }
   }
 
-  v36 = [v7 objectForKeyedSubscript:kCallUpdatePropertyHasMessage];
+  v36 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyHasMessage];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v37 = v36;
-    v38 = [v6 hasMessage];
+    hasMessage = [record_syncCopy hasMessage];
     v39 = v37;
     v40 = v39;
-    if (v39 | v38)
+    if (v39 | hasMessage)
     {
       if (v39)
       {
-        v41 = [v38 isEqual:v39];
+        v41 = [hasMessage isEqual:v39];
 
         if (v41)
         {
@@ -2047,14 +2047,14 @@ LABEL_26:
       {
       }
 
-      [v6 setHasMessage:v40];
+      [record_syncCopy setHasMessage:v40];
       v14 = 1;
     }
 
 LABEL_38:
   }
 
-  v42 = [v7 objectForKeyedSubscript:kCallUpdatePropertyAutoAnsweredReason];
+  v42 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyAutoAnsweredReason];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2063,14 +2063,14 @@ LABEL_38:
   }
 
   v43 = v42;
-  v44 = [v6 autoAnsweredReason];
+  autoAnsweredReason = [record_syncCopy autoAnsweredReason];
   v45 = v43;
   v46 = v45;
-  if (v45 | v44)
+  if (v45 | autoAnsweredReason)
   {
     if (v45)
     {
-      v47 = [v44 isEqual:v45];
+      v47 = [autoAnsweredReason isEqual:v45];
 
       if (v47)
       {
@@ -2082,14 +2082,14 @@ LABEL_38:
     {
     }
 
-    [v6 setAutoAnsweredReason:v46];
+    [record_syncCopy setAutoAnsweredReason:v46];
     v14 = 1;
   }
 
 LABEL_46:
 
 LABEL_47:
-  v48 = [v7 objectForKeyedSubscript:kCallUpdatePropertyEmergencyMediaItem];
+  v48 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyEmergencyMediaItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2097,22 +2097,22 @@ LABEL_47:
     v49 = [[CHEmergencyMediaItem alloc] initWithDictionary:v48];
     if (v49)
     {
-      v14 = [v6 addEmergencyMediaItem:v49];
+      v14 = [record_syncCopy addEmergencyMediaItem:v49];
     }
   }
 
-  v50 = [v7 objectForKeyedSubscript:kCallUpdatePropertyReminderUUID];
+  v50 = [dictCopy objectForKeyedSubscript:kCallUpdatePropertyReminderUUID];
 
-  v51 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v50 == v51)
+  if (v50 == null)
   {
-    v57 = [v6 reminderUUID];
-    if (v57)
+    reminderUUID = [record_syncCopy reminderUUID];
+    if (reminderUUID)
     {
-      v58 = v57;
+      v58 = reminderUUID;
 
-      [v6 setReminderUUID:0];
+      [record_syncCopy setReminderUUID:0];
       v14 = 1;
     }
   }
@@ -2123,14 +2123,14 @@ LABEL_47:
     if (objc_opt_isKindOfClass())
     {
       v52 = v50;
-      v53 = [v6 reminderUUID];
+      reminderUUID2 = [record_syncCopy reminderUUID];
       v54 = v52;
       v55 = v54;
-      if (v54 | v53)
+      if (v54 | reminderUUID2)
       {
         if (v54)
         {
-          v56 = [v53 isEqual:v54];
+          v56 = [reminderUUID2 isEqual:v54];
 
           if (v56)
           {
@@ -2142,7 +2142,7 @@ LABEL_47:
         {
         }
 
-        [v6 setReminderUUID:v55];
+        [record_syncCopy setReminderUUID:v55];
         v14 = 1;
       }
 
@@ -2153,112 +2153,112 @@ LABEL_61:
   return v14;
 }
 
-- (BOOL)updateCallRecord_sync:(id)a3 withCall:(id)a4
+- (BOOL)updateCallRecord_sync:(id)record_sync withCall:(id)call
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 chRecentCall];
-  v9 = [v8 isEqual:v7];
+  record_syncCopy = record_sync;
+  callCopy = call;
+  chRecentCall = [record_syncCopy chRecentCall];
+  v9 = [chRecentCall isEqual:callCopy];
   if ((v9 & 1) == 0)
   {
     v46 = 0;
-    -[CallHistoryDBClientHandle parseCallStatus_sync:isAnswered:isOriginated:](self, "parseCallStatus_sync:isAnswered:isOriginated:", [v7 callStatus], &v46 + 1, &v46);
-    v10 = [v7 uniqueId];
-    [v6 setUnique_id:v10];
+    -[CallHistoryDBClientHandle parseCallStatus_sync:isAnswered:isOriginated:](self, "parseCallStatus_sync:isAnswered:isOriginated:", [callCopy callStatus], &v46 + 1, &v46);
+    uniqueId = [callCopy uniqueId];
+    [record_syncCopy setUnique_id:uniqueId];
 
-    v11 = [v7 outgoingLocalParticipantUUID];
-    [v6 setOutgoingLocalParticipantUUID:v11];
+    outgoingLocalParticipantUUID = [callCopy outgoingLocalParticipantUUID];
+    [record_syncCopy setOutgoingLocalParticipantUUID:outgoingLocalParticipantUUID];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "read")}];
-    [v6 setRead:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(callCopy, "read")}];
+    [record_syncCopy setRead:v12];
 
-    v13 = [v7 bytesOfDataUsed];
-    [v6 setFace_time_data:v13];
+    bytesOfDataUsed = [callCopy bytesOfDataUsed];
+    [record_syncCopy setFace_time_data:bytesOfDataUsed];
 
     v14 = [MEMORY[0x1E696AD98] numberWithBool:HIBYTE(v46)];
-    [v6 setAnswered:v14];
+    [record_syncCopy setAnswered:v14];
 
     v15 = [MEMORY[0x1E696AD98] numberWithBool:v46];
-    [v6 setOriginated:v15];
+    [record_syncCopy setOriginated:v15];
 
-    v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "hasMessage")}];
-    [v6 setHasMessage:v16];
+    v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(callCopy, "hasMessage")}];
+    [record_syncCopy setHasMessage:v16];
 
-    v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "autoAnsweredReason")}];
-    [v6 setAutoAnsweredReason:v17];
+    v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(callCopy, "autoAnsweredReason")}];
+    [record_syncCopy setAutoAnsweredReason:v17];
 
-    v18 = [v7 participantGroupUUID];
-    [v6 setParticipantGroupUUID:v18];
+    participantGroupUUID = [callCopy participantGroupUUID];
+    [record_syncCopy setParticipantGroupUUID:participantGroupUUID];
 
     v19 = MEMORY[0x1E696AD98];
-    [v7 duration];
+    [callCopy duration];
     v20 = [v19 numberWithDouble:?];
-    [v6 setDuration:v20];
+    [record_syncCopy setDuration:v20];
 
-    v21 = [v6 localParticipantUUID];
-    if (v21)
+    localParticipantUUID = [record_syncCopy localParticipantUUID];
+    if (localParticipantUUID)
     {
-      v22 = v6;
+      v22 = record_syncCopy;
     }
 
     else
     {
-      v22 = v7;
+      v22 = callCopy;
     }
 
-    v23 = [v22 localParticipantUUID];
-    [v6 setLocalParticipantUUID:v23];
+    localParticipantUUID2 = [v22 localParticipantUUID];
+    [record_syncCopy setLocalParticipantUUID:localParticipantUUID2];
 
-    v24 = [v6 outgoingLocalParticipantUUID];
-    if (v24)
+    outgoingLocalParticipantUUID2 = [record_syncCopy outgoingLocalParticipantUUID];
+    if (outgoingLocalParticipantUUID2)
     {
-      v25 = v6;
+      v25 = record_syncCopy;
     }
 
     else
     {
-      v25 = v7;
+      v25 = callCopy;
     }
 
-    v26 = [v25 outgoingLocalParticipantUUID];
-    [v6 setOutgoingLocalParticipantUUID:v26];
+    outgoingLocalParticipantUUID3 = [v25 outgoingLocalParticipantUUID];
+    [record_syncCopy setOutgoingLocalParticipantUUID:outgoingLocalParticipantUUID3];
 
-    v27 = [v6 verificationStatus];
+    verificationStatus = [record_syncCopy verificationStatus];
     v28 = [MEMORY[0x1E696AD98] numberWithInteger:0];
-    if (v27 == v28)
+    if (verificationStatus == v28)
     {
-      [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "verificationStatus")}];
+      [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(callCopy, "verificationStatus")}];
     }
 
     else
     {
-      [v6 verificationStatus];
+      [record_syncCopy verificationStatus];
     }
     v29 = ;
-    [v6 setVerificationStatus:v29];
+    [record_syncCopy setVerificationStatus:v29];
 
-    v30 = [v6 date];
-    v31 = [v7 date];
-    if ([v30 compare:v31] == 1)
+    date = [record_syncCopy date];
+    date2 = [callCopy date];
+    if ([date compare:date2] == 1)
     {
-      v32 = v7;
+      v32 = callCopy;
     }
 
     else
     {
-      v32 = v6;
+      v32 = record_syncCopy;
     }
 
-    v33 = [v32 date];
-    [v6 setDate:v33];
+    date3 = [v32 date];
+    [record_syncCopy setDate:date3];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v34 = [v7 emergencyMediaItems];
-    v35 = [v34 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    emergencyMediaItems = [callCopy emergencyMediaItems];
+    v35 = [emergencyMediaItems countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v35)
     {
       v36 = v35;
@@ -2269,20 +2269,20 @@ LABEL_61:
         {
           if (*v43 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(emergencyMediaItems);
           }
 
-          [v6 addEmergencyMediaItem:*(*(&v42 + 1) + 8 * i)];
+          [record_syncCopy addEmergencyMediaItem:*(*(&v42 + 1) + 8 * i)];
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v36 = [emergencyMediaItems countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v36);
     }
 
-    v39 = [v7 reminderUUID];
-    [v6 setReminderUUID:v39];
+    reminderUUID = [callCopy reminderUUID];
+    [record_syncCopy setReminderUUID:reminderUUID];
   }
 
   v40 = *MEMORY[0x1E69E9840];
@@ -2297,27 +2297,27 @@ LABEL_61:
   [(CallHistoryDBClientHandle *)&v3 dealloc];
 }
 
-- (BOOL)saveDatabase:(id *)a3
+- (BOOL)saveDatabase:(id *)database
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __42__CallHistoryDBClientHandle_saveDatabase___block_invoke;
   v4[3] = &unk_1E81DC988;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = database;
   return [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v4];
 }
 
-- (BOOL)moveCallRecordsFromDatabaseAtURL:(id)a3
+- (BOOL)moveCallRecordsFromDatabaseAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CallHistoryDBClientHandle_moveCallRecordsFromDatabaseAtURL___block_invoke;
   v7[3] = &unk_1E81DCA50;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = lCopy;
+  v5 = lCopy;
   LOBYTE(self) = [(CHSynchronizedLoggable *)self executeSyncWithBOOL:v7];
 
   return self;

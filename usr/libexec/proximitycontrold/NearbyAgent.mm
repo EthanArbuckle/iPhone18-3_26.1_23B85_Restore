@@ -1,18 +1,18 @@
 @interface NearbyAgent
 - (NSString)description;
 - (_TtC17proximitycontrold11NearbyAgent)init;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation NearbyAgent
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -31,13 +31,13 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold11NearbyAgent_interruptionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -56,15 +56,15 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold11NearbyAgent_invalidationHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC17proximitycontrold11NearbyAgent_dispatchQueue);
-  *(self + OBJC_IVAR____TtC17proximitycontrold11NearbyAgent_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC17proximitycontrold11NearbyAgent_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
 - (_TtC17proximitycontrold11NearbyAgent)init
@@ -74,24 +74,24 @@
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100133114(sub_100104000, v5);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100134F64();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013A2FC();
 
   v3 = String._bridgeToObjectiveC()();

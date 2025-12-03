@@ -1,37 +1,37 @@
 @interface PSUICellularUsageSchedulingGroup
 - (PSListController)hostController;
-- (PSUICellularUsageSchedulingGroup)initWithListController:(id)a3 groupSpecifierTitle:(id)a4 usageType:(unint64_t)a5;
+- (PSUICellularUsageSchedulingGroup)initWithListController:(id)controller groupSpecifierTitle:(id)title usageType:(unint64_t)type;
 - (id)specifiers;
-- (void)calculateUsageWithForcedRefresh:(BOOL)a3;
-- (void)didFailToSetPolicyForSpecifier:(id)a3;
-- (void)prefetchPoliciesFor:(id)a3;
-- (void)selectedBillingPeriodChanged:(unint64_t)a3;
+- (void)calculateUsageWithForcedRefresh:(BOOL)refresh;
+- (void)didFailToSetPolicyForSpecifier:(id)specifier;
+- (void)prefetchPoliciesFor:(id)for;
+- (void)selectedBillingPeriodChanged:(unint64_t)changed;
 - (void)sortGroup;
 @end
 
 @implementation PSUICellularUsageSchedulingGroup
 
-- (PSUICellularUsageSchedulingGroup)initWithListController:(id)a3 groupSpecifierTitle:(id)a4 usageType:(unint64_t)a5
+- (PSUICellularUsageSchedulingGroup)initWithListController:(id)controller groupSpecifierTitle:(id)title usageType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  titleCopy = title;
   v21.receiver = self;
   v21.super_class = PSUICellularUsageSchedulingGroup;
   v10 = [(PSUICellularUsageSchedulingGroup *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_hostController, v8);
-    v12 = [[CTUIListWithHeaderLoadingGroup alloc] initWithHostController:v8];
+    objc_storeWeak(&v10->_hostController, controllerCopy);
+    v12 = [[CTUIListWithHeaderLoadingGroup alloc] initWithHostController:controllerCopy];
     loadingGroup = v11->_loadingGroup;
     v11->_loadingGroup = v12;
 
-    v11->_usageType = a5;
+    v11->_usageType = type;
     v14 = [PSUIAppDataUsageSpecifierFactory alloc];
-    v15 = [MEMORY[0x277D4D850] sharedInstance];
-    v16 = [MEMORY[0x277D4D860] sharedInstance];
+    mEMORY[0x277D4D850] = [MEMORY[0x277D4D850] sharedInstance];
+    mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
     v17 = +[PSUICarrierSpaceManager sharedManager];
-    v18 = [(PSUIAppDataUsageSpecifierFactory *)v14 initWithGroupSpecifierTitle:v9 managementCache:v15 statisticsCache:v16 carrierSpaceManager:v17 usageType:v11->_usageType billingCycleDelegate:v11 policySpecifierDelegate:v11];
+    v18 = [(PSUIAppDataUsageSpecifierFactory *)v14 initWithGroupSpecifierTitle:titleCopy managementCache:mEMORY[0x277D4D850] statisticsCache:mEMORY[0x277D4D860] carrierSpaceManager:v17 usageType:v11->_usageType billingCycleDelegate:v11 policySpecifierDelegate:v11];
     appDataUsageSpecifierFactory = v11->_appDataUsageSpecifierFactory;
     v11->_appDataUsageSpecifierFactory = v18;
   }
@@ -41,30 +41,30 @@
 
 - (id)specifiers
 {
-  v2 = [(PSUICellularUsageSchedulingGroup *)self loadingGroup];
-  v3 = [v2 specifiers];
+  loadingGroup = [(PSUICellularUsageSchedulingGroup *)self loadingGroup];
+  specifiers = [loadingGroup specifiers];
 
-  return v3;
+  return specifiers;
 }
 
-- (void)prefetchPoliciesFor:(id)a3
+- (void)prefetchPoliciesFor:(id)for
 {
   v3 = MEMORY[0x277D4D840];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 fetchUsagePoliciesFor:v4];
+  forCopy = for;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance fetchUsagePoliciesFor:forCopy];
 }
 
-- (void)didFailToSetPolicyForSpecifier:(id)a3
+- (void)didFailToSetPolicyForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__PSUICellularUsageSchedulingGroup_didFailToSetPolicyForSpecifier___block_invoke;
   v6[3] = &unk_279BA9D30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -74,61 +74,61 @@ void __67__PSUICellularUsageSchedulingGroup_didFailToSetPolicyForSpecifier___blo
   [v2 reloadSpecifier:*(a1 + 40)];
 }
 
-- (void)selectedBillingPeriodChanged:(unint64_t)a3
+- (void)selectedBillingPeriodChanged:(unint64_t)changed
 {
-  v4 = [(PSUICellularUsageSchedulingGroup *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularUsageSchedulingGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "Sorting cellular usage group due to billing period selector change", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Sorting cellular usage group due to billing period selector change", v5, 2u);
   }
 
   [(PSUICellularUsageSchedulingGroup *)self sortGroup];
 }
 
-- (void)calculateUsageWithForcedRefresh:(BOOL)a3
+- (void)calculateUsageWithForcedRefresh:(BOOL)refresh
 {
-  if (a3)
+  if (refresh)
   {
     goto LABEL_7;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (![(PSUICellularUsageSchedulingGroup *)v4 refreshInProgress])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(PSUICellularUsageSchedulingGroup *)selfCopy refreshInProgress])
   {
-    [(PSUICellularUsageSchedulingGroup *)v4 setRefreshInProgress:1];
-    objc_sync_exit(v4);
+    [(PSUICellularUsageSchedulingGroup *)selfCopy setRefreshInProgress:1];
+    objc_sync_exit(selfCopy);
 
 LABEL_7:
-    v6 = [(PSUICellularUsageSchedulingGroup *)self loadingGroup];
-    v7 = [(PSUICellularUsageSchedulingGroup *)self appDataUsageSpecifierFactory];
-    v8 = [v7 headerSpecifiers];
-    [v6 setHeaderSpecifiers:v8];
+    loadingGroup = [(PSUICellularUsageSchedulingGroup *)self loadingGroup];
+    appDataUsageSpecifierFactory = [(PSUICellularUsageSchedulingGroup *)self appDataUsageSpecifierFactory];
+    headerSpecifiers = [appDataUsageSpecifierFactory headerSpecifiers];
+    [loadingGroup setHeaderSpecifiers:headerSpecifiers];
 
     objc_initWeak(buf, self);
-    v9 = [MEMORY[0x277D4D860] sharedInstance];
+    mEMORY[0x277D4D860] = [MEMORY[0x277D4D860] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __68__PSUICellularUsageSchedulingGroup_calculateUsageWithForcedRefresh___block_invoke;
     v10[3] = &unk_279BA9DA8;
     v10[4] = self;
     objc_copyWeak(&v11, buf);
-    [v9 fetchDeviceDataUsageWithCompletion:v10];
+    [mEMORY[0x277D4D860] fetchDeviceDataUsageWithCompletion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
     return;
   }
 
-  v5 = [(PSUICellularUsageSchedulingGroup *)v4 getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularUsageSchedulingGroup *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __68__PSUICellularUsageSchedulingGroup_calculateUsageWithForcedRefresh___block_invoke(uint64_t a1)
@@ -230,28 +230,28 @@ void __68__PSUICellularUsageSchedulingGroup_calculateUsageWithForcedRefresh___bl
 
 - (void)sortGroup
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(PSUICellularUsageSchedulingGroup *)v2 refreshInProgress])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(PSUICellularUsageSchedulingGroup *)selfCopy refreshInProgress])
   {
-    v3 = [(PSUICellularUsageSchedulingGroup *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularUsageSchedulingGroup *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Refresh already in progress, just refresh specifiers instead of sorting.", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Refresh already in progress, just refresh specifiers instead of sorting.", buf, 2u);
     }
 
-    v4 = [(PSUICellularUsageSchedulingGroup *)v2 hostController];
-    [v4 reloadSpecifiers];
+    hostController = [(PSUICellularUsageSchedulingGroup *)selfCopy hostController];
+    [hostController reloadSpecifiers];
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(buf, v2);
+    objc_initWeak(buf, selfCopy);
     v5 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

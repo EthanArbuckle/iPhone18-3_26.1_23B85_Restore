@@ -1,33 +1,33 @@
 @interface HFAudioAnalysisDetectionCondition
-- (HFAudioAnalysisDetectionCondition)initWithPredicate:(id)a3;
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3;
+- (HFAudioAnalysisDetectionCondition)initWithPredicate:(id)predicate;
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options;
 @end
 
 @implementation HFAudioAnalysisDetectionCondition
 
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options
 {
   v3 = [[HFConditionUISummary alloc] initWithCondition:self title:0 description:0];
 
   return v3;
 }
 
-- (HFAudioAnalysisDetectionCondition)initWithPredicate:(id)a3
+- (HFAudioAnalysisDetectionCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v25.receiver = self;
   v25.super_class = HFAudioAnalysisDetectionCondition;
-  v5 = [(HFCondition *)&v25 initWithPredicate:v4];
+  v5 = [(HFCondition *)&v25 initWithPredicate:predicateCopy];
   if (!v5)
   {
     goto LABEL_9;
   }
 
   objc_opt_class();
-  v6 = v4;
+  firstObject = predicateCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
@@ -40,7 +40,7 @@
   if (!v8)
   {
     objc_opt_class();
-    v16 = v6;
+    v16 = firstObject;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -53,8 +53,8 @@
 
     v18 = v17;
 
-    v19 = [v18 subpredicates];
-    v20 = [v19 count];
+    subpredicates = [v18 subpredicates];
+    v20 = [subpredicates count];
 
     if (v20 != 1)
     {
@@ -63,11 +63,11 @@
     }
 
     objc_opt_class();
-    v21 = [v18 subpredicates];
-    v6 = [v21 firstObject];
+    subpredicates2 = [v18 subpredicates];
+    firstObject = [subpredicates2 firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v22 = v6;
+      v22 = firstObject;
     }
 
     else
@@ -83,18 +83,18 @@
     }
   }
 
-  v9 = [v6 leftExpression];
-  if ([v9 expressionType] != 4)
+  leftExpression = [firstObject leftExpression];
+  if ([leftExpression expressionType] != 4)
   {
 
     goto LABEL_20;
   }
 
-  v10 = [v6 leftExpression];
-  v11 = [v10 arguments];
-  v12 = [v11 firstObject];
-  v13 = [v12 keyPath];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CCF2F0]];
+  leftExpression2 = [firstObject leftExpression];
+  arguments = [leftExpression2 arguments];
+  firstObject2 = [arguments firstObject];
+  keyPath = [firstObject2 keyPath];
+  v14 = [keyPath isEqualToString:*MEMORY[0x277CCF2F0]];
 
   if (!v14)
   {

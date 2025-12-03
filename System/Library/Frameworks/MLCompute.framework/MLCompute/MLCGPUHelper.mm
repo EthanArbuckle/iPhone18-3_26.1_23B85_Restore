@@ -1,101 +1,101 @@
 @interface MLCGPUHelper
-+ (id)allocateMPSImageBatchForTensor:(id)a3 commandBuffer:(id)a4 kernel:(id)a5 batchSize:(unint64_t)a6 heapAllocator:(id)a7 imageBatchIsTemporary:(BOOL)a8;
-+ (void)copyMPSImageBatchToMTLBuffer:(id)a3 commandBuffer:(id)a4 sourceImageBatch:(id)a5 destinationMTLBuffer:(id)a6 MLCDataType:(int)a7;
-+ (void)copyMTLBufferToMPSImageBatch:(id)a3 commandBuffer:(id)a4 sourceMTLBuffer:(id)a5 destinationImageBatch:(id)a6 MLCDataType:(int)a7;
++ (id)allocateMPSImageBatchForTensor:(id)tensor commandBuffer:(id)buffer kernel:(id)kernel batchSize:(unint64_t)size heapAllocator:(id)allocator imageBatchIsTemporary:(BOOL)temporary;
++ (void)copyMPSImageBatchToMTLBuffer:(id)buffer commandBuffer:(id)commandBuffer sourceImageBatch:(id)batch destinationMTLBuffer:(id)lBuffer MLCDataType:(int)type;
++ (void)copyMTLBufferToMPSImageBatch:(id)batch commandBuffer:(id)buffer sourceMTLBuffer:(id)lBuffer destinationImageBatch:(id)imageBatch MLCDataType:(int)type;
 @end
 
 @implementation MLCGPUHelper
 
-+ (void)copyMTLBufferToMPSImageBatch:(id)a3 commandBuffer:(id)a4 sourceMTLBuffer:(id)a5 destinationImageBatch:(id)a6 MLCDataType:(int)a7
++ (void)copyMTLBufferToMPSImageBatch:(id)batch commandBuffer:(id)buffer sourceMTLBuffer:(id)lBuffer destinationImageBatch:(id)imageBatch MLCDataType:(int)type
 {
-  v24 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  batchCopy = batch;
+  bufferCopy = buffer;
+  lBufferCopy = lBuffer;
+  imageBatchCopy = imageBatch;
   v14 = objc_autoreleasePoolPush();
-  v15 = [v13 count];
-  v16 = [v13 objectAtIndexedSubscript:0];
-  v17 = [v16 width];
-  v18 = [v13 objectAtIndexedSubscript:0];
-  v19 = [v18 height] * v17;
-  v20 = [v13 objectAtIndexedSubscript:0];
+  v15 = [imageBatchCopy count];
+  v16 = [imageBatchCopy objectAtIndexedSubscript:0];
+  width = [v16 width];
+  v18 = [imageBatchCopy objectAtIndexedSubscript:0];
+  v19 = [v18 height] * width;
+  v20 = [imageBatchCopy objectAtIndexedSubscript:0];
   v21 = v19 * [v20 featureChannels];
 
-  v22 = GPU_CreateMPSMatrixDesc(v15, v21, 1, a7);
-  v23 = [objc_alloc(MEMORY[0x277CD7250]) initWithBuffer:v12 descriptor:v22];
-  [v24 encodeBatchToCommandBuffer:v11 sourceMatrix:v23 destinationImages:v13];
+  v22 = GPU_CreateMPSMatrixDesc(v15, v21, 1, type);
+  v23 = [objc_alloc(MEMORY[0x277CD7250]) initWithBuffer:lBufferCopy descriptor:v22];
+  [batchCopy encodeBatchToCommandBuffer:bufferCopy sourceMatrix:v23 destinationImages:imageBatchCopy];
 
   objc_autoreleasePoolPop(v14);
 }
 
-+ (void)copyMPSImageBatchToMTLBuffer:(id)a3 commandBuffer:(id)a4 sourceImageBatch:(id)a5 destinationMTLBuffer:(id)a6 MLCDataType:(int)a7
++ (void)copyMPSImageBatchToMTLBuffer:(id)buffer commandBuffer:(id)commandBuffer sourceImageBatch:(id)batch destinationMTLBuffer:(id)lBuffer MLCDataType:(int)type
 {
-  v24 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bufferCopy = buffer;
+  commandBufferCopy = commandBuffer;
+  batchCopy = batch;
+  lBufferCopy = lBuffer;
   v14 = objc_autoreleasePoolPush();
-  v15 = [v12 count];
-  v16 = [v12 objectAtIndexedSubscript:0];
-  v17 = [v16 width];
-  v18 = [v12 objectAtIndexedSubscript:0];
-  v19 = [v18 height] * v17;
-  v20 = [v12 objectAtIndexedSubscript:0];
+  v15 = [batchCopy count];
+  v16 = [batchCopy objectAtIndexedSubscript:0];
+  width = [v16 width];
+  v18 = [batchCopy objectAtIndexedSubscript:0];
+  v19 = [v18 height] * width;
+  v20 = [batchCopy objectAtIndexedSubscript:0];
   v21 = v19 * [v20 featureChannels];
 
-  v22 = GPU_CreateMPSMatrixDesc(v15, v21, 1, a7);
-  v23 = [objc_alloc(MEMORY[0x277CD7250]) initWithBuffer:v13 descriptor:v22];
-  [v24 encodeBatchToCommandBuffer:v11 sourceImages:v12 destinationMatrix:v23];
+  v22 = GPU_CreateMPSMatrixDesc(v15, v21, 1, type);
+  v23 = [objc_alloc(MEMORY[0x277CD7250]) initWithBuffer:lBufferCopy descriptor:v22];
+  [bufferCopy encodeBatchToCommandBuffer:commandBufferCopy sourceImages:batchCopy destinationMatrix:v23];
 
   objc_autoreleasePoolPop(v14);
 }
 
-+ (id)allocateMPSImageBatchForTensor:(id)a3 commandBuffer:(id)a4 kernel:(id)a5 batchSize:(unint64_t)a6 heapAllocator:(id)a7 imageBatchIsTemporary:(BOOL)a8
++ (id)allocateMPSImageBatchForTensor:(id)tensor commandBuffer:(id)buffer kernel:(id)kernel batchSize:(unint64_t)size heapAllocator:(id)allocator imageBatchIsTemporary:(BOOL)temporary
 {
   v33 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = [v13 descriptor];
-  v18 = [v17 shape];
-  v19 = [v18 count] != 1;
+  tensorCopy = tensor;
+  bufferCopy = buffer;
+  kernelCopy = kernel;
+  allocatorCopy = allocator;
+  descriptor = [tensorCopy descriptor];
+  shape = [descriptor shape];
+  v19 = [shape count] != 1;
 
-  v20 = [v13 descriptor];
-  v21 = [v20 shape];
-  v22 = [v21 objectAtIndexedSubscript:v19];
-  v23 = [v22 unsignedIntegerValue];
+  descriptor2 = [tensorCopy descriptor];
+  shape2 = [descriptor2 shape];
+  v22 = [shape2 objectAtIndexedSubscript:v19];
+  unsignedIntegerValue = [v22 unsignedIntegerValue];
 
   v36 = 0;
-  v37 = v23;
+  v37 = unsignedIntegerValue;
   v35 = 0;
-  GPU_GetTensorWidthAndHeight(v13, &v36, &v35);
-  if (!a6)
+  GPU_GetTensorWidthAndHeight(tensorCopy, &v36, &v35);
+  if (!size)
   {
-    a6 = [v13 calculateBatchSizeToUse];
+    size = [tensorCopy calculateBatchSizeToUse];
   }
 
-  if (v23 > kMaxFeatureChannelMPSImage && (GPU_AdjustFeatureChannelBeyondMax(&v36, &v35, &v37, 0) & 1) == 0)
+  if (unsignedIntegerValue > kMaxFeatureChannelMPSImage && (GPU_AdjustFeatureChannelBeyondMax(&v36, &v35, &v37, 0) & 1) == 0)
   {
     v27 = +[MLCLog framework];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      [MLCGPUHelper allocateMPSImageBatchForTensor:v33 commandBuffer:v13 kernel:v27 batchSize:? heapAllocator:? imageBatchIsTemporary:?];
+      [MLCGPUHelper allocateMPSImageBatchForTensor:v33 commandBuffer:tensorCopy kernel:v27 batchSize:? heapAllocator:? imageBatchIsTemporary:?];
     }
 
     goto LABEL_13;
   }
 
-  v24 = [v13 descriptor];
-  v25 = [v24 dataType];
+  descriptor3 = [tensorCopy descriptor];
+  dataType = [descriptor3 dataType];
 
-  v26 = v25 - 1;
-  if ((v25 - 1) >= 6 || ((0x2Du >> v26) & 1) == 0)
+  v26 = dataType - 1;
+  if ((dataType - 1) >= 6 || ((0x2Du >> v26) & 1) == 0)
   {
     v27 = +[MLCLog framework];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      [MLCGPUHelper allocateMPSImageBatchForTensor:v34 commandBuffer:v13 kernel:v27 batchSize:? heapAllocator:? imageBatchIsTemporary:?];
+      [MLCGPUHelper allocateMPSImageBatchForTensor:v34 commandBuffer:tensorCopy kernel:v27 batchSize:? heapAllocator:? imageBatchIsTemporary:?];
     }
 
 LABEL_13:
@@ -104,14 +104,14 @@ LABEL_13:
   }
 
   v27 = [MEMORY[0x277CD7220] imageDescriptorWithChannelFormat:qword_238D45B10[v26] width:v36 height:v35 featureChannels:v37];
-  if (v16)
+  if (allocatorCopy)
   {
-    v28 = v16;
+    defaultAllocator = allocatorCopy;
   }
 
   else
   {
-    if (a8)
+    if (temporary)
     {
       v31 = MEMORY[0x277CD72A8];
     }
@@ -121,11 +121,11 @@ LABEL_13:
       v31 = MEMORY[0x277CD7218];
     }
 
-    v28 = [v31 defaultAllocator];
+    defaultAllocator = [v31 defaultAllocator];
   }
 
-  v32 = v28;
-  v29 = [v28 imageBatchForCommandBuffer:v14 imageDescriptor:v27 kernel:v15 count:a6];
+  v32 = defaultAllocator;
+  v29 = [defaultAllocator imageBatchForCommandBuffer:bufferCopy imageDescriptor:v27 kernel:kernelCopy count:size];
 
 LABEL_14:
 

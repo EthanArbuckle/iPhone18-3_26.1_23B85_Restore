@@ -2,7 +2,7 @@
 - (CGPoint)position;
 - (CGRect)bounds;
 - (CGSize)size;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation EDAbsoluteAnchor
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  self->mPosition.x = a3.origin.x;
-  self->mPosition.y = a3.origin.y;
-  self->mSize.width = a3.size.width;
-  self->mSize.height = a3.size.height;
+  self->mPosition.x = bounds.origin.x;
+  self->mPosition.y = bounds.origin.y;
+  self->mSize.width = bounds.size.width;
+  self->mSize.height = bounds.size.height;
 }
 
 @end

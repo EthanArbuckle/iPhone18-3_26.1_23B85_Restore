@@ -1,12 +1,12 @@
 @interface NPKProtoStandaloneInitializationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneInitializationRequest
@@ -17,60 +17,60 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneInitializationRequest;
   v4 = [(NPKProtoStandaloneInitializationRequest *)&v8 description];
-  v5 = [(NPKProtoStandaloneInitializationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneInitializationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   requestHeader = self->_requestHeader;
   if (requestHeader)
   {
-    v5 = [(NPKProtoStandaloneRequestHeader *)requestHeader dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"requestHeader"];
+    dictionaryRepresentation = [(NPKProtoStandaloneRequestHeader *)requestHeader dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"requestHeader"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_useSimulatedFlowController];
-    [v3 setObject:v6 forKey:@"useSimulatedFlowController"];
+    [dictionary setObject:v6 forKey:@"useSimulatedFlowController"];
   }
 
   userLanguageCode = self->_userLanguageCode;
   if (userLanguageCode)
   {
-    [v3 setObject:userLanguageCode forKey:@"userLanguageCode"];
+    [dictionary setObject:userLanguageCode forKey:@"userLanguageCode"];
   }
 
   passImageSize = self->_passImageSize;
   if (passImageSize)
   {
-    v9 = [(NPKProtoStandaloneImageSize *)passImageSize dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"passImageSize"];
+    dictionaryRepresentation2 = [(NPKProtoStandaloneImageSize *)passImageSize dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"passImageSize"];
   }
 
   passThumbnailImageSize = self->_passThumbnailImageSize;
   if (passThumbnailImageSize)
   {
-    v11 = [(NPKProtoStandaloneImageSize *)passThumbnailImageSize dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"passThumbnailImageSize"];
+    dictionaryRepresentation3 = [(NPKProtoStandaloneImageSize *)passThumbnailImageSize dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"passThumbnailImageSize"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_requestHeader)
   {
     [NPKProtoStandaloneInitializationRequest writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteSubmessage();
   if (*&self->_has)
   {
@@ -97,40 +97,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setRequestHeader:self->_requestHeader];
-  v4 = v5;
+  toCopy = to;
+  [toCopy setRequestHeader:self->_requestHeader];
+  v4 = toCopy;
   if (*&self->_has)
   {
-    v5[40] = self->_useSimulatedFlowController;
-    v5[44] |= 1u;
+    toCopy[40] = self->_useSimulatedFlowController;
+    toCopy[44] |= 1u;
   }
 
   if (self->_userLanguageCode)
   {
-    [v5 setUserLanguageCode:?];
-    v4 = v5;
+    [toCopy setUserLanguageCode:?];
+    v4 = toCopy;
   }
 
   if (self->_passImageSize)
   {
-    [v5 setPassImageSize:?];
-    v4 = v5;
+    [toCopy setPassImageSize:?];
+    v4 = toCopy;
   }
 
   if (self->_passThumbnailImageSize)
   {
-    [v5 setPassThumbnailImageSize:?];
-    v4 = v5;
+    [toCopy setPassThumbnailImageSize:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandaloneRequestHeader *)self->_requestHeader copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandaloneRequestHeader *)self->_requestHeader copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -140,31 +140,31 @@
     *(v5 + 44) |= 1u;
   }
 
-  v8 = [(NSString *)self->_userLanguageCode copyWithZone:a3];
+  v8 = [(NSString *)self->_userLanguageCode copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NPKProtoStandaloneImageSize *)self->_passImageSize copyWithZone:a3];
+  v10 = [(NPKProtoStandaloneImageSize *)self->_passImageSize copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NPKProtoStandaloneImageSize *)self->_passThumbnailImageSize copyWithZone:a3];
+  v12 = [(NPKProtoStandaloneImageSize *)self->_passThumbnailImageSize copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   requestHeader = self->_requestHeader;
-  if (requestHeader | *(v4 + 3))
+  if (requestHeader | *(equalCopy + 3))
   {
     if (![(NPKProtoStandaloneRequestHeader *)requestHeader isEqual:?])
     {
@@ -172,18 +172,18 @@
     }
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (!self->_useSimulatedFlowController)
   {
 LABEL_5:
@@ -197,20 +197,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((*(v4 + 40) & 1) == 0)
+  if ((*(equalCopy + 40) & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_6:
   userLanguageCode = self->_userLanguageCode;
-  if (userLanguageCode | *(v4 + 4) && ![(NSString *)userLanguageCode isEqual:?])
+  if (userLanguageCode | *(equalCopy + 4) && ![(NSString *)userLanguageCode isEqual:?])
   {
     goto LABEL_13;
   }
 
   passImageSize = self->_passImageSize;
-  if (passImageSize | *(v4 + 1))
+  if (passImageSize | *(equalCopy + 1))
   {
     if (![(NPKProtoStandaloneImageSize *)passImageSize isEqual:?])
     {
@@ -219,7 +219,7 @@ LABEL_6:
   }
 
   passThumbnailImageSize = self->_passThumbnailImageSize;
-  if (passThumbnailImageSize | *(v4 + 2))
+  if (passThumbnailImageSize | *(equalCopy + 2))
   {
     v10 = [(NPKProtoStandaloneImageSize *)passThumbnailImageSize isEqual:?];
   }
@@ -253,12 +253,12 @@ LABEL_14:
   return v7 ^ [(NPKProtoStandaloneImageSize *)self->_passThumbnailImageSize hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestHeader = self->_requestHeader;
-  v6 = *(v4 + 3);
-  v11 = v4;
+  v6 = *(fromCopy + 3);
+  v11 = fromCopy;
   if (requestHeader)
   {
     if (!v6)
@@ -279,22 +279,22 @@ LABEL_14:
     [(NPKProtoStandaloneInitializationRequest *)self setRequestHeader:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_useSimulatedFlowController = *(v4 + 40);
+    self->_useSimulatedFlowController = *(fromCopy + 40);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoStandaloneInitializationRequest *)self setUserLanguageCode:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
   passImageSize = self->_passImageSize;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (passImageSize)
   {
     if (!v8)
@@ -315,10 +315,10 @@ LABEL_7:
     [(NPKProtoStandaloneInitializationRequest *)self setPassImageSize:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_17:
   passThumbnailImageSize = self->_passThumbnailImageSize;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   if (passThumbnailImageSize)
   {
     if (!v10)
@@ -339,7 +339,7 @@ LABEL_17:
     [(NPKProtoStandaloneInitializationRequest *)self setPassThumbnailImageSize:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_23:
 }
 

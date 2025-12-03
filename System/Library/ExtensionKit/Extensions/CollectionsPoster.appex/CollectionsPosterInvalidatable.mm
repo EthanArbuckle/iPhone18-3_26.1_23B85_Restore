@@ -15,7 +15,7 @@
 - (void)wk_invalidate
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster30CollectionsPosterInvalidatable_posterKitInvalidatable);
-  v3 = self;
+  selfCopy = self;
   [objc_msgSend(v2 "assertion")];
   swift_unknownObjectRelease();
 }

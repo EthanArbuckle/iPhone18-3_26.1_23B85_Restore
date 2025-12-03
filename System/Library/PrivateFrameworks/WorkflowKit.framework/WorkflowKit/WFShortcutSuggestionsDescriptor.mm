@@ -1,58 +1,58 @@
 @interface WFShortcutSuggestionsDescriptor
-- (WFShortcutSuggestionsDescriptor)initWithCoder:(id)a3;
-- (WFShortcutSuggestionsDescriptor)initWithIdentifier:(id)a3 suggestions:(id)a4 availability:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFShortcutSuggestionsDescriptor)initWithCoder:(id)coder;
+- (WFShortcutSuggestionsDescriptor)initWithIdentifier:(id)identifier suggestions:(id)suggestions availability:(unint64_t)availability;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFShortcutSuggestionsDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFShortcutSuggestionsDescriptor;
-  v4 = a3;
-  [(WFShortcutSuggestionsDescriptor *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFShortcutSuggestionsDescriptor *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFShortcutSuggestionsDescriptor *)self suggestions:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"suggestions"];
+  [coderCopy encodeObject:v5 forKey:@"suggestions"];
 
-  [v4 encodeInteger:-[WFShortcutSuggestionsDescriptor availability](self forKey:{"availability"), @"availability"}];
+  [coderCopy encodeInteger:-[WFShortcutSuggestionsDescriptor availability](self forKey:{"availability"), @"availability"}];
 }
 
-- (WFShortcutSuggestionsDescriptor)initWithCoder:(id)a3
+- (WFShortcutSuggestionsDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = WFShortcutSuggestionsDescriptor;
-  v5 = [(WFShortcutSuggestionsDescriptor *)&v13 initWithCoder:v4];
+  v5 = [(WFShortcutSuggestionsDescriptor *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"suggestions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"suggestions"];
     suggestions = v5->_suggestions;
     v5->_suggestions = v9;
 
-    v5->_availability = [v4 decodeIntegerForKey:@"availability"];
+    v5->_availability = [coderCopy decodeIntegerForKey:@"availability"];
     v11 = v5;
   }
 
   return v5;
 }
 
-- (WFShortcutSuggestionsDescriptor)initWithIdentifier:(id)a3 suggestions:(id)a4 availability:(unint64_t)a5
+- (WFShortcutSuggestionsDescriptor)initWithIdentifier:(id)identifier suggestions:(id)suggestions availability:(unint64_t)availability
 {
-  v8 = a4;
+  suggestionsCopy = suggestions;
   v14.receiver = self;
   v14.super_class = WFShortcutSuggestionsDescriptor;
-  v9 = [(WFShortcutSuggestionsDescriptor *)&v14 initWithIdentifier:a3 objectType:6];
+  v9 = [(WFShortcutSuggestionsDescriptor *)&v14 initWithIdentifier:identifier objectType:6];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [suggestionsCopy copy];
     suggestions = v9->_suggestions;
     v9->_suggestions = v10;
 
-    v9->_availability = a5;
+    v9->_availability = availability;
     v12 = v9;
   }
 

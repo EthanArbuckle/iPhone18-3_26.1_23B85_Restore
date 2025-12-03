@@ -1,26 +1,26 @@
 @interface PCScheduledTravelPredictor
-+ (double)estimateTravelTimeForCurrentLocation:(id)a3 destination:(id)a4;
-+ (id)findFirstVisitWithin24HoursAfterNavigationSession:(id)a3 visitHistory:(id)a4;
-+ (void)predictWithScheduledTravelWithActiveNav:(id)a3 previousNav:(id)a4 visitHistory:(id)a5 locationHistory:(id)a6 atTime:(double)a7 results:(id *)a8;
++ (double)estimateTravelTimeForCurrentLocation:(id)location destination:(id)destination;
++ (id)findFirstVisitWithin24HoursAfterNavigationSession:(id)session visitHistory:(id)history;
++ (void)predictWithScheduledTravelWithActiveNav:(id)nav previousNav:(id)previousNav visitHistory:(id)history locationHistory:(id)locationHistory atTime:(double)time results:(id *)results;
 @end
 
 @implementation PCScheduledTravelPredictor
 
-+ (id)findFirstVisitWithin24HoursAfterNavigationSession:(id)a3 visitHistory:(id)a4
++ (id)findFirstVisitWithin24HoursAfterNavigationSession:(id)session visitHistory:(id)history
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasUsageTimeCFAbsolute])
+  sessionCopy = session;
+  historyCopy = history;
+  if ([sessionCopy hasUsageTimeCFAbsolute])
   {
-    [v5 usageTimeCFAbsolute];
+    [sessionCopy usageTimeCFAbsolute];
     v8 = v7;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v6;
-    v9 = v6;
+    v28 = historyCopy;
+    v9 = historyCopy;
     v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v10)
     {
@@ -39,9 +39,9 @@
           }
 
           v15 = *(*(&v30 + 1) + 8 * v14);
-          v16 = [v15 location];
-          v17 = [v5 destinationLocation];
-          if (+[PCLocationUtils isLocation:withinThreshold:](PCLocationUtils, "isLocation:withinThreshold:", v16, v17) && ([v15 entryTimeCFAbsolute], v18 > v8) && (objc_msgSend(v15, "entryTimeCFAbsolute"), v19 <= v8 + 86400.0))
+          location = [v15 location];
+          destinationLocation = [sessionCopy destinationLocation];
+          if (+[PCLocationUtils isLocation:withinThreshold:](PCLocationUtils, "isLocation:withinThreshold:", location, destinationLocation) && ([v15 entryTimeCFAbsolute], v18 > v8) && (objc_msgSend(v15, "entryTimeCFAbsolute"), v19 <= v8 + 86400.0))
           {
             [v15 entryTimeCFAbsolute];
             v21 = v20;
@@ -76,7 +76,7 @@
       v29 = 0;
     }
 
-    v6 = v28;
+    historyCopy = v28;
     v25 = v29;
   }
 
@@ -90,10 +90,10 @@
   return v25;
 }
 
-+ (double)estimateTravelTimeForCurrentLocation:(id)a3 destination:(id)a4
++ (double)estimateTravelTimeForCurrentLocation:(id)location destination:(id)destination
 {
   result = -1.0;
-  if (a3 && a4)
+  if (location && destination)
   {
     [PCLocationUtils distanceInMetersBetweenLocation:-1.0 andLocation:?];
     v6 = v5 / 20.11675;
@@ -108,18 +108,18 @@
   return result;
 }
 
-+ (void)predictWithScheduledTravelWithActiveNav:(id)a3 previousNav:(id)a4 visitHistory:(id)a5 locationHistory:(id)a6 atTime:(double)a7 results:(id *)a8
++ (void)predictWithScheduledTravelWithActiveNav:(id)nav previousNav:(id)previousNav visitHistory:(id)history locationHistory:(id)locationHistory atTime:(double)time results:(id *)results
 {
   v165 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  *a8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v13)
+  navCopy = nav;
+  previousNavCopy = previousNav;
+  historyCopy = history;
+  locationHistoryCopy = locationHistory;
+  *results = objc_alloc_init(MEMORY[0x1E695DF70]);
+  if (navCopy)
   {
-    v17 = [PCLocationUtils currentLocationWithLocationHistory:v16 visitHistory:v15 currentTime:a7];
-    if (!v17)
+    originLocation = [PCLocationUtils currentLocationWithLocationHistory:locationHistoryCopy visitHistory:historyCopy currentTime:time];
+    if (!originLocation)
     {
       v18 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -129,19 +129,19 @@
         _os_log_impl(&dword_1CEE74000, v18, OS_LOG_TYPE_ERROR, "%s, current location is unknown!, use origin location as a fallback", buf, 0xCu);
       }
 
-      v17 = [v13 originLocation];
+      originLocation = [navCopy originLocation];
     }
 
-    if ([v13 hasTravelTime])
+    if ([navCopy hasTravelTime])
     {
-      [v13 travelTime];
+      [navCopy travelTime];
       v20 = v19;
     }
 
     else
     {
-      a5 = [v13 destinationLocation];
-      [PCScheduledTravelPredictor estimateTravelTimeForCurrentLocation:v17 destination:a5];
+      history = [navCopy destinationLocation];
+      [PCScheduledTravelPredictor estimateTravelTimeForCurrentLocation:originLocation destination:history];
       v20 = v30;
     }
 
@@ -155,13 +155,13 @@
         _os_log_impl(&dword_1CEE74000, v31, OS_LOG_TYPE_DEFAULT, "%s, unable to determine travel time", buf, 0xCu);
       }
 
-      if (*a8 && [*a8 count])
+      if (*results && [*results count])
       {
-        v120 = v17;
+        v120 = originLocation;
         v32 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [*a8 count];
+          v33 = [*results count];
           *buf = 134217984;
           v162 = v33;
           _os_log_impl(&dword_1CEE74000, v32, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -171,7 +171,7 @@
         v149 = 0u;
         v146 = 0u;
         v147 = 0u;
-        v34 = *a8;
+        v34 = *results;
         v35 = [(PCPPredictedContextLocation *)v34 countByEnumeratingWithState:&v146 objects:v159 count:16];
         if (!v35)
         {
@@ -179,10 +179,10 @@
         }
 
         v36 = v35;
-        v121 = v16;
-        v124 = v15;
-        v126 = v14;
-        v119 = v13;
+        v121 = locationHistoryCopy;
+        v124 = historyCopy;
+        v126 = previousNavCopy;
+        v119 = navCopy;
         v37 = *v147;
         do
         {
@@ -222,7 +222,7 @@ LABEL_76:
       goto LABEL_115;
     }
 
-    if (([v13 hasDestinationLocation] & 1) == 0)
+    if (([navCopy hasDestinationLocation] & 1) == 0)
     {
       v59 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -230,19 +230,19 @@ LABEL_76:
         *buf = 136315394;
         v162 = "+[PCScheduledTravelPredictor predictWithScheduledTravelWithActiveNav:previousNav:visitHistory:locationHistory:atTime:results:]";
         v163 = 2112;
-        v164 = v13;
+        v164 = navCopy;
         _os_log_impl(&dword_1CEE74000, v59, OS_LOG_TYPE_DEFAULT, "%s, active nav doesnot have destination location, %@", buf, 0x16u);
       }
 
-      if (*a8 && [*a8 count])
+      if (*results && [*results count])
       {
-        v121 = v16;
-        v124 = v15;
-        v126 = v14;
+        v121 = locationHistoryCopy;
+        v124 = historyCopy;
+        v126 = previousNavCopy;
         v60 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
         if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
         {
-          v61 = [*a8 count];
+          v61 = [*results count];
           *buf = 134217984;
           v162 = v61;
           _os_log_impl(&dword_1CEE74000, v60, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -252,7 +252,7 @@ LABEL_76:
         v145 = 0u;
         v142 = 0u;
         v143 = 0u;
-        v34 = *a8;
+        v34 = *results;
         v62 = [(PCPPredictedContextLocation *)v34 countByEnumeratingWithState:&v142 objects:v158 count:16];
         if (!v62)
         {
@@ -260,8 +260,8 @@ LABEL_76:
         }
 
         v63 = v62;
-        v119 = v13;
-        v120 = v17;
+        v119 = navCopy;
+        v120 = originLocation;
         v64 = *v143;
         do
         {
@@ -287,12 +287,12 @@ LABEL_76:
 
         while (v63);
 LABEL_73:
-        v13 = v119;
-        v15 = v124;
-        v14 = v126;
-        v16 = v121;
+        navCopy = v119;
+        historyCopy = v124;
+        previousNavCopy = v126;
+        locationHistoryCopy = v121;
 LABEL_114:
-        v17 = v120;
+        originLocation = v120;
         goto LABEL_115;
       }
 
@@ -308,28 +308,28 @@ LABEL_115:
       goto LABEL_116;
     }
 
-    v129 = a8;
-    v120 = v17;
-    v122 = v16;
+    resultsCopy = results;
+    v120 = originLocation;
+    v122 = locationHistoryCopy;
     v41 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_10];
-    [v15 filterUsingPredicate:v41];
+    [historyCopy filterUsingPredicate:v41];
 
-    [v15 sortUsingComparator:&__block_literal_global_7];
+    [historyCopy sortUsingComparator:&__block_literal_global_7];
     v42 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_10];
-    [v14 filterUsingPredicate:v42];
+    [previousNavCopy filterUsingPredicate:v42];
 
-    [v14 sortUsingComparator:&__block_literal_global_13];
+    [previousNavCopy sortUsingComparator:&__block_literal_global_13];
     v140 = 0u;
     v141 = 0u;
     v138 = 0u;
     v139 = 0u;
-    v125 = v15;
-    v43 = v15;
+    v125 = historyCopy;
+    v43 = historyCopy;
     v44 = [v43 countByEnumeratingWithState:&v138 objects:v157 count:16];
     if (v44)
     {
       v45 = v44;
-      v127 = v14;
+      v127 = previousNavCopy;
       v46 = 0;
       v47 = *v139;
       v48 = 0.0;
@@ -343,12 +343,12 @@ LABEL_115:
           }
 
           v50 = *(*(&v138 + 1) + 8 * k);
-          v51 = [v50 location];
-          v52 = v13;
-          v53 = [v13 destinationLocation];
-          a5 = [PCLocationUtils isLocation:v51 withinThreshold:v53];
+          location = [v50 location];
+          v52 = navCopy;
+          destinationLocation = [navCopy destinationLocation];
+          history = [PCLocationUtils isLocation:location withinThreshold:destinationLocation];
 
-          if (a5)
+          if (history)
           {
             ++v46;
             [v50 exitTimeCFAbsolute];
@@ -357,7 +357,7 @@ LABEL_115:
             v48 = v48 + v55 - v56;
           }
 
-          v13 = v52;
+          navCopy = v52;
         }
 
         v45 = [v43 countByEnumeratingWithState:&v138 objects:v157 count:16];
@@ -365,7 +365,7 @@ LABEL_115:
 
       while (v45);
 
-      v14 = v127;
+      previousNavCopy = v127;
       if (v46 >= 1)
       {
         v57 = v48 / v46;
@@ -382,7 +382,7 @@ LABEL_115:
     v137 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v68 = v14;
+    v68 = previousNavCopy;
     v69 = [v68 countByEnumeratingWithState:&v134 objects:v156 count:16];
     if (v69)
     {
@@ -400,13 +400,13 @@ LABEL_115:
           }
 
           v75 = [PCScheduledTravelPredictor findFirstVisitWithin24HoursAfterNavigationSession:*(*(&v134 + 1) + 8 * m) visitHistory:v43];
-          a5 = v75;
+          history = v75;
           if (v75)
           {
             ++v71;
             [v75 exitTimeCFAbsolute];
             v77 = v76;
-            [a5 entryTimeCFAbsolute];
+            [history entryTimeCFAbsolute];
             v73 = v73 + v77 - v78;
           }
         }
@@ -416,7 +416,7 @@ LABEL_115:
 
       while (v70);
 
-      v79 = v129;
+      v79 = resultsCopy;
       if (v71 < 1)
       {
         v57 = 3600.0;
@@ -434,34 +434,34 @@ LABEL_92:
       v80 = objc_alloc_init(PCPLocationOfInterest);
       [(PCPPredictedContextLocation *)v34 setLocationOfInterest:v80];
 
-      v81 = [v13 loiIdentifier];
-      v82 = v81;
-      if (!v81)
+      loiIdentifier = [navCopy loiIdentifier];
+      v82 = loiIdentifier;
+      if (!loiIdentifier)
       {
-        a5 = [MEMORY[0x1E696AFB0] UUID];
-        v82 = [PCAlgorithmsCommonUtils dataFromUUID:a5];
+        history = [MEMORY[0x1E696AFB0] UUID];
+        v82 = [PCAlgorithmsCommonUtils dataFromUUID:history];
       }
 
-      v83 = v20 + a7;
-      v84 = [(PCPPredictedContextLocation *)v34 locationOfInterest];
-      [v84 setLoiIdentifier:v82];
+      v83 = v20 + time;
+      locationOfInterest = [(PCPPredictedContextLocation *)v34 locationOfInterest];
+      [locationOfInterest setLoiIdentifier:v82];
 
-      if (!v81)
+      if (!loiIdentifier)
       {
       }
 
-      v85 = [v13 destinationLocation];
-      v86 = [(PCPPredictedContextLocation *)v34 locationOfInterest];
-      [v86 setLocation:v85];
+      destinationLocation2 = [navCopy destinationLocation];
+      locationOfInterest2 = [(PCPPredictedContextLocation *)v34 locationOfInterest];
+      [locationOfInterest2 setLocation:destinationLocation2];
 
       v87 = objc_alloc_init(PCPPredictedContext);
       [(PCPPredictedContextLocation *)v34 setPredictedContext:v87];
 
-      v88 = [(PCPPredictedContextLocation *)v34 predictedContext];
-      [v88 setProbability:v58];
+      predictedContext = [(PCPPredictedContextLocation *)v34 predictedContext];
+      [predictedContext setProbability:v58];
 
-      v89 = [(PCPPredictedContextLocation *)v34 predictedContext];
-      [v89 setContextType:1];
+      predictedContext2 = [(PCPPredictedContextLocation *)v34 predictedContext];
+      [predictedContext2 setContextType:1];
 
       v90 = objc_alloc_init(PCPSource);
       v91 = objc_opt_class();
@@ -469,14 +469,14 @@ LABEL_92:
       [(PCPSource *)v90 setIdentifier:v92];
 
       v93 = objc_alloc_init(PCPPredictedContextSource);
-      [(PCPPredictedContextSource *)v93 setMapsActiveNavigation:v13];
+      [(PCPPredictedContextSource *)v93 setMapsActiveNavigation:navCopy];
       v118 = v93;
       [(PCPSource *)v90 setPredictedContextSource:v93];
       v155 = v90;
       v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v155 count:1];
       v95 = [v94 mutableCopy];
-      v96 = [(PCPPredictedContextLocation *)v34 predictedContext];
-      [v96 setSources:v95];
+      predictedContext3 = [(PCPPredictedContextLocation *)v34 predictedContext];
+      [predictedContext3 setSources:v95];
 
       v97 = objc_alloc_init(PCPPredictedContextDateInterval);
       v98 = objc_alloc_init(PCPPredictedContextDate);
@@ -485,24 +485,24 @@ LABEL_92:
       v99 = objc_alloc_init(PCPPredictedContextDate);
       [(PCPPredictedContextDateInterval *)v97 setEndDate:v99];
 
-      v100 = [(PCPPredictedContextDateInterval *)v97 startDate];
-      [v100 setDate:v83];
+      startDate = [(PCPPredictedContextDateInterval *)v97 startDate];
+      [startDate setDate:v83];
 
-      v101 = [(PCPPredictedContextDateInterval *)v97 startDate];
-      [v101 setConfidenceInterval:1800.0];
+      startDate2 = [(PCPPredictedContextDateInterval *)v97 startDate];
+      [startDate2 setConfidenceInterval:1800.0];
 
-      v102 = [(PCPPredictedContextDateInterval *)v97 endDate];
-      [v102 setDate:v83 + v57];
+      endDate = [(PCPPredictedContextDateInterval *)v97 endDate];
+      [endDate setDate:v83 + v57];
 
-      v103 = [(PCPPredictedContextDateInterval *)v97 endDate];
-      [v103 setConfidenceInterval:1800.0];
+      endDate2 = [(PCPPredictedContextDateInterval *)v97 endDate];
+      [endDate2 setConfidenceInterval:1800.0];
 
-      v104 = [(PCPPredictedContextLocation *)v34 predictedContext];
-      [v104 setDateInterval:v97];
+      predictedContext4 = [(PCPPredictedContextLocation *)v34 predictedContext];
+      [predictedContext4 setDateInterval:v97];
 
       [*v79 addObject:v34];
-      v16 = v122;
-      v15 = v125;
+      locationHistoryCopy = v122;
+      historyCopy = v125;
       if (*v79 && [*v79 count])
       {
         v105 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
@@ -525,7 +525,7 @@ LABEL_92:
           v109 = v108;
           v116 = v90;
           v117 = v34;
-          v128 = v14;
+          v128 = previousNavCopy;
           v110 = *v131;
           do
           {
@@ -551,9 +551,9 @@ LABEL_92:
 
           while (v109);
           v114 = v118;
-          v15 = v125;
-          v14 = v128;
-          v16 = v122;
+          historyCopy = v125;
+          previousNavCopy = v128;
+          locationHistoryCopy = v122;
           v90 = v116;
           v34 = v117;
           goto LABEL_113;
@@ -579,7 +579,7 @@ LABEL_113:
     v57 = 3600.0;
     v58 = 0.4;
 LABEL_91:
-    v79 = v129;
+    v79 = resultsCopy;
     goto LABEL_92;
   }
 
@@ -593,12 +593,12 @@ LABEL_91:
     _os_log_impl(&dword_1CEE74000, v21, OS_LOG_TYPE_DEFAULT, "%s, no active nav, %{sensitive}@", buf, 0x16u);
   }
 
-  if (*a8 && [*a8 count])
+  if (*results && [*results count])
   {
     v22 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [*a8 count];
+      v23 = [*results count];
       *buf = 134217984;
       v162 = v23;
       _os_log_impl(&dword_1CEE74000, v22, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -608,12 +608,12 @@ LABEL_91:
     v153 = 0u;
     v150 = 0u;
     v151 = 0u;
-    v17 = *a8;
-    v24 = [v17 countByEnumeratingWithState:&v150 objects:v160 count:16];
+    originLocation = *results;
+    v24 = [originLocation countByEnumeratingWithState:&v150 objects:v160 count:16];
     if (v24)
     {
       v25 = v24;
-      v123 = v15;
+      v123 = historyCopy;
       v26 = *v151;
       do
       {
@@ -621,7 +621,7 @@ LABEL_91:
         {
           if (*v151 != v26)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(originLocation);
           }
 
           v28 = [PCLoggingUtils formattedStringForLocationPrediction:*(*(&v150 + 1) + 8 * ii)];
@@ -634,22 +634,22 @@ LABEL_91:
           }
         }
 
-        v25 = [v17 countByEnumeratingWithState:&v150 objects:v160 count:16];
+        v25 = [originLocation countByEnumeratingWithState:&v150 objects:v160 count:16];
       }
 
       while (v25);
-      v13 = 0;
-      v15 = v123;
+      navCopy = 0;
+      historyCopy = v123;
     }
   }
 
   else
   {
-    v17 = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    originLocation = _plc_log_get_normal_handle(PCLogCategoryScheduledTravelPredictor);
+    if (os_log_type_enabled(originLocation, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1CEE74000, v17, OS_LOG_TYPE_INFO, "No Location Predictions to log", buf, 2u);
+      _os_log_impl(&dword_1CEE74000, originLocation, OS_LOG_TYPE_INFO, "No Location Predictions to log", buf, 2u);
     }
   }
 

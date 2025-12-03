@@ -1,23 +1,23 @@
 @interface CAMPendingLocalPersistenceWrapper
-- (CAMPendingLocalPersistenceWrapper)initWithRequest:(id)a3 result:(id)a4 completionHandler:(id)a5;
+- (CAMPendingLocalPersistenceWrapper)initWithRequest:(id)request result:(id)result completionHandler:(id)handler;
 @end
 
 @implementation CAMPendingLocalPersistenceWrapper
 
-- (CAMPendingLocalPersistenceWrapper)initWithRequest:(id)a3 result:(id)a4 completionHandler:(id)a5
+- (CAMPendingLocalPersistenceWrapper)initWithRequest:(id)request result:(id)result completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  resultCopy = result;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = CAMPendingLocalPersistenceWrapper;
   v12 = [(CAMPendingLocalPersistenceWrapper *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_result, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_result, result);
+    v14 = [handlerCopy copy];
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v14;
 

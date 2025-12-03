@@ -1,5 +1,5 @@
 @interface FTRelayCancelMessage
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation FTRelayCancelMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = FTRelayCancelMessage;
-  return [(FTFaceTimeMessage *)&v4 copyWithZone:a3];
+  return [(FTFaceTimeMessage *)&v4 copyWithZone:zone];
 }
 
 - (void)dealloc
@@ -25,8 +25,8 @@
 {
   v36.receiver = self;
   v36.super_class = FTRelayCancelMessage;
-  v2 = [(FTFaceTimeMessage *)&v36 requiredKeys];
-  v7 = objc_msgSend_mutableCopy(v2, v3, v4, v5, v6);
+  requiredKeys = [(FTFaceTimeMessage *)&v36 requiredKeys];
+  v7 = objc_msgSend_mutableCopy(requiredKeys, v3, v4, v5, v6);
   objc_msgSend_addObject_(v7, v8, @"peer-id", v9, v10);
   objc_msgSend_addObject_(v7, v11, @"peer-push-token", v12, v13);
   objc_msgSend_addObject_(v7, v14, @"reason", v15, v16);
@@ -43,8 +43,8 @@
 {
   v100.receiver = self;
   v100.super_class = FTRelayCancelMessage;
-  v3 = [(FTFaceTimeMessage *)&v100 messageBody];
-  v8 = objc_msgSend_mutableCopy(v3, v4, v5, v6, v7);
+  messageBody = [(FTFaceTimeMessage *)&v100 messageBody];
+  v8 = objc_msgSend_mutableCopy(messageBody, v4, v5, v6, v7);
   v13 = objc_msgSend_peerID(self, v9, v10, v11, v12);
   if (v13)
   {

@@ -1,15 +1,15 @@
 @interface TVPContentKeyRequest
-+ (id)secureInvalidationRequestForIdentifier:(id)a3 offlineKeyData:(id)a4 additionalRequestParams:(id)a5 contentID:(id)a6;
++ (id)secureInvalidationRequestForIdentifier:(id)identifier offlineKeyData:(id)data additionalRequestParams:(id)params contentID:(id)d;
 + (void)initialize;
 - (BOOL)isCancelled;
-- (TVPContentKeyRequest)initWithAVContentKeyRequest:(id)a3;
+- (TVPContentKeyRequest)initWithAVContentKeyRequest:(id)request;
 - (TVPContentKeySession)contentKeySession;
 - (id)description;
-- (id)offlineKeyDataFromServerKeyData:(id)a3 error:(id *)a4;
+- (id)offlineKeyDataFromServerKeyData:(id)data error:(id *)error;
 - (void)finish;
 - (void)finishByRequestingOfflineKeysIfPossible;
-- (void)makeKeyRequestDataForCertificateData:(id)a3 assetIDData:(id)a4 completion:(id)a5;
-- (void)offlineKeyDataFromServerKeyData:(id)a3 completion:(id)a4;
+- (void)makeKeyRequestDataForCertificateData:(id)data assetIDData:(id)dData completion:(id)completion;
+- (void)offlineKeyDataFromServerKeyData:(id)data completion:(id)completion;
 @end
 
 @implementation TVPContentKeyRequest
@@ -33,51 +33,51 @@ uint64_t __34__TVPContentKeyRequest_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)secureInvalidationRequestForIdentifier:(id)a3 offlineKeyData:(id)a4 additionalRequestParams:(id)a5 contentID:(id)a6
++ (id)secureInvalidationRequestForIdentifier:(id)identifier offlineKeyData:(id)data additionalRequestParams:(id)params contentID:(id)d
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithAVContentKeyRequest:0];
-  [v14 setKeyIdentifier:v13];
+  dCopy = d;
+  paramsCopy = params;
+  dataCopy = data;
+  identifierCopy = identifier;
+  v14 = [[self alloc] initWithAVContentKeyRequest:0];
+  [v14 setKeyIdentifier:identifierCopy];
 
-  [v14 setOfflineKeyData:v12];
-  [v14 setAdditionalRequestParams:v11];
+  [v14 setOfflineKeyData:dataCopy];
+  [v14 setAdditionalRequestParams:paramsCopy];
 
   [v14 setType:3];
-  [v14 setContentID:v10];
+  [v14 setContentID:dCopy];
 
   return v14;
 }
 
-- (TVPContentKeyRequest)initWithAVContentKeyRequest:(id)a3
+- (TVPContentKeyRequest)initWithAVContentKeyRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = TVPContentKeyRequest;
   v6 = [(TVPContentKeyRequest *)&v19 init];
   if (v6)
   {
-    v7 = [v5 identifier];
-    if (v7)
+    identifier = [requestCopy identifier];
+    if (identifier)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = identifier;
 LABEL_11:
         keyIdentifier = v6->_keyIdentifier;
         v6->_keyIdentifier = v8;
         v11 = v8;
 
-        objc_storeStrong(&v6->_avContentKeyRequest, a3);
+        objc_storeStrong(&v6->_avContentKeyRequest, request);
         v12 = initWithAVContentKeyRequest__sRequestID++;
         v6->_requestID = v12;
-        v13 = [MEMORY[0x277CCAD78] UUID];
-        v14 = [v13 UUIDString];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
         eventReportingID = v6->_eventReportingID;
-        v6->_eventReportingID = v14;
+        v6->_eventReportingID = uUIDString;
 
         v6->_type = 0;
         v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -90,7 +90,7 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v7;
+        v9 = identifier;
         if ([v9 length])
         {
           v8 = [MEMORY[0x277CBEBC0] URLWithString:v9];
@@ -116,22 +116,22 @@ LABEL_12:
 
 - (BOOL)isCancelled
 {
-  v2 = [(TVPContentKeyRequest *)self avContentKeyRequest];
-  v3 = [v2 status];
+  avContentKeyRequest = [(TVPContentKeyRequest *)self avContentKeyRequest];
+  status = [avContentKeyRequest status];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+  return (status & 0xFFFFFFFFFFFFFFFELL) == 4;
 }
 
 - (id)description
 {
-  v3 = [(TVPContentKeyRequest *)self type];
+  type = [(TVPContentKeyRequest *)self type];
   v4 = &stru_287E49338;
-  if (v3 == 3)
+  if (type == 3)
   {
     v4 = @" [secure invalidation request]";
   }
 
-  if (v3 == 2)
+  if (type == 2)
   {
     v5 = @" [offline request]";
   }
@@ -142,26 +142,26 @@ LABEL_12:
   }
 
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [(TVPContentKeyRequest *)self requestID];
-  v8 = [(TVPContentKeyRequest *)self keyIdentifier];
-  v9 = [v6 initWithFormat:@"[%lu: %@%@]", v7, v8, v5];
+  requestID = [(TVPContentKeyRequest *)self requestID];
+  keyIdentifier = [(TVPContentKeyRequest *)self keyIdentifier];
+  v9 = [v6 initWithFormat:@"[%lu: %@%@]", requestID, keyIdentifier, v5];
 
   return v9;
 }
 
-- (void)makeKeyRequestDataForCertificateData:(id)a3 assetIDData:(id)a4 completion:(id)a5
+- (void)makeKeyRequestDataForCertificateData:(id)data assetIDData:(id)dData completion:(id)completion
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TVPContentKeyRequest *)self offlineKeyData];
-  v12 = [v11 length];
+  dataCopy = data;
+  dDataCopy = dData;
+  completionCopy = completion;
+  offlineKeyData = [(TVPContentKeyRequest *)self offlineKeyData];
+  v12 = [offlineKeyData length];
 
   if (!v12)
   {
-    v18 = [(TVPContentKeyRequest *)self keyFormatVersions];
-    v19 = [v18 count];
+    keyFormatVersions = [(TVPContentKeyRequest *)self keyFormatVersions];
+    v19 = [keyFormatVersions count];
 
     if (v19)
     {
@@ -169,17 +169,17 @@ LABEL_12:
       if (os_log_type_enabled(sLogObject_5, OS_LOG_TYPE_DEFAULT))
       {
         v21 = v20;
-        v22 = [(TVPContentKeyRequest *)self keyFormatVersions];
+        keyFormatVersions2 = [(TVPContentKeyRequest *)self keyFormatVersions];
         *buf = 138412546;
-        *&buf[4] = v22;
+        *&buf[4] = keyFormatVersions2;
         v37 = 2112;
-        v38 = self;
+        selfCopy = self;
         _os_log_impl(&dword_26CEDD000, v21, OS_LOG_TYPE_DEFAULT, "Using key format versions %@ for key request: %@", buf, 0x16u);
       }
 
       v34 = *MEMORY[0x277CE5CF8];
-      v15 = [(TVPContentKeyRequest *)self keyFormatVersions];
-      v35 = v15;
+      keyFormatVersions3 = [(TVPContentKeyRequest *)self keyFormatVersions];
+      v35 = keyFormatVersions3;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       goto LABEL_10;
     }
@@ -201,25 +201,25 @@ LABEL_15:
   v14 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:buf length:8];
   if (v14)
   {
-    v15 = v14;
+    keyFormatVersions3 = v14;
     v39[0] = *MEMORY[0x277CE5D08];
-    v16 = [(TVPContentKeyRequest *)self offlineKeyData];
+    offlineKeyData2 = [(TVPContentKeyRequest *)self offlineKeyData];
     v39[1] = *MEMORY[0x277CE5D18];
-    v40[0] = v16;
-    v40[1] = v15;
+    v40[0] = offlineKeyData2;
+    v40[1] = keyFormatVersions3;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
 
 LABEL_10:
 LABEL_16:
-    v27 = [(TVPContentKeyRequest *)self avContentKeyRequest];
+    avContentKeyRequest = [(TVPContentKeyRequest *)self avContentKeyRequest];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __84__TVPContentKeyRequest_makeKeyRequestDataForCertificateData_assetIDData_completion___block_invoke;
     v32[3] = &unk_279D7D320;
     v25 = &v33;
-    v33 = v10;
-    v26 = v10;
-    [v27 makeStreamingContentKeyRequestDataForApp:v8 contentIdentifier:v9 options:v17 completionHandler:v32];
+    v33 = completionCopy;
+    v26 = completionCopy;
+    [avContentKeyRequest makeStreamingContentKeyRequestDataForApp:dataCopy contentIdentifier:dDataCopy options:v17 completionHandler:v32];
     goto LABEL_17;
   }
 
@@ -241,11 +241,11 @@ LABEL_16:
   block[3] = &unk_279D7D348;
   v25 = &v31;
   v30 = v24;
-  v31 = v10;
+  v31 = completionCopy;
   v26 = v24;
-  v17 = v10;
+  v17 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v27 = v30;
+  avContentKeyRequest = v30;
 LABEL_17:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -290,13 +290,13 @@ uint64_t __84__TVPContentKeyRequest_makeKeyRequestDataForCertificateData_assetID
   return result;
 }
 
-- (id)offlineKeyDataFromServerKeyData:(id)a3 error:(id *)a4
+- (id)offlineKeyDataFromServerKeyData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if ([(TVPContentKeyRequest *)self type]== 2 && ([(TVPContentKeyRequest *)self avContentKeyRequest], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, (isKindOfClass & 1) != 0))
   {
-    v9 = [(TVPContentKeyRequest *)self avContentKeyRequest];
-    v10 = [v9 persistableContentKeyFromKeyVendorResponse:v6 options:0 error:a4];
+    avContentKeyRequest = [(TVPContentKeyRequest *)self avContentKeyRequest];
+    v10 = [avContentKeyRequest persistableContentKeyFromKeyVendorResponse:dataCopy options:0 error:error];
   }
 
   else
@@ -307,13 +307,13 @@ uint64_t __84__TVPContentKeyRequest_makeKeyRequestDataForCertificateData_assetID
   return v10;
 }
 
-- (void)offlineKeyDataFromServerKeyData:(id)a3 completion:(id)a4
+- (void)offlineKeyDataFromServerKeyData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(TVPContentKeyRequest *)self type]== 2)
   {
-    v8 = [(TVPContentKeyRequest *)self avContentKeyRequest];
+    avContentKeyRequest = [(TVPContentKeyRequest *)self avContentKeyRequest];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -322,21 +322,21 @@ uint64_t __84__TVPContentKeyRequest_makeKeyRequestDataForCertificateData_assetID
       block[1] = 3221225472;
       block[2] = __67__TVPContentKeyRequest_offlineKeyDataFromServerKeyData_completion___block_invoke;
       block[3] = &unk_279D7D370;
-      v11 = v8;
-      v12 = v6;
-      v13 = v7;
+      v11 = avContentKeyRequest;
+      v12 = dataCopy;
+      v13 = completionCopy;
       dispatch_async(v9, block);
     }
 
-    else if (v7)
+    else if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -373,8 +373,8 @@ uint64_t __67__TVPContentKeyRequest_offlineKeyDataFromServerKeyData_completion__
 
 - (void)finish
 {
-  v3 = [(TVPContentKeyRequest *)self contentKeySession];
-  [v3 finishKeyRequest:self];
+  contentKeySession = [(TVPContentKeyRequest *)self contentKeySession];
+  [contentKeySession finishKeyRequest:self];
 }
 
 - (void)finishByRequestingOfflineKeysIfPossible

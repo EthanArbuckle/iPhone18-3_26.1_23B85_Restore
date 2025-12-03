@@ -1,38 +1,38 @@
 @interface AVInterstitialTimeRange
-+ (AVInterstitialTimeRange)interstitialTimeRangeWithPlayerInterstitialEvent:(id)a3 isLive:(BOOL)a4;
-+ (id)interstitalTimeRangeWithTimelineSegment:(id)a3 isLive:(BOOL)a4;
++ (AVInterstitialTimeRange)interstitialTimeRangeWithPlayerInterstitialEvent:(id)event isLive:(BOOL)live;
++ (id)interstitalTimeRangeWithTimelineSegment:(id)segment isLive:(BOOL)live;
 - (AVInterstitialTimeRange)init;
-- (AVInterstitialTimeRange)initWithCoder:(id)a3;
-- (AVInterstitialTimeRange)initWithHiddenTimeRange:(id *)a3;
+- (AVInterstitialTimeRange)initWithCoder:(id)coder;
+- (AVInterstitialTimeRange)initWithHiddenTimeRange:(id *)range;
 - (AVInterstitialTimeRange)initWithTimeRange:(CMTimeRange *)timeRange;
 - (AVTimelineSegment)timelineSegment;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInterstitialTimeRange:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInterstitialTimeRange:(id)range;
 - (BOOL)supplementsPrimaryContent;
 - (double)playingDuration;
-- (id)_initWithTimeRange:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithTimeRange:(id *)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setActive:(BOOL)a3;
-- (void)_setDurationTimeInterval:(double)a3;
-- (void)_setLive:(BOOL)a3;
-- (void)_setPlayerInterstitialEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setActive:(BOOL)active;
+- (void)_setDurationTimeInterval:(double)interval;
+- (void)_setLive:(BOOL)live;
+- (void)_setPlayerInterstitialEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVInterstitialTimeRange
 
-+ (AVInterstitialTimeRange)interstitialTimeRangeWithPlayerInterstitialEvent:(id)a3 isLive:(BOOL)a4
++ (AVInterstitialTimeRange)interstitialTimeRangeWithPlayerInterstitialEvent:(id)event isLive:(BOOL)live
 {
-  v4 = a4;
+  liveCopy = live;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 date];
+  eventCopy = event;
+  date = [eventCopy date];
 
-  if (v6)
+  if (date)
   {
-    if ([v5 timelineOccupancy])
+    if ([eventCopy timelineOccupancy])
     {
       v7 = _AVLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -43,10 +43,10 @@
     }
 
     v8 = [AVInterstitialDateRange alloc];
-    v9 = [v5 date];
-    v10 = [(AVInterstitialDateRange *)v8 initWithStart:v9 end:0];
+    date2 = [eventCopy date];
+    v10 = [(AVInterstitialDateRange *)v8 initWithStart:date2 end:0];
 
-    [(AVInterstitialTimeRange *)v10 _setLive:v4];
+    [(AVInterstitialTimeRange *)v10 _setLive:liveCopy];
     p_super = &v10->super;
   }
 
@@ -54,9 +54,9 @@
   {
     memset(v19, 0, sizeof(v19));
     *buf = 0u;
-    if (v5)
+    if (eventCopy)
     {
-      [v5 time];
+      [eventCopy time];
     }
 
     else
@@ -75,26 +75,26 @@
     v10 = 0;
   }
 
-  [(AVInterstitialTimeRange *)p_super _setPlayerInterstitialEvent:v5];
-  v13 = [v5 restrictions];
+  [(AVInterstitialTimeRange *)p_super _setPlayerInterstitialEvent:eventCopy];
+  restrictions = [eventCopy restrictions];
   v14 = INFINITY;
-  if ((v13 & 4) == 0)
+  if ((restrictions & 4) == 0)
   {
     v14 = 0.0;
   }
 
   [(AVInterstitialTimeRange *)p_super setLinearPlaybackRequirementDuration:v14];
-  -[AVInterstitialTimeRange setRequiredViewingPolicy:](p_super, "setRequiredViewingPolicy:", ~(2 * [v5 restrictions]) & 2);
-  if ([v5 timelineOccupancy] == 1)
+  -[AVInterstitialTimeRange setRequiredViewingPolicy:](p_super, "setRequiredViewingPolicy:", ~(2 * [eventCopy restrictions]) & 2);
+  if ([eventCopy timelineOccupancy] == 1)
   {
     [(AVInterstitialTimeRange *)p_super _setCollapsedInTimeLine:0];
-    if ([v5 supplementsPrimaryContent])
+    if ([eventCopy supplementsPrimaryContent])
     {
       [(AVInterstitialTimeRange *)p_super _setUnmarked:1];
     }
   }
 
-  else if ([v5 supplementsPrimaryContent])
+  else if ([eventCopy supplementsPrimaryContent])
   {
     v15 = _AVLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -108,62 +108,62 @@
   return p_super;
 }
 
-+ (id)interstitalTimeRangeWithTimelineSegment:(id)a3 isLive:(BOOL)a4
++ (id)interstitalTimeRangeWithTimelineSegment:(id)segment isLive:(BOOL)live
 {
-  v4 = a4;
+  liveCopy = live;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isInterstitial])
+  segmentCopy = segment;
+  if ([segmentCopy isInterstitial])
   {
-    if (v4)
+    if (liveCopy)
     {
       v6 = [AVInterstitialDateRange alloc];
-      v7 = [v5 startDate];
-      v8 = [(AVInterstitialDateRange *)v6 initWithStart:v7 end:0];
+      startDate = [segmentCopy startDate];
+      v8 = [(AVInterstitialDateRange *)v6 initWithStart:startDate end:0];
 
-      v9 = v8;
+      interstitialTimeRange = v8;
     }
 
     else
     {
-      v9 = [v5 interstitialTimeRange];
+      interstitialTimeRange = [segmentCopy interstitialTimeRange];
       v8 = 0;
     }
 
-    [v9 _setLive:v4];
-    v12 = [v5 playerInterstitialEvent];
-    [v9 _setPlayerInterstitialEvent:v12];
-    [v9 _setTimelineSegment:v5];
-    v13 = [v12 restrictions];
+    [interstitialTimeRange _setLive:liveCopy];
+    playerInterstitialEvent = [segmentCopy playerInterstitialEvent];
+    [interstitialTimeRange _setPlayerInterstitialEvent:playerInterstitialEvent];
+    [interstitialTimeRange _setTimelineSegment:segmentCopy];
+    restrictions = [playerInterstitialEvent restrictions];
     v14 = INFINITY;
-    if ((v13 & 4) == 0)
+    if ((restrictions & 4) == 0)
     {
       v14 = 0.0;
     }
 
-    [v9 setLinearPlaybackRequirementDuration:v14];
-    if ([v12 restrictions])
+    [interstitialTimeRange setLinearPlaybackRequirementDuration:v14];
+    if ([playerInterstitialEvent restrictions])
     {
-      v15 = [v12 willPlayOnce];
+      willPlayOnce = [playerInterstitialEvent willPlayOnce];
     }
 
     else
     {
-      v15 = 2;
+      willPlayOnce = 2;
     }
 
-    [v9 setRequiredViewingPolicy:v15];
-    if ([v12 timelineOccupancy] == 1)
+    [interstitialTimeRange setRequiredViewingPolicy:willPlayOnce];
+    if ([playerInterstitialEvent timelineOccupancy] == 1)
     {
-      [v9 _setCollapsedInTimeLine:0];
+      [interstitialTimeRange _setCollapsedInTimeLine:0];
     }
 
-    if ([v12 supplementsPrimaryContent])
+    if ([playerInterstitialEvent supplementsPrimaryContent])
     {
-      [v9 _setUnmarked:1];
+      [interstitialTimeRange _setUnmarked:1];
     }
 
-    v10 = v9;
+    v10 = interstitialTimeRange;
 
     v11 = v10;
   }
@@ -193,30 +193,30 @@
 
 - (BOOL)supplementsPrimaryContent
 {
-  v2 = [(AVInterstitialTimeRange *)self playerInterstitialEvent];
-  v3 = [v2 supplementsPrimaryContent];
+  playerInterstitialEvent = [(AVInterstitialTimeRange *)self playerInterstitialEvent];
+  supplementsPrimaryContent = [playerInterstitialEvent supplementsPrimaryContent];
 
-  return v3;
+  return supplementsPrimaryContent;
 }
 
-- (void)_setLive:(BOOL)a3
+- (void)_setLive:(BOOL)live
 {
-  if (self->_live != a3)
+  if (self->_live != live)
   {
-    self->_live = a3;
+    self->_live = live;
     [(AVInterstitialTimeRange *)self _setCollapsedInTimeLine:?];
   }
 }
 
-- (void)_setPlayerInterstitialEvent:(id)a3
+- (void)_setPlayerInterstitialEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   p_playerInterstitialEvent = &self->_playerInterstitialEvent;
-  if (self->_playerInterstitialEvent != v5)
+  if (self->_playerInterstitialEvent != eventCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_playerInterstitialEvent, a3);
-    v5 = v8;
+    v8 = eventCopy;
+    objc_storeStrong(p_playerInterstitialEvent, event);
+    eventCopy = v8;
     if (v8)
     {
       if ((~self->_timeRange.duration.flags & 0x11) == 0)
@@ -228,7 +228,7 @@
     }
   }
 
-  MEMORY[0x1EEE66BB8](p_playerInterstitialEvent, v5);
+  MEMORY[0x1EEE66BB8](p_playerInterstitialEvent, eventCopy);
 }
 
 - (double)playingDuration
@@ -245,12 +245,12 @@
   return result;
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (!a3)
+    self->_active = active;
+    if (!active)
     {
       v4 = [(AVInterstitialTimeRange *)self _watchCount]+ 1;
 
@@ -325,23 +325,23 @@ LABEL_13:
     [v6 addObject:v14];
   }
 
-  v16 = [(AVPlayerInterstitialEvent *)v7 restrictions];
+  restrictions = [(AVPlayerInterstitialEvent *)v7 restrictions];
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = v17;
-  if (v16)
+  if (restrictions)
   {
     [v17 addObject:@"ConstrainsSeekingForwardInPrimaryContent"];
   }
 
-  if ((v16 & 4) != 0)
+  if ((restrictions & 4) != 0)
   {
     [v18 addObject:@"RequiresPlaybackAtPreferredRateForAdvancement"];
   }
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFALL) != 0)
+  if ((restrictions & 0xFFFFFFFFFFFFFFFALL) != 0)
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unrecognized restrictions 0x%lx", v16 & 0xFFFFFFFFFFFFFFFALL];
-    [v18 addObject:v19];
+    0xFFFFFFFFFFFFFFFALL = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unrecognized restrictions 0x%lx", restrictions & 0xFFFFFFFFFFFFFFFALL];
+    [v18 addObject:0xFFFFFFFFFFFFFFFALL];
   }
 
   if ([v18 count])
@@ -365,14 +365,14 @@ LABEL_13:
     [v6 addObject:@"supplements primary content"];
   }
 
-  v21 = [(AVPlayerInterstitialEvent *)v7 timelineOccupancy];
+  timelineOccupancy = [(AVPlayerInterstitialEvent *)v7 timelineOccupancy];
   v22 = @"unrecognized occupancy";
-  if (!v21)
+  if (!timelineOccupancy)
   {
     v22 = @"single point occupancy";
   }
 
-  if (v21 == 1)
+  if (timelineOccupancy == 1)
   {
     v23 = @"fill occupancy";
   }
@@ -394,30 +394,30 @@ LABEL_34:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(AVInterstitialTimeRange *)self isEqualToInterstitialTimeRange:v5];
+    v7 = equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(AVInterstitialTimeRange *)self isEqualToInterstitialTimeRange:v5];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToInterstitialTimeRange:(id)a3
+- (BOOL)isEqualToInterstitialTimeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   memset(v12, 0, sizeof(v12));
   v11 = 0u;
   [(AVInterstitialTimeRange *)self timeRange];
-  if (v4 && (memset(v10, 0, sizeof(v10)), v9 = 0u, [v4 timeRange], *&time1.value = v11, time1.epoch = *&v12[0], *&v7.value = v9, v7.epoch = *&v10[0], !CMTimeCompare(&time1, &v7)))
+  if (rangeCopy && (memset(v10, 0, sizeof(v10)), v9 = 0u, [rangeCopy timeRange], *&time1.value = v11, time1.epoch = *&v12[0], *&v7.value = v9, v7.epoch = *&v10[0], !CMTimeCompare(&time1, &v7)))
   {
     time1 = *(v12 + 8);
     v7 = *(v10 + 8);
@@ -449,17 +449,17 @@ LABEL_34:
   return v5 ^ __ROR8__(v3, 61);
 }
 
-- (void)_setDurationTimeInterval:(double)a3
+- (void)_setDurationTimeInterval:(double)interval
 {
   [(AVInterstitialTimeRange *)self willChangeValueForKey:@"timeRange"];
-  CMTimeMakeWithSeconds(&v5, a3, 1000);
+  CMTimeMakeWithSeconds(&v5, interval, 1000);
   self->_timeRange.duration = v5;
   [(AVInterstitialTimeRange *)self didChangeValueForKey:@"timeRange"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AVInterstitialTimeRange allocWithZone:a3];
+  v4 = [AVInterstitialTimeRange allocWithZone:zone];
   [(AVInterstitialTimeRange *)self timeRange];
   v5 = [(AVInterstitialTimeRange *)v4 initWithTimeRange:&v7];
   v5->_hidden = [(AVInterstitialTimeRange *)self isHidden];
@@ -467,17 +467,17 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AVInterstitialTimeRange *)self timeRange];
   v5 = CMTimeRangeCopyAsDictionary(&v6, *MEMORY[0x1E695E480]);
-  [v4 encodeObject:v5 forKey:@"AVTimeRange"];
+  [coderCopy encodeObject:v5 forKey:@"AVTimeRange"];
 }
 
-- (AVInterstitialTimeRange)initWithCoder:(id)a3
+- (AVInterstitialTimeRange)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"AVTimeRange"];
+  v4 = [coder decodeObjectForKey:@"AVTimeRange"];
   v5 = v4;
   v6 = *(MEMORY[0x1E6960CA8] + 16);
   *&v10.start.value = *MEMORY[0x1E6960CA8];
@@ -494,12 +494,12 @@ LABEL_34:
   return v7;
 }
 
-- (AVInterstitialTimeRange)initWithHiddenTimeRange:(id *)a3
+- (AVInterstitialTimeRange)initWithHiddenTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var3;
-  v5[0] = *&a3->var0.var0;
+  v3 = *&range->var0.var3;
+  v5[0] = *&range->var0.var0;
   v5[1] = v3;
-  v5[2] = *&a3->var1.var1;
+  v5[2] = *&range->var1.var1;
   result = [(AVInterstitialTimeRange *)self initWithTimeRange:v5];
   if (result)
   {
@@ -527,7 +527,7 @@ LABEL_34:
   return v5;
 }
 
-- (id)_initWithTimeRange:(id *)a3
+- (id)_initWithTimeRange:(id *)range
 {
   v9.receiver = self;
   v9.super_class = AVInterstitialTimeRange;
@@ -535,10 +535,10 @@ LABEL_34:
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0.var3;
-    v8[0] = *&a3->var0.var0;
+    v6 = *&range->var0.var3;
+    v8[0] = *&range->var0.var0;
     v8[1] = v6;
-    v8[2] = *&a3->var1.var1;
+    v8[2] = *&range->var1.var1;
     _CommonInit_19613(v4, v8);
   }
 

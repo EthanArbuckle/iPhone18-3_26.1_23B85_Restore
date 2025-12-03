@@ -1,8 +1,8 @@
 @interface PaymentSetupCredentialsFlowItem
 - (_TtC9PassKitUI31PaymentSetupCredentialsFlowItem)init;
-- (void)credentialsViewController:(id)a3 didSelectCredentials:(id)a4;
-- (void)credentialsViewControllerDidSelectManualEntry:(id)a3;
-- (void)credentialsViewControllerDidTerminate:(id)a3;
+- (void)credentialsViewController:(id)controller didSelectCredentials:(id)credentials;
+- (void)credentialsViewControllerDidSelectManualEntry:(id)entry;
+- (void)credentialsViewControllerDidTerminate:(id)terminate;
 @end
 
 @implementation PaymentSetupCredentialsFlowItem
@@ -14,31 +14,31 @@
   return result;
 }
 
-- (void)credentialsViewControllerDidTerminate:(id)a3
+- (void)credentialsViewControllerDidTerminate:(id)terminate
 {
   v4 = self + OBJC_IVAR____TtC9PassKitUI31PaymentSetupCredentialsFlowItem_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    v7 = self;
-    sub_1BD8659A4(v7, &off_1F3BCA500, ObjectType, v5);
+    selfCopy = self;
+    sub_1BD8659A4(selfCopy, &off_1F3BCA500, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)credentialsViewControllerDidSelectManualEntry:(id)a3
+- (void)credentialsViewControllerDidSelectManualEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
+  entryCopy = entry;
+  selfCopy = self;
   sub_1BD9C1638();
 }
 
-- (void)credentialsViewController:(id)a3 didSelectCredentials:(id)a4
+- (void)credentialsViewController:(id)controller didSelectCredentials:(id)credentials
 {
   sub_1BD71D990();
   v5 = sub_1BE052744();
-  v6 = self;
+  selfCopy = self;
   sub_1BD9C0B40(v5);
 }
 

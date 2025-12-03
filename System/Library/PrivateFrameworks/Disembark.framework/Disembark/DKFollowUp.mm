@@ -11,7 +11,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248D66000, a2, OS_LOG_TYPE_ERROR, "Failed to post follow up: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -20,7 +20,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248D66000, a2, OS_LOG_TYPE_ERROR, "Failed to clear follow up: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -35,9 +35,9 @@
 + (id)_followUpIconName
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 @end

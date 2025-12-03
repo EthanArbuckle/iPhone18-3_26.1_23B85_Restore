@@ -1,25 +1,25 @@
 @interface ADNilDistortionModel
-- (ADNilDistortionModel)initWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ADNilDistortionModel)initWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ADNilDistortionModel
 
-- (ADNilDistortionModel)initWithDictionary:(id)a3
+- (ADNilDistortionModel)initWithDictionary:(id)dictionary
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   v6 = 1;
-  if (v4 && self != v4)
+  if (equalCopy && self != equalCopy)
   {
-    v6 = [(ADNilDistortionModel *)v4 isMemberOfClass:objc_opt_class()];
+    v6 = [(ADNilDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()];
   }
 
   return v6;

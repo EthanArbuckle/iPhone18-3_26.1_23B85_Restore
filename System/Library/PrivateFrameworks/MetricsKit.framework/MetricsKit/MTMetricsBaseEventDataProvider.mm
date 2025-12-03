@@ -8,11 +8,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTMetricsBaseEventDataProvider;
-  v2 = [(MTBaseEventDataProvider *)&v7 knownFields];
-  v3 = v2;
-  if (v2)
+  knownFields = [(MTBaseEventDataProvider *)&v7 knownFields];
+  v3 = knownFields;
+  if (knownFields)
   {
-    v4 = v2;
+    v4 = knownFields;
   }
 
   else

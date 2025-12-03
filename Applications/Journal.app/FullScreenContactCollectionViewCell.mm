@@ -1,10 +1,10 @@
 @interface FullScreenContactCollectionViewCell
-- (_TtC7Journal35FullScreenContactCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal35FullScreenContactCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenContactCollectionViewCell
 
-- (_TtC7Journal35FullScreenContactCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal35FullScreenContactCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal35FullScreenContactCollectionViewCell_contactAsset) = 0;
   v4 = OBJC_IVAR____TtC7Journal35FullScreenContactCollectionViewCell_contactAssetView;

@@ -1,48 +1,48 @@
 @interface _UITableViewDropAnimationToTarget
-- (_UITableViewDropAnimationToTarget)initWithDragItem:(id)a3 target:(id)a4;
-- (id)cellForTargetContainerInTableView:(id)a3;
+- (_UITableViewDropAnimationToTarget)initWithDragItem:(id)item target:(id)target;
+- (id)cellForTargetContainerInTableView:(id)view;
 @end
 
 @implementation _UITableViewDropAnimationToTarget
 
-- (_UITableViewDropAnimationToTarget)initWithDragItem:(id)a3 target:(id)a4
+- (_UITableViewDropAnimationToTarget)initWithDragItem:(id)item target:(id)target
 {
-  v7 = a4;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = _UITableViewDropAnimationToTarget;
-  v8 = [(_UITableViewDropAnimation *)&v11 initWithDragItem:a3];
+  v8 = [(_UITableViewDropAnimation *)&v11 initWithDragItem:item];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_target, a4);
+    objc_storeStrong(&v8->_target, target);
   }
 
   return v9;
 }
 
-- (id)cellForTargetContainerInTableView:(id)a3
+- (id)cellForTargetContainerInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (![(_UITableViewDropAnimationToTarget *)self didSearchForCell])
   {
     objc_opt_class();
-    v5 = [(_UITableViewDropAnimationToTarget *)self target];
-    v6 = [v5 container];
+    target = [(_UITableViewDropAnimationToTarget *)self target];
+    container = [target container];
 
-    while ((objc_opt_isKindOfClass() & 1) == 0 || ![(UIView *)v6 isDescendantOfView:v4])
+    while ((objc_opt_isKindOfClass() & 1) == 0 || ![(UIView *)container isDescendantOfView:viewCopy])
     {
-      v7 = [(UIView *)v6 superview];
+      superview = [(UIView *)container superview];
 
-      v6 = v7;
-      if (!v7)
+      container = superview;
+      if (!superview)
       {
         goto LABEL_8;
       }
     }
 
     cell = self->_cell;
-    self->_cell = v6;
-    v9 = v6;
+    self->_cell = container;
+    v9 = container;
 
 LABEL_8:
     [(_UITableViewDropAnimationToTarget *)self setDidSearchForCell:1];

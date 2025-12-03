@@ -1,26 +1,26 @@
 @interface EDString
-+ (EDString)edStringWithString:(id)a3;
-+ (EDString)edStringWithString:(id)a3 runs:(id)a4;
++ (EDString)edStringWithString:(id)string;
++ (EDString)edStringWithString:(id)string runs:(id)runs;
 + (id)string;
 - (BOOL)areThereRuns;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEDString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEDString:(id)string;
 - (EDString)init;
-- (EDString)initWithString:(id)a3;
-- (EDString)initWithString:(id)a3 runs:(id)a4;
+- (EDString)initWithString:(id)string;
+- (EDString)initWithString:(id)string runs:(id)runs;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstFont;
 - (id)firstRunEffects;
 - (id)firstRunFont;
 - (unint64_t)hash;
-- (void)appendString:(id)a3;
-- (void)prependString:(id)a3;
-- (void)removeCharacterAtIndex:(unint64_t)a3;
-- (void)removeCharactersInSet:(id)a3;
-- (void)setPhoneticInfo:(id)a3;
-- (void)setRuns:(id)a3;
-- (void)setString:(id)a3;
+- (void)appendString:(id)string;
+- (void)prependString:(id)string;
+- (void)removeCharacterAtIndex:(unint64_t)index;
+- (void)removeCharactersInSet:(id)set;
+- (void)setPhoneticInfo:(id)info;
+- (void)setRuns:(id)runs;
+- (void)setString:(id)string;
 @end
 
 @implementation EDString
@@ -68,15 +68,15 @@
   if ([(EDString *)self areThereRuns])
   {
     v3 = [(EDCollection *)self->mRuns objectAtIndex:0];
-    v4 = [v3 font];
+    font = [v3 font];
   }
 
   else
   {
-    v4 = 0;
+    font = 0;
   }
 
-  return v4;
+  return font;
 }
 
 - (id)firstRunEffects
@@ -84,69 +84,69 @@
   if ([(EDString *)self areThereRuns])
   {
     v3 = [(EDCollection *)self->mRuns objectAtIndex:0];
-    v4 = [v3 effects];
+    effects = [v3 effects];
   }
 
   else
   {
-    v4 = 0;
+    effects = 0;
   }
 
-  return v4;
+  return effects;
 }
 
-- (EDString)initWithString:(id)a3
+- (EDString)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(EDString *)self init];
   v6 = v5;
   if (v5)
   {
-    [(EDString *)v5 setString:v4];
+    [(EDString *)v5 setString:stringCopy];
   }
 
   return v6;
 }
 
-- (EDString)initWithString:(id)a3 runs:(id)a4
+- (EDString)initWithString:(id)string runs:(id)runs
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDString *)self initWithString:v6];
+  stringCopy = string;
+  runsCopy = runs;
+  v8 = [(EDString *)self initWithString:stringCopy];
   v9 = v8;
   if (v8)
   {
-    [(EDString *)v8 setRuns:v7];
+    [(EDString *)v8 setRuns:runsCopy];
   }
 
   return v9;
 }
 
-+ (EDString)edStringWithString:(id)a3
++ (EDString)edStringWithString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithString:v3];
+  stringCopy = string;
+  v4 = [objc_alloc(objc_opt_class()) initWithString:stringCopy];
 
   return v4;
 }
 
-+ (EDString)edStringWithString:(id)a3 runs:(id)a4
++ (EDString)edStringWithString:(id)string runs:(id)runs
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithString:v5 runs:v6];
+  stringCopy = string;
+  runsCopy = runs;
+  v7 = [objc_alloc(objc_opt_class()) initWithString:stringCopy runs:runsCopy];
 
   return v7;
 }
 
-- (BOOL)isEqualToEDString:(id)a3
+- (BOOL)isEqualToEDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   mRuns = self->mRuns;
-  if ((mRuns == v4[2] || [(EDCollection *)mRuns isEqual:?]) && ((mPhoneticInfo = self->mPhoneticInfo, mPhoneticInfo == v4[3]) || [(EDPhoneticInfo *)mPhoneticInfo isEqual:?]))
+  if ((mRuns == stringCopy[2] || [(EDCollection *)mRuns isEqual:?]) && ((mPhoneticInfo = self->mPhoneticInfo, mPhoneticInfo == stringCopy[3]) || [(EDPhoneticInfo *)mPhoneticInfo isEqual:?]))
   {
     mString = self->mString;
-    if (mString == v4[1])
+    if (mString == stringCopy[1])
     {
       v8 = 1;
     }
@@ -165,13 +165,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -200,14 +200,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v6 = v5;
   if (v5)
   {
     *(v5 + 32) = 0;
-    v7 = [(EDKeyedCollection *)self->mRuns copyWithZone:a3];
+    v7 = [(EDKeyedCollection *)self->mRuns copyWithZone:zone];
     v8 = v6[2];
     v6[2] = v7;
 
@@ -215,7 +215,7 @@ LABEL_10:
     v10 = v6[1];
     v6[1] = v9;
 
-    v11 = [(EDPhoneticInfo *)self->mPhoneticInfo copyWithZone:a3];
+    v11 = [(EDPhoneticInfo *)self->mPhoneticInfo copyWithZone:zone];
     v12 = v6[3];
     v6[3] = v11;
 
@@ -225,29 +225,29 @@ LABEL_10:
   return v6;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (!self->mDoNotModify)
   {
     mString = self->mString;
     p_mString = &self->mString;
-    if (mString != v5)
+    if (mString != stringCopy)
     {
-      v8 = v5;
-      objc_storeStrong(p_mString, a3);
-      v5 = v8;
+      v8 = stringCopy;
+      objc_storeStrong(p_mString, string);
+      stringCopy = v8;
     }
   }
 }
 
-- (void)prependString:(id)a3
+- (void)prependString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (!self->mDoNotModify)
   {
-    v11 = v4;
-    v5 = [v4 stringByAppendingString:self->mString];
+    v11 = stringCopy;
+    v5 = [stringCopy stringByAppendingString:self->mString];
     [(EDString *)self setString:v5];
 
     v6 = [(EDCollection *)self->mRuns count];
@@ -263,27 +263,27 @@ LABEL_10:
     }
 
     [(EDPhoneticInfo *)self->mPhoneticInfo prependString:v11];
-    v4 = v11;
+    stringCopy = v11;
   }
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (!self->mDoNotModify)
   {
-    v6 = v4;
-    v5 = [(NSString *)self->mString stringByAppendingString:v4];
+    v6 = stringCopy;
+    v5 = [(NSString *)self->mString stringByAppendingString:stringCopy];
     [(EDString *)self setString:v5];
 
-    v4 = v6;
+    stringCopy = v6;
   }
 }
 
-- (void)removeCharacterAtIndex:(unint64_t)a3
+- (void)removeCharacterAtIndex:(unint64_t)index
 {
   mString = self->mString;
-  if (mString && [(NSString *)mString length]> a3)
+  if (mString && [(NSString *)mString length]> index)
   {
     v6 = [(EDCollection *)self->mRuns count];
     if (v6 >= 2)
@@ -292,10 +292,10 @@ LABEL_10:
       for (i = 1; i != v7; ++i)
       {
         v11 = [(EDCollection *)self->mRuns objectAtIndex:i];
-        v9 = [v11 charIndex];
-        if (v9)
+        charIndex = [v11 charIndex];
+        if (charIndex)
         {
-          v10 = v9 >= a3;
+          v10 = charIndex >= index;
         }
 
         else
@@ -305,25 +305,25 @@ LABEL_10:
 
         if (v10)
         {
-          [v11 setCharIndex:v9 - 1];
+          [v11 setCharIndex:charIndex - 1];
         }
       }
     }
 
-    v12 = [(NSString *)self->mString stringByReplacingCharactersInRange:a3 withString:1, &stru_286EE1130];
+    v12 = [(NSString *)self->mString stringByReplacingCharactersInRange:index withString:1, &stru_286EE1130];
     [(EDString *)self setString:?];
   }
 }
 
-- (void)removeCharactersInSet:(id)a3
+- (void)removeCharactersInSet:(id)set
 {
-  v6 = a3;
-  if (v6)
+  setCopy = set;
+  if (setCopy)
   {
     mString = self->mString;
     if (mString)
     {
-      for (i = [(NSString *)mString rangeOfCharacterFromSet:v6]; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSString *)self->mString rangeOfCharacterFromSet:v6])
+      for (i = [(NSString *)mString rangeOfCharacterFromSet:setCopy]; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSString *)self->mString rangeOfCharacterFromSet:setCopy])
       {
         [(EDString *)self removeCharacterAtIndex:?];
       }
@@ -331,33 +331,33 @@ LABEL_10:
   }
 }
 
-- (void)setPhoneticInfo:(id)a3
+- (void)setPhoneticInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   if (!self->mDoNotModify)
   {
     mPhoneticInfo = self->mPhoneticInfo;
     p_mPhoneticInfo = &self->mPhoneticInfo;
-    if (mPhoneticInfo != v7)
+    if (mPhoneticInfo != infoCopy)
     {
-      objc_storeStrong(p_mPhoneticInfo, a3);
+      objc_storeStrong(p_mPhoneticInfo, info);
       [(EDPhoneticInfo *)*p_mPhoneticInfo setDoNotModify:1];
     }
   }
 }
 
-- (void)setRuns:(id)a3
+- (void)setRuns:(id)runs
 {
-  v5 = a3;
+  runsCopy = runs;
   if (!self->mDoNotModify)
   {
     mRuns = self->mRuns;
     p_mRuns = &self->mRuns;
-    if (mRuns != v5)
+    if (mRuns != runsCopy)
     {
-      v8 = v5;
-      objc_storeStrong(p_mRuns, a3);
-      v5 = v8;
+      v8 = runsCopy;
+      objc_storeStrong(p_mRuns, runs);
+      runsCopy = v8;
     }
   }
 }
@@ -368,15 +368,15 @@ LABEL_10:
   if (mRuns && [(EDCollection *)mRuns count]&& ([(EDCollection *)self->mRuns objectAtIndex:0], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
     v6 = [(EDCollection *)self->mRuns objectAtIndex:0];
-    v7 = [v6 font];
+    font = [v6 font];
   }
 
   else
   {
-    v7 = 0;
+    font = 0;
   }
 
-  return v7;
+  return font;
 }
 
 - (NSString)description

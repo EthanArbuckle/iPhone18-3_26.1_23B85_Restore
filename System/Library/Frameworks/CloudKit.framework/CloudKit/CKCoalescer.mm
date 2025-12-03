@@ -1,10 +1,10 @@
 @interface CKCoalescer
-- (CKCoalescer)initWithActivityDelay:(unint64_t)a3 maxActivityDelay:(unint64_t)a4 coalescingInterval:(unint64_t)a5 processingDelay:(unint64_t)a6 notifyBlock:(id)a7;
-- (void)coalesce:(id)a3;
+- (CKCoalescer)initWithActivityDelay:(unint64_t)delay maxActivityDelay:(unint64_t)activityDelay coalescingInterval:(unint64_t)interval processingDelay:(unint64_t)processingDelay notifyBlock:(id)block;
+- (void)coalesce:(id)coalesce;
 - (void)dealloc;
-- (void)delayPostBy:(unint64_t)a3;
-- (void)finish:(id)a3;
-- (void)mutate:(id)a3;
+- (void)delayPostBy:(unint64_t)by;
+- (void)finish:(id)finish;
+- (void)mutate:(id)mutate;
 - (void)postFinishedNotice;
 - (void)postNotice;
 - (void)processingComplete;
@@ -90,9 +90,9 @@
   dispatch_async(v3, block);
 }
 
-- (CKCoalescer)initWithActivityDelay:(unint64_t)a3 maxActivityDelay:(unint64_t)a4 coalescingInterval:(unint64_t)a5 processingDelay:(unint64_t)a6 notifyBlock:(id)a7
+- (CKCoalescer)initWithActivityDelay:(unint64_t)delay maxActivityDelay:(unint64_t)activityDelay coalescingInterval:(unint64_t)interval processingDelay:(unint64_t)processingDelay notifyBlock:(id)block
 {
-  v12 = a7;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = CKCoalescer;
   v13 = [(CKCoalescer *)&v25 init];
@@ -100,14 +100,14 @@
   if (v13)
   {
     pthread_mutex_init(&v13->_lock, 0);
-    v15 = _Block_copy(v12);
+    v15 = _Block_copy(blockCopy);
     notifyBlock = v14->_notifyBlock;
     v14->_notifyBlock = v15;
 
-    v14->_activityDelay = a3;
-    v14->_maxActivityDelay = a4;
-    v14->_coalescingInterval = a5;
-    v14->_processingDelay = a6;
+    v14->_activityDelay = delay;
+    v14->_maxActivityDelay = activityDelay;
+    v14->_coalescingInterval = interval;
+    v14->_processingDelay = processingDelay;
     v17 = dispatch_get_global_queue(17, 0);
     v18 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v17);
     fireTimer = v14->_fireTimer;
@@ -128,7 +128,7 @@
   return v14;
 }
 
-- (void)delayPostBy:(unint64_t)a3
+- (void)delayPostBy:(unint64_t)by
 {
   v5 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   coalesceStart = self->_coalesceStart;
@@ -142,11 +142,11 @@
     v7 = 0;
   }
 
-  v8 = v7 + a3;
-  if (v7 + a3 > self->_fireDelay)
+  v8 = v7 + by;
+  if (v7 + by > self->_fireDelay)
   {
     fireTimer = self->_fireTimer;
-    v10 = dispatch_time(0, a3);
+    v10 = dispatch_time(0, by);
     dispatch_source_set_timer(fireTimer, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
     self->_fireDelay = v8;
   }
@@ -168,9 +168,9 @@
   }
 }
 
-- (void)coalesce:(id)a3
+- (void)coalesce:(id)coalesce
 {
-  v22 = a3;
+  coalesceCopy = coalesce;
   pthread_mutex_lock(&self->_lock);
   if (self->_finished)
   {
@@ -182,9 +182,9 @@
     goto LABEL_21;
   }
 
-  if (v22)
+  if (coalesceCopy)
   {
-    v22[2](v22);
+    coalesceCopy[2](coalesceCopy);
   }
 
   v11 = objc_msgSend_activityDelay(self, v5, v6);
@@ -236,21 +236,21 @@ LABEL_21:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)mutate:(id)a3
+- (void)mutate:(id)mutate
 {
-  v4 = a3;
+  mutateCopy = mutate;
   pthread_mutex_lock(&self->_lock);
-  if (v4)
+  if (mutateCopy)
   {
-    v4[2]();
+    mutateCopy[2]();
   }
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)finish:(id)a3
+- (void)finish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   pthread_mutex_lock(&self->_lock);
   if (self->_finished)
   {
@@ -269,9 +269,9 @@ LABEL_21:
 
   else
   {
-    if (v4)
+    if (finishCopy)
     {
-      v4[2](v4);
+      finishCopy[2](finishCopy);
     }
 
     self->_finished = 1;

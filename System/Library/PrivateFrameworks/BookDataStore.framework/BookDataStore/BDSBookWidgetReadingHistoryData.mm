@@ -1,107 +1,107 @@
 @interface BDSBookWidgetReadingHistoryData
-- (BDSBookWidgetReadingHistoryData)initWithCoder:(id)a3;
-- (BDSBookWidgetReadingHistoryData)initWithStateInfo:(id)a3 readingGoalsEnabled:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BDSBookWidgetReadingHistoryData)initWithCoder:(id)coder;
+- (BDSBookWidgetReadingHistoryData)initWithStateInfo:(id)info readingGoalsEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSBookWidgetReadingHistoryData
 
-- (BDSBookWidgetReadingHistoryData)initWithStateInfo:(id)a3 readingGoalsEnabled:(BOOL)a4
+- (BDSBookWidgetReadingHistoryData)initWithStateInfo:(id)info readingGoalsEnabled:(BOOL)enabled
 {
-  v7 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = BDSBookWidgetReadingHistoryData;
   v8 = [(BDSBookWidgetReadingHistoryData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stateInfo, a3);
-    v9->_readingGoalsEnabled = a4;
+    objc_storeStrong(&v8->_stateInfo, info);
+    v9->_readingGoalsEnabled = enabled;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v5 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v4 = BUDynamicCast();
 
-    LOBYTE(v5) = 0;
+    LOBYTE(equalCopy) = 0;
     if (!self || !v4)
     {
       goto LABEL_10;
     }
 
-    v6 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
-    v7 = [v4 stateInfo];
-    v8 = v7;
-    if (v6 == v7)
+    stateInfo = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
+    stateInfo2 = [v4 stateInfo];
+    v8 = stateInfo2;
+    if (stateInfo == stateInfo2)
     {
     }
 
     else
     {
-      v9 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
-      v10 = [v4 stateInfo];
-      v11 = [v9 isEqual:v10];
+      stateInfo3 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
+      stateInfo4 = [v4 stateInfo];
+      v11 = [stateInfo3 isEqual:stateInfo4];
 
       if (!v11)
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(equalCopy) = 0;
 LABEL_10:
 
-        return v5;
+        return equalCopy;
       }
     }
 
-    v12 = [(BDSBookWidgetReadingHistoryData *)self readingGoalsEnabled];
-    LODWORD(v5) = v12 ^ [v4 readingGoalsEnabled] ^ 1;
+    readingGoalsEnabled = [(BDSBookWidgetReadingHistoryData *)self readingGoalsEnabled];
+    LODWORD(equalCopy) = readingGoalsEnabled ^ [v4 readingGoalsEnabled] ^ 1;
     goto LABEL_10;
   }
 
-  LOBYTE(v5) = 1;
-  return v5;
+  LOBYTE(equalCopy) = 1;
+  return equalCopy;
 }
 
-- (BDSBookWidgetReadingHistoryData)initWithCoder:(id)a3
+- (BDSBookWidgetReadingHistoryData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSBookWidgetReadingHistoryData *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateInfo"];
     stateInfo = v5->_stateInfo;
     v5->_stateInfo = v6;
 
-    v5->_readingGoalsEnabled = [v4 decodeBoolForKey:@"readingGoalsEnabled"];
+    v5->_readingGoalsEnabled = [coderCopy decodeBoolForKey:@"readingGoalsEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
-  [v5 encodeObject:v4 forKey:@"stateInfo"];
+  coderCopy = coder;
+  stateInfo = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
+  [coderCopy encodeObject:stateInfo forKey:@"stateInfo"];
 
-  [v5 encodeBool:-[BDSBookWidgetReadingHistoryData readingGoalsEnabled](self forKey:{"readingGoalsEnabled"), @"readingGoalsEnabled"}];
+  [coderCopy encodeBool:-[BDSBookWidgetReadingHistoryData readingGoalsEnabled](self forKey:{"readingGoalsEnabled"), @"readingGoalsEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSBookWidgetReadingHistoryData);
   if (v4)
   {
-    v5 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
-    [(BDSBookWidgetReadingHistoryData *)v4 setStateInfo:v5];
+    stateInfo = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
+    [(BDSBookWidgetReadingHistoryData *)v4 setStateInfo:stateInfo];
 
     [(BDSBookWidgetReadingHistoryData *)v4 setReadingGoalsEnabled:[(BDSBookWidgetReadingHistoryData *)self readingGoalsEnabled]];
   }
@@ -113,8 +113,8 @@ LABEL_10:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
-  v6 = [v3 stringWithFormat:@"<%@: %p stateInfo:%@, readingGoalsEnabled:%d>", v4, self, v5, -[BDSBookWidgetReadingHistoryData readingGoalsEnabled](self, "readingGoalsEnabled")];
+  stateInfo = [(BDSBookWidgetReadingHistoryData *)self stateInfo];
+  v6 = [v3 stringWithFormat:@"<%@: %p stateInfo:%@, readingGoalsEnabled:%d>", v4, self, stateInfo, -[BDSBookWidgetReadingHistoryData readingGoalsEnabled](self, "readingGoalsEnabled")];
 
   return v6;
 }

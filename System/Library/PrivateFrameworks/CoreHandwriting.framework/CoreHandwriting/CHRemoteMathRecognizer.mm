@@ -1,22 +1,22 @@
 @interface CHRemoteMathRecognizer
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteMathRecognizer:(id)a3;
-- (id)mathRecognitionResultForDrawing:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteMathRecognizer:(id)recognizer;
+- (id)mathRecognitionResultForDrawing:(id)drawing options:(id)options error:(id *)error;
 - (unint64_t)hash;
 @end
 
 @implementation CHRemoteMathRecognizer
 
-- (id)mathRecognitionResultForDrawing:(id)a3 options:(id)a4 error:(id *)a5
+- (id)mathRecognitionResultForDrawing:(id)drawing options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  drawingCopy = drawing;
+  optionsCopy = options;
+  v10 = optionsCopy;
   if (self)
   {
     v11 = [CHRemoteRecognitionMathRequest alloc];
     v17 = objc_msgSend_priority(self, v12, v13, v14, v15, v16);
-    v20 = objc_msgSend_initWithDrawing_options_priority_(v11, v18, v8, v10, v17, v19);
+    v20 = objc_msgSend_initWithDrawing_options_priority_(v11, v18, drawingCopy, v10, v17, v19);
     v26 = objc_msgSend_locales(self, v21, v22, v23, v24, v25);
     objc_msgSend_setLocales_(v20, v27, v26, v28, v29, v30);
 
@@ -128,7 +128,7 @@
     _Block_object_dispose(&v139, 8);
 
     v115 = v112;
-    if (a5)
+    if (error)
     {
       goto LABEL_19;
     }
@@ -141,21 +141,21 @@
     v114 = 0;
 
     v115 = 0;
-    if (a5)
+    if (error)
     {
 LABEL_19:
       v115 = v115;
-      *a5 = v115;
+      *error = v115;
     }
   }
 
   return v114;
 }
 
-- (BOOL)isEqualToRemoteMathRecognizer:(id)a3
+- (BOOL)isEqualToRemoteMathRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (self == v4)
+  recognizerCopy = recognizer;
+  if (self == recognizerCopy)
   {
     isEqualToSet = 1;
   }
@@ -164,10 +164,10 @@ LABEL_19:
   {
     v35.receiver = self;
     v35.super_class = CHRemoteMathRecognizer;
-    if ([(CHRemoteRecognizer *)&v35 isEqualToRemoteRecognizer:v4])
+    if ([(CHRemoteRecognizer *)&v35 isEqualToRemoteRecognizer:recognizerCopy])
     {
       v10 = objc_msgSend_declaredVariables(self, v5, v6, v7, v8, v9);
-      v21 = objc_msgSend_declaredVariables(v4, v11, v12, v13, v14, v15);
+      v21 = objc_msgSend_declaredVariables(recognizerCopy, v11, v12, v13, v14, v15);
       if (v10 == v21)
       {
         isEqualToSet = 1;
@@ -176,7 +176,7 @@ LABEL_19:
       else
       {
         v22 = objc_msgSend_declaredVariables(self, v16, v17, v18, v19, v20);
-        v28 = objc_msgSend_declaredVariables(v4, v23, v24, v25, v26, v27);
+        v28 = objc_msgSend_declaredVariables(recognizerCopy, v23, v24, v25, v26, v27);
         isEqualToSet = objc_msgSend_isEqualToSet_(v22, v29, v28, v30, v31, v32);
       }
     }
@@ -190,13 +190,13 @@ LABEL_19:
   return isEqualToSet;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteMathRecognizer = objc_msgSend_isEqualToRemoteMathRecognizer_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteMathRecognizer = objc_msgSend_isEqualToRemoteMathRecognizer_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteMathRecognizer;
   }

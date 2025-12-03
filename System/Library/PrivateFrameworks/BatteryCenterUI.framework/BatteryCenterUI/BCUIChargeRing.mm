@@ -1,34 +1,34 @@
 @interface BCUIChargeRing
 - (BCUIChargeRing)init;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIViewControllerTransitionCoordinator)transitionCoordinator;
 - (double)lineWidth;
 - (id)_baseRing;
 - (id)_chargeRing;
 - (id)_glyphImageView;
 - (id)_ringVisualStylingProvider;
-- (void)_beginAutomaticallyUpdatingPrimaryVisualStylingForView:(id)a3 observerBlock:(id)a4;
-- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3;
+- (void)_beginAutomaticallyUpdatingPrimaryVisualStylingForView:(id)view observerBlock:(id)block;
+- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category;
 - (void)_configureBoltImageViewIfNecessary;
 - (void)_configureBoltMaskImageViewIfNecessary;
 - (void)_configureCaptureBackdropIfNecessary;
 - (void)_configureRingCapShadowIfNecessary;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3;
+- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category;
 - (void)_updateVisualStylingForBaseRingIfNecessary;
 - (void)_updateVisualStylingForBolt;
-- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)a3;
+- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)provider;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setCharging:(BOOL)a3;
-- (void)setGlyph:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setLowCharge:(BOOL)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
-- (void)setPercentCharge:(int64_t)a3;
-- (void)setScaleFactor:(double)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setCharging:(BOOL)charging;
+- (void)setGlyph:(id)glyph;
+- (void)setLineWidth:(double)width;
+- (void)setLowCharge:(BOOL)charge;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
+- (void)setPercentCharge:(int64_t)charge;
+- (void)setScaleFactor:(double)factor;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation BCUIChargeRing
@@ -44,18 +44,18 @@
   return result;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  if (self->_lineWidth != a3)
+  if (self->_lineWidth != width)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
     [(BCUIChargeRing *)self setNeedsLayout];
   }
 }
 
-- (void)setPercentCharge:(int64_t)a3
+- (void)setPercentCharge:(int64_t)charge
 {
-  v3 = a3 & ~(a3 >> 63);
+  v3 = charge & ~(charge >> 63);
   if (v3 >= 100)
   {
     v3 = 100;
@@ -64,14 +64,14 @@
   if (v3 != self->_percentCharge)
   {
     self->_percentCharge = v3;
-    if (a3 < 1)
+    if (charge < 1)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __35__BCUIChargeRing_setPercentCharge___block_invoke;
       v9[3] = &unk_1E814ECE8;
       v9[4] = self;
-      v5 = MEMORY[0x1C690A930](v9, a2);
+      _chargeRing = MEMORY[0x1C690A930](v9, a2);
       WeakRetained = objc_loadWeakRetained(&self->_transitionCoordinator);
       if (WeakRetained)
       {
@@ -79,20 +79,20 @@
         v7[1] = 3221225472;
         v7[2] = __35__BCUIChargeRing_setPercentCharge___block_invoke_2;
         v7[3] = &unk_1E814ED60;
-        v8 = v5;
+        v8 = _chargeRing;
         [WeakRetained animateAlongsideTransition:0 completion:v7];
       }
 
       else
       {
-        v5[2](v5);
+        _chargeRing[2](_chargeRing);
       }
     }
 
     else
     {
-      v5 = [(BCUIChargeRing *)self _chargeRing];
-      [v5 setFractionComplete:self->_percentCharge / 100.0];
+      _chargeRing = [(BCUIChargeRing *)self _chargeRing];
+      [_chargeRing setFractionComplete:self->_percentCharge / 100.0];
     }
 
     [(BCUIChargeRing *)self setNeedsLayout];
@@ -121,50 +121,50 @@ void __35__BCUIChargeRing_setPercentCharge___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLowCharge:(BOOL)a3
+- (void)setLowCharge:(BOOL)charge
 {
-  if (self->_lowCharge != a3)
+  if (self->_lowCharge != charge)
   {
-    self->_lowCharge = a3;
+    self->_lowCharge = charge;
     [(BCUIChargeRing *)self setNeedsLayout];
   }
 }
 
-- (void)setCharging:(BOOL)a3
+- (void)setCharging:(BOOL)charging
 {
-  if (self->_charging != a3)
+  if (self->_charging != charging)
   {
-    self->_charging = a3;
+    self->_charging = charging;
     [(BCUIChargeRing *)self setNeedsLayout];
   }
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
-  if (self->_lowPowerModeEnabled != a3)
+  if (self->_lowPowerModeEnabled != enabled)
   {
-    self->_lowPowerModeEnabled = a3;
+    self->_lowPowerModeEnabled = enabled;
     [(BCUIChargeRing *)self setNeedsLayout];
   }
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  v5 = a3;
-  if (self->_glyph != v5)
+  glyphCopy = glyph;
+  if (self->_glyph != glyphCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyph, a3);
+    v6 = glyphCopy;
+    objc_storeStrong(&self->_glyph, glyph);
     [(BCUIChargeRing *)self setNeedsLayout];
-    v5 = v6;
+    glyphCopy = v6;
   }
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
-  if (self->_scaleFactor != a3)
+  if (self->_scaleFactor != factor)
   {
-    self->_scaleFactor = a3;
+    self->_scaleFactor = factor;
     [(BCUIChargeRing *)self setNeedsLayout];
   }
 }
@@ -193,8 +193,8 @@ void __35__BCUIChargeRing_setPercentCharge___block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = BCUIChargeRing;
   [(BCUIChargeRing *)&v4 didMoveToSuperview];
-  v3 = [(BCUIChargeRing *)self superview];
-  [(BCUIChargeRing *)self _updateVisualStylingWithProvidersFromStylingProvider:v3];
+  superview = [(BCUIChargeRing *)self superview];
+  [(BCUIChargeRing *)self _updateVisualStylingWithProvidersFromStylingProvider:superview];
 }
 
 - (void)didMoveToWindow
@@ -202,12 +202,12 @@ void __35__BCUIChargeRing_setPercentCharge___block_invoke(uint64_t a1)
   v5.receiver = self;
   v5.super_class = BCUIChargeRing;
   [(BCUIChargeRing *)&v5 didMoveToWindow];
-  v3 = [(BCUIChargeRing *)self window];
+  window = [(BCUIChargeRing *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(BCUIChargeRing *)self superview];
-    [(BCUIChargeRing *)self _updateVisualStylingWithProvidersFromStylingProvider:v4];
+    superview = [(BCUIChargeRing *)self superview];
+    [(BCUIChargeRing *)self _updateVisualStylingWithProvidersFromStylingProvider:superview];
   }
 }
 
@@ -223,17 +223,17 @@ void __35__BCUIChargeRing_setPercentCharge___block_invoke(uint64_t a1)
   v10 = v9;
   [(BCUIChargeRing *)self lineWidth];
   v12 = v11 * self->_scaleFactor * self->_ringScale;
-  v13 = [(BCUIChargeRing *)self _baseRing];
-  [v13 setLineWidth:v12];
+  _baseRing = [(BCUIChargeRing *)self _baseRing];
+  [_baseRing setLineWidth:v12];
 
   [(BCUIRingView *)self->_baseRing setFrame:v4, v6, v8, v10];
   [(BCUIChargeRing *)self _updateVisualStylingForBaseRingIfNecessary];
   lowCharge = self->_lowCharge;
   lowPowerModeEnabled = self->_lowPowerModeEnabled;
-  v16 = [MEMORY[0x1E69DC888] systemGreenColor];
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
   if (lowPowerModeEnabled)
   {
-    v17 = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
   }
 
   else
@@ -243,19 +243,19 @@ void __35__BCUIChargeRing_setPercentCharge___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    v17 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
-  v18 = v17;
+  v18 = systemYellowColor;
 
-  v16 = v18;
+  systemGreenColor = v18;
 LABEL_6:
   chargeRing = self->_chargeRing;
   if (chargeRing)
   {
     [(BCUIRingView *)chargeRing setLineWidth:v12];
     [(BCUIRingView *)self->_chargeRing setFrame:v4, v6, v8, v10];
-    [(BCUIRingView *)self->_chargeRing setStrokeColor:v16];
+    [(BCUIRingView *)self->_chargeRing setStrokeColor:systemGreenColor];
     chargeRing = self->_chargeRing;
   }
 
@@ -290,26 +290,26 @@ LABEL_6:
   }
 
   v24 = self->_ringCapShadow;
-  v25 = [(BCUIChargeRing *)self _shouldShowRingCapShadow];
+  _shouldShowRingCapShadow = [(BCUIChargeRing *)self _shouldShowRingCapShadow];
   v26 = 0.0;
-  if (v25)
+  if (_shouldShowRingCapShadow)
   {
     v26 = 1.0;
   }
 
   [(BCUIRingCapShadow *)v24 setAlpha:v26];
-  v27 = [(BCUIChargeRing *)self window];
-  if (v27)
+  window = [(BCUIChargeRing *)self window];
+  if (window)
   {
-    v28 = [(BCUIChargeRing *)self window];
-    v29 = [v28 screen];
-    [v29 scale];
+    window2 = [(BCUIChargeRing *)self window];
+    screen = [window2 screen];
+    [screen scale];
   }
 
   else
   {
-    v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v28 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
   }
 
   if (self->_charging)
@@ -356,11 +356,11 @@ LABEL_6:
   }
 
   [(UIImageView *)self->_boltImageView setAlpha:v35];
-  v36 = [(BCUIChargeRing *)self _glyphImageView];
-  v37 = [v36 image];
+  _glyphImageView = [(BCUIChargeRing *)self _glyphImageView];
+  image = [_glyphImageView image];
   glyph = self->_glyph;
 
-  if (v37 != glyph)
+  if (image != glyph)
   {
     [(UIImageView *)self->_glyphImageView setImage:self->_glyph];
     [(UIImageView *)self->_glyphImageView setContentMode:4];
@@ -407,12 +407,12 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
   return [v2 setFrame:{v3, v4, v5, v6}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(BCUIChargeRing *)self _baseRing];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  _baseRing = [(BCUIChargeRing *)self _baseRing];
+  [_baseRing sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -434,23 +434,23 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
   [(BCUIChargeRing *)self _updateVisualStylingForBaseRingIfNecessary];
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v11 = a3;
-  if (v11)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v7 = [(BCUIChargeRing *)self requiredVisualStyleCategories];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v9 = [v7 containsObject:v8];
+    requiredVisualStyleCategories = [(BCUIChargeRing *)self requiredVisualStyleCategories];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+    v9 = [requiredVisualStyleCategories containsObject:v8];
 
     if (v9)
     {
-      v10 = [(BCUIChargeRing *)self _visualStylingProviderForCategory:a4];
-      if (v10 != v11)
+      v10 = [(BCUIChargeRing *)self _visualStylingProviderForCategory:category];
+      if (v10 != providerCopy)
       {
-        [(BCUIChargeRing *)self _stopAutomaticallyUpdatingVisualStylingForCategory:a4];
-        objc_storeStrong(&self->_visualStylingProvider, a3);
-        [(BCUIChargeRing *)self _beginAutomaticallyUpdatingVisualStylingForCategory:a4];
+        [(BCUIChargeRing *)self _stopAutomaticallyUpdatingVisualStylingForCategory:category];
+        objc_storeStrong(&self->_visualStylingProvider, provider);
+        [(BCUIChargeRing *)self _beginAutomaticallyUpdatingVisualStylingForCategory:category];
       }
     }
   }
@@ -466,8 +466,8 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     self->_chargeRing = v4;
 
     v6 = self->_chargeRing;
-    v7 = [(BCUIChargeRing *)self _baseRing];
-    [(BCUIChargeRing *)self insertSubview:v6 aboveSubview:v7];
+    _baseRing = [(BCUIChargeRing *)self _baseRing];
+    [(BCUIChargeRing *)self insertSubview:v6 aboveSubview:_baseRing];
 
     chargeRing = self->_chargeRing;
   }
@@ -485,8 +485,8 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     self->_baseRing = v4;
 
     v6 = self->_baseRing;
-    v7 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-    [(BCUIRingView *)v6 setStrokeColor:v7];
+    secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+    [(BCUIRingView *)v6 setStrokeColor:secondarySystemFillColor];
 
     [(BCUIRingView *)self->_baseRing setFractionComplete:1.0];
     [(BCUIChargeRing *)self addSubview:self->_baseRing];
@@ -508,16 +508,16 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     chargeRing = self->_chargeRing;
     if (chargeRing)
     {
-      v7 = chargeRing;
+      _baseRing = chargeRing;
     }
 
     else
     {
-      v7 = [(BCUIChargeRing *)self _baseRing];
+      _baseRing = [(BCUIChargeRing *)self _baseRing];
     }
 
-    v8 = v7;
-    [(BCUIChargeRing *)self insertSubview:self->_glyphImageView aboveSubview:v7];
+    v8 = _baseRing;
+    [(BCUIChargeRing *)self insertSubview:self->_glyphImageView aboveSubview:_baseRing];
     [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:self->_glyphImageView withStyle:0];
 
     glyphImageView = self->_glyphImageView;
@@ -533,15 +533,15 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     v3 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v4 = MEMORY[0x1E69DCAB8];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v6 = [(BCUIChargeRing *)self traitCollection];
-    v7 = [v4 imageNamed:@"batterywidget.bolt.mask" inBundle:v5 compatibleWithTraitCollection:v6];
+    traitCollection = [(BCUIChargeRing *)self traitCollection];
+    v7 = [v4 imageNamed:@"batterywidget.bolt.mask" inBundle:v5 compatibleWithTraitCollection:traitCollection];
     v8 = [v3 initWithImage:v7];
     boltMaskImageView = self->_boltMaskImageView;
     self->_boltMaskImageView = v8;
 
     [(UIImageView *)self->_boltMaskImageView setContentMode:1];
-    v10 = [(UIImageView *)self->_boltMaskImageView layer];
-    [v10 setCompositingFilter:*MEMORY[0x1E69798E8]];
+    layer = [(UIImageView *)self->_boltMaskImageView layer];
+    [layer setCompositingFilter:*MEMORY[0x1E69798E8]];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -560,8 +560,8 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     v3 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v4 = MEMORY[0x1E69DCAB8];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v6 = [(BCUIChargeRing *)self traitCollection];
-    v7 = [v4 imageNamed:@"batterywidget.bolt" inBundle:v5 compatibleWithTraitCollection:v6];
+    traitCollection = [(BCUIChargeRing *)self traitCollection];
+    v7 = [v4 imageNamed:@"batterywidget.bolt" inBundle:v5 compatibleWithTraitCollection:traitCollection];
     v8 = [v3 initWithImage:v7];
     boltImageView = self->_boltImageView;
     self->_boltImageView = v8;
@@ -580,7 +580,7 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
 
 - (void)_configureRingCapShadowIfNecessary
 {
-  v3 = [(BCUIChargeRing *)self _shouldShowRingCapShadow];
+  _shouldShowRingCapShadow = [(BCUIChargeRing *)self _shouldShowRingCapShadow];
   [(BCUIChargeRing *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -607,7 +607,7 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 
   ringCapShadow = self->_ringCapShadow;
-  if (ringCapShadow == 0 && v3)
+  if (ringCapShadow == 0 && _shouldShowRingCapShadow)
   {
     [(BCUIRingView *)self->_chargeRing lineWidth];
     v19 = [BCUIRingCapShadow ringCapShadowForRingWithBounds:v5 lineWidth:v7, v9, v11, v18];
@@ -623,7 +623,7 @@ uint64_t __32__BCUIChargeRing_layoutSubviews__block_invoke_2(uint64_t a1)
     [MEMORY[0x1E69DD250] performWithoutAnimation:v24];
   }
 
-  else if (ringCapShadow != 0 && !v3)
+  else if (ringCapShadow != 0 && !_shouldShowRingCapShadow)
   {
     WeakRetained = objc_loadWeakRetained(&self->_transitionCoordinator);
     if (WeakRetained)
@@ -665,18 +665,18 @@ uint64_t __52__BCUIChargeRing__configureRingCapShadowIfNecessary__block_invoke_3
   return result;
 }
 
-- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)a3
+- (void)_updateVisualStylingWithProvidersFromStylingProvider:(id)provider
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(BCUIChargeRing *)self requiredVisualStyleCategories];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    requiredVisualStyleCategories = [(BCUIChargeRing *)self requiredVisualStyleCategories];
+    v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -687,15 +687,15 @@ uint64_t __52__BCUIChargeRing__configureRingCapShadowIfNecessary__block_invoke_3
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [v4 visualStylingProviderForCategory:{objc_msgSend(v10, "integerValue")}];
+          v11 = [providerCopy visualStylingProviderForCategory:{objc_msgSend(v10, "integerValue")}];
           -[BCUIChargeRing setVisualStylingProvider:forCategory:](self, "setVisualStylingProvider:forCategory:", v11, [v10 integerValue]);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -703,9 +703,9 @@ uint64_t __52__BCUIChargeRing__configureRingCapShadowIfNecessary__block_invoke_3
   }
 }
 
-- (void)_beginAutomaticallyUpdatingPrimaryVisualStylingForView:(id)a3 observerBlock:(id)a4
+- (void)_beginAutomaticallyUpdatingPrimaryVisualStylingForView:(id)view observerBlock:(id)block
 {
-  if (a3)
+  if (view)
   {
     visualStylingProvider = self->_visualStylingProvider;
     if (visualStylingProvider)
@@ -717,9 +717,9 @@ uint64_t __52__BCUIChargeRing__configureRingCapShadowIfNecessary__block_invoke_3
   }
 }
 
-- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3
+- (void)_beginAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category
 {
-  if (a3 == 1 && self->_visualStylingProvider)
+  if (category == 1 && self->_visualStylingProvider)
   {
     [(BCUIChargeRing *)self _beginAutomaticallyUpdatingPrimaryVisualStylingForView:self->_glyphImageView observerBlock:0];
 
@@ -727,9 +727,9 @@ uint64_t __52__BCUIChargeRing__configureRingCapShadowIfNecessary__block_invoke_3
   }
 }
 
-- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)a3
+- (void)_stopAutomaticallyUpdatingVisualStylingForCategory:(int64_t)category
 {
-  if (a3 == 1)
+  if (category == 1)
   {
     v7[9] = v3;
     v7[10] = v4;
@@ -766,10 +766,10 @@ uint64_t __69__BCUIChargeRing__stopAutomaticallyUpdatingVisualStylingForCategory
   baseRingVisualStylingProvider = self->_baseRingVisualStylingProvider;
   if (!baseRingVisualStylingProvider)
   {
-    v4 = [(BCUIChargeRing *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(BCUIChargeRing *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v6 = @"baseRingLight";
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = @"baseRingDark";
     }
@@ -795,8 +795,8 @@ uint64_t __69__BCUIChargeRing__stopAutomaticallyUpdatingVisualStylingForCategory
   {
     [(BCUIRingView *)self->_baseRing mt_removeAllVisualStyling];
     baseRing = self->_baseRing;
-    v6 = [(BCUIChargeRing *)self _ringVisualStylingProvider];
-    v5 = [v6 _visualStylingForStyle:1];
+    _ringVisualStylingProvider = [(BCUIChargeRing *)self _ringVisualStylingProvider];
+    v5 = [_ringVisualStylingProvider _visualStylingForStyle:1];
     [(BCUIRingView *)baseRing mt_replaceVisualStyling:v5];
   }
 }
@@ -813,8 +813,8 @@ uint64_t __69__BCUIChargeRing__stopAutomaticallyUpdatingVisualStylingForCategory
       self->_captureBackdrop = v4;
 
       [(CABackdropLayer *)self->_captureBackdrop setAllowsInPlaceFiltering:1];
-      v8 = [(BCUIChargeRing *)self layer];
-      [v8 insertSublayer:self->_captureBackdrop atIndex:0];
+      layer = [(BCUIChargeRing *)self layer];
+      [layer insertSublayer:self->_captureBackdrop atIndex:0];
     }
   }
 
@@ -867,8 +867,8 @@ void __54__BCUIChargeRing__configureCaptureBackdropIfNecessary__block_invoke(uin
     {
       [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:boltImageView];
       v6 = self->_boltImageView;
-      v7 = [MEMORY[0x1E69DC888] systemGreenColor];
-      [(UIImageView *)v6 setTintColor:v7];
+      systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+      [(UIImageView *)v6 setTintColor:systemGreenColor];
     }
 
     else
@@ -890,14 +890,14 @@ void __54__BCUIChargeRing__configureCaptureBackdropIfNecessary__block_invoke(uin
       }
     }
 
-    v9 = [(BCUIChargeRing *)self layer];
-    [v9 setAllowsGroupBlending:1];
+    layer = [(BCUIChargeRing *)self layer];
+    [layer setAllowsGroupBlending:1];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_transitionCoordinator);
-    v9 = WeakRetained;
+    layer = WeakRetained;
     if (WeakRetained)
     {
       v13[0] = MEMORY[0x1E69E9820];
@@ -910,8 +910,8 @@ void __54__BCUIChargeRing__configureCaptureBackdropIfNecessary__block_invoke(uin
 
     else
     {
-      v12 = [(BCUIChargeRing *)self layer];
-      [v12 setAllowsGroupBlending:self->_charging];
+      layer2 = [(BCUIChargeRing *)self layer];
+      [layer2 setAllowsGroupBlending:self->_charging];
     }
   }
 }

@@ -1,29 +1,29 @@
 @interface ETTranscriptDetailCanvasViewController
 - (BOOL)_canShowCompositionControls;
-- (BOOL)_isRecognizer:(id)a3 closeToButton:(id)a4;
+- (BOOL)_isRecognizer:(id)recognizer closeToButton:(id)button;
 - (BOOL)_shouldAutoSend;
 - (BOOL)_shouldDimColorPicker;
 - (BOOL)_shouldShowCancelButton;
 - (BOOL)_shouldShowOnButton;
 - (BOOL)_shouldShowSendButton;
 - (BOOL)_showingSendInProgress;
-- (BOOL)_tapRecognizerShouldBegin:(id)a3;
+- (BOOL)_tapRecognizerShouldBegin:(id)begin;
 - (BOOL)canShowReplayButton;
 - (BOOL)shouldAutorotate;
 - (BOOL)usesCompactKeyboardLayout;
 - (ETTranscriptDetailCanvasViewController)init;
 - (ETTranscriptDetailCanvasViewControllerPresentationDelegate)presentationDelegate;
-- (double)elapsedTimeSinceStartOfMessage:(id)a3;
+- (double)elapsedTimeSinceStartOfMessage:(id)message;
 - (id)_largeVideoOnButton;
 - (id)_smallVideoOnButton;
-- (id)_videoProgressTimeString:(unint64_t)a3;
+- (id)_videoProgressTimeString:(unint64_t)string;
 - (id)colorPicker;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_backToPreviewButtonTapped;
 - (void)_cameraFlipButtonTapped;
 - (void)_cancelButtonTapped;
 - (void)_clearPhotoSendMessageTimer;
-- (void)_composingOnlyIntroMessageType:(BOOL)a3;
+- (void)_composingOnlyIntroMessageType:(BOOL)type;
 - (void)_dismissColorWheel;
 - (void)_endIntroMessage;
 - (void)_endMediaMessageComposition;
@@ -34,14 +34,14 @@
 - (void)_photoCaptureButtonTapped;
 - (void)_photoSendMessageTimerFired;
 - (void)_sendButtonTapped;
-- (void)_setCameraEnabled:(BOOL)a3;
-- (void)_setEntryViewHidden:(BOOL)a3;
-- (void)_setShowingCompositionControls:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setShowingGestureInstructionView:(BOOL)a3;
-- (void)_setShowingVideoProgress:(BOOL)a3;
-- (void)_setVideoZoomEnabled:(BOOL)a3;
+- (void)_setCameraEnabled:(BOOL)enabled;
+- (void)_setEntryViewHidden:(BOOL)hidden;
+- (void)_setShowingCompositionControls:(BOOL)controls animated:(BOOL)animated;
+- (void)_setShowingGestureInstructionView:(BOOL)view;
+- (void)_setShowingVideoProgress:(BOOL)progress;
+- (void)_setVideoZoomEnabled:(BOOL)enabled;
 - (void)_showCompositionControlsTimerFired;
-- (void)_showWriteErrorAlertForMediaType:(unint64_t)a3 outOfSpaceError:(BOOL)a4 completion:(id)a5;
+- (void)_showWriteErrorAlertForMediaType:(unint64_t)type outOfSpaceError:(BOOL)error completion:(id)completion;
 - (void)_startCameraPreview;
 - (void)_startPhotoSendMessageTimer;
 - (void)_startShowCompositionControlsTimer;
@@ -54,40 +54,40 @@
 - (void)_updateMediaInstructionView;
 - (void)_updateSendButton;
 - (void)_updateSkipButtonFrame;
-- (void)_updateVideoOnButtonForHorizontalSizeClass:(int64_t)a3;
+- (void)_updateVideoOnButtonForHorizontalSizeClass:(int64_t)class;
 - (void)_updateVideoOnButtonOpacity;
 - (void)_updateVideoPreviewFrame;
 - (void)_updateVideoProgressFrame;
-- (void)_updateVideoRecorderTime:(unint64_t)a3;
+- (void)_updateVideoRecorderTime:(unint64_t)time;
 - (void)_videoRecordButtonTapped;
-- (void)_videoZoomGestureRecognized:(id)a3;
-- (void)canvasView:(id)a3 didUpdateComposingMessageType:(unsigned __int16)a4;
-- (void)colorPicker:(id)a3 requestsPresentColorWheel:(id)a4;
-- (void)dataSource:(id)a3 startPlaybackWithCompletion:(id)a4;
-- (void)dataSourceStopPlayback:(id)a3;
+- (void)_videoZoomGestureRecognized:(id)recognized;
+- (void)canvasView:(id)view didUpdateComposingMessageType:(unsigned __int16)type;
+- (void)colorPicker:(id)picker requestsPresentColorWheel:(id)wheel;
+- (void)dataSource:(id)source startPlaybackWithCompletion:(id)completion;
+- (void)dataSourceStopPlayback:(id)playback;
 - (void)didBeginComposingMessage;
 - (void)didChangeColorPickerColor;
 - (void)didEndComposingMessage;
 - (void)expandUI;
 - (void)loadView;
-- (void)setPlayingMessages:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPlayingMessages:(BOOL)messages;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateVideoUI;
-- (void)videoControllerDidEndPhotoCapture:(id)a3 photoImage:(id)a4;
-- (void)videoControllerDidEndPreview:(id)a3;
-- (void)videoControllerDidEndRecording:(id)a3 mediaURL:(id)a4 withError:(id)a5;
-- (void)videoControllerDidInterruptPreview:(id)a3 withInterruptionReason:(int64_t)a4;
-- (void)videoControllerDidStartPreview:(id)a3;
-- (void)videoControllerDidStartRecording:(id)a3;
-- (void)videoControllerDidStopPreview:(id)a3;
-- (void)videoControllerWillBeginPhotoCapture:(id)a3;
-- (void)videoControllerWillCancelRecording:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)videoControllerDidEndPhotoCapture:(id)capture photoImage:(id)image;
+- (void)videoControllerDidEndPreview:(id)preview;
+- (void)videoControllerDidEndRecording:(id)recording mediaURL:(id)l withError:(id)error;
+- (void)videoControllerDidInterruptPreview:(id)preview withInterruptionReason:(int64_t)reason;
+- (void)videoControllerDidStartPreview:(id)preview;
+- (void)videoControllerDidStartRecording:(id)recording;
+- (void)videoControllerDidStopPreview:(id)preview;
+- (void)videoControllerWillBeginPhotoCapture:(id)capture;
+- (void)videoControllerWillCancelRecording:(id)recording;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewDidTransitionToCompactPresentation;
 - (void)viewDidTransitionToExpandedPresentation;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -118,8 +118,8 @@
     v11 = [UIColor colorWithWhite:0.4 alpha:1.0];
     [(UIButton *)v10 setBackgroundColor:v11];
 
-    v12 = [(UIButton *)v2->_expandToCameraButton layer];
-    [v12 setCornerRadius:20.0];
+    layer = [(UIButton *)v2->_expandToCameraButton layer];
+    [layer setCornerRadius:20.0];
 
     [(UIButton *)v2->_expandToCameraButton setFrame:0.0, 0.0, 40.0, 40.0];
     [(UIButton *)v2->_expandToCameraButton setAlpha:0.0];
@@ -132,15 +132,15 @@
     v16 = +[UIColor clearColor];
     [(UIButton *)v15 setBackgroundColor:v16];
 
-    v17 = [(UIButton *)v2->_expandColorPickerButton layer];
-    [v17 setCornerRadius:20.0];
+    layer2 = [(UIButton *)v2->_expandColorPickerButton layer];
+    [layer2 setCornerRadius:20.0];
 
-    v18 = [(UIButton *)v2->_expandColorPickerButton layer];
+    layer3 = [(UIButton *)v2->_expandColorPickerButton layer];
     v19 = +[UIColor redColor];
-    [v18 setBorderColor:{objc_msgSend(v19, "CGColor")}];
+    [layer3 setBorderColor:{objc_msgSend(v19, "CGColor")}];
 
-    v20 = [(UIButton *)v2->_expandColorPickerButton layer];
-    [v20 setBorderWidth:13.0];
+    layer4 = [(UIButton *)v2->_expandColorPickerButton layer];
+    [layer4 setBorderWidth:13.0];
 
     [(UIButton *)v2->_expandColorPickerButton setFrame:0.0, 0.0, 40.0, 40.0];
     [(UIButton *)v2->_expandColorPickerButton setAlpha:0.0];
@@ -208,8 +208,8 @@
     v2->_videoProgressDot = v44;
 
     [(UIView *)v2->_videoProgressDot setBackgroundColor:v41];
-    v46 = [(UIView *)v2->_videoProgressDot layer];
-    [v46 setCornerRadius:2.5];
+    layer5 = [(UIView *)v2->_videoProgressDot layer];
+    [layer5 setCornerRadius:2.5];
 
     [(UIView *)v2->_videoProgressDot setAlpha:0.0];
     v47 = objc_alloc_init(UILabel);
@@ -231,15 +231,15 @@
 
     [(UILabel *)v2->_videoProgressTimeLabel setAlpha:0.0];
     v55 = +[UIScreen mainScreen];
-    v56 = [v55 traitCollection];
-    -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](v2, "_updateVideoOnButtonForHorizontalSizeClass:", [v56 horizontalSizeClass]);
+    traitCollection = [v55 traitCollection];
+    -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](v2, "_updateVideoOnButtonForHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
 
     v57 = objc_alloc_init(ETLandscapeTrapView);
     landscapeTrapView = v2->_landscapeTrapView;
     v2->_landscapeTrapView = v57;
 
-    v59 = [(ETTranscriptDetailCanvasViewController *)v2 canvasView];
-    [v59 setTimeSource:v2];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)v2 canvasView];
+    [canvasView setTimeSource:v2];
 
     v60 = v2;
   }
@@ -250,8 +250,8 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(ETGestureIgnoringView);
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [(ETGestureIgnoringView *)v4 ignoreGesturesInView:v3];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [(ETGestureIgnoringView *)v4 ignoreGesturesInView:canvasView];
 
   [(ETTranscriptDetailCanvasViewController *)self setView:v4];
 }
@@ -261,37 +261,37 @@
   v6.receiver = self;
   v6.super_class = ETTranscriptDetailCanvasViewController;
   [(ETTranscriptDetailCanvasViewController *)&v6 viewDidLoad];
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 addSubview:self->_videoOnButton];
-  [v3 addSubview:self->_sendButton];
-  v4 = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
-  [v3 addSubview:v4];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view addSubview:self->_videoOnButton];
+  [view addSubview:self->_sendButton];
+  _replayButton = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
+  [view addSubview:_replayButton];
 
-  [v3 addSubview:self->_cameraFlipButton];
-  [v3 addSubview:self->_backToPreviewButton];
-  [v3 addSubview:self->_videoProgressBar];
-  [v3 addSubview:self->_videoProgressDot];
-  [v3 addSubview:self->_videoProgressTimeLabel];
-  [v3 addSubview:self->_expandToCameraButton];
-  [v3 addSubview:self->_expandColorPickerButton];
-  v5 = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
-  [v3 addSubview:v5];
+  [view addSubview:self->_cameraFlipButton];
+  [view addSubview:self->_backToPreviewButton];
+  [view addSubview:self->_videoProgressBar];
+  [view addSubview:self->_videoProgressDot];
+  [view addSubview:self->_videoProgressTimeLabel];
+  [view addSubview:self->_expandToCameraButton];
+  [view addSubview:self->_expandColorPickerButton];
+  colorWheel = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
+  [view addSubview:colorWheel];
 
-  [v3 addSubview:self->_gestureInstructionButton];
+  [view addSubview:self->_gestureInstructionButton];
 }
 
 - (BOOL)usesCompactKeyboardLayout
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 0;
   }
 
-  v6 = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
-  v7 = [v6 canvasViewControllerUsesCompactKeyboardLayout:self];
+  presentationDelegate = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
+  v7 = [presentationDelegate canvasViewControllerUsesCompactKeyboardLayout:self];
 
   return v7;
 }
@@ -315,8 +315,8 @@
 - (void)viewDidTransitionToExpandedPresentation
 {
   self->_requestedExpansion = 0;
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view setNeedsLayout];
 
   [(ETTranscriptDetailCanvasViewController *)self setPlaybackEnabled:1];
   [(ETTranscriptDetailCanvasViewController *)self startMessagePlaybackLoop];
@@ -331,25 +331,25 @@
     self->_expandToGestureInstructionView = 0;
   }
 
-  v4 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-  [v4 setAlpha:1.0];
+  colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+  [colorPicker setAlpha:1.0];
 }
 
 - (void)viewDidTransitionToCompactPresentation
 {
   self->_requestedExpansion = 0;
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view setNeedsLayout];
 
-  v4 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-  [v4 setAlpha:1.0];
+  colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+  [colorPicker setAlpha:1.0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ETTranscriptDetailCanvasViewController;
-  [(ETTranscriptDetailCanvasViewController *)&v5 viewDidDisappear:a3];
+  [(ETTranscriptDetailCanvasViewController *)&v5 viewDidDisappear:disappear];
   if (([(ETTranscriptDetailCanvasViewController *)self ignoreAppearanceCallbacks]& 1) == 0)
   {
     if (self->_mediaMessage)
@@ -359,34 +359,34 @@
 
     [(ETTranscriptDetailCanvasViewController *)self _endMediaMessageComposition];
     [(ETTranscriptDetailCanvasViewController *)self _updateColorPickerEnabled];
-    v4 = [(ETTranscriptDetailCanvasViewController *)self view];
-    [v4 setNeedsLayout];
+    view = [(ETTranscriptDetailCanvasViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ETTranscriptDetailCanvasViewController;
-  [(ETTranscriptDetailCanvasViewController *)&v4 viewWillAppear:a3];
+  [(ETTranscriptDetailCanvasViewController *)&v4 viewWillAppear:appear];
   [(ETTranscriptDetailCanvasViewController *)self ignoreAppearanceCallbacks];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ETTranscriptDetailCanvasViewController;
-  [(ETTranscriptDetailCanvasViewController *)&v4 viewDidAppear:a3];
+  [(ETTranscriptDetailCanvasViewController *)&v4 viewDidAppear:appear];
   [(ETTranscriptDetailCanvasViewController *)self ignoreAppearanceCallbacks];
 }
 
-- (void)_setShowingGestureInstructionView:(BOOL)a3
+- (void)_setShowingGestureInstructionView:(BOOL)view
 {
-  v3 = a3;
-  if ([(ETTranscriptDetailCanvasViewController *)self _gestureInstructionViewIsShown]!= a3)
+  viewCopy = view;
+  if ([(ETTranscriptDetailCanvasViewController *)self _gestureInstructionViewIsShown]!= view)
   {
     gestureInstructionView = self->_gestureInstructionView;
-    if (v3)
+    if (viewCopy)
     {
       if (!gestureInstructionView)
       {
@@ -394,10 +394,10 @@
         v7 = self->_gestureInstructionView;
         self->_gestureInstructionView = v6;
 
-        v8 = [(ETTranscriptDetailCanvasViewController *)self view];
+        view = [(ETTranscriptDetailCanvasViewController *)self view];
         v9 = self->_gestureInstructionView;
-        v10 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-        [v8 insertSubview:v9 aboveSubview:v10];
+        canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+        [view insertSubview:v9 aboveSubview:canvasView];
 
         gestureInstructionView = self->_gestureInstructionView;
       }
@@ -412,7 +412,7 @@
 
     [(GestureInstructionView *)gestureInstructionView setAlpha:v11];
     [(ETTranscriptDetailCanvasViewController *)self _updateColorPickerEnabled];
-    [(ETTranscriptDetailCanvasViewController *)self setComposeDisabled:v3];
+    [(ETTranscriptDetailCanvasViewController *)self setComposeDisabled:viewCopy];
     [(ETTranscriptDetailCanvasViewController *)self _updatePlaybackControls];
     [(ETTranscriptDetailCanvasViewController *)self _updateVideoOnButtonOpacity];
 
@@ -425,9 +425,9 @@
   showCompositionControlsTimer = self->_showCompositionControlsTimer;
   self->_showCompositionControlsTimer = 0;
 
-  v4 = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
+  _canShowCompositionControls = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
 
-  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:v4 animated:1];
+  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:_canShowCompositionControls animated:1];
 }
 
 - (void)_startShowCompositionControlsTimer
@@ -445,26 +445,26 @@
   [(ETTranscriptDetailCanvasViewController *)self _startShowCompositionControlsTimer];
 }
 
-- (void)_setShowingCompositionControls:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowingCompositionControls:(BOOL)controls animated:(BOOL)animated
 {
-  if (self->_showingCompositionControls != a3)
+  if (self->_showingCompositionControls != controls)
   {
     v22 = v7;
     v23 = v6;
     v24 = v4;
     v25 = v5;
-    v8 = a4;
-    self->_showingCompositionControls = a3;
-    v11 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-    v12 = v11;
+    animatedCopy = animated;
+    self->_showingCompositionControls = controls;
+    colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+    v12 = colorPicker;
     v13 = self->_expansionState != 1;
-    if (!a3)
+    if (!controls)
     {
-      [v11 setAlpha:0.0];
+      [colorPicker setAlpha:0.0];
     }
 
-    self->_animatingCompositionControls = v8;
-    if (v8)
+    self->_animatingCompositionControls = animatedCopy;
+    if (animatedCopy)
     {
       v14 = 0.25;
     }
@@ -478,10 +478,10 @@
     v17[1] = 3221225472;
     v17[2] = sub_3BA0;
     v17[3] = &unk_24808;
-    v19 = a3;
+    controlsCopy = controls;
     v17[4] = self;
     v18 = v12;
-    v20 = !a3;
+    v20 = !controls;
     v21 = v13;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -500,24 +500,24 @@
     return 0;
   }
 
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  v4 = ([v3 isComposingSketch] & 1) == 0 && self->_expansionState != 1;
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  v4 = ([canvasView isComposingSketch] & 1) == 0 && self->_expansionState != 1;
 
   return v4;
 }
 
 - (void)_updateCompositionControlsCenter
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 bounds];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view bounds];
   v5 = v4;
   rect = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v12 frame];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -551,24 +551,24 @@
 - (void)_updateCompositionControls
 {
   [(ETTranscriptDetailCanvasViewController *)self _updateCompositionControlsCenter];
-  v3 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-  v4 = [v3 selectedColor];
-  v5 = [v4 CGColor];
+  colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+  selectedColor = [colorPicker selectedColor];
+  cGColor = [selectedColor CGColor];
 
-  v6 = [(UIButton *)self->_expandColorPickerButton layer];
-  [v6 setBorderColor:v5];
+  layer = [(UIButton *)self->_expandColorPickerButton layer];
+  [layer setBorderColor:cGColor];
 
-  v7 = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
+  _canShowCompositionControls = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
 
-  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:v7 animated:0];
+  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:_canShowCompositionControls animated:0];
 }
 
 - (void)didChangeColorPickerColor
 {
-  v3 = [(UIButton *)self->_expandColorPickerButton layer];
-  v4 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-  v5 = [v4 selectedColor];
-  [v3 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+  layer = [(UIButton *)self->_expandColorPickerButton layer];
+  colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+  selectedColor = [colorPicker selectedColor];
+  [layer setBorderColor:{objc_msgSend(selectedColor, "CGColor")}];
 
   if ([(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls])
   {
@@ -579,40 +579,40 @@
 
 - (void)didBeginComposingMessage
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
+  _canShowCompositionControls = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
 
-  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:v3 animated:1];
+  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:_canShowCompositionControls animated:1];
 }
 
 - (void)didEndComposingMessage
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
+  _canShowCompositionControls = [(ETTranscriptDetailCanvasViewController *)self _canShowCompositionControls];
 
-  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:v3 animated:1];
+  [(ETTranscriptDetailCanvasViewController *)self _setShowingCompositionControls:_canShowCompositionControls animated:1];
 }
 
 - (void)_updateLandscapeTrap
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v5 = [(ETTranscriptDetailCanvasViewController *)self view];
+    view = [(ETTranscriptDetailCanvasViewController *)self view];
     landscapeTrapView = self->_landscapeTrapView;
-    v13 = v5;
-    [v5 bounds];
+    v13 = view;
+    [view bounds];
     [(ETLandscapeTrapView *)landscapeTrapView setFrame:?];
-    v7 = [(ETTranscriptDetailCanvasViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 interfaceOrientation];
-    v11 = v10 != &dword_0 + 1;
+    view2 = [(ETTranscriptDetailCanvasViewController *)self view];
+    window = [view2 window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
+    v11 = interfaceOrientation != &dword_0 + 1;
 
     if (self->_showingLandscapeTrap != v11)
     {
       self->_showingLandscapeTrap = v11;
-      if (v10 == &dword_0 + 1)
+      if (interfaceOrientation == &dword_0 + 1)
       {
         [(ETLandscapeTrapView *)self->_landscapeTrapView removeFromSuperview];
       }
@@ -633,22 +633,22 @@
   v68.receiver = self;
   v68.super_class = ETTranscriptDetailCanvasViewController;
   [(ETTranscriptDetailCanvasViewController *)&v68 viewWillLayoutSubviews];
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 bounds];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
   [(ETTranscriptDetailCanvasViewController *)self _updateLandscapeTrap];
   if (!self->_showingLandscapeTrap)
   {
-    v9 = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
-    [v9 canvasViewControllerPercentExpanded:self];
+    presentationDelegate = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
+    [presentationDelegate canvasViewControllerPercentExpanded:self];
     v11 = v10;
 
     v12 = +[UIDevice currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1 || !self->_requestedExpansion && (v11 <= 0.0 || v11 >= 1.0 || self->_expansionState == 1))
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || !self->_requestedExpansion && (v11 <= 0.0 || v11 >= 1.0 || self->_expansionState == 1))
     {
       if (v11 == 0.0 && self->_expansionState)
       {
@@ -658,16 +658,16 @@
       else if (v11 == 1.0 && self->_expansionState != 2)
       {
         self->_expansionState = 2;
-        v15 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-        [v15 setAlpha:1.0];
+        colorPicker = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+        [colorPicker setAlpha:1.0];
       }
     }
 
     else
     {
       self->_expansionState = 1;
-      v14 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
-      [v14 setAlpha:0.0];
+      colorPicker2 = [(ETTranscriptDetailCanvasViewController *)self colorPicker];
+      [colorPicker2 setAlpha:0.0];
 
       v67[0] = _NSConcreteStackBlock;
       v67[1] = 3221225472;
@@ -681,8 +681,8 @@
       [(ETTranscriptDetailCanvasViewController *)self setPlaybackEnabled:0];
     }
 
-    v16 = [(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout];
-    if (v16)
+    usesCompactKeyboardLayout = [(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout];
+    if (usesCompactKeyboardLayout)
     {
       v17 = 3;
     }
@@ -696,7 +696,7 @@
     [(ETHorizontalColorPicker *)self->_expandedColorPicker sizeThatFitsColumns:2];
     v20 = v19;
     v21 = 80.0;
-    if (v16)
+    if (usesCompactKeyboardLayout)
     {
       v22 = v20;
     }
@@ -728,14 +728,14 @@
       v25 = (v7 + -48.0) / 1.25;
     }
 
-    if (v16)
+    if (usesCompactKeyboardLayout)
     {
       v26 = (v5 - v25) * 0.5;
       v27 = v18;
       [(ETHorizontalColorPicker *)self->_expandedColorPicker setShouldCompressSpacingBetweenColumns:v20 > v26 + -8.0 + -14.0];
-      v28 = [(ETHorizontalColorPicker *)self->_expandedColorPicker shouldCompressSpacingBetweenColumns];
+      shouldCompressSpacingBetweenColumns = [(ETHorizontalColorPicker *)self->_expandedColorPicker shouldCompressSpacingBetweenColumns];
       v29 = (v26 + -8.0 - v20) * 0.5;
-      if (v28)
+      if (shouldCompressSpacingBetweenColumns)
       {
         v29 = 8.0;
       }
@@ -788,11 +788,11 @@
     v46 = v45;
     v48 = v47;
     v63 = v49;
-    [v8 setFrame:?];
+    [canvasView setFrame:?];
     UIRoundToViewScale();
     v51 = v50;
-    v52 = [v8 layer];
-    [v52 setCornerRadius:v51];
+    layer = [canvasView layer];
+    [layer setCornerRadius:v51];
 
     [(ETTranscriptDetailCanvasViewController *)self _updateCompositionControlsCenter];
     if (self->_showingCompositionControls)
@@ -830,19 +830,19 @@
     MidY = CGRectGetMidY(v71);
     self->_expandedColorPickerCenter.x = MidX;
     self->_expandedColorPickerCenter.y = MidY;
-    v56 = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
-    [v56 setFrame:{v63, v44, v46, v48}];
+    colorWheel = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
+    [colorWheel setFrame:{v63, v44, v46, v48}];
 
     [(ETTranscriptDetailCanvasViewController *)self _updateGestureInstructionViewFrame];
     [(ETTranscriptDetailCanvasViewController *)self _updateVideoOnButtonOpacity];
     [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
-    v57 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
-    [v57 center];
+    _cancelButton = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
+    [_cancelButton center];
     v59 = v58;
     v61 = v60;
 
-    v62 = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
-    [v62 setCenter:{v59, v61}];
+    _replayButton = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
+    [_replayButton setCenter:{v59, v61}];
 
     [(ETTranscriptDetailCanvasViewController *)self _updateBackToPreviewButton];
     [(ETTranscriptDetailCanvasViewController *)self _updatePlaybackControls];
@@ -871,28 +871,28 @@
 
   else
   {
-    v4 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    v3 = [v4 isComposingSketch] ^ 1;
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    v3 = [canvasView isComposingSketch] ^ 1;
   }
 
   return v3;
 }
 
-- (void)colorPicker:(id)a3 requestsPresentColorWheel:(id)a4
+- (void)colorPicker:(id)picker requestsPresentColorWheel:(id)wheel
 {
-  v5 = a4;
-  v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v6 setPaused:1];
+  wheelCopy = wheel;
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView setPaused:1];
 
-  v7 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v7 frame];
+  canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView2 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v5 setFrame:{v9, v11, v13, v15}];
-  [v5 presentAnimatedWithDuration:0 completion:0.2];
+  [wheelCopy setFrame:{v9, v11, v13, v15}];
+  [wheelCopy presentAnimatedWithDuration:0 completion:0.2];
 
   [(ETHorizontalColorPicker *)self->_expandedColorPicker selectedCircle];
   v17[0] = _NSConcreteStackBlock;
@@ -906,8 +906,8 @@
 
 - (void)_dismissColorWheel
 {
-  v3 = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
-  if ([v3 isPresented])
+  colorWheel = [(ETHorizontalColorPicker *)self->_expandedColorPicker colorWheel];
+  if ([colorWheel isPresented])
   {
     objc_initWeak(&location, self);
     v12[0] = _NSConcreteStackBlock;
@@ -916,9 +916,9 @@
     v12[3] = &unk_248D0;
     objc_copyWeak(&v13, &location);
     v4 = objc_retainBlock(v12);
-    [v3 dismissAnimatedWithDuration:v4 completion:0.3];
-    v5 = [(ETHorizontalColorPicker *)self->_expandedColorPicker longPressRecognizer];
-    [v5 setEnabled:1];
+    [colorWheel dismissAnimatedWithDuration:v4 completion:0.3];
+    longPressRecognizer = [(ETHorizontalColorPicker *)self->_expandedColorPicker longPressRecognizer];
+    [longPressRecognizer setEnabled:1];
 
     [(ETHorizontalColorPicker *)self->_expandedColorPicker selectedCircle];
     v10[0] = _NSConcreteStackBlock;
@@ -940,21 +940,21 @@
   }
 }
 
-- (void)setPlayingMessages:(BOOL)a3
+- (void)setPlayingMessages:(BOOL)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v5.receiver = self;
   v5.super_class = ETTranscriptDetailCanvasViewController;
   [(ETTranscriptDetailCanvasViewController *)&v5 setPlayingMessages:?];
   v4 = +[UIApplication sharedApplication];
-  [v4 setIdleTimerDisabled:v3];
+  [v4 setIdleTimerDisabled:messagesCopy];
 }
 
 - (void)expandUI
 {
   self->_requestedExpansion = 1;
-  v3 = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
-  [v3 canvasViewController:self requestsPresentationStyleExpanded:1];
+  presentationDelegate = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
+  [presentationDelegate canvasViewController:self requestsPresentationStyleExpanded:1];
 }
 
 - (BOOL)_showingSendInProgress
@@ -996,8 +996,8 @@
 
   if ([(ETVideoController *)videoController videoState]== &dword_0 + 1)
   {
-    v7 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    v8 = [v7 isComposing] ^ 1;
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    v8 = [canvasView isComposing] ^ 1;
   }
 
   else
@@ -1007,16 +1007,16 @@ LABEL_7:
   }
 
 LABEL_9:
-  v9 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  if ([v9 usesMediaAppearance])
+  canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  if ([canvasView2 usesMediaAppearance])
   {
-    v10 = 0;
+    isComposingSketch = 0;
   }
 
   else
   {
-    v11 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    v10 = [v11 isComposingSketch];
+    canvasView3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    isComposingSketch = [canvasView3 isComposingSketch];
   }
 
   if ([(ETTranscriptDetailCanvasViewController *)self _gestureInstructionViewIsShown])
@@ -1024,7 +1024,7 @@ LABEL_9:
     return 1;
   }
 
-  if ((v10 | v8))
+  if ((isComposingSketch | v8))
   {
     return ![(ETTranscriptDetailCanvasViewController *)self _showingSendInProgress];
   }
@@ -1039,30 +1039,30 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  v3 = ([v5 isComposing] & 1) == 0 && !-[ETVideoController videoState](self->_videoController, "videoState") && !self->_expandToCameraPreview && !self->_expandToGestureInstructionView && !-[ETTranscriptDetailCanvasViewController _gestureInstructionViewIsShown](self, "_gestureInstructionViewIsShown") && self->_expansionState != 1;
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  v3 = ([canvasView isComposing] & 1) == 0 && !-[ETVideoController videoState](self->_videoController, "videoState") && !self->_expandToCameraPreview && !self->_expandToGestureInstructionView && !-[ETTranscriptDetailCanvasViewController _gestureInstructionViewIsShown](self, "_gestureInstructionViewIsShown") && self->_expansionState != 1;
 
   return v3;
 }
 
 - (void)_updateVideoPreviewFrame
 {
-  v4 = [(ETVideoController *)self->_videoController view];
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v3 frame];
-  [v4 setFrame:{0.0, 0.0}];
+  view = [(ETVideoController *)self->_videoController view];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
+  [view setFrame:{0.0, 0.0}];
 }
 
 - (void)updateVideoUI
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v3 frame];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v12 bounds];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view bounds];
 
   if ([(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout]|| self->_expansionState == 1)
   {
@@ -1070,8 +1070,8 @@ LABEL_9:
   }
 
   [(ETTranscriptDetailCanvasViewController *)self _updateVideoPreviewFrame];
-  v13 = [(ETVideoController *)self->_videoController videoState];
-  if (v13 - 1 <= 1)
+  videoState = [(ETVideoController *)self->_videoController videoState];
+  if (videoState - 1 <= 1)
   {
     videoRecordButton = self->_videoRecordButton;
     if (!videoRecordButton)
@@ -1084,13 +1084,13 @@ LABEL_9:
       [(ETVideoRecordButton *)self->_videoRecordButton addTarget:self action:"_videoRecordButtonTapped" forControlEvents:64];
       LODWORD(v17) = -1093874483;
       [(ETVideoRecordButton *)self->_videoRecordButton setCharge:v17];
-      v18 = [(ETTranscriptDetailCanvasViewController *)self view];
-      [v18 insertSubview:self->_videoRecordButton above:v3];
+      view2 = [(ETTranscriptDetailCanvasViewController *)self view];
+      [view2 insertSubview:self->_videoRecordButton above:canvasView];
 
       videoRecordButton = self->_videoRecordButton;
     }
 
-    [v3 center];
+    [canvasView center];
     v20 = v19 + -27.0;
     v45.origin.x = v5;
     v45.origin.y = v7;
@@ -1100,20 +1100,20 @@ LABEL_9:
   }
 
   [(ETVideoRecordButton *)self->_videoRecordButton alpha];
-  if (v13 - 1 < 2 == (v21 == 0.0))
+  if (videoState - 1 < 2 == (v21 == 0.0))
   {
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_5710;
     v43[3] = &unk_24920;
     v43[4] = self;
-    v44 = v13 - 1 < 2;
+    v44 = videoState - 1 < 2;
     [UIView animateWithDuration:v43 animations:0.25];
   }
 
-  [(ETVideoRecordButton *)self->_videoRecordButton setVideoState:v13];
-  v22 = v13 == 4 || v13 == 1;
-  if (v13 == 1 || v13 == 4)
+  [(ETVideoRecordButton *)self->_videoRecordButton setVideoState:videoState];
+  v22 = videoState == 4 || videoState == 1;
+  if (videoState == 1 || videoState == 4)
   {
     photoCaptureButton = self->_photoCaptureButton;
     if (!photoCaptureButton)
@@ -1130,8 +1130,8 @@ LABEL_9:
       [(ETVideoRecordButton *)self->_photoCaptureButton addTarget:self action:"_photoCaptureButtonTapped" forControlEvents:64];
       LODWORD(v29) = -1093874483;
       [(ETVideoRecordButton *)self->_photoCaptureButton setCharge:v29];
-      v30 = [(ETTranscriptDetailCanvasViewController *)self view];
-      [v30 insertSubview:self->_photoCaptureButton above:v3];
+      view3 = [(ETTranscriptDetailCanvasViewController *)self view];
+      [view3 insertSubview:self->_photoCaptureButton above:canvasView];
 
       photoCaptureButton = self->_photoCaptureButton;
     }
@@ -1165,8 +1165,8 @@ LABEL_9:
   [(ETTranscriptDetailCanvasViewController *)self _updateSendButton];
   [(ETTranscriptDetailCanvasViewController *)self _updatePlaybackControls];
   [(ETTranscriptDetailCanvasViewController *)self _updateBackToPreviewButton];
-  v35 = [(ETTranscriptDetailCanvasViewController *)self traitCollection];
-  -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](self, "_updateVideoOnButtonForHorizontalSizeClass:", [v35 horizontalSizeClass]);
+  traitCollection = [(ETTranscriptDetailCanvasViewController *)self traitCollection];
+  -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](self, "_updateVideoOnButtonForHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
 
   [(ETTranscriptDetailCanvasViewController *)self _updateGestureInstructionButton];
   v48.origin.x = v5;
@@ -1178,39 +1178,39 @@ LABEL_9:
   [(ETTranscriptDetailCanvasViewController *)self _cornerButtonInset];
   [(ETVideoRecordButton *)self->_videoRecordButton center];
   cameraFlipButton = self->_cameraFlipButton;
-  v37 = [(ETTranscriptDetailCanvasViewController *)self view];
+  view4 = [(ETTranscriptDetailCanvasViewController *)self view];
   UIPointRoundToViewScale();
   [(UIButton *)cameraFlipButton setCenter:?];
 
   [(UIButton *)self->_cameraFlipButton alpha];
-  if ((v13 == 1) == (v38 == 0.0))
+  if ((videoState == 1) == (v38 == 0.0))
   {
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_5750;
     v39[3] = &unk_24920;
     v39[4] = self;
-    v40 = v13 == 1;
+    v40 = videoState == 1;
     [UIView animateWithDuration:v39 animations:0.25];
   }
 
-  [(ETTranscriptDetailCanvasViewController *)self _setShowingVideoProgress:v13 == 2];
+  [(ETTranscriptDetailCanvasViewController *)self _setShowingVideoProgress:videoState == 2];
   [(ETTranscriptDetailCanvasViewController *)self _updateMediaInstructionView];
 }
 
 - (void)_updateBackToPreviewButton
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
   v4 = 0.0;
-  if ([v3 usesMediaAppearance])
+  if ([canvasView usesMediaAppearance])
   {
     videoController = self->_videoController;
     if (videoController)
     {
       if ([(ETVideoController *)videoController videoState]== &dword_0 + 1)
       {
-        v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-        if ([v6 isComposing])
+        canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+        if ([canvasView2 isComposing])
         {
           v4 = ([(ETTranscriptDetailCanvasViewController *)self _showingSendInProgress]^ 1);
         }
@@ -1225,20 +1225,20 @@ LABEL_9:
 
   [(UIButton *)self->_backToPreviewButton setAlpha:v4];
   backToPreviewButton = self->_backToPreviewButton;
-  v8 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
-  [v8 center];
+  _cancelButton = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
+  [_cancelButton center];
   [(UIButton *)backToPreviewButton setCenter:?];
 }
 
 - (BOOL)_shouldShowSendButton
 {
-  v3 = [(ETVideoController *)self->_videoController videoState];
+  videoState = [(ETVideoController *)self->_videoController videoState];
   if ([(ETTranscriptDetailCanvasViewController *)self _shouldAutoSend])
   {
     return 0;
   }
 
-  if (v3 - 5 < 2)
+  if (videoState - 5 < 2)
   {
     return 1;
   }
@@ -1248,19 +1248,19 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  v6 = [v5 isComposingSketch];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  isComposingSketch = [canvasView isComposingSketch];
 
-  return v6;
+  return isComposingSketch;
 }
 
 - (void)_updateGestureInstructionButton
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self _shouldShowOnButton];
-  [(UIButton *)self->_gestureInstructionButton setEnabled:v3];
-  v4 = [(ETTranscriptDetailCanvasViewController *)self view];
-  v5 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v5 frame];
+  _shouldShowOnButton = [(ETTranscriptDetailCanvasViewController *)self _shouldShowOnButton];
+  [(UIButton *)self->_gestureInstructionButton setEnabled:_shouldShowOnButton];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1289,28 +1289,28 @@ LABEL_9:
   v17[2] = sub_5A90;
   v17[3] = &unk_24920;
   v17[4] = self;
-  v18 = v3;
+  v18 = _shouldShowOnButton;
   [UIView animateWithDuration:v17 animations:0.25];
 }
 
 - (void)_updateSendButton
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self _shouldShowSendButton];
+  _shouldShowSendButton = [(ETTranscriptDetailCanvasViewController *)self _shouldShowSendButton];
   [(UIButton *)self->_sendButton alpha];
-  if (((v3 ^ (v4 == 0.0)) & 1) == 0)
+  if (((_shouldShowSendButton ^ (v4 == 0.0)) & 1) == 0)
   {
     v5 = 0.0;
     v27 = 3221225472;
     v26 = _NSConcreteStackBlock;
     v28 = sub_5CC8;
     v29 = &unk_24920;
-    if (v3)
+    if (_shouldShowSendButton)
     {
       v5 = 0.25;
     }
 
-    v30 = self;
-    v31 = v3;
+    selfCopy = self;
+    v31 = _shouldShowSendButton;
     [UIView animateWithDuration:&v26 animations:v5];
   }
 
@@ -1323,12 +1323,12 @@ LABEL_9:
 
   if ([(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout])
   {
-    v15 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    [v15 frame];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    [canvasView frame];
     MaxX = CGRectGetMaxX(v32);
 
-    v17 = [(ETTranscriptDetailCanvasViewController *)self view];
-    [v17 bounds];
+    view = [(ETTranscriptDetailCanvasViewController *)self view];
+    [view bounds];
     v19 = MaxX + (v18 - MaxX) * 0.5;
 
     v33.origin.x = v8;
@@ -1355,7 +1355,7 @@ LABEL_9:
     v35.size.width = v12;
     v35.size.height = v14;
     [(UIButton *)sendButton setCenter:v25, CGRectGetMaxY(v35) + 7.0 + 27.0];
-    if (((self->_videoController == 0) & v3) == 1)
+    if (((self->_videoController == 0) & _shouldShowSendButton) == 1)
     {
       [(ETTranscriptDetailCanvasViewController *)self _setEntryViewHidden:1];
     }
@@ -1364,25 +1364,25 @@ LABEL_9:
 
 - (void)_updateSkipButtonFrame
 {
-  v4 = [(ETTranscriptDetailCanvasViewController *)self _skipButton];
-  v3 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
-  [v3 frame];
-  [v4 setFrame:?];
+  _skipButton = [(ETTranscriptDetailCanvasViewController *)self _skipButton];
+  _cancelButton = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
+  [_cancelButton frame];
+  [_skipButton setFrame:?];
 }
 
-- (void)_setEntryViewHidden:(BOOL)a3
+- (void)_setEntryViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
-  v6 = v5;
-  if (v3)
+  hiddenCopy = hidden;
+  presentationDelegate = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
+  v6 = presentationDelegate;
+  if (hiddenCopy)
   {
-    [v5 canvasViewControllerHideEntryView:self];
+    [presentationDelegate canvasViewControllerHideEntryView:self];
   }
 
   else
   {
-    [v5 canvasViewControllerShowEntryView:self];
+    [presentationDelegate canvasViewControllerShowEntryView:self];
   }
 }
 
@@ -1405,13 +1405,13 @@ LABEL_9:
 {
   if ([(UIButton *)self->_sendButton isEnabled])
   {
-    v3 = [(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout];
+    usesCompactKeyboardLayout = [(ETTranscriptDetailCanvasViewController *)self usesCompactKeyboardLayout];
     [(UIButton *)self->_sendButton setEnabled:0];
     [(UIButton *)self->_sendButton setAlpha:0.25];
     mediaMessage = self->_mediaMessage;
     if (mediaMessage)
     {
-      v5 = mediaMessage;
+      composedSketchMessage = mediaMessage;
       if ([(ETVideoMessage *)self->_mediaMessage mediaType]== &dword_0 + 1)
       {
         [(ETTranscriptDetailCanvasViewController *)self _stopPlaybackAnimated:1];
@@ -1427,7 +1427,7 @@ LABEL_9:
 
       [(ETTranscriptDetailCanvasViewController *)self _updateBackToPreviewButton];
       +[MediaInstructionView disallowInstruction];
-      if (v3)
+      if (usesCompactKeyboardLayout)
       {
         goto LABEL_13;
       }
@@ -1435,22 +1435,22 @@ LABEL_9:
 
     else
     {
-      v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-      v7 = v6;
-      if (v3)
+      canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+      v7 = canvasView;
+      if (usesCompactKeyboardLayout)
       {
-        [v6 sendCurrentMessage];
+        [canvasView sendCurrentMessage];
 
-        v5 = 0;
+        composedSketchMessage = 0;
 LABEL_13:
 
         return;
       }
 
-      v5 = [v6 composedSketchMessage];
+      composedSketchMessage = [canvasView composedSketchMessage];
 
-      v8 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-      [v8 clearCanvasAnimated:1];
+      canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+      [canvasView2 clearCanvasAnimated:1];
 
       [(ETTranscriptDetailCanvasViewController *)self _updatePlaybackControls];
     }
@@ -1461,11 +1461,11 @@ LABEL_13:
     v11[3] = &unk_24858;
     v11[4] = self;
     [UIView performWithoutAnimation:v11];
-    v9 = [(ETTranscriptDetailCanvasViewController *)self sendDelegate];
-    [v9 canvasViewController:self sendMessage:v5];
+    sendDelegate = [(ETTranscriptDetailCanvasViewController *)self sendDelegate];
+    [sendDelegate canvasViewController:self sendMessage:composedSketchMessage];
 
-    v10 = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
-    [v10 canvasViewController:self requestsPresentationStyleExpanded:0];
+    presentationDelegate = [(ETTranscriptDetailCanvasViewController *)self presentationDelegate];
+    [presentationDelegate canvasViewController:self requestsPresentationStyleExpanded:0];
 
     goto LABEL_13;
   }
@@ -1473,11 +1473,11 @@ LABEL_13:
 
 - (void)_startCameraPreview
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v3 endMessageComposition];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView endMessageComposition];
 
-  v4 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v4 clearCanvasAnimated:0];
+  canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView2 clearCanvasAnimated:0];
 
   [(ETTranscriptDetailCanvasViewController *)self _setCameraEnabled:1];
   [(ETTranscriptDetailCanvasViewController *)self setComposingCompositeMessage:1];
@@ -1488,15 +1488,15 @@ LABEL_13:
 
 - (void)_backToPreviewButtonTapped
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  if ([v3 isComposing] && (videoController = self->_videoController) != 0)
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  if ([canvasView isComposing] && (videoController = self->_videoController) != 0)
   {
-    v5 = [(ETVideoController *)videoController videoState];
+    videoState = [(ETVideoController *)videoController videoState];
 
-    if (v5 == &dword_0 + 1)
+    if (videoState == &dword_0 + 1)
     {
-      v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-      [v6 clearCanvasAnimated:1];
+      canvasView2 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+      [canvasView2 clearCanvasAnimated:1];
 
       [(ETTranscriptDetailCanvasViewController *)self clearDeferredMessages];
       goto LABEL_9;
@@ -1507,9 +1507,9 @@ LABEL_13:
   {
   }
 
-  v7 = [(ETVideoController *)self->_videoController videoState];
+  videoState2 = [(ETVideoController *)self->_videoController videoState];
   v8 = self->_videoController;
-  if (v7 == 2)
+  if (videoState2 == 2)
   {
     [(ETVideoController *)v8 cancelRecording];
   }
@@ -1554,11 +1554,11 @@ LABEL_9:
 
   else
   {
-    v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    [v3 setCanComposeHeartbeat:1];
-    [v3 setCanComposeTap:1];
-    [v3 setCanComposeKiss:1];
-    [v3 setCanComposeAnger:1];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    [canvasView setCanComposeHeartbeat:1];
+    [canvasView setCanComposeTap:1];
+    [canvasView setCanComposeKiss:1];
+    [canvasView setCanComposeAnger:1];
     [(ETTranscriptDetailCanvasViewController *)self _setEntryViewHidden:0];
   }
 
@@ -1568,16 +1568,16 @@ LABEL_9:
 
 - (void)_endIntroMessage
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v3 endMessageComposition];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView endMessageComposition];
 
   [(ETTranscriptDetailCanvasViewController *)self _setVideoZoomEnabled:0];
-  v7 = [(ETTranscriptDetailCanvasViewController *)self deferredMessages];
-  if ([v7 count])
+  deferredMessages = [(ETTranscriptDetailCanvasViewController *)self deferredMessages];
+  if ([deferredMessages count])
   {
-    v4 = [v7 objectAtIndexedSubscript:0];
-    v5 = [v4 strokes];
-    v6 = [v5 count];
+    v4 = [deferredMessages objectAtIndexedSubscript:0];
+    strokes = [v4 strokes];
+    v6 = [strokes count];
 
     if (v6)
     {
@@ -1594,12 +1594,12 @@ LABEL_9:
 
 - (void)_moveComposedMessagesIntoMediaMessage
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v3 endMessageComposition];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView endMessageComposition];
 
   mediaMessage = self->_mediaMessage;
-  v5 = [(ETTranscriptDetailCanvasViewController *)self deferredMessages];
-  [(ETVideoMessage *)mediaMessage setPlayingMessages:v5];
+  deferredMessages = [(ETTranscriptDetailCanvasViewController *)self deferredMessages];
+  [(ETVideoMessage *)mediaMessage setPlayingMessages:deferredMessages];
 
   [(ETTranscriptDetailCanvasViewController *)self clearDeferredMessages];
 }
@@ -1618,8 +1618,8 @@ LABEL_9:
 
     else if ([(ETVideoRecordButton *)self->_videoRecordButton videoState]== &dword_0 + 2)
     {
-      v4 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-      [v4 endMessageComposition];
+      canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+      [canvasView endMessageComposition];
 
       v5 = self->_videoController;
 
@@ -1653,8 +1653,8 @@ LABEL_9:
 
   v4 = self->_mediaMessage;
   [(ETTranscriptDetailCanvasViewController *)self _endPhotoMessageComposition];
-  v5 = [(ETTranscriptDetailCanvasViewController *)self sendDelegate];
-  [v5 canvasViewController:self sendMessage:v4];
+  sendDelegate = [(ETTranscriptDetailCanvasViewController *)self sendDelegate];
+  [sendDelegate canvasViewController:self sendMessage:v4];
 }
 
 - (void)_clearPhotoSendMessageTimer
@@ -1671,30 +1671,30 @@ LABEL_9:
   self->_lastVideoZoomGestureScale = 0.0;
 }
 
-- (void)_setCameraEnabled:(BOOL)a3
+- (void)_setCameraEnabled:(BOOL)enabled
 {
-  if ((((self->_videoController == 0) ^ a3) & 1) == 0)
+  if ((((self->_videoController == 0) ^ enabled) & 1) == 0)
   {
-    v3 = a3;
-    v5 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    v17 = v5;
-    if (v3)
+    enabledCopy = enabled;
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    v17 = canvasView;
+    if (enabledCopy)
     {
-      [v5 sendCurrentMessage];
+      [canvasView sendCurrentMessage];
       v6 = objc_alloc_init(ETVideoMessage);
       mediaMessage = self->_mediaMessage;
       self->_mediaMessage = v6;
 
       v8 = [ETVideoController alloc];
-      v9 = [(ETVideoMessage *)self->_mediaMessage identifier];
-      v10 = [(ETVideoController *)v8 initWithMessageIdentifier:v9];
+      identifier = [(ETVideoMessage *)self->_mediaMessage identifier];
+      v10 = [(ETVideoController *)v8 initWithMessageIdentifier:identifier];
       videoController = self->_videoController;
       self->_videoController = v10;
 
       [(ETVideoController *)self->_videoController setDelegate:self];
       [(ETTranscriptDetailCanvasViewController *)self addChildViewController:self->_videoController];
-      v12 = [(ETVideoController *)self->_videoController view];
-      [v17 insertSubview:v12 atIndex:0];
+      view = [(ETVideoController *)self->_videoController view];
+      [v17 insertSubview:view atIndex:0];
 
       [(ETVideoController *)self->_videoController didMoveToParentViewController:self];
       [(ETTranscriptDetailCanvasViewController *)self _updateVideoPreviewFrame];
@@ -1703,17 +1703,17 @@ LABEL_9:
 
     else
     {
-      [v5 clearCanvasAnimated:0];
-      v13 = [(ETTranscriptDetailCanvasViewController *)self playingMessage];
-      [v13 stopPlaying];
+      [canvasView clearCanvasAnimated:0];
+      playingMessage = [(ETTranscriptDetailCanvasViewController *)self playingMessage];
+      [playingMessage stopPlaying];
 
       v14 = self->_mediaMessage;
       self->_mediaMessage = 0;
 
       [(ETVideoController *)self->_videoController setDelegate:0];
       [(ETVideoController *)self->_videoController stopPreview];
-      v15 = [(ETVideoController *)self->_videoController view];
-      [v15 removeFromSuperview];
+      view2 = [(ETVideoController *)self->_videoController view];
+      [view2 removeFromSuperview];
 
       [(ETVideoController *)self->_videoController removeFromParentViewController];
       v16 = self->_videoController;
@@ -1729,18 +1729,18 @@ LABEL_9:
       self->_expandToCameraPreview = 0;
     }
 
-    [(ETTranscriptDetailCanvasViewController *)self _setEntryViewHidden:v3];
-    [(ETTranscriptDetailCanvasViewController *)self setDeferMessageSend:v3];
-    [(ETTranscriptDetailCanvasViewController *)self _composingOnlyIntroMessageType:v3];
-    [v17 setUsesMediaAppearance:v3];
+    [(ETTranscriptDetailCanvasViewController *)self _setEntryViewHidden:enabledCopy];
+    [(ETTranscriptDetailCanvasViewController *)self setDeferMessageSend:enabledCopy];
+    [(ETTranscriptDetailCanvasViewController *)self _composingOnlyIntroMessageType:enabledCopy];
+    [v17 setUsesMediaAppearance:enabledCopy];
     [v17 setParentMessage:self->_mediaMessage];
   }
 }
 
 - (void)_updateVideoProgressFrame
 {
-  v3 = [(ETTranscriptDetailCanvasViewController *)self view];
-  [v3 bounds];
+  view = [(ETTranscriptDetailCanvasViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1756,8 +1756,8 @@ LABEL_9:
   [(UIView *)videoProgressBar setFrame:0.0, v13];
   [(UILabel *)self->_videoProgressTimeLabel sizeToFit];
   [(UIView *)self->_videoProgressDot setFrame:0.0, 0.0, 5.0, 5.0];
-  v14 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v14 frame];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
   v16 = v15;
 
   videoProgressDot = self->_videoProgressDot;
@@ -1775,7 +1775,7 @@ LABEL_9:
   [(UILabel *)videoProgressTimeLabel setFrame:v23, v25, v19 + 4.0, v21];
 }
 
-- (id)_videoProgressTimeString:(unint64_t)a3
+- (id)_videoProgressTimeString:(unint64_t)string
 {
   if (!self->_videoProgressTimeFormatter)
   {
@@ -1786,48 +1786,48 @@ LABEL_9:
     [(NSDateFormatter *)self->_videoProgressTimeFormatter setDateFormat:@"mm:ss"];
   }
 
-  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:string];
   v8 = [(NSDateFormatter *)self->_videoProgressTimeFormatter stringFromDate:v7];
 
   return v8;
 }
 
-- (void)_setShowingVideoProgress:(BOOL)a3
+- (void)_setShowingVideoProgress:(BOOL)progress
 {
-  if (self->_showingVideoProgress != a3)
+  if (self->_showingVideoProgress != progress)
   {
     v16[5] = v6;
     v16[6] = v5;
     v16[17] = v3;
     v16[18] = v4;
-    v7 = a3;
-    self->_showingVideoProgress = a3;
-    if (!a3)
+    progressCopy = progress;
+    self->_showingVideoProgress = progress;
+    if (!progress)
     {
       videoProgressTimeLabel = self->_videoProgressTimeLabel;
       v10 = [(ETTranscriptDetailCanvasViewController *)self _videoProgressTimeString:10.0];
       [(UILabel *)videoProgressTimeLabel setText:v10];
 
-      v11 = [(UIView *)self->_videoProgressDot layer];
-      [v11 removeAllAnimations];
+      layer = [(UIView *)self->_videoProgressDot layer];
+      [layer removeAllAnimations];
 
-      v12 = [(UIView *)self->_videoProgressBar layer];
-      [v12 removeAllAnimations];
+      layer2 = [(UIView *)self->_videoProgressBar layer];
+      [layer2 removeAllAnimations];
 
-      v13 = [(UILabel *)self->_videoProgressTimeLabel layer];
-      [v13 removeAllAnimations];
+      layer3 = [(UILabel *)self->_videoProgressTimeLabel layer];
+      [layer3 removeAllAnimations];
 
       videoProgressBar = self->_videoProgressBar;
-      v15 = [(ETTranscriptDetailCanvasViewController *)self view];
-      [v15 bounds];
+      view = [(ETTranscriptDetailCanvasViewController *)self view];
+      [view bounds];
       [(UIView *)videoProgressBar setFrame:0.0, CGRectGetMaxY(v17) + -2.0, 0.0, 2.0];
     }
 
-    [(UIView *)self->_videoProgressBar setAlpha:v7];
-    [(UIView *)self->_videoProgressDot setAlpha:v7];
-    [(UILabel *)self->_videoProgressTimeLabel setAlpha:v7];
+    [(UIView *)self->_videoProgressBar setAlpha:progressCopy];
+    [(UIView *)self->_videoProgressDot setAlpha:progressCopy];
+    [(UILabel *)self->_videoProgressTimeLabel setAlpha:progressCopy];
     [(ETTranscriptDetailCanvasViewController *)self _updateVideoProgressFrame];
-    if (v7)
+    if (progressCopy)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -1840,14 +1840,14 @@ LABEL_9:
   }
 }
 
-- (void)_updateVideoRecorderTime:(unint64_t)a3
+- (void)_updateVideoRecorderTime:(unint64_t)time
 {
-  [(UIView *)self->_videoProgressDot setAlpha:((a3 & 1) == 0)];
+  [(UIView *)self->_videoProgressDot setAlpha:((time & 1) == 0)];
   videoProgressTimeLabel = self->_videoProgressTimeLabel;
-  v6 = [(ETTranscriptDetailCanvasViewController *)self _videoProgressTimeString:a3];
+  v6 = [(ETTranscriptDetailCanvasViewController *)self _videoProgressTimeString:time];
   [(UILabel *)videoProgressTimeLabel setText:v6];
 
-  if (a3)
+  if (time)
   {
     if (self->_showingVideoProgress)
     {
@@ -1857,7 +1857,7 @@ LABEL_9:
       v8[2] = sub_6FB0;
       v8[3] = &unk_24948;
       v8[4] = self;
-      v8[5] = a3;
+      v8[5] = time;
       dispatch_after(v7, &_dispatch_main_q, v8);
     }
   }
@@ -1875,16 +1875,16 @@ LABEL_9:
   return [(ETTranscriptDetailCanvasViewController *)&v4 _shouldDimColorPicker];
 }
 
-- (BOOL)_isRecognizer:(id)a3 closeToButton:(id)a4
+- (BOOL)_isRecognizer:(id)recognizer closeToButton:(id)button
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 superview];
-  [v6 locationInView:v7];
+  buttonCopy = button;
+  recognizerCopy = recognizer;
+  superview = [buttonCopy superview];
+  [recognizerCopy locationInView:superview];
   v9 = v8;
   v11 = v10;
 
-  [v5 frame];
+  [buttonCopy frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1901,21 +1901,21 @@ LABEL_9:
   return CGRectContainsPoint(v25, *&v20);
 }
 
-- (BOOL)_tapRecognizerShouldBegin:(id)a3
+- (BOOL)_tapRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = 104;
   [(UIButton *)self->_videoOnButton alpha];
   if (v6 == 0.0)
   {
-    v7 = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
-    [v7 alpha];
+    _replayButton = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
+    [_replayButton alpha];
     v9 = v8;
 
     if (v9 == 0.0)
     {
-      v11 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
-      [v11 alpha];
+      _cancelButton = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
+      [_cancelButton alpha];
       v13 = v12;
 
       if (v13 == 0.0)
@@ -1932,16 +1932,16 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v10 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
+      _cancelButton2 = [(ETTranscriptDetailCanvasViewController *)self _cancelButton];
     }
 
     else
     {
-      v10 = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
+      _cancelButton2 = [(ETTranscriptDetailCanvasViewController *)self _replayButton];
     }
 
-    v14 = v10;
-    v15 = [(ETTranscriptDetailCanvasViewController *)self _isRecognizer:v4 closeToButton:v10];
+    v14 = _cancelButton2;
+    v15 = [(ETTranscriptDetailCanvasViewController *)self _isRecognizer:beginCopy closeToButton:_cancelButton2];
 
     if (v15)
     {
@@ -1952,7 +1952,7 @@ LABEL_11:
   }
 
 LABEL_2:
-  if (![(ETTranscriptDetailCanvasViewController *)self _isRecognizer:v4 closeToButton:*&self->DTSCanvasViewController_opaque[v5]])
+  if (![(ETTranscriptDetailCanvasViewController *)self _isRecognizer:beginCopy closeToButton:*&self->DTSCanvasViewController_opaque[v5]])
   {
     goto LABEL_11;
   }
@@ -1966,21 +1966,21 @@ LABEL_12:
 
 - (void)_updateGestureInstructionViewFrame
 {
-  v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v6 frame];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView frame];
   [(GestureInstructionView *)self->_gestureInstructionView setFrame:?];
   gestureInstructionView = self->_gestureInstructionView;
-  [v6 center];
+  [canvasView center];
   [(GestureInstructionView *)gestureInstructionView setCenter:?];
-  v4 = [(GestureInstructionView *)self->_gestureInstructionView layer];
-  v5 = [v6 layer];
-  [v5 cornerRadius];
-  [v4 setCornerRadius:?];
+  layer = [(GestureInstructionView *)self->_gestureInstructionView layer];
+  layer2 = [canvasView layer];
+  [layer2 cornerRadius];
+  [layer setCornerRadius:?];
 }
 
 - (void)_updateMediaInstructionView
 {
-  v19 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
   if (!self->_videoController || ([(ETTranscriptDetailCanvasViewController *)self isPlayingCompositeMessage]& 1) != 0 || ([(ETTranscriptDetailCanvasViewController *)self isPlayingMessages]& 1) != 0 || !+[MediaInstructionView isInstructionAllowed])
   {
     [(MediaInstructionView *)self->_mediaInstructionView removeFromSuperview];
@@ -1996,16 +1996,16 @@ LABEL_12:
       v4 = self->_mediaInstructionView;
       self->_mediaInstructionView = v3;
 
-      [v19 addSubview:self->_mediaInstructionView];
+      [canvasView addSubview:self->_mediaInstructionView];
     }
 
-    [v19 bounds];
+    [canvasView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v13 preferredContentSizeCategory];
     IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
     if (IsAccessibilityContentSizeCategory)
@@ -2028,7 +2028,7 @@ LABEL_12:
   }
 }
 
-- (void)videoControllerDidStartPreview:(id)a3
+- (void)videoControllerDidStartPreview:(id)preview
 {
   self->_expandToCameraPreview = 0;
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
@@ -2037,17 +2037,17 @@ LABEL_12:
   [(ETTranscriptDetailCanvasViewController *)self _composingOnlyIntroMessageType:1];
 }
 
-- (void)videoControllerDidEndPreview:(id)a3
+- (void)videoControllerDidEndPreview:(id)preview
 {
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
 
   [(ETTranscriptDetailCanvasViewController *)self _updatePlaybackControls];
 }
 
-- (void)videoControllerWillCancelRecording:(id)a3
+- (void)videoControllerWillCancelRecording:(id)recording
 {
-  v4 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v4 clearCanvasAnimated:1];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView clearCanvasAnimated:1];
 
   [(ETTranscriptDetailCanvasViewController *)self clearDeferredMessages];
   mediaMessage = self->_mediaMessage;
@@ -2055,7 +2055,7 @@ LABEL_12:
   [(ETVideoMessage *)mediaMessage setIntroMessage:0];
 }
 
-- (void)videoControllerDidStartRecording:(id)a3
+- (void)videoControllerDidStartRecording:(id)recording
 {
   videoController = self->_videoController;
   if (videoController)
@@ -2066,22 +2066,22 @@ LABEL_12:
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
 }
 
-- (void)videoControllerDidEndRecording:(id)a3 mediaURL:(id)a4 withError:(id)a5
+- (void)videoControllerDidEndRecording:(id)recording mediaURL:(id)l withError:(id)error
 {
-  if (a5)
+  if (error)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_77C8;
     v7[3] = &unk_24858;
     v7[4] = self;
-    -[ETTranscriptDetailCanvasViewController _showWriteErrorAlertForMediaType:outOfSpaceError:completion:](self, "_showWriteErrorAlertForMediaType:outOfSpaceError:completion:", 1, [a5 code] == -11807, v7);
+    -[ETTranscriptDetailCanvasViewController _showWriteErrorAlertForMediaType:outOfSpaceError:completion:](self, "_showWriteErrorAlertForMediaType:outOfSpaceError:completion:", 1, [error code] == -11807, v7);
   }
 
   else
   {
-    [(ETVideoMessage *)self->_mediaMessage setMediaURL:a4];
-    v6 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    [(ETVideoMessage *)self->_mediaMessage setMediaURL:l];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
     [(ETTranscriptDetailCanvasViewController *)self _moveComposedMessagesIntoMediaMessage];
     [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
     [(ETTranscriptDetailCanvasViewController *)self setPlayingCompositeMessage:1];
@@ -2092,19 +2092,19 @@ LABEL_12:
     v8[2] = sub_7758;
     v8[3] = &unk_24858;
     v8[4] = self;
-    [v6 wispVisibleSketchViewsWithCompletion:v8];
+    [canvasView wispVisibleSketchViewsWithCompletion:v8];
   }
 
   [(ETTranscriptDetailCanvasViewController *)self clearDeferredMessages];
 }
 
-- (void)_showWriteErrorAlertForMediaType:(unint64_t)a3 outOfSpaceError:(BOOL)a4 completion:(id)a5
+- (void)_showWriteErrorAlertForMediaType:(unint64_t)type outOfSpaceError:(BOOL)error completion:(id)completion
 {
-  v5 = a4;
-  v19 = a5;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (a3 == 1)
+  if (type == 1)
   {
     v10 = @"MEDIA_CANNOT_CREATE_TITLE_VIDEO";
   }
@@ -2115,9 +2115,9 @@ LABEL_12:
   }
 
   v11 = [v8 localizedStringForKey:v10 value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
-  if (v5)
+  if (errorCopy)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v12 = @"MEDIA_OUT_OF_SPACE_MESSAGE_VIDEO";
     }
@@ -2140,7 +2140,7 @@ LABEL_12:
   v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:0];
 
   [v14 addAction:v16];
-  if (v5)
+  if (errorCopy)
   {
     v17 = [v9 localizedStringForKey:@"MEDIA_ALERT_SETTINGS" value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
     v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:&stru_24988];
@@ -2148,7 +2148,7 @@ LABEL_12:
     [v14 addAction:v18];
   }
 
-  [(ETTranscriptDetailCanvasViewController *)self presentViewController:v14 animated:1 completion:v19];
+  [(ETTranscriptDetailCanvasViewController *)self presentViewController:v14 animated:1 completion:completionCopy];
 }
 
 - (void)_hideVideoController
@@ -2168,32 +2168,32 @@ LABEL_12:
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI:v4];
 }
 
-- (void)videoControllerDidStopPreview:(id)a3
+- (void)videoControllerDidStopPreview:(id)preview
 {
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
 
   [(ETTranscriptDetailCanvasViewController *)self _updateCanvasInteractionEnabled];
 }
 
-- (void)videoControllerWillBeginPhotoCapture:(id)a3
+- (void)videoControllerWillBeginPhotoCapture:(id)capture
 {
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
 
   [(ETTranscriptDetailCanvasViewController *)self _updateCanvasInteractionEnabled];
 }
 
-- (void)videoControllerDidEndPhotoCapture:(id)a3 photoImage:(id)a4
+- (void)videoControllerDidEndPhotoCapture:(id)capture photoImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  captureCopy = capture;
+  imageCopy = image;
   [(ETTranscriptDetailCanvasViewController *)self _endIntroMessage];
   [(ETVideoMessage *)self->_mediaMessage setMediaType:2];
-  [(ETVideoMessage *)self->_mediaMessage setStillImage:v7];
+  [(ETVideoMessage *)self->_mediaMessage setStillImage:imageCopy];
   [(ETTranscriptDetailCanvasViewController *)self updateVideoUI];
   [(ETTranscriptDetailCanvasViewController *)self _updateCanvasInteractionEnabled];
-  v8 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  v9 = [(ETVideoMessage *)self->_mediaMessage stillImage];
-  [v8 showPhotoForImage:v9];
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  stillImage = [(ETVideoMessage *)self->_mediaMessage stillImage];
+  [canvasView showPhotoForImage:stillImage];
 
   [(ETTranscriptDetailCanvasViewController *)self _startPhotoSendMessageTimer];
   v10 = self->_mediaMessage;
@@ -2215,9 +2215,9 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)videoControllerDidInterruptPreview:(id)a3 withInterruptionReason:(int64_t)a4
+- (void)videoControllerDidInterruptPreview:(id)preview withInterruptionReason:(int64_t)reason
 {
-  if (a4 == 4 && ([(ETVideoController *)self->_videoController timeSinceStartOfPreview], v5 < 0.5))
+  if (reason == 4 && ([(ETVideoController *)self->_videoController timeSinceStartOfPreview], v5 < 0.5))
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"MEDIA_CANNOT_START_CAMERA_ALERT_TITLE" value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
@@ -2241,31 +2241,31 @@ LABEL_12:
   }
 }
 
-- (void)_composingOnlyIntroMessageType:(BOOL)a3
+- (void)_composingOnlyIntroMessageType:(BOOL)type
 {
-  v3 = a3;
-  v4 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-  [v4 setCanComposeHeartbeat:!v3];
-  [v4 setCanComposeTap:!v3];
-  [v4 setCanComposeKiss:!v3];
-  [v4 setCanComposeAnger:!v3];
+  typeCopy = type;
+  canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+  [canvasView setCanComposeHeartbeat:!typeCopy];
+  [canvasView setCanComposeTap:!typeCopy];
+  [canvasView setCanComposeKiss:!typeCopy];
+  [canvasView setCanComposeAnger:!typeCopy];
 }
 
-- (void)_videoZoomGestureRecognized:(id)a3
+- (void)_videoZoomGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  [v4 scale];
+  recognizedCopy = recognized;
+  [recognizedCopy scale];
   v6 = v5;
-  v7 = [v4 state];
+  state = [recognizedCopy state];
 
-  if (v7 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
-    v8 = [(ETVideoController *)self->_videoController videoDevice];
+    videoDevice = [(ETVideoController *)self->_videoController videoDevice];
     v9 = fmax(self->_lastVideoZoomGestureScale, 0.001);
     self->_lastVideoZoomGestureScale = v9;
     self->_videoZoomScale = fmax(self->_videoZoomScale * (v6 / v9), 1.0);
-    v10 = [v8 activeFormat];
-    [v10 videoMaxZoomFactor];
+    activeFormat = [videoDevice activeFormat];
+    [activeFormat videoMaxZoomFactor];
     v12 = v11;
 
     videoZoomScale = self->_videoZoomScale;
@@ -2276,60 +2276,60 @@ LABEL_12:
 
     self->_videoZoomScale = videoZoomScale;
     v15 = 0;
-    [v8 lockForConfiguration:&v15];
+    [videoDevice lockForConfiguration:&v15];
     v14 = v15;
     if (!v14)
     {
-      [v8 setVideoZoomFactor:self->_videoZoomScale];
-      [v8 unlockForConfiguration];
+      [videoDevice setVideoZoomFactor:self->_videoZoomScale];
+      [videoDevice unlockForConfiguration];
     }
 
     self->_lastVideoZoomGestureScale = v6;
   }
 
-  else if (v7 == &dword_0 + 1)
+  else if (state == &dword_0 + 1)
   {
     self->_lastVideoZoomGestureScale = v6;
   }
 }
 
-- (void)_setVideoZoomEnabled:(BOOL)a3
+- (void)_setVideoZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && !self->_videoZoomGestureRecognizer)
+  enabledCopy = enabled;
+  if (enabled && !self->_videoZoomGestureRecognizer)
   {
     v5 = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:"_videoZoomGestureRecognized:"];
     videoZoomGestureRecognizer = self->_videoZoomGestureRecognizer;
     self->_videoZoomGestureRecognizer = v5;
 
-    v7 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    [v7 addGestureRecognizer:self->_videoZoomGestureRecognizer];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    [canvasView addGestureRecognizer:self->_videoZoomGestureRecognizer];
   }
 
   v8 = self->_videoZoomGestureRecognizer;
 
-  [(UIPinchGestureRecognizer *)v8 setEnabled:v3];
+  [(UIPinchGestureRecognizer *)v8 setEnabled:enabledCopy];
 }
 
-- (void)canvasView:(id)a3 didUpdateComposingMessageType:(unsigned __int16)a4
+- (void)canvasView:(id)view didUpdateComposingMessageType:(unsigned __int16)type
 {
-  if ([a3 isComposing])
+  if ([view isComposing])
   {
 
     [(ETTranscriptDetailCanvasViewController *)self _setVideoZoomEnabled:0];
   }
 }
 
-- (double)elapsedTimeSinceStartOfMessage:(id)a3
+- (double)elapsedTimeSinceStartOfMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(ETVideoController *)self->_videoController currentFrameIntervalSinceFirstFrame];
   v6 = v5;
   if ([(ETVideoMessage *)self->_mediaMessage canCompressTime])
   {
     [(ETVideoMessage *)self->_mediaMessage compressTimeSinceStartOfMessage:v6];
     v6 = v7;
-    -[ETVideoMessage setPauseTimeCompression:](self->_mediaMessage, "setPauseTimeCompression:", [v4 messageType] != 1);
+    -[ETVideoMessage setPauseTimeCompression:](self->_mediaMessage, "setPauseTimeCompression:", [messageCopy messageType] != 1);
   }
 
   return v6;
@@ -2419,8 +2419,8 @@ LABEL_12:
     v13 = [UIColor colorWithWhite:0.4 alpha:1.0];
     [(UIButton *)v12 setBackgroundColor:v13];
 
-    v14 = [(UIButton *)self->_largeVideoOnButton layer];
-    [v14 setCornerRadius:25.0];
+    layer = [(UIButton *)self->_largeVideoOnButton layer];
+    [layer setCornerRadius:25.0];
 
     [(UIButton *)self->_largeVideoOnButton setFrame:0.0, 0.0, 50.0, 50.0];
     [(UIButton *)self->_largeVideoOnButton setAlpha:0.0];
@@ -2434,37 +2434,37 @@ LABEL_12:
 {
   if (self->_largeVideoOnButton)
   {
-    v3 = [(ETTranscriptDetailCanvasViewController *)self _gestureInstructionViewIsShown];
+    _gestureInstructionViewIsShown = [(ETTranscriptDetailCanvasViewController *)self _gestureInstructionViewIsShown];
   }
 
   else
   {
-    v3 = 0;
+    _gestureInstructionViewIsShown = 0;
   }
 
-  [(UIButton *)self->_videoOnButton setEnabled:v3 ^ 1];
+  [(UIButton *)self->_videoOnButton setEnabled:_gestureInstructionViewIsShown ^ 1];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_8850;
   v4[3] = &unk_24920;
   v4[4] = self;
-  v5 = v3;
+  v5 = _gestureInstructionViewIsShown;
   [UIView animateWithDuration:v4 animations:0.25];
 }
 
-- (void)_updateVideoOnButtonForHorizontalSizeClass:(int64_t)a3
+- (void)_updateVideoOnButtonForHorizontalSizeClass:(int64_t)class
 {
-  if (a3 == 2 && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 userInterfaceIdiom], v4, (v5 & 0xFFFFFFFFFFFFFFFBLL) != 1))
+  if (class == 2 && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 userInterfaceIdiom], v4, (v5 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
-    v6 = [(ETTranscriptDetailCanvasViewController *)self _largeVideoOnButton];
+    _largeVideoOnButton = [(ETTranscriptDetailCanvasViewController *)self _largeVideoOnButton];
   }
 
   else
   {
-    v6 = [(ETTranscriptDetailCanvasViewController *)self _smallVideoOnButton];
+    _largeVideoOnButton = [(ETTranscriptDetailCanvasViewController *)self _smallVideoOnButton];
   }
 
-  v7 = v6;
+  v7 = _largeVideoOnButton;
   videoOnButton = self->_videoOnButton;
   obj = v7;
   if (videoOnButton != v7)
@@ -2475,16 +2475,16 @@ LABEL_12:
 
   if ([(ETTranscriptDetailCanvasViewController *)self isViewLoaded])
   {
-    v9 = [(ETTranscriptDetailCanvasViewController *)self view];
-    v10 = [(UIButton *)self->_videoOnButton superview];
+    view = [(ETTranscriptDetailCanvasViewController *)self view];
+    superview = [(UIButton *)self->_videoOnButton superview];
 
-    if (!v10)
+    if (!superview)
     {
-      [v9 addSubview:self->_videoOnButton];
+      [view addSubview:self->_videoOnButton];
     }
 
-    v11 = [(ETTranscriptDetailCanvasViewController *)self canvasView];
-    [v11 frame];
+    canvasView = [(ETTranscriptDetailCanvasViewController *)self canvasView];
+    [canvasView frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -2515,8 +2515,8 @@ LABEL_12:
     else
     {
       MaxX = CGRectGetMaxX(*&v20);
-      v25 = [(ETTranscriptDetailCanvasViewController *)self view];
-      [v25 bounds];
+      view2 = [(ETTranscriptDetailCanvasViewController *)self view];
+      [view2 bounds];
       v27 = v26;
       v34.origin.x = v13;
       v34.origin.y = v15;
@@ -2535,20 +2535,20 @@ LABEL_12:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = ETTranscriptDetailCanvasViewController;
-  [(ETTranscriptDetailCanvasViewController *)&v5 traitCollectionDidChange:a3];
-  v4 = [(ETTranscriptDetailCanvasViewController *)self traitCollection];
-  -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](self, "_updateVideoOnButtonForHorizontalSizeClass:", [v4 horizontalSizeClass]);
+  [(ETTranscriptDetailCanvasViewController *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(ETTranscriptDetailCanvasViewController *)self traitCollection];
+  -[ETTranscriptDetailCanvasViewController _updateVideoOnButtonForHorizontalSizeClass:](self, "_updateVideoOnButtonForHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
 
   [(ETTranscriptDetailCanvasViewController *)self _updateGestureInstructionButton];
 }
 
-- (void)dataSourceStopPlayback:(id)a3
+- (void)dataSourceStopPlayback:(id)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -2560,10 +2560,10 @@ LABEL_12:
   }
 }
 
-- (void)dataSource:(id)a3 startPlaybackWithCompletion:(id)a4
+- (void)dataSource:(id)source startPlaybackWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();

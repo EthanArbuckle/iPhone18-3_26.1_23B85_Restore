@@ -1,7 +1,7 @@
 @interface _CDContextServiceManager
 + (id)sharedInstance;
 - (_CDContextServiceManager)init;
-- (id)_extractInteractionsFromEvents:(id)a3 onStream:(id)a4;
+- (id)_extractInteractionsFromEvents:(id)events onStream:(id)stream;
 - (void)_setUpServices;
 @end
 
@@ -148,13 +148,13 @@
   return v4;
 }
 
-- (id)_extractInteractionsFromEvents:(id)a3 onStream:(id)a4
+- (id)_extractInteractionsFromEvents:(id)events onStream:(id)stream
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 eventStreamProperties];
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:@"CallInProgress"];
+  eventsCopy = events;
+  streamCopy = stream;
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
+  v9 = [name isEqualToString:@"CallInProgress"];
 
   if (v9)
   {
@@ -163,9 +163,9 @@
 
   else
   {
-    v11 = [v6 eventStreamProperties];
-    v12 = [v11 name];
-    v13 = [v12 isEqualToString:@"NextCalendarEvent"];
+    eventStreamProperties2 = [streamCopy eventStreamProperties];
+    name2 = [eventStreamProperties2 name];
+    v13 = [name2 isEqualToString:@"NextCalendarEvent"];
 
     if (!v13)
     {
@@ -177,21 +177,21 @@ LABEL_17:
     v10 = _DKCalendarMetadataKey_ptr;
   }
 
-  v14 = [*v10 interaction];
-  if (!v14)
+  interaction = [*v10 interaction];
+  if (!interaction)
   {
     goto LABEL_17;
   }
 
-  v15 = v14;
-  v28 = v6;
-  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  v15 = interaction;
+  v28 = streamCopy;
+  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [eventsCopy count]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v29 = v5;
-  v17 = v5;
+  v29 = eventsCopy;
+  v17 = eventsCopy;
   v18 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v18)
   {
@@ -207,16 +207,16 @@ LABEL_17:
         }
 
         v22 = *(*(&v30 + 1) + 8 * i);
-        v23 = [v22 metadata];
-        v24 = [v23 objectForKeyedSubscript:v15];
+        metadata = [v22 metadata];
+        v24 = [metadata objectForKeyedSubscript:v15];
 
         if (v24 && [v24 mechanism] != 5)
         {
           [v16 addObject:v24];
         }
 
-        v25 = [v22 metadata];
-        v26 = [v25 mutableCopy];
+        metadata2 = [v22 metadata];
+        v26 = [metadata2 mutableCopy];
 
         [v26 removeObjectForKey:v15];
         [v22 setMetadata:v26];
@@ -228,8 +228,8 @@ LABEL_17:
     while (v19);
   }
 
-  v6 = v28;
-  v5 = v29;
+  streamCopy = v28;
+  eventsCopy = v29;
 LABEL_18:
 
   return v16;

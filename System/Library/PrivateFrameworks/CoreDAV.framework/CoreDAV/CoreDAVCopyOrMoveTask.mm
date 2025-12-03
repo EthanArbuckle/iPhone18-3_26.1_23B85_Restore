@@ -1,19 +1,19 @@
 @interface CoreDAVCopyOrMoveTask
-+ (id)stringFromOverwriteValue:(int)a3;
-- (CoreDAVCopyOrMoveTask)initWithSourceURL:(id)a3 destinationURL:(id)a4 andOverwrite:(int)a5;
++ (id)stringFromOverwriteValue:(int)value;
+- (CoreDAVCopyOrMoveTask)initWithSourceURL:(id)l destinationURL:(id)rL andOverwrite:(int)overwrite;
 - (id)additionalHeaderValues;
 - (id)description;
-- (void)finishCoreDAVTaskWithError:(id)a3;
-- (void)setPriorOrderedURL:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
+- (void)setPriorOrderedURL:(id)l;
 @end
 
 @implementation CoreDAVCopyOrMoveTask
 
-- (CoreDAVCopyOrMoveTask)initWithSourceURL:(id)a3 destinationURL:(id)a4 andOverwrite:(int)a5
+- (CoreDAVCopyOrMoveTask)initWithSourceURL:(id)l destinationURL:(id)rL andOverwrite:(int)overwrite
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8 || (v10 = v9, [v8 CDVRawPath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, !v12))
+  lCopy = l;
+  rLCopy = rL;
+  if (!lCopy || (v10 = rLCopy, [lCopy CDVRawPath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, !v12))
   {
     v18 = MEMORY[0x277CBEAD8];
     v19 = *MEMORY[0x277CBE660];
@@ -29,7 +29,7 @@
     goto LABEL_12;
   }
 
-  if ([v8 isEqual:v10])
+  if ([lCopy isEqual:v10])
   {
     v18 = MEMORY[0x277CBEAD8];
     v19 = *MEMORY[0x277CBE660];
@@ -41,12 +41,12 @@ LABEL_12:
 
   v22.receiver = self;
   v22.super_class = CoreDAVCopyOrMoveTask;
-  v15 = [(CoreDAVTask *)&v22 initWithURL:v8];
+  v15 = [(CoreDAVTask *)&v22 initWithURL:lCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_destinationURL, a4);
-    *(&v16->_overwrite + 1) = a5;
+    objc_storeStrong(&v15->_destinationURL, rL);
+    *(&v16->_overwrite + 1) = overwrite;
   }
 
   return v16;
@@ -61,12 +61,12 @@ LABEL_12:
   [v3 appendFormat:@"[%@ ", v4];
 
   v5 = [(CoreDAVTask *)self url];
-  v6 = [v5 absoluteString];
-  [v3 appendFormat:@"| Source URL: [%@]", v6];
+  absoluteString = [v5 absoluteString];
+  [v3 appendFormat:@"| Source URL: [%@]", absoluteString];
 
-  v7 = [(CoreDAVCopyOrMoveTask *)self destinationURL];
-  v8 = [v7 absoluteString];
-  [v3 appendFormat:@"| Destination URL: [%@]", v8];
+  destinationURL = [(CoreDAVCopyOrMoveTask *)self destinationURL];
+  absoluteString2 = [destinationURL absoluteString];
+  [v3 appendFormat:@"| Destination URL: [%@]", absoluteString2];
 
   v9 = [objc_opt_class() stringFromOverwriteValue:{-[CoreDAVCopyOrMoveTask overwrite](self, "overwrite")}];
   [v3 appendFormat:@"| Overwrite: [%@]", v9];
@@ -81,26 +81,26 @@ LABEL_12:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14.receiver = self;
   v14.super_class = CoreDAVCopyOrMoveTask;
-  v4 = [(CoreDAVTask *)&v14 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v14 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
-  v5 = [(CoreDAVCopyOrMoveTask *)self destinationURL];
-  v6 = [v5 absoluteString];
+  destinationURL = [(CoreDAVCopyOrMoveTask *)self destinationURL];
+  absoluteString = [destinationURL absoluteString];
 
-  if (v6)
+  if (absoluteString)
   {
-    [v3 setObject:v6 forKey:@"Destination"];
+    [v3 setObject:absoluteString forKey:@"Destination"];
   }
 
-  v7 = [(CoreDAVCopyOrMoveTask *)self overwrite];
-  if (v7 == 1)
+  overwrite = [(CoreDAVCopyOrMoveTask *)self overwrite];
+  if (overwrite == 1)
   {
     v8 = @"T";
   }
 
   else
   {
-    if (v7 != 2)
+    if (overwrite != 2)
     {
       goto LABEL_8;
     }
@@ -112,12 +112,12 @@ LABEL_12:
 LABEL_8:
   if (self->_shouldSendOrder)
   {
-    v9 = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
-    if ([v9 length])
+    cDVRawLastPathComponent = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
+    if ([cDVRawLastPathComponent length])
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = CDVRelativeOrderHeaderString();
-      v12 = [v10 stringWithFormat:@"%@%@", v11, v9];
+      v12 = [v10 stringWithFormat:@"%@%@", v11, cDVRawLastPathComponent];
 
       [v3 setObject:v12 forKey:@"Position"];
     }
@@ -126,28 +126,28 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPriorOrderedURL:(id)a3
+- (void)setPriorOrderedURL:(id)l
 {
-  objc_storeStrong(&self->_priorOrderedURL, a3);
+  objc_storeStrong(&self->_priorOrderedURL, l);
   if (self->_priorOrderedURL)
   {
     self->_shouldSendOrder = 1;
   }
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -195,25 +195,25 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v16 = [(CoreDAVTask *)self responseBodyParser];
+  responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_14:
-    v21 = 0;
+    allObjects = 0;
     goto LABEL_15;
   }
 
-  v18 = [(CoreDAVTask *)self responseBodyParser];
-  v19 = [v18 rootElement];
-  v20 = [v19 responses];
-  v21 = [v20 allObjects];
+  responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
+  rootElement = [responseBodyParser2 rootElement];
+  responses = [rootElement responses];
+  allObjects = [responses allObjects];
 
 LABEL_15:
-  self->super._numDownloadedElements = [v21 count];
-  [(CoreDAVCopyOrMoveTask *)self _callBackToDelegateWithResponses:v21 error:v5];
+  self->super._numDownloadedElements = [allObjects count];
+  [(CoreDAVCopyOrMoveTask *)self _callBackToDelegateWithResponses:allObjects error:v5];
   v25.receiver = self;
   v25.super_class = CoreDAVCopyOrMoveTask;
   [(CoreDAVTask *)&v25 finishCoreDAVTaskWithError:v5];
@@ -221,16 +221,16 @@ LABEL_15:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringFromOverwriteValue:(int)a3
++ (id)stringFromOverwriteValue:(int)value
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278E31468[a3];
+    return off_278E31468[value];
   }
 }
 

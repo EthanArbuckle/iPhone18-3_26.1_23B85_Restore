@@ -3,10 +3,10 @@
 - (BOOL)handleSetConfiguration;
 - (BOOL)handleSleep;
 - (NESMVPNSessionStateUpdating)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleEstablishIPC;
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectedWithReason:(int)a4;
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectingWithReason:(int)a4;
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectedWithReason:(int)reason;
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectingWithReason:(int)reason;
 - (void)handleStop;
 - (void)handleTimeout;
 - (void)handleUpdateConfiguration;
@@ -69,9 +69,9 @@
   return 0;
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectingWithReason:(int)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectingWithReason:(int)reason
 {
-  v5 = a3;
+  pluginCopy = plugin;
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -92,16 +92,16 @@
     v13 = 2112;
     v14 = v10;
     v15 = 2112;
-    v16 = v5;
+    v16 = pluginCopy;
     v17 = 2080;
     v18 = ne_session_stop_reason_to_string();
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to disconnecting with reason %s", &v11, 0x2Au);
   }
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectedWithReason:(int)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectedWithReason:(int)reason
 {
-  v5 = a3;
+  pluginCopy = plugin;
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,7 +122,7 @@
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v5;
+    v18 = pluginCopy;
     v19 = 2080;
     v20 = ne_session_stop_reason_to_string();
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ disconnected with reason %s", &v13, 0x2Au);
@@ -275,32 +275,32 @@
 
 - (void)leave
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 16, 1);
   }
 
-  v3 = self;
-  v4 = [(NESMVPNSessionStateUpdating *)v3 queue];
+  selfCopy2 = self;
+  queue = [(NESMVPNSessionStateUpdating *)selfCopy2 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007B378;
   block[3] = &unk_1000EB1C0;
-  v8 = v3;
-  v5 = v3;
-  dispatch_async(v4, block);
+  v8 = selfCopy2;
+  v5 = selfCopy2;
+  dispatch_async(queue, block);
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = NESMVPNSessionStateUpdating;
   [(NESMVPNSessionState *)&v6 leave];
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = NESMVPNSessionStateUpdating;
-  [(NESMVPNSessionState *)&v7 enterWithSession:a3];
+  [(NESMVPNSessionState *)&v7 enterWithSession:session];
   if (self)
   {
     [objc_getProperty(self v4];

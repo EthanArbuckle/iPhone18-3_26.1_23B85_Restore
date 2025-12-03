@@ -1,17 +1,17 @@
 @interface AMSQRCodeDialogTask
-- (__CFDictionary)_createNoteDictionaryWithKeys:(ButtonKey *)a3 buttonActions:(id)a4 outOptions:(unint64_t *)a5;
+- (__CFDictionary)_createNoteDictionaryWithKeys:(ButtonKey *)keys buttonActions:(id)actions outOptions:(unint64_t *)options;
 @end
 
 @implementation AMSQRCodeDialogTask
 
-- (__CFDictionary)_createNoteDictionaryWithKeys:(ButtonKey *)a3 buttonActions:(id)a4 outOptions:(unint64_t *)a5
+- (__CFDictionary)_createNoteDictionaryWithKeys:(ButtonKey *)keys buttonActions:(id)actions outOptions:(unint64_t *)options
 {
   v32.receiver = self;
   v32.super_class = AMSQRCodeDialogTask;
-  v6 = [(AMSSystemAlertDialogTask *)&v32 _createNoteDictionaryWithKeys:a3 buttonActions:a4 outOptions:a5];
-  v7 = [(AMSSystemAlertDialogTask *)self request];
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
+  v6 = [(AMSSystemAlertDialogTask *)&v32 _createNoteDictionaryWithKeys:keys buttonActions:actions outOptions:options];
+  request = [(AMSSystemAlertDialogTask *)self request];
+  userInfo = [request userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
 
   CFDictionarySetValue(v6, @"PBCFUserNotificationTemplateType", @"PBCFUserNotificationTwoWaySignInTemplate");
   v10 = [v9 objectForKeyedSubscript:@"PINCodeTitle"];

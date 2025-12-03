@@ -1,7 +1,7 @@
 @interface MapsToken
-- (BOOL)isEqual:(id)a3;
-- (MapsToken)initWithDelegate:(id)a3 tokenGroupName:(id)a4 reason:(id)a5;
-- (MapsToken)initWithDelegate:(id)a3 tokenGroupName:(id)a4 userInfo:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MapsToken)initWithDelegate:(id)delegate tokenGroupName:(id)name reason:(id)reason;
+- (MapsToken)initWithDelegate:(id)delegate tokenGroupName:(id)name userInfo:(id)info;
 - (MapsTokenDelegate)delegate;
 - (NSString)reason;
 - (id)description;
@@ -16,17 +16,17 @@
   v8.receiver = self;
   v8.super_class = MapsToken;
   v3 = [(MapsToken *)&v8 description];
-  v4 = [(MapsToken *)self tokenGroupName];
-  v5 = [(MapsToken *)self userInfo];
-  v6 = [NSString stringWithFormat:@"%@ <tokenGroupName: %@, userInfo: %@>", v3, v4, v5];
+  tokenGroupName = [(MapsToken *)self tokenGroupName];
+  userInfo = [(MapsToken *)self userInfo];
+  v6 = [NSString stringWithFormat:@"%@ <tokenGroupName: %@, userInfo: %@>", v3, tokenGroupName, userInfo];
 
   return v6;
 }
 
 - (NSString)reason
 {
-  v2 = [(MapsToken *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"reason"];
+  userInfo = [(MapsToken *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"reason"];
 
   if (v3)
   {
@@ -49,8 +49,8 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [(MapsToken *)self tombstone];
-    [v4 decrementForToken:v5];
+    tombstone = [(MapsToken *)self tombstone];
+    [v4 decrementForToken:tombstone];
 
     objc_storeWeak(&self->_delegate, 0);
   }
@@ -85,12 +85,12 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4[1] isEqual:self->_identifier];
+    v5 = [equalCopy[1] isEqual:self->_identifier];
   }
 
   else
@@ -101,24 +101,24 @@
   return v5;
 }
 
-- (MapsToken)initWithDelegate:(id)a3 tokenGroupName:(id)a4 reason:(id)a5
+- (MapsToken)initWithDelegate:(id)delegate tokenGroupName:(id)name reason:(id)reason
 {
   v14 = @"reason";
-  v15 = a5;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+  reasonCopy = reason;
+  reasonCopy2 = reason;
+  nameCopy = name;
+  delegateCopy = delegate;
+  v11 = [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v14 count:1];
 
-  v12 = [(MapsToken *)self initWithDelegate:v10 tokenGroupName:v9 userInfo:v11];
+  v12 = [(MapsToken *)self initWithDelegate:delegateCopy tokenGroupName:nameCopy userInfo:v11];
   return v12;
 }
 
-- (MapsToken)initWithDelegate:(id)a3 tokenGroupName:(id)a4 userInfo:(id)a5
+- (MapsToken)initWithDelegate:(id)delegate tokenGroupName:(id)name userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  nameCopy = name;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = MapsToken;
   v11 = [(MapsToken *)&v21 init];
@@ -128,15 +128,15 @@
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     tokenGroupName = v11->_tokenGroupName;
     v11->_tokenGroupName = v14;
 
-    v16 = [v10 copy];
+    v16 = [infoCopy copy];
     userInfo = v11->_userInfo;
     v11->_userInfo = v16;
 
-    objc_storeWeak(&v11->_delegate, v8);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     +[NSDate timeIntervalSinceReferenceDate];
     v11->_createdTimestamp = v18;
     WeakRetained = objc_loadWeakRetained(&v11->_delegate);

@@ -1,15 +1,15 @@
 @interface TSCHPropertyMigrator
-- (TSCHPropertyMigrator)initWithProperties:(id)a3;
-- (void)migrateToSeries:(id)a3;
-- (void)visitExistingSeries:(id)a3;
+- (TSCHPropertyMigrator)initWithProperties:(id)properties;
+- (void)migrateToSeries:(id)series;
+- (void)visitExistingSeries:(id)series;
 @end
 
 @implementation TSCHPropertyMigrator
 
-- (TSCHPropertyMigrator)initWithProperties:(id)a3
+- (TSCHPropertyMigrator)initWithProperties:(id)properties
 {
-  v5 = a3;
-  if (!v5)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHPropertyMigrator initWithProperties:]");
@@ -24,7 +24,7 @@
   v25 = [(TSCHPropertyMigrator *)&v36 init];
   if (v25)
   {
-    v29 = objc_msgSend_copy(v5, v24, v26, v27, v28);
+    v29 = objc_msgSend_copy(propertiesCopy, v24, v26, v27, v28);
     propertiesToForce = v25->_propertiesToForce;
     v25->_propertiesToForce = v29;
 
@@ -40,34 +40,34 @@
   return v25;
 }
 
-- (void)visitExistingSeries:(id)a3
+- (void)visitExistingSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   propertiesToForce = self->_propertiesToForce;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_276232ACC;
   v11[3] = &unk_27A6B6D88;
-  v12 = v4;
-  v13 = self;
-  v6 = v4;
+  v12 = seriesCopy;
+  selfCopy = self;
+  v6 = seriesCopy;
   objc_msgSend_enumeratePropertiesUsingBlock_(propertiesToForce, v7, v8, v9, v10, v11);
 }
 
-- (void)migrateToSeries:(id)a3
+- (void)migrateToSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   propertiesToForce = self->_propertiesToForce;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276232D38;
   v13[3] = &unk_27A6B6DB0;
-  v14 = v4;
-  v15 = self;
+  v14 = seriesCopy;
+  selfCopy = self;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = seriesCopy;
   objc_msgSend_enumeratePropertiesUsingBlock_(propertiesToForce, v9, v10, v11, v12, v13);
 }
 

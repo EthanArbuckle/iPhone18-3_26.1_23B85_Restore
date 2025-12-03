@@ -1,49 +1,49 @@
 @interface PKEntitlementWhitelist
-- (BOOL)_BOOLValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
-- (BOOL)_probeEntitlementsWithAuditToken:(id *)a3;
-- (BOOL)entitledToPerformPassAction:(unint64_t)a3 pass:(id)a4;
-- (BOOL)entitledToPerformPassAction:(unint64_t)a3 passTypeID:(id)a4 teamID:(id)a5 associatedPassTypeIdentifiers:(id)a6 associatedApplicationIdentifiers:(id)a7;
-- (BOOL)isEntitledForAnyFromUniquePassTypeIDs:(id)a3;
-- (BOOL)isEntitledForMerchantSession:(id)a3;
-- (BOOL)isEntitledForPassTypeID:(id)a3;
-- (BOOL)isEntitledForPaymentRequest:(id)a3;
-- (PKEntitlementWhitelist)initWithConnection:(id)a3;
-- (PKEntitlementWhitelist)initWithProcessIdentifier:(int)a3 auditToken:(id *)a4;
-- (id)_arrayValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
-- (id)_stringValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
-- (void)_copyValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
+- (BOOL)_probeEntitlementsWithAuditToken:(id *)token;
+- (BOOL)entitledToPerformPassAction:(unint64_t)action pass:(id)pass;
+- (BOOL)entitledToPerformPassAction:(unint64_t)action passTypeID:(id)d teamID:(id)iD associatedPassTypeIdentifiers:(id)identifiers associatedApplicationIdentifiers:(id)applicationIdentifiers;
+- (BOOL)isEntitledForAnyFromUniquePassTypeIDs:(id)ds;
+- (BOOL)isEntitledForMerchantSession:(id)session;
+- (BOOL)isEntitledForPassTypeID:(id)d;
+- (BOOL)isEntitledForPaymentRequest:(id)request;
+- (PKEntitlementWhitelist)initWithConnection:(id)connection;
+- (PKEntitlementWhitelist)initWithProcessIdentifier:(int)identifier auditToken:(id *)token;
+- (id)_arrayValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
+- (id)_stringValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
+- (void)_copyValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
 @end
 
 @implementation PKEntitlementWhitelist
 
-- (PKEntitlementWhitelist)initWithConnection:(id)a3
+- (PKEntitlementWhitelist)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (connectionCopy)
   {
-    v6 = [v4 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v10 = 0u;
     v11 = 0u;
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
   {
     v10 = 0u;
     v11 = 0u;
-    v6 = 0xFFFFFFFFLL;
+    processIdentifier = 0xFFFFFFFFLL;
   }
 
   v9[0] = v10;
   v9[1] = v11;
-  v7 = [(PKEntitlementWhitelist *)self initWithProcessIdentifier:v6 auditToken:v9];
+  v7 = [(PKEntitlementWhitelist *)self initWithProcessIdentifier:processIdentifier auditToken:v9];
   objc_autoreleasePoolPop(v5);
 
   return v7;
 }
 
-- (PKEntitlementWhitelist)initWithProcessIdentifier:(int)a3 auditToken:(id *)a4
+- (PKEntitlementWhitelist)initWithProcessIdentifier:(int)identifier auditToken:(id *)token
 {
   v14 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -52,9 +52,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_processIdentifier = a3;
-    v8 = *&a4->var0[4];
-    *buf = *a4->var0;
+    v6->_processIdentifier = identifier;
+    v8 = *&token->var0[4];
+    *buf = *token->var0;
     v13 = v8;
     if (![(PKEntitlementWhitelist *)v6 _probeEntitlementsWithAuditToken:buf])
     {
@@ -62,7 +62,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        *&buf[4] = a3;
+        *&buf[4] = identifier;
         _os_log_error_impl(&dword_1AD337000, v9, OS_LOG_TYPE_ERROR, "Failed to probe entitlements for process: %lu.", buf, 0xCu);
       }
     }
@@ -71,12 +71,12 @@
   return v7;
 }
 
-- (void)_copyValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (void)_copyValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  entitlementCopy = entitlement;
   error = 0;
-  v7 = SecTaskCopyValueForEntitlement(a4, v6, &error);
+  v7 = SecTaskCopyValueForEntitlement(task, entitlementCopy, &error);
   v8 = error;
   if (error)
   {
@@ -85,7 +85,7 @@
     {
       processIdentifier = self->_processIdentifier;
       *buf = 138412802;
-      v14 = v6;
+      v14 = entitlementCopy;
       v15 = 2048;
       v16 = processIdentifier;
       v17 = 2112;
@@ -99,9 +99,9 @@
   return v7;
 }
 
-- (BOOL)_BOOLValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
-  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:a3 fromSecTask:a4];
+  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:entitlement fromSecTask:task];
   if (!v4)
   {
     return 0;
@@ -114,9 +114,9 @@
   return v7;
 }
 
-- (id)_arrayValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (id)_arrayValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
-  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:a3 fromSecTask:a4];
+  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:entitlement fromSecTask:task];
   v5 = v4;
   if (v4)
   {
@@ -131,9 +131,9 @@
   return v5;
 }
 
-- (id)_stringValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (id)_stringValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
-  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:a3 fromSecTask:a4];
+  v4 = [(PKEntitlementWhitelist *)self _copyValueOfEntitlement:entitlement fromSecTask:task];
   v5 = v4;
   if (v4)
   {
@@ -148,12 +148,12 @@
   return v5;
 }
 
-- (BOOL)_probeEntitlementsWithAuditToken:(id *)a3
+- (BOOL)_probeEntitlementsWithAuditToken:(id *)token
 {
   v95 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E695E480];
-  v5 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(v4, &token);
   if (v6)
@@ -298,7 +298,7 @@
     {
       v31 = v30;
       v66 = v15;
-      v67 = self;
+      selfCopy = self;
       v68 = v6;
       v32 = objc_opt_class();
       v85[0] = MEMORY[0x1E69E9820];
@@ -442,15 +442,15 @@
       }
 
       v60 = [v34 copy];
-      teamIDs = v67->_teamIDs;
-      v67->_teamIDs = v60;
+      teamIDs = selfCopy->_teamIDs;
+      selfCopy->_teamIDs = v60;
 
       v62 = [v45 copy];
-      passTypeIDs = v67->_passTypeIDs;
-      v67->_passTypeIDs = v62;
+      passTypeIDs = selfCopy->_passTypeIDs;
+      selfCopy->_passTypeIDs = v62;
 
-      passTypeIDPrefixes = v67->_passTypeIDPrefixes;
-      v67->_passTypeIDPrefixes = MEMORY[0x1E695E0F0];
+      passTypeIDPrefixes = selfCopy->_passTypeIDPrefixes;
+      selfCopy->_passTypeIDPrefixes = MEMORY[0x1E695E0F0];
 
       v6 = v68;
       v18 = v69;
@@ -463,13 +463,13 @@
   return v6 != 0;
 }
 
-- (BOOL)isEntitledForPassTypeID:(id)a3
+- (BOOL)isEntitledForPassTypeID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    if ([(NSArray *)self->_passTypeIDs containsObject:v4])
+    if ([(NSArray *)self->_passTypeIDs containsObject:dCopy])
     {
       LOBYTE(v5) = 1;
     }
@@ -494,7 +494,7 @@
               objc_enumerationMutation(v6);
             }
 
-            if ([v4 hasPrefix:{*(*(&v10 + 1) + 8 * i), v10}])
+            if ([dCopy hasPrefix:{*(*(&v10 + 1) + 8 * i), v10}])
             {
               LOBYTE(v5) = 1;
               goto LABEL_15;
@@ -523,17 +523,17 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEntitledForAnyFromUniquePassTypeIDs:(id)a3
+- (BOOL)isEntitledForAnyFromUniquePassTypeIDs:(id)ds
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  dsCopy = ds;
+  v5 = [dsCopy count];
   if (v5)
   {
     if (v5 == 1)
     {
-      v6 = [v4 anyObject];
-      v7 = [(PKEntitlementWhitelist *)self isEntitledForPassTypeID:v6];
+      anyObject = [dsCopy anyObject];
+      v7 = [(PKEntitlementWhitelist *)self isEntitledForPassTypeID:anyObject];
     }
 
     else
@@ -557,7 +557,7 @@ LABEL_15:
               objc_enumerationMutation(v8);
             }
 
-            if ([v4 containsObject:*(*(&v33 + 1) + 8 * i)])
+            if ([dsCopy containsObject:*(*(&v33 + 1) + 8 * i)])
             {
 
               v7 = 1;
@@ -579,8 +579,8 @@ LABEL_15:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v6 = v4;
-      v13 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      anyObject = dsCopy;
+      v13 = [anyObject countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v13)
       {
         v14 = v13;
@@ -592,7 +592,7 @@ LABEL_15:
           {
             if (*v30 != v15)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(anyObject);
             }
 
             v17 = *(*(&v29 + 1) + 8 * j);
@@ -636,7 +636,7 @@ LABEL_15:
             v15 = v24;
           }
 
-          v14 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v14 = [anyObject countByEnumeratingWithState:&v29 objects:v38 count:16];
           v7 = 0;
         }
 
@@ -662,36 +662,36 @@ LABEL_31:
   return v7;
 }
 
-- (BOOL)entitledToPerformPassAction:(unint64_t)a3 pass:(id)a4
+- (BOOL)entitledToPerformPassAction:(unint64_t)action pass:(id)pass
 {
-  v6 = a4;
-  v7 = [v6 passTypeIdentifier];
-  v8 = [v6 teamID];
-  v9 = [v6 associatedPassTypeIdentifiers];
-  v10 = [v6 secureElementPass];
+  passCopy = pass;
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  teamID = [passCopy teamID];
+  associatedPassTypeIdentifiers = [passCopy associatedPassTypeIdentifiers];
+  secureElementPass = [passCopy secureElementPass];
 
-  v11 = [v10 associatedApplicationIdentifiers];
-  LOBYTE(a3) = [(PKEntitlementWhitelist *)self entitledToPerformPassAction:a3 passTypeID:v7 teamID:v8 associatedPassTypeIdentifiers:v9 associatedApplicationIdentifiers:v11];
+  associatedApplicationIdentifiers = [secureElementPass associatedApplicationIdentifiers];
+  LOBYTE(action) = [(PKEntitlementWhitelist *)self entitledToPerformPassAction:action passTypeID:passTypeIdentifier teamID:teamID associatedPassTypeIdentifiers:associatedPassTypeIdentifiers associatedApplicationIdentifiers:associatedApplicationIdentifiers];
 
-  return a3;
+  return action;
 }
 
-- (BOOL)entitledToPerformPassAction:(unint64_t)a3 passTypeID:(id)a4 teamID:(id)a5 associatedPassTypeIdentifiers:(id)a6 associatedApplicationIdentifiers:(id)a7
+- (BOOL)entitledToPerformPassAction:(unint64_t)action passTypeID:(id)d teamID:(id)iD associatedPassTypeIdentifiers:(id)identifiers associatedApplicationIdentifiers:(id)applicationIdentifiers
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (self->_passesAllAccess || v13 && [(NSArray *)self->_teamIDs containsObject:v13])
+  dCopy = d;
+  iDCopy = iD;
+  identifiersCopy = identifiers;
+  applicationIdentifiersCopy = applicationIdentifiers;
+  if (self->_passesAllAccess || iDCopy && [(NSArray *)self->_teamIDs containsObject:iDCopy])
   {
     goto LABEL_15;
   }
 
-  if (v12)
+  if (dCopy)
   {
-    v16 = [(PKEntitlementWhitelist *)self isEntitledForPassTypeID:v12];
-    if ((a3 & 7) == 0 || !v14 || v16)
+    v16 = [(PKEntitlementWhitelist *)self isEntitledForPassTypeID:dCopy];
+    if ((action & 7) == 0 || !identifiersCopy || v16)
     {
       if (v16)
       {
@@ -702,12 +702,12 @@ LABEL_31:
     }
   }
 
-  else if ((a3 & 7) == 0 || !v14)
+  else if ((action & 7) == 0 || !identifiersCopy)
   {
     goto LABEL_13;
   }
 
-  if ([(PKEntitlementWhitelist *)self isEntitledForAnyFromUniquePassTypeIDs:v14])
+  if ([(PKEntitlementWhitelist *)self isEntitledForAnyFromUniquePassTypeIDs:identifiersCopy])
   {
 LABEL_15:
     v17 = 1;
@@ -715,7 +715,7 @@ LABEL_15:
   }
 
 LABEL_13:
-  if (PKPassTypeForPassTypeIdentifier(v12) != 1)
+  if (PKPassTypeForPassTypeIdentifier(dCopy) != 1)
   {
     goto LABEL_37;
   }
@@ -725,7 +725,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (a3 != 2)
+  if (action != 2)
   {
 LABEL_37:
     v17 = 0;
@@ -733,7 +733,7 @@ LABEL_37:
   }
 
   v19 = self->_applicationID;
-  v20 = v15;
+  v20 = applicationIdentifiersCopy;
   v21 = v20;
   v36 = v19;
   if (v19 && [v20 count])
@@ -832,25 +832,25 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)isEntitledForPaymentRequest:(id)a3
+- (BOOL)isEntitledForPaymentRequest:(id)request
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 originatingURL];
-  v6 = [v5 scheme];
+  requestCopy = request;
+  originatingURL = [requestCopy originatingURL];
+  scheme = [originatingURL scheme];
 
-  switch([v4 requestType])
+  switch([requestCopy requestType])
   {
     case 0:
     case 10:
-      if (v6 && ![v6 caseInsensitiveCompare:@"https"])
+      if (scheme && ![scheme caseInsensitiveCompare:@"https"])
       {
         goto LABEL_23;
       }
 
-      v7 = [v4 merchantIdentifier];
+      merchantIdentifier = [requestCopy merchantIdentifier];
 
-      if (v7)
+      if (merchantIdentifier)
       {
         goto LABEL_20;
       }
@@ -888,26 +888,26 @@ LABEL_16:
 
       goto LABEL_26;
     case 5:
-      if (v6 && ![v6 caseInsensitiveCompare:@"https"])
+      if (scheme && ![scheme caseInsensitiveCompare:@"https"])
       {
 LABEL_23:
-        v10 = [v4 merchantSession];
-        inAppPaymentsPrivate = [(PKEntitlementWhitelist *)self isEntitledForMerchantSession:v10];
+        merchantSession = [requestCopy merchantSession];
+        inAppPaymentsPrivate = [(PKEntitlementWhitelist *)self isEntitledForMerchantSession:merchantSession];
       }
 
       else
       {
-        v8 = [v4 merchantIdentifier];
+        merchantIdentifier2 = [requestCopy merchantIdentifier];
 
-        if (!v8)
+        if (!merchantIdentifier2)
         {
           goto LABEL_27;
         }
 
 LABEL_20:
         merchantIdentifiers = self->_merchantIdentifiers;
-        v10 = [v4 merchantIdentifier];
-        if ([(NSArray *)merchantIdentifiers containsObject:v10]|| self->_paymentAllAccess)
+        merchantSession = [requestCopy merchantIdentifier];
+        if ([(NSArray *)merchantIdentifiers containsObject:merchantSession]|| self->_paymentAllAccess)
         {
 
 LABEL_26:
@@ -952,16 +952,16 @@ LABEL_30:
   }
 }
 
-- (BOOL)isEntitledForMerchantSession:(id)a3
+- (BOOL)isEntitledForMerchantSession:(id)session
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 initiative];
-  v6 = [v5 lowercaseString];
+  sessionCopy = session;
+  initiative = [sessionCopy initiative];
+  lowercaseString = [initiative lowercaseString];
 
-  if (![v6 isEqualToString:@"messaging"])
+  if (![lowercaseString isEqualToString:@"messaging"])
   {
-    if ([v6 isEqualToString:@"amp_enrollment"])
+    if ([lowercaseString isEqualToString:@"amp_enrollment"])
     {
       if (self->_AMPCardEnrollment)
       {
@@ -971,7 +971,7 @@ LABEL_30:
       goto LABEL_9;
     }
 
-    if ([v6 isEqualToString:@"amp_psd2"])
+    if ([lowercaseString isEqualToString:@"amp_psd2"])
     {
       if (!self->_cardOnFilePayments)
       {
@@ -981,13 +981,13 @@ LABEL_30:
       goto LABEL_21;
     }
 
-    if ([v6 isEqualToString:@"in_app"])
+    if ([lowercaseString isEqualToString:@"in_app"])
     {
       if (self->_inAppPayments)
       {
         developerTeamID = self->_developerTeamID;
-        v10 = [v4 initiativeContext];
-        if (![(NSString *)developerTeamID isEqualToString:v10]&& (PKBypassCertValidation() & 1) == 0 && !self->_inAppPaymentsPrivate)
+        initiativeContext = [sessionCopy initiativeContext];
+        if (![(NSString *)developerTeamID isEqualToString:initiativeContext]&& (PKBypassCertValidation() & 1) == 0 && !self->_inAppPaymentsPrivate)
         {
           paymentAllAccess = self->_paymentAllAccess;
 

@@ -1,45 +1,45 @@
 @interface CKConversationListCollectionViewConversationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityRetainsCustomRotorActionSetting;
 - (id)_accessibilityCustomActionGroupIdentifier;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CKConversationListCollectionViewConversationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKConversationListEmbeddedCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"CKConversationListCollectionViewConversationCell" isKindOfClass:@"CKConversationListEmbeddedCollectionViewCell"];
-  [v3 validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"embeddedTableViewCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"setEditingMode:animated:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"UICollectionViewListCell" hasInstanceMethod:@"trailingEditingAccessoryConfigurations" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"editingMode" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"_UICellAccessoryConfigurationCustomView" hasInstanceMethod:@"customView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewConversationCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"togglePinStateForConversation:withReason:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"_singleSelectionMenuInCollectionView:indexPaths:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"conversationForItemIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"pinnedConversationDisplayNamePreferringShortName:" withFullSignature:{"@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKConversationListEmbeddedCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewConversationCell" isKindOfClass:@"CKConversationListEmbeddedCollectionViewCell"];
+  [validationsCopy validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"embeddedTableViewCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"setEditingMode:animated:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"UICollectionViewListCell" hasInstanceMethod:@"trailingEditingAccessoryConfigurations" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListEmbeddedCollectionViewCell" hasInstanceMethod:@"editingMode" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"_UICellAccessoryConfigurationCustomView" hasInstanceMethod:@"customView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewConversationCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"togglePinStateForConversation:withReason:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"_singleSelectionMenuInCollectionView:indexPaths:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasInstanceMethod:@"conversationForItemIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"pinnedConversationDisplayNamePreferringShortName:" withFullSignature:{"@", "B", 0}];
 }
 
 - (id)_privateAccessibilityCustomActions
 {
   v91 = *MEMORY[0x29EDCA608];
-  v47 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v88.receiver = self;
   v88.super_class = CKConversationListCollectionViewConversationCellAccessibility;
-  v3 = [(CKConversationListCollectionViewConversationCellAccessibility *)&v88 accessibilityCustomActions];
-  [v47 axSafelyAddObjectsFromArray:v3];
+  accessibilityCustomActions = [(CKConversationListCollectionViewConversationCellAccessibility *)&v88 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
-  v46 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _accessibilityIndexPath];
-  if (v46)
+  _accessibilityIndexPath = [(CKConversationListCollectionViewConversationCellAccessibility *)self _accessibilityIndexPath];
+  if (_accessibilityIndexPath)
   {
     v4 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _accessibilityViewAncestorIsKindOf:objc_opt_class()];
     v5 = [(CKConversationListCollectionViewConversationCellAccessibility *)self safeValueForKey:@"delegate"];
@@ -48,8 +48,8 @@
     v6 = [v5 safeValueForKey:@"dataSource"];
     v45 = __UIAccessibilityCastAsClass();
 
-    v7 = [v45 itemIdentifierForIndexPath:v46];
-    v48 = [MEMORY[0x29EDB8DE8] array];
+    v7 = [v45 itemIdentifierForIndexPath:_accessibilityIndexPath];
+    array2 = [MEMORY[0x29EDB8DE8] array];
     v82 = 0;
     v83 = &v82;
     v84 = 0x3032000000;
@@ -65,7 +65,7 @@
     v78 = v8;
     v41 = v4;
     v79 = v41;
-    v80 = v46;
+    v80 = _accessibilityIndexPath;
     AXPerformSafeBlock();
     v44 = v83[5];
 
@@ -74,8 +74,8 @@
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v9 = [v44 children];
-    v10 = [v9 countByEnumeratingWithState:&v70 objects:v90 count:16];
+    children = [v44 children];
+    v10 = [children countByEnumeratingWithState:&v70 objects:v90 count:16];
     if (v10)
     {
       v11 = *v71;
@@ -85,21 +85,21 @@
         {
           if (*v71 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(children);
           }
 
           v13 = *(*(&v70 + 1) + 8 * i);
-          v14 = [v13 title];
-          v15 = [v14 isEqualToString:@"Internal"];
+          title = [v13 title];
+          v15 = [title isEqualToString:@"Internal"];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v13 children];
-            [v48 axSafelyAddObjectsFromArray:v16];
+            children2 = [v13 children];
+            [array2 axSafelyAddObjectsFromArray:children2];
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v70 objects:v90 count:16];
+        v10 = [children countByEnumeratingWithState:&v70 objects:v90 count:16];
       }
 
       while (v10);
@@ -157,15 +157,15 @@
     v55 = v39;
     v42 = [v19 initWithName:v22 actionHandler:v53];
 
-    [v47 axSafelyAddObject:v42];
-    v23 = _AXCustomActionsForActions(v48);
-    [v47 axSafelyAddObjectsFromArray:v23];
+    [array axSafelyAddObject:v42];
+    v23 = _AXCustomActionsForActions(array2);
+    [array axSafelyAddObjectsFromArray:v23];
 
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v24 = v47;
+    v24 = array;
     v25 = [v24 countByEnumeratingWithState:&v49 objects:v89 count:16];
     if (v25)
     {
@@ -180,16 +180,16 @@
           }
 
           v28 = *(*(&v49 + 1) + 8 * j);
-          v29 = [v28 name];
+          name = [v28 name];
           v30 = accessibilityLocalizedString(@"mute.collection.view.cell");
-          v31 = [v29 isEqualToString:v30];
+          v31 = [name isEqualToString:v30];
 
           v32 = @"hide.alerts.collection.view.cell";
           if ((v31 & 1) == 0)
           {
-            v33 = [v28 name];
+            name2 = [v28 name];
             v34 = accessibilityLocalizedString(@"unmute.collection.view.cell");
-            v35 = [v33 isEqualToString:v34];
+            v35 = [name2 isEqualToString:v34];
 
             v32 = @"show.alerts.collection.view.cell";
             if (!v35)
@@ -209,7 +209,7 @@
     }
   }
 
-  return v47;
+  return array;
 }
 
 void __99__CKConversationListCollectionViewConversationCellAccessibility__privateAccessibilityCustomActions__block_invoke(void *a1)
@@ -251,34 +251,34 @@ uint64_t __99__CKConversationListCollectionViewConversationCellAccessibility__pr
 - (id)accessibilityLabel
 {
   v3 = [(CKConversationListCollectionViewConversationCellAccessibility *)self safeIntegerForKey:@"editingMode"];
-  v4 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
-  v5 = [v4 accessibilityLabel];
+  _axEmbeddedTableViewCell = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
+  accessibilityLabel = [_axEmbeddedTableViewCell accessibilityLabel];
 
   if (v3 == 2)
   {
     v8 = accessibilityLocalizedString(@"unpinned.label");
     v6 = __UIAXStringForVariables();
 
-    v5 = v6;
+    accessibilityLabel = v6;
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityRetainsCustomRotorActionSetting
 {
-  v2 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
-  v3 = [v2 _accessibilityRetainsCustomRotorActionSetting];
+  _axEmbeddedTableViewCell = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
+  _accessibilityRetainsCustomRotorActionSetting = [_axEmbeddedTableViewCell _accessibilityRetainsCustomRotorActionSetting];
 
-  return v3;
+  return _accessibilityRetainsCustomRotorActionSetting;
 }
 
 - (id)_accessibilityCustomActionGroupIdentifier
 {
-  v2 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
-  v3 = [v2 _accessibilityCustomActionGroupIdentifier];
+  _axEmbeddedTableViewCell = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
+  _accessibilityCustomActionGroupIdentifier = [_axEmbeddedTableViewCell _accessibilityCustomActionGroupIdentifier];
 
-  return v3;
+  return _accessibilityCustomActionGroupIdentifier;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -286,30 +286,30 @@ uint64_t __99__CKConversationListCollectionViewConversationCellAccessibility__pr
   v4.receiver = self;
   v4.super_class = CKConversationListCollectionViewConversationCellAccessibility;
   [(CKConversationListCollectionViewConversationCellAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
-  [v3 _accessibilityLoadAccessibilityInformation];
+  _axEmbeddedTableViewCell = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
+  [_axEmbeddedTableViewCell _accessibilityLoadAccessibilityInformation];
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
-  v3 = [v2 accessibilityUserInputLabels];
+  _axEmbeddedTableViewCell = [(CKConversationListCollectionViewConversationCellAccessibility *)self _axEmbeddedTableViewCell];
+  accessibilityUserInputLabels = [_axEmbeddedTableViewCell accessibilityUserInputLabels];
 
-  return v3;
+  return accessibilityUserInputLabels;
 }
 
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated
 {
   v9.receiver = self;
   v9.super_class = CKConversationListCollectionViewConversationCellAccessibility;
-  [(CKConversationListCollectionViewConversationCellAccessibility *)&v9 setEditingMode:a3 animated:a4];
-  if (a3 == 2)
+  [(CKConversationListCollectionViewConversationCellAccessibility *)&v9 setEditingMode:mode animated:animated];
+  if (mode == 2)
   {
     v6 = [(CKConversationListCollectionViewConversationCellAccessibility *)self safeArrayForKey:@"trailingEditingAccessoryConfigurations"];
     if ([v6 count])
     {
-      v7 = [v6 firstObject];
-      v8 = [v7 safeValueForKey:@"customView"];
+      firstObject = [v6 firstObject];
+      v8 = [firstObject safeValueForKey:@"customView"];
       [v8 setAccessibilityElementsHidden:1];
     }
   }

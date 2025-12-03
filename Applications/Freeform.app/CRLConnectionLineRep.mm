@@ -1,9 +1,9 @@
 @interface CRLConnectionLineRep
-+ (BOOL)canConnectToRep:(id)a3;
-+ (id)infosToConnectFromSelectionPath:(id)a3 withInteractiveCanvasController:(id)a4;
-- (BOOL)canConnectToRep:(id)a3;
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
++ (BOOL)canConnectToRep:(id)rep;
++ (id)infosToConnectFromSelectionPath:(id)path withInteractiveCanvasController:(id)controller;
+- (BOOL)canConnectToRep:(id)rep;
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (BOOL)crlaxIsStraightLine;
 - (BOOL)i_editMenuOverlapsEndKnobs;
 - (BOOL)p_controlKnobVisible;
@@ -14,16 +14,16 @@
 - (BOOL)shouldShowSmartShapeKnobs;
 - (CGPoint)i_dragOffset;
 - (CGRect)targetRectForEditMenu;
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4;
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit;
 - (id)additionalRepsForDragging;
 - (id)connectionLineLayout;
-- (id)newTrackerForKnob:(id)a3;
+- (id)newTrackerForKnob:(id)knob;
 - (id)overlayRenderables;
-- (id)p_createClippedPathRenderableForEnd:(unint64_t)a3;
-- (id)p_createRenderableForMagnet:(CGPoint)a3 connected:(BOOL)a4;
+- (id)p_createClippedPathRenderableForEnd:(unint64_t)end;
+- (id)p_createRenderableForMagnet:(CGPoint)magnet connected:(BOOL)connected;
 - (unint64_t)enabledKnobMask;
 - (void)updateFromLayout;
-- (void)updateMagnetRenderables:(id)a3 withEmptyMagnets:(id)a4 withHighlightedMagnets:(id)a5 includeClippedPortions:(BOOL)a6;
+- (void)updateMagnetRenderables:(id)renderables withEmptyMagnets:(id)magnets withHighlightedMagnets:(id)highlightedMagnets includeClippedPortions:(BOOL)portions;
 @end
 
 @implementation CRLConnectionLineRep
@@ -31,19 +31,19 @@
 - (id)connectionLineLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   return v5;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  if (([v8 isInvisible] & 1) != 0 || !objc_msgSend(v8, "validLine"))
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  if (([connectionLineLayout isInvisible] & 1) != 0 || !objc_msgSend(connectionLineLayout, "validLine"))
   {
     v9 = 0;
   }
@@ -52,23 +52,23 @@
   {
     v11.receiver = self;
     v11.super_class = CRLConnectionLineRep;
-    v9 = [(CRLShapeRep *)&v11 containsPoint:v4 withPrecision:x, y];
+    v9 = [(CRLShapeRep *)&v11 containsPoint:precisionCopy withPrecision:x, y];
   }
 
   return v9;
 }
 
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLConnectionLineRep *)self connectionLineLayout];
+  y = point.y;
+  x = point.x;
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
   v9 = 3.40282347e38;
-  if (([v8 isInvisible] & 1) == 0 && objc_msgSend(v8, "validLine"))
+  if (([connectionLineLayout isInvisible] & 1) == 0 && objc_msgSend(connectionLineLayout, "validLine"))
   {
     v12.receiver = self;
     v12.super_class = CRLConnectionLineRep;
-    [(CRLShapeRep *)&v12 shortestDistanceToPoint:a4 countAsHit:x, y];
+    [(CRLShapeRep *)&v12 shortestDistanceToPoint:hit countAsHit:x, y];
     v9 = v10;
   }
 
@@ -82,13 +82,13 @@
   [(CRLCanvasRep *)&v7 updateFromLayout];
   if (![(CRLCanvasRep *)self isBeingDragged]&& ![(CRLCanvasRep *)self isBeingRotated]&& ![(CRLCanvasRep *)self isBeingFreeTransformed])
   {
-    v3 = [(CRLShapeRep *)self shapeLayout];
-    v4 = [v3 pathSource];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    pathSource = [shapeLayout pathSource];
 
-    if (([v4 isEqual:self->mLastPathSource] & 1) == 0)
+    if (([pathSource isEqual:self->mLastPathSource] & 1) == 0)
     {
       [(CRLShapeRep *)self layoutInRootChangedFrom:0 to:0 translatedOnly:0];
-      v5 = [v4 copy];
+      v5 = [pathSource copy];
       mLastPathSource = self->mLastPathSource;
       self->mLastPathSource = v5;
     }
@@ -97,13 +97,13 @@
 
 - (BOOL)shouldSetPathSourceWhenChangingInfoGeometry
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [(CRLCanvasRep *)self layout];
-  if ([v4 isInTopLevelContainerForEditing])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout isInTopLevelContainerForEditing])
   {
-    if ([v3 displaysMultiselectionWithSingleBounds])
+    if ([interactiveCanvasController displaysMultiselectionWithSingleBounds])
     {
-      v5 = [v3 shouldSuppressSelectionKnobsForRep:self];
+      v5 = [interactiveCanvasController shouldSuppressSelectionKnobsForRep:self];
     }
 
     else
@@ -120,19 +120,19 @@
   return v5;
 }
 
-+ (id)infosToConnectFromSelectionPath:(id)a3 withInteractiveCanvasController:(id)a4
++ (id)infosToConnectFromSelectionPath:(id)path withInteractiveCanvasController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
+  controllerCopy = controller;
+  pathCopy = path;
   v7 = +[NSMutableArray array];
-  v8 = [v5 selectionModelTranslator];
-  v9 = [v8 boardItemsForSelectionPath:v6];
+  selectionModelTranslator = [controllerCopy selectionModelTranslator];
+  v9 = [selectionModelTranslator boardItemsForSelectionPath:pathCopy];
 
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100304CC4;
   v18 = &unk_101855288;
-  v10 = v5;
+  v10 = controllerCopy;
   v19 = v10;
   v11 = v7;
   v20 = v11;
@@ -148,64 +148,64 @@
   return v12;
 }
 
-+ (BOOL)canConnectToRep:(id)a3
++ (BOOL)canConnectToRep:(id)rep
 {
-  v3 = [a3 repForSelecting];
+  repForSelecting = [rep repForSelecting];
   v4 = objc_opt_class();
-  v5 = [v3 layout];
-  v6 = sub_100014370(v4, v5);
-  v7 = [v6 pathIsLineSegment];
+  layout = [repForSelecting layout];
+  v6 = sub_100014370(v4, layout);
+  pathIsLineSegment = [v6 pathIsLineSegment];
 
-  if (v7)
+  if (pathIsLineSegment)
   {
-    v8 = 0;
+    allowsConnections = 0;
   }
 
   else
   {
-    v9 = [v3 layout];
-    v8 = [v9 allowsConnections];
+    layout2 = [repForSelecting layout];
+    allowsConnections = [layout2 allowsConnections];
   }
 
-  return v8 & 1;
+  return allowsConnections & 1;
 }
 
-- (BOOL)canConnectToRep:(id)a3
+- (BOOL)canConnectToRep:(id)rep
 {
-  v4 = [a3 repForSelecting];
-  if (v4 == self || ![CRLConnectionLineRep canConnectToRep:v4])
+  repForSelecting = [rep repForSelecting];
+  if (repForSelecting == self || ![CRLConnectionLineRep canConnectToRep:repForSelecting])
   {
     v19 = 0;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)v4 layout];
-    v6 = [v5 parent];
-    v7 = [(CRLCanvasRep *)self layout];
-    v8 = [v7 parent];
+    layout = [(CRLCanvasRep *)repForSelecting layout];
+    parent = [layout parent];
+    layout2 = [(CRLCanvasRep *)self layout];
+    parent2 = [layout2 parent];
 
-    if (v6 == v8)
+    if (parent == parent2)
     {
       v19 = 1;
     }
 
     else
     {
-      v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v10 = [v9 freehandDrawingToolkit];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
       v11 = objc_opt_class();
-      v12 = [(CRLCanvasRep *)v4 info];
-      v13 = sub_100014370(v11, v12);
+      info = [(CRLCanvasRep *)repForSelecting info];
+      v13 = sub_100014370(v11, info);
 
-      if (v13 && [v10 isLassoSelectionForMixedTypeEnabledInDrawingMode])
+      if (v13 && [freehandDrawingToolkit isLassoSelectionForMixedTypeEnabledInDrawingMode])
       {
         v14 = sub_100125F34(v13);
-        v15 = [v9 layoutForInfo:v14];
-        v16 = [v15 parent];
-        v17 = [(CRLCanvasRep *)self layout];
-        v18 = [v17 parent];
-        v19 = v16 == v18;
+        v15 = [interactiveCanvasController layoutForInfo:v14];
+        parent3 = [v15 parent];
+        layout3 = [(CRLCanvasRep *)self layout];
+        parent4 = [layout3 parent];
+        v19 = parent3 == parent4;
       }
 
       else
@@ -218,25 +218,25 @@
   return v19;
 }
 
-- (void)updateMagnetRenderables:(id)a3 withEmptyMagnets:(id)a4 withHighlightedMagnets:(id)a5 includeClippedPortions:(BOOL)a6
+- (void)updateMagnetRenderables:(id)renderables withEmptyMagnets:(id)magnets withHighlightedMagnets:(id)highlightedMagnets includeClippedPortions:(BOOL)portions
 {
-  v6 = a6;
-  v52 = a3;
-  v51 = a4;
-  v10 = a5;
+  portionsCopy = portions;
+  renderablesCopy = renderables;
+  magnetsCopy = magnets;
+  highlightedMagnetsCopy = highlightedMagnets;
   v11 = objc_alloc_init(NSMutableArray);
   mMagnetRenderables = self->mMagnetRenderables;
   self->mMagnetRenderables = v11;
 
   v13 = objc_opt_class();
-  v14 = [(CRLCanvasRep *)self layout];
-  v15 = sub_100014370(v13, v14);
+  layout = [(CRLCanvasRep *)self layout];
+  v15 = sub_100014370(v13, layout);
 
-  if (v6)
+  if (portionsCopy)
   {
     if ([v15 drawClippedHeadPortion] && (objc_msgSend(v15, "connectedTo"), v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
     {
-      v17 = self;
+      selfCopy2 = self;
       v18 = 11;
     }
 
@@ -247,18 +247,18 @@
         goto LABEL_11;
       }
 
-      v19 = [v15 connectedFrom];
+      connectedFrom = [v15 connectedFrom];
 
-      if (!v19)
+      if (!connectedFrom)
       {
         goto LABEL_11;
       }
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 10;
     }
 
-    v20 = [(CRLConnectionLineRep *)v17 p_createClippedPathRenderableForEnd:v18];
+    v20 = [(CRLConnectionLineRep *)selfCopy2 p_createClippedPathRenderableForEnd:v18];
     if (v20)
     {
       [(NSMutableArray *)self->mMagnetRenderables addObject:v20];
@@ -267,15 +267,15 @@
 
 LABEL_11:
   v53 = v15;
-  v21 = [(CRLCanvasRep *)self canvas];
-  [v21 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v23 = v22;
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v24 = v10;
+  v24 = highlightedMagnetsCopy;
   v25 = [v24 countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v25)
   {
@@ -302,8 +302,8 @@ LABEL_11:
         CGAffineTransformMakeScale(&v63, v23, v23);
         v62 = v63;
         [v34 setAffineTransform:&v62];
-        v35 = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
-        [v34 setShadowColor:{objc_msgSend(v35, "CGColor")}];
+        defaultSelectionHighlightColor = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
+        [v34 setShadowColor:{objc_msgSend(defaultSelectionHighlightColor, "CGColor")}];
 
         [v34 setShadowOffset:{CGSizeZero.width, height}];
         LODWORD(v36) = 1.0;
@@ -326,7 +326,7 @@ LABEL_11:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v37 = v51;
+  v37 = magnetsCopy;
   v38 = [v37 countByEnumeratingWithState:&v58 objects:v69 count:16];
   if (v38)
   {
@@ -361,7 +361,7 @@ LABEL_11:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v44 = v52;
+  v44 = renderablesCopy;
   v45 = [v44 countByEnumeratingWithState:&v54 objects:v68 count:16];
   if (v45)
   {
@@ -393,13 +393,13 @@ LABEL_11:
   }
 }
 
-- (id)p_createClippedPathRenderableForEnd:(unint64_t)a3
+- (id)p_createClippedPathRenderableForEnd:(unint64_t)end
 {
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasRep *)self layout];
-  v7 = sub_100014370(v5, v6);
+  layout = [(CRLCanvasRep *)self layout];
+  v7 = sub_100014370(v5, layout);
 
-  if (a3 == 11)
+  if (end == 11)
   {
     [v7 getClippedHeadPortion];
   }
@@ -416,17 +416,17 @@ LABEL_11:
     LODWORD(v10) = 0.25;
     [v9 setOpacity:v10];
     [v9 setPath:{objc_msgSend(v8, "CGPath")}];
-    v11 = [(CRLCanvasRep *)self canvas];
-    [v11 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v13 = v12;
-    v14 = [(CRLCanvasRep *)self canvas];
-    [v14 viewScale];
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    [canvas2 viewScale];
     CGAffineTransformMakeScale(&v19, v13, v15);
     v18 = v19;
     [v9 setAffineTransform:&v18];
 
-    v16 = [v7 stroke];
-    [v16 applyToShapeRenderable:v9 withScale:1.0];
+    stroke = [v7 stroke];
+    [stroke applyToShapeRenderable:v9 withScale:1.0];
   }
 
   else
@@ -437,9 +437,9 @@ LABEL_11:
   return v9;
 }
 
-- (id)p_createRenderableForMagnet:(CGPoint)a3 connected:(BOOL)a4
+- (id)p_createRenderableForMagnet:(CGPoint)magnet connected:(BOOL)connected
 {
-  if (a4)
+  if (connected)
   {
     v5 = @"ios-canvas-diagram-connect";
   }
@@ -449,9 +449,9 @@ LABEL_11:
     v5 = @"ios-canvas-diagram-magnet";
   }
 
-  v8 = [CRLImage imageNamed:v5, *&a3.y, v7, *&a3.x, v6];
-  v9 = [(CRLCanvasRep *)self canvas];
-  [v9 contentsScale];
+  v8 = [CRLImage imageNamed:v5, *&magnet.y, v7, *&magnet.x, v6];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v10 = [v8 CGImageForContentsScale:?];
 
   v11 = +[CRLCanvasShapeRenderable renderable];
@@ -463,21 +463,21 @@ LABEL_11:
   [v11 setAffineTransform:&v21];
   [v8 size];
   [v11 setBounds:sub_10011ECB4()];
-  v13 = [(CRLCanvasRep *)self canvas];
-  [v13 viewScale];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 viewScale];
   v15 = v14;
-  v16 = [(CRLCanvasRep *)self canvas];
-  [v16 viewScale];
+  canvas3 = [(CRLCanvasRep *)self canvas];
+  [canvas3 viewScale];
   CGAffineTransformMakeScale(&v21, v15, v17);
   [v11 setPosition:{vaddq_f64(*&v21.tx, vmlaq_n_f64(vmulq_n_f64(*&v21.c, v19), *&v21.a, v20))}];
 
   return v11;
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
-  v4 = a3;
-  if (!v4)
+  knobCopy = knob;
+  if (!knobCopy)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -507,16 +507,16 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:261 isFatal:0 description:"invalid nil value for '%{public}s'", "knob"];
   }
 
-  if ([v4 tag] == 28)
+  if ([knobCopy tag] == 28)
   {
     v13.receiver = self;
     v13.super_class = CRLConnectionLineRep;
-    v10 = [(CRLShapeRep *)&v13 newTrackerForKnob:v4];
+    v10 = [(CRLShapeRep *)&v13 newTrackerForKnob:knobCopy];
   }
 
   else
   {
-    v10 = [[CRLConnectionLineKnobTracker alloc] initWithRep:self knob:v4];
+    v10 = [[CRLConnectionLineKnobTracker alloc] initWithRep:self knob:knobCopy];
   }
 
   v11 = v10;
@@ -526,14 +526,14 @@ LABEL_11:
 
 - (BOOL)shouldShowSmartShapeKnobs
 {
-  v3 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  v4 = [v3 connectedPathSource];
-  v5 = [v4 type];
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  connectedPathSource = [connectionLineLayout connectedPathSource];
+  type = [connectedPathSource type];
 
-  v6 = [(CRLConnectionLineRep *)self shouldCreateKnobs];
-  if (v5 == 1 || !v6)
+  shouldCreateKnobs = [(CRLConnectionLineRep *)self shouldCreateKnobs];
+  if (type == 1 || !shouldCreateKnobs)
   {
-    if (!v6)
+    if (!shouldCreateKnobs)
     {
       goto LABEL_9;
     }
@@ -544,8 +544,8 @@ LABEL_11:
     [(CRLCanvasRep *)self boundsForStandardKnobs];
     v8 = v7;
     v10 = v9;
-    v11 = [(CRLCanvasRep *)self canvas];
-    [v11 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v13 = sub_10011F340(v8, v10, v12);
     v15 = v14;
 
@@ -562,8 +562,8 @@ LABEL_11:
     v20.super_class = CRLConnectionLineRep;
     if (([(CRLShapeRep *)&v20 enabledKnobMask]& 0x800) != 0 && ![(CRLCanvasRep *)self isLocked])
     {
-      v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v17 = [v19 documentIsSharedReadOnly] ^ 1;
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      v17 = [interactiveCanvasController documentIsSharedReadOnly] ^ 1;
 
       goto LABEL_10;
     }
@@ -578,35 +578,35 @@ LABEL_10:
 
 - (BOOL)shouldCreateKnobs
 {
-  v2 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  if ([v2 isInvisible])
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  if ([connectionLineLayout isInvisible])
   {
-    v3 = 0;
+    validLine = 0;
   }
 
   else
   {
-    v3 = [v2 validLine];
+    validLine = [connectionLineLayout validLine];
   }
 
-  return v3;
+  return validLine;
 }
 
 - (unint64_t)enabledKnobMask
 {
   v6.receiver = self;
   v6.super_class = CRLConnectionLineRep;
-  v3 = [(CRLShapeRep *)&v6 enabledKnobMask];
+  enabledKnobMask = [(CRLShapeRep *)&v6 enabledKnobMask];
   v5.receiver = self;
   v5.super_class = CRLConnectionLineRep;
   if ([(CRLCanvasRep *)&v5 shouldCreateKnobs])
   {
-    return v3;
+    return enabledKnobMask;
   }
 
   else
   {
-    return v3 & 0xFFFFFFFFFFFFF3FFLL;
+    return enabledKnobMask & 0xFFFFFFFFFFFFF3FFLL;
   }
 }
 
@@ -616,36 +616,36 @@ LABEL_10:
   v19.super_class = CRLConnectionLineRep;
   if (![(CRLCanvasRep *)&v19 shouldCreateSelectionKnobs])
   {
-    v4 = [(CRLConnectionLineRep *)self connectionLineLayout];
-    v5 = [v4 connectedPathSource];
-    v6 = [v5 type];
+    connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+    connectedPathSource = [connectionLineLayout connectedPathSource];
+    type = [connectedPathSource type];
 
-    if (v6 != 1)
+    if (type != 1)
     {
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(connectedTo) = 0;
+      return connectedTo;
     }
 
-    v7 = [(CRLConnectionLineRep *)self connectionLineLayout];
-    v8 = [v7 connectedFrom];
+    connectionLineLayout2 = [(CRLConnectionLineRep *)self connectionLineLayout];
+    connectedFrom = [connectionLineLayout2 connectedFrom];
 
-    if (v8)
+    if (connectedFrom)
     {
-      v9 = [(CRLCanvasRep *)self canvas];
-      v10 = [v7 connectedFrom];
-      v11 = [v9 repForLayout:v10];
+      canvas = [(CRLCanvasRep *)self canvas];
+      connectedFrom2 = [connectionLineLayout2 connectedFrom];
+      v11 = [canvas repForLayout:connectedFrom2];
 
       if ([v11 shouldCreateKnobs])
       {
-        v12 = [v7 connectedFrom];
-        v13 = [v12 layoutState];
+        connectedFrom3 = [connectionLineLayout2 connectedFrom];
+        layoutState = [connectedFrom3 layoutState];
 
-        if (v13 == 2)
+        if (layoutState == 2)
         {
-          LOBYTE(v3) = 1;
+          LOBYTE(connectedTo) = 1;
 LABEL_15:
 
-          return v3;
+          return connectedTo;
         }
       }
 
@@ -654,48 +654,48 @@ LABEL_15:
       }
     }
 
-    v3 = [v7 connectedTo];
+    connectedTo = [connectionLineLayout2 connectedTo];
 
-    if (v3)
+    if (connectedTo)
     {
-      v14 = [(CRLCanvasRep *)self canvas];
-      v15 = [v7 connectedTo];
-      v16 = [v14 repForLayout:v15];
+      canvas2 = [(CRLCanvasRep *)self canvas];
+      connectedTo2 = [connectionLineLayout2 connectedTo];
+      v16 = [canvas2 repForLayout:connectedTo2];
 
       if ([v16 shouldCreateKnobs])
       {
-        v17 = [v7 connectedTo];
-        LOBYTE(v3) = [v17 layoutState] == 2;
+        connectedTo3 = [connectionLineLayout2 connectedTo];
+        LOBYTE(connectedTo) = [connectedTo3 layoutState] == 2;
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(connectedTo) = 0;
       }
     }
 
     goto LABEL_15;
   }
 
-  LOBYTE(v3) = 1;
-  return v3;
+  LOBYTE(connectedTo) = 1;
+  return connectedTo;
 }
 
 - (id)overlayRenderables
 {
   v29.receiver = self;
   v29.super_class = CRLConnectionLineRep;
-  v3 = [(CRLShapeRep *)&v29 overlayRenderables];
+  overlayRenderables = [(CRLShapeRep *)&v29 overlayRenderables];
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasRep *)self currentKnobTracker];
-  v6 = sub_100014370(v4, v5);
+  currentKnobTracker = [(CRLCanvasRep *)self currentKnobTracker];
+  v6 = sub_100014370(v4, currentKnobTracker);
 
-  v7 = [v6 connectedRepForHighlighting];
-  if (v7)
+  connectedRepForHighlighting = [v6 connectedRepForHighlighting];
+  if (connectedRepForHighlighting)
   {
-    if (v3)
+    if (overlayRenderables)
     {
-      v8 = v3;
+      v8 = overlayRenderables;
     }
 
     else
@@ -704,26 +704,26 @@ LABEL_15:
     }
 
     v9 = +[CRLCanvasShapeRenderable renderable];
-    v10 = [v7 layout];
-    v11 = [(CRLCanvasRep *)self canvas];
-    [v11 viewScale];
+    layout = [connectedRepForHighlighting layout];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v13 = v12;
 
     memset(&transform, 0, sizeof(transform));
-    if (v10)
+    if (layout)
     {
-      [v10 transformInRoot];
+      [layout transformInRoot];
     }
 
     CGAffineTransformMakeScale(&t2, v13, v13);
     t1 = transform;
     CGAffineTransformConcat(&v27, &t1, &t2);
     transform = v27;
-    v14 = [v10 pathForClippingConnectionLines];
-    v15 = v14;
-    if (!v14 || [v14 elementCount] < 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    pathForClippingConnectionLines = [layout pathForClippingConnectionLines];
+    v15 = pathForClippingConnectionLines;
+    if (!pathForClippingConnectionLines || [pathForClippingConnectionLines elementCount] < 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v10 boundsForStandardKnobs];
+      [layout boundsForStandardKnobs];
       v16 = [CRLBezierPath bezierPathWithRect:?];
 
       v15 = v16;
@@ -739,17 +739,17 @@ LABEL_15:
     v27 = v24;
     [v9 setAffineTransform:&v27];
     CFRelease(v19);
-    v20 = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
-    [v9 setShadowColor:{objc_msgSend(v20, "CGColor")}];
+    defaultSelectionHighlightColor = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
+    [v9 setShadowColor:{objc_msgSend(defaultSelectionHighlightColor, "CGColor")}];
 
     [v9 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
     LODWORD(v21) = 1.0;
     [v9 setShadowOpacity:v21];
     [v9 setShadowRadius:1.0];
-    v3 = [v8 arrayByAddingObject:v9];
+    overlayRenderables = [v8 arrayByAddingObject:v9];
   }
 
-  v22 = [v3 arrayByAddingObjectsFromArray:self->mMagnetRenderables];
+  v22 = [overlayRenderables arrayByAddingObjectsFromArray:self->mMagnetRenderables];
 
   return v22;
 }
@@ -758,27 +758,27 @@ LABEL_15:
 {
   if ([(CRLConnectionLineRep *)self p_isConnected])
   {
-    v3 = [(CRLConnectionLineRep *)self connectionLineLayout];
+    connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
     v4 = objc_alloc_init(NSMutableSet);
-    v5 = [v3 connectedFrom];
+    connectedFrom = [connectionLineLayout connectedFrom];
 
-    if (v5)
+    if (connectedFrom)
     {
-      v6 = [(CRLCanvasRep *)self canvas];
-      v7 = [v3 connectedFrom];
-      v8 = [v6 repForLayout:v7];
+      canvas = [(CRLCanvasRep *)self canvas];
+      connectedFrom2 = [connectionLineLayout connectedFrom];
+      v8 = [canvas repForLayout:connectedFrom2];
 
       v9 = [v8 additionalRepsForDraggingConnectionLine:self];
       [v4 unionSet:v9];
     }
 
-    v10 = [v3 connectedTo];
+    connectedTo = [connectionLineLayout connectedTo];
 
-    if (v10)
+    if (connectedTo)
     {
-      v11 = [(CRLCanvasRep *)self canvas];
-      v12 = [v3 connectedTo];
-      v13 = [v11 repForLayout:v12];
+      canvas2 = [(CRLCanvasRep *)self canvas];
+      connectedTo2 = [connectionLineLayout connectedTo];
+      v13 = [canvas2 repForLayout:connectedTo2];
 
       v14 = [v13 additionalRepsForDraggingConnectionLine:self];
       [v4 unionSet:v14];
@@ -820,10 +820,10 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob
 {
-  v4 = a3;
-  if ([v4 tag] == 12)
+  knobCopy = knob;
+  if ([knobCopy tag] == 12)
   {
     v5 = 0;
   }
@@ -832,7 +832,7 @@ LABEL_15:
   {
     v7.receiver = self;
     v7.super_class = CRLConnectionLineRep;
-    v5 = [(CRLShapeRep *)&v7 canUseSpecializedHitRegionForKnob:v4];
+    v5 = [(CRLShapeRep *)&v7 canUseSpecializedHitRegionForKnob:knobCopy];
   }
 
   return v5;
@@ -840,10 +840,10 @@ LABEL_15:
 
 - (CGPoint)i_dragOffset
 {
-  v3 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  v4 = [v3 connectedTo];
-  v5 = [v3 connectedFrom];
-  v6 = (v4 == 0) ^ (v5 != 0);
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  connectedTo = [connectionLineLayout connectedTo];
+  connectedFrom = [connectionLineLayout connectedFrom];
+  v6 = (connectedTo == 0) ^ (connectedFrom != 0);
 
   if (v6)
   {
@@ -854,12 +854,12 @@ LABEL_15:
 
   else
   {
-    if ([v3 isBeingTransformed])
+    if ([connectionLineLayout isBeingTransformed])
     {
-      [v3 pauseDynamicTransformation];
+      [connectionLineLayout pauseDynamicTransformation];
     }
 
-    [v3 i_accumulatedDrag];
+    [connectionLineLayout i_accumulatedDrag];
   }
 
   v9 = v7;
@@ -877,29 +877,29 @@ LABEL_15:
   v3 = [(CRLCanvasRep *)self knobForTag:12];
   v4 = [(CRLCanvasRep *)self knobForTag:11];
   v5 = [(CRLCanvasRep *)self knobForTag:10];
-  v6 = [(CRLCanvasRep *)self canvas];
+  canvas = [(CRLCanvasRep *)self canvas];
   [v3 position];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [v6 convertUnscaledToBoundsPoint:?];
+  [canvas convertUnscaledToBoundsPoint:?];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CRLCanvasRep *)self canvas];
+  canvas2 = [(CRLCanvasRep *)self canvas];
   [v4 position];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [v11 convertUnscaledToBoundsPoint:?];
+  [canvas2 convertUnscaledToBoundsPoint:?];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(CRLCanvasRep *)self canvas];
+  canvas3 = [(CRLCanvasRep *)self canvas];
   [v5 position];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [v16 convertUnscaledToBoundsPoint:?];
+  [canvas3 convertUnscaledToBoundsPoint:?];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CRLCanvasRep *)self canvas];
-  [v21 i_approximateScaledFrameOfEditingMenuAtPoint:{v8, v10}];
+  canvas4 = [(CRLCanvasRep *)self canvas];
+  [canvas4 i_approximateScaledFrameOfEditingMenuAtPoint:{v8, v10}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -932,17 +932,17 @@ LABEL_15:
 
 - (BOOL)p_isConnected
 {
-  v2 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  v3 = [v2 connectedFrom];
-  if (v3)
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  connectedFrom = [connectionLineLayout connectedFrom];
+  if (connectedFrom)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v2 connectedTo];
-    v4 = v5 != 0;
+    connectedTo = [connectionLineLayout connectedTo];
+    v4 = connectedTo != 0;
   }
 
   return v4;
@@ -950,35 +950,35 @@ LABEL_15:
 
 - (BOOL)p_controlKnobVisible
 {
-  v3 = [(CRLConnectionLineRep *)self shouldShowSmartShapeKnobs];
-  if (v3)
+  shouldShowSmartShapeKnobs = [(CRLConnectionLineRep *)self shouldShowSmartShapeKnobs];
+  if (shouldShowSmartShapeKnobs)
   {
     v4 = [(CRLCanvasRep *)self knobForTag:12];
-    v5 = [(CRLCanvasRep *)self canvas];
+    canvas = [(CRLCanvasRep *)self canvas];
     [v4 position];
     [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-    [v5 convertUnscaledToBoundsPoint:?];
+    [canvas convertUnscaledToBoundsPoint:?];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v10 visibleBoundsRect];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController visibleBoundsRect];
     v12.x = v7;
     v12.y = v9;
-    LOBYTE(v5) = CGRectContainsPoint(v13, v12);
+    LOBYTE(canvas) = CGRectContainsPoint(v13, v12);
 
-    LOBYTE(v3) = v5;
+    LOBYTE(shouldShowSmartShapeKnobs) = canvas;
   }
 
-  return v3;
+  return shouldShowSmartShapeKnobs;
 }
 
 - (BOOL)crlaxIsStraightLine
 {
-  v2 = [(CRLConnectionLineRep *)self connectionLineLayout];
-  v3 = [v2 isStraightLine];
+  connectionLineLayout = [(CRLConnectionLineRep *)self connectionLineLayout];
+  isStraightLine = [connectionLineLayout isStraightLine];
 
-  return v3;
+  return isStraightLine;
 }
 
 @end

@@ -2,26 +2,26 @@
 - (NSArray)results;
 - (SUIKSearchResultsCollectionViewControllerDelegate)delegate;
 - (UICollectionViewDiffableDataSource)diffableDataSource;
-- (_SUIKSearchResultsUpdateOperation)initWithResults:(id)a3 diffableDataSource:(id)a4 delegate:(id)a5;
+- (_SUIKSearchResultsUpdateOperation)initWithResults:(id)results diffableDataSource:(id)source delegate:(id)delegate;
 - (void)main;
 @end
 
 @implementation _SUIKSearchResultsUpdateOperation
 
-- (_SUIKSearchResultsUpdateOperation)initWithResults:(id)a3 diffableDataSource:(id)a4 delegate:(id)a5
+- (_SUIKSearchResultsUpdateOperation)initWithResults:(id)results diffableDataSource:(id)source delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = _SUIKSearchResultsUpdateOperation;
   v11 = [(_SUIKSearchResultsUpdateOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_results, v8);
-    objc_storeWeak(&v12->_diffableDataSource, v9);
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v11->_results, resultsCopy);
+    objc_storeWeak(&v12->_diffableDataSource, sourceCopy);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;
@@ -34,20 +34,20 @@
   {
     v3 = objc_alloc_init(MEMORY[0x1E69955A0]);
     objc_initWeak(&location, self);
-    v4 = [(_SUIKSearchResultsUpdateOperation *)self results];
-    v5 = [v4 count] == 0;
+    results = [(_SUIKSearchResultsUpdateOperation *)self results];
+    v5 = [results count] == 0;
 
     v6 = &off_18B103000;
     if (!v5)
     {
       v7 = [MEMORY[0x1E695DFA8] set];
-      v8 = [(_SUIKSearchResultsUpdateOperation *)self results];
+      results2 = [(_SUIKSearchResultsUpdateOperation *)self results];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __41___SUIKSearchResultsUpdateOperation_main__block_invoke;
       v32[3] = &unk_1E71DEB20;
       v32[4] = self;
-      v9 = [v8 na_dictionaryByBucketingObjectsUsingKeyGenerator:v32];
+      v9 = [results2 na_dictionaryByBucketingObjectsUsingKeyGenerator:v32];
 
       if (([(_SUIKSearchResultsUpdateOperation *)self isCancelled]& 1) != 0)
       {
@@ -58,13 +58,13 @@ LABEL_21:
         return;
       }
 
-      v10 = [v9 allKeys];
+      allKeys = [v9 allKeys];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __41___SUIKSearchResultsUpdateOperation_main__block_invoke_2;
       v31[3] = &unk_1E71DEB48;
       v31[4] = self;
-      v20 = [v10 sortedArrayUsingComparator:v31];
+      v20 = [allKeys sortedArrayUsingComparator:v31];
 
       if (([(_SUIKSearchResultsUpdateOperation *)self isCancelled]& 1) != 0)
       {
@@ -144,9 +144,9 @@ LABEL_19:
         }
       }
 
-      v19 = [(_SUIKSearchResultsUpdateOperation *)self isCancelled];
+      isCancelled = [(_SUIKSearchResultsUpdateOperation *)self isCancelled];
       v6 = &off_18B103000;
-      if (v19)
+      if (isCancelled)
       {
         goto LABEL_21;
       }

@@ -13,14 +13,14 @@
 - (id)dp_stringsFromCSVString
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", "}];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v3 = [self componentsSeparatedByCharactersInSet:v2];
 
   return v3;
 }
 
 - (id)dp_numbersFromCSVString
 {
-  v1 = [a1 dp_stringsFromCSVString];
+  dp_stringsFromCSVString = [self dp_stringsFromCSVString];
   v2 = objc_opt_new();
   [v2 setNumberStyle:1];
   v3 = [MEMORY[0x277CBEBF8] mutableCopy];
@@ -32,7 +32,7 @@
   v4 = v3;
   v11 = v4;
   v5 = v2;
-  [v1 enumerateObjectsUsingBlock:v9];
+  [dp_stringsFromCSVString enumerateObjectsUsingBlock:v9];
   v6 = v11;
   v7 = v4;
 
@@ -44,7 +44,7 @@
   v2 = objc_opt_new();
   [v2 setNumberStyle:1];
   v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@""];;
-  v4 = [a1 componentsSeparatedByCharactersInSet:v3];
+  v4 = [self componentsSeparatedByCharactersInSet:v3];
 
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
   v11[0] = MEMORY[0x277D85DD0];
@@ -64,7 +64,7 @@
 
 - (id)dp_bitVectorsFromCSVString
 {
-  v1 = [a1 dp_stringsFromCSVString];
+  dp_stringsFromCSVString = [self dp_stringsFromCSVString];
   v2 = [MEMORY[0x277CBEBF8] mutableCopy];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -72,7 +72,7 @@
   v5[3] = &unk_27858B300;
   v3 = v2;
   v6 = v3;
-  [v1 enumerateObjectsUsingBlock:v5];
+  [dp_stringsFromCSVString enumerateObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -80,7 +80,7 @@
 - (id)dp_floatVectorsFromCSVString
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@""];;
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v3 = [self componentsSeparatedByCharactersInSet:v2];
 
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
   v7[0] = MEMORY[0x277D85DD0];
@@ -96,7 +96,7 @@
 
 - (id)dp_wordRecordsFromCSVString
 {
-  v1 = [a1 dp_stringsFromCSVString];
+  dp_stringsFromCSVString = [self dp_stringsFromCSVString];
   v2 = objc_opt_new();
   [v2 setNumberStyle:1];
   v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@":"];
@@ -111,7 +111,7 @@
   v14 = v5;
   v6 = v2;
   v7 = v3;
-  [v1 enumerateObjectsUsingBlock:v11];
+  [dp_stringsFromCSVString enumerateObjectsUsingBlock:v11];
   v8 = v14;
   v9 = v5;
 
@@ -120,11 +120,11 @@
 
 - (id)dp_dictionaryFromJsonString
 {
-  v1 = [a1 stringByReplacingOccurrencesOfString:@"\\{" withString:@"{"];
+  v1 = [self stringByReplacingOccurrencesOfString:@"\\{" withString:@"{"];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"\\}" withString:@"}"];
 
-  v3 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v4 = [v2 componentsSeparatedByCharactersInSet:v3];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v4 = [v2 componentsSeparatedByCharactersInSet:newlineCharacterSet];
   v5 = [v4 componentsJoinedByString:@" "];
 
   v6 = [v5 dataUsingEncoding:4];

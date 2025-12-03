@@ -1,15 +1,15 @@
 @interface PersonalAudioAudiogramViewController
-- (PersonalAudioAudiogramViewController)initWithAudiograms:(id)a3 andDelegate:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (PersonalAudioAudiogramViewController)initWithAudiograms:(id)audiograms andDelegate:(id)delegate;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (unint64_t)numberOfAudiograms;
 - (void)addAudiogramTapped;
-- (void)audiogramIngestionDidSaveAudiogram:(id)a3;
-- (void)nextButtonTapped:(id)a3;
-- (void)showAudiogramsInHealth:(id)a3;
-- (void)skipButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)audiogramIngestionDidSaveAudiogram:(id)audiogram;
+- (void)nextButtonTapped:(id)tapped;
+- (void)showAudiogramsInHealth:(id)health;
+- (void)skipButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTableViewHeight;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -17,10 +17,10 @@
 
 @implementation PersonalAudioAudiogramViewController
 
-- (PersonalAudioAudiogramViewController)initWithAudiograms:(id)a3 andDelegate:(id)a4
+- (PersonalAudioAudiogramViewController)initWithAudiograms:(id)audiograms andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  audiogramsCopy = audiograms;
+  delegateCopy = delegate;
   v8 = paLocString();
   v9 = paLocString();
   v13.receiver = self;
@@ -29,9 +29,9 @@
 
   if (v10)
   {
-    [(PersonalAudioAudiogramViewController *)v10 setAudiograms:v6];
-    [(PersonalAudioAudiogramViewController *)v10 setDelegate:v7];
-    if ([v6 count])
+    [(PersonalAudioAudiogramViewController *)v10 setAudiograms:audiogramsCopy];
+    [(PersonalAudioAudiogramViewController *)v10 setDelegate:delegateCopy];
+    if ([audiogramsCopy count])
     {
       v11 = [NSIndexPath indexPathForRow:0 inSection:0];
       [(PersonalAudioAudiogramViewController *)v10 setSelectedIndexPath:v11];
@@ -50,8 +50,8 @@
   nextButton = self->_nextButton;
   self->_nextButton = v3;
 
-  v5 = [(PersonalAudioAudiogramViewController *)self buttonTray];
-  [v5 addButton:self->_nextButton];
+  buttonTray = [(PersonalAudioAudiogramViewController *)self buttonTray];
+  [buttonTray addButton:self->_nextButton];
 
   v6 = +[OBLinkTrayButton linkButton];
   linkButton = self->_linkButton;
@@ -62,8 +62,8 @@
   [(OBLinkTrayButton *)v8 setTitle:v9 forState:0];
 
   [(OBLinkTrayButton *)self->_linkButton addTarget:self action:"skipButtonTapped:" forControlEvents:64];
-  v10 = [(PersonalAudioAudiogramViewController *)self buttonTray];
-  [v10 addButton:self->_linkButton];
+  buttonTray2 = [(PersonalAudioAudiogramViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_linkButton];
 
   v11 = paLocString();
   v12 = [PersonalAudioLinkControl linkWithTitle:v11];
@@ -72,8 +72,8 @@
 
   [(PersonalAudioLinkControl *)self->_healthLink setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PersonalAudioLinkControl *)self->_healthLink addTarget:self action:"showAudiogramsInHealth:" forControlEvents:64];
-  v14 = [(PersonalAudioAudiogramViewController *)self contentView];
-  [v14 addSubview:self->_healthLink];
+  contentView = [(PersonalAudioAudiogramViewController *)self contentView];
+  [contentView addSubview:self->_healthLink];
 
   v15 = [[UITableView alloc] initWithFrame:1 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   tableView = self->_tableView;
@@ -89,51 +89,51 @@
   [(UITableView *)self->_tableView setSeparatorStyle:1];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"PAAudiogramHeaderReuseID"];
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [(PersonalAudioAudiogramViewController *)self contentView];
-  [v19 addSubview:self->_tableView];
+  contentView2 = [(PersonalAudioAudiogramViewController *)self contentView];
+  [contentView2 addSubview:self->_tableView];
 
-  v56 = [(PersonalAudioLinkControl *)self->_healthLink topAnchor];
-  v57 = [(PersonalAudioAudiogramViewController *)self contentView];
-  v55 = [v57 topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor = [(PersonalAudioLinkControl *)self->_healthLink topAnchor];
+  contentView3 = [(PersonalAudioAudiogramViewController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[0] = v54;
-  v52 = [(PersonalAudioLinkControl *)self->_healthLink leadingAnchor];
-  v53 = [(PersonalAudioAudiogramViewController *)self contentView];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor = [(PersonalAudioLinkControl *)self->_healthLink leadingAnchor];
+  contentView4 = [(PersonalAudioAudiogramViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[1] = v50;
-  v48 = [(PersonalAudioLinkControl *)self->_healthLink trailingAnchor];
-  v49 = [(PersonalAudioAudiogramViewController *)self contentView];
-  v47 = [v49 trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor = [(PersonalAudioLinkControl *)self->_healthLink trailingAnchor];
+  contentView5 = [(PersonalAudioAudiogramViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[2] = v46;
-  v45 = [(UITableView *)self->_tableView topAnchor];
-  v44 = [(PersonalAudioLinkControl *)self->_healthLink bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor = [(PersonalAudioLinkControl *)self->_healthLink bottomAnchor];
+  v43 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v59[3] = v43;
-  v41 = [(UITableView *)self->_tableView leadingAnchor];
-  v42 = [(PersonalAudioAudiogramViewController *)self view];
-  v40 = [v42 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  view = [(PersonalAudioAudiogramViewController *)self view];
+  leadingAnchor4 = [view leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v59[4] = v39;
-  v20 = [(UITableView *)self->_tableView trailingAnchor];
-  v21 = [(PersonalAudioAudiogramViewController *)self view];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  view2 = [(PersonalAudioAudiogramViewController *)self view];
+  trailingAnchor4 = [view2 trailingAnchor];
+  v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v59[5] = v23;
-  v24 = [(UITableView *)self->_tableView bottomAnchor];
-  v25 = [(PersonalAudioAudiogramViewController *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  bottomAnchor2 = [(UITableView *)self->_tableView bottomAnchor];
+  contentView6 = [(PersonalAudioAudiogramViewController *)self contentView];
+  bottomAnchor3 = [contentView6 bottomAnchor];
+  v27 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v59[6] = v27;
   v28 = [NSArray arrayWithObjects:v59 count:7];
   [NSLayoutConstraint activateConstraints:v28];
 
   [(PersonalAudioAudiogramViewController *)self updateTableViewHeight];
-  v29 = [(PersonalAudioAudiogramViewController *)self audiograms];
-  v30 = [v29 count];
+  audiograms = [(PersonalAudioAudiogramViewController *)self audiograms];
+  v30 = [audiograms count];
 
-  v31 = [(PersonalAudioAudiogramViewController *)self headerView];
+  headerView = [(PersonalAudioAudiogramViewController *)self headerView];
   if (v30)
   {
     v32 = &selRef_nextButtonTapped_;
@@ -145,19 +145,19 @@
   }
 
   v33 = paLocString();
-  [v31 setTitle:v33];
+  [headerView setTitle:v33];
 
-  v34 = [(PersonalAudioAudiogramViewController *)self headerView];
+  headerView2 = [(PersonalAudioAudiogramViewController *)self headerView];
   v35 = paLocString();
-  [v34 setDetailText:v35];
+  [headerView2 setDetailText:v35];
 
   v36 = self->_nextButton;
   v37 = paLocString();
   [(OBTrayButton *)v36 setTitle:v37 forState:0];
 
   [(OBTrayButton *)self->_nextButton addTarget:self action:*v32 forControlEvents:64];
-  v38 = [(PersonalAudioAudiogramViewController *)self scrollView];
-  [v38 _addScrollViewScrollObserver:self];
+  scrollView = [(PersonalAudioAudiogramViewController *)self scrollView];
+  [scrollView _addScrollViewScrollObserver:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -178,8 +178,8 @@
     [(NSLayoutConstraint *)tableViewHeightConstraint constant];
     if (v4 != v6)
     {
-      v11 = [(PersonalAudioAudiogramViewController *)self tableViewHeightConstraint];
-      [v11 setConstant:v4];
+      tableViewHeightConstraint = [(PersonalAudioAudiogramViewController *)self tableViewHeightConstraint];
+      [tableViewHeightConstraint setConstant:v4];
     }
   }
 
@@ -195,27 +195,27 @@
   }
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
-  v4 = [(PersonalAudioAudiogramViewController *)self audiograms];
-  v5 = [v4 count];
-  v6 = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
-  v7 = ~[v6 row];
+  audiograms = [(PersonalAudioAudiogramViewController *)self audiograms];
+  v5 = [audiograms count];
+  selectedIndexPath = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
+  v7 = ~[selectedIndexPath row];
 
-  v8 = [(PersonalAudioAudiogramViewController *)self audiograms];
-  v10 = [v8 objectAtIndex:&v5[v7]];
+  audiograms2 = [(PersonalAudioAudiogramViewController *)self audiograms];
+  v10 = [audiograms2 objectAtIndex:&v5[v7]];
 
-  v9 = [(PersonalAudioAudiogramViewController *)self delegate];
-  [v9 didSelectAudiogram:v10];
+  delegate = [(PersonalAudioAudiogramViewController *)self delegate];
+  [delegate didSelectAudiogram:v10];
 }
 
-- (void)skipButtonTapped:(id)a3
+- (void)skipButtonTapped:(id)tapped
 {
-  v3 = [(PersonalAudioAudiogramViewController *)self delegate];
-  [v3 didSelectAudiogram:0];
+  delegate = [(PersonalAudioAudiogramViewController *)self delegate];
+  [delegate didSelectAudiogram:0];
 }
 
-- (void)showAudiogramsInHealth:(id)a3
+- (void)showAudiogramsInHealth:(id)health
 {
   v4 = [NSURL URLWithString:@"x-apple-health://SampleType/HKDataTypeIdentifierAudiogram"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -231,8 +231,8 @@
 
 - (unint64_t)numberOfAudiograms
 {
-  v2 = [(PersonalAudioAudiogramViewController *)self audiograms];
-  v3 = [v2 count];
+  audiograms = [(PersonalAudioAudiogramViewController *)self audiograms];
+  v3 = [audiograms count];
 
   if (v3 >= 3)
   {
@@ -245,23 +245,23 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PersonalAudioAudiogramViewController *)self audiograms];
-  v4 = [v3 count] != 0;
+  audiograms = [(PersonalAudioAudiogramViewController *)self audiograms];
+  v4 = [audiograms count] != 0;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_new();
-  v9 = [(PersonalAudioAudiogramViewController *)self numberOfAudiograms];
-  if ([v6 row] >= v9)
+  numberOfAudiograms = [(PersonalAudioAudiogramViewController *)self numberOfAudiograms];
+  if ([pathCopy row] >= numberOfAudiograms)
   {
-    v10 = [v7 dequeueReusableCellWithIdentifier:@"PAAddAudiogramCellReuseID"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"PAAddAudiogramCellReuseID"];
 
     if (v10)
     {
@@ -269,57 +269,57 @@
     }
 
     v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PAAddAudiogramCellReuseID"];
-    v24 = [v10 textLabel];
+    textLabel = [v10 textLabel];
     v25 = paLocString();
-    [v24 setText:v25];
+    [textLabel setText:v25];
 
-    v26 = [v10 textLabel];
+    textLabel2 = [v10 textLabel];
     v27 = +[UIColor systemBlueColor];
-    [v26 setTextColor:v27];
+    [textLabel2 setTextColor:v27];
 
-    v28 = [v10 imageView];
+    imageView = [v10 imageView];
     v29 = [v10 _checkmarkImage:0];
-    [v28 setImage:v29];
+    [imageView setImage:v29];
 
-    v20 = [v10 imageView];
-    [v20 setHidden:1];
+    imageView2 = [v10 imageView];
+    [imageView2 setHidden:1];
   }
 
   else
   {
-    v10 = [v7 dequeueReusableCellWithIdentifier:@"PAAudiogramCellReuseID"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"PAAudiogramCellReuseID"];
 
     if (!v10)
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PAAudiogramCellReuseID"];
-      v11 = [v10 imageView];
-      [v11 setContentMode:1];
+      imageView3 = [v10 imageView];
+      [imageView3 setContentMode:1];
 
-      v12 = [v10 imageView];
+      imageView4 = [v10 imageView];
       v13 = [v10 _checkmarkImage:0];
-      [v12 setImage:v13];
+      [imageView4 setImage:v13];
 
-      v14 = [v10 imageView];
-      v15 = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
-      [v14 setHidden:v15 != v6];
+      imageView5 = [v10 imageView];
+      selectedIndexPath = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
+      [imageView5 setHidden:selectedIndexPath != pathCopy];
     }
 
-    v16 = [(PersonalAudioAudiogramViewController *)self audiograms];
-    v17 = [v16 count];
-    v18 = ~[v6 row];
+    audiograms = [(PersonalAudioAudiogramViewController *)self audiograms];
+    v17 = [audiograms count];
+    v18 = ~[pathCopy row];
 
-    v19 = [(PersonalAudioAudiogramViewController *)self audiograms];
-    v20 = [v19 objectAtIndex:&v17[v18]];
+    audiograms2 = [(PersonalAudioAudiogramViewController *)self audiograms];
+    imageView2 = [audiograms2 objectAtIndex:&v17[v18]];
 
-    v21 = [v20 startDate];
-    if (!v21)
+    startDate = [imageView2 startDate];
+    if (!startDate)
     {
-      v21 = +[NSDate date];
+      startDate = +[NSDate date];
     }
 
-    v22 = [v10 textLabel];
-    v23 = [NSDateFormatter localizedStringFromDate:v21 dateStyle:3 timeStyle:0];
-    [v22 setText:v23];
+    textLabel3 = [v10 textLabel];
+    v23 = [NSDateFormatter localizedStringFromDate:startDate dateStyle:3 timeStyle:0];
+    [textLabel3 setText:v23];
   }
 
 LABEL_10:
@@ -327,22 +327,22 @@ LABEL_10:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"PAAudiogramHeaderReuseID", a4}];
-  v5 = [v4 contentView];
+  v4 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"PAAudiogramHeaderReuseID", section}];
+  contentView = [v4 contentView];
   v6 = +[UIColor systemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  [contentView setBackgroundColor:v6];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [pathCopy row];
   if (v8 >= [(PersonalAudioAudiogramViewController *)self numberOfAudiograms])
   {
     [(PersonalAudioAudiogramViewController *)self addAudiogramTapped];
@@ -350,25 +350,25 @@ LABEL_10:
 
   else
   {
-    v9 = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
+    selectedIndexPath = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
 
-    if (v9 != v7)
+    if (selectedIndexPath != pathCopy)
     {
-      v10 = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
-      [(PersonalAudioAudiogramViewController *)self setSelectedIndexPath:v7];
-      v12[0] = v10;
-      v12[1] = v7;
+      selectedIndexPath2 = [(PersonalAudioAudiogramViewController *)self selectedIndexPath];
+      [(PersonalAudioAudiogramViewController *)self setSelectedIndexPath:pathCopy];
+      v12[0] = selectedIndexPath2;
+      v12[1] = pathCopy;
       v11 = [NSArray arrayWithObjects:v12 count:2];
-      [v6 reloadRowsAtIndexPaths:v11 withRowAnimation:100];
+      [viewCopy reloadRowsAtIndexPaths:v11 withRowAnimation:100];
     }
   }
 }
 
-- (void)audiogramIngestionDidSaveAudiogram:(id)a3
+- (void)audiogramIngestionDidSaveAudiogram:(id)audiogram
 {
-  v4 = a3;
-  v5 = [(PersonalAudioAudiogramViewController *)self delegate];
-  [v5 didSelectAudiogram:v4];
+  audiogramCopy = audiogram;
+  delegate = [(PersonalAudioAudiogramViewController *)self delegate];
+  [delegate didSelectAudiogram:audiogramCopy];
 }
 
 @end

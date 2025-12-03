@@ -1,9 +1,9 @@
 @interface BKSContextRelativePoint
-- (BKSContextRelativePoint)initWithBSXPCCoder:(id)a3;
-- (BKSContextRelativePoint)initWithPoint:(CGPoint)a3 contextID:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
+- (BKSContextRelativePoint)initWithBSXPCCoder:(id)coder;
+- (BKSContextRelativePoint)initWithPoint:(CGPoint)point contextID:(unsigned int)d;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)point;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BKSContextRelativePoint
@@ -17,30 +17,30 @@
   return result;
 }
 
-- (BKSContextRelativePoint)initWithBSXPCCoder:(id)a3
+- (BKSContextRelativePoint)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeCGPointForKey:@"point"];
+  coderCopy = coder;
+  [coderCopy decodeCGPointForKey:@"point"];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 decodeInt64ForKey:@"contextID"];
+  v9 = [coderCopy decodeInt64ForKey:@"contextID"];
 
   return [(BKSContextRelativePoint *)self initWithPoint:v9 contextID:v6, v8];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   x = self->_point.x;
   y = self->_point.y;
-  v6 = a3;
-  [v6 encodeCGPoint:@"point" forKey:{x, y}];
-  [v6 encodeInt64:self->_contextID forKey:@"contextID"];
+  coderCopy = coder;
+  [coderCopy encodeCGPoint:@"point" forKey:{x, y}];
+  [coderCopy encodeInt64:self->_contextID forKey:@"contextID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -48,10 +48,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(BKSContextRelativePoint *)self contextID], v5 == [(BKSContextRelativePoint *)v4 contextID]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(BKSContextRelativePoint *)self contextID], v5 == [(BKSContextRelativePoint *)equalCopy contextID]))
     {
       [(BKSContextRelativePoint *)self point];
-      [(BKSContextRelativePoint *)v4 point];
+      [(BKSContextRelativePoint *)equalCopy point];
       v6 = BSPointEqualToPoint();
     }
 
@@ -64,10 +64,10 @@
   return v6;
 }
 
-- (BKSContextRelativePoint)initWithPoint:(CGPoint)a3 contextID:(unsigned int)a4
+- (BKSContextRelativePoint)initWithPoint:(CGPoint)point contextID:(unsigned int)d
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8.receiver = self;
   v8.super_class = BKSContextRelativePoint;
   result = [(BKSContextRelativePoint *)&v8 init];
@@ -75,7 +75,7 @@
   {
     result->_point.x = x;
     result->_point.y = y;
-    result->_contextID = a4;
+    result->_contextID = d;
   }
 
   return result;

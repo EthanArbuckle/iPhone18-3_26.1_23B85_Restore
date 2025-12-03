@@ -1,44 +1,44 @@
 @interface _UICommandItemInsertion
-+ (id)insertionWithAnchor:(id)a3 fallbacks:(id)a4 insertsBefore:(id)a5 insertsAfter:(id)a6;
-- (BOOL)acceptBoolItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6;
-- (_UICommandItemInsertion)initWithAnchor:(id)a3 fallbacks:(id)a4 insertsBefore:(id)a5 insertsAfter:(id)a6;
-- (_UICommandItemInsertion)initWithCoder:(id)a3;
-- (void)acceptItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)insertionWithAnchor:(id)anchor fallbacks:(id)fallbacks insertsBefore:(id)before insertsAfter:(id)after;
+- (BOOL)acceptBoolItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit;
+- (_UICommandItemInsertion)initWithAnchor:(id)anchor fallbacks:(id)fallbacks insertsBefore:(id)before insertsAfter:(id)after;
+- (_UICommandItemInsertion)initWithCoder:(id)coder;
+- (void)acceptItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICommandItemInsertion
 
-+ (id)insertionWithAnchor:(id)a3 fallbacks:(id)a4 insertsBefore:(id)a5 insertsAfter:(id)a6
++ (id)insertionWithAnchor:(id)anchor fallbacks:(id)fallbacks insertsBefore:(id)before insertsAfter:(id)after
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_UICommandItemInsertion alloc] initWithAnchor:v12 fallbacks:v11 insertsBefore:v10 insertsAfter:v9];
+  afterCopy = after;
+  beforeCopy = before;
+  fallbacksCopy = fallbacks;
+  anchorCopy = anchor;
+  v13 = [[_UICommandItemInsertion alloc] initWithAnchor:anchorCopy fallbacks:fallbacksCopy insertsBefore:beforeCopy insertsAfter:afterCopy];
 
   return v13;
 }
 
-- (_UICommandItemInsertion)initWithAnchor:(id)a3 fallbacks:(id)a4 insertsBefore:(id)a5 insertsAfter:(id)a6
+- (_UICommandItemInsertion)initWithAnchor:(id)anchor fallbacks:(id)fallbacks insertsBefore:(id)before insertsAfter:(id)after
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  fallbacksCopy = fallbacks;
+  beforeCopy = before;
+  afterCopy = after;
   v21.receiver = self;
   v21.super_class = _UICommandItemInsertion;
-  v13 = [(_UICommandChange *)&v21 initWithAnchor:a3];
+  v13 = [(_UICommandChange *)&v21 initWithAnchor:anchor];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [fallbacksCopy copy];
     fallbacks = v13->_fallbacks;
     v13->_fallbacks = v14;
 
-    v16 = [v11 copy];
+    v16 = [beforeCopy copy];
     insertsBefore = v13->_insertsBefore;
     v13->_insertsBefore = v16;
 
-    v18 = [v12 copy];
+    v18 = [afterCopy copy];
     insertsAfter = v13->_insertsAfter;
     v13->_insertsAfter = v18;
   }
@@ -46,18 +46,18 @@
   return v13;
 }
 
-- (_UICommandItemInsertion)initWithCoder:(id)a3
+- (_UICommandItemInsertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = _UICommandItemInsertion;
-  v5 = [(_UICommandChange *)&v24 initWithCoder:v4];
+  v5 = [(_UICommandChange *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"fallbacks"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"fallbacks"];
     fallbacks = v5->_fallbacks;
     v5->_fallbacks = v9;
 
@@ -65,7 +65,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"insertsBefore"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"insertsBefore"];
     insertsBefore = v5->_insertsBefore;
     v5->_insertsBefore = v15;
 
@@ -73,7 +73,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v17 setWithObjects:{v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"insertsAfter"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"insertsAfter"];
     insertsAfter = v5->_insertsAfter;
     v5->_insertsAfter = v21;
   }
@@ -81,19 +81,19 @@
   return v5;
 }
 
-- (void)acceptItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6
+- (void)acceptItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit
 {
-  if (a3)
+  if (visit)
   {
-    (*(a3 + 2))(a3, self);
+    (*(visit + 2))(visit, self);
   }
 }
 
-- (BOOL)acceptBoolItemInsertionVisit:(id)a3 itemDeletionVisit:(id)a4 menuInsertionVisit:(id)a5 menuDeletionVisit:(id)a6
+- (BOOL)acceptBoolItemInsertionVisit:(id)visit itemDeletionVisit:(id)deletionVisit menuInsertionVisit:(id)insertionVisit menuDeletionVisit:(id)menuDeletionVisit
 {
-  if (a3)
+  if (visit)
   {
-    return (*(a3 + 2))(a3, self);
+    return (*(visit + 2))(visit, self);
   }
 
   else
@@ -102,15 +102,15 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICommandItemInsertion;
-  v4 = a3;
-  [(_UICommandChange *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fallbacks forKey:{@"fallbacks", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_insertsBefore forKey:@"insertsBefore"];
-  [v4 encodeObject:self->_insertsAfter forKey:@"insertsAfter"];
+  coderCopy = coder;
+  [(_UICommandChange *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fallbacks forKey:{@"fallbacks", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_insertsBefore forKey:@"insertsBefore"];
+  [coderCopy encodeObject:self->_insertsAfter forKey:@"insertsAfter"];
 }
 
 @end

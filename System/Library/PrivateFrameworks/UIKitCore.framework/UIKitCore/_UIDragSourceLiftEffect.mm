@@ -1,10 +1,10 @@
 @interface _UIDragSourceLiftEffect
 - (_UIDragSourceLiftEffect)init;
-- (void)_addworkaroundForPropertyAnimator:(id)a3 inView:(id)a4;
-- (void)_installInteractionPlattersForOperation:(id)a3;
-- (void)_setInteractionEffectsLifted:(BOOL)a3 withOperation:(id)a4;
-- (void)_uninstallInteractionPlattersForOperation:(id)a3;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)_addworkaroundForPropertyAnimator:(id)animator inView:(id)view;
+- (void)_installInteractionPlattersForOperation:(id)operation;
+- (void)_setInteractionEffectsLifted:(BOOL)lifted withOperation:(id)operation;
+- (void)_uninstallInteractionPlattersForOperation:(id)operation;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation _UIDragSourceLiftEffect
@@ -16,9 +16,9 @@
   v2 = [(_UIDragSourceLiftEffect *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     liftOperationByContext = v2->_liftOperationByContext;
-    v2->_liftOperationByContext = v3;
+    v2->_liftOperationByContext = strongToStrongObjectsMapTable;
 
     v2->_scrollCancelling = 0;
   }
@@ -26,14 +26,14 @@
   return v2;
 }
 
-- (void)_addworkaroundForPropertyAnimator:(id)a3 inView:(id)a4
+- (void)_addworkaroundForPropertyAnimator:(id)animator inView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  animatorCopy = animator;
   v7 = [[UIView alloc] initWithFrame:-500.0, -500.0, 0.0, 0.0];
   [(UIView *)v7 setUserInteractionEnabled:0];
   [(UIView *)v7 setAlpha:0.0];
-  [v5 addSubview:v7];
+  [viewCopy addSubview:v7];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -41,25 +41,25 @@
   v12[3] = &unk_1E70F3590;
   v8 = v7;
   v13 = v8;
-  [v6 addAnimations:v12];
+  [animatorCopy addAnimations:v12];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68___UIDragSourceLiftEffect__addworkaroundForPropertyAnimator_inView___block_invoke_3;
   v10[3] = &unk_1E70F5DB8;
   v11 = v8;
   v9 = v8;
-  [v6 addCompletion:v10];
+  [animatorCopy addCompletion:v10];
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 state];
-  v9 = [(NSMapTable *)self->_liftOperationByContext objectForKey:v7];
+  interactionCopy = interaction;
+  contextCopy = context;
+  state = [contextCopy state];
+  v9 = [(NSMapTable *)self->_liftOperationByContext objectForKey:contextCopy];
   if (!v9)
   {
-    if (!v8)
+    if (!state)
     {
       v9 = 0;
       goto LABEL_16;
@@ -68,88 +68,88 @@
     v10 = [_UIDragLiftEffectOperation alloc];
     [(_UIDragSourceLiftEffect *)self liftAnimationDuration];
     v12 = v11;
-    v13 = [(_UIDragSourceLiftEffect *)self liftTimingParameters];
-    v9 = [(_UIDragLiftEffectOperation *)v10 initWithLiftAnimationDuration:v13 liftTimingParameters:v12];
+    liftTimingParameters = [(_UIDragSourceLiftEffect *)self liftTimingParameters];
+    v9 = [(_UIDragLiftEffectOperation *)v10 initWithLiftAnimationDuration:liftTimingParameters liftTimingParameters:v12];
 
-    [(_UIDragLiftEffectOperation *)v9 setContext:v7];
-    [(_UIDragLiftEffectOperation *)v9 setInteraction:v6];
-    v14 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
+    [(_UIDragLiftEffectOperation *)v9 setContext:contextCopy];
+    [(_UIDragLiftEffectOperation *)v9 setInteraction:interactionCopy];
+    propertyAnimator = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __60___UIDragSourceLiftEffect_interaction_didChangeWithContext___block_invoke;
     v26[3] = &unk_1E70F3590;
-    v15 = v7;
+    v15 = contextCopy;
     v27 = v15;
-    [v14 addAnimations:v26];
+    [propertyAnimator addAnimations:v26];
 
-    v16 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
-    v17 = [v15 completion];
-    [v16 addCompletion:v17];
+    propertyAnimator2 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
+    completion = [v15 completion];
+    [propertyAnimator2 addCompletion:completion];
 
-    v18 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
-    v19 = [v6 view];
-    v20 = [v19 _window];
-    [(_UIDragSourceLiftEffect *)self _addworkaroundForPropertyAnimator:v18 inView:v20];
+    propertyAnimator3 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
+    view = [interactionCopy view];
+    _window = [view _window];
+    [(_UIDragSourceLiftEffect *)self _addworkaroundForPropertyAnimator:propertyAnimator3 inView:_window];
 
     [(NSMapTable *)self->_liftOperationByContext setObject:v9 forKey:v15];
   }
 
-  switch(v8)
+  switch(state)
   {
     case 2:
       [(_UIDragSourceLiftEffect *)self _uninstallInteractionPlattersForOperation:v9];
-      v25 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
-      if ([v25 state])
+      propertyAnimator4 = [(_UIDragLiftEffectOperation *)v9 propertyAnimator];
+      if ([propertyAnimator4 state])
       {
-        [v25 setPausesOnCompletion:0];
-        [v25 stopAnimation:0];
-        [v25 finishAnimationAtPosition:0];
+        [propertyAnimator4 setPausesOnCompletion:0];
+        [propertyAnimator4 stopAnimation:0];
+        [propertyAnimator4 finishAnimationAtPosition:0];
       }
 
       break;
     case 1:
-      v23 = [(_UIDragLiftEffectOperation *)v9 context];
-      v24 = [v23 shouldAnimateLift];
+      context = [(_UIDragLiftEffectOperation *)v9 context];
+      shouldAnimateLift = [context shouldAnimateLift];
 
-      if (v24)
+      if (shouldAnimateLift)
       {
         [(_UIDragSourceLiftEffect *)self _installInteractionPlattersForOperation:v9];
       }
 
-      v21 = self;
+      selfCopy2 = self;
       v22 = 1;
       goto LABEL_11;
     case 0:
-      v21 = self;
+      selfCopy2 = self;
       v22 = 0;
 LABEL_11:
-      [(_UIDragSourceLiftEffect *)v21 _setInteractionEffectsLifted:v22 withOperation:v9];
+      [(_UIDragSourceLiftEffect *)selfCopy2 _setInteractionEffectsLifted:v22 withOperation:v9];
       break;
   }
 
 LABEL_16:
 }
 
-- (void)_installInteractionPlattersForOperation:(id)a3
+- (void)_installInteractionPlattersForOperation:(id)operation
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 items];
+  operationCopy = operation;
+  items = [operationCopy items];
 
-  if (!v5)
+  if (!items)
   {
-    v43 = self;
+    selfCopy = self;
     v47 = objc_opt_new();
     v6 = objc_opt_new();
-    v44 = v4;
-    v7 = [v4 context];
-    v8 = [v7 items];
+    v44 = operationCopy;
+    context = [operationCopy context];
+    items2 = [context items];
 
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = v8;
+    obj = items2;
     v9 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v9)
     {
@@ -169,87 +169,87 @@ LABEL_16:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v56 + 1) + 8 * v13) _targetedLiftPreview];
-          v15 = [v14 view];
-          if (v15 && ([v6 containsObject:v15] & 1) == 0)
+          _targetedLiftPreview = [*(*(&v56 + 1) + 8 * v13) _targetedLiftPreview];
+          view = [_targetedLiftPreview view];
+          if (view && ([v6 containsObject:view] & 1) == 0)
           {
-            [v6 addObject:v15];
-            v16 = [v15 window];
+            [v6 addObject:view];
+            window = [view window];
 
-            if (!v16)
+            if (!window)
             {
-              v17 = [v14 target];
-              v18 = [v17 container];
-              [v18 addSubview:v15];
+              target = [_targetedLiftPreview target];
+              container = [target container];
+              [container addSubview:view];
             }
 
-            v19 = [v14 _duiPreview];
-            v20 = [[_UIPlatterView alloc] initWithDUIPreview:v19 imageComponent:0 sourceView:v15];
+            _duiPreview = [_targetedLiftPreview _duiPreview];
+            v20 = [[_UIPlatterView alloc] initWithDUIPreview:_duiPreview imageComponent:0 sourceView:view];
             [(UIView *)v20 setUserInteractionEnabled:0];
-            [(_UIPlatterView *)v20 setSourceView:v15];
-            v21 = [v14 parameters];
-            v22 = [v21 _previewMode];
+            [(_UIPlatterView *)v20 setSourceView:view];
+            parameters = [_targetedLiftPreview parameters];
+            _previewMode = [parameters _previewMode];
 
             v23 = 0.1;
-            if (v22 != 1)
+            if (_previewMode != 1)
             {
-              [v19 liftAlpha];
+              [_duiPreview liftAlpha];
             }
 
-            v50 = v19;
+            v50 = _duiPreview;
             [(UIView *)v20 setAlpha:v23];
             [(_UIPlatterView *)v20 setAppliesOriginalRotation:1];
-            v24 = [v14 target];
-            v25 = [v24 container];
+            target2 = [_targetedLiftPreview target];
+            container2 = [target2 container];
 
-            [(_UIPlatterView *)v20 takeCounterTransformsToAddToContainer:v25];
-            v26 = [v14 _previewContainer];
-            if (v26)
+            [(_UIPlatterView *)v20 takeCounterTransformsToAddToContainer:container2];
+            _previewContainer = [_targetedLiftPreview _previewContainer];
+            if (_previewContainer)
             {
               [(UIView *)v20 bounds];
-              [v26 setBounds:?];
-              v27 = [v14 target];
-              [v27 center];
-              [v26 setCenter:?];
+              [_previewContainer setBounds:?];
+              target3 = [_targetedLiftPreview target];
+              [target3 center];
+              [_previewContainer setCenter:?];
 
-              [v25 addSubview:v26];
-              v28 = [(_UIPlatterView *)v20 sourceView];
+              [container2 addSubview:_previewContainer];
+              sourceView = [(_UIPlatterView *)v20 sourceView];
               v29 = *(MEMORY[0x1E695EFD0] + 16);
               v55[0] = *MEMORY[0x1E695EFD0];
               v55[1] = v29;
               v55[2] = *(MEMORY[0x1E695EFD0] + 32);
-              [v26 _preparePreviewContainerWithPreview:v20 source:v28 initialTransform:v55];
+              [_previewContainer _preparePreviewContainerWithPreview:v20 source:sourceView initialTransform:v55];
 
-              v30 = [v15 layer];
-              [v30 zPosition];
+              layer = [view layer];
+              [layer zPosition];
               v32 = v31 + 1.0 + v11;
-              [v26 layer];
+              [_previewContainer layer];
               v34 = v33 = v11;
               [v34 setZPosition:v32];
             }
 
             else
             {
-              [v15 layer];
+              [view layer];
               v35 = v33 = v11;
               [v35 zPosition];
               v37 = v36 + 1.0 + v33;
-              v38 = [(UIView *)v20 layer];
-              [v38 setZPosition:v37];
+              layer2 = [(UIView *)v20 layer];
+              [layer2 setZPosition:v37];
 
-              v39 = [v14 target];
-              [v39 center];
+              target4 = [_targetedLiftPreview target];
+              [target4 center];
               [(UIView *)v20 setCenter:?];
 
-              [v25 addSubview:v20];
+              [container2 addSubview:v20];
             }
 
             [(UIView *)v20 layoutIfNeeded];
             v40 = objc_opt_new();
-            [v40 setPreviewContainer:v26];
+            [v40 setPreviewContainer:_previewContainer];
             [v40 setPlatterView:v20];
-            [v40 setTargetedPreview:v14];
-            [v40 setSourceViewWasAdded:v16 == 0];
+            [v40 setTargetedPreview:_targetedLiftPreview];
+            [v40 setSourceViewWasAdded:window == 0];
             [v50 liftAlpha];
             [v40 setLiftAlpha:?];
             [v47 addObject:v40];
@@ -270,36 +270,36 @@ LABEL_16:
       while (v10);
     }
 
-    v4 = v44;
+    operationCopy = v44;
     [v44 setItems:v47];
-    v41 = [v44 propertyAnimator];
+    propertyAnimator = [v44 propertyAnimator];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __67___UIDragSourceLiftEffect__installInteractionPlattersForOperation___block_invoke;
     v53[3] = &unk_1E70F3590;
     v42 = v44;
     v54 = v42;
-    [v41 addAnimations:v53];
+    [propertyAnimator addAnimations:v53];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __67___UIDragSourceLiftEffect__installInteractionPlattersForOperation___block_invoke_3;
     v51[3] = &unk_1E71003B0;
-    v51[4] = v43;
+    v51[4] = selfCopy;
     v52 = v42;
-    [v41 addCompletion:v51];
+    [propertyAnimator addCompletion:v51];
   }
 }
 
-- (void)_uninstallInteractionPlattersForOperation:(id)a3
+- (void)_uninstallInteractionPlattersForOperation:(id)operation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operationCopy = operation;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 items];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  items = [operationCopy items];
+  v6 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -310,13 +310,13 @@ LABEL_16:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 previewContainer];
+        previewContainer = [v10 previewContainer];
 
-        if (v11)
+        if (previewContainer)
         {
           [v10 previewContainer];
         }
@@ -328,105 +328,105 @@ LABEL_16:
         v12 = ;
         [v12 removeFromSuperview];
 
-        v13 = [v10 targetedPreview];
-        v14 = [v13 view];
+        targetedPreview = [v10 targetedPreview];
+        view = [targetedPreview view];
 
         if ([v10 sourceViewWasAdded])
         {
-          [v14 removeFromSuperview];
+          [view removeFromSuperview];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  [v4 setItems:0];
+  [operationCopy setItems:0];
   liftOperationByContext = self->_liftOperationByContext;
-  v16 = [v4 context];
-  [(NSMapTable *)liftOperationByContext removeObjectForKey:v16];
+  context = [operationCopy context];
+  [(NSMapTable *)liftOperationByContext removeObjectForKey:context];
 }
 
-- (void)_setInteractionEffectsLifted:(BOOL)a3 withOperation:(id)a4
+- (void)_setInteractionEffectsLifted:(BOOL)lifted withOperation:(id)operation
 {
-  v4 = a3;
-  v15 = a4;
-  v6 = [v15 context];
-  v7 = [v15 propertyAnimator];
-  v8 = [v6 shouldAnimateLift];
-  if ([v6 state])
+  liftedCopy = lifted;
+  operationCopy = operation;
+  context = [operationCopy context];
+  propertyAnimator = [operationCopy propertyAnimator];
+  shouldAnimateLift = [context shouldAnimateLift];
+  if ([context state])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v4;
+    v9 = liftedCopy;
   }
 
-  if (v8)
+  if (shouldAnimateLift)
   {
     if (v9)
     {
-      if (v4)
+      if (liftedCopy)
       {
-        [v7 setPausesOnCompletion:1];
-        if ([v7 isReversed])
+        [propertyAnimator setPausesOnCompletion:1];
+        if ([propertyAnimator isReversed])
         {
-          if ([v7 isRunning])
+          if ([propertyAnimator isRunning])
           {
-            [v7 pauseAnimation];
+            [propertyAnimator pauseAnimation];
           }
 
-          [v7 setReversed:0];
-          v10 = [v7 timingParameters];
-          [v7 continueAnimationWithTimingParameters:v10 durationFactor:1.0];
+          [propertyAnimator setReversed:0];
+          timingParameters = [propertyAnimator timingParameters];
+          [propertyAnimator continueAnimationWithTimingParameters:timingParameters durationFactor:1.0];
         }
 
         else
         {
-          [v7 startAnimation];
+          [propertyAnimator startAnimation];
         }
       }
     }
 
     else
     {
-      [v7 setPausesOnCompletion:0];
-      if ([v7 isRunning])
+      [propertyAnimator setPausesOnCompletion:0];
+      if ([propertyAnimator isRunning])
       {
-        [v7 pauseAnimation];
+        [propertyAnimator pauseAnimation];
       }
 
-      [v7 setReversed:1];
-      v11 = [v7 timingParameters];
-      v12 = [(_UIDragSourceLiftEffect *)self reversedTimingParametersForTimingParameters:v11];
+      [propertyAnimator setReversed:1];
+      timingParameters2 = [propertyAnimator timingParameters];
+      v12 = [(_UIDragSourceLiftEffect *)self reversedTimingParametersForTimingParameters:timingParameters2];
 
-      [v7 continueAnimationWithTimingParameters:v12 durationFactor:1.0];
+      [propertyAnimator continueAnimationWithTimingParameters:v12 durationFactor:1.0];
       [(_UIDragSourceLiftEffect *)self setScrollCancelling:0];
-      v13 = [v15 items];
-      v14 = [v13 count];
+      items = [operationCopy items];
+      v14 = [items count];
 
       if (!v14)
       {
-        [v7 stopAnimation:0];
-        [v7 finishAnimationAtPosition:1];
+        [propertyAnimator stopAnimation:0];
+        [propertyAnimator finishAnimationAtPosition:1];
       }
     }
   }
 
   else if (v9)
   {
-    [v7 pauseAnimation];
+    [propertyAnimator pauseAnimation];
   }
 
   else
   {
-    [v7 stopAnimation:0];
-    [v7 finishAnimationAtPosition:1];
-    [(_UIDragSourceLiftEffect *)self _uninstallInteractionPlattersForOperation:v15];
+    [propertyAnimator stopAnimation:0];
+    [propertyAnimator finishAnimationAtPosition:1];
+    [(_UIDragSourceLiftEffect *)self _uninstallInteractionPlattersForOperation:operationCopy];
   }
 }
 

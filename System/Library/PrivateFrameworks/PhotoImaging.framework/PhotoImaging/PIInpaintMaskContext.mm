@@ -1,22 +1,22 @@
 @interface PIInpaintMaskContext
-+ (id)_createSubjectMaskFromBuffer:(id)a3 digest:(id)a4 ciContext:(id)a5 fullImageSize:(id)a6;
++ (id)_createSubjectMaskFromBuffer:(id)buffer digest:(id)digest ciContext:(id)context fullImageSize:(id)size;
 - ($721907E0E1CDE8B6CD3FA271A8B25860)fullImageExtent;
-- (PIInpaintMaskContext)initWithSegmentationResult:(id)a3 composition:(id)a4 subjectMaskBuffer:(id)a5 detectedFaces:(id)a6 fullImageExtent:(id *)a7 assetIdentifier:(id)a8 requestID:(id)a9 initialSensitivityScore:(double)a10 livePhotoKeyFrameTime:(id *)a11;
-- (id)_foregroundOperationsFromComposition:(id)a3 subjectMaskBuffer:(id)a4;
+- (PIInpaintMaskContext)initWithSegmentationResult:(id)result composition:(id)composition subjectMaskBuffer:(id)buffer detectedFaces:(id)faces fullImageExtent:(id *)extent assetIdentifier:(id)identifier requestID:(id)d initialSensitivityScore:(double)self0 livePhotoKeyFrameTime:(id *)self1;
+- (id)_foregroundOperationsFromComposition:(id)composition subjectMaskBuffer:(id)buffer;
 - (id)debugDescription;
-- (id)subjectMaskDigestForComposition:(id)a3 subjectMaskBuffer:(id)a4;
-- (void)_resetForComposition:(id)a3 requestID:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)_updatePropertiesFromContext:(id)a3;
-- (void)setLivePhotoKeyFrameTime:(id *)a3;
-- (void)updateSubjectMaskBufferIfNeededForComposition:(id)a3 digest:(id)a4 completionQueue:(id)a5 completion:(id)a6;
+- (id)subjectMaskDigestForComposition:(id)composition subjectMaskBuffer:(id)buffer;
+- (void)_resetForComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion;
+- (void)_updatePropertiesFromContext:(id)context;
+- (void)setLivePhotoKeyFrameTime:(id *)time;
+- (void)updateSubjectMaskBufferIfNeededForComposition:(id)composition digest:(id)digest completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation PIInpaintMaskContext
 
-- (void)setLivePhotoKeyFrameTime:(id *)a3
+- (void)setLivePhotoKeyFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_livePhotoKeyFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_livePhotoKeyFrameTime.epoch = time->var3;
   *&self->_livePhotoKeyFrameTime.value = v3;
 }
 
@@ -28,28 +28,28 @@
   return self;
 }
 
-- (void)_updatePropertiesFromContext:(id)a3
+- (void)_updatePropertiesFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 segmentationResult];
+  contextCopy = context;
+  segmentationResult = [contextCopy segmentationResult];
   segmentationResult = self->_segmentationResult;
-  self->_segmentationResult = v5;
+  self->_segmentationResult = segmentationResult;
 
-  v7 = [v4 subjectMask];
+  subjectMask = [contextCopy subjectMask];
   subjectMask = self->_subjectMask;
-  self->_subjectMask = v7;
+  self->_subjectMask = subjectMask;
 
-  v9 = [v4 subjectMaskDigest];
+  subjectMaskDigest = [contextCopy subjectMaskDigest];
   subjectMaskDigest = self->_subjectMaskDigest;
-  self->_subjectMaskDigest = v9;
+  self->_subjectMaskDigest = subjectMaskDigest;
 
-  v11 = [v4 detectedFaces];
+  detectedFaces = [contextCopy detectedFaces];
   detectedFaces = self->_detectedFaces;
-  self->_detectedFaces = v11;
+  self->_detectedFaces = detectedFaces;
 
-  if (v4)
+  if (contextCopy)
   {
-    [v4 fullImageExtent];
+    [contextCopy fullImageExtent];
   }
 
   else
@@ -60,13 +60,13 @@
 
   self->_fullImageExtent.origin = v17;
   self->_fullImageExtent.size = v19;
-  v13 = [v4 assetIdentifier];
+  assetIdentifier = [contextCopy assetIdentifier];
   assetIdentifier = self->_assetIdentifier;
-  self->_assetIdentifier = v13;
+  self->_assetIdentifier = assetIdentifier;
 
-  if (v4)
+  if (contextCopy)
   {
-    [v4 livePhotoKeyFrameTime];
+    [contextCopy livePhotoKeyFrameTime];
   }
 
   else
@@ -77,22 +77,22 @@
 
   *&self->_livePhotoKeyFrameTime.value = v18;
   self->_livePhotoKeyFrameTime.epoch = v20;
-  v15 = [v4 ciContext];
+  ciContext = [contextCopy ciContext];
   ciContext = self->_ciContext;
-  self->_ciContext = v15;
+  self->_ciContext = ciContext;
 }
 
-- (void)_resetForComposition:(id)a3 requestID:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)_resetForComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a6;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PIInpaintMaskContext__resetForComposition_requestID_completionQueue_completion___block_invoke;
   v10[3] = &unk_1E82AAF68;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [PIObjectRemoval createMaskContextForComposition:a3 requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [PIObjectRemoval createMaskContextForComposition:composition requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v10];
 }
 
 void __82__PIInpaintMaskContext__resetForComposition_requestID_completionQueue_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -126,28 +126,28 @@ void __82__PIInpaintMaskContext__resetForComposition_requestID_completionQueue_c
 LABEL_7:
 }
 
-- (void)updateSubjectMaskBufferIfNeededForComposition:(id)a3 digest:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)updateSubjectMaskBufferIfNeededForComposition:(id)composition digest:(id)digest completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PIInpaintMaskContext *)self subjectMaskDigest];
-  v15 = [v14 stringValue];
-  v16 = [v11 stringValue];
-  v17 = [v15 isEqualToString:v16];
+  compositionCopy = composition;
+  digestCopy = digest;
+  queueCopy = queue;
+  completionCopy = completion;
+  subjectMaskDigest = [(PIInpaintMaskContext *)self subjectMaskDigest];
+  stringValue = [subjectMaskDigest stringValue];
+  stringValue2 = [digestCopy stringValue];
+  v17 = [stringValue isEqualToString:stringValue2];
 
   if (v17)
   {
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, self, 0, 0);
+      (*(completionCopy + 2))(completionCopy, self, 0, 0);
     }
   }
 
   else
   {
-    [(PIInpaintMaskContext *)self setSubjectMaskDigest:v11];
+    [(PIInpaintMaskContext *)self setSubjectMaskDigest:digestCopy];
     v18 = +[PIPhotoEditHelper pipelineFiltersForPostInpaintSegmentation];
     [MEMORY[0x1E69B3C60] begin];
     v43[0] = 0;
@@ -162,9 +162,9 @@ LABEL_7:
     v41[3] = __Block_byref_object_copy__13039;
     v41[4] = __Block_byref_object_dispose__13040;
     v42 = 0;
-    v19 = [objc_alloc(MEMORY[0x1E69B3D50]) initWithComposition:v10];
+    v19 = [objc_alloc(MEMORY[0x1E69B3D50]) initWithComposition:compositionCopy];
     [v19 setPipelineFilters:v18];
-    [v19 setResponseQueue:v12];
+    [v19 setResponseQueue:queueCopy];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __104__PIInpaintMaskContext_updateSubjectMaskBufferIfNeededForComposition_digest_completionQueue_completion___block_invoke;
@@ -172,7 +172,7 @@ LABEL_7:
     v40[4] = v43;
     v40[5] = v41;
     [v19 submit:v40];
-    v26 = v10;
+    v26 = compositionCopy;
     v38[0] = 0;
     v38[1] = v38;
     v38[2] = 0x3032000000;
@@ -187,7 +187,7 @@ LABEL_7:
     v37 = 0;
     v20 = [PIFaceObservationCache faceRequestWithRequest:v19];
     [v20 setPipelineFilters:v18];
-    [v20 setResponseQueue:v12];
+    [v20 setResponseQueue:queueCopy];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __104__PIInpaintMaskContext_updateSubjectMaskBufferIfNeededForComposition_digest_completionQueue_completion___block_invoke_75;
@@ -209,11 +209,11 @@ LABEL_7:
     v31 = v43;
     v32 = v41;
     v28 = v25;
-    v29 = self;
-    v30 = v13;
+    selfCopy = self;
+    v30 = completionCopy;
     v33 = v38;
     v34 = v36;
-    [v24 commitAndNotifyOnQueue:v12 withBlock:v27];
+    [v24 commitAndNotifyOnQueue:queueCopy withBlock:v27];
 
     _Block_object_dispose(v36, 8);
     _Block_object_dispose(v38, 8);
@@ -221,7 +221,7 @@ LABEL_7:
     _Block_object_dispose(v41, 8);
     _Block_object_dispose(v43, 8);
 
-    v10 = v26;
+    compositionCopy = v26;
   }
 }
 
@@ -371,24 +371,24 @@ uint64_t __104__PIInpaintMaskContext_updateSubjectMaskBufferIfNeededForCompositi
 - (id)debugDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PIInpaintMaskContext *)self segmentationResult];
-  v4 = [v3 instances];
-  v5 = [v2 stringWithFormat:@"PIInpaintMaskContext with instance segments: %@", v4];
+  segmentationResult = [(PIInpaintMaskContext *)self segmentationResult];
+  instances = [segmentationResult instances];
+  v5 = [v2 stringWithFormat:@"PIInpaintMaskContext with instance segments: %@", instances];
 
   return v5;
 }
 
-- (PIInpaintMaskContext)initWithSegmentationResult:(id)a3 composition:(id)a4 subjectMaskBuffer:(id)a5 detectedFaces:(id)a6 fullImageExtent:(id *)a7 assetIdentifier:(id)a8 requestID:(id)a9 initialSensitivityScore:(double)a10 livePhotoKeyFrameTime:(id *)a11
+- (PIInpaintMaskContext)initWithSegmentationResult:(id)result composition:(id)composition subjectMaskBuffer:(id)buffer detectedFaces:(id)faces fullImageExtent:(id *)extent assetIdentifier:(id)identifier requestID:(id)d initialSensitivityScore:(double)self0 livePhotoKeyFrameTime:(id *)self1
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
+  resultCopy = result;
+  bufferCopy = buffer;
+  facesCopy = faces;
+  identifierCopy = identifier;
+  dCopy = d;
   v43.receiver = self;
   v43.super_class = PIInpaintMaskContext;
-  v23 = a4;
+  compositionCopy = composition;
   v24 = [(PIInpaintMaskContext *)&v43 init];
   v25 = MEMORY[0x1E695F620];
   v26 = *MEMORY[0x1E695F830];
@@ -401,48 +401,48 @@ uint64_t __104__PIInpaintMaskContext_updateSubjectMaskBufferIfNeededForCompositi
   v29 = *(v24 + 8);
   *(v24 + 8) = v28;
 
-  objc_storeStrong(v24 + 1, a3);
-  v30 = [v24 subjectMaskDigestForComposition:v23 subjectMaskBuffer:v19];
+  objc_storeStrong(v24 + 1, result);
+  v30 = [v24 subjectMaskDigestForComposition:compositionCopy subjectMaskBuffer:bufferCopy];
 
   v31 = *(v24 + 7);
   *(v24 + 7) = v30;
 
-  if (v19)
+  if (bufferCopy)
   {
-    v32 = [PIInpaintMaskContext _createSubjectMaskFromBuffer:v19 digest:*(v24 + 7) ciContext:*(v24 + 8) fullImageSize:a7->var1.var0, a7->var1.var1];
+    v32 = [PIInpaintMaskContext _createSubjectMaskFromBuffer:bufferCopy digest:*(v24 + 7) ciContext:*(v24 + 8) fullImageSize:extent->var1.var0, extent->var1.var1];
     v33 = *(v24 + 6);
     *(v24 + 6) = v32;
   }
 
   v34 = *(v24 + 2);
-  *(v24 + 2) = v20;
-  v35 = v20;
+  *(v24 + 2) = facesCopy;
+  v35 = facesCopy;
 
-  var1 = a7->var1;
-  *(v24 + 6) = a7->var0;
+  var1 = extent->var1;
+  *(v24 + 6) = extent->var0;
   *(v24 + 7) = var1;
   v37 = *(v24 + 3);
-  *(v24 + 3) = v21;
-  v38 = v21;
+  *(v24 + 3) = identifierCopy;
+  v38 = identifierCopy;
 
   v39 = *(v24 + 4);
-  *(v24 + 4) = v22;
+  *(v24 + 4) = dCopy;
 
-  *(v24 + 5) = a10;
-  v40 = *&a11->var0;
-  *(v24 + 11) = a11->var3;
+  *(v24 + 5) = score;
+  v40 = *&time->var0;
+  *(v24 + 11) = time->var3;
   *(v24 + 72) = v40;
 
   return v24;
 }
 
-- (id)subjectMaskDigestForComposition:(id)a3 subjectMaskBuffer:(id)a4
+- (id)subjectMaskDigestForComposition:(id)composition subjectMaskBuffer:(id)buffer
 {
   v6 = MEMORY[0x1E69B3A38];
-  v7 = a4;
-  v8 = a3;
+  bufferCopy = buffer;
+  compositionCopy = composition;
   v9 = objc_alloc_init(v6);
-  v10 = [(PIInpaintMaskContext *)self _foregroundOperationsFromComposition:v8 subjectMaskBuffer:v7];
+  v10 = [(PIInpaintMaskContext *)self _foregroundOperationsFromComposition:compositionCopy subjectMaskBuffer:bufferCopy];
 
   if ([v10 count])
   {
@@ -452,11 +452,11 @@ uint64_t __104__PIInpaintMaskContext_updateSubjectMaskBufferIfNeededForCompositi
   return v9;
 }
 
-- (id)_foregroundOperationsFromComposition:(id)a3 subjectMaskBuffer:(id)a4
+- (id)_foregroundOperationsFromComposition:(id)composition subjectMaskBuffer:(id)buffer
 {
-  if (a4)
+  if (buffer)
   {
-    v4 = [a3 objectForKeyedSubscript:@"inpaint"];
+    v4 = [composition objectForKeyedSubscript:@"inpaint"];
     v5 = [v4 objectForKeyedSubscript:@"operations"];
     v6 = PFFilter();
   }
@@ -496,20 +496,20 @@ uint64_t __79__PIInpaintMaskContext__foregroundOperationsFromComposition_subject
   return v8;
 }
 
-+ (id)_createSubjectMaskFromBuffer:(id)a3 digest:(id)a4 ciContext:(id)a5 fullImageSize:(id)a6
++ (id)_createSubjectMaskFromBuffer:(id)buffer digest:(id)digest ciContext:(id)context fullImageSize:(id)size
 {
-  v8 = a3;
-  if (v8)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
     v9 = MEMORY[0x1E69B3B68];
-    v10 = a4;
-    v11 = [v9 propertiesForMask:v8 context:a5];
-    [v8 size];
+    digestCopy = digest;
+    v11 = [v9 propertiesForMask:bufferCopy context:context];
+    [bufferCopy size];
     v12 = NUScaleMake();
     v14 = v13;
-    v15 = [v10 stringValue];
+    stringValue = [digestCopy stringValue];
 
-    v16 = [@"subject-" stringByAppendingString:v15];
+    v16 = [@"subject-" stringByAppendingString:stringValue];
 
     v17 = [PIInpaintMask alloc];
     if (v11)
@@ -522,7 +522,7 @@ uint64_t __79__PIInpaintMaskContext__foregroundOperationsFromComposition_subject
       memset(v20, 0, sizeof(v20));
     }
 
-    v18 = [(PIInpaintMask *)v17 initWithBuffer:v8 identifier:v16 extent:v20 scale:v12, v14];
+    v18 = [(PIInpaintMask *)v17 initWithBuffer:bufferCopy identifier:v16 extent:v20 scale:v12, v14];
   }
 
   else

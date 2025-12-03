@@ -1,21 +1,21 @@
 @interface TSCEPartialResultMapByOffset
-- (TSCEPartialResultMapByOffset)initWithPartialResultTree:(id)a3;
+- (TSCEPartialResultMapByOffset)initWithPartialResultTree:(id)tree;
 - (id).cxx_construct;
-- (id)partialResultForOffset:(unsigned int)a3;
+- (id)partialResultForOffset:(unsigned int)offset;
 @end
 
 @implementation TSCEPartialResultMapByOffset
 
-- (TSCEPartialResultMapByOffset)initWithPartialResultTree:(id)a3
+- (TSCEPartialResultMapByOffset)initWithPartialResultTree:(id)tree
 {
-  v4 = a3;
+  treeCopy = tree;
   v28.receiver = self;
   v28.super_class = TSCEPartialResultMapByOffset;
   v5 = [(TSCEPartialResultMapByOffset *)&v28 init];
   if (v5)
   {
     v6 = [TSCEPartialResultTreeEnumerator alloc];
-    v10 = objc_msgSend_initWithPartialResultTree_(v6, v7, v4, v8, v9);
+    v10 = objc_msgSend_initWithPartialResultTree_(v6, v7, treeCopy, v8, v9);
     v19 = objc_msgSend_nextResult(v10, v11, v12, v13, v14);
     if (v19)
     {
@@ -41,17 +41,17 @@
   return v5;
 }
 
-- (id)partialResultForOffset:(unsigned int)a3
+- (id)partialResultForOffset:(unsigned int)offset
 {
-  v5 = a3;
-  if (a3 == -1)
+  offsetCopy = offset;
+  if (offset == -1)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = sub_2211DC534(&self->_mapByOffset.__table_.__bucket_list_.__ptr_, &v5);
+    v3 = sub_2211DC534(&self->_mapByOffset.__table_.__bucket_list_.__ptr_, &offsetCopy);
     if (v3)
     {
       v3 = v3[3];

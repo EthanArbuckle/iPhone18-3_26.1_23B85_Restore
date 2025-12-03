@@ -6,9 +6,9 @@
 
 - (id)predicateWithProfile:()HealthDaemon
 {
-  [a1 operatorType];
+  [self operatorType];
   v2 = HDSQLiteComparisonTypeForPredicateOperator();
-  v3 = [a1 value];
+  value = [self value];
   v4 = HDCategorySampleEntityPredicateForValue(v2);
 
   return v4;

@@ -37,29 +37,29 @@
     self->_siriXIndicatorView = v4;
 
     [(UIView *)self->_siriXIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIView *)self->_siriXIndicatorView layer];
-    [v6 setCornerRadius:2.5];
+    layer = [(UIView *)self->_siriXIndicatorView layer];
+    [layer setCornerRadius:2.5];
 
-    v7 = [(UIView *)self->_siriXIndicatorView layer];
-    [v7 setAllowsHitTesting:0];
+    layer2 = [(UIView *)self->_siriXIndicatorView layer];
+    [layer2 setAllowsHitTesting:0];
 
     [(AFUISiriCarPlayView *)self setRequestHandlingStatus:0];
     [(AFUISiriCarPlayView *)self addSubview:self->_siriXIndicatorView];
-    v19 = [(UIView *)self->_siriXIndicatorView leadingAnchor];
-    v20 = [(AFUISiriCarPlayView *)self safeAreaLayoutGuide];
-    v18 = [v20 leadingAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18 constant:5.0];
+    leadingAnchor = [(UIView *)self->_siriXIndicatorView leadingAnchor];
+    safeAreaLayoutGuide = [(AFUISiriCarPlayView *)self safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
     v21[0] = v17;
-    v8 = [(UIView *)self->_siriXIndicatorView bottomAnchor];
-    v9 = [(AFUISiriCarPlayView *)self safeAreaLayoutGuide];
-    v10 = [v9 bottomAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10 constant:-5.0];
+    bottomAnchor = [(UIView *)self->_siriXIndicatorView bottomAnchor];
+    safeAreaLayoutGuide2 = [(AFUISiriCarPlayView *)self safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v21[1] = v11;
-    v12 = [(UIView *)self->_siriXIndicatorView widthAnchor];
-    v13 = [v12 constraintEqualToConstant:5.0];
+    widthAnchor = [(UIView *)self->_siriXIndicatorView widthAnchor];
+    v13 = [widthAnchor constraintEqualToConstant:5.0];
     v21[2] = v13;
-    v14 = [(UIView *)self->_siriXIndicatorView heightAnchor];
-    v15 = [v14 constraintEqualToConstant:5.0];
+    heightAnchor = [(UIView *)self->_siriXIndicatorView heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:5.0];
     v21[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
     [v3 addObjectsFromArray:v16];
@@ -77,11 +77,11 @@
     self->_edgeLightBackgroundView = v3;
 
     [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView setFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    v5 = [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView layer];
-    [v5 setAllowsHitTesting:0];
+    layer = [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView layer];
+    [layer setAllowsHitTesting:0];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView setBackgroundColor:clearColor];
 
     [(AFUITouchPassThroughView *)self->_edgeLightBackgroundView setAutoresizingMask:18];
     v7 = self->_edgeLightBackgroundView;
@@ -112,7 +112,7 @@
   self->_systemLightView = v8;
 
   [(UIView *)self->_systemLightView setUserInteractionEnabled:0];
-  v10 = [(UIView *)self->_systemLightView layer];
+  layer = [(UIView *)self->_systemLightView layer];
   v11 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2C0]];
   v12 = MEMORY[0x277CCAE60];
   CAColorMatrixMakeMultiplyColor();
@@ -122,30 +122,30 @@
   [v11 setValue:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CDA350]];
   v35[0] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  [v10 setFilters:v14];
+  [layer setFilters:v14];
 
-  [v10 setOpaque:0];
-  [v10 setAllowsHitTesting:0];
-  v32 = v10;
-  [v10 addSublayer:self->_edgeLightMask];
+  [layer setOpaque:0];
+  [layer setAllowsHitTesting:0];
+  v32 = layer;
+  [layer addSublayer:self->_edgeLightMask];
   [(AFUISiriCarPlayView *)self addSubview:self->_systemLightView];
   [(UIView *)self->_systemLightView setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = MEMORY[0x277CBEB18];
-  v31 = [(UIView *)self->_systemLightView bottomAnchor];
-  v30 = [(AFUISiriCarPlayView *)self bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:0.0];
+  bottomAnchor = [(UIView *)self->_systemLightView bottomAnchor];
+  bottomAnchor2 = [(AFUISiriCarPlayView *)self bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v34[0] = v29;
-  v28 = [(UIView *)self->_systemLightView topAnchor];
-  v27 = [(AFUISiriCarPlayView *)self topAnchor];
-  v16 = [v28 constraintEqualToAnchor:v27 constant:0.0];
+  topAnchor = [(UIView *)self->_systemLightView topAnchor];
+  topAnchor2 = [(AFUISiriCarPlayView *)self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v34[1] = v16;
-  v17 = [(UIView *)self->_systemLightView leadingAnchor];
-  v18 = [(AFUISiriCarPlayView *)self leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:0.0];
+  leadingAnchor = [(UIView *)self->_systemLightView leadingAnchor];
+  leadingAnchor2 = [(AFUISiriCarPlayView *)self leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v34[2] = v19;
-  v20 = [(UIView *)self->_systemLightView trailingAnchor];
-  v21 = [(AFUISiriCarPlayView *)self trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:0.0];
+  trailingAnchor = [(UIView *)self->_systemLightView trailingAnchor];
+  trailingAnchor2 = [(AFUISiriCarPlayView *)self trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   v34[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   v24 = [v15 arrayWithArray:v23];
@@ -153,9 +153,9 @@
   [MEMORY[0x277CCAAD0] activateConstraints:v24];
   if (!self->_statusBarStyleAssertion)
   {
-    v25 = [objc_alloc(MEMORY[0x277CF9348]) initForSiriPresentation];
+    initForSiriPresentation = [objc_alloc(MEMORY[0x277CF9348]) initForSiriPresentation];
     statusBarStyleAssertion = self->_statusBarStyleAssertion;
-    self->_statusBarStyleAssertion = v25;
+    self->_statusBarStyleAssertion = initForSiriPresentation;
   }
 }
 
@@ -170,8 +170,8 @@
   [(UIView *)v5 setFrame:?];
   [(UIView *)self->_latencyLightView setAutoresizingMask:18];
   [(UIView *)self->_latencyLightView setHidden:1];
-  v6 = [(UIView *)self->_latencyLightView layer];
-  [v6 setAllowsHitTesting:0];
+  layer = [(UIView *)self->_latencyLightView layer];
+  [layer setAllowsHitTesting:0];
 
   v7 = self->_latencyLightView;
   systemLightView = self->_systemLightView;
@@ -219,16 +219,16 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
 - (void)_updateOrbViewModeToMatchSessionState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SUICOrbView *)self->_orbView mode];
-  v4 = [(AFUISiriCarPlayView *)self _orbViewModeForCurrentSessionState];
+  mode = [(SUICOrbView *)self->_orbView mode];
+  _orbViewModeForCurrentSessionState = [(AFUISiriCarPlayView *)self _orbViewModeForCurrentSessionState];
   v5 = *MEMORY[0x277CEF098];
   v6 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
-  if (v3 == v4)
+  if (mode == _orbViewModeForCurrentSessionState)
   {
     if (v6)
     {
       v7 = v5;
-      v8 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:v3];
+      v8 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:mode];
       v12 = 136315394;
       v13 = "[AFUISiriCarPlayView _updateOrbViewModeToMatchSessionState]";
       v14 = 2112;
@@ -242,8 +242,8 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
     if (v6)
     {
       v9 = v5;
-      v10 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:v3];
-      v11 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:v4];
+      v10 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:mode];
+      v11 = [(AFUISiriCarPlayView *)self _SUICOrbViewModeGetDescription:_orbViewModeForCurrentSessionState];
       v12 = 136315650;
       v13 = "[AFUISiriCarPlayView _updateOrbViewModeToMatchSessionState]";
       v14 = 2112;
@@ -253,7 +253,7 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
       _os_log_impl(&dword_241432000, v9, OS_LOG_TYPE_DEFAULT, "%s #orbAnimation mode %@ -> %@", &v12, 0x20u);
     }
 
-    [(SUICOrbView *)self->_orbView setMode:v4];
+    [(SUICOrbView *)self->_orbView setMode:_orbViewModeForCurrentSessionState];
   }
 }
 
@@ -286,9 +286,9 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
 {
   if (self->_edgeLightOffAndInitialized)
   {
-    v3 = [(AFUISiriCarPlayView *)self window];
+    window = [(AFUISiriCarPlayView *)self window];
 
-    if (v3)
+    if (window)
     {
       self->_edgeLightOffAndInitialized = 0;
       objc_initWeak(&location, self);
@@ -299,8 +299,8 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
       v15[3] = &unk_278CD55A0;
       objc_copyWeak(&v16, &location);
       [(SUICEdgeLightMaskMetalLayer *)edgeLightMask animateOnWithCompletion:v15];
-      v5 = [(AFUISiriCarPlayView *)self traitCollection];
-      v6 = [v5 userInterfaceStyle] == 1;
+      traitCollection = [(AFUISiriCarPlayView *)self traitCollection];
+      v6 = [traitCollection userInterfaceStyle] == 1;
 
       v7 = MEMORY[0x277D75D18];
       v9 = MEMORY[0x277D85DD0];
@@ -330,23 +330,23 @@ void __47__AFUISiriCarPlayView__animateLatencyLightToOn__block_invoke(uint64_t a
   v10.receiver = self;
   v10.super_class = AFUISiriCarPlayView;
   [(AFUISiriCarPlayView *)&v10 didMoveToWindow];
-  v3 = [(AFUISiriCarPlayView *)self window];
+  window = [(AFUISiriCarPlayView *)self window];
 
-  if (v3 && [(AFUISiriCarPlayView *)self _deviceSupportsAI])
+  if (window && [(AFUISiriCarPlayView *)self _deviceSupportsAI])
   {
     statusBarStyleAssertion = self->_statusBarStyleAssertion;
     v5 = [MEMORY[0x277CF0B70] settingsWithDuration:0.0];
     [(CRSUIStatusBarStyleAssertion *)statusBarStyleAssertion acquireWithAnimationSettings:v5];
 
     edgeLightMask = self->_edgeLightMask;
-    v7 = [(AFUISiriCarPlayView *)self window];
-    v8 = [v7 screen];
-    [(SUICEdgeLightMaskMetalLayer *)edgeLightMask setScreen:v8];
+    window2 = [(AFUISiriCarPlayView *)self window];
+    screen = [window2 screen];
+    [(SUICEdgeLightMaskMetalLayer *)edgeLightMask setScreen:screen];
 
     if (self->_launchIntoEdgeLightAnimation)
     {
-      v9 = [(AFUISiriCarPlayView *)self window];
-      [v9 bounds];
+      window3 = [(AFUISiriCarPlayView *)self window];
+      [window3 bounds];
       [(AFUISiriCarPlayView *)self setFrame:?];
 
       self->_launchIntoEdgeLightAnimation = 0;

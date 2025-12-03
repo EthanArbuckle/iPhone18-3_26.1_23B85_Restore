@@ -3,67 +3,67 @@
 + (BOOL)includeNotesInVCards;
 + (BOOL)includePhotosInVCards;
 + (BOOL)includeREVInVCards;
-+ (BOOL)vcardFieldisPrivate:(id)a3;
++ (BOOL)vcardFieldisPrivate:(id)private;
 + (__CFArray)supportedProperties;
-+ (void)setIncludeAddressingGrammarInVCards:(BOOL)a3;
-+ (void)setIncludeNotesInVCards:(BOOL)a3;
-+ (void)setIncludePhotosInVCards:(BOOL)a3;
-+ (void)setIncludeREVInVCards:(BOOL)a3;
-+ (void)setPrivateVCardEnabled:(BOOL)a3;
-+ (void)setVCardField:(id)a3 isPrivate:(BOOL)a4;
++ (void)setIncludeAddressingGrammarInVCards:(BOOL)cards;
++ (void)setIncludeNotesInVCards:(BOOL)cards;
++ (void)setIncludePhotosInVCards:(BOOL)cards;
++ (void)setIncludeREVInVCards:(BOOL)cards;
++ (void)setPrivateVCardEnabled:(BOOL)enabled;
++ (void)setVCardField:(id)field isPrivate:(BOOL)private;
 - (ABVCardRecord)init;
-- (ABVCardRecord)initWithRecord:(void *)a3;
-- (ABVCardRecord)initWithVCardRepresentation:(id)a3;
+- (ABVCardRecord)initWithRecord:(void *)record;
+- (ABVCardRecord)initWithVCardRepresentation:(id)representation;
 - (BOOL)_isCompany;
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4;
-- (__CFString)_vCardKeyForEmailLabel:(id)a3;
-- (__CFString)_vCardKeyForGenericLabel:(id)a3;
-- (id)ISO8061StringFromDate:(id)a3;
-- (id)ISO8061StringFromDateTime:(id)a3;
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property;
+- (__CFString)_vCardKeyForEmailLabel:(id)label;
+- (__CFString)_vCardKeyForGenericLabel:(id)label;
+- (id)ISO8061StringFromDate:(id)date;
+- (id)ISO8061StringFromDateTime:(id)time;
 - (id)_21vCardRepresentationAsData;
-- (id)_copyGroupVCardRepresentationAsStringIncludeExternalProperties:(BOOL)a3;
-- (id)_copyVCardRepresentationAsStringIncludeExternalProperties:(BOOL)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5 includePrivateData:(BOOL)a6 includeWallpaper:(BOOL)a7;
+- (id)_copyGroupVCardRepresentationAsStringIncludeExternalProperties:(BOOL)properties;
+- (id)_copyVCardRepresentationAsStringIncludeExternalProperties:(BOOL)properties withPhoto:(id)photo extraPhotoParameters:(id)parameters includePrivateData:(BOOL)data includeWallpaper:(BOOL)wallpaper;
 - (id)_dictionaryForActivityAlerts;
-- (id)_fullNameIncludingAuxiliaryElements:(BOOL)a3;
+- (id)_fullNameIncludingAuxiliaryElements:(BOOL)elements;
 - (id)_prodID;
 - (id)_realCompositeName;
-- (id)_typeParameterForToneType:(id)a3;
-- (id)_vCardKeyForAddressLabel:(id)a3 vCard3:(BOOL)a4;
-- (id)_vCardKeysForPhoneLabel:(id)a3;
-- (id)_valueForPersonSounds:(void *)a3 identifier:(int)a4;
+- (id)_typeParameterForToneType:(id)type;
+- (id)_vCardKeyForAddressLabel:(id)label vCard3:(BOOL)card3;
+- (id)_vCardKeysForPhoneLabel:(id)label;
+- (id)_valueForPersonSounds:(void *)sounds identifier:(int)identifier;
 - (id)alternateName;
 - (id)dataForInstantMessageProperties;
-- (id)dataForSocialProfileProperty:(void *)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5;
-- (id)dataForSoundProperty:(void *)a3;
-- (id)encodedDataForValue:(id)a3 charsetName:(id *)a4;
-- (id)encodedLineForValue:(id)a3;
+- (id)dataForSocialProfileProperty:(void *)property groupCount:(int64_t *)count includePrivateData:(BOOL)data;
+- (id)dataForSoundProperty:(void *)property;
+- (id)encodedDataForValue:(id)value charsetName:(id *)name;
+- (id)encodedLineForValue:(id)value;
 - (id)imageData;
-- (id)newISO8061StringFromDate:(id)a3;
-- (id)propertyLineForGenericABProperty21:(unsigned int)a3 vCardProperty:(id)a4;
-- (id)propertyLineForGenericABProperty:(unsigned int)a3 vCardProperty:(id)a4 is21:(BOOL)a5 groupCount:(int64_t *)a6;
-- (id)propertyLineForIMHandles:(id)a3 labels:(id)a4 vCardProperty:(id)a5;
-- (id)propertyLineForIMPPProperty:(BOOL)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5;
-- (id)propertyLineForInstantMessageHandles:(BOOL)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5;
-- (id)stringForAlternateBirthdayComponent:(id)a3 key:(id)a4 formatWidth:(int)a5;
-- (id)stringFromAlternateBirthday:(id)a3;
-- (id)vCardRepresentationForMode:(int)a3;
-- (void)_addPersonSounds:(void *)a3 identifier:(int)a4 toActivityAlerts:(id *)a5 activity:(id)a6 alert:(id)a7;
-- (void)_appendPropValue:(id)a3 forPropKey:(id)a4 toOutString:(id)a5 usingDelimiter:(id)a6 inGroup:(id)a7;
-- (void)appendLabel:(id)a3 toVCardRep:(id)a4 inGroup:(id)a5;
+- (id)newISO8061StringFromDate:(id)date;
+- (id)propertyLineForGenericABProperty21:(unsigned int)property21 vCardProperty:(id)property;
+- (id)propertyLineForGenericABProperty:(unsigned int)property vCardProperty:(id)cardProperty is21:(BOOL)is21 groupCount:(int64_t *)count;
+- (id)propertyLineForIMHandles:(id)handles labels:(id)labels vCardProperty:(id)property;
+- (id)propertyLineForIMPPProperty:(BOOL)property groupCount:(int64_t *)count includePrivateData:(BOOL)data;
+- (id)propertyLineForInstantMessageHandles:(BOOL)handles groupCount:(int64_t *)count includePrivateData:(BOOL)data;
+- (id)stringForAlternateBirthdayComponent:(id)component key:(id)key formatWidth:(int)width;
+- (id)stringFromAlternateBirthday:(id)birthday;
+- (id)vCardRepresentationForMode:(int)mode;
+- (void)_addPersonSounds:(void *)sounds identifier:(int)identifier toActivityAlerts:(id *)alerts activity:(id)activity alert:(id)alert;
+- (void)_appendPropValue:(id)value forPropKey:(id)key toOutString:(id)string usingDelimiter:(id)delimiter inGroup:(id)group;
+- (void)appendLabel:(id)label toVCardRep:(id)rep inGroup:(id)group;
 - (void)dealloc;
-- (void)valueForProperty:(unsigned int)a3;
+- (void)valueForProperty:(unsigned int)property;
 @end
 
 @implementation ABVCardRecord
 
-- (ABVCardRecord)initWithRecord:(void *)a3
+- (ABVCardRecord)initWithRecord:(void *)record
 {
   v6.receiver = self;
   v6.super_class = ABVCardRecord;
   v4 = [(ABVCardRecord *)&v6 init];
   if (v4)
   {
-    v4->_record = CFRetain(a3);
+    v4->_record = CFRetain(record);
     v4->_properties = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   }
 
@@ -84,7 +84,7 @@
   return v2;
 }
 
-- (ABVCardRecord)initWithVCardRepresentation:(id)a3
+- (ABVCardRecord)initWithVCardRepresentation:(id)representation
 {
   v10.receiver = self;
   v10.super_class = ABVCardRecord;
@@ -92,10 +92,10 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (representation)
     {
       v6 = objc_opt_new();
-      v7 = [[ABVCardParser alloc] initWithData:a3];
+      v7 = [[ABVCardParser alloc] initWithData:representation];
       v8 = [(ABVCardParser *)v7 sortedPeopleAndProperties:0];
       if ([v8 count] == 1)
       {
@@ -134,17 +134,17 @@
   [(ABVCardRecord *)&v5 dealloc];
 }
 
-- (id)vCardRepresentationForMode:(int)a3
+- (id)vCardRepresentationForMode:(int)mode
 {
-  if (a3)
+  if (mode)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       v4 = [(ABVCardRecord *)self _copyVCardRepresentationAsStringIncludeExternalProperties:0 withPhoto:0 extraPhotoParameters:0 includePrivateData:0 includeWallpaper:0];
-      v5 = [v4 copyABVCardDataRepresentation];
+      copyABVCardDataRepresentation = [v4 copyABVCardDataRepresentation];
       ABRegulatoryLogReadTransmitContactsData();
 
-      return v5;
+      return copyABVCardDataRepresentation;
     }
 
     else
@@ -214,20 +214,20 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return result;
 }
 
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property
 {
   v7 = +[ABVCardRecord supportedProperties];
-  if (a4 && (v8 = v7, v11.length = CFArrayGetCount(v7), v11.location = 0, CFArrayGetFirstIndexOfValue(v8, v11, a4) == -1))
+  if (property && (v8 = v7, v11.length = CFArrayGetCount(v7), v11.location = 0, CFArrayGetFirstIndexOfValue(v8, v11, property) == -1))
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = ABRecordSetValue(self->_record, a4, a3, 0);
+    v9 = ABRecordSetValue(self->_record, property, value, 0);
     if (v9)
     {
-      CFArrayAppendValue(self->_properties, a4);
+      CFArrayAppendValue(self->_properties, property);
       LOBYTE(v9) = 1;
     }
   }
@@ -235,14 +235,14 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return v9;
 }
 
-+ (void)setPrivateVCardEnabled:(BOOL)a3
++ (void)setPrivateVCardEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
 
   CFPreferencesSetAppValue(@"ABPrivateVCardFieldsEnabled", v3, @"com.apple.AddressBook");
 }
 
-+ (void)setVCardField:(id)a3 isPrivate:(BOOL)a4
++ (void)setVCardField:(id)field isPrivate:(BOOL)private
 {
   v6 = CFPreferencesCopyAppValue(@"ABPrivateVCardFields", @"com.apple.AddressBook");
   valuea = [v6 mutableCopy];
@@ -254,30 +254,30 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   }
 
   value = v7;
-  if (a4)
+  if (private)
   {
-    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), a3}];
+    [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), field}];
   }
 
   else
   {
-    [v7 removeObjectForKey:a3];
+    [v7 removeObjectForKey:field];
   }
 
   CFPreferencesSetAppValue(@"ABPrivateVCardFields", value, @"com.apple.AddressBook");
 }
 
-+ (BOOL)vcardFieldisPrivate:(id)a3
++ (BOOL)vcardFieldisPrivate:(id)private
 {
   v4 = CFPreferencesCopyAppValue(@"ABPrivateVCardFields", @"com.apple.AddressBook");
-  LOBYTE(a3) = [objc_msgSend(v4 objectForKey:{a3), "BOOLValue"}];
+  LOBYTE(private) = [objc_msgSend(v4 objectForKey:{private), "BOOLValue"}];
 
-  return a3;
+  return private;
 }
 
-+ (void)setIncludeNotesInVCards:(BOOL)a3
++ (void)setIncludeNotesInVCards:(BOOL)cards
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:cards];
 
   CFPreferencesSetAppValue(@"ABIncludeNotesInVCard", v3, @"com.apple.AddressBook");
 }
@@ -298,9 +298,9 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return !v2;
 }
 
-+ (void)setIncludeAddressingGrammarInVCards:(BOOL)a3
++ (void)setIncludeAddressingGrammarInVCards:(BOOL)cards
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:cards];
 
   CFPreferencesSetAppValue(@"ABIncludeAddressingGrammarInVCard", v3, @"com.apple.AddressBook");
 }
@@ -321,9 +321,9 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return !v2;
 }
 
-+ (void)setIncludeREVInVCards:(BOOL)a3
++ (void)setIncludeREVInVCards:(BOOL)cards
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:cards];
 
   CFPreferencesSetAppValue(@"ABIncludeREVInVCard", v3, @"com.apple.AddressBook");
 }
@@ -344,9 +344,9 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return !v2;
 }
 
-+ (void)setIncludePhotosInVCards:(BOOL)a3
++ (void)setIncludePhotosInVCards:(BOOL)cards
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:cards];
 
   CFPreferencesSetAppValue(@"ABIncludePhotosInVCard", v3, @"com.apple.AddressBook");
 }
@@ -367,22 +367,22 @@ CFArrayRef __36__ABVCardRecord_supportedProperties__block_invoke()
   return !v2;
 }
 
-- (id)_vCardKeyForAddressLabel:(id)a3 vCard3:(BOOL)a4
+- (id)_vCardKeyForAddressLabel:(id)label vCard3:(BOOL)card3
 {
-  v4 = a4;
-  if ([a3 isEqualToString:@"_$!<Work>!$_"])
+  card3Copy = card3;
+  if ([label isEqualToString:@"_$!<Work>!$_"])
   {
     v6 = @"WORK";
     v7 = @";type=WORK";
     goto LABEL_5;
   }
 
-  if ([a3 isEqualToString:@"_$!<Home>!$_"])
+  if ([label isEqualToString:@"_$!<Home>!$_"])
   {
     v6 = @"HOME";
     v7 = @";type=HOME";
 LABEL_5:
-    if (v4)
+    if (card3Copy)
     {
       return v7;
     }
@@ -393,9 +393,9 @@ LABEL_5:
     }
   }
 
-  v9 = [a3 isEqualToString:@"_$!<Other>!$_"];
+  v9 = [label isEqualToString:@"_$!<Other>!$_"];
   v10 = @"OTHER";
-  if (v4)
+  if (card3Copy)
   {
     v10 = @";type=OTHER";
   }
@@ -411,14 +411,14 @@ LABEL_5:
   }
 }
 
-- (__CFString)_vCardKeyForGenericLabel:(id)a3
+- (__CFString)_vCardKeyForGenericLabel:(id)label
 {
-  if ([a3 isEqualToString:@"_$!<Work>!$_"])
+  if ([label isEqualToString:@"_$!<Work>!$_"])
   {
     return @"WORK";
   }
 
-  if ([a3 isEqualToString:@"_$!<Home>!$_"])
+  if ([label isEqualToString:@"_$!<Home>!$_"])
   {
     return @"HOME";
   }
@@ -426,45 +426,45 @@ LABEL_5:
   return 0;
 }
 
-- (id)_vCardKeysForPhoneLabel:(id)a3
+- (id)_vCardKeysForPhoneLabel:(id)label
 {
-  if ([a3 isEqualToString:@"_$!<Work>!$_"])
+  if ([label isEqualToString:@"_$!<Work>!$_"])
   {
     v4 = MEMORY[0x1E695DEC8];
     v5 = @"VOICE";
     return [v4 arrayWithObjects:{@"WORK", v5, 0, v13}];
   }
 
-  if ([a3 isEqualToString:@"_$!<Home>!$_"])
+  if ([label isEqualToString:@"_$!<Home>!$_"])
   {
     v7 = MEMORY[0x1E695DEC8];
     v8 = @"VOICE";
     return [v7 arrayWithObjects:{@"HOME", v8, 0, v13}];
   }
 
-  if ([a3 isEqualToString:@"_$!<Other>!$_"])
+  if ([label isEqualToString:@"_$!<Other>!$_"])
   {
     v9 = MEMORY[0x1E695DEC8];
     v10 = @"VOICE";
     return [v9 arrayWithObjects:{@"OTHER", v10, 0, v13}];
   }
 
-  if ([a3 isEqualToString:@"_$!<Mobile>!$_"])
+  if ([label isEqualToString:@"_$!<Mobile>!$_"])
   {
     return [MEMORY[0x1E695DEC8] arrayWithObjects:{@"CELL", @"VOICE", 0, v13}];
   }
 
-  if ([a3 isEqualToString:@"iPhone"])
+  if ([label isEqualToString:@"iPhone"])
   {
     return [MEMORY[0x1E695DEC8] arrayWithObjects:{@"IPHONE", @"CELL", @"VOICE", 0}];
   }
 
-  if ([a3 isEqualToString:@"Apple Watch"])
+  if ([label isEqualToString:@"Apple Watch"])
   {
     return [MEMORY[0x1E695DEC8] arrayWithObjects:{@"APPLEWATCH", @"CELL", @"VOICE", 0}];
   }
 
-  if ([a3 isEqualToString:@"_$!<Main>!$_"])
+  if ([label isEqualToString:@"_$!<Main>!$_"])
   {
     v11 = MEMORY[0x1E695DEC8];
     v12 = @"MAIN";
@@ -472,28 +472,28 @@ LABEL_5:
 
   else
   {
-    if ([a3 isEqualToString:@"_$!<WorkFAX>!$_"])
+    if ([label isEqualToString:@"_$!<WorkFAX>!$_"])
     {
       v4 = MEMORY[0x1E695DEC8];
       v5 = @"FAX";
       return [v4 arrayWithObjects:{@"WORK", v5, 0, v13}];
     }
 
-    if ([a3 isEqualToString:@"_$!<HomeFAX>!$_"])
+    if ([label isEqualToString:@"_$!<HomeFAX>!$_"])
     {
       v7 = MEMORY[0x1E695DEC8];
       v8 = @"FAX";
       return [v7 arrayWithObjects:{@"HOME", v8, 0, v13}];
     }
 
-    if ([a3 isEqualToString:@"_$!<OtherFAX>!$_"])
+    if ([label isEqualToString:@"_$!<OtherFAX>!$_"])
     {
       v9 = MEMORY[0x1E695DEC8];
       v10 = @"FAX";
       return [v9 arrayWithObjects:{@"OTHER", v10, 0, v13}];
     }
 
-    if (![a3 isEqualToString:@"_$!<Pager>!$_"])
+    if (![label isEqualToString:@"_$!<Pager>!$_"])
     {
       return 0;
     }
@@ -505,14 +505,14 @@ LABEL_5:
   return [v11 arrayWithObject:v12];
 }
 
-- (__CFString)_vCardKeyForEmailLabel:(id)a3
+- (__CFString)_vCardKeyForEmailLabel:(id)label
 {
-  if ([a3 isEqualToString:@"_$!<Work>!$_"])
+  if ([label isEqualToString:@"_$!<Work>!$_"])
   {
     return @"WORK";
   }
 
-  if ([a3 isEqualToString:@"_$!<Home>!$_"])
+  if ([label isEqualToString:@"_$!<Home>!$_"])
   {
     return @"HOME";
   }
@@ -520,27 +520,27 @@ LABEL_5:
   return 0;
 }
 
-- (void)appendLabel:(id)a3 toVCardRep:(id)a4 inGroup:(id)a5
+- (void)appendLabel:(id)label toVCardRep:(id)rep inGroup:(id)group
 {
-  if (a3)
+  if (label)
   {
-    [a4 appendString:a5];
-    [a4 appendString:@"."];
-    [a4 appendString:@"X-ABLabel:"];
-    [a4 appendString:{objc_msgSend(a3, "abVCardKoshify")}];
+    [rep appendString:group];
+    [rep appendString:@"."];
+    [rep appendString:@"X-ABLabel:"];
+    [rep appendString:{objc_msgSend(label, "abVCardKoshify")}];
 
-    [a4 appendString:@"\r\n"];
+    [rep appendString:@"\r\n"];
   }
 }
 
-- (id)newISO8061StringFromDate:(id)a3
+- (id)newISO8061StringFromDate:(id)date
 {
   if (newISO8061StringFromDate__pred != -1)
   {
     [ABVCardRecord newISO8061StringFromDate:];
   }
 
-  v4 = [newISO8061StringFromDate__gmtDateFormatter stringFromDate:a3];
+  v4 = [newISO8061StringFromDate__gmtDateFormatter stringFromDate:date];
 
   return v4;
 }
@@ -553,14 +553,14 @@ uint64_t __42__ABVCardRecord_newISO8061StringFromDate___block_invoke()
   return [v0 setFormatOptions:275];
 }
 
-- (id)ISO8061StringFromDate:(id)a3
+- (id)ISO8061StringFromDate:(id)date
 {
-  v3 = [(ABVCardRecord *)self newISO8061StringFromDate:a3];
+  v3 = [(ABVCardRecord *)self newISO8061StringFromDate:date];
 
   return v3;
 }
 
-- (id)ISO8061StringFromDateTime:(id)a3
+- (id)ISO8061StringFromDateTime:(id)time
 {
   if (ISO8061StringFromDateTime__pred != -1)
   {
@@ -569,7 +569,7 @@ uint64_t __42__ABVCardRecord_newISO8061StringFromDate___block_invoke()
 
   v4 = ISO8061StringFromDateTime__gmtDateFormatter;
 
-  return [v4 stringFromDate:a3];
+  return [v4 stringFromDate:time];
 }
 
 uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
@@ -580,12 +580,12 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
   return [v0 setFormatOptions:1907];
 }
 
-- (id)stringForAlternateBirthdayComponent:(id)a3 key:(id)a4 formatWidth:(int)a5
+- (id)stringForAlternateBirthdayComponent:(id)component key:(id)key formatWidth:(int)width
 {
-  v5 = *&a5;
-  if ([a3 objectForKeyedSubscript:a4])
+  v5 = *&width;
+  if ([component objectForKeyedSubscript:key])
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%0*li", v5, objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", a4), "integerValue")];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%0*li", v5, objc_msgSend(objc_msgSend(component, "objectForKeyedSubscript:", key), "integerValue")];
   }
 
   else
@@ -594,33 +594,33 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
   }
 }
 
-- (id)stringFromAlternateBirthday:(id)a3
+- (id)stringFromAlternateBirthday:(id)birthday
 {
-  v5 = [MEMORY[0x1E696AD60] string];
-  [v5 appendFormat:@"CALSCALE=%@:", objc_msgSend(a3, "objectForKeyedSubscript:", @"calendarIdentifier"];
-  [v5 appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", a3, @"era", 4)}];
-  [v5 appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", a3, @"year", 4)}];
-  [v5 appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", a3, @"month", 2)}];
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"isLeapMonth", "BOOLValue"}])
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"CALSCALE=%@:", objc_msgSend(birthday, "objectForKeyedSubscript:", @"calendarIdentifier"];
+  [string appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", birthday, @"era", 4)}];
+  [string appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", birthday, @"year", 4)}];
+  [string appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", birthday, @"month", 2)}];
+  if ([objc_msgSend(birthday objectForKeyedSubscript:{@"isLeapMonth", "BOOLValue"}])
   {
-    [v5 appendString:@"L"];
+    [string appendString:@"L"];
   }
 
-  [v5 appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", a3, @"day", 2)}];
-  return v5;
+  [string appendString:{-[ABVCardRecord stringForAlternateBirthdayComponent:key:formatWidth:](self, "stringForAlternateBirthdayComponent:key:formatWidth:", birthday, @"day", 2)}];
+  return string;
 }
 
-- (void)valueForProperty:(unsigned int)a3
+- (void)valueForProperty:(unsigned int)property
 {
-  v3 = [(ABVCardRecord *)self copyValueForProperty:*&a3];
+  v3 = [(ABVCardRecord *)self copyValueForProperty:*&property];
 
   return v3;
 }
 
-- (id)propertyLineForGenericABProperty:(unsigned int)a3 vCardProperty:(id)a4 is21:(BOOL)a5 groupCount:(int64_t *)a6
+- (id)propertyLineForGenericABProperty:(unsigned int)property vCardProperty:(id)cardProperty is21:(BOOL)is21 groupCount:(int64_t *)count
 {
-  v8 = *&a3;
-  v10 = [MEMORY[0x1E696AD60] string];
+  v8 = *&property;
+  string = [MEMORY[0x1E696AD60] string];
   v11 = [(ABVCardRecord *)self valueForProperty:v8];
   if (v11)
   {
@@ -633,7 +633,7 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
       v14 = Count;
       v15 = 0;
       v26 = v12;
-      v27 = self;
+      selfCopy = self;
       v25 = Count;
       do
       {
@@ -656,37 +656,37 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
           v20 = ABMultiValueCopyLabelAtIndex(v12, v15);
           v21 = [(ABVCardRecord *)self _vCardKeyForGenericLabel:v20];
           v22 = v21;
-          if (a5 || v21)
+          if (is21 || v21)
           {
-            [v10 appendString:a4];
+            [string appendString:cardProperty];
             if (v22)
             {
-              [v10 appendString:@";type="];
-              [v10 appendString:v22];
+              [string appendString:@";type="];
+              [string appendString:v22];
               v22 = 0;
             }
           }
 
           else
           {
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*a6)++];
-            [v10 appendString:v22];
-            [v10 appendString:@"."];
-            [v10 appendString:a4];
+            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*count)++];
+            [string appendString:v22];
+            [string appendString:@"."];
+            [string appendString:cardProperty];
           }
 
           if (IdentifierAtIndex == PrimaryIdentifier)
           {
-            [v10 appendString:@";type=pref"];
+            [string appendString:@";type=pref"];
           }
 
-          [v10 appendString:@":"];
-          [v10 appendString:{objc_msgSend(v30, "abVCardKoshify")}];
-          [v10 appendString:@"\r\n"];
-          self = v27;
+          [string appendString:@":"];
+          [string appendString:{objc_msgSend(v30, "abVCardKoshify")}];
+          [string appendString:@"\r\n"];
+          self = selfCopy;
           if (v22)
           {
-            [(ABVCardRecord *)v27 appendLabel:v20 toVCardRep:v10 inGroup:v22];
+            [(ABVCardRecord *)selfCopy appendLabel:v20 toVCardRep:string inGroup:v22];
           }
 
           v14 = v25;
@@ -704,13 +704,13 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
     }
   }
 
-  return v10;
+  return string;
 }
 
-- (id)propertyLineForInstantMessageHandles:(BOOL)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5
+- (id)propertyLineForInstantMessageHandles:(BOOL)handles groupCount:(int64_t *)count includePrivateData:(BOOL)data
 {
-  v31 = a5;
-  v6 = [MEMORY[0x1E696AD60] string];
+  dataCopy = data;
+  string = [MEMORY[0x1E696AD60] string];
   v7 = kABPersonInstantMessageProperty;
   v8 = [(ABVCardRecord *)self valueForProperty:kABPersonInstantMessageProperty];
   if (v8)
@@ -735,7 +735,7 @@ uint64_t __43__ABVCardRecord_ISO8061StringFromDateTime___block_invoke()
 LABEL_36:
         if (++v12 == v11)
         {
-          return v6;
+          return string;
         }
       }
 
@@ -775,31 +775,31 @@ LABEL_36:
       if ([v35 length])
       {
         v18 = ABMultiValueCopyLabelAtIndex(v9, v12);
-        v19 = self;
+        selfCopy = self;
         v20 = [(ABVCardRecord *)self _vCardKeyForGenericLabel:v18];
         v21 = v20;
-        if (!v18 || a3 || v20)
+        if (!v18 || handles || v20)
         {
-          [v6 appendString:v17];
+          [string appendString:v17];
           v22 = 0;
           v24 = 0;
           v23 = @";type=";
           if (!v21)
           {
 LABEL_19:
-            self = v19;
+            self = selfCopy;
             v9 = v28;
-            if (v31)
+            if (dataCopy)
             {
               if (v33)
               {
-                [v6 appendString:@";x-teamidentifier="];
-                [v6 appendString:v33];
+                [string appendString:@";x-teamidentifier="];
+                [string appendString:v33];
               }
 
               if (v16)
               {
-                [v6 appendString:@";x-bundleidentifiers="];
+                [string appendString:@";x-bundleidentifiers="];
                 if ([v16 count])
                 {
                   v25 = 0;
@@ -807,10 +807,10 @@ LABEL_19:
                   {
                     if (v25)
                     {
-                      [v6 appendString:{@", "}];
+                      [string appendString:{@", "}];
                     }
 
-                    [v6 appendString:{objc_msgSend(v16, "objectAtIndexedSubscript:", v25++)}];
+                    [string appendString:{objc_msgSend(v16, "objectAtIndexedSubscript:", v25++)}];
                   }
 
                   while (v25 < [v16 count]);
@@ -819,22 +819,22 @@ LABEL_19:
 
               if (v34)
               {
-                [v6 appendString:@";x-userid="];
-                [v6 appendString:{objc_msgSend(v34, "abVCardKoshify")}];
+                [string appendString:@";x-userid="];
+                [string appendString:{objc_msgSend(v34, "abVCardKoshify")}];
               }
             }
 
             if (IdentifierAtIndex == PrimaryIdentifier)
             {
-              [v6 appendString:@";type=pref"];
+              [string appendString:@";type=pref"];
             }
 
-            [v6 appendString:@":"];
-            [v6 appendString:{objc_msgSend(v35, "abVCardKoshify")}];
-            [v6 appendString:@"\r\n"];
+            [string appendString:@":"];
+            [string appendString:{objc_msgSend(v35, "abVCardKoshify")}];
+            [string appendString:@"\r\n"];
             if (v24)
             {
-              [(ABVCardRecord *)self appendLabel:v18 toVCardRep:v6 inGroup:v24];
+              [(ABVCardRecord *)self appendLabel:v18 toVCardRep:string inGroup:v24];
             }
 
             v7 = kABPersonInstantMessageProperty;
@@ -844,14 +844,14 @@ LABEL_19:
 
         else
         {
-          v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*a4)++];
-          [v6 appendString:v22];
+          v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*count)++];
+          [string appendString:v22];
           v23 = @".";
           v21 = v17;
         }
 
-        [v6 appendString:v23];
-        [v6 appendString:v21];
+        [string appendString:v23];
+        [string appendString:v21];
         v24 = v22;
         goto LABEL_19;
       }
@@ -863,13 +863,13 @@ LABEL_35:
     }
   }
 
-  return v6;
+  return string;
 }
 
-- (id)propertyLineForIMPPProperty:(BOOL)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5
+- (id)propertyLineForIMPPProperty:(BOOL)property groupCount:(int64_t *)count includePrivateData:(BOOL)data
 {
-  v28 = a5;
-  v6 = [MEMORY[0x1E696AD60] string];
+  dataCopy = data;
+  string = [MEMORY[0x1E696AD60] string];
   v7 = [(ABVCardRecord *)self valueForProperty:kABPersonInstantMessageProperty];
   if (v7)
   {
@@ -898,29 +898,29 @@ LABEL_35:
             v29 = v16;
             if (v15 && !v16)
             {
-              v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*a4)++];
+              v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item%ld", (*count)++];
               v17 = v18;
-              [v6 appendString:v18];
-              [v6 appendString:@"."];
+              [string appendString:v18];
+              [string appendString:@"."];
             }
 
-            [v6 appendString:@"IMPP"];
+            [string appendString:@"IMPP"];
             if (v33)
             {
-              [v6 appendFormat:@";X-SERVICE-TYPE=%@", v33];
+              [string appendFormat:@";X-SERVICE-TYPE=%@", v33];
             }
 
-            if (v28)
+            if (dataCopy)
             {
               if (v13)
               {
-                [v6 appendString:@";x-teamidentifier="];
-                [v6 appendString:v13];
+                [string appendString:@";x-teamidentifier="];
+                [string appendString:v13];
               }
 
               if (v14)
               {
-                [v6 appendString:@";x-bundleidentifiers="];
+                [string appendString:@";x-bundleidentifiers="];
                 if ([v14 count])
                 {
                   v19 = 0;
@@ -928,10 +928,10 @@ LABEL_35:
                   {
                     if (v19)
                     {
-                      [v6 appendString:{@", "}];
+                      [string appendString:{@", "}];
                     }
 
-                    [v6 appendString:{objc_msgSend(v14, "objectAtIndexedSubscript:", v19++)}];
+                    [string appendString:{objc_msgSend(v14, "objectAtIndexedSubscript:", v19++)}];
                   }
 
                   while (v19 < [v14 count]);
@@ -940,36 +940,36 @@ LABEL_35:
 
               if (v30)
               {
-                [v6 appendString:@";x-userid="];
-                [v6 appendString:{objc_msgSend(v30, "abVCardKoshify")}];
+                [string appendString:@";x-userid="];
+                [string appendString:{objc_msgSend(v30, "abVCardKoshify")}];
               }
             }
 
             if (v29)
             {
-              [v6 appendString:@";type="];
-              [v6 appendString:v29];
+              [string appendString:@";type="];
+              [string appendString:v29];
             }
 
             if (IdentifierAtIndex == ABCMultiValueGetPrimaryIdentifier(v8))
             {
-              [v6 appendString:@";type=pref"];
+              [string appendString:@";type=pref"];
             }
 
             if (v33 && (v20 = MEMORY[0x1E695DF20], v21 = v17, v22 = MEMORY[0x1E696AAE8], v23 = objc_opt_class(), v24 = v22, v17 = v21, (v25 = [objc_msgSend(v20 dictionaryWithContentsOfFile:{objc_msgSend(objc_msgSend(v24, "bundleForClass:", v23), "pathForResource:ofType:", @"InstantMessageURLSchemes", @"plist", "valueForKey:", objc_msgSend(v33, "lowercaseString")}]) != 0))
             {
-              [v6 appendFormat:@":%@", v25];
+              [string appendFormat:@":%@", v25];
             }
 
             else
             {
-              [v6 appendString:@":x-apple"];
+              [string appendString:@":x-apple"];
             }
 
-            [v6 appendFormat:@":%@\r\n", objc_msgSend(objc_msgSend(v31, "stringByAddingPercentEncodingWithAllowedCharacters:", objc_msgSend(MEMORY[0x1E696AB08], "URLPathAllowedCharacterSet")), "abVCardKoshify")];
+            [string appendFormat:@":%@\r\n", objc_msgSend(objc_msgSend(v31, "stringByAddingPercentEncodingWithAllowedCharacters:", objc_msgSend(MEMORY[0x1E696AB08], "URLPathAllowedCharacterSet")), "abVCardKoshify")];
             if (v17)
             {
-              [(ABVCardRecord *)self appendLabel:v15 toVCardRep:v6 inGroup:v17];
+              [(ABVCardRecord *)self appendLabel:v15 toVCardRep:string inGroup:v17];
             }
           }
         }
@@ -977,13 +977,13 @@ LABEL_35:
     }
   }
 
-  return v6;
+  return string;
 }
 
-- (id)propertyLineForGenericABProperty21:(unsigned int)a3 vCardProperty:(id)a4
+- (id)propertyLineForGenericABProperty21:(unsigned int)property21 vCardProperty:(id)property
 {
-  v4 = *&a3;
-  v6 = [MEMORY[0x1E695DF88] data];
+  v4 = *&property21;
+  data = [MEMORY[0x1E695DF88] data];
   v27 = 0;
   v7 = [(ABVCardRecord *)self valueForProperty:v4];
   if (v7)
@@ -1017,37 +1017,37 @@ LABEL_35:
           v16 = v15;
           v17 = ABMultiValueCopyLabelAtIndex(v8, v11);
           v18 = [(ABVCardRecord *)self _vCardKeyForGenericLabel:v17];
-          [v6 abAppendString:a4];
+          [data abAppendString:property];
           if (v18)
           {
-            [v6 abAppendString:@";type="];
-            [v6 abAppendString:v18];
+            [data abAppendString:@";type="];
+            [data abAppendString:v18];
           }
 
           if (IdentifierAtIndex == PrimaryIdentifier)
           {
-            [v6 abAppendString:@";type=pref"];
+            [data abAppendString:@";type=pref"];
           }
 
-          v19 = [v16 abVCardKoshify];
-          v20 = [(ABVCardRecord *)self encodedDataForValue:v19 charsetName:&v27];
+          abVCardKoshify = [v16 abVCardKoshify];
+          v20 = [(ABVCardRecord *)self encodedDataForValue:abVCardKoshify charsetName:&v27];
           if (v27)
           {
             v21 = v20;
-            [v6 abAppendString:@";CHARSET="];
-            [v6 abAppendString:v27];
-            [v6 abAppendString:@":"];
-            [v6 appendData:v21];
+            [data abAppendString:@";CHARSET="];
+            [data abAppendString:v27];
+            [data abAppendString:@":"];
+            [data appendData:v21];
           }
 
           else
           {
-            [v6 abAppendString:@":"];
-            [v6 abAppendString:v19];
+            [data abAppendString:@":"];
+            [data abAppendString:abVCardKoshify];
           }
 
           v10 = v23;
-          [v6 abAppendString:@"\r\n"];
+          [data abAppendString:@"\r\n"];
 
           if (v14)
           {
@@ -1062,22 +1062,22 @@ LABEL_35:
     }
   }
 
-  return v6;
+  return data;
 }
 
-- (id)dataForSocialProfileProperty:(void *)a3 groupCount:(int64_t *)a4 includePrivateData:(BOOL)a5
+- (id)dataForSocialProfileProperty:(void *)property groupCount:(int64_t *)count includePrivateData:(BOOL)data
 {
-  v30 = a5;
-  v6 = [MEMORY[0x1E695DF88] data];
-  v33 = a3;
-  if (a3)
+  dataCopy = data;
+  data = [MEMORY[0x1E695DF88] data];
+  propertyCopy = property;
+  if (property)
   {
-    Count = ABMultiValueGetCount(a3);
+    Count = ABMultiValueGetCount(property);
     if (Count)
     {
       for (i = 0; i != Count; ++i)
       {
-        v8 = ABMultiValueCopyValueAtIndex(v33, i);
+        v8 = ABMultiValueCopyValueAtIndex(propertyCopy, i);
         v9 = [v8 objectForKey:@"url"];
         v10 = [v8 objectForKey:@"service"];
         v11 = [v8 objectForKey:@"username"];
@@ -1088,51 +1088,51 @@ LABEL_35:
         if (v9 | v11)
         {
           v31 = v15;
-          [v6 abAppendString:@"X-SOCIALPROFILE"];
+          [data abAppendString:@"X-SOCIALPROFILE"];
           v16 = v10;
           if (v10)
           {
             v17 = MEMORY[0x1E696AEC0];
-            v26 = [v16 abVCardKoshify];
+            abVCardKoshify = [v16 abVCardKoshify];
             v18 = v17;
             v10 = v16;
-            [v6 abAppendString:{objc_msgSend(v18, "stringWithFormat:", @";type=%@", v26)}];
+            [data abAppendString:{objc_msgSend(v18, "stringWithFormat:", @";type=%@", abVCardKoshify)}];
           }
 
           if (v11)
           {
             v19 = MEMORY[0x1E696AEC0];
-            v27 = [v11 abVCardKoshify];
+            abVCardKoshify2 = [v11 abVCardKoshify];
             v20 = v19;
             v10 = v16;
-            [v6 abAppendString:{objc_msgSend(v20, "stringWithFormat:", @";x-user=%@", v27)}];
+            [data abAppendString:{objc_msgSend(v20, "stringWithFormat:", @";x-user=%@", abVCardKoshify2)}];
           }
 
           if (v12)
           {
             v21 = MEMORY[0x1E696AEC0];
-            v28 = [v12 abVCardKoshify];
+            abVCardKoshify3 = [v12 abVCardKoshify];
             v22 = v21;
             v10 = v16;
-            [v6 abAppendString:{objc_msgSend(v22, "stringWithFormat:", @";x-userid=%@", v28)}];
+            [data abAppendString:{objc_msgSend(v22, "stringWithFormat:", @";x-userid=%@", abVCardKoshify3)}];
           }
 
           if (v13)
           {
-            [v6 abAppendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @";x-displayname=%@", objc_msgSend(v13, "abVCardKoshify"))}];
+            [data abAppendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @";x-displayname=%@", objc_msgSend(v13, "abVCardKoshify"))}];
           }
 
           v23 = v11;
-          if (v30)
+          if (dataCopy)
           {
             if (v31)
             {
-              [v6 abAppendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @";x-teamidentifier=%@", objc_msgSend(v31, "abVCardKoshify"))}];
+              [data abAppendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @";x-teamidentifier=%@", objc_msgSend(v31, "abVCardKoshify"))}];
             }
 
             if (v14)
             {
-              [v6 abAppendString:@";x-bundleidentifiers="];
+              [data abAppendString:@";x-bundleidentifiers="];
               if ([v14 count])
               {
                 v24 = 0;
@@ -1140,10 +1140,10 @@ LABEL_35:
                 {
                   if (v24)
                   {
-                    [v6 abAppendString:{@", "}];
+                    [data abAppendString:{@", "}];
                   }
 
-                  [v6 abAppendString:{objc_msgSend(objc_msgSend(v14, "objectAtIndexedSubscript:", v24++), "abVCardKoshify")}];
+                  [data abAppendString:{objc_msgSend(objc_msgSend(v14, "objectAtIndexedSubscript:", v24++), "abVCardKoshify")}];
                 }
 
                 while (v24 < [v14 count]);
@@ -1156,56 +1156,56 @@ LABEL_35:
             v9 = socialProfileURLForServiceAndUsername(v10, v23);
           }
 
-          [v6 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v9, "abVCardKoshify"))}];
+          [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v9, "abVCardKoshify"))}];
         }
       }
     }
   }
 
-  return v6;
+  return data;
 }
 
-- (id)propertyLineForIMHandles:(id)a3 labels:(id)a4 vCardProperty:(id)a5
+- (id)propertyLineForIMHandles:(id)handles labels:(id)labels vCardProperty:(id)property
 {
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v19 = 0;
-  v10 = [a3 count];
+  v10 = [handles count];
   if (v10)
   {
     v11 = v10;
     for (i = 0; i != v11; ++i)
     {
-      v13 = [a3 objectAtIndex:i];
-      v14 = -[ABVCardRecord _vCardKeyForGenericLabel:](self, "_vCardKeyForGenericLabel:", [a4 objectAtIndex:i]);
-      [v9 abAppendString:a5];
+      v13 = [handles objectAtIndex:i];
+      v14 = -[ABVCardRecord _vCardKeyForGenericLabel:](self, "_vCardKeyForGenericLabel:", [labels objectAtIndex:i]);
+      [data abAppendString:property];
       if (v14)
       {
-        [v9 abAppendString:@";type="];
-        [v9 abAppendString:v14];
+        [data abAppendString:@";type="];
+        [data abAppendString:v14];
       }
 
-      v15 = [v13 abVCardKoshify];
-      v16 = [(ABVCardRecord *)self encodedDataForValue:v15 charsetName:&v19];
+      abVCardKoshify = [v13 abVCardKoshify];
+      v16 = [(ABVCardRecord *)self encodedDataForValue:abVCardKoshify charsetName:&v19];
       if (v19)
       {
         v17 = v16;
-        [v9 abAppendString:@";CHARSET="];
-        [v9 abAppendString:v19];
-        [v9 abAppendString:@":"];
-        [v9 appendData:v17];
+        [data abAppendString:@";CHARSET="];
+        [data abAppendString:v19];
+        [data abAppendString:@":"];
+        [data appendData:v17];
       }
 
       else
       {
-        [v9 abAppendString:@":"];
-        [v9 abAppendString:v15];
+        [data abAppendString:@":"];
+        [data abAppendString:abVCardKoshify];
       }
 
-      [v9 abAppendString:@"\r\n"];
+      [data abAppendString:@"\r\n"];
     }
   }
 
-  return v9;
+  return data;
 }
 
 - (id)dataForInstantMessageProperties
@@ -1299,14 +1299,14 @@ LABEL_35:
     }
   }
 
-  v14 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v15 = [(ABVCardRecord *)self propertyLineForIMHandles:v37 labels:v36 vCardProperty:@"X-AIM"];
   if (v15)
   {
     v16 = v15;
     if ([v15 length])
     {
-      [v14 appendData:v16];
+      [data appendData:v16];
     }
   }
 
@@ -1316,7 +1316,7 @@ LABEL_35:
     v18 = v17;
     if ([v17 length])
     {
-      [v14 appendData:v18];
+      [data appendData:v18];
     }
   }
 
@@ -1326,7 +1326,7 @@ LABEL_35:
     v20 = v19;
     if ([v19 length])
     {
-      [v14 appendData:v20];
+      [data appendData:v20];
     }
   }
 
@@ -1336,7 +1336,7 @@ LABEL_35:
     v22 = v21;
     if ([v21 length])
     {
-      [v14 appendData:v22];
+      [data appendData:v22];
     }
   }
 
@@ -1346,16 +1346,16 @@ LABEL_35:
     v24 = v23;
     if ([v23 length])
     {
-      [v14 appendData:v24];
+      [data appendData:v24];
     }
   }
 
-  return v14;
+  return data;
 }
 
-- (id)_valueForPersonSounds:(void *)a3 identifier:(int)a4
+- (id)_valueForPersonSounds:(void *)sounds identifier:(int)identifier
 {
-  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(a3, a4);
+  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(sounds, identifier);
   if (IndexForIdentifier == -1)
   {
     v6 = 0;
@@ -1363,34 +1363,34 @@ LABEL_35:
 
   else
   {
-    v6 = ABMultiValueCopyValueAtIndex(a3, IndexForIdentifier);
+    v6 = ABMultiValueCopyValueAtIndex(sounds, IndexForIdentifier);
   }
 
   return v6;
 }
 
-- (void)_addPersonSounds:(void *)a3 identifier:(int)a4 toActivityAlerts:(id *)a5 activity:(id)a6 alert:(id)a7
+- (void)_addPersonSounds:(void *)sounds identifier:(int)identifier toActivityAlerts:(id *)alerts activity:(id)activity alert:(id)alert
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v10 = [(ABVCardRecord *)self _valueForPersonSounds:a3 identifier:*&a4];
+  v10 = [(ABVCardRecord *)self _valueForPersonSounds:sounds identifier:*&identifier];
   if (v10)
   {
     v11 = v10;
-    v12 = *a5;
-    if (!*a5)
+    dictionary = *alerts;
+    if (!*alerts)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
-      *a5 = v12;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      *alerts = dictionary;
     }
 
-    v13 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v12, "objectForKeyedSubscript:", a6)}];
-    v17 = a7;
+    v13 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(dictionary, "objectForKeyedSubscript:", activity)}];
+    alertCopy = alert;
     v18[0] = v11;
-    [v13 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v18, &v17, 1)}];
-    v14 = *a5;
-    v15 = a6;
+    [v13 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v18, &alertCopy, 1)}];
+    v14 = *alerts;
+    activityCopy = activity;
     v16 = v13;
-    [v14 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}];
+    [v14 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v16, &activityCopy, 1)}];
   }
 }
 
@@ -1420,33 +1420,33 @@ LABEL_35:
   return result;
 }
 
-- (id)_typeParameterForToneType:(id)a3
+- (id)_typeParameterForToneType:(id)type
 {
-  if (![a3 caseInsensitiveCompare:@"com.apple.activityalert.call"])
+  if (![type caseInsensitiveCompare:@"com.apple.activityalert.call"])
   {
     return @"call";
   }
 
-  if ([a3 caseInsensitiveCompare:@"com.apple.activityalert.text"])
+  if ([type caseInsensitiveCompare:@"com.apple.activityalert.text"])
   {
-    return a3;
+    return type;
   }
 
   return @"text";
 }
 
-- (id)dataForSoundProperty:(void *)a3
+- (id)dataForSoundProperty:(void *)property
 {
-  v4 = [MEMORY[0x1E695DF88] data];
-  v5 = [(ABVCardRecord *)self _dictionaryForActivityAlerts];
+  data = [MEMORY[0x1E695DF88] data];
+  _dictionaryForActivityAlerts = [(ABVCardRecord *)self _dictionaryForActivityAlerts];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__ABVCardRecord_dataForSoundProperty___block_invoke;
   v7[3] = &unk_1E7CCCE58;
-  v7[4] = v4;
+  v7[4] = data;
   v7[5] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
-  return v4;
+  [_dictionaryForActivityAlerts enumerateKeysAndObjectsUsingBlock:v7];
+  return data;
 }
 
 uint64_t __38__ABVCardRecord_dataForSoundProperty___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1464,13 +1464,13 @@ uint64_t __38__ABVCardRecord_dataForSoundProperty___block_invoke(uint64_t a1, ui
   return result;
 }
 
-- (id)encodedLineForValue:(id)a3
+- (id)encodedLineForValue:(id)value
 {
-  v4 = [MEMORY[0x1E695DF88] data];
-  if ([a3 canBeConvertedToEncoding:1])
+  data = [MEMORY[0x1E695DF88] data];
+  if ([value canBeConvertedToEncoding:1])
   {
     v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@":"];
-    [(__CFString *)v5 appendString:a3];
+    [(__CFString *)v5 appendString:value];
     [(__CFString *)v5 appendString:@"\r\n"];
     v6 = v5;
 LABEL_6:
@@ -1478,30 +1478,30 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  [v4 appendData:{objc_msgSend(@";CHARSET=", "dataUsingEncoding:", 1)}];
+  [data appendData:{objc_msgSend(@";CHARSET=", "dataUsingEncoding:", 1)}];
   v7 = CFPreferencesCopyAppValue(@"AB21vCardEncoding", @"com.apple.AddressBook");
   if (v7)
   {
     v5 = v7;
     v8 = CFStringConvertIANACharSetNameToEncoding(v7);
-    ExternalRepresentation = CFStringCreateExternalRepresentation(0, a3, v8, 0);
+    ExternalRepresentation = CFStringCreateExternalRepresentation(0, value, v8, 0);
     v10 = CFMakeCollectable(ExternalRepresentation);
     if (v10)
     {
       v11 = v10;
-      [v4 appendData:{-[__CFString dataUsingEncoding:](v5, "dataUsingEncoding:", 1)}];
-      [v4 appendData:{objc_msgSend(@":", "dataUsingEncoding:", 1)}];
-      [v4 appendData:v11];
+      [data appendData:{-[__CFString dataUsingEncoding:](v5, "dataUsingEncoding:", 1)}];
+      [data appendData:{objc_msgSend(@":", "dataUsingEncoding:", 1)}];
+      [data appendData:v11];
 
       v6 = @"\r\n";
       goto LABEL_6;
     }
   }
 
-  if ([a3 canBeConvertedToEncoding:5])
+  if ([value canBeConvertedToEncoding:5])
   {
     v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"LATIN1:"];
-    [(__CFString *)v5 appendString:a3];
+    [(__CFString *)v5 appendString:value];
     [(__CFString *)v5 appendString:@"\r\n"];
     v6 = v5;
     v12 = 5;
@@ -1509,12 +1509,12 @@ LABEL_6:
 
   else
   {
-    v14 = [a3 canBeConvertedToEncoding:30];
+    v14 = [value canBeConvertedToEncoding:30];
     v15 = objc_alloc(MEMORY[0x1E696AD60]);
     if (v14)
     {
       v5 = [v15 initWithString:@"MACINTOSH:"];
-      [(__CFString *)v5 appendString:a3];
+      [(__CFString *)v5 appendString:value];
       [(__CFString *)v5 appendString:@"\r\n"];
       v6 = v5;
       v12 = 30;
@@ -1523,7 +1523,7 @@ LABEL_6:
     else
     {
       v5 = [v15 initWithString:@"UTF-8:"];
-      [(__CFString *)v5 appendString:a3];
+      [(__CFString *)v5 appendString:value];
       [(__CFString *)v5 appendString:@"\r\n"];
       v6 = v5;
       v12 = 4;
@@ -1531,63 +1531,63 @@ LABEL_6:
   }
 
 LABEL_7:
-  [v4 appendData:{-[__CFString dataUsingEncoding:](v6, "dataUsingEncoding:", v12)}];
+  [data appendData:{-[__CFString dataUsingEncoding:](v6, "dataUsingEncoding:", v12)}];
 
-  return v4;
+  return data;
 }
 
-- (id)encodedDataForValue:(id)a3 charsetName:(id *)a4
+- (id)encodedDataForValue:(id)value charsetName:(id *)name
 {
-  if ([a3 canBeConvertedToEncoding:1])
+  if ([value canBeConvertedToEncoding:1])
   {
-    *a4 = 0;
-    v6 = a3;
+    *name = 0;
+    valueCopy4 = value;
     v7 = 1;
     goto LABEL_13;
   }
 
   v8 = CFPreferencesCopyAppValue(@"AB21vCardEncoding", @"com.apple.AddressBook");
-  if ([a3 canBeConvertedToEncoding:5])
+  if ([value canBeConvertedToEncoding:5])
   {
-    *a4 = @"LATIN1";
-    v6 = a3;
+    *name = @"LATIN1";
+    valueCopy4 = value;
     v7 = 5;
     goto LABEL_13;
   }
 
-  if (!v8 || (v9 = CFStringConvertIANACharSetNameToEncoding(v8), ExternalRepresentation = CFStringCreateExternalRepresentation(0, a3, v9, 0), (v11 = CFMakeCollectable(ExternalRepresentation)) == 0))
+  if (!v8 || (v9 = CFStringConvertIANACharSetNameToEncoding(v8), ExternalRepresentation = CFStringCreateExternalRepresentation(0, value, v9, 0), (v11 = CFMakeCollectable(ExternalRepresentation)) == 0))
   {
-    if ([a3 canBeConvertedToEncoding:30])
+    if ([value canBeConvertedToEncoding:30])
     {
-      *a4 = @"MACINTOSH";
-      v6 = a3;
+      *name = @"MACINTOSH";
+      valueCopy4 = value;
       v7 = 30;
     }
 
     else
     {
-      *a4 = @"UTF-8";
-      v6 = a3;
+      *name = @"UTF-8";
+      valueCopy4 = value;
       v7 = 4;
     }
 
 LABEL_13:
 
-    return [v6 dataUsingEncoding:v7];
+    return [valueCopy4 dataUsingEncoding:v7];
   }
 
-  *a4 = v8;
+  *name = v8;
 
   return v11;
 }
 
-- (id)_fullNameIncludingAuxiliaryElements:(BOOL)a3
+- (id)_fullNameIncludingAuxiliaryElements:(BOOL)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v5 = [(ABVCardRecord *)self valueForProperty:kABPersonFirstNameProperty];
   v6 = [(ABVCardRecord *)self valueForProperty:kABPersonLastNameProperty];
   v7 = [(ABVCardRecord *)self valueForProperty:kABPersonMiddleNameProperty];
-  if (v3)
+  if (elementsCopy)
   {
     v8 = [(ABVCardRecord *)self valueForProperty:kABPersonPrefixProperty];
   }
@@ -1598,7 +1598,7 @@ LABEL_13:
   }
 
   v9 = [(ABVCardRecord *)self valueForProperty:kABPersonSuffixProperty];
-  v10 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (v5)
   {
     v11 = v5;
@@ -1678,45 +1678,45 @@ LABEL_13:
     {
       if (v18)
       {
-        [v10 appendString:v14];
-        [v10 appendString:v22];
+        [string appendString:v14];
+        [string appendString:v22];
       }
 
-      [v10 appendString:v12];
-      [v10 appendString:v22];
-      [v10 appendString:v11];
+      [string appendString:v12];
+      [string appendString:v22];
+      [string appendString:v11];
       if (v20)
       {
-        [v10 appendString:v22];
-        [v10 appendString:v15];
+        [string appendString:v22];
+        [string appendString:v15];
       }
 
       if (!v24)
       {
-        return v10;
+        return string;
       }
 
 LABEL_40:
-      [v10 appendString:v22];
-      [v10 appendString:v13];
-      return v10;
+      [string appendString:v22];
+      [string appendString:v13];
+      return string;
     }
 
     if (v18)
     {
-      [v10 appendString:v14];
-      [v10 appendString:v22];
+      [string appendString:v14];
+      [string appendString:v22];
     }
 
-    [v10 appendString:v11];
-    [v10 appendString:v22];
+    [string appendString:v11];
+    [string appendString:v22];
     if (v24)
     {
-      [v10 appendString:v13];
-      [v10 appendString:v22];
+      [string appendString:v13];
+      [string appendString:v22];
     }
 
-    [v10 appendString:v12];
+    [string appendString:v12];
     v13 = v15;
     if (v20)
     {
@@ -1729,7 +1729,7 @@ LABEL_40:
     return v12;
   }
 
-  return v10;
+  return string;
 }
 
 - (BOOL)_isCompany
@@ -1776,17 +1776,17 @@ LABEL_40:
     v3 = [(ABVCardRecord *)self valueForProperty:kABPersonOrganizationProperty];
     if (v3)
     {
-      v4 = v3;
+      alternateName = v3;
       if ([v3 length])
       {
         goto LABEL_8;
       }
     }
 
-    v5 = [(ABVCardRecord *)self _fullName];
+    _fullName = [(ABVCardRecord *)self _fullName];
 LABEL_6:
-    v4 = v5;
-    if ([v5 length])
+    alternateName = _fullName;
+    if ([_fullName length])
     {
       goto LABEL_8;
     }
@@ -1794,18 +1794,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [(ABVCardRecord *)self _fullNameIncludingAuxiliaryElements:1];
-  if (v5)
+  _fullName = [(ABVCardRecord *)self _fullNameIncludingAuxiliaryElements:1];
+  if (_fullName)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v4 = [(ABVCardRecord *)self alternateName];
+  alternateName = [(ABVCardRecord *)self alternateName];
 LABEL_8:
-  if (v4)
+  if (alternateName)
   {
-    return v4;
+    return alternateName;
   }
 
   else
@@ -1816,119 +1816,119 @@ LABEL_8:
 
 - (id)_21vCardRepresentationAsData
 {
-  v2 = [MEMORY[0x1E695DF88] data];
-  v84 = [MEMORY[0x1E695DF70] array];
-  [v2 abAppendString:@"BEGIN:VCARD"];
-  [v2 abAppendString:@"\r\n"];
-  [v2 abAppendString:@"VERSION:2.1"];
-  [v2 abAppendString:@"\r\n"];
+  data = [MEMORY[0x1E695DF88] data];
+  array = [MEMORY[0x1E695DF70] array];
+  [data abAppendString:@"BEGIN:VCARD"];
+  [data abAppendString:@"\r\n"];
+  [data abAppendString:@"VERSION:2.1"];
+  [data abAppendString:@"\r\n"];
   v3 = [(ABVCardRecord *)self valueForProperty:kABPersonLastNameProperty];
   if (!v3)
   {
     v3 = &stru_1F2FE2718;
   }
 
-  [v84 addObject:{-[__CFString abVCardKoshify](v3, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v3, "abVCardKoshify")}];
   v4 = [(ABVCardRecord *)self valueForProperty:kABPersonFirstNameProperty];
   if (!v4)
   {
     v4 = &stru_1F2FE2718;
   }
 
-  [v84 addObject:{-[__CFString abVCardKoshify](v4, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v4, "abVCardKoshify")}];
   v5 = [(ABVCardRecord *)self valueForProperty:kABPersonMiddleNameProperty];
   if (!v5)
   {
     v5 = &stru_1F2FE2718;
   }
 
-  [v84 addObject:{-[__CFString abVCardKoshify](v5, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v5, "abVCardKoshify")}];
   v6 = [(ABVCardRecord *)self valueForProperty:kABCPrefixProperty];
   if (!v6)
   {
     v6 = &stru_1F2FE2718;
   }
 
-  [v84 addObject:{-[__CFString abVCardKoshify](v6, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v6, "abVCardKoshify")}];
   v7 = [(ABVCardRecord *)self valueForProperty:kABCSuffixProperty];
   if (!v7)
   {
     v7 = &stru_1F2FE2718;
   }
 
-  [v84 addObject:{-[__CFString abVCardKoshify](v7, "abVCardKoshify")}];
-  [v2 abAppendString:@"N"];
-  [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v84, "componentsJoinedByString:", @";"}];
-  [v84 removeAllObjects];
-  v8 = [(ABVCardRecord *)self _realCompositeName];
-  if ([v8 length])
+  [array addObject:{-[__CFString abVCardKoshify](v7, "abVCardKoshify")}];
+  [data abAppendString:@"N"];
+  [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(array, "componentsJoinedByString:", @";"}];
+  [array removeAllObjects];
+  _realCompositeName = [(ABVCardRecord *)self _realCompositeName];
+  if ([_realCompositeName length])
   {
-    [v2 abAppendString:@"FN"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v8, "abVCardKoshify"))}];
+    [data abAppendString:@"FN"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(_realCompositeName, "abVCardKoshify"))}];
   }
 
   v9 = [(ABVCardRecord *)self valueForProperty:kABPersonNicknameProperty];
   v10 = v9;
   if (v9 && ([v9 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"NICKNAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v10, "abVCardKoshify"))}];
+    [data abAppendString:@"NICKNAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v10, "abVCardKoshify"))}];
   }
 
   v11 = [(ABVCardRecord *)self valueForProperty:kABPersonPreviousFamilyNameProperty];
   v12 = v11;
   if (v11 && ([v11 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-MAIDENNAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v12, "abVCardKoshify"))}];
+    [data abAppendString:@"X-MAIDENNAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v12, "abVCardKoshify"))}];
   }
 
   v13 = [(ABVCardRecord *)self valueForProperty:kABPersonFirstNamePhoneticProperty];
   v14 = v13;
   if (v13 && ([v13 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PHONETIC-FIRST-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v14, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PHONETIC-FIRST-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v14, "abVCardKoshify"))}];
   }
 
   v15 = [(ABVCardRecord *)self valueForProperty:kABPersonFirstNamePronunciationProperty];
   v16 = v15;
   if (v15 && ([v15 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PRONUNCIATION-FIRST-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v16, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PRONUNCIATION-FIRST-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v16, "abVCardKoshify"))}];
   }
 
   v17 = [(ABVCardRecord *)self valueForProperty:kABPersonMiddleNamePhoneticProperty];
   v18 = v17;
   if (v17 && ([v17 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PHONETIC-MIDDLE-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v18, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PHONETIC-MIDDLE-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v18, "abVCardKoshify"))}];
   }
 
   v19 = [(ABVCardRecord *)self valueForProperty:kABPersonMiddleNamePronunciationProperty];
   v20 = v19;
   if (v19 && ([v19 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PRONUNCIATION-MIDDLE-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v20, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PRONUNCIATION-MIDDLE-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v20, "abVCardKoshify"))}];
   }
 
   v21 = [(ABVCardRecord *)self valueForProperty:kABPersonLastNamePhoneticProperty];
   v22 = v21;
   if (v21 && ([v21 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PHONETIC-LAST-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v22, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PHONETIC-LAST-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v22, "abVCardKoshify"))}];
   }
 
   v23 = [(ABVCardRecord *)self valueForProperty:kABPersonLastNamePronunciationProperty];
   v24 = v23;
   if (v23 && ([v23 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PRONUNCIATION-LAST-NAME"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v24, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PRONUNCIATION-LAST-NAME"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v24, "abVCardKoshify"))}];
   }
 
   v25 = [(ABVCardRecord *)self valueForProperty:kABPersonOrganizationProperty];
@@ -1938,53 +1938,53 @@ LABEL_8:
     v27 = objc_alloc_init(MEMORY[0x1E696AD60]);
     if ([v25 length])
     {
-      v28 = [v25 abVCardKoshify];
+      abVCardKoshify = [v25 abVCardKoshify];
     }
 
     else
     {
-      v28 = &stru_1F2FE2718;
+      abVCardKoshify = &stru_1F2FE2718;
     }
 
-    [v27 appendString:v28];
+    [v27 appendString:abVCardKoshify];
     [v27 appendString:@";"];
     if ([v26 length])
     {
-      v29 = [v26 abVCardKoshify];
+      abVCardKoshify2 = [v26 abVCardKoshify];
     }
 
     else
     {
-      v29 = &stru_1F2FE2718;
+      abVCardKoshify2 = &stru_1F2FE2718;
     }
 
-    [v27 appendString:v29];
-    [v2 abAppendString:@"ORG"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", v27)}];
+    [v27 appendString:abVCardKoshify2];
+    [data abAppendString:@"ORG"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", v27)}];
   }
 
   v30 = [(ABVCardRecord *)self valueForProperty:kABPersonOrganizationPhoneticProperty];
   v31 = v30;
   if (v30 && ([v30 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PHONETIC-ORG"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v31, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PHONETIC-ORG"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v31, "abVCardKoshify"))}];
   }
 
   v32 = [(ABVCardRecord *)self valueForProperty:kABPersonOrganizationPronunciationProperty];
   v33 = v32;
   if (v32 && ([v32 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"X-PRONUNCIATION-ORG"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v33, "abVCardKoshify"))}];
+    [data abAppendString:@"X-PRONUNCIATION-ORG"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v33, "abVCardKoshify"))}];
   }
 
   v34 = [(ABVCardRecord *)self valueForProperty:kABPersonJobTitleProperty];
   v35 = v34;
   if (v34 && ([v34 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
-    [v2 abAppendString:@"TITLE"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v35, "abVCardKoshify"))}];
+    [data abAppendString:@"TITLE"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v35, "abVCardKoshify"))}];
   }
 
   v36 = [(ABVCardRecord *)self valueForProperty:kABPersonEmailProperty];
@@ -2000,15 +2000,15 @@ LABEL_8:
         {
           v40 = ABMultiValueCopyValueAtIndex(v37, i);
           v41 = ABMultiValueCopyLabelAtIndex(v37, i);
-          [v2 abAppendString:@"EMAIL;INTERNET"];
+          [data abAppendString:@"EMAIL;INTERNET"];
           v42 = [(ABVCardRecord *)self _vCardKeyForEmailLabel:v41];
           if (v42)
           {
-            [v2 abAppendString:@";"];
-            [v2 abAppendString:v42];
+            [data abAppendString:@";"];
+            [data abAppendString:v42];
           }
 
-          [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v40, "abVCardKoshify"))}];
+          [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v40, "abVCardKoshify"))}];
         }
       }
     }
@@ -2027,7 +2027,7 @@ LABEL_8:
         {
           v46 = ABMultiValueCopyValueAtIndex(v44, j);
           v47 = ABMultiValueCopyLabelAtIndex(v44, j);
-          [v2 abAppendString:@"TEL"];
+          [data abAppendString:@"TEL"];
           v48 = [(ABVCardRecord *)self _vCardKeysForPhoneLabel:v47];
           v49 = [v48 count];
           if (v49 >= 1)
@@ -2035,12 +2035,12 @@ LABEL_8:
             for (k = 0; k != v49; ++k)
             {
               v51 = [v48 objectAtIndex:k];
-              [v2 abAppendString:@";"];
-              [v2 abAppendString:v51];
+              [data abAppendString:@";"];
+              [data abAppendString:v51];
             }
           }
 
-          [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v46, "abVCardKoshify"))}];
+          [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v46, "abVCardKoshify"))}];
         }
       }
     }
@@ -2059,15 +2059,15 @@ LABEL_8:
         {
           v56 = ABMultiValueCopyValueAtIndex(v53, m);
           v57 = ABMultiValueCopyLabelAtIndex(v53, m);
-          [v2 abAppendString:@"ADR"];
+          [data abAppendString:@"ADR"];
           v58 = [(ABVCardRecord *)self _vCardKeyForAddressLabel:v57 vCard3:0];
           if (v58)
           {
-            [v2 abAppendString:@";"];
-            [v2 abAppendString:v58];
+            [data abAppendString:@";"];
+            [data abAppendString:v58];
           }
 
-          [v84 addObject:&stru_1F2FE2718];
+          [array addObject:&stru_1F2FE2718];
           v59 = [v56 objectForKey:@"Street"];
           v60 = v59;
           if (v59)
@@ -2076,23 +2076,23 @@ LABEL_8:
             if (v62)
             {
               v63 = v61;
-              [v84 addObject:{objc_msgSend(objc_msgSend(v60, "substringToIndex:", v61), "abVCardKoshify")}];
-              v64 = [objc_msgSend(v60 substringFromIndex:{v63 + 1), "abVCardKoshify"}];
+              [array addObject:{objc_msgSend(objc_msgSend(v60, "substringToIndex:", v61), "abVCardKoshify")}];
+              abVCardKoshify3 = [objc_msgSend(v60 substringFromIndex:{v63 + 1), "abVCardKoshify"}];
             }
 
             else
             {
-              [v84 addObject:&stru_1F2FE2718];
-              v64 = [v60 abVCardKoshify];
+              [array addObject:&stru_1F2FE2718];
+              abVCardKoshify3 = [v60 abVCardKoshify];
             }
 
-            [v84 addObject:v64];
+            [array addObject:abVCardKoshify3];
           }
 
           else
           {
-            [v84 addObject:&stru_1F2FE2718];
-            [v84 addObject:&stru_1F2FE2718];
+            [array addObject:&stru_1F2FE2718];
+            [array addObject:&stru_1F2FE2718];
           }
 
           v65 = [v56 objectForKey:@"City"];
@@ -2101,30 +2101,30 @@ LABEL_8:
             v65 = &stru_1F2FE2718;
           }
 
-          [v84 addObject:{-[__CFString abVCardKoshify](v65, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v65, "abVCardKoshify")}];
           v66 = [v56 objectForKey:@"State"];
           if (!v66)
           {
             v66 = &stru_1F2FE2718;
           }
 
-          [v84 addObject:{-[__CFString abVCardKoshify](v66, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v66, "abVCardKoshify")}];
           v67 = [v56 objectForKey:@"ZIP"];
           if (!v67)
           {
             v67 = &stru_1F2FE2718;
           }
 
-          [v84 addObject:{-[__CFString abVCardKoshify](v67, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v67, "abVCardKoshify")}];
           v68 = [v56 objectForKey:@"Country"];
           if (!v68)
           {
             v68 = &stru_1F2FE2718;
           }
 
-          [v84 addObject:{-[__CFString abVCardKoshify](v68, "abVCardKoshify")}];
-          [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v84, "componentsJoinedByString:", @";"}];
-          [v84 removeAllObjects];
+          [array addObject:{-[__CFString abVCardKoshify](v68, "abVCardKoshify")}];
+          [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(array, "componentsJoinedByString:", @";"}];
+          [array removeAllObjects];
         }
       }
     }
@@ -2134,66 +2134,66 @@ LABEL_8:
   v70 = v69;
   if (v69 && ([v69 isEqualToString:&stru_1F2FE2718] & 1) == 0 && objc_msgSend(objc_opt_class(), "includeNotesInVCards"))
   {
-    [v2 abAppendString:@"NOTE"];
-    [v2 appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v70, "abVCardKoshify"))}];
+    [data abAppendString:@"NOTE"];
+    [data appendData:{-[ABVCardRecord encodedLineForValue:](self, "encodedLineForValue:", objc_msgSend(v70, "abVCardKoshify"))}];
   }
 
   v71 = [(ABVCardRecord *)self propertyLineForGenericABProperty21:kABPersonURLProperty vCardProperty:@"URL"];
   v72 = v71;
   if (v71 && [v71 length])
   {
-    [v2 appendData:v72];
+    [data appendData:v72];
   }
 
   v73 = [(ABVCardRecord *)self valueForProperty:kABPersonBirthdayProperty];
   if (v73 && [(ABVCardRecord *)self _showField:kABPersonBirthdayProperty])
   {
-    [v2 abAppendString:@"BDAY;"];
-    [v2 abAppendString:@"value=date:"];
-    [v2 abAppendString:{-[ABVCardRecord ISO8061StringFromDate:](self, "ISO8061StringFromDate:", v73)}];
-    [v2 abAppendString:@"\r\n"];
+    [data abAppendString:@"BDAY;"];
+    [data abAppendString:@"value=date:"];
+    [data abAppendString:{-[ABVCardRecord ISO8061StringFromDate:](self, "ISO8061StringFromDate:", v73)}];
+    [data abAppendString:@"\r\n"];
   }
 
-  v74 = [(ABVCardRecord *)self dataForInstantMessageProperties];
-  v75 = v74;
-  if (v74 && [v74 length])
+  dataForInstantMessageProperties = [(ABVCardRecord *)self dataForInstantMessageProperties];
+  v75 = dataForInstantMessageProperties;
+  if (dataForInstantMessageProperties && [dataForInstantMessageProperties length])
   {
-    [v2 appendData:v75];
+    [data appendData:v75];
   }
 
   v76 = [(ABVCardRecord *)self dataForSocialProfileProperty:[(ABVCardRecord *)self valueForProperty:kABPersonSocialProfileProperty] groupCount:0 includePrivateData:0];
   v77 = v76;
   if (v76 && [v76 length])
   {
-    [v2 appendData:v77];
+    [data appendData:v77];
   }
 
   v78 = [(ABVCardRecord *)self propertyLineForGenericABProperty21:kABPersonRelatedNamesProperty vCardProperty:@"X-ABRELATEDNAMES"];
   v79 = v78;
   if (v78 && [v78 length])
   {
-    [v2 appendData:v79];
+    [data appendData:v79];
   }
 
   v80 = [(ABVCardRecord *)self valueForProperty:kABPersonModificationDateProperty];
   if (v80 && [objc_opt_class() includeREVInVCards])
   {
-    [v2 abAppendString:@"REV:"];
-    [v2 abAppendString:{-[ABVCardRecord ISO8061StringFromDateTime:](self, "ISO8061StringFromDateTime:", v80)}];
-    [v2 abAppendString:@"\r\n"];
+    [data abAppendString:@"REV:"];
+    [data abAppendString:{-[ABVCardRecord ISO8061StringFromDateTime:](self, "ISO8061StringFromDateTime:", v80)}];
+    [data abAppendString:@"\r\n"];
   }
 
   v81 = [(ABVCardRecord *)self valueForProperty:kABPersonAlternateBirthdayProperty];
   if ([v81 count] && -[ABVCardRecord _showField:](self, "_showField:", kABPersonAlternateBirthdayProperty))
   {
-    [v2 abAppendString:@"X-ALTBDAY;"];
-    [v2 abAppendString:{-[ABVCardRecord stringFromAlternateBirthday:](self, "stringFromAlternateBirthday:", v81)}];
-    [v2 abAppendString:@"\r\n"];
+    [data abAppendString:@"X-ALTBDAY;"];
+    [data abAppendString:{-[ABVCardRecord stringFromAlternateBirthday:](self, "stringFromAlternateBirthday:", v81)}];
+    [data abAppendString:@"\r\n"];
   }
 
-  [v2 abAppendString:@"END:VCARD"];
-  [v2 abAppendString:@"\r\n"];
-  return v2;
+  [data abAppendString:@"END:VCARD"];
+  [data abAppendString:@"\r\n"];
+  return data;
 }
 
 - (id)imageData
@@ -2237,24 +2237,24 @@ void __24__ABVCardRecord__prodID__block_invoke()
   _prodID__sProdID = [v1 initWithFormat:@"-//Apple Inc.//iOS %@//EN", objc_msgSend(v2, "objectForKey:", *MEMORY[0x1E695E208])];
 }
 
-- (void)_appendPropValue:(id)a3 forPropKey:(id)a4 toOutString:(id)a5 usingDelimiter:(id)a6 inGroup:(id)a7
+- (void)_appendPropValue:(id)value forPropKey:(id)key toOutString:(id)string usingDelimiter:(id)delimiter inGroup:(id)group
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (group)
   {
-    [a5 appendString:a7];
-    [a5 appendString:@"."];
+    [string appendString:group];
+    [string appendString:@"."];
   }
 
-  [a5 appendString:a4];
-  [a5 appendString:@":"];
-  if ([(ABVCardRecord *)self _usesArrayForExternalPropKey:a4])
+  [string appendString:key];
+  [string appendString:@":"];
+  if ([(ABVCardRecord *)self _usesArrayForExternalPropKey:key])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v12 = [value countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2266,20 +2266,20 @@ void __24__ABVCardRecord__prodID__block_invoke()
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(value);
           }
 
           v17 = *(*(&v18 + 1) + 8 * i);
           if ((v15 & 1) == 0)
           {
-            [a5 appendString:{@", "}];
+            [string appendString:{@", "}];
           }
 
-          [a5 appendString:{objc_msgSend(v17, "abVCardKoshify")}];
+          [string appendString:{objc_msgSend(v17, "abVCardKoshify")}];
           v15 = 0;
         }
 
-        v13 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [value countByEnumeratingWithState:&v18 objects:v22 count:16];
         v15 = 0;
       }
 
@@ -2289,21 +2289,21 @@ void __24__ABVCardRecord__prodID__block_invoke()
 
   else
   {
-    [a5 appendString:{objc_msgSend(a3, "abVCardKoshify")}];
+    [string appendString:{objc_msgSend(value, "abVCardKoshify")}];
   }
 
-  [a5 appendString:a6];
+  [string appendString:delimiter];
 }
 
-- (id)_copyVCardRepresentationAsStringIncludeExternalProperties:(BOOL)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5 includePrivateData:(BOOL)a6 includeWallpaper:(BOOL)a7
+- (id)_copyVCardRepresentationAsStringIncludeExternalProperties:(BOOL)properties withPhoto:(id)photo extraPhotoParameters:(id)parameters includePrivateData:(BOOL)data includeWallpaper:(BOOL)wallpaper
 {
-  v175 = a7;
-  v176 = a6;
-  v174 = a3;
+  wallpaperCopy = wallpaper;
+  dataCopy = data;
+  propertiesCopy = properties;
   v201 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v198 = 1;
-  v187 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [v8 appendString:@"BEGIN:VCARD"];
   [v8 appendString:@"\r\n"];
   [v8 appendString:@"VERSION:3.0"];
@@ -2317,44 +2317,44 @@ void __24__ABVCardRecord__prodID__block_invoke()
     v9 = &stru_1F2FE2718;
   }
 
-  [v187 addObject:{-[__CFString abVCardKoshify](v9, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v9, "abVCardKoshify")}];
   v10 = [(ABVCardRecord *)self valueForProperty:kABPersonFirstNameProperty];
   if (!v10)
   {
     v10 = &stru_1F2FE2718;
   }
 
-  [v187 addObject:{-[__CFString abVCardKoshify](v10, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v10, "abVCardKoshify")}];
   v11 = [(ABVCardRecord *)self valueForProperty:kABPersonMiddleNameProperty];
   if (!v11)
   {
     v11 = &stru_1F2FE2718;
   }
 
-  [v187 addObject:{-[__CFString abVCardKoshify](v11, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v11, "abVCardKoshify")}];
   v12 = [(ABVCardRecord *)self valueForProperty:kABPersonPrefixProperty];
   if (!v12)
   {
     v12 = &stru_1F2FE2718;
   }
 
-  [v187 addObject:{-[__CFString abVCardKoshify](v12, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v12, "abVCardKoshify")}];
   v13 = [(ABVCardRecord *)self valueForProperty:kABPersonSuffixProperty];
   if (!v13)
   {
     v13 = &stru_1F2FE2718;
   }
 
-  [v187 addObject:{-[__CFString abVCardKoshify](v13, "abVCardKoshify")}];
+  [array addObject:{-[__CFString abVCardKoshify](v13, "abVCardKoshify")}];
   [v8 appendString:@"N:"];
-  [v8 appendString:{objc_msgSend(v187, "componentsJoinedByString:", @";"}];
+  [v8 appendString:{objc_msgSend(array, "componentsJoinedByString:", @";"}];
   [v8 appendString:@"\r\n"];
-  [v187 removeAllObjects];
-  v14 = [(ABVCardRecord *)self _realCompositeName];
+  [array removeAllObjects];
+  _realCompositeName = [(ABVCardRecord *)self _realCompositeName];
   [v8 appendString:@"FN:"];
-  if (v14)
+  if (_realCompositeName)
   {
-    v15 = v14;
+    v15 = _realCompositeName;
   }
 
   else
@@ -2464,27 +2464,27 @@ void __24__ABVCardRecord__prodID__block_invoke()
     [v8 appendString:@"ORG:"];
     if ([v36 length])
     {
-      v38 = [v36 abVCardKoshify];
+      abVCardKoshify = [v36 abVCardKoshify];
     }
 
     else
     {
-      v38 = &stru_1F2FE2718;
+      abVCardKoshify = &stru_1F2FE2718;
     }
 
-    [v8 appendString:v38];
+    [v8 appendString:abVCardKoshify];
     [v8 appendString:@";"];
     if ([v37 length])
     {
-      v39 = [v37 abVCardKoshify];
+      abVCardKoshify2 = [v37 abVCardKoshify];
     }
 
     else
     {
-      v39 = &stru_1F2FE2718;
+      abVCardKoshify2 = &stru_1F2FE2718;
     }
 
-    [v8 appendString:v39];
+    [v8 appendString:abVCardKoshify2];
     [v8 appendString:@"\r\n"];
   }
 
@@ -2670,7 +2670,7 @@ void __24__ABVCardRecord__prodID__block_invoke()
           }
 
           [v8 appendString:@":"];
-          [v187 addObject:&stru_1F2FE2718];
+          [array addObject:&stru_1F2FE2718];
           v73 = [v68 objectForKey:@"Street"];
           v74 = v73;
           if (v73)
@@ -2679,23 +2679,23 @@ void __24__ABVCardRecord__prodID__block_invoke()
             if (v76)
             {
               v77 = v75;
-              [v187 addObject:{objc_msgSend(objc_msgSend(v74, "substringToIndex:", v75), "abVCardKoshify")}];
-              v78 = [objc_msgSend(v74 substringFromIndex:{v77 + 1), "abVCardKoshify"}];
+              [array addObject:{objc_msgSend(objc_msgSend(v74, "substringToIndex:", v75), "abVCardKoshify")}];
+              abVCardKoshify3 = [objc_msgSend(v74 substringFromIndex:{v77 + 1), "abVCardKoshify"}];
             }
 
             else
             {
-              [v187 addObject:&stru_1F2FE2718];
-              v78 = [v74 abVCardKoshify];
+              [array addObject:&stru_1F2FE2718];
+              abVCardKoshify3 = [v74 abVCardKoshify];
             }
 
-            [v187 addObject:v78];
+            [array addObject:abVCardKoshify3];
           }
 
           else
           {
-            [v187 addObject:&stru_1F2FE2718];
-            [v187 addObject:&stru_1F2FE2718];
+            [array addObject:&stru_1F2FE2718];
+            [array addObject:&stru_1F2FE2718];
           }
 
           v79 = [v68 objectForKey:@"City"];
@@ -2704,30 +2704,30 @@ void __24__ABVCardRecord__prodID__block_invoke()
             v79 = &stru_1F2FE2718;
           }
 
-          [v187 addObject:{-[__CFString abVCardKoshify](v79, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v79, "abVCardKoshify")}];
           v80 = [v68 objectForKey:@"State"];
           if (!v80)
           {
             v80 = &stru_1F2FE2718;
           }
 
-          [v187 addObject:{-[__CFString abVCardKoshify](v80, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v80, "abVCardKoshify")}];
           v81 = [v68 objectForKey:@"ZIP"];
           if (!v81)
           {
             v81 = &stru_1F2FE2718;
           }
 
-          [v187 addObject:{-[__CFString abVCardKoshify](v81, "abVCardKoshify")}];
+          [array addObject:{-[__CFString abVCardKoshify](v81, "abVCardKoshify")}];
           v82 = [v68 objectForKey:@"Country"];
           if (!v82)
           {
             v82 = &stru_1F2FE2718;
           }
 
-          [v187 addObject:{-[__CFString abVCardKoshify](v82, "abVCardKoshify")}];
-          [v8 appendString:{objc_msgSend(v187, "componentsJoinedByString:", @";"}];
-          [v187 removeAllObjects];
+          [array addObject:{-[__CFString abVCardKoshify](v82, "abVCardKoshify")}];
+          [v8 appendString:{objc_msgSend(array, "componentsJoinedByString:", @";"}];
+          [array removeAllObjects];
           [v8 appendString:@"\r\n"];
           if (!v70)
           {
@@ -2782,10 +2782,10 @@ void __24__ABVCardRecord__prodID__block_invoke()
   }
 
   v91 = [(ABVCardRecord *)self valueForProperty:kABPersonImageURIProperty];
-  v92 = [objc_opt_class() includeImageURIInVCards];
+  includeImageURIInVCards = [objc_opt_class() includeImageURIInVCards];
   if (v91)
   {
-    v93 = v92;
+    v93 = includeImageURIInVCards;
   }
 
   else
@@ -2803,9 +2803,9 @@ void __24__ABVCardRecord__prodID__block_invoke()
       [v94 appendFormat:@";VND-63-MEMOJI-DETAILS=%@", objc_msgSend(v96, "base64EncodedStringWithOptions:", 0)];
     }
 
-    if (a5)
+    if (parameters)
     {
-      [v94 appendFormat:@";%@;VALUE=uri:", a5];
+      [v94 appendFormat:@";%@;VALUE=uri:", parameters];
     }
 
     else
@@ -2820,14 +2820,14 @@ void __24__ABVCardRecord__prodID__block_invoke()
 
   else
   {
-    v97 = a4;
-    if (!a4)
+    photoCopy = photo;
+    if (!photo)
     {
-      v97 = [(ABVCardRecord *)self imageData];
+      photoCopy = [(ABVCardRecord *)self imageData];
     }
 
-    v98 = v97;
-    if ([(__CFData *)v97 length])
+    v98 = photoCopy;
+    if ([(__CFData *)photoCopy length])
     {
       v99 = CGImageSourceCreateWithData(v98, 0);
       v100 = v99;
@@ -2888,9 +2888,9 @@ void __24__ABVCardRecord__prodID__block_invoke()
             [v110 appendFormat:@";TYPE=%@", v104];
           }
 
-          if (a5)
+          if (parameters)
           {
-            [v110 appendFormat:@";%@", a5];
+            [v110 appendFormat:@";%@", parameters];
           }
 
           [v110 appendString:@":"];
@@ -2920,13 +2920,13 @@ void __24__ABVCardRecord__prodID__block_invoke()
     }
   }
 
-  if (v175)
+  if (wallpaperCopy)
   {
     v118 = [(ABVCardRecord *)self valueForProperty:kABPersonWallpaperURIProperty];
-    v119 = [objc_opt_class() includeWallpaperURIInVCards];
+    includeWallpaperURIInVCards = [objc_opt_class() includeWallpaperURIInVCards];
     if (v118)
     {
-      v120 = v119;
+      v120 = includeWallpaperURIInVCards;
     }
 
     else
@@ -2962,21 +2962,21 @@ void __24__ABVCardRecord__prodID__block_invoke()
     [v8 appendString:@"\r\n"];
   }
 
-  v124 = [(ABVCardRecord *)self propertyLineForInstantMessageHandles:0 groupCount:&v198 includePrivateData:v176];
+  v124 = [(ABVCardRecord *)self propertyLineForInstantMessageHandles:0 groupCount:&v198 includePrivateData:dataCopy];
   v125 = v124;
   if (v124 && ([v124 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
     [v8 appendString:v125];
   }
 
-  v126 = [(ABVCardRecord *)self propertyLineForIMPPProperty:0 groupCount:&v198 includePrivateData:v176];
+  v126 = [(ABVCardRecord *)self propertyLineForIMPPProperty:0 groupCount:&v198 includePrivateData:dataCopy];
   v127 = v126;
   if (v126 && ([v126 isEqualToString:&stru_1F2FE2718] & 1) == 0)
   {
     [v8 appendString:v127];
   }
 
-  v128 = [(ABVCardRecord *)self dataForSocialProfileProperty:[(ABVCardRecord *)self valueForProperty:kABPersonSocialProfileProperty] groupCount:&v198 includePrivateData:v176];
+  v128 = [(ABVCardRecord *)self dataForSocialProfileProperty:[(ABVCardRecord *)self valueForProperty:kABPersonSocialProfileProperty] groupCount:&v198 includePrivateData:dataCopy];
   v129 = v128;
   if (v128 && [v128 length])
   {
@@ -3004,11 +3004,11 @@ void __24__ABVCardRecord__prodID__block_invoke()
     [v8 appendString:@"\r\n"];
   }
 
-  v135 = [(ABVCardRecord *)self sharedPhotoDisplayPreferenceStringValue];
-  if (v135)
+  sharedPhotoDisplayPreferenceStringValue = [(ABVCardRecord *)self sharedPhotoDisplayPreferenceStringValue];
+  if (sharedPhotoDisplayPreferenceStringValue)
   {
     [v8 appendString:@"X-SHARED-PHOTO-DISPLAY-PREF:"];
-    [v8 appendString:v135];
+    [v8 appendString:sharedPhotoDisplayPreferenceStringValue];
     [v8 appendString:@"\r\n"];
   }
 
@@ -3020,7 +3020,7 @@ void __24__ABVCardRecord__prodID__block_invoke()
     [v8 appendString:@"\r\n"];
   }
 
-  if (v174)
+  if (propertiesCopy)
   {
     v137 = [(ABVCardRecord *)self valueForProperty:kABPersonExternalUUIDProperty];
     if ([v137 length])
@@ -3055,11 +3055,11 @@ void __24__ABVCardRecord__prodID__block_invoke()
       v196 = 0u;
       v193 = 0u;
       v194 = 0u;
-      v146 = [v188 allKeys];
-      v147 = [v146 countByEnumeratingWithState:&v193 objects:v200 count:16];
+      allKeys = [v188 allKeys];
+      v147 = [allKeys countByEnumeratingWithState:&v193 objects:v200 count:16];
       if (v147)
       {
-        objc = v146;
+        objc = allKeys;
         v186 = *v194;
         do
         {
@@ -3107,7 +3107,7 @@ void __24__ABVCardRecord__prodID__block_invoke()
     }
   }
 
-  if (v176)
+  if (dataCopy)
   {
     v154 = [(ABVCardRecord *)self valueForProperty:kABPersonPhonemeDataProperty];
     v155 = v154;
@@ -3130,7 +3130,7 @@ void __24__ABVCardRecord__prodID__block_invoke()
     [v8 appendString:@"\r\n"];
   }
 
-  if (v176)
+  if (dataCopy)
   {
     v157 = [(ABVCardRecord *)self valueForProperty:kABPersonMapsDataProperty];
     v158 = v157;
@@ -3188,14 +3188,14 @@ void __24__ABVCardRecord__prodID__block_invoke()
 
   [v8 appendString:@"END:VCARD"];
   [v8 appendString:@"\r\n"];
-  v169 = [v8 abStringByStrippingControlCharacters];
+  abStringByStrippingControlCharacters = [v8 abStringByStrippingControlCharacters];
 
-  return v169;
+  return abStringByStrippingControlCharacters;
 }
 
-- (id)_copyGroupVCardRepresentationAsStringIncludeExternalProperties:(BOOL)a3
+- (id)_copyGroupVCardRepresentationAsStringIncludeExternalProperties:(BOOL)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v48 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v5 appendString:@"BEGIN:VCARD"];
@@ -3224,7 +3224,7 @@ void __24__ABVCardRecord__prodID__block_invoke()
   [v5 appendString:@"FN:"];
   [v5 appendString:v7];
   [v5 appendString:@"\r\n"];
-  if (v3)
+  if (propertiesCopy)
   {
     v8 = [(ABVCardRecord *)self valueForProperty:kABGroupExternalUUIDProperty];
     if ([v8 length])
@@ -3259,11 +3259,11 @@ void __24__ABVCardRecord__prodID__block_invoke()
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v17 = [v34 allKeys];
-      v18 = [v17 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      allKeys = [v34 allKeys];
+      v18 = [allKeys countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (v18)
       {
-        obj = v17;
+        obj = allKeys;
         v36 = *v42;
         do
         {
@@ -3348,9 +3348,9 @@ void __24__ABVCardRecord__prodID__block_invoke()
 
   [v5 appendString:@"END:VCARD"];
   [v5 appendString:@"\r\n"];
-  v32 = [v5 abStringByStrippingControlCharacters];
+  abStringByStrippingControlCharacters = [v5 abStringByStrippingControlCharacters];
 
-  return v32;
+  return abStringByStrippingControlCharacters;
 }
 
 @end

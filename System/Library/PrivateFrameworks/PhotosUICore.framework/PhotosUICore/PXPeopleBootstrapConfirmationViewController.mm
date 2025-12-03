@@ -1,23 +1,23 @@
 @interface PXPeopleBootstrapConfirmationViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)lastSize;
 - (CGSize)preferredSize;
 - (NSArray)presentationStatuses;
-- (PXPeopleBootstrapConfirmationViewController)initWithContext:(id)a3 dataSource:(id)a4;
+- (PXPeopleBootstrapConfirmationViewController)initWithContext:(id)context dataSource:(id)source;
 - (PXPeopleFlowViewControllerActionDelegate)actionDelegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)_descriptionForFooterView;
-- (id)_keyAssetForPersonAtIndex:(int64_t)a3;
+- (id)_keyAssetForPersonAtIndex:(int64_t)index;
 - (id)_sortedIndexPathsForVisibleCells;
 - (id)_titleForHeaderView;
-- (id)_titleForPreviewForAsset:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)_titleForPreviewForAsset:(id)asset;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_badgeLoadingCells;
 - (void)_cacheCurrentSuggestions;
 - (void)_evaluateIfSuggestionPresentationFinished;
@@ -25,22 +25,22 @@
 - (void)_markSkippedSuggestions;
 - (void)_noSuggestionsFound;
 - (void)_startLoadingTimer;
-- (void)_toggleConfirmedForCollectionViewCellAtIndexPath:(id)a3;
+- (void)_toggleConfirmedForCollectionViewCellAtIndexPath:(id)path;
 - (void)_updateNavigationBarForCurrentTraitCollection;
-- (void)_updateViewWithViewState:(unint64_t)a3;
+- (void)_updateViewWithViewState:(unint64_t)state;
 - (void)dealloc;
-- (void)keyFaceUpdated:(id)a3;
-- (void)noMoreSuggestionsAvailableForSuggestionManager:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setViewState:(unint64_t)a3;
-- (void)suggestionManager:(id)a3 hasNewSuggestionsAvailable:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateImageForCell:(id)a3 withPerson:(id)a4;
+- (void)keyFaceUpdated:(id)updated;
+- (void)noMoreSuggestionsAvailableForSuggestionManager:(id)manager;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setViewState:(unint64_t)state;
+- (void)suggestionManager:(id)manager hasNewSuggestionsAvailable:(id)available;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateImageForCell:(id)cell withPerson:(id)person;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willLoadMoreSuggestionsForSuggestionManager:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willLoadMoreSuggestionsForSuggestionManager:(id)manager;
 - (void)willTransitionToNextInFlow;
 @end
 
@@ -62,18 +62,18 @@
   return WeakRetained;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  [v5 locationInView:v6];
+  interactionCopy = interaction;
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  [interactionCopy locationInView:collectionView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v6 indexPathForItemAtPoint:{v8, v10}];
+  v11 = [collectionView indexPathForItemAtPoint:{v8, v10}];
   if (v11)
   {
-    v12 = [v6 cellForItemAtIndexPath:v11];
+    v12 = [collectionView cellForItemAtIndexPath:v11];
     v13 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v12];
   }
 
@@ -85,19 +85,19 @@
   return v13;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v9 = [v8 indexPathForItemAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  v9 = [collectionView indexPathForItemAtPoint:{x, y}];
   if (!v9)
   {
     v20 = 0;
     goto LABEL_11;
   }
 
-  v10 = [v8 cellForItemAtIndexPath:v9];
+  v10 = [collectionView cellForItemAtIndexPath:v9];
   if (v10)
   {
     objc_opt_class();
@@ -106,42 +106,42 @@
       goto LABEL_4;
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v24 = NSStringFromClass(v25);
-    v26 = [v10 px_descriptionForAssertionMessage];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:845 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[collectionView cellForItemAtIndexPath:indexPath]", v24, v26}];
+    px_descriptionForAssertionMessage = [v10 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:845 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[collectionView cellForItemAtIndexPath:indexPath]", v24, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:845 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[collectionView cellForItemAtIndexPath:indexPath]", v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:845 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[collectionView cellForItemAtIndexPath:indexPath]", v24}];
   }
 
 LABEL_4:
-  v11 = [v10 image];
+  image = [v10 image];
 
-  if (!v11)
+  if (!image)
   {
     v20 = 0;
     goto LABEL_10;
   }
 
-  v12 = [v9 item];
-  v13 = [(PXPeopleBootstrapConfirmationViewController *)self _keyAssetForPersonAtIndex:v12];
-  v14 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v15 = [v14 objectAtIndexedSubscript:v12];
+  item = [v9 item];
+  v13 = [(PXPeopleBootstrapConfirmationViewController *)self _keyAssetForPersonAtIndex:item];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v15 = [currentSuggestions objectAtIndexedSubscript:item];
 
   v16 = v15;
   if (!v16)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    [v27 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:850 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"suggestion", v29}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:850 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"suggestion", v29}];
 LABEL_19:
 
     goto LABEL_7;
@@ -150,11 +150,11 @@ LABEL_19:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = objc_opt_class();
     v29 = NSStringFromClass(v30);
-    v31 = [v16 px_descriptionForAssertionMessage];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:850 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"suggestion", v29, v31}];
+    px_descriptionForAssertionMessage2 = [v16 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:850 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"suggestion", v29, px_descriptionForAssertionMessage2}];
 
     goto LABEL_19;
   }
@@ -167,7 +167,7 @@ LABEL_7:
   v36[3] = &unk_1E77420A0;
   v37 = v16;
   v38 = v13;
-  v39 = self;
+  selfCopy = self;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_configurationForMenuAtLocation___block_invoke_2;
@@ -238,11 +238,11 @@ void __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_c
   [WeakRetained _toggleConfirmedForCollectionViewCellAtIndexPath:*(a1 + 32)];
 }
 
-- (void)keyFaceUpdated:(id)a3
+- (void)keyFaceUpdated:(id)updated
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"PXPeopleUpdatedKeyFacePersonsKey"];
+  userInfo = [updated userInfo];
+  v4 = [userInfo objectForKey:@"PXPeopleUpdatedKeyFacePersonsKey"];
 
   v32 = 0u;
   v33 = 0u;
@@ -269,10 +269,10 @@ void __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_c
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v7 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-        v8 = [v7 visibleCells];
+        collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+        visibleCells = [collectionView visibleCells];
 
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v9 = [visibleCells countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v9)
         {
           v10 = v9;
@@ -283,20 +283,20 @@ void __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_c
             {
               if (*v27 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(visibleCells);
               }
 
               v13 = *(*(&v26 + 1) + 8 * i);
-              v14 = [v13 image];
+              image = [v13 image];
 
-              if (!v14)
+              if (!image)
               {
-                v15 = [v13 imageRequest];
-                v16 = [v15 person];
+                imageRequest = [v13 imageRequest];
+                person = [imageRequest person];
 
-                v17 = [v16 px_localIdentifier];
-                v18 = [v6 px_localIdentifier];
-                v19 = [v17 isEqualToString:v18];
+                px_localIdentifier = [person px_localIdentifier];
+                px_localIdentifier2 = [v6 px_localIdentifier];
+                v19 = [px_localIdentifier isEqualToString:px_localIdentifier2];
 
                 if (v19)
                 {
@@ -312,7 +312,7 @@ void __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_c
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v10 = [visibleCells countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v10);
@@ -329,9 +329,9 @@ void __101__PXPeopleBootstrapConfirmationViewController_contextMenuInteraction_c
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"nameSelection", a4, a5, a6}])
+  if ([path isEqualToString:{@"nameSelection", object, change, context}])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -361,9 +361,9 @@ void __94__PXPeopleBootstrapConfirmationViewController_observeValueForKeyPath_of
   }
 
   [(PXPeopleBootstrapConfirmationViewController *)self _markSkippedSuggestions];
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  v5 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  [v5 setSuggestionManager:v4];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  [bootstrapContext setSuggestionManager:suggestionManager];
 }
 
 - (CGSize)preferredSize
@@ -374,9 +374,9 @@ void __94__PXPeopleBootstrapConfirmationViewController_observeValueForKeyPath_of
   return result;
 }
 
-- (void)suggestionManager:(id)a3 hasNewSuggestionsAvailable:(id)a4
+- (void)suggestionManager:(id)manager hasNewSuggestionsAvailable:(id)available
 {
-  [(PXPeopleBootstrapConfirmationViewController *)self _cacheCurrentSuggestions:a3];
+  [(PXPeopleBootstrapConfirmationViewController *)self _cacheCurrentSuggestions:manager];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -398,7 +398,7 @@ void __92__PXPeopleBootstrapConfirmationViewController_suggestionManager_hasNewS
   [v3 reloadData];
 }
 
-- (void)willLoadMoreSuggestionsForSuggestionManager:(id)a3
+- (void)willLoadMoreSuggestionsForSuggestionManager:(id)manager
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = PLUIGetLog();
@@ -425,7 +425,7 @@ void __92__PXPeopleBootstrapConfirmationViewController_suggestionManager_hasNewS
   }
 }
 
-- (void)noMoreSuggestionsAvailableForSuggestionManager:(id)a3
+- (void)noMoreSuggestionsAvailableForSuggestionManager:(id)manager
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -435,14 +435,14 @@ void __92__PXPeopleBootstrapConfirmationViewController_suggestionManager_hasNewS
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)updateImageForCell:(id)a3 withPerson:(id)a4
+- (void)updateImageForCell:(id)cell withPerson:(id)person
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[PXPersonImageRequest alloc] initWithPerson:v7];
-  [v6 setImageRequest:v8];
-  v9 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  [v6 bounds];
+  cellCopy = cell;
+  personCopy = person;
+  v8 = [[PXPersonImageRequest alloc] initWithPerson:personCopy];
+  [cellCopy setImageRequest:v8];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  [cellCopy bounds];
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
@@ -463,11 +463,11 @@ void __92__PXPeopleBootstrapConfirmationViewController_suggestionManager_hasNewS
     v16 = v14;
   }
 
-  v17 = [v6 traitCollection];
-  [v17 displayScale];
+  traitCollection = [cellCopy traitCollection];
+  [traitCollection displayScale];
   v19 = v18;
 
-  v20 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v7 targetSize:v16 displayScale:v16, v19];
+  v20 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:personCopy targetSize:v16 displayScale:v16, v19];
   [(PXPeopleFaceCropFetchOptions *)v20 setCropFactor:0];
   [(PXPeopleFaceCropFetchOptions *)v20 setCornerStyle:1];
   [(PXPeopleFaceCropFetchOptions *)v20 setUseLowMemoryMode:[(PXPeopleBootstrapConfirmationViewController *)self useLowMemoryMode]];
@@ -476,12 +476,12 @@ void __92__PXPeopleBootstrapConfirmationViewController_suggestionManager_hasNewS
   v25[2] = __77__PXPeopleBootstrapConfirmationViewController_updateImageForCell_withPerson___block_invoke;
   v25[3] = &unk_1E7742078;
   v26 = v8;
-  v27 = v6;
-  v28 = v9;
-  v29 = v7;
-  v21 = v7;
-  v22 = v9;
-  v23 = v6;
+  v27 = cellCopy;
+  v28 = suggestionManager;
+  v29 = personCopy;
+  v21 = personCopy;
+  v22 = suggestionManager;
+  v23 = cellCopy;
   v24 = v8;
   [(PXPersonImageRequest *)v24 requestFaceCropWithOptions:v20 timeout:v25 resultHandler:30.0];
 }
@@ -530,18 +530,18 @@ void __77__PXPeopleBootstrapConfirmationViewController_updateImageForCell_withPe
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"PXPeopleBootstrapCell" forIndexPath:v6];
-  v9 = [v6 item];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PXPeopleBootstrapCell" forIndexPath:pathCopy];
+  item = [pathCopy item];
 
-  v10 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  v11 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v12 = [v11 objectAtIndexedSubscript:v9];
-  v13 = [v8 contentView];
-  v14 = [v13 layer];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v12 = [currentSuggestions objectAtIndexedSubscript:item];
+  contentView = [v8 contentView];
+  layer = [contentView layer];
 
   [v8 bounds];
   x = v44.origin.x;
@@ -568,9 +568,9 @@ void __77__PXPeopleBootstrapConfirmationViewController_updateImageForCell_withPe
   [v8 setImageRequest:v22];
   [v8 setIsMergeCandidate:{objc_msgSend(v12, "isPersonModel")}];
   [v8 setIsVerified:{objc_msgSend(v12, "isVerified")}];
-  v23 = [v7 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  [v23 displayScale];
+  [traitCollection displayScale];
   v25 = v24;
 
   v26 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v12 targetSize:v21 displayScale:v21, v25];
@@ -584,11 +584,11 @@ void __77__PXPeopleBootstrapConfirmationViewController_updateImageForCell_withPe
   v39 = v22;
   v27 = v8;
   v40 = v27;
-  v41 = v10;
+  v41 = suggestionManager;
   v42 = v12;
-  v43 = self;
+  selfCopy = self;
   v28 = v12;
-  v29 = v10;
+  v29 = suggestionManager;
   v30 = v22;
   v31 = _Block_copy(aBlock);
   v36[0] = MEMORY[0x1E69E9820];
@@ -667,11 +667,11 @@ void __85__PXPeopleBootstrapConfirmationViewController_collectionView_cellForIte
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
+  kindCopy = kind;
   v9 = *MEMORY[0x1E69DDC08];
-  if (*MEMORY[0x1E69DDC08] == v8)
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
     v10 = @"PXPeopleBootstrapHeader";
   }
@@ -681,26 +681,26 @@ void __85__PXPeopleBootstrapConfirmationViewController_collectionView_cellForIte
     v10 = @"PXPeopleBootstrapFooter";
   }
 
-  v11 = [a3 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v10 forIndexPath:a5];
-  if (v9 == v8)
+  v11 = [view dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v10 forIndexPath:path];
+  if (v9 == kindCopy)
   {
-    v13 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-    v14 = [v13 sourcePerson];
-    [v11 setPerson:v14];
+    bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+    sourcePerson = [bootstrapContext sourcePerson];
+    [v11 setPerson:sourcePerson];
 
-    v12 = [(PXPeopleBootstrapConfirmationViewController *)self _titleForHeaderView];
-    [v11 setTitle:v12];
+    _titleForHeaderView = [(PXPeopleBootstrapConfirmationViewController *)self _titleForHeaderView];
+    [v11 setTitle:_titleForHeaderView];
   }
 
   else
   {
-    if (*MEMORY[0x1E69DDC00] != v8)
+    if (*MEMORY[0x1E69DDC00] != kindCopy)
     {
       goto LABEL_9;
     }
 
-    v12 = [(PXPeopleBootstrapConfirmationViewController *)self _descriptionForFooterView];
-    [v11 setDescriptionText:v12];
+    _titleForHeaderView = [(PXPeopleBootstrapConfirmationViewController *)self _descriptionForFooterView];
+    [v11 setDescriptionText:_titleForHeaderView];
   }
 
 LABEL_9:
@@ -708,9 +708,9 @@ LABEL_9:
   return v11;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [a3 frame];
+  [view frame];
 
   [PXPeopleGridSizer cellSizeForGridClass:0 width:v5];
   result.height = v7;
@@ -718,9 +718,9 @@ LABEL_9:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
   [PXPeopleGridSizer marginForGridClass:0 width:v5];
   v7 = v6 * 0.5;
   v8 = ceilf(v7);
@@ -733,13 +733,13 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  [a3 frame];
+  [view frame];
   v7 = v6;
   v9 = v8;
-  v10 = [(PXPeopleBootstrapConfirmationViewController *)self _descriptionForFooterView];
-  [PXPeopleBootstrapFooterView sizeForBoundingSize:v10 descriptionText:v7, v9];
+  _descriptionForFooterView = [(PXPeopleBootstrapConfirmationViewController *)self _descriptionForFooterView];
+  [PXPeopleBootstrapFooterView sizeForBoundingSize:_descriptionForFooterView descriptionText:v7, v9];
   v12 = v11;
   v14 = v13;
 
@@ -750,14 +750,14 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PXPeopleBootstrapConfirmationViewController *)self _titleForHeaderView];
-  [v6 frame];
+  viewCopy = view;
+  _titleForHeaderView = [(PXPeopleBootstrapConfirmationViewController *)self _titleForHeaderView];
+  [viewCopy frame];
   v9 = v8;
 
-  [PXPeopleConfirmationHeaderView sizeForTitle:v7 boundingSize:v9, 0.0];
+  [PXPeopleConfirmationHeaderView sizeForTitle:_titleForHeaderView boundingSize:v9, 0.0];
   v11 = v10;
   v13 = v12;
 
@@ -768,27 +768,27 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions:a3];
+  v4 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)_titleForPreviewForAsset:(id)a3
+- (id)_titleForPreviewForAsset:(id)asset
 {
   v3 = MEMORY[0x1E69BE3B8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 creationDate];
-  v7 = [v5 stringFromDate:v6];
+  creationDate = [assetCopy creationDate];
+  v7 = [v5 stringFromDate:creationDate];
 
-  v8 = [v4 localizedGeoDescription];
+  localizedGeoDescription = [assetCopy localizedGeoDescription];
 
-  if ([v8 length])
+  if ([localizedGeoDescription length])
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v8, v7];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", localizedGeoDescription, v7];
   }
 
   else
@@ -802,11 +802,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)_keyAssetForPersonAtIndex:(int64_t)a3
+- (id)_keyAssetForPersonAtIndex:(int64_t)index
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v7 = [currentSuggestions objectAtIndexedSubscript:index];
 
   v8 = v7;
   if (v8)
@@ -817,47 +817,47 @@ LABEL_9:
       goto LABEL_3;
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v8 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:469 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"suggestion", v21, v23}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:469 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"suggestion", v21, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:469 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"suggestion", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:469 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"suggestion", v21}];
   }
 
 LABEL_3:
-  v9 = [v8 photoLibrary];
-  v10 = [v9 librarySpecificFetchOptions];
+  photoLibrary = [v8 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v10 setFetchLimit:1];
-  v11 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v10 setIncludedDetectionTypes:v11];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  [v10 setIncludeTorsoAndFaceDetectionData:1];
-  v12 = [MEMORY[0x1E69787C8] fetchKeyFaceForPerson:v8 options:v10];
-  v13 = [v12 firstObject];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  v12 = [MEMORY[0x1E69787C8] fetchKeyFaceForPerson:v8 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
   v14 = MEMORY[0x1E6978630];
-  v24[0] = v13;
+  v24[0] = firstObject;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v16 = [v14 fetchAssetsForFaces:v15 options:v10];
-  v17 = [v16 firstObject];
+  v16 = [v14 fetchAssetsForFaces:v15 options:librarySpecificFetchOptions];
+  firstObject2 = [v16 firstObject];
 
-  return v17;
+  return firstObject2;
 }
 
 - (id)_titleForHeaderView
 {
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  v5 = [v4 sourcePerson];
-  if (v5)
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  sourcePerson = [bootstrapContext sourcePerson];
+  if (sourcePerson)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -865,40 +865,40 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v5 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:455 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v11, v13}];
+    px_descriptionForAssertionMessage = [sourcePerson px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:455 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:455 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:455 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v11}];
   }
 
 LABEL_3:
-  v6 = [v4 localizedName];
-  if ([v6 length])
+  localizedName = [bootstrapContext localizedName];
+  if ([localizedName length])
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v5, 0, @"PXPeopleBootstrapHeaderTitleNamed");
+    PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapHeaderTitleNamed");
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  v7 = PXLocalizedStringForPersonOrPetAndVisibility(v5, 0, @"PXPeopleBootstrapHeaderTitleUnnamed");
+  v7 = PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapHeaderTitleUnnamed");
 
   return v7;
 }
 
 - (id)_descriptionForFooterView
 {
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  v5 = [v4 sourcePerson];
-  if (v5)
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  sourcePerson = [bootstrapContext sourcePerson];
+  if (sourcePerson)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -906,61 +906,61 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v5 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:440 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v11, v13}];
+    px_descriptionForAssertionMessage = [sourcePerson px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:440 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:440 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:440 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v11}];
   }
 
 LABEL_3:
-  v6 = [v4 localizedName];
-  if ([v6 length])
+  localizedName = [bootstrapContext localizedName];
+  if ([localizedName length])
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v5, 0, @"PXPeopleBootstrapHeaderDescriptionNamed");
+    PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapHeaderDescriptionNamed");
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  v7 = PXLocalizedStringForPersonOrPetAndVisibility(v5, 0, @"PXPeopleBootstrapHeaderDescriptionUnnamed");
+  v7 = PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapHeaderDescriptionUnnamed");
 
   return v7;
 }
 
 - (void)_cacheCurrentSuggestions
 {
-  v8 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  v3 = [v8 nameSelection];
-  v4 = [v3 person];
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  nameSelection = [bootstrapContext nameSelection];
+  person = [nameSelection person];
 
-  v5 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  v6 = [v5 currentSuggestions];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  currentSuggestions = [suggestionManager currentSuggestions];
 
-  if (v4 && [v6 containsObject:v4])
+  if (person && [currentSuggestions containsObject:person])
   {
-    v7 = [v6 mutableCopy];
-    [v7 removeObject:v4];
+    v7 = [currentSuggestions mutableCopy];
+    [v7 removeObject:person];
 
-    v6 = v7;
+    currentSuggestions = v7;
   }
 
-  [(PXPeopleBootstrapConfirmationViewController *)self setCurrentSuggestions:v6];
+  [(PXPeopleBootstrapConfirmationViewController *)self setCurrentSuggestions:currentSuggestions];
 }
 
 - (id)_sortedIndexPathsForVisibleCells
 {
-  v2 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v3 = [v2 indexPathsForVisibleItems];
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  v4 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
@@ -972,10 +972,10 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v3 = [v2 visibleCells];
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -986,7 +986,7 @@ LABEL_3:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -996,7 +996,7 @@ LABEL_3:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1034,11 +1034,11 @@ void __92__PXPeopleBootstrapConfirmationViewController__updateNavigationBarForCu
 
 - (void)_startLoadingTimer
 {
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
-  v4 = v3;
-  if (v3)
+  loadingDelayTimer = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
+  v4 = loadingDelayTimer;
+  if (loadingDelayTimer)
   {
-    [v3 invalidate];
+    [loadingDelayTimer invalidate];
   }
 
   objc_initWeak(&location, self);
@@ -1108,12 +1108,12 @@ void __65__PXPeopleBootstrapConfirmationViewController__startLoadingTimer__block
   }
 }
 
-- (void)_toggleConfirmedForCollectionViewCellAtIndexPath:(id)a3
+- (void)_toggleConfirmedForCollectionViewCellAtIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v7)
   {
@@ -1123,36 +1123,36 @@ void __65__PXPeopleBootstrapConfirmationViewController__startLoadingTimer__block
       goto LABEL_3;
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v7 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self.collectionView cellForItemAtIndexPath:indexPath]", v15, v17}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self.collectionView cellForItemAtIndexPath:indexPath]", v15, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self.collectionView cellForItemAtIndexPath:indexPath]", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBootstrapConfirmationViewController.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self.collectionView cellForItemAtIndexPath:indexPath]", v15}];
   }
 
 LABEL_3:
-  v8 = [v7 image];
+  image = [v7 image];
 
-  if (v8)
+  if (image)
   {
-    v9 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-    v10 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+    suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+    currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+    v11 = [currentSuggestions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    LODWORD(v10) = [v9 isSuggestionConfirmed:v11];
+    LODWORD(currentSuggestions) = [suggestionManager isSuggestionConfirmed:v11];
     v18[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    [v9 markSuggestions:v12 confirmed:v10 ^ 1 wantsSound:1];
+    [suggestionManager markSuggestions:v12 confirmed:currentSuggestions ^ 1 wantsSound:1];
 
-    [v7 setConfirmed:v10 ^ 1];
+    [v7 setConfirmed:currentSuggestions ^ 1];
     [(PXPeopleBootstrapConfirmationViewController *)self setHasSelectionEverChanged:1];
   }
 }
@@ -1170,8 +1170,8 @@ LABEL_3:
       _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "Bootstrap UI: %s", &v5, 0xCu);
     }
 
-    v4 = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
-    [v4 invalidate];
+    loadingDelayTimer = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
+    [loadingDelayTimer invalidate];
 
     [(PXPeopleBootstrapConfirmationViewController *)self setLoadingDelayTimer:0];
     [(PXPeopleBootstrapConfirmationViewController *)self setViewState:5];
@@ -1180,18 +1180,18 @@ LABEL_3:
 
 - (void)_markSkippedSuggestions
 {
-  v14 = [(PXPeopleBootstrapConfirmationViewController *)self presentationStatuses];
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  presentationStatuses = [(PXPeopleBootstrapConfirmationViewController *)self presentationStatuses];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
   v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if ([v3 count])
+  if ([currentSuggestions count])
   {
     v5 = 0;
     do
     {
-      v6 = [v14 objectAtIndexedSubscript:v5];
-      v7 = [v6 integerValue];
+      v6 = [presentationStatuses objectAtIndexedSubscript:v5];
+      integerValue = [v6 integerValue];
 
-      if (v7 == 3)
+      if (integerValue == 3)
       {
         [v4 addIndex:v5];
       }
@@ -1199,27 +1199,27 @@ LABEL_3:
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [currentSuggestions count]);
   }
 
-  v8 = [v3 objectsAtIndexes:v4];
-  v9 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  v10 = [v9 nameSelection];
-  v11 = [v10 person];
+  v8 = [currentSuggestions objectsAtIndexes:v4];
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  nameSelection = [bootstrapContext nameSelection];
+  person = [nameSelection person];
 
-  if (v11)
+  if (person)
   {
-    v12 = [v8 arrayByAddingObject:v11];
+    v12 = [v8 arrayByAddingObject:person];
   }
 
-  v13 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  [v13 markSuggestionsAsSkipped:v8];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  [suggestionManager markSuggestionsAsSkipped:v8];
 }
 
 - (void)_evaluateIfSuggestionPresentationFinished
 {
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self presentationStatuses];
-  if (([v3 containsObject:&unk_1F190D4E0] & 1) == 0 && (objc_msgSend(v3, "containsObject:", &unk_1F190D4F8) & 1) == 0 && !-[PXPeopleBootstrapConfirmationViewController suggestionsPresented](self, "suggestionsPresented"))
+  presentationStatuses = [(PXPeopleBootstrapConfirmationViewController *)self presentationStatuses];
+  if (([presentationStatuses containsObject:&unk_1F190D4E0] & 1) == 0 && (objc_msgSend(presentationStatuses, "containsObject:", &unk_1F190D4F8) & 1) == 0 && !-[PXPeopleBootstrapConfirmationViewController suggestionsPresented](self, "suggestionsPresented"))
   {
     [(PXPeopleBootstrapConfirmationViewController *)self _finishedPresentingSuggestions];
   }
@@ -1227,12 +1227,12 @@ LABEL_3:
 
 - (void)_finishedPresentingSuggestions
 {
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
-  [v3 invalidate];
+  loadingDelayTimer = [(PXPeopleBootstrapConfirmationViewController *)self loadingDelayTimer];
+  [loadingDelayTimer invalidate];
 
   [(PXPeopleBootstrapConfirmationViewController *)self setLoadingDelayTimer:0];
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v5 = [v4 count];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v5 = [currentSuggestions count];
 
   if (v5)
   {
@@ -1247,19 +1247,19 @@ LABEL_3:
   [(PXPeopleBootstrapConfirmationViewController *)self setSuggestionsPresented:1];
 }
 
-- (void)_updateViewWithViewState:(unint64_t)a3
+- (void)_updateViewWithViewState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 1uLL:
-      v4 = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
-      [v4 setAdvanceButtonEnabled:1];
+      actionDelegate = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
+      [actionDelegate setAdvanceButtonEnabled:1];
 
       [(PXPeopleBootstrapConfirmationViewController *)self _updateNavigationBarForCurrentTraitCollection];
       break;
     case 5uLL:
-      v5 = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
-      [v5 setAdvanceButtonEnabled:1];
+      actionDelegate2 = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
+      [actionDelegate2 setAdvanceButtonEnabled:1];
 
       break;
     case 2uLL:
@@ -1269,32 +1269,32 @@ LABEL_3:
   }
 }
 
-- (void)setViewState:(unint64_t)a3
+- (void)setViewState:(unint64_t)state
 {
-  if ([(PXPeopleBootstrapConfirmationViewController *)self viewState]!= a3)
+  if ([(PXPeopleBootstrapConfirmationViewController *)self viewState]!= state)
   {
-    self->_viewState = a3;
+    self->_viewState = state;
 
-    [(PXPeopleBootstrapConfirmationViewController *)self _updateViewWithViewState:a3];
+    [(PXPeopleBootstrapConfirmationViewController *)self _updateViewWithViewState:state];
   }
 }
 
 - (NSArray)presentationStatuses
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self _sortedIndexPathsForVisibleCells];
-  v7 = [v3 count];
-  if ([v6 count] == v7)
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(currentSuggestions, "count")}];
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  _sortedIndexPathsForVisibleCells = [(PXPeopleBootstrapConfirmationViewController *)self _sortedIndexPathsForVisibleCells];
+  v7 = [currentSuggestions count];
+  if ([_sortedIndexPathsForVisibleCells count] == v7)
   {
-    v17 = v3;
+    v17 = currentSuggestions;
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v6;
+    v8 = _sortedIndexPathsForVisibleCells;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -1309,7 +1309,7 @@ LABEL_3:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v5 cellForItemAtIndexPath:*(*(&v18 + 1) + 8 * i)];
+          v13 = [collectionView cellForItemAtIndexPath:*(*(&v18 + 1) + 8 * i)];
           v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "presentationStatus")}];
           [v4 addObject:v14];
         }
@@ -1320,7 +1320,7 @@ LABEL_3:
       while (v10);
     }
 
-    v3 = v17;
+    currentSuggestions = v17;
   }
 
   else
@@ -1336,39 +1336,39 @@ LABEL_3:
   return v15;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = PXPeopleBootstrapConfirmationViewController;
-  v4 = a3;
-  [(PXPeopleBootstrapConfirmationViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXPeopleBootstrapConfirmationViewController *)&v9 traitCollectionDidChange:changeCopy];
   [(PXPeopleBootstrapConfirmationViewController *)self _updateNavigationBarForCurrentTraitCollection:v9.receiver];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(PXPeopleBootstrapConfirmationViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-    [v8 reloadData];
+    collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PXPeopleBootstrapConfirmationViewController;
-  v7 = a4;
-  [(PXPeopleBootstrapConfirmationViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(PXPeopleBootstrapConfirmationViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __98__PXPeopleBootstrapConfirmationViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E774BC60;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __98__PXPeopleBootstrapConfirmationViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1377,59 +1377,59 @@ void __98__PXPeopleBootstrapConfirmationViewController_viewWillTransitionToSize_
   [v1 invalidateLayout];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PXPeopleBootstrapConfirmationViewController;
-  [(PXPeopleBootstrapConfirmationViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  v5 = [v4 dataSource];
+  [(PXPeopleBootstrapConfirmationViewController *)&v7 viewWillDisappear:disappear];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  dataSource = [suggestionManager dataSource];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"PXPeopleSuggestionManagerKeyFaceUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"PXPeopleSuggestionManagerKeyFaceUpdateNotification" object:0];
 
-    [v5 stopListeningForLibraryChanges];
+    [dataSource stopListeningForLibraryChanges];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = PXPeopleBootstrapConfirmationViewController;
-  [(PXPeopleBootstrapConfirmationViewController *)&v11 viewWillAppear:a3];
-  v4 = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
-  v5 = [v4 dataSource];
+  [(PXPeopleBootstrapConfirmationViewController *)&v11 viewWillAppear:appear];
+  suggestionManager = [(PXPeopleBootstrapConfirmationViewController *)self suggestionManager];
+  dataSource = [suggestionManager dataSource];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel_keyFaceUpdated_ name:@"PXPeopleSuggestionManagerKeyFaceUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_keyFaceUpdated_ name:@"PXPeopleSuggestionManagerKeyFaceUpdateNotification" object:0];
 
-    [v5 startListeningForLibraryChanges];
+    [dataSource startListeningForLibraryChanges];
   }
 
   [(PXPeopleBootstrapConfirmationViewController *)self _cacheCurrentSuggestions];
   [(PXPeopleBootstrapConfirmationViewController *)self setWillAppear:1];
-  v7 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v8 = [v7 count];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  v8 = [currentSuggestions count];
 
   if (v8)
   {
     [(PXPeopleBootstrapConfirmationViewController *)self _evaluateIfSuggestionPresentationFinished];
   }
 
-  v9 = [(PXPeopleBootstrapConfirmationViewController *)self viewState];
-  if (v9 != 1)
+  viewState = [(PXPeopleBootstrapConfirmationViewController *)self viewState];
+  if (viewState != 1)
   {
-    if (v9 == 4)
+    if (viewState == 4)
     {
       [(PXPeopleBootstrapConfirmationViewController *)self _startLoadingTimer];
     }
 
-    v10 = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
-    [v10 setAdvanceButtonEnabled:0];
+    actionDelegate = [(PXPeopleBootstrapConfirmationViewController *)self actionDelegate];
+    [actionDelegate setAdvanceButtonEnabled:0];
   }
 
   [(PXPeopleBootstrapConfirmationViewController *)self _updateHeaderContent];
@@ -1441,46 +1441,46 @@ void __98__PXPeopleBootstrapConfirmationViewController_viewWillTransitionToSize_
   v12.receiver = self;
   v12.super_class = PXPeopleBootstrapConfirmationViewController;
   [(PXPeopleBootstrapConfirmationViewController *)&v12 viewDidLoad];
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self view];
-  [v3 bounds];
+  view = [(PXPeopleBootstrapConfirmationViewController *)self view];
+  [view bounds];
   [(PXPeopleBootstrapConfirmationViewController *)self setLastSize:v4, v5];
-  v6 = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v6 setBackgroundColor:v7];
+  collectionView = [(PXPeopleBootstrapConfirmationViewController *)self collectionView];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
-  [v6 setAllowsMultipleSelection:1];
-  [v6 setContentInsetAdjustmentBehavior:0];
-  [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXPeopleBootstrapCell"];
-  [v6 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"PXPeopleBootstrapHeader"];
-  [v6 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"PXPeopleBootstrapFooter"];
+  [collectionView setAllowsMultipleSelection:1];
+  [collectionView setContentInsetAdjustmentBehavior:0];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXPeopleBootstrapCell"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"PXPeopleBootstrapHeader"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"PXPeopleBootstrapFooter"];
   v8 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
-  [v6 addInteraction:v8];
-  v9 = [(PXPeopleBootstrapConfirmationViewController *)self viewState];
-  if (v9)
+  [collectionView addInteraction:v8];
+  viewState = [(PXPeopleBootstrapConfirmationViewController *)self viewState];
+  if (viewState)
   {
-    [(PXPeopleBootstrapConfirmationViewController *)self _updateViewWithViewState:v9];
+    [(PXPeopleBootstrapConfirmationViewController *)self _updateViewWithViewState:viewState];
   }
 
   [(PXPeopleBootstrapConfirmationViewController *)self _updateNavigationBarForCurrentTraitCollection];
-  v10 = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
-  v11 = [v10 firstObject];
-  [objc_opt_class() px_loadRepresentativeFacesForPersons:v10];
+  currentSuggestions = [(PXPeopleBootstrapConfirmationViewController *)self currentSuggestions];
+  firstObject = [currentSuggestions firstObject];
+  [objc_opt_class() px_loadRepresentativeFacesForPersons:currentSuggestions];
 }
 
 - (void)dealloc
 {
-  v3 = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
-  [v3 removeObserver:self forKeyPath:@"nameSelection"];
+  bootstrapContext = [(PXPeopleBootstrapConfirmationViewController *)self bootstrapContext];
+  [bootstrapContext removeObserver:self forKeyPath:@"nameSelection"];
 
   v4.receiver = self;
   v4.super_class = PXPeopleBootstrapConfirmationViewController;
   [(PXPeopleBootstrapConfirmationViewController *)&v4 dealloc];
 }
 
-- (PXPeopleBootstrapConfirmationViewController)initWithContext:(id)a3 dataSource:(id)a4
+- (PXPeopleBootstrapConfirmationViewController)initWithContext:(id)context dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  sourceCopy = source;
   v9 = objc_alloc_init(MEMORY[0x1E69DC840]);
   [v9 setSectionInset:{0.0, 5.0, 5.0, 5.0}];
   [v9 setMinimumLineSpacing:5.0];
@@ -1493,23 +1493,23 @@ void __98__PXPeopleBootstrapConfirmationViewController_viewWillTransitionToSize_
   {
     v10->_viewState = 0;
     v12 = [PXPeopleSuggestionManager alloc];
-    v13 = [v7 sourcePerson];
-    v14 = [(PXPeopleSuggestionManager *)v12 initWithPerson:v13];
+    sourcePerson = [contextCopy sourcePerson];
+    v14 = [(PXPeopleSuggestionManager *)v12 initWithPerson:sourcePerson];
     suggestionManager = v11->_suggestionManager;
     v11->_suggestionManager = v14;
 
     [(PXPeopleSuggestionManager *)v11->_suggestionManager setMute:1];
     [(PXPeopleSuggestionManager *)v11->_suggestionManager setDelegate:v11];
-    v11->_type = [v7 bootstrapType];
+    v11->_type = [contextCopy bootstrapType];
     v11->_willAppear = 0;
-    objc_storeStrong(&v11->_bootstrapContext, a3);
+    objc_storeStrong(&v11->_bootstrapContext, context);
     if (objc_opt_respondsToSelector())
     {
-      [v8 setInitialPageLimit:9];
+      [sourceCopy setInitialPageLimit:9];
     }
 
-    [(PXPeopleSuggestionManager *)v11->_suggestionManager setDataSource:v8];
-    [v7 addObserver:v11 forKeyPath:@"nameSelection" options:0 context:0];
+    [(PXPeopleSuggestionManager *)v11->_suggestionManager setDataSource:sourceCopy];
+    [contextCopy addObserver:v11 forKeyPath:@"nameSelection" options:0 context:0];
   }
 
   return v11;

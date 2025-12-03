@@ -1,16 +1,16 @@
 @interface PXLivePhotoTrimScrubberSnapStripController
 - (PXLivePhotoTrimScrubberSnapStripControllerSpec)spec;
-- (id)_snapIndicatorInfosForTimes:(id)a3 currentTime:(id *)a4 style:(unint64_t)a5 skipSingleIndicatorWithCurrentTime:(BOOL)a6 skipDefaultTimeIndicator:(BOOL)a7;
-- (id)_snapIndicatorInfosForTimes:(id)a3 currentTime:(id *)a4 suggestedTime:(id *)a5 style:(unint64_t)a6 skipSingleIndicatorWithCurrentTime:(BOOL)a7 skipDefaultTimeIndicator:(BOOL)a8;
-- (void)setSpec:(id)a3;
-- (void)updateSnapStripViewAnimated:(BOOL)a3;
+- (id)_snapIndicatorInfosForTimes:(id)times currentTime:(id *)time style:(unint64_t)style skipSingleIndicatorWithCurrentTime:(BOOL)currentTime skipDefaultTimeIndicator:(BOOL)indicator;
+- (id)_snapIndicatorInfosForTimes:(id)times currentTime:(id *)time suggestedTime:(id *)suggestedTime style:(unint64_t)style skipSingleIndicatorWithCurrentTime:(BOOL)currentTime skipDefaultTimeIndicator:(BOOL)indicator;
+- (void)setSpec:(id)spec;
+- (void)updateSnapStripViewAnimated:(BOOL)animated;
 @end
 
 @implementation PXLivePhotoTrimScrubberSnapStripController
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  objc_storeStrong(&self->_spec, a3);
+  objc_storeStrong(&self->_spec, spec);
 
   [(PXLivePhotoTrimScrubberSnapStripController *)self updateSnapStripView];
 }
@@ -29,19 +29,19 @@
   return spec;
 }
 
-- (void)updateSnapStripViewAnimated:(BOOL)a3
+- (void)updateSnapStripViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXLivePhotoTrimScrubberSnapStripController *)self trimScrubber];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [v5 currentlyInteractingElement];
-  if ((v7 - 3) < 2)
+  animatedCopy = animated;
+  trimScrubber = [(PXLivePhotoTrimScrubberSnapStripController *)self trimScrubber];
+  array = [MEMORY[0x1E695DF70] array];
+  currentlyInteractingElement = [trimScrubber currentlyInteractingElement];
+  if ((currentlyInteractingElement - 3) < 2)
   {
-    v8 = [v5 snapKeyTimes];
-    if (v5)
+    snapKeyTimes = [trimScrubber snapKeyTimes];
+    if (trimScrubber)
     {
-      [v5 keyTime];
-      [v5 suggestedKeyTime];
+      [trimScrubber keyTime];
+      [trimScrubber suggestedKeyTime];
     }
 
     else
@@ -54,27 +54,27 @@
       v21 = 0;
     }
 
-    v10 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec:v19];
-    v11 = [v10 alwaysShowKeyTime];
-    v12 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
-    v13 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", v8, &v22, &v19, 0, v11 ^ 1u, [v12 showDefaultKeyTime] ^ 1);
-    [v6 addObjectsFromArray:v13];
+    spec2 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec:v19];
+    alwaysShowKeyTime = [spec2 alwaysShowKeyTime];
+    spec = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
+    v13 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", snapKeyTimes, &v22, &v19, 0, alwaysShowKeyTime ^ 1u, [spec showDefaultKeyTime] ^ 1);
+    [array addObjectsFromArray:v13];
 
     goto LABEL_27;
   }
 
-  if (v7 == 1)
+  if (currentlyInteractingElement == 1)
   {
     if ([(PXLivePhotoTrimScrubberSnapStripController *)self allowStartEndTimeSnapIndicators])
     {
-      v8 = [v5 snapTrimStartTimes];
-      if (v5)
+      snapKeyTimes = [trimScrubber snapTrimStartTimes];
+      if (trimScrubber)
       {
-        [v5 trimStartTime];
+        [trimScrubber trimStartTime];
 LABEL_26:
-        v10 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
-        v12 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", v8, &v22, 1, 1, [v10 showDefaultKeyTime] ^ 1);
-        [v6 addObjectsFromArray:v12];
+        spec2 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
+        spec = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", snapKeyTimes, &v22, 1, 1, [spec2 showDefaultKeyTime] ^ 1);
+        [array addObjectsFromArray:spec];
 LABEL_27:
 
         goto LABEL_28;
@@ -90,7 +90,7 @@ LABEL_25:
 
   else
   {
-    if (v7 == 2)
+    if (currentlyInteractingElement == 2)
     {
       if (![(PXLivePhotoTrimScrubberSnapStripController *)self allowStartEndTimeSnapIndicators])
       {
@@ -98,23 +98,23 @@ LABEL_25:
       }
 
 LABEL_23:
-      v8 = [v5 snapTrimEndTimes];
-      if (v5)
+      snapKeyTimes = [trimScrubber snapTrimEndTimes];
+      if (trimScrubber)
       {
-        [v5 trimEndTime];
+        [trimScrubber trimEndTime];
         goto LABEL_26;
       }
 
       goto LABEL_25;
     }
 
-    if ([v5 playheadStyle])
+    if ([trimScrubber playheadStyle])
     {
-      v9 = [v5 snapKeyTimes];
-      if (v5)
+      snapKeyTimes2 = [trimScrubber snapKeyTimes];
+      if (trimScrubber)
       {
-        [v5 keyTime];
-        [v5 suggestedKeyTime];
+        [trimScrubber keyTime];
+        [trimScrubber suggestedKeyTime];
       }
 
       else
@@ -128,16 +128,16 @@ LABEL_23:
       }
 
       v14 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec:v19];
-      v15 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", v9, &v22, &v19, 0, 0, [v14 showDefaultKeyTime] ^ 1);
-      [v6 addObjectsFromArray:v15];
+      v15 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:suggestedTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", snapKeyTimes2, &v22, &v19, 0, 0, [v14 showDefaultKeyTime] ^ 1);
+      [array addObjectsFromArray:v15];
     }
 
     if ([(PXLivePhotoTrimScrubberSnapStripController *)self allowStartEndTimeSnapIndicators])
     {
-      v16 = [v5 snapTrimStartTimes];
-      if (v5)
+      snapTrimStartTimes = [trimScrubber snapTrimStartTimes];
+      if (trimScrubber)
       {
-        [v5 trimStartTime];
+        [trimScrubber trimStartTime];
       }
 
       else
@@ -147,36 +147,36 @@ LABEL_23:
         v24 = 0;
       }
 
-      v17 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
-      v18 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", v16, &v22, 1, 1, [v17 showDefaultKeyTime] ^ 1);
-      [v6 addObjectsFromArray:v18];
+      spec3 = [(PXLivePhotoTrimScrubberSnapStripController *)self spec];
+      v18 = -[PXLivePhotoTrimScrubberSnapStripController _snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:](self, "_snapIndicatorInfosForTimes:currentTime:style:skipSingleIndicatorWithCurrentTime:skipDefaultTimeIndicator:", snapTrimStartTimes, &v22, 1, 1, [spec3 showDefaultKeyTime] ^ 1);
+      [array addObjectsFromArray:v18];
 
       goto LABEL_23;
     }
   }
 
 LABEL_28:
-  [(PXSnapStripView *)self->_snapStripView setIndicatorInfos:v6 animated:v3];
+  [(PXSnapStripView *)self->_snapStripView setIndicatorInfos:array animated:animatedCopy];
 }
 
-- (id)_snapIndicatorInfosForTimes:(id)a3 currentTime:(id *)a4 suggestedTime:(id *)a5 style:(unint64_t)a6 skipSingleIndicatorWithCurrentTime:(BOOL)a7 skipDefaultTimeIndicator:(BOOL)a8
+- (id)_snapIndicatorInfosForTimes:(id)times currentTime:(id *)time suggestedTime:(id *)suggestedTime style:(unint64_t)style skipSingleIndicatorWithCurrentTime:(BOOL)currentTime skipDefaultTimeIndicator:(BOOL)indicator
 {
   v56 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  timesCopy = times;
   v15 = self->_trimScrubber;
   if ([(PXLivePhotoTrimScrubber *)v15 isAssetDurationLoaded]&& ([(PXLivePhotoTrimScrubber *)v15 bounds], v16 != 0.0))
   {
-    v17 = [MEMORY[0x1E695DF70] array];
-    if ([v14 count])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([timesCopy count])
     {
-      v31 = [(PXLivePhotoTrimScrubber *)v15 isDisabled];
+      isDisabled = [(PXLivePhotoTrimScrubber *)v15 isDisabled];
       v53 = 0uLL;
       v54 = 0;
-      v19 = [v14 firstObject];
-      v20 = v19;
-      if (v19)
+      firstObject = [timesCopy firstObject];
+      v20 = firstObject;
+      if (firstObject)
       {
-        [v19 CMTimeValue];
+        [firstObject CMTimeValue];
       }
 
       else
@@ -191,18 +191,18 @@ LABEL_28:
       aBlock[3] = &unk_1E772D3C8;
       v46 = v53;
       v47 = v54;
-      v48 = *&a4->var0;
-      var3 = a4->var3;
-      v50 = a7;
-      v21 = v14;
-      v51 = a8;
+      v48 = *&time->var0;
+      var3 = time->var3;
+      currentTimeCopy = currentTime;
+      v21 = timesCopy;
+      indicatorCopy = indicator;
       v41 = v21;
-      v42 = self;
-      v52 = v31;
+      selfCopy = self;
+      v52 = isDisabled;
       v43 = v15;
-      v45 = a6;
-      v17 = v17;
-      v44 = v17;
+      styleCopy = style;
+      array = array;
+      v44 = array;
       v22 = _Block_copy(aBlock);
       v36 = 0u;
       v37 = 0u;
@@ -243,11 +243,11 @@ LABEL_28:
         while (v25);
       }
 
-      if (a5->var2)
+      if (suggestedTime->var2)
       {
         v30 = v22[2];
-        v34 = *&a5->var0;
-        v35 = a5->var3;
+        v34 = *&suggestedTime->var0;
+        v35 = suggestedTime->var3;
         v30(v22, &v34, 1);
       }
     }
@@ -255,10 +255,10 @@ LABEL_28:
 
   else
   {
-    v17 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v17;
+  return array;
 }
 
 void __166__PXLivePhotoTrimScrubberSnapStripController__snapIndicatorInfosForTimes_currentTime_suggestedTime_style_skipSingleIndicatorWithCurrentTime_skipDefaultTimeIndicator___block_invoke(uint64_t a1, CMTime *a2, char a3)
@@ -325,12 +325,12 @@ void __166__PXLivePhotoTrimScrubberSnapStripController__snapIndicatorInfosForTim
   }
 }
 
-- (id)_snapIndicatorInfosForTimes:(id)a3 currentTime:(id *)a4 style:(unint64_t)a5 skipSingleIndicatorWithCurrentTime:(BOOL)a6 skipDefaultTimeIndicator:(BOOL)a7
+- (id)_snapIndicatorInfosForTimes:(id)times currentTime:(id *)time style:(unint64_t)style skipSingleIndicatorWithCurrentTime:(BOOL)currentTime skipDefaultTimeIndicator:(BOOL)indicator
 {
-  v11 = *a4;
+  v11 = *time;
   v9 = *MEMORY[0x1E6960CC0];
   v10 = *(MEMORY[0x1E6960CC0] + 16);
-  v7 = [(PXLivePhotoTrimScrubberSnapStripController *)self _snapIndicatorInfosForTimes:a3 currentTime:&v11 suggestedTime:&v9 style:a5 skipSingleIndicatorWithCurrentTime:a6 skipDefaultTimeIndicator:a7];
+  v7 = [(PXLivePhotoTrimScrubberSnapStripController *)self _snapIndicatorInfosForTimes:times currentTime:&v11 suggestedTime:&v9 style:style skipSingleIndicatorWithCurrentTime:currentTime skipDefaultTimeIndicator:indicator];
 
   return v7;
 }

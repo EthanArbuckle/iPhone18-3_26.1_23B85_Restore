@@ -1,19 +1,19 @@
 @interface PGSuggestionOptions
-+ (PGSuggestionOptions)suggestionOptionsWithDictionary:(id)a3 subtypes:(id)a4;
++ (PGSuggestionOptions)suggestionOptionsWithDictionary:(id)dictionary subtypes:(id)subtypes;
 - (PGSuggestionOptions)init;
-- (PGSuggestionOptions)initWithOptionsDictionary:(id)a3;
-- (void)setDefaultStartAndEndDatesIfNeededWithNumberOfDays:(int64_t)a3;
+- (PGSuggestionOptions)initWithOptionsDictionary:(id)dictionary;
+- (void)setDefaultStartAndEndDatesIfNeededWithNumberOfDays:(int64_t)days;
 @end
 
 @implementation PGSuggestionOptions
 
-- (void)setDefaultStartAndEndDatesIfNeededWithNumberOfDays:(int64_t)a3
+- (void)setDefaultStartAndEndDatesIfNeededWithNumberOfDays:(int64_t)days
 {
-  v13 = [(PGSuggestionOptions *)self universalStartDate];
-  v5 = [(PGSuggestionOptions *)self universalEndDate];
-  if (v5)
+  universalStartDate = [(PGSuggestionOptions *)self universalStartDate];
+  universalEndDate = [(PGSuggestionOptions *)self universalEndDate];
+  if (universalEndDate)
   {
-    if (v13)
+    if (universalStartDate)
     {
       goto LABEL_3;
     }
@@ -22,61 +22,61 @@
   }
 
   v8 = MEMORY[0x277D27690];
-  if (v13)
+  if (universalStartDate)
   {
-    v5 = [MEMORY[0x277D27690] dateByAddingDays:a3 toDate:v13];
+    universalEndDate = [MEMORY[0x277D27690] dateByAddingDays:days toDate:universalStartDate];
   }
 
   else
   {
-    v9 = [(PGSuggestionOptions *)self localToday];
-    v10 = [v8 startOfDayForDate:v9];
+    localToday = [(PGSuggestionOptions *)self localToday];
+    v10 = [v8 startOfDayForDate:localToday];
 
     v11 = MEMORY[0x277D27690];
-    v12 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-    v5 = [v11 universalDateFromLocalDate:v10 inTimeZone:v12];
+    defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+    universalEndDate = [v11 universalDateFromLocalDate:v10 inTimeZone:defaultTimeZone];
   }
 
-  [(PGSuggestionOptions *)self setUniversalEndDate:v5];
-  if (!v13)
+  [(PGSuggestionOptions *)self setUniversalEndDate:universalEndDate];
+  if (!universalStartDate)
   {
 LABEL_12:
-    v13 = [MEMORY[0x277D27690] dateByAddingDays:-a3 toDate:v5];
+    universalStartDate = [MEMORY[0x277D27690] dateByAddingDays:-days toDate:universalEndDate];
     [(PGSuggestionOptions *)self setUniversalStartDate:?];
   }
 
 LABEL_3:
-  v6 = [(PGSuggestionOptions *)self universalEndDateForWholeLibrarySuggestions];
+  universalEndDateForWholeLibrarySuggestions = [(PGSuggestionOptions *)self universalEndDateForWholeLibrarySuggestions];
 
-  if (!v6)
+  if (!universalEndDateForWholeLibrarySuggestions)
   {
-    v7 = [(PGSuggestionOptions *)self universalStartDate];
-    [(PGSuggestionOptions *)self setUniversalEndDateForWholeLibrarySuggestions:v7];
+    universalStartDate2 = [(PGSuggestionOptions *)self universalStartDate];
+    [(PGSuggestionOptions *)self setUniversalEndDateForWholeLibrarySuggestions:universalStartDate2];
   }
 }
 
-- (PGSuggestionOptions)initWithOptionsDictionary:(id)a3
+- (PGSuggestionOptions)initWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PGSuggestionOptions *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0C0]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0C0]];
     if (v6)
     {
       objc_storeStrong(&v5->_localToday, v6);
     }
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0B0]];
+    v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0B0]];
     universalStartDate = v5->_universalStartDate;
     v5->_universalStartDate = v7;
 
     v9 = *MEMORY[0x277D3B078];
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B078]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B078]];
     universalEndDate = v5->_universalEndDate;
     v5->_universalEndDate = v10;
 
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B070]];
+    v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B070]];
     v13 = v12;
     if (v12)
     {
@@ -85,67 +85,67 @@ LABEL_3:
 
     else
     {
-      v14 = [v4 objectForKeyedSubscript:v9];
+      v14 = [dictionaryCopy objectForKeyedSubscript:v9];
     }
 
     universalEndDateForWholeLibrarySuggestions = v5->_universalEndDateForWholeLibrarySuggestions;
     v5->_universalEndDateForWholeLibrarySuggestions = v14;
 
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B058]];
+    v16 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B058]];
     v17 = v16;
     if (v16)
     {
       v5->_allowNotification = [v16 BOOLValue];
     }
 
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B088]];
+    v18 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B088]];
     v5->_ignoreCollisionsWithExistingSuggestions = [v18 BOOLValue];
 
-    v19 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B090]];
+    v19 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B090]];
     v5->_ignoreCollisionsWithSameBatchSuggestions = [v19 BOOLValue];
 
-    v20 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B060]];
+    v20 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B060]];
     v5->_computeReasons = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0A8]];
+    v21 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0A8]];
     v5->_shouldProcessExistingSuggestions = [v21 BOOLValue];
 
-    v22 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B068]];
+    v22 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B068]];
     v5->_discardGeneratedSuggestions = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0C8]];
-    v24 = [v23 integerValue];
+    v23 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0C8]];
+    integerValue = [v23 integerValue];
 
-    v25 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0B8]];
-    v26 = [v25 integerValue];
+    v25 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0B8]];
+    integerValue2 = [v25 integerValue];
 
-    if (v24)
+    if (integerValue)
     {
-      v27 = [MEMORY[0x277CCAA78] indexSetWithIndex:v24];
+      v27 = [MEMORY[0x277CCAA78] indexSetWithIndex:integerValue];
       suggestionTypeWhitelist = v5->_suggestionTypeWhitelist;
       v5->_suggestionTypeWhitelist = v27;
     }
 
-    if (v26)
+    if (integerValue2)
     {
-      v29 = [MEMORY[0x277CCAA78] indexSetWithIndex:v26];
+      v29 = [MEMORY[0x277CCAA78] indexSetWithIndex:integerValue2];
       suggestionSubtypeWhitelist = v5->_suggestionSubtypeWhitelist;
       v5->_suggestionSubtypeWhitelist = v29;
     }
 
-    v31 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B0A0]];
-    v32 = [v31 unsignedIntegerValue];
+    v31 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B0A0]];
+    unsignedIntegerValue = [v31 unsignedIntegerValue];
 
-    if (v32)
+    if (unsignedIntegerValue)
     {
-      v5->_maximumNumberOfSuggestions = v32;
+      v5->_maximumNumberOfSuggestions = unsignedIntegerValue;
     }
 
-    v33 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B050]];
+    v33 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B050]];
     additionalOptions = v5->_additionalOptions;
     v5->_additionalOptions = v33;
 
-    v35 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B098]];
+    v35 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D3B098]];
     v5->_noLimitPerFeature = [v35 BOOLValue];
   }
 
@@ -159,9 +159,9 @@ LABEL_3:
   v2 = [(PGSuggestionOptions *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D27690] currentLocalDate];
+    currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
     localToday = v2->_localToday;
-    v2->_localToday = v3;
+    v2->_localToday = currentLocalDate;
 
     v2->_maximumNumberOfSuggestions = -1;
     v2->_shouldProcessExistingSuggestions = 1;
@@ -170,14 +170,14 @@ LABEL_3:
   return v2;
 }
 
-+ (PGSuggestionOptions)suggestionOptionsWithDictionary:(id)a3 subtypes:(id)a4
++ (PGSuggestionOptions)suggestionOptionsWithDictionary:(id)dictionary subtypes:(id)subtypes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  subtypesCopy = subtypes;
+  if (dictionaryCopy)
   {
-    v7 = [[PGSuggestionOptions alloc] initWithOptionsDictionary:v5];
+    v7 = [[PGSuggestionOptions alloc] initWithOptionsDictionary:dictionaryCopy];
   }
 
   else
@@ -193,7 +193,7 @@ LABEL_3:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v6;
+  v10 = subtypesCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -217,17 +217,17 @@ LABEL_3:
     while (v12);
   }
 
-  v15 = [(PGSuggestionOptions *)v8 suggestionSubtypeWhitelist];
-  if (v15)
+  suggestionSubtypeWhitelist = [(PGSuggestionOptions *)v8 suggestionSubtypeWhitelist];
+  if (suggestionSubtypeWhitelist)
   {
-    v16 = v15;
-    v17 = [(PGSuggestionOptions *)v8 suggestionSubtypeWhitelist];
+    v16 = suggestionSubtypeWhitelist;
+    suggestionSubtypeWhitelist2 = [(PGSuggestionOptions *)v8 suggestionSubtypeWhitelist];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __64__PGSuggestionOptions_suggestionOptionsWithDictionary_subtypes___block_invoke;
     v21[3] = &unk_278885578;
     v22 = v9;
-    v18 = [v17 indexesPassingTest:v21];
+    v18 = [suggestionSubtypeWhitelist2 indexesPassingTest:v21];
     [(PGSuggestionOptions *)v8 setSuggestionSubtypeWhitelist:v18];
   }
 

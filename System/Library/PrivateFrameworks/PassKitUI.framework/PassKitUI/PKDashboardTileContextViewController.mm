@@ -1,17 +1,17 @@
 @interface PKDashboardTileContextViewController
-- (PKDashboardTileContextViewController)initWithTitle:(id)a3 dataSource:(id)a4;
-- (id)presentationWindowForSectionedDataSource:(id)a3;
-- (void)dashboardPassLinkedAppItemPresenter:(id)a3 reloadItemForCollectionViewCell:(id)a4;
+- (PKDashboardTileContextViewController)initWithTitle:(id)title dataSource:(id)source;
+- (id)presentationWindowForSectionedDataSource:(id)source;
+- (void)dashboardPassLinkedAppItemPresenter:(id)presenter reloadItemForCollectionViewCell:(id)cell;
 - (void)viewDidLoad;
 @end
 
 @implementation PKDashboardTileContextViewController
 
-- (PKDashboardTileContextViewController)initWithTitle:(id)a3 dataSource:(id)a4
+- (PKDashboardTileContextViewController)initWithTitle:(id)title dataSource:(id)source
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  sourceCopy = source;
   v8 = objc_alloc_init(PKDashboardPassTilesItemPresenter);
   v9 = objc_alloc_init(PKDashboardPassLinkedAppItemPresenter);
   v16[0] = v8;
@@ -20,12 +20,12 @@
   v11 = objc_alloc_init(PKTileContextCompositionalLayout);
   v15.receiver = self;
   v15.super_class = PKDashboardTileContextViewController;
-  v12 = [(PKDashboardViewController *)&v15 initWithDataSource:v7 presenters:v10 layout:v11];
+  v12 = [(PKDashboardViewController *)&v15 initWithDataSource:sourceCopy presenters:v10 layout:v11];
   v13 = v12;
   if (v12)
   {
-    [(PKDashboardTileContextViewController *)v12 setTitle:v6];
-    [v7 setPresentationProvider:v13];
+    [(PKDashboardTileContextViewController *)v12 setTitle:titleCopy];
+    [sourceCopy setPresentationProvider:v13];
     [(PKDashboardPassTilesItemPresenter *)v8 setDelegate:v13];
     [(PKDashboardPassLinkedAppItemPresenter *)v9 setDelegate:v13];
   }
@@ -38,33 +38,33 @@
   v5.receiver = self;
   v5.super_class = PKDashboardTileContextViewController;
   [(PKDashboardViewController *)&v5 viewDidLoad];
-  v3 = [(PKDashboardTileContextViewController *)self view];
+  view = [(PKDashboardTileContextViewController *)self view];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
-- (void)dashboardPassLinkedAppItemPresenter:(id)a3 reloadItemForCollectionViewCell:(id)a4
+- (void)dashboardPassLinkedAppItemPresenter:(id)presenter reloadItemForCollectionViewCell:(id)cell
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PKDashboardTileContextViewController *)self collectionView];
-  v7 = [v6 indexPathForCell:v5];
+  cellCopy = cell;
+  collectionView = [(PKDashboardTileContextViewController *)self collectionView];
+  v7 = [collectionView indexPathForCell:cellCopy];
 
   if (v7)
   {
     v9[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [v6 reloadItemsAtIndexPaths:v8];
+    [collectionView reloadItemsAtIndexPaths:v8];
   }
 }
 
-- (id)presentationWindowForSectionedDataSource:(id)a3
+- (id)presentationWindowForSectionedDataSource:(id)source
 {
-  v3 = [(PKDashboardTileContextViewController *)self navigationController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  navigationController = [(PKDashboardTileContextViewController *)self navigationController];
+  view = [navigationController view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
 @end

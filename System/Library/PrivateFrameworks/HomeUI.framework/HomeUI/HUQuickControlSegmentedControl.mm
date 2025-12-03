@@ -1,29 +1,29 @@
 @interface HUQuickControlSegmentedControl
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)preferVerticalLayout;
-- (HUQuickControlSegmentedControl)initWithSegments:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_handleGesture:(id)a3;
+- (HUQuickControlSegmentedControl)initWithSegments:(id)segments;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_handleGesture:(id)gesture;
 - (void)_setupConstraints;
-- (void)_updateSegmentSelectionStateAnimated:(BOOL)a3;
+- (void)_updateSegmentSelectionStateAnimated:(BOOL)animated;
 - (void)_updateSegmentViewsForUILayoutDirection;
 - (void)ensureCorrectHeaderViewOrientation;
 - (void)layoutSubviews;
-- (void)setSelectedSegmentIndex:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelectedSegmentIndex:(id)index;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUQuickControlSegmentedControl
 
-- (HUQuickControlSegmentedControl)initWithSegments:(id)a3
+- (HUQuickControlSegmentedControl)initWithSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   v28.receiver = self;
   v28.super_class = HUQuickControlSegmentedControl;
   v5 = [(HUQuickControlSegmentedControl *)&v28 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [segmentsCopy copy];
     segments = v5->_segments;
     v5->_segments = v6;
 
@@ -36,45 +36,45 @@
     v26[2] = __51__HUQuickControlSegmentedControl_initWithSegments___block_invoke;
     v26[3] = &unk_277DBBAB0;
     v26[4] = v27;
-    v8 = [v4 na_map:v26];
+    v8 = [segmentsCopy na_map:v26];
     [(HUQuickControlSegmentedControl *)v5 setSegmentViews:v8];
 
     [(HUQuickControlSegmentedControl *)v5 _updateSegmentViewsForUILayoutDirection];
     v9 = objc_alloc(MEMORY[0x277D75A68]);
-    v10 = [(HUQuickControlSegmentedControl *)v5 segmentViews];
-    v11 = [v9 initWithArrangedSubviews:v10];
+    segmentViews = [(HUQuickControlSegmentedControl *)v5 segmentViews];
+    v11 = [v9 initWithArrangedSubviews:segmentViews];
     [(HUQuickControlSegmentedControl *)v5 setSegmentStackView:v11];
 
-    v12 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    segmentStackView = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
+    [segmentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
-    [v13 setAxis:0];
+    segmentStackView2 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
+    [segmentStackView2 setAxis:0];
 
-    v14 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
-    [v14 setDistribution:1];
+    segmentStackView3 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
+    [segmentStackView3 setDistribution:1];
 
-    v15 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
-    [(HUQuickControlSegmentedControl *)v5 addSubview:v15];
+    segmentStackView4 = [(HUQuickControlSegmentedControl *)v5 segmentStackView];
+    [(HUQuickControlSegmentedControl *)v5 addSubview:segmentStackView4];
 
     v16 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v5 action:sel__handleGesture_];
     [(HUQuickControlSegmentedControl *)v5 setGestureRecognizer:v16];
 
-    v17 = [(HUQuickControlSegmentedControl *)v5 gestureRecognizer];
-    [v17 setMinimumPressDuration:0.0];
+    gestureRecognizer = [(HUQuickControlSegmentedControl *)v5 gestureRecognizer];
+    [gestureRecognizer setMinimumPressDuration:0.0];
 
-    v18 = [(HUQuickControlSegmentedControl *)v5 gestureRecognizer];
-    [(HUQuickControlSegmentedControl *)v5 addGestureRecognizer:v18];
+    gestureRecognizer2 = [(HUQuickControlSegmentedControl *)v5 gestureRecognizer];
+    [(HUQuickControlSegmentedControl *)v5 addGestureRecognizer:gestureRecognizer2];
 
     +[HUQuickControlSegmentedControlSegment borderInset];
     v20 = v19;
-    v21 = [(HUQuickControlSegmentedControl *)v5 layer];
-    [v21 setBorderWidth:v20];
+    layer = [(HUQuickControlSegmentedControl *)v5 layer];
+    [layer setBorderWidth:v20];
 
     v22 = +[HUQuickControlSegmentedControlSegment selectedColor];
-    v23 = [v22 CGColor];
-    v24 = [(HUQuickControlSegmentedControl *)v5 layer];
-    [v24 setBorderColor:v23];
+    cGColor = [v22 CGColor];
+    layer2 = [(HUQuickControlSegmentedControl *)v5 layer];
+    [layer2 setBorderColor:cGColor];
 
     [(HUQuickControlSegmentedControl *)v5 setClipsToBounds:1];
     [(HUQuickControlSegmentedControl *)v5 _setupConstraints];
@@ -104,9 +104,9 @@ HUQuickControlSegmentedControlSegment *__51__HUQuickControlSegmentedControl_init
   return v5;
 }
 
-- (void)setSelectedSegmentIndex:(id)a3
+- (void)setSelectedSegmentIndex:(id)index
 {
-  v5 = a3;
+  indexCopy = index;
   if (self->_selectedSegmentIndex)
   {
     selectedSegmentIndex = self->_selectedSegmentIndex;
@@ -117,18 +117,18 @@ HUQuickControlSegmentedControlSegment *__51__HUQuickControlSegmentedControl_init
     selectedSegmentIndex = &unk_2824911C0;
   }
 
-  v7 = v5;
+  v7 = indexCopy;
   if (([(NSNumber *)selectedSegmentIndex isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_selectedSegmentIndex, a3);
+    objc_storeStrong(&self->_selectedSegmentIndex, index);
     [(HUQuickControlSegmentedControl *)self _updateSegmentSelectionStateAnimated:0];
   }
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v21 = a3;
-  [v21 locationInView:self];
+  gestureCopy = gesture;
+  [gestureCopy locationInView:self];
   v4 = [(HUQuickControlSegmentedControl *)self hitTest:0 withEvent:?];
   objc_opt_class();
   v5 = v4;
@@ -154,34 +154,34 @@ HUQuickControlSegmentedControlSegment *__51__HUQuickControlSegmentedControl_init
     v8 = 0;
   }
 
-  v9 = [v21 state];
+  state = [gestureCopy state];
   v10 = v8;
-  if ((v9 - 1) < 2)
+  if ((state - 1) < 2)
   {
     goto LABEL_21;
   }
 
-  if (v9 != 4)
+  if (state != 4)
   {
-    if (v9 != 3)
+    if (state != 3)
     {
       goto LABEL_22;
     }
 
     if (v8)
     {
-      v11 = v8;
+      selectedSegmentIndex = v8;
     }
 
     else
     {
-      v11 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
+      selectedSegmentIndex = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
     }
 
-    v12 = v11;
-    v13 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
-    v14 = v13;
-    if (v12 == v13)
+    v12 = selectedSegmentIndex;
+    selectedSegmentIndex2 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
+    v14 = selectedSegmentIndex2;
+    if (v12 == selectedSegmentIndex2)
     {
 
       v20 = v12;
@@ -191,8 +191,8 @@ HUQuickControlSegmentedControlSegment *__51__HUQuickControlSegmentedControl_init
 
     else
     {
-      v15 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
-      v16 = [v12 isEqual:v15];
+      selectedSegmentIndex3 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
+      v16 = [v12 isEqual:selectedSegmentIndex3];
 
       objc_storeStrong(&self->_selectedSegmentIndex, v12);
       if (v16)
@@ -200,16 +200,16 @@ HUQuickControlSegmentedControlSegment *__51__HUQuickControlSegmentedControl_init
         goto LABEL_19;
       }
 
-      v17 = [(HUQuickControlSegmentedControl *)self selectionChangeHandler];
+      selectionChangeHandler = [(HUQuickControlSegmentedControl *)self selectionChangeHandler];
 
-      if (!v17)
+      if (!selectionChangeHandler)
       {
         goto LABEL_19;
       }
 
       selectedSegmentIndex = [(HUQuickControlSegmentedControl *)self selectionChangeHandler];
-      v19 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
-      (selectedSegmentIndex)[2](selectedSegmentIndex, v19);
+      selectedSegmentIndex4 = [(HUQuickControlSegmentedControl *)self selectedSegmentIndex];
+      (selectedSegmentIndex)[2](selectedSegmentIndex, selectedSegmentIndex4);
     }
 
 LABEL_19:
@@ -222,10 +222,10 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_updateSegmentSelectionStateAnimated:(BOOL)a3
+- (void)_updateSegmentSelectionStateAnimated:(BOOL)animated
 {
   v3 = 0.15;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -264,18 +264,18 @@ void __71__HUQuickControlSegmentedControl__updateSegmentSelectionStateAnimated__
 
 - (void)_updateSegmentViewsForUILayoutDirection
 {
-  v3 = [(HUQuickControlSegmentedControl *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(HUQuickControlSegmentedControl *)self effectiveUserInterfaceLayoutDirection];
   if (![(HUQuickControlSegmentedControl *)self preferVerticalLayout])
   {
-    v4 = v3 == 1;
-    v5 = [(HUQuickControlSegmentedControl *)self segmentViews];
+    v4 = effectiveUserInterfaceLayoutDirection == 1;
+    segmentViews = [(HUQuickControlSegmentedControl *)self segmentViews];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDirection__block_invoke;
     v6[3] = &unk_277DBBB28;
     v7 = v4;
     v6[4] = self;
-    [v5 enumerateObjectsUsingBlock:v6];
+    [segmentViews enumerateObjectsUsingBlock:v6];
   }
 }
 
@@ -321,44 +321,44 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
 
 - (void)_setupConstraints
 {
-  v23 = [MEMORY[0x277CBEB18] array];
-  v3 = [(HUQuickControlSegmentedControl *)self layer];
-  [v3 borderWidth];
+  array = [MEMORY[0x277CBEB18] array];
+  layer = [(HUQuickControlSegmentedControl *)self layer];
+  [layer borderWidth];
   v5 = v4;
 
-  v6 = [(HUQuickControlSegmentedControl *)self segmentStackView];
-  v7 = [v6 centerXAnchor];
-  v8 = [(HUQuickControlSegmentedControl *)self centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
-  [v23 addObject:v9];
+  segmentStackView = [(HUQuickControlSegmentedControl *)self segmentStackView];
+  centerXAnchor = [segmentStackView centerXAnchor];
+  centerXAnchor2 = [(HUQuickControlSegmentedControl *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v9];
 
-  v10 = [(HUQuickControlSegmentedControl *)self segmentStackView];
-  v11 = [v10 centerYAnchor];
-  v12 = [(HUQuickControlSegmentedControl *)self centerYAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  [v23 addObject:v13];
+  segmentStackView2 = [(HUQuickControlSegmentedControl *)self segmentStackView];
+  centerYAnchor = [segmentStackView2 centerYAnchor];
+  centerYAnchor2 = [(HUQuickControlSegmentedControl *)self centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v13];
 
-  v14 = [(HUQuickControlSegmentedControl *)self segmentStackView];
-  v15 = [v14 widthAnchor];
-  v16 = [(HUQuickControlSegmentedControl *)self widthAnchor];
+  segmentStackView3 = [(HUQuickControlSegmentedControl *)self segmentStackView];
+  widthAnchor = [segmentStackView3 widthAnchor];
+  widthAnchor2 = [(HUQuickControlSegmentedControl *)self widthAnchor];
   v17 = v5 * -2.0;
-  v18 = [v15 constraintEqualToAnchor:v16 constant:v17];
-  [v23 addObject:v18];
+  v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:v17];
+  [array addObject:v18];
 
-  v19 = [(HUQuickControlSegmentedControl *)self segmentStackView];
-  v20 = [v19 heightAnchor];
-  v21 = [(HUQuickControlSegmentedControl *)self heightAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:v17];
-  [v23 addObject:v22];
+  segmentStackView4 = [(HUQuickControlSegmentedControl *)self segmentStackView];
+  heightAnchor = [segmentStackView4 heightAnchor];
+  heightAnchor2 = [(HUQuickControlSegmentedControl *)self heightAnchor];
+  v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:v17];
+  [array addObject:v22];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v23];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlSegmentedControl;
-  [(HUQuickControlSegmentedControl *)&v4 traitCollectionDidChange:a3];
+  [(HUQuickControlSegmentedControl *)&v4 traitCollectionDidChange:change];
   [(HUQuickControlSegmentedControl *)self _updateSegmentViewsForUILayoutDirection];
 }
 
@@ -369,8 +369,8 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(HUQuickControlSegmentedControl *)self segmentViews];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  segmentViews = [(HUQuickControlSegmentedControl *)self segmentViews];
+  v4 = [segmentViews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -384,14 +384,14 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(segmentViews);
         }
 
         [*(*(&v15 + 1) + 8 * i) systemLayoutSizeFittingSize:{v7, v8}];
         v9 = v9 + v11;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [segmentViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -402,8 +402,8 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
     v9 = 0.0;
   }
 
-  v12 = [(HUQuickControlSegmentedControl *)self superview];
-  [v12 bounds];
+  superview = [(HUQuickControlSegmentedControl *)self superview];
+  [superview bounds];
   v13 = v9 > CGRectGetWidth(v21);
 
   return v13;
@@ -411,11 +411,11 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
 
 - (void)ensureCorrectHeaderViewOrientation
 {
-  v5 = [(HUQuickControlSegmentedControl *)self segmentStackView];
-  v3 = [(HUQuickControlSegmentedControl *)self preferVerticalLayout];
-  v4 = !v3;
-  [v5 setAxis:v3];
-  [v5 setDistribution:v4];
+  segmentStackView = [(HUQuickControlSegmentedControl *)self segmentStackView];
+  preferVerticalLayout = [(HUQuickControlSegmentedControl *)self preferVerticalLayout];
+  v4 = !preferVerticalLayout;
+  [segmentStackView setAxis:preferVerticalLayout];
+  [segmentStackView setDistribution:v4];
 }
 
 - (void)layoutSubviews
@@ -426,14 +426,14 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
   [(HUQuickControlSegmentedControl *)self ensureCorrectHeaderViewOrientation];
   [(HUQuickControlSegmentedControl *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(HUQuickControlSegmentedControl *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(HUQuickControlSegmentedControl *)self layer];
+  [layer setCornerRadius:v4];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(HUQuickControlSegmentedControl *)self bounds];
   v11 = CGRectInset(v10, 0.0, -10.0);
   v6 = x;
@@ -442,20 +442,20 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if ([(HUQuickControlSegmentedControl *)self pointInside:v7 withEvent:x, y])
+  eventCopy = event;
+  if ([(HUQuickControlSegmentedControl *)self pointInside:eventCopy withEvent:x, y])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(HUQuickControlSegmentedControl *)self segmentViews];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    segmentViews = [(HUQuickControlSegmentedControl *)self segmentViews];
+    v9 = [segmentViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -468,7 +468,7 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(segmentViews);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -484,7 +484,7 @@ uint64_t __73__HUQuickControlSegmentedControl__updateSegmentViewsForUILayoutDire
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [segmentViews countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);

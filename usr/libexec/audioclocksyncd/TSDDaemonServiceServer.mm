@@ -1,7 +1,7 @@
 @interface TSDDaemonServiceServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TSDDaemonServiceServer)init;
-- (void)dispatchDaemonServiceCallbackForProcess:(int)a3 clientID:(unsigned int)a4 ioResult:(int)a5 args:(const unint64_t *)a6 numArgs:(unsigned int)a7;
+- (void)dispatchDaemonServiceCallbackForProcess:(int)process clientID:(unsigned int)d ioResult:(int)result args:(const unint64_t *)args numArgs:(unsigned int)numArgs;
 @end
 
 @implementation TSDDaemonServiceServer
@@ -37,30 +37,30 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   listener = self->_listener;
-  if (listener == v6)
+  if (listener == listenerCopy)
   {
     objc_initWeak(&location, self);
     v9 = objc_alloc_init(TSDDaemonServiceServerExported);
     [(TSDDaemonServiceServerExported *)v9 setObject:self];
-    -[TSDDaemonServiceServerExported setProcessID:](v9, "setProcessID:", [v7 processIdentifier]);
+    -[TSDDaemonServiceServerExported setProcessID:](v9, "setProcessID:", [connectionCopy processIdentifier]);
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TSXDaemonServiceClientProtocol];
-    [v7 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TSXDaemonServiceServerProtocol];
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10001B790;
     v18[3] = &unk_10004CFE8;
     objc_copyWeak(&v20, &location);
-    v12 = v7;
+    v12 = connectionCopy;
     v19 = v12;
     [v12 setInvalidationHandler:v18];
     connectionsQueue = self->_connectionsQueue;
@@ -78,10 +78,10 @@
     objc_destroyWeak(&location);
   }
 
-  return listener == v6;
+  return listener == listenerCopy;
 }
 
-- (void)dispatchDaemonServiceCallbackForProcess:(int)a3 clientID:(unsigned int)a4 ioResult:(int)a5 args:(const unint64_t *)a6 numArgs:(unsigned int)a7
+- (void)dispatchDaemonServiceCallbackForProcess:(int)process clientID:(unsigned int)d ioResult:(int)result args:(const unint64_t *)args numArgs:(unsigned int)numArgs
 {
   connectionsQueue = self->_connectionsQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -89,11 +89,11 @@
   v8[2] = sub_10001BD44;
   v8[3] = &unk_10004D088;
   v8[4] = self;
-  v8[5] = a6;
-  v9 = a3;
-  v10 = a7;
-  v11 = a4;
-  v12 = a5;
+  v8[5] = args;
+  processCopy = process;
+  numArgsCopy = numArgs;
+  dCopy = d;
+  resultCopy = result;
   dispatch_sync(connectionsQueue, v8);
 }
 

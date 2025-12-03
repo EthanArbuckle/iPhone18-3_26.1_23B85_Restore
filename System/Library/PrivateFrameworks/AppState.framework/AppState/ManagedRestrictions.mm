@@ -1,10 +1,10 @@
 @interface ManagedRestrictions
-- (void)effectiveSettingsChanged:(id)a3;
+- (void)effectiveSettingsChanged:(id)changed;
 @end
 
 @implementation ManagedRestrictions
 
-- (void)effectiveSettingsChanged:(id)a3
+- (void)effectiveSettingsChanged:(id)changed
 {
   v3 = sub_22261AC60();
   v4 = *(v3 - 8);

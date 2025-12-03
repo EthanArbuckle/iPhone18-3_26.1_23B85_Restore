@@ -1,16 +1,16 @@
 @interface BKSMutableHIDEventKeyCommandsRegistration
 - (BKSMutableHIDEventKeyCommandsRegistration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDeferringEnvironment:(id)a3;
-- (void)setDeferringToken:(id)a3;
-- (void)setKeyCommands:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDeferringEnvironment:(id)environment;
+- (void)setDeferringToken:(id)token;
+- (void)setKeyCommands:(id)commands;
 @end
 
 @implementation BKSMutableHIDEventKeyCommandsRegistration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSHIDEventKeyCommandsRegistration allocWithZone:a3];
+  v4 = [BKSHIDEventKeyCommandsRegistration allocWithZone:zone];
   environment = self->super._environment;
   token = self->super._token;
   keyCommands = self->super._keyCommands;
@@ -18,11 +18,11 @@
   return [(BKSHIDEventKeyCommandsRegistration *)v4 _initWithEnvironment:environment token:token keyCommands:keyCommands];
 }
 
-- (void)setKeyCommands:(id)a3
+- (void)setKeyCommands:(id)commands
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  commandsCopy = commands;
+  if (!commandsCopy)
   {
     v33 = MEMORY[0x1E696AEC0];
     v34 = objc_opt_class();
@@ -39,7 +39,7 @@
       v56 = 2114;
       v57 = v39;
       v58 = 2048;
-      v59 = self;
+      selfCopy4 = self;
       v60 = 2114;
       v61 = @"BKSHIDEventKeyCommandsRegistration.m";
       v62 = 1024;
@@ -55,18 +55,18 @@
     JUMPOUT(0x18638E62CLL);
   }
 
-  v6 = v5;
+  v6 = commandsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v40 = MEMORY[0x1E696AEC0];
-    v41 = [v6 classForCoder];
-    if (!v41)
+    classForCoder = [v6 classForCoder];
+    if (!classForCoder)
     {
-      v41 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v42 = NSStringFromClass(v41);
+    v42 = NSStringFromClass(classForCoder);
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
     v45 = [v40 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"keyCommands", v42, v44];
@@ -81,7 +81,7 @@
       v56 = 2114;
       v57 = v48;
       v58 = 2048;
-      v59 = self;
+      selfCopy4 = self;
       v60 = 2114;
       v61 = @"BKSHIDEventKeyCommandsRegistration.m";
       v62 = 1024;
@@ -135,7 +135,7 @@
             v56 = 2114;
             v57 = v23;
             v58 = 2048;
-            v59 = self;
+            selfCopy4 = self;
             v60 = 2114;
             v61 = @"BKSHIDEventKeyCommandsRegistration.m";
             v62 = 1024;
@@ -156,13 +156,13 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v24 = MEMORY[0x1E696AEC0];
-          v25 = [v13 classForCoder];
-          if (!v25)
+          classForCoder2 = [v13 classForCoder];
+          if (!classForCoder2)
           {
-            v25 = objc_opt_class();
+            classForCoder2 = objc_opt_class();
           }
 
-          v26 = NSStringFromClass(v25);
+          v26 = NSStringFromClass(classForCoder2);
           v27 = objc_opt_class();
           v28 = NSStringFromClass(v27);
           v29 = [v24 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"keyCommand", v26, v28];
@@ -177,7 +177,7 @@
             v56 = 2114;
             v57 = v32;
             v58 = 2048;
-            v59 = self;
+            selfCopy4 = self;
             v60 = 2114;
             v61 = @"BKSHIDEventKeyCommandsRegistration.m";
             v62 = 1024;
@@ -210,23 +210,23 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeferringToken:(id)a3
+- (void)setDeferringToken:(id)token
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [tokenCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"token", v10, v12];
@@ -241,7 +241,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDEventKeyCommandsRegistration.m";
         v26 = 1024;
@@ -258,18 +258,18 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [tokenCopy copy];
   token = self->super._token;
   self->super._token = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeferringEnvironment:(id)a3
+- (void)setDeferringEnvironment:(id)environment
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
@@ -286,7 +286,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventKeyCommandsRegistration.m";
       v33 = 1024;
@@ -306,13 +306,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [environmentCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"environment", v17, v19];
@@ -327,7 +327,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventKeyCommandsRegistration.m";
       v33 = 1024;
@@ -343,7 +343,7 @@
     JUMPOUT(0x18638EC80);
   }
 
-  v5 = [v24 copy];
+  v5 = [environmentCopy copy];
   environment = self->super._environment;
   self->super._environment = v5;
 
@@ -367,7 +367,7 @@
       v16 = 2114;
       v17 = v13;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BKSHIDEventKeyCommandsRegistration.m";
       v22 = 1024;

@@ -1,33 +1,33 @@
 @interface SYLogEngineState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInSession:(BOOL)a3;
-- (void)setHasSuspended:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInSession:(BOOL)session;
+- (void)setHasSuspended:(BOOL)suspended;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYLogEngineState
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Messaging"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Messaging"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FileTransfer"])
+  else if ([typeCopy isEqualToString:@"FileTransfer"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DirectConnection"])
+  else if ([typeCopy isEqualToString:@"DirectConnection"])
   {
     v4 = 3;
   }
@@ -40,9 +40,9 @@
   return v4;
 }
 
-- (void)setHasSuspended:(BOOL)a3
+- (void)setHasSuspended:(BOOL)suspended
 {
-  if (a3)
+  if (suspended)
   {
     v3 = 4;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInSession:(BOOL)a3
+- (void)setHasInSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 2;
   }
@@ -76,8 +76,8 @@
   v8.receiver = self;
   v8.super_class = SYLogEngineState;
   v4 = [(SYLogEngineState *)&v8 description];
-  v5 = [(SYLogEngineState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYLogEngineState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -89,7 +89,7 @@
     [SYLogEngineState dictionaryRepresentation];
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = self->_type - 1;
   if (v4 >= 3)
   {
@@ -101,13 +101,13 @@
     v5 = off_1E86CA368[v4];
   }
 
-  [v3 setObject:v5 forKey:@"type"];
+  [dictionary setObject:v5 forKey:@"type"];
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:self->_suspended];
-    [v3 setObject:v19 forKey:@"suspended"];
+    [dictionary setObject:v19 forKey:@"suspended"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -128,77 +128,77 @@ LABEL_8:
   }
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_inSession];
-  [v3 setObject:v20 forKey:@"inSession"];
+  [dictionary setObject:v20 forKey:@"inSession"];
 
   if (*&self->_has)
   {
 LABEL_9:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_buffersSessions];
-    [v3 setObject:v7 forKey:@"buffersSessions"];
+    [dictionary setObject:v7 forKey:@"buffersSessions"];
   }
 
 LABEL_10:
   if (self->_queueSuspendedDate)
   {
     v8 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v8 forKey:@"queueSuspendedDate"];
+    [dictionary setObject:v8 forKey:@"queueSuspendedDate"];
   }
 
   if (self->_queueResumedDate)
   {
     v9 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v9 forKey:@"queueResumedDate"];
+    [dictionary setObject:v9 forKey:@"queueResumedDate"];
   }
 
   if (self->_handledRequestID >= 1)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithShort:?];
-    [v3 setObject:v10 forKey:@"handledRequestID"];
+    [dictionary setObject:v10 forKey:@"handledRequestID"];
   }
 
   if (self->_requestStartedDate)
   {
     v11 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v11 forKey:@"requestStarted"];
+    [dictionary setObject:v11 forKey:@"requestStarted"];
   }
 
   if (self->_requestEndedDate)
   {
     v12 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v12 forKey:@"requestEnded"];
+    [dictionary setObject:v12 forKey:@"requestEnded"];
   }
 
   if (self->_handledResponseID >= 1)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithShort:?];
-    [v3 setObject:v13 forKey:@"handledResponseID"];
+    [dictionary setObject:v13 forKey:@"handledResponseID"];
   }
 
   if (self->_responseStartedDate)
   {
     v14 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v14 forKey:@"responseStarted"];
+    [dictionary setObject:v14 forKey:@"responseStarted"];
   }
 
   if (self->_responseEndedDate)
   {
     v15 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v15 forKey:@"responseEnded"];
+    [dictionary setObject:v15 forKey:@"responseEnded"];
   }
 
   if (self->_oobDataStartedDate)
   {
     v16 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v16 forKey:@"oobDataStartedDate"];
+    [dictionary setObject:v16 forKey:@"oobDataStartedDate"];
   }
 
   if (self->_oobDataEndedDate)
   {
     v17 = [dictionaryRepresentation___formatter stringFromDate:?];
-    [v3 setObject:v17 forKey:@"oobDataEndedDate"];
+    [dictionary setObject:v17 forKey:@"oobDataEndedDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 uint64_t __44__SYLogEngineState_dictionaryRepresentation__block_invoke()
@@ -212,11 +212,11 @@ uint64_t __44__SYLogEngineState_dictionaryRepresentation__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS ZZZZZ"];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteInt32Field();
   has = self->_has;
   if ((has & 4) != 0)
@@ -253,14 +253,14 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_type;
+  *(to + 2) = self->_type;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 14) = self->_suspended;
-    *(a3 + 96) |= 4u;
+    *(to + 14) = self->_suspended;
+    *(to + 96) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -279,56 +279,56 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 13) = self->_inSession;
-  *(a3 + 96) |= 2u;
+  *(to + 13) = self->_inSession;
+  *(to + 96) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(a3 + 12) = self->_buffersSessions;
-    *(a3 + 96) |= 1u;
+    *(to + 12) = self->_buffersSessions;
+    *(to + 96) |= 1u;
   }
 
 LABEL_5:
   queueSuspendedDate = self->_queueSuspendedDate;
-  v22 = a3;
+  toCopy = to;
   v6 = [(NSDate *)queueSuspendedDate copy];
-  v7 = v22[2];
-  v22[2] = v6;
+  v7 = toCopy[2];
+  toCopy[2] = v6;
 
   v8 = [(NSDate *)self->_queueResumedDate copy];
-  v9 = v22[3];
-  v22[3] = v8;
+  v9 = toCopy[3];
+  toCopy[3] = v8;
 
-  *(v22 + 16) = self->_handledRequestID;
+  *(toCopy + 16) = self->_handledRequestID;
   v10 = [(NSDate *)self->_requestStartedDate copy];
-  v11 = v22[5];
-  v22[5] = v10;
+  v11 = toCopy[5];
+  toCopy[5] = v10;
 
   v12 = [(NSDate *)self->_requestEndedDate copy];
-  v13 = v22[6];
-  v22[6] = v12;
+  v13 = toCopy[6];
+  toCopy[6] = v12;
 
-  *(v22 + 28) = self->_handledResponseID;
+  *(toCopy + 28) = self->_handledResponseID;
   v14 = [(NSDate *)self->_responseStartedDate copy];
-  v15 = v22[8];
-  v22[8] = v14;
+  v15 = toCopy[8];
+  toCopy[8] = v14;
 
   v16 = [(NSDate *)self->_responseEndedDate copy];
-  v17 = v22[9];
-  v22[9] = v16;
+  v17 = toCopy[9];
+  toCopy[9] = v16;
 
   v18 = [(NSDate *)self->_oobDataStartedDate copy];
-  v19 = v22[10];
-  v22[10] = v18;
+  v19 = toCopy[10];
+  toCopy[10] = v18;
 
   v20 = [(NSDate *)self->_oobDataEndedDate copy];
-  v21 = v22[11];
-  v22[11] = v20;
+  v21 = toCopy[11];
+  toCopy[11] = v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 8) = self->_type;
   has = self->_has;
@@ -367,102 +367,102 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSDate *)self->_queueSuspendedDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_queueSuspendedDate copyWithZone:zone];
   v9 = *(v6 + 16);
   *(v6 + 16) = v8;
 
-  v10 = [(NSDate *)self->_queueResumedDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_queueResumedDate copyWithZone:zone];
   v11 = *(v6 + 24);
   *(v6 + 24) = v10;
 
   *(v6 + 32) = self->_handledRequestID;
-  v12 = [(NSDate *)self->_requestStartedDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_requestStartedDate copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
-  v14 = [(NSDate *)self->_requestEndedDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_requestEndedDate copyWithZone:zone];
   v15 = *(v6 + 48);
   *(v6 + 48) = v14;
 
   *(v6 + 56) = self->_handledResponseID;
-  v16 = [(NSDate *)self->_responseStartedDate copyWithZone:a3];
+  v16 = [(NSDate *)self->_responseStartedDate copyWithZone:zone];
   v17 = *(v6 + 64);
   *(v6 + 64) = v16;
 
-  v18 = [(NSDate *)self->_responseEndedDate copyWithZone:a3];
+  v18 = [(NSDate *)self->_responseEndedDate copyWithZone:zone];
   v19 = *(v6 + 72);
   *(v6 + 72) = v18;
 
-  v20 = [(NSDate *)self->_oobDataStartedDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_oobDataStartedDate copyWithZone:zone];
   v21 = *(v6 + 80);
   *(v6 + 80) = v20;
 
-  v22 = [(NSDate *)self->_oobDataEndedDate copyWithZone:a3];
+  v22 = [(NSDate *)self->_oobDataEndedDate copyWithZone:zone];
   v23 = *(v6 + 88);
   *(v6 + 88) = v22;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_type != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_type != *(equalCopy + 2))
   {
     goto LABEL_42;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[48] & 4) == 0)
+    if ((equalCopy[48] & 4) == 0)
     {
       goto LABEL_42;
     }
 
-    v15 = *(v4 + 14);
+    v15 = *(equalCopy + 14);
     if (self->_suspended)
     {
-      if ((v4[7] & 1) == 0)
+      if ((equalCopy[7] & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (v4[7])
+    else if (equalCopy[7])
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[48] & 4) != 0)
+  else if ((equalCopy[48] & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[48] & 2) == 0)
+    if ((equalCopy[48] & 2) == 0)
     {
       goto LABEL_42;
     }
 
-    v16 = *(v4 + 13);
+    v16 = *(equalCopy + 13);
     if (self->_inSession)
     {
-      if ((*(v4 + 13) & 1) == 0)
+      if ((*(equalCopy + 13) & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(v4 + 13))
+    else if (*(equalCopy + 13))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[48] & 2) != 0)
+  else if ((equalCopy[48] & 2) != 0)
   {
     goto LABEL_42;
   }
@@ -472,12 +472,12 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if ((v4[48] & 1) == 0)
+  if ((equalCopy[48] & 1) == 0)
   {
     goto LABEL_42;
   }
 
-  v5 = *(v4 + 12);
+  v5 = *(equalCopy + 12);
   if (!self->_buffersSessions)
   {
 LABEL_8:
@@ -491,20 +491,20 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if ((v4[6] & 1) == 0)
+  if ((equalCopy[6] & 1) == 0)
   {
     goto LABEL_42;
   }
 
 LABEL_9:
   queueSuspendedDate = self->_queueSuspendedDate;
-  if (queueSuspendedDate | *(v4 + 2) && ![(NSDate *)queueSuspendedDate isEqual:?])
+  if (queueSuspendedDate | *(equalCopy + 2) && ![(NSDate *)queueSuspendedDate isEqual:?])
   {
     goto LABEL_42;
   }
 
   queueResumedDate = self->_queueResumedDate;
-  if (queueResumedDate | *(v4 + 3))
+  if (queueResumedDate | *(equalCopy + 3))
   {
     if (![(NSDate *)queueResumedDate isEqual:?])
     {
@@ -512,13 +512,13 @@ LABEL_9:
     }
   }
 
-  if (self->_handledRequestID != v4[16])
+  if (self->_handledRequestID != equalCopy[16])
   {
     goto LABEL_42;
   }
 
   requestStartedDate = self->_requestStartedDate;
-  if (requestStartedDate | *(v4 + 5))
+  if (requestStartedDate | *(equalCopy + 5))
   {
     if (![(NSDate *)requestStartedDate isEqual:?])
     {
@@ -527,7 +527,7 @@ LABEL_9:
   }
 
   requestEndedDate = self->_requestEndedDate;
-  if (requestEndedDate | *(v4 + 6))
+  if (requestEndedDate | *(equalCopy + 6))
   {
     if (![(NSDate *)requestEndedDate isEqual:?])
     {
@@ -535,13 +535,13 @@ LABEL_9:
     }
   }
 
-  if (self->_handledResponseID != v4[28])
+  if (self->_handledResponseID != equalCopy[28])
   {
     goto LABEL_42;
   }
 
   responseStartedDate = self->_responseStartedDate;
-  if (responseStartedDate | *(v4 + 8))
+  if (responseStartedDate | *(equalCopy + 8))
   {
     if (![(NSDate *)responseStartedDate isEqual:?])
     {
@@ -550,7 +550,7 @@ LABEL_9:
   }
 
   responseEndedDate = self->_responseEndedDate;
-  if (responseEndedDate | *(v4 + 9))
+  if (responseEndedDate | *(equalCopy + 9))
   {
     if (![(NSDate *)responseEndedDate isEqual:?])
     {
@@ -559,7 +559,7 @@ LABEL_9:
   }
 
   oobDataStartedDate = self->_oobDataStartedDate;
-  if (oobDataStartedDate | *(v4 + 10))
+  if (oobDataStartedDate | *(equalCopy + 10))
   {
     if (![(NSDate *)oobDataStartedDate isEqual:?])
     {
@@ -568,7 +568,7 @@ LABEL_9:
   }
 
   oobDataEndedDate = self->_oobDataEndedDate;
-  if (oobDataEndedDate | *(v4 + 11))
+  if (oobDataEndedDate | *(equalCopy + 11))
   {
     v14 = [(NSDate *)oobDataEndedDate isEqual:?];
   }
@@ -839,15 +839,15 @@ LABEL_43:
   return v75 ^ v74 ^ v72 ^ (2654435761 * type) ^ v71 ^ v19 ^ (2654435761 * handledRequestID) ^ v28 ^ v37 ^ (2654435761 * handledResponseID) ^ v46 ^ v54 ^ v62 ^ v69;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_type = *(a3 + 2);
-  v5 = *(a3 + 96);
+  self->_type = *(from + 2);
+  v5 = *(from + 96);
   if ((v5 & 4) != 0)
   {
-    self->_suspended = *(a3 + 14);
+    self->_suspended = *(from + 14);
     *&self->_has |= 4u;
-    v5 = *(a3 + 96);
+    v5 = *(from + 96);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -860,35 +860,35 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 96) & 2) == 0)
+  else if ((*(from + 96) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_inSession = *(a3 + 13);
+  self->_inSession = *(from + 13);
   *&self->_has |= 2u;
-  if (*(a3 + 96))
+  if (*(from + 96))
   {
 LABEL_4:
-    self->_buffersSessions = *(a3 + 12);
+    self->_buffersSessions = *(from + 12);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   queueSuspendedDate = self->_queueSuspendedDate;
   self->_queueSuspendedDate = v6;
-  v8 = a3;
+  fromCopy = from;
 
-  objc_storeStrong(&self->_queueResumedDate, *(v8 + 3));
-  self->_handledRequestID = *(v8 + 16);
-  objc_storeStrong(&self->_requestStartedDate, *(v8 + 5));
-  objc_storeStrong(&self->_requestEndedDate, *(v8 + 6));
-  self->_handledResponseID = *(v8 + 28);
-  objc_storeStrong(&self->_responseStartedDate, *(v8 + 8));
-  objc_storeStrong(&self->_responseEndedDate, *(v8 + 9));
-  objc_storeStrong(&self->_oobDataStartedDate, *(v8 + 10));
-  objc_storeStrong(&self->_oobDataEndedDate, *(v8 + 11));
+  objc_storeStrong(&self->_queueResumedDate, *(fromCopy + 3));
+  self->_handledRequestID = *(fromCopy + 16);
+  objc_storeStrong(&self->_requestStartedDate, *(fromCopy + 5));
+  objc_storeStrong(&self->_requestEndedDate, *(fromCopy + 6));
+  self->_handledResponseID = *(fromCopy + 28);
+  objc_storeStrong(&self->_responseStartedDate, *(fromCopy + 8));
+  objc_storeStrong(&self->_responseEndedDate, *(fromCopy + 9));
+  objc_storeStrong(&self->_oobDataStartedDate, *(fromCopy + 10));
+  objc_storeStrong(&self->_oobDataEndedDate, *(fromCopy + 11));
 }
 
 @end

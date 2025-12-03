@@ -1,58 +1,58 @@
 @interface CaptureMTLBlitCommandEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLBlitCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLBlitCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer;
 - (NSString)description;
 - (unint64_t)streamReference;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTensor:(id)a3 sourceOrigin:(id)a4 sourceDimensions:(id)a5 toTensor:(id)a6 destinationOrigin:(id)a7 destinationDimensions:(id)a8;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTensor:(id)tensor sourceOrigin:(id)origin sourceDimensions:(id)dimensions toTensor:(id)toTensor destinationOrigin:(id)destinationOrigin destinationDimensions:(id)destinationDimensions;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)endEncoding;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)insertDebugSignpost:(id)a3;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)insertSplit;
-- (void)invalidateCompressedTexture:(id)a3;
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4;
+- (void)invalidateCompressedTexture:(id)texture;
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset;
+- (void)setLabel:(id)label;
 - (void)touch;
-- (void)updateFence:(id)a3;
-- (void)waitForFence:(id)a3;
+- (void)updateFence:(id)fence;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation CaptureMTLBlitCommandEncoder
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -62,8 +62,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject waitForFence:v8];
+  baseObject = [fenceCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject waitForFence:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16131;
@@ -84,10 +84,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -95,10 +95,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -114,16 +114,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -133,8 +133,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject updateFence:v8];
+  baseObject = [fenceCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject updateFence:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16124;
@@ -155,10 +155,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -166,10 +166,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -185,16 +185,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v10 = a3;
-  [v10 touch];
-  if (v10)
+  countersCopy = counters;
+  [countersCopy touch];
+  if (countersCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:countersCopy];
     }
   }
 
@@ -204,12 +204,12 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v30);
   baseObject = self->_baseObject;
-  v14 = [v10 baseObject];
-  v15 = *&a4->var0.var2;
-  v29[0] = *&a4->var0.var0;
+  baseObject = [countersCopy baseObject];
+  v15 = *&region->var0.var2;
+  v29[0] = *&region->var0.var0;
   v29[1] = v15;
-  v29[2] = *&a4->var1.var1;
-  [(MTLBlitCommandEncoderSPI *)baseObject resetTextureAccessCounters:v14 region:v29 mipLevel:a5 slice:a6];
+  v29[2] = *&region->var1.var1;
+  [(MTLBlitCommandEncoderSPI *)baseObject resetTextureAccessCounters:baseObject region:v29 mipLevel:level slice:slice];
 
   v16 = *(&v30 + 1);
   v17 = v31;
@@ -219,10 +219,10 @@
   ++BYTE10(v32);
   Bytes = GTTraceMemPool_allocateBytes(v18, *(&v31 + 1), v19 | 0x5000000000);
   *(v17 + 13) = v19;
-  v21 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -230,10 +230,10 @@
     var0 = 0;
   }
 
-  v23 = [v10 traceStream];
-  if (v23)
+  traceStream2 = [countersCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -243,31 +243,31 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v24;
-  v25 = *&a4->var0.var2;
-  v26 = *&a4->var1.var1;
-  *(Bytes + 2) = *&a4->var0.var0;
+  v25 = *&region->var0.var2;
+  v26 = *&region->var1.var1;
+  *(Bytes + 2) = *&region->var0.var0;
   *(Bytes + 3) = v25;
   *(Bytes + 4) = v26;
-  *(Bytes + 10) = a5;
-  *(Bytes + 11) = a6;
+  *(Bytes + 10) = level;
+  *(Bytes + 11) = slice;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v32);
   *(v31 + 15) |= 8u;
 }
 
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  [v7 touch];
-  if (v7)
+  length = range.length;
+  location = range.location;
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v7];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -277,8 +277,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
   baseObject = self->_baseObject;
-  v11 = [v7 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject resetCommandsInBuffer:v11 withRange:location, length];
+  baseObject = [bufferCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject resetCommandsInBuffer:baseObject withRange:location, length];
 
   v12 = v24;
   *(v24 + 8) = -15960;
@@ -299,10 +299,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -310,10 +310,10 @@
     var0 = 0;
   }
 
-  v19 = [v7 traceStream];
-  if (v19)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v20 = *v19;
+    v20 = *traceStream2;
   }
 
   else
@@ -331,15 +331,15 @@
   *(v24 + 15) |= 8u;
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLBlitCommandEncoderSPI *)self->_baseObject pushDebugGroup:v4];
+  [(MTLBlitCommandEncoderSPI *)self->_baseObject pushDebugGroup:groupCopy];
   v6 = v19;
   *(v19 + 8) = -16374;
   v7 = BYTE9(v20);
@@ -359,10 +359,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -370,16 +370,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [groupCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [groupCopy UTF8String];
+    v15 = strlen([groupCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -415,10 +415,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -433,18 +433,18 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  [v7 touch];
-  if (v7)
+  length = range.length;
+  location = range.location;
+  bufferCopy = buffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v7];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
@@ -454,8 +454,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
   baseObject = self->_baseObject;
-  v11 = [v7 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject optimizeIndirectCommandBuffer:v11 withRange:location, length];
+  baseObject = [bufferCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject optimizeIndirectCommandBuffer:baseObject withRange:location, length];
 
   v12 = v24;
   *(v24 + 8) = -15958;
@@ -476,10 +476,10 @@
   }
 
   *(v12 + 13) = v13;
-  v17 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -487,10 +487,10 @@
     var0 = 0;
   }
 
-  v19 = [v7 traceStream];
-  if (v19)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v20 = *v19;
+    v20 = *traceStream2;
   }
 
   else
@@ -508,16 +508,16 @@
   *(v24 + 15) |= 8u;
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  accessCopy = access;
+  [accessCopy touch];
+  if (accessCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:accessCopy];
     }
   }
 
@@ -527,8 +527,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForGPUAccess:v12 slice:a4 level:a5];
+  baseObject = [accessCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForGPUAccess:baseObject slice:slice level:level];
 
   v13 = v25;
   *(v25 + 8) = -15994;
@@ -549,10 +549,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -560,10 +560,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [accessCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -573,24 +573,24 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = slice;
+  *(v15 + 3) = level;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  accessCopy = access;
+  [accessCopy touch];
+  if (accessCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:accessCopy];
     }
   }
 
@@ -600,8 +600,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForGPUAccess:v8];
+  baseObject = [accessCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForGPUAccess:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15995;
@@ -622,10 +622,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -633,10 +633,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [accessCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -652,16 +652,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  accessCopy = access;
+  [accessCopy touch];
+  if (accessCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:accessCopy];
     }
   }
 
@@ -671,8 +671,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForCPUAccess:v12 slice:a4 level:a5];
+  baseObject = [accessCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForCPUAccess:baseObject slice:slice level:level];
 
   v13 = v25;
   *(v25 + 8) = -15992;
@@ -693,10 +693,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -704,10 +704,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [accessCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -717,24 +717,24 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = slice;
+  *(v15 + 3) = level;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  accessCopy = access;
+  [accessCopy touch];
+  if (accessCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:accessCopy];
     }
   }
 
@@ -744,8 +744,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForCPUAccess:v8];
+  baseObject = [accessCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject optimizeContentsForCPUAccess:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15993;
@@ -766,10 +766,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -777,10 +777,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [accessCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -796,16 +796,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level
 {
-  v8 = a3;
-  [v8 touch];
-  if (v8)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -815,8 +815,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v8 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject invalidateCompressedTexture:v12 slice:a4 level:a5];
+  baseObject = [textureCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject invalidateCompressedTexture:baseObject slice:slice level:level];
 
   v13 = v25;
   *(v25 + 8) = -15469;
@@ -837,10 +837,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -848,10 +848,10 @@
     var0 = 0;
   }
 
-  v20 = [v8 traceStream];
-  if (v20)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -861,24 +861,24 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = slice;
+  *(v15 + 3) = level;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)invalidateCompressedTexture:(id)a3
+- (void)invalidateCompressedTexture:(id)texture
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -888,8 +888,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject invalidateCompressedTexture:v8];
+  baseObject = [textureCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject invalidateCompressedTexture:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15470;
@@ -910,10 +910,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -921,10 +921,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -948,15 +948,15 @@
   [(MTLBlitCommandEncoderSPI *)baseObject insertSplit];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = a3;
+  signpostCopy = signpost;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLBlitCommandEncoderSPI *)self->_baseObject insertDebugSignpost:v4];
+  [(MTLBlitCommandEncoderSPI *)self->_baseObject insertDebugSignpost:signpostCopy];
   v6 = v19;
   *(v19 + 8) = -16375;
   v7 = BYTE9(v20);
@@ -976,10 +976,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -987,16 +987,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [signpostCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [signpostCopy UTF8String];
+    v15 = strlen([signpostCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1005,16 +1005,16 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -1024,8 +1024,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject generateMipmapsForTexture:v8];
+  baseObject = [textureCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject generateMipmapsForTexture:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -16379;
@@ -1046,10 +1046,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1057,10 +1057,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -1076,16 +1076,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
-  v14 = a3;
-  [v14 touch];
-  if (v14)
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -1095,12 +1095,12 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v39);
   baseObject = self->_baseObject;
-  v18 = [v14 baseObject];
-  v19 = *&a6->var0.var2;
-  v38[0] = *&a6->var0.var0;
+  baseObject = [textureCopy baseObject];
+  v19 = *&region->var0.var2;
+  v38[0] = *&region->var0.var0;
   v38[1] = v19;
-  v38[2] = *&a6->var1.var1;
-  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:v18 level:a4 slice:a5 region:v38 bytes:a7 length:a8];
+  v38[2] = *&region->var1.var1;
+  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:baseObject level:level slice:slice region:v38 bytes:bytes length:length];
 
   v20 = *(&v39 + 1);
   v21 = v40;
@@ -1110,10 +1110,10 @@
   ++BYTE10(v41);
   Bytes = GTTraceMemPool_allocateBytes(v22, *(&v40 + 1), v23 | 0x6000000000);
   *(v21 + 13) = v23;
-  v25 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1121,10 +1121,10 @@
     var0 = 0;
   }
 
-  v27 = [v14 traceStream];
-  if (v27)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -1132,15 +1132,15 @@
     v28 = 0;
   }
 
-  v30 = *&a6->var0.var0;
-  v29 = *&a6->var0.var2;
-  v31 = *&a6->var1.var1;
+  v30 = *&region->var0.var0;
+  v29 = *&region->var0.var2;
+  v31 = *&region->var1.var1;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v36 = *&a6->var1.var1;
-    v37 = *&a6->var0.var2;
-    v35 = *&a6->var0.var0;
-    v32 = GTTraceEncoder_storeBlob(&v39, a7, a8);
+    v36 = *&region->var1.var1;
+    v37 = *&region->var0.var2;
+    v35 = *&region->var0.var0;
+    v32 = GTTraceEncoder_storeBlob(&v39, bytes, length);
     v30 = v35;
     v31 = v36;
     v29 = v37;
@@ -1153,12 +1153,12 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v28;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 4) = level;
+  *(Bytes + 5) = slice;
   *(Bytes + 3) = v30;
   *(Bytes + 4) = v29;
   *(Bytes + 5) = v31;
-  *(Bytes + 12) = a8;
+  *(Bytes + 12) = length;
   Bytes[104] = v32;
   *(Bytes + 105) = 0;
   *(Bytes + 27) = 0;
@@ -1195,10 +1195,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1239,10 +1239,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1261,29 +1261,29 @@
   [(CaptureMTLBlitCommandEncoder *)&v13 dealloc];
 }
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  [v11 touch];
-  if (v11)
+  length = range.length;
+  location = range.location;
+  bufferCopy = buffer;
+  destinationCopy = destination;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v11];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v12 touch];
-  if (v12)
+  [destinationCopy touch];
+  if (destinationCopy)
   {
     v14 = self->_retainedObjects;
     if (v14)
     {
-      [(NSMutableSet *)v14 addObject:v12];
+      [(NSMutableSet *)v14 addObject:destinationCopy];
     }
   }
 
@@ -1293,9 +1293,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v32);
   baseObject = self->_baseObject;
-  v17 = [v11 baseObject];
-  v18 = [v12 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject copyIndirectCommandBuffer:v17 sourceRange:location destination:length destinationIndex:v18, a6];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [destinationCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject copyIndirectCommandBuffer:baseObject sourceRange:location destination:length destinationIndex:baseObject2, index];
 
   v19 = v33;
   *(v33 + 8) = -15959;
@@ -1316,10 +1316,10 @@
   }
 
   *(v19 + 13) = v20;
-  v24 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1327,10 +1327,10 @@
     var0 = 0;
   }
 
-  v26 = [v11 traceStream];
-  if (v26)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v27 = *v26;
+    v27 = *traceStream2;
   }
 
   else
@@ -1338,10 +1338,10 @@
     v27 = 0;
   }
 
-  v28 = [v12 traceStream];
-  if (v28)
+  traceStream3 = [destinationCopy traceStream];
+  if (traceStream3)
   {
-    v29 = *v28;
+    v29 = *traceStream3;
   }
 
   else
@@ -1354,34 +1354,34 @@
   *(v21 + 2) = location;
   *(v21 + 3) = length;
   *(v21 + 4) = v29;
-  *(v21 + 5) = a6;
+  *(v21 + 5) = index;
   s();
   *v30 = v31;
   *(v30 + 8) = BYTE8(v34);
   *(v33 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 touch];
-  if (v6)
+  textureCopy = texture;
+  toTextureCopy = toTexture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v7 touch];
-  if (v7)
+  [toTextureCopy touch];
+  if (toTextureCopy)
   {
     v9 = self->_retainedObjects;
     if (v9)
     {
-      [(NSMutableSet *)v9 addObject:v7];
+      [(NSMutableSet *)v9 addObject:toTextureCopy];
     }
   }
 
@@ -1391,9 +1391,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v12 = [v6 baseObject];
-  v13 = [v7 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v12 toTexture:v13];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [toTextureCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject toTexture:baseObject2];
 
   v14 = v28;
   *(v28 + 8) = -15877;
@@ -1414,10 +1414,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1425,10 +1425,10 @@
     var0 = 0;
   }
 
-  v21 = [v6 traceStream];
-  if (v21)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v22 = *v21;
+    v22 = *traceStream2;
   }
 
   else
@@ -1436,10 +1436,10 @@
     v22 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream3 = [toTextureCopy traceStream];
+  if (traceStream3)
   {
-    v24 = *v23;
+    v24 = *traceStream3;
   }
 
   else
@@ -1456,27 +1456,27 @@
   *(v28 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  v14 = a3;
-  v15 = a6;
-  [v14 touch];
-  if (v14)
+  textureCopy = texture;
+  toTextureCopy = toTexture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [toTextureCopy touch];
+  if (toTextureCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v15];
+      [(NSMutableSet *)v17 addObject:toTextureCopy];
     }
   }
 
@@ -1486,9 +1486,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v37);
   baseObject = self->_baseObject;
-  v20 = [v14 baseObject];
-  v21 = [v15 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v20 sourceSlice:a4 sourceLevel:a5 toTexture:v21 destinationSlice:a7 destinationLevel:a8 sliceCount:a9 levelCount:a10];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [toTextureCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject sourceSlice:slice sourceLevel:level toTexture:baseObject2 destinationSlice:destinationSlice destinationLevel:destinationLevel sliceCount:count levelCount:levelCount];
 
   v22 = *(&v37 + 1);
   v23 = v38;
@@ -1498,10 +1498,10 @@
   ++BYTE10(v39);
   Bytes = GTTraceMemPool_allocateBytes(v24, *(&v38 + 1), v25 | 0x4800000000);
   *(v23 + 13) = v25;
-  v27 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1509,10 +1509,10 @@
     var0 = 0;
   }
 
-  v29 = [v14 traceStream];
-  if (v29)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v30 = *v29;
+    v30 = *traceStream2;
   }
 
   else
@@ -1520,10 +1520,10 @@
     v30 = 0;
   }
 
-  v31 = [v15 traceStream];
-  if (v31)
+  traceStream3 = [toTextureCopy traceStream];
+  if (traceStream3)
   {
-    v32 = *v31;
+    v32 = *traceStream3;
   }
 
   else
@@ -1533,40 +1533,40 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v30;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 4) = slice;
+  *(Bytes + 5) = level;
   *(Bytes + 6) = v32;
-  *(Bytes + 7) = a7;
-  *(Bytes + 8) = a8;
-  *(Bytes + 9) = a9;
-  *(Bytes + 10) = a10;
+  *(Bytes + 7) = destinationSlice;
+  *(Bytes + 8) = destinationLevel;
+  *(Bytes + 9) = count;
+  *(Bytes + 10) = levelCount;
   s();
   *v33 = v34;
   *(v33 + 8) = BYTE8(v39);
   *(v38 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v17 = a3;
-  v18 = a8;
-  [v17 touch];
-  if (v17)
+  textureCopy = texture;
+  toTextureCopy = toTexture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v17];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v18 touch];
-  if (v18)
+  [toTextureCopy touch];
+  if (toTextureCopy)
   {
     v20 = self->_retainedObjects;
     if (v20)
     {
-      [(NSMutableSet *)v20 addObject:v18];
+      [(NSMutableSet *)v20 addObject:toTextureCopy];
     }
   }
 
@@ -1576,15 +1576,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v54);
   baseObject = self->_baseObject;
-  v23 = [v17 baseObject];
-  v24 = [v18 baseObject];
-  v52 = *&a6->var0;
-  var2 = a6->var2;
-  v50 = *&a7->var0;
-  v51 = a7->var2;
-  v49 = *a11;
-  v46 = a5;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v23 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v52 sourceSize:&v50 toTexture:v24 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v49 options:a12];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [toTextureCopy baseObject];
+  v52 = *&origin->var0;
+  var2 = origin->var2;
+  v50 = *&size->var0;
+  v51 = size->var2;
+  v49 = *destinationOrigin;
+  levelCopy = level;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject sourceSlice:slice sourceLevel:level sourceOrigin:&v52 sourceSize:&v50 toTexture:baseObject2 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v49 options:options];
 
   v25 = *(&v54 + 1);
   v26 = v55;
@@ -1594,10 +1594,10 @@
   ++BYTE10(v56);
   Bytes = GTTraceMemPool_allocateBytes(v27, *(&v55 + 1), v28 | 0x8800000000);
   *(v26 + 13) = v28;
-  v30 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v30)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v30->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1605,11 +1605,11 @@
     var0 = 0;
   }
 
-  v32 = [v17 traceStream];
-  v47 = v17;
-  if (v32)
+  traceStream2 = [textureCopy traceStream];
+  v47 = textureCopy;
+  if (traceStream2)
   {
-    v33 = *v32;
+    v33 = *traceStream2;
   }
 
   else
@@ -1617,16 +1617,16 @@
     v33 = 0;
   }
 
-  v35 = a6->var0;
-  var1 = a6->var1;
-  v36 = a6->var2;
-  v38 = a7->var0;
-  v37 = a7->var1;
-  v39 = a7->var2;
-  v40 = [v18 traceStream];
-  if (v40)
+  v35 = origin->var0;
+  var1 = origin->var1;
+  v36 = origin->var2;
+  v38 = size->var0;
+  v37 = size->var1;
+  v39 = size->var2;
+  traceStream3 = [toTextureCopy traceStream];
+  if (traceStream3)
   {
-    v41 = *v40;
+    v41 = *traceStream3;
   }
 
   else
@@ -1634,15 +1634,15 @@
     v41 = 0;
   }
 
-  v42 = a11->var2;
+  v42 = destinationOrigin->var2;
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v33;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = v46;
+  *(Bytes + 4) = slice;
+  *(Bytes + 5) = levelCopy;
   *(Bytes + 12) = v41;
-  *(Bytes + 13) = a9;
-  *(Bytes + 14) = a10;
-  v43 = *&a11->var0;
+  *(Bytes + 13) = destinationSlice;
+  *(Bytes + 14) = destinationLevel;
+  v43 = *&destinationOrigin->var0;
   *(Bytes + 6) = v35;
   *(Bytes + 7) = var1;
   *(Bytes + 8) = v36;
@@ -1651,34 +1651,34 @@
   *(Bytes + 11) = v39;
   *(Bytes + 120) = v43;
   *(Bytes + 17) = v42;
-  *(Bytes + 18) = a12;
+  *(Bytes + 18) = options;
   s();
   *v44 = v45;
   *(v44 + 8) = BYTE8(v56);
   *(v55 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v16 = a3;
-  v17 = a8;
-  [v16 touch];
-  if (v16)
+  textureCopy = texture;
+  toTextureCopy = toTexture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v16];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v17 touch];
-  if (v17)
+  [toTextureCopy touch];
+  if (toTextureCopy)
   {
     v19 = self->_retainedObjects;
     if (v19)
     {
-      [(NSMutableSet *)v19 addObject:v17];
+      [(NSMutableSet *)v19 addObject:toTextureCopy];
     }
   }
 
@@ -1688,15 +1688,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v53);
   baseObject = self->_baseObject;
-  v22 = [v16 baseObject];
-  v23 = [v17 baseObject];
-  v51 = *&a6->var0;
-  var2 = a6->var2;
-  v49 = *&a7->var0;
-  v50 = a7->var2;
-  v48 = *a11;
-  v45 = a5;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v22 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v51 sourceSize:&v49 toTexture:v23 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v48];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [toTextureCopy baseObject];
+  v51 = *&origin->var0;
+  var2 = origin->var2;
+  v49 = *&size->var0;
+  v50 = size->var2;
+  v48 = *destinationOrigin;
+  levelCopy = level;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject sourceSlice:slice sourceLevel:level sourceOrigin:&v51 sourceSize:&v49 toTexture:baseObject2 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v48];
 
   v24 = *(&v53 + 1);
   v25 = v54;
@@ -1706,10 +1706,10 @@
   ++BYTE10(v55);
   Bytes = GTTraceMemPool_allocateBytes(v26, *(&v54 + 1), v27 | 0x8000000000);
   *(v25 + 13) = v27;
-  v29 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v29)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v29->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1717,11 +1717,11 @@
     var0 = 0;
   }
 
-  v31 = [v16 traceStream];
-  v46 = v16;
-  if (v31)
+  traceStream2 = [textureCopy traceStream];
+  v46 = textureCopy;
+  if (traceStream2)
   {
-    v32 = *v31;
+    v32 = *traceStream2;
   }
 
   else
@@ -1729,16 +1729,16 @@
     v32 = 0;
   }
 
-  v34 = a6->var0;
-  var1 = a6->var1;
-  v35 = a6->var2;
-  v37 = a7->var0;
-  v36 = a7->var1;
-  v38 = a7->var2;
-  v39 = [v17 traceStream];
-  if (v39)
+  v34 = origin->var0;
+  var1 = origin->var1;
+  v35 = origin->var2;
+  v37 = size->var0;
+  v36 = size->var1;
+  v38 = size->var2;
+  traceStream3 = [toTextureCopy traceStream];
+  if (traceStream3)
   {
-    v40 = *v39;
+    v40 = *traceStream3;
   }
 
   else
@@ -1746,15 +1746,15 @@
     v40 = 0;
   }
 
-  v41 = a11->var2;
+  v41 = destinationOrigin->var2;
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v32;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = v45;
+  *(Bytes + 4) = slice;
+  *(Bytes + 5) = levelCopy;
   *(Bytes + 12) = v40;
-  *(Bytes + 13) = a9;
-  *(Bytes + 14) = a10;
-  v42 = *&a11->var0;
+  *(Bytes + 13) = destinationSlice;
+  *(Bytes + 14) = destinationLevel;
+  v42 = *&destinationOrigin->var0;
   *(Bytes + 6) = v34;
   *(Bytes + 7) = var1;
   *(Bytes + 8) = v35;
@@ -1769,27 +1769,27 @@
   *(v54 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v18 = a3;
-  v19 = a8;
-  [v18 touch];
-  if (v18)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v18];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v19 touch];
-  if (v19)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v21 = self->_retainedObjects;
     if (v21)
     {
-      [(NSMutableSet *)v21 addObject:v19];
+      [(NSMutableSet *)v21 addObject:bufferCopy];
     }
   }
 
@@ -1799,15 +1799,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v52);
   baseObject = self->_baseObject;
-  v24 = [v18 baseObject];
-  v25 = [v19 baseObject];
-  v50 = *&a6->var0;
-  var2 = a6->var2;
-  v48 = *&a7->var0;
-  v49 = a7->var2;
-  v45 = a4;
-  v46 = a5;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v24 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v50 sourceSize:&v48 toBuffer:v25 destinationOffset:a9 destinationBytesPerRow:a10 destinationBytesPerImage:a11 options:a12];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  v50 = *&origin->var0;
+  var2 = origin->var2;
+  v48 = *&size->var0;
+  v49 = size->var2;
+  sliceCopy = slice;
+  levelCopy = level;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject sourceSlice:slice sourceLevel:level sourceOrigin:&v50 sourceSize:&v48 toBuffer:baseObject2 destinationOffset:offset destinationBytesPerRow:row destinationBytesPerImage:image options:options];
 
   v26 = *(&v52 + 1);
   v27 = v53;
@@ -1817,10 +1817,10 @@
   ++BYTE10(v54);
   Bytes = GTTraceMemPool_allocateBytes(v28, *(&v53 + 1), v29 | 0x7800000000);
   *(v27 + 13) = v29;
-  v31 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v31)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1828,11 +1828,11 @@
     var0 = 0;
   }
 
-  v33 = [v18 traceStream];
-  v47 = v18;
-  if (v33)
+  traceStream2 = [textureCopy traceStream];
+  v47 = textureCopy;
+  if (traceStream2)
   {
-    v34 = *v33;
+    v34 = *traceStream2;
   }
 
   else
@@ -1840,16 +1840,16 @@
     v34 = 0;
   }
 
-  v36 = a6->var0;
-  var1 = a6->var1;
-  v37 = a6->var2;
-  v39 = a7->var0;
-  v38 = a7->var1;
-  v40 = a7->var2;
-  v41 = [v19 traceStream];
-  if (v41)
+  v36 = origin->var0;
+  var1 = origin->var1;
+  v37 = origin->var2;
+  v39 = size->var0;
+  v38 = size->var1;
+  v40 = size->var2;
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v42 = *v41;
+    v42 = *traceStream3;
   }
 
   else
@@ -1859,8 +1859,8 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v34;
-  *(Bytes + 4) = v45;
-  *(Bytes + 5) = v46;
+  *(Bytes + 4) = sliceCopy;
+  *(Bytes + 5) = levelCopy;
   *(Bytes + 6) = v36;
   *(Bytes + 7) = var1;
   *(Bytes + 8) = v37;
@@ -1868,37 +1868,37 @@
   *(Bytes + 10) = v38;
   *(Bytes + 11) = v40;
   *(Bytes + 12) = v42;
-  *(Bytes + 13) = a9;
-  *(Bytes + 14) = a10;
-  *(Bytes + 15) = a11;
-  *(Bytes + 16) = a12;
+  *(Bytes + 13) = offset;
+  *(Bytes + 14) = row;
+  *(Bytes + 15) = image;
+  *(Bytes + 16) = options;
   s();
   *v43 = v44;
   *(v43 + 8) = BYTE8(v54);
   *(v53 + 15) |= 8u;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
-  v17 = a3;
-  v18 = a8;
-  [v17 touch];
-  if (v17)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v17];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
-  [v18 touch];
-  if (v18)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v20 = self->_retainedObjects;
     if (v20)
     {
-      [(NSMutableSet *)v20 addObject:v18];
+      [(NSMutableSet *)v20 addObject:bufferCopy];
     }
   }
 
@@ -1908,15 +1908,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v51);
   baseObject = self->_baseObject;
-  v23 = [v17 baseObject];
-  v24 = [v18 baseObject];
-  v49 = *&a6->var0;
-  var2 = a6->var2;
-  v47 = *&a7->var0;
-  v48 = a7->var2;
-  v44 = a4;
-  v45 = a5;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:v23 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v49 sourceSize:&v47 toBuffer:v24 destinationOffset:a9 destinationBytesPerRow:a10 destinationBytesPerImage:a11];
+  baseObject = [textureCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  v49 = *&origin->var0;
+  var2 = origin->var2;
+  v47 = *&size->var0;
+  v48 = size->var2;
+  sliceCopy = slice;
+  levelCopy = level;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTexture:baseObject sourceSlice:slice sourceLevel:level sourceOrigin:&v49 sourceSize:&v47 toBuffer:baseObject2 destinationOffset:offset destinationBytesPerRow:row destinationBytesPerImage:image];
 
   v25 = *(&v51 + 1);
   v26 = v52;
@@ -1926,10 +1926,10 @@
   ++BYTE10(v53);
   Bytes = GTTraceMemPool_allocateBytes(v27, *(&v52 + 1), v28 | 0x7000000000);
   *(v26 + 13) = v28;
-  v30 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v30)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v30->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1937,11 +1937,11 @@
     var0 = 0;
   }
 
-  v32 = [v17 traceStream];
-  v46 = v17;
-  if (v32)
+  traceStream2 = [textureCopy traceStream];
+  v46 = textureCopy;
+  if (traceStream2)
   {
-    v33 = *v32;
+    v33 = *traceStream2;
   }
 
   else
@@ -1949,16 +1949,16 @@
     v33 = 0;
   }
 
-  v35 = a6->var0;
-  var1 = a6->var1;
-  v36 = a6->var2;
-  v38 = a7->var0;
-  v37 = a7->var1;
-  v39 = a7->var2;
-  v40 = [v18 traceStream];
-  if (v40)
+  v35 = origin->var0;
+  var1 = origin->var1;
+  v36 = origin->var2;
+  v38 = size->var0;
+  v37 = size->var1;
+  v39 = size->var2;
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v41 = *v40;
+    v41 = *traceStream3;
   }
 
   else
@@ -1968,8 +1968,8 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v33;
-  *(Bytes + 4) = v44;
-  *(Bytes + 5) = v45;
+  *(Bytes + 4) = sliceCopy;
+  *(Bytes + 5) = levelCopy;
   *(Bytes + 6) = v35;
   *(Bytes + 7) = var1;
   *(Bytes + 8) = v36;
@@ -1977,40 +1977,40 @@
   *(Bytes + 10) = v37;
   *(Bytes + 11) = v39;
   *(Bytes + 12) = v41;
-  *(Bytes + 13) = a9;
-  *(Bytes + 14) = a10;
-  *(Bytes + 15) = a11;
+  *(Bytes + 13) = offset;
+  *(Bytes + 14) = row;
+  *(Bytes + 15) = image;
   s();
   *v42 = v43;
   *(v42 + 8) = BYTE8(v53);
   *(v52 + 15) |= 8u;
 }
 
-- (void)copyFromTensor:(id)a3 sourceOrigin:(id)a4 sourceDimensions:(id)a5 toTensor:(id)a6 destinationOrigin:(id)a7 destinationDimensions:(id)a8
+- (void)copyFromTensor:(id)tensor sourceOrigin:(id)origin sourceDimensions:(id)dimensions toTensor:(id)toTensor destinationOrigin:(id)destinationOrigin destinationDimensions:(id)destinationDimensions
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  [v14 touch];
-  if (v14)
+  tensorCopy = tensor;
+  toTensorCopy = toTensor;
+  destinationDimensionsCopy = destinationDimensions;
+  destinationOriginCopy = destinationOrigin;
+  dimensionsCopy = dimensions;
+  originCopy = origin;
+  [tensorCopy touch];
+  if (tensorCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v14];
+      [(NSMutableSet *)retainedObjects addObject:tensorCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [toTensorCopy touch];
+  if (toTensorCopy)
   {
     v21 = self->_retainedObjects;
     if (v21)
     {
-      [(NSMutableSet *)v21 addObject:v15];
+      [(NSMutableSet *)v21 addObject:toTensorCopy];
     }
   }
 
@@ -2020,11 +2020,11 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v113);
   baseObject = self->_baseObject;
-  v112 = v14;
-  v24 = [v14 baseObject];
-  v111 = v15;
-  v25 = [v15 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTensor:v24 sourceOrigin:v19 sourceDimensions:v18 toTensor:v25 destinationOrigin:v17 destinationDimensions:v16];
+  v112 = tensorCopy;
+  baseObject = [tensorCopy baseObject];
+  v111 = toTensorCopy;
+  baseObject2 = [toTensorCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromTensor:baseObject sourceOrigin:originCopy sourceDimensions:dimensionsCopy toTensor:baseObject2 destinationOrigin:destinationOriginCopy destinationDimensions:destinationDimensionsCopy];
 
   v26 = *(&v113 + 1);
   v27 = v114;
@@ -2034,10 +2034,10 @@
   ++BYTE10(v115);
   Bytes = GTTraceMemPool_allocateBytes(v28, *(&v114 + 1), v29 | 0x23800000000);
   *(v27 + 13) = v29;
-  v31 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v31)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2045,10 +2045,10 @@
     var0 = 0;
   }
 
-  v32 = [v112 traceStream];
-  if (v32)
+  traceStream2 = [v112 traceStream];
+  if (traceStream2)
   {
-    v109 = *v32;
+    v109 = *traceStream2;
   }
 
   else
@@ -2056,48 +2056,48 @@
     v109 = 0;
   }
 
-  v108 = [v19 rank];
-  v107 = *[v19 extents];
-  v106 = *([v19 extents] + 1);
-  v105 = *([v19 extents] + 2);
-  v104 = *([v19 extents] + 3);
-  v103 = *([v19 extents] + 4);
-  v102 = *([v19 extents] + 5);
-  v101 = *([v19 extents] + 6);
-  v100 = *([v19 extents] + 7);
-  v99 = *([v19 extents] + 8);
-  v98 = *([v19 extents] + 9);
-  v97 = *([v19 extents] + 10);
-  v96 = *([v19 extents] + 11);
-  v95 = *([v19 extents] + 12);
-  v94 = *([v19 extents] + 13);
-  v93 = *([v19 extents] + 14);
-  v33 = [v19 extents];
+  rank = [originCopy rank];
+  v107 = *[originCopy extents];
+  v106 = *([originCopy extents] + 1);
+  v105 = *([originCopy extents] + 2);
+  v104 = *([originCopy extents] + 3);
+  v103 = *([originCopy extents] + 4);
+  v102 = *([originCopy extents] + 5);
+  v101 = *([originCopy extents] + 6);
+  v100 = *([originCopy extents] + 7);
+  v99 = *([originCopy extents] + 8);
+  v98 = *([originCopy extents] + 9);
+  v97 = *([originCopy extents] + 10);
+  v96 = *([originCopy extents] + 11);
+  v95 = *([originCopy extents] + 12);
+  v94 = *([originCopy extents] + 13);
+  v93 = *([originCopy extents] + 14);
+  extents = [originCopy extents];
 
-  v92 = v33[15];
-  v91 = [v18 rank];
-  v90 = *[v18 extents];
-  v89 = *([v18 extents] + 1);
-  v88 = *([v18 extents] + 2);
-  v87 = *([v18 extents] + 3);
-  v86 = *([v18 extents] + 4);
-  v85 = *([v18 extents] + 5);
-  v84 = *([v18 extents] + 6);
-  v83 = *([v18 extents] + 7);
-  v82 = *([v18 extents] + 8);
-  v81 = *([v18 extents] + 9);
-  v80 = *([v18 extents] + 10);
-  v79 = *([v18 extents] + 11);
-  v78 = *([v18 extents] + 12);
-  v77 = *([v18 extents] + 13);
-  v76 = *([v18 extents] + 14);
-  v34 = [v18 extents];
+  v92 = extents[15];
+  rank2 = [dimensionsCopy rank];
+  v90 = *[dimensionsCopy extents];
+  v89 = *([dimensionsCopy extents] + 1);
+  v88 = *([dimensionsCopy extents] + 2);
+  v87 = *([dimensionsCopy extents] + 3);
+  v86 = *([dimensionsCopy extents] + 4);
+  v85 = *([dimensionsCopy extents] + 5);
+  v84 = *([dimensionsCopy extents] + 6);
+  v83 = *([dimensionsCopy extents] + 7);
+  v82 = *([dimensionsCopy extents] + 8);
+  v81 = *([dimensionsCopy extents] + 9);
+  v80 = *([dimensionsCopy extents] + 10);
+  v79 = *([dimensionsCopy extents] + 11);
+  v78 = *([dimensionsCopy extents] + 12);
+  v77 = *([dimensionsCopy extents] + 13);
+  v76 = *([dimensionsCopy extents] + 14);
+  extents2 = [dimensionsCopy extents];
 
-  v75 = v34[15];
-  v35 = [v111 traceStream];
-  if (v35)
+  v75 = extents2[15];
+  traceStream3 = [v111 traceStream];
+  if (traceStream3)
   {
-    v74 = *v35;
+    v74 = *traceStream3;
   }
 
   else
@@ -2105,47 +2105,47 @@
     v74 = 0;
   }
 
-  v73 = [v17 rank];
-  v72 = *[v17 extents];
-  v71 = *([v17 extents] + 1);
-  v70 = *([v17 extents] + 2);
-  v69 = *([v17 extents] + 3);
-  v68 = *([v17 extents] + 4);
-  v67 = *([v17 extents] + 5);
-  v66 = *([v17 extents] + 6);
-  v65 = *([v17 extents] + 7);
-  v64 = *([v17 extents] + 8);
-  v63 = *([v17 extents] + 9);
-  v62 = *([v17 extents] + 10);
-  v61 = *([v17 extents] + 11);
-  v60 = *([v17 extents] + 12);
-  v59 = *([v17 extents] + 13);
-  v58 = *([v17 extents] + 14);
-  v36 = [v17 extents];
+  rank3 = [destinationOriginCopy rank];
+  v72 = *[destinationOriginCopy extents];
+  v71 = *([destinationOriginCopy extents] + 1);
+  v70 = *([destinationOriginCopy extents] + 2);
+  v69 = *([destinationOriginCopy extents] + 3);
+  v68 = *([destinationOriginCopy extents] + 4);
+  v67 = *([destinationOriginCopy extents] + 5);
+  v66 = *([destinationOriginCopy extents] + 6);
+  v65 = *([destinationOriginCopy extents] + 7);
+  v64 = *([destinationOriginCopy extents] + 8);
+  v63 = *([destinationOriginCopy extents] + 9);
+  v62 = *([destinationOriginCopy extents] + 10);
+  v61 = *([destinationOriginCopy extents] + 11);
+  v60 = *([destinationOriginCopy extents] + 12);
+  v59 = *([destinationOriginCopy extents] + 13);
+  v58 = *([destinationOriginCopy extents] + 14);
+  extents3 = [destinationOriginCopy extents];
 
-  v57 = v36[15];
-  v56 = [v16 rank];
-  v55 = *[v16 extents];
-  v54 = *([v16 extents] + 1);
-  v53 = *([v16 extents] + 2);
-  v52 = *([v16 extents] + 3);
-  v51 = *([v16 extents] + 4);
-  v50 = *([v16 extents] + 5);
-  v49 = *([v16 extents] + 6);
-  v48 = *([v16 extents] + 7);
-  v37 = *([v16 extents] + 8);
-  v38 = *([v16 extents] + 9);
-  v39 = *([v16 extents] + 10);
-  v40 = *([v16 extents] + 11);
-  v41 = *([v16 extents] + 12);
-  v42 = *([v16 extents] + 13);
-  v43 = *([v16 extents] + 14);
-  v44 = [v16 extents];
+  v57 = extents3[15];
+  rank4 = [destinationDimensionsCopy rank];
+  v55 = *[destinationDimensionsCopy extents];
+  v54 = *([destinationDimensionsCopy extents] + 1);
+  v53 = *([destinationDimensionsCopy extents] + 2);
+  v52 = *([destinationDimensionsCopy extents] + 3);
+  v51 = *([destinationDimensionsCopy extents] + 4);
+  v50 = *([destinationDimensionsCopy extents] + 5);
+  v49 = *([destinationDimensionsCopy extents] + 6);
+  v48 = *([destinationDimensionsCopy extents] + 7);
+  v37 = *([destinationDimensionsCopy extents] + 8);
+  v38 = *([destinationDimensionsCopy extents] + 9);
+  v39 = *([destinationDimensionsCopy extents] + 10);
+  v40 = *([destinationDimensionsCopy extents] + 11);
+  v41 = *([destinationDimensionsCopy extents] + 12);
+  v42 = *([destinationDimensionsCopy extents] + 13);
+  v43 = *([destinationDimensionsCopy extents] + 14);
+  extents4 = [destinationDimensionsCopy extents];
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v109;
-  v45 = v44[15];
-  *(Bytes + 4) = v108;
+  v45 = extents4[15];
+  *(Bytes + 4) = rank;
   *(Bytes + 5) = v107;
   *(Bytes + 6) = v106;
   *(Bytes + 7) = v105;
@@ -2162,7 +2162,7 @@
   *(Bytes + 18) = v94;
   *(Bytes + 19) = v93;
   *(Bytes + 20) = v92;
-  *(Bytes + 21) = v91;
+  *(Bytes + 21) = rank2;
   *(Bytes + 22) = v90;
   *(Bytes + 23) = v89;
   *(Bytes + 24) = v88;
@@ -2180,7 +2180,7 @@
   *(Bytes + 36) = v76;
   *(Bytes + 37) = v75;
   *(Bytes + 38) = v74;
-  *(Bytes + 39) = v73;
+  *(Bytes + 39) = rank3;
   *(Bytes + 40) = v72;
   *(Bytes + 41) = v71;
   *(Bytes + 42) = v70;
@@ -2197,7 +2197,7 @@
   *(Bytes + 53) = v59;
   *(Bytes + 54) = v58;
   *(Bytes + 55) = v57;
-  *(Bytes + 56) = v56;
+  *(Bytes + 56) = rank4;
   *(Bytes + 57) = v55;
   *(Bytes + 58) = v54;
   *(Bytes + 59) = v53;
@@ -2220,27 +2220,27 @@
   *(v114 + 15) |= 8u;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
-  v12 = a3;
-  v13 = a5;
-  [v12 touch];
-  if (v12)
+  bufferCopy = buffer;
+  toBufferCopy = toBuffer;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v13 touch];
-  if (v13)
+  [toBufferCopy touch];
+  if (toBufferCopy)
   {
     v15 = self->_retainedObjects;
     if (v15)
     {
-      [(NSMutableSet *)v15 addObject:v13];
+      [(NSMutableSet *)v15 addObject:toBufferCopy];
     }
   }
 
@@ -2250,9 +2250,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v33);
   baseObject = self->_baseObject;
-  v18 = [v12 baseObject];
-  v19 = [v13 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:v18 sourceOffset:a4 toBuffer:v19 destinationOffset:a6 size:a7];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [toBufferCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:baseObject sourceOffset:offset toBuffer:baseObject2 destinationOffset:destinationOffset size:size];
 
   v20 = v34;
   *(v34 + 8) = -16377;
@@ -2273,10 +2273,10 @@
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2284,10 +2284,10 @@
     var0 = 0;
   }
 
-  v27 = [v12 traceStream];
-  if (v27)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -2295,10 +2295,10 @@
     v28 = 0;
   }
 
-  v29 = [v13 traceStream];
-  if (v29)
+  traceStream3 = [toBufferCopy traceStream];
+  if (traceStream3)
   {
-    v30 = *v29;
+    v30 = *traceStream3;
   }
 
   else
@@ -2308,37 +2308,37 @@
 
   *v22 = var0;
   *(v22 + 1) = v28;
-  *(v22 + 2) = a4;
+  *(v22 + 2) = offset;
   *(v22 + 3) = v30;
-  *(v22 + 4) = a6;
-  *(v22 + 5) = a7;
+  *(v22 + 4) = destinationOffset;
+  *(v22 + 5) = size;
   s();
   *v31 = v32;
   *(v31 + 8) = BYTE8(v35);
   *(v34 + 15) |= 8u;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v17 = a3;
-  v18 = a8;
-  [v17 touch];
-  if (v17)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v17];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v18 touch];
-  if (v18)
+  [textureCopy touch];
+  if (textureCopy)
   {
     v20 = self->_retainedObjects;
     if (v20)
     {
-      [(NSMutableSet *)v20 addObject:v18];
+      [(NSMutableSet *)v20 addObject:textureCopy];
     }
   }
 
@@ -2348,15 +2348,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v50);
   baseObject = self->_baseObject;
-  v23 = [v17 baseObject];
-  v24 = [v18 baseObject];
-  v48 = *&a7->var0;
-  var2 = a7->var2;
-  v47 = *a11;
-  v45 = a5;
-  v25 = a5;
-  v26 = a6;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:v23 sourceOffset:a4 sourceBytesPerRow:v25 sourceBytesPerImage:a6 sourceSize:&v48 toTexture:v24 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v47 options:a12];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [textureCopy baseObject];
+  v48 = *&size->var0;
+  var2 = size->var2;
+  v47 = *origin;
+  rowCopy = row;
+  rowCopy2 = row;
+  imageCopy = image;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:baseObject sourceOffset:offset sourceBytesPerRow:rowCopy2 sourceBytesPerImage:image sourceSize:&v48 toTexture:baseObject2 destinationSlice:slice destinationLevel:level destinationOrigin:&v47 options:options];
 
   v27 = *(&v50 + 1);
   v28 = v51;
@@ -2366,10 +2366,10 @@
   ++BYTE10(v52);
   Bytes = GTTraceMemPool_allocateBytes(v29, *(&v51 + 1), v30 | 0x7800000000);
   *(v28 + 13) = v30;
-  v32 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v32)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v32->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2377,10 +2377,10 @@
     var0 = 0;
   }
 
-  v34 = [v17 traceStream];
-  if (v34)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v35 = *v34;
+    v35 = *traceStream2;
   }
 
   else
@@ -2388,13 +2388,13 @@
     v35 = 0;
   }
 
-  v36 = a7->var0;
-  var1 = a7->var1;
-  v38 = a7->var2;
-  v39 = [v18 traceStream];
-  if (v39)
+  v36 = size->var0;
+  var1 = size->var1;
+  v38 = size->var2;
+  traceStream3 = [textureCopy traceStream];
+  if (traceStream3)
   {
-    v40 = *v39;
+    v40 = *traceStream3;
   }
 
   else
@@ -2402,49 +2402,49 @@
     v40 = 0;
   }
 
-  v41 = a11->var2;
+  v41 = origin->var2;
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v35;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = v45;
+  *(Bytes + 4) = offset;
+  *(Bytes + 5) = rowCopy;
   *(Bytes + 10) = v40;
-  *(Bytes + 11) = a9;
-  *(Bytes + 12) = a10;
-  v42 = *&a11->var0;
-  *(Bytes + 6) = v26;
+  *(Bytes + 11) = slice;
+  *(Bytes + 12) = level;
+  v42 = *&origin->var0;
+  *(Bytes + 6) = imageCopy;
   *(Bytes + 7) = v36;
   *(Bytes + 8) = var1;
   *(Bytes + 9) = v38;
   *(Bytes + 104) = v42;
   *(Bytes + 15) = v41;
-  *(Bytes + 16) = a12;
+  *(Bytes + 16) = options;
   s();
   *v43 = v44;
   *(v43 + 8) = BYTE8(v52);
   *(v51 + 15) |= 8u;
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v16 = a3;
-  v17 = a8;
-  [v16 touch];
-  if (v16)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v16];
+      [(NSMutableSet *)retainedObjects addObject:bufferCopy];
     }
   }
 
-  [v17 touch];
-  if (v17)
+  [textureCopy touch];
+  if (textureCopy)
   {
     v19 = self->_retainedObjects;
     if (v19)
     {
-      [(NSMutableSet *)v19 addObject:v17];
+      [(NSMutableSet *)v19 addObject:textureCopy];
     }
   }
 
@@ -2454,15 +2454,15 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v49);
   baseObject = self->_baseObject;
-  v22 = [v16 baseObject];
-  v23 = [v17 baseObject];
-  v47 = *&a7->var0;
-  var2 = a7->var2;
-  v46 = *a11;
-  v44 = a5;
-  v24 = a5;
-  v25 = a6;
-  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:v22 sourceOffset:a4 sourceBytesPerRow:v24 sourceBytesPerImage:a6 sourceSize:&v47 toTexture:v23 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v46];
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [textureCopy baseObject];
+  v47 = *&size->var0;
+  var2 = size->var2;
+  v46 = *origin;
+  rowCopy = row;
+  rowCopy2 = row;
+  imageCopy = image;
+  [(MTLBlitCommandEncoderSPI *)baseObject copyFromBuffer:baseObject sourceOffset:offset sourceBytesPerRow:rowCopy2 sourceBytesPerImage:image sourceSize:&v47 toTexture:baseObject2 destinationSlice:slice destinationLevel:level destinationOrigin:&v46];
 
   v26 = *(&v49 + 1);
   v27 = v50;
@@ -2472,10 +2472,10 @@
   ++BYTE10(v51);
   Bytes = GTTraceMemPool_allocateBytes(v28, *(&v50 + 1), v29 | 0x7000000000);
   *(v27 + 13) = v29;
-  v31 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v31)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2483,10 +2483,10 @@
     var0 = 0;
   }
 
-  v33 = [v16 traceStream];
-  if (v33)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v34 = *v33;
+    v34 = *traceStream2;
   }
 
   else
@@ -2494,13 +2494,13 @@
     v34 = 0;
   }
 
-  v35 = a7->var0;
-  var1 = a7->var1;
-  v37 = a7->var2;
-  v38 = [v17 traceStream];
-  if (v38)
+  v35 = size->var0;
+  var1 = size->var1;
+  v37 = size->var2;
+  traceStream3 = [textureCopy traceStream];
+  if (traceStream3)
   {
-    v39 = *v38;
+    v39 = *traceStream3;
   }
 
   else
@@ -2508,16 +2508,16 @@
     v39 = 0;
   }
 
-  v40 = a11->var2;
+  v40 = origin->var2;
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v34;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = v44;
+  *(Bytes + 4) = offset;
+  *(Bytes + 5) = rowCopy;
   *(Bytes + 10) = v39;
-  *(Bytes + 11) = a9;
-  *(Bytes + 12) = a10;
-  v41 = *&a11->var0;
-  *(Bytes + 6) = v25;
+  *(Bytes + 11) = slice;
+  *(Bytes + 12) = level;
+  v41 = *&origin->var0;
+  *(Bytes + 6) = imageCopy;
   *(Bytes + 7) = v35;
   *(Bytes + 8) = var1;
   *(Bytes + 9) = v37;
@@ -2529,14 +2529,14 @@
   *(v50 + 15) |= 8u;
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLBlitCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:a3 beforeStages:a4];
+  [(MTLBlitCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:stages beforeStages:beforeStages];
   v8 = v18;
   *(v18 + 8) = -14966;
   v9 = BYTE9(v19);
@@ -2556,10 +2556,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2568,23 +2568,23 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = stages;
+  *(v10 + 2) = beforeStages;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLBlitCommandEncoderSPI *)self->_baseObject setLabel:v4];
+  [(MTLBlitCommandEncoderSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16384;
   v7 = BYTE9(v20);
@@ -2604,10 +2604,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2615,16 +2615,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -2633,13 +2633,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLBlitCommandEncoderSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLBlitCommandEncoderSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -2694,20 +2694,20 @@
   }
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v17 = a3;
-  [v17 touch];
-  if (v17)
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v17];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -2717,12 +2717,12 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v37);
   baseObject = self->_baseObject;
-  v21 = [v17 baseObject];
-  v22 = *&a6->var0.var2;
-  v36[0] = *&a6->var0.var0;
+  baseObject = [textureCopy baseObject];
+  v22 = *&region->var0.var2;
+  v36[0] = *&region->var0.var0;
   v36[1] = v22;
-  v36[2] = *&a6->var1.var1;
-  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:v21 level:a4 slice:a5 region:v36 color:a8 pixelFormat:var0, var1, var2, var3];
+  v36[2] = *&region->var1.var1;
+  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:baseObject level:level slice:slice region:v36 color:format pixelFormat:var0, var1, var2, var3];
 
   v23 = *(&v37 + 1);
   v24 = v38;
@@ -2732,10 +2732,10 @@
   ++BYTE10(v39);
   Bytes = GTTraceMemPool_allocateBytes(v25, *(&v38 + 1), v26 | 0x7800000000);
   *(v24 + 13) = v26;
-  v28 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    v29 = v28->var0;
+    v29 = traceStream->var0;
   }
 
   else
@@ -2743,10 +2743,10 @@
     v29 = 0;
   }
 
-  v30 = [v17 traceStream];
-  if (v30)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v31 = *v30;
+    v31 = *traceStream2;
   }
 
   else
@@ -2756,38 +2756,38 @@
 
   *(Bytes + 2) = v29;
   *(Bytes + 3) = v31;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
-  v32 = *&a6->var0.var2;
-  v33 = *&a6->var1.var1;
-  *(Bytes + 3) = *&a6->var0.var0;
+  *(Bytes + 4) = level;
+  *(Bytes + 5) = slice;
+  v32 = *&region->var0.var2;
+  v33 = *&region->var1.var1;
+  *(Bytes + 3) = *&region->var0.var0;
   *(Bytes + 4) = v32;
   *(Bytes + 5) = v33;
   *(Bytes + 12) = var0;
   *(Bytes + 13) = var1;
   *(Bytes + 14) = var2;
   *(Bytes + 15) = var3;
-  *(Bytes + 16) = a8;
+  *(Bytes + 16) = format;
   s();
   *v34 = v35;
   *(v34 + 8) = BYTE8(v39);
   *(v38 + 15) |= 8u;
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v15 = a3;
-  [v15 touch];
-  if (v15)
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  textureCopy = texture;
+  [textureCopy touch];
+  if (textureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v15];
+      [(NSMutableSet *)retainedObjects addObject:textureCopy];
     }
   }
 
@@ -2797,12 +2797,12 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v35);
   baseObject = self->_baseObject;
-  v19 = [v15 baseObject];
-  v20 = *&a6->var0.var2;
-  v34[0] = *&a6->var0.var0;
+  baseObject = [textureCopy baseObject];
+  v20 = *&region->var0.var2;
+  v34[0] = *&region->var0.var0;
   v34[1] = v20;
-  v34[2] = *&a6->var1.var1;
-  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:v19 level:a4 slice:a5 region:v34 color:var0, var1, var2, var3];
+  v34[2] = *&region->var1.var1;
+  [(MTLBlitCommandEncoderSPI *)baseObject fillTexture:baseObject level:level slice:slice region:v34 color:var0, var1, var2, var3];
 
   v21 = *(&v35 + 1);
   v22 = v36;
@@ -2812,10 +2812,10 @@
   ++BYTE10(v37);
   Bytes = GTTraceMemPool_allocateBytes(v23, *(&v36 + 1), v24 | 0x7000000000);
   *(v22 + 13) = v24;
-  v26 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    v27 = v26->var0;
+    v27 = traceStream->var0;
   }
 
   else
@@ -2823,10 +2823,10 @@
     v27 = 0;
   }
 
-  v28 = [v15 traceStream];
-  if (v28)
+  traceStream2 = [textureCopy traceStream];
+  if (traceStream2)
   {
-    v29 = *v28;
+    v29 = *traceStream2;
   }
 
   else
@@ -2836,11 +2836,11 @@
 
   *(Bytes + 2) = v27;
   *(Bytes + 3) = v29;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
-  v30 = *&a6->var0.var2;
-  v31 = *&a6->var1.var1;
-  *(Bytes + 3) = *&a6->var0.var0;
+  *(Bytes + 4) = level;
+  *(Bytes + 5) = slice;
+  v30 = *&region->var0.var2;
+  v31 = *&region->var1.var1;
+  *(Bytes + 3) = *&region->var0.var0;
   *(Bytes + 4) = v30;
   *(Bytes + 5) = v31;
   *(Bytes + 12) = var0;
@@ -2853,29 +2853,29 @@
   *(v36 + 15) |= 8u;
 }
 
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  [v11 touch];
-  if (v11)
+  length = range.length;
+  location = range.location;
+  countersCopy = counters;
+  bufferCopy = buffer;
+  [countersCopy touch];
+  if (countersCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v11];
+      [(NSMutableSet *)retainedObjects addObject:countersCopy];
     }
   }
 
-  [v12 touch];
-  if (v12)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v14 = self->_retainedObjects;
     if (v14)
     {
-      [(NSMutableSet *)v14 addObject:v12];
+      [(NSMutableSet *)v14 addObject:bufferCopy];
     }
   }
 
@@ -2885,9 +2885,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v48);
   baseObject = self->_baseObject;
-  v17 = [v11 baseObject];
-  v18 = [v12 baseObject];
-  [(MTLBlitCommandEncoderSPI *)baseObject resolveCounters:v17 inRange:location destinationBuffer:length destinationOffset:v18, a6];
+  baseObject = [countersCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLBlitCommandEncoderSPI *)baseObject resolveCounters:baseObject inRange:location destinationBuffer:length destinationOffset:baseObject2, offset];
 
   v19 = v49;
   *(v49 + 8) = -15756;
@@ -2908,10 +2908,10 @@
   }
 
   *(v19 + 13) = v20;
-  v24 = [(CaptureMTLBlitCommandEncoder *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLBlitCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2919,10 +2919,10 @@
     var0 = 0;
   }
 
-  v26 = [v11 traceStream];
-  if (v26)
+  traceStream2 = [countersCopy traceStream];
+  if (traceStream2)
   {
-    v27 = *v26;
+    v27 = *traceStream2;
   }
 
   else
@@ -2930,10 +2930,10 @@
     v27 = 0;
   }
 
-  v28 = [v12 traceStream];
-  if (v28)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v29 = *v28;
+    v29 = *traceStream3;
   }
 
   else
@@ -2946,14 +2946,14 @@
   *(v21 + 2) = location;
   *(v21 + 3) = length;
   *(v21 + 4) = v29;
-  *(v21 + 5) = a6;
+  *(v21 + 5) = offset;
   *(v21 + 6) = 0;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v31 = [WeakRetained isCapturing];
+  isCapturing = [WeakRetained isCapturing];
 
-  if (v31)
+  if (isCapturing)
   {
-    v32 = DEVICEOBJECT(v12);
+    v32 = DEVICEOBJECT(bufferCopy);
     v33 = [v32 length];
     v34 = *(*(&v48 + 1) + 24);
     v35 = BYTE10(v50);
@@ -2961,8 +2961,8 @@
     Bytes = GTTraceMemPool_allocateBytes(v34, *(&v49 + 1), v35 | (v33 << 32) | 0x100);
     v21[48] = Bytes[8];
     v37 = DEVICEOBJECT(self->_baseObject);
-    v38 = [v37 device];
-    v39 = [v38 newBufferWithLength:v33 options:0];
+    device = [v37 device];
+    v39 = [device newBufferWithLength:v33 options:0];
     [v37 copyFromBuffer:v32 sourceOffset:0 toBuffer:v39 destinationOffset:0 size:v33];
     v40 = objc_loadWeakRetained(&self->_captureCommandBuffer);
     v41 = DEVICEOBJECT(v40);
@@ -3004,30 +3004,30 @@ void *__92__CaptureMTLBlitCommandEncoder_resolveCounters_inRange_destinationBuff
   return memcpy(v5, v6, v7);
 }
 
-- (CaptureMTLBlitCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4
+- (CaptureMTLBlitCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v20.receiver = self;
   v20.super_class = CaptureMTLBlitCommandEncoder;
   v9 = [(CaptureMTLBlitCommandEncoder *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    objc_storeWeak(&v10->_captureCommandBuffer, v8);
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openEncoderStream(v13, v14, *([v8 traceStream] + 3));
+    objc_storeWeak(&v10->_captureCommandBuffer, bufferCopy);
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openEncoderStream(traceContext, v14, *([bufferCopy traceStream] + 3));
 
-    v15 = [v8 retainedObjects];
+    retainedObjects = [bufferCopy retainedObjects];
     retainedObjects = v10->_retainedObjects;
-    v10->_retainedObjects = v15;
+    v10->_retainedObjects = retainedObjects;
 
     v17 = v10->_retainedObjects;
     v18 = DEVICEOBJECT(v10->_baseObject);

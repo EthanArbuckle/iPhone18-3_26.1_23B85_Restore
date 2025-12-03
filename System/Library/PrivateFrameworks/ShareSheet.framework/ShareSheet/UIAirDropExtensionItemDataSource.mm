@@ -1,16 +1,16 @@
 @interface UIAirDropExtensionItemDataSource
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4;
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request;
 @end
 
 @implementation UIAirDropExtensionItemDataSource
 
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  requestCopy = request;
   v8 = share_sheet_log();
   v9 = share_sheet_log();
-  v10 = os_signpost_id_make_with_pointer(v9, a1);
+  v10 = os_signpost_id_make_with_pointer(v9, self);
 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
@@ -18,33 +18,33 @@
     _os_signpost_emit_with_name_impl(&dword_18B359000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PreparingItemData", &unk_18B437ED2, buf, 2u);
   }
 
-  v11 = [v7 maxPreviews];
+  maxPreviews = [requestCopy maxPreviews];
   *buf = 0;
   v35 = buf;
   v36 = 0x2020000000;
   v37 = 0;
   v12 = objc_alloc_init(UISUIActivityExtensionItemData);
-  v13 = [v7 activityType];
-  [v7 thumbnailSize];
+  activityType = [requestCopy activityType];
+  [requestCopy thumbnailSize];
   v15 = v14;
   v17 = v16;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __116__UIAirDropExtensionItemDataSource_preparedActivityExtensionItemDataForActivityItemValues_extensionItemDataRequest___block_invoke;
   v27[3] = &unk_1E71FB6F8;
-  v18 = v13;
+  v18 = activityType;
   v28 = v18;
   v19 = v12;
   v29 = v19;
   v30 = buf;
-  v31 = v11;
+  v31 = maxPreviews;
   v32 = v15;
   v33 = v17;
-  v20 = _NSExtensionItemsFromActivityItemValuesForExtensionItemDataRequestWithProcessingBlock(v6, v7, v27);
+  v20 = _NSExtensionItemsFromActivityItemValuesForExtensionItemDataRequestWithProcessingBlock(valuesCopy, requestCopy, v27);
   [(UISUIActivityExtensionItemData *)v19 setExtensionItems:v20];
   v21 = share_sheet_log();
   v22 = share_sheet_log();
-  v23 = os_signpost_id_make_with_pointer(v22, a1);
+  v23 = os_signpost_id_make_with_pointer(v22, self);
 
   if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {

@@ -1,10 +1,10 @@
 @interface CKDSerializeRecordModificationsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (BOOL)validateAgainstLiveContainer:(id)a3 error:(id *)a4;
-- (CKDSerializeRecordModificationsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (BOOL)validateAgainstLiveContainer:(id)container error:(id *)error;
+- (CKDSerializeRecordModificationsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_preflightRecords;
 - (void)_serialize;
 - (void)_setupTranslator;
@@ -12,19 +12,19 @@
 
 @implementation CKDSerializeRecordModificationsOperation
 
-- (CKDSerializeRecordModificationsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDSerializeRecordModificationsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = CKDSerializeRecordModificationsOperation;
-  v9 = [(CKDDatabaseOperation *)&v17 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v17 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordsToSave(v6, v7, v8);
+    v10 = objc_msgSend_recordsToSave(infoCopy, v7, v8);
     recordsToSave = v9->_recordsToSave;
     v9->_recordsToSave = v10;
 
-    v14 = objc_msgSend_recordIDsToDelete(v6, v12, v13);
+    v14 = objc_msgSend_recordIDsToDelete(infoCopy, v12, v13);
     recordIDsToDelete = v9->_recordIDsToDelete;
     v9->_recordIDsToDelete = v14;
   }
@@ -73,37 +73,37 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDSerializeRecordModificationsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_2785495E8[a3 - 2];
+    v5 = off_2785495E8[state - 2];
   }
 
   return v5;
 }
 
-- (BOOL)validateAgainstLiveContainer:(id)a3 error:(id *)a4
+- (BOOL)validateAgainstLiveContainer:(id)container error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  containerCopy = container;
   v24.receiver = self;
   v24.super_class = CKDSerializeRecordModificationsOperation;
-  if (![(CKDOperation *)&v24 validateAgainstLiveContainer:v6 error:a4])
+  if (![(CKDOperation *)&v24 validateAgainstLiveContainer:containerCopy error:error])
   {
     goto LABEL_9;
   }
 
-  v9 = objc_msgSend_entitlements(v6, v7, v8);
+  v9 = objc_msgSend_entitlements(containerCopy, v7, v8);
   hasAllowRealTimeOperationsEntitlement = objc_msgSend_hasAllowRealTimeOperationsEntitlement(v9, v10, v11);
 
   if ((hasAllowRealTimeOperationsEntitlement & 1) == 0)
@@ -123,13 +123,13 @@
       v26 = v23;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Operation %{public}@ is not allowed to run without an entitlement", buf, 0xCu);
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
@@ -138,32 +138,32 @@
     v15 = *MEMORY[0x277CBBF50];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    *a4 = objc_msgSend_errorWithDomain_code_format_(v14, v18, v15, 8, @"Operation %@ is not allowed to run without an entitlement", v17);
+    *error = objc_msgSend_errorWithDomain_code_format_(v14, v18, v15, 8, @"Operation %@ is not allowed to run without an entitlement", v17);
 
 LABEL_9:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_10;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_10:
 
   v19 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_serializeCompletionBlock(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_serializeCompletionBlock(self, v8, v9);
     v13 = v10;
-    if (v4)
+    if (errorCopy)
     {
-      (*(v10 + 16))(v10, 0, v4);
+      (*(v10 + 16))(v10, 0, errorCopy);
     }
 
     else
@@ -177,7 +177,7 @@ LABEL_10:
 
   v16.receiver = self;
   v16.super_class = CKDSerializeRecordModificationsOperation;
-  [(CKDOperation *)&v16 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v16 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)_preflightRecords
@@ -192,7 +192,7 @@ LABEL_10:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v37 = self;
+    selfCopy = self;
     v10 = objc_msgSend_recordsToSave(self, v8, v9);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v39, v44, 16);
     if (v12)
@@ -220,7 +220,7 @@ LABEL_10:
           if (v22)
           {
             v34 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBBF50], 12, @"CKDSerializeRecordModificationsOperation does not support records with asset values");
-            objc_msgSend_setError_(v37, v35, v34);
+            objc_msgSend_setError_(selfCopy, v35, v34);
 
             v26 = v10;
             goto LABEL_12;
@@ -240,11 +240,11 @@ LABEL_10:
       }
     }
 
-    v25 = objc_msgSend_stateTransitionGroup(v37, v23, v24);
+    v25 = objc_msgSend_stateTransitionGroup(selfCopy, v23, v24);
     dispatch_group_enter(v25);
 
     v26 = objc_opt_new();
-    v29 = objc_msgSend_recordsToSave(v37, v27, v28);
+    v29 = objc_msgSend_recordsToSave(selfCopy, v27, v28);
     objc_msgSend_setRecordsToSave_(v26, v30, v29);
 
     objc_msgSend_setShouldModifyRecordsInDatabase_(v26, v31, 0);
@@ -253,8 +253,8 @@ LABEL_10:
     v38[1] = 3221225472;
     v38[2] = sub_2251D4A18;
     v38[3] = &unk_278548B60;
-    v38[4] = v37;
-    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(v37, v33, v32, v26, v38);
+    v38[4] = selfCopy;
+    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(selfCopy, v33, v32, v26, v38);
 LABEL_12:
   }
 

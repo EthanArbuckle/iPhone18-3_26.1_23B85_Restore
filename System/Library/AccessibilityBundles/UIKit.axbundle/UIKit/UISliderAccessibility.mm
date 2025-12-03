@@ -1,11 +1,11 @@
 @interface UISliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)_accessibilityMaxScrubberPosition;
 - (CGPoint)_accessibilityMinScrubberPosition;
 - (CGPoint)accessibilityActivationPoint;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 - (double)_accessibilityMaxValue;
 - (double)_accessibilityMinValue;
 - (double)_accessibilityNumberValue;
@@ -15,25 +15,25 @@
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityAnnounceNewValue;
-- (void)_accessibilityBumpValue:(BOOL)a3;
-- (void)_accessibilitySetValue:(id)a3;
+- (void)_accessibilityBumpValue:(BOOL)value;
+- (void)_accessibilitySetValue:(id)value;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)sendActionsForControlEvents:(unint64_t)a3;
+- (void)sendActionsForControlEvents:(unint64_t)events;
 @end
 
 @implementation UISliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UISlider";
   [location[0] validateClass:? isKindOfClass:?];
   v6 = @"UIControl";
@@ -51,7 +51,7 @@
 - (CGPoint)accessibilityActivationPoint
 {
   v51 = *MEMORY[0x29EDCA608];
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
   v45 = 0uLL;
   v45 = *MEMORY[0x29EDB90B8];
@@ -68,7 +68,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v42 = [(UISliderAccessibility *)v47 safeValueForKey:@"_thumbViewNeue"];
+  v42 = [(UISliderAccessibility *)selfCopy safeValueForKey:@"_thumbViewNeue"];
   if (v42)
   {
     [v42 accessibilityActivationPoint];
@@ -82,7 +82,7 @@ LABEL_23:
 
   location = [MEMORY[0x29EDB8DE8] array];
   memset(__b, 0, sizeof(__b));
-  obj = [(UISliderAccessibility *)v47 safeArrayForKey:@"subviews"];
+  obj = [(UISliderAccessibility *)selfCopy safeArrayForKey:@"subviews"];
   v32 = [obj countByEnumeratingWithState:__b objects:v50 count:16];
   if (v32)
   {
@@ -100,11 +100,11 @@ LABEL_23:
       v39 = *(__b[1] + 8 * v29);
       v24 = location;
       v23 = v39;
-      v26 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+      defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
       v25 = [v23 _accessibilityLeafDescendantsWithOptions:?];
       [v24 addObjectsFromArray:?];
       MEMORY[0x29EDC9740](v25);
-      *&v6 = MEMORY[0x29EDC9740](v26).n128_u64[0];
+      *&v6 = MEMORY[0x29EDC9740](defaultVoiceOverOptions).n128_u64[0];
       ++v29;
       if (v27 + 1 >= v30)
       {
@@ -136,9 +136,9 @@ LABEL_23:
       }
 
       v37 = *(v36[1] + 8 * v19);
-      v15 = [v37 accessibilityIdentifier];
-      v16 = [v15 isEqualToString:@"AXSliderKnob"];
-      *&v7 = MEMORY[0x29EDC9740](v15).n128_u64[0];
+      accessibilityIdentifier = [v37 accessibilityIdentifier];
+      v16 = [accessibilityIdentifier isEqualToString:@"AXSliderKnob"];
+      *&v7 = MEMORY[0x29EDC9740](accessibilityIdentifier).n128_u64[0];
       if (v16)
       {
         break;
@@ -171,7 +171,7 @@ LABEL_19:
   *&v10 = MEMORY[0x29EDC9740](v21).n128_u64[0];
   if (!v35)
   {
-    v33.receiver = v47;
+    v33.receiver = selfCopy;
     v33.super_class = UISliderAccessibility;
     [(UISliderAccessibility *)&v33 accessibilityActivationPoint];
     *&v34 = v11;
@@ -204,15 +204,15 @@ LABEL_26:
 
 - (BOOL)isAccessibilityElement
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v6 = [(UISliderAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v6)
+  isAccessibilityUserDefinedElement = [(UISliderAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v5 = [(UISliderAccessibility *)v11 isAccessibilityUserDefinedElement];
-    v12 = [v5 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v5);
+    isAccessibilityUserDefinedElement2 = [(UISliderAccessibility *)selfCopy isAccessibilityUserDefinedElement];
+    v12 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
@@ -222,9 +222,9 @@ LABEL_26:
     v8 = __UIAccessibilityCastAsClass();
     v7 = MEMORY[0x29EDC9748](v8);
     objc_storeStrong(&v8, 0);
-    v4 = [v7 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v7 _accessibilityViewIsVisible];
     MEMORY[0x29EDC9740](v7);
-    return (v4 & 1) != 0;
+    return (_accessibilityViewIsVisible & 1) != 0;
   }
 
   return v12;
@@ -250,7 +250,7 @@ LABEL_26:
 
 - (id)accessibilityValue
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = [(UISliderAccessibility *)self accessibilityUserDefinedValue];
   if (v19[0])
@@ -261,17 +261,17 @@ LABEL_26:
 
   else
   {
-    v7 = [(UISliderAccessibility *)v20 safeValueForKey:@"minimumValue"];
+    v7 = [(UISliderAccessibility *)selfCopy safeValueForKey:@"minimumValue"];
     [v7 floatValue];
     v8 = v2;
     MEMORY[0x29EDC9740](v7);
     v17 = v8;
-    v9 = [(UISliderAccessibility *)v20 safeValueForKey:@"maximumValue"];
+    v9 = [(UISliderAccessibility *)selfCopy safeValueForKey:@"maximumValue"];
     [v9 floatValue];
     v10 = v3;
     MEMORY[0x29EDC9740](v9);
     v16 = v10;
-    v11 = [(UISliderAccessibility *)v20 safeValueForKey:@"value"];
+    v11 = [(UISliderAccessibility *)selfCopy safeValueForKey:@"value"];
     [v11 floatValue];
     v12 = v4;
     MEMORY[0x29EDC9740](v11);
@@ -315,102 +315,102 @@ LABEL_26:
   return result;
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UISliderAccessibility *)v4 setValue:location[0] forKey:@"value"];
+  objc_storeStrong(location, value);
+  [(UISliderAccessibility *)selfCopy setValue:location[0] forKey:@"value"];
   objc_storeStrong(location, 0);
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v9 = [(UISliderAccessibility *)self accessibilityUserDefinedTraits];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v9)
+  accessibilityUserDefinedTraits = [(UISliderAccessibility *)self accessibilityUserDefinedTraits];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedTraits).n128_u64[0];
+  if (accessibilityUserDefinedTraits)
   {
-    v8 = [(UISliderAccessibility *)v13 accessibilityUserDefinedTraits];
-    v14 = [v8 unsignedLongLongValue];
-    MEMORY[0x29EDC9740](v8);
+    accessibilityUserDefinedTraits2 = [(UISliderAccessibility *)selfCopy accessibilityUserDefinedTraits];
+    unsignedLongLongValue = [accessibilityUserDefinedTraits2 unsignedLongLongValue];
+    MEMORY[0x29EDC9740](accessibilityUserDefinedTraits2);
   }
 
   else
   {
-    v10.receiver = v13;
+    v10.receiver = selfCopy;
     v10.super_class = UISliderAccessibility;
     v11 = [(UISliderAccessibility *)&v10 accessibilityTraits]| *MEMORY[0x29EDC7F60];
-    v7 = [(UISliderAccessibility *)v13 accessibilityUserDefinedTraits];
-    *&v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-    if (v7)
+    accessibilityUserDefinedTraits3 = [(UISliderAccessibility *)selfCopy accessibilityUserDefinedTraits];
+    *&v3 = MEMORY[0x29EDC9740](accessibilityUserDefinedTraits3).n128_u64[0];
+    if (accessibilityUserDefinedTraits3)
     {
-      v6 = [(UISliderAccessibility *)v13 accessibilityUserDefinedTraits];
-      v4 = [v6 unsignedLongLongValue];
-      v11 |= v4;
-      MEMORY[0x29EDC9740](v6);
+      accessibilityUserDefinedTraits4 = [(UISliderAccessibility *)selfCopy accessibilityUserDefinedTraits];
+      unsignedLongLongValue2 = [accessibilityUserDefinedTraits4 unsignedLongLongValue];
+      v11 |= unsignedLongLongValue2;
+      MEMORY[0x29EDC9740](accessibilityUserDefinedTraits4);
     }
 
     return v11;
   }
 
-  return v14;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, touch);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7.receiver = v11;
+  objc_storeStrong(&v9, event);
+  v7.receiver = selfCopy;
   v7.super_class = UISliderAccessibility;
   v8 = [(UISliderAccessibility *)&v7 continueTrackingWithTouch:location[0] withEvent:v9];
-  [(UISliderAccessibility *)v11 _accessibilityAnnounceNewValue];
+  [(UISliderAccessibility *)selfCopy _accessibilityAnnounceNewValue];
   v6 = v8;
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v6 & 1;
 }
 
-- (void)sendActionsForControlEvents:(unint64_t)a3
+- (void)sendActionsForControlEvents:(unint64_t)events
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  eventsCopy = events;
   v3.receiver = self;
   v3.super_class = UISliderAccessibility;
-  [(UISliderAccessibility *)&v3 sendActionsForControlEvents:a3];
-  if (v4 == 4)
+  [(UISliderAccessibility *)&v3 sendActionsForControlEvents:events];
+  if (eventsCopy == 4)
   {
-    [(UISliderAccessibility *)v6 _accessibilityAnnounceNewValue];
+    [(UISliderAccessibility *)selfCopy _accessibilityAnnounceNewValue];
   }
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, touch);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7.receiver = v10;
+  objc_storeStrong(&v8, event);
+  v7.receiver = selfCopy;
   v7.super_class = UISliderAccessibility;
   [(UISliderAccessibility *)&v7 endTrackingWithTouch:location[0] withEvent:v8];
   notification = *MEMORY[0x29EDC7EA8];
-  v6 = [(UISliderAccessibility *)v10 _accessibilityAXAttributedValue];
-  UIAccessibilityPostNotification(notification, v6);
-  MEMORY[0x29EDC9740](v6);
+  _accessibilityAXAttributedValue = [(UISliderAccessibility *)selfCopy _accessibilityAXAttributedValue];
+  UIAccessibilityPostNotification(notification, _accessibilityAXAttributedValue);
+  MEMORY[0x29EDC9740](_accessibilityAXAttributedValue);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
   [(UISliderAccessibility *)self safeCGFloatForKey:@"minimumValue"];
   v10 = v3;
@@ -418,7 +418,7 @@ LABEL_26:
   v9 = v4;
   [(UISliderAccessibility *)self safeCGFloatForKey:@"value"];
   v7 = (v9 - v10) / 10.0;
-  if (a3)
+  if (amount)
   {
     v8 = v5 + v7;
   }
@@ -456,21 +456,21 @@ LABEL_26:
   objc_storeStrong(argument, 0);
 }
 
-- (void)_accessibilityBumpValue:(BOOL)a3
+- (void)_accessibilityBumpValue:(BOOL)value
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  [(UISliderAccessibility *)self _accessibilityIncreaseAmount:a3];
+  valueCopy = value;
+  [(UISliderAccessibility *)self _accessibilityIncreaseAmount:value];
   v9[1] = v3;
   *&v3 = *&v3;
-  [(UISliderAccessibility *)v12 setValue:0 animated:*&v3];
+  [(UISliderAccessibility *)selfCopy setValue:0 animated:*&v3];
   v4 = MEMORY[0x29EDCA5F8];
   v5 = -1073741824;
   v6 = 0;
   v7 = __49__UISliderAccessibility__accessibilityBumpValue___block_invoke;
   v8 = &unk_29F30C7C8;
-  v9[0] = MEMORY[0x29EDC9748](v12);
+  v9[0] = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   objc_storeStrong(v9, 0);
 }
@@ -505,9 +505,9 @@ LABEL_26:
 - (void)accessibilityIncrement
 {
   v3 = [(UISliderAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  if (v4)
+  if (bOOLValue)
   {
     [(UISliderAccessibility *)self _accessibilityBumpValue:1, v2];
   }
@@ -516,9 +516,9 @@ LABEL_26:
 - (void)accessibilityDecrement
 {
   v3 = [(UISliderAccessibility *)self safeValueForKey:@"isUserInteractionEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  if (v4)
+  if (bOOLValue)
   {
     [(UISliderAccessibility *)self _accessibilityBumpValue:0, v2];
   }
@@ -526,7 +526,7 @@ LABEL_26:
 
 - (id)accessibilityPath
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20 = AXRequestingClient();
   if (v20 == 3 || v20 == 4)
@@ -541,7 +541,7 @@ LABEL_26:
       goto LABEL_16;
     }
 
-    v13 = [(UIView *)v22 safeUIViewForKey:@"_thumbView"];
+    v13 = [(UIView *)selfCopy safeUIViewForKey:@"_thumbView"];
     v17 = 0;
     if (v13)
     {
@@ -550,7 +550,7 @@ LABEL_26:
 
     else
     {
-      v18 = [(UIView *)v22 safeUIViewForKey:@"_thumbViewNeue"];
+      v18 = [(UIView *)selfCopy safeUIViewForKey:@"_thumbViewNeue"];
       v17 = 1;
       v2 = MEMORY[0x29EDC9748](v18);
     }
@@ -563,24 +563,24 @@ LABEL_26:
 
     if ([v19 _accessibilityViewIsVisible])
     {
-      v16 = [v19 accessibilityPath];
-      if (!v16)
+      accessibilityPath = [v19 accessibilityPath];
+      if (!accessibilityPath)
       {
         [v19 bounds];
-        [v19 convertRect:v22 toView:{v3, v4, v5, v6}];
+        [v19 convertRect:selfCopy toView:{v3, v4, v5, v6}];
         CGRectMake_2();
         AX_CGRectGetCenter();
         UIRectCenteredAboutPoint();
         v15 = v7;
         v12 = MEMORY[0x29EDC7948];
         AX_CGRectGetCenter();
-        v16 = [v12 bezierPathWithArcCenter:1 radius:v8 startAngle:v9 endAngle:v15 / 2.0 + 3.0 clockwise:{0.0, 6.28318531}];
+        accessibilityPath = [v12 bezierPathWithArcCenter:1 radius:v8 startAngle:v9 endAngle:v15 / 2.0 + 3.0 clockwise:{0.0, 6.28318531}];
         MEMORY[0x29EDC9740](0);
       }
 
-      v23 = UIAccessibilityConvertPathToScreenCoordinates(v16, v22);
+      v23 = UIAccessibilityConvertPathToScreenCoordinates(accessibilityPath, selfCopy);
       v14 = 1;
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&accessibilityPath, 0);
     }
 
     else
@@ -603,12 +603,12 @@ LABEL_16:
 
 - (void)layoutSubviews
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = UISliderAccessibility;
   [(UISliderAccessibility *)&v6 layoutSubviews];
-  if (([(UISliderAccessibility *)v8 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  if (([(UISliderAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     v2 = MEMORY[0x29EDC7A98];
     v5 = 0;
@@ -623,7 +623,7 @@ LABEL_16:
 
 - (id)_containerViewForLegacyFocusRing
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v6 = [(UISliderAccessibility *)self safeUIViewForKey:@"_thumbView"];
   v12 = 0;
@@ -634,7 +634,7 @@ LABEL_16:
 
   else
   {
-    v13 = [(UISliderAccessibility *)v15 safeUIViewForKey:@"_thumbViewNeue"];
+    v13 = [(UISliderAccessibility *)selfCopy safeUIViewForKey:@"_thumbViewNeue"];
     v12 = 1;
     v2 = MEMORY[0x29EDC9748](v13);
   }

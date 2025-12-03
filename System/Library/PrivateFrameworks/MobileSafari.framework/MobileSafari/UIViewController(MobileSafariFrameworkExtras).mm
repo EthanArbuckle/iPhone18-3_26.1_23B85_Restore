@@ -17,36 +17,36 @@
 
 - (void)safari_updateApplicationBackgroundStyle
 {
-  v2 = [a1 viewIfLoaded];
-  v11 = [v2 window];
+  viewIfLoaded = [self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v3 = [v11 windowScene];
-  v4 = [v11 rootViewController];
-  v5 = [v4 safari_wantsTransparentApplicationBackground];
+  windowScene = [window windowScene];
+  rootViewController = [window rootViewController];
+  safari_wantsTransparentApplicationBackground = [rootViewController safari_wantsTransparentApplicationBackground];
 
-  if (!v5)
+  if (!safari_wantsTransparentApplicationBackground)
   {
-    [v11 setBackgroundColor:0];
+    [window setBackgroundColor:0];
     goto LABEL_5;
   }
 
   if (AXAssistiveAccessEnabled())
   {
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v11 setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [window setBackgroundColor:systemBackgroundColor];
 
 LABEL_5:
     v7 = 0;
     goto LABEL_9;
   }
 
-  v8 = [a1 traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  traitCollection = [self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [v11 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [window setBackgroundColor:clearColor];
 
-  if (v9 == 2)
+  if (userInterfaceStyle == 2)
   {
     v7 = 4;
   }
@@ -57,16 +57,16 @@ LABEL_5:
   }
 
 LABEL_9:
-  [v3 _setBackgroundStyle:v7];
+  [windowScene _setBackgroundStyle:v7];
 }
 
 - (id)safari_sheetPresentationController
 {
-  v1 = [a1 presentationController];
+  presentationController = [self presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = presentationController;
   }
 
   else
@@ -81,12 +81,12 @@ LABEL_9:
 {
   v2 = objc_opt_class();
 
-  return [a1 safari_isEventuallyPresentedByViewControllerClass:v2];
+  return [self safari_isEventuallyPresentedByViewControllerClass:v2];
 }
 
 - (uint64_t)safari_isEventuallyPresentedByViewControllerClass:()MobileSafariFrameworkExtras
 {
-  v5 = [a1 presentingViewController];
+  presentingViewController = [self presentingViewController];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -94,64 +94,64 @@ LABEL_9:
     return 1;
   }
 
-  v8 = [a1 presentingViewController];
+  presentingViewController2 = [self presentingViewController];
 
-  if (!v8)
+  if (!presentingViewController2)
   {
     return 0;
   }
 
-  v9 = [a1 presentingViewController];
-  v10 = [v9 safari_isEventuallyPresentedByViewControllerClass:a3];
+  presentingViewController3 = [self presentingViewController];
+  v10 = [presentingViewController3 safari_isEventuallyPresentedByViewControllerClass:a3];
 
   return v10;
 }
 
 - (void)safari_dismissPresentedAlert
 {
-  v1 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v1 dismissViewControllerAnimated:0 completion:0];
+    [presentedViewController dismissViewControllerAnimated:0 completion:0];
   }
 }
 
 - (id)_sf_viewControllerToPresentFrom
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
-  if (v2)
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
+  if (presentedViewController)
   {
     while (1)
     {
-      v3 = v2;
-      if ([v2 isBeingDismissed])
+      v3 = presentedViewController;
+      if ([presentedViewController isBeingDismissed])
       {
         break;
       }
 
-      v2 = [v3 presentedViewController];
-      v1 = v3;
-      if (!v2)
+      presentedViewController = [v3 presentedViewController];
+      selfCopy = v3;
+      if (!presentedViewController)
       {
-        v1 = v3;
+        selfCopy = v3;
         v3 = 0;
         break;
       }
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)_sf_bottomUnsafeAreaFrame
 {
-  v1 = [a1 viewIfLoaded];
-  v2 = v1;
-  if (v1)
+  viewIfLoaded = [self viewIfLoaded];
+  v2 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v1 _sf_bottomUnsafeAreaFrame];
+    [viewIfLoaded _sf_bottomUnsafeAreaFrame];
     v4 = v3;
   }
 
@@ -165,11 +165,11 @@ LABEL_9:
 
 - (double)_sf_bottomUnsafeAreaFrameForToolbar
 {
-  v1 = [a1 viewIfLoaded];
-  v2 = v1;
-  if (v1)
+  viewIfLoaded = [self viewIfLoaded];
+  v2 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v1 _sf_bottomUnsafeAreaFrameForToolbar];
+    [viewIfLoaded _sf_bottomUnsafeAreaFrameForToolbar];
     v4 = v3;
   }
 
@@ -185,9 +185,9 @@ LABEL_9:
 {
   v14 = a3;
   v8 = a5;
-  v9 = [a1 _sf_viewControllerToPresentFrom];
-  v10 = v9;
-  if (v9 == a1)
+  _sf_viewControllerToPresentFrom = [self _sf_viewControllerToPresentFrom];
+  v10 = _sf_viewControllerToPresentFrom;
+  if (_sf_viewControllerToPresentFrom == self)
   {
     v11 = objc_opt_class();
     v12 = [v11 instanceMethodForSelector:sel_presentViewController_animated_completion_];
@@ -198,12 +198,12 @@ LABEL_9:
     }
 
     while (v13 == v12);
-    v13(a1, sel_presentViewController_animated_completion_, v14, a4, v8);
+    v13(self, sel_presentViewController_animated_completion_, v14, a4, v8);
   }
 
   else
   {
-    [v9 presentViewController:v14 animated:a4 completion:v8];
+    [_sf_viewControllerToPresentFrom presentViewController:v14 animated:a4 completion:v8];
   }
 }
 
@@ -212,17 +212,17 @@ LABEL_9:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 transitionCoordinator];
+    transitionCoordinator = [self transitionCoordinator];
 
-    if (v5)
+    if (transitionCoordinator)
     {
-      v6 = [a1 transitionCoordinator];
+      transitionCoordinator2 = [self transitionCoordinator];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __89__UIViewController_MobileSafariFrameworkExtras___sf_animateAlongsideTransitionOrPerform___block_invoke;
       v7[3] = &unk_1E721D838;
       v8 = v4;
-      [v6 animateAlongsideTransition:v7 completion:0];
+      [transitionCoordinator2 animateAlongsideTransition:v7 completion:0];
     }
 
     else
@@ -234,13 +234,13 @@ LABEL_9:
 
 - (uint64_t)_sf_canEditFields
 {
-  if ([a1 _isInPopoverPresentation])
+  if ([self _isInPopoverPresentation])
   {
     return 1;
   }
 
-  v3 = [a1 view];
-  [v3 bounds];
+  view = [self view];
+  [view bounds];
   v2 = CGRectGetHeight(v5) > 320.0;
 
   return v2;
@@ -249,11 +249,11 @@ LABEL_9:
 - (uint64_t)_sf_isPresentationControllerDismissalTransitionDidEndNotification:()MobileSafariFrameworkExtras
 {
   v5 = a3;
-  v6 = [v5 object];
-  if (v6 != a1)
+  object = [v5 object];
+  if (object != self)
   {
-    v3 = [a1 navigationController];
-    if (v6 != v3)
+    navigationController = [self navigationController];
+    if (object != navigationController)
     {
       v7 = 0;
 LABEL_5:
@@ -262,10 +262,10 @@ LABEL_5:
     }
   }
 
-  v8 = [v5 userInfo];
-  v7 = [v8 safari_BOOLForKey:*MEMORY[0x1E69DE2C0]];
+  userInfo = [v5 userInfo];
+  v7 = [userInfo safari_BOOLForKey:*MEMORY[0x1E69DE2C0]];
 
-  if (v6 != a1)
+  if (object != self)
   {
     goto LABEL_5;
   }

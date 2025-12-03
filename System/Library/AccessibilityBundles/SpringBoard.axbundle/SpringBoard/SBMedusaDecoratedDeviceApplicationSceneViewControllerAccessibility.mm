@@ -1,42 +1,42 @@
 @interface SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility)initWithDeviceApplicationSceneHandle:(id)a3 layoutRole:(int64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility)initWithDeviceApplicationSceneHandle:(id)handle layoutRole:(int64_t)role;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetUpAffordanceViewController;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_deviceApplicationSceneHandle" withType:"SBDeviceApplicationSceneHandle"];
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceMethod:@"initWithDeviceApplicationSceneHandle:layoutRole:" withFullSignature:{"@", "@", "q", 0}];
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_topAffordanceViewController" withType:"SBTopAffordanceViewController"];
-  [v3 validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDeviceApplicationSceneHandle"];
-  [v3 validateClass:@"SBDeviceApplicationSceneHandle" isKindOfClass:@"SBApplicationSceneHandle"];
-  [v3 validateClass:@"SBApplicationSceneHandle" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication"];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_deviceApplicationSceneHandle" withType:"SBDeviceApplicationSceneHandle"];
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceMethod:@"initWithDeviceApplicationSceneHandle:layoutRole:" withFullSignature:{"@", "@", "q", 0}];
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_topAffordanceViewController" withType:"SBTopAffordanceViewController"];
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneHandle"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneHandle" isKindOfClass:@"SBApplicationSceneHandle"];
+  [validationsCopy validateClass:@"SBApplicationSceneHandle" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication"];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
-- (SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility)initWithDeviceApplicationSceneHandle:(id)a3 layoutRole:(int64_t)a4
+- (SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility)initWithDeviceApplicationSceneHandle:(id)handle layoutRole:(int64_t)role
 {
   v6.receiver = self;
   v6.super_class = SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility;
-  v4 = [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)&v6 initWithDeviceApplicationSceneHandle:a3 layoutRole:a4];
+  v4 = [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)&v6 initWithDeviceApplicationSceneHandle:handle layoutRole:role];
   [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility;
-  [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)&v4 viewDidAppear:a3];
+  [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)&v4 viewDidAppear:appear];
   [(SBMedusaDecoratedDeviceApplicationSceneViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

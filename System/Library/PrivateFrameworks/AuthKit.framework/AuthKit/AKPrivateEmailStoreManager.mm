@@ -1,20 +1,20 @@
 @interface AKPrivateEmailStoreManager
 + (id)sharedInstance;
 - (AKPrivateEmailStoreManager)init;
-- (AKPrivateEmailStoreManager)initWithDatabasePath:(id)a3;
-- (AKPrivateEmailStoreManager)initWithExecutor:(id)a3;
-- (AKPrivateEmailStoreManager)initWithPath:(id)a3;
-- (BOOL)commitChangesToCacheWithInformation:(id)a3 error:(id *)a4;
-- (BOOL)removePrivateEmailForContext:(id)a3 error:(id *)a4;
-- (BOOL)setCurrentEmailListVersion:(id)a3 error:(id *)a4;
-- (BOOL)setPrivateEmail:(id)a3 keyAlreadyHashed:(BOOL)a4 error:(id *)a5;
-- (BOOL)setProtocolVersion:(int)a3 error:(id *)a4;
-- (id)_hashKeyIfNecessary:(id)a3;
+- (AKPrivateEmailStoreManager)initWithDatabasePath:(id)path;
+- (AKPrivateEmailStoreManager)initWithExecutor:(id)executor;
+- (AKPrivateEmailStoreManager)initWithPath:(id)path;
+- (BOOL)commitChangesToCacheWithInformation:(id)information error:(id *)error;
+- (BOOL)removePrivateEmailForContext:(id)context error:(id *)error;
+- (BOOL)setCurrentEmailListVersion:(id)version error:(id *)error;
+- (BOOL)setPrivateEmail:(id)email keyAlreadyHashed:(BOOL)hashed error:(id *)error;
+- (BOOL)setProtocolVersion:(int)version error:(id *)error;
+- (id)_hashKeyIfNecessary:(id)necessary;
 - (id)currentEmailListVersion;
-- (id)emailForContext:(id)a3 error:(id *)a4;
-- (id)fetchAllPrivateEmailsWithError:(id *)a3;
+- (id)emailForContext:(id)context error:(id *)error;
+- (id)fetchAllPrivateEmailsWithError:(id *)error;
 - (int)currentProtocolVersion;
-- (void)clearDatabase:(id *)a3;
+- (void)clearDatabase:(id *)database;
 @end
 
 @implementation AKPrivateEmailStoreManager
@@ -44,58 +44,58 @@
   return v3;
 }
 
-- (AKPrivateEmailStoreManager)initWithDatabasePath:(id)a3
+- (AKPrivateEmailStoreManager)initWithDatabasePath:(id)path
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(AKPrivateEmailStoreManager *)v3 initWithPath:location[0]];
-  v5 = _objc_retain(v7);
+  objc_storeStrong(location, path);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKPrivateEmailStoreManager *)v3 initWithPath:location[0]];
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKPrivateEmailStoreManager)initWithExecutor:(id)a3
+- (AKPrivateEmailStoreManager)initWithExecutor:(id)executor
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, executor);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKPrivateEmailStoreManager;
   v6 = [(AKPrivateEmailStoreManager *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_executor, location[0]);
+    objc_storeStrong(&selfCopy->_executor, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKPrivateEmailStoreManager)initWithPath:(id)a3
+- (AKPrivateEmailStoreManager)initWithPath:(id)path
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v15;
-  v15 = 0;
+  objc_storeStrong(location, path);
+  v3 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v3;
   v13.super_class = AKPrivateEmailStoreManager;
   v11 = [(AKPrivateEmailStoreManager *)&v13 init];
-  v15 = v11;
-  objc_storeStrong(&v15, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
     v12 = objc_alloc_init(AKPrivateEmailStoreMigrator);
@@ -103,48 +103,48 @@
     v10 = NSHomeDirectory();
     v9 = [(NSString *)v10 stringByAppendingString:location[0]];
     v4 = [AKSQLiteExecutor initWithDatabasePath:v8 migrationController:"initWithDatabasePath:migrationController:"];
-    executor = v15->_executor;
-    v15->_executor = v4;
+    executor = selfCopy->_executor;
+    selfCopy->_executor = v4;
     _objc_release(executor);
     _objc_release(v9);
     _objc_release(v10);
     objc_storeStrong(&v12, 0);
   }
 
-  v7 = _objc_retain(v15);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)clearDatabase:(id *)a3
+- (void)clearDatabase:(id *)database
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  databaseCopy = database;
   v7 = 0;
   executor = self->_executor;
   obj = 0;
   [(AKSQLiteExecutor *)executor wipeDatabase:&obj];
   objc_storeStrong(&v7, obj);
-  if (v8)
+  if (databaseCopy)
   {
     v5 = v7;
     v4 = v7;
-    *v8 = v5;
+    *databaseCopy = v5;
   }
 
   objc_storeStrong(&v7, 0);
 }
 
-- (BOOL)setPrivateEmail:(id)a3 keyAlreadyHashed:(BOOL)a4 error:(id *)a5
+- (BOOL)setPrivateEmail:(id)email keyAlreadyHashed:(BOOL)hashed error:(id *)error
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v49 = a4;
-  v48 = a5;
+  objc_storeStrong(location, email);
+  hashedCopy = hashed;
+  errorCopy = error;
   v43 = 0;
   v44 = &v43;
   v45 = 0x20000000;
@@ -164,14 +164,14 @@
     v18 = 1;
     if (v17)
     {
-      v35 = [location[0] privateEmailAddress];
+      privateEmailAddress = [location[0] privateEmailAddress];
       v34 = 1;
-      v18 = v35 == 0;
+      v18 = privateEmailAddress == 0;
     }
 
     if (v34)
     {
-      _objc_release(v35);
+      _objc_release(privateEmailAddress);
     }
 
     _objc_release(v17);
@@ -186,26 +186,26 @@
     else
     {
       v33 = [location[0] key];
-      if (!v49)
+      if (!hashedCopy)
       {
-        v7 = [(AKPrivateEmailStoreManager *)v51 _hashKeyIfNecessary:v33];
+        v7 = [(AKPrivateEmailStoreManager *)selfCopy _hashKeyIfNecessary:v33];
         v8 = v33;
         v33 = v7;
         _objc_release(v8);
       }
 
       v52[0] = v33;
-      v16 = [location[0] privateEmailAddress];
-      v52[1] = v16;
+      privateEmailAddress2 = [location[0] privateEmailAddress];
+      v52[1] = privateEmailAddress2;
       v32 = [NSArray arrayWithObjects:v52 count:2];
-      _objc_release(v16);
+      _objc_release(privateEmailAddress2);
       v31 = _objc_retain(@"INSERT OR REPLACE INTO emails (client_key, email) VALUES (?, ?)");
       v30 = [AKSQLiteQuery queryWithString:v31];
       v15 = (v37 + 5);
       v29 = v37[5];
       [v30 bindParameters:v32 error:&v29];
       objc_storeStrong(v15, v29);
-      objc_initWeak(&from, v51);
+      objc_initWeak(&from, selfCopy);
       v21 = _NSConcreteStackBlock;
       v22 = -1073741824;
       v23 = 0;
@@ -234,11 +234,11 @@
     _objc_release(v10);
   }
 
-  if (v48)
+  if (errorCopy)
   {
     v14 = v37[5];
     v11 = v14;
-    *v48 = v14;
+    *errorCopy = v14;
   }
 
   v13 = *(v44 + 24);
@@ -249,13 +249,13 @@
   return v13 & 1;
 }
 
-- (BOOL)removePrivateEmailForContext:(id)a3 error:(id *)a4
+- (BOOL)removePrivateEmailForContext:(id)context error:(id *)error
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v38 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v33 = 0;
   v34 = &v33;
   v35 = 0x20000000;
@@ -273,7 +273,7 @@
   {
     if (![location[0] keyAndBundleIdAreHashed])
     {
-      v4 = [(AKPrivateEmailStoreManager *)v40 _hashKeyIfNecessary:v25];
+      v4 = [(AKPrivateEmailStoreManager *)selfCopy _hashKeyIfNecessary:v25];
       v5 = v25;
       v25 = v4;
       _objc_release(v5);
@@ -285,7 +285,7 @@
     v22 = v27[5];
     [v23 bindParameter:v25 error:&v22];
     objc_storeStrong(v12, v22);
-    objc_initWeak(&v21, v40);
+    objc_initWeak(&v21, selfCopy);
     v14 = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
@@ -311,11 +311,11 @@
     _objc_release(v7);
   }
 
-  if (v38)
+  if (errorCopy)
   {
     v11 = v27[5];
     v8 = v11;
-    *v38 = v11;
+    *errorCopy = v11;
   }
 
   v10 = *(v34 + 24);
@@ -327,13 +327,13 @@
   return v10 & 1;
 }
 
-- (id)emailForContext:(id)a3 error:(id *)a4
+- (id)emailForContext:(id)context error:(id *)error
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v55 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v54 = 0;
   v52 = 0;
   v17 = 1;
@@ -353,7 +353,7 @@
   {
     v15 = [NSError errorWithDomain:AKPrivateEmailErrorDomain code:-6002 userInfo:0];
     v4 = v15;
-    *v55 = v15;
+    *errorCopy = v15;
     v58 = _objc_retain(v54);
     v51 = 1;
   }
@@ -365,7 +365,7 @@
     _objc_release(v14);
     if (![location[0] keyAndBundleIdAreHashed])
     {
-      v5 = [(AKPrivateEmailStoreManager *)v57 _hashKeyIfNecessary:v50];
+      v5 = [(AKPrivateEmailStoreManager *)selfCopy _hashKeyIfNecessary:v50];
       v6 = v50;
       v50 = v5;
       _objc_release(v6);
@@ -398,7 +398,7 @@
     v31 = &unk_10031F288;
     v32 = &v36;
     [v34 setRowHandler:?];
-    objc_initWeak(v27, v57);
+    objc_initWeak(v27, selfCopy);
     v20 = _NSConcreteStackBlock;
     v21 = -1073741824;
     v22 = 0;
@@ -432,7 +432,7 @@
       }
 
       v8 = v11;
-      *v55 = v11;
+      *errorCopy = v11;
       if (v18)
       {
         _objc_release(v19);
@@ -460,14 +460,14 @@
   return v9;
 }
 
-- (id)_hashKeyIfNecessary:(id)a3
+- (id)_hashKeyIfNecessary:(id)necessary
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(AKPrivateEmailStoreManager *)v12 currentProtocolVersion];
-  if (v10 < AKPrivateEmailProtocolVersion2)
+  objc_storeStrong(location, necessary);
+  currentProtocolVersion = [(AKPrivateEmailStoreManager *)selfCopy currentProtocolVersion];
+  if (currentProtocolVersion < AKPrivateEmailProtocolVersion2)
   {
     v13 = _objc_retain(location[0]);
   }
@@ -496,7 +496,7 @@
 
 - (id)currentEmailListVersion
 {
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
   v30[0] = [AKSQLiteQuery queryWithString:@"SELECT privateEmailListVersion FROM version"];
   v24[0] = 0;
@@ -520,7 +520,7 @@
   v15 = &unk_10031F288;
   v16 = &v17;
   [v30[0] setRowHandler:?];
-  objc_initWeak(location, v31);
+  objc_initWeak(location, selfCopy);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -543,13 +543,13 @@
   return v3;
 }
 
-- (BOOL)setCurrentEmailListVersion:(id)a3 error:(id *)a4
+- (BOOL)setCurrentEmailListVersion:(id)version error:(id *)error
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = a4;
+  objc_storeStrong(location, version);
+  errorCopy = error;
   v30 = 0;
   v31 = &v30;
   v32 = 0x20000000;
@@ -570,7 +570,7 @@
     v20 = v24[5];
     [v21 bindParameter:location[0] error:&v20];
     objc_storeStrong(v10, v20);
-    objc_initWeak(&v19, v37);
+    objc_initWeak(&v19, selfCopy);
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
@@ -596,11 +596,11 @@
     _objc_release(v5);
   }
 
-  if (v35)
+  if (errorCopy)
   {
     v9 = v24[5];
     v6 = v9;
-    *v35 = v9;
+    *errorCopy = v9;
   }
 
   v8 = *(v31 + 24);
@@ -611,23 +611,23 @@
   return v8 & 1;
 }
 
-- (BOOL)commitChangesToCacheWithInformation:(id)a3 error:(id *)a4
+- (BOOL)commitChangesToCacheWithInformation:(id)information error:(id *)error
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v68 = a4;
+  objc_storeStrong(location, information);
+  errorCopy = error;
   v67 = 0;
   v66 = 1;
-  v4 = [location[0] privateEmailListVersion];
-  v39 = v4 != 0;
-  _objc_release(v4);
+  privateEmailListVersion = [location[0] privateEmailListVersion];
+  v39 = privateEmailListVersion != 0;
+  _objc_release(privateEmailListVersion);
   v65 = v39;
   if (v39)
   {
-    v5 = [location[0] protocolVersion];
-    v64 = v5 >= AKPrivateEmailProtocolVersion2;
+    protocolVersion = [location[0] protocolVersion];
+    v64 = protocolVersion >= AKPrivateEmailProtocolVersion2;
     memset(__b, 0, sizeof(__b));
     obj = [location[0] addedPrivateEmails];
     v37 = [obj countByEnumeratingWithState:__b objects:v79 count:16];
@@ -658,7 +658,7 @@
         objc_storeStrong(&v61, 0);
         objc_storeStrong(&v67, 0);
         v59 = v67;
-        [(AKPrivateEmailStoreManager *)v70 setPrivateEmail:v63 keyAlreadyHashed:v64 error:&v59];
+        [(AKPrivateEmailStoreManager *)selfCopy setPrivateEmail:v63 keyAlreadyHashed:v64 error:&v59];
         objc_storeStrong(&v67, v59);
         if (v67)
         {
@@ -697,8 +697,8 @@
     if (v66)
     {
       memset(v54, 0, sizeof(v54));
-      v25 = [location[0] removedPrivateEmails];
-      v26 = [v25 countByEnumeratingWithState:v54 objects:v76 count:16];
+      removedPrivateEmails = [location[0] removedPrivateEmails];
+      v26 = [removedPrivateEmails countByEnumeratingWithState:v54 objects:v76 count:16];
       if (v26)
       {
         v22 = *v54[2];
@@ -709,7 +709,7 @@
           v21 = v23;
           if (*v54[2] != v22)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(removedPrivateEmails);
           }
 
           v55 = *(v54[1] + 8 * v23);
@@ -728,13 +728,13 @@
           objc_storeStrong(&v67, 0);
           v16 = [AKPrivateEmailContext alloc];
           v18 = [v55 key];
-          v17 = [v55 clientAppBundleId];
+          clientAppBundleId = [v55 clientAppBundleId];
           v50 = [v16 initWithKey:v18 altDSID:&stru_100330538 clientAppBundleId:?];
-          _objc_release(v17);
+          _objc_release(clientAppBundleId);
           _objc_release(v18);
           [v50 setKeyAndBundleIdAreHashed:v64];
           v49 = v67;
-          [(AKPrivateEmailStoreManager *)v70 removePrivateEmailForContext:v50 error:&v49];
+          [(AKPrivateEmailStoreManager *)selfCopy removePrivateEmailForContext:v50 error:&v49];
           objc_storeStrong(&v67, v49);
           if (v67)
           {
@@ -757,7 +757,7 @@
           if (v21 + 1 >= v24)
           {
             v23 = 0;
-            v24 = [v25 countByEnumeratingWithState:v54 objects:v76 count:16];
+            v24 = [removedPrivateEmails countByEnumeratingWithState:v54 objects:v76 count:16];
             if (!v24)
             {
               break;
@@ -766,18 +766,18 @@
         }
       }
 
-      _objc_release(v25);
+      _objc_release(removedPrivateEmails);
     }
 
     if (v66)
     {
       objc_storeStrong(&v67, 0);
-      v13 = v70;
-      v14 = [location[0] privateEmailListVersion];
+      v13 = selfCopy;
+      privateEmailListVersion2 = [location[0] privateEmailListVersion];
       v46 = v67;
       [AKPrivateEmailStoreManager setCurrentEmailListVersion:v13 error:"setCurrentEmailListVersion:error:"];
       objc_storeStrong(&v67, v46);
-      _objc_release(v14);
+      _objc_release(privateEmailListVersion2);
       if (v67)
       {
         v66 = 0;
@@ -795,14 +795,14 @@
 
     if (v66)
     {
-      v6 = [location[0] protocolVersion];
-      if (v6 > AKPrivateEmailInitialProtocolVersion)
+      protocolVersion2 = [location[0] protocolVersion];
+      if (protocolVersion2 > AKPrivateEmailInitialProtocolVersion)
       {
         objc_storeStrong(&v67, 0);
-        v12 = v70;
-        v7 = [location[0] protocolVersion];
+        v12 = selfCopy;
+        protocolVersion3 = [location[0] protocolVersion];
         v43 = v67;
-        [(AKPrivateEmailStoreManager *)v12 setProtocolVersion:v7 error:&v43];
+        [(AKPrivateEmailStoreManager *)v12 setProtocolVersion:protocolVersion3 error:&v43];
         objc_storeStrong(&v67, v43);
         if (v67)
         {
@@ -834,11 +834,11 @@
     v66 = 0;
   }
 
-  if (v68)
+  if (errorCopy)
   {
     v11 = v67;
     v8 = v67;
-    *v68 = v11;
+    *errorCopy = v11;
   }
 
   v10 = v66;
@@ -849,7 +849,7 @@
 
 - (int)currentProtocolVersion
 {
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
   v30[0] = [AKSQLiteQuery queryWithString:@"SELECT protocol_version FROM version"];
   v24[0] = 0;
@@ -873,7 +873,7 @@
   v15 = &unk_10031F288;
   v16 = &v17;
   [v30[0] setRowHandler:?];
-  objc_initWeak(location, v31);
+  objc_initWeak(location, selfCopy);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -883,13 +883,13 @@
   v9[0] = _objc_retain(v30[0]);
   v9[1] = v24;
   [AKSQLiteExecutor performBlockAndWait:&v4];
-  v3 = AKPrivateEmailInitialProtocolVersion;
+  intValue = AKPrivateEmailInitialProtocolVersion;
   if (v18[5])
   {
-    v3 = [v18[5] intValue];
-    if (v3 < AKPrivateEmailInitialProtocolVersion)
+    intValue = [v18[5] intValue];
+    if (intValue < AKPrivateEmailInitialProtocolVersion)
     {
-      v3 = AKPrivateEmailInitialProtocolVersion;
+      intValue = AKPrivateEmailInitialProtocolVersion;
     }
   }
 
@@ -901,15 +901,15 @@
   _Block_object_dispose(v24, 8);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(v30, 0);
-  return v3;
+  return intValue;
 }
 
-- (BOOL)setProtocolVersion:(int)a3 error:(id *)a4
+- (BOOL)setProtocolVersion:(int)version error:(id *)error
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
-  v33 = a4;
+  versionCopy = version;
+  errorCopy = error;
   v28 = 0;
   v29 = &v28;
   v30 = 0x20000000;
@@ -924,13 +924,13 @@
   v27 = 0;
   v20 = _objc_retain(@"UPDATE version SET protocol_version = ?");
   v19 = [AKSQLiteQuery queryWithString:v20];
-  v8 = [NSNumber numberWithInteger:v34];
+  v8 = [NSNumber numberWithInteger:versionCopy];
   location = (v22 + 5);
   v18 = v22[5];
   [v19 bindParameter:? error:?];
   objc_storeStrong(location, v18);
   _objc_release(v8);
-  objc_initWeak(&v17, v36);
+  objc_initWeak(&v17, selfCopy);
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
@@ -941,11 +941,11 @@
   v15[1] = &v21;
   v15[2] = &v28;
   [AKSQLiteExecutor performBlockAndWait:&v10];
-  if (v33)
+  if (errorCopy)
   {
     v7 = v22[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
   }
 
   v6 = *(v29 + 24);
@@ -960,11 +960,11 @@
   return v6 & 1;
 }
 
-- (id)fetchAllPrivateEmailsWithError:(id *)a3
+- (id)fetchAllPrivateEmailsWithError:(id *)error
 {
-  v29 = self;
+  selfCopy = self;
   v28[2] = a2;
-  v28[1] = a3;
+  v28[1] = error;
   v28[0] = [AKSQLiteQuery queryWithString:@"SELECT email, client_key FROM emails"];
   v21 = 0;
   v22 = &v21;
@@ -981,7 +981,7 @@
   v18 = &unk_10031F2D8;
   v19 = _objc_retain(v20);
   [v28[0] setRowHandler:&v14];
-  objc_initWeak(&location, v29);
+  objc_initWeak(&location, selfCopy);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;

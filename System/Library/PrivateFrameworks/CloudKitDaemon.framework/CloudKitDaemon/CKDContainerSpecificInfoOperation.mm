@@ -1,17 +1,17 @@
 @interface CKDContainerSpecificInfoOperation
-- (CKDContainerSpecificInfoOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDContainerSpecificInfoOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)main;
-- (void)setCompletionBlock:(id)a3;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation CKDContainerSpecificInfoOperation
 
-- (CKDContainerSpecificInfoOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDContainerSpecificInfoOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v8.receiver = self;
   v8.super_class = CKDContainerSpecificInfoOperation;
-  v4 = [(CKDOperation *)&v8 initWithOperationInfo:a3 container:a4];
+  v4 = [(CKDOperation *)&v8 initWithOperationInfo:info container:container];
   if (v4)
   {
     v5 = dispatch_group_create();
@@ -31,15 +31,15 @@
   return v2;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2251A2A30;
   aBlock[3] = &unk_278547F28;
-  v5 = v4;
+  v5 = blockCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   v6 = _Block_copy(aBlock);

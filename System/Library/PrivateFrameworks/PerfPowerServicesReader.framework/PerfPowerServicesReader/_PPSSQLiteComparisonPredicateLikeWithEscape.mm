@@ -1,21 +1,21 @@
 @interface _PPSSQLiteComparisonPredicateLikeWithEscape
-- (_PPSSQLiteComparisonPredicateLikeWithEscape)initWithProperty:(id)a3 value:(id)a4 escapeCharacter:(id)a5;
-- (id)sqlForEntity:(id)a3;
+- (_PPSSQLiteComparisonPredicateLikeWithEscape)initWithProperty:(id)property value:(id)value escapeCharacter:(id)character;
+- (id)sqlForEntity:(id)entity;
 @end
 
 @implementation _PPSSQLiteComparisonPredicateLikeWithEscape
 
-- (_PPSSQLiteComparisonPredicateLikeWithEscape)initWithProperty:(id)a3 value:(id)a4 escapeCharacter:(id)a5
+- (_PPSSQLiteComparisonPredicateLikeWithEscape)initWithProperty:(id)property value:(id)value escapeCharacter:(id)character
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  valueCopy = value;
+  characterCopy = character;
   v15.receiver = self;
   v15.super_class = _PPSSQLiteComparisonPredicateLikeWithEscape;
-  v11 = [(PPSSQLiteComparisonPredicate *)&v15 initWithProperty:v8 value:v9 comparisonType:7];
+  v11 = [(PPSSQLiteComparisonPredicate *)&v15 initWithProperty:propertyCopy value:valueCopy comparisonType:7];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [characterCopy copy];
     escapeCharacter = v11->_escapeCharacter;
     v11->_escapeCharacter = v12;
   }
@@ -23,11 +23,11 @@
   return v11;
 }
 
-- (id)sqlForEntity:(id)a3
+- (id)sqlForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(PPSSQLitePropertyPredicate *)self property];
-  v6 = [v4 disambiguatedSQLForProperty:v5 shouldEscape:1];
+  entityCopy = entity;
+  property = [(PPSSQLitePropertyPredicate *)self property];
+  v6 = [entityCopy disambiguatedSQLForProperty:property shouldEscape:1];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ LIKE ? ESCAPE '%@')", v6, self->_escapeCharacter];
 

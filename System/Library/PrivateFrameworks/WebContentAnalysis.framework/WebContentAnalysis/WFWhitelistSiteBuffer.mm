@@ -1,8 +1,8 @@
 @interface WFWhitelistSiteBuffer
-- (BOOL)containsURLString:(id)a3;
-- (BOOL)treeContainsURLString:(id)a3;
+- (BOOL)containsURLString:(id)string;
+- (BOOL)treeContainsURLString:(id)string;
 - (WFWhitelistSiteBuffer)init;
-- (void)addURLString:(id)a3;
+- (void)addURLString:(id)string;
 - (void)dealloc;
 @end
 
@@ -41,16 +41,16 @@
   [(WFWhitelistSiteBuffer *)&v5 dealloc];
 }
 
-- (void)addURLString:(id)a3
+- (void)addURLString:(id)string
 {
-  v4 = [(WFWhitelistSiteBuffer *)self urlList];
+  urlList = [(WFWhitelistSiteBuffer *)self urlList];
 
-  [(WCRURLList *)v4 addURLString:a3];
+  [(WCRURLList *)urlList addURLString:string];
 }
 
-- (BOOL)treeContainsURLString:(id)a3
+- (BOOL)treeContainsURLString:(id)string
 {
-  v4 = [a3 WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
+  v4 = [string WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
   v5 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(v4, "lowercaseString")}];
   v6 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(objc_msgSend(v5, "host"), "componentsSeparatedByString:", @"."}];
   if ([objc_msgSend(v5 "pathComponents")] >= 2)
@@ -68,7 +68,7 @@
     [v6 addObject:{objc_msgSend(v5, "fragment")}];
   }
 
-  v7 = [(WFWhitelistSiteBuffer *)self siteTree];
+  siteTree = [(WFWhitelistSiteBuffer *)self siteTree];
   v8 = [v6 count] - 1;
   if (v8 < 0)
   {
@@ -77,7 +77,7 @@
 
   while (1)
   {
-    v9 = -[NSMutableDictionary objectForKey:](v7, "objectForKey:", [v6 objectAtIndex:v8]);
+    v9 = -[NSMutableDictionary objectForKey:](siteTree, "objectForKey:", [v6 objectAtIndex:v8]);
     if (!v9)
     {
       goto LABEL_17;
@@ -91,7 +91,7 @@
 
     if (-[NSMutableDictionary count](v10, "count") == 1 && (v11 = [-[NSMutableDictionary objectForKey:](v10 objectForKey:{@"kWFEndpointKey", "BOOLValue"}], v8))
     {
-      v7 = v10;
+      siteTree = v10;
       if (v11)
       {
         return 1;
@@ -100,7 +100,7 @@
 
     else
     {
-      v7 = v10;
+      siteTree = v10;
     }
 
 LABEL_17:
@@ -111,11 +111,11 @@ LABEL_17:
   }
 }
 
-- (BOOL)containsURLString:(id)a3
+- (BOOL)containsURLString:(id)string
 {
-  v4 = [(WFWhitelistSiteBuffer *)self urlList];
+  urlList = [(WFWhitelistSiteBuffer *)self urlList];
 
-  return [(WCRURLList *)v4 containsURLString:a3];
+  return [(WCRURLList *)urlList containsURLString:string];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface IMFallbackTranscoder_AudioMessage
 - (id)_tmpOutputFileURL;
-- (void)_failWithOSStatusErrorCode:(int)a3 description:(id)a4 completion:(id)a5;
-- (void)transcodeOpusFile:(id)a3 completionBlock:(id)a4;
+- (void)_failWithOSStatusErrorCode:(int)code description:(id)description completion:(id)completion;
+- (void)transcodeOpusFile:(id)file completionBlock:(id)block;
 @end
 
 @implementation IMFallbackTranscoder_AudioMessage
 
-- (void)transcodeOpusFile:(id)a3 completionBlock:(id)a4
+- (void)transcodeOpusFile:(id)file completionBlock:(id)block
 {
   v101 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (file)
   {
     outExtAudioFile = 0;
-    v7 = ExtAudioFileOpenURL(a3, &outExtAudioFile);
+    v7 = ExtAudioFileOpenURL(file, &outExtAudioFile);
     v14 = v7;
     if (outExtAudioFile)
     {
@@ -46,7 +46,7 @@
           }
         }
 
-        (*(a4 + 2))(a4, 0, 0, v94, 0, 1);
+        (*(block + 2))(block, 0, 0, v94, 0, 1);
       }
 
       else
@@ -66,7 +66,7 @@
           }
 
           v49 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v44, @"Creating new file at path: %@", v45, v46, v47, v48, v21);
-          objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v50, v39, v49, a4, v51, v52);
+          objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v50, v39, v49, block, v51, v52);
         }
 
         else
@@ -79,7 +79,7 @@
           {
             ExtAudioFileDispose(outExtAudioFile);
             ExtAudioFileDispose(v93);
-            objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v41, v40, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ClientDataFormat for AMR", a4, v42, v43);
+            objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v41, v40, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ClientDataFormat for AMR", block, v42, v43);
           }
 
           else
@@ -89,7 +89,7 @@
             {
               ExtAudioFileDispose(outExtAudioFile);
               ExtAudioFileDispose(v93);
-              objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v55, v54, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ClientDataFormat for Opus", a4, v56, v57);
+              objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v55, v54, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ClientDataFormat for Opus", block, v56, v57);
             }
 
             else
@@ -102,7 +102,7 @@
               {
                 ExtAudioFileDispose(outExtAudioFile);
                 ExtAudioFileDispose(v93);
-                objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v59, Property, @"ExtAudioFileGetProperty / kExtAudioFileProperty_AudioConverter for AMR", a4, v60, v61);
+                objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v59, Property, @"ExtAudioFileGetProperty / kExtAudioFileProperty_AudioConverter for AMR", block, v60, v61);
               }
 
               else
@@ -112,7 +112,7 @@
                 {
                   ExtAudioFileDispose(outExtAudioFile);
                   ExtAudioFileDispose(v93);
-                  objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v63, v62, @"AudioConverterSetProperty / kAudioConverterEncodeBitRate for outConverter", a4, v64, v65);
+                  objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v63, v62, @"AudioConverterSetProperty / kAudioConverterEncodeBitRate for outConverter", block, v64, v65);
                 }
 
                 else
@@ -123,7 +123,7 @@
                   {
                     ExtAudioFileDispose(outExtAudioFile);
                     ExtAudioFileDispose(v93);
-                    objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v67, v66, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ConverterConfig for AMR", a4, v68, v69);
+                    objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v67, v66, @"ExtAudioFileSetProperty / kExtAudioFileProperty_ConverterConfig for AMR", block, v68, v69);
                   }
 
                   else
@@ -141,7 +141,7 @@
                       {
                         ExtAudioFileDispose(outExtAudioFile);
                         ExtAudioFileDispose(v93);
-                        objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v75, v70, @"ExtAudioFileRead", a4, v76, v77);
+                        objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v75, v70, @"ExtAudioFileRead", block, v76, v77);
                         goto LABEL_23;
                       }
 
@@ -155,7 +155,7 @@
                       {
                         ExtAudioFileDispose(outExtAudioFile);
                         ExtAudioFileDispose(v93);
-                        objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v72, v71, @"ExtAudioFileWrite", a4, v73, v74);
+                        objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v72, v71, @"ExtAudioFileWrite", block, v73, v74);
                         goto LABEL_23;
                       }
                     }
@@ -164,7 +164,7 @@
                     ExtAudioFileDispose(v93);
                     v96 = v21;
                     v82 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v78, &v96, 1, v79, v80, v81);
-                    (*(a4 + 2))(a4, v82, 0, 0, 1, 1);
+                    (*(block + 2))(block, v82, 0, 0, 1, 1);
                   }
                 }
               }
@@ -176,8 +176,8 @@
 
     else
     {
-      v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"Opening Opus file at path %@", v10, v11, v12, v13, a3);
-      objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v17, v14, v16, a4, v18, v19);
+      v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"Opening Opus file at path %@", v10, v11, v12, v13, file);
+      objc_msgSend__failWithOSStatusErrorCode_description_completion_(self, v17, v14, v16, block, v18, v19);
     }
   }
 
@@ -193,7 +193,7 @@
       }
     }
 
-    (*(a4 + 2))(a4, 0, 0, 0, 0, 1);
+    (*(block + 2))(block, 0, 0, 0, 0, 1);
   }
 
 LABEL_23:
@@ -214,14 +214,14 @@ LABEL_23:
   return result;
 }
 
-- (void)_failWithOSStatusErrorCode:(int)a3 description:(id)a4 completion:(id)a5
+- (void)_failWithOSStatusErrorCode:(int)code description:(id)description completion:(id)completion
 {
-  v6 = a4;
+  descriptionCopy = description;
   v18 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!description)
   {
     IMLogBacktrace();
-    v6 = @"NO DESCRIPTION!";
+    descriptionCopy = @"NO DESCRIPTION!";
   }
 
   if (IMOSLoggingEnabled())
@@ -230,17 +230,17 @@ LABEL_23:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = descriptionCopy;
       v16 = 1024;
-      v17 = a3;
+      codeCopy = code;
       _os_log_impl(&dword_254811000, v11, OS_LOG_TYPE_INFO, "IMFallbackTranscoder_AudioMessage: %@ failed with error code %d", &v14, 0x12u);
     }
   }
 
-  if (a5)
+  if (completion)
   {
-    v12 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v8, *MEMORY[0x277CCA590], a3, 0, v9, v10);
-    (*(a5 + 2))(a5, 0, 0, v12, 0, 1);
+    v12 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v8, *MEMORY[0x277CCA590], code, 0, v9, v10);
+    (*(completion + 2))(completion, 0, 0, v12, 0, 1);
   }
 
   v13 = *MEMORY[0x277D85DE8];

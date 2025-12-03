@@ -1,28 +1,28 @@
 @interface FBSSceneSnapshotRequestAction
 - (FBSSceneSnapshotContext)context;
-- (id)_initWithType:(unint64_t)a3 context:(id)a4 responder:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)_initWithType:(unint64_t)type context:(id)context responder:(id)responder;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)type;
 @end
 
 @implementation FBSSceneSnapshotRequestAction
 
-- (id)_initWithType:(unint64_t)a3 context:(id)a4 responder:(id)a5
+- (id)_initWithType:(unint64_t)type context:(id)context responder:(id)responder
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  contextCopy = context;
+  responderCopy = responder;
+  if (!responderCopy)
   {
     [FBSSceneSnapshotRequestAction _initWithType:a2 context:self responder:?];
   }
 
-  v11 = v10;
+  v11 = responderCopy;
   v12 = objc_alloc_init(off_1E76BCA00);
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v12 setObject:v13 forSetting:1];
 
-  [v12 setObject:v9 forSetting:2];
+  [v12 setObject:contextCopy forSetting:2];
   [v12 setDescriptionProvider:self];
   v16.receiver = self;
   v16.super_class = FBSSceneSnapshotRequestAction;
@@ -33,30 +33,30 @@
 
 - (unint64_t)type
 {
-  v2 = [(FBSSceneSnapshotRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(FBSSceneSnapshotRequestAction *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (FBSSceneSnapshotContext)context
 {
-  v2 = [(FBSSceneSnapshotRequestAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(FBSSceneSnapshotRequestAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"context";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"requestType";
   }
@@ -67,21 +67,21 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 != 1)
+  if (setting != 1)
   {
     return 0;
   }
 
-  v7 = [a4 unsignedIntegerValue];
+  unsignedIntegerValue = [object unsignedIntegerValue];
   v8 = @"invalidateSnapshot";
-  if (v7 != 2)
+  if (unsignedIntegerValue != 2)
   {
     v8 = 0;
   }
 
-  if (v7 == 1)
+  if (unsignedIntegerValue == 1)
   {
     return @"performSnapshot";
   }

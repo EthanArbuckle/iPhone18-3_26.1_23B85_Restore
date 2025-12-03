@@ -1,63 +1,63 @@
 @interface FAInviteCompletionInfo
-- (FAInviteCompletionInfo)initWithCoder:(id)a3;
+- (FAInviteCompletionInfo)initWithCoder:(id)coder;
 - (id)_completionStatusStringValue;
 - (id)_transportStringValue;
 - (id)serverReadableDictionary;
-- (unint64_t)completionTypeFrom:(id)a3;
-- (unint64_t)transportTypeFrom:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)completionTypeFrom:(id)from;
+- (unint64_t)transportTypeFrom:(id)from;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FAInviteCompletionInfo
 
 - (id)serverReadableDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FAInviteCompletionInfo *)self _transportStringValue];
-  [v3 setObject:v4 forKeyedSubscript:@"transportMode"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _transportStringValue = [(FAInviteCompletionInfo *)self _transportStringValue];
+  [dictionary setObject:_transportStringValue forKeyedSubscript:@"transportMode"];
 
-  v5 = [(FAInviteCompletionInfo *)self recipients];
-  [v3 setObject:v5 forKeyedSubscript:@"inviteRecipients"];
+  recipients = [(FAInviteCompletionInfo *)self recipients];
+  [dictionary setObject:recipients forKeyedSubscript:@"inviteRecipients"];
 
-  v6 = [(FAInviteCompletionInfo *)self _completionStatusStringValue];
-  [v3 setObject:v6 forKeyedSubscript:@"completionStatus"];
+  _completionStatusStringValue = [(FAInviteCompletionInfo *)self _completionStatusStringValue];
+  [dictionary setObject:_completionStatusStringValue forKeyedSubscript:@"completionStatus"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_transportStringValue
 {
-  v2 = [(FAInviteCompletionInfo *)self transportType];
-  if (v2 - 1 > 3)
+  transportType = [(FAInviteCompletionInfo *)self transportType];
+  if (transportType - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7CA5630[v2 - 1];
+    return off_1E7CA5630[transportType - 1];
   }
 }
 
-- (unint64_t)transportTypeFrom:(id)a3
+- (unint64_t)transportTypeFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"messages"])
+  fromCopy = from;
+  if ([fromCopy isEqualToString:@"messages"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"mail"])
+  else if ([fromCopy isEqualToString:@"mail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"airdrop"])
+  else if ([fromCopy isEqualToString:@"airdrop"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"inviteInPerson"])
+  else if ([fromCopy isEqualToString:@"inviteInPerson"])
   {
     v4 = 4;
   }
@@ -72,63 +72,63 @@
 
 - (id)_completionStatusStringValue
 {
-  v2 = [(FAInviteCompletionInfo *)self status];
-  if (v2 > 2)
+  status = [(FAInviteCompletionInfo *)self status];
+  if (status > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7CA5650[v2];
+    return off_1E7CA5650[status];
   }
 }
 
-- (unint64_t)completionTypeFrom:(id)a3
+- (unint64_t)completionTypeFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"failure"])
+  fromCopy = from;
+  if ([fromCopy isEqualToString:@"failure"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"success"];
+    v4 = [fromCopy isEqualToString:@"success"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FAInviteCompletionInfo *)self _transportStringValue];
-  [v4 encodeObject:v5 forKey:@"transportMode"];
+  coderCopy = coder;
+  _transportStringValue = [(FAInviteCompletionInfo *)self _transportStringValue];
+  [coderCopy encodeObject:_transportStringValue forKey:@"transportMode"];
 
-  v6 = [(FAInviteCompletionInfo *)self recipients];
-  [v4 encodeObject:v6 forKey:@"inviteRecipients"];
+  recipients = [(FAInviteCompletionInfo *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"inviteRecipients"];
 
-  v7 = [(FAInviteCompletionInfo *)self _completionStatusStringValue];
-  [v4 encodeObject:v7 forKey:@"completionStatus"];
+  _completionStatusStringValue = [(FAInviteCompletionInfo *)self _completionStatusStringValue];
+  [coderCopy encodeObject:_completionStatusStringValue forKey:@"completionStatus"];
 }
 
-- (FAInviteCompletionInfo)initWithCoder:(id)a3
+- (FAInviteCompletionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAInviteCompletionInfo *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"inviteRecipients"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"inviteRecipients"];
     recipients = v5->_recipients;
     v5->_recipients = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transportMode"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transportMode"];
     v5->_transportType = [(FAInviteCompletionInfo *)v5 transportTypeFrom:v11];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completionStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completionStatus"];
     v5->_status = [(FAInviteCompletionInfo *)v5 completionTypeFrom:v12];
   }
 

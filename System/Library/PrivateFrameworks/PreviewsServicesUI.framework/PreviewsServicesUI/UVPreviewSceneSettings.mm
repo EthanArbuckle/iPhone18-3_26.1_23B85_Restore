@@ -1,9 +1,9 @@
 @interface UVPreviewSceneSettings
 - (CGSize)previewMaximumSize;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)makeMutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)previewSceneLayout;
 @end
 
@@ -11,8 +11,8 @@
 
 - (CGSize)previewMaximumSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1100101];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1100101];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -26,14 +26,14 @@
 
 - (int64_t)previewSceneLayout
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1100102];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1100102];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UVMutablePreviewSceneSettings alloc];
 
@@ -47,9 +47,9 @@
   return v2;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1100102)
+  if (setting == 1100102)
   {
     v5 = @"previewSceneLayout";
   }
@@ -59,7 +59,7 @@
     v5 = 0;
   }
 
-  if (a3 == 1100101)
+  if (setting == 1100101)
   {
     v6 = @"previewMaximumSize";
   }
@@ -80,7 +80,7 @@
   {
     v12.receiver = self;
     v12.super_class = UVPreviewSceneSettings;
-    v9 = [(FBSSettings *)&v12 keyDescriptionForSetting:a3];
+    v9 = [(FBSSettings *)&v12 keyDescriptionForSetting:setting];
   }
 
   v10 = v9;
@@ -88,10 +88,10 @@
   return v10;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = _PreviewSceneSettingValueDescription(a5, v8);
+  objectCopy = object;
+  v9 = _PreviewSceneSettingValueDescription(setting, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -102,7 +102,7 @@
   {
     v14.receiver = self;
     v14.super_class = UVPreviewSceneSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

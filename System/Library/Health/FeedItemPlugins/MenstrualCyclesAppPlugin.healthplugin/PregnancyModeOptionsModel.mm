@@ -1,14 +1,14 @@
 @interface PregnancyModeOptionsModel
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation PregnancyModeOptionsModel
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_29E0BBEB4(v3);
+  sub_29E0BBEB4(updateCopy);
 }
 
 @end

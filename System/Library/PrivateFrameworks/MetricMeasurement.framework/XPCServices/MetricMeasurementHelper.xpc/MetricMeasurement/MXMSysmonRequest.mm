@@ -1,19 +1,19 @@
 @interface MXMSysmonRequest
-+ (id)requestWithType:(unint64_t)a3 handler:(id)a4;
-- (void)addAttributes:(unsigned int)a3;
++ (id)requestWithType:(unint64_t)type handler:(id)handler;
+- (void)addAttributes:(unsigned int)attributes;
 - (void)cancel;
 - (void)execute;
-- (void)logTopUsageProcesses:(id)a3;
-- (void)setInterval:(double)a3;
+- (void)logTopUsageProcesses:(id)processes;
+- (void)setInterval:(double)interval;
 - (void)wait;
 @end
 
 @implementation MXMSysmonRequest
 
-+ (id)requestWithType:(unint64_t)a3 handler:(id)a4
++ (id)requestWithType:(unint64_t)type handler:(id)handler
 {
-  v5 = a4;
-  v6 = objc_alloc_init(a1);
+  handlerCopy = handler;
+  v6 = objc_alloc_init(self);
   if (v6)
   {
     v19 = 0;
@@ -34,7 +34,7 @@
     objc_initWeak(&location, v6);
     v12 = v6;
     v16 = v19;
-    v14 = v5;
+    v14 = handlerCopy;
     objc_copyWeak(&v15, &location);
     v13 = v7;
     v9 = sysmon_request_create();
@@ -50,10 +50,10 @@
   return v6;
 }
 
-- (void)logTopUsageProcesses:(id)a3
+- (void)logTopUsageProcesses:(id)processes
 {
-  v3 = a3;
-  v4 = [v3 keysSortedByValueUsingComparator:&stru_10000C5A0];
+  processesCopy = processes;
+  v4 = [processesCopy keysSortedByValueUsingComparator:&stru_10000C5A0];
   if ([v4 count] > 4)
   {
     v5 = 5;
@@ -87,7 +87,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v3 objectForKeyedSubscript:{v13, v16}];
+        v14 = [processesCopy objectForKeyedSubscript:{v13, v16}];
         [v7 setValue:v14 forKey:v13];
       }
 
@@ -106,14 +106,14 @@
   }
 }
 
-- (void)addAttributes:(unsigned int)a3
+- (void)addAttributes:(unsigned int)attributes
 {
   v6 = &v7;
-  if (a3)
+  if (attributes)
   {
     do
     {
-      v4 = [(MXMSysmonRequest *)self request];
+      request = [(MXMSysmonRequest *)self request];
       sysmon_request_add_attribute();
 
       v5 = v6++;
@@ -128,29 +128,29 @@
   v3 = dispatch_semaphore_create(0);
   [(MXMSysmonRequest *)self setWait_sema:v3];
 
-  v4 = [(MXMSysmonRequest *)self request];
+  request = [(MXMSysmonRequest *)self request];
   sysmon_request_execute();
 }
 
 - (void)wait
 {
-  v2 = [(MXMSysmonRequest *)self wait_sema];
-  dispatch_semaphore_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
+  wait_sema = [(MXMSysmonRequest *)self wait_sema];
+  dispatch_semaphore_wait(wait_sema, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (void)cancel
 {
-  v3 = [(MXMSysmonRequest *)self request];
+  request = [(MXMSysmonRequest *)self request];
   sysmon_request_cancel();
 
-  v4 = [(MXMSysmonRequest *)self wait_sema];
-  dispatch_semaphore_signal(v4);
+  wait_sema = [(MXMSysmonRequest *)self wait_sema];
+  dispatch_semaphore_signal(wait_sema);
 }
 
-- (void)setInterval:(double)a3
+- (void)setInterval:(double)interval
 {
-  self->_interval = round(a3 + a3) * 0.5;
-  v5 = [(MXMSysmonRequest *)self request];
+  self->_interval = round(interval + interval) * 0.5;
+  request = [(MXMSysmonRequest *)self request];
   v4 = self->_interval * 1000.0;
   sysmon_request_set_interval();
 }

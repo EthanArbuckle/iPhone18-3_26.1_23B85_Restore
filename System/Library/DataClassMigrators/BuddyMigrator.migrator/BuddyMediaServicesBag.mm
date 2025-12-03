@@ -16,9 +16,9 @@
   v2 = [(BuddyMediaServicesBag *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() createBagForSubProfile];
+    createBagForSubProfile = [objc_opt_class() createBagForSubProfile];
     underlyingBag = v2->_underlyingBag;
-    v2->_underlyingBag = v3;
+    v2->_underlyingBag = createBagForSubProfile;
   }
 
   return v2;
@@ -27,25 +27,25 @@
 - (id)getAppStoreURL
 {
   v3 = +[ACAccountStore ams_sharedAccountStore];
-  v4 = [v3 ams_activeiTunesAccount];
-  v5 = [(BuddyMediaServicesBag *)self underlyingBag];
-  v6 = [v5 URLForKey:@"postOnboardingUrl" account:v4];
+  ams_activeiTunesAccount = [v3 ams_activeiTunesAccount];
+  underlyingBag = [(BuddyMediaServicesBag *)self underlyingBag];
+  v6 = [underlyingBag URLForKey:@"postOnboardingUrl" account:ams_activeiTunesAccount];
 
   return v6;
 }
 
 - (id)getAppStoreMessage
 {
-  v2 = [(BuddyMediaServicesBag *)self underlyingBag];
-  v3 = [v2 stringForKey:@"postOnboardingMessage"];
+  underlyingBag = [(BuddyMediaServicesBag *)self underlyingBag];
+  v3 = [underlyingBag stringForKey:@"postOnboardingMessage"];
 
   return v3;
 }
 
 - (id)getBundleURL
 {
-  v2 = [(BuddyMediaServicesBag *)self underlyingBag];
-  v3 = [v2 URLForKey:@"dynamic-ui-bundle-gdpr-url"];
+  underlyingBag = [(BuddyMediaServicesBag *)self underlyingBag];
+  v3 = [underlyingBag URLForKey:@"dynamic-ui-bundle-gdpr-url"];
 
   return v3;
 }
@@ -73,8 +73,8 @@
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagKeySet];
-  [AMSBagKeySet registerBagKeySet:v2 forProfile:@"setup" profileVersion:@"1"];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  [AMSBagKeySet registerBagKeySet:bagKeySet forProfile:@"setup" profileVersion:@"1"];
 
   return [AMSBag bagForProfile:@"setup" profileVersion:@"1"];
 }

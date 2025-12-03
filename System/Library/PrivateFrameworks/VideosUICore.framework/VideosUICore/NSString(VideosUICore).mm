@@ -8,8 +8,8 @@
 
 - (id)vui_filenameSafeString
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithString:a1];
-  v3 = [a1 length];
+  v2 = [MEMORY[0x277CCAB68] stringWithString:self];
+  v3 = [self length];
   [v2 replaceOccurrencesOfString:@"/" withString:@"_" options:0 range:{0, v3}];
   [v2 replaceOccurrencesOfString:@":" withString:@"_" options:0 range:{0, v3}];
   v4 = [MEMORY[0x277CCACA8] stringWithString:v2];
@@ -19,20 +19,20 @@
 
 - (id)vui_SHA256String
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 < 1)
   {
-    v5 = 0;
+    vui_lowercaseHexString = 0;
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:objc_msgSend(a1 length:{"UTF8String"), v2}];
-    v4 = [v3 vui_SHA256Digest];
-    v5 = [v4 vui_lowercaseHexString];
+    v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:objc_msgSend(self length:{"UTF8String"), v2}];
+    vui_SHA256Digest = [v3 vui_SHA256Digest];
+    vui_lowercaseHexString = [vui_SHA256Digest vui_lowercaseHexString];
   }
 
-  return v5;
+  return vui_lowercaseHexString;
 }
 
 + (id)tvs_hexStringWithBytes:()VideosUICore length:lowercase:

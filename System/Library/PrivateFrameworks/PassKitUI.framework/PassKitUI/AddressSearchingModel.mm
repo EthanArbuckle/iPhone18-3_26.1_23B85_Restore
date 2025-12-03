@@ -1,8 +1,8 @@
 @interface AddressSearchingModel
 - (_TtC9PassKitUI21AddressSearchingModel)init;
-- (void)contactsSearchUpdated:(id)a3;
-- (void)mapSearchUpdated:(id)a3;
-- (void)selectedAddress:(id)a3 withError:(id)a4;
+- (void)contactsSearchUpdated:(id)updated;
+- (void)mapSearchUpdated:(id)updated;
+- (void)selectedAddress:(id)address withError:(id)error;
 @end
 
 @implementation AddressSearchingModel
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (void)contactsSearchUpdated:(id)a3
+- (void)contactsSearchUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD6D69BC(v4, &unk_1F3BB63A0, sub_1BD6D7470, &block_descriptor_53_0);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_1BD6D69BC(updatedCopy, &unk_1F3BB63A0, sub_1BD6D7470, &block_descriptor_53_0);
 }
 
-- (void)mapSearchUpdated:(id)a3
+- (void)mapSearchUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD6D69BC(v4, &unk_1F3BB6350, sub_1BD6D7468, &block_descriptor_41);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_1BD6D69BC(updatedCopy, &unk_1F3BB6350, sub_1BD6D7468, &block_descriptor_41);
 }
 
-- (void)selectedAddress:(id)a3 withError:(id)a4
+- (void)selectedAddress:(id)address withError:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_1BD6D71C4(a3);
+  addressCopy = address;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1BD6D71C4(address);
 }
 
 @end

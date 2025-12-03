@@ -6,21 +6,21 @@
 
 - (id)fp_sanitizer
 {
-  v2 = [a1 userInfo];
+  userInfo = [self userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 userInfo];
+    userInfo2 = [self userInfo];
   }
 
   else
   {
-    v4 = 0;
+    userInfo2 = 0;
   }
 
-  return v4;
+  return userInfo2;
 }
 
 @end

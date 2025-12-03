@@ -10,7 +10,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 wallpaperImageURLForVariant:a3 wallpaperMode:a4];
+    v7 = [self wallpaperImageURLForVariant:a3 wallpaperMode:a4];
   }
 
   else
@@ -25,7 +25,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 wallpaperOriginalImageURLForVariant:a3 wallpaperMode:a4];
+    v7 = [self wallpaperOriginalImageURLForVariant:a3 wallpaperMode:a4];
   }
 
   else
@@ -40,7 +40,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 wallpaperThumbnailURLForVariant:a3 wallpaperMode:a4];
+    v7 = [self wallpaperThumbnailURLForVariant:a3 wallpaperMode:a4];
   }
 
   else

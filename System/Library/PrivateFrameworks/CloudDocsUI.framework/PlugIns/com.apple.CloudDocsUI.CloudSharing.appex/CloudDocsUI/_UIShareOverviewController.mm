@@ -5,140 +5,140 @@
 - (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing;
 - (CKShare)share;
 - (NSURL)itemURL;
-- (_UIShareOverviewController)initWithDelegate:(id)a3;
+- (_UIShareOverviewController)initWithDelegate:(id)delegate;
 - (_UIShareOverviewControllerDelegate)delegate;
 - (id)editableParticipants;
 - (id)rootItemName;
 - (id)shareRootItemURL;
 - (id)sharedByModifiedByText;
 - (void)dismiss;
-- (void)presentError:(id)a3;
-- (void)setNavigationItemSpinner:(BOOL)a3;
+- (void)presentError:(id)error;
+- (void)setNavigationItemSpinner:(BOOL)spinner;
 - (void)shareDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateThumbnail;
 @end
 
 @implementation _UIShareOverviewController
 
-- (_UIShareOverviewController)initWithDelegate:(id)a3
+- (_UIShareOverviewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIShareOverviewController;
   v5 = [(_UIShareOverviewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(_UIShareOverviewController *)v5 setDelegate:v4];
+    [(_UIShareOverviewController *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)presentError:(id)a3
+- (void)presentError:(id)error
 {
-  v4 = a3;
-  [(_UIShareOverviewController *)self setError:v4];
-  v5 = [(_UIShareOverviewController *)self delegate];
-  [v5 shareViewController:self presentError:v4];
+  errorCopy = error;
+  [(_UIShareOverviewController *)self setError:errorCopy];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate shareViewController:self presentError:errorCopy];
 }
 
 - (void)dismiss
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  [v3 shareViewControllerDismiss:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate shareViewControllerDismiss:self];
 }
 
 - (CKShare)share
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  v4 = [v3 viewControllerShare:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v4 = [delegate viewControllerShare:self];
 
   return v4;
 }
 
 - (BOOL)isShowAddPeople
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 isShowAddPeople];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  isShowAddPeople = [delegate isShowAddPeople];
 
-  return v3;
+  return isShowAddPeople;
 }
 
 - (id)editableParticipants
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 editableParticipants];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  editableParticipants = [delegate editableParticipants];
 
-  return v3;
+  return editableParticipants;
 }
 
 - (BOOL)itemIsShareRoot
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 itemIsShareRoot];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  itemIsShareRoot = [delegate itemIsShareRoot];
 
-  return v3;
+  return itemIsShareRoot;
 }
 
 - (BOOL)itemIsInsideFolderShare
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 itemIsInsideFolderShare];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  itemIsInsideFolderShare = [delegate itemIsInsideFolderShare];
 
-  return v3;
+  return itemIsInsideFolderShare;
 }
 
 - (id)shareRootItemURL
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 shareRootItemURL];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  shareRootItemURL = [delegate shareRootItemURL];
 
-  return v3;
+  return shareRootItemURL;
 }
 
 - (id)rootItemName
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 rootItemName];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  rootItemName = [delegate rootItemName];
 
-  return v3;
+  return rootItemName;
 }
 
 - (id)sharedByModifiedByText
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 sharedByModifiedByText];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  sharedByModifiedByText = [delegate sharedByModifiedByText];
 
-  return v3;
+  return sharedByModifiedByText;
 }
 
 - (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing
 {
-  v2 = self;
-  v3 = [(_UIShareOverviewController *)self delegate];
-  LOBYTE(v2) = [v3 shareViewControllerIsNotesOrRemindersOrDocSharing:v2];
+  selfCopy = self;
+  delegate = [(_UIShareOverviewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate shareViewControllerIsNotesOrRemindersOrDocSharing:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSURL)itemURL
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  v4 = [v3 viewControllerItemURL:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v4 = [delegate viewControllerItemURL:self];
 
   return v4;
 }
 
-- (void)setNavigationItemSpinner:(BOOL)a3
+- (void)setNavigationItemSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(_UIShareOverviewController *)self navigationItem];
-  v6 = [v5 leftBarButtonItems];
-  v7 = [NSMutableArray arrayWithArray:v6];
+  spinnerCopy = spinner;
+  navigationItem = [(_UIShareOverviewController *)self navigationItem];
+  leftBarButtonItems = [navigationItem leftBarButtonItems];
+  v7 = [NSMutableArray arrayWithArray:leftBarButtonItems];
 
-  if (v3)
+  if (spinnerCopy)
   {
     if (!self->_showingSpinner)
     {
@@ -159,12 +159,12 @@
     self->_showingSpinner = 0;
   }
 
-  v11 = [(_UIShareOverviewController *)self navigationItem];
-  [v11 setLeftBarButtonItems:v7];
+  navigationItem2 = [(_UIShareOverviewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItems:v7];
 
-  v12 = [(_UIShareOverviewController *)self navigationItem];
-  v13 = [v12 rightBarButtonItem];
-  if (v13)
+  navigationItem3 = [(_UIShareOverviewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+  if (rightBarButtonItem)
   {
 
 LABEL_10:
@@ -175,25 +175,25 @@ LABEL_10:
 
   if (showingSpinner)
   {
-    v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-    v18 = v12;
+    navigationItem3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
+    v18 = navigationItem3;
     v15 = [NSArray arrayWithObjects:&v18 count:1];
-    v16 = [(_UIShareOverviewController *)self navigationItem];
-    [v16 setRightBarButtonItems:v15];
+    navigationItem4 = [(_UIShareOverviewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItems:v15];
 
     goto LABEL_10;
   }
 
 LABEL_11:
-  v17 = [(_UIShareOverviewController *)self view];
-  [v17 setUserInteractionEnabled:!v3];
+  view = [(_UIShareOverviewController *)self view];
+  [view setUserInteractionEnabled:!spinnerCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UIShareOverviewController;
-  [(_UIShareOverviewController *)&v4 traitCollectionDidChange:a3];
+  [(_UIShareOverviewController *)&v4 traitCollectionDidChange:change];
   [(_UIShareOverviewController *)self updateTraitCollection];
 }
 

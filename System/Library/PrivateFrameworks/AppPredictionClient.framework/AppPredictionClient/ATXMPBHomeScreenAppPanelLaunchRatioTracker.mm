@@ -1,19 +1,19 @@
 @interface ATXMPBHomeScreenAppPanelLaunchRatioTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)locationAsString:(int)a3;
-- (id)ratioTypeAsString:(int)a3;
-- (int)StringAsLocation:(id)a3;
-- (int)StringAsRatioType:(id)a3;
+- (id)locationAsString:(int)string;
+- (id)ratioTypeAsString:(int)string;
+- (int)StringAsLocation:(id)location;
+- (int)StringAsRatioType:(id)type;
 - (int)location;
 - (int)ratioType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRatioType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRatioType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBHomeScreenAppPanelLaunchRatioTracker
@@ -31,50 +31,50 @@
   }
 }
 
-- (id)locationAsString:(int)a3
+- (id)locationAsString:(int)string
 {
-  if ((a3 - 1) >= 6)
+  if ((string - 1) >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C3AA0[a3 - 1];
+    v4 = off_1E80C3AA0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsLocation:(id)a3
+- (int)StringAsLocation:(id)location
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Page1"])
+  locationCopy = location;
+  if ([locationCopy isEqualToString:@"Page1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Page2"])
+  else if ([locationCopy isEqualToString:@"Page2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Page3"])
+  else if ([locationCopy isEqualToString:@"Page3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Page4"])
+  else if ([locationCopy isEqualToString:@"Page4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"OtherPages"])
+  else if ([locationCopy isEqualToString:@"OtherPages"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDock"])
+  else if ([locationCopy isEqualToString:@"HomeScreenDock"])
   {
     v4 = 6;
   }
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasRatioType:(BOOL)a3
+- (void)setHasRatioType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -115,40 +115,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)ratioTypeAsString:(int)a3
+- (id)ratioTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C3AD0[a3 - 1];
+    v4 = off_1E80C3AD0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsRatioType:(id)a3
+- (int)StringAsRatioType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AppPanel"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AppPanel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"StaticAppIcon"])
+  else if ([typeCopy isEqualToString:@"StaticAppIcon"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"StaticAppIconIncludingEveryAppInFolder"])
+  else if ([typeCopy isEqualToString:@"StaticAppIconIncludingEveryAppInFolder"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Dock"])
+  else if ([typeCopy isEqualToString:@"Dock"])
   {
     v4 = 4;
   }
@@ -167,15 +167,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBHomeScreenAppPanelLaunchRatioTracker;
   v4 = [(ATXMPBHomeScreenAppPanelLaunchRatioTracker *)&v8 description];
-  v5 = [(ATXMPBHomeScreenAppPanelLaunchRatioTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBHomeScreenAppPanelLaunchRatioTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -190,7 +190,7 @@
       v6 = off_1E80C3AA0[v5];
     }
 
-    [v3 setObject:v6 forKey:@"location"];
+    [dictionary setObject:v6 forKey:@"location"];
 
     has = self->_has;
   }
@@ -208,52 +208,52 @@
       v8 = off_1E80C3AD0[v7];
     }
 
-    [v3 setObject:v8 forKey:@"ratioType"];
+    [dictionary setObject:v8 forKey:@"ratioType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_location;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_location;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[3] = self->_ratioType;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_ratioType;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -271,33 +271,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_location != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_location != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_ratioType != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_ratioType != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
@@ -336,20 +336,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_location = *(v4 + 2);
+    self->_location = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_ratioType = *(v4 + 3);
+    self->_ratioType = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 }

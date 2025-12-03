@@ -1,51 +1,51 @@
 @interface CMHeartRateData
-+ (id)dataSourceName:(int64_t)a3;
-+ (id)modeName:(int64_t)a3;
-- (CMHeartRateData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMHeartRateData)initWithCoder:(id)a3;
-- (CMHeartRateData)initWithHeartRate:(double)a3 confidence:(double)a4 timestamp:(double)a5 startDate:(id)a6 error:(BOOL)a7 dataSource:(int64_t)a8 mode:(int64_t)a9;
-- (CMHeartRateData)initWithHighFrequencyHeartRate:(id)a3;
++ (id)dataSourceName:(int64_t)name;
++ (id)modeName:(int64_t)name;
+- (CMHeartRateData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMHeartRateData)initWithCoder:(id)coder;
+- (CMHeartRateData)initWithHeartRate:(double)rate confidence:(double)confidence timestamp:(double)timestamp startDate:(id)date error:(BOOL)error dataSource:(int64_t)source mode:(int64_t)mode;
+- (CMHeartRateData)initWithHighFrequencyHeartRate:(id)rate;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMHeartRateData
 
-- (CMHeartRateData)initWithHeartRate:(double)a3 confidence:(double)a4 timestamp:(double)a5 startDate:(id)a6 error:(BOOL)a7 dataSource:(int64_t)a8 mode:(int64_t)a9
+- (CMHeartRateData)initWithHeartRate:(double)rate confidence:(double)confidence timestamp:(double)timestamp startDate:(id)date error:(BOOL)error dataSource:(int64_t)source mode:(int64_t)mode
 {
   v18.receiver = self;
   v18.super_class = CMHeartRateData;
-  v15 = [(CMLogItem *)&v18 initWithTimestamp:a5];
+  v15 = [(CMLogItem *)&v18 initWithTimestamp:timestamp];
   v16 = v15;
   if (v15)
   {
-    v15->_heartRate = a3;
-    v15->_confidence = a4;
-    v15->_startDate = a6;
-    v16->_error = a7;
-    v16->_dataSource = a8;
-    v16->_mode = a9;
+    v15->_heartRate = rate;
+    v15->_confidence = confidence;
+    v15->_startDate = date;
+    v16->_error = error;
+    v16->_dataSource = source;
+    v16->_mode = mode;
     v16->_frequency = -1.0;
   }
 
   return v16;
 }
 
-- (CMHeartRateData)initWithHighFrequencyHeartRate:(id)a3
+- (CMHeartRateData)initWithHighFrequencyHeartRate:(id)rate
 {
-  objc_msgSend_timestamp(a3, a2, a3);
+  objc_msgSend_timestamp(rate, a2, rate);
   v12.receiver = self;
   v12.super_class = CMHeartRateData;
   v7 = [(CMLogItem *)&v12 initWithTimestamp:?];
   if (v7)
   {
-    objc_msgSend_heartRate(a3, v5, v6);
+    objc_msgSend_heartRate(rate, v5, v6);
     v7->_heartRate = v8;
     v7->_confidence = 1.0;
-    v7->_startDate = objc_msgSend_date(a3, v9, v10);
+    v7->_startDate = objc_msgSend_date(rate, v9, v10);
     v7->_error = 0;
     v7->_dataSource = 3;
     v7->_mode = 1;
@@ -62,11 +62,11 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CMHeartRateData;
-  v4 = [(CMLogItem *)&v9 copyWithZone:a3];
+  v4 = [(CMLogItem *)&v9 copyWithZone:zone];
   v7 = v4;
   if (v4)
   {
@@ -82,7 +82,7 @@
   return v7;
 }
 
-- (CMHeartRateData)initWithCoder:(id)a3
+- (CMHeartRateData)initWithCoder:(id)coder
 {
   v33.receiver = self;
   v33.super_class = CMHeartRateData;
@@ -90,22 +90,22 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMHeartRateDataCodingKeyHeartRate");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMHeartRateDataCodingKeyHeartRate");
     objc_msgSend_doubleValue(v7, v8, v9);
     v4->_heartRate = v10;
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMHeartRateDataCodingKeyConfidence");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMHeartRateDataCodingKeyConfidence");
     objc_msgSend_doubleValue(v13, v14, v15);
     v4->_confidence = v16;
     v17 = objc_opt_class();
-    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v17, @"kCMHeartRateDataCodingKeyStartDate");
+    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v17, @"kCMHeartRateDataCodingKeyStartDate");
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v20, v19, @"kCMHeartRateDataCodingKeyError");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v20, v19, @"kCMHeartRateDataCodingKeyError");
     v4->_error = objc_msgSend_BOOLValue(v21, v22, v23);
-    v4->_dataSource = objc_msgSend_decodeIntegerForKey_(a3, v24, @"kCMHeartRateDataCodingKeyDataSource");
-    v4->_mode = objc_msgSend_decodeIntegerForKey_(a3, v25, @"kCMHeartRateDataCodingKeyMode");
+    v4->_dataSource = objc_msgSend_decodeIntegerForKey_(coder, v24, @"kCMHeartRateDataCodingKeyDataSource");
+    v4->_mode = objc_msgSend_decodeIntegerForKey_(coder, v25, @"kCMHeartRateDataCodingKeyMode");
     v26 = objc_opt_class();
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v27, v26, @"kCMHeartRateDataCodingKeyFrequency");
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v27, v26, @"kCMHeartRateDataCodingKeyFrequency");
     objc_msgSend_doubleValue(v28, v29, v30);
     v4->_frequency = v31;
   }
@@ -113,47 +113,47 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23.receiver = self;
   v23.super_class = CMHeartRateData;
   [(CMLogItem *)&v23 encodeWithCoder:?];
   v7 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v5, v6, self->_heartRate);
-  objc_msgSend_encodeObject_forKey_(a3, v8, v7, @"kCMHeartRateDataCodingKeyHeartRate");
+  objc_msgSend_encodeObject_forKey_(coder, v8, v7, @"kCMHeartRateDataCodingKeyHeartRate");
   v11 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v9, v10, self->_confidence);
-  objc_msgSend_encodeObject_forKey_(a3, v12, v11, @"kCMHeartRateDataCodingKeyConfidence");
-  objc_msgSend_encodeObject_forKey_(a3, v13, self->_startDate, @"kCMHeartRateDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v12, v11, @"kCMHeartRateDataCodingKeyConfidence");
+  objc_msgSend_encodeObject_forKey_(coder, v13, self->_startDate, @"kCMHeartRateDataCodingKeyStartDate");
   v15 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v14, self->_error);
-  objc_msgSend_encodeObject_forKey_(a3, v16, v15, @"kCMHeartRateDataCodingKeyError");
-  objc_msgSend_encodeInteger_forKey_(a3, v17, self->_dataSource, @"kCMHeartRateDataCodingKeyDataSource");
-  objc_msgSend_encodeInteger_forKey_(a3, v18, self->_mode, @"kCMHeartRateDataCodingKeyMode");
+  objc_msgSend_encodeObject_forKey_(coder, v16, v15, @"kCMHeartRateDataCodingKeyError");
+  objc_msgSend_encodeInteger_forKey_(coder, v17, self->_dataSource, @"kCMHeartRateDataCodingKeyDataSource");
+  objc_msgSend_encodeInteger_forKey_(coder, v18, self->_mode, @"kCMHeartRateDataCodingKeyMode");
   v21 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v19, v20, self->_frequency);
-  objc_msgSend_encodeObject_forKey_(a3, v22, v21, @"kCMHeartRateDataCodingKeyFrequency");
+  objc_msgSend_encodeObject_forKey_(coder, v22, v21, @"kCMHeartRateDataCodingKeyFrequency");
 }
 
-+ (id)dataSourceName:(int64_t)a3
++ (id)dataSourceName:(int64_t)name
 {
-  if (a3 > 4)
+  if (name > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7535A90[a3];
+    return off_1E7535A90[name];
   }
 }
 
-+ (id)modeName:(int64_t)a3
++ (id)modeName:(int64_t)name
 {
-  if (a3 > 4)
+  if (name > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7535AB8[a3];
+    return off_1E7535AB8[name];
   }
 }
 
@@ -193,9 +193,9 @@
   return v5;
 }
 
-- (CMHeartRateData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMHeartRateData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMHeartRateData;
@@ -204,7 +204,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

@@ -1,28 +1,28 @@
 @interface CNUIUserActionItemList
-- (CNUIUserActionItemList)initWithItems:(id)a3 type:(id)a4 icon:(id)a5;
+- (CNUIUserActionItemList)initWithItems:(id)items type:(id)type icon:(id)icon;
 @end
 
 @implementation CNUIUserActionItemList
 
-- (CNUIUserActionItemList)initWithItems:(id)a3 type:(id)a4 icon:(id)a5
+- (CNUIUserActionItemList)initWithItems:(id)items type:(id)type icon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  typeCopy = type;
+  iconCopy = icon;
   v20.receiver = self;
   v20.super_class = CNUIUserActionItemList;
   v11 = [(CNUIUserActionItemList *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [itemsCopy copy];
     items = v11->_items;
     v11->_items = v12;
 
-    v14 = [v9 copy];
+    v14 = [typeCopy copy];
     type = v11->_type;
     v11->_type = v14;
 
-    v16 = [v10 copy];
+    v16 = [iconCopy copy];
     icon = v11->_icon;
     v11->_icon = v16;
 

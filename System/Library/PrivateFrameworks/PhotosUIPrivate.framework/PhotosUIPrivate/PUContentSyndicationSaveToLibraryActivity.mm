@@ -1,5 +1,5 @@
 @interface PUContentSyndicationSaveToLibraryActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PXActivityItemSourceController)itemSourceController;
 - (id)activityTitle;
 - (id)activityViewController;
@@ -17,10 +17,10 @@
 
 - (void)performActivity
 {
-  v3 = [MEMORY[0x1E69C3408] sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+  preventActualSaveToLibraryBehavior = [mEMORY[0x1E69C3408] preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
 
     [(UIActivity *)self activityDidFinish:0];
@@ -28,10 +28,10 @@
 
   else
   {
-    v5 = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
-    v6 = [v5 assets];
+    itemSourceController = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
+    assets = [itemSourceController assets];
     v7 = PXFilter();
-    v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __60__PUContentSyndicationSaveToLibraryActivity_performActivity__block_invoke_2;
@@ -42,9 +42,9 @@
     v10[2] = __60__PUContentSyndicationSaveToLibraryActivity_performActivity__block_invoke_3;
     v10[3] = &unk_1E7B7FB70;
     v11 = v14;
-    v12 = self;
+    selfCopy = self;
     v9 = v14;
-    [v8 performChanges:v13 completionHandler:v10];
+    [px_deprecated_appPhotoLibrary performChanges:v13 completionHandler:v10];
   }
 }
 
@@ -174,10 +174,10 @@ LABEL_4:
 
 - (id)activityViewController
 {
-  v3 = [MEMORY[0x1E69C3408] sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+  preventActualSaveToLibraryBehavior = [mEMORY[0x1E69C3408] preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
     v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Save to Library Prevented" message:@"Saving to Library is currently disabled via our internal settings (for debugging)." preferredStyle:1];
     objc_initWeak(&location, self);
@@ -208,30 +208,30 @@ void __67__PUContentSyndicationSaveToLibraryActivity_activityViewController__blo
   [WeakRetained activityDidFinish:0];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
-  v4 = [v3 unsavedSyndicatedAssetCount] != 0;
+  itemSourceController = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
+  v4 = [itemSourceController unsavedSyndicatedAssetCount] != 0;
 
   return v4;
 }
 
 - (id)activityTitle
 {
-  v2 = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  if ([v3 count] == 1)
+  itemSourceController = [(PUContentSyndicationSaveToLibraryActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  if ([assets count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 mediaType];
+    firstObject = [assets firstObject];
+    mediaType = [firstObject mediaType];
 
     v6 = @"ITEM";
-    if (v5 == 1)
+    if (mediaType == 1)
     {
       v6 = @"PHOTO";
     }
 
-    if (v5 == 2)
+    if (mediaType == 2)
     {
       v6 = @"VIDEO";
     }

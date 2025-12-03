@@ -1,17 +1,17 @@
 @interface _UICollectionViewItemKey
-+ (_UICollectionViewItemKey)collectionItemKeyForCellWithIndexPath:(uint64_t)a1;
-+ (_UICollectionViewItemKey)collectionItemKeyForDecorationViewOfKind:(void *)a3 andIndexPath:;
-+ (_UICollectionViewItemKey)collectionItemKeyForSupplementaryViewOfKind:(void *)a3 andIndexPath:;
-+ (id)collectionItemKeyForLayoutAttributes:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (_UICollectionViewItemKey)collectionItemKeyForCellWithIndexPath:(uint64_t)path;
++ (_UICollectionViewItemKey)collectionItemKeyForDecorationViewOfKind:(void *)kind andIndexPath:;
++ (_UICollectionViewItemKey)collectionItemKeyForSupplementaryViewOfKind:(void *)kind andIndexPath:;
++ (id)collectionItemKeyForLayoutAttributes:(uint64_t)attributes;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initWithType:(void *)a3 indexPath:(void *)a4 identifier:(char)a5 clone:;
+- (id)initWithType:(void *)type indexPath:(void *)path identifier:(char)identifier clone:;
 - (unsigned)copyAsClone:(unsigned __int8 *)result;
 @end
 
 @implementation _UICollectionViewItemKey
 
-+ (_UICollectionViewItemKey)collectionItemKeyForCellWithIndexPath:(uint64_t)a1
++ (_UICollectionViewItemKey)collectionItemKeyForCellWithIndexPath:(uint64_t)path
 {
   objc_opt_self();
   v3 = [_UICollectionViewItemKey alloc];
@@ -23,38 +23,38 @@
   return v3;
 }
 
-+ (_UICollectionViewItemKey)collectionItemKeyForSupplementaryViewOfKind:(void *)a3 andIndexPath:
++ (_UICollectionViewItemKey)collectionItemKeyForSupplementaryViewOfKind:(void *)kind andIndexPath:
 {
   objc_opt_self();
   v5 = [_UICollectionViewItemKey alloc];
   if (v5)
   {
-    v5 = [(_UICollectionViewItemKey *)v5 initWithType:a3 indexPath:a2 identifier:0 clone:?];
+    v5 = [(_UICollectionViewItemKey *)v5 initWithType:kind indexPath:a2 identifier:0 clone:?];
   }
 
   return v5;
 }
 
-+ (_UICollectionViewItemKey)collectionItemKeyForDecorationViewOfKind:(void *)a3 andIndexPath:
++ (_UICollectionViewItemKey)collectionItemKeyForDecorationViewOfKind:(void *)kind andIndexPath:
 {
   objc_opt_self();
   v5 = [_UICollectionViewItemKey alloc];
   if (v5)
   {
-    v5 = [(_UICollectionViewItemKey *)v5 initWithType:a3 indexPath:a2 identifier:0 clone:?];
+    v5 = [(_UICollectionViewItemKey *)v5 initWithType:kind indexPath:a2 identifier:0 clone:?];
   }
 
   return v5;
 }
 
-+ (id)collectionItemKeyForLayoutAttributes:(uint64_t)a1
++ (id)collectionItemKeyForLayoutAttributes:(uint64_t)attributes
 {
   objc_opt_self();
   if (!a2)
   {
     v4 = 2;
 LABEL_6:
-    v5 = [(_UILabelConfiguration *)a2 _content];
+    _content = [(_UILabelConfiguration *)a2 _content];
     goto LABEL_8;
   }
 
@@ -75,10 +75,10 @@ LABEL_6:
   }
 
   v4 = 0;
-  v5 = @"_Cell_";
+  _content = @"_Cell_";
 LABEL_8:
   v6 = [_UICollectionViewItemKey alloc];
-  v7 = [a2 indexPath];
+  indexPath = [a2 indexPath];
   if (a2)
   {
     v8 = (*(a2 + 288) >> 3) & 1;
@@ -89,28 +89,28 @@ LABEL_8:
     LOBYTE(v8) = 0;
   }
 
-  v9 = [(_UICollectionViewItemKey *)v6 initWithType:v4 indexPath:v7 identifier:v5 clone:v8];
+  v9 = [(_UICollectionViewItemKey *)v6 initWithType:v4 indexPath:indexPath identifier:_content clone:v8];
 
   return v9;
 }
 
-- (id)initWithType:(void *)a3 indexPath:(void *)a4 identifier:(char)a5 clone:
+- (id)initWithType:(void *)type indexPath:(void *)path identifier:(char)identifier clone:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = _UICollectionViewItemKey;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   v10 = v9;
   if (v9)
   {
     v9[4] = a2;
-    objc_storeStrong(v9 + 1, a3);
-    objc_storeStrong(v10 + 2, a4);
-    *(v10 + 24) = a5;
+    objc_storeStrong(v9 + 1, type);
+    objc_storeStrong(v10 + 2, path);
+    *(v10 + 24) = identifier;
   }
 
   return v10;
@@ -136,7 +136,7 @@ LABEL_5:
     }
 
     v7 = indexPath;
-    v8 = [(NSIndexPath *)v7 _ui_shortDescription];
+    _ui_shortDescription = [(NSIndexPath *)v7 _ui_shortDescription];
     isClone = self->_isClone;
 
     v10 = &stru_1EFB14550;
@@ -145,7 +145,7 @@ LABEL_5:
       v10 = @" (C)";
     }
 
-    v11 = [v4 stringWithFormat:@"%@ Type = C IndexPath = %@%@", v5, v8, v10];
+    v11 = [v4 stringWithFormat:@"%@ Type = C IndexPath = %@%@", v5, _ui_shortDescription, v10];
     goto LABEL_19;
   }
 
@@ -159,9 +159,9 @@ LABEL_5:
       v5 = [(_UICollectionViewItemKey *)&v24 description];
       identifier = self->_identifier;
       v14 = self->_indexPath;
-      v8 = identifier;
-      v20 = [(NSIndexPath *)v14 _ui_shortDescription];
-      v16 = v20;
+      _ui_shortDescription = identifier;
+      _ui_shortDescription2 = [(NSIndexPath *)v14 _ui_shortDescription];
+      v16 = _ui_shortDescription2;
       if (self->_isClone)
       {
         v21 = @" (C)";
@@ -172,7 +172,7 @@ LABEL_5:
         v21 = &stru_1EFB14550;
       }
 
-      [v18 stringWithFormat:@"%@ Type = DV ReuseID = %@ IndexPath = %@%@", v5, v8, v20, v21];
+      [v18 stringWithFormat:@"%@ Type = DV ReuseID = %@ IndexPath = %@%@", v5, _ui_shortDescription, _ui_shortDescription2, v21];
       goto LABEL_18;
     case 1uLL:
       v12 = MEMORY[0x1E696AEC0];
@@ -181,9 +181,9 @@ LABEL_5:
       v5 = [(_UICollectionViewItemKey *)&v25 description];
       v13 = self->_identifier;
       v14 = self->_indexPath;
-      v8 = v13;
-      v15 = [(NSIndexPath *)v14 _ui_shortDescription];
-      v16 = v15;
+      _ui_shortDescription = v13;
+      _ui_shortDescription3 = [(NSIndexPath *)v14 _ui_shortDescription];
+      v16 = _ui_shortDescription3;
       if (self->_isClone)
       {
         v17 = @" (C)";
@@ -194,7 +194,7 @@ LABEL_5:
         v17 = &stru_1EFB14550;
       }
 
-      [v12 stringWithFormat:@"%@ Type = SV Kind = %@ IndexPath = %@%@", v5, v8, v15, v17];
+      [v12 stringWithFormat:@"%@ Type = SV Kind = %@ IndexPath = %@%@", v5, _ui_shortDescription, _ui_shortDescription3, v17];
       v11 = LABEL_18:;
 
 LABEL_19:
@@ -238,16 +238,16 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->_type == v4[4] && [(NSString *)self->_identifier isEqualToString:v4[2]]&& [(NSIndexPath *)self->_indexPath isEqual:v4[1]]&& self->_isClone == *(v4 + 24);
+  v6 = v5 == objc_opt_class() && self->_type == equalCopy[4] && [(NSString *)self->_identifier isEqualToString:equalCopy[2]]&& [(NSIndexPath *)self->_indexPath isEqual:equalCopy[1]]&& self->_isClone == *(equalCopy + 24);
 
   return v6;
 }

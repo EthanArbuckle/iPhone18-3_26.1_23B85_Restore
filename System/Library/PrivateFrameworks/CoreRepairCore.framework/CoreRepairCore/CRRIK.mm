@@ -1,9 +1,9 @@
 @interface CRRIK
 - (BOOL)create;
-- (BOOL)createWithKeyBlob:(id)a3;
-- (BOOL)verify:(id)a3 signature:(id)a4;
+- (BOOL)createWithKeyBlob:(id)blob;
+- (BOOL)verify:(id)verify signature:(id)signature;
 - (CRRIK)init;
-- (CRRIK)initWithKeyBlob:(id)a3;
+- (CRRIK)initWithKeyBlob:(id)blob;
 - (id)attestationBlob;
 - (id)keyBlob;
 - (id)pubKeyBlob;
@@ -32,14 +32,14 @@
   return v4;
 }
 
-- (CRRIK)initWithKeyBlob:(id)a3
+- (CRRIK)initWithKeyBlob:(id)blob
 {
-  v4 = a3;
+  blobCopy = blob;
   v9.receiver = self;
   v9.super_class = CRRIK;
   v5 = [(CRRIK *)&v9 init];
   v6 = v5;
-  if (v5 && ![(CRRIK *)v5 createWithKeyBlob:v4])
+  if (v5 && ![(CRRIK *)v5 createWithKeyBlob:blobCopy])
   {
     v7 = 0;
   }
@@ -127,15 +127,15 @@
   return v3;
 }
 
-- (BOOL)verify:(id)a3 signature:(id)a4
+- (BOOL)verify:(id)verify signature:(id)signature
 {
-  v6 = a3;
-  v7 = a4;
+  verifyCopy = verify;
+  signatureCopy = signature;
   v8 = [(CRRIK *)self rk];
   v9 = 0;
-  if (v7 && v6 && v8)
+  if (signatureCopy && verifyCopy && v8)
   {
-    if (aks_ref_key_verify_sig(-[CRRIK rk](self, "rk"), 0, 0, [v6 bytes], objc_msgSend(v6, "length"), objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length")))
+    if (aks_ref_key_verify_sig(-[CRRIK rk](self, "rk"), 0, 0, [verifyCopy bytes], objc_msgSend(verifyCopy, "length"), objc_msgSend(signatureCopy, "bytes"), objc_msgSend(signatureCopy, "length")))
     {
       v10 = handleForCategory(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -269,14 +269,14 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)createWithKeyBlob:(id)a3
+- (BOOL)createWithKeyBlob:(id)blob
 {
-  v4 = a3;
-  v5 = v4;
+  blobCopy = blob;
+  v5 = blobCopy;
   v11 = 0;
-  if (v4)
+  if (blobCopy)
   {
-    [v4 bytes];
+    [blobCopy bytes];
     [v5 length];
     v6 = aks_ref_key_create_with_blob();
     v7 = v6 == 0;

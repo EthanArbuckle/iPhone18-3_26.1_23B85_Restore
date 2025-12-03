@@ -1,23 +1,23 @@
 @interface ICDocCamImageSequenceAnalyzer
-- (ICDocCamImageSequenceAnalyzer)initWithOptions:(id)a3 callback:(id)a4;
-- (void)addFrame:(__CVBuffer *)a3 metaData:(id)a4 frameOptions:(id)a5 rectangleRequest:(id)a6 pixelFocalLength:(float)a7 cameraIntrinsicData:(__CFData *)a8;
+- (ICDocCamImageSequenceAnalyzer)initWithOptions:(id)options callback:(id)callback;
+- (void)addFrame:(__CVBuffer *)frame metaData:(id)data frameOptions:(id)options rectangleRequest:(id)request pixelFocalLength:(float)length cameraIntrinsicData:(__CFData *)intrinsicData;
 - (void)dealloc;
 @end
 
 @implementation ICDocCamImageSequenceAnalyzer
 
-- (ICDocCamImageSequenceAnalyzer)initWithOptions:(id)a3 callback:(id)a4
+- (ICDocCamImageSequenceAnalyzer)initWithOptions:(id)options callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  callbackCopy = callback;
   v32.receiver = self;
   v32.super_class = ICDocCamImageSequenceAnalyzer;
   v8 = [(ICDocCamImageSequenceAnalyzer *)&v32 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     frameArray = v8->_frameArray;
-    v8->_frameArray = v9;
+    v8->_frameArray = array;
 
     v11 = dispatch_semaphore_create(1);
     frameArraySem = v8->_frameArraySem;
@@ -28,7 +28,7 @@
     dq = v8->_dq;
     v8->_dq = v14;
 
-    v16 = _Block_copy(v7);
+    v16 = _Block_copy(callbackCopy);
     callback = v8->_callback;
     v8->_callback = v16;
 
@@ -36,7 +36,7 @@
     seqHandler = v8->_seqHandler;
     v8->_seqHandler = v18;
 
-    v20 = [v6 mutableCopy];
+    v20 = [optionsCopy mutableCopy];
     sessionOptions = v8->_sessionOptions;
     v8->_sessionOptions = v20;
 
@@ -45,9 +45,9 @@
     if (v22)
     {
       v23 = [(NSDictionary *)v8->_sessionOptions objectForKeyedSubscript:@"ICDocCamImageSequenceAnalyzer_MaxBufferQueueSize"];
-      v24 = [v23 intValue];
+      intValue = [v23 intValue];
 
-      v25 = dispatch_semaphore_create(v24);
+      v25 = dispatch_semaphore_create(intValue);
     }
 
     else
@@ -89,14 +89,14 @@
   [(ICDocCamImageSequenceAnalyzer *)&v2 dealloc];
 }
 
-- (void)addFrame:(__CVBuffer *)a3 metaData:(id)a4 frameOptions:(id)a5 rectangleRequest:(id)a6 pixelFocalLength:(float)a7 cameraIntrinsicData:(__CFData *)a8
+- (void)addFrame:(__CVBuffer *)frame metaData:(id)data frameOptions:(id)options rectangleRequest:(id)request pixelFocalLength:(float)length cameraIntrinsicData:(__CFData *)intrinsicData
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a5;
+  dataCopy = data;
+  requestCopy = request;
+  optionsCopy = options;
   v17 = objc_alloc_init(ICDocCamImageSequenceFrame);
-  [(ICDocCamImageSequenceFrame *)v17 setPb:CVPixelBufferRetain(a3)];
-  [(ICDocCamImageSequenceFrame *)v17 setFrameOptions:v16];
+  [(ICDocCamImageSequenceFrame *)v17 setPb:CVPixelBufferRetain(frame)];
+  [(ICDocCamImageSequenceFrame *)v17 setFrameOptions:optionsCopy];
 
   if (!self->_bSynchronous)
   {
@@ -115,11 +115,11 @@
   aBlock[2] = __118__ICDocCamImageSequenceAnalyzer_addFrame_metaData_frameOptions_rectangleRequest_pixelFocalLength_cameraIntrinsicData___block_invoke;
   aBlock[3] = &unk_278F934A8;
   aBlock[4] = self;
-  v29 = a8;
-  v30 = a7;
-  v19 = v15;
+  intrinsicDataCopy = intrinsicData;
+  lengthCopy = length;
+  v19 = requestCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = dataCopy;
   v28 = v20;
   v21 = _Block_copy(aBlock);
   v22 = v21;

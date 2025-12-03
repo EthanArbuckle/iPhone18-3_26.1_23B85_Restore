@@ -1,22 +1,22 @@
 @interface RAPPlaceCorrectableString
 - (BOOL)isEdited;
 - (NSString)localizedTitle;
-- (RAPPlaceCorrectableString)initWithKind:(int64_t)a3 originalValue:(id)a4;
+- (RAPPlaceCorrectableString)initWithKind:(int64_t)kind originalValue:(id)value;
 - (void)_invokeChangeHandlers;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 - (void)revertCorrections;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation RAPPlaceCorrectableString
 
 - (BOOL)isEdited
 {
-  v3 = [(RAPPlaceCorrectableString *)self value];
-  v4 = v3;
-  if (v3)
+  value = [(RAPPlaceCorrectableString *)self value];
+  v4 = value;
+  if (value)
   {
-    v5 = v3;
+    v5 = value;
   }
 
   else
@@ -31,11 +31,11 @@
   [v7 formUnionWithCharacterSet:v8];
 
   v9 = [(__CFString *)v6 stringByTrimmingCharactersInSet:v7];
-  v10 = [(RAPPlaceCorrectableString *)self originalValue];
-  v11 = v10;
-  if (v10)
+  originalValue = [(RAPPlaceCorrectableString *)self originalValue];
+  v11 = originalValue;
+  if (originalValue)
   {
-    v12 = v10;
+    v12 = originalValue;
   }
 
   else
@@ -53,16 +53,16 @@
 
 - (void)revertCorrections
 {
-  v3 = [(RAPPlaceCorrectableString *)self originalValue];
-  [(RAPPlaceCorrectableString *)self setValue:v3];
+  originalValue = [(RAPPlaceCorrectableString *)self originalValue];
+  [(RAPPlaceCorrectableString *)self setValue:originalValue];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_value] & 1) == 0)
+  valueCopy = value;
+  if (([valueCopy isEqualToString:self->_value] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [valueCopy copy];
     value = self->_value;
     self->_value = v4;
 
@@ -75,10 +75,10 @@
   localizedTitle = self->_localizedTitle;
   if (!localizedTitle)
   {
-    v4 = [(RAPPlaceCorrectableString *)self kind];
-    if (v4 <= 0x15 && ((0x30FFFFu >> v4) & 1) != 0)
+    kind = [(RAPPlaceCorrectableString *)self kind];
+    if (kind <= 0x15 && ((0x30FFFFu >> kind) & 1) != 0)
     {
-      v5 = off_101624FB0[v4];
+      v5 = off_101624FB0[kind];
       v6 = +[NSBundle mainBundle];
       v7 = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
     }
@@ -97,17 +97,17 @@
   return localizedTitle;
 }
 
-- (RAPPlaceCorrectableString)initWithKind:(int64_t)a3 originalValue:(id)a4
+- (RAPPlaceCorrectableString)initWithKind:(int64_t)kind originalValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = RAPPlaceCorrectableString;
   v7 = [(RAPPlaceCorrectableString *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_kind = a3;
-    v9 = [v6 copy];
+    v7->_kind = kind;
+    v9 = [valueCopy copy];
     originalValue = v8->_originalValue;
     v8->_originalValue = v9;
 
@@ -125,8 +125,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_observers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -137,7 +137,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -145,17 +145,17 @@
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -166,8 +166,8 @@
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 @end

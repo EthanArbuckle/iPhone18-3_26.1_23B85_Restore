@@ -11,30 +11,30 @@
 {
   if (a3)
   {
-    return [a1 removeObjectForKey:?];
+    return [self removeObjectForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_addEntriesFromNonNilDictionary:()VK
 {
   if (a3)
   {
-    return [a1 addEntriesFromDictionary:?];
+    return [self addEntriesFromDictionary:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_setNonNilObject:()VK forKey:
 {
   if (a3)
   {
-    return [a1 setObject:? forKeyedSubscript:?];
+    return [self setObject:? forKeyedSubscript:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_setNonNilObject:()VK forNonNilKey:
@@ -43,11 +43,11 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKeyedSubscript:?];
+      return [self setObject:? forKeyedSubscript:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

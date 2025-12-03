@@ -1,25 +1,25 @@
 @interface _SBHardwareButtonPortalObservationToken
-- (_SBHardwareButtonPortalObservationToken)initWithObserverBlock:(id)a3 invalidationBlock:(id)a4;
-- (void)didUpdateWithView:(id)a3;
+- (_SBHardwareButtonPortalObservationToken)initWithObserverBlock:(id)block invalidationBlock:(id)invalidationBlock;
+- (void)didUpdateWithView:(id)view;
 - (void)invalidate;
 @end
 
 @implementation _SBHardwareButtonPortalObservationToken
 
-- (_SBHardwareButtonPortalObservationToken)initWithObserverBlock:(id)a3 invalidationBlock:(id)a4
+- (_SBHardwareButtonPortalObservationToken)initWithObserverBlock:(id)block invalidationBlock:(id)invalidationBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  invalidationBlockCopy = invalidationBlock;
   v14.receiver = self;
   v14.super_class = _SBHardwareButtonPortalObservationToken;
   v8 = [(_SBHardwareButtonPortalObservationToken *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     observerBlock = v8->_observerBlock;
     v8->_observerBlock = v9;
 
-    v11 = [v7 copy];
+    v11 = [invalidationBlockCopy copy];
     invalidationBlock = v8->_invalidationBlock;
     v8->_invalidationBlock = v11;
   }
@@ -27,12 +27,12 @@
   return v8;
 }
 
-- (void)didUpdateWithView:(id)a3
+- (void)didUpdateWithView:(id)view
 {
   observerBlock = self->_observerBlock;
   if (observerBlock)
   {
-    observerBlock[2](observerBlock, a3);
+    observerBlock[2](observerBlock, view);
   }
 }
 

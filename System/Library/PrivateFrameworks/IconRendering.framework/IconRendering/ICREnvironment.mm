@@ -20,9 +20,9 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR___ICREnvironment__shortInfoString);
-  v3 = self;
+  selfCopy = self;
   free(v2);
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = ICREnvironment;
   [(ICREnvironment *)&v4 dealloc];
 }

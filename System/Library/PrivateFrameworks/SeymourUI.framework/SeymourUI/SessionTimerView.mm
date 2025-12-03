@@ -1,21 +1,21 @@
 @interface SessionTimerView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI16SessionTimerView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI16SessionTimerView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)updateDuration:(double)a3;
+- (void)updateDuration:(double)duration;
 @end
 
 @implementation SessionTimerView
 
-- (void)updateDuration:(double)a3
+- (void)updateDuration:(double)duration
 {
-  v4 = self;
-  sub_20BDFBFEC(a3);
+  selfCopy = self;
+  sub_20BDFBFEC(duration);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20BDFC148();
   v5 = v4;
 
@@ -29,7 +29,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI16SessionTimerView_animator);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 stopAnimation_];
@@ -40,7 +40,7 @@
   [(SessionTimerView *)&v5 dealloc];
 }
 
-- (_TtC9SeymourUI16SessionTimerView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16SessionTimerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

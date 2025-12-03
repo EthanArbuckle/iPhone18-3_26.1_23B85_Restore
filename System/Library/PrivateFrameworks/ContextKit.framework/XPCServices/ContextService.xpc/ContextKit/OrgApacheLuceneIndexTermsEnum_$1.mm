@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneIndexTermsEnum_$1
 - (id)attributes;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexTermsEnum_$1
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -20,9 +20,9 @@
   objc_sync_enter(self);
   v5.receiver = self;
   v5.super_class = OrgApacheLuceneIndexTermsEnum__1;
-  v3 = [(OrgApacheLuceneIndexTermsEnum *)&v5 attributes];
+  attributes = [(OrgApacheLuceneIndexTermsEnum *)&v5 attributes];
   objc_sync_exit(self);
-  return v3;
+  return attributes;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface EmptyViewFactory.MissingLayer
 - (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)init;
-- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithCoder:(id)a3;
-- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithCoder:(id)coder;
+- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation EmptyViewFactory.MissingLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  contextCopy = context;
   EnvironmentValues.init()(&v7);
   v6 = v7;
-  specialized static GraphicsContext.renderingTo(cgContext:environment:deviceScale:content:)(v5, &v6, 0, 1, v4);
+  specialized static GraphicsContext.renderingTo(cgContext:environment:deviceScale:content:)(contextCopy, &v6, 0, 1, selfCopy);
 }
 
 - (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)init
@@ -23,7 +23,7 @@
   return [(EmptyViewFactory.MissingLayer *)&v3 init];
 }
 
-- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithLayer:(id)a3
+- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -39,12 +39,12 @@
   return v6;
 }
 
-- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithCoder:(id)a3
+- (_TtCV7SwiftUI16EmptyViewFactoryP33_7A45621CE16223183E03CAC88E8C5E6012MissingLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(EmptyViewFactory.MissingLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(EmptyViewFactory.MissingLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -11,37 +11,37 @@
 
 - (id)backingCardSection
 {
-  if ([a1 conformsToProtocol:&unk_2856014C0])
+  if ([self conformsToProtocol:&unk_2856014C0])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)parametersForInteraction:()CRCardSection
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 intent];
-  v31 = [v4 intentResponse];
-  v32 = v5;
-  v6 = [v5 _intentInstanceDescription];
-  v7 = [v6 name];
-  v30 = [v6 responseName];
+  intent = [v4 intent];
+  intentResponse = [v4 intentResponse];
+  v32 = intent;
+  _intentInstanceDescription = [intent _intentInstanceDescription];
+  name = [_intentInstanceDescription name];
+  responseName = [_intentInstanceDescription responseName];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [a1 backingCardSection];
-  v9 = [v8 parameterKeyPaths];
+  backingCardSection = [self backingCardSection];
+  parameterKeyPaths = [backingCardSection parameterKeyPaths];
 
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v10 = [parameterKeyPaths countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v10)
   {
 
@@ -60,7 +60,7 @@ LABEL_23:
   }
 
   v11 = v10;
-  v28 = v6;
+  v28 = _intentInstanceDescription;
   v29 = v4;
   v12 = 0;
   v13 = *v34;
@@ -70,7 +70,7 @@ LABEL_23:
     {
       if (*v34 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(parameterKeyPaths);
       }
 
       v15 = *(*(&v33 + 1) + 8 * i);
@@ -89,7 +89,7 @@ LABEL_23:
         v22 = [v15 substringFromIndex:v19 + v20];
       }
 
-      if (([v21 isEqualToString:v7] & 1) != 0 || objc_msgSend(v21, "isEqualToString:", v30))
+      if (([v21 isEqualToString:name] & 1) != 0 || objc_msgSend(v21, "isEqualToString:", responseName))
       {
         v23 = [MEMORY[0x277CD3E50] parameterForClass:objc_opt_class() keyPath:v22];
         if (v23)
@@ -105,12 +105,12 @@ LABEL_23:
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v11 = [parameterKeyPaths countByEnumeratingWithState:&v33 objects:v37 count:16];
   }
 
   while (v11);
 
-  v6 = v28;
+  _intentInstanceDescription = v28;
   v4 = v29;
   if (!v12)
   {
@@ -129,33 +129,33 @@ LABEL_26:
 {
   v28 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEB18];
-  v3 = [a1 backingCardSection];
-  v4 = [v3 commands];
-  v5 = [v2 arrayWithArray:v4];
+  backingCardSection = [self backingCardSection];
+  commands = [backingCardSection commands];
+  v5 = [v2 arrayWithArray:commands];
 
-  v6 = [a1 backingCardSection];
-  v7 = [v6 nextCard];
+  backingCardSection2 = [self backingCardSection];
+  nextCard = [backingCardSection2 nextCard];
 
-  if (v7)
+  if (nextCard)
   {
     v8 = objc_alloc_init(CRNextCardCommand);
-    v9 = [a1 backingCardSection];
-    v10 = [v9 nextCard];
-    [(CRNextCardCommand *)v8 setNextCard:v10];
+    backingCardSection3 = [self backingCardSection];
+    nextCard2 = [backingCardSection3 nextCard];
+    [(CRNextCardCommand *)v8 setNextCard:nextCard2];
 
     [v5 addObject:v8];
   }
 
-  v11 = [a1 backingCardSection];
-  v12 = [v11 punchoutOptions];
+  backingCardSection4 = [self backingCardSection];
+  punchoutOptions = [backingCardSection4 punchoutOptions];
 
-  if (v12)
+  if (punchoutOptions)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = v12;
+    v13 = punchoutOptions;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
@@ -192,41 +192,41 @@ LABEL_26:
 
 - (BOOL)hasNextCard
 {
-  v1 = [a1 backingCardSection];
-  v2 = [v1 nextCard];
-  v3 = v2 != 0;
+  backingCardSection = [self backingCardSection];
+  nextCard = [backingCardSection nextCard];
+  v3 = nextCard != 0;
 
   return v3;
 }
 
 - (id)cardSectionIdentifier
 {
-  v2 = [a1 cardSectionId];
-  v3 = v2;
-  if (!v2 || ![v2 length] || objc_msgSend(v3, "isEqualToString:", @"0"))
+  cardSectionId = [self cardSectionId];
+  v3 = cardSectionId;
+  if (!cardSectionId || ![cardSectionId length] || objc_msgSend(v3, "isEqualToString:", @"0"))
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v6 = CRLogContextCards;
     if (os_log_type_enabled(CRLogContextCards, OS_LOG_TYPE_ERROR))
     {
-      [(SFCardSection(CRCardSection) *)a1 cardSectionIdentifier];
+      [(SFCardSection(CRCardSection) *)self cardSectionIdentifier];
     }
 
-    [a1 setCardSectionId:v5];
+    [self setCardSectionId:uUIDString];
   }
 
-  v7 = [a1 cardSectionId];
+  cardSectionId2 = [self cardSectionId];
 
-  return v7;
+  return cardSectionId2;
 }
 
 - (void)cardSectionIdentifier
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_24327C000, log, OS_LOG_TYPE_ERROR, "Card section %@ does not have a card section identifier. This is a requirement. Category CRCardSection on SFCardSection is setting one (%@) on the client's behalf as a workaround", &v4, 0x16u);

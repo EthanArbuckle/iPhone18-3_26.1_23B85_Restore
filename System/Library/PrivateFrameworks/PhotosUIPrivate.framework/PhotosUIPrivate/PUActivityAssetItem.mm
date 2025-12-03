@@ -1,10 +1,10 @@
 @interface PUActivityAssetItem
-+ (id)itemsForAssets:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActivityAssetItem:(id)a3;
++ (id)itemsForAssets:(id)assets;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActivityAssetItem:(id)item;
 - (PUActivityAssetItem)init;
-- (PUActivityAssetItem)initWithAsset:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUActivityAssetItem)initWithAsset:(id)asset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localIdentifier;
 - (unint64_t)hash;
@@ -14,24 +14,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PUActivityAssetItem *)self asset];
-  v3 = [v2 hash];
+  asset = [(PUActivityAssetItem *)self asset];
+  v3 = [asset hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PUActivityAssetItem *)self isEqualToActivityAssetItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PUActivityAssetItem *)self isEqualToActivityAssetItem:v5];
   }
 
   return v6;
@@ -91,24 +91,24 @@
   return v14;
 }
 
-- (BOOL)isEqualToActivityAssetItem:(id)a3
+- (BOOL)isEqualToActivityAssetItem:(id)item
 {
-  v4 = a3;
-  if (self == v4)
+  itemCopy = item;
+  if (self == itemCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    v5 = [(PUActivityAssetItem *)self asset];
-    v6 = [(PUActivityAssetItem *)v4 asset];
-    v7 = [v5 isEqual:v6];
+    asset = [(PUActivityAssetItem *)self asset];
+    asset2 = [(PUActivityAssetItem *)itemCopy asset];
+    v7 = [asset isEqual:asset2];
 
-    if (v7 && (v8 = [(PUActivityAssetItem *)self excludeLiveness], v8 == [(PUActivityAssetItem *)v4 excludeLiveness]) && (v9 = [(PUActivityAssetItem *)self excludeLocation], v9 == [(PUActivityAssetItem *)v4 excludeLocation]) && (v10 = [(PUActivityAssetItem *)self excludeCaption], v10 == [(PUActivityAssetItem *)v4 excludeCaption]))
+    if (v7 && (v8 = [(PUActivityAssetItem *)self excludeLiveness], v8 == [(PUActivityAssetItem *)itemCopy excludeLiveness]) && (v9 = [(PUActivityAssetItem *)self excludeLocation], v9 == [(PUActivityAssetItem *)itemCopy excludeLocation]) && (v10 = [(PUActivityAssetItem *)self excludeCaption], v10 == [(PUActivityAssetItem *)itemCopy excludeCaption]))
     {
-      v13 = [(PUActivityAssetItem *)self excludeAccessibilityDescription];
-      v11 = v13 ^ [(PUActivityAssetItem *)v4 excludeAccessibilityDescription]^ 1;
+      excludeAccessibilityDescription = [(PUActivityAssetItem *)self excludeAccessibilityDescription];
+      v11 = excludeAccessibilityDescription ^ [(PUActivityAssetItem *)itemCopy excludeAccessibilityDescription]^ 1;
     }
 
     else
@@ -123,42 +123,42 @@
 - (id)localIdentifier
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  v3 = [(PUActivityAssetItem *)self asset];
-  v4 = [v3 localIdentifier];
-  v5 = v4;
+  asset = [(PUActivityAssetItem *)self asset];
+  localIdentifier = [asset localIdentifier];
+  v5 = localIdentifier;
   v6 = @"unknown";
-  if (v4)
+  if (localIdentifier)
   {
-    v6 = v4;
+    v6 = localIdentifier;
   }
 
-  v7 = [(PUActivityAssetItem *)self excludeLiveness];
+  excludeLiveness = [(PUActivityAssetItem *)self excludeLiveness];
   v8 = @"original";
-  if (v7)
+  if (excludeLiveness)
   {
     v8 = @"still";
   }
 
   v18[1] = v8;
-  v9 = [(PUActivityAssetItem *)self excludeLocation];
+  excludeLocation = [(PUActivityAssetItem *)self excludeLocation];
   v10 = @"withLocation";
-  if (v9)
+  if (excludeLocation)
   {
     v10 = @"noLocation";
   }
 
   v18[2] = v10;
-  v11 = [(PUActivityAssetItem *)self excludeCaption];
+  excludeCaption = [(PUActivityAssetItem *)self excludeCaption];
   v12 = @"withCaption";
-  if (v11)
+  if (excludeCaption)
   {
     v12 = @"noCaption";
   }
 
   v18[3] = v12;
-  v13 = [(PUActivityAssetItem *)self excludeAccessibilityDescription];
+  excludeAccessibilityDescription = [(PUActivityAssetItem *)self excludeAccessibilityDescription];
   v14 = @"withAXDescription";
-  if (v13)
+  if (excludeAccessibilityDescription)
   {
     v14 = @"noAXDescription";
   }
@@ -171,9 +171,9 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAsset:", self->_asset}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAsset:", self->_asset}];
   *(result + 8) = self->_excludeLiveness;
   *(result + 9) = self->_excludeLocation;
   *(result + 10) = self->_excludeCaption;
@@ -181,13 +181,13 @@
   return result;
 }
 
-- (PUActivityAssetItem)initWithAsset:(id)a3
+- (PUActivityAssetItem)initWithAsset:(id)asset
 {
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUActivityAssetItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityAssetItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v11.receiver = self;
@@ -196,7 +196,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_asset, a3);
+    objc_storeStrong(&v7->_asset, asset);
   }
 
   return v8;
@@ -204,22 +204,22 @@
 
 - (PUActivityAssetItem)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUActivityAssetItem.m" lineNumber:25 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityAssetItem.m" lineNumber:25 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-+ (id)itemsForAssets:(id)a3
++ (id)itemsForAssets:(id)assets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  assetsCopy = assets;
+  v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

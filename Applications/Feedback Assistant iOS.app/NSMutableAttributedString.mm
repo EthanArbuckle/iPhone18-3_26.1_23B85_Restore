@@ -1,34 +1,34 @@
 @interface NSMutableAttributedString
-+ (id)linkedAttributedFromString:(id)a3 withFont:(id)a4;
-+ (id)linkedAttributedFromString:(id)a3 withFont:(id)a4 textColor:(id)a5;
++ (id)linkedAttributedFromString:(id)string withFont:(id)font;
++ (id)linkedAttributedFromString:(id)string withFont:(id)font textColor:(id)color;
 @end
 
 @implementation NSMutableAttributedString
 
-+ (id)linkedAttributedFromString:(id)a3 withFont:(id)a4
++ (id)linkedAttributedFromString:(id)string withFont:(id)font
 {
-  v6 = a4;
-  v7 = a3;
+  fontCopy = font;
+  stringCopy = string;
   v8 = +[UIColor labelColor];
-  v9 = [a1 linkedAttributedFromString:v7 withFont:v6 textColor:v8];
+  v9 = [self linkedAttributedFromString:stringCopy withFont:fontCopy textColor:v8];
 
   return v9;
 }
 
-+ (id)linkedAttributedFromString:(id)a3 withFont:(id)a4 textColor:(id)a5
++ (id)linkedAttributedFromString:(id)string withFont:(id)font textColor:(id)color
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = &stru_1000E2210;
-  if (a3)
+  fontCopy = font;
+  colorCopy = color;
+  stringCopy = &stru_1000E2210;
+  if (string)
   {
-    v9 = a3;
+    stringCopy = string;
   }
 
-  v10 = v9;
-  if (v7)
+  v10 = stringCopy;
+  if (fontCopy)
   {
-    v11 = v7;
+    v11 = fontCopy;
   }
 
   else
@@ -42,7 +42,7 @@
   v26[0] = NSFontAttributeName;
   v26[1] = NSForegroundColorAttributeName;
   v27[0] = v12;
-  v27[1] = v8;
+  v27[1] = colorCopy;
   v14 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   v15 = [v13 initWithString:v10 attributes:v14];
 

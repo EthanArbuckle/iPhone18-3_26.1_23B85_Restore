@@ -1,44 +1,44 @@
 @interface MPMediaLibraryEntityTranslationContext
 - (NSString)personID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPMediaLibraryEntityTranslationContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(MPMediaLibraryEntityTranslationContext *)self mediaLibrary];
-  [v5 setMediaLibrary:v6];
+  mediaLibrary = [(MPMediaLibraryEntityTranslationContext *)self mediaLibrary];
+  [v5 setMediaLibrary:mediaLibrary];
 
-  v7 = [(MPMediaLibraryEntityTranslationContext *)self allowedEntityIdentifiers];
-  v8 = [v7 copyWithZone:a3];
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)self allowedEntityIdentifiers];
+  v8 = [allowedEntityIdentifiers copyWithZone:zone];
   [v5 setAllowedEntityIdentifiers:v8];
 
-  v9 = [(MPMediaLibraryEntityTranslationContext *)self scopedContainers];
-  v10 = [v9 copyWithZone:a3];
+  scopedContainers = [(MPMediaLibraryEntityTranslationContext *)self scopedContainers];
+  v10 = [scopedContainers copyWithZone:zone];
   [v5 setScopedContainers:v10];
 
   [v5 setMultiQuery:{-[MPMediaLibraryEntityTranslationContext isMultiQuery](self, "isMultiQuery")}];
   [v5 setSortUsingAllowedEntityIdentifiers:{-[MPMediaLibraryEntityTranslationContext sortUsingAllowedEntityIdentifiers](self, "sortUsingAllowedEntityIdentifiers")}];
   [v5 setFilteringOptions:{-[MPMediaLibraryEntityTranslationContext filteringOptions](self, "filteringOptions")}];
-  v11 = [(MPMediaLibraryEntityTranslationContext *)self modelKind];
-  [v5 setModelKind:v11];
+  modelKind = [(MPMediaLibraryEntityTranslationContext *)self modelKind];
+  [v5 setModelKind:modelKind];
 
-  v12 = [(MPMediaLibraryEntityTranslationContext *)self personID];
-  v13 = [v12 copyWithZone:a3];
+  personID = [(MPMediaLibraryEntityTranslationContext *)self personID];
+  v13 = [personID copyWithZone:zone];
   [v5 setPersonID:v13];
 
-  v14 = [(MPMediaLibraryEntityTranslationContext *)self filterText];
-  v15 = [v14 copyWithZone:a3];
+  filterText = [(MPMediaLibraryEntityTranslationContext *)self filterText];
+  v15 = [filterText copyWithZone:zone];
   [v5 setFilterText:v15];
 
-  v16 = [(MPMediaLibraryEntityTranslationContext *)self propertyFilters];
-  v17 = [v16 copyWithZone:a3];
+  propertyFilters = [(MPMediaLibraryEntityTranslationContext *)self propertyFilters];
+  v17 = [propertyFilters copyWithZone:zone];
   [v5 setPropertyFilters:v17];
 
-  v18 = [(MPMediaLibraryEntityTranslationContext *)self identifierSourcePrefix];
-  v19 = [v18 copyWithZone:a3];
+  identifierSourcePrefix = [(MPMediaLibraryEntityTranslationContext *)self identifierSourcePrefix];
+  v19 = [identifierSourcePrefix copyWithZone:zone];
   [v5 setIdentifierSourcePrefix:v19];
 
   return v5;

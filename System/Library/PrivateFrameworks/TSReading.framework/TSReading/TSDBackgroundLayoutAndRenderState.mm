@@ -1,18 +1,18 @@
 @interface TSDBackgroundLayoutAndRenderState
-- (TSDBackgroundLayoutAndRenderState)initWithDelegate:(id)a3;
+- (TSDBackgroundLayoutAndRenderState)initWithDelegate:(id)delegate;
 - (void)setNeedsLayoutAndRender;
 - (void)setNeedsLayoutForTilingLayers;
 @end
 
 @implementation TSDBackgroundLayoutAndRenderState
 
-- (TSDBackgroundLayoutAndRenderState)initWithDelegate:(id)a3
+- (TSDBackgroundLayoutAndRenderState)initWithDelegate:(id)delegate
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBackgroundLayoutAndRenderState initWithDelegate:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 175, @"This operation must only be performed on the main thread."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 175, @"This operation must only be performed on the main thread."}];
   }
 
   v8.receiver = self;
@@ -20,7 +20,7 @@
   result = [(TSDBackgroundLayoutAndRenderState *)&v8 init];
   if (result)
   {
-    result->mDelegate = a3;
+    result->mDelegate = delegate;
   }
 
   return result;
@@ -30,9 +30,9 @@
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBackgroundLayoutAndRenderState setNeedsLayoutAndRender]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 191, @"This operation must only be performed on the main thread."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 191, @"This operation must only be performed on the main thread."}];
   }
 
   objc_sync_enter(self);
@@ -49,9 +49,9 @@
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBackgroundLayoutAndRenderState setNeedsLayoutForTilingLayers]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 203, @"This operation must only be performed on the main thread."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInteractiveCanvasController.m"), 203, @"This operation must only be performed on the main thread."}];
   }
 
   objc_sync_enter(self);

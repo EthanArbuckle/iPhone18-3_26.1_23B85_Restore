@@ -1,17 +1,17 @@
 @interface LowFuelAction
-- (LowFuelAction)initWithEngineType:(int)a3;
+- (LowFuelAction)initWithEngineType:(int)type;
 @end
 
 @implementation LowFuelAction
 
-- (LowFuelAction)initWithEngineType:(int)a3
+- (LowFuelAction)initWithEngineType:(int)type
 {
   v5.receiver = self;
   v5.super_class = LowFuelAction;
   result = [(LowFuelAction *)&v5 init];
   if (result)
   {
-    result->_engineType = a3;
+    result->_engineType = type;
   }
 
   return result;

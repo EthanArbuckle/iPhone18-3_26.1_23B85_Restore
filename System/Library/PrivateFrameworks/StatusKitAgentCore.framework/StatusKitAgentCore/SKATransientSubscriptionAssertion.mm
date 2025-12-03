@@ -1,8 +1,8 @@
 @interface SKATransientSubscriptionAssertion
 + (id)logger;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransientSubscription:(id)a3;
-- (SKATransientSubscriptionAssertion)initWithSubscriptionIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransientSubscription:(id)subscription;
+- (SKATransientSubscriptionAssertion)initWithSubscriptionIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,10 +10,10 @@
 
 @implementation SKATransientSubscriptionAssertion
 
-- (SKATransientSubscriptionAssertion)initWithSubscriptionIdentifier:(id)a3
+- (SKATransientSubscriptionAssertion)initWithSubscriptionIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SKATransientSubscriptionAssertion;
   v5 = [(SKATransientSubscriptionAssertion *)&v13 init];
@@ -23,11 +23,11 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = identifierCopy;
       _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Creating TransientSubscriptionAssertion for channel %@", buf, 0xCu);
     }
 
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     subscriptionIdentifier = v5->_subscriptionIdentifier;
     v5->_subscriptionIdentifier = v7;
 
@@ -44,37 +44,37 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKATransientSubscriptionAssertion *)self subscriptionIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p subscriptionIdentifier = %@", v4, self, v5];;
+  subscriptionIdentifier = [(SKATransientSubscriptionAssertion *)self subscriptionIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p subscriptionIdentifier = %@", v4, self, subscriptionIdentifier];;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKATransientSubscriptionAssertion *)self isEqualToTransientSubscription:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKATransientSubscriptionAssertion *)self isEqualToTransientSubscription:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToTransientSubscription:(id)a3
+- (BOOL)isEqualToTransientSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  subscriptionCopy = subscription;
+  v5 = subscriptionCopy;
+  if (subscriptionCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(SKATransientSubscriptionAssertion *)v4 subscriptionIdentifier];
-    if (v6 || self->_subscriptionIdentifier)
+    subscriptionIdentifier = [(SKATransientSubscriptionAssertion *)subscriptionCopy subscriptionIdentifier];
+    if (subscriptionIdentifier || self->_subscriptionIdentifier)
     {
-      v7 = [(SKATransientSubscriptionAssertion *)v5 subscriptionIdentifier];
-      v8 = [v7 isEqualToString:self->_subscriptionIdentifier];
+      subscriptionIdentifier2 = [(SKATransientSubscriptionAssertion *)v5 subscriptionIdentifier];
+      v8 = [subscriptionIdentifier2 isEqualToString:self->_subscriptionIdentifier];
     }
 
     else
@@ -88,8 +88,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKATransientSubscriptionAssertion *)self subscriptionIdentifier];
-  v3 = [v2 hash];
+  subscriptionIdentifier = [(SKATransientSubscriptionAssertion *)self subscriptionIdentifier];
+  v3 = [subscriptionIdentifier hash];
 
   return v3;
 }

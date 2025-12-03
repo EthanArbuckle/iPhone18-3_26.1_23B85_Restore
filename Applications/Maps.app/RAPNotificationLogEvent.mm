@@ -1,25 +1,25 @@
 @interface RAPNotificationLogEvent
-+ (id)_buildRequestParamsWithRapId:(id)a3 responseId:(id)a4;
-+ (void)reportNotificationWasShownWithRapId:(id)a3 responseId:(id)a4 notificationType:(id)a5 completion:(id)a6;
-+ (void)reportUserTappedNotificationWithRapId:(id)a3 responseId:(id)a4 notificationType:(id)a5 completion:(id)a6;
++ (id)_buildRequestParamsWithRapId:(id)id responseId:(id)responseId;
++ (void)reportNotificationWasShownWithRapId:(id)id responseId:(id)responseId notificationType:(id)type completion:(id)completion;
++ (void)reportUserTappedNotificationWithRapId:(id)id responseId:(id)responseId notificationType:(id)type completion:(id)completion;
 @end
 
 @implementation RAPNotificationLogEvent
 
-+ (id)_buildRequestParamsWithRapId:(id)a3 responseId:(id)a4
++ (id)_buildRequestParamsWithRapId:(id)id responseId:(id)responseId
 {
-  v5 = a4;
-  v6 = a3;
+  responseIdCopy = responseId;
+  idCopy = id;
   v7 = objc_alloc_init(GEORPRapNotificationLogEvent);
-  [v7 setOriginalRapId:v6];
+  [v7 setOriginalRapId:idCopy];
 
-  [v7 setResponseId:v5];
+  [v7 setResponseId:responseIdCopy];
   v8 = objc_alloc_init(GEORPFeedbackLogEventDetails);
   [v8 setRapNotificationLogEvent:v7];
   v9 = objc_alloc_init(GEORPFeedbackLogEventParameters);
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
-  [v9 setClientEventUuid:v11];
+  uUIDString = [v10 UUIDString];
+  [v9 setClientEventUuid:uUIDString];
 
   v12 = objc_alloc_init(GEORPTimestamp);
   v13 = +[NSDate date];
@@ -36,60 +36,60 @@
   return v16;
 }
 
-+ (void)reportUserTappedNotificationWithRapId:(id)a3 responseId:(id)a4 notificationType:(id)a5 completion:(id)a6
++ (void)reportUserTappedNotificationWithRapId:(id)id responseId:(id)responseId notificationType:(id)type completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [RAPNotificationLogEvent _buildRequestParamsWithRapId:a3 responseId:a4];
-  v12 = [v11 logEventParameters];
-  v13 = [v12 details];
-  v14 = [v13 rapNotificationLogEvent];
-  [v14 setUserInteractedWithNotification:1];
+  completionCopy = completion;
+  typeCopy = type;
+  v11 = [RAPNotificationLogEvent _buildRequestParamsWithRapId:id responseId:responseId];
+  logEventParameters = [v11 logEventParameters];
+  details = [logEventParameters details];
+  rapNotificationLogEvent = [details rapNotificationLogEvent];
+  [rapNotificationLogEvent setUserInteractedWithNotification:1];
 
   v15 = +[GEOMapService sharedService];
-  v16 = [v15 defaultTraits];
+  defaultTraits = [v15 defaultTraits];
 
-  v17 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v11 traits:v16];
+  v17 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v11 traits:defaultTraits];
   [v17 setFeedbackRequestType:7];
   v18 = +[GEOMapService sharedService];
-  v19 = [v18 ticketForFeedbackRequest:v17 traits:v16];
+  v19 = [v18 ticketForFeedbackRequest:v17 traits:defaultTraits];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100D5FD30;
   v21[3] = &unk_101652BF8;
-  v22 = v9;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = completionCopy;
   [v19 submitWithHandler:v21 networkActivity:0];
-  [GEOAPPortal captureUserAction:9003 target:713 value:v10];
+  [GEOAPPortal captureUserAction:9003 target:713 value:typeCopy];
 }
 
-+ (void)reportNotificationWasShownWithRapId:(id)a3 responseId:(id)a4 notificationType:(id)a5 completion:(id)a6
++ (void)reportNotificationWasShownWithRapId:(id)id responseId:(id)responseId notificationType:(id)type completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [RAPNotificationLogEvent _buildRequestParamsWithRapId:a3 responseId:a4];
-  v12 = [v11 logEventParameters];
-  v13 = [v12 details];
-  v14 = [v13 rapNotificationLogEvent];
-  [v14 setUserShownNotification:1];
+  completionCopy = completion;
+  typeCopy = type;
+  v11 = [RAPNotificationLogEvent _buildRequestParamsWithRapId:id responseId:responseId];
+  logEventParameters = [v11 logEventParameters];
+  details = [logEventParameters details];
+  rapNotificationLogEvent = [details rapNotificationLogEvent];
+  [rapNotificationLogEvent setUserShownNotification:1];
 
   v15 = +[GEOMapService sharedService];
-  v16 = [v15 defaultTraits];
+  defaultTraits = [v15 defaultTraits];
 
-  v17 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v11 traits:v16];
+  v17 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v11 traits:defaultTraits];
   [v17 setFeedbackRequestType:7];
   v18 = +[GEOMapService sharedService];
-  v19 = [v18 ticketForFeedbackRequest:v17 traits:v16];
+  v19 = [v18 ticketForFeedbackRequest:v17 traits:defaultTraits];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100D5FEFC;
   v21[3] = &unk_101652BF8;
-  v22 = v9;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = completionCopy;
   [v19 submitWithHandler:v21 networkActivity:0];
-  [GEOAPPortal captureUserAction:9002 target:713 value:v10];
+  [GEOAPPortal captureUserAction:9002 target:713 value:typeCopy];
 }
 
 @end

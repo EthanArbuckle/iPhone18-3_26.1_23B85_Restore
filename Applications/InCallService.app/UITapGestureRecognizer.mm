@@ -1,39 +1,39 @@
 @interface UITapGestureRecognizer
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 tapCount:(unint64_t)a6;
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 tapCount:(unint64_t)a6 touchCount:(unint64_t)a7;
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action;
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action tapCount:(unint64_t)count;
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action tapCount:(unint64_t)count touchCount:(unint64_t)touchCount;
 @end
 
 @implementation UITapGestureRecognizer
 
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UITapGestureRecognizer alloc] initWithTarget:v7 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v9 = [[UITapGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v8 addGestureRecognizer:v9];
+  [viewCopy addGestureRecognizer:v9];
 }
 
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 tapCount:(unint64_t)a6
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action tapCount:(unint64_t)count
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v11 = [[UITapGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v11 setNumberOfTapsRequired:a6];
-  [v10 addGestureRecognizer:v11];
+  [v11 setNumberOfTapsRequired:count];
+  [viewCopy addGestureRecognizer:v11];
 }
 
-+ (void)addTapGestureRecognizerToView:(id)a3 withTarget:(id)a4 action:(SEL)a5 tapCount:(unint64_t)a6 touchCount:(unint64_t)a7
++ (void)addTapGestureRecognizerToView:(id)view withTarget:(id)target action:(SEL)action tapCount:(unint64_t)count touchCount:(unint64_t)touchCount
 {
-  v11 = a4;
-  v12 = a3;
-  v13 = [[UITapGestureRecognizer alloc] initWithTarget:v11 action:a5];
+  targetCopy = target;
+  viewCopy = view;
+  v13 = [[UITapGestureRecognizer alloc] initWithTarget:targetCopy action:action];
 
-  [v13 setNumberOfTapsRequired:a6];
-  [v13 setNumberOfTouchesRequired:a7];
-  [v12 addGestureRecognizer:v13];
+  [v13 setNumberOfTapsRequired:count];
+  [v13 setNumberOfTouchesRequired:touchCount];
+  [viewCopy addGestureRecognizer:v13];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface AltitudeRichCircularDialView
-- (CircularLayoutConstants)_layoutConstantsForDevice:(id)a3;
+- (CircularLayoutConstants)_layoutConstantsForDevice:(id)device;
 - (id)_threeLineConstraints;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
 - (id)monochromeOtherViews;
 - (id)unitFont;
 - (id)valueFont;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 @end
 
 @implementation AltitudeRichCircularDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v91.receiver = self;
   v91.super_class = AltitudeRichCircularDialView;
-  v5 = [(NanoCompassBaseRichView *)&v91 initFullColorImageViewWithDevice:v4];
+  v5 = [(NanoCompassBaseRichView *)&v91 initFullColorImageViewWithDevice:deviceCopy];
   v8 = v5;
   if (v5)
   {
     objc_msgSend_setClipsToBounds_(v5, v6, 1, v7);
-    objc_msgSend__layoutConstantsForDevice_(v8, v9, v4, v10);
+    objc_msgSend__layoutConstantsForDevice_(v8, v9, deviceCopy, v10);
     *(v8 + 58) = v11;
     *(v8 + 59) = v12;
     *(v8 + 60) = v13;
@@ -79,13 +79,13 @@
   return v8;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v63.receiver = self;
   v63.super_class = AltitudeRichCircularDialView;
-  [(NanoCompassBaseRichView *)&v63 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(NanoCompassBaseRichView *)&v63 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"altitude", v12);
 
   v17 = objc_msgSend_null(MEMORY[0x277CBEB68], v14, v15, v16);
@@ -97,7 +97,7 @@
     v13 = 0;
   }
 
-  v24 = objc_msgSend_metadata(v6, v21, v22, v23);
+  v24 = objc_msgSend_metadata(providerCopy, v21, v22, v23);
   v27 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"nodata", v26);
   v31 = objc_msgSend_BOOLValue(v27, v28, v29, v30);
 
@@ -153,9 +153,9 @@
   return v3;
 }
 
-- (CircularLayoutConstants)_layoutConstantsForDevice:(id)a3
+- (CircularLayoutConstants)_layoutConstantsForDevice:(id)device
 {
-  sub_23BD2B1F4(self, a3);
+  sub_23BD2B1F4(self, device);
   v3 = *&qword_27E1C4AC8;
   v4 = *&qword_27E1C4AD0;
   v5 = *&qword_27E1C4AD8;

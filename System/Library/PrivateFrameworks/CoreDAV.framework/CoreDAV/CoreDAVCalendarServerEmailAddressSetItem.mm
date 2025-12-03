@@ -1,7 +1,7 @@
 @interface CoreDAVCalendarServerEmailAddressSetItem
 + (id)copyParseRules;
 - (id)description;
-- (void)addEmailAddress:(id)a3;
+- (void)addEmailAddress:(id)address;
 @end
 
 @implementation CoreDAVCalendarServerEmailAddressSetItem
@@ -14,11 +14,11 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
-  [v3 appendFormat:@"\n  Number of email addresses: [%lu]", objc_msgSend(v5, "count")];
+  emailAddresses = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
+  [v3 appendFormat:@"\n  Number of email addresses: [%lu]", objc_msgSend(emailAddresses, "count")];
 
-  v6 = [(CoreDAVCalendarServerEmailAddressSetItem *)self unauthenticated];
-  [v3 appendFormat:@"\n  Unauthenticated: [%@]", v6];
+  unauthenticated = [(CoreDAVCalendarServerEmailAddressSetItem *)self unauthenticated];
+  [v3 appendFormat:@"\n  Unauthenticated: [%@]", unauthenticated];
 
   return v3;
 }
@@ -26,7 +26,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -39,26 +39,26 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)addEmailAddress:(id)a3
+- (void)addEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
+  addressCopy = address;
+  emailAddresses = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
 
-  if (!v5)
+  if (!emailAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(CoreDAVCalendarServerEmailAddressSetItem *)self setEmailAddresses:v6];
   }
 
-  v7 = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
-  [v7 addObject:v4];
+  emailAddresses2 = [(CoreDAVCalendarServerEmailAddressSetItem *)self emailAddresses];
+  [emailAddresses2 addObject:addressCopy];
 }
 
 @end

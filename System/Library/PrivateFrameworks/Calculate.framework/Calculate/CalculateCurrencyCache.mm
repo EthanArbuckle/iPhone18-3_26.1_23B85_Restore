@@ -2,12 +2,12 @@
 + (CalculateCurrencyCache)shared;
 - (BOOL)_needsRefresh;
 - (BOOL)_queue_refresh;
-- (BOOL)_queue_refresh:(double)a3;
+- (BOOL)_queue_refresh:(double)_queue_refresh;
 - (BOOL)needsRefresh;
 - (BOOL)refresh;
 - (BOOL)refreshIfNeeded;
-- (BOOL)refreshWithTimeOut:(float)a3;
-- (BOOL)updateCurrencyCacheWithData:(id)a3;
+- (BOOL)refreshWithTimeOut:(float)out;
+- (BOOL)updateCurrencyCacheWithData:(id)data;
 - (CalculateCurrencyCache)init;
 - (NSDate)lastRefreshDate;
 - (NSDictionary)currencyData;
@@ -19,11 +19,11 @@
 
 @implementation CalculateCurrencyCache
 
-- (BOOL)updateCurrencyCacheWithData:(id)a3
+- (BOOL)updateCurrencyCacheWithData:(id)data
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"query"];
+  dataCopy = data;
+  v4 = [dataCopy objectForKey:@"query"];
   v5 = [v4 objectForKey:@"created"];
 
   if (![v5 length])
@@ -86,7 +86,7 @@ LABEL_10:
   }
 
 LABEL_15:
-  v19 = [v3 objectForKey:@"query"];
+  v19 = [dataCopy objectForKey:@"query"];
   v20 = [v19 objectForKey:@"results"];
   v21 = [v20 objectForKey:@"item"];
   v22 = [v21 objectForKey:@"response"];
@@ -109,7 +109,7 @@ LABEL_15:
       v42 = v26;
       v43 = v25;
       v44 = v5;
-      v45 = v3;
+      v45 = dataCopy;
       v30 = *v48;
       do
       {
@@ -150,7 +150,7 @@ LABEL_15:
 
       while (v29);
       v5 = v44;
-      v3 = v45;
+      dataCopy = v45;
       v26 = v42;
       v25 = v43;
     }
@@ -301,7 +301,7 @@ uint64_t __53__CalculateCurrencyCache__queue_persistCurrencyCache__block_invoke(
   return [(CalculateCurrencyCache *)self _queue_refresh:?];
 }
 
-- (BOOL)_queue_refresh:(double)a3
+- (BOOL)_queue_refresh:(double)_queue_refresh
 {
   [(NSLock *)self->_lock lock];
   lastRefreshTimeInternal = self->_lastRefreshTimeInternal;
@@ -318,16 +318,16 @@ uint64_t __53__CalculateCurrencyCache__queue_persistCurrencyCache__block_invoke(
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", -[CalculateCurrencyCache uuid](self, "uuid")];
     [v9 setValue:v10 forHTTPHeaderField:@"X-Client-ID"];
 
-    [v9 setTimeoutInterval:a3];
-    v11 = [(CalculateCurrencyCache *)self createCredential];
-    v12 = [objc_alloc(MEMORY[0x1E69B7B68]) initWithCredential:v11];
+    [v9 setTimeoutInterval:_queue_refresh];
+    createCredential = [(CalculateCurrencyCache *)self createCredential];
+    v12 = [objc_alloc(MEMORY[0x1E69B7B68]) initWithCredential:createCredential];
     v13 = dispatch_group_create();
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
     dispatch_group_enter(v13);
-    v14 = [MEMORY[0x1E696AF78] sharedSession];
+    mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
     v15 = [v12 signedURLRequestWithRequest:v9];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -337,7 +337,7 @@ uint64_t __53__CalculateCurrencyCache__queue_persistCurrencyCache__block_invoke(
     v21 = &v22;
     v16 = v13;
     v20 = v16;
-    v17 = [v14 dataTaskWithRequest:v15 completionHandler:v19];
+    v17 = [mEMORY[0x1E696AF78] dataTaskWithRequest:v15 completionHandler:v19];
 
     [v17 resume];
     dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
@@ -433,24 +433,24 @@ void __41__CalculateCurrencyCache__queue_refresh___block_invoke(uint64_t a1, voi
 - (id)createCredential
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B7B60]);
-  v4 = [(CalculateCurrencyCache *)self _consumerKey];
-  [v3 setConsumerKey:v4];
+  _consumerKey = [(CalculateCurrencyCache *)self _consumerKey];
+  [v3 setConsumerKey:_consumerKey];
 
-  v5 = [(CalculateCurrencyCache *)self _consumerSecret];
-  [v3 setConsumerSecret:v5];
+  _consumerSecret = [(CalculateCurrencyCache *)self _consumerSecret];
+  [v3 setConsumerSecret:_consumerSecret];
 
   return v3;
 }
 
 - (id)_consumerSecret
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 40; ++i)
   {
-    [v2 appendFormat:@"%c", consumerSecret[i]];
+    [string appendFormat:@"%c", consumerSecret[i]];
   }
 
-  return v2;
+  return string;
 }
 
 - (NSDictionary)currencyData
@@ -465,9 +465,9 @@ void __41__CalculateCurrencyCache__queue_refresh___block_invoke(uint64_t a1, voi
 - (BOOL)needsRefresh
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(CalculateCurrencyCache *)self _needsRefresh];
+  _needsRefresh = [(CalculateCurrencyCache *)self _needsRefresh];
   [(NSLock *)self->_lock unlock];
-  return v3;
+  return _needsRefresh;
 }
 
 - (BOOL)_needsRefresh
@@ -487,30 +487,30 @@ void __41__CalculateCurrencyCache__queue_refresh___block_invoke(uint64_t a1, voi
   return v3;
 }
 
-- (BOOL)refreshWithTimeOut:(float)a3
+- (BOOL)refreshWithTimeOut:(float)out
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(CalculateCurrencyCache *)self serializer];
+  serializer = [(CalculateCurrencyCache *)self serializer];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__CalculateCurrencyCache_refreshWithTimeOut___block_invoke;
   v9[3] = &unk_1E815C048;
   v10 = v5;
   v11 = &v13;
-  v12 = a3;
+  outCopy = out;
   v9[4] = self;
   v7 = v5;
-  dispatch_async(v6, v9);
+  dispatch_async(serializer, v9);
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v6) = *(v14 + 24);
+  LOBYTE(serializer) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v6;
+  return serializer;
 }
 
 intptr_t __45__CalculateCurrencyCache_refreshWithTimeOut___block_invoke(uint64_t a1)
@@ -544,7 +544,7 @@ intptr_t __45__CalculateCurrencyCache_refreshWithTimeOut___block_invoke(uint64_t
   v12 = 0x2020000000;
   v13 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CalculateCurrencyCache *)self serializer];
+  serializer = [(CalculateCurrencyCache *)self serializer];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__CalculateCurrencyCache_refresh__block_invoke;
@@ -553,13 +553,13 @@ intptr_t __45__CalculateCurrencyCache_refreshWithTimeOut___block_invoke(uint64_t
   v9 = &v10;
   block[4] = self;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(serializer, block);
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(serializer) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v4;
+  return serializer;
 }
 
 intptr_t __33__CalculateCurrencyCache_refresh__block_invoke(uint64_t a1)
@@ -582,8 +582,8 @@ intptr_t __33__CalculateCurrencyCache_refresh__block_invoke(uint64_t a1)
   v2 = [(CalculateCurrencyCache *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    *(v2 + 1) = [v3 hash];
+    date = [MEMORY[0x1E695DF00] date];
+    *(v2 + 1) = [date hash];
 
     v4 = dispatch_queue_create("com.apple.framework.calculate.currency-cache", 0);
     v5 = *(v2 + 10);

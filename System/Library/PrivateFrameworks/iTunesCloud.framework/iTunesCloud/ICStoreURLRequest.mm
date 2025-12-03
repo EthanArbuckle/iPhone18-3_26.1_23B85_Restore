@@ -1,16 +1,16 @@
 @interface ICStoreURLRequest
-+ (BOOL)_shouldPersonalizeRequestForRequestContext:(id)a3 personalizationStyle:(int64_t)a4;
++ (BOOL)_shouldPersonalizeRequestForRequestContext:(id)context personalizationStyle:(int64_t)style;
 + (NSString)currentConnectionTypeHeader;
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3;
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason;
 - (BOOL)_isPersonalizationRestricted;
-- (ICStoreURLRequest)initWithURL:(id)a3 requestContext:(id)a4;
-- (ICStoreURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5;
+- (ICStoreURLRequest)initWithURL:(id)l requestContext:(id)context;
+- (ICStoreURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data;
 - (NSDictionary)additionalHTTPCookies;
-- (id)_stringForCachePolicy:(unint64_t)a3;
+- (id)_stringForCachePolicy:(unint64_t)policy;
 - (id)description;
-- (void)_getSignatureDataForRequest:(id)a3 urlBag:(id)a4 completionHandler:(id)a5;
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5;
-- (void)buildURLRequestWithCompletionHandler:(id)a3;
+- (void)_getSignatureDataForRequest:(id)request urlBag:(id)bag completionHandler:(id)handler;
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler;
+- (void)buildURLRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICStoreURLRequest
@@ -20,8 +20,8 @@
   v7.receiver = self;
   v7.super_class = ICStoreURLRequest;
   v3 = [(ICURLRequest *)&v7 description];
-  v4 = [(ICStoreURLRequest *)self storeRequestContext];
-  v5 = [v3 stringByAppendingFormat:@"[requestContext=%@]", v4];
+  storeRequestContext = [(ICStoreURLRequest *)self storeRequestContext];
+  v5 = [v3 stringByAppendingFormat:@"[requestContext=%@]", storeRequestContext];
 
   return v5;
 }
@@ -29,24 +29,24 @@
 + (NSString)currentConnectionTypeHeader
 {
   v2 = +[ICEnvironmentMonitor sharedMonitor];
-  v3 = [v2 networkType];
-  v4 = v3;
+  networkType = [v2 networkType];
+  v4 = networkType;
   v5 = 0;
   v6 = 1;
-  if (v3 > 7)
+  if (networkType > 7)
   {
-    if (v3 <= 999)
+    if (networkType <= 999)
     {
-      if (v3 == 8)
+      if (networkType == 8)
       {
         v6 = 0;
         v5 = @"9G";
         goto LABEL_38;
       }
 
-      if (v3 != 100)
+      if (networkType != 100)
       {
-        if (v3 != 500)
+        if (networkType != 500)
         {
           goto LABEL_38;
         }
@@ -57,14 +57,14 @@
 
     else
     {
-      if ((v3 - 1000) < 2)
+      if ((networkType - 1000) < 2)
       {
         goto LABEL_22;
       }
 
-      if (v3 != 3000)
+      if (networkType != 3000)
       {
-        if (v3 != 2000)
+        if (networkType != 2000)
         {
           goto LABEL_38;
         }
@@ -81,17 +81,17 @@ LABEL_22:
     goto LABEL_38;
   }
 
-  if (v3 > 3)
+  if (networkType > 3)
   {
     v7 = @"7G";
     v8 = @"8G";
-    v9 = v3 != 7;
-    if (v3 != 7)
+    v9 = networkType != 7;
+    if (networkType != 7)
     {
       v8 = 0;
     }
 
-    if (v3 == 6)
+    if (networkType == 6)
     {
       v9 = 0;
     }
@@ -102,19 +102,19 @@ LABEL_22:
     }
 
     v10 = @"6G";
-    v11 = v3 != 5;
-    if (v3 != 5)
+    v11 = networkType != 5;
+    if (networkType != 5)
     {
       v10 = 0;
     }
 
-    if (v3 == 4)
+    if (networkType == 4)
     {
       v11 = 0;
       v10 = @"5G";
     }
 
-    if (v3 <= 5)
+    if (networkType <= 5)
     {
       v6 = v11;
     }
@@ -124,7 +124,7 @@ LABEL_22:
       v6 = v9;
     }
 
-    if (v3 <= 5)
+    if (networkType <= 5)
     {
       v5 = v10;
     }
@@ -137,7 +137,7 @@ LABEL_22:
     goto LABEL_38;
   }
 
-  if (v3 == 1)
+  if (networkType == 1)
   {
 LABEL_35:
     v6 = 0;
@@ -146,13 +146,13 @@ LABEL_35:
   }
 
   v12 = @"4G";
-  if (v3 != 3)
+  if (networkType != 3)
   {
     v12 = 0;
   }
 
-  v6 = v3 != 2 && v3 != 3;
-  if (v3 == 2)
+  v6 = networkType != 2 && networkType != 3;
+  if (networkType == 2)
   {
     v5 = @"3G";
   }
@@ -163,18 +163,18 @@ LABEL_35:
   }
 
 LABEL_38:
-  v13 = [MEMORY[0x1E696AD60] string];
-  v14 = v13;
+  string = [MEMORY[0x1E696AD60] string];
+  v14 = string;
   if (!v6)
   {
-    [v13 appendString:v5];
+    [string appendString:v5];
     if ((v4 - 1) <= 0x1F2)
     {
-      v15 = [v2 telephonyOperatorName];
-      if ([v15 length])
+      telephonyOperatorName = [v2 telephonyOperatorName];
+      if ([telephonyOperatorName length])
       {
-        v16 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-        v17 = [v15 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+        v17 = [telephonyOperatorName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
         [v14 appendFormat:@"/%@", v17];
       }
@@ -186,57 +186,57 @@ LABEL_38:
 
 - (BOOL)_isPersonalizationRestricted
 {
-  v2 = [(ICStoreURLRequest *)self storeRequestContext];
-  v3 = [v2 clientInfo];
-  v4 = [v3 requestingBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  storeRequestContext = [(ICStoreURLRequest *)self storeRequestContext];
+  clientInfo = [storeRequestContext clientInfo];
+  requestingBundleIdentifier = [clientInfo requestingBundleIdentifier];
+  v5 = requestingBundleIdentifier;
+  if (requestingBundleIdentifier)
   {
-    v6 = v4;
+    bundleIdentifier = requestingBundleIdentifier;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v7 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  v8 = [v2 identity];
-  v9 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v8];
-  v10 = [v9 shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:v6];
+  identity = [storeRequestContext identity];
+  v9 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:identity];
+  v10 = [v9 shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:bundleIdentifier];
 
   return v10;
 }
 
-- (id)_stringForCachePolicy:(unint64_t)a3
+- (id)_stringForCachePolicy:(unint64_t)policy
 {
-  if (a3 > 5)
+  if (policy > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7BF6428[a3];
+    return off_1E7BF6428[policy];
   }
 }
 
-- (void)_getSignatureDataForRequest:(id)a3 urlBag:(id)a4 completionHandler:(id)a5
+- (void)_getSignatureDataForRequest:(id)request urlBag:(id)bag completionHandler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  requestCopy = request;
+  bagCopy = bag;
+  handlerCopy = handler;
+  if (bagCopy)
   {
-    v11 = [v9 mescalConfigurationForRequest:v8];
+    v11 = [bagCopy mescalConfigurationForRequest:requestCopy];
     if (v11)
     {
       v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v57 = self;
+        selfCopy = self;
         v58 = 2114;
         v59 = v11;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ creating mescal signature for request. configuration=%{public}@", buf, 0x16u);
@@ -245,30 +245,30 @@ LABEL_38:
       v13 = objc_alloc_init(MEMORY[0x1E695DF88]);
       if ([v11 shouldSignBody])
       {
-        v14 = [v8 HTTPMethod];
-        v15 = [v14 isEqualToString:@"POST"];
+        hTTPMethod = [requestCopy HTTPMethod];
+        v15 = [hTTPMethod isEqualToString:@"POST"];
 
         if (v15)
         {
-          v16 = [v8 HTTPBody];
-          [v13 appendData:v16];
+          hTTPBody = [requestCopy HTTPBody];
+          [v13 appendData:hTTPBody];
         }
       }
 
-      v17 = [v8 HTTPMethod];
-      v18 = [v17 isEqualToString:@"POST"];
+      hTTPMethod2 = [requestCopy HTTPMethod];
+      v18 = [hTTPMethod2 isEqualToString:@"POST"];
 
       if ((v18 & 1) == 0)
       {
-        v43 = self;
-        v44 = v10;
+        selfCopy2 = self;
+        v44 = handlerCopy;
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
         v45 = v11;
-        v19 = [v11 headers];
-        v20 = [v19 countByEnumeratingWithState:&v50 objects:v55 count:16];
+        headers = [v11 headers];
+        v20 = [headers countByEnumeratingWithState:&v50 objects:v55 count:16];
         if (v20)
         {
           v21 = v20;
@@ -279,10 +279,10 @@ LABEL_38:
             {
               if (*v51 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(headers);
               }
 
-              v24 = [v8 valueForHTTPHeaderField:*(*(&v50 + 1) + 8 * i)];
+              v24 = [requestCopy valueForHTTPHeaderField:*(*(&v50 + 1) + 8 * i)];
               v25 = v24;
               if (v24 && [v24 length])
               {
@@ -291,7 +291,7 @@ LABEL_38:
               }
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v50 objects:v55 count:16];
+            v21 = [headers countByEnumeratingWithState:&v50 objects:v55 count:16];
           }
 
           while (v21);
@@ -301,12 +301,12 @@ LABEL_38:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v27 = [v45 fields];
-        v28 = [v27 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        fields = [v45 fields];
+        v28 = [fields countByEnumeratingWithState:&v46 objects:v54 count:16];
         if (v28)
         {
           v29 = v28;
-          v30 = 0;
+          ic_queryParametersDictionary = 0;
           v31 = *v47;
           do
           {
@@ -314,17 +314,17 @@ LABEL_38:
             {
               if (*v47 != v31)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(fields);
               }
 
               v33 = *(*(&v46 + 1) + 8 * j);
-              if (!v30)
+              if (!ic_queryParametersDictionary)
               {
-                v34 = [v8 URL];
-                v30 = [v34 ic_queryParametersDictionary];
+                v34 = [requestCopy URL];
+                ic_queryParametersDictionary = [v34 ic_queryParametersDictionary];
               }
 
-              v35 = [v30 objectForKey:v33];
+              v35 = [ic_queryParametersDictionary objectForKey:v33];
               v36 = v35;
               if (v35 && [v35 length])
               {
@@ -333,7 +333,7 @@ LABEL_38:
               }
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v46 objects:v54 count:16];
+            v29 = [fields countByEnumeratingWithState:&v46 objects:v54 count:16];
           }
 
           while (v29);
@@ -341,124 +341,124 @@ LABEL_38:
 
         else
         {
-          v30 = 0;
+          ic_queryParametersDictionary = 0;
         }
 
         v11 = v45;
         if ([v45 shouldIncludePath])
         {
-          v38 = [v8 URL];
-          v39 = [v38 path];
+          v38 = [requestCopy URL];
+          path = [v38 path];
 
-          v40 = [v39 dataUsingEncoding:4];
+          v40 = [path dataUsingEncoding:4];
           [v13 appendData:v40];
         }
 
-        self = v43;
-        v10 = v44;
+        self = selfCopy2;
+        handlerCopy = v44;
       }
 
-      v41 = [(ICStoreURLRequest *)self storeRequestContext];
-      v42 = [ICSAPSession sharedSAPSessionWithVersion:200 URLBag:v9 requestContext:v41];
+      storeRequestContext = [(ICStoreURLRequest *)self storeRequestContext];
+      v42 = [ICSAPSession sharedSAPSessionWithVersion:200 URLBag:bagCopy requestContext:storeRequestContext];
 
       if (v42)
       {
-        [v42 signData:v13 withCompletionHandler:v10];
+        [v42 signData:v13 withCompletionHandler:handlerCopy];
       }
 
       else
       {
-        (*(v10 + 2))(v10, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
       }
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7200 userInfo:0];
-    (*(v10 + 2))(v10, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler
 {
   v199 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICStoreURLRequest *)self storeRequestContext];
-  v164 = [v11 clientInfo];
-  v161 = [v11 deviceInfo];
-  v160 = [v11 identityStore];
-  v12 = [v8 mutableCopy];
+  requestCopy = request;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  storeRequestContext = [(ICStoreURLRequest *)self storeRequestContext];
+  clientInfo = [storeRequestContext clientInfo];
+  deviceInfo = [storeRequestContext deviceInfo];
+  identityStore = [storeRequestContext identityStore];
+  v12 = [requestCopy mutableCopy];
   v167 = [v12 URL];
-  v13 = [v11 personalizationStyle];
-  if (v13 == 1 && [(ICStoreURLRequest *)self _isPersonalizationRestricted])
+  personalizationStyle = [storeRequestContext personalizationStyle];
+  if (personalizationStyle == 1 && [(ICStoreURLRequest *)self _isPersonalizationRestricted])
   {
-    v14 = v11;
+    v14 = storeRequestContext;
     v15 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v194 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "%{public}@ Automatic personalization is requested but not allowed - failing request", buf, 0xCu);
     }
 
     v16 = MEMORY[0x1E69B13D8];
     v17 = *MEMORY[0x1E69B1350];
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Automatic personalization is requested but not allowed. url='%@'", v167];
-    [v16 snapshotWithDomain:v17 type:@"Bug" subType:@"ICStoreURLRequest" context:v18 triggerThresholdValues:0 events:0 completion:0];
+    v167 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Automatic personalization is requested but not allowed. url='%@'", v167];
+    [v16 snapshotWithDomain:v17 type:@"Bug" subType:@"ICStoreURLRequest" context:v167 triggerThresholdValues:0 events:0 completion:0];
 
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7007 userInfo:0];
-    v10[2](v10, v12, v19);
+    handlerCopy[2](handlerCopy, v12, v19);
     goto LABEL_186;
   }
 
-  v156 = v13 != 0;
+  v156 = personalizationStyle != 0;
   v20 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = "unpersonalized";
-    if (v13)
+    if (personalizationStyle)
     {
       v21 = "personalized";
     }
 
     *buf = 138543618;
-    v194 = self;
+    selfCopy2 = self;
     v195 = 2082;
     v196 = v21;
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Building %{public}s store URL request", buf, 0x16u);
   }
 
   v165 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v22 = [v9 URLBag];
-  v159 = v22;
-  if (v13 && v22 && [v22 shouldAppendDeviceGUIDForURL:v167])
+  uRLBag = [propertiesCopy URLBag];
+  v159 = uRLBag;
+  if (personalizationStyle && uRLBag && [uRLBag shouldAppendDeviceGUIDForURL:v167])
   {
-    v23 = [v161 deviceGUID];
-    if (v23)
+    deviceGUID = [deviceInfo deviceGUID];
+    if (deviceGUID)
     {
-      [v165 setObject:v23 forKey:@"guid"];
+      [v165 setObject:deviceGUID forKey:@"guid"];
     }
   }
 
-  v157 = v11;
-  v158 = v10;
+  v157 = storeRequestContext;
+  v158 = handlerCopy;
   v24 = +[ICDefaults standardDefaults];
-  v25 = [v24 isLegacyStoreCacheBusterEnabled];
+  isLegacyStoreCacheBusterEnabled = [v24 isLegacyStoreCacheBusterEnabled];
 
-  if (v25)
+  if (isLegacyStoreCacheBusterEnabled)
   {
-    v26 = [MEMORY[0x1E696AFB0] UUID];
-    v27 = [v26 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [v165 setObject:v27 forKey:@"buster"];
+    [v165 setObject:uUIDString forKey:@"buster"];
   }
 
   if ([v165 count])
@@ -469,54 +469,54 @@ LABEL_38:
     v167 = v28;
   }
 
-  v29 = [(ICStoreURLRequest *)self additionalQueryItems];
-  v155 = v29;
-  if ([v29 count])
+  additionalQueryItems = [(ICStoreURLRequest *)self additionalQueryItems];
+  v155 = additionalQueryItems;
+  if ([additionalQueryItems count])
   {
-    v30 = [v167 ic_URLByAppendingQueryItems:v29];
+    v30 = [v167 ic_URLByAppendingQueryItems:additionalQueryItems];
 
     [v12 setURL:v30];
     v167 = v30;
   }
 
-  v31 = [v9 DSID];
-  v32 = v31;
-  if (v13)
+  dSID = [propertiesCopy DSID];
+  v32 = dSID;
+  if (personalizationStyle)
   {
     v33 = [v12 valueForHTTPHeaderField:@"X-Dsid"];
 
     v153 = v32 != 0;
     if (!v33 && v32)
     {
-      v34 = [v32 stringValue];
-      [v12 setValue:v34 forHTTPHeaderField:@"X-Dsid"];
+      stringValue = [v32 stringValue];
+      [v12 setValue:stringValue forHTTPHeaderField:@"X-Dsid"];
     }
 
     v35 = [v12 valueForHTTPHeaderField:@"iCloud-DSID"];
 
     if (!v35)
     {
-      v36 = [v9 iCloudPersonID];
-      if (v36)
+      iCloudPersonID = [propertiesCopy iCloudPersonID];
+      if (iCloudPersonID)
       {
-        [v12 setValue:v36 forHTTPHeaderField:@"iCloud-DSID"];
+        [v12 setValue:iCloudPersonID forHTTPHeaderField:@"iCloud-DSID"];
       }
     }
   }
 
   else
   {
-    v153 = v31 != 0;
+    v153 = dSID != 0;
   }
 
   v37 = [v12 valueForHTTPHeaderField:@"X-Apple-Requesting-Bundle-Id"];
 
   if (!v37)
   {
-    v38 = [v164 requestingBundleIdentifier];
-    if ([v38 length])
+    requestingBundleIdentifier = [clientInfo requestingBundleIdentifier];
+    if ([requestingBundleIdentifier length])
     {
-      [v12 setValue:v38 forHTTPHeaderField:@"X-Apple-Requesting-Bundle-Id"];
+      [v12 setValue:requestingBundleIdentifier forHTTPHeaderField:@"X-Apple-Requesting-Bundle-Id"];
     }
   }
 
@@ -524,37 +524,37 @@ LABEL_38:
 
   if (!v39)
   {
-    v40 = [v164 requestingBundleVersion];
-    if ([v40 length])
+    requestingBundleVersion = [clientInfo requestingBundleVersion];
+    if ([requestingBundleVersion length])
     {
-      [v12 setValue:v40 forHTTPHeaderField:@"X-Apple-Requesting-Bundle-Version"];
+      [v12 setValue:requestingBundleVersion forHTTPHeaderField:@"X-Apple-Requesting-Bundle-Version"];
     }
   }
 
   v163 = v32;
   v41 = [v12 valueForHTTPHeaderField:@"X-Enqueuer-DSID"];
 
-  v166 = self;
+  selfCopy3 = self;
   if (!v41)
   {
-    v42 = [v9 delegatedDSID];
-    if (v42)
+    delegatedDSID = [propertiesCopy delegatedDSID];
+    if (delegatedDSID)
     {
       v43 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
       {
-        v44 = [v42 stringValue];
+        stringValue2 = [delegatedDSID stringValue];
         *buf = 138543874;
-        v194 = v166;
+        selfCopy2 = selfCopy3;
         v195 = 2112;
         v196 = @"X-Enqueuer-DSID";
         v197 = 2112;
-        v198 = v44;
+        v198 = stringValue2;
         _os_log_impl(&dword_1B4491000, v43, OS_LOG_TYPE_DEBUG, "%{public}@ - buildStoreURLRequestWithURLRequest:properties:completionHandler: - Delegation header [dsid] [%@: %@]", buf, 0x20u);
       }
 
-      v45 = [v42 stringValue];
-      [v12 setValue:v45 forHTTPHeaderField:@"X-Enqueuer-DSID"];
+      stringValue3 = [delegatedDSID stringValue];
+      [v12 setValue:stringValue3 forHTTPHeaderField:@"X-Enqueuer-DSID"];
     }
   }
 
@@ -562,51 +562,51 @@ LABEL_38:
 
   if (!v46)
   {
-    v47 = [v9 delegatedStorefrontIdentifier];
-    if ([v47 length])
+    delegatedStorefrontIdentifier = [propertiesCopy delegatedStorefrontIdentifier];
+    if ([delegatedStorefrontIdentifier length])
     {
-      v48 = [v9 delegatedURLBag];
-      v49 = v48;
-      if (v48)
+      delegatedURLBag = [propertiesCopy delegatedURLBag];
+      v49 = delegatedURLBag;
+      if (delegatedURLBag)
       {
-        v50 = v48;
+        uRLBag2 = delegatedURLBag;
       }
 
       else
       {
-        v50 = [v9 URLBag];
+        uRLBag2 = [propertiesCopy URLBag];
       }
 
-      v51 = [v50 storefrontHeaderSuffix];
-      if ([v51 length])
+      storefrontHeaderSuffix = [uRLBag2 storefrontHeaderSuffix];
+      if ([storefrontHeaderSuffix length])
       {
-        v52 = [v47 stringByAppendingString:v51];
+        v52 = [delegatedStorefrontIdentifier stringByAppendingString:storefrontHeaderSuffix];
 
-        v47 = v52;
+        delegatedStorefrontIdentifier = v52;
       }
 
-      [v12 setValue:v47 forHTTPHeaderField:@"X-Apple-Enqueuer-Store-Front"];
+      [v12 setValue:delegatedStorefrontIdentifier forHTTPHeaderField:@"X-Apple-Enqueuer-Store-Front"];
     }
   }
 
   v53 = [v12 valueForHTTPHeaderField:@"X-WHA-Token"];
 
-  v162 = v9;
+  v162 = propertiesCopy;
   if (!v53)
   {
-    v54 = [v9 delegateToken];
-    if ([v54 type] == 1)
+    delegateToken = [propertiesCopy delegateToken];
+    if ([delegateToken type] == 1)
     {
-      v55 = [v54 data];
-      v56 = [v55 base64EncodedStringWithOptions:0];
+      data = [delegateToken data];
+      v56 = [data base64EncodedStringWithOptions:0];
       if (v56)
       {
-        v57 = v8;
+        v57 = requestCopy;
         v58 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543874;
-          v194 = v166;
+          selfCopy2 = selfCopy3;
           v195 = 2112;
           v196 = @"X-WHA-Token";
           v197 = 2112;
@@ -615,10 +615,10 @@ LABEL_38:
         }
 
         [v12 setValue:v56 forHTTPHeaderField:@"X-WHA-Token"];
-        v8 = v57;
+        requestCopy = v57;
       }
 
-      v9 = v162;
+      propertiesCopy = v162;
     }
   }
 
@@ -626,16 +626,16 @@ LABEL_38:
 
   if (!v59)
   {
-    v60 = [MEMORY[0x1E695DFE8] localTimeZone];
-    v61 = [v60 secondsFromGMT];
-    v62 = [MEMORY[0x1E696AD98] numberWithDouble:v61];
-    v63 = [v62 stringValue];
-    [v12 setValue:v63 forHTTPHeaderField:@"X-Apple-Tz"];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    secondsFromGMT = [localTimeZone secondsFromGMT];
+    v62 = [MEMORY[0x1E696AD98] numberWithDouble:secondsFromGMT];
+    stringValue4 = [v62 stringValue];
+    [v12 setValue:stringValue4 forHTTPHeaderField:@"X-Apple-Tz"];
   }
 
   v64 = [v12 valueForHTTPHeaderField:@"X-Apple-I-Client-Time"];
 
-  v65 = v166;
+  v65 = selfCopy3;
   if (!v64)
   {
     if (buildStoreURLRequestWithURLRequest_builderProperties_completionHandler__sClientTimeDateFormatterOnceToken != -1)
@@ -644,8 +644,8 @@ LABEL_38:
     }
 
     v66 = buildStoreURLRequestWithURLRequest_builderProperties_completionHandler__sClientTimeDateFormatter;
-    v67 = [MEMORY[0x1E695DF00] date];
-    v68 = [v66 stringFromDate:v67];
+    date = [MEMORY[0x1E695DF00] date];
+    v68 = [v66 stringFromDate:date];
 
     if ([v68 length])
     {
@@ -657,10 +657,10 @@ LABEL_38:
 
   if (!v69)
   {
-    v70 = [objc_opt_class() currentConnectionTypeHeader];
-    if ([v70 length])
+    currentConnectionTypeHeader = [objc_opt_class() currentConnectionTypeHeader];
+    if ([currentConnectionTypeHeader length])
     {
-      [v12 setValue:v70 forHTTPHeaderField:@"X-Apple-Connection-Type"];
+      [v12 setValue:currentConnectionTypeHeader forHTTPHeaderField:@"X-Apple-Connection-Type"];
     }
   }
 
@@ -669,11 +669,11 @@ LABEL_38:
   if (!v71)
   {
     v72 = +[ICDefaults standardDefaults];
-    v73 = [v72 cloudMediaLibraryUID];
+    cloudMediaLibraryUID = [v72 cloudMediaLibraryUID];
 
-    if (v73)
+    if (cloudMediaLibraryUID)
     {
-      [v12 setValue:v73 forHTTPHeaderField:@"X-Apple-Cuid"];
+      [v12 setValue:cloudMediaLibraryUID forHTTPHeaderField:@"X-Apple-Cuid"];
     }
   }
 
@@ -681,57 +681,57 @@ LABEL_38:
 
   if (!v74)
   {
-    v75 = [v9 storefrontIdentifier];
-    v76 = v75;
-    if (v75)
+    storefrontIdentifier = [propertiesCopy storefrontIdentifier];
+    v76 = storefrontIdentifier;
+    if (storefrontIdentifier)
     {
-      v77 = v75;
+      storefrontIdentifier2 = storefrontIdentifier;
     }
 
     else
     {
-      v78 = [v160 localStoreAccountProperties];
-      v77 = [v78 storefrontIdentifier];
+      localStoreAccountProperties = [identityStore localStoreAccountProperties];
+      storefrontIdentifier2 = [localStoreAccountProperties storefrontIdentifier];
 
-      v65 = v166;
+      v65 = selfCopy3;
     }
 
-    if ([v77 length])
+    if ([storefrontIdentifier2 length])
     {
-      v79 = [v159 storefrontHeaderSuffix];
-      if ([v79 length])
+      storefrontHeaderSuffix2 = [v159 storefrontHeaderSuffix];
+      if ([storefrontHeaderSuffix2 length])
       {
-        v80 = [v77 stringByAppendingString:v79];
+        v80 = [storefrontIdentifier2 stringByAppendingString:storefrontHeaderSuffix2];
 
-        v77 = v80;
+        storefrontIdentifier2 = v80;
       }
 
-      [v12 setValue:v77 forHTTPHeaderField:@"X-Apple-Store-Front"];
+      [v12 setValue:storefrontIdentifier2 forHTTPHeaderField:@"X-Apple-Store-Front"];
 
-      v65 = v166;
+      v65 = selfCopy3;
     }
   }
 
   v81 = +[ICDeviceInfo currentDeviceInfo];
-  v82 = [v81 isInternalBuild];
+  isInternalBuild = [v81 isInternalBuild];
 
-  if (v82)
+  if (isInternalBuild)
   {
     v83 = [v12 valueForHTTPHeaderField:@"X-Apple-Issuing-Process"];
 
     if (!v83)
     {
-      v84 = [MEMORY[0x1E696AAE8] mainBundle];
-      v85 = [v84 bundleIdentifier];
-      [v12 setValue:v85 forHTTPHeaderField:@"X-Apple-Issuing-Process"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [v12 setValue:bundleIdentifier forHTTPHeaderField:@"X-Apple-Issuing-Process"];
     }
 
     v86 = [v12 valueForHTTPHeaderField:@"X-Apple-Requesting-Process"];
 
     if (!v86)
     {
-      v87 = [v164 _clientIdentifierForUserAgent];
-      [v12 setValue:v87 forHTTPHeaderField:@"X-Apple-Requesting-Process"];
+      _clientIdentifierForUserAgent = [clientInfo _clientIdentifierForUserAgent];
+      [v12 setValue:_clientIdentifierForUserAgent forHTTPHeaderField:@"X-Apple-Requesting-Process"];
     }
 
     v88 = [v12 valueForHTTPHeaderField:@"X-Apple-NSURLCachePolicy"];
@@ -747,7 +747,7 @@ LABEL_38:
   v90 = +[ICHTTPCookieStore sharedCookieStore];
   v91 = v90;
   v154 = v90;
-  if (v13)
+  if (personalizationStyle)
   {
     v92 = [v90 getCookiesHeadersForURL:v167 userIdentifier:v163];
   }
@@ -755,15 +755,15 @@ LABEL_38:
   else
   {
     v93 = +[ICDeviceInfo currentDeviceInfo];
-    v94 = [v93 isInternalBuild];
+    isInternalBuild2 = [v93 isInternalBuild];
 
-    if (v94)
+    if (isInternalBuild2)
     {
-      v152 = v8;
+      v152 = requestCopy;
       v95 = [v91 getCookiesForURL:v167 userIdentifier:v163];
       v96 = [MEMORY[0x1E695DFD8] setWithObjects:{@"itfe", 0}];
       v169 = [MEMORY[0x1E695DFD8] setWithObjects:{@".apple.com", 0}];
-      v168 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v187 = 0u;
       v188 = 0u;
       v189 = 0u;
@@ -784,15 +784,15 @@ LABEL_38:
             }
 
             v102 = *(*(&v187 + 1) + 8 * i);
-            v103 = [v102 name];
-            if ([v96 containsObject:v103])
+            name = [v102 name];
+            if ([v96 containsObject:name])
             {
-              v104 = [v102 domain];
-              v105 = [v169 containsObject:v104];
+              domain = [v102 domain];
+              v105 = [v169 containsObject:domain];
 
               if (v105)
               {
-                [v168 addObject:v102];
+                [array addObject:v102];
               }
             }
 
@@ -807,9 +807,9 @@ LABEL_38:
         while (v99);
       }
 
-      if ([v168 count])
+      if ([array count])
       {
-        v92 = [MEMORY[0x1E695ABF8] requestHeaderFieldsWithCookies:v168];
+        v92 = [MEMORY[0x1E695ABF8] requestHeaderFieldsWithCookies:array];
       }
 
       else
@@ -817,7 +817,7 @@ LABEL_38:
         v92 = 0;
       }
 
-      v8 = v152;
+      requestCopy = v152;
     }
 
     else
@@ -861,33 +861,33 @@ LABEL_38:
     while (v108);
   }
 
-  v114 = v166;
-  if ([(NSDictionary *)v166->_additionalHTTPCookies count])
+  v114 = selfCopy3;
+  if ([(NSDictionary *)selfCopy3->_additionalHTTPCookies count])
   {
-    [v12 ic_appendHTTPCookies:v166->_additionalHTTPCookies];
+    [v12 ic_appendHTTPCookies:selfCopy3->_additionalHTTPCookies];
   }
 
   v115 = [v12 valueForHTTPHeaderField:@"X-Apple-Device-Model"];
 
-  v9 = v162;
+  propertiesCopy = v162;
   if (!v115)
   {
     v116 = +[ICDeviceInfo currentDeviceInfo];
-    v117 = [v116 rawDeviceModel];
+    rawDeviceModel = [v116 rawDeviceModel];
 
-    if (v117)
+    if (rawDeviceModel)
     {
-      [v12 setValue:v117 forHTTPHeaderField:@"X-Apple-Device-Model"];
+      [v12 setValue:rawDeviceModel forHTTPHeaderField:@"X-Apple-Device-Model"];
     }
   }
 
-  anisetteVersion = v166->_anisetteVersion;
+  anisetteVersion = selfCopy3->_anisetteVersion;
   if (anisetteVersion != -1)
   {
     if (anisetteVersion == 1)
     {
       anisetteVersion = v153;
-      v166->_anisetteVersion = v153;
+      selfCopy3->_anisetteVersion = v153;
     }
 
     if (!anisetteVersion)
@@ -896,13 +896,13 @@ LABEL_38:
     }
 
 LABEL_132:
-    v119 = v8;
+    v119 = requestCopy;
     v120 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
     {
-      v121 = v166->_anisetteVersion;
+      v121 = selfCopy3->_anisetteVersion;
       *buf = 138543618;
-      v194 = v166;
+      selfCopy2 = selfCopy3;
       v195 = 1024;
       LODWORD(v196) = v121;
       _os_log_impl(&dword_1B4491000, v120, OS_LOG_TYPE_DEFAULT, "%{public}@ adding MD headers for version %d", buf, 0x12u);
@@ -917,7 +917,7 @@ LABEL_132:
     v125 = v180;
     if (!v122)
     {
-      v130 = v166->_anisetteVersion;
+      v130 = selfCopy3->_anisetteVersion;
       if (v130 != 1)
       {
         goto LABEL_154;
@@ -927,7 +927,7 @@ LABEL_132:
       if (os_log_type_enabled(v126, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v194 = v166;
+        selfCopy2 = selfCopy3;
         v195 = 2114;
         v196 = v125;
         _os_log_impl(&dword_1B4491000, v126, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to generate MD header data. err=%{public}@", buf, 0x16u);
@@ -965,7 +965,7 @@ LABEL_132:
     if (!v131)
     {
 LABEL_153:
-      v130 = v166->_anisetteVersion;
+      v130 = selfCopy3->_anisetteVersion;
 LABEL_154:
       if (v130 == 2)
       {
@@ -984,13 +984,13 @@ LABEL_154:
           if (os_log_type_enabled(v136, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v194 = v166;
+            selfCopy2 = selfCopy3;
             v195 = 2114;
             v196 = v135;
             _os_log_impl(&dword_1B4491000, v136, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to generate AMD header data. err=%{public}@", buf, 0x16u);
           }
 
-          v8 = v119;
+          requestCopy = v119;
           goto LABEL_167;
         }
 
@@ -1009,7 +1009,7 @@ LABEL_154:
           v136 = 0;
         }
 
-        v8 = v119;
+        requestCopy = v119;
         if (!v134)
         {
 LABEL_167:
@@ -1032,13 +1032,13 @@ LABEL_167:
         v135 = v125;
         v133 = v123;
         v134 = v124;
-        v8 = v119;
+        requestCopy = v119;
       }
 
 LABEL_168:
 
-      v9 = v162;
-      v114 = v166;
+      propertiesCopy = v162;
+      v114 = selfCopy3;
       goto LABEL_169;
     }
 
@@ -1059,9 +1059,9 @@ LABEL_152:
       v129 = 0;
     }
 
-    v166->_anisetteVersion = v129;
+    selfCopy3->_anisetteVersion = v129;
 
-    if (!v166->_anisetteVersion)
+    if (!selfCopy3->_anisetteVersion)
     {
       goto LABEL_169;
     }
@@ -1069,7 +1069,7 @@ LABEL_152:
     goto LABEL_132;
   }
 
-  v166->_anisetteVersion = 0;
+  selfCopy3->_anisetteVersion = 0;
 LABEL_169:
   if (v114->_machineDataSyncState)
   {
@@ -1087,7 +1087,7 @@ LABEL_169:
     [v12 setValue:v114->_machineDataSyncState forHTTPHeaderField:v139];
   }
 
-  v10 = v158;
+  handlerCopy = v158;
   if (v114->_JSSignConfiguration)
   {
     v140 = [[ICJSSign alloc] initWithConfiguration:v114->_JSSignConfiguration];
@@ -1098,20 +1098,20 @@ LABEL_169:
       v143 = [v141 base64EncodedStringWithOptions:0];
       v144 = v114;
       v145 = v143;
-      v146 = [(ICJSSignConfiguration *)v144->_JSSignConfiguration signatureDataCookieName];
-      if ([v146 length])
+      signatureDataCookieName = [(ICJSSignConfiguration *)v144->_JSSignConfiguration signatureDataCookieName];
+      if ([signatureDataCookieName length])
       {
-        [v12 ic_appendHTTPCookieWithName:v146 value:v145];
+        [v12 ic_appendHTTPCookieWithName:signatureDataCookieName value:v145];
       }
 
-      v147 = [(ICJSSignConfiguration *)v166->_JSSignConfiguration signatureDataHeaderName];
-      if ([v147 length])
+      signatureDataHeaderName = [(ICJSSignConfiguration *)selfCopy3->_JSSignConfiguration signatureDataHeaderName];
+      if ([signatureDataHeaderName length])
       {
-        [v12 setValue:v145 forHTTPHeaderField:v147];
+        [v12 setValue:v145 forHTTPHeaderField:signatureDataHeaderName];
       }
 
-      v9 = v162;
-      v114 = v166;
+      propertiesCopy = v162;
+      v114 = selfCopy3;
     }
   }
 
@@ -1248,22 +1248,22 @@ void __92__ICStoreURLRequest_buildStoreURLRequestWithURLRequest_builderPropertie
   }
 }
 
-- (void)buildURLRequestWithCompletionHandler:(id)a3
+- (void)buildURLRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 qualityOfService];
+  handlerCopy = handler;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  qualityOfService = [currentThread qualityOfService];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__ICStoreURLRequest_buildURLRequestWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7BF63E0;
   v9[4] = self;
-  v10 = v4;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = qualityOfService;
   v8.receiver = self;
   v8.super_class = ICStoreURLRequest;
-  v7 = v4;
+  v7 = handlerCopy;
   [(ICURLRequest *)&v8 buildURLRequestWithCompletionHandler:v9];
 }
 
@@ -1777,20 +1777,20 @@ uint64_t __58__ICStoreURLRequest_buildURLRequestWithCompletionHandler___block_in
   return v2();
 }
 
-- (ICStoreURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5
+- (ICStoreURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ICStoreURLRequest.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"[requestContext isKindOfClass:[ICStoreRequestContext class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreURLRequest.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"[requestContext isKindOfClass:[ICStoreRequestContext class]]"}];
   }
 
   v14.receiver = self;
   v14.super_class = ICStoreURLRequest;
-  v10 = [(ICURLRequest *)&v14 initWithURLRequest:v8 requestContext:v9 resumeData:0];
+  v10 = [(ICURLRequest *)&v14 initWithURLRequest:requestCopy requestContext:contextCopy resumeData:0];
   v11 = v10;
   if (v10)
   {
@@ -1804,52 +1804,52 @@ uint64_t __58__ICStoreURLRequest_buildURLRequestWithCompletionHandler___block_in
   return v11;
 }
 
-- (ICStoreURLRequest)initWithURL:(id)a3 requestContext:(id)a4
+- (ICStoreURLRequest)initWithURL:(id)l requestContext:(id)context
 {
   v6 = MEMORY[0x1E695AC68];
-  v7 = a4;
-  v8 = [v6 requestWithURL:a3];
-  v9 = [(ICStoreURLRequest *)self initWithURLRequest:v8 requestContext:v7 resumeData:0];
+  contextCopy = context;
+  v8 = [v6 requestWithURL:l];
+  v9 = [(ICStoreURLRequest *)self initWithURLRequest:v8 requestContext:contextCopy resumeData:0];
 
   return v9;
 }
 
-+ (BOOL)_shouldPersonalizeRequestForRequestContext:(id)a3 personalizationStyle:(int64_t)a4
++ (BOOL)_shouldPersonalizeRequestForRequestContext:(id)context personalizationStyle:(int64_t)style
 {
-  if (a4 != 1)
+  if (style != 1)
   {
-    return a4 != 0;
+    return style != 0;
   }
 
-  v5 = a3;
-  v6 = [v5 clientInfo];
-  v7 = [v6 requestingBundleIdentifier];
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  clientInfo = [contextCopy clientInfo];
+  requestingBundleIdentifier = [clientInfo requestingBundleIdentifier];
+  v8 = requestingBundleIdentifier;
+  if (requestingBundleIdentifier)
   {
-    v9 = v7;
+    bundleIdentifier = requestingBundleIdentifier;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v10 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  v11 = [v5 identity];
+  identity = [contextCopy identity];
 
-  v12 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v11];
-  v13 = [v12 shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:v9];
+  v12 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:identity];
+  v13 = [v12 shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:bundleIdentifier];
 
   v4 = v13 ^ 1;
   return v4;
 }
 
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != @"machine-data-action-performed" && ([(__CFString *)v4 isEqual:@"machine-data-action-performed"]& 1) == 0)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (reasonCopy != @"machine-data-action-performed" && ([(__CFString *)reasonCopy isEqual:@"machine-data-action-performed"]& 1) == 0)
   {
     if (v5 == @"dialog-processed" || ([(__CFString *)v5 isEqual:@"dialog-processed"]& 1) != 0)
     {
@@ -1859,7 +1859,7 @@ uint64_t __58__ICStoreURLRequest_buildURLRequestWithCompletionHandler___block_in
 
     if (v5 != @"other" && ([(__CFString *)v5 isEqual:@"other"]& 1) == 0)
     {
-      v8.receiver = a1;
+      v8.receiver = self;
       v8.super_class = &OBJC_METACLASS___ICStoreURLRequest;
       v6 = objc_msgSendSuper2(&v8, sel__defaultMaxRetryCountForReason_, v5);
       goto LABEL_7;

@@ -1,13 +1,13 @@
 @interface MPSNDArrayGatherGradientState
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceGradientIndex:(unint64_t)a4;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceGradientIndex:(unint64_t)index;
 @end
 
 @implementation MPSNDArrayGatherGradientState
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceGradientIndex:(unint64_t)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceGradientIndex:(unint64_t)index
 {
   v18[16] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectAtIndexedSubscript:a4];
+  v4 = [arrays objectAtIndexedSubscript:index];
   v5 = *(v4 + *MEMORY[0x277CD73F0]);
   if (v5)
   {

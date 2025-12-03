@@ -1,29 +1,29 @@
 @interface WFINSpeakableStringContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (INSpeakableString)speakableString;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFINSpeakableStringContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Speakable Strings", @"Speakable Strings");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Speakable String", @"Speakable String");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -56,15 +56,15 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v7 = MEMORY[0x1E6996EC8];
-    v8 = [(WFINSpeakableStringContentItem *)self speakableString];
-    v9 = [v8 spokenPhrase];
-    v10 = [v7 object:v9];
+    speakableString = [(WFINSpeakableStringContentItem *)self speakableString];
+    spokenPhrase = [speakableString spokenPhrase];
+    v10 = [v7 object:spokenPhrase];
     v13[0] = v10;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }

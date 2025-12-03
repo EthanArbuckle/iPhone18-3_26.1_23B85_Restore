@@ -1,57 +1,57 @@
 @interface WFSlotTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (NSString)description;
 - (UIColor)tintColor;
 - (UIFont)font;
-- (WFSlotTextAttachment)initWithSlotTemplateToken:(id)a3;
+- (WFSlotTextAttachment)initWithSlotTemplateToken:(id)token;
 - (id)accessibilityLabel;
 - (id)adjustedFont;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForBounds:(CGRect)a3 textContainer:(id)a4 characterIndex:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForBounds:(CGRect)bounds textContainer:(id)container characterIndex:(unint64_t)index;
 - (id)variableName;
 - (unint64_t)currentControlState;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)notifyNeedsDisplay;
-- (void)removeObserver:(id)a3;
-- (void)templateTokenDidChange:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)templateTokenDidChange:(id)change;
 @end
 
 @implementation WFSlotTextAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  width = a4.size.width;
-  v9 = a3;
-  v10 = [v9 layoutManager];
-  v11 = [(WFSlotTextAttachment *)self surroundingTextFont];
-  v12 = v11;
-  if (v11)
+  width = fragment.size.width;
+  containerCopy = container;
+  layoutManager = [containerCopy layoutManager];
+  surroundingTextFont = [(WFSlotTextAttachment *)self surroundingTextFont];
+  v12 = surroundingTextFont;
+  if (surroundingTextFont)
   {
-    [v11 wf_lineHeight];
+    [surroundingTextFont wf_lineHeight];
     v14 = v13 * 0.92;
   }
 
   else
   {
-    v15 = [(WFSlotTextAttachment *)self adjustedFont];
-    [v15 wf_lineHeight];
+    adjustedFont = [(WFSlotTextAttachment *)self adjustedFont];
+    [adjustedFont wf_lineHeight];
     v14 = v16 * 1.06;
   }
 
-  if ([v10 conformsToProtocol:&unk_1F4853988] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([layoutManager conformsToProtocol:&unk_1F4853988] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 preferredHeightForDrawingTextAttachment:self atCharacterIndex:a6 withProposedHeight:v14];
+    [layoutManager preferredHeightForDrawingTextAttachment:self atCharacterIndex:index withProposedHeight:v14];
     v14 = v17;
   }
 
-  [v9 lineFragmentPadding];
+  [containerCopy lineFragmentPadding];
   v19 = v18;
-  v20 = [(WFSlotTextAttachment *)self variableName];
-  v21 = [(WFSlotTextAttachment *)self token];
-  v22 = [v21 icon];
-  v23 = [(WFSlotTextAttachment *)self adjustedFont];
-  [WFVariablePillView widthForVariableViewWithName:v20 icon:v22 font:v23 height:v14];
+  variableName = [(WFSlotTextAttachment *)self variableName];
+  token = [(WFSlotTextAttachment *)self token];
+  icon = [token icon];
+  adjustedFont2 = [(WFSlotTextAttachment *)self adjustedFont];
+  [WFVariablePillView widthForVariableViewWithName:variableName icon:icon font:adjustedFont2 height:v14];
   v25 = v24;
 
   if (v12)
@@ -62,8 +62,8 @@
 
   else
   {
-    v28 = [(WFSlotTextAttachment *)self font];
-    [v28 capHeight];
+    font = [(WFSlotTextAttachment *)self font];
+    [font capHeight];
     v27 = v29;
   }
 
@@ -96,38 +96,38 @@
   return result;
 }
 
-- (id)imageForBounds:(CGRect)a3 textContainer:(id)a4 characterIndex:(unint64_t)a5
+- (id)imageForBounds:(CGRect)bounds textContainer:(id)container characterIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___block_invoke;
   aBlock[3] = &unk_1E8308258;
   aBlock[4] = self;
-  v22 = a3;
+  boundsCopy = bounds;
   v8 = _Block_copy(aBlock);
-  v9 = [(WFSlotTextAttachment *)self token];
-  v10 = [v9 icon];
+  token = [(WFSlotTextAttachment *)self token];
+  icon = [token icon];
 
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (icon && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [(WFSlotTextAttachment *)self variableName];
-    v12 = [(WFSlotTextAttachment *)self adjustedFont];
-    v13 = [(WFSlotTextAttachment *)self tintColor];
-    v14 = [(WFSlotTextAttachment *)self currentControlState];
-    v15 = [(WFSlotTextAttachment *)self token];
-    v16 = [v15 isAvailable];
+    variableName = [(WFSlotTextAttachment *)self variableName];
+    adjustedFont = [(WFSlotTextAttachment *)self adjustedFont];
+    tintColor = [(WFSlotTextAttachment *)self tintColor];
+    currentControlState = [(WFSlotTextAttachment *)self currentControlState];
+    token2 = [(WFSlotTextAttachment *)self token];
+    isAvailable = [token2 isAvailable];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___block_invoke_2;
     v20[3] = &unk_1E8308280;
     v20[4] = self;
-    [WFVariablePillDrawer drawVariableForAppIconNamed:v11 icon:v10 font:v12 tint:v13 size:v14 state:v16 isAvailable:width completion:height, v20];
+    [WFVariablePillDrawer drawVariableForAppIconNamed:variableName icon:icon font:adjustedFont tint:tintColor size:currentControlState state:isAvailable isAvailable:width completion:height, v20];
 
-    v17 = [(WFSlotTextAttachment *)self image];
+    image = [(WFSlotTextAttachment *)self image];
 
-    if (v17)
+    if (image)
     {
       [(WFSlotTextAttachment *)self image];
     }
@@ -182,20 +182,20 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
 
 - (unint64_t)currentControlState
 {
-  v2 = self;
-  if ([(WFSlotTextAttachment *)v2 isEnabled])
+  selfCopy = self;
+  if ([(WFSlotTextAttachment *)selfCopy isEnabled])
   {
-    if ([(WFSlotTextAttachment *)v2 isSelected])
+    if ([(WFSlotTextAttachment *)selfCopy isSelected])
     {
       v3 = 2;
     }
 
-    else if ([(WFSlotTextAttachment *)v2 isHighlighted])
+    else if ([(WFSlotTextAttachment *)selfCopy isHighlighted])
     {
       v3 = 1;
     }
 
-    else if ([(WFSlotTextAttachment *)v2 isEmphasized])
+    else if ([(WFSlotTextAttachment *)selfCopy isEmphasized])
     {
       v3 = 4;
     }
@@ -219,9 +219,9 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
   tintColor = self->_tintColor;
   if (!tintColor)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     v5 = self->_tintColor;
-    self->_tintColor = v4;
+    self->_tintColor = systemBlueColor;
 
     tintColor = self->_tintColor;
   }
@@ -231,18 +231,18 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
 
 - (id)adjustedFont
 {
-  v3 = [(WFSlotTextAttachment *)self standalone];
-  v4 = [(WFSlotTextAttachment *)self font];
-  if (!v3)
+  standalone = [(WFSlotTextAttachment *)self standalone];
+  font = [(WFSlotTextAttachment *)self font];
+  if (!standalone)
   {
-    v5 = [(WFSlotTextAttachment *)self font];
-    [v5 pointSize];
-    v7 = [v4 fontWithSize:v6 * 0.9];
+    font2 = [(WFSlotTextAttachment *)self font];
+    [font2 pointSize];
+    v7 = [font fontWithSize:v6 * 0.9];
 
-    v4 = v7;
+    font = v7;
   }
 
-  return v4;
+  return font;
 }
 
 - (UIFont)font
@@ -262,60 +262,60 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
 
 - (id)variableName
 {
-  v3 = [(WFSlotTextAttachment *)self overrideVariableName];
-  v4 = v3;
-  if (v3)
+  overrideVariableName = [(WFSlotTextAttachment *)self overrideVariableName];
+  v4 = overrideVariableName;
+  if (overrideVariableName)
   {
-    v5 = v3;
+    displayName = overrideVariableName;
   }
 
   else
   {
-    v6 = [(WFSlotTextAttachment *)self token];
-    v5 = [v6 displayName];
+    token = [(WFSlotTextAttachment *)self token];
+    displayName = [token displayName];
   }
 
-  return v5;
+  return displayName;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(WFSlotTextAttachment *)self token];
-  v3 = [v2 displayName];
+  token = [(WFSlotTextAttachment *)self token];
+  displayName = [token displayName];
 
-  return v3;
+  return displayName;
 }
 
-- (void)templateTokenDidChange:(id)a3
+- (void)templateTokenDidChange:(id)change
 {
-  objc_storeStrong(&self->_token, a3);
+  objc_storeStrong(&self->_token, change);
 
   [(WFSlotTextAttachment *)self notifyNeedsDisplay];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFSlotTextAttachment *)self token];
-  v6 = [v4 initWithSlotTemplateToken:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  token = [(WFSlotTextAttachment *)self token];
+  v6 = [v4 initWithSlotTemplateToken:token];
 
   [v6 setEnabled:{-[WFSlotTextAttachment isEnabled](self, "isEnabled")}];
   [v6 setSelected:{-[WFSlotTextAttachment isSelected](self, "isSelected")}];
   [v6 setHighlighted:{-[WFSlotTextAttachment isHighlighted](self, "isHighlighted")}];
-  v7 = [(WFSlotTextAttachment *)self font];
-  [v6 setFont:v7];
+  font = [(WFSlotTextAttachment *)self font];
+  [v6 setFont:font];
 
-  v8 = [(WFSlotTextAttachment *)self surroundingTextFont];
-  [v6 setSurroundingTextFont:v8];
+  surroundingTextFont = [(WFSlotTextAttachment *)self surroundingTextFont];
+  [v6 setSurroundingTextFont:surroundingTextFont];
 
-  v9 = [(WFSlotTextAttachment *)self tintColor];
-  [v6 setTintColor:v9];
+  tintColor = [(WFSlotTextAttachment *)self tintColor];
+  [v6 setTintColor:tintColor];
 
-  v10 = [(WFSlotTextAttachment *)self overrideVariableName];
-  [v6 setOverrideVariableName:v10];
+  overrideVariableName = [(WFSlotTextAttachment *)self overrideVariableName];
+  [v6 setOverrideVariableName:overrideVariableName];
 
-  v11 = [(WFSlotTextAttachment *)self containingSlotIdentifier];
-  [v6 setContainingSlotIdentifier:v11];
+  containingSlotIdentifier = [(WFSlotTextAttachment *)self containingSlotIdentifier];
+  [v6 setContainingSlotIdentifier:containingSlotIdentifier];
 
   [v6 setStandalone:{-[WFSlotTextAttachment standalone](self, "standalone")}];
   return v6;
@@ -328,8 +328,8 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(WFSlotTextAttachment *)self observers];
-  v4 = [v3 copy];
+  observers = [(WFSlotTextAttachment *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
@@ -357,18 +357,18 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFSlotTextAttachment *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(WFSlotTextAttachment *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFSlotTextAttachment *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(WFSlotTextAttachment *)self observers];
+  [observers addObject:observerCopy];
 }
 
 - (NSString)description
@@ -377,17 +377,17 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
   v12.receiver = self;
   v12.super_class = WFSlotTextAttachment;
   v4 = [(WFSlotTextAttachment *)&v12 description];
-  v5 = [(WFSlotTextAttachment *)self token];
-  v6 = [v5 displayName];
-  v7 = [(WFSlotTextAttachment *)self token];
-  v8 = [v7 isAvailable];
+  token = [(WFSlotTextAttachment *)self token];
+  displayName = [token displayName];
+  token2 = [(WFSlotTextAttachment *)self token];
+  isAvailable = [token2 isAvailable];
   v9 = @"unavailable";
-  if (v8)
+  if (isAvailable)
   {
     v9 = @"available";
   }
 
-  v10 = [v3 stringWithFormat:@"%@: %@ %@", v4, v6, v9];
+  v10 = [v3 stringWithFormat:@"%@: %@ %@", v4, displayName, v9];
 
   return v10;
 }
@@ -400,13 +400,13 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
   [(WFSlotTextAttachment *)&v3 dealloc];
 }
 
-- (WFSlotTextAttachment)initWithSlotTemplateToken:(id)a3
+- (WFSlotTextAttachment)initWithSlotTemplateToken:(id)token
 {
-  v6 = a3;
-  if (!v6)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFSlotTextAttachment.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"token"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTextAttachment.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"token"}];
   }
 
   v7 = objc_opt_new();
@@ -414,14 +414,14 @@ void __68__WFSlotTextAttachment_imageForBounds_textContainer_characterIndex___bl
 
   if (v8)
   {
-    objc_storeStrong(&v8->_token, a3);
+    objc_storeStrong(&v8->_token, token);
     v8->_enabled = 1;
     v8->_standalone = 0;
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v8->_observers;
-    v8->_observers = v9;
+    v8->_observers = weakObjectsHashTable;
 
-    [v6 addDelegate:v8];
+    [tokenCopy addDelegate:v8];
     v11 = v8;
   }
 

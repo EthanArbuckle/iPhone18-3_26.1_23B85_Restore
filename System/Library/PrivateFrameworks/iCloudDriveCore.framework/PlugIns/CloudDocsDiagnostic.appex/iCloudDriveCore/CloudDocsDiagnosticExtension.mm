@@ -1,26 +1,26 @@
 @interface CloudDocsDiagnosticExtension
-- (BOOL)_backupDatabaseWithSession:(id)a3 toOutputPath:(id)a4;
-- (BOOL)_dumpDatabaseToOutputPath:(id)a3;
-- (BOOL)_dumpSystemLogsToOutputPath:(id)a3;
-- (BOOL)_getConfigureLogsParam:(id)a3 configureLogs:(BOOL *)a4;
+- (BOOL)_backupDatabaseWithSession:(id)session toOutputPath:(id)path;
+- (BOOL)_dumpDatabaseToOutputPath:(id)path;
+- (BOOL)_dumpSystemLogsToOutputPath:(id)path;
+- (BOOL)_getConfigureLogsParam:(id)param configureLogs:(BOOL *)logs;
 - (double)_logCollectionInterval;
-- (id)_displayStringForLogType:(unint64_t)a3;
-- (id)attachmentsForParameters:(id)a3;
-- (id)computeHomeDirPathForAccount:(id)a3;
-- (void)_enableLogSensitiveData:(BOOL)a3;
+- (id)_displayStringForLogType:(unint64_t)type;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)computeHomeDirPathForAccount:(id)account;
+- (void)_enableLogSensitiveData:(BOOL)data;
 @end
 
 @implementation CloudDocsDiagnosticExtension
 
-- (BOOL)_getConfigureLogsParam:(id)a3 configureLogs:(BOOL *)a4
+- (BOOL)_getConfigureLogsParam:(id)param configureLogs:(BOOL *)logs
 {
   v4 = 0;
-  if (a3 && a4)
+  if (param && logs)
   {
-    v6 = [a3 objectForKey:@"configure_logs"];
+    v6 = [param objectForKey:@"configure_logs"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      *a4 = [v6 BOOLValue];
+      *logs = [v6 BOOLValue];
       v4 = 1;
     }
 
@@ -40,17 +40,17 @@
   return v4;
 }
 
-- (void)_enableLogSensitiveData:(BOOL)a3
+- (void)_enableLogSensitiveData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100003688(v3, v4, v5);
+    sub_100003688(dataCopy, v4, v5);
   }
 
-  if (v3)
+  if (dataCopy)
   {
     v6 = &off_100008688;
   }
@@ -64,13 +64,13 @@
   CFPreferencesSynchronize(kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-- (id)computeHomeDirPathForAccount:(id)a3
+- (id)computeHomeDirPathForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 environment];
+  environment = [v4 environment];
 
-  if (geteuid() || ([v3 isDataSeparated] & 1) != 0)
+  if (geteuid() || ([accountCopy isDataSeparated] & 1) != 0)
   {
     v6 = +[BRSpecialFolders homeDirForCurrentPersona];
     if (v6)
@@ -81,14 +81,14 @@
     goto LABEL_4;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"HOME"];
+  v9 = [environment objectForKeyedSubscript:@"HOME"];
   v6 = NSHomeDirectoryForUser(@"mobile");
 
   if (!v6)
   {
 LABEL_4:
-    v7 = [v3 accountIdentifier];
-    printf("couldn't get home path for account %s\n", [v7 UTF8String]);
+    accountIdentifier = [accountCopy accountIdentifier];
+    printf("couldn't get home path for account %s\n", [accountIdentifier UTF8String]);
   }
 
 LABEL_5:
@@ -96,9 +96,9 @@ LABEL_5:
   return v6;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v15 = a3;
+  parametersCopy = parameters;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -114,7 +114,7 @@ LABEL_5:
   }
 
   v24 = 0;
-  v5 = [(CloudDocsDiagnosticExtension *)self _getConfigureLogsParam:v15 configureLogs:&v24];
+  v5 = [(CloudDocsDiagnosticExtension *)self _getConfigureLogsParam:parametersCopy configureLogs:&v24];
   if (v5 && v24 == 1)
   {
     v6 = brc_bread_crumbs();
@@ -175,12 +175,12 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)_backupDatabaseWithSession:(id)a3 toOutputPath:(id)a4
+- (BOOL)_backupDatabaseWithSession:(id)session toOutputPath:(id)path
 {
-  v5 = a3;
-  v6 = [NSURL fileURLWithPath:a4];
+  sessionCopy = session;
+  v6 = [NSURL fileURLWithPath:path];
   v11 = 0;
-  v7 = [v5 backupDatabaseToURL:v6 error:&v11];
+  v7 = [sessionCopy backupDatabaseToURL:v6 error:&v11];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -192,16 +192,16 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_dumpDatabaseToOutputPath:(id)a3
+- (BOOL)_dumpDatabaseToOutputPath:(id)path
 {
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 525, 420);
+  pathCopy = path;
+  v4 = open([pathCopy fileSystemRepresentation], 525, 420);
   if ((v4 & 0x80000000) != 0)
   {
-    v5 = [v3 fileSystemRepresentation];
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
     v6 = __error();
     v7 = strerror(*v6);
-    syslog(3, "unable open file at path %s; %s", v5, v7);
+    syslog(3, "unable open file at path %s; %s", fileSystemRepresentation, v7);
   }
 
   v8 = [[NSFileHandle alloc] initWithFileDescriptor:v4 closeOnDealloc:1];
@@ -225,16 +225,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)_displayStringForLogType:(unint64_t)a3
+- (id)_displayStringForLogType:(unint64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       return @"Default";
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       return @"Info";
     }
@@ -242,7 +242,7 @@ LABEL_5:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         return @"Debug";
@@ -268,9 +268,9 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_dumpSystemLogsToOutputPath:(id)a3
+- (BOOL)_dumpSystemLogsToOutputPath:(id)path
 {
-  v59 = a3;
+  pathCopy = path;
   v60 = +[OSLogEventStore localStore];
   v76 = 0;
   v77 = &v76;
@@ -286,7 +286,7 @@ LABEL_5:
   [v60 prepareWithCompletionHandler:v75];
   if (v77[5])
   {
-    v4 = COERCE_DOUBLE(v59);
+    v4 = COERCE_DOUBLE(pathCopy);
     v5 = objc_alloc_init(NSData);
     v74 = 0;
     v6 = [v5 writeToFile:*&v4 options:1 error:&v74];
@@ -360,7 +360,7 @@ LABEL_5:
           v64[3] = &unk_100008350;
           v19 = v17;
           v65 = v19;
-          v66 = self;
+          selfCopy = self;
           v20 = v57;
           v67 = v20;
           v52 = *&v4;
@@ -418,14 +418,14 @@ LABEL_5:
               if (os_log_type_enabled(v38, 0x90u))
               {
                 v51 = v37;
-                v54 = [v52 fp_prettyPath];
-                v50 = [v36 fp_prettyDescription];
+                fp_prettyPath = [v52 fp_prettyPath];
+                fp_prettyDescription = [v36 fp_prettyDescription];
                 *buf = 138413058;
                 v83 = COERCE_DOUBLE(@"\nERROR: Log Collection could not complete, timed out.");
                 v84 = 2112;
-                v85 = v54;
+                v85 = fp_prettyPath;
                 v86 = 2112;
-                v87 = v50;
+                v87 = fp_prettyDescription;
                 v88 = 2112;
                 v89 = v51;
                 _os_log_error_impl(&_mh_execute_header, v38, 0x90u, "[ERROR] Failed writing log line '%@' to file %@: %@%@", buf, 0x2Au);
@@ -444,11 +444,11 @@ LABEL_5:
           v46 = brc_default_log();
           if (os_log_type_enabled(v46, 0x90u))
           {
-            v49 = [v55 fp_prettyDescription];
+            fp_prettyDescription2 = [v55 fp_prettyDescription];
             *buf = 138412802;
             v83 = v4;
             v84 = 2112;
-            v85 = v49;
+            v85 = fp_prettyDescription2;
             v86 = 2112;
             v87 = v45;
             _os_log_error_impl(&_mh_execute_header, v46, 0x90u, "[ERROR] Failed to truncate file: %@ : %@%@", buf, 0x20u);
@@ -479,8 +479,8 @@ LABEL_5:
       v40 = brc_default_log();
       if (os_log_type_enabled(v40, 0x90u))
       {
-        v41 = [v56 fp_prettyDescription];
-        sub_100003868(v41, v57, buf, v40);
+        fp_prettyDescription3 = [v56 fp_prettyDescription];
+        sub_100003868(fp_prettyDescription3, v57, buf, v40);
       }
     }
 

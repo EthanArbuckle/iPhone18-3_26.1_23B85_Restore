@@ -1,69 +1,69 @@
 @interface IDSKTVerificationInfoProvider
-- (IDSKTVerificationInfoProvider)initWithApplicationIdentifier:(id)a3;
-- (void)fetchPeerVerificationInfos:(id)a3 completionBlock:(id)a4;
-- (void)fetchSelfVerificationInfo:(id)a3;
-- (void)healSelf:(id)a3 completionBlock:(id)a4;
+- (IDSKTVerificationInfoProvider)initWithApplicationIdentifier:(id)identifier;
+- (void)fetchPeerVerificationInfos:(id)infos completionBlock:(id)block;
+- (void)fetchSelfVerificationInfo:(id)info;
+- (void)healSelf:(id)self completionBlock:(id)block;
 @end
 
 @implementation IDSKTVerificationInfoProvider
 
-- (IDSKTVerificationInfoProvider)initWithApplicationIdentifier:(id)a3
+- (IDSKTVerificationInfoProvider)initWithApplicationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = IDSKTVerificationInfoProvider;
   v6 = [(IDSKTVerificationInfoProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationIdentifier, a3);
+    objc_storeStrong(&v6->_applicationIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)fetchPeerVerificationInfos:(id)a3 completionBlock:(id)a4
+- (void)fetchPeerVerificationInfos:(id)infos completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A91C70;
   v10[3] = &unk_1E743F278;
-  v11 = v6;
-  v12 = v7;
+  v11 = infosCopy;
+  v12 = blockCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = infosCopy;
+  v9 = blockCopy;
   [IDSXPCDaemonController performDaemonControllerTask:v10];
 }
 
-- (void)fetchSelfVerificationInfo:(id)a3
+- (void)fetchSelfVerificationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A91E84;
   v6[3] = &unk_1E7440330;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [IDSXPCDaemonController performDaemonControllerTask:v6];
 }
 
-- (void)healSelf:(id)a3 completionBlock:(id)a4
+- (void)healSelf:(id)self completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  selfCopy = self;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A92184;
   v10[3] = &unk_1E743F278;
-  v11 = v6;
-  v12 = v7;
+  v11 = selfCopy;
+  v12 = blockCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = selfCopy;
+  v9 = blockCopy;
   [IDSXPCDaemonController performDaemonControllerTask:v10];
 }
 

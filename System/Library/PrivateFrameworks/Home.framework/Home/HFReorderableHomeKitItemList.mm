@@ -1,16 +1,16 @@
 @interface HFReorderableHomeKitItemList
-+ (id)_dataForHomeKitItem:(id)a3;
++ (id)_dataForHomeKitItem:(id)item;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (HFReorderableHomeKitItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFReorderableHomeKitItemList)initWithApplicationDataContainer:(id)container category:(id)category;
 - (NSString)_applicationDataKey;
 - (id)_actionSetTypeComparator;
 - (id)_homeKitItemDataComparator;
 - (id)_reorderableObjectDateAddedComparator;
 - (id)_reorderableObjectTitleComparator;
 - (id)_sortedHomeKitIdentifierComparator;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)sortedHomeKitItemComparator;
 - (id)sortedHomeKitObjectComparator;
 - (unint64_t)hash;
@@ -18,30 +18,30 @@
 
 @implementation HFReorderableHomeKitItemList
 
-- (HFReorderableHomeKitItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4
+- (HFReorderableHomeKitItemList)initWithApplicationDataContainer:(id)container category:(id)category
 {
   v16.receiver = self;
   v16.super_class = HFReorderableHomeKitItemList;
-  v4 = [(HFReorderableItemListAbstractBase *)&v16 initWithApplicationDataContainer:a3 category:a4];
+  v4 = [(HFReorderableItemListAbstractBase *)&v16 initWithApplicationDataContainer:container category:category];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HFReorderableItemListAbstractBase *)v4 applicationDataContainer];
-    v7 = [v6 applicationData];
-    v8 = [(HFReorderableHomeKitItemList *)v5 _applicationDataKey];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    applicationDataContainer = [(HFReorderableItemListAbstractBase *)v4 applicationDataContainer];
+    applicationData = [applicationDataContainer applicationData];
+    _applicationDataKey = [(HFReorderableHomeKitItemList *)v5 _applicationDataKey];
+    v9 = [applicationData objectForKeyedSubscript:_applicationDataKey];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      array = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    v12 = v11;
+    v12 = array;
 
     v13 = [v12 na_map:&__block_literal_global_223];
     sortedHomeKitObjectIdentifiers = v5->_sortedHomeKitObjectIdentifiers;
@@ -68,44 +68,44 @@ id __74__HFReorderableHomeKitItemList_initWithApplicationDataContainer_category_
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFReorderableHomeKitItemList alloc];
-  v5 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
-  v6 = [(HFReorderableItemListAbstractBase *)self category];
-  v7 = [(HFReorderableHomeKitItemList *)v4 initWithApplicationDataContainer:v5 category:v6];
+  applicationDataContainer = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
+  category = [(HFReorderableItemListAbstractBase *)self category];
+  v7 = [(HFReorderableHomeKitItemList *)v4 initWithApplicationDataContainer:applicationDataContainer category:category];
 
-  v8 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
-  [(HFReorderableHomeKitItemList *)v7 setSortedHomeKitObjectIdentifiers:v8];
+  sortedHomeKitObjectIdentifiers = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
+  [(HFReorderableHomeKitItemList *)v7 setSortedHomeKitObjectIdentifiers:sortedHomeKitObjectIdentifiers];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableReorderableHomeKitItemList alloc];
-  v5 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
-  v6 = [(HFReorderableItemListAbstractBase *)self category];
-  v7 = [(HFReorderableHomeKitItemList *)v4 initWithApplicationDataContainer:v5 category:v6];
+  applicationDataContainer = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
+  category = [(HFReorderableItemListAbstractBase *)self category];
+  v7 = [(HFReorderableHomeKitItemList *)v4 initWithApplicationDataContainer:applicationDataContainer category:category];
 
-  v8 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
-  [(HFReorderableHomeKitItemList *)v7 setSortedHomeKitObjectIdentifiers:v8];
+  sortedHomeKitObjectIdentifiers = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
+  [(HFReorderableHomeKitItemList *)v7 setSortedHomeKitObjectIdentifiers:sortedHomeKitObjectIdentifiers];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HFReorderableHomeKitItemList *)self _applicationDataKey];
-  v3 = [v2 hash];
+  _applicationDataKey = [(HFReorderableHomeKitItemList *)self _applicationDataKey];
+  v3 = [_applicationDataKey hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -115,37 +115,37 @@ id __74__HFReorderableHomeKitItemList_initWithApplicationDataContainer_category_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFReorderableItemListAbstractBase *)v5 applicationDataContainer];
-      v7 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
-      if (v6 == v7)
+      v5 = equalCopy;
+      applicationDataContainer = [(HFReorderableItemListAbstractBase *)v5 applicationDataContainer];
+      applicationDataContainer2 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
+      if (applicationDataContainer == applicationDataContainer2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HFReorderableItemListAbstractBase *)v5 applicationDataContainer];
-        v9 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
-        v10 = [v8 isEqual:v9];
+        applicationDataContainer3 = [(HFReorderableItemListAbstractBase *)v5 applicationDataContainer];
+        applicationDataContainer4 = [(HFReorderableItemListAbstractBase *)self applicationDataContainer];
+        v10 = [applicationDataContainer3 isEqual:applicationDataContainer4];
       }
 
-      v11 = [(HFReorderableItemListAbstractBase *)v5 category];
-      v12 = [(HFReorderableItemListAbstractBase *)self category];
-      if (v11 != v12)
+      category = [(HFReorderableItemListAbstractBase *)v5 category];
+      category2 = [(HFReorderableItemListAbstractBase *)self category];
+      if (category != category2)
       {
-        v13 = [(HFReorderableItemListAbstractBase *)v5 category];
-        v14 = [(HFReorderableItemListAbstractBase *)self category];
-        v10 &= [v13 isEqual:v14];
+        category3 = [(HFReorderableItemListAbstractBase *)v5 category];
+        category4 = [(HFReorderableItemListAbstractBase *)self category];
+        v10 &= [category3 isEqual:category4];
       }
 
-      v15 = [(HFReorderableHomeKitItemList *)v5 sortedHomeKitObjectIdentifiers];
-      v16 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
-      if (v15 != v16)
+      sortedHomeKitObjectIdentifiers = [(HFReorderableHomeKitItemList *)v5 sortedHomeKitObjectIdentifiers];
+      sortedHomeKitObjectIdentifiers2 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
+      if (sortedHomeKitObjectIdentifiers != sortedHomeKitObjectIdentifiers2)
       {
-        v17 = [(HFReorderableHomeKitItemList *)v5 sortedHomeKitObjectIdentifiers];
-        v18 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
-        v10 &= [v17 isEqual:v18];
+        sortedHomeKitObjectIdentifiers3 = [(HFReorderableHomeKitItemList *)v5 sortedHomeKitObjectIdentifiers];
+        sortedHomeKitObjectIdentifiers4 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
+        v10 &= [sortedHomeKitObjectIdentifiers3 isEqual:sortedHomeKitObjectIdentifiers4];
       }
     }
 
@@ -158,16 +158,16 @@ id __74__HFReorderableHomeKitItemList_initWithApplicationDataContainer_category_
   return v10;
 }
 
-+ (id)_dataForHomeKitItem:(id)a3
++ (id)_dataForHomeKitItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:@"title"];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:@"title"];
 
-  v6 = [v3 latestResults];
-  v7 = [v6 objectForKeyedSubscript:@"dateAdded"];
+  latestResults2 = [itemCopy latestResults];
+  v7 = [latestResults2 objectForKeyedSubscript:@"dateAdded"];
 
-  v8 = v3;
+  v8 = itemCopy;
   objc_opt_class();
   v9 = v8;
   if (objc_opt_isKindOfClass())
@@ -186,14 +186,14 @@ id __74__HFReorderableHomeKitItemList_initWithApplicationDataContainer_category_
 
     v11 = v10;
 
-    v12 = [v11 sourceItem];
-    v13 = [v12 conformsToProtocol:&unk_28252A8F8];
+    sourceItem = [v11 sourceItem];
+    v13 = [sourceItem conformsToProtocol:&unk_28252A8F8];
 
     if (v13)
     {
-      v14 = [v11 sourceItem];
+      sourceItem2 = [v11 sourceItem];
 
-      v9 = v14;
+      v9 = sourceItem2;
     }
   }
 
@@ -212,26 +212,26 @@ id __74__HFReorderableHomeKitItemList_initWithApplicationDataContainer_category_
 
     v17 = v16;
 
-    v18 = [v17 primaryHomeKitObject];
+    primaryHomeKitObject = [v17 primaryHomeKitObject];
   }
 
   else
   {
-    v18 = [v9 homeKitObject];
+    primaryHomeKitObject = [v9 homeKitObject];
   }
 
-  v19 = [v18 uniqueIdentifier];
+  uniqueIdentifier = [primaryHomeKitObject uniqueIdentifier];
 
-  v20 = [HFOrderedHomeKitItemData dataWithUniqueIdentifier:v19 title:v5 dateAdded:v7];
-  v21 = [v9 homeKitObject];
+  v20 = [HFOrderedHomeKitItemData dataWithUniqueIdentifier:uniqueIdentifier title:v5 dateAdded:v7];
+  homeKitObject = [v9 homeKitObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v23 = [v9 homeKitObject];
-    v24 = [v23 actionSetType];
-    [v20 setActionSetType:v24];
+    homeKitObject2 = [v9 homeKitObject];
+    actionSetType = [homeKitObject2 actionSetType];
+    [v20 setActionSetType:actionSetType];
   }
 
   return v20;
@@ -434,8 +434,8 @@ uint64_t __58__HFReorderableHomeKitItemList__homeKitItemDataComparator__block_in
 
 - (BOOL)isEmpty
 {
-  v2 = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
-  v3 = [v2 count] == 0;
+  sortedHomeKitObjectIdentifiers = [(HFReorderableHomeKitItemList *)self sortedHomeKitObjectIdentifiers];
+  v3 = [sortedHomeKitObjectIdentifiers count] == 0;
 
   return v3;
 }
@@ -443,8 +443,8 @@ uint64_t __58__HFReorderableHomeKitItemList__homeKitItemDataComparator__block_in
 - (NSString)_applicationDataKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HFReorderableItemListAbstractBase *)self category];
-  v4 = [v2 stringWithFormat:@"%@_%@", @"HFSortedIdentifierStrings", v3];
+  category = [(HFReorderableItemListAbstractBase *)self category];
+  v4 = [v2 stringWithFormat:@"%@_%@", @"HFSortedIdentifierStrings", category];
 
   return v4;
 }

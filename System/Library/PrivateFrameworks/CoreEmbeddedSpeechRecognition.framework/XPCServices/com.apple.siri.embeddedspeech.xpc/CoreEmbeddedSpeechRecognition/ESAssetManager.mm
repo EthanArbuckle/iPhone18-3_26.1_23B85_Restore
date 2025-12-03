@@ -1,53 +1,53 @@
 @interface ESAssetManager
 + (id)sharedInstance;
-- (BOOL)_geoLMCompatibleWithMainAsset:(id)a3 geoAssetConfig:(id)a4;
+- (BOOL)_geoLMCompatibleWithMainAsset:(id)asset geoAssetConfig:(id)config;
 - (BOOL)isTrialAssetDeliveryEnabled;
-- (BOOL)purgeInstalledAssetsExceptLanguages:(id)a3 assetType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)validateHammerConfigFile:(id)a3;
+- (BOOL)purgeInstalledAssetsExceptLanguages:(id)languages assetType:(unint64_t)type error:(id *)error;
+- (BOOL)validateHammerConfigFile:(id)file;
 - (ESAssetManager)init;
-- (id)_installedGeoLMRegionMappingForLanguage:(id)a3;
-- (id)geoLMRegionIdForLocation:(id)a3;
-- (id)installationStatusForLanguagesIgnoringCache:(BOOL)a3 assetType:(unint64_t)a4 withDetailedStatus:(BOOL)a5 withError:(id *)a6;
-- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)a3 regionId:(id)a4 mainAssetConfig:(id)a5;
-- (id)installedHammerConfigFileForLanguage:(id)a3;
-- (id)installedQuasarModelPathForAssetConfig:(id)a3 error:(id *)a4;
-- (void)_invalidateInstallationStatusCacheForAssetType:(unint64_t)a3;
+- (id)_installedGeoLMRegionMappingForLanguage:(id)language;
+- (id)geoLMRegionIdForLocation:(id)location;
+- (id)installationStatusForLanguagesIgnoringCache:(BOOL)cache assetType:(unint64_t)type withDetailedStatus:(BOOL)status withError:(id *)error;
+- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)language regionId:(id)id mainAssetConfig:(id)config;
+- (id)installedHammerConfigFileForLanguage:(id)language;
+- (id)installedQuasarModelPathForAssetConfig:(id)config error:(id *)error;
+- (void)_invalidateInstallationStatusCacheForAssetType:(unint64_t)type;
 - (void)cleanupUnusedSubscriptions;
 - (void)dealloc;
 - (void)handlePostInstallSubscriptions;
-- (void)initializeGeoLMWithLanguage:(id)a3;
-- (void)purgeUnusedGeoLMAssetsForLanguage:(id)a3;
+- (void)initializeGeoLMWithLanguage:(id)language;
+- (void)purgeUnusedGeoLMAssetsForLanguage:(id)language;
 - (void)registerNotifications;
 @end
 
 @implementation ESAssetManager
 
-- (void)purgeUnusedGeoLMAssetsForLanguage:(id)a3
+- (void)purgeUnusedGeoLMAssetsForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000106DC;
   block[3] = &unk_100055618;
-  v8 = v4;
-  v6 = v4;
+  v8 = languageCopy;
+  v6 = languageCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)_geoLMCompatibleWithMainAsset:(id)a3 geoAssetConfig:(id)a4
+- (BOOL)_geoLMCompatibleWithMainAsset:(id)asset geoAssetConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  assetCopy = asset;
+  configCopy = config;
+  v7 = configCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (assetCopy && configCopy)
   {
-    v9 = [[_EARSpeechModelInfo alloc] initWithConfig:v5];
+    v9 = [[_EARSpeechModelInfo alloc] initWithConfig:assetCopy];
     v10 = [[_EARSpeechModelInfo alloc] initWithConfig:v7];
-    v11 = [v9 version];
-    v12 = [v10 version];
-    v13 = [v11 isEqualToString:v12];
+    version = [v9 version];
+    version2 = [v10 version];
+    v13 = [version isEqualToString:version2];
 
     if (v13)
     {
@@ -60,16 +60,16 @@
       v14 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v9 version];
-        v17 = [v10 version];
+        version3 = [v9 version];
+        version4 = [v10 version];
         v18 = 136316162;
         v19 = "[ESAssetManager _geoLMCompatibleWithMainAsset:geoAssetConfig:]";
         v20 = 2112;
-        v21 = v16;
+        v21 = version3;
         v22 = 2112;
-        v23 = v17;
+        v23 = version4;
         v24 = 2112;
-        v25 = v5;
+        v25 = assetCopy;
         v26 = 2112;
         v27 = v7;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s GeoLM: model-info.version doesn't match. mainASRModelInfo.version=%@ geoLMModelInfo.version=%@ mainAssetConfig=%@ geoAssetConfig=%@", &v18, 0x34u);
@@ -82,16 +82,16 @@
   return v8;
 }
 
-- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)a3 regionId:(id)a4 mainAssetConfig:(id)a5
+- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)language regionId:(id)id mainAssetConfig:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[SFEntitledAssetConfig alloc] initWithLanguage:v7 assetType:5];
+  languageCopy = language;
+  idCopy = id;
+  configCopy = config;
+  v10 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:5];
   v11 = +[SFEntitledAssetManager sharedInstance];
   v12 = +[NSBundle mainBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [v11 installedAssetWithConfig:v10 regionId:v8 shouldSubscribe:1 subscriberId:v13 expiration:0];
+  bundleIdentifier = [v12 bundleIdentifier];
+  v14 = [v11 installedAssetWithConfig:v10 regionId:idCopy shouldSubscribe:1 subscriberId:bundleIdentifier expiration:0];
 
   if (v14 && [v14 length])
   {
@@ -103,17 +103,17 @@
       v24 = 136315651;
       v25 = "[ESAssetManager installedGeoLMRegionSpecificAssetForLanguage:regionId:mainAssetConfig:]";
       v26 = 2113;
-      v27 = v8;
+      v27 = idCopy;
       v28 = 2114;
       v29 = v16;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s GeoLM: region specific [%{private}@] geo-config json file=%{public}@", &v24, 0x20u);
     }
 
     v18 = +[CESRGeoLMRegionIDCache sharedInstance];
-    [v18 updateGeoLMAssetsInfoDictWithRegionId:v8 language:v7];
+    [v18 updateGeoLMAssetsInfoDictWithRegionId:idCopy language:languageCopy];
 
     v19 = +[ESAssetManager sharedInstance];
-    v20 = [v19 _geoLMCompatibleWithMainAsset:v9 geoAssetConfig:v16];
+    v20 = [v19 _geoLMCompatibleWithMainAsset:configCopy geoAssetConfig:v16];
 
     if (v20)
     {
@@ -127,7 +127,7 @@
       v24 = 136315395;
       v25 = "[ESAssetManager installedGeoLMRegionSpecificAssetForLanguage:regionId:mainAssetConfig:]";
       v26 = 2113;
-      v27 = v8;
+      v27 = idCopy;
       _os_log_fault_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "%s GeoLM: geoLM region specific [%{private}@] asset exists on device, but not compatible.", &v24, 0x16u);
     }
   }
@@ -140,9 +140,9 @@
       v24 = 136315651;
       v25 = "[ESAssetManager installedGeoLMRegionSpecificAssetForLanguage:regionId:mainAssetConfig:]";
       v26 = 2114;
-      v27 = v7;
+      v27 = languageCopy;
       v28 = 2113;
-      v29 = v8;
+      v29 = idCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s GeoLM: region specific asset is not found for given language=%{public}@ regionId=%{private}@", &v24, 0x20u);
     }
   }
@@ -153,11 +153,11 @@ LABEL_13:
   return v16;
 }
 
-- (id)geoLMRegionIdForLocation:(id)a3
+- (id)geoLMRegionIdForLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (!locationCopy)
   {
     v11 = AFSiriLogContextSpeech;
     if (!os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
@@ -175,7 +175,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
   [v5 coordinate];
   earGeoLMHelper = self->_earGeoLMHelper;
@@ -209,9 +209,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)initializeGeoLMWithLanguage:(id)a3
+- (void)initializeGeoLMWithLanguage:(id)language
 {
-  if (a3)
+  if (language)
   {
     v4 = [(ESAssetManager *)self _installedGeoLMRegionMappingForLanguage:?];
     if (v4)
@@ -226,14 +226,14 @@ LABEL_9:
   }
 }
 
-- (id)_installedGeoLMRegionMappingForLanguage:(id)a3
+- (id)_installedGeoLMRegionMappingForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [[SFEntitledAssetConfig alloc] initWithLanguage:v3 assetType:4];
+  languageCopy = language;
+  v4 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:4];
   v5 = +[SFEntitledAssetManager sharedInstance];
   v6 = +[NSBundle mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 installedAssetWithConfig:v4 regionId:0 shouldSubscribe:1 subscriberId:v7 expiration:0];
+  bundleIdentifier = [v6 bundleIdentifier];
+  v8 = [v5 installedAssetWithConfig:v4 regionId:0 shouldSubscribe:1 subscriberId:bundleIdentifier expiration:0];
 
   if (v8 && [v8 length])
   {
@@ -258,7 +258,7 @@ LABEL_9:
       v14 = 136315394;
       v15 = "[ESAssetManager _installedGeoLMRegionMappingForLanguage:]";
       v16 = 2112;
-      v17 = v3;
+      v17 = languageCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s GeoLM: region mapping json file is nil Or there is no regionMapping for given language=%@", &v14, 0x16u);
     }
 
@@ -268,10 +268,10 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)validateHammerConfigFile:(id)a3
+- (BOOL)validateHammerConfigFile:(id)file
 {
-  v3 = a3;
-  v4 = [[_EARSpeechModelInfo alloc] initWithConfig:v3];
+  fileCopy = file;
+  v4 = [[_EARSpeechModelInfo alloc] initWithConfig:fileCopy];
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -285,10 +285,10 @@ LABEL_9:
   return 1;
 }
 
-- (id)installedHammerConfigFileForLanguage:(id)a3
+- (id)installedHammerConfigFileForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [[SFEntitledAssetConfig alloc] initWithLanguage:v3 assetType:1];
+  languageCopy = language;
+  v4 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:1];
 
   v5 = +[SFEntitledAssetManager sharedInstance];
   v6 = [v5 installedAssetWithConfig:v4 regionId:0 shouldSubscribe:0 subscriberId:0 expiration:0];
@@ -311,9 +311,9 @@ LABEL_9:
 {
   v2 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.internal.ck"];
   v3 = [v2 objectForKey:@"disableTrialAssetDelivery"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -357,8 +357,8 @@ LABEL_9:
   v4 = +[AFPreferences sharedPreferences];
   if ([v4 dictationIsEnabled])
   {
-    v5 = [v4 activeDictationLanguages];
-    [v3 addObjectsFromArray:v5];
+    activeDictationLanguages = [v4 activeDictationLanguages];
+    [v3 addObjectsFromArray:activeDictationLanguages];
   }
 
   v6 = +[SFEntitledAssetManager subscriberIdForDictationAssets];
@@ -368,9 +368,9 @@ LABEL_9:
 - (void)handlePostInstallSubscriptions
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 dictationIsEnabled];
+  dictationIsEnabled = [v2 dictationIsEnabled];
 
-  if (v3)
+  if (dictationIsEnabled)
   {
     v4 = +[SFEntitledAssetManager sharedInstance];
     v5 = [v4 installationStatusForLanguagesWithAssetType:3];
@@ -379,32 +379,32 @@ LABEL_9:
   }
 }
 
-- (BOOL)purgeInstalledAssetsExceptLanguages:(id)a3 assetType:(unint64_t)a4 error:(id *)a5
+- (BOOL)purgeInstalledAssetsExceptLanguages:(id)languages assetType:(unint64_t)type error:(id *)error
 {
-  v7 = a3;
+  languagesCopy = languages;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000118AC;
   block[3] = &unk_100055548;
-  v13 = self;
-  v14 = a4;
-  v12 = v7;
-  v9 = v7;
+  selfCopy = self;
+  typeCopy = type;
+  v12 = languagesCopy;
+  v9 = languagesCopy;
   dispatch_async(queue, block);
 
   return 1;
 }
 
-- (id)installedQuasarModelPathForAssetConfig:(id)a3 error:(id *)a4
+- (id)installedQuasarModelPathForAssetConfig:(id)config error:(id *)error
 {
-  v4 = [(ESAssetManager *)self installedModelInfoForAssetConfig:a3 error:a4];
+  v4 = [(ESAssetManager *)self installedModelInfoForAssetConfig:config error:error];
   v5 = [v4 objectForKey:@"quasarModelPath"];
 
   return v5;
 }
 
-- (void)_invalidateInstallationStatusCacheForAssetType:(unint64_t)a3
+- (void)_invalidateInstallationStatusCacheForAssetType:(unint64_t)type
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = AFSiriLogContextSpeech;
@@ -413,11 +413,11 @@ LABEL_9:
     v11 = 136315394;
     v12 = "[ESAssetManager _invalidateInstallationStatusCacheForAssetType:]";
     v13 = 2048;
-    v14 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Invalidating installation status cache for %lu", &v11, 0x16u);
   }
 
-  if (!-[ESAssetManager isTrialAssetDeliveryEnabled](self, "isTrialAssetDeliveryEnabled") || (v6 = objc_alloc_init(SFEntitledAssetManager), [v6 installationStatusForLanguagesWithAssetType:a3], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!-[ESAssetManager isTrialAssetDeliveryEnabled](self, "isTrialAssetDeliveryEnabled") || (v6 = objc_alloc_init(SFEntitledAssetManager), [v6 installationStatusForLanguagesWithAssetType:type], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v8 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -431,18 +431,18 @@ LABEL_9:
   }
 
   languageInstallationCache = self->_languageInstallationCache;
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v10 = [NSNumber numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)languageInstallationCache setObject:v7 forKeyedSubscript:v10];
 }
 
-- (id)installationStatusForLanguagesIgnoringCache:(BOOL)a3 assetType:(unint64_t)a4 withDetailedStatus:(BOOL)a5 withError:(id *)a6
+- (id)installationStatusForLanguagesIgnoringCache:(BOOL)cache assetType:(unint64_t)type withDetailedStatus:(BOOL)status withError:(id *)error
 {
-  v8 = a3;
+  cacheCopy = cache;
   v10 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v11 = @"NO";
-    if (v8)
+    if (cacheCopy)
     {
       v11 = @"YES";
     }
@@ -467,9 +467,9 @@ LABEL_9:
   v15[3] = &unk_100054EA8;
   v15[4] = self;
   v15[5] = buf;
-  v15[6] = a4;
-  v16 = v8;
-  v17 = a5;
+  v15[6] = type;
+  v16 = cacheCopy;
+  statusCopy = status;
   dispatch_sync(queue, v15);
   v13 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);

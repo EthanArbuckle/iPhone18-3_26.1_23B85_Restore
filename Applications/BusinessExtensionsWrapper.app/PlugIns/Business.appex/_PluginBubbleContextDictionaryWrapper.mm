@@ -1,7 +1,7 @@
 @interface _PluginBubbleContextDictionaryWrapper
 - (NSDictionary)dictionaryValue;
 - (_TtC8Business37_PluginBubbleContextDictionaryWrapper)init;
-- (void)setDictionaryValue:(id)a3;
+- (void)setDictionaryValue:(id)value;
 @end
 
 @implementation _PluginBubbleContextDictionaryWrapper
@@ -15,7 +15,7 @@
   return v3.super.isa;
 }
 
-- (void)setDictionaryValue:(id)a3
+- (void)setDictionaryValue:(id)value
 {
   v4 = sub_1000ABFBC();
   v5 = *(self + OBJC_IVAR____TtC8Business37_PluginBubbleContextDictionaryWrapper_dictionaryValue);

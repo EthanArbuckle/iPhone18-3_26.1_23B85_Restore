@@ -18,21 +18,21 @@
 - (NSArray)tracksWithMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic;
 - (NSArray)tracksWithMediaType:(AVMediaType)mediaType;
 - (OpaqueFigFormatReader)_copyFormatReader;
-- (id)_addMutableTrackWithMediaType:(id)a3 copySettingsFromTrack:(id)a4 options:(id)a5;
-- (id)_initWithFigAsset:(OpaqueFigAsset *)a3;
-- (id)_initWithFigError:(int)a3 userInfo:(id)a4;
-- (id)_initWithFormatReader:(OpaqueFigFormatReader *)a3 URL:(id)a4 data:(id)a5 options:(id)a6;
+- (id)_addMutableTrackWithMediaType:(id)type copySettingsFromTrack:(id)track options:(id)options;
+- (id)_initWithFigAsset:(OpaqueFigAsset *)asset;
+- (id)_initWithFigError:(int)error userInfo:(id)info;
+- (id)_initWithFormatReader:(OpaqueFigFormatReader *)reader URL:(id)l data:(id)data options:(id)options;
 - (id)_mutableTracks;
 - (id)availableMetadataFormats;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)trackReferences;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)_addFigAssetNotifications;
 - (void)_removeFigAssetNotifications;
 - (void)dealloc;
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 - (void)removeTimeRange:(CMTimeRange *)timeRange;
 - (void)removeTrack:(AVMovieTrack *)track;
 - (void)scaleTimeRange:(CMTimeRange *)timeRange toDuration:(CMTime *)duration;
@@ -51,7 +51,7 @@
 {
   v8 = URL;
   v9 = options;
-  v10 = [[a1 alloc] initWithURL:v8 options:v9 error:outError];
+  v10 = [[self alloc] initWithURL:v8 options:v9 error:outError];
 
   return v10;
 }
@@ -139,29 +139,29 @@ LABEL_9:
 
   if (v22)
   {
-    v28 = self;
+    selfCopy = self;
   }
 
   else if (outError)
   {
     v29 = v21;
-    v28 = 0;
+    selfCopy = 0;
     *outError = v21;
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
 + (AVMutableMovie)movieWithData:(NSData *)data options:(NSDictionary *)options error:(NSError *)outError
 {
   v8 = data;
   v9 = options;
-  v10 = [[a1 alloc] initWithData:v8 options:v9 error:outError];
+  v10 = [[self alloc] initWithData:v8 options:v9 error:outError];
 
   return v10;
 }
@@ -169,7 +169,7 @@ LABEL_9:
 - (AVMutableMovie)initWithData:(NSData *)data options:(NSDictionary *)options error:(NSError *)outError
 {
   v9 = data;
-  v10 = options;
+  dictionary = options;
   cf = 0;
   v39 = 0;
   v40 = 0;
@@ -185,25 +185,25 @@ LABEL_9:
 
   v16 = [(NSData *)v9 copy];
 
-  if (!v10)
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
   v17 = *MEMORY[0x1E6972000];
-  v18 = [(NSDictionary *)v10 objectForKeyedSubscript:*MEMORY[0x1E6972000]];
+  v18 = [(NSDictionary *)dictionary objectForKeyedSubscript:*MEMORY[0x1E6972000]];
 
   if (!v18)
   {
-    v19 = [(NSDictionary *)v10 mutableCopy];
+    v19 = [(NSDictionary *)dictionary mutableCopy];
     [(NSDictionary *)v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v17];
 
-    v10 = v19;
+    dictionary = v19;
   }
 
-  v20 = _figOptionsFromAVMovieOptions(v10);
+  v20 = _figOptionsFromAVMovieOptions(dictionary);
   v21 = FigMutableMovieRemoteCreateFromData();
-  if (v21 || (v21 = _configureFigObjects(&cf, v10)) != 0)
+  if (v21 || (v21 = _configureFigObjects(&cf, dictionary)) != 0)
   {
     AVLocalizedErrorWithUnderlyingOSStatus(v21, 0);
     v23 = v22 = 0;
@@ -224,7 +224,7 @@ LABEL_9:
       {
         [(AVMutableMovie *)v24 _addFigAssetNotifications];
         objc_storeStrong(&v24->_mutableMovieInternal->data, v16);
-        v27 = [(NSDictionary *)v10 copy];
+        v27 = [(NSDictionary *)dictionary copy];
         v28 = v24->_mutableMovieInternal;
         initializationOptions = v28->initializationOptions;
         v28->initializationOptions = v27;
@@ -267,22 +267,22 @@ LABEL_9:
 
   if (v22)
   {
-    v30 = self;
+    selfCopy = self;
   }
 
   else if (outError)
   {
     v31 = v23;
-    v30 = 0;
+    selfCopy = 0;
     *outError = v23;
   }
 
   else
   {
-    v30 = 0;
+    selfCopy = 0;
   }
 
-  return v30;
+  return selfCopy;
 }
 
 + (AVMutableMovie)movieWithSettingsFromMovie:(AVMovie *)movie options:(NSDictionary *)options error:(NSError *)outError
@@ -301,7 +301,7 @@ LABEL_9:
   cf = 0;
   v26 = 0;
   v27 = 0;
-  v10 = [(AVMovie *)v8 _copyFormatReader];
+  _copyFormatReader = [(AVMovie *)v8 _copyFormatReader];
   v11 = _figOptionsFromAVMovieOptions(v9);
   Empty = FigMutableMovieRemoteCreateEmpty();
   if (Empty || (Empty = _configureFigObjects(&cf, v9)) != 0)
@@ -365,46 +365,46 @@ LABEL_9:
     CFRelease(v27);
   }
 
-  if (v10)
+  if (_copyFormatReader)
   {
-    CFRelease(v10);
+    CFRelease(_copyFormatReader);
   }
 
   if (v13)
   {
-    v21 = self;
+    selfCopy = self;
   }
 
   else if (outError)
   {
     v22 = v14;
-    v21 = 0;
+    selfCopy = 0;
     *outError = v14;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)_initWithFormatReader:(OpaqueFigFormatReader *)a3 URL:(id)a4 data:(id)a5 options:(id)a6
+- (id)_initWithFormatReader:(OpaqueFigFormatReader *)reader URL:(id)l data:(id)data options:(id)options
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  dataCopy = data;
+  optionsCopy = options;
   cf = 0;
   v31 = 0;
   v32 = 0;
-  v13 = _figOptionsFromAVMovieOptions(v12);
+  v13 = _figOptionsFromAVMovieOptions(optionsCopy);
   v14 = FigMutableMovieRemoteCreateFromFormatReader();
-  if (v14 || (v14 = _configureFigObjects(&cf, v12)) != 0)
+  if (v14 || (v14 = _configureFigObjects(&cf, optionsCopy)) != 0)
   {
-    if (v10)
+    if (lCopy)
     {
-      initializationOptions = [MEMORY[0x1E695DF20] dictionaryWithObject:v10 forKey:*MEMORY[0x1E696A998]];
+      initializationOptions = [MEMORY[0x1E695DF20] dictionaryWithObject:lCopy forKey:*MEMORY[0x1E696A998]];
     }
 
     else
@@ -415,7 +415,7 @@ LABEL_9:
     v23 = AVLocalizedErrorWithUnderlyingOSStatus(v14, initializationOptions);
     v25 = 0;
     v26 = 0;
-    if (v10)
+    if (lCopy)
     {
       goto LABEL_10;
     }
@@ -435,13 +435,13 @@ LABEL_9:
       if (v16->_mutableMovieInternal)
       {
         [(AVMutableMovie *)v16 _addFigAssetNotifications];
-        objc_storeStrong(&v16->_mutableMovieInternal->URL, a4);
-        v19 = [v11 copy];
+        objc_storeStrong(&v16->_mutableMovieInternal->URL, l);
+        v19 = [dataCopy copy];
         v20 = v16->_mutableMovieInternal;
         data = v20->data;
         v20->data = v19;
 
-        v22 = [v12 copy];
+        v22 = [optionsCopy copy];
         v23 = 0;
         v24 = v16->_mutableMovieInternal;
         initializationOptions = v24->initializationOptions;
@@ -485,18 +485,18 @@ LABEL_11:
 
   if (v26)
   {
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-- (id)_initWithFigAsset:(OpaqueFigAsset *)a3
+- (id)_initWithFigAsset:(OpaqueFigAsset *)asset
 {
   if ([(AVMutableMovie *)self isMemberOfClass:objc_opt_class()])
   {
@@ -511,9 +511,9 @@ LABEL_11:
   return 0;
 }
 
-- (id)_initWithFigError:(int)a3 userInfo:(id)a4
+- (id)_initWithFigError:(int)error userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if ([(AVMutableMovie *)self isMemberOfClass:objc_opt_class()])
   {
     v13 = MEMORY[0x1E695DF30];
@@ -527,12 +527,12 @@ LABEL_11:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   cf = 0;
-  v4 = [(AVMutableMovie *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 8);
-  if (!v5 || v5(v4, 1, 0, &cf))
+  if (!v5 || v5(_figMutableMovie, 1, 0, &cf))
   {
     v11 = 0;
   }
@@ -542,9 +542,9 @@ LABEL_11:
     v6 = [AVMovie alloc];
     v7 = cf;
     v8 = [(AVMutableMovie *)self URL];
-    v9 = [(AVMutableMovie *)self data];
-    v10 = [(AVMutableMovie *)self _initializationOptions];
-    v11 = [(AVMovie *)v6 _initWithFormatReader:v7 URL:v8 data:v9 options:v10];
+    data = [(AVMutableMovie *)self data];
+    _initializationOptions = [(AVMutableMovie *)self _initializationOptions];
+    v11 = [(AVMovie *)v6 _initWithFormatReader:v7 URL:v8 data:data options:_initializationOptions];
   }
 
   if (cf)
@@ -561,8 +561,8 @@ LABEL_11:
   if (figAsset)
   {
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAsset *)self _weakReference];
-    [v5 addListenerWithWeakReference:v4 callback:mutableMovieNotificationHandler name:*MEMORY[0x1E6970EC0] object:figAsset flags:0];
+    _weakReference = [(AVAsset *)self _weakReference];
+    [v5 addListenerWithWeakReference:_weakReference callback:mutableMovieNotificationHandler name:*MEMORY[0x1E6970EC0] object:figAsset flags:0];
   }
 }
 
@@ -572,8 +572,8 @@ LABEL_11:
   if (figAsset)
   {
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAsset *)self _weakReference];
-    [v5 removeListenerWithWeakReference:v4 callback:mutableMovieNotificationHandler name:*MEMORY[0x1E6970EC0] object:figAsset];
+    _weakReference = [(AVAsset *)self _weakReference];
+    [v5 removeListenerWithWeakReference:_weakReference callback:mutableMovieNotificationHandler name:*MEMORY[0x1E6970EC0] object:figAsset];
   }
 }
 
@@ -609,9 +609,9 @@ LABEL_11:
   [(AVMovie *)&v7 dealloc];
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   if ([(AVMutableMovie *)self _figMutableMovie])
   {
     v7 = 2;
@@ -621,21 +621,21 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = AVMutableMovie;
-    v7 = [(AVAsset *)&v9 statusOfValueForKey:v6 error:a4];
+    v7 = [(AVAsset *)&v9 statusOfValueForKey:keyCopy error:error];
   }
 
   return v7;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   if ([(AVMutableMovie *)self _figMutableMovie])
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -643,7 +643,7 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = AVMutableMovie;
-    [(AVAsset *)&v8 loadValuesAsynchronouslyForKeys:v6 completionHandler:v7];
+    [(AVAsset *)&v8 loadValuesAsynchronouslyForKeys:keysCopy completionHandler:handlerCopy];
   }
 }
 
@@ -777,8 +777,8 @@ LABEL_20:
 
 - (NSArray)tracks
 {
-  v2 = [(AVMutableMovie *)self _mutableTracks];
-  v3 = [v2 copy];
+  _mutableTracks = [(AVMutableMovie *)self _mutableTracks];
+  v3 = [_mutableTracks copy];
 
   return v3;
 }
@@ -819,13 +819,13 @@ LABEL_20:
   if (v3)
   {
     v4 = v3(FigBaseObject, *MEMORY[0x1E6972060], *MEMORY[0x1E695E480], &cf);
-    v5 = cf;
+    dictionary = cf;
     if (v4)
     {
 LABEL_7:
-      if (v5)
+      if (dictionary)
       {
-        CFRelease(v5);
+        CFRelease(dictionary);
       }
 
       goto LABEL_9;
@@ -835,7 +835,7 @@ LABEL_7:
     {
       v6 = CFGetTypeID(cf);
       TypeID = CFDictionaryGetTypeID();
-      v5 = cf;
+      dictionary = cf;
       if (v6 == TypeID)
       {
         if (cf)
@@ -843,7 +843,7 @@ LABEL_7:
           goto LABEL_10;
         }
 
-        v5 = 0;
+        dictionary = 0;
       }
 
       goto LABEL_7;
@@ -851,10 +851,10 @@ LABEL_7:
   }
 
 LABEL_9:
-  v5 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
 LABEL_10:
 
-  return v5;
+  return dictionary;
 }
 
 - (void)setModified:(BOOL)modified
@@ -885,8 +885,8 @@ LABEL_10:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [(AVMutableMovie *)self tracks];
-    v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    tracks = [(AVMutableMovie *)self tracks];
+    v9 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v9)
     {
       v10 = *v13;
@@ -896,13 +896,13 @@ LABEL_10:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tracks);
           }
 
           [*(*(&v12 + 1) + 8 * i) setModified:0];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1000,21 +1000,21 @@ LABEL_10:
 
 - (id)description
 {
-  v3 = [(AVMutableMovie *)self defaultMediaDataStorage];
-  v4 = [v3 URL];
+  defaultMediaDataStorage = [(AVMutableMovie *)self defaultMediaDataStorage];
+  v4 = [defaultMediaDataStorage URL];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(AVMutableMovie *)self tracks];
+  tracks = [(AVMutableMovie *)self tracks];
   if (v4)
   {
-    [v5 stringWithFormat:@"<%@: %p defaultMediaDataStorage = %@, tracks = %@ >", v7, self, v4, v8];
+    [v5 stringWithFormat:@"<%@: %p defaultMediaDataStorage = %@, tracks = %@ >", v7, self, v4, tracks];
   }
 
   else
   {
-    [v5 stringWithFormat:@"<%@: %p tracks = %@ >", v7, self, v8];
+    [v5 stringWithFormat:@"<%@: %p tracks = %@ >", v7, self, tracks];
   }
   v9 = ;
 
@@ -1024,7 +1024,7 @@ LABEL_10:
 - (BOOL)isDefunct
 {
   v8 = 0;
-  v2 = [(AVMutableMovie *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
   v3 = *(CMBaseObjectGetVTable() + 8);
   if (*v3 < 5uLL)
   {
@@ -1037,7 +1037,7 @@ LABEL_10:
     v4 = v3[11];
     if (v4)
     {
-      LOBYTE(v4) = v4(v2, &v8) == 0;
+      LOBYTE(v4) = v4(_figMutableMovie, &v8) == 0;
       v5 = v8;
     }
 
@@ -1070,22 +1070,22 @@ LABEL_10:
   v7 = copySampleData;
   v83[1] = *MEMORY[0x1E69E9840];
   v47 = asset;
-  v49 = [(AVMutableMovie *)self _mutableTracks];
+  _mutableTracks = [(AVMutableMovie *)self _mutableTracks];
   v72 = 0;
   cf = 0;
   if ([(AVAsset *)v47 providesPreciseDurationAndTiming])
   {
-    v45 = [(AVMutableMovie *)self _copyFormatReader];
+    _copyFormatReader = [(AVMutableMovie *)self _copyFormatReader];
     [(AVMutableMovie *)self willChangeValueForKey:@"duration"];
     [(AVMutableMovie *)self willChangeValueForKey:@"tracks"];
-    v10 = [v49 count];
+    v10 = [_mutableTracks count];
     if (self != v47 || v7)
     {
-      v44 = [(AVMutableMovie *)v47 _copyFormatReader];
-      if (!v44)
+      _copyFormatReader2 = [(AVMutableMovie *)v47 _copyFormatReader];
+      if (!_copyFormatReader2)
       {
         v22 = AVLocalizedError(@"AVFoundationErrorDomain", -11838, 0);
-        v44 = 0;
+        _copyFormatReader2 = 0;
         v15 = 0;
         v28 = 0;
 LABEL_56:
@@ -1094,14 +1094,14 @@ LABEL_56:
           CFRelease(cf);
         }
 
-        if (v44)
+        if (_copyFormatReader2)
         {
-          CFRelease(v44);
+          CFRelease(_copyFormatReader2);
         }
 
-        if (v45)
+        if (_copyFormatReader)
         {
-          CFRelease(v45);
+          CFRelease(_copyFormatReader);
         }
 
         if (outError)
@@ -1152,7 +1152,7 @@ LABEL_71:
         v23 = v7;
       }
 
-      v24 = [(AVMutableMovie *)self _figMutableMovie];
+      _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
       v25 = *&timeRange->start.epoch;
       v64 = *&timeRange->start.value;
       v65 = v25;
@@ -1167,7 +1167,7 @@ LABEL_71:
         v78 = v66;
         v74 = v62;
         v75 = epoch;
-        v15 = v26(v24, v44, &v76, &v74, v23) == 0;
+        v15 = v26(_figMutableMovie, _copyFormatReader2, &v76, &v74, v23) == 0;
       }
 
       else
@@ -1184,8 +1184,8 @@ LABEL_71:
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v11 = [(AVMutableMovie *)v47 tracks];
-      v12 = [v11 countByEnumeratingWithState:&v68 objects:v81 count:16];
+      tracks = [(AVMutableMovie *)v47 tracks];
+      v12 = [tracks countByEnumeratingWithState:&v68 objects:v81 count:16];
       v51 = v10;
       v13 = 0;
       if (v12)
@@ -1200,7 +1200,7 @@ LABEL_71:
           {
             if (*v69 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tracks);
             }
 
             v18 = *(*(&v68 + 1) + 8 * v16);
@@ -1220,7 +1220,7 @@ LABEL_71:
           }
 
           while (v12 != v16);
-          v12 = [v11 countByEnumeratingWithState:&v68 objects:v81 count:16];
+          v12 = [tracks countByEnumeratingWithState:&v68 objects:v81 count:16];
         }
 
         while (v12);
@@ -1231,14 +1231,14 @@ LABEL_71:
         v15 = 1;
       }
 
-      v44 = 0;
+      _copyFormatReader2 = 0;
       v10 = v51;
     }
 
     v27 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v27)
     {
-      v28 = v27(v45, &v72);
+      v28 = v27(_copyFormatReader, &v72);
       if (v28)
       {
         goto LABEL_55;
@@ -1278,14 +1278,14 @@ LABEL_53:
                   objc_enumerationMutation(obj);
                 }
 
-                v33 = [*(*(&v58 + 1) + 8 * i) integerValue];
-                if (v33)
+                integerValue = [*(*(&v58 + 1) + 8 * i) integerValue];
+                if (integerValue)
                 {
                   v56 = 0u;
                   v57 = 0u;
                   v54 = 0u;
                   v55 = 0u;
-                  v34 = v49;
+                  v34 = _mutableTracks;
                   v35 = [v34 countByEnumeratingWithState:&v54 objects:v79 count:16];
                   if (v35)
                   {
@@ -1304,7 +1304,7 @@ LABEL_53:
 
                         j = *(*(&v54 + 1) + 8 * v38);
 
-                        if ([j trackID] == v33)
+                        if ([j trackID] == integerValue)
                         {
 
                           goto LABEL_50;
@@ -1325,10 +1325,10 @@ LABEL_53:
                     }
                   }
 
-                  for (j = [AVMutableMovieTrack trackWithTrackID:v33 forMovie:self];
+                  for (j = [AVMutableMovieTrack trackWithTrackID:integerValue forMovie:self];
                   {
                     dispatch_semaphore_wait(self->_mutableMovieInternal->trackWaitingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-                    [AVMutableMovieTrack trackWithTrackID:v33 forMovie:self];
+                    [AVMutableMovieTrack trackWithTrackID:integerValue forMovie:self];
                   }
 
                   [v34 addObject:j];
@@ -1379,13 +1379,13 @@ LABEL_72:
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange
 {
   [(AVMutableMovie *)self willChangeValueForKey:@"duration"];
-  v5 = [(AVMutableMovie *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
   v7 = *timeRange;
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 128);
   if (v6)
   {
     v8 = v7;
-    v6(v5, &v8);
+    v6(_figMutableMovie, &v8);
   }
 
   [(AVMutableMovie *)self didChangeValueForKey:@"duration", *&v7.start.value, *&v7.start.epoch, *&v7.duration.timescale];
@@ -1394,13 +1394,13 @@ LABEL_72:
 - (void)removeTimeRange:(CMTimeRange *)timeRange
 {
   [(AVMutableMovie *)self willChangeValueForKey:@"duration"];
-  v5 = [(AVMutableMovie *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
   v7 = *timeRange;
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 144);
   if (v6)
   {
     v8 = v7;
-    v6(v5, &v8);
+    v6(_figMutableMovie, &v8);
   }
 
   [(AVMutableMovie *)self didChangeValueForKey:@"duration", *&v7.start.value, *&v7.start.epoch, *&v7.duration.timescale];
@@ -1409,7 +1409,7 @@ LABEL_72:
 - (void)scaleTimeRange:(CMTimeRange *)timeRange toDuration:(CMTime *)duration
 {
   [(AVMutableMovie *)self willChangeValueForKey:@"duration"];
-  v7 = [(AVMutableMovie *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
   v10 = *timeRange;
   v9 = *duration;
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 160);
@@ -1417,7 +1417,7 @@ LABEL_72:
   {
     v12 = v10;
     v11 = v9;
-    v8(v7, &v12, &v11);
+    v8(_figMutableMovie, &v12, &v11);
   }
 
   [(AVMutableMovie *)self didChangeValueForKey:@"duration", *&v9.value, v9.epoch];
@@ -1427,29 +1427,29 @@ LABEL_72:
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = track;
-  v5 = [(AVMutableMovie *)self tracks];
-  v6 = v5;
+  tracks = [(AVMutableMovie *)self tracks];
+  v6 = tracks;
   v21 = 0;
-  if (!v5 || ![v5 count])
+  if (!tracks || ![tracks count])
   {
     goto LABEL_18;
   }
 
   if ([v6 containsObject:v4])
   {
-    v7 = v4;
+    _figTrackReader = v4;
     goto LABEL_19;
   }
 
-  v7 = [(AVAssetTrack *)v4 _figTrackReader];
-  if (v7)
+  _figTrackReader = [(AVAssetTrack *)v4 _figTrackReader];
+  if (_figTrackReader)
   {
-    v8 = [(AVMutableMovie *)self _figMutableMovie];
+    _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
     v9 = *(*(CMBaseObjectGetVTable() + 16) + 104);
     if (v9)
     {
-      v10 = v9(v8, v7, &v21);
-      v7 = 0;
+      v10 = v9(_figMutableMovie, _figTrackReader, &v21);
+      _figTrackReader = 0;
       if (!v10 && v21)
       {
         v19 = 0u;
@@ -1457,13 +1457,13 @@ LABEL_72:
         v17 = 0u;
         v18 = 0u;
         v11 = v6;
-        v7 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
-        if (v7)
+        _figTrackReader = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        if (_figTrackReader)
         {
           v12 = *v18;
           while (2)
           {
-            for (i = 0; i != v7; i = (i + 1))
+            for (i = 0; i != _figTrackReader; i = (i + 1))
             {
               if (*v18 != v12)
               {
@@ -1471,16 +1471,16 @@ LABEL_72:
               }
 
               v14 = *(*(&v17 + 1) + 8 * i);
-              v15 = [v14 trackID];
-              if (v15 == v21)
+              trackID = [v14 trackID];
+              if (trackID == v21)
               {
-                v7 = v14;
+                _figTrackReader = v14;
                 goto LABEL_23;
               }
             }
 
-            v7 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
-            if (v7)
+            _figTrackReader = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+            if (_figTrackReader)
             {
               continue;
             }
@@ -1496,28 +1496,28 @@ LABEL_23:
     }
 
 LABEL_18:
-    v7 = 0;
+    _figTrackReader = 0;
   }
 
 LABEL_19:
 
-  return v7;
+  return _figTrackReader;
 }
 
-- (id)_addMutableTrackWithMediaType:(id)a3 copySettingsFromTrack:(id)a4 options:(id)a5
+- (id)_addMutableTrackWithMediaType:(id)type copySettingsFromTrack:(id)track options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  trackCopy = track;
+  optionsCopy = options;
   v19 = 0;
-  v11 = [(AVMutableMovie *)self _mutableTracks];
-  v12 = AVOSTypeForString(v8);
-  v13 = [(AVMutableMovie *)self _figMutableMovie];
-  v14 = [v9 _figTrackReader];
+  _mutableTracks = [(AVMutableMovie *)self _mutableTracks];
+  v12 = AVOSTypeForString(typeCopy);
+  _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
+  _figTrackReader = [trackCopy _figTrackReader];
   v15 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v15)
   {
-    v16 = v15(v13, v12, v10, v14, &v19);
+    v16 = v15(_figMutableMovie, v12, optionsCopy, _figTrackReader, &v19);
   }
 
   else
@@ -1534,7 +1534,7 @@ LABEL_19:
       v17 = [AVMutableMovieTrack trackWithTrackID:"trackWithTrackID:forMovie:" forMovie:?];
       if (v17)
       {
-        [v11 addObject:v17];
+        [_mutableTracks addObject:v17];
       }
     }
   }
@@ -1557,8 +1557,8 @@ LABEL_19:
 
   if (v10)
   {
-    v17 = [(AVAssetTrack *)v10 mediaType];
-    v18 = [(NSString *)v9 isEqualToString:v17];
+    mediaType = [(AVAssetTrack *)v10 mediaType];
+    v18 = [(NSString *)v9 isEqualToString:mediaType];
 
     if (!v18)
     {
@@ -1675,8 +1675,8 @@ LABEL_63:
           }
 
           v31 = *(*(&v91 + 1) + 8 * j);
-          v32 = [v31 mediaType];
-          v33 = [(AVMutableMovie *)self _addMutableTrackWithMediaType:v32 copySettingsFromTrack:v31 options:v74];
+          mediaType = [v31 mediaType];
+          v33 = [(AVMutableMovie *)self _addMutableTrackWithMediaType:mediaType copySettingsFromTrack:v31 options:v74];
 
           if (v33)
           {
@@ -1713,8 +1713,8 @@ LABEL_63:
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v68 = [v34 availableTrackAssociationTypes];
-          v35 = [v68 countByEnumeratingWithState:&v83 objects:v101 count:16];
+          availableTrackAssociationTypes = [v34 availableTrackAssociationTypes];
+          v35 = [availableTrackAssociationTypes countByEnumeratingWithState:&v83 objects:v101 count:16];
           if (v35)
           {
             v70 = *v84;
@@ -1725,7 +1725,7 @@ LABEL_63:
               {
                 if (*v84 != v70)
                 {
-                  objc_enumerationMutation(v68);
+                  objc_enumerationMutation(availableTrackAssociationTypes);
                 }
 
                 v37 = *(*(&v83 + 1) + 8 * m);
@@ -1764,7 +1764,7 @@ LABEL_63:
                 }
               }
 
-              v35 = [v68 countByEnumeratingWithState:&v83 objects:v101 count:16];
+              v35 = [availableTrackAssociationTypes countByEnumeratingWithState:&v83 objects:v101 count:16];
             }
 
             while (v35);
@@ -1822,26 +1822,26 @@ LABEL_63:
 - (void)removeTrack:(AVMovieTrack *)track
 {
   v10 = track;
-  v4 = [(AVMutableMovie *)self _mutableTracks];
-  v5 = [v4 indexOfObject:v10];
-  if (v10 && v4 && v5 != 0x7FFFFFFFFFFFFFFFLL)
+  _mutableTracks = [(AVMutableMovie *)self _mutableTracks];
+  v5 = [_mutableTracks indexOfObject:v10];
+  if (v10 && _mutableTracks && v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(AVAssetTrack *)v10 asset];
+    asset = [(AVAssetTrack *)v10 asset];
 
-    if (v6 != self)
+    if (asset != self)
     {
       goto LABEL_9;
     }
 
     [(AVMutableMovie *)self willChangeValueForKey:@"duration"];
-    v7 = [(AVMutableMovie *)self _figMutableMovie];
-    v8 = [(AVAssetTrack *)v10 trackID];
+    _figMutableMovie = [(AVMutableMovie *)self _figMutableMovie];
+    trackID = [(AVAssetTrack *)v10 trackID];
     v9 = *(*(CMBaseObjectGetVTable() + 16) + 40);
-    if (v9 && !v9(v7, v8))
+    if (v9 && !v9(_figMutableMovie, trackID))
     {
       dispatch_semaphore_wait(self->_mutableMovieInternal->trackWaitingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
       [(AVMutableMovie *)self willChangeValueForKey:@"tracks"];
-      [v4 removeObjectAtIndex:v5];
+      [_mutableTracks removeObjectAtIndex:v5];
       [(AVMutableMovie *)self didChangeValueForKey:@"tracks"];
     }
   }
@@ -1859,13 +1859,13 @@ LABEL_9:
   if (v3)
   {
     v4 = v3(FigBaseObject, *MEMORY[0x1E6972010], *MEMORY[0x1E695E480], &cf);
-    v5 = cf;
+    array = cf;
     if (v4)
     {
 LABEL_10:
-      if (v5)
+      if (array)
       {
-        CFRelease(v5);
+        CFRelease(array);
       }
 
       goto LABEL_6;
@@ -1875,11 +1875,11 @@ LABEL_10:
     {
       v6 = CFGetTypeID(cf);
       TypeID = CFArrayGetTypeID();
-      v5 = cf;
+      array = cf;
       if (v6 == TypeID)
       {
         cf = 0;
-        if (v5)
+        if (array)
         {
           goto LABEL_7;
         }
@@ -1892,21 +1892,21 @@ LABEL_10:
   }
 
 LABEL_6:
-  v5 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 LABEL_7:
 
-  return v5;
+  return array;
 }
 
 - (NSArray)metadataForFormat:(AVMetadataFormat)format
 {
   v4 = format;
-  v5 = [(AVMutableMovie *)self _copyFormatReader];
-  v6 = v5;
+  _copyFormatReader = [(AVMutableMovie *)self _copyFormatReader];
+  v6 = _copyFormatReader;
   v7 = 0;
   cf = 0;
   theArray = 0;
-  if (v4 && v5)
+  if (v4 && _copyFormatReader)
   {
     FigBaseObject = FigFormatReaderGetFigBaseObject();
     v9 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -1965,8 +1965,8 @@ LABEL_14:
 
       v21 = [AVMetadataEnumerator metadataEnumeratorWithMetadataReader:ValueAtIndex];
       v22 = MEMORY[0x1E695DF70];
-      v23 = [v21 allObjects];
-      v7 = [v22 arrayWithArray:v23];
+      allObjects = [v21 allObjects];
+      v7 = [v22 arrayWithArray:allObjects];
 
       if ([(NSString *)v4 isEqualToString:@"com.apple.quicktime.udta"]|| [(NSString *)v4 isEqualToString:@"org.mp4ra"])
       {
@@ -2008,15 +2008,15 @@ LABEL_19:
 
   if (v17)
   {
-    v18 = v17;
+    array = v17;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v19 = v18;
+  v19 = array;
 
   return v19;
 }
@@ -2024,13 +2024,13 @@ LABEL_19:
 - (NSArray)metadata
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(AVMutableMovie *)self availableMetadataFormats];
-  v4 = [MEMORY[0x1E695DF70] array];
+  availableMetadataFormats = [(AVMutableMovie *)self availableMetadataFormats];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = availableMetadataFormats;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -2045,7 +2045,7 @@ LABEL_19:
         }
 
         v9 = [(AVMutableMovie *)self metadataForFormat:*(*(&v11 + 1) + 8 * i), v11];
-        [v4 addObjectsFromArray:v9];
+        [array addObjectsFromArray:v9];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -2054,7 +2054,7 @@ LABEL_19:
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 - (void)setMetadata:(NSArray *)metadata

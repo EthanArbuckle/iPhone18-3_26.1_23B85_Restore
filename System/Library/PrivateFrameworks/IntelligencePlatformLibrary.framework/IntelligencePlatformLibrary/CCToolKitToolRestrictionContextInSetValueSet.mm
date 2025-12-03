@@ -1,7 +1,7 @@
 @interface CCToolKitToolRestrictionContextInSetValueSet
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextInSetValueSet)initWithBundleIdentifier:(id)a3 kind:(id)a4 kindType:(unsigned int)a5 error:(id *)a6;
-- (CCToolKitToolRestrictionContextInSetValueSet)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRestrictionContextInSetValueSet)initWithBundleIdentifier:(id)identifier kind:(id)kind kindType:(unsigned int)type error:(id *)error;
+- (CCToolKitToolRestrictionContextInSetValueSet)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCToolKitToolRestrictionContextInSetValueSetContentPropertyPossibleValues)contentPropertyPossibleValues;
 - (CCToolKitToolRestrictionContextInSetValueSetDynamicEnumeration)dynamicEnumeration;
 - (CCToolKitToolRestrictionContextInSetValueSetDynamicTriggerEnumeration)dynamicEnumerationOnTrigger;
@@ -10,22 +10,22 @@
 - (NSString)bundleIdentifier;
 - (NSString)standaloneLinkQuery;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextInSetValueSet
 
-- (CCToolKitToolRestrictionContextInSetValueSet)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextInSetValueSet)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v37[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"dynamicEnumeration"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dynamicEnumeration"];
     if (v10)
     {
       v37[0] = 0;
@@ -44,7 +44,7 @@ LABEL_47:
       v10 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"contentPropertyPossibleValues"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"contentPropertyPossibleValues"];
     if (v13)
     {
       v36 = 0;
@@ -60,18 +60,18 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v31 = self;
+      selfCopy2 = self;
 
       v13 = v14;
     }
 
     else
     {
-      v31 = self;
+      selfCopy2 = self;
     }
 
     v32 = v9;
-    v11 = [v6 objectForKeyedSubscript:@"linkQuery"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"linkQuery"];
     if (v11)
     {
       v35 = 0;
@@ -82,7 +82,7 @@ LABEL_46:
       {
         CCSetError();
         v16 = 0;
-        self = v31;
+        self = selfCopy2;
 LABEL_45:
 
         v9 = v32;
@@ -92,8 +92,8 @@ LABEL_45:
       v11 = v17;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"standaloneLinkQuery"];
-    v17 = [v6 objectForKeyedSubscript:@"linkQueryOnParameter"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"standaloneLinkQuery"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"linkQueryOnParameter"];
     if (v17)
     {
       v34 = 0;
@@ -109,7 +109,7 @@ LABEL_45:
       v17 = v19;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"dynamicEnumerationOnTrigger"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"dynamicEnumerationOnTrigger"];
     if (!v21)
     {
 LABEL_25:
@@ -165,7 +165,7 @@ LABEL_25:
         v19 = v29;
       }
 
-      v16 = [[CCToolKitToolRestrictionContextInSetValueSet alloc] initWithBundleIdentifier:v32 kind:v19 kindType:v24 error:a4];
+      v16 = [[CCToolKitToolRestrictionContextInSetValueSet alloc] initWithBundleIdentifier:v32 kind:v19 kindType:v24 error:error];
       goto LABEL_44;
     }
 
@@ -185,7 +185,7 @@ LABEL_25:
 LABEL_31:
     v16 = 0;
 LABEL_44:
-    self = v31;
+    self = selfCopy2;
 
     goto LABEL_45;
   }
@@ -202,8 +202,8 @@ LABEL_48:
   v3 = objc_opt_new();
   if (self->_bundleIdentifier)
   {
-    v4 = [(CCToolKitToolRestrictionContextInSetValueSet *)self bundleIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(CCToolKitToolRestrictionContextInSetValueSet *)self bundleIdentifier];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
   }
 
   kindType = self->_kindType;
@@ -214,9 +214,9 @@ LABEL_48:
       goto LABEL_21;
     }
 
-    v6 = [(CCToolKitToolRestrictionContextInSetValueSet *)self dynamicEnumeration];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"dynamicEnumeration"];
+    dynamicEnumeration = [(CCToolKitToolRestrictionContextInSetValueSet *)self dynamicEnumeration];
+    jsonDictionary = [dynamicEnumeration jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"dynamicEnumeration"];
 
     kindType = self->_kindType;
   }
@@ -228,9 +228,9 @@ LABEL_48:
       goto LABEL_21;
     }
 
-    v8 = [(CCToolKitToolRestrictionContextInSetValueSet *)self contentPropertyPossibleValues];
-    v9 = [v8 jsonDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"contentPropertyPossibleValues"];
+    contentPropertyPossibleValues = [(CCToolKitToolRestrictionContextInSetValueSet *)self contentPropertyPossibleValues];
+    jsonDictionary2 = [contentPropertyPossibleValues jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"contentPropertyPossibleValues"];
 
     kindType = self->_kindType;
   }
@@ -242,9 +242,9 @@ LABEL_48:
       goto LABEL_21;
     }
 
-    v10 = [(CCToolKitToolRestrictionContextInSetValueSet *)self linkQuery];
-    v11 = [v10 jsonDictionary];
-    [v3 setObject:v11 forKeyedSubscript:@"linkQuery"];
+    linkQuery = [(CCToolKitToolRestrictionContextInSetValueSet *)self linkQuery];
+    jsonDictionary3 = [linkQuery jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"linkQuery"];
 
     kindType = self->_kindType;
   }
@@ -256,8 +256,8 @@ LABEL_48:
       goto LABEL_21;
     }
 
-    v12 = [(CCToolKitToolRestrictionContextInSetValueSet *)self standaloneLinkQuery];
-    [v3 setObject:v12 forKeyedSubscript:@"standaloneLinkQuery"];
+    standaloneLinkQuery = [(CCToolKitToolRestrictionContextInSetValueSet *)self standaloneLinkQuery];
+    [v3 setObject:standaloneLinkQuery forKeyedSubscript:@"standaloneLinkQuery"];
 
     kindType = self->_kindType;
   }
@@ -269,18 +269,18 @@ LABEL_48:
       goto LABEL_21;
     }
 
-    v13 = [(CCToolKitToolRestrictionContextInSetValueSet *)self linkQueryOnParameter];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"linkQueryOnParameter"];
+    linkQueryOnParameter = [(CCToolKitToolRestrictionContextInSetValueSet *)self linkQueryOnParameter];
+    jsonDictionary4 = [linkQueryOnParameter jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"linkQueryOnParameter"];
 
     kindType = self->_kindType;
   }
 
   if (kindType == 7 && self->_dynamicEnumerationOnTrigger)
   {
-    v15 = [(CCToolKitToolRestrictionContextInSetValueSet *)self dynamicEnumerationOnTrigger];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"dynamicEnumerationOnTrigger"];
+    dynamicEnumerationOnTrigger = [(CCToolKitToolRestrictionContextInSetValueSet *)self dynamicEnumerationOnTrigger];
+    jsonDictionary5 = [dynamicEnumerationOnTrigger jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"dynamicEnumerationOnTrigger"];
   }
 
 LABEL_21:
@@ -289,11 +289,11 @@ LABEL_21:
   return v17;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v15 = v5;
+  v15 = blockCopy;
   if (self->_bundleIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_bundleIdentifier];
@@ -389,10 +389,10 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -713,21 +713,21 @@ LABEL_56:
   return v76;
 }
 
-- (CCToolKitToolRestrictionContextInSetValueSet)initWithBundleIdentifier:(id)a3 kind:(id)a4 kindType:(unsigned int)a5 error:(id *)a6
+- (CCToolKitToolRestrictionContextInSetValueSet)initWithBundleIdentifier:(id)identifier kind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  kindCopy = kind;
   v12 = objc_opt_new();
-  if (!v10)
+  if (!identifierCopy)
   {
     v14 = 0;
-    if (!v11)
+    if (!kindCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_6:
-    if (a5 == 2)
+    if (type == 2)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -742,7 +742,7 @@ LABEL_6:
     }
 
 LABEL_9:
-    if (v11 && a5 == 3)
+    if (kindCopy && type == 3)
     {
       objc_opt_class();
       v17 = CCValidateIsInstanceOfExpectedClass();
@@ -755,14 +755,14 @@ LABEL_9:
 
 LABEL_30:
       CCSetError();
-      v18 = 0;
+      selfCopy = 0;
       v14 = v16;
       goto LABEL_31;
     }
 
-    if (!v11 || a5 != 4)
+    if (!kindCopy || type != 4)
     {
-      if (v11 && a5 == 5)
+      if (kindCopy && type == 5)
       {
         objc_opt_class();
         v22 = CCValidateIsInstanceOfExpectedClass();
@@ -775,7 +775,7 @@ LABEL_30:
         }
       }
 
-      else if (v11 && a5 == 6)
+      else if (kindCopy && type == 6)
       {
         objc_opt_class();
         v23 = CCValidateIsInstanceOfExpectedClass();
@@ -789,7 +789,7 @@ LABEL_30:
 
       else
       {
-        if (!v11 || a5 != 7)
+        if (!kindCopy || type != 7)
         {
           v16 = v14;
           goto LABEL_18;
@@ -818,15 +818,15 @@ LABEL_30:
     }
 
 LABEL_17:
-    v20 = [v11 data];
+    data = [kindCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_18:
-    v21 = [v12 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v12 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
     v14 = v16;
-    v18 = self;
+    selfCopy = self;
     goto LABEL_31;
   }
 
@@ -836,7 +836,7 @@ LABEL_18:
   if (v13)
   {
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!kindCopy)
     {
       goto LABEL_9;
     }
@@ -845,10 +845,10 @@ LABEL_18:
   }
 
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_31:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

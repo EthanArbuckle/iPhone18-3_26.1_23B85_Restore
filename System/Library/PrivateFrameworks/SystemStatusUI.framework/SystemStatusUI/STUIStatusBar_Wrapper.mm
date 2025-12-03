@@ -1,39 +1,39 @@
 @interface STUIStatusBar_Wrapper
-+ (double)_heightForStyle:(int64_t)a3 orientation:(int64_t)a4 forStatusBarFrame:(BOOL)a5 inWindow:(id)a6 isAzulBLinked:(BOOL)a7;
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5;
-- (CGRect)frameForPartWithIdentifier:(id)a3;
++ (double)_heightForStyle:(int64_t)style orientation:(int64_t)orientation forStatusBarFrame:(BOOL)frame inWindow:(id)window isAzulBLinked:(BOOL)linked;
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override;
+- (CGRect)frameForPartWithIdentifier:(id)identifier;
 - (CGSize)intrinsicContentSize;
-- (UIOffset)offsetForPartWithIdentifier:(id)a3;
-- (id)_dataFromLegacyData:(id *)a3;
-- (id)_effectiveDataFromData:(id)a3 activeOverride:(unint64_t)a4 activeBackgroundActivity:(id)a5 canUpdateBackgroundActivity:(BOOL)a6;
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6;
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier;
+- (id)_dataFromLegacyData:(id *)data;
+- (id)_effectiveDataFromData:(id)data activeOverride:(unint64_t)override activeBackgroundActivity:(id)activity canUpdateBackgroundActivity:(BOOL)backgroundActivity;
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider;
 - (id)clockFont;
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3;
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style;
 - (int64_t)currentStyle;
-- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)a3;
-- (void)_getStyle:(int64_t *)a3 andActiveOverride:(unint64_t *)a4 andActiveBackgroundActivity:(id *)a5 forRequestedStyle:(int64_t)a6 updatingBackgroundActivity:(BOOL)a7;
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6;
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 legibilityStyle:(int64_t)a5 foregroundColor:(id)a6 animationParameters:(id)a7 forced:(BOOL)a8;
-- (void)_updateSemanticContentAttributeFromLegacyData:(id *)a3;
-- (void)_updateWithData:(id)a3 force:(BOOL)a4;
-- (void)activeBackgroundActivitiesDidUpdate:(id)a3;
+- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)style;
+- (void)_getStyle:(int64_t *)style andActiveOverride:(unint64_t *)override andActiveBackgroundActivity:(id *)activity forRequestedStyle:(int64_t)requestedStyle updatingBackgroundActivity:(BOOL)backgroundActivity;
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced;
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles legibilityStyle:(int64_t)legibilityStyle foregroundColor:(id)color animationParameters:(id)parameters forced:(BOOL)forced;
+- (void)_updateSemanticContentAttributeFromLegacyData:(id *)data;
+- (void)_updateWithData:(id)data force:(BOOL)force;
+- (void)activeBackgroundActivitiesDidUpdate:(id)update;
 - (void)dealloc;
-- (void)forceUpdate:(BOOL)a3;
-- (void)forceUpdateData:(BOOL)a3;
+- (void)forceUpdate:(BOOL)update;
+- (void)forceUpdateData:(BOOL)data;
 - (void)jiggleLockIcon;
 - (void)layoutSubviews;
-- (void)requestResolvedStyle:(int64_t)a3;
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5;
-- (void)setForegroundAlpha:(double)a3 animationParameters:(id)a4;
-- (void)setForegroundColor:(id)a3 animationParameters:(id)a4;
-- (void)setHidden:(BOOL)a3 animationParameters:(id)a4;
-- (void)setLegibilityStyle:(int64_t)a3 animationParameters:(id)a4;
-- (void)setMode:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4;
-- (void)statusBarServer:(id)a3 didReceiveStatusBarData:(id *)a4 withActions:(int)a5;
-- (void)statusBarServer:(id)a3 didReceiveStyleOverrides:(unint64_t)a4;
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5;
+- (void)requestResolvedStyle:(int64_t)style;
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options;
+- (void)setForegroundAlpha:(double)alpha animationParameters:(id)parameters;
+- (void)setForegroundColor:(id)color animationParameters:(id)parameters;
+- (void)setHidden:(BOOL)hidden animationParameters:(id)parameters;
+- (void)setLegibilityStyle:(int64_t)style animationParameters:(id)parameters;
+- (void)setMode:(int64_t)mode;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters;
+- (void)statusBarServer:(id)server didReceiveStatusBarData:(id *)data withActions:(int)actions;
+- (void)statusBarServer:(id)server didReceiveStyleOverrides:(unint64_t)overrides;
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions;
 @end
 
 @implementation STUIStatusBar_Wrapper
@@ -48,72 +48,72 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D6B920] sharedInstance];
-  [v3 removeBackgroundActivityClient:self];
+  mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+  [mEMORY[0x277D6B920] removeBackgroundActivityClient:self];
 
   v4.receiver = self;
   v4.super_class = STUIStatusBar_Wrapper;
   [(STUIStatusBar_Wrapper *)&v4 dealloc];
 }
 
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider
 {
-  v6 = a5;
-  v7 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  serverCopy = server;
+  viewCopy = view;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = STUIStatusBar_Wrapper;
-  v14 = [(STUIStatusBar_Wrapper *)&v24 _initWithFrame:v7 showForegroundView:v6 wantsServer:v13 inProcessStateProvider:x, y, width, height];
-  if (v14)
+  height = [(STUIStatusBar_Wrapper *)&v24 _initWithFrame:viewCopy showForegroundView:serverCopy wantsServer:providerCopy inProcessStateProvider:x, y, width, height];
+  if (height)
   {
     v15 = [[STUIStatusBar alloc] initWithStyle:0];
-    [v14 addSubview:v15];
-    [v14 _setRequestedStyle:0];
-    objc_initWeak(&location, v14);
+    [height addSubview:v15];
+    [height _setRequestedStyle:0];
+    objc_initWeak(&location, height);
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __94__STUIStatusBar_Wrapper__initWithFrame_showForegroundView_wantsServer_inProcessStateProvider___block_invoke;
     v21 = &unk_279D385B0;
     objc_copyWeak(&v22, &location);
     [(STUIStatusBar *)v15 setRegionActionValidationBlock:&v18];
-    [v14 setStatusBar:{v15, v18, v19, v20, v21}];
-    v16 = [MEMORY[0x277D6B920] sharedInstance];
-    [v16 addBackgroundActivityClient:v14];
+    [height setStatusBar:{v15, v18, v19, v20, v21}];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    [mEMORY[0x277D6B920] addBackgroundActivityClient:height];
 
-    [v14 _evaluateServerRegistration];
-    [v14 setNeedsLayout];
+    [height _evaluateServerRegistration];
+    [height setNeedsLayout];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
   }
 
-  return v14;
+  return height;
 }
 
-+ (double)_heightForStyle:(int64_t)a3 orientation:(int64_t)a4 forStatusBarFrame:(BOOL)a5 inWindow:(id)a6 isAzulBLinked:(BOOL)a7
++ (double)_heightForStyle:(int64_t)style orientation:(int64_t)orientation forStatusBarFrame:(BOOL)frame inWindow:(id)window isAzulBLinked:(BOOL)linked
 {
-  v7 = a7;
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [STUIStatusBar intrinsicContentSizeForTargetScreen:v10 orientation:a4 onLockScreen:a3 == 306 isAzulBLinked:v7];
+  linkedCopy = linked;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [STUIStatusBar intrinsicContentSizeForTargetScreen:mainScreen orientation:orientation onLockScreen:style == 306 isAzulBLinked:linkedCopy];
   v12 = v11;
 
   return v12;
 }
 
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___STUIStatusBar_Wrapper;
-  objc_msgSendSuper2(&v7, sel__defaultStyleForRequestedStyle_styleOverrides_activeStyleOverride_, a3, a4, a5);
-  return a3;
+  objc_msgSendSuper2(&v7, sel__defaultStyleForRequestedStyle_styleOverrides_activeStyleOverride_, style, overrides, override);
+  return style;
 }
 
-- (void)_updateSemanticContentAttributeFromLegacyData:(id *)a3
+- (void)_updateSemanticContentAttributeFromLegacyData:(id *)data
 {
-  if ((*(a3 + 2536) & 2) != 0)
+  if ((*(data + 2536) & 2) != 0)
   {
     v3 = 4;
   }
@@ -126,50 +126,50 @@
   [(STUIStatusBar *)self->_statusBar setSemanticContentAttribute:v3];
 }
 
-- (id)_dataFromLegacyData:(id *)a3
+- (id)_dataFromLegacyData:(id *)data
 {
   v10 = *MEMORY[0x277D85DE8];
   if ([(STUIStatusBar_Wrapper *)self localDataOverrides])
   {
     memset(&v9[30], 0, 32);
-    [MEMORY[0x277D75A78] getData:v9 forRequestedData:a3 withOverrides:{-[STUIStatusBar_Wrapper localDataOverrides](self, "localDataOverrides", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)}];
-    v5 = [(STUIStatusBar *)self->_statusBar currentData];
-    v6 = v9;
+    [MEMORY[0x277D75A78] getData:v9 forRequestedData:data withOverrides:{-[STUIStatusBar_Wrapper localDataOverrides](self, "localDataOverrides", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)}];
+    currentData = [(STUIStatusBar *)self->_statusBar currentData];
+    dataCopy = v9;
   }
 
   else
   {
-    v5 = [(STUIStatusBar *)self->_statusBar currentData];
-    v6 = a3;
+    currentData = [(STUIStatusBar *)self->_statusBar currentData];
+    dataCopy = data;
   }
 
-  v7 = [STUIStatusBarDataConverter convertData:v6 fromReferenceData:v5];
+  v7 = [STUIStatusBarDataConverter convertData:dataCopy fromReferenceData:currentData];
 
   return v7;
 }
 
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style
 {
-  if (a3 > 108)
+  if (style > 108)
   {
-    if (a3 <= 301)
+    if (style <= 301)
     {
-      if (a3 <= 299)
+      if (style <= 299)
       {
-        if (a3 == 109)
+        if (style == 109)
         {
           return 3;
         }
 
-        if (a3 != 110)
+        if (style != 110)
         {
           goto LABEL_28;
         }
 
-        return a3;
+        return style;
       }
 
-      if (a3 != 300)
+      if (style != 300)
       {
         return 1;
       }
@@ -177,14 +177,14 @@
 
     else
     {
-      if (a3 <= 303)
+      if (style <= 303)
       {
         return 1;
       }
 
-      if (a3 != 304 && a3 != 305)
+      if (style != 304 && style != 305)
       {
-        if (a3 != 306)
+        if (style != 306)
         {
           goto LABEL_28;
         }
@@ -196,11 +196,11 @@
     return 0;
   }
 
-  if (a3 > 102)
+  if (style > 102)
   {
-    if (a3 <= 106)
+    if (style <= 106)
     {
-      if (a3 != 103 && a3 != 106)
+      if (style != 103 && style != 106)
       {
         goto LABEL_28;
       }
@@ -208,14 +208,14 @@
       return 1;
     }
 
-    return a3 != 107;
+    return style != 107;
   }
 
-  if (a3 <= 0x33)
+  if (style <= 0x33)
   {
-    if (((1 << a3) & 0xB) == 0)
+    if (((1 << style) & 0xB) == 0)
     {
-      if (((1 << a3) & 0x8000000000004) == 0)
+      if (((1 << style) & 0x8000000000004) == 0)
       {
         goto LABEL_28;
       }
@@ -223,7 +223,7 @@
       return 1;
     }
 
-    return a3;
+    return style;
   }
 
 LABEL_28:
@@ -232,14 +232,14 @@ LABEL_28:
   return _UIStatusBarStyleFromResolvedStyle();
 }
 
-- (id)_effectiveDataFromData:(id)a3 activeOverride:(unint64_t)a4 activeBackgroundActivity:(id)a5 canUpdateBackgroundActivity:(BOOL)a6
+- (id)_effectiveDataFromData:(id)data activeOverride:(unint64_t)override activeBackgroundActivity:(id)activity canUpdateBackgroundActivity:(BOOL)backgroundActivity
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = v10;
-  v13 = v11;
-  if (v11)
+  backgroundActivityCopy = backgroundActivity;
+  dataCopy = data;
+  activityCopy = activity;
+  v12 = dataCopy;
+  v13 = activityCopy;
+  if (activityCopy)
   {
 LABEL_98:
     v16 = v13;
@@ -256,11 +256,11 @@ LABEL_98:
     v19 = v18;
     v20 = MEMORY[0x277D6BA58];
     v21 = MEMORY[0x277D75A98];
-    v22 = [0 backgroundActivityIdentifier];
-    v23 = [v21 stui_getDoubleHeightStatusStringBackgroundActivityWithIdentifier:v22];
-    v24 = [v20 entryWithBackgroundActivityIdentifier:v16 displayStartDate:v23 detailString:v19];
+    backgroundActivityIdentifier = [0 backgroundActivityIdentifier];
+    v23 = [v21 stui_getDoubleHeightStatusStringBackgroundActivityWithIdentifier:backgroundActivityIdentifier];
+    disabledEntry = [v20 entryWithBackgroundActivityIdentifier:v16 displayStartDate:v23 detailString:v19];
 
-    if (v6)
+    if (backgroundActivityCopy)
     {
       goto LABEL_102;
     }
@@ -268,21 +268,21 @@ LABEL_98:
     goto LABEL_103;
   }
 
-  if (a4 >= 0x200000)
+  if (override >= 0x200000)
   {
-    if (a4 <= 0x7FFFFFFF)
+    if (override <= 0x7FFFFFFF)
     {
-      if (a4 <= 0x3FFFFFF)
+      if (override <= 0x3FFFFFF)
       {
-        if (a4 < 0x800000)
+        if (override < 0x800000)
         {
-          if (a4 == 0x200000)
+          if (override == 0x200000)
           {
             v14 = MEMORY[0x277D6BC78];
             goto LABEL_97;
           }
 
-          if (a4 == 0x400000)
+          if (override == 0x400000)
           {
             v14 = MEMORY[0x277D6BBF8];
             goto LABEL_97;
@@ -291,7 +291,7 @@ LABEL_98:
 
         else
         {
-          switch(a4)
+          switch(override)
           {
             case 0x800000uLL:
               v14 = MEMORY[0x277D6BBF0];
@@ -308,15 +308,15 @@ LABEL_98:
         goto LABEL_112;
       }
 
-      if (a4 <= 0xFFFFFFF)
+      if (override <= 0xFFFFFFF)
       {
-        if (a4 == 0x4000000)
+        if (override == 0x4000000)
         {
           v14 = MEMORY[0x277D6BC40];
           goto LABEL_97;
         }
 
-        if (a4 == 0x8000000)
+        if (override == 0x8000000)
         {
           v14 = MEMORY[0x277D6BC10];
           goto LABEL_97;
@@ -325,13 +325,13 @@ LABEL_98:
         goto LABEL_112;
       }
 
-      if (a4 == 0x10000000)
+      if (override == 0x10000000)
       {
         v14 = MEMORY[0x277D6BD08];
         goto LABEL_97;
       }
 
-      if (a4 == 0x20000000)
+      if (override == 0x20000000)
       {
         v14 = MEMORY[0x277D6BCB0];
         goto LABEL_97;
@@ -342,11 +342,11 @@ LABEL_98:
 
     else
     {
-      if (a4 > 0xFFFFFFFFFLL)
+      if (override > 0xFFFFFFFFFLL)
       {
-        if (a4 > 0x7FFFFFFFFFLL)
+        if (override > 0x7FFFFFFFFFLL)
         {
-          switch(a4)
+          switch(override)
           {
             case 0x8000000000uLL:
               v14 = MEMORY[0x277D6BD00];
@@ -362,7 +362,7 @@ LABEL_98:
 
         else
         {
-          switch(a4)
+          switch(override)
           {
             case 0x1000000000uLL:
               v14 = MEMORY[0x277D6BBD8];
@@ -381,17 +381,17 @@ LABEL_97:
         goto LABEL_112;
       }
 
-      if (a4 > 0x1FFFFFFFFLL)
+      if (override > 0x1FFFFFFFFLL)
       {
-        if (a4 != 0x200000000)
+        if (override != 0x200000000)
         {
-          if (a4 == 0x400000000)
+          if (override == 0x400000000)
           {
             v14 = MEMORY[0x277D6BCA0];
             goto LABEL_97;
           }
 
-          if (a4 == 0x800000000)
+          if (override == 0x800000000)
           {
             v14 = MEMORY[0x277D6BCB8];
             goto LABEL_97;
@@ -405,7 +405,7 @@ LABEL_74:
         goto LABEL_97;
       }
 
-      if (a4 == 0x80000000)
+      if (override == 0x80000000)
       {
         goto LABEL_74;
       }
@@ -413,7 +413,7 @@ LABEL_74:
       v15 = 0x100000000;
     }
 
-    if (a4 == v15)
+    if (override == v15)
     {
       v14 = MEMORY[0x277D6BCD8];
       goto LABEL_97;
@@ -422,19 +422,19 @@ LABEL_74:
     goto LABEL_112;
   }
 
-  if (a4 > 2047)
+  if (override > 2047)
   {
-    if (a4 >= 0x10000)
+    if (override >= 0x10000)
     {
-      if (a4 < 0x40000)
+      if (override < 0x40000)
       {
-        if (a4 == 0x10000)
+        if (override == 0x10000)
         {
           v14 = MEMORY[0x277D6BC28];
           goto LABEL_97;
         }
 
-        if (a4 == 0x20000)
+        if (override == 0x20000)
         {
           v14 = MEMORY[0x277D6BD20];
           goto LABEL_97;
@@ -443,7 +443,7 @@ LABEL_74:
 
       else
       {
-        switch(a4)
+        switch(override)
         {
           case 0x40000uLL:
             v14 = MEMORY[0x277D6BBE0];
@@ -458,15 +458,15 @@ LABEL_74:
       }
     }
 
-    else if (a4 < 0x2000)
+    else if (override < 0x2000)
     {
-      if (a4 == 2048)
+      if (override == 2048)
       {
         v14 = MEMORY[0x277D6BC00];
         goto LABEL_97;
       }
 
-      if (a4 == 4096)
+      if (override == 4096)
       {
         v14 = MEMORY[0x277D6BC20];
         goto LABEL_97;
@@ -475,7 +475,7 @@ LABEL_74:
 
     else
     {
-      switch(a4)
+      switch(override)
       {
         case 0x2000uLL:
           v14 = MEMORY[0x277D6BCF0];
@@ -490,11 +490,11 @@ LABEL_74:
     }
   }
 
-  else if (a4 > 63)
+  else if (override > 63)
   {
-    if (a4 <= 255)
+    if (override <= 255)
     {
-      if (a4 == 64 || a4 == 128)
+      if (override == 64 || override == 128)
       {
         v14 = MEMORY[0x277D6BC80];
         goto LABEL_97;
@@ -503,7 +503,7 @@ LABEL_74:
 
     else
     {
-      switch(a4)
+      switch(override)
       {
         case 0x100uLL:
           v14 = MEMORY[0x277D6BBE8];
@@ -518,15 +518,15 @@ LABEL_74:
     }
   }
 
-  else if (a4 <= 7)
+  else if (override <= 7)
   {
-    if (a4 == 1)
+    if (override == 1)
     {
       v14 = MEMORY[0x277D6BC60];
       goto LABEL_97;
     }
 
-    if (a4 == 4)
+    if (override == 4)
     {
       v14 = MEMORY[0x277D6BCA8];
       goto LABEL_97;
@@ -535,7 +535,7 @@ LABEL_74:
 
   else
   {
-    switch(a4)
+    switch(override)
     {
       case 8uLL:
         v14 = MEMORY[0x277D6BCF8];
@@ -550,19 +550,19 @@ LABEL_74:
   }
 
 LABEL_112:
-  v24 = [MEMORY[0x277D6BA58] disabledEntry];
+  disabledEntry = [MEMORY[0x277D6BA58] disabledEntry];
   v16 = 0;
-  if (v6)
+  if (backgroundActivityCopy)
   {
 LABEL_102:
-    objc_storeStrong(&_effectiveDataFromData_activeOverride_activeBackgroundActivity_canUpdateBackgroundActivity__lastBackgroundActivityEntry, v24);
+    objc_storeStrong(&_effectiveDataFromData_activeOverride_activeBackgroundActivity_canUpdateBackgroundActivity__lastBackgroundActivityEntry, disabledEntry);
   }
 
 LABEL_103:
-  v25 = [(STUIStatusBar *)self->_statusBar currentData];
-  v26 = [v25 backgroundActivityEntry];
+  currentData = [(STUIStatusBar *)self->_statusBar currentData];
+  backgroundActivityEntry = [currentData backgroundActivityEntry];
 
-  v27 = v12;
+  immutableCopy = v12;
   if ((BSEqualObjects() & 1) == 0)
   {
     if (v12)
@@ -576,19 +576,19 @@ LABEL_103:
     }
 
     v29 = v28;
-    [v28 setBackgroundActivityEntry:v24];
-    v27 = [v29 immutableCopy];
+    [v28 setBackgroundActivityEntry:disabledEntry];
+    immutableCopy = [v29 immutableCopy];
   }
 
-  return v27;
+  return immutableCopy;
 }
 
-- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)a3
+- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)style
 {
-  if (a3 > 113)
+  if (style > 113)
   {
     result = 0x20000000;
-    switch(a3)
+    switch(style)
     {
       case 200:
 LABEL_18:
@@ -696,7 +696,7 @@ LABEL_30:
         result = 0x20000000000;
         break;
       default:
-        switch(a3)
+        switch(style)
         {
           case 1001:
             goto LABEL_12;
@@ -748,7 +748,7 @@ LABEL_30:
           case 1027:
             goto LABEL_30;
           default:
-            if (a3 != 114)
+            if (style != 114)
             {
               return 0;
             }
@@ -761,14 +761,14 @@ LABEL_30:
     }
   }
 
-  else if (a3 <= 110)
+  else if (style <= 110)
   {
-    if (a3 == 104)
+    if (style == 104)
     {
       return 32;
     }
 
-    else if (a3 == 105)
+    else if (style == 105)
     {
       return 256;
     }
@@ -779,12 +779,12 @@ LABEL_30:
     }
   }
 
-  else if (a3 == 111)
+  else if (style == 111)
   {
     return 0x100000;
   }
 
-  else if (a3 == 112)
+  else if (style == 112)
   {
     return 4096;
   }
@@ -797,24 +797,24 @@ LABEL_30:
   return result;
 }
 
-- (void)_updateWithData:(id)a3 force:(BOOL)a4
+- (void)_updateWithData:(id)data force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  forceCopy = force;
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v7 = [(STUIStatusBar *)self->_statusBar currentData];
+    currentData = [(STUIStatusBar *)self->_statusBar currentData];
 
-    if (!v7)
+    if (!currentData)
     {
       goto LABEL_15;
     }
   }
 
   v16 = 0;
-  v8 = [(STUIStatusBar_Wrapper *)self styleDelegate];
+  styleDelegate = [(STUIStatusBar_Wrapper *)self styleDelegate];
 
-  if (v8)
+  if (styleDelegate)
   {
     v15 = 0;
     [(STUIStatusBar *)self->_statusBar style];
@@ -827,7 +827,7 @@ LABEL_30:
       goto LABEL_9;
     }
 
-    v11 = v16;
+    styleOverrides = v16;
     if (!v16)
     {
       goto LABEL_7;
@@ -836,24 +836,24 @@ LABEL_30:
 
   else
   {
-    v11 = [(STUIStatusBar_Wrapper *)self styleOverrides];
-    v16 = v11;
-    if (!v11)
+    styleOverrides = [(STUIStatusBar_Wrapper *)self styleOverrides];
+    v16 = styleOverrides;
+    if (!styleOverrides)
     {
 LABEL_7:
-      v11 = [(STUIStatusBar_Wrapper *)self _implicitStyleOverrideForStyle:[(STUIStatusBar_Wrapper *)self _requestStyle]];
-      v16 = v11;
+      styleOverrides = [(STUIStatusBar_Wrapper *)self _implicitStyleOverrideForStyle:[(STUIStatusBar_Wrapper *)self _requestStyle]];
+      v16 = styleOverrides;
     }
   }
 
-  [(STUIStatusBar_Wrapper *)self setActiveStyleOverride:v11];
+  [(STUIStatusBar_Wrapper *)self setActiveStyleOverride:styleOverrides];
   v10 = 0;
 LABEL_9:
-  v12 = [(STUIStatusBar_Wrapper *)self activeStyleOverride];
-  v13 = [(STUIStatusBar_Wrapper *)self styleDelegate];
-  v14 = [(STUIStatusBar_Wrapper *)self _effectiveDataFromData:v6 activeOverride:v12 activeBackgroundActivity:v10 canUpdateBackgroundActivity:v13 != 0];
+  activeStyleOverride = [(STUIStatusBar_Wrapper *)self activeStyleOverride];
+  styleDelegate2 = [(STUIStatusBar_Wrapper *)self styleDelegate];
+  v14 = [(STUIStatusBar_Wrapper *)self _effectiveDataFromData:dataCopy activeOverride:activeStyleOverride activeBackgroundActivity:v10 canUpdateBackgroundActivity:styleDelegate2 != 0];
 
-  if (v14 || v4)
+  if (v14 || forceCopy)
   {
     if (!v14)
     {
@@ -866,28 +866,28 @@ LABEL_9:
 LABEL_15:
 }
 
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 legibilityStyle:(int64_t)a5 foregroundColor:(id)a6 animationParameters:(id)a7 forced:(BOOL)a8
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles legibilityStyle:(int64_t)legibilityStyle foregroundColor:(id)color animationParameters:(id)parameters forced:(BOOL)forced
 {
-  v8 = a8;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (a3 || ([(STUIStatusBar_Wrapper *)self _requestedResolvedStyle]& 0x3F) != 0)
+  forcedCopy = forced;
+  stylesCopy = styles;
+  colorCopy = color;
+  parametersCopy = parameters;
+  if (style || ([(STUIStatusBar_Wrapper *)self _requestedResolvedStyle]& 0x3F) != 0)
   {
-    [(STUIStatusBar_Wrapper *)self _setRequestedResolvedStyle:a3];
+    [(STUIStatusBar_Wrapper *)self _setRequestedResolvedStyle:style];
   }
 
   else
   {
-    a3 = [(STUIStatusBar_Wrapper *)self _requestedResolvedStyle];
+    style = [(STUIStatusBar_Wrapper *)self _requestedResolvedStyle];
   }
 
   v17 = _UIStatusBarStyleFromResolvedStyle();
-  v18 = [(STUIStatusBar_Wrapper *)self manager];
-  if (!v18 || (v19 = v18, -[STUIStatusBar_Wrapper manager](self, "manager"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 statusBar:self shouldRequestStyle:v17 animationParameters:v16 forced:v8], v20, v19, v21))
+  manager = [(STUIStatusBar_Wrapper *)self manager];
+  if (!manager || (v19 = manager, -[STUIStatusBar_Wrapper manager](self, "manager"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 statusBar:self shouldRequestStyle:v17 animationParameters:parametersCopy forced:forcedCopy], v20, v19, v21))
   {
     v22 = [(STUIStatusBar_Wrapper *)self styleForRequestedStyle:[(STUIStatusBar_Wrapper *)self _effectiveStyleFromStyle:v17]];
-    if (a5)
+    if (legibilityStyle)
     {
       _UIStatusBarStyleFromLegibilityStyle();
     }
@@ -899,39 +899,39 @@ LABEL_10:
       v23[1] = 3221225472;
       v23[2] = __109__STUIStatusBar_Wrapper__requestStyle_partStyles_legibilityStyle_foregroundColor_animationParameters_forced___block_invoke;
       v23[3] = &unk_279D38600;
-      v26 = a3;
+      styleCopy = style;
       v23[4] = self;
-      v24 = v15;
-      v25 = v14;
-      [(STUIStatusBar_Wrapper *)self _performAnimations:v23 withParameters:v16 completion:0];
+      v24 = colorCopy;
+      v25 = stylesCopy;
+      [(STUIStatusBar_Wrapper *)self _performAnimations:v23 withParameters:parametersCopy completion:0];
 
       goto LABEL_11;
     }
 
-    a3 = _UIStatusBarResolvedStyleFromStyle();
+    style = _UIStatusBarResolvedStyleFromStyle();
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)requestResolvedStyle:(int64_t)a3
+- (void)requestResolvedStyle:(int64_t)style
 {
-  v5 = [(STUIStatusBar_Wrapper *)self legibilityStyle];
-  v7 = [(STUIStatusBar_Wrapper *)self foregroundColor];
-  v6 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-  [(STUIStatusBar_Wrapper *)self _requestStyle:a3 partStyles:0 legibilityStyle:v5 foregroundColor:v7 animationParameters:v6 forced:0];
+  legibilityStyle = [(STUIStatusBar_Wrapper *)self legibilityStyle];
+  foregroundColor = [(STUIStatusBar_Wrapper *)self foregroundColor];
+  initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+  [(STUIStatusBar_Wrapper *)self _requestStyle:style partStyles:0 legibilityStyle:legibilityStyle foregroundColor:foregroundColor animationParameters:initWithDefaultParameters forced:0];
 }
 
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = a4;
+  forcedCopy = forced;
+  parametersCopy = parameters;
+  stylesCopy = styles;
   v11 = _UIStatusBarResolvedStyleFromStyle();
-  v12 = [(STUIStatusBar_Wrapper *)self legibilityStyle];
-  v13 = [(STUIStatusBar_Wrapper *)self foregroundColor];
-  [(STUIStatusBar_Wrapper *)self _requestStyle:v11 partStyles:v10 legibilityStyle:v12 foregroundColor:v13 animationParameters:v9 forced:v6];
+  legibilityStyle = [(STUIStatusBar_Wrapper *)self legibilityStyle];
+  foregroundColor = [(STUIStatusBar_Wrapper *)self foregroundColor];
+  [(STUIStatusBar_Wrapper *)self _requestStyle:v11 partStyles:stylesCopy legibilityStyle:legibilityStyle foregroundColor:foregroundColor animationParameters:parametersCopy forced:forcedCopy];
 }
 
 - (int64_t)currentStyle
@@ -941,134 +941,134 @@ LABEL_11:
   return _UIStatusBarStyleFromResolvedStyle();
 }
 
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters
 {
   v11.receiver = self;
   v11.super_class = STUIStatusBar_Wrapper;
-  v6 = a4;
-  v7 = a3;
-  [(STUIStatusBar_Wrapper *)&v11 setStyleRequest:v7 animationParameters:v6];
-  v8 = [v7 resolvedStyle];
-  v9 = [v7 legibilityStyle];
-  v10 = [v7 foregroundColor];
+  parametersCopy = parameters;
+  requestCopy = request;
+  [(STUIStatusBar_Wrapper *)&v11 setStyleRequest:requestCopy animationParameters:parametersCopy];
+  resolvedStyle = [requestCopy resolvedStyle];
+  legibilityStyle = [requestCopy legibilityStyle];
+  foregroundColor = [requestCopy foregroundColor];
 
-  [(STUIStatusBar_Wrapper *)self _requestStyle:v8 partStyles:0 legibilityStyle:v9 foregroundColor:v10 animationParameters:v6 forced:0];
+  [(STUIStatusBar_Wrapper *)self _requestStyle:resolvedStyle partStyles:0 legibilityStyle:legibilityStyle foregroundColor:foregroundColor animationParameters:parametersCopy forced:0];
 }
 
-- (void)setForegroundColor:(id)a3 animationParameters:(id)a4
+- (void)setForegroundColor:(id)color animationParameters:(id)parameters
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBar_Wrapper;
-  v6 = a4;
-  v7 = a3;
-  [(STUIStatusBar_Wrapper *)&v8 setForegroundColor:v7 animationParameters:v6];
-  [(STUIStatusBar_Wrapper *)self _requestStyle:[(STUIStatusBar_Wrapper *)self _requestedResolvedStyle:v8.receiver] partStyles:0 legibilityStyle:[(STUIStatusBar_Wrapper *)self legibilityStyle] foregroundColor:v7 animationParameters:v6 forced:0];
+  parametersCopy = parameters;
+  colorCopy = color;
+  [(STUIStatusBar_Wrapper *)&v8 setForegroundColor:colorCopy animationParameters:parametersCopy];
+  [(STUIStatusBar_Wrapper *)self _requestStyle:[(STUIStatusBar_Wrapper *)self _requestedResolvedStyle:v8.receiver] partStyles:0 legibilityStyle:[(STUIStatusBar_Wrapper *)self legibilityStyle] foregroundColor:colorCopy animationParameters:parametersCopy forced:0];
 }
 
-- (void)setForegroundAlpha:(double)a3 animationParameters:(id)a4
+- (void)setForegroundAlpha:(double)alpha animationParameters:(id)parameters
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBar_Wrapper;
-  v6 = a4;
-  [(STUIStatusBar_Wrapper *)&v8 setForegroundAlpha:v6 animationParameters:a3];
+  parametersCopy = parameters;
+  [(STUIStatusBar_Wrapper *)&v8 setForegroundAlpha:parametersCopy animationParameters:alpha];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__STUIStatusBar_Wrapper_setForegroundAlpha_animationParameters___block_invoke;
   v7[3] = &unk_279D38628;
   v7[4] = self;
-  *&v7[5] = a3;
-  [(STUIStatusBar_Wrapper *)self _performAnimations:v7 withParameters:v6 completion:0];
+  *&v7[5] = alpha;
+  [(STUIStatusBar_Wrapper *)self _performAnimations:v7 withParameters:parametersCopy completion:0];
 }
 
-- (void)setLegibilityStyle:(int64_t)a3 animationParameters:(id)a4
+- (void)setLegibilityStyle:(int64_t)style animationParameters:(id)parameters
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBar_Wrapper;
-  v6 = a4;
-  [(STUIStatusBar_Wrapper *)&v9 setLegibilityStyle:a3 animationParameters:v6];
+  parametersCopy = parameters;
+  [(STUIStatusBar_Wrapper *)&v9 setLegibilityStyle:style animationParameters:parametersCopy];
   v7 = [(STUIStatusBar_Wrapper *)self _requestedResolvedStyle:v9.receiver];
-  v8 = [(STUIStatusBar_Wrapper *)self foregroundColor];
-  [(STUIStatusBar_Wrapper *)self _requestStyle:v7 partStyles:0 legibilityStyle:a3 foregroundColor:v8 animationParameters:v6 forced:0];
+  foregroundColor = [(STUIStatusBar_Wrapper *)self foregroundColor];
+  [(STUIStatusBar_Wrapper *)self _requestStyle:v7 partStyles:0 legibilityStyle:style foregroundColor:foregroundColor animationParameters:parametersCopy forced:0];
 }
 
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = STUIStatusBar_Wrapper;
-  v11 = a4;
-  [(STUIStatusBar_Wrapper *)&v12 setAvoidanceFrame:v11 animationSettings:a5 options:x, y, width, height];
-  [(STUIStatusBar *)self->_statusBar setAvoidanceFrame:v11 animationSettings:a5 options:x, y, width, height, v12.receiver, v12.super_class];
+  settingsCopy = settings;
+  [(STUIStatusBar_Wrapper *)&v12 setAvoidanceFrame:settingsCopy animationSettings:options options:x, y, width, height];
+  [(STUIStatusBar *)self->_statusBar setAvoidanceFrame:settingsCopy animationSettings:options options:x, y, width, height, v12.receiver, v12.super_class];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBar_Wrapper;
   [(STUIStatusBar_Wrapper *)&v5 setMode:?];
-  [(STUIStatusBar *)self->_statusBar setMode:a3];
+  [(STUIStatusBar *)self->_statusBar setMode:mode];
 }
 
 - (id)clockFont
 {
-  v2 = [(STUIStatusBar *)self->_statusBar visualProvider];
-  v3 = [v2 clockFont];
+  visualProvider = [(STUIStatusBar *)self->_statusBar visualProvider];
+  clockFont = [visualProvider clockFont];
 
-  return v3;
+  return clockFont;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBar_Wrapper;
   [(STUIStatusBar_Wrapper *)&v5 setOrientation:?];
-  [(STUIStatusBar *)self->_statusBar setOrientation:a3];
+  [(STUIStatusBar *)self->_statusBar setOrientation:orientation];
 }
 
 - (void)jiggleLockIcon
 {
   v6 = objc_alloc_init(MEMORY[0x277D6BA20]);
-  v3 = [(STUIStatusBar *)self->_statusBar currentData];
-  v4 = [v3 lockEntry];
+  currentData = [(STUIStatusBar *)self->_statusBar currentData];
+  lockEntry = [currentData lockEntry];
 
-  if ([v4 isEnabled])
+  if ([lockEntry isEnabled])
   {
-    v5 = [MEMORY[0x277D6BAC8] entryWithUnlockFailureCount:{objc_msgSend(v4, "unlockFailureCount") + 1}];
+    v5 = [MEMORY[0x277D6BAC8] entryWithUnlockFailureCount:{objc_msgSend(lockEntry, "unlockFailureCount") + 1}];
 
-    v4 = v5;
+    lockEntry = v5;
   }
 
-  [v6 setLockEntry:v4];
+  [v6 setLockEntry:lockEntry];
   [(STUIStatusBar *)self->_statusBar updateWithData:v6];
 }
 
-- (UIOffset)offsetForPartWithIdentifier:(id)a3
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier
 {
-  [(STUIStatusBar *)self->_statusBar offsetForPartWithIdentifier:a3];
+  [(STUIStatusBar *)self->_statusBar offsetForPartWithIdentifier:identifier];
   result.vertical = v4;
   result.horizontal = v3;
   return result;
 }
 
-- (void)setHidden:(BOOL)a3 animationParameters:(id)a4
+- (void)setHidden:(BOOL)hidden animationParameters:(id)parameters
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   statusBar = self->_statusBar;
-  v7 = a4;
-  [(STUIStatusBar *)statusBar setHidden:v4 animationParameters:v7];
+  parametersCopy = parameters;
+  [(STUIStatusBar *)statusBar setHidden:hiddenCopy animationParameters:parametersCopy];
   v8.receiver = self;
   v8.super_class = STUIStatusBar_Wrapper;
-  [(STUIStatusBar_Wrapper *)&v8 setHidden:v4 animationParameters:v7];
+  [(STUIStatusBar_Wrapper *)&v8 setHidden:hiddenCopy animationParameters:parametersCopy];
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3
+- (CGRect)frameForPartWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(STUIStatusBar_Wrapper *)self layoutIfNeeded];
-  [(STUIStatusBar *)self->_statusBar frameForPartWithIdentifier:v4];
+  [(STUIStatusBar *)self->_statusBar frameForPartWithIdentifier:identifierCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1085,41 +1085,41 @@ LABEL_11:
   return result;
 }
 
-- (void)activeBackgroundActivitiesDidUpdate:(id)a3
+- (void)activeBackgroundActivitiesDidUpdate:(id)update
 {
-  v4 = [a3 copy];
+  v4 = [update copy];
   backgroundActivities = self->_backgroundActivities;
   self->_backgroundActivities = v4;
 
   [(STUIStatusBar_Wrapper *)self forceUpdate:1];
 }
 
-- (void)_getStyle:(int64_t *)a3 andActiveOverride:(unint64_t *)a4 andActiveBackgroundActivity:(id *)a5 forRequestedStyle:(int64_t)a6 updatingBackgroundActivity:(BOOL)a7
+- (void)_getStyle:(int64_t *)style andActiveOverride:(unint64_t *)override andActiveBackgroundActivity:(id *)activity forRequestedStyle:(int64_t)requestedStyle updatingBackgroundActivity:(BOOL)backgroundActivity
 {
-  v12 = [(STUIStatusBar_Wrapper *)self styleDelegate:a3];
+  v12 = [(STUIStatusBar_Wrapper *)self styleDelegate:style];
   if (objc_opt_respondsToSelector())
   {
-    v14 = a6 == 306 || (a6 & 0xFFFFFFFFFFFFFFFELL) == 108;
-    v15 = [(STUIStatusBar_Wrapper *)self backgroundActivities];
-    v16 = [v12 statusBar:self effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:v15];
+    v14 = requestedStyle == 306 || (requestedStyle & 0xFFFFFFFFFFFFFFFELL) == 108;
+    backgroundActivities = [(STUIStatusBar_Wrapper *)self backgroundActivities];
+    v16 = [v12 statusBar:self effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:backgroundActivities];
 
-    v17 = [MEMORY[0x277D6B920] sharedInstance];
-    v18 = [v17 resolvedBackgroundActivityFromBackgroundActivities:v16 inPrecedenceScope:v14];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v18 = [mEMORY[0x277D6B920] resolvedBackgroundActivityFromBackgroundActivities:v16 inPrecedenceScope:v14];
 
-    if (a4)
+    if (override)
     {
-      *a4 = 0;
+      *override = 0;
     }
 
-    if (a5)
+    if (activity)
     {
       v19 = v18;
-      *a5 = v18;
+      *activity = v18;
     }
 
-    if (a3)
+    if (style)
     {
-      *a3 = a6;
+      *style = requestedStyle;
     }
   }
 
@@ -1127,13 +1127,13 @@ LABEL_11:
   {
     v20.receiver = self;
     v20.super_class = STUIStatusBar_Wrapper;
-    [(STUIStatusBar_Wrapper *)&v20 _getStyle:a3 andActiveOverride:a4 forRequestedStyle:a6];
+    [(STUIStatusBar_Wrapper *)&v20 _getStyle:style andActiveOverride:override forRequestedStyle:requestedStyle];
   }
 }
 
-- (void)forceUpdate:(BOOL)a3
+- (void)forceUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
 
     [(STUIStatusBar_Wrapper *)self _updateWithData:0 force:1];
@@ -1152,15 +1152,15 @@ LABEL_11:
   }
 }
 
-- (void)forceUpdateData:(BOOL)a3
+- (void)forceUpdateData:(BOOL)data
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75A98] getStatusBarData];
-  if (v5)
+  dataCopy = data;
+  getStatusBarData = [MEMORY[0x277D75A98] getStatusBarData];
+  if (getStatusBarData)
   {
-    v6 = v5;
+    v6 = getStatusBarData;
     v7 = 0;
-    while (*(v5 + v7) != 1)
+    while (*(getStatusBarData + v7) != 1)
     {
       if (++v7 == 52)
       {
@@ -1168,10 +1168,10 @@ LABEL_11:
       }
     }
 
-    [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:v5];
+    [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:getStatusBarData];
     v8 = [(STUIStatusBar_Wrapper *)self _dataFromLegacyData:v6];
     v9 = v8;
-    if (v3)
+    if (dataCopy)
     {
       [(STUIStatusBar_Wrapper *)self _updateWithData:v8 force:0];
     }
@@ -1190,24 +1190,24 @@ LABEL_11:
   }
 }
 
-- (void)statusBarServer:(id)a3 didReceiveStatusBarData:(id *)a4 withActions:(int)a5
+- (void)statusBarServer:(id)server didReceiveStatusBarData:(id *)data withActions:(int)actions
 {
-  [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:a4];
-  v7 = [(STUIStatusBar_Wrapper *)self _dataFromLegacyData:a4];
+  [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:data];
+  v7 = [(STUIStatusBar_Wrapper *)self _dataFromLegacyData:data];
   [(STUIStatusBar_Wrapper *)self _updateWithData:v7 force:0];
 }
 
-- (void)statusBarServer:(id)a3 didReceiveStyleOverrides:(unint64_t)a4
+- (void)statusBarServer:(id)server didReceiveStyleOverrides:(unint64_t)overrides
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(STUIStatusBar_Wrapper *)self styleOverrides]== a4)
+  serverCopy = server;
+  if ([(STUIStatusBar_Wrapper *)self styleOverrides]== overrides)
   {
     v7 = _STUIStatusBar_BackgroundActivity_Log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = a4;
+      overridesCopy = overrides;
       _os_log_impl(&dword_26C4DD000, v7, OS_LOG_TYPE_DEFAULT, "Duplicate StatusBar_Modern overrides receieved: %llu", buf, 0xCu);
     }
   }
@@ -1216,15 +1216,15 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = STUIStatusBar_Wrapper;
-    [(STUIStatusBar_Wrapper *)&v8 statusBarServer:v6 didReceiveStyleOverrides:a4];
+    [(STUIStatusBar_Wrapper *)&v8 statusBarServer:serverCopy didReceiveStyleOverrides:overrides];
     [(STUIStatusBar_Wrapper *)self forceUpdate:1];
   }
 }
 
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions
 {
-  [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:a4];
-  v7 = [(STUIStatusBar_Wrapper *)self _dataFromLegacyData:a4];
+  [(STUIStatusBar_Wrapper *)self _updateSemanticContentAttributeFromLegacyData:data];
+  v7 = [(STUIStatusBar_Wrapper *)self _dataFromLegacyData:data];
   [(STUIStatusBar_Wrapper *)self _updateWithData:v7 force:0];
 }
 

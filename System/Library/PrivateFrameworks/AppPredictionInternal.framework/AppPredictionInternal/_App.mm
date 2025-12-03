@@ -1,18 +1,18 @@
 @interface _App
-- (_App)initWithNotificationStacks:(id)a3 maxAppMarqueeGroups:(unint64_t)a4 digestFeedback:(id)a5;
-- (double)logisticScoreForInput:(double)a3;
+- (_App)initWithNotificationStacks:(id)stacks maxAppMarqueeGroups:(unint64_t)groups digestFeedback:(id)feedback;
+- (double)logisticScoreForInput:(double)input;
 - (double)setDigestRankingScore;
-- (id)getGroupsFromNotificationStacks:(id)a3;
+- (id)getGroupsFromNotificationStacks:(id)stacks;
 - (void)setBundleId;
-- (void)setRankedGroupsFromNotificationGroups:(id)a3;
+- (void)setRankedGroupsFromNotificationGroups:(id)groups;
 @end
 
 @implementation _App
 
-- (_App)initWithNotificationStacks:(id)a3 maxAppMarqueeGroups:(unint64_t)a4 digestFeedback:(id)a5
+- (_App)initWithNotificationStacks:(id)stacks maxAppMarqueeGroups:(unint64_t)groups digestFeedback:(id)feedback
 {
-  v8 = a3;
-  v9 = a5;
+  stacksCopy = stacks;
+  feedbackCopy = feedback;
   v15.receiver = self;
   v15.super_class = _App;
   v10 = [(_App *)&v15 init];
@@ -22,9 +22,9 @@
     c = v10->_c;
     v10->_c = v11;
 
-    v10->_maxAppMarqueeGroups = a4;
-    objc_storeStrong(&v10->_digestFeedback, a5);
-    v13 = [(_App *)v10 getGroupsFromNotificationStacks:v8];
+    v10->_maxAppMarqueeGroups = groups;
+    objc_storeStrong(&v10->_digestFeedback, feedback);
+    v13 = [(_App *)v10 getGroupsFromNotificationStacks:stacksCopy];
     [(_App *)v10 setRankedGroupsFromNotificationGroups:v13];
 
     [(_App *)v10 setBundleId];
@@ -34,14 +34,14 @@
   return v10;
 }
 
-- (id)getGroupsFromNotificationStacks:(id)a3
+- (id)getGroupsFromNotificationStacks:(id)stacks
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40___App_getGroupsFromNotificationStacks___block_invoke;
   v5[3] = &unk_2785A1C38;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [stacks _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }
@@ -104,16 +104,16 @@ LABEL_7:
   }
 
 LABEL_9:
-  v15 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   bundleId = self->_bundleId;
-  self->_bundleId = v15;
+  self->_bundleId = firstObject;
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRankedGroupsFromNotificationGroups:(id)a3
+- (void)setRankedGroupsFromNotificationGroups:(id)groups
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_255];
+  v4 = [groups sortedArrayUsingComparator:&__block_literal_global_255];
   v5 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_27_2];
   groupsWithComms = self->_groupsWithComms;
   self->_groupsWithComms = v5;
@@ -203,9 +203,9 @@ LABEL_9:
   return result;
 }
 
-- (double)logisticScoreForInput:(double)a3
+- (double)logisticScoreForInput:(double)input
 {
-  v4 = fmin(a3, 25.0);
+  v4 = fmin(input, 25.0);
   if (v4 >= -25.0)
   {
     v5 = v4;

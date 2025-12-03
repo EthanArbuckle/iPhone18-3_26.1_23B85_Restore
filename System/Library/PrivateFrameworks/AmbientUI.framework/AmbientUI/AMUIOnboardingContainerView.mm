@@ -1,15 +1,15 @@
 @interface AMUIOnboardingContainerView
 - (AMAmbientDefaults)ambientDefaults;
 - (AMUIOnboardingContainerViewDelegate)delegate;
-- (id)_newBlurMaterialViewWithInitialWeighting:(double)a3 superview:(id)a4;
+- (id)_newBlurMaterialViewWithInitialWeighting:(double)weighting superview:(id)superview;
 - (void)_configureAnimationContainerViewIfNecessary;
 - (void)_configureOnboardingViewIfNecessary;
-- (void)_configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:(double)a3;
+- (void)_configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:(double)weighting;
 - (void)_layoutOnboardingView;
-- (void)_performDismissalAnimationWithCompletion:(id)a3;
-- (void)_performPresentationAnimationWithCompletion:(id)a3;
+- (void)_performDismissalAnimationWithCompletion:(id)completion;
+- (void)_performPresentationAnimationWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)onboardingViewRequestsDismissal:(id)a3;
+- (void)onboardingViewRequestsDismissal:(id)dismissal;
 - (void)performDismissalAnimation;
 @end
 
@@ -41,10 +41,10 @@ void __56__AMUIOnboardingContainerView_performDismissalAnimation__block_invoke(u
   [(AMUIOnboardingContainerView *)self _layoutOnboardingView];
 }
 
-- (void)onboardingViewRequestsDismissal:(id)a3
+- (void)onboardingViewRequestsDismissal:(id)dismissal
 {
-  v4 = [(AMUIOnboardingContainerView *)self ambientDefaults];
-  [v4 setFirstPresentation:0];
+  ambientDefaults = [(AMUIOnboardingContainerView *)self ambientDefaults];
+  [ambientDefaults setFirstPresentation:0];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -97,17 +97,17 @@ void __63__AMUIOnboardingContainerView_onboardingViewRequestsDismissal___block_i
   }
 }
 
-- (id)_newBlurMaterialViewWithInitialWeighting:(double)a3 superview:(id)a4
+- (id)_newBlurMaterialViewWithInitialWeighting:(double)weighting superview:(id)superview
 {
   v5 = MEMORY[0x277D26718];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a4;
+  superviewCopy = superview;
   v8 = [v6 bundleForClass:objc_opt_class()];
-  v9 = [v5 materialViewWithRecipeNamed:@"ambientOnboardingOverlayBlur" inBundle:v8 options:0 initialWeighting:0 scaleAdjustment:a3];
+  v9 = [v5 materialViewWithRecipeNamed:@"ambientOnboardingOverlayBlur" inBundle:v8 options:0 initialWeighting:0 scaleAdjustment:weighting];
 
   [v9 setGroupNameBase:@"AMUIOnboardingViewMaterialGroup"];
-  [v7 addSubview:v9];
-  [v7 bounds];
+  [superviewCopy addSubview:v9];
+  [superviewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -146,7 +146,7 @@ void __63__AMUIOnboardingContainerView_onboardingViewRequestsDismissal___block_i
   }
 }
 
-- (void)_performPresentationAnimationWithCompletion:(id)a3
+- (void)_performPresentationAnimationWithCompletion:(id)completion
 {
   [(AMUIOnboardingContainerView *)self layoutIfNeeded];
   [(AMUIOnboardingContainerView *)self _configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:1.0];
@@ -155,8 +155,8 @@ void __63__AMUIOnboardingContainerView_onboardingViewRequestsDismissal___block_i
   [(UIView *)v4 setAlpha:0.0];
   CGAffineTransformMakeScale(&v23, 1.25, 1.25);
   [(UIView *)v4 setTransform:&v23];
-  v6 = [(UIView *)v4 layer];
-  [v6 setAllowsGroupOpacity:1];
+  layer = [(UIView *)v4 layer];
+  [layer setAllowsGroupOpacity:1];
 
   v7 = MEMORY[0x277D75D18];
   v21[0] = MEMORY[0x277D85DD0];
@@ -210,16 +210,16 @@ void __75__AMUIOnboardingContainerView__performPresentationAnimationWithCompleti
   [v1 setAllowsGroupOpacity:0];
 }
 
-- (void)_performDismissalAnimationWithCompletion:(id)a3
+- (void)_performDismissalAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(AMUIOnboardingContainerView *)self layoutIfNeeded];
   [(AMUIOnboardingContainerView *)self _configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:0.0];
   v5 = self->_animationContainerView;
   v6 = self->_onboardingView;
   v7 = self->_overlayBlurMaterialView;
-  v8 = [(UIView *)v5 layer];
-  [v8 setAllowsGroupOpacity:1];
+  layer = [(UIView *)v5 layer];
+  [layer setAllowsGroupOpacity:1];
 
   memset(&v22, 0, sizeof(v22));
   CGAffineTransformMakeScale(&v22, 0.8, 0.8);
@@ -237,8 +237,8 @@ void __75__AMUIOnboardingContainerView__performPresentationAnimationWithCompleti
   v14[2] = __72__AMUIOnboardingContainerView__performDismissalAnimationWithCompletion___block_invoke_2;
   v14[3] = &unk_278C76220;
   v15 = v18;
-  v16 = v4;
-  v10 = v4;
+  v16 = completionCopy;
+  v10 = completionCopy;
   v11 = v18;
   v12 = v7;
   v13 = v6;
@@ -271,9 +271,9 @@ uint64_t __72__AMUIOnboardingContainerView__performDismissalAnimationWithComplet
   return result;
 }
 
-- (void)_configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:(double)a3
+- (void)_configureOverlayBlurMaterialViewIfNecessaryWithInitialWeighting:(double)weighting
 {
-  v4 = [(AMUIOnboardingContainerView *)self _newBlurMaterialViewWithInitialWeighting:self->_animationContainerView superview:a3];
+  v4 = [(AMUIOnboardingContainerView *)self _newBlurMaterialViewWithInitialWeighting:self->_animationContainerView superview:weighting];
   overlayBlurMaterialView = self->_overlayBlurMaterialView;
   self->_overlayBlurMaterialView = v4;
 

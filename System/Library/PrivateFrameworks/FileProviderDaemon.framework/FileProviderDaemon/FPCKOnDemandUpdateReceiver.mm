@@ -1,11 +1,11 @@
 @interface FPCKOnDemandUpdateReceiver
 - (NSDictionary)telemetryReport;
 - (_TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver)init;
-- (_TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver)initWithDomainBackend:(id)a3 persistUpdates:(BOOL)a4;
-- (void)reingestItemIDs:(id)a3;
-- (void)saveCheckpointWithReport:(id)a3;
-- (void)sendDiagnosticsForItemIDs:(id)a3;
-- (void)shouldPauseWithCompletion:(id)a3;
+- (_TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver)initWithDomainBackend:(id)backend persistUpdates:(BOOL)updates;
+- (void)reingestItemIDs:(id)ds;
+- (void)saveCheckpointWithReport:(id)report;
+- (void)sendDiagnosticsForItemIDs:(id)ds;
+- (void)shouldPauseWithCompletion:(id)completion;
 @end
 
 @implementation FPCKOnDemandUpdateReceiver
@@ -13,7 +13,7 @@
 - (NSDictionary)telemetryReport
 {
   v2 = (self + OBJC_IVAR____TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver_report);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *&v2[2]._os_unfair_lock_opaque;
   sub_1CF4DFA80();
@@ -24,33 +24,33 @@
   return v5;
 }
 
-- (_TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver)initWithDomainBackend:(id)a3 persistUpdates:(BOOL)a4
+- (_TtC18FileProviderDaemon26FPCKOnDemandUpdateReceiver)initWithDomainBackend:(id)backend persistUpdates:(BOOL)updates
 {
   swift_unknownObjectRetain();
-  v6 = sub_1CF3402F4(a3, a4);
+  v6 = sub_1CF3402F4(backend, updates);
   swift_unknownObjectRelease();
   return v6;
 }
 
-- (void)saveCheckpointWithReport:(id)a3
+- (void)saveCheckpointWithReport:(id)report
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CF33FBC0(v4);
+  reportCopy = report;
+  selfCopy = self;
+  sub_1CF33FBC0(reportCopy);
 }
 
-- (void)shouldPauseWithCompletion:(id)a3
+- (void)shouldPauseWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   (*(v3 + 2))(v3, 0, 0);
 
   _Block_release(v3);
 }
 
-- (void)sendDiagnosticsForItemIDs:(id)a3
+- (void)sendDiagnosticsForItemIDs:(id)ds
 {
-  v4 = a3;
-  v8 = self;
+  dsCopy = ds;
+  selfCopy = self;
   v5 = sub_1CF9E5B88();
   v7 = v6;
 
@@ -58,10 +58,10 @@
   sub_1CEFE4714(v5, v7);
 }
 
-- (void)reingestItemIDs:(id)a3
+- (void)reingestItemIDs:(id)ds
 {
-  v4 = a3;
-  v8 = self;
+  dsCopy = ds;
+  selfCopy = self;
   v5 = sub_1CF9E5B88();
   v7 = v6;
 

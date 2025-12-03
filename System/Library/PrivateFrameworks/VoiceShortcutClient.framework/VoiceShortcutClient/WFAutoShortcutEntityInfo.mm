@@ -1,59 +1,59 @@
 @interface WFAutoShortcutEntityInfo
-- (WFAutoShortcutEntityInfo)initWithCoder:(id)a3;
-- (WFAutoShortcutEntityInfo)initWithName:(id)a3 subtitle:(id)a4 icon:(id)a5 badge:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (WFAutoShortcutEntityInfo)initWithCoder:(id)coder;
+- (WFAutoShortcutEntityInfo)initWithName:(id)name subtitle:(id)subtitle icon:(id)icon badge:(unint64_t)badge;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAutoShortcutEntityInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAutoShortcutEntityInfo *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(WFAutoShortcutEntityInfo *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(WFAutoShortcutEntityInfo *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(WFAutoShortcutEntityInfo *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(WFAutoShortcutEntityInfo *)self icon];
-  [v4 encodeObject:v7 forKey:@"icon"];
+  icon = [(WFAutoShortcutEntityInfo *)self icon];
+  [coderCopy encodeObject:icon forKey:@"icon"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFAutoShortcutEntityInfo badge](self, "badge")}];
-  [v4 encodeObject:v8 forKey:@"badge"];
+  [coderCopy encodeObject:v8 forKey:@"badge"];
 }
 
-- (WFAutoShortcutEntityInfo)initWithCoder:(id)a3
+- (WFAutoShortcutEntityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"badge"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"badge"];
 
   v9 = [(WFAutoShortcutEntityInfo *)self initWithName:v5 subtitle:v6 icon:v7 badge:v8];
   return v9;
 }
 
-- (WFAutoShortcutEntityInfo)initWithName:(id)a3 subtitle:(id)a4 icon:(id)a5 badge:(unint64_t)a6
+- (WFAutoShortcutEntityInfo)initWithName:(id)name subtitle:(id)subtitle icon:(id)icon badge:(unint64_t)badge
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  iconCopy = icon;
   v20.receiver = self;
   v20.super_class = WFAutoShortcutEntityInfo;
   v13 = [(WFAutoShortcutEntityInfo *)&v20 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v11 copy];
+    v16 = [subtitleCopy copy];
     subtitle = v13->_subtitle;
     v13->_subtitle = v16;
 
-    objc_storeStrong(&v13->_icon, a5);
-    v13->_badge = a6;
+    objc_storeStrong(&v13->_icon, icon);
+    v13->_badge = badge;
     v18 = v13;
   }
 

@@ -1,126 +1,126 @@
 @interface CDPUIController
 - (BOOL)_canShowRPD;
-- (BOOL)_isQuotaServiceHost:(id)a3;
+- (BOOL)_isQuotaServiceHost:(id)host;
 - (CDPUIDelegate)delegate;
-- (id)_beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3;
-- (id)_beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3;
+- (id)_beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask;
+- (id)_beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask;
 - (id)_buildQuotaRequest;
 - (id)_chooseDeviceEscapeOption;
-- (id)_custodianAskHelpViewControllerWithSupportedEscapeOfferMask:(unint64_t)a3;
-- (id)_custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3;
-- (id)_custodianCodeEntryViewControllerWithController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3 askHelpController:(id)a4;
-- (id)_deviceLimitOfferCustodianForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_deviceLimitOfferDeviceSelectionForDevice:(id)a3 fromViewController:(id)a4;
-- (id)_deviceLimitOfferPiggybackingForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_deviceLimitOfferRecoveryKeyAndCustodianForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_deviceLimitOfferRecoveryKeyForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_deviceLimitOfferSkipForDevice:(id)a3;
-- (id)_enterCustodianCodeEscapeOfferWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4 presentationBlock:(id)a5;
-- (id)_enterSecretLaterEscapeOptionWithSecret:(unint64_t)a3;
-- (id)_escapeOfferForDevice:(id)a3 withMask:(unint64_t)a4;
-- (id)_escapeOfferForMultiApprovalWithMask:(unint64_t)a3;
-- (id)_escapeOfferForSingleApprovalWithMask:(unint64_t)a3;
-- (id)_escapeOfferMessageForDevice:(id)a3 withMask:(unint64_t)a4;
-- (id)_escapeOffersForgotAllWithMask:(unint64_t)a3 presenter:(id)a4 devices:(id)a5;
-- (id)_iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6 withDevice:(id)a7;
-- (id)_iCloudDeleteConfirmationViewController:(id)a3;
-- (id)_instructionsControllerForPlatform:(unint64_t)a3 controller:(id)a4 supportedEscapeOfferMask:(unint64_t)a5;
+- (id)_custodianAskHelpViewControllerWithSupportedEscapeOfferMask:(unint64_t)mask;
+- (id)_custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers;
+- (id)_custodianCodeEntryViewControllerWithController:(id)controller supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask askHelpController:(id)controller;
+- (id)_deviceLimitOfferCustodianForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_deviceLimitOfferDeviceSelectionForDevice:(id)device fromViewController:(id)controller;
+- (id)_deviceLimitOfferPiggybackingForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_deviceLimitOfferRecoveryKeyAndCustodianForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_deviceLimitOfferRecoveryKeyForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_deviceLimitOfferSkipForDevice:(id)device;
+- (id)_enterCustodianCodeEscapeOfferWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask presentationBlock:(id)block;
+- (id)_enterSecretLaterEscapeOptionWithSecret:(unint64_t)secret;
+- (id)_escapeOfferForDevice:(id)device withMask:(unint64_t)mask;
+- (id)_escapeOfferForMultiApprovalWithMask:(unint64_t)mask;
+- (id)_escapeOfferForSingleApprovalWithMask:(unint64_t)mask;
+- (id)_escapeOfferMessageForDevice:(id)device withMask:(unint64_t)mask;
+- (id)_escapeOffersForgotAllWithMask:(unint64_t)mask presenter:(id)presenter devices:(id)devices;
+- (id)_iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:(id)title message:(id)message skipButtonTitle:(id)buttonTitle supportedEscapeOfferMask:(unint64_t)mask withDevice:(id)device;
+- (id)_iCloudDeleteConfirmationViewController:(id)controller;
+- (id)_instructionsControllerForPlatform:(unint64_t)platform controller:(id)controller supportedEscapeOfferMask:(unint64_t)mask;
 - (id)_localDeviceClass;
-- (id)_makeRemoteApprovalCompletedEventWithContext:(id)a3 didApprove:(BOOL)a4 error:(id)a5;
-- (id)_makeRemoteSecretInputEventWithContext:(id)a3 device:(id)a4;
+- (id)_makeRemoteApprovalCompletedEventWithContext:(id)context didApprove:(BOOL)approve error:(id)error;
+- (id)_makeRemoteSecretInputEventWithContext:(id)context device:(id)device;
 - (id)_noRecoveryFactorsBaseController;
-- (id)_piggybackingCantGetToMyDevices:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6;
-- (id)_piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:(unint64_t)a3;
-- (id)_piggybackingHandleNonProxError:(unint64_t)a3;
-- (id)_piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3 title:(id)a4 localizationKey:(id)a5;
-- (id)_piggybackingSomethingWentWrong:(unint64_t)a3;
-- (id)_piggybackingViewControllerWithSupportedEscapeOfferMask:(unint64_t)a3;
-- (id)_quotaScreenRPDErrorWithUnderlyingError:(id)a3;
-- (id)_recoveryKeyControllerWithContext:(id)a3 secretValidator:(id)a4 completion:(id)a5;
-- (id)_recoveryKeyControllerWithContext:(id)a3 validator:(id)a4 completion:(id)a5;
-- (id)_recoveryKeyEscapeOfferWithSupportedEscapeOfferMask:(unint64_t)a3;
-- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3;
-- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3 presentationBlock:(id)a4;
-- (id)_recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3;
-- (id)_recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3;
+- (id)_piggybackingCantGetToMyDevices:(id)devices message:(id)message skipButtonTitle:(id)title supportedEscapeOfferMask:(unint64_t)mask;
+- (id)_piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:(unint64_t)offers;
+- (id)_piggybackingHandleNonProxError:(unint64_t)error;
+- (id)_piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers title:(id)title localizationKey:(id)key;
+- (id)_piggybackingSomethingWentWrong:(unint64_t)wrong;
+- (id)_piggybackingViewControllerWithSupportedEscapeOfferMask:(unint64_t)mask;
+- (id)_quotaScreenRPDErrorWithUnderlyingError:(id)error;
+- (id)_recoveryKeyControllerWithContext:(id)context secretValidator:(id)validator completion:(id)completion;
+- (id)_recoveryKeyControllerWithContext:(id)context validator:(id)validator completion:(id)completion;
+- (id)_recoveryKeyEscapeOfferWithSupportedEscapeOfferMask:(unint64_t)mask;
+- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask;
+- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask presentationBlock:(id)block;
+- (id)_recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers;
+- (id)_recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask;
 - (id)_remoteApprovalEscapeOption;
-- (id)_remoteSecretControllerForDevice:(id)a3;
-- (id)_singleICSCEscapeOfferWithMask:(unint64_t)a3 withController:(id)a4;
-- (id)_skipOrDeleteiCloudDataEscapeOfferWithTitle:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6;
+- (id)_remoteSecretControllerForDevice:(id)device;
+- (id)_singleICSCEscapeOfferWithMask:(unint64_t)mask withController:(id)controller;
+- (id)_skipOrDeleteiCloudDataEscapeOfferWithTitle:(id)title message:(id)message skipButtonTitle:(id)buttonTitle supportedEscapeOfferMask:(unint64_t)mask;
 - (id)_tryAgainLaterEscapeOption;
 - (id)_waitingForApprovalEscapeOffer;
-- (id)devicePicker:(id)a3 escapeOffersForDevices:(id)a4;
-- (id)recoveryKeyEntryControllerForCircleJoinWithCancel:(BOOL)a3 supportedEscapeOfferMask:(unint64_t)a4;
-- (id)updateContextWithAuthResults:(id)a3;
-- (void)_beginDevicePickerFlowFromEntryController:(id)a3;
+- (id)devicePicker:(id)picker escapeOffersForDevices:(id)devices;
+- (id)recoveryKeyEntryControllerForCircleJoinWithCancel:(BOOL)cancel supportedEscapeOfferMask:(unint64_t)mask;
+- (id)updateContextWithAuthResults:(id)results;
+- (void)_beginDevicePickerFlowFromEntryController:(id)controller;
 - (void)_beginWaitingForApprovalFlow;
 - (void)_disableUserInteractionAndStartSpinner;
-- (void)_dismissPresentedViewControllerCompletion:(id)a3;
+- (void)_dismissPresentedViewControllerCompletion:(id)completion;
 - (void)_enableUserInteractionAndStopSpinner;
-- (void)_handleDepletedRemainingAttemptsForDevice:(id)a3 fromViewController:(id)a4 mask:(unint64_t)a5;
-- (void)_handleResetActionWithCompletion:(id)a3;
-- (void)_manageNavigationBarForRootViewController:(id)a3;
+- (void)_handleDepletedRemainingAttemptsForDevice:(id)device fromViewController:(id)controller mask:(unint64_t)mask;
+- (void)_handleResetActionWithCompletion:(id)completion;
+- (void)_manageNavigationBarForRootViewController:(id)controller;
 - (void)_presentCustodianAttemptLimitAlert;
-- (void)_presentRemoteSecretControllerWithNewestDevice:(id)a3;
-- (void)_presentRootController:(id)a3 completion:(id)a4;
-- (void)_presentSwiftUIRemoteSecretPromptWithDevice:(id)a3 didSelectDevice:(BOOL)a4;
-- (void)_replaceViewController:(id)a3 withNewController:(id)a4;
-- (void)_rpdEscapeOptionWithOffer:(id)a3;
-- (void)_setupDevicePickerController:(id)a3;
-- (void)_showQuotaStorageAppListView:(id)a3;
-- (void)_showQuotaStorageAppListView:(id)a3 andCompletion:(id)a4;
-- (void)_showResetKeychainConfirmationAlertWithViewController:(id)a3;
+- (void)_presentRemoteSecretControllerWithNewestDevice:(id)device;
+- (void)_presentRootController:(id)controller completion:(id)completion;
+- (void)_presentSwiftUIRemoteSecretPromptWithDevice:(id)device didSelectDevice:(BOOL)selectDevice;
+- (void)_replaceViewController:(id)controller withNewController:(id)newController;
+- (void)_rpdEscapeOptionWithOffer:(id)offer;
+- (void)_setupDevicePickerController:(id)controller;
+- (void)_showQuotaStorageAppListView:(id)view;
+- (void)_showQuotaStorageAppListView:(id)view andCompletion:(id)completion;
+- (void)_showResetKeychainConfirmationAlertWithViewController:(id)controller;
 - (void)_showStartRecoverySessionFailureAlert;
-- (void)_showTryAgainLaterConfirmationAlertWithViewController:(id)a3;
-- (void)_validateCustodianRecoveryInfo:(id)a3;
-- (void)approveFromAnotherDevice:(BOOL)a3;
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 mask:(unint64_t)a4;
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 mask:(unint64_t)a4 validator:(id)a5;
-- (void)backTappedFromRoot:(id)a3;
-- (void)cancelTapped:(id)a3;
-- (void)cancelledRemoteSecretEntry:(id)a3;
-- (void)cdpContext:(id)a3 confirmRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 createLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 presentRemoteApprovalWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4;
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7;
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6;
-- (void)cdpContext:(id)a3 showError:(id)a4 withDefaultIndex:(int64_t)a5 withCompletion:(id)a6;
-- (void)cdpContext:(id)a3 showResetCompletedAlertWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 showResetFailedAlertWithUnderlyingError:(id)a4 completion:(id)a5;
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5;
-- (void)custodianOSSelectionViewControllerWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4 completion:(id)a5;
+- (void)_showTryAgainLaterConfirmationAlertWithViewController:(id)controller;
+- (void)_validateCustodianRecoveryInfo:(id)info;
+- (void)approveFromAnotherDevice:(BOOL)device;
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking mask:(unint64_t)mask;
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking mask:(unint64_t)mask validator:(id)validator;
+- (void)backTappedFromRoot:(id)root;
+- (void)cancelTapped:(id)tapped;
+- (void)cancelledRemoteSecretEntry:(id)entry;
+- (void)cdpContext:(id)context confirmRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context createLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context presentRemoteApprovalWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c;
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator;
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator;
+- (void)cdpContext:(id)context showError:(id)error withDefaultIndex:(int64_t)index withCompletion:(id)completion;
+- (void)cdpContext:(id)context showResetCompletedAlertWithCompletion:(id)completion;
+- (void)cdpContext:(id)context showResetFailedAlertWithUnderlyingError:(id)error completion:(id)completion;
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator;
+- (void)custodianOSSelectionViewControllerWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask completion:(id)completion;
 - (void)dealloc;
-- (void)devicePicker:(id)a3 didSelectDevice:(id)a4;
-- (void)dismissAndResetAccountCDPState:(id)a3 localSecret:(id)a4;
-- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)a3;
-- (void)finishValidation:(id)a3 withError:(id)a4;
+- (void)devicePicker:(id)picker didSelectDevice:(id)device;
+- (void)dismissAndResetAccountCDPState:(id)state localSecret:(id)secret;
+- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)action;
+- (void)finishValidation:(id)validation withError:(id)error;
 - (void)handleBackPopCompletion;
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
-- (void)performAccountReset:(id)a3;
-- (void)performCustodianRecovery:(id)a3;
-- (void)performPiggybackingRecovery:(id)a3;
-- (void)performRecoveryKeyRecovery:(id)a3;
-- (void)piggybackingUserDidNotGetACode:(unint64_t)a3;
-- (void)presentQuotaScreenForRequest:(id)a3 completion:(id)a4;
-- (void)presentQuotaScreenWithCompletion:(id)a3;
-- (void)remoteSecretEntry:(id)a3 depletedRemainingAttemptsForDevice:(id)a4;
-- (void)remoteSecretEntry:(id)a3 didAcceptValidRemoteSecretForDevice:(id)a4;
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error;
+- (void)performAccountReset:(id)reset;
+- (void)performCustodianRecovery:(id)recovery;
+- (void)performPiggybackingRecovery:(id)recovery;
+- (void)performRecoveryKeyRecovery:(id)recovery;
+- (void)piggybackingUserDidNotGetACode:(unint64_t)code;
+- (void)presentQuotaScreenForRequest:(id)request completion:(id)completion;
+- (void)presentQuotaScreenWithCompletion:(id)completion;
+- (void)remoteSecretEntry:(id)entry depletedRemainingAttemptsForDevice:(id)device;
+- (void)remoteSecretEntry:(id)entry didAcceptValidRemoteSecretForDevice:(id)device;
 - (void)remoteSecretEntryDidAcceptValidSecret;
 - (void)remoteSecretEntryDidExceedMaximumAttempts;
-- (void)remoteSecretEntryDidFinishValidationWithError:(id)a3;
-- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)a3 newestDevice:(id)a4;
+- (void)remoteSecretEntryDidFinishValidationWithError:(id)error;
+- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)controller newestDevice:(id)device;
 - (void)remoteSecretEntryDidRequestAccountReset;
-- (void)remoteSecretEntryDidRequestAccountResetEscapeActionForDevice:(id)a3;
+- (void)remoteSecretEntryDidRequestAccountResetEscapeActionForDevice:(id)device;
 - (void)remoteSecretEntryDidRequestCancellation;
 - (void)remoteSecretEntryDidRequestCustodianRecoveryEscapeAction;
 - (void)remoteSecretEntryDidRequestDeviceSelection;
@@ -131,18 +131,18 @@
 - (void)remoteSecretEntryDidRequestEnableUserInteractionAndStopSpinner;
 - (void)remoteSecretEntryDidRequestPiggybackingEscapeAction;
 - (void)remoteSecretEntryDidRequestRecoveryKeyEscapeAction;
-- (void)remoteSecretEntryDidRequestSkipEscapeActionForDevice:(id)a3;
-- (void)remoteUIController:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)sendEscapeOfferSelectedEvent:(id)a3;
-- (void)sendRemoteApprovalCompletedEventWithContext:(id)a3 didApprove:(BOOL)a4 error:(id)a5;
-- (void)sendRemoteApprovalStartedBreadCrumbEventWithContext:(id)a3;
-- (void)sendRemoteSecretInputEventWithContext:(id)a3 device:(id)a4;
-- (void)tryAgainLaterTapped:(id)a3;
+- (void)remoteSecretEntryDidRequestSkipEscapeActionForDevice:(id)device;
+- (void)remoteUIController:(id)controller didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)sendEscapeOfferSelectedEvent:(id)event;
+- (void)sendRemoteApprovalCompletedEventWithContext:(id)context didApprove:(BOOL)approve error:(id)error;
+- (void)sendRemoteApprovalStartedBreadCrumbEventWithContext:(id)context;
+- (void)sendRemoteSecretInputEventWithContext:(id)context device:(id)device;
+- (void)tryAgainLaterTapped:(id)tapped;
 @end
 
 @implementation CDPUIController
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -154,9 +154,9 @@
   recoveryKeyViewModel = self->_recoveryKeyViewModel;
   if (recoveryKeyViewModel)
   {
-    v6 = [(CDPRecoveryKeyEntryViewModel *)recoveryKeyViewModel completionHandler];
+    completionHandler = [(CDPRecoveryKeyEntryViewModel *)recoveryKeyViewModel completionHandler];
     v7 = _CDPStateError();
-    (v6)[2](v6, 0, v7);
+    (completionHandler)[2](completionHandler, 0, v7);
   }
 
   else
@@ -177,7 +177,7 @@ void __32__CDPUIController_cancelTapped___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 24) cancelValidationWithError:v2];
 }
 
-- (void)tryAgainLaterTapped:(id)a3
+- (void)tryAgainLaterTapped:(id)tapped
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -202,7 +202,7 @@ void __39__CDPUIController_tryAgainLaterTapped___block_invoke(uint64_t a1)
   [v1 cancelValidationWithError:v2];
 }
 
-- (void)backTappedFromRoot:(id)a3
+- (void)backTappedFromRoot:(id)root
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -213,16 +213,16 @@ void __39__CDPUIController_tryAgainLaterTapped___block_invoke(uint64_t a1)
 
   [MEMORY[0x277D75780] _setUseCustomBackButtonAction:0];
   v5 = [(UINavigationController *)self->_navController popViewControllerAnimated:1];
-  v6 = [(UINavigationController *)self->_navController transitionCoordinator];
-  v7 = v6;
-  if (v6)
+  transitionCoordinator = [(UINavigationController *)self->_navController transitionCoordinator];
+  v7 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __38__CDPUIController_backTappedFromRoot___block_invoke_36;
     v9[3] = &unk_278E2AFD8;
     v9[4] = self;
-    [v6 animateAlongsideTransition:&__block_literal_global completion:v9];
+    [transitionCoordinator animateAlongsideTransition:&__block_literal_global completion:v9];
   }
 
   else
@@ -264,35 +264,35 @@ uint64_t __38__CDPUIController_backTappedFromRoot___block_invoke_36(uint64_t a1)
 {
   if (self->_recoveryKeyViewModel)
   {
-    v4 = [(CDPRecoveryKeyEntryViewModel *)self->_recoveryKeyViewModel completionHandler];
+    completionHandler = [(CDPRecoveryKeyEntryViewModel *)self->_recoveryKeyViewModel completionHandler];
     v2 = _CDPStateError();
-    v4[2](v4, 0, v2);
+    completionHandler[2](completionHandler, 0, v2);
   }
 
   else
   {
     remoteSecretValidator = self->_remoteSecretValidator;
-    v4 = _CDPStateError();
+    completionHandler = _CDPStateError();
     [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator cancelValidationWithError:?];
   }
 }
 
-- (void)_dismissPresentedViewControllerCompletion:(id)a3
+- (void)_dismissPresentedViewControllerCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDPUIController *)self forceInlinePresentation];
+  completionCopy = completion;
+  forceInlinePresentation = [(CDPUIController *)self forceInlinePresentation];
   v6 = _CDPLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (forceInlinePresentation)
   {
     if (v7)
     {
       [CDPUIController _dismissPresentedViewControllerCompletion:?];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -303,40 +303,40 @@ uint64_t __38__CDPUIController_backTappedFromRoot___block_invoke_36(uint64_t a1)
       [CDPUIController _dismissPresentedViewControllerCompletion:?];
     }
 
-    v8 = [(CDPUIBaseController *)self presentingViewController];
-    [v8 dismissViewControllerAnimated:1 completion:v4];
+    presentingViewController = [(CDPUIBaseController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
-- (void)_manageNavigationBarForRootViewController:(id)a3
+- (void)_manageNavigationBarForRootViewController:(id)controller
 {
-  v12 = a3;
+  controllerCopy = controller;
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v12 navigationItem];
-    [v4 _setNavigationBarHidden:1];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem _setNavigationBarHidden:1];
   }
 
   else if (self->_hostingController == self->_rootViewController)
   {
-    v6 = [MEMORY[0x277CFD560] isNaturalUIEnabled];
+    isNaturalUIEnabled = [MEMORY[0x277CFD560] isNaturalUIEnabled];
     v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_remoteSecretEntryDidRequestCancellation];
-    v8 = [v12 navigationItem];
-    v9 = v8;
-    if (v6)
+    navigationItem2 = [controllerCopy navigationItem];
+    v9 = navigationItem2;
+    if (isNaturalUIEnabled)
     {
-      [v8 setRightBarButtonItem:v7];
+      [navigationItem2 setRightBarButtonItem:v7];
 
-      v4 = [v12 navigationItem];
-      [v4 rightBarButtonItem];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem rightBarButtonItem];
     }
 
     else
     {
-      [v8 setLeftBarButtonItem:v7];
+      [navigationItem2 setLeftBarButtonItem:v7];
 
-      v4 = [v12 navigationItem];
-      [v4 leftBarButtonItem];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem leftBarButtonItem];
     }
     v10 = ;
     cancelButtonForSwiftUIHostingController = self->_cancelButtonForSwiftUIHostingController;
@@ -345,23 +345,23 @@ uint64_t __38__CDPUIController_backTappedFromRoot___block_invoke_36(uint64_t a1)
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTapped_];
-    v5 = [v12 navigationItem];
-    [v5 setLeftBarButtonItem:v4];
+    navigationItem = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTapped_];
+    navigationItem3 = [controllerCopy navigationItem];
+    [navigationItem3 setLeftBarButtonItem:navigationItem];
   }
 }
 
-- (void)_presentRootController:(id)a3 completion:(id)a4
+- (void)_presentRootController:(id)controller completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->super._presentingViewController);
     *buf = 138412546;
-    v20 = v6;
+    v20 = controllerCopy;
     v21 = 2112;
     v22 = WeakRetained;
     _os_log_impl(&dword_2451DB000, v8, OS_LOG_TYPE_DEFAULT, "Presenting %@ onto %@", buf, 0x16u);
@@ -372,9 +372,9 @@ uint64_t __38__CDPUIController_backTappedFromRoot___block_invoke_36(uint64_t a1)
   aBlock[2] = __53__CDPUIController__presentRootController_completion___block_invoke;
   aBlock[3] = &unk_278E2B050;
   aBlock[4] = self;
-  v10 = v6;
+  v10 = controllerCopy;
   v17 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v18 = v11;
   v12 = _Block_copy(aBlock);
   v13 = objc_loadWeakRetained(&self->_delegate);
@@ -653,10 +653,10 @@ uint64_t __53__CDPUIController__presentRootController_completion___block_invoke_
   return result;
 }
 
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -667,9 +667,9 @@ uint64_t __53__CDPUIController__presentRootController_completion___block_invoke_
     v12[1] = 3221225472;
     v12[2] = __79__CDPUIController_cdpContext_promptForInteractiveAuthenticationWithCompletion___block_invoke;
     v12[3] = &unk_278E2B078;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
+    v13 = contextCopy;
+    selfCopy = self;
+    v15 = completionCopy;
     [v10 uiController:self prepareAlertContext:v12];
   }
 
@@ -677,7 +677,7 @@ uint64_t __53__CDPUIController__presentRootController_completion___block_invoke_
   {
     v11.receiver = self;
     v11.super_class = CDPUIController;
-    [(CDPUIBaseController *)&v11 cdpContext:v6 promptForInteractiveAuthenticationWithCompletion:v7];
+    [(CDPUIBaseController *)&v11 cdpContext:contextCopy promptForInteractiveAuthenticationWithCompletion:completionCopy];
   }
 }
 
@@ -690,11 +690,11 @@ id __79__CDPUIController_cdpContext_promptForInteractiveAuthenticationWithComple
   return objc_msgSendSuper2(&v4, sel_cdpContext_promptForInteractiveAuthenticationWithCompletion_, v1, v2);
 }
 
-- (void)cdpContext:(id)a3 showError:(id)a4 withDefaultIndex:(int64_t)a5 withCompletion:(id)a6
+- (void)cdpContext:(id)context showError:(id)error withDefaultIndex:(int64_t)index withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  contextCopy = context;
+  errorCopy = error;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = objc_opt_respondsToSelector();
 
@@ -705,11 +705,11 @@ id __79__CDPUIController_cdpContext_promptForInteractiveAuthenticationWithComple
     v17[1] = 3221225472;
     v17[2] = __72__CDPUIController_cdpContext_showError_withDefaultIndex_withCompletion___block_invoke;
     v17[3] = &unk_278E2B0A0;
-    v18 = v10;
-    v19 = v11;
-    v22 = a5;
-    v20 = self;
-    v21 = v12;
+    v18 = contextCopy;
+    v19 = errorCopy;
+    indexCopy = index;
+    selfCopy = self;
+    v21 = completionCopy;
     [v15 uiController:self prepareAlertContext:v17];
   }
 
@@ -717,7 +717,7 @@ id __79__CDPUIController_cdpContext_promptForInteractiveAuthenticationWithComple
   {
     v16.receiver = self;
     v16.super_class = CDPUIController;
-    [(CDPUIBaseController *)&v16 cdpContext:v10 showError:v11 withDefaultIndex:a5 withCompletion:v12];
+    [(CDPUIBaseController *)&v16 cdpContext:contextCopy showError:errorCopy withDefaultIndex:index withCompletion:completionCopy];
   }
 }
 
@@ -732,15 +732,15 @@ id __72__CDPUIController_cdpContext_showError_withDefaultIndex_withCompletion___
   return objc_msgSendSuper2(&v6, sel_cdpContext_showError_withDefaultIndex_withCompletion_, v1, v2, v3, v4);
 }
 
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  objc_storeStrong(&self->_activeContext, a3);
-  objc_storeStrong(&self->_remoteSecretValidator, a7);
-  if (v8)
+  randomCopy = random;
+  contextCopy = context;
+  lengthCopy = length;
+  validatorCopy = validator;
+  objc_storeStrong(&self->_activeContext, context);
+  objc_storeStrong(&self->_remoteSecretValidator, validator);
+  if (randomCopy)
   {
     v16 = objc_alloc_init(CDPSingleICSCEntryViewController);
     [(PSKeychainSyncSecurityCodeController *)v16 setMode:2];
@@ -758,9 +758,9 @@ id __72__CDPUIController_cdpContext_showError_withDefaultIndex_withCompletion___
     v18[2] = __90__CDPUIController_cdpContext_promptForICSCWithIsNumeric_numericLength_isRandom_validator___block_invoke;
     v18[3] = &unk_278E2B0C8;
     objc_copyWeak(&v21, &location);
-    v22 = a4;
-    v19 = v14;
-    v20 = self;
+    numericCopy = numeric;
+    v19 = lengthCopy;
+    selfCopy = self;
     [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v18];
 
     objc_destroyWeak(&v21);
@@ -788,12 +788,12 @@ void __90__CDPUIController_cdpContext_promptForICSCWithIsNumeric_numericLength_i
   }
 }
 
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_activeContext, a3);
+  contextCopy = context;
+  completionCopy = completion;
+  objc_storeStrong(&self->_activeContext, context);
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -808,8 +808,8 @@ void __90__CDPUIController_cdpContext_promptForICSCWithIsNumeric_numericLength_i
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
   v13 = [v12 mutableCopy];
 
-  v14 = [(CDPUIController *)self titleText];
-  [v13 setObject:v14 forKeyedSubscript:@"title"];
+  titleText = [(CDPUIController *)self titleText];
+  [v13 setObject:titleText forKeyedSubscript:@"title"];
 
   v15 = _CDPLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -845,7 +845,7 @@ void __90__CDPUIController_cdpContext_promptForICSCWithIsNumeric_numericLength_i
   v40 = buf;
   objc_copyWeak(&v41, &location);
   v38[4] = self;
-  v21 = v8;
+  v21 = completionCopy;
   v39 = v21;
   [v19 instantiateViewControllerWithInputItems:v20 connectionHandler:v38];
 
@@ -867,10 +867,10 @@ void __90__CDPUIController_cdpContext_promptForICSCWithIsNumeric_numericLength_i
   v26[2] = __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block_invoke_190;
   v26[3] = &unk_278E2B208;
   v30 = v36;
-  v23 = v7;
+  v23 = contextCopy;
   v27 = v23;
   v24 = v22;
-  v28 = self;
+  selfCopy = self;
   v29 = v24;
   v31 = buf;
   [v19 set_requestPostCompletionBlockWithItems:v26];
@@ -1097,13 +1097,13 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   (*(v2 + 16))(v2, v3, [v5 integerValue]);
 }
 
-- (void)cdpContext:(id)a3 presentRemoteApprovalWithCompletion:(id)a4
+- (void)cdpContext:(id)context presentRemoteApprovalWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   activeContext = self->_activeContext;
-  self->_activeContext = v6;
-  v9 = v6;
+  self->_activeContext = contextCopy;
+  v9 = contextCopy;
 
   v10 = [[CDPWaitingApprovalViewController alloc] initWithEscapeOffer:0];
   objc_storeStrong(&self->_rootViewController, v10);
@@ -1114,13 +1114,13 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   v14[2] = __66__CDPUIController_cdpContext_presentRemoteApprovalWithCompletion___block_invoke;
   v14[3] = &unk_278E2B230;
   v15 = v10;
-  v16 = v7;
-  v12 = v7;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
   [(CDPUIController *)self _presentRootController:rootViewController completion:v14];
 }
 
-- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)a3
+- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)action
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1134,12 +1134,12 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   }
 
   v6 = v5;
-  if (a3 == 1)
+  if (action == 1)
   {
     [(UIViewController *)v5 cancelRemoteApproval];
   }
 
-  else if (a3 == 2)
+  else if (action == 2)
   {
     [(UIViewController *)v5 remoteApprovalSucceeded];
   }
@@ -1147,30 +1147,30 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   [(CDPUIController *)self _dismissPresentedViewControllerCompletion:0];
 }
 
-- (void)sendRemoteApprovalStartedBreadCrumbEventWithContext:(id)a3
+- (void)sendRemoteApprovalStartedBreadCrumbEventWithContext:(id)context
 {
-  v4 = [(CDPUIController *)self _makeRemoteApprovalStartedBreadCrumbEventWithContext:a3];
-  v3 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v3 sendEvent:v4];
+  v4 = [(CDPUIController *)self _makeRemoteApprovalStartedBreadCrumbEventWithContext:context];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v4];
 }
 
-- (void)sendRemoteApprovalCompletedEventWithContext:(id)a3 didApprove:(BOOL)a4 error:(id)a5
+- (void)sendRemoteApprovalCompletedEventWithContext:(id)context didApprove:(BOOL)approve error:(id)error
 {
-  v6 = [(CDPUIController *)self _makeRemoteApprovalCompletedEventWithContext:a3 didApprove:a4 error:a5];
-  v5 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v5 sendEvent:v6];
+  v6 = [(CDPUIController *)self _makeRemoteApprovalCompletedEventWithContext:context didApprove:approve error:error];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v6];
 }
 
-- (id)_makeRemoteApprovalCompletedEventWithContext:(id)a3 didApprove:(BOOL)a4 error:(id)a5
+- (id)_makeRemoteApprovalCompletedEventWithContext:(id)context didApprove:(BOOL)approve error:(id)error
 {
-  v5 = a4;
+  approveCopy = approve;
   v7 = MEMORY[0x277CE44D8];
   v8 = *MEMORY[0x277CFD810];
   v9 = *MEMORY[0x277CFD930];
-  v10 = a5;
-  v11 = [v7 analyticsEventWithContext:a3 eventName:v8 category:v9];
+  errorCopy = error;
+  v11 = [v7 analyticsEventWithContext:context eventName:v8 category:v9];
   v12 = v11;
-  if (v5)
+  if (approveCopy)
   {
     v13 = MEMORY[0x277CBEC38];
   }
@@ -1181,17 +1181,17 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   }
 
   [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277CFD6C0]];
-  [v12 populateUnderlyingErrorsStartingWithRootError:v10];
+  [v12 populateUnderlyingErrorsStartingWithRootError:errorCopy];
 
   return v12;
 }
 
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:v8 validator:v9 mode:1];
+  contextCopy = context;
+  validatorCopy = validator;
+  completionCopy = completion;
+  v11 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:contextCopy validator:validatorCopy mode:1];
   v12 = [[CDPRecoveryKeyEntryViewController alloc] initWithRecoveryContext:v11 cdpContext:self->_activeContext];
   objc_storeStrong(&self->_recoveryKeyViewModel, v11);
   objc_initWeak(&location, self);
@@ -1200,11 +1200,11 @@ void __65__CDPUIController_cdpContext_promptForLocalSecretWithCompletion___block
   v16[2] = __73__CDPUIController_cdpContext_presentRecoveryKeyWithValidator_completion___block_invoke;
   v16[3] = &unk_278E2B280;
   objc_copyWeak(&v20, &location);
-  v13 = v8;
+  v13 = contextCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = validatorCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v19 = v15;
   [(CDPRecoveryKeyEntryViewModel *)v11 setCompletionHandler:v16];
   [(CDPUIController *)self _presentRootController:v12 completion:0];
@@ -1239,31 +1239,31 @@ void __73__CDPUIController_cdpContext_presentRecoveryKeyWithValidator_completion
   }
 }
 
-- (void)cdpContext:(id)a3 confirmRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context confirmRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:a3 validator:a4 completion:a5];
+  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:context validator:validator completion:completion];
   [(UINavigationController *)self->_navController pushViewController:v6 animated:1];
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:a3 validator:a4 completion:a5];
+  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:context validator:validator completion:completion];
   [(CDPUIController *)self _presentRootController:v6 completion:0];
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion
 {
-  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:a3 secretValidator:a4 completion:a5];
+  v6 = [(CDPUIController *)self _recoveryKeyControllerWithContext:context secretValidator:validator completion:completion];
   [(CDPUIController *)self _presentRootController:v6 completion:0];
 }
 
-- (id)_recoveryKeyControllerWithContext:(id)a3 validator:(id)a4 completion:(id)a5
+- (id)_recoveryKeyControllerWithContext:(id)context validator:(id)validator completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_activeContext, a3);
-  v11 = a4;
-  v12 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:v9 validator:v11 mode:2];
+  contextCopy = context;
+  completionCopy = completion;
+  objc_storeStrong(&self->_activeContext, context);
+  validatorCopy = validator;
+  v12 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:contextCopy validator:validatorCopy mode:2];
 
   if (!self->_recoveryKeyViewModel)
   {
@@ -1276,8 +1276,8 @@ void __73__CDPUIController_cdpContext_presentRecoveryKeyWithValidator_completion
   v16[2] = __74__CDPUIController__recoveryKeyControllerWithContext_validator_completion___block_invoke;
   v16[3] = &unk_278E2B2A8;
   v16[4] = self;
-  v17 = v10;
-  v14 = v10;
+  v17 = completionCopy;
+  v14 = completionCopy;
   [(CDPRecoveryKeyEntryViewModel *)v12 setCompletionHandler:v16];
 
   return v13;
@@ -1308,13 +1308,13 @@ void __74__CDPUIController__recoveryKeyControllerWithContext_validator_completio
   [v7 _dismissPresentedViewControllerCompletion:v10];
 }
 
-- (id)_recoveryKeyControllerWithContext:(id)a3 secretValidator:(id)a4 completion:(id)a5
+- (id)_recoveryKeyControllerWithContext:(id)context secretValidator:(id)validator completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_activeContext, a3);
-  v11 = a4;
-  v12 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:v9 validator:v11];
+  contextCopy = context;
+  completionCopy = completion;
+  objc_storeStrong(&self->_activeContext, context);
+  validatorCopy = validator;
+  v12 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:contextCopy validator:validatorCopy];
 
   if (!self->_recoveryKeyViewModel)
   {
@@ -1327,8 +1327,8 @@ void __74__CDPUIController__recoveryKeyControllerWithContext_validator_completio
   v16[2] = __80__CDPUIController__recoveryKeyControllerWithContext_secretValidator_completion___block_invoke;
   v16[3] = &unk_278E2B2A8;
   v16[4] = self;
-  v17 = v10;
-  v14 = v10;
+  v17 = completionCopy;
+  v14 = completionCopy;
   [(CDPRecoveryKeyEntryViewModel *)v12 setCompletionHandler:v16];
 
   return v13;
@@ -1359,16 +1359,16 @@ void __80__CDPUIController__recoveryKeyControllerWithContext_secretValidator_com
   [v7 _dismissPresentedViewControllerCompletion:v10];
 }
 
-- (void)_presentSwiftUIRemoteSecretPromptWithDevice:(id)a3 didSelectDevice:(BOOL)a4
+- (void)_presentSwiftUIRemoteSecretPromptWithDevice:(id)device didSelectDevice:(BOOL)selectDevice
 {
-  v4 = a4;
-  v6 = a3;
+  selectDeviceCopy = selectDevice;
+  deviceCopy = device;
   objc_initWeak(&location, self);
-  v20 = v6;
-  v19 = [(CDPUIController *)self _canShowRPD];
-  if (v4)
+  v20 = deviceCopy;
+  _canShowRPD = [(CDPUIController *)self _canShowRPD];
+  if (selectDeviceCopy)
   {
-    v7 = v6;
+    v7 = deviceCopy;
   }
 
   else
@@ -1379,25 +1379,25 @@ void __80__CDPUIController__recoveryKeyControllerWithContext_secretValidator_com
   activeContext = self->_activeContext;
   remoteSecretValidator = self->_remoteSecretValidator;
   devices = self->_devices;
-  v9 = [(CDPUIBaseController *)self presentingViewController];
-  v10 = [(CDPUIController *)self performingAccountRecovery];
+  presentingViewController = [(CDPUIBaseController *)self presentingViewController];
+  performingAccountRecovery = [(CDPUIController *)self performingAccountRecovery];
   offeringRemoteApproval = self->_offeringRemoteApproval;
   isWalrusEnabled = self->_isWalrusEnabled;
-  v13 = [MEMORY[0x277CFD560] isNaturalUIEnabled];
+  isNaturalUIEnabled = [MEMORY[0x277CFD560] isNaturalUIEnabled];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __79__CDPUIController__presentSwiftUIRemoteSecretPromptWithDevice_didSelectDevice___block_invoke;
   v21[3] = &unk_278E2B2F8;
   objc_copyWeak(&v23, &location);
   v21[4] = self;
-  v24 = v4;
+  v24 = selectDeviceCopy;
   v14 = v20;
   v22 = v14;
-  LOBYTE(v16) = v13;
+  LOBYTE(v16) = isNaturalUIEnabled;
   BYTE2(v15) = isWalrusEnabled;
-  BYTE1(v15) = v19;
+  BYTE1(v15) = _canShowRPD;
   LOBYTE(v15) = offeringRemoteApproval;
-  [CDPStateSwiftUIProvider makeSwiftUIViewForRemoteSecretDuringSignInCdpContext:"makeSwiftUIViewForRemoteSecretDuringSignInCdpContext:validator:devices:presentingViewController:performingAccountRecovery:delegate:offeringRemoteApproval:canShowRPD:isADPEnabled:selectedDevice:isNaturalUIEnabled:completionHandler:" validator:activeContext devices:remoteSecretValidator presentingViewController:devices performingAccountRecovery:v9 delegate:v10 offeringRemoteApproval:self canShowRPD:v15 isADPEnabled:v7 selectedDevice:v16 isNaturalUIEnabled:v21 completionHandler:?];
+  [CDPStateSwiftUIProvider makeSwiftUIViewForRemoteSecretDuringSignInCdpContext:"makeSwiftUIViewForRemoteSecretDuringSignInCdpContext:validator:devices:presentingViewController:performingAccountRecovery:delegate:offeringRemoteApproval:canShowRPD:isADPEnabled:selectedDevice:isNaturalUIEnabled:completionHandler:" validator:activeContext devices:remoteSecretValidator presentingViewController:devices performingAccountRecovery:presentingViewController delegate:performingAccountRecovery offeringRemoteApproval:self canShowRPD:v15 isADPEnabled:v7 selectedDevice:v16 isNaturalUIEnabled:v21 completionHandler:?];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -1442,20 +1442,20 @@ void __79__CDPUIController__presentSwiftUIRemoteSecretPromptWithDevice_didSelect
   }
 }
 
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator
 {
-  v11 = a3;
-  v12 = a4;
-  v29 = a6;
-  v13 = [v12 firstObject];
-  objc_storeStrong(&self->_activeContext, a3);
-  objc_storeStrong(&self->_remoteSecretValidator, a6);
-  objc_storeStrong(&self->_devices, a4);
-  self->_offeringRemoteApproval = a5;
+  contextCopy = context;
+  devicesCopy = devices;
+  validatorCopy = validator;
+  firstObject = [devicesCopy firstObject];
+  objc_storeStrong(&self->_activeContext, context);
+  objc_storeStrong(&self->_remoteSecretValidator, validator);
+  objc_storeStrong(&self->_devices, devices);
+  self->_offeringRemoteApproval = approval;
   if (!self->_recoveryFlowContext)
   {
     v14 = objc_alloc_init(MEMORY[0x277CFD530]);
-    if (!v11)
+    if (!contextCopy)
     {
       v15 = _CDPLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1464,9 +1464,9 @@ void __79__CDPUIController__presentSwiftUIRemoteSecretPromptWithDevice_didSelect
       }
     }
 
-    [v14 setContext:v11];
+    [v14 setContext:contextCopy];
     [v14 setIsWalrusEnabled:self->_isWalrusEnabled];
-    [v14 setHasViableICSC:{objc_msgSend(v12, "count") != 0}];
+    [v14 setHasViableICSC:{objc_msgSend(devicesCopy, "count") != 0}];
     [v14 setRpdProbationDuration:self->_rpdProbationDuration];
     recoveryFlowContext = self->_recoveryFlowContext;
     self->_recoveryFlowContext = v14;
@@ -1475,99 +1475,99 @@ void __79__CDPUIController__presentSwiftUIRemoteSecretPromptWithDevice_didSelect
   if (!self->_ledger)
   {
     v28 = objc_alloc(MEMORY[0x277CFDAB0]);
-    v27 = [v29 supportedEscapeOfferMask];
+    supportedEscapeOfferMask = [validatorCopy supportedEscapeOfferMask];
     v17 = self->_recoveryFlowContext;
-    v18 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v19 = v12;
-    v20 = [v18 hasLocalSecret];
-    v21 = [MEMORY[0x277CFD480] sharedInstance];
-    v22 = [MEMORY[0x277CFD560] isVirtualMachine];
-    v23 = [v11 isICDPEnabledFromNetwork];
-    v24 = v20;
-    v12 = v19;
-    v25 = [v28 initWithExpectedEscapeOffers:v27 recoveryFlowContext:v17 deviceHasPasscode:v24 probationChecker:v21 deviceIsVM:v22 isICDPEnabled:v23];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    v19 = devicesCopy;
+    hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+    isVirtualMachine = [MEMORY[0x277CFD560] isVirtualMachine];
+    isICDPEnabledFromNetwork = [contextCopy isICDPEnabledFromNetwork];
+    v24 = hasLocalSecret;
+    devicesCopy = v19;
+    v25 = [v28 initWithExpectedEscapeOffers:supportedEscapeOfferMask recoveryFlowContext:v17 deviceHasPasscode:v24 probationChecker:mEMORY[0x277CFD480] deviceIsVM:isVirtualMachine isICDPEnabled:isICDPEnabledFromNetwork];
     ledger = self->_ledger;
     self->_ledger = v25;
   }
 
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled] && -[NSArray count](self->_devices, "count"))
   {
-    [(CDPUIController *)self _presentSwiftUIRemoteSecretPromptWithDevice:v13 didSelectDevice:0];
+    [(CDPUIController *)self _presentSwiftUIRemoteSecretPromptWithDevice:firstObject didSelectDevice:0];
   }
 
   else
   {
-    [(CDPUIController *)self _presentRemoteSecretControllerWithNewestDevice:v13];
-    [(CDPUIController *)self sendRemoteSecretInputEventWithContext:v11 device:v13];
+    [(CDPUIController *)self _presentRemoteSecretControllerWithNewestDevice:firstObject];
+    [(CDPUIController *)self sendRemoteSecretInputEventWithContext:contextCopy device:firstObject];
   }
 }
 
-- (void)sendRemoteSecretInputEventWithContext:(id)a3 device:(id)a4
+- (void)sendRemoteSecretInputEventWithContext:(id)context device:(id)device
 {
-  v5 = [(CDPUIController *)self _makeRemoteSecretInputEventWithContext:a3 device:a4];
-  v4 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v4 sendEvent:v5];
+  v5 = [(CDPUIController *)self _makeRemoteSecretInputEventWithContext:context device:device];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v5];
 }
 
-- (id)_makeRemoteSecretInputEventWithContext:(id)a3 device:(id)a4
+- (id)_makeRemoteSecretInputEventWithContext:(id)context device:(id)device
 {
   v5 = MEMORY[0x277CE44D8];
   v6 = *MEMORY[0x277CFD820];
   v7 = *MEMORY[0x277CFD930];
-  v8 = a4;
-  v9 = [v5 analyticsEventWithContext:a3 eventName:v6 category:v7];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "remainingAttempts")}];
+  deviceCopy = device;
+  v9 = [v5 analyticsEventWithContext:context eventName:v6 category:v7];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(deviceCopy, "remainingAttempts")}];
   [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277CFD808]];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "hasNumericSecret")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(deviceCopy, "hasNumericSecret")}];
   [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CFD748]];
 
-  v12 = [v8 numericSecretLength];
-  [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFD788]];
+  numericSecretLength = [deviceCopy numericSecretLength];
+  [v9 setObject:numericSecretLength forKeyedSubscript:*MEMORY[0x277CFD788]];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v8 isCurrentDevice];
+  isCurrentDevice = [deviceCopy isCurrentDevice];
 
-  v15 = [v13 numberWithBool:v14];
+  v15 = [v13 numberWithBool:isCurrentDevice];
   [v9 setObject:v15 forKeyedSubscript:*MEMORY[0x277CFD758]];
 
   return v9;
 }
 
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  self->_isWalrusEnabled = [v8 isWalrusEnabled];
-  [v8 rpdProbationDuration];
+  contextCopy = context;
+  validatorCopy = validator;
+  devicesCopy = devices;
+  self->_isWalrusEnabled = [contextCopy isWalrusEnabled];
+  [contextCopy rpdProbationDuration];
   self->_rpdProbationDuration = v11;
   recoveryFlowContext = self->_recoveryFlowContext;
-  self->_recoveryFlowContext = v8;
-  v13 = v8;
+  self->_recoveryFlowContext = contextCopy;
+  v13 = contextCopy;
 
-  v15 = [v13 context];
-  v14 = [v13 hasPeersForRemoteApproval];
+  context = [v13 context];
+  hasPeersForRemoteApproval = [v13 hasPeersForRemoteApproval];
 
-  [(CDPUIController *)self cdpContext:v15 promptForRemoteSecretWithDevices:v10 offeringRemoteApproval:v14 validator:v9];
+  [(CDPUIController *)self cdpContext:context promptForRemoteSecretWithDevices:devicesCopy offeringRemoteApproval:hasPeersForRemoteApproval validator:validatorCopy];
 }
 
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = [CDPUIInheritanceUIProviderImpl alloc];
-  v9 = [(CDPUIBaseController *)self presentingViewController];
-  v10 = [(CDPUIInheritanceUIProviderImpl *)v8 initWithPresentingViewController:v9];
+  presentingViewController = [(CDPUIBaseController *)self presentingViewController];
+  v10 = [(CDPUIInheritanceUIProviderImpl *)v8 initWithPresentingViewController:presentingViewController];
   inheritanceUIProvider = self->_inheritanceUIProvider;
   self->_inheritanceUIProvider = v10;
 
   v12 = objc_alloc(MEMORY[0x277CF0260]);
-  v13 = [v6 beneficiaryIdentifier];
-  v14 = [v12 initWithBeneficiairyIdentifier:v13];
+  beneficiaryIdentifier = [contextCopy beneficiaryIdentifier];
+  v14 = [v12 initWithBeneficiairyIdentifier:beneficiaryIdentifier];
 
-  v15 = [v6 beneficiaryWrappedKeyData];
-  [v14 setWrappedKeyData:v15];
+  beneficiaryWrappedKeyData = [contextCopy beneficiaryWrappedKeyData];
+  [v14 setWrappedKeyData:beneficiaryWrappedKeyData];
 
   objc_initWeak(&location, self);
   v16 = self->_inheritanceUIProvider;
@@ -1576,7 +1576,7 @@ void __79__CDPUIController__presentSwiftUIRemoteSecretPromptWithDevice_didSelect
   v18[2] = __74__CDPUIController_cdpContext_promptForBeneficiaryAccessKeyWithCompletion___block_invoke;
   v18[3] = &unk_278E2B320;
   objc_copyWeak(&v20, &location);
-  v17 = v7;
+  v17 = completionCopy;
   v19 = v17;
   [(CDPUIInheritanceUIProvider *)v16 promptForAccessCodeForAccessKey:v14 completion:v18];
 
@@ -1599,10 +1599,10 @@ void __74__CDPUIController_cdpContext_promptForBeneficiaryAccessKeyWithCompletio
   }
 }
 
-- (id)_remoteSecretControllerForDevice:(id)a3
+- (id)_remoteSecretControllerForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[CDPRemoteSecretEntryViewController alloc] initWithDevice:v4 validator:self->_remoteSecretValidator delegate:self];
+  deviceCopy = device;
+  v5 = [[CDPRemoteSecretEntryViewController alloc] initWithDevice:deviceCopy validator:self->_remoteSecretValidator delegate:self];
 
   v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_285826188 target:0 set:0 get:0 detail:0 cell:13 edit:0];
   [v6 setEditPaneClass:objc_opt_class()];
@@ -1612,9 +1612,9 @@ void __74__CDPUIController_cdpContext_promptForBeneficiaryAccessKeyWithCompletio
   return v5;
 }
 
-- (void)_presentRemoteSecretControllerWithNewestDevice:(id)a3
+- (void)_presentRemoteSecretControllerWithNewestDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   objc_initWeak(&location, self);
   remoteSecretValidator = self->_remoteSecretValidator;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1622,9 +1622,9 @@ void __74__CDPUIController_cdpContext_promptForBeneficiaryAccessKeyWithCompletio
   v7[2] = __66__CDPUIController__presentRemoteSecretControllerWithNewestDevice___block_invoke;
   v7[3] = &unk_278E2B348;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = deviceCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v7];
 
   objc_destroyWeak(&v10);
@@ -1707,16 +1707,16 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c
 {
-  v5 = a4;
+  cCopy = c;
   v6 = MEMORY[0x277D750F8];
   v7 = CDPLocalizedString();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__CDPUIController_cdpContext_promptForAdoptionOfMultipleICSC___block_invoke;
   v16[3] = &unk_278E2B370;
-  v8 = v5;
+  v8 = cCopy;
   v17 = v8;
   v9 = [v6 actionWithTitle:v7 style:0 handler:v16];
 
@@ -1732,8 +1732,8 @@ LABEL_20:
     [CDPUIController cdpContext:? promptForAdoptionOfMultipleICSC:?];
   }
 
-  v15 = [(CDPUIBaseController *)self presentingViewController];
-  [v15 presentViewController:v13 animated:1 completion:0];
+  presentingViewController = [(CDPUIBaseController *)self presentingViewController];
+  [presentingViewController presentViewController:v13 animated:1 completion:0];
 }
 
 uint64_t __62__CDPUIController_cdpContext_promptForAdoptionOfMultipleICSC___block_invoke(uint64_t a1)
@@ -1747,15 +1747,15 @@ uint64_t __62__CDPUIController_cdpContext_promptForAdoptionOfMultipleICSC___bloc
   return result;
 }
 
-- (void)approveFromAnotherDevice:(BOOL)a3
+- (void)approveFromAnotherDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v18 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = v3;
+    v17 = deviceCopy;
     _os_log_impl(&dword_2451DB000, v5, OS_LOG_TYPE_DEFAULT, "Trying to approve from another device, with cancel support: %{BOOL}d", buf, 8u);
   }
 
@@ -1763,11 +1763,11 @@ uint64_t __62__CDPUIController_cdpContext_promptForAdoptionOfMultipleICSC___bloc
   v7 = [(CDPUIController *)self _escapeOfferForMultiApprovalWithMask:[(CDPRemoteDeviceSecretValidator *)self->_remoteSecretValidator supportedEscapeOfferMask]];
   v8 = [(CDPWaitingApprovalViewController *)v6 initWithEscapeOffer:v7];
 
-  if (v3)
+  if (deviceCopy)
   {
     v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelRemoteApprovalTapped_];
-    v10 = [(CDPWaitingApprovalViewController *)v8 navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    navigationItem = [(CDPWaitingApprovalViewController *)v8 navigationItem];
+    [navigationItem setLeftBarButtonItem:v9];
   }
 
   v11 = _CDPLogSystem();
@@ -1805,47 +1805,47 @@ uint64_t __44__CDPUIController_approveFromAnotherDevice___block_invoke(uint64_t 
   return result;
 }
 
-- (void)devicePicker:(id)a3 didSelectDevice:(id)a4
+- (void)devicePicker:(id)picker didSelectDevice:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    [(CDPUIController *)self _presentSwiftUIRemoteSecretPromptWithDevice:v7 didSelectDevice:1];
+    [(CDPUIController *)self _presentSwiftUIRemoteSecretPromptWithDevice:deviceCopy didSelectDevice:1];
   }
 
   else
   {
-    v5 = [(CDPUIController *)self _remoteSecretControllerForDevice:v7];
+    v5 = [(CDPUIController *)self _remoteSecretControllerForDevice:deviceCopy];
     [v5 setHidesCancelButton:1];
-    v6 = [(CDPUIController *)self _escapeOfferForDevice:v7 withMask:[(CDPRemoteDeviceSecretValidator *)self->_remoteSecretValidator supportedEscapeOfferMask]];
+    v6 = [(CDPUIController *)self _escapeOfferForDevice:deviceCopy withMask:[(CDPRemoteDeviceSecretValidator *)self->_remoteSecretValidator supportedEscapeOfferMask]];
     [v5 setEscapeOffer:v6];
 
     [(UINavigationController *)self->_navController pushViewController:v5 animated:1];
   }
 }
 
-- (id)devicePicker:(id)a3 escapeOffersForDevices:(id)a4
+- (id)devicePicker:(id)picker escapeOffersForDevices:(id)devices
 {
   remoteSecretValidator = self->_remoteSecretValidator;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CDPUIController *)self _escapeOffersForgotAllWithMask:[(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMask] presenter:v8 devices:v7];
+  devicesCopy = devices;
+  pickerCopy = picker;
+  v9 = [(CDPUIController *)self _escapeOffersForgotAllWithMask:[(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMask] presenter:pickerCopy devices:devicesCopy];
 
   return v9;
 }
 
-- (void)remoteSecretEntry:(id)a3 didAcceptValidRemoteSecretForDevice:(id)a4
+- (void)remoteSecretEntry:(id)entry didAcceptValidRemoteSecretForDevice:(id)device
 {
-  if (![(CDPUIController *)self forceInlinePresentation:a3])
+  if (![(CDPUIController *)self forceInlinePresentation:entry])
   {
 
     [(CDPUIController *)self _dismissPresentedViewControllerCompletion:0];
   }
 }
 
-- (void)cancelledRemoteSecretEntry:(id)a3
+- (void)cancelledRemoteSecretEntry:(id)entry
 {
-  if (self->_rootViewController == a3)
+  if (self->_rootViewController == entry)
   {
     [(CDPRemoteDeviceSecretValidator *)self->_remoteSecretValidator cancelApproveFromAnotherDevice];
     if (![(CDPUIController *)self forceInlinePresentation])
@@ -1859,17 +1859,17 @@ uint64_t __44__CDPUIController_approveFromAnotherDevice___block_invoke(uint64_t 
   }
 }
 
-- (void)performRecoveryKeyRecovery:(id)a3
+- (void)performRecoveryKeyRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   remoteSecretValidator = self->_remoteSecretValidator;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__CDPUIController_performRecoveryKeyRecovery___block_invoke;
   v7[3] = &unk_278E2B3E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recoveryCopy;
+  v6 = recoveryCopy;
   [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v7];
 }
 
@@ -1893,9 +1893,9 @@ void __46__CDPUIController_performRecoveryKeyRecovery___block_invoke_2(uint64_t 
   [*(*(a1 + 32) + 152) insert:32];
 }
 
-- (void)performCustodianRecovery:(id)a3
+- (void)performCustodianRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1909,8 +1909,8 @@ void __46__CDPUIController_performRecoveryKeyRecovery___block_invoke_2(uint64_t 
   v8[2] = __44__CDPUIController_performCustodianRecovery___block_invoke;
   v8[3] = &unk_278E2B3E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = recoveryCopy;
+  v7 = recoveryCopy;
   [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v8];
 }
 
@@ -1955,17 +1955,17 @@ uint64_t __44__CDPUIController_performCustodianRecovery___block_invoke_3(uint64_
   return result;
 }
 
-- (void)performPiggybackingRecovery:(id)a3
+- (void)performPiggybackingRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   remoteSecretValidator = self->_remoteSecretValidator;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CDPUIController_performPiggybackingRecovery___block_invoke;
   v7[3] = &unk_278E2B3E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recoveryCopy;
+  v6 = recoveryCopy;
   [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v7];
 }
 
@@ -1989,14 +1989,14 @@ void __47__CDPUIController_performPiggybackingRecovery___block_invoke_2(uint64_t
   [*(*(a1 + 32) + 152) insert:128];
 }
 
-- (void)performAccountReset:(id)a3
+- (void)performAccountReset:(id)reset
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__CDPUIController_performAccountReset___block_invoke;
   v3[3] = &unk_278E2AF90;
   v3[4] = self;
-  [(CDPUIController *)self dismissRecoveryFlow:a3 reason:@"com.apple.CoreCDPUI.CDPEnrollmentCompleted" completion:v3];
+  [(CDPUIController *)self dismissRecoveryFlow:reset reason:@"com.apple.CoreCDPUI.CDPEnrollmentCompleted" completion:v3];
 }
 
 uint64_t __39__CDPUIController_performAccountReset___block_invoke(uint64_t a1)
@@ -2025,17 +2025,17 @@ uint64_t __39__CDPUIController_performAccountReset___block_invoke(uint64_t a1)
   return [*(v3 + 24) resetAccountCDPStateWithEscapeOptionsOffered:{objc_msgSend(v4, "escapeOffersPresented")}];
 }
 
-- (void)finishValidation:(id)a3 withError:(id)a4
+- (void)finishValidation:(id)validation withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__CDPUIController_finishValidation_withError___block_invoke;
   v8[3] = &unk_278E2B2D0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(CDPUIController *)self dismissRecoveryFlow:a3 reason:@"com.apple.CoreCDPUI.CDPEnrollmentCancelled" completion:v8];
+  v9 = errorCopy;
+  v7 = errorCopy;
+  [(CDPUIController *)self dismissRecoveryFlow:validation reason:@"com.apple.CoreCDPUI.CDPEnrollmentCancelled" completion:v8];
 }
 
 uint64_t __46__CDPUIController_finishValidation_withError___block_invoke(uint64_t a1)
@@ -2050,11 +2050,11 @@ uint64_t __46__CDPUIController_finishValidation_withError___block_invoke(uint64_
   return [*(*(a1 + 32) + 24) cancelValidationWithError:*(a1 + 40)];
 }
 
-- (void)remoteSecretEntry:(id)a3 depletedRemainingAttemptsForDevice:(id)a4
+- (void)remoteSecretEntry:(id)entry depletedRemainingAttemptsForDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSArray *)self->_devices aaf_arrayByRemovingObject:v7];
+  entryCopy = entry;
+  deviceCopy = device;
+  v8 = [(NSArray *)self->_devices aaf_arrayByRemovingObject:deviceCopy];
   devices = self->_devices;
   self->_devices = v8;
 
@@ -2065,9 +2065,9 @@ uint64_t __46__CDPUIController_finishValidation_withError___block_invoke(uint64_
   v13[2] = __72__CDPUIController_remoteSecretEntry_depletedRemainingAttemptsForDevice___block_invoke;
   v13[3] = &unk_278E2B348;
   objc_copyWeak(&v16, &location);
-  v11 = v7;
+  v11 = deviceCopy;
   v14 = v11;
-  v12 = v6;
+  v12 = entryCopy;
   v15 = v12;
   [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMaskCompletion:v13];
 
@@ -2101,11 +2101,11 @@ void __72__CDPUIController_remoteSecretEntry_depletedRemainingAttemptsForDevice_
   }
 }
 
-- (void)_handleDepletedRemainingAttemptsForDevice:(id)a3 fromViewController:(id)a4 mask:(unint64_t)a5
+- (void)_handleDepletedRemainingAttemptsForDevice:(id)device fromViewController:(id)controller mask:(unint64_t)mask
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  deviceCopy = device;
+  controllerCopy = controller;
   if ([(NSArray *)self->_devices count])
   {
     v10 = _CDPLogSystem();
@@ -2115,53 +2115,53 @@ void __72__CDPUIController_remoteSecretEntry_depletedRemainingAttemptsForDevice_
       _os_log_impl(&dword_2451DB000, v10, OS_LOG_TYPE_DEFAULT, "Device limit reached, but other devices are available, show device selection screen", buf, 2u);
     }
 
-    v11 = [(CDPUIController *)self _deviceLimitOfferDeviceSelectionForDevice:v8 fromViewController:v9];
+    v11 = [(CDPUIController *)self _deviceLimitOfferDeviceSelectionForDevice:deviceCopy fromViewController:controllerCopy];
     goto LABEL_11;
   }
 
-  if ((a5 & 0x80) != 0)
+  if ((mask & 0x80) != 0)
   {
-    v11 = [(CDPUIController *)self _deviceLimitOfferPiggybackingForDevice:v8 supportedEscapeOfferMask:a5];
+    v11 = [(CDPUIController *)self _deviceLimitOfferPiggybackingForDevice:deviceCopy supportedEscapeOfferMask:mask];
     goto LABEL_11;
   }
 
-  if ((a5 & 0x20) != 0)
+  if ((mask & 0x20) != 0)
   {
-    v13 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
-    if ((a5 & 0x40) != 0 && v13)
+    isICSCHarmonizationEnabled = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+    if ((mask & 0x40) != 0 && isICSCHarmonizationEnabled)
     {
-      v11 = [(CDPUIController *)self _deviceLimitOfferRecoveryKeyAndCustodianForDevice:v8 supportedEscapeOfferMask:a5];
+      v11 = [(CDPUIController *)self _deviceLimitOfferRecoveryKeyAndCustodianForDevice:deviceCopy supportedEscapeOfferMask:mask];
     }
 
     else
     {
-      v11 = [(CDPUIController *)self _deviceLimitOfferRecoveryKeyForDevice:v8 supportedEscapeOfferMask:a5];
+      v11 = [(CDPUIController *)self _deviceLimitOfferRecoveryKeyForDevice:deviceCopy supportedEscapeOfferMask:mask];
     }
 
     goto LABEL_11;
   }
 
-  if ((a5 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
-    v11 = [(CDPUIController *)self _deviceLimitOfferCustodianForDevice:v8 supportedEscapeOfferMask:a5];
+    v11 = [(CDPUIController *)self _deviceLimitOfferCustodianForDevice:deviceCopy supportedEscapeOfferMask:mask];
     goto LABEL_11;
   }
 
-  if ((a5 & 8) == 0)
+  if ((mask & 8) == 0)
   {
-    v11 = [(CDPUIController *)self _deviceLimitOfferSkipForDevice:v8];
+    v11 = [(CDPUIController *)self _deviceLimitOfferSkipForDevice:deviceCopy];
 LABEL_11:
     v12 = v11;
     goto LABEL_12;
   }
 
   v14 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v15 = [v14 addSecretType:{objc_msgSend(v8, "localSecretType")}];
-  v16 = [v15 localizedString];
+  v15 = [v14 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v15 localizedString];
 
-  v17 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+  isICSCHarmonizationEnabled2 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
   v18 = MEMORY[0x277CCACA8];
-  if (v17)
+  if (isICSCHarmonizationEnabled2)
   {
     v19 = @"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_NO_RECOVERY_RPD";
   }
@@ -2172,19 +2172,19 @@ LABEL_11:
   }
 
   v20 = [MEMORY[0x277CFD508] builderForKey:v19];
-  v21 = [v20 addSecretType:{objc_msgSend(v8, "localSecretType")}];
-  v22 = [v21 localizedString];
-  v23 = [v8 localizedName];
-  v24 = [v18 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, v23];
+  v21 = [v20 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v21 localizedString];
+  localizedName = [deviceCopy localizedName];
+  v24 = [v18 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
 
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v12 = [(CDPUIController *)self _iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:v16 message:v24 skipButtonTitle:&stru_285826188 supportedEscapeOfferMask:a5 withDevice:v8];
+    v12 = [(CDPUIController *)self _iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString message:v24 skipButtonTitle:&stru_285826188 supportedEscapeOfferMask:mask withDevice:deviceCopy];
     v25 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ALERT_BUTTON_TITLE_DELETE_ICLOUD_DATA" inTable:@"Localizable-Walrus"];
-    v26 = [v25 localizedString];
-    v27 = [v12 escapeOptions];
-    v28 = [v27 firstObject];
-    [v28 setTitle:v26];
+    localizedString3 = [v25 localizedString];
+    escapeOptions = [v12 escapeOptions];
+    firstObject = [escapeOptions firstObject];
+    [firstObject setTitle:localizedString3];
 
     if ([MEMORY[0x277CFD560] shouldCentralizeRPDFlow])
     {
@@ -2205,13 +2205,13 @@ LABEL_11:
         v38 = _CDPLogSystem();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [(CDPRPDLedger *)self->_ledger rpdBlockingError];
+          rpdBlockingError = [(CDPRPDLedger *)self->_ledger rpdBlockingError];
           *buf = 138412290;
-          v43 = v39;
+          v43 = rpdBlockingError;
           _os_log_impl(&dword_2451DB000, v38, OS_LOG_TYPE_DEFAULT, "Cannot offer RPD. Reason: %@", buf, 0xCu);
         }
 
-        v40 = [(CDPUIController *)self _deviceLimitOfferSkipForDevice:v8];
+        v40 = [(CDPUIController *)self _deviceLimitOfferSkipForDevice:deviceCopy];
 
         v12 = v40;
       }
@@ -2221,7 +2221,7 @@ LABEL_11:
   else
   {
     v41 = CDPLocalizedString();
-    v12 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v16 message:v24 skipButtonTitle:v41 supportedEscapeOfferMask:a5];
+    v12 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString message:v24 skipButtonTitle:v41 supportedEscapeOfferMask:mask];
   }
 
 LABEL_12:
@@ -2229,9 +2229,9 @@ LABEL_12:
   [v12 handleEscapeAction:self];
 }
 
-- (void)_beginDevicePickerFlowFromEntryController:(id)a3
+- (void)_beginDevicePickerFlowFromEntryController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2240,17 +2240,17 @@ LABEL_12:
   }
 
   v6 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_activeContext eventName:*MEMORY[0x277CFD6B0] category:*MEMORY[0x277CFD930]];
-  v7 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v7 sendEvent:v6];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v6];
 
-  if (self->_rootViewController == v4)
+  if (self->_rootViewController == controllerCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __61__CDPUIController__beginDevicePickerFlowFromEntryController___block_invoke;
     v9[3] = &unk_278E2B460;
     v9[4] = self;
-    v10 = v4;
+    v10 = controllerCopy;
     [(CDPUIController *)self _setupDevicePickerController:v9];
   }
 
@@ -2261,44 +2261,44 @@ LABEL_12:
   }
 }
 
-- (void)_replaceViewController:(id)a3 withNewController:(id)a4
+- (void)_replaceViewController:(id)controller withNewController:(id)newController
 {
-  v13 = a4;
+  newControllerCopy = newController;
   navController = self->_navController;
-  v7 = a3;
-  v8 = [(UINavigationController *)navController viewControllers];
-  v9 = [v8 mutableCopy];
+  controllerCopy = controller;
+  viewControllers = [(UINavigationController *)navController viewControllers];
+  v9 = [viewControllers mutableCopy];
 
-  [v9 replaceObjectAtIndex:objc_msgSend(v9 withObject:{"indexOfObject:", v7), v13}];
+  [v9 replaceObjectAtIndex:objc_msgSend(v9 withObject:{"indexOfObject:", controllerCopy), newControllerCopy}];
   rootViewController = self->_rootViewController;
 
-  if (rootViewController == v7)
+  if (rootViewController == controllerCopy)
   {
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTapped_];
-    v12 = [v13 navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    navigationItem = [newControllerCopy navigationItem];
+    [navigationItem setLeftBarButtonItem:v11];
   }
 
   [(UINavigationController *)self->_navController setViewControllers:v9 animated:1];
 }
 
-- (id)_escapeOfferForDevice:(id)a3 withMask:(unint64_t)a4
+- (id)_escapeOfferForDevice:(id)device withMask:(unint64_t)mask
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v9 = [v6 modelClass];
-  v10 = [v8 addDeviceClass:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v12 = [v11 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:v12];
+  modelClass = [deviceCopy modelClass];
+  v10 = [v8 addDeviceClass:modelClass];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:localizedString];
 
   v13 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_TITLE"];
-  v14 = [v13 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v15 = [v14 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v15];
+  v14 = [v13 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v14 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString2];
 
-  v16 = [(CDPUIController *)self _escapeOfferMessageForDevice:v6 withMask:a4];
+  v16 = [(CDPUIController *)self _escapeOfferMessageForDevice:deviceCopy withMask:mask];
   [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v16];
 
   if ([(CDPUIController *)self _isSOSCompatibilityCFUForSingleICSC])
@@ -2308,71 +2308,71 @@ LABEL_12:
 
     v18 = MEMORY[0x277CCACA8];
     v19 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_SINGLE_ICSC_ESCAPE_OFFER_MESSAGE"];
-    v20 = [v19 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v21 = [v20 localizedString];
-    v22 = [v6 localizedName];
-    v23 = [v18 stringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:0, v22];
+    v20 = [v19 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString3 = [v20 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v23 = [v18 stringWithValidatedFormat:localizedString3 validFormatSpecifiers:@"%@" error:0, localizedName];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v23];
   }
 
-  if ((a4 & 2) != 0 && [(NSArray *)self->_devices count]>= 2)
+  if ((mask & 2) != 0 && [(NSArray *)self->_devices count]>= 2)
   {
-    v24 = [(CDPUIController *)self _chooseDeviceEscapeOption];
+    _chooseDeviceEscapeOption = [(CDPUIController *)self _chooseDeviceEscapeOption];
 LABEL_16:
-    v33 = v24;
-    [v24 setStyle:4];
+    v33 = _chooseDeviceEscapeOption;
+    [_chooseDeviceEscapeOption setStyle:4];
 LABEL_17:
     [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v33];
 
     goto LABEL_18;
   }
 
-  if ((a4 & 0x80) != 0)
+  if ((mask & 0x80) != 0)
   {
-    v24 = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:a4];
+    _chooseDeviceEscapeOption = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_16;
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((mask & 0x20) != 0)
   {
-    v24 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a4];
+    _chooseDeviceEscapeOption = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_16;
   }
 
-  if ((a4 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
-    v24 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a4];
+    _chooseDeviceEscapeOption = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_16;
   }
 
-  if ((a4 & 4) != 0 && self->_offeringRemoteApproval)
+  if ((mask & 4) != 0 && self->_offeringRemoteApproval)
   {
     v25 = [(NSArray *)self->_devices count];
     v26 = MEMORY[0x277CCACA8];
     if (v25 == 1)
     {
       v27 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_SINGLE_ICSC_ESCAPE_OFFER_MESSAGE_REMOTE_APPROVAL"];
-      v28 = [v27 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-      v29 = [v28 localizedString];
-      v30 = [v6 localizedName];
-      v31 = [v26 stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:0, v30];
+      v28 = [v27 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+      localizedString4 = [v28 localizedString];
+      localizedName2 = [deviceCopy localizedName];
+      v31 = [v26 stringWithValidatedFormat:localizedString4 validFormatSpecifiers:@"%@" error:0, localizedName2];
       [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v31];
 
-      v32 = [(CDPUIController *)self _remoteApprovalEscapeOption];
-      [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v32];
+      _remoteApprovalEscapeOption = [(CDPUIController *)self _remoteApprovalEscapeOption];
+      [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:_remoteApprovalEscapeOption];
     }
 
     else
     {
       v52 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_MULTI_ICSC_ESCAPE_OFFER_MESSAGE_CHOOSE_DEVICE"];
-      v53 = [v52 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-      v54 = [v53 localizedString];
-      v55 = [v6 localizedName];
-      v56 = [v26 stringWithValidatedFormat:v54 validFormatSpecifiers:@"%@" error:0, v55];
+      v53 = [v52 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+      localizedString5 = [v53 localizedString];
+      localizedName3 = [deviceCopy localizedName];
+      v56 = [v26 stringWithValidatedFormat:localizedString5 validFormatSpecifiers:@"%@" error:0, localizedName3];
       [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v56];
 
-      v32 = _CDPLogSystem();
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
+      _remoteApprovalEscapeOption = _CDPLogSystem();
+      if (os_log_type_enabled(_remoteApprovalEscapeOption, OS_LOG_TYPE_DEBUG))
       {
         [CDPUIController _escapeOfferForDevice:withMask:];
       }
@@ -2382,33 +2382,33 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ((a4 & 0x18) != 0)
+  if ((mask & 0x18) != 0)
   {
-    v40 = [(NSArray *)self->_devices prevailingLocalSecretType];
+    prevailingLocalSecretType = [(NSArray *)self->_devices prevailingLocalSecretType];
     v41 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_TITLE"];
-    v42 = [v41 addSecretType:v40];
-    v58 = [v42 localizedString];
+    v42 = [v41 addSecretType:prevailingLocalSecretType];
+    localizedString6 = [v42 localizedString];
 
     v43 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_MESSAGE"];
-    v44 = [v43 addSecretType:v40];
-    v57 = [v44 localizedString];
+    v44 = [v43 addSecretType:prevailingLocalSecretType];
+    localizedString7 = [v44 localizedString];
 
     v45 = CDPLocalizedString();
-    v46 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v58 message:v57 skipButtonTitle:v45 supportedEscapeOfferMask:a4];
+    v46 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString6 message:localizedString7 skipButtonTitle:v45 supportedEscapeOfferMask:mask];
 
     v47 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-    v48 = [v6 modelClass];
-    v49 = [v47 addDeviceClass:v48];
-    v50 = [v49 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v51 = [v50 localizedString];
-    [(CDPRemoteValidationEscapeOffer *)v46 setEscapeOfferName:v51];
+    modelClass2 = [deviceCopy modelClass];
+    v49 = [v47 addDeviceClass:modelClass2];
+    v50 = [v49 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString8 = [v50 localizedString];
+    [(CDPRemoteValidationEscapeOffer *)v46 setEscapeOfferName:localizedString8];
 
     v7 = v46;
   }
 
 LABEL_18:
-  v34 = [(CDPRemoteValidationEscapeOffer *)v7 escapeOptions];
-  v35 = [v34 count];
+  escapeOptions = [(CDPRemoteValidationEscapeOffer *)v7 escapeOptions];
+  v35 = [escapeOptions count];
 
   if (v35)
   {
@@ -2419,11 +2419,11 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v36 = [(CDPContext *)self->_activeContext telemetryDeviceSessionID];
-    [(CDPRemoteValidationEscapeOffer *)v7 setDeviceSessionID:v36];
+    telemetryDeviceSessionID = [(CDPContext *)self->_activeContext telemetryDeviceSessionID];
+    [(CDPRemoteValidationEscapeOffer *)v7 setDeviceSessionID:telemetryDeviceSessionID];
 
-    v37 = [(CDPContext *)self->_activeContext telemetryFlowID];
-    [(CDPRemoteValidationEscapeOffer *)v7 setFlowID:v37];
+    telemetryFlowID = [(CDPContext *)self->_activeContext telemetryFlowID];
+    [(CDPRemoteValidationEscapeOffer *)v7 setFlowID:telemetryFlowID];
 LABEL_23:
 
     goto LABEL_24;
@@ -2431,8 +2431,8 @@ LABEL_23:
 
   if ([(CDPUIController *)self _isSOSCompatibilityCFUForSingleICSC])
   {
-    v37 = +[CDPEscapeOption okOption];
-    [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v37];
+    telemetryFlowID = +[CDPEscapeOption okOption];
+    [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:telemetryFlowID];
     goto LABEL_23;
   }
 
@@ -2442,18 +2442,18 @@ LABEL_25:
   return v38;
 }
 
-- (void)sendEscapeOfferSelectedEvent:(id)a3
+- (void)sendEscapeOfferSelectedEvent:(id)event
 {
   v3 = MEMORY[0x277CE44D8];
   activeContext = self->_activeContext;
   v5 = *MEMORY[0x277CFD6E0];
   v6 = *MEMORY[0x277CFD930];
-  v7 = a3;
+  eventCopy = event;
   v9 = [v3 analyticsEventWithContext:activeContext eventName:v5 category:v6];
-  [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277CFD6D8]];
+  [v9 setObject:eventCopy forKeyedSubscript:*MEMORY[0x277CFD6D8]];
 
-  v8 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v8 sendEvent:v9];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v9];
 }
 
 - (id)_chooseDeviceEscapeOption
@@ -2494,10 +2494,10 @@ void __44__CDPUIController__chooseDeviceEscapeOption__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_escapeOfferMessageForDevice:(id)a3 withMask:(unint64_t)a4
+- (id)_escapeOfferMessageForDevice:(id)device withMask:(unint64_t)mask
 {
-  v5 = a3;
-  v6 = [(NSArray *)self->_devices prevailingLocalSecretType];
+  deviceCopy = device;
+  prevailingLocalSecretType = [(NSArray *)self->_devices prevailingLocalSecretType];
   if ([MEMORY[0x277CFD4A8] isSubsetOfContextTypeSignIn:{-[CDPContext type](self->_activeContext, "type")}])
   {
     v7 = objc_alloc_init(MEMORY[0x277CFD568]);
@@ -2507,26 +2507,26 @@ void __44__CDPUIController__chooseDeviceEscapeOption__block_invoke(uint64_t a1)
     v10 = v9;
     if (v8 == 1)
     {
-      v11 = [(CDPContext *)self->_activeContext isAttemptingBackupRestore];
+      isAttemptingBackupRestore = [(CDPContext *)self->_activeContext isAttemptingBackupRestore];
       v12 = MEMORY[0x277CCACA8];
-      if (v11)
+      if (isAttemptingBackupRestore)
       {
-        v13 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_WALRUS_BUDDY_BACKUP" inTable:@"Localizable-Walrus"];
-        v14 = [v13 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-        v15 = [v5 modelClass];
-        v16 = [v14 addDeviceClass:v15];
-        v17 = [v16 localizedString];
-        v18 = [v5 localizedName];
-        v19 = [v12 stringWithValidatedFormat:v17 validFormatSpecifiers:@"%@" error:0, v18];
+        localizedString2 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_WALRUS_BUDDY_BACKUP" inTable:@"Localizable-Walrus"];
+        localizedName3 = [localizedString2 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+        modelClass = [deviceCopy modelClass];
+        localizedName2 = [localizedName3 addDeviceClass:modelClass];
+        localizedString = [localizedName2 localizedString];
+        localizedName = [deviceCopy localizedName];
+        v19 = [v12 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, localizedName];
       }
 
       else
       {
-        v13 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_WALRUS_SIGNIN" inTable:@"Localizable-Walrus"];
-        v14 = [v13 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-        v15 = [v14 localizedString];
-        v16 = [v5 localizedName];
-        v19 = [v12 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v16];
+        localizedString2 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_WALRUS_SIGNIN" inTable:@"Localizable-Walrus"];
+        localizedName3 = [localizedString2 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+        modelClass = [localizedName3 localizedString];
+        localizedName2 = [deviceCopy localizedName];
+        v19 = [v12 stringWithValidatedFormat:modelClass validFormatSpecifiers:@"%@" error:0, localizedName2];
       }
 
       goto LABEL_14;
@@ -2548,20 +2548,20 @@ void __44__CDPUIController__chooseDeviceEscapeOption__block_invoke(uint64_t a1)
     }
 
     v7 = [MEMORY[0x277CFD508] builderForKey:v22];
-    v10 = [v7 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-    v13 = [v10 localizedString];
-    v14 = [v5 localizedName];
-    v19 = [v21 stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v14];
+    v10 = [v7 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v10 localizedString];
+    localizedName3 = [deviceCopy localizedName];
+    v19 = [v21 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName3];
     goto LABEL_15;
   }
 
   v23 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_ANOTHER_DEVICE"];
-  v10 = [v7 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v13 = [v10 addSecretType:v6];
-  v14 = [v13 localizedString];
-  v15 = [v5 localizedName];
-  v19 = [v23 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+  v10 = [v7 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v10 addSecretType:prevailingLocalSecretType];
+  localizedName3 = [localizedString2 localizedString];
+  modelClass = [deviceCopy localizedName];
+  v19 = [v23 stringWithValidatedFormat:localizedName3 validFormatSpecifiers:@"%@" error:0, modelClass];
 LABEL_14:
 
 LABEL_15:
@@ -2602,22 +2602,22 @@ void __45__CDPUIController__tryAgainLaterEscapeOption__block_invoke(uint64_t a1)
   [WeakRetained tryAgainLaterTapped:*(a1 + 32)];
 }
 
-- (id)_deviceLimitOfferDeviceSelectionForDevice:(id)a3 fromViewController:(id)a4
+- (id)_deviceLimitOfferDeviceSelectionForDevice:(id)device fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  controllerCopy = controller;
   v8 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v9 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v10 = [v9 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v11 = [v10 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v8 setTitle:v11];
+  v10 = [v9 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v10 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v8 setTitle:localizedString];
 
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v12 = [(CDPContext *)self->_activeContext idmsRecovery];
+    idmsRecovery = [(CDPContext *)self->_activeContext idmsRecovery];
     v13 = MEMORY[0x277CCACA8];
     v14 = MEMORY[0x277CFD508];
-    if (v12)
+    if (idmsRecovery)
     {
       v15 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_OTHER_ICSC";
     }
@@ -2636,10 +2636,10 @@ void __45__CDPUIController__tryAgainLaterEscapeOption__block_invoke(uint64_t a1)
   }
 
   v16 = [v14 builderForKey:v15];
-  v17 = [v16 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v18 = [v17 localizedString];
-  v19 = [v6 localizedName];
-  v20 = [v13 stringWithValidatedFormat:v18 validFormatSpecifiers:@"%@" error:0, v19];
+  v17 = [v16 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v17 localizedString];
+  localizedName = [deviceCopy localizedName];
+  v20 = [v13 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
   [(CDPRemoteValidationEscapeOffer *)v8 setMessage:v20];
 
   objc_initWeak(&location, self);
@@ -2654,12 +2654,12 @@ void __45__CDPUIController__tryAgainLaterEscapeOption__block_invoke(uint64_t a1)
   v26[2] = __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewController___block_invoke;
   v26[3] = &unk_278E2B4D8;
   objc_copyWeak(&v28, &location);
-  v23 = v7;
+  v23 = controllerCopy;
   v27 = v23;
   [(CDPEscapeOption *)v21 setEscapeAction:v26];
   [(CDPRemoteValidationEscapeOffer *)v8 addEscapeOptionsObject:v21];
-  v24 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v8 addEscapeOptionsObject:v24];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v8 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -2673,71 +2673,71 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
   [WeakRetained _beginDevicePickerFlowFromEntryController:*(a1 + 32)];
 }
 
-- (id)_deviceLimitOfferPiggybackingForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_deviceLimitOfferPiggybackingForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v9 = [v8 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v10 = [v9 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v10];
+  v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v9 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString];
 
-  v11 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+  isICSCHarmonizationEnabled = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
   v12 = MEMORY[0x277CCACA8];
-  if (v11)
+  if (isICSCHarmonizationEnabled)
   {
     v13 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_TRUSTED_DEVICES"];
-    v14 = [v13 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v15 = [v14 localizedString];
-    v16 = [v6 localizedName];
-    v17 = [v12 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v16];
-    [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v17];
+    v14 = [v13 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v14 localizedString];
+    localizedName = [deviceCopy localizedName];
+    localizedName2 = [v12 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
+    [(CDPRemoteValidationEscapeOffer *)v7 setMessage:localizedName2];
   }
 
   else
   {
     v13 = [MEMORY[0x277CFD508] builderForKey:@"PIGGYBACKING_RECOVERY_HELP_PROMPT_MESSAGE"];
-    v14 = [v13 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v15 = [v14 localizedString];
-    v16 = [v6 localizedName];
-    v17 = [v6 localizedName];
-    v18 = [v12 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v16, v17];
+    v14 = [v13 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v14 localizedString];
+    localizedName = [deviceCopy localizedName];
+    localizedName2 = [deviceCopy localizedName];
+    v18 = [v12 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@%@" error:0, localizedName, localizedName2];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v18];
   }
 
-  v19 = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:a4];
+  v19 = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
   [v19 setStyle:3];
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
     v20 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_PIGGYBACKING"];
-    v21 = [v20 localizedString];
-    [v19 setTitle:v21];
+    localizedString3 = [v20 localizedString];
+    [v19 setTitle:localizedString3];
 
     [v19 setTitleLocalizationKey:@"REMOTE_SECRET_ENTRY_ALERT_PIGGYBACKING"];
   }
 
   [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v19];
-  v22 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v22];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
   return v7;
 }
 
-- (id)_deviceLimitOfferRecoveryKeyForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_deviceLimitOfferRecoveryKeyForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v9 = [v8 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v10 = [v9 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v10];
+  v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v9 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString];
 
-  v11 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a4];
+  v11 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v12 = [(CDPContext *)self->_activeContext idmsRecovery];
+    idmsRecovery = [(CDPContext *)self->_activeContext idmsRecovery];
     v13 = MEMORY[0x277CCACA8];
-    if (v12)
+    if (idmsRecovery)
     {
       v14 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RK";
     }
@@ -2748,10 +2748,10 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
     }
 
     v15 = [MEMORY[0x277CFD508] builderForKey:v14];
-    v16 = [v15 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v17 = [v16 localizedString];
-    v18 = [v6 localizedName];
-    v19 = [v13 stringWithValidatedFormat:v17 validFormatSpecifiers:@"%@" error:0, v18];
+    v16 = [v15 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v16 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v19 = [v13 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v19];
 
     [v11 setStyle:3];
@@ -2761,35 +2761,35 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
   {
     v20 = MEMORY[0x277CCACA8];
     v21 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_RECOVERY_HARD_LIMIT_LAST_DEVICE_RECOVERY_KEY"];
-    v22 = [v21 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v23 = [v22 localizedString];
-    v24 = [v6 localizedName];
-    v25 = [v20 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, v24];
+    v22 = [v21 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString3 = [v22 localizedString];
+    localizedName2 = [deviceCopy localizedName];
+    v25 = [v20 stringWithValidatedFormat:localizedString3 validFormatSpecifiers:@"%@" error:0, localizedName2];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v25];
   }
 
   [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v11];
-  v26 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v26];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
   return v7;
 }
 
-- (id)_deviceLimitOfferCustodianForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_deviceLimitOfferCustodianForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v9 = [v8 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v10 = [v9 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v10];
+  v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v9 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString];
 
-  v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a4];
+  v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
-    v12 = [(CDPContext *)self->_activeContext idmsRecovery];
+    idmsRecovery = [(CDPContext *)self->_activeContext idmsRecovery];
     v13 = MEMORY[0x277CCACA8];
-    if (v12)
+    if (idmsRecovery)
     {
       v14 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RC";
     }
@@ -2800,10 +2800,10 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
     }
 
     v15 = [MEMORY[0x277CFD508] builderForKey:v14];
-    v16 = [v15 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v17 = [v16 localizedString];
-    v18 = [v6 localizedName];
-    v19 = [v13 stringWithValidatedFormat:v17 validFormatSpecifiers:@"%@" error:0, v18];
+    v16 = [v15 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v16 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v19 = [v13 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v19];
 
     [v11 setStyle:3];
@@ -2813,32 +2813,32 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
   {
     v20 = MEMORY[0x277CCACA8];
     v21 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_RECOVERY_HARD_LIMIT_LAST_DEVICE_CUSTODIAN"];
-    v22 = [v21 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-    v23 = [v22 localizedString];
-    v24 = [v6 localizedName];
-    v25 = [v20 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, v24];
+    v22 = [v21 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString3 = [v22 localizedString];
+    localizedName2 = [deviceCopy localizedName];
+    v25 = [v20 stringWithValidatedFormat:localizedString3 validFormatSpecifiers:@"%@" error:0, localizedName2];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v25];
   }
 
   [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v11];
-  v26 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v26];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
   return v7;
 }
 
-- (id)_deviceLimitOfferRecoveryKeyAndCustodianForDevice:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_deviceLimitOfferRecoveryKeyAndCustodianForDevice:(id)device supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v9 = [v8 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v10 = [v9 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v10];
+  v9 = [v8 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v9 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString];
 
-  v11 = [(CDPContext *)self->_activeContext idmsRecovery];
+  idmsRecovery = [(CDPContext *)self->_activeContext idmsRecovery];
   v12 = MEMORY[0x277CCACA8];
-  if (v11)
+  if (idmsRecovery)
   {
     v13 = @"RECOVERY_REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_RK_AND_RC";
   }
@@ -2849,52 +2849,52 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
   }
 
   v14 = [MEMORY[0x277CFD508] builderForKey:v13];
-  v15 = [v14 addSecretType:{objc_msgSend(v6, "localSecretType")}];
-  v16 = [v15 localizedString];
-  v17 = [v6 localizedName];
-  v18 = [v12 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v17];
+  v15 = [v14 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v15 localizedString];
+  localizedName = [deviceCopy localizedName];
+  v18 = [v12 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
   [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v18];
 
-  v19 = [(CDPUIController *)self _recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:a4];
+  v19 = [(CDPUIController *)self _recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:mask];
   [v19 setStyle:3];
   [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v19];
-  v20 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v20];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
   return v7;
 }
 
-- (id)_deviceLimitOfferSkipForDevice:(id)a3
+- (id)_deviceLimitOfferSkipForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-  v7 = [v6 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v8 = [v7 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:v8];
+  v7 = [v6 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v7 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:localizedString];
 
-  v9 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  v10 = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  isICSCHarmonizationEnabled = [MEMORY[0x277CFD560] isICSCHarmonizationEnabled];
   v11 = MEMORY[0x277CCACA8];
-  if (v10)
+  if (isICSCHarmonizationEnabled)
   {
     v12 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_HARD_LIMIT_ALERT_SUBTITLE_NO_RECOVERY_METHOD"];
-    v13 = [v12 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v14 = [v13 localizedString];
-    v15 = [v4 localizedName];
-    v16 = [v11 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+    v13 = [v12 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString2 = [v13 localizedString];
+    localizedName = [deviceCopy localizedName];
+    v16 = [v11 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
     [(CDPRemoteValidationEscapeOffer *)v5 setMessage:v16];
 
-    [v9 setStyle:3];
+    [_tryAgainLaterEscapeOption setStyle:3];
   }
 
   else
   {
     v17 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_RECOVERY_HARD_LIMIT_LAST_DEVICE_SKIP"];
-    v18 = [v17 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-    v19 = [v18 localizedString];
-    v20 = [v4 localizedName];
-    v21 = [v11 stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@" error:0, v20];
+    v18 = [v17 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+    localizedString3 = [v18 localizedString];
+    localizedName2 = [deviceCopy localizedName];
+    v21 = [v11 stringWithValidatedFormat:localizedString3 validFormatSpecifiers:@"%@" error:0, localizedName2];
     [(CDPRemoteValidationEscapeOffer *)v5 setMessage:v21];
   }
 
@@ -2904,8 +2904,8 @@ void __80__CDPUIController__deviceLimitOfferDeviceSelectionForDevice_fromViewCon
   v23[2] = __50__CDPUIController__deviceLimitOfferSkipForDevice___block_invoke;
   v23[3] = &unk_278E2B4B0;
   objc_copyWeak(&v24, &location);
-  [v9 setEscapeAction:v23];
-  [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v9];
+  [_tryAgainLaterEscapeOption setEscapeAction:v23];
+  [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 
@@ -2918,9 +2918,9 @@ void __50__CDPUIController__deviceLimitOfferSkipForDevice___block_invoke(uint64_
   [WeakRetained tryAgainLaterTapped:WeakRetained];
 }
 
-- (id)_escapeOfferForMultiApprovalWithMask:(unint64_t)a3
+- (id)_escapeOfferForMultiApprovalWithMask:(unint64_t)mask
 {
-  v5 = [(CDPUIController *)self _waitingForApprovalEscapeOffer];
+  _waitingForApprovalEscapeOffer = [(CDPUIController *)self _waitingForApprovalEscapeOffer];
   if ([MEMORY[0x277CFD4A8] isSubsetOfContextTypeRepair:{-[CDPContext type](self->_activeContext, "type")}])
   {
     v6 = @"WAITING_APPROVAL_RESET_DIALOG_MESSAGE_REPAIR";
@@ -2932,25 +2932,25 @@ void __50__CDPUIController__deviceLimitOfferSkipForDevice___block_invoke(uint64_
   }
 
   v7 = [MEMORY[0x277CFD508] builderForKey:v6];
-  v8 = [(CDPUIController *)self _localDeviceClass];
-  v9 = [v7 addDeviceClass:v8];
-  v10 = [v9 localizedString];
-  [v5 setMessage:v10];
+  _localDeviceClass = [(CDPUIController *)self _localDeviceClass];
+  v9 = [v7 addDeviceClass:_localDeviceClass];
+  localizedString = [v9 localizedString];
+  [_waitingForApprovalEscapeOffer setMessage:localizedString];
 
-  if ((a3 & 0x10) != 0)
+  if ((mask & 0x10) != 0)
   {
     v16 = [(CDPUIController *)self _enterSecretLaterEscapeOptionWithSecret:1];
     v17 = [MEMORY[0x277CFD508] builderForKey:@"WAITING_APPROVAL_RESET_DIALOG_BUTTON_LATER"];
-    v18 = [v17 localizedString];
-    [v16 setTitle:v18];
+    localizedString2 = [v17 localizedString];
+    [v16 setTitle:localizedString2];
 
     [v16 setStyle:3];
-    [v5 addEscapeOptionsObject:v16];
+    [_waitingForApprovalEscapeOffer addEscapeOptionsObject:v16];
 
-    if ((a3 & 8) == 0)
+    if ((mask & 8) == 0)
     {
 LABEL_6:
-      if ((a3 & 0x40) == 0)
+      if ((mask & 0x40) == 0)
       {
         goto LABEL_8;
       }
@@ -2959,41 +2959,41 @@ LABEL_6:
     }
   }
 
-  else if ((a3 & 8) == 0)
+  else if ((mask & 8) == 0)
   {
     goto LABEL_6;
   }
 
-  v19 = [(NSArray *)self->_devices prevailingLocalSecretType];
+  prevailingLocalSecretType = [(NSArray *)self->_devices prevailingLocalSecretType];
   v20 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_TITLE"];
-  v21 = [v20 addSecretType:v19];
-  v22 = [v21 localizedString];
+  v21 = [v20 addSecretType:prevailingLocalSecretType];
+  localizedString3 = [v21 localizedString];
 
   v23 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_MESSAGE"];
-  v24 = [v23 addSecretType:v19];
-  v25 = [v24 localizedString];
+  v24 = [v23 addSecretType:prevailingLocalSecretType];
+  localizedString4 = [v24 localizedString];
 
   v26 = CDPLocalizedString();
-  v27 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v22 message:v25 skipButtonTitle:v26 supportedEscapeOfferMask:a3];
+  v27 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString3 message:localizedString4 skipButtonTitle:v26 supportedEscapeOfferMask:mask];
 
-  v5 = v27;
-  if ((a3 & 0x40) != 0)
+  _waitingForApprovalEscapeOffer = v27;
+  if ((mask & 0x40) != 0)
   {
 LABEL_7:
-    v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3];
-    [v5 addEscapeOptionsObject:v11];
+    v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
+    [_waitingForApprovalEscapeOffer addEscapeOptionsObject:v11];
   }
 
 LABEL_8:
-  v12 = [v5 escapeOptions];
-  v13 = [v12 count];
+  escapeOptions = [_waitingForApprovalEscapeOffer escapeOptions];
+  v13 = [escapeOptions count];
 
   if (v13)
   {
     v14 = +[CDPEscapeOption cancelOption];
-    [v5 addEscapeOptionsObject:v14];
+    [_waitingForApprovalEscapeOffer addEscapeOptionsObject:v14];
 
-    v15 = v5;
+    v15 = _waitingForApprovalEscapeOffer;
   }
 
   else
@@ -3004,21 +3004,21 @@ LABEL_8:
   return v15;
 }
 
-- (id)_escapeOfferForSingleApprovalWithMask:(unint64_t)a3
+- (id)_escapeOfferForSingleApprovalWithMask:(unint64_t)mask
 {
-  if ((a3 & 8) != 0)
+  if ((mask & 8) != 0)
   {
-    v6 = [(NSArray *)self->_devices prevailingLocalSecretType];
+    prevailingLocalSecretType = [(NSArray *)self->_devices prevailingLocalSecretType];
     v7 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_TITLE"];
-    v8 = [v7 addSecretType:v6];
-    v9 = [v8 localizedString];
+    v8 = [v7 addSecretType:prevailingLocalSecretType];
+    localizedString = [v8 localizedString];
 
     v10 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_MESSAGE"];
-    v11 = [v10 addSecretType:v6];
-    v12 = [v11 localizedString];
+    v11 = [v10 addSecretType:prevailingLocalSecretType];
+    localizedString2 = [v11 localizedString];
 
     v13 = CDPLocalizedString();
-    v4 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v9 message:v12 skipButtonTitle:v13 supportedEscapeOfferMask:a3];
+    v4 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString message:localizedString2 skipButtonTitle:v13 supportedEscapeOfferMask:mask];
   }
 
   else
@@ -3029,21 +3029,21 @@ LABEL_8:
   return v4;
 }
 
-- (void)dismissAndResetAccountCDPState:(id)a3 localSecret:(id)a4
+- (void)dismissAndResetAccountCDPState:(id)state localSecret:(id)secret
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  secretCopy = secret;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__CDPUIController_dismissAndResetAccountCDPState_localSecret___block_invoke;
   v11[3] = &unk_278E2B500;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
-  v10 = self;
-  [(CDPUIController *)v10 _dismissPresentedViewControllerWithReason:@"com.apple.CoreCDPUI.CDPEnrollmentCompleted" completion:v11];
+  v12 = stateCopy;
+  v13 = secretCopy;
+  v8 = secretCopy;
+  v9 = stateCopy;
+  selfCopy = self;
+  [(CDPUIController *)selfCopy _dismissPresentedViewControllerWithReason:@"com.apple.CoreCDPUI.CDPEnrollmentCompleted" completion:v11];
 }
 
 uint64_t __62__CDPUIController_dismissAndResetAccountCDPState_localSecret___block_invoke(uint64_t a1)
@@ -3073,13 +3073,13 @@ uint64_t __62__CDPUIController_dismissAndResetAccountCDPState_localSecret___bloc
   }
 }
 
-- (id)_beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(CDPEscapeOption);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_DIALOG"];
-  v7 = [v6 localizedString];
-  [(CDPEscapeOption *)v5 setTitle:v7];
+  localizedString = [v6 localizedString];
+  [(CDPEscapeOption *)v5 setTitle:localizedString];
 
   [(CDPEscapeOption *)v5 setTitleLocalizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_DIALOG"];
   [(CDPEscapeOption *)v5 setTitleTelemetryKey:*MEMORY[0x277CFD9B0]];
@@ -3090,7 +3090,7 @@ uint64_t __62__CDPUIController_dismissAndResetAccountCDPState_localSecret___bloc
   v9[3] = &unk_278E2B528;
   objc_copyWeak(v10, &location);
   v9[4] = self;
-  v10[1] = a3;
+  v10[1] = mask;
   [(CDPEscapeOption *)v5 setEscapeAction:v9];
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -3130,51 +3130,51 @@ void __86__CDPUIController__beginPiggybackingRecoveryEscapeOptionWithSupportedEs
   }
 }
 
-- (id)updateContextWithAuthResults:(id)a3
+- (id)updateContextWithAuthResults:(id)results
 {
   v4 = MEMORY[0x277CFD4A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithAuthenticationResults:v5];
+  resultsCopy = results;
+  v6 = [[v4 alloc] initWithAuthenticationResults:resultsCopy];
 
   [v6 set_alwaysCreateEscrowRecord:{-[CDPContext _alwaysCreateEscrowRecord](self->_activeContext, "_alwaysCreateEscrowRecord")}];
   [v6 setType:{-[CDPContext type](self->_activeContext, "type")}];
   [v6 setSosCompatibilityType:{-[CDPContext sosCompatibilityType](self->_activeContext, "sosCompatibilityType")}];
   [v6 setKeychainSyncSystem:{-[CDPContext keychainSyncSystem](self->_activeContext, "keychainSyncSystem")}];
   [v6 setIsSOSCFUFlow:{-[CDPContext isSOSCFUFlow](self->_activeContext, "isSOSCFUFlow")}];
-  v7 = [(CDPContext *)self->_activeContext telemetryFlowID];
-  [v6 setTelemetryFlowID:v7];
+  telemetryFlowID = [(CDPContext *)self->_activeContext telemetryFlowID];
+  [v6 setTelemetryFlowID:telemetryFlowID];
 
-  v8 = [(CDPContext *)self->_activeContext telemetryDeviceSessionID];
-  [v6 setTelemetryDeviceSessionID:v8];
+  telemetryDeviceSessionID = [(CDPContext *)self->_activeContext telemetryDeviceSessionID];
+  [v6 setTelemetryDeviceSessionID:telemetryDeviceSessionID];
 
-  v9 = [(CDPContext *)self->_activeContext password];
-  v10 = [(CDPContext *)self->_activeContext oldPassword];
-  [v6 setNewPassword:v9 oldPassword:v10];
+  password = [(CDPContext *)self->_activeContext password];
+  oldPassword = [(CDPContext *)self->_activeContext oldPassword];
+  [v6 setNewPassword:password oldPassword:oldPassword];
 
-  v11 = [(CDPContext *)self->_activeContext cachedLocalSecret];
-  [v6 setCachedLocalSecret:v11];
+  cachedLocalSecret = [(CDPContext *)self->_activeContext cachedLocalSecret];
+  [v6 setCachedLocalSecret:cachedLocalSecret];
 
   [v6 setCachedLocalSecretType:{-[CDPContext cachedLocalSecretType](self->_activeContext, "cachedLocalSecretType")}];
-  v12 = [(CDPContext *)self->_activeContext sharingChannel];
-  [v6 setSharingChannel:v12];
+  sharingChannel = [(CDPContext *)self->_activeContext sharingChannel];
+  [v6 setSharingChannel:sharingChannel];
 
   return v6;
 }
 
-- (void)piggybackingUserDidNotGetACode:(unint64_t)a3
+- (void)piggybackingUserDidNotGetACode:(unint64_t)code
 {
   objc_initWeak(&location, self);
   v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v6 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_DID_NOT_GET_CODE_MESSAGE"];
-  v7 = [v6 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:v7];
+  localizedString = [v6 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:localizedString];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_DID_NOT_GET_CODE_TITLE"];
-  v9 = [v8 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:v9];
+  localizedString2 = [v8 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:localizedString2];
 
   v10 = CDPLocalizedString();
-  v11 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:a3 title:v10 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_RESEND_CODE_TO_MY_DEVICES_TITLE"];
+  v11 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:code title:v10 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_RESEND_CODE_TO_MY_DEVICES_TITLE"];
 
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v11];
   v12 = objc_alloc_init(CDPEscapeOption);
@@ -3190,21 +3190,21 @@ void __86__CDPUIController__beginPiggybackingRecoveryEscapeOptionWithSupportedEs
   v20[3] = &unk_278E2B528;
   objc_copyWeak(v21, &location);
   v20[4] = self;
-  v21[1] = a3;
+  v21[1] = code;
   [(CDPEscapeOption *)v12 setEscapeAction:v20];
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v12];
   v14 = +[CDPEscapeOption cancelOption];
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v14];
 
-  v15 = [(UINavigationController *)self->_navController topViewController];
-  [(CDPRemoteValidationEscapeOffer *)v5 setPresentingViewController:v15];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  [(CDPRemoteValidationEscapeOffer *)v5 setPresentingViewController:topViewController];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__CDPUIController_piggybackingUserDidNotGetACode___block_invoke_2;
   v17[3] = &unk_278E2B2D0;
   v18 = v5;
-  v19 = self;
+  selfCopy = self;
   v16 = v5;
   dispatch_async(MEMORY[0x277D85CD0], v17);
 
@@ -3236,14 +3236,14 @@ void __50__CDPUIController_piggybackingUserDidNotGetACode___block_invoke(uint64_
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (id)_piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3 title:(id)a4 localizationKey:(id)a5
+- (id)_piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers title:(id)title localizationKey:(id)key
 {
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  keyCopy = key;
   objc_initWeak(&location, self);
   v10 = objc_alloc_init(CDPEscapeOption);
-  [(CDPEscapeOption *)v10 setTitle:v8];
-  [(CDPEscapeOption *)v10 setTitleLocalizationKey:v9];
+  [(CDPEscapeOption *)v10 setTitle:titleCopy];
+  [(CDPEscapeOption *)v10 setTitleLocalizationKey:keyCopy];
   [(CDPEscapeOption *)v10 setTitleTelemetryKey:*MEMORY[0x277CFDA28]];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -3251,7 +3251,7 @@ void __50__CDPUIController_piggybackingUserDidNotGetACode___block_invoke(uint64_
   v12[3] = &unk_278E2B5A0;
   v12[4] = self;
   objc_copyWeak(v13, &location);
-  v13[1] = a3;
+  v13[1] = offers;
   [(CDPEscapeOption *)v10 setEscapeAction:v12];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -3419,19 +3419,19 @@ uint64_t __99__CDPUIController__piggybackingSendCodeEscapeOfferWithSupportedEsca
   return [*(a1 + 32) handleEscapeAction:*(a1 + 40)];
 }
 
-- (id)_piggybackingHandleNonProxError:(unint64_t)a3
+- (id)_piggybackingHandleNonProxError:(unint64_t)error
 {
   v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v6 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_NON_PROX_ERROR_MESSAGE"];
-  v7 = [v6 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:v7];
+  localizedString = [v6 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:localizedString];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_NON_PROX_ERROR_TITLE"];
-  v9 = [v8 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:v9];
+  localizedString2 = [v8 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:localizedString2];
 
   v10 = CDPLocalizedString();
-  v11 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:a3 title:v10 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_NON_PROX_ERROR_SEND_NEW_CODE_TITLE"];
+  v11 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:error title:v10 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_NON_PROX_ERROR_SEND_NEW_CODE_TITLE"];
 
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v11];
   v12 = objc_alloc_init(CDPEscapeOption);
@@ -3447,8 +3447,8 @@ uint64_t __99__CDPUIController__piggybackingSendCodeEscapeOfferWithSupportedEsca
   v17 = __51__CDPUIController__piggybackingHandleNonProxError___block_invoke;
   v18 = &unk_278E2B528;
   objc_copyWeak(v20, &location);
-  v19 = self;
-  v20[1] = a3;
+  selfCopy = self;
+  v20[1] = error;
   [(CDPEscapeOption *)v12 setEscapeAction:&v15];
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v12, v15, v16, v17, v18];
   objc_destroyWeak(v20);
@@ -3482,16 +3482,16 @@ void __51__CDPUIController__piggybackingHandleNonProxError___block_invoke(uint64
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 mask:(unint64_t)a4 validator:(id)a5
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking mask:(unint64_t)mask validator:(id)validator
 {
-  objc_storeStrong(&self->_remoteSecretValidator, a5);
-  v8 = a3;
-  [(CDPUIController *)self attemptToJoinCircleWithPiggybacking:v8 mask:a4];
+  objc_storeStrong(&self->_remoteSecretValidator, validator);
+  piggybackingCopy = piggybacking;
+  [(CDPUIController *)self attemptToJoinCircleWithPiggybacking:piggybackingCopy mask:mask];
 }
 
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 mask:(unint64_t)a4
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking mask:(unint64_t)mask
 {
-  v6 = a3;
+  piggybackingCopy = piggybacking;
   objc_initWeak(&location, self);
   remoteSecretValidator = self->_remoteSecretValidator;
   v8[0] = MEMORY[0x277D85DD0];
@@ -3500,8 +3500,8 @@ void __51__CDPUIController__piggybackingHandleNonProxError___block_invoke(uint64
   v8[3] = &unk_278E2B5C8;
   objc_copyWeak(v9, &location);
   v8[4] = self;
-  v9[1] = a4;
-  [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator attemptToJoinCircleWithPiggybacking:v6 withCompletion:v8];
+  v9[1] = mask;
+  [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator attemptToJoinCircleWithPiggybacking:piggybackingCopy withCompletion:v8];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
@@ -3584,15 +3584,15 @@ void __60__CDPUIController_attemptToJoinCircleWithPiggybacking_mask___block_invo
   [v3 handleEscapeAction:*(a1 + 40)];
 }
 
-- (id)_piggybackingCantGetToMyDevices:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6
+- (id)_piggybackingCantGetToMyDevices:(id)devices message:(id)message skipButtonTitle:(id)title supportedEscapeOfferMask:(unint64_t)mask
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((a6 & 0x20) != 0)
+  devicesCopy = devices;
+  messageCopy = message;
+  titleCopy = title;
+  if ((mask & 0x20) != 0)
   {
     v13 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-    v14 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a6];
+    v14 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
 LABEL_7:
     v15 = v14;
     [v14 setStyle:4];
@@ -3601,16 +3601,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((a6 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
     v13 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-    v14 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a6];
+    v14 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_7;
   }
 
-  if ((a6 & 8) != 0)
+  if ((mask & 8) != 0)
   {
-    v13 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v10 message:v11 skipButtonTitle:v12 supportedEscapeOfferMask:a6];
+    v13 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:devicesCopy message:messageCopy skipButtonTitle:titleCopy supportedEscapeOfferMask:mask];
   }
 
   else
@@ -3623,17 +3623,17 @@ LABEL_8:
   return v13;
 }
 
-- (id)_piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:(unint64_t)a3
+- (id)_piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:(unint64_t)offers
 {
   v5 = CDPLocalizedString();
   v6 = CDPLocalizedString();
   v7 = CDPLocalizedString();
-  v8 = [(CDPUIController *)self _piggybackingCantGetToMyDevices:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:a3];
+  v8 = [(CDPUIController *)self _piggybackingCantGetToMyDevices:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:offers];
 
   return v8;
 }
 
-- (id)_piggybackingViewControllerWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_piggybackingViewControllerWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   v5 = objc_alloc_init(CDPUIPiggybackingViewModel);
   [(CDPUIPiggybackingViewModel *)v5 setIconName:@"macbook.and.iphone"];
@@ -3644,10 +3644,10 @@ LABEL_8:
   [(CDPUIPiggybackingViewModel *)v5 setMessage:v7];
 
   v8 = CDPLocalizedString();
-  v9 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:a3 title:v8 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_SEND_CODE_BUTTON_TITLE"];
+  v9 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:mask title:v8 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_SEND_CODE_BUTTON_TITLE"];
 
   [(CDPUIPiggybackingViewModel *)v5 setSendCodeOption:v9];
-  v10 = [(CDPUIController *)self _piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:a3];
+  v10 = [(CDPUIController *)self _piggybackingEscapeOfferCantGetToDevicesWithSupportedEscapeOffers:mask];
   v11 = CDPLocalizedString();
   [v10 setEscapeOfferName:v11];
 
@@ -3659,30 +3659,30 @@ LABEL_8:
   return v12;
 }
 
-- (id)_piggybackingSomethingWentWrong:(unint64_t)a3
+- (id)_piggybackingSomethingWentWrong:(unint64_t)wrong
 {
-  v5 = ~a3;
+  v5 = ~wrong;
   v6 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v7 = CDPLocalizedString();
   [(CDPRemoteValidationEscapeOffer *)v6 setTitle:v7];
 
   v8 = CDPLocalizedString();
-  v9 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:a3 title:v8 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_SEND_NEW_CODE_BUTTON_TITLE"];
+  v9 = [(CDPUIController *)self _piggybackingSendCodeEscapeOfferWithSupportedEscapeOffers:wrong title:v8 localizationKey:@"DATA_RECOVERY_PROX_PIGGYBACKING_SEND_NEW_CODE_BUTTON_TITLE"];
 
   [(CDPRemoteValidationEscapeOffer *)v6 addEscapeOptionsObject:v9];
   if ((v5 & 0x60) != 0)
   {
-    if ((a3 & 0x20) != 0)
+    if ((wrong & 0x20) != 0)
     {
       v15 = CDPLocalizedString();
       [(CDPRemoteValidationEscapeOffer *)v6 setMessage:v15];
 
-      v14 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3];
+      v14 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:wrong];
       v11 = v14;
       goto LABEL_8;
     }
 
-    if ((a3 & 0x40) == 0)
+    if ((wrong & 0x40) == 0)
     {
       v11 = CDPLocalizedString();
       [(CDPRemoteValidationEscapeOffer *)v6 setMessage:v11];
@@ -3692,7 +3692,7 @@ LABEL_8:
     v19 = CDPLocalizedString();
     [(CDPRemoteValidationEscapeOffer *)v6 setMessage:v19];
 
-    v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v11 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:wrong];
     v12 = @"DATA_RECOVERY_PROX_PIGGYBACKING_USE_CUSTODIAN_RECOVERY_TITLE";
   }
 
@@ -3701,7 +3701,7 @@ LABEL_8:
     v10 = CDPLocalizedString();
     [(CDPRemoteValidationEscapeOffer *)v6 setMessage:v10];
 
-    v11 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v11 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:wrong];
     v12 = @"DATA_RECOVERY_PROX_PIGGYBACKING_USE_RECOVERY_METHOD_TITLE";
   }
 
@@ -3715,32 +3715,32 @@ LABEL_8:
   [(CDPRemoteValidationEscapeOffer *)v6 addEscapeOptionsObject:v11];
 LABEL_9:
 
-  v16 = [(CDPUIController *)self _tryAgainLaterEscapeOption];
-  [(CDPRemoteValidationEscapeOffer *)v6 addEscapeOptionsObject:v16];
+  _tryAgainLaterEscapeOption = [(CDPUIController *)self _tryAgainLaterEscapeOption];
+  [(CDPRemoteValidationEscapeOffer *)v6 addEscapeOptionsObject:_tryAgainLaterEscapeOption];
 
-  v17 = [(UINavigationController *)self->_navController topViewController];
-  [(CDPRemoteValidationEscapeOffer *)v6 setPresentingViewController:v17];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  [(CDPRemoteValidationEscapeOffer *)v6 setPresentingViewController:topViewController];
 
   return v6;
 }
 
-- (id)_beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(CDPEscapeOption);
   if ([MEMORY[0x277CFD560] isICSCHarmonizationEnabled])
   {
     v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_USE_RECOVERY_CONTACT"];
-    v7 = [v6 localizedString];
-    [(CDPEscapeOption *)v5 setTitle:v7];
+    localizedString = [v6 localizedString];
+    [(CDPEscapeOption *)v5 setTitle:localizedString];
     v8 = @"REMOTE_SECRET_ENTRY_ALERT_USE_RECOVERY_CONTACT";
   }
 
   else
   {
     v6 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_CUSTODIAN"];
-    v7 = [v6 localizedString];
-    [(CDPEscapeOption *)v5 setTitle:v7];
+    localizedString = [v6 localizedString];
+    [(CDPEscapeOption *)v5 setTitle:localizedString];
     v8 = @"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_CUSTODIAN";
   }
 
@@ -3753,7 +3753,7 @@ LABEL_9:
   v10[3] = &unk_278E2B528;
   objc_copyWeak(v11, &location);
   v10[4] = self;
-  v11[1] = a3;
+  v11[1] = mask;
   [(CDPEscapeOption *)v5 setEscapeAction:v10];
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -3792,7 +3792,7 @@ void __83__CDPUIController__beginCustodianRecoveryEscapeOptionWithSupportedEscap
   }
 }
 
-- (id)_custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3
+- (id)_custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers
 {
   v5 = CDPLocalizedString();
   v6 = CDPLocalizedString();
@@ -3803,12 +3803,12 @@ void __83__CDPUIController__beginCustodianRecoveryEscapeOptionWithSupportedEscap
     [CDPUIController _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:];
   }
 
-  v9 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:a3];
+  v9 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:offers];
 
   return v9;
 }
 
-- (id)_custodianAskHelpViewControllerWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_custodianAskHelpViewControllerWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   v5 = objc_alloc_init(CDPUICustodianAskHelpViewModel);
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
@@ -3823,45 +3823,45 @@ void __83__CDPUIController__beginCustodianRecoveryEscapeOptionWithSupportedEscap
 
   [(CDPUICustodianAskHelpViewModel *)v5 setIconName:v6];
   v7 = [MEMORY[0x277CFD508] builderForKey:@"GET_HELP_FROM_RC_VIEW_TITLE" inTable:@"Localizable-Walrus"];
-  v8 = [v7 localizedString];
-  [(CDPUICustodianAskHelpViewModel *)v5 setTitle:v8];
+  localizedString = [v7 localizedString];
+  [(CDPUICustodianAskHelpViewModel *)v5 setTitle:localizedString];
 
   v9 = [MEMORY[0x277CFD508] builderForKey:@"GET_HELP_FROM_RC_VIEW_MESSAGE" inTable:@"Localizable-Walrus"];
-  v10 = [v9 localizedString];
-  [(CDPUICustodianAskHelpViewModel *)v5 setMessage:v10];
+  localizedString2 = [v9 localizedString];
+  [(CDPUICustodianAskHelpViewModel *)v5 setMessage:localizedString2];
 
   v11 = [[CDPUICustodianAskHelpViewController alloc] initWithViewModel:v5 cdpContext:self->_activeContext];
-  v12 = [(CDPUIController *)self _custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3 askHelpController:v11];
+  v12 = [(CDPUIController *)self _custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask askHelpController:v11];
   v13 = [MEMORY[0x277CFD508] builderForKey:@"GET_HELP_NOW_BUTTON_TITLE" inTable:@"Localizable-Walrus"];
-  v14 = [v13 localizedString];
-  [v12 setTitle:v14];
+  localizedString3 = [v13 localizedString];
+  [v12 setTitle:localizedString3];
 
   [v12 setTitleLocalizationKey:@"GET_HELP_NOW_BUTTON_TITLE"];
   [(CDPUICustodianAskHelpViewModel *)v5 setGetHelpNowOption:v12];
-  v15 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:a3];
+  v15 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:mask];
   v16 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_BUTTON_TITLE_DONT_ASK_FOR_HELP" inTable:@"Localizable-Walrus"];
-  v17 = [v16 localizedString];
-  [v15 setEscapeOfferName:v17];
+  localizedString4 = [v16 localizedString];
+  [v15 setEscapeOfferName:localizedString4];
 
   [(CDPUICustodianAskHelpViewModel *)v5 setDontAskForHelpOption:v15];
   v18 = *MEMORY[0x277CFD9D8];
-  v19 = [(CDPUICustodianAskHelpViewModel *)v5 dontAskForHelpOption];
-  [v19 setTitleTelemetryKey:v18];
+  dontAskForHelpOption = [(CDPUICustodianAskHelpViewModel *)v5 dontAskForHelpOption];
+  [dontAskForHelpOption setTitleTelemetryKey:v18];
 
   [v15 setPresentingViewController:v11];
 
   return v11;
 }
 
-- (id)_custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3 askHelpController:(id)a4
+- (id)_custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask askHelpController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v7 = [objc_alloc(MEMORY[0x277CFD4B0]) initWithContext:self->_activeContext];
   v8 = objc_alloc_init(CDPEscapeOption);
   v9 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_CUSTODIAN"];
-  v10 = [v9 localizedString];
-  [(CDPEscapeOption *)v8 setTitle:v10];
+  localizedString = [v9 localizedString];
+  [(CDPEscapeOption *)v8 setTitle:localizedString];
 
   [(CDPEscapeOption *)v8 setTitleTelemetryKey:*MEMORY[0x277CFD9B8]];
   v14[0] = MEMORY[0x277D85DD0];
@@ -3869,11 +3869,11 @@ void __83__CDPUIController__beginCustodianRecoveryEscapeOptionWithSupportedEscap
   v14[2] = __96__CDPUIController__custodianRecoveryEscapeOptionWithSupportedEscapeOfferMask_askHelpController___block_invoke;
   v14[3] = &unk_278E2B438;
   objc_copyWeak(v17, &location);
-  v11 = v6;
+  v11 = controllerCopy;
   v15 = v11;
   v12 = v7;
   v16 = v12;
-  v17[1] = a3;
+  v17[1] = mask;
   [(CDPEscapeOption *)v8 setEscapeAction:v14];
 
   objc_destroyWeak(v17);
@@ -3948,36 +3948,36 @@ void __96__CDPUIController__custodianRecoveryEscapeOptionWithSupportedEscapeOffe
   }
 }
 
-- (void)custodianOSSelectionViewControllerWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4 completion:(id)a5
+- (void)custodianOSSelectionViewControllerWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask completion:(id)completion
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v31 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v7 = objc_alloc_init(CDPUICustodianOSSelectionViewModel);
   v8 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_OS_PICKER_TITLE"];
-  v9 = [v8 localizedString];
-  [(CDPUICustodianOSSelectionViewModel *)v7 setTitle:v9];
+  localizedString = [v8 localizedString];
+  [(CDPUICustodianOSSelectionViewModel *)v7 setTitle:localizedString];
 
   v10 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_OS_PICKER_SUBTITLE"];
-  v11 = [v10 localizedString];
-  [(CDPUICustodianOSSelectionViewModel *)v7 setMessage:v11];
+  localizedString2 = [v10 localizedString];
+  [(CDPUICustodianOSSelectionViewModel *)v7 setMessage:localizedString2];
 
   v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
   {
     v12 = MEMORY[0x277D755D0];
-    v13 = [MEMORY[0x277D74300] systemFontOfSize:{82.0, v31, v33}];
+    v13 = [MEMORY[0x277D74300] systemFontOfSize:{82.0, completionCopy, controllerCopy}];
     v14 = [v12 configurationWithFont:v13 scale:-1];
 
     v15 = [MEMORY[0x277D755D0] configurationWithColorRenderingMode:2];
     v16 = MEMORY[0x277D755D0];
-    v17 = [MEMORY[0x277D75348] systemWhiteColor];
-    v44[0] = v17;
-    v18 = [MEMORY[0x277D75348] systemWhiteColor];
-    v19 = [v18 colorWithAlphaComponent:0.5];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    v44[0] = systemWhiteColor;
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    v19 = [systemWhiteColor2 colorWithAlphaComponent:0.5];
     v44[1] = v19;
-    v20 = [MEMORY[0x277D75348] systemBlueColor];
-    v44[2] = v20;
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v44[2] = systemBlueColor;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:3];
     v22 = [v16 configurationWithPaletteColors:v21];
 
@@ -3990,7 +3990,7 @@ void __96__CDPUIController__custodianRecoveryEscapeOptionWithSupportedEscapeOffe
 
   else
   {
-    v26 = [MEMORY[0x277D755B8] imageNamed:@"recovery_contact" inBundle:{v36, v31, v33}];
+    v26 = [MEMORY[0x277D755B8] imageNamed:@"recovery_contact" inBundle:{v36, completionCopy, controllerCopy}];
     [(CDPUICustodianOSSelectionViewModel *)v7 setIcon:v26];
   }
 
@@ -4013,7 +4013,7 @@ void __96__CDPUIController__custodianRecoveryEscapeOptionWithSupportedEscapeOffe
   v37[4] = self;
   v29 = v34;
   v38 = v29;
-  v41[1] = a4;
+  v41[1] = mask;
   v30 = v7;
   v39 = v30;
   [v29 startRecoverySessionWithCompletion:v37];
@@ -4195,33 +4195,33 @@ void __113__CDPUIController_custodianOSSelectionViewControllerWithCustodianContr
   [(UINavigationController *)self->_navController presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)_instructionsControllerForPlatform:(unint64_t)a3 controller:(id)a4 supportedEscapeOfferMask:(unint64_t)a5
+- (id)_instructionsControllerForPlatform:(unint64_t)platform controller:(id)controller supportedEscapeOfferMask:(unint64_t)mask
 {
-  v8 = a4;
+  controllerCopy = controller;
   v9 = objc_alloc_init(CDPUICustodianInstructionsViewModel);
   v10 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_INSTRUCTIONS_TITLE"];
-  v11 = [v10 localizedString];
-  [(CDPUICustodianInstructionsViewModel *)v9 setTitle:v11];
+  localizedString = [v10 localizedString];
+  [(CDPUICustodianInstructionsViewModel *)v9 setTitle:localizedString];
 
   v12 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_INSTRUCTIONS_SUBTITLE"];
-  v13 = [v12 localizedString];
-  [(CDPUICustodianInstructionsViewModel *)v9 setSubtitle:v13];
+  localizedString2 = [v12 localizedString];
+  [(CDPUICustodianInstructionsViewModel *)v9 setSubtitle:localizedString2];
 
   v14 = [MEMORY[0x277CFD508] builderForKey:&stru_285826188];
-  v15 = [v14 localizedString];
-  [(CDPUICustodianInstructionsViewModel *)v9 setFooterText:v15];
+  localizedString3 = [v14 localizedString];
+  [(CDPUICustodianInstructionsViewModel *)v9 setFooterText:localizedString3];
 
-  v16 = [MEMORY[0x277CFD480] sharedInstance];
-  v17 = [v16 primaryAccountFullName];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountFullName = [mEMORY[0x277CFD480] primaryAccountFullName];
 
-  if (a3 == 1)
+  if (platform == 1)
   {
     v18 = @"CUSTODIAN_INSTRUCTIONS_OS_DETAIL_IOS";
   }
 
   else
   {
-    if (a3 != 2)
+    if (platform != 2)
     {
       goto LABEL_6;
     }
@@ -4230,29 +4230,29 @@ void __113__CDPUIController_custodianOSSelectionViewControllerWithCustodianContr
   }
 
   v19 = [MEMORY[0x277CFD508] builderForKey:v18];
-  v20 = [v19 localizedString];
-  [(CDPUICustodianInstructionsViewModel *)v9 setInstructionHeader:v20];
+  localizedString4 = [v19 localizedString];
+  [(CDPUICustodianInstructionsViewModel *)v9 setInstructionHeader:localizedString4];
 
   v21 = MEMORY[0x277CCACA8];
   v22 = CDPLocalizedString();
-  v23 = [v21 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, v17];
+  v23 = [v21 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, primaryAccountFullName];
   [(CDPUICustodianInstructionsViewModel *)v9 setInstructions:v23];
 
 LABEL_6:
   v24 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_INSTRUCTIONS_FOOTER"];
-  v25 = [v24 localizedString];
-  [(CDPUICustodianInstructionsViewModel *)v9 setFooterText:v25];
+  localizedString5 = [v24 localizedString];
+  [(CDPUICustodianInstructionsViewModel *)v9 setFooterText:localizedString5];
 
-  v26 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:a5];
+  v26 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:mask];
   v27 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_INSTRUCTIONS_ESCAPE_TITLE"];
-  v28 = [v27 localizedString];
-  [v26 setEscapeOfferName:v28];
+  localizedString6 = [v27 localizedString];
+  [v26 setEscapeOfferName:localizedString6];
 
   [(CDPUICustodianInstructionsViewModel *)v9 setEscapeOffer:v26];
   v29 = objc_alloc_init(CDPEscapeOption);
   v30 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_INSTRUCTIONS_CONTINUE_TITLE"];
-  v31 = [v30 localizedString];
-  [(CDPEscapeOption *)v29 setTitle:v31];
+  localizedString7 = [v30 localizedString];
+  [(CDPEscapeOption *)v29 setTitle:localizedString7];
 
   objc_initWeak(&location, self);
   v35[0] = MEMORY[0x277D85DD0];
@@ -4261,9 +4261,9 @@ LABEL_6:
   v35[3] = &unk_278E2B438;
   objc_copyWeak(v37, &location);
   v35[4] = self;
-  v32 = v8;
+  v32 = controllerCopy;
   v36 = v32;
-  v37[1] = a5;
+  v37[1] = mask;
   [(CDPEscapeOption *)v29 setEscapeAction:v35];
   [(CDPUICustodianInstructionsViewModel *)v9 setContinueOption:v29];
   v33 = [[CDPUICustodianInstructionsViewController alloc] initWithViewModel:v9];
@@ -4282,22 +4282,22 @@ void __90__CDPUIController__instructionsControllerForPlatform_controller_support
   [WeakRetained[7] pushViewController:v2 animated:1];
 }
 
-- (id)_custodianCodeEntryViewControllerWithController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_custodianCodeEntryViewControllerWithController:(id)controller supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = objc_alloc_init(CDPUICodeEntryViewModel);
   v8 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_CODE_PROMPT_TITLE"];
-  v9 = [v8 localizedString];
-  [(CDPUICodeEntryViewModel *)v7 setPromptTitle:v9];
+  localizedString = [v8 localizedString];
+  [(CDPUICodeEntryViewModel *)v7 setPromptTitle:localizedString];
 
   v10 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_CODE_PROMPT_MESSAGE"];
-  v11 = [v10 localizedString];
-  [(CDPUICodeEntryViewModel *)v7 setPromptMessage:v11];
+  localizedString2 = [v10 localizedString];
+  [(CDPUICodeEntryViewModel *)v7 setPromptMessage:localizedString2];
 
-  v12 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:a4];
+  v12 = [(CDPUIController *)self _custodianCantReachContactEscapeOfferWithSupportedEscapeOffers:mask];
   v13 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_CODE_PROMPT_ESCAPE_TITLE"];
-  v14 = [v13 localizedString];
-  [v12 setTitle:v14];
+  localizedString3 = [v13 localizedString];
+  [v12 setTitle:localizedString3];
 
   [v12 setTitleTelemetryKey:*MEMORY[0x277CFD9D0]];
   [(CDPUICodeEntryViewModel *)v7 setEscapeOffer:v12];
@@ -4306,7 +4306,7 @@ void __90__CDPUIController__instructionsControllerForPlatform_controller_support
   v18[1] = 3221225472;
   v18[2] = __92__CDPUIController__custodianCodeEntryViewControllerWithController_supportedEscapeOfferMask___block_invoke;
   v18[3] = &unk_278E2B6B8;
-  v15 = v6;
+  v15 = controllerCopy;
   v19 = v15;
   objc_copyWeak(&v20, &location);
   [(CDPUICodeEntryViewModel *)v7 setCodeEnteredAction:v18];
@@ -4417,9 +4417,9 @@ uint64_t __92__CDPUIController__custodianCodeEntryViewControllerWithController_s
   return [*(a1 + 40) _validateCustodianRecoveryInfo:*(a1 + 32)];
 }
 
-- (void)_validateCustodianRecoveryInfo:(id)a3
+- (void)_validateCustodianRecoveryInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
   remoteSecretValidator = self->_remoteSecretValidator;
   v6[0] = MEMORY[0x277D85DD0];
@@ -4427,7 +4427,7 @@ uint64_t __92__CDPUIController__custodianCodeEntryViewControllerWithController_s
   v6[2] = __50__CDPUIController__validateCustodianRecoveryInfo___block_invoke;
   v6[3] = &unk_278E2B6E0;
   objc_copyWeak(&v7, &location);
-  [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator validateCustodianRecoveryInfo:v4 withCompletion:v6];
+  [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator validateCustodianRecoveryInfo:infoCopy withCompletion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -4459,24 +4459,24 @@ void __50__CDPUIController__validateCustodianRecoveryInfo___block_invoke(uint64_
 {
   v3 = MEMORY[0x277D75110];
   v4 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_MACOS_DEPLETED_ATTEMPTS_TITLE"];
-  v5 = [v4 localizedString];
+  localizedString = [v4 localizedString];
   v6 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_MACOS_DEPLETED_ATTEMPTS_MESSAGE"];
-  v7 = [v6 localizedString];
-  v8 = [v3 alertControllerWithTitle:v5 message:v7 preferredStyle:1];
+  localizedString2 = [v6 localizedString];
+  v8 = [v3 alertControllerWithTitle:localizedString message:localizedString2 preferredStyle:1];
 
   v9 = MEMORY[0x277D750F8];
   v10 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_ERROR_DEFAULT_BUTTON"];
-  v11 = [v10 localizedString];
+  localizedString3 = [v10 localizedString];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__CDPUIController__presentCustodianAttemptLimitAlert__block_invoke;
   v14[3] = &unk_278E2B708;
   v14[4] = self;
-  v12 = [v9 actionWithTitle:v11 style:0 handler:v14];
+  v12 = [v9 actionWithTitle:localizedString3 style:0 handler:v14];
 
   [v8 addAction:v12];
-  v13 = [(CDPUIBaseController *)self presentingViewController];
-  [v13 presentViewController:v8 animated:1 completion:0];
+  presentingViewController = [(CDPUIBaseController *)self presentingViewController];
+  [presentingViewController presentViewController:v8 animated:1 completion:0];
 }
 
 void __53__CDPUIController__presentCustodianAttemptLimitAlert__block_invoke(uint64_t a1)
@@ -4486,33 +4486,33 @@ void __53__CDPUIController__presentCustodianAttemptLimitAlert__block_invoke(uint
   [v1 cancelValidationWithError:v2];
 }
 
-- (id)_recoveryKeyEscapeOfferWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_recoveryKeyEscapeOfferWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  v6 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3];
+  v6 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
   [v6 setStyle:4];
-  v7 = [v6 title];
-  [(CDPRemoteValidationEscapeOffer *)v5 setEscapeOfferName:v7];
+  title = [v6 title];
+  [(CDPRemoteValidationEscapeOffer *)v5 setEscapeOfferName:title];
 
   [(CDPRemoteValidationEscapeOffer *)v5 addEscapeOptionsObject:v6];
 
   return v5;
 }
 
-- (id)_recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_recoveryMethodEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask
 {
-  v3 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3];
+  v3 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
   [v3 setStyle:4];
   v4 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_USE_RECOVERY_METHOD"];
-  v5 = [v4 localizedString];
-  [v3 setTitle:v5];
+  localizedString = [v4 localizedString];
+  [v3 setTitle:localizedString];
 
   [v3 setTitleTelemetryKey:@"REMOTE_SECRET_ENTRY_ALERT_USE_RECOVERY_METHOD"];
 
   return v3;
 }
 
-- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3
+- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask
 {
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -4521,7 +4521,7 @@ void __53__CDPUIController__presentCustodianAttemptLimitAlert__block_invoke(uint
   v7[3] = &unk_278E2B730;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  v5 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3 presentationBlock:v7];
+  v5 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask presentationBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 
@@ -4546,31 +4546,31 @@ void __72__CDPUIController__recoveryKeyEscapeOptionWithSupportedEscapeOfferMask_
   [*(*(a1 + 32) + 152) insert:32];
 }
 
-- (id)_enterCustodianCodeEscapeOfferWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_enterCustodianCodeEscapeOfferWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  v8 = [(CDPUIController *)self _enterCustodianCodeEscapeOptionWithCustodianController:v6 supportedEscapeOfferMask:a4];
+  v8 = [(CDPUIController *)self _enterCustodianCodeEscapeOptionWithCustodianController:controllerCopy supportedEscapeOfferMask:mask];
 
   [v8 setStyle:4];
-  v9 = [v8 title];
-  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:v9];
+  title = [v8 title];
+  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:title];
 
   [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v8];
 
   return v7;
 }
 
-- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__CDPUIController__enterCustodianCodeEscapeOptionWithCustodianController_supportedEscapeOfferMask___block_invoke;
   v9[3] = &unk_278E2B758;
   objc_copyWeak(&v10, &location);
-  v7 = [(CDPUIController *)self _enterCustodianCodeEscapeOptionWithCustodianController:v6 supportedEscapeOfferMask:a4 presentationBlock:v9];
+  v7 = [(CDPUIController *)self _enterCustodianCodeEscapeOptionWithCustodianController:controllerCopy supportedEscapeOfferMask:mask presentationBlock:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 
@@ -4588,25 +4588,25 @@ void __99__CDPUIController__enterCustodianCodeEscapeOptionWithCustodianControlle
   }
 }
 
-- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)a3 supportedEscapeOfferMask:(unint64_t)a4 presentationBlock:(id)a5
+- (id)_enterCustodianCodeEscapeOptionWithCustodianController:(id)controller supportedEscapeOfferMask:(unint64_t)mask presentationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10 = objc_alloc_init(CDPEscapeOption);
   v11 = [MEMORY[0x277CFD508] builderForKey:@"CUSTODIAN_RECOVERY_CODE_PROMPT_TITLE"];
-  v12 = [v11 localizedString];
-  [(CDPEscapeOption *)v10 setTitle:v12];
+  localizedString = [v11 localizedString];
+  [(CDPEscapeOption *)v10 setTitle:localizedString];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __117__CDPUIController__enterCustodianCodeEscapeOptionWithCustodianController_supportedEscapeOfferMask_presentationBlock___block_invoke;
   v16[3] = &unk_278E2B780;
   objc_copyWeak(v19, &location);
-  v13 = v8;
+  v13 = controllerCopy;
   v17 = v13;
-  v19[1] = a4;
-  v14 = v9;
+  v19[1] = mask;
+  v14 = blockCopy;
   v18 = v14;
   [(CDPEscapeOption *)v10 setEscapeAction:v16];
 
@@ -4634,14 +4634,14 @@ void __117__CDPUIController__enterCustodianCodeEscapeOptionWithCustodianControll
   }
 }
 
-- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)a3 presentationBlock:(id)a4
+- (id)_recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:(unint64_t)mask presentationBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v7 = objc_alloc_init(CDPEscapeOption);
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_RK"];
-  v9 = [v8 localizedString];
-  [(CDPEscapeOption *)v7 setTitle:v9];
+  localizedString = [v8 localizedString];
+  [(CDPEscapeOption *)v7 setTitle:localizedString];
 
   [(CDPEscapeOption *)v7 setTitleLocalizationKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_RK"];
   [(CDPEscapeOption *)v7 setTitleTelemetryKey:*MEMORY[0x277CFDA10]];
@@ -4651,8 +4651,8 @@ void __117__CDPUIController__enterCustodianCodeEscapeOptionWithCustodianControll
   v12[3] = &unk_278E2B780;
   objc_copyWeak(v14, &location);
   v12[4] = self;
-  v14[1] = a3;
-  v10 = v6;
+  v14[1] = mask;
+  v10 = blockCopy;
   v13 = v10;
   [(CDPEscapeOption *)v7 setEscapeAction:v12];
 
@@ -4681,30 +4681,30 @@ void __90__CDPUIController__recoveryKeyEscapeOptionWithSupportedEscapeOfferMask_
   }
 }
 
-- (id)_recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:(unint64_t)a3
+- (id)_recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:(unint64_t)offers
 {
   v5 = CDPLocalizedString();
   v6 = CDPLocalizedString();
   v7 = CDPLocalizedString();
-  v8 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:a3];
+  v8 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v5 message:v6 skipButtonTitle:v7 supportedEscapeOfferMask:offers];
 
   return v8;
 }
 
-- (id)recoveryKeyEntryControllerForCircleJoinWithCancel:(BOOL)a3 supportedEscapeOfferMask:(unint64_t)a4
+- (id)recoveryKeyEntryControllerForCircleJoinWithCancel:(BOOL)cancel supportedEscapeOfferMask:(unint64_t)mask
 {
-  v5 = a3;
+  cancelCopy = cancel;
   v7 = [[CDPRecoveryKeyEntryViewModel alloc] initWithContext:self->_activeContext validator:self->_remoteSecretValidator];
   [(CDPRecoveryKeyEntryViewModel *)v7 setIsWalrusEnabled:self->_isWalrusEnabled];
-  if ((a4 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
-    v8 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a4];
+    v8 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     [(CDPRecoveryKeyEntryViewModel *)v7 setCustodianRecoveryEscapeOption:v8];
   }
 
-  v9 = [(CDPUIController *)self _recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:a4];
+  v9 = [(CDPUIController *)self _recoveryKeyResetProtectedDataEscapeOfferWithSupportedEscapeOffers:mask];
   [(CDPRecoveryKeyEntryViewModel *)v7 setDeleteiCloudDataEscapeOffer:v9];
-  [(CDPRecoveryKeyEntryViewModel *)v7 setShouldSuppressCancelButton:!v5];
+  [(CDPRecoveryKeyEntryViewModel *)v7 setShouldSuppressCancelButton:!cancelCopy];
   v10 = [[CDPRecoveryKeyEntryViewController alloc] initWithRecoveryContext:v7 cdpContext:self->_activeContext];
   [v9 setPresentingViewController:v10];
   objc_initWeak(&location, self);
@@ -4714,7 +4714,7 @@ void __90__CDPUIController__recoveryKeyEscapeOptionWithSupportedEscapeOfferMask_
   v13[3] = &unk_278E2B7A8;
   objc_copyWeak(v15, &location);
   v13[4] = self;
-  v15[1] = a4;
+  v15[1] = mask;
   v11 = v9;
   v14 = v11;
   [(CDPRecoveryKeyEntryViewModel *)v7 setCompletionHandler:v13];
@@ -4781,14 +4781,14 @@ void __94__CDPUIController_recoveryKeyEntryControllerForCircleJoinWithCancel_sup
   [v3 insert:64];
 }
 
-- (id)_enterSecretLaterEscapeOptionWithSecret:(unint64_t)a3
+- (id)_enterSecretLaterEscapeOptionWithSecret:(unint64_t)secret
 {
   objc_initWeak(&location, self);
   v4 = objc_alloc_init(CDPEscapeOption);
   v5 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_LATER"];
-  v6 = [v5 addSecretType:a3];
-  v7 = [v6 localizedString];
-  [(CDPEscapeOption *)v4 setTitle:v7];
+  v6 = [v5 addSecretType:secret];
+  localizedString = [v6 localizedString];
+  [(CDPEscapeOption *)v4 setTitle:localizedString];
 
   [(CDPEscapeOption *)v4 setTitleLocalizationKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_LATER"];
   [(CDPEscapeOption *)v4 setTitleTelemetryKey:*MEMORY[0x277CFD998]];
@@ -4838,25 +4838,25 @@ void __59__CDPUIController__enterSecretLaterEscapeOptionWithSecret___block_invok
 {
   v3 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v4 = [MEMORY[0x277CFD508] builderForKey:@"WAITING_APPROVAL_ESCAPE_TITLE"];
-  v5 = [(CDPUIController *)self _localDeviceClass];
-  v6 = [v4 addDeviceClass:v5];
-  v7 = [v6 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v3 setEscapeOfferName:v7];
+  _localDeviceClass = [(CDPUIController *)self _localDeviceClass];
+  v6 = [v4 addDeviceClass:_localDeviceClass];
+  localizedString = [v6 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v3 setEscapeOfferName:localizedString];
 
   return v3;
 }
 
 - (id)_localDeviceClass
 {
-  v2 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v3 = [v2 deviceClass];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
 
-  return v3;
+  return deviceClass;
 }
 
-- (id)_singleICSCEscapeOfferWithMask:(unint64_t)a3 withController:(id)a4
+- (id)_singleICSCEscapeOfferWithMask:(unint64_t)mask withController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
   v8 = CDPLocalizedString();
   [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:v8];
@@ -4868,7 +4868,7 @@ void __59__CDPUIController__enterSecretLaterEscapeOptionWithSecret___block_invok
   [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v10];
 
   objc_initWeak(&location, self);
-  if ((a3 & 4) != 0)
+  if ((mask & 4) != 0)
   {
     v11 = objc_alloc_init(CDPEscapeOption);
     v12 = CDPLocalizedString();
@@ -4885,13 +4885,13 @@ void __59__CDPUIController__enterSecretLaterEscapeOptionWithSecret___block_invok
     objc_destroyWeak(&v25);
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
-    v13 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v13 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v13];
   }
 
-  if ((a3 & 8) != 0)
+  if ((mask & 8) != 0)
   {
     v14 = objc_alloc_init(CDPEscapeOption);
     v15 = CDPLocalizedString();
@@ -4903,7 +4903,7 @@ void __59__CDPUIController__enterSecretLaterEscapeOptionWithSecret___block_invok
     v20 = __65__CDPUIController__singleICSCEscapeOfferWithMask_withController___block_invoke_2;
     v21 = &unk_278E2B4D8;
     objc_copyWeak(&v23, &location);
-    v22 = v6;
+    v22 = controllerCopy;
     [(CDPEscapeOption *)v14 setEscapeAction:&v18];
     [(CDPRemoteValidationEscapeOffer *)v7 addEscapeOptionsObject:v14, v18, v19, v20, v21];
 
@@ -4930,143 +4930,143 @@ void __65__CDPUIController__singleICSCEscapeOfferWithMask_withController___block
   [WeakRetained _showResetKeychainConfirmationAlertWithViewController:*(a1 + 32)];
 }
 
-- (id)_escapeOffersForgotAllWithMask:(unint64_t)a3 presenter:(id)a4 devices:(id)a5
+- (id)_escapeOffersForgotAllWithMask:(unint64_t)mask presenter:(id)presenter devices:(id)devices
 {
-  v47 = a4;
+  presenterCopy = presenter;
   v8 = MEMORY[0x277CBEB18];
-  v9 = a5;
-  v49 = [v8 array];
+  devicesCopy = devices;
+  array = [v8 array];
   v10 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  v11 = [v9 prevailingLocalSecretType];
+  prevailingLocalSecretType = [devicesCopy prevailingLocalSecretType];
 
   v12 = [MEMORY[0x277CFD508] builderForKey:@"DEVICE_PICKER_FORGOT_CODE_DIALOG_TITLE"];
-  v13 = [v12 addSecretType:v11];
-  v50 = [v13 localizedString];
+  v13 = [v12 addSecretType:prevailingLocalSecretType];
+  localizedString = [v13 localizedString];
 
   if ([MEMORY[0x277CFD4A8] isSubsetOfContextTypeRepair:{-[CDPContext type](self->_activeContext, "type")}])
   {
     v14 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_FORGOT_ALL_RESET"];
-    v15 = [v14 addSecretType:v11];
-    v16 = [(CDPUIController *)self _localDeviceClass];
-    v17 = [v15 addDeviceClass:v16];
-    v18 = [v17 localizedString];
+    v15 = [v14 addSecretType:prevailingLocalSecretType];
+    _localDeviceClass = [(CDPUIController *)self _localDeviceClass];
+    v17 = [v15 addDeviceClass:_localDeviceClass];
+    localizedString2 = [v17 localizedString];
   }
 
   else
   {
     v14 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_FORGOT_ALL"];
-    v15 = [v14 addSecretType:v11];
-    v18 = [v15 localizedString];
+    v15 = [v14 addSecretType:prevailingLocalSecretType];
+    localizedString2 = [v15 localizedString];
   }
 
   v19 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_DEVICE_PICKER_FORGOT_ALL" inTable:@"Localizable-Walrus"];
-  v20 = [v19 addSecretType:v11];
-  v21 = [v20 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v10 setEscapeOfferName:v21];
+  v20 = [v19 addSecretType:prevailingLocalSecretType];
+  localizedString3 = [v20 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v10 setEscapeOfferName:localizedString3];
 
-  v22 = v50;
-  [(CDPRemoteValidationEscapeOffer *)v10 setTitle:v50];
-  [(CDPRemoteValidationEscapeOffer *)v10 setMessage:v18];
+  v22 = localizedString;
+  [(CDPRemoteValidationEscapeOffer *)v10 setTitle:localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v10 setMessage:localizedString2];
   if ([(CDPContext *)self->_activeContext keychainSyncSystem]== 1)
   {
-    v23 = v18;
-    if ((a3 & 4) == 0 || !self->_offeringRemoteApproval)
+    v23 = localizedString2;
+    if ((mask & 4) == 0 || !self->_offeringRemoteApproval)
     {
       v39 = CDPLocalizedString();
       [(CDPRemoteValidationEscapeOffer *)v10 setTitle:v39];
 
       v40 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_MULTI_ICSC_ESCAPE_OFFER_MESSAGE"];
-      v41 = [v40 addSecretType:v11];
-      v42 = [v41 localizedString];
-      [(CDPRemoteValidationEscapeOffer *)v10 setMessage:v42];
+      v41 = [v40 addSecretType:prevailingLocalSecretType];
+      localizedString4 = [v41 localizedString];
+      [(CDPRemoteValidationEscapeOffer *)v10 setMessage:localizedString4];
 
       v27 = +[CDPEscapeOption okOption];
       goto LABEL_16;
     }
 
-    v24 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_MULTI_ICSC_ESCAPE_OFFER_MESSAGE_REMOTE_APPROVAL"];
-    v25 = [v24 addSecretType:v11];
-    v26 = [v25 localizedString];
-    [(CDPRemoteValidationEscapeOffer *)v10 setMessage:v26];
+    _remoteApprovalEscapeOption = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SOS_MULTI_ICSC_ESCAPE_OFFER_MESSAGE_REMOTE_APPROVAL"];
+    v25 = [_remoteApprovalEscapeOption addSecretType:prevailingLocalSecretType];
+    localizedString5 = [v25 localizedString];
+    [(CDPRemoteValidationEscapeOffer *)v10 setMessage:localizedString5];
 
 LABEL_8:
     v27 = +[CDPEscapeOption cancelOption];
 LABEL_16:
-    v30 = v27;
+    localizedString6 = v27;
 LABEL_21:
-    [(CDPRemoteValidationEscapeOffer *)v10 addEscapeOptionsObject:v30, v47];
+    [(CDPRemoteValidationEscapeOffer *)v10 addEscapeOptionsObject:localizedString6, presenterCopy];
     goto LABEL_22;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((mask & 0x80) != 0)
   {
-    v23 = v18;
-    v43 = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v23 = localizedString2;
+    v43 = [(CDPUIController *)self _beginPiggybackingRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
 LABEL_20:
-    v30 = v43;
-    [v43 setStyle:{4, v47}];
+    localizedString6 = v43;
+    [v43 setStyle:{4, presenterCopy}];
     goto LABEL_21;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((mask & 0x20) != 0)
   {
-    v23 = v18;
-    v43 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v23 = localizedString2;
+    v43 = [(CDPUIController *)self _recoveryKeyEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_20;
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((mask & 0x40) != 0)
   {
-    v23 = v18;
-    v43 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:a3];
+    v23 = localizedString2;
+    v43 = [(CDPUIController *)self _beginCustodianRecoveryEscapeOptionWithSupportedEscapeOfferMask:mask];
     goto LABEL_20;
   }
 
-  if ((a3 & 4) != 0)
+  if ((mask & 4) != 0)
   {
-    v23 = v18;
-    v24 = [(CDPUIController *)self _remoteApprovalEscapeOption];
-    [(CDPRemoteValidationEscapeOffer *)v10 addEscapeOptionsObject:v24];
+    v23 = localizedString2;
+    _remoteApprovalEscapeOption = [(CDPUIController *)self _remoteApprovalEscapeOption];
+    [(CDPRemoteValidationEscapeOffer *)v10 addEscapeOptionsObject:_remoteApprovalEscapeOption];
     goto LABEL_8;
   }
 
-  if ((a3 & 0x18) == 0)
+  if ((mask & 0x18) == 0)
   {
     goto LABEL_23;
   }
 
-  v23 = v18;
+  v23 = localizedString2;
   v28 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_TITLE"];
-  v29 = [v28 addSecretType:v11];
-  v30 = [v29 localizedString];
+  v29 = [v28 addSecretType:prevailingLocalSecretType];
+  localizedString6 = [v29 localizedString];
 
   v31 = [MEMORY[0x277CFD508] builderForKey:@"DATA_RECOVERY_DEVICE_SELECTION_SKIP_MESSAGE"];
-  v32 = [v31 addSecretType:v11];
-  v33 = [v32 localizedString];
+  v32 = [v31 addSecretType:prevailingLocalSecretType];
+  localizedString7 = [v32 localizedString];
 
   v34 = CDPLocalizedString();
-  v35 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:v30 message:v33 skipButtonTitle:v34 supportedEscapeOfferMask:a3];
+  v35 = [(CDPUIController *)self _skipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString6 message:localizedString7 skipButtonTitle:v34 supportedEscapeOfferMask:mask];
 
   v36 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_DEVICE_PICKER_FORGOT_ALL" inTable:@"Localizable-Walrus"];
-  v37 = [v36 addSecretType:v11];
-  v38 = [v37 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v35 setEscapeOfferName:v38];
+  v37 = [v36 addSecretType:prevailingLocalSecretType];
+  localizedString8 = [v37 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v35 setEscapeOfferName:localizedString8];
 
-  v22 = v50;
+  v22 = localizedString;
   v10 = v35;
 LABEL_22:
 
-  v18 = v23;
+  localizedString2 = v23;
 LABEL_23:
-  [v49 addObject:{v10, v47}];
+  [array addObject:{v10, presenterCopy}];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __68__CDPUIController__escapeOffersForgotAllWithMask_presenter_devices___block_invoke;
   v51[3] = &unk_278E2B7D0;
   v52 = v48;
   v44 = v48;
-  [v49 enumerateObjectsUsingBlock:v51];
-  v45 = [v49 copy];
+  [array enumerateObjectsUsingBlock:v51];
+  v45 = [array copy];
 
   return v45;
 }
@@ -5104,27 +5104,27 @@ void __46__CDPUIController__remoteApprovalEscapeOption__block_invoke(uint64_t a1
   }
 }
 
-- (void)_setupDevicePickerController:(id)a3
+- (void)_setupDevicePickerController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   v4 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_activeContext eventName:*MEMORY[0x277CFD6B0] category:*MEMORY[0x277CFD930]];
   [(CDPRPDLedger *)self->_ledger insert:2];
   v5 = [[CDPDevicePickerViewController alloc] initWithDevices:self->_devices delegate:self tableViewStyle:2];
   devicePicker = self->_devicePicker;
   self->_devicePicker = v5;
 
-  v7 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v7 sendEvent:v4];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v4];
 
-  if (v8)
+  if (controllerCopy)
   {
-    v8[2](v8, self->_devicePicker);
+    controllerCopy[2](controllerCopy, self->_devicePicker);
   }
 }
 
-- (void)_showResetKeychainConfirmationAlertWithViewController:(id)a3
+- (void)_showResetKeychainConfirmationAlertWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = MEMORY[0x277D750F8];
   v6 = CDPLocalizedString();
   v7 = [v5 actionWithTitle:v6 style:1 handler:0];
@@ -5135,9 +5135,9 @@ void __46__CDPUIController__remoteApprovalEscapeOption__block_invoke(uint64_t a1
   v17 = 3221225472;
   v18 = __73__CDPUIController__showResetKeychainConfirmationAlertWithViewController___block_invoke;
   v19 = &unk_278E2B7F8;
-  v20 = v4;
-  v21 = self;
-  v10 = v4;
+  v20 = controllerCopy;
+  selfCopy = self;
+  v10 = controllerCopy;
   v11 = [v8 actionWithTitle:v9 style:0 handler:&v16];
 
   v12 = MEMORY[0x277D75110];
@@ -5183,9 +5183,9 @@ uint64_t __73__CDPUIController__showResetKeychainConfirmationAlertWithViewContro
   return [*(v3 + 24) resetAccountCDPStateWithEscapeOptionsOffered:{objc_msgSend(v4, "escapeOffersPresented")}];
 }
 
-- (void)_showTryAgainLaterConfirmationAlertWithViewController:(id)a3
+- (void)_showTryAgainLaterConfirmationAlertWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D750F8];
   v6 = CDPLocalizedString();
@@ -5242,15 +5242,15 @@ void __73__CDPUIController__showTryAgainLaterConfirmationAlertWithViewController
   [v1 cancelValidationWithError:v2];
 }
 
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  controllerCopy = controller;
+  resultCopy = result;
+  v9 = controllerCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 objectForKey:@"securityCode"];
+    v10 = [resultCopy objectForKey:@"securityCode"];
     [v9 disableUserInteractionAndStartSpinner];
     remoteSecretValidator = self->_remoteSecretValidator;
     v16[0] = MEMORY[0x277D85DD0];
@@ -5258,11 +5258,11 @@ void __73__CDPUIController__showTryAgainLaterConfirmationAlertWithViewController
     v16[2] = __68__CDPUIController_keychainSyncController_didFinishWithResult_error___block_invoke;
     v16[3] = &unk_278E2B870;
     v17 = v9;
-    v18 = self;
+    selfCopy = self;
     [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator validateSecret:v10 devices:0 type:0 withCompletion:v16];
   }
 
-  else if ([v8 isEqualToString:@"resetKeychain"])
+  else if ([resultCopy isEqualToString:@"resetKeychain"])
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -5275,7 +5275,7 @@ void __73__CDPUIController__showTryAgainLaterConfirmationAlertWithViewController
     [(CDPRemoteDeviceSecretValidator *)self->_remoteSecretValidator resetAccountCDPStateWithEscapeOptionsOffered:[(CDPRPDLedger *)self->_ledger escapeOffersPresented]];
   }
 
-  else if ([v8 isEqualToString:@"approveFromOtherDevice"])
+  else if ([resultCopy isEqualToString:@"approveFromOtherDevice"])
   {
     v13 = _CDPLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -5378,41 +5378,41 @@ uint64_t __47__CDPUIController__beginWaitingForApprovalFlow__block_invoke(uint64
   return result;
 }
 
-- (void)cdpContext:(id)a3 createLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context createLocalSecretWithCompletion:(id)completion
 {
-  v14 = a4;
-  v5 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v6 = [v5 hasLocalSecret];
+  completionCopy = completion;
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-  if (v6)
+  if (hasLocalSecret)
   {
-    v7 = v14;
-    if (!v14)
+    v7 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = _CDPStateError();
-    (*(v14 + 2))(v14, 0, v8);
+    _noRecoveryFactorsBaseController = _CDPStateError();
+    (*(completionCopy + 2))(completionCopy, 0, _noRecoveryFactorsBaseController);
   }
 
   else
   {
-    v8 = [(CDPUIController *)self _noRecoveryFactorsBaseController];
+    _noRecoveryFactorsBaseController = [(CDPUIController *)self _noRecoveryFactorsBaseController];
     v9 = [CDPUIDeviceToDeviceEncryptionFlowContext alloc];
-    v10 = [MEMORY[0x277CFD480] sharedInstance];
-    v11 = [v10 primaryAccountAltDSID];
-    v12 = [(CDPUIDeviceToDeviceEncryptionFlowContext *)v9 initWithAltDSID:v11];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+    primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
+    v12 = [(CDPUIDeviceToDeviceEncryptionFlowContext *)v9 initWithAltDSID:primaryAccountAltDSID];
 
-    [(CDPUIDeviceToDeviceEncryptionFlowContext *)v12 setPresentingViewController:v8];
+    [(CDPUIDeviceToDeviceEncryptionFlowContext *)v12 setPresentingViewController:_noRecoveryFactorsBaseController];
     [(CDPUIDeviceToDeviceEncryptionFlowContext *)v12 setForceInlinePresentation:1];
     [(CDPUIDeviceToDeviceEncryptionFlowContext *)v12 setShouldSuppressPasscodeCreationCancelPrompt:1];
     v13 = [[CDPUIDeviceToDeviceEncryptionHelper alloc] initWithContext:v12];
     [(CDPUIDeviceToDeviceEncryptionHelper *)v13 _configureNavigationController];
-    [(CDPUIDeviceToDeviceEncryptionHelper *)v13 _createLocalSecretForContext:v12 completion:v14];
+    [(CDPUIDeviceToDeviceEncryptionHelper *)v13 _createLocalSecretForContext:v12 completion:completionCopy];
   }
 
-  v7 = v14;
+  v7 = completionCopy;
 LABEL_6:
 }
 
@@ -5427,33 +5427,33 @@ LABEL_6:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->super._presentingViewController);
-    v6 = [WeakRetained presentedViewController];
+    presentedViewController = [WeakRetained presentedViewController];
     v7 = objc_loadWeakRetained(&self->super._presentingViewController);
     v3 = v7;
-    if (v6)
+    if (presentedViewController)
     {
-      v8 = [(UINavigationController *)v7 presentedViewController];
+      presentedViewController2 = [(UINavigationController *)v7 presentedViewController];
 
-      v3 = v8;
+      v3 = presentedViewController2;
     }
   }
 
   return v3;
 }
 
-- (id)_skipOrDeleteiCloudDataEscapeOfferWithTitle:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6
+- (id)_skipOrDeleteiCloudDataEscapeOfferWithTitle:(id)title message:(id)message skipButtonTitle:(id)buttonTitle supportedEscapeOfferMask:(unint64_t)mask
 {
-  v6 = a6;
+  maskCopy = mask;
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
   v13 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  [(CDPRemoteValidationEscapeOffer *)v13 setTitle:v10];
-  [(CDPRemoteValidationEscapeOffer *)v13 setMessage:v11];
+  [(CDPRemoteValidationEscapeOffer *)v13 setTitle:titleCopy];
+  [(CDPRemoteValidationEscapeOffer *)v13 setMessage:messageCopy];
   objc_initWeak(&location, self);
   v14 = objc_alloc_init(CDPEscapeOption);
-  [(CDPEscapeOption *)v14 setTitle:v12];
+  [(CDPEscapeOption *)v14 setTitle:buttonTitleCopy];
   [(CDPEscapeOption *)v14 setTitleTelemetryKey:*MEMORY[0x277CFDA48]];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -5462,23 +5462,23 @@ LABEL_6:
   objc_copyWeak(&v36, &location);
   [(CDPEscapeOption *)v14 setEscapeAction:v35];
   [(CDPRemoteValidationEscapeOffer *)v13 addEscapeOptionsObject:v14];
-  if ((v6 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
-    v15 = [(CDPUIController *)self _buildQuotaRequest];
-    v16 = [v15 isUrlAvailable];
+    _buildQuotaRequest = [(CDPUIController *)self _buildQuotaRequest];
+    isUrlAvailable = [_buildQuotaRequest isUrlAvailable];
     v17 = objc_alloc_init(CDPEscapeOption);
-    if (v16)
+    if (isUrlAvailable)
     {
       v18 = _CDPLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [v15 urlString];
-        [CDPUIController _skipOrDeleteiCloudDataEscapeOfferWithTitle:v19 message:v38 skipButtonTitle:? supportedEscapeOfferMask:?];
+        urlString = [_buildQuotaRequest urlString];
+        [CDPUIController _skipOrDeleteiCloudDataEscapeOfferWithTitle:urlString message:v38 skipButtonTitle:? supportedEscapeOfferMask:?];
       }
 
       v20 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ALERT_BUTTON_TITLE_MORE_INFORMATION" inTable:@"Localizable-Walrus"];
-      v21 = [v20 localizedString];
-      [(CDPEscapeOption *)v17 setTitle:v21];
+      localizedString = [v20 localizedString];
+      [(CDPEscapeOption *)v17 setTitle:localizedString];
 
       [(CDPEscapeOption *)v17 setStyle:0];
       [(CDPEscapeOption *)v17 setTitleTelemetryKey:*MEMORY[0x277CFDA20]];
@@ -5488,7 +5488,7 @@ LABEL_6:
       v32[3] = &unk_278E2B4D8;
       v22 = &v34;
       objc_copyWeak(&v34, &location);
-      v33 = v15;
+      v33 = _buildQuotaRequest;
       [(CDPEscapeOption *)v17 setEscapeAction:v32];
     }
 
@@ -5501,8 +5501,8 @@ LABEL_6:
       }
 
       v24 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ALERT_BUTTON_TITLE_DELETE_ICLOUD_DATA" inTable:@"Localizable-Walrus"];
-      v25 = [v24 localizedString];
-      [(CDPEscapeOption *)v17 setTitle:v25];
+      localizedString2 = [v24 localizedString];
+      [(CDPEscapeOption *)v17 setTitle:localizedString2];
 
       [(CDPEscapeOption *)v17 setStyle:2];
       [(CDPEscapeOption *)v17 setTitleTelemetryKey:*MEMORY[0x277CFDA18]];
@@ -5529,8 +5529,8 @@ LABEL_6:
   v26 = +[CDPEscapeOption cancelOption];
   [(CDPRemoteValidationEscapeOffer *)v13 addEscapeOptionsObject:v26];
 
-  v27 = [(UINavigationController *)self->_navController topViewController];
-  [(CDPRemoteValidationEscapeOffer *)v13 setPresentingViewController:v27];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  [(CDPRemoteValidationEscapeOffer *)v13 setPresentingViewController:topViewController];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&location);
@@ -5671,26 +5671,26 @@ uint64_t __112__CDPUIController__skipOrDeleteiCloudDataEscapeOfferWithTitle_mess
   return v11;
 }
 
-- (void)_rpdEscapeOptionWithOffer:(id)a3
+- (void)_rpdEscapeOptionWithOffer:(id)offer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  offerCopy = offer;
   objc_initWeak(&location, self);
-  v5 = [(CDPUIController *)self _buildQuotaRequest];
-  v6 = [v5 isUrlAvailable];
+  _buildQuotaRequest = [(CDPUIController *)self _buildQuotaRequest];
+  isUrlAvailable = [_buildQuotaRequest isUrlAvailable];
   v7 = objc_alloc_init(CDPEscapeOption);
-  if (v6)
+  if (isUrlAvailable)
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v5 urlString];
-      [CDPUIController _skipOrDeleteiCloudDataEscapeOfferWithTitle:v9 message:v27 skipButtonTitle:? supportedEscapeOfferMask:?];
+      urlString = [_buildQuotaRequest urlString];
+      [CDPUIController _skipOrDeleteiCloudDataEscapeOfferWithTitle:urlString message:v27 skipButtonTitle:? supportedEscapeOfferMask:?];
     }
 
     v10 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_MORE_OPTIONS"];
-    v11 = [v10 localizedString];
-    [(CDPEscapeOption *)v7 setTitle:v11];
+    localizedString = [v10 localizedString];
+    [(CDPEscapeOption *)v7 setTitle:localizedString];
 
     [(CDPEscapeOption *)v7 setStyle:0];
     [(CDPEscapeOption *)v7 setTitleTelemetryKey:*MEMORY[0x277CFDA20]];
@@ -5700,7 +5700,7 @@ uint64_t __112__CDPUIController__skipOrDeleteiCloudDataEscapeOfferWithTitle_mess
     v23[3] = &unk_278E2B4D8;
     v12 = &v25;
     objc_copyWeak(&v25, &location);
-    v24 = v5;
+    v24 = _buildQuotaRequest;
     [(CDPEscapeOption *)v7 setEscapeAction:v23];
   }
 
@@ -5713,8 +5713,8 @@ uint64_t __112__CDPUIController__skipOrDeleteiCloudDataEscapeOfferWithTitle_mess
     }
 
     v14 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_ALERT_MORE_OPTIONS"];
-    v15 = [v14 localizedString];
-    [(CDPEscapeOption *)v7 setTitle:v15];
+    localizedString2 = [v14 localizedString];
+    [(CDPEscapeOption *)v7 setTitle:localizedString2];
 
     [(CDPEscapeOption *)v7 setStyle:0];
     [(CDPEscapeOption *)v7 setTitleTelemetryKey:*MEMORY[0x277CFDA18]];
@@ -5762,8 +5762,8 @@ uint64_t __112__CDPUIController__skipOrDeleteiCloudDataEscapeOfferWithTitle_mess
     [v16 setCanShowEscapeOption:v17];
   }
 
-  [v4 addEscapeOptionsObject:v7];
-  [v4 addEscapeOptionsObject:v16];
+  [offerCopy addEscapeOptionsObject:v7];
+  [offerCopy addEscapeOptionsObject:v16];
 
   objc_destroyWeak(&location);
 }
@@ -5919,21 +5919,21 @@ uint64_t __45__CDPUIController__rpdEscapeOptionWithOffer___block_invoke_2(uint64
   return v3;
 }
 
-- (id)_iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:(id)a3 message:(id)a4 skipButtonTitle:(id)a5 supportedEscapeOfferMask:(unint64_t)a6 withDevice:(id)a7
+- (id)_iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:(id)title message:(id)message skipButtonTitle:(id)buttonTitle supportedEscapeOfferMask:(unint64_t)mask withDevice:(id)device
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  maskCopy = mask;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  deviceCopy = device;
   v16 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  [(CDPRemoteValidationEscapeOffer *)v16 setTitle:v12];
-  [(CDPRemoteValidationEscapeOffer *)v16 setMessage:v13];
+  [(CDPRemoteValidationEscapeOffer *)v16 setTitle:titleCopy];
+  [(CDPRemoteValidationEscapeOffer *)v16 setMessage:messageCopy];
   objc_initWeak(&location, self);
-  if ([v14 length])
+  if ([buttonTitleCopy length])
   {
     v17 = objc_alloc_init(CDPEscapeOption);
-    [(CDPEscapeOption *)v17 setTitle:v14];
+    [(CDPEscapeOption *)v17 setTitle:buttonTitleCopy];
     [(CDPEscapeOption *)v17 setTitleTelemetryKey:*MEMORY[0x277CFDA48]];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
@@ -5945,13 +5945,13 @@ uint64_t __45__CDPUIController__rpdEscapeOptionWithOffer___block_invoke_2(uint64
     objc_destroyWeak(&v24);
   }
 
-  if ((v8 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     [(CDPUIController *)self _rpdEscapeOptionWithOffer:v16];
   }
 
-  v18 = [(UINavigationController *)self->_navController topViewController];
-  [(CDPRemoteValidationEscapeOffer *)v16 setPresentingViewController:v18];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  [(CDPRemoteValidationEscapeOffer *)v16 setPresentingViewController:topViewController];
 
   objc_destroyWeak(&location);
 
@@ -5984,10 +5984,10 @@ void __127__CDPUIController__iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle_mess
   [v1 cancelValidationWithError:v2];
 }
 
-- (void)cdpContext:(id)a3 showResetCompletedAlertWithCompletion:(id)a4
+- (void)cdpContext:(id)context showResetCompletedAlertWithCompletion:(id)completion
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = [(CDPUIController *)self _iCloudDeleteConfirmationViewController:a4];
+  v5 = [(CDPUIController *)self _iCloudDeleteConfirmationViewController:completion];
   [(CDPUIController *)self _setResetCompletedView:v5];
   [(CDPUIController *)self _enableUserInteractionAndStopSpinner];
   navController = self->_navController;
@@ -6002,8 +6002,8 @@ void __127__CDPUIController__iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle_mess
 
     v9 = self->_navController;
     v11[0] = v5;
-    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    [(UINavigationController *)v9 setViewControllers:v10 animated:1];
+    _noRecoveryFactorsBaseController = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
+    [(UINavigationController *)v9 setViewControllers:_noRecoveryFactorsBaseController animated:1];
   }
 
   else
@@ -6013,16 +6013,16 @@ void __127__CDPUIController__iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle_mess
       [CDPUIController cdpContext:showResetCompletedAlertWithCompletion:];
     }
 
-    v10 = [(CDPUIController *)self _noRecoveryFactorsBaseController];
-    [v10 presentViewController:v5 animated:1 completion:0];
+    _noRecoveryFactorsBaseController = [(CDPUIController *)self _noRecoveryFactorsBaseController];
+    [_noRecoveryFactorsBaseController presentViewController:v5 animated:1 completion:0];
   }
 }
 
-- (void)cdpContext:(id)a3 showResetFailedAlertWithUnderlyingError:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context showResetFailedAlertWithUnderlyingError:(id)error completion:(id)completion
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  errorCopy = error;
   v9 = [MEMORY[0x277CBEC10] mutableCopy];
   v10 = CDPLocalizedString();
   [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA450]];
@@ -6031,20 +6031,20 @@ void __127__CDPUIController__iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle_mess
   [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
   v12 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_ERROR_DEFAULT_BUTTON"];
-  v13 = [v12 localizedString];
-  v20[0] = v13;
+  localizedString = [v12 localizedString];
+  v20[0] = localizedString;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   [v9 setObject:v14 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
-  [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  [v9 setObject:errorCopy forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   v15 = _CDPStateError();
   activeContext = self->_activeContext;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __81__CDPUIController_cdpContext_showResetFailedAlertWithUnderlyingError_completion___block_invoke;
   v18[3] = &unk_278E2B8C0;
-  v19 = v7;
-  v17 = v7;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [(CDPUIController *)self cdpContext:activeContext showError:v15 withDefaultIndex:0 withCompletion:v18];
 }
 
@@ -6059,14 +6059,14 @@ uint64_t __81__CDPUIController_cdpContext_showResetFailedAlertWithUnderlyingErro
   return result;
 }
 
-- (void)_showQuotaStorageAppListView:(id)a3
+- (void)_showQuotaStorageAppListView:(id)view
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__CDPUIController__showQuotaStorageAppListView___block_invoke;
   v3[3] = &unk_278E2B8E8;
   v3[4] = self;
-  [(CDPUIController *)self _showQuotaStorageAppListView:a3 andCompletion:v3];
+  [(CDPUIController *)self _showQuotaStorageAppListView:view andCompletion:v3];
 }
 
 void __48__CDPUIController__showQuotaStorageAppListView___block_invoke(uint64_t a1, int a2, void *a3)
@@ -6084,15 +6084,15 @@ void __48__CDPUIController__showQuotaStorageAppListView___block_invoke(uint64_t 
   }
 }
 
-- (void)_showQuotaStorageAppListView:(id)a3 andCompletion:(id)a4
+- (void)_showQuotaStorageAppListView:(id)view andCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 urlRequest];
+  viewCopy = view;
+  completionCopy = completion;
+  urlRequest = [viewCopy urlRequest];
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [CDPUIController _showQuotaStorageAppListView:v8 andCompletion:v9];
+    [CDPUIController _showQuotaStorageAppListView:urlRequest andCompletion:v9];
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D46220]);
@@ -6101,8 +6101,8 @@ void __48__CDPUIController__showQuotaStorageAppListView___block_invoke(uint64_t 
 
   [self->_storageAppListRemoteUIController setDelegate:self];
   v12 = self->_storageAppListRemoteUIController;
-  v13 = [(CDPUIController *)self _noRecoveryFactorsBaseController];
-  [(RemoteUIController *)v12 setHostViewController:v13];
+  _noRecoveryFactorsBaseController = [(CDPUIController *)self _noRecoveryFactorsBaseController];
+  [(RemoteUIController *)v12 setHostViewController:_noRecoveryFactorsBaseController];
 
   objc_initWeak(&location, self);
   v14 = self->_storageAppListRemoteUIController;
@@ -6111,7 +6111,7 @@ void __48__CDPUIController__showQuotaStorageAppListView___block_invoke(uint64_t 
   v20[2] = __62__CDPUIController__showQuotaStorageAppListView_andCompletion___block_invoke_727;
   v20[3] = &unk_278E2B930;
   objc_copyWeak(&v22, &location);
-  v15 = v7;
+  v15 = completionCopy;
   v21 = v15;
   v16 = [(RemoteUIController *)v14 setHandlerForElementsMatching:&__block_literal_global_717 handler:v20];
   v17 = self->_storageAppListRemoteUIController;
@@ -6121,7 +6121,7 @@ void __48__CDPUIController__showQuotaStorageAppListView___block_invoke(uint64_t 
   v18[3] = &unk_278E2B980;
   objc_copyWeak(&v19, &location);
   v18[4] = self;
-  [(RemoteUIController *)v17 loadRequest:v8 completion:v18];
+  [(RemoteUIController *)v17 loadRequest:urlRequest completion:v18];
   objc_destroyWeak(&v19);
 
   objc_destroyWeak(&v22);
@@ -6258,13 +6258,13 @@ void __62__CDPUIController__showQuotaStorageAppListView_andCompletion___block_in
   }
 }
 
-- (void)_handleResetActionWithCompletion:(id)a3
+- (void)_handleResetActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CFD480];
-  v6 = [(CDPContext *)self->_activeContext dsid];
-  v7 = [v6 stringValue];
-  LODWORD(v5) = [v5 isICDPEnabledForDSID:v7];
+  dsid = [(CDPContext *)self->_activeContext dsid];
+  stringValue = [dsid stringValue];
+  LODWORD(v5) = [v5 isICDPEnabledForDSID:stringValue];
 
   if (v5 && ([MEMORY[0x277CFD4F8] sharedInstance], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hasLocalSecret"), v8, (v9 & 1) == 0))
   {
@@ -6273,13 +6273,13 @@ void __62__CDPUIController__showQuotaStorageAppListView_andCompletion___block_in
     v11[1] = 3221225472;
     v11[2] = __52__CDPUIController__handleResetActionWithCompletion___block_invoke;
     v11[3] = &unk_278E2B9A8;
-    v12 = v4;
+    v12 = completionCopy;
     [(CDPUIController *)self cdpContext:activeContext createLocalSecretWithCompletion:v11];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -6313,10 +6313,10 @@ void __52__CDPUIController__handleResetActionWithCompletion___block_invoke(uint6
   v9();
 }
 
-- (id)_quotaScreenRPDErrorWithUnderlyingError:(id)a3
+- (id)_quotaScreenRPDErrorWithUnderlyingError:(id)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = [MEMORY[0x277CBEC10] mutableCopy];
   v5 = CDPLocalizedString();
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
@@ -6325,12 +6325,12 @@ void __52__CDPUIController__handleResetActionWithCompletion___block_invoke(uint6
   [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CCA470]];
 
   v7 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_ERROR_DEFAULT_BUTTON"];
-  v8 = [v7 localizedString];
-  v12[0] = v8;
+  localizedString = [v7 localizedString];
+  v12[0] = localizedString;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA480]];
 
-  [v4 setObject:v3 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  [v4 setObject:errorCopy forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   v10 = _CDPStateError();
 
   return v10;
@@ -6338,43 +6338,43 @@ void __52__CDPUIController__handleResetActionWithCompletion___block_invoke(uint6
 
 - (void)_disableUserInteractionAndStartSpinner
 {
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v4 = [(UINavigationController *)self->_navController topViewController];
-  v5 = [v4 navigationItem];
-  [v3 startAnimatingInNavItem:v5 forIdentifier:@"cdpuicontroller" hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  navigationItem = [topViewController navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"cdpuicontroller" hideBackButton:1];
 
-  v7 = [(UINavigationController *)self->_navController topViewController];
-  v6 = [v7 view];
-  [v6 setUserInteractionEnabled:0];
+  topViewController2 = [(UINavigationController *)self->_navController topViewController];
+  view = [topViewController2 view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)_enableUserInteractionAndStopSpinner
 {
-  v2 = [(UINavigationController *)self->_navController topViewController];
-  v3 = [v2 view];
-  [v3 setUserInteractionEnabled:1];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
+  view = [topViewController view];
+  [view setUserInteractionEnabled:1];
 
-  v4 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  [v4 stopAnimatingForIdentifier:@"cdpuicontroller"];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"cdpuicontroller"];
 }
 
-- (id)_iCloudDeleteConfirmationViewController:(id)a3
+- (id)_iCloudDeleteConfirmationViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(CDPUIInfoViewModel);
   v6 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ICLOUD_DELETED_CONFIRM_VIEW_TITLE" inTable:@"Localizable-Walrus"];
-  v7 = [v6 localizedString];
-  [(CDPUIInfoViewModel *)v5 setTitle:v7];
+  localizedString = [v6 localizedString];
+  [(CDPUIInfoViewModel *)v5 setTitle:localizedString];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ICLOUD_DELETED_CONFIRM_VIEW_MESSAGE" inTable:@"Localizable-Walrus"];
-  v9 = [v8 localizedString];
-  [(CDPUIInfoViewModel *)v5 setMessage:v9];
+  localizedString2 = [v8 localizedString];
+  [(CDPUIInfoViewModel *)v5 setMessage:localizedString2];
 
   objc_initWeak(&location, self);
   v10 = objc_alloc_init(CDPEscapeOption);
   v11 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_ICLOUD_DELETED_CONFIRM_DONE_BUTTON_TITLE" inTable:@"Localizable-Walrus"];
-  v12 = [v11 localizedString];
-  [(CDPEscapeOption *)v10 setTitle:v12];
+  localizedString3 = [v11 localizedString];
+  [(CDPEscapeOption *)v10 setTitle:localizedString3];
 
   [(CDPEscapeOption *)v10 setTitleTelemetryKey:*MEMORY[0x277CFD978]];
   v16[0] = MEMORY[0x277D85DD0];
@@ -6382,7 +6382,7 @@ void __52__CDPUIController__handleResetActionWithCompletion___block_invoke(uint6
   v16[2] = __59__CDPUIController__iCloudDeleteConfirmationViewController___block_invoke;
   v16[3] = &unk_278E2B9D0;
   objc_copyWeak(&v18, &location);
-  v13 = v4;
+  v13 = controllerCopy;
   v17 = v13;
   [(CDPEscapeOption *)v10 setEscapeAction:v16];
   [(CDPUIInfoViewModel *)v5 setOption1:v10];
@@ -6426,28 +6426,28 @@ void __59__CDPUIController__iCloudDeleteConfirmationViewController___block_invok
 
   v3 = !self->_isWalrusEnabled;
   v4 = [CDPQuotaStorageAppListRequest alloc];
-  v5 = [MEMORY[0x277CFD480] sharedInstance];
-  v6 = [v5 primaryAppleAccount];
-  v7 = [(CDPQuotaStorageAppListRequest *)v4 initWithAccount:v6 appList:v2 contentSpecifiesE2EE:v3];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAppleAccount = [mEMORY[0x277CFD480] primaryAppleAccount];
+  v7 = [(CDPQuotaStorageAppListRequest *)v4 initWithAccount:primaryAppleAccount appList:v2 contentSpecifiesE2EE:v3];
 
   return v7;
 }
 
-- (void)remoteUIController:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)remoteUIController:(id)controller didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CE4508];
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  challengeCopy = challenge;
   v10 = objc_alloc_init(v6);
-  v9 = [v10 validateCertificateTrustWithChallenge:v8 type:0];
+  v9 = [v10 validateCertificateTrustWithChallenge:challengeCopy type:0];
 
-  v7[2](v7, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (BOOL)_isQuotaServiceHost:(id)a3
+- (BOOL)_isQuotaServiceHost:(id)host
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:@"quota.icloud.com"] & 1) != 0 || objc_msgSend(v3, "rangeOfString:options:", @"p\\d{2}-quota.icloud.com", 1024) != 0x7FFFFFFFFFFFFFFFLL;
+  hostCopy = host;
+  v4 = ([hostCopy isEqualToString:@"quota.icloud.com"] & 1) != 0 || objc_msgSend(hostCopy, "rangeOfString:options:", @"p\\d{2}-quota.icloud.com", 1024) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
@@ -6463,8 +6463,8 @@ void __59__CDPUIController__iCloudDeleteConfirmationViewController___block_invok
 
   else
   {
-    v5 = [MEMORY[0x277CFD480] sharedInstance];
-    v6 = [v5 rpdProbationIsInEffectForDuration:self->_activeContext context:self->_rpdProbationDuration];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+    v6 = [mEMORY[0x277CFD480] rpdProbationIsInEffectForDuration:self->_activeContext context:self->_rpdProbationDuration];
 
     return v6;
   }
@@ -6544,7 +6544,7 @@ uint64_t __58__CDPUIController_remoteSecretEntryDidRequestAccountReset__block_in
   return [*(*(a1 + 32) + 24) resetAccountCDPStateWithEscapeOptionsOffered:{objc_msgSend(*(*(a1 + 32) + 152), "escapeOffersPresented")}];
 }
 
-- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)a3 newestDevice:(id)a4
+- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)controller newestDevice:(id)device
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -6571,10 +6571,10 @@ uint64_t __61__CDPUIController_remoteSecretEntryDidRequestDeviceSelection__block
   return [v3 insert:2];
 }
 
-- (void)remoteSecretEntryDidFinishValidationWithError:(id)a3
+- (void)remoteSecretEntryDidFinishValidationWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (self->_rootViewController)
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -6582,7 +6582,7 @@ uint64_t __61__CDPUIController_remoteSecretEntryDidRequestDeviceSelection__block
     v6[2] = __65__CDPUIController_remoteSecretEntryDidFinishValidationWithError___block_invoke;
     v6[3] = &unk_278E2B2D0;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     [(CDPUIController *)self _dismissPresentedViewControllerWithReason:0 completion:v6];
   }
 }
@@ -6613,34 +6613,34 @@ uint64_t __65__CDPUIController_remoteSecretEntryDidFinishValidationWithError___b
   [(CDPRPDLedger *)self->_ledger insert:64];
 }
 
-- (void)remoteSecretEntryDidRequestAccountResetEscapeActionForDevice:(id)a3
+- (void)remoteSecretEntryDidRequestAccountResetEscapeActionForDevice:(id)device
 {
   remoteSecretValidator = self->_remoteSecretValidator;
-  v5 = a3;
-  v6 = [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMask];
+  deviceCopy = device;
+  supportedEscapeOfferMask = [(CDPRemoteDeviceSecretValidator *)remoteSecretValidator supportedEscapeOfferMask];
   v7 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v8 = [v5 modelClass];
-  v9 = [v7 addDeviceClass:v8];
-  v10 = [v9 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v25 = [v10 localizedString];
+  modelClass = [deviceCopy modelClass];
+  v9 = [v7 addDeviceClass:modelClass];
+  v10 = [v9 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v10 localizedString];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_DONT_KNOW_ALERT_SUBTITLE_NO_RECOVERY_METHOD"];
-  v13 = [v12 addSecretType:{objc_msgSend(v5, "localSecretType")}];
-  v14 = [v13 localizedString];
-  v15 = [v5 localizedName];
-  v16 = [v11 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+  v13 = [v12 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v13 localizedString];
+  localizedName = [deviceCopy localizedName];
+  v16 = [v11 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
 
   v17 = CDPLocalizedString();
-  v18 = [(CDPUIController *)self _iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:v25 message:v16 skipButtonTitle:v17 supportedEscapeOfferMask:v6 withDevice:v5];
+  v18 = [(CDPUIController *)self _iCSCSkipOrDeleteiCloudDataEscapeOfferWithTitle:localizedString message:v16 skipButtonTitle:v17 supportedEscapeOfferMask:supportedEscapeOfferMask withDevice:deviceCopy];
   v19 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v20 = [v5 modelClass];
-  v21 = [v19 addDeviceClass:v20];
-  v22 = [v5 localSecretType];
+  modelClass2 = [deviceCopy modelClass];
+  v21 = [v19 addDeviceClass:modelClass2];
+  localSecretType = [deviceCopy localSecretType];
 
-  v23 = [v21 addSecretType:v22];
-  v24 = [v23 localizedString];
-  [v18 setEscapeOfferName:v24];
+  v23 = [v21 addSecretType:localSecretType];
+  localizedString3 = [v23 localizedString];
+  [v18 setEscapeOfferName:localizedString3];
 
   [v18 setPresentingViewController:self->_navController];
   [v18 handleEscapeAction:self];
@@ -6664,25 +6664,25 @@ uint64_t __73__CDPUIController_remoteSecretEntryDidRequestDeviceSelectionEscapeA
   return [v3 insert:2];
 }
 
-- (void)remoteSecretEntryDidRequestSkipEscapeActionForDevice:(id)a3
+- (void)remoteSecretEntryDidRequestSkipEscapeActionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v6 = [v4 modelClass];
-  v7 = [v5 addDeviceClass:v6];
-  v8 = [v7 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v9 = [v8 localizedString];
+  modelClass = [deviceCopy modelClass];
+  v7 = [v5 addDeviceClass:modelClass];
+  v8 = [v7 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v8 localizedString];
 
   v10 = MEMORY[0x277CCACA8];
   v11 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_DONT_KNOW_ALERT_SUBTITLE_NO_RECOVERY_METHOD"];
-  v12 = [v11 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v13 = [v12 localizedString];
-  v14 = [v4 localizedName];
-  v15 = [v10 stringWithValidatedFormat:v13 validFormatSpecifiers:@"%@" error:0, v14];
+  v12 = [v11 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v12 localizedString];
+  localizedName = [deviceCopy localizedName];
+  v15 = [v10 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
 
   v26 = CDPLocalizedString();
   v16 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:self->_activeContext];
-  [(CDPRemoteValidationEscapeOffer *)v16 setTitle:v9];
+  [(CDPRemoteValidationEscapeOffer *)v16 setTitle:localizedString];
   v25 = v15;
   [(CDPRemoteValidationEscapeOffer *)v16 setMessage:v15];
   objc_initWeak(&location, self);
@@ -6696,17 +6696,17 @@ uint64_t __73__CDPUIController_remoteSecretEntryDidRequestDeviceSelectionEscapeA
   v27[3] = &unk_278E2B4B0;
   objc_copyWeak(&v28, &location);
   [(CDPEscapeOption *)v17 setEscapeAction:v27];
-  v24 = v9;
+  v24 = localizedString;
   [(CDPRemoteValidationEscapeOffer *)v16 addEscapeOptionsObject:v17];
   v18 = +[CDPEscapeOption cancelOption];
   [v18 setStyle:0];
   [(CDPRemoteValidationEscapeOffer *)v16 addEscapeOptionsObject:v18];
   v19 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v20 = [v4 modelClass];
-  v21 = [v19 addDeviceClass:v20];
-  v22 = [v21 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v23 = [v22 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v16 setEscapeOfferName:v23];
+  modelClass2 = [deviceCopy modelClass];
+  v21 = [v19 addDeviceClass:modelClass2];
+  v22 = [v21 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString3 = [v22 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v16 setEscapeOfferName:localizedString3];
 
   [(CDPRemoteValidationEscapeOffer *)v16 setPresentingViewController:self->_navController];
   [(CDPRemoteValidationEscapeOffer *)v16 handleEscapeAction:self];
@@ -6757,13 +6757,13 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
   {
     if (([MEMORY[0x277CFD560] isNaturalUIEnabled] & 1) == 0)
     {
-      v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-      v4 = [(UIViewController *)self->_hostingController navigationItem];
-      [v3 startAnimatingInNavItem:v4 forIdentifier:@"remoteSecretValidator" hideBackButton:1];
+      mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+      navigationItem = [(UIViewController *)self->_hostingController navigationItem];
+      [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"remoteSecretValidator" hideBackButton:1];
     }
 
-    v5 = [(UIViewController *)self->_hostingController view];
-    [v5 setUserInteractionEnabled:0];
+    view = [(UIViewController *)self->_hostingController view];
+    [view setUserInteractionEnabled:0];
 
     cancelButtonForSwiftUIHostingController = self->_cancelButtonForSwiftUIHostingController;
     if (cancelButtonForSwiftUIHostingController)
@@ -6779,8 +6779,8 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
   hostingController = self->_hostingController;
   if (hostingController)
   {
-    v4 = [(UIViewController *)hostingController view];
-    [v4 setUserInteractionEnabled:1];
+    view = [(UIViewController *)hostingController view];
+    [view setUserInteractionEnabled:1];
 
     cancelButtonForSwiftUIHostingController = self->_cancelButtonForSwiftUIHostingController;
     if (cancelButtonForSwiftUIHostingController)
@@ -6790,15 +6790,15 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
 
     if (([MEMORY[0x277CFD560] isNaturalUIEnabled] & 1) == 0)
     {
-      v6 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-      [v6 stopAnimatingForIdentifier:@"remoteSecretValidator"];
+      mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+      [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"remoteSecretValidator"];
     }
 
     doneButtonForSwiftUIHostingController = self->_doneButtonForSwiftUIHostingController;
     if (doneButtonForSwiftUIHostingController)
     {
-      v8 = [(UIViewController *)self->_hostingController navigationItem];
-      [v8 setRightBarButtonItem:doneButtonForSwiftUIHostingController];
+      navigationItem = [(UIViewController *)self->_hostingController navigationItem];
+      [navigationItem setRightBarButtonItem:doneButtonForSwiftUIHostingController];
 
       v9 = self->_doneButtonForSwiftUIHostingController;
 
@@ -6812,15 +6812,15 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
   hostingController = self->_hostingController;
   if (hostingController)
   {
-    v4 = [(UIViewController *)hostingController navigationItem];
-    v5 = [v4 rightBarButtonItem];
+    navigationItem = [(UIViewController *)hostingController navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (v5)
+    if (rightBarButtonItem)
     {
-      v6 = [(UIViewController *)self->_hostingController navigationItem];
-      v7 = [v6 rightBarButtonItem];
+      navigationItem2 = [(UIViewController *)self->_hostingController navigationItem];
+      rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
       doneButtonForSwiftUIHostingController = self->_doneButtonForSwiftUIHostingController;
-      self->_doneButtonForSwiftUIHostingController = v7;
+      self->_doneButtonForSwiftUIHostingController = rightBarButtonItem2;
 
       v9 = self->_doneButtonForSwiftUIHostingController;
 
@@ -6841,21 +6841,21 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
   }
 }
 
-- (void)presentQuotaScreenWithCompletion:(id)a3
+- (void)presentQuotaScreenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDPUIController *)self _buildQuotaRequest];
-  [(CDPUIController *)self presentQuotaScreenForRequest:v5 completion:v4];
+  completionCopy = completion;
+  _buildQuotaRequest = [(CDPUIController *)self _buildQuotaRequest];
+  [(CDPUIController *)self presentQuotaScreenForRequest:_buildQuotaRequest completion:completionCopy];
 }
 
-- (void)presentQuotaScreenForRequest:(id)a3 completion:(id)a4
+- (void)presentQuotaScreenForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   [(CDPUIController *)self _enableUserInteractionAndStopSpinner];
-  if ([v6 isUrlAvailable])
+  if ([requestCopy isUrlAvailable])
   {
-    [(CDPUIController *)self _showQuotaStorageAppListView:v6 andCompletion:v7];
+    [(CDPUIController *)self _showQuotaStorageAppListView:requestCopy andCompletion:completionCopy];
   }
 
   else
@@ -6863,23 +6863,23 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
     v8 = objc_initWeak(&location, self);
     v9 = MEMORY[0x277D75110];
     v10 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_STORAGE_LIST_UNAVAILABLE_CONFIRMATION_ALERT_TITLE" inTable:@"Localizable-Walrus"];
-    v11 = [v10 localizedString];
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    localizedString = [v10 localizedString];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v14 = [v9 alertControllerWithTitle:v11 message:0 preferredStyle:(v13 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    v14 = [v9 alertControllerWithTitle:localizedString message:0 preferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
 
     v15 = MEMORY[0x277D750F8];
     v16 = [MEMORY[0x277CFD508] builderForKey:@"WALRUS_STORAGE_LIST_UNAVAILABLE_CONFIRMATION_DELETE_BUTTON_TITLE" inTable:@"Localizable-Walrus"];
-    v17 = [v16 localizedString];
+    localizedString2 = [v16 localizedString];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __59__CDPUIController_presentQuotaScreenForRequest_completion___block_invoke;
     v23[3] = &unk_278E2BA18;
-    v18 = self;
-    v24 = v18;
-    v25 = v7;
-    v19 = [v15 actionWithTitle:v17 style:2 handler:v23];
+    selfCopy = self;
+    v24 = selfCopy;
+    v25 = completionCopy;
+    v19 = [v15 actionWithTitle:localizedString2 style:2 handler:v23];
 
     [v14 addAction:v19];
     v20 = MEMORY[0x277D750F8];
@@ -6887,7 +6887,7 @@ void __72__CDPUIController_remoteSecretEntryDidRequestSkipEscapeActionForDevice_
     v22 = [v20 actionWithTitle:v21 style:1 handler:0];
     [v14 addAction:v22];
 
-    [(UINavigationController *)v18->_navController presentViewController:v14 animated:1 completion:0];
+    [(UINavigationController *)selfCopy->_navController presentViewController:v14 animated:1 completion:0];
     objc_destroyWeak(&location);
   }
 }

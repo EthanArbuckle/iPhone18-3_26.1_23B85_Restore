@@ -2,27 +2,27 @@
 - (BOOL)hasChanges;
 - (BOOL)hasChangesAffectingSharingComposition;
 - (BOOL)hasSharingChanges;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PLSharedAssetsContainerIncrementalChange)init;
-- (PLSharedAssetsContainerIncrementalChange)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PLSharedAssetsContainerIncrementalChange)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)addHighlightContainerChange:(id)a3 sourceHighlightID:(id)a4 destinationHighlightID:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeChangesFrom:(id)a3;
+- (void)addHighlightContainerChange:(id)change sourceHighlightID:(id)d destinationHighlightID:(id)iD;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeChangesFrom:(id)from;
 @end
 
 @implementation PLSharedAssetsContainerIncrementalChange
 
-- (void)mergeChangesFrom:(id)a3
+- (void)mergeChangesFrom:(id)from
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy)
   {
-    if ([v4 collectionChangeType])
+    if ([fromCopy collectionChangeType])
     {
       -[PLSharedAssetsContainerIncrementalChange setCollectionChangeType:](self, "setCollectionChangeType:", [v5 collectionChangeType]);
     }
@@ -31,30 +31,30 @@
     {
       if (-[PLSharedAssetsContainerIncrementalChange sharingChange](self, "sharingChange") == 1 && [v5 sharingChange] == 2 || -[PLSharedAssetsContainerIncrementalChange sharingChange](self, "sharingChange") == 2 && objc_msgSend(v5, "sharingChange") == 1)
       {
-        v6 = 0;
+        sharingChange = 0;
       }
 
       else
       {
-        v6 = [v5 sharingChange];
+        sharingChange = [v5 sharingChange];
       }
 
-      [(PLSharedAssetsContainerIncrementalChange *)self setSharingChange:v6];
+      [(PLSharedAssetsContainerIncrementalChange *)self setSharingChange:sharingChange];
     }
 
     if ([v5 suggestionStateChange])
     {
       if (-[PLSharedAssetsContainerIncrementalChange suggestionStateChange](self, "suggestionStateChange") == 1 && [v5 suggestionStateChange] == 2 || -[PLSharedAssetsContainerIncrementalChange suggestionStateChange](self, "suggestionStateChange") == 2 && objc_msgSend(v5, "suggestionStateChange") == 1)
       {
-        v7 = 0;
+        suggestionStateChange = 0;
       }
 
       else
       {
-        v7 = [v5 suggestionStateChange];
+        suggestionStateChange = [v5 suggestionStateChange];
       }
 
-      [(PLSharedAssetsContainerIncrementalChange *)self setSuggestionStateChange:v7];
+      [(PLSharedAssetsContainerIncrementalChange *)self setSuggestionStateChange:suggestionStateChange];
     }
 
     -[PLSharedAssetsContainerIncrementalChange setMediaType:](self, "setMediaType:", [v5 mediaType]);
@@ -62,8 +62,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v5 highlightContainerChanges];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    highlightContainerChanges = [v5 highlightContainerChanges];
+    v9 = [highlightContainerChanges countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -75,24 +75,24 @@
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(highlightContainerChanges);
           }
 
           v13 = *(*(&v18 + 1) + 8 * v12);
-          v14 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-          v15 = [v14 containsObject:v13];
+          highlightContainerChanges2 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+          v15 = [highlightContainerChanges2 containsObject:v13];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-            v17 = [v16 arrayByAddingObject:v13];
+            highlightContainerChanges3 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+            v17 = [highlightContainerChanges3 arrayByAddingObject:v13];
           }
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [highlightContainerChanges countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -100,30 +100,30 @@
   }
 }
 
-- (void)addHighlightContainerChange:(id)a3 sourceHighlightID:(id)a4 destinationHighlightID:(id)a5
+- (void)addHighlightContainerChange:(id)change sourceHighlightID:(id)d destinationHighlightID:(id)iD
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v18)
+  changeCopy = change;
+  dCopy = d;
+  iDCopy = iD;
+  if (!changeCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLSharedAssetsContainer.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"relationshipKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSharedAssetsContainer.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"relationshipKey"}];
   }
 
-  if (!(v9 | v10))
+  if (!(dCopy | iDCopy))
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLSharedAssetsContainer.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"sourceHighlightID != nil || destinationHighlightID != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSharedAssetsContainer.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"sourceHighlightID != nil || destinationHighlightID != nil"}];
   }
 
   v11 = objc_alloc_init(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange);
-  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setRelationshipKey:v18];
-  v12 = [v9 URIRepresentation];
-  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setSourceHighlightURI:v12];
+  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setRelationshipKey:changeCopy];
+  uRIRepresentation = [dCopy URIRepresentation];
+  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setSourceHighlightURI:uRIRepresentation];
 
-  v13 = [v10 URIRepresentation];
-  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setDestinationHighlightURI:v13];
+  uRIRepresentation2 = [iDCopy URIRepresentation];
+  [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)v11 setDestinationHighlightURI:uRIRepresentation2];
 
   v14 = [(NSArray *)self->_highlightContainerChanges arrayByAddingObject:v11];
   highlightContainerChanges = self->_highlightContainerChanges;
@@ -147,8 +147,8 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-    v3 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+    v3 = [highlightContainerChanges countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v6 = *v12;
@@ -158,11 +158,11 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(highlightContainerChanges);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * i) relationshipKey];
-          v9 = [v4 containsObject:v8];
+          relationshipKey = [*(*(&v11 + 1) + 8 * i) relationshipKey];
+          v9 = [v4 containsObject:relationshipKey];
 
           if (v9)
           {
@@ -171,7 +171,7 @@
           }
         }
 
-        v3 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v3 = [highlightContainerChanges countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v3)
         {
           continue;
@@ -194,8 +194,8 @@ LABEL_13:
     return 1;
   }
 
-  v5 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-  v3 = [v5 count] != 0;
+  highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+  v3 = [highlightContainerChanges count] != 0;
 
   return v3;
 }
@@ -207,8 +207,8 @@ LABEL_13:
     return 0;
   }
 
-  v4 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-  if ([v4 count])
+  highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+  if ([highlightContainerChanges count])
   {
     v3 = 0;
   }
@@ -221,7 +221,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSharingChange:self->_sharingChange];
@@ -259,24 +259,24 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLSharedAssetsContainerIncrementalChange *)self collectionChangeType];
-  v6 = [(PLSharedAssetsContainerIncrementalChange *)self sharingChange];
-  v7 = [(PLSharedAssetsContainerIncrementalChange *)self suggestionStateChange];
-  v8 = [(PLSharedAssetsContainerIncrementalChange *)self mediaType];
-  v9 = [(PLSharedAssetsContainerIncrementalChange *)self hasNoOtherAssetChangesRequiringMomentGeneration];
-  v10 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-  if ([v10 count])
+  collectionChangeType = [(PLSharedAssetsContainerIncrementalChange *)self collectionChangeType];
+  sharingChange = [(PLSharedAssetsContainerIncrementalChange *)self sharingChange];
+  suggestionStateChange = [(PLSharedAssetsContainerIncrementalChange *)self suggestionStateChange];
+  mediaType = [(PLSharedAssetsContainerIncrementalChange *)self mediaType];
+  hasNoOtherAssetChangesRequiringMomentGeneration = [(PLSharedAssetsContainerIncrementalChange *)self hasNoOtherAssetChangesRequiringMomentGeneration];
+  highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+  if ([highlightContainerChanges count])
   {
-    v11 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-    v12 = [v11 debugDescription];
+    highlightContainerChanges2 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+    v12 = [highlightContainerChanges2 debugDescription];
     v13 = v3;
     v14 = v12;
-    v15 = [v13 stringWithFormat:@"<%@: %p collectionChangeType = %d, sharingChange = %d, suggestionStateChange = %d, mediaType = %d, hasNoOtherAssetChangesRequiringMomentGeneration = %d, highlightContainerChanges = %@>", v4, self, v5, v6, v7, v8, v9, v12];;
+    v15 = [v13 stringWithFormat:@"<%@: %p collectionChangeType = %d, sharingChange = %d, suggestionStateChange = %d, mediaType = %d, hasNoOtherAssetChangesRequiringMomentGeneration = %d, highlightContainerChanges = %@>", v4, self, collectionChangeType, sharingChange, suggestionStateChange, mediaType, hasNoOtherAssetChangesRequiringMomentGeneration, v12];;
   }
 
   else
   {
-    v15 = [v3 stringWithFormat:@"<%@: %p collectionChangeType = %d, sharingChange = %d, suggestionStateChange = %d, mediaType = %d, hasNoOtherAssetChangesRequiringMomentGeneration = %d, highlightContainerChanges = %@>", v4, self, v5, v6, v7, v8, v9, &stru_1F0F06D80];;
+    v15 = [v3 stringWithFormat:@"<%@: %p collectionChangeType = %d, sharingChange = %d, suggestionStateChange = %d, mediaType = %d, hasNoOtherAssetChangesRequiringMomentGeneration = %d, highlightContainerChanges = %@>", v4, self, collectionChangeType, sharingChange, suggestionStateChange, mediaType, hasNoOtherAssetChangesRequiringMomentGeneration, &stru_1F0F06D80];;
   }
 
   return v15;
@@ -289,10 +289,10 @@ LABEL_13:
   return v2 ^ hasNoOtherAssetChangesRequiringMomentGeneration ^ [(NSArray *)self->_highlightContainerChanges hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -302,9 +302,9 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLSharedAssetsContainerIncrementalChange *)self collectionChangeType];
-      if (v6 == [(PLSharedAssetsContainerIncrementalChange *)v5 collectionChangeType]&& (v7 = [(PLSharedAssetsContainerIncrementalChange *)self sharingChange], v7 == [(PLSharedAssetsContainerIncrementalChange *)v5 sharingChange]) && (v8 = [(PLSharedAssetsContainerIncrementalChange *)self suggestionStateChange], v8 == [(PLSharedAssetsContainerIncrementalChange *)v5 suggestionStateChange]) && (v9 = [(PLSharedAssetsContainerIncrementalChange *)self mediaType], v9 == [(PLSharedAssetsContainerIncrementalChange *)v5 mediaType]) && (v10 = [(PLSharedAssetsContainerIncrementalChange *)self hasNoOtherAssetChangesRequiringMomentGeneration], v10 == [(PLSharedAssetsContainerIncrementalChange *)v5 hasNoOtherAssetChangesRequiringMomentGeneration]))
+      v5 = equalCopy;
+      collectionChangeType = [(PLSharedAssetsContainerIncrementalChange *)self collectionChangeType];
+      if (collectionChangeType == [(PLSharedAssetsContainerIncrementalChange *)v5 collectionChangeType]&& (v7 = [(PLSharedAssetsContainerIncrementalChange *)self sharingChange], v7 == [(PLSharedAssetsContainerIncrementalChange *)v5 sharingChange]) && (v8 = [(PLSharedAssetsContainerIncrementalChange *)self suggestionStateChange], v8 == [(PLSharedAssetsContainerIncrementalChange *)v5 suggestionStateChange]) && (v9 = [(PLSharedAssetsContainerIncrementalChange *)self mediaType], v9 == [(PLSharedAssetsContainerIncrementalChange *)v5 mediaType]) && (v10 = [(PLSharedAssetsContainerIncrementalChange *)self hasNoOtherAssetChangesRequiringMomentGeneration], v10 == [(PLSharedAssetsContainerIncrementalChange *)v5 hasNoOtherAssetChangesRequiringMomentGeneration]))
       {
         IsEqual = PLObjectIsEqual();
       }
@@ -324,32 +324,32 @@ LABEL_13:
   return IsEqual;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[PLSharedAssetsContainerIncrementalChange collectionChangeType](self forKey:{"collectionChangeType"), @"collectionChangeType"}];
-  [v5 encodeInteger:-[PLSharedAssetsContainerIncrementalChange sharingChange](self forKey:{"sharingChange"), @"sharingChange"}];
-  [v5 encodeInteger:-[PLSharedAssetsContainerIncrementalChange suggestionStateChange](self forKey:{"suggestionStateChange"), @"suggestionStateChange"}];
-  [v5 encodeInteger:-[PLSharedAssetsContainerIncrementalChange mediaType](self forKey:{"mediaType"), @"mediaType"}];
-  v4 = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
-  [v5 encodeObject:v4 forKey:@"highlightContainerChanges"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PLSharedAssetsContainerIncrementalChange collectionChangeType](self forKey:{"collectionChangeType"), @"collectionChangeType"}];
+  [coderCopy encodeInteger:-[PLSharedAssetsContainerIncrementalChange sharingChange](self forKey:{"sharingChange"), @"sharingChange"}];
+  [coderCopy encodeInteger:-[PLSharedAssetsContainerIncrementalChange suggestionStateChange](self forKey:{"suggestionStateChange"), @"suggestionStateChange"}];
+  [coderCopy encodeInteger:-[PLSharedAssetsContainerIncrementalChange mediaType](self forKey:{"mediaType"), @"mediaType"}];
+  highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)self highlightContainerChanges];
+  [coderCopy encodeObject:highlightContainerChanges forKey:@"highlightContainerChanges"];
 
-  [v5 encodeBool:-[PLSharedAssetsContainerIncrementalChange hasNoOtherAssetChangesRequiringMomentGeneration](self forKey:{"hasNoOtherAssetChangesRequiringMomentGeneration"), @"hasNoOtherAssetChangesRequiringMomentGeneration"}];
+  [coderCopy encodeBool:-[PLSharedAssetsContainerIncrementalChange hasNoOtherAssetChangesRequiringMomentGeneration](self forKey:{"hasNoOtherAssetChangesRequiringMomentGeneration"), @"hasNoOtherAssetChangesRequiringMomentGeneration"}];
 }
 
-- (PLSharedAssetsContainerIncrementalChange)initWithCoder:(id)a3
+- (PLSharedAssetsContainerIncrementalChange)initWithCoder:(id)coder
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PLSharedAssetsContainerIncrementalChange;
   v5 = [(PLSharedAssetsContainerIncrementalChange *)&v11 init];
   if (v5)
   {
-    v5->_collectionChangeType = [v4 decodeIntegerForKey:@"collectionChangeType"];
-    v5->_sharingChange = [v4 decodeIntegerForKey:@"sharingChange"];
-    v5->_suggestionStateChange = [v4 decodeIntegerForKey:@"suggestionStateChange"];
-    v5->_mediaType = [v4 decodeIntegerForKey:@"mediaType"];
+    v5->_collectionChangeType = [coderCopy decodeIntegerForKey:@"collectionChangeType"];
+    v5->_sharingChange = [coderCopy decodeIntegerForKey:@"sharingChange"];
+    v5->_suggestionStateChange = [coderCopy decodeIntegerForKey:@"suggestionStateChange"];
+    v5->_mediaType = [coderCopy decodeIntegerForKey:@"mediaType"];
     v12[0] = objc_opt_class();
     v12[1] = objc_opt_class();
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:v12 count:2];
@@ -357,11 +357,11 @@ LABEL_13:
     {
     }
 
-    v8 = [v4 decodeObjectOfClasses:v6 forKey:@"highlightContainerChanges"];
+    v8 = [coderCopy decodeObjectOfClasses:v6 forKey:@"highlightContainerChanges"];
     highlightContainerChanges = v5->_highlightContainerChanges;
     v5->_highlightContainerChanges = v8;
 
-    v5->_hasNoOtherAssetChangesRequiringMomentGeneration = [v4 decodeBoolForKey:@"hasNoOtherAssetChangesRequiringMomentGeneration"];
+    v5->_hasNoOtherAssetChangesRequiringMomentGeneration = [coderCopy decodeBoolForKey:@"hasNoOtherAssetChangesRequiringMomentGeneration"];
     if (!v5->_highlightContainerChanges)
     {
       v5->_highlightContainerChanges = MEMORY[0x1E695E0F0];

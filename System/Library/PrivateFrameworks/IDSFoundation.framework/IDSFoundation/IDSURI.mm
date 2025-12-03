@@ -1,35 +1,35 @@
 @interface IDSURI
-+ (IDSURI)URIWithPrefixedURI:(id)a3;
-+ (IDSURI)URIWithPrefixedURI:(id)a3 withServiceLoggingHint:(id)a4;
-+ (IDSURI)URIWithUnprefixedURI:(id)a3;
-+ (IDSURI)URIWithUnprefixedURI:(id)a3 withServiceLoggingHint:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToURI:(id)a3;
++ (IDSURI)URIWithPrefixedURI:(id)i;
++ (IDSURI)URIWithPrefixedURI:(id)i withServiceLoggingHint:(id)hint;
++ (IDSURI)URIWithUnprefixedURI:(id)i;
++ (IDSURI)URIWithUnprefixedURI:(id)i withServiceLoggingHint:(id)hint;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToURI:(id)i;
 - (IDSPushToken)pushToken;
-- (IDSURI)initWithCoder:(id)a3;
-- (IDSURI)initWithPrefixedURI:(id)a3 withServiceLoggingHint:(id)a4;
-- (IDSURI)initWithUnprefixedURI:(id)a3 withServiceLoggingHint:(id)a4;
+- (IDSURI)initWithCoder:(id)coder;
+- (IDSURI)initWithPrefixedURI:(id)i withServiceLoggingHint:(id)hint;
+- (IDSURI)initWithUnprefixedURI:(id)i withServiceLoggingHint:(id)hint;
 - (IDSURI)tokenFreeURI;
 - (NSString)description;
 - (NSString)unprefixedURI;
-- (id)URIByAddingOptionalPushToken:(id)a3;
-- (id)URIByAddingPushToken:(id)a3;
+- (id)URIByAddingOptionalPushToken:(id)token;
+- (id)URIByAddingPushToken:(id)token;
 - (id)destinationURIs;
 - (int64_t)FZIDType;
 - (int64_t)IDSIDType;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSURI
 
 - (NSString)unprefixedURI
 {
-  v2 = [(IDSURI *)self prefixedURI];
-  v3 = [v2 _stripFZIDPrefix];
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  _stripFZIDPrefix = [prefixedURI _stripFZIDPrefix];
 
-  return v3;
+  return _stripFZIDPrefix;
 }
 
 - (NSString)description
@@ -44,59 +44,59 @@
 
 - (int64_t)IDSIDType
 {
-  v2 = [(IDSURI *)self prefixedURI];
-  v3 = _IDSTypeForID(v2);
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  v3 = _IDSTypeForID(prefixedURI);
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IDSURI *)self prefixedURI];
-  v3 = [v2 hash];
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  v3 = [prefixedURI hash];
 
   return v3;
 }
 
-+ (IDSURI)URIWithPrefixedURI:(id)a3
++ (IDSURI)URIWithPrefixedURI:(id)i
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPrefixedURI:v4 withServiceLoggingHint:0];
+  iCopy = i;
+  v5 = [[self alloc] initWithPrefixedURI:iCopy withServiceLoggingHint:0];
 
   return v5;
 }
 
-+ (IDSURI)URIWithPrefixedURI:(id)a3 withServiceLoggingHint:(id)a4
++ (IDSURI)URIWithPrefixedURI:(id)i withServiceLoggingHint:(id)hint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPrefixedURI:v7 withServiceLoggingHint:v6];
+  hintCopy = hint;
+  iCopy = i;
+  v8 = [[self alloc] initWithPrefixedURI:iCopy withServiceLoggingHint:hintCopy];
 
   return v8;
 }
 
-+ (IDSURI)URIWithUnprefixedURI:(id)a3
++ (IDSURI)URIWithUnprefixedURI:(id)i
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUnprefixedURI:v4 withServiceLoggingHint:0];
+  iCopy = i;
+  v5 = [[self alloc] initWithUnprefixedURI:iCopy withServiceLoggingHint:0];
 
   return v5;
 }
 
-+ (IDSURI)URIWithUnprefixedURI:(id)a3 withServiceLoggingHint:(id)a4
++ (IDSURI)URIWithUnprefixedURI:(id)i withServiceLoggingHint:(id)hint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithUnprefixedURI:v7 withServiceLoggingHint:v6];
+  hintCopy = hint;
+  iCopy = i;
+  v8 = [[self alloc] initWithUnprefixedURI:iCopy withServiceLoggingHint:hintCopy];
 
   return v8;
 }
 
-- (IDSURI)initWithPrefixedURI:(id)a3 withServiceLoggingHint:(id)a4
+- (IDSURI)initWithPrefixedURI:(id)i withServiceLoggingHint:(id)hint
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  iCopy = i;
+  hintCopy = hint;
+  if (iCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13.receiver = self;
     v13.super_class = IDSURI;
@@ -106,120 +106,120 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v6 copy];
+        v9 = [iCopy copy];
       }
 
       else
       {
-        v9 = v6;
+        v9 = iCopy;
       }
 
       prefixedURI = v8->_prefixedURI;
       v8->_prefixedURI = v9;
 
-      objc_storeStrong(&v8->_serviceLoggingHint, a4);
+      objc_storeStrong(&v8->_serviceLoggingHint, hint);
     }
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSURI)initWithUnprefixedURI:(id)a3 withServiceLoggingHint:(id)a4
+- (IDSURI)initWithUnprefixedURI:(id)i withServiceLoggingHint:(id)hint
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  hintCopy = hint;
   v8 = objc_autoreleasePoolPush();
   v14 = 0;
-  v9 = [v6 _stripPotentialTokenURIWithToken:&v14];
+  v9 = [iCopy _stripPotentialTokenURIWithToken:&v14];
   if (!v14)
   {
-    v10 = [v6 _stripFZIDPrefix];
-    v11 = [v10 _bestGuessURI];
+    _stripFZIDPrefix = [iCopy _stripFZIDPrefix];
+    _bestGuessURI = [_stripFZIDPrefix _bestGuessURI];
 
-    v6 = v11;
+    iCopy = _bestGuessURI;
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(IDSURI *)self initWithPrefixedURI:v6 withServiceLoggingHint:0];
+  v12 = [(IDSURI *)self initWithPrefixedURI:iCopy withServiceLoggingHint:0];
 
   return v12;
 }
 
-- (id)URIByAddingPushToken:(id)a3
+- (id)URIByAddingPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(IDSURI *)self isTokenURI];
+  tokenCopy = token;
+  isTokenURI = [(IDSURI *)self isTokenURI];
   v6 = 0;
-  if (v4 && !v5)
+  if (tokenCopy && !isTokenURI)
   {
-    v7 = [v4 rawToken];
-    v8 = _IDSCopyIDForTokenWithURI(v7, self->_prefixedURI);
+    rawToken = [tokenCopy rawToken];
+    v8 = _IDSCopyIDForTokenWithURI(rawToken, self->_prefixedURI);
     v6 = [IDSURI URIWithPrefixedURI:v8 withServiceLoggingHint:self->_serviceLoggingHint];
   }
 
   return v6;
 }
 
-- (id)URIByAddingOptionalPushToken:(id)a3
+- (id)URIByAddingOptionalPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(IDSURI *)self isTokenURI];
-  if (!v4 || v5)
+  tokenCopy = token;
+  isTokenURI = [(IDSURI *)self isTokenURI];
+  if (!tokenCopy || isTokenURI)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [v4 rawToken];
-    v7 = _IDSCopyIDForTokenWithURI(v6, self->_prefixedURI);
-    v8 = [IDSURI URIWithPrefixedURI:v7 withServiceLoggingHint:self->_serviceLoggingHint];
+    rawToken = [tokenCopy rawToken];
+    v7 = _IDSCopyIDForTokenWithURI(rawToken, self->_prefixedURI);
+    selfCopy = [IDSURI URIWithPrefixedURI:v7 withServiceLoggingHint:self->_serviceLoggingHint];
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (int64_t)FZIDType
 {
-  v2 = [(IDSURI *)self prefixedURI];
-  v3 = [v2 _FZIDType];
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  _FZIDType = [prefixedURI _FZIDType];
 
-  return v3;
+  return _FZIDType;
 }
 
 - (IDSURI)tokenFreeURI
 {
   if ([(IDSURI *)self isTokenURI])
   {
-    v3 = [(IDSURI *)self prefixedURI];
-    v4 = [v3 _stripPotentialTokenURIWithToken:0];
+    prefixedURI = [(IDSURI *)self prefixedURI];
+    v4 = [prefixedURI _stripPotentialTokenURIWithToken:0];
 
-    v5 = [IDSURI URIWithPrefixedURI:v4 withServiceLoggingHint:self->_serviceLoggingHint];
+    selfCopy = [IDSURI URIWithPrefixedURI:v4 withServiceLoggingHint:self->_serviceLoggingHint];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (IDSPushToken)pushToken
 {
   if ([(IDSURI *)self isTokenURI])
   {
-    v3 = [(IDSURI *)self prefixedURI];
+    prefixedURI = [(IDSURI *)self prefixedURI];
     v8 = 0;
-    v4 = [v3 _stripPotentialTokenURIWithToken:&v8];
+    v4 = [prefixedURI _stripPotentialTokenURIWithToken:&v8];
     v5 = v8;
 
     v6 = [IDSPushToken pushTokenWithData:v5 withServiceLoggingHint:self->_serviceLoggingHint];
@@ -233,66 +233,66 @@
   return v6;
 }
 
-- (BOOL)isEqualToURI:(id)a3
+- (BOOL)isEqualToURI:(id)i
 {
-  if (self == a3)
+  if (self == i)
   {
     return 1;
   }
 
-  v4 = [a3 prefixedURI];
-  v5 = [(IDSURI *)self prefixedURI];
-  v6 = [v4 isEqualToIgnoringCase:v5];
+  prefixedURI = [i prefixedURI];
+  prefixedURI2 = [(IDSURI *)self prefixedURI];
+  v6 = [prefixedURI isEqualToIgnoringCase:prefixedURI2];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSURI *)self isEqualToURI:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSURI *)self isEqualToURI:equalCopy];
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(IDSURI *)self prefixedURI];
-  v6 = [v4 prefixedURI];
+  compareCopy = compare;
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  prefixedURI2 = [compareCopy prefixedURI];
 
-  v7 = [v5 compare:v6];
+  v7 = [prefixedURI compare:prefixedURI2];
   return v7;
 }
 
 - (id)destinationURIs
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(IDSURI *)self prefixedURI];
-  v4 = [v2 setWithObject:v3];
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  v4 = [v2 setWithObject:prefixedURI];
 
   return v4;
 }
 
-- (IDSURI)initWithCoder:(id)a3
+- (IDSURI)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prefixedURI"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceHint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prefixedURI"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceHint"];
 
   v7 = [(IDSURI *)self initWithPrefixedURI:v5 withServiceLoggingHint:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSURI *)self prefixedURI];
-  [v4 encodeObject:v5 forKey:@"prefixedURI"];
+  coderCopy = coder;
+  prefixedURI = [(IDSURI *)self prefixedURI];
+  [coderCopy encodeObject:prefixedURI forKey:@"prefixedURI"];
 
-  v6 = [(IDSURI *)self serviceLoggingHint];
-  [v4 encodeObject:v6 forKey:@"serviceHint"];
+  serviceLoggingHint = [(IDSURI *)self serviceLoggingHint];
+  [coderCopy encodeObject:serviceLoggingHint forKey:@"serviceHint"];
 }
 
 @end

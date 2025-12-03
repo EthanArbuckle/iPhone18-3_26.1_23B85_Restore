@@ -1,22 +1,22 @@
 @interface PosterBoardApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
-- (void)_runScrollPosterGalleryWithTestOptions:(id)a3 completion:(id)a4;
-- (void)_runScrollPosterRackWithTestOptions:(id)a3 completion:(id)a4;
-- (void)_runSwitchPosterWithTestOptions:(id)a3 completion:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
+- (void)_runScrollPosterGalleryWithTestOptions:(id)options completion:(id)completion;
+- (void)_runScrollPosterRackWithTestOptions:(id)options completion:(id)completion;
+- (void)_runSwitchPosterWithTestOptions:(id)options completion:(id)completion;
 @end
 
 @implementation PosterBoardApplication
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v8 = +[PosterBoardTestingUtilities knownPPTTests];
-  v9 = [v8 containsObject:v6];
+  v9 = [v8 containsObject:testCopy];
 
   if (v9)
   {
-    [(PosterBoardApplication *)self setRunningPPTTestName:v6];
+    [(PosterBoardApplication *)self setRunningPPTTestName:testCopy];
     +[PosterBoardTestingUtilities posterRackViewController];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -41,7 +41,7 @@
     v15 = v13;
     v27 = v15;
     v16 = objc_retainBlock(v24);
-    if ([v6 isEqualToString:@"scrollPosterRack"])
+    if ([testCopy isEqualToString:@"scrollPosterRack"])
     {
       v17 = v23;
       v23[0] = _NSConcreteStackBlock;
@@ -49,7 +49,7 @@
       v18 = sub_100001FEC;
     }
 
-    else if ([v6 isEqualToString:@"scrollPosterGallery"])
+    else if ([testCopy isEqualToString:@"scrollPosterGallery"])
     {
       v17 = v22;
       v22[0] = _NSConcreteStackBlock;
@@ -59,7 +59,7 @@
 
     else
     {
-      if (![v6 isEqualToString:@"switchPoster"])
+      if (![testCopy isEqualToString:@"switchPoster"])
       {
         v19 = 0;
         goto LABEL_10;
@@ -74,7 +74,7 @@
     v17[2] = v18;
     v17[3] = &unk_100010420;
     v17[4] = self;
-    v17[5] = v7;
+    v17[5] = optionsCopy;
     (v16[2])(v16, v17);
 
     v19 = 1;
@@ -89,34 +89,34 @@ LABEL_11:
   return v19;
 }
 
-- (void)_runScrollPosterRackWithTestOptions:(id)a3 completion:(id)a4
+- (void)_runScrollPosterRackWithTestOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v35 = self;
-  v36 = [(PosterBoardApplication *)self runningPPTTestName];
-  v6 = [v5 objectForKey:@"minNumberOfPostersInSwitcher"];
+  optionsCopy = options;
+  selfCopy = self;
+  runningPPTTestName = [(PosterBoardApplication *)self runningPPTTestName];
+  v6 = [optionsCopy objectForKey:@"minNumberOfPostersInSwitcher"];
   v7 = v6;
   if (!v6)
   {
     v6 = &off_100010E80;
   }
 
-  v8 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v9 = [v5 objectForKey:@"maxNumberOfPostersInSwitcher"];
+  v9 = [optionsCopy objectForKey:@"maxNumberOfPostersInSwitcher"];
   v10 = v9;
   if (!v9)
   {
     v9 = &off_100010E98;
   }
 
-  v34 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
   v11 = +[PosterBoardTestingUtilities posterRackViewController];
-  v12 = [v11 posterExtensionDataStore];
-  v13 = [v12 switcherConfiguration];
-  v14 = [v13 configurations];
-  v15 = [v14 count];
+  posterExtensionDataStore = [v11 posterExtensionDataStore];
+  switcherConfiguration = [posterExtensionDataStore switcherConfiguration];
+  configurations = [switcherConfiguration configurations];
+  v15 = [configurations count];
 
   v37 = objc_opt_new();
   v16 = objc_opt_new();
@@ -130,9 +130,9 @@ LABEL_11:
   [v16 addObject:v19];
 
   v32 = v15;
-  if (v8 >= v15)
+  if (unsignedIntegerValue >= v15)
   {
-    v20 = v8 - v15;
+    v20 = unsignedIntegerValue - v15;
   }
 
   else
@@ -140,7 +140,7 @@ LABEL_11:
     v20 = 0;
   }
 
-  if (v8 > v15)
+  if (unsignedIntegerValue > v15)
   {
     v21 = 0;
     do
@@ -165,7 +165,7 @@ LABEL_11:
   v24 = [PBFPPTOperation operationToScrollToFirstPoster:0];
   [v16 addObject:v24];
 
-  v25 = [PBFPPTOperation operationToStartTest:v36];
+  v25 = [PBFPPTOperation operationToStartTest:runningPPTTestName];
   [v16 addObject:v25];
 
   v26 = [PBFPPTOperation operationToWaitForTimeInterval:5.0];
@@ -175,13 +175,13 @@ LABEL_11:
   v40[1] = 3221225472;
   v40[2] = sub_1000024E8;
   v40[3] = &unk_100010498;
-  v41 = v36;
-  v42 = v35;
+  v41 = runningPPTTestName;
+  v42 = selfCopy;
   v27 = v37;
   v43 = v27;
   v44 = v33;
-  v45 = v34;
-  v28 = v36;
+  v45 = unsignedIntegerValue2;
+  v28 = runningPPTTestName;
   v29 = [PBFPPTBlockOperation operationWithName:@"scrollPosterRack" block:v40];
   [v16 addObject:v29];
 
@@ -197,9 +197,9 @@ LABEL_11:
   [PBFPPTOperation enqueueOperations:v16];
 }
 
-- (void)_runScrollPosterGalleryWithTestOptions:(id)a3 completion:(id)a4
+- (void)_runScrollPosterGalleryWithTestOptions:(id)options completion:(id)completion
 {
-  v4 = [(PosterBoardApplication *)self runningPPTTestName:a3];
+  v4 = [(PosterBoardApplication *)self runningPPTTestName:options];
   v5 = objc_opt_new();
   v6 = +[PBFPPTOperation operationToResetSwitcher];
   [v5 addObject:v6];
@@ -228,12 +228,12 @@ LABEL_11:
   [PBFPPTOperation enqueueOperations:v5];
 }
 
-- (void)_runSwitchPosterWithTestOptions:(id)a3 completion:(id)a4
+- (void)_runSwitchPosterWithTestOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v6 = [(PosterBoardApplication *)self runningPPTTestName];
+  optionsCopy = options;
+  runningPPTTestName = [(PosterBoardApplication *)self runningPPTTestName];
   v7 = objc_opt_new();
-  v8 = [v5 objectForKeyedSubscript:@"testPosterProvider"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"testPosterProvider"];
   v9 = v8;
   v10 = @"com.apple.PosterTester.SamplePoster";
   if (v8)
@@ -243,7 +243,7 @@ LABEL_11:
 
   v11 = v10;
 
-  v12 = [v5 objectForKeyedSubscript:@"testPosterProviderDescriptorIdentifier"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"testPosterProviderDescriptorIdentifier"];
 
   v13 = @"red";
   if (v12)
@@ -281,7 +281,7 @@ LABEL_11:
   v23 = [PBFPPTOperation operationToWaitForTimeInterval:1.0];
   [v15 addObject:v23];
 
-  v24 = [PBFPPTOperation operationToStartTest:v6];
+  v24 = [PBFPPTOperation operationToStartTest:runningPPTTestName];
   [v15 addObject:v24];
 
   v25 = PBFPPTEventActionsToSwipeLeftInMiddleOfInterface();
@@ -295,8 +295,8 @@ LABEL_11:
   v36[1] = 3221225472;
   v36[2] = sub_1000031BC;
   v36[3] = &unk_100010538;
-  v37 = v6;
-  v28 = v6;
+  v37 = runningPPTTestName;
+  v28 = runningPPTTestName;
   v29 = [PBFPPTBlockOperation operationWithName:@"selectedPoster" block:v36];
   [v15 addObject:v29];
 

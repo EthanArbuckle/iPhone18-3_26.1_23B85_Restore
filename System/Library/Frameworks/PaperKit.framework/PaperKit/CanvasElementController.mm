@@ -1,59 +1,59 @@
 @interface CanvasElementController
-- (BOOL)_toolPicker:(id)a3 shouldChangeSelectedToolColor:(id)a4;
-- (id)_toolPickerCurrentSelectionColor:(id)a3;
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4;
-- (void)_toolPickerDidChangePosition:(id)a3 fromPosition:(int64_t)a4 toPosition:(int64_t)a5;
-- (void)_toolPickerDidInvokeAddTextBox:(id)a3;
-- (void)_toolPickerDidInvokeInsertSticker:(id)a3 fromItemProvider:(id)a4;
-- (void)didTapPlusButton:(id)a3;
-- (void)toolPickerFramesObscuredDidChange:(void *)a1;
-- (void)toolPickerSelectedToolItemDidChange:(id)a3;
+- (BOOL)_toolPicker:(id)picker shouldChangeSelectedToolColor:(id)color;
+- (id)_toolPickerCurrentSelectionColor:(id)color;
+- (void)_toolPicker:(id)picker didChangeColor:(id)color;
+- (void)_toolPickerDidChangePosition:(id)position fromPosition:(int64_t)fromPosition toPosition:(int64_t)toPosition;
+- (void)_toolPickerDidInvokeAddTextBox:(id)box;
+- (void)_toolPickerDidInvokeInsertSticker:(id)sticker fromItemProvider:(id)provider;
+- (void)didTapPlusButton:(id)button;
+- (void)toolPickerFramesObscuredDidChange:(void *)change;
+- (void)toolPickerSelectedToolItemDidChange:(id)change;
 @end
 
 @implementation CanvasElementController
 
-- (void)toolPickerFramesObscuredDidChange:(void *)a1
+- (void)toolPickerFramesObscuredDidChange:(void *)change
 {
-  v1 = a1;
+  changeCopy = change;
   CanvasElementController.updateToolPickerContextualEditingView()();
 }
 
-- (void)didTapPlusButton:(id)a3
+- (void)didTapPlusButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  CanvasElementController.didTapPlusButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  CanvasElementController.didTapPlusButton(_:)(buttonCopy);
 }
 
-- (void)toolPickerSelectedToolItemDidChange:(id)a3
+- (void)toolPickerSelectedToolItemDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  CanvasElementController.toolPickerSelectedToolItemDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  CanvasElementController.toolPickerSelectedToolItemDidChange(_:)(changeCopy);
 }
 
-- (void)_toolPickerDidChangePosition:(id)a3 fromPosition:(int64_t)a4 toPosition:(int64_t)a5
+- (void)_toolPickerDidChangePosition:(id)position fromPosition:(int64_t)fromPosition toPosition:(int64_t)toPosition
 {
-  v5 = self;
+  selfCopy = self;
   CanvasElementController.updateToolPickerContextualEditingView()();
 }
 
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4
+- (void)_toolPicker:(id)picker didChangeColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CanvasElementController._toolPicker(_:didChange:)(a4);
+  pickerCopy = picker;
+  colorCopy = color;
+  selfCopy = self;
+  specialized CanvasElementController._toolPicker(_:didChange:)(color);
 }
 
-- (BOOL)_toolPicker:(id)a3 shouldChangeSelectedToolColor:(id)a4
+- (BOOL)_toolPicker:(id)picker shouldChangeSelectedToolColor:(id)color
 {
-  v4 = a3;
-  v5 = [objc_msgSend(v4 _selectionContext)];
+  pickerCopy = picker;
+  v5 = [objc_msgSend(pickerCopy _selectionContext)];
   swift_unknownObjectRelease();
   if ((v5 & 4) != 0)
   {
-    v7 = [objc_msgSend(v4 _selectionContext)];
+    v7 = [objc_msgSend(pickerCopy _selectionContext)];
     swift_unknownObjectRelease();
 
     return v7 ^ 1;
@@ -66,28 +66,28 @@
   }
 }
 
-- (id)_toolPickerCurrentSelectionColor:(id)a3
+- (id)_toolPickerCurrentSelectionColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
+  colorCopy = color;
+  selfCopy = self;
   v6 = specialized CanvasElementController._toolPickerCurrentSelectionColor(_:)();
 
   return v6;
 }
 
-- (void)_toolPickerDidInvokeAddTextBox:(id)a3
+- (void)_toolPickerDidInvokeAddTextBox:(id)box
 {
-  v4 = a3;
-  v5 = self;
+  boxCopy = box;
+  selfCopy = self;
   specialized CanvasElementController._toolPickerDidInvokeAddTextBox(_:)();
 }
 
-- (void)_toolPickerDidInvokeInsertSticker:(id)a3 fromItemProvider:(id)a4
+- (void)_toolPickerDidInvokeInsertSticker:(id)sticker fromItemProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CanvasElementController._toolPickerDidInvokeInsertSticker(_:from:)(v7);
+  stickerCopy = sticker;
+  providerCopy = provider;
+  selfCopy = self;
+  specialized CanvasElementController._toolPickerDidInvokeInsertSticker(_:from:)(providerCopy);
 }
 
 @end

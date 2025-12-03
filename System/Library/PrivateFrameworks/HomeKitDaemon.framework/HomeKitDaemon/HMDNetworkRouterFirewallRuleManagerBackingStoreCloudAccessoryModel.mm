@@ -2,53 +2,53 @@
 + (NSUUID)namespaceID;
 + (id)hmbProperties;
 + (id)logCategory;
-+ (id)modelIDForRecordID:(id)a3;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)a3 recordID:(id)a4 networkDeclarationsData:(id)a5;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)a3 recordID:(id)a4 networkDeclarationsData:(id)a5 pairedMetadataData:(id)a6;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithModelID:(id)a3 parentModelID:(id)a4 networkDeclarationsData:(id)a5 pairedMetadataData:(id)a6;
++ (id)modelIDForRecordID:(id)d;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)d recordID:(id)iD networkDeclarationsData:(id)data;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)d recordID:(id)iD networkDeclarationsData:(id)data pairedMetadataData:(id)metadataData;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithModelID:(id)d parentModelID:(id)iD networkDeclarationsData:(id)data pairedMetadataData:(id)metadataData;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)a3 recordID:(id)a4 networkDeclarationsData:(id)a5
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)d recordID:(id)iD networkDeclarationsData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() modelIDForRecordID:v9];
+  dataCopy = data;
+  iDCopy = iD;
+  dCopy = d;
+  v11 = [objc_opt_class() modelIDForRecordID:iDCopy];
 
-  v12 = [v10 modelID];
+  modelID = [dCopy modelID];
 
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)self initWithModelID:v11 parentModelID:v12 networkDeclarationsData:v8];
+  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)self initWithModelID:v11 parentModelID:modelID networkDeclarationsData:dataCopy];
   return v13;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)a3 recordID:(id)a4 networkDeclarationsData:(id)a5 pairedMetadataData:(id)a6
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithCloudZoneID:(id)d recordID:(id)iD networkDeclarationsData:(id)data pairedMetadataData:(id)metadataData
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() modelIDForRecordID:v12];
+  metadataDataCopy = metadataData;
+  dataCopy = data;
+  iDCopy = iD;
+  dCopy = d;
+  v14 = [objc_opt_class() modelIDForRecordID:iDCopy];
 
-  v15 = [v13 modelID];
+  modelID = [dCopy modelID];
 
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)self initWithModelID:v14 parentModelID:v15 networkDeclarationsData:v11 pairedMetadataData:v10];
+  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)self initWithModelID:v14 parentModelID:modelID networkDeclarationsData:dataCopy pairedMetadataData:metadataDataCopy];
   return v16;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithModelID:(id)a3 parentModelID:(id)a4 networkDeclarationsData:(id)a5 pairedMetadataData:(id)a6
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel)initWithModelID:(id)d parentModelID:(id)iD networkDeclarationsData:(id)data pairedMetadataData:(id)metadataData
 {
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  metadataDataCopy = metadataData;
   v16.receiver = self;
   v16.super_class = HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel;
-  v12 = [(HMBModel *)&v16 initWithModelID:a3 parentModelID:a4];
+  v12 = [(HMBModel *)&v16 initWithModelID:d parentModelID:iD];
   v13 = v12;
   if (v12)
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v12 setNetworkDeclarationsData:v10];
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v13 setPairedMetadataData:v11];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v12 setNetworkDeclarationsData:dataCopy];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v13 setPairedMetadataData:metadataDataCopy];
     v14 = v13;
   }
 
@@ -83,18 +83,18 @@ void __83__HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel_hm
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelIDForRecordID:(id)a3
++ (id)modelIDForRecordID:(id)d
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordName];
-  v26[0] = v5;
-  v6 = [v4 zoneID];
-  v7 = [v6 zoneName];
-  v26[1] = v7;
+  dCopy = d;
+  recordName = [dCopy recordName];
+  v26[0] = recordName;
+  zoneID = [dCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v26[1] = zoneName;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
 
-  v9 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -115,7 +115,7 @@ void __83__HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel_hm
         }
 
         v15 = [*(*(&v21 + 1) + 8 * i) dataUsingEncoding:{4, v21}];
-        [v9 appendData:v15];
+        [data appendData:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -125,8 +125,8 @@ void __83__HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel_hm
   }
 
   v16 = MEMORY[0x277CCAD78];
-  v17 = [a1 namespaceID];
-  v18 = [v16 hmf_UUIDWithNamespace:v17 data:v9];
+  namespaceID = [self namespaceID];
+  v18 = [v16 hmf_UUIDWithNamespace:namespaceID data:data];
 
   v19 = *MEMORY[0x277D85DE8];
 

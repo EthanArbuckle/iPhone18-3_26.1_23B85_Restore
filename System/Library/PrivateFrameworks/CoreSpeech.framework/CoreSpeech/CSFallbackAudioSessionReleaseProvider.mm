@@ -1,13 +1,13 @@
 @interface CSFallbackAudioSessionReleaseProvider
-- (BOOL)fallbackDeactivateAudioSession:(unint64_t)a3 error:(id *)a4;
-- (CSFallbackAudioSessionReleaseProvider)initWithAudioRecorder:(id)a3;
-- (void)audioRecorderWillBeDestroyed:(id)a3;
-- (void)setAudioRecorder:(id)a3;
+- (BOOL)fallbackDeactivateAudioSession:(unint64_t)session error:(id *)error;
+- (CSFallbackAudioSessionReleaseProvider)initWithAudioRecorder:(id)recorder;
+- (void)audioRecorderWillBeDestroyed:(id)destroyed;
+- (void)setAudioRecorder:(id)recorder;
 @end
 
 @implementation CSFallbackAudioSessionReleaseProvider
 
-- (void)audioRecorderWillBeDestroyed:(id)a3
+- (void)audioRecorderWillBeDestroyed:(id)destroyed
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -18,7 +18,7 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)fallbackDeactivateAudioSession:(unint64_t)a3 error:(id *)a4
+- (BOOL)fallbackDeactivateAudioSession:(unint64_t)session error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -38,25 +38,25 @@
   v10[4] = self;
   v10[5] = &v17;
   v10[6] = &v11;
-  v10[7] = a3;
+  v10[7] = session;
   dispatch_async_and_wait(queue, v10);
   if ((v18[3] & 1) == 0)
   {
     v6 = CSLogCategoryAudio;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v12[5] localizedDescription];
+      localizedDescription = [v12[5] localizedDescription];
       *buf = 136315394;
       v22 = "[CSFallbackAudioSessionReleaseProvider fallbackDeactivateAudioSession:error:]";
       v23 = 2114;
-      v24 = v7;
+      v24 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Cannot deactivateAudioSession with %{public}@", buf, 0x16u);
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12[5];
+    *error = v12[5];
   }
 
   v8 = *(v18 + 24);
@@ -66,23 +66,23 @@
   return v8 & 1;
 }
 
-- (void)setAudioRecorder:(id)a3
+- (void)setAudioRecorder:(id)recorder
 {
-  v4 = a3;
+  recorderCopy = recorder;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000193C8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recorderCopy;
+  v6 = recorderCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSFallbackAudioSessionReleaseProvider)initWithAudioRecorder:(id)a3
+- (CSFallbackAudioSessionReleaseProvider)initWithAudioRecorder:(id)recorder
 {
-  v5 = a3;
+  recorderCopy = recorder;
   v11.receiver = self;
   v11.super_class = CSFallbackAudioSessionReleaseProvider;
   v6 = [(CSFallbackAudioSessionReleaseProvider *)&v11 init];
@@ -92,9 +92,9 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_audioRecorder, a3);
-    v9 = [(CSFallbackAudioSessionReleaseProvider *)v6 audioRecorder];
-    [v9 registerObserver:v6];
+    objc_storeStrong(&v6->_audioRecorder, recorder);
+    audioRecorder = [(CSFallbackAudioSessionReleaseProvider *)v6 audioRecorder];
+    [audioRecorder registerObserver:v6];
   }
 
   return v6;

@@ -1,24 +1,24 @@
 @interface AFClientLiteInternal
 - (void)dealloc;
-- (void)handleCommand:(id)a3 completion:(id)a4;
+- (void)handleCommand:(id)command completion:(id)completion;
 @end
 
 @implementation AFClientLiteInternal
 
-- (void)handleCommand:(id)a3 completion:(id)a4
+- (void)handleCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__AFClientLiteInternal_handleCommand_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = commandCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = commandCopy;
   dispatch_async(queue, block);
 }
 
@@ -159,7 +159,7 @@ void __79__AFClientLiteInternal__handleCommand_afterCurrentRequest_isOneWay_comp
     *buf = 136315394;
     v7 = "[AFClientLiteInternal dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 

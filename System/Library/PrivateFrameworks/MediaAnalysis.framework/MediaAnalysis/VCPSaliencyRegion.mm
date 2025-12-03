@@ -1,20 +1,20 @@
 @interface VCPSaliencyRegion
-+ (id)salientRegionsFromPixelBuffer:(__CVBuffer *)a3;
-+ (void)attachSalientRegions:(id)a3 toPixelBuffer:(__CVBuffer *)a4;
++ (id)salientRegionsFromPixelBuffer:(__CVBuffer *)buffer;
++ (void)attachSalientRegions:(id)regions toPixelBuffer:(__CVBuffer *)buffer;
 - (CGRect)bound;
-- (VCPSaliencyRegion)initWith:(CGRect)a3 confidence:(float)a4;
-- (VCPSaliencyRegion)initWithPlistRepresentation:(id)a3;
+- (VCPSaliencyRegion)initWith:(CGRect)with confidence:(float)confidence;
+- (VCPSaliencyRegion)initWithPlistRepresentation:(id)representation;
 - (id)plistRepresentation;
 @end
 
 @implementation VCPSaliencyRegion
 
-- (VCPSaliencyRegion)initWith:(CGRect)a3 confidence:(float)a4
+- (VCPSaliencyRegion)initWith:(CGRect)with confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = with.size.height;
+  width = with.size.width;
+  y = with.origin.y;
+  x = with.origin.x;
   v10.receiver = self;
   v10.super_class = VCPSaliencyRegion;
   result = [(VCPSaliencyRegion *)&v10 init];
@@ -24,17 +24,17 @@
     result->_bound.origin.y = y;
     result->_bound.size.width = width;
     result->_bound.size.height = height;
-    result->_confidence = a4;
+    result->_confidence = confidence;
   }
 
   return result;
 }
 
-- (VCPSaliencyRegion)initWithPlistRepresentation:(id)a3
+- (VCPSaliencyRegion)initWithPlistRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"bound"];
-  v6 = [v4 objectForKeyedSubscript:@"confidence"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"bound"];
+  v6 = [representationCopy objectForKeyedSubscript:@"confidence"];
   v7 = v6;
   if (!v5)
   {
@@ -86,16 +86,16 @@ LABEL_6:
   return v6;
 }
 
-+ (void)attachSalientRegions:(id)a3 toPixelBuffer:(__CVBuffer *)a4
++ (void)attachSalientRegions:(id)regions toPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = [a3 valueForKey:@"plistRepresentation"];
-  CVBufferSetAttachment(a4, @"SalientRegions", v5, kCVAttachmentMode_ShouldNotPropagate);
+  v5 = [regions valueForKey:@"plistRepresentation"];
+  CVBufferSetAttachment(buffer, @"SalientRegions", v5, kCVAttachmentMode_ShouldNotPropagate);
 }
 
-+ (id)salientRegionsFromPixelBuffer:(__CVBuffer *)a3
++ (id)salientRegionsFromPixelBuffer:(__CVBuffer *)buffer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = CVBufferGetAttachment(a3, @"SalientRegions", 0);
+  v3 = CVBufferGetAttachment(buffer, @"SalientRegions", 0);
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;

@@ -1,23 +1,23 @@
 @interface BWMetadataTimeMachine
 + (void)initialize;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)earliestAllowedPTS;
-- (BOOL)waitUntilCapacity:(int)a3 timeout:(float)a4;
-- (BWMetadataTimeMachine)initWithName:(id)a3 capacity:(int)a4 metadataHandlingPriority:(unsigned int)a5 addHandler:(id)a6;
+- (BOOL)waitUntilCapacity:(int)capacity timeout:(float)timeout;
+- (BWMetadataTimeMachine)initWithName:(id)name capacity:(int)capacity metadataHandlingPriority:(unsigned int)priority addHandler:(id)handler;
 - (id)metadata;
-- (id)metadataForPTSRange:(id *)a3 timeout:(float)a4;
-- (void)_metadataForPTSRange:(uint64_t)a1;
-- (void)addDroppedFrameForPortType:(id)a3 pts:(id *)a4;
-- (void)addMetadata:(id)a3;
+- (id)metadataForPTSRange:(id *)range timeout:(float)timeout;
+- (void)_metadataForPTSRange:(uint64_t)range;
+- (void)addDroppedFrameForPortType:(id)type pts:(id *)pts;
+- (void)addMetadata:(id)metadata;
 - (void)dealloc;
 - (void)reset;
-- (void)setEarliestAllowedPTS:(id *)a3;
+- (void)setEarliestAllowedPTS:(id *)s;
 @end
 
 @implementation BWMetadataTimeMachine
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -26,18 +26,18 @@
   }
 }
 
-- (BWMetadataTimeMachine)initWithName:(id)a3 capacity:(int)a4 metadataHandlingPriority:(unsigned int)a5 addHandler:(id)a6
+- (BWMetadataTimeMachine)initWithName:(id)name capacity:(int)capacity metadataHandlingPriority:(unsigned int)priority addHandler:(id)handler
 {
   v12.receiver = self;
   v12.super_class = BWMetadataTimeMachine;
   v9 = [(BWMetadataTimeMachine *)&v12 init];
   if (v9)
   {
-    *(v9 + 1) = [a3 copy];
-    *(v9 + 4) = a4;
-    *(v9 + 3) = [a6 copy];
+    *(v9 + 1) = [name copy];
+    *(v9 + 4) = capacity;
+    *(v9 + 3) = [handler copy];
     *(v9 + 4) = FigDispatchQueueCreateWithPriority();
-    *(v9 + 5) = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+    *(v9 + 5) = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
     *(v9 + 6) = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = MEMORY[0x1E6960C70];
     *(v9 + 56) = *MEMORY[0x1E6960C70];
@@ -300,7 +300,7 @@ LABEL_43:
 LABEL_55:
 }
 
-- (id)metadataForPTSRange:(id *)a3 timeout:(float)a4
+- (id)metadataForPTSRange:(id *)range timeout:(float)timeout
 {
   if (dword_1EB58E100)
   {
@@ -323,25 +323,25 @@ LABEL_55:
   v28 = __Block_byref_object_copy__3;
   v29 = __Block_byref_object_dispose__3;
   v30 = 0;
-  if ((a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && (a3->var1.var0 & 0x8000000000000000) == 0)
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
     metadataHandlingQueue = self->_metadataHandlingQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
-    v9 = *&a3->var0.var3;
-    v22 = *&a3->var0.var0;
+    v9 = *&range->var0.var3;
+    v22 = *&range->var0.var0;
     block[2] = __53__BWMetadataTimeMachine_metadataForPTSRange_timeout___block_invoke;
     block[3] = &unk_1E7990280;
     block[4] = self;
     block[5] = &v25;
     v23 = v9;
-    v24 = *&a3->var1.var1;
+    v24 = *&range->var1.var1;
     block[6] = &v31;
     dispatch_sync(metadataHandlingQueue, block);
     v11 = *(*&v31.timescale + 40);
     if (v11)
     {
-      *&v10 = a4;
+      *&v10 = timeout;
       [v11 waitForCompletionWithTimeout:v10];
       v12 = *(*&v31.timescale + 40);
       if (v12)
@@ -407,7 +407,7 @@ uint64_t __33__BWMetadataTimeMachine_metadata__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)waitUntilCapacity:(int)a3 timeout:(float)a4
+- (BOOL)waitUntilCapacity:(int)capacity timeout:(float)timeout
 {
   if (dword_1EB58E100)
   {
@@ -434,7 +434,7 @@ uint64_t __33__BWMetadataTimeMachine_metadata__block_invoke(uint64_t a1)
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (self->_capacity >= a3)
+  if (self->_capacity >= capacity)
   {
     metadataHandlingQueue = self->_metadataHandlingQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -443,13 +443,13 @@ uint64_t __33__BWMetadataTimeMachine_metadata__block_invoke(uint64_t a1)
     block[3] = &unk_1E79902A8;
     block[4] = self;
     block[5] = &v18;
-    v17 = a3;
+    capacityCopy = capacity;
     block[6] = &v22;
     dispatch_sync(metadataHandlingQueue, block);
     v11 = v23[5];
     if (v11)
     {
-      *&v10 = a4;
+      *&v10 = timeout;
       [v11 waitForCompletionWithTimeout:v10];
       v12 = v23;
       v13 = v23[5];
@@ -467,7 +467,7 @@ uint64_t __33__BWMetadataTimeMachine_metadata__block_invoke(uint64_t a1)
     kdebug_trace();
   }
 
-  v14 = *(v19 + 6) >= a3;
+  v14 = *(v19 + 6) >= capacity;
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v22, 8);
   return v14;
@@ -617,11 +617,11 @@ __n128 __43__BWMetadataTimeMachine_earliestAllowedPTS__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addMetadata:(id)a3
+- (void)addMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    [a3 copy];
+    [metadata copy];
     OUTLINED_FUNCTION_0_7();
     v6[1] = 3221225472;
     v6[2] = __37__BWMetadataTimeMachine_addMetadata___block_invoke;
@@ -632,9 +632,9 @@ __n128 __43__BWMetadataTimeMachine_earliestAllowedPTS__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_metadataForPTSRange:(uint64_t)a1
+- (void)_metadataForPTSRange:(uint64_t)range
 {
-  if (!a1)
+  if (!range)
   {
     return 0;
   }
@@ -655,14 +655,14 @@ __n128 __43__BWMetadataTimeMachine_earliestAllowedPTS__block_invoke(uint64_t a1)
   v4 = MEMORY[0x1E6960C98];
   value = *MEMORY[0x1E6960C98];
   timescale = *(MEMORY[0x1E6960C98] + 8);
-  if ([*(a1 + 40) count])
+  if ([*(range + 40) count])
   {
     memset(&rhs, 0, 24);
-    v6 = [*(a1 + 40) firstObject];
+    firstObject = [*(range + 40) firstObject];
     v7 = *off_1E798A420;
-    CMTimeMakeFromDictionary(&rhs.start, [v6 objectForKeyedSubscript:*off_1E798A420]);
+    CMTimeMakeFromDictionary(&rhs.start, [firstObject objectForKeyedSubscript:*off_1E798A420]);
     memset(&lhs, 0, sizeof(lhs));
-    CMTimeMakeFromDictionary(&lhs, [objc_msgSend(*(a1 + 40) "lastObject")]);
+    CMTimeMakeFromDictionary(&lhs, [objc_msgSend(*(range + 40) "lastObject")]);
     *&time1.start.value = *&rhs.start.value;
     time1.start.epoch = rhs.start.epoch;
     OUTLINED_FUNCTION_4_20();
@@ -680,7 +680,7 @@ __n128 __43__BWMetadataTimeMachine_earliestAllowedPTS__block_invoke(uint64_t a1)
 
   else
   {
-    if ((*(a1 + 68) & 1) == 0)
+    if ((*(range + 68) & 1) == 0)
     {
       flags = *(v4 + 12);
       epoch = *(v4 + 16);
@@ -690,8 +690,8 @@ __n128 __43__BWMetadataTimeMachine_earliestAllowedPTS__block_invoke(uint64_t a1)
       goto LABEL_15;
     }
 
-    *&rhs.start.value = *(a1 + 56);
-    rhs.start.epoch = *(a1 + 72);
+    *&rhs.start.value = *(range + 56);
+    rhs.start.epoch = *(range + 72);
     *&lhs.value = *MEMORY[0x1E6960CC0];
     OUTLINED_FUNCTION_1_24(*(MEMORY[0x1E6960CC0] + 16));
     CMTimeRangeMake(v14, v12, v13);
@@ -710,7 +710,7 @@ LABEL_15:
     return 0;
   }
 
-  v15 = 0;
+  array = 0;
   if ((BYTE4(v5) & 1) != 0 && !v11)
   {
     v57 = v5;
@@ -753,7 +753,7 @@ LABEL_15:
         return 0;
       }
 
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v26 = *(a2 + 16);
       *&time1.start.value = *a2;
       *&time1.start.epoch = v26;
@@ -772,7 +772,7 @@ LABEL_15:
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v31 = *(a1 + 40);
+      v31 = *(range + 40);
       v39 = OUTLINED_FUNCTION_6_15(v30, v32, v33, v34, v35, v36, v37, v38, v53, v55, v57, *(&v57 + 1), rhs.start.value, *&rhs.start.timescale, rhs.start.epoch, rhs.duration.value, *&rhs.duration.timescale, rhs.duration.epoch, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, 0);
       if (v39)
       {
@@ -796,7 +796,7 @@ LABEL_15:
             v45 = CMTimeRangeContainsTime(&rhs, &time2);
             if (v45)
             {
-              v45 = [v15 addObject:v44];
+              v45 = [array addObject:v44];
             }
           }
 
@@ -808,20 +808,20 @@ LABEL_15:
     }
   }
 
-  return v15;
+  return array;
 }
 
-- (void)addDroppedFrameForPortType:(id)a3 pts:(id *)a4
+- (void)addDroppedFrameForPortType:(id)type pts:(id *)pts
 {
-  if (a4->var2)
+  if (pts->var2)
   {
     v6 = *MEMORY[0x1E695E480];
-    time = *a4;
+    time = *pts;
     v7 = CMTimeCopyAsDictionary(&time, v6);
     v8 = *off_1E798A420;
     v9[0] = *off_1E798B540;
     v9[1] = v8;
-    v10[0] = a3;
+    v10[0] = type;
     v10[1] = v7;
     v9[2] = @"IsDroppedFrameMetadataKey";
     v10[2] = MEMORY[0x1E695E118];
@@ -861,9 +861,9 @@ void *__53__BWMetadataTimeMachine_metadataForPTSRange_timeout___block_invoke(uin
   return result;
 }
 
-- (void)setEarliestAllowedPTS:(id *)a3
+- (void)setEarliestAllowedPTS:(id *)s
 {
-  if (a3->var2)
+  if (s->var2)
   {
     OUTLINED_FUNCTION_0_7();
     v6[1] = 3221225472;

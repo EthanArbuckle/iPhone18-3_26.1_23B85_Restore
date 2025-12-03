@@ -1,21 +1,21 @@
 @interface DVTKtraceSymbolsInformation
 - (id).cxx_construct;
-- (id)getSymbolInfoForAddress:(unint64_t)a3;
-- (void)addSymbolInfoForRange:(unint64_t)a3 length:(unint64_t)a4 symbolInfo:(id)a5;
+- (id)getSymbolInfoForAddress:(unint64_t)address;
+- (void)addSymbolInfoForRange:(unint64_t)range length:(unint64_t)length symbolInfo:(id)info;
 @end
 
 @implementation DVTKtraceSymbolsInformation
 
-- (void)addSymbolInfoForRange:(unint64_t)a3 length:(unint64_t)a4 symbolInfo:(id)a5
+- (void)addSymbolInfoForRange:(unint64_t)range length:(unint64_t)length symbolInfo:(id)info
 {
-  v7[0] = a3;
-  v7[1] = a4;
-  v8 = a5;
-  v6 = v8;
+  v7[0] = range;
+  v7[1] = length;
+  infoCopy = info;
+  v6 = infoCopy;
   sub_247FABA7C(&self->_symbolInfos, v7);
 }
 
-- (id)getSymbolInfoForAddress:(unint64_t)a3
+- (id)getSymbolInfoForAddress:(unint64_t)address
 {
   if (!self->_symbolInfos.__tree_.__size_)
   {
@@ -42,8 +42,8 @@ LABEL_16:
   do
   {
     v5 = *(left + 4);
-    v6 = v5 >= a3;
-    v7 = v5 < a3;
+    v6 = v5 >= address;
+    v7 = v5 < address;
     if (v6)
     {
       p_end_node = left;
@@ -56,12 +56,12 @@ LABEL_16:
   if (p_end_node != &self->_symbolInfos.__tree_.__end_node_)
   {
     isa = p_end_node[1].super.isa;
-    if (p_end_node == self->_symbolInfos.__tree_.__begin_node_ && isa > a3)
+    if (p_end_node == self->_symbolInfos.__tree_.__begin_node_ && isa > address)
     {
       goto LABEL_23;
     }
 
-    if (isa == a3)
+    if (isa == address)
     {
       v10 = p_end_node;
 LABEL_22:
@@ -94,7 +94,7 @@ LABEL_22:
     }
 
     v13 = *(v10 + 4);
-    if (v13 >= a3)
+    if (v13 >= address)
     {
       sub_24802E690();
     }
@@ -118,7 +118,7 @@ LABEL_22:
 LABEL_20:
   v13 = *(v10 + 4);
 LABEL_21:
-  if (*(v10 + 5) + v13 > a3)
+  if (*(v10 + 5) + v13 > address)
   {
     goto LABEL_22;
   }

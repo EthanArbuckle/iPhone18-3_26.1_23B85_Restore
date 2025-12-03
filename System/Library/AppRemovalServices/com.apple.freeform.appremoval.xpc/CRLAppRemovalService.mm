@@ -1,13 +1,13 @@
 @interface CRLAppRemovalService
-- (BOOL)p_removeAllUserDefaultsWithError:(id *)a3;
-- (void)removeAppWithReply:(id)a3;
+- (BOOL)p_removeAllUserDefaultsWithError:(id *)error;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation CRLAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -30,10 +30,10 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Finished removing all user defaults.", v9, 2u);
   }
 
-  v4[2](v4, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (BOOL)p_removeAllUserDefaultsWithError:(id *)a3
+- (BOOL)p_removeAllUserDefaultsWithError:(id *)error
 {
   v4 = [NSUserDefaults alloc];
   v5 = CRLAppBundleIdentifier();
@@ -45,33 +45,33 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
       [CRLAppRemovalService p_removeAllUserDefaultsWithError:v9];
-      if (a3)
+      if (error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_16:
       v17 = v9;
-      v14 = 0;
-      *a3 = v9;
+      synchronize = 0;
+      *error = v9;
       goto LABEL_19;
     }
 
-    v14 = 0;
+    synchronize = 0;
     goto LABEL_19;
   }
 
-  v7 = [v6 dictionaryRepresentation];
-  v8 = [v7 allKeys];
+  dictionaryRepresentation = [v6 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v8;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -95,20 +95,20 @@ LABEL_16:
     while (v11);
   }
 
-  v14 = [v6 synchronize];
-  if ((v14 & 1) == 0)
+  synchronize = [v6 synchronize];
+  if ((synchronize & 1) == 0)
   {
     v15 = [NSError errorWithDomain:@"com.apple.freeform.appremoval.errorDomain" code:2 userInfo:0];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
       [CRLAppRemovalService p_removeAllUserDefaultsWithError:v15];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
 LABEL_13:
 
@@ -116,13 +116,13 @@ LABEL_13:
     }
 
     v16 = v15;
-    *a3 = v15;
+    *error = v15;
     goto LABEL_13;
   }
 
 LABEL_19:
 
-  return v14;
+  return synchronize;
 }
 
 - (void)p_removeAllUserDefaultsWithError:(void *)a1 .cold.1(void *a1)

@@ -1,13 +1,13 @@
 @interface PBObjectToObjectCoercion
-- (BOOL)canCoerceToObjectOfClass:(Class)a3;
-- (PBObjectToObjectCoercion)initWithClass:(Class)a3;
-- (id)coerceObject:(id)a3 toObjectOfClass:(Class)a4 outError:(id *)a5;
-- (void)addCoercionToClass:(Class)a3 block:(id)a4;
+- (BOOL)canCoerceToObjectOfClass:(Class)class;
+- (PBObjectToObjectCoercion)initWithClass:(Class)class;
+- (id)coerceObject:(id)object toObjectOfClass:(Class)class outError:(id *)error;
+- (void)addCoercionToClass:(Class)class block:(id)block;
 @end
 
 @implementation PBObjectToObjectCoercion
 
-- (PBObjectToObjectCoercion)initWithClass:(Class)a3
+- (PBObjectToObjectCoercion)initWithClass:(Class)class
 {
   v11.receiver = self;
   v11.super_class = PBObjectToObjectCoercion;
@@ -15,30 +15,30 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_theClass, a3);
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v4->_theClass, class);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     blockByClass = v5->_blockByClass;
-    v5->_blockByClass = v6;
+    v5->_blockByClass = dictionary;
 
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     orderedClassNames = v5->_orderedClassNames;
-    v5->_orderedClassNames = v8;
+    v5->_orderedClassNames = orderedSet;
   }
 
   return v5;
 }
 
-- (void)addCoercionToClass:(Class)a3 block:(id)a4
+- (void)addCoercionToClass:(Class)class block:(id)block
 {
-  v6 = a4;
-  v8 = NSStringFromClass(a3);
-  v7 = MEMORY[0x25F8AC430](v6);
+  blockCopy = block;
+  v8 = NSStringFromClass(class);
+  v7 = MEMORY[0x25F8AC430](blockCopy);
 
   [(NSMutableDictionary *)self->_blockByClass setObject:v7 forKeyedSubscript:v8];
   [(NSMutableOrderedSet *)self->_orderedClassNames addObject:v8];
 }
 
-- (BOOL)canCoerceToObjectOfClass:(Class)a3
+- (BOOL)canCoerceToObjectOfClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -61,7 +61,7 @@
         }
 
         v9 = NSClassFromString(*(*(&v13 + 1) + 8 * i));
-        if (([(objc_class *)v9 isSubclassOfClass:a3, v13]& 1) != 0)
+        if (([(objc_class *)v9 isSubclassOfClass:class, v13]& 1) != 0)
         {
           v10 = 1;
           goto LABEL_11;
@@ -85,10 +85,10 @@ LABEL_11:
   return v10;
 }
 
-- (id)coerceObject:(id)a3 toObjectOfClass:(Class)a4 outError:(id *)a5
+- (id)coerceObject:(id)object toObjectOfClass:(Class)class outError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  objectCopy = object;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -110,34 +110,34 @@ LABEL_11:
 
         v14 = *(*(&v30 + 1) + 8 * i);
         v15 = NSClassFromString(v14);
-        if ([(objc_class *)v15 isSubclassOfClass:a4])
+        if ([(objc_class *)v15 isSubclassOfClass:class])
         {
           v16 = [(NSMutableDictionary *)self->_blockByClass objectForKeyedSubscript:v14];
           if (v16)
           {
             v19 = v16;
             v29 = 0;
-            v18 = (*(v16 + 16))(v16, v15, v8, &v29);
+            v18 = (*(v16 + 16))(v16, v15, objectCopy, &v29);
             v20 = v29;
             v21 = v20;
-            if (a5)
+            if (error)
             {
               if (v20)
               {
-                v22 = [v20 domain];
-                v23 = [v22 isEqualToString:@"PBErrorDomain"];
+                domain = [v20 domain];
+                v23 = [domain isEqualToString:@"PBErrorDomain"];
 
                 if ((v23 & 1) == 0)
                 {
                   v24 = objc_opt_class();
-                  v25 = PBCannotCoerceObjectOfClassToObjectOfClassError(v24, a4, v21);
+                  v25 = PBCannotCoerceObjectOfClassToObjectOfClassError(v24, class, v21);
 
                   v21 = v25;
                 }
               }
 
               v26 = v21;
-              *a5 = v21;
+              *error = v21;
             }
 
             goto LABEL_19;
@@ -155,11 +155,11 @@ LABEL_11:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v17 = objc_opt_class();
-    PBCannotCoerceObjectOfClassToObjectOfClassError(v17, a4, 0);
-    *a5 = v18 = 0;
+    PBCannotCoerceObjectOfClassToObjectOfClassError(v17, class, 0);
+    *error = v18 = 0;
   }
 
   else

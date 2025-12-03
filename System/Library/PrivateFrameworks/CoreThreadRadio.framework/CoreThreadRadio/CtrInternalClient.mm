@@ -13,14 +13,14 @@
 - (Result)updateHomeThreadInfo:(Result *__return_ptr)retstr;
 - (Result)updatePrimaryResident:(Result *__return_ptr)retstr;
 - (id).cxx_construct;
-- (id)init:(const char *)a3;
-- (void)setEventHandler:()basic_string<char InternalClientEventBlock:()std:(std::allocator<char>> *)a3 :char_traits<char> dqueue:;
-- (void)signal_property_changed:()basic_string<char value:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (id)init:(const char *)init;
+- (void)setEventHandler:()basic_string<char InternalClientEventBlock:()std:(std::allocator<char>> *)std :char_traits<char> dqueue:;
+- (void)signal_property_changed:()basic_string<char value:()std:(std::allocator<char>> *)std :char_traits<char>;
 @end
 
 @implementation CtrInternalClient
 
-- (id)init:(const char *)a3
+- (id)init:(const char *)init
 {
   v9.receiver = self;
   v9.super_class = CtrInternalClient;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    [(CtrInternalClient *)v4 createClient:a3];
+    [(CtrInternalClient *)v4 createClient:init];
     cntrl = v5->ctrInternalClientPtr.__cntrl_;
     v5->ctrInternalClientPtr = v8;
     if (cntrl)
@@ -44,19 +44,19 @@
   return v5;
 }
 
-- (void)setEventHandler:()basic_string<char InternalClientEventBlock:()std:(std::allocator<char>> *)a3 :char_traits<char> dqueue:
+- (void)setEventHandler:()basic_string<char InternalClientEventBlock:()std:(std::allocator<char>> *)std :char_traits<char> dqueue:
 {
   v5 = v4;
   v8 = v3;
   ptr = self->ctrInternalClientPtr.__ptr_;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v12, a3->var0.var1.var0, a3->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v12, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    v12 = *a3;
+    v12 = *std;
   }
 
   v11 = *v5;
@@ -257,18 +257,18 @@
   InternalClient::generatePSKc(v6, v9, v4);
 }
 
-- (void)signal_property_changed:()basic_string<char value:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)signal_property_changed:()basic_string<char value:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
   ptr = self->ctrInternalClientPtr.__ptr_;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&__p, a3->var0.var1.var0, a3->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&__p, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    __p = *a3;
+    __p = *std;
   }
 
   InternalClient::signal_property_changed(ptr, &__p, v4);

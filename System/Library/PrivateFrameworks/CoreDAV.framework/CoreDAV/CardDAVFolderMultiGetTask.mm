@@ -1,14 +1,14 @@
 @interface CardDAVFolderMultiGetTask
-- (CardDAVFolderMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5;
+- (CardDAVFolderMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class;
 @end
 
 @implementation CardDAVFolderMultiGetTask
 
-- (CardDAVFolderMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5
+- (CardDAVFolderMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = CardDAVFolderMultiGetTask;
-  v5 = [(CoreDAVContainerMultiGetTask *)&v8 initWithURLs:a3 atContainerURL:a4 appSpecificDataItemClass:a5];
+  v5 = [(CoreDAVContainerMultiGetTask *)&v8 initWithURLs:ls atContainerURL:l appSpecificDataItemClass:class];
   v6 = v5;
   if (v5)
   {

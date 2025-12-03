@@ -1,10 +1,10 @@
 @interface PGEventLabelerE5Model
-- (BOOL)_areFeaturesValidForFeatures:(id)a3 error:(id *)a4;
-- (PGEventLabelerE5Model)initWithFilePath:(id)a3 error:(id *)a4;
+- (BOOL)_areFeaturesValidForFeatures:(id)features error:(id *)error;
+- (PGEventLabelerE5Model)initWithFilePath:(id)path error:(id *)error;
 - (id).cxx_construct;
-- (id)computeWithFeatures:(id)a3 error:(id *)a4;
-- (id)inputNamesWithError:(id *)a3;
-- (id)inputSizeByNameWithError:(id *)a3;
+- (id)computeWithFeatures:(id)features error:(id *)error;
+- (id)inputNamesWithError:(id *)error;
+- (id)inputSizeByNameWithError:(id *)error;
 @end
 
 @implementation PGEventLabelerE5Model
@@ -25,10 +25,10 @@
   return self;
 }
 
-- (BOOL)_areFeaturesValidForFeatures:(id)a3 error:(id *)a4
+- (BOOL)_areFeaturesValidForFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PGEventLabelerE5Model *)self inputSizeByNameWithError:a4];
+  featuresCopy = features;
+  v7 = [(PGEventLabelerE5Model *)self inputSizeByNameWithError:error];
   if (v7)
   {
     v20 = 0;
@@ -45,13 +45,13 @@
     v10[1] = 3221225472;
     v10[2] = __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invoke;
     v10[3] = &unk_2788855D0;
-    v11 = v6;
+    v11 = featuresCopy;
     v12 = &v20;
     v13 = &v14;
     [v7 enumerateKeysAndObjectsUsingBlock:v10];
-    if (a4)
+    if (error)
     {
-      *a4 = v15[5];
+      *error = v15[5];
     }
 
     v8 = *(v21 + 24);
@@ -90,11 +90,11 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
   }
 }
 
-- (id)computeWithFeatures:(id)a3 error:(id *)a4
+- (id)computeWithFeatures:(id)features error:(id *)error
 {
-  v43 = a3;
+  featuresCopy = features;
   v42 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:self->_outputPortByName.__table_.__size_];
-  if ([(PGEventLabelerE5Model *)self _areFeaturesValidForFeatures:v43 error:a4])
+  if ([(PGEventLabelerE5Model *)self _areFeaturesValidForFeatures:featuresCopy error:error])
   {
     for (i = self->_inputPortByName.__table_.__first_node_.__next_; i; i = *i)
     {
@@ -130,7 +130,7 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
       }
 
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
-      v14 = [v43 objectForKeyedSubscript:v13];
+      v14 = [featuresCopy objectForKeyedSubscript:v13];
       for (j = 0; j < [v14 count]; ++j)
       {
         v16 = [v14 objectAtIndexedSubscript:j];
@@ -202,12 +202,12 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
       }
 
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:p_p];
-      v34 = [v33 lowercaseString];
+      lowercaseString = [v33 lowercaseString];
       __asm { FCVT            S8, H8 }
 
       LODWORD(v36) = _S8;
       v37 = [MEMORY[0x277CCABB0] numberWithFloat:v36];
-      [v42 setValue:v37 forKey:v34];
+      [v42 setValue:v37 forKey:lowercaseString];
 
       if (v26)
       {
@@ -238,7 +238,7 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
   return v39;
 }
 
-- (id)inputSizeByNameWithError:(id *)a3
+- (id)inputSizeByNameWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:self->_inputPortByName.__table_.__size_];
   for (i = self->_inputPortByName.__table_.__first_node_.__next_; i; i = *i)
@@ -285,7 +285,7 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
   return v4;
 }
 
-- (id)inputNamesWithError:(id *)a3
+- (id)inputNamesWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:self->_inputPortByName.__table_.__size_];
   for (i = self->_inputPortByName.__table_.__first_node_.__next_; i; i = *i)
@@ -303,18 +303,18 @@ void __60__PGEventLabelerE5Model__areFeaturesValidForFeatures_error___block_invo
   return v4;
 }
 
-- (PGEventLabelerE5Model)initWithFilePath:(id)a3 error:(id *)a4
+- (PGEventLabelerE5Model)initWithFilePath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v45.receiver = self;
   v45.super_class = PGEventLabelerE5Model;
   v6 = [(PGEventLabelerE5Model *)&v45 init];
   if (v6)
   {
-    v35 = v5;
+    v35 = pathCopy;
     v36 = v6;
     std::string::basic_string[abi:ne200100]<0>(&v46, "op");
-    std::string::basic_string[abi:ne200100]<0>(&v42, [v5 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&v42, [pathCopy UTF8String]);
     std::string::basic_string[abi:ne200100]<0>(&__p, "main");
     E5RT::ExecutionStreamOperation::CreatePreCompiledComputeOp();
     if (v44)
@@ -522,7 +522,7 @@ LABEL_40:
     E5RT::ExecutionStream::CreateExecutionStream(&v46, OutputPorts);
     v29 = v46;
     v46 = 0;
-    v5 = v35;
+    pathCopy = v35;
     v7 = v36;
     ptr = v36->_stream.__ptr_;
     v36->_stream.__ptr_ = v29;

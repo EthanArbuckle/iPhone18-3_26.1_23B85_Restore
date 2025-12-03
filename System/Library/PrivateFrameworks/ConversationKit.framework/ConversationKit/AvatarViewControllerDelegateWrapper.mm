@@ -1,13 +1,13 @@
 @interface AvatarViewControllerDelegateWrapper
-- (id)hostingViewControllerForController:(id)a3;
+- (id)hostingViewControllerForController:(id)controller;
 @end
 
 @implementation AvatarViewControllerDelegateWrapper
 
-- (id)hostingViewControllerForController:(id)a3
+- (id)hostingViewControllerForController:(id)controller
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = AvatarViewControllerDelegateWrapper.hostingViewController(for:)();
   swift_unknownObjectRelease();
 

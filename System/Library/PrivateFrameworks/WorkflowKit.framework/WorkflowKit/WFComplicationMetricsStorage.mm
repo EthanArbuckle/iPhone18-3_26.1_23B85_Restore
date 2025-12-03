@@ -1,36 +1,36 @@
 @interface WFComplicationMetricsStorage
 + (unint64_t)appComplicationSlotsUsed;
 + (unint64_t)shortcutComplicationSlotsUsed;
-+ (void)setAppComplicationSlotsUsed:(unint64_t)a3;
-+ (void)setShortcutComplicationSlotsUsed:(unint64_t)a3;
++ (void)setAppComplicationSlotsUsed:(unint64_t)used;
++ (void)setShortcutComplicationSlotsUsed:(unint64_t)used;
 @end
 
 @implementation WFComplicationMetricsStorage
 
-+ (void)setShortcutComplicationSlotsUsed:(unint64_t)a3
++ (void)setShortcutComplicationSlotsUsed:(unint64_t)used
 {
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  [v4 setInteger:a3 forKey:@"ShortcutComplicationSlotsUsed"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults setInteger:used forKey:@"ShortcutComplicationSlotsUsed"];
 }
 
 + (unint64_t)shortcutComplicationSlotsUsed
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 integerForKey:@"ShortcutComplicationSlotsUsed"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults integerForKey:@"ShortcutComplicationSlotsUsed"];
 
   return v3 & (v3 >> 63);
 }
 
-+ (void)setAppComplicationSlotsUsed:(unint64_t)a3
++ (void)setAppComplicationSlotsUsed:(unint64_t)used
 {
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  [v4 setInteger:a3 forKey:@"AppComplicationSlotsUsed"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults setInteger:used forKey:@"AppComplicationSlotsUsed"];
 }
 
 + (unint64_t)appComplicationSlotsUsed
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 integerForKey:@"AppComplicationSlotsUsed"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults integerForKey:@"AppComplicationSlotsUsed"];
 
   return v3 & (v3 >> 63);
 }

@@ -1,15 +1,15 @@
 @interface MenstrualCyclesOnboardingItem
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 @end
 
 @implementation MenstrualCyclesOnboardingItem
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  analysisCopy = analysis;
 
-  sub_29DF28EAC(v6);
+  sub_29DF28EAC(analysisCopy);
 }
 
 @end

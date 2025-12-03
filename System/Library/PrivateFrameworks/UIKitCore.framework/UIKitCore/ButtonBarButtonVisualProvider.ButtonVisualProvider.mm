@@ -1,6 +1,6 @@
 @interface ButtonBarButtonVisualProvider.ButtonVisualProvider
-- (id)_newImageViewWithFrame:(CGRect)a3;
-- (id)_newLabelWithFrame:(CGRect)a3;
+- (id)_newImageViewWithFrame:(CGRect)frame;
+- (id)_newLabelWithFrame:(CGRect)frame;
 - (void)_updateImageView;
 - (void)_updateTitleView;
 - (void)layoutSubviews;
@@ -10,17 +10,17 @@
 
 - (void)_updateImageView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890A0B8C();
 }
 
-- (id)_newImageViewWithFrame:(CGRect)a3
+- (id)_newImageViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   v8 = sub_188C5F1C8(x, y, width, height);
 
   return v8;
@@ -41,7 +41,7 @@
   v8[2] = sub_188A4A968;
   v8[3] = &block_descriptor_100;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);
@@ -55,23 +55,23 @@
 
 - (void)_updateTitleView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890A0D18();
 }
 
-- (id)_newLabelWithFrame:(CGRect)a3
+- (id)_newLabelWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
   v7 = v10.receiver;
-  v8 = [(UIButtonLegacyVisualProvider *)&v10 _newLabelWithFrame:x, y, width, height];
-  [v8 setAdjustsFontForContentSizeCategory_];
+  height = [(UIButtonLegacyVisualProvider *)&v10 _newLabelWithFrame:x, y, width, height];
+  [height setAdjustsFontForContentSizeCategory_];
 
-  return v8;
+  return height;
 }
 
 @end

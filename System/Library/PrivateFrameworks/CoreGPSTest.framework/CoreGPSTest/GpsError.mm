@@ -1,17 +1,17 @@
 @interface GpsError
-+ (BOOL)setError:(id *)a3 withCode:(int)a4 format:(id)a5;
++ (BOOL)setError:(id *)error withCode:(int)code format:(id)format;
 @end
 
 @implementation GpsError
 
-+ (BOOL)setError:(id *)a3 withCode:(int)a4 format:(id)a5
++ (BOOL)setError:(id *)error withCode:(int)code format:(id)format
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if (v7)
+  formatCopy = format;
+  if (formatCopy)
   {
     v20[0] = &v21;
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v7 arguments:&v21];
+    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v21];
   }
 
   else
@@ -19,20 +19,20 @@
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = dictionary;
   if (v8)
   {
-    [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GpsFactoryTest" code:a4 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"GpsFactoryTest" code:code userInfo:v10];
   v12 = v11;
-  if (a3)
+  if (error)
   {
-    v13 = *a3 == 0;
+    v13 = *error == 0;
     v14 = v11;
-    *a3 = v12;
+    *error = v12;
     if (v13)
     {
       v17 = 1;

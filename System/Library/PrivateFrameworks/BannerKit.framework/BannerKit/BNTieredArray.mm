@@ -1,18 +1,18 @@
 @interface BNTieredArray
 - (NSArray)allObjects;
 - (NSArray)topObjectFromEachTier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForObject:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (id)tierAtIndex:(unint64_t)a3;
-- (id)topObjectInTier:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForObject:(id)object;
+- (id)objectAtIndexPath:(id)path;
+- (id)tierAtIndex:(unint64_t)index;
+- (id)topObjectInTier:(int64_t)tier;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)_invalidateAllObjectsCache;
-- (void)addObject:(id)a3 incrementingTier:(BOOL)a4 addTierToTop:(BOOL)a5;
-- (void)addObject:(id)a3 toTierOfObject:(id)a4 addObjectToTop:(BOOL)a5;
-- (void)removeObject:(id)a3;
-- (void)removeObjectAtIndexPath:(id)a3;
+- (void)addObject:(id)object incrementingTier:(BOOL)tier addTierToTop:(BOOL)top;
+- (void)addObject:(id)object toTierOfObject:(id)ofObject addObjectToTop:(BOOL)top;
+- (void)removeObject:(id)object;
+- (void)removeObjectAtIndexPath:(id)path;
 @end
 
 @implementation BNTieredArray
@@ -20,9 +20,9 @@
 - (NSArray)allObjects
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  allObjects = v2->_allObjects;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = selfCopy->_allObjects;
   if (!allObjects)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -30,7 +30,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v2->_collections;
+    v5 = selfCopy->_collections;
     v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -53,14 +53,14 @@
       while (v6);
     }
 
-    v9 = v2->_allObjects;
-    v2->_allObjects = v4;
+    v9 = selfCopy->_allObjects;
+    selfCopy->_allObjects = v4;
 
-    allObjects = v2->_allObjects;
+    allObjects = selfCopy->_allObjects;
   }
 
   v10 = allObjects;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
@@ -115,10 +115,10 @@
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(BNTieredArray *)self allObjects];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  allObjects = [(BNTieredArray *)self allObjects];
+  v9 = [allObjects countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
@@ -143,29 +143,29 @@
   return v3;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 tier];
-  v6 = [v4 item];
+  pathCopy = path;
+  tier = [pathCopy tier];
+  item = [pathCopy item];
 
-  if (v5 >= -[NSMutableArray count](self->_collections, "count") || (-[NSMutableArray objectAtIndexedSubscript:](self->_collections, "objectAtIndexedSubscript:", v5), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6 >= v8))
+  if (tier >= -[NSMutableArray count](self->_collections, "count") || (-[NSMutableArray objectAtIndexedSubscript:](self->_collections, "objectAtIndexedSubscript:", tier), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, item >= v8))
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(NSMutableArray *)self->_collections objectAtIndexedSubscript:v5];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    v9 = [(NSMutableArray *)self->_collections objectAtIndexedSubscript:tier];
+    v10 = [v9 objectAtIndexedSubscript:item];
   }
 
   return v10;
 }
 
-- (id)indexPathForObject:(id)a3
+- (id)indexPathForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -180,7 +180,7 @@
   v9[2] = __36__BNTieredArray_indexPathForObject___block_invoke;
   v9[3] = &unk_1E81E4E90;
   v11 = &v17;
-  v6 = v4;
+  v6 = objectCopy;
   v10 = v6;
   v12 = &v13;
   [(NSMutableArray *)collections enumerateObjectsUsingBlock:v9];
@@ -205,19 +205,19 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
   return result;
 }
 
-- (void)addObject:(id)a3 toTierOfObject:(id)a4 addObjectToTop:(BOOL)a5
+- (void)addObject:(id)object toTierOfObject:(id)ofObject addObjectToTop:(BOOL)top
 {
-  v5 = a5;
-  v8 = a3;
-  if (v8)
+  topCopy = top;
+  objectCopy = object;
+  if (objectCopy)
   {
-    v12 = v8;
-    v9 = [(BNTieredArray *)self indexPathForObject:a4];
+    v12 = objectCopy;
+    v9 = [(BNTieredArray *)self indexPathForObject:ofObject];
     if ([v9 item] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_collections, "objectAtIndexedSubscript:", [v9 tier]);
       v11 = v10;
-      if (v5)
+      if (topCopy)
       {
         [v10 addObject:v12];
       }
@@ -230,16 +230,16 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
       [(BNTieredArray *)self _invalidateAllObjectsCache];
     }
 
-    v8 = v12;
+    objectCopy = v12;
   }
 }
 
-- (void)addObject:(id)a3 incrementingTier:(BOOL)a4 addTierToTop:(BOOL)a5
+- (void)addObject:(id)object incrementingTier:(BOOL)tier addTierToTop:(BOOL)top
 {
-  v7 = a3;
-  if (v7)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v14 = v7;
+    v14 = objectCopy;
     collections = self->_collections;
     if (!collections)
     {
@@ -250,9 +250,9 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
       collections = self->_collections;
     }
 
-    v11 = [(NSMutableArray *)collections firstObject];
-    v12 = v11;
-    if (a4 || !v11)
+    firstObject = [(NSMutableArray *)collections firstObject];
+    v12 = firstObject;
+    if (tier || !firstObject)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [(NSMutableArray *)self->_collections insertObject:v13 atIndex:0];
@@ -263,27 +263,27 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
     [v12 addObject:v14];
     [(BNTieredArray *)self _invalidateAllObjectsCache];
 
-    v7 = v14;
+    objectCopy = v14;
   }
 }
 
-- (void)removeObjectAtIndexPath:(id)a3
+- (void)removeObjectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 tier];
-  v6 = [v4 item];
+  pathCopy = path;
+  tier = [pathCopy tier];
+  item = [pathCopy item];
 
-  if (v5 < [(NSMutableArray *)self->_collections count])
+  if (tier < [(NSMutableArray *)self->_collections count])
   {
-    v10 = [(NSMutableArray *)self->_collections objectAtIndexedSubscript:v5];
-    v7 = v6 >= [v10 count];
+    v10 = [(NSMutableArray *)self->_collections objectAtIndexedSubscript:tier];
+    v7 = item >= [v10 count];
     v8 = v10;
     if (!v7)
     {
-      [v10 removeObjectAtIndex:v6];
+      [v10 removeObjectAtIndex:item];
       if (![v10 count])
       {
-        [(NSMutableArray *)self->_collections removeObjectAtIndex:v5];
+        [(NSMutableArray *)self->_collections removeObjectAtIndex:tier];
       }
 
       if (![(NSMutableArray *)self->_collections count])
@@ -298,11 +298,11 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -318,7 +318,7 @@ uint64_t __36__BNTieredArray_indexPathForObject___block_invoke(void *a1, void *a
     v8[2] = __30__BNTieredArray_removeObject___block_invoke;
     v8[3] = &unk_1E81E4E90;
     v10 = &v12;
-    v9 = v4;
+    v9 = objectCopy;
     v11 = &v16;
     [(NSMutableArray *)collections enumerateObjectsUsingBlock:v8];
     v7 = [MEMORY[0x1E696AC88] indexPathForItem:v13[3] inTier:v17[3]];
@@ -342,30 +342,30 @@ uint64_t __30__BNTieredArray_removeObject___block_invoke(void *a1, void *a2, uin
   return result;
 }
 
-- (id)tierAtIndex:(unint64_t)a3
+- (id)tierAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_collections count]<= a3)
+  if ([(NSMutableArray *)self->_collections count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_collections objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_collections objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)topObjectInTier:(int64_t)a3
+- (id)topObjectInTier:(int64_t)tier
 {
-  v3 = [(BNTieredArray *)self tierAtIndex:a3];
-  v4 = [v3 lastObject];
+  v3 = [(BNTieredArray *)self tierAtIndex:tier];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BNTieredArray);
   v5 = [(NSMutableArray *)self->_collections copy];

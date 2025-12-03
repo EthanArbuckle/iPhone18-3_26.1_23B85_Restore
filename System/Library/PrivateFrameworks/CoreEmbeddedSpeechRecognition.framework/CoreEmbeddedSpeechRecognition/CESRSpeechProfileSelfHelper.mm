@@ -1,22 +1,22 @@
 @interface CESRSpeechProfileSelfHelper
 - (CESRSpeechProfileSelfHelper)init;
-- (void)logASRSpeechProfileUpdateEndedWithUserDataMetrics:(id)a3;
+- (void)logASRSpeechProfileUpdateEndedWithUserDataMetrics:(id)metrics;
 - (void)logASRSpeechProfileUpdateStarted;
-- (void)wrapAndEmitTopLevelEvent:(id)a3;
+- (void)wrapAndEmitTopLevelEvent:(id)event;
 @end
 
 @implementation CESRSpeechProfileSelfHelper
 
-- (void)wrapAndEmitTopLevelEvent:(id)a3
+- (void)wrapAndEmitTopLevelEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(MEMORY[0x277D56AC0]);
   v6 = [objc_alloc(MEMORY[0x277D5AC78]) initWithNSUUID:self->_componentId];
   [v5 setSpeechProfileId:v6];
   v7 = objc_alloc_init(MEMORY[0x277D56AB8]);
   [v7 setEventMetadata:v5];
-  [v7 setSpeechProfileUpdateContext:v4];
+  [v7 setSpeechProfileUpdateContext:eventCopy];
   v8 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
   {
@@ -30,22 +30,22 @@
     _os_log_debug_impl(&dword_225EEB000, v13, OS_LOG_TYPE_DEBUG, "%s SELF: Wrapping and logging an event of type %@", &v16, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D552C0] sharedAnalytics];
-  v10 = [v9 defaultMessageStream];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  [v10 emitMessage:v7 isolatedStreamUUID:v11];
+  mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedAnalytics];
+  defaultMessageStream = [mEMORY[0x277D552C0] defaultMessageStream];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [defaultMessageStream emitMessage:v7 isolatedStreamUUID:uUID];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logASRSpeechProfileUpdateEndedWithUserDataMetrics:(id)a3
+- (void)logASRSpeechProfileUpdateEndedWithUserDataMetrics:(id)metrics
 {
-  v4 = a3;
-  v7 = +[CESRSpeechProfileSelfHelper _cleanupMetricsWithIsIngestionEnabled:numEntitiesContainingEmoji:numEntitiesContainingSpecialCharacters:numEntitiesCleaned:](CESRSpeechProfileSelfHelper, "_cleanupMetricsWithIsIngestionEnabled:numEntitiesContainingEmoji:numEntitiesContainingSpecialCharacters:numEntitiesCleaned:", [v4 isCleanupIngestionEnabled], objc_msgSend(v4, "numEntitiesContainingEmoji"), objc_msgSend(v4, "numEntitiesContainingSpecialCharacters"), objc_msgSend(v4, "numEntitiesCleaned"));
-  v5 = +[CESRSpeechProfileSelfHelper _extractionMetricsWithIsIngestionEnabled:isExtractionSetupSuccessful:numEntitiesExtractionAttempted:numEntitiesContainingExtractions:numEntitiesExtracted:](CESRSpeechProfileSelfHelper, "_extractionMetricsWithIsIngestionEnabled:isExtractionSetupSuccessful:numEntitiesExtractionAttempted:numEntitiesContainingExtractions:numEntitiesExtracted:", [v4 isExtractionIngestionEnabled], objc_msgSend(v4, "isExtractionSetupSuccessful"), objc_msgSend(v4, "numEntitiesExtractionAttempted"), objc_msgSend(v4, "numEntitiesContainingExtractions"), objc_msgSend(v4, "numEntitiesExtracted"));
-  v6 = [v4 totalNumEntitiesReceived];
+  metricsCopy = metrics;
+  v7 = +[CESRSpeechProfileSelfHelper _cleanupMetricsWithIsIngestionEnabled:numEntitiesContainingEmoji:numEntitiesContainingSpecialCharacters:numEntitiesCleaned:](CESRSpeechProfileSelfHelper, "_cleanupMetricsWithIsIngestionEnabled:numEntitiesContainingEmoji:numEntitiesContainingSpecialCharacters:numEntitiesCleaned:", [metricsCopy isCleanupIngestionEnabled], objc_msgSend(metricsCopy, "numEntitiesContainingEmoji"), objc_msgSend(metricsCopy, "numEntitiesContainingSpecialCharacters"), objc_msgSend(metricsCopy, "numEntitiesCleaned"));
+  v5 = +[CESRSpeechProfileSelfHelper _extractionMetricsWithIsIngestionEnabled:isExtractionSetupSuccessful:numEntitiesExtractionAttempted:numEntitiesContainingExtractions:numEntitiesExtracted:](CESRSpeechProfileSelfHelper, "_extractionMetricsWithIsIngestionEnabled:isExtractionSetupSuccessful:numEntitiesExtractionAttempted:numEntitiesContainingExtractions:numEntitiesExtracted:", [metricsCopy isExtractionIngestionEnabled], objc_msgSend(metricsCopy, "isExtractionSetupSuccessful"), objc_msgSend(metricsCopy, "numEntitiesExtractionAttempted"), objc_msgSend(metricsCopy, "numEntitiesContainingExtractions"), objc_msgSend(metricsCopy, "numEntitiesExtracted"));
+  totalNumEntitiesReceived = [metricsCopy totalNumEntitiesReceived];
 
-  [(CESRSpeechProfileSelfHelper *)self logASRSpeechProfileUpdateEndedWithTotalNumEntitiesReceived:v6 entityCleanupMetrics:v7 entityExtractionMetrics:v5];
+  [(CESRSpeechProfileSelfHelper *)self logASRSpeechProfileUpdateEndedWithTotalNumEntitiesReceived:totalNumEntitiesReceived entityCleanupMetrics:v7 entityExtractionMetrics:v5];
 }
 
 - (void)logASRSpeechProfileUpdateStarted
@@ -64,9 +64,9 @@
   v2 = [(CESRSpeechProfileSelfHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     componentId = v2->_componentId;
-    v2->_componentId = v3;
+    v2->_componentId = uUID;
   }
 
   return v2;

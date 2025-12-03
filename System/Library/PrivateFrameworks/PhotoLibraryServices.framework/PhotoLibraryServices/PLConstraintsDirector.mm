@@ -1,7 +1,7 @@
 @interface PLConstraintsDirector
-- (PLConstraintsDirector)initWithPhotoLibraryURL:(id)a3;
+- (PLConstraintsDirector)initWithPhotoLibraryURL:(id)l;
 - (void)_requestMediaAnalysisQuickFaceProcessing;
-- (void)cameraWatcherDidChangeState:(id)a3;
+- (void)cameraWatcherDidChangeState:(id)state;
 - (void)informAssetDeferredProcessingOccurring;
 - (void)informAssetsFinishedDeferredProcessing;
 - (void)informPhotoCapturedThatNeedsDeferredProcessing;
@@ -10,18 +10,18 @@
 
 @implementation PLConstraintsDirector
 
-- (void)cameraWatcherDidChangeState:(id)a3
+- (void)cameraWatcherDidChangeState:(id)state
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(isolationQueue);
-  v6 = [v5 isCameraRunning];
+  isCameraRunning = [stateCopy isCameraRunning];
 
-  if ((v6 & 1) != 0 || self->_deferredProcessingOngoing || self->_outstandingCaptures != 1)
+  if ((isCameraRunning & 1) != 0 || self->_deferredProcessingOngoing || self->_outstandingCaptures != 1)
   {
     faceQuickClassificationRequestID = self->_faceQuickClassificationRequestID;
     v8 = +[PLMediaAnalysisServiceRequestAdapter invalidVCPRequestID];
-    v9 = v6 ^ 1;
+    v9 = isCameraRunning ^ 1;
     if (faceQuickClassificationRequestID == v8)
     {
       v9 = 1;
@@ -147,9 +147,9 @@ uint64_t __62__PLConstraintsDirector_informPhotoCapturedThatNeedsQuickFace__bloc
   return result;
 }
 
-- (PLConstraintsDirector)initWithPhotoLibraryURL:(id)a3
+- (PLConstraintsDirector)initWithPhotoLibraryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = PLConstraintsDirector;
   v6 = [(PLConstraintsDirector *)&v13 init];
@@ -161,7 +161,7 @@ uint64_t __62__PLConstraintsDirector_informPhotoCapturedThatNeedsQuickFace__bloc
     v6->_isolationQueue = v8;
 
     v6->_outstandingCaptures = 0;
-    objc_storeStrong(&v6->_photoLibraryURL, a3);
+    objc_storeStrong(&v6->_photoLibraryURL, l);
     v10 = [objc_alloc(MEMORY[0x1E69C0690]) initWithDispatchQueue:v6->_isolationQueue delegate:v6];
     cameraWatcher = v6->_cameraWatcher;
     v6->_cameraWatcher = v10;

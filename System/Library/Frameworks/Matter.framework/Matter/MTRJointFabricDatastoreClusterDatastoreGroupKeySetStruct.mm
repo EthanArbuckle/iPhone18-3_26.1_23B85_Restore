@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct
 - (MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -45,35 +45,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeySetID];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeySetID:v5];
+  groupKeySetID = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeySetID];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeySetID:groupKeySetID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeySecurityPolicy];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeySecurityPolicy:v6];
+  groupKeySecurityPolicy = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeySecurityPolicy];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeySecurityPolicy:groupKeySecurityPolicy];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey0];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey0:v7];
+  epochKey0 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey0];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey0:epochKey0];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime0];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime0:v8];
+  epochStartTime0 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime0];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime0:epochStartTime0];
 
-  v9 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey1];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey1:v9];
+  epochKey1 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey1];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey1:epochKey1];
 
-  v10 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime1];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime1:v10];
+  epochStartTime1 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime1];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime1:epochStartTime1];
 
-  v11 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey2];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey2:v11];
+  epochKey2 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochKey2];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochKey2:epochKey2];
 
-  v12 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime2];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime2:v12];
+  epochStartTime2 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self epochStartTime2];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setEpochStartTime2:epochStartTime2];
 
-  v13 = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeyMulticastPolicy];
-  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeyMulticastPolicy:v13];
+  groupKeyMulticastPolicy = [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)self groupKeyMulticastPolicy];
+  [(MTRJointFabricDatastoreClusterDatastoreGroupKeySetStruct *)v4 setGroupKeyMulticastPolicy:groupKeyMulticastPolicy];
 
   return v4;
 }

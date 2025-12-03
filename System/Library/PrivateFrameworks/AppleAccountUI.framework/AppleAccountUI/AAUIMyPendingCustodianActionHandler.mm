@@ -1,26 +1,26 @@
 @interface AAUIMyPendingCustodianActionHandler
-- (void)displayMessagesInvitationFlowWithViewController:(id)a3;
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4;
+- (void)displayMessagesInvitationFlowWithViewController:(id)controller;
+- (void)doPrimaryAction:(id)action specifier:(id)specifier;
 @end
 
 @implementation AAUIMyPendingCustodianActionHandler
 
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4
+- (void)doPrimaryAction:(id)action specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  specifierCopy = specifier;
   v8 = objc_alloc_init(MEMORY[0x1E698B850]);
   objc_initWeak(&location, self);
-  v9 = [(AAUIMyCustodianActionHandler *)self contact];
-  v10 = [v9 custodianID];
+  contact = [(AAUIMyCustodianActionHandler *)self contact];
+  custodianID = [contact custodianID];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__AAUIMyPendingCustodianActionHandler_doPrimaryAction_specifier___block_invoke;
   v12[3] = &unk_1E820C3A0;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = actionCopy;
   v13 = v11;
-  [v8 reSendCustodianInvitationWithCustodianID:v10 completion:v12];
+  [v8 reSendCustodianInvitationWithCustodianID:custodianID completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -54,17 +54,17 @@ void __65__AAUIMyPendingCustodianActionHandler_doPrimaryAction_specifier___block
   }
 }
 
-- (void)displayMessagesInvitationFlowWithViewController:(id)a3
+- (void)displayMessagesInvitationFlowWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__AAUIMyPendingCustodianActionHandler_displayMessagesInvitationFlowWithViewController___block_invoke;
   block[3] = &unk_1E820BE68;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);

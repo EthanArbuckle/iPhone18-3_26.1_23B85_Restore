@@ -1,13 +1,13 @@
 @interface DDShowCalendarAction
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDShowCalendarAction
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   context = self->super._context;
-  v5 = a3;
+  viewCopy = view;
   v6 = [(NSDictionary *)context objectForKeyedSubscript:0x282C1E0C8];
   v14 = _eventStartDateFromCache(v6);
 
@@ -21,9 +21,9 @@
 
     else
     {
-      v8 = [(DDAction *)self associatedResults];
-      v9 = [(DDAction *)self context];
-      v15 = beginDateOfEventResults(v8, v9, 0, 0, 0);
+      associatedResults = [(DDAction *)self associatedResults];
+      context = [(DDAction *)self context];
+      v15 = beginDateOfEventResults(associatedResults, context, 0, 0, 0);
 
       v7 = v15;
     }
@@ -35,7 +35,7 @@
   v12 = [v10 stringWithFormat:@"calshow:%f", v11];
   v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
   DDUIRecordOtherActionInSheetForResultIfNeeded(self->super._result);
-  [(DDAction *)self _performFromView:v5 byOpeningURL:v13];
+  [(DDAction *)self _performFromView:viewCopy byOpeningURL:v13];
 }
 
 @end

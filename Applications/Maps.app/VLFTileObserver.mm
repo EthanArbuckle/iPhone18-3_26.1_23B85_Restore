@@ -1,16 +1,16 @@
 @interface VLFTileObserver
 - (CLLocationCoordinate2D)previouslyCheckedCoordinate;
-- (VLFTileObserver)initWithLocationManager:(id)a3 navigationService:(id)a4 carDisplayController:(id)a5 purpose:(int64_t)a6;
+- (VLFTileObserver)initWithLocationManager:(id)manager navigationService:(id)service carDisplayController:(id)controller purpose:(int64_t)purpose;
 - (double)distanceThreshold;
-- (void)addAvailabilityObserver:(id)a3;
-- (void)checkForTileAvailabilityAtLocation:(id)a3;
+- (void)addAvailabilityObserver:(id)observer;
+- (void)checkForTileAvailabilityAtLocation:(id)location;
 - (void)checkForUnsupportedNavigationTransportType;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeAvailabilityObserver:(id)a3;
-- (void)setAreTilesAvailable:(BOOL)a3;
-- (void)setNavigatingInUnsupportedTransportType:(BOOL)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeAvailabilityObserver:(id)observer;
+- (void)setAreTilesAvailable:(BOOL)available;
+- (void)setNavigatingInUnsupportedTransportType:(BOOL)type;
 @end
 
 @implementation VLFTileObserver
@@ -26,33 +26,33 @@
 
 - (double)distanceThreshold
 {
-  v2 = [(VLFTileObserver *)self carDisplayController];
-  [v2 state];
+  carDisplayController = [(VLFTileObserver *)self carDisplayController];
+  [carDisplayController state];
 
   GEOConfigGetDouble();
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = NSStringFromSelector("state");
-  if (([v10 isEqualToString:v13] & 1) == 0)
+  if (([pathCopy isEqualToString:v13] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v14 = [(VLFTileObserver *)self carDisplayController];
+  carDisplayController = [(VLFTileObserver *)self carDisplayController];
 
-  if (v14 != v11)
+  if (carDisplayController != objectCopy)
   {
 LABEL_9:
     v18.receiver = self;
     v18.super_class = VLFTileObserver;
-    [(VLFTileObserver *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFTileObserver *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_10;
   }
 
@@ -60,27 +60,27 @@ LABEL_9:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Detected carplay connectivity state changed", buf, 0xCu);
   }
 
-  v16 = [(VLFTileObserver *)self locationManager];
-  v17 = [v16 lastLocation];
+  locationManager = [(VLFTileObserver *)self locationManager];
+  lastLocation = [locationManager lastLocation];
 
-  if (v17)
+  if (lastLocation)
   {
-    [(VLFTileObserver *)self checkForTileAvailabilityAtLocation:v17];
+    [(VLFTileObserver *)self checkForTileAvailabilityAtLocation:lastLocation];
   }
 
 LABEL_10:
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = [a3 lastLocation];
-  if (v4)
+  lastLocation = [location lastLocation];
+  if (lastLocation)
   {
-    [(VLFTileObserver *)self checkForTileAvailabilityAtLocation:v4];
+    [(VLFTileObserver *)self checkForTileAvailabilityAtLocation:lastLocation];
   }
 
   else
@@ -89,7 +89,7 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134349056;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Got nil location update; ignoring", &v6, 0xCu);
     }
   }
@@ -97,24 +97,24 @@ LABEL_10:
 
 - (void)checkForUnsupportedNavigationTransportType
 {
-  v3 = [(VLFTileObserver *)self navigationService];
-  v4 = [v3 isInNavigatingState];
+  navigationService = [(VLFTileObserver *)self navigationService];
+  isInNavigatingState = [navigationService isInNavigatingState];
 
-  if ((v4 & 1) == 0)
+  if ((isInNavigatingState & 1) == 0)
   {
     v8 = sub_100052314();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v13 = 134349056;
-      v14 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Detected not navigating", &v13, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v5 = [(VLFTileObserver *)self navigationService];
-  v6 = [v5 navigationTransportType] - 1;
+  navigationService2 = [(VLFTileObserver *)self navigationService];
+  v6 = [navigationService2 navigationTransportType] - 1;
   if (v6 > 5)
   {
     v7 = 1;
@@ -133,11 +133,11 @@ LABEL_10:
   {
     if (v10)
     {
-      v11 = [(VLFTileObserver *)self navigationService];
+      navigationService3 = [(VLFTileObserver *)self navigationService];
       v13 = 134349312;
-      v14 = self;
+      selfCopy3 = self;
       v15 = 1024;
-      v16 = [v11 navigationTransportType];
+      navigationTransportType = [navigationService3 navigationTransportType];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Detected navigating in a supported transport type: %d", &v13, 0x12u);
     }
 
@@ -149,11 +149,11 @@ LABEL_10:
 
   if (v10)
   {
-    v12 = [(VLFTileObserver *)self navigationService];
+    navigationService4 = [(VLFTileObserver *)self navigationService];
     v13 = 134349312;
-    v14 = self;
+    selfCopy3 = self;
     v15 = 1024;
-    v16 = [v12 navigationTransportType];
+    navigationTransportType = [navigationService4 navigationTransportType];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Detected navigating in an unsupported transport type: %d", &v13, 0x12u);
   }
 
@@ -161,9 +161,9 @@ LABEL_10:
   [(VLFTileObserver *)self setAreTilesAvailable:0];
 }
 
-- (void)checkForTileAvailabilityAtLocation:(id)a3
+- (void)checkForTileAvailabilityAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -231,16 +231,16 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v9 = [(VLFTileObserver *)self lastErrorDate];
-  v10 = v9 == 0;
+  lastErrorDate = [(VLFTileObserver *)self lastErrorDate];
+  v10 = lastErrorDate == 0;
 
   if (!v10)
   {
     [(VLFTileObserver *)self errorTimeoutThreshold];
     v12 = v11;
     v13 = +[NSDate date];
-    v14 = [(VLFTileObserver *)self lastErrorDate];
-    [v13 timeIntervalSinceDate:v14];
+    lastErrorDate2 = [(VLFTileObserver *)self lastErrorDate];
+    [v13 timeIntervalSinceDate:lastErrorDate2];
     v16 = v15 >= v12;
 
     v8 = sub_100052314();
@@ -269,7 +269,7 @@ LABEL_34:
     [(VLFTileObserver *)self setLastErrorDate:0];
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v39 = v44;
   if (!CLLocationCoordinate2DIsValid(v44))
   {
@@ -312,25 +312,25 @@ LABEL_34:
   v22 = sub_100052314();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = [(VLFTileObserver *)self purpose];
+    purpose = [(VLFTileObserver *)self purpose];
     *buf = 134349312;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = v23;
+    *&buf[14] = purpose;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Checking for VLF tile availability at the current location for purpose: %ld", buf, 0x16u);
   }
 
   GEOLocationCoordinate2DFromCLLocationCoordinate2D();
-  [v4 altitude];
+  [locationCopy altitude];
   VLECEFFromCoordinate();
   v31 = v38;
   v32 = v37;
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v25 = v24;
   [(VLFTileObserver *)self setAvailabilityCheckInFlight:1];
   objc_initWeak(&location, self);
-  v26 = [(VLFTileObserver *)self localizer];
-  v27 = [(VLFTileObserver *)self purpose];
+  localizer = [(VLFTileObserver *)self localizer];
+  purpose2 = [(VLFTileObserver *)self purpose];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10089FE98;
@@ -341,35 +341,35 @@ LABEL_34:
   *&buf[16] = v31;
   *&buf[32] = v25;
   v41 = 0;
-  [v26 determineAvailabilityAtLocation:buf purpose:v27 callbackQueue:&_dispatch_main_q callback:v33];
+  [localizer determineAvailabilityAtLocation:buf purpose:purpose2 callbackQueue:&_dispatch_main_q callback:v33];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&location);
 LABEL_35:
 }
 
-- (void)setAreTilesAvailable:(BOOL)a3
+- (void)setAreTilesAvailable:(BOOL)available
 {
-  if (self->_areTilesAvailable != a3)
+  if (self->_areTilesAvailable != available)
   {
-    self->_areTilesAvailable = a3;
-    v5 = [(VLFTileObserver *)self observers];
-    [v5 tileObserver:self didChangeTileAvailability:self->_areTilesAvailable];
+    self->_areTilesAvailable = available;
+    observers = [(VLFTileObserver *)self observers];
+    [observers tileObserver:self didChangeTileAvailability:self->_areTilesAvailable];
   }
 }
 
-- (void)setNavigatingInUnsupportedTransportType:(BOOL)a3
+- (void)setNavigatingInUnsupportedTransportType:(BOOL)type
 {
-  if (self->_navigatingInUnsupportedTransportType != a3)
+  if (self->_navigatingInUnsupportedTransportType != type)
   {
-    self->_navigatingInUnsupportedTransportType = a3;
-    if (!a3)
+    self->_navigatingInUnsupportedTransportType = type;
+    if (!type)
     {
       v4 = sub_100052314();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
         v5 = 134349056;
-        v6 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] No longer navigating in an unsupported transport type; clearing previously checked coordinate", &v5, 0xCu);
       }
 
@@ -378,18 +378,18 @@ LABEL_35:
   }
 }
 
-- (void)removeAvailabilityObserver:(id)a3
+- (void)removeAvailabilityObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VLFTileObserver *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(VLFTileObserver *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addAvailabilityObserver:(id)a3
+- (void)addAvailabilityObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VLFTileObserver *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(VLFTileObserver *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (void)dealloc
@@ -398,7 +398,7 @@ LABEL_35:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -413,12 +413,12 @@ LABEL_35:
   [(VLFTileObserver *)&v6 dealloc];
 }
 
-- (VLFTileObserver)initWithLocationManager:(id)a3 navigationService:(id)a4 carDisplayController:(id)a5 purpose:(int64_t)a6
+- (VLFTileObserver)initWithLocationManager:(id)manager navigationService:(id)service carDisplayController:(id)controller purpose:(int64_t)purpose
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  managerCopy = manager;
+  serviceCopy = service;
+  controllerCopy = controller;
+  if (!managerCopy)
   {
     v24 = sub_10006D178();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -447,7 +447,7 @@ LABEL_35:
     }
   }
 
-  if (!v12)
+  if (!serviceCopy)
   {
     v27 = sub_10006D178();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -476,7 +476,7 @@ LABEL_35:
     }
   }
 
-  if (!v13)
+  if (!controllerCopy)
   {
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -518,16 +518,16 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v14->_purpose = a6;
+    v14->_purpose = purpose;
     v16 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___VLFTileAvailabilityObserver queue:&_dispatch_main_q];
     observers = v14->_observers;
     v14->_observers = v16;
 
-    objc_storeStrong(&v14->_locationManager, a3);
+    objc_storeStrong(&v14->_locationManager, manager);
     [(MKLocationManager *)v14->_locationManager listenForLocationUpdates:v14];
-    objc_storeStrong(&v14->_navigationService, a4);
+    objc_storeStrong(&v14->_navigationService, service);
     [(MNNavigationService *)v14->_navigationService registerObserver:v14];
-    objc_storeStrong(&v14->_carDisplayController, a5);
+    objc_storeStrong(&v14->_carDisplayController, controller);
     carDisplayController = v14->_carDisplayController;
     v19 = NSStringFromSelector("state");
     [(CarDisplayController *)carDisplayController addObserver:v14 forKeyPath:v19 options:0 context:0];
@@ -538,10 +538,10 @@ LABEL_35:
     v14->_localizer = v20;
 
     v14->_previouslyCheckedCoordinate = kCLLocationCoordinate2DInvalid;
-    v22 = [(MKLocationManager *)v14->_locationManager lastLocation];
-    if (v22)
+    lastLocation = [(MKLocationManager *)v14->_locationManager lastLocation];
+    if (lastLocation)
     {
-      [(VLFTileObserver *)v14 checkForTileAvailabilityAtLocation:v22];
+      [(VLFTileObserver *)v14 checkForTileAvailabilityAtLocation:lastLocation];
     }
   }
 

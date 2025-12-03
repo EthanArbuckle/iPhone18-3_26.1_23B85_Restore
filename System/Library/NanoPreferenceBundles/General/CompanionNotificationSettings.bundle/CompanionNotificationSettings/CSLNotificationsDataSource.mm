@@ -1,31 +1,31 @@
 @interface CSLNotificationsDataSource
-- (BOOL)isSecondPartyApp:(id)a3;
+- (BOOL)isSecondPartyApp:(id)app;
 - (BOOL)watchSupportsAOT;
 - (CSLNotificationsDataSource)init;
-- (id)_showOnGizmoStateForBundleID:(id)a3;
+- (id)_showOnGizmoStateForBundleID:(id)d;
 - (id)additionalSpecifiers;
 - (id)appBacklightPrivacyLinkSpecifiers;
 - (id)currentDevice;
 - (id)deniedNotificationApps;
 - (id)hardcodedSpecifiers;
-- (id)notificationsIndicatorActive:(id)a3;
+- (id)notificationsIndicatorActive:(id)active;
 - (id)secondPartyApps;
-- (id)showOnGizmoState:(id)a3;
+- (id)showOnGizmoState:(id)state;
 - (id)specifiersForWatchKitAppsWithNotifications;
 - (id)specifiersFromBBSections;
-- (id)watchAppSpecifierWithDisplayName:(id)a3 specifierID:(id)a4 identifier:(id)a5;
-- (void)_clockStatusBarSettingsChanged:(id)a3;
-- (void)_setShowOnGizmoState:(id)a3 forBundleID:(id)a4;
-- (void)_valueChangedNotificationForSpecifier:(id)a3;
-- (void)_writeSectionState:(id)a3 forBundleID:(id)a4;
+- (id)watchAppSpecifierWithDisplayName:(id)name specifierID:(id)d identifier:(id)identifier;
+- (void)_clockStatusBarSettingsChanged:(id)changed;
+- (void)_setShowOnGizmoState:(id)state forBundleID:(id)d;
+- (void)_valueChangedNotificationForSpecifier:(id)specifier;
+- (void)_writeSectionState:(id)state forBundleID:(id)d;
 - (void)cleanBBSections;
 - (void)dealloc;
-- (void)lazyLoadBundle:(id)a3;
+- (void)lazyLoadBundle:(id)bundle;
 - (void)loadSpecifiers;
 - (void)refreshBBSections;
 - (void)reloadSpecifiers;
-- (void)setNotificationsIndicatorActive:(id)a3 specifier:(id)a4;
-- (void)setShowOnGizmoState:(id)a3 specifier:(id)a4;
+- (void)setNotificationsIndicatorActive:(id)active specifier:(id)specifier;
+- (void)setShowOnGizmoState:(id)state specifier:(id)specifier;
 - (void)setupAllowlistFromInheritedSpecifiers;
 @end
 
@@ -80,17 +80,17 @@
 - (id)currentDevice
 {
   v2 = +[PDRRegistry sharedInstance];
-  v3 = [v2 getActivePairedDeviceExcludingAltAccount];
+  getActivePairedDeviceExcludingAltAccount = [v2 getActivePairedDeviceExcludingAltAccount];
 
-  return v3;
+  return getActivePairedDeviceExcludingAltAccount;
 }
 
 - (BOOL)watchSupportsAOT
 {
   if (!self->_checkedIfWatchSupportsAOT)
   {
-    v3 = [(CSLNotificationsDataSource *)self currentDevice];
-    self->_watchSupportsAOT = [v3 supportsCapability:1789638251];
+    currentDevice = [(CSLNotificationsDataSource *)self currentDevice];
+    self->_watchSupportsAOT = [currentDevice supportsCapability:1789638251];
     self->_checkedIfWatchSupportsAOT = 1;
   }
 
@@ -111,39 +111,39 @@
   v3 = [NSArray arrayWithObjects:v7 count:9];
   v4 = [NSMutableArray arrayWithArray:v3];
 
-  v5 = [(CSLNotificationsDataSource *)self currentDevice];
-  if (([v5 supportsCapability:3519289856] & 1) == 0)
+  currentDevice = [(CSLNotificationsDataSource *)self currentDevice];
+  if (([currentDevice supportsCapability:3519289856] & 1) == 0)
   {
     [v4 addObject:@"com.apple.DeepBreathingSettings"];
   }
 
-  if (([v5 supportsCapability:54295327] & 1) == 0)
+  if (([currentDevice supportsCapability:54295327] & 1) == 0)
   {
     [v4 addObject:@"com.apple.private.PodcastsBridgeSettings"];
   }
 
-  if (([v5 supportsCapability:3783076099] & 1) == 0)
+  if (([currentDevice supportsCapability:3783076099] & 1) == 0)
   {
     [v4 addObject:@"com.apple.HeartRateSettings"];
   }
 
-  if (([v5 supportsCapability:674176742] & 1) == 0)
+  if (([currentDevice supportsCapability:674176742] & 1) == 0)
   {
     [v4 addObject:@"com.apple.tincan.settings"];
   }
 
-  if (([v5 supportsCapability:2657637795] & 1) == 0)
+  if (([currentDevice supportsCapability:2657637795] & 1) == 0)
   {
     [v4 addObject:@"com.apple.NanoBooks.BridgeSettings"];
   }
 
-  if (([v5 supportsCapability:4123187920] & 1) == 0)
+  if (([currentDevice supportsCapability:4123187920] & 1) == 0)
   {
     [v4 addObject:@"com.apple.Noise.settings"];
   }
 
   [v4 addObject:@"com.apple.OxygenSaturationSettings"];
-  if (([v5 supportsCapability:207200216] & 1) == 0)
+  if (([currentDevice supportsCapability:207200216] & 1) == 0)
   {
     [v4 addObject:@"com.apple.BrookBridgeSettings"];
   }
@@ -153,13 +153,13 @@
 
 - (void)loadSpecifiers
 {
-  v79 = [(CSLNotificationsDataSource *)self specifiers];
+  specifiers = [(CSLNotificationsDataSource *)self specifiers];
   v86 = [NSBundle bundleForClass:objc_opt_class()];
   v2 = [PSSpecifierDataSource loadSpecifiersFromPlist:@"Notifications" inBundle:v86 target:self stringsTable:@"Notifications"];
   v90 = [v2 mutableCopy];
 
-  v87 = [(CSLNotificationsDataSource *)self currentDevice];
-  if (([v87 supportsCapability:252543419] & 1) == 0)
+  currentDevice = [(CSLNotificationsDataSource *)self currentDevice];
+  if (([currentDevice supportsCapability:252543419] & 1) == 0)
   {
     v3 = objc_opt_new();
     v111 = 0u;
@@ -204,8 +204,8 @@
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AOTEnabled", @"com.apple.system.prefs", &keyExistsAndHasValidFormat);
   if ((!keyExistsAndHasValidFormat || AppBooleanValue) && [(CSLNotificationsDataSource *)self watchSupportsAOT])
   {
-    v13 = [(CSLNotificationsDataSource *)self appBacklightPrivacyLinkSpecifiers];
-    [v90 addObjectsFromArray:v13];
+    appBacklightPrivacyLinkSpecifiers = [(CSLNotificationsDataSource *)self appBacklightPrivacyLinkSpecifiers];
+    [v90 addObjectsFromArray:appBacklightPrivacyLinkSpecifiers];
     v14 = +[NSMutableArray array];
     v109[0] = _NSConcreteStackBlock;
     v109[1] = 3221225472;
@@ -213,7 +213,7 @@
     v109[3] = &unk_C460;
     v95 = v14;
     v110 = v95;
-    [v13 enumerateObjectsUsingBlock:v109];
+    [appBacklightPrivacyLinkSpecifiers enumerateObjectsUsingBlock:v109];
   }
 
   else
@@ -221,7 +221,7 @@
     v95 = 0;
   }
 
-  if ([v87 supportsCapability:240655905])
+  if ([currentDevice supportsCapability:240655905])
   {
     v15 = [v90 specifierForID:@"NOTIFICATION_PRIVACY_DESCRIPTION_ID"];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
@@ -248,8 +248,8 @@
     while (1)
     {
       v21 = [v94 objectAtIndex:v20];
-      v22 = [v21 pathExtension];
-      v23 = [v22 isEqualToString:@"dSYM"];
+      pathExtension = [v21 pathExtension];
+      v23 = [pathExtension isEqualToString:@"dSYM"];
 
       if ((v23 & 1) == 0)
       {
@@ -264,8 +264,8 @@ LABEL_37:
       }
     }
 
-    v24 = [v21 stringByDeletingPathExtension];
-    if (![v24 length])
+    stringByDeletingPathExtension = [v21 stringByDeletingPathExtension];
+    if (![stringByDeletingPathExtension length])
     {
 LABEL_36:
 
@@ -274,17 +274,17 @@ LABEL_36:
 
     v25 = [v94 objectAtIndex:v20];
     v26 = [@"/System/Library/NanoPreferenceBundles/Applications/" stringByAppendingPathComponent:v25];
-    v27 = [v26 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath = [v26 stringByResolvingSymlinksInPath];
 
-    v28 = [NSBundle bundleWithPath:v27];
-    v29 = [(CSLNotificationsDataSource *)self deniedNotificationApps];
-    v30 = [v28 bundleIdentifier];
-    LOBYTE(v26) = [v29 containsObject:v30];
+    v28 = [NSBundle bundleWithPath:stringByResolvingSymlinksInPath];
+    deniedNotificationApps = [(CSLNotificationsDataSource *)self deniedNotificationApps];
+    bundleIdentifier = [v28 bundleIdentifier];
+    LOBYTE(v26) = [deniedNotificationApps containsObject:bundleIdentifier];
 
     if ((v26 & 1) == 0)
     {
-      v31 = [v28 bundleIdentifier];
-      if ([@"com.apple.tincan.settings" isEqualToString:v31])
+      bundleIdentifier2 = [v28 bundleIdentifier];
+      if ([@"com.apple.tincan.settings" isEqualToString:bundleIdentifier2])
       {
         v32 = BPSIsWalkieTalkieAppInstalled();
 
@@ -299,27 +299,27 @@ LABEL_36:
       }
 
       v33 = [v28 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-      v34 = [v28 bundleIdentifier];
-      v35 = [@"com.apple.NanoBedtimeBridgeSettings" isEqualToString:v34];
+      bundleIdentifier3 = [v28 bundleIdentifier];
+      v35 = [@"com.apple.NanoBedtimeBridgeSettings" isEqualToString:bundleIdentifier3];
 
       if (v35)
       {
         v36 = +[NSBundle mainBundle];
-        v37 = [v36 localizedStringForKey:v24 value:&stru_C638 table:@"Localizable-burrito"];
+        v37 = [v36 localizedStringForKey:stringByDeletingPathExtension value:&stru_C638 table:@"Localizable-burrito"];
 
         v33 = v37;
       }
 
       if (![v33 length])
       {
-        v38 = [(CSLNotificationsDataSource *)self localizedPrefsStringForString:v24];
+        v38 = [(CSLNotificationsDataSource *)self localizedPrefsStringForString:stringByDeletingPathExtension];
 
         v33 = v38;
       }
 
       v39 = [NSMutableDictionary alloc];
-      v40 = [v28 bundleIdentifier];
-      v41 = [v39 initWithObjectsAndKeys:{v33, v91, v40, v84, @"PSLinkCell", v82, kCFBooleanTrue, v80, kCFBooleanTrue, v78, v24, v77, kCFBooleanTrue, @"isController", 0}];
+      bundleIdentifier4 = [v28 bundleIdentifier];
+      v41 = [v39 initWithObjectsAndKeys:{v33, v91, bundleIdentifier4, v84, @"PSLinkCell", v82, kCFBooleanTrue, v80, kCFBooleanTrue, v78, stringByDeletingPathExtension, v77, kCFBooleanTrue, @"isController", 0}];
 
       v42 = [v28 objectForInfoDictionaryKey:obj];
       if (v42)
@@ -340,22 +340,22 @@ LABEL_38:
   v43 = [v88 objectForKey:@"title"];
   v92 = SpecifiersFromPlist();
 
-  v81 = [(CSLNotificationsDataSource *)self currentDevice];
-  if ([v81 supportsCapability:486198456])
+  currentDevice2 = [(CSLNotificationsDataSource *)self currentDevice];
+  if ([currentDevice2 supportsCapability:486198456])
   {
     BPSRemoveSystemDeletedAppBundleSettingsFromSpecifiers();
-    v83 = [(CSLNotificationsDataSource *)self hardcodedSpecifiers];
+    hardcodedSpecifiers = [(CSLNotificationsDataSource *)self hardcodedSpecifiers];
     BPSRemoveSystemDeletedAppBundleIDsFromSpecifiers();
   }
 
   else
   {
-    v83 = [(CSLNotificationsDataSource *)self hardcodedSpecifiers];
+    hardcodedSpecifiers = [(CSLNotificationsDataSource *)self hardcodedSpecifiers];
   }
 
-  [v92 addObjectsFromArray:v83];
-  v44 = [(CSLNotificationsDataSource *)self specifiersForWatchKitAppsWithNotifications];
-  [v92 addObjectsFromArray:v44];
+  [v92 addObjectsFromArray:hardcodedSpecifiers];
+  specifiersForWatchKitAppsWithNotifications = [(CSLNotificationsDataSource *)self specifiersForWatchKitAppsWithNotifications];
+  [v92 addObjectsFromArray:specifiersForWatchKitAppsWithNotifications];
 
   BPSRemoveHiddenAppsFromSpecifiers();
   v45 = [v92 sortedArrayUsingComparator:&stru_C4A0];
@@ -390,15 +390,15 @@ LABEL_38:
         v54 = *(*(&v105 + 1) + 8 * j);
         if ([v54 cellType] == &dword_0 + 1)
         {
-          v55 = [v54 identifier];
-          v56 = [v95 containsObject:v55];
+          identifier = [v54 identifier];
+          v56 = [v95 containsObject:identifier];
 
           if ((v56 & 1) == 0)
           {
             v57 = [NSNumber numberWithBool:1];
             [v54 setProperty:v57 forKey:v50];
 
-            v58 = [v54 identifier];
+            identifier2 = [v54 identifier];
             v59 = BPSMappedNanoBundleIDForNanoSettingsBundleID();
 
             [v54 setProperty:v59 forKey:v51];
@@ -477,10 +477,10 @@ LABEL_64:
   }
 
   objc_storeStrong(&self->_internalSpecifiers, v90);
-  v73 = [(CSLNotificationsDataSource *)self additionalSpecifiers];
-  [obja addObjectsFromArray:v73];
+  additionalSpecifiers = [(CSLNotificationsDataSource *)self additionalSpecifiers];
+  [obja addObjectsFromArray:additionalSpecifiers];
 
-  [v79 addObjectsFromArray:obja];
+  [specifiers addObjectsFromArray:obja];
   v74 = +[NSNotificationCenter defaultCenter];
   v75 = NTKClockStatusBarSettingsDidChangeNotification;
   [v74 removeObserver:self name:NTKClockStatusBarSettingsDidChangeNotification object:0];
@@ -495,8 +495,8 @@ LABEL_64:
 - (id)secondPartyApps
 {
   v3 = objc_opt_new();
-  v4 = [(CSLNotificationsDataSource *)self currentDevice];
-  v5 = [v4 supportsCapability:3922540677];
+  currentDevice = [(CSLNotificationsDataSource *)self currentDevice];
+  v5 = [currentDevice supportsCapability:3922540677];
 
   if (v5)
   {
@@ -506,24 +506,24 @@ LABEL_64:
   return v3;
 }
 
-- (BOOL)isSecondPartyApp:(id)a3
+- (BOOL)isSecondPartyApp:(id)app
 {
-  v4 = a3;
-  v5 = [(CSLNotificationsDataSource *)self secondPartyApps];
-  v6 = [v5 containsObject:v4];
+  appCopy = app;
+  secondPartyApps = [(CSLNotificationsDataSource *)self secondPartyApps];
+  v6 = [secondPartyApps containsObject:appCopy];
 
   return v6;
 }
 
-- (id)watchAppSpecifierWithDisplayName:(id)a3 specifierID:(id)a4 identifier:(id)a5
+- (id)watchAppSpecifierWithDisplayName:(id)name specifierID:(id)d identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+  identifierCopy = identifier;
+  dCopy = d;
+  nameCopy = name;
+  v10 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-  [v10 setProperty:v8 forKey:@"SpecifierID"];
-  [v10 setIdentifier:v7];
+  [v10 setProperty:dCopy forKey:@"SpecifierID"];
+  [v10 setIdentifier:identifierCopy];
 
   return v10;
 }
@@ -533,7 +533,7 @@ LABEL_64:
   v3 = objc_opt_new();
   [(CSLNotificationsDataSource *)self cleanBBSections];
   v4 = +[BPSBridgeAppContext shared];
-  v5 = [v4 installedWatchkitApps];
+  installedWatchkitApps = [v4 installedWatchkitApps];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -542,7 +542,7 @@ LABEL_64:
   v10[4] = self;
   v6 = v3;
   v11 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [installedWatchkitApps enumerateKeysAndObjectsUsingBlock:v10];
   v7 = v11;
   v8 = v6;
 
@@ -575,8 +575,8 @@ LABEL_64:
 {
   v3 = +[NSMutableArray array];
   [(CSLNotificationsDataSource *)self setupAllowlistFromInheritedSpecifiers];
-  v4 = [(CSLNotificationsDataSource *)self specifiersFromBBSections];
-  [v3 addObjectsFromArray:v4];
+  specifiersFromBBSections = [(CSLNotificationsDataSource *)self specifiersFromBBSections];
+  [v3 addObjectsFromArray:specifiersFromBBSections];
 
   return v3;
 }
@@ -617,14 +617,14 @@ LABEL_64:
   [v9 setProperty:v11 forKey:PSFooterTextGroupKey];
 
   v15[0] = v9;
-  v12 = [v8 firstObject];
-  v15[1] = v12;
+  firstObject = [v8 firstObject];
+  v15[1] = firstObject;
   v13 = [NSArray arrayWithObjects:v15 count:2];
 
   return v13;
 }
 
-- (id)notificationsIndicatorActive:(id)a3
+- (id)notificationsIndicatorActive:(id)active
 {
   v3 = +[NTKClockStatusBarSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isNotificationsIndicatorEnabled]);
@@ -632,13 +632,13 @@ LABEL_64:
   return v4;
 }
 
-- (void)setNotificationsIndicatorActive:(id)a3 specifier:(id)a4
+- (void)setNotificationsIndicatorActive:(id)active specifier:(id)specifier
 {
-  v4 = a3;
+  activeCopy = active;
   v6 = +[NTKClockStatusBarSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [activeCopy BOOLValue];
 
-  [v6 setNotificationsIndicatorEnabled:v5];
+  [v6 setNotificationsIndicatorEnabled:bOOLValue];
 }
 
 - (void)setupAllowlistFromInheritedSpecifiers
@@ -664,8 +664,8 @@ LABEL_64:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) identifier];
-        v10 = MappedPhoneBundleIDForNanoSettingsBundleID(v9);
+        identifier = [*(*(&v12 + 1) + 8 * v8) identifier];
+        v10 = MappedPhoneBundleIDForNanoSettingsBundleID(identifier);
 
         if (v10)
         {
@@ -692,8 +692,8 @@ LABEL_64:
   [v3 loadBBSections];
 
   v4 = +[PBBGatewayManager sharedManager];
-  v5 = [v4 bbSections];
-  v6 = [v5 copy];
+  bbSections = [v4 bbSections];
+  v6 = [bbSections copy];
   bbSections = self->_bbSections;
   self->_bbSections = v6;
 
@@ -736,19 +736,19 @@ LABEL_64:
         if ([v7 allowsNotifications] && (objc_msgSend(v7, "alertType") || objc_msgSend(v7, "lockScreenSetting") == &dword_0 + 2) && (objc_msgSend(v7, "suppressFromSettings") & 1) == 0)
         {
           v8 = qword_110B0;
-          v9 = [v7 sectionID];
-          if (([v8 containsObject:v9] & 1) != 0 || objc_msgSend(v7, "sectionType") == &dword_0 + 1)
+          sectionID = [v7 sectionID];
+          if (([v8 containsObject:sectionID] & 1) != 0 || objc_msgSend(v7, "sectionType") == &dword_0 + 1)
           {
           }
 
           else
           {
             inheritedAllowList = self->_inheritedAllowList;
-            v11 = [v7 sectionID];
-            v12 = [(NSDictionary *)inheritedAllowList objectForKey:v11];
-            v13 = [v12 BOOLValue];
+            sectionID2 = [v7 sectionID];
+            v12 = [(NSDictionary *)inheritedAllowList objectForKey:sectionID2];
+            bOOLValue = [v12 BOOLValue];
 
-            if ((v13 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               [(NSArray *)v16 addObject:v7];
             }
@@ -779,7 +779,7 @@ LABEL_64:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v42 = self;
+  selfCopy = self;
   obj = self->_bbSections;
   v44 = [(NSArray *)obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v44)
@@ -800,23 +800,23 @@ LABEL_64:
         }
 
         v4 = *(*(&v46 + 1) + 8 * i);
-        v5 = [v4 sectionID];
-        v6 = [v4 sectionID];
+        sectionID = [v4 sectionID];
+        sectionID2 = [v4 sectionID];
         v7 = [LSApplicationRecord alloc];
         v45 = 0;
-        v8 = [v7 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v45];
+        v8 = [v7 initWithBundleIdentifier:sectionID2 allowPlaceholder:0 error:&v45];
         v9 = v45;
         if (v9 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v6;
+          *&buf[4] = sectionID2;
           *&buf[12] = 2112;
           *&buf[14] = v9;
           _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "error while retrieving application record %@ with error %@", buf, 0x16u);
         }
 
-        v10 = [v8 counterpartIdentifiers];
-        v11 = [v10 firstObject];
+        counterpartIdentifiers = [v8 counterpartIdentifiers];
+        firstObject = [counterpartIdentifiers firstObject];
 
         v12 = BPSMappedNanoSettingsBundleIDForNanoBundleID();
         *buf = @"com.apple.facetime";
@@ -825,13 +825,13 @@ LABEL_64:
         v52 = @"com.apple.Bridge";
         v53 = @"com.apple.Sharing.Remote";
         v13 = [NSArray arrayWithObjects:buf count:5];
-        if ([v13 containsObject:v6])
+        if ([v13 containsObject:sectionID2])
         {
 
 LABEL_12:
-          if (([v6 isEqualToString:@"com.apple.tips"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar"))
+          if (([sectionID2 isEqualToString:@"com.apple.tips"] & 1) != 0 || objc_msgSend(sectionID2, "isEqualToString:", @"com.apple.TapToRadar"))
           {
-            [(CSLNotificationsDataSource *)v42 _setShowOnGizmoState:&__kCFBooleanFalse forBundleID:v6];
+            [(CSLNotificationsDataSource *)selfCopy _setShowOnGizmoState:&__kCFBooleanFalse forBundleID:sectionID2];
           }
 
           goto LABEL_30;
@@ -844,57 +844,57 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        v15 = [(NSDictionary *)v42->_inheritedAllowList objectForKey:v11];
+        v15 = [(NSDictionary *)selfCopy->_inheritedAllowList objectForKey:firstObject];
 
         if (v15)
         {
           goto LABEL_30;
         }
 
-        v16 = [(NSMutableArray *)v42->_internalSpecifiers specifierForID:v11];
+        v16 = [(NSMutableArray *)selfCopy->_internalSpecifiers specifierForID:firstObject];
         if (v16)
         {
 
           goto LABEL_30;
         }
 
-        v17 = [(NSMutableArray *)v42->_internalSpecifiers specifierForID:v12];
+        v17 = [(NSMutableArray *)selfCopy->_internalSpecifiers specifierForID:v12];
 
         if (!v17)
         {
-          v18 = [(CSLNotificationsDataSource *)v42 deniedNotificationApps];
-          v19 = [v18 containsObject:v12];
+          deniedNotificationApps = [(CSLNotificationsDataSource *)selfCopy deniedNotificationApps];
+          v19 = [deniedNotificationApps containsObject:v12];
 
           if ((v19 & 1) == 0)
           {
-            v20 = [v4 displayName];
+            displayName = [v4 displayName];
 
-            if (v20)
+            if (displayName)
             {
-              v21 = [v4 displayName];
+              displayName2 = [v4 displayName];
               goto LABEL_24;
             }
 
-            if (v6)
+            if (sectionID2)
             {
-              v21 = [v8 localizedName];
+              displayName2 = [v8 localizedName];
 LABEL_24:
-              v22 = v21;
+              v22 = displayName2;
 
-              v5 = v22;
+              sectionID = v22;
             }
 
-            if (v5)
+            if (sectionID)
             {
-              v23 = [PSSpecifier preferenceSpecifierNamed:v5 target:v42 set:"setShowOnGizmoState:specifier:" get:"showOnGizmoState:" detail:0 cell:6 edit:0];
-              v24 = [v4 sectionID];
-              [v23 setProperty:v24 forKey:v38];
+              v23 = [PSSpecifier preferenceSpecifierNamed:sectionID target:selfCopy set:"setShowOnGizmoState:specifier:" get:"showOnGizmoState:" detail:0 cell:6 edit:0];
+              sectionID3 = [v4 sectionID];
+              [v23 setProperty:sectionID3 forKey:v38];
 
               [v23 setProperty:&__kCFBooleanTrue forKey:v37];
               [v23 setProperty:v4 forKey:v36];
-              [v23 setProperty:v5 forKey:v35];
+              [v23 setProperty:sectionID forKey:v35];
               [v23 setProperty:objc_opt_class() forKey:v34];
-              [v23 setProperty:v42->_localIconLoadingQueue forKey:@"CSLNotificationCellIconQueue"];
+              [v23 setProperty:selfCopy->_localIconLoadingQueue forKey:@"CSLNotificationCellIconQueue"];
               if ([v4 isAppClip])
               {
                 v25 = v39;
@@ -946,33 +946,33 @@ LABEL_30:
   return v40;
 }
 
-- (void)_writeSectionState:(id)a3 forBundleID:(id)a4
+- (void)_writeSectionState:(id)state forBundleID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
+  stateCopy = state;
+  dCopy = d;
   v7 = BPSNanoBulletinSectionId;
-  v8 = [v12 objectForKey:BPSNanoBulletinSectionId];
+  v8 = [stateCopy objectForKey:BPSNanoBulletinSectionId];
 
   if (!v8)
   {
-    [v12 setObject:v6 forKey:v7];
+    [stateCopy setObject:dCopy forKey:v7];
   }
 
   v9 = +[NSDate date];
-  [v12 setObject:v9 forKey:BPSNanoBulletinUpdateTimestamp];
+  [stateCopy setObject:v9 forKey:BPSNanoBulletinUpdateTimestamp];
 
-  [(NPSDomainAccessor *)self->_bbAppsSettings setObject:v12 forKey:v6];
-  v10 = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
+  [(NPSDomainAccessor *)self->_bbAppsSettings setObject:stateCopy forKey:dCopy];
+  synchronize = [(NPSDomainAccessor *)self->_bbAppsSettings synchronize];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, BPSBulletinDistributorBBSectionsDidChangeNotification, 0, 0, 0);
 }
 
-- (void)_setShowOnGizmoState:(id)a3 forBundleID:(id)a4
+- (void)_setShowOnGizmoState:(id)state forBundleID:(id)d
 {
   bbAppsSettings = self->_bbAppsSettings;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NPSDomainAccessor *)bbAppsSettings dictionaryForKey:v7];
+  dCopy = d;
+  stateCopy = state;
+  v9 = [(NPSDomainAccessor *)bbAppsSettings dictionaryForKey:dCopy];
   v14 = v9;
   if (v9)
   {
@@ -985,28 +985,28 @@ LABEL_30:
   }
 
   v11 = v10;
-  [v10 setObject:v8 forKey:BPSNanoBulletinShowsAlerts];
-  v12 = [v8 BOOLValue];
+  [v10 setObject:stateCopy forKey:BPSNanoBulletinShowsAlerts];
+  bOOLValue = [stateCopy BOOLValue];
 
-  v13 = [NSNumber numberWithInt:v12 ^ 1];
+  v13 = [NSNumber numberWithInt:bOOLValue ^ 1];
   [v11 setObject:v13 forKey:BPSNanoBulletinShowsCustomSettings];
 
-  [(CSLNotificationsDataSource *)self _writeSectionState:v11 forBundleID:v7];
+  [(CSLNotificationsDataSource *)self _writeSectionState:v11 forBundleID:dCopy];
 }
 
-- (void)setShowOnGizmoState:(id)a3 specifier:(id)a4
+- (void)setShowOnGizmoState:(id)state specifier:(id)specifier
 {
   v6 = BPSNotificationAppBBSectionInfo;
-  v7 = a3;
-  v9 = [a4 propertyForKey:v6];
-  v8 = [v9 sectionID];
-  [(CSLNotificationsDataSource *)self _setShowOnGizmoState:v7 forBundleID:v8];
+  stateCopy = state;
+  v9 = [specifier propertyForKey:v6];
+  sectionID = [v9 sectionID];
+  [(CSLNotificationsDataSource *)self _setShowOnGizmoState:stateCopy forBundleID:sectionID];
 }
 
-- (id)_showOnGizmoStateForBundleID:(id)a3
+- (id)_showOnGizmoStateForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NPSDomainAccessor *)self->_bbAppsSettings dictionaryForKey:v4];
+  dCopy = d;
+  v5 = [(NPSDomainAccessor *)self->_bbAppsSettings dictionaryForKey:dCopy];
   v6 = [v5 mutableCopy];
 
   v7 = [v6 objectForKey:BPSNanoBulletinShowsAlerts];
@@ -1025,7 +1025,7 @@ LABEL_30:
   {
 
     v8 = &__kCFBooleanTrue;
-    [(CSLNotificationsDataSource *)self _setShowOnGizmoState:&__kCFBooleanTrue forBundleID:v4];
+    [(CSLNotificationsDataSource *)self _setShowOnGizmoState:&__kCFBooleanTrue forBundleID:dCopy];
   }
 
   else if (([v7 BOOLValue] & 1) == 0)
@@ -1033,48 +1033,48 @@ LABEL_30:
     v10 = [v6 objectForKey:BPSNanoBulletinShowsCustomSettings];
     if (!v10)
     {
-      [(CSLNotificationsDataSource *)self _setShowOnGizmoState:v8 forBundleID:v4];
+      [(CSLNotificationsDataSource *)self _setShowOnGizmoState:v8 forBundleID:dCopy];
     }
   }
 
   return v8;
 }
 
-- (id)showOnGizmoState:(id)a3
+- (id)showOnGizmoState:(id)state
 {
-  v4 = [a3 propertyForKey:BPSNotificationAppBBSectionInfo];
-  v5 = [v4 sectionID];
-  v6 = [(CSLNotificationsDataSource *)self _showOnGizmoStateForBundleID:v5];
+  v4 = [state propertyForKey:BPSNotificationAppBBSectionInfo];
+  sectionID = [v4 sectionID];
+  v6 = [(CSLNotificationsDataSource *)self _showOnGizmoStateForBundleID:sectionID];
 
   return v6;
 }
 
-- (void)lazyLoadBundle:(id)a3
+- (void)lazyLoadBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = [(CSLNotificationsDataSource *)self observersOfClass:objc_opt_class()];
-  v6 = [v5 anyObject];
+  anyObject = [v5 anyObject];
 
-  [v6 lazyLoadBundle:v4];
+  [anyObject lazyLoadBundle:bundleCopy];
 }
 
-- (void)_valueChangedNotificationForSpecifier:(id)a3
+- (void)_valueChangedNotificationForSpecifier:(id)specifier
 {
   v4 = PSValueKey;
-  v5 = a3;
-  [v5 setProperty:0 forKey:v4];
-  v6 = [PSRootController readPreferenceValue:v5];
-  v7 = [(CSLNotificationsDataSource *)self specifiers];
-  v8 = [PSSpecifierUpdates updatesWithSpecifiers:v7];
+  specifierCopy = specifier;
+  [specifierCopy setProperty:0 forKey:v4];
+  v6 = [PSRootController readPreferenceValue:specifierCopy];
+  specifiers = [(CSLNotificationsDataSource *)self specifiers];
+  v8 = [PSSpecifierUpdates updatesWithSpecifiers:specifiers];
 
-  [v8 reloadSpecifier:v5];
+  [v8 reloadSpecifier:specifierCopy];
   [(CSLNotificationsDataSource *)self performUpdates:v8];
 }
 
-- (void)_clockStatusBarSettingsChanged:(id)a3
+- (void)_clockStatusBarSettingsChanged:(id)changed
 {
-  v5 = [(CSLNotificationsDataSource *)self specifiers];
-  v4 = [v5 specifierForID:@"NOTIFICATIONS_INDICATOR_ID"];
+  specifiers = [(CSLNotificationsDataSource *)self specifiers];
+  v4 = [specifiers specifierForID:@"NOTIFICATIONS_INDICATOR_ID"];
   [(CSLNotificationsDataSource *)self _valueChangedNotificationForSpecifier:v4];
 }
 

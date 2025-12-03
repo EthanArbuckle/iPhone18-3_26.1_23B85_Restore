@@ -9,8 +9,8 @@
 
 - (uint64_t)isLocationAuthorized
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"locationAuthorized"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"locationAuthorized"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -25,14 +25,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresHomeLocationEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"HMDMessageRequiresHomeLocationEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"HMDMessageRequiresHomeLocationEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,8 +47,8 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 + (id)homeLocationAuthorizedAndEntitledMessageWithName:()LocationMessage target:messagePayload:

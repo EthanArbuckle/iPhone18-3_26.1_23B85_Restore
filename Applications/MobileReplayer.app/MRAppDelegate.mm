@@ -1,7 +1,7 @@
 @interface MRAppDelegate
 - (void)_closeInterposeDylib;
 - (void)dealloc;
-- (void)startupAndCreateViewController:(BOOL)a3;
+- (void)startupAndCreateViewController:(BOOL)controller;
 @end
 
 @implementation MRAppDelegate
@@ -24,26 +24,26 @@
   }
 }
 
-- (void)startupAndCreateViewController:(BOOL)a3
+- (void)startupAndCreateViewController:(BOOL)controller
 {
-  self->_shouldCreateViewController = a3;
+  self->_shouldCreateViewController = controller;
   v4 = +[NSProcessInfo processInfo];
-  v15 = [v4 environment];
+  environment = [v4 environment];
 
-  v5 = [v15 objectForKeyedSubscript:@"METAL_LOAD_INTERPOSER"];
-  v6 = [v5 BOOLValue];
+  v5 = [environment objectForKeyedSubscript:@"METAL_LOAD_INTERPOSER"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = DYGetMTLInterposeDylibPath();
-    v8 = [v15 objectForKeyedSubscript:@"GT_HOST_URL_MTL"];
+    v8 = [environment objectForKeyedSubscript:@"GT_HOST_URL_MTL"];
     v9 = "DYGetMTLGuestAppClient";
   }
 
   else
   {
     v7 = DYGetGLInterposeDylibPath();
-    v8 = [v15 objectForKeyedSubscript:@"GT_HOST_URL_GL"];
+    v8 = [environment objectForKeyedSubscript:@"GT_HOST_URL_GL"];
     v9 = "DYGetGLGuestAppClient";
   }
 

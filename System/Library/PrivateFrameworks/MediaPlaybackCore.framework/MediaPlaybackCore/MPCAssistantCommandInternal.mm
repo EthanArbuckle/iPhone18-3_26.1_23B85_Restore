@@ -1,27 +1,27 @@
 @interface MPCAssistantCommandInternal
 - (MPCAssistantCommandInternal)init;
-- (id)_applyOriginatingDeviceUIDs:(id)a3;
-- (void)_findOutputDevicesForDestination:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_setAnalyticsError:(id)a3;
-- (void)_setAnalyticsKey:(id)a3 value:(id)a4;
-- (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 commandID:(id)a5 commandBuilder:(id)a6 completion:(id)a7;
-- (void)sendCommandWithResult:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackArchiveWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackQueueWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
+- (id)_applyOriginatingDeviceUIDs:(id)ds;
+- (void)_findOutputDevicesForDestination:(id)destination options:(id)options completion:(id)completion;
+- (void)_setAnalyticsError:(id)error;
+- (void)_setAnalyticsKey:(id)key value:(id)value;
+- (void)sendCommand:(unsigned int)command toDestination:(id)destination commandID:(id)d commandBuilder:(id)builder completion:(id)completion;
+- (void)sendCommandWithResult:(unsigned int)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackArchiveWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackQueueWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation MPCAssistantCommandInternal
 
-- (void)_setAnalyticsError:(id)a3
+- (void)_setAnalyticsError:(id)error
 {
-  v6 = a3;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"success" value:MEMORY[0x1E695E110]];
-    v4 = [v6 localizedFailureReason];
-    [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"errorString" value:v4];
+    localizedFailureReason = [errorCopy localizedFailureReason];
+    [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"errorString" value:localizedFailureReason];
 
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "code")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"errorCode" value:v5];
   }
 
@@ -31,10 +31,10 @@
   }
 }
 
-- (void)_setAnalyticsKey:(id)a3 value:(id)a4
+- (void)_setAnalyticsKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   dispatch_group_enter(self->_analyticsGroup);
   analyticsQueue = self->_analyticsQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -42,10 +42,10 @@
   block[2] = __54__MPCAssistantCommandInternal__setAnalyticsKey_value___block_invoke;
   block[3] = &unk_1E82391C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = keyCopy;
   dispatch_async(analyticsQueue, block);
 }
 
@@ -63,51 +63,51 @@ void __54__MPCAssistantCommandInternal__setAnalyticsKey_value___block_invoke(voi
   dispatch_group_leave(v3);
 }
 
-- (void)_findOutputDevicesForDestination:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_findOutputDevicesForDestination:(id)destination options:(id)options completion:(id)completion
 {
   v84 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
+  v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    uUIDString = v12;
   }
 
   else
   {
-    v15 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B10B8]];
+    v15 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10B8]];
     v16 = v15;
     if (v15)
     {
-      v14 = v15;
+      uUIDString = v15;
     }
 
     else
     {
-      v17 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B10D0]];
+      v17 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10D0]];
       v18 = v17;
       if (v17)
       {
-        v14 = v17;
+        uUIDString = v17;
       }
 
       else
       {
-        v19 = [MEMORY[0x1E696AFB0] UUID];
-        v14 = [v19 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
       }
     }
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"findOutputDevicesForDestination", v14];
+  v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"findOutputDevicesForDestination", uUIDString];
   v21 = v20;
-  if (v8)
+  if (destinationCopy)
   {
-    [v20 appendFormat:@" for %@", v8];
+    [v20 appendFormat:@" for %@", destinationCopy];
   }
 
   v22 = _MRLogForCategory();
@@ -119,45 +119,45 @@ void __54__MPCAssistantCommandInternal__setAnalyticsKey_value___block_invoke(voi
   }
 
   v23 = qos_class_self();
-  v24 = [(MPCAssistantCommandInternal *)self _applyOriginatingDeviceUIDs:v8];
+  v24 = [(MPCAssistantCommandInternal *)self _applyOriginatingDeviceUIDs:destinationCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_options_completion___block_invoke;
   aBlock[3] = &unk_1E8230D00;
   v81 = v23;
   v76 = @"findOutputDevicesForDestination";
-  v25 = v14;
+  v25 = uUIDString;
   v77 = v25;
   v78 = v24;
   v26 = v11;
   v79 = v26;
-  v27 = v10;
+  v27 = completionCopy;
   v80 = v27;
   v28 = v24;
   v29 = _Block_copy(aBlock);
   v30 = [(MPCAssistantCommandInternal *)self _applyOriginatingDeviceUIDs:v28];
 
-  v31 = [MEMORY[0x1E69B0B08] currentSettings];
-  v32 = [v31 supportPTOTRefactorPart2];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  supportPTOTRefactorPart2 = [currentSettings supportPTOTRefactorPart2];
 
-  if (v32)
+  if (supportPTOTRefactorPart2)
   {
-    v64 = self;
-    v33 = v8;
+    selfCopy = self;
+    v33 = destinationCopy;
     v34 = v25;
     v35 = v27;
     v36 = v26;
-    v37 = v9;
-    v38 = [v30 origin];
-    if ([v38 isLocal])
+    v37 = optionsCopy;
+    origin = [v30 origin];
+    if ([origin isLocal])
     {
       v39 = [v30 mutableCopy];
-      v40 = [v39 outputDeviceUIDs];
+      outputDeviceUIDs = [v39 outputDeviceUIDs];
 
-      if (v40)
+      if (outputDeviceUIDs)
       {
-        v61 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v61 handleFailureInMethod:a2 object:v64 file:@"MPCAssistantCommand.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"!newDestination.outputDeviceUIDs"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MPCAssistantCommand.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"!newDestination.outputDeviceUIDs"}];
       }
 
       v41 = &unk_1F4599790;
@@ -166,15 +166,15 @@ void __54__MPCAssistantCommandInternal__setAnalyticsKey_value___block_invoke(voi
 
     else
     {
-      if ([v38 identifier] != 1129140302)
+      if ([origin identifier] != 1129140302)
       {
-        if (!v38)
+        if (!origin)
         {
           goto LABEL_25;
         }
 
-        v44 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v44 handleFailureInMethod:a2 object:v64 file:@"MPCAssistantCommand.m" lineNumber:661 description:{@"Invalid parameter not satisfying: %@", @"!origin"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"MPCAssistantCommand.m" lineNumber:661 description:{@"Invalid parameter not satisfying: %@", @"!origin"}];
         v39 = v30;
 LABEL_24:
 
@@ -182,11 +182,11 @@ LABEL_24:
 LABEL_25:
         v29[2](v29, v30);
 
-        v9 = v37;
+        optionsCopy = v37;
         v26 = v36;
         v27 = v35;
         v25 = v34;
-        v8 = v33;
+        destinationCopy = v33;
         goto LABEL_28;
       }
 
@@ -196,12 +196,12 @@ LABEL_25:
     }
 
     [v42 setOutputDeviceUIDs:v41];
-    v44 = v30;
+    currentHandler2 = v30;
     goto LABEL_24;
   }
 
-  v43 = [v30 outputDeviceUIDs];
-  if ([v43 count])
+  outputDeviceUIDs2 = [v30 outputDeviceUIDs];
+  if ([outputDeviceUIDs2 count])
   {
 
 LABEL_27:
@@ -209,19 +209,19 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v45 = [v30 origin];
+  origin2 = [v30 origin];
 
-  if (v45)
+  if (origin2)
   {
     goto LABEL_27;
   }
 
-  v68 = [MEMORY[0x1E69B0A20] localDeviceInfo];
-  v46 = [v68 deviceUID];
-  v47 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-  v48 = v47;
-  v65 = v46;
-  if ((!v46 || [v47 isProxyGroupPlayer]) && MSVDeviceIsAudioAccessory())
+  localDeviceInfo = [MEMORY[0x1E69B0A20] localDeviceInfo];
+  deviceUID = [localDeviceInfo deviceUID];
+  mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+  v48 = mEMORY[0x1E69B09A0];
+  v65 = deviceUID;
+  if ((!deviceUID || [mEMORY[0x1E69B09A0] isProxyGroupPlayer]) && MSVDeviceIsAudioAccessory())
   {
     v49 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -232,13 +232,13 @@ LABEL_27:
 
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"actualDestination" value:@"proxy promotion"];
     v50 = [v30 mutableCopy];
-    v51 = v65;
+    uniqueIdentifier = v65;
     if (!v65)
     {
-      v51 = [v48 uniqueIdentifier];
+      uniqueIdentifier = [v48 uniqueIdentifier];
     }
 
-    [MEMORY[0x1E695DEC8] arrayWithObject:v51];
+    [MEMORY[0x1E695DEC8] arrayWithObject:uniqueIdentifier];
     v52 = v66 = v48;
     [v50 setOutputDeviceUIDs:v52];
 
@@ -251,31 +251,31 @@ LABEL_27:
     v53 = objc_alloc(MEMORY[0x1E69B0AE0]);
     v54 = [v53 initWithInitiator:*MEMORY[0x1E69B0968] requestID:v25 reason:@"findOutputDevicesForDestination"];
     v62 = MEMORY[0x1E69B0990];
-    v63 = v8;
+    v63 = destinationCopy;
     v55 = v25;
     v56 = v27;
     v57 = v26;
-    v58 = v9;
+    v58 = optionsCopy;
     sendCommandQueue = self->_sendCommandQueue;
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_options_completion___block_invoke_191;
     v69[3] = &unk_1E8230D28;
-    v70 = v68;
-    v71 = self;
+    v70 = localDeviceInfo;
+    selfCopy2 = self;
     v72 = v54;
     v73 = v30;
     v74 = v29;
     v50 = v54;
     v60 = sendCommandQueue;
-    v9 = v58;
+    optionsCopy = v58;
     v26 = v57;
     v27 = v56;
     v25 = v55;
-    v8 = v63;
+    destinationCopy = v63;
     [v62 findMyGroupLeaderWithTimeout:v50 details:v60 queue:v69 completion:5.0];
 
-    v51 = v65;
+    uniqueIdentifier = v65;
   }
 
 LABEL_28:
@@ -593,35 +593,35 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   return v6 ^ 1u;
 }
 
-- (id)_applyOriginatingDeviceUIDs:(id)a3
+- (id)_applyOriginatingDeviceUIDs:(id)ds
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  if (([v3 originatingDeviceControl] & 1) == 0)
+  dsCopy = ds;
+  v4 = [dsCopy mutableCopy];
+  if (([dsCopy originatingDeviceControl] & 1) == 0)
   {
-    v5 = [v3 outputDeviceUIDs];
-    if ([v5 count])
+    outputDeviceUIDs = [dsCopy outputDeviceUIDs];
+    if ([outputDeviceUIDs count])
     {
     }
 
     else
     {
-      v6 = [v3 originatingOutputDeviceUID];
+      originatingOutputDeviceUID = [dsCopy originatingOutputDeviceUID];
 
-      if (v6)
+      if (originatingOutputDeviceUID)
       {
         v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v3 originatingOutputDeviceUID];
+          originatingOutputDeviceUID2 = [dsCopy originatingOutputDeviceUID];
           *buf = 138543362;
-          v14 = v8;
+          v14 = originatingOutputDeviceUID2;
           _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "Originating device destination: %{public}@", buf, 0xCu);
         }
 
-        v9 = [v3 originatingOutputDeviceUID];
-        v12 = v9;
+        originatingOutputDeviceUID3 = [dsCopy originatingOutputDeviceUID];
+        v12 = originatingOutputDeviceUID3;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
         [v4 setOutputDeviceUIDs:v10];
 
@@ -634,43 +634,43 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   return v4;
 }
 
-- (void)sendPlaybackArchiveWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackArchiveWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
   v79 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  resultCopy = result;
+  optionsCopy = options;
+  completionCopy = completion;
+  destinationCopy = destination;
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v78 = v10;
+    v78 = resultCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEBUG, "Send Playback Archive: %@", buf, 0xCu);
   }
 
   v15 = +[MPCAssistantRemoteControlDestination nowPlayingApplicationDestination];
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  if (v11)
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  if (optionsCopy)
   {
-    v17 = v11;
+    dictionary = optionsCopy;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v18 = v17;
+  v18 = dictionary;
   v19 = *MEMORY[0x1E69B10B8];
-  v20 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69B10B8]];
+  v20 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69B10B8]];
 
-  v47 = v16;
+  v47 = uUID;
   if (!v20)
   {
     v21 = [v18 mutableCopy];
-    v22 = [v16 UUIDString];
-    [v21 setObject:v22 forKeyedSubscript:v19];
+    uUIDString = [uUID UUIDString];
+    [v21 setObject:uUIDString forKeyedSubscript:v19];
 
     v18 = v21;
   }
@@ -679,14 +679,14 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   aBlock[1] = 3221225472;
   aBlock[2] = __98__MPCAssistantCommandInternal_sendPlaybackArchiveWithResult_toDestination_withOptions_completion___block_invoke;
   aBlock[3] = &unk_1E8230BC0;
-  v23 = v10;
+  v23 = resultCopy;
   v72 = v23;
   v24 = v18;
   v73 = v24;
-  v74 = self;
+  selfCopy = self;
   v25 = v15;
   v75 = v25;
-  v26 = v12;
+  v26 = completionCopy;
   v76 = v26;
   v27 = _Block_copy(aBlock);
   v64[0] = MEMORY[0x1E69E9820];
@@ -695,7 +695,7 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   v64[3] = &unk_1E8230C10;
   v28 = v23;
   v65 = v28;
-  v66 = self;
+  selfCopy2 = self;
   v29 = v25;
   v67 = v29;
   v30 = v24;
@@ -713,7 +713,7 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   v59 = v33;
   v34 = v30;
   v60 = v34;
-  v61 = self;
+  selfCopy3 = self;
   v62 = v29;
   v35 = v32;
   v63 = v35;
@@ -726,7 +726,7 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   v38 = v33;
   v53 = v38;
   v54 = v34;
-  v55 = self;
+  selfCopy4 = self;
   v56 = v31;
   v57 = v35;
   v39 = v35;
@@ -743,7 +743,7 @@ uint64_t __83__MPCAssistantCommandInternal__findOutputDevicesForDestination_opti
   v43 = v37;
   v44 = v42;
   v45 = v38;
-  [(MPCAssistantCommandInternal *)self _findOutputDevicesForDestination:v13 options:v11 completion:v48];
+  [(MPCAssistantCommandInternal *)self _findOutputDevicesForDestination:destinationCopy options:optionsCopy completion:v48];
 }
 
 void __98__MPCAssistantCommandInternal_sendPlaybackArchiveWithResult_toDestination_withOptions_completion___block_invoke(uint64_t a1, void *a2)
@@ -1074,18 +1074,18 @@ void __98__MPCAssistantCommandInternal_sendPlaybackArchiveWithResult_toDestinati
   }
 }
 
-- (void)sendPlaybackQueueWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackQueueWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  resultCopy = result;
+  optionsCopy = options;
+  completionCopy = completion;
+  destinationCopy = destination;
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v10;
+    v23 = resultCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "Send Queue: %{public}@", buf, 0xCu);
   }
 
@@ -1094,13 +1094,13 @@ void __98__MPCAssistantCommandInternal_sendPlaybackArchiveWithResult_toDestinati
   v18[2] = __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination_withOptions_completion___block_invoke;
   v18[3] = &unk_1E8230B98;
   v18[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v21 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
-  [(MPCAssistantCommandInternal *)self _findOutputDevicesForDestination:v13 options:v17 completion:v18];
+  v19 = optionsCopy;
+  v20 = resultCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = resultCopy;
+  v17 = optionsCopy;
+  [(MPCAssistantCommandInternal *)self _findOutputDevicesForDestination:destinationCopy options:v17 completion:v18];
 }
 
 void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination_withOptions_completion___block_invoke(uint64_t a1, void *a2)
@@ -1218,50 +1218,50 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
   }
 }
 
-- (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 commandID:(id)a5 commandBuilder:(id)a6 completion:(id)a7
+- (void)sendCommand:(unsigned int)command toDestination:(id)destination commandID:(id)d commandBuilder:(id)builder completion:(id)completion
 {
   v154 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v13)
+  destinationCopy = destination;
+  dCopy = d;
+  builderCopy = builder;
+  completionCopy = completion;
+  if (!dCopy)
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v16 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    dCopy = [uUID UUIDString];
   }
 
   v17 = [MEMORY[0x1E695DF00] now];
-  v105 = a3;
+  commandCopy = command;
   v107 = MRMediaRemoteCopyCommandDescription();
-  v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"sendCommand: %@", v107];
-  v19 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v18, v13];
-  v20 = v19;
-  if (v12)
+  v107 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"sendCommand: %@", v107];
+  dCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v107, dCopy];
+  v20 = dCopy;
+  if (destinationCopy)
   {
-    [(MPCAssistantCommandInternal *)v19 appendFormat:@" for %@", v12];
+    [(MPCAssistantCommandInternal *)dCopy appendFormat:@" for %@", destinationCopy];
   }
 
   v21 = _MRLogForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v149 = v20;
+    selfCopy2 = v20;
     _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
   v22 = qos_class_self();
-  v102 = v12;
-  v23 = [(MPCAssistantCommandInternal *)self _applyOriginatingDeviceUIDs:v12];
+  v102 = destinationCopy;
+  v23 = [(MPCAssistantCommandInternal *)self _applyOriginatingDeviceUIDs:destinationCopy];
   v24 = [MEMORY[0x1E69B09C0] discoverySessionWithEndpointFeatures:8];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__MPCAssistantCommandInternal_sendCommand_toDestination_commandID_commandBuilder_completion___block_invoke;
   aBlock[3] = &unk_1E8230828;
   v147 = v22;
-  v103 = v18;
+  v103 = v107;
   v141 = v103;
-  v25 = v13;
+  v25 = dCopy;
   v142 = v25;
   v106 = v24;
   v143 = v106;
@@ -1269,14 +1269,14 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
   v144 = v26;
   v27 = v17;
   v145 = v27;
-  v28 = v15;
+  v28 = completionCopy;
   v146 = v28;
   v29 = _Block_copy(aBlock);
   v134[0] = MEMORY[0x1E69E9820];
   v134[1] = 3221225472;
   v134[2] = __93__MPCAssistantCommandInternal_sendCommand_toDestination_commandID_commandBuilder_completion___block_invoke_29;
   v134[3] = &unk_1E8230878;
-  v101 = v14;
+  v101 = builderCopy;
   v139 = v101;
   v104 = v25;
   v135 = v104;
@@ -1284,27 +1284,27 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
   v136 = v100;
   v30 = v26;
   v137 = v30;
-  v138 = self;
+  selfCopy = self;
   v31 = _Block_copy(v134);
-  v32 = [MEMORY[0x1E69B0B08] currentSettings];
-  v33 = [v32 supportPTOTRefactorPart2];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  supportPTOTRefactorPart2 = [currentSettings supportPTOTRefactorPart2];
 
-  if (!v33)
+  if (!supportPTOTRefactorPart2)
   {
     v99 = v31;
-    v43 = [MEMORY[0x1E69B0A20] localDeviceInfo];
-    v44 = [v43 deviceUID];
-    v96 = v43;
-    v97 = [v43 clusterID];
+    localDeviceInfo = [MEMORY[0x1E69B0A20] localDeviceInfo];
+    deviceUID = [localDeviceInfo deviceUID];
+    v96 = localDeviceInfo;
+    clusterID = [localDeviceInfo clusterID];
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"command" value:v107];
-    v45 = [v30 appBundleID];
-    [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"appBundleID" value:v45];
+    appBundleID = [v30 appBundleID];
+    [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"appBundleID" value:appBundleID];
 
     v46 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v149 = v107;
+      selfCopy2 = v107;
       _os_log_impl(&dword_1C5C61000, v46, OS_LOG_TYPE_DEFAULT, "Send Command: %{public}@", buf, 0xCu);
     }
 
@@ -1314,7 +1314,7 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v149 = self;
+      selfCopy2 = self;
       v150 = 2112;
       v151 = v107;
       _os_log_impl(&dword_1C5C61000, v47, OS_LOG_TYPE_DEFAULT, "[KAOS] <%p> sendCommandWithResult %@", buf, 0x16u);
@@ -1326,12 +1326,12 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
     v125[3] = &unk_1E8230918;
     v48 = v107;
     v126 = v48;
-    v127 = self;
+    selfCopy3 = self;
     v49 = v29;
     v128 = v49;
     v50 = _Block_copy(v125);
-    v51 = [MEMORY[0x1E69B0B08] currentSettings];
-    v52 = [v51 canHostMultiplayerStream];
+    currentSettings2 = [MEMORY[0x1E69B0B08] currentSettings];
+    canHostMultiplayerStream = [currentSettings2 canHostMultiplayerStream];
 
     v116[0] = MEMORY[0x1E69E9820];
     v116[1] = 3221225472;
@@ -1345,12 +1345,12 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
     v120 = v54;
     v55 = v49;
     v121 = v55;
-    v123 = v105;
+    v123 = commandCopy;
     v56 = v50;
     v122 = v56;
-    v37 = v44;
+    v37 = deviceUID;
     v119 = v37;
-    v124 = v52;
+    v124 = canHostMultiplayerStream;
     v57 = _Block_copy(v116);
     v114[0] = MEMORY[0x1E69E9820];
     v114[1] = 3221225472;
@@ -1388,17 +1388,17 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
     v92 = v54;
     v93 = v56;
     v58 = MEMORY[0x1E696AD98];
-    v59 = [v53 outputDeviceUIDs];
-    v60 = [v58 numberWithUnsignedInteger:{objc_msgSend(v59, "count")}];
+    outputDeviceUIDs = [v53 outputDeviceUIDs];
+    v60 = [v58 numberWithUnsignedInteger:{objc_msgSend(outputDeviceUIDs, "count")}];
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"requestedUIDs" value:v60];
 
     v61 = MEMORY[0x1E696AD98];
-    v62 = [v53 outputGroups];
-    v63 = [v61 numberWithUnsignedInteger:{objc_msgSend(v62, "count")}];
+    outputGroups = [v53 outputGroups];
+    v63 = [v61 numberWithUnsignedInteger:{objc_msgSend(outputGroups, "count")}];
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"outputGroups" value:v63];
 
-    v64 = [v53 outputGroupID];
-    v65 = [v64 length];
+    outputGroupID = [v53 outputGroupID];
+    v65 = [outputGroupID length];
     v66 = MEMORY[0x1E695E118];
     v67 = MEMORY[0x1E695E110];
     if (v65)
@@ -1424,19 +1424,19 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
     }
 
     [(MPCAssistantCommandInternal *)self _setAnalyticsKey:@"formGroup" value:v69];
-    v70 = [v53 outputGroups];
+    outputGroups2 = [v53 outputGroups];
     v42 = v29;
-    if (![v70 count])
+    if (![outputGroups2 count])
     {
-      v71 = [v53 outputDeviceUIDs];
-      if (![v71 count])
+      outputDeviceUIDs2 = [v53 outputDeviceUIDs];
+      if (![outputDeviceUIDs2 count])
       {
-        v72 = [v53 outputGroupID];
-        if (!v72)
+        outputGroupID2 = [v53 outputGroupID];
+        if (!outputGroupID2)
         {
-          v90 = [v53 origin];
+          origin = [v53 origin];
 
-          if (!v90)
+          if (!origin)
           {
             v74 = _MRLogForCategory();
             v28 = v98;
@@ -1448,7 +1448,7 @@ void __96__MPCAssistantCommandInternal_sendPlaybackQueueWithResult_toDestination
             }
 
             *buf = 138543874;
-            v149 = v103;
+            selfCopy2 = v103;
             v150 = 2114;
             v151 = v104;
             v152 = 2112;
@@ -1461,16 +1461,16 @@ LABEL_26:
           if (![v53 singleGroup] || (objc_msgSend(v53, "outputGroupID"), v73 = objc_claimAutoreleasedReturnValue(), v73, !v73))
           {
             [v106 setDiscoveryMode:3];
-            v76 = [v53 outputDeviceUIDs];
-            if ([v76 containsObject:v37])
+            outputDeviceUIDs3 = [v53 outputDeviceUIDs];
+            if ([outputDeviceUIDs3 containsObject:v37])
             {
               v77 = 1;
             }
 
             else
             {
-              v83 = [v53 outputDeviceUIDs];
-              v77 = [v83 containsObject:v97];
+              outputDeviceUIDs4 = [v53 outputDeviceUIDs];
+              v77 = [outputDeviceUIDs4 containsObject:clusterID];
             }
 
             v38 = v102;
@@ -1481,7 +1481,7 @@ LABEL_26:
               if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543874;
-                v149 = v103;
+                selfCopy2 = v103;
                 v150 = 2114;
                 v151 = v104;
                 v152 = 2112;
@@ -1494,7 +1494,7 @@ LABEL_26:
               if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v149 = v85;
+                selfCopy2 = v85;
                 _os_log_impl(&dword_1C5C61000, v87, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
               }
 
@@ -1510,7 +1510,7 @@ LABEL_26:
               v110 = v94;
               v111 = v91;
               v108[4] = self;
-              v113 = v105;
+              v113 = commandCopy;
               v109 = v53;
               v82 = v93;
               v112 = v93;
@@ -1529,7 +1529,7 @@ LABEL_26:
             if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v149 = v103;
+              selfCopy2 = v103;
               v150 = 2114;
               v151 = v104;
               v152 = 2112;
@@ -1563,7 +1563,7 @@ LABEL_31:
           }
 
           *buf = 138543874;
-          v149 = v103;
+          selfCopy2 = v103;
           v150 = 2114;
           v151 = v104;
           v152 = 2112;
@@ -1578,17 +1578,17 @@ LABEL_30:
     goto LABEL_26;
   }
 
-  v34 = [v30 createPlayerPath];
+  createPlayerPath = [v30 createPlayerPath];
   v129[0] = MEMORY[0x1E69E9820];
   v129[1] = 3221225472;
   v129[2] = __93__MPCAssistantCommandInternal_sendCommand_toDestination_commandID_commandBuilder_completion___block_invoke_37;
   v129[3] = &unk_1E82308F0;
   v132 = v29;
-  v133 = v105;
+  v133 = commandCopy;
   v130 = v30;
-  v131 = v34;
+  v131 = createPlayerPath;
   v35 = *(v31 + 2);
-  v36 = v34;
+  v36 = createPlayerPath;
   v35(v31, v130, v129);
 
   v37 = v132;
@@ -2883,21 +2883,21 @@ void __93__MPCAssistantCommandInternal_sendCommand_toDestination_commandID_comma
   }
 }
 
-- (void)sendCommandWithResult:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendCommandWithResult:(unsigned int)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v8 = *&a3;
-  v10 = a5;
+  v8 = *&result;
+  optionsCopy = options;
   v11 = *MEMORY[0x1E69B10B0];
-  v12 = a6;
-  v13 = a4;
-  v14 = [v10 objectForKeyedSubscript:v11];
+  completionCopy = completion;
+  destinationCopy = destination;
+  v14 = [optionsCopy objectForKeyedSubscript:v11];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__MPCAssistantCommandInternal_sendCommandWithResult_toDestination_withOptions_completion___block_invoke;
   v16[3] = &unk_1E8230800;
-  v17 = v10;
-  v15 = v10;
-  [(MPCAssistantCommandInternal *)self sendCommand:v8 toDestination:v13 commandID:v14 commandBuilder:v16 completion:v12];
+  v17 = optionsCopy;
+  v15 = optionsCopy;
+  [(MPCAssistantCommandInternal *)self sendCommand:v8 toDestination:destinationCopy commandID:v14 commandBuilder:v16 completion:completionCopy];
 }
 
 - (MPCAssistantCommandInternal)init
@@ -2920,9 +2920,9 @@ void __93__MPCAssistantCommandInternal_sendCommand_toDestination_commandID_comma
     sendCommandQueue = v2->_sendCommandQueue;
     v2->_sendCommandQueue = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     analytics = v2->_analytics;
-    v2->_analytics = v10;
+    v2->_analytics = dictionary;
 
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v13 = dispatch_queue_create("com.apple.mediaplayer.assistant.MPCAssistantCommand.sendCommandQueue", v12);

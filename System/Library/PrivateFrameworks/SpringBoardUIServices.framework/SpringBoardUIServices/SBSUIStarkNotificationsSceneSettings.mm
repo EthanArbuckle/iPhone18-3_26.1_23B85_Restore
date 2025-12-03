@@ -2,9 +2,9 @@
 - (BOOL)isConnectedWirelessly;
 - (BOOL)isGeoSupported;
 - (BSServiceConnectionEndpoint)openServiceEndpoint;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)suspensionReasons;
 @end
 
@@ -12,24 +12,24 @@
 
 - (BOOL)isConnectedWirelessly
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2998744415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2998744415];
 
   return v3;
 }
 
 - (BOOL)isGeoSupported
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2998744418];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2998744418];
 
   return v3;
 }
 
 - (unint64_t)suspensionReasons
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2998744416];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2998744416];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -52,14 +52,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (BSServiceConnectionEndpoint)openServiceEndpoint
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2998744417];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2998744417];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -80,16 +80,16 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIMutableStarkNotificationsSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 2998744415u > 3)
+  if (setting - 2998744415u > 3)
   {
     v8 = v3;
     v9 = v4;
@@ -100,16 +100,16 @@
 
   else
   {
-    v5 = off_1E789FF18[a3 - 2998744415u];
+    v5 = off_1E789FF18[setting - 2998744415u];
   }
 
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = SBSUIStarkNotificationsSceneSettingValueDescription(a5, a3, v8);
+  objectCopy = object;
+  v9 = SBSUIStarkNotificationsSceneSettingValueDescription(setting, flag, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -120,7 +120,7 @@
   {
     v14.receiver = self;
     v14.super_class = SBSUIStarkNotificationsSceneSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

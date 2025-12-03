@@ -1,8 +1,8 @@
 @interface PGKeyAssetCurationOptions
 - (PGKeyAssetCurationOptions)init;
-- (PGKeyAssetCurationOptions)initWithDictionaryRepresentation:(id)a3;
-- (PGKeyAssetCurationOptions)initWithReferenceAsset:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PGKeyAssetCurationOptions)initWithDictionaryRepresentation:(id)representation;
+- (PGKeyAssetCurationOptions)initWithReferenceAsset:(id)asset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
@@ -30,8 +30,8 @@
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_minimumNumberOfReferencePersons];
   [v3 setObject:v10 forKeyedSubscript:@"minimumNumberOfReferencePersons"];
 
-  v11 = [(NSSet *)self->_referencePersonLocalIdentifiers allObjects];
-  [v3 setObject:v11 forKeyedSubscript:@"referencePersonLocalIdentifiers"];
+  allObjects = [(NSSet *)self->_referencePersonLocalIdentifiers allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"referencePersonLocalIdentifiers"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_focusOnPeople];
   [v3 setObject:v12 forKeyedSubscript:@"focusOnPeople"];
@@ -77,7 +77,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PGKeyAssetCurationOptions);
   objc_storeStrong(&v4->_referenceLocation, self->_referenceLocation);
@@ -101,15 +101,15 @@
   return v4;
 }
 
-- (PGKeyAssetCurationOptions)initWithDictionaryRepresentation:(id)a3
+- (PGKeyAssetCurationOptions)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v35.receiver = self;
   v35.super_class = PGKeyAssetCurationOptions;
   v5 = [(PGKeyAssetCurationOptions *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"referenceLocation"];
+    v6 = [representationCopy objectForKeyedSubscript:@"referenceLocation"];
     if (v6)
     {
       v7 = objc_alloc(MEMORY[0x277CE41F8]);
@@ -123,11 +123,11 @@
       v5->_referenceLocation = v13;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"minimumNumberOfReferencePersons"];
+    v15 = [representationCopy objectForKeyedSubscript:@"minimumNumberOfReferencePersons"];
     v5->_minimumNumberOfReferencePersons = [v15 unsignedIntegerValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"referencePersonLocalIdentifiers"];
-    if (v16 || ([v4 objectForKeyedSubscript:@"referencePersonUUIDs"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    v16 = [representationCopy objectForKeyedSubscript:@"referencePersonLocalIdentifiers"];
+    if (v16 || ([representationCopy objectForKeyedSubscript:@"referencePersonUUIDs"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v17 = v16;
       v18 = [MEMORY[0x277CBEB98] setWithArray:v16];
@@ -135,70 +135,70 @@
       v5->_referencePersonLocalIdentifiers = v18;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"focusOnPeople"];
+    v20 = [representationCopy objectForKeyedSubscript:@"focusOnPeople"];
     v5->_focusOnPeople = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"complete"];
+    v21 = [representationCopy objectForKeyedSubscript:@"complete"];
     v5->_complete = [v21 BOOLValue];
 
-    v22 = [v4 objectForKeyedSubscript:@"allowContextualTrip"];
+    v22 = [representationCopy objectForKeyedSubscript:@"allowContextualTrip"];
     v5->_allowContextualTrip = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"useSummarizer"];
+    v23 = [representationCopy objectForKeyedSubscript:@"useSummarizer"];
     v5->_useSummarizer = [v23 BOOLValue];
 
-    v24 = [v4 objectForKeyedSubscript:@"useContextualCurationOnly"];
+    v24 = [representationCopy objectForKeyedSubscript:@"useContextualCurationOnly"];
     v5->_useContextualCurationOnly = [v24 BOOLValue];
 
-    v25 = [v4 objectForKeyedSubscript:@"prefilterAssetsWithFaces"];
+    v25 = [representationCopy objectForKeyedSubscript:@"prefilterAssetsWithFaces"];
     v5->_prefilterAssetsWithFaces = [v25 BOOLValue];
 
-    v26 = [v4 objectForKeyedSubscript:@"prefilterAssetsWithFacesThreshold"];
+    v26 = [representationCopy objectForKeyedSubscript:@"prefilterAssetsWithFacesThreshold"];
     [v26 doubleValue];
     v5->_prefilterAssetsWithFacesThreshold = v27;
 
-    v28 = [v4 objectForKeyedSubscript:@"promoteAutoplayableItems"];
+    v28 = [representationCopy objectForKeyedSubscript:@"promoteAutoplayableItems"];
     v5->_promoteAutoplayableItems = [v28 BOOLValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"isForMemories"];
+    v29 = [representationCopy objectForKeyedSubscript:@"isForMemories"];
     v5->_isForMemories = [v29 BOOLValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"allowGuestAsset"];
+    v30 = [representationCopy objectForKeyedSubscript:@"allowGuestAsset"];
     v5->_allowGuestAsset = [v30 BOOLValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"wantsGoodSquareCropScore"];
+    v31 = [representationCopy objectForKeyedSubscript:@"wantsGoodSquareCropScore"];
     v5->_wantsGoodSquareCropScore = [v31 BOOLValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"useIconicScore"];
+    v32 = [representationCopy objectForKeyedSubscript:@"useIconicScore"];
     v5->_useIconicScore = [v32 BOOLValue];
 
-    v33 = [v4 objectForKeyedSubscript:@"avoidPromotingAutoplayableItemsWhenUsingIconicScore"];
+    v33 = [representationCopy objectForKeyedSubscript:@"avoidPromotingAutoplayableItemsWhenUsingIconicScore"];
     v5->_avoidPromotingAutoplayableItemsWhenUsingIconicScore = [v33 BOOLValue];
   }
 
   return v5;
 }
 
-- (PGKeyAssetCurationOptions)initWithReferenceAsset:(id)a3
+- (PGKeyAssetCurationOptions)initWithReferenceAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = [(PGKeyAssetCurationOptions *)self init];
   if (v6)
   {
     v7 = MEMORY[0x277CBEB98];
-    v8 = [v5 clsUnprefetchedPersonLocalIdentifiers];
-    v9 = [v7 setWithArray:v8];
+    clsUnprefetchedPersonLocalIdentifiers = [assetCopy clsUnprefetchedPersonLocalIdentifiers];
+    v9 = [v7 setWithArray:clsUnprefetchedPersonLocalIdentifiers];
 
-    v10 = [v5 clsLocation];
+    clsLocation = [assetCopy clsLocation];
     referencePersonLocalIdentifiers = v6->_referencePersonLocalIdentifiers;
     v6->_referencePersonLocalIdentifiers = v9;
     v12 = v9;
 
     referenceLocation = v6->_referenceLocation;
-    v6->_referenceLocation = v10;
-    v14 = v10;
+    v6->_referenceLocation = clsLocation;
+    v14 = clsLocation;
 
-    objc_storeStrong(&v6->_referenceAsset, a3);
+    objc_storeStrong(&v6->_referenceAsset, asset);
   }
 
   return v6;

@@ -11,14 +11,14 @@
   if (v3)
   {
     v4 = *((*MEMORY[0x277D85000] & *v3) + 0x1C8);
-    v5 = self;
+    selfCopy = self;
     v6 = v3;
     v4();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

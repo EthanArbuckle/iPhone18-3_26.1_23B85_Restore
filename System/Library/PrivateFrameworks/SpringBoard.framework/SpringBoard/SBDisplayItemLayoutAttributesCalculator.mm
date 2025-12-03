@@ -1,36 +1,36 @@
 @interface SBDisplayItemLayoutAttributesCalculator
-- (BOOL)_appLayoutContainsOnlyResizableApps:(id)a3;
-- (CGPoint)centerForLayoutAttributes:(id)a3 windowingConfiguration:(id)a4;
-- (CGRect)containerBoundsForWindowScene:(id)a3 containerOrientation:(int64_t)a4;
-- (CGRect)frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4 bounds:(CGRect)a5;
-- (CGRect)frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4 windowScene:(id)a5;
-- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4 bounds:(CGRect)a5;
-- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4 windowScene:(id)a5;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 containerOrientation:(int64_t)a5 windowScene:(id)a6;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 layoutAttributesMap:(id)a5 containerOrientation:(int64_t)a6 windowScene:(id)a7;
-- (CGSize)_minSizeForDisplayItem:(id)a3 inContainerBounds:(CGRect)a4 layoutGrid:(id)a5 layoutRestrictionInfo:(id)a6 contentOrientation:(int64_t)a7 screenScale:(double)a8 windowingConfiguration:(id)a9;
-- (CGSize)sizeForLayoutAttributes:(id)a3 windowingConfiguration:(id)a4;
-- (CGSize)sizeForSlideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)a3 windowingConfiguration:(id)a4;
+- (BOOL)_appLayoutContainsOnlyResizableApps:(id)apps;
+- (CGPoint)centerForLayoutAttributes:(id)attributes windowingConfiguration:(id)configuration;
+- (CGRect)containerBoundsForWindowScene:(id)scene containerOrientation:(int64_t)orientation;
+- (CGRect)frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation bounds:(CGRect)bounds;
+- (CGRect)frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation windowScene:(id)scene;
+- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration bounds:(CGRect)bounds;
+- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration windowScene:(id)scene;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout containerOrientation:(int64_t)orientation windowScene:(id)scene;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout layoutAttributesMap:(id)map containerOrientation:(int64_t)orientation windowScene:(id)scene;
+- (CGSize)_minSizeForDisplayItem:(id)item inContainerBounds:(CGRect)bounds layoutGrid:(id)grid layoutRestrictionInfo:(id)info contentOrientation:(int64_t)orientation screenScale:(double)scale windowingConfiguration:(id)configuration;
+- (CGSize)sizeForLayoutAttributes:(id)attributes windowingConfiguration:(id)configuration;
+- (CGSize)sizeForSlideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)configuration windowingConfiguration:(id)windowingConfiguration;
 - (SBDisplayItemLayoutAttributesProviding)preferredDisplayItemLayoutAttributesProvider;
-- (SBDisplayItemSlideOverConfiguration)updatedSlideOverConfigurationForItemWithSize:(SEL)a3 center:(CGSize)a4 slideOverConfiguration:(CGPoint)a5 windowingConfiguration:(SBDisplayItemSlideOverConfiguration *)a6;
-- (double)_frameForLayoutRole:(CGFloat)a3 inAppLayout:(CGFloat)a4 layoutAttributesMap:(CGFloat)a5 containerBounds:(double)a6 containerOrientation:(double)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(uint64_t)a9 screenScale:(void *)a10 isChamoisWindowingUIEnabled:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(void *)a13 leftStatusBarPartIntersectionRegion:(int)a14 rightStatusBarPartIntersectionRegion:(__int16)a15 skipAutoLayout:(uint64_t)a16;
-- (double)frameForLayoutRole:(double)a3 inAppLayout:(double)a4 containerBounds:(double)a5 containerOrientation:(double)a6 floatingDockHeight:(double)a7 screenScale:(uint64_t)a8 isChamoisWindowingUIEnabled:(uint64_t)a9 isEmbeddedDisplay:(void *)a10 prefersStripHidden:(uint64_t)a11 prefersDockHidden:(uint64_t)a12 leftStatusBarPartIntersectionRegion:(uint64_t)a13 rightStatusBarPartIntersectionRegion:(uint64_t)a14;
-- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)a3 previousAppLayout:(CGFloat)a4 usingNewLayoutAttributes:(CGFloat)a5 options:(CGFloat)a6 containerOrientation:(CGFloat)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(void *)a9 screenScale:(void *)a10 bounds:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(uint64_t)a13 source:(void *)a14 leftStatusBarPartIntersectionRegion:(__int16)a15 rightStatusBarPartIntersectionRegion:(unint64_t)a16 itemsNeedingPositionSnapping:(uint64_t)a17 itemsNeedingSizeSnapping:(uint64_t)a18;
-- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)a3 previousAppLayout:(double)a4 layoutAttributes:(double)a5 options:(double)a6 containerOrientation:(double)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(void *)a9 screenScale:(void *)a10 bounds:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(uint64_t)a13 source:(void *)a14 leftStatusBarPartIntersectionRegion:(__int16)a15 rightStatusBarPartIntersectionRegion:(uint64_t)a16 itemsNeedingPositionSnapping:(uint64_t)a17 itemsNeedingSizeSnapping:(uint64_t)a18;
-- (id)_applicationForDisplayItem:(id)a3;
+- (SBDisplayItemSlideOverConfiguration)updatedSlideOverConfigurationForItemWithSize:(SEL)size center:(CGSize)center slideOverConfiguration:(CGPoint)configuration windowingConfiguration:(SBDisplayItemSlideOverConfiguration *)windowingConfiguration;
+- (double)_frameForLayoutRole:(CGFloat)role inAppLayout:(CGFloat)layout layoutAttributesMap:(CGFloat)map containerBounds:(double)bounds containerOrientation:(double)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(uint64_t)height screenScale:(void *)self0 isChamoisWindowingUIEnabled:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(void *)self3 leftStatusBarPartIntersectionRegion:(int)self4 rightStatusBarPartIntersectionRegion:(__int16)self5 skipAutoLayout:(uint64_t)self6;
+- (double)frameForLayoutRole:(double)role inAppLayout:(double)layout containerBounds:(double)bounds containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(uint64_t)scale isChamoisWindowingUIEnabled:(uint64_t)enabled isEmbeddedDisplay:(void *)self0 prefersStripHidden:(uint64_t)self1 prefersDockHidden:(uint64_t)self2 leftStatusBarPartIntersectionRegion:(uint64_t)self3 rightStatusBarPartIntersectionRegion:(uint64_t)self4;
+- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)layout previousAppLayout:(CGFloat)appLayout usingNewLayoutAttributes:(CGFloat)attributes options:(CGFloat)options containerOrientation:(CGFloat)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(void *)height screenScale:(void *)self0 bounds:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(uint64_t)self3 source:(void *)self4 leftStatusBarPartIntersectionRegion:(__int16)self5 rightStatusBarPartIntersectionRegion:(unint64_t)self6 itemsNeedingPositionSnapping:(uint64_t)self7 itemsNeedingSizeSnapping:(uint64_t)self8;
+- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)layout previousAppLayout:(double)appLayout layoutAttributes:(double)attributes options:(double)options containerOrientation:(double)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(void *)height screenScale:(void *)self0 bounds:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(uint64_t)self3 source:(void *)self4 leftStatusBarPartIntersectionRegion:(__int16)self5 rightStatusBarPartIntersectionRegion:(uint64_t)self6 itemsNeedingPositionSnapping:(uint64_t)self7 itemsNeedingSizeSnapping:(uint64_t)self8;
+- (id)_applicationForDisplayItem:(id)item;
 - (id)_centerWindowSheetMetricsCache;
 - (id)_chamoisLayoutGridCache;
-- (id)_deviceApplicationSceneHandleForDisplayItem:(id)a3;
+- (id)_deviceApplicationSceneHandleForDisplayItem:(id)item;
 - (id)_displayItemLayoutAttributesProvider;
 - (id)_flexibleAutoLayoutController;
-- (id)_preferredMinimumSizeMapForAppLayout:(id)a3;
+- (id)_preferredMinimumSizeMapForAppLayout:(id)layout;
 - (id)_windowingSettingsCache;
-- (id)appLayoutByPerformingAutoLayoutForAppLayout:(double)a3 previousAppLayout:(double)a4 options:(double)a5 containerOrientation:(double)a6 floatingDockHeight:(double)a7 screenScale:(uint64_t)a8 bounds:(void *)a9 isEmbeddedDisplay:(void *)a10 prefersStripHidden:(uint64_t)a11 prefersDockHidden:(uint64_t)a12 source:(unsigned int)a13 leftStatusBarPartIntersectionRegion:(uint64_t)a14 rightStatusBarPartIntersectionRegion:(unsigned __int8)a15 itemsNeedingPositionSnapping:(uint64_t)a16 itemsNeedingSizeSnapping:(__int128)a17;
-- (id)appLayoutByPerformingAutoLayoutForAppLayout:(id)a3 previousAppLayout:(id)a4 usingLayoutAttributes:(id)a5 options:(unint64_t)a6 containerOrientation:(int64_t)a7 windowScene:(id)a8 source:(int64_t)a9 itemsNeedingPositionSnapping:(id)a10 itemsNeedingSizeSnapping:(id)a11;
-- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)a3 containerOrientation:(double)a4 floatingDockHeight:(double)a5 screenScale:(double)a6 bounds:(double)a7 isEmbeddedDisplay:(uint64_t)a8 prefersStripHidden:(void *)a9 prefersDockHidden:(uint64_t)a10 leftStatusBarPartIntersectionRegion:(uint64_t)a11 rightStatusBarPartIntersectionRegion:(uint64_t)a12;
-- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)a3 containerOrientation:(double)a4 floatingDockHeight:(double)a5 screenScale:(double)a6 bounds:(double)a7 isEmbeddedDisplay:(uint64_t)a8 prefersStripHidden:(void *)a9 prefersDockHidden:(uint64_t)a10 newLayoutAttributes:(unsigned int)a11 leftStatusBarPartIntersectionRegion:(uint64_t)a12 rightStatusBarPartIntersectionRegion:(uint64_t)a13 itemsNeedingPositionSnapping:(void *)a14 itemsNeedingSizeSnapping:(__int128)a15;
-- (id)layoutRestrictionInfoForItem:(id)a3;
-- (int64_t)sizingPolicyForDisplayItem:(id)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 proposedSizingPolicy:(int64_t)a6 windowScene:(id)a7;
+- (id)appLayoutByPerformingAutoLayoutForAppLayout:(double)layout previousAppLayout:(double)appLayout options:(double)options containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(uint64_t)scale bounds:(void *)bounds isEmbeddedDisplay:(void *)self0 prefersStripHidden:(uint64_t)self1 prefersDockHidden:(uint64_t)self2 source:(unsigned int)self3 leftStatusBarPartIntersectionRegion:(uint64_t)self4 rightStatusBarPartIntersectionRegion:(unsigned __int8)self5 itemsNeedingPositionSnapping:(uint64_t)self6 itemsNeedingSizeSnapping:(__int128)self7;
+- (id)appLayoutByPerformingAutoLayoutForAppLayout:(id)layout previousAppLayout:(id)appLayout usingLayoutAttributes:(id)attributes options:(unint64_t)options containerOrientation:(int64_t)orientation windowScene:(id)scene source:(int64_t)source itemsNeedingPositionSnapping:(id)self0 itemsNeedingSizeSnapping:(id)self1;
+- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)layout containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(double)scale bounds:(double)bounds isEmbeddedDisplay:(uint64_t)display prefersStripHidden:(void *)hidden prefersDockHidden:(uint64_t)self0 leftStatusBarPartIntersectionRegion:(uint64_t)self1 rightStatusBarPartIntersectionRegion:(uint64_t)self2;
+- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)layout containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(double)scale bounds:(double)bounds isEmbeddedDisplay:(uint64_t)display prefersStripHidden:(void *)hidden prefersDockHidden:(uint64_t)self0 newLayoutAttributes:(unsigned int)self1 leftStatusBarPartIntersectionRegion:(uint64_t)self2 rightStatusBarPartIntersectionRegion:(uint64_t)self3 itemsNeedingPositionSnapping:(void *)self4 itemsNeedingSizeSnapping:(__int128)self5;
+- (id)layoutRestrictionInfoForItem:(id)item;
+- (int64_t)sizingPolicyForDisplayItem:(id)item contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation proposedSizingPolicy:(int64_t)policy windowScene:(id)scene;
 @end
 
 @implementation SBDisplayItemLayoutAttributesCalculator
@@ -41,9 +41,9 @@
   if (!windowingSettingsCache)
   {
     v4 = +[SBAppSwitcherDomain rootSettings];
-    v5 = [v4 windowingSettings];
+    windowingSettings = [v4 windowingSettings];
     v6 = self->_windowingSettingsCache;
-    self->_windowingSettingsCache = v5;
+    self->_windowingSettingsCache = windowingSettings;
 
     windowingSettingsCache = self->_windowingSettingsCache;
   }
@@ -57,21 +57,21 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = WeakRetained;
+    displayItemLayoutAttributesProvider = WeakRetained;
   }
 
   else
   {
     v5 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    v4 = [v5 displayItemLayoutAttributesProvider];
+    displayItemLayoutAttributesProvider = [v5 displayItemLayoutAttributesProvider];
   }
 
-  return v4;
+  return displayItemLayoutAttributesProvider;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 containerOrientation:(int64_t)a5 windowScene:(id)a6
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout containerOrientation:(int64_t)orientation windowScene:(id)scene
 {
-  [(SBDisplayItemLayoutAttributesCalculator *)self frameForLayoutRole:a3 inAppLayout:a4 layoutAttributesMap:0 containerOrientation:a5 windowScene:a6];
+  [(SBDisplayItemLayoutAttributesCalculator *)self frameForLayoutRole:role inAppLayout:layout layoutAttributesMap:0 containerOrientation:orientation windowScene:scene];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -79,19 +79,19 @@
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 layoutAttributesMap:(id)a5 containerOrientation:(int64_t)a6 windowScene:(id)a7
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout layoutAttributesMap:(id)map containerOrientation:(int64_t)orientation windowScene:(id)scene
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  [(SBDisplayItemLayoutAttributesCalculator *)self containerBoundsForWindowScene:v14 containerOrientation:a6];
+  layoutCopy = layout;
+  mapCopy = map;
+  sceneCopy = scene;
+  [(SBDisplayItemLayoutAttributesCalculator *)self containerBoundsForWindowScene:sceneCopy containerOrientation:orientation];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  if (SBLayoutRoleIsValidForSplitView(a3))
+  if (SBLayoutRoleIsValidForSplitView(role))
   {
-    v23 = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutContainsOnlyResizableApps:v12]^ 1;
+    v23 = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutContainsOnlyResizableApps:layoutCopy]^ 1;
   }
 
   else
@@ -99,19 +99,19 @@
     v23 = 0;
   }
 
-  v24 = self;
-  v25 = [(SBDisplayItemLayoutAttributesCalculator *)self _windowingSettingsCache];
-  v26 = [v14 floatingDockController];
-  [v26 floatingDockHeightForFrame:{v16, v18, v20, v22}];
+  selfCopy = self;
+  _windowingSettingsCache = [(SBDisplayItemLayoutAttributesCalculator *)self _windowingSettingsCache];
+  floatingDockController = [sceneCopy floatingDockController];
+  [floatingDockController floatingDockHeightForFrame:{v16, v18, v20, v22}];
   v28 = v27;
 
-  v84 = v25;
+  v84 = _windowingSettingsCache;
   v77 = v28;
-  v79 = [v25 windowingConfigurationForWindowScene:v14 interfaceOrientation:a6 requiresFullScreen:v23 floatingDockHeight:v28];
-  v29 = [v14 switcherController];
-  v30 = [v29 contentViewController];
+  v79 = [_windowingSettingsCache windowingConfigurationForWindowScene:sceneCopy interfaceOrientation:orientation requiresFullScreen:v23 floatingDockHeight:v28];
+  switcherController = [sceneCopy switcherController];
+  contentViewController = [switcherController contentViewController];
   v31 = objc_opt_class();
-  v32 = v30;
+  v32 = contentViewController;
   v82 = v18;
   v83 = v16;
   v80 = v22;
@@ -136,56 +136,56 @@
 
   v34 = v33;
 
-  v35 = [v14 screen];
-  [v35 scale];
+  screen = [sceneCopy screen];
+  [screen scale];
   v76 = v36;
 
-  v78 = v29;
-  v37 = [v29 windowManagementContext];
-  v38 = [v37 isChamoisOrFlexibleWindowing];
+  v78 = switcherController;
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v39 = [v34 prefersStripHidden];
-  v75 = [v34 prefersDockHidden];
-  v40 = [v34 personality];
+  prefersStripHidden = [v34 prefersStripHidden];
+  prefersDockHidden = [v34 prefersDockHidden];
+  personality = [v34 personality];
 
-  [v40 leftStatusBarPartIntersectionRegion];
+  [personality leftStatusBarPartIntersectionRegion];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  [v40 rightStatusBarPartIntersectionRegion];
+  [personality rightStatusBarPartIntersectionRegion];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
-  if (v13 || !v38)
+  if (mapCopy || !isChamoisOrFlexibleWindowing)
   {
-    v60 = v13;
+    v60 = mapCopy;
   }
 
   else
   {
-    v57 = [(SBDisplayItemLayoutAttributesCalculator *)v24 _displayItemLayoutAttributesProvider];
-    v58 = [v12 preferredDisplayOrdinal];
-    if ((a6 - 1) < 2)
+    _displayItemLayoutAttributesProvider = [(SBDisplayItemLayoutAttributesCalculator *)selfCopy _displayItemLayoutAttributesProvider];
+    preferredDisplayOrdinal = [layoutCopy preferredDisplayOrdinal];
+    if ((orientation - 1) < 2)
     {
       v59 = 1;
     }
 
     else
     {
-      v59 = 2 * ((a6 - 3) < 2);
+      v59 = 2 * ((orientation - 3) < 2);
     }
 
-    v60 = [v57 layoutAttributesMapForAppLayout:v12 displayOrdinal:v58 orientation:v59];
+    v60 = [_displayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:layoutCopy displayOrdinal:preferredDisplayOrdinal orientation:v59];
 
-    v13 = 0;
+    mapCopy = 0;
   }
 
   LOBYTE(v74) = 0;
-  BYTE1(v73) = v75;
-  LOBYTE(v73) = v39;
-  [(SBDisplayItemLayoutAttributesCalculator *)v24 _frameForLayoutRole:a3 inAppLayout:v12 layoutAttributesMap:v60 containerBounds:a6 containerOrientation:v79 windowingConfiguration:v38 floatingDockHeight:v83 screenScale:v82 isChamoisWindowingUIEnabled:v81 prefersStripHidden:v80 prefersDockHidden:v77 leftStatusBarPartIntersectionRegion:v76 rightStatusBarPartIntersectionRegion:v73 skipAutoLayout:v42, v44, v46, v48, v50, v52, v54, v56, v74];
+  BYTE1(v73) = prefersDockHidden;
+  LOBYTE(v73) = prefersStripHidden;
+  [(SBDisplayItemLayoutAttributesCalculator *)selfCopy _frameForLayoutRole:role inAppLayout:layoutCopy layoutAttributesMap:v60 containerBounds:orientation containerOrientation:v79 windowingConfiguration:isChamoisOrFlexibleWindowing floatingDockHeight:v83 screenScale:v82 isChamoisWindowingUIEnabled:v81 prefersStripHidden:v80 prefersDockHidden:v77 leftStatusBarPartIntersectionRegion:v76 rightStatusBarPartIntersectionRegion:v73 skipAutoLayout:v42, v44, v46, v48, v50, v52, v54, v56, v74];
   v62 = v61;
   v64 = v63;
   v66 = v65;
@@ -202,24 +202,24 @@
   return result;
 }
 
-- (double)frameForLayoutRole:(double)a3 inAppLayout:(double)a4 containerBounds:(double)a5 containerOrientation:(double)a6 floatingDockHeight:(double)a7 screenScale:(uint64_t)a8 isChamoisWindowingUIEnabled:(uint64_t)a9 isEmbeddedDisplay:(void *)a10 prefersStripHidden:(uint64_t)a11 prefersDockHidden:(uint64_t)a12 leftStatusBarPartIntersectionRegion:(uint64_t)a13 rightStatusBarPartIntersectionRegion:(uint64_t)a14
+- (double)frameForLayoutRole:(double)role inAppLayout:(double)layout containerBounds:(double)bounds containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(uint64_t)scale isChamoisWindowingUIEnabled:(uint64_t)enabled isEmbeddedDisplay:(void *)self0 prefersStripHidden:(uint64_t)self1 prefersDockHidden:(uint64_t)self2 leftStatusBarPartIntersectionRegion:(uint64_t)self3 rightStatusBarPartIntersectionRegion:(uint64_t)self4
 {
-  v33 = a10;
-  if (a12)
+  displayCopy = display;
+  if (dockHidden)
   {
-    v34 = [a1 _displayItemLayoutAttributesProvider];
-    v35 = [v33 preferredDisplayOrdinal];
-    if ((a11 - 1) < 2)
+    _displayItemLayoutAttributesProvider = [self _displayItemLayoutAttributesProvider];
+    preferredDisplayOrdinal = [displayCopy preferredDisplayOrdinal];
+    if ((hidden - 1) < 2)
     {
       v36 = 1;
     }
 
     else
     {
-      v36 = 2 * ((a11 - 3) < 2);
+      v36 = 2 * ((hidden - 3) < 2);
     }
 
-    v37 = [v34 layoutAttributesMapForAppLayout:v33 displayOrdinal:v35 orientation:v36];
+    v37 = [_displayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:displayCopy displayOrdinal:preferredDisplayOrdinal orientation:v36];
   }
 
   else
@@ -227,71 +227,71 @@
     v37 = 0;
   }
 
-  v38 = [a1 _appLayoutContainsOnlyResizableApps:v33];
-  v39 = [a1 _windowingSettingsCache];
-  v40 = [v39 windowingConfigurationForContainerBounds:a11 interfaceOrientation:v38 ^ 1u floatingDockHeight:a14 requiresFullScreen:a15 prefersStripHidden:a13 prefersDockHidden:1 isEmbeddedDisplay:a2 isFlexibleWindowingEnabled:{a3, a4, a5, a6}];
+  v38 = [self _appLayoutContainsOnlyResizableApps:displayCopy];
+  _windowingSettingsCache = [self _windowingSettingsCache];
+  v40 = [_windowingSettingsCache windowingConfigurationForContainerBounds:hidden interfaceOrientation:v38 ^ 1u floatingDockHeight:intersectionRegion requiresFullScreen:a15 prefersStripHidden:region prefersDockHidden:1 isEmbeddedDisplay:a2 isFlexibleWindowingEnabled:{role, layout, bounds, orientation}];
 
   LOBYTE(v45) = 0;
   BYTE1(v44) = a15;
-  LOBYTE(v44) = a14;
-  [a1 _frameForLayoutRole:a9 inAppLayout:v33 layoutAttributesMap:v37 containerBounds:a11 containerOrientation:v40 windowingConfiguration:a12 floatingDockHeight:a2 screenScale:a3 isChamoisWindowingUIEnabled:a4 prefersStripHidden:a5 prefersDockHidden:a6 leftStatusBarPartIntersectionRegion:a7 rightStatusBarPartIntersectionRegion:v44 skipAutoLayout:{a16, a17, a18, a19, a20, a21, a22, a23, v45}];
+  LOBYTE(v44) = intersectionRegion;
+  [self _frameForLayoutRole:enabled inAppLayout:displayCopy layoutAttributesMap:v37 containerBounds:hidden containerOrientation:v40 windowingConfiguration:dockHidden floatingDockHeight:a2 screenScale:role isChamoisWindowingUIEnabled:layout prefersStripHidden:bounds prefersDockHidden:orientation leftStatusBarPartIntersectionRegion:height rightStatusBarPartIntersectionRegion:v44 skipAutoLayout:{a16, a17, a18, a19, a20, a21, a22, a23, v45}];
   v42 = v41;
 
   return v42;
 }
 
-- (double)_frameForLayoutRole:(CGFloat)a3 inAppLayout:(CGFloat)a4 layoutAttributesMap:(CGFloat)a5 containerBounds:(double)a6 containerOrientation:(double)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(uint64_t)a9 screenScale:(void *)a10 isChamoisWindowingUIEnabled:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(void *)a13 leftStatusBarPartIntersectionRegion:(int)a14 rightStatusBarPartIntersectionRegion:(__int16)a15 skipAutoLayout:(uint64_t)a16
+- (double)_frameForLayoutRole:(CGFloat)role inAppLayout:(CGFloat)layout layoutAttributesMap:(CGFloat)map containerBounds:(double)bounds containerOrientation:(double)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(uint64_t)height screenScale:(void *)self0 isChamoisWindowingUIEnabled:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(void *)self3 leftStatusBarPartIntersectionRegion:(int)self4 rightStatusBarPartIntersectionRegion:(__int16)self5 skipAutoLayout:(uint64_t)self6
 {
-  v36 = a10;
-  v37 = a11;
-  v38 = a13;
-  if (HIBYTE(a15))
+  scaleCopy = scale;
+  enabledCopy = enabled;
+  dockHiddenCopy = dockHidden;
+  if (HIBYTE(intersectionRegion))
   {
-    v39 = 0.0;
+    boundsCopy = 0.0;
   }
 
   else
   {
-    v39 = a6;
+    boundsCopy = bounds;
   }
 
-  if (!a14 || a24)
+  if (!region || a24)
   {
-    v40 = v36;
+    v40 = scaleCopy;
   }
 
   else
   {
-    LOWORD(v161) = a15;
-    v40 = [a1 _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v36 previousAppLayout:0 layoutAttributes:v37 options:0 containerOrientation:a12 windowingConfiguration:v38 floatingDockHeight:v39 screenScale:a7 bounds:a2 prefersStripHidden:a3 prefersDockHidden:a4 source:a5 leftStatusBarPartIntersectionRegion:v161 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:a16 itemsNeedingSizeSnapping:{a17, a18, a19, a20, a21, a22, a23, 0, 0}];
+    LOWORD(v161) = intersectionRegion;
+    v40 = [self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:scaleCopy previousAppLayout:0 layoutAttributes:enabledCopy options:0 containerOrientation:hidden windowingConfiguration:dockHiddenCopy floatingDockHeight:boundsCopy screenScale:orientation bounds:a2 prefersStripHidden:role prefersDockHidden:layout source:map leftStatusBarPartIntersectionRegion:v161 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:autoLayout itemsNeedingSizeSnapping:{a17, a18, a19, a20, a21, a22, a23, 0, 0}];
   }
 
   v41 = v40;
-  v42 = [v38 isFlexibleWindowingEnabled];
-  if (a9 != 4)
+  isFlexibleWindowingEnabled = [dockHiddenCopy isFlexibleWindowingEnabled];
+  if (height != 4)
   {
-    v43 = v42;
+    v43 = isFlexibleWindowingEnabled;
     if ([v41 environment] != 3)
     {
-      if (a9 == 3 || [v41 environment] == 2)
+      if (height == 3 || [v41 environment] == 2)
       {
-        [a1 frameForFloatingAppLayoutInInterfaceOrientation:a12 floatingConfiguration:2 bounds:{a2, a3, a4, a5}];
+        [self frameForFloatingAppLayoutInInterfaceOrientation:hidden floatingConfiguration:2 bounds:{a2, role, layout, map}];
         goto LABEL_11;
       }
 
       v176 = *MEMORY[0x277CBF3A8];
       v171 = *(MEMORY[0x277CBF3A8] + 8);
       UIRectGetCenter();
-      if (!a14)
+      if (!region)
       {
         SBLayoutDefaultSideLayoutElementWidth();
         SBLayoutDefaultSideLayoutElementWidth();
         v49 = MEMORY[0x277D76620];
         [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-        v50 = [v41 configuration];
-        if (v50 != 3 || (a12 - 1) >= 2)
+        configuration = [v41 configuration];
+        if (configuration != 3 || (hidden - 1) >= 2)
         {
-          v52 = v50;
+          v52 = configuration;
         }
 
         else
@@ -326,7 +326,7 @@
       }
 
       v163 = v43;
-      if (([v38 prefersDockHidden] | v43))
+      if (([dockHiddenCopy prefersDockHidden] | v43))
       {
         UIRectGetCenter();
         v174 = v47;
@@ -335,14 +335,14 @@
 
       else
       {
-        v174 = a2 + a4 * 0.5;
-        v168 = (a5 - a6) * 0.5;
+        v174 = a2 + layout * 0.5;
+        v168 = (map - bounds) * 0.5;
       }
 
-      v56 = [v41 cachedLastFlexibleWindowingAutoLayoutSpace];
-      v57 = [v41 itemForLayoutRole:a9];
-      v166 = v56;
-      v58 = [v56 flexibleAutoLayoutItemForDisplayItemIfExists:v57];
+      cachedLastFlexibleWindowingAutoLayoutSpace = [v41 cachedLastFlexibleWindowingAutoLayoutSpace];
+      v57 = [v41 itemForLayoutRole:height];
+      v166 = cachedLastFlexibleWindowingAutoLayoutSpace;
+      v58 = [cachedLastFlexibleWindowingAutoLayoutSpace flexibleAutoLayoutItemForDisplayItemIfExists:v57];
 
       [v58 size];
       v60 = v59;
@@ -351,16 +351,16 @@
       [v58 position];
       v63 = v62;
       v162 = v64;
-      v65 = [v41 itemForLayoutRole:a9];
-      v66 = [v37 objectForKey:v65];
+      v65 = [v41 itemForLayoutRole:height];
+      v66 = [enabledCopy objectForKey:v65];
       v167 = v65;
-      v179 = [a1 layoutRestrictionInfoForItem:v65];
-      v164 = [v179 layoutRestrictions];
+      v179 = [self layoutRestrictionInfoForItem:v65];
+      layoutRestrictions = [v179 layoutRestrictions];
       if (a24)
       {
-        [a1 sizeForLayoutAttributes:v66 windowingConfiguration:v38];
+        [self sizeForLayoutAttributes:v66 windowingConfiguration:dockHiddenCopy];
         v170 = v67;
-        v173 = v68;
+        mapCopy = v68;
         v69 = v66;
       }
 
@@ -379,12 +379,12 @@
         v69 = v66;
         if ((BSFloatLessThanOrEqualToFloat() & 1) != 0 || (!v72 ? (v74 = v172) : (v74 = v171), BSFloatLessThanOrEqualToFloat()))
         {
-          [a1 sizeForLayoutAttributes:v66 windowingConfiguration:v38];
+          [self sizeForLayoutAttributes:v66 windowingConfiguration:dockHiddenCopy];
           v170 = v75;
           v74 = v76;
         }
 
-        v173 = v74;
+        mapCopy = v74;
         if (v63 != 1.79769313e308)
         {
           v77 = v162;
@@ -410,20 +410,20 @@ LABEL_46:
           v169 = v82;
           if ([(SBHomeScreenConfigurationServer *)v69 connections]== 1)
           {
-            v83 = [v41 itemForLayoutRole:a9];
-            v84 = [a1 layoutRestrictionInfoForItem:v83];
+            v83 = [v41 itemForLayoutRole:height];
+            v84 = [self layoutRestrictionInfoForItem:v83];
 
-            [v38 screenEdgePadding];
+            [dockHiddenCopy screenEdgePadding];
             v86 = v85;
             v180.origin.x = a2;
-            v180.origin.y = a3;
-            v180.size.width = a4;
-            v180.size.height = a5;
+            v180.origin.y = role;
+            v180.size.width = layout;
+            v180.size.height = map;
             v181 = CGRectInset(v180, v86, v86);
             Height = CGRectGetHeight(v181);
-            if (v173 <= Height)
+            if (mapCopy <= Height)
             {
-              v88 = v173;
+              v88 = mapCopy;
             }
 
             else
@@ -431,70 +431,70 @@ LABEL_46:
               v88 = Height;
             }
 
-            v89 = [a1 _chamoisLayoutGridCache];
-            v90 = [v41 allItems];
+            _chamoisLayoutGridCache = [self _chamoisLayoutGridCache];
+            allItems = [v41 allItems];
             v91 = v69;
-            [v89 nearestGridSizeForProposedSize:objc_msgSend(v90 countOnStage:"count") inBounds:-[SBHomeScreenConfigurationServer authenticator](v69) contentOrientation:v84 layoutRestrictionInfo:v38 screenScale:v170 windowingConfiguration:{v88, a2, a3, a4, a5, a7}];
-            v93 = v92;
-            v95 = v94;
+            [_chamoisLayoutGridCache nearestGridSizeForProposedSize:objc_msgSend(allItems countOnStage:"count") inBounds:-[SBHomeScreenConfigurationServer authenticator](v69) contentOrientation:v84 layoutRestrictionInfo:dockHiddenCopy screenScale:v170 windowingConfiguration:{v88, a2, role, layout, map, orientation}];
+            layoutCopy2 = v92;
+            mapCopy2 = v94;
 
             v96 = v167;
             goto LABEL_85;
           }
 
-          if ([v38 requiresFullScreen])
+          if ([dockHiddenCopy requiresFullScreen])
           {
             v96 = v167;
             if ([(SBHomeScreenConfigurationServer *)v69 connections]== 2)
             {
               UIRectGetCenter();
-              v173 = a5;
-              v97 = a4;
+              mapCopy = map;
+              layoutCopy = layout;
 LABEL_74:
-              v114 = [a1 _chamoisLayoutGridCache];
+              _chamoisLayoutGridCache2 = [self _chamoisLayoutGridCache];
               v91 = v69;
-              [a1 _minSizeForDisplayItem:v96 inContainerBounds:v114 layoutGrid:v179 layoutRestrictionInfo:-[SBHomeScreenConfigurationServer authenticator](v69) contentOrientation:v38 screenScale:a2 windowingConfiguration:{a3, a4, a5, a7}];
+              [self _minSizeForDisplayItem:v96 inContainerBounds:_chamoisLayoutGridCache2 layoutGrid:v179 layoutRestrictionInfo:-[SBHomeScreenConfigurationServer authenticator](v69) contentOrientation:dockHiddenCopy screenScale:a2 windowingConfiguration:{role, layout, map, orientation}];
               v116 = v115;
               v118 = v117;
 
-              if (v116 >= v97)
+              if (v116 >= layoutCopy)
               {
                 v119 = v116;
               }
 
               else
               {
-                v119 = v97;
+                v119 = layoutCopy;
               }
 
-              if (a4 <= v119)
+              if (layout <= v119)
               {
-                v93 = a4;
+                layoutCopy2 = layout;
               }
 
               else
               {
-                v93 = v119;
+                layoutCopy2 = v119;
               }
 
-              v120 = v173;
-              if (v118 >= v173)
+              v120 = mapCopy;
+              if (v118 >= mapCopy)
               {
                 v120 = v118;
               }
 
-              if (a5 <= v120)
+              if (map <= v120)
               {
-                v95 = a5;
+                mapCopy2 = map;
               }
 
               else
               {
-                v95 = v120;
+                mapCopy2 = v120;
               }
 
 LABEL_85:
-              if (!v164 || ([a1 _chamoisLayoutGridCache], v121 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "allItems"), v122 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v121, "nearestGridSizeForProposedSize:countOnStage:inBounds:contentOrientation:layoutRestrictionInfo:screenScale:windowingConfiguration:", objc_msgSend(v122, "count"), -[SBHomeScreenConfigurationServer authenticator](v91), v179, v38, v93, v95, a2, a3, a4, a5, a7), v124 = v123, v126 = v125, v122, v121, (v163 & 1) != 0))
+              if (!layoutRestrictions || ([self _chamoisLayoutGridCache], v121 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "allItems"), v122 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v121, "nearestGridSizeForProposedSize:countOnStage:inBounds:contentOrientation:layoutRestrictionInfo:screenScale:windowingConfiguration:", objc_msgSend(v122, "count"), -[SBHomeScreenConfigurationServer authenticator](v91), v179, dockHiddenCopy, layoutCopy2, mapCopy2, a2, role, layout, map, orientation), v124 = v123, v126 = v125, v122, v121, (v163 & 1) != 0))
               {
                 v127 = v165;
 LABEL_112:
@@ -506,23 +506,23 @@ LABEL_113:
                 goto LABEL_11;
               }
 
-              v128 = [v41 allItems];
-              if ([v128 count] >= 2)
+              allItems2 = [v41 allItems];
+              if ([allItems2 count] >= 2)
               {
 
-                if (v124 < a4 && v126 < a5)
+                if (v124 < layout && v126 < map)
                 {
                   goto LABEL_111;
                 }
 
-                v129 = [a1 _chamoisLayoutGridCache];
-                v128 = [v129 allGridWidthsForBounds:-[SBHomeScreenConfigurationServer authenticator](v91) contentOrientation:v179 layoutRestrictionInfo:v38 screenScale:a2 windowingConfiguration:{a3, a4, a5, a7}];
+                _chamoisLayoutGridCache3 = [self _chamoisLayoutGridCache];
+                allItems2 = [_chamoisLayoutGridCache3 allGridWidthsForBounds:-[SBHomeScreenConfigurationServer authenticator](v91) contentOrientation:v179 layoutRestrictionInfo:dockHiddenCopy screenScale:a2 windowingConfiguration:{role, layout, map, orientation}];
 
-                v130 = [a1 _chamoisLayoutGridCache];
+                _chamoisLayoutGridCache4 = [self _chamoisLayoutGridCache];
                 v178 = v91;
-                v131 = [v130 allGridHeightsForBounds:-[SBHomeScreenConfigurationServer authenticator](v91) contentOrientation:v179 layoutRestrictionInfo:v38 screenScale:a2 windowingConfiguration:{a3, a4, a5, a7}];
+                v131 = [_chamoisLayoutGridCache4 allGridHeightsForBounds:-[SBHomeScreenConfigurationServer authenticator](v91) contentOrientation:v179 layoutRestrictionInfo:dockHiddenCopy screenScale:a2 windowingConfiguration:{role, layout, map, orientation}];
 
-                v132 = [v128 count];
+                v132 = [allItems2 count];
                 v133 = [v131 count];
                 if (v132 >= v133)
                 {
@@ -542,7 +542,7 @@ LABEL_113:
                   v138 = v124 / v126;
                   do
                   {
-                    v139 = [v128 objectAtIndex:v135];
+                    v139 = [allItems2 objectAtIndex:v135];
                     [v139 doubleValue];
                     v141 = v140;
 
@@ -578,10 +578,10 @@ LABEL_111:
               goto LABEL_112;
             }
 
-            [v38 defaultWindowSize];
-            v97 = v104;
+            [dockHiddenCopy defaultWindowSize];
+            layoutCopy = v104;
 LABEL_70:
-            v173 = v98;
+            mapCopy = v98;
             goto LABEL_74;
           }
 
@@ -589,20 +589,20 @@ LABEL_70:
           if (v170 != v176)
           {
             v96 = v167;
-            v97 = v170;
+            layoutCopy = v170;
             goto LABEL_74;
           }
 
-          v98 = v173;
-          if (v173 != v171)
+          v98 = mapCopy;
+          if (mapCopy != v171)
           {
             v96 = v167;
-            v97 = v170;
+            layoutCopy = v170;
             goto LABEL_70;
           }
 
-          v99 = [v41 itemForLayoutRole:{a9, v171, v173}];
-          v100 = [a1 _deviceApplicationSceneHandleForDisplayItem:v99];
+          v99 = [v41 itemForLayoutRole:{height, v171, mapCopy}];
+          v100 = [self _deviceApplicationSceneHandleForDisplayItem:v99];
 
           v177 = v100;
           if (!v100 || ![v100 supportsCenterWindow] || -[SBHomeScreenConfigurationServer connections](v69))
@@ -611,41 +611,41 @@ LABEL_70:
             if ([(SBHomeScreenConfigurationServer *)v69 connections]== 2)
             {
               UIRectGetCenter();
-              v102 = a5;
-              v103 = a4;
+              mapCopy3 = map;
+              layoutCopy3 = layout;
             }
 
             else
             {
-              [v38 defaultWindowSize];
-              v103 = v105;
-              v102 = v106;
+              [dockHiddenCopy defaultWindowSize];
+              layoutCopy3 = v105;
+              mapCopy3 = v106;
             }
 
             goto LABEL_73;
           }
 
-          [v38 screenEdgePadding];
+          [dockHiddenCopy screenEdgePadding];
           SBRectWithSize();
-          [a1 frameForCenterItemWithConfiguration:1 interfaceOrientation:a12 bounds:?];
-          v103 = v149;
-          v102 = v150;
+          [self frameForCenterItemWithConfiguration:1 interfaceOrientation:hidden bounds:?];
+          layoutCopy3 = v149;
+          mapCopy3 = v150;
           v101 = v69;
           if (v169 != *MEMORY[0x277CBF348] || v175 != *(MEMORY[0x277CBF348] + 8))
           {
             goto LABEL_73;
           }
 
-          v151 = [v41 allItems];
-          v152 = SBDisplayItemDescendingInteractionTimeComparator(v37);
-          v153 = [v151 sortedArrayUsingComparator:v152];
+          allItems3 = [v41 allItems];
+          v152 = SBDisplayItemDescendingInteractionTimeComparator(enabledCopy);
+          v153 = [allItems3 sortedArrayUsingComparator:v152];
 
           v154 = v153;
-          v155 = [v153 firstObject];
-          if (v155)
+          firstObject = [v153 firstObject];
+          if (firstObject)
           {
-            v156 = v155;
-            v157 = [v41 itemForLayoutRole:a9];
+            v156 = firstObject;
+            v157 = [v41 itemForLayoutRole:height];
             if (([(SBDisplayItem *)v157 isEqualToItem:v156]& 1) != 0)
             {
               v158 = [v154 count];
@@ -666,23 +666,23 @@ LABEL_70:
             {
             }
 
-            v160 = [v37 objectForKey:v156];
-            [a1 centerForLayoutAttributes:v160 windowingConfiguration:v38];
+            v160 = [enabledCopy objectForKey:v156];
+            [self centerForLayoutAttributes:v160 windowingConfiguration:dockHiddenCopy];
           }
 
 LABEL_123:
 
 LABEL_73:
           v96 = v167;
-          v107 = [a1 _chamoisLayoutGridCache];
-          v108 = [v41 allItems];
-          v109 = [v108 count];
-          v110 = [(SBHomeScreenConfigurationServer *)v101 authenticator];
+          _chamoisLayoutGridCache5 = [self _chamoisLayoutGridCache];
+          allItems4 = [v41 allItems];
+          v109 = [allItems4 count];
+          authenticator = [(SBHomeScreenConfigurationServer *)v101 authenticator];
           v111 = v109;
           v69 = v101;
-          [v107 nearestGridSizeForProposedSize:v111 countOnStage:v110 inBounds:v179 contentOrientation:v38 layoutRestrictionInfo:v103 screenScale:v102 windowingConfiguration:{a2, a3, a4, a5, a7}];
-          v97 = v112;
-          v173 = v113;
+          [_chamoisLayoutGridCache5 nearestGridSizeForProposedSize:v111 countOnStage:authenticator inBounds:v179 contentOrientation:dockHiddenCopy layoutRestrictionInfo:layoutCopy3 screenScale:mapCopy3 windowingConfiguration:{a2, role, layout, map, orientation}];
+          layoutCopy = v112;
+          mapCopy = v113;
 
           goto LABEL_74;
         }
@@ -694,25 +694,25 @@ LABEL_73:
         }
       }
 
-      [a1 centerForLayoutAttributes:v69 windowingConfiguration:v38];
+      [self centerForLayoutAttributes:v69 windowingConfiguration:dockHiddenCopy];
       v63 = v78;
       goto LABEL_46;
     }
   }
 
-  [a1 frameForCenterItemWithConfiguration:SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration(objc_msgSend(v41 interfaceOrientation:"centerConfiguration")) bounds:{a12, a2, a3, a4, a5}];
+  [self frameForCenterItemWithConfiguration:SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration(objc_msgSend(v41 interfaceOrientation:"centerConfiguration")) bounds:{hidden, a2, role, layout, map}];
 LABEL_11:
   v45 = v44;
 
   return v45;
 }
 
-- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4 windowScene:(id)a5
+- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration windowScene:(id)scene
 {
-  v8 = [a5 _fbsDisplayConfiguration];
-  [v8 bounds];
+  _fbsDisplayConfiguration = [scene _fbsDisplayConfiguration];
+  [_fbsDisplayConfiguration bounds];
   _UIWindowConvertRectFromOrientationToOrientation();
-  [(SBDisplayItemLayoutAttributesCalculator *)self frameForFloatingAppLayoutInInterfaceOrientation:a3 floatingConfiguration:a4 bounds:?];
+  [(SBDisplayItemLayoutAttributesCalculator *)self frameForFloatingAppLayoutInInterfaceOrientation:orientation floatingConfiguration:configuration bounds:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -729,12 +729,12 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4 bounds:(CGRect)a5
+- (CGRect)frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   SBLayoutDefaultSideLayoutElementWidth();
   v11 = v10;
   if (frameForFloatingAppLayoutInInterfaceOrientation_floatingConfiguration_bounds__onceToken != -1)
@@ -743,9 +743,9 @@ LABEL_11:
   }
 
   v12 = 0.0;
-  if (a4 <= 1)
+  if (configuration <= 1)
   {
-    if (!a4)
+    if (!configuration)
     {
 LABEL_12:
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -765,7 +765,7 @@ LABEL_12:
       goto LABEL_20;
     }
 
-    if (a4 != 1)
+    if (configuration != 1)
     {
       goto LABEL_20;
     }
@@ -786,7 +786,7 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  if (a4 == 2)
+  if (configuration == 2)
   {
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] != 1)
     {
@@ -796,9 +796,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a4 != 3)
+  if (configuration != 3)
   {
-    if (a4 != 4)
+    if (configuration != 4)
     {
       goto LABEL_20;
     }
@@ -806,12 +806,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   v14 = x;
   v15 = y;
   v16 = width;
   v17 = height;
-  if (v13 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v12 = v11 + CGRectGetMaxX(*&v14);
   }
@@ -845,12 +845,12 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   return result;
 }
 
-- (CGRect)frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4 windowScene:(id)a5
+- (CGRect)frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation windowScene:(id)scene
 {
-  v8 = [a5 _fbsDisplayConfiguration];
-  [v8 bounds];
+  _fbsDisplayConfiguration = [scene _fbsDisplayConfiguration];
+  [_fbsDisplayConfiguration bounds];
   _UIWindowConvertRectFromOrientationToOrientation();
-  [(SBDisplayItemLayoutAttributesCalculator *)self frameForCenterItemWithConfiguration:a3 interfaceOrientation:a4 bounds:?];
+  [(SBDisplayItemLayoutAttributesCalculator *)self frameForCenterItemWithConfiguration:configuration interfaceOrientation:orientation bounds:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -867,14 +867,14 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   return result;
 }
 
-- (CGRect)frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4 bounds:(CGRect)a5
+- (CGRect)frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = [(SBDisplayItemLayoutAttributesCalculator *)self _centerWindowSheetMetricsCache];
-  [v11 pageSheetFrameForBounds:a4 interfaceOrientation:a3 == 2 configuration:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _centerWindowSheetMetricsCache = [(SBDisplayItemLayoutAttributesCalculator *)self _centerWindowSheetMetricsCache];
+  [_centerWindowSheetMetricsCache pageSheetFrameForBounds:orientation interfaceOrientation:configuration == 2 configuration:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -891,89 +891,89 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   return result;
 }
 
-- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)a3 containerOrientation:(double)a4 floatingDockHeight:(double)a5 screenScale:(double)a6 bounds:(double)a7 isEmbeddedDisplay:(uint64_t)a8 prefersStripHidden:(void *)a9 prefersDockHidden:(uint64_t)a10 leftStatusBarPartIntersectionRegion:(uint64_t)a11 rightStatusBarPartIntersectionRegion:(uint64_t)a12
+- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)layout containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(double)scale bounds:(double)bounds isEmbeddedDisplay:(uint64_t)display prefersStripHidden:(void *)hidden prefersDockHidden:(uint64_t)self0 leftStatusBarPartIntersectionRegion:(uint64_t)self1 rightStatusBarPartIntersectionRegion:(uint64_t)self2
 {
-  v30 = a9;
-  v31 = [a1 _appLayoutContainsOnlyResizableApps:v30];
-  v32 = [a1 _windowingSettingsCache];
-  v33 = [v32 windowingConfigurationForContainerBounds:a10 interfaceOrientation:v31 ^ 1u floatingDockHeight:a12 requiresFullScreen:a13 prefersStripHidden:a11 prefersDockHidden:1 isEmbeddedDisplay:a4 isFlexibleWindowingEnabled:{a5, a6, a7, a2}];
+  hiddenCopy = hidden;
+  v31 = [self _appLayoutContainsOnlyResizableApps:hiddenCopy];
+  _windowingSettingsCache = [self _windowingSettingsCache];
+  v33 = [_windowingSettingsCache windowingConfigurationForContainerBounds:dockHidden interfaceOrientation:v31 ^ 1u floatingDockHeight:intersectionRegion requiresFullScreen:a13 prefersStripHidden:region prefersDockHidden:1 isEmbeddedDisplay:orientation isFlexibleWindowingEnabled:{height, scale, bounds, a2}];
 
   BYTE1(v37) = a13;
-  LOBYTE(v37) = a12;
-  v34 = [a1 _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v30 previousAppLayout:0 layoutAttributes:0 options:0 containerOrientation:a10 windowingConfiguration:v33 floatingDockHeight:a2 screenScale:a3 bounds:a4 prefersStripHidden:a5 prefersDockHidden:a6 source:a7 leftStatusBarPartIntersectionRegion:v37 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:a15 itemsNeedingSizeSnapping:{a16, a17, a18, a19, a20, 0, 0}];
+  LOBYTE(v37) = intersectionRegion;
+  v34 = [self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:hiddenCopy previousAppLayout:0 layoutAttributes:0 options:0 containerOrientation:dockHidden windowingConfiguration:v33 floatingDockHeight:a2 screenScale:layout bounds:orientation prefersStripHidden:height prefersDockHidden:scale source:bounds leftStatusBarPartIntersectionRegion:v37 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:a15 itemsNeedingSizeSnapping:{a16, a17, a18, a19, a20, 0, 0}];
 
-  v35 = [v34 cachedLastFlexibleWindowingAutoLayoutSpace];
+  cachedLastFlexibleWindowingAutoLayoutSpace = [v34 cachedLastFlexibleWindowingAutoLayoutSpace];
 
-  return v35;
+  return cachedLastFlexibleWindowingAutoLayoutSpace;
 }
 
-- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)a3 containerOrientation:(double)a4 floatingDockHeight:(double)a5 screenScale:(double)a6 bounds:(double)a7 isEmbeddedDisplay:(uint64_t)a8 prefersStripHidden:(void *)a9 prefersDockHidden:(uint64_t)a10 newLayoutAttributes:(unsigned int)a11 leftStatusBarPartIntersectionRegion:(uint64_t)a12 rightStatusBarPartIntersectionRegion:(uint64_t)a13 itemsNeedingPositionSnapping:(void *)a14 itemsNeedingSizeSnapping:(__int128)a15
+- (id)flexibleWindowingAutoLayoutSpaceForAppLayout:(double)layout containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(double)scale bounds:(double)bounds isEmbeddedDisplay:(uint64_t)display prefersStripHidden:(void *)hidden prefersDockHidden:(uint64_t)self0 newLayoutAttributes:(unsigned int)self1 leftStatusBarPartIntersectionRegion:(uint64_t)self2 rightStatusBarPartIntersectionRegion:(uint64_t)self3 itemsNeedingPositionSnapping:(void *)self4 itemsNeedingSizeSnapping:(__int128)self5
 {
   v33 = a22;
   v34 = a21;
-  v35 = a14;
-  v36 = a9;
-  v37 = [a1 _appLayoutContainsOnlyResizableApps:v36];
-  v38 = [a1 _windowingSettingsCache];
+  snappingCopy = snapping;
+  hiddenCopy = hidden;
+  v37 = [self _appLayoutContainsOnlyResizableApps:hiddenCopy];
+  _windowingSettingsCache = [self _windowingSettingsCache];
   v39 = v37 ^ 1u;
-  v40 = a10;
-  v41 = [v38 windowingConfigurationForContainerBounds:a10 interfaceOrientation:v39 floatingDockHeight:a12 requiresFullScreen:a13 prefersStripHidden:a11 prefersDockHidden:1 isEmbeddedDisplay:a4 isFlexibleWindowingEnabled:{a5, a6, a7, a2}];
+  dockHiddenCopy = dockHidden;
+  v41 = [_windowingSettingsCache windowingConfigurationForContainerBounds:dockHidden interfaceOrientation:v39 floatingDockHeight:region requiresFullScreen:intersectionRegion prefersStripHidden:attributes prefersDockHidden:1 isEmbeddedDisplay:orientation isFlexibleWindowingEnabled:{height, scale, bounds, a2}];
 
-  BYTE1(v45) = a13;
-  LOBYTE(v45) = a12;
-  v42 = [a1 _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v36 previousAppLayout:0 usingNewLayoutAttributes:v35 options:0 containerOrientation:v40 windowingConfiguration:v41 floatingDockHeight:a2 screenScale:a3 bounds:a4 prefersStripHidden:a5 prefersDockHidden:a6 source:a7 leftStatusBarPartIntersectionRegion:v45 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:a15 itemsNeedingSizeSnapping:{a16, a17, a18, a19, a20, v34, v33}];
+  BYTE1(v45) = intersectionRegion;
+  LOBYTE(v45) = region;
+  v42 = [self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:hiddenCopy previousAppLayout:0 usingNewLayoutAttributes:snappingCopy options:0 containerOrientation:dockHiddenCopy windowingConfiguration:v41 floatingDockHeight:a2 screenScale:layout bounds:orientation prefersStripHidden:height prefersDockHidden:scale source:bounds leftStatusBarPartIntersectionRegion:v45 rightStatusBarPartIntersectionRegion:0 itemsNeedingPositionSnapping:sizeSnapping itemsNeedingSizeSnapping:{a16, a17, a18, a19, a20, v34, v33}];
 
-  v43 = [v42 cachedLastFlexibleWindowingAutoLayoutSpace];
+  cachedLastFlexibleWindowingAutoLayoutSpace = [v42 cachedLastFlexibleWindowingAutoLayoutSpace];
 
-  return v43;
+  return cachedLastFlexibleWindowingAutoLayoutSpace;
 }
 
-- (id)appLayoutByPerformingAutoLayoutForAppLayout:(double)a3 previousAppLayout:(double)a4 options:(double)a5 containerOrientation:(double)a6 floatingDockHeight:(double)a7 screenScale:(uint64_t)a8 bounds:(void *)a9 isEmbeddedDisplay:(void *)a10 prefersStripHidden:(uint64_t)a11 prefersDockHidden:(uint64_t)a12 source:(unsigned int)a13 leftStatusBarPartIntersectionRegion:(uint64_t)a14 rightStatusBarPartIntersectionRegion:(unsigned __int8)a15 itemsNeedingPositionSnapping:(uint64_t)a16 itemsNeedingSizeSnapping:(__int128)a17
+- (id)appLayoutByPerformingAutoLayoutForAppLayout:(double)layout previousAppLayout:(double)appLayout options:(double)options containerOrientation:(double)orientation floatingDockHeight:(double)height screenScale:(uint64_t)scale bounds:(void *)bounds isEmbeddedDisplay:(void *)self0 prefersStripHidden:(uint64_t)self1 prefersDockHidden:(uint64_t)self2 source:(unsigned int)self3 leftStatusBarPartIntersectionRegion:(uint64_t)self4 rightStatusBarPartIntersectionRegion:(unsigned __int8)self5 itemsNeedingPositionSnapping:(uint64_t)self6 itemsNeedingSizeSnapping:(__int128)self7
 {
   v34 = a24;
   v35 = a23;
-  v36 = a10;
-  v37 = a9;
-  v38 = [a1 _appLayoutContainsOnlyResizableApps:v37];
-  v39 = [a1 _windowingSettingsCache];
+  displayCopy = display;
+  boundsCopy = bounds;
+  v38 = [self _appLayoutContainsOnlyResizableApps:boundsCopy];
+  _windowingSettingsCache = [self _windowingSettingsCache];
   v40 = v38 ^ 1u;
-  v41 = a12;
-  v42 = [v39 windowingConfigurationForContainerBounds:a12 interfaceOrientation:v40 floatingDockHeight:a14 requiresFullScreen:a15 prefersStripHidden:a13 prefersDockHidden:1 isEmbeddedDisplay:a4 isFlexibleWindowingEnabled:{a5, a6, a7, a2}];
+  dockHiddenCopy = dockHidden;
+  v42 = [_windowingSettingsCache windowingConfigurationForContainerBounds:dockHidden interfaceOrientation:v40 floatingDockHeight:region requiresFullScreen:intersectionRegion prefersStripHidden:source prefersDockHidden:1 isEmbeddedDisplay:appLayout isFlexibleWindowingEnabled:{options, orientation, height, a2}];
 
-  BYTE1(v45) = a15;
-  LOBYTE(v45) = a14;
-  v43 = [a1 _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v37 previousAppLayout:v36 layoutAttributes:0 options:a11 containerOrientation:v41 windowingConfiguration:v42 floatingDockHeight:a2 screenScale:a3 bounds:a4 prefersStripHidden:a5 prefersDockHidden:a6 source:a7 leftStatusBarPartIntersectionRegion:v45 rightStatusBarPartIntersectionRegion:a16 itemsNeedingPositionSnapping:a17 itemsNeedingSizeSnapping:{a18, a19, a20, a21, a22, v35, v34}];
+  BYTE1(v45) = intersectionRegion;
+  LOBYTE(v45) = region;
+  v43 = [self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:boundsCopy previousAppLayout:displayCopy layoutAttributes:0 options:hidden containerOrientation:dockHiddenCopy windowingConfiguration:v42 floatingDockHeight:a2 screenScale:layout bounds:appLayout prefersStripHidden:options prefersDockHidden:orientation source:height leftStatusBarPartIntersectionRegion:v45 rightStatusBarPartIntersectionRegion:snapping itemsNeedingPositionSnapping:sizeSnapping itemsNeedingSizeSnapping:{a18, a19, a20, a21, a22, v35, v34}];
 
   return v43;
 }
 
-- (id)appLayoutByPerformingAutoLayoutForAppLayout:(id)a3 previousAppLayout:(id)a4 usingLayoutAttributes:(id)a5 options:(unint64_t)a6 containerOrientation:(int64_t)a7 windowScene:(id)a8 source:(int64_t)a9 itemsNeedingPositionSnapping:(id)a10 itemsNeedingSizeSnapping:(id)a11
+- (id)appLayoutByPerformingAutoLayoutForAppLayout:(id)layout previousAppLayout:(id)appLayout usingLayoutAttributes:(id)attributes options:(unint64_t)options containerOrientation:(int64_t)orientation windowScene:(id)scene source:(int64_t)source itemsNeedingPositionSnapping:(id)self0 itemsNeedingSizeSnapping:(id)self1
 {
-  v16 = a8;
-  v64 = a11;
-  v63 = a10;
-  v62 = a5;
-  v61 = a4;
-  v17 = a3;
-  LODWORD(a5) = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutContainsOnlyResizableApps:v17];
-  [(SBDisplayItemLayoutAttributesCalculator *)self containerBoundsForWindowScene:v16 containerOrientation:a7];
+  sceneCopy = scene;
+  sizeSnappingCopy = sizeSnapping;
+  snappingCopy = snapping;
+  attributesCopy = attributes;
+  appLayoutCopy = appLayout;
+  layoutCopy = layout;
+  LODWORD(attributes) = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutContainsOnlyResizableApps:layoutCopy];
+  [(SBDisplayItemLayoutAttributesCalculator *)self containerBoundsForWindowScene:sceneCopy containerOrientation:orientation];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(SBDisplayItemLayoutAttributesCalculator *)self _windowingSettingsCache];
-  v27 = [v16 floatingDockController];
+  _windowingSettingsCache = [(SBDisplayItemLayoutAttributesCalculator *)self _windowingSettingsCache];
+  floatingDockController = [sceneCopy floatingDockController];
   v58 = v21;
   v59 = v19;
-  [v27 floatingDockHeightForFrame:{v19, v21, v23, v25}];
+  [floatingDockController floatingDockHeightForFrame:{v19, v21, v23, v25}];
   v29 = v28;
 
-  v60 = v26;
-  v57 = [v26 windowingConfigurationForWindowScene:v16 interfaceOrientation:a7 requiresFullScreen:a5 ^ 1 floatingDockHeight:v29];
-  v30 = [v16 switcherController];
-  v31 = [v30 contentViewController];
+  v60 = _windowingSettingsCache;
+  v57 = [_windowingSettingsCache windowingConfigurationForWindowScene:sceneCopy interfaceOrientation:orientation requiresFullScreen:attributes ^ 1 floatingDockHeight:v29];
+  switcherController = [sceneCopy switcherController];
+  contentViewController = [switcherController contentViewController];
   v32 = objc_opt_class();
-  v33 = v31;
+  v33 = contentViewController;
   if (v32)
   {
     if (objc_opt_isKindOfClass())
@@ -994,33 +994,33 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
 
   v35 = v34;
 
-  v36 = [v16 screen];
-  [v36 scale];
+  screen = [sceneCopy screen];
+  [screen scale];
   v38 = v37;
 
-  v39 = [v35 prefersStripHidden];
-  v40 = [v35 prefersDockHidden];
-  v41 = [v35 personality];
+  prefersStripHidden = [v35 prefersStripHidden];
+  prefersDockHidden = [v35 prefersDockHidden];
+  personality = [v35 personality];
 
-  [v41 leftStatusBarPartIntersectionRegion];
+  [personality leftStatusBarPartIntersectionRegion];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  [v41 rightStatusBarPartIntersectionRegion];
-  BYTE1(v56) = v40;
-  LOBYTE(v56) = v39;
-  v54 = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v17 previousAppLayout:v61 usingNewLayoutAttributes:v62 options:a6 containerOrientation:a7 windowingConfiguration:v57 floatingDockHeight:v29 screenScale:v38 bounds:v59 prefersStripHidden:v58 prefersDockHidden:v23 source:v25 leftStatusBarPartIntersectionRegion:v56 rightStatusBarPartIntersectionRegion:a9 itemsNeedingPositionSnapping:v43 itemsNeedingSizeSnapping:v45, v47, v49, v50, v51, v52, v53, v63, v64];
+  [personality rightStatusBarPartIntersectionRegion];
+  BYTE1(v56) = prefersDockHidden;
+  LOBYTE(v56) = prefersStripHidden;
+  sizeSnappingCopy = [(SBDisplayItemLayoutAttributesCalculator *)self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:layoutCopy previousAppLayout:appLayoutCopy usingNewLayoutAttributes:attributesCopy options:options containerOrientation:orientation windowingConfiguration:v57 floatingDockHeight:v29 screenScale:v38 bounds:v59 prefersStripHidden:v58 prefersDockHidden:v23 source:v25 leftStatusBarPartIntersectionRegion:v56 rightStatusBarPartIntersectionRegion:source itemsNeedingPositionSnapping:v43 itemsNeedingSizeSnapping:v45, v47, v49, v50, v51, v52, v53, snappingCopy, sizeSnappingCopy];
 
-  return v54;
+  return sizeSnappingCopy;
 }
 
-- (id)layoutRestrictionInfoForItem:(id)a3
+- (id)layoutRestrictionInfoForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBDisplayItemLayoutAttributesCalculator *)self _applicationForDisplayItem:v4];
-  v6 = [v5 supportsChamoisSceneResizing];
-  if (!v5 || v6)
+  itemCopy = item;
+  v5 = [(SBDisplayItemLayoutAttributesCalculator *)self _applicationForDisplayItem:itemCopy];
+  supportsChamoisSceneResizing = [v5 supportsChamoisSceneResizing];
+  if (!v5 || supportsChamoisSceneResizing)
   {
     v9 = 0;
     v7 = -1.0;
@@ -1038,14 +1038,14 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   {
     if (SBFIsFullScreenLetterboxingAvailable())
     {
-      v10 = [(SBDisplayItemLayoutAttributesCalculator *)self _deviceApplicationSceneHandleForDisplayItem:v4];
-      v11 = [v10 sceneManager];
-      v12 = [v11 displayIdentity];
-      v13 = [v12 isExternal];
+      v10 = [(SBDisplayItemLayoutAttributesCalculator *)self _deviceApplicationSceneHandleForDisplayItem:itemCopy];
+      sceneManager = [v10 sceneManager];
+      displayIdentity = [sceneManager displayIdentity];
+      isExternal = [displayIdentity isExternal];
 
-      v14 = [v10 application];
-      v15 = v14;
-      if ((v13 & 1) != 0 || [v14 onlySupportsOneOrientation])
+      application = [v10 application];
+      v15 = application;
+      if ((isExternal & 1) != 0 || [application onlySupportsOneOrientation])
       {
         if ([v15 classicAppPhoneAppRunningOnPad])
         {
@@ -1069,9 +1069,9 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
       v9 = 10;
     }
 
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    v17 = [v16 displayConfiguration];
-    [v5 defaultLaunchingSizeForDisplayConfiguration:v17];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    displayConfiguration = [mainScreen displayConfiguration];
+    [v5 defaultLaunchingSizeForDisplayConfiguration:displayConfiguration];
     v7 = v18;
     v8 = v19;
   }
@@ -1081,41 +1081,41 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   return v20;
 }
 
-- (int64_t)sizingPolicyForDisplayItem:(id)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 proposedSizingPolicy:(int64_t)a6 windowScene:(id)a7
+- (int64_t)sizingPolicyForDisplayItem:(id)item contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation proposedSizingPolicy:(int64_t)policy windowScene:(id)scene
 {
-  v12 = a7;
-  v13 = [(SBDisplayItemLayoutAttributesCalculator *)self _applicationForDisplayItem:a3];
+  sceneCopy = scene;
+  v13 = [(SBDisplayItemLayoutAttributesCalculator *)self _applicationForDisplayItem:item];
   if (v13)
   {
-    v14 = [v12 switcherController];
-    v15 = [v14 windowManagementContext];
-    v16 = [v14 displayIdentity];
-    if (((1 << a6) & ~[v13 supportedSizingPoliciesForSwitcherWindowManagementContext:v15 displayIdentity:v16 contentOrientation:a4 containerOrientation:a5]) != 0)
+    switcherController = [sceneCopy switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    displayIdentity = [switcherController displayIdentity];
+    if (((1 << policy) & ~[v13 supportedSizingPoliciesForSwitcherWindowManagementContext:windowManagementContext displayIdentity:displayIdentity contentOrientation:orientation containerOrientation:containerOrientation]) != 0)
     {
-      a6 = [v13 preferredSizingPolicyForSwitcherWindowManagementContext:v15 displayIdentity:v16 contentOrientation:a4 containerOrientation:a5];
+      policy = [v13 preferredSizingPolicyForSwitcherWindowManagementContext:windowManagementContext displayIdentity:displayIdentity contentOrientation:orientation containerOrientation:containerOrientation];
     }
   }
 
-  return a6;
+  return policy;
 }
 
-- (CGRect)containerBoundsForWindowScene:(id)a3 containerOrientation:(int64_t)a4
+- (CGRect)containerBoundsForWindowScene:(id)scene containerOrientation:(int64_t)orientation
 {
-  v5 = a3;
-  v6 = [v5 screen];
-  v7 = [v6 displayConfiguration];
-  [v7 bounds];
+  sceneCopy = scene;
+  screen = [sceneCopy screen];
+  displayConfiguration = [screen displayConfiguration];
+  [displayConfiguration bounds];
   v9 = v8;
   v11 = v10;
 
   v12 = *MEMORY[0x277CBF3A0];
   v13 = *(MEMORY[0x277CBF3A0] + 8);
-  v14 = [v5 traitsPipelineManager];
+  traitsPipelineManager = [sceneCopy traitsPipelineManager];
 
-  if ([v14 supportsLiveDeviceRotation])
+  if ([traitsPipelineManager supportsLiveDeviceRotation])
   {
 
-    if ((a4 - 3) <= 1)
+    if ((orientation - 3) <= 1)
     {
       BSSizeSwap();
       v9 = v15;
@@ -1138,12 +1138,12 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
   return result;
 }
 
-- (SBDisplayItemSlideOverConfiguration)updatedSlideOverConfigurationForItemWithSize:(SEL)a3 center:(CGSize)a4 slideOverConfiguration:(CGPoint)a5 windowingConfiguration:(SBDisplayItemSlideOverConfiguration *)a6
+- (SBDisplayItemSlideOverConfiguration)updatedSlideOverConfigurationForItemWithSize:(SEL)size center:(CGSize)center slideOverConfiguration:(CGPoint)configuration windowingConfiguration:(SBDisplayItemSlideOverConfiguration *)windowingConfiguration
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
+  y = configuration.y;
+  x = configuration.x;
+  height = center.height;
+  width = center.width;
   v14 = a7;
   [v14 statusBarHeight];
   v16 = v15;
@@ -1206,12 +1206,12 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
     v34 = y >= v25;
   }
 
-  v35 = a6->size.width;
-  v36 = a6->size.height;
-  size = a6->size;
-  v47[0] = *&a6->corner;
+  v35 = windowingConfiguration->size.width;
+  v36 = windowingConfiguration->size.height;
+  size = windowingConfiguration->size;
+  v47[0] = *&windowingConfiguration->corner;
   v47[1] = size;
-  v48 = *&a6->isActive;
+  v48 = *&windowingConfiguration->isActive;
   [(SBDisplayItemLayoutAttributesCalculator *)self sizeForSlideOverConfiguration:v47 windowingConfiguration:v14];
   v39 = v38;
   v41 = v40;
@@ -1238,81 +1238,81 @@ uint64_t __120__SBDisplayItemLayoutAttributesCalculator_frameForFloatingAppLayou
     v45 = height;
   }
 
-  return SBDisplayItemSlideOverConfigurationMake(v34, a6->isActive, a6->isStashed, v33, retstr, v32, v44, v45);
+  return SBDisplayItemSlideOverConfigurationMake(v34, windowingConfiguration->isActive, windowingConfiguration->isStashed, v33, retstr, v32, v44, v45);
 }
 
-- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)a3 previousAppLayout:(double)a4 layoutAttributes:(double)a5 options:(double)a6 containerOrientation:(double)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(void *)a9 screenScale:(void *)a10 bounds:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(uint64_t)a13 source:(void *)a14 leftStatusBarPartIntersectionRegion:(__int16)a15 rightStatusBarPartIntersectionRegion:(uint64_t)a16 itemsNeedingPositionSnapping:(uint64_t)a17 itemsNeedingSizeSnapping:(uint64_t)a18
+- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)layout previousAppLayout:(double)appLayout layoutAttributes:(double)attributes options:(double)options containerOrientation:(double)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(void *)height screenScale:(void *)self0 bounds:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(uint64_t)self3 source:(void *)self4 leftStatusBarPartIntersectionRegion:(__int16)self5 rightStatusBarPartIntersectionRegion:(uint64_t)self6 itemsNeedingPositionSnapping:(uint64_t)self7 itemsNeedingSizeSnapping:(uint64_t)self8
 {
-  v31 = a9;
-  v32 = a10;
-  v33 = a11;
-  v34 = a14;
+  heightCopy = height;
+  scaleCopy = scale;
+  boundsCopy = bounds;
+  sourceCopy = source;
   v35 = a25;
   v36 = a26;
-  if (v33)
+  if (boundsCopy)
   {
-    v37 = v33;
+    v37 = boundsCopy;
   }
 
   else
   {
-    v38 = [a1 _displayItemLayoutAttributesProvider];
-    v39 = [v31 preferredDisplayOrdinal];
-    if ((a13 - 1) < 2)
+    _displayItemLayoutAttributesProvider = [self _displayItemLayoutAttributesProvider];
+    preferredDisplayOrdinal = [heightCopy preferredDisplayOrdinal];
+    if ((dockHidden - 1) < 2)
     {
       v40 = 1;
     }
 
     else
     {
-      v40 = 2 * ((a13 - 3) < 2);
+      v40 = 2 * ((dockHidden - 3) < 2);
     }
 
-    v37 = [v38 layoutAttributesMapForAppLayout:v31 displayOrdinal:v39 orientation:v40];
+    v37 = [_displayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:heightCopy displayOrdinal:preferredDisplayOrdinal orientation:v40];
   }
 
-  LOWORD(v43) = a15;
-  v41 = [a1 _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:v31 previousAppLayout:v32 usingNewLayoutAttributes:v37 options:a12 containerOrientation:a13 windowingConfiguration:v34 floatingDockHeight:a2 screenScale:a3 bounds:a4 prefersStripHidden:a5 prefersDockHidden:a6 source:a7 leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:a16 itemsNeedingPositionSnapping:a17 itemsNeedingSizeSnapping:{a18, a19, a20, a21, a22, a23, a24, v35, v36}];
+  LOWORD(v43) = region;
+  v41 = [self _appLayoutByPerformingAutoLayoutIfNeededInAppLayout:heightCopy previousAppLayout:scaleCopy usingNewLayoutAttributes:v37 options:hidden containerOrientation:dockHidden windowingConfiguration:sourceCopy floatingDockHeight:a2 screenScale:layout bounds:appLayout prefersStripHidden:attributes prefersDockHidden:options source:orientation leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:intersectionRegion itemsNeedingPositionSnapping:snapping itemsNeedingSizeSnapping:{sizeSnapping, a19, a20, a21, a22, a23, a24, v35, v36}];
 
   return v41;
 }
 
-- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)a3 previousAppLayout:(CGFloat)a4 usingNewLayoutAttributes:(CGFloat)a5 options:(CGFloat)a6 containerOrientation:(CGFloat)a7 windowingConfiguration:(uint64_t)a8 floatingDockHeight:(void *)a9 screenScale:(void *)a10 bounds:(void *)a11 prefersStripHidden:(uint64_t)a12 prefersDockHidden:(uint64_t)a13 source:(void *)a14 leftStatusBarPartIntersectionRegion:(__int16)a15 rightStatusBarPartIntersectionRegion:(unint64_t)a16 itemsNeedingPositionSnapping:(uint64_t)a17 itemsNeedingSizeSnapping:(uint64_t)a18
+- (id)_appLayoutByPerformingAutoLayoutIfNeededInAppLayout:(double)layout previousAppLayout:(CGFloat)appLayout usingNewLayoutAttributes:(CGFloat)attributes options:(CGFloat)options containerOrientation:(CGFloat)orientation windowingConfiguration:(uint64_t)configuration floatingDockHeight:(void *)height screenScale:(void *)self0 bounds:(void *)self1 prefersStripHidden:(uint64_t)self2 prefersDockHidden:(uint64_t)self3 source:(void *)self4 leftStatusBarPartIntersectionRegion:(__int16)self5 rightStatusBarPartIntersectionRegion:(unint64_t)self6 itemsNeedingPositionSnapping:(uint64_t)self7 itemsNeedingSizeSnapping:(uint64_t)self8
 {
   v250 = *MEMORY[0x277D85DE8];
-  v34 = a9;
-  v35 = a10;
-  v36 = a11;
-  v37 = a14;
+  heightCopy = height;
+  scaleCopy = scale;
+  boundsCopy = bounds;
+  sourceCopy = source;
   v38 = a25;
   v39 = a26;
-  if (v34)
+  if (heightCopy)
   {
-    if (([v37 isFlexibleWindowingEnabled] & 1) == 0)
+    if (([sourceCopy isFlexibleWindowingEnabled] & 1) == 0)
     {
-      v43 = v34;
+      v43 = heightCopy;
       goto LABEL_104;
     }
 
-    v189 = a12;
-    v40 = [v34 cachedLastOverlappingModelKey];
-    v41 = v40;
-    if (v40)
+    hiddenCopy = hidden;
+    cachedLastOverlappingModelKey = [heightCopy cachedLastOverlappingModelKey];
+    v41 = cachedLastOverlappingModelKey;
+    if (cachedLastOverlappingModelKey)
     {
-      v42 = v40;
+      v42 = cachedLastOverlappingModelKey;
     }
 
     else
     {
-      v42 = [[SBAppLayoutAutoLayoutSpaceCacheKey alloc] initWithAppLayout:v34];
+      v42 = [[SBAppLayoutAutoLayoutSpaceCacheKey alloc] initWithAppLayout:heightCopy];
     }
 
     v44 = v42;
 
-    v45 = [a1 _preferredMinimumSizeMapForAppLayout:v34];
-    if (([(SBAppLayoutAutoLayoutSpaceCacheKey *)v44 updateWithContainerBounds:a13 containerOrientation:a15 floatingDockHeight:HIBYTE(a15) hideStrips:v45 hideDock:v36 preferredMinimumSizeMap:a4 layoutAttributesMap:a5, a6, a7, a2]& 1) == 0)
+    v45 = [self _preferredMinimumSizeMapForAppLayout:heightCopy];
+    if (([(SBAppLayoutAutoLayoutSpaceCacheKey *)v44 updateWithContainerBounds:dockHidden containerOrientation:region floatingDockHeight:HIBYTE(region) hideStrips:v45 hideDock:boundsCopy preferredMinimumSizeMap:appLayout layoutAttributesMap:attributes, options, orientation, a2]& 1) == 0)
     {
-      v63 = v34;
+      v63 = heightCopy;
 LABEL_103:
 
       goto LABEL_104;
@@ -1320,58 +1320,58 @@ LABEL_103:
 
     v186 = v45;
     v190 = v39;
-    v210 = v37;
-    if (a16 > 0x37)
+    v210 = sourceCopy;
+    if (intersectionRegion > 0x37)
     {
       goto LABEL_20;
     }
 
-    if (((1 << a16) & 0x80000800002000) == 0)
+    if (((1 << intersectionRegion) & 0x80000800002000) == 0)
     {
       goto LABEL_20;
     }
 
-    if (!v35)
+    if (!scaleCopy)
     {
       goto LABEL_20;
     }
 
-    v46 = [v34 allItems];
-    v47 = [v46 count];
-    v48 = [v35 allItems];
+    allItems = [heightCopy allItems];
+    v47 = [allItems count];
+    allItems2 = [scaleCopy allItems];
     v49 = v44;
-    v50 = [v48 count] + 1;
+    v50 = [allItems2 count] + 1;
 
     v88 = v47 == v50;
     v44 = v49;
-    v37 = v210;
+    sourceCopy = v210;
     if (!v88)
     {
       goto LABEL_20;
     }
 
-    v51 = [v34 allItems];
+    allItems3 = [heightCopy allItems];
     v245[0] = MEMORY[0x277D85DD0];
     v245[1] = 3221225472;
     v245[2] = __399__SBDisplayItemLayoutAttributesCalculator__appLayoutByPerformingAutoLayoutIfNeededInAppLayout_previousAppLayout_usingNewLayoutAttributes_options_containerOrientation_windowingConfiguration_floatingDockHeight_screenScale_bounds_prefersStripHidden_prefersDockHidden_source_leftStatusBarPartIntersectionRegion_rightStatusBarPartIntersectionRegion_itemsNeedingPositionSnapping_itemsNeedingSizeSnapping___block_invoke;
     v245[3] = &unk_2783A8C90;
-    v246 = v35;
-    v52 = [v51 bs_firstObjectPassingTest:v245];
+    v246 = scaleCopy;
+    v52 = [allItems3 bs_firstObjectPassingTest:v245];
 
     if (v52)
     {
-      v53 = [a1 _deviceApplicationSceneHandleForDisplayItem:v52];
+      v53 = [self _deviceApplicationSceneHandleForDisplayItem:v52];
       if (v53)
       {
         v54 = v53;
-        v55 = [v53 supportsCenterWindow];
+        supportsCenterWindow = [v53 supportsCenterWindow];
 
-        v37 = v210;
-        if (v55)
+        sourceCopy = v210;
+        if (supportsCenterWindow)
         {
-          v56 = [a1 _chamoisLayoutGridCache];
+          _chamoisLayoutGridCache = [self _chamoisLayoutGridCache];
           v57 = [SBDisplayItemGridLayoutRestrictionInfo layoutRestrictionInfoWithLayoutRestrictions:0 restrictedSize:-1.0, -1.0];
-          [v56 maxGridSizeForBounds:a13 contentOrientation:v57 layoutRestrictionInfo:v210 screenScale:a4 windowingConfiguration:{a5, a6, a7, a3}];
+          [_chamoisLayoutGridCache maxGridSizeForBounds:dockHidden contentOrientation:v57 layoutRestrictionInfo:v210 screenScale:appLayout windowingConfiguration:{attributes, options, orientation, layout}];
           v59 = v58;
           v204 = v60;
 
@@ -1382,13 +1382,13 @@ LABEL_103:
         }
 
 LABEL_20:
-        v64 = [a1 _chamoisLayoutGridCache];
-        [v37 maximumWindowWidthForOverlapping];
+        _chamoisLayoutGridCache2 = [self _chamoisLayoutGridCache];
+        [sourceCopy maximumWindowWidthForOverlapping];
         v66 = v65;
-        v67 = [v34 allItems];
-        v68 = [v67 count];
+        allItems4 = [heightCopy allItems];
+        v68 = [allItems4 count];
         v69 = [SBDisplayItemGridLayoutRestrictionInfo layoutRestrictionInfoWithLayoutRestrictions:0 restrictedSize:-1.0, -1.0];
-        [v64 nearestGridSizeForProposedSize:v68 countOnStage:a13 inBounds:v69 contentOrientation:v210 layoutRestrictionInfo:v66 screenScale:a7 windowingConfiguration:{a4, a5, a6, a7, a3}];
+        [_chamoisLayoutGridCache2 nearestGridSizeForProposedSize:v68 countOnStage:dockHidden inBounds:v69 contentOrientation:v210 layoutRestrictionInfo:v66 screenScale:orientation windowingConfiguration:{appLayout, attributes, options, orientation, layout}];
         obj = v70;
         v204 = v71;
 
@@ -1397,20 +1397,20 @@ LABEL_21:
         [v61 defaultWindowSize];
         [v61 screenEdgePadding];
         v203 = v72;
-        v73 = [v34 allItems];
-        v74 = [v73 count];
+        allItems5 = [heightCopy allItems];
+        v74 = [allItems5 count];
 
         v191 = v38;
-        v192 = v34;
-        v216 = a5;
-        v217 = a6;
-        v215 = a4;
+        v192 = heightCopy;
+        attributesCopy = attributes;
+        optionsCopy = options;
+        appLayoutCopy = appLayout;
         v187 = v44;
-        v188 = v35;
+        v188 = scaleCopy;
         if (v74 < 2)
         {
-          v117 = [v34 allItems];
-          v118 = [v117 count];
+          allItems6 = [heightCopy allItems];
+          v118 = [allItems6 count];
 
           if (v118 != 1)
           {
@@ -1422,8 +1422,8 @@ LABEL_74:
             v227[3] = &unk_2783AE1C8;
             v128 = v127;
             v228 = v128;
-            [v34 enumerate:v227];
-            v129 = SBDisplayItemDescendingZOrderComparator(v36);
+            [heightCopy enumerate:v227];
+            v129 = SBDisplayItemDescendingZOrderComparator(boundsCopy);
             v199 = v128;
             v130 = [v128 sortedArrayUsingComparator:v129];
 
@@ -1449,11 +1449,11 @@ LABEL_74:
 
                   v135 = *(*(&v223 + 1) + 8 * i);
                   LOBYTE(v185) = 1;
-                  LOWORD(v182) = a15;
-                  [a1 _frameForLayoutRole:objc_msgSend(v34 inAppLayout:"layoutRoleForItem:" layoutAttributesMap:v135) containerBounds:v34 containerOrientation:v36 windowingConfiguration:a13 floatingDockHeight:v210 screenScale:1 isChamoisWindowingUIEnabled:a4 prefersStripHidden:a5 prefersDockHidden:a6 leftStatusBarPartIntersectionRegion:a7 rightStatusBarPartIntersectionRegion:a2 skipAutoLayout:{a3, v182, a17, a18, a19, a20, a21, a22, a23, a24, v185}];
+                  LOWORD(v182) = region;
+                  [self _frameForLayoutRole:objc_msgSend(heightCopy inAppLayout:"layoutRoleForItem:" layoutAttributesMap:v135) containerBounds:heightCopy containerOrientation:boundsCopy windowingConfiguration:dockHidden floatingDockHeight:v210 screenScale:1 isChamoisWindowingUIEnabled:appLayout prefersStripHidden:attributes prefersDockHidden:options leftStatusBarPartIntersectionRegion:orientation rightStatusBarPartIntersectionRegion:a2 skipAutoLayout:{layout, v182, snapping, sizeSnapping, a19, a20, a21, a22, a23, a24, v185}];
                   v137 = v136;
                   v139 = v138;
-                  v140 = [v36 objectForKey:v135];
+                  v140 = [boundsCopy objectForKey:v135];
                   v141 = [(SBFlexibleWindowingAutoLayoutItem *)[SBMutableFlexibleWindowingAutoLayoutItem alloc] initWithDisplayItem:v135];
                   [(SBFlexibleWindowingAutoLayoutItem *)v141 setSize:v137, v139];
                   UIRectGetCenter();
@@ -1471,13 +1471,13 @@ LABEL_74:
             }
 
             v142 = [SBContinuousExposeAutoLayoutConfiguration alloc];
-            v143 = a4;
-            v144 = a7;
-            v145 = [(SBContinuousExposeAutoLayoutConfiguration *)v142 initWithContainerBounds:v210 screenScale:v143 dockHeightWithBottomEdgePadding:a5 leftStatusBarPartIntersectionRegion:a6 rightStatusBarPartIntersectionRegion:a7 windowingConfiguration:a3, a2, a17, a18, a19, a20, a21, a22, a23, a24];
+            appLayoutCopy2 = appLayout;
+            orientationCopy3 = orientation;
+            v145 = [(SBContinuousExposeAutoLayoutConfiguration *)v142 initWithContainerBounds:v210 screenScale:appLayoutCopy2 dockHeightWithBottomEdgePadding:attributes leftStatusBarPartIntersectionRegion:options rightStatusBarPartIntersectionRegion:orientation windowingConfiguration:layout, a2, snapping, sizeSnapping, a19, a20, a21, a22, a23, a24];
             v146 = [[SBFlexibleWindowingAutoLayoutSpace alloc] initWithItems:v205];
-            v147 = [a1 _flexibleAutoLayoutController];
+            _flexibleAutoLayoutController = [self _flexibleAutoLayoutController];
             v207 = v145;
-            v148 = [v147 spaceByPerformingFlexibleAutoLayoutWithSpace:v146 configuration:v145 options:v189 itemsNeedingPositionSnapping:v191 itemsNeedingSizeSnapping:v190];
+            v148 = [_flexibleAutoLayoutController spaceByPerformingFlexibleAutoLayoutWithSpace:v146 configuration:v145 options:hiddenCopy itemsNeedingPositionSnapping:v191 itemsNeedingSizeSnapping:v190];
 
             v149 = objc_alloc_init(MEMORY[0x277CBEB38]);
             v219 = 0u;
@@ -1485,8 +1485,8 @@ LABEL_74:
             v221 = 0u;
             v222 = 0u;
             v206 = v148;
-            v208 = [v148 autoLayoutItems];
-            v150 = [v208 countByEnumeratingWithState:&v219 objects:v247 count:16];
+            autoLayoutItems = [v148 autoLayoutItems];
+            v150 = [autoLayoutItems countByEnumeratingWithState:&v219 objects:v247 count:16];
             if (v150)
             {
               v151 = v150;
@@ -1497,12 +1497,12 @@ LABEL_74:
                 {
                   if (*v220 != v152)
                   {
-                    objc_enumerationMutation(v208);
+                    objc_enumerationMutation(autoLayoutItems);
                   }
 
                   v154 = *(*(&v219 + 1) + 8 * j);
-                  v155 = [v154 displayItem];
-                  v156 = [v154 positionIsSystemManaged];
+                  displayItem = [v154 displayItem];
+                  positionIsSystemManaged = [v154 positionIsSystemManaged];
                   [v154 position];
                   v158 = v157;
                   v160 = v159;
@@ -1514,35 +1514,35 @@ LABEL_74:
                     [v154 isOverlapped];
                   }
 
-                  v163 = [(SBDisplayItemLayoutAttributes *)v158 normalizedPointForPoint:v160 inBounds:v215, v216, v217, v144];
+                  orientationCopy3 = [(SBDisplayItemLayoutAttributes *)v158 normalizedPointForPoint:v160 inBounds:appLayoutCopy, attributesCopy, optionsCopy, orientationCopy3];
                   v165 = v164;
-                  v166 = [(SBDisplayItemLayoutAttributes *)1.79769313e308 normalizedPointForPoint:v215 inBounds:v216, v217, v144];
+                  orientationCopy32 = [(SBDisplayItemLayoutAttributes *)1.79769313e308 normalizedPointForPoint:appLayoutCopy inBounds:attributesCopy, optionsCopy, orientationCopy3];
                   v168 = v167;
-                  v169 = [v36 objectForKey:v155];
+                  v169 = [boundsCopy objectForKey:displayItem];
                   v170 = [SBDisplayItemLayoutAttributes attributesByModifyingOcclusionState:v169];
 
-                  v171 = [(SBDisplayItemLayoutAttributes *)v170 attributesByModifyingUnoccludedPeekingCenter:v166, v168];
+                  v168 = [(SBDisplayItemLayoutAttributes *)v170 attributesByModifyingUnoccludedPeekingCenter:orientationCopy32, v168];
 
-                  v172 = [(SBDisplayItemLayoutAttributes *)v171 attributesByModifyingPositionIsSystemManaged:v156];
+                  v1652 = [(SBDisplayItemLayoutAttributes *)v168 attributesByModifyingPositionIsSystemManaged:positionIsSystemManaged];
 
                   *&v231 = 0;
                   v229 = 0u;
                   v230 = 0u;
-                  [(SBDisplayItemLayoutAttributes *)v172 slideOverConfiguration];
+                  [(SBDisplayItemLayoutAttributes *)v1652 slideOverConfiguration];
                   v237 = v229;
                   v238 = v230;
                   *&v239 = v231;
                   IsValid = SBDisplayItemSlideOverConfigurationIsValid(&v237);
-                  if ([(SBHomeScreenConfigurationServer *)v172 connections]|| ([(SBDisplayItemLayoutAttributes *)v172 tileConfiguration], ((SBDisplayItemTileConfigurationIsValid(&v237) | IsValid) & 1) != 0))
+                  if ([(SBHomeScreenConfigurationServer *)v1652 connections]|| ([(SBDisplayItemLayoutAttributes *)v1652 tileConfiguration], ((SBDisplayItemTileConfigurationIsValid(&v237) | IsValid) & 1) != 0))
                   {
-                    v144 = a7;
-                    if ([(SBHomeScreenConfigurationServer *)v172 connections]== 1)
+                    orientationCopy3 = orientation;
+                    if ([(SBHomeScreenConfigurationServer *)v1652 connections]== 1)
                     {
-                      v174 = [(SBDisplayItemLayoutAttributes *)v172 attributesByModifyingNormalizedCenter:v163, v165];
+                      v165 = [(SBDisplayItemLayoutAttributes *)v1652 attributesByModifyingNormalizedCenter:orientationCopy3, v165];
 LABEL_92:
-                      v175 = v174;
+                      v175 = v165;
 
-                      v172 = v175;
+                      v1652 = v175;
                       goto LABEL_97;
                     }
 
@@ -1551,8 +1551,8 @@ LABEL_92:
                       v233 = v229;
                       v234 = v230;
                       *&v235 = v231;
-                      [a1 updatedSlideOverConfigurationForItemWithSize:&v233 center:v210 slideOverConfiguration:v212 windowingConfiguration:{v214, v158, v160}];
-                      v174 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v172];
+                      [self updatedSlideOverConfigurationForItemWithSize:&v233 center:v210 slideOverConfiguration:v212 windowingConfiguration:{v214, v158, v160}];
+                      v165 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v1652];
                       goto LABEL_92;
                     }
                   }
@@ -1563,59 +1563,59 @@ LABEL_92:
                     v238 = 0u;
                     v239 = 0u;
                     v237 = 0u;
-                    [(SBDisplayItemLayoutAttributes *)v172 attributedSize];
+                    [(SBDisplayItemLayoutAttributes *)v1652 attributedSize];
                     v184 = v203;
-                    v144 = a7;
-                    SBDisplayItemAttributedSizeInfer(&v233, v212, v214, v215, v216, v217, a7);
+                    orientationCopy3 = orientation;
+                    SBDisplayItemAttributedSizeInfer(&v233, v212, v214, appLayoutCopy, attributesCopy, optionsCopy, orientation);
                     v240 = v236;
                     v238 = v234;
                     v239 = v235;
                     v237 = v233;
-                    v176 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedSize:v172];
+                    v176 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedSize:v1652];
 
-                    v172 = [(SBDisplayItemLayoutAttributes *)v176 attributesByModifyingNormalizedCenter:v163, v165];
+                    v1652 = [(SBDisplayItemLayoutAttributes *)v176 attributesByModifyingNormalizedCenter:orientationCopy3, v165];
                   }
 
 LABEL_97:
-                  [v149 setObject:v172 forKey:{v155, v184}];
+                  [v149 setObject:v1652 forKey:{displayItem, v184}];
                 }
 
-                v151 = [v208 countByEnumeratingWithState:&v219 objects:v247 count:16];
+                v151 = [autoLayoutItems countByEnumeratingWithState:&v219 objects:v247 count:16];
               }
 
               while (v151);
             }
 
-            v34 = v192;
+            heightCopy = v192;
             v177 = v192;
-            v178 = [a1 _displayItemLayoutAttributesProvider];
-            v179 = [v177 preferredDisplayOrdinal];
-            if ((a13 - 1) < 2)
+            _displayItemLayoutAttributesProvider = [self _displayItemLayoutAttributesProvider];
+            preferredDisplayOrdinal = [v177 preferredDisplayOrdinal];
+            if ((dockHidden - 1) < 2)
             {
               v180 = 1;
             }
 
             else
             {
-              v180 = 2 * ((a13 - 3) < 2);
+              v180 = 2 * ((dockHidden - 3) < 2);
             }
 
-            [v178 updateLayoutAttributesMap:v149 forAppLayout:v177 displayOrdinal:v179 orientation:v180];
+            [_displayItemLayoutAttributesProvider updateLayoutAttributesMap:v149 forAppLayout:v177 displayOrdinal:preferredDisplayOrdinal orientation:v180];
 
             [v177 setCachedLastFlexibleWindowingAutoLayoutSpace:v206];
             v44 = v187;
             [v177 setCachedLastOverlappingModelKey:v187];
 
-            v35 = v188;
-            v37 = v210;
+            scaleCopy = v188;
+            sourceCopy = v210;
             v39 = v190;
             v38 = v191;
             v45 = v186;
             goto LABEL_103;
           }
 
-          v75 = [v34 itemForLayoutRole:1];
-          v119 = [v36 objectForKey:v75];
+          allItems7 = [heightCopy itemForLayoutRole:1];
+          v119 = [boundsCopy objectForKey:allItems7];
           v121 = [SBDisplayItemLayoutAttributes userSizeBeforeOverlappingInBounds:v119 defaultSize:? screenEdgePadding:?];
           v122 = v120;
           if ((v121 != *MEMORY[0x277CBF3A8] || v120 != *(MEMORY[0x277CBF3A8] + 8)) && ![(SBHomeScreenConfigurationServer *)v119 connections])
@@ -1627,7 +1627,7 @@ LABEL_97:
               v238 = 0u;
               v239 = 0u;
               v237 = 0u;
-              SBDisplayItemAttributedSizeInfer(&v237, v121, v122, a4, a5, a6, a7);
+              SBDisplayItemAttributedSizeInfer(&v237, v121, v122, appLayout, attributes, options, orientation);
               v233 = v237;
               v234 = v238;
               v235 = v239;
@@ -1637,19 +1637,19 @@ LABEL_97:
               SBDisplayItemAttributedSizeUnspecified(&v233);
               v119 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedUserSizeBeforeOverlapping:v123];
 
-              v124 = [a1 _displayItemLayoutAttributesProvider];
-              v125 = [v34 preferredDisplayOrdinal];
-              if ((a13 - 1) < 2)
+              _displayItemLayoutAttributesProvider2 = [self _displayItemLayoutAttributesProvider];
+              preferredDisplayOrdinal2 = [heightCopy preferredDisplayOrdinal];
+              if ((dockHidden - 1) < 2)
               {
                 v126 = 1;
               }
 
               else
               {
-                v126 = 2 * ((a13 - 3) < 2);
+                v126 = 2 * ((dockHidden - 3) < 2);
               }
 
-              [v124 updateLayoutAttributes:v119 ofDisplayItem:v75 displayOrdinal:v125 orientation:v126];
+              [_displayItemLayoutAttributesProvider2 updateLayoutAttributes:v119 ofDisplayItem:allItems7 displayOrdinal:preferredDisplayOrdinal2 orientation:v126];
             }
           }
         }
@@ -1660,29 +1660,29 @@ LABEL_97:
           v244 = 0u;
           v241 = 0u;
           v242 = 0u;
-          v75 = [v34 allItems];
-          v76 = [v75 countByEnumeratingWithState:&v241 objects:v249 count:16];
+          allItems7 = [heightCopy allItems];
+          v76 = [allItems7 countByEnumeratingWithState:&v241 objects:v249 count:16];
           if (v76)
           {
             v77 = v76;
             v78 = *v242;
             v79 = *MEMORY[0x277CBF3A8];
             v80 = *(MEMORY[0x277CBF3A8] + 8);
-            if ((a13 - 1) < 2)
+            if ((dockHidden - 1) < 2)
             {
               v81 = 1;
             }
 
             else
             {
-              v81 = 2 * ((a13 - 3) < 2);
+              v81 = 2 * ((dockHidden - 3) < 2);
             }
 
             v193 = v81;
-            v82 = a1;
+            selfCopy3 = self;
             v200 = a2;
             v196 = *v242;
-            v197 = v75;
+            v197 = allItems7;
             v194 = *(MEMORY[0x277CBF3A8] + 8);
             v195 = *MEMORY[0x277CBF3A8];
             do
@@ -1693,53 +1693,53 @@ LABEL_97:
               {
                 if (*v242 != v78)
                 {
-                  objc_enumerationMutation(v75);
+                  objc_enumerationMutation(allItems7);
                 }
 
                 v84 = *(*(&v241 + 1) + 8 * v83);
-                v85 = [v34 layoutRoleForItem:v84];
+                v85 = [heightCopy layoutRoleForItem:v84];
                 if (SBLayoutRoleIsValidForSplitView(v85))
                 {
-                  v86 = [v36 objectForKey:v84];
+                  v86 = [boundsCopy objectForKey:v84];
                   v88 = [SBDisplayItemLayoutAttributes userSizeBeforeOverlappingInBounds:v86 defaultSize:? screenEdgePadding:?]== v79 && v87 == v80;
                   if (v88)
                   {
-                    v89 = [v82 layoutRestrictionInfoForItem:v84];
+                    v89 = [selfCopy3 layoutRestrictionInfoForItem:v84];
                     v90 = v204;
                     v91 = obj;
                     if ([v89 layoutRestrictions])
                     {
-                      v92 = [v82 _chamoisLayoutGridCache];
-                      v93 = [v34 allItems];
-                      [v92 nearestGridSizeForProposedSize:objc_msgSend(v93 countOnStage:"count") inBounds:a13 contentOrientation:v89 layoutRestrictionInfo:v210 screenScale:obj windowingConfiguration:{v204, a4, a5, a6, a7, a3}];
+                      _chamoisLayoutGridCache3 = [selfCopy3 _chamoisLayoutGridCache];
+                      allItems8 = [heightCopy allItems];
+                      [_chamoisLayoutGridCache3 nearestGridSizeForProposedSize:objc_msgSend(allItems8 countOnStage:"count") inBounds:dockHidden contentOrientation:v89 layoutRestrictionInfo:v210 screenScale:obj windowingConfiguration:{v204, appLayout, attributes, options, orientation, layout}];
                       v91 = v94;
                       v90 = v95;
 
-                      v34 = v192;
-                      if (v91 >= a6 || v90 >= a7)
+                      heightCopy = v192;
+                      if (v91 >= options || v90 >= orientation)
                       {
-                        v97 = [v82 _chamoisLayoutGridCache];
+                        _chamoisLayoutGridCache4 = [selfCopy3 _chamoisLayoutGridCache];
                         [v210 maximumWindowWidthForOverlapping];
                         v99 = v98;
-                        v100 = [v192 allItems];
-                        [v97 nearestGridSizeForProposedSize:objc_msgSend(v100 countOnStage:"count") inBounds:a13 contentOrientation:v89 layoutRestrictionInfo:v210 screenScale:v99 windowingConfiguration:{a7, a4, a5, a6, a7, a3}];
+                        allItems9 = [v192 allItems];
+                        [_chamoisLayoutGridCache4 nearestGridSizeForProposedSize:objc_msgSend(allItems9 countOnStage:"count") inBounds:dockHidden contentOrientation:v89 layoutRestrictionInfo:v210 screenScale:v99 windowingConfiguration:{orientation, appLayout, attributes, options, orientation, layout}];
                         v91 = v101;
                         v90 = v102;
 
-                        v34 = v192;
+                        heightCopy = v192;
                       }
                     }
 
-                    [v82 sizeForLayoutAttributes:v86 windowingConfiguration:v210];
+                    [selfCopy3 sizeForLayoutAttributes:v86 windowingConfiguration:v210];
                     if (v103 <= 0.0 || (v105 = v104, v104 <= 0.0))
                     {
                       LOBYTE(v185) = 1;
-                      LOWORD(v182) = a15;
-                      v82 = a1;
-                      v109 = a6;
-                      v107 = a6;
-                      v108 = a7;
-                      [a1 _frameForLayoutRole:v85 inAppLayout:v34 layoutAttributesMap:v36 containerBounds:a13 containerOrientation:v210 windowingConfiguration:1 floatingDockHeight:a4 screenScale:a5 isChamoisWindowingUIEnabled:v109 prefersStripHidden:a7 prefersDockHidden:v200 leftStatusBarPartIntersectionRegion:a3 rightStatusBarPartIntersectionRegion:v182 skipAutoLayout:{a17, a18, a19, a20, a21, a22, a23, a24, v185}];
+                      LOWORD(v182) = region;
+                      selfCopy3 = self;
+                      optionsCopy2 = options;
+                      optionsCopy4 = options;
+                      orientationCopy5 = orientation;
+                      [self _frameForLayoutRole:v85 inAppLayout:heightCopy layoutAttributesMap:boundsCopy containerBounds:dockHidden containerOrientation:v210 windowingConfiguration:1 floatingDockHeight:appLayout screenScale:attributes isChamoisWindowingUIEnabled:optionsCopy2 prefersStripHidden:orientation prefersDockHidden:v200 leftStatusBarPartIntersectionRegion:layout rightStatusBarPartIntersectionRegion:v182 skipAutoLayout:{snapping, sizeSnapping, a19, a20, a21, a22, a23, a24, v185}];
                       v106 = v110;
                       v105 = v111;
                     }
@@ -1747,9 +1747,9 @@ LABEL_97:
                     else
                     {
                       v106 = v103;
-                      v107 = a6;
-                      v108 = a7;
-                      v82 = a1;
+                      optionsCopy4 = options;
+                      orientationCopy5 = orientation;
+                      selfCopy3 = self;
                     }
 
                     v77 = v198;
@@ -1758,7 +1758,7 @@ LABEL_97:
                     v239 = 0u;
                     v237 = 0u;
                     v183 = v203;
-                    SBDisplayItemAttributedSizeInfer(&v237, v106, v105, a4, a5, v107, v108);
+                    SBDisplayItemAttributedSizeInfer(&v237, v106, v105, appLayout, attributes, optionsCopy4, orientationCopy5);
                     v233 = v237;
                     v234 = v238;
                     v235 = v239;
@@ -1770,9 +1770,9 @@ LABEL_97:
                       a2 = v200;
                       if ([v210 isFlexibleWindowingEnabled])
                       {
-                        a5 = v216;
-                        a6 = v217;
-                        a4 = v215;
+                        attributes = attributesCopy;
+                        options = optionsCopy;
+                        appLayout = appLayoutCopy;
                       }
 
                       else
@@ -1802,10 +1802,10 @@ LABEL_97:
 
                         v233 = 0uLL;
                         v183 = v203;
-                        a4 = v215;
-                        a5 = v216;
-                        a6 = v217;
-                        SBDisplayItemAttributedSizeInfer(&v233, v113, v114, v215, v216, v217, a7);
+                        appLayout = appLayoutCopy;
+                        attributes = attributesCopy;
+                        options = optionsCopy;
+                        SBDisplayItemAttributedSizeInfer(&v233, v113, v114, appLayoutCopy, attributesCopy, optionsCopy, orientation);
                         v229 = v233;
                         v230 = v234;
                         v231 = v235;
@@ -1818,18 +1818,18 @@ LABEL_97:
 
                     else
                     {
-                      a5 = v216;
-                      a6 = v217;
-                      a4 = v215;
+                      attributes = attributesCopy;
+                      options = optionsCopy;
+                      appLayout = appLayoutCopy;
                       a2 = v200;
                     }
 
-                    v116 = [v82 _displayItemLayoutAttributesProvider];
-                    [v116 updateLayoutAttributes:v112 ofDisplayItem:v84 displayOrdinal:objc_msgSend(v34 orientation:{"preferredDisplayOrdinal"), v193}];
+                    _displayItemLayoutAttributesProvider3 = [selfCopy3 _displayItemLayoutAttributesProvider];
+                    [_displayItemLayoutAttributesProvider3 updateLayoutAttributes:v112 ofDisplayItem:v84 displayOrdinal:objc_msgSend(heightCopy orientation:{"preferredDisplayOrdinal"), v193}];
 
                     v86 = v112;
                     v78 = v196;
-                    v75 = v197;
+                    allItems7 = v197;
                     v80 = v194;
                     v79 = v195;
                   }
@@ -1839,7 +1839,7 @@ LABEL_97:
               }
 
               while (v77 != v83);
-              v77 = [v75 countByEnumeratingWithState:&v241 objects:v249 count:16];
+              v77 = [allItems7 countByEnumeratingWithState:&v241 objects:v249 count:16];
             }
 
             while (v77);
@@ -1850,13 +1850,13 @@ LABEL_97:
       }
     }
 
-    v37 = v210;
+    sourceCopy = v210;
     goto LABEL_20;
   }
 
 LABEL_104:
 
-  return v34;
+  return heightCopy;
 }
 
 void __399__SBDisplayItemLayoutAttributesCalculator__appLayoutByPerformingAutoLayoutIfNeededInAppLayout_previousAppLayout_usingNewLayoutAttributes_options_containerOrientation_windowingConfiguration_floatingDockHeight_screenScale_bounds_prefersStripHidden_prefersDockHidden_source_leftStatusBarPartIntersectionRegion_rightStatusBarPartIntersectionRegion_itemsNeedingPositionSnapping_itemsNeedingSizeSnapping___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -1868,9 +1868,9 @@ void __399__SBDisplayItemLayoutAttributesCalculator__appLayoutByPerformingAutoLa
   }
 }
 
-- (id)_deviceApplicationSceneHandleForDisplayItem:(id)a3
+- (id)_deviceApplicationSceneHandleForDisplayItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1882,7 +1882,7 @@ void __399__SBDisplayItemLayoutAttributesCalculator__appLayoutByPerformingAutoLa
   v8[1] = 3221225472;
   v8[2] = __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandleForDisplayItem___block_invoke;
   v8[3] = &unk_2783B0A70;
-  v5 = v3;
+  v5 = itemCopy;
   v9 = v5;
   v10 = &v11;
   [v4 enumerateSwitcherControllersWithBlock:v8];
@@ -1935,20 +1935,20 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
   *a3 = *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (id)_applicationForDisplayItem:(id)a3
+- (id)_applicationForDisplayItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationForDisplayItem:v3];
+  v5 = [v4 applicationForDisplayItem:itemCopy];
 
   return v5;
 }
 
-- (BOOL)_appLayoutContainsOnlyResizableApps:(id)a3
+- (BOOL)_appLayoutContainsOnlyResizableApps:(id)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 _appLayoutContainsOnlyResizableApps:v3];
+  v5 = [v4 _appLayoutContainsOnlyResizableApps:appsCopy];
 
   return v5;
 }
@@ -1998,24 +1998,24 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
   return chamoisLayoutGridCache;
 }
 
-- (CGSize)_minSizeForDisplayItem:(id)a3 inContainerBounds:(CGRect)a4 layoutGrid:(id)a5 layoutRestrictionInfo:(id)a6 contentOrientation:(int64_t)a7 screenScale:(double)a8 windowingConfiguration:(id)a9
+- (CGSize)_minSizeForDisplayItem:(id)item inContainerBounds:(CGRect)bounds layoutGrid:(id)grid layoutRestrictionInfo:(id)info contentOrientation:(int64_t)orientation screenScale:(double)scale windowingConfiguration:(id)configuration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a9;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  itemCopy = item;
+  gridCopy = grid;
+  infoCopy = info;
+  configurationCopy = configuration;
   v22 = +[SBMainSwitcherControllerCoordinator sharedInstanceIfExists];
-  v23 = [v22 switcherControllerForDisplayItem:v18];
+  v23 = [v22 switcherControllerForDisplayItem:itemCopy];
 
   if (v23)
   {
-    v24 = [v23 contentViewController];
+    contentViewController = [v23 contentViewController];
     v25 = objc_opt_class();
-    v26 = v24;
+    v26 = contentViewController;
     if (v25)
     {
       if (objc_opt_isKindOfClass())
@@ -2036,14 +2036,14 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
 
     v32 = v27;
 
-    [v32 minSizeForDisplayItem:v18 inContainerBounds:v19 layoutGrid:v20 layoutRestrictionInfo:a7 contentOrientation:v21 screenScale:x windowingConfiguration:{y, width, height, a8}];
+    [v32 minSizeForDisplayItem:itemCopy inContainerBounds:gridCopy layoutGrid:infoCopy layoutRestrictionInfo:orientation contentOrientation:configurationCopy screenScale:x windowingConfiguration:{y, width, height, scale}];
     v29 = v33;
     v31 = v34;
   }
 
   else
   {
-    [v19 minGridSizeForBounds:a7 contentOrientation:v20 layoutRestrictionInfo:v21 screenScale:x windowingConfiguration:{y, width, height, a8}];
+    [gridCopy minGridSizeForBounds:orientation contentOrientation:infoCopy layoutRestrictionInfo:configurationCopy screenScale:x windowingConfiguration:{y, width, height, scale}];
     v29 = v28;
     v31 = v30;
   }
@@ -2055,20 +2055,20 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
   return result;
 }
 
-- (id)_preferredMinimumSizeMapForAppLayout:(id)a3
+- (id)_preferredMinimumSizeMapForAppLayout:(id)layout
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 allItems];
+  layoutCopy = layout;
+  allItems = [layoutCopy allItems];
   v5 = +[SBMainSwitcherControllerCoordinator sharedInstanceIfExists];
   if (v5)
   {
-    v22 = v4;
+    v22 = allItems;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v4;
+    obj = allItems;
     v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v6)
     {
@@ -2088,9 +2088,9 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
 
           v13 = *(*(&v24 + 1) + 8 * i);
           v14 = [v5 switcherControllerForDisplayItem:v13];
-          v15 = [v14 contentViewController];
+          contentViewController = [v14 contentViewController];
           v16 = objc_opt_class();
-          v17 = v15;
+          v17 = contentViewController;
           if (v16)
           {
             if (objc_opt_isKindOfClass())
@@ -2135,7 +2135,7 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
       v8 = 0;
     }
 
-    v4 = v22;
+    allItems = v22;
   }
 
   else
@@ -2146,34 +2146,34 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
   return v8;
 }
 
-- (CGSize)sizeForSlideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)a3 windowingConfiguration:(id)a4
+- (CGSize)sizeForSlideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)configuration windowingConfiguration:(id)windowingConfiguration
 {
-  v5 = a4;
-  width = a3->size.width;
-  height = a3->size.height;
+  windowingConfigurationCopy = windowingConfiguration;
+  width = configuration->size.width;
+  height = configuration->size.height;
   if (BSFloatIsZero())
   {
-    [v5 minimumWindowWidth];
+    [windowingConfigurationCopy minimumWindowWidth];
     width = v8;
   }
 
   if (BSFloatIsZero())
   {
-    [v5 statusBarHeight];
+    [windowingConfigurationCopy statusBarHeight];
     v10 = v9;
-    [v5 containerBounds];
+    [windowingConfigurationCopy containerBounds];
     v12 = v11;
-    [v5 slideOverBorderWidth];
+    [windowingConfigurationCopy slideOverBorderWidth];
     v14 = v13;
     v15 = v12 - v10;
-    if (a3->dodgesDock)
+    if (configuration->dodgesDock)
     {
-      [v5 floatingDockHeightWithTopAndBottomPadding];
+      [windowingConfigurationCopy floatingDockHeightWithTopAndBottomPadding];
     }
 
     else
     {
-      [v5 dockTopMargin];
+      [windowingConfigurationCopy dockTopMargin];
     }
 
     height = v15 - v16 + v14 * -2.0;
@@ -2186,46 +2186,46 @@ void __87__SBDisplayItemLayoutAttributesCalculator__deviceApplicationSceneHandle
   return result;
 }
 
-- (CGSize)sizeForLayoutAttributes:(id)a3 windowingConfiguration:(id)a4
+- (CGSize)sizeForLayoutAttributes:(id)attributes windowingConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  [(SBDisplayItemLayoutAttributes *)v6 slideOverConfiguration];
+  attributesCopy = attributes;
+  configurationCopy = configuration;
+  [(SBDisplayItemLayoutAttributes *)attributesCopy slideOverConfiguration];
   if (SBDisplayItemSlideOverConfigurationIsValid(&v29))
   {
-    [(SBDisplayItemLayoutAttributesCalculator *)self sizeForSlideOverConfiguration:&v29 windowingConfiguration:v7, [(SBDisplayItemLayoutAttributes *)v6 slideOverConfiguration]];
+    [(SBDisplayItemLayoutAttributesCalculator *)self sizeForSlideOverConfiguration:&v29 windowingConfiguration:configurationCopy, [(SBDisplayItemLayoutAttributes *)attributesCopy slideOverConfiguration]];
 LABEL_3:
     v10 = v8;
     v11 = v9;
     goto LABEL_7;
   }
 
-  if ([(SBHomeScreenConfigurationServer *)v6 connections]== 2 || [(SBHomeScreenConfigurationServer *)v6 connections]== 1)
+  if ([(SBHomeScreenConfigurationServer *)attributesCopy connections]== 2 || [(SBHomeScreenConfigurationServer *)attributesCopy connections]== 1)
   {
-    [v7 containerBounds];
+    [configurationCopy containerBounds];
     v10 = v12;
     v11 = v13;
     goto LABEL_7;
   }
 
-  [(SBDisplayItemLayoutAttributes *)v6 tileConfiguration];
+  [(SBDisplayItemLayoutAttributes *)attributesCopy tileConfiguration];
   if (!SBDisplayItemTileConfigurationIsValid(&v29))
   {
-    [v7 containerBounds];
-    [v7 defaultWindowSize];
-    [v7 screenEdgePadding];
-    v8 = [SBDisplayItemLayoutAttributes sizeInBounds:v6 defaultSize:? screenEdgePadding:?];
+    [configurationCopy containerBounds];
+    [configurationCopy defaultWindowSize];
+    [configurationCopy screenEdgePadding];
+    v8 = [SBDisplayItemLayoutAttributes sizeInBounds:attributesCopy defaultSize:? screenEdgePadding:?];
     goto LABEL_3;
   }
 
   v29 = 0;
   v30 = 0.0;
   v31 = 0.0;
-  [(SBDisplayItemLayoutAttributes *)v6 tileConfiguration];
-  [v7 stageInterItemSpacing];
-  [v7 containerBounds];
+  [(SBDisplayItemLayoutAttributes *)attributesCopy tileConfiguration];
+  [configurationCopy stageInterItemSpacing];
+  [configurationCopy containerBounds];
   v17 = v16;
-  [v7 floatingDockHeightWithTopAndBottomPadding];
+  [configurationCopy floatingDockHeightWithTopAndBottomPadding];
   v28 = v18;
   SBScreenScale();
   UISizeRoundToScale();
@@ -2297,29 +2297,29 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)centerForLayoutAttributes:(id)a3 windowingConfiguration:(id)a4
+- (CGPoint)centerForLayoutAttributes:(id)attributes windowingConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 containerBounds];
+  attributesCopy = attributes;
+  configurationCopy = configuration;
+  [configurationCopy containerBounds];
   v10 = v9;
   v12 = v11;
-  [(SBDisplayItemLayoutAttributes *)v7 slideOverConfiguration];
+  [(SBDisplayItemLayoutAttributes *)attributesCopy slideOverConfiguration];
   if (SBDisplayItemSlideOverConfigurationIsValid(v39))
   {
     v40 = 0;
     memset(v39, 0, sizeof(v39));
-    v13 = [(SBDisplayItemLayoutAttributes *)v7 slideOverConfiguration];
+    slideOverConfiguration = [(SBDisplayItemLayoutAttributes *)attributesCopy slideOverConfiguration];
     v14 = *&v39[0];
-    [v8 dockTopMargin];
+    [configurationCopy dockTopMargin];
     v16 = v15;
-    [v8 statusBarHeight];
+    [configurationCopy statusBarHeight];
     v18 = v17;
-    [v8 slideOverBorderWidth];
+    [configurationCopy slideOverBorderWidth];
     v20 = v19;
-    [v8 floatingDockHeightWithTopAndBottomPadding];
+    [configurationCopy floatingDockHeightWithTopAndBottomPadding];
     v22 = v21;
-    [(SBDisplayItemLayoutAttributesCalculator *)self sizeForLayoutAttributes:v7 windowingConfiguration:v8];
+    [(SBDisplayItemLayoutAttributesCalculator *)self sizeForLayoutAttributes:attributesCopy windowingConfiguration:configurationCopy];
     v25 = v20 + v16 + v24 * 0.5;
     if (v14 >= 2)
     {
@@ -2355,7 +2355,7 @@ LABEL_7:
     goto LABEL_35;
   }
 
-  if ([(SBHomeScreenConfigurationServer *)v7 connections]== 2)
+  if ([(SBHomeScreenConfigurationServer *)attributesCopy connections]== 2)
   {
     UIRectGetCenter();
     v26 = v29;
@@ -2363,18 +2363,18 @@ LABEL_7:
     goto LABEL_35;
   }
 
-  [(SBDisplayItemLayoutAttributes *)v7 tileConfiguration];
+  [(SBDisplayItemLayoutAttributes *)attributesCopy tileConfiguration];
   if (!SBDisplayItemTileConfigurationIsValid(v39))
   {
-    v26 = v10 * [(SBDisplayItemLayoutAttributes *)v7 normalizedCenter];
+    v26 = v10 * [(SBDisplayItemLayoutAttributes *)attributesCopy normalizedCenter];
     v31 = v12 * v34;
     goto LABEL_35;
   }
 
-  [(SBDisplayItemLayoutAttributesCalculator *)self sizeForLayoutAttributes:v7 windowingConfiguration:v8];
+  [(SBDisplayItemLayoutAttributesCalculator *)self sizeForLayoutAttributes:attributesCopy windowingConfiguration:configurationCopy];
   v26 = v32 * 0.5;
   v31 = v33 * 0.5;
-  [(SBDisplayItemLayoutAttributes *)v7 tileConfiguration];
+  [(SBDisplayItemLayoutAttributes *)attributesCopy tileConfiguration];
   if (v38[0] > 8)
   {
     if (v38[0] <= 11)
@@ -2432,8 +2432,8 @@ LABEL_32:
 
     if (!v38[0])
     {
-      v35 = [MEMORY[0x277CCA890] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"SBDisplayItemLayoutAttributesCalculator.m" lineNumber:944 description:@"Invalid tile role"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayItemLayoutAttributesCalculator.m" lineNumber:944 description:@"Invalid tile role"];
 
       v26 = 1.79769313e308;
       v31 = 1.79769313e308;

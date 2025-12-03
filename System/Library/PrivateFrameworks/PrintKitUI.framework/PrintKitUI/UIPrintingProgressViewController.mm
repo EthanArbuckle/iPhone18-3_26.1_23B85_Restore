@@ -1,43 +1,43 @@
 @interface UIPrintingProgressViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (UIPrintingProgressViewController)initWithTitle:(id)a3 message:(id)a4 printingProgress:(id)a5;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (UIPrintingProgressViewController)initWithTitle:(id)title message:(id)message printingProgress:(id)progress;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)cancelProgress;
 - (void)dismissProgress;
 - (void)doneProgress;
-- (void)setDonePrinting:(BOOL)a3;
+- (void)setDonePrinting:(BOOL)printing;
 @end
 
 @implementation UIPrintingProgressViewController
 
-- (UIPrintingProgressViewController)initWithTitle:(id)a3 message:(id)a4 printingProgress:(id)a5
+- (UIPrintingProgressViewController)initWithTitle:(id)title message:(id)message printingProgress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  progressCopy = progress;
   v28.receiver = self;
   v28.super_class = UIPrintingProgressViewController;
   v11 = [(UIPrintingProgressViewController *)&v28 initWithStyle:1];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_printingProgress, v10);
+    objc_storeWeak(&v11->_printingProgress, progressCopy);
     [(UIPrintingProgressViewController *)v12 setDonePrinting:0];
-    v13 = [(UIPrintingProgressViewController *)v12 view];
-    [v13 setBounces:0];
+    view = [(UIPrintingProgressViewController *)v12 view];
+    [view setBounces:0];
 
-    v14 = [v10 hostingWindowScene];
+    hostingWindowScene = [progressCopy hostingWindowScene];
 
-    if (!v14)
+    if (!hostingWindowScene)
     {
-      v15 = [MEMORY[0x277D75128] sharedApplication];
-      v16 = [v15 _findUISceneForLegacyInterfaceOrientation];
-      [v10 setHostingWindowScene:v16];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      _findUISceneForLegacyInterfaceOrientation = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
+      [progressCopy setHostingWindowScene:_findUISceneForLegacyInterfaceOrientation];
     }
 
     v17 = objc_alloc(MEMORY[0x277D75DA0]);
-    v18 = [v10 hostingWindowScene];
-    v19 = [v17 initWithWindowScene:v18];
+    hostingWindowScene2 = [progressCopy hostingWindowScene];
+    v19 = [v17 initWithWindowScene:hostingWindowScene2];
     window = v12->_window;
     v12->_window = v19;
 
@@ -50,30 +50,30 @@
 
     [(UIWindow *)v12->_window setRootViewController:v12->_navController];
     v23 = [UIPrintingMessageView alloc];
-    v24 = [(UIPrintingProgressViewController *)v12 view];
-    v25 = [(UIPrintingMessageView *)v23 initInView:v24 title:v8];
+    view2 = [(UIPrintingProgressViewController *)v12 view];
+    v25 = [(UIPrintingMessageView *)v23 initInView:view2 title:titleCopy];
     messageView = v12->_messageView;
     v12->_messageView = v25;
 
-    [(UIPrintingMessageView *)v12->_messageView setMessage:v9];
+    [(UIPrintingMessageView *)v12->_messageView setMessage:messageCopy];
     [(UIPrintingMessageView *)v12->_messageView setHidden:0];
   }
 
   return v12;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
     return 1;
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     return 0;
   }
@@ -99,7 +99,7 @@
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (v13 != self->_window && ![(UIWindow *)v13 _shouldAutorotateToInterfaceOrientation:a3, v15])
+        if (v13 != self->_window && ![(UIWindow *)v13 _shouldAutorotateToInterfaceOrientation:orientation, v15])
         {
           v7 = 0;
           goto LABEL_16;
@@ -126,10 +126,10 @@ LABEL_16:
 - (unint64_t)supportedInterfaceOrientations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -185,19 +185,19 @@ LABEL_16:
   [(UIPrintingProgressViewController *)self doneProgress];
 }
 
-- (void)setDonePrinting:(BOOL)a3
+- (void)setDonePrinting:(BOOL)printing
 {
-  v3 = a3;
+  printingCopy = printing;
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = &selRef_doneProgress;
-  if (!v3)
+  if (!printingCopy)
   {
     v6 = &selRef_cancelProgress;
   }
 
-  v8 = [v5 initWithBarButtonSystemItem:!v3 target:self action:*v6];
-  v7 = [(UIPrintingProgressViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v8];
+  v8 = [v5 initWithBarButtonSystemItem:!printingCopy target:self action:*v6];
+  navigationItem = [(UIPrintingProgressViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v8];
 }
 
 - (void)dismissProgress

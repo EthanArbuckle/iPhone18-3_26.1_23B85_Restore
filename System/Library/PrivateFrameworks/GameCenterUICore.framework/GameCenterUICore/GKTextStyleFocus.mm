@@ -7,9 +7,9 @@
 - (id)bannerTitle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setTextAlignment:4];
   [v4 setLineBreakMode:4];

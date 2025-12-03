@@ -2,67 +2,67 @@
 + (BOOL)_legacyBuddyOfferMightNeedPresenting;
 + (id)defaultBundleIdentifier;
 + (id)sharedOfferManager;
-- (BOOL)_offerTypeMatchesRequestOptions:(id)a3 offer:(id)a4;
-- (BOOL)_shouldUseOffer:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)didDismissRecommendationForBundleId:(id)a3;
+- (BOOL)_offerTypeMatchesRequestOptions:(id)options offer:(id)offer;
+- (BOOL)_shouldUseOffer:(id)offer forBundleIdentifier:(id)identifier;
+- (BOOL)didDismissRecommendationForBundleId:(id)id;
 - (BOOL)fetchOfferIfNeeded;
 - (BOOL)isBuddyOfferEnabled;
 - (BOOL)isSimulatedDeviceStorageAlmostFull;
-- (BOOL)shouldPresentAppLaunchLink:(id)a3;
+- (BOOL)shouldPresentAppLaunchLink:(id)link;
 - (ICQOfferManager)init;
-- (id)_currentOfferForBundleIdentifier:(id)a3 options:(id)a4;
+- (id)_currentOfferForBundleIdentifier:(id)identifier options:(id)options;
 - (id)_premiumOptions;
-- (id)_refreshOfferWithDaemonOfferDict:(id)a3 offerRequestType:(int64_t)a4 bundleId:(id)a5;
-- (id)cachedOfferForType:(int64_t)a3;
+- (id)_refreshOfferWithDaemonOfferDict:(id)dict offerRequestType:(int64_t)type bundleId:(id)id;
+- (id)cachedOfferForType:(int64_t)type;
 - (id)currentDefaultOffer;
 - (id)currentOffer;
 - (id)currentPremiumOffer;
-- (id)currentPremiumOfferForBundleIdentifier:(id)a3;
+- (id)currentPremiumOfferForBundleIdentifier:(id)identifier;
 - (id)simulatedPhotosLibrarySize;
-- (void)_firedPremiumOfferInvalidationTimer:(id)a3;
-- (void)_firedRegularOfferInvalidationTimer:(id)a3;
-- (void)_funnelCloudServerOfferForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_getOfferForAccount:(id)a3 bundleIdentifier:(id)a4 options:(id)a5 offerContext:(id)a6 completion:(id)a7;
-- (void)_getOfferForBundleIdentifier:(id)a3 options:(id)a4 offerContext:(id)a5 completion:(id)a6;
-- (void)_handlePushReceivedDarwinNotificationRequestType:(int64_t)a3;
+- (void)_firedPremiumOfferInvalidationTimer:(id)timer;
+- (void)_firedRegularOfferInvalidationTimer:(id)timer;
+- (void)_funnelCloudServerOfferForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)_getOfferForAccount:(id)account bundleIdentifier:(id)identifier options:(id)options offerContext:(id)context completion:(id)completion;
+- (void)_getOfferForBundleIdentifier:(id)identifier options:(id)options offerContext:(id)context completion:(id)completion;
+- (void)_handlePushReceivedDarwinNotificationRequestType:(int64_t)type;
 - (void)_refetchDefaultOffer;
 - (void)_refetchPremiumOffer;
 - (void)_refetchRegularOffer;
-- (void)_registerForDarwinNotification:(id)a3;
-- (void)_setupTimerForInvalidationDate:(id)a3 forType:(int64_t)a4;
-- (void)_setupTimerForPremiumOfferInvalidationDate:(id)a3;
-- (void)_setupTimerForRegularOfferInvalidationDate:(id)a3;
-- (void)_teardownInvalidationTimerForRequestType:(int64_t)a3;
+- (void)_registerForDarwinNotification:(id)notification;
+- (void)_setupTimerForInvalidationDate:(id)date forType:(int64_t)type;
+- (void)_setupTimerForPremiumOfferInvalidationDate:(id)date;
+- (void)_setupTimerForRegularOfferInvalidationDate:(id)date;
+- (void)_teardownInvalidationTimerForRequestType:(int64_t)type;
 - (void)_teardownPremiumOfferInvalidationTimer;
 - (void)_teardownRegularOfferInvalidationTimer;
 - (void)_unregisterForAllDarwinNotifications;
-- (void)_unregisterForDarwinNotification:(id)a3;
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3;
+- (void)_unregisterForDarwinNotification:(id)notification;
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier;
 - (void)clearFollowups;
 - (void)dealloc;
-- (void)dismissRecommendationForBundleId:(id)a3;
+- (void)dismissRecommendationForBundleId:(id)id;
 - (void)forcePostFollowup;
-- (void)getDefaultOfferWithCompletion:(id)a3;
-- (void)getEventOfferWithOptions:(id)a3 completion:(id)a4;
-- (void)getOfferForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getOfferForBundleIdentifier:(id)a3 offerContext:(id)a4 completion:(id)a5;
-- (void)getOfferWithCompletion:(id)a3;
-- (void)getPremiumOfferAndOpportunityBubbleForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getPremiumOfferAndOpportunityBubbleWithCompletion:(id)a3;
-- (void)getPremiumOfferForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getPremiumOfferForBundleIdentifier:(id)a3 offerContext:(id)a4 completion:(id)a5;
-- (void)getPremiumOfferWithCompletion:(id)a3;
-- (void)postBackupRestoredOffer:(id)a3;
-- (void)postBuddyOfferType:(id)a3;
-- (void)postOfferType:(id)a3;
-- (void)setCachedOfferForType:(int64_t)a3 daemonOffer:(id)a4 bundleIdentifier:(id)a5;
-- (void)setSimulatedPhotosLibrarySize:(id)a3;
+- (void)getDefaultOfferWithCompletion:(id)completion;
+- (void)getEventOfferWithOptions:(id)options completion:(id)completion;
+- (void)getOfferForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getOfferForBundleIdentifier:(id)identifier offerContext:(id)context completion:(id)completion;
+- (void)getOfferWithCompletion:(id)completion;
+- (void)getPremiumOfferAndOpportunityBubbleForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getPremiumOfferAndOpportunityBubbleWithCompletion:(id)completion;
+- (void)getPremiumOfferForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getPremiumOfferForBundleIdentifier:(id)identifier offerContext:(id)context completion:(id)completion;
+- (void)getPremiumOfferWithCompletion:(id)completion;
+- (void)postBackupRestoredOffer:(id)offer;
+- (void)postBuddyOfferType:(id)type;
+- (void)postOfferType:(id)type;
+- (void)setCachedOfferForType:(int64_t)type daemonOffer:(id)offer bundleIdentifier:(id)identifier;
+- (void)setSimulatedPhotosLibrarySize:(id)size;
 - (void)teardownCachedBuddyOffer;
 - (void)teardownCachedEventOffer;
 - (void)teardownCachedOffer;
 - (void)teardownCachedOffers;
 - (void)teardownCachedPremiumOffer;
-- (void)updateOfferId:(id)a3 buttonId:(id)a4 info:(id)a5 completion:(id)a6;
+- (void)updateOfferId:(id)id buttonId:(id)buttonId info:(id)info completion:(id)completion;
 @end
 
 @implementation ICQOfferManager
@@ -73,7 +73,7 @@
   block[1] = 3221225472;
   block[2] = __37__ICQOfferManager_sharedOfferManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedOfferManager_onceToken != -1)
   {
     dispatch_once(&sharedOfferManager_onceToken, block);
@@ -103,7 +103,7 @@ uint64_t __37__ICQOfferManager_sharedOfferManager__block_invoke(uint64_t a1)
     cachedOffersLock = v2->_cachedOffersLock;
     v2->_cachedOffersLock = v3;
 
-    v5 = [objc_opt_class() defaultBundleIdentifier];
+    defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
   }
 
   return v2;
@@ -162,29 +162,29 @@ void __42__ICQOfferManager_defaultBundleIdentifier__block_invoke()
 
 - (id)currentOffer
 {
-  v3 = [objc_opt_class() defaultBundleIdentifier];
-  v4 = [(ICQOfferManager *)self currentOfferForBundleIdentifier:v3];
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  v4 = [(ICQOfferManager *)self currentOfferForBundleIdentifier:defaultBundleIdentifier];
 
   return v4;
 }
 
 - (id)currentPremiumOffer
 {
-  v3 = [objc_opt_class() defaultBundleIdentifier];
-  v4 = [(ICQOfferManager *)self currentPremiumOfferForBundleIdentifier:v3];
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  v4 = [(ICQOfferManager *)self currentPremiumOfferForBundleIdentifier:defaultBundleIdentifier];
 
   return v4;
 }
 
-- (void)getDefaultOfferWithCompletion:(id)a3
+- (void)getDefaultOfferWithCompletion:(id)completion
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBundleIdentifier];
+  completionCopy = completion;
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
   v8 = @"isDefaultOffer";
   v9[0] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v5 options:v6 offerContext:0 completion:v4];
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:defaultBundleIdentifier options:v6 offerContext:0 completion:completionCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -192,23 +192,23 @@ void __42__ICQOfferManager_defaultBundleIdentifier__block_invoke()
 - (id)currentDefaultOffer
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() defaultBundleIdentifier];
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
   v8 = @"isDefaultOffer";
   v9[0] = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v5 = [(ICQOfferManager *)self _currentOfferForBundleIdentifier:v3 options:v4];
+  v5 = [(ICQOfferManager *)self _currentOfferForBundleIdentifier:defaultBundleIdentifier options:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (id)currentPremiumOfferForBundleIdentifier:(id)a3
+- (id)currentPremiumOfferForBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQOfferManager *)self _premiumOptions];
-  v6 = [(ICQOfferManager *)self _currentOfferForBundleIdentifier:v4 options:v5];
+  identifierCopy = identifier;
+  _premiumOptions = [(ICQOfferManager *)self _premiumOptions];
+  v6 = [(ICQOfferManager *)self _currentOfferForBundleIdentifier:identifierCopy options:_premiumOptions];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -228,7 +228,7 @@ void __42__ICQOfferManager_defaultBundleIdentifier__block_invoke()
         v13 = 138412546;
         v14 = v10;
         v15 = 2112;
-        v16 = v4;
+        v16 = identifierCopy;
         _os_log_impl(&dword_275572000, v8, OS_LOG_TYPE_DEFAULT, "Received incorrect class %@ when requesting currentPremiumOffer for bundle ID %@", &v13, 0x16u);
       }
     }
@@ -236,7 +236,7 @@ void __42__ICQOfferManager_defaultBundleIdentifier__block_invoke()
     else if (v9)
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_275572000, v8, OS_LOG_TYPE_DEFAULT, "Offer received was nil when requesting currentPremiumOffer for bundle ID %@", &v13, 0xCu);
     }
 
@@ -248,44 +248,44 @@ void __42__ICQOfferManager_defaultBundleIdentifier__block_invoke()
   return v7;
 }
 
-- (void)getOfferWithCompletion:(id)a3
+- (void)getOfferWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBundleIdentifier];
-  [(ICQOfferManager *)self getOfferForBundleIdentifier:v5 completion:v4];
+  completionCopy = completion;
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  [(ICQOfferManager *)self getOfferForBundleIdentifier:defaultBundleIdentifier completion:completionCopy];
 }
 
-- (void)getPremiumOfferWithCompletion:(id)a3
+- (void)getPremiumOfferWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBundleIdentifier];
-  [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:v5 completion:v4];
+  completionCopy = completion;
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:defaultBundleIdentifier completion:completionCopy];
 }
 
-- (void)getOfferForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getOfferForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ICQOfferManager_getOfferForBundleIdentifier_completion___block_invoke;
   v8[3] = &unk_27A651B40;
-  v9 = v6;
-  v7 = v6;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:a3 options:0 offerContext:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:identifier options:0 offerContext:0 completion:v8];
 }
 
-- (void)getPremiumOfferForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getPremiumOfferForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICQOfferManager *)self _premiumOptions];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  _premiumOptions = [(ICQOfferManager *)self _premiumOptions];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__ICQOfferManager_getPremiumOfferForBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_27A651B40;
-  v11 = v6;
-  v9 = v6;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v7 options:v8 offerContext:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:identifierCopy options:_premiumOptions offerContext:0 completion:v10];
 }
 
 void __65__ICQOfferManager_getPremiumOfferForBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -308,17 +308,17 @@ void __65__ICQOfferManager_getPremiumOfferForBundleIdentifier_completion___block
   (*(*(a1 + 32) + 16))(*(a1 + 32), v8, v5);
 }
 
-- (void)getPremiumOfferAndOpportunityBubbleWithCompletion:(id)a3
+- (void)getPremiumOfferAndOpportunityBubbleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBundleIdentifier];
-  [(ICQOfferManager *)self getPremiumOfferAndOpportunityBubbleForBundleIdentifier:v5 completion:v4];
+  completionCopy = completion;
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  [(ICQOfferManager *)self getPremiumOfferAndOpportunityBubbleForBundleIdentifier:defaultBundleIdentifier completion:completionCopy];
 }
 
-- (void)getPremiumOfferAndOpportunityBubbleForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getPremiumOfferAndOpportunityBubbleForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -330,9 +330,9 @@ void __65__ICQOfferManager_getPremiumOfferForBundleIdentifier_completion___block
   v10[1] = 3221225472;
   v10[2] = __85__ICQOfferManager_getPremiumOfferAndOpportunityBubbleForBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_27A651B90;
-  v11 = v6;
-  v9 = v6;
-  [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:identifierCopy completion:v10];
 }
 
 void __85__ICQOfferManager_getPremiumOfferAndOpportunityBubbleForBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -385,10 +385,10 @@ void __85__ICQOfferManager_getPremiumOfferAndOpportunityBubbleForBundleIdentifie
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postBackupRestoredOffer:(id)a3
+- (void)postBackupRestoredOffer:(id)offer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  offerCopy = offer;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -404,8 +404,8 @@ void __85__ICQOfferManager_getPremiumOfferAndOpportunityBubbleForBundleIdentifie
   v9[1] = 3221225472;
   v9[2] = __43__ICQOfferManager_postBackupRestoredOffer___block_invoke;
   v9[3] = &unk_27A651B40;
-  v10 = v4;
-  v7 = v4;
+  v10 = offerCopy;
+  v7 = offerCopy;
   [(ICQOfferManager *)self getEventOfferWithOptions:v6 completion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -454,31 +454,31 @@ LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getOfferForBundleIdentifier:(id)a3 offerContext:(id)a4 completion:(id)a5
+- (void)getOfferForBundleIdentifier:(id)identifier offerContext:(id)context completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__ICQOfferManager_getOfferForBundleIdentifier_offerContext_completion___block_invoke;
   v10[3] = &unk_27A651B40;
-  v11 = v8;
-  v9 = v8;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:a3 options:0 offerContext:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:identifier options:0 offerContext:context completion:v10];
 }
 
-- (void)getPremiumOfferForBundleIdentifier:(id)a3 offerContext:(id)a4 completion:(id)a5
+- (void)getPremiumOfferForBundleIdentifier:(id)identifier offerContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICQOfferManager *)self _premiumOptions];
+  completionCopy = completion;
+  contextCopy = context;
+  identifierCopy = identifier;
+  _premiumOptions = [(ICQOfferManager *)self _premiumOptions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__ICQOfferManager_getPremiumOfferForBundleIdentifier_offerContext_completion___block_invoke;
   v13[3] = &unk_27A651B40;
-  v14 = v8;
-  v12 = v8;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v10 options:v11 offerContext:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:identifierCopy options:_premiumOptions offerContext:contextCopy completion:v13];
 }
 
 void __78__ICQOfferManager_getPremiumOfferForBundleIdentifier_offerContext_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -501,14 +501,14 @@ void __78__ICQOfferManager_getPremiumOfferForBundleIdentifier_offerContext_compl
   (*(*(a1 + 32) + 16))(*(a1 + 32), v8, v5);
 }
 
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  identifierCopy = identifier;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v6 = [MEMORY[0x277CBEAA8] now];
   [v6 timeIntervalSince1970];
-  [v5 setDouble:@"iCloudAppLaunchLinkPresentationDate" forKey:?];
+  [standardUserDefaults setDouble:@"iCloudAppLaunchLinkPresentationDate" forKey:?];
 
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -516,24 +516,24 @@ void __78__ICQOfferManager_getPremiumOfferForBundleIdentifier_offerContext_compl
     [(ICQOfferManager *)v7 appLaunchLinkDidPresentForBundleIdentifier:v8, v9, v10, v11, v12, v13, v14];
   }
 
-  v15 = [(ICQOfferManager *)self cachedOffersLock];
+  cachedOffersLock = [(ICQOfferManager *)self cachedOffersLock];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__ICQOfferManager_appLaunchLinkDidPresentForBundleIdentifier___block_invoke;
   v19[3] = &unk_27A651BB8;
   v19[4] = self;
-  [v15 synchronized:v19];
+  [cachedOffersLock synchronized:v19];
 
   v16 = _ICQGetLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = identifierCopy;
     _os_log_impl(&dword_275572000, v16, OS_LOG_TYPE_DEFAULT, "Sending AppLaunch event to ind with bundleId %@", buf, 0xCu);
   }
 
   v17 = objc_alloc_init(getINDaemonConnectionClass());
-  [v17 appLaunchLinkDidPresentForBundleIdentifier:v4 completion:&__block_literal_global_30];
+  [v17 appLaunchLinkDidPresentForBundleIdentifier:identifierCopy completion:&__block_literal_global_30];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -557,27 +557,27 @@ void __62__ICQOfferManager_appLaunchLinkDidPresentForBundleIdentifier___block_in
   }
 }
 
-- (BOOL)shouldPresentAppLaunchLink:(id)a3
+- (BOOL)shouldPresentAppLaunchLink:(id)link
 {
-  v3 = a3;
-  if (!v3)
+  linkCopy = link;
+  if (!linkCopy)
   {
     goto LABEL_3;
   }
 
   v4 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 doubleForKey:@"iCloudAppLaunchLinkPresentationDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"iCloudAppLaunchLinkPresentationDate"];
   v6 = [v4 initWithTimeIntervalSince1970:?];
 
-  v7 = [v3 minDisplayIntervalDays];
-  v8 = [v7 integerValue];
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
+  minDisplayIntervalDays = [linkCopy minDisplayIntervalDays];
+  integerValue = [minDisplayIntervalDays integerValue];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v10 = [MEMORY[0x277CBEAA8] now];
-  v11 = [v9 components:16 fromDate:v6 toDate:v10 options:0];
+  v11 = [currentCalendar components:16 fromDate:v6 toDate:v10 options:0];
   v12 = [v11 day];
 
-  if (v8 <= v12)
+  if (integerValue <= v12)
   {
     v13 = 1;
   }
@@ -591,14 +591,14 @@ LABEL_3:
   return v13;
 }
 
-- (void)getEventOfferWithOptions:(id)a3 completion:(id)a4
+- (void)getEventOfferWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() defaultBundleIdentifier];
-  if (v6)
+  optionsCopy = options;
+  completionCopy = completion;
+  defaultBundleIdentifier = [objc_opt_class() defaultBundleIdentifier];
+  if (optionsCopy)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [optionsCopy mutableCopy];
   }
 
   else
@@ -612,11 +612,11 @@ LABEL_3:
   aBlock[1] = 3221225472;
   aBlock[2] = __55__ICQOfferManager_getEventOfferWithOptions_completion___block_invoke;
   aBlock[3] = &unk_27A651B40;
-  v15 = v7;
-  v11 = v7;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v13 = [v10 copy];
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v8 options:v13 offerContext:0 completion:v12];
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:defaultBundleIdentifier options:v13 offerContext:0 completion:v12];
 }
 
 void __55__ICQOfferManager_getEventOfferWithOptions_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -655,10 +655,10 @@ void __55__ICQOfferManager_getEventOfferWithOptions_completion___block_invoke(ui
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_currentOfferForBundleIdentifier:(id)a3 options:(id)a4
+- (id)_currentOfferForBundleIdentifier:(id)identifier options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -673,7 +673,7 @@ void __55__ICQOfferManager_getEventOfferWithOptions_completion___block_invoke(ui
   v14 = &v15;
   v9 = v8;
   v13 = v9;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v6 options:v7 offerContext:0 completion:v12];
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:identifierCopy options:optionsCopy offerContext:0 completion:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v16[5];
 
@@ -708,41 +708,41 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_funnelCloudServerOfferForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_funnelCloudServerOfferForAccount:(id)account options:(id)options completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  optionsCopy = options;
+  completionCopy = completion;
+  accountCopy = account;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v7;
+    v14 = optionsCopy;
     _os_log_impl(&dword_275572000, v10, OS_LOG_TYPE_DEFAULT, "Getting offer from ind with options %@", &v13, 0xCu);
   }
 
   v11 = objc_alloc_init(getINDaemonConnectionClass());
-  [v11 iCloudServerOfferForAccount:v9 options:v7 completion:v8];
+  [v11 iCloudServerOfferForAccount:accountCopy options:optionsCopy completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldUseOffer:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)_shouldUseOffer:(id)offer forBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 offerType] != 1 || !objc_msgSend(v5, "isEqualToString:", @"com.apple.mobileslideshow") || +[ICQDaemonOfferConditions isPhotosCloudEnabled](ICQDaemonOfferConditions, "isPhotosCloudEnabled");
+  identifierCopy = identifier;
+  v6 = [offer offerType] != 1 || !objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.mobileslideshow") || +[ICQDaemonOfferConditions isPhotosCloudEnabled](ICQDaemonOfferConditions, "isPhotosCloudEnabled");
 
   return v6;
 }
 
-- (void)_getOfferForBundleIdentifier:(id)a3 options:(id)a4 offerContext:(id)a5 completion:(id)a6
+- (void)_getOfferForBundleIdentifier:(id)identifier options:(id)options offerContext:(id)context completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   v14 = _ICQGetLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -751,34 +751,34 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
     _os_log_impl(&dword_275572000, v14, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x277CB8F48] defaultStore];
-  v16 = [v15 aa_primaryAppleAccount];
-  if (v16)
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __80__ICQOfferManager__getOfferForBundleIdentifier_options_offerContext_completion___block_invoke;
     v18[3] = &unk_27A651C28;
-    v19 = v15;
-    v20 = v13;
-    [(ICQOfferManager *)self _getOfferForAccount:v16 bundleIdentifier:v10 options:v11 offerContext:v12 completion:v18];
+    v19 = defaultStore;
+    v20 = completionCopy;
+    [(ICQOfferManager *)self _getOfferForAccount:aa_primaryAppleAccount bundleIdentifier:identifierCopy options:optionsCopy offerContext:contextCopy completion:v18];
   }
 
   else
   {
-    -[ICQOfferManager removeCachedOfferForType:](self, "removeCachedOfferForType:", +[_ICQHelperFunctions _getOfferRequestTypeFromOptions:bundleId:isBuddy:](_ICQHelperFunctions, "_getOfferRequestTypeFromOptions:bundleId:isBuddy:", v11, v10, [v10 isEqualToString:@"com.apple.purplebuddy"]));
-    (*(v13 + 2))(v13, 0, 0);
+    -[ICQOfferManager removeCachedOfferForType:](self, "removeCachedOfferForType:", +[_ICQHelperFunctions _getOfferRequestTypeFromOptions:bundleId:isBuddy:](_ICQHelperFunctions, "_getOfferRequestTypeFromOptions:bundleId:isBuddy:", optionsCopy, identifierCopy, [identifierCopy isEqualToString:@"com.apple.purplebuddy"]));
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_offerTypeMatchesRequestOptions:(id)a3 offer:(id)a4
+- (BOOL)_offerTypeMatchesRequestOptions:(id)options offer:(id)offer
 {
-  if (a4)
+  if (offer)
   {
-    v5 = a4;
-    v6 = [_ICQHelperFunctions _getOfferRequestTypeFromOptions:a3 bundleId:0 isBuddy:0];
+    offerCopy = offer;
+    v6 = [_ICQHelperFunctions _getOfferRequestTypeFromOptions:options bundleId:0 isBuddy:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -793,14 +793,14 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
   return v8 & 1;
 }
 
-- (void)_getOfferForAccount:(id)a3 bundleIdentifier:(id)a4 options:(id)a5 offerContext:(id)a6 completion:(id)a7
+- (void)_getOfferForAccount:(id)account bundleIdentifier:(id)identifier options:(id)options offerContext:(id)context completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextCopy = context;
+  completionCopy = completion;
   v17 = _ICQSignpostLogSystem();
   v18 = objc_opt_new();
   v19 = _ICQSignpostCreateWithObject(v17, v18);
@@ -811,16 +811,16 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
   if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 138412290;
-    v53 = v14;
+    v53 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_275572000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v19, "GetOffer", " enableTelemetry=YES options: %@", buf, 0xCu);
   }
 
-  v41 = v12;
+  v41 = accountCopy;
 
   v24 = _ICQSignpostLogSystem();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    [ICQOfferManager _getOfferForAccount:v19 bundleIdentifier:v14 options:v24 offerContext:? completion:?];
+    [ICQOfferManager _getOfferForAccount:v19 bundleIdentifier:optionsCopy options:v24 offerContext:? completion:?];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -830,11 +830,11 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
   v50 = v19;
   v51 = v21;
   aBlock[4] = self;
-  v25 = v13;
+  v25 = identifierCopy;
   v47 = v25;
-  v26 = v14;
+  v26 = optionsCopy;
   v48 = v26;
-  v27 = v16;
+  v27 = completionCopy;
   v49 = v27;
   v28 = _Block_copy(aBlock);
   v29 = [v25 isEqualToString:@"com.apple.purplebuddy"];
@@ -845,12 +845,12 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
     v32 = v31;
     if (v31 && ([v31 isExpired] & 1) == 0)
     {
-      v33 = [v32 bundleIdentifier];
-      if ([v33 isEqualToString:v25])
+      bundleIdentifier = [v32 bundleIdentifier];
+      if ([bundleIdentifier isEqualToString:v25])
       {
-        v40 = [v32 accountAltDSID];
-        v38 = [v12 aa_altDSID];
-        v39 = [v40 isEqualToString:v38];
+        accountAltDSID = [v32 accountAltDSID];
+        aa_altDSID = [accountCopy aa_altDSID];
+        v39 = [accountAltDSID isEqualToString:aa_altDSID];
 
         if (v39)
         {
@@ -864,7 +864,7 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
           }
 
           v28[2](v28, v32, 0);
-          v12 = v41;
+          accountCopy = v41;
           goto LABEL_24;
         }
       }
@@ -893,9 +893,9 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
     [v36 setObject:v25 forKeyedSubscript:@"bundleIdentifier"];
   }
 
-  if (v15)
+  if (contextCopy)
   {
-    [v32 setObject:v15 forKeyedSubscript:@"contextDictionary"];
+    [v32 setObject:contextCopy forKeyedSubscript:@"contextDictionary"];
   }
 
   v42[0] = MEMORY[0x277D85DD0];
@@ -906,7 +906,7 @@ void __60__ICQOfferManager__currentOfferForBundleIdentifier_options___block_invo
   v45 = v30;
   v43 = v25;
   v44 = v28;
-  [(ICQOfferManager *)self _funnelCloudServerOfferForAccount:v12 options:v32 completion:v42];
+  [(ICQOfferManager *)self _funnelCloudServerOfferForAccount:accountCopy options:v32 completion:v42];
 
 LABEL_24:
   v37 = *MEMORY[0x277D85DE8];
@@ -1055,16 +1055,16 @@ void __88__ICQOfferManager__getOfferForAccount_bundleIdentifier_options_offerCon
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_refreshOfferWithDaemonOfferDict:(id)a3 offerRequestType:(int64_t)a4 bundleId:(id)a5
+- (id)_refreshOfferWithDaemonOfferDict:(id)dict offerRequestType:(int64_t)type bundleId:(id)id
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 > 3)
+  dictCopy = dict;
+  idCopy = id;
+  if (type > 3)
   {
-    if (a4 != 4)
+    if (type != 4)
     {
-      if (a4 == 5)
+      if (type == 5)
       {
         objc_opt_class();
       }
@@ -1079,9 +1079,9 @@ LABEL_8:
 
   else
   {
-    if (a4 != 1)
+    if (type != 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v10 = off_27A650DC0;
         goto LABEL_11;
@@ -1096,12 +1096,12 @@ LABEL_8:
 LABEL_11:
   v11 = *v10;
   v12 = objc_opt_class();
-  v13 = [[v12 alloc] initWithDictionary:v8];
-  v14 = [v13 serverDictionary];
+  v13 = [[v12 alloc] initWithDictionary:dictCopy];
+  serverDictionary = [v13 serverDictionary];
 
-  if (v14)
+  if (serverDictionary)
   {
-    v31 = self;
+    selfCopy = self;
     v15 = [(objc_class *)v12 isEqual:objc_opt_class()];
     v16 = off_27A650E90;
     if (!v15)
@@ -1111,27 +1111,27 @@ LABEL_11:
 
     v17 = *v16;
     v18 = objc_opt_class();
-    v19 = [v13 appLaunchLinkForBundleID:v9];
+    v19 = [v13 appLaunchLinkForBundleID:idCopy];
     v20 = [v18 alloc];
-    v21 = [v13 serverDictionary];
-    v22 = [v13 accountAltDSID];
-    v23 = [v13 notificationID];
-    v24 = [v13 retrievalDate];
+    serverDictionary2 = [v13 serverDictionary];
+    accountAltDSID = [v13 accountAltDSID];
+    notificationID = [v13 notificationID];
+    retrievalDate = [v13 retrievalDate];
     [v13 callbackInterval];
-    v14 = [v20 initWithServerDictionary:v21 accountAltDSID:v22 notificationID:v23 retrievalDate:v24 callbackInterval:v19 appLaunchLink:v9 bundleIdentifier:?];
+    serverDictionary = [v20 initWithServerDictionary:serverDictionary2 accountAltDSID:accountAltDSID notificationID:notificationID retrievalDate:retrievalDate callbackInterval:v19 appLaunchLink:idCopy bundleIdentifier:?];
 
     v25 = _ICQGetLogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [_ICQHelperFunctions _getOfferDescriptionFromRequestType:a4];
+      v26 = [_ICQHelperFunctions _getOfferDescriptionFromRequestType:type];
       *buf = 138412290;
       v34 = v26;
       _os_log_impl(&dword_275572000, v25, OS_LOG_TYPE_DEFAULT, "Fetched offer type: %@", buf, 0xCu);
     }
 
-    if (a4 != 4)
+    if (type != 4)
     {
-      [(ICQOfferManager *)v31 setCachedOfferForType:a4 daemonOffer:v13 bundleIdentifier:v9];
+      [(ICQOfferManager *)selfCopy setCachedOfferForType:type daemonOffer:v13 bundleIdentifier:idCopy];
     }
 
     if ([v13 failedToFetchFromServer])
@@ -1139,9 +1139,9 @@ LABEL_11:
       v27 = _ICQGetLogSystem();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v13 failureDetails];
+        failureDetails = [v13 failureDetails];
         *buf = 138412290;
-        v34 = v28;
+        v34 = failureDetails;
         _os_log_impl(&dword_275572000, v27, OS_LOG_TYPE_DEFAULT, "failed to fetch offer from server; details: %@", buf, 0xCu);
       }
 
@@ -1149,18 +1149,18 @@ LABEL_11:
       block[1] = 3221225472;
       block[2] = __78__ICQOfferManager__refreshOfferWithDaemonOfferDict_offerRequestType_bundleId___block_invoke;
       block[3] = &unk_27A651CC8;
-      block[4] = v31;
-      block[5] = a4;
+      block[4] = selfCopy;
+      block[5] = type;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return serverDictionary;
 }
 
-- (id)cachedOfferForType:(int64_t)a3
+- (id)cachedOfferForType:(int64_t)type
 {
   v9 = 0;
   v10 = &v9;
@@ -1168,15 +1168,15 @@ LABEL_11:
   v12 = __Block_byref_object_copy__2;
   v13 = __Block_byref_object_dispose__2;
   v14 = 0;
-  v5 = [(ICQOfferManager *)self cachedOffersLock];
+  cachedOffersLock = [(ICQOfferManager *)self cachedOffersLock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__ICQOfferManager_cachedOfferForType___block_invoke;
   v8[3] = &unk_27A651CF0;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = type;
   v8[4] = self;
-  [v5 synchronized:v8];
+  [cachedOffersLock synchronized:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1196,33 +1196,33 @@ void __38__ICQOfferManager_cachedOfferForType___block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (void)setCachedOfferForType:(int64_t)a3 daemonOffer:(id)a4 bundleIdentifier:(id)a5
+- (void)setCachedOfferForType:(int64_t)type daemonOffer:(id)offer bundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 expirationDate];
-  v11 = [(ICQOfferManager *)self cachedOffersLock];
+  offerCopy = offer;
+  identifierCopy = identifier;
+  expirationDate = [offerCopy expirationDate];
+  cachedOffersLock = [(ICQOfferManager *)self cachedOffersLock];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __70__ICQOfferManager_setCachedOfferForType_daemonOffer_bundleIdentifier___block_invoke;
   v20 = &unk_27A651D18;
-  v21 = self;
-  v24 = a3;
-  v12 = v8;
+  selfCopy = self;
+  typeCopy = type;
+  v12 = offerCopy;
   v22 = v12;
-  v13 = v9;
+  v13 = identifierCopy;
   v23 = v13;
-  [v11 synchronized:&v17];
+  [cachedOffersLock synchronized:&v17];
 
-  v14 = [_ICQHelperFunctions _darwinNotificationNameForRequestType:a3, v17, v18, v19, v20, v21];
-  if (v14)
+  selfCopy = [_ICQHelperFunctions _darwinNotificationNameForRequestType:type, v17, v18, v19, v20, selfCopy];
+  if (selfCopy)
   {
-    [(ICQOfferManager *)self _registerForDarwinNotification:v14];
-    if (v10)
+    [(ICQOfferManager *)self _registerForDarwinNotification:selfCopy];
+    if (expirationDate)
     {
 LABEL_3:
-      [(ICQOfferManager *)self _setupTimerForInvalidationDate:v10 forType:a3];
+      [(ICQOfferManager *)self _setupTimerForInvalidationDate:expirationDate forType:type];
     }
   }
 
@@ -1232,11 +1232,11 @@ LABEL_3:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v26 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_275572000, v16, OS_LOG_TYPE_DEFAULT, "Found no notification to observe for offerRequestType: %ld", buf, 0xCu);
     }
 
-    if (v10)
+    if (expirationDate)
     {
       goto LABEL_3;
     }
@@ -1264,7 +1264,7 @@ void __70__ICQOfferManager_setCachedOfferForType_daemonOffer_bundleIdentifier___
 - (void)_refetchRegularOffer
 {
   v3 = [(ICQOfferManager *)self cachedOfferForType:3];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
   [(ICQOfferManager *)self removeCachedOfferForType:3];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1273,9 +1273,9 @@ void __70__ICQOfferManager_setCachedOfferForType_daemonOffer_bundleIdentifier___
   aBlock[3] = &unk_27A651D40;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  if (v4)
+  if (bundleIdentifier)
   {
-    [(ICQOfferManager *)self getOfferForBundleIdentifier:v4 completion:v5];
+    [(ICQOfferManager *)self getOfferForBundleIdentifier:bundleIdentifier completion:v5];
   }
 
   else
@@ -1303,7 +1303,7 @@ void __39__ICQOfferManager__refetchRegularOffer__block_invoke_2(uint64_t a1)
 - (void)_refetchPremiumOffer
 {
   v3 = [(ICQOfferManager *)self cachedOfferForType:2];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
   [(ICQOfferManager *)self removeCachedOfferForType:2];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1312,9 +1312,9 @@ void __39__ICQOfferManager__refetchRegularOffer__block_invoke_2(uint64_t a1)
   aBlock[3] = &unk_27A651D68;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  if (v4)
+  if (bundleIdentifier)
   {
-    [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:v4 completion:v5];
+    [(ICQOfferManager *)self getPremiumOfferForBundleIdentifier:bundleIdentifier completion:v5];
   }
 
   else
@@ -1343,7 +1343,7 @@ void __39__ICQOfferManager__refetchPremiumOffer__block_invoke_2(uint64_t a1)
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [(ICQOfferManager *)self cachedOfferForType:1];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
   [(ICQOfferManager *)self removeCachedOfferForType:1];
   v8 = @"isDefaultOffer";
@@ -1354,7 +1354,7 @@ void __39__ICQOfferManager__refetchPremiumOffer__block_invoke_2(uint64_t a1)
   v7[2] = __39__ICQOfferManager__refetchDefaultOffer__block_invoke;
   v7[3] = &unk_27A651D40;
   v7[4] = self;
-  [(ICQOfferManager *)self _getOfferForBundleIdentifier:v4 options:v5 offerContext:0 completion:v7];
+  [(ICQOfferManager *)self _getOfferForBundleIdentifier:bundleIdentifier options:v5 offerContext:0 completion:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1433,24 +1433,24 @@ void __37__ICQOfferManager_fetchOfferIfNeeded__block_invoke_2(uint64_t a1)
   [v2 postNotificationName:@"ICQCurrentOfferChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)_registerForDarwinNotification:(id)a3
+- (void)_registerForDarwinNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  notificationCopy = notification;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (notificationCopy)
   {
-    v6 = [(ICQOfferManager *)v5 registeredDarwinNotifications];
+    registeredDarwinNotifications = [(ICQOfferManager *)selfCopy registeredDarwinNotifications];
 
-    if (!v6)
+    if (!registeredDarwinNotifications)
     {
       v7 = objc_opt_new();
-      [(ICQOfferManager *)v5 setRegisteredDarwinNotifications:v7];
+      [(ICQOfferManager *)selfCopy setRegisteredDarwinNotifications:v7];
     }
 
-    v8 = [(ICQOfferManager *)v5 registeredDarwinNotifications];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    registeredDarwinNotifications2 = [(ICQOfferManager *)selfCopy registeredDarwinNotifications];
+    v9 = [registeredDarwinNotifications2 objectForKeyedSubscript:notificationCopy];
 
     if (!v9 || ([v9 BOOLValue] & 1) == 0)
     {
@@ -1458,49 +1458,49 @@ void __37__ICQOfferManager_fetchOfferIfNeeded__block_invoke_2(uint64_t a1)
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = notificationCopy;
         _os_log_impl(&dword_275572000, v10, OS_LOG_TYPE_DEFAULT, "registering for darwin notification %@", &v14, 0xCu);
       }
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, _handlePushReceivedDarwinNotification, v4, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-      v12 = [(ICQOfferManager *)v5 registeredDarwinNotifications];
-      [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v4];
+      CFNotificationCenterAddObserver(DarwinNotifyCenter, selfCopy, _handlePushReceivedDarwinNotification, notificationCopy, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+      registeredDarwinNotifications3 = [(ICQOfferManager *)selfCopy registeredDarwinNotifications];
+      [registeredDarwinNotifications3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:notificationCopy];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterForDarwinNotification:(id)a3
+- (void)_unregisterForDarwinNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ICQOfferManager *)v5 registeredDarwinNotifications];
-  v7 = [v6 objectForKeyedSubscript:v4];
-  v8 = [v7 BOOLValue];
+  notificationCopy = notification;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  registeredDarwinNotifications = [(ICQOfferManager *)selfCopy registeredDarwinNotifications];
+  v7 = [registeredDarwinNotifications objectForKeyedSubscript:notificationCopy];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = _ICQGetLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = notificationCopy;
       _os_log_impl(&dword_275572000, v9, OS_LOG_TYPE_DEFAULT, "unregistering for darwin notification %@", &v13, 0xCu);
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v5, v4, 0);
-    v11 = [(ICQOfferManager *)v5 registeredDarwinNotifications];
-    [v11 removeObjectForKey:v4];
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, notificationCopy, 0);
+    registeredDarwinNotifications2 = [(ICQOfferManager *)selfCopy registeredDarwinNotifications];
+    [registeredDarwinNotifications2 removeObjectForKey:notificationCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1513,25 +1513,25 @@ void __37__ICQOfferManager_fetchOfferIfNeeded__block_invoke_2(uint64_t a1)
   [(ICQOfferManager *)self _unregisterForDarwinNotification:@"ICQDaemonOfferChangedDueToPushDarwinNotificationDefault"];
 }
 
-- (void)_handlePushReceivedDarwinNotificationRequestType:(int64_t)a3
+- (void)_handlePushReceivedDarwinNotificationRequestType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.RemoteiCloudQuotaUI"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.RemoteiCloudQuotaUI"];
 
-  if (a3 == 1 || (v7 & 1) == 0)
+  if (type == 1 || (v7 & 1) == 0)
   {
     v9 = _ICQGetLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [_ICQHelperFunctions _getOfferDescriptionFromRequestType:a3];
+      v10 = [_ICQHelperFunctions _getOfferDescriptionFromRequestType:type];
       v11 = 138412290;
       v12 = v10;
       _os_log_impl(&dword_275572000, v9, OS_LOG_TYPE_DEFAULT, "push received -- refetching offer type %@", &v11, 0xCu);
     }
 
-    switch(a3)
+    switch(type)
     {
       case 1:
         [(ICQOfferManager *)self _refetchDefaultOffer];
@@ -1548,43 +1548,43 @@ void __37__ICQOfferManager_fetchOfferIfNeeded__block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupTimerForInvalidationDate:(id)a3 forType:(int64_t)a4
+- (void)_setupTimerForInvalidationDate:(id)date forType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 2)
+  dateCopy = date;
+  v7 = dateCopy;
+  if (type == 2)
   {
-    v8 = v6;
-    v6 = [(ICQOfferManager *)self _setupTimerForPremiumOfferInvalidationDate:v6];
+    v8 = dateCopy;
+    dateCopy = [(ICQOfferManager *)self _setupTimerForPremiumOfferInvalidationDate:dateCopy];
   }
 
   else
   {
-    if (a4 != 3)
+    if (type != 3)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
-    v6 = [(ICQOfferManager *)self _setupTimerForRegularOfferInvalidationDate:v6];
+    v8 = dateCopy;
+    dateCopy = [(ICQOfferManager *)self _setupTimerForRegularOfferInvalidationDate:dateCopy];
   }
 
   v7 = v8;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](dateCopy, v7);
 }
 
-- (void)_setupTimerForRegularOfferInvalidationDate:(id)a3
+- (void)_setupTimerForRegularOfferInvalidationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__ICQOfferManager__setupTimerForRegularOfferInvalidationDate___block_invoke;
   v6[3] = &unk_27A651D90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1604,16 +1604,16 @@ uint64_t __62__ICQOfferManager__setupTimerForRegularOfferInvalidationDate___bloc
   return MEMORY[0x2821F96F8](v6, v8);
 }
 
-- (void)_setupTimerForPremiumOfferInvalidationDate:(id)a3
+- (void)_setupTimerForPremiumOfferInvalidationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__ICQOfferManager__setupTimerForPremiumOfferInvalidationDate___block_invoke;
   v6[3] = &unk_27A651D90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1633,14 +1633,14 @@ uint64_t __62__ICQOfferManager__setupTimerForPremiumOfferInvalidationDate___bloc
   return MEMORY[0x2821F96F8](v6, v8);
 }
 
-- (void)_teardownInvalidationTimerForRequestType:(int64_t)a3
+- (void)_teardownInvalidationTimerForRequestType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     [(ICQOfferManager *)self _teardownPremiumOfferInvalidationTimer];
   }
 
-  else if (a3 == 3)
+  else if (type == 3)
   {
     [(ICQOfferManager *)self _teardownRegularOfferInvalidationTimer];
   }
@@ -1668,7 +1668,7 @@ uint64_t __62__ICQOfferManager__setupTimerForPremiumOfferInvalidationDate___bloc
   self->_premiumOfferInvalidationTimer = 0;
 }
 
-- (void)_firedRegularOfferInvalidationTimer:(id)a3
+- (void)_firedRegularOfferInvalidationTimer:(id)timer
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1681,7 +1681,7 @@ uint64_t __62__ICQOfferManager__setupTimerForPremiumOfferInvalidationDate___bloc
   [(ICQOfferManager *)self _refetchRegularOffer];
 }
 
-- (void)_firedPremiumOfferInvalidationTimer:(id)a3
+- (void)_firedPremiumOfferInvalidationTimer:(id)timer
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1700,44 +1700,44 @@ uint64_t __62__ICQOfferManager__setupTimerForPremiumOfferInvalidationDate___bloc
   [v2 clearFollowupsOfferType:3 completion:0];
 }
 
-- (void)updateOfferId:(id)a3 buttonId:(id)a4 info:(id)a5 completion:(id)a6
+- (void)updateOfferId:(id)id buttonId:(id)buttonId info:(id)info completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CB8F48] defaultStore];
-  v14 = [v13 aa_primaryAppleAccount];
+  idCopy = id;
+  buttonIdCopy = buttonId;
+  infoCopy = info;
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
   v15 = _ICQGetLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v22 = v14;
+    v22 = aa_primaryAppleAccount;
     v23 = 2112;
-    v24 = v9;
+    v24 = idCopy;
     v25 = 2112;
-    v26 = v10;
+    v26 = buttonIdCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = infoCopy;
     _os_log_impl(&dword_275572000, v15, OS_LOG_TYPE_DEFAULT, "account:%@ updateOfferId:%@ buttonId:%@ info:%@", buf, 0x2Au);
   }
 
-  if (v14)
+  if (aa_primaryAppleAccount)
   {
     v16 = objc_alloc_init(getINDaemonConnectionClass());
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __67__ICQOfferManager_Private__updateOfferId_buttonId_info_completion___block_invoke;
     v18[3] = &unk_27A651DB8;
-    v19 = v13;
-    v20 = v12;
-    [v16 updateOfferForAccount:v14 offerId:v9 buttonId:v10 info:v11 completion:v18];
+    v19 = defaultStore;
+    v20 = completionCopy;
+    [v16 updateOfferForAccount:aa_primaryAppleAccount offerId:idCopy buttonId:buttonIdCopy info:infoCopy completion:v18];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1754,40 +1754,40 @@ uint64_t __67__ICQOfferManager_Private__updateOfferId_buttonId_info_completion__
   return result;
 }
 
-- (void)dismissRecommendationForBundleId:(id)a3
+- (void)dismissRecommendationForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(ICQOfferManager *)self dismissedRecommendations];
+  idCopy = id;
+  dismissedRecommendations = [(ICQOfferManager *)self dismissedRecommendations];
 
-  if (!v5)
+  if (!dismissedRecommendations)
   {
     v6 = objc_opt_new();
     [(ICQOfferManager *)self setDismissedRecommendations:v6];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  v7 = [(ICQOfferManager *)self dismissedRecommendations];
-  [v7 setObject:v8 forKeyedSubscript:v4];
+  dismissedRecommendations2 = [(ICQOfferManager *)self dismissedRecommendations];
+  [dismissedRecommendations2 setObject:v8 forKeyedSubscript:idCopy];
 }
 
-- (BOOL)didDismissRecommendationForBundleId:(id)a3
+- (BOOL)didDismissRecommendationForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(ICQOfferManager *)self dismissedRecommendations];
+  idCopy = id;
+  dismissedRecommendations = [(ICQOfferManager *)self dismissedRecommendations];
 
-  if (v5 && (-[ICQOfferManager dismissedRecommendations](self, "dismissedRecommendations"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKeyedSubscript:v4], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  if (dismissedRecommendations && (-[ICQOfferManager dismissedRecommendations](self, "dismissedRecommendations"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKeyedSubscript:idCopy], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(ICQOfferManager *)self dismissedRecommendations];
-    v9 = [v8 objectForKeyedSubscript:v4];
-    v10 = [v9 BOOLValue];
+    dismissedRecommendations2 = [(ICQOfferManager *)self dismissedRecommendations];
+    v9 = [dismissedRecommendations2 objectForKeyedSubscript:idCopy];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
 + (BOOL)_legacyBuddyOfferMightNeedPresenting
@@ -1830,18 +1830,18 @@ uint64_t __67__ICQOfferManager_Private__updateOfferId_buttonId_info_completion__
   [v2 forcePostFollowup];
 }
 
-- (void)postOfferType:(id)a3
+- (void)postOfferType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  [v4 postOfferType:v3];
+  [v4 postOfferType:typeCopy];
 }
 
-- (void)postBuddyOfferType:(id)a3
+- (void)postBuddyOfferType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  [v4 postBuddyOfferType:v3];
+  [v4 postBuddyOfferType:typeCopy];
 }
 
 - (void)teardownCachedOffer
@@ -1877,32 +1877,32 @@ uint64_t __67__ICQOfferManager_Private__updateOfferId_buttonId_info_completion__
 - (BOOL)isSimulatedDeviceStorageAlmostFull
 {
   v2 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v3 = [v2 isSimulatedDeviceStorageAlmostFull];
+  isSimulatedDeviceStorageAlmostFull = [v2 isSimulatedDeviceStorageAlmostFull];
 
-  return v3;
+  return isSimulatedDeviceStorageAlmostFull;
 }
 
 - (id)simulatedPhotosLibrarySize
 {
   v2 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v3 = [v2 simulatedPhotosLibrarySize];
+  simulatedPhotosLibrarySize = [v2 simulatedPhotosLibrarySize];
 
-  return v3;
+  return simulatedPhotosLibrarySize;
 }
 
-- (void)setSimulatedPhotosLibrarySize:(id)a3
+- (void)setSimulatedPhotosLibrarySize:(id)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v4 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  [v4 setSimulatedPhotosLibrarySize:v3];
+  [v4 setSimulatedPhotosLibrarySize:sizeCopy];
 }
 
 - (BOOL)isBuddyOfferEnabled
 {
   v2 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v3 = [v2 isBuddyOfferEnabled];
+  isBuddyOfferEnabled = [v2 isBuddyOfferEnabled];
 
-  return v3;
+  return isBuddyOfferEnabled;
 }
 
 void __43__ICQOfferManager_postBackupRestoredOffer___block_invoke_cold_1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

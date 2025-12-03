@@ -1,17 +1,17 @@
 @interface SBUIPluginController
 - (SBUIPluginControllerHost)host;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation SBUIPluginController
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"SBUIPluginVisibilityDidChangeNotification" object:self userInfo:0];
+    self->_isVisible = visible;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBUIPluginVisibilityDidChangeNotification" object:self userInfo:0];
   }
 }
 

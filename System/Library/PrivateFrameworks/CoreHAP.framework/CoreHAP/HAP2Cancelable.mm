@@ -1,34 +1,34 @@
 @interface HAP2Cancelable
-+ (HAP2Cancelable)cancelableWithBlock:(id)a3;
++ (HAP2Cancelable)cancelableWithBlock:(id)block;
 + (HAP2Cancelable)new;
 + (id)ignore;
 - (HAP2Cancelable)init;
-- (HAP2Cancelable)initWithBlock:(id)a3;
-- (void)cancelWithError:(id)a3;
+- (HAP2Cancelable)initWithBlock:(id)block;
+- (void)cancelWithError:(id)error;
 @end
 
 @implementation HAP2Cancelable
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ((atomic_exchange(&self->_called, 1u) & 1) == 0)
   {
-    v6 = v4;
-    v5 = [(HAP2Cancelable *)self block];
-    if (v5)
+    v6 = errorCopy;
+    block = [(HAP2Cancelable *)self block];
+    if (block)
     {
       [(HAP2Cancelable *)self setBlock:0];
-      (v5)[2](v5, v6);
+      (block)[2](block, v6);
     }
 
-    v4 = v6;
+    errorCopy = v6;
   }
 }
 
-- (HAP2Cancelable)initWithBlock:(id)a3
+- (HAP2Cancelable)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = HAP2Cancelable;
   v5 = [(HAP2Cancelable *)&v10 init];
@@ -36,7 +36,7 @@
   if (v5)
   {
     v5->_called = 0;
-    v7 = MEMORY[0x231885210](v4);
+    v7 = MEMORY[0x231885210](blockCopy);
     block = v6->_block;
     v6->_block = v7;
   }
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __24__HAP2Cancelable_ignore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (ignore_onceToken != -1)
   {
     dispatch_once(&ignore_onceToken, block);
@@ -82,10 +82,10 @@ uint64_t __24__HAP2Cancelable_ignore__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (HAP2Cancelable)cancelableWithBlock:(id)a3
++ (HAP2Cancelable)cancelableWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBlock:v3];
+  blockCopy = block;
+  v4 = [objc_alloc(objc_opt_class()) initWithBlock:blockCopy];
 
   return v4;
 }

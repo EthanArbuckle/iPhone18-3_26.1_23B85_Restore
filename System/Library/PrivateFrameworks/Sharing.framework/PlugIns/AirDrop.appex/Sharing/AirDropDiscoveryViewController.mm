@@ -1,31 +1,31 @@
 @interface AirDropDiscoveryViewController
-- (_TtC7AirDrop30AirDropDiscoveryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7AirDrop30AirDropDiscoveryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AirDropDiscoveryViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   AirDropDiscoveryViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  AirDropDiscoveryViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  AirDropDiscoveryViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  AirDropDiscoveryViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  AirDropDiscoveryViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (_TtC7AirDrop30AirDropDiscoveryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7AirDrop30AirDropDiscoveryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

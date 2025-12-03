@@ -4,19 +4,19 @@
 - (CGSize)secondScreenSize;
 - (PUViewControllerSpec)init;
 - (void)_didChange;
-- (void)_publishChange:(id)a3;
-- (void)_setCurrentLayoutStyle:(int64_t)a3;
+- (void)_publishChange:(id)change;
+- (void)_setCurrentLayoutStyle:(int64_t)style;
 - (void)_updateCurrentLayoutStyleIfNeeded;
 - (void)_willChange;
 - (void)assertInsideChangesBlock;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)setLayoutReferenceSize:(CGSize)a3;
-- (void)setPrefersCompactLayoutForSplitScreen:(BOOL)a3;
-- (void)setPresentedForSecondScreen:(BOOL)a3;
-- (void)setSecondScreenSize:(CGSize)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer;
+- (void)setLayoutReferenceSize:(CGSize)size;
+- (void)setPrefersCompactLayoutForSplitScreen:(BOOL)screen;
+- (void)setPresentedForSecondScreen:(BOOL)screen;
+- (void)setSecondScreenSize:(CGSize)size;
+- (void)setTraitCollection:(id)collection;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUViewControllerSpec
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)_setCurrentLayoutStyle:(int64_t)a3
+- (void)_setCurrentLayoutStyle:(int64_t)style
 {
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_currentLayoutStyle != a3)
+  if (self->_currentLayoutStyle != style)
   {
-    self->_currentLayoutStyle = a3;
-    v5 = [(PUViewControllerSpec *)self currentChange];
-    [v5 setLayoutStyleChanged:1];
+    self->_currentLayoutStyle = style;
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setLayoutStyleChanged:1];
   }
 }
 
@@ -54,28 +54,28 @@
 {
   if ([(PUViewControllerSpec *)self _needsUpdateLayoutStyle])
   {
-    v22 = [(PUViewControllerSpec *)self traitCollection];
-    v3 = [(PUViewControllerSpec *)self layoutReferenceSize];
-    v6 = v22;
-    if (v22)
+    traitCollection = [(PUViewControllerSpec *)self traitCollection];
+    layoutReferenceSize = [(PUViewControllerSpec *)self layoutReferenceSize];
+    v6 = traitCollection;
+    if (traitCollection)
     {
       v7 = v4;
       v8 = v5;
-      v3 = [v22 horizontalSizeClass];
-      v6 = v22;
-      if (v3)
+      layoutReferenceSize = [traitCollection horizontalSizeClass];
+      v6 = traitCollection;
+      if (layoutReferenceSize)
       {
-        v9 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-        [v9 _referenceBounds];
+        px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+        [px_mainScreen _referenceBounds];
         v11 = v10;
         v13 = v12;
 
         [(PUViewControllerSpec *)self _portraitOrientedSizeForSize:v7, v8];
         v15 = v14;
         v17 = v16;
-        v18 = [(PUViewControllerSpec *)self prefersCompactLayoutForSplitScreen];
+        prefersCompactLayoutForSplitScreen = [(PUViewControllerSpec *)self prefersCompactLayoutForSplitScreen];
         [(PUViewControllerSpec *)self _setNeedsUpdateLayoutStyle:0];
-        if ([v22 horizontalSizeClass] == 2 && (v17 < v13 ? (v19 = 1) : (v19 = v15 < v11), objc_msgSend(v22, "verticalSizeClass") == 2 && (!v18 || !v19)))
+        if ([traitCollection horizontalSizeClass] == 2 && (v17 < v13 ? (v19 = 1) : (v19 = v15 < v11), objc_msgSend(traitCollection, "verticalSizeClass") == 2 && (!prefersCompactLayoutForSplitScreen || !v19)))
         {
           v20 = 4;
         }
@@ -102,12 +102,12 @@
           }
         }
 
-        v3 = [(PUViewControllerSpec *)self _setCurrentLayoutStyle:v20];
-        v6 = v22;
+        layoutReferenceSize = [(PUViewControllerSpec *)self _setCurrentLayoutStyle:v20];
+        v6 = traitCollection;
       }
     }
 
-    MEMORY[0x1EEE66BB8](v3, v6);
+    MEMORY[0x1EEE66BB8](layoutReferenceSize, v6);
   }
 }
 
@@ -133,18 +133,18 @@
   return result;
 }
 
-- (void)_publishChange:(id)a3
+- (void)_publishChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 changed])
+  changeCopy = change;
+  if ([changeCopy changed])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(PUViewControllerSpec *)self _changeObservers];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _changeObservers = [(PUViewControllerSpec *)self _changeObservers];
+    v6 = [_changeObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -156,20 +156,20 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_changeObservers);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 viewControllerSpec:self didChange:v4];
+            [v10 viewControllerSpec:self didChange:changeCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_changeObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -184,95 +184,95 @@
   if (!v3)
   {
     [(PUViewControllerSpec *)self updateIfNeeded];
-    v4 = [(PUViewControllerSpec *)self currentChange];
+    currentChange = [(PUViewControllerSpec *)self currentChange];
     [(PUViewControllerSpec *)self _setCurrentChange:0];
-    [(PUViewControllerSpec *)self _publishChange:v4];
+    [(PUViewControllerSpec *)self _publishChange:currentChange];
   }
 }
 
 - (void)_willChange
 {
-  v4 = [(PUViewControllerSpec *)self _changeCount];
-  [(PUViewControllerSpec *)self _setChangeCount:v4 + 1];
-  if (!v4)
+  _changeCount = [(PUViewControllerSpec *)self _changeCount];
+  [(PUViewControllerSpec *)self _setChangeCount:_changeCount + 1];
+  if (!_changeCount)
   {
-    v5 = [(PUViewControllerSpec *)self newSpecChange];
-    v7 = v5;
-    if (!v5)
+    newSpecChange = [(PUViewControllerSpec *)self newSpecChange];
+    v7 = newSpecChange;
+    if (!newSpecChange)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"currentChange != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"currentChange != nil"}];
 
-      v5 = 0;
+      newSpecChange = 0;
     }
 
-    [(PUViewControllerSpec *)self _setCurrentChange:v5];
+    [(PUViewControllerSpec *)self _setCurrentChange:newSpecChange];
   }
 }
 
-- (void)setPrefersCompactLayoutForSplitScreen:(BOOL)a3
+- (void)setPrefersCompactLayoutForSplitScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_prefersCompactLayoutForSplitScreen != v3)
+  if (self->_prefersCompactLayoutForSplitScreen != screenCopy)
   {
-    self->_prefersCompactLayoutForSplitScreen = v3;
-    v5 = [(PUViewControllerSpec *)self currentChange];
-    [v5 setPrefersCompactLayoutForSplitScreenChanged:1];
+    self->_prefersCompactLayoutForSplitScreen = screenCopy;
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setPrefersCompactLayoutForSplitScreenChanged:1];
   }
 }
 
-- (void)setSecondScreenSize:(CGSize)a3
+- (void)setSecondScreenSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
   if (width != self->_secondScreenSize.width || height != self->_secondScreenSize.height)
   {
     self->_secondScreenSize.width = width;
     self->_secondScreenSize.height = height;
-    v7 = [(PUViewControllerSpec *)self currentChange];
-    [v7 setSecondScreenSizeChanged:1];
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setSecondScreenSizeChanged:1];
   }
 }
 
-- (void)setPresentedForSecondScreen:(BOOL)a3
+- (void)setPresentedForSecondScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_presentedForSecondScreen != v3)
+  if (self->_presentedForSecondScreen != screenCopy)
   {
-    self->_presentedForSecondScreen = v3;
-    v5 = [(PUViewControllerSpec *)self currentChange];
-    [v5 setPresentedForSecondScreenChanged:1];
+    self->_presentedForSecondScreen = screenCopy;
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setPresentedForSecondScreenChanged:1];
   }
 }
 
-- (void)setLayoutReferenceSize:(CGSize)a3
+- (void)setLayoutReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
   if (width != self->_layoutReferenceSize.width || height != self->_layoutReferenceSize.height)
   {
     self->_layoutReferenceSize.width = width;
     self->_layoutReferenceSize.height = height;
-    v7 = [(PUViewControllerSpec *)self currentChange];
-    [v7 setLayoutReferenceSizeChanged:1];
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setLayoutReferenceSizeChanged:1];
 
     [(PUViewControllerSpec *)self _invalidateLayoutStyle];
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   [(PUViewControllerSpec *)self assertInsideChangesBlock];
-  if (self->_traitCollection != v6)
+  if (self->_traitCollection != collectionCopy)
   {
-    objc_storeStrong(&self->_traitCollection, a3);
-    v5 = [(PUViewControllerSpec *)self currentChange];
-    [v5 setTraitCollectionChanged:1];
+    objc_storeStrong(&self->_traitCollection, collection);
+    currentChange = [(PUViewControllerSpec *)self currentChange];
+    [currentChange setTraitCollectionChanged:1];
 
     [(PUViewControllerSpec *)self _invalidateLayoutStyle];
   }
@@ -280,40 +280,40 @@
 
 - (void)assertInsideChangesBlock
 {
-  v4 = [(PUViewControllerSpec *)self currentChange];
+  currentChange = [(PUViewControllerSpec *)self currentChange];
 
-  if (!v4)
+  if (!currentChange)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:48 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:48 description:@"not within a change block"];
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUViewControllerSpec *)self _changeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _changeObservers = [(PUViewControllerSpec *)self _changeObservers];
+  [_changeObservers removeObject:observerCopy];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUViewControllerSpec *)self _changeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _changeObservers = [(PUViewControllerSpec *)self _changeObservers];
+  [_changeObservers addObject:observerCopy];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v6 = a3;
-  if (!v6)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"changes != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewControllerSpec.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"changes != NULL"}];
   }
 
   [(PUViewControllerSpec *)self _willChange];
-  v6[2]();
+  changesCopy[2]();
   [(PUViewControllerSpec *)self _didChange];
 }
 
@@ -324,9 +324,9 @@
   v2 = [(PUViewControllerSpec *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     changeObservers = v2->__changeObservers;
-    v2->__changeObservers = v3;
+    v2->__changeObservers = weakObjectsHashTable;
   }
 
   return v2;

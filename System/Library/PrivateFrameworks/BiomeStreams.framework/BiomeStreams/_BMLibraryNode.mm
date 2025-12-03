@@ -3,7 +3,7 @@
 + (id)allStreams;
 + (id)allValidEventClasses;
 + (id)allValidKeyPaths;
-+ (id)streamWithIdentifier:(id)a3 error:(id *)a4;
++ (id)streamWithIdentifier:(id)identifier error:(id *)error;
 + (id)streams;
 @end
 
@@ -18,8 +18,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [a1 streamNames];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  streamNames = [self streamNames];
+  v5 = [streamNames countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,11 +30,11 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(streamNames);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [a1 streamWithName:v9];
+        v10 = [self streamWithName:v9];
         if (v10)
         {
           [v3 addObject:v10];
@@ -45,11 +45,11 @@
           v11 = __biome_log_for_category();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
           {
-            v12 = [a1 identifier];
+            identifier = [self identifier];
             *buf = 138412802;
             v22 = v9;
             v23 = 2112;
-            v24 = v12;
+            v24 = identifier;
             v25 = 2112;
             v26 = 0;
             _os_log_fault_impl(&dword_1848EE000, v11, OS_LOG_TYPE_FAULT, "Failure to fetch stream for known name %@ in library node %@, %@", buf, 0x20u);
@@ -57,7 +57,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      v6 = [streamNames countByEnumeratingWithState:&v17 objects:v27 count:16];
     }
 
     while (v6);
@@ -74,17 +74,17 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{self, 0}];
   v6 = v5;
   while ([v5 count])
   {
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     [v6 removeLastObject];
-    v8 = [v7 sublibraries];
-    [v6 addObjectsFromArray:v8];
+    sublibraries = [lastObject sublibraries];
+    [v6 addObjectsFromArray:sublibraries];
 
-    v9 = [v7 streams];
-    [v4 addObjectsFromArray:v9];
+    streams = [lastObject streams];
+    [v4 addObjectsFromArray:streams];
 
     v5 = v6;
   }
@@ -101,10 +101,10 @@
   v48 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = a1;
-  v6 = [v5 identifier];
+  selfCopy = self;
+  identifier = [selfCopy identifier];
   context = v3;
-  if ([v6 isEqualToString:@"BMLibrary"])
+  if ([identifier isEqualToString:@"BMLibrary"])
   {
     v7 = &stru_1EF2B2408;
   }
@@ -112,16 +112,16 @@
   else
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [v5 identifier];
-    v7 = [v8 initWithFormat:@"%@.", v9];
+    identifier2 = [selfCopy identifier];
+    v7 = [v8 initWithFormat:@"%@.", identifier2];
   }
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v10 = [v5 streamNames];
-  v11 = [v10 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  streamNames = [selfCopy streamNames];
+  v11 = [streamNames countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v11)
   {
     v12 = v11;
@@ -132,14 +132,14 @@
       {
         if (*v42 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(streamNames);
         }
 
         v15 = [(__CFString *)v7 stringByAppendingString:*(*(&v41 + 1) + 8 * i)];
         [v4 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v12 = [streamNames countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v12);
@@ -149,8 +149,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v30 = v5;
-  obj = [v5 sublibraries];
+  v30 = selfCopy;
+  obj = [selfCopy sublibraries];
   v16 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v16)
   {
@@ -170,8 +170,8 @@
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v21 = [v20 allStreamIdentifiers];
-        v22 = [v21 countByEnumeratingWithState:&v33 objects:v45 count:16];
+        allStreamIdentifiers = [v20 allStreamIdentifiers];
+        v22 = [allStreamIdentifiers countByEnumeratingWithState:&v33 objects:v45 count:16];
         if (v22)
         {
           v23 = v22;
@@ -182,14 +182,14 @@
             {
               if (*v34 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allStreamIdentifiers);
               }
 
               v26 = [(__CFString *)v7 stringByAppendingString:*(*(&v33 + 1) + 8 * k)];
               [v4 addObject:v26];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v33 objects:v45 count:16];
+            v23 = [allStreamIdentifiers countByEnumeratingWithState:&v33 objects:v45 count:16];
           }
 
           while (v23);
@@ -213,24 +213,24 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [MEMORY[0x1E698E898] genericValidKeyPaths];
-  [v4 unionSet:v5];
+  genericValidKeyPaths = [MEMORY[0x1E698E898] genericValidKeyPaths];
+  [v4 unionSet:genericValidKeyPaths];
 
   v6 = +[BMEventBase validKeyPaths];
   [v4 addObjectsFromArray:v6];
 
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{self, 0}];
   v8 = v7;
   while ([v7 count])
   {
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
     [v8 removeObjectAtIndex:0];
-    v10 = [v9 validKeyPaths];
-    v11 = [v10 allObjects];
-    [v4 addObjectsFromArray:v11];
+    validKeyPaths = [firstObject validKeyPaths];
+    allObjects = [validKeyPaths allObjects];
+    [v4 addObjectsFromArray:allObjects];
 
-    v12 = [v9 sublibraries];
-    [v8 addObjectsFromArray:v12];
+    sublibraries = [firstObject sublibraries];
+    [v8 addObjectsFromArray:sublibraries];
 
     v7 = v8;
   }
@@ -247,15 +247,15 @@
   v20 = *MEMORY[0x1E69E9840];
   v2 = objc_autoreleasePoolPush();
   v3 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v4 = [objc_opt_class() allStreams];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  allStreams = [objc_opt_class() allStreams];
+  v5 = [v3 initWithCapacity:{objc_msgSend(allStreams, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [objc_opt_class() allStreams];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allStreams2 = [objc_opt_class() allStreams];
+  v7 = [allStreams2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -266,14 +266,14 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allStreams2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) configuration];
-        [v5 addObject:{objc_msgSend(v11, "eventClass")}];
+        configuration = [*(*(&v15 + 1) + 8 * i) configuration];
+        [v5 addObject:{objc_msgSend(configuration, "eventClass")}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allStreams2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -286,10 +286,10 @@
   return v12;
 }
 
-+ (id)streamWithIdentifier:(id)a3 error:(id *)a4
++ (id)streamWithIdentifier:(id)identifier error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v43 = a3;
+  identifierCopy = identifier;
   v57 = 0;
   v58 = &v57;
   v59 = 0x3032000000;
@@ -301,19 +301,19 @@
   aBlock[2] = __45___BMLibraryNode_streamWithIdentifier_error___block_invoke;
   aBlock[3] = &unk_1E6E52958;
   aBlock[4] = &v57;
-  aBlock[5] = a4;
+  aBlock[5] = error;
   v56 = _Block_copy(aBlock);
   context = objc_autoreleasePoolPush();
-  if (v43)
+  if (identifierCopy)
   {
-    v41 = [v43 componentsSeparatedByString:@"."];
+    v41 = [identifierCopy componentsSeparatedByString:@"."];
     if ([v41 count] == 1)
     {
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = [a1 streamNames];
+      obj = [self streamNames];
       v5 = [obj countByEnumeratingWithState:&v51 objects:v68 count:16];
       if (v5)
       {
@@ -328,13 +328,13 @@
             }
 
             v8 = *(*(&v51 + 1) + 8 * i);
-            v9 = [v43 lowercaseString];
-            v10 = [v8 lowercaseString];
-            v11 = [v9 isEqualToString:v10];
+            lowercaseString = [identifierCopy lowercaseString];
+            lowercaseString2 = [v8 lowercaseString];
+            v11 = [lowercaseString isEqualToString:lowercaseString2];
 
             if (v11)
             {
-              v18 = [a1 streamWithName:v8];
+              v18 = [self streamWithName:v8];
               goto LABEL_29;
             }
           }
@@ -352,8 +352,8 @@
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v66 = *MEMORY[0x1E696A578];
       v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v14 = [a1 identifier];
-      v15 = [v13 initWithFormat:@"Stream %@ could not be found, it is not a member of %@", v43, v14];
+      identifier = [self identifier];
+      v15 = [v13 initWithFormat:@"Stream %@ could not be found, it is not a member of %@", identifierCopy, identifier];
       v67 = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
       v17 = [v12 initWithDomain:@"BMLibraryErrorDomain" code:1 userInfo:v16];
@@ -371,8 +371,8 @@
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v19 = [a1 sublibraries];
-      v20 = [v19 countByEnumeratingWithState:&v47 objects:v65 count:16];
+      sublibraries = [self sublibraries];
+      v20 = [sublibraries countByEnumeratingWithState:&v47 objects:v65 count:16];
       if (v20)
       {
         v21 = 0;
@@ -383,14 +383,14 @@ LABEL_15:
         {
           if (*v48 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(sublibraries);
           }
 
           v24 = *(*(&v47 + 1) + 8 * v23);
-          v25 = [obj lowercaseString];
-          v26 = [v24 identifier];
-          v27 = [v26 lowercaseString];
-          v28 = [v25 isEqualToString:v27];
+          lowercaseString3 = [obj lowercaseString];
+          identifier2 = [v24 identifier];
+          lowercaseString4 = [identifier2 lowercaseString];
+          v28 = [lowercaseString3 isEqualToString:lowercaseString4];
 
           if (v28)
           {
@@ -408,7 +408,7 @@ LABEL_15:
 
           if (v20 == ++v23)
           {
-            v20 = [v19 countByEnumeratingWithState:&v47 objects:v65 count:16];
+            v20 = [sublibraries countByEnumeratingWithState:&v47 objects:v65 count:16];
             if (v20)
             {
               goto LABEL_15;
@@ -433,8 +433,8 @@ LABEL_26:
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v63 = *MEMORY[0x1E696A578];
         v33 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v34 = [a1 identifier];
-        v35 = [v33 initWithFormat:@"Library %@ could not be found, it is not a member of %@", obj, v34];
+        identifier3 = [self identifier];
+        v35 = [v33 initWithFormat:@"Library %@ could not be found, it is not a member of %@", obj, identifier3];
         v64 = v35;
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
         v31 = [v32 initWithDomain:@"BMLibraryErrorDomain" code:1 userInfo:v36];
@@ -442,7 +442,7 @@ LABEL_26:
         v30 = 0;
 LABEL_27:
         v18 = 0;
-        v19 = v58[5];
+        sublibraries = v58[5];
         v58[5] = v31;
       }
 

@@ -1,11 +1,11 @@
 @interface ETAngerMessage
 - (CGPoint)normalizedCenter;
 - (ETAngerMessage)init;
-- (ETAngerMessage)initWithArchiveData:(id)a3;
+- (ETAngerMessage)initWithArchiveData:(id)data;
 - (id)archiveData;
-- (void)_updateCenterFromNormalizedPoint:(CGPoint)a3 inScene:(id)a4;
-- (void)displayInScene:(id)a3;
-- (void)setNormalizedPoint:(CGPoint)a3 atRelativeTime:(double)a4 inScene:(id)a5;
+- (void)_updateCenterFromNormalizedPoint:(CGPoint)point inScene:(id)scene;
+- (void)displayInScene:(id)scene;
+- (void)setNormalizedPoint:(CGPoint)point atRelativeTime:(double)time inScene:(id)scene;
 - (void)stopPlaying;
 @end
 
@@ -18,13 +18,13 @@
   v2 = [(ETMessage *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     points = v2->_points;
-    v2->_points = v3;
+    v2->_points = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     delays = v2->_delays;
-    v2->_delays = v5;
+    v2->_delays = array2;
 
     v7 = v2;
   }
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (ETAngerMessage)initWithArchiveData:(id)a3
+- (ETAngerMessage)initWithArchiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = ETAngerMessage;
-  v5 = [(ETMessage *)&v31 initWithArchiveData:v4];
+  v5 = [(ETMessage *)&v31 initWithArchiveData:dataCopy];
   if (v5)
   {
-    v6 = [[ETPAnger alloc] initWithData:v4];
+    v6 = [[ETPAnger alloc] initWithData:dataCopy];
     v7 = v6;
     if (v6 && [(ETPAnger *)v6 hasDuration]&& [(ETPAnger *)v7 hasNormalizedCenterX]&& [(ETPAnger *)v7 hasNormalizedCenterY])
     {
@@ -60,23 +60,23 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v12 = [(ETPAnger *)v7 points];
-      v13 = [v12 length];
+      points = [(ETPAnger *)v7 points];
+      v13 = [points length];
       v14 = v13 >> 2;
-      v28 = [v12 bytes];
-      v15 = [(ETPAnger *)v7 delays];
-      v16 = [v15 length];
-      v17 = [v15 bytes];
+      bytes = [points bytes];
+      delays = [(ETPAnger *)v7 delays];
+      v16 = [delays length];
+      bytes2 = [delays bytes];
       if (v13 >> 2 == v16 >> 1)
       {
         if (v13 >= 4)
         {
-          v18 = v17;
+          v18 = bytes2;
           v19 = 0;
           do
           {
-            v20 = HIWORD(*(v28 + 4 * v19)) / 32767.0 + -1.0;
-            v30.x = *(v28 + 4 * v19) / 32767.0 + -1.0;
+            v20 = HIWORD(*(bytes + 4 * v19)) / 32767.0 + -1.0;
+            v30.x = *(bytes + 4 * v19) / 32767.0 + -1.0;
             v30.y = v20;
             if (!v19)
             {
@@ -126,16 +126,16 @@ LABEL_19:
   *&y = y;
   [(ETPAnger *)v3 setNormalizedCenterY:y];
   v7 = [(NSMutableArray *)self->_points count];
-  v8 = [MEMORY[0x277CBEB28] data];
-  [v8 setLength:4 * v7];
-  v21 = v8;
-  v9 = [v8 mutableBytes];
-  v10 = [MEMORY[0x277CBEB28] data];
-  [v10 setLength:2 * v7];
-  v11 = [v10 mutableBytes];
+  data = [MEMORY[0x277CBEB28] data];
+  [data setLength:4 * v7];
+  v21 = data;
+  mutableBytes = [data mutableBytes];
+  data2 = [MEMORY[0x277CBEB28] data];
+  [data2 setLength:2 * v7];
+  mutableBytes2 = [data2 mutableBytes];
   if (v7)
   {
-    v12 = v11;
+    v12 = mutableBytes2;
     v13 = 0;
     v22 = *MEMORY[0x277CBF348];
     do
@@ -147,7 +147,7 @@ LABEL_19:
       v15 = (*&v24 + 1.0) * 32767.0;
       v16 = llroundf(v15);
       v17 = (*(&v24 + 1) + 1.0) * 32767.0;
-      *(v9 + 4 * v13) = v16 | (llroundf(v17) << 16);
+      *(mutableBytes + 4 * v13) = v16 | (llroundf(v17) << 16);
       v23 = 0.0;
       v18 = [(NSMutableArray *)self->_delays objectAtIndexedSubscript:v13];
       [v18 getValue:&v23];
@@ -159,16 +159,16 @@ LABEL_19:
   }
 
   [(ETPAnger *)v3 setPoints:v21];
-  [(ETPAnger *)v3 setDelays:v10];
-  v19 = [(ETPAnger *)v3 data];
+  [(ETPAnger *)v3 setDelays:data2];
+  data3 = [(ETPAnger *)v3 data];
 
-  return v19;
+  return data3;
 }
 
-- (void)displayInScene:(id)a3
+- (void)displayInScene:(id)scene
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  val = a3;
+  val = scene;
   v4 = ETFrameworkBundle();
   location = 0;
   p_location = &location;
@@ -262,18 +262,18 @@ LABEL_19:
 
   v15 = v14;
   _Block_object_dispose(&location, 8);
-  v16 = [MEMORY[0x277D75348] clearColor];
-  v17 = [v16 colorSpaceConvertedColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  colorSpaceConvertedColor = [clearColor colorSpaceConvertedColor];
   v18 = fmin(v13, 272.0);
-  v19 = [v14 spriteNodeWithColor:v17 size:{v18, v18 / 272.0 * 340.0}];
+  v19 = [v14 spriteNodeWithColor:colorSpaceConvertedColor size:{v18, v18 / 272.0 * 340.0}];
   anger = self->_anger;
   self->_anger = v19;
 
   [(SKSpriteNode *)self->_anger setShader:v55];
   v21 = self->_anger;
   v22 = [MEMORY[0x277D75348] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-  v23 = [v22 colorSpaceConvertedColor];
-  [(SKSpriteNode *)v21 setColor:v23];
+  colorSpaceConvertedColor2 = [v22 colorSpaceConvertedColor];
+  [(SKSpriteNode *)v21 setColor:colorSpaceConvertedColor2];
 
   [(SKSpriteNode *)self->_anger setColorBlendFactor:1.0];
   [(SKSpriteNode *)self->_anger setBlendMode:1];
@@ -295,7 +295,7 @@ LABEL_19:
     objc_initWeak(&from, val);
     if (![(ETMessage *)self isRenderingOffscreen])
     {
-      v29 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v30 = [(NSMutableArray *)self->_points count];
       if (v30 >= 1)
       {
@@ -312,7 +312,7 @@ LABEL_19:
           [v33 getValue:&v66];
 
           v34 = [getSKActionClass_1() waitForDuration:v66];
-          [v29 addObject:v34];
+          [array addObject:v34];
 
           SKActionClass_1 = getSKActionClass_1();
           v62[0] = MEMORY[0x277D85DD0];
@@ -323,7 +323,7 @@ LABEL_19:
           v65 = v68;
           objc_copyWeak(&v64, &from);
           v36 = [SKActionClass_1 runBlock:v62];
-          [v29 addObject:v36];
+          [array addObject:v36];
 
           objc_destroyWeak(&v64);
           objc_destroyWeak(&v63);
@@ -334,7 +334,7 @@ LABEL_19:
       }
 
       v37 = self->_anger;
-      v38 = [getSKActionClass_1() sequence:v29];
+      v38 = [getSKActionClass_1() sequence:array];
       [(SKSpriteNode *)v37 runAction:v38];
 
       v39 = self->_anger;
@@ -397,10 +397,10 @@ uint64_t __33__ETAngerMessage_displayInScene___block_invoke_3(uint64_t a1)
   return [v1 setFloatValue:v3];
 }
 
-- (void)_updateCenterFromNormalizedPoint:(CGPoint)a3 inScene:(id)a4
+- (void)_updateCenterFromNormalizedPoint:(CGPoint)point inScene:(id)scene
 {
   anger = self->_anger;
-  [(ETMessage *)self scenePointFromNormalizedPoint:a4 inScene:a3.x, a3.y];
+  [(ETMessage *)self scenePointFromNormalizedPoint:scene inScene:point.x, point.y];
 
   [(SKSpriteNode *)anger setPosition:?];
 }
@@ -408,15 +408,15 @@ uint64_t __33__ETAngerMessage_displayInScene___block_invoke_3(uint64_t a1)
 - (void)stopPlaying
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ETMessage *)self delegate];
-  [v3 messageWillStopPlaying:self];
+  delegate = [(ETMessage *)self delegate];
+  [delegate messageWillStopPlaying:self];
   [(SKSpriteNode *)self->_anger removeAllActions];
   anger = self->_anger;
   SKActionClass_1 = getSKActionClass_1();
   v6 = [getSKActionClass_1() fadeOutWithDuration:0.2];
   v28[0] = v6;
-  v7 = [getSKActionClass_1() removeFromParent];
-  v28[1] = v7;
+  removeFromParent = [getSKActionClass_1() removeFromParent];
+  v28[1] = removeFromParent;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   v9 = [SKActionClass_1 sequence:v8];
   [(SKSpriteNode *)anger runAction:v9 withKey:@"fade"];
@@ -442,12 +442,12 @@ uint64_t __33__ETAngerMessage_displayInScene___block_invoke_3(uint64_t a1)
   v18 = [v13 sequence:v17];
   [(SKSpriteNode *)v12 runAction:v18];
 
-  v19 = [(SKSpriteNode *)self->_anger parent];
-  LODWORD(v14) = v19 == 0;
+  parent = [(SKSpriteNode *)self->_anger parent];
+  LODWORD(v14) = parent == 0;
 
   if (v14)
   {
-    [v3 messageDidStopPlaying:self];
+    [delegate messageDidStopPlaying:self];
   }
 
   else
@@ -457,8 +457,8 @@ uint64_t __33__ETAngerMessage_displayInScene___block_invoke_3(uint64_t a1)
     v21[1] = 3221225472;
     v21[2] = __29__ETAngerMessage_stopPlaying__block_invoke_2;
     v21[3] = &unk_278F79FB0;
-    v22 = v3;
-    v23 = self;
+    v22 = delegate;
+    selfCopy = self;
     dispatch_after(v20, MEMORY[0x277D85CD0], v21);
   }
 
@@ -472,21 +472,21 @@ void __29__ETAngerMessage_stopPlaying__block_invoke(uint64_t a1)
   [WeakRetained removeFromParent];
 }
 
-- (void)setNormalizedPoint:(CGPoint)a3 atRelativeTime:(double)a4 inScene:(id)a5
+- (void)setNormalizedPoint:(CGPoint)point atRelativeTime:(double)time inScene:(id)scene
 {
-  v13 = a3;
-  v12 = a4;
+  pointCopy = point;
+  timeCopy = time;
   delays = self->_delays;
   v7 = MEMORY[0x277CCAE60];
-  v8 = a5;
-  v9 = [v7 valueWithBytes:&v12 objCType:"d"];
+  sceneCopy = scene;
+  v9 = [v7 valueWithBytes:&timeCopy objCType:"d"];
   [(NSMutableArray *)delays addObject:v9];
 
   points = self->_points;
-  v11 = [MEMORY[0x277CCAE60] valueWithBytes:&v13 objCType:"{CGPoint=dd}"];
+  v11 = [MEMORY[0x277CCAE60] valueWithBytes:&pointCopy objCType:"{CGPoint=dd}"];
   [(NSMutableArray *)points addObject:v11];
 
-  [(ETAngerMessage *)self _updateCenterFromNormalizedPoint:v8 inScene:v13.x, v13.y];
+  [(ETAngerMessage *)self _updateCenterFromNormalizedPoint:sceneCopy inScene:pointCopy.x, pointCopy.y];
 }
 
 - (CGPoint)normalizedCenter

@@ -1,6 +1,6 @@
 @interface AKPolygonAdornmentLayer
 - (void)updateAdornmentElements;
-- (void)updateSublayersWithScale:(double)a3;
+- (void)updateSublayersWithScale:(double)scale;
 @end
 
 @implementation AKPolygonAdornmentLayer
@@ -14,8 +14,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v3 = [(AKPolygonAdornmentLayer *)self sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  sublayers = [(AKPolygonAdornmentLayer *)self sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v4)
   {
     v5 = *v43;
@@ -25,7 +25,7 @@
       {
         if (*v43 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sublayers);
         }
 
         v7 = *(*(&v42 + 1) + 8 * i);
@@ -37,7 +37,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v4 = [sublayers countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v4)
       {
         continue;
@@ -49,13 +49,13 @@
 
 LABEL_11:
 
-  v8 = [(AKAdornmentLayer *)self annotation];
+  annotation = [(AKAdornmentLayer *)self annotation];
   if ([(AKAdornmentLayer *)self currentlyDraggedArea]== 17)
   {
     if (!v4)
     {
       v4 = objc_alloc_init(AKEllipseLayer);
-      [v8 rectangle];
+      [annotation rectangle];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -93,9 +93,9 @@ LABEL_11:
       y = v53.origin.y;
       width = v53.size.width;
       height = v53.size.height;
-      v29 = [(AKAdornmentLayer *)self pageController];
-      v30 = [v29 geometryHelper];
-      [v30 convertRect:self fromModelToLayer:{x, y, width, height}];
+      pageController = [(AKAdornmentLayer *)self pageController];
+      geometryHelper = [pageController geometryHelper];
+      [geometryHelper convertRect:self fromModelToLayer:{x, y, width, height}];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -120,15 +120,15 @@ LABEL_11:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)updateSublayersWithScale:(double)a3
+- (void)updateSublayersWithScale:(double)scale
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AKPolygonAdornmentLayer *)self sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(AKPolygonAdornmentLayer *)self sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -138,7 +138,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -150,7 +150,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -162,10 +162,10 @@ LABEL_11:
 
 LABEL_11:
 
-  [v6 setLineWidth:*&qword_27E399028 / a3];
+  [v6 setLineWidth:*&qword_27E399028 / scale];
   v10.receiver = self;
   v10.super_class = AKPolygonAdornmentLayer;
-  [(AKAdornmentLayer *)&v10 updateSublayersWithScale:a3];
+  [(AKAdornmentLayer *)&v10 updateSublayersWithScale:scale];
 }
 
 @end

@@ -2,12 +2,12 @@
 + (id)sharedPreferencesController;
 - (TIPreferencesControllerClient)init;
 - (void)_disconnect;
-- (void)_pushValue:(id)a3 toPreference:(id)a4 domain:(id)a5;
+- (void)_pushValue:(id)value toPreference:(id)preference domain:(id)domain;
 - (void)createConnectionIfNecessary;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)performWithWriteability:(BOOL)a3 operations:(id)a4;
-- (void)updateInputModes:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)performWithWriteability:(BOOL)writeability operations:(id)operations;
+- (void)updateInputModes:(id)modes;
 @end
 
 @implementation TIPreferencesControllerClient
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __60__TIPreferencesControllerClient_sharedPreferencesController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferencesController_once_769 != -1)
   {
     dispatch_once(&sharedPreferencesController_once_769, block);
@@ -53,16 +53,16 @@ uint64_t __60__TIPreferencesControllerClient_sharedPreferencesController__block_
   return v2;
 }
 
-- (void)updateInputModes:(id)a3
+- (void)updateInputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__TIPreferencesControllerClient_updateInputModes___block_invoke;
   v6[3] = &unk_1E6F4D8D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = modesCopy;
+  selfCopy = self;
+  v5 = modesCopy;
   [(TIPreferencesControllerClient *)self performWithWriteability:1 operations:v6];
 }
 
@@ -74,15 +74,15 @@ id __50__TIPreferencesControllerClient_updateInputModes___block_invoke(uint64_t 
   return objc_msgSendSuper2(&v3, sel_updateInputModes_, v1);
 }
 
-- (void)performWithWriteability:(BOOL)a3 operations:(id)a4
+- (void)performWithWriteability:(BOOL)writeability operations:(id)operations
 {
   writeable = self->_writeable;
-  self->_writeable = a3;
-  (*(a4 + 2))(a4, a2);
+  self->_writeable = writeability;
+  (*(operations + 2))(operations, a2);
   self->_writeable = writeable;
 }
 
-- (void)_pushValue:(id)a3 toPreference:(id)a4 domain:(id)a5
+- (void)_pushValue:(id)value toPreference:(id)preference domain:(id)domain
 {
   if (self->_writeable)
   {
@@ -90,28 +90,28 @@ id __50__TIPreferencesControllerClient_updateInputModes___block_invoke(uint64_t 
     v9 = v6;
     v7.receiver = self;
     v7.super_class = TIPreferencesControllerClient;
-    [(TIPreferencesController *)&v7 _pushValue:a3 toPreference:a4 domain:a5];
+    [(TIPreferencesController *)&v7 _pushValue:value toPreference:preference domain:domain];
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v8 = a3;
+  invocationCopy = invocation;
   v4 = &unk_1EF7ED518;
-  MethodDescription = protocol_getMethodDescription(v4, [v8 selector], 1, 1);
+  MethodDescription = protocol_getMethodDescription(v4, [invocationCopy selector], 1, 1);
   if (MethodDescription.name && *MethodDescription.types == 118)
   {
     [(TIPreferencesControllerClient *)self createConnectionIfNecessary];
-    v6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v6)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       [(TIPreferencesController *)self setIgnoreNextSyncNotification:1];
-      v7 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-      [v8 invokeWithTarget:v7];
+      remoteObjectProxy2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+      [invocationCopy invokeWithTarget:remoteObjectProxy2];
     }
   }
 
-  [v8 invokeWithTarget:self];
+  [invocationCopy invokeWithTarget:self];
 }
 
 - (void)createConnectionIfNecessary
@@ -137,12 +137,12 @@ id __50__TIPreferencesControllerClient_updateInputModes___block_invoke(uint64_t 
     }
 
     [(NSXPCConnection *)v7 _setQueue:_preferencesClientDispatchQueue___xpc_queue];
-    v8 = self;
+    selfCopy = self;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __60__TIPreferencesControllerClient_createConnectionIfNecessary__block_invoke;
     v17[3] = &unk_1E6F4D860;
-    v9 = v8;
+    v9 = selfCopy;
     v18 = v9;
     [(NSXPCConnection *)self->_connection setInterruptionHandler:v17];
     v12 = MEMORY[0x1E69E9820];

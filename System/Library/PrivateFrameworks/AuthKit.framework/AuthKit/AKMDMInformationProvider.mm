@@ -1,71 +1,71 @@
 @interface AKMDMInformationProvider
-- (BOOL)_shouldGetMDMInformationForAccount:(id)a3 accountManager:(id)a4;
-- (BOOL)_shouldGetMDMInformationForAuthContext:(id)a3;
+- (BOOL)_shouldGetMDMInformationForAccount:(id)account accountManager:(id)manager;
+- (BOOL)_shouldGetMDMInformationForAuthContext:(id)context;
 - (id)_fetchMDMInformationFromDeviceManagementClient;
-- (id)fetchMDMInformationIfNecessaryForAccount:(id)a3 accountManager:(id)a4;
-- (id)fetchMDMInformationIfNecessaryForAuthContext:(id)a3;
+- (id)fetchMDMInformationIfNecessaryForAccount:(id)account accountManager:(id)manager;
+- (id)fetchMDMInformationIfNecessaryForAuthContext:(id)context;
 @end
 
 @implementation AKMDMInformationProvider
 
-- (id)fetchMDMInformationIfNecessaryForAuthContext:(id)a3
+- (id)fetchMDMInformationIfNecessaryForAuthContext:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKMDMInformationProvider *)v6 _shouldGetMDMInformationForAuthContext:location[0]])
+  objc_storeStrong(location, context);
+  if ([(AKMDMInformationProvider *)selfCopy _shouldGetMDMInformationForAuthContext:location[0]])
   {
-    v7 = [(AKMDMInformationProvider *)v6 _fetchMDMInformationFromDeviceManagementClient];
+    _fetchMDMInformationFromDeviceManagementClient = [(AKMDMInformationProvider *)selfCopy _fetchMDMInformationFromDeviceManagementClient];
   }
 
   else
   {
-    v7 = 0;
+    _fetchMDMInformationFromDeviceManagementClient = 0;
   }
 
   objc_storeStrong(location, 0);
-  v3 = v7;
+  v3 = _fetchMDMInformationFromDeviceManagementClient;
 
   return v3;
 }
 
-- (id)fetchMDMInformationIfNecessaryForAccount:(id)a3 accountManager:(id)a4
+- (id)fetchMDMInformationIfNecessaryForAccount:(id)account accountManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([(AKMDMInformationProvider *)v9 _shouldGetMDMInformationForAccount:location[0] accountManager:v7])
+  objc_storeStrong(&v7, manager);
+  if ([(AKMDMInformationProvider *)selfCopy _shouldGetMDMInformationForAccount:location[0] accountManager:v7])
   {
-    v10 = [(AKMDMInformationProvider *)v9 _fetchMDMInformationFromDeviceManagementClient];
+    _fetchMDMInformationFromDeviceManagementClient = [(AKMDMInformationProvider *)selfCopy _fetchMDMInformationFromDeviceManagementClient];
   }
 
   else
   {
-    v10 = 0;
+    _fetchMDMInformationFromDeviceManagementClient = 0;
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
-  v4 = v10;
+  v4 = _fetchMDMInformationFromDeviceManagementClient;
 
   return v4;
 }
 
-- (BOOL)_shouldGetMDMInformationForAuthContext:(id)a3
+- (BOOL)_shouldGetMDMInformationForAuthContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] isMDMInformationRequired];
+  objc_storeStrong(location, context);
+  isMDMInformationRequired = [location[0] isMDMInformationRequired];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    if (v7)
+    if (isMDMInformationRequired)
     {
       v3 = @"YES";
     }
@@ -80,19 +80,19 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = v7;
+  v5 = isMDMInformationRequired;
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (BOOL)_shouldGetMDMInformationForAccount:(id)a3 accountManager:(id)a4
+- (BOOL)_shouldGetMDMInformationForAccount:(id)account accountManager:(id)manager
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, manager);
   v9 = [v10 mdmInformationRequiredForAccount:location[0]];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))

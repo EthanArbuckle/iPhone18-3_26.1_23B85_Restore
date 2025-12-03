@@ -1,16 +1,16 @@
 @interface SettingsViewController
-- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithCoder:(id)a3;
-- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)notificationsEnabledWithSpecifier:(id)a3;
+- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithCoder:(id)coder;
+- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)notificationsEnabledWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)launchHealthAppOnboardingWithSpecifier:(id)a3;
-- (void)setWithNotificationsEnabled:(id)a3 specifier:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)launchHealthAppOnboardingWithSpecifier:(id)specifier;
+- (void)setWithNotificationsEnabled:(id)enabled specifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SettingsViewController
 
-- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_51C8();
   sub_51B8();
@@ -20,7 +20,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_5128();
     v7 = v6;
@@ -31,12 +31,12 @@
     v7 = 0;
   }
 
-  v8 = sub_159C(a4, v7, a4);
+  v8 = sub_159C(bundle, v7, bundle);
 
   return v8;
 }
 
-- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithCoder:(id)a3
+- (_TtC31NanoHealthBalanceBridgeSettings22SettingsViewController)initWithCoder:(id)coder
 {
   sub_51C8();
   sub_51B8();
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   sub_51C8();
   sub_51B8();
   sub_51A8();
@@ -66,11 +66,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1A84(v3);
+  selfCopy = self;
+  sub_1A84(appearCopy);
 }
 
-- (id)notificationsEnabledWithSpecifier:(id)a3
+- (id)notificationsEnabledWithSpecifier:(id)specifier
 {
   sub_51C8();
   sub_51B8();
@@ -81,13 +81,13 @@
   }
 
   v4 = *&self->BPSListController_opaque[OBJC_IVAR____TtC31NanoHealthBalanceBridgeSettings22SettingsViewController_settings];
-  v5 = self;
+  selfCopy = self;
   v6 = [objc_allocWithZone(NSNumber) initWithBool:sub_5028() & 1];
 
   return v6;
 }
 
-- (void)setWithNotificationsEnabled:(id)a3 specifier:(id)a4
+- (void)setWithNotificationsEnabled:(id)enabled specifier:(id)specifier
 {
   sub_51C8();
   sub_51B8();
@@ -98,13 +98,13 @@
   }
 
   v6 = *&self->BPSListController_opaque[OBJC_IVAR____TtC31NanoHealthBalanceBridgeSettings22SettingsViewController_settings];
-  v8 = a3;
-  v7 = self;
-  [v8 BOOLValue];
+  enabledCopy = enabled;
+  selfCopy = self;
+  [enabledCopy BOOLValue];
   sub_5038();
 }
 
-- (void)launchHealthAppOnboardingWithSpecifier:(id)a3
+- (void)launchHealthAppOnboardingWithSpecifier:(id)specifier
 {
   sub_51C8();
   sub_51B8();
@@ -131,12 +131,12 @@
   v4 = __chkstk_darwin(isCurrentExecutor);
   __chkstk_darwin(v4);
   sub_355C();
-  v5 = self;
+  selfCopy = self;
   sub_4F78();
   sub_29E0(v9);
   isa = sub_5178().super.isa;
 
-  [(SettingsViewController *)v5 setSpecifiers:isa];
+  [(SettingsViewController *)selfCopy setSpecifiers:isa];
 
   sub_29E0(v9);
 

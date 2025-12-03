@@ -1,13 +1,13 @@
 @interface VCCompanionSyncSession
 + (int64_t)direction;
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
 - (NSString)debugDescription;
-- (VCCompanionSyncSession)initWithSYSession:(id)a3 service:(id)a4 syncDataHandlers:(id)a5;
+- (VCCompanionSyncSession)initWithSYSession:(id)session service:(id)service syncDataHandlers:(id)handlers;
 - (VCCompanionSyncSessionDelegate)delegate;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)resetDataStoreForSyncSession:(id)a3 completion:(id)a4;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)resetDataStoreForSyncSession:(id)session completion:(id)completion;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation VCCompanionSyncSession
@@ -19,14 +19,14 @@
   return WeakRetained;
 }
 
-- (void)resetDataStoreForSyncSession:(id)a3 completion:(id)a4
+- (void)resetDataStoreForSyncSession:(id)session completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() direction];
+  sessionCopy = session;
+  completionCopy = completion;
+  direction = [objc_opt_class() direction];
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
-  if (v7)
+  if (direction)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:v9 format:@"-[VCCompanionSyncSession resetDataStoreForSyncSession:completion:] must be overridden"];
     __break(1u);
@@ -36,40 +36,40 @@
   __break(1u);
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
-  v4 = a3;
+  sessionCopy = session;
   result = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"-[VCCompanionSyncSession resetDataStoreForSyncSession:completion:] should be called instead"];
   __break(1u);
   return result;
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VCCompanionSyncSession *)self session];
-  v10 = [v7 isEqual:v9];
+  sessionCopy = session;
+  errorCopy = error;
+  session = [(VCCompanionSyncSession *)self session];
+  v10 = [sessionCopy isEqual:session];
 
   if ((v10 & 1) == 0)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:84 description:{@"Unexpected session finishing: %@", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:84 description:{@"Unexpected session finishing: %@", sessionCopy}];
   }
 
   v11 = getWFWatchSyncLogObject();
   v12 = v11;
-  if (v8)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v21 = "[VCCompanionSyncSession syncSession:didEndWithError:]";
       v22 = 2114;
-      v23 = v7;
+      v23 = sessionCopy;
       v24 = 2114;
-      v25 = v8;
+      v25 = errorCopy;
       v13 = "%s finished session %{public}@ with error %{public}@";
       v14 = v12;
       v15 = OS_LOG_TYPE_ERROR;
@@ -84,7 +84,7 @@ LABEL_8:
     *buf = 136315394;
     v21 = "[VCCompanionSyncSession syncSession:didEndWithError:]";
     v22 = 2114;
-    v23 = v7;
+    v23 = sessionCopy;
     v13 = "%s finished session %{public}@";
     v14 = v12;
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -92,17 +92,17 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v17 = [(VCCompanionSyncSession *)self delegate];
-  [v17 companionSyncSession:self didFinishWithError:v8];
+  delegate = [(VCCompanionSyncSession *)self delegate];
+  [delegate companionSyncSession:self didFinishWithError:errorCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
-  v5 = [objc_opt_class() direction];
+  direction = [objc_opt_class() direction];
   v6 = *MEMORY[0x277CBE658];
-  if (v5)
+  if (direction)
   {
     v7 = @"[VCCompanionSyncSession syncSession:applyChanges:completion:] must be overridden";
   }
@@ -117,14 +117,14 @@ LABEL_8:
   [v8 raise:v6 format:v7];
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() direction];
+  sessionCopy = session;
+  changesCopy = changes;
+  direction = [objc_opt_class() direction];
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
-  if (v8)
+  if (direction)
   {
     v9 = [MEMORY[0x277CBEAD8] raise:v10 format:@"-[VCCompanionSyncSession syncSession:enqueueChanges:error:] must be overridden"];
     __break(1u);
@@ -140,32 +140,32 @@ LABEL_8:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VCCompanionSyncSession *)self session];
-  v7 = [(VCCompanionSyncSession *)self session];
-  v8 = [v7 identifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p SYSession=%@ id=%@>", v5, self, v6, v8];
+  session = [(VCCompanionSyncSession *)self session];
+  session2 = [(VCCompanionSyncSession *)self session];
+  identifier = [session2 identifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p SYSession=%@ id=%@>", v5, self, session, identifier];
 
   return v9;
 }
 
-- (VCCompanionSyncSession)initWithSYSession:(id)a3 service:(id)a4 syncDataHandlers:(id)a5
+- (VCCompanionSyncSession)initWithSYSession:(id)session service:(id)service syncDataHandlers:(id)handlers
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  sessionCopy = session;
+  serviceCopy = service;
+  handlersCopy = handlers;
+  if (sessionCopy)
   {
-    if (v11)
+    if (serviceCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_19:
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"service"}];
 
-    if (v12)
+    if (handlersCopy)
     {
       goto LABEL_4;
     }
@@ -173,25 +173,25 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v32 = [MEMORY[0x277CCA890] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"session"}];
 
-  if (!v11)
+  if (!serviceCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_3:
-  if (v12)
+  if (handlersCopy)
   {
 LABEL_4:
-    v13 = v12;
+    v13 = handlersCopy;
     goto LABEL_5;
   }
 
 LABEL_20:
-  v34 = [MEMORY[0x277CCA890] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"syncDataHandlers"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncSession.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"syncDataHandlers"}];
 
   v13 = 0;
 LABEL_5:
@@ -201,11 +201,11 @@ LABEL_5:
   v14 = [(VCCompanionSyncSession *)&v35 init];
   if (v14)
   {
-    v15 = [objc_opt_class() direction];
+    direction = [objc_opt_class() direction];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_attr_make_with_qos_class(v16, QOS_CLASS_USER_INITIATED, 0);
 
-    if (v15 == 1)
+    if (direction == 1)
     {
       v18 = "com.apple.VCCompanionSyncSession.incoming";
     }
@@ -215,7 +215,7 @@ LABEL_5:
       v18 = "com.apple.VCCompanionSyncSession.outgoing";
     }
 
-    if (v15 == 1)
+    if (direction == 1)
     {
       v19 = @"VCCompanionSyncSession.incoming";
     }
@@ -233,15 +233,15 @@ LABEL_5:
     transaction = v14->_transaction;
     v14->_transaction = v22;
 
-    objc_storeStrong(&v14->_session, a3);
+    objc_storeStrong(&v14->_session, session);
     [(SYSession *)v14->_session setDelegate:v14];
     [(SYSession *)v14->_session setTargetQueue:v14->_queue];
     v24 = objc_alloc_init(VCCompanionSyncSerializer);
     [(SYSession *)v14->_session setSerializer:v24];
 
     [(SYSession *)v14->_session setMaxConcurrentMessages:15];
-    objc_storeStrong(&v14->_service, a4);
-    v25 = [v12 copy];
+    objc_storeStrong(&v14->_service, service);
+    v25 = [handlersCopy copy];
     syncDataHandlers = v14->_syncDataHandlers;
     v14->_syncDataHandlers = v25;
 
@@ -253,7 +253,7 @@ LABEL_5:
       v37 = "[VCCompanionSyncSession initWithSYSession:service:syncDataHandlers:]";
       v38 = 2114;
       v39 = v14;
-      if (v15 == 1)
+      if (direction == 1)
       {
         v28 = @"incoming";
       }
@@ -261,7 +261,7 @@ LABEL_5:
       v40 = 2114;
       v41 = v28;
       v42 = 2114;
-      v43 = v10;
+      v43 = sessionCopy;
       _os_log_impl(&dword_23103C000, v27, OS_LOG_TYPE_DEFAULT, "%s %{public}@ %{public}@ session created with SYSession: %{public}@", buf, 0x2Au);
     }
 

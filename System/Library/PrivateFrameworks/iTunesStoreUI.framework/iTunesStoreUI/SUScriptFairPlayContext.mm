@@ -1,7 +1,7 @@
 @interface SUScriptFairPlayContext
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (id)signData:(id)a3;
+- (id)signData:(id)data;
 @end
 
 @implementation SUScriptFairPlayContext
@@ -13,7 +13,7 @@ uint64_t __32__SUScriptFairPlayContext_close__block_invoke(uint64_t a1)
   return [v1 _closeMescalSession];
 }
 
-- (id)signData:(id)a3
+- (id)signData:(id)data
 {
   v6 = 0;
   v7 = &v6;
@@ -22,7 +22,7 @@ uint64_t __32__SUScriptFairPlayContext_close__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_dispose__54;
   v11 = 0;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (a3 == 0) | objc_opt_isKindOfClass() & 1) || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (data == 0) | objc_opt_isKindOfClass() & 1) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -54,14 +54,14 @@ id __36__SUScriptFairPlayContext_signData___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_59, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_59, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFairPlayContext;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -69,7 +69,7 @@ id __36__SUScriptFairPlayContext_signData___block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_59 = sel_close;
     *algn_1EBF3B9B8 = @"close";

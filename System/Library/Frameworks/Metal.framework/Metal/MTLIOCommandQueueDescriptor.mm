@@ -1,17 +1,17 @@
 @interface MTLIOCommandQueueDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLIOCommandQueueDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation MTLIOCommandQueueDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMaxCommandBufferCount:{-[MTLIOCommandQueueDescriptor maxCommandBufferCount](self, "maxCommandBufferCount")}];
   [v4 setPriority:{-[MTLIOCommandQueueDescriptor priority](self, "priority")}];
   [v4 setScratchBufferAllocator:{-[MTLIOCommandQueueDescriptor scratchBufferAllocator](self, "scratchBufferAllocator")}];
@@ -19,42 +19,42 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLIOCommandQueueDescriptor *)self maxCommandBufferCount];
-  if (v6 != [a3 maxCommandBufferCount])
+  maxCommandBufferCount = [(MTLIOCommandQueueDescriptor *)self maxCommandBufferCount];
+  if (maxCommandBufferCount != [equal maxCommandBufferCount])
   {
     return 0;
   }
 
-  v7 = [(MTLIOCommandQueueDescriptor *)self priority];
-  if (v7 != [a3 priority] || (objc_msgSend(-[MTLIOCommandQueueDescriptor scratchBufferAllocator](self, "scratchBufferAllocator"), "isEqual:", objc_msgSend(a3, "scratchBufferAllocator")) & 1) != 0)
+  priority = [(MTLIOCommandQueueDescriptor *)self priority];
+  if (priority != [equal priority] || (objc_msgSend(-[MTLIOCommandQueueDescriptor scratchBufferAllocator](self, "scratchBufferAllocator"), "isEqual:", objc_msgSend(equal, "scratchBufferAllocator")) & 1) != 0)
   {
     return 0;
   }
 
-  v9 = [(MTLIOCommandQueueDescriptor *)self type];
-  return v9 == [a3 type];
+  type = [(MTLIOCommandQueueDescriptor *)self type];
+  return type == [equal type];
 }
 
 - (unint64_t)hash
 {
   bzero(&v4, 0x28uLL);
-  v5 = [(MTLIOCommandQueueDescriptor *)self maxCommandBufferCount];
-  v6 = [(MTLIOCommandQueueDescriptor *)self priority];
+  maxCommandBufferCount = [(MTLIOCommandQueueDescriptor *)self maxCommandBufferCount];
+  priority = [(MTLIOCommandQueueDescriptor *)self priority];
   v7 = [-[MTLIOCommandQueueDescriptor scratchBufferAllocator](self "scratchBufferAllocator")];
-  v8 = [(MTLIOCommandQueueDescriptor *)self type];
+  type = [(MTLIOCommandQueueDescriptor *)self type];
   return _MTLHashState(&v4, 0x28uLL);
 }
 
@@ -74,10 +74,10 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v15[12] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v14.receiver = self;
   v14.super_class = MTLIOCommandQueueDescriptor;

@@ -1,23 +1,23 @@
 @interface FSAgentClientDelegate
-- (void)instanceExited:(id)a3 instanceUUID:(id)a4;
+- (void)instanceExited:(id)exited instanceUUID:(id)d;
 @end
 
 @implementation FSAgentClientDelegate
 
-- (void)instanceExited:(id)a3 instanceUUID:(id)a4
+- (void)instanceExited:(id)exited instanceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  exitedCopy = exited;
+  dCopy = d;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__FSAgentClientDelegate_instanceExited_instanceUUID___block_invoke;
   block[3] = &unk_278FED250;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = exitedCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = exitedCopy;
   dispatch_async(v8, block);
 }
 

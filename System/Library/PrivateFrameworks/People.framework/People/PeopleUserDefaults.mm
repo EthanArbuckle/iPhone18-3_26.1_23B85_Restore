@@ -1,12 +1,12 @@
 @interface PeopleUserDefaults
-- (_TtC6People18PeopleUserDefaults)initWithSuiteName:(id)a3;
+- (_TtC6People18PeopleUserDefaults)initWithSuiteName:(id)name;
 @end
 
 @implementation PeopleUserDefaults
 
-- (_TtC6People18PeopleUserDefaults)initWithSuiteName:(id)a3
+- (_TtC6People18PeopleUserDefaults)initWithSuiteName:(id)name
 {
-  if (a3)
+  if (name)
   {
     sub_22F0D0CAC();
     v4 = sub_22F0D0C7C();

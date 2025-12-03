@@ -1,12 +1,12 @@
 @interface NSObject
-- (void)ppt_startIterationWithBlock:(id)a3 completion:(id)a4;
+- (void)ppt_startIterationWithBlock:(id)block completion:(id)completion;
 @end
 
 @implementation NSObject
 
-- (void)ppt_startIterationWithBlock:(id)a3 completion:(id)a4
+- (void)ppt_startIterationWithBlock:(id)block completion:(id)completion
 {
-  v5 = a3;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -25,10 +25,10 @@
   v13[3] = &unk_10005BFD8;
   v15 = &v23;
   v16 = &v17;
-  v6 = a4;
-  v14 = v6;
+  completionCopy = completion;
+  v14 = completionCopy;
   v7 = objc_retainBlock(v13);
-  v8 = [v5 copy];
+  v8 = [blockCopy copy];
   v9 = v24[5];
   v24[5] = v8;
 

@@ -1,5 +1,5 @@
 @interface HMDAccessoryMetricTransportDetails
-- (HMDAccessoryMetricTransportDetails)initWithAccessory:(id)a3;
+- (HMDAccessoryMetricTransportDetails)initWithAccessory:(id)accessory;
 - (id)attributeDescriptions;
 @end
 
@@ -9,8 +9,8 @@
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMDAccessoryMetricTransportDetails *)self accessoryProtocol];
-  v4 = [v3 initWithName:@"accessoryProtocol" value:v20];
+  accessoryProtocol = [(HMDAccessoryMetricTransportDetails *)self accessoryProtocol];
+  v4 = [v3 initWithName:@"accessoryProtocol" value:accessoryProtocol];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDAccessoryMetricTransportDetails *)self isAccessoryBatteryPowered];
@@ -39,15 +39,15 @@
   return v17;
 }
 
-- (HMDAccessoryMetricTransportDetails)initWithAccessory:(id)a3
+- (HMDAccessoryMetricTransportDetails)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v13.receiver = self;
   v13.super_class = HMDAccessoryMetricTransportDetails;
   v5 = [(HMDAccessoryMetricTransportDetails *)&v13 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = accessoryCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,8 +78,8 @@
 
     objc_storeStrong(&v5->_accessoryProtocol, v9);
     v5->_isAccessoryBatteryPowered = [v8 hasBattery];
-    v10 = [v8 bridge];
-    v5->_isAccessoryBridged = v10 != 0;
+    bridge = [v8 bridge];
+    v5->_isAccessoryBridged = bridge != 0;
 
     if (([v8 supportsThread] & 1) != 0 || objc_msgSend(v8, "hasThreadServer"))
     {
@@ -88,8 +88,8 @@
 
     else
     {
-      v11 = [v8 supportedLinkLayerTypes];
-      v5->_isThreadAccessory = ([v11 unsignedIntValue] & 0x10) != 0;
+      supportedLinkLayerTypes = [v8 supportedLinkLayerTypes];
+      v5->_isThreadAccessory = ([supportedLinkLayerTypes unsignedIntValue] & 0x10) != 0;
     }
 
     v5->_isHH2Enabled = HAPIsHH2Enabled();

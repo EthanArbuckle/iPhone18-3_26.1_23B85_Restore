@@ -1,16 +1,16 @@
 @interface EQKitMathMLMAlignGroup
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)layoutSchemata;
 @end
 
 @implementation EQKitMathMLMAlignGroup
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v5.receiver = self;
   v5.super_class = EQKitMathMLMAlignGroup;
-  return [(EQKitMathMLMAlignGroup *)&v5 init:a3];
+  return [(EQKitMathMLMAlignGroup *)&v5 init:node];
 }
 
 - (const)mathMLAttributes
@@ -26,10 +26,10 @@
 
 - (void)layoutSchemata
 {
-  *a1 = &unk_2884CB990;
-  *(a1 + 8) = 26;
-  *(a1 + 16) = 0;
-  *(a1 + 24) = 0;
+  *self = &unk_2884CB990;
+  *(self + 8) = 26;
+  *(self + 16) = 0;
+  *(self + 24) = 0;
 }
 
 @end

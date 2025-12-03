@@ -1,19 +1,19 @@
 @interface PXPhotosGridUnfilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridUnfilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v6 = a4;
-  v9.receiver = a1;
+  modelCopy = model;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PXPhotosGridUnfilterActionPerformer;
-  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, a3, v6))
+  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, type, modelCopy))
   {
-    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:1 viewModel:v6];
+    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:1 viewModel:modelCopy];
   }
 
   else
@@ -26,22 +26,22 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 dataSourceManager];
-  v5 = [v4 dataSource];
-  v9 = [v5 containerCollection];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v6 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v7 = [v6 photoLibrary];
-  v8 = [PXContentFilterState defaultFilterStateForContainerCollection:v9 photoLibrary:v7];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  photoLibrary = [currentContentFilterState photoLibrary];
+  v8 = [PXContentFilterState defaultFilterStateForContainerCollection:containerCollection photoLibrary:photoLibrary];
 
   [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v8];
 }
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:1];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:1];
 
   return v3;
 }

@@ -3,9 +3,9 @@
 - ($670CA482A27156A98D0A7E5F20B9370A)preview;
 - ($9638EFF0CCCAFE90921E224CC361F7AC)anchor;
 - (CGRect)contentBounds;
-- (void)setAnchor:(id *)a3;
-- (void)setMenu:(id *)a3;
-- (void)setPreview:(id *)a3;
+- (void)setAnchor:(id *)anchor;
+- (void)setMenu:(id *)menu;
+- (void)setPreview:(id *)preview;
 @end
 
 @implementation _UIContextMenuLayoutArbiterOutput
@@ -66,47 +66,47 @@
   return self;
 }
 
-- (void)setPreview:(id *)a3
+- (void)setPreview:(id *)preview
 {
-  origin = a3->var0.origin;
-  size = a3->var0.size;
-  v5 = *&a3->var1.x;
-  *&self->_preview.center.z = *&a3->var1.z;
+  origin = preview->var0.origin;
+  size = preview->var0.size;
+  v5 = *&preview->var1.x;
+  *&self->_preview.center.z = *&preview->var1.z;
   *&self->_preview.center.x = v5;
   self->_preview.bounds.size = size;
   self->_preview.bounds.origin = origin;
-  v6 = *&a3->var2.y;
-  v7 = *&a3->var3.b;
-  v8 = *&a3->var3.d;
-  *&self->_preview.transform.ty = *&a3->var3.ty;
+  v6 = *&preview->var2.y;
+  v7 = *&preview->var3.b;
+  v8 = *&preview->var3.d;
+  *&self->_preview.transform.ty = *&preview->var3.ty;
   *&self->_preview.transform.d = v8;
   *&self->_preview.transform.b = v7;
   *&self->_preview.anchorPoint.y = v6;
 }
 
-- (void)setMenu:(id *)a3
+- (void)setMenu:(id *)menu
 {
-  origin = a3->var0.origin;
-  size = a3->var0.size;
-  v5 = *&a3->var1.z;
-  *&self->_menu.center.x = *&a3->var1.x;
+  origin = menu->var0.origin;
+  size = menu->var0.size;
+  v5 = *&menu->var1.z;
+  *&self->_menu.center.x = *&menu->var1.x;
   *&self->_menu.center.z = v5;
   self->_menu.bounds.size = size;
   self->_menu.bounds.origin = origin;
-  v6 = *&a3->var2.y;
-  v7 = *&a3->var3.b;
-  v8 = *&a3->var3.ty;
-  *&self->_menu.transform.d = *&a3->var3.d;
+  v6 = *&menu->var2.y;
+  v7 = *&menu->var3.b;
+  v8 = *&menu->var3.ty;
+  *&self->_menu.transform.d = *&menu->var3.d;
   *&self->_menu.transform.ty = v8;
   *&self->_menu.anchorPoint.y = v6;
   *&self->_menu.transform.b = v7;
 }
 
-- (void)setAnchor:(id *)a3
+- (void)setAnchor:(id *)anchor
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_anchor.gravity = a3->var4;
+  v3 = *&anchor->var0;
+  v4 = *&anchor->var2;
+  self->_anchor.gravity = anchor->var4;
   *&self->_anchor.attachment = v3;
   *&self->_anchor.attachmentOffset = v4;
 }

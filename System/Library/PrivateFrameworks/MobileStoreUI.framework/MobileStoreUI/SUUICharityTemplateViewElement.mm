@@ -1,23 +1,23 @@
 @interface SUUICharityTemplateViewElement
-- (SUUICharityTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUICharityTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUICharityTemplateViewElement
 
-- (SUUICharityTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICharityTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUICharityTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"campaignID"];
+    v10 = [elementCopy getAttribute:@"campaignID"];
     campaignIdentifier = v9->_campaignIdentifier;
     v9->_campaignIdentifier = v10;
 
-    v12 = [v8 getAttribute:@"src"];
+    v12 = [elementCopy getAttribute:@"src"];
     charityMetadataURLString = v9->_charityMetadataURLString;
     v9->_charityMetadataURLString = v12;
   }
@@ -25,22 +25,22 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUICharityTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v12 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v12 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUICharityTemplateViewElement *)v4 campaignIdentifier];
+    campaignIdentifier = [(SUUICharityTemplateViewElement *)elementCopy campaignIdentifier];
     campaignIdentifier = self->_campaignIdentifier;
-    self->_campaignIdentifier = v7;
+    self->_campaignIdentifier = campaignIdentifier;
 
-    v9 = [(SUUICharityTemplateViewElement *)v4 charityMetadataURLString];
+    charityMetadataURLString = [(SUUICharityTemplateViewElement *)elementCopy charityMetadataURLString];
     charityMetadataURLString = self->_charityMetadataURLString;
-    self->_charityMetadataURLString = v9;
+    self->_charityMetadataURLString = charityMetadataURLString;
   }
 
   return v6;

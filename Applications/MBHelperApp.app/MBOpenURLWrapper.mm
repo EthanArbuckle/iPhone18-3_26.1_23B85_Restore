@@ -3,7 +3,7 @@
 - (BOOL)_isInternalPrefsURL;
 - (BOOL)_isPrepareBuddyURL;
 - (MBOpenURLWrapper)init;
-- (MBOpenURLWrapper)initWithURL:(id)a3;
+- (MBOpenURLWrapper)initWithURL:(id)l;
 - (MBOpenURLWrapperDelegate)delegate;
 - (void)_openInternalPrefsURL;
 - (void)_openPrebuddyURL;
@@ -21,15 +21,15 @@
   return v4;
 }
 
-- (MBOpenURLWrapper)initWithURL:(id)a3
+- (MBOpenURLWrapper)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = MBOpenURLWrapper;
   v5 = [(MBOpenURLWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -40,17 +40,17 @@
 - (BOOL)_isHTTPURL
 {
   v2 = [(MBOpenURLWrapper *)self url];
-  v3 = [v2 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [v2 scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v4 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"https"];
+    v5 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v5;
@@ -59,20 +59,20 @@
 - (BOOL)_isPrepareBuddyURL
 {
   v2 = [(MBOpenURLWrapper *)self url];
-  v3 = [v2 host];
-  v4 = [v3 lowercaseString];
+  host = [v2 host];
+  lowercaseString = [host lowercaseString];
 
-  LOBYTE(v2) = [v4 isEqualToString:@"prepare.icloud.com"];
+  LOBYTE(v2) = [lowercaseString isEqualToString:@"prepare.icloud.com"];
   return v2;
 }
 
 - (BOOL)_isInternalPrefsURL
 {
   v2 = [(MBOpenURLWrapper *)self url];
-  v3 = [v2 path];
-  v4 = [v3 lowercaseString];
+  path = [v2 path];
+  lowercaseString = [path lowercaseString];
 
-  LOBYTE(v2) = [v4 isEqualToString:@"/backup-internal"];
+  LOBYTE(v2) = [lowercaseString isEqualToString:@"/backup-internal"];
   return v2;
 }
 
@@ -136,10 +136,10 @@
 
       else
       {
-        v5 = [(MBOpenURLWrapper *)self delegate];
+        delegate = [(MBOpenURLWrapper *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v5 openURLWrapper:self willOpenURL:self->_url];
+          [delegate openURLWrapper:self willOpenURL:self->_url];
         }
 
         v6 = MBGetDefaultLog();
@@ -153,7 +153,7 @@
         [(MBOpenURLWrapper *)self _openPrebuddyURL];
         if (objc_opt_respondsToSelector())
         {
-          [v5 openURLWrapper:self didOpenURL:self->_url];
+          [delegate openURLWrapper:self didOpenURL:self->_url];
         }
       }
     }

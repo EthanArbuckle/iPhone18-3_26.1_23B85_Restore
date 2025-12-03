@@ -1,18 +1,18 @@
 @interface CommunicationsFilterBlockListStore
 + (id)sharedInstance;
-- (BOOL)addItemForAllServices:(id)a3;
-- (BOOL)isItemInList:(id)a3 rebuiltBlockList:(id)a4;
-- (BOOL)removeAssociatedItems:(id)a3;
-- (BOOL)removeItemForAllServices:(id)a3;
+- (BOOL)addItemForAllServices:(id)services;
+- (BOOL)isItemInList:(id)list rebuiltBlockList:(id)blockList;
+- (BOOL)removeAssociatedItems:(id)items;
+- (BOOL)removeItemForAllServices:(id)services;
 - (CommunicationsFilterBlockListStore)init;
-- (id)_copyItems:(BOOL)a3;
-- (id)_isItemInList:(id)a3 blockList:(id)a4;
-- (void)_stopSharingFocusStatusWithFilterItem:(id)a3;
+- (id)_copyItems:(BOOL)items;
+- (id)_isItemInList:(id)list blockList:(id)blockList;
+- (void)_stopSharingFocusStatusWithFilterItem:(id)item;
 - (void)_storeDidChangeExternally;
-- (void)_updateStore:(id)a3 revision:(unint64_t)a4 updateKVS:(BOOL)a5 updateLocal:(BOOL)a6 itemsNeedConversion:(BOOL)a7;
+- (void)_updateStore:(id)store revision:(unint64_t)revision updateKVS:(BOOL)s updateLocal:(BOOL)local itemsNeedConversion:(BOOL)conversion;
 - (void)clearBlockList;
 - (void)dealloc;
-- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)a3;
+- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)notification;
 - (void)migrateLegacyDataStoreIfNeeded;
 - (void)synchronizeDataStore;
 - (void)updateDataStore;
@@ -126,10 +126,10 @@ LABEL_4:
   dataStore = self->_dataStore;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CMFSyncAgentDataStore *)self->_dataStore synchronize];
+    synchronize = [(CMFSyncAgentDataStore *)self->_dataStore synchronize];
     v5 = sub_1000015F8();
     v6 = v5;
-    if (v4)
+    if (synchronize)
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
@@ -149,14 +149,14 @@ LABEL_4:
 {
   v3 = sub_100001E4C();
   dispatch_assert_queue_V2(v3);
-  v4 = [(CommunicationsFilterBlockListStore *)self dataStore];
+  dataStore = [(CommunicationsFilterBlockListStore *)self dataStore];
   v8 = 0;
   v5 = objc_alloc_init(NSMutableArray);
   v7 = 0;
-  sub_100001670(v4, v5, 0, &v8, &v7 + 1, &v7);
-  LODWORD(v4) = [v5 count] == 0;
+  sub_100001670(dataStore, v5, 0, &v8, &v7 + 1, &v7);
+  LODWORD(dataStore) = [v5 count] == 0;
 
-  sub_100002D70(v4);
+  sub_100002D70(dataStore);
   v6 = sub_100001E4C();
   dispatch_async(v6, &stru_100018BF0);
 }
@@ -174,9 +174,9 @@ LABEL_4:
   [(CommunicationsFilterBlockListStore *)self updateDataStore];
 }
 
-- (BOOL)addItemForAllServices:(id)a3
+- (BOOL)addItemForAllServices:(id)services
 {
-  if (a3)
+  if (services)
   {
     v14 = 0;
     v5 = objc_alloc_init(NSMutableArray);
@@ -198,7 +198,7 @@ LABEL_4:
       goto LABEL_15;
     }
 
-    v9 = [(CommunicationsFilterBlockListStore *)self _isItemInList:a3 blockList:v5];
+    v9 = [(CommunicationsFilterBlockListStore *)self _isItemInList:services blockList:v5];
     v7 = v9 == 0;
     if (v9)
     {
@@ -212,7 +212,7 @@ LABEL_4:
 
     else
     {
-      [v5 addObject:a3];
+      [v5 addObject:services];
       ++v14;
       v10 = 1;
       v13 = 257;
@@ -220,7 +220,7 @@ LABEL_4:
     }
 
     [(CommunicationsFilterBlockListStore *)self _updateStore:v5 revision:v14 updateKVS:v11 & 1 updateLocal:v10 & 1 itemsNeedConversion:1];
-    [(CommunicationsFilterBlockListStore *)self _stopSharingFocusStatusWithFilterItem:a3];
+    [(CommunicationsFilterBlockListStore *)self _stopSharingFocusStatusWithFilterItem:services];
 LABEL_14:
     sub_100002D70([v5 count] == 0);
 LABEL_15:
@@ -237,22 +237,22 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)removeItemForAllServices:(id)a3
+- (BOOL)removeItemForAllServices:(id)services
 {
   v5 = sub_1000015F8();
   v6 = v5;
-  if (a3)
+  if (services)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = services;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received request to remove %@", buf, 0xCu);
     }
 
     if (_os_feature_enabled_impl())
     {
-      return [(CommunicationsFilterBlockListStore *)self removeAssociatedItems:a3];
+      return [(CommunicationsFilterBlockListStore *)self removeAssociatedItems:services];
     }
 
     *buf = 0;
@@ -260,7 +260,7 @@ LABEL_15:
     [(CommunicationsFilterBlockListStore *)self clearBlockList];
     v8 = objc_alloc_init(NSMutableArray);
     sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], v8, 0, buf, &v13 + 1, &v13);
-    v9 = [(CommunicationsFilterBlockListStore *)self _isItemInList:a3 blockList:v8];
+    v9 = [(CommunicationsFilterBlockListStore *)self _isItemInList:services blockList:v8];
     v7 = v9 != 0;
     if (v9)
     {
@@ -296,14 +296,14 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)removeAssociatedItems:(id)a3
+- (BOOL)removeAssociatedItems:(id)items
 {
   v24 = 0;
   v23 = 0;
   [(CommunicationsFilterBlockListStore *)self clearBlockList];
   v5 = objc_alloc_init(NSMutableArray);
   sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], v5, 0, &v24, &v23 + 1, &v23);
-  if (![(CommunicationsFilterBlockListStore *)self isItemInList:a3 rebuiltBlockList:v5])
+  if (![(CommunicationsFilterBlockListStore *)self isItemInList:items rebuiltBlockList:v5])
   {
     v17 = sub_1000015F8();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -315,7 +315,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v6 = [(CMFBlockedContactsCache *)self->_contactsCache associatedContacts:a3];
+  v6 = [(CMFBlockedContactsCache *)self->_contactsCache associatedContacts:items];
   v7 = [v6 objectForKeyedSubscript:@"associatedFilterItems"];
   v8 = [v6 objectForKeyedSubscript:@"associatedContacts"];
   v9 = sub_1000015F8();
@@ -382,14 +382,14 @@ LABEL_18:
   return v16;
 }
 
-- (id)_copyItems:(BOOL)a3
+- (id)_copyItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v34 = 0;
   v33 = 0;
   [(CommunicationsFilterBlockListStore *)self clearBlockList];
   v5 = objc_alloc_init(NSMutableArray);
-  sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], v5, v3, &v34, &v33 + 1, &v33);
+  sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], v5, itemsCopy, &v34, &v33 + 1, &v33);
   if (v33 & 0x100) != 0 || (v33)
   {
     [CommunicationsFilterBlockListStore _updateStore:"_updateStore:revision:updateKVS:updateLocal:itemsNeedConversion:" revision:v5 updateKVS:v34 updateLocal:v33 & 1u | ((v33 & 0x100) == 0) itemsNeedConversion:?];
@@ -400,15 +400,15 @@ LABEL_18:
     return v5;
   }
 
-  v6 = [(CMFBlockedContactsCache *)[(CommunicationsFilterBlockListStore *)self contactsCache] getBlockedCache];
+  getBlockedCache = [(CMFBlockedContactsCache *)[(CommunicationsFilterBlockListStore *)self contactsCache] getBlockedCache];
   v7 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (itemsCopy)
   {
     v31 = 0uLL;
     v32 = 0uLL;
     v29 = 0uLL;
     v30 = 0uLL;
-    v8 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    v8 = [getBlockedCache countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -419,13 +419,13 @@ LABEL_18:
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(getBlockedCache);
           }
 
           [v7 addObject:{objc_msgSend(*(*(&v29 + 1) + 8 * i), "dictionaryRepresentation")}];
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v9 = [getBlockedCache countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v9);
@@ -488,7 +488,7 @@ LABEL_30:
       while (v17);
     }
 
-    v12 = [v7 arrayByAddingObjectsFromArray:v6];
+    v12 = [v7 arrayByAddingObjectsFromArray:getBlockedCache];
     v22 = v12;
 
     v14 = sub_1000015F8();
@@ -504,13 +504,13 @@ LABEL_30:
   return v12;
 }
 
-- (id)_isItemInList:(id)a3 blockList:(id)a4
+- (id)_isItemInList:(id)list blockList:(id)blockList
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [blockList countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -524,18 +524,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(blockList);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 matchesFilterItem:a3])
+    if ([v10 matchesFilterItem:list])
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [blockList countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -546,26 +546,26 @@ LABEL_3:
   }
 }
 
-- (BOOL)isItemInList:(id)a3 rebuiltBlockList:(id)a4
+- (BOOL)isItemInList:(id)list rebuiltBlockList:(id)blockList
 {
   v13 = 0;
   v12 = 0;
   if (![(CommunicationsFilterBlockListStore *)self cachedBlockList])
   {
-    if (!a4)
+    if (!blockList)
     {
-      a4 = +[NSMutableArray array];
-      sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], a4, 0, &v13, &v12 + 1, &v12);
+      blockList = +[NSMutableArray array];
+      sub_100001670([(CommunicationsFilterBlockListStore *)self dataStore], blockList, 0, &v13, &v12 + 1, &v12);
     }
 
-    [(CommunicationsFilterBlockListStore *)self setCachedBlockList:a4];
+    [(CommunicationsFilterBlockListStore *)self setCachedBlockList:blockList];
   }
 
-  v7 = [(CommunicationsFilterBlockListStore *)self _isItemInList:a3 blockList:[(CommunicationsFilterBlockListStore *)self cachedBlockList]];
+  v7 = [(CommunicationsFilterBlockListStore *)self _isItemInList:list blockList:[(CommunicationsFilterBlockListStore *)self cachedBlockList]];
   if ((v12 & 0x100) != 0 || v12 == 1)
   {
-    v8 = [(CommunicationsFilterBlockListStore *)self cachedBlockList];
-    [(CommunicationsFilterBlockListStore *)self _updateStore:v8 revision:v13 updateKVS:v12 updateLocal:HIBYTE(v12) itemsNeedConversion:1];
+    cachedBlockList = [(CommunicationsFilterBlockListStore *)self cachedBlockList];
+    [(CommunicationsFilterBlockListStore *)self _updateStore:cachedBlockList revision:v13 updateKVS:v12 updateLocal:HIBYTE(v12) itemsNeedConversion:1];
   }
 
   v9 = _os_feature_enabled_impl();
@@ -577,29 +577,29 @@ LABEL_3:
 
   if (v10 && !v7)
   {
-    LOBYTE(v9) = [(CMFBlockedContactsCache *)self->_contactsCache isItemBlocked:a3];
+    LOBYTE(v9) = [(CMFBlockedContactsCache *)self->_contactsCache isItemBlocked:list];
   }
 
   return v9;
 }
 
-- (void)_updateStore:(id)a3 revision:(unint64_t)a4 updateKVS:(BOOL)a5 updateLocal:(BOOL)a6 itemsNeedConversion:(BOOL)a7
+- (void)_updateStore:(id)store revision:(unint64_t)revision updateKVS:(BOOL)s updateLocal:(BOOL)local itemsNeedConversion:(BOOL)conversion
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  if (a5 || a6)
+  conversionCopy = conversion;
+  localCopy = local;
+  sCopy = s;
+  if (s || local)
   {
     if (_os_feature_enabled_impl())
     {
-      v32 = a4;
-      v33 = self;
+      revisionCopy = revision;
+      selfCopy = self;
       v13 = objc_alloc_init(NSMutableArray);
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v14 = [a3 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v14 = [store countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v14)
       {
         v15 = v14;
@@ -611,7 +611,7 @@ LABEL_3:
           {
             if (*v35 != v16)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(store);
             }
 
             v18 = *(*(&v34 + 1) + 8 * v17);
@@ -634,7 +634,7 @@ LABEL_3:
           }
 
           while (v15 != v17);
-          v15 = [a3 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v15 = [store countByEnumeratingWithState:&v34 objects:v42 count:16];
         }
 
         while (v15);
@@ -647,22 +647,22 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Regenerating contacts cache", buf, 2u);
       }
 
-      self = v33;
-      [(CMFBlockedContactsCache *)[(CommunicationsFilterBlockListStore *)v33 contactsCache] updateCacheWithBlocklist:v13];
+      self = selfCopy;
+      [(CMFBlockedContactsCache *)[(CommunicationsFilterBlockListStore *)selfCopy contactsCache] updateCacheWithBlocklist:v13];
 
-      a4 = v32;
+      revision = revisionCopy;
     }
 
-    if (v9 && v8)
+    if (sCopy && localCopy)
     {
-      if (v7)
+      if (conversionCopy)
       {
-        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [store count]);
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v22 = [a3 countByEnumeratingWithState:&v38 objects:buf count:16];
+        v22 = [store countByEnumeratingWithState:&v38 objects:buf count:16];
         if (v22)
         {
           v23 = v22;
@@ -674,7 +674,7 @@ LABEL_3:
             {
               if (*v39 != v24)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(store);
               }
 
               -[NSMutableArray addObject:](v21, "addObject:", [*(*(&v38 + 1) + 8 * v25) dictionaryRepresentation]);
@@ -682,21 +682,21 @@ LABEL_3:
             }
 
             while (v23 != v25);
-            v23 = [a3 countByEnumeratingWithState:&v38 objects:buf count:16];
+            v23 = [store countByEnumeratingWithState:&v38 objects:buf count:16];
           }
 
           while (v23);
         }
 
-        a3 = v21;
+        store = v21;
       }
 
-      v26 = +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 1), @"__kCMFBlockListStoreVersionKey", a3, @"__kCMFBlockListStoreArrayKey", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", a4), @"__kCMFBlockListStoreRevisionKey", +[NSDate date], @"__kCMFBlockListStoreRevisionTimestampKey", @"__kCMFBlockListStoreTypeValue", @"__kCMFBlockListStoreTypeKey", 0);
+      v26 = +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 1), @"__kCMFBlockListStoreVersionKey", store, @"__kCMFBlockListStoreArrayKey", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", revision), @"__kCMFBlockListStoreRevisionKey", +[NSDate date], @"__kCMFBlockListStoreRevisionTimestampKey", @"__kCMFBlockListStoreTypeValue", @"__kCMFBlockListStoreTypeKey", 0);
     }
 
     else
     {
-      v26 = v9 ? IMGetAppValueForKey() : [(CMFSyncAgentDataStore *)[(CommunicationsFilterBlockListStore *)self dataStore] objectForKey:@"__kCMFBlockListStoreTopLevelKey"];
+      v26 = sCopy ? IMGetAppValueForKey() : [(CMFSyncAgentDataStore *)[(CommunicationsFilterBlockListStore *)self dataStore] objectForKey:@"__kCMFBlockListStoreTopLevelKey"];
     }
 
     v27 = v26;
@@ -709,14 +709,14 @@ LABEL_3:
         *buf = 138412802;
         v44 = v31;
         v45 = 1024;
-        v46 = v9;
+        v46 = sCopy;
         v47 = 1024;
-        v48 = v8;
+        v48 = localCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "updating store to %@, updateKVS: %d, updateLocal: %d", buf, 0x18u);
-        if (!v9)
+        if (!sCopy)
         {
 LABEL_37:
-          if (!v8)
+          if (!localCopy)
           {
             goto LABEL_39;
           }
@@ -725,13 +725,13 @@ LABEL_37:
         }
       }
 
-      else if (!v9)
+      else if (!sCopy)
       {
         goto LABEL_37;
       }
 
       [(CMFSyncAgentDataStore *)[(CommunicationsFilterBlockListStore *)self dataStore] setObject:v27 forKey:@"__kCMFBlockListStoreTopLevelKey"];
-      if (!v8)
+      if (!localCopy)
       {
 LABEL_39:
         v29 = sub_1000015F8();
@@ -741,9 +741,9 @@ LABEL_39:
           *buf = 138412802;
           v44 = v30;
           v45 = 1024;
-          v46 = v9;
+          v46 = sCopy;
           v47 = 1024;
-          v48 = v8;
+          v48 = localCopy;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "store after updating %@, updateKVS:%d, updateLocal:%d", buf, 0x18u);
         }
 
@@ -758,34 +758,34 @@ LABEL_38:
   }
 }
 
-- (void)_stopSharingFocusStatusWithFilterItem:(id)a3
+- (void)_stopSharingFocusStatusWithFilterItem:(id)item
 {
-  v3 = [a3 unformattedID];
-  if ([v3 length])
+  unformattedID = [item unformattedID];
+  if ([unformattedID length])
   {
     v4 = sub_1000015F8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = unformattedID;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Asking StatusKit to remove sharing of focus status with handle %@", &v7, 0xCu);
     }
 
     v5 = IMWeakLinkClass();
     v6 = IMWeakLinkClass();
-    [objc_msgSend([v6 alloc] initWithStatusTypeIdentifier:{*IMWeakLinkSymbol()), "removeInvitedHandle:completion:", objc_msgSend([v5 alloc], "initWithString:", v3), &stru_100018C30}];
+    [objc_msgSend([v6 alloc] initWithStatusTypeIdentifier:{*IMWeakLinkSymbol()), "removeInvitedHandle:completion:", objc_msgSend([v5 alloc], "initWithString:", unformattedID), &stru_100018C30}];
   }
 }
 
-- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)a3
+- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  if (!v5)
+  userInfo = [notification userInfo];
+  if (!userInfo)
   {
     goto LABEL_7;
   }
 
-  v6 = [v5 objectForKeyedSubscript:NSUbiquitousKeyValueStoreChangeReasonKey];
+  v6 = [userInfo objectForKeyedSubscript:NSUbiquitousKeyValueStoreChangeReasonKey];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -807,7 +807,7 @@ LABEL_7:
     v9[2] = sub_1000041DC;
     v9[3] = &unk_100018C58;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = notification;
     dispatch_async(v8, v9);
   }
 }

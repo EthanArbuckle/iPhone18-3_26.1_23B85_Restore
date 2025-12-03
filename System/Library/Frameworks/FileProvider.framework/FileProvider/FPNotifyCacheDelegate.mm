@@ -1,16 +1,16 @@
 @interface FPNotifyCacheDelegate
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation FPNotifyCacheDelegate
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    notify_cancel([v4 intValue]);
+    notify_cancel([objectCopy intValue]);
   }
 }
 

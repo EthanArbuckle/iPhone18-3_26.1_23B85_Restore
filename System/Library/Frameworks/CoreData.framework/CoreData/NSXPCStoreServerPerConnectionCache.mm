@@ -1,23 +1,23 @@
 @interface NSXPCStoreServerPerConnectionCache
-- (NSXPCStoreServerPerConnectionCache)initWithCoordinator:(id)a3;
+- (NSXPCStoreServerPerConnectionCache)initWithCoordinator:(id)coordinator;
 - (id)releaseQueryGenerationForRemoteGeneration:(id *)result;
-- (uint64_t)localGenerationForRemoteGeneration:(id *)a1;
+- (uint64_t)localGenerationForRemoteGeneration:(id *)generation;
 - (void)dealloc;
-- (void)registerQueryGeneration:(uint64_t)a3 forRemoteGeneration:;
+- (void)registerQueryGeneration:(uint64_t)generation forRemoteGeneration:;
 - (void)setClientIdentifier:(void *)result;
 @end
 
 @implementation NSXPCStoreServerPerConnectionCache
 
-- (NSXPCStoreServerPerConnectionCache)initWithCoordinator:(id)a3
+- (NSXPCStoreServerPerConnectionCache)initWithCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = NSXPCStoreServerPerConnectionCache;
   v4 = [(NSXPCStoreServerPerConnectionCache *)&v7 init];
   if (v4)
   {
-    v4->_coordinator = a3;
-    v5 = -[NSSQLitePrefetchRequestCache initWithSQLCore:]([NSSQLitePrefetchRequestCache alloc], "initWithSQLCore:", [objc_msgSend(a3 "persistentStores")]);
+    v4->_coordinator = coordinator;
+    v5 = -[NSSQLitePrefetchRequestCache initWithSQLCore:]([NSSQLitePrefetchRequestCache alloc], "initWithSQLCore:", [objc_msgSend(coordinator "persistentStores")]);
     v4->_generationTokenMap = 0;
     v4->_transaction = 0;
     v4->_prefetchRequestCache = v5;
@@ -45,13 +45,13 @@
   [(NSXPCStoreServerPerConnectionCache *)&v4 dealloc];
 }
 
-- (uint64_t)localGenerationForRemoteGeneration:(id *)a1
+- (uint64_t)localGenerationForRemoteGeneration:(id *)generation
 {
   v2 = 0;
-  if (a1 && a2)
+  if (generation && a2)
   {
-    objc_sync_enter(a1);
-    v5 = [a1[3] objectForKey:a2];
+    objc_sync_enter(generation);
+    v5 = [generation[3] objectForKey:a2];
     if (v5)
     {
       v2 = *(v5 + 8);
@@ -62,13 +62,13 @@
       v2 = 0;
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(generation);
   }
 
   return v2;
 }
 
-- (void)registerQueryGeneration:(uint64_t)a3 forRemoteGeneration:
+- (void)registerQueryGeneration:(uint64_t)generation forRemoteGeneration:
 {
   if (result)
   {
@@ -86,7 +86,7 @@
       *(v5 + 4) = os_transaction_create();
     }
 
-    v7 = [*(v5 + 3) objectForKey:a3];
+    v7 = [*(v5 + 3) objectForKey:generation];
     if (v7)
     {
       goto LABEL_12;
@@ -110,7 +110,7 @@
       v7 = 0;
     }
 
-    [*(v5 + 3) setObject:v7 forKey:a3];
+    [*(v5 + 3) setObject:v7 forKey:generation];
 
     if (v7)
     {

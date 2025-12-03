@@ -1,59 +1,59 @@
 @interface PTCinematographyExistingTrack
-- (PTCinematographyExistingTrack)initWithDetectionType:(unint64_t)a3 trackIdentifier:(int64_t)a4 groupIdentifier:(int64_t)a5;
-- (id)_initWithExistingTrack:(id)a3;
-- (id)detectionAtOrBeforeTime:(id *)a3;
-- (id)detectionInFrame:(id)a3;
-- (id)detectionNearestTime:(id *)a3;
-- (id)detectionsInTimeRange:(id *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PTCinematographyExistingTrack)initWithDetectionType:(unint64_t)type trackIdentifier:(int64_t)identifier groupIdentifier:(int64_t)groupIdentifier;
+- (id)_initWithExistingTrack:(id)track;
+- (id)detectionAtOrBeforeTime:(id *)time;
+- (id)detectionInFrame:(id)frame;
+- (id)detectionNearestTime:(id *)time;
+- (id)detectionsInTimeRange:(id *)range;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PTCinematographyExistingTrack
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 _initWithExistingTrack:self];
 }
 
-- (id)_initWithExistingTrack:(id)a3
+- (id)_initWithExistingTrack:(id)track
 {
-  v4 = a3;
-  v5 = [v4 detectionType];
-  v6 = [v4 trackIdentifier];
-  v7 = [v4 groupIdentifier];
+  trackCopy = track;
+  detectionType = [trackCopy detectionType];
+  trackIdentifier = [trackCopy trackIdentifier];
+  groupIdentifier = [trackCopy groupIdentifier];
 
-  return [(PTCinematographyExistingTrack *)self initWithDetectionType:v5 trackIdentifier:v6 groupIdentifier:v7];
+  return [(PTCinematographyExistingTrack *)self initWithDetectionType:detectionType trackIdentifier:trackIdentifier groupIdentifier:groupIdentifier];
 }
 
-- (PTCinematographyExistingTrack)initWithDetectionType:(unint64_t)a3 trackIdentifier:(int64_t)a4 groupIdentifier:(int64_t)a5
+- (PTCinematographyExistingTrack)initWithDetectionType:(unint64_t)type trackIdentifier:(int64_t)identifier groupIdentifier:(int64_t)groupIdentifier
 {
   v10.receiver = self;
   v10.super_class = PTCinematographyExistingTrack;
-  v7 = [(PTCinematographyTrack *)&v10 initWithDetectionType:a3];
+  v7 = [(PTCinematographyTrack *)&v10 initWithDetectionType:type];
   v8 = v7;
   if (v7)
   {
-    [(PTCinematographyTrack *)v7 setTrackIdentifier:a4];
-    [(PTCinematographyTrack *)v8 setGroupIdentifier:a5];
+    [(PTCinematographyTrack *)v7 setTrackIdentifier:identifier];
+    [(PTCinematographyTrack *)v8 setGroupIdentifier:groupIdentifier];
     [(PTCinematographyTrack *)v8 setUserCreated:0];
   }
 
   return v8;
 }
 
-- (id)detectionInFrame:(id)a3
+- (id)detectionInFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 detectionForTrackIdentifier:{-[PTCinematographyTrack trackIdentifier](self, "trackIdentifier")}];
+  frameCopy = frame;
+  v5 = [frameCopy detectionForTrackIdentifier:{-[PTCinematographyTrack trackIdentifier](self, "trackIdentifier")}];
 
   return v5;
 }
 
-- (id)detectionNearestTime:(id *)a3
+- (id)detectionNearestTime:(id *)time
 {
-  time2.start = *a3;
+  time2.start = *time;
   v5 = [(PTCinematographyExistingTrack *)self detectionAtOrBeforeTime:&time2];
   v6 = v5;
   if (v5)
@@ -66,8 +66,8 @@
     memset(&time2, 0, 24);
   }
 
-  *&time1.start.value = *&a3->var0;
-  time1.start.epoch = a3->var3;
+  *&time1.start.value = *&time->var0;
+  time1.start.epoch = time->var3;
   if (CMTimeCompare(&time1.start, &time2.start))
   {
     memset(&v17, 0, sizeof(v17));
@@ -81,12 +81,12 @@
       memset(&time2, 0, 24);
     }
 
-    *&time1.start.value = *&a3->var0;
-    time1.start.epoch = a3->var3;
+    *&time1.start.value = *&time->var0;
+    time1.start.epoch = time->var3;
     CMTimeSubtract(&v17, &time1.start, &time2.start);
     memset(&time2, 0, sizeof(time2));
-    *&time1.start.value = *&a3->var0;
-    time1.start.epoch = a3->var3;
+    *&time1.start.value = *&time->var0;
+    time1.start.epoch = time->var3;
     duration = v17;
     CMTimeRangeMake(&time2, &time1.start, &duration);
     time1 = time2;
@@ -105,7 +105,7 @@
         memset(&duration, 0, sizeof(duration));
       }
 
-      v13 = *a3;
+      v13 = *time;
       CMTimeSubtract(&time1.start, &duration, &v13);
       duration = v17;
       v10 = CMTimeCompare(&time1.start, &duration);
@@ -122,25 +122,25 @@
   return v6;
 }
 
-- (id)detectionAtOrBeforeTime:(id *)a3
+- (id)detectionAtOrBeforeTime:(id *)time
 {
-  v5 = [(PTCinematographyTrack *)self script];
-  v6 = [(PTCinematographyTrack *)self trackIdentifier];
-  v9 = *a3;
-  v7 = [v5 _detectionWithTrackIdentifier:v6 atOrBeforeTime:&v9];
+  script = [(PTCinematographyTrack *)self script];
+  trackIdentifier = [(PTCinematographyTrack *)self trackIdentifier];
+  v9 = *time;
+  v7 = [script _detectionWithTrackIdentifier:trackIdentifier atOrBeforeTime:&v9];
 
   return v7;
 }
 
-- (id)detectionsInTimeRange:(id *)a3
+- (id)detectionsInTimeRange:(id *)range
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(PTCinematographyTrack *)self script];
-  v6 = *&a3->var0.var3;
-  v21[0] = *&a3->var0.var0;
+  script = [(PTCinematographyTrack *)self script];
+  v6 = *&range->var0.var3;
+  v21[0] = *&range->var0.var0;
   v21[1] = v6;
-  v21[2] = *&a3->var1.var1;
-  v7 = [v5 framesInTimeRange:v21];
+  v21[2] = *&range->var1.var1;
+  v7 = [script framesInTimeRange:v21];
 
   v8 = objc_opt_new();
   v17 = 0u;

@@ -2,32 +2,32 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-+ (id)requestEncoderWithSharedProperties:(id)a3 task:(id)a4;
-- (AMSMercuryCacheFetchTask)initWithAccount:(id)a3 bag:(id)a4 cacheTypeIDs:(id)a5 clientIdentifier:(id)a6 clientVersion:(id)a7;
-- (id)_updateEndpointURLRequestWithError:(id *)a3;
++ (id)requestEncoderWithSharedProperties:(id)properties task:(id)task;
+- (AMSMercuryCacheFetchTask)initWithAccount:(id)account bag:(id)bag cacheTypeIDs:(id)ds clientIdentifier:(id)identifier clientVersion:(id)version;
+- (id)_updateEndpointURLRequestWithError:(id *)error;
 - (id)perform;
 @end
 
 @implementation AMSMercuryCacheFetchTask
 
-- (AMSMercuryCacheFetchTask)initWithAccount:(id)a3 bag:(id)a4 cacheTypeIDs:(id)a5 clientIdentifier:(id)a6 clientVersion:(id)a7
+- (AMSMercuryCacheFetchTask)initWithAccount:(id)account bag:(id)bag cacheTypeIDs:(id)ds clientIdentifier:(id)identifier clientVersion:(id)version
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v20 = a6;
-  v16 = a7;
+  accountCopy = account;
+  bagCopy = bag;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  versionCopy = version;
   v21.receiver = self;
   v21.super_class = AMSMercuryCacheFetchTask;
   v17 = [(AMSTask *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_account, a3);
-    objc_storeStrong(&v18->_bag, a4);
-    objc_storeStrong(&v18->_cacheTypeIDs, a5);
-    objc_storeStrong(&v18->_clientIdentifier, a6);
-    objc_storeStrong(&v18->_clientVersion, a7);
+    objc_storeStrong(&v17->_account, account);
+    objc_storeStrong(&v18->_bag, bag);
+    objc_storeStrong(&v18->_cacheTypeIDs, ds);
+    objc_storeStrong(&v18->_clientIdentifier, identifier);
+    objc_storeStrong(&v18->_clientVersion, version);
   }
 
   return v18;
@@ -242,28 +242,28 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_updateEndpointURLRequestWithError:(id *)a3
+- (id)_updateEndpointURLRequestWithError:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
   v5 = [(AMSMercuryCacheFetchTask *)self bag];
   v6 = [v5 stringForKey:@"mercury-sync-media-api-url"];
-  v7 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
   v62 = 0;
-  v8 = [v7 resultWithError:&v62];
+  v8 = [valuePromise resultWithError:&v62];
   v9 = v62;
 
   v10 = [(AMSMercuryCacheFetchTask *)self bag];
   v11 = [v10 stringForKey:@"countryCode"];
-  v12 = [v11 valuePromise];
+  valuePromise2 = [v11 valuePromise];
   v61 = v9;
-  v13 = [v12 resultWithError:&v61];
+  v13 = [valuePromise2 resultWithError:&v61];
   v14 = v61;
 
   v15 = [(AMSMercuryCacheFetchTask *)self bag];
   v16 = [v15 stringForKey:@"language-tag"];
-  v17 = [v16 valuePromise];
+  valuePromise3 = [v16 valuePromise];
   v60 = v14;
-  v18 = [v17 resultWithError:&v60];
+  v18 = [valuePromise3 resultWithError:&v60];
   v19 = v60;
 
   if (v19)
@@ -274,26 +274,26 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [(AMSMercuryCacheFetchTask *)self logKey];
+      logKey = [(AMSMercuryCacheFetchTask *)self logKey];
       *buf = 138543874;
       v64 = v22;
       v65 = 2114;
-      v66 = v24;
+      v66 = logKey;
       v67 = 2114;
       v68 = v19;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error fetching bag values for url generation %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error fetching bag values for url generation %{public}@", buf, 0x20u);
     }
 
-    if (a3)
+    if (error)
     {
       v25 = v19;
       v26 = 0;
-      *a3 = v19;
+      *error = v19;
     }
 
     else
@@ -304,9 +304,9 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
 
   else
   {
-    v27 = [(AMSMercuryCacheFetchTask *)self cacheTypeIDs];
-    v28 = [v27 allObjects];
-    v29 = [v28 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+    cacheTypeIDs = [(AMSMercuryCacheFetchTask *)self cacheTypeIDs];
+    allObjects = [cacheTypeIDs allObjects];
+    v29 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
     v30 = [v29 componentsJoinedByString:{@", "}];
 
     v59 = v13;
@@ -341,22 +341,22 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
         v38 = +[AMSLogConfig sharedConfig];
       }
 
-      v39 = [v38 OSLogObject];
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v38 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v40 = objc_opt_class();
         v51 = v40;
-        v41 = [(AMSMercuryCacheFetchTask *)self logKey];
+        logKey2 = [(AMSMercuryCacheFetchTask *)self logKey];
         AMSLogableURLRequest(v26);
         v53 = v18;
         v43 = v42 = v8;
         *buf = 138543874;
         v64 = v40;
         v65 = 2114;
-        v66 = v41;
+        v66 = logKey2;
         v67 = 2114;
         v68 = v43;
-        _os_log_impl(&dword_192869000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request generated %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request generated %{public}@", buf, 0x20u);
 
         v8 = v42;
         v18 = v53;
@@ -374,30 +374,30 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
         v44 = +[AMSLogConfig sharedConfig];
       }
 
-      v45 = [v44 OSLogObject];
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v44 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v54 = v18;
         v46 = v8;
         v47 = objc_opt_class();
         v52 = v47;
-        v48 = [(AMSMercuryCacheFetchTask *)self logKey];
+        logKey3 = [(AMSMercuryCacheFetchTask *)self logKey];
         *buf = 138543874;
         v64 = v47;
         v8 = v46;
         v18 = v54;
         v65 = 2114;
-        v66 = v48;
+        v66 = logKey3;
         v67 = 2114;
         v68 = v19;
-        _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error fetching bag values for url generation %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error fetching bag values for url generation %{public}@", buf, 0x20u);
       }
 
-      if (a3)
+      if (error)
       {
         v49 = v19;
         v26 = 0;
-        *a3 = v19;
+        *error = v19;
       }
 
       else
@@ -412,22 +412,22 @@ id __35__AMSMercuryCacheFetchTask_perform__block_invoke(uint64_t a1)
   return v26;
 }
 
-+ (id)requestEncoderWithSharedProperties:(id)a3 task:(id)a4
++ (id)requestEncoderWithSharedProperties:(id)properties task:(id)task
 {
-  v5 = a4;
-  v6 = a3;
+  taskCopy = task;
+  propertiesCopy = properties;
   v7 = [AMSMediaRequestEncoder alloc];
-  v8 = [v6 tokenService];
+  tokenService = [propertiesCopy tokenService];
 
-  v9 = [v5 bag];
-  v10 = [(AMSMediaRequestEncoder *)v7 initWithTokenService:v8 bag:v9];
+  v9 = [taskCopy bag];
+  v10 = [(AMSMediaRequestEncoder *)v7 initWithTokenService:tokenService bag:v9];
 
-  v11 = [v5 account];
-  [(AMSMediaRequestEncoder *)v10 setAccount:v11];
+  account = [taskCopy account];
+  [(AMSMediaRequestEncoder *)v10 setAccount:account];
 
-  v12 = [v5 clientInfo];
+  clientInfo = [taskCopy clientInfo];
 
-  [(AMSMediaRequestEncoder *)v10 setClientInfo:v12];
+  [(AMSMediaRequestEncoder *)v10 setClientInfo:clientInfo];
   v13 = objc_alloc_init(AMSMediaResponseDecoder);
   [(AMSMediaRequestEncoder *)v10 setResponseDecoder:v13];
 
@@ -472,9 +472,9 @@ void __48__AMSMercuryCacheFetchTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

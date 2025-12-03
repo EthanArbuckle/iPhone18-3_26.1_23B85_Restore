@@ -5,9 +5,9 @@
 + (BOOL)isHomePodNoTTSPerfTestEnabled;
 + (BOOL)isInfoDomainsRFEnabled;
 + (BOOL)isLocationSearchContinuityEnabled;
-+ (BOOL)isPersistentIDLoggingDisabledForType:(int64_t)a3;
-+ (BOOL)isSiriPommesEnabledForLanguage:(id)a3;
-+ (BOOL)isSiriUODAvailableForLanguage:(id)a3;
++ (BOOL)isPersistentIDLoggingDisabledForType:(int64_t)type;
++ (BOOL)isSiriPommesEnabledForLanguage:(id)language;
++ (BOOL)isSiriUODAvailableForLanguage:(id)language;
 + (BOOL)isStateFeedbackEnabled;
 + (id)featureFlags;
 + (id)sharedInstance;
@@ -184,15 +184,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)sharedInstance
@@ -214,21 +214,21 @@ void __32__AFFeatureFlags_sharedInstance__block_invoke()
   sharedInstance_sFeatureFlags = v0;
 }
 
-+ (BOOL)isPersistentIDLoggingDisabledForType:(int64_t)a3
++ (BOOL)isPersistentIDLoggingDisabledForType:(int64_t)type
 {
-  if (a3 > 0x12)
+  if (type > 0x12)
   {
     return 0;
   }
 
-  v3 = off_1E7344608[a3];
+  v3 = off_1E7344608[type];
   return _os_feature_enabled_impl();
 }
 
-+ (BOOL)isSiriPommesEnabledForLanguage:(id)a3
++ (BOOL)isSiriPommesEnabledForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = v3;
+  languageCopy = language;
+  v4 = languageCopy;
   if (isSiriPommesEnabledForLanguage__once != -1)
   {
     dispatch_once(&isSiriPommesEnabledForLanguage__once, &__block_literal_global_267_14566);
@@ -242,16 +242,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v3)
+  if (!languageCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
   v5 = [isSiriPommesEnabledForLanguage__supportByLanguage objectForKey:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (!v6 || !_os_feature_enabled_impl())
+  if (!bOOLValue || !_os_feature_enabled_impl())
   {
     goto LABEL_7;
   }
@@ -422,22 +422,22 @@ void __64__AFFeatureFlags_SWEFeatureFlags__isHomePodNoTTSPerfTestEnabled__block_
   isHomePodNoTTSPerfTestEnabled_isDefaultSet = [v0 BOOLForKey:@"HomePodNoTTSPerfTestEnabled"];
 }
 
-+ (BOOL)isSiriUODAvailableForLanguage:(id)a3
++ (BOOL)isSiriUODAvailableForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   if (isSiriUODAvailableForLanguage__once != -1)
   {
     dispatch_once(&isSiriUODAvailableForLanguage__once, &__block_literal_global_42_14753);
   }
 
-  if ([isSiriUODAvailableForLanguage__top13Locales containsObject:v3])
+  if ([isSiriUODAvailableForLanguage__top13Locales containsObject:languageCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [isSiriUODAvailableForLanguage__bottom28Locales containsObject:v3];
+    v4 = [isSiriUODAvailableForLanguage__bottom28Locales containsObject:languageCopy];
   }
 
   return v4;

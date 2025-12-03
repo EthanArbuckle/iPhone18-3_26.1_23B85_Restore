@@ -1,57 +1,57 @@
 @interface PGMeaningfulEventMemoryGenerator
 + (id)_invalidMeaningLabelsForMemories;
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
 @end
 
 @implementation PGMeaningfulEventMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
-  v12 = [v10 memoryMomentNodes];
-  if ([v12 count] == 1)
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  if ([memoryMomentNodes count] == 1)
   {
-    v13 = [v10 memoryFeatureNodes];
-    v14 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v13];
+    memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+    loggingConnection2 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
 
-    if ([v14 count]== 1)
+    if ([loggingConnection2 count]== 1)
     {
-      v27 = [(PGGraphEdgeCollection *)PGGraphMeaningEdgeCollection edgesFromNodes:v12 toNodes:v14];
-      v15 = [v27 anyEdge];
+      v27 = [(PGGraphEdgeCollection *)PGGraphMeaningEdgeCollection edgesFromNodes:memoryMomentNodes toNodes:loggingConnection2];
+      anyEdge = [v27 anyEdge];
       v16 = [PGMeaningfulEventTitleGenerator alloc];
-      v17 = [v12 anyNode];
-      v18 = [v15 meaningLabel];
-      v19 = v11;
-      v20 = [v15 isReliable];
-      v21 = [v10 memoryFeatureNodes];
-      v22 = v20;
-      v11 = v19;
-      v23 = [(PGMeaningfulEventTitleGenerator *)v16 initWithCollection:v17 meaningLabel:v18 meaningIsReliable:v22 titleGenerationContext:v19 featureNodes:v21];
+      anyNode = [memoryMomentNodes anyNode];
+      meaningLabel = [anyEdge meaningLabel];
+      v19 = contextCopy;
+      isReliable = [anyEdge isReliable];
+      memoryFeatureNodes2 = [memoryCopy memoryFeatureNodes];
+      v22 = isReliable;
+      contextCopy = v19;
+      v23 = [(PGMeaningfulEventTitleGenerator *)v16 initWithCollection:anyNode meaningLabel:meaningLabel meaningIsReliable:v22 titleGenerationContext:v19 featureNodes:memoryFeatureNodes2];
 
       goto LABEL_10;
     }
 
-    v24 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v29 = [v14 count];
-      _os_log_error_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_ERROR, "[PGMeaningfulEventMemoryGenerator] One meaning node expected, found %d", buf, 8u);
+      v29 = [loggingConnection2 count];
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGMeaningfulEventMemoryGenerator] One meaning node expected, found %d", buf, 8u);
     }
   }
 
   else
   {
-    v14 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    loggingConnection2 = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v29 = [v12 count];
-      _os_log_error_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_ERROR, "[PGMeaningfulEventMemoryGenerator] One moment node expected, found %d", buf, 8u);
+      v29 = [memoryMomentNodes count];
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGMeaningfulEventMemoryGenerator] One moment node expected, found %d", buf, 8u);
     }
   }
 
@@ -63,75 +63,75 @@ LABEL_10:
   return v23;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 memoryMomentNodes];
-  v9 = [v6 memoryFeatureNodes];
-  v10 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v9];
-  v11 = [v10 childMeaningNodes];
-  v12 = [v11 count];
+  memoryCopy = memory;
+  graphCopy = graph;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v10 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
+  childMeaningNodes = [v10 childMeaningNodes];
+  v12 = [childMeaningNodes count];
 
   if (v12)
   {
-    v13 = [v10 childMeaningNodes];
+    childMeaningNodes2 = [v10 childMeaningNodes];
 
-    v10 = v13;
+    v10 = childMeaningNodes2;
   }
 
-  v14 = [v10 labels];
-  v15 = [v14 anyObject];
+  labels = [v10 labels];
+  anyObject = [labels anyObject];
 
-  v16 = [v15 isEqualToString:@"HolidayEvent"];
-  v27 = self;
-  v17 = [(PGMemoryGenerator *)self memoryCurationSession];
-  v18 = [v17 curationManager];
-  v19 = [v18 curationCriteriaFactory];
-  v20 = v19;
+  v16 = [anyObject isEqualToString:@"HolidayEvent"];
+  selfCopy = self;
+  memoryCurationSession = [(PGMemoryGenerator *)self memoryCurationSession];
+  curationManager = [memoryCurationSession curationManager];
+  curationCriteriaFactory = [curationManager curationCriteriaFactory];
+  v20 = curationCriteriaFactory;
   if (v16)
   {
-    v21 = [v19 curationCriteriaWithMeaningLabel:v15 featureNodes:v9 inGraph:v7 client:1];
+    v21 = [curationCriteriaFactory curationCriteriaWithMeaningLabel:anyObject featureNodes:memoryFeatureNodes inGraph:graphCopy client:1];
   }
 
   else
   {
-    [v8 anyNode];
-    v26 = v9;
-    v23 = v22 = v8;
-    v21 = [v20 curationCriteriaWithCollection:v23 meaningLabel:v15 inGraph:v7 client:1];
+    [memoryMomentNodes anyNode];
+    v26 = memoryFeatureNodes;
+    v23 = v22 = memoryMomentNodes;
+    v21 = [v20 curationCriteriaWithCollection:v23 meaningLabel:anyObject inGraph:graphCopy client:1];
 
-    v8 = v22;
-    v9 = v26;
+    memoryMomentNodes = v22;
+    memoryFeatureNodes = v26;
   }
 
-  v28.receiver = v27;
+  v28.receiver = selfCopy;
   v28.super_class = PGMeaningfulEventMemoryGenerator;
-  v24 = [(PGMemoryGenerator *)&v28 keyAssetCurationOptionsWithTriggeredMemory:v6 inGraph:v7];
+  v24 = [(PGMemoryGenerator *)&v28 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graphCopy];
 
   [v24 setCurationCriteria:v21];
 
   return v24;
 }
 
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block
 {
   v92[2] = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:v9];
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  v10 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:blockCopy];
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 0;
   v64 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:v8];
+  v11 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:graphCopy];
   if ([v11 count])
   {
-    v62 = [objc_opt_class() _invalidMeaningLabelsForMemories];
-    v12 = [v62 allObjects];
-    v13 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v12 inGraph:v8];
+    _invalidMeaningLabelsForMemories = [objc_opt_class() _invalidMeaningLabelsForMemories];
+    allObjects = [_invalidMeaningLabelsForMemories allObjects];
+    v13 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:allObjects inGraph:graphCopy];
 
     v14 = [v11 collectionBySubtracting:v13];
 
@@ -169,9 +169,9 @@ LABEL_51:
       goto LABEL_51;
     }
 
-    v15 = [v14 reliableMeaningEdges];
-    v16 = [v15 momentNodes];
-    v17 = [v16 momentNodesWithContentScoreAbove:0.5];
+    reliableMeaningEdges = [v14 reliableMeaningEdges];
+    momentNodes = [reliableMeaningEdges momentNodes];
+    v17 = [momentNodes momentNodesWithContentScoreAbove:0.5];
 
     if (![v17 count])
     {
@@ -210,10 +210,10 @@ LABEL_50:
 
     if ([v18 count])
     {
-      v19 = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
-      v61 = [v19 momentNodesWithBlockedFeature];
+      momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
+      momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
-      v17 = [v18 collectionBySubtracting:v61];
+      v17 = [v18 collectionBySubtracting:momentNodesWithBlockedFeature];
 
       if (![v17 count])
       {
@@ -246,32 +246,32 @@ LABEL_50:
         goto LABEL_47;
       }
 
-      v20 = [(PGMemoryGenerator *)self memoryGenerationContext];
-      v59 = [v20 momentNodesAtSensitiveLocationsInGraph:v8];
+      memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+      v59 = [memoryGenerationContext momentNodesAtSensitiveLocationsInGraph:graphCopy];
 
       v60 = [v17 collectionBySubtracting:v59];
 
-      v54 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:12 inGraph:v8];
-      v52 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:13 inGraph:v8];
+      v54 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:12 inGraph:graphCopy];
+      v52 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:13 inGraph:graphCopy];
       v92[0] = @"Concert";
       v92[1] = @"Performance";
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:2];
-      v51 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v21 inGraph:v8];
+      v51 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v21 inGraph:graphCopy];
 
       v22 = MEMORY[0x277CBEB98];
-      v23 = [MEMORY[0x277D27780] musicConcerts];
-      v91[0] = v23;
-      v24 = [MEMORY[0x277D27780] festivalsAndFairs];
-      v91[1] = v24;
+      musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+      v91[0] = musicConcerts;
+      festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+      v91[1] = festivalsAndFairs;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:2];
       v58 = [v22 setWithArray:v25];
 
-      v50 = [PGGraphPublicEventNodeCollection publicEventNodesWithCategories:v58 inGraph:v8];
+      v50 = [PGGraphPublicEventNodeCollection publicEventNodesWithCategories:v58 inGraph:graphCopy];
       v90[0] = @"Lunch";
       v90[1] = @"Dinner";
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:2];
-      v27 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v26 inGraph:v8];
-      v48 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:v8];
+      v27 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v26 inGraph:graphCopy];
+      v48 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:graphCopy];
       v46 = v26;
       *buf = 0;
       *&v88 = buf;

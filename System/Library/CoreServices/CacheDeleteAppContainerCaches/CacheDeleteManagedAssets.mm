@@ -1,20 +1,20 @@
 @interface CacheDeleteManagedAssets
-- (BOOL)dateHasExpired:(id)a3 interval:(double)a4;
-- (BOOL)periodicShouldRemoveAsset:(id)a3;
-- (CacheDeleteManagedAssets)initWithInfo:(id)a3 atUrgency:(int)a4;
+- (BOOL)dateHasExpired:(id)expired interval:(double)interval;
+- (BOOL)periodicShouldRemoveAsset:(id)asset;
+- (CacheDeleteManagedAssets)initWithInfo:(id)info atUrgency:(int)urgency;
 - (id)analytics;
-- (id)assetsFromArray:(id)a3 forAmount:(unint64_t)a4;
-- (id)sizeEligibleAsset:(int64_t *)a3;
-- (id)sortAssets:(id)a3;
-- (unint64_t)purgeAssets:(unint64_t)a3 testObject:(id)a4;
-- (void)periodic:(id)a3;
+- (id)assetsFromArray:(id)array forAmount:(unint64_t)amount;
+- (id)sizeEligibleAsset:(int64_t *)asset;
+- (id)sortAssets:(id)assets;
+- (unint64_t)purgeAssets:(unint64_t)assets testObject:(id)object;
+- (void)periodic:(id)periodic;
 @end
 
 @implementation CacheDeleteManagedAssets
 
-- (CacheDeleteManagedAssets)initWithInfo:(id)a3 atUrgency:(int)a4
+- (CacheDeleteManagedAssets)initWithInfo:(id)info atUrgency:(int)urgency
 {
-  v7 = a3;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = CacheDeleteManagedAssets;
   v8 = [(CacheDeleteManagedAssets *)&v17 init];
@@ -24,8 +24,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_info, a3);
-  v10 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  objc_storeStrong(&v8->_info, info);
+  v10 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v11 = evaluateStringProperty();
   volume = v9->_volume;
   v9->_volume = v11;
@@ -42,8 +42,8 @@
     goto LABEL_8;
   }
 
-  v9->_urgency = a4;
-  if ((a4 - 5) < 0xFFFFFFFC)
+  v9->_urgency = urgency;
+  if ((urgency - 5) < 0xFFFFFFFC)
   {
 LABEL_8:
     v13 = 0;
@@ -57,29 +57,29 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)dateHasExpired:(id)a3 interval:(double)a4
+- (BOOL)dateHasExpired:(id)expired interval:(double)interval
 {
-  if (!a3)
+  if (!expired)
   {
     return 0;
   }
 
-  v5 = a3;
+  expiredCopy = expired;
   v6 = +[NSDate date];
   [v6 timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  [v5 timeIntervalSinceReferenceDate];
+  [expiredCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  return v8 - v10 > a4 && v8 >= v10;
+  return v8 - v10 > interval && v8 >= v10;
 }
 
-- (BOOL)periodicShouldRemoveAsset:(id)a3
+- (BOOL)periodicShouldRemoveAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 expirationDate];
-  v6 = [(CacheDeleteManagedAssets *)self dateHasExpired:v5 interval:0.0];
+  assetCopy = asset;
+  expirationDate = [assetCopy expirationDate];
+  v6 = [(CacheDeleteManagedAssets *)self dateHasExpired:expirationDate interval:0.0];
 
   if (v6)
   {
@@ -88,31 +88,31 @@ LABEL_9:
 
   else
   {
-    v8 = [v4 downloadCompletionDate];
+    downloadCompletionDate = [assetCopy downloadCompletionDate];
 
-    if (v8)
+    if (downloadCompletionDate)
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [v4 downloadStartDate];
-      v7 = [(CacheDeleteManagedAssets *)self dateHasExpired:v9 interval:2592000.0];
+      downloadStartDate = [assetCopy downloadStartDate];
+      v7 = [(CacheDeleteManagedAssets *)self dateHasExpired:downloadStartDate interval:2592000.0];
     }
   }
 
   return v7;
 }
 
-- (id)sortAssets:(id)a3
+- (id)sortAssets:(id)assets
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __39__CacheDeleteManagedAssets_sortAssets___block_invoke;
   v5[3] = &unk_10000C5A8;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [assets sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -471,10 +471,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)sizeEligibleAsset:(int64_t *)a3
+- (id)sizeEligibleAsset:(int64_t *)asset
 {
   v5 = +[NSMutableArray array];
-  v6 = [(CacheDeleteManagedAssets *)self info];
+  info = [(CacheDeleteManagedAssets *)self info];
   v7 = CacheDeleteUserManagedAssetsPurgeable();
 
   v10 = 0;
@@ -487,9 +487,9 @@ LABEL_7:
     CacheManagementEnumerateAssets();
   }
 
-  if (a3)
+  if (asset)
   {
-    *a3 = v11[3];
+    *asset = v11[3];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -518,15 +518,15 @@ uint64_t __46__CacheDeleteManagedAssets_sizeEligibleAsset___block_invoke(uint64_
   return 1;
 }
 
-- (id)assetsFromArray:(id)a3 forAmount:(unint64_t)a4
+- (id)assetsFromArray:(id)array forAmount:(unint64_t)amount
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = +[NSMutableDictionary dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -543,20 +543,20 @@ LABEL_3:
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
-      v14 = [v13 identifier];
-      v15 = [v6 objectForKeyedSubscript:v14];
+      identifier = [v13 identifier];
+      v15 = [v6 objectForKeyedSubscript:identifier];
 
       if (!v15)
       {
         v15 = +[NSMutableArray array];
-        v16 = [v13 identifier];
-        [v6 setObject:v15 forKeyedSubscript:v16];
+        identifier2 = [v13 identifier];
+        [v6 setObject:v15 forKeyedSubscript:identifier2];
       }
 
       [v15 addObject:v13];
       v10 += [v13 sizeCached:1];
 
-      if (v10 >= a4)
+      if (v10 >= amount)
       {
         break;
       }
@@ -579,9 +579,9 @@ LABEL_3:
   return v17;
 }
 
-- (unint64_t)purgeAssets:(unint64_t)a3 testObject:(id)a4
+- (unint64_t)purgeAssets:(unint64_t)assets testObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -590,7 +590,7 @@ LABEL_3:
   v7 = [(CacheDeleteManagedAssets *)self sizeEligibleAsset:&v24];
   v8 = dispatch_group_create();
   v9 = dispatch_queue_create("com.apple.mobile.cache_delete_managed_assets.CacheManagementAsset.Purge", 0);
-  if (v24 <= a3)
+  if (v24 <= assets)
   {
     v11 = [v7 mutableCopy];
   }
@@ -606,13 +606,13 @@ LABEL_3:
   block[2] = __51__CacheDeleteManagedAssets_purgeAssets_testObject___block_invoke;
   block[3] = &unk_10000C668;
   v22 = &v25;
-  v23 = a3;
+  assetsCopy = assets;
   v18 = v11;
-  v19 = self;
-  v20 = v6;
+  selfCopy = self;
+  v20 = objectCopy;
   v21 = v8;
   v12 = v8;
-  v13 = v6;
+  v13 = objectCopy;
   v14 = v11;
   dispatch_group_async(v12, v9, block);
   dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
@@ -796,9 +796,9 @@ void __51__CacheDeleteManagedAssets_purgeAssets_testObject___block_invoke_13(id 
   }
 }
 
-- (void)periodic:(id)a3
+- (void)periodic:(id)periodic
 {
-  v4 = a3;
+  periodicCopy = periodic;
   +[NSMutableDictionary dictionary];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
@@ -941,7 +941,7 @@ void __37__CacheDeleteManagedAssets_periodic___block_invoke_16(id a1, NSError *a
 
 - (id)analytics
 {
-  v3 = [(CacheDeleteManagedAssets *)self info];
+  info = [(CacheDeleteManagedAssets *)self info];
   v25 = CacheDeleteUserManagedAssetsPurgeable();
 
   v54 = 0;

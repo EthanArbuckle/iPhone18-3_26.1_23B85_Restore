@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (SBApplicationTestingManager)init;
 - (void)_handleTestEnded;
-- (void)_installTestEndedHandler:(id)a3;
-- (void)_prepareForTestStartup:(id)a3;
-- (void)installNotificationObserverForNotificationName:(id)a3 notificationCenter:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6;
+- (void)_installTestEndedHandler:(id)handler;
+- (void)_prepareForTestStartup:(id)startup;
+- (void)installNotificationObserverForNotificationName:(id)name notificationCenter:(id)center forOneNotification:(BOOL)notification usingBlock:(id)block;
 - (void)markUserLaunchInitiationTime;
-- (void)setupKeyboardAnimationSubTestsForTestName:(id)a3;
+- (void)setupKeyboardAnimationSubTestsForTestName:(id)name;
 @end
 
 @implementation SBApplicationTestingManager
@@ -31,11 +31,11 @@
 - (void)markUserLaunchInitiationTime
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(SBApplicationTestingManager *)self currentTestName];
-  v3 = v2;
-  if (v2)
+  currentTestName = [(SBApplicationTestingManager *)self currentTestName];
+  v3 = currentTestName;
+  if (currentTestName)
   {
-    strncpy(__dst, [v2 UTF8String], 0x10uLL);
+    strncpy(__dst, [currentTestName UTF8String], 0x10uLL);
     [v3 hash];
     [v3 length];
     kdebug_trace();
@@ -57,18 +57,18 @@
   return v2;
 }
 
-- (void)setupKeyboardAnimationSubTestsForTestName:(id)a3
+- (void)setupKeyboardAnimationSubTestsForTestName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  nameCopy = name;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v6 = *MEMORY[0x277D76C60];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __73__SBApplicationTestingManager_setupKeyboardAnimationSubTestsForTestName___block_invoke;
   v27[3] = &unk_2783B7F38;
-  v7 = v5;
+  v7 = mEMORY[0x277D75128];
   v28 = v7;
-  v8 = v4;
+  v8 = nameCopy;
   v29 = v8;
   [(SBApplicationTestingManager *)self installNotificationObserverForNotificationName:v6 forOneNotification:1 usingBlock:v27];
   v9 = *MEMORY[0x277D76BA8];
@@ -103,23 +103,23 @@
   [(SBApplicationTestingManager *)self installNotificationObserverForNotificationName:v15 forOneNotification:1 usingBlock:v18];
 }
 
-- (void)installNotificationObserverForNotificationName:(id)a3 notificationCenter:(id)a4 forOneNotification:(BOOL)a5 usingBlock:(id)a6
+- (void)installNotificationObserverForNotificationName:(id)name notificationCenter:(id)center forOneNotification:(BOOL)notification usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v10)
+  nameCopy = name;
+  centerCopy = center;
+  blockCopy = block;
+  if (centerCopy)
   {
-    v12 = v10;
+    defaultCenter = centerCopy;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   }
 
-  v13 = v12;
-  v14 = [MEMORY[0x277CCABD8] mainQueue];
+  v13 = defaultCenter;
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -132,12 +132,12 @@
   v25[2] = __127__SBApplicationTestingManager_installNotificationObserverForNotificationName_notificationCenter_forOneNotification_usingBlock___block_invoke;
   v25[3] = &unk_2783B7F60;
   v28 = &v30;
-  v29 = a5;
+  notificationCopy = notification;
   v16 = v15;
   v26 = v16;
-  v17 = v11;
+  v17 = blockCopy;
   v27 = v17;
-  v18 = [v16 addObserverForName:v9 object:0 queue:v14 usingBlock:v25];
+  v18 = [v16 addObserverForName:nameCopy object:0 queue:mainQueue usingBlock:v25];
   v19 = v31[5];
   v31[5] = v18;
 
@@ -185,12 +185,12 @@ void __127__SBApplicationTestingManager_installNotificationObserverForNotificati
   }
 }
 
-- (void)_prepareForTestStartup:(id)a3
+- (void)_prepareForTestStartup:(id)startup
 {
-  v11 = a3;
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PPT Test %@", v11];
+  startupCopy = startup;
+  startupCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PPT Test %@", startupCopy];
   v5 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-  v6 = [v5 acquireIdleTimerDisableAssertionForReason:v4];
+  v6 = [v5 acquireIdleTimerDisableAssertionForReason:startupCopy];
 
   idleTimerDisableAssertions = self->_idleTimerDisableAssertions;
   if (!idleTimerDisableAssertions)
@@ -202,31 +202,31 @@ void __127__SBApplicationTestingManager_installNotificationObserverForNotificati
     idleTimerDisableAssertions = self->_idleTimerDisableAssertions;
   }
 
-  v10 = [(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:v11];
+  v10 = [(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:startupCopy];
 
   if (!v10)
   {
-    [(NSMutableDictionary *)self->_idleTimerDisableAssertions setObject:v6 forKey:v11];
+    [(NSMutableDictionary *)self->_idleTimerDisableAssertions setObject:v6 forKey:startupCopy];
   }
 }
 
 - (void)_handleTestEnded
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SBApplicationTestingManager *)self _idleTimerDisableAssertions];
-  v4 = [(SBApplicationTestingManager *)self currentTestName];
-  v5 = [v3 objectForKey:v4];
+  _idleTimerDisableAssertions = [(SBApplicationTestingManager *)self _idleTimerDisableAssertions];
+  currentTestName = [(SBApplicationTestingManager *)self currentTestName];
+  v5 = [_idleTimerDisableAssertions objectForKey:currentTestName];
 
   if (v5)
   {
     [v5 invalidate];
-    v6 = [(SBApplicationTestingManager *)self _idleTimerDisableAssertions];
-    v7 = [(SBApplicationTestingManager *)self currentTestName];
-    [v6 removeObjectForKey:v7];
+    _idleTimerDisableAssertions2 = [(SBApplicationTestingManager *)self _idleTimerDisableAssertions];
+    currentTestName2 = [(SBApplicationTestingManager *)self currentTestName];
+    [_idleTimerDisableAssertions2 removeObjectForKey:currentTestName2];
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self name:@"SBApplicationDidExitNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBApplicationDidExitNotification" object:0];
 
   [(SBApplicationTestingManager *)self setCurrentTestName:0];
   v19 = 0;
@@ -288,12 +288,12 @@ void __47__SBApplicationTestingManager__handleTestEnded__block_invoke(uint64_t a
   *(v5 + 16) = 0;
 }
 
-- (void)_installTestEndedHandler:(id)a3
+- (void)_installTestEndedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SBApplicationTestingManager *)self currentTestName];
+  handlerCopy = handler;
+  currentTestName = [(SBApplicationTestingManager *)self currentTestName];
 
-  if (v5)
+  if (currentTestName)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -301,7 +301,7 @@ void __47__SBApplicationTestingManager__handleTestEnded__block_invoke(uint64_t a
     v7[2] = __56__SBApplicationTestingManager__installTestEndedHandler___block_invoke;
     v7[3] = &unk_2783A98A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_sync(queue, v7);
   }
 }

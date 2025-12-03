@@ -5,7 +5,7 @@
 - (CGSize)interItemSpacing;
 - (CGSize)itemSize;
 - (UIEdgeInsets)contentInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXGridLayoutMetrics
@@ -68,11 +68,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXGridLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   *(result + 4) = self->_axis;
   *(result + 3) = self->_itemSize;
   *(result + 7) = self->_footerSize;

@@ -1,19 +1,19 @@
 @interface PosterKitBlastDoorUtilities
-+ (id)archiverWithFileManager:(id)a3;
-+ (id)discreteColorsContentStyleForContentStyle:(id)a3;
-+ (id)gradientContentStyleForContentStyle:(id)a3;
-+ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)a3 error:(id *)a4;
-+ (id)serverPathFromPath:(id)a3;
-+ (id)systemTimeFontConfigurationFromTimeFontConfiguration:(id)a3;
-+ (id)vibrantMaterialContentStyleForContentStyle:(id)a3;
-+ (id)vibrantMonochromeContentStyleForContentStyle:(id)a3;
++ (id)archiverWithFileManager:(id)manager;
++ (id)discreteColorsContentStyleForContentStyle:(id)style;
++ (id)gradientContentStyleForContentStyle:(id)style;
++ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)configuration error:(id *)error;
++ (id)serverPathFromPath:(id)path;
++ (id)systemTimeFontConfigurationFromTimeFontConfiguration:(id)configuration;
++ (id)vibrantMaterialContentStyleForContentStyle:(id)style;
++ (id)vibrantMonochromeContentStyleForContentStyle:(id)style;
 @end
 
 @implementation PosterKitBlastDoorUtilities
 
-+ (id)serverPathFromPath:(id)a3
++ (id)serverPathFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -34,7 +34,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = pathCopy;
   }
 
   else
@@ -45,9 +45,9 @@
   return v6;
 }
 
-+ (id)archiverWithFileManager:(id)a3
++ (id)archiverWithFileManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -66,23 +66,23 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [[v4 alloc] initWithFileManager:v3];
+  v6 = [[v4 alloc] initWithFileManager:managerCopy];
 
   return v6;
 }
 
-+ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)a3 error:(id *)a4
++ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   sub_1000103CC();
-  v6 = [v5 pr_loadConfiguredPropertiesWithError:a4];
+  v6 = [configurationCopy pr_loadConfiguredPropertiesWithError:error];
 
   return v6;
 }
 
-+ (id)systemTimeFontConfigurationFromTimeFontConfiguration:(id)a3
++ (id)systemTimeFontConfigurationFromTimeFontConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -103,7 +103,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = configurationCopy;
   }
 
   else
@@ -114,9 +114,9 @@
   return v6;
 }
 
-+ (id)discreteColorsContentStyleForContentStyle:(id)a3
++ (id)discreteColorsContentStyleForContentStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -137,7 +137,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = styleCopy;
   }
 
   else
@@ -148,9 +148,9 @@
   return v6;
 }
 
-+ (id)gradientContentStyleForContentStyle:(id)a3
++ (id)gradientContentStyleForContentStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -171,7 +171,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = styleCopy;
   }
 
   else
@@ -182,9 +182,9 @@
   return v6;
 }
 
-+ (id)vibrantMaterialContentStyleForContentStyle:(id)a3
++ (id)vibrantMaterialContentStyleForContentStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -205,7 +205,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = styleCopy;
   }
 
   else
@@ -216,9 +216,9 @@
   return v6;
 }
 
-+ (id)vibrantMonochromeContentStyleForContentStyle:(id)a3
++ (id)vibrantMonochromeContentStyleForContentStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -239,7 +239,7 @@
   _Block_object_dispose(&v9, 8);
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = styleCopy;
   }
 
   else

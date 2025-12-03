@@ -15,22 +15,22 @@
   v6 = a3;
   if (v6)
   {
-    v7 = a1;
+    selfCopy = self;
     v8 = v6;
     if ((a4 & 2) != 0)
     {
-      v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v10 = [v7 componentsSeparatedByCharactersInSet:v9];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v10 = [selfCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       v11 = [v10 componentsJoinedByString:&stru_1F0579798];
 
-      v12 = [v8 componentsSeparatedByCharactersInSet:v9];
+      v12 = [v8 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
       v13 = [v12 componentsJoinedByString:&stru_1F0579798];
 
-      v7 = v11;
+      selfCopy = v11;
       v8 = v13;
     }
 
-    v14 = [v7 rangeOfString:v8 options:a4 & 1] != 0x7FFFFFFFFFFFFFFFLL;
+    v14 = [selfCopy rangeOfString:v8 options:a4 & 1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -43,22 +43,22 @@
 
 - (uint64_t)axIsLanguageCode
 {
-  if ([a1 axIsGenericLanguageCode])
+  if ([self axIsGenericLanguageCode])
   {
     return 1;
   }
 
-  return [a1 axIsRegionalLanguageCode];
+  return [self axIsRegionalLanguageCode];
 }
 
 - (BOOL)axIsGenericLanguageCode
 {
-  v2 = [MEMORY[0x1E696AB08] letterCharacterSet];
-  v3 = [v2 invertedSet];
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+  invertedSet = [letterCharacterSet invertedSet];
 
-  if ([a1 rangeOfCharacterFromSet:v3] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [a1 length] == 2 || objc_msgSend(a1, "length") == 3;
+    v4 = [self length] == 2 || objc_msgSend(self, "length") == 3;
   }
 
   else
@@ -71,83 +71,83 @@
 
 - (uint64_t)axIsRegionalLanguageCode
 {
-  v1 = [a1 componentsSeparatedByString:@"-"];
+  v1 = [self componentsSeparatedByString:@"-"];
   if ([v1 count] == 2)
   {
     v2 = [v1 objectAtIndexedSubscript:0];
     v3 = [v1 objectAtIndexedSubscript:1];
     if ([v2 axIsGenericLanguageCode])
     {
-      v4 = [v3 axIsGenericLanguageCode];
+      axIsGenericLanguageCode = [v3 axIsGenericLanguageCode];
     }
 
     else
     {
-      v4 = 0;
+      axIsGenericLanguageCode = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    axIsGenericLanguageCode = 0;
   }
 
-  return v4;
+  return axIsGenericLanguageCode;
 }
 
 - (id)axLanguageCode
 {
-  if ([a1 axIsGenericLanguageCode])
+  if ([self axIsGenericLanguageCode])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  else if ([a1 axIsRegionalLanguageCode])
+  else if ([self axIsRegionalLanguageCode])
   {
-    v3 = [a1 componentsSeparatedByString:@"-"];
-    v2 = [v3 firstObject];
+    v3 = [self componentsSeparatedByString:@"-"];
+    selfCopy = [v3 firstObject];
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)axRegionCode
 {
-  if ([a1 axIsRegionalLanguageCode])
+  if ([self axIsRegionalLanguageCode])
   {
-    v2 = [a1 componentsSeparatedByString:@"-"];
-    v3 = [v2 lastObject];
+    v2 = [self componentsSeparatedByString:@"-"];
+    lastObject = [v2 lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)axCapitalizeFirstLetter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 substringToIndex:1];
-    v3 = [a1 substringFromIndex:1];
-    v4 = [v2 uppercaseString];
-    v5 = [v4 stringByAppendingString:v3];
+    v2 = [self substringToIndex:1];
+    v3 = [self substringFromIndex:1];
+    uppercaseString = [v2 uppercaseString];
+    selfCopy = [uppercaseString stringByAppendingString:v3];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface RMHeadphoneActivityProvider
-- (id)startProducingDataWithCallback:(id)a3;
+- (id)startProducingDataWithCallback:(id)callback;
 - (void)stopProducingData;
 @end
 
@@ -18,9 +18,9 @@
   }
 }
 
-- (id)startProducingDataWithCallback:(id)a3
+- (id)startProducingDataWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = objc_opt_new();
   sub_10000FA04(self, v5);
 
@@ -29,9 +29,9 @@
   v11 = 3221225472;
   v12 = sub_100003AC4;
   v13 = &unk_100024B68;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = callbackCopy;
+  v6 = callbackCopy;
   v7 = objc_retainBlock(&v10);
   if (self)
   {
@@ -43,7 +43,7 @@
     audioAccessoryManager = 0;
   }
 
-  [(RMAudioAccessoryManager *)audioAccessoryManager startActivityUpdatesWithHandler:v7, v10, v11, v12, v13, v14];
+  [(RMAudioAccessoryManager *)audioAccessoryManager startActivityUpdatesWithHandler:v7, v10, v11, v12, v13, selfCopy];
 
   return 0;
 }

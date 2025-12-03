@@ -1,8 +1,8 @@
 @interface MTRZoneManagementClusterCreateTwoDCartesianZoneParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRZoneManagementClusterCreateTwoDCartesianZoneParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterCreateTwoDCartesianZoneParams);
   v5 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
   [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)v4 setZone:v5];
 
-  v6 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self timedInvokeTimeoutMs];
-  [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self timedInvokeTimeoutMs];
+  [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self serverSideProcessingTimeout];
-  [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self serverSideProcessingTimeout];
+  [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,11 +54,11 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v42 = *MEMORY[0x277D85DE8];
   v31 = 0uLL;
-  v32 = 0;
+  unsignedCharValue = 0;
   v33 = 0;
   v34 = 0;
   v35 = 0;
@@ -66,18 +66,18 @@
   v30[1] = 0;
   v29 = v30;
   v4 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
-  v5 = [v4 name];
-  v6 = v5;
-  sub_238DB9BD8(buf, [v5 UTF8String], objc_msgSend(v5, "lengthOfBytesUsingEncoding:", 4));
+  name = [v4 name];
+  v6 = name;
+  sub_238DB9BD8(buf, [name UTF8String], objc_msgSend(name, "lengthOfBytesUsingEncoding:", 4));
 
   v31 = *buf;
   v7 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
   v8 = [v7 use];
-  v32 = [v8 unsignedCharValue];
+  unsignedCharValue = [v8 unsignedCharValue];
 
   v9 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
-  v10 = [v9 vertices];
-  v11 = [v10 count] == 0;
+  vertices = [v9 vertices];
+  v11 = [vertices count] == 0;
 
   if (!v11)
   {
@@ -87,17 +87,17 @@
   v33 = 0;
   v34 = 0;
   v12 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
-  v13 = [v12 color];
-  v14 = v13 == 0;
+  color = [v12 color];
+  v14 = color == 0;
 
   if (!v14)
   {
     v35 = 1;
     v36 = 0uLL;
     v15 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self zone];
-    v16 = [v15 color];
-    v17 = v16;
-    sub_238DB9BD8(buf, [v16 UTF8String], objc_msgSend(v16, "lengthOfBytesUsingEncoding:", 4));
+    color2 = [v15 color];
+    v17 = color2;
+    sub_238DB9BD8(buf, [color2 UTF8String], objc_msgSend(color2, "lengthOfBytesUsingEncoding:", 4));
 
     v36 = *buf;
   }
@@ -121,8 +121,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v28);
-      v18 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v28);
+      v18 = sub_2393C7114(reader, 21, 256);
       v21 = v26;
       v20 = v18;
     }
@@ -151,19 +151,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRZoneManagementClusterCreateTwoDCartesianZoneParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -174,7 +174,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x828D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

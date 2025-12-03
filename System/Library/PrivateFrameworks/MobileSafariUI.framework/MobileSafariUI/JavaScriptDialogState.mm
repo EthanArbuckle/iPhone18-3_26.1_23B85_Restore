@@ -1,29 +1,29 @@
 @interface JavaScriptDialogState
-- (JavaScriptDialogState)initWithMessage:(id)a3 defaultText:(id)a4 type:(int64_t)a5 completionHandler:(id)a6;
+- (JavaScriptDialogState)initWithMessage:(id)message defaultText:(id)text type:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation JavaScriptDialogState
 
-- (JavaScriptDialogState)initWithMessage:(id)a3 defaultText:(id)a4 type:(int64_t)a5 completionHandler:(id)a6
+- (JavaScriptDialogState)initWithMessage:(id)message defaultText:(id)text type:(int64_t)type completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  messageCopy = message;
+  textCopy = text;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = JavaScriptDialogState;
   v13 = [(JavaScriptDialogState *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [messageCopy copy];
     message = v13->_message;
     v13->_message = v14;
 
-    v16 = [v11 copy];
+    v16 = [textCopy copy];
     defaultText = v13->_defaultText;
     v13->_defaultText = v16;
 
-    v13->_type = a5;
-    v18 = _Block_copy(v12);
+    v13->_type = type;
+    v18 = _Block_copy(handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v18;
 

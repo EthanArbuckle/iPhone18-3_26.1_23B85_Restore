@@ -1,30 +1,30 @@
 @interface CATIDSServiceConnectionMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetadata:(id)a3;
-- (CATIDSServiceConnectionMetadata)initWithConnectionIdentifier:(id)a3 destinationAppleID:(id)a4 userInfo:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetadata:(id)metadata;
+- (CATIDSServiceConnectionMetadata)initWithConnectionIdentifier:(id)identifier destinationAppleID:(id)d userInfo:(id)info;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CATIDSServiceConnectionMetadata
 
-- (CATIDSServiceConnectionMetadata)initWithConnectionIdentifier:(id)a3 destinationAppleID:(id)a4 userInfo:(id)a5
+- (CATIDSServiceConnectionMetadata)initWithConnectionIdentifier:(id)identifier destinationAppleID:(id)d userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = CATIDSServiceConnectionMetadata;
   v12 = [(CATIDSServiceConnectionMetadata *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connectionIdentifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_connectionIdentifier, identifier);
+    v14 = [dCopy copy];
     destinationAppleID = v13->_destinationAppleID;
     v13->_destinationAppleID = v14;
 
-    v16 = [v11 copy];
+    v16 = [infoCopy copy];
     userInfo = v13->_userInfo;
     v13->_userInfo = v16;
   }
@@ -36,42 +36,42 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
-  v6 = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
-  v7 = [(CATIDSServiceConnectionMetadata *)self userInfo];
-  v8 = [v3 stringWithFormat:@"<%@: %p { connectionIdentifier = %@, destinationAppleID = %@, userInfo = %@ }>", v4, self, v5, v6, v7];
+  connectionIdentifier = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
+  destinationAppleID = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
+  userInfo = [(CATIDSServiceConnectionMetadata *)self userInfo];
+  v8 = [v3 stringWithFormat:@"<%@: %p { connectionIdentifier = %@, destinationAppleID = %@, userInfo = %@ }>", v4, self, connectionIdentifier, destinationAppleID, userInfo];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CATIDSServiceConnectionMetadata *)self userInfo];
-  v8 = [v7 hash];
+  connectionIdentifier = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
+  v4 = [connectionIdentifier hash];
+  destinationAppleID = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
+  v6 = [destinationAppleID hash] ^ v4;
+  userInfo = [(CATIDSServiceConnectionMetadata *)self userInfo];
+  v8 = [userInfo hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_9;
   }
 
-  if ([(CATIDSServiceConnectionMetadata *)v4 isMemberOfClass:objc_opt_class()])
+  if ([(CATIDSServiceConnectionMetadata *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = v5;
     objc_opt_class();
@@ -94,13 +94,13 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqualToMetadata:(id)a3
+- (BOOL)isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
-  v6 = [v4 connectionIdentifier];
-  v7 = v5;
-  v8 = v6;
+  metadataCopy = metadata;
+  connectionIdentifier = [(CATIDSServiceConnectionMetadata *)self connectionIdentifier];
+  connectionIdentifier2 = [metadataCopy connectionIdentifier];
+  v7 = connectionIdentifier;
+  v8 = connectionIdentifier2;
   if (v7 | v8 && (v9 = [v7 isEqual:v8], v8, v7, !v9))
   {
     v17 = 0;
@@ -108,10 +108,10 @@ LABEL_9:
 
   else
   {
-    v10 = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
-    v11 = [v4 destinationAppleID];
-    v12 = v10;
-    v13 = v11;
+    destinationAppleID = [(CATIDSServiceConnectionMetadata *)self destinationAppleID];
+    destinationAppleID2 = [metadataCopy destinationAppleID];
+    v12 = destinationAppleID;
+    v13 = destinationAppleID2;
     if (v12 | v13 && (v14 = [v12 isEqual:v13], v13, v12, !v14))
     {
       v17 = 0;
@@ -119,11 +119,11 @@ LABEL_9:
 
     else
     {
-      v15 = [(CATIDSServiceConnectionMetadata *)self userInfo];
-      v16 = [v4 userInfo];
-      if (v15 | v16)
+      userInfo = [(CATIDSServiceConnectionMetadata *)self userInfo];
+      userInfo2 = [metadataCopy userInfo];
+      if (userInfo | userInfo2)
       {
-        v17 = [v15 isEqual:v16];
+        v17 = [userInfo isEqual:userInfo2];
       }
 
       else

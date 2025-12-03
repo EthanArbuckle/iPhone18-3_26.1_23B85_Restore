@@ -1,9 +1,9 @@
 @interface _MSPresentationState
 + (BOOL)isRunningInCameraContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_MSPresentationState)init;
-- (_MSPresentationState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_MSPresentationState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MSPresentationState
@@ -49,33 +49,33 @@
   return v3;
 }
 
-- (_MSPresentationState)initWithCoder:(id)a3
+- (_MSPresentationState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _MSPresentationState;
   v5 = [(_MSPresentationState *)&v7 init];
   if (v5)
   {
-    v5->_presentationStyle = [v4 decodeIntegerForKey:@"presentationStyle"];
-    v5->_presentationContext = [v4 decodeIntegerForKey:@"pContext"];
+    v5->_presentationStyle = [coderCopy decodeIntegerForKey:@"presentationStyle"];
+    v5->_presentationContext = [coderCopy decodeIntegerForKey:@"pContext"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   presentationStyle = self->_presentationStyle;
-  v5 = a3;
-  [v5 encodeInteger:presentationStyle forKey:@"presentationStyle"];
-  [v5 encodeInteger:self->_presentationContext forKey:@"pContext"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:presentationStyle forKey:@"presentationStyle"];
+  [coderCopy encodeInteger:self->_presentationContext forKey:@"pContext"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -84,9 +84,9 @@
   {
     v10.receiver = self;
     v10.super_class = _MSPresentationState;
-    if ([(_MSPresentationState *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(_MSPresentationState *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       presentationStyle = self->_presentationStyle;
       if (presentationStyle == [(_MSPresentationState *)v5 presentationStyle])
       {

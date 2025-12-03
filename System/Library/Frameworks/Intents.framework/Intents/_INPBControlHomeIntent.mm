@@ -1,15 +1,15 @@
 @interface _INPBControlHomeIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBControlHomeIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBControlHomeIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContents:(id)a3;
-- (void)addFilters:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setFilters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContents:(id)contents;
+- (void)addFilters:(id)filters;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContents:(id)contents;
+- (void)setFilters:(id)filters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBControlHomeIntent
@@ -17,10 +17,10 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_contents count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -40,8 +40,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -50,12 +50,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"contents"];
+    [dictionary setObject:array forKeyedSubscript:@"contents"];
   }
 
   if ([(NSArray *)self->_filters count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -85,24 +85,24 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"filters"];
+    [dictionary setObject:array2 forKeyedSubscript:@"filters"];
   }
 
-  v18 = [(_INPBControlHomeIntent *)self intentMetadata];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBControlHomeIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
-  v20 = [(_INPBControlHomeIntent *)self time];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"time"];
+  time = [(_INPBControlHomeIntent *)self time];
+  dictionaryRepresentation4 = [time dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"time"];
 
-  v22 = [(_INPBControlHomeIntent *)self userTask];
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"userTask"];
+  userTask = [(_INPBControlHomeIntent *)self userTask];
+  dictionaryRepresentation5 = [userTask dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"userTask"];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -114,28 +114,28 @@
   return v6 ^ [(_INPBHomeUserTask *)self->_userTask hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBControlHomeIntent *)self contents];
-  v6 = [v4 contents];
-  if ((v5 != 0) == (v6 == 0))
+  contents = [(_INPBControlHomeIntent *)self contents];
+  contents2 = [equalCopy contents];
+  if ((contents != 0) == (contents2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBControlHomeIntent *)self contents];
-  if (v7)
+  contents3 = [(_INPBControlHomeIntent *)self contents];
+  if (contents3)
   {
-    v8 = v7;
-    v9 = [(_INPBControlHomeIntent *)self contents];
-    v10 = [v4 contents];
-    v11 = [v9 isEqual:v10];
+    v8 = contents3;
+    contents4 = [(_INPBControlHomeIntent *)self contents];
+    contents5 = [equalCopy contents];
+    v11 = [contents4 isEqual:contents5];
 
     if (!v11)
     {
@@ -147,20 +147,20 @@
   {
   }
 
-  v5 = [(_INPBControlHomeIntent *)self filters];
-  v6 = [v4 filters];
-  if ((v5 != 0) == (v6 == 0))
+  contents = [(_INPBControlHomeIntent *)self filters];
+  contents2 = [equalCopy filters];
+  if ((contents != 0) == (contents2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBControlHomeIntent *)self filters];
-  if (v12)
+  filters = [(_INPBControlHomeIntent *)self filters];
+  if (filters)
   {
-    v13 = v12;
-    v14 = [(_INPBControlHomeIntent *)self filters];
-    v15 = [v4 filters];
-    v16 = [v14 isEqual:v15];
+    v13 = filters;
+    filters2 = [(_INPBControlHomeIntent *)self filters];
+    filters3 = [equalCopy filters];
+    v16 = [filters2 isEqual:filters3];
 
     if (!v16)
     {
@@ -172,20 +172,20 @@
   {
   }
 
-  v5 = [(_INPBControlHomeIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  contents = [(_INPBControlHomeIntent *)self intentMetadata];
+  contents2 = [equalCopy intentMetadata];
+  if ((contents != 0) == (contents2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBControlHomeIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBControlHomeIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBControlHomeIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBControlHomeIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v5 = [(_INPBControlHomeIntent *)self time];
-  v6 = [v4 time];
-  if ((v5 != 0) == (v6 == 0))
+  contents = [(_INPBControlHomeIntent *)self time];
+  contents2 = [equalCopy time];
+  if ((contents != 0) == (contents2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBControlHomeIntent *)self time];
-  if (v22)
+  time = [(_INPBControlHomeIntent *)self time];
+  if (time)
   {
-    v23 = v22;
-    v24 = [(_INPBControlHomeIntent *)self time];
-    v25 = [v4 time];
-    v26 = [v24 isEqual:v25];
+    v23 = time;
+    time2 = [(_INPBControlHomeIntent *)self time];
+    time3 = [equalCopy time];
+    v26 = [time2 isEqual:time3];
 
     if (!v26)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v5 = [(_INPBControlHomeIntent *)self userTask];
-  v6 = [v4 userTask];
-  if ((v5 != 0) != (v6 == 0))
+  contents = [(_INPBControlHomeIntent *)self userTask];
+  contents2 = [equalCopy userTask];
+  if ((contents != 0) != (contents2 == 0))
   {
-    v27 = [(_INPBControlHomeIntent *)self userTask];
-    if (!v27)
+    userTask = [(_INPBControlHomeIntent *)self userTask];
+    if (!userTask)
     {
 
 LABEL_30:
@@ -235,10 +235,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBControlHomeIntent *)self userTask];
-    v30 = [v4 userTask];
-    v31 = [v29 isEqual:v30];
+    v28 = userTask;
+    userTask2 = [(_INPBControlHomeIntent *)self userTask];
+    userTask3 = [equalCopy userTask];
+    v31 = [userTask2 isEqual:userTask3];
 
     if (v31)
     {
@@ -258,55 +258,55 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBControlHomeIntent allocWithZone:](_INPBControlHomeIntent init];
-  v6 = [(NSArray *)self->_contents copyWithZone:a3];
+  v6 = [(NSArray *)self->_contents copyWithZone:zone];
   [(_INPBControlHomeIntent *)v5 setContents:v6];
 
-  v7 = [(NSArray *)self->_filters copyWithZone:a3];
+  v7 = [(NSArray *)self->_filters copyWithZone:zone];
   [(_INPBControlHomeIntent *)v5 setFilters:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBControlHomeIntent *)v5 setIntentMetadata:v8];
 
-  v9 = [(_INPBDateTimeRange *)self->_time copyWithZone:a3];
+  v9 = [(_INPBDateTimeRange *)self->_time copyWithZone:zone];
   [(_INPBControlHomeIntent *)v5 setTime:v9];
 
-  v10 = [(_INPBHomeUserTask *)self->_userTask copyWithZone:a3];
+  v10 = [(_INPBHomeUserTask *)self->_userTask copyWithZone:zone];
   [(_INPBControlHomeIntent *)v5 setUserTask:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBControlHomeIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBControlHomeIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBControlHomeIntent)initWithCoder:(id)a3
+- (_INPBControlHomeIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBControlHomeIntent *)self initWithData:v6];
+    self = [(_INPBControlHomeIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -371,81 +371,81 @@ LABEL_28:
     while (v13);
   }
 
-  v17 = [(_INPBControlHomeIntent *)self intentMetadata];
+  intentMetadata = [(_INPBControlHomeIntent *)self intentMetadata];
 
-  if (v17)
+  if (intentMetadata)
   {
-    v18 = [(_INPBControlHomeIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBControlHomeIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBControlHomeIntent *)self time];
+  time = [(_INPBControlHomeIntent *)self time];
 
-  if (v19)
+  if (time)
   {
-    v20 = [(_INPBControlHomeIntent *)self time];
+    time2 = [(_INPBControlHomeIntent *)self time];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_INPBControlHomeIntent *)self userTask];
+  userTask = [(_INPBControlHomeIntent *)self userTask];
 
-  if (v21)
+  if (userTask)
   {
-    v22 = [(_INPBControlHomeIntent *)self userTask];
+    userTask2 = [(_INPBControlHomeIntent *)self userTask];
     PBDataWriterWriteSubmessage();
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   filters = self->_filters;
-  v8 = v4;
+  v8 = filtersCopy;
   if (!filters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_filters;
-    self->_filters = v6;
+    self->_filters = array;
 
-    v4 = v8;
+    filtersCopy = v8;
     filters = self->_filters;
   }
 
-  [(NSArray *)filters addObject:v4];
+  [(NSArray *)filters addObject:filtersCopy];
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [filters mutableCopy];
   filters = self->_filters;
   self->_filters = v4;
 
   MEMORY[0x1EEE66BB8](v4, filters);
 }
 
-- (void)addContents:(id)a3
+- (void)addContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   contents = self->_contents;
-  v8 = v4;
+  v8 = contentsCopy;
   if (!contents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contents;
-    self->_contents = v6;
+    self->_contents = array;
 
-    v4 = v8;
+    contentsCopy = v8;
     contents = self->_contents;
   }
 
-  [(NSArray *)contents addObject:v4];
+  [(NSArray *)contents addObject:contentsCopy];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contents mutableCopy];
   contents = self->_contents;
   self->_contents = v4;
 

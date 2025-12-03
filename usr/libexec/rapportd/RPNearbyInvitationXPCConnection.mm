@@ -1,35 +1,35 @@
 @interface RPNearbyInvitationXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (BOOL)reportFoundDevice:(id)a3 outReason:(id *)a4;
-- (RPNearbyInvitationXPCConnection)initWithDaemon:(id)a3 xpcCnx:(id)a4;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (BOOL)reportFoundDevice:(id)device outReason:(id *)reason;
+- (RPNearbyInvitationXPCConnection)initWithDaemon:(id)daemon xpcCnx:(id)cnx;
 - (void)connectionInvalidated;
-- (void)nearbyInvitationActivateDiscovery:(id)a3 completion:(id)a4;
-- (void)nearbyInvitationActivateServer:(id)a3 completion:(id)a4;
-- (void)nearbyInvitationActivateSession:(id)a3 completion:(id)a4;
+- (void)nearbyInvitationActivateDiscovery:(id)discovery completion:(id)completion;
+- (void)nearbyInvitationActivateServer:(id)server completion:(id)completion;
+- (void)nearbyInvitationActivateSession:(id)session completion:(id)completion;
 - (void)nearbyInvitationInvalidateClientSession;
-- (void)nearbyInvitationInvalidateSessionID:(id)a3;
-- (void)nearbyInvitationSendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)nearbyInvitationSendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)reportLostDevice:(id)a3;
-- (void)sessionActivatedWithError:(id)a3;
-- (void)sessionEndedWithID:(id)a3 netCnx:(id)a4;
-- (void)sessionStartWithID:(id)a3 netCnx:(id)a4 completion:(id)a5;
+- (void)nearbyInvitationInvalidateSessionID:(id)d;
+- (void)nearbyInvitationSendEventID:(id)d event:(id)event options:(id)options completion:(id)completion;
+- (void)nearbyInvitationSendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)reportLostDevice:(id)device;
+- (void)sessionActivatedWithError:(id)error;
+- (void)sessionEndedWithID:(id)d netCnx:(id)cnx;
+- (void)sessionStartWithID:(id)d netCnx:(id)cnx completion:(id)completion;
 @end
 
 @implementation RPNearbyInvitationXPCConnection
 
-- (RPNearbyInvitationXPCConnection)initWithDaemon:(id)a3 xpcCnx:(id)a4
+- (RPNearbyInvitationXPCConnection)initWithDaemon:(id)daemon xpcCnx:(id)cnx
 {
-  v7 = a3;
-  v8 = a4;
+  daemonCopy = daemon;
+  cnxCopy = cnx;
   v12.receiver = self;
   v12.super_class = RPNearbyInvitationXPCConnection;
   v9 = [(RPNearbyInvitationXPCConnection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemon, a3);
-    objc_storeStrong(&v10->_xpcCnx, a4);
+    objc_storeStrong(&v9->_daemon, daemon);
+    objc_storeStrong(&v10->_xpcCnx, cnx);
   }
 
   return v10;
@@ -60,8 +60,8 @@
   if (v4)
   {
     activatedServerXPCCnxMap = self->_daemon->_activatedServerXPCCnxMap;
-    v7 = [(RPNearbyInvitationServer *)v4 serviceType];
-    [(NSMutableDictionary *)activatedServerXPCCnxMap removeObjectForKey:v7];
+    serviceType = [(RPNearbyInvitationServer *)v4 serviceType];
+    [(NSMutableDictionary *)activatedServerXPCCnxMap removeObjectForKey:serviceType];
 
     [(RPNearbyInvitationServer *)v4 invalidate];
   }
@@ -78,7 +78,7 @@
   }
 }
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -108,27 +108,27 @@
     }
 
     v10 = v9;
-    *a3 = v10;
+    *error = v10;
 
     return self->_entitled;
   }
 }
 
-- (void)sessionStartWithID:(id)a3 netCnx:(id)a4 completion:(id)a5
+- (void)sessionStartWithID:(id)d netCnx:(id)cnx completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  cnxCopy = cnx;
+  completionCopy = completion;
   v11 = objc_alloc_init(RPNearbyInvitationDevice);
-  v12 = [v9 peerDeviceInfo];
-  if (v12)
+  peerDeviceInfo = [cnxCopy peerDeviceInfo];
+  if (peerDeviceInfo)
   {
-    [v11 updateWithEndpoint:v12];
+    [v11 updateWithEndpoint:peerDeviceInfo];
   }
 
   netCnx = self->_netCnx;
-  self->_netCnx = v9;
-  v14 = v9;
+  self->_netCnx = cnxCopy;
+  v14 = cnxCopy;
 
   if (dword_1001D3D90 <= 30 && (dword_1001D3D90 != -1 || _LogCategory_Initialize()))
   {
@@ -140,16 +140,16 @@
   v18[1] = 3221225472;
   v18[2] = sub_100063740;
   v18[3] = &unk_1001AC998;
-  v19 = v10;
-  v16 = v10;
+  v19 = completionCopy;
+  v16 = completionCopy;
   v17 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v18];
-  [v17 nearbyInvitationStartServerSessionID:v8 device:v11 completion:v16];
+  [v17 nearbyInvitationStartServerSessionID:dCopy device:v11 completion:v16];
 }
 
-- (void)sessionEndedWithID:(id)a3 netCnx:(id)a4
+- (void)sessionEndedWithID:(id)d netCnx:(id)cnx
 {
-  v8 = a3;
-  v6 = a4;
+  dCopy = d;
+  cnxCopy = cnx;
   if (self->_activatedServer)
   {
     if (dword_1001D3D90 <= 30 && (dword_1001D3D90 != -1 || _LogCategory_Initialize()))
@@ -157,29 +157,29 @@
       sub_10011A094();
     }
 
-    v7 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v7 nearbyInvitationSessionEndedWithID:v8];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy nearbyInvitationSessionEndedWithID:dCopy];
   }
 }
 
-- (void)sessionActivatedWithError:(id)a3
+- (void)sessionActivatedWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   [(RPNearbyInvitationSession *)self->_activatedSession setWaitingToConnect:0];
-  [(RPNearbyInvitationSession *)self->_activatedSession setFailedToConnect:v6 != 0];
+  [(RPNearbyInvitationSession *)self->_activatedSession setFailedToConnect:errorCopy != 0];
   activateCompletionHandler = self->_activateCompletionHandler;
   if (activateCompletionHandler)
   {
-    activateCompletionHandler[2](activateCompletionHandler, v6);
+    activateCompletionHandler[2](activateCompletionHandler, errorCopy);
     v5 = self->_activateCompletionHandler;
     self->_activateCompletionHandler = 0;
   }
 }
 
-- (void)nearbyInvitationActivateDiscovery:(id)a3 completion:(id)a4
+- (void)nearbyInvitationActivateDiscovery:(id)discovery completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  discoveryCopy = discovery;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v19 = 0;
   v9 = [(RPNearbyInvitationXPCConnection *)self _entitledAndReturnError:&v19];
@@ -192,8 +192,8 @@
       sub_10011A0D4(self);
     }
 
-    [v7 setDispatchQueue:self->_dispatchQueue];
-    objc_storeStrong(&self->_activatedDiscovery, a3);
+    [discoveryCopy setDispatchQueue:self->_dispatchQueue];
+    objc_storeStrong(&self->_activatedDiscovery, discovery);
     activatedDiscoverySet = self->_daemon->_activatedDiscoverySet;
     if (!activatedDiscoverySet)
     {
@@ -205,10 +205,10 @@
       activatedDiscoverySet = self->_daemon->_activatedDiscoverySet;
     }
 
-    [(NSMutableSet *)activatedDiscoverySet addObject:v7];
-    if (v8)
+    [(NSMutableSet *)activatedDiscoverySet addObject:discoveryCopy];
+    if (completionCopy)
     {
-      v8[2](v8, v10);
+      completionCopy[2](completionCopy, v10);
     }
 
     [(RPNearbyInvitationDaemon *)self->_daemon _update];
@@ -217,42 +217,42 @@
     v16[1] = 3221225472;
     v16[2] = sub_100063AD0;
     v16[3] = &unk_1001ACD00;
-    v17 = v7;
-    v18 = self;
+    v17 = discoveryCopy;
+    selfCopy = self;
     [(NSMutableDictionary *)discoveredDevices enumerateKeysAndObjectsUsingBlock:v16];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 }
 
-- (void)nearbyInvitationActivateServer:(id)a3 completion:(id)a4
+- (void)nearbyInvitationActivateServer:(id)server completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v18 = 0;
   v9 = [(RPNearbyInvitationXPCConnection *)self _entitledAndReturnError:&v18];
   v10 = v18;
   if (v9)
   {
-    v11 = [v7 serviceType];
+    serviceType = [serverCopy serviceType];
 
-    if (v11)
+    if (serviceType)
     {
       activatedServerXPCCnxMap = self->_daemon->_activatedServerXPCCnxMap;
-      v13 = [v7 serviceType];
-      v14 = [(NSMutableDictionary *)activatedServerXPCCnxMap objectForKey:v13];
+      serviceType2 = [serverCopy serviceType];
+      v14 = [(NSMutableDictionary *)activatedServerXPCCnxMap objectForKey:serviceType2];
 
       if (v14)
       {
-        if (v8)
+        if (completionCopy)
         {
-          v17 = [v7 serviceType];
+          serviceType3 = [serverCopy serviceType];
           v15 = RPErrorF();
-          v8[2](v8, v15);
+          completionCopy[2](completionCopy, v15);
         }
       }
 
@@ -263,12 +263,12 @@
           sub_10011A11C(self);
         }
 
-        [v7 setDispatchQueue:self->_dispatchQueue];
-        objc_storeStrong(&self->_activatedServer, a3);
+        [serverCopy setDispatchQueue:self->_dispatchQueue];
+        objc_storeStrong(&self->_activatedServer, server);
         [(RPNearbyInvitationDaemon *)self->_daemon _handleServerActivation:self];
-        if (v8)
+        if (completionCopy)
         {
-          v8[2](v8, v10);
+          completionCopy[2](completionCopy, v10);
         }
 
         [(RPNearbyInvitationDaemon *)self->_daemon _update];
@@ -279,25 +279,25 @@
     {
       v16 = RPErrorF();
 
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, v16);
+        completionCopy[2](completionCopy, v16);
       }
 
       v10 = v16;
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 }
 
-- (void)nearbyInvitationActivateSession:(id)a3 completion:(id)a4
+- (void)nearbyInvitationActivateSession:(id)session completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v37 = 0;
   v38 = &v37;
@@ -310,7 +310,7 @@
   v34[2] = sub_1000640E8;
   v34[3] = &unk_1001ABD58;
   v36 = &v37;
-  v9 = v8;
+  v9 = completionCopy;
   v35 = v9;
   v10 = objc_retainBlock(v34);
   v11 = (v38 + 5);
@@ -322,34 +322,34 @@
     if (self->_activatedSession)
     {
       v13 = RPErrorF();
-      v14 = v38[5];
+      identifier = v38[5];
       v38[5] = v13;
     }
 
     else
     {
-      v15 = [v7 destinationDevice];
-      v14 = [v15 identifier];
+      destinationDevice = [sessionCopy destinationDevice];
+      identifier = [destinationDevice identifier];
 
-      if (v14)
+      if (identifier)
       {
-        v16 = [(RPNearbyInvitationDaemon *)self->_daemon _findMatchingDeviceWithIdentifier:v14];
+        v16 = [(RPNearbyInvitationDaemon *)self->_daemon _findMatchingDeviceWithIdentifier:identifier];
         v17 = v16;
-        if (v16 && ([v16 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v14, "isEqualToString:", v18), v18, (v19 & 1) != 0))
+        if (v16 && ([v16 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(identifier, "isEqualToString:", v18), v18, (v19 & 1) != 0))
         {
-          [v7 setDaemonDevice:v17];
+          [sessionCopy setDaemonDevice:v17];
           if (dword_1001D3D90 <= 30 && (dword_1001D3D90 != -1 || _LogCategory_Initialize()))
           {
-            v20 = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
-            v31 = [v7 serviceType];
+            processIdentifier = [(NSXPCConnection *)self->_xpcCnx processIdentifier];
+            serviceType = [sessionCopy serviceType];
             v32 = v17;
-            v30 = v20;
+            v30 = processIdentifier;
             LogPrintF();
           }
 
-          [v7 setWaitingToConnect:{1, v30, v31, v32}];
-          [v7 setDispatchQueue:self->_dispatchQueue];
-          objc_storeStrong(&self->_activatedSession, a3);
+          [sessionCopy setWaitingToConnect:{1, v30, serviceType, v32}];
+          [sessionCopy setDispatchQueue:self->_dispatchQueue];
+          objc_storeStrong(&self->_activatedSession, session);
           v24 = objc_retainBlock(v9);
           activateCompletionHandler = self->_activateCompletionHandler;
           self->_activateCompletionHandler = v24;
@@ -365,7 +365,7 @@
             activatedSessionSet = self->_daemon->_activatedSessionSet;
           }
 
-          [(NSMutableSet *)activatedSessionSet addObject:v7];
+          [(NSMutableSet *)activatedSessionSet addObject:sessionCopy];
           [(RPNearbyInvitationDaemon *)self->_daemon _update];
         }
 
@@ -413,9 +413,9 @@
   [(RPNearbyInvitationDaemon *)daemon _update];
 }
 
-- (void)nearbyInvitationInvalidateSessionID:(id)a3
+- (void)nearbyInvitationInvalidateSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D3D90 <= 30 && (dword_1001D3D90 != -1 || _LogCategory_Initialize()))
   {
@@ -423,12 +423,12 @@
   }
 }
 
-- (void)nearbyInvitationSendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6
+- (void)nearbyInvitationSendEventID:(id)d event:(id)event options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v19 = 0;
   v14 = [(RPNearbyInvitationXPCConnection *)self _entitledAndReturnError:&v19];
@@ -439,28 +439,28 @@
     v17 = v16;
     if (v16)
     {
-      [(RPConnection *)v16 sendEncryptedEventID:v10 event:v11 options:v12 completion:v13];
+      [(RPConnection *)v16 sendEncryptedEventID:dCopy event:eventCopy options:optionsCopy completion:completionCopy];
     }
 
-    else if (v13)
+    else if (completionCopy)
     {
       v18 = RPErrorF();
-      v13[2](v13, v18);
+      completionCopy[2](completionCopy, v18);
     }
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
-    v13[2](v13, v15);
+    completionCopy[2](completionCopy, v15);
   }
 }
 
-- (void)nearbyInvitationSendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)nearbyInvitationSendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v18 = 0;
   v14 = [(RPNearbyInvitationXPCConnection *)self _entitledAndReturnError:&v18];
@@ -470,34 +470,34 @@
     netCnx = self->_netCnx;
     if (netCnx)
     {
-      [(RPConnection *)netCnx sendEncryptedRequestID:v10 request:v11 xpcID:self->_xpcID options:v12 responseHandler:v13];
+      [(RPConnection *)netCnx sendEncryptedRequestID:dCopy request:requestCopy xpcID:self->_xpcID options:optionsCopy responseHandler:handlerCopy];
     }
 
     else
     {
       v17 = RPErrorF();
-      (*(v13 + 2))(v13, 0, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v17);
     }
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v15);
   }
 }
 
-- (BOOL)reportFoundDevice:(id)a3 outReason:(id *)a4
+- (BOOL)reportFoundDevice:(id)device outReason:(id *)reason
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  if (!v7)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
-    if (a4)
+    if (reason)
     {
       v14 = 0;
       v15 = @"missingDeviceIdentifier";
 LABEL_11:
-      *a4 = v15;
+      *reason = v15;
       goto LABEL_15;
     }
 
@@ -506,9 +506,9 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (([(RPNearbyInvitationDiscovery *)self->_activatedDiscovery shouldReportDevice:v6]& 1) == 0)
+  if (([(RPNearbyInvitationDiscovery *)self->_activatedDiscovery shouldReportDevice:deviceCopy]& 1) == 0)
   {
-    if (a4)
+    if (reason)
     {
       v14 = 0;
       v15 = @"activateDiscoveryIgnore";
@@ -518,7 +518,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
   devices = self->_devices;
   if (!devices)
@@ -530,17 +530,17 @@ LABEL_12:
     devices = self->_devices;
   }
 
-  [(NSMutableDictionary *)devices setObject:v6 forKeyedSubscript:v7];
-  v12 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-  v13 = v12;
+  [(NSMutableDictionary *)devices setObject:deviceCopy forKeyedSubscript:identifier];
+  remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+  v13 = remoteObjectProxy;
   if (v8)
   {
-    [v12 nearbyInvitationChangedDevice:v6 changes:2];
+    [remoteObjectProxy nearbyInvitationChangedDevice:deviceCopy changes:2];
   }
 
   else
   {
-    [v12 nearbyInvitationFoundDevice:v6];
+    [remoteObjectProxy nearbyInvitationFoundDevice:deviceCopy];
   }
 
   v14 = 1;
@@ -549,19 +549,19 @@ LABEL_15:
   return v14;
 }
 
-- (void)reportLostDevice:(id)a3
+- (void)reportLostDevice:(id)device
 {
-  v7 = a3;
-  v4 = [v7 identifier];
-  if (v4)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
     if (v5)
     {
-      [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:v4];
-      v6 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-      [v6 nearbyInvitationLostDevice:v7];
+      [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:identifier];
+      remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+      [remoteObjectProxy nearbyInvitationLostDevice:deviceCopy];
     }
   }
 }

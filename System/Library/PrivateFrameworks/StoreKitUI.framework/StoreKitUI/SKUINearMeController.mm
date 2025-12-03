@@ -4,22 +4,22 @@
 - (BOOL)isNearMeLocationStatusEnabled;
 - (NSArray)items;
 - (SKUINearMeController)init;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_disableNearMe;
-- (void)_finishLookupWithItems:(id)a3 response:(id)a4 error:(id)a5;
-- (void)_lookupItemsForLocation:(id)a3;
+- (void)_finishLookupWithItems:(id)items response:(id)response error:(id)error;
+- (void)_lookupItemsForLocation:(id)location;
 - (void)_monitorLocationTimeout;
 - (void)_refreshTimeout;
-- (void)_setItems:(id)a3 responseDictionary:(id)a4 error:(id)a5 status:(int64_t)a6;
+- (void)_setItems:(id)items responseDictionary:(id)dictionary error:(id)error status:(int64_t)status;
 - (void)_startMonitoringLocation;
 - (void)_startRefreshTimer;
 - (void)_stopMonitoringLocation;
 - (void)_stopRefreshTimer;
 - (void)init;
-- (void)itemStateCenterRestrictionsChanged:(id)a3;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)itemStateCenterRestrictionsChanged:(id)changed;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation SKUINearMeController
@@ -62,8 +62,8 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
   v3 = [(SKUINearMeController *)&v7 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
     v5 = +[SKUIItemStateCenter defaultCenter];
     [v5 addObserver:v3];
   }
@@ -74,9 +74,9 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
 - (NSArray)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[SKUIItemStateCenter defaultCenter];
-  v5 = [v4 parentalControlsRank];
+  parentalControlsRank = [v4 parentalControlsRank];
 
   v15 = 0u;
   v16 = 0u;
@@ -98,9 +98,9 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 parentalControlsRank] <= v5)
+        if ([v11 parentalControlsRank] <= parentalControlsRank)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -110,7 +110,7 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
     while (v8);
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)isNearMeLocationStatusEnabled
@@ -121,7 +121,7 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
   return SKUINearMeIsEnabledForAuthorizationStatus(v3);
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if (self->_refreshTimer)
   {
@@ -129,7 +129,7 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
   }
 }
 
-- (void)itemStateCenterRestrictionsChanged:(id)a3
+- (void)itemStateCenterRestrictionsChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -139,27 +139,27 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (SKUINearMeIsEnabledForAuthorizationStatus(a4))
+  if (SKUINearMeIsEnabledForAuthorizationStatus(status))
   {
     [(SKUINearMeController *)self _startMonitoringLocation];
   }
 
-  else if (a4)
+  else if (status)
   {
     [(SKUINearMeController *)self _disableNearMe];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v14 = @"nearMeEnabled";
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:SKUINearMeIsEnabledForAuthorizationStatus(a4)];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:SKUINearMeIsEnabledForAuthorizationStatus(status)];
   v15[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  [v6 postNotificationName:@"SKUINearMeLocationStatusDidChangeNotification" object:v8];
+  [defaultCenter postNotificationName:@"SKUINearMeLocationStatusDidChangeNotification" object:v8];
 
-  if (a4 == 2 && !self->_authorizationStatus)
+  if (status == 2 && !self->_authorizationStatus)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75118]);
     clientContext = self->_clientContext;
@@ -191,33 +191,33 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
     [v9 show];
   }
 
-  self->_authorizationStatus = a4;
+  self->_authorizationStatus = status;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  if ([a4 code] == 1)
+  if ([error code] == 1)
   {
 
     [(SKUINearMeController *)self _disableNearMe];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v9 = a4;
-  v5 = [v9 count];
-  v6 = v9;
+  locationsCopy = locations;
+  v5 = [locationsCopy count];
+  v6 = locationsCopy;
   if (v5)
   {
-    v7 = [v9 lastObject];
-    [v7 horizontalAccuracy];
-    if (v8 > 0.00000011920929 && v8 <= 65.0 && SKUILocationIsAccurate(v7))
+    lastObject = [locationsCopy lastObject];
+    [lastObject horizontalAccuracy];
+    if (v8 > 0.00000011920929 && v8 <= 65.0 && SKUILocationIsAccurate(lastObject))
     {
-      [(SKUINearMeController *)self _lookupItemsForLocation:v7];
+      [(SKUINearMeController *)self _lookupItemsForLocation:lastObject];
     }
 
-    v6 = v9;
+    v6 = locationsCopy;
   }
 
   MEMORY[0x2821F96F8](v5, v6);
@@ -244,9 +244,9 @@ uint64_t __40__SKUINearMeController_sharedController__block_invoke()
       }
     }
 
-    v8 = [objc_opt_class() authorizationStatus];
-    self->_authorizationStatus = v8;
-    if (!v8)
+    authorizationStatus = [objc_opt_class() authorizationStatus];
+    self->_authorizationStatus = authorizationStatus;
+    if (!authorizationStatus)
     {
       [(CLLocationManager *)self->_locationManager requestWhenInUseAuthorization];
     }
@@ -303,9 +303,9 @@ void __48__SKUINearMeController__startMonitoringLocation__block_invoke(uint64_t 
 
 - (void)_monitorLocationTimeout
 {
-  v3 = [(CLLocationManager *)self->_locationManager location];
-  v9 = v3;
-  if (v3 && (IsAccurate = SKUILocationIsAccurate(v3), v4 = v9, IsAccurate))
+  location = [(CLLocationManager *)self->_locationManager location];
+  v9 = location;
+  if (location && (IsAccurate = SKUILocationIsAccurate(location), v4 = v9, IsAccurate))
   {
     [(SKUINearMeController *)self _lookupItemsForLocation:v9];
   }
@@ -330,15 +330,15 @@ void __48__SKUINearMeController__startMonitoringLocation__block_invoke(uint64_t 
   }
 }
 
-- (void)_lookupItemsForLocation:(id)a3
+- (void)_lookupItemsForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(SKUINearMeController *)self _stopMonitoringLocation];
   [(SKUINearMeController *)self _stopRefreshTimer];
   if (!self->_lookupRequest)
   {
     objc_initWeak(&location, self);
-    v5 = [objc_alloc(MEMORY[0x277D69B50]) initWithLocation:v4];
+    v5 = [objc_alloc(MEMORY[0x277D69B50]) initWithLocation:locationCopy];
     lookupRequest = self->_lookupRequest;
     self->_lookupRequest = v5;
 
@@ -423,12 +423,12 @@ void __48__SKUINearMeController__lookupItemsForLocation___block_invoke_2(uint64_
   [WeakRetained _finishLookupWithItems:*(a1 + 32) response:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)_finishLookupWithItems:(id)a3 response:(id)a4 error:(id)a5
+- (void)_finishLookupWithItems:(id)items response:(id)response error:(id)error
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 responseDictionary];
-  [(SKUINearMeController *)self _setItems:v9 responseDictionary:v10 error:v8 status:1];
+  errorCopy = error;
+  itemsCopy = items;
+  responseDictionary = [response responseDictionary];
+  [(SKUINearMeController *)self _setItems:itemsCopy responseDictionary:responseDictionary error:errorCopy status:1];
 
   [(SKUINearMeController *)self _startRefreshTimer];
   lookupRequest = self->_lookupRequest;
@@ -486,22 +486,22 @@ void __42__SKUINearMeController__startRefreshTimer__block_invoke(uint64_t a1)
   [(SKUINearMeController *)self _startMonitoringLocation];
 }
 
-- (void)_setItems:(id)a3 responseDictionary:(id)a4 error:(id)a5 status:(int64_t)a6
+- (void)_setItems:(id)items responseDictionary:(id)dictionary error:(id)error status:(int64_t)status
 {
-  v9 = a3;
-  v10 = a4;
+  itemsCopy = items;
+  dictionaryCopy = dictionary;
   items = self->_items;
-  self->_items = v9;
-  v12 = v9;
+  self->_items = itemsCopy;
+  v12 = itemsCopy;
 
-  self->_status = a6;
+  self->_status = status;
   responseDictionary = self->_responseDictionary;
-  self->_responseDictionary = v10;
-  v14 = v10;
+  self->_responseDictionary = dictionaryCopy;
+  v14 = dictionaryCopy;
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v15 postNotificationName:@"SKUINearMeItemsDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"SKUINearMeItemsDidChangeNotification" object:self];
 }
 
 - (void)_disableNearMe

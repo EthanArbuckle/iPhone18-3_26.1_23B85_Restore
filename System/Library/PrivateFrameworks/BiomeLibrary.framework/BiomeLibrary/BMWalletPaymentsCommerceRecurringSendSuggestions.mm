@@ -1,31 +1,31 @@
 @interface BMWalletPaymentsCommerceRecurringSendSuggestions
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithUserSelection:(int)a3 passType:(int)a4 tagClickDate:(id)a5 frequency:(int)a6 suggestionsRange:(int)a7 dayRange:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithUserSelection:(int)selection passType:(int)type tagClickDate:(id)date frequency:(int)frequency suggestionsRange:(int)range dayRange:(int)dayRange;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceRecurringSendSuggestions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)self userSelection];
-    if (v6 == [v5 userSelection] && (v7 = -[BMWalletPaymentsCommerceRecurringSendSuggestions passType](self, "passType"), v7 == objc_msgSend(v5, "passType")) && (!-[BMWalletPaymentsCommerceRecurringSendSuggestions hasTagClickDate](self, "hasTagClickDate") && !objc_msgSend(v5, "hasTagClickDate") || -[BMWalletPaymentsCommerceRecurringSendSuggestions hasTagClickDate](self, "hasTagClickDate") && objc_msgSend(v5, "hasTagClickDate") && (-[BMWalletPaymentsCommerceRecurringSendSuggestions tagClickDate](self, "tagClickDate"), v9 = v8, objc_msgSend(v5, "tagClickDate"), v9 == v10)) && (v11 = -[BMWalletPaymentsCommerceRecurringSendSuggestions frequency](self, "frequency"), v11 == objc_msgSend(v5, "frequency")) && (v12 = -[BMWalletPaymentsCommerceRecurringSendSuggestions suggestionsRange](self, "suggestionsRange"), v12 == objc_msgSend(v5, "suggestionsRange")))
+    v5 = equalCopy;
+    userSelection = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)self userSelection];
+    if (userSelection == [v5 userSelection] && (v7 = -[BMWalletPaymentsCommerceRecurringSendSuggestions passType](self, "passType"), v7 == objc_msgSend(v5, "passType")) && (!-[BMWalletPaymentsCommerceRecurringSendSuggestions hasTagClickDate](self, "hasTagClickDate") && !objc_msgSend(v5, "hasTagClickDate") || -[BMWalletPaymentsCommerceRecurringSendSuggestions hasTagClickDate](self, "hasTagClickDate") && objc_msgSend(v5, "hasTagClickDate") && (-[BMWalletPaymentsCommerceRecurringSendSuggestions tagClickDate](self, "tagClickDate"), v9 = v8, objc_msgSend(v5, "tagClickDate"), v9 == v10)) && (v11 = -[BMWalletPaymentsCommerceRecurringSendSuggestions frequency](self, "frequency"), v11 == objc_msgSend(v5, "frequency")) && (v12 = -[BMWalletPaymentsCommerceRecurringSendSuggestions suggestionsRange](self, "suggestionsRange"), v12 == objc_msgSend(v5, "suggestionsRange")))
     {
-      v13 = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)self dayRange];
-      v14 = v13 == [v5 dayRange];
+      dayRange = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)self dayRange];
+      v14 = dayRange == [v5 dayRange];
     }
 
     else
@@ -64,56 +64,56 @@
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceRecurringSendSuggestions suggestionsRange](self, "suggestionsRange")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceRecurringSendSuggestions dayRange](self, "dayRange")}];
   v24[0] = @"userSelection";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v11;
+  v20 = null;
   v22 = v4;
-  v25[0] = v11;
+  v25[0] = null;
   v24[1] = @"passType";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[1] = v12;
+  v25[1] = null2;
   v24[2] = @"tagClickDate";
-  v13 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v3;
-  v25[2] = v13;
+  v25[2] = null3;
   v24[3] = @"frequency";
-  v14 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v14;
+  v25[3] = null4;
   v24[4] = @"suggestionsRange";
-  v15 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v15;
+  v25[4] = null5;
   v24[5] = @"dayRange";
-  v16 = v10;
+  null6 = v10;
   if (!v10)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v16;
+  v25[5] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{6, v20}];
   if (v10)
   {
@@ -173,16 +173,16 @@ LABEL_24:
   return v17;
 }
 
-- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"userSelection"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"userSelection"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_9:
-    v9 = [v5 objectForKeyedSubscript:@"passType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"passType"];
     v66 = v7;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -197,7 +197,7 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v10 = 0;
             v30 = 0;
@@ -214,7 +214,7 @@ LABEL_9:
           v13 = v46;
           v10 = 0;
           v30 = 0;
-          *a4 = [v47 initWithDomain:v44 code:2 userInfo:v46];
+          *error = [v47 initWithDomain:v44 code:2 userInfo:v46];
           v29 = v45;
           goto LABEL_35;
         }
@@ -230,14 +230,14 @@ LABEL_9:
       v10 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"tagClickDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tagClickDate"];
     v64 = v12;
     if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v29 = 0;
           v30 = 0;
@@ -259,7 +259,7 @@ LABEL_9:
         v13 = v64;
         v63 = v39;
         v30 = 0;
-        *a4 = [v40 initWithDomain:v35 code:2 userInfo:?];
+        *error = [v40 initWithDomain:v35 code:2 userInfo:?];
         v29 = 0;
 LABEL_34:
 
@@ -275,7 +275,7 @@ LABEL_35:
       v61 = 0;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"frequency"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"frequency"];
     v62 = v10;
     v63 = v14;
     if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -291,7 +291,7 @@ LABEL_35:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v67 = 0;
             v30 = 0;
@@ -307,7 +307,7 @@ LABEL_35:
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
           v67 = 0;
           v30 = 0;
-          *a4 = [v48 initWithDomain:v49 code:2 userInfo:v31];
+          *error = [v48 initWithDomain:v49 code:2 userInfo:v31];
           v29 = v61;
           v10 = v62;
 LABEL_32:
@@ -326,7 +326,7 @@ LABEL_33:
       v67 = 0;
     }
 
-    v16 = [v5 objectForKeyedSubscript:@"suggestionsRange"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"suggestionsRange"];
     v60 = v16;
     if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -341,7 +341,7 @@ LABEL_33:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v65 = 0;
             v30 = 0;
@@ -361,7 +361,7 @@ LABEL_33:
           v54 = [v53 initWithDomain:v52 code:2 userInfo:v18];
           v65 = 0;
           v30 = 0;
-          *a4 = v54;
+          *error = v54;
           goto LABEL_66;
         }
 
@@ -374,22 +374,22 @@ LABEL_33:
       v65 = 0;
     }
 
-    v18 = [v5 objectForKeyedSubscript:@"dayRange"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"dayRange"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = v9;
       v20 = v6;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 0;
 LABEL_29:
-      v23 = [v7 intValue];
-      v24 = [v10 intValue];
-      v25 = [v67 intValue];
-      v26 = [v65 intValue];
-      v27 = [v22 intValue];
-      v28 = v24;
+      intValue = [v7 intValue];
+      intValue2 = [v10 intValue];
+      intValue3 = [v67 intValue];
+      intValue4 = [v65 intValue];
+      intValue5 = [v22 intValue];
+      v28 = intValue2;
       v29 = v61;
-      v30 = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)v21 initWithUserSelection:v23 passType:v28 tagClickDate:v61 frequency:v25 suggestionsRange:v26 dayRange:v27];
+      v30 = [(BMWalletPaymentsCommerceRecurringSendSuggestions *)selfCopy3 initWithUserSelection:intValue passType:v28 tagClickDate:v61 frequency:intValue3 suggestionsRange:intValue4 dayRange:intValue5];
       self = v30;
       v6 = v20;
       v9 = v19;
@@ -406,7 +406,7 @@ LABEL_31:
     {
       v19 = v9;
       v20 = v6;
-      v21 = self;
+      selfCopy3 = self;
       v22 = v18;
       goto LABEL_29;
     }
@@ -416,12 +416,12 @@ LABEL_31:
     {
       v19 = v9;
       v20 = v6;
-      v21 = self;
+      selfCopy3 = self;
       v22 = [MEMORY[0x1E696AD98] numberWithInt:BMWalletPaymentsCommerceRecurringSendSuggestionsDayRangeFromString(v18)];
       goto LABEL_29;
     }
 
-    if (a4)
+    if (error)
     {
       v55 = objc_alloc(MEMORY[0x1E696ABC0]);
       v56 = *MEMORY[0x1E698F240];
@@ -429,7 +429,7 @@ LABEL_31:
       v57 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"dayRange"];
       v70 = v57;
       v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-      *a4 = [v55 initWithDomain:v56 code:2 userInfo:v58];
+      *error = [v55 initWithDomain:v56 code:2 userInfo:v58];
     }
 
     v22 = 0;
@@ -455,7 +455,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v66 = 0;
     v30 = 0;
@@ -470,7 +470,7 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
   v66 = 0;
   v30 = 0;
-  *a4 = [v41 initWithDomain:v42 code:2 userInfo:v9];
+  *error = [v41 initWithDomain:v42 code:2 userInfo:v9];
 LABEL_36:
 
 LABEL_37:
@@ -482,14 +482,14 @@ LABEL_37:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceRecurringSendSuggestions *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   userSelection = self->_userSelection;
   PBDataWriterWriteUint32Field();
   passType = self->_passType;
@@ -508,9 +508,9 @@ LABEL_37:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMWalletPaymentsCommerceRecurringSendSuggestions;
   v5 = [(BMEventBase *)&v50 init];
@@ -519,12 +519,12 @@ LABEL_37:
     goto LABEL_102;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_100;
       }
@@ -535,18 +535,18 @@ LABEL_37:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v51) & 0x7F) << v7;
@@ -563,9 +563,9 @@ LABEL_37:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_100;
       }
@@ -582,18 +582,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v32 = [v4 position] + 1;
-              if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+              v32 = [fromCopy position] + 1;
+              if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
               {
-                v34 = [v4 data];
-                [v34 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (LOBYTE(v51) & 0x7F) << v30;
@@ -610,7 +610,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 5)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 5)
             {
 LABEL_81:
               LODWORD(v20) = 0;
@@ -625,18 +625,18 @@ LABEL_81:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v42 = [v4 position] + 1;
-              if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+              v42 = [fromCopy position] + 1;
+              if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
               {
-                v44 = [v4 data];
-                [v44 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (LOBYTE(v51) & 0x7F) << v40;
@@ -653,7 +653,7 @@ LABEL_81:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 2)
             {
 LABEL_93:
               LODWORD(v20) = 0;
@@ -668,18 +668,18 @@ LABEL_93:
             while (1)
             {
               LOBYTE(v51) = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (LOBYTE(v51) & 0x7F) << v18;
@@ -696,7 +696,7 @@ LABEL_93:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 3)
             {
 LABEL_85:
               LODWORD(v20) = 0;
@@ -730,18 +730,18 @@ LABEL_55:
         while (1)
         {
           LOBYTE(v51) = 0;
-          v37 = [v4 position] + 1;
-          if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+          v37 = [fromCopy position] + 1;
+          if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
           {
-            v39 = [v4 data];
-            [v39 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (LOBYTE(v51) & 0x7F) << v35;
@@ -758,7 +758,7 @@ LABEL_55:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v20 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v20 > 2)
         {
 LABEL_89:
           LODWORD(v20) = 0;
@@ -777,24 +777,24 @@ LABEL_95:
 
       v5->_hasTagClickDate = 1;
       v51 = 0.0;
-      v16 = [v4 position] + 8;
-      if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+      v16 = [fromCopy position] + 8;
+      if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
       {
-        v47 = [v4 data];
-        [v47 getBytes:&v51 range:{objc_msgSend(v4, "position"), 8}];
+        data6 = [fromCopy data];
+        [data6 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v5->_tagClickDate = v51;
 LABEL_96:
-      v46 = [v4 position];
-      if (v46 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_100;
       }
@@ -806,18 +806,18 @@ LABEL_96:
     while (1)
     {
       LOBYTE(v51) = 0;
-      v27 = [v4 position] + 1;
-      if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+      v27 = [fromCopy position] + 1;
+      if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
       {
-        v29 = [v4 data];
-        [v29 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+        data7 = [fromCopy data];
+        [data7 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v20 |= (LOBYTE(v51) & 0x7F) << v25;
@@ -834,7 +834,7 @@ LABEL_96:
       }
     }
 
-    if (([v4 hasError] & 1) != 0 || v20 > 3)
+    if (([fromCopy hasError] & 1) != 0 || v20 > 3)
     {
 LABEL_77:
       LODWORD(v20) = 0;
@@ -845,7 +845,7 @@ LABEL_77:
   }
 
 LABEL_100:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_101:
     v48 = 0;
@@ -876,21 +876,21 @@ LABEL_102:
   return v11;
 }
 
-- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithUserSelection:(int)a3 passType:(int)a4 tagClickDate:(id)a5 frequency:(int)a6 suggestionsRange:(int)a7 dayRange:(int)a8
+- (BMWalletPaymentsCommerceRecurringSendSuggestions)initWithUserSelection:(int)selection passType:(int)type tagClickDate:(id)date frequency:(int)frequency suggestionsRange:(int)range dayRange:(int)dayRange
 {
-  v14 = a5;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = BMWalletPaymentsCommerceRecurringSendSuggestions;
   v15 = [(BMEventBase *)&v18 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    v15->_userSelection = a3;
-    v15->_passType = a4;
-    if (v14)
+    v15->_userSelection = selection;
+    v15->_passType = type;
+    if (dateCopy)
     {
       v15->_hasTagClickDate = 1;
-      [v14 doubleValue];
+      [dateCopy doubleValue];
     }
 
     else
@@ -900,9 +900,9 @@ LABEL_102:
     }
 
     v15->_tagClickDate = v16;
-    v15->_frequency = a6;
-    v15->_suggestionsRange = a7;
-    v15->_dayRange = a8;
+    v15->_frequency = frequency;
+    v15->_suggestionsRange = range;
+    v15->_dayRange = dayRange;
   }
 
   return v15;
@@ -952,9 +952,9 @@ LABEL_102:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -962,8 +962,8 @@ LABEL_102:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceRecurringSendSuggestions alloc] initByReadFrom:v7];
     v4 = v8;

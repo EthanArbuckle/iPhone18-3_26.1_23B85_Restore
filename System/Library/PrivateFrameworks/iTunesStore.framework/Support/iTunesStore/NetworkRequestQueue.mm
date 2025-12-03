@@ -1,45 +1,45 @@
 @interface NetworkRequestQueue
 + (id)sharedNetworkRequestQueue;
-+ (void)_addSubscriptionOperationWithType:(int64_t)a3 message:(id)a4 connection:(id)a5;
-+ (void)authenticationRequestWithMessage:(id)a3 connection:(id)a4;
-+ (void)claimAppsWithMessage:(id)a3 connection:(id)a4;
-+ (void)disableAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4;
-+ (void)getDownloadQueueWithMessage:(id)a3 connection:(id)a4;
-+ (void)getMatchStatusWithMessage:(id)a3 connection:(id)a4;
-+ (void)getSubscriptionEntitlements:(id)a3 connection:(id)a4;
-+ (void)getSubscriptionStatusWithMessage:(id)a3 connection:(id)a4;
-+ (void)importDownloadToIPodLibraryWithMessage:(id)a3 connection:(id)a4;
-+ (void)installManagedAppWithMessage:(id)a3 connection:(id)a4 provideDetailedResponse:(BOOL)a5;
-+ (void)keybagSyncWithMessage:(id)a3 connection:(id)a4;
-+ (void)loadURLBagWithMessage:(id)a3 connection:(id)a4;
-+ (void)lookupItemsWithMessage:(id)a3 connection:(id)a4;
-+ (void)lookupWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)performMigrationWithMessage:(id)a3 connection:(id)a4;
-+ (void)presentRemoteWebViewWithMessage:(id)a3 connection:(id)a4;
-+ (void)rentalInformationRequestWithMessage:(id)a3 connection:(id)a4;
-+ (void)repairAppWithMessage:(id)a3 connection:(id)a4;
-+ (void)requestURLWithMessage:(id)a3 connection:(id)a4;
-+ (void)restoreDemotedApplicationsWithMessage:(id)a3 connection:(id)a4;
-+ (void)sdk_getCloudServiceCapabilities:(id)a3 connection:(id)a4;
-+ (void)sdk_loadStoreFrontIdentifierWithMessage:(id)a3 connection:(id)a4;
-+ (void)sdk_requestAPITokenWithMessage:(id)a3 connection:(id)a4;
-+ (void)serverAuthenticateWithMessage:(id)a3 connection:(id)a4;
-+ (void)silentEnrollmentVerificationWithMessage:(id)a3 connection:(id)a4;
-+ (void)silentEnrollmentWithMessage:(id)a3 connection:(id)a4;
-+ (void)updateMediaContentTasteWithMessage:(id)a3 connection:(id)a4;
-+ (void)wishlistAddItemsWithMessage:(id)a3 connection:(id)a4;
++ (void)_addSubscriptionOperationWithType:(int64_t)type message:(id)message connection:(id)connection;
++ (void)authenticationRequestWithMessage:(id)message connection:(id)connection;
++ (void)claimAppsWithMessage:(id)message connection:(id)connection;
++ (void)disableAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection;
++ (void)getDownloadQueueWithMessage:(id)message connection:(id)connection;
++ (void)getMatchStatusWithMessage:(id)message connection:(id)connection;
++ (void)getSubscriptionEntitlements:(id)entitlements connection:(id)connection;
++ (void)getSubscriptionStatusWithMessage:(id)message connection:(id)connection;
++ (void)importDownloadToIPodLibraryWithMessage:(id)message connection:(id)connection;
++ (void)installManagedAppWithMessage:(id)message connection:(id)connection provideDetailedResponse:(BOOL)response;
++ (void)keybagSyncWithMessage:(id)message connection:(id)connection;
++ (void)loadURLBagWithMessage:(id)message connection:(id)connection;
++ (void)lookupItemsWithMessage:(id)message connection:(id)connection;
++ (void)lookupWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)performMigrationWithMessage:(id)message connection:(id)connection;
++ (void)presentRemoteWebViewWithMessage:(id)message connection:(id)connection;
++ (void)rentalInformationRequestWithMessage:(id)message connection:(id)connection;
++ (void)repairAppWithMessage:(id)message connection:(id)connection;
++ (void)requestURLWithMessage:(id)message connection:(id)connection;
++ (void)restoreDemotedApplicationsWithMessage:(id)message connection:(id)connection;
++ (void)sdk_getCloudServiceCapabilities:(id)capabilities connection:(id)connection;
++ (void)sdk_loadStoreFrontIdentifierWithMessage:(id)message connection:(id)connection;
++ (void)sdk_requestAPITokenWithMessage:(id)message connection:(id)connection;
++ (void)serverAuthenticateWithMessage:(id)message connection:(id)connection;
++ (void)silentEnrollmentVerificationWithMessage:(id)message connection:(id)connection;
++ (void)silentEnrollmentWithMessage:(id)message connection:(id)connection;
++ (void)updateMediaContentTasteWithMessage:(id)message connection:(id)connection;
++ (void)wishlistAddItemsWithMessage:(id)message connection:(id)connection;
 - (NetworkRequestQueue)init;
-- (id)_copyAuthenticationContextWithContext:(id)a3 client:(id)a4;
+- (id)_copyAuthenticationContextWithContext:(id)context client:(id)client;
 - (id)_managedQueue;
-- (id)_newClientWithMessage:(id)a3 connection:(id)a4;
-- (void)_dequeueSubscriptionStatusOperation:(id)a3;
-- (void)_enqueueOperationsForStoreServicesURL:(id)a3;
-- (void)_enqueueSubscriptionStatusOperation:(id)a3 forClient:(id)a4;
-- (void)_sendMessageWithError:(id)a3 toClient:(id)a4;
-- (void)_sendNotSupportedMessageToClient:(id)a3;
-- (void)_sendUnentitledMessageToClient:(id)a3;
-- (void)_sendUnentitledReplyForMessage:(id)a3 connection:(id)a4;
+- (id)_newClientWithMessage:(id)message connection:(id)connection;
+- (void)_dequeueSubscriptionStatusOperation:(id)operation;
+- (void)_enqueueOperationsForStoreServicesURL:(id)l;
+- (void)_enqueueSubscriptionStatusOperation:(id)operation forClient:(id)client;
+- (void)_sendMessageWithError:(id)error toClient:(id)client;
+- (void)_sendNotSupportedMessageToClient:(id)client;
+- (void)_sendUnentitledMessageToClient:(id)client;
+- (void)_sendUnentitledReplyForMessage:(id)message connection:(id)connection;
 @end
 
 @implementation NetworkRequestQueue
@@ -70,7 +70,7 @@
   block[1] = 3221225472;
   block[2] = sub_100140DB8;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383F28 != -1)
   {
     dispatch_once(&qword_100383F28, block);
@@ -81,48 +81,48 @@
   return v2;
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:a1 selector:"claimAppsWithMessage:connection:" forMessage:138];
-  [v4 addObserver:a1 selector:"getMatchStatusWithMessage:connection:" forMessage:130];
-  [v4 addObserver:a1 selector:"disableAutomaticDownloadKindsWithMessage:connection:" forMessage:194];
-  [v4 addObserver:a1 selector:"keybagSyncWithMessage:connection:" forMessage:144];
-  [v4 addObserver:a1 selector:"installManagedAppWithMessage:connection:" forMessage:112];
-  [v4 addObserver:a1 selector:"installManagedAppWithMessageAndDetailedResponse:connection:" forMessage:113];
-  [v4 addObserver:a1 selector:"getDownloadQueueWithMessage:connection:" forMessage:65];
-  [v4 addObserver:a1 selector:"importDownloadToIPodLibraryWithMessage:connection:" forMessage:66];
-  [v4 addObserver:a1 selector:"loadURLBagWithMessage:connection:" forMessage:25];
-  [v4 addObserver:a1 selector:"lookupItemsWithMessage:connection:" forMessage:54];
-  [v4 addObserver:a1 selector:"lookupWithMessage:connection:" forMessage:85];
-  [v4 addObserver:a1 selector:"sdk_loadStoreFrontIdentifierWithMessage:connection:" forMessage:174];
-  [v4 addObserver:a1 selector:"sdk_getCloudServiceCapabilities:connection:" forMessage:175];
-  [v4 addObserver:a1 selector:"performMigrationWithMessage:connection:" forMessage:116];
-  [v4 addObserver:a1 selector:"repairAppWithMessage:connection:" forMessage:148];
-  [v4 addObserver:a1 selector:"requestURLWithMessage:connection:" forMessage:62];
-  [v4 addObserver:a1 selector:"restoreDemotedApplicationsWithMessage:connection:" forMessage:162];
-  [v4 addObserver:a1 selector:"serverAuthenticateWithMessage:connection:" forMessage:132];
-  [v4 addObserver:a1 selector:"authenticationRequestWithMessage:connection:" forMessage:133];
-  [v4 addObserver:a1 selector:"updateMediaContentTasteWithMessage:connection:" forMessage:163];
-  [v4 addObserver:a1 selector:"wishlistAddItemsWithMessage:connection:" forMessage:166];
-  [v4 addObserver:a1 selector:"presentRemoteWebViewWithMessage:connection:" forMessage:209];
-  [v4 addObserver:a1 selector:"disableSubscriptionWithMessage:connection:" forMessage:145];
-  [v4 addObserver:a1 selector:"enableSubscriptionWithMessage:connection:" forMessage:146];
-  [v4 addObserver:a1 selector:"getSubscriptionStatusWithMessage:connection:" forMessage:149];
-  [v4 addObserver:a1 selector:"getSubscriptionEntitlements:connection:" forMessage:150];
-  [v4 addObserver:a1 selector:"refreshSubscriptionWithMessage:connection:" forMessage:147];
-  [v4 addObserver:a1 selector:"rentalInformationRequestWithMessage:connection:" forMessage:170];
-  [v4 addObserver:a1 selector:"sdk_requestAPITokenWithMessage:connection:" forMessage:191];
-  [v4 addObserver:a1 selector:"silentEnrollmentWithMessage:connection:" forMessage:211];
-  [v4 addObserver:a1 selector:"silentEnrollmentVerificationWithMessage:connection:" forMessage:212];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"claimAppsWithMessage:connection:" forMessage:138];
+  [serverCopy addObserver:self selector:"getMatchStatusWithMessage:connection:" forMessage:130];
+  [serverCopy addObserver:self selector:"disableAutomaticDownloadKindsWithMessage:connection:" forMessage:194];
+  [serverCopy addObserver:self selector:"keybagSyncWithMessage:connection:" forMessage:144];
+  [serverCopy addObserver:self selector:"installManagedAppWithMessage:connection:" forMessage:112];
+  [serverCopy addObserver:self selector:"installManagedAppWithMessageAndDetailedResponse:connection:" forMessage:113];
+  [serverCopy addObserver:self selector:"getDownloadQueueWithMessage:connection:" forMessage:65];
+  [serverCopy addObserver:self selector:"importDownloadToIPodLibraryWithMessage:connection:" forMessage:66];
+  [serverCopy addObserver:self selector:"loadURLBagWithMessage:connection:" forMessage:25];
+  [serverCopy addObserver:self selector:"lookupItemsWithMessage:connection:" forMessage:54];
+  [serverCopy addObserver:self selector:"lookupWithMessage:connection:" forMessage:85];
+  [serverCopy addObserver:self selector:"sdk_loadStoreFrontIdentifierWithMessage:connection:" forMessage:174];
+  [serverCopy addObserver:self selector:"sdk_getCloudServiceCapabilities:connection:" forMessage:175];
+  [serverCopy addObserver:self selector:"performMigrationWithMessage:connection:" forMessage:116];
+  [serverCopy addObserver:self selector:"repairAppWithMessage:connection:" forMessage:148];
+  [serverCopy addObserver:self selector:"requestURLWithMessage:connection:" forMessage:62];
+  [serverCopy addObserver:self selector:"restoreDemotedApplicationsWithMessage:connection:" forMessage:162];
+  [serverCopy addObserver:self selector:"serverAuthenticateWithMessage:connection:" forMessage:132];
+  [serverCopy addObserver:self selector:"authenticationRequestWithMessage:connection:" forMessage:133];
+  [serverCopy addObserver:self selector:"updateMediaContentTasteWithMessage:connection:" forMessage:163];
+  [serverCopy addObserver:self selector:"wishlistAddItemsWithMessage:connection:" forMessage:166];
+  [serverCopy addObserver:self selector:"presentRemoteWebViewWithMessage:connection:" forMessage:209];
+  [serverCopy addObserver:self selector:"disableSubscriptionWithMessage:connection:" forMessage:145];
+  [serverCopy addObserver:self selector:"enableSubscriptionWithMessage:connection:" forMessage:146];
+  [serverCopy addObserver:self selector:"getSubscriptionStatusWithMessage:connection:" forMessage:149];
+  [serverCopy addObserver:self selector:"getSubscriptionEntitlements:connection:" forMessage:150];
+  [serverCopy addObserver:self selector:"refreshSubscriptionWithMessage:connection:" forMessage:147];
+  [serverCopy addObserver:self selector:"rentalInformationRequestWithMessage:connection:" forMessage:170];
+  [serverCopy addObserver:self selector:"sdk_requestAPITokenWithMessage:connection:" forMessage:191];
+  [serverCopy addObserver:self selector:"silentEnrollmentWithMessage:connection:" forMessage:211];
+  [serverCopy addObserver:self selector:"silentEnrollmentVerificationWithMessage:connection:" forMessage:212];
 }
 
-+ (void)claimAppsWithMessage:(id)a3 connection:(id)a4
++ (void)claimAppsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ((SSXPCConnectionHasEntitlement() & 1) == 0 && (SSXPCConnectionHasEntitlement() & 1) == 0)
   {
     v14 = +[SSLogConfig sharedDaemonConfig];
@@ -131,19 +131,19 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -162,11 +162,11 @@
       {
 LABEL_18:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_19;
       }
 
-      v17 = [NSString stringWithCString:v19 encoding:4, &v25, v20];
+      oSLogObject = [NSString stringWithCString:v19 encoding:4, &v25, v20];
       free(v19);
       SSFileLog();
     }
@@ -175,7 +175,7 @@ LABEL_18:
   }
 
   v10 = [SSVClaimApplicationsRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
   if ([v12 claimStyle])
@@ -203,12 +203,12 @@ LABEL_18:
 LABEL_19:
 }
 
-+ (void)disableAutomaticDownloadKindsWithMessage:(id)a3 connection:(id)a4
++ (void)disableAutomaticDownloadKindsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ((SSXPCConnectionHasEntitlement() & 1) == 0)
   {
     v14 = +[SSLogConfig sharedDaemonConfig];
@@ -217,19 +217,19 @@ LABEL_19:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -248,11 +248,11 @@ LABEL_19:
       {
 LABEL_14:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_15;
       }
 
-      v17 = [NSString stringWithCString:v19 encoding:4, &v23, v20];
+      oSLogObject = [NSString stringWithCString:v19 encoding:4, &v23, v20];
       free(v19);
       SSFileLog();
     }
@@ -264,7 +264,7 @@ LABEL_14:
   [(SetAutomaticDownloadKindsOperation *)v10 setShouldSuppressServerDialogs:1];
   objc_opt_class();
   v11 = SSXPCDictionaryCopyObjectWithClass();
-  v12 = [v8 _copyAuthenticationContextWithContext:v11 client:v9];
+  v12 = [sharedNetworkRequestQueue _copyAuthenticationContextWithContext:v11 client:v9];
 
   [(SetAutomaticDownloadKindsOperation *)v10 setAuthenticationContext:v12];
   v21[0] = _NSConcreteStackBlock;
@@ -273,17 +273,17 @@ LABEL_14:
   v21[3] = &unk_100329B68;
   v22 = v10;
   v13 = v10;
-  [v8 addOperation:v13 forMessage:v6 connection:v7 replyBlock:v21];
+  [sharedNetworkRequestQueue addOperation:v13 forMessage:messageCopy connection:connectionCopy replyBlock:v21];
 
 LABEL_15:
 }
 
-+ (void)getMatchStatusWithMessage:(id)a3 connection:(id)a4
++ (void)getMatchStatusWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ((SSXPCConnectionHasEntitlement() & 1) == 0 && (SSXPCConnectionHasEntitlement() & 1) == 0)
   {
     v14 = +[SSLogConfig sharedDaemonConfig];
@@ -292,19 +292,19 @@ LABEL_15:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -323,11 +323,11 @@ LABEL_15:
       {
 LABEL_15:
 
-        [v8 _sendUnentitledReplyForMessage:v6 connection:v7];
+        [sharedNetworkRequestQueue _sendUnentitledReplyForMessage:messageCopy connection:connectionCopy];
         goto LABEL_16;
       }
 
-      v17 = [NSString stringWithCString:v19 encoding:4, &v23, v20];
+      oSLogObject = [NSString stringWithCString:v19 encoding:4, &v23, v20];
       free(v19);
       SSFileLog();
     }
@@ -338,8 +338,8 @@ LABEL_15:
   objc_opt_class();
   v10 = SSXPCDictionaryCopyObjectWithClass();
   v11 = [[LoadMatchStatusOperation alloc] initWithAccountIdentifier:v10];
-  v12 = [v9 userAgent];
-  [(LoadMatchStatusOperation *)v11 setUserAgent:v12];
+  userAgent = [v9 userAgent];
+  [(LoadMatchStatusOperation *)v11 setUserAgent:userAgent];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -347,34 +347,34 @@ LABEL_15:
   v21[3] = &unk_100329B68;
   v22 = v11;
   v13 = v11;
-  [v8 addOperation:v13 forMessage:v6 connection:v7 replyBlock:v21];
+  [sharedNetworkRequestQueue addOperation:v13 forMessage:messageCopy connection:connectionCopy replyBlock:v21];
 
 LABEL_16:
 }
 
-+ (void)getSubscriptionStatusWithMessage:(id)a3 connection:(id)a4
++ (void)getSubscriptionStatusWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if (SSXPCConnectionHasEntitlement() & 1) != 0 || (SSIsDaemon())
   {
     v10 = objc_alloc_init(SubscriptionStatusOperation);
     v11 = [SSVSubscriptionStatusRequest alloc];
-    v12 = xpc_dictionary_get_value(v6, "1");
+    v12 = xpc_dictionary_get_value(messageCopy, "1");
     v13 = [v11 initWithXPCEncoding:v12];
 
     -[SubscriptionStatusOperation setAuthenticatesIfNecessary:](v10, "setAuthenticatesIfNecessary:", [v13 authenticatesIfNecessary]);
-    v14 = [v13 authenticationContext];
-    [(SubscriptionStatusOperation *)v10 setAuthenticationContext:v14];
+    authenticationContext = [v13 authenticationContext];
+    [(SubscriptionStatusOperation *)v10 setAuthenticationContext:authenticationContext];
 
     -[SubscriptionStatusOperation setCarrierBundleProvisioningStyle:](v10, "setCarrierBundleProvisioningStyle:", [v13 carrierBundleProvisioningStyle]);
-    v15 = [v13 localizedAuthenticationReason];
-    [(SubscriptionStatusOperation *)v10 setLocalizedAuthenticationReason:v15];
+    localizedAuthenticationReason = [v13 localizedAuthenticationReason];
+    [(SubscriptionStatusOperation *)v10 setLocalizedAuthenticationReason:localizedAuthenticationReason];
 
-    v16 = [v13 reason];
-    [(SubscriptionStatusOperation *)v10 setReason:v16];
+    reason = [v13 reason];
+    [(SubscriptionStatusOperation *)v10 setReason:reason];
 
     objc_initWeak(location, v10);
     v27[0] = _NSConcreteStackBlock;
@@ -384,7 +384,7 @@ LABEL_16:
     v17 = v9;
     v28 = v17;
     objc_copyWeak(&v30, location);
-    v18 = v8;
+    v18 = sharedNetworkRequestQueue;
     v29 = v18;
     [(SubscriptionStatusOperation *)v10 setStatusBlock:v27];
     [v18 _enqueueSubscriptionStatusOperation:v10 forClient:v17];
@@ -401,19 +401,19 @@ LABEL_16:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog;
     }
 
-    v22 = [v19 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v19 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v21 &= 2u;
     }
@@ -440,30 +440,30 @@ LABEL_16:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)getDownloadQueueWithMessage:(id)a3 connection:(id)a4
++ (void)getDownloadQueueWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   v10 = [SSVDownloadQueueRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
-  v13 = [v12 queueType];
+  queueType = [v12 queueType];
   if ([v9 hasEntitlements])
   {
     v14 = @"pendingApps";
-    if (v13 == 1)
+    if (queueType == 1)
     {
       v14 = @"pendingRentals";
     }
 
-    if (v13)
+    if (queueType)
     {
       v15 = v14;
     }
@@ -474,19 +474,19 @@ LABEL_16:
     }
 
     v16 = objc_alloc_init(SSMutableURLRequestProperties);
-    v17 = [v9 auditTokenData];
-    [v16 setClientAuditTokenData:v17];
+    auditTokenData = [v9 auditTokenData];
+    [v16 setClientAuditTokenData:auditTokenData];
 
     [v16 setURLBagKey:v15];
-    v18 = [v9 userAgent];
-    [v16 setValue:v18 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    userAgent = [v9 userAgent];
+    [v16 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
     v19 = [[LoadDownloadQueueOperation alloc] initWithRequestProperties:v16];
     v20 = +[SSAccountStore defaultStore];
-    v21 = [v20 activeAccount];
+    activeAccount = [v20 activeAccount];
 
-    v22 = [v21 uniqueIdentifier];
-    [(LoadDownloadQueueOperation *)v19 setAccountIdentifier:v22];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
+    [(LoadDownloadQueueOperation *)v19 setAccountIdentifier:uniqueIdentifier];
 
     [(LoadDownloadQueueOperation *)v19 setNeedsAuthentication:0];
     objc_initWeak(location, v19);
@@ -497,8 +497,8 @@ LABEL_16:
     objc_copyWeak(&v34, location);
     v33 = v9;
     [(LoadDownloadQueueOperation *)v19 setCompletionBlock:v32];
-    v23 = [v8 operationQueue];
-    [v23 addOperation:v19];
+    operationQueue = [sharedNetworkRequestQueue operationQueue];
+    [operationQueue addOperation:v19];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(location);
@@ -512,19 +512,19 @@ LABEL_16:
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog;
     }
 
-    v27 = [v24 OSLogObject];
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v24 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v26 &= 2u;
     }
@@ -551,41 +551,41 @@ LABEL_16:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)importDownloadToIPodLibraryWithMessage:(id)a3 connection:(id)a4
++ (void)importDownloadToIPodLibraryWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   v10 = [SSImportDownloadToIPodLibraryRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v38 = [v10 initWithXPCEncoding:v11];
 
   if ([v9 hasEntitlements])
   {
-    v37 = [a1 sharedNetworkRequestQueue];
-    v12 = [v38 downloadMetadata];
-    if (v12 || ([v38 purchaseResponse], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "purchase"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "valueForDownloadProperty:", SSDownloadPropertyStoreItemIdentifier), v15 = objc_claimAutoreleasedReturnValue(), v14, objc_msgSend(v13, "downloadMetadataForItemIdentifier:", objc_msgSend(v15, "unsignedLongLongValue")), v12 = objc_claimAutoreleasedReturnValue(), v15, v13, v12))
+    sharedNetworkRequestQueue2 = [self sharedNetworkRequestQueue];
+    downloadMetadata = [v38 downloadMetadata];
+    if (downloadMetadata || ([v38 purchaseResponse], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "purchase"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "valueForDownloadProperty:", SSDownloadPropertyStoreItemIdentifier), v15 = objc_claimAutoreleasedReturnValue(), v14, objc_msgSend(v13, "downloadMetadataForItemIdentifier:", objc_msgSend(v15, "unsignedLongLongValue")), downloadMetadata = objc_claimAutoreleasedReturnValue(), v15, v13, downloadMetadata))
     {
       v16 = objc_alloc_init(IPodLibraryItem);
       v17 = [StoreDownload alloc];
-      v18 = [v12 dictionary];
-      v19 = [(StoreDownload *)v17 initWithDictionary:v18];
+      dictionary = [downloadMetadata dictionary];
+      v19 = [(StoreDownload *)v17 initWithDictionary:dictionary];
 
       [(IPodLibraryItem *)v16 setItemMetadata:v19];
       if ([(StoreDownload *)v19 isRental])
       {
         [(IPodLibraryItem *)v16 setUpdateType:2];
-        v20 = [(StoreDownload *)v19 fullSizeImageURL];
+        fullSizeImageURL = [(StoreDownload *)v19 fullSizeImageURL];
 
-        if (v20)
+        if (fullSizeImageURL)
         {
-          v21 = [(StoreDownload *)v19 fullSizeImageURL];
-          v22 = [NSData dataWithContentsOfURL:v21];
+          fullSizeImageURL2 = [(StoreDownload *)v19 fullSizeImageURL];
+          v22 = [NSData dataWithContentsOfURL:fullSizeImageURL2];
 
           [(IPodLibraryItem *)v16 setItemArtworkData:v22];
         }
@@ -598,14 +598,14 @@ LABEL_16:
       v39[2] = sub_100142D60;
       v39[3] = &unk_100329BB8;
       objc_copyWeak(&v43, location);
-      v40 = v6;
-      v41 = v7;
-      v24 = v37;
+      v40 = messageCopy;
+      v41 = connectionCopy;
+      v24 = sharedNetworkRequestQueue2;
       v42 = v24;
       [(AddItemToIPodLibraryOperation *)v23 setCompletionBlock:v39];
       [v24 setClient:v9 forOperation:v23];
-      v25 = [v24 operationQueue];
-      [v25 addOperation:v23];
+      operationQueue = [v24 operationQueue];
+      [operationQueue addOperation:v23];
 
       objc_destroyWeak(&v43);
       objc_destroyWeak(location);
@@ -613,13 +613,13 @@ LABEL_16:
 
     else
     {
-      reply = xpc_dictionary_create_reply(v6);
+      reply = xpc_dictionary_create_reply(messageCopy);
       v35 = reply;
       if (reply)
       {
         xpc_dictionary_set_int64(reply, "0", 1011);
         xpc_dictionary_set_BOOL(v35, "1", 0);
-        xpc_connection_send_message(v7, v35);
+        xpc_connection_send_message(connectionCopy, v35);
       }
     }
   }
@@ -632,19 +632,19 @@ LABEL_16:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
+    shouldLog = [v26 shouldLog];
     if ([v26 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog;
     }
 
-    v29 = [v26 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v28;
     }
@@ -676,35 +676,35 @@ LABEL_16:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)sdk_getCloudServiceCapabilities:(id)a3 connection:(id)a4
++ (void)sdk_getCloudServiceCapabilities:(id)capabilities connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  capabilitiesCopy = capabilities;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:capabilitiesCopy connection:connectionCopy];
   v26 = 0u;
   v27 = 0u;
   xpc_connection_get_audit_token();
   if ((SSXPCConnectionHasEntitlement() & 1) != 0 || (*location = v26, v29 = v27, TCCAccessCheckAuditToken()))
   {
     v10 = [SSVCloudServiceCapabilitiesRequest alloc];
-    v11 = xpc_dictionary_get_value(v6, "1");
+    v11 = xpc_dictionary_get_value(capabilitiesCopy, "1");
     v12 = [v10 initWithXPCEncoding:v11];
 
-    v13 = objc_alloc_init(CloudServiceCapabilitiesOperation);
-    -[CloudServiceCapabilitiesOperation setAllowsPromptingForPrivacyAcknowledgement:](v13, "setAllowsPromptingForPrivacyAcknowledgement:", [v12 allowsPromptingForPrivacyAcknowledgement]);
+    oSLogObject = objc_alloc_init(CloudServiceCapabilitiesOperation);
+    -[CloudServiceCapabilitiesOperation setAllowsPromptingForPrivacyAcknowledgement:](oSLogObject, "setAllowsPromptingForPrivacyAcknowledgement:", [v12 allowsPromptingForPrivacyAcknowledgement]);
     v14 = SSXPCConnectionCopyValueForEntitlement();
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_respondsToSelector())
     {
-      [(CloudServiceCapabilitiesOperation *)v13 setAllowsBypassOfPrivacyAcknowledgement:1];
+      [(CloudServiceCapabilitiesOperation *)oSLogObject setAllowsBypassOfPrivacyAcknowledgement:1];
     }
 
-    objc_initWeak(location, v13);
+    objc_initWeak(location, oSLogObject);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1001431FC;
@@ -712,11 +712,11 @@ LABEL_16:
     objc_copyWeak(&v25, location);
     v15 = v9;
     v23 = v15;
-    v16 = v8;
+    v16 = sharedNetworkRequestQueue;
     v24 = v16;
-    [(CloudServiceCapabilitiesOperation *)v13 setResponseBlock:v22];
-    [v16 setClient:v15 forOperation:v13];
-    [v16 addOperation:v13];
+    [(CloudServiceCapabilitiesOperation *)oSLogObject setResponseBlock:v22];
+    [v16 setClient:v15 forOperation:oSLogObject];
+    [v16 addOperation:oSLogObject];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
@@ -730,19 +730,19 @@ LABEL_16:
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v12 shouldLog];
+    shouldLog = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v13 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -760,7 +760,7 @@ LABEL_16:
         goto LABEL_8;
       }
 
-      v13 = [NSString stringWithCString:v20 encoding:4, location, v21];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, location, v21];
       free(v20);
       SSFileLog();
     }
@@ -769,19 +769,19 @@ LABEL_16:
 LABEL_8:
 }
 
-+ (void)getSubscriptionEntitlements:(id)a3 connection:(id)a4
++ (void)getSubscriptionEntitlements:(id)entitlements connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  entitlementsCopy = entitlements;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:entitlementsCopy connection:connectionCopy];
   if (SSXPCConnectionHasEntitlement() & 1) != 0 || (SSIsDaemon())
   {
-    v10 = xpc_dictionary_get_BOOL(v6, "1");
+    v10 = xpc_dictionary_get_BOOL(entitlementsCopy, "1");
     v11 = objc_alloc_init(SubscriptionEntitlementsOperation);
     [(SubscriptionEntitlementsOperation *)v11 setIgnoreCaches:v10];
-    v12 = [v9 clientIdentifier];
-    [(SubscriptionEntitlementsOperation *)v11 setClientIdentifier:v12];
+    clientIdentifier = [v9 clientIdentifier];
+    [(SubscriptionEntitlementsOperation *)v11 setClientIdentifier:clientIdentifier];
 
     objc_initWeak(location, v11);
     v22[0] = _NSConcreteStackBlock;
@@ -789,9 +789,9 @@ LABEL_8:
     v22[2] = sub_10014362C;
     v22[3] = &unk_100329C08;
     objc_copyWeak(&v26, location);
-    v23 = v6;
-    v24 = v7;
-    v13 = v8;
+    v23 = entitlementsCopy;
+    v24 = connectionCopy;
+    v13 = sharedNetworkRequestQueue;
     v25 = v13;
     [(SubscriptionEntitlementsOperation *)v11 setSubscriptionEntitlementsBlock:v22];
     [v13 setClient:v9 forOperation:v11];
@@ -809,19 +809,19 @@ LABEL_8:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -848,19 +848,19 @@ LABEL_8:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)installManagedAppWithMessage:(id)a3 connection:(id)a4 provideDetailedResponse:(BOOL)a5
++ (void)installManagedAppWithMessage:(id)message connection:(id)connection provideDetailedResponse:(BOOL)response
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 sharedNetworkRequestQueue];
-  v11 = [v10 _newClientWithMessage:v9 connection:v8];
+  connectionCopy = connection;
+  messageCopy = message;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v11 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   v12 = [SSVInstallManagedApplicationRequest alloc];
-  v13 = xpc_dictionary_get_value(v9, "1");
+  v13 = xpc_dictionary_get_value(messageCopy, "1");
 
   v14 = [v12 initWithXPCEncoding:v13];
   if (([v11 hasEntitlements] & 1) == 0)
@@ -871,19 +871,19 @@ LABEL_8:
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog;
     }
 
-    v27 = [v24 OSLogObject];
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v24 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v26 &= 2u;
     }
@@ -902,11 +902,11 @@ LABEL_8:
       {
 LABEL_26:
 
-        [v10 _sendUnentitledMessageToClient:v11];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v11];
         goto LABEL_39;
       }
 
-      v27 = [NSString stringWithCString:v29 encoding:4, &v42, v36];
+      oSLogObject = [NSString stringWithCString:v29 encoding:4, &v42, v36];
       free(v29);
       SSFileLog();
     }
@@ -914,30 +914,30 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v15 = [v14 itemIdentifier];
+  itemIdentifier = [v14 itemIdentifier];
 
   v16 = +[SSLogConfig sharedDaemonConfig];
   v17 = v16;
-  if (!v15)
+  if (!itemIdentifier)
   {
     if (!v16)
     {
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v30 = [v17 shouldLog];
+    shouldLog2 = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v31 = v30 | 2;
+      v31 = shouldLog2 | 2;
     }
 
     else
     {
-      v31 = v30;
+      v31 = shouldLog2;
     }
 
-    v32 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v31 &= 2u;
     }
@@ -955,12 +955,12 @@ LABEL_26:
 LABEL_38:
 
         v35 = SSError();
-        [v10 _sendMessageWithError:v35 toClient:v11];
+        [sharedNetworkRequestQueue _sendMessageWithError:v35 toClient:v11];
 
         goto LABEL_39;
       }
 
-      v32 = [NSString stringWithCString:v34 encoding:4, &v42, v36];
+      oSLogObject2 = [NSString stringWithCString:v34 encoding:4, &v42, v36];
       free(v34);
       SSFileLog();
     }
@@ -973,19 +973,19 @@ LABEL_38:
     v17 = +[SSLogConfig sharedConfig];
   }
 
-  v18 = [v17 shouldLog];
+  shouldLog3 = [v17 shouldLog];
   if ([v17 shouldLogToDisk])
   {
-    v19 = v18 | 2;
+    v19 = shouldLog3 | 2;
   }
 
   else
   {
-    v19 = v18;
+    v19 = shouldLog3;
   }
 
-  v20 = [v17 OSLogObject];
-  if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v17 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v19 &= 2u;
   }
@@ -1008,7 +1008,7 @@ LABEL_38:
 
   if (v23)
   {
-    v20 = [NSString stringWithCString:v23 encoding:4, &v42, v36];
+    oSLogObject3 = [NSString stringWithCString:v23 encoding:4, &v42, v36];
     free(v23);
     SSFileLog();
 LABEL_13:
@@ -1018,21 +1018,21 @@ LABEL_13:
   v37[1] = 3221225472;
   v37[2] = sub_100143C74;
   v37[3] = &unk_100329C30;
-  v38 = v10;
+  v38 = sharedNetworkRequestQueue;
   v39 = v14;
-  v41 = a5;
+  responseCopy = response;
   v40 = v11;
   [AppStoreUtility installManagedAppWithRequest:v39 completionBlock:v37];
 
 LABEL_39:
 }
 
-+ (void)keybagSyncWithMessage:(id)a3 connection:(id)a4
++ (void)keybagSyncWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   HasEntitlement = SSXPCConnectionHasEntitlement();
 
   if ((HasEntitlement & 1) == 0)
@@ -1043,19 +1043,19 @@ LABEL_39:
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -1074,11 +1074,11 @@ LABEL_39:
       {
 LABEL_14:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_15;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v24, v21];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v24, v21];
       free(v20);
       SSFileLog();
     }
@@ -1087,7 +1087,7 @@ LABEL_14:
   }
 
   v11 = [SSVKeybagSyncRequest alloc];
-  v12 = xpc_dictionary_get_value(v6, "1");
+  v12 = xpc_dictionary_get_value(messageCopy, "1");
   v13 = [v11 initWithXPCEncoding:v12];
 
   v22[0] = _NSConcreteStackBlock;
@@ -1096,42 +1096,42 @@ LABEL_14:
   v22[3] = &unk_100329B68;
   v23 = [[KeybagSyncOperation alloc] initWithKeybagSyncRequest:v13];
   v14 = v23;
-  [v8 addOperation:v14 forClient:v9 withMessageBlock:v22];
+  [sharedNetworkRequestQueue addOperation:v14 forClient:v9 withMessageBlock:v22];
 
 LABEL_15:
 }
 
-+ (void)loadURLBagWithMessage:(id)a3 connection:(id)a4
++ (void)loadURLBagWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
   if (SSXPCConnectionHasEntitlement() & 1) != 0 || (SSXPCConnectionHasEntitlement())
   {
-    v9 = [[XPCClient alloc] initWithInputConnection:v7];
+    v9 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
     v10 = [SSURLBagContext alloc];
-    v11 = xpc_dictionary_get_value(v6, "1");
-    v12 = [v10 initWithXPCEncoding:v11];
+    v11 = xpc_dictionary_get_value(messageCopy, "1");
+    oSLogObject = [v10 initWithXPCEncoding:v11];
 
-    v13 = [(XPCClient *)v9 auditTokenData];
-    [v12 setClientAuditTokenData:v13];
+    auditTokenData = [(XPCClient *)v9 auditTokenData];
+    [oSLogObject setClientAuditTokenData:auditTokenData];
 
     v14 = SSHTTPHeaderUserAgent;
-    v15 = [v12 valueForHTTPHeaderField:SSHTTPHeaderUserAgent];
+    v15 = [oSLogObject valueForHTTPHeaderField:SSHTTPHeaderUserAgent];
 
     if (!v15)
     {
-      v16 = [(XPCClient *)v9 userAgent];
-      [v12 setValue:v16 forHTTPHeaderField:v14];
+      userAgent = [(XPCClient *)v9 userAgent];
+      [oSLogObject setValue:userAgent forHTTPHeaderField:v14];
     }
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1001445E4;
     v23[3] = &unk_100329B68;
-    v24 = [[ISLoadURLBagOperation alloc] initWithBagContext:v12];
+    v24 = [[ISLoadURLBagOperation alloc] initWithBagContext:oSLogObject];
     v17 = v24;
-    [v8 addOperation:v17 forMessage:v6 connection:v7 replyBlock:v23];
+    [sharedNetworkRequestQueue addOperation:v17 forMessage:messageCopy connection:connectionCopy replyBlock:v23];
   }
 
   else
@@ -1142,19 +1142,19 @@ LABEL_15:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [(XPCClient *)v9 shouldLog];
+    shouldLog = [(XPCClient *)v9 shouldLog];
     if ([(XPCClient *)v9 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v12 = [(XPCClient *)v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [(XPCClient *)v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -1172,7 +1172,7 @@ LABEL_15:
         goto LABEL_7;
       }
 
-      v12 = [NSString stringWithCString:v21 encoding:4, &v25, v22];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, &v25, v22];
       free(v21);
       SSFileLog();
     }
@@ -1181,12 +1181,12 @@ LABEL_15:
 LABEL_7:
 }
 
-+ (void)lookupItemsWithMessage:(id)a3 connection:(id)a4
++ (void)lookupItemsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ([v9 hasEntitlements])
   {
     v10 = objc_alloc_init(ISStoreURLOperation);
@@ -1194,19 +1194,19 @@ LABEL_7:
     [v10 setDataProvider:v11];
 
     v12 = [SSItemLookupRequest alloc];
-    v13 = xpc_dictionary_get_value(v6, "1");
+    v13 = xpc_dictionary_get_value(messageCopy, "1");
     v14 = [v12 initWithXPCEncoding:v13];
 
     v15 = objc_alloc_init(SSMutableURLRequestProperties);
-    v16 = [v9 clientIdentifierHeader];
-    [v15 setClientIdentifier:v16];
+    clientIdentifierHeader = [v9 clientIdentifierHeader];
+    [v15 setClientIdentifier:clientIdentifierHeader];
 
     [v15 setURLBagKey:@"adkit-product-url"];
-    v17 = [v9 userAgent];
-    [v15 setValue:v17 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    userAgent = [v9 userAgent];
+    [v15 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
-    v18 = [v14 copyQueryStringParameters];
-    [v15 setRequestParameters:v18];
+    copyQueryStringParameters = [v14 copyQueryStringParameters];
+    [v15 setRequestParameters:copyQueryStringParameters];
     [v10 setRequestProperties:v15];
     objc_initWeak(location, v10);
     v26[0] = _NSConcreteStackBlock;
@@ -1216,7 +1216,7 @@ LABEL_7:
     objc_copyWeak(&v28, location);
     v27 = v9;
     [v10 setCompletionBlock:v26];
-    [v8 addOperation:v10];
+    [sharedNetworkRequestQueue addOperation:v10];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(location);
@@ -1230,19 +1230,19 @@ LABEL_7:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v21 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 &= 2u;
     }
@@ -1271,12 +1271,12 @@ LABEL_7:
   }
 }
 
-+ (void)lookupWithMessage:(id)a3 connection:(id)a4
++ (void)lookupWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ((SSXPCConnectionHasEntitlement() & 1) == 0 && (SSXPCConnectionHasEntitlement() & 1) == 0 && (SSIsDaemon() & 1) == 0)
   {
     v23 = +[SSLogConfig sharedDaemonConfig];
@@ -1285,19 +1285,19 @@ LABEL_7:
       v23 = +[SSLogConfig sharedConfig];
     }
 
-    v24 = [v23 shouldLog];
+    shouldLog = [v23 shouldLog];
     if ([v23 shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog;
     }
 
-    v26 = [v23 OSLogObject];
-    if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v23 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v25 &= 2u;
     }
@@ -1316,11 +1316,11 @@ LABEL_7:
       {
 LABEL_22:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_10;
       }
 
-      v26 = [NSString stringWithCString:v28 encoding:4, &v32, v29];
+      oSLogObject = [NSString stringWithCString:v28 encoding:4, &v32, v29];
       free(v28);
       SSFileLog();
     }
@@ -1329,32 +1329,32 @@ LABEL_22:
   }
 
   v10 = [SSLookupRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
-  v13 = [v12 _lookupProperties];
-  v14 = [v13 valueForRequestParameter:@"caller"];
+  _lookupProperties = [v12 _lookupProperties];
+  v14 = [_lookupProperties valueForRequestParameter:@"caller"];
   if (!v14)
   {
-    v15 = [v9 clientIdentifier];
-    [v13 setValue:v15 forRequestParameter:@"caller"];
+    clientIdentifier = [v9 clientIdentifier];
+    [_lookupProperties setValue:clientIdentifier forRequestParameter:@"caller"];
   }
 
-  v16 = [[LookupRequestOperation alloc] initWithLookupProperties:v13];
-  v17 = [v12 authenticationContext];
-  [(LookupRequestOperation *)v16 setAuthenticationContext:v17];
+  v16 = [[LookupRequestOperation alloc] initWithLookupProperties:_lookupProperties];
+  authenticationContext = [v12 authenticationContext];
+  [(LookupRequestOperation *)v16 setAuthenticationContext:authenticationContext];
 
-  v18 = [v9 clientIdentifierHeader];
-  [(LookupRequestOperation *)v16 setClientIdentifierHeader:v18];
+  clientIdentifierHeader = [v9 clientIdentifierHeader];
+  [(LookupRequestOperation *)v16 setClientIdentifierHeader:clientIdentifierHeader];
 
   -[LookupRequestOperation setPersonalizationStyle:](v16, "setPersonalizationStyle:", [v12 personalizationStyle]);
-  v19 = [v9 userAgent];
-  [(LookupRequestOperation *)v16 setUserAgent:v19];
+  userAgent = [v9 userAgent];
+  [(LookupRequestOperation *)v16 setUserAgent:userAgent];
 
   if ([v12 personalizationStyle] == 2)
   {
-    v20 = [v9 clientIdentifier];
-    v21 = [v20 isEqualToString:@"com.apple.Health"];
+    clientIdentifier2 = [v9 clientIdentifier];
+    v21 = [clientIdentifier2 isEqualToString:@"com.apple.Health"];
 
     if (v21)
     {
@@ -1368,41 +1368,41 @@ LABEL_22:
   v30[3] = &unk_100329B68;
   v31 = v16;
   v22 = v16;
-  [v8 addOperation:v22 forClient:v9 withMessageBlock:v30];
+  [sharedNetworkRequestQueue addOperation:v22 forClient:v9 withMessageBlock:v30];
 
 LABEL_10:
 }
 
-+ (void)performMigrationWithMessage:(id)a3 connection:(id)a4
++ (void)performMigrationWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if (SSXPCConnectionHasEntitlement())
   {
     objc_opt_class();
     v33 = SSXPCDictionaryCopyObjectWithClass();
-    v10 = [v33 integerValue];
+    integerValue = [v33 integerValue];
     v11 = +[SSLogConfig sharedDaemonConfig];
     if (!v11)
     {
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v15 = v13;
     }
@@ -1432,7 +1432,7 @@ LABEL_10:
     {
     }
 
-    v26 = [objc_alloc(ISWeakLinkedClassForString()) initWithMigrationType:v10];
+    v26 = [objc_alloc(ISWeakLinkedClassForString()) initWithMigrationType:integerValue];
     v27 = [objc_alloc(ISWeakLinkedClassForString()) initWithOptions:v26];
     v28 = dispatch_semaphore_create(0);
     *v38 = 0;
@@ -1444,16 +1444,16 @@ LABEL_10:
     v34[2] = sub_100145590;
     v34[3] = &unk_100329C58;
     v36 = v38;
-    v37 = a1;
+    selfCopy = self;
     v29 = v28;
     v35 = v29;
     [v27 startWithCompletionBlock:v34];
     v30 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v29, v30);
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(messageCopy);
     xpc_dictionary_set_int64(reply, "0", 1011);
     xpc_dictionary_set_BOOL(reply, "1", *(*&v38[8] + 24));
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(connectionCopy, reply);
 
     _Block_object_dispose(v38, 8);
   }
@@ -1466,19 +1466,19 @@ LABEL_10:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog2 = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog2 | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog2;
     }
 
-    v22 = [v19 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v19 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v21 &= 2u;
     }
@@ -1505,16 +1505,16 @@ LABEL_10:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)presentRemoteWebViewWithMessage:(id)a3 connection:(id)a4
++ (void)presentRemoteWebViewWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if (([v9 hasEntitlements] & 1) == 0)
   {
@@ -1524,19 +1524,19 @@ LABEL_10:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -1555,11 +1555,11 @@ LABEL_10:
       {
 LABEL_14:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_15;
       }
 
-      v20 = [NSString stringWithCString:v22 encoding:4, v24, v23, *v24, *&v24[16]];
+      oSLogObject = [NSString stringWithCString:v22 encoding:4, v24, v23, *v24, *&v24[16]];
       free(v22);
       SSFileLog();
     }
@@ -1568,36 +1568,36 @@ LABEL_14:
   }
 
   v10 = [SSRemoteWebViewRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
   v13 = [[RemoteWebViewOperation alloc] initWithWebViewRequest:v12];
-  v14 = [v8 operationQueue];
-  [v14 addOperation:v13];
+  operationQueue = [sharedNetworkRequestQueue operationQueue];
+  [operationQueue addOperation:v13];
 
   v15 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v15, "0", 1011);
-  v16 = [v9 outputConnection];
-  [v16 sendMessage:v15];
+  outputConnection = [v9 outputConnection];
+  [outputConnection sendMessage:v15];
 
 LABEL_15:
 }
 
-+ (void)rentalInformationRequestWithMessage:(id)a3 connection:(id)a4
++ (void)rentalInformationRequestWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   v10 = [SSRentalInformationRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
   if ([v9 hasEntitlements])
   {
-    v13 = [v12 accountIdentifier];
-    v14 = [v12 rentalKeyIdentifier];
-    v15 = [[LoadRentalInformationOperation alloc] initWithAccountIdentifier:v13 rentalKeyIdentifier:v14];
+    accountIdentifier = [v12 accountIdentifier];
+    rentalKeyIdentifier = [v12 rentalKeyIdentifier];
+    v15 = [[LoadRentalInformationOperation alloc] initWithAccountIdentifier:accountIdentifier rentalKeyIdentifier:rentalKeyIdentifier];
     objc_initWeak(location, v15);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -1606,8 +1606,8 @@ LABEL_15:
     objc_copyWeak(&v27, location);
     v26 = v9;
     [(LoadRentalInformationOperation *)v15 setCompletionBlock:v25];
-    v16 = [v8 operationQueue];
-    [v16 addOperation:v15];
+    operationQueue = [sharedNetworkRequestQueue operationQueue];
+    [operationQueue addOperation:v15];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(location);
@@ -1621,19 +1621,19 @@ LABEL_15:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -1660,16 +1660,16 @@ LABEL_15:
     {
     }
 
-    [v8 _sendUnentitledMessageToClient:v9];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
   }
 }
 
-+ (void)repairAppWithMessage:(id)a3 connection:(id)a4
++ (void)repairAppWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if (([v9 hasEntitlements] & 1) == 0)
   {
@@ -1679,19 +1679,19 @@ LABEL_15:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
+    shouldLog = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v26 = v24;
     }
@@ -1715,11 +1715,11 @@ LABEL_15:
       {
 LABEL_25:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_28;
       }
 
-      v25 = [NSString stringWithCString:v28 encoding:4, &v36, v30];
+      oSLogObject = [NSString stringWithCString:v28 encoding:4, &v36, v30];
       free(v28);
       SSFileLog();
     }
@@ -1728,7 +1728,7 @@ LABEL_25:
   }
 
   v10 = [SSVRepairApplicationRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
   v13 = +[SSLogConfig sharedDaemonConfig];
@@ -1737,19 +1737,19 @@ LABEL_25:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog2 = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog2 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog2;
   }
 
-  v16 = [v13 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v17 = v15;
   }
@@ -1763,12 +1763,12 @@ LABEL_25:
   {
     v18 = objc_opt_class();
     v31 = v18;
-    v19 = [v12 accountDSID];
+    accountDSID = [v12 accountDSID];
     [v12 bundleID];
     v36 = 138412802;
     v37 = v18;
     v38 = 2112;
-    v39 = v19;
+    v39 = accountDSID;
     v41 = v40 = 2112;
     LODWORD(v30) = 32;
     v20 = _os_log_send_and_compose_impl();
@@ -1789,7 +1789,7 @@ LABEL_25:
   v32[1] = 3221225472;
   v32[2] = sub_1001462B8;
   v32[3] = &unk_100329C80;
-  v35 = a1;
+  selfCopy = self;
   v33 = v12;
   v34 = v9;
   v29 = v12;
@@ -1798,12 +1798,12 @@ LABEL_25:
 LABEL_28:
 }
 
-+ (void)requestURLWithMessage:(id)a3 connection:(id)a4
++ (void)requestURLWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if (([v9 hasEntitlements] & 1) == 0)
   {
@@ -1813,19 +1813,19 @@ LABEL_28:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
+    shouldLog = [v26 shouldLog];
     if ([v26 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog;
     }
 
-    v29 = [v26 OSLogObject];
-    if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v26 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v28 &= 2u;
     }
@@ -1844,11 +1844,11 @@ LABEL_28:
       {
 LABEL_19:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_22;
       }
 
-      v29 = [NSString stringWithCString:v31 encoding:4, &v38, v35];
+      oSLogObject = [NSString stringWithCString:v31 encoding:4, &v38, v35];
       free(v31);
       SSFileLog();
     }
@@ -1857,51 +1857,51 @@ LABEL_19:
   }
 
   v10 = [SSURLConnectionRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
-  v13 = [v12 requestProperties];
-  v14 = [v13 mutableCopy];
+  requestProperties = [v12 requestProperties];
+  v14 = [requestProperties mutableCopy];
 
-  v15 = [v9 auditTokenData];
-  [v14 setClientAuditTokenData:v15];
+  auditTokenData = [v9 auditTokenData];
+  [v14 setClientAuditTokenData:auditTokenData];
 
-  v16 = [v14 clientIdentifier];
+  clientIdentifier = [v14 clientIdentifier];
 
-  if (!v16)
+  if (!clientIdentifier)
   {
-    v17 = [v9 clientIdentifierHeader];
-    [v14 setClientIdentifier:v17];
+    clientIdentifierHeader = [v9 clientIdentifierHeader];
+    [v14 setClientIdentifier:clientIdentifierHeader];
   }
 
-  v18 = [v14 HTTPHeaders];
+  hTTPHeaders = [v14 HTTPHeaders];
   v19 = SSHTTPHeaderUserAgent;
-  v20 = [v18 objectForKey:SSHTTPHeaderUserAgent];
+  v20 = [hTTPHeaders objectForKey:SSHTTPHeaderUserAgent];
 
   if (!v20)
   {
-    v21 = [v9 userAgent];
-    [v14 setValue:v21 forHTTPHeaderField:v19];
+    userAgent = [v9 userAgent];
+    [v14 setValue:userAgent forHTTPHeaderField:v19];
   }
 
   v22 = [v14 URL];
-  v23 = [v22 scheme];
-  v24 = [v23 isEqualToString:SSActionURLScheme];
+  scheme = [v22 scheme];
+  v24 = [scheme isEqualToString:SSActionURLScheme];
 
   if (v24)
   {
     v25 = [v14 URL];
-    [v8 _enqueueOperationsForStoreServicesURL:v25];
+    [sharedNetworkRequestQueue _enqueueOperationsForStoreServicesURL:v25];
   }
 
   else
   {
     v32 = [[URLConnectionRequestOperation alloc] initWithRequestProperties:v14];
-    v33 = [v12 authenticationContext];
-    [(URLConnectionRequestOperation *)v32 setAuthenticationContext:v33];
+    authenticationContext = [v12 authenticationContext];
+    [(URLConnectionRequestOperation *)v32 setAuthenticationContext:authenticationContext];
 
-    v34 = [v12 destinationFileURL];
-    [(URLConnectionRequestOperation *)v32 setDestinationFileURL:v34];
+    destinationFileURL = [v12 destinationFileURL];
+    [(URLConnectionRequestOperation *)v32 setDestinationFileURL:destinationFileURL];
 
     -[URLConnectionRequestOperation setSendsResponseForHTTPFailures:](v32, "setSendsResponseForHTTPFailures:", [v12 sendsResponseForHTTPFailures]);
     -[URLConnectionRequestOperation setShouldMescalSign:](v32, "setShouldMescalSign:", [v12 shouldMescalSign]);
@@ -1911,18 +1911,18 @@ LABEL_19:
     v36[3] = &unk_100329B68;
     v37 = v32;
     v25 = v32;
-    [v8 addOperation:v25 forClient:v9 withMessageBlock:v36];
+    [sharedNetworkRequestQueue addOperation:v25 forClient:v9 withMessageBlock:v36];
   }
 
 LABEL_22:
 }
 
-+ (void)restoreDemotedApplicationsWithMessage:(id)a3 connection:(id)a4
++ (void)restoreDemotedApplicationsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if (([v9 hasEntitlements] & 1) == 0)
   {
     v15 = +[SSLogConfig sharedDaemonConfig];
@@ -1931,19 +1931,19 @@ LABEL_22:
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -1962,11 +1962,11 @@ LABEL_22:
       {
 LABEL_17:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_23;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v28, v24];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v28, v24];
       free(v20);
       SSFileLog();
     }
@@ -1977,7 +1977,7 @@ LABEL_17:
   v10 = objc_alloc_init(NSMutableArray);
   objc_opt_class();
   v11 = SSXPCDictionaryCopyObjectWithClass();
-  v12 = xpc_dictionary_get_value(v6, "1");
+  v12 = xpc_dictionary_get_value(messageCopy, "1");
   v13 = v12;
   if (v12)
   {
@@ -2011,20 +2011,20 @@ LABEL_17:
     [v22 restoreDemotedBundleIdentifiers:v10 options:v11];
   }
 
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(messageCopy);
   xpc_dictionary_set_int64(reply, "0", 1011);
   xpc_dictionary_set_BOOL(reply, "1", 1);
   SSXPCDictionarySetObject();
-  xpc_connection_send_message(v7, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 
 LABEL_23:
 }
 
-+ (void)sdk_loadStoreFrontIdentifierWithMessage:(id)a3 connection:(id)a4
++ (void)sdk_loadStoreFrontIdentifierWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
   v24 = 0u;
   v25 = 0u;
   xpc_connection_get_audit_token();
@@ -2032,7 +2032,7 @@ LABEL_23:
   if (TCCAccessCheckAuditToken())
   {
     v9 = [SSURLBagContext alloc];
-    v10 = xpc_dictionary_get_value(v6, "1");
+    v10 = xpc_dictionary_get_value(messageCopy, "1");
     v11 = [v9 initWithXPCEncoding:v10];
 
     v12 = SSHTTPHeaderUserAgent;
@@ -2040,9 +2040,9 @@ LABEL_23:
 
     if (!v13)
     {
-      v14 = [[XPCClient alloc] initWithInputConnection:v7];
-      v15 = [(XPCClient *)v14 userAgent];
-      [v11 setValue:v15 forHTTPHeaderField:v12];
+      v14 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
+      userAgent = [(XPCClient *)v14 userAgent];
+      [v11 setValue:userAgent forHTTPHeaderField:v12];
     }
 
     v22[0] = _NSConcreteStackBlock;
@@ -2050,8 +2050,8 @@ LABEL_23:
     v22[2] = sub_100147148;
     v22[3] = &unk_100329B68;
     v23 = [[ISLoadURLBagOperation alloc] initWithBagContext:v11];
-    v16 = v23;
-    [v8 addOperation:v16 forMessage:v6 connection:v7 replyBlock:v22];
+    oSLogObject = v23;
+    [sharedNetworkRequestQueue addOperation:oSLogObject forMessage:messageCopy connection:connectionCopy replyBlock:v22];
   }
 
   else
@@ -2062,19 +2062,19 @@ LABEL_23:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v16 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -2092,7 +2092,7 @@ LABEL_23:
         goto LABEL_6;
       }
 
-      v16 = [NSString stringWithCString:v20 encoding:4, v26, v21];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, v26, v21];
       free(v20);
       SSFileLog();
     }
@@ -2101,12 +2101,12 @@ LABEL_23:
 LABEL_6:
 }
 
-+ (void)sdk_requestAPITokenWithMessage:(id)a3 connection:(id)a4
++ (void)sdk_requestAPITokenWithMessage:(id)message connection:(id)connection
 {
-  xdict = a3;
-  v6 = a4;
-  v27 = [a1 sharedNetworkRequestQueue];
-  v7 = [v27 _newClientWithMessage:xdict connection:v6];
+  xdict = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v7 = [sharedNetworkRequestQueue _newClientWithMessage:xdict connection:connectionCopy];
   v32 = 0u;
   v33 = 0u;
   xpc_connection_get_audit_token();
@@ -2118,14 +2118,14 @@ LABEL_6:
     v9 = xpc_dictionary_get_value(xdict, "1");
     v10 = [v8 initWithXPCEncoding:v9];
 
-    v11 = [v7 clientIdentifier];
-    v25 = [v7 clientVersion];
+    clientIdentifier = [v7 clientIdentifier];
+    clientVersion = [v7 clientVersion];
     v12 = +[SSAccountStore defaultStore];
-    v13 = [v12 activeAccount];
+    activeAccount = [v12 activeAccount];
 
-    if (v13)
+    if (activeAccount)
     {
-      v14 = [[SSMutableAuthenticationContext alloc] initWithAccount:v13];
+      v14 = [[SSMutableAuthenticationContext alloc] initWithAccount:activeAccount];
     }
 
     else
@@ -2138,11 +2138,11 @@ LABEL_6:
     [v19 setAllowsSilentAuthentication:1];
     v20 = objc_alloc_init(CloudServiceAPITokenOperation);
     [(CloudServiceAPITokenOperation *)v20 setAuthenticationContext:v19];
-    v21 = [v10 clientToken];
-    [(CloudServiceAPITokenOperation *)v20 setClientToken:v21];
+    clientToken = [v10 clientToken];
+    [(CloudServiceAPITokenOperation *)v20 setClientToken:clientToken];
 
-    [(CloudServiceAPITokenOperation *)v20 setRequestingBundleID:v11];
-    [(CloudServiceAPITokenOperation *)v20 setRequestingBundleVersion:v25];
+    [(CloudServiceAPITokenOperation *)v20 setRequestingBundleID:clientIdentifier];
+    [(CloudServiceAPITokenOperation *)v20 setRequestingBundleVersion:clientVersion];
     objc_initWeak(location, v20);
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -2151,7 +2151,7 @@ LABEL_6:
     objc_copyWeak(&v31, location);
     v22 = v7;
     v29 = v22;
-    v23 = v27;
+    v23 = sharedNetworkRequestQueue;
     v30 = v23;
     [(CloudServiceAPITokenOperation *)v20 setResponseBlock:v28];
     [v23 setClient:v22 forOperation:v20];
@@ -2164,21 +2164,21 @@ LABEL_6:
   }
 
   v10 = +[SSLogConfig sharedConfig];
-  v15 = [v10 shouldLog];
+  shouldLog = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v15 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  clientIdentifier = [v10 OSLogObject];
+  if (os_log_type_enabled(clientIdentifier, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = v15;
+    v16 = shouldLog;
   }
 
   else
   {
-    v16 = v15 & 2;
+    v16 = shouldLog & 2;
   }
 
   if (!v16)
@@ -2194,59 +2194,59 @@ LABEL_6:
 
   if (v18)
   {
-    v11 = [NSString stringWithCString:v18 encoding:4, location, v24];
+    clientIdentifier = [NSString stringWithCString:v18 encoding:4, location, v24];
     free(v18);
     SSFileLog();
 LABEL_14:
   }
 }
 
-+ (void)silentEnrollmentWithMessage:(id)a3 connection:(id)a4
++ (void)silentEnrollmentWithMessage:(id)message connection:(id)connection
 {
-  v40 = a3;
-  v6 = a4;
-  v7 = [a1 sharedNetworkRequestQueue];
-  v41 = [v7 _newClientWithMessage:v40 connection:v6];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v41 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if (SSXPCConnectionHasEntitlement())
   {
     v8 = [SSSilentEnrollment alloc];
-    v9 = xpc_dictionary_get_value(v40, "1");
+    v9 = xpc_dictionary_get_value(messageCopy, "1");
     v10 = [v8 initWithXPCEncoding:v9];
 
-    v11 = [v10 context];
-    v39 = [v11 accountIdentifier];
+    context = [v10 context];
+    accountIdentifier = [context accountIdentifier];
 
-    v12 = [v10 context];
-    v38 = [v12 headerADSID];
+    context2 = [v10 context];
+    headerADSID = [context2 headerADSID];
 
-    v13 = [v10 context];
-    v37 = [v13 headerGSToken];
+    context3 = [v10 context];
+    headerGSToken = [context3 headerGSToken];
 
-    v14 = [v10 context];
-    v36 = [v14 headerGuid];
+    context4 = [v10 context];
+    headerGuid = [context4 headerGuid];
 
-    v15 = [v10 context];
-    v35 = [v15 headerMMeClientInfo];
+    context5 = [v10 context];
+    headerMMeClientInfo = [context5 headerMMeClientInfo];
 
-    v16 = [v10 context];
-    v34 = [v16 headerMMeDeviceId];
+    context6 = [v10 context];
+    headerMMeDeviceId = [context6 headerMMeDeviceId];
 
-    v17 = [v10 context];
-    v18 = [v17 URLString];
-    v33 = [NSURL URLWithString:v18];
+    context7 = [v10 context];
+    uRLString = [context7 URLString];
+    v33 = [NSURL URLWithString:uRLString];
 
     v19 = objc_alloc_init(ISStoreURLOperation);
     v20 = objc_alloc_init(ISJSONDataProvider);
     [v19 setDataProvider:v20];
-    v21 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:v39];
+    v21 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:accountIdentifier];
     [v19 setAuthenticationContext:v21];
     v22 = [[NSMutableURLRequest alloc] initWithURL:v33];
     [v22 setHTTPMethod:@"GET"];
-    [v22 setValue:v38 forHTTPHeaderField:SSHTTPHeaderXAppleADSID];
-    [v22 setValue:v37 forHTTPHeaderField:SSHTTPHeaderXAppleGSToken];
-    [v22 setValue:v36 forHTTPHeaderField:SSHTTPHeaderGUID];
-    [v22 setValue:v35 forHTTPHeaderField:SSHTTPHeaderXAppleMMeClientInfo];
-    [v22 setValue:v34 forHTTPHeaderField:SSHTTPHeaderXAppleMMeDeviceID];
+    [v22 setValue:headerADSID forHTTPHeaderField:SSHTTPHeaderXAppleADSID];
+    [v22 setValue:headerGSToken forHTTPHeaderField:SSHTTPHeaderXAppleGSToken];
+    [v22 setValue:headerGuid forHTTPHeaderField:SSHTTPHeaderGUID];
+    [v22 setValue:headerMMeClientInfo forHTTPHeaderField:SSHTTPHeaderXAppleMMeClientInfo];
+    [v22 setValue:headerMMeDeviceId forHTTPHeaderField:SSHTTPHeaderXAppleMMeDeviceID];
     v23 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:v22];
     [v19 setRequestProperties:v23];
     objc_initWeak(location, v19);
@@ -2258,8 +2258,8 @@ LABEL_14:
     v24 = v41;
     v43 = v24;
     [v19 setCompletionBlock:v42];
-    [v7 setClient:v24 forOperation:v19];
-    [v7 addOperation:v19];
+    [sharedNetworkRequestQueue setClient:v24 forOperation:v19];
+    [sharedNetworkRequestQueue addOperation:v19];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(location);
@@ -2273,19 +2273,19 @@ LABEL_14:
       v25 = +[SSLogConfig sharedConfig];
     }
 
-    v26 = [v25 shouldLog];
+    shouldLog = [v25 shouldLog];
     if ([v25 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog;
     }
 
-    v28 = [v25 OSLogObject];
-    if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v25 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v27 &= 2u;
     }
@@ -2312,61 +2312,61 @@ LABEL_14:
     {
     }
 
-    [v7 _sendUnentitledMessageToClient:v41];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v41];
   }
 }
 
-+ (void)silentEnrollmentVerificationWithMessage:(id)a3 connection:(id)a4
++ (void)silentEnrollmentVerificationWithMessage:(id)message connection:(id)connection
 {
-  v42 = a3;
-  v43 = a4;
-  v6 = [a1 sharedNetworkRequestQueue];
-  v44 = [v6 _newClientWithMessage:v42 connection:v43];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v44 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if (SSXPCConnectionHasEntitlement())
   {
     v7 = [SSSilentEnrollment alloc];
-    v8 = xpc_dictionary_get_value(v42, "1");
+    v8 = xpc_dictionary_get_value(messageCopy, "1");
     v9 = [v7 initWithXPCEncoding:v8];
 
-    v10 = [v9 context];
-    v41 = [v10 accountIdentifier];
+    context = [v9 context];
+    accountIdentifier = [context accountIdentifier];
 
-    v11 = [v9 context];
-    v40 = [v11 headerADSID];
+    context2 = [v9 context];
+    headerADSID = [context2 headerADSID];
 
-    v12 = [v9 context];
-    v39 = [v12 headerGSToken];
+    context3 = [v9 context];
+    headerGSToken = [context3 headerGSToken];
 
-    v13 = [v9 context];
-    v38 = [v13 headerGuid];
+    context4 = [v9 context];
+    headerGuid = [context4 headerGuid];
 
-    v14 = [v9 context];
-    v37 = [v14 headerMMeClientInfo];
+    context5 = [v9 context];
+    headerMMeClientInfo = [context5 headerMMeClientInfo];
 
-    v15 = [v9 context];
-    v36 = [v15 headerMMeDeviceId];
+    context6 = [v9 context];
+    headerMMeDeviceId = [context6 headerMMeDeviceId];
 
-    v16 = [v9 context];
-    v35 = [v16 parameters];
+    context7 = [v9 context];
+    parameters = [context7 parameters];
 
-    v17 = [v9 context];
-    v18 = [v17 URLString];
-    v19 = [NSURL URLWithString:v18];
+    context8 = [v9 context];
+    uRLString = [context8 URLString];
+    v19 = [NSURL URLWithString:uRLString];
 
     v20 = objc_alloc_init(ISStoreURLOperation);
     v21 = objc_alloc_init(ISJSONDataProvider);
     [v20 setDataProvider:v21];
-    v22 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:v41];
+    v22 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:accountIdentifier];
     [v20 setAuthenticationContext:v22];
     v23 = [[NSMutableURLRequest alloc] initWithURL:v19];
-    [v23 setHTTPBody:v35];
+    [v23 setHTTPBody:parameters];
     [v23 setHTTPMethod:@"POST"];
     [v23 setHTTPContentType:@"application/json"];
-    [v23 setValue:v40 forHTTPHeaderField:SSHTTPHeaderXAppleADSID];
-    [v23 setValue:v39 forHTTPHeaderField:SSHTTPHeaderXAppleGSToken];
-    [v23 setValue:v38 forHTTPHeaderField:SSHTTPHeaderGUID];
-    [v23 setValue:v37 forHTTPHeaderField:SSHTTPHeaderXAppleMMeClientInfo];
-    [v23 setValue:v36 forHTTPHeaderField:SSHTTPHeaderXAppleMMeDeviceID];
+    [v23 setValue:headerADSID forHTTPHeaderField:SSHTTPHeaderXAppleADSID];
+    [v23 setValue:headerGSToken forHTTPHeaderField:SSHTTPHeaderXAppleGSToken];
+    [v23 setValue:headerGuid forHTTPHeaderField:SSHTTPHeaderGUID];
+    [v23 setValue:headerMMeClientInfo forHTTPHeaderField:SSHTTPHeaderXAppleMMeClientInfo];
+    [v23 setValue:headerMMeDeviceId forHTTPHeaderField:SSHTTPHeaderXAppleMMeDeviceID];
     v24 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:v23];
     [v20 setRequestProperties:v24];
     objc_initWeak(location, v20);
@@ -2378,8 +2378,8 @@ LABEL_14:
     v25 = v44;
     v46 = v25;
     [v20 setCompletionBlock:v45];
-    [v6 setClient:v25 forOperation:v20];
-    [v6 addOperation:v20];
+    [sharedNetworkRequestQueue setClient:v25 forOperation:v20];
+    [sharedNetworkRequestQueue addOperation:v20];
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(location);
@@ -2393,19 +2393,19 @@ LABEL_14:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
+    shouldLog = [v26 shouldLog];
     if ([v26 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog;
     }
 
-    v29 = [v26 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v28;
     }
@@ -2437,16 +2437,16 @@ LABEL_14:
     {
     }
 
-    [v6 _sendUnentitledMessageToClient:v44];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v44];
   }
 }
 
-+ (void)authenticationRequestWithMessage:(id)a3 connection:(id)a4
++ (void)authenticationRequestWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if (([v9 hasEntitlements] & 1) == 0)
   {
@@ -2456,19 +2456,19 @@ LABEL_14:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 &= 2u;
     }
@@ -2487,11 +2487,11 @@ LABEL_14:
       {
 LABEL_14:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_15;
       }
 
-      v16 = [NSString stringWithCString:v18 encoding:4, &v22, v19];
+      oSLogObject = [NSString stringWithCString:v18 encoding:4, &v22, v19];
       free(v18);
       SSFileLog();
     }
@@ -2501,7 +2501,7 @@ LABEL_14:
 
   +[SSVSubscriptionStatusCoordinator beginSuspendingSubscriptionStatusChangeNotifications];
   v10 = [SSAuthenticateRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
   v20[0] = _NSConcreteStackBlock;
@@ -2514,12 +2514,12 @@ LABEL_14:
 LABEL_15:
 }
 
-+ (void)serverAuthenticateWithMessage:(id)a3 connection:(id)a4
++ (void)serverAuthenticateWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v6 connection:v7];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if (([v9 hasEntitlements] & 1) == 0)
   {
@@ -2529,19 +2529,19 @@ LABEL_15:
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog;
     }
 
-    v24 = [v21 OSLogObject];
-    if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v21 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v23 &= 2u;
     }
@@ -2560,11 +2560,11 @@ LABEL_15:
       {
 LABEL_14:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_15;
       }
 
-      v24 = [NSString stringWithCString:v26 encoding:4, &v31, v27];
+      oSLogObject = [NSString stringWithCString:v26 encoding:4, &v31, v27];
       free(v26);
       SSFileLog();
     }
@@ -2573,15 +2573,15 @@ LABEL_14:
   }
 
   v10 = [SSVServerAuthenticateRequest alloc];
-  v11 = xpc_dictionary_get_value(v6, "1");
+  v11 = xpc_dictionary_get_value(messageCopy, "1");
   v12 = [v10 initWithXPCEncoding:v11];
 
-  v13 = [v12 authenticationContext];
-  v14 = [v8 _copyAuthenticationContextWithContext:v13 client:v9];
+  authenticationContext = [v12 authenticationContext];
+  v14 = [sharedNetworkRequestQueue _copyAuthenticationContextWithContext:authenticationContext client:v9];
 
   v15 = [ISDialog alloc];
-  v16 = [v12 encodedDialog];
-  v17 = [v15 initWithXPCEncoding:v16];
+  encodedDialog = [v12 encodedDialog];
+  v17 = [v15 initWithXPCEncoding:encodedDialog];
 
   v18 = [[ServerAuthenticationOperation alloc] initWithDialog:v17];
   [(ServerAuthenticationOperation *)v18 setAuthenticationContext:v14];
@@ -2594,20 +2594,20 @@ LABEL_14:
   v30 = v17;
   v19 = v17;
   v20 = v18;
-  [v8 addOperation:v20 forClient:v9 withMessageBlock:v28];
+  [sharedNetworkRequestQueue addOperation:v20 forClient:v9 withMessageBlock:v28];
 
 LABEL_15:
 }
 
-+ (void)updateMediaContentTasteWithMessage:(id)a3 connection:(id)a4
++ (void)updateMediaContentTasteWithMessage:(id)message connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedNetworkRequestQueue];
-  v9 = [v8 _newClientWithMessage:v7 connection:v6];
+  connectionCopy = connection;
+  messageCopy = message;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v9 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
-  LOBYTE(v7) = SSXPCConnectionHasEntitlement();
-  if ((v7 & 1) == 0 && (SSIsDaemon() & 1) == 0)
+  LOBYTE(messageCopy) = SSXPCConnectionHasEntitlement();
+  if ((messageCopy & 1) == 0 && (SSIsDaemon() & 1) == 0)
   {
     v16 = +[SSLogConfig sharedDaemonConfig];
     if (!v16)
@@ -2615,19 +2615,19 @@ LABEL_15:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -2646,11 +2646,11 @@ LABEL_15:
       {
 LABEL_26:
 
-        [v8 _sendUnentitledMessageToClient:v9];
+        [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v9];
         goto LABEL_27;
       }
 
-      v19 = [NSString stringWithCString:v21 encoding:4, v23, v22, *v23, *&v23[8]];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, v23, v22, *v23, *&v23[8]];
       free(v21);
       SSFileLog();
     }
@@ -2664,19 +2664,19 @@ LABEL_26:
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
+  shouldLog2 = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog2 | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog2;
   }
 
-  v13 = [v10 OSLogObject];
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+  oSLogObject2 = [v10 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
   {
     v12 &= 2u;
   }
@@ -2696,22 +2696,22 @@ LABEL_26:
 
   if (v15)
   {
-    v13 = [NSString stringWithCString:v15 encoding:4, v23, v22, *v23, *&v23[16]];
+    oSLogObject2 = [NSString stringWithCString:v15 encoding:4, v23, v22, *v23, *&v23[16]];
     free(v15);
     SSFileLog();
 LABEL_13:
   }
 
-  [v8 _sendNotSupportedMessageToClient:v9];
+  [sharedNetworkRequestQueue _sendNotSupportedMessageToClient:v9];
 LABEL_27:
 }
 
-+ (void)wishlistAddItemsWithMessage:(id)a3 connection:(id)a4
++ (void)wishlistAddItemsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v31 = a4;
-  v7 = [a1 sharedNetworkRequestQueue];
-  v8 = [v7 _newClientWithMessage:v6 connection:v31];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v8 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
   if ([v8 hasEntitlements])
   {
     v9 = objc_alloc_init(ISStoreURLOperation);
@@ -2719,14 +2719,14 @@ LABEL_27:
     [v9 setDataProvider:v10];
 
     v11 = +[SSAccountStore defaultStore];
-    v12 = [v11 activeAccount];
+    activeAccount = [v11 activeAccount];
 
-    if (!v12 || ([v12 isAuthenticated] & 1) == 0)
+    if (!activeAccount || ([activeAccount isAuthenticated] & 1) == 0)
     {
       [v9 setNeedsAuthentication:1];
     }
 
-    v13 = [v8 clientIdentifier];
+    clientIdentifier = [v8 clientIdentifier];
     v14 = ISClientIdentifierForBundleIdentifier();
 
     if ([v14 isEqualToString:ISClientIdentifierMoveToiOS])
@@ -2735,19 +2735,19 @@ LABEL_27:
     }
 
     v15 = [SSWishlistAddItemsRequest alloc];
-    v16 = xpc_dictionary_get_value(v6, "1");
+    v16 = xpc_dictionary_get_value(messageCopy, "1");
     v17 = [v15 initWithXPCEncoding:v16];
 
     v18 = objc_alloc_init(SSMutableURLRequestProperties);
-    v19 = [v8 clientIdentifier];
-    [v18 setClientIdentifier:v19];
+    clientIdentifier2 = [v8 clientIdentifier];
+    [v18 setClientIdentifier:clientIdentifier2];
 
     [v18 setURLBagKey:@"addItemsToWishlistBaseUrl"];
-    v20 = [v8 userAgent];
-    [v18 setValue:v20 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    userAgent = [v8 userAgent];
+    [v18 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
-    v21 = [v17 copyQueryStringParameters];
-    [v18 setRequestParameters:v21];
+    copyQueryStringParameters = [v17 copyQueryStringParameters];
+    [v18 setRequestParameters:copyQueryStringParameters];
     [v9 setRequestProperties:v18];
     objc_initWeak(location, v9);
     v32[0] = _NSConcreteStackBlock;
@@ -2757,7 +2757,7 @@ LABEL_27:
     objc_copyWeak(&v34, location);
     v33 = v8;
     [v9 setCompletionBlock:v32];
-    [v7 addOperation:v9];
+    [sharedNetworkRequestQueue addOperation:v9];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(location);
@@ -2771,19 +2771,19 @@ LABEL_27:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
+    shouldLog = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v26 = v24;
     }
@@ -2815,44 +2815,44 @@ LABEL_27:
     {
     }
 
-    [v7 _sendUnentitledMessageToClient:v8];
+    [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v8];
   }
 }
 
-+ (void)_addSubscriptionOperationWithType:(int64_t)a3 message:(id)a4 connection:(id)a5
++ (void)_addSubscriptionOperationWithType:(int64_t)type message:(id)message connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 sharedNetworkRequestQueue];
-  v11 = [v10 _newClientWithMessage:v8 connection:v9];
+  messageCopy = message;
+  connectionCopy = connection;
+  sharedNetworkRequestQueue = [self sharedNetworkRequestQueue];
+  v11 = [sharedNetworkRequestQueue _newClientWithMessage:messageCopy connection:connectionCopy];
 
   if ([v11 hasEntitlements])
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v25 = [SSVRefreshSubscriptionRequest alloc];
-      v26 = xpc_dictionary_get_value(v8, "1");
+      v26 = xpc_dictionary_get_value(messageCopy, "1");
       v21 = [v25 initWithXPCEncoding:v26];
 
-      v27 = [v21 authenticationContext];
-      v23 = [v10 _copyAuthenticationContextWithContext:v27 client:v11];
+      authenticationContext = [v21 authenticationContext];
+      v23 = [sharedNetworkRequestQueue _copyAuthenticationContextWithContext:authenticationContext client:v11];
 
-      v24 = [v21 isRequestingOfflineSlot];
+      isRequestingOfflineSlot = [v21 isRequestingOfflineSlot];
     }
 
     else
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v12 = SSVEnableSubscriptionRequest;
       }
 
       else
       {
-        if (a3)
+        if (type)
         {
           v23 = 0;
-          v24 = 0;
+          isRequestingOfflineSlot = 0;
           goto LABEL_23;
         }
 
@@ -2860,22 +2860,22 @@ LABEL_27:
       }
 
       v19 = [v12 alloc];
-      v20 = xpc_dictionary_get_value(v8, "1");
+      v20 = xpc_dictionary_get_value(messageCopy, "1");
       v21 = [v19 initWithXPCEncoding:v20];
 
-      v22 = [v21 authenticationContext];
-      v23 = [v10 _copyAuthenticationContextWithContext:v22 client:v11];
+      authenticationContext2 = [v21 authenticationContext];
+      v23 = [sharedNetworkRequestQueue _copyAuthenticationContextWithContext:authenticationContext2 client:v11];
 
-      v24 = 0;
+      isRequestingOfflineSlot = 0;
     }
 
 LABEL_23:
     v28 = objc_alloc_init(SubscriptionOperation);
     [(SubscriptionOperation *)v28 setAuthenticationContext:v23];
-    [(SubscriptionOperation *)v28 setOperationType:a3];
-    [(SubscriptionOperation *)v28 setRequestingOfflineSlot:v24];
-    v29 = [v11 userAgent];
-    [(SubscriptionOperation *)v28 setUserAgent:v29];
+    [(SubscriptionOperation *)v28 setOperationType:type];
+    [(SubscriptionOperation *)v28 setRequestingOfflineSlot:isRequestingOfflineSlot];
+    userAgent = [v11 userAgent];
+    [(SubscriptionOperation *)v28 setUserAgent:userAgent];
 
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -2883,7 +2883,7 @@ LABEL_23:
     v32[3] = &unk_100329B68;
     v33 = v28;
     v30 = v28;
-    [v10 addOperation:v30 forClient:v11 withMessageBlock:v32];
+    [sharedNetworkRequestQueue addOperation:v30 forClient:v11 withMessageBlock:v32];
 
     goto LABEL_24;
   }
@@ -2894,19 +2894,19 @@ LABEL_23:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
-  v16 = [v13 OSLogObject];
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v13 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v15 &= 2u;
   }
@@ -2926,52 +2926,52 @@ LABEL_23:
 
   if (v18)
   {
-    v16 = [NSString stringWithCString:v18 encoding:4, &v34, v31];
+    oSLogObject = [NSString stringWithCString:v18 encoding:4, &v34, v31];
     free(v18);
     SSFileLog();
 LABEL_16:
   }
 
-  [v10 _sendUnentitledMessageToClient:v11];
+  [sharedNetworkRequestQueue _sendUnentitledMessageToClient:v11];
 LABEL_24:
 }
 
-- (id)_copyAuthenticationContextWithContext:(id)a3 client:(id)a4
+- (id)_copyAuthenticationContextWithContext:(id)context client:(id)client
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  clientCopy = client;
+  v6 = [context mutableCopy];
   if (!v6)
   {
     v7 = [SSMutableAuthenticationContext alloc];
     v8 = +[SSAccountStore defaultStore];
-    v9 = [v8 activeAccount];
-    v6 = [v7 initWithAccount:v9];
+    activeAccount = [v8 activeAccount];
+    v6 = [v7 initWithAccount:activeAccount];
   }
 
-  v10 = [v6 clientIdentifierHeader];
+  clientIdentifierHeader = [v6 clientIdentifierHeader];
 
-  if (!v10)
+  if (!clientIdentifierHeader)
   {
-    v11 = [v5 clientIdentifierHeader];
-    [v6 setClientIdentifierHeader:v11];
+    clientIdentifierHeader2 = [clientCopy clientIdentifierHeader];
+    [v6 setClientIdentifierHeader:clientIdentifierHeader2];
   }
 
-  v12 = [v6 HTTPHeaders];
+  hTTPHeaders = [v6 HTTPHeaders];
   v13 = SSHTTPHeaderUserAgent;
-  v14 = [v12 objectForKey:SSHTTPHeaderUserAgent];
+  v14 = [hTTPHeaders objectForKey:SSHTTPHeaderUserAgent];
 
   if (!v14)
   {
-    v15 = [v5 userAgent];
-    [v6 setValue:v15 forHTTPHeaderField:v13];
+    userAgent = [clientCopy userAgent];
+    [v6 setValue:userAgent forHTTPHeaderField:v13];
   }
 
   return v6;
 }
 
-- (void)_enqueueOperationsForStoreServicesURL:(id)a3
+- (void)_enqueueOperationsForStoreServicesURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(NSMutableString);
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
@@ -2985,7 +2985,7 @@ LABEL_24:
   v63 = v9;
   v10 = v7;
   v64 = v10;
-  [v4 enumerateQueryWithBlock:v61];
+  [lCopy enumerateQueryWithBlock:v61];
   if (![v8 isEqualToString:@"download-manifest"])
   {
     v30 = v10;
@@ -3000,21 +3000,21 @@ LABEL_24:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v48 = [(RedeemCodesOperation *)v13 shouldLog];
+      shouldLog = [(RedeemCodesOperation *)v13 shouldLog];
       if ([(RedeemCodesOperation *)v13 shouldLogToDisk])
       {
-        v48 |= 2u;
+        shouldLog |= 2u;
       }
 
-      v43 = [(RedeemCodesOperation *)v13 OSLogObject];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [(RedeemCodesOperation *)v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = v48;
+        v49 = shouldLog;
       }
 
       else
       {
-        v49 = v48 & 2;
+        v49 = shouldLog & 2;
       }
 
       if (v49)
@@ -3034,7 +3034,7 @@ LABEL_24:
           goto LABEL_60;
         }
 
-        v43 = [NSString stringWithCString:v52 encoding:4, &v66, v53];
+        oSLogObject = [NSString stringWithCString:v52 encoding:4, &v66, v53];
         free(v52);
         SSFileLog();
       }
@@ -3048,27 +3048,27 @@ LABEL_24:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v34 = [(RedeemCodesOperation *)v13 shouldLog];
+    shouldLog2 = [(RedeemCodesOperation *)v13 shouldLog];
     if ([(RedeemCodesOperation *)v13 shouldLogToDisk])
     {
-      v34 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v35 = [(RedeemCodesOperation *)v13 OSLogObject];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [(RedeemCodesOperation *)v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v36 = v34;
+      v36 = shouldLog2;
     }
 
     else
     {
-      v36 = v34 & 2;
+      v36 = shouldLog2 & 2;
     }
 
     if (v36)
     {
       v37 = objc_opt_class();
-      v38 = v4;
+      v38 = lCopy;
       v39 = v37;
       v40 = [v31 count];
       v66 = 138412546;
@@ -3078,7 +3078,7 @@ LABEL_24:
       LODWORD(v53) = 22;
       v41 = _os_log_send_and_compose_impl();
 
-      v4 = v38;
+      lCopy = v38;
       v9 = v31;
 
       v10 = v30;
@@ -3091,7 +3091,7 @@ LABEL_57:
         goto LABEL_60;
       }
 
-      v35 = [NSString stringWithCString:v41 encoding:4, &v66, v53];
+      oSLogObject2 = [NSString stringWithCString:v41 encoding:4, &v66, v53];
       free(v41);
       SSFileLog();
     }
@@ -3114,21 +3114,21 @@ LABEL_57:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v42 = [(RedeemCodesOperation *)v13 shouldLog];
+    shouldLog3 = [(RedeemCodesOperation *)v13 shouldLog];
     if ([(RedeemCodesOperation *)v13 shouldLogToDisk])
     {
-      v42 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    v43 = [(RedeemCodesOperation *)v13 OSLogObject];
-    if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [(RedeemCodesOperation *)v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = v42;
+      v44 = shouldLog3;
     }
 
     else
     {
-      v44 = v42 & 2;
+      v44 = shouldLog3 & 2;
     }
 
     if (v44)
@@ -3145,7 +3145,7 @@ LABEL_57:
         goto LABEL_60;
       }
 
-      v43 = [NSString stringWithCString:v47 encoding:4, &v66, v53];
+      oSLogObject = [NSString stringWithCString:v47 encoding:4, &v66, v53];
       free(v47);
       SSFileLog();
     }
@@ -3161,20 +3161,20 @@ LABEL_59:
   }
 
   v55 = v9;
-  v56 = v4;
-  v14 = [(RedeemCodesOperation *)v13 shouldLog];
+  v56 = lCopy;
+  shouldLog4 = [(RedeemCodesOperation *)v13 shouldLog];
   if ([(RedeemCodesOperation *)v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog4 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog4;
   }
 
-  v16 = [(RedeemCodesOperation *)v13 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [(RedeemCodesOperation *)v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
     v17 = v15;
   }
@@ -3201,7 +3201,7 @@ LABEL_59:
       goto LABEL_15;
     }
 
-    v16 = [NSString stringWithCString:v21 encoding:4, &v66, v53];
+    oSLogObject3 = [NSString stringWithCString:v21 encoding:4, &v66, v53];
     free(v21);
     SSFileLog();
   }
@@ -3239,13 +3239,13 @@ LABEL_15:
 
     while (v25);
     v9 = v55;
-    v4 = v56;
+    lCopy = v56;
     v10 = v54;
   }
 
   else
   {
-    v4 = v56;
+    lCopy = v56;
   }
 
 LABEL_60:
@@ -3268,13 +3268,13 @@ LABEL_60:
   return managedQueue;
 }
 
-- (id)_newClientWithMessage:(id)a3 connection:(id)a4
+- (id)_newClientWithMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[XPCClient alloc] initWithInputConnection:v5];
+  connectionCopy = connection;
+  messageCopy = message;
+  v7 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
 
-  v8 = xpc_dictionary_get_value(v6, "2");
+  v8 = xpc_dictionary_get_value(messageCopy, "2");
 
   if (v8 && xpc_get_type(v8) == &_xpc_type_endpoint)
   {
@@ -3288,43 +3288,43 @@ LABEL_60:
   return v7;
 }
 
-- (void)_sendMessageWithError:(id)a3 toClient:(id)a4
+- (void)_sendMessageWithError:(id)error toClient:(id)client
 {
-  v5 = a4;
-  v6 = a3;
+  clientCopy = client;
+  errorCopy = error;
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v8, "0", 1011);
   SSXPCDictionarySetObject();
 
-  v7 = [v5 outputConnection];
+  outputConnection = [clientCopy outputConnection];
 
-  [v7 sendMessage:v8];
+  [outputConnection sendMessage:v8];
 }
 
-- (void)_sendNotSupportedMessageToClient:(id)a3
+- (void)_sendNotSupportedMessageToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = SSError();
-  [(NetworkRequestQueue *)self _sendMessageWithError:v5 toClient:v4];
+  [(NetworkRequestQueue *)self _sendMessageWithError:v5 toClient:clientCopy];
 }
 
-- (void)_sendUnentitledMessageToClient:(id)a3
+- (void)_sendUnentitledMessageToClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v6, "0", 1011);
   v4 = SSError();
   SSXPCDictionarySetObject();
 
-  v5 = [v3 outputConnection];
+  outputConnection = [clientCopy outputConnection];
 
-  [v5 sendMessage:v6];
+  [outputConnection sendMessage:v6];
 }
 
-- (void)_sendUnentitledReplyForMessage:(id)a3 connection:(id)a4
+- (void)_sendUnentitledReplyForMessage:(id)message connection:(id)connection
 {
-  connection = a4;
-  reply = xpc_dictionary_create_reply(a3);
+  connection = connection;
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v6 = SSError();
@@ -3334,34 +3334,34 @@ LABEL_60:
   }
 }
 
-- (void)_enqueueSubscriptionStatusOperation:(id)a3 forClient:(id)a4
+- (void)_enqueueSubscriptionStatusOperation:(id)operation forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  clientCopy = client;
   subscriptionStatusOperationAccessQueue = self->_subscriptionStatusOperationAccessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10014A9C8;
   block[3] = &unk_1003281A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = clientCopy;
+  v13 = operationCopy;
+  v9 = operationCopy;
+  v10 = clientCopy;
   dispatch_sync(subscriptionStatusOperationAccessQueue, block);
 }
 
-- (void)_dequeueSubscriptionStatusOperation:(id)a3
+- (void)_dequeueSubscriptionStatusOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   subscriptionStatusOperationAccessQueue = self->_subscriptionStatusOperationAccessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014AB20;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_sync(subscriptionStatusOperationAccessQueue, v7);
 }
 

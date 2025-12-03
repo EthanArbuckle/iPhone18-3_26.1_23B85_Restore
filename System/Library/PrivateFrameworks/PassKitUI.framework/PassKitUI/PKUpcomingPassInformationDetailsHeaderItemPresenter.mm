@@ -1,12 +1,12 @@
 @interface PKUpcomingPassInformationDetailsHeaderItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKUpcomingPassInformationDetailsHeaderItemPresenter)init;
-- (id)_blurredImageFromImage:(id)a3;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)_blurredImageFromImage:(id)image;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)_updateHeaderImagesOnCell:(id)a3 item:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)_updateHeaderImagesOnCell:(id)cell item:(id)item;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKUpcomingPassInformationDetailsHeaderItemPresenter
@@ -37,54 +37,54 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"PKUpcomingPassInformationEntryHeaderItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKUpcomingPassInformationEntryHeaderItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
   sampleCell = self->_sampleCell;
-  [a4 bounds];
+  [view bounds];
 
-  [(PKUpcomingPassInformationDetailsHeaderCell *)sampleCell sizeThatFits:a5, v8];
+  [(PKUpcomingPassInformationDetailsHeaderCell *)sampleCell sizeThatFits:width, v8];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 headerView];
-  v15 = [v11 title];
-  [v14 setPrimaryText:v15];
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  headerView = [cellCopy headerView];
+  title = [itemCopy title];
+  [headerView setPrimaryText:title];
 
-  v16 = [v11 secondaryText];
-  [v14 setSecondaryText:v16];
+  secondaryText = [itemCopy secondaryText];
+  [headerView setSecondaryText:secondaryText];
 
-  v17 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v14 setFallbackColor:v17];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [headerView setFallbackColor:systemGrayColor];
 
-  [v10 setOverlayEffect:self->_overlayEffect];
-  [v10 setShadowColor:self->_shadowColor];
-  v18 = [v11 headerManifest];
-  if (v18)
+  [cellCopy setOverlayEffect:self->_overlayEffect];
+  [cellCopy setShadowColor:self->_shadowColor];
+  headerManifest = [itemCopy headerManifest];
+  if (headerManifest)
   {
-    v19 = [v18 itemClosestMatchingScreenScale:PKUIScreenScale()];
-    v20 = [v19 sessionCachedImageIfExists];
-    if (v20)
+    v19 = [headerManifest itemClosestMatchingScreenScale:PKUIScreenScale()];
+    sessionCachedImageIfExists = [v19 sessionCachedImageIfExists];
+    if (sessionCachedImageIfExists)
     {
-      v21 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v20];
+      v21 = [MEMORY[0x1E69DCAB8] imageWithPKImage:sessionCachedImageIfExists];
       headerImage = self->_headerImage;
       self->_headerImage = v21;
     }
@@ -97,8 +97,8 @@
       v25 = __108__PKUpcomingPassInformationDetailsHeaderItemPresenter__configureCell_forItem_inCollectionView_forIndexPath___block_invoke;
       v26 = &unk_1E801A238;
       objc_copyWeak(&v29, &location);
-      v27 = v10;
-      v28 = v11;
+      v27 = cellCopy;
+      v28 = itemCopy;
       [v19 downloadImageWithCompletion:&v23];
 
       objc_destroyWeak(&v29);
@@ -106,7 +106,7 @@
     }
   }
 
-  [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)self _updateHeaderImagesOnCell:v10 item:v11, v23, v24, v25, v26];
+  [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)self _updateHeaderImagesOnCell:cellCopy item:itemCopy, v23, v24, v25, v26];
 }
 
 void __108__PKUpcomingPassInformationDetailsHeaderItemPresenter__configureCell_forItem_inCollectionView_forIndexPath___block_invoke(id *a1, uint64_t a2, uint64_t a3)
@@ -143,13 +143,13 @@ void __108__PKUpcomingPassInformationDetailsHeaderItemPresenter__configureCell_f
   }
 }
 
-- (void)_updateHeaderImagesOnCell:(id)a3 item:(id)a4
+- (void)_updateHeaderImagesOnCell:(id)cell item:(id)item
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v6 headerManifest];
+  cellCopy = cell;
+  itemCopy = item;
+  headerManifest = [itemCopy headerManifest];
 
-  if (v7)
+  if (headerManifest)
   {
     p_headerImage = &self->_headerImage;
 LABEL_3:
@@ -162,8 +162,8 @@ LABEL_3:
   if (!fallbackBackgroundImage)
   {
     v14 = MEMORY[0x1E69DCAB8];
-    v15 = [v6 fallbackBackgroundImage];
-    v16 = [v14 imageWithPKImage:v15];
+    fallbackBackgroundImage = [itemCopy fallbackBackgroundImage];
+    v16 = [v14 imageWithPKImage:fallbackBackgroundImage];
 
     v17 = [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)self _blurredImageFromImage:v16];
     v18 = self->_fallbackBackgroundImage;
@@ -174,33 +174,33 @@ LABEL_3:
 
 LABEL_5:
   v10 = fallbackBackgroundImage;
-  v11 = [v19 headerView];
-  v12 = [v11 backgroundImage];
-  v13 = v12 == 0;
+  headerView = [cellCopy headerView];
+  backgroundImage = [headerView backgroundImage];
+  v13 = backgroundImage == 0;
 
-  [v11 setBackgroundImage:v10 animated:v13];
-  [v11 setShowsGradientOverlay:v10 != 0];
+  [headerView setBackgroundImage:v10 animated:v13];
+  [headerView setShowsGradientOverlay:v10 != 0];
 }
 
-- (id)_blurredImageFromImage:(id)a3
+- (id)_blurredImageFromImage:(id)image
 {
   v3 = MEMORY[0x1E695F620];
-  v4 = a3;
+  imageCopy = image;
   v5 = [[v3 alloc] initWithOptions:0];
-  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:v4];
+  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:imageCopy];
 
   v7 = [MEMORY[0x1E695F648] filterWithName:@"CIAffineClamp"];
   [v7 setDefaults];
   v8 = *MEMORY[0x1E695FAB0];
   [v7 setValue:v6 forKey:*MEMORY[0x1E695FAB0]];
   v9 = [MEMORY[0x1E695F648] filterWithName:@"CIGaussianBlur"];
-  v10 = [v7 outputImage];
-  [v9 setValue:v10 forKey:v8];
+  outputImage = [v7 outputImage];
+  [v9 setValue:outputImage forKey:v8];
 
   [v9 setValue:&unk_1F3CC7730 forKey:*MEMORY[0x1E695FB10]];
   v11 = [MEMORY[0x1E695F648] filterWithName:@"CIColorControls"];
-  v12 = [v9 outputImage];
-  [v11 setValue:v12 forKey:v8];
+  outputImage2 = [v9 outputImage];
+  [v11 setValue:outputImage2 forKey:v8];
 
   [v11 setValue:&unk_1F3CC6C78 forKey:*MEMORY[0x1E695FB18]];
   [v6 extent];
@@ -208,12 +208,12 @@ LABEL_5:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v11 outputImage];
-  v22 = [v5 createCGImage:v21 fromRect:{v14, v16, v18, v20}];
+  outputImage3 = [v11 outputImage];
+  v22 = [v5 createCGImage:outputImage3 fromRect:{v14, v16, v18, v20}];
 
   v23 = objc_alloc(MEMORY[0x1E69DCA78]);
-  v24 = [MEMORY[0x1E69DCA80] preferredFormat];
-  v25 = [v23 initWithBounds:v24 format:{v14, v16, v18, v20}];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  v25 = [v23 initWithBounds:preferredFormat format:{v14, v16, v18, v20}];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -251,24 +251,24 @@ void __78__PKUpcomingPassInformationDetailsHeaderItemPresenter__blurredImageFrom
   CGContextFillRect(v3, *(a1 + 32));
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v15 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v15 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }

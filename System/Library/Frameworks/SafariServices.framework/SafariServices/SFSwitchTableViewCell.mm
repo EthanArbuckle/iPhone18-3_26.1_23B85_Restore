@@ -1,17 +1,17 @@
 @interface SFSwitchTableViewCell
-- (SFSwitchTableViewCell)initWithReuseIdentifier:(id)a3;
+- (SFSwitchTableViewCell)initWithReuseIdentifier:(id)identifier;
 - (SFSwitchTableViewCellDelegate)delegate;
-- (void)_switchViewStateDidChange:(id)a3;
-- (void)setSwitchOn:(BOOL)a3;
+- (void)_switchViewStateDidChange:(id)change;
+- (void)setSwitchOn:(BOOL)on;
 @end
 
 @implementation SFSwitchTableViewCell
 
-- (SFSwitchTableViewCell)initWithReuseIdentifier:(id)a3
+- (SFSwitchTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = SFSwitchTableViewCell;
-  v3 = [(SFSwitchTableViewCell *)&v8 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(SFSwitchTableViewCell *)&v8 initWithStyle:0 reuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -26,24 +26,24 @@
   return v3;
 }
 
-- (void)setSwitchOn:(BOOL)a3
+- (void)setSwitchOn:(BOOL)on
 {
-  v3 = a3;
-  if ([(UISwitch *)self->_switchView isOn]!= a3)
+  onCopy = on;
+  if ([(UISwitch *)self->_switchView isOn]!= on)
   {
     switchView = self->_switchView;
 
-    [(UISwitch *)switchView setOn:v3];
+    [(UISwitch *)switchView setOn:onCopy];
   }
 }
 
-- (void)_switchViewStateDidChange:(id)a3
+- (void)_switchViewStateDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained switchTableViewCell:self didChangeSwitchState:{objc_msgSend(v5, "isOn")}];
+    [WeakRetained switchTableViewCell:self didChangeSwitchState:{objc_msgSend(changeCopy, "isOn")}];
   }
 }
 

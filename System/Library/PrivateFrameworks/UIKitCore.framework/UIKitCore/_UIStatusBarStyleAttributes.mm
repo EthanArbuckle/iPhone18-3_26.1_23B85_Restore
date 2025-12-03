@@ -1,19 +1,19 @@
 @interface _UIStatusBarStyleAttributes
 + (id)overriddenStyleAttributes;
-+ (id)styleAttributesForStatusBar:(id)a3 style:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)styleAttributesForStatusBar:(id)bar style:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRounded;
-- (_UIStatusBarStyleAttributes)initWithCoder:(id)a3;
-- (_UIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIStatusBarStyleAttributes)initWithCoder:(id)coder;
+- (_UIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)overrides;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)fontForStyle:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)fontForStyle:(int64_t)style;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIStatusBarStyleAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 2) = self->_style;
@@ -36,121 +36,121 @@
   return v4;
 }
 
-- (_UIStatusBarStyleAttributes)initWithCoder:(id)a3
+- (_UIStatusBarStyleAttributes)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = _UIStatusBarStyleAttributes;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(_UIStatusBarStyleAttributes *)&v16 init];
-  v4->_style = [v3 decodeIntegerForKey:{@"style", v16.receiver, v16.super_class}];
-  v4->_mode = [v3 decodeIntegerForKey:@"mode"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
+  v4->_style = [coderCopy decodeIntegerForKey:{@"style", v16.receiver, v16.super_class}];
+  v4->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traitCollection"];
   traitCollection = v4->_traitCollection;
   v4->_traitCollection = v5;
 
-  v4->_effectiveLayoutDirection = [v3 decodeIntegerForKey:@"effectiveLayoutDirection"];
-  [v3 decodeDoubleForKey:@"iconScale"];
+  v4->_effectiveLayoutDirection = [coderCopy decodeIntegerForKey:@"effectiveLayoutDirection"];
+  [coderCopy decodeDoubleForKey:@"iconScale"];
   v4->_iconScale = v7;
-  v4->_iconSize = [v3 decodeIntegerForKey:@"iconSize"];
-  v4->_symbolScale = [v3 decodeIntegerForKey:@"symbolScale"];
-  v4->_scaledFixedWidthBar = [v3 decodeBoolForKey:@"scaledFixedWidthBar"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+  v4->_iconSize = [coderCopy decodeIntegerForKey:@"iconSize"];
+  v4->_symbolScale = [coderCopy decodeIntegerForKey:@"symbolScale"];
+  v4->_scaledFixedWidthBar = [coderCopy decodeBoolForKey:@"scaledFixedWidthBar"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
   [(_UIStatusBarStyleAttributes *)v4 setFont:v8];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"emphasizedFont"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emphasizedFont"];
   [(_UIStatusBarStyleAttributes *)v4 setEmphasizedFont:v9];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"smallFont"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smallFont"];
   [(_UIStatusBarStyleAttributes *)v4 setSmallFont:v10];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
   [(_UIStatusBarStyleAttributes *)v4 setTextColor:v11];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageTintColor"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageTintColor"];
   [(_UIStatusBarStyleAttributes *)v4 setImageTintColor:v12];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageDimmedTintColor"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDimmedTintColor"];
   [(_UIStatusBarStyleAttributes *)v4 setImageDimmedTintColor:v13];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageNamePrefixes"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageNamePrefixes"];
 
   [(_UIStatusBarStyleAttributes *)v4 setImageNamePrefixes:v14];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"style"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeObject:self->_traitCollection forKey:@"traitCollection"];
-  [v5 encodeInteger:self->_effectiveLayoutDirection forKey:@"effectiveLayoutDirection"];
-  [v5 encodeDouble:@"iconScale" forKey:self->_iconScale];
-  [v5 encodeInteger:self->_iconSize forKey:@"iconSize"];
-  [v5 encodeInteger:self->_symbolScale forKey:@"symbolScale"];
-  [v5 encodeBool:self->_scaledFixedWidthBar forKey:@"scaledFixedWidthBar"];
-  [v5 encodeObject:self->_font forKey:@"font"];
-  [v5 encodeObject:self->_emphasizedFont forKey:@"emphasizedFont"];
-  [v5 encodeObject:self->_smallFont forKey:@"smallFont"];
-  [v5 encodeObject:self->_textColor forKey:@"textColor"];
-  [v5 encodeObject:self->_imageTintColor forKey:@"imageTintColor"];
-  [v5 encodeObject:self->_imageDimmedTintColor forKey:@"imageDimmedTintColor"];
-  [v5 encodeObject:self->_imageNamePrefixes forKey:@"imageNamePrefixes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"style"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeObject:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeInteger:self->_effectiveLayoutDirection forKey:@"effectiveLayoutDirection"];
+  [coderCopy encodeDouble:@"iconScale" forKey:self->_iconScale];
+  [coderCopy encodeInteger:self->_iconSize forKey:@"iconSize"];
+  [coderCopy encodeInteger:self->_symbolScale forKey:@"symbolScale"];
+  [coderCopy encodeBool:self->_scaledFixedWidthBar forKey:@"scaledFixedWidthBar"];
+  [coderCopy encodeObject:self->_font forKey:@"font"];
+  [coderCopy encodeObject:self->_emphasizedFont forKey:@"emphasizedFont"];
+  [coderCopy encodeObject:self->_smallFont forKey:@"smallFont"];
+  [coderCopy encodeObject:self->_textColor forKey:@"textColor"];
+  [coderCopy encodeObject:self->_imageTintColor forKey:@"imageTintColor"];
+  [coderCopy encodeObject:self->_imageDimmedTintColor forKey:@"imageDimmedTintColor"];
+  [coderCopy encodeObject:self->_imageNamePrefixes forKey:@"imageNamePrefixes"];
 }
 
-+ (id)styleAttributesForStatusBar:(id)a3 style:(int64_t)a4
++ (id)styleAttributesForStatusBar:(id)bar style:(int64_t)style
 {
-  v7 = a3;
-  if (a4)
+  barCopy = bar;
+  if (style)
   {
-    if (a4 != 4)
+    if (style != 4)
     {
       goto LABEL_3;
     }
 
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    v28 = v27;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v28 = currentHandler;
     v29 = @"The status bar style should never be set to .inherited, it should only be used to notify about using the main style in setStyle:forPartWithIdentifier:";
     v30 = a2;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = 96;
   }
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    v28 = v27;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v28 = currentHandler;
     v29 = @"The default style should have been resolved to .lightContent or .darkContent already";
     v30 = a2;
-    v31 = a1;
+    selfCopy2 = self;
     v32 = 95;
   }
 
-  [v27 handleFailureInMethod:v30 object:v31 file:@"_UIStatusBarStyleAttributes.m" lineNumber:v32 description:v29];
+  [currentHandler handleFailureInMethod:v30 object:selfCopy2 file:@"_UIStatusBarStyleAttributes.m" lineNumber:v32 description:v29];
 
 LABEL_3:
-  v8 = objc_alloc_init(a1);
-  *(v8 + 2) = a4;
-  *(v8 + 3) = [v7 mode];
-  *(v8 + 5) = [v7 effectiveUserInterfaceLayoutDirection];
+  v8 = objc_alloc_init(self);
+  *(v8 + 2) = style;
+  *(v8 + 3) = [barCopy mode];
+  *(v8 + 5) = [barCopy effectiveUserInterfaceLayoutDirection];
   *(v8 + 6) = 0x3FF0000000000000;
   *(v8 + 7) = 0;
-  v9 = [v7 traitCollection];
-  [v9 displayScale];
+  traitCollection = [barCopy traitCollection];
+  [traitCollection displayScale];
   if (v10 == 0.0)
   {
-    v11 = [objc_opt_self() mainScreen];
-    [v11 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v13 = v12;
     v14 = objc_opt_self();
-    v15 = [v9 traitCollectionByReplacingCGFloatValue:v14 forTrait:v13];
+    v15 = [traitCollection traitCollectionByReplacingCGFloatValue:v14 forTrait:v13];
 
-    v9 = v15;
+    traitCollection = v15;
   }
 
-  objc_storeStrong(v8 + 4, v9);
-  [v9 displayScale];
+  objc_storeStrong(v8 + 4, traitCollection);
+  [traitCollection displayScale];
   v17 = v16;
   v18 = _UIDeviceNativeUserInterfaceIdiom();
   if (v18 == 1)
@@ -182,17 +182,17 @@ LABEL_3:
   }
 
   *(v8 + 8) = v20;
-  v21 = [v7 foregroundColor];
+  foregroundColor = [barCopy foregroundColor];
 
-  if (v21)
+  if (foregroundColor)
   {
-    v22 = [v7 foregroundColor];
+    foregroundColor2 = [barCopy foregroundColor];
     v23 = *(v8 + 12);
-    *(v8 + 12) = v22;
+    *(v8 + 12) = foregroundColor2;
 
-    v24 = [v7 foregroundColor];
+    foregroundColor3 = [barCopy foregroundColor];
     v25 = *(v8 + 13);
-    *(v8 + 13) = v24;
+    *(v8 + 13) = foregroundColor3;
   }
 
   return v8;
@@ -200,18 +200,18 @@ LABEL_3:
 
 + (id)overriddenStyleAttributes
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     style = self->_style;
     if (style != [v7 style] || (mode = self->_mode, mode != objc_msgSend(v7, "mode")))
     {
@@ -222,24 +222,24 @@ LABEL_29:
     }
 
     traitCollection = self->_traitCollection;
-    v11 = [v7 traitCollection];
-    v12 = traitCollection;
-    v13 = v11;
+    traitCollection = [v7 traitCollection];
+    font = traitCollection;
+    v13 = traitCollection;
     v14 = v13;
-    if (v12 == v13)
+    if (font == v13)
     {
     }
 
     else
     {
       v6 = 0;
-      if (!v12 || !v13)
+      if (!font || !v13)
       {
-        v24 = v13;
+        emphasizedFont = v13;
         goto LABEL_26;
       }
 
-      v15 = [(UITraitCollection *)v12 isEqual:v13];
+      v15 = [(UITraitCollection *)font isEqual:v13];
 
       if (!v15)
       {
@@ -283,36 +283,36 @@ LABEL_28:
     }
 
     font = self->_font;
-    v12 = [v7 font];
-    if (!_deferringTokenEqualToToken(font, v12))
+    font = [v7 font];
+    if (!_deferringTokenEqualToToken(font, font))
     {
       v6 = 0;
       goto LABEL_27;
     }
 
     emphasizedFont = self->_emphasizedFont;
-    v24 = [v7 emphasizedFont];
-    if (_deferringTokenEqualToToken(emphasizedFont, v24))
+    emphasizedFont = [v7 emphasizedFont];
+    if (_deferringTokenEqualToToken(emphasizedFont, emphasizedFont))
     {
       smallFont = self->_smallFont;
-      v26 = [v7 smallFont];
-      if (_deferringTokenEqualToToken(smallFont, v26))
+      smallFont = [v7 smallFont];
+      if (_deferringTokenEqualToToken(smallFont, smallFont))
       {
         textColor = self->_textColor;
-        v28 = [v7 textColor];
-        if (_deferringTokenEqualToToken(textColor, v28))
+        textColor = [v7 textColor];
+        if (_deferringTokenEqualToToken(textColor, textColor))
         {
           imageTintColor = self->_imageTintColor;
-          v30 = [v7 imageTintColor];
-          if (_deferringTokenEqualToToken(imageTintColor, v30))
+          imageTintColor = [v7 imageTintColor];
+          if (_deferringTokenEqualToToken(imageTintColor, imageTintColor))
           {
             imageDimmedTintColor = self->_imageDimmedTintColor;
-            v35 = [v7 imageDimmedTintColor];
-            if (_deferringTokenEqualToToken(imageDimmedTintColor, v35))
+            imageDimmedTintColor = [v7 imageDimmedTintColor];
+            if (_deferringTokenEqualToToken(imageDimmedTintColor, imageDimmedTintColor))
             {
               imageNamePrefixes = self->_imageNamePrefixes;
-              v33 = [v7 imageNamePrefixes];
-              v6 = _deferringTokenEqualToToken(imageNamePrefixes, v33);
+              imageNamePrefixes = [v7 imageNamePrefixes];
+              v6 = _deferringTokenEqualToToken(imageNamePrefixes, imageNamePrefixes);
             }
 
             else
@@ -393,118 +393,118 @@ LABEL_30:
   return v12;
 }
 
-- (_UIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)a3
+- (_UIStatusBarStyleAttributes)styleAttributesWithOverrides:(id)overrides
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || v4 == self)
+  overridesCopy = overrides;
+  v5 = overridesCopy;
+  if (!overridesCopy || overridesCopy == self)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(_UIStatusBarStyleAttributes *)self copy];
+    selfCopy = [(_UIStatusBarStyleAttributes *)self copy];
     [(_UIStatusBarStyleAttributes *)v5 iconScale];
     if (v7 > 0.0)
     {
       [(_UIStatusBarStyleAttributes *)v5 iconScale];
-      [(_UIStatusBarStyleAttributes *)v6 setIconScale:?];
+      [(_UIStatusBarStyleAttributes *)selfCopy setIconScale:?];
     }
 
     if ([(_UIStatusBarStyleAttributes *)v5 iconSize])
     {
-      [(_UIStatusBarStyleAttributes *)v6 setIconSize:[(_UIStatusBarStyleAttributes *)v5 iconSize]];
+      [(_UIStatusBarStyleAttributes *)selfCopy setIconSize:[(_UIStatusBarStyleAttributes *)v5 iconSize]];
     }
 
     if ([(_UIStatusBarStyleAttributes *)v5 symbolScale])
     {
-      [(_UIStatusBarStyleAttributes *)v6 setSymbolScale:[(_UIStatusBarStyleAttributes *)v5 symbolScale]];
+      [(_UIStatusBarStyleAttributes *)selfCopy setSymbolScale:[(_UIStatusBarStyleAttributes *)v5 symbolScale]];
     }
 
-    v8 = [(_UIStatusBarStyleAttributes *)v5 font];
+    font = [(_UIStatusBarStyleAttributes *)v5 font];
 
-    if (v8)
+    if (font)
     {
-      v9 = [(_UIStatusBarStyleAttributes *)v5 font];
-      [(_UIStatusBarStyleAttributes *)v6 setFont:v9];
+      font2 = [(_UIStatusBarStyleAttributes *)v5 font];
+      [(_UIStatusBarStyleAttributes *)selfCopy setFont:font2];
     }
 
-    v10 = [(_UIStatusBarStyleAttributes *)v5 emphasizedFont];
+    emphasizedFont = [(_UIStatusBarStyleAttributes *)v5 emphasizedFont];
 
-    if (v10)
+    if (emphasizedFont)
     {
-      v11 = [(_UIStatusBarStyleAttributes *)v5 emphasizedFont];
-      [(_UIStatusBarStyleAttributes *)v6 setEmphasizedFont:v11];
+      emphasizedFont2 = [(_UIStatusBarStyleAttributes *)v5 emphasizedFont];
+      [(_UIStatusBarStyleAttributes *)selfCopy setEmphasizedFont:emphasizedFont2];
     }
 
-    v12 = [(_UIStatusBarStyleAttributes *)v5 smallFont];
+    smallFont = [(_UIStatusBarStyleAttributes *)v5 smallFont];
 
-    if (v12)
+    if (smallFont)
     {
-      v13 = [(_UIStatusBarStyleAttributes *)v5 smallFont];
-      [(_UIStatusBarStyleAttributes *)v6 setSmallFont:v13];
+      smallFont2 = [(_UIStatusBarStyleAttributes *)v5 smallFont];
+      [(_UIStatusBarStyleAttributes *)selfCopy setSmallFont:smallFont2];
     }
 
-    v14 = [(_UIStatusBarStyleAttributes *)v5 textColor];
+    textColor = [(_UIStatusBarStyleAttributes *)v5 textColor];
 
-    if (v14)
+    if (textColor)
     {
-      v15 = [(_UIStatusBarStyleAttributes *)v5 textColor];
-      [(_UIStatusBarStyleAttributes *)v6 setTextColor:v15];
+      textColor2 = [(_UIStatusBarStyleAttributes *)v5 textColor];
+      [(_UIStatusBarStyleAttributes *)selfCopy setTextColor:textColor2];
     }
 
-    v16 = [(_UIStatusBarStyleAttributes *)v5 imageTintColor];
+    imageTintColor = [(_UIStatusBarStyleAttributes *)v5 imageTintColor];
 
-    if (v16)
+    if (imageTintColor)
     {
-      v17 = [(_UIStatusBarStyleAttributes *)v5 imageTintColor];
-      [(_UIStatusBarStyleAttributes *)v6 setImageTintColor:v17];
+      imageTintColor2 = [(_UIStatusBarStyleAttributes *)v5 imageTintColor];
+      [(_UIStatusBarStyleAttributes *)selfCopy setImageTintColor:imageTintColor2];
     }
 
-    v18 = [(_UIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
+    imageDimmedTintColor = [(_UIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
 
-    if (v18)
+    if (imageDimmedTintColor)
     {
-      v19 = [(_UIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
-      [(_UIStatusBarStyleAttributes *)v6 setImageDimmedTintColor:v19];
+      imageDimmedTintColor2 = [(_UIStatusBarStyleAttributes *)v5 imageDimmedTintColor];
+      [(_UIStatusBarStyleAttributes *)selfCopy setImageDimmedTintColor:imageDimmedTintColor2];
     }
 
-    v20 = [(_UIStatusBarStyleAttributes *)v5 imageNamePrefixes];
+    imageNamePrefixes = [(_UIStatusBarStyleAttributes *)v5 imageNamePrefixes];
 
-    if (v20)
+    if (imageNamePrefixes)
     {
-      v21 = [(_UIStatusBarStyleAttributes *)v5 imageNamePrefixes];
-      [(_UIStatusBarStyleAttributes *)v6 setImageNamePrefixes:v21];
+      imageNamePrefixes2 = [(_UIStatusBarStyleAttributes *)v5 imageNamePrefixes];
+      [(_UIStatusBarStyleAttributes *)selfCopy setImageNamePrefixes:imageNamePrefixes2];
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)fontForStyle:(int64_t)a3
+- (id)fontForStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    v3 = [(_UIStatusBarStyleAttributes *)self smallFont];
+    smallFont = [(_UIStatusBarStyleAttributes *)self smallFont];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
-    v3 = [(_UIStatusBarStyleAttributes *)self emphasizedFont];
+    smallFont = [(_UIStatusBarStyleAttributes *)self emphasizedFont];
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }
 
-    v3 = [(_UIStatusBarStyleAttributes *)self font];
+    smallFont = [(_UIStatusBarStyleAttributes *)self font];
   }
 
-  a2 = v3;
+  a2 = smallFont;
 LABEL_8:
 
   return a2;
@@ -512,11 +512,11 @@ LABEL_8:
 
 - (BOOL)isRounded
 {
-  v2 = [(_UIStatusBarStyleAttributes *)self font];
+  font = [(_UIStatusBarStyleAttributes *)self font];
   UIFontDesign = CTFontGetUIFontDesign();
 
-  LOBYTE(v2) = [UIFontDesign isEqualToString:*MEMORY[0x1E69658C8]];
-  return v2;
+  LOBYTE(font) = [UIFontDesign isEqualToString:*MEMORY[0x1E69658C8]];
+  return font;
 }
 
 @end

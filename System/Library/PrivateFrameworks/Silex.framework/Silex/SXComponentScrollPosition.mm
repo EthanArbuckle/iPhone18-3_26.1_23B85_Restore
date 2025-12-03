@@ -1,66 +1,66 @@
 @interface SXComponentScrollPosition
-+ (BOOL)jsonDictionaryRepresentationIsValid:(id)a3 exactly:(BOOL)a4;
-- (SXComponentScrollPosition)initWithCoder:(id)a3;
-- (SXComponentScrollPosition)initWithComponentIdentifier:(id)a3 canvasWidth:(double)a4 relativePageOffset:(double)a5;
-- (SXComponentScrollPosition)initWithDictionaryRepresentation:(id)a3 exactly:(BOOL)a4;
++ (BOOL)jsonDictionaryRepresentationIsValid:(id)valid exactly:(BOOL)exactly;
+- (SXComponentScrollPosition)initWithCoder:(id)coder;
+- (SXComponentScrollPosition)initWithComponentIdentifier:(id)identifier canvasWidth:(double)width relativePageOffset:(double)offset;
+- (SXComponentScrollPosition)initWithDictionaryRepresentation:(id)representation exactly:(BOOL)exactly;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SXComponentScrollPosition
 
-- (SXComponentScrollPosition)initWithComponentIdentifier:(id)a3 canvasWidth:(double)a4 relativePageOffset:(double)a5
+- (SXComponentScrollPosition)initWithComponentIdentifier:(id)identifier canvasWidth:(double)width relativePageOffset:(double)offset
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SXComponentScrollPosition;
   v10 = [(SXComponentScrollPosition *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_componentIdentifier, a3);
-    v11->_canvasWidth = a4;
-    v11->_relativePageOffset = a5;
+    objc_storeStrong(&v10->_componentIdentifier, identifier);
+    v11->_canvasWidth = width;
+    v11->_relativePageOffset = offset;
   }
 
   return v11;
 }
 
-- (SXComponentScrollPosition)initWithCoder:(id)a3
+- (SXComponentScrollPosition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SXComponentScrollPosition;
-  v5 = [(SXScrollPosition *)&v11 initWithCoder:v4];
+  v5 = [(SXScrollPosition *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"componentIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"componentIdentifier"];
     componentIdentifier = v5->_componentIdentifier;
     v5->_componentIdentifier = v6;
 
-    [v4 decodeFloatForKey:@"canvasWidth"];
+    [coderCopy decodeFloatForKey:@"canvasWidth"];
     v5->_canvasWidth = v8;
-    [v4 decodeFloatForKey:@"relativePageOffset"];
+    [coderCopy decodeFloatForKey:@"relativePageOffset"];
     v5->_relativePageOffset = v9;
   }
 
   return v5;
 }
 
-+ (BOOL)jsonDictionaryRepresentationIsValid:(id)a3 exactly:(BOOL)a4
++ (BOOL)jsonDictionaryRepresentationIsValid:(id)valid exactly:(BOOL)exactly
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  validCopy = valid;
+  v6 = validCopy;
+  if (exactly)
   {
-    v7 = [v5 allKeys];
-    v8 = [v7 count] == 3;
+    allKeys = [validCopy allKeys];
+    v8 = [allKeys count] == 3;
   }
 
   else
   {
-    v7 = [v5 objectForKeyedSubscript:@"componentIdentifier"];
-    if (v7)
+    allKeys = [validCopy objectForKeyedSubscript:@"componentIdentifier"];
+    if (allKeys)
     {
       v9 = [v6 objectForKeyedSubscript:@"canvasWidth"];
       if (v9)
@@ -84,40 +84,40 @@
   return v8;
 }
 
-- (SXComponentScrollPosition)initWithDictionaryRepresentation:(id)a3 exactly:(BOOL)a4
+- (SXComponentScrollPosition)initWithDictionaryRepresentation:(id)representation exactly:(BOOL)exactly
 {
-  v4 = a4;
-  v6 = a3;
-  if ([objc_opt_class() jsonDictionaryRepresentationIsValid:v6 exactly:v4])
+  exactlyCopy = exactly;
+  representationCopy = representation;
+  if ([objc_opt_class() jsonDictionaryRepresentationIsValid:representationCopy exactly:exactlyCopy])
   {
-    v7 = [v6 objectForKeyedSubscript:@"componentIdentifier"];
-    v8 = [v6 objectForKeyedSubscript:@"canvasWidth"];
+    v7 = [representationCopy objectForKeyedSubscript:@"componentIdentifier"];
+    v8 = [representationCopy objectForKeyedSubscript:@"canvasWidth"];
     [v8 floatValue];
     v10 = v9;
-    v11 = [v6 objectForKeyedSubscript:@"relativePageOffset"];
+    v11 = [representationCopy objectForKeyedSubscript:@"relativePageOffset"];
     [v11 floatValue];
     v13 = [(SXComponentScrollPosition *)self initWithComponentIdentifier:v7 canvasWidth:v10 relativePageOffset:v12];
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SXComponentScrollPosition *)self componentIdentifier];
-  v4 = v3;
-  if (v3)
+  componentIdentifier = [(SXComponentScrollPosition *)self componentIdentifier];
+  v4 = componentIdentifier;
+  if (componentIdentifier)
   {
-    v12[0] = v3;
+    v12[0] = componentIdentifier;
     v11[0] = @"componentIdentifier";
     v11[1] = @"canvasWidth";
     v5 = MEMORY[0x1E696AD98];
@@ -140,18 +140,18 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(SXComponentScrollPosition *)self componentIdentifier];
-  [v7 encodeObject:v4 forKey:@"componentIdentifier"];
+  coderCopy = coder;
+  componentIdentifier = [(SXComponentScrollPosition *)self componentIdentifier];
+  [coderCopy encodeObject:componentIdentifier forKey:@"componentIdentifier"];
 
   [(SXComponentScrollPosition *)self canvasWidth];
   *&v5 = v5;
-  [v7 encodeFloat:@"canvasWidth" forKey:v5];
+  [coderCopy encodeFloat:@"canvasWidth" forKey:v5];
   [(SXComponentScrollPosition *)self relativePageOffset];
   *&v6 = v6;
-  [v7 encodeFloat:@"relativePageOffset" forKey:v6];
+  [coderCopy encodeFloat:@"relativePageOffset" forKey:v6];
 }
 
 @end

@@ -1,88 +1,88 @@
 @interface USOMatchInfo
-- (USOMatchInfo)initWithCoder:(id)a3;
-- (USOMatchInfo)initWithMatchSignalBitSet:(unsigned int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (USOMatchInfo)initWithCoder:(id)coder;
+- (USOMatchInfo)initWithMatchSignalBitSet:(unsigned int)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOMatchInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[USOMatchInfo matchSignalBitSet](self forKey:{"matchSignalBitSet"), @"matchSignalBitSet"}];
-  v5 = [(USOMatchInfo *)self matchScore];
-  [v4 encodeObject:v5 forKey:@"matchScore"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[USOMatchInfo matchSignalBitSet](self forKey:{"matchSignalBitSet"), @"matchSignalBitSet"}];
+  matchScore = [(USOMatchInfo *)self matchScore];
+  [coderCopy encodeObject:matchScore forKey:@"matchScore"];
 
-  v6 = [(USOMatchInfo *)self maxTokenCount];
-  [v4 encodeObject:v6 forKey:@"maxTokenCount"];
+  maxTokenCount = [(USOMatchInfo *)self maxTokenCount];
+  [coderCopy encodeObject:maxTokenCount forKey:@"maxTokenCount"];
 
-  v7 = [(USOMatchInfo *)self matchedTokenCount];
-  [v4 encodeObject:v7 forKey:@"matchedTokenCount"];
+  matchedTokenCount = [(USOMatchInfo *)self matchedTokenCount];
+  [coderCopy encodeObject:matchedTokenCount forKey:@"matchedTokenCount"];
 
-  v8 = [(USOMatchInfo *)self maxStopWordCount];
-  [v4 encodeObject:v8 forKey:@"maxStopWordCount"];
+  maxStopWordCount = [(USOMatchInfo *)self maxStopWordCount];
+  [coderCopy encodeObject:maxStopWordCount forKey:@"maxStopWordCount"];
 
-  v9 = [(USOMatchInfo *)self matchedStopWordCount];
-  [v4 encodeObject:v9 forKey:@"matchedStopWordCount"];
+  matchedStopWordCount = [(USOMatchInfo *)self matchedStopWordCount];
+  [coderCopy encodeObject:matchedStopWordCount forKey:@"matchedStopWordCount"];
 
-  v10 = [(USOMatchInfo *)self editDistance];
-  [v4 encodeObject:v10 forKey:@"editDistance"];
+  editDistance = [(USOMatchInfo *)self editDistance];
+  [coderCopy encodeObject:editDistance forKey:@"editDistance"];
 
-  v11 = [(USOMatchInfo *)self maxAliasCount];
-  [v4 encodeObject:v11 forKey:@"maxAliasCount"];
+  maxAliasCount = [(USOMatchInfo *)self maxAliasCount];
+  [coderCopy encodeObject:maxAliasCount forKey:@"maxAliasCount"];
 
-  v12 = [(USOMatchInfo *)self matchedAliasCount];
-  [v4 encodeObject:v12 forKey:@"matchedAliasCount"];
+  matchedAliasCount = [(USOMatchInfo *)self matchedAliasCount];
+  [coderCopy encodeObject:matchedAliasCount forKey:@"matchedAliasCount"];
 
-  v13 = [(USOMatchInfo *)self matchedAliasTypes];
-  [v4 encodeObject:v13 forKey:@"matchedAliasTypes"];
+  matchedAliasTypes = [(USOMatchInfo *)self matchedAliasTypes];
+  [coderCopy encodeObject:matchedAliasTypes forKey:@"matchedAliasTypes"];
 }
 
-- (USOMatchInfo)initWithCoder:(id)a3
+- (USOMatchInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = USOMatchInfo;
   v5 = [(USOMatchInfo *)&v28 init];
   if (v5)
   {
-    v5->_matchSignalBitSet = [v4 decodeInt32ForKey:@"matchSignalBitSet"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchScore"];
+    v5->_matchSignalBitSet = [coderCopy decodeInt32ForKey:@"matchSignalBitSet"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchScore"];
     matchScore = v5->_matchScore;
     v5->_matchScore = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxTokenCount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxTokenCount"];
     maxTokenCount = v5->_maxTokenCount;
     v5->_maxTokenCount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedTokenCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedTokenCount"];
     matchedTokenCount = v5->_matchedTokenCount;
     v5->_matchedTokenCount = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxStopWordCount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxStopWordCount"];
     maxStopWordCount = v5->_maxStopWordCount;
     v5->_maxStopWordCount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedStopWordCount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedStopWordCount"];
     matchedStopWordCount = v5->_matchedStopWordCount;
     v5->_matchedStopWordCount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editDistance"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editDistance"];
     editDistance = v5->_editDistance;
     v5->_editDistance = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxAliasCount"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxAliasCount"];
     maxAliasCount = v5->_maxAliasCount;
     v5->_maxAliasCount = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedAliasCount"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedAliasCount"];
     matchedAliasCount = v5->_matchedAliasCount;
     v5->_matchedAliasCount = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"matchedAliasTypes"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"matchedAliasTypes"];
     matchedAliasTypes = v5->_matchedAliasTypes;
     v5->_matchedAliasTypes = v25;
   }
@@ -90,7 +90,7 @@
   return v5;
 }
 
-- (USOMatchInfo)initWithMatchSignalBitSet:(unsigned int)a3
+- (USOMatchInfo)initWithMatchSignalBitSet:(unsigned int)set
 {
   v9.receiver = self;
   v9.super_class = USOMatchInfo;
@@ -98,10 +98,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_matchSignalBitSet = a3;
-    v6 = [MEMORY[0x1E695DF70] array];
+    v4->_matchSignalBitSet = set;
+    array = [MEMORY[0x1E695DF70] array];
     matchedAliasTypes = v5->_matchedAliasTypes;
-    v5->_matchedAliasTypes = v6;
+    v5->_matchedAliasTypes = array;
   }
 
   return v5;

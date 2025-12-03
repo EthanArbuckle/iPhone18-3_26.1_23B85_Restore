@@ -1,6 +1,6 @@
 @interface MonogramPosterBackgroundViewController
-- (_TtC23MonogramPosterExtension38MonogramPosterBackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23MonogramPosterExtension38MonogramPosterBackgroundViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000036AC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100005060();
 }
 
-- (_TtC23MonogramPosterExtension38MonogramPosterBackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23MonogramPosterExtension38MonogramPosterBackgroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100026A20();
     v7 = v6;
@@ -33,8 +33,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000486C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000486C(v5, v7, bundle);
 }
 
 @end

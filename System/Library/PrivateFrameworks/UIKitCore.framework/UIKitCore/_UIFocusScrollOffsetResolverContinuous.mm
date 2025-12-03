@@ -1,40 +1,40 @@
 @interface _UIFocusScrollOffsetResolverContinuous
-- (CGPoint)contentOffsetForScrollRequest:(id)a3;
+- (CGPoint)contentOffsetForScrollRequest:(id)request;
 @end
 
 @implementation _UIFocusScrollOffsetResolverContinuous
 
-- (CGPoint)contentOffsetForScrollRequest:(id)a3
+- (CGPoint)contentOffsetForScrollRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 environmentScrollableContainer];
-  v5 = [v4 scrollableContainer];
+  requestCopy = request;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
 
-  v6 = [v3 focusItemInfo];
-  [v3 focusItemFrame];
+  focusItemInfo = [requestCopy focusItemInfo];
+  [requestCopy focusItemFrame];
   v8 = v7;
   v10 = v9;
   rect_24 = v11;
   rect_16 = v12;
-  v13 = [v3 focusMovement];
-  [v13 heading];
+  focusMovement = [requestCopy focusMovement];
+  [focusMovement heading];
 
-  [v3 originatingContentOffset];
+  [requestCopy originatingContentOffset];
   v114 = v14;
   v115 = v15;
-  CanScrollX = _UIFocusItemScrollableContainerCanScrollX(v5);
-  CanScrollY = _UIFocusItemScrollableContainerCanScrollY(v5);
-  [v3 targetContentOffset];
+  CanScrollX = _UIFocusItemScrollableContainerCanScrollX(scrollableContainer);
+  CanScrollY = _UIFocusItemScrollableContainerCanScrollY(scrollableContainer);
+  [requestCopy targetContentOffset];
   v126 = v18;
   v127 = v19;
-  [v3 originatingBounds];
+  [requestCopy originatingBounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  if (_IsKindOfUIView(v5) & 1) != 0 || (v28 = objc_opt_respondsToSelector(), v29 = 0.0, v122 = 0.0, v30 = 0.0, v31 = 0.0, (v28))
+  if (_IsKindOfUIView(scrollableContainer) & 1) != 0 || (v28 = objc_opt_respondsToSelector(), v29 = 0.0, v122 = 0.0, v30 = 0.0, v31 = 0.0, (v28))
   {
-    [v5 safeAreaInsets];
+    [scrollableContainer safeAreaInsets];
     v30 = v32;
     v122 = v33;
   }
@@ -50,9 +50,9 @@
 
   v123 = v35;
   v121 = v30;
-  if ([v5 __isKindOfUIScrollView])
+  if ([scrollableContainer __isKindOfUIScrollView])
   {
-    [v5 _effectiveContentInset];
+    [scrollableContainer _effectiveContentInset];
     v21 = v21 + v36;
     v23 = v23 + v37;
     v25 = v25 - (v36 + v38);
@@ -91,7 +91,7 @@
   y = v138.origin.y;
   width = v138.size.width;
   v47 = v138.size.height;
-  v48 = _UIFocusItemScrollableContainerScrollableAreaInsets(v5);
+  v48 = _UIFocusItemScrollableContainerScrollableAreaInsets(scrollableContainer);
   v52 = width - v49 - v51;
   if (v52 >= 0.0)
   {
@@ -116,34 +116,34 @@
 
   v56 = x + v49;
   v57 = y + v48;
-  v58 = [v6 item];
+  item = [focusItemInfo item];
 
-  if (v58)
+  if (item)
   {
-    v58 = [v3 environmentScrollableContainer];
-    v59 = [v6 item];
-    v60 = _UIFocusItemScrollableContainerScrollBoundaryMetricsForItem(v58, v59);
+    item = [requestCopy environmentScrollableContainer];
+    item2 = [focusItemInfo item];
+    v60 = _UIFocusItemScrollableContainerScrollBoundaryMetricsForItem(item, item2);
 
-    v61 = [v60 isMinX];
-    v62 = [v60 isMaxX];
-    LODWORD(v58) = [v60 isMinY];
-    v63 = [v60 isMaxY];
+    isMinX = [v60 isMinX];
+    isMaxX = [v60 isMaxX];
+    LODWORD(item) = [v60 isMinY];
+    isMaxY = [v60 isMaxY];
   }
 
   else
   {
-    v63 = 0;
-    v62 = 0;
-    v61 = 0;
+    isMaxY = 0;
+    isMaxX = 0;
+    isMinX = 0;
   }
 
   v64 = fmax(v52, 0.0);
   v65 = fmax(v54, 0.0);
   v124 = v57 + v55;
   v125 = v56 + v53;
-  v66 = _UIFocusItemScrollableContainerMinimumContentOffset(v5);
+  v66 = _UIFocusItemScrollableContainerMinimumContentOffset(scrollableContainer);
   v68 = v67;
-  v69 = _UIFocusItemScrollableContainerMaximumContentOffset(v5);
+  v69 = _UIFocusItemScrollableContainerMaximumContentOffset(scrollableContainer);
   v120 = v70;
   v71 = rect_8;
   v72 = v126;
@@ -191,7 +191,7 @@
       v82 = v80;
     }
 
-    if ((v62 & v61) != 0)
+    if ((isMaxX & isMinX) != 0)
     {
       v83 = v82;
     }
@@ -201,12 +201,12 @@
       v83 = v66;
     }
 
-    if (v62)
+    if (isMaxX)
     {
       v82 = v73;
     }
 
-    if (v61)
+    if (isMinX)
     {
       v82 = v83;
     }
@@ -227,9 +227,9 @@
     v144.size.width = rect_24;
     v144.size.height = rect_16;
     v85 = CGRectGetMaxX(v144);
-    if (v84 < v72 || ([v5 visibleSize], v85 > v72 + v86))
+    if (v84 < v72 || ([scrollableContainer visibleSize], v85 > v72 + v86))
     {
-      [v5 visibleSize];
+      [scrollableContainer visibleSize];
       v88 = v87;
       v145.origin.x = rect;
       v145.origin.y = rect_8;
@@ -245,14 +245,14 @@
         }
 
         v90 = v84 - v116;
-        [v5 visibleSize];
+        [scrollableContainer visibleSize];
         v92 = v85 - v93;
       }
 
       else
       {
         v90 = v84 - v123 - v116;
-        [v5 visibleSize];
+        [scrollableContainer visibleSize];
         v92 = v123 + v85 - v91;
       }
 
@@ -273,7 +273,7 @@ LABEL_52:
   if (!CanScrollY)
   {
     v100 = v127;
-    if (!v6)
+    if (!focusItemInfo)
     {
       goto LABEL_82;
     }
@@ -312,7 +312,7 @@ LABEL_52:
     v99 = v121;
   }
 
-  if ((v63 & v58) != 0)
+  if ((isMaxY & item) != 0)
   {
     v101 = v98;
   }
@@ -322,12 +322,12 @@ LABEL_52:
     v101 = v68;
   }
 
-  if (v63)
+  if (isMaxY)
   {
     v98 = v120;
   }
 
-  if (!v58)
+  if (!item)
   {
     v101 = v98;
   }
@@ -357,10 +357,10 @@ LABEL_52:
   v150.size.width = rect_24;
   v150.size.height = rect_16;
   v103 = CGRectGetMaxY(v150);
-  if (v102 < v100 || ([v5 visibleSize], v103 > v100 + v104 - v99))
+  if (v102 < v100 || ([scrollableContainer visibleSize], v103 > v100 + v104 - v99))
   {
     v105 = fmax(v117 - v118, 0.0);
-    [v5 visibleSize];
+    [scrollableContainer visibleSize];
     v107 = v106;
     v151.origin.x = rect;
     v151.origin.y = v71;
@@ -372,7 +372,7 @@ LABEL_52:
       if (v108 >= 0.0)
       {
         v100 = v102 + v108 * 0.5 - v119;
-        if (!v6)
+        if (!focusItemInfo)
         {
           goto LABEL_82;
         }
@@ -389,7 +389,7 @@ LABEL_52:
       v103 = v105 + v103;
     }
 
-    [v5 visibleSize];
+    [scrollableContainer visibleSize];
     if (vabdd_f64(v109, v115) >= vabdd_f64(v99 + v103 - v110, v115))
     {
       v100 = v99 + v103 - v110;
@@ -401,10 +401,10 @@ LABEL_52:
     }
   }
 
-  if (v6)
+  if (focusItemInfo)
   {
 LABEL_81:
-    v72 = _UIFocusItemScrollableContainerAdjustedContentOffsetToShowFocusItem(v5, v6, v72, v100);
+    v72 = _UIFocusItemScrollableContainerAdjustedContentOffsetToShowFocusItem(scrollableContainer, focusItemInfo, v72, v100);
     v100 = v111;
   }
 

@@ -5,17 +5,17 @@
 - (NSArray)activeSessions;
 - (NSString)description;
 - (PXVideoSessionManager)init;
-- (PXVideoSessionManager)initWithResourceReclamationController:(id)a3;
-- (id)checkOutSessionWithContentProvider:(id)a3;
-- (id)contentProviderForAsset:(id)a3 withOptions:(id)a4 mediaProvider:(id)a5 requestURLOnly:(BOOL)a6;
-- (id)videoSessionForAsset:(id)a3 mediaProvider:(id)a4;
-- (id)videoSessionForAsset:(id)a3 withOptions:(id)a4 mediaProvider:(id)a5;
+- (PXVideoSessionManager)initWithResourceReclamationController:(id)controller;
+- (id)checkOutSessionWithContentProvider:(id)provider;
+- (id)contentProviderForAsset:(id)asset withOptions:(id)options mediaProvider:(id)provider requestURLOnly:(BOOL)only;
+- (id)videoSessionForAsset:(id)asset mediaProvider:(id)provider;
+- (id)videoSessionForAsset:(id)asset withOptions:(id)options mediaProvider:(id)provider;
 - (void)_flushReusablePlayerPool;
 - (void)_updateCanStoreReusablePlayers;
-- (void)checkInReusableWrappedPlayer:(id)a3;
-- (void)checkInVideoSession:(id)a3;
+- (void)checkInReusableWrappedPlayer:(id)player;
+- (void)checkInVideoSession:(id)session;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXVideoSessionManager
@@ -58,45 +58,45 @@ _BYTE *__55__PXVideoSessionManager__updateCanStoreReusablePlayers__block_invoke(
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ApplicationStateContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ApplicationStateContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXVideoSessionManager.m" lineNumber:181 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSessionManager.m" lineNumber:181 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXVideoSessionManager *)self _updateCanStoreReusablePlayers];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)checkInReusableWrappedPlayer:(id)a3
+- (void)checkInReusableWrappedPlayer:(id)player
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 status] == 2)
+  playerCopy = player;
+  if ([playerCopy status] == 2)
   {
     v5 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v4 error];
+      error = [playerCopy error];
       v7 = 138543362;
-      v8 = v6;
+      v8 = error;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Dropping checked-in wrapped player because it's status is .failed. Error: %{public}@", &v7, 0xCu);
     }
   }
 
   else
   {
-    [(PXReusableObjectPool *)self->_ivarQueue_playerPool checkInReusableObject:v4];
+    [(PXReusableObjectPool *)self->_ivarQueue_playerPool checkInReusableObject:playerCopy];
   }
 }
 
@@ -201,19 +201,19 @@ void __36__PXVideoSessionManager_description__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)checkInVideoSession:(id)a3
+- (void)checkInVideoSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     ivarQueue = self->_ivarQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__PXVideoSessionManager_checkInVideoSession___block_invoke;
     v7[3] = &unk_1E774C620;
-    v8 = v4;
-    v9 = self;
+    v8 = sessionCopy;
+    selfCopy = self;
     dispatch_async(ivarQueue, v7);
   }
 }
@@ -295,10 +295,10 @@ uint64_t __45__PXVideoSessionManager_checkInVideoSession___block_invoke_5(uint64
   return result;
 }
 
-- (id)checkOutSessionWithContentProvider:(id)a3
+- (id)checkOutSessionWithContentProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 contentIdentifier];
+  providerCopy = provider;
+  contentIdentifier = [providerCopy contentIdentifier];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -311,11 +311,11 @@ uint64_t __45__PXVideoSessionManager_checkInVideoSession___block_invoke_5(uint64
   v11[2] = __60__PXVideoSessionManager_checkOutSessionWithContentProvider___block_invoke;
   v11[3] = &unk_1E77448A8;
   v11[4] = self;
-  v12 = v5;
-  v13 = v4;
+  v12 = contentIdentifier;
+  v13 = providerCopy;
   v14 = &v15;
-  v7 = v4;
-  v8 = v5;
+  v7 = providerCopy;
+  v8 = contentIdentifier;
   dispatch_sync(ivarQueue, v11);
   v9 = v16[5];
 
@@ -357,25 +357,25 @@ uint64_t __60__PXVideoSessionManager_checkOutSessionWithContentProvider___block_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PXVideoSessionManager;
   [(PXVideoSessionManager *)&v4 dealloc];
 }
 
-- (PXVideoSessionManager)initWithResourceReclamationController:(id)a3
+- (PXVideoSessionManager)initWithResourceReclamationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PXVideoSessionManager;
   v6 = [(PXVideoSessionManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceReclamationController, a3);
-    [v5 registerObserver:v7];
+    objc_storeStrong(&v6->_resourceReclamationController, controller);
+    [controllerCopy registerObserver:v7];
     px_dispatch_queue_create_serial_with_priority();
   }
 
@@ -426,13 +426,13 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_45154 = v0;
 }
 
-- (id)contentProviderForAsset:(id)a3 withOptions:(id)a4 mediaProvider:(id)a5 requestURLOnly:(BOOL)a6
+- (id)contentProviderForAsset:(id)asset withOptions:(id)options mediaProvider:(id)provider requestURLOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6 && (([v11 shouldCrossfadeLivePhotosWhenLooping] & 1) != 0 || (objc_msgSend(v11, "shouldStabilizeLivePhotosIfPossible") & 1) != 0 || (objc_msgSend(v11, "isAudioAllowed") & 1) == 0))
+  onlyCopy = only;
+  assetCopy = asset;
+  optionsCopy = options;
+  providerCopy = provider;
+  if (onlyCopy && (([optionsCopy shouldCrossfadeLivePhotosWhenLooping] & 1) != 0 || (objc_msgSend(optionsCopy, "shouldStabilizeLivePhotosIfPossible") & 1) != 0 || (objc_msgSend(optionsCopy, "isAudioAllowed") & 1) == 0))
   {
     PXAssertGetLog();
   }
@@ -440,33 +440,33 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v10 mediaType] != 1 || v6)
+    if ([assetCopy mediaType] != 1 || onlyCopy)
     {
-      v18 = v12;
-      v19 = v10;
+      v18 = providerCopy;
+      v19 = assetCopy;
       v20 = [PXPhotoKitVideoContentProvider alloc];
-      [v11 strategies];
-      v21 = v33 = v12;
-      v22 = [v11 audioSessionKind];
-      v23 = [(PXVideoSessionManager *)self resourceReclamationController];
-      v13 = [(PXPhotoKitVideoContentProvider *)v20 initWithAsset:v19 mediaProvider:v18 deliveryStrategies:v21 audioSessionKind:v22 requestURLOnly:v6 resourceReclamationController:v23];
+      [optionsCopy strategies];
+      v21 = v33 = providerCopy;
+      audioSessionKind = [optionsCopy audioSessionKind];
+      resourceReclamationController = [(PXVideoSessionManager *)self resourceReclamationController];
+      v13 = [(PXPhotoKitVideoContentProvider *)v20 initWithAsset:v19 mediaProvider:v18 deliveryStrategies:v21 audioSessionKind:audioSessionKind requestURLOnly:onlyCopy resourceReclamationController:resourceReclamationController];
 
-      v12 = v33;
+      providerCopy = v33;
     }
 
-    else if ([v11 shouldPlayLivePhotosWithSettlingEffectIfPossible])
+    else if ([optionsCopy shouldPlayLivePhotosWithSettlingEffectIfPossible])
     {
-      v13 = [[PXWallpaperAssetVideoContentProvider alloc] initWithWallpaperAsset:v10];
+      v13 = [[PXWallpaperAssetVideoContentProvider alloc] initWithWallpaperAsset:assetCopy];
     }
 
     else
     {
-      v34 = v12;
-      v24 = v10;
+      v34 = providerCopy;
+      v24 = assetCopy;
       v25 = objc_alloc_init(PXPhotoKitLivePhotoVideoContentProviderSpec);
-      if (v11)
+      if (optionsCopy)
       {
-        [v11 livePhotoLoopTimeRange];
+        [optionsCopy livePhotoLoopTimeRange];
       }
 
       else
@@ -483,7 +483,7 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
       *buf = *MEMORY[0x1E6960CC0];
       *&v39 = *(MEMORY[0x1E6960CC0] + 16);
       [(PXPhotoKitLivePhotoVideoContentProviderSpec *)v25 setLoopStartTime:buf];
-      if ([v11 shouldCrossfadeLivePhotosWhenLooping])
+      if ([optionsCopy shouldCrossfadeLivePhotosWhenLooping])
       {
         v26 = objc_opt_class();
         if (v26)
@@ -502,37 +502,37 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
         [(PXPhotoKitLivePhotoVideoContentProviderSpec *)v25 setCrossfadeDuration:buf];
       }
 
-      if ([v11 shouldStabilizeLivePhotosIfPossible])
+      if ([optionsCopy shouldStabilizeLivePhotosIfPossible])
       {
         -[PXPhotoKitLivePhotoVideoContentProviderSpec setStabilizeIfPossible:](v25, "setStabilizeIfPossible:", [objc_opt_class() isLivePhotoStabilizationEnabled]);
       }
 
-      v27 = v12;
-      if ([v11 isAudioAllowed])
+      v27 = providerCopy;
+      if ([optionsCopy isAudioAllowed])
       {
         [(PXPhotoKitLivePhotoVideoContentProviderSpec *)v25 setWantsAudio:1];
       }
 
       v28 = [PXPhotoKitLivePhotoVideoContentProvider alloc];
-      v29 = [v11 strategies];
-      v30 = [v11 audioSessionKind];
-      v31 = [(PXVideoSessionManager *)self resourceReclamationController];
-      v13 = [(PXPhotoKitLivePhotoVideoContentProvider *)v28 initWithAsset:v24 mediaProvider:v35 deliveryStrategies:v29 audioSessionKind:v30 spec:v25 resourceReclamationController:v31];
+      strategies = [optionsCopy strategies];
+      audioSessionKind2 = [optionsCopy audioSessionKind];
+      resourceReclamationController2 = [(PXVideoSessionManager *)self resourceReclamationController];
+      v13 = [(PXPhotoKitLivePhotoVideoContentProvider *)v28 initWithAsset:v24 mediaProvider:v35 deliveryStrategies:strategies audioSessionKind:audioSessionKind2 spec:v25 resourceReclamationController:resourceReclamationController2];
 
-      v12 = v27;
+      providerCopy = v27;
     }
   }
 
   else
   {
     v14 = [PXDisplayAssetVideoContentProvider alloc];
-    v15 = [v11 strategies];
-    v16 = [v11 audioSessionKind];
-    v17 = [(PXVideoSessionManager *)self resourceReclamationController];
-    v13 = [(PXDisplayAssetVideoContentProvider *)v14 initWithAsset:v10 mediaProvider:v12 deliveryStrategies:v15 audioSessionKind:v16 requestURLOnly:v6 resourceReclamationController:v17];
+    strategies2 = [optionsCopy strategies];
+    audioSessionKind3 = [optionsCopy audioSessionKind];
+    resourceReclamationController3 = [(PXVideoSessionManager *)self resourceReclamationController];
+    v13 = [(PXDisplayAssetVideoContentProvider *)v14 initWithAsset:assetCopy mediaProvider:providerCopy deliveryStrategies:strategies2 audioSessionKind:audioSessionKind3 requestURLOnly:onlyCopy resourceReclamationController:resourceReclamationController3];
   }
 
-  if ([v11 shouldCreateUniqueVideoSession])
+  if ([optionsCopy shouldCreateUniqueVideoSession])
   {
     [(PXWallpaperAssetVideoContentProvider *)v13 makeUniqueContentIdentifier];
   }
@@ -540,20 +540,20 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
   return v13;
 }
 
-- (id)videoSessionForAsset:(id)a3 withOptions:(id)a4 mediaProvider:(id)a5
+- (id)videoSessionForAsset:(id)asset withOptions:(id)options mediaProvider:(id)provider
 {
-  v6 = [(PXVideoSessionManager *)self contentProviderForAsset:a3 withOptions:a4 mediaProvider:a5 requestURLOnly:0];
+  v6 = [(PXVideoSessionManager *)self contentProviderForAsset:asset withOptions:options mediaProvider:provider requestURLOnly:0];
   v7 = [(PXVideoSessionManager *)self checkOutSessionWithContentProvider:v6];
 
   return v7;
 }
 
-- (id)videoSessionForAsset:(id)a3 mediaProvider:(id)a4
+- (id)videoSessionForAsset:(id)asset mediaProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  assetCopy = asset;
   v8 = objc_alloc_init(PXVideoSessionManagerDisplayAssetOptions);
-  v9 = [(PXVideoSessionManager *)self videoSessionForAsset:v7 withOptions:v8 mediaProvider:v6];
+  v9 = [(PXVideoSessionManager *)self videoSessionForAsset:assetCopy withOptions:v8 mediaProvider:providerCopy];
 
   return v9;
 }
@@ -570,9 +570,9 @@ void __39__PXVideoSessionManager_sharedInstance__block_invoke()
 + (BOOL)isLivePhotoStabilizationEnabled
 {
   v2 = +[PXCuratedLibrarySettings sharedInstance];
-  v3 = [v2 stabilizeLivePhotos];
+  stabilizeLivePhotos = [v2 stabilizeLivePhotos];
 
-  return v3;
+  return stabilizeLivePhotos;
 }
 
 @end

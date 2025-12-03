@@ -1,8 +1,8 @@
 @interface SCROEvent
 + (id)brailleEvent;
-- (id)initForHandlerType:(int)a3;
+- (id)initForHandlerType:(int)type;
 - (id)mainDictionary;
-- (void)setMainDictionary:(id)a3;
+- (void)setMainDictionary:(id)dictionary;
 @end
 
 @implementation SCROEvent
@@ -14,23 +14,23 @@
   return v2;
 }
 
-- (id)initForHandlerType:(int)a3
+- (id)initForHandlerType:(int)type
 {
   result = [(SCROEvent *)self init];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = type;
   }
 
   return result;
 }
 
-- (void)setMainDictionary:(id)a3
+- (void)setMainDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   self->_readOnly = 1;
-  v9 = v4;
-  v5 = [v4 objectForKey:&unk_287651C98];
+  v9 = dictionaryCopy;
+  v5 = [dictionaryCopy objectForKey:&unk_287651C98];
   if (v5)
   {
     objc_storeStrong(&self->_callbacks, v5);
@@ -60,12 +60,12 @@
 
 - (id)mainDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   callbacks = self->_callbacks;
   if (callbacks)
   {
-    [v3 setObject:callbacks forKey:&unk_287651C98];
+    [dictionary setObject:callbacks forKey:&unk_287651C98];
   }
 
   setDictionary = self->_setDictionary;

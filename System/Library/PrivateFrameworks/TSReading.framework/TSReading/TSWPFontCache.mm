@@ -1,24 +1,24 @@
 @interface TSWPFontCache
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedCache;
 - (TSWPFontCache)init;
-- (__CTFont)_createFontWithName:(id)a3 size:(double)a4 weight:(double)a5;
-- (__CTFont)createFontWithName:(id)a3 size:(double)a4 weight:(double)a5 attributes:(id)a6;
-- (id)availableMembersOfFontFamily:(id)a3;
-- (id)displayNameForFontFamily:(id)a3;
+- (__CTFont)_createFontWithName:(id)name size:(double)size weight:(double)weight;
+- (__CTFont)createFontWithName:(id)name size:(double)size weight:(double)weight attributes:(id)attributes;
+- (id)availableMembersOfFontFamily:(id)family;
+- (id)displayNameForFontFamily:(id)family;
 - (id)p_excludedFamilyNames;
 - (id)sortedFontFamilies;
-- (id)sortedFontFamilyEntriesForStylesheet:(id)a3;
+- (id)sortedFontFamilyEntriesForStylesheet:(id)stylesheet;
 - (void)dealloc;
-- (void)p_FontWasDownloaded:(id)a3;
+- (void)p_FontWasDownloaded:(id)downloaded;
 @end
 
 @implementation TSWPFontCache
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSWPFontCache;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -28,32 +28,32 @@
   result = +[TSWPFontCache sharedCache]::sSingletonInstance;
   if (!+[TSWPFontCache sharedCache]::sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!+[TSWPFontCache sharedCache]::sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       +[TSWPFontCache sharedCache]::sSingletonInstance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPFontCache sharedCache]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 65, @"Couldn't create singleton instance of %@", a1}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 65, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return +[TSWPFontCache sharedCache]::sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPFontCache allocWithZone:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 65, @"Don't alloc a singleton"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 65, @"Don't alloc a singleton"}];
   return 0;
 }
 
@@ -80,19 +80,19 @@
   [(TSWPFontCache *)&v3 dealloc];
 }
 
-- (__CTFont)createFontWithName:(id)a3 size:(double)a4 weight:(double)a5 attributes:(id)a6
+- (__CTFont)createFontWithName:(id)name size:(double)size weight:(double)weight attributes:(id)attributes
 {
-  if (a6)
+  if (attributes)
   {
-    v9 = [a6 mutableCopy];
+    v9 = [attributes mutableCopy];
     v10 = *MEMORY[0x277CC4950];
-    v11 = [objc_msgSend(a6 objectForKeyedSubscript:{*MEMORY[0x277CC4950]), "mutableCopy"}];
+    v11 = [objc_msgSend(attributes objectForKeyedSubscript:{*MEMORY[0x277CC4950]), "mutableCopy"}];
     if (!v11)
     {
       v11 = objc_opt_new();
     }
 
-    v12 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v12 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
     [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277CC49B8]];
     if (v11)
     {
@@ -103,7 +103,7 @@
     if (v13)
     {
       v14 = v13;
-      v15 = CTFontCreateWithFontDescriptor(v13, a4, 0);
+      v15 = CTFontCreateWithFontDescriptor(v13, size, 0);
       CFRelease(v14);
     }
 
@@ -118,11 +118,11 @@
   else
   {
 
-    return [TSWPFontCache _createFontWithName:"_createFontWithName:size:weight:" size:a3 weight:?];
+    return [TSWPFontCache _createFontWithName:"_createFontWithName:size:weight:" size:name weight:?];
   }
 }
 
-- (__CTFont)_createFontWithName:(id)a3 size:(double)a4 weight:(double)a5
+- (__CTFont)_createFontWithName:(id)name size:(double)size weight:(double)weight
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v9 = [TSWPFontCacheKey cacheKeyWithFontName:"cacheKeyWithFontName:size:weight:" size:? weight:?];
@@ -137,25 +137,25 @@
 
   else
   {
-    if ([a3 hasPrefix:@".System-"])
+    if ([name hasPrefix:@".System-"])
     {
       v11 = *MEMORY[0x277CC4968];
       v12 = *MEMORY[0x277CC49B8];
       v21[0] = *MEMORY[0x277CC4980];
       v21[1] = v12;
       v22[0] = v11;
-      v22[1] = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+      v22[1] = [MEMORY[0x277CCABB0] numberWithDouble:weight];
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
       v19 = *MEMORY[0x277CC4950];
       v20 = v13;
       v14 = CTFontDescriptorCreateWithAttributes([MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1]);
-      v15 = CTFontCreateWithFontDescriptor(v14, a4, 0);
+      v15 = CTFontCreateWithFontDescriptor(v14, size, 0);
       CFRelease(v14);
     }
 
     else
     {
-      v15 = CTFontCreateWithName(a3, a4, 0);
+      v15 = CTFontCreateWithName(name, size, 0);
     }
 
     v10 = [TSWPFontCacheValue cacheValueWithCTFont:v15];
@@ -168,9 +168,9 @@
     objc_sync_exit(self);
     if (!v10)
     {
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFontCache _createFontWithName:size:weight:]"];
-      [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 165, @"invalid nil value for '%s'", "cacheValue"}];
+      [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 165, @"invalid nil value for '%s'", "cacheValue"}];
       v10 = 0;
     }
   }
@@ -213,7 +213,7 @@
       MatchingFontDescriptors = CTFontCollectionCreateMatchingFontDescriptors(v3);
       if (MatchingFontDescriptors)
       {
-        v6 = [(TSWPFontCache *)self p_excludedFamilyNames];
+        p_excludedFamilyNames = [(TSWPFontCache *)self p_excludedFamilyNames];
         v7 = [MEMORY[0x277CBEB58] setWithCapacity:CFArrayGetCount(MatchingFontDescriptors)];
         cf = v4;
         v18 = 0u;
@@ -238,7 +238,7 @@
               v13 = v12;
               if (v12)
               {
-                if (!CFStringHasPrefix(v12, @".") && ([v6 containsObject:v13] & 1) == 0)
+                if (!CFStringHasPrefix(v12, @".") && ([p_excludedFamilyNames containsObject:v13] & 1) == 0)
                 {
                   [v7 addObject:v13];
                 }
@@ -277,17 +277,17 @@
   return self->_familyNames;
 }
 
-- (id)sortedFontFamilyEntriesForStylesheet:(id)a3
+- (id)sortedFontFamilyEntriesForStylesheet:(id)stylesheet
 {
-  v4 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  if (!v4->_familyFonts)
+  if (!selfCopy->_familyFonts)
   {
-    v21 = v4;
-    obj = [(TSWPFontCache *)v4 sortedFontFamilies];
+    v21 = selfCopy;
+    obj = [(TSWPFontCache *)selfCopy sortedFontFamilies];
     v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(obj, "count")}];
-    v20 = a3;
+    stylesheetCopy = stylesheet;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -325,17 +325,17 @@
 
             else
             {
-              v16 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler = [MEMORY[0x277D6C290] currentHandler];
               v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFontCache sortedFontFamilyEntriesForStylesheet:]"];
-              [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 314, @"Could not determine font name for descriptor: %@", v12}];
+              [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 314, @"Could not determine font name for descriptor: %@", v12}];
             }
           }
 
           else
           {
-            v14 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFontCache sortedFontFamilyEntriesForStylesheet:]"];
-            [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 310, @"invalid nil value for '%s'", "desc"}];
+            [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 310, @"invalid nil value for '%s'", "desc"}];
           }
 
           ++v9;
@@ -348,19 +348,19 @@
       while (v5);
     }
 
-    v4 = v21;
+    selfCopy = v21;
     v21->_familyFonts = v22;
-    a3 = v20;
+    stylesheet = stylesheetCopy;
   }
 
-  objc_sync_exit(v4);
-  v18 = [(NSArray *)v4->_familyFonts mutableCopy];
+  objc_sync_exit(selfCopy);
+  v18 = [(NSArray *)selfCopy->_familyFonts mutableCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__TSWPFontCache_sortedFontFamilyEntriesForStylesheet___block_invoke;
   v24[3] = &unk_279D48130;
   v24[4] = v18;
-  [a3 enumerateCascadedStylesUsingBlock:v24];
+  [stylesheet enumerateCascadedStylesUsingBlock:v24];
   [v18 sortUsingComparator:&__block_literal_global_63];
   return v18;
 }
@@ -439,14 +439,14 @@ uint64_t __54__TSWPFontCache_sortedFontFamilyEntriesForStylesheet___block_invoke
   return [v2 compare:v3];
 }
 
-- (id)displayNameForFontFamily:(id)a3
+- (id)displayNameForFontFamily:(id)family
 {
   v16[1] = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   familyDisplayNames = self->_familyDisplayNames;
   if (familyDisplayNames)
   {
-    if (a3)
+    if (family)
     {
       goto LABEL_3;
     }
@@ -458,18 +458,18 @@ LABEL_8:
 
   familyDisplayNames = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSArray count](self->_familyNames, "count")}];
   self->_familyDisplayNames = familyDisplayNames;
-  if (!a3)
+  if (!family)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v6 = [(NSMutableDictionary *)familyDisplayNames objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)familyDisplayNames objectForKeyedSubscript:family];
   if (!v6)
   {
     v7 = *MEMORY[0x277CC48B8];
     v15 = *MEMORY[0x277CC48B8];
-    v16[0] = a3;
+    v16[0] = family;
     v8 = CTFontDescriptorCreateWithAttributes([MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1]);
     v9 = v8;
     if (v8)
@@ -478,7 +478,7 @@ LABEL_3:
       CFRelease(v9);
       if (v6)
       {
-        [(NSMutableDictionary *)self->_familyDisplayNames setObject:v6 forKeyedSubscript:a3];
+        [(NSMutableDictionary *)self->_familyDisplayNames setObject:v6 forKeyedSubscript:family];
 
         goto LABEL_9;
       }
@@ -486,15 +486,15 @@ LABEL_3:
 
     else
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFontCache displayNameForFontFamily:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 403, @"invalid nil value for '%s'", "desc"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 403, @"invalid nil value for '%s'", "desc"}];
     }
 
     objc_sync_exit(self);
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFontCache displayNameForFontFamily:]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 422, @"Couldn't generate a display name for font family: %@", a3}];
+    [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFontCache.mm"), 422, @"Couldn't generate a display name for font family: %@", family}];
     return 0;
   }
 
@@ -503,18 +503,18 @@ LABEL_9:
   return v6;
 }
 
-- (id)availableMembersOfFontFamily:(id)a3
+- (id)availableMembersOfFontFamily:(id)family
 {
   v29 = *MEMORY[0x277D85DE8];
   v21 = objc_opt_class();
   objc_sync_enter(v21);
-  if (![(NSString *)self->_cachedMembersFamilyName isEqualToString:a3])
+  if (![(NSString *)self->_cachedMembersFamilyName isEqualToString:family])
   {
 
     self->_cachedMembersFamilyName = 0;
     self->_cachedAvailableMembers = 0;
     v5 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v6 = [v5 initWithObjectsAndKeys:{a3, *MEMORY[0x277CC48B8], 0}];
+    v6 = [v5 initWithObjectsAndKeys:{family, *MEMORY[0x277CC48B8], 0}];
     v7 = CTFontDescriptorCreateWithAttributes(v6);
     v8 = v7;
     if (v7)
@@ -522,7 +522,7 @@ LABEL_9:
       obj = CTFontDescriptorCreateMatchingFontDescriptors(v7, 0);
       if (obj)
       {
-        self->_cachedMembersFamilyName = a3;
+        self->_cachedMembersFamilyName = family;
         v20 = v8;
         self->_cachedAvailableMembers = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[__CFArray count](obj, "count")}];
         v23 = 0u;
@@ -571,12 +571,12 @@ LABEL_9:
   return v18;
 }
 
-- (void)p_FontWasDownloaded:(id)a3
+- (void)p_FontWasDownloaded:(id)downloaded
 {
   v37 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v5 = [a3 object];
-  v6 = [v5 valueForKey:*MEMORY[0x277CC4858]];
+  object = [downloaded object];
+  v6 = [object valueForKey:*MEMORY[0x277CC4858]];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -602,8 +602,8 @@ LABEL_9:
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v11 = [(TSULRUCache *)self->_fontCache allKeys];
-        v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        allKeys = [(TSULRUCache *)self->_fontCache allKeys];
+        v12 = [allKeys countByEnumeratingWithState:&v26 objects:v35 count:16];
         if (v12)
         {
           v13 = *v27;
@@ -613,7 +613,7 @@ LABEL_9:
             {
               if (*v27 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v26 + 1) + 8 * j);
@@ -623,7 +623,7 @@ LABEL_9:
               }
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v26 objects:v35 count:16];
           }
 
           while (v12);

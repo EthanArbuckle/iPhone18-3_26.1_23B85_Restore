@@ -1,33 +1,33 @@
 @interface KNOutlineSelection
-- (BOOL)isEqual:(id)a3;
-- (KNOutlineSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (KNOutlineSelection)initWithSlideNodes:(id)a3 slideNodeToEdit:(id)a4 selectedParagraphIndexesForSlideNodes:(id)a5 rangeInSelectedParagraph:(_NSRange)a6;
-- (_NSRange)absoluteRangeInStorage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNOutlineSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (KNOutlineSelection)initWithSlideNodes:(id)nodes slideNodeToEdit:(id)edit selectedParagraphIndexesForSlideNodes:(id)slideNodes rangeInSelectedParagraph:(_NSRange)paragraph;
+- (_NSRange)absoluteRangeInStorage:(id)storage;
 - (_NSRange)rangeInSelectedParagraph;
-- (id)contiguousIndexesForSelectedParagraphIndexesForSlideNodes:(id)a3;
+- (id)contiguousIndexesForSelectedParagraphIndexesForSlideNodes:(id)nodes;
 - (id)description;
 - (id)estimatedTextSelection;
-- (id)updatedOutlineSelectionWithTextSelection:(id)a3;
+- (id)updatedOutlineSelectionWithTextSelection:(id)selection;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation KNOutlineSelection
 
-- (KNOutlineSelection)initWithSlideNodes:(id)a3 slideNodeToEdit:(id)a4 selectedParagraphIndexesForSlideNodes:(id)a5 rangeInSelectedParagraph:(_NSRange)a6
+- (KNOutlineSelection)initWithSlideNodes:(id)nodes slideNodeToEdit:(id)edit selectedParagraphIndexesForSlideNodes:(id)slideNodes rangeInSelectedParagraph:(_NSRange)paragraph
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  length = paragraph.length;
+  location = paragraph.location;
+  nodesCopy = nodes;
+  editCopy = edit;
+  slideNodesCopy = slideNodes;
   v40.receiver = self;
   v40.super_class = KNOutlineSelection;
-  v14 = [(KNSlideCollectionSelection *)&v40 initWithSlideNodes:v11 slideNodeToEdit:v12];
+  v14 = [(KNSlideCollectionSelection *)&v40 initWithSlideNodes:nodesCopy slideNodeToEdit:editCopy];
   v16 = v14;
   if (v14)
   {
-    v17 = objc_msgSend_contiguousIndexesForSelectedParagraphIndexesForSlideNodes_(v14, v15, v13);
+    v17 = objc_msgSend_contiguousIndexesForSelectedParagraphIndexesForSlideNodes_(v14, v15, slideNodesCopy);
     selectedParagraphIndexesForSlideNodes = v16->_selectedParagraphIndexesForSlideNodes;
     v16->_selectedParagraphIndexesForSlideNodes = v17;
 
@@ -61,16 +61,16 @@
   return v16;
 }
 
-- (id)contiguousIndexesForSelectedParagraphIndexesForSlideNodes:(id)a3
+- (id)contiguousIndexesForSelectedParagraphIndexesForSlideNodes:(id)nodes
 {
   v35 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  nodesCopy = nodes;
   v3 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = v29;
+  v4 = nodesCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v30, v34, 16);
   if (v7)
   {
@@ -118,10 +118,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v21 = 1;
   }
@@ -131,7 +131,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_slideNodes(self, v6, v7);
       v36 = v8;
       v11 = objc_msgSend_slideNodes(v5, v9, v10);
@@ -206,11 +206,11 @@
   return v19 ^ location;
 }
 
-- (_NSRange)absoluteRangeInStorage:(id)a3
+- (_NSRange)absoluteRangeInStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v7 = objc_msgSend_slideNodes(self, v5, v6);
-  v9 = objc_msgSend_parentSlideNodeForInfo_(KNSlideNode, v8, v4);
+  v9 = objc_msgSend_parentSlideNodeForInfo_(KNSlideNode, v8, storageCopy);
   v11 = objc_msgSend_containsObject_(v7, v10, v9);
 
   if ((v11 & 1) == 0)
@@ -245,7 +245,7 @@
 
   if (Index)
   {
-    v34 += objc_msgSend_textRangeForParagraphAtIndex_(v4, v47, Index - 1);
+    v34 += objc_msgSend_textRangeForParagraphAtIndex_(storageCopy, v47, Index - 1);
   }
 
   v48 = v34;
@@ -291,9 +291,9 @@
   return v26;
 }
 
-- (id)updatedOutlineSelectionWithTextSelection:(id)a3
+- (id)updatedOutlineSelectionWithTextSelection:(id)selection
 {
-  v74 = a3;
+  selectionCopy = selection;
   v6 = objc_msgSend_selectedParagraphIndexesForSlideNodes(self, v4, v5);
   if (objc_msgSend_count(v6, v7, v8) != 1)
   {
@@ -305,18 +305,18 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  v17 = self;
+  selfCopy = self;
   if (objc_msgSend_count(v6, v18, v19) == 1)
   {
     v22 = objc_msgSend_allValues(v6, v20, v21);
     v25 = objc_msgSend_firstObject(v22, v23, v24);
     Index = objc_msgSend_firstIndex(v25, v26, v27);
 
-    v33 = objc_msgSend_DEPRECATED_range(v74, v29, v30);
+    v33 = objc_msgSend_DEPRECATED_range(selectionCopy, v29, v30);
     v34 = v31;
     if (Index)
     {
-      v35 = objc_msgSend_slideNodeToEdit(v17, v31, v32);
+      v35 = objc_msgSend_slideNodeToEdit(selfCopy, v31, v32);
       v38 = objc_msgSend_slide(v35, v36, v37);
       v41 = objc_msgSend_bodyPlaceholder(v38, v39, v40);
       v44 = objc_msgSend_textStorage(v41, v42, v43);
@@ -331,7 +331,7 @@
         v76.location = v47;
         v76.length = v48;
         v53 = NSStringFromRange(v76);
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v49, v54, v50, v52, 181, 0, "The computed text selection for outline selection %@ starts before the previous paragraph range %@", v17, v53);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v49, v54, v50, v52, 181, 0, "The computed text selection for outline selection %@ starts before the previous paragraph range %@", selfCopy, v53);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v55, v56);
       }
@@ -350,26 +350,26 @@
     }
 
     v64 = objc_alloc(objc_opt_class());
-    v67 = objc_msgSend_slideNodes(v17, v65, v66);
-    v70 = objc_msgSend_slideNodeToEdit(v17, v68, v69);
+    v67 = objc_msgSend_slideNodes(selfCopy, v65, v66);
+    v70 = objc_msgSend_slideNodeToEdit(selfCopy, v68, v69);
     v72 = objc_msgSend_initWithSlideNodes_slideNodeToEdit_selectedParagraphIndexesForSlideNodes_rangeInSelectedParagraph_(v64, v71, v67, v70, v6, v33, v34);
 
-    v17 = v72;
+    selfCopy = v72;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (KNOutlineSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (KNOutlineSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v31.receiver = self;
   v31.super_class = KNOutlineSelection;
-  v22 = a4;
-  v5 = [(KNSlideCollectionSelection *)&v31 initWithArchive:a3 unarchiver:?];
+  unarchiverCopy = unarchiver;
+  v5 = [(KNSlideCollectionSelection *)&v31 initWithArchive:archive unarchiver:?];
   v6 = v5;
   if (v5)
   {
-    if ((*(a3 + 16) & 2) != 0)
+    if ((*(archive + 16) & 2) != 0)
     {
       v5->_rangeInSelectedParagraph.location = TSPNSRangeFromMessage();
       v6->_rangeInSelectedParagraph.length = v7;
@@ -380,7 +380,7 @@
       v5->_rangeInSelectedParagraph = *MEMORY[0x277D81490];
     }
 
-    v8 = *(a3 + 14);
+    v8 = *(archive + 14);
     if (v8 >= 1)
     {
       v21 = v6;
@@ -389,7 +389,7 @@
       v12 = 8;
       do
       {
-        sub_275E13BCC(v29, *(*(a3 + 8) + v12));
+        sub_275E13BCC(v29, *(*(archive + 8) + v12));
         if (v30)
         {
           v13 = v30;
@@ -407,7 +407,7 @@
         sub_275E13BCC(v28, v29);
         v14 = v11;
         v27 = v14;
-        v15 = v22;
+        v15 = unarchiverCopy;
         v16 = objc_opt_class();
         objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v15, v17, v13, v16, 0, v26);
 
@@ -433,26 +433,26 @@
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v36.receiver = self;
   v36.super_class = KNOutlineSelection;
-  [(KNSlideCollectionSelection *)&v36 saveToArchive:a3 archiver:v6];
+  [(KNSlideCollectionSelection *)&v36 saveToArchive:archive archiver:archiverCopy];
   if (self->_rangeInSelectedParagraph.location != *MEMORY[0x277D81490] || self->_rangeInSelectedParagraph.length != *(MEMORY[0x277D81490] + 8))
   {
     objc_msgSend_rangeInSelectedParagraph(self, v7, v8);
-    *(a3 + 4) |= 2u;
-    if (!*(a3 + 10))
+    *(archive + 4) |= 2u;
+    if (!*(archive + 10))
     {
-      v10 = *(a3 + 1);
+      v10 = *(archive + 1);
       if (v10)
       {
         v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      *(a3 + 10) = MEMORY[0x277C8F030](v10);
+      *(archive + 10) = MEMORY[0x277C8F030](v10);
     }
 
     TSPNSRangeCopyToMessage();
@@ -479,34 +479,34 @@
 
         v17 = *(*(&v32 + 1) + 8 * i);
         v19 = objc_msgSend_objectForKeyedSubscript_(self->_selectedParagraphIndexesForSlideNodes, v13, v17);
-        v20 = *(a3 + 8);
+        v20 = *(archive + 8);
         if (!v20)
         {
           goto LABEL_20;
         }
 
-        v21 = *(a3 + 14);
+        v21 = *(archive + 14);
         v22 = *v20;
         if (v21 < *v20)
         {
-          *(a3 + 14) = v21 + 1;
+          *(archive + 14) = v21 + 1;
           v23 = *&v20[2 * v21 + 2];
           goto LABEL_22;
         }
 
-        if (v22 == *(a3 + 15))
+        if (v22 == *(archive + 15))
         {
 LABEL_20:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 48));
-          v20 = *(a3 + 8);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 48));
+          v20 = *(archive + 8);
           v22 = *v20;
         }
 
         *v20 = v22 + 1;
-        v23 = sub_275E2136C(*(a3 + 6));
-        v24 = *(a3 + 14);
-        v25 = *(a3 + 8) + 8 * v24;
-        *(a3 + 14) = v24 + 1;
+        v23 = sub_275E2136C(*(archive + 6));
+        v24 = *(archive + 14);
+        v25 = *(archive + 8) + 8 * v24;
+        *(archive + 14) = v24 + 1;
         *(v25 + 8) = v23;
 LABEL_22:
         *(v23 + 16) |= 1u;
@@ -523,7 +523,7 @@ LABEL_22:
           *(v23 + 24) = v26;
         }
 
-        objc_msgSend_setWeakReference_message_(v6, v18, v17, v26);
+        objc_msgSend_setWeakReference_message_(archiverCopy, v18, v17, v26);
         *(v23 + 16) |= 2u;
         v29 = *(v23 + 32);
         if (!v29)

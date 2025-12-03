@@ -27,11 +27,11 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(SHAudioEnvironment *)self audioSession];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  audioSession = [(SHAudioEnvironment *)self audioSession];
+  currentRoute = [audioSession currentRoute];
+  outputs = [currentRoute outputs];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,11 +42,11 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) portType];
-        v10 = [v9 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
+        portType = [*(*(&v13 + 1) + 8 * i) portType];
+        v10 = [portType isEqualToString:AVAudioSessionPortBuiltInSpeaker];
 
         if (!v10)
         {
@@ -55,7 +55,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -74,9 +74,9 @@ LABEL_11:
 - (BOOL)isOtherAudioPlaying
 {
   v2 = +[AVAudioSession sharedInstance];
-  v3 = [v2 isOtherAudioPlaying];
+  isOtherAudioPlaying = [v2 isOtherAudioPlaying];
 
-  return v3;
+  return isOtherAudioPlaying;
 }
 
 @end

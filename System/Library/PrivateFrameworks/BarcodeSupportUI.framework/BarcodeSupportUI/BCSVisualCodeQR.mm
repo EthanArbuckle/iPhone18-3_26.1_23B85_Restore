@@ -1,6 +1,6 @@
 @interface BCSVisualCodeQR
-- (BCSVisualCodeQR)initWithBarcodeObservation:(id)a3;
-- (BCSVisualCodeQR)initWithCoder:(id)a3;
+- (BCSVisualCodeQR)initWithBarcodeObservation:(id)observation;
+- (BCSVisualCodeQR)initWithCoder:(id)coder;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
@@ -10,16 +10,16 @@
 
 @implementation BCSVisualCodeQR
 
-- (BCSVisualCodeQR)initWithBarcodeObservation:(id)a3
+- (BCSVisualCodeQR)initWithBarcodeObservation:(id)observation
 {
-  v5 = a3;
+  observationCopy = observation;
   v10.receiver = self;
   v10.super_class = BCSVisualCodeQR;
   v6 = [(BCSVisualCodeQR *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_barcodeObservation, a3);
+    objc_storeStrong(&v6->_barcodeObservation, observation);
     v8 = v7;
   }
 
@@ -68,11 +68,11 @@
   return result;
 }
 
-- (BCSVisualCodeQR)initWithCoder:(id)a3
+- (BCSVisualCodeQR)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CE2BF8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [[v4 alloc] initWithCoder:coderCopy];
 
   v7 = [(BCSVisualCodeQR *)self initWithBarcodeObservation:v6];
   return v7;

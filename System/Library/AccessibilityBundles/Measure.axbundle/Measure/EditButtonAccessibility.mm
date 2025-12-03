@@ -1,16 +1,16 @@
 @interface EditButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation EditButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.EditButton" hasInstanceMethod:@"editEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Measure.EditButton" hasInstanceMethod:@"isInputEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.EditButton" hasInstanceMethod:@"editEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Measure.EditButton" hasInstanceMethod:@"isInputEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue

@@ -1,5 +1,5 @@
 @interface MultiShowEpisodeCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
 @end
@@ -12,23 +12,23 @@
   v8.super_class = type metadata accessor for MultiShowEpisodeCell();
   v2 = v8.receiver;
   [(MultiShowEpisodeCell *)&v8 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [v3 screen];
-    [v5 scale];
+    v4 = window;
+    screen = [window screen];
+    [screen scale];
     v7 = v6;
 
     *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews20MultiShowEpisodeCell_displayScale] = v7;
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_FCB74(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_FCB74(attributesCopy);
   v7 = v6;
 
   return v7;

@@ -1,12 +1,12 @@
 @interface TSCH3DSharegroupPool
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedInstance;
 - (BOOL)canCreateOpenGLObjects;
 - (BOOL)canFlushObjects;
 - (BOOL)canRenderForAnimations;
 - (BOOL)canRenderUsingOpenGL;
-- (BOOL)p_canUseOpenGLWithCheck:(id)a3;
+- (BOOL)p_canUseOpenGLWithCheck:(id)check;
 - (TSCH3DSharegroupPool)init;
 - (id)obtainSharegroup;
 - (id)p_obtainSharegroupFromSharegroups;
@@ -16,12 +16,12 @@
 - (void)disable;
 - (void)enable;
 - (void)flush;
-- (void)p_conditionLockedWaitForBackgroundThreadsWithTimeout:(double)a3;
+- (void)p_conditionLockedWaitForBackgroundThreadsWithTimeout:(double)timeout;
 - (void)p_flushSharegroupsIfPossible;
-- (void)p_lockAndPerformBlock:(id)a3;
+- (void)p_lockAndPerformBlock:(id)block;
 - (void)p_removeSharegroupsFromFlushingManager;
-- (void)releaseSharegroup:(id)a3;
-- (void)waitForBackgroundThreadsWithTimeout:(double)a3;
+- (void)releaseSharegroup:(id)sharegroup;
+- (void)waitForBackgroundThreadsWithTimeout:(double)timeout;
 - (void)willCheckCondition;
 @end
 
@@ -29,7 +29,7 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DSharegroupPool;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_2762FF304;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47A60 != -1)
   {
     dispatch_once(&qword_280A47A60, block);
@@ -51,7 +51,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DSharegroupPool allocWithZone:]");
@@ -92,11 +92,11 @@
   return v3;
 }
 
-- (void)p_lockAndPerformBlock:(id)a3
+- (void)p_lockAndPerformBlock:(id)block
 {
-  v12 = a3;
+  blockCopy = block;
   objc_msgSend_lock(self->_condition, v4, v5, v6, v7);
-  v12[2]();
+  blockCopy[2]();
   objc_msgSend_unlock(self->_condition, v8, v9, v10, v11);
 }
 
@@ -260,18 +260,18 @@ LABEL_8:
   return v35;
 }
 
-- (void)releaseSharegroup:(id)a3
+- (void)releaseSharegroup:(id)sharegroup
 {
-  v4 = a3;
-  objc_msgSend_setPerformance_(v4, v5, v6, v7, v8, 1);
-  objc_msgSend_flushIfNecessary(v4, v9, v10, v11, v12);
-  objc_msgSend_setPerformance_(v4, v13, v14, v15, v16, 0);
+  sharegroupCopy = sharegroup;
+  objc_msgSend_setPerformance_(sharegroupCopy, v5, v6, v7, v8, 1);
+  objc_msgSend_flushIfNecessary(sharegroupCopy, v9, v10, v11, v12);
+  objc_msgSend_setPerformance_(sharegroupCopy, v13, v14, v15, v16, 0);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_276300324;
   v22[3] = &unk_27A6B6338;
   v22[4] = self;
-  v17 = v4;
+  v17 = sharegroupCopy;
   v23 = v17;
   objc_msgSend_p_lockAndPerformBlock_(self, v18, v19, v20, v21, v22);
 }
@@ -310,9 +310,9 @@ LABEL_8:
   objc_msgSend_p_lockAndPerformBlock_(self, a2, COERCE_DOUBLE(3221225472), v2, v3, v8);
 }
 
-- (BOOL)p_canUseOpenGLWithCheck:(id)a3
+- (BOOL)p_canUseOpenGLWithCheck:(id)check
 {
-  v3 = a3;
+  checkCopy = check;
   if (objc_msgSend_isMainThread(MEMORY[0x277CCACC8], v4, v5, v6, v7))
   {
     v12 = objc_msgSend_sharedDelegate(MEMORY[0x277D80610], v8, v9, v10, v11);
@@ -323,7 +323,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!checkCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCH3DSharegroupPool p_canUseOpenGLWithCheck:]");
@@ -336,7 +336,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v18 = v3[2](v3);
+  v18 = checkCopy[2](checkCopy);
 LABEL_7:
 
   return v18;
@@ -414,21 +414,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)p_conditionLockedWaitForBackgroundThreadsWithTimeout:(double)a3
+- (void)p_conditionLockedWaitForBackgroundThreadsWithTimeout:(double)timeout
 {
-  if (objc_msgSend_count(self->_sharegroups, a2, a3, v3, v4) < self->_numAlive)
+  if (objc_msgSend_count(self->_sharegroups, a2, timeout, v3, v4) < self->_numAlive)
   {
     do
     {
       condition = self->_condition;
-      if (a3 <= 0.0)
+      if (timeout <= 0.0)
       {
         objc_msgSend_wait(self->_condition, v7, v8, v9, v10);
       }
 
       else
       {
-        v12 = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x277CBEAA8], v7, a3, v9, v10);
+        v12 = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x277CBEAA8], v7, timeout, v9, v10);
         v17 = objc_msgSend_waitUntilDate_(condition, v13, v14, v15, v16, v12);
 
         if ((v17 & 1) == 0)
@@ -442,15 +442,15 @@ LABEL_7:
   }
 }
 
-- (void)waitForBackgroundThreadsWithTimeout:(double)a3
+- (void)waitForBackgroundThreadsWithTimeout:(double)timeout
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_276300ECC;
   v4[3] = &unk_27A6B7688;
   v4[4] = self;
-  *&v4[5] = a3;
-  objc_msgSend_p_lockAndPerformBlock_(self, a2, a3, COERCE_DOUBLE(3221225472), v3, v4);
+  *&v4[5] = timeout;
+  objc_msgSend_p_lockAndPerformBlock_(self, a2, timeout, COERCE_DOUBLE(3221225472), v3, v4);
 }
 
 - (void)willCheckCondition

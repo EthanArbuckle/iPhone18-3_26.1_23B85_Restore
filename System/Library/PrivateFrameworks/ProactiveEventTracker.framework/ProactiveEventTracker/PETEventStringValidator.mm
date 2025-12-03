@@ -1,24 +1,24 @@
 @interface PETEventStringValidator
-+ (BOOL)dictionaryContainsValidStrings:(id)a3;
-+ (BOOL)setContainsValidStrings:(id)a3;
-+ (BOOL)stringIsValid:(id)a3;
-+ (id)sanitizedDictionary:(id)a3;
-+ (id)sanitizedSet:(id)a3;
-+ (id)sanitizedString:(id)a3;
++ (BOOL)dictionaryContainsValidStrings:(id)strings;
++ (BOOL)setContainsValidStrings:(id)strings;
++ (BOOL)stringIsValid:(id)valid;
++ (id)sanitizedDictionary:(id)dictionary;
++ (id)sanitizedSet:(id)set;
++ (id)sanitizedString:(id)string;
 @end
 
 @implementation PETEventStringValidator
 
-+ (id)sanitizedSet:(id)a3
++ (id)sanitizedSet:(id)set
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  setCopy = set;
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(setCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = setCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -33,7 +33,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 sanitizedString:{*(*(&v15 + 1) + 8 * i), v15}];
+        v11 = [self sanitizedString:{*(*(&v15 + 1) + 8 * i), v15}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -52,16 +52,16 @@
   return v12;
 }
 
-+ (id)sanitizedDictionary:(id)a3
++ (id)sanitizedDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  dictionaryCopy = dictionary;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -81,7 +81,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [a1 sanitizedString:v11];
+          v13 = [self sanitizedString:v11];
 
           v11 = v13;
         }
@@ -89,7 +89,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [a1 sanitizedString:v12];
+          v14 = [self sanitizedString:v12];
 
           v12 = v14;
         }
@@ -122,13 +122,13 @@
   return v16;
 }
 
-+ (id)sanitizedString:(id)a3
++ (id)sanitizedString:(id)string
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 length];
+  stringCopy = string;
+  v4 = [(__CFString *)stringCopy length];
   if (!v4)
   {
-    v24 = v3;
+    v24 = stringCopy;
     goto LABEL_38;
   }
 
@@ -149,15 +149,15 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  theString = v3;
+  theString = stringCopy;
   v37 = 0;
   v38 = v5;
-  CharactersPtr = CFStringGetCharactersPtr(v3);
+  CharactersPtr = CFStringGetCharactersPtr(stringCopy);
   CStringPtr = 0;
   v35 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(stringCopy, 0x600u);
   }
 
   v10 = 0;
@@ -252,15 +252,15 @@ LABEL_38:
   return v24;
 }
 
-+ (BOOL)setContainsValidStrings:(id)a3
++ (BOOL)setContainsValidStrings:(id)strings
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  stringsCopy = strings;
+  v5 = [stringsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,17 +271,17 @@ LABEL_38:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsCopy);
         }
 
-        if (![a1 stringIsValid:{*(*(&v12 + 1) + 8 * i), v12}])
+        if (![self stringIsValid:{*(*(&v12 + 1) + 8 * i), v12}])
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [stringsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -298,15 +298,15 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)dictionaryContainsValidStrings:(id)a3
++ (BOOL)dictionaryContainsValidStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  stringsCopy = strings;
+  v5 = [stringsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -317,19 +317,19 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ![a1 stringIsValid:{v9, v14}])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ![self stringIsValid:{v9, v14}])
         {
           goto LABEL_14;
         }
 
-        v10 = [v4 objectForKeyedSubscript:{v9, v14}];
+        v10 = [stringsCopy objectForKeyedSubscript:{v9, v14}];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ![a1 stringIsValid:v10])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ![self stringIsValid:v10])
         {
 
 LABEL_14:
@@ -338,7 +338,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [stringsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -355,23 +355,23 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)stringIsValid:(id)a3
++ (BOOL)stringIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 length];
+  validCopy = valid;
+  v4 = [(__CFString *)validCopy length];
   if (v4)
   {
     v5 = v4;
     memset(v27, 0, sizeof(v27));
-    theString = v3;
+    theString = validCopy;
     v31 = 0;
     v32 = v4;
-    CharactersPtr = CFStringGetCharactersPtr(v3);
+    CharactersPtr = CFStringGetCharactersPtr(validCopy);
     CStringPtr = 0;
     v29 = CharactersPtr;
     if (!CharactersPtr)
     {
-      CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(validCopy, 0x600u);
     }
 
     v8 = 0;

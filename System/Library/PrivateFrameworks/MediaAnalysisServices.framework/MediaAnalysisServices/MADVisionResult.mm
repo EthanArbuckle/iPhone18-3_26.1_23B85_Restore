@@ -1,20 +1,20 @@
 @interface MADVisionResult
-+ (id)resultWithVisionResults:(id)a3;
-- (MADVisionResult)initWithCoder:(id)a3;
-- (MADVisionResult)initWithVisionResults:(id)a3;
++ (id)resultWithVisionResults:(id)results;
+- (MADVisionResult)initWithCoder:(id)coder;
+- (MADVisionResult)initWithVisionResults:(id)results;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVisionResult
 
-- (MADVisionResult)initWithCoder:(id)a3
+- (MADVisionResult)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MADVisionResult;
-  v5 = [(MADResult *)&v12 initWithCoder:v4];
+  v5 = [(MADResult *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -23,7 +23,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"VisionResults"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"VisionResults"];
     visionResults = v5->_visionResults;
     v5->_visionResults = v9;
   }
@@ -31,48 +31,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADVisionResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_visionResults forKey:@"VisionResults"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_visionResults forKey:@"VisionResults"];
 }
 
-- (MADVisionResult)initWithVisionResults:(id)a3
+- (MADVisionResult)initWithVisionResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = MADVisionResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visionResults, a3);
+    objc_storeStrong(&v6->_visionResults, results);
   }
 
   return v7;
 }
 
-+ (id)resultWithVisionResults:(id)a3
++ (id)resultWithVisionResults:(id)results
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithVisionResults:v4];
+  resultsCopy = results;
+  v5 = [[self alloc] initWithVisionResults:resultsCopy];
 
   return v5;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"%@: %lu count>", @"VisionResults", -[NSArray count](self->_visionResults, "count")];
+  [string appendFormat:@"%@: %lu count>", @"VisionResults", -[NSArray count](self->_visionResults, "count")];
 
-  return v3;
+  return string;
 }
 
 @end

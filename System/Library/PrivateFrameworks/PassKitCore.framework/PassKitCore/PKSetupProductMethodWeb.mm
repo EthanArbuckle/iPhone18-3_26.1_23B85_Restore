@@ -1,22 +1,22 @@
 @interface PKSetupProductMethodWeb
-- (PKSetupProductMethodWeb)initWithCoder:(id)a3;
-- (PKSetupProductMethodWeb)initWithDictionary:(id)a3 partnerIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_decorateDescription:(id)a3;
-- (void)encodeWithCode:(id)a3;
+- (PKSetupProductMethodWeb)initWithCoder:(id)coder;
+- (PKSetupProductMethodWeb)initWithDictionary:(id)dictionary partnerIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_decorateDescription:(id)description;
+- (void)encodeWithCode:(id)code;
 @end
 
 @implementation PKSetupProductMethodWeb
 
-- (PKSetupProductMethodWeb)initWithDictionary:(id)a3 partnerIdentifier:(id)a4
+- (PKSetupProductMethodWeb)initWithDictionary:(id)dictionary partnerIdentifier:(id)identifier
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKSetupProductMethodWeb;
-  v7 = [(PKSetupProductMethod *)&v13 initWithDictionary:v6 partnerIdentifier:a4];
+  v7 = [(PKSetupProductMethod *)&v13 initWithDictionary:dictionaryCopy partnerIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 PKStringForKey:@"webType"];
+    v8 = [dictionaryCopy PKStringForKey:@"webType"];
     v9 = v8;
     v11 = 1;
     if (v8 != @"issuerInstallments")
@@ -33,12 +33,12 @@
   return v7;
 }
 
-- (void)_decorateDescription:(id)a3
+- (void)_decorateDescription:(id)description
 {
   v6.receiver = self;
   v6.super_class = PKSetupProductMethodWeb;
-  v4 = a3;
-  [(PKSetupProductMethod *)&v6 _decorateDescription:v4];
+  descriptionCopy = description;
+  [(PKSetupProductMethod *)&v6 _decorateDescription:descriptionCopy];
   if (self->_webType == 1)
   {
     v5 = @"issuerInstallments";
@@ -49,33 +49,33 @@
     v5 = @"unknown";
   }
 
-  [v4 appendFormat:@"webType: '%@'; ", v5];
+  [descriptionCopy appendFormat:@"webType: '%@'; ", v5];
 }
 
-- (PKSetupProductMethodWeb)initWithCoder:(id)a3
+- (PKSetupProductMethodWeb)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKSetupProductMethodWeb;
-  v5 = [(PKSetupProductMethod *)&v7 initWithCoder:v4];
+  v5 = [(PKSetupProductMethod *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_webType = [v4 decodeIntegerForKey:@"webType"];
+    v5->_webType = [coderCopy decodeIntegerForKey:@"webType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCode:(id)a3
+- (void)encodeWithCode:(id)code
 {
   v5.receiver = self;
   v5.super_class = PKSetupProductMethodWeb;
-  v4 = a3;
-  [(PKSetupProductMethod *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_webType forKey:{@"webType", v5.receiver, v5.super_class}];
+  codeCopy = code;
+  [(PKSetupProductMethod *)&v5 encodeWithCoder:codeCopy];
+  [codeCopy encodeInteger:self->_webType forKey:{@"webType", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKSetupProductMethodWeb);
   [(PKSetupProductMethod *)self _copyInto:v4];

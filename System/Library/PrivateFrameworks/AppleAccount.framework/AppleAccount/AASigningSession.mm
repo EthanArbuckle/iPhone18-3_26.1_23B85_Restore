@@ -1,28 +1,28 @@
 @interface AASigningSession
-+ (id)establishedSessionWithCertURL:(id)a3 sessionURL:(id)a4 error:(id *)a5;
-- (AASigningSession)initWithCertURL:(id)a3 sessionURL:(id)a4;
-- (id)signatureForData:(id)a3;
++ (id)establishedSessionWithCertURL:(id)l sessionURL:(id)rL error:(id *)error;
+- (AASigningSession)initWithCertURL:(id)l sessionURL:(id)rL;
+- (id)signatureForData:(id)data;
 - (void)dealloc;
 - (void)establishSession;
 @end
 
 @implementation AASigningSession
 
-+ (id)establishedSessionWithCertURL:(id)a3 sessionURL:(id)a4 error:(id *)a5
++ (id)establishedSessionWithCertURL:(id)l sessionURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  lCopy = l;
+  rLCopy = rL;
+  v9 = rLCopy;
+  if (lCopy && rLCopy)
   {
-    v10 = [[AASigningSession alloc] initWithCertURL:v7 sessionURL:v8];
+    v10 = [[AASigningSession alloc] initWithCertURL:lCopy sessionURL:rLCopy];
     [(AASigningSession *)v10 establishSession];
   }
 
-  else if (a5)
+  else if (error)
   {
     [objc_opt_class() _badURLError];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -33,20 +33,20 @@
   return v10;
 }
 
-- (AASigningSession)initWithCertURL:(id)a3 sessionURL:(id)a4
+- (AASigningSession)initWithCertURL:(id)l sessionURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = AASigningSession;
   v8 = [(AASigningSession *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     certURL = v8->_certURL;
     v8->_certURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     sessionURL = v8->_sessionURL;
     v8->_sessionURL = v11;
   }
@@ -70,7 +70,7 @@
   v10 = 3221225472;
   v11 = __36__AASigningSession_establishSession__block_invoke;
   v12 = &unk_1E7C9BD90;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v7 = v5;
   v8 = [v6 dataTaskWithURL:v4 completion:&v9];
@@ -211,13 +211,13 @@ void __36__AASigningSession_establishSession__block_invoke_66(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)signatureForData:(id)a3
+- (id)signatureForData:(id)data
 {
   if (self->_context)
   {
     v16 = 0;
     v15 = 0;
-    v4 = a3;
+    dataCopy = data;
     v5 = _AALogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -226,10 +226,10 @@ void __36__AASigningSession_establishSession__block_invoke_66(uint64_t a1, void 
     }
 
     context = self->_context;
-    v7 = [v4 bytes];
-    v8 = [v4 length];
+    bytes = [dataCopy bytes];
+    v8 = [dataCopy length];
 
-    t1BoNctgaUu66(context, v7, v8, &v16);
+    t1BoNctgaUu66(context, bytes, v8, &v16);
     if (v9)
     {
       v10 = v9;

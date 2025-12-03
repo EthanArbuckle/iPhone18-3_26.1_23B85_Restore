@@ -1,50 +1,50 @@
 @interface PKListTextFieldContentView
 - (BOOL)_keepTextFieldVisible;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKListTextFieldContentView)initWithConfiguration:(id)a3;
-- (PKListTextFieldContentView)initWithFrame:(CGRect)a3;
-- (id)_transformedText:(id)a3 forTransform:(int64_t)a4;
-- (int64_t)_textAlignmentForListAlignment:(int64_t)a3;
-- (int64_t)_textAutocapTypeForTextTransform:(int64_t)a3;
-- (void)_applyConfiguration:(id)a3;
-- (void)_applyTextProperties:(id)a3 toLabel:(id)a4;
-- (void)_applyTextProperties:(id)a3 toTextField:(id)a4;
-- (void)_textFieldTextDidChange:(id)a3;
-- (void)_updateErrorState:(BOOL)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKListTextFieldContentView)initWithConfiguration:(id)configuration;
+- (PKListTextFieldContentView)initWithFrame:(CGRect)frame;
+- (id)_transformedText:(id)text forTransform:(int64_t)transform;
+- (int64_t)_textAlignmentForListAlignment:(int64_t)alignment;
+- (int64_t)_textAutocapTypeForTextTransform:(int64_t)transform;
+- (void)_applyConfiguration:(id)configuration;
+- (void)_applyTextProperties:(id)properties toLabel:(id)label;
+- (void)_applyTextProperties:(id)properties toTextField:(id)field;
+- (void)_textFieldTextDidChange:(id)change;
+- (void)_updateErrorState:(BOOL)state;
 - (void)beginEditing;
 - (void)endEditing;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetTextFieldTextFromLabel;
-- (void)setConfiguration:(id)a3;
-- (void)setToolbarItems:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setToolbarItems:(id)items;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation PKListTextFieldContentView
 
-- (PKListTextFieldContentView)initWithConfiguration:(id)a3
+- (PKListTextFieldContentView)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(PKListTextFieldContentView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(PKListTextFieldContentView *)v5 setConfiguration:v4];
+    [(PKListTextFieldContentView *)v5 setConfiguration:configurationCopy];
   }
 
   return v6;
 }
 
-- (PKListTextFieldContentView)initWithFrame:(CGRect)a3
+- (PKListTextFieldContentView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PKListTextFieldContentView;
-  v3 = [(PKListTextFieldContentView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKListTextFieldContentView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -69,56 +69,56 @@
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_configuration, a3);
-    [(PKListTextFieldContentView *)self _applyConfiguration:v5];
+    objc_storeStrong(&self->_configuration, configuration);
+    [(PKListTextFieldContentView *)self _applyConfiguration:configurationCopy];
   }
 }
 
-- (void)_applyConfiguration:(id)a3
+- (void)_applyConfiguration:(id)configuration
 {
   textLabel = self->_textLabel;
-  v5 = a3;
-  v6 = [v5 text];
-  [(UILabel *)textLabel setText:v6];
+  configurationCopy = configuration;
+  text = [configurationCopy text];
+  [(UILabel *)textLabel setText:text];
 
   textField = self->_textField;
-  v8 = [v5 text];
-  [(UITextField *)textField setText:v8];
+  text2 = [configurationCopy text];
+  [(UITextField *)textField setText:text2];
 
   v9 = self->_textField;
-  v10 = [v5 placeholderText];
-  [(UITextField *)v9 setPlaceholder:v10];
+  placeholderText = [configurationCopy placeholderText];
+  [(UITextField *)v9 setPlaceholder:placeholderText];
 
   secondaryTextLabel = self->_secondaryTextLabel;
-  v12 = [v5 secondaryText];
-  [(UILabel *)secondaryTextLabel setText:v12];
+  secondaryText = [configurationCopy secondaryText];
+  [(UILabel *)secondaryTextLabel setText:secondaryText];
 
-  v13 = [v5 textProperties];
-  [(PKListTextFieldContentView *)self _applyTextProperties:v13 toLabel:self->_textLabel];
+  textProperties = [configurationCopy textProperties];
+  [(PKListTextFieldContentView *)self _applyTextProperties:textProperties toLabel:self->_textLabel];
 
-  v14 = [v5 textProperties];
-  [(PKListTextFieldContentView *)self _applyTextProperties:v14 toTextField:self->_textField];
+  textProperties2 = [configurationCopy textProperties];
+  [(PKListTextFieldContentView *)self _applyTextProperties:textProperties2 toTextField:self->_textField];
 
-  v15 = [v5 secondaryTextProperties];
-  [(PKListTextFieldContentView *)self _applyTextProperties:v15 toLabel:self->_secondaryTextLabel];
+  secondaryTextProperties = [configurationCopy secondaryTextProperties];
+  [(PKListTextFieldContentView *)self _applyTextProperties:secondaryTextProperties toLabel:self->_secondaryTextLabel];
 
-  -[UITextField setClearsOnBeginEditing:](self->_textField, "setClearsOnBeginEditing:", [v5 clearsOnBeginEditing]);
-  -[UITextField setClearsOnInsertion:](self->_textField, "setClearsOnInsertion:", [v5 clearsOnInsertion]);
-  -[UITextField setReturnKeyType:](self->_textField, "setReturnKeyType:", [v5 returnKeyType]);
-  -[UITextField setKeyboardType:](self->_textField, "setKeyboardType:", [v5 keyboardType]);
-  -[UITextField setAutocorrectionType:](self->_textField, "setAutocorrectionType:", [v5 autocorrectionType]);
-  v18 = [v5 error];
+  -[UITextField setClearsOnBeginEditing:](self->_textField, "setClearsOnBeginEditing:", [configurationCopy clearsOnBeginEditing]);
+  -[UITextField setClearsOnInsertion:](self->_textField, "setClearsOnInsertion:", [configurationCopy clearsOnInsertion]);
+  -[UITextField setReturnKeyType:](self->_textField, "setReturnKeyType:", [configurationCopy returnKeyType]);
+  -[UITextField setKeyboardType:](self->_textField, "setKeyboardType:", [configurationCopy keyboardType]);
+  -[UITextField setAutocorrectionType:](self->_textField, "setAutocorrectionType:", [configurationCopy autocorrectionType]);
+  error = [configurationCopy error];
 
-  if (v18)
+  if (error)
   {
     v16 = self->_secondaryTextLabel;
-    v17 = [v18 localizedDescription];
-    [(UILabel *)v16 setText:v17];
+    localizedDescription = [error localizedDescription];
+    [(UILabel *)v16 setText:localizedDescription];
 
     [(PKListTextFieldContentView *)self _updateErrorState:1];
   }
@@ -136,13 +136,13 @@
   [(PKListTextFieldContentView *)self setNeedsLayout];
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v5 = a3;
-  if (v5)
+  itemsCopy = items;
+  if (itemsCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD180]);
-    [v4 setItems:v5];
+    [v4 setItems:itemsCopy];
     [v4 sizeToFit];
     [(UITextField *)self->_textField setInputAccessoryView:v4];
   }
@@ -153,62 +153,62 @@
   }
 }
 
-- (void)_applyTextProperties:(id)a3 toLabel:(id)a4
+- (void)_applyTextProperties:(id)properties toLabel:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 resolvedColor];
-  [v6 setTextColor:v8];
+  labelCopy = label;
+  propertiesCopy = properties;
+  resolvedColor = [propertiesCopy resolvedColor];
+  [labelCopy setTextColor:resolvedColor];
 
-  v9 = [v7 font];
-  [v6 setFont:v9];
+  font = [propertiesCopy font];
+  [labelCopy setFont:font];
 
-  [v6 setTextAlignment:{-[PKListTextFieldContentView _textAlignmentForListAlignment:](self, "_textAlignmentForListAlignment:", objc_msgSend(v7, "alignment"))}];
-  [v6 setLineBreakMode:{objc_msgSend(v7, "lineBreakMode")}];
-  [v6 setNumberOfLines:{objc_msgSend(v7, "numberOfLines")}];
-  [v6 setAdjustsFontSizeToFitWidth:{objc_msgSend(v7, "adjustsFontSizeToFitWidth")}];
-  [v7 minimumScaleFactor];
-  [v6 setMinimumScaleFactor:?];
-  [v6 setAllowsDefaultTighteningForTruncation:{objc_msgSend(v7, "allowsDefaultTighteningForTruncation")}];
-  [v6 setAdjustsFontForContentSizeCategory:{objc_msgSend(v7, "adjustsFontForContentSizeCategory")}];
-  v12 = [v6 text];
-  v10 = [v7 transform];
+  [labelCopy setTextAlignment:{-[PKListTextFieldContentView _textAlignmentForListAlignment:](self, "_textAlignmentForListAlignment:", objc_msgSend(propertiesCopy, "alignment"))}];
+  [labelCopy setLineBreakMode:{objc_msgSend(propertiesCopy, "lineBreakMode")}];
+  [labelCopy setNumberOfLines:{objc_msgSend(propertiesCopy, "numberOfLines")}];
+  [labelCopy setAdjustsFontSizeToFitWidth:{objc_msgSend(propertiesCopy, "adjustsFontSizeToFitWidth")}];
+  [propertiesCopy minimumScaleFactor];
+  [labelCopy setMinimumScaleFactor:?];
+  [labelCopy setAllowsDefaultTighteningForTruncation:{objc_msgSend(propertiesCopy, "allowsDefaultTighteningForTruncation")}];
+  [labelCopy setAdjustsFontForContentSizeCategory:{objc_msgSend(propertiesCopy, "adjustsFontForContentSizeCategory")}];
+  text = [labelCopy text];
+  transform = [propertiesCopy transform];
 
-  v11 = [(PKListTextFieldContentView *)self _transformedText:v12 forTransform:v10];
-  [v6 setText:v11];
+  v11 = [(PKListTextFieldContentView *)self _transformedText:text forTransform:transform];
+  [labelCopy setText:v11];
 }
 
-- (void)_applyTextProperties:(id)a3 toTextField:(id)a4
+- (void)_applyTextProperties:(id)properties toTextField:(id)field
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [v6 resolvedColor];
-  [v12 setTextColor:v7];
+  fieldCopy = field;
+  propertiesCopy = properties;
+  resolvedColor = [propertiesCopy resolvedColor];
+  [fieldCopy setTextColor:resolvedColor];
 
-  v8 = [v6 font];
-  [v12 setFont:v8];
+  font = [propertiesCopy font];
+  [fieldCopy setFont:font];
 
-  [v12 setTextAlignment:{-[PKListTextFieldContentView _textAlignmentForListAlignment:](self, "_textAlignmentForListAlignment:", objc_msgSend(v6, "alignment"))}];
-  [v12 setAdjustsFontSizeToFitWidth:{objc_msgSend(v6, "adjustsFontSizeToFitWidth")}];
-  [v6 minimumScaleFactor];
-  [v12 setMinimumFontSize:?];
-  [v12 setAdjustsFontForContentSizeCategory:{objc_msgSend(v6, "adjustsFontForContentSizeCategory")}];
-  v9 = [v12 text];
-  v10 = -[PKListTextFieldContentView _transformedText:forTransform:](self, "_transformedText:forTransform:", v9, [v6 transform]);
-  [v12 setText:v10];
+  [fieldCopy setTextAlignment:{-[PKListTextFieldContentView _textAlignmentForListAlignment:](self, "_textAlignmentForListAlignment:", objc_msgSend(propertiesCopy, "alignment"))}];
+  [fieldCopy setAdjustsFontSizeToFitWidth:{objc_msgSend(propertiesCopy, "adjustsFontSizeToFitWidth")}];
+  [propertiesCopy minimumScaleFactor];
+  [fieldCopy setMinimumFontSize:?];
+  [fieldCopy setAdjustsFontForContentSizeCategory:{objc_msgSend(propertiesCopy, "adjustsFontForContentSizeCategory")}];
+  text = [fieldCopy text];
+  v10 = -[PKListTextFieldContentView _transformedText:forTransform:](self, "_transformedText:forTransform:", text, [propertiesCopy transform]);
+  [fieldCopy setText:v10];
 
-  v11 = [v6 transform];
-  [v12 setAutocapitalizationType:{-[PKListTextFieldContentView _textAutocapTypeForTextTransform:](self, "_textAutocapTypeForTextTransform:", v11)}];
+  transform = [propertiesCopy transform];
+  [fieldCopy setAutocapitalizationType:{-[PKListTextFieldContentView _textAutocapTypeForTextTransform:](self, "_textAutocapTypeForTextTransform:", transform)}];
 }
 
-- (int64_t)_textAlignmentForListAlignment:(int64_t)a3
+- (int64_t)_textAlignmentForListAlignment:(int64_t)alignment
 {
-  if (a3 == 2)
+  if (alignment == 2)
   {
     return 3;
   }
 
-  if (a3)
+  if (alignment)
   {
     return 1;
   }
@@ -221,40 +221,40 @@
   return 0;
 }
 
-- (id)_transformedText:(id)a3 forTransform:(int64_t)a4
+- (id)_transformedText:(id)text forTransform:(int64_t)transform
 {
-  v5 = a3;
-  v6 = v5;
-  switch(a4)
+  textCopy = text;
+  v6 = textCopy;
+  switch(transform)
   {
     case 3:
-      v7 = [v5 pk_capitalizedStringForPreferredLocale];
+      pk_capitalizedStringForPreferredLocale = [textCopy pk_capitalizedStringForPreferredLocale];
       break;
     case 2:
-      v7 = [v5 pk_lowercaseStringForPreferredLocale];
+      pk_capitalizedStringForPreferredLocale = [textCopy pk_lowercaseStringForPreferredLocale];
       break;
     case 1:
-      v7 = [v5 pk_uppercaseStringForPreferredLocale];
+      pk_capitalizedStringForPreferredLocale = [textCopy pk_uppercaseStringForPreferredLocale];
       break;
     default:
-      v7 = v5;
+      pk_capitalizedStringForPreferredLocale = textCopy;
       break;
   }
 
-  v8 = v7;
+  v8 = pk_capitalizedStringForPreferredLocale;
 
   return v8;
 }
 
-- (int64_t)_textAutocapTypeForTextTransform:(int64_t)a3
+- (int64_t)_textAutocapTypeForTextTransform:(int64_t)transform
 {
   v3 = 3;
-  if (a3 != 1)
+  if (transform != 1)
   {
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (transform == 3)
   {
     return 1;
   }
@@ -274,23 +274,23 @@
   [(PKListTextFieldContentView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKListTextFieldContentView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKListTextFieldContentView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PKListTextFieldContentView *)self configuration];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  configuration = [(PKListTextFieldContentView *)self configuration];
   v9 = *(MEMORY[0x1E695F050] + 16);
   slice.origin = *MEMORY[0x1E695F050];
   slice.size = v9;
@@ -305,12 +305,12 @@
   remainder.origin.y = y + v12;
   remainder.size.width = v15;
   remainder.size.height = v17;
-  if (!self->_isTemplateLayout && [v8 focusTextField])
+  if (!self->_isTemplateLayout && [configuration focusTextField])
   {
     [(UITextField *)self->_textField setFrame:v11, v13, v15, v17];
   }
 
-  if ([v8 mode] && (-[UILabel text](self->_secondaryTextLabel, "text"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
+  if ([configuration mode] && (-[UILabel text](self->_secondaryTextLabel, "text"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
   {
     v50 = y;
     [(UILabel *)self->_secondaryTextLabel pkui_sizeThatFits:1 forceWordWrap:v15, v17];
@@ -343,7 +343,7 @@
         [(UILabel *)self->_textLabel setFrame:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
       }
 
-      if (([v8 focusTextField] & 1) == 0 && !self->_isTemplateLayout)
+      if (([configuration focusTextField] & 1) == 0 && !self->_isTemplateLayout)
       {
         [(UITextField *)self->_textField setFrame:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
       }
@@ -372,7 +372,7 @@
         [(UILabel *)self->_textLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
       }
 
-      if (([v8 focusTextField] & 1) == 0 && !self->_isTemplateLayout)
+      if (([configuration focusTextField] & 1) == 0 && !self->_isTemplateLayout)
       {
         [(UITextField *)self->_textField setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
       }
@@ -386,9 +386,9 @@
 
   else
   {
-    v27 = [(UILabel *)self->_textLabel text];
+    text = [(UILabel *)self->_textLabel text];
 
-    if (v27)
+    if (text)
     {
       [(UILabel *)self->_textLabel pkui_sizeThatFits:1 forceWordWrap:v15, v17];
       v29 = v28;
@@ -400,7 +400,7 @@
       if (!self->_isTemplateLayout)
       {
         [(UILabel *)self->_textLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
-        if (([v8 focusTextField] & 1) == 0)
+        if (([configuration focusTextField] & 1) == 0)
         {
           [(UITextField *)self->_textField setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
         }
@@ -428,9 +428,9 @@
 
     [(PKListTextFieldContentConfiguration *)self->_configuration textToSecondaryTextVerticalPadding];
     v38 = v37;
-    v39 = [(UILabel *)self->_secondaryTextLabel text];
+    text2 = [(UILabel *)self->_secondaryTextLabel text];
 
-    if (v39)
+    if (text2)
     {
       [(UILabel *)self->_secondaryTextLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
       v41 = v40;
@@ -493,9 +493,9 @@
 
 - (void)endEditing
 {
-  v3 = [(PKListTextFieldContentView *)self _keepTextFieldVisible];
-  [(UITextField *)self->_textField setHidden:v3 ^ 1];
-  [(UILabel *)self->_textLabel setHidden:v3];
+  _keepTextFieldVisible = [(PKListTextFieldContentView *)self _keepTextFieldVisible];
+  [(UITextField *)self->_textField setHidden:_keepTextFieldVisible ^ 1];
+  [(UILabel *)self->_textLabel setHidden:_keepTextFieldVisible];
   [(UILabel *)self->_textLabel setUserInteractionEnabled:0];
   if ([(PKListTextFieldContentConfiguration *)self->_configuration focusTextField])
   {
@@ -510,51 +510,51 @@
 - (void)resetTextFieldTextFromLabel
 {
   textField = self->_textField;
-  v3 = [(UILabel *)self->_textLabel text];
-  [(UITextField *)textField setText:v3];
+  text = [(UILabel *)self->_textLabel text];
+  [(UITextField *)textField setText:text];
 }
 
-- (void)_textFieldTextDidChange:(id)a3
+- (void)_textFieldTextDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(PKListTextFieldContentView *)self configuration];
-  v5 = [v4 hasErrorHandler];
+  changeCopy = change;
+  configuration = [(PKListTextFieldContentView *)self configuration];
+  hasErrorHandler = [configuration hasErrorHandler];
 
-  if (v5)
+  if (hasErrorHandler)
   {
-    [(PKListTextFieldContentView *)self _updateErrorState:(v5)[2](v5, v6)];
+    [(PKListTextFieldContentView *)self _updateErrorState:(hasErrorHandler)[2](hasErrorHandler, changeCopy)];
   }
 }
 
-- (void)_updateErrorState:(BOOL)a3
+- (void)_updateErrorState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(PKListTextFieldContentView *)self configuration];
-  v10 = v5;
-  if (v3)
+  stateCopy = state;
+  configuration = [(PKListTextFieldContentView *)self configuration];
+  v10 = configuration;
+  if (stateCopy)
   {
-    v6 = [v5 errorColor];
-    v7 = v6;
+    errorColor = [configuration errorColor];
+    color = errorColor;
   }
 
   else
   {
-    v8 = [v5 textProperties];
-    v7 = [v8 color];
+    textProperties = [configuration textProperties];
+    color = [textProperties color];
 
-    v9 = [v10 secondaryTextProperties];
-    v6 = [v9 color];
+    secondaryTextProperties = [v10 secondaryTextProperties];
+    errorColor = [secondaryTextProperties color];
   }
 
-  [(UILabel *)self->_textLabel setTextColor:v7];
-  [(UITextField *)self->_textField setTextColor:v7];
-  [(UILabel *)self->_secondaryTextLabel setTextColor:v6];
+  [(UILabel *)self->_textLabel setTextColor:color];
+  [(UITextField *)self->_textField setTextColor:color];
+  [(UILabel *)self->_secondaryTextLabel setTextColor:errorColor];
 }
 
 - (BOOL)_keepTextFieldVisible
 {
-  v2 = [(PKListTextFieldContentView *)self configuration];
-  v3 = [v2 mode] == 1;
+  configuration = [(PKListTextFieldContentView *)self configuration];
+  v3 = [configuration mode] == 1;
 
   return v3;
 }
@@ -568,12 +568,12 @@
   self->_configuration = 0;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldShouldReturn:v4 forContentView:self];
+    v5 = [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldShouldReturn:returnCopy forContentView:self];
   }
 
   else
@@ -584,30 +584,30 @@
   return v5;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (objc_opt_respondsToSelector())
   {
-    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidBeginEditing:v4 forContentView:self];
+    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidBeginEditing:editingCopy forContentView:self];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (objc_opt_respondsToSelector())
   {
-    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidEndEditing:v4 forContentView:self];
+    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidEndEditing:editingCopy forContentView:self];
   }
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   if (objc_opt_respondsToSelector())
   {
-    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidChangeSelection:v4 forContentView:self];
+    [(PKListTextFieldContentViewDelegate *)self->_delegate textFieldDidChangeSelection:selectionCopy forContentView:self];
   }
 }
 

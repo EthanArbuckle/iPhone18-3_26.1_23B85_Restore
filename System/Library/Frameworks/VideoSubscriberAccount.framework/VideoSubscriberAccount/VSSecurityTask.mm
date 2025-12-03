@@ -1,14 +1,14 @@
 @interface VSSecurityTask
 + (VSSecurityTask)securityTaskForCurrentConnection;
-+ (VSSecurityTask)securityTaskWithAuditToken:(id *)a3;
++ (VSSecurityTask)securityTaskWithAuditToken:(id *)token;
 + (id)currentSecurityTask;
-- (BOOL)getValue:(id *)a3 forEntitlement:(id)a4 error:(id *)a5;
-- (BOOL)shouldAllowAccessForBooleanEntitlement:(id)a3;
-- (BOOL)shouldAllowAccessToSubscriberIdentifierHashModifier:(id)a3;
+- (BOOL)getValue:(id *)value forEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)shouldAllowAccessForBooleanEntitlement:(id)entitlement;
+- (BOOL)shouldAllowAccessToSubscriberIdentifierHashModifier:(id)modifier;
 - (NSString)signingIdentifier;
 - (VSSecurityTask)init;
-- (VSSecurityTask)initWithAuditToken:(id *)a3 createWithAuditTokenProc:(void *)a4 copyValueForEntitlementProc:(void *)a5;
-- (VSSecurityTask)initWithCreateFromSelfProc:(void *)a3 copyValueForEntitlementProc:(void *)a4;
+- (VSSecurityTask)initWithAuditToken:(id *)token createWithAuditTokenProc:(void *)proc copyValueForEntitlementProc:(void *)entitlementProc;
+- (VSSecurityTask)initWithCreateFromSelfProc:(void *)proc copyValueForEntitlementProc:(void *)entitlementProc;
 - (__SecTask)_taskRef;
 - (void)_copySigningIdentifier;
 - (void)dealloc;
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (VSSecurityTask)securityTaskWithAuditToken:(id *)a3
++ (VSSecurityTask)securityTaskWithAuditToken:(id *)token
 {
   v4 = [VSSecurityTask alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [(VSSecurityTask *)v4 initWithAuditToken:v8 createWithAuditTokenProc:MEMORY[0x277CDBE58] copyValueForEntitlementProc:MEMORY[0x277CDBE48]];
 
@@ -41,13 +41,13 @@
   v2 = _securityTaskForCurrentConnection;
   if (!v2)
   {
-    v3 = [MEMORY[0x277CCAE80] currentConnection];
-    v4 = v3;
-    if (v3)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v4 = currentConnection;
+    if (currentConnection)
     {
       v7 = 0u;
       v8 = 0u;
-      [v3 auditToken];
+      [currentConnection auditToken];
       v6[0] = v7;
       v6[1] = v8;
       v2 = [VSSecurityTask securityTaskWithAuditToken:v6];
@@ -62,7 +62,7 @@
   return v2;
 }
 
-- (VSSecurityTask)initWithAuditToken:(id *)a3 createWithAuditTokenProc:(void *)a4 copyValueForEntitlementProc:(void *)a5
+- (VSSecurityTask)initWithAuditToken:(id *)token createWithAuditTokenProc:(void *)proc copyValueForEntitlementProc:(void *)entitlementProc
 {
   v10.receiver = self;
   v10.super_class = VSSecurityTask;
@@ -70,17 +70,17 @@
   if (result)
   {
     result->_kind = 1;
-    v9 = *&a3->var0[4];
-    *result->_auditToken.val = *a3->var0;
+    v9 = *&token->var0[4];
+    *result->_auditToken.val = *token->var0;
     *&result->_auditToken.val[4] = v9;
-    result->_createWithAuditToken = a4;
-    result->_copyValueForEntitlement = a5;
+    result->_createWithAuditToken = proc;
+    result->_copyValueForEntitlement = entitlementProc;
   }
 
   return result;
 }
 
-- (VSSecurityTask)initWithCreateFromSelfProc:(void *)a3 copyValueForEntitlementProc:(void *)a4
+- (VSSecurityTask)initWithCreateFromSelfProc:(void *)proc copyValueForEntitlementProc:(void *)entitlementProc
 {
   v7.receiver = self;
   v7.super_class = VSSecurityTask;
@@ -88,8 +88,8 @@
   if (result)
   {
     result->_kind = 0;
-    result->_createFromSelf = a3;
-    result->_copyValueForEntitlement = a4;
+    result->_createFromSelf = proc;
+    result->_copyValueForEntitlement = entitlementProc;
   }
 
   return result;
@@ -158,19 +158,19 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)getValue:(id *)a3 forEntitlement:(id)a4 error:(id *)a5
+- (BOOL)getValue:(id *)value forEntitlement:(id)entitlement error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VSSecurityTask *)self _taskRef];
-  if (v9)
+  entitlementCopy = entitlement;
+  _taskRef = [(VSSecurityTask *)self _taskRef];
+  if (_taskRef)
   {
     v14 = 0;
-    v10 = (self->_copyValueForEntitlement)(v9, v8, &v14);
+    v10 = (self->_copyValueForEntitlement)(_taskRef, entitlementCopy, &v14);
     if (v10)
     {
-      if (a3)
+      if (value)
       {
-        *a3 = v10;
+        *value = v10;
       }
 
       else
@@ -185,15 +185,15 @@ LABEL_15:
 
     if (!v14)
     {
-      if (a3)
+      if (value)
       {
-        *a3 = 0;
+        *value = 0;
       }
 
       goto LABEL_15;
     }
 
-    if (a5)
+    if (error)
     {
       v11 = v14;
       goto LABEL_10;
@@ -204,7 +204,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -212,19 +212,19 @@ LABEL_11:
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
 LABEL_10:
   v12 = 0;
-  *a5 = v11;
+  *error = v11;
 LABEL_16:
 
   return v12;
 }
 
-- (BOOL)shouldAllowAccessForBooleanEntitlement:(id)a3
+- (BOOL)shouldAllowAccessForBooleanEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v5 = objc_autoreleasePoolPush();
   v12 = 0;
   v13 = 0;
-  v6 = [(VSSecurityTask *)self getValue:&v13 forEntitlement:v4 error:&v12];
+  v6 = [(VSSecurityTask *)self getValue:&v13 forEntitlement:entitlementCopy error:&v12];
   v7 = v13;
   v8 = v12;
   if (!v6)
@@ -241,21 +241,21 @@ LABEL_16:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_7:
-    v9 = 0;
+    bOOLValue = 0;
     goto LABEL_8;
   }
 
-  v9 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_8:
 
   objc_autoreleasePoolPop(v5);
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)shouldAllowAccessToSubscriberIdentifierHashModifier:(id)a3
+- (BOOL)shouldAllowAccessToSubscriberIdentifierHashModifier:(id)modifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modifierCopy = modifier;
   v5 = objc_autoreleasePoolPush();
   v32 = 0;
   v31 = 0;
@@ -284,7 +284,7 @@ LABEL_8:
         if ([v14 count])
         {
           v25 = v5;
-          v26 = v4;
+          v26 = modifierCopy;
           v29 = 0u;
           v30 = 0u;
           v27 = 0u;
@@ -316,7 +316,7 @@ LABEL_8:
 
                   objc_autoreleasePoolPop(v20);
                   v5 = v25;
-                  v4 = v26;
+                  modifierCopy = v26;
                   goto LABEL_32;
                 }
 
@@ -333,7 +333,7 @@ LABEL_8:
             }
           }
 
-          v4 = v26;
+          modifierCopy = v26;
           if (([v15 containsObject:v26]& 1) != 0)
           {
             v21 = 1;
@@ -403,12 +403,12 @@ LABEL_35:
 
 - (NSString)signingIdentifier
 {
-  v3 = [(VSSecurityTask *)self _taskRef];
-  if (v3)
+  _taskRef = [(VSSecurityTask *)self _taskRef];
+  if (_taskRef)
   {
     v6 = 0;
-    v3 = ([(VSSecurityTask *)self _copySigningIdentifier])(v3, &v6);
-    if (!v3)
+    _taskRef = ([(VSSecurityTask *)self _copySigningIdentifier])(_taskRef, &v6);
+    if (!_taskRef)
     {
       v4 = VSErrorLogObject();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -418,7 +418,7 @@ LABEL_35:
     }
   }
 
-  return v3;
+  return _taskRef;
 }
 
 - (void)shouldAllowAccessToSubscriberIdentifierHashModifier:.cold.1()
@@ -444,7 +444,7 @@ LABEL_35:
 
 - (void)signingIdentifier
 {
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
 }

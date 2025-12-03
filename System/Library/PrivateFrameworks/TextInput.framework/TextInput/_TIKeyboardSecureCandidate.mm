@@ -1,7 +1,7 @@
 @interface _TIKeyboardSecureCandidate
-- (BOOL)isEqual:(id)a3;
-- (_TIKeyboardSecureCandidate)initWithSecureHeader:(id)a3 secureContent:(id)a4 secureFormattedContent:(id)a5 input:(id)a6 truncationSentinel:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_TIKeyboardSecureCandidate)initWithSecureHeader:(id)header secureContent:(id)content secureFormattedContent:(id)formattedContent input:(id)input truncationSentinel:(id)sentinel;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)candidateHash;
 - (unint64_t)hash;
@@ -26,42 +26,42 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_TIKeyboardSecureCandidate *)self secureHeader];
-  v5 = [v3 stringWithFormat:@"secureHeader(%@)", v4];
+  secureHeader = [(_TIKeyboardSecureCandidate *)self secureHeader];
+  v5 = [v3 stringWithFormat:@"secureHeader(%@)", secureHeader];
 
-  v6 = [(_TIKeyboardSecureCandidate *)self secureContent];
-  v7 = [v5 stringByAppendingFormat:@"secureContent(%@)", v6];;
+  secureContent = [(_TIKeyboardSecureCandidate *)self secureContent];
+  v7 = [v5 stringByAppendingFormat:@"secureContent(%@)", secureContent];;
 
-  v8 = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
-  v9 = [v7 stringByAppendingFormat:@"secureFormattedContent(%@)", v8];;
+  secureFormattedContent = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
+  v9 = [v7 stringByAppendingFormat:@"secureFormattedContent(%@)", secureFormattedContent];;
 
-  v10 = [(_TIKeyboardSecureCandidate *)self input];
-  v11 = [v9 stringByAppendingFormat:@"input(%@)", v10];;
+  input = [(_TIKeyboardSecureCandidate *)self input];
+  v11 = [v9 stringByAppendingFormat:@"input(%@)", input];;
 
-  v12 = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
-  v13 = [v11 stringByAppendingFormat:@"truncationSentinel(%@)", v12];;
+  truncationSentinel = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
+  v13 = [v11 stringByAppendingFormat:@"truncationSentinel(%@)", truncationSentinel];;
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(_TIKeyboardSecureCandidate *)self secureHeader];
-    v7 = [v5 secureHeader];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    secureHeader = [(_TIKeyboardSecureCandidate *)self secureHeader];
+    secureHeader2 = [v5 secureHeader];
+    v8 = secureHeader2;
+    if (secureHeader == secureHeader2)
     {
     }
 
     else
     {
-      v9 = [(_TIKeyboardSecureCandidate *)self secureHeader];
-      v10 = [v5 secureHeader];
-      v11 = [v9 isEqualToString:v10];
+      secureHeader3 = [(_TIKeyboardSecureCandidate *)self secureHeader];
+      secureHeader4 = [v5 secureHeader];
+      v11 = [secureHeader3 isEqualToString:secureHeader4];
 
       if (!v11)
       {
@@ -69,18 +69,18 @@
       }
     }
 
-    v13 = [(_TIKeyboardSecureCandidate *)self secureContent];
-    v14 = [v5 secureContent];
-    v15 = v14;
-    if (v13 == v14)
+    secureContent = [(_TIKeyboardSecureCandidate *)self secureContent];
+    secureContent2 = [v5 secureContent];
+    v15 = secureContent2;
+    if (secureContent == secureContent2)
     {
     }
 
     else
     {
-      v16 = [(_TIKeyboardSecureCandidate *)self secureContent];
-      v17 = [v5 secureContent];
-      v18 = [v16 isEqualToString:v17];
+      secureContent3 = [(_TIKeyboardSecureCandidate *)self secureContent];
+      secureContent4 = [v5 secureContent];
+      v18 = [secureContent3 isEqualToString:secureContent4];
 
       if (!v18)
       {
@@ -88,18 +88,18 @@
       }
     }
 
-    v19 = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
-    v20 = [v5 secureFormattedContent];
-    v21 = v20;
-    if (v19 == v20)
+    secureFormattedContent = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
+    secureFormattedContent2 = [v5 secureFormattedContent];
+    v21 = secureFormattedContent2;
+    if (secureFormattedContent == secureFormattedContent2)
     {
     }
 
     else
     {
-      v22 = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
-      v23 = [v5 secureFormattedContent];
-      v24 = [v22 isEqualToString:v23];
+      secureFormattedContent3 = [(_TIKeyboardSecureCandidate *)self secureFormattedContent];
+      secureFormattedContent4 = [v5 secureFormattedContent];
+      v24 = [secureFormattedContent3 isEqualToString:secureFormattedContent4];
 
       if (!v24)
       {
@@ -107,18 +107,18 @@
       }
     }
 
-    v25 = [(_TIKeyboardSecureCandidate *)self input];
-    v26 = [v5 input];
-    v27 = v26;
-    if (v25 == v26)
+    input = [(_TIKeyboardSecureCandidate *)self input];
+    input2 = [v5 input];
+    v27 = input2;
+    if (input == input2)
     {
     }
 
     else
     {
-      v28 = [(_TIKeyboardSecureCandidate *)self input];
-      v29 = [v5 input];
-      v30 = [v28 isEqualToString:v29];
+      input3 = [(_TIKeyboardSecureCandidate *)self input];
+      input4 = [v5 input];
+      v30 = [input3 isEqualToString:input4];
 
       if (!v30)
       {
@@ -130,18 +130,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
-    v32 = [v5 truncationSentinel];
-    if (v31 == v32)
+    truncationSentinel = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
+    truncationSentinel2 = [v5 truncationSentinel];
+    if (truncationSentinel == truncationSentinel2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
-      v34 = [v5 truncationSentinel];
-      v12 = [v33 isEqualToString:v34];
+      truncationSentinel3 = [(_TIKeyboardSecureCandidate *)self truncationSentinel];
+      truncationSentinel4 = [v5 truncationSentinel];
+      v12 = [truncationSentinel3 isEqualToString:truncationSentinel4];
     }
 
     goto LABEL_23;
@@ -153,9 +153,9 @@ LABEL_24:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -169,24 +169,24 @@ LABEL_24:
   return v5;
 }
 
-- (_TIKeyboardSecureCandidate)initWithSecureHeader:(id)a3 secureContent:(id)a4 secureFormattedContent:(id)a5 input:(id)a6 truncationSentinel:(id)a7
+- (_TIKeyboardSecureCandidate)initWithSecureHeader:(id)header secureContent:(id)content secureFormattedContent:(id)formattedContent input:(id)input truncationSentinel:(id)sentinel
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  headerCopy = header;
+  contentCopy = content;
+  formattedContentCopy = formattedContent;
+  inputCopy = input;
+  sentinelCopy = sentinel;
   v21.receiver = self;
   v21.super_class = _TIKeyboardSecureCandidate;
   v17 = [(_TIKeyboardSecureCandidate *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_secureHeader, a3);
-    objc_storeStrong(&v18->_secureContent, a4);
-    objc_storeStrong(&v18->_secureFormattedContent, a5);
-    objc_storeStrong(&v18->_input, a6);
-    objc_storeStrong(&v18->_truncationSentinel, a7);
+    objc_storeStrong(&v17->_secureHeader, header);
+    objc_storeStrong(&v18->_secureContent, content);
+    objc_storeStrong(&v18->_secureFormattedContent, formattedContent);
+    objc_storeStrong(&v18->_input, input);
+    objc_storeStrong(&v18->_truncationSentinel, sentinel);
   }
 
   return v18;

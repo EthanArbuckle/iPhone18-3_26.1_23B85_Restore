@@ -1,25 +1,25 @@
 @interface THSearchIndex
-- (BOOL)p_isIndexedWord:(id)a3;
-- (THSearchIndex)initWithContext:(id)a3;
-- (id)addTermWithStem:(id)a3;
-- (id)filterOutGlossaryKeysFromOccurrenceMap:(id)a3;
-- (id)occurrenceMapForQuery:(id)a3;
-- (id)p_cfiForString:(id)a3 paragraphRange:(id)a4;
-- (id)p_createModelSearchResultForTerm:(id)a3 searchContext:(id)a4 occurrence:(id *)a5 occurrenceIndex:(unsigned int)a6 previousEntry:(id)a7;
-- (id)p_firstIndexedWordInQuery:(id)a3 outWordRange:(_NSRange *)a4 outHasMultipleWords:(BOOL *)a5;
-- (id)resultsForQuery:(id)a3 occurrenceMap:(id)a4 searchContextMap:(id)a5 suggestions:(BOOL)a6;
-- (id)unambiguousCFIForString:(id)a3;
+- (BOOL)p_isIndexedWord:(id)word;
+- (THSearchIndex)initWithContext:(id)context;
+- (id)addTermWithStem:(id)stem;
+- (id)filterOutGlossaryKeysFromOccurrenceMap:(id)map;
+- (id)occurrenceMapForQuery:(id)query;
+- (id)p_cfiForString:(id)string paragraphRange:(id)range;
+- (id)p_createModelSearchResultForTerm:(id)term searchContext:(id)context occurrence:(id *)occurrence occurrenceIndex:(unsigned int)index previousEntry:(id)entry;
+- (id)p_firstIndexedWordInQuery:(id)query outWordRange:(_NSRange *)range outHasMultipleWords:(BOOL *)words;
+- (id)resultsForQuery:(id)query occurrenceMap:(id)map searchContextMap:(id)contextMap suggestions:(BOOL)suggestions;
+- (id)unambiguousCFIForString:(id)string;
 - (void)dealloc;
 - (void)unload;
 @end
 
 @implementation THSearchIndex
 
-- (THSearchIndex)initWithContext:(id)a3
+- (THSearchIndex)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = THSearchIndex;
-  v3 = [(THSearchIndex *)&v5 initWithContext:a3];
+  v3 = [(THSearchIndex *)&v5 initWithContext:context];
   if (v3)
   {
     v3->mTerms = objc_alloc_init(TSLSearchTree);
@@ -50,27 +50,27 @@
   [(THSearchIndex *)&v3 dealloc];
 }
 
-- (id)addTermWithStem:(id)a3
+- (id)addTermWithStem:(id)stem
 {
   [(THSearchIndex *)self willModify];
-  v5 = [[THModelSearchIndexTerm alloc] initWithStem:a3];
-  [(TSLSearchTree *)self->mTerms insertWord:a3 value:v5];
+  v5 = [[THModelSearchIndexTerm alloc] initWithStem:stem];
+  [(TSLSearchTree *)self->mTerms insertWord:stem value:v5];
   v6 = v5;
   return v5;
 }
 
-- (id)p_createModelSearchResultForTerm:(id)a3 searchContext:(id)a4 occurrence:(id *)a5 occurrenceIndex:(unsigned int)a6 previousEntry:(id)a7
+- (id)p_createModelSearchResultForTerm:(id)term searchContext:(id)context occurrence:(id *)occurrence occurrenceIndex:(unsigned int)index previousEntry:(id)entry
 {
-  v8 = [[THModelSearchResult alloc] initWithTerm:a3 rank:a5->var0 cfi:[(TSUNoCopyDictionary *)self->mReferences objectForKey:a5->var4] pageNumber:a5->var2 displayPageNumber:a5->var3 occurrenceIndex:a6 context:a4];
-  if (a7)
+  v8 = [[THModelSearchResult alloc] initWithTerm:term rank:occurrence->var0 cfi:[(TSUNoCopyDictionary *)self->mReferences objectForKey:occurrence->var4] pageNumber:occurrence->var2 displayPageNumber:occurrence->var3 occurrenceIndex:index context:context];
+  if (entry)
   {
-    -[THModelSearchResult setOccurenceCount:](v8, "setOccurenceCount:", [a7 occurenceCount] + 1);
+    -[THModelSearchResult setOccurenceCount:](v8, "setOccurenceCount:", [entry occurenceCount] + 1);
   }
 
   return v8;
 }
 
-- (BOOL)p_isIndexedWord:(id)a3
+- (BOOL)p_isIndexedWord:(id)word
 {
   v8 = 0;
   v9 = &v8;
@@ -82,19 +82,19 @@
   v7[1] = 3221225472;
   v7[2] = sub_E972C;
   v7[3] = &unk_45D408;
-  v7[4] = a3;
+  v7[4] = word;
   v7[5] = &v8;
   [(TSLSearchTree *)mTerms enumerateWordsForPrefix:v5 withBlock:v7];
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(word) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return word;
 }
 
-- (id)p_firstIndexedWordInQuery:(id)a3 outWordRange:(_NSRange *)a4 outHasMultipleWords:(BOOL *)a5
+- (id)p_firstIndexedWordInQuery:(id)query outWordRange:(_NSRange *)range outHasMultipleWords:(BOOL *)words
 {
-  v18.length = [a3 length];
+  v18.length = [query length];
   v18.location = 0;
-  v9 = CFStringTokenizerCreate(0, a3, v18, 0, 0);
+  v9 = CFStringTokenizerCreate(0, query, v18, 0, 0);
   if (v9)
   {
     v10 = v9;
@@ -107,7 +107,7 @@
       do
       {
         CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v10);
-        v16 = CFStringCreateWithSubstring(0, a3, CurrentTokenRange);
+        v16 = CFStringCreateWithSubstring(0, query, CurrentTokenRange);
         if (v11)
         {
           v13 = 1;
@@ -134,7 +134,7 @@
     }
 
     CFRelease(v10);
-    if (a5)
+    if (words)
     {
       goto LABEL_12;
     }
@@ -146,43 +146,43 @@
     length = 0;
     v11 = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
-    if (a5)
+    if (words)
     {
 LABEL_12:
-      *a5 = v13 & 1;
+      *words = v13 & 1;
     }
   }
 
-  if (a4)
+  if (range)
   {
-    a4->location = location;
-    a4->length = length;
+    range->location = location;
+    range->length = length;
   }
 
   return v11;
 }
 
-- (id)resultsForQuery:(id)a3 occurrenceMap:(id)a4 searchContextMap:(id)a5 suggestions:(BOOL)a6
+- (id)resultsForQuery:(id)query occurrenceMap:(id)map searchContextMap:(id)contextMap suggestions:(BOOL)suggestions
 {
-  v75 = a6;
-  if (!a3)
+  suggestionsCopy = suggestions;
+  if (!query)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v8 = [a3 lowercaseString];
+  lowercaseString = [query lowercaseString];
   v70 = +[NSMutableSet set];
   v88 = 0;
   v87 = xmmword_34A730;
-  if ([(THSearchIndex *)self p_firstIndexedWordInQuery:v8 outWordRange:&v87 outHasMultipleWords:&v88]&& v87 != 0x7FFFFFFFFFFFFFFFLL)
+  if ([(THSearchIndex *)self p_firstIndexedWordInQuery:lowercaseString outWordRange:&v87 outHasMultipleWords:&v88]&& v87 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v72 = self;
+    selfCopy = self;
     v74 = objc_alloc_init(NSMutableDictionary);
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
-    obj = [a4 allKeys];
+    obj = [map allKeys];
     v68 = [obj countByEnumeratingWithState:&v83 objects:v90 count:16];
     if (!v68)
     {
@@ -190,7 +190,7 @@ LABEL_12:
     }
 
     v65 = *v84;
-    v73 = v8;
+    v73 = lowercaseString;
     while (1)
     {
       v9 = 0;
@@ -203,12 +203,12 @@ LABEL_12:
 
         v69 = v9;
         v10 = *(*(&v83 + 1) + 8 * v9);
-        v11 = [a5 objectForKey:v10];
+        v11 = [contextMap objectForKey:v10];
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v71 = [a4 objectForKey:v10];
+        v71 = [map objectForKey:v10];
         v77 = [v71 countByEnumeratingWithState:&v79 objects:v89 count:16];
         if (v77)
         {
@@ -226,17 +226,17 @@ LABEL_12:
 
               v13 = *(*(&v79 + 1) + 8 * v12);
               v14 = [objc_msgSend(v13 "first")];
-              v15 = [v13 second];
-              v16 = v15;
-              v17 = v15[1];
+              second = [v13 second];
+              v16 = second;
+              v17 = second[1];
               if (v88)
               {
-                v18 = v15[1];
-                v19 = v8;
-                if (*v15 == 1)
+                v18 = second[1];
+                v19 = lowercaseString;
+                if (*second == 1)
                 {
                   v20 = 1;
-                  v19 = v8;
+                  v19 = lowercaseString;
 LABEL_22:
                   if (([v14 hasPrefix:v19] & 1) == 0)
                   {
@@ -252,11 +252,11 @@ LABEL_22:
 
               else
               {
-                v21 = [v14 isEqualToString:v8];
+                v21 = [v14 isEqualToString:lowercaseString];
                 v20 = v21;
                 if (v88)
                 {
-                  v19 = v8;
+                  v19 = lowercaseString;
                 }
 
                 else
@@ -343,8 +343,8 @@ LABEL_38:
               v23 = 0;
               v24 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_42:
-              v27 = v75;
-              v8 = v73;
+              v27 = suggestionsCopy;
+              lowercaseString = v73;
 LABEL_43:
               if (v24 != 0x7FFFFFFFFFFFFFFFLL || !v27)
               {
@@ -357,10 +357,10 @@ LABEL_51:
                 v22 = 1;
                 v20 = 1;
 LABEL_52:
-                if (v75)
+                if (suggestionsCopy)
                 {
-                  v40 = [v14 lowercaseString];
-                  v41 = [v74 objectForKey:v40];
+                  lowercaseString2 = [v14 lowercaseString];
+                  v41 = [v74 objectForKey:lowercaseString2];
                   v42 = v41;
                   if (v41 && [v41 rank] <= *v16)
                   {
@@ -369,12 +369,12 @@ LABEL_52:
 
                   else
                   {
-                    v43 = [(THSearchIndex *)v72 p_createModelSearchResultForTerm:v40 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v42];
-                    [v74 setObject:v43 forKey:v40];
+                    v43 = [(THSearchIndex *)selfCopy p_createModelSearchResultForTerm:lowercaseString2 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v42];
+                    [v74 setObject:v43 forKey:lowercaseString2];
                   }
 
                   v46 = v22 & v20;
-                  v8 = v73;
+                  lowercaseString = v73;
                   if (v46 == 1 && [v73 length] >= 3)
                   {
                     v47 = v24 + v23;
@@ -391,12 +391,12 @@ LABEL_52:
                         v53 = [(__CFString *)v78 substringWithRange:v24, CurrentTokenRange.length - v24 + CurrentTokenRange.location];
                         if ([v53 length])
                         {
-                          v54 = [v53 lowercaseString];
-                          v55 = [v74 objectForKey:v54];
+                          lowercaseString3 = [v53 lowercaseString];
+                          v55 = [v74 objectForKey:lowercaseString3];
                           v56 = v55;
                           if (v55 && [v55 rank] <= *v16)
                           {
-                            if (([v40 isEqualToString:v54] & 1) == 0)
+                            if (([lowercaseString2 isEqualToString:lowercaseString3] & 1) == 0)
                             {
                               [v56 setOccurenceCount:{objc_msgSend(v56, "occurenceCount") + 1}];
                             }
@@ -404,18 +404,18 @@ LABEL_52:
 
                           else
                           {
-                            v57 = [(THSearchIndex *)v72 p_createModelSearchResultForTerm:v54 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v56];
-                            [v74 setObject:v57 forKey:v54];
+                            v57 = [(THSearchIndex *)selfCopy p_createModelSearchResultForTerm:lowercaseString3 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v56];
+                            [v74 setObject:v57 forKey:lowercaseString3];
                           }
 
                           if (CurrentTokenRange.location > v47)
                           {
-                            v58 = [v73 lowercaseString];
-                            v59 = [v74 objectForKey:v58];
+                            lowercaseString4 = [v73 lowercaseString];
+                            v59 = [v74 objectForKey:lowercaseString4];
                             v60 = v59;
                             if (v59 && [v59 rank] <= *v16)
                             {
-                              if (([v40 isEqualToString:v58] & 1) == 0)
+                              if (([lowercaseString2 isEqualToString:lowercaseString4] & 1) == 0)
                               {
                                 [v60 setOccurenceCount:{objc_msgSend(v60, "occurenceCount") + 1}];
                               }
@@ -423,8 +423,8 @@ LABEL_52:
 
                             else
                             {
-                              v61 = [(THSearchIndex *)v72 p_createModelSearchResultForTerm:v58 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v60];
-                              [v74 setObject:v61 forKey:v58];
+                              v61 = [(THSearchIndex *)selfCopy p_createModelSearchResultForTerm:lowercaseString4 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v60];
+                              [v74 setObject:v61 forKey:lowercaseString4];
                             }
                           }
                         }
@@ -447,22 +447,22 @@ LABEL_52:
                     v44 = v14;
                   }
 
-                  v45 = [(THSearchIndex *)v72 p_createModelSearchResultForTerm:v44 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:0];
+                  v45 = [(THSearchIndex *)selfCopy p_createModelSearchResultForTerm:v44 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:0];
                   [v70 addObject:v45];
 
-                  v8 = v73;
+                  lowercaseString = v73;
                 }
 
                 goto LABEL_78;
               }
 
-              if (!v75)
+              if (!suggestionsCopy)
               {
                 [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
               }
 
-              v36 = [v14 lowercaseString];
-              v37 = [v74 objectForKey:v36];
+              lowercaseString5 = [v14 lowercaseString];
+              v37 = [v74 objectForKey:lowercaseString5];
               v38 = v37;
               if (v37 && [v37 rank] <= *v16)
               {
@@ -471,8 +471,8 @@ LABEL_52:
 
               else
               {
-                v39 = [(THSearchIndex *)v72 p_createModelSearchResultForTerm:v36 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v38];
-                [v74 setObject:v39 forKey:v36];
+                v39 = [(THSearchIndex *)selfCopy p_createModelSearchResultForTerm:lowercaseString5 searchContext:v78 occurrence:v16 occurrenceIndex:v17 previousEntry:v38];
+                [v74 setObject:v39 forKey:lowercaseString5];
               }
 
 LABEL_78:
@@ -506,7 +506,7 @@ LABEL_87:
   return v70;
 }
 
-- (id)occurrenceMapForQuery:(id)a3
+- (id)occurrenceMapForQuery:(id)query
 {
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0;
@@ -514,7 +514,7 @@ LABEL_87:
   v18 = 0x2020000000;
   v19 = 0;
   v15 = 0;
-  v6 = -[THSearchIndex p_firstIndexedWordInQuery:outWordRange:outHasMultipleWords:](self, "p_firstIndexedWordInQuery:outWordRange:outHasMultipleWords:", [a3 lowercaseString], 0, &v15);
+  v6 = -[THSearchIndex p_firstIndexedWordInQuery:outWordRange:outHasMultipleWords:](self, "p_firstIndexedWordInQuery:outWordRange:outHasMultipleWords:", [query lowercaseString], 0, &v15);
   v7 = v6;
   if (v6)
   {
@@ -554,34 +554,34 @@ LABEL_87:
   return v5;
 }
 
-- (id)filterOutGlossaryKeysFromOccurrenceMap:(id)a3
+- (id)filterOutGlossaryKeysFromOccurrenceMap:(id)map
 {
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [map count]);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_EA434;
   v6[3] = &unk_45D480;
   v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [map enumerateKeysAndObjectsUsingBlock:v6];
   return v4;
 }
 
-- (id)p_cfiForString:(id)a3 paragraphRange:(id)a4
+- (id)p_cfiForString:(id)string paragraphRange:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v8 = objc_alloc_init(NSMutableSet);
   v9 = objc_alloc_init(NSMutableSet);
   v18.location = var0;
   v18.length = var1;
-  v10 = CFStringTokenizerCreate(0, a3, v18, 0, 0);
+  v10 = CFStringTokenizerCreate(0, string, v18, 0, 0);
   if (v10)
   {
     v11 = v10;
     while (CFStringTokenizerAdvanceToNextToken(v11))
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v11);
-      v12 = CFStringCreateWithSubstring(0, a3, CurrentTokenRange);
+      v12 = CFStringCreateWithSubstring(0, string, CurrentTokenRange);
       v13 = [(TSLStemmer *)self->mStemmer newStemmedWord:v12];
       mTerms = self->mTerms;
       v17[0] = _NSConcreteStackBlock;
@@ -618,20 +618,20 @@ LABEL_87:
 
   if ([v8 count] == &dword_0 + 1)
   {
-    v15 = [v8 anyObject];
+    anyObject = [v8 anyObject];
   }
 
   else
   {
-    v15 = 0;
+    anyObject = 0;
   }
 
-  return v15;
+  return anyObject;
 }
 
-- (id)unambiguousCFIForString:(id)a3
+- (id)unambiguousCFIForString:(id)string
 {
-  v4 = [objc_msgSend(a3 "lowercaseString")];
+  v4 = [objc_msgSend(string "lowercaseString")];
   v11.length = [(__CFString *)v4 length];
   v11.location = 0;
   v5 = CFStringTokenizerCreate(0, v4, v11, 2uLL, 0);

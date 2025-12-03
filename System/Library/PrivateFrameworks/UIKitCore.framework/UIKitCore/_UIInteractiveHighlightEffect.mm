@@ -4,22 +4,22 @@
 - (UIView)view;
 - (UIVisualEffectView)effectView;
 - (_UIPortalView)portalView;
-- (void)applyBackgroundEffectWithMagnitude:(double)a3 interactive:(BOOL)a4 completion:(id)a5;
+- (void)applyBackgroundEffectWithMagnitude:(double)magnitude interactive:(BOOL)interactive completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation _UIInteractiveHighlightEffect
 
-- (void)applyBackgroundEffectWithMagnitude:(double)a3 interactive:(BOOL)a4 completion:(id)a5
+- (void)applyBackgroundEffectWithMagnitude:(double)magnitude interactive:(BOOL)interactive completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  interactiveCopy = interactive;
+  completionCopy = completion;
+  if (interactiveCopy)
   {
     [(_UIInteractiveHighlightEnvironment *)self->_environment applyContentInsets:self->_preferredContentInsets.top, self->_preferredContentInsets.left, self->_preferredContentInsets.bottom, self->_preferredContentInsets.right];
   }
 
-  [(_UIInteractiveHighlightEnvironment *)self->_environment applyBackgroundEffectWithMagnitude:v5 interactive:v8 completion:a3];
+  [(_UIInteractiveHighlightEnvironment *)self->_environment applyBackgroundEffectWithMagnitude:interactiveCopy interactive:completionCopy completion:magnitude];
 }
 
 - (void)dealloc

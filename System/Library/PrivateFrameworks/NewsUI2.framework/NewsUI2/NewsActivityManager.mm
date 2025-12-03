@@ -1,29 +1,29 @@
 @interface NewsActivityManager
 - (_TtC7NewsUI219NewsActivityManager)init;
 - (void)clearAllSavedUserActivities;
-- (void)deregisterActivityWithData:(id)a3;
-- (void)registerCurrentActivityWithData:(id)a3;
+- (void)deregisterActivityWithData:(id)data;
+- (void)registerCurrentActivityWithData:(id)data;
 @end
 
 @implementation NewsActivityManager
 
-- (void)registerCurrentActivityWithData:(id)a3
+- (void)registerCurrentActivityWithData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  NewsActivityManager.registerCurrentActivity(with:)(v4);
+  dataCopy = data;
+  selfCopy = self;
+  NewsActivityManager.registerCurrentActivity(with:)(dataCopy);
 }
 
-- (void)deregisterActivityWithData:(id)a3
+- (void)deregisterActivityWithData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  NewsActivityManager.deregisterActivity(with:)(v4);
+  dataCopy = data;
+  selfCopy = self;
+  NewsActivityManager.deregisterActivity(with:)(dataCopy);
 }
 
 - (void)clearAllSavedUserActivities
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_219BE7874();
 }

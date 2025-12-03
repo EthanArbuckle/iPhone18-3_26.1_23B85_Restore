@@ -1,13 +1,13 @@
 @interface _UISEEdgeTypeFailGestureFeature
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
 @end
 
 @implementation _UISEEdgeTypeFailGestureFeature
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
-  var3 = a3->var3;
-  if (a3->var0)
+  var3 = sample->var3;
+  if (sample->var0)
   {
     if (var3)
     {

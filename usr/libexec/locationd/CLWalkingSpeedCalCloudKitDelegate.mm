@@ -1,29 +1,29 @@
 @interface CLWalkingSpeedCalCloudKitDelegate
-- (BOOL)convertDataBlob:(id)a3 toBoundStatement:(const void *)a4;
-- (CLWalkingSpeedCalCloudKitDelegate)initWithWalkingSpeedCalRecorderDb:(void *)a3;
-- (id)convertStatementToDataBlobs:(const void *)a3;
+- (BOOL)convertDataBlob:(id)blob toBoundStatement:(const void *)statement;
+- (CLWalkingSpeedCalCloudKitDelegate)initWithWalkingSpeedCalRecorderDb:(void *)db;
+- (id)convertStatementToDataBlobs:(const void *)blobs;
 @end
 
 @implementation CLWalkingSpeedCalCloudKitDelegate
 
-- (CLWalkingSpeedCalCloudKitDelegate)initWithWalkingSpeedCalRecorderDb:(void *)a3
+- (CLWalkingSpeedCalCloudKitDelegate)initWithWalkingSpeedCalRecorderDb:(void *)db
 {
   v5.receiver = self;
   v5.super_class = CLWalkingSpeedCalCloudKitDelegate;
   result = [(CLWalkingSpeedCalCloudKitDelegate *)&v5 init];
   if (result)
   {
-    result->fWalkingSpeedCalDb = a3;
+    result->fWalkingSpeedCalDb = db;
   }
 
   return result;
 }
 
-- (id)convertStatementToDataBlobs:(const void *)a3
+- (id)convertStatementToDataBlobs:(const void *)blobs
 {
   v7 = 0;
   fWalkingSpeedCalDb = self->fWalkingSpeedCalDb;
-  if (fWalkingSpeedCalDb && !sub_100970954(fWalkingSpeedCalDb, a3, &v7))
+  if (fWalkingSpeedCalDb && !sub_100970954(fWalkingSpeedCalDb, blobs, &v7))
   {
     if (qword_1025D4430 != -1)
     {
@@ -46,12 +46,12 @@
   return v7;
 }
 
-- (BOOL)convertDataBlob:(id)a3 toBoundStatement:(const void *)a4
+- (BOOL)convertDataBlob:(id)blob toBoundStatement:(const void *)statement
 {
   fWalkingSpeedCalDb = self->fWalkingSpeedCalDb;
   if (fWalkingSpeedCalDb)
   {
-    v5 = *a4 == 0;
+    v5 = *statement == 0;
   }
 
   else
@@ -69,8 +69,8 @@
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    v7 = sub_100970BC8(fWalkingSpeedCalDb, a3, &v12);
-    v8 = sub_100008880(*a4);
+    v7 = sub_100970BC8(fWalkingSpeedCalDb, blob, &v12);
+    v8 = sub_100008880(*statement);
     if (v8)
     {
       v9 = !v7;

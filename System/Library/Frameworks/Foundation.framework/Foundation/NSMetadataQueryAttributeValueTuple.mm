@@ -1,17 +1,17 @@
 @interface NSMetadataQueryAttributeValueTuple
 - (NSString)attribute;
-- (id)_init:(id)a3 attribute:(id)a4 value:(id)a5 count:(unint64_t)a6;
+- (id)_init:(id)_init attribute:(id)attribute value:(id)value count:(unint64_t)count;
 - (id)value;
 - (void)dealloc;
 @end
 
 @implementation NSMetadataQueryAttributeValueTuple
 
-- (id)_init:(id)a3 attribute:(id)a4 value:(id)a5 count:(unint64_t)a6
+- (id)_init:(id)_init attribute:(id)attribute value:(id)value count:(unint64_t)count
 {
-  self->_attr = a4;
-  self->_value = a5;
-  self->_count = a6;
+  self->_attr = attribute;
+  self->_value = value;
+  self->_count = count;
   return self;
 }
 

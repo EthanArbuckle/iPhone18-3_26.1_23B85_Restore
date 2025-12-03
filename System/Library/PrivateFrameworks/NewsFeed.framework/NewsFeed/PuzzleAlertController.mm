@@ -1,8 +1,8 @@
 @interface PuzzleAlertController
 - (NSArray)keyCommands;
-- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithCoder:(id)a3;
-- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didPressKey:(id)a3;
+- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithCoder:(id)coder;
+- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didPressKey:(id)key;
 @end
 
 @implementation PuzzleAlertController
@@ -17,16 +17,16 @@
   return v2;
 }
 
-- (void)didPressKey:(id)a3
+- (void)didPressKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6A18394(v4);
+  keyCopy = key;
+  selfCopy = self;
+  sub_1D6A18394(keyCopy);
 }
 
-- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D726207C();
     v7 = v6;
@@ -42,7 +42,7 @@
   v8[1] = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController_events) = MEMORY[0x1E69E7CC8];
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController_commands) = MEMORY[0x1E69E7CC0];
-  v9 = a4;
+  bundleCopy = bundle;
   if (v7)
   {
     v10 = sub_1D726203C();
@@ -55,12 +55,12 @@
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for PuzzleAlertController();
-  v11 = [(PuzzleAlertController *)&v13 initWithNibName:v10 bundle:a4];
+  v11 = [(PuzzleAlertController *)&v13 initWithNibName:v10 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithCoder:(id)a3
+- (_TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController_handler);
   *v4 = 0;
@@ -69,8 +69,8 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeedP33_B3216C832986877D01E235539593604B21PuzzleAlertController_commands) = MEMORY[0x1E69E7CC0];
   v8.receiver = self;
   v8.super_class = type metadata accessor for PuzzleAlertController();
-  v5 = a3;
-  v6 = [(PuzzleAlertController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(PuzzleAlertController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

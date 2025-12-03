@@ -1,21 +1,21 @@
 @interface ATXScoredActionWithReason
-- (ATXScoredActionWithReason)initWithScoredAction:(id)a3 predictionReason:(id)a4;
+- (ATXScoredActionWithReason)initWithScoredAction:(id)action predictionReason:(id)reason;
 @end
 
 @implementation ATXScoredActionWithReason
 
-- (ATXScoredActionWithReason)initWithScoredAction:(id)a3 predictionReason:(id)a4
+- (ATXScoredActionWithReason)initWithScoredAction:(id)action predictionReason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = ATXScoredActionWithReason;
   v9 = [(ATXScoredActionWithReason *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scoredAction, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_scoredAction, action);
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
   }

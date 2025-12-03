@@ -1,35 +1,35 @@
 @interface CDPUIAccessCodeEntryTextField
 + (unint64_t)accessKeyCharacterCount;
 - (BOOL)isComplete;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (CDPUIAccessCodeEntryTextField)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (CDPUIAccessCodeEntryTextField)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (CDPUIAccessCodeEntryTextFieldDelegate)accessCodeInputDelegate;
-- (id)_sanitizeInputString:(id)a3;
+- (id)_sanitizeInputString:(id)string;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)_handleMultiCharacterStringInput:(id)a3 range:(_NSRange)a4;
+- (void)_handleMultiCharacterStringInput:(id)input range:(_NSRange)range;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setFont:(id)font;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)setupSeparatorLocations;
 - (void)setupUI;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 - (void)updatePlaceholderVisibility;
 @end
 
 @implementation CDPUIAccessCodeEntryTextField
 
-- (CDPUIAccessCodeEntryTextField)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (CDPUIAccessCodeEntryTextField)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = CDPUIAccessCodeEntryTextField;
-  v8 = [(CDPUIAccessCodeEntryTextField *)&v11 initWithFrame:a4 textContainer:?];
+  v8 = [(CDPUIAccessCodeEntryTextField *)&v11 initWithFrame:container textContainer:?];
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D75C40]) initWithFrame:0 textContainer:{x, y, width, height}];
@@ -46,24 +46,24 @@
 {
   [(CDPUIAccessCodeEntryTextField *)self setAutocorrectionType:1];
   [(CDPUIAccessCodeEntryTextField *)self setReturnKeyType:9];
-  v3 = [MEMORY[0x277D75348] labelColor];
-  [(CDPUIAccessCodeEntryTextField *)self setTextColor:v3];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(CDPUIAccessCodeEntryTextField *)self setTextColor:labelColor];
 
   [(CDPUIAccessCodeEntryTextField *)self setSpellCheckingType:1];
   [(CDPUIAccessCodeEntryTextField *)self setAutocapitalizationType:3];
-  v4 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v4 setAutoresizingMask:18];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setAutoresizingMask:18];
 
-  v5 = [MEMORY[0x277D75348] systemGray2Color];
-  v6 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v6 setTextColor:v5];
+  systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
+  placeholderTextView2 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView2 setTextColor:systemGray2Color];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v8 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  placeholderTextView3 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView3 setBackgroundColor:clearColor];
 
-  v9 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v9 setText:0];
+  placeholderTextView4 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView4 setText:0];
 
   [(CDPUIAccessCodeEntryTextField *)self setDelegate:self];
   [(CDPUIAccessCodeEntryTextField *)self bounds];
@@ -71,14 +71,14 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  placeholderTextView5 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView5 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v19 setEditable:0];
+  placeholderTextView6 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView6 setEditable:0];
 
-  v20 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [(CDPUIAccessCodeEntryTextField *)self addSubview:v20];
+  placeholderTextView7 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [(CDPUIAccessCodeEntryTextField *)self addSubview:placeholderTextView7];
 }
 
 - (void)setupSeparatorLocations
@@ -132,12 +132,12 @@ void __56__CDPUIAccessCodeEntryTextField_accessKeyCharacterCount__block_invoke()
 
 - (BOOL)isComplete
 {
-  v2 = self;
-  v3 = [(CDPUIAccessCodeEntryTextField *)self text];
-  v4 = [v3 length];
-  LOBYTE(v2) = v4 == [(CDPUIAccessCodeEntryTextField *)v2 _totalCharacterLimit];
+  selfCopy = self;
+  text = [(CDPUIAccessCodeEntryTextField *)self text];
+  v4 = [text length];
+  LOBYTE(selfCopy) = v4 == [(CDPUIAccessCodeEntryTextField *)selfCopy _totalCharacterLimit];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -150,92 +150,92 @@ void __56__CDPUIAccessCodeEntryTextField_accessKeyCharacterCount__block_invoke()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v12 setAutoresizingMask:18];
+  placeholderTextView2 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView2 setAutoresizingMask:18];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v6.receiver = self;
   v6.super_class = CDPUIAccessCodeEntryTextField;
-  [(CDPUIAccessCodeEntryTextField *)&v6 setFont:a3];
-  v4 = [(CDPUIAccessCodeEntryTextField *)self font];
-  v5 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v5 setFont:v4];
+  [(CDPUIAccessCodeEntryTextField *)&v6 setFont:font];
+  font = [(CDPUIAccessCodeEntryTextField *)self font];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setFont:font];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v6.receiver = self;
   v6.super_class = CDPUIAccessCodeEntryTextField;
-  [(CDPUIAccessCodeEntryTextField *)&v6 setTextAlignment:a3];
-  v4 = [(CDPUIAccessCodeEntryTextField *)self textAlignment];
-  v5 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v5 setTextAlignment:v4];
+  [(CDPUIAccessCodeEntryTextField *)&v6 setTextAlignment:alignment];
+  textAlignment = [(CDPUIAccessCodeEntryTextField *)self textAlignment];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setTextAlignment:textAlignment];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = CDPUIAccessCodeEntryTextField;
-  [(CDPUIAccessCodeEntryTextField *)&v4 setText:a3];
+  [(CDPUIAccessCodeEntryTextField *)&v4 setText:text];
   [(CDPUIAccessCodeEntryTextField *)self updatePlaceholderVisibility];
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  placeholderCopy = placeholder;
+  v5 = [placeholderCopy copy];
   placeholder = self->_placeholder;
   self->_placeholder = v5;
 
-  v7 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v7 setText:v4];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setText:placeholderCopy];
 }
 
 - (void)updatePlaceholderVisibility
 {
-  v5 = [(CDPUIAccessCodeEntryTextField *)self text];
-  v3 = [v5 length] != 0;
-  v4 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  [v4 setHidden:v3];
+  text = [(CDPUIAccessCodeEntryTextField *)self text];
+  v3 = [text length] != 0;
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  [placeholderTextView setHidden:v3];
 }
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  v3 = [v2 viewForFirstBaselineLayout];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  viewForFirstBaselineLayout = [placeholderTextView viewForFirstBaselineLayout];
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
-  v3 = [v2 viewForLastBaselineLayout];
+  placeholderTextView = [(CDPUIAccessCodeEntryTextField *)self placeholderTextView];
+  viewForLastBaselineLayout = [placeholderTextView viewForLastBaselineLayout];
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  if (![v8 isEqualToString:@"\n"] || (-[CDPUIAccessCodeEntryTextField accessCodeInputDelegate](self, "accessCodeInputDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) == 0))
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  if (![textCopy isEqualToString:@"\n"] || (-[CDPUIAccessCodeEntryTextField accessCodeInputDelegate](self, "accessCodeInputDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) == 0))
   {
     if (location >= [(CDPUIAccessCodeEntryTextField *)self _totalCharacterLimit])
     {
       goto LABEL_7;
     }
 
-    v12 = [(CDPUIAccessCodeEntryTextField *)self _sanitizeInputString:v8];
+    v12 = [(CDPUIAccessCodeEntryTextField *)self _sanitizeInputString:textCopy];
 
-    v13 = [(CDPUIAccessCodeEntryTextField *)self text];
-    v14 = location < [v13 length] && objc_msgSend(v12, "length") != 0;
+    text = [(CDPUIAccessCodeEntryTextField *)self text];
+    v14 = location < [text length] && objc_msgSend(v12, "length") != 0;
 
     if ([v12 length] > 1 || v14)
     {
@@ -253,8 +253,8 @@ LABEL_19:
 
       if (separatorDeleteLocations)
       {
-        v19 = [(CDPUIAccessCodeEntryTextField *)self text];
-        v24 = [v19 stringByReplacingCharactersInRange:location - 1 withString:{2, &stru_285826188}];
+        text2 = [(CDPUIAccessCodeEntryTextField *)self text];
+        v24 = [text2 stringByReplacingCharactersInRange:location - 1 withString:{2, &stru_285826188}];
         [(CDPUIAccessCodeEntryTextField *)self setText:v24];
 
         goto LABEL_18;
@@ -270,9 +270,9 @@ LABEL_19:
       if (separatorLocations)
       {
         v18 = MEMORY[0x277CCACA8];
-        v19 = [(CDPUIAccessCodeEntryTextField *)self text];
-        v20 = [v12 uppercaseString];
-        v21 = [v18 stringWithFormat:@"%@%@%@", v19, @"-", v20];
+        text2 = [(CDPUIAccessCodeEntryTextField *)self text];
+        uppercaseString = [v12 uppercaseString];
+        v21 = [v18 stringWithFormat:@"%@%@%@", text2, @"-", uppercaseString];
         [(CDPUIAccessCodeEntryTextField *)self setText:v21];
 
 LABEL_18:
@@ -284,36 +284,36 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v11 = [(CDPUIAccessCodeEntryTextField *)self accessCodeInputDelegate];
-  [v11 accessCodeEntryTextFieldDidReturn:self];
+  accessCodeInputDelegate = [(CDPUIAccessCodeEntryTextField *)self accessCodeInputDelegate];
+  [accessCodeInputDelegate accessCodeEntryTextFieldDidReturn:self];
 
 LABEL_7:
   v15 = 0;
-  v12 = v8;
+  v12 = textCopy;
 LABEL_21:
 
   return v15;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   [(CDPUIAccessCodeEntryTextField *)self updatePlaceholderVisibility];
-  v4 = [(CDPUIAccessCodeEntryTextField *)self text];
-  v5 = [v4 uppercaseString];
-  [(CDPUIAccessCodeEntryTextField *)self setText:v5];
+  text = [(CDPUIAccessCodeEntryTextField *)self text];
+  uppercaseString = [text uppercaseString];
+  [(CDPUIAccessCodeEntryTextField *)self setText:uppercaseString];
 
-  v6 = [(CDPUIAccessCodeEntryTextField *)self accessCodeInputDelegate];
-  [v6 accessCodeEntryTextFieldDidUpdate:self];
+  accessCodeInputDelegate = [(CDPUIAccessCodeEntryTextField *)self accessCodeInputDelegate];
+  [accessCodeInputDelegate accessCodeEntryTextFieldDidUpdate:self];
 }
 
-- (void)_handleMultiCharacterStringInput:(id)a3 range:(_NSRange)a4
+- (void)_handleMultiCharacterStringInput:(id)input range:(_NSRange)range
 {
-  location = a4.location;
-  v16 = a3;
-  v6 = [(CDPUIAccessCodeEntryTextField *)self text];
-  if ([v6 length] >= location)
+  location = range.location;
+  inputCopy = input;
+  text = [(CDPUIAccessCodeEntryTextField *)self text];
+  if ([text length] >= location)
   {
-    v7 = [v6 substringToIndex:location];
+    v7 = [text substringToIndex:location];
   }
 
   else
@@ -321,9 +321,9 @@ LABEL_21:
     v7 = &stru_285826188;
   }
 
-  if ([v6 length] >= location)
+  if ([text length] >= location)
   {
-    v9 = [v6 substringFromIndex:location];
+    v9 = [text substringFromIndex:location];
     v8 = [v9 stringByReplacingOccurrencesOfString:@"-" withString:&stru_285826188];
   }
 
@@ -332,7 +332,7 @@ LABEL_21:
     v8 = &stru_285826188;
   }
 
-  v10 = [v16 stringByAppendingString:v8];
+  v10 = [inputCopy stringByAppendingString:v8];
 
   [(CDPUIAccessCodeEntryTextField *)self setText:v7];
   if ([v10 length])
@@ -343,9 +343,9 @@ LABEL_21:
       v12 = [v10 substringWithRange:{v11, 1}];
       if ([(CDPUIAccessCodeEntryTextField *)self textView:self shouldChangeTextInRange:location replacementText:0, v12])
       {
-        v13 = [(CDPUIAccessCodeEntryTextField *)self text];
-        v14 = [v12 uppercaseString];
-        v15 = [v13 stringByAppendingString:v14];
+        text2 = [(CDPUIAccessCodeEntryTextField *)self text];
+        uppercaseString = [v12 uppercaseString];
+        v15 = [text2 stringByAppendingString:uppercaseString];
         [(CDPUIAccessCodeEntryTextField *)self setText:v15];
       }
 
@@ -365,14 +365,14 @@ LABEL_21:
   [(CDPUIAccessCodeEntryTextField *)self setSelectedRange:location, 0];
 }
 
-- (id)_sanitizeInputString:(id)a3
+- (id)_sanitizeInputString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 alphanumericCharacterSet];
-  v6 = [v5 invertedSet];
+  stringCopy = string;
+  alphanumericCharacterSet = [v3 alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
 
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  v7 = [stringCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v8 = [v7 componentsJoinedByString:&stru_285826188];
 

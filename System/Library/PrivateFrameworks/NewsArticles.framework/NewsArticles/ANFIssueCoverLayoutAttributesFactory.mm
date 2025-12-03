@@ -1,16 +1,16 @@
 @interface ANFIssueCoverLayoutAttributesFactory
 - (_TtC12NewsArticles36ANFIssueCoverLayoutAttributesFactory)init;
-- (id)createAttributesWithIssueCover:(id)a3 options:(id)a4;
+- (id)createAttributesWithIssueCover:(id)cover options:(id)options;
 @end
 
 @implementation ANFIssueCoverLayoutAttributesFactory
 
-- (id)createAttributesWithIssueCover:(id)a3 options:(id)a4
+- (id)createAttributesWithIssueCover:(id)cover options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1D7B5AC54(v7);
+  coverCopy = cover;
+  optionsCopy = options;
+  selfCopy = self;
+  v9 = sub_1D7B5AC54(optionsCopy);
 
   return v9;
 }

@@ -1,17 +1,17 @@
 @interface PKPeerPaymentDynamicFraudPageBodyContent
-+ (id)bodyContentWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyContent)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyContent)initWithDictionary:(id)a3;
++ (id)bodyContentWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudPageBodyContent)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudPageBodyContent)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation PKPeerPaymentDynamicFraudPageBodyContent
 
-+ (id)bodyContentWithDictionary:(id)a3
++ (id)bodyContentWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   v5 = PKPeerPaymentDynamicFraudPageBodyContentTypeFromString(v4);
 
   if (v5 > 1)
@@ -37,19 +37,19 @@
     v6 = off_1E79C10D8;
   }
 
-  v5 = [objc_alloc(*v6) initWithDictionary:v3];
+  v5 = [objc_alloc(*v6) initWithDictionary:dictionaryCopy];
 LABEL_8:
 
   return v5;
 }
 
-- (PKPeerPaymentDynamicFraudPageBodyContent)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentDynamicFraudPageBodyContent;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v9 init];
-  if (v5 && ([v4 PKStringForKey:@"type"], v6 = objc_claimAutoreleasedReturnValue(), v5->_type = PKPeerPaymentDynamicFraudPageBodyContentTypeFromString(v6), v6, !v5->_type))
+  if (v5 && ([dictionaryCopy PKStringForKey:@"type"], v6 = objc_claimAutoreleasedReturnValue(), v5->_type = PKPeerPaymentDynamicFraudPageBodyContentTypeFromString(v6), v6, !v5->_type))
   {
     v7 = 0;
   }
@@ -62,15 +62,15 @@ LABEL_8:
   return v7;
 }
 
-- (PKPeerPaymentDynamicFraudPageBodyContent)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPeerPaymentDynamicFraudPageBodyContent;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
@@ -97,11 +97,11 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[1];
 
   return v5;
 }

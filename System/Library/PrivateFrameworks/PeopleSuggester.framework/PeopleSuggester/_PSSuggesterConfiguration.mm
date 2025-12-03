@@ -21,8 +21,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_PSSuggesterConfiguration maximumNumberOfSuggestions](self, "maximumNumberOfSuggestions")}];
-  v6 = [(_PSSuggesterConfiguration *)self suggestionModel];
-  v7 = [v3 stringWithFormat:@"<%@ %p> maximumNumberOfSuggestions: %@ suggestionModel: %@", v4, self, v5, v6];
+  suggestionModel = [(_PSSuggesterConfiguration *)self suggestionModel];
+  v7 = [v3 stringWithFormat:@"<%@ %p> maximumNumberOfSuggestions: %@ suggestionModel: %@", v4, self, v5, suggestionModel];
 
   return v7;
 }

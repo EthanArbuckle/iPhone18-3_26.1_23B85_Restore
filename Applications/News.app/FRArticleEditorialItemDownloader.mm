@@ -1,31 +1,31 @@
 @interface FRArticleEditorialItemDownloader
-- (FRArticleEditorialItemDownloader)initWithArticleController:(id)a3 dataProviderFactory:(id)a4 articleEditorialItemProvider:(id)a5 editorialItemEntryManager:(id)a6 thumbnailCreator:(id)a7 editorialItemCreator:(id)a8;
-- (void)downloadArticleWithArticleID:(id)a3 editorialItemFromCache:(id)a4 completion:(id)a5;
-- (void)downloadEditorialItemWithIDs:(id)a3 completion:(id)a4;
-- (void)loadArticleMetadataWithHeadline:(id)a3 editorialItemFromCache:(id)a4 content:(id)a5 articleModifiedDate:(id)a6 completion:(id)a7;
+- (FRArticleEditorialItemDownloader)initWithArticleController:(id)controller dataProviderFactory:(id)factory articleEditorialItemProvider:(id)provider editorialItemEntryManager:(id)manager thumbnailCreator:(id)creator editorialItemCreator:(id)itemCreator;
+- (void)downloadArticleWithArticleID:(id)d editorialItemFromCache:(id)cache completion:(id)completion;
+- (void)downloadEditorialItemWithIDs:(id)ds completion:(id)completion;
+- (void)loadArticleMetadataWithHeadline:(id)headline editorialItemFromCache:(id)cache content:(id)content articleModifiedDate:(id)date completion:(id)completion;
 @end
 
 @implementation FRArticleEditorialItemDownloader
 
-- (FRArticleEditorialItemDownloader)initWithArticleController:(id)a3 dataProviderFactory:(id)a4 articleEditorialItemProvider:(id)a5 editorialItemEntryManager:(id)a6 thumbnailCreator:(id)a7 editorialItemCreator:(id)a8
+- (FRArticleEditorialItemDownloader)initWithArticleController:(id)controller dataProviderFactory:(id)factory articleEditorialItemProvider:(id)provider editorialItemEntryManager:(id)manager thumbnailCreator:(id)creator editorialItemCreator:(id)itemCreator
 {
-  v25 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v23 = a8;
-  v18 = a8;
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  factoryCopy = factory;
+  providerCopy = provider;
+  managerCopy = manager;
+  creatorCopy = creator;
+  itemCreatorCopy = itemCreator;
+  itemCreatorCopy2 = itemCreator;
+  if (!factoryCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000711EC();
-    if (v16)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -36,16 +36,16 @@
   }
 
 LABEL_6:
-  if (!v15 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!providerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100071374();
-    if (v17)
+    if (creatorCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v17)
+  else if (creatorCopy)
   {
     goto LABEL_11;
   }
@@ -56,7 +56,7 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v18 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!itemCreatorCopy2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000714FC();
   }
@@ -67,25 +67,25 @@ LABEL_11:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_articleController, a3);
-    objc_storeStrong(&v20->_flintDataProviderFactory, a4);
-    objc_storeStrong(&v20->_articleEditorialItemProvider, a5);
-    objc_storeStrong(&v20->_editorialItemEntryManager, a6);
+    objc_storeStrong(&v19->_articleController, controller);
+    objc_storeStrong(&v20->_flintDataProviderFactory, factory);
+    objc_storeStrong(&v20->_articleEditorialItemProvider, provider);
+    objc_storeStrong(&v20->_editorialItemEntryManager, manager);
     objc_storeStrong(&v20->_thumbnailCreator, obj);
-    objc_storeStrong(&v20->_editorialItemCreator, v23);
+    objc_storeStrong(&v20->_editorialItemCreator, itemCreatorCopy);
   }
 
   return v20;
 }
 
-- (void)downloadEditorialItemWithIDs:(id)a3 completion:(id)a4
+- (void)downloadEditorialItemWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v20 = v6;
-  if ([v6 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  v20 = dsCopy;
+  if ([dsCopy count])
   {
-    v19 = v7;
+    v19 = completionCopy;
     v32[0] = 0;
     v32[1] = v32;
     v32[2] = 0x3032000000;
@@ -97,7 +97,7 @@ LABEL_11:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v6;
+    obj = dsCopy;
     v9 = [obj countByEnumeratingWithState:&v28 objects:v39 count:16];
     if (v9)
     {
@@ -112,9 +112,9 @@ LABEL_11:
           }
 
           v12 = *(*(&v28 + 1) + 8 * i);
-          v13 = [(FRArticleEditorialItemDownloader *)self editorialItemEntryManager];
-          v14 = [v13 editorialItemsByID];
-          v15 = [v14 objectForKey:v12];
+          editorialItemEntryManager = [(FRArticleEditorialItemDownloader *)self editorialItemEntryManager];
+          editorialItemsByID = [editorialItemEntryManager editorialItemsByID];
+          v15 = [editorialItemsByID objectForKey:v12];
 
           dispatch_group_enter(v8);
           v25[0] = _NSConcreteStackBlock;
@@ -150,23 +150,23 @@ LABEL_11:
     v35 = 3221225472;
     v36 = sub_10004CEAC;
     v37 = &unk_1000C3098;
-    v38 = v7;
-    if (v7)
+    v38 = completionCopy;
+    if (completionCopy)
     {
-      v17 = v7[2];
-      v18 = v7;
+      v17 = completionCopy[2];
+      v18 = completionCopy;
       v17();
     }
   }
 }
 
-- (void)downloadArticleWithArticleID:(id)a3 editorialItemFromCache:(id)a4 completion:(id)a5
+- (void)downloadArticleWithArticleID:(id)d editorialItemFromCache:(id)cache completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FRArticleEditorialItemDownloader *)self articleController];
-  v12 = [v11 articleWithID:v8 forceArticleUpdate:1 qualityOfService:25 relativePriority:1];
+  dCopy = d;
+  cacheCopy = cache;
+  completionCopy = completion;
+  articleController = [(FRArticleEditorialItemDownloader *)self articleController];
+  v12 = [articleController articleWithID:dCopy forceArticleUpdate:1 qualityOfService:25 relativePriority:1];
 
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
@@ -176,11 +176,11 @@ LABEL_11:
   objc_copyWeak(&v22, &location);
   v13 = v12;
   v18 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v21 = v14;
-  v15 = v9;
+  v15 = cacheCopy;
   v19 = v15;
-  v16 = v8;
+  v16 = dCopy;
   v20 = v16;
   [v13 performBlockWhenContentIsLoaded:v17];
 
@@ -188,42 +188,42 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)loadArticleMetadataWithHeadline:(id)a3 editorialItemFromCache:(id)a4 content:(id)a5 articleModifiedDate:(id)a6 completion:(id)a7
+- (void)loadArticleMetadataWithHeadline:(id)headline editorialItemFromCache:(id)cache content:(id)content articleModifiedDate:(id)date completion:(id)completion
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
-  v16 = a3;
-  v17 = [v16 articleID];
+  cacheCopy = cache;
+  dateCopy = date;
+  completionCopy = completion;
+  contentCopy = content;
+  headlineCopy = headline;
+  articleID = [headlineCopy articleID];
   v18 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = v17;
+    v35 = articleID;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "ToC Editorial Manager: Download flint data initiated for articleID: %{public}@", buf, 0xCu);
   }
 
-  v19 = [(FRArticleEditorialItemDownloader *)self flintDataProviderFactory];
-  v20 = [v15 anfContent];
+  flintDataProviderFactory = [(FRArticleEditorialItemDownloader *)self flintDataProviderFactory];
+  anfContent = [contentCopy anfContent];
 
-  v21 = [v19 flintDataProviderForANFContent:v20 headline:v16];
+  v21 = [flintDataProviderFactory flintDataProviderForANFContent:anfContent headline:headlineCopy];
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10004D924;
   v28[3] = &unk_1000C51F0;
   v28[4] = self;
-  v29 = v17;
-  v30 = v12;
-  v31 = v13;
+  v29 = articleID;
+  v30 = cacheCopy;
+  v31 = dateCopy;
   v32 = v21;
-  v33 = v14;
+  v33 = completionCopy;
   v22 = v21;
-  v23 = v13;
-  v24 = v12;
-  v25 = v14;
-  v26 = v17;
+  v23 = dateCopy;
+  v24 = cacheCopy;
+  v25 = completionCopy;
+  v26 = articleID;
   v27 = [v22 loadContextWithCompletionBlock:v28];
 }
 

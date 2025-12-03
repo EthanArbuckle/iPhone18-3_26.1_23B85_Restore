@@ -1,10 +1,10 @@
 @interface CKKeepMessagesPreferenceManager
 + (IMSyncedSettingsManaging)syncedSettingsManager;
 + (id)keepMessagesPreference;
-- (void)addSyncedSettingObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5;
+- (void)addSyncedSettingObserver:(id)observer selector:(SEL)selector key:(int64_t)key;
 - (void)dealloc;
-- (void)removeSyncedSettingObserver:(id)a3 key:(int64_t)a4;
-- (void)updateKeepMessagesPreference:(id)a3;
+- (void)removeSyncedSettingObserver:(id)observer key:(int64_t)key;
+- (void)updateKeepMessagesPreference:(id)preference;
 @end
 
 @implementation CKKeepMessagesPreferenceManager
@@ -17,11 +17,11 @@
   [(CKKeepMessagesPreferenceManager *)&v3 dealloc];
 }
 
-- (void)updateKeepMessagesPreference:(id)a3
+- (void)updateKeepMessagesPreference:(id)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v4 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v4 setSettingValue:v3 forKey:0];
+  [v4 setSettingValue:preferenceCopy forKey:0];
 }
 
 + (id)keepMessagesPreference
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (void)addSyncedSettingObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5
+- (void)addSyncedSettingObserver:(id)observer selector:(SEL)selector key:(int64_t)key
 {
-  v7 = a3;
+  observerCopy = observer;
   v8 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v8 addObserver:v7 selector:a4 key:a5];
+  [v8 addObserver:observerCopy selector:selector key:key];
 }
 
-- (void)removeSyncedSettingObserver:(id)a3 key:(int64_t)a4
+- (void)removeSyncedSettingObserver:(id)observer key:(int64_t)key
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v6 removeObserver:v5 key:a4];
+  [v6 removeObserver:observerCopy key:key];
 }
 
 + (IMSyncedSettingsManaging)syncedSettingsManager

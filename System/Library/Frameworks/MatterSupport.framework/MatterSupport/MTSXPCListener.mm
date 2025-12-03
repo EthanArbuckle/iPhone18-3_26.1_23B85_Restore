@@ -1,6 +1,6 @@
 @interface MTSXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MTSXPCListener)initWithXPCListener:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MTSXPCListener)initWithXPCListener:(id)listener;
 - (MTSXPCListenerDelegate)delegate;
 - (void)start;
 @end
@@ -14,39 +14,39 @@
   return WeakRetained;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [[MTSXPCConnection alloc] initWithXPCConnection:v5];
+  connectionCopy = connection;
+  v6 = [[MTSXPCConnection alloc] initWithXPCConnection:connectionCopy];
 
-  v7 = [(MTSXPCListener *)self delegate];
-  LOBYTE(self) = [v7 listener:self shouldAcceptNewConnection:v6];
+  delegate = [(MTSXPCListener *)self delegate];
+  LOBYTE(self) = [delegate listener:self shouldAcceptNewConnection:v6];
 
   return self;
 }
 
 - (void)start
 {
-  v3 = [(MTSXPCListener *)self xpcListener];
-  [v3 setDelegate:self];
+  xpcListener = [(MTSXPCListener *)self xpcListener];
+  [xpcListener setDelegate:self];
 
-  v4 = [(MTSXPCListener *)self xpcListener];
-  [v4 resume];
+  xpcListener2 = [(MTSXPCListener *)self xpcListener];
+  [xpcListener2 resume];
 }
 
-- (MTSXPCListener)initWithXPCListener:(id)a3
+- (MTSXPCListener)initWithXPCListener:(id)listener
 {
-  v5 = a3;
-  if (v5)
+  listenerCopy = listener;
+  if (listenerCopy)
   {
-    v6 = v5;
+    v6 = listenerCopy;
     v12.receiver = self;
     v12.super_class = MTSXPCListener;
     v7 = [(MTSXPCListener *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_xpcListener, a3);
+      objc_storeStrong(&v7->_xpcListener, listener);
     }
 
     return v8;

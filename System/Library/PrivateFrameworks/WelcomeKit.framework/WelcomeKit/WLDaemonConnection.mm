@@ -1,7 +1,7 @@
 @interface WLDaemonConnection
 - (WLDaemonConnection)init;
 - (id)daemonConnection;
-- (id)daemonWithErrorHandler:(id)a3;
+- (id)daemonWithErrorHandler:(id)handler;
 - (void)invalidateDaemonConnection;
 @end
 
@@ -100,19 +100,19 @@ uint64_t __38__WLDaemonConnection_daemonConnection__block_invoke_2(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)daemonWithErrorHandler:(id)a3
+- (id)daemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WLDaemonConnection *)self daemonConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  daemonConnection = [(WLDaemonConnection *)self daemonConnection];
+  v6 = [daemonConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (void)invalidateDaemonConnection
 {
-  v2 = [(WLDaemonConnection *)self daemonConnection];
-  [v2 invalidate];
+  daemonConnection = [(WLDaemonConnection *)self daemonConnection];
+  [daemonConnection invalidate];
 }
 
 @end

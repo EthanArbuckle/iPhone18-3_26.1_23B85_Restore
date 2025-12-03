@@ -1,13 +1,13 @@
 @interface PXGMetalOffscreenTexturesStore
 - (PXGMetalOffscreenTexturesStore)init;
-- (id)_queue_checkoutOffscreenTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4;
-- (id)_queue_loadTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4;
-- (id)checkoutOffscreenTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4;
-- (void)_queue_preloadTexturesCount:(int64_t)a3;
+- (id)_queue_checkoutOffscreenTextureWithSize:(id *)size pixelFormat:(unint64_t)format;
+- (id)_queue_loadTextureWithSize:(id *)size pixelFormat:(unint64_t)format;
+- (id)checkoutOffscreenTextureWithSize:(id *)size pixelFormat:(unint64_t)format;
+- (void)_queue_preloadTexturesCount:(int64_t)count;
 - (void)_queue_removeAllTextures;
-- (void)_queue_willRenderFrameWithDevice:(id)a3 size:(id *)a4 sampleCount:(int64_t)a5 pixelFormat:(unint64_t)a6 preloadTexturesCount:(int64_t)a7;
+- (void)_queue_willRenderFrameWithDevice:(id)device size:(id *)size sampleCount:(int64_t)count pixelFormat:(unint64_t)format preloadTexturesCount:(int64_t)texturesCount;
 - (void)removeAllTextures;
-- (void)willRenderFrameWithDevice:(id)a3 size:(id *)a4 sampleCount:(int64_t)a5 pixelFormat:(unint64_t)a6 preloadTexturesCount:(int64_t)a7;
+- (void)willRenderFrameWithDevice:(id)device size:(id *)size sampleCount:(int64_t)count pixelFormat:(unint64_t)format preloadTexturesCount:(int64_t)texturesCount;
 @end
 
 @implementation PXGMetalOffscreenTexturesStore
@@ -34,9 +34,9 @@
     queue_usedTextures = v2->_queue_usedTextures;
     v2->_queue_usedTextures = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     queue_aliveTextures = v2->_queue_aliveTextures;
-    v2->_queue_aliveTextures = v11;
+    v2->_queue_aliveTextures = weakObjectsHashTable;
   }
 
   return v2;
@@ -51,7 +51,7 @@
   [(NSHashTable *)queue_aliveTextures removeAllObjects];
 }
 
-- (id)_queue_loadTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4
+- (id)_queue_loadTextureWithSize:(id *)size pixelFormat:(unint64_t)format
 {
   v27 = *MEMORY[0x277D85DE8];
   v21 = 0u;
@@ -76,9 +76,9 @@
         v12 = *(*(&v21 + 1) + 8 * i);
         if (v12)
         {
-          *buf = *&a3->var0;
-          *&buf[16] = a3->var2;
-          if (_textureMatchesSize(v12, buf, a4) && ([(NSMutableSet *)self->_queue_loadedTextures containsObject:v12, v21]& 1) == 0 && ![(NSMutableSet *)self->_queue_usedTextures containsObject:v12])
+          *buf = *&size->var0;
+          *&buf[16] = size->var2;
+          if (_textureMatchesSize(v12, buf, format) && ([(NSMutableSet *)self->_queue_loadedTextures containsObject:v12, v21]& 1) == 0 && ![(NSMutableSet *)self->_queue_usedTextures containsObject:v12])
           {
             v17 = v12;
             goto LABEL_25;
@@ -96,9 +96,9 @@
     }
   }
 
-  v13 = [MEMORY[0x277CCACC8] isMainThread];
-  var0 = a3->var0;
-  if (v13 && var0 == self->_queue_size.width && a3->var1 == self->_queue_size.height && a3->var2 == self->_queue_size.depth)
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
+  var0 = size->var0;
+  if (isMainThread && var0 == self->_queue_size.width && size->var1 == self->_queue_size.height && size->var2 == self->_queue_size.depth)
   {
     v15 = PXGTungstenGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -107,10 +107,10 @@
       _os_log_impl(&dword_21AD38000, v15, OS_LOG_TYPE_DEFAULT, "Warning, allocating offscreen texture on the main thread.", buf, 2u);
     }
 
-    var0 = a3->var0;
+    var0 = size->var0;
   }
 
-  v7 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a4 width:var0 height:a3->var1 mipmapped:0, v21];
+  v7 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:var0 height:size->var1 mipmapped:0, v21];
   [(NSHashTable *)v7 setSampleCount:self->_queue_sampleCount];
   if (self->_queue_sampleCount >= 2)
   {
@@ -154,7 +154,7 @@ LABEL_25:
   return v17;
 }
 
-- (id)_queue_checkoutOffscreenTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4
+- (id)_queue_checkoutOffscreenTextureWithSize:(id *)size pixelFormat:(unint64_t)format
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -177,9 +177,9 @@ LABEL_3:
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
-      v15 = *&a3->var0;
-      var2 = a3->var2;
-      if (_textureMatchesSize(v12, &v15, a4) && ![(NSMutableSet *)self->_queue_usedTextures containsObject:v12])
+      v15 = *&size->var0;
+      var2 = size->var2;
+      if (_textureMatchesSize(v12, &v15, format) && ![(NSMutableSet *)self->_queue_usedTextures containsObject:v12])
       {
         break;
       }
@@ -209,9 +209,9 @@ LABEL_3:
 LABEL_10:
   }
 
-  v15 = *&a3->var0;
-  var2 = a3->var2;
-  v13 = [(PXGMetalOffscreenTexturesStore *)self _queue_loadTextureWithSize:&v15 pixelFormat:a4];
+  v15 = *&size->var0;
+  var2 = size->var2;
+  v13 = [(PXGMetalOffscreenTexturesStore *)self _queue_loadTextureWithSize:&v15 pixelFormat:format];
   if (v13)
   {
 LABEL_13:
@@ -221,7 +221,7 @@ LABEL_13:
   return v13;
 }
 
-- (void)_queue_preloadTexturesCount:(int64_t)a3
+- (void)_queue_preloadTexturesCount:(int64_t)count
 {
   p_queue_size = &self->_queue_size;
   if (*&self->_queue_size.width != 0)
@@ -230,14 +230,14 @@ LABEL_13:
     [v6 offscreenTextureMaximumLifeTime];
     v8 = v7;
 
-    if ([(NSMutableSet *)self->_queue_loadedTextures count]> a3)
+    if ([(NSMutableSet *)self->_queue_loadedTextures count]> count)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEA78]);
-      while ([(NSMutableSet *)self->_queue_loadedTextures count]> a3)
+      while ([(NSMutableSet *)self->_queue_loadedTextures count]> count)
       {
-        v10 = [(NSMutableSet *)self->_queue_loadedTextures anyObject];
-        [(NSMutableSet *)self->_queue_loadedTextures removeObject:v10];
-        [v9 setObject:v10 forKey:v10];
+        anyObject = [(NSMutableSet *)self->_queue_loadedTextures anyObject];
+        [(NSMutableSet *)self->_queue_loadedTextures removeObject:anyObject];
+        [v9 setObject:anyObject forKey:anyObject];
       }
 
       v11 = dispatch_time(0, (v8 * 1000000000.0));
@@ -253,7 +253,7 @@ LABEL_13:
 
     do
     {
-      if ([(NSMutableSet *)self->_queue_loadedTextures count]>= a3)
+      if ([(NSMutableSet *)self->_queue_loadedTextures count]>= count)
       {
         break;
       }
@@ -268,27 +268,27 @@ LABEL_13:
   }
 }
 
-- (void)_queue_willRenderFrameWithDevice:(id)a3 size:(id *)a4 sampleCount:(int64_t)a5 pixelFormat:(unint64_t)a6 preloadTexturesCount:(int64_t)a7
+- (void)_queue_willRenderFrameWithDevice:(id)device size:(id *)size sampleCount:(int64_t)count pixelFormat:(unint64_t)format preloadTexturesCount:(int64_t)texturesCount
 {
-  v12 = a3;
+  deviceCopy = device;
   queue_device = self->_queue_device;
-  if (queue_device != v12 || (self->_queue_size.width == a4->var0 ? (v14 = self->_queue_size.height == a4->var1) : (v14 = 0), v14 ? (v15 = self->_queue_size.depth == a4->var2) : (v15 = 0), !v15 || self->_queue_sampleCount != a5 || self->_queue_pixelFormat != a6))
+  if (queue_device != deviceCopy || (self->_queue_size.width == size->var0 ? (v14 = self->_queue_size.height == size->var1) : (v14 = 0), v14 ? (v15 = self->_queue_size.depth == size->var2) : (v15 = 0), !v15 || self->_queue_sampleCount != count || self->_queue_pixelFormat != format))
   {
     [(PXGMetalOffscreenTexturesStore *)self _queue_removeAllTextures];
     queue_device = self->_queue_device;
   }
 
-  self->_queue_device = v12;
-  v16 = v12;
+  self->_queue_device = deviceCopy;
+  v16 = deviceCopy;
 
-  var2 = a4->var2;
-  *&self->_queue_size.width = *&a4->var0;
+  var2 = size->var2;
+  *&self->_queue_size.width = *&size->var0;
   self->_queue_size.depth = var2;
-  self->_queue_sampleCount = a5;
-  self->_queue_pixelFormat = a6;
+  self->_queue_sampleCount = count;
+  self->_queue_pixelFormat = format;
   [(NSMutableSet *)self->_queue_usedTextures removeAllObjects];
 
-  [(PXGMetalOffscreenTexturesStore *)self _queue_preloadTexturesCount:a7];
+  [(PXGMetalOffscreenTexturesStore *)self _queue_preloadTexturesCount:texturesCount];
 }
 
 - (void)removeAllTextures
@@ -302,12 +302,12 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-- (id)checkoutOffscreenTextureWithSize:(id *)a3 pixelFormat:(unint64_t)a4
+- (id)checkoutOffscreenTextureWithSize:(id *)size pixelFormat:(unint64_t)format
 {
-  if (a3->var2 != 1)
+  if (size->var2 != 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGMetalOffscreenTexturesStore.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"size.depth == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalOffscreenTexturesStore.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"size.depth == 1"}];
   }
 
   v16 = 0;
@@ -323,9 +323,9 @@ LABEL_13:
   block[3] = &unk_2782AB838;
   block[4] = self;
   block[5] = &v16;
-  v13 = *&a3->var0;
-  var2 = a3->var2;
-  v15 = a4;
+  v13 = *&size->var0;
+  var2 = size->var2;
+  formatCopy = format;
   dispatch_sync(queue, block);
   v8 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -345,13 +345,13 @@ void __79__PXGMetalOffscreenTexturesStore_checkoutOffscreenTextureWithSize_pixel
   *(v5 + 40) = v4;
 }
 
-- (void)willRenderFrameWithDevice:(id)a3 size:(id *)a4 sampleCount:(int64_t)a5 pixelFormat:(unint64_t)a6 preloadTexturesCount:(int64_t)a7
+- (void)willRenderFrameWithDevice:(id)device size:(id *)size sampleCount:(int64_t)count pixelFormat:(unint64_t)format preloadTexturesCount:(int64_t)texturesCount
 {
-  v13 = a3;
-  if (a4->var2 != 1)
+  deviceCopy = device;
+  if (size->var2 != 1)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXGMetalOffscreenTexturesStore.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"size.depth == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalOffscreenTexturesStore.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"size.depth == 1"}];
   }
 
   queue = self->_queue;
@@ -360,13 +360,13 @@ void __79__PXGMetalOffscreenTexturesStore_checkoutOffscreenTextureWithSize_pixel
   block[2] = __110__PXGMetalOffscreenTexturesStore_willRenderFrameWithDevice_size_sampleCount_pixelFormat_preloadTexturesCount___block_invoke;
   block[3] = &unk_2782A9108;
   block[4] = self;
-  v18 = v13;
-  v19 = *&a4->var0;
-  var2 = a4->var2;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v15 = v13;
+  v18 = deviceCopy;
+  v19 = *&size->var0;
+  var2 = size->var2;
+  countCopy = count;
+  formatCopy = format;
+  texturesCountCopy = texturesCount;
+  v15 = deviceCopy;
   dispatch_async(queue, block);
 }
 

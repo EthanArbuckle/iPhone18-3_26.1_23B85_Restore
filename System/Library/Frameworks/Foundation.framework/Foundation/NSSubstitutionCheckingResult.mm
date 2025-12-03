@@ -1,20 +1,20 @@
 @interface NSSubstitutionCheckingResult
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3;
-- (NSSubstitutionCheckingResult)initWithCoder:(id)a3;
-- (NSSubstitutionCheckingResult)initWithRange:(_NSRange)a3 replacementString:(id)a4;
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset;
+- (NSSubstitutionCheckingResult)initWithCoder:(id)coder;
+- (NSSubstitutionCheckingResult)initWithRange:(_NSRange)range replacementString:(id)string;
 - (_NSRange)range;
 - (id)description;
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3;
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSubstitutionCheckingResult
 
-- (NSSubstitutionCheckingResult)initWithRange:(_NSRange)a3 replacementString:(id)a4
+- (NSSubstitutionCheckingResult)initWithRange:(_NSRange)range replacementString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = NSSubstitutionCheckingResult;
@@ -24,7 +24,7 @@
   {
     v7->_range.location = location;
     v7->_range.length = length;
-    v7->_replacementString = [a4 copy];
+    v7->_replacementString = [string copy];
   }
 
   return v8;
@@ -47,36 +47,36 @@
   return [NSString stringWithFormat:@"%@{%@}", [(NSTextCheckingResult *)&v3 description], [(NSSubstitutionCheckingResult *)self replacementString]];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSSubstitutionCheckingResult *)self replacementString];
-  v6 = [a3 allowsKeyedCoding];
-  [(NSTextCheckingResult *)self encodeRangeWithCoder:a3];
-  if (v6)
+  replacementString = [(NSSubstitutionCheckingResult *)self replacementString];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
+  [(NSTextCheckingResult *)self encodeRangeWithCoder:coder];
+  if (allowsKeyedCoding)
   {
 
-    [a3 encodeObject:v5 forKey:@"NSReplacementString"];
+    [coder encodeObject:replacementString forKey:@"NSReplacementString"];
   }
 
   else
   {
 
-    [a3 encodeObject:v5];
+    [coder encodeObject:replacementString];
   }
 }
 
-- (NSSubstitutionCheckingResult)initWithCoder:(id)a3
+- (NSSubstitutionCheckingResult)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v7;
-    v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSReplacementString"];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSReplacementString"];
   }
 
   else
   {
-    v10 = [a3 versionForClassName:@"NSTextCheckingResult"];
+    v10 = [coder versionForClassName:@"NSTextCheckingResult"];
     if (v10 != 1)
     {
       v13 = v10;
@@ -86,12 +86,12 @@
       return 0;
     }
 
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v11;
-    v9 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
   }
 
-  return [(NSSubstitutionCheckingResult *)self initWithRange:v6 replacementString:v8, v9];
+  return [(NSSubstitutionCheckingResult *)self initWithRange:v6 replacementString:v8, decodeObject];
 }
 
 - (_NSRange)range
@@ -104,24 +104,24 @@
   return result;
 }
 
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset
 {
-  v6 = [(NSSubstitutionCheckingResult *)self range];
+  range = [(NSSubstitutionCheckingResult *)self range];
   v8 = v7;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (range != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && v6 < -a3)
+    if (offset < 0 && range < -offset)
     {
-      v12 = v6;
+      v12 = range;
       v13 = _NSFullMethodName(self, a2);
       v16.location = v12;
       v16.length = v8;
-      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, a3, NSStringFromRange(v16)), 0}];
+      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, offset, NSStringFromRange(v16)), 0}];
       objc_exception_throw(v14);
     }
 
-    v9 = v6 + a3;
+    v9 = range + offset;
   }
 
   v10 = [objc_alloc(objc_opt_class()) initWithRange:v9 replacementString:{v7, -[NSSubstitutionCheckingResult replacementString](self, "replacementString")}];
@@ -129,20 +129,20 @@
   return v10;
 }
 
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset
 {
   location = self->_range.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && location < -a3)
+    if (offset < 0 && location < -offset)
     {
       p_range = &self->_range;
       v7 = _NSFullMethodName(self, a2);
-      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, a3, NSStringFromRange(*p_range)), 0}];
+      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, offset, NSStringFromRange(*p_range)), 0}];
       objc_exception_throw(v8);
     }
 
-    self->_range.location = location + a3;
+    self->_range.location = location + offset;
   }
 
   return 1;

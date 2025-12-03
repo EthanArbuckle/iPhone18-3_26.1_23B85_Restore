@@ -1,8 +1,8 @@
 @interface _GCDevicePhysicalInputJoystickElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputJoystickElementParameters)init;
 - (double)directionPressedThreshold;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)downSources;
 - (id)leftSources;
 - (id)rightSources;
@@ -23,15 +23,15 @@
 - (uint64_t)setEventXValueField:(uint64_t)result;
 - (uint64_t)setEventYValueField:(uint64_t)result;
 - (uint64_t)touch;
-- (void)setDownSources:(uint64_t)a3;
-- (void)setLeftSources:(uint64_t)a3;
-- (void)setPress:(uint64_t)a1;
-- (void)setRightSources:(uint64_t)a3;
-- (void)setTouch:(uint64_t)a1;
-- (void)setUpSources:(uint64_t)a3;
-- (void)setXSources:(uint64_t)a3;
-- (void)setXySources:(uint64_t)a3;
-- (void)setYSources:(uint64_t)a3;
+- (void)setDownSources:(uint64_t)sources;
+- (void)setLeftSources:(uint64_t)sources;
+- (void)setPress:(uint64_t)press;
+- (void)setRightSources:(uint64_t)sources;
+- (void)setTouch:(uint64_t)touch;
+- (void)setUpSources:(uint64_t)sources;
+- (void)setXSources:(uint64_t)sources;
+- (void)setXySources:(uint64_t)sources;
+- (void)setYSources:(uint64_t)sources;
 @end
 
 @implementation _GCDevicePhysicalInputJoystickElementParameters
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _GCDevicePhysicalInputJoystickElementParameters;
-  v4 = [(_GCDevicePhysicalInputElementParameters *)&v10 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputElementParameters *)&v10 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_xySources);
   objc_storeStrong(v4 + 7, self->_xSources);
   objc_storeStrong(v4 + 8, self->_ySources);
@@ -77,26 +77,26 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = _GCDevicePhysicalInputJoystickElementParameters;
-  if (![(_GCDevicePhysicalInputElementParameters *)&v16 isEqual:v4])
+  if (![(_GCDevicePhysicalInputElementParameters *)&v16 isEqual:equalCopy])
   {
     goto LABEL_26;
   }
 
   xySources = self->_xySources;
-  if (xySources != v4[6] && ![(NSSet *)xySources isEqual:?])
+  if (xySources != equalCopy[6] && ![(NSSet *)xySources isEqual:?])
   {
     goto LABEL_26;
   }
 
-  if (((xSources = self->_xSources, xSources == v4[7]) || [(NSSet *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == v4[8]) || [(NSSet *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == v4[9]) || [(NSSet *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == v4[10]) || [(NSSet *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == v4[11]) || [(NSSet *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == v4[12]) || [(NSSet *)rightSources isEqual:?]) && self->_analog == *(v4 + 40) && self->_directionPressedThreshold == *(v4 + 11) && self->_eventXValueField == v4[15] && self->_eventYValueField == v4[16] && self->_eventPressValueField == v4[17] && self->_eventTouchValueField == v4[18] && ((press = self->_press, press == v4[13]) || [(_GCDevicePhysicalInputPressInputParameters *)press isEqual:?]))
+  if (((xSources = self->_xSources, xSources == equalCopy[7]) || [(NSSet *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == equalCopy[8]) || [(NSSet *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == equalCopy[9]) || [(NSSet *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == equalCopy[10]) || [(NSSet *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == equalCopy[11]) || [(NSSet *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == equalCopy[12]) || [(NSSet *)rightSources isEqual:?]) && self->_analog == *(equalCopy + 40) && self->_directionPressedThreshold == *(equalCopy + 11) && self->_eventXValueField == equalCopy[15] && self->_eventYValueField == equalCopy[16] && self->_eventPressValueField == equalCopy[17] && self->_eventTouchValueField == equalCopy[18] && ((press = self->_press, press == equalCopy[13]) || [(_GCDevicePhysicalInputPressInputParameters *)press isEqual:?]))
   {
     touch = self->_touch;
-    if (touch == v4[14])
+    if (touch == equalCopy[14])
     {
       v14 = 1;
     }
@@ -158,9 +158,9 @@ LABEL_26:
 
 - (uint64_t)isAnalog
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else
@@ -173,24 +173,24 @@ LABEL_26:
 
 - (double)directionPressedThreshold
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 44);
+  LODWORD(result) = *(self + 44);
   return result;
 }
 
 - (id)xySources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[7];
+    v6 = self[7];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -206,22 +206,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)xSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[7];
+    v6 = self[7];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -237,22 +237,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)ySources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[8];
+    v6 = self[8];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -268,22 +268,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)upSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[9];
+    v6 = self[9];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -299,22 +299,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)downSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[11];
+    v6 = self[11];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -330,22 +330,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)leftSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[10];
+    v6 = self[10];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -361,22 +361,22 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)rightSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[12];
+    v6 = self[12];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -392,11 +392,11 @@ LABEL_26:
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)press
@@ -419,23 +419,23 @@ LABEL_26:
   return result;
 }
 
-- (void)setPress:(uint64_t)a1
+- (void)setPress:(uint64_t)press
 {
   v6 = a2;
-  if (a1)
+  if (press)
   {
     v14 = v6;
     v7 = [v6 copy];
-    v8 = *(a1 + 104);
-    *(a1 + 104) = v7;
+    v8 = *(press + 104);
+    *(press + 104) = v7;
 
-    v9 = [(_GCDevicePhysicalInputPressInputParameters *)*(a1 + 104) sources];
+    sources = [(_GCDevicePhysicalInputPressInputParameters *)*(press + 104) sources];
 
     v6 = v14;
-    if (!v9)
+    if (!sources)
     {
       v10 = MEMORY[0x1E69A06B8];
-      [(_GCDevicePhysicalInputElementParameters *)a1 aliases];
+      [(_GCDevicePhysicalInputElementParameters *)press aliases];
       objc_claimAutoreleasedReturnValue();
       v11 = OUTLINED_FUNCTION_17();
       [(_GCDevicePhysicalInputElementParameters *)v11 localizedName];
@@ -446,30 +446,30 @@ LABEL_26:
       [OUTLINED_FUNCTION_0_7() sourceWithElementAliases:? localizedName:? symbol:?];
       objc_claimAutoreleasedReturnValue();
       v13 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
-      [(_GCDevicePhysicalInputPressInputParameters *)*(a1 + 104) setSources:v13];
+      [(_GCDevicePhysicalInputPressInputParameters *)*(press + 104) setSources:v13];
 
       v6 = v14;
     }
   }
 }
 
-- (void)setTouch:(uint64_t)a1
+- (void)setTouch:(uint64_t)touch
 {
   v6 = a2;
-  if (a1)
+  if (touch)
   {
     v14 = v6;
     v7 = [v6 copy];
-    v8 = *(a1 + 112);
-    *(a1 + 112) = v7;
+    v8 = *(touch + 112);
+    *(touch + 112) = v7;
 
-    v9 = [(_GCDevicePhysicalInputTouchInputParameters *)*(a1 + 112) sources];
+    sources = [(_GCDevicePhysicalInputTouchInputParameters *)*(touch + 112) sources];
 
     v6 = v14;
-    if (!v9)
+    if (!sources)
     {
       v10 = MEMORY[0x1E69A06B8];
-      [(_GCDevicePhysicalInputElementParameters *)a1 aliases];
+      [(_GCDevicePhysicalInputElementParameters *)touch aliases];
       objc_claimAutoreleasedReturnValue();
       v11 = OUTLINED_FUNCTION_17();
       [(_GCDevicePhysicalInputElementParameters *)v11 localizedName];
@@ -480,66 +480,66 @@ LABEL_26:
       [OUTLINED_FUNCTION_0_7() sourceWithElementAliases:? localizedName:? symbol:?];
       objc_claimAutoreleasedReturnValue();
       v13 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
-      [(_GCDevicePhysicalInputTouchInputParameters *)*(a1 + 112) setSources:v13];
+      [(_GCDevicePhysicalInputTouchInputParameters *)*(touch + 112) setSources:v13];
 
       v6 = v14;
     }
   }
 }
 
-- (void)setXySources:(uint64_t)a3
+- (void)setXySources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 48);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 48);
   }
 }
 
-- (void)setXSources:(uint64_t)a3
+- (void)setXSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 56);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 56);
   }
 }
 
-- (void)setYSources:(uint64_t)a3
+- (void)setYSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 64);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 64);
   }
 }
 
-- (void)setUpSources:(uint64_t)a3
+- (void)setUpSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 72);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 72);
   }
 }
 
-- (void)setLeftSources:(uint64_t)a3
+- (void)setLeftSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 80);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 80);
   }
 }
 
-- (void)setDownSources:(uint64_t)a3
+- (void)setDownSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 88);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 88);
   }
 }
 
-- (void)setRightSources:(uint64_t)a3
+- (void)setRightSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 96);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 96);
   }
 }
 

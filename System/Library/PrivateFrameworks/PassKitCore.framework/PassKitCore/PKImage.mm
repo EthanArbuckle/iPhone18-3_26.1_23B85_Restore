@@ -1,34 +1,34 @@
 @interface PKImage
-+ (id)URLForImageNamed:(id)a3 inBundle:(id)a4 scale:(double *)a5 preferredScreenScale:(double)a6 suffix:(id)a7;
-+ (id)hashOfImageNamed:(id)a3 inBundle:(id)a4;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 screenScale:(double)a5 suffix:(id)a6;
-+ (id)newImageNamed:(id)a3 inBundle:(id)a4 screenScale:(double)a5 suffix:(id)a6;
-+ (id)passesImageNamed:(id)a3;
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImage:(id)a3;
++ (id)URLForImageNamed:(id)named inBundle:(id)bundle scale:(double *)scale preferredScreenScale:(double)screenScale suffix:(id)suffix;
++ (id)hashOfImageNamed:(id)named inBundle:(id)bundle;
++ (id)imageNamed:(id)named inBundle:(id)bundle;
++ (id)imageNamed:(id)named inBundle:(id)bundle screenScale:(double)scale suffix:(id)suffix;
++ (id)newImageNamed:(id)named inBundle:(id)bundle screenScale:(double)scale suffix:(id)suffix;
++ (id)passesImageNamed:(id)named;
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImage:(id)image;
 - (CGImage)imageRef;
-- (CGSize)downscaleSizeMatchingScale:(double)a3;
+- (CGSize)downscaleSizeMatchingScale:(double)scale;
 - (CGSize)size;
 - (NSData)imageData;
 - (PKEdgeInsets)capInsets;
 - (PKImage)imageWithoutCapInsets;
 - (PKImage)init;
-- (PKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (PKImage)initWithCoder:(id)a3;
-- (PKImage)initWithData:(id)a3 scale:(double)a4;
-- (id)blurredImageWithRadius:(unint64_t)a3 constraints:(id)a4;
-- (id)croppedImageWithInsets:(PKEdgeInsets)a3;
+- (PKImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
+- (PKImage)initWithCoder:(id)coder;
+- (PKImage)initWithData:(id)data scale:(double)scale;
+- (id)blurredImageWithRadius:(unint64_t)radius constraints:(id)constraints;
+- (id)croppedImageWithInsets:(PKEdgeInsets)insets;
 - (id)imageHash;
-- (id)resizableImageByStretchingWithCapInsets:(PKEdgeInsets)a3;
+- (id)resizableImageByStretchingWithCapInsets:(PKEdgeInsets)insets;
 - (id)resizableImageByTilingCenterPixel;
-- (id)resizableImageByTilingWithCapInsets:(PKEdgeInsets)a3;
+- (id)resizableImageByTilingWithCapInsets:(PKEdgeInsets)insets;
 - (int64_t)orientation;
 - (void)_queue_createImageRefIfNecessary;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)a4 withBlendMode:(int)a5 alpha:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)context withBlendMode:(int)mode alpha:(double)alpha;
+- (void)encodeWithCoder:(id)coder;
 - (void)preheatBitmapData;
 @end
 
@@ -180,13 +180,13 @@
 
 - (CGSize)size
 {
-  v3 = [(PKImage *)self imageRef];
+  imageRef = [(PKImage *)self imageRef];
   [(PKImage *)self scale];
   v5 = v4;
-  v6 = CGImageGetWidth(v3) / v4;
-  v7 = CGImageGetHeight(v3) / v5;
-  v8 = [(PKImage *)self orientation];
-  if ((v8 - 1) >= 4)
+  v6 = CGImageGetWidth(imageRef) / v4;
+  v7 = CGImageGetHeight(imageRef) / v5;
+  orientation = [(PKImage *)self orientation];
+  if ((orientation - 1) >= 4)
   {
     v9 = v7;
   }
@@ -196,7 +196,7 @@
     v9 = v6;
   }
 
-  if ((v8 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
     v10 = v6;
   }
@@ -211,15 +211,15 @@
   return result;
 }
 
-+ (id)URLForImageNamed:(id)a3 inBundle:(id)a4 scale:(double *)a5 preferredScreenScale:(double)a6 suffix:(id)a7
++ (id)URLForImageNamed:(id)named inBundle:(id)bundle scale:(double *)scale preferredScreenScale:(double)screenScale suffix:(id)suffix
 {
   v64[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  namedCopy = named;
+  bundleCopy = bundle;
+  suffixCopy = suffix;
   v14 = 0;
-  v44 = v12;
-  if (v11 && v12)
+  v44 = bundleCopy;
+  if (namedCopy && bundleCopy)
   {
     v49 = 0;
     v50 = &v49;
@@ -227,13 +227,13 @@
     v52 = __Block_byref_object_copy__6;
     v53 = __Block_byref_object_dispose__6;
     v54 = 0;
-    v15 = [(__CFString *)v11 pathExtension];
-    v40 = a5;
-    if ([(__CFString *)v15 length])
+    pathExtension = [(__CFString *)namedCopy pathExtension];
+    scaleCopy = scale;
+    if ([(__CFString *)pathExtension length])
     {
-      [(__CFString *)v11 stringByDeletingPathExtension];
-      v41 = v15;
-      v11 = v15 = v11;
+      [(__CFString *)namedCopy stringByDeletingPathExtension];
+      v41 = pathExtension;
+      namedCopy = pathExtension = namedCopy;
     }
 
     else
@@ -241,22 +241,22 @@
       v41 = @"png";
     }
 
-    v43 = [(__CFString *)v11 stringByAppendingString:@"@1x"];
-    if (v13)
+    v43 = [(__CFString *)namedCopy stringByAppendingString:@"@1x"];
+    if (suffixCopy)
     {
-      v16 = [(__CFString *)v11 stringByAppendingString:v13];
+      v16 = [(__CFString *)namedCopy stringByAppendingString:suffixCopy];
       v42 = [v16 stringByAppendingString:@"@1x"];
 
-      v17 = [(__CFString *)v11 stringByAppendingString:@"@2x"];
-      v18 = [(__CFString *)v11 stringByAppendingString:v13];
+      v17 = [(__CFString *)namedCopy stringByAppendingString:@"@2x"];
+      v18 = [(__CFString *)namedCopy stringByAppendingString:suffixCopy];
       v19 = [v18 stringByAppendingString:@"@2x"];
 
-      v20 = [(__CFString *)v11 stringByAppendingString:@"@3x"];
-      v21 = [(__CFString *)v11 stringByAppendingString:v13];
+      v20 = [(__CFString *)namedCopy stringByAppendingString:@"@3x"];
+      v21 = [(__CFString *)namedCopy stringByAppendingString:suffixCopy];
       v22 = [v21 stringByAppendingString:@"@3x"];
 
       v62[0] = v42;
-      v62[1] = v11;
+      v62[1] = namedCopy;
       v62[2] = v43;
       v63[0] = &unk_1F23B4AA8;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:3];
@@ -276,9 +276,9 @@
 
     else
     {
-      v42 = [(__CFString *)v11 stringByAppendingString:@"@2x"];
-      v17 = [(__CFString *)v11 stringByAppendingString:@"@3x"];
-      v57[0] = v11;
+      v42 = [(__CFString *)namedCopy stringByAppendingString:@"@2x"];
+      v17 = [(__CFString *)namedCopy stringByAppendingString:@"@3x"];
+      v57[0] = namedCopy;
       v57[1] = v43;
       v58[0] = &unk_1F23B4AA8;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
@@ -303,50 +303,50 @@
     v27 = v41;
     v47 = v27;
     v28 = _Block_copy(aBlock);
-    if (a6 <= 0.0)
+    if (screenScale <= 0.0)
     {
-      a6 = PKScreenScale();
+      screenScale = PKScreenScale();
     }
 
-    v29 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+    v29 = [MEMORY[0x1E696AD98] numberWithDouble:screenScale];
     v30 = [v26 objectForKey:v29];
     v28[2](v28, v30);
 
     if (v50[5])
     {
-      v31 = a6;
+      screenScaleCopy3 = screenScale;
     }
 
     else
     {
-      v31 = a6;
+      screenScaleCopy3 = screenScale;
       do
       {
-        v31 = v31 + 1.0;
-        if (v31 > 3.0)
+        screenScaleCopy3 = screenScaleCopy3 + 1.0;
+        if (screenScaleCopy3 > 3.0)
         {
           break;
         }
 
-        v32 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
+        v32 = [MEMORY[0x1E696AD98] numberWithDouble:screenScaleCopy3];
         v33 = [v26 objectForKey:v32];
         v34 = (v28[2])(v28, v33);
-        v35 = v31 >= 3.0 ? 1 : v34;
+        v35 = screenScaleCopy3 >= 3.0 ? 1 : v34;
       }
 
       while (!v35);
       if (!v50[5])
       {
-        v31 = a6;
+        screenScaleCopy3 = screenScale;
         do
         {
-          v31 = v31 + -1.0;
-          if (v31 <= 0.0)
+          screenScaleCopy3 = screenScaleCopy3 + -1.0;
+          if (screenScaleCopy3 <= 0.0)
           {
             break;
           }
 
-          v36 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
+          v36 = [MEMORY[0x1E696AD98] numberWithDouble:screenScaleCopy3];
           v37 = [v26 objectForKey:v36];
           v38 = (v28[2])(v28, v37);
         }
@@ -355,9 +355,9 @@
       }
     }
 
-    if (v40)
+    if (scaleCopy)
     {
-      *v40 = v31;
+      *scaleCopy = screenScaleCopy3;
     }
 
     v14 = v50[5];
@@ -417,27 +417,27 @@ LABEL_3:
   return v11;
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4
++ (id)imageNamed:(id)named inBundle:(id)bundle
 {
-  v4 = [a1 newImageNamed:a3 inBundle:a4];
+  v4 = [self newImageNamed:named inBundle:bundle];
 
   return v4;
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 screenScale:(double)a5 suffix:(id)a6
++ (id)imageNamed:(id)named inBundle:(id)bundle screenScale:(double)scale suffix:(id)suffix
 {
-  v6 = [a1 newImageNamed:a3 inBundle:a4 screenScale:a6 suffix:a5];
+  v6 = [self newImageNamed:named inBundle:bundle screenScale:suffix suffix:scale];
 
   return v6;
 }
 
-+ (id)newImageNamed:(id)a3 inBundle:(id)a4 screenScale:(double)a5 suffix:(id)a6
++ (id)newImageNamed:(id)named inBundle:(id)bundle screenScale:(double)scale suffix:(id)suffix
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  namedCopy = named;
+  bundleCopy = bundle;
+  suffixCopy = suffix;
   v21 = 0x3FF0000000000000;
-  v13 = [a1 URLForImageNamed:v10 inBundle:v11 scale:&v21 preferredScreenScale:v12 suffix:a5];
+  v13 = [self URLForImageNamed:namedCopy inBundle:bundleCopy scale:&v21 preferredScreenScale:suffixCopy suffix:scale];
   v14 = *&v21;
   v15 = v13;
   v16 = objc_autoreleasePoolPush();
@@ -457,12 +457,12 @@ LABEL_3:
   return v19;
 }
 
-+ (id)hashOfImageNamed:(id)a3 inBundle:(id)a4
++ (id)hashOfImageNamed:(id)named inBundle:(id)bundle
 {
-  v4 = [a1 newImageNamed:a3 inBundle:a4];
-  v5 = [v4 imageHash];
+  v4 = [self newImageNamed:named inBundle:bundle];
+  imageHash = [v4 imageHash];
 
-  return v5;
+  return imageHash;
 }
 
 - (id)imageHash
@@ -471,19 +471,19 @@ LABEL_3:
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PKImage *)self imageData];
-  v5 = [v4 bytes];
-  if ([v4 length] > 0xFFFFFFFE)
+  imageData = [(PKImage *)self imageData];
+  bytes = [imageData bytes];
+  if ([imageData length] > 0xFFFFFFFE)
   {
     v6 = -1;
   }
 
   else
   {
-    v6 = [v4 length];
+    v6 = [imageData length];
   }
 
-  CC_SHA256_Update(&c, v5, v6);
+  CC_SHA256_Update(&c, bytes, v6);
 
   objc_autoreleasePoolPop(v3);
   data = 30;
@@ -495,64 +495,64 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKImage *)self isEqualToImage:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKImage *)self isEqualToImage:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToImage:(id)a3
+- (BOOL)isEqualToImage:(id)image
 {
-  v4 = a3;
-  v5 = [(PKImage *)self imageHash];
-  v6 = [v4 imageHash];
+  imageCopy = image;
+  imageHash = [(PKImage *)self imageHash];
+  imageHash2 = [imageCopy imageHash];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(imageCopy) = [imageHash isEqual:imageHash2];
+  return imageCopy;
 }
 
-+ (id)passesImageNamed:(id)a3
++ (id)passesImageNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = PKPassKitCoreBundle();
-  v6 = [a1 imageNamed:v4 inBundle:v5];
+  v6 = [self imageNamed:namedCopy inBundle:v5];
 
   return v6;
 }
 
-- (PKImage)initWithData:(id)a3 scale:(double)a4
+- (PKImage)initWithData:(id)data scale:(double)scale
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = [(PKImage *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_imageData, a3);
-    v9->_scale = a4;
+    objc_storeStrong(&v8->_imageData, data);
+    v9->_scale = scale;
   }
 
   return v9;
 }
 
-- (PKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (PKImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
   v8 = [(PKImage *)self init];
   if (v8)
   {
-    if (a3)
+    if (image)
     {
-      v9 = CGImageRetain(a3);
+      v9 = CGImageRetain(image);
     }
 
     else
@@ -561,23 +561,23 @@ LABEL_3:
     }
 
     v8->_imageRef = v9;
-    v8->_scale = a4;
-    v8->_orientation = a5;
+    v8->_scale = scale;
+    v8->_orientation = orientation;
   }
 
   return v8;
 }
 
-- (CGSize)downscaleSizeMatchingScale:(double)a3
+- (CGSize)downscaleSizeMatchingScale:(double)scale
 {
-  if (a3 == 0.0)
+  if (scale == 0.0)
   {
-    a3 = PKScreenScale();
+    scale = PKScreenScale();
   }
 
   scale = self->_scale;
-  v5 = a3 == 0.0 || scale == 0.0;
-  v6 = scale / a3;
+  v5 = scale == 0.0 || scale == 0.0;
+  v6 = scale / scale;
   if (v5)
   {
     v7 = 1.0;
@@ -603,24 +603,24 @@ LABEL_3:
 - (void)preheatBitmapData
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PKImage *)self imageRef];
+  imageRef = [(PKImage *)self imageRef];
   if (objc_opt_respondsToSelector())
   {
-    [(CGImage *)v4 CA_prepareRenderValue];
+    [(CGImage *)imageRef CA_prepareRenderValue];
   }
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)blurredImageWithRadius:(unint64_t)a3 constraints:(id)a4
+- (id)blurredImageWithRadius:(unint64_t)radius constraints:(id)constraints
 {
-  v6 = a4;
+  constraintsCopy = constraints;
   memset(&v32, 0, sizeof(v32));
   v31 = 0uLL;
   v7 = 0;
-  if ([v6 getPixelCropRect:&v32 pixelOutputSize:&v31 forImage:self])
+  if ([constraintsCopy getPixelCropRect:&v32 pixelOutputSize:&v31 forImage:self])
   {
-    [v6 outputScale];
+    [constraintsCopy outputScale];
     v9 = v8;
     __asm { FMOV            V1.2D, #0.5 }
 
@@ -635,8 +635,8 @@ LABEL_3:
     dest.width = CGBitmapContextGetWidth(v16);
     dest.height = CGBitmapContextGetHeight(v16);
     dest.rowBytes = CGBitmapContextGetBytesPerRow(v16);
-    v17 = [(PKImage *)self imageRef];
-    v18 = CGImageCreateWithImageInRect(v17, v32);
+    imageRef = [(PKImage *)self imageRef];
+    v18 = CGImageCreateWithImageInRect(imageRef, v32);
     v19 = *MEMORY[0x1E695EFF8];
     v20 = *(MEMORY[0x1E695EFF8] + 8);
     v34.origin.x = *MEMORY[0x1E695EFF8];
@@ -644,7 +644,7 @@ LABEL_3:
     v34.size = rect;
     CGContextDrawImage(BitmapContext, v34, v18);
     CGImageRelease(v18);
-    v21 = vcvtpd_u64_f64(v9 * a3) | 1;
+    v21 = vcvtpd_u64_f64(v9 * radius) | 1;
     vImageTentConvolve_ARGB8888(&src, &dest, 0, 0, 0, v21, v21, 0, 8u);
     Image = CGBitmapContextCreateImage(v16);
     CGContextRelease(BitmapContext);
@@ -660,12 +660,12 @@ LABEL_3:
       CGImageRelease(Image);
       v24 = CGBitmapContextCreateImage(v23);
       CGContextRelease(v23);
-      LODWORD(v23) = [v6 outputMirrored];
-      v25 = [(PKImage *)self orientation];
-      v26 = v25;
+      LODWORD(v23) = [constraintsCopy outputMirrored];
+      orientation = [(PKImage *)self orientation];
+      v26 = orientation;
       if (v23)
       {
-        v26 = _MirroredOrientation(v25);
+        v26 = _MirroredOrientation(orientation);
       }
 
       v7 = [[PKImage alloc] initWithCGImage:v24 scale:v26 orientation:v9];
@@ -681,12 +681,12 @@ LABEL_3:
   return v7;
 }
 
-- (id)croppedImageWithInsets:(PKEdgeInsets)a3
+- (id)croppedImageWithInsets:(PKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = CGImageRetain([(PKImage *)self imageRef]);
   scale = self->_scale;
   v10 = left * scale;
@@ -729,12 +729,12 @@ LABEL_3:
   return v3;
 }
 
-- (id)resizableImageByTilingWithCapInsets:(PKEdgeInsets)a3
+- (id)resizableImageByTilingWithCapInsets:(PKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   os_unfair_lock_lock(&self->_lock);
   v8 = objc_alloc_init(PKImage);
   v9 = [(NSData *)self->_imageData copy];
@@ -760,12 +760,12 @@ LABEL_3:
   return v8;
 }
 
-- (id)resizableImageByStretchingWithCapInsets:(PKEdgeInsets)a3
+- (id)resizableImageByStretchingWithCapInsets:(PKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   os_unfair_lock_lock(&self->_lock);
   v8 = objc_alloc_init(PKImage);
   v9 = [(NSData *)self->_imageData copy];
@@ -798,13 +798,13 @@ LABEL_3:
   return [(PKImage *)self resizableImageByTilingWithCapInsets:?];
 }
 
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)a4 withBlendMode:(int)a5 alpha:(double)a6
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)context withBlendMode:(int)mode alpha:(double)alpha
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     return;
   }
@@ -822,9 +822,9 @@ LABEL_3:
   }
 
   v17 = v14;
-  CGContextSaveGState(a4);
-  CGContextSetBlendMode(a4, a5);
-  CGContextSetAlpha(a4, a6);
+  CGContextSaveGState(context);
+  CGContextSetBlendMode(context, mode);
+  CGContextSetAlpha(context, alpha);
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
@@ -835,18 +835,18 @@ LABEL_3:
   v42.size.width = width;
   v42.size.height = height;
   MaxY = CGRectGetMaxY(v42);
-  CGContextTranslateCTM(a4, MinX, MaxY);
-  CGContextScaleCTM(a4, 1.0, -1.0);
-  v20 = [(PKImage *)self orientation];
-  if (height > 0.0 && width > 0.0 && (v20 - 2) <= 6)
+  CGContextTranslateCTM(context, MinX, MaxY);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  orientation = [(PKImage *)self orientation];
+  if (height > 0.0 && width > 0.0 && (orientation - 2) <= 6)
   {
-    if (v20 > 4)
+    if (orientation > 4)
     {
-      if (v20 > 6)
+      if (orientation > 6)
       {
         v21 = height / width;
         *(&v22 + 1) = 0;
-        if (v20 == 7)
+        if (orientation == 7)
         {
           *&v22 = width / height;
           v24 = 0.0;
@@ -864,7 +864,7 @@ LABEL_3:
       else
       {
         v21 = -height / width;
-        if (v20 == 5)
+        if (orientation == 5)
         {
           *(&v22 + 1) = 0;
           *&v22 = -width / height;
@@ -884,7 +884,7 @@ LABEL_3:
 
     v23 = -1.0;
     v21 = 0.0;
-    if (v20 == 2)
+    if (orientation == 2)
     {
       v22 = xmmword_1ADB99540;
       v24 = 0.0;
@@ -892,7 +892,7 @@ LABEL_3:
     }
 
     v22 = xmmword_1ADB99550;
-    if (v20 != 3)
+    if (orientation != 3)
     {
       v23 = 1.0;
       v25 = 0.0;
@@ -910,24 +910,24 @@ LABEL_22:
     *&transform.c = v22;
     transform.tx = v25;
     transform.ty = v24;
-    CGContextConcatCTM(a4, &transform);
+    CGContextConcatCTM(context, &transform);
   }
 
   if (v17 == width && v16 == height || !(v29 = [(PKImage *)self _isTiledWhenStretchedToSize:width, height]) && (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(*&self->_capInsets.top), vceqzq_f64(*&self->_capInsets.bottom))))) & 1) == 0)
   {
     v26 = *MEMORY[0x1E695EFF8];
     v27 = *(MEMORY[0x1E695EFF8] + 8);
-    v28 = [(PKImage *)self imageRef];
+    imageRef = [(PKImage *)self imageRef];
     v43.origin.x = v26;
     v43.origin.y = v27;
     v43.size.width = width;
     v43.size.height = height;
-    CGContextDrawImage(a4, v43, v28);
+    CGContextDrawImage(context, v43, imageRef);
   }
 
   else
   {
-    v30 = [(PKImage *)self imageRef];
+    imageRef2 = [(PKImage *)self imageRef];
     [(PKImage *)self scale];
     *&v31 = v31;
     v32 = vcvtps_s32_f32(*&v31);
@@ -953,81 +953,81 @@ LABEL_22:
     CGRectDivide(v45, &v38, &remainder, bottom, CGRectMinYEdge);
     if (!CGRectIsEmpty(slice))
     {
-      _Draw3PartSlice(a4, v30, v32, v29, 0.0, 0.0, v17, top, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, top, left, bottom, right);
+      _Draw3PartSlice(context, imageRef2, v32, v29, 0.0, 0.0, v17, top, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, top, left, bottom, right);
     }
 
     if (!CGRectIsEmpty(remainder))
     {
-      _Draw3PartSlice(a4, v30, v32, v29, 0.0, top, v17, v16 - (top + bottom), remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, top, left, bottom, right);
+      _Draw3PartSlice(context, imageRef2, v32, v29, 0.0, top, v17, v16 - (top + bottom), remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, top, left, bottom, right);
     }
 
     if (!CGRectIsEmpty(v38))
     {
-      _Draw3PartSlice(a4, v30, v32, v29, 0.0, v16 - bottom, v17, bottom, v38.origin.x, v38.origin.y, v38.size.width, v38.size.height, top, left, bottom, right);
+      _Draw3PartSlice(context, imageRef2, v32, v29, 0.0, v16 - bottom, v17, bottom, v38.origin.x, v38.origin.y, v38.size.width, v38.size.height, top, left, bottom, right);
     }
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PKImage *)self imageData];
-  [v11 encodeObject:v5 forKey:@"imageData"];
+  imageData = [(PKImage *)self imageData];
+  [coderCopy encodeObject:imageData forKey:@"imageData"];
 
   [(PKImage *)self scale];
   *&v6 = v6;
-  [v11 encodeFloat:@"scale" forKey:v6];
-  [v11 encodeInteger:-[PKImage orientation](self forKey:{"orientation"), @"orientation"}];
-  [v11 encodeBool:self->_shouldTile forKey:@"shouldTile"];
-  [v11 encodeBool:self->_shouldStretch forKey:@"shouldStretch"];
+  [coderCopy encodeFloat:@"scale" forKey:v6];
+  [coderCopy encodeInteger:-[PKImage orientation](self forKey:{"orientation"), @"orientation"}];
+  [coderCopy encodeBool:self->_shouldTile forKey:@"shouldTile"];
+  [coderCopy encodeBool:self->_shouldStretch forKey:@"shouldStretch"];
   if (self->_shouldTile || self->_shouldStretch)
   {
     left = self->_capInsets.left;
     *&left = left;
-    [v11 encodeFloat:@"leftCap" forKey:left];
+    [coderCopy encodeFloat:@"leftCap" forKey:left];
     right = self->_capInsets.right;
     *&right = right;
-    [v11 encodeFloat:@"rightCap" forKey:right];
+    [coderCopy encodeFloat:@"rightCap" forKey:right];
     top = self->_capInsets.top;
     *&top = top;
-    [v11 encodeFloat:@"topCap" forKey:top];
+    [coderCopy encodeFloat:@"topCap" forKey:top];
     bottom = self->_capInsets.bottom;
     *&bottom = bottom;
-    [v11 encodeFloat:@"bottomCap" forKey:bottom];
+    [coderCopy encodeFloat:@"bottomCap" forKey:bottom];
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (PKImage)initWithCoder:(id)a3
+- (PKImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKImage *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v7;
 
-    [v4 decodeFloatForKey:@"scale"];
+    [coderCopy decodeFloatForKey:@"scale"];
     v5->_scale = v9;
-    v5->_orientation = [v4 decodeIntegerForKey:@"orientation"];
-    v5->_shouldTile = [v4 decodeBoolForKey:@"shouldTile"];
-    v10 = [v4 decodeBoolForKey:@"shouldStretch"];
+    v5->_orientation = [coderCopy decodeIntegerForKey:@"orientation"];
+    v5->_shouldTile = [coderCopy decodeBoolForKey:@"shouldTile"];
+    v10 = [coderCopy decodeBoolForKey:@"shouldStretch"];
     v5->_shouldStretch = v10;
     if (v5->_shouldTile || v10)
     {
-      [v4 decodeFloatForKey:@"leftCap"];
+      [coderCopy decodeFloatForKey:@"leftCap"];
       v5->_capInsets.left = v11;
-      [v4 decodeFloatForKey:@"rightCap"];
+      [coderCopy decodeFloatForKey:@"rightCap"];
       v5->_capInsets.right = v12;
-      [v4 decodeFloatForKey:@"topCap"];
+      [coderCopy decodeFloatForKey:@"topCap"];
       v5->_capInsets.top = v13;
-      [v4 decodeFloatForKey:@"bottomCap"];
+      [coderCopy decodeFloatForKey:@"bottomCap"];
       v5->_capInsets.bottom = v14;
     }
 
@@ -1037,15 +1037,15 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size
 {
   if (!self->_shouldTile)
   {
     return 0;
   }
 
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PKImage *)self size];
   if (v6 - self->_capInsets.left - self->_capInsets.right > 1.0 && width != v6)
   {

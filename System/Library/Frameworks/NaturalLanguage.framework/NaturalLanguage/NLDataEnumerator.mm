@@ -1,37 +1,37 @@
 @interface NLDataEnumerator
-- (NLDataEnumerator)initWithDataProvider:(id)a3;
-- (NLDataEnumerator)initWithDataProvider:(id)a3 numberGenerator:(id)a4;
-- (id)instanceAtIndex:(unint64_t)a3;
+- (NLDataEnumerator)initWithDataProvider:(id)provider;
+- (NLDataEnumerator)initWithDataProvider:(id)provider numberGenerator:(id)generator;
+- (id)instanceAtIndex:(unint64_t)index;
 - (id)nextInstance;
-- (void)rewindAndShuffle:(BOOL)a3;
+- (void)rewindAndShuffle:(BOOL)shuffle;
 - (void)shuffle;
 @end
 
 @implementation NLDataEnumerator
 
-- (NLDataEnumerator)initWithDataProvider:(id)a3 numberGenerator:(id)a4
+- (NLDataEnumerator)initWithDataProvider:(id)provider numberGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  generatorCopy = generator;
   v12.receiver = self;
   v12.super_class = NLDataEnumerator;
   v9 = [(NLDataEnumerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataProvider, a3);
+    objc_storeStrong(&v9->_dataProvider, provider);
     v10->_idx = 0;
-    objc_storeStrong(&v10->_generator, a4);
+    objc_storeStrong(&v10->_generator, generator);
   }
 
   return v10;
 }
 
-- (NLDataEnumerator)initWithDataProvider:(id)a3
+- (NLDataEnumerator)initWithDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(NLNumberGenerator);
-  v6 = [(NLDataEnumerator *)self initWithDataProvider:v4 numberGenerator:v5];
+  v6 = [(NLDataEnumerator *)self initWithDataProvider:providerCopy numberGenerator:v5];
 
   return v6;
 }
@@ -56,26 +56,26 @@ LABEL_6:
   return v4;
 }
 
-- (id)instanceAtIndex:(unint64_t)a3
+- (id)instanceAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   shuffleData = self->_shuffleData;
   if (shuffleData)
   {
-    v3 = *([(NSMutableData *)shuffleData bytes]+ 4 * a3);
+    indexCopy = *([(NSMutableData *)shuffleData bytes]+ 4 * index);
   }
 
-  v6 = [(NLDataEnumerator *)self dataProvider];
-  v7 = [v6 instanceAtIndex:v3];
+  dataProvider = [(NLDataEnumerator *)self dataProvider];
+  v7 = [dataProvider instanceAtIndex:indexCopy];
 
   return v7;
 }
 
-- (void)rewindAndShuffle:(BOOL)a3
+- (void)rewindAndShuffle:(BOOL)shuffle
 {
-  v3 = a3;
+  shuffleCopy = shuffle;
   [(NLDataEnumerator *)self rewind];
-  if (v3)
+  if (shuffleCopy)
   {
 
     [(NLDataEnumerator *)self shuffle];
@@ -84,8 +84,8 @@ LABEL_6:
 
 - (void)shuffle
 {
-  v3 = [(NLDataEnumerator *)self dataProvider];
-  v4 = [v3 numberOfInstances];
+  dataProvider = [(NLDataEnumerator *)self dataProvider];
+  numberOfInstances = [dataProvider numberOfInstances];
 
   shuffleData = self->_shuffleData;
   if (shuffleData)
@@ -93,44 +93,44 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * v4];
+  v6 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * numberOfInstances];
   v7 = self->_shuffleData;
   self->_shuffleData = v6;
 
-  v8 = [(NSMutableData *)self->_shuffleData mutableBytes];
-  if (v4)
+  mutableBytes = [(NSMutableData *)self->_shuffleData mutableBytes];
+  if (numberOfInstances)
   {
     v9 = 0;
     do
     {
-      v8[v9] = v9;
+      mutableBytes[v9] = v9;
       ++v9;
     }
 
-    while (v4 > v9);
+    while (numberOfInstances > v9);
   }
 
   shuffleData = self->_shuffleData;
   if (shuffleData)
   {
 LABEL_6:
-    v10 = [(NSMutableData *)shuffleData mutableBytes];
-    if (v4 >= 2)
+    mutableBytes2 = [(NSMutableData *)shuffleData mutableBytes];
+    if (numberOfInstances >= 2)
     {
-      v11 = v10;
-      v12 = v10 - 4;
+      v11 = mutableBytes2;
+      v12 = mutableBytes2 - 4;
       do
       {
-        v13 = v4 - 1;
-        v14 = [(NLNumberGenerator *)self->_generator numberInRange:0, v4];
-        if (v4 - 1 != v14)
+        v13 = numberOfInstances - 1;
+        v14 = [(NLNumberGenerator *)self->_generator numberInRange:0, numberOfInstances];
+        if (numberOfInstances - 1 != v14)
         {
-          v15 = *(v12 + 4 * v4);
-          *(v12 + 4 * v4) = *(v11 + 4 * v14);
+          v15 = *(v12 + 4 * numberOfInstances);
+          *(v12 + 4 * numberOfInstances) = *(v11 + 4 * v14);
           *(v11 + 4 * v14) = v15;
         }
 
-        --v4;
+        --numberOfInstances;
       }
 
       while (v13 > 1);

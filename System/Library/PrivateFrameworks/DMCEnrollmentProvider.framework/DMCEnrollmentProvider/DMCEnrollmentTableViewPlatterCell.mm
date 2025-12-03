@@ -1,19 +1,19 @@
 @interface DMCEnrollmentTableViewPlatterCell
-- (DMCEnrollmentTableViewPlatterCell)initWithCellData:(id)a3 parentTableView:(id)a4 useShadow:(BOOL)a5;
+- (DMCEnrollmentTableViewPlatterCell)initWithCellData:(id)data parentTableView:(id)view useShadow:(BOOL)shadow;
 - (UITableView)parentTableView;
 - (double)cellHeight;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation DMCEnrollmentTableViewPlatterCell
 
-- (DMCEnrollmentTableViewPlatterCell)initWithCellData:(id)a3 parentTableView:(id)a4 useShadow:(BOOL)a5
+- (DMCEnrollmentTableViewPlatterCell)initWithCellData:(id)data parentTableView:(id)view useShadow:(BOOL)shadow
 {
-  v5 = a5;
+  shadowCopy = shadow;
   v76 = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  obj = a4;
+  dataCopy = data;
+  obj = view;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v72.receiver = self;
@@ -22,60 +22,60 @@
 
   if (v11)
   {
-    v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(DMCEnrollmentTableViewPlatterCell *)v11 setBackgroundColor:v12];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(DMCEnrollmentTableViewPlatterCell *)v11 setBackgroundColor:systemBackgroundColor];
 
     [(DMCEnrollmentTableViewPlatterCell *)v11 setSelectionStyle:0];
-    v13 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v14 = [v13 layer];
-    [v14 setMasksToBounds:0];
+    contentView = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    layer = [contentView layer];
+    [layer setMasksToBounds:0];
 
-    objc_storeStrong(&v11->_cellData, a3);
+    objc_storeStrong(&v11->_cellData, data);
     objc_storeWeak(&v11->_parentTableView, obj);
-    if (v5)
+    if (shadowCopy)
     {
       v15 = objc_opt_new();
       shadowView = v11->_shadowView;
       v11->_shadowView = v15;
 
-      v17 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(UIView *)v11->_shadowView setBackgroundColor:v17];
+      systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(UIView *)v11->_shadowView setBackgroundColor:systemBackgroundColor2];
 
-      v18 = [(UIView *)v11->_shadowView layer];
-      [v18 setMasksToBounds:0];
+      layer2 = [(UIView *)v11->_shadowView layer];
+      [layer2 setMasksToBounds:0];
 
-      v19 = [(UIView *)v11->_shadowView layer];
-      [v19 setShadowOffset:{0.0, 3.0}];
+      layer3 = [(UIView *)v11->_shadowView layer];
+      [layer3 setShadowOffset:{0.0, 3.0}];
 
-      v20 = [(UIView *)v11->_shadowView layer];
-      [v20 setShadowRadius:5.0];
+      layer4 = [(UIView *)v11->_shadowView layer];
+      [layer4 setShadowRadius:5.0];
 
-      v21 = [(UIView *)v11->_shadowView layer];
+      layer5 = [(UIView *)v11->_shadowView layer];
       LODWORD(v22) = 1053609165;
-      [v21 setShadowOpacity:v22];
+      [layer5 setShadowOpacity:v22];
 
-      v23 = [MEMORY[0x277D75348] lightGrayColor];
-      v24 = v23;
-      v25 = [v23 CGColor];
-      v26 = [(UIView *)v11->_shadowView layer];
-      [v26 setShadowColor:v25];
+      lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+      v24 = lightGrayColor;
+      cGColor = [lightGrayColor CGColor];
+      layer6 = [(UIView *)v11->_shadowView layer];
+      [layer6 setShadowColor:cGColor];
     }
 
     v27 = [[DMCEnrollmentTemplateTableViewController alloc] initWithIconName:0 iconImage:0 title:0 subTitle:0 layoutStyle:1];
     tableViewController = v11->_tableViewController;
     v11->_tableViewController = v27;
 
-    v29 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    [v29 setScrollEnabled:0];
+    tableView = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    [tableView setScrollEnabled:0];
 
-    v30 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView2 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v31 = v63;
+    v31 = dataCopy;
     v32 = [v31 countByEnumeratingWithState:&v68 objects:v75 count:16];
     if (v32)
     {
@@ -101,38 +101,38 @@
     }
 
     [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController willMoveToParentViewController:0];
-    v35 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    [v35 addSubview:v11->_shadowView];
+    contentView2 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    [contentView2 addSubview:v11->_shadowView];
 
-    v36 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v37 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    [v36 addSubview:v37];
+    contentView3 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    tableView3 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    [contentView3 addSubview:tableView3];
 
     [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController didMoveToParentViewController:0];
     v50 = MEMORY[0x277CCAAD0];
-    v62 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    v60 = [v62 widthAnchor];
-    v61 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v59 = [v61 widthAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 multiplier:1.0];
+    tableView4 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    widthAnchor = [tableView4 widthAnchor];
+    contentView4 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    widthAnchor2 = [contentView4 widthAnchor];
+    v58 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
     v74[0] = v58;
-    v57 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    v55 = [v57 heightAnchor];
-    v56 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v54 = [v56 heightAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 multiplier:1.0];
+    tableView5 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    heightAnchor = [tableView5 heightAnchor];
+    contentView5 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    heightAnchor2 = [contentView5 heightAnchor];
+    v53 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
     v74[1] = v53;
-    v52 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    v51 = [v52 leadingAnchor];
-    v38 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v39 = [v38 leadingAnchor];
-    v40 = [v51 constraintEqualToAnchor:v39];
+    tableView6 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    leadingAnchor = [tableView6 leadingAnchor];
+    contentView6 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    leadingAnchor2 = [contentView6 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v74[2] = v40;
-    v41 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
-    v42 = [v41 bottomAnchor];
-    v43 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
-    v44 = [v43 bottomAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    tableView7 = [(DMCEnrollmentTemplateTableViewController *)v11->_tableViewController tableView];
+    bottomAnchor = [tableView7 bottomAnchor];
+    contentView7 = [(DMCEnrollmentTableViewPlatterCell *)v11 contentView];
+    bottomAnchor2 = [contentView7 bottomAnchor];
+    v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v74[3] = v45;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:4];
     [v50 activateConstraints:v46];
@@ -177,11 +177,11 @@ void __80__DMCEnrollmentTableViewPlatterCell_initWithCellData_parentTableView_us
   v47.receiver = self;
   v47.super_class = DMCEnrollmentTableViewPlatterCell;
   [(DMCEnrollmentTableViewPlatterCell *)&v47 layoutSubviews];
-  v3 = [(DMCEnrollmentTableViewPlatterCell *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(DMCEnrollmentTableViewPlatterCell *)self layer];
+  [layer setMasksToBounds:0];
 
-  v4 = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
-  [v4 bounds];
+  contentView = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -189,58 +189,58 @@ void __80__DMCEnrollmentTableViewPlatterCell_initWithCellData_parentTableView_us
 
   v13 = v6 + 6.0;
   v14 = v10 + -12.0;
-  v15 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
-  [v15 setFrame:{v13, v8, v14, v12}];
+  shadowView = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
+  [shadowView setFrame:{v13, v8, v14, v12}];
 
-  v16 = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
+  customHorizontalMargin = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
 
-  if (v16)
+  if (customHorizontalMargin)
   {
     [(DMCEnrollmentTableViewPlatterCell *)self bounds];
     v18 = v17;
     v8 = v19;
     v21 = v20;
     v12 = v22;
-    v23 = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
-    [v23 floatValue];
+    customHorizontalMargin2 = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
+    [customHorizontalMargin2 floatValue];
     v13 = v18 + v24;
 
-    v25 = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
-    [v25 floatValue];
+    customHorizontalMargin3 = [(DMCEnrollmentTableViewPlatterCell *)self customHorizontalMargin];
+    [customHorizontalMargin3 floatValue];
     v14 = v21 - (v26 + v26);
   }
 
-  v27 = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
-  v28 = [v27 tableView];
-  [v28 setFrame:{v13, v8, v14, v12}];
+  tableViewController = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
+  tableView = [tableViewController tableView];
+  [tableView setFrame:{v13, v8, v14, v12}];
 
-  v29 = [MEMORY[0x277D75348] clearColor];
-  v30 = [(DMCEnrollmentTemplateTableViewController *)self->_tableViewController tableView];
-  [v30 setBackgroundColor:v29];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView2 = [(DMCEnrollmentTemplateTableViewController *)self->_tableViewController tableView];
+  [tableView2 setBackgroundColor:clearColor];
 
-  v31 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
-  v32 = [v31 layer];
-  [v32 setCornerRadius:20.0];
+  shadowView2 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
+  layer2 = [shadowView2 layer];
+  [layer2 setCornerRadius:20.0];
 
   v33 = MEMORY[0x277D75208];
-  v34 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
-  [v34 bounds];
+  shadowView3 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
+  [shadowView3 bounds];
   v35 = [v33 bezierPathWithRoundedRect:? cornerRadius:?];
-  v36 = [v35 CGPath];
-  v37 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
-  v38 = [v37 layer];
-  [v38 setShadowPath:v36];
+  cGPath = [v35 CGPath];
+  shadowView4 = [(DMCEnrollmentTableViewPlatterCell *)self shadowView];
+  layer3 = [shadowView4 layer];
+  [layer3 setShadowPath:cGPath];
 
   [(DMCEnrollmentTableViewPlatterCell *)self previousWidth];
   v40 = v39;
-  v41 = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
-  [v41 bounds];
+  contentView2 = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
+  [contentView2 bounds];
   v43 = v42;
 
   if (v40 != v43)
   {
-    v44 = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
-    [v44 bounds];
+    contentView3 = [(DMCEnrollmentTableViewPlatterCell *)self contentView];
+    [contentView3 bounds];
     [(DMCEnrollmentTableViewPlatterCell *)self setPreviousWidth:v45];
 
     block[0] = MEMORY[0x277D85DD0];
@@ -258,18 +258,18 @@ void __51__DMCEnrollmentTableViewPlatterCell_layoutSubviews__block_invoke(uint64
   [v1 reloadData];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
-  [v4 setInProgress:!v3];
+  enabledCopy = enabled;
+  tableViewController = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
+  [tableViewController setInProgress:!enabledCopy];
 }
 
 - (double)cellHeight
 {
-  v2 = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
-  v3 = [v2 tableView];
-  [v3 contentSize];
+  tableViewController = [(DMCEnrollmentTableViewPlatterCell *)self tableViewController];
+  tableView = [tableViewController tableView];
+  [tableView contentSize];
   v5 = v4;
 
   return v5;

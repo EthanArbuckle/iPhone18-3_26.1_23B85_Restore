@@ -1,9 +1,9 @@
 @interface CNPropertyFaceTimeAction
 - (BOOL)canPerformAction;
-- (CNPropertyFaceTimeAction)initWithContact:(id)a3 propertyItems:(id)a4;
+- (CNPropertyFaceTimeAction)initWithContact:(id)contact propertyItems:(id)items;
 - (void)_queryFaceTimeStatus;
 - (void)dealloc;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
+- (void)performActionForItem:(id)item sender:(id)sender;
 - (void)queryComplete;
 @end
 
@@ -11,20 +11,20 @@
 
 - (void)queryComplete
 {
-  v3 = [(CNContactAction *)self delegate];
+  delegate = [(CNContactAction *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactAction *)self delegate];
-    [v5 actionDidUpdate:self];
+    delegate2 = [(CNContactAction *)self delegate];
+    [delegate2 actionDidUpdate:self];
   }
 }
 
 - (void)_queryFaceTimeStatus
 {
   v3 = [CNPropertyBestIDSValueQuery alloc];
-  v4 = [(CNPropertyAction *)self propertyItems];
+  propertyItems = [(CNPropertyAction *)self propertyItems];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -44,43 +44,43 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v6 = [(CNPropertyBestIDSValueQuery *)v3 initWithPropertyItems:v4 service:*v5];
+    v6 = [(CNPropertyBestIDSValueQuery *)v3 initWithPropertyItems:propertyItems service:*v5];
     [(CNPropertyFaceTimeAction *)self setBestFaceTimeQuery:v6];
 
-    v7 = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery];
-    [v7 setDelegate:self];
+    bestFaceTimeQuery = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery];
+    [bestFaceTimeQuery setDelegate:self];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIDSServiceNameFaceTime(void)"];
-    [v8 handleFailureInFunction:v9 file:@"CNUIIDS_SoftLink.h" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v9 file:@"CNUIIDS_SoftLink.h" lineNumber:24 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery:a3];
-  v6 = [v5 bestIDSProperty];
+  v5 = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery:item];
+  bestIDSProperty = [v5 bestIDSProperty];
 
-  if (!v6)
+  if (!bestIDSProperty)
   {
-    v7 = [(CNPropertyAction *)self propertyItems];
-    v8 = [v7 count];
+    propertyItems = [(CNPropertyAction *)self propertyItems];
+    v8 = [propertyItems count];
 
     if (v8)
     {
-      v9 = [(CNPropertyAction *)self propertyItems];
-      v6 = [v9 objectAtIndexedSubscript:0];
+      propertyItems2 = [(CNPropertyAction *)self propertyItems];
+      bestIDSProperty = [propertyItems2 objectAtIndexedSubscript:0];
     }
 
     else
     {
-      v6 = 0;
+      bestIDSProperty = 0;
     }
   }
 
@@ -88,40 +88,40 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = bestIDSProperty;
     _os_log_impl(&dword_199A75000, v10, OS_LOG_TYPE_DEFAULT, "[CNPropertyFaceTimeAction performActionForItem:sender:], bestFaceTimePropertyItem = %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (bestIDSProperty)
   {
-    v11 = [v6 labeledValue];
-    v12 = [v11 value];
+    labeledValue = [bestIDSProperty labeledValue];
+    value = [labeledValue value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v14 = [v12 stringValue];
+      stringValue = [value stringValue];
       v15 = 2;
     }
 
     else
     {
-      v14 = v12;
+      stringValue = value;
       v15 = 3;
     }
 
-    v16 = [(CNPropertyFaceTimeAction *)self type];
-    v17 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:v14 type:v15];
+    type = [(CNPropertyFaceTimeAction *)self type];
+    v17 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:stringValue type:v15];
     v18 = MEMORY[0x1E695DFF8];
-    v19 = [(CNContactAction *)self contact];
-    if (v16 == 1)
+    contact = [(CNContactAction *)self contact];
+    if (type == 1)
     {
-      [v18 _cnui_faceTimeAudioURLWithHandle:v17 contact:v19];
+      [v18 _cnui_faceTimeAudioURLWithHandle:v17 contact:contact];
     }
 
     else
     {
-      [v18 _cnui_faceTimeVideoURLWithHandle:v17 contact:v19];
+      [v18 _cnui_faceTimeVideoURLWithHandle:v17 contact:contact];
     }
     v20 = ;
 
@@ -138,7 +138,7 @@
       v22 = +[CNUIDataCollector sharedCollector];
       v28 = CNUIContactActionFaceTimeMediaType;
       v23 = CNUIContactActionTypeFaceTime;
-      if (v16 == 1)
+      if (type == 1)
       {
         v24 = &CNUIContactActionFaceTimeMediaTypeAudioOnly;
       }
@@ -186,9 +186,9 @@ void __56__CNPropertyFaceTimeAction_performActionForItem_sender___block_invoke(u
 
 - (BOOL)canPerformAction
 {
-  v2 = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery];
-  v3 = [v2 bestIDSProperty];
-  v4 = v3 != 0;
+  bestFaceTimeQuery = [(CNPropertyFaceTimeAction *)self bestFaceTimeQuery];
+  bestIDSProperty = [bestFaceTimeQuery bestIDSProperty];
+  v4 = bestIDSProperty != 0;
 
   return v4;
 }
@@ -201,11 +201,11 @@ void __56__CNPropertyFaceTimeAction_performActionForItem_sender___block_invoke(u
   [(CNPropertyFaceTimeAction *)&v3 dealloc];
 }
 
-- (CNPropertyFaceTimeAction)initWithContact:(id)a3 propertyItems:(id)a4
+- (CNPropertyFaceTimeAction)initWithContact:(id)contact propertyItems:(id)items
 {
   v7.receiver = self;
   v7.super_class = CNPropertyFaceTimeAction;
-  v4 = [(CNPropertyAction *)&v7 initWithContact:a3 propertyItems:a4];
+  v4 = [(CNPropertyAction *)&v7 initWithContact:contact propertyItems:items];
   v5 = v4;
   if (v4)
   {

@@ -3,7 +3,7 @@
 - (AssistiveTouchHelper)init;
 - (id)_astDispatchQueue;
 - (void)_sendKeyboardStatusUpdate;
-- (void)_sendKeyboardStatusUpdate:(CGRect)a3;
+- (void)_sendKeyboardStatusUpdate:(CGRect)update;
 - (void)_sendKeyboardStatusUpdateHidden;
 - (void)dealloc;
 - (void)enable;
@@ -34,8 +34,8 @@ uint64_t __41__AssistiveTouchHelper__astDispatchQueue__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AssistiveTouchHelper;
@@ -44,9 +44,9 @@ uint64_t __41__AssistiveTouchHelper__astDispatchQueue__block_invoke()
 
 - (void)_sendKeyboardStatusUpdate
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"CGRect soft_AXUIKeyboardScreenFrame(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:43 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:43 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -58,23 +58,23 @@ uint64_t __41__AssistiveTouchHelper__astDispatchQueue__block_invoke()
   v4 = [MEMORY[0x29EDBA070] numberWithInt:getpid()];
   [v3 setObject:v4 forKey:@"pid"];
 
-  v5 = [(AssistiveTouchHelper *)self _astDispatchQueue];
+  _astDispatchQueue = [(AssistiveTouchHelper *)self _astDispatchQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __55__AssistiveTouchHelper__sendKeyboardStatusUpdateHidden__block_invoke;
   block[3] = &unk_29F29A700;
   v8 = v3;
   v6 = v3;
-  dispatch_async(v5, block);
+  dispatch_async(_astDispatchQueue, block);
 }
 
-- (void)_sendKeyboardStatusUpdate:(CGRect)a3
+- (void)_sendKeyboardStatusUpdate:(CGRect)update
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(AssistiveTouchHelper *)self _astDispatchQueue];
+  height = update.size.height;
+  width = update.size.width;
+  y = update.origin.y;
+  x = update.origin.x;
+  _astDispatchQueue = [(AssistiveTouchHelper *)self _astDispatchQueue];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __50__AssistiveTouchHelper__sendKeyboardStatusUpdate___block_invoke;
@@ -83,7 +83,7 @@ uint64_t __41__AssistiveTouchHelper__astDispatchQueue__block_invoke()
   *&v8[5] = y;
   *&v8[6] = width;
   *&v8[7] = height;
-  dispatch_async(v7, v8);
+  dispatch_async(_astDispatchQueue, v8);
 }
 
 void __50__AssistiveTouchHelper__sendKeyboardStatusUpdate___block_invoke(NSRect *a1)
@@ -101,9 +101,9 @@ void __50__AssistiveTouchHelper__sendKeyboardStatusUpdate___block_invoke(NSRect 
 
 - (void)installKeyboardListener
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"BOOL soft_AXProcessIsSpotlight(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:69 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AXSettingsLoaderSoftLinkages.h" lineNumber:69 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -308,7 +308,7 @@ uint64_t __44__AssistiveTouchHelper_initializeMonitoring__block_invoke()
     v12 = 3221225472;
     v13 = __30__AssistiveTouchHelper_enable__block_invoke;
     v14 = &unk_29F29A700;
-    v15 = self;
+    selfCopy = self;
     if (enable_onceToken != -1)
     {
       dispatch_once(&enable_onceToken, &v11);

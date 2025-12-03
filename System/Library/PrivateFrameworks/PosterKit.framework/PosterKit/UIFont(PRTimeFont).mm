@@ -52,7 +52,7 @@
   v10 = PRFontNameForTimeFontIdentifier(v9);
   v11 = PRFontAttributesForTimeFontIdentifier(v9);
 
-  v12 = [a1 pr_fontWithName:v10 forRole:v8 includingFallbackFonts:a5 attributes:v11];
+  v12 = [self pr_fontWithName:v10 forRole:v8 includingFallbackFonts:a5 attributes:v11];
 
   return v12;
 }
@@ -104,8 +104,8 @@
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a4 bundleURL];
-  v11 = [a1 pr_fontWithPostScriptName:v9 inBundleAtURL:v10 relativePath:v8];
+  bundleURL = [a4 bundleURL];
+  v11 = [self pr_fontWithPostScriptName:v9 inBundleAtURL:bundleURL relativePath:v8];
 
   return v11;
 }
@@ -121,7 +121,7 @@
   v13 = [v12 URL];
   if (v13)
   {
-    v14 = [a1 pr_fontWithPostScriptName:v8 inBundleAtURL:v13 relativePath:v9];
+    v14 = [self pr_fontWithPostScriptName:v8 inBundleAtURL:v13 relativePath:v9];
   }
 
   else
@@ -249,8 +249,8 @@ LABEL_4:
 
 + (id)pr_defaultTimeFont
 {
-  v2 = [a1 pr_defaultTimeFontIdentifier];
-  v3 = [a1 pr_fontWithTimeFontIdentifier:v2];
+  pr_defaultTimeFontIdentifier = [self pr_defaultTimeFontIdentifier];
+  v3 = [self pr_fontWithTimeFontIdentifier:pr_defaultTimeFontIdentifier];
 
   return v3;
 }
@@ -258,8 +258,8 @@ LABEL_4:
 + (id)pr_defaultTimeFontForRole:()PRTimeFont
 {
   v4 = a3;
-  v5 = [a1 pr_defaultTimeFontIdentifierForRole:v4];
-  v6 = [a1 pr_fontWithTimeFontIdentifier:v5 forRole:v4];
+  v5 = [self pr_defaultTimeFontIdentifierForRole:v4];
+  v6 = [self pr_fontWithTimeFontIdentifier:v5 forRole:v4];
 
   return v6;
 }
@@ -293,8 +293,8 @@ LABEL_4:
 
 - (CTFontRef)pr_minimumAllowedFontWeightFont
 {
-  v1 = [a1 pr_timeFontIdentifier];
-  v2 = PRMinimumVariableFontNameForTimeFontIdentifier(v1);
+  pr_timeFontIdentifier = [self pr_timeFontIdentifier];
+  v2 = PRMinimumVariableFontNameForTimeFontIdentifier(pr_timeFontIdentifier);
 
   if (v2)
   {
@@ -311,8 +311,8 @@ LABEL_4:
 
 - (CTFontRef)pr_maximumAllowedFontWeightFont
 {
-  v1 = [a1 pr_timeFontIdentifier];
-  v2 = PRMaximumVariableFontNameForTimeFontIdentifier(v1);
+  pr_timeFontIdentifier = [self pr_timeFontIdentifier];
+  v2 = PRMaximumVariableFontNameForTimeFontIdentifier(pr_timeFontIdentifier);
 
   if (v2)
   {
@@ -330,7 +330,7 @@ LABEL_4:
 - (CTFontRef)pr_fontWithAttributes:()PRTimeFont options:
 {
   v6 = a3;
-  CopyWithAttributes = CTFontDescriptorCreateCopyWithAttributes([a1 fontDescriptor], v6);
+  CopyWithAttributes = CTFontDescriptorCreateCopyWithAttributes([self fontDescriptor], v6);
 
   v8 = CTFontCreateWithFontDescriptorAndOptions(CopyWithAttributes, 12.0, 0, a4);
   CFRelease(CopyWithAttributes);
@@ -345,7 +345,7 @@ LABEL_4:
   v5 = v4;
   if (v4)
   {
-    v26[0] = a1;
+    v26[0] = self;
     v26[1] = v4;
     v6 = MEMORY[0x1E695DEC8];
     v7 = v26;
@@ -354,7 +354,7 @@ LABEL_4:
 
   else
   {
-    v27[0] = a1;
+    v27[0] = self;
     v6 = MEMORY[0x1E695DEC8];
     v7 = v27;
     v8 = 1;
@@ -365,9 +365,9 @@ LABEL_4:
   v10 = cachedFontWithDefaultFallbacks;
   if (!cachedFontWithDefaultFallbacks)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = cachedFontWithDefaultFallbacks;
-    cachedFontWithDefaultFallbacks = v11;
+    cachedFontWithDefaultFallbacks = dictionary;
 
     v10 = cachedFontWithDefaultFallbacks;
   }
@@ -383,11 +383,11 @@ LABEL_4:
   else
   {
     os_unfair_lock_unlock(&cachedFontLock);
-    v15 = [a1 pr_defaultFontFallbacks];
-    v14 = [a1 pr_fontWithFallbacks:v15];
+    pr_defaultFontFallbacks = [self pr_defaultFontFallbacks];
+    v14 = [self pr_fontWithFallbacks:pr_defaultFontFallbacks];
 
-    v16 = [a1 pr_timeFontIdentifier];
-    if (([v16 isEqualToString:@"PRTimeFontIdentifierNewYorkAlpha"] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"PRTimeFontIdentifierSFCondensed"))
+    pr_timeFontIdentifier = [self pr_timeFontIdentifier];
+    if (([pr_timeFontIdentifier isEqualToString:@"PRTimeFontIdentifierNewYorkAlpha"] & 1) != 0 || objc_msgSend(pr_timeFontIdentifier, "isEqualToString:", @"PRTimeFontIdentifierSFCondensed"))
     {
       v17 = PRFontNameForTimeFontIdentifier(@"PRTimeFontIdentifierSFArabic");
       v25[0] = v17;
@@ -423,28 +423,28 @@ LABEL_4:
   v2 = cachedDefaultFallbacks;
   if (!cachedDefaultFallbacks)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = cachedDefaultFallbacks;
-    cachedDefaultFallbacks = v3;
+    cachedDefaultFallbacks = dictionary;
 
     v2 = cachedDefaultFallbacks;
   }
 
-  v5 = [v2 objectForKeyedSubscript:a1];
+  v5 = [v2 objectForKeyedSubscript:self];
 
   if (v5)
   {
-    v6 = [cachedDefaultFallbacks objectForKeyedSubscript:a1];
+    v6 = [cachedDefaultFallbacks objectForKeyedSubscript:self];
   }
 
   else
   {
     os_unfair_lock_unlock(&cachedDefaultFallbacksLock);
-    v7 = CTFontCopyDefaultCascadeListForLanguages(a1, 0);
+    v7 = CTFontCopyDefaultCascadeListForLanguages(self, 0);
     v6 = [(__CFArray *)v7 copy];
     CFRelease(v7);
     os_unfair_lock_lock(&cachedDefaultFallbacksLock);
-    [cachedDefaultFallbacks setObject:v6 forKeyedSubscript:a1];
+    [cachedDefaultFallbacks setObject:v6 forKeyedSubscript:self];
   }
 
   os_unfair_lock_unlock(&cachedDefaultFallbacksLock);
@@ -454,20 +454,20 @@ LABEL_4:
 
 - (id)pr_fontFallbacks
 {
-  v2 = [a1 fontDescriptor];
-  v3 = [v2 objectForKey:*MEMORY[0x1E6965678]];
+  fontDescriptor = [self fontDescriptor];
+  v3 = [fontDescriptor objectForKey:*MEMORY[0x1E6965678]];
 
   if (v3 && [v3 count])
   {
-    v4 = v3;
+    pr_defaultFontFallbacks = v3;
   }
 
   else
   {
-    v4 = [a1 pr_defaultFontFallbacks];
+    pr_defaultFontFallbacks = [self pr_defaultFontFallbacks];
   }
 
-  v5 = v4;
+  v5 = pr_defaultFontFallbacks;
 
   return v5;
 }
@@ -476,7 +476,7 @@ LABEL_4:
 {
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:*MEMORY[0x1E6965678]];
   v5 = CTFontDescriptorCreateWithAttributes(v4);
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a1, 0.0, 0, v5);
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(self, 0.0, 0, v5);
 
   return CopyWithAttributes;
 }
@@ -485,10 +485,10 @@ LABEL_4:
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v23 = a1;
+  selfCopy = self;
   v24 = a4;
-  v7 = [a1 pr_fontFallbacks];
-  v26 = [v7 mutableCopy];
+  pr_fontFallbacks = [self pr_fontFallbacks];
+  v26 = [pr_fontFallbacks mutableCopy];
 
   v34 = 0;
   v35 = &v34;
@@ -537,11 +537,11 @@ LABEL_4:
         v18 = [v16 fontDescriptorWithFontAttributes:v17];
 
         MatchingFontDescriptorsWithOptions = CTFontDescriptorCreateMatchingFontDescriptorsWithOptions();
-        v20 = [MatchingFontDescriptorsWithOptions firstObject];
+        firstObject = [MatchingFontDescriptorsWithOptions firstObject];
 
-        if (v20)
+        if (firstObject)
         {
-          [v26 insertObject:v20 atIndex:v35[3]++];
+          [v26 insertObject:firstObject atIndex:v35[3]++];
         }
       }
 
@@ -551,7 +551,7 @@ LABEL_4:
     while (v12);
   }
 
-  v21 = [v23 pr_fontWithFallbacks:v26];
+  v21 = [selfCopy pr_fontWithFallbacks:v26];
 
   _Block_object_dispose(&v34, 8);
 
@@ -562,8 +562,8 @@ LABEL_4:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 pr_fontFallbacks];
-  v6 = [v5 mutableCopy];
+  pr_fontFallbacks = [self pr_fontFallbacks];
+  v6 = [pr_fontFallbacks mutableCopy];
 
   v7 = MEMORY[0x1E695DFD8];
   v19[0] = *MEMORY[0x1E69DB8B8];
@@ -581,31 +581,31 @@ LABEL_4:
   v11 = v9;
   v12 = v4;
   [v10 enumerateObjectsUsingBlock:v15];
-  v13 = [a1 pr_fontWithFallbacks:v10];
+  v13 = [self pr_fontWithFallbacks:v10];
 
   return v13;
 }
 
 - (id)pr_timeFontIdentifier
 {
-  v1 = [a1 fontName];
-  v2 = PRTimeFontIdentifierForFontName(v1);
+  fontName = [self fontName];
+  v2 = PRTimeFontIdentifierForFontName(fontName);
 
   return v2;
 }
 
 - (id)pr_localizedTimeFontName
 {
-  v2 = [a1 pr_timeFontIdentifier];
-  v3 = v2;
-  if (v2)
+  pr_timeFontIdentifier = [self pr_timeFontIdentifier];
+  v3 = pr_timeFontIdentifier;
+  if (pr_timeFontIdentifier)
   {
-    PRLocalizedDisplayNameForTimeFontIdentifier(v2);
+    PRLocalizedDisplayNameForTimeFontIdentifier(pr_timeFontIdentifier);
   }
 
   else
   {
-    [a1 familyName];
+    [self familyName];
   }
   v4 = ;
 
@@ -614,15 +614,15 @@ LABEL_4:
 
 - (__CFString)pr_postScriptName
 {
-  v1 = CTFontCopyPostScriptName(a1);
+  v1 = CTFontCopyPostScriptName(self);
 
   return v1;
 }
 
 - (id)pr_referenceURL
 {
-  v1 = [a1 fontDescriptor];
-  v2 = CTFontDescriptorCopyAttribute(v1, *MEMORY[0x1E6965838]);
+  fontDescriptor = [self fontDescriptor];
+  v2 = CTFontDescriptorCopyAttribute(fontDescriptor, *MEMORY[0x1E6965838]);
 
   return v2;
 }
@@ -635,8 +635,8 @@ LABEL_4:
     [UIFont(PRTimeFont) pr_referencePathRelativeToBundle:];
   }
 
-  v5 = [v4 bundleURL];
-  v6 = [a1 pr_referencePathRelativeToDirectoryAtURL:v5];
+  bundleURL = [v4 bundleURL];
+  v6 = [self pr_referencePathRelativeToDirectoryAtURL:bundleURL];
 
   return v6;
 }
@@ -649,14 +649,14 @@ LABEL_4:
     [UIFont(PRTimeFont) pr_referencePathRelativeToDirectoryAtURL:];
   }
 
-  if ([a1 pr_isReferenceFileContainedInDirectoryAtURL:v4])
+  if ([self pr_isReferenceFileContainedInDirectoryAtURL:v4])
   {
-    v5 = [a1 pr_referenceURL];
-    v6 = [v5 path];
-    v7 = [v4 path];
-    if ([v6 hasPrefix:v7])
+    pr_referenceURL = [self pr_referenceURL];
+    path = [pr_referenceURL path];
+    path2 = [v4 path];
+    if ([path hasPrefix:path2])
     {
-      v8 = [v6 substringFromIndex:{objc_msgSend(v7, "length")}];
+      v8 = [path substringFromIndex:{objc_msgSend(path2, "length")}];
     }
 
     else
@@ -675,8 +675,8 @@ LABEL_4:
 
 - (uint64_t)pr_isReferenceFileContainedInBundle:()PRTimeFont
 {
-  v4 = [a3 bundleURL];
-  v5 = [a1 pr_isReferenceFileContainedInDirectoryAtURL:v4];
+  bundleURL = [a3 bundleURL];
+  v5 = [self pr_isReferenceFileContainedInDirectoryAtURL:bundleURL];
 
   return v5;
 }
@@ -684,10 +684,10 @@ LABEL_4:
 - (uint64_t)pr_isReferenceFileContainedInDirectoryAtURL:()PRTimeFont
 {
   v4 = a3;
-  v5 = [a1 pr_referenceURL];
-  v6 = v5;
+  pr_referenceURL = [self pr_referenceURL];
+  v6 = pr_referenceURL;
   v7 = 0;
-  if (v4 && v5)
+  if (v4 && pr_referenceURL)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
     v11 = 0;

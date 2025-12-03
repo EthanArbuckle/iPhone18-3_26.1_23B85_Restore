@@ -1,31 +1,31 @@
 @interface SUGSchemaSUGEngagementMetricReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUGSchemaSUGEngagementMetricReported)initWithDictionary:(id)a3;
-- (SUGSchemaSUGEngagementMetricReported)initWithJSON:(id)a3;
+- (SUGSchemaSUGEngagementMetricReported)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGEngagementMetricReported)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConversionMetricType:(BOOL)a3;
-- (void)setHasDaysBucketType:(BOOL)a3;
-- (void)setHasHasConversion:(BOOL)a3;
-- (void)setHasNumberOfActionsAfter:(BOOL)a3;
-- (void)setHasNumberOfActionsBefore:(BOOL)a3;
-- (void)setHasSecondsToConversion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConversionMetricType:(BOOL)type;
+- (void)setHasDaysBucketType:(BOOL)type;
+- (void)setHasHasConversion:(BOOL)conversion;
+- (void)setHasNumberOfActionsAfter:(BOOL)after;
+- (void)setHasNumberOfActionsBefore:(BOOL)before;
+- (void)setHasSecondsToConversion:(BOOL)conversion;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGEngagementMetricReported
 
-- (SUGSchemaSUGEngagementMetricReported)initWithDictionary:(id)a3
+- (SUGSchemaSUGEngagementMetricReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = SUGSchemaSUGEngagementMetricReported;
   v5 = [(SUGSchemaSUGEngagementMetricReported *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
     }
 
     v20 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"loggingActionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"loggingActionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,49 +42,49 @@
       [(SUGSchemaSUGEngagementMetricReported *)v5 setLoggingActionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"numberSuggestionShownBefore", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"numberSuggestionShownBefore", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setNumberSuggestionShownBefore:](v5, "setNumberSuggestionShownBefore:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"hasConversion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hasConversion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setHasConversion:](v5, "setHasConversion:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"secondsToConversion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"secondsToConversion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setSecondsToConversion:](v5, "setSecondsToConversion:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"numberOfActionsBefore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numberOfActionsBefore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setNumberOfActionsBefore:](v5, "setNumberOfActionsBefore:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"numberOfActionsAfter"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numberOfActionsAfter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setNumberOfActionsAfter:](v5, "setNumberOfActionsAfter:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"daysBucketType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"daysBucketType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGEngagementMetricReported setDaysBucketType:](v5, "setDaysBucketType:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"conversionMetricType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"conversionMetricType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,30 +97,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGEngagementMetricReported)initWithJSON:(id)a3
+- (SUGSchemaSUGEngagementMetricReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGEngagementMetricReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGEngagementMetricReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGEngagementMetricReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -133,18 +133,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    v5 = [(SUGSchemaSUGEngagementMetricReported *)self conversionMetricType];
+    conversionMetricType = [(SUGSchemaSUGEngagementMetricReported *)self conversionMetricType];
     v6 = @"SUGCONVERSIONMETRICTYPE_UNKNOWN";
-    if (v5 == 1)
+    if (conversionMetricType == 1)
     {
       v6 = @"SUGCONVERSIONMETRICTYPE_CONVERTED";
     }
 
-    if (v5 == 2)
+    if (conversionMetricType == 2)
     {
       v7 = @"SUGCONVERSIONMETRICTYPE_NOT_CONVERTED";
     }
@@ -154,7 +154,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"conversionMetricType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"conversionMetricType"];
     has = self->_has;
   }
 
@@ -171,28 +171,28 @@
       v9 = off_1E78E7B98[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"daysBucketType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"daysBucketType"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[SUGSchemaSUGEngagementMetricReported hasConversion](self, "hasConversion")}];
-    [v3 setObject:v10 forKeyedSubscript:@"hasConversion"];
+    [dictionary setObject:v10 forKeyedSubscript:@"hasConversion"];
   }
 
   if (self->_loggingActionId)
   {
-    v11 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"loggingActionId"];
+    loggingActionId = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
+    v12 = [loggingActionId copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"loggingActionId"];
   }
 
   v13 = self->_has;
   if ((v13 & 0x10) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGEngagementMetricReported numberOfActionsAfter](self, "numberOfActionsAfter")}];
-    [v3 setObject:v18 forKeyedSubscript:@"numberOfActionsAfter"];
+    [dictionary setObject:v18 forKeyedSubscript:@"numberOfActionsAfter"];
 
     v13 = self->_has;
     if ((v13 & 8) == 0)
@@ -213,7 +213,7 @@ LABEL_19:
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGEngagementMetricReported numberOfActionsBefore](self, "numberOfActionsBefore")}];
-  [v3 setObject:v19 forKeyedSubscript:@"numberOfActionsBefore"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numberOfActionsBefore"];
 
   v13 = self->_has;
   if ((v13 & 1) == 0)
@@ -229,26 +229,26 @@ LABEL_20:
 
 LABEL_29:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGEngagementMetricReported numberSuggestionShownBefore](self, "numberSuggestionShownBefore")}];
-  [v3 setObject:v20 forKeyedSubscript:@"numberSuggestionShownBefore"];
+  [dictionary setObject:v20 forKeyedSubscript:@"numberSuggestionShownBefore"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_21:
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGEngagementMetricReported secondsToConversion](self, "secondsToConversion")}];
-    [v3 setObject:v14 forKeyedSubscript:@"secondsToConversion"];
+    [dictionary setObject:v14 forKeyedSubscript:@"secondsToConversion"];
   }
 
 LABEL_22:
   if (self->_suggestionId)
   {
-    v15 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"suggestionId"];
+    suggestionId = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
+    v16 = [suggestionId copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"suggestionId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -349,28 +349,28 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
-  v6 = [v4 suggestionId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionId = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
+  suggestionId2 = [equalCopy suggestionId];
+  if ((suggestionId != 0) == (suggestionId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
-  if (v7)
+  suggestionId3 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
+  if (suggestionId3)
   {
-    v8 = v7;
-    v9 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
-    v10 = [v4 suggestionId];
-    v11 = [v9 isEqual:v10];
+    v8 = suggestionId3;
+    suggestionId4 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
+    suggestionId5 = [equalCopy suggestionId];
+    v11 = [suggestionId4 isEqual:suggestionId5];
 
     if (!v11)
     {
@@ -382,22 +382,22 @@ LABEL_8:
   {
   }
 
-  v5 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
-  v6 = [v4 loggingActionId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionId = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
+  suggestionId2 = [equalCopy loggingActionId];
+  if ((suggestionId != 0) == (suggestionId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
-  if (v12)
+  loggingActionId = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
+  if (loggingActionId)
   {
-    v13 = v12;
-    v14 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
-    v15 = [v4 loggingActionId];
-    v16 = [v14 isEqual:v15];
+    v13 = loggingActionId;
+    loggingActionId2 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
+    loggingActionId3 = [equalCopy loggingActionId];
+    v16 = [loggingActionId2 isEqual:loggingActionId3];
 
     if (!v16)
     {
@@ -410,19 +410,19 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[52];
+  v20 = equalCopy[52];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       numberSuggestionShownBefore = self->_numberSuggestionShownBefore;
-      if (numberSuggestionShownBefore != [v4 numberSuggestionShownBefore])
+      if (numberSuggestionShownBefore != [equalCopy numberSuggestionShownBefore])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[52];
+      v20 = equalCopy[52];
     }
 
     v22 = (*&has >> 1) & 1;
@@ -431,13 +431,13 @@ LABEL_11:
       if (v22)
       {
         hasConversion = self->_hasConversion;
-        if (hasConversion != [v4 hasConversion])
+        if (hasConversion != [equalCopy hasConversion])
         {
           goto LABEL_12;
         }
 
         has = self->_has;
-        v20 = v4[52];
+        v20 = equalCopy[52];
       }
 
       v24 = (*&has >> 2) & 1;
@@ -446,13 +446,13 @@ LABEL_11:
         if (v24)
         {
           secondsToConversion = self->_secondsToConversion;
-          if (secondsToConversion != [v4 secondsToConversion])
+          if (secondsToConversion != [equalCopy secondsToConversion])
           {
             goto LABEL_12;
           }
 
           has = self->_has;
-          v20 = v4[52];
+          v20 = equalCopy[52];
         }
 
         v26 = (*&has >> 3) & 1;
@@ -461,13 +461,13 @@ LABEL_11:
           if (v26)
           {
             numberOfActionsBefore = self->_numberOfActionsBefore;
-            if (numberOfActionsBefore != [v4 numberOfActionsBefore])
+            if (numberOfActionsBefore != [equalCopy numberOfActionsBefore])
             {
               goto LABEL_12;
             }
 
             has = self->_has;
-            v20 = v4[52];
+            v20 = equalCopy[52];
           }
 
           v28 = (*&has >> 4) & 1;
@@ -476,13 +476,13 @@ LABEL_11:
             if (v28)
             {
               numberOfActionsAfter = self->_numberOfActionsAfter;
-              if (numberOfActionsAfter != [v4 numberOfActionsAfter])
+              if (numberOfActionsAfter != [equalCopy numberOfActionsAfter])
               {
                 goto LABEL_12;
               }
 
               has = self->_has;
-              v20 = v4[52];
+              v20 = equalCopy[52];
             }
 
             v30 = (*&has >> 5) & 1;
@@ -491,19 +491,19 @@ LABEL_11:
               if (v30)
               {
                 daysBucketType = self->_daysBucketType;
-                if (daysBucketType != [v4 daysBucketType])
+                if (daysBucketType != [equalCopy daysBucketType])
                 {
                   goto LABEL_12;
                 }
 
                 has = self->_has;
-                v20 = v4[52];
+                v20 = equalCopy[52];
               }
 
               v32 = (*&has >> 6) & 1;
               if (v32 == ((v20 >> 6) & 1))
               {
-                if (!v32 || (conversionMetricType = self->_conversionMetricType, conversionMetricType == [v4 conversionMetricType]))
+                if (!v32 || (conversionMetricType = self->_conversionMetricType, conversionMetricType == [equalCopy conversionMetricType]))
                 {
                   v17 = 1;
                   goto LABEL_13;
@@ -523,29 +523,29 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
+  toCopy = to;
+  suggestionId = [(SUGSchemaSUGEngagementMetricReported *)self suggestionId];
 
-  if (v4)
+  if (suggestionId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
+  loggingActionId = [(SUGSchemaSUGEngagementMetricReported *)self loggingActionId];
 
-  if (v5)
+  if (loggingActionId)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v7 = v8;
+  v7 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -565,7 +565,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -580,7 +580,7 @@ LABEL_8:
 
 LABEL_18:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -595,7 +595,7 @@ LABEL_9:
 
 LABEL_19:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -610,7 +610,7 @@ LABEL_10:
 
 LABEL_20:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -625,20 +625,20 @@ LABEL_11:
 
 LABEL_21:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_13:
 }
 
-- (void)setHasConversionMetricType:(BOOL)a3
+- (void)setHasConversionMetricType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -651,9 +651,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDaysBucketType:(BOOL)a3
+- (void)setHasDaysBucketType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -666,9 +666,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNumberOfActionsAfter:(BOOL)a3
+- (void)setHasNumberOfActionsAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 16;
   }
@@ -681,9 +681,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumberOfActionsBefore:(BOOL)a3
+- (void)setHasNumberOfActionsBefore:(BOOL)before
 {
-  if (a3)
+  if (before)
   {
     v3 = 8;
   }
@@ -696,9 +696,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSecondsToConversion:(BOOL)a3
+- (void)setHasSecondsToConversion:(BOOL)conversion
 {
-  if (a3)
+  if (conversion)
   {
     v3 = 4;
   }
@@ -711,9 +711,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasConversion:(BOOL)a3
+- (void)setHasHasConversion:(BOOL)conversion
 {
-  if (a3)
+  if (conversion)
   {
     v3 = 2;
   }

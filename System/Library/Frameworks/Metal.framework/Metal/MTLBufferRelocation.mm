@@ -1,20 +1,20 @@
 @interface MTLBufferRelocation
-- (MTLBufferRelocation)initWithSymbolName:(id)a3 buffer:(id)a4 offset:(unint64_t)a5;
+- (MTLBufferRelocation)initWithSymbolName:(id)name buffer:(id)buffer offset:(unint64_t)offset;
 - (void)dealloc;
 @end
 
 @implementation MTLBufferRelocation
 
-- (MTLBufferRelocation)initWithSymbolName:(id)a3 buffer:(id)a4 offset:(unint64_t)a5
+- (MTLBufferRelocation)initWithSymbolName:(id)name buffer:(id)buffer offset:(unint64_t)offset
 {
   v10.receiver = self;
   v10.super_class = MTLBufferRelocation;
   v8 = [(MTLBufferRelocation *)&v10 init];
   if (v8)
   {
-    v8->_symbolName = a3;
-    v8->_buffer = a4;
-    v8->_offset = a5;
+    v8->_symbolName = name;
+    v8->_buffer = buffer;
+    v8->_offset = offset;
   }
 
   return v8;

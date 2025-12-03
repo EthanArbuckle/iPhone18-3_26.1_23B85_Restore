@@ -8,8 +8,8 @@
 - (void)px_invalidate
 {
   self->_invalidated = 1;
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v2 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 }
 
 - (void)dealloc

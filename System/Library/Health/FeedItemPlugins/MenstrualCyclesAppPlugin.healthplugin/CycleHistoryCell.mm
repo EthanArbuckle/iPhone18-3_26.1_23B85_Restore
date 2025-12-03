@@ -1,20 +1,20 @@
 @interface CycleHistoryCell
 - (BOOL)isHighlighted;
 - (UIColor)backgroundColor;
-- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CycleHistoryCell
 
-- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16CycleHistoryCell_item;
   v9 = type metadata accessor for CycleHistorySingleCycleView();
   *v8 = 0u;
@@ -24,13 +24,13 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16CycleHistoryCell_singleCycleView) = v10;
   v13.receiver = self;
   v13.super_class = type metadata accessor for CycleHistoryCell();
-  v11 = [(CycleHistoryCell *)&v13 initWithFrame:x, y, width, height];
+  height = [(CycleHistoryCell *)&v13 initWithFrame:x, y, width, height];
   sub_29E1613D8();
 
-  return v11;
+  return height;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin16CycleHistoryCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16CycleHistoryCell_item;
   *v3 = 0u;
@@ -48,13 +48,13 @@
   return [(CycleHistoryCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CycleHistoryCell();
   v4 = v5.receiver;
-  [(CycleHistoryCell *)&v5 setHighlighted:v3];
+  [(CycleHistoryCell *)&v5 setHighlighted:highlightedCopy];
   sub_29E161170();
 }
 
@@ -62,30 +62,30 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for CycleHistoryCell();
-  v2 = [(CycleHistoryCell *)&v4 backgroundColor];
+  backgroundColor = [(CycleHistoryCell *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for CycleHistoryCell();
   v4 = v9.receiver;
-  v5 = a3;
-  [(CycleHistoryCell *)&v9 setBackgroundColor:v5];
-  v6 = [v4 backgroundColor];
-  if (v6)
+  colorCopy = color;
+  [(CycleHistoryCell *)&v9 setBackgroundColor:colorCopy];
+  backgroundColor = [v4 backgroundColor];
+  if (backgroundColor)
   {
-    v7 = v6;
+    v7 = backgroundColor;
     v8 = *(*&v4[OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16CycleHistoryCell_singleCycleView] + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleView_cycleView);
     sub_29E1C8D84(v7);
   }
 
   else
   {
-    v8 = v5;
-    v5 = v4;
+    v8 = colorCopy;
+    colorCopy = v4;
   }
 }
 

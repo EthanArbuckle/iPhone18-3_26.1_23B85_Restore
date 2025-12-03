@@ -1,46 +1,46 @@
 @interface CRImageReaderTrackingSession
-+ (unint64_t)regionTypeForTrackingLevel:(unint64_t)a3;
-- (CRImageReaderTrackingSession)initWithTrackingLevel:(unint64_t)a3 ocrFrameInterval:(unint64_t)a4;
++ (unint64_t)regionTypeForTrackingLevel:(unint64_t)level;
+- (CRImageReaderTrackingSession)initWithTrackingLevel:(unint64_t)level ocrFrameInterval:(unint64_t)interval;
 - (double)accumulatedSceneHomography;
 - (double)sceneHomography;
-- (float)applyOpticalFlowTrackingForFrame:(uint64_t)a1;
+- (float)applyOpticalFlowTrackingForFrame:(uint64_t)frame;
 - (id).cxx_construct;
-- (uint64_t)dispatchIfReady:(uint64_t)a1;
+- (uint64_t)dispatchIfReady:(uint64_t)ready;
 - (uint64_t)setLastFrameTime:(uint64_t)result;
 - (uint64_t)shouldRunOCROnCurrentFrame;
 - (unint64_t)trackedRegionType;
 - (void)prepareSessionForOCRDispatch;
 - (void)saveQuadsAfterAssociation;
-- (void)setAccumulatedSceneHomography:(__n128)a3;
-- (void)setSceneHomography:(__n128)a3;
-- (void)updateOCRUpdateModeWithStability:(id)a3 frameDuration:(double)a4;
+- (void)setAccumulatedSceneHomography:(__n128)homography;
+- (void)setSceneHomography:(__n128)homography;
+- (void)updateOCRUpdateModeWithStability:(id)stability frameDuration:(double)duration;
 @end
 
 @implementation CRImageReaderTrackingSession
 
-- (CRImageReaderTrackingSession)initWithTrackingLevel:(unint64_t)a3 ocrFrameInterval:(unint64_t)a4
+- (CRImageReaderTrackingSession)initWithTrackingLevel:(unint64_t)level ocrFrameInterval:(unint64_t)interval
 {
   v22.receiver = self;
   v22.super_class = CRImageReaderTrackingSession;
   v6 = [(CRImageReaderTrackingSession *)&v22 init];
   v7 = v6;
-  if (a3 <= 1)
+  if (level <= 1)
   {
-    v8 = 1;
+    levelCopy = 1;
   }
 
   else
   {
-    v8 = a3;
+    levelCopy = level;
   }
 
   v6->_shouldIncludeLinesInTrackingResult = 0;
-  v9 = [[CRImageReaderTrackingResult alloc] initWithTrackingLevel:v8];
+  v9 = [[CRImageReaderTrackingResult alloc] initWithTrackingLevel:levelCopy];
   latestResult = v7->_latestResult;
   v7->_latestResult = v9;
 
   v11 = objc_alloc_init(MEMORY[0x1E69DF9A8]);
-  v12 = a3 == 0;
+  v12 = level == 0;
   optFlowSession = v7->_optFlowSession;
   v7->_optFlowSession = v11;
 
@@ -61,43 +61,43 @@
   ocrQueue = v7->_ocrQueue;
   v7->_ocrQueue = v19;
 
-  v7->_ocrFrameInterval = a4;
+  v7->_ocrFrameInterval = interval;
   v7->_replacedQuadArea = 0.0;
   *&v7->_frameCount = 0u;
   v7->_ocrUpdateMode = 1;
   v7->_lowFrequencyOCRElapsedTimeAboveMinimumStability = 0.0;
   *&v7->_didDispatchOCROnFrame = 0;
   *&v7->_lastOCRDispatchTime = 0u;
-  v7->_trackingLevel = v8;
+  v7->_trackingLevel = levelCopy;
   v7->_usesGroupedRegions = v12;
 
   return v7;
 }
 
-- (uint64_t)dispatchIfReady:(uint64_t)a1
+- (uint64_t)dispatchIfReady:(uint64_t)ready
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ready)
   {
-    if (*(a1 + 64))
+    if (*(ready + 64))
     {
       v6 = v3;
-      if (!(*(a1 + 48) % *(a1 + 64)) && (*(a1 + 11) & 1) != 0)
+      if (!(*(ready + 48) % *(ready + 64)) && (*(ready + 11) & 1) != 0)
       {
-        Property = objc_getProperty(a1, v5, 40, 1);
+        Property = objc_getProperty(ready, v5, 40, 1);
         dispatch_barrier_sync(Property, &__block_literal_global_131);
       }
 
-      if ((*(a1 + 11) & 1) != 0 || *(a1 + 48) % *(a1 + 64))
+      if ((*(ready + 11) & 1) != 0 || *(ready + 48) % *(ready + 64))
       {
         v8 = 0;
       }
 
       else
       {
-        v14 = objc_initWeak(&location, a1);
-        v16 = objc_getProperty(a1, v15, 40, 1);
+        v14 = objc_initWeak(&location, ready);
+        v16 = objc_getProperty(ready, v15, 40, 1);
         block = MEMORY[0x1E69E9820];
         v20 = 3221225472;
         v21 = __60__CRImageReaderTrackingSession__dispatchAtOCRFrameInterval___block_invoke_2;
@@ -116,11 +116,11 @@
     else
     {
       v6 = v3;
-      v9 = *(a1 + 11);
+      v9 = *(ready + 11);
       if ((v9 & 1) == 0)
       {
-        v10 = objc_initWeak(&location, a1);
-        v12 = objc_getProperty(a1, v11, 40, 1);
+        v10 = objc_initWeak(&location, ready);
+        v12 = objc_getProperty(ready, v11, 40, 1);
         block = MEMORY[0x1E69E9820];
         v20 = 3221225472;
         v21 = __49__CRImageReaderTrackingSession__dispatchIfReady___block_invoke;
@@ -137,7 +137,7 @@
       v8 = v9 ^ 1u;
     }
 
-    ++*(a1 + 48);
+    ++*(ready + 48);
   }
 
   else
@@ -148,16 +148,16 @@
   return v8;
 }
 
-+ (unint64_t)regionTypeForTrackingLevel:(unint64_t)a3
++ (unint64_t)regionTypeForTrackingLevel:(unint64_t)level
 {
-  if (a3 > 2)
+  if (level > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B42AF2D8[a3];
+    return qword_1B42AF2D8[level];
   }
 }
 
@@ -171,11 +171,11 @@
   return result;
 }
 
-- (float)applyOpticalFlowTrackingForFrame:(uint64_t)a1
+- (float)applyOpticalFlowTrackingForFrame:(uint64_t)frame
 {
   v168 = *MEMORY[0x1E69E9840];
   v125 = a2;
-  if (!a1)
+  if (!frame)
   {
     v29 = 0.0;
     goto LABEL_132;
@@ -226,15 +226,15 @@
     _os_signpost_emit_with_name_impl(&dword_1B40D2000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "OCRTrackingInputPrep", "", buf, 2u);
   }
 
-  ++*(a1 + 56);
+  ++*(frame + 56);
   Current = CFAbsoluteTimeGetCurrent();
-  v12 = *(a1 + 72);
-  *(a1 + 72) = CFAbsoluteTimeGetCurrent();
-  v13 = [v125 width];
-  v14 = *(a1 + 20);
-  v15 = [v125 height];
-  v16 = v13 / v14;
-  v17 = v15 / *(a1 + 20);
+  v12 = *(frame + 72);
+  *(frame + 72) = CFAbsoluteTimeGetCurrent();
+  width = [v125 width];
+  v14 = *(frame + 20);
+  height = [v125 height];
+  v16 = width / v14;
+  v17 = height / *(frame + 20);
   if (v16)
   {
     v18 = v16 + 1.0;
@@ -258,7 +258,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (*(a1 + 12))
+    if (*(frame + 12))
     {
       v20 = 1278226488;
     }
@@ -268,14 +268,14 @@
       v20 = 1111970369;
     }
 
-    v21 = [v125 pixelBufferWithScale:buf paddedToSize:1 adjustedToSize:v20 paddingMode:1 format:1 hardwareAcceleration:1.0 / *(a1 + 20) iosurfaceBacking:{v18, v19}];
+    v21 = [v125 pixelBufferWithScale:buf paddedToSize:1 adjustedToSize:v20 paddingMode:1 format:1 hardwareAcceleration:1.0 / *(frame + 20) iosurfaceBacking:{v18, v19}];
 LABEL_32:
     if (v21)
     {
       v25 = MEMORY[0x1E695DF70];
-      v26 = *(a1 + 24);
-      location = (a1 + 24);
-      if (*(a1 + 8) == 1)
+      v26 = *(frame + 24);
+      location = (frame + 24);
+      if (*(frame + 8) == 1)
       {
         [v26 regionTrackingGroups];
       }
@@ -290,14 +290,14 @@ LABEL_32:
 
       v131 = objc_opt_new();
       v132 = objc_opt_new();
-      if (*(a1 + 8) == 1)
+      if (*(frame + 8) == 1)
       {
         v148 = 0uLL;
         v149 = 0uLL;
         v146 = 0uLL;
         v147 = 0uLL;
-        v31 = [*location regionTrackingGroups];
-        v32 = [v31 countByEnumeratingWithState:&v146 objects:v161 count:16];
+        regionTrackingGroups = [*location regionTrackingGroups];
+        v32 = [regionTrackingGroups countByEnumeratingWithState:&v146 objects:v161 count:16];
         if (v32)
         {
           v33 = *v147;
@@ -307,19 +307,19 @@ LABEL_32:
             {
               if (*v147 != v33)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(regionTrackingGroups);
               }
 
               v35 = *(*(&v146 + 1) + 8 * i);
-              v36 = [v35 vcQuad];
-              *&v37 = 1.0 / *(a1 + 20);
-              v38 = [v36 quadAfterScaling:v37];
+              vcQuad = [v35 vcQuad];
+              *&v37 = 1.0 / *(frame + 20);
+              v38 = [vcQuad quadAfterScaling:v37];
 
               [v28 addObject:v38];
               [v132 setObject:v35 forKeyedSubscript:v38];
             }
 
-            v32 = [v31 countByEnumeratingWithState:&v146 objects:v161 count:16];
+            v32 = [regionTrackingGroups countByEnumeratingWithState:&v146 objects:v161 count:16];
           }
 
           while (v32);
@@ -332,8 +332,8 @@ LABEL_32:
         v145 = 0uLL;
         v142 = 0uLL;
         v143 = 0uLL;
-        v31 = [*location trackedRegions];
-        v39 = [v31 countByEnumeratingWithState:&v142 objects:v160 count:16];
+        regionTrackingGroups = [*location trackedRegions];
+        v39 = [regionTrackingGroups countByEnumeratingWithState:&v142 objects:v160 count:16];
         if (v39)
         {
           v40 = *v143;
@@ -343,19 +343,19 @@ LABEL_32:
             {
               if (*v143 != v40)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(regionTrackingGroups);
               }
 
               v42 = *(*(&v142 + 1) + 8 * j);
-              v43 = [v42 vcImageSpaceQuad];
-              *&v44 = 1.0 / *(a1 + 20);
-              v45 = [v43 quadAfterScaling:v44];
+              vcImageSpaceQuad = [v42 vcImageSpaceQuad];
+              *&v44 = 1.0 / *(frame + 20);
+              v45 = [vcImageSpaceQuad quadAfterScaling:v44];
 
               [v28 addObject:v45];
               [v131 setObject:v42 forKeyedSubscript:v45];
             }
 
-            v39 = [v31 countByEnumeratingWithState:&v142 objects:v160 count:16];
+            v39 = [regionTrackingGroups countByEnumeratingWithState:&v142 objects:v160 count:16];
           }
 
           while (v39);
@@ -397,7 +397,7 @@ LABEL_32:
         _os_signpost_emit_with_name_impl(&dword_1B40D2000, v51, OS_SIGNPOST_INTERVAL_BEGIN, v49, "OCRTrackingComputeHomographies", "", buf, 2u);
       }
 
-      if (*(a1 + 10) == 1)
+      if (*(frame + 10) == 1)
       {
         v158 = *MEMORY[0x1E69DF9D0];
         v159 = MEMORY[0x1E695E118];
@@ -410,7 +410,7 @@ LABEL_32:
       }
 
       v52 = objc_autoreleasePoolPush();
-      v53 = *(a1 + 96);
+      v53 = *(frame + 96);
       v141 = 0;
       v54 = [MEMORY[0x1E69DF9A0] computeHomographiesForQuadrilaterals:v115 inFrame:texture session:v53 options:v116 error:&v141];
       v117 = v141;
@@ -421,15 +421,15 @@ LABEL_32:
       }
 
       v119 = v54;
-      if (*(a1 + 10) == 1)
+      if (*(frame + 10) == 1)
       {
-        v55 = [*(a1 + 96) debuggingResult];
-        v56 = *(a1 + 104);
-        *(a1 + 104) = v55;
+        debuggingResult = [*(frame + 96) debuggingResult];
+        v56 = *(frame + 104);
+        *(frame + 104) = debuggingResult;
 
-        v57 = [*(a1 + 96) debuggingMemoryResult];
-        v58 = *(a1 + 112);
-        *(a1 + 112) = v57;
+        debuggingMemoryResult = [*(frame + 96) debuggingMemoryResult];
+        v58 = *(frame + 112);
+        *(frame + 112) = debuggingMemoryResult;
       }
 
       if (CRSignpostLog_onceToken != -1)
@@ -466,20 +466,20 @@ LABEL_32:
         _os_signpost_emit_with_name_impl(&dword_1B40D2000, v63, OS_SIGNPOST_INTERVAL_BEGIN, spid, "OCRTrackingApplyHomographies", "", buf, 2u);
       }
 
-      obj = [[CRImageReaderTrackingResult alloc] initWithTrackingLevel:*(a1 + 32)];
-      [*(a1 + 96) sceneHomography];
+      obj = [[CRImageReaderTrackingResult alloc] initWithTrackingLevel:*(frame + 32)];
+      [*(frame + 96) sceneHomography];
       v66.i32[3] = v65.i32[0];
       if ((vmaxv_u8(vmovn_s16(vmvnq_s8(vuzp1q_s16(vceqzq_f32(v66), vceqzq_f32(vextq_s8(vextq_s8(v65, v65, 0xCuLL), v64, 8uLL)))))) & 1) != 0 || *&v64.i32[2] != 0.0)
       {
-        [*(a1 + 96) sceneHomography];
+        [*(frame + 96) sceneHomography];
         *&v68 = v67;
         if (v67 != 0.0)
         {
-          [*(a1 + 96) sceneHomography];
+          [*(frame + 96) sceneHomography];
           v72 = 0;
-          v73 = *(a1 + 224);
-          v74 = *(a1 + 240);
-          v162[0] = *(a1 + 208);
+          v73 = *(frame + 224);
+          v74 = *(frame + 240);
+          v162[0] = *(frame + 208);
           v162[1] = v73;
           v162[2] = v74;
           do
@@ -492,23 +492,23 @@ LABEL_32:
           v75 = *buf;
           v76 = v166;
           v77 = v167;
-          *(a1 + 216) = *&buf[8];
-          *(a1 + 232) = DWORD2(v76);
-          *(a1 + 208) = v75;
-          *(a1 + 224) = v76;
-          *(a1 + 248) = DWORD2(v77);
-          *(a1 + 240) = v77;
+          *(frame + 216) = *&buf[8];
+          *(frame + 232) = DWORD2(v76);
+          *(frame + 208) = v75;
+          *(frame + 224) = v76;
+          *(frame + 248) = DWORD2(v77);
+          *(frame + 240) = v77;
           *&v75 = 1.0 / *(&v77 + 2);
-          v78 = *(a1 + 240);
-          v79 = vmulq_n_f32(*(a1 + 208), 1.0 / *(&v77 + 2));
-          v80 = vmulq_n_f32(*(a1 + 224), 1.0 / *(&v77 + 2));
-          *(a1 + 216) = v79.i32[2];
-          *(a1 + 232) = v80.i32[2];
-          *(a1 + 208) = v79.i64[0];
-          *(a1 + 224) = v80.i64[0];
+          v78 = *(frame + 240);
+          v79 = vmulq_n_f32(*(frame + 208), 1.0 / *(&v77 + 2));
+          v80 = vmulq_n_f32(*(frame + 224), 1.0 / *(&v77 + 2));
+          *(frame + 216) = v79.i32[2];
+          *(frame + 232) = v80.i32[2];
+          *(frame + 208) = v79.i64[0];
+          *(frame + 224) = v80.i64[0];
           v81 = vmulq_n_f32(v78, *&v75);
-          *(a1 + 248) = v81.i32[2];
-          *(a1 + 240) = v81.i64[0];
+          *(frame + 248) = v81.i32[2];
+          *(frame + 240) = v81.i64[0];
         }
       }
 
@@ -520,7 +520,7 @@ LABEL_32:
       v138 = &v137;
       v139 = 0x2020000000;
       v140 = 0;
-      if (*(a1 + 8) == 1)
+      if (*(frame + 8) == 1)
       {
         v82 = v134;
         v134[0] = MEMORY[0x1E69E9820];
@@ -530,7 +530,7 @@ LABEL_32:
         v83 = v132;
         v136 = &v137;
         v134[4] = v83;
-        v134[5] = a1;
+        v134[5] = frame;
         v134[6] = v123;
         v134[7] = v120;
         v134[8] = v122;
@@ -548,7 +548,7 @@ LABEL_32:
         v84 = v131;
         v133[9] = &v137;
         v133[4] = v84;
-        v133[5] = a1;
+        v133[5] = frame;
         v133[6] = v123;
         v133[7] = v121;
         v133[8] = v122;
@@ -559,39 +559,39 @@ LABEL_32:
       [(CRImageReaderTrackingResult *)obj setRemovedRegionIDs:v123];
       [(CRImageReaderTrackingResult *)obj setUpdatedRegionIDs:v122];
       [(CRImageReaderTrackingResult *)obj setRegionTrackingGroups:v120];
-      v85 = *(a1 + 56);
+      v85 = *(frame + 56);
       *&v86 = v85;
       if (v85 >= 8)
       {
         *&v86 = 7.5;
       }
 
-      [(CRImageReaderTrackingResult *)obj markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:0 ransacReprojError:v86 markedQuadArea:*(a1 + 80)];
-      v87 = [v125 sceneStabilityMetric];
-      [a1 updateOCRUpdateModeWithStability:v87 frameDuration:Current - v12];
+      [(CRImageReaderTrackingResult *)obj markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:0 ransacReprojError:v86 markedQuadArea:*(frame + 80)];
+      sceneStabilityMetric = [v125 sceneStabilityMetric];
+      [frame updateOCRUpdateModeWithStability:sceneStabilityMetric frameDuration:Current - v12];
 
-      if (*(a1 + 8) == 1 && (*(a1 + 136) - 1) >= 2)
+      if (*(frame + 8) == 1 && (*(frame + 136) - 1) >= 2)
       {
         v111 = obj;
-        v88 = [(CRImageReaderTrackingResult *)v111 regionTrackingGroups];
-        v126 = [v88 mutableCopy];
+        regionTrackingGroups2 = [(CRImageReaderTrackingResult *)v111 regionTrackingGroups];
+        v126 = [regionTrackingGroups2 mutableCopy];
 
-        v89 = [(CRImageReaderTrackingResult *)v111 trackedRegions];
-        v90 = [v89 mutableCopy];
+        trackedRegions = [(CRImageReaderTrackingResult *)v111 trackedRegions];
+        v90 = [trackedRegions mutableCopy];
 
-        v91 = [(CRImageReaderTrackingResult *)v111 trackedRegions];
-        v127 = [v91 mutableCopy];
+        trackedRegions2 = [(CRImageReaderTrackingResult *)v111 trackedRegions];
+        v127 = [trackedRegions2 mutableCopy];
 
-        v92 = [(CRImageReaderTrackingResult *)v111 removedRegionIDs];
-        v128 = [v92 mutableCopy];
+        removedRegionIDs = [(CRImageReaderTrackingResult *)v111 removedRegionIDs];
+        v128 = [removedRegionIDs mutableCopy];
 
         v156 = 0u;
         v157 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v93 = [(CRImageReaderTrackingResult *)v111 regionTrackingGroups];
-        texturea = v93;
-        v94 = [(__CVBuffer *)v93 countByEnumeratingWithState:&v154 objects:buf count:16];
+        regionTrackingGroups3 = [(CRImageReaderTrackingResult *)v111 regionTrackingGroups];
+        texturea = regionTrackingGroups3;
+        v94 = [(__CVBuffer *)regionTrackingGroups3 countByEnumeratingWithState:&v154 objects:buf count:16];
         if (v94)
         {
           v95 = *v155;
@@ -611,24 +611,24 @@ LABEL_32:
                 v98 = CROSLogForCategory(1);
                 if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
                 {
-                  v99 = *(a1 + 48);
+                  v99 = *(frame + 48);
                   *v163 = 134217984;
                   v164 = v99;
                   _os_log_impl(&dword_1B40D2000, v98, OS_LOG_TYPE_DEFAULT, "Replaced a group due to ransac (frame %ld)", v163, 0xCu);
                 }
 
-                v100 = [v97 trackingID];
-                [v127 removeObject:v100];
+                trackingID = [v97 trackingID];
+                [v127 removeObject:trackingID];
 
-                v101 = [v97 trackingID];
-                [v128 addObject:v101];
+                trackingID2 = [v97 trackingID];
+                [v128 addObject:trackingID2];
 
                 v152 = 0u;
                 v153 = 0u;
                 v150 = 0u;
                 v151 = 0u;
-                v102 = [v97 children];
-                v103 = [v102 countByEnumeratingWithState:&v150 objects:v162 count:16];
+                children = [v97 children];
+                v103 = [children countByEnumeratingWithState:&v150 objects:v162 count:16];
                 if (v103)
                 {
                   v104 = *v151;
@@ -638,13 +638,13 @@ LABEL_32:
                     {
                       if (*v151 != v104)
                       {
-                        objc_enumerationMutation(v102);
+                        objc_enumerationMutation(children);
                       }
 
                       [v90 removeObject:*(*(&v150 + 1) + 8 * m)];
                     }
 
-                    v103 = [v102 countByEnumeratingWithState:&v150 objects:v162 count:16];
+                    v103 = [children countByEnumeratingWithState:&v150 objects:v162 count:16];
                   }
 
                   while (v103);
@@ -652,7 +652,7 @@ LABEL_32:
               }
             }
 
-            v93 = texturea;
+            regionTrackingGroups3 = texturea;
             v94 = [(__CVBuffer *)texturea countByEnumeratingWithState:&v154 objects:buf count:16];
           }
 
@@ -712,9 +712,9 @@ LABEL_130:
     goto LABEL_131;
   }
 
-  if (*(a1 + 12) != 1)
+  if (*(frame + 12) != 1)
   {
-    v24 = [v125 pixelBufferWithScale:1.0 / *(a1 + 20) paddedToSize:{v18, v19}];
+    v24 = [v125 pixelBufferWithScale:1.0 / *(frame + 20) paddedToSize:{v18, v19}];
     goto LABEL_31;
   }
 
@@ -722,7 +722,7 @@ LABEL_130:
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 pixelBufferWithScale:1.0 / *(a1 + 20) paddedToSize:{v18, v19}];
+    v24 = [v22 pixelBufferWithScale:1.0 / *(frame + 20) paddedToSize:{v18, v19}];
 
 LABEL_31:
     v21 = CRCreateIOSurfacePixelBufferFromPixelBuffer(v24);
@@ -933,14 +933,14 @@ BOOL __65__CRImageReaderTrackingSession_applyOpticalFlowTrackingForFrame___block
   return (a1 & 1) == 0;
 }
 
-- (void)updateOCRUpdateModeWithStability:(id)a3 frameDuration:(double)a4
+- (void)updateOCRUpdateModeWithStability:(id)stability frameDuration:(double)duration
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
-  if (v7)
+  stabilityCopy = stability;
+  ocrUpdateMode = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+  if (stabilityCopy)
   {
-    [v7 doubleValue];
+    [stabilityCopy doubleValue];
     if (v9 < 0.976)
     {
       v10 = 0;
@@ -950,7 +950,7 @@ LABEL_26:
     }
   }
 
-  if (self && a4 > 0.100000001 && self->_frameCount)
+  if (self && duration > 0.100000001 && self->_frameCount)
   {
     v11 = 4;
 LABEL_8:
@@ -958,7 +958,7 @@ LABEL_8:
     goto LABEL_27;
   }
 
-  if (v7 && ([v7 doubleValue], v12 > 0.984))
+  if (stabilityCopy && ([stabilityCopy doubleValue], v12 > 0.984))
   {
     Current = CFAbsoluteTimeGetCurrent();
     if (self)
@@ -973,7 +973,7 @@ LABEL_8:
 
     [(CRImageReaderTrackingSession *)self lowFrequencyOCRElapsedTimeAboveMinimumStability];
     [(CRImageReaderTrackingSession *)self setLowFrequencyOCRElapsedTimeAboveMinimumStability:v15 + Current - lastFrameTime];
-    [v7 doubleValue];
+    [stabilityCopy doubleValue];
     if (v16 > 0.988)
     {
       [(CRImageReaderTrackingSession *)self lowFrequencyOCRElapsedTimeAboveMinimumStability];
@@ -989,20 +989,20 @@ LABEL_8:
     [(CRImageReaderTrackingSession *)self setLowFrequencyOCRElapsedTimeAboveMinimumStability:0.0];
   }
 
-  if (v8 == [(CRImageReaderTrackingSession *)self ocrUpdateMode]|| [(CRImageReaderTrackingSession *)self ocrUpdateMode]== 4)
+  if (ocrUpdateMode == [(CRImageReaderTrackingSession *)self ocrUpdateMode]|| [(CRImageReaderTrackingSession *)self ocrUpdateMode]== 4)
   {
     [(CRImageReaderTrackingSession *)self lowFrequencyOCRElapsedTimeAboveMinimumStability];
     if (v18 == 0.0)
     {
-      if (!v7 || ([v7 doubleValue], v19 <= 0.978))
+      if (!stabilityCopy || ([stabilityCopy doubleValue], v19 <= 0.978))
       {
         v10 = 1;
         goto LABEL_26;
       }
 
-      v20 = [(CRImageReaderTrackingSession *)self latestResult];
-      v4 = [v20 trackedRegions];
-      if ([v4 count])
+      latestResult = [(CRImageReaderTrackingSession *)self latestResult];
+      trackedRegions = [latestResult trackedRegions];
+      if ([trackedRegions count])
       {
         v21 = self->_replacedQuadArea / self->_totalQuadArea;
 
@@ -1038,12 +1038,12 @@ LABEL_8:
   }
 
 LABEL_27:
-  if (v8 != [(CRImageReaderTrackingSession *)self ocrUpdateMode])
+  if (ocrUpdateMode != [(CRImageReaderTrackingSession *)self ocrUpdateMode])
   {
     v22 = CROSLogForCategory(1);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+      ocrUpdateMode2 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
       if (self)
       {
         v24 = self->_frameCount;
@@ -1055,13 +1055,13 @@ LABEL_27:
       }
 
       v36 = 134218754;
-      v37 = v8;
+      v37 = ocrUpdateMode;
       v38 = 2048;
-      v39 = *&v23;
+      v39 = *&ocrUpdateMode2;
       v40 = 2048;
       v41 = v24;
       v42 = 2112;
-      v43 = v7;
+      v43 = stabilityCopy;
       _os_log_impl(&dword_1B40D2000, v22, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: %ld -> %ld (frame %ld, scene %@)", &v36, 0x2Au);
     }
   }
@@ -1075,27 +1075,27 @@ LABEL_27:
       v26 = CROSLogForCategory(1);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+        ocrUpdateMode3 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
         v36 = 134217984;
-        v37 = v27;
+        v37 = ocrUpdateMode3;
         _os_log_impl(&dword_1B40D2000, v26, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: [KILL SWITCH] %lu", &v36, 0xCu);
       }
     }
   }
 
-  v28 = [MEMORY[0x1E696AE30] processInfo];
-  v29 = [v28 thermalState]> 1;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v29 = [processInfo thermalState]> 1;
 
   if (v29 && [(CRImageReaderTrackingSession *)self ocrUpdateMode]<= 2 && [(CRImageReaderTrackingSession *)self ocrUpdateMode])
   {
     [(CRImageReaderTrackingSession *)self setOcrUpdateMode:3];
-    v28 = CROSLogForCategory(1);
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    processInfo = CROSLogForCategory(1);
+    if (os_log_type_enabled(processInfo, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+      ocrUpdateMode4 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
       v36 = 134217984;
-      v37 = v30;
-      _os_log_impl(&dword_1B40D2000, v28, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: [THERMAL PRESSURE OVERRIDE] %lu", &v36, 0xCu);
+      v37 = ocrUpdateMode4;
+      _os_log_impl(&dword_1B40D2000, processInfo, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: [THERMAL PRESSURE OVERRIDE] %lu", &v36, 0xCu);
     }
   }
 
@@ -1106,17 +1106,17 @@ LABEL_27:
 
   if (_MergedGlobals_14)
   {
-    v28 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
-    if (v28 != [_MergedGlobals_14 unsignedIntegerValue])
+    processInfo = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+    if (processInfo != [_MergedGlobals_14 unsignedIntegerValue])
     {
       if ([(CRImageReaderTrackingSession *)self ocrUpdateMode])
       {
-        v28 = CROSLogForCategory(1);
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+        processInfo = CROSLogForCategory(1);
+        if (os_log_type_enabled(processInfo, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138412290;
           v37 = _MergedGlobals_14;
-          _os_log_impl(&dword_1B40D2000, v28, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: [DEFAULTS OVERRIDE] %@", &v36, 0xCu);
+          _os_log_impl(&dword_1B40D2000, processInfo, OS_LOG_TYPE_DEFAULT, "OCR Update Mode: [DEFAULTS OVERRIDE] %@", &v36, 0xCu);
         }
 
         -[CRImageReaderTrackingSession setOcrUpdateMode:](self, "setOcrUpdateMode:", [_MergedGlobals_14 unsignedIntegerValue]);
@@ -1124,8 +1124,8 @@ LABEL_27:
     }
   }
 
-  v31 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
-  if (v31)
+  ocrUpdateMode5 = [(CRImageReaderTrackingSession *)self ocrUpdateMode];
+  if (ocrUpdateMode5)
   {
     v32 = 0;
     if (!self)
@@ -1136,9 +1136,9 @@ LABEL_27:
     goto LABEL_55;
   }
 
-  v28 = [(CRImageReaderTrackingSession *)self latestResult];
-  v4 = [v28 trackedRegions];
-  v32 = [v4 count] == 0;
+  processInfo = [(CRImageReaderTrackingSession *)self latestResult];
+  trackedRegions = [processInfo trackedRegions];
+  v32 = [trackedRegions count] == 0;
   if (self)
   {
 LABEL_55:
@@ -1146,7 +1146,7 @@ LABEL_55:
   }
 
 LABEL_56:
-  if (!v31)
+  if (!ocrUpdateMode5)
   {
   }
 }
@@ -1170,18 +1170,18 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
     }
 
     v2 = CFAbsoluteTimeGetCurrent() - *(result + 120);
-    v3 = [v1 ocrUpdateMode];
+    ocrUpdateMode = [v1 ocrUpdateMode];
     result = 1;
-    if (v3 > 2)
+    if (ocrUpdateMode > 2)
     {
-      if (v3 == 3)
+      if (ocrUpdateMode == 3)
       {
         v4 = 2.0;
       }
 
       else
       {
-        if (v3 != 4)
+        if (ocrUpdateMode != 4)
         {
           return result;
         }
@@ -1192,12 +1192,12 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
 
     else
     {
-      if (!v3)
+      if (!ocrUpdateMode)
       {
         return 0;
       }
 
-      if (v3 != 2)
+      if (ocrUpdateMode != 2)
       {
         return result;
       }
@@ -1214,20 +1214,20 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
 - (void)prepareSessionForOCRDispatch
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    *(a1 + 120) = CFAbsoluteTimeGetCurrent();
+    *(self + 120) = CFAbsoluteTimeGetCurrent();
     v2 = MEMORY[0x1E69E9B10];
     v3 = *(MEMORY[0x1E69E9B10] + 16);
-    *(a1 + 208) = *MEMORY[0x1E69E9B10];
-    *(a1 + 224) = v3;
-    *(a1 + 240) = *(v2 + 32);
+    *(self + 208) = *MEMORY[0x1E69E9B10];
+    *(self + 224) = v3;
+    *(self + 240) = *(v2 + 32);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v4 = [*(a1 + 24) trackedRegions];
-    v5 = [v4 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    trackedRegions = [*(self + 24) trackedRegions];
+    v5 = [trackedRegions countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v5)
     {
       v6 = *v27;
@@ -1237,13 +1237,13 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
         {
           if (*v27 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(trackedRegions);
           }
 
           [*(*(&v26 + 1) + 8 * i) updatePreviousAssociationQuad];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v26 objects:v32 count:16];
+        v5 = [trackedRegions countByEnumeratingWithState:&v26 objects:v32 count:16];
       }
 
       while (v5);
@@ -1253,8 +1253,8 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [*(a1 + 24) regionTrackingGroups];
-    v9 = [v8 countByEnumeratingWithState:&v22 objects:v31 count:16];
+    regionTrackingGroups = [*(self + 24) regionTrackingGroups];
+    v9 = [regionTrackingGroups countByEnumeratingWithState:&v22 objects:v31 count:16];
     if (v9)
     {
       v10 = *v23;
@@ -1264,20 +1264,20 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(regionTrackingGroups);
           }
 
           [*(*(&v22 + 1) + 8 * j) updatePreviousAssociationQuad];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v31 count:16];
+        v9 = [regionTrackingGroups countByEnumeratingWithState:&v22 objects:v31 count:16];
       }
 
       while (v9);
     }
 
-    v12 = *(a1 + 168);
-    v13 = *(a1 + 160);
+    v12 = *(self + 168);
+    v13 = *(self + 160);
     if (v12 == v13)
     {
       v14 = 0;
@@ -1288,15 +1288,15 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
       v14 = ((v12 - v13) << 6) - 1;
     }
 
-    v16 = *(a1 + 184);
-    v15 = *(a1 + 192);
+    v16 = *(self + 184);
+    v15 = *(self + 192);
     v17 = v15 + v16;
     if (v14 == v15 + v16)
     {
       if (v16 < 0x200)
       {
-        v18 = *(a1 + 176);
-        v19 = *(a1 + 152);
+        v18 = *(self + 176);
+        v19 = *(self + 152);
         if (v12 - v13 < (v18 - v19))
         {
           operator new();
@@ -1315,28 +1315,28 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
         std::__allocate_at_least[abi:ne200100]<std::allocator<double *>>(v20);
       }
 
-      *(a1 + 184) = v16 - 512;
+      *(self + 184) = v16 - 512;
       v30 = *v13;
-      *(a1 + 160) = v13 + 1;
-      std::__split_buffer<double *>::emplace_back<double *&>((a1 + 152), &v30);
-      v13 = *(a1 + 160);
-      v16 = *(a1 + 184);
-      v15 = *(a1 + 192);
+      *(self + 160) = v13 + 1;
+      std::__split_buffer<double *>::emplace_back<double *&>((self + 152), &v30);
+      v13 = *(self + 160);
+      v16 = *(self + 184);
+      v15 = *(self + 192);
       v17 = v16 + v15;
     }
 
-    (*(v13 + ((v17 >> 6) & 0x3FFFFFFFFFFFFF8)))[v17 & 0x1FF] = *(a1 + 120);
-    *(a1 + 192) = v15 + 1;
+    (*(v13 + ((v17 >> 6) & 0x3FFFFFFFFFFFFF8)))[v17 & 0x1FF] = *(self + 120);
+    *(self + 192) = v15 + 1;
     if ((v15 + 1) >= 6)
     {
       v21 = v16 + 1;
-      *(a1 + 184) = v21;
-      *(a1 + 192) = v15;
+      *(self + 184) = v21;
+      *(self + 192) = v15;
       if (v21 >= 0x400)
       {
         operator delete(*v13);
-        *(a1 + 160) += 8;
-        *(a1 + 184) -= 512;
+        *(self + 160) += 8;
+        *(self + 184) -= 512;
       }
     }
   }
@@ -1345,14 +1345,14 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
 - (void)saveQuadsAfterAssociation
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v2 = [*(a1 + 24) trackedRegions];
-    v3 = [v2 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    trackedRegions = [*(self + 24) trackedRegions];
+    v3 = [trackedRegions countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v3)
     {
       v4 = *v19;
@@ -1362,13 +1362,13 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
         {
           if (*v19 != v4)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(trackedRegions);
           }
 
           [*(*(&v18 + 1) + 8 * i) updateBoundingQuadAfterOCR];
         }
 
-        v3 = [v2 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v3 = [trackedRegions countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v3);
@@ -1378,8 +1378,8 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [*(a1 + 24) regionTrackingGroups];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    regionTrackingGroups = [*(self + 24) regionTrackingGroups];
+    v7 = [regionTrackingGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -1389,25 +1389,25 @@ void __79__CRImageReaderTrackingSession_updateOCRUpdateModeWithStability_frameDu
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(regionTrackingGroups);
           }
 
           v10 = *(*(&v14 + 1) + 8 * j);
           [v10 updateBoundingQuadAfterOCR];
-          v11 = [v10 boundingQuad];
-          v12 = [v11 denormalizedQuad];
-          [v12 area];
-          *(a1 + 88) = v13 + *(a1 + 88);
+          boundingQuad = [v10 boundingQuad];
+          denormalizedQuad = [boundingQuad denormalizedQuad];
+          [denormalizedQuad area];
+          *(self + 88) = v13 + *(self + 88);
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v7 = [regionTrackingGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    *(a1 + 80) = 0;
-    *(a1 + 56) = 0;
+    *(self + 80) = 0;
+    *(self + 56) = 0;
   }
 }
 
@@ -1445,45 +1445,45 @@ void __60__CRImageReaderTrackingSession__dispatchAtOCRFrameInterval___block_invo
 
 - (double)sceneHomography
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  objc_copyStruct(&v2, (a1 + 208), 48, 1, 0);
+  objc_copyStruct(&v2, (self + 208), 48, 1, 0);
   return *&v2;
 }
 
-- (void)setSceneHomography:(__n128)a3
+- (void)setSceneHomography:(__n128)homography
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = homography;
   v4[2] = a4;
-  if (a1)
+  if (self)
   {
-    objc_copyStruct((a1 + 208), v4, 48, 1, 0);
+    objc_copyStruct((self + 208), v4, 48, 1, 0);
   }
 }
 
 - (double)accumulatedSceneHomography
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  objc_copyStruct(&v2, (a1 + 256), 48, 1, 0);
+  objc_copyStruct(&v2, (self + 256), 48, 1, 0);
   return *&v2;
 }
 
-- (void)setAccumulatedSceneHomography:(__n128)a3
+- (void)setAccumulatedSceneHomography:(__n128)homography
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = homography;
   v4[2] = a4;
-  if (a1)
+  if (self)
   {
-    objc_copyStruct((a1 + 256), v4, 48, 1, 0);
+    objc_copyStruct((self + 256), v4, 48, 1, 0);
   }
 }
 

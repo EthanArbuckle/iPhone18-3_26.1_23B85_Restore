@@ -1,12 +1,12 @@
 @interface BWFastStereoDisparityConfiguration
-- (BWFastStereoDisparityConfiguration)initWithInferenceType:(int)a3 fsdNetStereoImagesAlignment:(int)a4 disparityType:(unsigned int)a5;
+- (BWFastStereoDisparityConfiguration)initWithInferenceType:(int)type fsdNetStereoImagesAlignment:(int)alignment disparityType:(unsigned int)disparityType;
 @end
 
 @implementation BWFastStereoDisparityConfiguration
 
-- (BWFastStereoDisparityConfiguration)initWithInferenceType:(int)a3 fsdNetStereoImagesAlignment:(int)a4 disparityType:(unsigned int)a5
+- (BWFastStereoDisparityConfiguration)initWithInferenceType:(int)type fsdNetStereoImagesAlignment:(int)alignment disparityType:(unsigned int)disparityType
 {
-  if (a3 != 108)
+  if (type != 108)
   {
     return 0;
   }
@@ -21,16 +21,16 @@
     return result;
   }
 
-  result->_disparityType = a5;
-  result->_fsdNetStereoImagesAlignment = a4;
-  if (a5 == 2)
+  result->_disparityType = disparityType;
+  result->_fsdNetStereoImagesAlignment = alignment;
+  if (disparityType == 2)
   {
     v10 = 3;
   }
 
   else
   {
-    if (a5 != 1)
+    if (disparityType != 1)
     {
       return result;
     }

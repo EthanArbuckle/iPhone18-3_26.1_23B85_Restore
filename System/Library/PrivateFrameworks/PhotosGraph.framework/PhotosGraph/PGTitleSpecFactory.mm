@@ -13,9 +13,9 @@
 + (id)_specForClimbing;
 + (id)_specForDinner;
 + (id)_specForDiving;
-+ (id)_specForEarlyMomentsWithPersonNodes:(id)a3;
++ (id)_specForEarlyMomentsWithPersonNodes:(id)nodes;
 + (id)_specForEntertainment;
-+ (id)_specForFoodieWithPersonNodes:(id)a3 locationName:(id)a4 tripTitleLocationType:(unint64_t)a5 allowInspiredTastesTitle:(BOOL)a6 genericOnly:(BOOL)a7;
++ (id)_specForFoodieWithPersonNodes:(id)nodes locationName:(id)name tripTitleLocationType:(unint64_t)type allowInspiredTastesTitle:(BOOL)title genericOnly:(BOOL)only;
 + (id)_specForGathering;
 + (id)_specForHiking;
 + (id)_specForLunch;
@@ -27,8 +27,8 @@
 + (id)_specForThrowbackThursday;
 + (id)_specForWedding;
 + (id)_specForWinterSport;
-+ (id)specCollectionForMeaningLabel:(id)a3;
-+ (id)specCollectionForMemoryCategory:(unint64_t)a3 subcategory:(unint64_t)a4 personNodes:(id)a5;
++ (id)specCollectionForMeaningLabel:(id)label;
++ (id)specCollectionForMemoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory personNodes:(id)nodes;
 @end
 
 @implementation PGTitleSpecFactory
@@ -82,13 +82,13 @@
   return v2;
 }
 
-+ (id)_specForFoodieWithPersonNodes:(id)a3 locationName:(id)a4 tripTitleLocationType:(unint64_t)a5 allowInspiredTastesTitle:(BOOL)a6 genericOnly:(BOOL)a7
++ (id)_specForFoodieWithPersonNodes:(id)nodes locationName:(id)name tripTitleLocationType:(unint64_t)type allowInspiredTastesTitle:(BOOL)title genericOnly:(BOOL)only
 {
-  v7 = a7;
-  v65 = a6;
+  onlyCopy = only;
+  titleCopy = title;
   v83[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v69 = a4;
+  nodesCopy = nodes;
+  nameCopy = name;
   v10 = [PGTitleSpec alloc];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"PGFoodieMemoryTitleGeneric" value:@"PGFoodieMemoryTitleGeneric" table:@"Localizable"];
@@ -111,12 +111,12 @@
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:3];
   v23 = [PGTitleSpecPool poolWithSpecs:v22];
 
-  v68 = v9;
-  if (!v7)
+  v68 = nodesCopy;
+  if (!onlyCopy)
   {
-    if ([v9 count])
+    if ([nodesCopy count])
     {
-      v26 = v9;
+      v26 = nodesCopy;
       v27 = [PGTitleSpec alloc];
       v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v29 = [v28 localizedStringForKey:@"PGFoodieMemoryTitleWithPerson %@" value:@"PGFoodieMemoryTitleWithPerson %@" table:@"Localizable"];
@@ -141,7 +141,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v35 = [v69 length];
+    v35 = [nameCopy length];
     v36 = [PGTitleSpec alloc];
     v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v38 = [v37 localizedStringForKey:@"PGFoodieMemoryTitleWithLocationName %@" value:@"PGFoodieMemoryTitleWithLocationName %@" table:@"Localizable"];
@@ -149,7 +149,7 @@ LABEL_28:
 
     if (v35)
     {
-      v39 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:v69];
+      v39 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:nameCopy];
       v78 = v39;
       v40 = &v78;
     }
@@ -171,7 +171,7 @@ LABEL_28:
 
     if (v35)
     {
-      v45 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:v69];
+      v45 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:nameCopy];
       v76 = v45;
       v46 = &v76;
     }
@@ -186,7 +186,7 @@ LABEL_28:
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:{1, v35}];
     [(PGTitleSpec *)v33 setArguments:v47];
 
-    if (!v65)
+    if (!titleCopy)
     {
       v71[0] = v24;
       v71[1] = v33;
@@ -203,10 +203,10 @@ LABEL_27:
     }
 
     v48 = 0;
-    if (a5 > 2)
+    if (type > 2)
     {
       v49 = v63;
-      if (a5 == 3)
+      if (type == 3)
       {
         v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v51 = v50;
@@ -214,7 +214,7 @@ LABEL_27:
         goto LABEL_22;
       }
 
-      if (a5 == 4)
+      if (type == 4)
       {
         v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v51 = v50;
@@ -226,7 +226,7 @@ LABEL_27:
     else
     {
       v49 = v63;
-      if (a5 < 2)
+      if (type < 2)
       {
         v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v51 = v50;
@@ -237,7 +237,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a5 == 2)
+      if (type == 2)
       {
         v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v51 = v50;
@@ -251,7 +251,7 @@ LABEL_23:
     v66 = v48;
     if (v49)
     {
-      v55 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:v69];
+      v55 = [PGTitleSpecLocationArgument argumentWithLocationTypeLocationForLocationName:nameCopy];
       v74 = v55;
       v56 = &v74;
     }
@@ -341,16 +341,16 @@ LABEL_29:
   return v8;
 }
 
-+ (id)_specForEarlyMomentsWithPersonNodes:(id)a3
++ (id)_specForEarlyMomentsWithPersonNodes:(id)nodes
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = [PGTitleSpec alloc];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"PGEarlyMomentsWithPeopleTitleFormatOnePersonWithName %@" value:@"PGEarlyMomentsWithPeopleTitleFormatOnePersonWithName %@" table:@"Localizable"];
   v7 = [(PGTitleSpec *)v4 initWithFormat:v6 titleCategory:0];
 
-  v8 = [PGTitleSpecPeopleArgument argumentWithPeopleType:0 personNodes:v3];
+  v8 = [PGTitleSpecPeopleArgument argumentWithPeopleType:0 personNodes:nodesCopy];
 
   v25[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
@@ -894,8 +894,8 @@ LABEL_29:
   v11 = [v10 localizedStringForKey:@"PGMeaningfulEventMemoryTitleTypePerformance2" value:@"PGMeaningfulEventMemoryTitleTypePerformance2" table:@"Localizable"];
   v12 = [(PGTitleSpec *)v9 initWithFormat:v11 titleCategory:1];
 
-  v13 = [a1 _publicEventSpecEventName];
-  v27 = v13;
+  _publicEventSpecEventName = [self _publicEventSpecEventName];
+  v27 = _publicEventSpecEventName;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
   v15 = [PGTitleSpecPool poolWithSpecs:v14];
 
@@ -937,8 +937,8 @@ LABEL_29:
   v11 = [v10 localizedStringForKey:@"PGMeaningfulEventMemoryTitleTypeSportEvent2" value:@"PGMeaningfulEventMemoryTitleTypeSportEvent2" table:@"Localizable"];
   v12 = [(PGTitleSpec *)v9 initWithFormat:v11 titleCategory:1];
 
-  v13 = [a1 _publicEventSpecEventName];
-  v24 = v13;
+  _publicEventSpecEventName = [self _publicEventSpecEventName];
+  v24 = _publicEventSpecEventName;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
   v15 = [PGTitleSpecPool poolWithSpecs:v14];
 
@@ -985,8 +985,8 @@ LABEL_29:
   v17 = [v16 localizedStringForKey:@"PGMeaningfulEventMemoryTitleTypeNightOut3" value:@"PGMeaningfulEventMemoryTitleTypeNightOut3" table:@"Localizable"];
   v18 = [(PGTitleSpec *)v15 initWithFormat:v17 titleCategory:1];
 
-  v19 = [a1 _publicEventSpecEventName];
-  v33 = v19;
+  _publicEventSpecEventName = [self _publicEventSpecEventName];
+  v33 = _publicEventSpecEventName;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
   v21 = [PGTitleSpecPool poolWithSpecs:v20];
 
@@ -1039,8 +1039,8 @@ LABEL_29:
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
   [(PGTitleSpec *)v15 setArguments:v17];
 
-  v18 = [a1 _publicEventSpecEventName];
-  v32 = v18;
+  _publicEventSpecEventName = [self _publicEventSpecEventName];
+  v32 = _publicEventSpecEventName;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
   v20 = [PGTitleSpecPool poolWithSpecs:v19];
 
@@ -1194,128 +1194,128 @@ LABEL_29:
   return v14;
 }
 
-+ (id)specCollectionForMeaningLabel:(id)a3
++ (id)specCollectionForMeaningLabel:(id)label
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Celebration"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"Celebration"])
   {
-    v5 = [a1 _specForCelebration];
+    _specForCelebration = [self _specForCelebration];
 LABEL_37:
-    v6 = v5;
+    v6 = _specForCelebration;
     goto LABEL_38;
   }
 
-  if ([v4 isEqualToString:@"Wedding"])
+  if ([labelCopy isEqualToString:@"Wedding"])
   {
-    v5 = [a1 _specForWedding];
+    _specForCelebration = [self _specForWedding];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Birthday"])
+  if ([labelCopy isEqualToString:@"Birthday"])
   {
-    v5 = [a1 _specForBirthday];
+    _specForCelebration = [self _specForBirthday];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Anniversary"])
+  if ([labelCopy isEqualToString:@"Anniversary"])
   {
-    v5 = [a1 _specForAnniversary];
+    _specForCelebration = [self _specForAnniversary];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Entertainment"])
+  if ([labelCopy isEqualToString:@"Entertainment"])
   {
-    v5 = [a1 _specForEntertainment];
+    _specForCelebration = [self _specForEntertainment];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"NightOut"])
+  if ([labelCopy isEqualToString:@"NightOut"])
   {
-    v5 = [a1 _specForNightOut];
+    _specForCelebration = [self _specForNightOut];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"SportEvent"])
+  if ([labelCopy isEqualToString:@"SportEvent"])
   {
-    v5 = [a1 _specForSportEvent];
+    _specForCelebration = [self _specForSportEvent];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Performance"])
+  if ([labelCopy isEqualToString:@"Performance"])
   {
-    v5 = [a1 _specForPerformance];
+    _specForCelebration = [self _specForPerformance];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Activity"])
+  if ([labelCopy isEqualToString:@"Activity"])
   {
-    v5 = [a1 _specForActivity];
+    _specForCelebration = [self _specForActivity];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"WinterSport"])
+  if ([labelCopy isEqualToString:@"WinterSport"])
   {
-    v5 = [a1 _specForWinterSport];
+    _specForCelebration = [self _specForWinterSport];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Beaching"])
+  if ([labelCopy isEqualToString:@"Beaching"])
   {
-    v5 = [a1 _specForBeaching];
+    _specForCelebration = [self _specForBeaching];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Hiking"])
+  if ([labelCopy isEqualToString:@"Hiking"])
   {
-    v5 = [a1 _specForHiking];
+    _specForCelebration = [self _specForHiking];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Climbing"])
+  if ([labelCopy isEqualToString:@"Climbing"])
   {
-    v5 = [a1 _specForClimbing];
+    _specForCelebration = [self _specForClimbing];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Diving"])
+  if ([labelCopy isEqualToString:@"Diving"])
   {
-    v5 = [a1 _specForDiving];
+    _specForCelebration = [self _specForDiving];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Breakfast"])
+  if ([labelCopy isEqualToString:@"Breakfast"])
   {
-    v5 = [a1 _specForBreakfast];
+    _specForCelebration = [self _specForBreakfast];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Lunch"])
+  if ([labelCopy isEqualToString:@"Lunch"])
   {
-    v5 = [a1 _specForLunch];
+    _specForCelebration = [self _specForLunch];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Dinner"])
+  if ([labelCopy isEqualToString:@"Dinner"])
   {
-    v5 = [a1 _specForDinner];
+    _specForCelebration = [self _specForDinner];
     goto LABEL_37;
   }
 
-  if ([v4 isEqualToString:@"Gathering"])
+  if ([labelCopy isEqualToString:@"Gathering"])
   {
-    v5 = [a1 _specForGathering];
+    _specForCelebration = [self _specForGathering];
     goto LABEL_37;
   }
 
   v9 = +[PGLogging sharedLogging];
-  v10 = [v9 loggingConnection];
+  loggingConnection = [v9 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
-    _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "No spec for %@", &v11, 0xCu);
+    v12 = labelCopy;
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "No spec for %@", &v11, 0xCu);
   }
 
   v6 = 0;
@@ -1326,44 +1326,44 @@ LABEL_38:
   return v6;
 }
 
-+ (id)specCollectionForMemoryCategory:(unint64_t)a3 subcategory:(unint64_t)a4 personNodes:(id)a5
++ (id)specCollectionForMemoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory personNodes:(id)nodes
 {
-  v8 = a5;
-  if (a4 > 216)
+  nodesCopy = nodes;
+  if (subcategory > 216)
   {
-    if (a4 == 217)
+    if (subcategory == 217)
     {
-      if (a3 == 219)
+      if (category == 219)
       {
-        v9 = [a1 _specForBaby];
+        _specForBaby = [self _specForBaby];
         goto LABEL_18;
       }
 
-      if (a3 == 220)
+      if (category == 220)
       {
-        v9 = [a1 _specForBabyGrowingUp];
+        _specForBaby = [self _specForBabyGrowingUp];
         goto LABEL_18;
       }
 
       goto LABEL_15;
     }
 
-    if (a4 == 218)
+    if (subcategory == 218)
     {
-      v9 = [a1 _specForFoodieWithPersonNodes:v8 locationName:0 tripTitleLocationType:0 allowInspiredTastesTitle:0 genericOnly:0];
+      _specForBaby = [self _specForFoodieWithPersonNodes:nodesCopy locationName:0 tripTitleLocationType:0 allowInspiredTastesTitle:0 genericOnly:0];
       goto LABEL_18;
     }
 
 LABEL_8:
-    if (a3 == 214)
+    if (category == 214)
     {
-      v9 = [a1 _specForThrowbackThursday];
+      _specForBaby = [self _specForThrowbackThursday];
       goto LABEL_18;
     }
 
-    if (a3 == 219)
+    if (category == 219)
     {
-      v9 = [a1 _specForEarlyMomentsWithPersonNodes:v8];
+      _specForBaby = [self _specForEarlyMomentsWithPersonNodes:nodesCopy];
       goto LABEL_18;
     }
 
@@ -1372,20 +1372,20 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (a4 == 212)
+  if (subcategory == 212)
   {
-    v9 = [a1 _specForPet];
+    _specForBaby = [self _specForPet];
     goto LABEL_18;
   }
 
-  if (a4 != 216)
+  if (subcategory != 216)
   {
     goto LABEL_8;
   }
 
-  v9 = [a1 _specForPeopleVisiting];
+  _specForBaby = [self _specForPeopleVisiting];
 LABEL_18:
-  v10 = v9;
+  v10 = _specForBaby;
 LABEL_19:
 
   return v10;

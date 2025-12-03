@@ -1,13 +1,13 @@
 @interface SAAlarmDelete
-- (id)_ad_alarmResponseForResponse:(id)a3;
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3;
+- (id)_ad_alarmResponseForResponse:(id)response;
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation SAAlarmDelete
 
-- (id)_ad_alarmResponseForResponse:(id)a3
+- (id)_ad_alarmResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -24,17 +24,17 @@
   return v5;
 }
 
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(AFDeleteAlarmRequest);
   v6 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(SAAlarmDelete *)self alarmIds];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  alarmIds = [(SAAlarmDelete *)self alarmIds];
+  v8 = [alarmIds countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -46,7 +46,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alarmIds);
         }
 
         v12 = sub_10024B22C(*(*(&v14 + 1) + 8 * v11));
@@ -59,7 +59,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v9 = [alarmIds countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v9);
@@ -76,7 +76,7 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Asking to delete alarms with identifiers %@", buf, 0x16u);
   }
 
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
 @end

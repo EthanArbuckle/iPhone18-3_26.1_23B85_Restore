@@ -1,21 +1,21 @@
 @interface UIAccessibilityHUDView
 + (CGSize)preferredHUDSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIAccessibilityHUDView)initWithHUDItem:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIAccessibilityHUDView)initWithHUDItem:(id)item;
 - (UIEdgeInsets)imageInsetsForLayout;
-- (id)_contentEffectsForItem:(id)a3;
+- (id)_contentEffectsForItem:(id)item;
 - (id)layoutManager;
-- (void)_show:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_show:(BOOL)_show animated:(BOOL)animated completion:(id)completion;
 - (void)_updateLabelForItem;
 - (void)layoutSubviews;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 @end
 
 @implementation UIAccessibilityHUDView
 
-- (UIAccessibilityHUDView)initWithHUDItem:(id)a3
+- (UIAccessibilityHUDView)initWithHUDItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v37.receiver = self;
   v37.super_class = UIAccessibilityHUDView;
   v6 = [(UIView *)&v37 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -23,8 +23,8 @@
   if (v6)
   {
     [(UIView *)v6 setUserInteractionEnabled:0];
-    objc_storeStrong(&v7->_item, a3);
-    -[UIView setOverrideUserInterfaceStyle:](v7, "setOverrideUserInterfaceStyle:", [v5 customUserInterfaceStyle]);
+    objc_storeStrong(&v7->_item, item);
+    -[UIView setOverrideUserInterfaceStyle:](v7, "setOverrideUserInterfaceStyle:", [itemCopy customUserInterfaceStyle]);
     v8 = objc_opt_new();
     transformContainer = v7->_transformContainer;
     v7->_transformContainer = v8;
@@ -39,12 +39,12 @@
     v7->_effectView = v12;
 
     [(UIView *)v7->_effectView setClipsToBounds:1];
-    v14 = [(UIView *)v7->_effectView layer];
-    [v14 setCornerRadius:17.0];
+    layer = [(UIView *)v7->_effectView layer];
+    [layer setCornerRadius:17.0];
 
     v15 = *MEMORY[0x1E69796E8];
-    v16 = [(UIView *)v7->_effectView layer];
-    [v16 setCornerCurve:v15];
+    layer2 = [(UIView *)v7->_effectView layer];
+    [layer2 setCornerCurve:v15];
 
     [(UIView *)v7->_transformContainer addSubview:v7->_effectView];
     v17 = objc_opt_new();
@@ -52,36 +52,36 @@
     v7->_imageView = v17;
 
     v19 = [UIVisualEffectView alloc];
-    v20 = [(UIAccessibilityHUDView *)v7 _contentEffectsForItem:v5];
+    v20 = [(UIAccessibilityHUDView *)v7 _contentEffectsForItem:itemCopy];
     v21 = [(UIVisualEffectView *)v19 initWithEffect:v20];
     itemEffectView = v7->_itemEffectView;
     v7->_itemEffectView = v21;
 
-    v23 = [(UIVisualEffectView *)v7->_effectView contentView];
-    [v23 addSubview:v7->_itemEffectView];
+    contentView = [(UIVisualEffectView *)v7->_effectView contentView];
+    [contentView addSubview:v7->_itemEffectView];
 
     [(UIImageView *)v7->_imageView setContentMode:1];
-    v24 = [v5 image];
-    [(UIImageView *)v7->_imageView setImage:v24];
+    image = [itemCopy image];
+    [(UIImageView *)v7->_imageView setImage:image];
 
-    v25 = [(UIImageView *)v7->_imageView image];
+    image2 = [(UIImageView *)v7->_imageView image];
 
-    if (v25)
+    if (image2)
     {
-      v26 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
-      [v26 addSubview:v7->_imageView];
+      contentView2 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
+      [contentView2 addSubview:v7->_imageView];
     }
 
-    v27 = [v5 customView];
+    customView = [itemCopy customView];
 
-    if (v27)
+    if (customView)
     {
-      v28 = [v5 customView];
+      customView2 = [itemCopy customView];
       customView = v7->_customView;
-      v7->_customView = v28;
+      v7->_customView = customView2;
 
-      v30 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
-      [v30 addSubview:v7->_customView];
+      contentView3 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
+      [contentView3 addSubview:v7->_customView];
     }
 
     v31 = objc_opt_new();
@@ -93,8 +93,8 @@
     [(UILabel *)v7->_titleLabel setMinimumScaleFactor:0.001];
     [(UILabel *)v7->_titleLabel setBaselineAdjustment:0];
     [(UILabel *)v7->_titleLabel setTextAlignment:1];
-    v33 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
-    [v33 addSubview:v7->_titleLabel];
+    contentView4 = [(UIVisualEffectView *)v7->_itemEffectView contentView];
+    [contentView4 addSubview:v7->_titleLabel];
 
     [(UIAccessibilityHUDView *)v7 _updateLabelForItem];
     [(UIView *)v7 setAlpha:0.0];
@@ -108,18 +108,18 @@
   return v7;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v14 = a3;
-  v4 = [(UIAccessibilityHUDItem *)self->_item isEqual:v14];
-  v5 = v14;
+  itemCopy = item;
+  v4 = [(UIAccessibilityHUDItem *)self->_item isEqual:itemCopy];
+  v5 = itemCopy;
   if (!v4)
   {
-    v6 = [v14 flattenImage];
-    if (v6 == [(UIAccessibilityHUDItem *)self->_item flattenImage])
+    flattenImage = [itemCopy flattenImage];
+    if (flattenImage == [(UIAccessibilityHUDItem *)self->_item flattenImage])
     {
-      v8 = [v14 disabledAppearance];
-      v7 = v8 ^ [(UIAccessibilityHUDItem *)self->_item disabledAppearance];
+      disabledAppearance = [itemCopy disabledAppearance];
+      v7 = disabledAppearance ^ [(UIAccessibilityHUDItem *)self->_item disabledAppearance];
     }
 
     else
@@ -127,34 +127,34 @@
       v7 = 1;
     }
 
-    v9 = [v14 copy];
+    v9 = [itemCopy copy];
     item = self->_item;
     self->_item = v9;
 
-    v11 = [v14 image];
-    [(UIImageView *)self->_imageView setImage:v11];
+    image = [itemCopy image];
+    [(UIImageView *)self->_imageView setImage:image];
 
-    -[UIView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [v14 customUserInterfaceStyle]);
+    -[UIView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [itemCopy customUserInterfaceStyle]);
     [(UIAccessibilityHUDView *)self _updateLabelForItem];
     if (v7)
     {
       itemEffectView = self->_itemEffectView;
-      v13 = [(UIAccessibilityHUDView *)self _contentEffectsForItem:v14];
+      v13 = [(UIAccessibilityHUDView *)self _contentEffectsForItem:itemCopy];
       [(UIVisualEffectView *)itemEffectView setEffect:v13];
     }
 
     [(UIView *)self setNeedsLayout];
-    v5 = v14;
+    v5 = itemCopy;
   }
 }
 
-- (id)_contentEffectsForItem:(id)a3
+- (id)_contentEffectsForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 flattenImage])
+  itemCopy = item;
+  if ([itemCopy flattenImage])
   {
     blurEffect = self->_blurEffect;
-    if ([v4 disabledAppearance])
+    if ([itemCopy disabledAppearance])
     {
       v6 = 5;
     }
@@ -177,11 +177,11 @@
 
 - (void)_updateLabelForItem
 {
-  v3 = [(UIAccessibilityHUDItem *)self->_item title];
-  [(UILabel *)self->_titleLabel setText:v3];
+  title = [(UIAccessibilityHUDItem *)self->_item title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v5 = [(UIAccessibilityHUDView *)self layoutManager];
-  v4 = [v5 labelFontForHUD:self];
+  layoutManager = [(UIAccessibilityHUDView *)self layoutManager];
+  v4 = [layoutManager labelFontForHUD:self];
   [(UILabel *)self->_titleLabel setFont:v4];
 }
 
@@ -192,28 +192,28 @@
     dispatch_once(&_MergedGlobals_5, &__block_literal_global_5);
   }
 
-  v3 = [(UIAccessibilityHUDItem *)self->_item customView];
+  customView = [(UIAccessibilityHUDItem *)self->_item customView];
 
-  if (v3)
+  if (customView)
   {
     v4 = &qword_1ED49A4D0;
     goto LABEL_13;
   }
 
-  v5 = [(UIAccessibilityHUDItem *)self->_item image];
-  if (v5 && (v6 = v5, -[UIAccessibilityHUDItem title](self->_item, "title"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, !v8))
+  image = [(UIAccessibilityHUDItem *)self->_item image];
+  if (image && (v6 = image, -[UIAccessibilityHUDItem title](self->_item, "title"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, !v8))
   {
     v4 = &qword_1ED49A4C8;
   }
 
   else
   {
-    v9 = [(UIAccessibilityHUDItem *)self->_item title];
-    if ([v9 length])
+    title = [(UIAccessibilityHUDItem *)self->_item title];
+    if ([title length])
     {
-      v10 = [(UIAccessibilityHUDItem *)self->_item image];
+      image2 = [(UIAccessibilityHUDItem *)self->_item image];
 
-      if (!v10)
+      if (!image2)
       {
         v4 = &qword_1ED49A4C0;
         goto LABEL_13;
@@ -252,12 +252,12 @@ void __39__UIAccessibilityHUDView_layoutManager__block_invoke()
   qword_1ED49A4D0 = v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIAccessibilityHUDView *)self layoutManager];
-  [v6 unscaledSizeForHUD:self containingSize:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  layoutManager = [(UIAccessibilityHUDView *)self layoutManager];
+  [layoutManager unscaledSizeForHUD:self containingSize:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -279,42 +279,42 @@ void __39__UIAccessibilityHUDView_layoutManager__block_invoke()
   [(UIView *)self->_transformContainer setCenter:v4 + v3 * 0.5, v6 + v5 * 0.5];
   [(UIView *)self->_transformContainer bounds];
   [(UIView *)self->_effectView setFrame:?];
-  v7 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v7 bounds];
+  contentView = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView bounds];
   [(UIView *)self->_itemEffectView setFrame:?];
 
-  v8 = [(UIAccessibilityHUDView *)self layoutManager];
-  [v8 layoutSubviewsOfHUD:self];
+  layoutManager = [(UIAccessibilityHUDView *)self layoutManager];
+  [layoutManager layoutSubviewsOfHUD:self];
 }
 
-- (void)_show:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_show:(BOOL)_show animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__UIAccessibilityHUDView__show_animated_completion___block_invoke;
   aBlock[3] = &unk_1E70F35E0;
   aBlock[4] = self;
-  v14 = a3;
+  _showCopy = _show;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v5)
+  if (animatedCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__UIAccessibilityHUDView__show_animated_completion___block_invoke_2;
     v11[3] = &unk_1E70F3608;
-    v12 = v8;
+    v12 = completionCopy;
     [UIView animateWithDuration:v10 animations:v11 completion:0.1];
   }
 
   else
   {
     (*(v9 + 2))(v9);
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }

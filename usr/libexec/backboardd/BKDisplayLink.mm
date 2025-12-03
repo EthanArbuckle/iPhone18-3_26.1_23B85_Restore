@@ -1,12 +1,12 @@
 @interface BKDisplayLink
-- (BKDisplayLink)initWithDisplayLinkClass:(Class)a3 display:(id)a4 target:(id)a5 action:(SEL)a6;
+- (BKDisplayLink)initWithDisplayLinkClass:(Class)class display:(id)display target:(id)target action:(SEL)action;
 - (void)_thread_displayLinkFired;
 - (void)_thread_invalidate;
-- (void)_thread_setPaused:(id)a3;
+- (void)_thread_setPaused:(id)paused;
 - (void)_thread_startRunLoop;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation BKDisplayLink
@@ -74,7 +74,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "BKDisplayLink %p _thread_invalidate already invalid", &v9, 0xCu);
     }
   }
@@ -84,7 +84,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BKDisplayLink %p _thread_invalidate", &v9, 0xCu);
     }
 
@@ -102,17 +102,17 @@
   }
 }
 
-- (void)_thread_setPaused:(id)a3
+- (void)_thread_setPaused:(id)paused
 {
   thread_displayLink = self->_thread_displayLink;
-  v4 = [a3 BOOLValue];
+  bOOLValue = [paused BOOLValue];
 
-  [(CADisplayLink *)thread_displayLink setPaused:v4];
+  [(CADisplayLink *)thread_displayLink setPaused:bOOLValue];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  self->_paused = a3;
+  self->_paused = paused;
   thread = self->_thread;
   v5 = [NSNumber numberWithBool:?];
   [(BKDisplayLink *)self performSelector:"_thread_setPaused:" onThread:thread withObject:v5 waitUntilDone:0];
@@ -124,7 +124,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BKDisplayLink %p invalidate start ", &v5, 0xCu);
   }
 
@@ -133,7 +133,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "BKDisplayLink %p invalidate finish", &v5, 0xCu);
   }
 }
@@ -153,7 +153,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKDisplayLink.m";
       v17 = 1024;
@@ -174,24 +174,24 @@
   [(BKDisplayLink *)&v8 dealloc];
 }
 
-- (BKDisplayLink)initWithDisplayLinkClass:(Class)a3 display:(id)a4 target:(id)a5 action:(SEL)a6
+- (BKDisplayLink)initWithDisplayLinkClass:(Class)class display:(id)display target:(id)target action:(SEL)action
 {
-  v11 = a4;
-  v12 = a5;
+  displayCopy = display;
+  targetCopy = target;
   v30.receiver = self;
   v30.super_class = BKDisplayLink;
   v13 = [(BKDisplayLink *)&v30 init];
   v14 = v13;
   if (v13)
   {
-    v13->_displayLinkClass = a3;
-    objc_storeStrong(&v13->_display, a4);
-    v15 = [(CADisplay *)v14->_display uniqueId];
-    v16 = [v15 length];
+    v13->_displayLinkClass = class;
+    objc_storeStrong(&v13->_display, display);
+    uniqueId = [(CADisplay *)v14->_display uniqueId];
+    v16 = [uniqueId length];
     v17 = BKSDisplayUUIDMainKey;
     if (v16)
     {
-      v17 = v15;
+      v17 = uniqueId;
     }
 
     v18 = v17;
@@ -199,18 +199,18 @@
     displayUUID = v14->_displayUUID;
     v14->_displayUUID = v18;
 
-    objc_storeStrong(&v14->_target, a5);
-    if (a6)
+    objc_storeStrong(&v14->_target, target);
+    if (action)
     {
-      v20 = a6;
+      actionCopy = action;
     }
 
     else
     {
-      v20 = 0;
+      actionCopy = 0;
     }
 
-    v14->_action = v20;
+    v14->_action = actionCopy;
     v21 = BKLogMousePointer();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {

@@ -1,5 +1,5 @@
 @interface CAMHeadObjectResult
-- (CAMHeadObjectResult)initWithHeadObject:(id)a3;
+- (CAMHeadObjectResult)initWithHeadObject:(id)object;
 - (NSString)description;
 - (NSString)metadataType;
 - (unint64_t)syntheticFocusMode;
@@ -7,19 +7,19 @@
 
 @implementation CAMHeadObjectResult
 
-- (CAMHeadObjectResult)initWithHeadObject:(id)a3
+- (CAMHeadObjectResult)initWithHeadObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CAMHeadObjectResult;
   v6 = [(CAMHeadObjectResult *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__metadataHeadObject, a3);
+    objc_storeStrong(&v6->__metadataHeadObject, object);
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v5 type];
-    v10 = [v8 stringWithFormat:@"%@", v9];
+    type = [objectCopy type];
+    v10 = [v8 stringWithFormat:@"%@", type];
     uniqueIdentifier = v7->_uniqueIdentifier;
     v7->_uniqueIdentifier = v10;
 
@@ -34,25 +34,25 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMHeadObjectResult *)self _metadataHeadObject];
-  v7 = [v6 type];
-  v8 = [v3 stringWithFormat:@"<%@: %p type: %@>", v5, self, v7];
+  _metadataHeadObject = [(CAMHeadObjectResult *)self _metadataHeadObject];
+  type = [_metadataHeadObject type];
+  v8 = [v3 stringWithFormat:@"<%@: %p type: %@>", v5, self, type];
 
   return v8;
 }
 
 - (NSString)metadataType
 {
-  v2 = [(CAMHeadObjectResult *)self _metadataHeadObject];
-  v3 = [v2 type];
+  _metadataHeadObject = [(CAMHeadObjectResult *)self _metadataHeadObject];
+  type = [_metadataHeadObject type];
 
-  return v3;
+  return type;
 }
 
 - (unint64_t)syntheticFocusMode
 {
-  v2 = [(CAMHeadObjectResult *)self underlyingMetadataObject];
-  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [v2 syntheticFocusMode]);
+  underlyingMetadataObject = [(CAMHeadObjectResult *)self underlyingMetadataObject];
+  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [underlyingMetadataObject syntheticFocusMode]);
 
   return v3;
 }

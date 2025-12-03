@@ -1,19 +1,19 @@
 @interface SUUISegmentedTableHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SUUISegmentedTableHeaderView)initWithFrame:(CGRect)a3;
+- (SUUISegmentedTableHeaderView)initWithFrame:(CGRect)frame;
 - (id)_borderView;
 - (void)layoutSubviews;
-- (void)setHidesBorderView:(BOOL)a3;
-- (void)setSegmentedControl:(id)a3;
+- (void)setHidesBorderView:(BOOL)view;
+- (void)setSegmentedControl:(id)control;
 @end
 
 @implementation SUUISegmentedTableHeaderView
 
-- (SUUISegmentedTableHeaderView)initWithFrame:(CGRect)a3
+- (SUUISegmentedTableHeaderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUISegmentedTableHeaderView;
-  v3 = [(SUUISegmentedTableHeaderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUISegmentedTableHeaderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
@@ -26,22 +26,22 @@
   return v3;
 }
 
-- (void)setHidesBorderView:(BOOL)a3
+- (void)setHidesBorderView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(SUUISegmentedTableHeaderView *)self _borderView];
-  [v4 setHidden:v3];
+  viewCopy = view;
+  _borderView = [(SUUISegmentedTableHeaderView *)self _borderView];
+  [_borderView setHidden:viewCopy];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   segmentedControl = self->_segmentedControl;
-  v7 = v5;
-  if (segmentedControl != v5)
+  v7 = controlCopy;
+  if (segmentedControl != controlCopy)
   {
     [(UIView *)segmentedControl removeFromSuperview];
-    objc_storeStrong(&self->_segmentedControl, a3);
+    objc_storeStrong(&self->_segmentedControl, control);
     if (self->_segmentedControl)
     {
       [(SUUISegmentedTableHeaderView *)self addSubview:?];
@@ -63,12 +63,12 @@
     [(UIView *)self->_segmentedControl setFrame:15.0, floorf(v9), v4 + -15.0 + -15.0];
   }
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = 1.0 / v11;
 
-  v13 = [(SUUISegmentedTableHeaderView *)self _borderView];
-  [v13 setFrame:{0.0, v6 - v12, v4, v12}];
+  _borderView = [(SUUISegmentedTableHeaderView *)self _borderView];
+  [_borderView setFrame:{0.0, v6 - v12, v4, v12}];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result

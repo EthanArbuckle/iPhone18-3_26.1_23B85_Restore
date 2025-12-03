@@ -1,9 +1,9 @@
 @interface PKAccountScheduledPaymentCell
-- (BOOL)_useStackedLayoutForUsableWidth:(double)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_useStackedLayoutForUsableWidth:(double)width;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKAccountPayment)payment;
-- (PKAccountScheduledPaymentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PKAccountScheduledPaymentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_effectiveLayoutMargins;
 - (id)_amountAttributedString;
 - (id)_amountString;
@@ -13,24 +13,24 @@
 - (id)_statusAttributedString;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPayment:(id)a3 forAccount:(id)a4;
+- (void)setPayment:(id)payment forAccount:(id)account;
 @end
 
 @implementation PKAccountScheduledPaymentCell
 
-- (PKAccountScheduledPaymentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKAccountScheduledPaymentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = PKAccountScheduledPaymentCell;
-  v5 = [(PKAccountScheduledPaymentCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v5 = [(PKAccountScheduledPaymentCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DD030] layoutManagerForTableViewCellStyle:a3];
+    v6 = [MEMORY[0x1E69DD030] layoutManagerForTableViewCellStyle:style];
     layoutManager = v5->_layoutManager;
     v5->_layoutManager = v6;
 
     v5->_featureIdentifier = 2;
-    v8 = [(PKAccountScheduledPaymentCell *)v5 contentView];
+    contentView = [(PKAccountScheduledPaymentCell *)v5 contentView];
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     frequencyLabel = v5->_frequencyLabel;
     v5->_frequencyLabel = v9;
@@ -38,7 +38,7 @@
     [(UILabel *)v5->_frequencyLabel setNumberOfLines:0];
     LODWORD(v11) = 1036831949;
     [(UILabel *)v5->_frequencyLabel _setHyphenationFactor:v11];
-    [v8 addSubview:v5->_frequencyLabel];
+    [contentView addSubview:v5->_frequencyLabel];
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     statusLabel = v5->_statusLabel;
     v5->_statusLabel = v12;
@@ -46,7 +46,7 @@
     [(UILabel *)v5->_statusLabel setNumberOfLines:0];
     LODWORD(v14) = 1036831949;
     [(UILabel *)v5->_statusLabel _setHyphenationFactor:v14];
-    [v8 addSubview:v5->_statusLabel];
+    [contentView addSubview:v5->_statusLabel];
     v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     amountLabel = v5->_amountLabel;
     v5->_amountLabel = v15;
@@ -54,16 +54,16 @@
     [(UILabel *)v5->_amountLabel setNumberOfLines:0];
     LODWORD(v17) = 1036831949;
     [(UILabel *)v5->_amountLabel _setHyphenationFactor:v17];
-    [v8 addSubview:v5->_amountLabel];
+    [contentView addSubview:v5->_amountLabel];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_sizing = 1;
-  [(PKAccountScheduledPaymentCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 1.79769313e308];
+  [(PKAccountScheduledPaymentCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 1.79769313e308];
   self->_sizing = 0;
   result.height = v5;
   result.width = v4;
@@ -79,13 +79,13 @@
   [(PKAccountScheduledPaymentCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UITableViewCellLayoutManager *)self->_layoutManager contentRectForCell:self forState:0 rowWidth:a3.size.width];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(UITableViewCellLayoutManager *)self->_layoutManager contentRectForCell:self forState:0 rowWidth:bounds.size.width];
   v9 = v8;
   memset(&slice, 0, sizeof(slice));
   [(PKAccountScheduledPaymentCell *)self _effectiveLayoutMargins];
@@ -182,9 +182,9 @@
   return result;
 }
 
-- (BOOL)_useStackedLayoutForUsableWidth:(double)a3
+- (BOOL)_useStackedLayoutForUsableWidth:(double)width
 {
-  v4 = (a3 + -16.0) * 0.5;
+  v4 = (width + -16.0) * 0.5;
   [(UILabel *)self->_amountLabel pkui_sizeThatFits:1 forceWordWrap:1.79769313e308, 1.79769313e308];
   result = v5 > v4;
   self->_useStackedLayout = v5 > v4;
@@ -193,13 +193,13 @@
 
 - (UIEdgeInsets)_effectiveLayoutMargins
 {
-  v3 = [(PKAccountScheduledPaymentCell *)self _shouldReverseLayoutDirection];
-  v4 = [(PKAccountScheduledPaymentCell *)self contentView];
+  _shouldReverseLayoutDirection = [(PKAccountScheduledPaymentCell *)self _shouldReverseLayoutDirection];
+  contentView = [(PKAccountScheduledPaymentCell *)self contentView];
   [(PKAccountScheduledPaymentCell *)self separatorInset];
   v6 = v5;
   v8 = v7;
-  [v4 layoutMargins];
-  if (v3)
+  [contentView layoutMargins];
+  if (_shouldReverseLayoutDirection)
   {
     v11 = v8;
   }
@@ -210,7 +210,7 @@
   }
 
   v12 = fmax(v11, v9);
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v6;
   }
@@ -233,39 +233,39 @@
   return result;
 }
 
-- (void)setPayment:(id)a3 forAccount:(id)a4
+- (void)setPayment:(id)payment forAccount:(id)account
 {
-  obj = a3;
-  v6 = a4;
+  obj = payment;
+  accountCopy = account;
   objc_storeWeak(&self->_payment, obj);
-  v7 = [obj isOnHoldForAccount:v6];
+  v7 = [obj isOnHoldForAccount:accountCopy];
   if (v7)
   {
-    LOBYTE(v7) = [obj isBeforeNextCycleForAccount:v6];
+    LOBYTE(v7) = [obj isBeforeNextCycleForAccount:accountCopy];
   }
 
   self->_onHold = v7;
-  v8 = [v6 creditDetails];
-  v9 = [v8 productTimeZone];
+  creditDetails = [accountCopy creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
   timeZone = self->_timeZone;
-  self->_timeZone = v9;
+  self->_timeZone = productTimeZone;
 
-  v11 = [v6 creditDetails];
-  v12 = [v11 accountSummary];
-  v13 = [v12 paymentDueDate];
-  self->_hasPaymentDueDate = v13 != 0;
+  creditDetails2 = [accountCopy creditDetails];
+  accountSummary = [creditDetails2 accountSummary];
+  paymentDueDate = [accountSummary paymentDueDate];
+  self->_hasPaymentDueDate = paymentDueDate != 0;
 
   frequencyLabel = self->_frequencyLabel;
-  v15 = [(PKAccountScheduledPaymentCell *)self _frequencyAttributedString];
-  [(UILabel *)frequencyLabel setAttributedText:v15];
+  _frequencyAttributedString = [(PKAccountScheduledPaymentCell *)self _frequencyAttributedString];
+  [(UILabel *)frequencyLabel setAttributedText:_frequencyAttributedString];
 
   amountLabel = self->_amountLabel;
-  v17 = [(PKAccountScheduledPaymentCell *)self _amountAttributedString];
-  [(UILabel *)amountLabel setAttributedText:v17];
+  _amountAttributedString = [(PKAccountScheduledPaymentCell *)self _amountAttributedString];
+  [(UILabel *)amountLabel setAttributedText:_amountAttributedString];
 
   statusLabel = self->_statusLabel;
-  v19 = [(PKAccountScheduledPaymentCell *)self _statusAttributedString];
-  [(UILabel *)statusLabel setAttributedText:v19];
+  _statusAttributedString = [(PKAccountScheduledPaymentCell *)self _statusAttributedString];
+  [(UILabel *)statusLabel setAttributedText:_statusAttributedString];
 
   [(PKAccountScheduledPaymentCell *)self setAccessoryType:1];
 }
@@ -281,25 +281,25 @@
 - (id)_frequencyAttributedString
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKAccountScheduledPaymentCell *)self _frequencyString];
+  _frequencyString = [(PKAccountScheduledPaymentCell *)self _frequencyString];
   v10[0] = *MEMORY[0x1E69DB648];
   v4 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC28], 0x8000, 0);
   v11[0] = v4;
   v10[1] = *MEMORY[0x1E69DB650];
-  v5 = [(PKAccountScheduledPaymentCell *)self titleColor];
-  v6 = v5;
-  if (!v5)
+  titleColor = [(PKAccountScheduledPaymentCell *)self titleColor];
+  labelColor = titleColor;
+  if (!titleColor)
   {
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v11[1] = v6;
+  v11[1] = labelColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!titleColor)
   {
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3 attributes:v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_frequencyString attributes:v7];
 
   return v8;
 }
@@ -311,11 +311,11 @@
   if ([WeakRetained isRecurring])
   {
     v4 = objc_loadWeakRetained(&self->_payment);
-    v5 = [v4 state];
+    state = [v4 state];
 
-    if (v5 == 4)
+    if (state == 4)
     {
-      v6 = PKLocalizedFeatureString();
+      _dateString = PKLocalizedFeatureString();
       v7 = 1;
       goto LABEL_6;
     }
@@ -325,10 +325,10 @@
   {
   }
 
-  v6 = [(PKAccountScheduledPaymentCell *)self _dateString];
+  _dateString = [(PKAccountScheduledPaymentCell *)self _dateString];
   v7 = 0;
 LABEL_6:
-  if ([v6 length])
+  if ([_dateString length])
   {
     v13[0] = *MEMORY[0x1E69DB648];
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC30], 0x8000, 0);
@@ -347,7 +347,7 @@ LABEL_6:
     v14[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v11];
+    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:_dateString attributes:v11];
   }
 
   else
@@ -361,10 +361,10 @@ LABEL_6:
 - (id)_frequencyString
 {
   WeakRetained = objc_loadWeakRetained(&self->_payment);
-  v3 = [WeakRetained scheduleDetails];
-  v4 = [v3 frequency];
+  scheduleDetails = [WeakRetained scheduleDetails];
+  frequency = [scheduleDetails frequency];
 
-  if ((v4 - 1) > 6)
+  if ((frequency - 1) > 6)
   {
     v5 = 0;
   }
@@ -380,22 +380,22 @@ LABEL_6:
 - (id)_amountString
 {
   WeakRetained = objc_loadWeakRetained(&self->_payment);
-  v4 = [WeakRetained scheduleDetails];
-  v5 = [v4 preset];
+  scheduleDetails = [WeakRetained scheduleDetails];
+  preset = [scheduleDetails preset];
 
-  if (v5 == 3 || v5 == 2)
+  if (preset == 3 || preset == 2)
   {
     v12 = PKLocalizedFeatureString();
   }
 
-  else if (v5 == 1)
+  else if (preset == 1)
   {
     v6 = objc_loadWeakRetained(&self->_payment);
-    v7 = [v6 currencyAmount];
-    v8 = [v7 amount];
+    currencyAmount = [v6 currencyAmount];
+    amount = [currencyAmount amount];
     v9 = objc_loadWeakRetained(&self->_payment);
-    v10 = [v9 currencyAmount];
-    v11 = [v10 currency];
+    currencyAmount2 = [v9 currencyAmount];
+    currency = [currencyAmount2 currency];
     v12 = PKFormattedCurrencyStringFromNumber();
   }
 
@@ -410,18 +410,18 @@ LABEL_6:
 - (id)_amountAttributedString
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PKAccountScheduledPaymentCell *)self _amountString];
-  if ([v2 length])
+  _amountString = [(PKAccountScheduledPaymentCell *)self _amountString];
+  if ([_amountString length])
   {
     v8[0] = *MEMORY[0x1E69DB648];
     v3 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC28], 0x8000, 0);
     v9[0] = v3;
     v8[1] = *MEMORY[0x1E69DB650];
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v9[1] = v4;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v9[1] = secondaryLabelColor;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-    v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v2 attributes:v5];
+    v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_amountString attributes:v5];
   }
 
   else
@@ -439,7 +439,7 @@ LABEL_6:
   [v3 setLocalizedDateFormatFromTemplate:@"MMM d"];
   [v3 setTimeZone:self->_timeZone];
   WeakRetained = objc_loadWeakRetained(&self->_payment);
-  v5 = [WeakRetained paymentDate];
+  paymentDate = [WeakRetained paymentDate];
 
   if (self->_onHold)
   {
@@ -449,21 +449,21 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v5)
+  if (paymentDate)
   {
     v7 = objc_loadWeakRetained(&self->_payment);
-    v8 = [v7 isRecurring];
+    isRecurring = [v7 isRecurring];
 
-    if (v8)
+    if (isRecurring)
     {
       v9 = PKLocalizedFeatureString();
-      v14 = [v3 stringFromDate:v5];
+      v14 = [v3 stringFromDate:paymentDate];
       v10 = PKStringWithValidatedFormat();
 
       goto LABEL_11;
     }
 
-    v6 = [v3 stringFromDate:v5];
+    v6 = [v3 stringFromDate:paymentDate];
     goto LABEL_10;
   }
 

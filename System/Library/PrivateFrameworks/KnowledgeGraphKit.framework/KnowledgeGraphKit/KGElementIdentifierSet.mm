@@ -1,40 +1,40 @@
 @interface KGElementIdentifierSet
 + (void)drainBitsetPool;
-- (BOOL)containsIdentifierSet:(id)a3;
-- (BOOL)intersectsIdentifierSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToElementIdentifierSet:(id)a3;
-- (BOOL)isSubsetOfIdentifierSet:(id)a3;
+- (BOOL)containsIdentifierSet:(id)set;
+- (BOOL)intersectsIdentifierSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToElementIdentifierSet:(id)set;
+- (BOOL)isSubsetOfIdentifierSet:(id)set;
 - (KGElementIdentifierSet)init;
-- (KGElementIdentifierSet)initWithBitmap:(const void *)a3;
-- (KGElementIdentifierSet)initWithElementIdentifier:(unint64_t)a3;
-- (KGElementIdentifierSet)initWithIndexArray:(id)a3;
-- (KGElementIdentifierSet)initWithIndexCollection:(id)a3;
-- (KGElementIdentifierSet)initWithIndexSet:(id)a3;
-- (KGElementIdentifierSet)initWithLiteralData:(id)a3;
+- (KGElementIdentifierSet)initWithBitmap:(const void *)bitmap;
+- (KGElementIdentifierSet)initWithElementIdentifier:(unint64_t)identifier;
+- (KGElementIdentifierSet)initWithIndexArray:(id)array;
+- (KGElementIdentifierSet)initWithIndexCollection:(id)collection;
+- (KGElementIdentifierSet)initWithIndexSet:(id)set;
+- (KGElementIdentifierSet)initWithLiteralData:(id)data;
 - (KGElementIdentifierSetIndex)endIndex;
-- (KGElementIdentifierSetIndex)indexAfterIndex:(KGElementIdentifierSetIndex)a3;
-- (KGElementIdentifierSetIndex)indexWithIterator:(const void *)a3;
+- (KGElementIdentifierSetIndex)indexAfterIndex:(KGElementIdentifierSetIndex)index;
+- (KGElementIdentifierSetIndex)indexWithIterator:(const void *)iterator;
 - (KGElementIdentifierSetIndex)startIndex;
 - (NSArray)indexArray;
 - (NSIndexSet)indexSet;
 - (id).cxx_construct;
 - (id)description;
-- (id)extractRangeByIndex:(_NSRange)a3;
-- (id)identifierSetByAddingIdentifier:(unint64_t)a3;
-- (id)identifierSetByFilteringUsingBlock:(id)a3;
-- (id)identifierSetByFormingSymmetricDifferenceWithIdentifierSet:(id)a3;
-- (id)identifierSetByFormingUnion:(id)a3;
-- (id)identifierSetByIntersectingIdentifierSet:(id)a3;
-- (id)identifierSetByRemovingIdentifier:(unint64_t)a3;
-- (id)identifierSetBySubtractingIdentifierSet:(id)a3;
+- (id)extractRangeByIndex:(_NSRange)index;
+- (id)identifierSetByAddingIdentifier:(unint64_t)identifier;
+- (id)identifierSetByFilteringUsingBlock:(id)block;
+- (id)identifierSetByFormingSymmetricDifferenceWithIdentifierSet:(id)set;
+- (id)identifierSetByFormingUnion:(id)union;
+- (id)identifierSetByIntersectingIdentifierSet:(id)set;
+- (id)identifierSetByRemovingIdentifier:(unint64_t)identifier;
+- (id)identifierSetBySubtractingIdentifierSet:(id)set;
 - (id)literalDataRepresentation;
 - (id)mutableCopy;
-- (id)prefix:(unint64_t)a3;
+- (id)prefix:(unint64_t)prefix;
 - (unint64_t)firstElement;
 - (unint64_t)lastElement;
 - (unint64_t)randomElement;
-- (void)enumerateIdentifiersWithBlock:(id)a3;
+- (void)enumerateIdentifiersWithBlock:(id)block;
 @end
 
 @implementation KGElementIdentifierSet
@@ -78,16 +78,16 @@
 
 - (id)description
 {
-  v2 = [(KGElementIdentifierSet *)self indexArray];
-  v3 = [v2 description];
+  indexArray = [(KGElementIdentifierSet *)self indexArray];
+  v3 = [indexArray description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -95,32 +95,32 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(KGElementIdentifierSet *)self isEqualToElementIdentifierSet:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(KGElementIdentifierSet *)self isEqualToElementIdentifierSet:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToElementIdentifierSet:(id)a3
+- (BOOL)isEqualToElementIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  setCopy = set;
+  v5 = setCopy;
+  if (setCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = degas::Bitmap::operator==([(KGElementIdentifierSet *)v4 bitmap], &self->_bitmap);
+    v6 = degas::Bitmap::operator==([(KGElementIdentifierSet *)setCopy bitmap], &self->_bitmap);
   }
 
   return v6;
 }
 
-- (void)enumerateIdentifiersWithBlock:(id)a3
+- (void)enumerateIdentifiersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   p_bitmap = &self->_bitmap;
   degas::Bitmap::begin(&self->_bitmap._bitCount, v9);
@@ -133,7 +133,7 @@
       break;
     }
 
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     if (v10)
     {
       break;
@@ -143,9 +143,9 @@
   }
 }
 
-- (id)identifierSetByFilteringUsingBlock:(id)a3
+- (id)identifierSetByFilteringUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -156,18 +156,18 @@
   v9[1] = 3221225472;
   v9[2] = __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block_invoke;
   v9[3] = &unk_2797FF868;
-  v10 = v4;
+  v10 = blockCopy;
   v11 = &v12;
   v9[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   [(KGElementIdentifierSet *)self enumerateIdentifiersWithBlock:v9];
-  v6 = v13[5];
-  if (!v6)
+  selfCopy = v13[5];
+  if (!selfCopy)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   _Block_object_dispose(&v12, 8);
 
@@ -196,62 +196,62 @@ uint64_t __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block
   return result;
 }
 
-- (id)identifierSetByFormingSymmetricDifferenceWithIdentifierSet:(id)a3
+- (id)identifierSetByFormingSymmetricDifferenceWithIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::symmetricDiffWith<degas::Bitmap>(&v5->_bitmap, v4 + 8);
+  degas::Bitmap::symmetricDiffWith<degas::Bitmap>(&v5->_bitmap, setCopy + 8);
 
   return v5;
 }
 
-- (id)identifierSetBySubtractingIdentifierSet:(id)a3
+- (id)identifierSetBySubtractingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::diffWith<degas::Bitmap>(&v5->_bitmap, (v4 + 8));
+  degas::Bitmap::diffWith<degas::Bitmap>(&v5->_bitmap, (setCopy + 8));
 
   return v5;
 }
 
-- (id)identifierSetByIntersectingIdentifierSet:(id)a3
+- (id)identifierSetByIntersectingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::intersectWith<degas::Bitmap>(&v5->_bitmap, (v4 + 8));
+  degas::Bitmap::intersectWith<degas::Bitmap>(&v5->_bitmap, (setCopy + 8));
 
   return v5;
 }
 
-- (id)identifierSetByFormingUnion:(id)a3
+- (id)identifierSetByFormingUnion:(id)union
 {
-  v4 = a3;
+  unionCopy = union;
   v5 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::unionWith<degas::Bitmap>(&v5->_bitmap, v4 + 8);
+  degas::Bitmap::unionWith<degas::Bitmap>(&v5->_bitmap, unionCopy + 8);
 
   return v5;
 }
 
-- (id)identifierSetByRemovingIdentifier:(unint64_t)a3
+- (id)identifierSetByRemovingIdentifier:(unint64_t)identifier
 {
   v4 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::clearBit(&v4->_bitmap, a3);
+  degas::Bitmap::clearBit(&v4->_bitmap, identifier);
 
   return v4;
 }
 
-- (id)identifierSetByAddingIdentifier:(unint64_t)a3
+- (id)identifierSetByAddingIdentifier:(unint64_t)identifier
 {
   v4 = [[KGElementIdentifierSet alloc] initWithBitmap:&self->_bitmap];
-  degas::Bitmap::setBit(&v4->_bitmap, a3);
+  degas::Bitmap::setBit(&v4->_bitmap, identifier);
 
   return v4;
 }
 
-- (id)prefix:(unint64_t)a3
+- (id)prefix:(unint64_t)prefix
 {
   *v7 = 0u;
-  degas::Bitmap::getBatch([(KGElementIdentifierSet *)self bitmap:0], &v5, a3);
+  degas::Bitmap::getBatch([(KGElementIdentifierSet *)self bitmap:0], &v5, prefix);
   v3 = [[KGElementIdentifierSet alloc] initWithBitmap:&v5];
   v8 = &v6;
   std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v8);
@@ -259,10 +259,10 @@ uint64_t __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block
   return v3;
 }
 
-- (id)extractRangeByIndex:(_NSRange)a3
+- (id)extractRangeByIndex:(_NSRange)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = index.length;
+  location = index.location;
   v14 = 0u;
   memset(v15, 0, 25);
   p_bitmap = &self->_bitmap;
@@ -293,11 +293,11 @@ uint64_t __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block
   return v9;
 }
 
-- (KGElementIdentifierSetIndex)indexAfterIndex:(KGElementIdentifierSetIndex)a3
+- (KGElementIdentifierSetIndex)indexAfterIndex:(KGElementIdentifierSetIndex)index
 {
   v6[0] = &self->_bitmap;
-  v6[1] = a3.var0;
-  v6[2] = self->_bitmap._bitSets.__begin_ + 16 * a3.var1;
+  v6[1] = index.var0;
+  v6[2] = self->_bitmap._bitSets.__begin_ + 16 * index.var1;
   degas::Bitmap::iterator::operator++(v6);
   v4 = [(KGElementIdentifierSet *)self indexWithIterator:v6];
   result.var1 = v5;
@@ -326,10 +326,10 @@ uint64_t __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block
   return result;
 }
 
-- (KGElementIdentifierSetIndex)indexWithIterator:(const void *)a3
+- (KGElementIdentifierSetIndex)indexWithIterator:(const void *)iterator
 {
-  v3 = *(a3 + 1);
-  v4 = (*(a3 + 2) - *(*a3 + 16)) >> 4;
+  v3 = *(iterator + 1);
+  v4 = (*(iterator + 2) - *(*iterator + 16)) >> 4;
   result.var1 = v4;
   result.var0 = v3;
   return result;
@@ -412,30 +412,30 @@ uint64_t __61__KGElementIdentifierSet_identifierSetByFilteringUsingBlock___block
   return v3;
 }
 
-- (BOOL)containsIdentifierSet:(id)a3
+- (BOOL)containsIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 bitmap];
-  LOBYTE(self) = degas::Bitmap::isSubsetOf<degas::Bitmap>(*(v5 + 16), *(v5 + 24), self->_bitmap._bitSets.__begin_, self->_bitmap._bitSets.__end_);
+  setCopy = set;
+  bitmap = [setCopy bitmap];
+  LOBYTE(self) = degas::Bitmap::isSubsetOf<degas::Bitmap>(*(bitmap + 16), *(bitmap + 24), self->_bitmap._bitSets.__begin_, self->_bitmap._bitSets.__end_);
 
   return self;
 }
 
-- (BOOL)isSubsetOfIdentifierSet:(id)a3
+- (BOOL)isSubsetOfIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 bitmap];
-  LOBYTE(self) = degas::Bitmap::isSubsetOf<degas::Bitmap>(self->_bitmap._bitSets.__begin_, self->_bitmap._bitSets.__end_, *(v5 + 16), *(v5 + 24));
+  setCopy = set;
+  bitmap = [setCopy bitmap];
+  LOBYTE(self) = degas::Bitmap::isSubsetOf<degas::Bitmap>(self->_bitmap._bitSets.__begin_, self->_bitmap._bitSets.__end_, *(bitmap + 16), *(bitmap + 24));
 
   return self;
 }
 
-- (BOOL)intersectsIdentifierSet:(id)a3
+- (BOOL)intersectsIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 bitmap];
-  v6 = *(v5 + 16);
-  v7 = *(v5 + 24) - v6;
+  setCopy = set;
+  bitmap = [setCopy bitmap];
+  v6 = *(bitmap + 16);
+  v7 = *(bitmap + 24) - v6;
   if ((v7 >> 4))
   {
     v8 = *&self->_bitmap._bitSets.__begin_;
@@ -507,12 +507,12 @@ LABEL_18:
   return v23;
 }
 
-- (KGElementIdentifierSet)initWithLiteralData:(id)a3
+- (KGElementIdentifierSet)initWithLiteralData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    degas::Bitmap::Bitmap(v7, [v4 bytes]);
+    degas::Bitmap::Bitmap(v7, [dataCopy bytes]);
     v5 = [(KGElementIdentifierSet *)self initWithBitmap:v7];
     v9 = &v8;
     std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v9);
@@ -526,7 +526,7 @@ LABEL_18:
   return v5;
 }
 
-- (KGElementIdentifierSet)initWithBitmap:(const void *)a3
+- (KGElementIdentifierSet)initWithBitmap:(const void *)bitmap
 {
   v7.receiver = self;
   v7.super_class = KGElementIdentifierSet;
@@ -534,16 +534,16 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    degas::Bitmap::operator=(&v4->_bitmap._bitCount, a3);
+    degas::Bitmap::operator=(&v4->_bitmap._bitCount, bitmap);
   }
 
   return v5;
 }
 
-- (KGElementIdentifierSet)initWithIndexCollection:(id)a3
+- (KGElementIdentifierSet)initWithIndexCollection:(id)collection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = KGElementIdentifierSet;
   v5 = [(KGElementIdentifierSet *)&v16 init];
@@ -553,7 +553,7 @@ LABEL_18:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = collectionCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -583,10 +583,10 @@ LABEL_18:
   return v5;
 }
 
-- (KGElementIdentifierSet)initWithIndexArray:(id)a3
+- (KGElementIdentifierSet)initWithIndexArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v16.receiver = self;
   v16.super_class = KGElementIdentifierSet;
   v5 = [(KGElementIdentifierSet *)&v16 init];
@@ -596,7 +596,7 @@ LABEL_18:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -626,9 +626,9 @@ LABEL_18:
   return v5;
 }
 
-- (KGElementIdentifierSet)initWithIndexSet:(id)a3
+- (KGElementIdentifierSet)initWithIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v10.receiver = self;
   v10.super_class = KGElementIdentifierSet;
   v5 = [(KGElementIdentifierSet *)&v10 init];
@@ -640,13 +640,13 @@ LABEL_18:
     v8[2] = __43__KGElementIdentifierSet_initWithIndexSet___block_invoke;
     v8[3] = &unk_2797FF388;
     v9 = v5;
-    [v4 enumerateIndexesUsingBlock:v8];
+    [setCopy enumerateIndexesUsingBlock:v8];
   }
 
   return v6;
 }
 
-- (KGElementIdentifierSet)initWithElementIdentifier:(unint64_t)a3
+- (KGElementIdentifierSet)initWithElementIdentifier:(unint64_t)identifier
 {
   v7.receiver = self;
   v7.super_class = KGElementIdentifierSet;
@@ -654,7 +654,7 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    degas::Bitmap::setBit(&v4->_bitmap, a3);
+    degas::Bitmap::setBit(&v4->_bitmap, identifier);
   }
 
   return v5;

@@ -1,61 +1,61 @@
 @interface CDPUIWalrusStatusChangeModel
 - (BOOL)_hasLocalSecret;
-- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5;
-- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5 context:(id)a6;
+- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater;
+- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater context:(id)context;
 - (NSString)cancelButtonText;
 - (NSString)messageText;
 - (NSString)primaryButtonText;
 - (NSString)titleText;
-- (void)_checkCurrentStatus:(id)a3;
-- (void)_reportUserChoice:(unint64_t)a3 error:(id)a4;
-- (void)_updateUnderlyingValue:(id)a3;
+- (void)_checkCurrentStatus:(id)status;
+- (void)_reportUserChoice:(unint64_t)choice error:(id)error;
+- (void)_updateUnderlyingValue:(id)value;
 @end
 
 @implementation CDPUIWalrusStatusChangeModel
 
-- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5
+- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater
 {
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  updaterCopy = updater;
   v14.receiver = self;
   v14.super_class = CDPUIWalrusStatusChangeModel;
   v11 = [(CDPUIWalrusStatusChangeModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_targetStatus = a3;
-    objc_storeStrong(&v11->_walrusStatusProvider, a4);
-    objc_storeStrong(&v12->_walrusStatusUpdater, a5);
+    v11->_targetStatus = status;
+    objc_storeStrong(&v11->_walrusStatusProvider, provider);
+    objc_storeStrong(&v12->_walrusStatusUpdater, updater);
   }
 
   return v12;
 }
 
-- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)a3 statusProvider:(id)a4 statusUpdater:(id)a5 context:(id)a6
+- (CDPUIWalrusStatusChangeModel)initWithTargetStatus:(unint64_t)status statusProvider:(id)provider statusUpdater:(id)updater context:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  updaterCopy = updater;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = CDPUIWalrusStatusChangeModel;
   v14 = [(CDPUIWalrusStatusChangeModel *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_targetStatus = a3;
-    objc_storeStrong(&v14->_walrusStatusProvider, a4);
-    objc_storeStrong(&v15->_walrusStatusUpdater, a5);
-    objc_storeStrong(&v15->_cdpContext, a6);
+    v14->_targetStatus = status;
+    objc_storeStrong(&v14->_walrusStatusProvider, provider);
+    objc_storeStrong(&v15->_walrusStatusUpdater, updater);
+    objc_storeStrong(&v15->_cdpContext, context);
   }
 
   return v15;
 }
 
-- (void)_checkCurrentStatus:(id)a3
+- (void)_checkCurrentStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  statusCopy = status;
+  v5 = statusCopy;
   if (self->_targetStatus)
   {
     walrusStatusProvider = self->_walrusStatusProvider;
@@ -64,7 +64,7 @@
     v10[2] = __52__CDPUIWalrusStatusChangeModel__checkCurrentStatus___block_invoke;
     v10[3] = &unk_278E2BE08;
     v10[4] = self;
-    v11 = v4;
+    v11 = statusCopy;
     [(CDPWalrusStatusProvider *)walrusStatusProvider combinedWalrusStatusWithCompletion:v10];
   }
 
@@ -182,16 +182,16 @@ void *__52__CDPUIWalrusStatusChangeModel__checkCurrentStatus___block_invoke_2(ui
   {
     if (targetStatus != 2)
     {
-      v11 = 0;
+      localizedString = 0;
       goto LABEL_10;
     }
 
-    v3 = [(CDPUIWalrusStatusChangeModel *)self _hasLocalSecret];
+    _hasLocalSecret = [(CDPUIWalrusStatusChangeModel *)self _hasLocalSecret];
     v4 = MEMORY[0x277CFD508];
-    if (!v3)
+    if (!_hasLocalSecret)
     {
       v6 = [MEMORY[0x277CFD508] builderForKey:@"ADVANCED_DATA_PROTECTION_DISABLE_NO_PASSCODE_ALERT_TITLE" inTable:@"Localizable-Walrus"];
-      v11 = [v6 localizedString];
+      localizedString = [v6 localizedString];
       goto LABEL_9;
     }
 
@@ -200,15 +200,15 @@ void *__52__CDPUIWalrusStatusChangeModel__checkCurrentStatus___block_invoke_2(ui
 
   v6 = [v4 builderForKey:v5 inTable:@"Localizable-Walrus"];
   v7 = [v6 addSecretType:1];
-  v8 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v9 = [v8 deviceClass];
-  v10 = [v7 addDeviceClass:v9];
-  v11 = [v10 localizedString];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+  v10 = [v7 addDeviceClass:deviceClass];
+  localizedString = [v10 localizedString];
 
 LABEL_9:
 LABEL_10:
 
-  return v11;
+  return localizedString;
 }
 
 - (NSString)messageText
@@ -216,15 +216,15 @@ LABEL_10:
   if (self->_targetStatus == 2 && ![(CDPUIWalrusStatusChangeModel *)self _hasLocalSecret])
   {
     v3 = [MEMORY[0x277CFD508] builderForKey:@"ADVANCED_DATA_PROTECTION_DISABLE_NO_PASSCODE_ALERT_MESSAGE" inTable:@"Localizable-Walrus"];
-    v2 = [v3 localizedString];
+    localizedString = [v3 localizedString];
   }
 
   else
   {
-    v2 = 0;
+    localizedString = 0;
   }
 
-  return v2;
+  return localizedString;
 }
 
 - (NSString)primaryButtonText
@@ -232,52 +232,52 @@ LABEL_10:
   if (self->_targetStatus == 2 && ![(CDPUIWalrusStatusChangeModel *)self _hasLocalSecret])
   {
     v3 = [MEMORY[0x277CFD508] builderForKey:@"ADVANCED_DATA_PROTECTION_DISABLE_NO_PASSCODE_ALERT_PRIMARY_BUTTON" inTable:@"Localizable-Walrus"];
-    v2 = [v3 localizedString];
+    localizedString = [v3 localizedString];
   }
 
   else
   {
-    v2 = 0;
+    localizedString = 0;
   }
 
-  return v2;
+  return localizedString;
 }
 
 - (NSString)cancelButtonText
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_CANCEL_BUTTON"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
-- (void)_updateUnderlyingValue:(id)a3
+- (void)_updateUnderlyingValue:(id)value
 {
   walrusStatusUpdater = self->_walrusStatusUpdater;
   targetStatus = self->_targetStatus;
-  v6 = a3;
-  v7 = [(CDPUIWalrusStatusChangeModel *)self authenticatedContext];
-  [(CDPWalrusStatusUpdater *)walrusStatusUpdater updateWalrusStatus:targetStatus authenticatedContext:v7 completion:v6];
+  valueCopy = value;
+  authenticatedContext = [(CDPUIWalrusStatusChangeModel *)self authenticatedContext];
+  [(CDPWalrusStatusUpdater *)walrusStatusUpdater updateWalrusStatus:targetStatus authenticatedContext:authenticatedContext completion:valueCopy];
 }
 
 - (BOOL)_hasLocalSecret
 {
-  v2 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v3 = [v2 hasLocalSecret];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-  return v3;
+  return hasLocalSecret;
 }
 
-- (void)_reportUserChoice:(unint64_t)a3 error:(id)a4
+- (void)_reportUserChoice:(unint64_t)choice error:(id)error
 {
   v5 = MEMORY[0x277CE44D8];
   cdpContext = self->_cdpContext;
   v7 = *MEMORY[0x277CFD8C8];
   v8 = *MEMORY[0x277CFD930];
-  v9 = a4;
+  errorCopy = error;
   v10 = [v5 analyticsEventWithContext:cdpContext eventName:v7 category:v8];
   v13 = v10;
-  if (a3 - 1 >= 2)
+  if (choice - 1 >= 2)
   {
     v11 = MEMORY[0x277CBEC28];
   }
@@ -288,10 +288,10 @@ LABEL_10:
   }
 
   [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x277CE4590]];
-  [v13 populateUnderlyingErrorsStartingWithRootError:v9];
+  [v13 populateUnderlyingErrorsStartingWithRootError:errorCopy];
 
-  v12 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v12 sendEvent:v13];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v13];
 }
 
 @end

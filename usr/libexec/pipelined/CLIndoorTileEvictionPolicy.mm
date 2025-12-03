@@ -1,9 +1,9 @@
 @interface CLIndoorTileEvictionPolicy
-- (BOOL)tileLastModified:(double)a3 needsEvictionAt:(double)a4;
+- (BOOL)tileLastModified:(double)modified needsEvictionAt:(double)at;
 - (CLIndoorTileEvictionPolicy)init;
-- (CLIndoorTileEvictionPolicy)initWithCoder:(id)a3;
+- (CLIndoorTileEvictionPolicy)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLIndoorTileEvictionPolicy
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (CLIndoorTileEvictionPolicy)initWithCoder:(id)a3
+- (CLIndoorTileEvictionPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CLIndoorTileEvictionPolicy;
   v5 = [(CLIndoorTileEvictionPolicy *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_maxModifiedAge"];
+    [coderCopy decodeDoubleForKey:@"_maxModifiedAge"];
     v5->_maxModifiedAge = v6;
-    v5->_forceClean = [v4 decodeBoolForKey:@"_forceClean"];
+    v5->_forceClean = [coderCopy decodeBoolForKey:@"_forceClean"];
     activity = v5->_activity;
     v5->_activity = 0;
 
@@ -47,15 +47,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeDouble:@"_maxModifiedAge" forKey:self->_maxModifiedAge];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_maxModifiedAge" forKey:self->_maxModifiedAge];
   LOBYTE(v4) = self->_forceClean;
-  [v5 encodeDouble:@"_forceClean" forKey:v4];
+  [coderCopy encodeDouble:@"_forceClean" forKey:v4];
 }
 
-- (BOOL)tileLastModified:(double)a3 needsEvictionAt:(double)a4
+- (BOOL)tileLastModified:(double)modified needsEvictionAt:(double)at
 {
   if (qword_10045B070 != -1)
   {
@@ -67,7 +67,7 @@
     }
 
 LABEL_5:
-    v8 = a4 - a3;
+    v8 = at - modified;
     return v8 >= self->_maxModifiedAge;
   }
 
@@ -78,18 +78,18 @@ LABEL_5:
   }
 
 LABEL_3:
-  v8 = a4 - a3;
+  v8 = at - modified;
   maxModifiedAge = self->_maxModifiedAge;
   v11 = 134350080;
-  v12 = a4;
+  atCopy = at;
   v13 = 2050;
-  v14 = a3;
+  modifiedCopy = modified;
   v15 = 2050;
-  v16 = a4 - a3;
+  v16 = at - modified;
   v17 = 2050;
   v18 = maxModifiedAge;
   v19 = 1024;
-  v20 = a4 - a3 >= maxModifiedAge;
+  v20 = at - modified >= maxModifiedAge;
   _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "@EvictCheck, modified, %{public}.1f, %{public}.1f, ages, %{public}.1f, %{public}.1f, evict, %d", &v11, 0x30u);
   return v8 >= self->_maxModifiedAge;
 }

@@ -1,39 +1,39 @@
 @interface BMAmbientMusicDetection
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAmbientMusicDetection)initWithAbsoluteTimestamp:(id)a3 detected:(id)a4;
-- (BMAmbientMusicDetection)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAmbientMusicDetection)initWithAbsoluteTimestamp:(id)timestamp detected:(id)detected;
+- (BMAmbientMusicDetection)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAmbientMusicDetection
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMAmbientMusicDetection *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -49,8 +49,8 @@
 
     if (-[BMAmbientMusicDetection hasDetected](self, "hasDetected") && [v5 hasDetected])
     {
-      v13 = [(BMAmbientMusicDetection *)self detected];
-      v12 = v13 ^ [v5 detected] ^ 1;
+      detected = [(BMAmbientMusicDetection *)self detected];
+      v12 = detected ^ [v5 detected] ^ 1;
 LABEL_13:
 
       goto LABEL_14;
@@ -87,12 +87,12 @@ LABEL_14:
 - (id)jsonDictionary
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMAmbientMusicDetection *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
-    [v5 timeIntervalSince1970];
+    absoluteTimestamp2 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -112,21 +112,21 @@ LABEL_14:
   }
 
   v13[0] = @"absoluteTimestamp";
-  v8 = v6;
+  null = v6;
   if (!v6)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v13[1] = @"detected";
-  v14[0] = v8;
-  v9 = v7;
+  v14[0] = null;
+  null2 = v7;
   if (!v7)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v9;
+  v14[1] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   if (v7)
   {
@@ -151,11 +151,11 @@ LABEL_13:
   return v10;
 }
 
-- (BMAmbientMusicDetection)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAmbientMusicDetection)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -183,10 +183,10 @@ LABEL_6:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v18 = 0;
+        selfCopy = 0;
         goto LABEL_14;
       }
 
@@ -198,8 +198,8 @@ LABEL_6:
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v27 = [v25 initWithDomain:v26 code:2 userInfo:v16];
       v8 = 0;
-      v18 = 0;
-      *a4 = v27;
+      selfCopy = 0;
+      *error = v27;
       goto LABEL_13;
     }
 
@@ -211,13 +211,13 @@ LABEL_6:
   v8 = [v15 dateFromString:v7];
 
 LABEL_9:
-  v16 = [v6 objectForKeyedSubscript:@"detected"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"detected"];
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
@@ -225,11 +225,11 @@ LABEL_9:
         v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"detected"];
         v29 = v23;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-        *a4 = [v21 initWithDomain:v22 code:2 userInfo:v24];
+        *error = [v21 initWithDomain:v22 code:2 userInfo:v24];
       }
 
       v17 = 0;
-      v18 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -242,45 +242,45 @@ LABEL_9:
   }
 
   self = [(BMAmbientMusicDetection *)self initWithAbsoluteTimestamp:v8 detected:v17];
-  v18 = self;
+  selfCopy = self;
 LABEL_13:
 
 LABEL_14:
   v19 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAmbientMusicDetection *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasDetected)
   {
     detected = self->_detected;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMAmbientMusicDetection;
   v5 = [(BMEventBase *)&v28 init];
@@ -289,12 +289,12 @@ LABEL_14:
     goto LABEL_41;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -305,18 +305,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v29) & 0x7F) << v7;
@@ -334,9 +334,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -350,18 +350,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v29) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (LOBYTE(v29) & 0x7F) << v17;
@@ -379,7 +379,7 @@ LABEL_16:
           }
         }
 
-        v23 = (v19 != 0) & ~[v4 hasError];
+        v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_35:
         v5->_detected = v23;
       }
@@ -388,18 +388,18 @@ LABEL_35:
       {
         v5->_hasRaw_absoluteTimestamp = 1;
         v29 = 0.0;
-        v15 = [v4 position] + 8;
-        if (v15 >= [v4 position] && (v16 = objc_msgSend(v4, "position") + 8, v16 <= objc_msgSend(v4, "length")))
+        v15 = [fromCopy position] + 8;
+        if (v15 >= [fromCopy position] && (v16 = objc_msgSend(fromCopy, "position") + 8, v16 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v29 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_absoluteTimestamp = v29;
@@ -410,13 +410,13 @@ LABEL_35:
         goto LABEL_40;
       }
 
-      v25 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v25 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_40:
     v26 = 0;
@@ -434,27 +434,27 @@ LABEL_41:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAmbientMusicDetection *)self absoluteTimestamp];
+  absoluteTimestamp = [(BMAmbientMusicDetection *)self absoluteTimestamp];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAmbientMusicDetection detected](self, "detected")}];
-  v6 = [v3 initWithFormat:@"BMAmbientMusicDetection with absoluteTimestamp: %@, detected: %@", v4, v5];
+  v6 = [v3 initWithFormat:@"BMAmbientMusicDetection with absoluteTimestamp: %@, detected: %@", absoluteTimestamp, v5];
 
   return v6;
 }
 
-- (BMAmbientMusicDetection)initWithAbsoluteTimestamp:(id)a3 detected:(id)a4
+- (BMAmbientMusicDetection)initWithAbsoluteTimestamp:(id)timestamp detected:(id)detected
 {
-  v6 = a3;
-  v7 = a4;
+  timestampCopy = timestamp;
+  detectedCopy = detected;
   v11.receiver = self;
   v11.super_class = BMAmbientMusicDetection;
   v8 = [(BMEventBase *)&v11 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (timestampCopy)
     {
       v8->_hasRaw_absoluteTimestamp = 1;
-      [v6 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -464,10 +464,10 @@ LABEL_41:
     }
 
     v8->_raw_absoluteTimestamp = v9;
-    if (v7)
+    if (detectedCopy)
     {
       v8->_hasDetected = 1;
-      v8->_detected = [v7 BOOLValue];
+      v8->_detected = [detectedCopy BOOLValue];
     }
 
     else
@@ -508,9 +508,9 @@ LABEL_41:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -518,8 +518,8 @@ LABEL_41:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAmbientMusicDetection alloc] initByReadFrom:v7];
     v4 = v8;

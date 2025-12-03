@@ -1,27 +1,27 @@
 @interface CKDFetchMergeableDeltasURLRequest
-- (CKDFetchMergeableDeltasURLRequest)initWithOperation:(id)a3 mergeableValueIDs:(id)a4 previousContinuationTokens:(id)a5;
+- (CKDFetchMergeableDeltasURLRequest)initWithOperation:(id)operation mergeableValueIDs:(id)ds previousContinuationTokens:(id)tokens;
 - (id)anonymousUserIDForHTTPHeader;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchMergeableDeltasURLRequest
 
-- (CKDFetchMergeableDeltasURLRequest)initWithOperation:(id)a3 mergeableValueIDs:(id)a4 previousContinuationTokens:(id)a5
+- (CKDFetchMergeableDeltasURLRequest)initWithOperation:(id)operation mergeableValueIDs:(id)ds previousContinuationTokens:(id)tokens
 {
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  tokensCopy = tokens;
   v24.receiver = self;
   v24.super_class = CKDFetchMergeableDeltasURLRequest;
-  v12 = [(CKDURLRequest *)&v24 initWithOperation:a3];
+  v12 = [(CKDURLRequest *)&v24 initWithOperation:operation];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v13 = objc_msgSend_copy(dsCopy, v10, v11);
     mergeableValueIDs = v12->_mergeableValueIDs;
     v12->_mergeableValueIDs = v13;
 
@@ -29,7 +29,7 @@
     mergeableValueIDsByRequestID = v12->_mergeableValueIDsByRequestID;
     v12->_mergeableValueIDsByRequestID = v17;
 
-    v21 = objc_msgSend_copy(v9, v19, v20);
+    v21 = objc_msgSend_copy(tokensCopy, v19, v20);
     previousContinuationTokens = v12->_previousContinuationTokens;
     v12->_previousContinuationTokens = v21;
   }
@@ -37,29 +37,29 @@
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDFetchMergeableDeltasURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_mergeableValueIDs(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"mvIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"mvIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_mergeableValueIDs(self, v5, v6);
-  objc_msgSend_setFetchMergeableValueIDs_(v4, v8, v7);
+  objc_msgSend_setFetchMergeableValueIDs_(propertiesCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDFetchMergeableDeltasURLRequest;
-  [(CKDURLRequest *)&v9 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v9 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -106,26 +106,26 @@
   return v6;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   v8 = objc_msgSend_mergeableValueIDsByRequestID(self, v6, v7);
-  v11 = objc_msgSend_response(v5, v9, v10);
+  v11 = objc_msgSend_response(objectCopy, v9, v10);
   v14 = objc_msgSend_operationUUID(v11, v12, v13);
   v16 = objc_msgSend_objectForKeyedSubscript_(v8, v15, v14);
 
   if (!v16)
   {
     v58 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v58, v59, a2, self, @"CKDFetchMergeableDeltasURLRequest.m", 119, @"Expected non-nil mergeable ID for response %@", v5);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v58, v59, a2, self, @"CKDFetchMergeableDeltasURLRequest.m", 119, @"Expected non-nil mergeable ID for response %@", objectCopy);
   }
 
   v19 = objc_opt_new();
-  if (objc_msgSend_hasMergeableDeltaRetrieveResponse(v5, v20, v21))
+  if (objc_msgSend_hasMergeableDeltaRetrieveResponse(objectCopy, v20, v21))
   {
-    v62 = v5;
-    v24 = objc_msgSend_mergeableDeltaRetrieveResponse(v5, v22, v23);
+    v62 = objectCopy;
+    v24 = objc_msgSend_mergeableDeltaRetrieveResponse(objectCopy, v22, v23);
     objc_msgSend_continuation(v24, v25, v26);
     v61 = v60 = v24;
     v66 = 0u;
@@ -202,7 +202,7 @@
     }
 
     v47 = v61;
-    v5 = v62;
+    objectCopy = v62;
   }
 
   else
@@ -228,7 +228,7 @@
   if (v48)
   {
     v51 = objc_msgSend_deltasFetchedBlock(self, v49, v50);
-    v54 = objc_msgSend_result(v5, v52, v53);
+    v54 = objc_msgSend_result(objectCopy, v52, v53);
     (v51)[2](v51, v16, v19, v47, v54);
   }
 
@@ -238,10 +238,10 @@
   return v34;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  failureCopy = failure;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -255,24 +255,24 @@
     *buf = 138412546;
     v41 = v37;
     v42 = 2112;
-    v43 = v5;
+    v43 = failureCopy;
     _os_log_error_impl(&dword_22506F000, v34, OS_LOG_TYPE_ERROR, "Node failure in atom sync request %@: %@", buf, 0x16u);
   }
 
-  v9 = objc_msgSend_response(v5, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
 
   if (v12)
   {
     v15 = objc_msgSend_mergeableValueIDsByRequestID(self, v13, v14);
-    v18 = objc_msgSend_response(v5, v16, v17);
+    v18 = objc_msgSend_response(failureCopy, v16, v17);
     v21 = objc_msgSend_operationUUID(v18, v19, v20);
     v23 = objc_msgSend_objectForKeyedSubscript_(v15, v22, v21);
 
     if (!v23)
     {
       v38 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v24, v25);
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v38, v39, a2, self, @"CKDFetchMergeableDeltasURLRequest.m", 158, @"Expected non-nil mergeable ID for response %@", v5);
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v38, v39, a2, self, @"CKDFetchMergeableDeltasURLRequest.m", 158, @"Expected non-nil mergeable ID for response %@", failureCopy);
     }
 
     v26 = objc_msgSend_deltasFetchedBlock(self, v24, v25);
@@ -280,7 +280,7 @@
     if (v26)
     {
       v29 = objc_msgSend_deltasFetchedBlock(self, v27, v28);
-      v32 = objc_msgSend_result(v5, v30, v31);
+      v32 = objc_msgSend_result(failureCopy, v30, v31);
       (v29)[2](v29, v23, 0, 0, v32);
     }
   }

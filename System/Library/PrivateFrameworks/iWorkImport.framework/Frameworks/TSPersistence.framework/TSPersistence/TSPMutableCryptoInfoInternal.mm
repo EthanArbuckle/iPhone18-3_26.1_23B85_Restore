@@ -1,22 +1,22 @@
 @interface TSPMutableCryptoInfoInternal
-- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6;
-- (void)addBlockInfo:(id)a3;
-- (void)incrementDecodedLengthBy:(unint64_t)a3;
+- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length;
+- (void)addBlockInfo:(id)info;
+- (void)incrementDecodedLengthBy:(unint64_t)by;
 - (void)reset;
 @end
 
 @implementation TSPMutableCryptoInfoInternal
 
-- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6
+- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length
 {
-  v10 = a3;
-  v11 = a5;
+  keyCopy = key;
+  infosCopy = infos;
   v18.receiver = self;
   v18.super_class = TSPMutableCryptoInfoInternal;
-  v14 = [(TSPCryptoInfoInternal *)&v18 initWithCryptoKey:v10 preferredBlockSize:a4 blockInfos:0 decodedLength:a6];
+  v14 = [(TSPCryptoInfoInternal *)&v18 initWithCryptoKey:keyCopy preferredBlockSize:size blockInfos:0 decodedLength:length];
   if (v14)
   {
-    v15 = objc_msgSend_mutableCopy(v11, v12, v13);
+    v15 = objc_msgSend_mutableCopy(infosCopy, v12, v13);
     objc_msgSend_setBlockInfos_(v14, v16, v15);
   }
 
@@ -30,9 +30,9 @@
   MEMORY[0x2821F9670](self, sel_setDecodedLength_, 0);
 }
 
-- (void)addBlockInfo:(id)a3
+- (void)addBlockInfo:(id)info
 {
-  v18 = a3;
+  infoCopy = info;
   if (objc_msgSend_preferredBlockSize(self, v4, v5) == -1)
   {
     v11 = MEMORY[0x277D81150];
@@ -52,13 +52,13 @@
       objc_msgSend_setBlockInfos_(self, v10, v9);
     }
 
-    objc_msgSend_addObject_(v9, v8, v18);
+    objc_msgSend_addObject_(v9, v8, infoCopy);
   }
 }
 
-- (void)incrementDecodedLengthBy:(unint64_t)a3
+- (void)incrementDecodedLengthBy:(unint64_t)by
 {
-  v4 = objc_msgSend_decodedLength(self, a2, a3) + a3;
+  v4 = objc_msgSend_decodedLength(self, a2, by) + by;
 
   MEMORY[0x2821F9670](self, sel_setDecodedLength_, v4);
 }

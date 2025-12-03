@@ -1,108 +1,108 @@
 @interface ResultsViewController
-+ (BOOL)isReloadingRefinementsWithSearchSession:(id)a3;
++ (BOOL)isReloadingRefinementsWithSearchSession:(id)session;
 - (BOOL)hasResults;
 - (BOOL)isShowingOmnipresentSearchBar;
 - (BOOL)isWaitingForResults;
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4;
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place;
 - (BOOL)shouldShowSearchOverlay;
 - (NSDictionary)searchResultCountInVenue;
 - (ResultsViewControllerDelegate)resultsDelegate;
 - (VKVenueFeatureMarker)venueWithFocus;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (double)topSpaceForScrollPocket;
 - (id)_displayMessageForNoInternet;
 - (id)_displayMessageFromError;
 - (id)contentTableView;
 - (id)errorModeView;
 - (id)impressionsCalculator;
-- (id)initForOmipresentSearchBar:(BOOL)a3;
+- (id)initForOmipresentSearchBar:(BOOL)bar;
 - (id)loadingModeView;
 - (id)loadingString;
 - (id)localSearchViewController;
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3;
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter;
 - (id)noResultString;
 - (id)refineSearchText;
 - (int)currentUITargetForAnalytics;
-- (int)listForDataSource:(id)a3;
+- (int)listForDataSource:(id)source;
 - (int)refineSearchSessionType;
 - (int64_t)floatingControlsOptions;
 - (void)_hideSearchHereControl;
 - (void)_showOfflineErrorView;
 - (void)_updateHairlineVisibility;
 - (void)_updateLoadingErrorFrames;
-- (void)_updateResultRefinementBarFromSearchInfo:(id)a3;
-- (void)allRefinementsApplyViewModel:(id)a3 selectionSequenceNumber:(id)a4;
-- (void)applyAlphaToContent:(double)a3;
+- (void)_updateResultRefinementBarFromSearchInfo:(id)info;
+- (void)allRefinementsApplyViewModel:(id)model selectionSequenceNumber:(id)number;
+- (void)applyAlphaToContent:(double)content;
 - (void)configureHeader;
-- (void)dataSource:(id)a3 itemFocused:(id)a4;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
+- (void)dataSource:(id)source itemFocused:(id)focused;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSourceUpdated:(id)updated;
 - (void)didBecomeCurrent;
 - (void)didCachePlaceSummaryTemplates;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didResignCurrent;
 - (void)didTapOnAddAPlace;
-- (void)didTapOnAddStopWithSearchResult:(id)a3 atIndexPath:(id)a4;
-- (void)didTapOnCallWithSearchResult:(id)a3;
-- (void)didTapOnContainmentParentMapItem:(id)a3;
-- (void)didTapOnCuratedGuide:(id)a3;
-- (void)didTapOnCuratedGuides:(id)a3;
-- (void)didTapOnDirectionsWithSearchResult:(id)a3;
-- (void)didTapOnFlyoverWithSearchResult:(id)a3;
-- (void)didTapOnLookAroundWithSearchResult:(id)a3;
-- (void)didTapOnTappableEntry:(id)a3;
-- (void)didTapOnUserGeneratedGuide:(id)a3;
-- (void)didTapOnUserLibraryMapItem:(id)a3;
-- (void)didTapOnWebsiteWithSearchResult:(id)a3;
+- (void)didTapOnAddStopWithSearchResult:(id)result atIndexPath:(id)path;
+- (void)didTapOnCallWithSearchResult:(id)result;
+- (void)didTapOnContainmentParentMapItem:(id)item;
+- (void)didTapOnCuratedGuide:(id)guide;
+- (void)didTapOnCuratedGuides:(id)guides;
+- (void)didTapOnDirectionsWithSearchResult:(id)result;
+- (void)didTapOnFlyoverWithSearchResult:(id)result;
+- (void)didTapOnLookAroundWithSearchResult:(id)result;
+- (void)didTapOnTappableEntry:(id)entry;
+- (void)didTapOnUserGeneratedGuide:(id)guide;
+- (void)didTapOnUserLibraryMapItem:(id)item;
+- (void)didTapOnWebsiteWithSearchResult:(id)result;
 - (void)editSearchButtonTapped;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
 - (void)increasResultRefinementsSelectionSequenceNumber;
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3;
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here;
 - (void)logNoSearchResult;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call;
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to;
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card;
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for;
 - (void)refreshCurrentSearch;
-- (void)refreshEVChargers:(id)a3;
-- (void)resultRefinementsBarApplyMultiSelectViewModel:(id)a3 atIndex:(id)a4;
-- (void)resultRefinementsBarApplyOpenOptionViewModel:(id)a3 atIndex:(id)a4;
-- (void)resultRefinementsBarDidTapOnMultiSelect:(id)a3 tappedAtIndex:(int64_t)a4;
-- (void)resultRefinementsBarDidTapOnOpenOptions:(id)a3 tappedAtIndex:(int64_t)a4;
-- (void)resultRefinementsBarDidTapOnSeeAllRefinements:(id)a3;
-- (void)resultRefinementsBarDidTapOnToggle:(id)a3 isSelected:(BOOL)a4;
-- (void)resultRefinementsBarDidUpdateViewModel:(id)a3;
-- (void)routeToCuratedCollection:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)searchDidCancel:(BOOL)a3;
-- (void)setDataSource:(id)a3;
-- (void)setHeaderContentWithSearchSession:(id)a3;
-- (void)setHideHeader:(BOOL)a3;
-- (void)setHideRefinementsBar:(BOOL)a3;
-- (void)setResultsList:(id)a3;
+- (void)refreshEVChargers:(id)chargers;
+- (void)resultRefinementsBarApplyMultiSelectViewModel:(id)model atIndex:(id)index;
+- (void)resultRefinementsBarApplyOpenOptionViewModel:(id)model atIndex:(id)index;
+- (void)resultRefinementsBarDidTapOnMultiSelect:(id)select tappedAtIndex:(int64_t)index;
+- (void)resultRefinementsBarDidTapOnOpenOptions:(id)options tappedAtIndex:(int64_t)index;
+- (void)resultRefinementsBarDidTapOnSeeAllRefinements:(id)refinements;
+- (void)resultRefinementsBarDidTapOnToggle:(id)toggle isSelected:(BOOL)selected;
+- (void)resultRefinementsBarDidUpdateViewModel:(id)model;
+- (void)routeToCuratedCollection:(id)collection;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)searchDidCancel:(BOOL)cancel;
+- (void)setDataSource:(id)source;
+- (void)setHeaderContentWithSearchSession:(id)session;
+- (void)setHideHeader:(BOOL)header;
+- (void)setHideRefinementsBar:(BOOL)bar;
+- (void)setResultsList:(id)list;
 - (void)setupConstraints;
-- (void)showError:(id)a3 hideRefinementsBar:(BOOL)a4;
-- (void)showSearchingHereIfNeeded:(BOOL)a3;
+- (void)showError:(id)error hideRefinementsBar:(BOOL)bar;
+- (void)showSearchingHereIfNeeded:(BOOL)needed;
 - (void)updateRefinementBarAlpha;
-- (void)updateSearchSession:(id)a3;
-- (void)viewControllerDidSelectBrowseVenue:(id)a3;
+- (void)updateSearchSession:(id)session;
+- (void)viewControllerDidSelectBrowseVenue:(id)venue;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)waitingData;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willChangeContainerStyle:(unint64_t)a3;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willChangeContainerStyle:(unint64_t)style;
 @end
 
 @implementation ResultsViewController
@@ -114,18 +114,18 @@
   return WeakRetained;
 }
 
-- (void)routeToCuratedCollection:(id)a3
+- (void)routeToCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  [v5 showCuratedCollection:v4 viewController:self];
+  collectionCopy = collection;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate showCuratedCollection:collectionCopy viewController:self];
 }
 
 - (void)_updateHairlineVisibility
 {
-  v3 = [(ResultsViewController *)self _shouldHideHairline];
+  _shouldHideHairline = [(ResultsViewController *)self _shouldHideHairline];
   v4 = 1.0;
-  if (v3)
+  if (_shouldHideHairline)
   {
     v4 = 0.0;
   }
@@ -135,21 +135,21 @@
   [(ContainerHeaderView *)containerHeaderView setHairLineAlpha:v4];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v4 scrollViewDidScroll:a3];
+  [(ContaineeViewController *)&v4 scrollViewDidScroll:scroll];
   [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator logImpressions];
   [(ResultsViewController *)self _updateHairlineVisibility];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
+  y = velocity.y;
   v11.receiver = self;
   v11.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v11 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
+  [(ContaineeViewController *)&v11 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x];
   v7 = objc_alloc_init(SearchSessionAnalytics);
   [(SearchSessionAnalytics *)v7 setTarget:[(ResultsViewController *)self currentUITargetForAnalytics]];
   if (y <= 0.0)
@@ -170,14 +170,14 @@
   [v10 collectSearchSessionAnalytics:v7];
 }
 
-- (void)viewControllerDidSelectBrowseVenue:(id)a3
+- (void)viewControllerDidSelectBrowseVenue:(id)venue
 {
-  v4 = [(ResultsViewController *)self resultsDelegate];
-  v3 = [v4 venuesManagerForSearchResults];
-  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+  [venuesManagerForSearchResults presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
 }
 
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2011 onTarget:-[ResultsViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
@@ -187,11 +187,11 @@
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(ResultsViewController *)self resultsDelegate];
-  v3 = [v2 venuesManagerForSearchResults];
-  v4 = [v3 venueWithFocus];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+  venueWithFocus = [venuesManagerForSearchResults venueWithFocus];
 
-  return v4;
+  return venueWithFocus;
 }
 
 - (void)editSearchButtonTapped
@@ -207,10 +207,10 @@
     [(ResultsViewController *)self setResultsList:0];
     [(ResultsViewController *)self resetRefinementsSequenceNumber];
     v3 = self->_searchSession;
-    v5 = [(ResultsViewController *)self resultsDelegate];
-    v4 = [(SearchSession *)v3 searchFieldItem];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchFieldItem = [(SearchSession *)v3 searchFieldItem];
 
-    [v5 presentSearchResultsRestoringSearchItem:v4];
+    [resultsDelegate presentSearchResultsRestoringSearchItem:searchFieldItem];
   }
 }
 
@@ -220,9 +220,9 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(ContainerHeaderView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(ContainerHeaderView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
   containerHeaderView = self->_containerHeaderView;
-  self->_containerHeaderView = v7;
+  self->_containerHeaderView = height;
 
   [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
@@ -232,9 +232,9 @@
   [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
   if (![(ResultsViewController *)self isShowingOmnipresentSearchBar])
   {
-    v10 = [[ResultsTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[ResultsTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     resultsTitleView = self->_resultsTitleView;
-    self->_resultsTitleView = v10;
+    self->_resultsTitleView = height2;
 
     [(ResultsTitleView *)self->_resultsTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ResultsTitleView *)self->_resultsTitleView setDelegate:self];
@@ -245,8 +245,8 @@
   self->_refinementsBar = v12;
 
   [(RefinementsBarUIView *)self->_refinementsBar setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(RefinementsBarUIView *)self->_refinementsBar heightAnchor];
-  v15 = [v14 constraintEqualToConstant:0.0];
+  heightAnchor = [(RefinementsBarUIView *)self->_refinementsBar heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:0.0];
   refinementsBarZeroHeight = self->_refinementsBarZeroHeight;
   self->_refinementsBarZeroHeight = v15;
 
@@ -266,26 +266,26 @@
 
     [(ContainerHeaderView *)self->_containerHeaderView setButtonHidden:1];
     [(ContainerHeaderView *)self->_containerHeaderView setTitleHidden:1];
-    v20 = [(ContaineeViewController *)self contentView];
-    [v20 addSubview:self->_refinementsBar];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView addSubview:self->_refinementsBar];
 
-    v21 = [(RefinementsBarUIView *)self->_refinementsBar trailingAnchor];
-    v22 = [(ContaineeViewController *)self contentView];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    trailingAnchor = [(RefinementsBarUIView *)self->_refinementsBar trailingAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v17 addObject:v24];
 
-    v25 = [(RefinementsBarUIView *)self->_refinementsBar leadingAnchor];
-    v26 = [(ContaineeViewController *)self contentView];
-    v27 = [v26 leadingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    leadingAnchor = [(RefinementsBarUIView *)self->_refinementsBar leadingAnchor];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v17 addObject:v28];
 
-    v29 = [(RefinementsBarUIView *)self->_refinementsBar topAnchor];
-    v30 = [(ContaineeViewController *)self contentView];
-    v31 = [v30 topAnchor];
+    topAnchor = [(RefinementsBarUIView *)self->_refinementsBar topAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
     [(ResultsViewController *)self topSpaceForRefinements];
-    v32 = [v29 constraintEqualToAnchor:v31 constant:?];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     [v17 addObject:v32];
   }
 
@@ -306,34 +306,34 @@
   }
 
   v34 = +[UIColor clearColor];
-  v35 = [(ContaineeViewController *)self headerView];
-  [v35 setBackgroundColor:v34];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView setBackgroundColor:v34];
 
-  v36 = [(ContaineeViewController *)self headerView];
-  [v36 addSubview:self->_containerHeaderView];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  [headerView2 addSubview:self->_containerHeaderView];
 
-  v56 = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
-  v55 = [v56 constraintGreaterThanOrEqualToConstant:v33];
+  heightAnchor2 = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
+  v55 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v33];
   v58[0] = v55;
-  v53 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
-  v54 = [(ContaineeViewController *)self headerView];
-  v52 = [v54 leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  leadingAnchor3 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  leadingAnchor4 = [headerView3 leadingAnchor];
+  v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v58[1] = v51;
-  v49 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
-  v50 = [(ContaineeViewController *)self headerView];
-  v48 = [v50 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  trailingAnchor3 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  trailingAnchor4 = [headerView4 trailingAnchor];
+  v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v58[2] = v47;
-  v37 = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
-  v38 = [(ContaineeViewController *)self headerView];
-  v39 = [v38 topAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  topAnchor3 = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  topAnchor4 = [headerView5 topAnchor];
+  v40 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v58[3] = v40;
-  v41 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-  v42 = [(ContaineeViewController *)self headerView];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  bottomAnchor = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+  headerView6 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView6 bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45 = self->_refinementsBarZeroHeight;
   v58[4] = v44;
   v58[5] = v45;
@@ -343,9 +343,9 @@
   [NSLayoutConstraint activateConstraints:v57];
 }
 
-- (void)setHideRefinementsBar:(BOOL)a3
+- (void)setHideRefinementsBar:(BOOL)bar
 {
-  v3 = a3;
+  barCopy = bar;
   refinementsBar = self->_refinementsBar;
   if (!refinementsBar)
   {
@@ -354,7 +354,7 @@
     {
       v7 = NSStringFromBOOL();
       *buf = 134218498;
-      v15 = self;
+      selfCopy = self;
       v16 = 2080;
       v17 = "[ResultsViewController setHideRefinementsBar:]";
       v18 = 2112;
@@ -367,7 +367,7 @@
     {
       v9 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v15 = v9;
+      selfCopy = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Call stack: %@", buf, 0xCu);
     }
 
@@ -375,8 +375,8 @@
     refinementsBar = self->_refinementsBar;
   }
 
-  [(RefinementsBarUIView *)refinementsBar setHidden:v3];
-  if (v3)
+  [(RefinementsBarUIView *)refinementsBar setHidden:barCopy];
+  if (barCopy)
   {
     self->_lastRefinementOriginType = 0;
     [(ResultsViewController *)self resetRefinementsSequenceNumber];
@@ -393,18 +393,18 @@
     [NSLayoutConstraint deactivateConstraints:v10];
   }
 
-  v11 = [(ContaineeViewController *)self cardPresentationController];
-  [v11 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)setHideHeader:(BOOL)a3
+- (void)setHideHeader:(BOOL)header
 {
-  if (self->_hideHeader != a3)
+  if (self->_hideHeader != header)
   {
     v12 = v7;
     v13 = v3;
-    self->_hideHeader = a3;
-    if (a3)
+    self->_hideHeader = header;
+    if (header)
     {
       v10 = 0.0;
     }
@@ -436,88 +436,88 @@
 {
   v7.receiver = self;
   v7.super_class = ResultsViewController;
-  v3 = [(ControlContaineeViewController *)&v7 floatingControlsOptions];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containerStyle];
+  floatingControlsOptions = [(ControlContaineeViewController *)&v7 floatingControlsOptions];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  if (v5 == 6)
+  if (containerStyle == 6)
   {
-    return v3 | 4;
+    return floatingControlsOptions | 4;
   }
 
   else
   {
-    return v3;
+    return floatingControlsOptions;
   }
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v6 = a6;
-  v10 = a3;
-  if (![(ResultsViewController *)self isShowingOmnipresentSearchBar]&& v6)
+  buttonCopy = button;
+  viewCopy = view;
+  if (![(ResultsViewController *)self isShowingOmnipresentSearchBar]&& buttonCopy)
   {
     self->_tappedTrackingButton = 1;
-    v8 = [(ResultsViewController *)self localSearchViewController];
-    v9 = [v8 refreshSearchHereBusinessController];
-    [v9 didStartRespondingToGesture:v10];
+    localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v12 = a3;
+  viewCopy = view;
   if (![(ResultsViewController *)self isShowingOmnipresentSearchBar])
   {
-    v9 = [(ResultsViewController *)self localSearchViewController];
-    v10 = [v9 refreshSearchHereBusinessController];
-    v11 = [v10 didStopRespondingToGesture:v12];
+    localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    v11 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
     [(ResultsViewController *)self showSearchingHereIfNeeded:v11];
   }
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v8 = a3;
+  viewCopy = view;
   if (![(ResultsViewController *)self isShowingOmnipresentSearchBar])
   {
-    v6 = [(ResultsViewController *)self localSearchViewController];
-    v7 = [v6 refreshSearchHereBusinessController];
-    [v7 didStartRespondingToGesture:v8];
+    localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController didStartRespondingToGesture:viewCopy];
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   if (self->_tappedTrackingButton)
   {
     self->_tappedTrackingButton = 0;
-    v6 = a3;
-    v7 = [(ResultsViewController *)self localSearchViewController];
-    v8 = [v7 refreshSearchHereBusinessController];
-    v9 = [v8 didStopRespondingToGesture:v6];
+    viewCopy = view;
+    localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+    refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+    v9 = [refreshSearchHereBusinessController didStopRespondingToGesture:viewCopy];
 
     [(ResultsViewController *)self showSearchingHereIfNeeded:v9];
   }
 }
 
-- (void)showSearchingHereIfNeeded:(BOOL)a3
+- (void)showSearchingHereIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if ((![(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]|| (GEOConfigGetBOOL() & 1) == 0) && ![(ResultsViewController *)self isShowingOmnipresentSearchBar])
   {
-    v5 = [(SearchSession *)self->_searchSession searchInfo];
-    if (v5)
+    searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+    if (searchInfo)
     {
-      v6 = [(ResultsViewController *)self resultsDelegate];
-      v7 = [v6 searchResultsContainerViewController];
-      v8 = [v7 chromeViewController];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      searchResultsContainerViewController = [resultsDelegate searchResultsContainerViewController];
+      chromeViewController = [searchResultsContainerViewController chromeViewController];
 
-      v9 = [v8 redoSearchOverlay];
-      [v9 setHidden:0];
+      redoSearchOverlay = [chromeViewController redoSearchOverlay];
+      [redoSearchOverlay setHidden:0];
 
-      if (v3)
+      if (neededCopy)
       {
         v10 = sub_100067540();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -528,12 +528,12 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[ResultsVC] Trigerred auto-redo search: %@", &v20, 0xCu);
         }
 
-        [v8 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-        v12 = [v8 redoSearchOverlay];
-        [v12 updateSearchOverlayWithState:0];
+        [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+        redoSearchOverlay2 = [chromeViewController redoSearchOverlay];
+        [redoSearchOverlay2 updateSearchOverlayWithState:0];
 
-        v13 = [v8 redoSearchOverlay];
-        [v13 shouldHideFloatingControl:0 animated:1];
+        redoSearchOverlay3 = [chromeViewController redoSearchOverlay];
+        [redoSearchOverlay3 shouldHideFloatingControl:0 animated:1];
 
         self->_didTriggerAutoRedoSearch = 1;
         [(ResultsViewController *)self refreshCurrentSearch];
@@ -541,11 +541,11 @@
 
       else
       {
-        v14 = [(ResultsViewController *)self localSearchViewController];
-        v15 = [v14 refreshSearchHereBusinessController];
-        v16 = [v15 shouldShowManualRedoButton];
+        localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+        refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+        shouldShowManualRedoButton = [refreshSearchHereBusinessController shouldShowManualRedoButton];
 
-        if (MapsFeature_IsEnabled_SearchAndDiscovery() && v16)
+        if (MapsFeature_IsEnabled_SearchAndDiscovery() && shouldShowManualRedoButton)
         {
           v17 = sub_1007991E4();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -556,9 +556,9 @@
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[SearchVC] Showing search here button as we did not trigger Auto-Redo: %@", &v20, 0xCu);
           }
 
-          [v8 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-          v19 = [v8 redoSearchOverlay];
-          [v19 updateSearchOverlayWithState:1];
+          [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+          redoSearchOverlay4 = [chromeViewController redoSearchOverlay];
+          [redoSearchOverlay4 updateSearchOverlayWithState:1];
         }
       }
     }
@@ -569,19 +569,19 @@
 {
   if (![(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor])
   {
-    v3 = [(ResultsViewController *)self resultsDelegate];
-    v4 = [v3 searchResultsContainerViewController];
-    v6 = [v4 chromeViewController];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchResultsContainerViewController = [resultsDelegate searchResultsContainerViewController];
+    chromeViewController = [searchResultsContainerViewController chromeViewController];
 
-    [v6 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-    v5 = [v6 redoSearchOverlay];
-    [v5 shouldHideFloatingControl:1 animated:0];
+    [chromeViewController setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+    redoSearchOverlay = [chromeViewController redoSearchOverlay];
+    [redoSearchOverlay shouldHideFloatingControl:1 animated:0];
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 2)
+  if (layout == 2)
   {
 
     sub_100068BB8();
@@ -589,7 +589,7 @@
 
   else
   {
-    if (a3 == 1)
+    if (layout == 1)
     {
       [(ContaineeViewController *)self headerHeight];
       v4 = 82.0;
@@ -599,15 +599,15 @@
         v4 = v6;
       }
 
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v9 = v8 + v4;
     }
 
     else
     {
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 availableHeight];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController availableHeight];
       v9 = v11;
     }
 
@@ -617,26 +617,26 @@
   return result;
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v11.receiver = self;
   v11.super_class = ResultsViewController;
   [(ContaineeViewController *)&v11 didChangeLayout:?];
   [(ResultsViewController *)self _updateLoadingErrorFrames];
-  if ([(ResultsViewController *)self containeeLayout]!= a3)
+  if ([(ResultsViewController *)self containeeLayout]!= layout)
   {
     v5 = objc_alloc_init(SearchSessionAnalytics);
     [(SearchSessionAnalytics *)v5 setTarget:[(ResultsViewController *)self currentUITargetForAnalytics]];
-    v6 = [(ResultsViewController *)self containeeLayout];
-    if (v6 && v6 < a3)
+    containeeLayout = [(ResultsViewController *)self containeeLayout];
+    if (containeeLayout && containeeLayout < layout)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(ResultsViewController *)self containeeLayout];
-      if (!a3 || v8 <= a3)
+      containeeLayout2 = [(ResultsViewController *)self containeeLayout];
+      if (!layout || containeeLayout2 <= layout)
       {
         goto LABEL_9;
       }
@@ -652,25 +652,25 @@ LABEL_9:
     v10 = +[SearchSessionAnalyticsAggregator sharedAggregator];
     [v10 collectSearchSessionAnalytics:v5];
 
-    [(ResultsViewController *)self setContaineeLayout:a3];
+    [(ResultsViewController *)self setContaineeLayout:layout];
   }
 
   [(ResultsViewController *)self updateRefinementBarAlpha];
   [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator logImpressions];
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = ResultsViewController;
   [(ContaineeViewController *)&v5 willChangeContainerStyle:?];
-  [(LocalSearchViewController *)self->_localSearchViewController setEnable:a3 != 6];
+  [(LocalSearchViewController *)self->_localSearchViewController setEnable:style != 6];
 }
 
 - (double)topSpaceForScrollPocket
 {
-  v3 = [(ResultsViewController *)self contentTableView];
-  v4 = sub_10000FA08(v3);
+  contentTableView = [(ResultsViewController *)self contentTableView];
+  v4 = sub_10000FA08(contentTableView);
 
   if (v4 == 5)
   {
@@ -690,15 +690,15 @@ LABEL_9:
 {
   if ([self->_currentDataSource conformsToProtocol:&OBJC_PROTOCOL___VenueItemDataSource]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [self->_currentDataSource itemCountInVenue];
+    itemCountInVenue = [self->_currentDataSource itemCountInVenue];
   }
 
   else
   {
-    v3 = 0;
+    itemCountInVenue = 0;
   }
 
-  return v3;
+  return itemCountInVenue;
 }
 
 - (BOOL)isShowingOmnipresentSearchBar
@@ -714,16 +714,16 @@ LABEL_9:
   }
 }
 
-- (void)_updateResultRefinementBarFromSearchInfo:(id)a3
+- (void)_updateResultRefinementBarFromSearchInfo:(id)info
 {
-  v11 = a3;
-  v4 = [v11 resultRefinementGroup];
+  infoCopy = info;
+  resultRefinementGroup = [infoCopy resultRefinementGroup];
 
-  if (v4)
+  if (resultRefinementGroup)
   {
-    v5 = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
+    refinementsSelectionSequenceNumber = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
 
-    if (!v5)
+    if (!refinementsSelectionSequenceNumber)
     {
       [(ResultsViewController *)self setRefinementsSelectionSequenceNumber:&off_1016E9D70];
     }
@@ -738,8 +738,8 @@ LABEL_9:
       [(RefinementsBarUIView *)self->_refinementsBar setDelegate:self->_refinementsController];
     }
 
-    v8 = [v11 resultRefinementGroup];
-    v9 = [_TtC4Maps27RefinementsViewModelFactory barViewModelWith:v8];
+    resultRefinementGroup2 = [infoCopy resultRefinementGroup];
+    v9 = [_TtC4Maps27RefinementsViewModelFactory barViewModelWith:resultRefinementGroup2];
 
     [(RefinementsBarUIView *)self->_refinementsBar setViewModel:v9];
     if (sub_10000FA08(self) == 5)
@@ -768,35 +768,35 @@ LABEL_9:
 
 - (void)didCachePlaceSummaryTemplates
 {
-  v3 = [(ResultsViewController *)self originalSearchInfo];
-  if (v3)
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
+  if (originalSearchInfo)
   {
-    v11 = v3;
-    v4 = [v3 searchText];
-    v5 = v4;
-    if (v4)
+    v11 = originalSearchInfo;
+    searchText = [originalSearchInfo searchText];
+    v5 = searchText;
+    if (searchText)
     {
-      v6 = v4;
+      title = searchText;
     }
 
     else
     {
-      v7 = [v11 searchFieldItem];
-      v6 = [v7 title];
+      searchFieldItem = [v11 searchFieldItem];
+      title = [searchFieldItem title];
     }
 
     searchResultsDataSource = self->_searchResultsDataSource;
-    v9 = [(ResultsViewController *)self currentUITargetForAnalytics];
-    v10 = [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator sessionIdentifier];
-    [SearchResultsAnalyticsManager didShowSearchResultsWithDataSource:searchResultsDataSource target:v9 query:v6 impressionsSessionIdentifier:v10];
+    currentUITargetForAnalytics = [(ResultsViewController *)self currentUITargetForAnalytics];
+    sessionIdentifier = [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator sessionIdentifier];
+    [SearchResultsAnalyticsManager didShowSearchResultsWithDataSource:searchResultsDataSource target:currentUITargetForAnalytics query:title impressionsSessionIdentifier:sessionIdentifier];
 
-    v3 = v11;
+    originalSearchInfo = v11;
   }
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(SearchSession *)self->_searchSession searchFieldItem];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
   if ([(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor])
   {
     v4 = 58;
@@ -804,9 +804,9 @@ LABEL_9:
 
   else
   {
-    v5 = [v3 searchCategory];
+    searchCategory = [searchFieldItem searchCategory];
 
-    if (v5)
+    if (searchCategory)
     {
       v4 = 102;
     }
@@ -820,35 +820,35 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place
 {
-  v5 = a4;
-  v6 = [(ResultsViewController *)self resultsDelegate];
-  v7 = [v6 venuesManagerForSearchResults];
-  v8 = [v5 mapItem];
+  placeCopy = place;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+  mapItem = [placeCopy mapItem];
 
-  LOBYTE(v5) = [v7 isUserAtSameVenueAsMapItem:v8];
-  return v5 ^ 1;
+  LOBYTE(placeCopy) = [venuesManagerForSearchResults isUserAtSameVenueAsMapItem:mapItem];
+  return placeCopy ^ 1;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of
 {
-  v5 = a4;
-  v6 = [(ResultsViewController *)self resultsDelegate];
-  [v6 removeDroppedPin:v5];
+  ofCopy = of;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate removeDroppedPin:ofCopy];
 }
 
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter
 {
-  v3 = [(ResultsViewController *)self resultsDelegate];
-  v4 = [v3 traitsForQuickActionPresenter];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  traitsForQuickActionPresenter = [resultsDelegate traitsForQuickActionPresenter];
 
-  return v4;
+  return traitsForQuickActionPresenter;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card
 {
-  v5 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath:a3];
+  v5 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath:presenter];
   if (v5)
   {
     v7 = v5;
@@ -859,56 +859,56 @@ LABEL_9:
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [of searchResult];
+  if (searchResult)
   {
-    v9 = v5;
-    v6 = [v5 contactForSharingToMessages];
-    v7 = [ShareItem shareItemWithSearchResult:v9 contact:v6 includePrintActivity:0];
+    v9 = searchResult;
+    contactForSharingToMessages = [searchResult contactForSharingToMessages];
+    v7 = [ShareItem shareItemWithSearchResult:v9 contact:contactForSharingToMessages includePrintActivity:0];
 
-    v8 = [(ResultsViewController *)self resultsDelegate];
-    [v8 doShareSheetForShareItem:v7];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate doShareSheetForShareItem:v7];
 
-    v5 = v9;
+    searchResult = v9;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [for searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(ResultsViewController *)self resultsDelegate];
-    [v6 openWebsiteForSearchResult:v7];
+    v7 = searchResult;
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate openWebsiteForSearchResult:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [call searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(ResultsViewController *)self resultsDelegate];
-    [v6 doAudioCallToSearchResult:v7];
+    v7 = searchResult;
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate doAudioCallToSearchResult:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [to searchResult];
+  if (searchResult)
   {
     if ([(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor])
     {
-      [(ResultsViewController *)self didTapOnAddStopWithSearchResult:v5 atIndexPath:0];
+      [(ResultsViewController *)self didTapOnAddStopWithSearchResult:searchResult atIndexPath:0];
     }
 
     else
@@ -918,7 +918,7 @@ LABEL_9:
       [(SearchFieldItem *)v6 setSearchResult:v7];
 
       v8 = objc_alloc_init(SearchFieldItem);
-      [(SearchFieldItem *)v8 setSearchResult:v5];
+      [(SearchFieldItem *)v8 setSearchResult:searchResult];
       v9 = [DirectionItem alloc];
       v16[0] = v6;
       v16[1] = v8;
@@ -928,15 +928,15 @@ LABEL_9:
       v14 = @"DirectionsSessionInitiatorKey";
       v15 = &off_1016E9D58;
       v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      v13 = [(ResultsViewController *)self resultsDelegate];
-      [v13 doDirectionItem:v11 withUserInfo:v12 viewController:0];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      [resultsDelegate doDirectionItem:v11 withUserInfo:v12 viewController:0];
     }
   }
 }
 
-- (void)didTapOnUserLibraryMapItem:(id)a3
+- (void)didTapOnUserLibraryMapItem:(id)item
 {
-  if ([a3 _hasHikeInfo])
+  if ([item _hasHikeInfo])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -948,122 +948,122 @@ LABEL_9:
 
   else
   {
-    v4 = [(ResultsViewController *)self resultsDelegate];
-    [v4 showLibraryPlacesViewFromViewController:self];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate showLibraryPlacesViewFromViewController:self];
   }
 }
 
-- (void)didTapOnAddStopWithSearchResult:(id)a3 atIndexPath:(id)a4
+- (void)didTapOnAddStopWithSearchResult:(id)result atIndexPath:(id)path
 {
   v11 = @"DirectionsSessionInitiatorKey";
   v12 = &off_1016E9D58;
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  resultCopy = result;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  v9 = [(ResultsViewController *)self resultsDelegate];
-  [v9 addStopForSearchResult:v7 withUserInfo:v8 viewController:self];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate addStopForSearchResult:resultCopy withUserInfo:v8 viewController:self];
 
-  v10 = [v7 mapItem];
+  mapItem = [resultCopy mapItem];
 
-  [SearchResultsAnalyticsManager didTapOnAddStopForSearchResultWithMapItem:v10 indexPath:v6];
+  [SearchResultsAnalyticsManager didTapOnAddStopForSearchResultWithMapItem:mapItem indexPath:pathCopy];
 }
 
-- (void)didTapOnTappableEntry:(id)a3
+- (void)didTapOnTappableEntry:(id)entry
 {
-  v4 = a3;
-  v9 = [[SearchResult alloc] initWithMapItem:v4];
+  entryCopy = entry;
+  v9 = [[SearchResult alloc] initWithMapItem:entryCopy];
 
-  v5 = [(ResultsViewController *)self resultsList];
-  v6 = [v5 arrayByAddingObject:v9];
+  resultsList = [(ResultsViewController *)self resultsList];
+  v6 = [resultsList arrayByAddingObject:v9];
 
-  v7 = [(ResultsViewController *)self resultsDelegate];
-  [v7 setSearchPins:v6 selectedPin:v9 animated:1];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate setSearchPins:v6 selectedPin:v9 animated:1];
 
-  v8 = [(SearchResult *)v9 mapItem];
-  +[SearchResultsAnalyticsManager tappableEntryUnitTappedWithMuid:](SearchResultsAnalyticsManager, "tappableEntryUnitTappedWithMuid:", [v8 _muid]);
+  mapItem = [(SearchResult *)v9 mapItem];
+  +[SearchResultsAnalyticsManager tappableEntryUnitTappedWithMuid:](SearchResultsAnalyticsManager, "tappableEntryUnitTappedWithMuid:", [mapItem _muid]);
 }
 
-- (void)didTapOnContainmentParentMapItem:(id)a3
+- (void)didTapOnContainmentParentMapItem:(id)item
 {
-  v4 = a3;
-  v9 = [[SearchResult alloc] initWithMapItem:v4];
+  itemCopy = item;
+  v9 = [[SearchResult alloc] initWithMapItem:itemCopy];
 
-  v5 = [(ResultsViewController *)self resultsList];
-  v6 = [v5 arrayByAddingObject:v9];
+  resultsList = [(ResultsViewController *)self resultsList];
+  v6 = [resultsList arrayByAddingObject:v9];
 
-  v7 = [(ResultsViewController *)self resultsDelegate];
-  [v7 setSearchPins:v6 selectedPin:v9 animated:1];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate setSearchPins:v6 selectedPin:v9 animated:1];
 
-  v8 = [(SearchResult *)v9 mapItem];
-  +[SearchResultsAnalyticsManager containmentParentUnitTappedWithMuid:](SearchResultsAnalyticsManager, "containmentParentUnitTappedWithMuid:", [v8 _muid]);
+  mapItem = [(SearchResult *)v9 mapItem];
+  +[SearchResultsAnalyticsManager containmentParentUnitTappedWithMuid:](SearchResultsAnalyticsManager, "containmentParentUnitTappedWithMuid:", [mapItem _muid]);
 }
 
-- (void)didTapOnFlyoverWithSearchResult:(id)a3
+- (void)didTapOnFlyoverWithSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  v6 = [v4 mapItem];
-  [v5 enterFlyoverForMapItem:v6 viewController:self];
+  resultCopy = result;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  mapItem = [resultCopy mapItem];
+  [resultsDelegate enterFlyoverForMapItem:mapItem viewController:self];
 
-  v7 = [v4 mapItem];
+  mapItem2 = [resultCopy mapItem];
 
-  +[SearchResultsAnalyticsManager flyoverButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "flyoverButtonTappedOnSearchResultWithMuid:", [v7 _muid]);
+  +[SearchResultsAnalyticsManager flyoverButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "flyoverButtonTappedOnSearchResultWithMuid:", [mapItem2 _muid]);
 }
 
-- (void)didTapOnWebsiteWithSearchResult:(id)a3
+- (void)didTapOnWebsiteWithSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  v6 = [v4 mapItem];
-  v7 = [v6 url];
-  [v5 openSearchResultURL:v7 viewController:self];
+  resultCopy = result;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  mapItem = [resultCopy mapItem];
+  v7 = [mapItem url];
+  [resultsDelegate openSearchResultURL:v7 viewController:self];
 
-  v8 = [v4 mapItem];
+  mapItem2 = [resultCopy mapItem];
 
-  +[SearchResultsAnalyticsManager websiteButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "websiteButtonTappedOnSearchResultWithMuid:", [v8 _muid]);
+  +[SearchResultsAnalyticsManager websiteButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "websiteButtonTappedOnSearchResultWithMuid:", [mapItem2 _muid]);
 }
 
-- (void)didTapOnCallWithSearchResult:(id)a3
+- (void)didTapOnCallWithSearchResult:(id)result
 {
-  v9 = a3;
-  v3 = [v9 mapItem];
-  v4 = [v3 phoneNumber];
-  v5 = [v4 length];
+  resultCopy = result;
+  mapItem = [resultCopy mapItem];
+  phoneNumber = [mapItem phoneNumber];
+  v5 = [phoneNumber length];
 
   if (v5)
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v3 phoneNumber];
-    [v6 callPhoneNumber:v7 completion:0];
+    phoneNumber2 = [mapItem phoneNumber];
+    [v6 callPhoneNumber:phoneNumber2 completion:0];
   }
 
-  v8 = [v9 mapItem];
-  +[SearchResultsAnalyticsManager callButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "callButtonTappedOnSearchResultWithMuid:", [v8 _muid]);
+  mapItem2 = [resultCopy mapItem];
+  +[SearchResultsAnalyticsManager callButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "callButtonTappedOnSearchResultWithMuid:", [mapItem2 _muid]);
 }
 
-- (void)didTapOnLookAroundWithSearchResult:(id)a3
+- (void)didTapOnLookAroundWithSearchResult:(id)result
 {
-  v8 = a3;
-  v4 = [v8 mapItem];
-  if ([v4 _hasLookAroundStorefront])
+  resultCopy = result;
+  mapItem = [resultCopy mapItem];
+  if ([mapItem _hasLookAroundStorefront])
   {
-    v5 = [(ResultsViewController *)self resultsDelegate];
-    v6 = [MKLookAroundEntryPoint entryPointWithMapItem:v4 wantsCloseUpView:1];
-    [v5 searchResultEnterLookAroundWithEntryPoint:v6 lookAroundView:0 showsFullScreen:1 originFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    v6 = [MKLookAroundEntryPoint entryPointWithMapItem:mapItem wantsCloseUpView:1];
+    [resultsDelegate searchResultEnterLookAroundWithEntryPoint:v6 lookAroundView:0 showsFullScreen:1 originFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   }
 
-  v7 = [v8 mapItem];
-  +[SearchResultsAnalyticsManager lookAroundButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "lookAroundButtonTappedOnSearchResultWithMuid:", [v7 _muid]);
+  mapItem2 = [resultCopy mapItem];
+  +[SearchResultsAnalyticsManager lookAroundButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "lookAroundButtonTappedOnSearchResultWithMuid:", [mapItem2 _muid]);
 }
 
-- (void)didTapOnDirectionsWithSearchResult:(id)a3
+- (void)didTapOnDirectionsWithSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(SearchFieldItem);
   v6 = +[SearchResult currentLocationSearchResult];
   [(SearchFieldItem *)v5 setSearchResult:v6];
 
-  v7 = [SearchFieldItem searchFieldItemWithObject:v4];
+  v7 = [SearchFieldItem searchFieldItemWithObject:resultCopy];
   v8 = [DirectionItem alloc];
   v16[0] = v5;
   v16[1] = v7;
@@ -1073,47 +1073,47 @@ LABEL_9:
   v14 = @"DirectionsSessionInitiatorKey";
   v15 = &off_1016E9D58;
   v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  v12 = [(ResultsViewController *)self resultsDelegate];
-  [v12 doDirectionItem:v10 withUserInfo:v11 viewController:0];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate doDirectionItem:v10 withUserInfo:v11 viewController:0];
 
-  v13 = [v4 mapItem];
+  mapItem = [resultCopy mapItem];
 
-  +[SearchResultsAnalyticsManager directionsButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "directionsButtonTappedOnSearchResultWithMuid:", [v13 _muid]);
+  +[SearchResultsAnalyticsManager directionsButtonTappedOnSearchResultWithMuid:](SearchResultsAnalyticsManager, "directionsButtonTappedOnSearchResultWithMuid:", [mapItem _muid]);
 }
 
-- (void)didTapOnCuratedGuides:(id)a3
+- (void)didTapOnCuratedGuides:(id)guides
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  [v5 showCuratedCollectionsList:v4 usingTitle:0 usingCollectionIds:0 completion:0 viewController:self];
+  guidesCopy = guides;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate showCuratedCollectionsList:guidesCopy usingTitle:0 usingCollectionIds:0 completion:0 viewController:self];
 
   +[SearchResultsAnalyticsManager curatedGuidesUnitTapped];
 }
 
-- (void)didTapOnCuratedGuide:(id)a3
+- (void)didTapOnCuratedGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  [v5 showCuratedCollection:v4 viewController:self];
+  guideCopy = guide;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate showCuratedCollection:guideCopy viewController:self];
 
   +[SearchResultsAnalyticsManager curatedGuidesUnitTapped];
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3
+- (void)didTapOnUserGeneratedGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(ResultsViewController *)self resultsDelegate];
-  [v5 showCollection:v4 viewController:self];
+  guideCopy = guide;
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate showCollection:guideCopy viewController:self];
 
   +[SearchResultsAnalyticsManager userGeneratedGuideUnitTapped];
 }
 
-- (int)listForDataSource:(id)a3
+- (int)listForDataSource:(id)source
 {
-  v3 = [(SearchSession *)self->_searchSession searchFieldItem];
-  v4 = [v3 searchCategory];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
+  searchCategory = [searchFieldItem searchCategory];
 
-  if (v4)
+  if (searchCategory)
   {
     return 3;
   }
@@ -1126,18 +1126,18 @@ LABEL_9:
 
 - (id)refineSearchText
 {
-  v2 = [(ResultsViewController *)self originalSearchInfo];
-  v3 = [v2 searchText];
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
+  searchText = [originalSearchInfo searchText];
 
-  return v3;
+  return searchText;
 }
 
 - (int)refineSearchSessionType
 {
-  v2 = [(SearchSession *)self->_searchSession searchFieldItem];
-  v3 = [v2 searchCategory];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
+  searchCategory = [searchFieldItem searchCategory];
 
-  if (v3)
+  if (searchCategory)
   {
     return 1;
   }
@@ -1150,82 +1150,82 @@ LABEL_9:
 
 - (void)didTapOnAddAPlace
 {
-  v3 = [(SearchSession *)self->_searchSession searchInfo];
-  v4 = [v3 searchFieldItem];
-  v5 = [v4 title];
-  v6 = v5;
-  if (v5)
+  searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+  searchFieldItem = [searchInfo searchFieldItem];
+  title = [searchFieldItem title];
+  v6 = title;
+  if (title)
   {
-    v7 = v5;
+    title2 = title;
   }
 
   else
   {
-    v7 = [(ResultsTitleView *)self->_resultsTitleView title];
+    title2 = [(ResultsTitleView *)self->_resultsTitleView title];
   }
 
-  v12 = v7;
+  v12 = title2;
 
   v8 = [[ReportASearchAutocompleteResult alloc] initWithTitle:v12];
-  v9 = [(ResultsViewController *)self _maps_mapsSceneDelegate];
-  v10 = [v9 rapPresenter];
-  [v10 presentAddToMapsFromSearchEntryPoint:-[ResultsViewController currentUITargetForAnalytics](self result:"currentUITargetForAnalytics") completion:{v8, 0}];
+  _maps_mapsSceneDelegate = [(ResultsViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  [rapPresenter presentAddToMapsFromSearchEntryPoint:-[ResultsViewController currentUITargetForAnalytics](self result:"currentUITargetForAnalytics") completion:{v8, 0}];
 
-  v11 = [(SearchSession *)self->_searchSession currentResults];
-  +[SearchResultsAnalyticsManager addAPlaceTappedWithNumberOfResults:target:](SearchResultsAnalyticsManager, "addAPlaceTappedWithNumberOfResults:target:", [v11 count], -[ResultsViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics"));
+  currentResults = [(SearchSession *)self->_searchSession currentResults];
+  +[SearchResultsAnalyticsManager addAPlaceTappedWithNumberOfResults:target:](SearchResultsAnalyticsManager, "addAPlaceTappedWithNumberOfResults:target:", [currentResults count], -[ResultsViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics"));
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v15 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v15;
+  v6 = tappedCopy;
   if (isKindOfClass)
   {
-    v7 = v15;
-    v8 = [v7 mapItem];
-    v9 = [v8 _hasHikeInfo];
+    v7 = tappedCopy;
+    mapItem = [v7 mapItem];
+    _hasHikeInfo = [mapItem _hasHikeInfo];
 
-    if (v9)
+    if (_hasHikeInfo)
     {
-      v10 = [(ResultsViewController *)self resultsDelegate];
-      v11 = [v7 mapItem];
-      [v10 enterRouteCreationWithMapItem:v11 completion:0];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      mapItem2 = [v7 mapItem];
+      [resultsDelegate enterRouteCreationWithMapItem:mapItem2 completion:0];
     }
 
     else
     {
-      v12 = [v7 placeCollection];
+      placeCollection = [v7 placeCollection];
 
-      v13 = [(ResultsViewController *)self resultsDelegate];
-      v10 = v13;
-      if (!v12)
+      resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+      resultsDelegate = resultsDelegate2;
+      if (!placeCollection)
       {
-        [v13 selectSearchResult:v7 animated:1];
+        [resultsDelegate2 selectSearchResult:v7 animated:1];
         goto LABEL_7;
       }
 
-      v11 = [v7 placeCollection];
-      [v10 showCuratedCollection:v11 viewController:self];
+      mapItem2 = [v7 placeCollection];
+      [resultsDelegate showCuratedCollection:mapItem2 viewController:self];
     }
 
 LABEL_7:
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = v7;
 
-    v6 = v15;
+    v6 = tappedCopy;
   }
 }
 
-- (void)dataSource:(id)a3 itemFocused:(id)a4
+- (void)dataSource:(id)source itemFocused:(id)focused
 {
-  v7 = a4;
+  focusedCopy = focused;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ResultsViewController *)self resultsDelegate];
-    [v5 focusSearchResult:v7 viewController:self];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate focusSearchResult:focusedCopy viewController:self];
 
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = 0;
@@ -1245,43 +1245,43 @@ LABEL_7:
 LABEL_6:
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  if (self->_currentDataSource == a3)
+  if (self->_currentDataSource == updated)
   {
     [(LoadingModeView *)self->_loadingModeView setHidden:1];
     [(UITableView *)self->_contentTableView setHidden:0];
     [(UITableView *)self->_contentTableView reloadData];
-    v5 = [(ResultsViewController *)self resultsDelegate];
-    v6 = [v5 venuesManagerForSearchResults];
-    [v6 venuesControlCoordinatingDidChangeSearchResultCount:self];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+    [venuesManagerForSearchResults venuesControlCoordinatingDidChangeSearchResultCount:self];
 
-    v8 = [(ResultsViewController *)self resultsDelegate];
-    v7 = [v8 venuesManagerForSearchResults];
-    [v7 updateFocusedVenueFloor];
+    resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+    venuesManagerForSearchResults2 = [resultsDelegate2 venuesManagerForSearchResults];
+    [venuesManagerForSearchResults2 updateFocusedVenueFloor];
   }
 }
 
-- (void)setHeaderContentWithSearchSession:(id)a3
+- (void)setHeaderContentWithSearchSession:(id)session
 {
-  v58 = a3;
-  v4 = [objc_opt_class() isReloadingRefinementsWithSearchSession:v58];
-  v5 = v58;
+  sessionCopy = session;
+  v4 = [objc_opt_class() isReloadingRefinementsWithSearchSession:sessionCopy];
+  v5 = sessionCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v58 searchFieldItem];
-    v7 = [v58 searchInfo];
-    v8 = [v6 originalSearchString];
-    v57 = v7;
-    if (!v8)
+    searchFieldItem = [sessionCopy searchFieldItem];
+    searchInfo = [sessionCopy searchInfo];
+    originalSearchString = [searchFieldItem originalSearchString];
+    v57 = searchInfo;
+    if (!originalSearchString)
     {
-      v9 = [v6 historyItem];
+      historyItem = [searchFieldItem historyItem];
       v10 = &OBJC_PROTOCOL___MSPHistoryEntrySearch;
       objc_opt_class();
-      v8 = v9;
+      originalSearchString = historyItem;
       if (objc_opt_isKindOfClass())
       {
-        v11 = v8;
+        v11 = originalSearchString;
       }
 
       else
@@ -1293,7 +1293,7 @@ LABEL_6:
 
       if (v12 && ([v12 historyEntry], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "conformsToProtocol:", v10), v13, v14))
       {
-        v15 = v8;
+        v15 = originalSearchString;
       }
 
       else
@@ -1303,82 +1303,82 @@ LABEL_6:
 
       if (!v15)
       {
-        v51 = [v6 completion];
-        v52 = [v51 _type];
+        completion = [searchFieldItem completion];
+        _type = [completion _type];
 
-        if (v52)
+        if (_type)
         {
           v17 = 1;
           goto LABEL_21;
         }
 
 LABEL_13:
-        v16 = [v6 searchCategory];
-        if (v16)
+        searchCategory = [searchFieldItem searchCategory];
+        if (searchCategory)
         {
           v17 = 1;
         }
 
         else
         {
-          v18 = [v6 placeCategoryItem];
-          v17 = v18 || [(ResultsViewController *)self isWaitingForResults]|| [(ResultsViewController *)self isShowingOmnipresentSearchBar]|| sub_10000FA08(self) == 5;
+          placeCategoryItem = [searchFieldItem placeCategoryItem];
+          v17 = placeCategoryItem || [(ResultsViewController *)self isWaitingForResults]|| [(ResultsViewController *)self isShowingOmnipresentSearchBar]|| sub_10000FA08(self) == 5;
         }
 
 LABEL_21:
         [(ResultsTitleView *)self->_resultsTitleView setEditButtonHidden:v17];
-        v19 = [(ResultsViewController *)self isWaitingForResults];
+        isWaitingForResults = [(ResultsViewController *)self isWaitingForResults];
         v20 = 0.0;
-        if ((v19 & 1) == 0)
+        if ((isWaitingForResults & 1) == 0)
         {
-          v21 = [(ResultsViewController *)self isShowingOmnipresentSearchBar];
+          isShowingOmnipresentSearchBar = [(ResultsViewController *)self isShowingOmnipresentSearchBar];
           v20 = 1.0;
-          if (v21)
+          if (isShowingOmnipresentSearchBar)
           {
             v20 = 0.0;
           }
         }
 
         [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:v20];
-        v22 = [v7 headerDisplayName];
-        v23 = v22;
-        if (v22)
+        headerDisplayName = [searchInfo headerDisplayName];
+        v23 = headerDisplayName;
+        if (headerDisplayName)
         {
-          v24 = v22;
+          title = headerDisplayName;
         }
 
         else
         {
-          v24 = [v6 title];
+          title = [searchFieldItem title];
         }
 
-        v25 = v24;
+        v25 = title;
 
-        v26 = [v7 subHeaderDisplayName];
-        if (v26 && (v27 = v26, v28 = [v58 isRedoOrAutoRedoSearchType], v27, (v28 & 1) == 0))
+        subHeaderDisplayName = [searchInfo subHeaderDisplayName];
+        if (subHeaderDisplayName && (v27 = subHeaderDisplayName, v28 = [sessionCopy isRedoOrAutoRedoSearchType], v27, (v28 & 1) == 0))
         {
-          v33 = [v7 subHeaderDisplayName];
+          subHeaderDisplayName2 = [searchInfo subHeaderDisplayName];
         }
 
         else
         {
-          v29 = [v58 currentResults];
+          currentResults = [sessionCopy currentResults];
 
-          if (v29)
+          if (currentResults)
           {
             v30 = +[NSBundle mainBundle];
             v31 = [v30 localizedStringForKey:@"[Results] subtitle" value:@"localized string not found" table:0];
-            v32 = [v58 currentResults];
-            v33 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v31, [v32 count]);
+            currentResults2 = [sessionCopy currentResults];
+            subHeaderDisplayName2 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v31, [currentResults2 count]);
           }
 
           else
           {
-            v33 = &stru_1016631F0;
+            subHeaderDisplayName2 = &stru_1016631F0;
           }
         }
 
-        if ([(__CFString *)v33 length])
+        if ([(__CFString *)subHeaderDisplayName2 length])
         {
           v34 = v17;
         }
@@ -1393,31 +1393,31 @@ LABEL_21:
           v35 = +[NSBundle mainBundle];
           v36 = [v35 localizedStringForKey:@" · [List view details separator]" value:@"localized string not found" table:0];
 
-          v37 = [(__CFString *)v33 stringByAppendingString:v36];
+          v37 = [(__CFString *)subHeaderDisplayName2 stringByAppendingString:v36];
 
-          v33 = v37;
+          subHeaderDisplayName2 = v37;
         }
 
         [(ResultsTitleView *)self->_resultsTitleView setTitle:v25];
-        [(ResultsTitleView *)self->_resultsTitleView setSubtitle:v33];
-        v38 = [v6 searchCategory];
-        v39 = [v38 styleAttributes];
-        if (v39)
+        [(ResultsTitleView *)self->_resultsTitleView setSubtitle:subHeaderDisplayName2];
+        searchCategory2 = [searchFieldItem searchCategory];
+        styleAttributes = [searchCategory2 styleAttributes];
+        if (styleAttributes)
         {
-          v40 = v39;
+          styleAttributes2 = styleAttributes;
         }
 
         else
         {
-          v41 = [v6 placeCategoryItem];
-          v42 = [v41 searchCategory];
-          v40 = [v42 styleAttributes];
+          placeCategoryItem2 = [searchFieldItem placeCategoryItem];
+          searchCategory3 = [placeCategoryItem2 searchCategory];
+          styleAttributes2 = [searchCategory3 styleAttributes];
 
-          if (!v40)
+          if (!styleAttributes2)
           {
-            v53 = [v7 styleAttributes];
+            styleAttributes3 = [searchInfo styleAttributes];
 
-            if (!v53)
+            if (!styleAttributes3)
             {
               v44 = 0;
               v50 = 0;
@@ -1425,8 +1425,8 @@ LABEL_21:
             }
 
             v54 = [GEOFeatureStyleAttributes alloc];
-            v55 = [v7 styleAttributes];
-            v43 = [v54 initWithGEOStyleAttributes:v55];
+            styleAttributes4 = [searchInfo styleAttributes];
+            v43 = [v54 initWithGEOStyleAttributes:styleAttributes4];
 
             v44 = 0;
             v50 = 0;
@@ -1439,8 +1439,8 @@ LABEL_42:
             v45 = +[UIScreen mainScreen];
             [v45 nativeScale];
             v47 = v46;
-            v48 = [(ResultsViewController *)self traitCollection];
-            LOBYTE(v56) = [v48 userInterfaceStyle] == 2;
+            traitCollection = [(ResultsViewController *)self traitCollection];
+            LOBYTE(v56) = [traitCollection userInterfaceStyle] == 2;
             v49 = [MKIconManager imageForStyle:v43 size:4 forScale:1 format:0 transparent:0 transitMode:0 isCarplay:v47 nightMode:v56];
 
             v50 = v43;
@@ -1449,7 +1449,7 @@ LABEL_42:
 LABEL_44:
               [(ResultsTitleView *)self->_resultsTitleView setHeaderImage:v49];
 
-              v5 = v58;
+              v5 = sessionCopy;
               goto LABEL_45;
             }
 
@@ -1460,7 +1460,7 @@ LABEL_43:
           }
         }
 
-        v43 = v40;
+        v43 = styleAttributes2;
         v44 = v43;
         goto LABEL_42;
       }
@@ -1472,45 +1472,45 @@ LABEL_43:
 LABEL_45:
 }
 
-- (void)resultRefinementsBarApplyOpenOptionViewModel:(id)a3 atIndex:(id)a4
+- (void)resultRefinementsBarApplyOpenOptionViewModel:(id)model atIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  indexCopy = index;
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v8 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-    [v8 resetRedoSearchController];
+    refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController resetRedoSearchController];
 
     self->_lastRefinementOriginType = 1;
-    v9 = [(ResultsViewController *)self originalSearchInfo];
+    originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
     v10 = objc_alloc_init(GEOPDResultRefinementQuery);
     [v10 setResultRefinementOriginType:self->_lastRefinementOriginType];
-    v11 = [v9 resultRefinementGroup];
-    v12 = [v11 refinementSessionState];
-    [v10 setRefinementSessionState:v12];
+    resultRefinementGroup = [originalSearchInfo resultRefinementGroup];
+    refinementSessionState = [resultRefinementGroup refinementSessionState];
+    [v10 setRefinementSessionState:refinementSessionState];
 
-    v13 = [v9 resultRefinementGroup];
-    v14 = [v13 resultRefinementBar];
-    v15 = [v14 resultRefinements];
+    resultRefinementGroup2 = [originalSearchInfo resultRefinementGroup];
+    resultRefinementBar = [resultRefinementGroup2 resultRefinementBar];
+    resultRefinements = [resultRefinementBar resultRefinements];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100D997F0;
     v33[3] = &unk_101653DD8;
-    v34 = v7;
-    v35 = v6;
+    v34 = indexCopy;
+    v35 = modelCopy;
     v16 = v10;
     v36 = v16;
-    [v15 enumerateObjectsUsingBlock:v33];
+    [resultRefinements enumerateObjectsUsingBlock:v33];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [v9 resultRefinementGroup];
-    v18 = [v17 resultRefinementView];
-    v19 = [v18 sections];
+    resultRefinementGroup3 = [originalSearchInfo resultRefinementGroup];
+    resultRefinementView = [resultRefinementGroup3 resultRefinementView];
+    sections = [resultRefinementView sections];
 
-    v20 = [v19 countByEnumeratingWithState:&v29 objects:v39 count:16];
+    v20 = [sections countByEnumeratingWithState:&v29 objects:v39 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1522,71 +1522,71 @@ LABEL_45:
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(sections);
           }
 
-          v24 = [*(*(&v29 + 1) + 8 * v23) convertToGEOPDResultRefinementSection];
-          [v16 addRefinementSection:v24];
+          convertToGEOPDResultRefinementSection = [*(*(&v29 + 1) + 8 * v23) convertToGEOPDResultRefinementSection];
+          [v16 addRefinementSection:convertToGEOPDResultRefinementSection];
 
           v23 = v23 + 1;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        v21 = [sections countByEnumeratingWithState:&v29 objects:v39 count:16];
       }
 
       while (v21);
     }
 
-    v25 = [(ResultsViewController *)self resultsDelegate];
-    v26 = [(SearchSession *)self->_searchSession searchFieldItem];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
     v37 = @"SearchSessionAddStopFromWaypointEditor";
     v27 = [NSNumber numberWithBool:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
     v38 = v27;
     v28 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    [v25 doSearchItem:v26 withUserInfo:v28 refinementsQuery:v16 viewController:self];
+    [resultsDelegate doSearchItem:searchFieldItem withUserInfo:v28 refinementsQuery:v16 viewController:self];
   }
 }
 
-- (void)resultRefinementsBarApplyMultiSelectViewModel:(id)a3 atIndex:(id)a4
+- (void)resultRefinementsBarApplyMultiSelectViewModel:(id)model atIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-  [v8 resetRedoSearchController];
+  modelCopy = model;
+  indexCopy = index;
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController resetRedoSearchController];
 
   self->_lastRefinementOriginType = 1;
-  v9 = [(ResultsViewController *)self originalSearchInfo];
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
   v10 = objc_alloc_init(GEOPDResultRefinementQuery);
   [v10 setResultRefinementOriginType:self->_lastRefinementOriginType];
-  v11 = [v9 resultRefinementGroup];
-  v12 = [v11 refinementSessionState];
-  [v10 setRefinementSessionState:v12];
+  resultRefinementGroup = [originalSearchInfo resultRefinementGroup];
+  refinementSessionState = [resultRefinementGroup refinementSessionState];
+  [v10 setRefinementSessionState:refinementSessionState];
 
-  v13 = [v9 resultRefinementGroup];
-  v14 = [v13 resultRefinementBar];
-  v15 = [v14 resultRefinements];
+  resultRefinementGroup2 = [originalSearchInfo resultRefinementGroup];
+  resultRefinementBar = [resultRefinementGroup2 resultRefinementBar];
+  resultRefinements = [resultRefinementBar resultRefinements];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_100D99C08;
   v35[3] = &unk_101653DD8;
-  v16 = v7;
+  v16 = indexCopy;
   v36 = v16;
-  v17 = v6;
+  v17 = modelCopy;
   v37 = v17;
   v18 = v10;
   v38 = v18;
-  [v15 enumerateObjectsUsingBlock:v35];
+  [resultRefinements enumerateObjectsUsingBlock:v35];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = [v9 resultRefinementGroup];
-  v20 = [v19 resultRefinementView];
-  v21 = [v20 sections];
+  resultRefinementGroup3 = [originalSearchInfo resultRefinementGroup];
+  resultRefinementView = [resultRefinementGroup3 resultRefinementView];
+  sections = [resultRefinementView sections];
 
-  v22 = [v21 countByEnumeratingWithState:&v31 objects:v41 count:16];
+  v22 = [sections countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1598,61 +1598,61 @@ LABEL_45:
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(sections);
         }
 
-        v26 = [*(*(&v31 + 1) + 8 * v25) convertToGEOPDResultRefinementSection];
-        [v18 addRefinementSection:v26];
+        convertToGEOPDResultRefinementSection = [*(*(&v31 + 1) + 8 * v25) convertToGEOPDResultRefinementSection];
+        [v18 addRefinementSection:convertToGEOPDResultRefinementSection];
 
         v25 = v25 + 1;
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v31 objects:v41 count:16];
+      v23 = [sections countByEnumeratingWithState:&v31 objects:v41 count:16];
     }
 
     while (v23);
   }
 
-  v27 = [(ResultsViewController *)self resultsDelegate];
-  v28 = [(SearchSession *)self->_searchSession searchFieldItem];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
   v39 = @"SearchSessionAddStopFromWaypointEditor";
   v29 = [NSNumber numberWithBool:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
   v40 = v29;
   v30 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-  [v27 doSearchItem:v28 withUserInfo:v30 refinementsQuery:v18 viewController:self];
+  [resultsDelegate doSearchItem:searchFieldItem withUserInfo:v30 refinementsQuery:v18 viewController:self];
 }
 
-- (void)allRefinementsApplyViewModel:(id)a3 selectionSequenceNumber:(id)a4
+- (void)allRefinementsApplyViewModel:(id)model selectionSequenceNumber:(id)number
 {
-  v6 = a3;
-  [(ResultsViewController *)self setRefinementsSelectionSequenceNumber:a4];
-  v7 = [v6 tappedBarButtonIndex];
+  modelCopy = model;
+  [(ResultsViewController *)self setRefinementsSelectionSequenceNumber:number];
+  tappedBarButtonIndex = [modelCopy tappedBarButtonIndex];
 
-  if (!v7)
+  if (!tappedBarButtonIndex)
   {
     goto LABEL_9;
   }
 
-  v8 = [v6 sections];
-  v9 = [v8 firstObject];
+  sections = [modelCopy sections];
+  firstObject = [sections firstObject];
 
-  v10 = [v9 type];
-  if (v10)
+  type = [firstObject type];
+  if (type)
   {
-    if (v10 == 2)
+    if (type == 2)
     {
-      v13 = v9;
-      v12 = [v6 tappedBarButtonIndex];
-      [(ResultsViewController *)self resultRefinementsBarApplyOpenOptionViewModel:v13 atIndex:v12];
+      v13 = firstObject;
+      tappedBarButtonIndex2 = [modelCopy tappedBarButtonIndex];
+      [(ResultsViewController *)self resultRefinementsBarApplyOpenOptionViewModel:v13 atIndex:tappedBarButtonIndex2];
       goto LABEL_7;
     }
 
-    if (v10 == 1)
+    if (type == 1)
     {
-      v11 = v9;
-      v12 = [v6 tappedBarButtonIndex];
-      [(ResultsViewController *)self resultRefinementsBarApplyMultiSelectViewModel:v11 atIndex:v12];
+      v11 = firstObject;
+      tappedBarButtonIndex2 = [modelCopy tappedBarButtonIndex];
+      [(ResultsViewController *)self resultRefinementsBarApplyMultiSelectViewModel:v11 atIndex:tappedBarButtonIndex2];
 LABEL_7:
 
 LABEL_24:
@@ -1660,26 +1660,26 @@ LABEL_24:
     }
 
 LABEL_9:
-    v14 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-    [v14 resetRedoSearchController];
+    refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+    [refreshSearchHereBusinessController resetRedoSearchController];
 
     self->_lastRefinementOriginType = 2;
-    v9 = [(ResultsViewController *)self originalSearchInfo];
-    v12 = objc_alloc_init(GEOPDResultRefinementQuery);
-    [v12 setResultRefinementOriginType:self->_lastRefinementOriginType];
-    v15 = [v9 resultRefinementGroup];
-    v16 = [v15 refinementSessionState];
-    [v12 setRefinementSessionState:v16];
+    firstObject = [(ResultsViewController *)self originalSearchInfo];
+    tappedBarButtonIndex2 = objc_alloc_init(GEOPDResultRefinementQuery);
+    [tappedBarButtonIndex2 setResultRefinementOriginType:self->_lastRefinementOriginType];
+    resultRefinementGroup = [firstObject resultRefinementGroup];
+    refinementSessionState = [resultRefinementGroup refinementSessionState];
+    [tappedBarButtonIndex2 setRefinementSessionState:refinementSessionState];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v17 = [v9 resultRefinementGroup];
-    v18 = [v17 resultRefinementBar];
-    v19 = [v18 resultRefinements];
+    resultRefinementGroup2 = [firstObject resultRefinementGroup];
+    resultRefinementBar = [resultRefinementGroup2 resultRefinementBar];
+    resultRefinements = [resultRefinementBar resultRefinements];
 
-    v20 = [v19 countByEnumeratingWithState:&v39 objects:v46 count:16];
+    v20 = [resultRefinements countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1691,23 +1691,23 @@ LABEL_9:
         {
           if (*v40 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(resultRefinements);
           }
 
-          v24 = [*(*(&v39 + 1) + 8 * v23) convertToGEOPDResultRefinement];
-          [v12 addRefinement:v24];
+          convertToGEOPDResultRefinement = [*(*(&v39 + 1) + 8 * v23) convertToGEOPDResultRefinement];
+          [tappedBarButtonIndex2 addRefinement:convertToGEOPDResultRefinement];
 
           v23 = v23 + 1;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v39 objects:v46 count:16];
+        v21 = [resultRefinements countByEnumeratingWithState:&v39 objects:v46 count:16];
       }
 
       while (v21);
     }
 
-    v25 = [_TtC4Maps21GEORefinementsFactory allRefinementsSectionsWith:v6];
+    v25 = [_TtC4Maps21GEORefinementsFactory allRefinementsSectionsWith:modelCopy];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -1727,8 +1727,8 @@ LABEL_9:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v35 + 1) + 8 * v29) convertToGEOPDResultRefinementSection];
-          [v12 addRefinementSection:v30];
+          convertToGEOPDResultRefinementSection = [*(*(&v35 + 1) + 8 * v29) convertToGEOPDResultRefinementSection];
+          [tappedBarButtonIndex2 addRefinementSection:convertToGEOPDResultRefinementSection];
 
           v29 = v29 + 1;
         }
@@ -1740,13 +1740,13 @@ LABEL_9:
       while (v27);
     }
 
-    v31 = [(ResultsViewController *)self resultsDelegate];
-    v32 = [(SearchSession *)self->_searchSession searchFieldItem];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
     v43 = @"SearchSessionAddStopFromWaypointEditor";
     v33 = [NSNumber numberWithBool:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
     v44 = v33;
     v34 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-    [v31 doSearchItem:v32 withUserInfo:v34 refinementsQuery:v12 viewController:self];
+    [resultsDelegate doSearchItem:searchFieldItem withUserInfo:v34 refinementsQuery:tappedBarButtonIndex2 viewController:self];
 
     goto LABEL_24;
   }
@@ -1754,122 +1754,122 @@ LABEL_9:
 LABEL_25:
 }
 
-- (void)resultRefinementsBarDidTapOnOpenOptions:(id)a3 tappedAtIndex:(int64_t)a4
+- (void)resultRefinementsBarDidTapOnOpenOptions:(id)options tappedAtIndex:(int64_t)index
 {
-  v16 = a3;
+  optionsCopy = options;
   IsEnabled_SearchAndDiscovery = MapsFeature_IsEnabled_SearchAndDiscovery();
-  v7 = v16;
+  v7 = optionsCopy;
   if (IsEnabled_SearchAndDiscovery)
   {
-    v8 = [_TtC4Maps27RefinementsViewModelFactory openOptionsRefinementsViewModelWith:v16 tappedAtIndex:a4];
+    v8 = [_TtC4Maps27RefinementsViewModelFactory openOptionsRefinementsViewModelWith:optionsCopy tappedAtIndex:index];
     v9 = [AllRefinementsViewController alloc];
-    v10 = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
-    v11 = [v10 copy];
+    refinementsSelectionSequenceNumber = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
+    v11 = [refinementsSelectionSequenceNumber copy];
     v12 = [(AllRefinementsViewController *)v9 initWithViewModel:v8 selectionSequenceNumber:v11 resultRefinementsAnalyticsDelegate:self->_analyticsManager];
 
-    v13 = [(ContaineeViewController *)self containeeDelegate];
-    [(ContaineeViewController *)v12 setContaineeDelegate:v13];
+    containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+    [(ContaineeViewController *)v12 setContaineeDelegate:containeeDelegate];
 
     [(AllRefinementsViewController *)v12 setAllRefinementsDelegate:self];
     if ([(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]&& GEOConfigGetBOOL())
     {
-      v14 = [(ResultsViewController *)self resultsDelegate];
-      [v14 showFiltersUsingViewController:v12];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      [resultsDelegate showFiltersUsingViewController:v12];
     }
 
     else
     {
-      v14 = [(ResultsViewController *)self resultsDelegate];
-      v15 = [v14 searchResultsContainerViewController];
-      [v15 presentController:v12 animated:1];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      searchResultsContainerViewController = [resultsDelegate searchResultsContainerViewController];
+      [searchResultsContainerViewController presentController:v12 animated:1];
     }
 
     [(ResultRefinementsAnalyticsManager *)self->_analyticsManager logRefinementsEvent:3 fromSource:0];
-    v7 = v16;
+    v7 = optionsCopy;
   }
 }
 
-- (void)resultRefinementsBarDidTapOnToggle:(id)a3 isSelected:(BOOL)a4
+- (void)resultRefinementsBarDidTapOnToggle:(id)toggle isSelected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   analyticsManager = self->_analyticsManager;
-  v6 = [a3 refinementKey];
-  [(ResultRefinementsAnalyticsManager *)analyticsManager resultRefinementTappedWithKey:v6 source:0 refinementType:0 isSelected:v4];
+  refinementKey = [toggle refinementKey];
+  [(ResultRefinementsAnalyticsManager *)analyticsManager resultRefinementTappedWithKey:refinementKey source:0 refinementType:0 isSelected:selectedCopy];
 }
 
-- (void)resultRefinementsBarDidTapOnMultiSelect:(id)a3 tappedAtIndex:(int64_t)a4
+- (void)resultRefinementsBarDidTapOnMultiSelect:(id)select tappedAtIndex:(int64_t)index
 {
-  v12 = [_TtC4Maps27RefinementsViewModelFactory multiSelectRefinementsViewModelWith:a3 tappedAtIndex:a4];
+  v12 = [_TtC4Maps27RefinementsViewModelFactory multiSelectRefinementsViewModelWith:select tappedAtIndex:index];
   v5 = [AllRefinementsViewController alloc];
-  v6 = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
-  v7 = [v6 copy];
+  refinementsSelectionSequenceNumber = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
+  v7 = [refinementsSelectionSequenceNumber copy];
   v8 = [(AllRefinementsViewController *)v5 initWithViewModel:v12 selectionSequenceNumber:v7 resultRefinementsAnalyticsDelegate:self->_analyticsManager];
 
-  v9 = [(ContaineeViewController *)self containeeDelegate];
-  [(ContaineeViewController *)v8 setContaineeDelegate:v9];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+  [(ContaineeViewController *)v8 setContaineeDelegate:containeeDelegate];
 
   [(AllRefinementsViewController *)v8 setAllRefinementsDelegate:self];
   if ([(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]&& GEOConfigGetBOOL())
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    [v10 showFiltersUsingViewController:v8];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate showFiltersUsingViewController:v8];
   }
 
   else
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    v11 = [v10 searchResultsContainerViewController];
-    [v11 presentController:v8 animated:1];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchResultsContainerViewController = [resultsDelegate searchResultsContainerViewController];
+    [searchResultsContainerViewController presentController:v8 animated:1];
   }
 
   [(ResultRefinementsAnalyticsManager *)self->_analyticsManager logRefinementsEvent:3 fromSource:0];
 }
 
-- (void)resultRefinementsBarDidTapOnSeeAllRefinements:(id)a3
+- (void)resultRefinementsBarDidTapOnSeeAllRefinements:(id)refinements
 {
-  v4 = a3;
+  refinementsCopy = refinements;
   v5 = [AllRefinementsViewController alloc];
-  v6 = [v4 copy];
+  v6 = [refinementsCopy copy];
 
-  v7 = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
-  v8 = [v7 copy];
+  refinementsSelectionSequenceNumber = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
+  v8 = [refinementsSelectionSequenceNumber copy];
   v12 = [(AllRefinementsViewController *)v5 initWithViewModel:v6 selectionSequenceNumber:v8 resultRefinementsAnalyticsDelegate:self->_analyticsManager];
 
-  v9 = [(ContaineeViewController *)self containeeDelegate];
-  [(ContaineeViewController *)v12 setContaineeDelegate:v9];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+  [(ContaineeViewController *)v12 setContaineeDelegate:containeeDelegate];
 
   [(AllRefinementsViewController *)v12 setAllRefinementsDelegate:self];
   if ([(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]&& GEOConfigGetBOOL())
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    [v10 showFiltersUsingViewController:v12];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate showFiltersUsingViewController:v12];
   }
 
   else
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    v11 = [v10 searchResultsContainerViewController];
-    [v11 presentController:v12 animated:1];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    searchResultsContainerViewController = [resultsDelegate searchResultsContainerViewController];
+    [searchResultsContainerViewController presentController:v12 animated:1];
   }
 
   [(ResultRefinementsAnalyticsManager *)self->_analyticsManager logRefinementsEvent:2 fromSource:0];
 }
 
-- (void)resultRefinementsBarDidUpdateViewModel:(id)a3
+- (void)resultRefinementsBarDidUpdateViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-  [v5 resetRedoSearchController];
+  modelCopy = model;
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController resetRedoSearchController];
 
   self->_lastRefinementOriginType = 1;
-  v6 = [(ResultsViewController *)self originalSearchInfo];
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
   v7 = objc_alloc_init(GEOPDResultRefinementQuery);
   [v7 setResultRefinementOriginType:self->_lastRefinementOriginType];
-  v8 = [v6 resultRefinementGroup];
-  v9 = [v8 refinementSessionState];
-  [v7 setRefinementSessionState:v9];
+  resultRefinementGroup = [originalSearchInfo resultRefinementGroup];
+  refinementSessionState = [resultRefinementGroup refinementSessionState];
+  [v7 setRefinementSessionState:refinementSessionState];
 
-  v10 = [_TtC4Maps21GEORefinementsFactory barResultRefinementsWith:v4];
+  v10 = [_TtC4Maps21GEORefinementsFactory barResultRefinementsWith:modelCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -1889,8 +1889,8 @@ LABEL_25:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v32 + 1) + 8 * v14) convertToGEOPDResultRefinement];
-        [v7 addRefinement:v15];
+        convertToGEOPDResultRefinement = [*(*(&v32 + 1) + 8 * v14) convertToGEOPDResultRefinement];
+        [v7 addRefinement:convertToGEOPDResultRefinement];
 
         v14 = v14 + 1;
       }
@@ -1906,11 +1906,11 @@ LABEL_25:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = [v6 resultRefinementGroup];
-  v17 = [v16 resultRefinementView];
-  v18 = [v17 sections];
+  resultRefinementGroup2 = [originalSearchInfo resultRefinementGroup];
+  resultRefinementView = [resultRefinementGroup2 resultRefinementView];
+  sections = [resultRefinementView sections];
 
-  v19 = [v18 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  v19 = [sections countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1922,59 +1922,59 @@ LABEL_25:
       {
         if (*v29 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(sections);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * v22) convertToGEOPDResultRefinementSection];
-        [v7 addRefinementSection:v23];
+        convertToGEOPDResultRefinementSection = [*(*(&v28 + 1) + 8 * v22) convertToGEOPDResultRefinementSection];
+        [v7 addRefinementSection:convertToGEOPDResultRefinementSection];
 
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v28 objects:v38 count:16];
+      v20 = [sections countByEnumeratingWithState:&v28 objects:v38 count:16];
     }
 
     while (v20);
   }
 
-  v24 = [(ResultsViewController *)self resultsDelegate];
-  v25 = [(SearchSession *)self->_searchSession searchFieldItem];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
   v36[0] = @"SearchSessionFromRefinementBar";
   v36[1] = @"SearchSessionAddStopFromWaypointEditor";
   v37[0] = &__kCFBooleanTrue;
   v26 = [NSNumber numberWithBool:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
   v37[1] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
-  [v24 doSearchItem:v25 withUserInfo:v27 refinementsQuery:v7 viewController:self];
+  [resultsDelegate doSearchItem:searchFieldItem withUserInfo:v27 refinementsQuery:v7 viewController:self];
 }
 
 - (void)increasResultRefinementsSelectionSequenceNumber
 {
-  v4 = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
-  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 intValue] + 1);
+  refinementsSelectionSequenceNumber = [(ResultsViewController *)self refinementsSelectionSequenceNumber];
+  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [refinementsSelectionSequenceNumber intValue] + 1);
   [(ResultsViewController *)self setRefinementsSelectionSequenceNumber:v3];
 }
 
-- (void)searchDidCancel:(BOOL)a3
+- (void)searchDidCancel:(BOOL)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 134218242;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[ResultsViewController searchDidCancel:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%p] %s", &v11, 0x16u);
   }
 
   [(LoadingModeView *)self->_loadingModeView setHidden:1];
-  v6 = [(ResultsViewController *)self impressionsCalculator];
-  [v6 setActive:0];
+  impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setActive:0];
 
-  v7 = [(ResultsViewController *)self resultsDelegate];
-  [v7 clearSearchResults];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate clearSearchResults];
 
   [(ResultsViewController *)self setResultsList:0];
   self->hasSetTheContentOffset = 0;
@@ -1982,56 +1982,56 @@ LABEL_25:
   refinementsController = self->_refinementsController;
   self->_refinementsController = 0;
 
-  v9 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-  [v9 resetRedoSearchController];
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController resetRedoSearchController];
 
-  if (v3)
+  if (cancelCopy)
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    [v10 closeSearchResultsViewController:self];
+    resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 closeSearchResultsViewController:self];
   }
 }
 
 - (BOOL)isWaitingForResults
 {
   v2 = self->_searchSession;
-  v3 = [(SearchSession *)v2 isSingleResultToShowAsPlacecard];
+  isSingleResultToShowAsPlacecard = [(SearchSession *)v2 isSingleResultToShowAsPlacecard];
   if (![(SearchSession *)v2 isRedoOrAutoRedoSearchType]&& [(SearchSession *)v2 isLoading])
   {
-    v3 = 1;
+    isSingleResultToShowAsPlacecard = 1;
   }
 
-  return v3;
+  return isSingleResultToShowAsPlacecard;
 }
 
 - (id)loadingString
 {
   v2 = self->_searchSession;
-  v3 = [(SearchSession *)v2 stringToDisplay];
-  v4 = [(SearchSession *)v2 searchFieldItem];
+  stringToDisplay = [(SearchSession *)v2 stringToDisplay];
+  searchFieldItem = [(SearchSession *)v2 searchFieldItem];
 
-  v5 = [v4 searchCategory];
+  searchCategory = [searchFieldItem searchCategory];
 
-  if (v5)
+  if (searchCategory)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Searching for  ... [Search Category]" value:@"localized string not found" table:0];
-    [NSString stringWithFormat:v7, v3];
+    [NSString stringWithFormat:v7, stringToDisplay];
   }
 
   else
   {
-    v8 = [v4 autocompletePerson];
-    v9 = [v8 handle];
+    autocompletePerson = [searchFieldItem autocompletePerson];
+    handle = [autocompletePerson handle];
 
-    if (!v9)
+    if (!handle)
     {
-      v12 = [v4 completion];
-      v13 = [v12 mapItem];
+      completion = [searchFieldItem completion];
+      mapItem = [completion mapItem];
 
       v14 = +[NSBundle mainBundle];
       v6 = v14;
-      if (v13)
+      if (mapItem)
       {
         v15 = @"Loading ...";
       }
@@ -2060,8 +2060,8 @@ LABEL_6:
 {
   [(ResultsViewController *)self showError:0];
   loadingModeView = self->_loadingModeView;
-  v4 = [(ResultsViewController *)self loadingString];
-  [(LoadingModeView *)loadingModeView setTitle:v4];
+  loadingString = [(ResultsViewController *)self loadingString];
+  [(LoadingModeView *)loadingModeView setTitle:loadingString];
 
   [(LoadingModeView *)self->_loadingModeView setHidden:0];
   [(UITableView *)self->_contentTableView setHidden:1];
@@ -2071,9 +2071,9 @@ LABEL_6:
   [(UITableView *)contentTableView setContentOffset:CGPointZero.x, y];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = a3;
+  tappedCopy = tapped;
   v6 = sub_100067540();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2081,43 +2081,43 @@ LABEL_6:
     v10.super_class = ResultsViewController;
     v7 = [(ResultsViewController *)&v10 class];
     v8 = v7;
-    v9 = [(ResultsViewController *)self resultsDelegate];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
     *buf = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v7;
     v15 = 2112;
-    v16 = v9;
+    v16 = resultsDelegate;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Header view close button tapped. Self : %@, Super class: %@ delegate: %@", buf, 0x20u);
   }
 
-  [(ResultsViewController *)self handleDismissAction:v5];
+  [(ResultsViewController *)self handleDismissAction:tappedCopy];
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:4 onTarget:-[ResultsViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v6 = [(ResultsViewController *)self resultsDelegate];
-  [v6 clearSearchResults];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  [resultsDelegate clearSearchResults];
 
   [(ResultsViewController *)self setResultsList:0];
   self->hasSetTheContentOffset = 0;
   [(ErrorModeView *)self->_errorModeView removeErrorIconImageView];
-  v7 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
-  [v7 resetRedoSearchController];
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController resetRedoSearchController];
 
   v8.receiver = self;
   v8.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v8 handleDismissAction:v4];
+  [(ContaineeViewController *)&v8 handleDismissAction:actionCopy];
 }
 
 - (id)impressionsCalculator
@@ -2181,66 +2181,66 @@ LABEL_11:
   return v14;
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v8.receiver = self;
   v8.super_class = ResultsViewController;
   [(ContaineeViewController *)&v8 applyAlphaToContent:?];
-  v5 = 0.0;
+  contentCopy = 0.0;
   if (![(ResultsViewController *)self _shouldHideHairline])
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    v7 = [v6 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
     if (!self->_hideHeader)
     {
-      if (v7 == 6)
+      if (containerStyle == 6)
       {
-        v5 = 1.0;
+        contentCopy = 1.0;
       }
 
       else
       {
-        v5 = a3;
+        contentCopy = content;
       }
 
       if ([(ResultsViewController *)self isShowingOmnipresentSearchBar])
       {
-        v5 = 0.0;
+        contentCopy = 0.0;
       }
     }
   }
 
-  [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:v5];
-  [(ErrorModeView *)self->_errorModeView setAlpha:a3];
-  [(RefinementsBarUIView *)self->_refinementsBar setAlpha:a3];
+  [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:contentCopy];
+  [(ErrorModeView *)self->_errorModeView setAlpha:content];
+  [(RefinementsBarUIView *)self->_refinementsBar setAlpha:content];
 }
 
 - (void)setupConstraints
 {
-  v24 = [(ResultsViewController *)self contentTableView];
-  v22 = [v24 leadingAnchor];
-  v23 = [(ContaineeViewController *)self contentView];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  contentTableView = [(ResultsViewController *)self contentTableView];
+  leadingAnchor = [contentTableView leadingAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v20;
-  v19 = [(ResultsViewController *)self contentTableView];
-  v17 = [v19 trailingAnchor];
-  v18 = [(ContaineeViewController *)self contentView];
-  v16 = [v18 trailingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  contentTableView2 = [(ResultsViewController *)self contentTableView];
+  trailingAnchor = [contentTableView2 trailingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[1] = v15;
-  v14 = [(ResultsViewController *)self contentTableView];
-  v13 = [v14 topAnchor];
-  v3 = [(ContaineeViewController *)self contentView];
-  v4 = [v3 topAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4];
+  contentTableView3 = [(ResultsViewController *)self contentTableView];
+  topAnchor = [contentTableView3 topAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[2] = v5;
-  v6 = [(ResultsViewController *)self contentTableView];
-  v7 = [v6 bottomAnchor];
-  v8 = [(ContaineeViewController *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  contentTableView4 = [(ResultsViewController *)self contentTableView];
+  bottomAnchor = [contentTableView4 bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v10;
   v11 = [NSArray arrayWithObjects:v25 count:4];
   v12 = [v11 mutableCopy];
@@ -2252,14 +2252,14 @@ LABEL_11:
 {
   if (self->_hideHeader)
   {
-    v3 = [(ResultsViewController *)self view];
-    [v3 bounds];
+    view = [(ResultsViewController *)self view];
+    [view bounds];
   }
 
   else
   {
-    v3 = [(ContaineeViewController *)self contentView];
-    [v3 frame];
+    view = [(ContaineeViewController *)self contentView];
+    [view frame];
   }
 
   v8 = v4;
@@ -2268,8 +2268,8 @@ LABEL_11:
   v11 = v7;
 
   [(LoadingModeView *)self->_loadingModeView setFrame:v8, v9, v10, v11];
-  v12 = [(ResultsViewController *)self view];
-  [v12 safeAreaInsets];
+  view2 = [(ResultsViewController *)self view];
+  [view2 safeAreaInsets];
   v14 = v13;
 
   if (_UISolariumEnabled())
@@ -2285,22 +2285,22 @@ LABEL_11:
 
 - (void)updateRefinementBarAlpha
 {
-  v12 = [(ResultsViewController *)self sheetPresentationController];
-  if (-[ResultsViewController containeeLayout](self, "containeeLayout") != 1 || (v4 = [v12 _isDragging], v3 = 0.0, v4))
+  sheetPresentationController = [(ResultsViewController *)self sheetPresentationController];
+  if (-[ResultsViewController containeeLayout](self, "containeeLayout") != 1 || (v4 = [sheetPresentationController _isDragging], v3 = 0.0, v4))
   {
     [(ResultsViewController *)self heightForLayout:1, v3];
     v6 = v5;
-    [v12 _currentPresentedViewFrame];
+    [sheetPresentationController _currentPresentedViewFrame];
     Height = CGRectGetHeight(v14);
-    v8 = [v12 containerView];
-    [v8 safeAreaInsets];
+    containerView = [sheetPresentationController containerView];
+    [containerView safeAreaInsets];
     v10 = Height - v9;
 
     if ([(ResultsViewController *)self containeeLayout]== 1 && v10 > v6)
     {
-      v11 = [v12 _isDragging];
+      _isDragging = [sheetPresentationController _isDragging];
       v3 = 1.0;
-      if (v11)
+      if (_isDragging)
       {
         goto LABEL_10;
       }
@@ -2329,16 +2329,16 @@ LABEL_10:
   [(ResultsViewController *)self _updateLoadingErrorFrames];
   [(ResultsViewController *)self updateRefinementBarAlpha];
   [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator logImpressions];
-  v3 = [(ResultsViewController *)self resultsList];
-  if ([v3 count])
+  resultsList = [(ResultsViewController *)self resultsList];
+  if ([resultsList count])
   {
     hasSetTheContentOffset = self->hasSetTheContentOffset;
 
     if (!hasSetTheContentOffset)
     {
-      v5 = [(ResultsViewController *)self contentTableView];
+      contentTableView = [(ResultsViewController *)self contentTableView];
       [(ResultsViewController *)self topSpaceForScrollPocket];
-      [v5 setContentOffset:{0.0, -v6}];
+      [contentTableView setContentOffset:{0.0, -v6}];
 
       self->hasSetTheContentOffset = 1;
     }
@@ -2358,20 +2358,20 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[ResultsViewController didBecomeCurrent]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%p] %s", buf, 0x16u);
   }
 
   self->_hasViewAppeared = 1;
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  -[ResultsViewController setContaineeLayout:](self, "setContaineeLayout:", [v4 containeeLayout]);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[ResultsViewController setContaineeLayout:](self, "setContaineeLayout:", [cardPresentationController containeeLayout]);
 
-  v5 = [(ResultsViewController *)self impressionsCalculator];
-  v6 = [v5 hasImpressionElements];
+  impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+  hasImpressionElements = [impressionsCalculator hasImpressionElements];
 
-  if ((v6 & 1) == 0)
+  if ((hasImpressionElements & 1) == 0)
   {
     [(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator logImpressions];
   }
@@ -2383,7 +2383,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[ResultsViewController didResignCurrent]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%p] %s", buf, 0x16u);
@@ -2394,20 +2394,20 @@ LABEL_10:
   v5.super_class = ResultsViewController;
   [(ContaineeViewController *)&v5 didResignCurrent];
   [(ResultsViewController *)self _hideSearchHereControl];
-  v4 = [(ResultsViewController *)self impressionsCalculator];
-  [v4 setActive:0];
+  impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setActive:0];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v15.receiver = self;
   v15.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v15 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v15 willBecomeCurrent:current];
   v4 = sub_100067540();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[ResultsViewController willBecomeCurrent:]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%p] %s", buf, 0x16u);
@@ -2415,56 +2415,56 @@ LABEL_10:
 
   if (([(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator isActive]& 1) == 0)
   {
-    v5 = [(ResultsViewController *)self impressionsCalculator];
-    [v5 setActive:1];
+    impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+    [impressionsCalculator setActive:1];
   }
 
-  v6 = [(SearchSession *)self->_searchSession currentResults];
-  if ([v6 count] && -[SearchSession isSpotlightPunchInSearch](self->_searchSession, "isSpotlightPunchInSearch"))
+  currentResults = [(SearchSession *)self->_searchSession currentResults];
+  if ([currentResults count] && -[SearchSession isSpotlightPunchInSearch](self->_searchSession, "isSpotlightPunchInSearch"))
   {
-    v7 = [(SearchSession *)self->_searchSession spotlightMatchingResultFound];
+    spotlightMatchingResultFound = [(SearchSession *)self->_searchSession spotlightMatchingResultFound];
 
-    if (!v7)
+    if (!spotlightMatchingResultFound)
     {
       goto LABEL_10;
     }
 
     [(ResultsViewController *)self setHeaderContentWithSearchSession:self->_searchSession];
     [(ResultsViewController *)self setHideHeader:0];
-    v6 = [(SearchSession *)self->_searchSession currentResults];
-    [(ResultsViewController *)self setResultsList:v6];
+    currentResults = [(SearchSession *)self->_searchSession currentResults];
+    [(ResultsViewController *)self setResultsList:currentResults];
   }
 
 LABEL_10:
-  v8 = [(ResultsViewController *)self resultsList];
-  if ([v8 count])
+  resultsList = [(ResultsViewController *)self resultsList];
+  if ([resultsList count])
   {
-    v9 = [(ResultsViewController *)self resultsList];
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    v11 = [v10 allSearchResultsForCurrentPinsOnMap];
-    v12 = [v9 isEqualToArray:v11];
+    resultsList2 = [(ResultsViewController *)self resultsList];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    allSearchResultsForCurrentPinsOnMap = [resultsDelegate allSearchResultsForCurrentPinsOnMap];
+    v12 = [resultsList2 isEqualToArray:allSearchResultsForCurrentPinsOnMap];
 
     if (v12)
     {
       return;
     }
 
-    v13 = [(ResultsViewController *)self resultsList];
-    v8 = [SearchInfo searchInfoWithResults:v13];
+    resultsList3 = [(ResultsViewController *)self resultsList];
+    resultsList = [SearchInfo searchInfoWithResults:resultsList3];
 
-    v14 = [(ResultsViewController *)self resultsDelegate];
-    [v14 setSearchPinsFromSearchInfo:v8 scrollToResults:0 displayPlaceCardForResult:0 animated:0 completion:0];
+    resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 setSearchPinsFromSearchInfo:resultsList scrollToResults:0 displayPlaceCardForResult:0 animated:0 completion:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[ResultsViewController viewWillDisappear:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%p] %s", buf, 0x16u);
@@ -2472,21 +2472,21 @@ LABEL_10:
 
   v7.receiver = self;
   v7.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v7 viewWillDisappear:v3];
-  v6 = [(ResultsViewController *)self impressionsCalculator];
-  [v6 setActive:0];
+  [(ContaineeViewController *)&v7 viewWillDisappear:disappearCopy];
+  impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setActive:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = ResultsViewController;
-  [(ContaineeViewController *)&v8 viewWillAppear:a3];
+  [(ContaineeViewController *)&v8 viewWillAppear:appear];
   v4 = sub_100067540();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[ResultsViewController viewWillAppear:]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%p] %s", buf, 0x16u);
@@ -2503,21 +2503,21 @@ LABEL_10:
 
   if (([(MUScrollViewImpressionsCalculator *)self->_impressionsCalculator isActive]& 1) == 0)
   {
-    v7 = [(ResultsViewController *)self impressionsCalculator];
-    [v7 setActive:1];
+    impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+    [impressionsCalculator setActive:1];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = [(ResultsViewController *)self isShowingOmnipresentSearchBar];
-  if (a3 && v5)
+  isShowingOmnipresentSearchBar = [(ResultsViewController *)self isShowingOmnipresentSearchBar];
+  if (controller && isShowingOmnipresentSearchBar)
   {
     v6 = sub_100067540();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
       v10 = "[ResultsViewController didMoveToParentViewController:]";
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%p] %s configuring header", &v7, 0x16u);
@@ -2532,31 +2532,31 @@ LABEL_10:
   v22.receiver = self;
   v22.super_class = ResultsViewController;
   [(ContaineeViewController *)&v22 viewDidLoad];
-  v3 = [(ContaineeViewController *)self contentView];
-  v4 = [(ResultsViewController *)self contentTableView];
-  [v3 addSubview:v4];
+  contentView = [(ContaineeViewController *)self contentView];
+  contentTableView = [(ResultsViewController *)self contentTableView];
+  [contentView addSubview:contentTableView];
 
-  v5 = [(ResultsViewController *)self contentTableView];
-  [(ContaineeViewController *)self setContentScrollView:v5 forEdge:1];
+  contentTableView2 = [(ResultsViewController *)self contentTableView];
+  [(ContaineeViewController *)self setContentScrollView:contentTableView2 forEdge:1];
 
   if (![(ResultsViewController *)self isShowingOmnipresentSearchBar])
   {
     [(ResultsViewController *)self configureHeader];
   }
 
-  v6 = [(ResultsViewController *)self view];
-  v7 = [(ResultsViewController *)self loadingModeView];
-  [v6 addSubview:v7];
+  view = [(ResultsViewController *)self view];
+  loadingModeView = [(ResultsViewController *)self loadingModeView];
+  [view addSubview:loadingModeView];
 
-  v8 = [(ResultsViewController *)self view];
-  v9 = [(ResultsViewController *)self errorModeView];
-  [v8 addSubview:v9];
+  view2 = [(ResultsViewController *)self view];
+  errorModeView = [(ResultsViewController *)self errorModeView];
+  [view2 addSubview:errorModeView];
 
-  v10 = [(ResultsViewController *)self view];
+  view3 = [(ResultsViewController *)self view];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [v12 stringByReplacingOccurrencesOfString:@"Controller" withString:&stru_1016631F0];
-  [v10 setAccessibilityIdentifier:v13];
+  [view3 setAccessibilityIdentifier:v13];
 
   [(ResultsViewController *)self setupConstraints];
   v14 = [[ResultRefinementsAnalyticsManager alloc] initWithRefinementsFromWaypointEditor:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
@@ -2564,45 +2564,45 @@ LABEL_10:
   self->_analyticsManager = v14;
 
   v16 = [SearchResultsDataSource alloc];
-  v17 = [(ResultsViewController *)self contentTableView];
-  v18 = [(SearchResultsDataSource *)v16 initWithTableView:v17];
+  contentTableView3 = [(ResultsViewController *)self contentTableView];
+  v18 = [(SearchResultsDataSource *)v16 initWithTableView:contentTableView3];
   searchResultsDataSource = self->_searchResultsDataSource;
   self->_searchResultsDataSource = v18;
 
   [self->_searchResultsDataSource setDelegate:self];
-  v20 = [(ResultsViewController *)self resultsDelegate];
-  v21 = [v20 searchResultsAppCoordinator];
-  [(SearchResultsDataSource *)self->_searchResultsDataSource setShareDelegate:v21];
+  resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+  searchResultsAppCoordinator = [resultsDelegate searchResultsAppCoordinator];
+  [(SearchResultsDataSource *)self->_searchResultsDataSource setShareDelegate:searchResultsAppCoordinator];
 
   [(SearchResultsDataSource *)self->_searchResultsDataSource setCollectionCarouselRoutingDelegate:self];
   [(SearchResultsDataSource *)self->_searchResultsDataSource setIsPresentingAddStopResultsFromWaypointEditor:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
   [(ResultsViewController *)self setDataSource:self->_searchResultsDataSource];
 }
 
-- (void)showError:(id)a3 hideRefinementsBar:(BOOL)a4
+- (void)showError:(id)error hideRefinementsBar:(BOOL)bar
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  barCopy = bar;
+  errorCopy = error;
+  if (errorCopy)
   {
     [(UITableView *)self->_contentTableView setHidden:1];
     [(LoadingModeView *)self->_loadingModeView setHidden:1];
-    if (v4)
+    if (barCopy)
     {
       [(ResultsViewController *)self setHideRefinementsBar:1];
     }
 
-    v7 = [(ResultsViewController *)self view];
-    v8 = [(ResultsViewController *)self errorModeView];
-    v9 = [(ResultsViewController *)self contentTableView];
-    [v7 insertSubview:v8 belowSubview:v9];
+    view = [(ResultsViewController *)self view];
+    errorModeView = [(ResultsViewController *)self errorModeView];
+    contentTableView = [(ResultsViewController *)self contentTableView];
+    [view insertSubview:errorModeView belowSubview:contentTableView];
 
     [(ResultsViewController *)self _updateLoadingErrorFrames];
-    [(ErrorModeView *)self->_errorModeView setTitle:v6 andMessage:0];
-    v10 = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
-    LODWORD(v8) = [v10 enableStructuredRAPAffordance];
+    [(ErrorModeView *)self->_errorModeView setTitle:errorCopy andMessage:0];
+    currentResultsSearchInfo = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
+    LODWORD(errorModeView) = [currentResultsSearchInfo enableStructuredRAPAffordance];
 
-    if (v8)
+    if (errorModeView)
     {
       objc_initWeak(&location, self);
       errorModeView = self->_errorModeView;
@@ -2634,11 +2634,11 @@ LABEL_10:
   v4 = [v3 localizedStringForKey:@"No results found in your offline map. Connect to the internet for more search results." value:@"localized string not found" table:@"Offline"];
 
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v6 = [v5 isUsingForcedOfflineMaps];
+  isUsingForcedOfflineMaps = [v5 isUsingForcedOfflineMaps];
 
   v7 = +[NSBundle mainBundle];
   v8 = v7;
-  if (v6)
+  if (isUsingForcedOfflineMaps)
   {
     v9 = @"Using Offline Maps";
   }
@@ -2653,7 +2653,7 @@ LABEL_10:
   [(ResultsViewController *)self showError:v4 hideRefinementsBar:0];
   [(ErrorModeView *)self->_errorModeView setTitle:v10 andMessage:v4];
   [(ErrorModeView *)self->_errorModeView insertErrorIcon:@"icloud.slash" atIndex:0];
-  if (v6)
+  if (isUsingForcedOfflineMaps)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"Turn Off" value:@"localized string not found" table:@"Offline"];
@@ -2671,46 +2671,46 @@ LABEL_10:
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   currentDataSource = self->_currentDataSource;
-  if (currentDataSource != v5)
+  if (currentDataSource != sourceCopy)
   {
-    v13 = v5;
+    v13 = sourceCopy;
     [currentDataSource setActive:0];
-    objc_storeStrong(&self->_currentDataSource, a3);
+    objc_storeStrong(&self->_currentDataSource, source);
     [(UITableView *)self->_contentTableView setDelegate:v13];
     [(UITableView *)self->_contentTableView setDataSource:v13];
     v7 = +[MapsDragAndDropManager sharedManager];
-    v8 = [v7 deviceSupportsDragAndDrop];
+    deviceSupportsDragAndDrop = [v7 deviceSupportsDragAndDrop];
 
-    if (v8)
+    if (deviceSupportsDragAndDrop)
     {
       [(UITableView *)self->_contentTableView setDragDelegate:v13];
     }
 
     [self->_currentDataSource setActive:1];
     [(UITableView *)self->_contentTableView reloadData];
-    v9 = [(ResultsViewController *)self resultsDelegate];
-    v10 = [v9 venuesManagerForSearchResults];
-    [v10 venuesControlCoordinatingDidChangeSearchResultCount:self];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+    [venuesManagerForSearchResults venuesControlCoordinatingDidChangeSearchResultCount:self];
 
-    v11 = [(ResultsViewController *)self resultsDelegate];
-    v12 = [v11 venuesManagerForSearchResults];
-    [v12 updateFocusedVenueFloor];
+    resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+    venuesManagerForSearchResults2 = [resultsDelegate2 venuesManagerForSearchResults];
+    [venuesManagerForSearchResults2 updateFocusedVenueFloor];
 
-    v5 = v13;
+    sourceCopy = v13;
   }
 }
 
-- (void)setResultsList:(id)a3
+- (void)setResultsList:(id)list
 {
-  v40 = a3;
-  if (self->_resultsList != v40)
+  listCopy = list;
+  if (self->_resultsList != listCopy)
   {
     self->_didTriggerAutoRedoSearch = 0;
-    objc_storeStrong(&self->_resultsList, a3);
+    objc_storeStrong(&self->_resultsList, list);
     self->hasSetTheContentOffset = 0;
     if (![(ResultsViewController *)self isShowingOmnipresentSearchBar])
     {
@@ -2718,56 +2718,56 @@ LABEL_10:
     }
 
     v5 = +[NSUUID UUID];
-    v6 = [(ResultsViewController *)self impressionsCalculator];
-    [v6 setSessionIdentifier:v5];
+    impressionsCalculator = [(ResultsViewController *)self impressionsCalculator];
+    [impressionsCalculator setSessionIdentifier:v5];
 
-    v7 = [(ResultsViewController *)self view];
+    view = [(ResultsViewController *)self view];
 
-    if (v7)
+    if (view)
     {
       v8 = self->_searchSession;
-      v9 = [(SearchSession *)v8 currentResultsSearchInfo];
-      v10 = [v9 searchText];
-      if (v10)
+      currentResultsSearchInfo = [(SearchSession *)v8 currentResultsSearchInfo];
+      searchText = [currentResultsSearchInfo searchText];
+      if (searchText)
       {
         p_searchResultsDataSource = &self->_searchResultsDataSource;
-        [(SearchResultsDataSource *)self->_searchResultsDataSource setSearchQuery:v10];
+        [(SearchResultsDataSource *)self->_searchResultsDataSource setSearchQuery:searchText];
       }
 
       else
       {
-        v12 = [v9 searchFieldItem];
-        v13 = [v12 title];
+        searchFieldItem = [currentResultsSearchInfo searchFieldItem];
+        title = [searchFieldItem title];
         p_searchResultsDataSource = &self->_searchResultsDataSource;
-        [(SearchResultsDataSource *)self->_searchResultsDataSource setSearchQuery:v13];
+        [(SearchResultsDataSource *)self->_searchResultsDataSource setSearchQuery:title];
       }
 
-      -[SearchResultsDataSource setDisplaysAsChainResult:](*p_searchResultsDataSource, "setDisplaysAsChainResult:", [v9 isChainResults]);
-      -[SearchResultsDataSource setPrefersAddressOverCategory:](*p_searchResultsDataSource, "setPrefersAddressOverCategory:", [v9 prefersAddressOverCategory]);
-      v14 = [v9 searchFieldItem];
-      v15 = [v14 searchCategory];
-      [(SearchResultsDataSource *)*p_searchResultsDataSource setSearchCategory:v15];
+      -[SearchResultsDataSource setDisplaysAsChainResult:](*p_searchResultsDataSource, "setDisplaysAsChainResult:", [currentResultsSearchInfo isChainResults]);
+      -[SearchResultsDataSource setPrefersAddressOverCategory:](*p_searchResultsDataSource, "setPrefersAddressOverCategory:", [currentResultsSearchInfo prefersAddressOverCategory]);
+      searchFieldItem2 = [currentResultsSearchInfo searchFieldItem];
+      searchCategory = [searchFieldItem2 searchCategory];
+      [(SearchResultsDataSource *)*p_searchResultsDataSource setSearchCategory:searchCategory];
 
-      v16 = [v9 placeSummaryMetadata];
-      [(SearchResultsDataSource *)*p_searchResultsDataSource setPlaceSummaryMetadata:v16];
+      placeSummaryMetadata = [currentResultsSearchInfo placeSummaryMetadata];
+      [(SearchResultsDataSource *)*p_searchResultsDataSource setPlaceSummaryMetadata:placeSummaryMetadata];
 
-      -[SearchResultsDataSource setEnableStructuredRAPAffordance:](*p_searchResultsDataSource, "setEnableStructuredRAPAffordance:", [v9 enableStructuredRAPAffordance]);
+      -[SearchResultsDataSource setEnableStructuredRAPAffordance:](*p_searchResultsDataSource, "setEnableStructuredRAPAffordance:", [currentResultsSearchInfo enableStructuredRAPAffordance]);
       [(SearchResultsDataSource *)*p_searchResultsDataSource setIsPresentingAddStopResultsFromWaypointEditor:[(ResultsViewController *)self isPresentingAddStopResultsFromWaypointEditor]];
-      v17 = [(ResultsViewController *)self impressionsCalculator];
-      v18 = [v17 sessionIdentifier];
-      [(SearchResultsDataSource *)*p_searchResultsDataSource setImpressionsSessionIdentifier:v18];
+      impressionsCalculator2 = [(ResultsViewController *)self impressionsCalculator];
+      sessionIdentifier = [impressionsCalculator2 sessionIdentifier];
+      [(SearchResultsDataSource *)*p_searchResultsDataSource setImpressionsSessionIdentifier:sessionIdentifier];
 
-      if ([v9 sortOrder] == 1)
+      if ([currentResultsSearchInfo sortOrder] == 1)
       {
-        v19 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:v40];
-        v20 = [(AlphabeticallyOrderedDataSource *)v19 sectionIndexTitles];
-        [(SearchResultsDataSource *)*p_searchResultsDataSource setSectionIndexTitles:v20];
+        v19 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:listCopy];
+        sectionIndexTitles = [(AlphabeticallyOrderedDataSource *)v19 sectionIndexTitles];
+        [(SearchResultsDataSource *)*p_searchResultsDataSource setSectionIndexTitles:sectionIndexTitles];
       }
 
       else
       {
-        v21 = [v9 searchSectionList];
-        if (v21)
+        searchSectionList = [currentResultsSearchInfo searchSectionList];
+        if (searchSectionList)
         {
           resultsList = self->_resultsList;
 
@@ -2775,14 +2775,14 @@ LABEL_10:
           {
             v23 = [SearchListOrderedDataSource alloc];
             v24 = self->_resultsList;
-            v25 = [v9 searchSectionList];
-            v19 = [(SearchListOrderedDataSource *)v23 initWithObjects:v24 searchSectionList:v25];
+            searchSectionList2 = [currentResultsSearchInfo searchSectionList];
+            v19 = [(SearchListOrderedDataSource *)v23 initWithObjects:v24 searchSectionList:searchSectionList2];
 
             [(SearchResultsDataSource *)*p_searchResultsDataSource setSectionIndexTitles:0];
             v26 = [[SearchResultsDataSourceContent alloc] initWithOrderedDataSource:v19];
             v27 = *p_searchResultsDataSource;
-            v28 = [v9 openAt];
-            [(SearchResultsDataSource *)v27 setContent:v26 openAt:v28];
+            openAt = [currentResultsSearchInfo openAt];
+            [(SearchResultsDataSource *)v27 setContent:v26 openAt:openAt];
 
             goto LABEL_18;
           }
@@ -2807,33 +2807,33 @@ LABEL_10:
       [(SearchResultsDataSource *)*p_searchResultsDataSource setContent:v26];
 LABEL_18:
 
-      v31 = [(ResultsViewController *)self resultsDelegate];
-      v32 = [v31 venuesManagerForSearchResults];
-      [v32 venuesControlCoordinatingDidChangeSearchResultCount:self];
+      resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+      venuesManagerForSearchResults = [resultsDelegate venuesManagerForSearchResults];
+      [venuesManagerForSearchResults venuesControlCoordinatingDidChangeSearchResultCount:self];
 
-      v33 = [(ResultsViewController *)self resultsDelegate];
-      v34 = [v33 venuesManagerForSearchResults];
-      [v34 updateFocusedVenueFloor];
+      resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+      venuesManagerForSearchResults2 = [resultsDelegate2 venuesManagerForSearchResults];
+      [venuesManagerForSearchResults2 updateFocusedVenueFloor];
 
       [(LoadingModeView *)self->_loadingModeView setHidden:1];
       v35 = self->_resultsList;
       if (v35)
       {
-        if (-[NSArray count](v35, "count") || ([v9 suggestions], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "count"), v36, v37))
+        if (-[NSArray count](v35, "count") || ([currentResultsSearchInfo suggestions], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "count"), v36, v37))
         {
           [(ResultsViewController *)self showError:0];
           [(UITableView *)self->_contentTableView setHidden:0];
         }
       }
 
-      [(ResultsViewController *)self _updateResultRefinementBarFromSearchInfo:v9];
+      [(ResultsViewController *)self _updateResultRefinementBarFromSearchInfo:currentResultsSearchInfo];
       if ([(NSArray *)self->_resultsList count])
       {
-        v38 = [(ResultsViewController *)self view];
-        [v38 setNeedsLayout];
+        view2 = [(ResultsViewController *)self view];
+        [view2 setNeedsLayout];
 
-        v39 = [(ResultsViewController *)self view];
-        [v39 layoutIfNeeded];
+        view3 = [(ResultsViewController *)self view];
+        [view3 layoutIfNeeded];
       }
     }
   }
@@ -2843,52 +2843,52 @@ LABEL_18:
 {
   if (![(SearchSession *)self->_searchSession isLoading])
   {
-    v3 = [(SearchSession *)self->_searchSession currentResults];
-    v4 = [v3 count];
+    currentResults = [(SearchSession *)self->_searchSession currentResults];
+    v4 = [currentResults count];
 
     if (!v4)
     {
-      v5 = [(ResultsViewController *)self currentUITargetForAnalytics];
+      currentUITargetForAnalytics = [(ResultsViewController *)self currentUITargetForAnalytics];
 
-      [SearchResultsAnalyticsManager logNoSearchResults:v5];
+      [SearchResultsAnalyticsManager logNoSearchResults:currentUITargetForAnalytics];
     }
   }
 }
 
-- (void)updateSearchSession:(id)a3
+- (void)updateSearchSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = sub_100067540();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v44 = v5;
+    v44 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "ResultsVC updating search session: %@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_searchSession, a3);
-  v7 = [(ResultsViewController *)self originalSearchInfo];
-  v8 = [v5 lastError];
-  v9 = [(ResultsViewController *)self localSearchViewController];
-  v10 = [v9 refreshSearchHereBusinessController];
-  [v10 setSearchSession:v5];
+  objc_storeStrong(&self->_searchSession, session);
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
+  lastError = [sessionCopy lastError];
+  localSearchViewController = [(ResultsViewController *)self localSearchViewController];
+  refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController setSearchSession:sessionCopy];
 
-  v11 = [(ResultsViewController *)self view];
+  view = [(ResultsViewController *)self view];
 
-  if (!v11)
+  if (!view)
   {
     goto LABEL_42;
   }
 
-  v12 = [(ResultsViewController *)self isWaitingForResults];
-  v13 = [v5 isResultRefinementsBarSearch] ^ 1;
-  v14 = v13 & v12;
-  if (v13 & 1) == 0 && (v12)
+  isWaitingForResults = [(ResultsViewController *)self isWaitingForResults];
+  v13 = [sessionCopy isResultRefinementsBarSearch] ^ 1;
+  v14 = v13 & isWaitingForResults;
+  if (v13 & 1) == 0 && (isWaitingForResults)
   {
-    v14 = [objc_opt_class() isReloadingRefinementsWithSearchSession:v5] ^ 1;
+    v14 = [objc_opt_class() isReloadingRefinementsWithSearchSession:sessionCopy] ^ 1;
   }
 
-  if ([v5 isSpotlightPunchInSearch])
+  if ([sessionCopy isSpotlightPunchInSearch])
   {
     [(ResultsViewController *)self setHideHeader:1];
   }
@@ -2896,32 +2896,32 @@ LABEL_18:
   else
   {
     [(ResultsViewController *)self setHideHeader:v14];
-    [(ResultsViewController *)self setHeaderContentWithSearchSession:v5];
+    [(ResultsViewController *)self setHeaderContentWithSearchSession:sessionCopy];
   }
 
-  v15 = [(ResultsViewController *)self isWaitingForResults];
-  v16 = [v5 isResultRefinementsBarSearch];
-  if (v15)
+  isWaitingForResults2 = [(ResultsViewController *)self isWaitingForResults];
+  isResultRefinementsBarSearch = [sessionCopy isResultRefinementsBarSearch];
+  if (isWaitingForResults2)
   {
-    if (v16)
+    if (isResultRefinementsBarSearch)
     {
-      v17 = [(RefinementsBarUIView *)self->_refinementsBar viewModel];
-      [v17 setTapInteractionEnabled:0];
+      viewModel = [(RefinementsBarUIView *)self->_refinementsBar viewModel];
+      [viewModel setTapInteractionEnabled:0];
     }
 
     [(ResultsViewController *)self waitingData];
     goto LABEL_43;
   }
 
-  if (v16)
+  if (isResultRefinementsBarSearch)
   {
-    v18 = [(RefinementsBarUIView *)self->_refinementsBar viewModel];
-    [v18 setTapInteractionEnabled:1];
+    viewModel2 = [(RefinementsBarUIView *)self->_refinementsBar viewModel];
+    [viewModel2 setTapInteractionEnabled:1];
   }
 
-  if (!v8 || [v5 isRedoOrAutoRedoSearchType] && (objc_msgSend(v5, "currentResults"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, v20))
+  if (!lastError || [sessionCopy isRedoOrAutoRedoSearchType] && (objc_msgSend(sessionCopy, "currentResults"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, v20))
   {
-    if (!v7)
+    if (!originalSearchInfo)
     {
       [(ResultsViewController *)self setResultsList:0];
       self->hasSetTheContentOffset = 0;
@@ -2930,16 +2930,16 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    if ([v7 searchResultType] == 1)
+    if ([originalSearchInfo searchResultType] == 1)
     {
-      if (![v5 isSpotlightPunchInSearch] || (objc_msgSend(v5, "spotlightMatchingResultFound") & 1) == 0)
+      if (![sessionCopy isSpotlightPunchInSearch] || (objc_msgSend(sessionCopy, "spotlightMatchingResultFound") & 1) == 0)
       {
-        v21 = [v5 currentResults];
-        [(ResultsViewController *)self setResultsList:v21];
+        currentResults = [sessionCopy currentResults];
+        [(ResultsViewController *)self setResultsList:currentResults];
       }
 
-      v22 = [v7 results];
-      v23 = [v22 count];
+      results = [originalSearchInfo results];
+      v23 = [results count];
 
       if (v23)
       {
@@ -2949,34 +2949,34 @@ LABEL_42:
 
     else
     {
-      if ([v7 searchResultType] != 2)
+      if ([originalSearchInfo searchResultType] != 2)
       {
-        if ([v7 searchResultType] == 3)
+        if ([originalSearchInfo searchResultType] == 3)
         {
-          v38 = [v5 currentResults];
-          [(ResultsViewController *)self setResultsList:v38];
+          currentResults2 = [sessionCopy currentResults];
+          [(ResultsViewController *)self setResultsList:currentResults2];
         }
 
         else
         {
-          if ([v7 searchResultType] != 4)
+          if ([originalSearchInfo searchResultType] != 4)
           {
             goto LABEL_42;
           }
 
-          v40 = [v5 currentResults];
-          [(ResultsViewController *)self setResultsList:v40];
+          currentResults3 = [sessionCopy currentResults];
+          [(ResultsViewController *)self setResultsList:currentResults3];
 
-          v41 = [v7 results];
-          v42 = [v41 count];
+          results2 = [originalSearchInfo results];
+          v42 = [results2 count];
 
           if (v42)
           {
             goto LABEL_42;
           }
 
-          v38 = [(ResultsViewController *)self noResultString];
-          [(ResultsViewController *)self showError:v38 hideRefinementsBar:0];
+          currentResults2 = [(ResultsViewController *)self noResultString];
+          [(ResultsViewController *)self showError:currentResults2 hideRefinementsBar:0];
         }
 
         goto LABEL_41;
@@ -2986,58 +2986,58 @@ LABEL_42:
       self->hasSetTheContentOffset = 0;
     }
 
-    v35 = [v7 resultDisplayHeader];
-    v36 = v35;
-    if (v35)
+    resultDisplayHeader = [originalSearchInfo resultDisplayHeader];
+    v36 = resultDisplayHeader;
+    if (resultDisplayHeader)
     {
-      v37 = v35;
+      noResultString = resultDisplayHeader;
     }
 
     else
     {
-      v37 = [(ResultsViewController *)self noResultString];
+      noResultString = [(ResultsViewController *)self noResultString];
     }
 
-    v38 = v37;
+    currentResults2 = noResultString;
 
-    v39 = [v7 resultDisplayHeader];
-    [(ResultsViewController *)self showError:v38 hideRefinementsBar:v39 != 0];
+    resultDisplayHeader2 = [originalSearchInfo resultDisplayHeader];
+    [(ResultsViewController *)self showError:currentResults2 hideRefinementsBar:resultDisplayHeader2 != 0];
 
 LABEL_41:
     goto LABEL_42;
   }
 
-  v24 = [(ResultsViewController *)self noResultString];
+  noResultString2 = [(ResultsViewController *)self noResultString];
   v25 = +[MapsOfflineUIHelper sharedHelper];
-  v26 = [v25 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v25 isUsingOfflineMaps];
 
-  if (v26)
+  if (isUsingOfflineMaps)
   {
     [(ResultsViewController *)self _showOfflineErrorView];
   }
 
   else
   {
-    v27 = [(SearchSession *)self->_searchSession lastError];
-    v28 = [v27 domain];
-    v29 = [v28 isEqualToString:@"SearchFindMy"];
+    lastError2 = [(SearchSession *)self->_searchSession lastError];
+    domain = [lastError2 domain];
+    v29 = [domain isEqualToString:@"SearchFindMy"];
 
     if (v29)
     {
       v30 = +[NSBundle mainBundle];
       v31 = [v30 localizedStringForKey:@"[Location Update] Unable to Refresh for person" value:@"localized string not found" table:0];
 
-      v32 = [(SearchSession *)self->_searchSession searchFieldItem];
-      v33 = [v32 title];
-      v34 = [NSString stringWithFormat:v31, v33];
+      searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
+      title = [searchFieldItem title];
+      v34 = [NSString stringWithFormat:v31, title];
 
       [(ResultsViewController *)self setHideHeader:1];
-      v24 = v34;
+      noResultString2 = v34;
     }
 
-    [(ResultsViewController *)self showError:v24 hideRefinementsBar:0];
+    [(ResultsViewController *)self showError:noResultString2 hideRefinementsBar:0];
     [(LoadingModeView *)self->_loadingModeView setHidden:1];
-    [(ResultsViewController *)self _updateResultRefinementBarFromSearchInfo:v7];
+    [(ResultsViewController *)self _updateResultRefinementBarFromSearchInfo:originalSearchInfo];
   }
 
   [(ResultsViewController *)self logNoSearchResult];
@@ -3045,12 +3045,12 @@ LABEL_41:
 LABEL_43:
 }
 
-- (void)refreshEVChargers:(id)a3
+- (void)refreshEVChargers:(id)chargers
 {
   searchResultsDataSource = self->_searchResultsDataSource;
   if (searchResultsDataSource)
   {
-    [(SearchResultsDataSource *)searchResultsDataSource refreshEVChargers:a3];
+    [(SearchResultsDataSource *)searchResultsDataSource refreshEVChargers:chargers];
   }
 }
 
@@ -3062,20 +3062,20 @@ LABEL_43:
     if (!v4)
     {
 LABEL_12:
-      v9 = [(ResultsViewController *)self _displayMessageFromError];
-      v7 = v9;
-      if (!v9)
+      _displayMessageFromError = [(ResultsViewController *)self _displayMessageFromError];
+      v7 = _displayMessageFromError;
+      if (!_displayMessageFromError)
       {
         v11 = +[NSBundle mainBundle];
-        v2 = [v11 localizedStringForKey:@"no_result_key" value:@"localized string not found" table:0];
+        _displayMessageForNoInternet = [v11 localizedStringForKey:@"no_result_key" value:@"localized string not found" table:0];
 
 LABEL_25:
         goto LABEL_26;
       }
 
-      v10 = v9;
+      v10 = _displayMessageFromError;
 LABEL_24:
-      v2 = v10;
+      _displayMessageForNoInternet = v10;
       goto LABEL_25;
     }
 
@@ -3131,7 +3131,7 @@ LABEL_23:
       v8 = @"NoSearchResults_CellDataDisabled";
       goto LABEL_23;
     case 3:
-      v2 = [(ResultsViewController *)self _displayMessageForNoInternet];
+      _displayMessageForNoInternet = [(ResultsViewController *)self _displayMessageForNoInternet];
       break;
     case 4:
       goto LABEL_12;
@@ -3139,7 +3139,7 @@ LABEL_23:
 
 LABEL_26:
 
-  return v2;
+  return _displayMessageForNoInternet;
 }
 
 - (id)_displayMessageForNoInternet
@@ -3164,15 +3164,15 @@ LABEL_26:
 
 - (id)_displayMessageFromError
 {
-  v3 = [(SearchSession *)self->_searchSession lastError];
-  v4 = v3;
-  if (!v3)
+  lastError = [(SearchSession *)self->_searchSession lastError];
+  v4 = lastError;
+  if (!lastError)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 domain];
-  if (([v5 isEqualToString:kCFErrorDomainCFNetwork] & 1) == 0)
+  domain = [lastError domain];
+  if (([domain isEqualToString:kCFErrorDomainCFNetwork] & 1) == 0)
   {
 
     goto LABEL_6;
@@ -3180,23 +3180,23 @@ LABEL_26:
 
   if ([v4 code] != 310)
   {
-    v7 = [v4 code];
+    code = [v4 code];
 
-    if (v7 == -1001)
+    if (code == -1001)
     {
       goto LABEL_8;
     }
 
 LABEL_6:
-    v6 = 0;
+    _displayMessageForNoInternet = 0;
     goto LABEL_9;
   }
 
 LABEL_8:
-  v6 = [(ResultsViewController *)self _displayMessageForNoInternet];
+  _displayMessageForNoInternet = [(ResultsViewController *)self _displayMessageForNoInternet];
 LABEL_9:
 
-  return v6;
+  return _displayMessageForNoInternet;
 }
 
 - (id)localSearchViewController
@@ -3208,11 +3208,11 @@ LABEL_9:
     v5 = self->_localSearchViewController;
     self->_localSearchViewController = v4;
 
-    v6 = [(LocalSearchViewController *)self->_localSearchViewController view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(LocalSearchViewController *)self->_localSearchViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    -[LocalSearchViewController setEnable:](self->_localSearchViewController, "setEnable:", [v7 containerStyle] != 6);
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    -[LocalSearchViewController setEnable:](self->_localSearchViewController, "setEnable:", [cardPresentationController containerStyle] != 6);
 
     [(LocalSearchViewController *)self->_localSearchViewController setDelegate:self];
     localSearchViewController = self->_localSearchViewController;
@@ -3301,14 +3301,14 @@ LABEL_9:
   v3 = sub_100067540();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(SearchSession *)self->_searchSession searchFieldItem];
+    searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
     *buf = 138412290;
-    v43 = v4;
+    v43 = searchFieldItem;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[ResultsVC] Refreshing current search: %@", buf, 0xCu);
   }
 
-  v5 = [(SearchSession *)self->_searchSession searchFieldItem];
-  v6 = [(ResultsViewController *)self originalSearchInfo];
+  searchFieldItem2 = [(SearchSession *)self->_searchSession searchFieldItem];
+  originalSearchInfo = [(ResultsViewController *)self originalSearchInfo];
   v40 = @"SearchSessionIsAutoRedoSearch";
   v41 = &__kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
@@ -3319,25 +3319,25 @@ LABEL_9:
     [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionAddStopFromWaypointEditor"];
   }
 
-  v9 = [v6 resultRefinementGroup];
+  resultRefinementGroup = [originalSearchInfo resultRefinementGroup];
 
-  if (v9)
+  if (resultRefinementGroup)
   {
-    v10 = objc_alloc_init(GEOPDResultRefinementQuery);
-    [v10 setResultRefinementOriginType:self->_lastRefinementOriginType];
-    v11 = [v6 resultRefinementGroup];
-    v12 = [v11 refinementSessionState];
-    [v10 setRefinementSessionState:v12];
+    resultsDelegate2 = objc_alloc_init(GEOPDResultRefinementQuery);
+    [resultsDelegate2 setResultRefinementOriginType:self->_lastRefinementOriginType];
+    resultRefinementGroup2 = [originalSearchInfo resultRefinementGroup];
+    refinementSessionState = [resultRefinementGroup2 refinementSessionState];
+    [resultsDelegate2 setRefinementSessionState:refinementSessionState];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v6 resultRefinementGroup];
-    v14 = [v13 resultRefinementBar];
-    v15 = [v14 resultRefinements];
+    resultRefinementGroup3 = [originalSearchInfo resultRefinementGroup];
+    resultRefinementBar = [resultRefinementGroup3 resultRefinementBar];
+    resultRefinements = [resultRefinementBar resultRefinements];
 
-    v16 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v16 = [resultRefinements countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
@@ -3349,17 +3349,17 @@ LABEL_9:
         {
           if (*v35 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(resultRefinements);
           }
 
-          v20 = [*(*(&v34 + 1) + 8 * v19) convertToGEOPDResultRefinement];
-          [v10 addRefinement:v20];
+          convertToGEOPDResultRefinement = [*(*(&v34 + 1) + 8 * v19) convertToGEOPDResultRefinement];
+          [resultsDelegate2 addRefinement:convertToGEOPDResultRefinement];
 
           v19 = v19 + 1;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v17 = [resultRefinements countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v17);
@@ -3369,11 +3369,11 @@ LABEL_9:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v21 = [v6 resultRefinementGroup];
-    v22 = [v21 resultRefinementView];
-    v23 = [v22 sections];
+    resultRefinementGroup4 = [originalSearchInfo resultRefinementGroup];
+    resultRefinementView = [resultRefinementGroup4 resultRefinementView];
+    sections = [resultRefinementView sections];
 
-    v24 = [v23 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v24 = [sections countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v24)
     {
       v25 = v24;
@@ -3385,59 +3385,59 @@ LABEL_9:
         {
           if (*v31 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(sections);
           }
 
-          v28 = [*(*(&v30 + 1) + 8 * v27) convertToGEOPDResultRefinementSection];
-          [v10 addRefinementSection:v28];
+          convertToGEOPDResultRefinementSection = [*(*(&v30 + 1) + 8 * v27) convertToGEOPDResultRefinementSection];
+          [resultsDelegate2 addRefinementSection:convertToGEOPDResultRefinementSection];
 
           v27 = v27 + 1;
         }
 
         while (v25 != v27);
-        v25 = [v23 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v25 = [sections countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v25);
     }
 
-    v29 = [(ResultsViewController *)self resultsDelegate];
-    [v29 doSearchItem:v5 withUserInfo:v8 refinementsQuery:v10 viewController:self];
+    resultsDelegate = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate doSearchItem:searchFieldItem2 withUserInfo:v8 refinementsQuery:resultsDelegate2 viewController:self];
   }
 
   else
   {
-    v10 = [(ResultsViewController *)self resultsDelegate];
-    [v10 doSearchItem:v5 withUserInfo:v8 viewController:self];
+    resultsDelegate2 = [(ResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 doSearchItem:searchFieldItem2 withUserInfo:v8 viewController:self];
   }
 }
 
 - (BOOL)hasResults
 {
-  v2 = [(SearchSession *)self->_searchSession currentResults];
-  v3 = [v2 count] != 0;
+  currentResults = [(SearchSession *)self->_searchSession currentResults];
+  v3 = [currentResults count] != 0;
 
   return v3;
 }
 
-- (id)initForOmipresentSearchBar:(BOOL)a3
+- (id)initForOmipresentSearchBar:(BOOL)bar
 {
   result = [(ResultsViewController *)self init];
   if (result)
   {
-    *(result + 200) = a3;
+    *(result + 200) = bar;
   }
 
   return result;
 }
 
-+ (BOOL)isReloadingRefinementsWithSearchSession:(id)a3
++ (BOOL)isReloadingRefinementsWithSearchSession:(id)session
 {
-  v3 = a3;
-  if ([v3 isResultRefinementsBarSearch])
+  sessionCopy = session;
+  if ([sessionCopy isResultRefinementsBarSearch])
   {
-    v4 = [v3 currentResults];
-    v5 = [v4 count] == 0;
+    currentResults = [sessionCopy currentResults];
+    v5 = [currentResults count] == 0;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface MKLinkPreviewSnapshotRequest
 - (BOOL)isCancelled;
 - (BOOL)isLoading;
-- (MKLinkPreviewSnapshotRequest)initWithMetadata:(id)a3;
-- (void)_annotatedSnapshotImageWithMetadata:(id)a3 isLightMode:(BOOL)a4 completionHandler:(id)a5;
-- (void)_failWithError:(id)a3;
+- (MKLinkPreviewSnapshotRequest)initWithMetadata:(id)metadata;
+- (void)_annotatedSnapshotImageWithMetadata:(id)metadata isLightMode:(BOOL)mode completionHandler:(id)handler;
+- (void)_failWithError:(id)error;
 - (void)_handleDirectionsAction;
 - (void)_handleGuidesAction;
 - (void)_handleLookAroundAction;
@@ -11,7 +11,7 @@
 - (void)_handleReportAProblemAction;
 - (void)cancel;
 - (void)dealloc;
-- (void)getSnapshotWithCompletionHandler:(id)a3;
+- (void)getSnapshotWithCompletionHandler:(id)handler;
 @end
 
 @implementation MKLinkPreviewSnapshotRequest
@@ -36,28 +36,28 @@
 {
   v3 = self->_metadata;
   v4 = MEMORY[0x1A58E9F30](self->_completionHandler);
-  v5 = [(MKLinkPreviewMetadata *)v3 curatedCollection];
+  curatedCollection = [(MKLinkPreviewMetadata *)v3 curatedCollection];
 
-  if (v5)
+  if (curatedCollection)
   {
-    v6 = [(MKLinkPreviewMetadata *)v3 curatedCollection];
+    curatedCollection2 = [(MKLinkPreviewMetadata *)v3 curatedCollection];
     v7 = +[MKSystemController sharedInstance];
     [v7 screenScale];
     v9 = v8;
 
-    v10 = [v6 photos];
-    v11 = [v10 firstObject];
+    photos = [curatedCollection2 photos];
+    firstObject = [photos firstObject];
     +[MKLinkPreviewSnapshot size];
     v13 = v12;
     v15 = v14;
     v16 = [MEMORY[0x1E69A21D8] defaultPhotoOptionsWithAllowSmaller:1];
-    v17 = [v11 bestPhotoForFrameSize:v16 displayScale:v13 options:{v15, v9}];
+    v17 = [firstObject bestPhotoForFrameSize:v16 displayScale:v13 options:{v15, v9}];
 
     if (v17)
     {
       v18 = [v17 url];
-      v19 = [v18 absoluteString];
-      v20 = [v19 length];
+      absoluteString = [v18 absoluteString];
+      v20 = [absoluteString length];
 
       if (v20)
       {
@@ -76,9 +76,9 @@
 
   else
   {
-    v23 = [(MKLinkPreviewMetadata *)v3 collectionStorage];
+    collectionStorage = [(MKLinkPreviewMetadata *)v3 collectionStorage];
 
-    if (v23)
+    if (collectionStorage)
     {
       [(MKLinkPreviewSnapshotRequest *)self _handleMapSnapshotAction];
     }
@@ -155,17 +155,17 @@ void __51__MKLinkPreviewSnapshotRequest__handleGuidesAction__block_invoke_3(uint
   v3 = self->_metadata;
   v4 = MEMORY[0x1A58E9F30](completionHandler);
   v5 = objc_alloc_init(MKLookAroundSnapshotOptions);
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.Maps"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.Maps"];
 
-  v9 = [(MKLookAroundSnapshotOptions *)v5 _options];
-  [v9 _setUseSnapshotService:v8 ^ 1u];
+  _options = [(MKLookAroundSnapshotOptions *)v5 _options];
+  [_options _setUseSnapshotService:v8 ^ 1u];
 
   +[MKLinkPreviewSnapshot size];
   [(MKLookAroundSnapshotOptions *)v5 setSize:?];
-  v10 = [(MKLinkPreviewMetadata *)v3 scene];
-  v11 = [[MKLookAroundSnapshotter alloc] initWithScene:v10 options:v5];
+  scene = [(MKLinkPreviewMetadata *)v3 scene];
+  v11 = [[MKLookAroundSnapshotter alloc] initWithScene:scene options:v5];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__MKLinkPreviewSnapshotRequest__handleLookAroundAction__block_invoke;
@@ -233,8 +233,8 @@ void __55__MKLinkPreviewSnapshotRequest__handleLookAroundAction__block_invoke_14
   v30[3] = __Block_byref_object_copy__21563;
   v30[4] = __Block_byref_object_dispose__21564;
   v31 = objc_alloc_init(MKLinkPreviewSnapshot);
-  v5 = [(MKLinkPreviewMetadata *)v3 mapItems];
-  v6 = [v5 count];
+  mapItems = [(MKLinkPreviewMetadata *)v3 mapItems];
+  v6 = [mapItems count];
 
   if (v6)
   {
@@ -375,14 +375,14 @@ void __56__MKLinkPreviewSnapshotRequest__handleMapSnapshotAction__block_invoke_3
   _performBlockOnMainThreadIfNeeded(v6);
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MKLinkPreviewSnapshotRequest *)self cancel];
   v5 = MEMORY[0x1A58E9F30](self->_completionHandler);
-  if (v4)
+  if (errorCopy)
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   else
@@ -402,39 +402,39 @@ void __56__MKLinkPreviewSnapshotRequest__handleMapSnapshotAction__block_invoke_3
   _performBlockOnMainThreadIfNeeded(v10);
 }
 
-- (void)_annotatedSnapshotImageWithMetadata:(id)a3 isLightMode:(BOOL)a4 completionHandler:(id)a5
+- (void)_annotatedSnapshotImageWithMetadata:(id)metadata isLightMode:(BOOL)mode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v10 isEqualToString:@"com.apple.Maps"];
+  modeCopy = mode;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v11 = [bundleIdentifier isEqualToString:@"com.apple.Maps"];
 
-  [v7 coordinateRegion];
+  [metadataCopy coordinateRegion];
   if (fabs(v15) > 180.0 || fabs(v12) > 90.0 || v13 < 0.0 || v13 > 180.0 || v14 < 0.0 || v14 > 360.0)
   {
     v29 = [MKAnnotatedMapSnapshotter alloc];
-    v17 = [v7 mapItems];
-    v30 = [v7 mapCamera];
+    mapItems = [metadataCopy mapItems];
+    mapCamera = [metadataCopy mapCamera];
     +[MKLinkPreviewSnapshot size];
-    v28 = -[MKAnnotatedMapSnapshotter initWithMapItems:camera:mapSize:mapType:useSnapshotService:](v29, "initWithMapItems:camera:mapSize:mapType:useSnapshotService:", v17, v30, [v7 mapType], v11 ^ 1u, v31, v32);
+    v28 = -[MKAnnotatedMapSnapshotter initWithMapItems:camera:mapSize:mapType:useSnapshotService:](v29, "initWithMapItems:camera:mapSize:mapType:useSnapshotService:", mapItems, mapCamera, [metadataCopy mapType], v11 ^ 1u, v31, v32);
   }
 
   else
   {
     v16 = [MKAnnotatedMapSnapshotter alloc];
-    v17 = [v7 mapItems];
-    [v7 coordinateRegion];
+    mapItems = [metadataCopy mapItems];
+    [metadataCopy coordinateRegion];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
     +[MKLinkPreviewSnapshot size];
-    v28 = -[MKAnnotatedMapSnapshotter initWithMapItems:region:mapSize:mapType:useSnapshotService:](v16, "initWithMapItems:region:mapSize:mapType:useSnapshotService:", v17, [v7 mapType], v11 ^ 1u, v19, v21, v23, v25, v26, v27);
+    v28 = -[MKAnnotatedMapSnapshotter initWithMapItems:region:mapSize:mapType:useSnapshotService:](v16, "initWithMapItems:region:mapSize:mapType:useSnapshotService:", mapItems, [metadataCopy mapType], v11 ^ 1u, v19, v21, v23, v25, v26, v27);
   }
 
-  if (v6)
+  if (modeCopy)
   {
     v33 = 1;
   }
@@ -451,8 +451,8 @@ void __56__MKLinkPreviewSnapshotRequest__handleMapSnapshotAction__block_invoke_3
   v37[1] = 3221225472;
   v37[2] = __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLightMode_completionHandler___block_invoke;
   v37[3] = &unk_1E76CD9A8;
-  v38 = v8;
-  v36 = v8;
+  v38 = handlerCopy;
+  v36 = handlerCopy;
   [(MKAnnotatedMapSnapshotter *)v28 startWithQueue:v35 completionHandler:v37];
 }
 
@@ -517,10 +517,10 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)getSnapshotWithCompletionHandler:(id)a3
+- (void)getSnapshotWithCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   if (self->_loading)
   {
@@ -539,7 +539,7 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
     v20[2] = __65__MKLinkPreviewSnapshotRequest_getSnapshotWithCompletionHandler___block_invoke;
     v20[3] = &unk_1E76CDA20;
     v21 = v7;
-    v22 = v4;
+    v22 = handlerCopy;
     v8 = v7;
     _performBlockOnMainThreadIfNeeded(v20);
 
@@ -550,14 +550,14 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
   {
     self->_loading = 1;
     os_unfair_lock_unlock(&self->_stateLock);
-    v10 = MEMORY[0x1A58E9F30](v4);
+    v10 = MEMORY[0x1A58E9F30](handlerCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v10;
 
-    v12 = [(MKLinkPreviewMetadata *)self->_metadata actionType];
-    if (v12 > 4)
+    actionType = [(MKLinkPreviewMetadata *)self->_metadata actionType];
+    if (actionType > 4)
     {
-      switch(v12)
+      switch(actionType)
       {
         case 5:
           [(MKLinkPreviewSnapshotRequest *)self _handleLookAroundAction];
@@ -573,13 +573,13 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
 
     else
     {
-      if ((v12 - 2) < 3)
+      if ((actionType - 2) < 3)
       {
         [(MKLinkPreviewSnapshotRequest *)self _handleMapSnapshotAction];
         goto LABEL_20;
       }
 
-      if (v12 == 1)
+      if (actionType == 1)
       {
         [(MKLinkPreviewSnapshotRequest *)self _handleDirectionsAction];
         goto LABEL_20;
@@ -589,9 +589,9 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
     v13 = MKGetMKLinkPreviewLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(MKLinkPreviewMetadata *)self->_metadata actionType];
+      actionType2 = [(MKLinkPreviewMetadata *)self->_metadata actionType];
       *buf = 134217984;
-      v24 = v14;
+      v24 = actionType2;
       _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_ERROR, "Unknown URL ActionType encountered : %lu", buf, 0xCu);
     }
 
@@ -602,7 +602,7 @@ void __98__MKLinkPreviewSnapshotRequest__annotatedSnapshotImageWithMetadata_isLi
     v17[2] = __65__MKLinkPreviewSnapshotRequest_getSnapshotWithCompletionHandler___block_invoke_3;
     v17[3] = &unk_1E76CDA20;
     v18 = v16;
-    v19 = v4;
+    v19 = handlerCopy;
     v8 = v16;
     _performBlockOnMainThreadIfNeeded(v17);
 
@@ -636,16 +636,16 @@ LABEL_20:
   [(MKLinkPreviewSnapshotRequest *)&v3 dealloc];
 }
 
-- (MKLinkPreviewSnapshotRequest)initWithMetadata:(id)a3
+- (MKLinkPreviewSnapshotRequest)initWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = MKLinkPreviewSnapshotRequest;
   v6 = [(MKLinkPreviewSnapshotRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadata, a3);
+    objc_storeStrong(&v6->_metadata, metadata);
   }
 
   return v7;

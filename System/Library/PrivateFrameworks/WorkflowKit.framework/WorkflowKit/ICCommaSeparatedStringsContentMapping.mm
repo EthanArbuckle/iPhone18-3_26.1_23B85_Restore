@@ -2,22 +2,22 @@
 - (id)allowedCharacterSet;
 - (id)contentItemClasses;
 - (id)escapedCharacters;
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICCommaSeparatedStringsContentMapping
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v7 = a3;
+  representationCopy = representation;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__ICCommaSeparatedStringsContentMapping_getStringRepresentation_withInput_parameters___block_invoke;
   v9[3] = &unk_1E837F020;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [a4 getStringRepresentations:v9];
+  v10 = representationCopy;
+  v8 = representationCopy;
+  [input getStringRepresentations:v9];
 }
 
 void __86__ICCommaSeparatedStringsContentMapping_getStringRepresentation_withInput_parameters___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -46,20 +46,20 @@ id __86__ICCommaSeparatedStringsContentMapping_getStringRepresentation_withInput
 
 - (id)allowedCharacterSet
 {
-  v3 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v4 = [v3 mutableCopy];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v4 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v4 removeCharactersInString:@"?&="];
-  v5 = [(ICCommaSeparatedStringsContentMapping *)self escapedCharacters];
-  [v4 removeCharactersInString:v5];
+  escapedCharacters = [(ICCommaSeparatedStringsContentMapping *)self escapedCharacters];
+  [v4 removeCharactersInString:escapedCharacters];
 
   return v4;
 }
 
 - (id)escapedCharacters
 {
-  v2 = [(WFInterchangeContentMapping *)self definition];
-  v3 = [v2 objectForKey:@"EscapedCharacters"];
+  definition = [(WFInterchangeContentMapping *)self definition];
+  v3 = [definition objectForKey:@"EscapedCharacters"];
   v4 = v3;
   if (v3)
   {

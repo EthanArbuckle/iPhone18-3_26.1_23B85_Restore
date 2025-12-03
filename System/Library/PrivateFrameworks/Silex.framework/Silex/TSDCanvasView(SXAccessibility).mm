@@ -10,17 +10,17 @@
 - (id)sxaxNextSpeakThisElementFromElement:()SXAccessibility
 {
   v4 = a3;
-  v5 = [a1 _speakThisElements];
-  v6 = [v5 indexOfObject:v4];
+  _speakThisElements = [self _speakThisElements];
+  v6 = [_speakThisElements indexOfObject:v4];
 
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || v6 >= [v5 count] - 1)
+  if (v6 == 0x7FFFFFFFFFFFFFFFLL || v6 >= [_speakThisElements count] - 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:v6 + 1];
+    v7 = [_speakThisElements objectAtIndexedSubscript:v6 + 1];
   }
 
   return v7;
@@ -28,7 +28,7 @@
 
 - (uint64_t)accessibilityElementsHidden
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = TSDCanvasView_0;
   if (objc_msgSendSuper2(&v3, sel_accessibilityElementsHidden))
   {
@@ -37,23 +37,23 @@
 
   else
   {
-    return [a1 _isInPreviewPlatter];
+    return [self _isInPreviewPlatter];
   }
 }
 
 - (id)_speakThisElements
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 controller];
-  v4 = [v3 canvas];
-  v5 = [v4 topLevelReps];
+  array = [MEMORY[0x1E695DF70] array];
+  controller = [self controller];
+  canvas = [controller canvas];
+  topLevelReps = [canvas topLevelReps];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v5;
+  v6 = topLevelReps;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
@@ -71,7 +71,7 @@
         v11 = *(*(&v26 + 1) + 8 * i);
         if ([v11 _accessibilityIsSpeakThisElement])
         {
-          [v2 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -81,8 +81,8 @@
     while (v8);
   }
 
-  v12 = [MEMORY[0x1E69DB5C8] defaultSpeakScreenOptions];
-  v13 = [a1 _accessibilityLeafDescendantsWithOptions:v12];
+  defaultSpeakScreenOptions = [MEMORY[0x1E69DB5C8] defaultSpeakScreenOptions];
+  v13 = [self _accessibilityLeafDescendantsWithOptions:defaultSpeakScreenOptions];
 
   v24 = 0u;
   v25 = 0u;
@@ -104,9 +104,9 @@
         }
 
         v19 = *(*(&v22 + 1) + 8 * j);
-        if ([v19 _accessibilityIsSpeakThisElement] && (objc_msgSend(v2, "containsObject:", v19) & 1) == 0)
+        if ([v19 _accessibilityIsSpeakThisElement] && (objc_msgSend(array, "containsObject:", v19) & 1) == 0)
         {
-          [v2 addObject:v19];
+          [array addObject:v19];
         }
       }
 
@@ -116,8 +116,8 @@
     while (v16);
   }
 
-  [v2 sortUsingComparator:&__block_literal_global_49];
-  v20 = [v2 copy];
+  [array sortUsingComparator:&__block_literal_global_49];
+  v20 = [array copy];
 
   return v20;
 }
@@ -135,20 +135,20 @@
   }
 
   v3 = v2;
-  v4 = [a1 window];
+  window = [self window];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__TSDCanvasView_SXAccessibility___isInPreviewPlatter__block_invoke;
   v9[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v9[4] = v3;
-  v5 = [v4 _accessibilityFindSubviewDescendant:v9];
+  v5 = [window _accessibilityFindSubviewDescendant:v9];
 
   if (objc_opt_respondsToSelector())
   {
     v6 = [v5 valueForKey:@"sourceView"];
     if (v6)
     {
-      v7 = [a1 isDescendantOfView:v6];
+      v7 = [self isDescendantOfView:v6];
     }
 
     else

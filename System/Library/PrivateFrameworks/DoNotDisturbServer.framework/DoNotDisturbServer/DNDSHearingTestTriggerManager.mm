@@ -1,33 +1,33 @@
 @interface DNDSHearingTestTriggerManager
 - (DNDSHearingTestTriggerManagerDataSource)dataSource;
-- (void)refreshWithEvent:(id)a3;
+- (void)refreshWithEvent:(id)event;
 @end
 
 @implementation DNDSHearingTestTriggerManager
 
-- (void)refreshWithEvent:(id)a3
+- (void)refreshWithEvent:(id)event
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DNDSHearingTestTriggerManager *)self dataSource];
+  eventCopy = event;
+  dataSource = [(DNDSHearingTestTriggerManager *)self dataSource];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v7 = [WeakRetained hearingTestModeForHearingTestTriggerManager:self];
 
-  v8 = [v7 modeIdentifier];
+  modeIdentifier = [v7 modeIdentifier];
   v60 = 0;
-  v9 = [v5 triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.hearing-trigger" error:&v60];
+  v9 = [dataSource triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.hearing-trigger" error:&v60];
   v10 = v60;
-  if (!v4)
+  if (!eventCopy)
   {
     if ([v9 count])
     {
-      v17 = [v9 firstObject];
-      v13 = v17;
-      if (v8)
+      firstObject = [v9 firstObject];
+      v13 = firstObject;
+      if (modeIdentifier)
       {
-        v18 = [v17 details];
-        v19 = [v18 modeIdentifier];
-        v20 = [v8 isEqualToString:v19];
+        details = [firstObject details];
+        modeIdentifier2 = [details modeIdentifier];
+        v20 = [modeIdentifier isEqualToString:modeIdentifier2];
 
         if (v20)
         {
@@ -37,48 +37,48 @@
         else
         {
           v52 = v13;
-          v43 = [v13 details];
-          v44 = [v43 mutableCopy];
+          details2 = [v13 details];
+          v44 = [details2 mutableCopy];
 
-          [v44 setModeIdentifier:v8];
+          [v44 setModeIdentifier:modeIdentifier];
           v58 = v10;
-          v45 = [v5 triggerManager:self takeModeAssertionWithDetails:v44 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v58];
+          v45 = [dataSource triggerManager:self takeModeAssertionWithDetails:v44 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v58];
           v15 = v58;
 
           v46 = DNDSLogHearingTestTrigger;
           if (os_log_type_enabled(DNDSLogHearingTestTrigger, OS_LOG_TYPE_DEFAULT))
           {
             v47 = v46;
-            v48 = [v52 details];
-            v49 = [v48 modeIdentifier];
+            details3 = [v52 details];
+            modeIdentifier3 = [details3 modeIdentifier];
             *buf = 138543618;
-            v62 = v8;
+            v62 = modeIdentifier;
             v63 = 2114;
-            v64 = v49;
+            v64 = modeIdentifier3;
             _os_log_impl(&dword_24912E000, v47, OS_LOG_TYPE_DEFAULT, "Updating active assertion to new mode identifer for hearing test session trigger; modeID=%{public}@ previousModeID=%{public}@", buf, 0x16u);
           }
 
           v13 = v52;
         }
 
-        v4 = 0;
+        eventCopy = 0;
       }
 
       else
       {
-        v37 = [v17 UUID];
+        uUID = [firstObject UUID];
         v59 = v10;
-        v38 = [v5 triggerManager:self invalidateModeAssertionWithUUID:v37 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v59];
+        v38 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v59];
         v15 = v59;
 
         v39 = DNDSLogHearingTestTrigger;
         if (os_log_type_enabled(DNDSLogHearingTestTrigger, OS_LOG_TYPE_DEFAULT))
         {
           v40 = v39;
-          v41 = [v13 details];
-          v42 = [v41 modeIdentifier];
+          details4 = [v13 details];
+          modeIdentifier4 = [details4 modeIdentifier];
           *buf = 138543362;
-          v62 = v42;
+          v62 = modeIdentifier4;
           _os_log_impl(&dword_24912E000, v40, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for hearing test session trigger; previousModeID=%{public}@", buf, 0xCu);
         }
       }
@@ -91,27 +91,27 @@ LABEL_18:
     goto LABEL_28;
   }
 
-  if (v8)
+  if (modeIdentifier)
   {
-    v11 = [v4 isHearingTestActive];
+    isHearingTestActive = [eventCopy isHearingTestActive];
     v12 = [v9 count];
-    if (v11)
+    if (isHearingTestActive)
     {
       if (!v12)
       {
         v13 = objc_alloc_init(MEMORY[0x277D05A40]);
         [v13 setIdentifier:@"com.apple.donotdisturb.trigger.hearing"];
         [v13 setLifetime:0];
-        [v13 setModeIdentifier:v8];
+        [v13 setModeIdentifier:modeIdentifier];
         v57 = v10;
-        v14 = [v5 triggerManager:self takeModeAssertionWithDetails:v13 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v57];
+        v14 = [dataSource triggerManager:self takeModeAssertionWithDetails:v13 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v57];
         v15 = v57;
 
         v16 = DNDSLogHearingTestTrigger;
         if (os_log_type_enabled(DNDSLogHearingTestTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v62 = v8;
+          v62 = modeIdentifier;
           _os_log_impl(&dword_24912E000, v16, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for hearing test session trigger in response to event; modeID=%{public}@", buf, 0xCu);
         }
 
@@ -132,25 +132,25 @@ LABEL_25:
     v55[1] = 3221225472;
     v55[2] = __50__DNDSHearingTestTriggerManager_refreshWithEvent___block_invoke;
     v55[3] = &unk_278F8A0B0;
-    v56 = v8;
+    v56 = modeIdentifier;
     v29 = [v9 bs_filter:v55];
-    v30 = [v29 firstObject];
+    firstObject2 = [v29 firstObject];
 
-    if (v30)
+    if (firstObject2)
     {
-      v31 = [v30 UUID];
+      uUID2 = [firstObject2 UUID];
       v54 = v10;
-      v32 = [v5 triggerManager:self invalidateModeAssertionWithUUID:v31 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v54];
+      v32 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID2 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v54];
       v15 = v54;
 
       v33 = DNDSLogHearingTestTrigger;
       if (os_log_type_enabled(DNDSLogHearingTestTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [v30 details];
-        v36 = [v35 modeIdentifier];
+        details5 = [firstObject2 details];
+        modeIdentifier5 = [details5 modeIdentifier];
         *buf = 138543362;
-        v62 = v36;
+        v62 = modeIdentifier5;
         _os_log_impl(&dword_24912E000, v34, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion for hearing test session trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
       }
     }
@@ -168,21 +168,21 @@ LABEL_25:
       goto LABEL_18;
     }
 
-    v21 = [v9 firstObject];
-    v22 = [v21 UUID];
+    firstObject3 = [v9 firstObject];
+    uUID3 = [firstObject3 UUID];
     v53 = v10;
-    v23 = [v5 triggerManager:self invalidateModeAssertionWithUUID:v22 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v53];
+    v23 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID3 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.hearing-trigger" error:&v53];
     v15 = v53;
 
     v24 = DNDSLogHearingTestTrigger;
     if (os_log_type_enabled(DNDSLogHearingTestTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v9 firstObject];
-      v27 = [v26 details];
-      v28 = [v27 modeIdentifier];
+      firstObject4 = [v9 firstObject];
+      details6 = [firstObject4 details];
+      modeIdentifier6 = [details6 modeIdentifier];
       *buf = 138543362;
-      v62 = v28;
+      v62 = modeIdentifier6;
       _os_log_impl(&dword_24912E000, v25, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion for hearing test session trigger in response to event, trigger is disabled; previousModeID=%{public}@", buf, 0xCu);
     }
   }

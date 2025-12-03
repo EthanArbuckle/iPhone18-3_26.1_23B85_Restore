@@ -1,26 +1,26 @@
 @interface MXMOSSignpostProbe
 + (id)probeHostLive;
-+ (id)probeHostSystemLogArchiveWithRelativeTimeInterval:(double)a3;
-+ (id)probeHostSystemLogArchiveWithStartDate:(id)a3 endDate:(id)a4;
-+ (id)probeHostSystemLogArchiveWithStartDate:(id)a3 endDate:(id)a4 startMachTime:(unint64_t)a5 stopMachTime:(unint64_t)a6;
-+ (id)probeWithLogArchivePath:(id)a3;
-+ (id)probeWithLogArchivePath:(id)a3 startDate:(id)a4 endDate:(id)a5;
-+ (id)probeWithLogArchivePath:(id)a3 startDate:(id)a4 endDate:(id)a5 startMachTime:(unint64_t)a6 stopMachTime:(unint64_t)a7;
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3;
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3 logArchive:(id)a4 startDate:(id)a5 endDate:(id)a6;
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3 logArchive:(id)a4 startDate:(id)a5 endDate:(id)a6 startMachTime:(unint64_t)a7 stopMachTime:(unint64_t)a8;
-- (id)_buildSampleSetWithData:(id)a3 tag:(id)a4 unit:(id)a5 attributes:(id)a6 signpostObject:(id)a7;
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4;
-- (void)_addAnimationFrameCountToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
-- (void)_addAnimationFrameRateToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
-- (void)_addAnimationGlitchTimeRatioToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
-- (void)_addAnimationGlitchesTotalDurationToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
-- (void)_addAnimationNumberOfGlitchesToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
-- (void)_addAnimationRenderStatsToData:(id)a3 fromSignpostAnimationInterval:(id)a4;
++ (id)probeHostSystemLogArchiveWithRelativeTimeInterval:(double)interval;
++ (id)probeHostSystemLogArchiveWithStartDate:(id)date endDate:(id)endDate;
++ (id)probeHostSystemLogArchiveWithStartDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime;
++ (id)probeWithLogArchivePath:(id)path;
++ (id)probeWithLogArchivePath:(id)path startDate:(id)date endDate:(id)endDate;
++ (id)probeWithLogArchivePath:(id)path startDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime;
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode;
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode logArchive:(id)archive startDate:(id)date endDate:(id)endDate;
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode logArchive:(id)archive startDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime;
+- (id)_buildSampleSetWithData:(id)data tag:(id)tag unit:(id)unit attributes:(id)attributes signpostObject:(id)object;
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason;
+- (void)_addAnimationFrameCountToData:(id)data fromSignpostAnimationInterval:(id)interval;
+- (void)_addAnimationFrameRateToData:(id)data fromSignpostAnimationInterval:(id)interval;
+- (void)_addAnimationGlitchTimeRatioToData:(id)data fromSignpostAnimationInterval:(id)interval;
+- (void)_addAnimationGlitchesTotalDurationToData:(id)data fromSignpostAnimationInterval:(id)interval;
+- (void)_addAnimationNumberOfGlitchesToData:(id)data fromSignpostAnimationInterval:(id)interval;
+- (void)_addAnimationRenderStatsToData:(id)data fromSignpostAnimationInterval:(id)interval;
 - (void)_beginUpdates;
-- (void)_buildData:(id)a3 attributes:(id)a4 signpostEvent:(id)a5;
-- (void)_buildData:(id)a3 signpostAnimationInterval:(id)a4;
-- (void)_buildData:(id)a3 signpostInterval:(id)a4;
+- (void)_buildData:(id)data attributes:(id)attributes signpostEvent:(id)event;
+- (void)_buildData:(id)data signpostAnimationInterval:(id)interval;
+- (void)_buildData:(id)data signpostInterval:(id)interval;
 - (void)_setupProcessingBlocks;
 - (void)_setupProcessingFilter;
 - (void)_stopUpdates;
@@ -31,68 +31,68 @@
 
 + (id)probeHostLive
 {
-  v2 = [[a1 alloc] initWithMode:0];
+  v2 = [[self alloc] initWithMode:0];
 
   return v2;
 }
 
-+ (id)probeHostSystemLogArchiveWithRelativeTimeInterval:(double)a3
++ (id)probeHostSystemLogArchiveWithRelativeTimeInterval:(double)interval
 {
-  v4 = [a1 alloc];
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-a3];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v4 initWithMode:1 logArchive:0 startDate:v5 endDate:v6];
+  v4 = [self alloc];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-interval];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [v4 initWithMode:1 logArchive:0 startDate:v5 endDate:date];
 
   return v7;
 }
 
-+ (id)probeHostSystemLogArchiveWithStartDate:(id)a3 endDate:(id)a4
++ (id)probeHostSystemLogArchiveWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMode:1 logArchive:0 startDate:v7 endDate:v6];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v8 = [[self alloc] initWithMode:1 logArchive:0 startDate:dateCopy endDate:endDateCopy];
 
   return v8;
 }
 
-+ (id)probeHostSystemLogArchiveWithStartDate:(id)a3 endDate:(id)a4 startMachTime:(unint64_t)a5 stopMachTime:(unint64_t)a6
++ (id)probeHostSystemLogArchiveWithStartDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithMode:1 logArchive:0 startDate:v11 endDate:v10 startMachTime:a5 stopMachTime:a6];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v12 = [[self alloc] initWithMode:1 logArchive:0 startDate:dateCopy endDate:endDateCopy startMachTime:time stopMachTime:machTime];
 
   return v12;
 }
 
-+ (id)probeWithLogArchivePath:(id)a3
++ (id)probeWithLogArchivePath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMode:2 logArchive:v4 startDate:0 endDate:0];
+  pathCopy = path;
+  v5 = [[self alloc] initWithMode:2 logArchive:pathCopy startDate:0 endDate:0];
 
   return v5;
 }
 
-+ (id)probeWithLogArchivePath:(id)a3 startDate:(id)a4 endDate:(id)a5
++ (id)probeWithLogArchivePath:(id)path startDate:(id)date endDate:(id)endDate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithMode:2 logArchive:v10 startDate:v9 endDate:v8];
+  endDateCopy = endDate;
+  dateCopy = date;
+  pathCopy = path;
+  v11 = [[self alloc] initWithMode:2 logArchive:pathCopy startDate:dateCopy endDate:endDateCopy];
 
   return v11;
 }
 
-+ (id)probeWithLogArchivePath:(id)a3 startDate:(id)a4 endDate:(id)a5 startMachTime:(unint64_t)a6 stopMachTime:(unint64_t)a7
++ (id)probeWithLogArchivePath:(id)path startDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[a1 alloc] initWithMode:2 logArchive:v14 startDate:v13 endDate:v12 startMachTime:a6 stopMachTime:a7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  pathCopy = path;
+  v15 = [[self alloc] initWithMode:2 logArchive:pathCopy startDate:dateCopy endDate:endDateCopy startMachTime:time stopMachTime:machTime];
 
   return v15;
 }
 
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode
 {
   v10.receiver = self;
   v10.super_class = MXMOSSignpostProbe;
@@ -103,7 +103,7 @@
     logArchivePath = v4->_logArchivePath;
     v4->_logArchivePath = 0;
 
-    v5->_mode = a3;
+    v5->_mode = mode;
     v7 = objc_alloc_init(MEMORY[0x277D55030]);
     extractor = v5->_extractor;
     v5->_extractor = v7;
@@ -114,51 +114,51 @@
   return v5;
 }
 
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3 logArchive:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode logArchive:(id)archive startDate:(id)date endDate:(id)endDate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MXMOSSignpostProbe *)self initWithMode:a3];
+  archiveCopy = archive;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v14 = [(MXMOSSignpostProbe *)self initWithMode:mode];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_logArchivePath, a4);
-    objc_storeStrong(&v15->_startDate, a5);
-    objc_storeStrong(&v15->_endDate, a6);
+    objc_storeStrong(&v14->_logArchivePath, archive);
+    objc_storeStrong(&v15->_startDate, date);
+    objc_storeStrong(&v15->_endDate, endDate);
   }
 
   return v15;
 }
 
-- (MXMOSSignpostProbe)initWithMode:(unint64_t)a3 logArchive:(id)a4 startDate:(id)a5 endDate:(id)a6 startMachTime:(unint64_t)a7 stopMachTime:(unint64_t)a8
+- (MXMOSSignpostProbe)initWithMode:(unint64_t)mode logArchive:(id)archive startDate:(id)date endDate:(id)endDate startMachTime:(unint64_t)time stopMachTime:(unint64_t)machTime
 {
-  self->_startMachContTime = a7;
-  self->_stopMachContTime = a8;
-  return [(MXMOSSignpostProbe *)self initWithMode:a3 logArchive:a4 startDate:a5 endDate:a6];
+  self->_startMachContTime = time;
+  self->_stopMachContTime = machTime;
+  return [(MXMOSSignpostProbe *)self initWithMode:mode logArchive:archive startDate:date endDate:endDate];
 }
 
 - (void)_setupProcessingFilter
 {
-  v13 = [MEMORY[0x277CBEB18] array];
-  v3 = [(MXMProbe *)self filter];
-  v4 = [v3 attributeFilterWithName:@"os_signpost subsystem"];
-  v5 = [v4 stringValue];
+  array = [MEMORY[0x277CBEB18] array];
+  filter = [(MXMProbe *)self filter];
+  v4 = [filter attributeFilterWithName:@"os_signpost subsystem"];
+  stringValue = [v4 stringValue];
 
-  v6 = [(MXMProbe *)self filter];
-  v7 = [v6 attributeFilterWithName:@"os_signpost category"];
-  v8 = [v7 stringValue];
+  filter2 = [(MXMProbe *)self filter];
+  v7 = [filter2 attributeFilterWithName:@"os_signpost category"];
+  stringValue2 = [v7 stringValue];
 
-  if (v5)
+  if (stringValue)
   {
-    v9 = [objc_alloc(MEMORY[0x277D55048]) initWithSubsystem:v5 category:v8];
-    [v13 addObject:v9];
+    v9 = [objc_alloc(MEMORY[0x277D55048]) initWithSubsystem:stringValue category:stringValue2];
+    [array addObject:v9];
   }
 
-  if ([v13 count])
+  if ([array count])
   {
     v10 = objc_alloc(MEMORY[0x277D55050]);
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v13];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:array];
     v12 = [v10 initWithEntries:v11];
 
     [(SignpostSupportObjectExtractor *)self->_extractor setSubsystemCategoryFilter:v12];
@@ -371,30 +371,30 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_buildSampleSetWithData:(id)a3 tag:(id)a4 unit:(id)a5 attributes:(id)a6 signpostObject:(id)a7
+- (id)_buildSampleSetWithData:(id)data tag:(id)tag unit:(id)unit attributes:(id)attributes signpostObject:(id)object
 {
   v67[4] = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v64 = a4;
-  v63 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = v11;
-  if (!v11)
+  dataCopy = data;
+  tagCopy = tag;
+  unitCopy = unit;
+  attributesCopy = attributes;
+  objectCopy = object;
+  v13 = attributesCopy;
+  if (!attributesCopy)
   {
     v13 = [MEMORY[0x277CBEB58] set];
   }
 
-  v62 = [v12 name];
-  v61 = [MXMSampleAttribute attributeWithName:@"os_signpost name" stringValue:v62];
+  name = [objectCopy name];
+  v61 = [MXMSampleAttribute attributeWithName:@"os_signpost name" stringValue:name];
   v67[0] = v61;
-  v14 = [v12 subsystem];
-  v15 = [MXMSampleAttribute attributeWithName:@"os_signpost subsystem" stringValue:v14];
+  subsystem = [objectCopy subsystem];
+  v15 = [MXMSampleAttribute attributeWithName:@"os_signpost subsystem" stringValue:subsystem];
   v67[1] = v15;
-  v16 = [v12 category];
-  v17 = [MXMSampleAttribute attributeWithName:@"os_signpost category" stringValue:v16];
+  category = [objectCopy category];
+  v17 = [MXMSampleAttribute attributeWithName:@"os_signpost category" stringValue:category];
   v67[2] = v17;
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "signpostId")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(objectCopy, "signpostId")}];
   v19 = [MXMSampleAttribute attributeWithName:@"os_signpost identifier" numericValue:v18];
   v67[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:4];
@@ -402,215 +402,215 @@ LABEL_14:
   v21 = [v13 setByAddingObjectsFromArray:v20];
   v66 = [v21 mutableCopy];
 
-  if (!v11)
+  if (!attributesCopy)
   {
   }
 
-  v22 = [v12 string1Name];
+  string1Name = [objectCopy string1Name];
 
   v23 = v66;
-  if (v22)
+  if (string1Name)
   {
-    v24 = [v12 string1Name];
-    v25 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string1 name" stringValue:v24];
+    string1Name2 = [objectCopy string1Name];
+    v25 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string1 name" stringValue:string1Name2];
     [v66 addObject:v25];
 
-    v26 = [v12 string1Value];
-    v27 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string1 value" stringValue:v26];
+    string1Value = [objectCopy string1Value];
+    v27 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string1 value" stringValue:string1Value];
     [v66 addObject:v27];
   }
 
-  v28 = [v12 string2Name];
+  string2Name = [objectCopy string2Name];
 
-  if (v28)
+  if (string2Name)
   {
-    v29 = [v12 string2Name];
-    v30 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string2 name" stringValue:v29];
+    string2Name2 = [objectCopy string2Name];
+    v30 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string2 name" stringValue:string2Name2];
     [v66 addObject:v30];
 
-    v31 = [v12 string2Value];
-    v32 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string2 value" stringValue:v31];
+    string2Value = [objectCopy string2Value];
+    v32 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry string2 value" stringValue:string2Value];
     [v66 addObject:v32];
   }
 
-  v33 = [v12 number1Value];
+  number1Value = [objectCopy number1Value];
 
-  if (v33)
+  if (number1Value)
   {
     v34 = [MXMMutableSampleSet alloc];
     v35 = +[MXMOSSignpostSampleTag telemetryNumber1];
-    v36 = [v12 number1Name];
-    v37 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry number1 name" stringValue:v36];
+    number1Name = [objectCopy number1Name];
+    v37 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry number1 name" stringValue:number1Name];
     v38 = [v66 setByAddingObject:v37];
     v39 = [(MXMSampleSet *)v34 initWithTag:v35 unit:0 attributes:v38];
-    [v65 appendSet:v39];
+    [dataCopy appendSet:v39];
 
     v23 = v66;
-    v40 = [v12 number1Value];
-    [v40 doubleValue];
+    number1Value2 = [objectCopy number1Value];
+    [number1Value2 doubleValue];
     v42 = v41;
     v43 = +[MXMOSSignpostSampleTag telemetryNumber1];
-    v44 = [v65 appendDoubleValue:v43 tag:objc_msgSend(v12 timestamp:{"startNanoseconds"), v42}];
+    v44 = [dataCopy appendDoubleValue:v43 tag:objc_msgSend(objectCopy timestamp:{"startNanoseconds"), v42}];
   }
 
-  v45 = [v12 number2Value];
+  number2Value = [objectCopy number2Value];
 
-  if (v45)
+  if (number2Value)
   {
     v46 = [MXMMutableSampleSet alloc];
     v47 = +[MXMOSSignpostSampleTag telemetryNumber2];
-    v48 = [v12 number2Name];
-    v49 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry number2 name" stringValue:v48];
+    number2Name = [objectCopy number2Name];
+    v49 = [MXMSampleAttribute attributeWithName:@"os_signpost telemetry number2 name" stringValue:number2Name];
     v50 = [v23 setByAddingObject:v49];
     v51 = [(MXMSampleSet *)v46 initWithTag:v47 unit:0 attributes:v50];
-    [v65 appendSet:v51];
+    [dataCopy appendSet:v51];
 
     v23 = v66;
-    v52 = [v12 number2Value];
-    [v52 doubleValue];
+    number2Value2 = [objectCopy number2Value];
+    [number2Value2 doubleValue];
     v54 = v53;
     v55 = +[MXMOSSignpostSampleTag telemetryNumber2];
-    v56 = [v65 appendDoubleValue:v55 tag:objc_msgSend(v12 timestamp:{"startNanoseconds"), v54}];
+    v56 = [dataCopy appendDoubleValue:v55 tag:objc_msgSend(objectCopy timestamp:{"startNanoseconds"), v54}];
   }
 
-  v57 = [(MXMSampleSet *)[MXMMutableSampleSet alloc] initWithTag:v64 unit:v63 attributes:v23];
+  v57 = [(MXMSampleSet *)[MXMMutableSampleSet alloc] initWithTag:tagCopy unit:unitCopy attributes:v23];
 
   v58 = *MEMORY[0x277D85DE8];
 
   return v57;
 }
 
-- (void)_buildData:(id)a3 attributes:(id)a4 signpostEvent:(id)a5
+- (void)_buildData:(id)data attributes:(id)attributes signpostEvent:(id)event
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
-  if (!v8)
+  dataCopy = data;
+  attributesCopy = attributes;
+  eventCopy = event;
+  v10 = attributesCopy;
+  if (!attributesCopy)
   {
     v10 = [MEMORY[0x277CBEB98] set];
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "processID")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(eventCopy, "processID")}];
   v12 = [MXMSampleAttribute attributeWithName:@"Process Identifier" numericValue:v11];
   v13 = [v10 setByAddingObject:v12];
 
-  if (!v8)
+  if (!attributesCopy)
   {
   }
 
   v14 = +[MXMOSSignpostSampleTag timestamp];
-  v15 = [MEMORY[0x277CCADD0] nanoseconds];
-  v16 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v17 tag:v14 unit:v15 attributes:v13 signpostObject:v9];
+  nanoseconds = [MEMORY[0x277CCADD0] nanoseconds];
+  v16 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v14 unit:nanoseconds attributes:v13 signpostObject:eventCopy];
 
-  [v16 appendDoubleValue:objc_msgSend(v9 timestamp:{"startMachContinuousTime"), objc_msgSend(v9, "startNanoseconds")}];
-  [v17 appendSet:v16];
+  [v16 appendDoubleValue:objc_msgSend(eventCopy timestamp:{"startMachContinuousTime"), objc_msgSend(eventCopy, "startNanoseconds")}];
+  [dataCopy appendSet:v16];
 }
 
-- (void)_buildData:(id)a3 signpostInterval:(id)a4
+- (void)_buildData:(id)data signpostInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 beginEvent];
-  [(MXMOSSignpostProbe *)self _buildData:v7 attributes:0 signpostEvent:v8];
+  intervalCopy = interval;
+  dataCopy = data;
+  beginEvent = [intervalCopy beginEvent];
+  [(MXMOSSignpostProbe *)self _buildData:dataCopy attributes:0 signpostEvent:beginEvent];
 
-  v9 = [v6 endEvent];
-  [(MXMOSSignpostProbe *)self _buildData:v7 attributes:0 signpostEvent:v9];
+  endEvent = [intervalCopy endEvent];
+  [(MXMOSSignpostProbe *)self _buildData:dataCopy attributes:0 signpostEvent:endEvent];
 
   v10 = +[MXMOSSignpostSampleTag duration];
-  v11 = [MEMORY[0x277CCADD0] nanoseconds];
-  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v10 unit:v11 attributes:0 signpostObject:v6];
+  nanoseconds = [MEMORY[0x277CCADD0] nanoseconds];
+  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v10 unit:nanoseconds attributes:0 signpostObject:intervalCopy];
 
-  v12 = [v6 durationNanoseconds];
-  v13 = [v6 startMachContinuousTime];
+  durationNanoseconds = [intervalCopy durationNanoseconds];
+  startMachContinuousTime = [intervalCopy startMachContinuousTime];
 
-  [v14 appendDoubleValue:v13 timestamp:v12];
-  [v7 appendSet:v14];
+  [v14 appendDoubleValue:startMachContinuousTime timestamp:durationNanoseconds];
+  [dataCopy appendSet:v14];
 }
 
-- (void)_buildData:(id)a3 signpostAnimationInterval:(id)a4
+- (void)_buildData:(id)data signpostAnimationInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  [(MXMOSSignpostProbe *)self _buildData:v7 signpostInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationFrameRateToData:v7 fromSignpostAnimationInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationFrameCountToData:v7 fromSignpostAnimationInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationRenderStatsToData:v7 fromSignpostAnimationInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationGlitchTimeRatioToData:v7 fromSignpostAnimationInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationNumberOfGlitchesToData:v7 fromSignpostAnimationInterval:v6];
-  [(MXMOSSignpostProbe *)self _addAnimationGlitchesTotalDurationToData:v7 fromSignpostAnimationInterval:v6];
+  intervalCopy = interval;
+  dataCopy = data;
+  [(MXMOSSignpostProbe *)self _buildData:dataCopy signpostInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationFrameRateToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationFrameCountToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationRenderStatsToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationGlitchTimeRatioToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationNumberOfGlitchesToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
+  [(MXMOSSignpostProbe *)self _addAnimationGlitchesTotalDurationToData:dataCopy fromSignpostAnimationInterval:intervalCopy];
 }
 
-- (void)_addAnimationFrameRateToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationFrameRateToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
+  intervalCopy = interval;
+  dataCopy = data;
   v8 = +[MXMOSSignpostSampleTag animationFrameRate];
-  v9 = [MEMORY[0x277CCAE00] framesPerSecond];
-  v13 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v8 unit:v9 attributes:0 signpostObject:v6];
+  framesPerSecond = [MEMORY[0x277CCAE00] framesPerSecond];
+  v13 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v8 unit:framesPerSecond attributes:0 signpostObject:intervalCopy];
 
-  [v6 frameRate];
+  [intervalCopy frameRate];
   v11 = v10;
-  v12 = [v6 startMachContinuousTime];
+  startMachContinuousTime = [intervalCopy startMachContinuousTime];
 
-  [v13 appendDoubleValue:v12 timestamp:v11];
-  [v7 appendSet:v13];
+  [v13 appendDoubleValue:startMachContinuousTime timestamp:v11];
+  [dataCopy appendSet:v13];
 }
 
-- (void)_addAnimationFrameCountToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationFrameCountToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
+  intervalCopy = interval;
+  dataCopy = data;
   v8 = +[MXMOSSignpostSampleTag animationFrameCount];
   v9 = +[MXMUnitFrame frames];
-  v12 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v8 unit:v9 attributes:0 signpostObject:v6];
+  v12 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v8 unit:v9 attributes:0 signpostObject:intervalCopy];
 
-  v10 = [v6 frameCount];
-  v11 = [v6 startMachContinuousTime];
+  frameCount = [intervalCopy frameCount];
+  startMachContinuousTime = [intervalCopy startMachContinuousTime];
 
-  [v12 appendDoubleValue:v11 timestamp:v10];
-  [v7 appendSet:v12];
+  [v12 appendDoubleValue:startMachContinuousTime timestamp:frameCount];
+  [dataCopy appendSet:v12];
 }
 
-- (void)_addAnimationRenderStatsToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationRenderStatsToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  intervalCopy = interval;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__MXMOSSignpostProbe__addAnimationRenderStatsToData_fromSignpostAnimationInterval___block_invoke;
   aBlock[3] = &unk_2798C9788;
   aBlock[4] = self;
-  v28 = v6;
-  v29 = v7;
-  v8 = v7;
-  v9 = v6;
+  v28 = dataCopy;
+  v29 = intervalCopy;
+  v8 = intervalCopy;
+  v9 = dataCopy;
   v10 = _Block_copy(aBlock);
   v11 = [v8 frameStatisticsForDisplayID:0];
   v12 = +[MXMOSSignpostSampleTag animationUpdateTimeP90];
-  v13 = [MEMORY[0x277CCADD0] milliseconds];
-  v14 = [v11 updateTime];
-  v10[2](v10, v12, v13, v14);
+  milliseconds = [MEMORY[0x277CCADD0] milliseconds];
+  updateTime = [v11 updateTime];
+  v10[2](v10, v12, milliseconds, updateTime);
 
   v15 = +[MXMOSSignpostSampleTag animationRenderTimeP90];
-  v16 = [MEMORY[0x277CCADD0] milliseconds];
-  v17 = [v11 renderTime];
-  v10[2](v10, v15, v16, v17);
+  milliseconds2 = [MEMORY[0x277CCADD0] milliseconds];
+  renderTime = [v11 renderTime];
+  v10[2](v10, v15, milliseconds2, renderTime);
 
   v18 = +[MXMOSSignpostSampleTag animationGPUTimeP90];
-  v19 = [MEMORY[0x277CCADD0] milliseconds];
-  v20 = [v11 gpuTime];
-  v10[2](v10, v18, v19, v20);
+  milliseconds3 = [MEMORY[0x277CCADD0] milliseconds];
+  gpuTime = [v11 gpuTime];
+  v10[2](v10, v18, milliseconds3, gpuTime);
 
   v21 = +[MXMOSSignpostSampleTag animationRenderGPUTimeP90];
-  v22 = [MEMORY[0x277CCADD0] milliseconds];
-  v23 = [v11 renderAndGPUTime];
-  v10[2](v10, v21, v22, v23);
+  milliseconds4 = [MEMORY[0x277CCADD0] milliseconds];
+  renderAndGPUTime = [v11 renderAndGPUTime];
+  v10[2](v10, v21, milliseconds4, renderAndGPUTime);
 
   v24 = +[MXMOSSignpostSampleTag animationNumberOfOffscreenPassesP90];
   v25 = +[MXMUnitFrame passes];
-  v26 = [v11 offscreenPassCount];
-  v10[2](v10, v24, v25, v26);
+  offscreenPassCount = [v11 offscreenPassCount];
+  v10[2](v10, v24, v25, offscreenPassCount);
 }
 
 void __83__MXMOSSignpostProbe__addAnimationRenderStatsToData_fromSignpostAnimationInterval___block_invoke(id *a1, uint64_t a2, uint64_t a3, void *a4)
@@ -632,48 +632,48 @@ void __83__MXMOSSignpostProbe__addAnimationRenderStatsToData_fromSignpostAnimati
   [a1[5] appendSet:v7];
 }
 
-- (void)_addAnimationGlitchTimeRatioToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationGlitchTimeRatioToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
+  intervalCopy = interval;
+  dataCopy = data;
   v8 = +[MXMOSSignpostSampleTag animationGlitchTimeRatio];
   v9 = +[MXMUnitHitch timeRatio];
-  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v8 unit:v9 attributes:0 signpostObject:v6];
+  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v8 unit:v9 attributes:0 signpostObject:intervalCopy];
 
-  [v6 glitchTimeRatioMsPerS];
-  [v10 appendDoubleValue:objc_msgSend(v6 timestamp:{"startMachContinuousTime"), v11}];
-  [v7 appendSet:v10];
+  [intervalCopy glitchTimeRatioMsPerS];
+  [v10 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), v11}];
+  [dataCopy appendSet:v10];
   v12 = +[MXMOSSignpostSampleTag animationNonFirstFrameGlitchTimeRatioAdjusted];
   v13 = +[MXMUnitHitch timeRatio];
-  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v12 unit:v13 attributes:0 signpostObject:v6];
+  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v12 unit:v13 attributes:0 signpostObject:intervalCopy];
 
-  [v6 nonFirstFrameGlitchTimeRatioAdjustedMsPerS];
-  [v14 appendDoubleValue:objc_msgSend(v6 timestamp:{"startMachContinuousTime"), v15}];
-  [v7 appendSet:v14];
+  [intervalCopy nonFirstFrameGlitchTimeRatioAdjustedMsPerS];
+  [v14 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), v15}];
+  [dataCopy appendSet:v14];
 
   v16 = +[MXMOSSignpostSampleTag animationPerAppNonFirstFrameGlitchTimeRatioAdjusted];
   v17 = +[MXMUnitHitch timeRatio];
-  v18 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v7 tag:v16 unit:v17 attributes:0 signpostObject:v6];
+  v18 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v16 unit:v17 attributes:0 signpostObject:intervalCopy];
 
-  v19 = [(MXMProbe *)self filter];
-  v20 = [v19 attributeFilterWithName:@"os_signpost animation contributing process name"];
-  v21 = [v20 stringValue];
+  filter = [(MXMProbe *)self filter];
+  v20 = [filter attributeFilterWithName:@"os_signpost animation contributing process name"];
+  stringValue = [v20 stringValue];
 
-  v22 = [v6 contributingPidsForProcessName:v21];
+  v22 = [intervalCopy contributingPidsForProcessName:stringValue];
   v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __87__MXMOSSignpostProbe__addAnimationGlitchTimeRatioToData_fromSignpostAnimationInterval___block_invoke;
   v30 = &unk_2798C97B0;
   v31 = v23;
-  v32 = v6;
-  v24 = v6;
+  v32 = intervalCopy;
+  v24 = intervalCopy;
   v25 = v23;
   [v22 enumerateIndexesUsingBlock:&v27];
   SignpostSupportTotalDurationNsForIntervals();
   [v24 timeRatioMSPerSForOverrunIntervals:v25 applyPerceptionAdjustments:{0x7FFFFFFFFFFFFFFFLL, v27, v28, v29, v30}];
   [v18 appendDoubleValue:objc_msgSend(v24 timestamp:{"startMachContinuousTime"), v26}];
-  [v7 appendSet:v18];
+  [dataCopy appendSet:v18];
 }
 
 void __87__MXMOSSignpostProbe__addAnimationGlitchTimeRatioToData_fromSignpostAnimationInterval___block_invoke(uint64_t a1, uint64_t a2)
@@ -684,35 +684,35 @@ void __87__MXMOSSignpostProbe__addAnimationGlitchTimeRatioToData_fromSignpostAni
   [v3 addObjectsFromArray:v4];
 }
 
-- (void)_addAnimationNumberOfGlitchesToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationNumberOfGlitchesToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  intervalCopy = interval;
   v8 = +[MXMOSSignpostSampleTag animationNumberOfGlitches];
   v9 = +[MXMUnitHitch hitches];
-  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v8 unit:v9 attributes:0 signpostObject:v7];
+  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v8 unit:v9 attributes:0 signpostObject:intervalCopy];
 
-  v11 = [v7 glitches];
-  [v10 appendDoubleValue:objc_msgSend(v7 timestamp:{"startMachContinuousTime"), objc_msgSend(v11, "count")}];
+  glitches = [intervalCopy glitches];
+  [v10 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), objc_msgSend(glitches, "count")}];
 
-  [v6 appendSet:v10];
+  [dataCopy appendSet:v10];
   v12 = +[MXMOSSignpostSampleTag animationNonFirstFrameNumberOfGlitches];
   v13 = +[MXMUnitHitch hitches];
-  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v12 unit:v13 attributes:0 signpostObject:v7];
+  v14 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v12 unit:v13 attributes:0 signpostObject:intervalCopy];
 
-  v15 = [v7 nonFirstFrameGlitches];
-  [v14 appendDoubleValue:objc_msgSend(v7 timestamp:{"startMachContinuousTime"), objc_msgSend(v15, "count")}];
+  nonFirstFrameGlitches = [intervalCopy nonFirstFrameGlitches];
+  [v14 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), objc_msgSend(nonFirstFrameGlitches, "count")}];
 
-  [v6 appendSet:v14];
+  [dataCopy appendSet:v14];
   v16 = +[MXMOSSignpostSampleTag animationPerAppNonFirstFrameNumberOfGlitches];
   v17 = +[MXMUnitHitch hitches];
-  v18 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v16 unit:v17 attributes:0 signpostObject:v7];
+  v18 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v16 unit:v17 attributes:0 signpostObject:intervalCopy];
 
-  v19 = [(MXMProbe *)self filter];
-  v20 = [v19 attributeFilterWithName:@"os_signpost animation contributing process name"];
-  v21 = [v20 stringValue];
+  filter = [(MXMProbe *)self filter];
+  v20 = [filter attributeFilterWithName:@"os_signpost animation contributing process name"];
+  stringValue = [v20 stringValue];
 
-  v22 = [v7 contributingPidsForProcessName:v21];
+  v22 = [intervalCopy contributingPidsForProcessName:stringValue];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -721,12 +721,12 @@ void __87__MXMOSSignpostProbe__addAnimationGlitchTimeRatioToData_fromSignpostAni
   v25 = 3221225472;
   v26 = __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAnimationInterval___block_invoke;
   v27 = &unk_2798C97D8;
-  v23 = v7;
+  v23 = intervalCopy;
   v28 = v23;
   v29 = &v30;
   [v22 enumerateIndexesUsingBlock:&v24];
   [v18 appendDoubleValue:objc_msgSend(v23 timestamp:{"startMachContinuousTime", v24, v25, v26, v27), v31[3]}];
-  [v6 appendSet:v18];
+  [dataCopy appendSet:v18];
 
   _Block_object_dispose(&v30, 8);
 }
@@ -738,21 +738,21 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
   *(*(*(a1 + 40) + 8) + 24) = *(*(*(a1 + 40) + 8) + 24) + [v3 count];
 }
 
-- (void)_addAnimationGlitchesTotalDurationToData:(id)a3 fromSignpostAnimationInterval:(id)a4
+- (void)_addAnimationGlitchesTotalDurationToData:(id)data fromSignpostAnimationInterval:(id)interval
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  intervalCopy = interval;
   v8 = +[MXMOSSignpostSampleTag animationGlitchesTotalDuration];
-  v9 = [MEMORY[0x277CCADD0] milliseconds];
-  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v8 unit:v9 attributes:0 signpostObject:v7];
+  milliseconds = [MEMORY[0x277CCADD0] milliseconds];
+  v10 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v8 unit:milliseconds attributes:0 signpostObject:intervalCopy];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = [v7 glitches];
-  v12 = [v11 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  glitches = [intervalCopy glitches];
+  v12 = [glitches countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v12)
   {
     v13 = *v50;
@@ -763,14 +763,14 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
       {
         if (*v50 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(glitches);
         }
 
         [*(*(&v49 + 1) + 8 * i) durationMs];
         v14 = v14 + v16;
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v12 = [glitches countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v12);
@@ -781,18 +781,18 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
     v14 = 0.0;
   }
 
-  [v10 appendDoubleValue:objc_msgSend(v7 timestamp:{"startMachContinuousTime"), v14}];
-  [v6 appendSet:v10];
+  [v10 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), v14}];
+  [dataCopy appendSet:v10];
   v17 = +[MXMOSSignpostSampleTag animationNonFirstFrameGlitchesTotalDuration];
-  v18 = [MEMORY[0x277CCADD0] milliseconds];
-  v19 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v17 unit:v18 attributes:0 signpostObject:v7];
+  milliseconds2 = [MEMORY[0x277CCADD0] milliseconds];
+  v19 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v17 unit:milliseconds2 attributes:0 signpostObject:intervalCopy];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v20 = [v7 nonFirstFrameGlitches];
-  v21 = [v20 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  nonFirstFrameGlitches = [intervalCopy nonFirstFrameGlitches];
+  v21 = [nonFirstFrameGlitches countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v21)
   {
     v22 = *v46;
@@ -803,14 +803,14 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
       {
         if (*v46 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(nonFirstFrameGlitches);
         }
 
         [*(*(&v45 + 1) + 8 * j) durationMs];
         v23 = v23 + v25;
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v21 = [nonFirstFrameGlitches countByEnumeratingWithState:&v45 objects:v53 count:16];
     }
 
     while (v21);
@@ -821,18 +821,18 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
     v23 = 0.0;
   }
 
-  [v19 appendDoubleValue:objc_msgSend(v7 timestamp:{"startMachContinuousTime"), v23}];
-  [v6 appendSet:v19];
+  [v19 appendDoubleValue:objc_msgSend(intervalCopy timestamp:{"startMachContinuousTime"), v23}];
+  [dataCopy appendSet:v19];
 
   v26 = +[MXMOSSignpostSampleTag animationPerAppNonFirstFrameGlitchesTotalDuration];
-  v27 = [MEMORY[0x277CCADD0] milliseconds];
-  v28 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:v6 tag:v26 unit:v27 attributes:0 signpostObject:v7];
+  milliseconds3 = [MEMORY[0x277CCADD0] milliseconds];
+  v28 = [(MXMOSSignpostProbe *)self _buildSampleSetWithData:dataCopy tag:v26 unit:milliseconds3 attributes:0 signpostObject:intervalCopy];
 
-  v29 = [(MXMProbe *)self filter];
-  v30 = [v29 attributeFilterWithName:@"os_signpost animation contributing process name"];
-  v31 = [v30 stringValue];
+  filter = [(MXMProbe *)self filter];
+  v30 = [filter attributeFilterWithName:@"os_signpost animation contributing process name"];
+  stringValue = [v30 stringValue];
 
-  v32 = [v7 contributingPidsForProcessName:v31];
+  v32 = [intervalCopy contributingPidsForProcessName:stringValue];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -841,12 +841,12 @@ void __88__MXMOSSignpostProbe__addAnimationNumberOfGlitchesToData_fromSignpostAn
   v36 = 3221225472;
   v37 = __93__MXMOSSignpostProbe__addAnimationGlitchesTotalDurationToData_fromSignpostAnimationInterval___block_invoke;
   v38 = &unk_2798C97D8;
-  v33 = v7;
+  v33 = intervalCopy;
   v39 = v33;
   v40 = &v41;
   [v32 enumerateIndexesUsingBlock:&v35];
   [v28 appendDoubleValue:objc_msgSend(v33 timestamp:{"startMachContinuousTime", v35, v36, v37, v38), v42[3]}];
-  [v6 appendSet:v28];
+  [dataCopy appendSet:v28];
 
   _Block_object_dispose(&v41, 8);
   v34 = *MEMORY[0x277D85DE8];
@@ -893,9 +893,9 @@ void __93__MXMOSSignpostProbe__addAnimationGlitchesTotalDurationToData_fromSignp
 
 - (void)_beginUpdates
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  v7 = [a1 description];
-  [v6 handleFailureInMethod:a2 object:a3 file:@"MXMOSSignpostProbe.m" lineNumber:611 description:v7];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v7 = [self description];
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"MXMOSSignpostProbe.m" lineNumber:611 description:v7];
 }
 
 - (void)_stopUpdates
@@ -907,7 +907,7 @@ void __93__MXMOSSignpostProbe__addAnimationGlitchesTotalDurationToData_fromSignp
   [(MXMProbe *)self _handleIncomingData:self->_data];
 }
 
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = dispatch_semaphore_create(0);
@@ -919,12 +919,12 @@ void __93__MXMOSSignpostProbe__addAnimationGlitchesTotalDurationToData_fromSignp
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v19 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_258DAA000, v8, OS_LOG_TYPE_DEBUG, "Created finish process semaphore, now waiting up to %f seconds.", buf, 0xCu);
   }
 
   v9 = self->_finishedProcessingSema;
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   v11 = dispatch_semaphore_wait(v9, v10);
   v12 = _MXMGetLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);

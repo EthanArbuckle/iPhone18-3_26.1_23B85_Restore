@@ -1,11 +1,11 @@
 @interface MTTimerIntentHandler
-- (BOOL)_isDefaultTimer:(id)a3;
+- (BOOL)_isDefaultTimer:(id)timer;
 - (MTTimerManagerProviding)timerManagerProvider;
-- (id)_alternateTimersForTargetTimerState:(int64_t)a3 type:(int64_t)a4 inTimers:(id)a5 allowedTimerStates:(id)a6;
-- (id)_onlyUnnamedTimerInTimers:(id)a3 forTargetTimer:(id)a4 allowMultiple:(BOOL)a5;
+- (id)_alternateTimersForTargetTimerState:(int64_t)state type:(int64_t)type inTimers:(id)timers allowedTimerStates:(id)states;
+- (id)_onlyUnnamedTimerInTimers:(id)timers forTargetTimer:(id)timer allowMultiple:(BOOL)multiple;
 - (id)_timerManager;
-- (void)_genericallyResolveTargetTimer:(id)a3 multiple:(BOOL)a4 allowedTimerStatesForFollowup:(id)a5 completion:(id)a6;
-- (void)_matchTimersFromIntentsTimer:(id)a3 excludeStoppedTimers:(BOOL)a4 completion:(id)a5;
+- (void)_genericallyResolveTargetTimer:(id)timer multiple:(BOOL)multiple allowedTimerStatesForFollowup:(id)followup completion:(id)completion;
+- (void)_matchTimersFromIntentsTimer:(id)timer excludeStoppedTimers:(BOOL)timers completion:(id)completion;
 @end
 
 @implementation MTTimerIntentHandler
@@ -15,12 +15,12 @@
   timerManager = self->_timerManager;
   if (!timerManager)
   {
-    v4 = [(MTTimerIntentHandler *)self timerManagerProvider];
-    v5 = [v4 timerManager];
-    v6 = v5;
-    if (v5)
+    timerManagerProvider = [(MTTimerIntentHandler *)self timerManagerProvider];
+    timerManager = [timerManagerProvider timerManager];
+    v6 = timerManager;
+    if (timerManager)
     {
-      v7 = v5;
+      v7 = timerManager;
     }
 
     else
@@ -37,32 +37,32 @@
   return timerManager;
 }
 
-- (void)_matchTimersFromIntentsTimer:(id)a3 excludeStoppedTimers:(BOOL)a4 completion:(id)a5
+- (void)_matchTimersFromIntentsTimer:(id)timer excludeStoppedTimers:(BOOL)timers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  timerCopy = timer;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = [(MTTimerIntentHandler *)self _timerManager];
-    v11 = [v10 timers];
+    _timerManager = [(MTTimerIntentHandler *)self _timerManager];
+    timers = [_timerManager timers];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __85__MTTimerIntentHandler__matchTimersFromIntentsTimer_excludeStoppedTimers_completion___block_invoke;
     v19[3] = &unk_1E7B0FEA8;
     v19[4] = self;
-    v22 = a4;
-    v20 = v8;
-    v12 = v9;
+    timersCopy = timers;
+    v20 = timerCopy;
+    v12 = completionCopy;
     v21 = v12;
-    v13 = [v11 addSuccessBlock:v19];
+    v13 = [timers addSuccessBlock:v19];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __85__MTTimerIntentHandler__matchTimersFromIntentsTimer_excludeStoppedTimers_completion___block_invoke_3;
     v16[3] = &unk_1E7B0D230;
-    v17 = v10;
+    v17 = _timerManager;
     v18 = v12;
-    v14 = v10;
-    v15 = [v11 addFailureBlock:v16];
+    v14 = _timerManager;
+    v15 = [timers addFailureBlock:v16];
   }
 }
 
@@ -147,35 +147,35 @@ void __85__MTTimerIntentHandler__matchTimersFromIntentsTimer_excludeStoppedTimer
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_genericallyResolveTargetTimer:(id)a3 multiple:(BOOL)a4 allowedTimerStatesForFollowup:(id)a5 completion:(id)a6
+- (void)_genericallyResolveTargetTimer:(id)timer multiple:(BOOL)multiple allowedTimerStatesForFollowup:(id)followup completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  timerCopy = timer;
+  followupCopy = followup;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10)
+    if (timerCopy)
     {
-      v13 = [v11 containsObject:&unk_1F2965FA8];
-      v14 = [(MTTimerIntentHandler *)self _timerManager];
+      v13 = [followupCopy containsObject:&unk_1F2965FA8];
+      _timerManager = [(MTTimerIntentHandler *)self _timerManager];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __105__MTTimerIntentHandler__genericallyResolveTargetTimer_multiple_allowedTimerStatesForFollowup_completion___block_invoke;
       v17[3] = &unk_1E7B0FEF8;
-      v18 = v10;
-      v19 = v14;
-      v22 = v12;
-      v20 = v11;
-      v21 = self;
-      v23 = a4;
-      v15 = v14;
+      v18 = timerCopy;
+      v19 = _timerManager;
+      v22 = completionCopy;
+      v20 = followupCopy;
+      selfCopy = self;
+      multipleCopy = multiple;
+      v15 = _timerManager;
       [(MTTimerIntentHandler *)self _matchTimersFromIntentsTimer:v18 excludeStoppedTimers:v13 ^ 1u completion:v17];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696EAC8] needsValue];
-      (*(v12 + 2))(v12, v16, 0);
+      needsValue = [MEMORY[0x1E696EAC8] needsValue];
+      (*(completionCopy + 2))(completionCopy, needsValue, 0);
     }
   }
 }
@@ -392,18 +392,18 @@ uint64_t __105__MTTimerIntentHandler__genericallyResolveTargetTimer_multiple_all
   return v4;
 }
 
-- (id)_onlyUnnamedTimerInTimers:(id)a3 forTargetTimer:(id)a4 allowMultiple:(BOOL)a5
+- (id)_onlyUnnamedTimerInTimers:(id)timers forTargetTimer:(id)timer allowMultiple:(BOOL)multiple
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  timersCopy = timers;
+  timerCopy = timer;
+  v9 = timerCopy;
+  if (multiple)
   {
     goto LABEL_2;
   }
 
-  v11 = [v8 label];
-  if (v11)
+  label = [timerCopy label];
+  if (label)
   {
     goto LABEL_8;
   }
@@ -414,15 +414,15 @@ uint64_t __105__MTTimerIntentHandler__genericallyResolveTargetTimer_multiple_all
     goto LABEL_8;
   }
 
-  if ([v7 count] < 2)
+  if ([timersCopy count] < 2)
   {
 LABEL_2:
     v10 = 0;
     goto LABEL_10;
   }
 
-  v11 = [v7 indexesOfObjectsPassingTest:&__block_literal_global_17_0];
-  if ([v11 count] != 1)
+  label = [timersCopy indexesOfObjectsPassingTest:&__block_literal_global_17_0];
+  if ([label count] != 1)
   {
 LABEL_8:
     v10 = 0;
@@ -430,7 +430,7 @@ LABEL_8:
 
   else
   {
-    v10 = [v7 objectAtIndexedSubscript:{objc_msgSend(v11, "firstIndex")}];
+    v10 = [timersCopy objectAtIndexedSubscript:{objc_msgSend(label, "firstIndex")}];
   }
 
 LABEL_10:
@@ -446,20 +446,20 @@ BOOL __79__MTTimerIntentHandler__onlyUnnamedTimerInTimers_forTargetTimer_allowMu
   return v3;
 }
 
-- (id)_alternateTimersForTargetTimerState:(int64_t)a3 type:(int64_t)a4 inTimers:(id)a5 allowedTimerStates:(id)a6
+- (id)_alternateTimersForTargetTimerState:(int64_t)state type:(int64_t)type inTimers:(id)timers allowedTimerStates:(id)states
 {
-  v9 = a6;
+  statesCopy = states;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__MTTimerIntentHandler__alternateTimersForTargetTimerState_type_inTimers_allowedTimerStates___block_invoke;
   v15[3] = &unk_1E7B0FF40;
-  v16 = v9;
-  v17 = a3;
-  v18 = a4;
-  v10 = v9;
-  v11 = a5;
-  v12 = [v11 indexesOfObjectsPassingTest:v15];
-  v13 = [v11 objectsAtIndexes:v12];
+  v16 = statesCopy;
+  stateCopy = state;
+  typeCopy = type;
+  v10 = statesCopy;
+  timersCopy = timers;
+  v12 = [timersCopy indexesOfObjectsPassingTest:v15];
+  v13 = [timersCopy objectsAtIndexes:v12];
 
   return v13;
 }
@@ -483,10 +483,10 @@ BOOL __93__MTTimerIntentHandler__alternateTimersForTargetTimerState_type_inTimer
   return v10;
 }
 
-- (BOOL)_isDefaultTimer:(id)a3
+- (BOOL)_isDefaultTimer:(id)timer
 {
-  v3 = [a3 title];
-  v4 = [v3 isEqualToString:@"CURRENT_TIMER"];
+  title = [timer title];
+  v4 = [title isEqualToString:@"CURRENT_TIMER"];
 
   return v4;
 }

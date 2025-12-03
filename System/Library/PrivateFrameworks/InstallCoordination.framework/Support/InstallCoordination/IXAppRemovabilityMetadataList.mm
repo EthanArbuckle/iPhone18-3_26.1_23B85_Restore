@@ -1,52 +1,52 @@
 @interface IXAppRemovabilityMetadataList
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (IXAppRemovabilityMetadataList)initWithCoder:(id)a3;
-- (IXAppRemovabilityMetadataList)initWithInitialRemovability:(unint64_t)a3 client:(unint64_t)a4;
-- (IXAppRemovabilityMetadataList)initWithInitialRemovabilityMetadata:(id)a3;
-- (IXAppRemovabilityMetadataList)initWithMetadataDictionary:(id)a3;
-- (IXAppRemovabilityMetadataList)initWithSerializedDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IXAppRemovabilityMetadataList)initWithCoder:(id)coder;
+- (IXAppRemovabilityMetadataList)initWithInitialRemovability:(unint64_t)removability client:(unint64_t)client;
+- (IXAppRemovabilityMetadataList)initWithInitialRemovabilityMetadata:(id)metadata;
+- (IXAppRemovabilityMetadataList)initWithMetadataDictionary:(id)dictionary;
+- (IXAppRemovabilityMetadataList)initWithSerializedDictionary:(id)dictionary;
 - (NSDictionary)propertyListRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mostRestrictiveRemovabilityMetadata;
 - (unint64_t)hash;
-- (unint64_t)removabilityForClient:(unint64_t)a3 notFoundRemovability:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateRemovability:(unint64_t)a3 forClient:(unint64_t)a4;
-- (void)updateRemovabilityWithMetadata:(id)a3;
+- (unint64_t)removabilityForClient:(unint64_t)client notFoundRemovability:(unint64_t)removability;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateRemovability:(unint64_t)removability forClient:(unint64_t)client;
+- (void)updateRemovabilityWithMetadata:(id)metadata;
 @end
 
 @implementation IXAppRemovabilityMetadataList
 
-- (IXAppRemovabilityMetadataList)initWithMetadataDictionary:(id)a3
+- (IXAppRemovabilityMetadataList)initWithMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v10.receiver = self;
     v10.super_class = IXAppRemovabilityMetadataList;
     v5 = [(IXAppRemovabilityMetadataList *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       clientToRemovabilityMetadataMap = v5->_clientToRemovabilityMetadataMap;
       v5->_clientToRemovabilityMetadataMap = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (IXAppRemovabilityMetadataList)initWithInitialRemovability:(unint64_t)a3 client:(unint64_t)a4
+- (IXAppRemovabilityMetadataList)initWithInitialRemovability:(unint64_t)removability client:(unint64_t)client
 {
   v10.receiver = self;
   v10.super_class = IXAppRemovabilityMetadataList;
@@ -57,16 +57,16 @@
     clientToRemovabilityMetadataMap = v6->_clientToRemovabilityMetadataMap;
     v6->_clientToRemovabilityMetadataMap = v7;
 
-    [(IXAppRemovabilityMetadataList *)v6 updateRemovability:a3 forClient:a4];
+    [(IXAppRemovabilityMetadataList *)v6 updateRemovability:removability forClient:client];
   }
 
   return v6;
 }
 
-- (IXAppRemovabilityMetadataList)initWithInitialRemovabilityMetadata:(id)a3
+- (IXAppRemovabilityMetadataList)initWithInitialRemovabilityMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v10.receiver = self;
     v10.super_class = IXAppRemovabilityMetadataList;
@@ -77,26 +77,26 @@
       clientToRemovabilityMetadataMap = v5->_clientToRemovabilityMetadataMap;
       v5->_clientToRemovabilityMetadataMap = v6;
 
-      [(IXAppRemovabilityMetadataList *)v5 updateRemovabilityWithMetadata:v4];
+      [(IXAppRemovabilityMetadataList *)v5 updateRemovabilityWithMetadata:metadataCopy];
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (IXAppRemovabilityMetadataList)initWithSerializedDictionary:(id)a3
+- (IXAppRemovabilityMetadataList)initWithSerializedDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = [a3 objectForKeyedSubscript:@"metadata"];
+    v4 = [dictionary objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     v5 = v4;
     if (objc_opt_isKindOfClass())
@@ -129,27 +129,27 @@
       }
 
       self = v8;
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)mostRestrictiveRemovabilityMetadata
 {
-  v2 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  if ([v2 count])
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  if ([clientToRemovabilityMetadataMap count])
   {
     v7 = 0;
     v8 = &v7;
@@ -167,7 +167,7 @@
     v5[3] = &unk_1001023A8;
     v5[4] = &v7;
     v5[5] = v6;
-    [v2 enumerateKeysAndObjectsUsingBlock:v5];
+    [clientToRemovabilityMetadataMap enumerateKeysAndObjectsUsingBlock:v5];
     v3 = v8[5];
     _Block_object_dispose(v6, 8);
     _Block_object_dispose(&v7, 8);
@@ -181,13 +181,13 @@
   return v3;
 }
 
-- (void)updateRemovability:(unint64_t)a3 forClient:(unint64_t)a4
+- (void)updateRemovability:(unint64_t)removability forClient:(unint64_t)client
 {
-  v7 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  v12 = [v7 mutableCopy];
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  v12 = [clientToRemovabilityMetadataMap mutableCopy];
 
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
-  if (a3 == 1)
+  v8 = [NSNumber numberWithUnsignedInteger:client];
+  if (removability == 1)
   {
     v9 = [v12 objectForKeyedSubscript:v8];
 
@@ -199,7 +199,7 @@
 
   else
   {
-    v10 = [[IXAppRemovabilityMetadata alloc] initWithRemovability:a3 client:a4];
+    v10 = [[IXAppRemovabilityMetadata alloc] initWithRemovability:removability client:client];
     [v12 setObject:v10 forKeyedSubscript:v8];
   }
 
@@ -207,14 +207,14 @@
   [(IXAppRemovabilityMetadataList *)self setClientToRemovabilityMetadataMap:v11];
 }
 
-- (void)updateRemovabilityWithMetadata:(id)a3
+- (void)updateRemovabilityWithMetadata:(id)metadata
 {
-  v9 = a3;
-  v4 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  v5 = [v4 mutableCopy];
+  metadataCopy = metadata;
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  v5 = [clientToRemovabilityMetadataMap mutableCopy];
 
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 client]);
-  if ([v9 removability] == 1)
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy client]);
+  if ([metadataCopy removability] == 1)
   {
     v7 = [v5 objectForKeyedSubscript:v6];
 
@@ -226,34 +226,34 @@
 
   else
   {
-    [v5 setObject:v9 forKeyedSubscript:v6];
+    [v5 setObject:metadataCopy forKeyedSubscript:v6];
   }
 
   v8 = [v5 copy];
   [(IXAppRemovabilityMetadataList *)self setClientToRemovabilityMetadataMap:v8];
 }
 
-- (unint64_t)removabilityForClient:(unint64_t)a3 notFoundRemovability:(unint64_t)a4
+- (unint64_t)removabilityForClient:(unint64_t)client notFoundRemovability:(unint64_t)removability
 {
   if (![(IXAppRemovabilityMetadataList *)self isEmpty])
   {
-    v7 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-    v8 = [NSNumber numberWithUnsignedInteger:a3];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+    v8 = [NSNumber numberWithUnsignedInteger:client];
+    v9 = [clientToRemovabilityMetadataMap objectForKeyedSubscript:v8];
 
     if (v9)
     {
-      a4 = [v9 removability];
+      removability = [v9 removability];
     }
   }
 
-  return a4;
+  return removability;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  v3 = [v2 count] == 0;
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  v3 = [clientToRemovabilityMetadataMap count] == 0;
 
   return v3;
 }
@@ -261,14 +261,14 @@
 - (id)description
 {
   v3 = objc_opt_new();
-  v4 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10003A708;
   v11 = &unk_1001023D0;
   v12 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [clientToRemovabilityMetadataMap enumerateKeysAndObjectsUsingBlock:&v8];
 
   v6 = [NSString stringWithFormat:@"%@", v5, v8, v9, v10, v11];
 
@@ -278,14 +278,14 @@
 - (NSDictionary)propertyListRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_10003A894;
   v12 = &unk_1001023D0;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v9];
+  [clientToRemovabilityMetadataMap enumerateKeysAndObjectsUsingBlock:&v9];
 
   v14 = @"metadata";
   v6 = [v5 copy];
@@ -295,29 +295,29 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [IXAppRemovabilityMetadataList allocWithZone:a3];
-  v5 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  v6 = [(IXAppRemovabilityMetadataList *)v4 initWithMetadataDictionary:v5];
+  v4 = [IXAppRemovabilityMetadataList allocWithZone:zone];
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  v6 = [(IXAppRemovabilityMetadataList *)v4 initWithMetadataDictionary:clientToRemovabilityMetadataMap];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(IXAppRemovabilityMetadataList *)v5 clientToRemovabilityMetadataMap];
-    v7 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-    v8 = [v6 isEqual:v7];
+    clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)v5 clientToRemovabilityMetadataMap];
+    clientToRemovabilityMetadataMap2 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+    v8 = [clientToRemovabilityMetadataMap isEqual:clientToRemovabilityMetadataMap2];
   }
 
   else
@@ -330,22 +330,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  v3 = [v2 hash];
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  v3 = [clientToRemovabilityMetadataMap hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
-  [v4 encodeObject:v5 forKey:@"clientToRemovabilityMetadataMap"];
+  coderCopy = coder;
+  clientToRemovabilityMetadataMap = [(IXAppRemovabilityMetadataList *)self clientToRemovabilityMetadataMap];
+  [coderCopy encodeObject:clientToRemovabilityMetadataMap forKey:@"clientToRemovabilityMetadataMap"];
 }
 
-- (IXAppRemovabilityMetadataList)initWithCoder:(id)a3
+- (IXAppRemovabilityMetadataList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = IXAppRemovabilityMetadataList;
   v5 = [(IXAppRemovabilityMetadataList *)&v13 init];
@@ -355,7 +355,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"clientToRemovabilityMetadataMap"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"clientToRemovabilityMetadataMap"];
     clientToRemovabilityMetadataMap = v5->_clientToRemovabilityMetadataMap;
     v5->_clientToRemovabilityMetadataMap = v10;
   }

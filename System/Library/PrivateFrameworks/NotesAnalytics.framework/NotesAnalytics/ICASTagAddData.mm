@@ -1,24 +1,24 @@
 @interface ICASTagAddData
-- (ICASTagAddData)initWithIsExistingTag:(id)a3 tagAddApproach:(id)a4 isAutoConversionEnabled:(id)a5;
+- (ICASTagAddData)initWithIsExistingTag:(id)tag tagAddApproach:(id)approach isAutoConversionEnabled:(id)enabled;
 - (id)toDict;
 @end
 
 @implementation ICASTagAddData
 
-- (ICASTagAddData)initWithIsExistingTag:(id)a3 tagAddApproach:(id)a4 isAutoConversionEnabled:(id)a5
+- (ICASTagAddData)initWithIsExistingTag:(id)tag tagAddApproach:(id)approach isAutoConversionEnabled:(id)enabled
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tagCopy = tag;
+  approachCopy = approach;
+  enabledCopy = enabled;
   v15.receiver = self;
   v15.super_class = ICASTagAddData;
   v12 = [(ICASTagAddData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_isExistingTag, a3);
-    objc_storeStrong(&v13->_tagAddApproach, a4);
-    objc_storeStrong(&v13->_isAutoConversionEnabled, a5);
+    objc_storeStrong(&v12->_isExistingTag, tag);
+    objc_storeStrong(&v13->_tagAddApproach, approach);
+    objc_storeStrong(&v13->_isAutoConversionEnabled, enabled);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"isExistingTag";
-  v3 = [(ICASTagAddData *)self isExistingTag];
-  if (v3)
+  isExistingTag = [(ICASTagAddData *)self isExistingTag];
+  if (isExistingTag)
   {
-    v4 = [(ICASTagAddData *)self isExistingTag];
+    isExistingTag2 = [(ICASTagAddData *)self isExistingTag];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    isExistingTag2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = isExistingTag2;
+  v16[0] = isExistingTag2;
   v15[1] = @"tagAddApproach";
-  v6 = [(ICASTagAddData *)self tagAddApproach];
-  if (v6)
+  tagAddApproach = [(ICASTagAddData *)self tagAddApproach];
+  if (tagAddApproach)
   {
-    v7 = [(ICASTagAddData *)self tagAddApproach];
+    tagAddApproach2 = [(ICASTagAddData *)self tagAddApproach];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    tagAddApproach2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = tagAddApproach2;
+  v16[1] = tagAddApproach2;
   v15[2] = @"isAutoConversionEnabled";
-  v9 = [(ICASTagAddData *)self isAutoConversionEnabled];
-  if (v9)
+  isAutoConversionEnabled = [(ICASTagAddData *)self isAutoConversionEnabled];
+  if (isAutoConversionEnabled)
   {
-    v10 = [(ICASTagAddData *)self isAutoConversionEnabled];
+    isAutoConversionEnabled2 = [(ICASTagAddData *)self isAutoConversionEnabled];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    isAutoConversionEnabled2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = isAutoConversionEnabled2;
+  v16[2] = isAutoConversionEnabled2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

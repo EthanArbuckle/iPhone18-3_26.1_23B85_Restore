@@ -1,17 +1,17 @@
 @interface SUICProgressIndicatorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation SUICProgressIndicatorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isSpinning" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isCheckmarkVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isArrowVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"progressValue" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isSpinning" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isCheckmarkVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"isArrowVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUICProgressIndicatorView" hasInstanceMethod:@"progressValue" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityValue
@@ -35,12 +35,12 @@
       {
         v8.receiver = self;
         v8.super_class = SUICProgressIndicatorViewAccessibility;
-        v4 = [(SUICProgressIndicatorViewAccessibility *)&v8 accessibilityValue];
+        accessibilityValue = [(SUICProgressIndicatorViewAccessibility *)&v8 accessibilityValue];
       }
 
       else
       {
-        v4 = AXFormatFloatWithPercentage();
+        accessibilityValue = AXFormatFloatWithPercentage();
       }
 
       goto LABEL_8;
@@ -49,10 +49,10 @@
     v3 = @"progress.indicator.value.idle";
   }
 
-  v4 = accessibilityLocalizedString(v3);
+  accessibilityValue = accessibilityLocalizedString(v3);
 LABEL_8:
 
-  return v4;
+  return accessibilityValue;
 }
 
 @end

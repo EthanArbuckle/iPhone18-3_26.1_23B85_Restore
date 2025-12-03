@@ -1,31 +1,31 @@
 @interface VideosChaptersTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation VideosChaptersTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosChaptersTableViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"VideosChaptersTableViewController" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosFormatters" hasClassMethod:@"localizedChapterTitle:" withFullSignature:{"@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosChaptersTableViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"VideosChaptersTableViewController" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosFormatters" hasClassMethod:@"localizedChapterTitle:" withFullSignature:{"@", "Q", 0}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = VideosChaptersTableViewControllerAccessibility;
-  v8 = [(VideosChaptersTableViewControllerAccessibility *)&v26 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(VideosChaptersTableViewControllerAccessibility *)&v26 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   v9 = [(VideosChaptersTableViewControllerAccessibility *)self safeValueForKey:@"item"];
   v10 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
-  v11 = [v10 chapterOfType:1 atIndex:{objc_msgSend(v7, "row")}];
+  v11 = [v10 chapterOfType:1 atIndex:{objc_msgSend(pathCopy, "row")}];
   v12 = __UIAccessibilityCastAsClass();
 
   v20 = 0;
@@ -34,13 +34,13 @@
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  v19 = v7;
+  v19 = pathCopy;
   AXPerformSafeBlock();
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
-  v14 = [v8 textLabel];
-  v15 = [v14 accessibilityLabel];
+  textLabel = [v8 textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
   [v12 playbackTime];
   v18 = AXDurationStringForDuration();
   v16 = __UIAXStringForVariables();

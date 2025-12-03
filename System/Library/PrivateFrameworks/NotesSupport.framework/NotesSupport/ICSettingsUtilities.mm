@@ -1,16 +1,16 @@
 @interface ICSettingsUtilities
-+ (BOOL)BOOLForKey:(id)a3;
-+ (id)objectForKey:(id)a3;
-+ (void)registerDefaults:(id)a3;
-+ (void)setBool:(BOOL)a3 forKey:(id)a4;
-+ (void)setObject:(id)a3 forKey:(id)a4;
++ (BOOL)BOOLForKey:(id)key;
++ (id)objectForKey:(id)key;
++ (void)registerDefaults:(id)defaults;
++ (void)setBool:(BOOL)bool forKey:(id)key;
++ (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation ICSettingsUtilities
 
-+ (void)registerDefaults:(id)a3
++ (void)registerDefaults:(id)defaults
 {
-  v6 = a3;
+  defaultsCopy = defaults;
   v3 = objc_alloc(MEMORY[0x1E695E000]);
   if (ICIsSandboxModeEnabled())
   {
@@ -22,18 +22,18 @@
     v4 = @"com.apple.mobilenotes";
   }
 
-  v5 = [v3 initWithSuiteName:v4];
-  if (!v5)
+  standardUserDefaults = [v3 initWithSuiteName:v4];
+  if (!standardUserDefaults)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   }
 
-  [v5 registerDefaults:v6];
+  [standardUserDefaults registerDefaults:defaultsCopy];
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (ICIsSandboxModeEnabled())
   {
     v4 = @"com.apple.mobilenotesdebug";
@@ -44,15 +44,15 @@
     v4 = @"com.apple.mobilenotes";
   }
 
-  v5 = CFPreferencesCopyAppValue(v3, v4);
+  v5 = CFPreferencesCopyAppValue(keyCopy, v4);
 
   return v5;
 }
 
-+ (void)setObject:(id)a3 forKey:(id)a4
++ (void)setObject:(id)object forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  objectCopy = object;
   if (ICIsSandboxModeEnabled())
   {
     v7 = @"com.apple.mobilenotesdebug";
@@ -63,7 +63,7 @@
     v7 = @"com.apple.mobilenotes";
   }
 
-  CFPreferencesSetAppValue(v5, v6, v7);
+  CFPreferencesSetAppValue(keyCopy, objectCopy, v7);
 
   if (ICIsSandboxModeEnabled())
   {
@@ -78,23 +78,23 @@
   CFPreferencesAppSynchronize(v8);
 }
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = [a1 objectForKey:a3];
+  v3 = [self objectForKey:key];
   v4 = objc_opt_class();
   v5 = ICCheckedDynamicCast(v4, v3);
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (void)setBool:(BOOL)a3 forKey:(id)a4
++ (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [a1 setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:boolCopy];
+  [self setObject:v8 forKey:keyCopy];
 }
 
 @end

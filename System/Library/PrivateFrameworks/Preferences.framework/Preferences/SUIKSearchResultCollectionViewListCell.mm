@@ -1,7 +1,7 @@
 @interface SUIKSearchResultCollectionViewListCell
-- (void)configureWithSearchableItem:(id)a3;
+- (void)configureWithSearchableItem:(id)item;
 - (void)prepareForReuse;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation SUIKSearchResultCollectionViewListCell
@@ -14,39 +14,39 @@
   [(SUIKSearchResultCollectionViewListCell *)self configureWithSearchableItem:0];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v30 = a3;
+  stateCopy = state;
   if (updateConfigurationUsingState__onceToken != -1)
   {
     [SUIKSearchResultCollectionViewListCell updateConfigurationUsingState:];
   }
 
-  v4 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
   v5 = +[PSListController appearance];
-  v6 = [v5 textColor];
-  v7 = [v4 textProperties];
-  [v7 setColor:v6];
+  textColor = [v5 textColor];
+  textProperties = [subtitleCellConfiguration textProperties];
+  [textProperties setColor:textColor];
 
   v8 = +[PSListController appearance];
-  v9 = [v8 altTextColor];
-  v10 = [v4 secondaryTextProperties];
-  [v10 setColor:v9];
+  altTextColor = [v8 altTextColor];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:altTextColor];
 
   v11 = *&updateConfigurationUsingState__iconSize_0;
   v12 = *&updateConfigurationUsingState__iconSize_1;
-  v13 = [v4 imageProperties];
-  [v13 setReservedLayoutSize:{v11, v12}];
+  imageProperties = [subtitleCellConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{v11, v12}];
 
-  [v4 setImage:updateConfigurationUsingState__icon];
+  [subtitleCellConfiguration setImage:updateConfigurationUsingState__icon];
   v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v15 = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
-  v16 = [v15 attributeSet];
-  v17 = [v16 subject];
-  v18 = v17;
-  if (v17)
+  searchableItem = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
+  attributeSet = [searchableItem attributeSet];
+  subject = [attributeSet subject];
+  v18 = subject;
+  if (subject)
   {
-    v19 = v17;
+    v19 = subject;
   }
 
   else
@@ -55,24 +55,24 @@
   }
 
   v20 = [v14 initWithString:v19];
-  [v4 setAttributedText:v20];
+  [subtitleCellConfiguration setAttributedText:v20];
 
-  v21 = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
-  v22 = [v21 attributeSet];
-  v23 = [v22 contentDescription];
-  v24 = [v23 length];
+  searchableItem2 = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
+  attributeSet2 = [searchableItem2 attributeSet];
+  contentDescription = [attributeSet2 contentDescription];
+  v24 = [contentDescription length];
 
   if (v24)
   {
     v25 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v26 = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
-    v27 = [v26 attributeSet];
-    v28 = [v27 contentDescription];
-    v29 = [v25 initWithString:v28];
-    [v4 setSecondaryAttributedText:v29];
+    searchableItem3 = [(SUIKSearchResultCollectionViewListCell *)self searchableItem];
+    attributeSet3 = [searchableItem3 attributeSet];
+    contentDescription2 = [attributeSet3 contentDescription];
+    v29 = [v25 initWithString:contentDescription2];
+    [subtitleCellConfiguration setSecondaryAttributedText:v29];
   }
 
-  [(SUIKSearchResultCollectionViewListCell *)self setContentConfiguration:v4];
+  [(SUIKSearchResultCollectionViewListCell *)self setContentConfiguration:subtitleCellConfiguration];
 }
 
 void __72__SUIKSearchResultCollectionViewListCell_updateConfigurationUsingState___block_invoke()
@@ -87,9 +87,9 @@ void __72__SUIKSearchResultCollectionViewListCell_updateConfigurationUsingState_
   updateConfigurationUsingState__icon = v3;
 }
 
-- (void)configureWithSearchableItem:(id)a3
+- (void)configureWithSearchableItem:(id)item
 {
-  [(SUIKSearchResultCollectionViewListCell *)self setSearchableItem:a3];
+  [(SUIKSearchResultCollectionViewListCell *)self setSearchableItem:item];
 
   [(SUIKSearchResultCollectionViewListCell *)self setNeedsUpdateConfiguration];
 }

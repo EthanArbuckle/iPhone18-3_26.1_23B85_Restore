@@ -1,16 +1,16 @@
 @interface WFTextScrollView
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CGSize)intrinsicContentSize;
 - (UITextViewDelegate)textViewDelegate;
-- (WFTextScrollView)initWithTextView:(id)a3;
+- (WFTextScrollView)initWithTextView:(id)view;
 - (_NSRange)selectedRange;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)layoutSubviews;
 - (void)textUpdated;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation WFTextScrollView
@@ -32,31 +32,31 @@
   return WeakRetained;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v8.receiver = self;
   v8.super_class = WFTextScrollView;
-  if (-[WFTextScrollView respondsToSelector:](&v8, sel_respondsToSelector_, [v4 selector]))
+  if (-[WFTextScrollView respondsToSelector:](&v8, sel_respondsToSelector_, [invocationCopy selector]))
   {
-    [v4 invokeWithTarget:self];
+    [invocationCopy invokeWithTarget:self];
   }
 
   else
   {
-    v5 = [(WFTextScrollView *)self textViewDelegate];
-    [v4 selector];
+    textViewDelegate = [(WFTextScrollView *)self textViewDelegate];
+    [invocationCopy selector];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(WFTextScrollView *)self textViewDelegate];
-      [v4 invokeWithTarget:v7];
+      textViewDelegate2 = [(WFTextScrollView *)self textViewDelegate];
+      [invocationCopy invokeWithTarget:textViewDelegate2];
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = WFTextScrollView;
@@ -64,19 +64,19 @@
   {
     v8.receiver = self;
     v8.super_class = WFTextScrollView;
-    v5 = [(WFTextScrollView *)&v8 methodSignatureForSelector:a3];
+    v5 = [(WFTextScrollView *)&v8 methodSignatureForSelector:selector];
   }
 
   else
   {
-    v6 = [(WFTextScrollView *)self textViewDelegate];
-    v5 = [v6 methodSignatureForSelector:a3];
+    textViewDelegate = [(WFTextScrollView *)self textViewDelegate];
+    v5 = [textViewDelegate methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = WFTextScrollView;
@@ -87,23 +87,23 @@
 
   else
   {
-    v5 = [(WFTextScrollView *)self textViewDelegate];
+    textViewDelegate = [(WFTextScrollView *)self textViewDelegate];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(WFTextScrollView *)self textViewDelegate];
+  editingCopy = editing;
+  textViewDelegate = [(WFTextScrollView *)self textViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFTextScrollView *)self textViewDelegate];
-    [v6 textViewDidEndEditing:v7];
+    textViewDelegate2 = [(WFTextScrollView *)self textViewDelegate];
+    [textViewDelegate2 textViewDidEndEditing:editingCopy];
   }
 
   if ([(WFTextScrollView *)self isFirstResponder])
@@ -112,16 +112,16 @@
   }
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v18 = a3;
-  v4 = [(WFTextScrollView *)self textViewDelegate];
+  selectionCopy = selection;
+  textViewDelegate = [(WFTextScrollView *)self textViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFTextScrollView *)self textViewDelegate];
-    [v6 textViewDidChangeSelection:v18];
+    textViewDelegate2 = [(WFTextScrollView *)self textViewDelegate];
+    [textViewDelegate2 textViewDidChangeSelection:selectionCopy];
   }
 
   if (!self->_adjustmentEnabled)
@@ -130,40 +130,40 @@
     goto LABEL_12;
   }
 
-  v7 = [(WFTextScrollView *)self selectedRange];
-  v8 = [v18 selectedRange];
-  [(WFTextScrollView *)self setSelectedRange:v8, v9];
-  v10 = [(WFTextScrollView *)self selectedRange];
-  v11 = [v18 selectedTextRange];
-  v12 = v11;
-  if (v10 >= v7)
+  selectedRange = [(WFTextScrollView *)self selectedRange];
+  selectedRange2 = [selectionCopy selectedRange];
+  [(WFTextScrollView *)self setSelectedRange:selectedRange2, v9];
+  selectedRange3 = [(WFTextScrollView *)self selectedRange];
+  selectedTextRange = [selectionCopy selectedTextRange];
+  v12 = selectedTextRange;
+  if (selectedRange3 >= selectedRange)
   {
-    v17 = [v11 end];
-    v14 = [v18 positionFromPosition:v17 offset:1];
+    v17 = [selectedTextRange end];
+    v14 = [selectionCopy positionFromPosition:v17 offset:1];
 
     if (!v14)
     {
-      v15 = [v18 selectedTextRange];
-      v16 = [v15 end];
+      selectedTextRange2 = [selectionCopy selectedTextRange];
+      start2 = [selectedTextRange2 end];
       goto LABEL_10;
     }
   }
 
   else
   {
-    v13 = [v11 start];
-    v14 = [v18 positionFromPosition:v13 offset:-1];
+    start = [selectedTextRange start];
+    v14 = [selectionCopy positionFromPosition:start offset:-1];
 
     if (!v14)
     {
-      v15 = [v18 selectedTextRange];
-      v16 = [v15 start];
+      selectedTextRange2 = [selectionCopy selectedTextRange];
+      start2 = [selectedTextRange2 start];
 LABEL_10:
-      v14 = v16;
+      v14 = start2;
     }
   }
 
-  [v18 caretRectForPosition:v14];
+  [selectionCopy caretRectForPosition:v14];
   [(WFTextScrollView *)self scrollRectToVisible:0 animated:?];
 
 LABEL_12:
@@ -193,8 +193,8 @@ LABEL_12:
     v28 = v27;
     [(WFTextScrollView *)self frame];
     v30 = v29;
-    v20 = [(WFTextScrollView *)self textView];
-    v7 = v20;
+    textView = [(WFTextScrollView *)self textView];
+    textView2 = textView;
     v21 = 0.0;
     v22 = 0.0;
     v23 = v28;
@@ -205,10 +205,10 @@ LABEL_12:
   [(WFTextScrollView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(WFTextScrollView *)self textView];
-  v8 = [(WFTextScrollView *)self textView];
-  v9 = [v8 attributedText];
-  [v9 size];
+  textView2 = [(WFTextScrollView *)self textView];
+  textView3 = [(WFTextScrollView *)self textView];
+  attributedText = [textView3 attributedText];
+  [attributedText size];
   v11 = v10 + 10.0;
 
   if (v11 >= v4)
@@ -236,27 +236,27 @@ LABEL_12:
     [(WFTextScrollView *)self setContentSize:width, v6];
   }
 
-  [v7 frame];
+  [textView2 frame];
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = height;
   if (!CGRectEqualToRect(v34, v35))
   {
-    v20 = v7;
+    textView = textView2;
     v21 = x;
     v22 = y;
     v23 = width;
     v24 = height;
 LABEL_13:
-    [v20 setFrame:{v21, v22, v23, v24}];
+    [textView setFrame:{v21, v22, v23, v24}];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(WFTextScrollView *)self textView];
-  [v2 intrinsicContentSize];
+  textView = [(WFTextScrollView *)self textView];
+  [textView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -269,27 +269,27 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D77218] object:self->_textView];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D77218] object:self->_textView];
 
   v4.receiver = self;
   v4.super_class = WFTextScrollView;
   [(WFTextScrollView *)&v4 dealloc];
 }
 
-- (WFTextScrollView)initWithTextView:(id)a3
+- (WFTextScrollView)initWithTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = [(WFTextScrollView *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textView, a3);
+    objc_storeStrong(&v6->_textView, view);
     v7->_adjustmentEnabled = 1;
-    [v5 setDelegate:v7];
-    [(WFTextScrollView *)v7 addSubview:v5];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel_textUpdated name:*MEMORY[0x277D77218] object:v5];
+    [viewCopy setDelegate:v7];
+    [(WFTextScrollView *)v7 addSubview:viewCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_textUpdated name:*MEMORY[0x277D77218] object:viewCopy];
 
     [(WFTextScrollView *)v7 setScrollEnabled:0];
     [(WFTextScrollView *)v7 setScrollsToTop:0];

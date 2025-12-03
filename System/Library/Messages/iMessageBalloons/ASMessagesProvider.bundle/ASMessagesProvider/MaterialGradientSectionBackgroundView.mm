@@ -1,11 +1,11 @@
 @interface MaterialGradientSectionBackgroundView
-- (_TtC18ASMessagesProvider37MaterialGradientSectionBackgroundView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider37MaterialGradientSectionBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MaterialGradientSectionBackgroundView
 
-- (_TtC18ASMessagesProvider37MaterialGradientSectionBackgroundView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider37MaterialGradientSectionBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider37MaterialGradientSectionBackgroundView_gradientView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for GradientView()) init];

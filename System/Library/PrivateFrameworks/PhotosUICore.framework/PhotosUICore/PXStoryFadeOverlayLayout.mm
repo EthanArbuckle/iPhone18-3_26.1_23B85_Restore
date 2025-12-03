@@ -1,12 +1,12 @@
 @interface PXStoryFadeOverlayLayout
 - (PXStoryFadeOverlayLayout)init;
-- (PXStoryFadeOverlayLayout)initWithModel:(id)a3;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (PXStoryFadeOverlayLayout)initWithModel:(id)model;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateContent;
 - (void)_updateContent;
 - (void)alphaDidChange;
 - (void)didUpdate;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
 - (void)update;
 - (void)willUpdate;
@@ -14,41 +14,41 @@
 
 @implementation PXStoryFadeOverlayLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (ModelContext != a5)
+  observableCopy = observable;
+  if (ModelContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:118 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:118 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((a4 & 0x400000000000) != 0)
+  if ((change & 0x400000000000) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryFadeOverlayLayout *)self _invalidateContent];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_fadeSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_fadeSpriteIndex != index)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:106 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:106 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = layoutCopy;
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 wantsHighContrastColors];
+  wantsHighContrastColors = [v9 wantsHighContrastColors];
 
-  if (v10)
+  if (wantsHighContrastColors)
   {
     [MEMORY[0x1E69DC888] orangeColor];
   }
@@ -70,19 +70,19 @@
   v6 = v5;
   v8 = v7;
   [(PXStoryFadeOverlayLayout *)self setContentSize:?];
-  v9 = [(PXStoryFadeOverlayLayout *)self model];
-  v10 = [(PXStoryFadeOverlayLayout *)self localNumberOfSprites];
+  model = [(PXStoryFadeOverlayLayout *)self model];
+  localNumberOfSprites = [(PXStoryFadeOverlayLayout *)self localNumberOfSprites];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__PXStoryFadeOverlayLayout__updateContent__block_invoke;
   v13[3] = &unk_1E7744830;
-  v11 = v10 << 32;
+  v11 = localNumberOfSprites << 32;
   v15 = v6;
   v16 = v8;
   v17 = v4;
   v13[4] = self;
-  v14 = v9;
-  v12 = v9;
+  v14 = model;
+  v12 = model;
   [(PXStoryFadeOverlayLayout *)self modifySpritesInRange:v11 state:v13];
 }
 
@@ -102,9 +102,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFadeOverlayLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryFadeOverlayLayout.m" lineNumber:82 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryFadeOverlayLayout.m" lineNumber:82 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -133,9 +133,9 @@ LABEL_5:
   [(PXStoryFadeOverlayLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFadeOverlayLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryFadeOverlayLayout.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryFadeOverlayLayout.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -148,9 +148,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFadeOverlayLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryFadeOverlayLayout.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryFadeOverlayLayout.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -167,9 +167,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFadeOverlayLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryFadeOverlayLayout.m" lineNumber:72 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryFadeOverlayLayout.m" lineNumber:72 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -186,9 +186,9 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryFadeOverlayLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryFadeOverlayLayout.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryFadeOverlayLayout.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -210,23 +210,23 @@ LABEL_5:
 
 - (PXStoryFadeOverlayLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXStoryFadeOverlayLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryFadeOverlayLayout.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXStoryFadeOverlayLayout init]"}];
 
   abort();
 }
 
-- (PXStoryFadeOverlayLayout)initWithModel:(id)a3
+- (PXStoryFadeOverlayLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryFadeOverlayLayout;
   v6 = [(PXStoryFadeOverlayLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
-    [v5 registerChangeObserver:v7 context:ModelContext];
+    objc_storeStrong(&v6->_model, model);
+    [modelCopy registerChangeObserver:v7 context:ModelContext];
     [(PXStoryFadeOverlayLayout *)v7 setContentSource:v7];
     v7->_fadeSpriteIndex = [(PXStoryFadeOverlayLayout *)v7 addSpriteWithInitialState:&__block_literal_global_207764];
   }

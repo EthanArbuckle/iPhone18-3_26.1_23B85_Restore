@@ -8,16 +8,16 @@
 - (void)_addTopBorder
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(ICQUIiCloudPlusFooterCell *)self contentView];
-  [v4 bounds];
+  contentView = [(ICQUIiCloudPlusFooterCell *)self contentView];
+  [contentView bounds];
   v8 = [v3 initWithFrame:{20.0, 0.0, v5 + -20.0, 0.5}];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D75348] separatorColor];
-  [v8 setBackgroundColor:v6];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  [v8 setBackgroundColor:separatorColor];
 
-  v7 = [(ICQUIiCloudPlusFooterCell *)self contentView];
-  [v7 addSubview:v8];
+  contentView2 = [(ICQUIiCloudPlusFooterCell *)self contentView];
+  [contentView2 addSubview:v8];
 }
 
 - (void)layoutSubviews

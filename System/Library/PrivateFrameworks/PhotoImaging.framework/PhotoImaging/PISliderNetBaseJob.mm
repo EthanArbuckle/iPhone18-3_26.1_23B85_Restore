@@ -1,12 +1,12 @@
 @interface PISliderNetBaseJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)complete:(id *)complete;
+- (BOOL)render:(id *)render;
 - (id)scalePolicy;
 @end
 
 @implementation PISliderNetBaseJob
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   renderTask = self->_renderTask;
   v24 = 0;
@@ -17,7 +17,7 @@
     v8 = self->_renderTask;
     self->_renderTask = 0;
 
-    v9 = [(NURenderJob *)self request];
+    request = [(NURenderJob *)self request];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -27,11 +27,11 @@
     v15[1] = 3221225472;
     v15[2] = __31__PISliderNetBaseJob_complete___block_invoke;
     v15[3] = &unk_1E82AAAD8;
-    v11 = v9;
-    v16 = v11;
-    v17 = self;
+    request2 = request;
+    v16 = request2;
+    selfCopy = self;
     v18 = &v20;
-    v19 = a3;
+    completeCopy = complete;
     [(NUPurgeableStorage *)storage useAsCVPixelBufferWithBlock:v15];
     v12 = *(v21 + 24);
 
@@ -41,9 +41,9 @@
   else
   {
     v13 = MEMORY[0x1E69B3A48];
-    v11 = [(NURenderJob *)self request];
-    [v13 errorWithCode:1 reason:@"Failed to render thumbnail" object:v11 underlyingError:v7];
-    *a3 = v12 = 0;
+    request2 = [(NURenderJob *)self request];
+    [v13 errorWithCode:1 reason:@"Failed to render thumbnail" object:request2 underlyingError:v7];
+    *complete = v12 = 0;
   }
 
   return v12 & 1;
@@ -61,18 +61,18 @@ uint64_t __31__PISliderNetBaseJob_complete___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
-  v5 = [(NURenderJob *)self renderNode];
-  v6 = [v5 outputImage:a3];
+  renderNode = [(NURenderJob *)self renderNode];
+  v6 = [renderNode outputImage:render];
 
-  v7 = [MEMORY[0x1E69B3BF0] BGRA8];
-  v8 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
-  v9 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v10 = [v9 surfaceStoragePool];
+  bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+  sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  surfaceStoragePool = [mEMORY[0x1E69B3A58] surfaceStoragePool];
 
-  v11 = [(NURenderJob *)self imageSize];
-  v13 = [v10 newStorageWithSize:v11 format:{v12, v7}];
+  imageSize = [(NURenderJob *)self imageSize];
+  v13 = [surfaceStoragePool newStorageWithSize:imageSize format:{v12, bGRA8}];
   storage = self->_storage;
   self->_storage = v13;
 
@@ -82,9 +82,9 @@ uint64_t __31__PISliderNetBaseJob_complete___block_invoke(uint64_t a1, void *a2)
   v28[3] = v15;
   v16 = [MEMORY[0x1E69B3C10] regionWithRect:v28];
   v17 = self->_storage;
-  v18 = [(NURenderJob *)self imageSize];
+  imageSize2 = [(NURenderJob *)self imageSize];
   v27 = 0;
-  v20 = [(NURenderJob *)self renderImage:v6 into:v17 colorSpace:v8 roi:v16 imageSize:v18 error:v19, &v27];
+  v20 = [(NURenderJob *)self renderImage:v6 into:v17 colorSpace:sRGBColorSpace roi:v16 imageSize:imageSize2 error:v19, &v27];
   v21 = v27;
   renderTask = self->_renderTask;
   self->_renderTask = v20;
@@ -93,8 +93,8 @@ uint64_t __31__PISliderNetBaseJob_complete___block_invoke(uint64_t a1, void *a2)
   if (!v23)
   {
     v24 = MEMORY[0x1E69B3A48];
-    v25 = [(NURenderJob *)self request];
-    *a3 = [v24 errorWithCode:1 reason:@"Failed to create CIRenderTask for thumbnail render" object:v25 underlyingError:*a3];
+    request = [(NURenderJob *)self request];
+    *render = [v24 errorWithCode:1 reason:@"Failed to create CIRenderTask for thumbnail render" object:request underlyingError:*render];
   }
 
   return v23 != 0;
@@ -102,10 +102,10 @@ uint64_t __31__PISliderNetBaseJob_complete___block_invoke(uint64_t a1, void *a2)
 
 - (id)scalePolicy
 {
-  v2 = [(NURenderJob *)self request];
-  v3 = [v2 scalePolicy];
+  request = [(NURenderJob *)self request];
+  scalePolicy = [request scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
 @end

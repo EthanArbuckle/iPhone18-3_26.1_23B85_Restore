@@ -20,7 +20,7 @@
     }
 
     v5 = 65;
-    v6 = self;
+    selfCopy = self;
     v3 = "";
     v4 = "[NRBluetoothPairer dealloc]";
     _NRLogWithArgs();

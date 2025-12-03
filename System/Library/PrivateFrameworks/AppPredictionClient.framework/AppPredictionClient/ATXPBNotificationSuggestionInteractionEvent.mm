@@ -1,14 +1,14 @@
 @interface ATXPBNotificationSuggestionInteractionEvent
 - (BOOL)hasSuggestionUUID;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)eventTypeAsString:(__CFString *)a1;
-- (__CFString)suggestionTypeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)eventTypeAsString:(__CFString *)string;
+- (__CFString)suggestionTypeAsString:(__CFString *)string;
 - (double)secondsSinceReferenceDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsEventType:(uint64_t)a1;
-- (uint64_t)StringAsSuggestionType:(uint64_t)a1;
+- (uint64_t)StringAsEventType:(uint64_t)type;
+- (uint64_t)StringAsSuggestionType:(uint64_t)type;
 - (uint64_t)eventType;
 - (uint64_t)hasEventType;
 - (uint64_t)hasSecondsSinceReferenceDate;
@@ -22,10 +22,10 @@
 - (uint64_t)suggestionType;
 - (uint64_t)suggestionUUID;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setSuggestionUUID:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setSuggestionUUID:(uint64_t)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBNotificationSuggestionInteractionEvent
@@ -36,15 +36,15 @@
   v8.receiver = self;
   v8.super_class = ATXPBNotificationSuggestionInteractionEvent;
   v4 = [(ATXPBNotificationSuggestionInteractionEvent *)&v8 description];
-  v5 = [(ATXPBNotificationSuggestionInteractionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBNotificationSuggestionInteractionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -59,7 +59,7 @@
       v6 = off_1E80C1120[suggestionType];
     }
 
-    [v3 setObject:v6 forKey:@"suggestionType"];
+    [dictionary setObject:v6 forKey:@"suggestionType"];
 
     has = self->_has;
   }
@@ -77,27 +77,27 @@
       v8 = off_1E80C1178[eventType];
     }
 
-    [v3 setObject:v8 forKey:@"eventType"];
+    [dictionary setObject:v8 forKey:@"eventType"];
   }
 
   suggestionUUID = self->_suggestionUUID;
   if (suggestionUUID)
   {
-    [v3 setObject:suggestionUUID forKey:@"suggestionUUID"];
+    [dictionary setObject:suggestionUUID forKey:@"suggestionUUID"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secondsSinceReferenceDate];
-    [v3 setObject:v10 forKey:@"secondsSinceReferenceDate"];
+    [dictionary setObject:v10 forKey:@"secondsSinceReferenceDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -121,9 +121,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -139,7 +139,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v8 = [(NSString *)self->_suggestionUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_suggestionUUID copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -152,10 +152,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
@@ -163,32 +163,32 @@
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_suggestionType != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_suggestionType != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_eventType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_eventType != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   suggestionUUID = self->_suggestionUUID;
-  if (suggestionUUID | *(v4 + 3))
+  if (suggestionUUID | *(equalCopy + 3))
   {
     if (![(NSString *)suggestionUUID isEqual:?])
     {
@@ -200,10 +200,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_secondsSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_secondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -336,31 +336,31 @@ LABEL_6:
   return result;
 }
 
-- (__CFString)suggestionTypeAsString:(__CFString *)a1
+- (__CFString)suggestionTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0xB)
   {
-    a1 = off_1E80C1120[a2];
+    string = off_1E80C1120[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSuggestionType:(uint64_t)a1
+- (uint64_t)StringAsSuggestionType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unused"])
@@ -491,31 +491,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)eventTypeAsString:(__CFString *)a1
+- (__CFString)eventTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0xA)
   {
-    a1 = off_1E80C1178[a2];
+    string = off_1E80C1178[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEventType:(uint64_t)a1
+- (uint64_t)StringAsEventType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unused"])
@@ -623,17 +623,17 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    v4 = *(a1 + 32);
+    v4 = *(to + 32);
     if ((v4 & 4) != 0)
     {
       v3 = OUTLINED_FUNCTION_1_8(v3, 20);
       v3[v6] = v5 | 4;
-      v4 = *(a1 + 32);
+      v4 = *(to + 32);
     }
 
     if ((v4 & 2) != 0)
@@ -642,7 +642,7 @@ LABEL_4:
       v3[v8] = v7 | 2;
     }
 
-    v9 = *(a1 + 24);
+    v9 = *(to + 24);
     if (v9)
     {
       v10 = v3;
@@ -650,53 +650,53 @@ LABEL_4:
       v3 = v10;
     }
 
-    if (*(a1 + 32))
+    if (*(to + 32))
     {
-      *(v3 + 1) = *(a1 + 8);
+      *(v3 + 1) = *(to + 8);
       v3[32] |= 1u;
     }
   }
 }
 
-- (void)setSuggestionUUID:(uint64_t)a1
+- (void)setSuggestionUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((d + 24), a2);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     v4 = v3[32];
     if ((v4 & 4) != 0)
     {
       v3 = OUTLINED_FUNCTION_0_12(v3, 20);
-      *(a1 + v6) = v5 | 4;
+      *(from + v6) = v5 | 4;
       v4 = v3[32];
     }
 
     if ((v4 & 2) != 0)
     {
       v3 = OUTLINED_FUNCTION_0_12(v3, 16);
-      *(a1 + v8) = v7 | 2;
+      *(from + v8) = v7 | 2;
     }
 
     v9 = *(v3 + 3);
     if (v9)
     {
       v10 = v3;
-      objc_storeStrong((a1 + 24), v9);
+      objc_storeStrong((from + 24), v9);
       v3 = v10;
     }
 
     if (v3[32])
     {
-      *(a1 + 8) = *(v3 + 1);
-      *(a1 + 32) |= 1u;
+      *(from + 8) = *(v3 + 1);
+      *(from + 32) |= 1u;
     }
   }
 }
@@ -713,9 +713,9 @@ LABEL_4:
 
 - (double)secondsSinceReferenceDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

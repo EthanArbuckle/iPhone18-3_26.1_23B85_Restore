@@ -1,13 +1,13 @@
 @interface CKSyncEngineSendChangesScope
 - (BOOL)containsPendingRecordZoneChange:(CKSyncEnginePendingRecordZoneChange *)pendingRecordZoneChange;
 - (BOOL)containsRecordID:(CKRecordID *)recordID;
-- (BOOL)containsScope:(id)a3;
-- (BOOL)containsZoneOrRecordWithZoneID:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsScope:(id)scope;
+- (BOOL)containsZoneOrRecordWithZoneID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (CKSyncEngineSendChangesScope)init;
 - (CKSyncEngineSendChangesScope)initWithRecordIDs:(NSSet *)recordIDs;
 - (CKSyncEngineSendChangesScope)initWithZoneIDs:(NSSet *)zoneIDs;
-- (CKSyncEngineSendChangesScope)initWithZoneIDs:(id)a3 excludedZoneIDs:(id)a4 recordIDs:(id)a5;
+- (CKSyncEngineSendChangesScope)initWithZoneIDs:(id)ds excludedZoneIDs:(id)iDs recordIDs:(id)recordIDs;
 - (id)description;
 @end
 
@@ -80,25 +80,25 @@ LABEL_8:
   return v7;
 }
 
-- (CKSyncEngineSendChangesScope)initWithZoneIDs:(id)a3 excludedZoneIDs:(id)a4 recordIDs:(id)a5
+- (CKSyncEngineSendChangesScope)initWithZoneIDs:(id)ds excludedZoneIDs:(id)iDs recordIDs:(id)recordIDs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  recordIDsCopy = recordIDs;
   v25.receiver = self;
   v25.super_class = CKSyncEngineSendChangesScope;
   v13 = [(CKSyncEngineSendChangesScope *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(dsCopy, v11, v12);
     zoneIDs = v13->_zoneIDs;
     v13->_zoneIDs = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(iDsCopy, v16, v17);
     excludedZoneIDs = v13->_excludedZoneIDs;
     v13->_excludedZoneIDs = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(recordIDsCopy, v20, v21);
     recordIDs = v13->_recordIDs;
     v13->_recordIDs = v22;
   }
@@ -106,15 +106,15 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)containsScope:(id)a3
+- (BOOL)containsScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v7 = objc_msgSend_zoneIDs(self, v5, v6);
   v10 = objc_msgSend_recordIDs(self, v8, v9);
   v13 = objc_msgSend_excludedZoneIDs(self, v11, v12);
-  v16 = objc_msgSend_zoneIDs(v4, v14, v15);
-  v19 = objc_msgSend_recordIDs(v4, v17, v18);
-  v22 = objc_msgSend_excludedZoneIDs(v4, v20, v21);
+  v16 = objc_msgSend_zoneIDs(scopeCopy, v14, v15);
+  v19 = objc_msgSend_recordIDs(scopeCopy, v17, v18);
+  v22 = objc_msgSend_excludedZoneIDs(scopeCopy, v20, v21);
 
   v24 = objc_msgSend_scopeWithZoneIDs_recordIDs_excludedZoneIDs_containsScopeWithZoneIDs_recordIDs_excludedZoneIDs_(CKSyncEngineFetchChangesScope, v23, v7, v10, v13, v16, v19, v22);
   return v24;
@@ -151,12 +151,12 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)containsZoneOrRecordWithZoneID:(id)a3
+- (BOOL)containsZoneOrRecordWithZoneID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_excludedZoneIDs(self, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  v9 = objc_msgSend_containsObject_(v7, v8, dCopy);
 
   if (v9)
   {
@@ -169,7 +169,7 @@ LABEL_8:
     v16 = v13;
     if (v13)
     {
-      LOBYTE(v12) = objc_msgSend_containsObject_(v13, v14, v4);
+      LOBYTE(v12) = objc_msgSend_containsObject_(v13, v14, dCopy);
     }
 
     else
@@ -196,7 +196,7 @@ LABEL_8:
               }
 
               v26 = objc_msgSend_zoneID(*(*(&v31 + 1) + 8 * i), v22, v23, v31);
-              isEqual = objc_msgSend_isEqual_(v26, v27, v4);
+              isEqual = objc_msgSend_isEqual_(v26, v27, dCopy);
 
               if (isEqual)
               {
@@ -229,13 +229,13 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_recordIDs(self, v6, v7);
     v11 = objc_msgSend_recordIDs(v5, v9, v10);
     v12 = CKObjectsAreBothNilOrEqual(v8, v11);

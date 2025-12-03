@@ -1,17 +1,17 @@
 @interface TSWPTextParentLayout
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (CGSize)maximumFrameSizeForChildren;
-- (TSWPTextParentLayout)initWithInfo:(id)a3;
+- (TSWPTextParentLayout)initWithInfo:(id)info;
 @end
 
 @implementation TSWPTextParentLayout
 
-- (TSWPTextParentLayout)initWithInfo:(id)a3
+- (TSWPTextParentLayout)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = TSWPTextParentLayout;
-  v5 = [(TSWPTextParentLayout *)&v10 initWithInfo:v4];
+  v5 = [(TSWPTextParentLayout *)&v10 initWithInfo:infoCopy];
   v8 = v5;
   if (v5)
   {
@@ -21,9 +21,9 @@
   return v8;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
-  MEMORY[0x2821F9670](self, sel_maximumFrameSizeForChildren, a3);
+  MEMORY[0x2821F9670](self, sel_maximumFrameSizeForChildren, child);
   result.height = v4;
   result.width = v3;
   return result;

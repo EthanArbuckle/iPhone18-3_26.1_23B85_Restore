@@ -1,7 +1,7 @@
 @interface HUPosterFrameViewCache
-+ (id)dequeuePosterFrameViewForWidth:(double)a3;
++ (id)dequeuePosterFrameViewForWidth:(double)width;
 + (id)sharedCache;
-+ (void)enqueuePosterFrameView:(id)a3;
++ (void)enqueuePosterFrameView:(id)view;
 + (void)purgeCache;
 - (HUPosterFrameViewCache)init;
 @end
@@ -42,24 +42,24 @@ void __37__HUPosterFrameViewCache_sharedCache__block_invoke()
   return v2;
 }
 
-+ (id)dequeuePosterFrameViewForWidth:(double)a3
++ (id)dequeuePosterFrameViewForWidth:(double)width
 {
-  v5 = [a1 sharedCache];
-  v6 = [v5 posterFrameViewQueue];
-  v7 = [v6 lastObject];
+  sharedCache = [self sharedCache];
+  posterFrameViewQueue = [sharedCache posterFrameViewQueue];
+  lastObject = [posterFrameViewQueue lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    v8 = [a1 sharedCache];
-    v9 = [v8 posterFrameViewQueue];
-    [v9 removeLastObject];
+    sharedCache2 = [self sharedCache];
+    posterFrameViewQueue2 = [sharedCache2 posterFrameViewQueue];
+    [posterFrameViewQueue2 removeLastObject];
 
-    v10 = v7;
+    v10 = lastObject;
   }
 
   else
   {
-    v10 = [HUPosterFrameView posterFrameViewForWidth:a3];
+    v10 = [HUPosterFrameView posterFrameViewForWidth:width];
   }
 
   v11 = v10;
@@ -67,20 +67,20 @@ void __37__HUPosterFrameViewCache_sharedCache__block_invoke()
   return v11;
 }
 
-+ (void)enqueuePosterFrameView:(id)a3
++ (void)enqueuePosterFrameView:(id)view
 {
-  v4 = a3;
-  [v4 prepareForReuse];
-  v6 = [a1 sharedCache];
-  v5 = [v6 posterFrameViewQueue];
-  [v5 addObject:v4];
+  viewCopy = view;
+  [viewCopy prepareForReuse];
+  sharedCache = [self sharedCache];
+  posterFrameViewQueue = [sharedCache posterFrameViewQueue];
+  [posterFrameViewQueue addObject:viewCopy];
 }
 
 + (void)purgeCache
 {
-  v3 = [a1 sharedCache];
-  v2 = [v3 posterFrameViewQueue];
-  [v2 removeAllObjects];
+  sharedCache = [self sharedCache];
+  posterFrameViewQueue = [sharedCache posterFrameViewQueue];
+  [posterFrameViewQueue removeAllObjects];
 }
 
 @end

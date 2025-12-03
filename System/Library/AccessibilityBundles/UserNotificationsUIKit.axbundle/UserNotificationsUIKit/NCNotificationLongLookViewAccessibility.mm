@@ -1,20 +1,20 @@
 @interface NCNotificationLongLookViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityBannerIsSticky;
 @end
 
 @implementation NCNotificationLongLookViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCDimmableView"];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceVariable:@"_notificationRequest" withType:"NCNotificationRequest"];
-  [v3 validateClass:@"NCNotificationLongLookView" isKindOfClass:@"PLExpandedPlatterView"];
-  [v3 validateClass:@"PLExpandedPlatterView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationOptions" hasInstanceMethod:@"dismissAutomatically" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationLongLookViewController" hasInstanceMethod:@"contentProviderDismissCustomContent:animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCDimmableView"];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceVariable:@"_notificationRequest" withType:"NCNotificationRequest"];
+  [validationsCopy validateClass:@"NCNotificationLongLookView" isKindOfClass:@"PLExpandedPlatterView"];
+  [validationsCopy validateClass:@"PLExpandedPlatterView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationOptions" hasInstanceMethod:@"dismissAutomatically" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationLongLookViewController" hasInstanceMethod:@"contentProviderDismissCustomContent:animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (BOOL)_accessibilityBannerIsSticky

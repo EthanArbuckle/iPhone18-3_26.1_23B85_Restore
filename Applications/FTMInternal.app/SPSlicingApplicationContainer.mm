@@ -1,16 +1,16 @@
 @interface SPSlicingApplicationContainer
-+ (id)_coreTelephonyAppInfoContainer:(id)a3;
++ (id)_coreTelephonyAppInfoContainer:(id)container;
 @end
 
 @implementation SPSlicingApplicationContainer
 
-+ (id)_coreTelephonyAppInfoContainer:(id)a3
++ (id)_coreTelephonyAppInfoContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = objc_opt_new();
-  v5 = [v3 appsInfo];
+  appsInfo = [containerCopy appsInfo];
 
-  v6 = [SPSlicingApplicationInfo _coreTelephonyAppInfoList:v5];
+  v6 = [SPSlicingApplicationInfo _coreTelephonyAppInfoList:appsInfo];
   [v4 setAppsInfo:v6];
 
   return v4;

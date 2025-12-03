@@ -1,51 +1,51 @@
 @interface HKNumericMinimumRangeAxisScalingRule
-+ (id)ruleWithDefaultYAxisRange:(double)a3 axisRangeOverrides:(id)a4;
-+ (id)ruleWithDefaultYAxisRange:(double)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6;
-+ (id)ruleWithDefaultYAxisRange:(double)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6 noDataAxisBounds:(id)a7;
++ (id)ruleWithDefaultYAxisRange:(double)range axisRangeOverrides:(id)overrides;
++ (id)ruleWithDefaultYAxisRange:(double)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides;
++ (id)ruleWithDefaultYAxisRange:(double)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides noDataAxisBounds:(id)bounds;
 - (id)description;
 @end
 
 @implementation HKNumericMinimumRangeAxisScalingRule
 
-+ (id)ruleWithDefaultYAxisRange:(double)a3 axisRangeOverrides:(id)a4
++ (id)ruleWithDefaultYAxisRange:(double)range axisRangeOverrides:(id)overrides
 {
-  v5 = a4;
-  v6 = [objc_opt_class() ruleWithDefaultYAxisRange:0 minimumValue:0 maximumValue:v5 axisRangeOverrides:0 noDataAxisBounds:a3];
+  overridesCopy = overrides;
+  v6 = [objc_opt_class() ruleWithDefaultYAxisRange:0 minimumValue:0 maximumValue:overridesCopy axisRangeOverrides:0 noDataAxisBounds:range];
 
   return v6;
 }
 
-+ (id)ruleWithDefaultYAxisRange:(double)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6
++ (id)ruleWithDefaultYAxisRange:(double)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [objc_opt_class() ruleWithDefaultYAxisRange:v11 minimumValue:v10 maximumValue:v9 axisRangeOverrides:0 noDataAxisBounds:a3];
+  overridesCopy = overrides;
+  maximumValueCopy = maximumValue;
+  valueCopy = value;
+  v12 = [objc_opt_class() ruleWithDefaultYAxisRange:valueCopy minimumValue:maximumValueCopy maximumValue:overridesCopy axisRangeOverrides:0 noDataAxisBounds:range];
 
   return v12;
 }
 
-+ (id)ruleWithDefaultYAxisRange:(double)a3 minimumValue:(id)a4 maximumValue:(id)a5 axisRangeOverrides:(id)a6 noDataAxisBounds:(id)a7
++ (id)ruleWithDefaultYAxisRange:(double)range minimumValue:(id)value maximumValue:(id)maximumValue axisRangeOverrides:(id)overrides noDataAxisBounds:(id)bounds
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  valueCopy = value;
+  maximumValueCopy = maximumValue;
+  overridesCopy = overrides;
+  boundsCopy = bounds;
   v15 = objc_alloc_init(objc_opt_class());
-  v15[1] = a3;
+  v15[1] = range;
   v16 = *(v15 + 2);
-  *(v15 + 2) = v13;
-  v17 = v13;
+  *(v15 + 2) = overridesCopy;
+  v17 = overridesCopy;
 
   v18 = *(v15 + 5);
-  *(v15 + 5) = v11;
-  v19 = v11;
+  *(v15 + 5) = valueCopy;
+  v19 = valueCopy;
 
   v20 = *(v15 + 6);
-  *(v15 + 6) = v12;
-  v21 = v12;
+  *(v15 + 6) = maximumValueCopy;
+  v21 = maximumValueCopy;
 
-  [v15 setNoDataAxisBounds:v14];
+  [v15 setNoDataAxisBounds:boundsCopy];
   v22 = [HKValueRange valueRangeWithMinValue:v19 maxValue:v21];
 
   [v15 setAxisBounds:v22];

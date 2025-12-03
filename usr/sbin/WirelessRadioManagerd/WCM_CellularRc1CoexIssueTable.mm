@@ -1,16 +1,16 @@
 @interface WCM_CellularRc1CoexIssueTable
-- (id)findAllCellRc1CoexIssueByCellBandInfoType:(int)a3 CellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 RC1Channel:(int)a8;
-- (id)findCellRc1CoexIssueByCellBandInfoType:(int)a3 CellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 RC1Channel:(int)a8;
-- (id)initFromPlist:(id)a3;
-- (id)initFromPlistV2:(id)a3;
+- (id)findAllCellRc1CoexIssueByCellBandInfoType:(int)type CellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq RC1Channel:(int)channel;
+- (id)findCellRc1CoexIssueByCellBandInfoType:(int)type CellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq RC1Channel:(int)channel;
+- (id)initFromPlist:(id)plist;
+- (id)initFromPlistV2:(id)v2;
 - (unsigned)getTableSize;
 @end
 
 @implementation WCM_CellularRc1CoexIssueTable
 
-- (id)initFromPlist:(id)a3
+- (id)initFromPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v69.receiver = self;
   v69.super_class = WCM_CellularRc1CoexIssueTable;
   v5 = [(WCM_CellularRc1CoexIssueTable *)&v69 init];
@@ -19,8 +19,8 @@
   p_isa = &v5->super.isa;
   v5->mCellularRc1CoexIssueTable = v6;
 
-  v65 = v4;
-  v64 = sub_10009D018(v4, @"plist");
+  v65 = plistCopy;
+  v64 = sub_10009D018(plistCopy, @"plist");
   v8 = [NSPropertyListSerialization propertyListWithData:"propertyListWithData:options:format:error:" options:? format:? error:?];
   v63 = 0;
   if (v8)
@@ -51,7 +51,7 @@
           [(WCM_CellularRc1CoexIssue *)v11 setRc1IssueChannel:sub_10005BA3C(v17)];
           v18 = [v8 objectAtIndex:v9];
           v19 = [v18 objectForKey:@"cellAntenna1"];
-          v20 = [v19 intValue];
+          intValue = [v19 intValue];
 
           v21 = [v8 objectAtIndex:v9];
           v22 = [v21 objectForKey:@"cellTxPowerLimit1"];
@@ -61,31 +61,31 @@
           [v24 doubleValue];
           v26 = v25;
 
-          if (v20)
+          if (intValue)
           {
             if ([v22 containsString:@"NA"])
             {
-              v27 = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
-              v28 = [NSNumber numberWithInt:v20];
-              [v27 addObject:v28];
+              cellAntBlockingList = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
+              v28 = [NSNumber numberWithInt:intValue];
+              [cellAntBlockingList addObject:v28];
 
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", v20, v62, v63];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", intValue, v62, v63];
             }
 
             else
             {
-              v29 = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
+              cellTxPowerLimit = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
               v30 = [NSNumber numberWithDouble:v26];
-              v31 = [NSNumber numberWithInt:v20];
-              [v29 setObject:v30 forKey:v31];
+              v31 = [NSNumber numberWithInt:intValue];
+              [cellTxPowerLimit setObject:v30 forKey:v31];
 
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", v20, v22, v63];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", intValue, v22, v63];
             }
           }
 
           v32 = [v8 objectAtIndex:v9];
           v33 = [v32 objectForKey:@"cellAntenna2"];
-          v34 = [v33 intValue];
+          intValue2 = [v33 intValue];
 
           v35 = [v8 objectAtIndex:v9];
           v36 = [v35 objectForKey:@"cellTxPowerLimit2"];
@@ -95,32 +95,32 @@
           [v38 doubleValue];
           v40 = v39;
 
-          if (v34)
+          if (intValue2)
           {
             if ([v36 containsString:@"NA"])
             {
-              v41 = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
-              v42 = [NSNumber numberWithInt:v34];
-              [v41 addObject:v42];
+              cellAntBlockingList2 = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
+              v42 = [NSNumber numberWithInt:intValue2];
+              [cellAntBlockingList2 addObject:v42];
 
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", v34];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", intValue2];
             }
 
             else
             {
-              v43 = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
+              cellTxPowerLimit2 = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
               v44 = [NSNumber numberWithDouble:v40];
-              v45 = [NSNumber numberWithInt:v34];
-              [v43 setObject:v44 forKey:v45];
+              v45 = [NSNumber numberWithInt:intValue2];
+              [cellTxPowerLimit2 setObject:v44 forKey:v45];
 
               v62 = v36;
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", v34];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", intValue2];
             }
           }
 
           v46 = [v8 objectAtIndex:v9];
           v47 = [v46 objectForKey:@"cellAntenna3"];
-          v48 = [v47 intValue];
+          intValue3 = [v47 intValue];
 
           v49 = [v8 objectAtIndex:v9];
           v50 = [v49 objectForKey:@"cellTxPowerLimit3"];
@@ -131,27 +131,27 @@
           v54 = v53;
 
           v13 = v68;
-          if (v48)
+          if (intValue3)
           {
             if ([v50 containsString:@"NA"])
             {
-              v55 = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
-              v56 = [NSNumber numberWithInt:v48];
-              [v55 addObject:v56];
+              cellAntBlockingList3 = [(WCM_CellularRc1CoexIssue *)v11 CellAntBlockingList];
+              v56 = [NSNumber numberWithInt:intValue3];
+              [cellAntBlockingList3 addObject:v56];
 
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", v48];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Block antenna %u", intValue3];
             }
 
             else
             {
-              v57 = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
+              cellTxPowerLimit3 = [(WCM_CellularRc1CoexIssue *)v11 cellTxPowerLimit];
               v58 = [NSNumber numberWithDouble:v54];
-              v59 = [NSNumber numberWithInt:v48];
-              [v57 setObject:v58 forKey:v59];
+              v59 = [NSNumber numberWithInt:intValue3];
+              [cellTxPowerLimit3 setObject:v58 forKey:v59];
 
               v13 = v68;
               v62 = v50;
-              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", v48];
+              [WCM_Logging logLevel:3 message:@"Cellular-RC1 Coex Plist: Power cap antenna %u to %@dBm", intValue3];
             }
           }
 
@@ -178,9 +178,9 @@
   return p_isa;
 }
 
-- (id)initFromPlistV2:(id)a3
+- (id)initFromPlistV2:(id)v2
 {
-  v4 = a3;
+  v2Copy = v2;
   v49.receiver = self;
   v49.super_class = WCM_CellularRc1CoexIssueTable;
   v5 = [(WCM_CellularRc1CoexIssueTable *)&v49 init];
@@ -189,7 +189,7 @@
   v5->mCellularRc1CoexIssueTable = v6;
 
   v48 = 0;
-  v8 = sub_10009D018(v4, @"plist");
+  v8 = sub_10009D018(v2Copy, @"plist");
   v47 = 0;
   v9 = [NSPropertyListSerialization propertyListWithData:v8 options:2 format:&v48 error:&v47];
   v10 = v47;
@@ -303,10 +303,10 @@
   return mCellularRc1CoexIssueTable;
 }
 
-- (id)findCellRc1CoexIssueByCellBandInfoType:(int)a3 CellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 RC1Channel:(int)a8
+- (id)findCellRc1CoexIssueByCellBandInfoType:(int)type CellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq RC1Channel:(int)channel
 {
   mCellularRc1CoexIssueTable = self->mCellularRc1CoexIssueTable;
-  if (mCellularRc1CoexIssueTable && [(NSMutableArray *)mCellularRc1CoexIssueTable count:a4])
+  if (mCellularRc1CoexIssueTable && [(NSMutableArray *)mCellularRc1CoexIssueTable count:freq])
   {
     v25 = 0u;
     v26 = 0u;
@@ -328,13 +328,13 @@
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          if (([v18 bandInfoType] & a3) != 0)
+          if (([v18 bandInfoType] & type) != 0)
           {
             [v18 uplinkLowFreq_Hz];
-            if (v19 <= a6)
+            if (v19 <= lowFreq)
             {
               [v18 uplinkHighFreq_Hz];
-              if (v20 > a6 && ([v18 Rc1IssueChannel] & a8) != 0)
+              if (v20 > lowFreq && ([v18 Rc1IssueChannel] & channel) != 0)
               {
                 v21 = v18;
                 goto LABEL_17;
@@ -365,10 +365,10 @@ LABEL_17:
   return v21;
 }
 
-- (id)findAllCellRc1CoexIssueByCellBandInfoType:(int)a3 CellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 RC1Channel:(int)a8
+- (id)findAllCellRc1CoexIssueByCellBandInfoType:(int)type CellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq RC1Channel:(int)channel
 {
   mCellularRc1CoexIssueTable = self->mCellularRc1CoexIssueTable;
-  if (mCellularRc1CoexIssueTable && [(NSMutableArray *)mCellularRc1CoexIssueTable count:a4])
+  if (mCellularRc1CoexIssueTable && [(NSMutableArray *)mCellularRc1CoexIssueTable count:freq])
   {
     v25 = 0u;
     v26 = 0u;
@@ -391,13 +391,13 @@ LABEL_17:
           }
 
           v19 = *(*(&v23 + 1) + 8 * i);
-          if (([v19 bandInfoType] & a3) != 0)
+          if (([v19 bandInfoType] & type) != 0)
           {
             [v19 uplinkLowFreq_Hz];
-            if (v20 <= a6)
+            if (v20 <= lowFreq)
             {
               [v19 uplinkHighFreq_Hz];
-              if (v21 > a6 && ([v19 Rc1IssueChannel] & a8) != 0)
+              if (v21 > lowFreq && ([v19 Rc1IssueChannel] & channel) != 0)
               {
                 if (!v16)
                 {

@@ -11,17 +11,17 @@
   if (v3)
   {
     v4 = [(ChevronButtonAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ChevronButtonAccessibility;
-    v5 = [(ChevronButtonAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(ChevronButtonAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

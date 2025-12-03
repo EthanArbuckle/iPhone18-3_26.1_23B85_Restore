@@ -1,6 +1,6 @@
 @interface LayerResizableUIView
-- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithCoder:(id)a3;
-- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithFrame:(CGRect)a3;
+- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithCoder:(id)coder;
+- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,27 +8,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004AE18();
 }
 
-- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithFrame:(CGRect)a3
+- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for LayerResizableUIView();
   return [(LayerResizableUIView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithCoder:(id)a3
+- (_TtC17AppleVisionProApp20LayerResizableUIView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LayerResizableUIView();
-  v4 = a3;
-  v5 = [(LayerResizableUIView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LayerResizableUIView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

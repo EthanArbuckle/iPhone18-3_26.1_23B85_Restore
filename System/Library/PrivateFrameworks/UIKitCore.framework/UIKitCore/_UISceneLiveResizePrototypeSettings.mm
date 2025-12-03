@@ -11,11 +11,11 @@
 {
   v5.receiver = self;
   v5.super_class = _UISceneLiveResizePrototypeSettings;
-  v2 = [(PTSettings *)&v5 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v5 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(_UISceneLiveResizePrototypeSettings *)v2 setDefaultValues];
+    [(_UISceneLiveResizePrototypeSettings *)initWithDefaultValues setDefaultValues];
   }
 
   return v3;
@@ -97,10 +97,10 @@
     return 2;
   }
 
-  v4 = [(_UISceneLiveResizePrototypeSettings *)self throttlingMode];
-  v5 = [v4 unsignedIntegerValue];
+  throttlingMode = [(_UISceneLiveResizePrototypeSettings *)self throttlingMode];
+  unsignedIntegerValue = [throttlingMode unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 @end

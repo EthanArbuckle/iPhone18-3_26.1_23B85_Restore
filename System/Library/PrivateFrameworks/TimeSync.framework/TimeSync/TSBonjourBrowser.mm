@@ -1,10 +1,10 @@
 @interface TSBonjourBrowser
-- (BOOL)startBrowsingWithError:(id *)a3;
+- (BOOL)startBrowsingWithError:(id *)error;
 - (BOOL)stopBrowsing;
 - (TSBonjourBrowser)init;
-- (void)addedServiceWithName:(const char *)a3 regType:(const char *)a4 domain:(const char *)a5 onInterface:(unsigned int)a6 withFlags:(unsigned int)a7;
+- (void)addedServiceWithName:(const char *)name regType:(const char *)type domain:(const char *)domain onInterface:(unsigned int)interface withFlags:(unsigned int)flags;
 - (void)dealloc;
-- (void)removedServiceWithName:(const char *)a3 regType:(const char *)a4 domain:(const char *)a5 onInterface:(unsigned int)a6 withFlags:(unsigned int)a7;
+- (void)removedServiceWithName:(const char *)name regType:(const char *)type domain:(const char *)domain onInterface:(unsigned int)interface withFlags:(unsigned int)flags;
 @end
 
 @implementation TSBonjourBrowser
@@ -28,43 +28,43 @@
   return v2;
 }
 
-- (void)addedServiceWithName:(const char *)a3 regType:(const char *)a4 domain:(const char *)a5 onInterface:(unsigned int)a6 withFlags:(unsigned int)a7
+- (void)addedServiceWithName:(const char *)name regType:(const char *)type domain:(const char *)domain onInterface:(unsigned int)interface withFlags:(unsigned int)flags
 {
   v66 = *MEMORY[0x277D85DE8];
   *v64 = 0;
   v65 = 0;
-  if_indextoname(a6, v64);
+  if_indextoname(interface, v64);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316418;
-    v53 = a3;
+    nameCopy = name;
     v54 = 2080;
-    v55 = a4;
+    typeCopy = type;
     v56 = 2080;
-    v57 = a5;
+    domainCopy = domain;
     v58 = 1024;
-    v59 = a7;
+    flagsCopy = flags;
     v60 = 2080;
     v61 = v64;
     v62 = 1024;
-    v63 = a6;
+    interfaceCopy = interface;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Added service with name %s type %s domain %s flags 0x%08x on interface %s (%u)\n", buf, 0x36u);
   }
 
-  if (a6)
+  if (interface)
   {
-    v43 = a6;
+    interfaceCopy2 = interface;
     v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:v64];
-    v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
-    v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
-    [MEMORY[0x277CCACA8] stringWithUTF8String:a5];
+    v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
+    v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:type];
+    [MEMORY[0x277CCACA8] stringWithUTF8String:domain];
     v45 = v44 = self;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v14 = [(TSBonjourBrowser *)self nodes];
-    v15 = [v14 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    nodes = [(TSBonjourBrowser *)self nodes];
+    v15 = [nodes countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v15)
     {
       v16 = v15;
@@ -75,31 +75,31 @@ LABEL_6:
       {
         if (*v48 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(nodes);
         }
 
         v19 = *(*(&v47 + 1) + 8 * v18);
-        v20 = [v19 name];
-        if (![v20 isEqualToString:v13])
+        name = [v19 name];
+        if (![name isEqualToString:v13])
         {
           goto LABEL_14;
         }
 
-        v21 = [v19 type];
-        if (([v21 isEqualToString:v46] & 1) == 0)
+        type = [v19 type];
+        if (([type isEqualToString:v46] & 1) == 0)
         {
           break;
         }
 
-        v22 = [v19 domain];
-        v23 = [v22 isEqualToString:v45];
+        domain = [v19 domain];
+        v23 = [domain isEqualToString:v45];
 
         if (v23)
         {
           v27 = v19;
 
           v24 = v44;
-          v25 = v43;
+          v25 = interfaceCopy2;
           v26 = v42;
           if (v27)
           {
@@ -112,7 +112,7 @@ LABEL_6:
 LABEL_15:
         if (v16 == ++v18)
         {
-          v16 = [v14 countByEnumeratingWithState:&v47 objects:v51 count:16];
+          v16 = [nodes countByEnumeratingWithState:&v47 objects:v51 count:16];
           if (v16)
           {
             goto LABEL_6;
@@ -129,16 +129,16 @@ LABEL_14:
 LABEL_17:
 
     v24 = v44;
-    v25 = v43;
+    v25 = interfaceCopy2;
     v26 = v42;
 LABEL_19:
     v27 = [[TSBonjourNode alloc] initWithServiceName:v13 type:v46 andDomain:v45];
-    v28 = [(TSBonjourBrowser *)v24 nodes];
+    nodes2 = [(TSBonjourBrowser *)v24 nodes];
 
-    if (v28)
+    if (nodes2)
     {
-      v29 = [(TSBonjourBrowser *)v24 nodes];
-      v30 = [v29 arrayByAddingObject:v27];
+      nodes3 = [(TSBonjourBrowser *)v24 nodes];
+      v30 = [nodes3 arrayByAddingObject:v27];
     }
 
     else
@@ -147,33 +147,33 @@ LABEL_19:
     }
 
     [(TSBonjourBrowser *)v24 setNodes:v30];
-    v31 = [(TSBonjourBrowser *)v24 delegate];
-    if (v31)
+    delegate = [(TSBonjourBrowser *)v24 delegate];
+    if (delegate)
     {
-      v32 = v31;
-      v33 = [(TSBonjourBrowser *)v24 delegate];
+      v32 = delegate;
+      delegate2 = [(TSBonjourBrowser *)v24 delegate];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
       {
-        v35 = [(TSBonjourBrowser *)v24 delegate];
-        [v35 didAddNode:v27 onBrowser:v24];
+        delegate3 = [(TSBonjourBrowser *)v24 delegate];
+        [delegate3 didAddNode:v27 onBrowser:v24];
       }
     }
 
 LABEL_26:
     [(TSBonjourNode *)v27 addedOnInterface:v25 named:v26];
-    v36 = [(TSBonjourBrowser *)v24 delegate];
-    if (v36)
+    delegate4 = [(TSBonjourBrowser *)v24 delegate];
+    if (delegate4)
     {
-      v37 = v36;
-      v38 = [(TSBonjourBrowser *)v24 delegate];
+      v37 = delegate4;
+      delegate5 = [(TSBonjourBrowser *)v24 delegate];
       v39 = objc_opt_respondsToSelector();
 
       if (v39)
       {
-        v40 = [(TSBonjourBrowser *)v24 delegate];
-        [v40 didAddInterface:v26 toNode:v27 onBrowser:v24];
+        delegate6 = [(TSBonjourBrowser *)v24 delegate];
+        [delegate6 didAddInterface:v26 toNode:v27 onBrowser:v24];
       }
     }
   }
@@ -181,40 +181,40 @@ LABEL_26:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removedServiceWithName:(const char *)a3 regType:(const char *)a4 domain:(const char *)a5 onInterface:(unsigned int)a6 withFlags:(unsigned int)a7
+- (void)removedServiceWithName:(const char *)name regType:(const char *)type domain:(const char *)domain onInterface:(unsigned int)interface withFlags:(unsigned int)flags
 {
   v63 = *MEMORY[0x277D85DE8];
   *v61 = 0;
   v62 = 0;
-  if_indextoname(a6, v61);
+  if_indextoname(interface, v61);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316418;
-    v50 = a3;
+    nameCopy = name;
     v51 = 2080;
-    v52 = a4;
+    typeCopy = type;
     v53 = 2080;
-    v54 = a5;
+    domainCopy = domain;
     v55 = 1024;
-    v56 = a7;
+    flagsCopy = flags;
     v57 = 2080;
     v58 = v61;
     v59 = 1024;
-    v60 = a6;
+    interfaceCopy = interface;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Removed service with name %s type %s domain %s flags 0x%08x on interface %s (%u)\n", buf, 0x36u);
   }
 
-  v41 = a6;
+  interfaceCopy2 = interface;
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:v61];
-  v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
-  v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
-  v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:a5];
+  v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
+  v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:type];
+  v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:domain];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = [(TSBonjourBrowser *)self nodes];
-  v16 = [v15 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  nodes = [(TSBonjourBrowser *)self nodes];
+  v16 = [nodes countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (!v16)
   {
 LABEL_25:
@@ -222,7 +222,7 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  v39 = self;
+  selfCopy = self;
   v40 = v13;
   v17 = *v45;
 LABEL_5:
@@ -231,26 +231,26 @@ LABEL_5:
   {
     if (*v45 != v17)
     {
-      objc_enumerationMutation(v15);
+      objc_enumerationMutation(nodes);
     }
 
     v19 = *(*(&v44 + 1) + 8 * v18);
-    v20 = [v19 name];
-    if (![v20 isEqualToString:v14])
+    name = [v19 name];
+    if (![name isEqualToString:v14])
     {
       goto LABEL_13;
     }
 
-    v21 = [v19 type];
-    if (([v21 isEqualToString:v43] & 1) == 0)
+    type = [v19 type];
+    if (([type isEqualToString:v43] & 1) == 0)
     {
 
 LABEL_13:
       goto LABEL_14;
     }
 
-    v22 = [v19 domain];
-    v23 = [v22 isEqualToString:v42];
+    domain = [v19 domain];
+    v23 = [domain isEqualToString:v42];
 
     if (v23)
     {
@@ -260,7 +260,7 @@ LABEL_13:
 LABEL_14:
     if (v16 == ++v18)
     {
-      v16 = [v15 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v16 = [nodes countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v16)
       {
         goto LABEL_5;
@@ -279,44 +279,44 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v24 = [(TSBonjourBrowser *)v39 delegate];
+  delegate = [(TSBonjourBrowser *)selfCopy delegate];
   v13 = v40;
-  if (v24)
+  if (delegate)
   {
-    v25 = v24;
-    v26 = [(TSBonjourBrowser *)v39 delegate];
+    v25 = delegate;
+    delegate2 = [(TSBonjourBrowser *)selfCopy delegate];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
     {
-      v28 = [(TSBonjourBrowser *)v39 delegate];
-      [v28 didRemoveInterface:v40 fromNode:v16 onBrowser:v39];
+      delegate3 = [(TSBonjourBrowser *)selfCopy delegate];
+      [delegate3 didRemoveInterface:v40 fromNode:v16 onBrowser:selfCopy];
     }
   }
 
-  [v16 removedFromInterface:v41 named:v40];
-  v29 = [v16 interfaces];
-  v30 = [v29 count];
+  [v16 removedFromInterface:interfaceCopy2 named:v40];
+  interfaces = [v16 interfaces];
+  v30 = [interfaces count];
 
   if (!v30)
   {
     v31 = objc_alloc(MEMORY[0x277CBEB18]);
-    v32 = [(TSBonjourBrowser *)v39 nodes];
-    v15 = [v31 initWithArray:v32];
+    nodes2 = [(TSBonjourBrowser *)selfCopy nodes];
+    nodes = [v31 initWithArray:nodes2];
 
-    [v15 removeObject:v16];
-    [(TSBonjourBrowser *)v39 setNodes:v15];
-    v33 = [(TSBonjourBrowser *)v39 delegate];
-    if (v33)
+    [nodes removeObject:v16];
+    [(TSBonjourBrowser *)selfCopy setNodes:nodes];
+    delegate4 = [(TSBonjourBrowser *)selfCopy delegate];
+    if (delegate4)
     {
-      v34 = v33;
-      v35 = [(TSBonjourBrowser *)v39 delegate];
+      v34 = delegate4;
+      delegate5 = [(TSBonjourBrowser *)selfCopy delegate];
       v36 = objc_opt_respondsToSelector();
 
       if (v36)
       {
-        v37 = [(TSBonjourBrowser *)v39 delegate];
-        [v37 didRemoveNode:v16 onBrowser:v39];
+        delegate6 = [(TSBonjourBrowser *)selfCopy delegate];
+        [delegate6 didRemoveNode:v16 onBrowser:selfCopy];
       }
     }
 
@@ -328,7 +328,7 @@ LABEL_27:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startBrowsingWithError:(id *)a3
+- (BOOL)startBrowsingWithError:(id *)error
 {
   sdRef = self->_sdRef;
   p_sdRef = &self->_sdRef;
@@ -338,12 +338,12 @@ LABEL_27:
   }
 
   v8 = DNSServiceBrowse(p_sdRef, 0x100000u, 0, "_ptp-general._udp.", 0, TSBBBrowseServiceReply, self);
-  if (a3 && v8)
+  if (error && v8)
   {
     v9 = TSBonjourErrorFromErrorCode(v8);
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
   }
 
   else

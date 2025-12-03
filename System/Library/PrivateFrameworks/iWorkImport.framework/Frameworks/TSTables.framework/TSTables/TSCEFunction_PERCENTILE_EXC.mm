@@ -1,39 +1,39 @@
 @interface TSCEFunction_PERCENTILE_EXC
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_PERCENTILE_EXC
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = *(*a5 + 8);
+  v8 = *(*arguments + 8);
   v36 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 1, &v36);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 1, &v36);
   v11 = v36;
   v35[0] = objc_msgSend_decimalRepresentation(v10, v12, v13, v14, v15);
   v35[1] = v16;
   if (v11)
   {
-    v19 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v11, v17, v18);
+    v19 = objc_msgSend_raiseErrorOrConvert_(context, v16, v11, v17, v18);
   }
 
   else
   {
-    v20 = **a5;
+    v20 = **arguments;
     v34 = 0;
-    v21 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v20, v16, a3, a4, 0, 1, &v34);
+    v21 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v20, v16, context, spec, 0, 1, &v34);
     v11 = v34;
     if (v11)
     {
-      v19 = objc_msgSend_raiseErrorOrConvert_(a3, v22, v11, v23, v24);
+      v19 = objc_msgSend_raiseErrorOrConvert_(context, v22, v11, v23, v24);
     }
 
     else
     {
-      v19 = objc_msgSend_computeWithVector_functionSpec_vector_percentile_isExclusive_ignoreError_(TSCEFunction_PERCENTILE, v22, a3, a4, v21, v35, 1, 0);
+      v19 = objc_msgSend_computeWithVector_functionSpec_vector_percentile_isExclusive_ignoreError_(TSCEFunction_PERCENTILE, v22, context, spec, v21, v35, 1, 0);
       if (v21)
       {
-        objc_msgSend_formatWithContext_(v21, v25, a3, v26, v27);
+        objc_msgSend_formatWithContext_(v21, v25, context, v26, v27);
       }
 
       else

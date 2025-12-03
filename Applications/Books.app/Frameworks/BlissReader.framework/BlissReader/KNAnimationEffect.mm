@@ -1,24 +1,24 @@
 @interface KNAnimationEffect
 + (id)defaultAttributes;
-+ (id)updateDirectionAttributeValue:(int64_t)a3 andCustomTextDirectionValue:(unint64_t)a4 turnOffBounce:(BOOL)a5 forAttributes:(id)a6;
-- (CATransform3D)mvpMatrixWithContext:(SEL)a3;
-- (CATransform3D)mvpMatrixWithFrame:(SEL)a3 size:(CGPoint)a4;
-- (CATransform3D)mvpMatrixWithTexture:(SEL)a3 andFrame:(id)a4;
-- (CATransform3D)perspectiveMVPMatrixWithContext:(SEL)a3;
-- (CATransform3D)perspectiveMVPMatrixWithTexture:(SEL)a3 andFrame:(id)a4;
-- (KNAnimationEffect)initWithAnimationContext:(id)a3;
++ (id)updateDirectionAttributeValue:(int64_t)value andCustomTextDirectionValue:(unint64_t)directionValue turnOffBounce:(BOOL)bounce forAttributes:(id)attributes;
+- (CATransform3D)mvpMatrixWithContext:(SEL)context;
+- (CATransform3D)mvpMatrixWithFrame:(SEL)frame size:(CGPoint)size;
+- (CATransform3D)mvpMatrixWithTexture:(SEL)texture andFrame:(id)frame;
+- (CATransform3D)perspectiveMVPMatrixWithContext:(SEL)context;
+- (CATransform3D)perspectiveMVPMatrixWithTexture:(SEL)texture andFrame:(id)frame;
+- (KNAnimationEffect)initWithAnimationContext:(id)context;
 @end
 
 @implementation KNAnimationEffect
 
-- (KNAnimationEffect)initWithAnimationContext:(id)a3
+- (KNAnimationEffect)initWithAnimationContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = KNAnimationEffect;
   result = [(KNAnimationEffect *)&v5 init];
   if (result)
   {
-    result->mAnimationContext = a3;
+    result->mAnimationContext = context;
   }
 
   return result;
@@ -31,18 +31,18 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-+ (id)updateDirectionAttributeValue:(int64_t)a3 andCustomTextDirectionValue:(unint64_t)a4 turnOffBounce:(BOOL)a5 forAttributes:(id)a6
++ (id)updateDirectionAttributeValue:(int64_t)value andCustomTextDirectionValue:(unint64_t)directionValue turnOffBounce:(BOOL)bounce forAttributes:(id)attributes
 {
-  v7 = a5;
-  v10 = [a6 mutableCopy];
-  [v10 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", a3), @"KNBuildAttributesDirection"}];
-  if (![a6 objectForKey:@"KNBuildCustomAttributesTextDelivery"])
+  bounceCopy = bounce;
+  v10 = [attributes mutableCopy];
+  [v10 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", value), @"KNBuildAttributesDirection"}];
+  if (![attributes objectForKey:@"KNBuildCustomAttributesTextDelivery"])
   {
     [v10 setObject:&off_49D318 forKey:@"KNBuildCustomAttributesTextDelivery"];
   }
 
-  [v10 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", a4), @"KNBuildCustomAttributesDeliveryOption"}];
-  if (v7)
+  [v10 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", directionValue), @"KNBuildCustomAttributesDeliveryOption"}];
+  if (bounceCopy)
   {
     [v10 setObject:&__kCFBooleanFalse forKey:@"KNBuildCustomAttributesBounce"];
   }
@@ -50,7 +50,7 @@
   return v10;
 }
 
-- (CATransform3D)mvpMatrixWithContext:(SEL)a3
+- (CATransform3D)mvpMatrixWithContext:(SEL)context
 {
   if (![a4 isTransition])
   {
@@ -101,10 +101,10 @@ LABEL_9:
   return result;
 }
 
-- (CATransform3D)mvpMatrixWithFrame:(SEL)a3 size:(CGPoint)a4
+- (CATransform3D)mvpMatrixWithFrame:(SEL)frame size:(CGPoint)size
 {
-  y = a4.y;
-  x = a4.x;
+  y = size.y;
+  x = size.x;
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
   *&retstr->m31 = 0u;
@@ -142,7 +142,7 @@ LABEL_9:
   return result;
 }
 
-- (CATransform3D)mvpMatrixWithTexture:(SEL)a3 andFrame:(id)a4
+- (CATransform3D)mvpMatrixWithTexture:(SEL)texture andFrame:(id)frame
 {
   height = a5.size.height;
   width = a5.size.width;
@@ -157,14 +157,14 @@ LABEL_9:
   *&retstr->m11 = 0u;
   *&retstr->m13 = 0u;
   TSDTransform3DMakeOrtho();
-  [a4 frameOnCanvas];
+  [frame frameOnCanvas];
   v12 = v11;
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
   v13 = v12 - CGRectGetMinX(v28);
-  [a4 frameOnCanvas];
+  [frame frameOnCanvas];
   v15 = v14;
   v29.origin.x = x;
   v29.origin.y = y;
@@ -199,7 +199,7 @@ LABEL_9:
   return result;
 }
 
-- (CATransform3D)perspectiveMVPMatrixWithContext:(SEL)a3
+- (CATransform3D)perspectiveMVPMatrixWithContext:(SEL)context
 {
   if (![a4 isTransition])
   {
@@ -250,20 +250,20 @@ LABEL_9:
   return result;
 }
 
-- (CATransform3D)perspectiveMVPMatrixWithTexture:(SEL)a3 andFrame:(id)a4
+- (CATransform3D)perspectiveMVPMatrixWithTexture:(SEL)texture andFrame:(id)frame
 {
   height = a5.size.height;
   width = a5.size.width;
   y = a5.origin.y;
   x = a5.origin.x;
-  [a4 frameOnCanvas];
+  [frame frameOnCanvas];
   v13 = v12;
   v34.origin.x = x;
   v34.origin.y = y;
   v34.size.width = width;
   v34.size.height = height;
   v29 = v13 - CGRectGetMinX(v34);
-  [a4 frameOnCanvas];
+  [frame frameOnCanvas];
   v15 = v14;
   v35.origin.x = x;
   v35.origin.y = y;

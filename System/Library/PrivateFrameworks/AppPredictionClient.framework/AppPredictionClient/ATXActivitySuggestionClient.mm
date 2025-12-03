@@ -1,30 +1,30 @@
 @interface ATXActivitySuggestionClient
-+ (Class)ATXTriggerClassFromDNDModeConfigurationTrigger:(id)a3;
-+ (Class)DNDModeConfigurationTriggerClassFromATXTrigger:(id)a3;
++ (Class)ATXTriggerClassFromDNDModeConfigurationTrigger:(id)trigger;
++ (Class)DNDModeConfigurationTriggerClassFromATXTrigger:(id)trigger;
 + (id)sharedInstance;
 - (ATXActivitySuggestionClient)init;
-- (ATXActivitySuggestionClient)initWithRoutineManager:(id)a3;
-- (BOOL)_activityIsEligibleForSetUpSuggestion:(id)a3 modeGlobals:(id)a4;
-- (BOOL)_activityIsEligibleForTriggerSuggestion:(id)a3 modeGlobals:(id)a4;
-- (BOOL)_shouldSendAutomationSuggestionForMode:(int)a3;
-- (BOOL)_shouldSendModeSetUpSuggestionAtEndOfModeToLockScreen:(id)a3 modeGlobals:(id)a4;
-- (BOOL)_shouldSendModeTriggerSuggestionAtEndOfModeToLockScreen:(id)a3 modeGlobals:(id)a4;
-- (id)DNDModeConfigurationTriggersToATXTriggers:(id)a3;
-- (id)_activityForEvent:(id)a3;
-- (id)_suggestionWithActivity:(id)a3 modeGlobals:(id)a4;
+- (ATXActivitySuggestionClient)initWithRoutineManager:(id)manager;
+- (BOOL)_activityIsEligibleForSetUpSuggestion:(id)suggestion modeGlobals:(id)globals;
+- (BOOL)_activityIsEligibleForTriggerSuggestion:(id)suggestion modeGlobals:(id)globals;
+- (BOOL)_shouldSendAutomationSuggestionForMode:(int)mode;
+- (BOOL)_shouldSendModeSetUpSuggestionAtEndOfModeToLockScreen:(id)screen modeGlobals:(id)globals;
+- (BOOL)_shouldSendModeTriggerSuggestionAtEndOfModeToLockScreen:(id)screen modeGlobals:(id)globals;
+- (id)DNDModeConfigurationTriggersToATXTriggers:(id)triggers;
+- (id)_activityForEvent:(id)event;
+- (id)_suggestionWithActivity:(id)activity modeGlobals:(id)globals;
 - (id)currentSuggestion;
-- (id)localizedSuggestionReasonForBMInferredModeEvent:(id)a3;
+- (id)localizedSuggestionReasonForBMInferredModeEvent:(id)event;
 - (id)previousSuggestion;
-- (id)suggestionWithUUID:(id)a3;
-- (id)triggersToDNDModeConfigurationTriggers:(id)a3;
+- (id)suggestionWithUUID:(id)d;
+- (id)triggersToDNDModeConfigurationTriggers:(id)triggers;
 - (void)_fetchAndCacheLOIs;
-- (void)_logFeedbackEventForSuggestionUUID:(id)a3 suggestionType:(unint64_t)a4 eventType:(unint64_t)a5 acceptedTriggers:(id)a6 location:(unint64_t)a7;
+- (void)_logFeedbackEventForSuggestionUUID:(id)d suggestionType:(unint64_t)type eventType:(unint64_t)eventType acceptedTriggers:(id)triggers location:(unint64_t)location;
 - (void)_modeDidChange;
 - (void)_setUpPublisherIfNecessary;
-- (void)currentSuggestionWithCompletionHandler:(id)a3;
+- (void)currentSuggestionWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 sendingInitialChangeNotification:(BOOL)a4;
-- (void)removeObserver:(id)a3;
+- (void)registerObserver:(id)observer sendingInitialChangeNotification:(BOOL)notification;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ATXActivitySuggestionClient
@@ -59,9 +59,9 @@ void __45__ATXActivitySuggestionClient_sharedInstance__block_invoke()
   return v4;
 }
 
-- (ATXActivitySuggestionClient)initWithRoutineManager:(id)a3
+- (ATXActivitySuggestionClient)initWithRoutineManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = ATXActivitySuggestionClient;
   v6 = [(ATXActivitySuggestionClient *)&v30 init];
@@ -74,9 +74,9 @@ void __45__ATXActivitySuggestionClient_sharedInstance__block_invoke()
       _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "Creating ATXActivitySuggestionClient", buf, 2u);
     }
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v8;
+    v6->_observers = weakObjectsHashTable;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("ATXActivitySuggestionClient.queue", v10);
@@ -84,10 +84,10 @@ void __45__ATXActivitySuggestionClient_sharedInstance__block_invoke()
     v6->_queue = v11;
 
     v13 = BiomeLibrary();
-    v14 = [v13 UserFocus];
-    v15 = [v14 InferredMode];
+    userFocus = [v13 UserFocus];
+    inferredMode = [userFocus InferredMode];
     inferredModeStream = v6->_inferredModeStream;
-    v6->_inferredModeStream = v15;
+    v6->_inferredModeStream = inferredMode;
 
     v17 = [[ATXActivitySuggestionFeedbackStream alloc] initWithStoreConfig:0];
     feedbackStream = v6->_feedbackStream;
@@ -105,7 +105,7 @@ void __45__ATXActivitySuggestionClient_sharedInstance__block_invoke()
     coalescingTimer = v6->_coalescingTimer;
     v6->_coalescingTimer = v21;
 
-    objc_storeStrong(&v6->_routineManager, a3);
+    objc_storeStrong(&v6->_routineManager, manager);
     v23 = MEMORY[0x1E69C5D08];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -157,10 +157,10 @@ void __54__ATXActivitySuggestionClient_initWithRoutineManager___block_invoke_2(u
     }
 
     v4 = BiomeLibrary();
-    v5 = [v4 UserFocus];
-    v6 = [v5 InferredMode];
+    userFocus = [v4 UserFocus];
+    inferredMode = [userFocus InferredMode];
     inferredModeStream = self->_inferredModeStream;
-    self->_inferredModeStream = v6;
+    self->_inferredModeStream = inferredMode;
 
     if (self->_inferredModeStream)
     {
@@ -173,9 +173,9 @@ LABEL_6:
       }
 
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [MEMORY[0x1E696AE30] processInfo];
-      v11 = [v10 processName];
-      v12 = [v9 stringWithFormat:@"ATXActivitySuggestionClient.Modes.%@", v11];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v12 = [v9 stringWithFormat:@"ATXActivitySuggestionClient.Modes.%@", processName];
 
       v13 = [objc_alloc(MEMORY[0x1E698F258]) initWithIdentifier:v12 targetQueue:self->_queue];
       scheduler = self->_scheduler;
@@ -184,8 +184,8 @@ LABEL_6:
       if (self->_scheduler)
       {
         objc_initWeak(buf, self);
-        v15 = [(BMStream *)self->_inferredModeStream DSLPublisher];
-        v16 = [v15 subscribeOn:self->_scheduler];
+        dSLPublisher = [(BMStream *)self->_inferredModeStream DSLPublisher];
+        v16 = [dSLPublisher subscribeOn:self->_scheduler];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __57__ATXActivitySuggestionClient__setUpPublisherIfNecessary__block_invoke_28;
@@ -281,33 +281,33 @@ void __57__ATXActivitySuggestionClient__setUpPublisherIfNecessary__block_invoke_
   }
 }
 
-- (void)registerObserver:(id)a3 sendingInitialChangeNotification:(BOOL)a4
+- (void)registerObserver:(id)observer sendingInitialChangeNotification:(BOOL)notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = __atxlog_handle_modes();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = observerCopy;
     _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_DEFAULT, "ATXActivitySuggestionClient: registered %@", buf, 0xCu);
   }
 
-  [(NSHashTable *)v7->_observers addObject:v6];
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
   v9 = MEMORY[0x1E69C5D08];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNotification___block_invoke;
   v11[3] = &unk_1E80C14B8;
-  v11[4] = v7;
-  v13 = a4;
-  v10 = v6;
+  v11[4] = selfCopy;
+  notificationCopy = notification;
+  v10 = observerCopy;
   v12 = v10;
   [v9 runBlockWhenDeviceIsClassCUnlockedWithQoS:25 block:v11];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 void __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNotification___block_invoke(uint64_t a1)
@@ -347,21 +347,21 @@ void __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNoti
   [*(a1 + 40) activitySuggestionClient:*(a1 + 32) didSuggestActivity:v2];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)suggestionWithUUID:(id)a3
+- (id)suggestionWithUUID:(id)d
 {
   v4 = MEMORY[0x1E69C5AB8];
-  v5 = a3;
+  dCopy = d;
   v6 = [[v4 alloc] initWithStream:self->_inferredModeStream];
-  v7 = [v6 inferredModeEventWithSuggestionUUID:v5];
+  v7 = [v6 inferredModeEventWithSuggestionUUID:dCopy];
 
   if (v7)
   {
@@ -389,9 +389,9 @@ void __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNoti
 - (id)previousSuggestion
 {
   v3 = [objc_alloc(MEMORY[0x1E69C5AB8]) initWithStream:self->_inferredModeStream];
-  v4 = [v3 previousModeEvent];
-  v5 = [v4 eventBody];
-  v6 = [(ATXActivitySuggestionClient *)self _activityForEvent:v5];
+  previousModeEvent = [v3 previousModeEvent];
+  eventBody = [previousModeEvent eventBody];
+  v6 = [(ATXActivitySuggestionClient *)self _activityForEvent:eventBody];
 
   return v6;
 }
@@ -399,20 +399,20 @@ void __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNoti
 - (id)currentSuggestion
 {
   v3 = [objc_alloc(MEMORY[0x1E69C5AB8]) initWithStream:self->_inferredModeStream];
-  v4 = [v3 currentMode];
-  v5 = [(ATXActivitySuggestionClient *)self _activityForEvent:v4];
+  currentMode = [v3 currentMode];
+  v5 = [(ATXActivitySuggestionClient *)self _activityForEvent:currentMode];
 
   return v5;
 }
 
-- (id)_activityForEvent:(id)a3
+- (id)_activityForEvent:(id)event
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if (-[ATXActivitySuggestionClient _shouldSendAutomationSuggestionForMode:](self, "_shouldSendAutomationSuggestionForMode:", [v4 modeType]))
+    if (-[ATXActivitySuggestionClient _shouldSendAutomationSuggestionForMode:](self, "_shouldSendAutomationSuggestionForMode:", [eventCopy modeType]))
     {
       v6 = [[ATXActivity alloc] initWithBiomeInferredModeEvent:v5];
       goto LABEL_10;
@@ -422,7 +422,7 @@ void __81__ATXActivitySuggestionClient_registerObserver_sendingInitialChangeNoti
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = [v5 modeType];
+      modeType = [v5 modeType];
       v8 = "ATXActivitySuggestionClient: last mode is not supported, not sending automation suggestion for mode of type: %lu";
       v9 = v7;
       v10 = 12;
@@ -450,17 +450,17 @@ LABEL_10:
   return v6;
 }
 
-- (void)currentSuggestionWithCompletionHandler:(id)a3
+- (void)currentSuggestionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__ATXActivitySuggestionClient_currentSuggestionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E80C2008;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -471,33 +471,33 @@ void __70__ATXActivitySuggestionClient_currentSuggestionWithCompletionHandler___
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)localizedSuggestionReasonForBMInferredModeEvent:(id)a3
+- (id)localizedSuggestionReasonForBMInferredModeEvent:(id)event
 {
-  v3 = a3;
-  v4 = [[ATXActivity alloc] initWithBMInferredModeEvent:v3];
+  eventCopy = event;
+  v4 = [[ATXActivity alloc] initWithBMInferredModeEvent:eventCopy];
 
-  v5 = [(ATXActivity *)v4 localizedSuggestionReason];
+  localizedSuggestionReason = [(ATXActivity *)v4 localizedSuggestionReason];
 
-  return v5;
+  return localizedSuggestionReason;
 }
 
-- (void)_logFeedbackEventForSuggestionUUID:(id)a3 suggestionType:(unint64_t)a4 eventType:(unint64_t)a5 acceptedTriggers:(id)a6 location:(unint64_t)a7
+- (void)_logFeedbackEventForSuggestionUUID:(id)d suggestionType:(unint64_t)type eventType:(unint64_t)eventType acceptedTriggers:(id)triggers location:(unint64_t)location
 {
-  v12 = a3;
-  v13 = a6;
+  dCopy = d;
+  triggersCopy = triggers;
   queue = self->_queue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __117__ATXActivitySuggestionClient__logFeedbackEventForSuggestionUUID_suggestionType_eventType_acceptedTriggers_location___block_invoke;
   v17[3] = &unk_1E80C3B20;
   v17[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v20 = a5;
-  v21 = a4;
-  v22 = a7;
-  v15 = v13;
-  v16 = v12;
+  v18 = dCopy;
+  v19 = triggersCopy;
+  eventTypeCopy = eventType;
+  typeCopy = type;
+  locationCopy = location;
+  v15 = triggersCopy;
+  v16 = dCopy;
   dispatch_async(queue, v17);
 }
 
@@ -539,14 +539,14 @@ void __117__ATXActivitySuggestionClient__logFeedbackEventForSuggestionUUID_sugge
   }
 }
 
-- (BOOL)_shouldSendAutomationSuggestionForMode:(int)a3
+- (BOOL)_shouldSendAutomationSuggestionForMode:(int)mode
 {
-  if ((a3 - 1) >= 0x11)
+  if ((mode - 1) >= 0x11)
   {
     v5 = __atxlog_handle_modes();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(ATXActivitySuggestionClient *)a3 _shouldSendAutomationSuggestionForMode:v5];
+      [(ATXActivitySuggestionClient *)mode _shouldSendAutomationSuggestionForMode:v5];
     }
 
     LOBYTE(v3) = 0;
@@ -554,33 +554,33 @@ void __117__ATXActivitySuggestionClient__logFeedbackEventForSuggestionUUID_sugge
 
   else
   {
-    v3 = 0x1EFFDu >> (a3 - 1);
+    v3 = 0x1EFFDu >> (mode - 1);
   }
 
   return v3 & 1;
 }
 
-- (id)_suggestionWithActivity:(id)a3 modeGlobals:(id)a4
+- (id)_suggestionWithActivity:(id)activity modeGlobals:(id)globals
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ATXActivitySuggestionClient *)self _activityIsEligibleForSetUpSuggestion:v6 modeGlobals:v7])
+  activityCopy = activity;
+  globalsCopy = globals;
+  if ([(ATXActivitySuggestionClient *)self _activityIsEligibleForSetUpSuggestion:activityCopy modeGlobals:globalsCopy])
   {
     v8 = ATXActivitySetUpSuggestion;
   }
 
   else
   {
-    if ([(ATXActivitySuggestionClient *)self _activityIsEligibleForTriggerSuggestion:v6 modeGlobals:v7])
+    if ([(ATXActivitySuggestionClient *)self _activityIsEligibleForTriggerSuggestion:activityCopy modeGlobals:globalsCopy])
     {
-      v9 = [[ATXActivityTriggerSuggestion alloc] initWithActivity:v6 activitySuggestionClient:self];
+      v9 = [[ATXActivityTriggerSuggestion alloc] initWithActivity:activityCopy activitySuggestionClient:self];
       goto LABEL_7;
     }
 
     v8 = ATXActivitySuggestion;
   }
 
-  v9 = [[v8 alloc] initWithActivity:v6];
+  v9 = [[v8 alloc] initWithActivity:activityCopy];
 LABEL_7:
   v10 = v9;
 
@@ -592,29 +592,29 @@ LABEL_7:
   v32 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v3 = +[ATXModeGlobals sharedInstance];
-  v4 = [(ATXActivitySuggestionClient *)self previousSuggestion];
-  v5 = [(ATXActivitySuggestionClient *)self currentSuggestion];
+  previousSuggestion = [(ATXActivitySuggestionClient *)self previousSuggestion];
+  currentSuggestion = [(ATXActivitySuggestionClient *)self currentSuggestion];
   v6 = __atxlog_handle_modes();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 modeUUID];
-    v15 = [v5 activityType];
-    [v5 activityType];
+    modeUUID = [currentSuggestion modeUUID];
+    activityType = [currentSuggestion activityType];
+    [currentSuggestion activityType];
     v8 = ATXActivityTypeToString();
-    v9 = [v4 modeUUID];
-    v10 = [v4 activityType];
-    [v4 activityType];
+    modeUUID2 = [previousSuggestion modeUUID];
+    activityType2 = [previousSuggestion activityType];
+    [previousSuggestion activityType];
     v11 = ATXActivityTypeToString();
     *buf = 138544642;
-    v21 = v7;
+    v21 = modeUUID;
     v22 = 2048;
-    v23 = v15;
+    v23 = activityType;
     v24 = 2114;
     v25 = v8;
     v26 = 2114;
-    v27 = v9;
+    v27 = modeUUID2;
     v28 = 2048;
-    v29 = v10;
+    v29 = activityType2;
     v30 = 2114;
     v31 = v11;
     _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "ATXActivitySuggestionClient: mode did change to: (uuid: %{public}@, modeType: %lu, string: %{public}@) from (uuid: %{public}@, modeType: %lu, string: %{public}@)", buf, 0x3Eu);
@@ -625,12 +625,12 @@ LABEL_7:
   block[2] = __45__ATXActivitySuggestionClient__modeDidChange__block_invoke;
   block[3] = &unk_1E80C3B48;
   block[4] = self;
-  v17 = v5;
-  v18 = v4;
+  v17 = currentSuggestion;
+  v18 = previousSuggestion;
   v19 = v3;
   v12 = v3;
-  v13 = v4;
-  v14 = v5;
+  v13 = previousSuggestion;
+  v14 = currentSuggestion;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -827,43 +827,43 @@ LABEL_41:
   objc_sync_exit(v31);
 }
 
-- (BOOL)_activityIsEligibleForSetUpSuggestion:(id)a3 modeGlobals:(id)a4
+- (BOOL)_activityIsEligibleForSetUpSuggestion:(id)suggestion modeGlobals:(id)globals
 {
-  v5 = a3;
-  v6 = [a4 isSetupSuggestionsForFocusEnabled];
+  suggestionCopy = suggestion;
+  isSetupSuggestionsForFocusEnabled = [globals isSetupSuggestionsForFocusEnabled];
   v7 = 0;
-  if (v5 && v6)
+  if (suggestionCopy && isSetupSuggestionsForFocusEnabled)
   {
-    v8 = [v5 modeUUID];
+    modeUUID = [suggestionCopy modeUUID];
 
-    v7 = v8 == 0;
+    v7 = modeUUID == 0;
   }
 
   return v7;
 }
 
-- (BOOL)_activityIsEligibleForTriggerSuggestion:(id)a3 modeGlobals:(id)a4
+- (BOOL)_activityIsEligibleForTriggerSuggestion:(id)suggestion modeGlobals:(id)globals
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 isAutomationTriggerSuggestionsForFocusEnabled];
-  LOBYTE(a4) = 0;
-  if (v5)
+  suggestionCopy = suggestion;
+  isAutomationTriggerSuggestionsForFocusEnabled = [globals isAutomationTriggerSuggestionsForFocusEnabled];
+  LOBYTE(globals) = 0;
+  if (suggestionCopy)
   {
-    if (v6)
+    if (isAutomationTriggerSuggestionsForFocusEnabled)
     {
-      a4 = [v5 modeUUID];
+      globals = [suggestionCopy modeUUID];
 
-      if (a4)
+      if (globals)
       {
-        if ([v5 shouldSuggestTriggers])
+        if ([suggestionCopy shouldSuggestTriggers])
         {
-          v8 = [v5 activityType];
-          LOBYTE(a4) = 1;
-          if (v8 <= 0x11 && ((1 << v8) & 0x2EF38) != 0)
+          activityType = [suggestionCopy activityType];
+          LOBYTE(globals) = 1;
+          if (activityType <= 0x11 && ((1 << activityType) & 0x2EF38) != 0)
           {
-            v9 = [v5 triggers];
-            v10 = [(ATXActivitySuggestionClient *)self triggersToDNDModeConfigurationTriggers:v9];
+            triggers = [suggestionCopy triggers];
+            v10 = [(ATXActivitySuggestionClient *)self triggersToDNDModeConfigurationTriggers:triggers];
 
             v19 = 0u;
             v20 = 0u;
@@ -887,13 +887,13 @@ LABEL_41:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    a4 = __atxlog_handle_modes();
-                    if (os_log_type_enabled(a4, OS_LOG_TYPE_ERROR))
+                    globals = __atxlog_handle_modes();
+                    if (os_log_type_enabled(globals, OS_LOG_TYPE_ERROR))
                     {
-                      [ATXActivitySuggestionClient _activityIsEligibleForTriggerSuggestion:v5 modeGlobals:?];
+                      [ATXActivitySuggestionClient _activityIsEligibleForTriggerSuggestion:suggestionCopy modeGlobals:?];
                     }
 
-                    LOBYTE(a4) = 0;
+                    LOBYTE(globals) = 0;
                     goto LABEL_20;
                   }
                 }
@@ -908,29 +908,29 @@ LABEL_41:
               }
             }
 
-            LOBYTE(a4) = 1;
+            LOBYTE(globals) = 1;
 LABEL_20:
           }
         }
 
         else
         {
-          LOBYTE(a4) = 0;
+          LOBYTE(globals) = 0;
         }
       }
     }
   }
 
-  return a4;
+  return globals;
 }
 
-- (BOOL)_shouldSendModeSetUpSuggestionAtEndOfModeToLockScreen:(id)a3 modeGlobals:(id)a4
+- (BOOL)_shouldSendModeSetUpSuggestionAtEndOfModeToLockScreen:(id)screen modeGlobals:(id)globals
 {
-  v6 = a3;
-  if (-[ATXActivitySuggestionClient _activityIsEligibleForSetUpSuggestion:modeGlobals:](self, "_activityIsEligibleForSetUpSuggestion:modeGlobals:", v6, a4) && ([v6 location] & 2) != 0)
+  screenCopy = screen;
+  if (-[ATXActivitySuggestionClient _activityIsEligibleForSetUpSuggestion:modeGlobals:](self, "_activityIsEligibleForSetUpSuggestion:modeGlobals:", screenCopy, globals) && ([screenCopy location] & 2) != 0)
   {
-    v8 = [v6 activityType];
-    v7 = v8 == 4 || v8 == 13;
+    activityType = [screenCopy activityType];
+    v7 = activityType == 4 || activityType == 13;
   }
 
   else
@@ -941,13 +941,13 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_shouldSendModeTriggerSuggestionAtEndOfModeToLockScreen:(id)a3 modeGlobals:(id)a4
+- (BOOL)_shouldSendModeTriggerSuggestionAtEndOfModeToLockScreen:(id)screen modeGlobals:(id)globals
 {
-  v6 = a3;
-  if (-[ATXActivitySuggestionClient _activityIsEligibleForTriggerSuggestion:modeGlobals:](self, "_activityIsEligibleForTriggerSuggestion:modeGlobals:", v6, a4) && ([v6 location] & 2) != 0)
+  screenCopy = screen;
+  if (-[ATXActivitySuggestionClient _activityIsEligibleForTriggerSuggestion:modeGlobals:](self, "_activityIsEligibleForTriggerSuggestion:modeGlobals:", screenCopy, globals) && ([screenCopy location] & 2) != 0)
   {
-    v8 = [v6 activityType];
-    v7 = v8 == 4 || v8 == 13;
+    activityType = [screenCopy activityType];
+    v7 = activityType == 4 || activityType == 13;
   }
 
   else
@@ -1044,11 +1044,11 @@ void __49__ATXActivitySuggestionClient__fetchAndCacheLOIs__block_invoke_53(uint6
   }
 }
 
-- (id)triggersToDNDModeConfigurationTriggers:(id)a3
+- (id)triggersToDNDModeConfigurationTriggers:(id)triggers
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  triggersCopy = triggers;
+  if (![triggersCopy count])
   {
     v5 = objc_opt_new();
     v12[0] = v5;
@@ -1061,7 +1061,7 @@ void __49__ATXActivitySuggestionClient__fetchAndCacheLOIs__block_invoke_53(uint6
   v10[2] = __70__ATXActivitySuggestionClient_triggersToDNDModeConfigurationTriggers___block_invoke;
   v10[3] = &unk_1E80C3B98;
   v10[4] = self;
-  v5 = [v4 _pas_mappedArrayWithTransform:v10];
+  v5 = [triggersCopy _pas_mappedArrayWithTransform:v10];
   if ([v5 count])
   {
     v6 = v5;
@@ -1150,14 +1150,14 @@ LABEL_19:
   return v9;
 }
 
-- (id)DNDModeConfigurationTriggersToATXTriggers:(id)a3
+- (id)DNDModeConfigurationTriggersToATXTriggers:(id)triggers
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__ATXActivitySuggestionClient_DNDModeConfigurationTriggersToATXTriggers___block_invoke;
   v5[3] = &unk_1E80C3BC0;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [triggers _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }
@@ -1212,9 +1212,9 @@ LABEL_15:
   return v8;
 }
 
-+ (Class)DNDModeConfigurationTriggerClassFromATXTrigger:(id)a3
++ (Class)DNDModeConfigurationTriggerClassFromATXTrigger:(id)trigger
 {
-  v3 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -1229,9 +1229,9 @@ LABEL_15:
   return v4;
 }
 
-+ (Class)ATXTriggerClassFromDNDModeConfigurationTrigger:(id)a3
++ (Class)ATXTriggerClassFromDNDModeConfigurationTrigger:(id)trigger
 {
-  v3 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {

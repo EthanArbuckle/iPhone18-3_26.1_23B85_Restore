@@ -5,26 +5,26 @@
 + (id)configurationForTopic;
 + (id)storeConfigurationForEntity;
 + (id)storeConfigurationForTopic;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMPortraitLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Entity"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Entity"])
   {
-    v5 = [a1 Entity];
+    entity = [self Entity];
 LABEL_5:
-    v6 = v5;
+    v6 = entity;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Topic"])
+  if ([nameCopy isEqualToString:@"Topic"])
   {
-    v5 = [a1 Topic];
+    entity = [self Topic];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForTopic
 {
-  v3 = [a1 storeConfigurationForTopic];
-  v4 = [a1 syncPolicyForTopic];
+  storeConfigurationForTopic = [self storeConfigurationForTopic];
+  syncPolicyForTopic = [self syncPolicyForTopic];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"FA423997-F253-4AD3-8C7A-37E3C2EF2732"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Portrait.Topic" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Portrait.Topic" eventClass:objc_opt_class() storeConfig:storeConfigurationForTopic syncPolicy:syncPolicyForTopic legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForEntity
 {
-  v3 = [a1 storeConfigurationForEntity];
-  v4 = [a1 syncPolicyForEntity];
+  storeConfigurationForEntity = [self storeConfigurationForEntity];
+  syncPolicyForEntity = [self syncPolicyForEntity];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9BD10277-41A8-46CA-8650-99A797ACBB1F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Portrait.Entity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Portrait.Entity" eventClass:objc_opt_class() storeConfig:storeConfigurationForEntity syncPolicy:syncPolicyForEntity legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)Topic
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTopic];
+  configurationForTopic = [self configurationForTopic];
   v3 = +[BMPortraitTopic columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Portrait.Topic" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Portrait.Topic" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Portrait.Topic" schema:v9 configuration:configurationForTopic];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)Entity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEntity];
+  configurationForEntity = [self configurationForEntity];
   v3 = +[BMPortraitEntity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Portrait.Entity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Portrait.Entity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Portrait.Entity" schema:v9 configuration:configurationForEntity];
 
   v11 = *MEMORY[0x1E69E9840];
 

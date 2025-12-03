@@ -1,6 +1,6 @@
 @interface AWDDiagnosticExtensionExtension
 - (AWDDiagnosticExtensionExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation AWDDiagnosticExtensionExtension
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   syslog(3, " **** attachmentsForParameters");
   v4 = +[NSMutableArray array];
   v5 = dispatch_semaphore_create(0);

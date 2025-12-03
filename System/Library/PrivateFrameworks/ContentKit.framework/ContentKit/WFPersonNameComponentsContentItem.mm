@@ -1,52 +1,52 @@
 @interface WFPersonNameComponentsContentItem
 + (id)coercions;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (LNCodableValue)personNameComponentsValue;
 - (NSPersonNameComponents)personNameComponents;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFPersonNameComponentsContentItem
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v14 = [(WFPersonNameComponentsContentItem *)self personNameComponentsValue];
-    v10 = [v14 personNameComponents];
+    personNameComponentsValue = [(WFPersonNameComponentsContentItem *)self personNameComponentsValue];
+    personNameComponents = [personNameComponentsValue personNameComponents];
 
-    if (v10)
+    if (personNameComponents)
     {
       v11 = objc_alloc_init(MEMORY[0x277CCAC08]);
-      v13 = [v11 stringFromPersonNameComponents:v10];
+      v13 = [v11 stringFromPersonNameComponents:personNameComponents];
       goto LABEL_8;
     }
   }
 
-  else if ([MEMORY[0x277D237B0] wf_personNameComponentsObjectClass] == a3)
+  else if ([MEMORY[0x277D237B0] wf_personNameComponentsObjectClass] == class)
   {
-    v7 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
+    personNameComponents2 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
 
-    if (v7)
+    if (personNameComponents2)
     {
       v8 = objc_alloc(MEMORY[0x277D23950]);
-      v9 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
-      v10 = [v8 initWithPersonNameComponents:v9];
+      personNameComponents3 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
+      personNameComponents = [v8 initWithPersonNameComponents:personNameComponents3];
 
-      if (v10)
+      if (personNameComponents)
       {
         v11 = objc_alloc_init(MEMORY[0x277CCAC08]);
-        v12 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
-        v13 = [v11 stringFromPersonNameComponents:v12];
+        personNameComponents4 = [(WFPersonNameComponentsContentItem *)self personNameComponents];
+        v13 = [v11 stringFromPersonNameComponents:personNameComponents4];
 
 LABEL_8:
         v15 = MEMORY[0x277CCACA8];
         v16 = WFLocalizedString(@"%@");
         v17 = [v15 localizedStringWithFormat:v16, v13, v13];
-        v18 = [WFObjectRepresentation object:v10 named:v17];
+        v18 = [WFObjectRepresentation object:personNameComponents named:v17];
 
         goto LABEL_10;
       }
@@ -61,9 +61,9 @@ LABEL_10:
 
 - (LNCodableValue)personNameComponentsValue
 {
-  v3 = [MEMORY[0x277D237B0] wf_personNameComponentsObjectClass];
+  wf_personNameComponentsObjectClass = [MEMORY[0x277D237B0] wf_personNameComponentsObjectClass];
 
-  return [(WFContentItem *)self objectForClass:v3];
+  return [(WFContentItem *)self objectForClass:wf_personNameComponentsObjectClass];
 }
 
 - (NSPersonNameComponents)personNameComponents
@@ -73,20 +73,20 @@ LABEL_10:
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Person Name Components (multiple)", @"Person Name Components");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Person Name Components (singular)", @"Person Name Components");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -134,8 +134,8 @@ id __58__WFPersonNameComponentsContentItem_stringCoercionHandler__block_invoke(u
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [a1 stringCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 

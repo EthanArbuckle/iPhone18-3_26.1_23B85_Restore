@@ -1,22 +1,22 @@
 @interface NMTMetricsUtil
 + (id)_downloadableEpisodeUUIDsURL;
 + (id)downloadableEpisodeUUIDs;
-+ (void)setDownloadableEpisodeUUIDs:(id)a3;
++ (void)setDownloadableEpisodeUUIDs:(id)ds;
 @end
 
 @implementation NMTMetricsUtil
 
-+ (void)setDownloadableEpisodeUUIDs:(id)a3
++ (void)setDownloadableEpisodeUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [a1 _downloadableEpisodeUUIDsURL];
-  [v4 writeToURL:v5 atomically:1];
+  dsCopy = ds;
+  _downloadableEpisodeUUIDsURL = [self _downloadableEpisodeUUIDsURL];
+  [dsCopy writeToURL:_downloadableEpisodeUUIDsURL atomically:1];
 
   v6 = _MTLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [dsCopy count];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Did set %lu metrics downloadable episode UUIDs", &v7, 0xCu);
   }
 }
@@ -24,8 +24,8 @@
 + (id)downloadableEpisodeUUIDs
 {
   v3 = [NSArray alloc];
-  v4 = [a1 _downloadableEpisodeUUIDsURL];
-  v5 = [v3 initWithContentsOfURL:v4];
+  _downloadableEpisodeUUIDsURL = [self _downloadableEpisodeUUIDsURL];
+  v5 = [v3 initWithContentsOfURL:_downloadableEpisodeUUIDsURL];
 
   v6 = _MTLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

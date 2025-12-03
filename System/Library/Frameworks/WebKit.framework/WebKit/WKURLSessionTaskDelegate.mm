@@ -1,23 +1,23 @@
 @interface WKURLSessionTaskDelegate
-- (WKURLSessionTaskDelegate)initWithTask:(id)a3 identifier:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a4 :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :DataTaskIdentifierType session:;
-- (WTF::StringImpl)URLSession:(uint64_t)a1 task:didReceiveChallenge:completionHandler:;
+- (WKURLSessionTaskDelegate)initWithTask:(id)task identifier:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :DataTaskIdentifierType session:;
+- (WTF::StringImpl)URLSession:(uint64_t)session task:didReceiveChallenge:completionHandler:;
 - (WTF::StringImpl)URLSession:task:didReceiveChallenge:completionHandler:;
 - (id).cxx_construct;
 - (uint64_t)URLSession:dataTask:didReceiveResponse:completionHandler:;
 - (uint64_t)URLSession:task:didReceiveChallenge:completionHandler:;
 - (uint64_t)URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)connection;
 - (void)dealloc;
 @end
 
 @implementation WKURLSessionTaskDelegate
 
-- (WKURLSessionTaskDelegate)initWithTask:(id)a3 identifier:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a4 :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :DataTaskIdentifierType session:
+- (WKURLSessionTaskDelegate)initWithTask:(id)task identifier:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :DataTaskIdentifierType session:
 {
   v34 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -35,8 +35,8 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v16 = WTFCurrentContinuousTime();
-          v17 = [objc_msgSend(a3 "originalRequest")];
-          v18 = [objc_msgSend(a3 "originalRequest")];
+          v17 = [objc_msgSend(task "originalRequest")];
+          v18 = [objc_msgSend(task "originalRequest")];
           *buf = 67110403;
           *v26 = 1;
           *&v26[4] = 1024;
@@ -66,8 +66,8 @@
           v21 = v20;
           if (os_signpost_enabled(v15))
           {
-            v22 = [objc_msgSend(a3 "originalRequest")];
-            v23 = [objc_msgSend(a3 "originalRequest")];
+            v22 = [objc_msgSend(task "originalRequest")];
+            v23 = [objc_msgSend(task "originalRequest")];
             *buf = 138543619;
             *v26 = v22;
             *&v26[8] = 2113;
@@ -82,7 +82,7 @@
       }
     }
 
-    v8->_identifier.m_value = a4;
+    v8->_identifier.m_value = f;
     WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a5 + 2, a5);
     v10 = *(a5 + 1);
     atomic_fetch_add(v10, 1u);
@@ -118,7 +118,7 @@
       v11 = 1024;
       v12 = 0;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
       v16 = WTFCurrentContinuousTime();
       _os_log_impl(&dword_19D52D000, v5, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu ", buf, 0x22u);
@@ -176,7 +176,7 @@ LABEL_2:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
   if (!kdebug_is_enabled())
@@ -196,7 +196,7 @@ LABEL_2:
       v35 = 1024;
       v36 = 0;
       v37 = 2048;
-      v38 = self;
+      selfCopy = self;
       v39 = 2048;
       v40 = WTFCurrentContinuousTime();
       _os_log_impl(&dword_19D52D000, v28, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu received challenge", buf, 0x22u);
@@ -235,29 +235,29 @@ LABEL_30:
   }
 
 LABEL_2:
-  v9 = [(WKURLSessionTaskDelegate *)self connection];
-  v10 = v9;
-  if (v9)
+  connection = [(WKURLSessionTaskDelegate *)self connection];
+  v10 = connection;
+  if (connection)
   {
     while (1)
     {
-      v11 = *v9;
-      if ((*v9 & 1) == 0)
+      v11 = *connection;
+      if ((*connection & 1) == 0)
       {
         break;
       }
 
-      v12 = *v9;
-      atomic_compare_exchange_strong_explicit(v9, &v12, v11 + 2, memory_order_relaxed, memory_order_relaxed);
+      v12 = *connection;
+      atomic_compare_exchange_strong_explicit(connection, &v12, v11 + 2, memory_order_relaxed, memory_order_relaxed);
       if (v12 == v11)
       {
         goto LABEL_7;
       }
     }
 
-    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*v9);
+    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*connection);
 LABEL_7:
-    if (!self->_identifier.m_value.m_identifier || (MEMORY[0x19EB0B400](buf, a5), v13 = _Block_copy(a6), v14 = WTF::fastMalloc(0x10), *v14 = &unk_1F10EE020, v14[1] = v13, _Block_release(0), WTF::ObjectIdentifierGeneric<IPC::AsyncReplyIDType,WTF::ObjectIdentifierThreadSafeAccessTraits<unsigned long long>,unsigned long long>::m_generationProtected == 1))
+    if (!self->_identifier.m_value.m_identifier || (MEMORY[0x19EB0B400](buf, challenge), v13 = _Block_copy(handler), v14 = WTF::fastMalloc(0x10), *v14 = &unk_1F10EE020, v14[1] = v13, _Block_release(0), WTF::ObjectIdentifierGeneric<IPC::AsyncReplyIDType,WTF::ObjectIdentifierThreadSafeAccessTraits<unsigned long long>,unsigned long long>::m_generationProtected == 1))
     {
       __break(0xC471u);
       JUMPOUT(0x19D952EC8);
@@ -313,11 +313,11 @@ LABEL_7:
 
   else
   {
-    (*(a6 + 2))(a6, 3, 0);
+    (*(handler + 2))(handler, 3, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
   if (!kdebug_is_enabled())
@@ -337,7 +337,7 @@ LABEL_7:
       v38 = 1024;
       v39 = 0;
       v40 = 2048;
-      v41 = self;
+      selfCopy = self;
       v42 = 2048;
       v43 = WTFCurrentContinuousTime();
       _os_log_impl(&dword_19D52D000, v30, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu redirect", buf, 0x22u);
@@ -376,31 +376,31 @@ LABEL_30:
   }
 
 LABEL_2:
-  v11 = [(WKURLSessionTaskDelegate *)self connection];
-  v12 = v11;
-  if (!v11)
+  connection = [(WKURLSessionTaskDelegate *)self connection];
+  v12 = connection;
+  if (!connection)
   {
-    (*(a7 + 2))(a7, 0);
+    (*(handler + 2))(handler, 0);
     return;
   }
 
   while (1)
   {
-    v13 = *v11;
-    if ((*v11 & 1) == 0)
+    v13 = *connection;
+    if ((*connection & 1) == 0)
     {
       break;
     }
 
-    v14 = *v11;
-    atomic_compare_exchange_strong_explicit(v11, &v14, v13 + 2, memory_order_relaxed, memory_order_relaxed);
+    v14 = *connection;
+    atomic_compare_exchange_strong_explicit(connection, &v14, v13 + 2, memory_order_relaxed, memory_order_relaxed);
     if (v14 == v13)
     {
       goto LABEL_7;
     }
   }
 
-  WTF::ThreadSafeWeakPtrControlBlock::strongRef(*v11);
+  WTF::ThreadSafeWeakPtrControlBlock::strongRef(*connection);
 LABEL_7:
   if (!self->_identifier.m_value.m_identifier)
   {
@@ -408,18 +408,18 @@ LABEL_7:
     goto LABEL_34;
   }
 
-  WebCore::ResourceResponse::ResourceResponse(buf, a5);
-  MEMORY[0x19EB06210](v33, a6);
-  v15 = _Block_copy(a7);
-  if (a6)
+  WebCore::ResourceResponse::ResourceResponse(buf, redirection);
+  MEMORY[0x19EB06210](v33, request);
+  v15 = _Block_copy(handler);
+  if (request)
   {
-    v16 = a6;
+    requestCopy = request;
   }
 
   v17 = WTF::fastMalloc(0x18);
   *v17 = &unk_1F10EE048;
   v17[1] = v15;
-  v17[2] = a6;
+  v17[2] = request;
   _Block_release(0);
   if (WTF::ObjectIdentifierGeneric<IPC::AsyncReplyIDType,WTF::ObjectIdentifierThreadSafeAccessTraits<unsigned long long>,unsigned long long>::m_generationProtected == 1)
   {
@@ -472,7 +472,7 @@ LABEL_34:
   WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<IPC::Connection,(WTF::DestructionThread)2>::deref(v12);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
   if (!kdebug_is_enabled())
@@ -492,7 +492,7 @@ LABEL_34:
       v34 = 1024;
       v35 = 0;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       v38 = 2048;
       v39 = WTFCurrentContinuousTime();
       _os_log_impl(&dword_19D52D000, v27, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu received response headers", buf, 0x22u);
@@ -531,29 +531,29 @@ LABEL_28:
   }
 
 LABEL_2:
-  v9 = [(WKURLSessionTaskDelegate *)self connection];
-  v10 = v9;
-  if (v9)
+  connection = [(WKURLSessionTaskDelegate *)self connection];
+  v10 = connection;
+  if (connection)
   {
     while (1)
     {
-      v11 = *v9;
-      if ((*v9 & 1) == 0)
+      v11 = *connection;
+      if ((*connection & 1) == 0)
       {
         break;
       }
 
-      v12 = *v9;
-      atomic_compare_exchange_strong_explicit(v9, &v12, v11 + 2, memory_order_relaxed, memory_order_relaxed);
+      v12 = *connection;
+      atomic_compare_exchange_strong_explicit(connection, &v12, v11 + 2, memory_order_relaxed, memory_order_relaxed);
       if (v12 == v11)
       {
         goto LABEL_7;
       }
     }
 
-    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*v9);
+    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*connection);
 LABEL_7:
-    if (!self->_identifier.m_value.m_identifier || (WebCore::ResourceResponse::ResourceResponse(buf, a5), v13 = _Block_copy(a6), v14 = WTF::fastMalloc(0x10), *v14 = &unk_1F10EE070, v14[1] = v13, _Block_release(0), WTF::ObjectIdentifierGeneric<IPC::AsyncReplyIDType,WTF::ObjectIdentifierThreadSafeAccessTraits<unsigned long long>,unsigned long long>::m_generationProtected == 1))
+    if (!self->_identifier.m_value.m_identifier || (WebCore::ResourceResponse::ResourceResponse(buf, response), v13 = _Block_copy(handler), v14 = WTF::fastMalloc(0x10), *v14 = &unk_1F10EE070, v14[1] = v13, _Block_release(0), WTF::ObjectIdentifierGeneric<IPC::AsyncReplyIDType,WTF::ObjectIdentifierThreadSafeAccessTraits<unsigned long long>,unsigned long long>::m_generationProtected == 1))
     {
       __break(0xC471u);
       JUMPOUT(0x19D953724);
@@ -603,11 +603,11 @@ LABEL_7:
 
   else
   {
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
   if (!kdebug_is_enabled())
@@ -626,11 +626,11 @@ LABEL_7:
       WORD4(buf) = 1024;
       *(&buf + 10) = 0;
       HIWORD(buf) = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2048;
       v24 = WTFCurrentContinuousTime();
       v25 = 2048;
-      v26 = [a5 length];
+      v26 = [data length];
       _os_log_impl(&dword_19D52D000, v17, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu received %zu bytes", &buf, 0x2Cu);
     }
 
@@ -649,7 +649,7 @@ LABEL_22:
     if (os_signpost_enabled(v17))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [a5 length];
+      *(&buf + 4) = [data length];
       _os_signpost_emit_with_name_impl(&dword_19D52D000, v17, OS_SIGNPOST_EVENT, v19, "DataTask", "received %zu bytes", &buf, 0xCu);
     }
 
@@ -668,45 +668,45 @@ LABEL_24:
   }
 
 LABEL_2:
-  v7 = [(WKURLSessionTaskDelegate *)self connection];
-  v8 = v7;
-  if (v7)
+  connection = [(WKURLSessionTaskDelegate *)self connection];
+  v8 = connection;
+  if (connection)
   {
     while (1)
     {
-      v9 = *v7;
-      if ((*v7 & 1) == 0)
+      v9 = *connection;
+      if ((*connection & 1) == 0)
       {
         break;
       }
 
-      v10 = *v7;
-      atomic_compare_exchange_strong_explicit(v7, &v10, v9 + 2, memory_order_relaxed, memory_order_relaxed);
+      v10 = *connection;
+      atomic_compare_exchange_strong_explicit(connection, &v10, v9 + 2, memory_order_relaxed, memory_order_relaxed);
       if (v10 == v9)
       {
         goto LABEL_7;
       }
     }
 
-    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*v7);
+    WTF::ThreadSafeWeakPtrControlBlock::strongRef(*connection);
 LABEL_7:
     m_identifier = self->_identifier.m_value.m_identifier;
     p_identifier = &self->_identifier;
     if (m_identifier)
     {
-      if (a5)
+      if (data)
       {
-        v13 = [a5 bytes];
-        v14 = [a5 length];
+        bytes = [data bytes];
+        v14 = [data length];
       }
 
       else
       {
-        v13 = 0;
+        bytes = 0;
         v14 = 0;
       }
 
-      v20[0] = v13;
+      v20[0] = bytes;
       v20[1] = v14;
       *&buf = p_identifier;
       *(&buf + 1) = v20;
@@ -721,7 +721,7 @@ LABEL_7:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
   if (!kdebug_is_enabled())
@@ -741,11 +741,11 @@ LABEL_7:
       LOWORD(v26) = 1024;
       *(&v26 + 2) = 0;
       HIWORD(v26) = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2048;
       v29 = WTFCurrentContinuousTime();
       v30 = 1024;
-      v31 = a5 != 0;
+      v31 = error != 0;
       _os_log_impl(&dword_19D52D000, v21, OS_LOG_TYPE_DEFAULT, "type=%d name=%d p=%lu ts=%llu completed with error: %d", buf, 0x28u);
     }
 
@@ -764,7 +764,7 @@ LABEL_34:
     if (os_signpost_enabled(v21))
     {
       *buf = 67109120;
-      *&buf[4] = a5 != 0;
+      *&buf[4] = error != 0;
       _os_signpost_emit_with_name_impl(&dword_19D52D000, v21, OS_SIGNPOST_EVENT, v23, "DataTask", "completed with error: %d", buf, 8u);
     }
 
@@ -783,30 +783,30 @@ LABEL_36:
   }
 
 LABEL_2:
-  v7 = [(WKURLSessionTaskDelegate *)self connection];
-  v8 = v7;
-  if (!v7)
+  connection = [(WKURLSessionTaskDelegate *)self connection];
+  v8 = connection;
+  if (!connection)
   {
     return;
   }
 
   while (1)
   {
-    v9 = *v7;
-    if ((*v7 & 1) == 0)
+    v9 = *connection;
+    if ((*connection & 1) == 0)
     {
       break;
     }
 
-    v10 = *v7;
-    atomic_compare_exchange_strong_explicit(v7, &v10, v9 + 2, memory_order_relaxed, memory_order_relaxed);
+    v10 = *connection;
+    atomic_compare_exchange_strong_explicit(connection, &v10, v9 + 2, memory_order_relaxed, memory_order_relaxed);
     if (v10 == v9)
     {
       goto LABEL_7;
     }
   }
 
-  WTF::ThreadSafeWeakPtrControlBlock::strongRef(*v7);
+  WTF::ThreadSafeWeakPtrControlBlock::strongRef(*connection);
 LABEL_7:
   p_identifier = &self->_identifier;
   if (!self->_identifier.m_value.m_identifier)
@@ -815,7 +815,7 @@ LABEL_7:
     goto LABEL_40;
   }
 
-  MEMORY[0x19EB04D40](buf, a5);
+  MEMORY[0x19EB04D40](buf, error);
   v24[0] = &self->_identifier;
   v24[1] = buf;
   IPC::Connection::send<Messages::NetworkProcessProxy::DataTaskDidCompleteWithError>(v8, v24, 0, 0, 0);
@@ -879,10 +879,10 @@ LABEL_23:
 
 - (uint64_t)URLSession:task:didReceiveChallenge:completionHandler:
 {
-  *a1 = &unk_1F10EE020;
-  _Block_release(a1[1]);
+  *self = &unk_1F10EE020;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (WTF::StringImpl)URLSession:task:didReceiveChallenge:completionHandler:
@@ -898,7 +898,7 @@ LABEL_23:
       v18 = 1;
       WebKit::fromAuthenticationChallengeDisposition(v6);
       WebCore::Credential::nsCredential(v15);
-      result = (*(*(a1 + 8) + 16))(*(a1 + 8));
+      result = (*(*(self + 8) + 16))(*(self + 8));
       if (v18)
       {
         v9 = v17;
@@ -938,13 +938,13 @@ LABEL_23:
         (*(*v14 + 16))(v14, v12);
       }
 
-      return IPC::Connection::cancelReply<Messages::NetworkProcessProxy::DataTaskReceivedChallenge,[WKURLSessionTaskDelegate URLSession:task:didReceiveChallenge:completionHandler:]::$_3>(a1 + 8);
+      return IPC::Connection::cancelReply<Messages::NetworkProcessProxy::DataTaskReceivedChallenge,[WKURLSessionTaskDelegate URLSession:task:didReceiveChallenge:completionHandler:]::$_3>(self + 8);
     }
   }
 
   else
   {
-    v11 = a1 + 8;
+    v11 = self + 8;
 
     return IPC::Connection::cancelReply<Messages::NetworkProcessProxy::DataTaskReceivedChallenge,[WKURLSessionTaskDelegate URLSession:task:didReceiveChallenge:completionHandler:]::$_3>(v11);
   }
@@ -952,7 +952,7 @@ LABEL_23:
   return result;
 }
 
-- (WTF::StringImpl)URLSession:(uint64_t)a1 task:didReceiveChallenge:completionHandler:
+- (WTF::StringImpl)URLSession:(uint64_t)session task:didReceiveChallenge:completionHandler:
 {
   WebCore::CredentialBase::CredentialBase(&v9);
   *v6 = v9;
@@ -960,7 +960,7 @@ LABEL_23:
   v8 = 0;
   WebKit::fromAuthenticationChallengeDisposition(0);
   WebCore::Credential::nsCredential(v6);
-  (*(*a1 + 16))();
+  (*(*session + 16))();
   v3 = v8;
   v8 = 0;
   if (v3)
@@ -994,7 +994,7 @@ LABEL_23:
     IPC::Decoder::decode<std::tuple<BOOL>>(a3);
   }
 
-  v4 = *(*(a1 + 8) + 16);
+  v4 = *(*(self + 8) + 16);
 
   return v4();
 }
@@ -1006,7 +1006,7 @@ LABEL_23:
     IPC::Decoder::decode<std::tuple<BOOL>>(a3);
   }
 
-  v4 = *(*(a1 + 8) + 16);
+  v4 = *(*(self + 8) + 16);
 
   return v4();
 }

@@ -1,65 +1,65 @@
 @interface INFERENCESchemaINFERENCESpeechAlternativeRanks
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFamilyNameRank:(BOOL)a3;
-- (void)setHasFullNameRank:(BOOL)a3;
-- (void)setHasGivenNameRank:(BOOL)a3;
-- (void)setHasMiddleNameRank:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFamilyNameRank:(BOOL)rank;
+- (void)setHasFullNameRank:(BOOL)rank;
+- (void)setHasGivenNameRank:(BOOL)rank;
+- (void)setHasMiddleNameRank:(BOOL)rank;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCESpeechAlternativeRanks
 
-- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = INFERENCESchemaINFERENCESpeechAlternativeRanks;
   v5 = [(INFERENCESchemaINFERENCESpeechAlternativeRanks *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isError"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESpeechAlternativeRanks setIsError:](v5, "setIsError:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"version"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESpeechAlternativeRanks setVersion:](v5, "setVersion:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"givenNameRank"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"givenNameRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESpeechAlternativeRanks setGivenNameRank:](v5, "setGivenNameRank:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"middleNameRank"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"middleNameRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESpeechAlternativeRanks setMiddleNameRank:](v5, "setMiddleNameRank:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"familyNameRank"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"familyNameRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCESpeechAlternativeRanks setFamilyNameRank:](v5, "setFamilyNameRank:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"fullNameRank"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"fullNameRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCESpeechAlternativeRanks)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCESpeechAlternativeRanks *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCESpeechAlternativeRanks *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCESpeechAlternativeRanks *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks familyNameRank](self, "familyNameRank")}];
-    [v3 setObject:v7 forKeyedSubscript:@"familyNameRank"];
+    [dictionary setObject:v7 forKeyedSubscript:@"familyNameRank"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks fullNameRank](self, "fullNameRank")}];
-  [v3 setObject:v8 forKeyedSubscript:@"fullNameRank"];
+  [dictionary setObject:v8 forKeyedSubscript:@"fullNameRank"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -150,7 +150,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks givenNameRank](self, "givenNameRank")}];
-  [v3 setObject:v9 forKeyedSubscript:@"givenNameRank"];
+  [dictionary setObject:v9 forKeyedSubscript:@"givenNameRank"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -166,7 +166,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks isError](self, "isError")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isError"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isError"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -182,19 +182,19 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks middleNameRank](self, "middleNameRank")}];
-  [v3 setObject:v11 forKeyedSubscript:@"middleNameRank"];
+  [dictionary setObject:v11 forKeyedSubscript:@"middleNameRank"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCESpeechAlternativeRanks version](self, "version")}];
-    [v3 setObject:v5 forKeyedSubscript:@"version"];
+    [dictionary setObject:v5 forKeyedSubscript:@"version"];
   }
 
 LABEL_8:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -279,16 +279,16 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -297,13 +297,13 @@ LABEL_7:
   if (*&has)
   {
     isError = self->_isError;
-    if (isError != [v4 isError])
+    if (isError != [equalCopy isError])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -315,13 +315,13 @@ LABEL_7:
   if (v8)
   {
     version = self->_version;
-    if (version != [v4 version])
+    if (version != [equalCopy version])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -333,13 +333,13 @@ LABEL_7:
   if (v10)
   {
     givenNameRank = self->_givenNameRank;
-    if (givenNameRank != [v4 givenNameRank])
+    if (givenNameRank != [equalCopy givenNameRank])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -351,13 +351,13 @@ LABEL_7:
   if (v12)
   {
     middleNameRank = self->_middleNameRank;
-    if (middleNameRank != [v4 middleNameRank])
+    if (middleNameRank != [equalCopy middleNameRank])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -369,10 +369,10 @@ LABEL_7:
   if (v14)
   {
     familyNameRank = self->_familyNameRank;
-    if (familyNameRank == [v4 familyNameRank])
+    if (familyNameRank == [equalCopy familyNameRank])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_22;
     }
 
@@ -391,7 +391,7 @@ LABEL_22:
   if (v16)
   {
     fullNameRank = self->_fullNameRank;
-    if (fullNameRank != [v4 fullNameRank])
+    if (fullNameRank != [equalCopy fullNameRank])
     {
       goto LABEL_26;
     }
@@ -403,9 +403,9 @@ LABEL_27:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -480,9 +480,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasFullNameRank:(BOOL)a3
+- (void)setHasFullNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 32;
   }
@@ -495,9 +495,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasFamilyNameRank:(BOOL)a3
+- (void)setHasFamilyNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 16;
   }
@@ -510,9 +510,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMiddleNameRank:(BOOL)a3
+- (void)setHasMiddleNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 8;
   }
@@ -525,9 +525,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasGivenNameRank:(BOOL)a3
+- (void)setHasGivenNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 4;
   }
@@ -540,9 +540,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

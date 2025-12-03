@@ -1,14 +1,14 @@
 @interface CKJSONLDGraph
-- (CKJSONLDGraph)initWithEntities:(id)a3;
+- (CKJSONLDGraph)initWithEntities:(id)entities;
 - (NSArray)entities;
-- (void)linkedDataWithCompletionHandler:(id)a3;
+- (void)linkedDataWithCompletionHandler:(id)handler;
 @end
 
 @implementation CKJSONLDGraph
 
-- (CKJSONLDGraph)initWithEntities:(id)a3
+- (CKJSONLDGraph)initWithEntities:(id)entities
 {
-  if (a3)
+  if (entities)
   {
     type metadata accessor for CKKnowledgeStoreEntity();
     v3 = sub_1C86F909C();
@@ -24,7 +24,7 @@
 
 - (NSArray)entities
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C86B1D04();
 
   v3 = sub_1C86F908C();
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (void)linkedDataWithCompletionHandler:(id)a3
+- (void)linkedDataWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_1C86B1E4C();
 }
 

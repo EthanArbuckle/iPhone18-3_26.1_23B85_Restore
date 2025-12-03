@@ -1,10 +1,10 @@
 @interface RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithCode:(id)a3;
-+ (id)buildWithCode:(id)a3 name:(id)a4 description:(id)a5 action:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithCode:(id)code;
++ (id)buildWithCode:(id)code name:(id)name description:(id)description action:(id)action;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction
@@ -25,21 +25,21 @@
   return v4;
 }
 
-+ (id)buildWithCode:(id)a3 name:(id)a4 description:(id)a5 action:(id)a6
++ (id)buildWithCode:(id)code name:(id)name description:(id)description action:(id)action
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  actionCopy = action;
+  descriptionCopy = description;
+  nameCopy = name;
+  codeCopy = code;
   v13 = objc_opt_new();
-  [v13 setPayloadCode:v12];
+  [v13 setPayloadCode:codeCopy];
 
-  [v13 setPayloadName:v11];
-  [v13 setPayloadDescription:v10];
+  [v13 setPayloadName:nameCopy];
+  [v13 setPayloadDescription:descriptionCopy];
 
-  if (v9)
+  if (actionCopy)
   {
-    v14 = v9;
+    v14 = actionCopy;
   }
 
   else
@@ -52,21 +52,21 @@
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithCode:(id)a3
++ (id)buildRequiredOnlyWithCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
-  [v4 setPayloadCode:v3];
+  [v4 setPayloadCode:codeCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -74,35 +74,35 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"Code" forKeyPath:@"payloadCode" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Name" forKeyPath:@"payloadName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Description" forKeyPath:@"payloadDescription" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Action" forKeyPath:@"payloadAction" isRequired:0 defaultValue:@"Default" error:a5];
+  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Code" forKeyPath:@"payloadCode" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Name" forKeyPath:@"payloadName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Description" forKeyPath:@"payloadDescription" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Action" forKeyPath:@"payloadAction" isRequired:0 defaultValue:@"Default" error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadCode];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Code" value:v5 isRequired:1 defaultValue:0];
+  payloadCode = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadCode];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Code" value:payloadCode isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Name" value:v6 isRequired:0 defaultValue:0];
+  payloadName = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Name" value:payloadName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadDescription];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Description" value:v7 isRequired:0 defaultValue:0];
+  payloadDescription = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadDescription];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Description" value:payloadDescription isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadAction];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Action" value:v8 isRequired:0 defaultValue:@"Default"];
+  payloadAction = [(RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction *)self payloadAction];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Action" value:payloadAction isRequired:0 defaultValue:@"Default"];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelNetworkEAPDeclaration_EAPSIMAKANotificationAction;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadCode copy];
   v6 = v4[2];
   v4[2] = v5;

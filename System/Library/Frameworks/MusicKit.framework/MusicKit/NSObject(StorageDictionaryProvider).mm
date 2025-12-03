@@ -14,7 +14,7 @@
   getMPModelObjectClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 valueForKey:@"_storage"];
+    v2 = [self valueForKey:@"_storage"];
   }
 
   else
@@ -30,12 +30,12 @@
   getMPModelObjectClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
     getMPModelGenericObjectClass();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
-      v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForGenericModelObject:v3];
+      _musicKit_innerModelObject = selfCopy;
+      v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForGenericModelObject:_musicKit_innerModelObject];
     }
 
     else
@@ -60,8 +60,8 @@
       _Block_object_dispose(&v16, 8);
       if (objc_opt_isKindOfClass())
       {
-        v3 = v2;
-        v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForStoreBrowseContentItem:v3];
+        _musicKit_innerModelObject = selfCopy;
+        v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForStoreBrowseContentItem:_musicKit_innerModelObject];
       }
 
       else
@@ -86,8 +86,8 @@
         _Block_object_dispose(&v16, 8);
         if (objc_opt_isKindOfClass())
         {
-          v3 = v2;
-          v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForPlaylistEntry:v3];
+          _musicKit_innerModelObject = selfCopy;
+          v4 = [objc_opt_class() _musicKit_modelObjectStorageDictionaryForPlaylistEntry:_musicKit_innerModelObject];
         }
 
         else
@@ -95,14 +95,14 @@
           getMPModelLibraryPinClass();
           if (objc_opt_isKindOfClass())
           {
-            v3 = v2;
-            [objc_opt_class() _musicKit_modelObjectStorageDictionaryForPin:v3];
+            _musicKit_innerModelObject = selfCopy;
+            [objc_opt_class() _musicKit_modelObjectStorageDictionaryForPin:_musicKit_innerModelObject];
           }
 
           else
           {
-            v3 = [v2 _musicKit_innerModelObject];
-            [v3 _musicKit_modelObjectRawStorageDictionary];
+            _musicKit_innerModelObject = [selfCopy _musicKit_innerModelObject];
+            [_musicKit_innerModelObject _musicKit_modelObjectRawStorageDictionary];
           }
           v4 = ;
         }
@@ -123,12 +123,12 @@
 + (id)_musicKit_modelObjectStorageDictionaryForGenericModelObject:()StorageDictionaryProvider
 {
   v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 _musicKit_innerModelObject];
+  type = [v3 type];
+  _musicKit_innerModelObject = [v3 _musicKit_innerModelObject];
 
-  v6 = [v5 _musicKit_modelObjectRawStorageDictionary];
-  v7 = [v6 mutableCopy];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+  _musicKit_modelObjectRawStorageDictionary = [_musicKit_innerModelObject _musicKit_modelObjectRawStorageDictionary];
+  v7 = [_musicKit_modelObjectRawStorageDictionary mutableCopy];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v7 setObject:v8 forKey:@"MusicKit_LegacyModelProperty_GenericType"];
 
   return v7;
@@ -137,11 +137,11 @@
 + (id)_musicKit_modelObjectStorageDictionaryForPlaylistEntry:()StorageDictionaryProvider
 {
   v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 _musicKit_modelObjectRawStorageDictionary];
+  type = [v3 type];
+  _musicKit_modelObjectRawStorageDictionary = [v3 _musicKit_modelObjectRawStorageDictionary];
 
-  v6 = [v5 mutableCopy];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+  v6 = [_musicKit_modelObjectRawStorageDictionary mutableCopy];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v6 setObject:v7 forKey:@"MusicKit_LegacyModelPlaylistEntryType"];
 
   return v6;
@@ -159,10 +159,10 @@
     _os_log_impl(&dword_2171EE000, v4, OS_LOG_TYPE_DEFAULT, "Creating storage dictionary for pin=%{public}@.", &v11, 0xCu);
   }
 
-  v5 = [v3 pinnedEntityType];
-  v6 = [v3 _musicKit_modelObjectRawStorageDictionary];
-  v7 = [v6 mutableCopy];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  pinnedEntityType = [v3 pinnedEntityType];
+  _musicKit_modelObjectRawStorageDictionary = [v3 _musicKit_modelObjectRawStorageDictionary];
+  v7 = [_musicKit_modelObjectRawStorageDictionary mutableCopy];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:pinnedEntityType];
   [v7 setObject:v8 forKey:@"MusicKit_LegacyModelLibraryPinnedEntityType"];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -174,10 +174,10 @@
 {
   v3 = a3;
   v4 = +[MusicKit_SoftLinking_MPModelGenericObject rawValueForType:](MusicKit_SoftLinking_MPModelGenericObject, "rawValueForType:", +[MusicKit_SoftLinking_MPModelStoreBrowseContentItem _genericObjectTypeForItemType:](MusicKit_SoftLinking_MPModelStoreBrowseContentItem, "_genericObjectTypeForItemType:", [v3 itemType]));
-  v5 = [v3 innerObject];
+  innerObject = [v3 innerObject];
 
-  v6 = [v5 _musicKit_modelObjectRawStorageDictionary];
-  v7 = [v6 mutableCopy];
+  _musicKit_modelObjectRawStorageDictionary = [innerObject _musicKit_modelObjectRawStorageDictionary];
+  v7 = [_musicKit_modelObjectRawStorageDictionary mutableCopy];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
   [v7 setObject:v8 forKey:@"MusicKit_LegacyModelProperty_GenericType"];
 

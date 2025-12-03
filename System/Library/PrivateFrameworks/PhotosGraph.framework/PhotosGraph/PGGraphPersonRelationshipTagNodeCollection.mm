@@ -1,14 +1,14 @@
 @interface PGGraphPersonRelationshipTagNodeCollection
-+ (id)nodesWithRelationshipTag:(unint64_t)a3 inGraph:(id)a4;
++ (id)nodesWithRelationshipTag:(unint64_t)tag inGraph:(id)graph;
 - (PGGraphPersonNodeCollection)personNodes;
-- (id)personNodesWithConfidence:(double)a3;
+- (id)personNodesWithConfidence:(double)confidence;
 @end
 
 @implementation PGGraphPersonRelationshipTagNodeCollection
 
-- (id)personNodesWithConfidence:(double)a3
+- (id)personNodesWithConfidence:(double)confidence
 {
-  v4 = [PGGraphPersonRelationshipTagNode personWithTagWithConfidence:a3];
+  v4 = [PGGraphPersonRelationshipTagNode personWithTagWithConfidence:confidence];
   v5 = [(MANodeCollection *)PGGraphPersonNodeCollection nodesRelatedToNodes:self withRelation:v4];
 
   return v5;
@@ -22,11 +22,11 @@
   return v4;
 }
 
-+ (id)nodesWithRelationshipTag:(unint64_t)a3 inGraph:(id)a4
++ (id)nodesWithRelationshipTag:(unint64_t)tag inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphPersonRelationshipTagNode filterWithTag:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphPersonRelationshipTagNode filterWithTag:tag];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

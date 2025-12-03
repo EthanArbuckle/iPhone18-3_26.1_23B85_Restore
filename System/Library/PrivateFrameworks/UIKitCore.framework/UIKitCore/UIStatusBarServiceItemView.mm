@@ -1,20 +1,20 @@
 @interface UIStatusBarServiceItemView
-- (BOOL)updateForContentType:(int)a3 serviceString:(id)a4 serviceCrossfadeString:(id)a5 maxWidth:(double)a6 actions:(int)a7;
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (double)addContentOverlap:(double)a3;
+- (BOOL)updateForContentType:(int)type serviceString:(id)string serviceCrossfadeString:(id)crossfadeString maxWidth:(double)width actions:(int)actions;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (double)addContentOverlap:(double)overlap;
 - (double)extraRightPadding;
 - (double)resetContentOverlap;
 - (double)standardPadding;
 - (double)updateContentsAndWidth;
-- (id)_contentsImageFromString:(id)a3 withWidth:(double)a4 letterSpacing:(double)a5;
+- (id)_contentsImageFromString:(id)string withWidth:(double)width letterSpacing:(double)spacing;
 - (id)_serviceContentsImage;
 - (id)accessibilityHUDRepresentation;
 - (id)contentsImage;
 - (int64_t)legibilityStyle;
 - (void)_crossfadeStepAnimation;
-- (void)_loopAnimationDidStopInDirection:(BOOL)a3;
+- (void)_loopAnimationDidStopInDirection:(BOOL)direction;
 - (void)performPendedActions;
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5;
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration;
 @end
 
 @implementation UIStatusBarServiceItemView
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (double)addContentOverlap:(double)a3
+- (double)addContentOverlap:(double)overlap
 {
   [(UIView *)self frame];
-  v6 = v5 - a3;
-  if (v5 - a3 < 20.0)
+  v6 = v5 - overlap;
+  if (v5 - overlap < 20.0)
   {
     v6 = 20.0;
   }
@@ -56,44 +56,44 @@
   return result;
 }
 
-- (BOOL)updateForContentType:(int)a3 serviceString:(id)a4 serviceCrossfadeString:(id)a5 maxWidth:(double)a6 actions:(int)a7
+- (BOOL)updateForContentType:(int)type serviceString:(id)string serviceCrossfadeString:(id)crossfadeString maxWidth:(double)width actions:(int)actions
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
+  actionsCopy = actions;
+  stringCopy = string;
+  crossfadeStringCopy = crossfadeString;
   contentType = self->_contentType;
-  v15 = contentType != a3;
-  if (contentType != a3)
+  v15 = contentType != type;
+  if (contentType != type)
   {
-    self->_contentType = a3;
+    self->_contentType = type;
   }
 
-  if (![v12 isEqualToString:self->_serviceString])
+  if (![stringCopy isEqualToString:self->_serviceString])
   {
-    v19 = [v12 copy];
+    v19 = [stringCopy copy];
     serviceString = self->_serviceString;
     self->_serviceString = v19;
 
     goto LABEL_12;
   }
 
-  if (self->_maxWidth != a6)
+  if (self->_maxWidth != width)
   {
 LABEL_12:
     [(UIStatusBarItemView *)self clearCachedTextImage];
-    self->_maxWidth = a6;
+    self->_maxWidth = width;
     self->_loopingNecessaryForString = 0;
     self->_letterSpacing = 0.0;
     v21 = self->_contentType;
     if (v21 != 1 && v21 != 6)
     {
       v23 = [(UIStatusBarServiceItemView *)self _contentsImageFromString:self->_serviceString withWidth:1.79769313e308 letterSpacing:0.0];
-      v24 = [v23 image];
+      image = [v23 image];
 
-      if (!v24 || ([v24 size], v25 > self->_maxWidth))
+      if (!image || ([image size], v25 > self->_maxWidth))
       {
-        v26 = [(UIStatusBarItemView *)self textFont];
-        [(NSString *)self->_serviceString _legacy_sizeWithFont:v26];
+        textFont = [(UIStatusBarItemView *)self textFont];
+        [(NSString *)self->_serviceString _legacy_sizeWithFont:textFont];
         if (v27 <= self->_maxWidth)
         {
 LABEL_21:
@@ -111,7 +111,7 @@ LABEL_21:
             }
 
             self->_letterSpacing = letterSpacing + -0.25;
-            [(NSString *)self->_serviceString sizeWithFont:v26 forWidth:4 lineBreakMode:1.79769313e308 letterSpacing:?];
+            [(NSString *)self->_serviceString sizeWithFont:textFont forWidth:4 lineBreakMode:1.79769313e308 letterSpacing:?];
             if (v29 <= self->_maxWidth)
             {
               goto LABEL_21;
@@ -131,13 +131,13 @@ LABEL_21:
       }
     }
 
-    v16 = (v7 & 8) == 0;
+    v16 = (actionsCopy & 8) == 0;
     v15 = 1;
     goto LABEL_28;
   }
 
-  v16 = (v7 & 8) == 0;
-  if (contentType == a3 && (v7 & 8) == 0)
+  v16 = (actionsCopy & 8) == 0;
+  if (contentType == type && (actionsCopy & 8) == 0)
   {
     v18 = 0;
     goto LABEL_34;
@@ -158,7 +158,7 @@ LABEL_28:
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__crossfadeStepAnimation object:0];
   if (!v16)
   {
-    v30 = [v13 copy];
+    v30 = [crossfadeStringCopy copy];
     crossfadeString = self->_crossfadeString;
     self->_crossfadeString = v30;
 
@@ -174,7 +174,7 @@ LABEL_34:
     self->_loopNowIfNecessary = 0;
   }
 
-  else if (v7)
+  else if (actionsCopy)
   {
     self->_loopNowIfNecessary = 1;
     if (self->_loopingNecessaryForString)
@@ -187,11 +187,11 @@ LABEL_34:
   return v18;
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v4 = *&a4;
-  v6 = [a3 rawData];
-  v7 = *(v6 + 2072);
+  v4 = *&actions;
+  rawData = [data rawData];
+  v7 = *(rawData + 2072);
   v8 = _UIKitPreferencesOnce();
   v9 = [v8 objectForKey:@"UIStatusBarShowBuildVersion"];
   if (([v9 BOOLValue] & 1) == 0)
@@ -200,22 +200,22 @@ LABEL_34:
     goto LABEL_5;
   }
 
-  v10 = [(UIStatusBarItemView *)self foregroundStyle];
-  v11 = [v10 supportsShowingBuildVersion];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  supportsShowingBuildVersion = [foregroundStyle supportsShowingBuildVersion];
 
-  if (!v11)
+  if (!supportsShowingBuildVersion)
   {
 LABEL_5:
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v6 + 448 encoding:4];
+    buildVersion = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:rawData + 448 encoding:4];
     goto LABEL_6;
   }
 
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 buildVersion];
+  buildVersion = [v12 buildVersion];
 
 LABEL_6:
-  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v6 + 648 encoding:4];
-  v15 = [(UIStatusBarServiceItemView *)self updateForContentType:v7 serviceString:v13 serviceCrossfadeString:v14 maxWidth:v4 actions:1.79769313e308];
+  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:rawData + 648 encoding:4];
+  v15 = [(UIStatusBarServiceItemView *)self updateForContentType:v7 serviceString:buildVersion serviceCrossfadeString:v14 maxWidth:v4 actions:1.79769313e308];
 
   return v15;
 }
@@ -234,7 +234,7 @@ LABEL_6:
 
 - (double)updateContentsAndWidth
 {
-  v3 = [(UIStatusBarServiceItemView *)self _crossfaded];
+  _crossfaded = [(UIStatusBarServiceItemView *)self _crossfaded];
   if ([(UIStatusBarServiceItemView *)self _loopingNecessary])
   {
     v4 = self->_loopNowIfNecessary || self->_loopingNow;
@@ -245,22 +245,22 @@ LABEL_6:
     v4 = 0;
   }
 
-  v5 = [(UIStatusBarServiceItemView *)self contentsImage];
-  v6 = v5;
+  contentsImage = [(UIStatusBarServiceItemView *)self contentsImage];
+  v6 = contentsImage;
   v7 = 0.0;
   v8 = 0.0;
   maxWidth = 0.0;
-  if (v5)
+  if (contentsImage)
   {
-    v10 = [v5 image];
+    image = [contentsImage image];
 
-    if (v10)
+    if (image)
     {
-      v11 = [v6 image];
-      [v11 size];
+      image2 = [v6 image];
+      [image2 size];
       v8 = v12;
 
-      if (v3 | ![(UIStatusBarServiceItemView *)self _loopingNecessary])
+      if (_crossfaded | ![(UIStatusBarServiceItemView *)self _loopingNecessary])
       {
         maxWidth = v8;
       }
@@ -280,62 +280,62 @@ LABEL_6:
   }
 
   v14 = 9;
-  if (v3)
+  if (_crossfaded)
   {
     v14 = 10;
   }
 
   *(&self->super.super.super.super.isa + OBJC_IVAR___UIStatusBarServiceItemView__contentType[v14]) = maxWidth;
   [(UIStatusBarItemView *)self setLayerContentsImage:v6];
-  v15 = [(UIView *)self layer];
-  [v15 setContentsGravity:*MEMORY[0x1E6979DD8]];
+  layer = [(UIView *)self layer];
+  [layer setContentsGravity:*MEMORY[0x1E6979DD8]];
 
   if (!self->_loopingNow)
   {
-    if (!v3 && v4 && v8 > 0.0)
+    if (!_crossfaded && v4 && v8 > 0.0)
     {
-      v16 = [(UIView *)self layer];
-      v17 = v16;
+      layer2 = [(UIView *)self layer];
+      v17 = layer2;
       v18 = 1.0;
       v19 = maxWidth / v8;
     }
 
     else
     {
-      v16 = [(UIView *)self layer];
-      v17 = v16;
+      layer2 = [(UIView *)self layer];
+      v17 = layer2;
       v19 = 1.0;
       v18 = 1.0;
     }
 
-    [v16 setContentsRect:{0.0, 0.0, v19, v18}];
+    [layer2 setContentsRect:{0.0, 0.0, v19, v18}];
   }
 
-  v20 = [(UIView *)self layer];
+  layer3 = [(UIView *)self layer];
   LODWORD(v21) = 1.0;
-  [v20 setOpacity:v21];
+  [layer3 setOpacity:v21];
 
   return v7;
 }
 
-- (id)_contentsImageFromString:(id)a3 withWidth:(double)a4 letterSpacing:(double)a5
+- (id)_contentsImageFromString:(id)string withWidth:(double)width letterSpacing:(double)spacing
 {
-  v8 = a3;
-  if ([v8 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    if ([(NSString *)self->_serviceString isEqual:v8])
+    if ([(NSString *)self->_serviceString isEqual:stringCopy])
     {
-      v9 = [(UIStatusBarItemView *)self cachedImageWithText:v8 truncatedWithEllipsesAtMaxWidth:a4 letterSpacing:a5];
+      v9 = [(UIStatusBarItemView *)self cachedImageWithText:stringCopy truncatedWithEllipsesAtMaxWidth:width letterSpacing:spacing];
     }
 
     else
     {
-      v10 = [(UIStatusBarItemView *)self foregroundStyle];
-      v11 = [(UIStatusBarItemView *)self textAlignment];
-      v12 = [(UIStatusBarItemView *)self textStyle];
-      v13 = [(UIStatusBarServiceItemView *)self legibilityStyle];
+      foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+      textAlignment = [(UIStatusBarItemView *)self textAlignment];
+      textStyle = [(UIStatusBarItemView *)self textStyle];
+      legibilityStyle = [(UIStatusBarServiceItemView *)self legibilityStyle];
       [(UIStatusBarItemView *)self legibilityStrength];
-      v9 = [v10 imageWithText:v8 ofItemType:6 forWidth:4 lineBreakMode:v11 letterSpacing:v12 textAlignment:v13 style:a4 withLegibilityStyle:a5 legibilityStrength:v14];
+      v9 = [foregroundStyle imageWithText:stringCopy ofItemType:6 forWidth:4 lineBreakMode:textAlignment letterSpacing:textStyle textAlignment:legibilityStyle style:width withLegibilityStyle:spacing legibilityStrength:v14];
     }
   }
 
@@ -378,14 +378,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)setVisible:(BOOL)a3 frame:(CGRect)a4 duration:(double)a5
+- (void)setVisible:(BOOL)visible frame:(CGRect)frame duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  if (a5 > 0.0 && a3)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  visibleCopy = visible;
+  if (duration > 0.0 && visible)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -397,7 +397,7 @@ LABEL_6:
 
   v13.receiver = self;
   v13.super_class = UIStatusBarServiceItemView;
-  [(UIStatusBarItemView *)&v13 setVisible:v10 frame:x duration:y, width, height, a5];
+  [(UIStatusBarItemView *)&v13 setVisible:visibleCopy frame:x duration:y, width, height, duration];
 }
 
 uint64_t __56__UIStatusBarServiceItemView_setVisible_frame_duration___block_invoke(uint64_t a1)
@@ -480,9 +480,9 @@ void __50__UIStatusBarServiceItemView_performPendedActions__block_invoke(uint64_
   [v9 setContentsRect:{1.0 - v6, v4, v6, v8}];
 }
 
-- (void)_loopAnimationDidStopInDirection:(BOOL)a3
+- (void)_loopAnimationDidStopInDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v11[4] = self;
     v12[0] = MEMORY[0x1E69E9820];
@@ -519,8 +519,8 @@ void __50__UIStatusBarServiceItemView_performPendedActions__block_invoke(uint64_
     [UIView animateWithDuration:0 delay:v6 options:v5 animations:0.25 completion:0.3];
     if (v8[3] != 0.0)
     {
-      v4 = [(UIStatusBarItemView *)self layoutManager];
-      [v4 itemView:self sizeChangedBy:v8[3]];
+      layoutManager = [(UIStatusBarItemView *)self layoutManager];
+      [layoutManager itemView:self sizeChangedBy:v8[3]];
     }
 
     _Block_object_dispose(&v7, 8);

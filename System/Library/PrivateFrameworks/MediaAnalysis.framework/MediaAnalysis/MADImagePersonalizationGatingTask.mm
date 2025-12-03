@@ -1,41 +1,41 @@
 @interface MADImagePersonalizationGatingTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (CGRect)expandNormalizedRect:(CGRect)a3;
-- (MADImagePersonalizationGatingTask)initWithRequest:(id)a3 imageAsset:(id)a4 signpostPayload:(id)a5;
-- (int)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 faces:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (CGRect)expandNormalizedRect:(CGRect)rect;
+- (MADImagePersonalizationGatingTask)initWithRequest:(id)request imageAsset:(id)asset signpostPayload:(id)payload;
+- (int)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation faces:(id)faces;
 - (int)run;
 @end
 
 @implementation MADImagePersonalizationGatingTask
 
-- (MADImagePersonalizationGatingTask)initWithRequest:(id)a3 imageAsset:(id)a4 signpostPayload:(id)a5
+- (MADImagePersonalizationGatingTask)initWithRequest:(id)request imageAsset:(id)asset signpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = MADImagePersonalizationGatingTask;
   v12 = [(MADImagePersonalizationGatingTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
   }
 
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 signpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy signpostPayload:payloadCopy];
   }
 
   else
@@ -59,12 +59,12 @@
   return v11;
 }
 
-- (CGRect)expandNormalizedRect:(CGRect)a3
+- (CGRect)expandNormalizedRect:(CGRect)rect
 {
-  v3.origin.x = a3.origin.x - a3.size.width * 0.5;
-  v3.origin.y = a3.origin.y - a3.size.height * 0.5;
-  v3.size.width = a3.size.width + a3.size.width;
-  v3.size.height = a3.size.height + a3.size.height;
+  v3.origin.x = rect.origin.x - rect.size.width * 0.5;
+  v3.origin.y = rect.origin.y - rect.size.height * 0.5;
+  v3.size.width = rect.size.width + rect.size.width;
+  v3.size.height = rect.size.height + rect.size.height;
   v5.origin.x = 0.0;
   v5.origin.y = 0.0;
   v5.size.width = 1.0;
@@ -72,11 +72,11 @@
   return CGRectIntersection(v3, v5);
 }
 
-- (int)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 faces:(id)a5
+- (int)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation faces:(id)faces
 {
-  v5 = *&a4;
+  v5 = *&orientation;
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  facesCopy = faces;
   v41 = +[MADFaceDetectionResource sharedResource];
   v9 = +[VCPMADResourceManager sharedManager];
   v40 = [v9 activateResource:v41];
@@ -88,8 +88,8 @@
   if (v11)
   {
     v13 = objc_alloc(MEMORY[0x1E69845B8]);
-    v14 = [v41 session];
-    v39 = [v13 initWithCVPixelBuffer:a3 orientation:v5 options:MEMORY[0x1E695E0F8] session:v14];
+    session = [v41 session];
+    v39 = [v13 initWithCVPixelBuffer:buffer orientation:v5 options:MEMORY[0x1E695E0F8] session:session];
 
     v15 = VCPSignPostLog();
     v16 = os_signpost_id_generate(v15);
@@ -127,8 +127,8 @@
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v26 = [v10 results];
-      v27 = [v26 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      results = [v10 results];
+      v27 = [results countByEnumeratingWithState:&v42 objects:v48 count:16];
       if (v27)
       {
         v28 = *v43;
@@ -138,25 +138,25 @@
           {
             if (*v43 != v28)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(results);
             }
 
             [*(*(&v42 + 1) + 8 * i) boundingBox];
             [(MADImagePersonalizationGatingTask *)self expandNormalizedRect:?];
             v34 = [objc_alloc(MEMORY[0x1E69AE320]) initWithNormalizedCropRect:{v30, v31, v32, v33}];
-            [v8 addObject:v34];
+            [facesCopy addObject:v34];
           }
 
-          v27 = [v26 countByEnumeratingWithState:&v42 objects:v48 count:16];
+          v27 = [results countByEnumeratingWithState:&v42 objects:v48 count:16];
         }
 
         while (v27);
       }
 
-      [v8 sortUsingComparator:&__block_literal_global_98];
+      [facesCopy sortUsingComparator:&__block_literal_global_98];
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v8 count];
+        v35 = [facesCopy count];
         *buf = 67109120;
         LODWORD(v51) = v35;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Total Faces: %d", buf, 8u);
@@ -241,8 +241,8 @@ uint64_t __74__MADImagePersonalizationGatingTask_processPixelBuffer_orientation_
     request = self->_request;
     v4 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Image loading failed"];
-    v24[0] = v5;
+    array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Image loading failed"];
+    v24[0] = array;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v7 = [v4 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v6];
     [(MADImagePersonalizationGatingRequest *)request setError:v7];
@@ -250,8 +250,8 @@ uint64_t __74__MADImagePersonalizationGatingTask_processPixelBuffer_orientation_
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    if ([(MADImagePersonalizationGatingTask *)self processPixelBuffer:*buf orientation:v18 faces:v5])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([(MADImagePersonalizationGatingTask *)self processPixelBuffer:*buf orientation:v18 faces:array])
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -272,7 +272,7 @@ uint64_t __74__MADImagePersonalizationGatingTask_processPixelBuffer_orientation_
     else
     {
       v13 = self->_request;
-      v14 = [objc_alloc(MEMORY[0x1E69AE330]) initWithFaces:v5];
+      v14 = [objc_alloc(MEMORY[0x1E69AE330]) initWithFaces:array];
       v20 = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
       [(MADImagePersonalizationGatingRequest *)v13 setResults:v15];

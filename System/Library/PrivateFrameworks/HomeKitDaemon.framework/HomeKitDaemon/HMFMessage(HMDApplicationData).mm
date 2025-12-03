@@ -6,8 +6,8 @@
 
 - (id)appDataDictionaryWithError:()HMDApplicationData
 {
-  v4 = [a1 messagePayload];
-  v5 = [v4 hmd_appDataDictionaryWithError:a3];
+  messagePayload = [self messagePayload];
+  v5 = [messagePayload hmd_appDataDictionaryWithError:a3];
 
   return v5;
 }

@@ -1,28 +1,28 @@
 @interface FocalPlaneV2
-- (FocalPlaneV2)initWithMetalContext:(id)a3;
+- (FocalPlaneV2)initWithMetalContext:(id)context;
 - (int)allocateResources;
 - (int)compileShaders;
-- (int)encodeDisparityRefinementPreprocessingOn:(id)a3 alphaTexture:(id)a4 inputDisparityTexture:(id)a5 outputDisparityTexture:(id)a6 configuration:(id *)a7;
-- (int)encodeFocalPlaneCalcOn:(id)a3 disparityTexture:(id)a4;
-- (int)encodeMinMaxOn:(id)a3 inputTexture:(id)a4;
+- (int)encodeDisparityRefinementPreprocessingOn:(id)on alphaTexture:(id)texture inputDisparityTexture:(id)disparityTexture outputDisparityTexture:(id)outputDisparityTexture configuration:(id *)configuration;
+- (int)encodeFocalPlaneCalcOn:(id)on disparityTexture:(id)texture;
+- (int)encodeMinMaxOn:(id)on inputTexture:(id)texture;
 - (void)dealloc;
 - (void)releaseResources;
-- (void)setConfig:(id *)a3;
+- (void)setConfig:(id *)config;
 @end
 
 @implementation FocalPlaneV2
 
-- (FocalPlaneV2)initWithMetalContext:(id)a3
+- (FocalPlaneV2)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = FocalPlaneV2;
   v6 = [(FocalPlaneV2 *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
-    v10 = objc_msgSend_device(v5, v8, v9);
+    objc_storeStrong(&v6->_metalContext, context);
+    v10 = objc_msgSend_device(contextCopy, v8, v9);
     device = v7->_device;
     v7->_device = v10;
 
@@ -180,13 +180,13 @@
   self->_zeroShiftResult_buf = 0;
 }
 
-- (int)encodeDisparityRefinementPreprocessingOn:(id)a3 alphaTexture:(id)a4 inputDisparityTexture:(id)a5 outputDisparityTexture:(id)a6 configuration:(id *)a7
+- (int)encodeDisparityRefinementPreprocessingOn:(id)on alphaTexture:(id)texture inputDisparityTexture:(id)disparityTexture outputDisparityTexture:(id)outputDisparityTexture configuration:(id *)configuration
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (objc_msgSend_pixelFormat(v14, v16, v17) != 25)
+  onCopy = on;
+  textureCopy = texture;
+  disparityTextureCopy = disparityTexture;
+  outputDisparityTextureCopy = outputDisparityTexture;
+  if (objc_msgSend_pixelFormat(disparityTextureCopy, v16, v17) != 25)
   {
     sub_2957E12EC(v57);
 LABEL_13:
@@ -194,22 +194,22 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v20 = objc_msgSend_width(v14, v18, v19);
-  if (v20 != objc_msgSend_width(v15, v21, v22))
+  v20 = objc_msgSend_width(disparityTextureCopy, v18, v19);
+  if (v20 != objc_msgSend_width(outputDisparityTextureCopy, v21, v22))
   {
     sub_2957E1378(v57);
     goto LABEL_13;
   }
 
-  v25 = objc_msgSend_height(v14, v23, v24);
-  if (v25 != objc_msgSend_height(v15, v26, v27))
+  v25 = objc_msgSend_height(disparityTextureCopy, v23, v24);
+  if (v25 != objc_msgSend_height(outputDisparityTextureCopy, v26, v27))
   {
     sub_2957E1404(v57);
     goto LABEL_13;
   }
 
-  self->_config.zeroShiftPercentile = a7->var0;
-  v29 = objc_msgSend_encodeFocalPlaneCalcOn_disparityTexture_(self, v28, v12, v14);
+  self->_config.zeroShiftPercentile = configuration->var0;
+  v29 = objc_msgSend_encodeFocalPlaneCalcOn_disparityTexture_(self, v28, onCopy, disparityTextureCopy);
   if (v29)
   {
     v54 = v29;
@@ -217,7 +217,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v32 = objc_msgSend_computeCommandEncoder(v12, v30, v31);
+  v32 = objc_msgSend_computeCommandEncoder(onCopy, v30, v31);
   if (!v32)
   {
     sub_2957E14F0(v57);
@@ -226,16 +226,16 @@ LABEL_13:
 
   v34 = v32;
   objc_msgSend_setComputePipelineState_(v32, v33, self->_disparityRefinementPreprocessingKernel);
-  objc_msgSend_setTexture_atIndex_(v34, v35, v13, 0);
-  objc_msgSend_setTexture_atIndex_(v34, v36, v14, 1);
-  objc_msgSend_setTexture_atIndex_(v34, v37, v15, 2);
-  objc_msgSend_setBytes_length_atIndex_(v34, v38, a7, 48, 0);
+  objc_msgSend_setTexture_atIndex_(v34, v35, textureCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v34, v36, disparityTextureCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v34, v37, outputDisparityTextureCopy, 2);
+  objc_msgSend_setBytes_length_atIndex_(v34, v38, configuration, 48, 0);
   objc_msgSend_setBytes_length_atIndex_(v34, v39, &self->_config, 20, 1);
   objc_msgSend_setBuffer_offset_atIndex_(v34, v40, self->_zeroShiftResult_buf, 0, 2);
   v43 = objc_msgSend_threadExecutionWidth(self->_disparityRefinementPreprocessingKernel, v41, v42);
   v46 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_disparityRefinementPreprocessingKernel, v44, v45) / v43;
-  v57[0] = objc_msgSend_width(v15, v47, v48);
-  v57[1] = objc_msgSend_height(v15, v49, v50);
+  v57[0] = objc_msgSend_width(outputDisparityTextureCopy, v47, v48);
+  v57[1] = objc_msgSend_height(outputDisparityTextureCopy, v49, v50);
   v57[2] = 1;
   v56[0] = v43;
   v56[1] = v46;
@@ -249,10 +249,10 @@ LABEL_7:
   return v54;
 }
 
-- (int)encodeMinMaxOn:(id)a3 inputTexture:(id)a4
+- (int)encodeMinMaxOn:(id)on inputTexture:(id)texture
 {
-  v6 = a4;
-  v9 = objc_msgSend_computeCommandEncoder(a3, v7, v8);
+  textureCopy = texture;
+  v9 = objc_msgSend_computeCommandEncoder(on, v7, v8);
   v11 = v9;
   if (v9)
   {
@@ -265,12 +265,12 @@ LABEL_7:
     v40 = 1;
     objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v11, v13, &v41, &v39);
     objc_msgSend_setComputePipelineState_(v11, v14, self->_minMax1_kernel);
-    objc_msgSend_setTexture_atIndex_(v11, v15, v6, 0);
+    objc_msgSend_setTexture_atIndex_(v11, v15, textureCopy, 0);
     objc_msgSend_setBuffer_offset_atIndex_(v11, v16, self->_minMaxAtomic_buf, 0, 0);
     v19 = objc_msgSend_threadExecutionWidth(self->_minMax1_kernel, v17, v18);
     v22 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_minMax1_kernel, v20, v21) / v19;
-    v25 = objc_msgSend_width(v6, v23, v24);
-    v28 = objc_msgSend_height(v6, v26, v27);
+    v25 = objc_msgSend_width(textureCopy, v23, v24);
+    v28 = objc_msgSend_height(textureCopy, v26, v27);
     v41.i64[0] = v25;
     v41.i64[1] = v28;
     v42 = 1;
@@ -299,11 +299,11 @@ LABEL_7:
   return v36;
 }
 
-- (int)encodeFocalPlaneCalcOn:(id)a3 disparityTexture:(id)a4
+- (int)encodeFocalPlaneCalcOn:(id)on disparityTexture:(id)texture
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_encodeMinMaxOn_inputTexture_(self, v8, v6, v7);
+  onCopy = on;
+  textureCopy = texture;
+  v9 = objc_msgSend_encodeMinMaxOn_inputTexture_(self, v8, onCopy, textureCopy);
   if (v9)
   {
     v23 = v9;
@@ -312,7 +312,7 @@ LABEL_7:
 
   else
   {
-    v12 = objc_msgSend_computeCommandEncoder(v6, v10, v11);
+    v12 = objc_msgSend_computeCommandEncoder(onCopy, v10, v11);
     if (v12)
     {
       v14 = v12;
@@ -320,7 +320,7 @@ LABEL_7:
       objc_msgSend_setBytes_length_atIndex_(v14, v15, &self->_config, 20, 0);
       objc_msgSend_setBuffer_offset_atIndex_(v14, v16, self->_minMaxResult_buf, 0, 1);
       objc_msgSend_setBuffer_offset_atIndex_(v14, v17, self->_zeroShiftResult_buf, 0, 2);
-      objc_msgSend_setTexture_atIndex_(v14, v18, v7, 0);
+      objc_msgSend_setTexture_atIndex_(v14, v18, textureCopy, 0);
       objc_msgSend_setThreadgroupMemoryLength_atIndex_(v14, v19, 1024, 0);
       v27 = vdupq_n_s64(1uLL);
       v28 = 1;
@@ -342,10 +342,10 @@ LABEL_7:
   return v23;
 }
 
-- (void)setConfig:(id *)a3
+- (void)setConfig:(id *)config
 {
-  v3 = *&a3->var0;
-  self->_config.zeroShiftPercentile = a3->var4;
+  v3 = *&config->var0;
+  self->_config.zeroShiftPercentile = config->var4;
   *&self->_config.left = v3;
 }
 

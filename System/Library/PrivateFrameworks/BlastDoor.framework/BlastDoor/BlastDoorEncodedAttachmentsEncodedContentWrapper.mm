@@ -27,7 +27,7 @@
 
 - (BlastDoorEncodedAttachments_EncodedAstc)astc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21458FD30();
 
   return v3;
@@ -35,7 +35,7 @@
 
 - (BlastDoorEncodedAttachments_RawData)other
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21458FE38();
 
   return v3;

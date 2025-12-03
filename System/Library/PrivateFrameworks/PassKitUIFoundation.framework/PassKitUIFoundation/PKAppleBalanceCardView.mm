@@ -65,7 +65,7 @@ LABEL_26:
         CGImageRelease(v14);
         CGImageRelease(v17);
         self = v18;
-        v10 = self;
+        selfCopy = self;
         goto LABEL_27;
       }
     }
@@ -84,10 +84,10 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_27:
 
-  return v10;
+  return selfCopy;
 }
 
 id *__30__PKAppleBalanceCardView_init__block_invoke(uint64_t *a1, void *a2)

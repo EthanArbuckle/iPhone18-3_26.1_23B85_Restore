@@ -1,6 +1,6 @@
 @interface HMDHomeInviteLogEvent
 + (id)logCategory;
-- (HMDHomeInviteLogEvent)initWithHomeInviteLogEventState:(int64_t)a3 isFMFDevice:(BOOL)a4;
+- (HMDHomeInviteLogEvent)initWithHomeInviteLogEventState:(int64_t)state isFMFDevice:(BOOL)device;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -61,7 +61,7 @@
   return v12;
 }
 
-- (HMDHomeInviteLogEvent)initWithHomeInviteLogEventState:(int64_t)a3 isFMFDevice:(BOOL)a4
+- (HMDHomeInviteLogEvent)initWithHomeInviteLogEventState:(int64_t)state isFMFDevice:(BOOL)device
 {
   v23 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -81,10 +81,10 @@
   v6->_suppressedNotification = 0;
   v6->_filtered = 0;
   v6->_received = 0;
-  v6->_isFMFDevice = a4;
-  if (a3 <= 3)
+  v6->_isFMFDevice = device;
+  if (state <= 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 1:
         p_suppressedNotification = &v6->_received;
@@ -117,10 +117,10 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if (a3 <= 5)
+  if (state <= 5)
   {
     p_suppressedNotification = &v6->_accepted;
-    if (a3 != 4)
+    if (state != 4)
     {
       p_suppressedNotification = &v6->_declined;
     }
@@ -129,13 +129,13 @@ LABEL_18:
   }
 
   p_suppressedNotification = &v6->_ignored;
-  if (a3 == 6)
+  if (state == 6)
   {
     goto LABEL_17;
   }
 
   p_suppressedNotification = &v6->_expired;
-  if (a3 == 7)
+  if (state == 7)
   {
     goto LABEL_17;
   }

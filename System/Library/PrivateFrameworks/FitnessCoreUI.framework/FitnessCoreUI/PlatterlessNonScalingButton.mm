@@ -1,21 +1,21 @@
 @interface PlatterlessNonScalingButton
 - (BOOL)canBecomeFocused;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 @end
 
 @implementation PlatterlessNonScalingButton
 
-- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -29,7 +29,7 @@
   return v7;
 }
 
-- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI27PlatterlessNonScalingButton)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -57,8 +57,8 @@
 
   v4 = CGSizeMake(isCurrentExecutor);
   v6 = v5;
-  v7 = self;
-  [(PlatterlessNonScalingButton *)v7 sizeThatFits:v4, v6];
+  selfCopy = self;
+  [(PlatterlessNonScalingButton *)selfCopy sizeThatFits:v4, v6];
   v9 = v8;
   v11 = v10;
 
@@ -69,10 +69,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -82,7 +82,7 @@
   }
 
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI27PlatterlessNonScalingButton_titleLabel);
-  v7 = self;
+  selfCopy = self;
   [v6 sizeThatFits_];
   v9 = v8;
   v11 = v10;
@@ -107,13 +107,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for PlatterlessNonScalingButton();
-  v3 = self;
+  selfCopy = self;
   [(PlatterlessNonScalingButton *)&v6 layoutSubviews];
-  v4 = *(&v3->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI27PlatterlessNonScalingButton_floatingContentView);
-  [(PlatterlessNonScalingButton *)v3 bounds:v6.receiver];
+  v4 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI27PlatterlessNonScalingButton_floatingContentView);
+  [(PlatterlessNonScalingButton *)selfCopy bounds:v6.receiver];
   [v4 setFrame_];
-  v5 = *(&v3->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI27PlatterlessNonScalingButton_titleLabel);
-  [(PlatterlessNonScalingButton *)v3 bounds];
+  v5 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI27PlatterlessNonScalingButton_titleLabel);
+  [(PlatterlessNonScalingButton *)selfCopy bounds];
   [v5 setFrame_];
 }
 
@@ -127,12 +127,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [(PlatterlessNonScalingButton *)self isEnabled];
+  isEnabled = [(PlatterlessNonScalingButton *)self isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -142,10 +142,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_20C3C6B98(v7, v8);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20C3C6B98(contextCopy, coordinatorCopy);
 }
 
 @end

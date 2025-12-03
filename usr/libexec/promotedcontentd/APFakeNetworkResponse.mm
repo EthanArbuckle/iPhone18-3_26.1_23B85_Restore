@@ -1,21 +1,21 @@
 @interface APFakeNetworkResponse
-- (BOOL)loadConfig:(id)a3;
-- (id)addFakeResponseHeadersToHeaders:(id)a3;
+- (BOOL)loadConfig:(id)config;
+- (id)addFakeResponseHeadersToHeaders:(id)headers;
 @end
 
 @implementation APFakeNetworkResponse
 
-- (BOOL)loadConfig:(id)a3
+- (BOOL)loadConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = @"debug-http-status";
-  v6 = [v4 objectForKey:@"debug-http-status"];
-  if (v6 || (v5 = @"debug-communication-code", [v4 objectForKey:@"debug-communication-code"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  v6 = [configCopy objectForKey:@"debug-http-status"];
+  if (v6 || (v5 = @"debug-communication-code", [configCopy objectForKey:@"debug-communication-code"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     [(APFakeNetworkResponse *)self setHeaderName:v5];
-    v8 = [v7 stringValue];
-    [(APFakeNetworkResponse *)self setHeaderValue:v8];
+    stringValue = [v7 stringValue];
+    [(APFakeNetworkResponse *)self setHeaderValue:stringValue];
 
     v9 = 1;
   }
@@ -28,23 +28,23 @@
   return v9;
 }
 
-- (id)addFakeResponseHeadersToHeaders:(id)a3
+- (id)addFakeResponseHeadersToHeaders:(id)headers
 {
-  v4 = a3;
-  if (v4)
+  headersCopy = headers;
+  if (headersCopy)
   {
-    v5 = [(APFakeNetworkResponse *)self headerName];
-    if ([v5 length])
+    headerName = [(APFakeNetworkResponse *)self headerName];
+    if ([headerName length])
     {
-      v6 = [(APFakeNetworkResponse *)self headerValue];
-      v7 = [v6 length];
+      headerValue = [(APFakeNetworkResponse *)self headerValue];
+      v7 = [headerValue length];
 
       if (v7)
       {
-        v8 = [v4 mutableCopy];
-        v9 = [(APFakeNetworkResponse *)self headerValue];
-        v10 = [(APFakeNetworkResponse *)self headerName];
-        [v8 setObject:v9 forKeyedSubscript:v10];
+        v8 = [headersCopy mutableCopy];
+        headerValue2 = [(APFakeNetworkResponse *)self headerValue];
+        headerName2 = [(APFakeNetworkResponse *)self headerName];
+        [v8 setObject:headerValue2 forKeyedSubscript:headerName2];
 
         v11 = [v8 copy];
         goto LABEL_7;
@@ -56,7 +56,7 @@
     }
   }
 
-  v11 = v4;
+  v11 = headersCopy;
 LABEL_7:
 
   return v11;

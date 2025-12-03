@@ -1,14 +1,14 @@
 @interface EPDynamicTransactionListContainer
 - (EPDynamicTransactionListContainer)init;
-- (EPDynamicTransactionListContainer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EPDynamicTransactionListContainer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EPDynamicTransactionListContainer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[NSMutableSet set];
   v14 = 0u;
   v15 = 0u;
@@ -30,10 +30,10 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 routingSlip];
-        v13 = [v12 persistWhilePending];
+        routingSlip = [v11 routingSlip];
+        persistWhilePending = [routingSlip persistWhilePending];
 
-        if (v13)
+        if (persistWhilePending)
         {
           [v5 addObject:v11];
         }
@@ -45,13 +45,13 @@
     while (v8);
   }
 
-  [v4 encodeObject:v5 forKey:@"transactions"];
-  [v4 encodeObject:self->_current forKey:@"current"];
+  [coderCopy encodeObject:v5 forKey:@"transactions"];
+  [coderCopy encodeObject:self->_current forKey:@"current"];
 }
 
-- (EPDynamicTransactionListContainer)initWithCoder:(id)a3
+- (EPDynamicTransactionListContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPDynamicTransactionListContainer *)self init];
   if (v5)
   {
@@ -59,14 +59,14 @@
     v12[1] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v12 count:2];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"transactions"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"transactions"];
 
     if (v8)
     {
       objc_storeStrong(&v5->_transactions, v8);
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current"];
     current = v5->_current;
     v5->_current = v9;
   }

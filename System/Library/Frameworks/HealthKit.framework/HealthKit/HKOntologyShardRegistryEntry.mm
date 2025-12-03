@@ -1,24 +1,24 @@
 @interface HKOntologyShardRegistryEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)unitTesting_isIdentical:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)unitTesting_isIdentical:(id)identical;
 - (HKOntologyShardRegistryEntry)init;
-- (HKOntologyShardRegistryEntry)initWithCoder:(id)a3;
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 availableURL:(id)a6;
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 desiredState:(int64_t)a6;
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 settings:(unint64_t)a6 slot:(int64_t)a7 desiredState:(int64_t)a8 desiredStateDate:(id)a9 currentVersion:(int64_t)a10 currentVersionDate:(id)a11 currentRegion:(id)a12 currentRegionDate:(id)a13 currentLocale:(id)a14 currentLocaleDate:(id)a15 availableVersion:(int64_t)a16 availableVersionDate:(id)a17 availableRegion:(id)a18 availableRegionDate:(id)a19 availableLocale:(id)a20 availableLocaleDate:(id)a21 availableURL:(id)a22 availableURLDate:(id)a23 availableChecksum:(id)a24 availableChecksumDate:(id)a25 availableSize:(int64_t)a26 availableSizeDate:(id)a27 availableState:(int64_t)a28 availableStateDate:(id)a29;
-- (id)copyWithAvailableState:(int64_t)a3;
+- (HKOntologyShardRegistryEntry)initWithCoder:(id)coder;
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version availableURL:(id)l;
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version desiredState:(int64_t)state;
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version settings:(unint64_t)settings slot:(int64_t)slot desiredState:(int64_t)state desiredStateDate:(id)date currentVersion:(int64_t)self0 currentVersionDate:(id)self1 currentRegion:(id)self2 currentRegionDate:(id)self3 currentLocale:(id)self4 currentLocaleDate:(id)self5 availableVersion:(int64_t)self6 availableVersionDate:(id)self7 availableRegion:(id)self8 availableRegionDate:(id)self9 availableLocale:(id)availableLocale availableLocaleDate:(id)availableLocaleDate availableURL:(id)l availableURLDate:(id)lDate availableChecksum:(id)checksum availableChecksumDate:(id)checksumDate availableSize:(int64_t)size availableSizeDate:(id)sizeDate availableState:(int64_t)availableState availableStateDate:(id)stateDate;
+- (id)copyWithAvailableState:(int64_t)state;
 - (id)copyWithAvailableStateImported;
-- (id)copyWithAvailableStateNotImportedForDate:(id)a3;
-- (id)copyWithAvailableVersion:(int64_t)a3;
-- (id)copyWithAvailableVersion:(int64_t)a3 availableState:(int64_t)a4;
-- (id)copyWithCurrentVersionUndeterminedForDate:(id)a3;
-- (id)copyWithDesiredState:(int64_t)a3;
-- (id)copyWithSlot:(int64_t)a3;
+- (id)copyWithAvailableStateNotImportedForDate:(id)date;
+- (id)copyWithAvailableVersion:(int64_t)version;
+- (id)copyWithAvailableVersion:(int64_t)version availableState:(int64_t)state;
+- (id)copyWithCurrentVersionUndeterminedForDate:(id)date;
+- (id)copyWithDesiredState:(int64_t)state;
+- (id)copyWithSlot:(int64_t)slot;
 - (id)debugDescription;
 - (id)description;
-- (id)updatedCopyWithAvailableVersion:(int64_t)a3 availableRegion:(id)a4 availableLocale:(id)a5 availableURL:(id)a6 availableChecksum:(id)a7 availableSize:(int64_t)a8 date:(id)a9;
+- (id)updatedCopyWithAvailableVersion:(int64_t)version availableRegion:(id)region availableLocale:(id)locale availableURL:(id)l availableChecksum:(id)checksum availableSize:(int64_t)size date:(id)date;
 - (uint64_t)_copy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOntologyShardRegistryEntry
@@ -33,113 +33,113 @@
   return 0;
 }
 
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 settings:(unint64_t)a6 slot:(int64_t)a7 desiredState:(int64_t)a8 desiredStateDate:(id)a9 currentVersion:(int64_t)a10 currentVersionDate:(id)a11 currentRegion:(id)a12 currentRegionDate:(id)a13 currentLocale:(id)a14 currentLocaleDate:(id)a15 availableVersion:(int64_t)a16 availableVersionDate:(id)a17 availableRegion:(id)a18 availableRegionDate:(id)a19 availableLocale:(id)a20 availableLocaleDate:(id)a21 availableURL:(id)a22 availableURLDate:(id)a23 availableChecksum:(id)a24 availableChecksumDate:(id)a25 availableSize:(int64_t)a26 availableSizeDate:(id)a27 availableState:(int64_t)a28 availableStateDate:(id)a29
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version settings:(unint64_t)settings slot:(int64_t)slot desiredState:(int64_t)state desiredStateDate:(id)date currentVersion:(int64_t)self0 currentVersionDate:(id)self1 currentRegion:(id)self2 currentRegionDate:(id)self3 currentLocale:(id)self4 currentLocaleDate:(id)self5 availableVersion:(int64_t)self6 availableVersionDate:(id)self7 availableRegion:(id)self8 availableRegionDate:(id)self9 availableLocale:(id)availableLocale availableLocaleDate:(id)availableLocaleDate availableURL:(id)l availableURLDate:(id)lDate availableChecksum:(id)checksum availableChecksumDate:(id)checksumDate availableSize:(int64_t)size availableSizeDate:(id)sizeDate availableState:(int64_t)availableState availableStateDate:(id)stateDate
 {
-  v93 = a3;
-  v92 = a4;
-  v30 = a9;
-  v31 = a11;
-  v32 = a12;
-  v33 = a13;
-  v34 = a14;
-  v35 = a15;
-  v36 = a17;
-  v37 = a18;
-  v38 = a19;
-  v91 = a20;
-  v90 = a21;
-  v89 = a22;
-  v88 = a23;
-  v87 = a24;
-  v86 = a25;
-  v85 = a27;
-  v84 = a29;
+  identifierCopy = identifier;
+  typeCopy = type;
+  dateCopy = date;
+  versionDateCopy = versionDate;
+  regionCopy = region;
+  regionDateCopy = regionDate;
+  localeCopy = locale;
+  localeDateCopy = localeDate;
+  availableVersionDateCopy = availableVersionDate;
+  availableRegionCopy = availableRegion;
+  availableRegionDateCopy = availableRegionDate;
+  availableLocaleCopy = availableLocale;
+  availableLocaleDateCopy = availableLocaleDate;
+  lCopy = l;
+  lDateCopy = lDate;
+  checksumCopy = checksum;
+  checksumDateCopy = checksumDate;
+  sizeDateCopy = sizeDate;
+  stateDateCopy = stateDate;
   v94.receiver = self;
   v94.super_class = HKOntologyShardRegistryEntry;
   v39 = [(HKOntologyShardRegistryEntry *)&v94 init];
   if (v39)
   {
-    v40 = [v93 copy];
+    v40 = [identifierCopy copy];
     identifier = v39->_identifier;
     v39->_identifier = v40;
 
-    v42 = [v92 copy];
+    v42 = [typeCopy copy];
     schemaType = v39->_schemaType;
     v39->_schemaType = v42;
 
-    v39->_schemaVersion = a5;
-    v39->_settings = a6;
-    v39->_slot = a7;
-    v39->_desiredState = a8;
-    v44 = [v30 copy];
+    v39->_schemaVersion = version;
+    v39->_settings = settings;
+    v39->_slot = slot;
+    v39->_desiredState = state;
+    v44 = [dateCopy copy];
     desiredStateDate = v39->_desiredStateDate;
     v39->_desiredStateDate = v44;
 
-    v39->_currentVersion = a10;
-    v46 = [v31 copy];
+    v39->_currentVersion = currentVersion;
+    v46 = [versionDateCopy copy];
     currentVersionDate = v39->_currentVersionDate;
     v39->_currentVersionDate = v46;
 
-    v48 = [v32 copy];
+    v48 = [regionCopy copy];
     currentRegion = v39->_currentRegion;
     v39->_currentRegion = v48;
 
-    v50 = [v33 copy];
+    v50 = [regionDateCopy copy];
     currentRegionDate = v39->_currentRegionDate;
     v39->_currentRegionDate = v50;
 
-    v52 = [v34 copy];
+    v52 = [localeCopy copy];
     currentLocale = v39->_currentLocale;
     v39->_currentLocale = v52;
 
-    v54 = [v35 copy];
+    v54 = [localeDateCopy copy];
     currentLocaleDate = v39->_currentLocaleDate;
     v39->_currentLocaleDate = v54;
 
-    v39->_availableVersion = a16;
-    v56 = [v36 copy];
+    v39->_availableVersion = availableVersion;
+    v56 = [availableVersionDateCopy copy];
     availableVersionDate = v39->_availableVersionDate;
     v39->_availableVersionDate = v56;
 
-    v58 = [v37 copy];
+    v58 = [availableRegionCopy copy];
     availableRegion = v39->_availableRegion;
     v39->_availableRegion = v58;
 
-    v60 = [v38 copy];
+    v60 = [availableRegionDateCopy copy];
     availableRegionDate = v39->_availableRegionDate;
     v39->_availableRegionDate = v60;
 
-    v62 = [v91 copy];
+    v62 = [availableLocaleCopy copy];
     availableLocale = v39->_availableLocale;
     v39->_availableLocale = v62;
 
-    v64 = [v90 copy];
+    v64 = [availableLocaleDateCopy copy];
     availableLocaleDate = v39->_availableLocaleDate;
     v39->_availableLocaleDate = v64;
 
-    v66 = [v89 copy];
+    v66 = [lCopy copy];
     availableURL = v39->_availableURL;
     v39->_availableURL = v66;
 
-    v68 = [v88 copy];
+    v68 = [lDateCopy copy];
     availableURLDate = v39->_availableURLDate;
     v39->_availableURLDate = v68;
 
-    v70 = [v87 copy];
+    v70 = [checksumCopy copy];
     availableChecksum = v39->_availableChecksum;
     v39->_availableChecksum = v70;
 
-    v72 = [v86 copy];
+    v72 = [checksumDateCopy copy];
     availableChecksumDate = v39->_availableChecksumDate;
     v39->_availableChecksumDate = v72;
 
-    v39->_availableSize = a26;
-    v74 = [v85 copy];
+    v39->_availableSize = size;
+    v74 = [sizeDateCopy copy];
     availableSizeDate = v39->_availableSizeDate;
     v39->_availableSizeDate = v74;
 
-    v39->_availableState = a28;
-    v76 = [v84 copy];
+    v39->_availableState = availableState;
+    v76 = [stateDateCopy copy];
     availableStateDate = v39->_availableStateDate;
     v39->_availableStateDate = v76;
   }
@@ -266,49 +266,49 @@
   return v33;
 }
 
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 desiredState:(int64_t)a6
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version desiredState:(int64_t)state
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 date];
-  v14 = [(HKOntologyShardRegistryEntry *)self initWithIdentifier:v12 schemaType:v11 schemaVersion:a5 settings:0 slot:-1 desiredState:a6 desiredStateDate:v13 currentVersion:0 currentVersionDate:v13 currentRegion:@"XX" currentRegionDate:v13 currentLocale:0 currentLocaleDate:v13 availableVersion:-1 availableVersionDate:v13 availableRegion:@"XX" availableRegionDate:v13 availableLocale:0 availableLocaleDate:v13 availableURL:0 availableURLDate:v13 availableChecksum:0 availableChecksumDate:v13 availableSize:-1 availableSizeDate:v13 availableState:0 availableStateDate:v13];
+  typeCopy = type;
+  identifierCopy = identifier;
+  date = [v10 date];
+  v14 = [(HKOntologyShardRegistryEntry *)self initWithIdentifier:identifierCopy schemaType:typeCopy schemaVersion:version settings:0 slot:-1 desiredState:state desiredStateDate:date currentVersion:0 currentVersionDate:date currentRegion:@"XX" currentRegionDate:date currentLocale:0 currentLocaleDate:date availableVersion:-1 availableVersionDate:date availableRegion:@"XX" availableRegionDate:date availableLocale:0 availableLocaleDate:date availableURL:0 availableURLDate:date availableChecksum:0 availableChecksumDate:date availableSize:-1 availableSizeDate:date availableState:0 availableStateDate:date];
 
   return v14;
 }
 
-- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)a3 schemaType:(id)a4 schemaVersion:(int64_t)a5 availableURL:(id)a6
+- (HKOntologyShardRegistryEntry)initWithIdentifier:(id)identifier schemaType:(id)type schemaVersion:(int64_t)version availableURL:(id)l
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 date];
-  v15 = [(HKOntologyShardRegistryEntry *)self initWithIdentifier:v13 schemaType:v12 schemaVersion:a5 settings:0 slot:-1 desiredState:3 desiredStateDate:v14 currentVersion:0 currentVersionDate:v14 currentRegion:@"XX" currentRegionDate:v14 currentLocale:0 currentLocaleDate:v14 availableVersion:-1 availableVersionDate:v14 availableRegion:@"XX" availableRegionDate:v14 availableLocale:0 availableLocaleDate:v14 availableURL:v11 availableURLDate:v14 availableChecksum:0 availableChecksumDate:v14 availableSize:-1 availableSizeDate:v14 availableState:1 availableStateDate:v14];
+  lCopy = l;
+  typeCopy = type;
+  identifierCopy = identifier;
+  date = [v10 date];
+  v15 = [(HKOntologyShardRegistryEntry *)self initWithIdentifier:identifierCopy schemaType:typeCopy schemaVersion:version settings:0 slot:-1 desiredState:3 desiredStateDate:date currentVersion:0 currentVersionDate:date currentRegion:@"XX" currentRegionDate:date currentLocale:0 currentLocaleDate:date availableVersion:-1 availableVersionDate:date availableRegion:@"XX" availableRegionDate:date availableLocale:0 availableLocaleDate:date availableURL:lCopy availableURLDate:date availableChecksum:0 availableChecksumDate:date availableSize:-1 availableSizeDate:date availableState:1 availableStateDate:date];
 
   return v15;
 }
 
-- (id)copyWithAvailableState:(int64_t)a3
+- (id)copyWithAvailableState:(int64_t)state
 {
-  v4 = [(HKOntologyShardRegistryEntry *)self _copy];
-  v4[26] = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = v4[27];
-  v4[27] = v5;
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  _copy[26] = state;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = _copy[27];
+  _copy[27] = date;
 
-  return v4;
+  return _copy;
 }
 
-- (id)updatedCopyWithAvailableVersion:(int64_t)a3 availableRegion:(id)a4 availableLocale:(id)a5 availableURL:(id)a6 availableChecksum:(id)a7 availableSize:(int64_t)a8 date:(id)a9
+- (id)updatedCopyWithAvailableVersion:(int64_t)version availableRegion:(id)region availableLocale:(id)locale availableURL:(id)l availableChecksum:(id)checksum availableSize:(int64_t)size date:(id)date
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = v14;
-  v17 = v15;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  regionCopy = region;
+  localeCopy = locale;
+  v16 = regionCopy;
+  v17 = localeCopy;
+  lCopy = l;
+  checksumCopy = checksum;
+  dateCopy = date;
   availableVersion = self->_availableVersion;
   availableRegion = self->_availableRegion;
   if (availableRegion == v16)
@@ -342,35 +342,35 @@
     v50 = 0;
   }
 
-  v23 = [v18 absoluteString];
-  v24 = [(NSURL *)self->_availableURL absoluteString];
-  if (v23 == v24)
+  absoluteString = [lCopy absoluteString];
+  absoluteString2 = [(NSURL *)self->_availableURL absoluteString];
+  if (absoluteString == absoluteString2)
   {
     v49 = 1;
   }
 
   else
   {
-    v25 = [(NSURL *)self->_availableURL absoluteString];
-    if (v25)
+    absoluteString3 = [(NSURL *)self->_availableURL absoluteString];
+    if (absoluteString3)
     {
-      [v18 absoluteString];
-      v46 = v19;
-      obja = v20;
+      [lCopy absoluteString];
+      v46 = checksumCopy;
+      obja = dateCopy;
       v26 = v17;
       v28 = v27 = v16;
       [(NSURL *)self->_availableURL absoluteString];
-      v29 = a8;
-      v31 = v30 = v18;
+      sizeCopy = size;
+      v31 = v30 = lCopy;
       v49 = [v28 isEqualToString:v31];
 
-      v18 = v30;
-      a8 = v29;
+      lCopy = v30;
+      size = sizeCopy;
 
       v16 = v27;
       v17 = v26;
-      v19 = v46;
-      v20 = obja;
+      checksumCopy = v46;
+      dateCopy = obja;
     }
 
     else
@@ -380,14 +380,14 @@
   }
 
   availableChecksum = self->_availableChecksum;
-  if (availableChecksum == v19)
+  if (availableChecksum == checksumCopy)
   {
     v33 = 1;
   }
 
   else if (availableChecksum)
   {
-    v33 = [(NSString *)v19 isEqualToString:?];
+    v33 = [(NSString *)checksumCopy isEqualToString:?];
   }
 
   else
@@ -396,78 +396,78 @@
   }
 
   availableSize = self->_availableSize;
-  if (availableVersion != a3 || ((v51 ^ 1) & 1) != 0 || ((v50 ^ 1) & 1) != 0 || ((v49 ^ 1) & 1) != 0 || !v33 || availableSize != a8)
+  if (availableVersion != version || ((v51 ^ 1) & 1) != 0 || ((v50 ^ 1) & 1) != 0 || ((v49 ^ 1) & 1) != 0 || !v33 || availableSize != size)
   {
-    v35 = [(HKOntologyShardRegistryEntry *)self _copy];
-    v37 = [v20 copy];
+    selfCopy = [(HKOntologyShardRegistryEntry *)self _copy];
+    v37 = [dateCopy copy];
     obj = v37;
-    if (availableVersion != a3)
+    if (availableVersion != version)
     {
-      v35->_availableVersion = a3;
-      objc_storeStrong(&v35->_availableVersionDate, v37);
+      selfCopy->_availableVersion = version;
+      objc_storeStrong(&selfCopy->_availableVersionDate, v37);
     }
 
     if ((v51 & 1) == 0)
     {
       v38 = [(NSString *)v16 copy];
-      v39 = v35->_availableRegion;
-      v35->_availableRegion = v38;
+      v39 = selfCopy->_availableRegion;
+      selfCopy->_availableRegion = v38;
 
-      objc_storeStrong(&v35->_availableRegionDate, obj);
+      objc_storeStrong(&selfCopy->_availableRegionDate, obj);
     }
 
     if ((v50 & 1) == 0)
     {
       v40 = [(NSString *)v17 copy];
-      v41 = v35->_availableLocale;
-      v35->_availableLocale = v40;
+      v41 = selfCopy->_availableLocale;
+      selfCopy->_availableLocale = v40;
 
-      objc_storeStrong(&v35->_availableLocaleDate, obj);
+      objc_storeStrong(&selfCopy->_availableLocaleDate, obj);
     }
 
     if ((v49 & 1) == 0)
     {
-      v42 = [v18 copy];
-      availableURL = v35->_availableURL;
-      v35->_availableURL = v42;
+      v42 = [lCopy copy];
+      availableURL = selfCopy->_availableURL;
+      selfCopy->_availableURL = v42;
 
-      objc_storeStrong(&v35->_availableURLDate, obj);
+      objc_storeStrong(&selfCopy->_availableURLDate, obj);
     }
 
     if ((v33 & 1) == 0)
     {
-      v44 = [(NSString *)v19 copy];
-      v45 = v35->_availableChecksum;
-      v35->_availableChecksum = v44;
+      v44 = [(NSString *)checksumCopy copy];
+      v45 = selfCopy->_availableChecksum;
+      selfCopy->_availableChecksum = v44;
 
-      objc_storeStrong(&v35->_availableChecksumDate, obj);
+      objc_storeStrong(&selfCopy->_availableChecksumDate, obj);
     }
 
-    if (availableSize != a8)
+    if (availableSize != size)
     {
-      v35->_availableSize = a8;
-      objc_storeStrong(&v35->_availableSizeDate, obj);
+      selfCopy->_availableSize = size;
+      objc_storeStrong(&selfCopy->_availableSizeDate, obj);
     }
 
     if (self->_availableState != 1)
     {
-      v35->_availableState = 1;
-      objc_storeStrong(&v35->_availableStateDate, obj);
+      selfCopy->_availableState = 1;
+      objc_storeStrong(&selfCopy->_availableStateDate, obj);
     }
   }
 
   else
   {
-    v35 = self;
+    selfCopy = self;
   }
 
-  return v35;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -477,7 +477,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v7 = v5->_identifier;
       v10 = (identifier == v7 || v7 && [(NSString *)identifier isEqualToString:?]) && ((schemaType = self->_schemaType, v9 = v5->_schemaType, schemaType == v9) || v9 && [(NSString *)schemaType isEqualToString:?]) && self->_schemaVersion == v5->_schemaVersion;
@@ -492,128 +492,128 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_schemaType forKey:@"schema"];
-  [v5 encodeInteger:self->_schemaVersion forKey:@"schemaVersion"];
-  [v5 encodeInteger:self->_settings forKey:@"settings"];
-  [v5 encodeInteger:self->_slot forKey:@"slot"];
-  [v5 encodeInteger:self->_desiredState forKey:@"desired_state"];
-  [v5 encodeObject:self->_desiredStateDate forKey:@"desired_state_date"];
-  [v5 encodeInteger:self->_currentVersion forKey:@"current_version"];
-  [v5 encodeObject:self->_currentVersionDate forKey:@"current_version_date"];
-  [v5 encodeObject:self->_currentRegion forKey:@"current_region"];
-  [v5 encodeObject:self->_currentRegionDate forKey:@"current_region_date"];
-  [v5 encodeObject:self->_currentLocale forKey:@"current_locale"];
-  [v5 encodeObject:self->_currentLocaleDate forKey:@"current_locale_date"];
-  [v5 encodeInteger:self->_availableVersion forKey:@"available_version"];
-  [v5 encodeObject:self->_availableVersionDate forKey:@"available_version_date"];
-  [v5 encodeObject:self->_availableRegion forKey:@"available_region"];
-  [v5 encodeObject:self->_availableRegionDate forKey:@"available_region_date"];
-  [v5 encodeObject:self->_availableLocale forKey:@"available_locale"];
-  [v5 encodeObject:self->_availableLocaleDate forKey:@"available_locale_date"];
-  [v5 encodeObject:self->_availableURL forKey:@"available_url"];
-  [v5 encodeObject:self->_availableURLDate forKey:@"available_url_date"];
-  [v5 encodeObject:self->_availableChecksum forKey:@"available_checksum"];
-  [v5 encodeObject:self->_availableChecksumDate forKey:@"available_checksum_date"];
-  [v5 encodeInteger:self->_availableSize forKey:@"available_size"];
-  [v5 encodeObject:self->_availableSizeDate forKey:@"available_size_date"];
-  [v5 encodeInteger:self->_availableState forKey:@"available_state"];
-  [v5 encodeObject:self->_availableStateDate forKey:@"available_state_date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_schemaType forKey:@"schema"];
+  [coderCopy encodeInteger:self->_schemaVersion forKey:@"schemaVersion"];
+  [coderCopy encodeInteger:self->_settings forKey:@"settings"];
+  [coderCopy encodeInteger:self->_slot forKey:@"slot"];
+  [coderCopy encodeInteger:self->_desiredState forKey:@"desired_state"];
+  [coderCopy encodeObject:self->_desiredStateDate forKey:@"desired_state_date"];
+  [coderCopy encodeInteger:self->_currentVersion forKey:@"current_version"];
+  [coderCopy encodeObject:self->_currentVersionDate forKey:@"current_version_date"];
+  [coderCopy encodeObject:self->_currentRegion forKey:@"current_region"];
+  [coderCopy encodeObject:self->_currentRegionDate forKey:@"current_region_date"];
+  [coderCopy encodeObject:self->_currentLocale forKey:@"current_locale"];
+  [coderCopy encodeObject:self->_currentLocaleDate forKey:@"current_locale_date"];
+  [coderCopy encodeInteger:self->_availableVersion forKey:@"available_version"];
+  [coderCopy encodeObject:self->_availableVersionDate forKey:@"available_version_date"];
+  [coderCopy encodeObject:self->_availableRegion forKey:@"available_region"];
+  [coderCopy encodeObject:self->_availableRegionDate forKey:@"available_region_date"];
+  [coderCopy encodeObject:self->_availableLocale forKey:@"available_locale"];
+  [coderCopy encodeObject:self->_availableLocaleDate forKey:@"available_locale_date"];
+  [coderCopy encodeObject:self->_availableURL forKey:@"available_url"];
+  [coderCopy encodeObject:self->_availableURLDate forKey:@"available_url_date"];
+  [coderCopy encodeObject:self->_availableChecksum forKey:@"available_checksum"];
+  [coderCopy encodeObject:self->_availableChecksumDate forKey:@"available_checksum_date"];
+  [coderCopy encodeInteger:self->_availableSize forKey:@"available_size"];
+  [coderCopy encodeObject:self->_availableSizeDate forKey:@"available_size_date"];
+  [coderCopy encodeInteger:self->_availableState forKey:@"available_state"];
+  [coderCopy encodeObject:self->_availableStateDate forKey:@"available_state_date"];
 }
 
-- (HKOntologyShardRegistryEntry)initWithCoder:(id)a3
+- (HKOntologyShardRegistryEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v45.receiver = self;
   v45.super_class = HKOntologyShardRegistryEntry;
   v5 = [(HKOntologyShardRegistryEntry *)&v45 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
     schemaType = v5->_schemaType;
     v5->_schemaType = v8;
 
-    v5->_schemaVersion = [v4 decodeIntegerForKey:@"schemaVersion"];
-    v5->_settings = [v4 decodeIntegerForKey:@"settings"];
-    v5->_slot = [v4 decodeIntegerForKey:@"slot"];
-    v5->_desiredState = [v4 decodeIntegerForKey:@"desired_state"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desired_state_date"];
+    v5->_schemaVersion = [coderCopy decodeIntegerForKey:@"schemaVersion"];
+    v5->_settings = [coderCopy decodeIntegerForKey:@"settings"];
+    v5->_slot = [coderCopy decodeIntegerForKey:@"slot"];
+    v5->_desiredState = [coderCopy decodeIntegerForKey:@"desired_state"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desired_state_date"];
     desiredStateDate = v5->_desiredStateDate;
     v5->_desiredStateDate = v10;
 
-    v5->_currentVersion = [v4 decodeIntegerForKey:@"current_version"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_version_date"];
+    v5->_currentVersion = [coderCopy decodeIntegerForKey:@"current_version"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_version_date"];
     currentVersionDate = v5->_currentVersionDate;
     v5->_currentVersionDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_region"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_region"];
     currentRegion = v5->_currentRegion;
     v5->_currentRegion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_region_date"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_region_date"];
     currentRegionDate = v5->_currentRegionDate;
     v5->_currentRegionDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_locale"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_locale"];
     currentLocale = v5->_currentLocale;
     v5->_currentLocale = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"current_locale_date"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"current_locale_date"];
     currentLocaleDate = v5->_currentLocaleDate;
     v5->_currentLocaleDate = v20;
 
-    v5->_availableVersion = [v4 decodeIntegerForKey:@"available_version"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_version_date"];
+    v5->_availableVersion = [coderCopy decodeIntegerForKey:@"available_version"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_version_date"];
     availableVersionDate = v5->_availableVersionDate;
     v5->_availableVersionDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_region"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_region"];
     availableRegion = v5->_availableRegion;
     v5->_availableRegion = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_region_date"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_region_date"];
     availableRegionDate = v5->_availableRegionDate;
     v5->_availableRegionDate = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_locale"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_locale"];
     availableLocale = v5->_availableLocale;
     v5->_availableLocale = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_locale_date"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_locale_date"];
     availableLocaleDate = v5->_availableLocaleDate;
     v5->_availableLocaleDate = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_url"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_url"];
     availableURL = v5->_availableURL;
     v5->_availableURL = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_url_date"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_url_date"];
     availableURLDate = v5->_availableURLDate;
     v5->_availableURLDate = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_checksum"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_checksum"];
     availableChecksum = v5->_availableChecksum;
     v5->_availableChecksum = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_checksum_date"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_checksum_date"];
     availableChecksumDate = v5->_availableChecksumDate;
     v5->_availableChecksumDate = v38;
 
-    v5->_availableSize = [v4 decodeIntegerForKey:@"available_size"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_size_date"];
+    v5->_availableSize = [coderCopy decodeIntegerForKey:@"available_size"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_size_date"];
     availableSizeDate = v5->_availableSizeDate;
     v5->_availableSizeDate = v40;
 
-    v5->_availableState = [v4 decodeIntegerForKey:@"available_state"];
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"available_state_date"];
+    v5->_availableState = [coderCopy decodeIntegerForKey:@"available_state"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"available_state_date"];
     availableStateDate = v5->_availableStateDate;
     v5->_availableStateDate = v42;
   }
@@ -621,78 +621,78 @@
   return v5;
 }
 
-- (BOOL)unitTesting_isIdentical:(id)a3
+- (BOOL)unitTesting_isIdentical:(id)identical
 {
-  v7 = a3;
-  if ([(HKOntologyShardRegistryEntry *)self isEqual:v7])
+  identicalCopy = identical;
+  if ([(HKOntologyShardRegistryEntry *)self isEqual:identicalCopy])
   {
     identifier = self->_identifier;
-    v9 = *(v7 + 1);
+    v9 = *(identicalCopy + 1);
     if (identifier == v9 || v9 && [(NSString *)identifier isEqualToString:?])
     {
       schemaType = self->_schemaType;
-      v11 = *(v7 + 2);
-      if ((schemaType == v11 || v11 && [(NSString *)schemaType isEqualToString:?]) && self->_schemaVersion == *(v7 + 3) && self->_settings == *(v7 + 4) && self->_slot == *(v7 + 5) && self->_desiredState == *(v7 + 6))
+      v11 = *(identicalCopy + 2);
+      if ((schemaType == v11 || v11 && [(NSString *)schemaType isEqualToString:?]) && self->_schemaVersion == *(identicalCopy + 3) && self->_settings == *(identicalCopy + 4) && self->_slot == *(identicalCopy + 5) && self->_desiredState == *(identicalCopy + 6))
       {
         desiredStateDate = self->_desiredStateDate;
-        v13 = *(v7 + 7);
-        if ((desiredStateDate == v13 || v13 && [(NSDate *)desiredStateDate isEqualToDate:?]) && self->_currentVersion == *(v7 + 8))
+        v13 = *(identicalCopy + 7);
+        if ((desiredStateDate == v13 || v13 && [(NSDate *)desiredStateDate isEqualToDate:?]) && self->_currentVersion == *(identicalCopy + 8))
         {
           currentVersionDate = self->_currentVersionDate;
-          v15 = *(v7 + 9);
+          v15 = *(identicalCopy + 9);
           if (currentVersionDate == v15 || v15 && [(NSDate *)currentVersionDate isEqualToDate:?])
           {
             currentRegion = self->_currentRegion;
-            v17 = *(v7 + 10);
+            v17 = *(identicalCopy + 10);
             if (currentRegion == v17 || v17 && [(NSString *)currentRegion isEqualToString:?])
             {
               currentRegionDate = self->_currentRegionDate;
-              v19 = *(v7 + 11);
+              v19 = *(identicalCopy + 11);
               if (currentRegionDate == v19 || v19 && [(NSDate *)currentRegionDate isEqualToDate:?])
               {
                 currentLocale = self->_currentLocale;
-                v21 = *(v7 + 12);
+                v21 = *(identicalCopy + 12);
                 if (currentLocale == v21 || v21 && [(NSString *)currentLocale isEqualToString:?])
                 {
                   currentLocaleDate = self->_currentLocaleDate;
-                  v23 = *(v7 + 13);
-                  if ((currentLocaleDate == v23 || v23 && [(NSDate *)currentLocaleDate isEqualToDate:?]) && self->_availableVersion == *(v7 + 14))
+                  v23 = *(identicalCopy + 13);
+                  if ((currentLocaleDate == v23 || v23 && [(NSDate *)currentLocaleDate isEqualToDate:?]) && self->_availableVersion == *(identicalCopy + 14))
                   {
                     availableVersionDate = self->_availableVersionDate;
-                    v25 = *(v7 + 15);
+                    v25 = *(identicalCopy + 15);
                     if (availableVersionDate == v25 || v25 && [(NSDate *)availableVersionDate isEqualToDate:?])
                     {
                       availableRegion = self->_availableRegion;
-                      v27 = *(v7 + 16);
+                      v27 = *(identicalCopy + 16);
                       if (availableRegion == v27 || v27 && [(NSString *)availableRegion isEqualToString:?])
                       {
                         availableRegionDate = self->_availableRegionDate;
-                        v29 = *(v7 + 17);
+                        v29 = *(identicalCopy + 17);
                         if (availableRegionDate == v29 || v29 && [(NSDate *)availableRegionDate isEqualToDate:?])
                         {
                           availableLocale = self->_availableLocale;
-                          v31 = *(v7 + 18);
+                          v31 = *(identicalCopy + 18);
                           if (availableLocale == v31 || v31 && [(NSString *)availableLocale isEqualToString:?])
                           {
                             availableLocaleDate = self->_availableLocaleDate;
-                            v33 = *(v7 + 19);
+                            v33 = *(identicalCopy + 19);
                             if (availableLocaleDate == v33 || v33 && [(NSDate *)availableLocaleDate isEqualToDate:?])
                             {
-                              v34 = [(NSURL *)self->_availableURL absoluteString];
-                              v35 = [*(v7 + 20) absoluteString];
-                              if (v34 != v35)
+                              absoluteString = [(NSURL *)self->_availableURL absoluteString];
+                              absoluteString2 = [*(identicalCopy + 20) absoluteString];
+                              if (absoluteString != absoluteString2)
                               {
-                                v36 = [*(v7 + 20) absoluteString];
-                                if (!v36)
+                                absoluteString3 = [*(identicalCopy + 20) absoluteString];
+                                if (!absoluteString3)
                                 {
                                   v37 = 0;
                                   goto LABEL_74;
                                 }
 
-                                v3 = v36;
-                                v4 = [(NSURL *)self->_availableURL absoluteString];
-                                v5 = [*(v7 + 20) absoluteString];
-                                if (![v4 isEqual:v5])
+                                v3 = absoluteString3;
+                                absoluteString4 = [(NSURL *)self->_availableURL absoluteString];
+                                absoluteString5 = [*(identicalCopy + 20) absoluteString];
+                                if (![absoluteString4 isEqual:absoluteString5])
                                 {
                                   v37 = 0;
                                   goto LABEL_72;
@@ -700,28 +700,28 @@
                               }
 
                               availableURLDate = self->_availableURLDate;
-                              v40 = *(v7 + 21);
+                              v40 = *(identicalCopy + 21);
                               if (availableURLDate == v40 || v40 && [(NSDate *)availableURLDate isEqualToDate:?])
                               {
                                 availableChecksum = self->_availableChecksum;
-                                v42 = *(v7 + 22);
+                                v42 = *(identicalCopy + 22);
                                 if (availableChecksum == v42 || v42 && [(NSString *)availableChecksum isEqualToString:?])
                                 {
                                   availableChecksumDate = self->_availableChecksumDate;
-                                  v44 = *(v7 + 23);
-                                  if ((availableChecksumDate == v44 || v44 && [(NSDate *)availableChecksumDate isEqualToDate:?]) && self->_availableSize == *(v7 + 24))
+                                  v44 = *(identicalCopy + 23);
+                                  if ((availableChecksumDate == v44 || v44 && [(NSDate *)availableChecksumDate isEqualToDate:?]) && self->_availableSize == *(identicalCopy + 24))
                                   {
                                     availableSizeDate = self->_availableSizeDate;
-                                    v46 = *(v7 + 25);
-                                    if ((availableSizeDate == v46 || v46 && [(NSDate *)availableSizeDate isEqualToDate:?]) && self->_availableState == *(v7 + 26))
+                                    v46 = *(identicalCopy + 25);
+                                    if ((availableSizeDate == v46 || v46 && [(NSDate *)availableSizeDate isEqualToDate:?]) && self->_availableState == *(identicalCopy + 26))
                                     {
                                       availableStateDate = self->_availableStateDate;
-                                      v48 = *(v7 + 27);
+                                      v48 = *(identicalCopy + 27);
                                       if (availableStateDate == v48)
                                       {
                                         v37 = 1;
 LABEL_71:
-                                        if (v34 == v35)
+                                        if (absoluteString == absoluteString2)
                                         {
 LABEL_74:
 
@@ -782,101 +782,101 @@ LABEL_52:
   return result;
 }
 
-- (id)copyWithAvailableVersion:(int64_t)a3
+- (id)copyWithAvailableVersion:(int64_t)version
 {
-  v4 = [(HKOntologyShardRegistryEntry *)self _copy];
-  v4[14] = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = v4[15];
-  v4[15] = v5;
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  _copy[14] = version;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = _copy[15];
+  _copy[15] = date;
 
-  return v4;
+  return _copy;
 }
 
-- (id)copyWithAvailableVersion:(int64_t)a3 availableState:(int64_t)a4
+- (id)copyWithAvailableVersion:(int64_t)version availableState:(int64_t)state
 {
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [(HKOntologyShardRegistryEntry *)self _copy];
-  *(v8 + 112) = a3;
-  objc_storeStrong((v8 + 120), v7);
-  v9 = *(v8 + 216);
-  *(v8 + 208) = a4;
-  *(v8 + 216) = v7;
+  date = [MEMORY[0x1E695DF00] date];
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  *(_copy + 112) = version;
+  objc_storeStrong((_copy + 120), date);
+  v9 = *(_copy + 216);
+  *(_copy + 208) = state;
+  *(_copy + 216) = date;
 
-  return v8;
+  return _copy;
 }
 
 - (id)copyWithAvailableStateImported
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(HKOntologyShardRegistryEntry *)self _copy];
-  *(v4 + 64) = *(v4 + 112);
-  objc_storeStrong((v4 + 72), v3);
-  objc_storeStrong((v4 + 80), *(v4 + 128));
-  objc_storeStrong((v4 + 88), v3);
-  objc_storeStrong((v4 + 96), *(v4 + 144));
-  objc_storeStrong((v4 + 104), v3);
-  v5 = *(v4 + 216);
-  *(v4 + 208) = 3;
-  *(v4 + 216) = v3;
+  date = [MEMORY[0x1E695DF00] date];
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  *(_copy + 64) = *(_copy + 112);
+  objc_storeStrong((_copy + 72), date);
+  objc_storeStrong((_copy + 80), *(_copy + 128));
+  objc_storeStrong((_copy + 88), date);
+  objc_storeStrong((_copy + 96), *(_copy + 144));
+  objc_storeStrong((_copy + 104), date);
+  v5 = *(_copy + 216);
+  *(_copy + 208) = 3;
+  *(_copy + 216) = date;
 
-  return v4;
+  return _copy;
 }
 
-- (id)copyWithAvailableStateNotImportedForDate:(id)a3
+- (id)copyWithAvailableStateNotImportedForDate:(id)date
 {
-  v5 = a3;
-  v6 = [(HKOntologyShardRegistryEntry *)self _copy];
-  *(v6 + 40) = -1;
-  *(v6 + 64) = 0;
-  objc_storeStrong((v6 + 72), a3);
-  objc_storeStrong((v6 + 80), @"XX");
-  objc_storeStrong((v6 + 88), a3);
-  v7 = *(v6 + 96);
-  *(v6 + 96) = 0;
+  dateCopy = date;
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  *(_copy + 40) = -1;
+  *(_copy + 64) = 0;
+  objc_storeStrong((_copy + 72), date);
+  objc_storeStrong((_copy + 80), @"XX");
+  objc_storeStrong((_copy + 88), date);
+  v7 = *(_copy + 96);
+  *(_copy + 96) = 0;
 
-  objc_storeStrong((v6 + 104), a3);
+  objc_storeStrong((_copy + 104), date);
   if (self->_availableState == 3)
   {
-    *(v6 + 208) = 1;
-    objc_storeStrong((v6 + 216), a3);
+    *(_copy + 208) = 1;
+    objc_storeStrong((_copy + 216), date);
   }
 
-  return v6;
+  return _copy;
 }
 
-- (id)copyWithCurrentVersionUndeterminedForDate:(id)a3
+- (id)copyWithCurrentVersionUndeterminedForDate:(id)date
 {
-  v5 = a3;
-  v6 = [(HKOntologyShardRegistryEntry *)self _copy];
-  *(v6 + 64) = -1;
-  objc_storeStrong((v6 + 72), a3);
-  objc_storeStrong((v6 + 80), @"XX");
-  objc_storeStrong((v6 + 88), a3);
-  v7 = *(v6 + 96);
-  *(v6 + 96) = 0;
+  dateCopy = date;
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  *(_copy + 64) = -1;
+  objc_storeStrong((_copy + 72), date);
+  objc_storeStrong((_copy + 80), @"XX");
+  objc_storeStrong((_copy + 88), date);
+  v7 = *(_copy + 96);
+  *(_copy + 96) = 0;
 
-  v8 = *(v6 + 104);
-  *(v6 + 104) = v5;
+  v8 = *(_copy + 104);
+  *(_copy + 104) = dateCopy;
 
-  return v6;
+  return _copy;
 }
 
-- (id)copyWithDesiredState:(int64_t)a3
+- (id)copyWithDesiredState:(int64_t)state
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(HKOntologyShardRegistryEntry *)self _copy];
-  v7 = v6[7];
-  v6[6] = a3;
-  v6[7] = v5;
+  date = [MEMORY[0x1E695DF00] date];
+  _copy = [(HKOntologyShardRegistryEntry *)self _copy];
+  v7 = _copy[7];
+  _copy[6] = state;
+  _copy[7] = date;
 
-  return v6;
+  return _copy;
 }
 
-- (id)copyWithSlot:(int64_t)a3
+- (id)copyWithSlot:(int64_t)slot
 {
   result = [(HKOntologyShardRegistryEntry *)self _copy];
-  *(result + 5) = a3;
+  *(result + 5) = slot;
   return result;
 }
 

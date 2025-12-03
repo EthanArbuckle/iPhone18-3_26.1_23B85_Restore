@@ -1,21 +1,21 @@
 @interface AWDIDSRegistrationProfileHandleOperation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasGenericError:(BOOL)a3;
-- (void)setHasPOSIXError:(BOOL)a3;
-- (void)setHasRegistrationError:(BOOL)a3;
-- (void)setHasResultCode:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasURLError:(BOOL)a3;
-- (void)setHasVettingStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasGenericError:(BOOL)error;
+- (void)setHasPOSIXError:(BOOL)error;
+- (void)setHasRegistrationError:(BOOL)error;
+- (void)setHasResultCode:(BOOL)code;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasURLError:(BOOL)error;
+- (void)setHasVettingStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSRegistrationProfileHandleOperation
@@ -28,9 +28,9 @@
   [(AWDIDSRegistrationProfileHandleOperation *)&v3 dealloc];
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 64;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasResultCode:(BOOL)a3
+- (void)setHasResultCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRegistrationError:(BOOL)a3
+- (void)setHasRegistrationError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 16;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasGenericError:(BOOL)a3
+- (void)setHasGenericError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasURLError:(BOOL)a3
+- (void)setHasURLError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 128;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPOSIXError:(BOOL)a3
+- (void)setHasPOSIXError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 8;
   }
@@ -133,9 +133,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasVettingStatus:(BOOL)a3
+- (void)setHasVettingStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 256;
   }
@@ -157,22 +157,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -191,7 +191,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -205,7 +205,7 @@ LABEL_8:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_resultCode), @"resultCode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_resultCode), @"resultCode"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -219,7 +219,7 @@ LABEL_9:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_registrationError), @"registrationError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_registrationError), @"registrationError"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -233,7 +233,7 @@ LABEL_10:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_genericError), @"genericError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_genericError), @"genericError"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -244,17 +244,17 @@ LABEL_11:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_pOSIXError), @"POSIXError"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_pOSIXError), @"POSIXError"}];
     if ((*&self->_has & 0x100) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_13;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_uRLError), @"URLError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_uRLError), @"URLError"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -265,13 +265,13 @@ LABEL_12:
   if ((has & 0x100) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vettingStatus), @"vettingStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vettingStatus), @"vettingStatus"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -395,24 +395,24 @@ LABEL_21:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(a3 + 11) = self->_success;
-    *(a3 + 28) |= 0x40u;
+    *(to + 11) = self->_success;
+    *(to + 28) |= 0x40u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -431,8 +431,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 4) = self->_connectionType;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_connectionType;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -446,8 +446,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  *(a3 + 10) = self->_resultCode;
-  *(a3 + 28) |= 0x20u;
+  *(to + 10) = self->_resultCode;
+  *(to + 28) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -461,8 +461,8 @@ LABEL_9:
   }
 
 LABEL_18:
-  *(a3 + 9) = self->_registrationError;
-  *(a3 + 28) |= 0x10u;
+  *(to + 9) = self->_registrationError;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -476,8 +476,8 @@ LABEL_10:
   }
 
 LABEL_19:
-  *(a3 + 5) = self->_genericError;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_genericError;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -491,8 +491,8 @@ LABEL_11:
   }
 
 LABEL_20:
-  *(a3 + 12) = self->_uRLError;
-  *(a3 + 28) |= 0x80u;
+  *(to + 12) = self->_uRLError;
+  *(to + 28) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -506,21 +506,21 @@ LABEL_12:
   }
 
 LABEL_21:
-  *(a3 + 8) = self->_pOSIXError;
-  *(a3 + 28) |= 8u;
+  *(to + 8) = self->_pOSIXError;
+  *(to + 28) |= 8u;
   if ((*&self->_has & 0x100) == 0)
   {
     return;
   }
 
 LABEL_13:
-  *(a3 + 13) = self->_vettingStatus;
-  *(a3 + 28) |= 0x100u;
+  *(to + 13) = self->_vettingStatus;
+  *(to + 28) |= 0x100u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -528,7 +528,7 @@ LABEL_13:
     *(v5 + 56) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -639,16 +639,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_49;
       }
@@ -662,7 +662,7 @@ LABEL_49:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 3))
+    if (guid | *(equal + 3))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -673,10 +673,10 @@ LABEL_49:
       has = self->_has;
     }
 
-    v9 = *(a3 + 28);
+    v9 = *(equal + 28);
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_success != *(a3 + 11))
+      if ((v9 & 0x40) == 0 || self->_success != *(equal + 11))
       {
         goto LABEL_49;
       }
@@ -689,7 +689,7 @@ LABEL_49:
 
     if ((has & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_connectionType != *(a3 + 4))
+      if ((v9 & 2) == 0 || self->_connectionType != *(equal + 4))
       {
         goto LABEL_49;
       }
@@ -702,7 +702,7 @@ LABEL_49:
 
     if ((has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_resultCode != *(a3 + 10))
+      if ((v9 & 0x20) == 0 || self->_resultCode != *(equal + 10))
       {
         goto LABEL_49;
       }
@@ -715,7 +715,7 @@ LABEL_49:
 
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_registrationError != *(a3 + 9))
+      if ((v9 & 0x10) == 0 || self->_registrationError != *(equal + 9))
       {
         goto LABEL_49;
       }
@@ -728,7 +728,7 @@ LABEL_49:
 
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_genericError != *(a3 + 5))
+      if ((v9 & 4) == 0 || self->_genericError != *(equal + 5))
       {
         goto LABEL_49;
       }
@@ -741,7 +741,7 @@ LABEL_49:
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_uRLError != *(a3 + 12))
+      if ((v9 & 0x80) == 0 || self->_uRLError != *(equal + 12))
       {
         goto LABEL_49;
       }
@@ -754,7 +754,7 @@ LABEL_49:
 
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_pOSIXError != *(a3 + 8))
+      if ((v9 & 8) == 0 || self->_pOSIXError != *(equal + 8))
       {
         goto LABEL_49;
       }
@@ -768,7 +768,7 @@ LABEL_49:
     LOBYTE(v5) = (v9 & 0x100) == 0;
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 28) & 0x100) == 0 || self->_vettingStatus != *(a3 + 13))
+      if ((*(equal + 28) & 0x100) == 0 || self->_vettingStatus != *(equal + 13))
       {
         goto LABEL_49;
       }
@@ -902,25 +902,25 @@ LABEL_12:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDIDSRegistrationProfileHandleOperation *)self setGuid:?];
   }
 
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x40) != 0)
   {
-    self->_success = *(a3 + 11);
+    self->_success = *(from + 11);
     *&self->_has |= 0x40u;
-    v5 = *(a3 + 28);
+    v5 = *(from + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -938,9 +938,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_connectionType = *(a3 + 4);
+  self->_connectionType = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -953,9 +953,9 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_resultCode = *(a3 + 10);
+  self->_resultCode = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -968,9 +968,9 @@ LABEL_9:
   }
 
 LABEL_18:
-  self->_registrationError = *(a3 + 9);
+  self->_registrationError = *(from + 9);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -983,9 +983,9 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_genericError = *(a3 + 5);
+  self->_genericError = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -998,9 +998,9 @@ LABEL_11:
   }
 
 LABEL_20:
-  self->_uRLError = *(a3 + 12);
+  self->_uRLError = *(from + 12);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_12:
@@ -1013,15 +1013,15 @@ LABEL_12:
   }
 
 LABEL_21:
-  self->_pOSIXError = *(a3 + 8);
+  self->_pOSIXError = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 28) & 0x100) == 0)
+  if ((*(from + 28) & 0x100) == 0)
   {
     return;
   }
 
 LABEL_13:
-  self->_vettingStatus = *(a3 + 13);
+  self->_vettingStatus = *(from + 13);
   *&self->_has |= 0x100u;
 }
 

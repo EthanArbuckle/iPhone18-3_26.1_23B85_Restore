@@ -1,22 +1,22 @@
 @interface PDFPageLayerSelectionEffect
-- (PDFPageLayerSelectionEffect)initWithPDFPageLayer:(id)a3;
-- (id)compositingFilterWithRenderingProperties:(id)a3;
+- (PDFPageLayerSelectionEffect)initWithPDFPageLayer:(id)layer;
+- (id)compositingFilterWithRenderingProperties:(id)properties;
 - (void)_generateRects;
-- (void)addSelection:(id)a3;
-- (void)setSelections:(id)a3;
+- (void)addSelection:(id)selection;
+- (void)setSelections:(id)selections;
 - (void)update;
-- (void)updateColor:(unint64_t)a3;
+- (void)updateColor:(unint64_t)color;
 - (void)updateCompositingMode;
 @end
 
 @implementation PDFPageLayerSelectionEffect
 
-- (PDFPageLayerSelectionEffect)initWithPDFPageLayer:(id)a3
+- (PDFPageLayerSelectionEffect)initWithPDFPageLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v11.receiver = self;
   v11.super_class = PDFPageLayerSelectionEffect;
-  v5 = [(PDFPageLayerEffect *)&v11 initWithPDFPageLayer:v4];
+  v5 = [(PDFPageLayerEffect *)&v11 initWithPDFPageLayer:layerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E6979398]);
@@ -25,7 +25,7 @@
     v7->rootSelectionLayer = v6;
 
     v9 = v5->super._private->rootSelectionLayer;
-    [v4 bounds];
+    [layerCopy bounds];
     [(CALayer *)v9 setFrame:?];
     [(PDFPageLayerSelectionEffect *)v5 addSublayer:v5->super._private->rootSelectionLayer];
   }
@@ -40,9 +40,9 @@
   [(PDFPageLayerSelectionEffect *)self updateCompositingMode];
 }
 
-- (void)setSelections:(id)a3
+- (void)setSelections:(id)selections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [selections mutableCopy];
   v5 = self->super._private;
   selections = v5->selections;
   v5->selections = v4;
@@ -50,11 +50,11 @@
   [(PDFPageLayerSelectionEffect *)self _generateRects];
 }
 
-- (void)addSelection:(id)a3
+- (void)addSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   selections = self->super._private->selections;
-  v10 = v4;
+  v10 = selectionCopy;
   if (!selections)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -62,30 +62,30 @@
     v8 = v7->selections;
     v7->selections = v6;
 
-    v4 = v10;
+    selectionCopy = v10;
     selections = self->super._private->selections;
   }
 
-  v9 = [v4 copy];
+  v9 = [selectionCopy copy];
   [(NSMutableArray *)selections addObject:v9];
 
   [(PDFPageLayerSelectionEffect *)self _generateRects];
 }
 
-- (void)updateColor:(unint64_t)a3
+- (void)updateColor:(unint64_t)color
 {
   v23 = *MEMORY[0x1E69E9840];
-  self->super._private->lastFocusState = a3;
+  self->super._private->lastFocusState = color;
   WeakRetained = objc_loadWeakRetained(&self->super._private->pageLayer);
-  v17 = [WeakRetained renderingProperties];
+  renderingProperties = [WeakRetained renderingProperties];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(CALayer *)self->super._private->rootSelectionLayer sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sublayers = [(CALayer *)self->super._private->rootSelectionLayer sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -96,7 +96,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -108,10 +108,10 @@
           v12 = v11;
           if (v11)
           {
-            v13 = [v11 color];
-            if (!v13)
+            color = [v11 color];
+            if (!color)
             {
-              if (a3)
+              if (color)
               {
                 +[PDFSelection defaultInactiveColor];
               }
@@ -121,23 +121,23 @@
                 +[PDFSelection defaultActiveColor];
               }
               v14 = ;
-              v13 = [v17 resolvedColor:v14];
+              color = [renderingProperties resolvedColor:v14];
             }
 
             if ([v10 backgroundColor])
             {
-              [v10 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+              [v10 setBackgroundColor:{objc_msgSend(color, "CGColor")}];
             }
 
             if ([v10 borderColor])
             {
-              [v10 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+              [v10 setBorderColor:{objc_msgSend(color, "CGColor")}];
             }
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -146,11 +146,11 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (id)compositingFilterWithRenderingProperties:(id)a3
+- (id)compositingFilterWithRenderingProperties:(id)properties
 {
-  v3 = [a3 isDarkMode];
+  isDarkMode = [properties isDarkMode];
   v4 = MEMORY[0x1E6979D18];
-  if (!v3)
+  if (!isDarkMode)
   {
     v4 = MEMORY[0x1E6979CA8];
   }
@@ -164,8 +164,8 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->super._private->pageLayer);
-  v4 = [WeakRetained renderingProperties];
-  v5 = [(PDFPageLayerSelectionEffect *)self compositingFilterWithRenderingProperties:v4];
+  renderingProperties = [WeakRetained renderingProperties];
+  v5 = [(PDFPageLayerSelectionEffect *)self compositingFilterWithRenderingProperties:renderingProperties];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(CALayer *)self->super._private->rootSelectionLayer setCompositingFilter:v5];
@@ -173,8 +173,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(CALayer *)self->super._private->rootSelectionLayer sublayers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sublayers = [(CALayer *)self->super._private->rootSelectionLayer sublayers];
+  v7 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -186,7 +186,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sublayers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
@@ -200,7 +200,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -213,12 +213,12 @@
 {
   v72 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->super._private->pageLayer);
-  v2 = [WeakRetained page];
-  if (v2)
+  page = [WeakRetained page];
+  if (page)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v51 = [WeakRetained renderingProperties];
-    v50 = [(PDFPageLayerSelectionEffect *)self compositingFilterWithRenderingProperties:v51];
+    renderingProperties = [WeakRetained renderingProperties];
+    v50 = [(PDFPageLayerSelectionEffect *)self compositingFilterWithRenderingProperties:renderingProperties];
     [(CALayer *)self->super._private->rootSelectionLayer setCompositingFilter:v50];
     v4 = self->super._private->selections;
     v67 = 0u;
@@ -243,11 +243,11 @@
           }
 
           v11 = *(*(&v67 + 1) + 8 * i);
-          v12 = [v11 cgSelections];
-          v13 = v12;
-          if (v12)
+          cgSelections = [v11 cgSelections];
+          v13 = cgSelections;
+          if (cgSelections)
           {
-            Count = CFArrayGetCount(v12);
+            Count = CFArrayGetCount(cgSelections);
             if (Count >= 1)
             {
               v15 = 0;
@@ -255,7 +255,7 @@
               {
                 CFArrayGetValueAtIndex(v13, v15);
                 Page = CGPDFSelectionGetPage();
-                if (Page == [v2 pageRef])
+                if (Page == [page pageRef])
                 {
                   break;
                 }
@@ -372,7 +372,7 @@ LABEL_21:
       while (v60);
     }
 
-    v43 = self;
+    selfCopy2 = self;
     if (!self->super._private->selectionEffectLayers)
     {
       v44 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -380,10 +380,10 @@ LABEL_21:
       selectionEffectLayers = v45->selectionEffectLayers;
       v45->selectionEffectLayers = v44;
 
-      v43 = self;
+      selfCopy2 = self;
     }
 
-    objc_initWeak(&location, v43);
+    objc_initWeak(&location, selfCopy2);
     v47 = self->super._private->selectionEffectLayers;
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
@@ -396,7 +396,7 @@ LABEL_21:
     v61[1] = 3221225472;
     v61[2] = __45__PDFPageLayerSelectionEffect__generateRects__block_invoke_2;
     v61[3] = &unk_1E8151C78;
-    v49 = v51;
+    v49 = renderingProperties;
     v62 = v49;
     UpdateRectTransformDictionary(v47, v3, 0, v63, v61);
 

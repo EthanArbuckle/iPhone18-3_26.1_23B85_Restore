@@ -1,14 +1,14 @@
 @interface PhotosSeparationSharedLibraryParticipant
-- (PhotosSeparationSharedLibraryParticipant)initWithShareParticipant:(id)a3;
+- (PhotosSeparationSharedLibraryParticipant)initWithShareParticipant:(id)participant;
 @end
 
 @implementation PhotosSeparationSharedLibraryParticipant
 
-- (PhotosSeparationSharedLibraryParticipant)initWithShareParticipant:(id)a3
+- (PhotosSeparationSharedLibraryParticipant)initWithShareParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   v6 = 1;
-  if ([v5 role] == 1)
+  if ([participantCopy role] == 1)
   {
     v7 = 1;
   }
@@ -18,20 +18,20 @@
     v7 = 2;
   }
 
-  if ([v5 permission] == 3)
+  if ([participantCopy permission] == 3)
   {
     v6 = 2;
   }
 
-  v8 = [v5 emailAddress];
-  v9 = [v5 phoneNumber];
+  emailAddress = [participantCopy emailAddress];
+  phoneNumber = [participantCopy phoneNumber];
   v12.receiver = self;
   v12.super_class = PhotosSeparationSharedLibraryParticipant;
-  v10 = [(PhotosSeparationParticipant *)&v12 initWithRole:v7 permission:v6 emailAddress:v8 phoneNumber:v9];
+  v10 = [(PhotosSeparationParticipant *)&v12 initWithRole:v7 permission:v6 emailAddress:emailAddress phoneNumber:phoneNumber];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_shareParticipant, a3);
+    objc_storeStrong(&v10->_shareParticipant, participant);
   }
 
   return v10;

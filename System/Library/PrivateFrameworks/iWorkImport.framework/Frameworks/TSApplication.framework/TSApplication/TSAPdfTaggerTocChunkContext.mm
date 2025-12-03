@@ -1,22 +1,22 @@
 @interface TSAPdfTaggerTocChunkContext
-- (TSAPdfTaggerTocChunkContext)initWithStateOfTagger:(id)a3 tocChunkRep:(id)a4;
-- (int)levelForParagraphStyle:(id)a3;
+- (TSAPdfTaggerTocChunkContext)initWithStateOfTagger:(id)tagger tocChunkRep:(id)rep;
+- (int)levelForParagraphStyle:(id)style;
 - (void)setUp;
 @end
 
 @implementation TSAPdfTaggerTocChunkContext
 
-- (TSAPdfTaggerTocChunkContext)initWithStateOfTagger:(id)a3 tocChunkRep:(id)a4
+- (TSAPdfTaggerTocChunkContext)initWithStateOfTagger:(id)tagger tocChunkRep:(id)rep
 {
-  v6 = a3;
-  v7 = a4;
+  taggerCopy = tagger;
+  repCopy = rep;
   v13.receiver = self;
   v13.super_class = TSAPdfTaggerTocChunkContext;
-  v8 = [(TSAPdfTaggerContext *)&v13 initWithStateOfTagger:v6];
+  v8 = [(TSAPdfTaggerContext *)&v13 initWithStateOfTagger:taggerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_tocChunkRep, a4);
+    objc_storeStrong(&v8->_tocChunkRep, rep);
     v10 = objc_opt_new();
     paragraphStyleToLevelMap = v9->_paragraphStyleToLevelMap;
     v9->_paragraphStyleToLevelMap = v10;
@@ -25,12 +25,12 @@
   return v9;
 }
 
-- (int)levelForParagraphStyle:(id)a3
+- (int)levelForParagraphStyle:(id)style
 {
-  v4 = a3;
-  v7 = objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], v5, v4, v6);
+  styleCopy = style;
+  v7 = objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], v5, styleCopy, v6);
   v10 = objc_msgSend_objectForKeyedSubscript_(self->_paragraphStyleToLevelMap, v8, v7, v9);
-  sub_2760CB2EC(v10 != 0, "Level number object not found for paragraph style %@", v11, v12, v13, v14, v15, v16, v4);
+  sub_2760CB2EC(v10 != 0, "Level number object not found for paragraph style %@", v11, v12, v13, v14, v15, v16, styleCopy);
   v20 = objc_msgSend_intValue(v10, v17, v18, v19);
 
   return v20;

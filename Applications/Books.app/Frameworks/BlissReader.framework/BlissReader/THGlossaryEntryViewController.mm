@@ -1,28 +1,28 @@
 @interface THGlossaryEntryViewController
 - (BOOL)allowCopy;
 - (THDocumentRoot)documentRoot;
-- (THGlossaryEntryViewController)initWithDocumentRoot:(id)a3 bookNavigator:(id)a4;
+- (THGlossaryEntryViewController)initWithDocumentRoot:(id)root bookNavigator:(id)navigator;
 - (void)_stylizeForTheme;
 - (void)dealloc;
-- (void)loadEntry:(id)a3 withLayoutStyleProvider:(id)a4 onComplete:(id)a5;
+- (void)loadEntry:(id)entry withLayoutStyleProvider:(id)provider onComplete:(id)complete;
 - (void)loadView;
-- (void)p_didLayoutOnComplete:(id)a3;
-- (void)p_layoutOnComplete:(id)a3;
-- (void)p_setupCanvasForInfo:(id)a3 withLayoutStyleProvider:(id)a4 onComplete:(id)a5;
+- (void)p_didLayoutOnComplete:(id)complete;
+- (void)p_layoutOnComplete:(id)complete;
+- (void)p_setupCanvasForInfo:(id)info withLayoutStyleProvider:(id)provider onComplete:(id)complete;
 - (void)p_unloadEntry;
-- (void)scrollToLocation:(int)a3 animated:(BOOL)a4;
-- (void)setTheme:(id)a3;
+- (void)scrollToLocation:(int)location animated:(BOOL)animated;
+- (void)setTheme:(id)theme;
 - (void)teardown;
-- (void)unloadEntryOnComplete:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)unloadEntryOnComplete:(id)complete;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation THGlossaryEntryViewController
 
-- (THGlossaryEntryViewController)initWithDocumentRoot:(id)a3 bookNavigator:(id)a4
+- (THGlossaryEntryViewController)initWithDocumentRoot:(id)root bookNavigator:(id)navigator
 {
   v12.receiver = self;
   v12.super_class = THGlossaryEntryViewController;
@@ -30,14 +30,14 @@
   v7 = v6;
   if (v6)
   {
-    [(THGlossaryEntryViewController *)v6 set_documentRoot:a3];
-    v7->_bookNavigator = a4;
+    [(THGlossaryEntryViewController *)v6 set_documentRoot:root];
+    v7->_bookNavigator = navigator;
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     THCanvasCreateWithClass(v7, &v7->mICC, &v7->mCVC, v8, v9);
     [(TSDInteractiveCanvasController *)[(THGlossaryEntryViewController *)v7 interactiveCanvasController] disableNormalGestures];
-    v10 = [(THGlossaryEntryViewController *)v7 interactiveCanvasController];
-    [(TSDInteractiveCanvasController *)v10 enableGestureKinds:[NSArray arrayWithObject:TSWPImmediateSingleTap]];
+    interactiveCanvasController = [(THGlossaryEntryViewController *)v7 interactiveCanvasController];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController enableGestureKinds:[NSArray arrayWithObject:TSWPImmediateSingleTap]];
     [objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THGlossaryEntryViewController interactiveCanvasController](v7 "interactiveCanvasController")];
     [(THGlossaryEntryViewController *)v7 setExtendedLayoutIncludesOpaqueBars:1];
     [(THGlossaryEntryViewController *)v7 setEdgesForExtendedLayout:15];
@@ -116,57 +116,57 @@
   [(TSKScrollView *)self->mScrollView setBackgroundColor:+[UIColor bc_booksBackground]];
   [(TSKScrollView *)self->mScrollView setDecelerationRate:UIScrollViewDecelerationRateFast];
   [-[THGlossaryEntryViewController view](self "view")];
-  v9 = [(THGlossaryInteractiveCanvasController *)self->mICC canvasView];
-  [v9 setAutoresizingMask:0];
-  [v9 setBackgroundColor:{+[UIColor bc_booksBackground](UIColor, "bc_booksBackground")}];
-  [(TSKScrollView *)self->mScrollView addSubview:v9];
-  [v9 setFrame:{0.0, y, v4, v6}];
+  canvasView = [(THGlossaryInteractiveCanvasController *)self->mICC canvasView];
+  [canvasView setAutoresizingMask:0];
+  [canvasView setBackgroundColor:{+[UIColor bc_booksBackground](UIColor, "bc_booksBackground")}];
+  [(TSKScrollView *)self->mScrollView addSubview:canvasView];
+  [canvasView setFrame:{0.0, y, v4, v6}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = THGlossaryEntryViewController;
   [(THGlossaryEntryViewController *)&v5 viewWillAppear:?];
-  [(THGlossaryiOSCanvasViewController *)self->mCVC viewWillAppear:v3];
+  [(THGlossaryiOSCanvasViewController *)self->mCVC viewWillAppear:appearCopy];
   [(THGlossaryEntryViewController *)self _stylizeForTheme];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = THGlossaryEntryViewController;
   [(THGlossaryEntryViewController *)&v5 viewDidAppear:?];
-  [(THGlossaryiOSCanvasViewController *)self->mCVC viewDidAppear:v3];
+  [(THGlossaryiOSCanvasViewController *)self->mCVC viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = THGlossaryEntryViewController;
   [(THGlossaryEntryViewController *)&v5 viewWillDisappear:?];
-  [(THGlossaryiOSCanvasViewController *)self->mCVC viewWillDisappear:v3];
+  [(THGlossaryiOSCanvasViewController *)self->mCVC viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = THGlossaryEntryViewController;
   [(THGlossaryEntryViewController *)&v5 viewDidDisappear:?];
-  [(THGlossaryiOSCanvasViewController *)self->mCVC viewDidDisappear:v3];
+  [(THGlossaryiOSCanvasViewController *)self->mCVC viewDidDisappear:disappearCopy];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   if (([(IMTheme *)self->_theme isEqual:?]& 1) == 0)
   {
-    v5 = a3;
+    themeCopy = theme;
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THGlossaryEntryViewController *)self _stylizeForTheme];
   }
@@ -186,12 +186,12 @@
     [-[THGlossaryEntryViewController view](self "view")];
   }
 
-  v4 = [(THGlossaryInteractiveCanvasController *)self->mICC canvasView];
+  canvasView = [(THGlossaryInteractiveCanvasController *)self->mICC canvasView];
 
-  [v4 setBackgroundColor:v3];
+  [canvasView setBackgroundColor:v3];
 }
 
-- (void)p_didLayoutOnComplete:(id)a3
+- (void)p_didLayoutOnComplete:(id)complete
 {
   if (self->mLoadCancelled)
   {
@@ -209,23 +209,23 @@
   }
 
   [(THGlossaryEntryViewController *)self setLoading:0];
-  v10 = *(a3 + 2);
+  v10 = *(complete + 2);
 
-  v10(a3, self);
+  v10(complete, self);
 }
 
-- (void)p_layoutOnComplete:(id)a3
+- (void)p_layoutOnComplete:(id)complete
 {
   if (!self->mLoadCancelled)
   {
-    v5 = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryEntryViewController *)self glossaryController] documentRoot] accessController];
-    v6 = v5;
+    accessController = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryEntryViewController *)self glossaryController] documentRoot] accessController];
+    v6 = accessController;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_C6B70;
     v8[3] = &unk_45AE00;
     v8[4] = self;
-    [v5 performRead:v8];
+    [accessController performRead:v8];
   }
 
   v7[0] = _NSConcreteStackBlock;
@@ -233,35 +233,35 @@
   v7[2] = sub_C6B84;
   v7[3] = &unk_45AEA8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = complete;
   [+[NSOperationQueue mainQueue](NSOperationQueue addOperation:"addOperation:", [NSBlockOperation blockOperationWithBlock:v7]];
 }
 
-- (void)p_setupCanvasForInfo:(id)a3 withLayoutStyleProvider:(id)a4 onComplete:(id)a5
+- (void)p_setupCanvasForInfo:(id)info withLayoutStyleProvider:(id)provider onComplete:(id)complete
 {
   if (self->mLoadCancelled)
   {
-    [(THGlossaryEntryViewController *)self p_unloadEntry:a3];
+    [(THGlossaryEntryViewController *)self p_unloadEntry:info];
     [(THGlossaryEntryViewController *)self setLoading:0];
-    v7 = *(a5 + 2);
+    v7 = *(complete + 2);
 
-    v7(a5, self);
+    v7(complete, self);
   }
 
   else
   {
     mEntry = self->mEntry;
-    if (mEntry != [a3 entry])
+    if (mEntry != [info entry])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
     [(TSKScrollView *)self->mScrollView setContentOffset:CGPointZero.x, CGPointZero.y];
-    self->mInfo = a3;
-    [(THGlossaryInteractiveCanvasController *)self->mICC setInfosToDisplay:[NSArray arrayWithObject:a3]];
+    self->mInfo = info;
+    [(THGlossaryInteractiveCanvasController *)self->mICC setInfosToDisplay:[NSArray arrayWithObject:info]];
     [-[THGlossaryEntryViewController view](self "view")];
     v12 = v11;
-    [a4 glossaryEntryLayoutContentSize];
+    [provider glossaryEntryLayoutContentSize];
     [(THGlossaryInteractiveCanvasController *)self->mICC setViewScale:v12 / v13];
     [(THGlossaryInteractiveCanvasController *)self->mICC viewScale];
     if (v14 != 1.0)
@@ -272,25 +272,25 @@
     [(THGlossaryInteractiveCanvasController *)self->mICC recreateAllLayoutsAndReps];
     objc_opt_class();
     [(THGlossaryInteractiveCanvasController *)self->mICC layoutForInfo:self->mInfo];
-    [TSUDynamicCast() setLayoutStyleProvider:a4];
+    [TSUDynamicCast() setLayoutStyleProvider:provider];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_C6E40;
     v15[3] = &unk_45AEA8;
     v15[4] = self;
-    v15[5] = a5;
+    v15[5] = complete;
     [+[NSOperationQueue mainQueue](NSOperationQueue addOperation:"addOperation:", [NSBlockOperation blockOperationWithBlock:v15]];
   }
 }
 
-- (void)loadEntry:(id)a3 withLayoutStyleProvider:(id)a4 onComplete:(id)a5
+- (void)loadEntry:(id)entry withLayoutStyleProvider:(id)provider onComplete:(id)complete
 {
   mEntry = self->mEntry;
-  if (mEntry == a3)
+  if (mEntry == entry)
   {
-    v11 = *(a5 + 2);
+    v11 = *(complete + 2);
 
-    v11(a5, self);
+    v11(complete, self);
   }
 
   else if (mEntry)
@@ -305,17 +305,17 @@
   else
   {
     [(THGlossaryEntryViewController *)self setLoading:1];
-    self->mEntry = a3;
+    self->mEntry = entry;
     [(THGlossaryInteractiveCanvasController *)self->mICC setDelegate:self];
-    v14 = _Block_copy(a5);
+    v14 = _Block_copy(complete);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_C6FE4;
     v15[3] = &unk_45D0D0;
     v15[4] = self;
-    v15[5] = a4;
+    v15[5] = provider;
     v15[6] = v14;
-    [a3 loadInfoOnComplete:v15];
+    [entry loadInfoOnComplete:v15];
   }
 }
 
@@ -330,8 +330,8 @@
 
   if ([(THGlossaryEntryViewController *)self unloadCallback])
   {
-    v3 = [(THGlossaryEntryViewController *)self unloadCallback];
-    v3[2](v3, self);
+    unloadCallback = [(THGlossaryEntryViewController *)self unloadCallback];
+    unloadCallback[2](unloadCallback, self);
     _Block_release(self->mUnloadCallback);
     self->mUnloadCallback = 0;
   }
@@ -339,7 +339,7 @@
   self->mLoadCancelled = 0;
 }
 
-- (void)unloadEntryOnComplete:(id)a3
+- (void)unloadEntryOnComplete:(id)complete
 {
   mUnloadCallback = self->mUnloadCallback;
   if (mUnloadCallback)
@@ -347,7 +347,7 @@
     _Block_release(mUnloadCallback);
   }
 
-  self->mUnloadCallback = _Block_copy(a3);
+  self->mUnloadCallback = _Block_copy(complete);
   if ([(THGlossaryEntryViewController *)self loading])
   {
     self->mLoadCancelled = 1;
@@ -360,12 +360,12 @@
   }
 }
 
-- (void)scrollToLocation:(int)a3 animated:(BOOL)a4
+- (void)scrollToLocation:(int)location animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 != 2)
+  animatedCopy = animated;
+  if (location != 2)
   {
-    if (a3 != 1)
+    if (location != 1)
     {
       return;
     }
@@ -400,15 +400,15 @@
 LABEL_8:
     v16 = *p_mScrollView;
 
-    [(TSKScrollView *)v16 setContentOffset:v4 animated:v8, v9];
+    [(TSKScrollView *)v16 setContentOffset:animatedCopy animated:v8, v9];
   }
 }
 
 - (BOOL)allowCopy
 {
-  v2 = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryEntryViewController *)self glossaryController] documentRoot] bookDescription];
+  bookDescription = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryEntryViewController *)self glossaryController] documentRoot] bookDescription];
 
-  return [(THBookDescription *)v2 allowCopy];
+  return [(THBookDescription *)bookDescription allowCopy];
 }
 
 @end

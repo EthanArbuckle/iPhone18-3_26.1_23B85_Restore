@@ -1,10 +1,10 @@
 @interface __RKEntityOrbitEntityAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityOrbitEntityAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityOrbitEntityAction.copy(with:)(v5);

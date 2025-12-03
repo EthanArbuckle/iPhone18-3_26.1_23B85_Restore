@@ -1,7 +1,7 @@
 @interface NetworkQualityClient
 + (id)getXpcConn;
-+ (void)findLocalMeasurementEndpoints:(id)a3;
-+ (void)performMeasurementWithConfiguration:(id)a3 reply:(id)a4;
++ (void)findLocalMeasurementEndpoints:(id)endpoints;
++ (void)performMeasurementWithConfiguration:(id)configuration reply:(id)reply;
 @end
 
 @implementation NetworkQualityClient
@@ -17,13 +17,13 @@
   return v2;
 }
 
-+ (void)performMeasurementWithConfiguration:(id)a3 reply:(id)a4
++ (void)performMeasurementWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [a1 getXpcConn];
-  v8 = [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
-  [v8 performMeasurementWithConfiguration:v7 reply:v6];
+  replyCopy = reply;
+  configurationCopy = configuration;
+  getXpcConn = [self getXpcConn];
+  v8 = [getXpcConn remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+  [v8 performMeasurementWithConfiguration:configurationCopy reply:replyCopy];
 }
 
 void __66__NetworkQualityClient_performMeasurementWithConfiguration_reply___block_invoke(uint64_t a1, void *a2)
@@ -51,12 +51,12 @@ void __66__NetworkQualityClient_performMeasurementWithConfiguration_reply___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)findLocalMeasurementEndpoints:(id)a3
++ (void)findLocalMeasurementEndpoints:(id)endpoints
 {
-  v4 = a3;
-  v6 = [a1 getXpcConn];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_8];
-  [v5 findLocalMeasurementEndpoints:v4];
+  endpointsCopy = endpoints;
+  getXpcConn = [self getXpcConn];
+  v5 = [getXpcConn remoteObjectProxyWithErrorHandler:&__block_literal_global_8];
+  [v5 findLocalMeasurementEndpoints:endpointsCopy];
 }
 
 void __54__NetworkQualityClient_findLocalMeasurementEndpoints___block_invoke(uint64_t a1, void *a2)

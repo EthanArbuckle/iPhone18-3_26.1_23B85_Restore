@@ -1,12 +1,12 @@
 @interface _BlastDoorLPSummarizedLinkMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPSummarizedLinkMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPSummarizedLinkMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BlastDoorLPSummarizedLinkMetadata
 
-- (_BlastDoorLPSummarizedLinkMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPSummarizedLinkMetadata)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -22,9 +22,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [_BlastDoorLPSummarizedLinkMetadata allocWithZone:a3];
+  v3 = [_BlastDoorLPSummarizedLinkMetadata allocWithZone:zone];
   v4 = v3;
   if (v3)
   {
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _BlastDoorLPSummarizedLinkMetadata;
-  if ([(_BlastDoorLPSummarizedLinkMetadata *)&v8 isEqual:v4])
+  if ([(_BlastDoorLPSummarizedLinkMetadata *)&v8 isEqual:equalCopy])
   {
     isKindOfClass = 1;
   }

@@ -8,8 +8,8 @@
 {
   if ([(TTRICustomRecurrenceCellRowSeparatorView *)self vibrant])
   {
-    v3 = [(TTRICustomRecurrenceCellRowSeparatorView *)self tintColor];
-    [(TTRICustomRecurrenceCellRowSeparatorView *)self setBackgroundColor:v3];
+    tintColor = [(TTRICustomRecurrenceCellRowSeparatorView *)self tintColor];
+    [(TTRICustomRecurrenceCellRowSeparatorView *)self setBackgroundColor:tintColor];
   }
 }
 

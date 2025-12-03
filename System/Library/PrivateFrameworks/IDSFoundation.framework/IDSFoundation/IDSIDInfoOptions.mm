@@ -5,9 +5,9 @@
 + (id)sync_currentIDInfo;
 + (id)sync_refreshIDInfo;
 - (IDSIDInfoOptions)init;
-- (IDSIDInfoOptions)initWithBypassLimit:(BOOL)a3 allowRefresh:(BOOL)a4 forceRefresh:(BOOL)a5 respectExpiry:(BOOL)a6 waitForReply:(BOOL)a7;
-- (IDSIDInfoOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IDSIDInfoOptions)initWithBypassLimit:(BOOL)limit allowRefresh:(BOOL)refresh forceRefresh:(BOOL)forceRefresh respectExpiry:(BOOL)expiry waitForReply:(BOOL)reply;
+- (IDSIDInfoOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSIDInfoOptions
@@ -61,41 +61,41 @@
   return result;
 }
 
-- (IDSIDInfoOptions)initWithBypassLimit:(BOOL)a3 allowRefresh:(BOOL)a4 forceRefresh:(BOOL)a5 respectExpiry:(BOOL)a6 waitForReply:(BOOL)a7
+- (IDSIDInfoOptions)initWithBypassLimit:(BOOL)limit allowRefresh:(BOOL)refresh forceRefresh:(BOOL)forceRefresh respectExpiry:(BOOL)expiry waitForReply:(BOOL)reply
 {
   v13.receiver = self;
   v13.super_class = IDSIDInfoOptions;
   result = [(IDSIDInfoOptions *)&v13 init];
   if (result)
   {
-    result->_bypassLimit = a3;
-    result->_allowRefresh = a4;
-    result->_forceRefresh = a5;
-    result->_respectExpiry = a6;
-    result->_waitForReply = a7;
+    result->_bypassLimit = limit;
+    result->_allowRefresh = refresh;
+    result->_forceRefresh = forceRefresh;
+    result->_respectExpiry = expiry;
+    result->_waitForReply = reply;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[IDSIDInfoOptions bypassLimit](self forKey:{"bypassLimit"), @"bypassLimit"}];
-  [v4 encodeBool:-[IDSIDInfoOptions allowRefresh](self forKey:{"allowRefresh"), @"allowRefresh"}];
-  [v4 encodeBool:-[IDSIDInfoOptions forceRefresh](self forKey:{"forceRefresh"), @"forceRefresh"}];
-  [v4 encodeBool:-[IDSIDInfoOptions respectExpiry](self forKey:{"respectExpiry"), @"respectExpiry"}];
-  [v4 encodeBool:-[IDSIDInfoOptions waitForReply](self forKey:{"waitForReply"), @"waitForReply"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[IDSIDInfoOptions bypassLimit](self forKey:{"bypassLimit"), @"bypassLimit"}];
+  [coderCopy encodeBool:-[IDSIDInfoOptions allowRefresh](self forKey:{"allowRefresh"), @"allowRefresh"}];
+  [coderCopy encodeBool:-[IDSIDInfoOptions forceRefresh](self forKey:{"forceRefresh"), @"forceRefresh"}];
+  [coderCopy encodeBool:-[IDSIDInfoOptions respectExpiry](self forKey:{"respectExpiry"), @"respectExpiry"}];
+  [coderCopy encodeBool:-[IDSIDInfoOptions waitForReply](self forKey:{"waitForReply"), @"waitForReply"}];
 }
 
-- (IDSIDInfoOptions)initWithCoder:(id)a3
+- (IDSIDInfoOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"bypassLimit"];
-  v6 = [v4 decodeBoolForKey:@"allowRefresh"];
-  v7 = [v4 decodeBoolForKey:@"forceRefresh"];
-  v8 = [v4 decodeBoolForKey:@"respectExpiry"];
-  v9 = [v4 decodeBoolForKey:@"waitForReply"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"bypassLimit"];
+  v6 = [coderCopy decodeBoolForKey:@"allowRefresh"];
+  v7 = [coderCopy decodeBoolForKey:@"forceRefresh"];
+  v8 = [coderCopy decodeBoolForKey:@"respectExpiry"];
+  v9 = [coderCopy decodeBoolForKey:@"waitForReply"];
 
   return [(IDSIDInfoOptions *)self initWithBypassLimit:v5 allowRefresh:v6 forceRefresh:v7 respectExpiry:v8 waitForReply:v9];
 }

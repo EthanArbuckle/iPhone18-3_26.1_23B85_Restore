@@ -3,16 +3,16 @@
 + (id)sharedRegistry;
 - (HMDApplicationRegistry)init;
 - (NSArray)applications;
-- (id)applicationInfoForBundleIdentifier:(id)a3;
-- (id)applicationInfoForBundleURL:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)applicationInfoForBundleIdentifier:(id)identifier;
+- (id)applicationInfoForBundleURL:(id)l;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
 @implementation HMDApplicationRegistry
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v15 = *MEMORY[0x277D85DE8];
   v13[0] = MEMORY[0x277D85DD0];
@@ -20,7 +20,7 @@
   v13[2] = __49__HMDApplicationRegistry_applicationsDidInstall___block_invoke;
   v13[3] = &unk_27972B878;
   v13[4] = self;
-  v3 = [a3 na_map:v13];
+  v3 = [install na_map:v13];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -53,17 +53,17 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  uninstallCopy = uninstall;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(uninstallCopy, "count")}];
   os_unfair_lock_lock_with_options();
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = uninstallCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {
@@ -128,13 +128,13 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)applicationInfoForBundleIdentifier:(id)a3
+- (id)applicationInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = __HMDApplicationRegistryApplicationWithBundleIdentifier(&self->super.super.isa, v4);
+    v5 = __HMDApplicationRegistryApplicationWithBundleIdentifier(&self->super.super.isa, identifierCopy);
     if (v5)
     {
       v6 = v5;
@@ -143,7 +143,7 @@
 
     else
     {
-      v7 = [HMDApplicationInfo applicationInfoForBundleIdentifier:v4];
+      v7 = [HMDApplicationInfo applicationInfoForBundleIdentifier:identifierCopy];
       if ([v7 isInstalled])
       {
         [(NSMutableSet *)self->_applications addObject:v7];
@@ -168,14 +168,14 @@
   return v6;
 }
 
-- (id)applicationInfoForBundleURL:(id)a3
+- (id)applicationInfoForBundleURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = __HMDApplicationRegistryApplicationForBundleURL(&self->super.super.isa, v4);
-    if (v5 || (+[HMDApplicationInfo applicationInfoForBundleURL:](HMDApplicationInfo, "applicationInfoForBundleURL:", v4), v5 = objc_claimAutoreleasedReturnValue(), ![v5 isInstalled]))
+    v5 = __HMDApplicationRegistryApplicationForBundleURL(&self->super.super.isa, lCopy);
+    if (v5 || (+[HMDApplicationInfo applicationInfoForBundleURL:](HMDApplicationInfo, "applicationInfoForBundleURL:", lCopy), v5 = objc_claimAutoreleasedReturnValue(), ![v5 isInstalled]))
     {
       os_unfair_lock_unlock(&self->_lock);
     }
@@ -199,10 +199,10 @@
 - (NSArray)applications
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableSet *)self->_applications allObjects];
+  allObjects = [(NSMutableSet *)self->_applications allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (void)dealloc
@@ -224,9 +224,9 @@
     applications = v2->_applications;
     v2->_applications = v3;
 
-    v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     workspace = v2->_workspace;
-    v2->_workspace = v5;
+    v2->_workspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v2->_workspace addObserver:v2];
   }

@@ -1,20 +1,20 @@
 @interface PXPhotosGridToggleFavoriteFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleFavoriteFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v6 = a4;
-  v9.receiver = a1;
+  modelCopy = model;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PXPhotosGridToggleFavoriteFilterActionPerformer;
-  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, a3, v6))
+  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, type, modelCopy))
   {
-    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:11 viewModel:v6];
+    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:11 viewModel:modelCopy];
   }
 
   else
@@ -27,18 +27,18 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setFavorite:{objc_msgSend(v3, "favorite") ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setFavorite:{objc_msgSend(currentContentFilterState, "favorite") ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v4 = [v3 contentFilterState];
-    if ([v4 favorite])
+    viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+    contentFilterState = [viewModel contentFilterState];
+    if ([contentFilterState favorite])
     {
       v5 = @"DISABLE_FAVORITES_FILTER_SHORTCUT";
     }
@@ -61,8 +61,8 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:11];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:11];
 
   return v3;
 }

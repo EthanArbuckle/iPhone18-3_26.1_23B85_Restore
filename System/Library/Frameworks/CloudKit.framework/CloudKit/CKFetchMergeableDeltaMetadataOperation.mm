@@ -1,24 +1,24 @@
 @interface CKFetchMergeableDeltaMetadataOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKFetchMergeableDeltaMetadataOperation)initWithMergeableValueIDs:(id)a3;
+- (CKFetchMergeableDeltaMetadataOperation)initWithMergeableValueIDs:(id)ds;
 - (id)activityCreate;
 - (id)fetchMergeableDeltaMetadataCompletionBlock;
 - (id)metadataFetchedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleFetchForMergeableValueID:(id)a3 metadatas:(id)a4 error:(id)a5;
-- (void)setFetchMergeableDeltaMetadataCompletionBlock:(id)a3;
-- (void)setMetadataFetchedBlock:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleFetchForMergeableValueID:(id)d metadatas:(id)metadatas error:(id)error;
+- (void)setFetchMergeableDeltaMetadataCompletionBlock:(id)block;
+- (void)setMetadataFetchedBlock:(id)block;
 @end
 
 @implementation CKFetchMergeableDeltaMetadataOperation
 
-- (void)setMetadataFetchedBlock:(id)a3
+- (void)setMetadataFetchedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -32,16 +32,16 @@
     v12[2] = sub_1885B1F38;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     metadataFetchedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_metadataFetchedBlock != v6)
+  if (self->_metadataFetchedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     metadataFetchedBlock = self->_metadataFetchedBlock;
     self->_metadataFetchedBlock = v9;
 LABEL_9:
@@ -84,9 +84,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchMergeableDeltaMetadataCompletionBlock:(id)a3
+- (void)setFetchMergeableDeltaMetadataCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -100,16 +100,16 @@ LABEL_9:
     v12[2] = sub_1885B22C4;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchMergeableDeltaMetadataCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchMergeableDeltaMetadataCompletionBlock != v6)
+  if (self->_fetchMergeableDeltaMetadataCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchMergeableDeltaMetadataCompletionBlock = self->_fetchMergeableDeltaMetadataCompletionBlock;
     self->_fetchMergeableDeltaMetadataCompletionBlock = v9;
 LABEL_9:
@@ -152,16 +152,16 @@ LABEL_9:
   return v6;
 }
 
-- (CKFetchMergeableDeltaMetadataOperation)initWithMergeableValueIDs:(id)a3
+- (CKFetchMergeableDeltaMetadataOperation)initWithMergeableValueIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = CKFetchMergeableDeltaMetadataOperation;
   v6 = [(CKOperation *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mergeableValueIDs, a3);
+    objc_storeStrong(&v6->_mergeableValueIDs, ds);
     v10 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v8, v9);
     perValueErrors = v7->_perValueErrors;
     v7->_perValueErrors = v10;
@@ -170,7 +170,7 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v16.receiver = self;
   v16.super_class = CKFetchMergeableDeltaMetadataOperation;
@@ -187,11 +187,11 @@ LABEL_9:
 
     else
     {
-      if (a3)
+      if (run)
       {
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 12, @"%@ cannot run without a mergeable value ID", v13);
+        *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 12, @"%@ cannot run without a mergeable value ID", v13);
       }
 
       LOBYTE(v5) = 0;
@@ -201,23 +201,23 @@ LABEL_9:
   return v5;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKFetchMergeableDeltaMetadataOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:v4];
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillOutOperationInfo:infoCopy];
   v7 = objc_msgSend_mergeableValueIDs(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setMergeableValueIDs_(v4, v8, v7);
+  objc_msgSend_setMergeableValueIDs_(infoCopy, v8, v7);
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKFetchMergeableDeltaMetadataOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_mergeableValueIDs(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_mergeableValueIDs(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setMergeableValueIDs_(self, v8, v7);
 }
@@ -246,11 +246,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v7 = objc_msgSend_perValueErrors(self, v4, v5);
     v10 = objc_msgSend_count(v7, v8, v9);
@@ -262,16 +262,16 @@ LABEL_9:
       v39[0] = v11;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v39, &v38, 1);
 
-      v6 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v14, @"CKInternalErrorDomain", 1011, v13, @"Failed to fetch some delta metadata");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v14, @"CKInternalErrorDomain", 1011, v13, @"Failed to fetch some delta metadata");
     }
 
     else
     {
-      v6 = 0;
+      errorCopy = 0;
     }
   }
 
-  v15 = objc_msgSend_CKClientSuitableError(v6, v4, v5);
+  v15 = objc_msgSend_CKClientSuitableError(errorCopy, v4, v5);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -328,28 +328,28 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  tweaksCopy = tweaks;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v9 = objc_msgSend_setWithObjects_(v4, v8, v6, v7, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v5, v10, v9, sel_handleFetchForMergeableValueID_metadatas_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v10, v9, sel_handleFetchForMergeableValueID_metadatas_error_, 1, 0);
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___CKFetchMergeableDeltaMetadataOperation;
-  objc_msgSendSuper2(&v11, sel_applyDaemonCallbackInterfaceTweaks_, v5);
+  objc_msgSendSuper2(&v11, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
-- (void)handleFetchForMergeableValueID:(id)a3 metadatas:(id)a4 error:(id)a5
+- (void)handleFetchForMergeableValueID:(id)d metadatas:(id)metadatas error:(id)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_CKClientSuitableError(a5, v10, v11);
+  dCopy = d;
+  metadatasCopy = metadatas;
+  v12 = objc_msgSend_CKClientSuitableError(error, v10, v11);
   v15 = objc_msgSend_perValueErrors(self, v13, v14);
-  objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v12, v8);
+  objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v12, dCopy);
 
   if (ck_log_initialization_predicate != -1)
   {
@@ -364,9 +364,9 @@ LABEL_9:
     v36 = 138544130;
     v37 = v29;
     v38 = 2112;
-    v39 = v8;
+    v39 = dCopy;
     v40 = 2048;
-    v41 = objc_msgSend_count(v9, v30, v31);
+    v41 = objc_msgSend_count(metadatasCopy, v30, v31);
     v42 = 2112;
     v43 = v12;
     _os_log_debug_impl(&dword_1883EA000, v26, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received fetch batch metadata callback for value %@ with %ld metadatas with error: %@", &v36, 0x2Au);
@@ -377,7 +377,7 @@ LABEL_9:
   if (v20)
   {
     v23 = objc_msgSend_metadataFetchedBlock(self, v21, v22);
-    (v23)[2](v23, v8, v9, v12);
+    (v23)[2](v23, dCopy, metadatasCopy, v12);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -393,7 +393,7 @@ LABEL_9:
     v36 = 138543874;
     v37 = v35;
     v38 = 2112;
-    v39 = v8;
+    v39 = dCopy;
     v40 = 2112;
     v41 = v12;
     _os_log_debug_impl(&dword_1883EA000, v32, OS_LOG_TYPE_DEBUG, "Operation %{public}@ finished fetch batch metadata callback for value %@ with error: %@", &v36, 0x20u);

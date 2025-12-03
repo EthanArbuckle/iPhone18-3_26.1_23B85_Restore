@@ -4,7 +4,7 @@
 - (CMMatrix<float,)fH;
 - (CMVector<float,)fQ;
 - (CMVector<float,)fState;
-- (void)assignFromObject:(id)a3;
+- (void)assignFromObject:(id)object;
 @end
 
 @implementation CLKFRunningEstimates
@@ -25,25 +25,25 @@
   return result;
 }
 
-- (void)assignFromObject:(id)a3
+- (void)assignFromObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    if (self != a3)
+    if (self != object)
     {
-      [a3 fState];
+      [object fState];
       self->_fState.elements[0] = v5;
       self->_fState.elements[1] = v6;
-      [a3 fP];
+      [object fP];
       self->_fP.fD = v13;
       self->_fP.fU.fData[0] = v14;
-      [a3 fQ];
+      [object fQ];
       self->_fQ.elements[0] = v7;
       self->_fQ.elements[1] = v8;
-      [a3 fH];
+      [object fH];
       self->_fH.fData[0] = v9;
       self->_fH.fData[1] = v10;
-      [a3 F01];
+      [object F01];
       self->_F01 = v11;
     }
   }

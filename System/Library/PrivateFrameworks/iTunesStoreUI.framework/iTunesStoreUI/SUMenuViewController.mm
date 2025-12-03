@@ -4,14 +4,14 @@
 - (CGSize)minimumViewSize;
 - (SUMenuViewController)init;
 - (id)_tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadView;
-- (void)performActionForMenuItemAtIndex:(int64_t)a3;
+- (void)performActionForMenuItemAtIndex:(int64_t)index;
 - (void)reload;
-- (void)setSelectedIndex:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setSelectedIndex:(int64_t)index;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SUMenuViewController
@@ -39,14 +39,14 @@
   [(SUViewController *)&v3 dealloc];
 }
 
-- (void)performActionForMenuItemAtIndex:(int64_t)a3
+- (void)performActionForMenuItemAtIndex:(int64_t)index
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = self;
+    selfCopy = self;
     delegate = self->_delegate;
 
-    [(SUMenuViewControllerDelegate *)delegate menuViewController:self didSelectItemAtIndex:a3];
+    [(SUMenuViewControllerDelegate *)delegate menuViewController:self didSelectItemAtIndex:index];
   }
 
   else
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
+    self->_selectedIndex = index;
     [(SUMenuViewController *)self reload];
   }
 }
@@ -85,15 +85,15 @@
 
 - (CGSize)minimumViewSize
 {
-  v3 = [(SUMenuViewController *)self numberOfMenuItems];
-  if (v3 <= 5)
+  numberOfMenuItems = [(SUMenuViewController *)self numberOfMenuItems];
+  if (numberOfMenuItems <= 5)
   {
     v4 = 5;
   }
 
   else
   {
-    v4 = v3;
+    v4 = numberOfMenuItems;
   }
 
   [(SUMenuViewController *)self view];
@@ -114,27 +114,27 @@
   [(SUViewController *)&v3 reload];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(UITableView *)self->_tableView flashScrollIndicators];
   v5.receiver = self;
   v5.super_class = SUMenuViewController;
-  [(SUViewController *)&v5 viewDidAppear:v3];
+  [(SUViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  -[SUMenuViewController setSelectedIndex:](self, "setSelectedIndex:", [a4 row]);
-  v6 = [a4 row];
+  -[SUMenuViewController setSelectedIndex:](self, "setSelectedIndex:", [path row]);
+  v6 = [path row];
 
   [(SUMenuViewController *)self performActionForMenuItemAtIndex:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a4 row];
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"i"];
+  v6 = [path row];
+  v7 = [view dequeueReusableCellWithIdentifier:@"i"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"i"];
@@ -151,10 +151,10 @@
   }
 
   [v7 setAccessoryType:v8];
-  v9 = [v7 textLabel];
-  [v9 setText:{-[SUMenuViewController titleOfMenuItemAtIndex:](self, "titleOfMenuItemAtIndex:", v6)}];
+  textLabel = [v7 textLabel];
+  [textLabel setText:{-[SUMenuViewController titleOfMenuItemAtIndex:](self, "titleOfMenuItemAtIndex:", v6)}];
   v10 = [(SUMenuViewController *)self isMenuItemEnabledAtIndex:v6];
-  [v9 setEnabled:v10];
+  [textLabel setEnabled:v10];
   [v7 setUserInteractionEnabled:v10];
   return v7;
 }
@@ -164,7 +164,7 @@
   v3 = objc_opt_respondsToSelector();
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     [(SUMenuViewControllerDelegate *)self->_delegate menuViewControllerDidCancel:self];
   }
 

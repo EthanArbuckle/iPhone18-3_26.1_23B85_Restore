@@ -1,7 +1,7 @@
 @interface RealtimeCollaborationSelectionDocument.State
 + (NSDictionary)CRProperties;
-- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithICCRCoder:(id)a3;
-- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithIdentity:(id)a3 fields:(id)a4;
+- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithICCRCoder:(id)coder;
+- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithIdentity:(id)identity fields:(id)fields;
 @end
 
 @implementation RealtimeCollaborationSelectionDocument.State
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithIdentity:(id)a3 fields:(id)a4
+- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithIdentity:(id)identity fields:(id)fields
 {
   ObjectType = swift_getObjectType();
   v6 = sub_2150A3A00();
@@ -36,12 +36,12 @@
   return v12;
 }
 
-- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithICCRCoder:(id)a3
+- (_TtCC11NotesShared38RealtimeCollaborationSelectionDocument5State)initWithICCRCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(ICCRObject *)&v7 initWithICCRCoder:v4];
+  coderCopy = coder;
+  v5 = [(ICCRObject *)&v7 initWithICCRCoder:coderCopy];
 
   if (v5)
   {

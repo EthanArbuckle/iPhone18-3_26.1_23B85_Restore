@@ -1,7 +1,7 @@
 @interface TTRIRemindersBoardCompletedHeaderView
 - (NSArray)accessibilityElements;
 - (NSString)accessibilityLabel;
-- (_TtC9Reminders37TTRIRemindersBoardCompletedHeaderView)initWithArrangedSubviews:(id)a3;
+- (_TtC9Reminders37TTRIRemindersBoardCompletedHeaderView)initWithArrangedSubviews:(id)subviews;
 - (void)layoutSubviews;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DC118();
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005DC2B4();
 
   if (v3)
@@ -33,7 +33,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DC394();
   v4 = v3;
 
@@ -50,7 +50,7 @@
   return v5;
 }
 
-- (_TtC9Reminders37TTRIRemindersBoardCompletedHeaderView)initWithArrangedSubviews:(id)a3
+- (_TtC9Reminders37TTRIRemindersBoardCompletedHeaderView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,10 +1,10 @@
 @interface HFCameraItem
-+ (BOOL)cameraContainsMotionServiceItem:(id)a3;
-+ (BOOL)shouldIgnoreStreamErrorForCameraSettings:(id)a3;
-+ (BOOL)shouldReportNotificationsAsDisabledForProfile:(id)a3;
-+ (void)getErrorDescription:(id *)a3 detailedErrorDescription:(id *)a4 forCameraStreamError:(id)a5;
++ (BOOL)cameraContainsMotionServiceItem:(id)item;
++ (BOOL)shouldIgnoreStreamErrorForCameraSettings:(id)settings;
++ (BOOL)shouldReportNotificationsAsDisabledForProfile:(id)profile;
++ (void)getErrorDescription:(id *)description detailedErrorDescription:(id *)errorDescription forCameraStreamError:(id)error;
 - (NSString)description;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (unint64_t)numberOfCompoundItems;
 @end
 
@@ -17,10 +17,10 @@
     v3 = MEMORY[0x277CCACA8];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(HFAccessoryProfileItem *)self profile];
-    v7 = [v6 hf_prettyDescription];
-    v8 = [(HFItem *)self latestResults];
-    v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, v7, v8];
+    profile = [(HFAccessoryProfileItem *)self profile];
+    hf_prettyDescription = [profile hf_prettyDescription];
+    latestResults = [(HFItem *)self latestResults];
+    v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, hf_prettyDescription, latestResults];
   }
 
   else
@@ -42,15 +42,15 @@ void __27__HFCameraItem_description__block_invoke_2()
   qword_280E03B10 = &stru_2824B1A78;
 }
 
-+ (void)getErrorDescription:(id *)a3 detailedErrorDescription:(id *)a4 forCameraStreamError:(id)a5
++ (void)getErrorDescription:(id *)description detailedErrorDescription:(id *)errorDescription forCameraStreamError:(id)error
 {
-  v15 = a5;
+  errorCopy = error;
   v7 = _HFLocalizedStringWithDefaultValue(@"HFCameraErrorNotReachable", @"HFCameraErrorNotReachable", 1);
   v8 = _HFLocalizedStringWithDefaultValue(@"HFCameraLongFormErrorNotReachable", @"HFCameraLongFormErrorNotReachable", 1);
-  v9 = [v15 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCFD28]];
+  domain = [errorCopy domain];
+  v10 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
-  if (v10 && [v15 code] == 14)
+  if (v10 && [errorCopy code] == 14)
   {
     v11 = _HFLocalizedStringWithDefaultValue(@"HFCameraErrorBusy", @"HFCameraErrorBusy", 1);
 
@@ -60,24 +60,24 @@ void __27__HFCameraItem_description__block_invoke_2()
     v8 = v12;
   }
 
-  if (a3)
+  if (description)
   {
     v13 = v7;
-    *a3 = v7;
+    *description = v7;
   }
 
-  if (a4)
+  if (errorDescription)
   {
     v14 = v8;
-    *a4 = v8;
+    *errorDescription = v8;
   }
 }
 
-+ (BOOL)cameraContainsMotionServiceItem:(id)a3
++ (BOOL)cameraContainsMotionServiceItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -90,45 +90,45 @@ void __27__HFCameraItem_description__block_invoke_2()
 
   v6 = v5;
 
-  v7 = [v4 services];
-  v8 = [v7 na_any:&__block_literal_global_45_2];
+  services = [v4 services];
+  v8 = [services na_any:&__block_literal_global_45_2];
 
   return (v6 == 0) & v8;
 }
 
-+ (BOOL)shouldReportNotificationsAsDisabledForProfile:(id)a3
++ (BOOL)shouldReportNotificationsAsDisabledForProfile:(id)profile
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  profileCopy = profile;
   v4 = HFLogForCategory(0xEuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 userSettings];
+    userSettings = [profileCopy userSettings];
     v13 = 138412290;
-    v14 = v5;
+    v14 = userSettings;
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "cameraProfile userSettings = %@", &v13, 0xCu);
   }
 
-  v6 = [v3 userSettings];
-  if ([v6 isAccessModeChangeNotificationEnabled])
+  userSettings2 = [profileCopy userSettings];
+  if ([userSettings2 isAccessModeChangeNotificationEnabled])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v3 userSettings];
-    if ([v8 isReachabilityEventNotificationEnabled])
+    userSettings3 = [profileCopy userSettings];
+    if ([userSettings3 isReachabilityEventNotificationEnabled])
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [v3 hf_userNotificationSettings];
-      v10 = [v9 areNotificationsEnabled];
+      hf_userNotificationSettings = [profileCopy hf_userNotificationSettings];
+      areNotificationsEnabled = [hf_userNotificationSettings areNotificationsEnabled];
 
-      v7 = v10 ^ 1;
+      v7 = areNotificationsEnabled ^ 1;
     }
   }
 
@@ -136,22 +136,22 @@ void __27__HFCameraItem_description__block_invoke_2()
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAccessoryProfileItem *)self profile];
-  v6 = [v5 accessory];
-  if (v6)
+  optionsCopy = options;
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  if (accessory)
   {
-    v7 = [(HFAccessoryProfileItem *)self valueSource];
+    valueSource = [(HFAccessoryProfileItem *)self valueSource];
 
-    if (v7)
+    if (valueSource)
     {
       objc_initWeak(location, self);
       v21.receiver = self;
       v21.super_class = HFCameraItem;
-      v8 = [(HFAccessoryProfileItem *)&v21 _subclass_updateWithOptions:v4];
+      v8 = [(HFAccessoryProfileItem *)&v21 _subclass_updateWithOptions:optionsCopy];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __44__HFCameraItem__subclass_updateWithOptions___block_invoke;
@@ -172,13 +172,13 @@ void __27__HFCameraItem_description__block_invoke_2()
   v10 = HFLogForCategory(0xEuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(HFAccessoryProfileItem *)self profile];
-    v12 = [v11 accessory];
-    v13 = [(HFAccessoryProfileItem *)self valueSource];
+    profile2 = [(HFAccessoryProfileItem *)self profile];
+    accessory2 = [profile2 accessory];
+    valueSource2 = [(HFAccessoryProfileItem *)self valueSource];
     *location = 138412546;
-    *&location[4] = v12;
+    *&location[4] = accessory2;
     v25 = 2112;
-    v26 = v13;
+    v26 = valueSource2;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Camera Item: Missing profile accessory:%@ or value source:%@", location, 0x16u);
   }
 
@@ -345,12 +345,12 @@ LABEL_23:
   return v55;
 }
 
-+ (BOOL)shouldIgnoreStreamErrorForCameraSettings:(id)a3
++ (BOOL)shouldIgnoreStreamErrorForCameraSettings:(id)settings
 {
-  v3 = a3;
-  if ([v3 currentAccessMode])
+  settingsCopy = settings;
+  if ([settingsCopy currentAccessMode])
   {
-    v4 = [v3 currentAccessMode] == 3;
+    v4 = [settingsCopy currentAccessMode] == 3;
   }
 
   else
@@ -363,9 +363,9 @@ LABEL_23:
 
 - (unint64_t)numberOfCompoundItems
 {
-  v2 = [(HFAccessoryProfileItem *)self accessory];
-  v3 = [v2 hf_visibleServices];
-  v4 = [v3 count];
+  accessory = [(HFAccessoryProfileItem *)self accessory];
+  hf_visibleServices = [accessory hf_visibleServices];
+  v4 = [hf_visibleServices count];
 
   return v4;
 }

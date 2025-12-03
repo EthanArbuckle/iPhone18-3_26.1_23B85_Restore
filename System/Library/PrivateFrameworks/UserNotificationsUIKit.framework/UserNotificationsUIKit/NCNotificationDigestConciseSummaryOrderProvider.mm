@@ -2,18 +2,18 @@
 - (id)leadingSummaryPlatterViewConfigureIfNecessary;
 - (void)_updateSummaryContentProvider;
 - (void)_updateSummaryPlatterView;
-- (void)setDeviceAuthenticated:(BOOL)a3;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
 @end
 
 @implementation NCNotificationDigestConciseSummaryOrderProvider
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
+  authenticatedCopy = authenticated;
   v5.receiver = self;
   v5.super_class = NCNotificationDigestConciseSummaryOrderProvider;
   [(NCNotificationSummaryOrderProvider *)&v5 setDeviceAuthenticated:?];
-  [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setDeviceAuthenticated:v3];
+  [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setDeviceAuthenticated:authenticatedCopy];
   [(NCNotificationSummaryOrderProvider *)self configureSummaryContentDisplaying:self->_summaryPlatterView withSummaryContentProviding:self->_summaryContentProvider];
 }
 
@@ -28,12 +28,12 @@
 
     [(NCNotificationSummaryPlatterView *)self->_summaryPlatterView setFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v6 = self->_summaryPlatterView;
-    v7 = [(NCNotificationSummaryOrderProvider *)self materialGroupNameBase];
-    [(PLPlatterView *)v6 setMaterialGroupNameBase:v7];
+    materialGroupNameBase = [(NCNotificationSummaryOrderProvider *)self materialGroupNameBase];
+    [(PLPlatterView *)v6 setMaterialGroupNameBase:materialGroupNameBase];
 
     v8 = self->_summaryPlatterView;
-    v9 = [(NCNotificationSummaryOrderProvider *)self summaryPlatterViewTapGestureRecognizer];
-    [(NCNotificationSummaryPlatterView *)v8 addGestureRecognizer:v9];
+    summaryPlatterViewTapGestureRecognizer = [(NCNotificationSummaryOrderProvider *)self summaryPlatterViewTapGestureRecognizer];
+    [(NCNotificationSummaryPlatterView *)v8 addGestureRecognizer:summaryPlatterViewTapGestureRecognizer];
 
     [(NCNotificationDigestConciseSummaryOrderProvider *)self _updateSummaryPlatterView];
     summaryPlatterView = self->_summaryPlatterView;
@@ -44,25 +44,25 @@
 
 - (void)_updateSummaryPlatterView
 {
-  v3 = [(NCNotificationDigestConciseSummaryOrderProvider *)self leadingSummaryPlatterViewConfigureIfNecessary];
+  leadingSummaryPlatterViewConfigureIfNecessary = [(NCNotificationDigestConciseSummaryOrderProvider *)self leadingSummaryPlatterViewConfigureIfNecessary];
   [(NCNotificationDigestConciseSummaryOrderProvider *)self _updateSummaryContentProvider];
   [(NCNotificationSummaryOrderProvider *)self configureSummaryContentDisplaying:self->_summaryPlatterView withSummaryContentProviding:self->_summaryContentProvider];
-  v4 = [(NCNotificationSummaryOrderProvider *)self delegate];
-  [v4 notificationSummaryOrderProviderRequestsReloadingLeadingSummaryPlatterView:self];
+  delegate = [(NCNotificationSummaryOrderProvider *)self delegate];
+  [delegate notificationSummaryOrderProviderRequestsReloadingLeadingSummaryPlatterView:self];
 }
 
 - (void)_updateSummaryContentProvider
 {
-  v12 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
-  v3 = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
-  v4 = [v3 viewFlattenedGroups];
+  cachedOrderedNotificationGroupLists = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
+  userNotificationDigest = [(NCNotificationDigestSummaryOrderProvider *)self userNotificationDigest];
+  viewFlattenedGroups = [userNotificationDigest viewFlattenedGroups];
 
-  v5 = [(NCNotificationSummaryOrderProvider *)self orderedNotificationGroupLists:v12 forATXUserNotificationDigestNotificationGroup:v4 orderGroupNotifications:0];
+  v5 = [(NCNotificationSummaryOrderProvider *)self orderedNotificationGroupLists:cachedOrderedNotificationGroupLists forATXUserNotificationDigestNotificationGroup:viewFlattenedGroups orderGroupNotifications:0];
   if (![v5 count])
   {
-    v6 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
+    cachedOrderedNotificationGroupLists2 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
 
-    v5 = v6;
+    v5 = cachedOrderedNotificationGroupLists2;
   }
 
   if ([v5 count])
@@ -74,8 +74,8 @@
 
     [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setDeviceAuthenticated:[(NCNotificationSummaryOrderProvider *)self isDeviceAuthenticated]];
     v10 = self->_summaryContentProvider;
-    v11 = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
-    [(NCNotificationSummaryContentProvider *)v10 setSummaryTitle:v11];
+    summaryHeading = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
+    [(NCNotificationSummaryContentProvider *)v10 setSummaryTitle:summaryHeading];
   }
 
   else

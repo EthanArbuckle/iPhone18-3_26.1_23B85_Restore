@@ -1,37 +1,37 @@
 @interface HDQuantitySeriesBuilderTaskServer
-- (HDQuantitySeriesBuilderTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDQuantitySeriesBuilderTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (int64_t)state;
-- (uint64_t)_queue_insertQuantitySeries:(void *)a3 series:(int)a4 forceInsert:(void *)a5 error:;
-- (uint64_t)_queue_isStateInAllowedStates:(void *)a3 description:(uint64_t)a4 error:;
-- (void)_queue_discardWithCompletion:(uint64_t)a1;
-- (void)_queue_finishSeriesWithMetadata:(void *)a3 endDate:(void *)a4 completion:;
-- (void)_queue_insertQuantitySeries:(void *)a3 completion:;
-- (void)remote_discardWithCompletion:(id)a3;
-- (void)remote_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 finalSeries:(id)a5 completion:(id)a6;
-- (void)remote_insertQuantitySeries:(id)a3 completion:(id)a4;
+- (uint64_t)_queue_insertQuantitySeries:(void *)series series:(int)a4 forceInsert:(void *)insert error:;
+- (uint64_t)_queue_isStateInAllowedStates:(void *)states description:(uint64_t)description error:;
+- (void)_queue_discardWithCompletion:(uint64_t)completion;
+- (void)_queue_finishSeriesWithMetadata:(void *)metadata endDate:(void *)date completion:;
+- (void)_queue_insertQuantitySeries:(void *)series completion:;
+- (void)remote_discardWithCompletion:(id)completion;
+- (void)remote_finishSeriesWithMetadata:(id)metadata endDate:(id)date finalSeries:(id)series completion:(id)completion;
+- (void)remote_insertQuantitySeries:(id)series completion:(id)completion;
 @end
 
 @implementation HDQuantitySeriesBuilderTaskServer
 
-- (HDQuantitySeriesBuilderTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDQuantitySeriesBuilderTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDQuantitySeriesBuilderTaskServer;
-  v12 = [(HDStandardTaskServer *)&v17 initWithUUID:a3 configuration:v11 client:a5 delegate:a6];
+  v12 = [(HDStandardTaskServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v12)
   {
     v13 = HKCreateSerialDispatchQueue();
     queue = v12->_queue;
     v12->_queue = v13;
 
-    if (!v11)
+    if (!configurationCopy)
     {
       v15 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v12->_configuration, a4);
+    objc_storeStrong(&v12->_configuration, configuration);
     v12->_state = 0;
   }
 
@@ -41,113 +41,113 @@ LABEL_6:
   return v15;
 }
 
-- (void)remote_insertQuantitySeries:(id)a3 completion:(id)a4
+- (void)remote_insertQuantitySeries:(id)series completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  seriesCopy = series;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HDQuantitySeriesBuilderTaskServer_remote_insertQuantitySeries_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = seriesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = seriesCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_insertQuantitySeries:(void *)a3 completion:
+- (void)_queue_insertQuantitySeries:(void *)series completion:
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  seriesCopy = series;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(self + 40));
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_283CB3B88, &unk_283CB3BA0, &unk_283CB3BB8, 0}];
     v35 = 0;
-    v8 = [(HDQuantitySeriesBuilderTaskServer *)a1 _queue_isStateInAllowedStates:v7 description:@"insert" error:&v35];
+    v8 = [(HDQuantitySeriesBuilderTaskServer *)self _queue_isStateInAllowedStates:v7 description:@"insert" error:&v35];
     v9 = v35;
     v10 = v9;
     if (v8)
     {
-      if (*(a1 + 56))
+      if (*(self + 56))
       {
-        v11 = *(a1 + 48);
+        v11 = *(self + 48);
         v30 = v9;
-        v12 = [(HDQuantitySeriesBuilderTaskServer *)a1 _queue_insertQuantitySeries:v5 series:v11 forceInsert:0 error:&v30];
+        v12 = [(HDQuantitySeriesBuilderTaskServer *)self _queue_insertQuantitySeries:v5 series:v11 forceInsert:0 error:&v30];
         v13 = v30;
 
-        v6[2](v6, v12, v13);
+        seriesCopy[2](seriesCopy, v12, v13);
         v10 = v13;
       }
 
       else
       {
         v14 = MEMORY[0x277CCD7E8];
-        v15 = [*(a1 + 88) quantityType];
-        v16 = [v15 canonicalUnit];
-        v17 = [v5 values];
-        v18 = [v17 firstObject];
-        [v18 value];
-        v19 = [v14 quantityWithUnit:v16 doubleValue:?];
+        quantityType = [*(self + 88) quantityType];
+        canonicalUnit = [quantityType canonicalUnit];
+        values = [v5 values];
+        firstObject = [values firstObject];
+        [firstObject value];
+        v19 = [v14 quantityWithUnit:canonicalUnit doubleValue:?];
 
         v20 = MEMORY[0x277CCD800];
-        v21 = [*(a1 + 88) quantityType];
-        v22 = [*(a1 + 88) startDate];
-        v23 = [*(a1 + 88) device];
-        v24 = [v20 _unfrozenQuantitySampleWithQuantityType:v21 quantity:v19 startDate:v22 device:v23];
+        quantityType2 = [*(self + 88) quantityType];
+        startDate = [*(self + 88) startDate];
+        device = [*(self + 88) device];
+        v24 = [v20 _unfrozenQuantitySampleWithQuantityType:quantityType2 quantity:v19 startDate:startDate device:device];
 
-        objc_storeStrong((a1 + 48), v24);
-        *(a1 + 56) = 1;
-        v25 = [a1 delegate];
-        v26 = [v25 sampleSavingDelegate];
+        objc_storeStrong((self + 48), v24);
+        *(self + 56) = 1;
+        delegate = [self delegate];
+        sampleSavingDelegate = [delegate sampleSavingDelegate];
         v36[0] = v24;
         v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __76__HDQuantitySeriesBuilderTaskServer__queue_insertQuantitySeries_completion___block_invoke;
         v31[3] = &unk_278624278;
-        v31[4] = a1;
-        v34 = v6;
+        v31[4] = self;
+        v34 = seriesCopy;
         v32 = v5;
         v33 = v24;
         v28 = v24;
-        [v26 saveSamples:v27 databaseAssertion:0 withCompletion:v31];
+        [sampleSavingDelegate saveSamples:v27 databaseAssertion:0 withCompletion:v31];
       }
     }
 
     else
     {
-      v6[2](v6, 0, v9);
+      seriesCopy[2](seriesCopy, 0, v9);
     }
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 finalSeries:(id)a5 completion:(id)a6
+- (void)remote_finishSeriesWithMetadata:(id)metadata endDate:(id)date finalSeries:(id)series completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  dateCopy = date;
+  seriesCopy = series;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__HDQuantitySeriesBuilderTaskServer_remote_finishSeriesWithMetadata_endDate_finalSeries_completion___block_invoke;
   block[3] = &unk_278621AA0;
-  v20 = v12;
-  v21 = self;
-  v23 = v11;
-  v24 = v13;
-  v22 = v10;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
-  v18 = v12;
+  v20 = seriesCopy;
+  selfCopy = self;
+  v23 = dateCopy;
+  v24 = completionCopy;
+  v22 = metadataCopy;
+  v15 = dateCopy;
+  v16 = metadataCopy;
+  v17 = completionCopy;
+  v18 = seriesCopy;
   dispatch_async(queue, block);
 }
 
@@ -211,39 +211,39 @@ void __100__HDQuantitySeriesBuilderTaskServer_remote_finishSeriesWithMetadata_en
   }
 }
 
-- (void)_queue_finishSeriesWithMetadata:(void *)a3 endDate:(void *)a4 completion:
+- (void)_queue_finishSeriesWithMetadata:(void *)metadata endDate:(void *)date completion:
 {
   v55[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  metadataCopy = metadata;
+  dateCopy = date;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(self + 40));
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_283CB3BA0, &unk_283CB3BB8, &unk_283CB3BD0, 0}];
     v54 = 0;
-    v11 = [(HDQuantitySeriesBuilderTaskServer *)a1 _queue_isStateInAllowedStates:v10 description:@"finish" error:&v54];
+    v11 = [(HDQuantitySeriesBuilderTaskServer *)self _queue_isStateInAllowedStates:v10 description:@"finish" error:&v54];
     v12 = v54;
     v13 = v54;
     v14 = v13;
-    v15 = *(a1 + 56);
+    v15 = *(self + 56);
     if ((v11 & 1) == 0)
     {
       if (!v15)
       {
-        *(a1 + 56) = 9;
-        objc_storeStrong((a1 + 72), v12);
+        *(self + 56) = 9;
+        objc_storeStrong((self + 72), v12);
       }
 
-      v9[2](v9, 0, v14);
+      dateCopy[2](dateCopy, 0, v14);
       goto LABEL_8;
     }
 
-    *(a1 + 56) = 8;
+    *(self + 56) = 8;
     if (v15 == 1)
     {
-      *(a1 + 56) = 6;
-      objc_initWeak(&location, a1);
+      *(self + 56) = 6;
+      objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __88__HDQuantitySeriesBuilderTaskServer__queue_finishSeriesWithMetadata_endDate_completion___block_invoke;
@@ -251,11 +251,11 @@ void __100__HDQuantitySeriesBuilderTaskServer_remote_finishSeriesWithMetadata_en
       objc_copyWeak(&v52, &location);
       v7 = v7;
       v49 = v7;
-      v50 = v8;
-      v51 = v9;
+      v50 = metadataCopy;
+      v51 = dateCopy;
       v16 = _Block_copy(aBlock);
-      v17 = *(a1 + 80);
-      *(a1 + 80) = v16;
+      v17 = *(self + 80);
+      *(self + 80) = v16;
 
       objc_destroyWeak(&v52);
       objc_destroyWeak(&location);
@@ -271,27 +271,27 @@ LABEL_8:
       goto LABEL_13;
     }
 
-    v20 = [a1 client];
-    v21 = [v20 configuration];
-    v22 = [v21 applicationSDKVersionToken];
+    client = [self client];
+    configuration = [client configuration];
+    applicationSDKVersionToken = [configuration applicationSDKVersionToken];
 
     if ((dyld_version_token_at_least() & 1) == 0)
     {
-      v29 = [v19 hk_copyWithoutPrivateMetadataKeys];
+      hk_copyWithoutPrivateMetadataKeys = [v19 hk_copyWithoutPrivateMetadataKeys];
 
-      v30 = v29;
+      v30 = hk_copyWithoutPrivateMetadataKeys;
       v28 = 1;
       goto LABEL_17;
     }
 
-    v23 = [a1 client];
-    v24 = [v23 entitlements];
-    v25 = v8;
-    v26 = [v24 hasPrivateMetadataAccess];
+    client2 = [self client];
+    entitlements = [client2 entitlements];
+    v25 = metadataCopy;
+    hasPrivateMetadataAccess = [entitlements hasPrivateMetadataAccess];
 
-    v27 = v26;
-    v8 = v25;
-    if (![v19 hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:v27 applicationSDKVersionToken:v22 error:&v47])
+    v27 = hasPrivateMetadataAccess;
+    metadataCopy = v25;
+    if (![v19 hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:v27 applicationSDKVersionToken:applicationSDKVersionToken error:&v47])
     {
       v28 = 0;
     }
@@ -302,53 +302,53 @@ LABEL_13:
       v28 = 1;
     }
 
-    v29 = v19;
+    hk_copyWithoutPrivateMetadataKeys = v19;
 LABEL_17:
 
-    v7 = v29;
+    v7 = hk_copyWithoutPrivateMetadataKeys;
     v31 = v47;
 
     if (v28)
     {
-      v32 = [a1 profile];
-      v33 = [v32 dataManager];
-      v34 = [v33 quantitySeriesManager];
-      v35 = *(a1 + 48);
+      profile = [self profile];
+      dataManager = [profile dataManager];
+      quantitySeriesManager = [dataManager quantitySeriesManager];
+      v35 = *(self + 48);
       v46 = v31;
-      v44 = v8;
-      v36 = [v34 freezeSeries:v35 metadata:v7 endDate:v8 error:&v46];
+      v44 = metadataCopy;
+      v36 = [quantitySeriesManager freezeSeries:v35 metadata:v7 endDate:metadataCopy error:&v46];
       v14 = v46;
 
       if (v36)
       {
         v37 = v14;
-        v38 = [v36 frozenIdentifier];
+        frozenIdentifier = [v36 frozenIdentifier];
 
-        if (v38)
+        if (frozenIdentifier)
         {
-          v39 = [v36 frozenIdentifier];
-          v40 = [a1 profile];
+          frozenIdentifier2 = [v36 frozenIdentifier];
+          profile2 = [self profile];
           v45 = v37;
-          v41 = [(HDDataEntity *)HDQuantitySampleSeriesEntity objectWithUUID:v39 encodingOptions:0 profile:v40 error:&v45];
+          v41 = [(HDDataEntity *)HDQuantitySampleSeriesEntity objectWithUUID:frozenIdentifier2 encodingOptions:0 profile:profile2 error:&v45];
           v14 = v45;
 
           if (v41)
           {
             v55[0] = v41;
             v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
-            (v9)[2](v9, v42, 0);
+            (dateCopy)[2](dateCopy, v42, 0);
           }
 
           else
           {
-            v9[2](v9, 0, v14);
+            dateCopy[2](dateCopy, 0, v14);
           }
         }
 
         else
         {
-          v43 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-          v9[2](v9, 0, v43);
+          hk_protectedDataInaccessibilityError = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+          dateCopy[2](dateCopy, 0, hk_protectedDataInaccessibilityError);
 
           v14 = v37;
         }
@@ -356,15 +356,15 @@ LABEL_17:
 
       else
       {
-        v9[2](v9, 0, v14);
+        dateCopy[2](dateCopy, 0, v14);
       }
 
-      v8 = v44;
+      metadataCopy = v44;
     }
 
     else
     {
-      v9[2](v9, 0, v31);
+      dateCopy[2](dateCopy, 0, v31);
       v14 = v31;
     }
 
@@ -376,38 +376,38 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_discardWithCompletion:(id)a3
+- (void)remote_discardWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HDQuantitySeriesBuilderTaskServer_remote_discardWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_discardWithCompletion:(uint64_t)a1
+- (void)_queue_discardWithCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(completion + 40));
     v4 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_283CB3B88, &unk_283CB3BA0, &unk_283CB3BB8, &unk_283CB3BE8, 0}];
     v22 = 0;
-    v5 = [(HDQuantitySeriesBuilderTaskServer *)a1 _queue_isStateInAllowedStates:v4 description:@"discard" error:&v22];
+    v5 = [(HDQuantitySeriesBuilderTaskServer *)completion _queue_isStateInAllowedStates:v4 description:@"discard" error:&v22];
     v6 = v22;
     if (v5)
     {
-      v7 = *(a1 + 56);
-      *(a1 + 56) = 5;
+      v7 = *(completion + 56);
+      *(completion + 56) = 5;
       if (v7 == 1)
       {
-        *(a1 + 56) = 3;
-        objc_initWeak(&location, a1);
+        *(completion + 56) = 3;
+        objc_initWeak(&location, completion);
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __66__HDQuantitySeriesBuilderTaskServer__queue_discardWithCompletion___block_invoke;
@@ -415,8 +415,8 @@ LABEL_9:
         objc_copyWeak(&v20, &location);
         v19 = v3;
         v8 = _Block_copy(aBlock);
-        v9 = *(a1 + 80);
-        *(a1 + 80) = v8;
+        v9 = *(completion + 80);
+        *(completion + 80) = v8;
 
         objc_destroyWeak(&v20);
         objc_destroyWeak(&location);
@@ -424,15 +424,15 @@ LABEL_9:
 
       else if (v7)
       {
-        v10 = *(a1 + 48);
-        *(a1 + 48) = 0;
+        v10 = *(completion + 48);
+        *(completion + 48) = 0;
         v11 = v10;
 
-        v12 = [a1 profile];
-        v13 = [v12 dataManager];
-        v14 = [v13 quantitySeriesManager];
+        profile = [completion profile];
+        dataManager = [profile dataManager];
+        quantitySeriesManager = [dataManager quantitySeriesManager];
         v17 = v6;
-        v15 = [v14 discardSeries:v11 error:&v17];
+        v15 = [quantitySeriesManager discardSeries:v11 error:&v17];
         v16 = v17;
 
         (*(v3 + 2))(v3, v15, v16);
@@ -472,22 +472,22 @@ LABEL_9:
   return v4;
 }
 
-- (uint64_t)_queue_isStateInAllowedStates:(void *)a3 description:(uint64_t)a4 error:
+- (uint64_t)_queue_isStateInAllowedStates:(void *)states description:(uint64_t)description error:
 {
   v7 = a2;
-  v8 = a3;
-  dispatch_assert_queue_V2(*(a1 + 40));
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 56)];
+  statesCopy = states;
+  dispatch_assert_queue_V2(*(self + 40));
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 56)];
   v10 = [v7 containsObject:v9];
 
   if ((v10 & 1) == 0)
   {
     v11 = [v7 hk_map:&__block_literal_global_141];
     v12 = MEMORY[0x277CCACA8];
-    v13 = NSStringFromHDQuantitySeriesBuilderTaskServerState(*(a1 + 56));
-    v14 = [v12 stringWithFormat:@"Current state %@ is not in allowed state(s) %@ for action %@", v13, v11, v8];
+    v13 = NSStringFromHDQuantitySeriesBuilderTaskServerState(*(self + 56));
+    statesCopy = [v12 stringWithFormat:@"Current state %@ is not in allowed state(s) %@ for action %@", v13, v11, statesCopy];
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:v14 underlyingError:*(a1 + 72)];
+    [MEMORY[0x277CCA9B8] hk_assignError:description code:3 description:statesCopy underlyingError:*(self + 72)];
   }
 
   return v10;
@@ -584,34 +584,34 @@ LABEL_14:
   v12();
 }
 
-- (uint64_t)_queue_insertQuantitySeries:(void *)a3 series:(int)a4 forceInsert:(void *)a5 error:
+- (uint64_t)_queue_insertQuantitySeries:(void *)series series:(int)a4 forceInsert:(void *)insert error:
 {
   v9 = a2;
-  v10 = a3;
-  if (!a1)
+  seriesCopy = series;
+  if (!self)
   {
     v20 = 0;
     goto LABEL_20;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 40));
-  v11 = *(a1 + 56);
+  dispatch_assert_queue_V2(*(self + 40));
+  v11 = *(self + 56);
   if (v11 != 2)
   {
     if (v11 == 1)
     {
-      v12 = *(a1 + 64);
+      v12 = *(self + 64);
       if (!v12)
       {
         v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v14 = *(a1 + 64);
-        *(a1 + 64) = v13;
+        v14 = *(self + 64);
+        *(self + 64) = v13;
 
-        v12 = *(a1 + 64);
+        v12 = *(self + 64);
       }
 
-      v15 = [v9 values];
-      [v12 addObjectsFromArray:v15];
+      values = [v9 values];
+      [v12 addObjectsFromArray:values];
 
       goto LABEL_11;
     }
@@ -624,42 +624,42 @@ LABEL_11:
     }
   }
 
-  v16 = *(a1 + 64);
-  if (v16 && ([v9 values], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "addObjectsFromArray:", v17), v17, (v18 = *(a1 + 64)) != 0))
+  v16 = *(self + 64);
+  if (v16 && ([v9 values], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "addObjectsFromArray:", v17), v17, (v18 = *(self + 64)) != 0))
   {
-    v19 = v18;
+    values2 = v18;
   }
 
   else
   {
-    v19 = [v9 values];
+    values2 = [v9 values];
   }
 
-  v21 = v19;
-  v22 = *(a1 + 64);
-  *(a1 + 64) = 0;
+  v21 = values2;
+  v22 = *(self + 64);
+  *(self + 64) = 0;
 
-  v23 = [a1 profile];
-  v24 = [v23 dataManager];
-  v25 = [v24 quantitySeriesManager];
+  profile = [self profile];
+  dataManager = [profile dataManager];
+  quantitySeriesManager = [dataManager quantitySeriesManager];
   v32 = 0;
-  v20 = [v25 insertValues:v21 series:v10 error:&v32];
+  v20 = [quantitySeriesManager insertValues:v21 series:seriesCopy error:&v32];
   v26 = v32;
 
   if ((v20 & 1) == 0)
   {
-    *(a1 + 56) = 9;
+    *(self + 56) = 9;
     v27 = [v26 copy];
-    v28 = *(a1 + 72);
-    *(a1 + 72) = v27;
+    v28 = *(self + 72);
+    *(self + 72) = v27;
 
     v29 = v26;
     if (v29)
     {
-      if (a5)
+      if (insert)
       {
         v30 = v29;
-        *a5 = v29;
+        *insert = v29;
       }
 
       else

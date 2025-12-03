@@ -1,35 +1,35 @@
 @interface HKBloodPressureClassificationUtilities
-+ (id)localizedStringForAxisAnnotationAboveLowerBoundValue:(double)a3;
-+ (id)localizedStringForAxisAnnotationBelowUpperBoundValue:(double)a3;
-+ (id)localizedStringForAxisAnnotationRangeRelationship:(int64_t)a3;
-+ (id)localizedStringForBloodPressureClassificationCategoryInfographicDescription:(id)a3;
-+ (id)localizedStringForBloodPressureClassificationCategoryInfographicTitle:(id)a3;
-+ (id)localizedStringForBloodPressureClassificationCategoryTitle:(id)a3;
-+ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicDescription:(int64_t)a3;
-+ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicReference:(int64_t)a3;
-+ (id)localizedStringForBloodPressureClassificationGuidelinesName:(int64_t)a3 abbreviated:(BOOL)a4;
-+ (id)localizedStringForBloodPressureClassificationGuidelinesPreference:(int64_t)a3;
-+ (id)metricColorsForCategory:(id)a3;
++ (id)localizedStringForAxisAnnotationAboveLowerBoundValue:(double)value;
++ (id)localizedStringForAxisAnnotationBelowUpperBoundValue:(double)value;
++ (id)localizedStringForAxisAnnotationRangeRelationship:(int64_t)relationship;
++ (id)localizedStringForBloodPressureClassificationCategoryInfographicDescription:(id)description;
++ (id)localizedStringForBloodPressureClassificationCategoryInfographicTitle:(id)title;
++ (id)localizedStringForBloodPressureClassificationCategoryTitle:(id)title;
++ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicDescription:(int64_t)description;
++ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicReference:(int64_t)reference;
++ (id)localizedStringForBloodPressureClassificationGuidelinesName:(int64_t)name abbreviated:(BOOL)abbreviated;
++ (id)localizedStringForBloodPressureClassificationGuidelinesPreference:(int64_t)preference;
++ (id)metricColorsForCategory:(id)category;
 @end
 
 @implementation HKBloodPressureClassificationUtilities
 
-+ (id)localizedStringForBloodPressureClassificationCategoryTitle:(id)a3
++ (id)localizedStringForBloodPressureClassificationCategoryTitle:(id)title
 {
-  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_TITLE_%@" stringByReplacingOccurrencesOfString:@"%@" withString:a3];
+  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_TITLE_%@" stringByReplacingOccurrencesOfString:@"%@" withString:title];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:v3 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chutney"];
 
   return v5;
 }
 
-+ (id)localizedStringForBloodPressureClassificationGuidelinesName:(int64_t)a3 abbreviated:(BOOL)a4
++ (id)localizedStringForBloodPressureClassificationGuidelinesName:(int64_t)name abbreviated:(BOOL)abbreviated
 {
-  v4 = a4;
+  abbreviatedCopy = abbreviated;
   v5 = HKBloodPressureClassificationGuidelinesIdentifierForGuidelines();
   if (v5)
   {
-    if (v4)
+    if (abbreviatedCopy)
     {
       v6 = @"BLOOD_PRESSURE_CLASSIFICATION_GUIDELINES_NAME_ABBREVIATION_%@";
     }
@@ -52,7 +52,7 @@
   return v9;
 }
 
-+ (id)localizedStringForBloodPressureClassificationGuidelinesPreference:(int64_t)a3
++ (id)localizedStringForBloodPressureClassificationGuidelinesPreference:(int64_t)preference
 {
   v3 = HKBloodPressureClassificationGuidelinesIdentifierForGuidelines();
   if (v3)
@@ -70,7 +70,7 @@
   return v6;
 }
 
-+ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicDescription:(int64_t)a3
++ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicDescription:(int64_t)description
 {
   v3 = HKBloodPressureClassificationGuidelinesIdentifierForGuidelines();
   if (v3)
@@ -88,25 +88,25 @@
   return v6;
 }
 
-+ (id)localizedStringForBloodPressureClassificationCategoryInfographicTitle:(id)a3
++ (id)localizedStringForBloodPressureClassificationCategoryInfographicTitle:(id)title
 {
-  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_CATEGORY_INFOGRAPHIC_TITLE_%@" stringByReplacingOccurrencesOfString:@"%@" withString:a3];
+  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_CATEGORY_INFOGRAPHIC_TITLE_%@" stringByReplacingOccurrencesOfString:@"%@" withString:title];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:v3 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chutney"];
 
   return v5;
 }
 
-+ (id)localizedStringForBloodPressureClassificationCategoryInfographicDescription:(id)a3
++ (id)localizedStringForBloodPressureClassificationCategoryInfographicDescription:(id)description
 {
-  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_CATEGORY_INFOGRAPHIC_DESCRIPTION_%@" stringByReplacingOccurrencesOfString:@"%@" withString:a3];
+  v3 = [@"BLOOD_PRESSURE_CLASSIFICATION_CATEGORY_INFOGRAPHIC_DESCRIPTION_%@" stringByReplacingOccurrencesOfString:@"%@" withString:description];
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:v3 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chutney"];
 
   return v5;
 }
 
-+ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicReference:(int64_t)a3
++ (id)localizedStringForBloodPressureClassificationGuidelinesInfographicReference:(int64_t)reference
 {
   v3 = HKBloodPressureClassificationGuidelinesIdentifierForGuidelines();
   if (v3)
@@ -124,35 +124,35 @@
   return v6;
 }
 
-+ (id)localizedStringForAxisAnnotationAboveLowerBoundValue:(double)a3
++ (id)localizedStringForAxisAnnotationAboveLowerBoundValue:(double)value
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"BLOOD_PRESSURE_CLASSIFICATION_OVERLAY_AXIS_ANNOTATION_LOWER_BOUND_%.0f" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chutney"];
-  v7 = [v4 initWithFormat:v6, *&a3];
+  v7 = [v4 initWithFormat:v6, *&value];
 
   return v7;
 }
 
-+ (id)localizedStringForAxisAnnotationBelowUpperBoundValue:(double)a3
++ (id)localizedStringForAxisAnnotationBelowUpperBoundValue:(double)value
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"BLOOD_PRESSURE_CLASSIFICATION_OVERLAY_AXIS_ANNOTATION_UPPER_BOUND_%.0f" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Chutney"];
-  v7 = [v4 initWithFormat:v6, *&a3];
+  v7 = [v4 initWithFormat:v6, *&value];
 
   return v7;
 }
 
-+ (id)localizedStringForAxisAnnotationRangeRelationship:(int64_t)a3
++ (id)localizedStringForAxisAnnotationRangeRelationship:(int64_t)relationship
 {
-  if (!a3)
+  if (!relationship)
   {
     v3 = @"BLOOD_PRESSURE_CLASSIFICATION_AXIS_ANNOTATION_RANGE_RELATIONSHIP_AND";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (relationship == 1)
   {
     v3 = @"BLOOD_PRESSURE_CLASSIFICATION_AXIS_ANNOTATION_RANGE_RELATIONSHIP_OR";
 LABEL_5:
@@ -168,10 +168,10 @@ LABEL_7:
   return v5;
 }
 
-+ (id)metricColorsForCategory:(id)a3
++ (id)metricColorsForCategory:(id)category
 {
-  v3 = a3;
-  if (([v3 isEqualToString:*MEMORY[0x1E696B528]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E696B520]) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E696B530]))
+  categoryCopy = category;
+  if (([categoryCopy isEqualToString:*MEMORY[0x1E696B528]] & 1) != 0 || (objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E696B520]) & 1) != 0 || objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E696B530]))
   {
     v4 = +[HKUIMetricColors pregnancyColors];
   }

@@ -1,18 +1,18 @@
 @interface GKOnboardingFriendsSuggestionsViewController
-- (GKOnboardingFriendsSuggestionsViewController)initWithGameBundleId:(id)a3;
-- (GKOnboardingFriendsSuggestionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (GKOnboardingFriendsSuggestionsViewController)initWithGameBundleId:(id)id;
+- (GKOnboardingFriendsSuggestionsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (void)loadView;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKOnboardingFriendsSuggestionsViewController
 
-- (GKOnboardingFriendsSuggestionsViewController)initWithGameBundleId:(id)a3
+- (GKOnboardingFriendsSuggestionsViewController)initWithGameBundleId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v3 = sub_24E347CF8();
   }
@@ -28,45 +28,45 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   OnboardingFriendsSuggestionsViewController.loadView()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  OnboardingFriendsSuggestionsViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  OnboardingFriendsSuggestionsViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  OnboardingFriendsSuggestionsViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  OnboardingFriendsSuggestionsViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  OnboardingFriendsSuggestionsViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  OnboardingFriendsSuggestionsViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = self;
-  OnboardingFriendsSuggestionsViewController.contentScrollView(for:)(v5, a3);
+  selfCopy = self;
+  OnboardingFriendsSuggestionsViewController.contentScrollView(for:)(v5, edge);
   v7 = v6;
 
   return v7;
 }
 
-- (GKOnboardingFriendsSuggestionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKOnboardingFriendsSuggestionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   OnboardingFriendsSuggestionsViewController.init(nibName:bundle:)();
 }
 

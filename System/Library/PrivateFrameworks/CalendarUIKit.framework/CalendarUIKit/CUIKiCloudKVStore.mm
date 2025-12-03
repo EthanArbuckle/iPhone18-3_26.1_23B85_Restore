@@ -2,11 +2,11 @@
 + (id)sharediCloudKVStore;
 - (BOOL)_canAccessiCloudKVStore;
 - (CUIKiCloudKVStore)init;
-- (void)_identityChanged:(id)a3;
-- (void)_storeDidChange:(id)a3;
+- (void)_identityChanged:(id)changed;
+- (void)_storeDidChange:(id)change;
 - (void)dealloc;
-- (void)setHasConnectedToCarBluetooth:(BOOL)a3;
-- (void)setLastCarConnectionDate:(id)a3;
+- (void)setHasConnectedToCarBluetooth:(BOOL)bluetooth;
+- (void)setLastCarConnectionDate:(id)date;
 @end
 
 @implementation CUIKiCloudKVStore
@@ -50,19 +50,19 @@ uint64_t __40__CUIKiCloudKVStore_sharediCloudKVStore__block_invoke()
     v3->_hasConnectedToCarBluetooth = 0;
     if ([objc_opt_class() _haveiCloudKVStoreEntitlement])
     {
-      v4 = [MEMORY[0x1E696AFB8] defaultStore];
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:v3 selector:sel__storeDidChange_ name:*MEMORY[0x1E696A9E8] object:v4];
+      defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel__storeDidChange_ name:*MEMORY[0x1E696A9E8] object:defaultStore];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v3 selector:sel__identityChanged_ name:*MEMORY[0x1E696A9F0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v3 selector:sel__identityChanged_ name:*MEMORY[0x1E696A9F0] object:0];
 
-      v7 = [MEMORY[0x1E696AFB8] defaultStore];
-      [v7 synchronize];
+      defaultStore2 = [MEMORY[0x1E696AFB8] defaultStore];
+      [defaultStore2 synchronize];
 
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      v9 = [v8 ubiquityIdentityToken];
-      [(CUIKiCloudKVStore *)v3 setUbiquityIdentityToken:v9];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      ubiquityIdentityToken = [defaultManager ubiquityIdentityToken];
+      [(CUIKiCloudKVStore *)v3 setUbiquityIdentityToken:ubiquityIdentityToken];
 
       [(CUIKiCloudKVStore *)v3 _storeDidChange:0];
     }
@@ -75,8 +75,8 @@ uint64_t __40__CUIKiCloudKVStore_sharediCloudKVStore__block_invoke()
 {
   if ([objc_opt_class() _haveiCloudKVStoreEntitlement])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v4.receiver = self;
@@ -84,72 +84,72 @@ uint64_t __40__CUIKiCloudKVStore_sharediCloudKVStore__block_invoke()
   [(CUIKiCloudKVStore *)&v4 dealloc];
 }
 
-- (void)setHasConnectedToCarBluetooth:(BOOL)a3
+- (void)setHasConnectedToCarBluetooth:(BOOL)bluetooth
 {
-  v3 = a3;
+  bluetoothCopy = bluetooth;
   if ([(CUIKiCloudKVStore *)self _canAccessiCloudKVStore])
   {
-    self->_hasConnectedToCarBluetooth = v3;
-    v5 = [MEMORY[0x1E696AFB8] defaultStore];
-    [v5 setBool:v3 forKey:@"HasConnectedToCarBluetoothKey"];
-    [v5 synchronize];
+    self->_hasConnectedToCarBluetooth = bluetoothCopy;
+    defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
+    [defaultStore setBool:bluetoothCopy forKey:@"HasConnectedToCarBluetoothKey"];
+    [defaultStore synchronize];
   }
 }
 
-- (void)setLastCarConnectionDate:(id)a3
+- (void)setLastCarConnectionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   lastCarConnectionDate = self->_lastCarConnectionDate;
-  v10 = v5;
+  v10 = dateCopy;
   if (lastCarConnectionDate)
   {
-    v7 = [(NSDate *)lastCarConnectionDate isEqualToDate:v5];
+    v7 = [(NSDate *)lastCarConnectionDate isEqualToDate:dateCopy];
   }
 
   else
   {
-    v7 = v5 == 0;
+    v7 = dateCopy == 0;
   }
 
   if ([(CUIKiCloudKVStore *)self _canAccessiCloudKVStore]&& !v7)
   {
-    objc_storeStrong(&self->_lastCarConnectionDate, a3);
-    v8 = [MEMORY[0x1E696AFB8] defaultStore];
-    v9 = v8;
+    objc_storeStrong(&self->_lastCarConnectionDate, date);
+    defaultStore = [MEMORY[0x1E696AFB8] defaultStore];
+    v9 = defaultStore;
     if (v10)
     {
-      [v8 setObject:v10 forKey:@"LastCarConnectionDate"];
+      [defaultStore setObject:v10 forKey:@"LastCarConnectionDate"];
     }
 
     else
     {
-      [v8 removeObjectForKey:@"LastCarConnectionDate"];
+      [defaultStore removeObjectForKey:@"LastCarConnectionDate"];
     }
 
     [v9 synchronize];
   }
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
-  v4 = [(CUIKiCloudKVStore *)self ubiquityIdentityToken];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 ubiquityIdentityToken];
-  v7 = [v4 isEqual:v6];
+  ubiquityIdentityToken = [(CUIKiCloudKVStore *)self ubiquityIdentityToken];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  ubiquityIdentityToken2 = [defaultManager ubiquityIdentityToken];
+  v7 = [ubiquityIdentityToken isEqual:ubiquityIdentityToken2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 ubiquityIdentityToken];
-    [(CUIKiCloudKVStore *)self setUbiquityIdentityToken:v9];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    ubiquityIdentityToken3 = [defaultManager2 ubiquityIdentityToken];
+    [(CUIKiCloudKVStore *)self setUbiquityIdentityToken:ubiquityIdentityToken3];
 
     self->_hasConnectedToCarBluetooth = 0;
     lastCarConnectionDate = self->_lastCarConnectionDate;
     self->_lastCarConnectionDate = 0;
 
-    v11 = [(CUIKiCloudKVStore *)self ubiquityIdentityToken];
+    ubiquityIdentityToken4 = [(CUIKiCloudKVStore *)self ubiquityIdentityToken];
 
-    if (v11)
+    if (ubiquityIdentityToken4)
     {
 
       [(CUIKiCloudKVStore *)self _storeDidChange:0];
@@ -157,12 +157,12 @@ uint64_t __40__CUIKiCloudKVStore_sharediCloudKVStore__block_invoke()
   }
 }
 
-- (void)_storeDidChange:(id)a3
+- (void)_storeDidChange:(id)change
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (!changeCopy)
   {
     v28 = 0;
     v10 = *MEMORY[0x1E696A9E0];
@@ -171,25 +171,25 @@ uint64_t __40__CUIKiCloudKVStore_sharediCloudKVStore__block_invoke()
     v38 = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
     v39[0] = v11;
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
+    userInfo = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
 
     goto LABEL_6;
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E696A9D8]];
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E696A9D8]];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
-    if (v9 <= 1)
+    if (integerValue <= 1)
     {
       v28 = v5;
       v10 = *MEMORY[0x1E696A9E0];
 LABEL_6:
-      v27 = v6;
-      v12 = [v6 objectForKey:v10];
+      v27 = userInfo;
+      v12 = [userInfo objectForKey:v10];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
@@ -217,8 +217,8 @@ LABEL_6:
           v19 = *(*(&v30 + 1) + 8 * i);
           if ([v19 isEqualToString:@"HasConnectedToCarBluetoothKey"])
           {
-            v20 = [*(v16 + 4024) defaultStore];
-            self->_hasConnectedToCarBluetooth = [v20 BOOLForKey:@"HasConnectedToCarBluetoothKey"];
+            defaultStore = [*(v16 + 4024) defaultStore];
+            self->_hasConnectedToCarBluetooth = [defaultStore BOOLForKey:@"HasConnectedToCarBluetoothKey"];
           }
 
           else
@@ -228,8 +228,8 @@ LABEL_6:
               continue;
             }
 
-            v20 = [*(v16 + 4024) defaultStore];
-            v21 = [v20 objectForKey:v17];
+            defaultStore = [*(v16 + 4024) defaultStore];
+            v21 = [defaultStore objectForKey:v17];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -267,7 +267,7 @@ LABEL_6:
         {
 LABEL_25:
 
-          v6 = v27;
+          userInfo = v27;
           v5 = v28;
           break;
         }

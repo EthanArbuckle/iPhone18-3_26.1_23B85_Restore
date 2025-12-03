@@ -1,5 +1,5 @@
 @interface NSAllDescendantPathsEnumerator
-+ (id)newWithPath:(id)a3 prepend:(id)a4 attributes:(id)a5 cross:(BOOL)a6 depth:(unint64_t)a7;
++ (id)newWithPath:(id)path prepend:(id)prepend attributes:(id)attributes cross:(BOOL)cross depth:(unint64_t)depth;
 - (id)currentSubdirectoryAttributes;
 - (id)directoryAttributes;
 - (id)fileAttributes;
@@ -86,26 +86,26 @@
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = self->under;
   }
 
   while (self && self->idx);
   v3 = +[NSFileManager defaultManager];
-  pathToLastReportedItem = v2->pathToLastReportedItem;
+  pathToLastReportedItem = selfCopy->pathToLastReportedItem;
 
   return [(NSFileManager *)v3 attributesOfItemAtPath:pathToLastReportedItem error:0];
 }
 
-+ (id)newWithPath:(id)a3 prepend:(id)a4 attributes:(id)a5 cross:(BOOL)a6 depth:(unint64_t)a7
++ (id)newWithPath:(id)path prepend:(id)prepend attributes:(id)attributes cross:(BOOL)cross depth:(unint64_t)depth
 {
-  v12 = [objc_allocWithZone(a1) init];
-  *(v12 + 16) = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:a3, 0];
-  *(v12 + 32) = [a4 copyWithZone:0];
-  *(v12 + 8) = [a3 stringByAppendingString:@"/"];
-  *(v12 + 48) = a5;
-  *(v12 + 72) = a6;
-  *(v12 + 64) = a7;
+  v12 = [objc_allocWithZone(self) init];
+  *(v12 + 16) = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:path, 0];
+  *(v12 + 32) = [prepend copyWithZone:0];
+  *(v12 + 8) = [path stringByAppendingString:@"/"];
+  *(v12 + 48) = attributes;
+  *(v12 + 72) = cross;
+  *(v12 + 64) = depth;
   return v12;
 }
 
@@ -121,27 +121,27 @@
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = self->under;
   }
 
   while (self && self->idx);
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NSString *)v2->pathToLastReportedItem stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [(NSString *)selfCopy->pathToLastReportedItem stringByDeletingLastPathComponent];
 
-  return [(NSFileManager *)v3 attributesOfItemAtPath:v4 error:0];
+  return [(NSFileManager *)v3 attributesOfItemAtPath:stringByDeletingLastPathComponent error:0];
 }
 
 - (unint64_t)level
 {
   do
   {
-    v2 = self;
+    selfCopy = self;
     self = self->under;
   }
 
   while (self && self->idx);
-  return v2->depth;
+  return selfCopy->depth;
 }
 
 - (void)skipDescendants

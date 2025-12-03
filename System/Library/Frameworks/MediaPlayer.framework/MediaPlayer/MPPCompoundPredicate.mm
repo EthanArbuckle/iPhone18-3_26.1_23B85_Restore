@@ -1,23 +1,23 @@
 @interface MPPCompoundPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPredicates:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addPredicates:(id)predicates;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPCompoundPredicate
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     predicates = self->_predicates;
-    if (predicates | v4[1])
+    if (predicates | equalCopy[1])
     {
       v6 = [(NSMutableArray *)predicates isEqual:?];
     }
@@ -36,10 +36,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addPredicates:v11];
 
         ++v10;
@@ -76,29 +76,29 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(MPPCompoundPredicate *)self predicatesCount])
   {
-    [v8 clearPredicates];
-    v4 = [(MPPCompoundPredicate *)self predicatesCount];
-    if (v4)
+    [toCopy clearPredicates];
+    predicatesCount = [(MPPCompoundPredicate *)self predicatesCount];
+    if (predicatesCount)
     {
-      v5 = v4;
+      v5 = predicatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MPPCompoundPredicate *)self predicatesAtIndex:i];
-        [v8 addPredicates:v7];
+        [toCopy addPredicates:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -122,8 +122,8 @@
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = objc_alloc_init(MEMORY[0x1E69C65C0]);
         [v10 writeTo:{v11, v13}];
-        v12 = [v11 data];
-        [v4 writeData:v12 forTag:1];
+        data = [v11 data];
+        [toCopy writeData:data forTag:1];
 
         ++v9;
       }
@@ -139,7 +139,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_predicates count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_predicates, "count")}];
@@ -162,8 +162,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -172,10 +172,10 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"predicates"];
+    [dictionary setObject:v4 forKey:@"predicates"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -184,28 +184,28 @@
   v8.receiver = self;
   v8.super_class = MPPCompoundPredicate;
   v4 = [(MPPCompoundPredicate *)&v8 description];
-  v5 = [(MPPCompoundPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPCompoundPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPredicates:(id)a3
+- (void)addPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   predicates = self->_predicates;
-  v8 = v4;
+  v8 = predicatesCopy;
   if (!predicates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predicates;
     self->_predicates = v6;
 
-    v4 = v8;
+    predicatesCopy = v8;
     predicates = self->_predicates;
   }
 
-  [(NSMutableArray *)predicates addObject:v4];
+  [(NSMutableArray *)predicates addObject:predicatesCopy];
 }
 
 - (void)dealloc

@@ -1,12 +1,12 @@
 @interface _INPBSnoozeTasksIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSnoozeTasksIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSnoozeTasksIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addSnoozedTasks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSnoozedTasks:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSnoozedTasks:(id)tasks;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSnoozedTasks:(id)tasks;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSnoozeTasksIntentResponse
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_snoozedTasks count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,26 +47,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"snoozedTasks"];
+    [dictionary setObject:array forKeyedSubscript:@"snoozedTasks"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
-    v6 = [v4 snoozedTasks];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    snoozedTasks = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
+    snoozedTasks2 = [equalCopy snoozedTasks];
+    v7 = snoozedTasks2;
+    if ((snoozedTasks != 0) != (snoozedTasks2 == 0))
     {
-      v8 = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
-      if (!v8)
+      snoozedTasks3 = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
+      if (!snoozedTasks3)
       {
 
 LABEL_10:
@@ -74,10 +74,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
-      v11 = [v4 snoozedTasks];
-      v12 = [v10 isEqual:v11];
+      v9 = snoozedTasks3;
+      snoozedTasks4 = [(_INPBSnoozeTasksIntentResponse *)self snoozedTasks];
+      snoozedTasks5 = [equalCopy snoozedTasks];
+      v12 = [snoozedTasks4 isEqual:snoozedTasks5];
 
       if (v12)
       {
@@ -96,43 +96,43 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSnoozeTasksIntentResponse allocWithZone:](_INPBSnoozeTasksIntentResponse init];
-  v6 = [(NSArray *)self->_snoozedTasks copyWithZone:a3];
+  v6 = [(NSArray *)self->_snoozedTasks copyWithZone:zone];
   [(_INPBSnoozeTasksIntentResponse *)v5 setSnoozedTasks:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSnoozeTasksIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSnoozeTasksIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSnoozeTasksIntentResponse)initWithCoder:(id)a3
+- (_INPBSnoozeTasksIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSnoozeTasksIntentResponse *)self initWithData:v6];
+    self = [(_INPBSnoozeTasksIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -168,27 +168,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSnoozedTasks:(id)a3
+- (void)addSnoozedTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   snoozedTasks = self->_snoozedTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!snoozedTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_snoozedTasks;
-    self->_snoozedTasks = v6;
+    self->_snoozedTasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     snoozedTasks = self->_snoozedTasks;
   }
 
-  [(NSArray *)snoozedTasks addObject:v4];
+  [(NSArray *)snoozedTasks addObject:tasksCopy];
 }
 
-- (void)setSnoozedTasks:(id)a3
+- (void)setSnoozedTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   snoozedTasks = self->_snoozedTasks;
   self->_snoozedTasks = v4;
 

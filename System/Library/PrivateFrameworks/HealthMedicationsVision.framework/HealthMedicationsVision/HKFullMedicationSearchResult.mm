@@ -1,20 +1,20 @@
 @interface HKFullMedicationSearchResult
-- (HKFullMedicationSearchResult)initWithProductId:(id)a3 packagingName:(id)a4 packagingNDC:(id)a5 productBrandName:(id)a6 productGenericName:(id)a7 route:(id)a8 doseForm:(id)a9;
+- (HKFullMedicationSearchResult)initWithProductId:(id)id packagingName:(id)name packagingNDC:(id)c productBrandName:(id)brandName productGenericName:(id)genericName route:(id)route doseForm:(id)form;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation HKFullMedicationSearchResult
 
-- (HKFullMedicationSearchResult)initWithProductId:(id)a3 packagingName:(id)a4 packagingNDC:(id)a5 productBrandName:(id)a6 productGenericName:(id)a7 route:(id)a8 doseForm:(id)a9
+- (HKFullMedicationSearchResult)initWithProductId:(id)id packagingName:(id)name packagingNDC:(id)c productBrandName:(id)brandName productGenericName:(id)genericName route:(id)route doseForm:(id)form
 {
-  v16 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  if (!v16)
+  idCopy = id;
+  nameCopy = name;
+  cCopy = c;
+  brandNameCopy = brandName;
+  genericNameCopy = genericName;
+  routeCopy = route;
+  formCopy = form;
+  if (!idCopy)
   {
     [HKFullMedicationSearchResult initWithProductId:a2 packagingName:self packagingNDC:? productBrandName:? productGenericName:? route:? doseForm:?];
   }
@@ -25,13 +25,13 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_productId, a3);
-    objc_storeStrong(&v19->_packagingName, a4);
-    objc_storeStrong(&v19->_packagingNDC, a5);
-    objc_storeStrong(&v19->_productGenericName, a7);
-    objc_storeStrong(&v19->_productBrandName, a6);
-    objc_storeStrong(&v19->_route, a8);
-    objc_storeStrong(&v19->_doseForm, a9);
+    objc_storeStrong(&v18->_productId, id);
+    objc_storeStrong(&v19->_packagingName, name);
+    objc_storeStrong(&v19->_packagingNDC, c);
+    objc_storeStrong(&v19->_productGenericName, genericName);
+    objc_storeStrong(&v19->_productBrandName, brandName);
+    objc_storeStrong(&v19->_route, route);
+    objc_storeStrong(&v19->_doseForm, form);
   }
 
   return v19;
@@ -45,8 +45,8 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = [(HKFullMedicationSearchResult *)self ingredients];
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  ingredients = [(HKFullMedicationSearchResult *)self ingredients];
+  v5 = [ingredients countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -57,25 +57,25 @@
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(ingredients);
         }
 
-        v9 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v6 = [ingredients countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v6);
   }
 
   v38[0] = @"productId";
-  v10 = [(HKFullMedicationSearchResult *)self productId];
-  v11 = v10;
-  if (v10)
+  productId = [(HKFullMedicationSearchResult *)self productId];
+  v11 = productId;
+  if (productId)
   {
-    v12 = v10;
+    v12 = productId;
   }
 
   else
@@ -85,11 +85,11 @@
 
   v39[0] = v12;
   v38[1] = @"packagingNDC";
-  v13 = [(HKFullMedicationSearchResult *)self packagingNDC];
-  v14 = v13;
-  if (v13)
+  packagingNDC = [(HKFullMedicationSearchResult *)self packagingNDC];
+  v14 = packagingNDC;
+  if (packagingNDC)
   {
-    v15 = v13;
+    v15 = packagingNDC;
   }
 
   else
@@ -99,11 +99,11 @@
 
   v39[1] = v15;
   v38[2] = @"productGenericName";
-  v16 = [(HKFullMedicationSearchResult *)self productGenericName];
-  v17 = v16;
-  if (v16)
+  productGenericName = [(HKFullMedicationSearchResult *)self productGenericName];
+  v17 = productGenericName;
+  if (productGenericName)
   {
-    v18 = v16;
+    v18 = productGenericName;
   }
 
   else
@@ -113,11 +113,11 @@
 
   v39[2] = v18;
   v38[3] = @"productBrandName";
-  v19 = [(HKFullMedicationSearchResult *)self productBrandName];
-  v20 = v19;
-  if (v19)
+  productBrandName = [(HKFullMedicationSearchResult *)self productBrandName];
+  v20 = productBrandName;
+  if (productBrandName)
   {
-    v21 = v19;
+    v21 = productBrandName;
   }
 
   else
@@ -127,11 +127,11 @@
 
   v39[3] = v21;
   v38[4] = @"packagingName";
-  v22 = [(HKFullMedicationSearchResult *)self packagingName];
-  v23 = v22;
-  if (v22)
+  packagingName = [(HKFullMedicationSearchResult *)self packagingName];
+  v23 = packagingName;
+  if (packagingName)
   {
-    v24 = v22;
+    v24 = packagingName;
   }
 
   else
@@ -141,11 +141,11 @@
 
   v39[4] = v24;
   v38[5] = @"route";
-  v25 = [(HKFullMedicationSearchResult *)self route];
-  v26 = v25;
-  if (v25)
+  route = [(HKFullMedicationSearchResult *)self route];
+  v26 = route;
+  if (route)
   {
-    v27 = v25;
+    v27 = route;
   }
 
   else
@@ -155,11 +155,11 @@
 
   v39[5] = v27;
   v38[6] = @"doseForm";
-  v28 = [(HKFullMedicationSearchResult *)self doseForm];
-  v29 = v28;
-  if (v28)
+  doseForm = [(HKFullMedicationSearchResult *)self doseForm];
+  v29 = doseForm;
+  if (doseForm)
   {
-    v30 = v28;
+    v30 = doseForm;
   }
 
   else

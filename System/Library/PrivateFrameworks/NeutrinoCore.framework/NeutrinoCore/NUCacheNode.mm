@@ -1,73 +1,73 @@
 @interface NUCacheNode
 + (id)cacheDirectoryURL;
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error;
 + (id)registry;
-+ (void)_ensureCacheDirectoryURL:(id)a3;
-+ (void)_pruneCacheDirectory:(id)a3 toSize:(int64_t)a4;
++ (void)_ensureCacheDirectoryURL:(id)l;
++ (void)_pruneCacheDirectory:(id)directory toSize:(int64_t)size;
 + (void)clearCacheDirectory;
-- (BOOL)installTemporaryURL:(id)a3 intoPersistentURL:(id)a4 error:(id *)a5;
-- (BOOL)isEqualToRenderNode:(id)a3;
+- (BOOL)installTemporaryURL:(id)l intoPersistentURL:(id)rL error:(id *)error;
+- (BOOL)isEqualToRenderNode:(id)node;
 - (BOOL)isResolved;
 - (NSString)cacheIdentifier;
-- (NUCacheNode)initWithInput:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5;
-- (NUCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5;
-- (NUCacheNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
+- (NUCacheNode)initWithInput:(id)input settings:(id)settings subsampleFactor:(int64_t)factor;
+- (NUCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor;
+- (NUCacheNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
 - (id)descriptionSubClassHook;
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4;
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)inputGeometryForPipelineState:(id)a3 error:(id *)a4;
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)outputGeometryForPipelineState:(id)a3 error:(id *)a4;
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error;
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error;
+- (id)inputGeometryForPipelineState:(id)state error:(id *)error;
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)outputGeometryForPipelineState:(id)state error:(id *)error;
 - (id)persistentURL;
 - (id)persistentURLPrefix;
-- (id)resolvedSourceNode:(id *)a3;
-- (id)setupDependentJobFromRequest:(id)a3 originalRequest:(id)a4 error:(id *)a5;
+- (id)resolvedSourceNode:(id *)node;
+- (id)setupDependentJobFromRequest:(id)request originalRequest:(id)originalRequest error:(id *)error;
 - (id)temporaryURLPrefix;
 - (int64_t)auxiliaryImageType;
 - (int64_t)sampleMode;
-- (int64_t)subsampleFactorForScale:(id)a3;
+- (int64_t)subsampleFactorForScale:(id)scale;
 - (unint64_t)_hash;
-- (void)_resolveWithSourceNode:(id)a3 error:(id)a4;
-- (void)nu_updateDigest:(id)a3;
-- (void)resolveSourceWithResponse:(id)a3;
-- (void)resolveWithSourceNode:(id)a3 error:(id)a4;
+- (void)_resolveWithSourceNode:(id)node error:(id)error;
+- (void)nu_updateDigest:(id)digest;
+- (void)resolveSourceWithResponse:(id)response;
+- (void)resolveWithSourceNode:(id)node error:(id)error;
 @end
 
 @implementation NUCacheNode
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v4 = [(NUCacheNode *)self resolvedSourceNode:?];
-  v5 = [v4 outputVideoComposition:a3];
+  v5 = [v4 outputVideoComposition:composition];
 
   return v5;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v4 = [(NUCacheNode *)self resolvedSourceNode:?];
-  v5 = [v4 outputVideo:a3];
+  v5 = [v4 outputVideo:video];
 
   return v5;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v4 = [(NUCacheNode *)self resolvedSourceNode:?];
-  v5 = [v4 _evaluateImage:a3];
+  v5 = [v4 _evaluateImage:image];
 
   return v5;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v4 = [(NUCacheNode *)self inputNode];
-  v5 = [v4 outputImageGeometry:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v5 = [inputNode outputImageGeometry:geometry];
   v6 = v5;
   if (v5)
   {
@@ -77,11 +77,11 @@
   return v6;
 }
 
-- (void)resolveSourceWithResponse:(id)a3
+- (void)resolveSourceWithResponse:(id)response
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  responseCopy = response;
+  if (!responseCopy)
   {
     v13 = NUAssertLogger_15823();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -102,8 +102,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v20;
         v34 = 2114;
@@ -114,8 +114,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -124,22 +124,22 @@
     _NUAssertFailHandler("[NUCacheNode resolveSourceWithResponse:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 531, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "response != nil");
   }
 
-  v5 = v4;
+  v5 = responseCopy;
   v31 = 0;
-  v6 = [v4 result:&v31];
+  v6 = [responseCopy result:&v31];
   v7 = v31;
   if (v6)
   {
-    v8 = [(NUCacheNode *)self persistentURL];
-    v9 = [v6 destinationURL];
+    persistentURL = [(NUCacheNode *)self persistentURL];
+    destinationURL = [v6 destinationURL];
     v30 = 0;
-    v10 = [(NUCacheNode *)self installTemporaryURL:v9 intoPersistentURL:v8 error:&v30];
+    v10 = [(NUCacheNode *)self installTemporaryURL:destinationURL intoPersistentURL:persistentURL error:&v30];
     v11 = v30;
 
     if (v10)
     {
       v29 = 0;
-      v12 = [(NUCacheNode *)self tryLoadPersistentURL:v8 error:&v29];
+      v12 = [(NUCacheNode *)self tryLoadPersistentURL:persistentURL error:&v29];
       v7 = v29;
 
       v11 = v7;
@@ -164,12 +164,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)installTemporaryURL:(id)a3 intoPersistentURL:(id)a4 error:(id *)a5
+- (BOOL)installTemporaryURL:(id)l intoPersistentURL:(id)rL error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!a5)
+  lCopy = l;
+  rLCopy = rL;
+  if (!error)
   {
     v21 = NUAssertLogger_15823();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -190,8 +190,8 @@ LABEL_10:
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v28;
         v42 = 2114;
@@ -202,8 +202,8 @@ LABEL_10:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -212,9 +212,9 @@ LABEL_10:
     _NUAssertFailHandler("[NUCacheNode installTemporaryURL:intoPersistentURL:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 508, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "error != nil");
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 moveItemAtURL:v7 toURL:v9 error:a5];
+  v9 = rLCopy;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager moveItemAtURL:lCopy toURL:v9 error:error];
 
   if (v11)
   {
@@ -228,13 +228,13 @@ LABEL_10:
     v13 = v37;
     if (v12)
     {
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v38 = *MEMORY[0x1E696A350];
-      v15 = [MEMORY[0x1E695DF00] date];
-      v39 = v15;
+      date = [MEMORY[0x1E695DF00] date];
+      v39 = date;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      v17 = [v9 path];
-      [v14 setAttributes:v16 ofItemAtPath:v17 error:0];
+      path = [v9 path];
+      [defaultManager2 setAttributes:v16 ofItemAtPath:path error:0];
     }
 
     else
@@ -247,9 +247,9 @@ LABEL_10:
       v18 = _NULogger;
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
       {
-        v20 = *a5;
+        v20 = *error;
         *buf = 138412802;
-        v41 = v7;
+        v41 = lCopy;
         v42 = 2112;
         v43 = v9;
         v44 = 2112;
@@ -262,10 +262,10 @@ LABEL_10:
   return v12;
 }
 
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_308);
@@ -308,8 +308,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -325,8 +325,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -385,8 +385,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -402,8 +402,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -421,10 +421,10 @@ LABEL_14:
 {
   v3 = +[NUCacheNode cacheDirectoryURL];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NUCacheNode *)self cacheIdentifier];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v4 stringWithFormat:@"%@.temp.%@", v5, v7];
+  cacheIdentifier = [(NUCacheNode *)self cacheIdentifier];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v4 stringWithFormat:@"%@.temp.%@", cacheIdentifier, uUIDString];
 
   v9 = [v3 URLByAppendingPathComponent:v8];
 
@@ -434,8 +434,8 @@ LABEL_14:
 - (id)persistentURLPrefix
 {
   v3 = +[NUCacheNode cacheDirectoryURL];
-  v4 = [(NUCacheNode *)self cacheIdentifier];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  cacheIdentifier = [(NUCacheNode *)self cacheIdentifier];
+  v5 = [v3 URLByAppendingPathComponent:cacheIdentifier];
 
   return v5;
 }
@@ -487,8 +487,8 @@ LABEL_9:
         v14 = MEMORY[0x1E696AF00];
         v15 = specific;
         v16 = v8;
-        v17 = [v14 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v29 = 138543618;
         *&v29[4] = specific;
         v30 = 2114;
@@ -506,8 +506,8 @@ LABEL_15:
     {
       v25 = MEMORY[0x1E696AF00];
       v26 = v19;
-      v27 = [v25 callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v25 callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v29 = 138543362;
       *&v29[4] = v28;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v29, 0xCu);
@@ -517,27 +517,27 @@ LABEL_15:
   }
 
 LABEL_16:
-  v20 = [(NUCacheNode *)self cachedCacheIdentifier];
-  if (!v20)
+  cachedCacheIdentifier = [(NUCacheNode *)self cachedCacheIdentifier];
+  if (!cachedCacheIdentifier)
   {
     v21 = objc_alloc_init(NUDigest);
     v22 = +[NUSoftwareVersion currentSoftwareVersion];
-    v23 = [v22 buildNumber];
-    [v23 nu_updateDigest:v21];
+    buildNumber = [v22 buildNumber];
+    [buildNumber nu_updateDigest:v21];
 
     [(NUCacheNode *)self nu_updateDigest:v21];
     [(NUDigest *)v21 finalize];
-    v20 = [(NUDigest *)v21 stringValue];
-    [(NUCacheNode *)self setCachedCacheIdentifier:v20];
+    cachedCacheIdentifier = [(NUDigest *)v21 stringValue];
+    [(NUCacheNode *)self setCachedCacheIdentifier:cachedCacheIdentifier];
   }
 
-  return v20;
+  return cachedCacheIdentifier;
 }
 
-- (id)resolvedSourceNode:(id *)a3
+- (id)resolvedSourceNode:(id *)node
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!node)
   {
     v9 = NUAssertLogger_15823();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -558,8 +558,8 @@ LABEL_16:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v16;
         *&buf[12] = 2114;
@@ -570,8 +570,8 @@ LABEL_16:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -618,7 +618,7 @@ LABEL_16:
     {
       [NUError failureError:@"Cache node doesn't have cached contents" object:self];
     }
-    *a3 = ;
+    *node = ;
   }
 
   _Block_object_dispose(&v26, 8);
@@ -637,21 +637,21 @@ void __34__NUCacheNode_resolvedSourceNode___block_invoke(void *a1)
   objc_storeStrong(v3, v2);
 }
 
-- (void)_resolveWithSourceNode:(id)a3 error:(id)a4
+- (void)_resolveWithSourceNode:(id)node error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  nodeCopy = node;
+  errorCopy = error;
   if (!self->_sourceNode)
   {
-    if (v7)
+    if (nodeCopy)
     {
-      [v7 setOriginalNode:self];
+      [nodeCopy setOriginalNode:self];
       v9 = [[NUCacheNodeSourceDerivation alloc] initWithSubsampleFactor:[(NUCacheNode *)self subsampleFactor]];
-      [v7 setSourceDerivation:v9];
+      [nodeCopy setSourceDerivation:v9];
 
       [(NURenderContext *)self->_renderContext cancelAllJobs];
-      objc_storeStrong(&self->_sourceNode, a3);
+      objc_storeStrong(&self->_sourceNode, node);
       sourceError = self->_sourceError;
       self->_sourceError = 0;
     }
@@ -659,7 +659,7 @@ void __34__NUCacheNode_resolvedSourceNode___block_invoke(void *a1)
     else if (!self->_sourceError)
     {
       self->_sourceNode = 0;
-      objc_storeStrong(&self->_sourceError, a4);
+      objc_storeStrong(&self->_sourceError, error);
       if (_NULogOnceToken != -1)
       {
         dispatch_once(&_NULogOnceToken, &__block_literal_global_310);
@@ -669,31 +669,31 @@ void __34__NUCacheNode_resolvedSourceNode___block_invoke(void *a1)
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
       {
         v12 = v11;
-        v13 = [(NUCacheNode *)self persistentURL];
+        persistentURL = [(NUCacheNode *)self persistentURL];
         v14 = 138412546;
-        v15 = v13;
+        v15 = persistentURL;
         v16 = 2112;
-        v17 = v8;
+        v17 = errorCopy;
         _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Error preparing cache node %@: %@", &v14, 0x16u);
       }
     }
   }
 }
 
-- (void)resolveWithSourceNode:(id)a3 error:(id)a4
+- (void)resolveWithSourceNode:(id)node error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__NUCacheNode_resolveWithSourceNode_error___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nodeCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = nodeCopy;
   dispatch_sync(queue, block);
 }
 
@@ -727,29 +727,29 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)setupDependentJobFromRequest:(id)a3 originalRequest:(id)a4 error:(id *)a5
+- (id)setupDependentJobFromRequest:(id)request originalRequest:(id)originalRequest error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 priority];
-  [v8 setPriority:v9];
+  requestCopy = request;
+  priority = [originalRequest priority];
+  [requestCopy setPriority:priority];
 
-  [v8 setSubmitTime:NUAbsoluteTime()];
-  v10 = [v8 newRenderJob];
+  [requestCopy setSubmitTime:NUAbsoluteTime()];
+  newRenderJob = [requestCopy newRenderJob];
 
-  [v10 setReplyGroup:self->_group];
+  [newRenderJob setReplyGroup:self->_group];
   v11 = [NUPipelineOutputNode alloc];
-  v12 = [(NUCacheNode *)self inputNode];
-  v13 = [(NUPipelineOutputNode *)v11 initWithInput:v12];
-  [v10 setPrepareNode:v13];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v13 = [(NUPipelineOutputNode *)v11 initWithInput:inputNode];
+  [newRenderJob setPrepareNode:v13];
 
-  v14 = [(NURenderNode *)self outputImageGeometry:a5];
+  v14 = [(NURenderNode *)self outputImageGeometry:error];
   if (v14)
   {
-    [v10 setOutputGeometry:v14];
-    v15 = [v14 renderScale];
-    [v10 setRenderScale:{v15, v16}];
-    [(NURenderContext *)self->_renderContext addJob:v10];
-    v17 = v10;
+    [newRenderJob setOutputGeometry:v14];
+    renderScale = [v14 renderScale];
+    [newRenderJob setRenderScale:{renderScale, v16}];
+    [(NURenderContext *)self->_renderContext addJob:newRenderJob];
+    v17 = newRenderJob;
   }
 
   else
@@ -760,10 +760,10 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
   return v17;
 }
 
-- (id)evaluateRenderDependenciesWithRequest:(id)a3 error:(id *)a4
+- (id)evaluateRenderDependenciesWithRequest:(id)request error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   if ([(NUCacheNode *)self wantsDependentJob])
   {
     if ([(NUCacheNode *)self subsampleFactor]<= 0)
@@ -787,8 +787,8 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
           v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v35 = MEMORY[0x1E696AF00];
           v36 = v34;
-          v37 = [v35 callStackSymbols];
-          v38 = [v37 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v35 callStackSymbols];
+          v38 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v50 = v34;
           v51 = 2114;
@@ -799,8 +799,8 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
 
       else if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v50 = v33;
         _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -815,19 +815,19 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
       goto LABEL_25;
     }
 
-    v8 = [(NUCacheNode *)self persistentURL];
+    persistentURL = [(NUCacheNode *)self persistentURL];
     v44 = 0;
-    v9 = [(NUCacheNode *)self tryLoadPersistentURL:v8 error:&v44];
+    v9 = [(NUCacheNode *)self tryLoadPersistentURL:persistentURL error:&v44];
     v10 = v44;
     if (v9)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v47 = *MEMORY[0x1E696A350];
-      v12 = [MEMORY[0x1E695DF00] date];
-      v48 = v12;
+      date = [MEMORY[0x1E695DF00] date];
+      v48 = date;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-      v14 = [v8 path];
-      [v11 setAttributes:v13 ofItemAtPath:v14 error:0];
+      path = [persistentURL path];
+      [defaultManager setAttributes:v13 ofItemAtPath:path error:0];
 
       if (_NULogOnceToken != -1)
       {
@@ -839,11 +839,11 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
       {
         v16 = v15;
         v17 = objc_opt_class();
-        v18 = [v8 path];
+        path2 = [persistentURL path];
         *buf = 138543618;
         v50 = v17;
         v51 = 2114;
-        v52 = v18;
+        v52 = path2;
         _os_log_impl(&dword_1C0184000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ cache hit: %{public}@", buf, 0x16u);
       }
 
@@ -862,22 +862,22 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
       {
         v20 = v19;
         v21 = objc_opt_class();
-        v22 = [v8 path];
+        path3 = [persistentURL path];
         *buf = 138543618;
         v50 = v21;
         v51 = 2114;
-        v52 = v22;
+        v52 = path3;
         _os_log_impl(&dword_1C0184000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ cache miss: %{public}@", buf, 0x16u);
       }
 
-      v23 = [(NUCacheNode *)self newRenderRequestWithOriginalRequest:v6 error:a4];
+      v23 = [(NUCacheNode *)self newRenderRequestWithOriginalRequest:requestCopy error:error];
       if (v23)
       {
-        v24 = [(NUCacheNode *)self setupDependentJobFromRequest:v23 originalRequest:v6 error:a4];
+        v24 = [(NUCacheNode *)self setupDependentJobFromRequest:v23 originalRequest:requestCopy error:error];
         if (v24)
         {
-          v25 = [(NUCacheNode *)self cacheIdentifier];
-          v45 = v25;
+          cacheIdentifier = [(NUCacheNode *)self cacheIdentifier];
+          v45 = cacheIdentifier;
           v46 = v24;
           v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         }
@@ -897,8 +897,8 @@ uint64_t __25__NUCacheNode_isResolved__block_invoke(uint64_t result)
 
   else
   {
-    v8 = [(NUCacheNode *)self inputNode];
-    v7 = [v8 evaluateRenderDependenciesWithRequest:v6 error:a4];
+    persistentURL = [(NUCacheNode *)self inputNode];
+    v7 = [persistentURL evaluateRenderDependenciesWithRequest:requestCopy error:error];
   }
 
 LABEL_25:
@@ -909,23 +909,23 @@ LABEL_25:
 - (int64_t)sampleMode
 {
   v2 = +[NUPlatform currentPlatform];
-  v3 = [v2 mainDevice];
-  v4 = [v3 defaultSampleMode];
+  mainDevice = [v2 mainDevice];
+  defaultSampleMode = [mainDevice defaultSampleMode];
 
-  return v4;
+  return defaultSampleMode;
 }
 
-- (int64_t)subsampleFactorForScale:(id)a3
+- (int64_t)subsampleFactorForScale:(id)scale
 {
   v4[0] = 0;
   v4[1] = 0;
-  return [NUSubsampleNode subsampleFactorForScale:a3.var0 additionalScale:a3.var1, v4];
+  return [NUSubsampleNode subsampleFactorForScale:scale.var0 additionalScale:scale.var1, v4];
 }
 
 - (int64_t)auxiliaryImageType
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"auxiliaryImageType"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"auxiliaryImageType"];
 
   if (v3)
   {
@@ -940,13 +940,13 @@ LABEL_25:
   return v4;
 }
 
-- (id)evaluateSettings:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)evaluateSettings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v8 = a4;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = NUCacheNode;
-  v9 = [(NURenderNode *)&v15 evaluateSettings:a3 pipelineState:v8 error:a5];
-  if ([v8 auxiliaryImageType] == 1)
+  v9 = [(NURenderNode *)&v15 evaluateSettings:settings pipelineState:stateCopy error:error];
+  if ([stateCopy auxiliaryImageType] == 1)
   {
     v10 = v9;
   }
@@ -954,15 +954,15 @@ LABEL_25:
   else
   {
     v10 = [v9 mutableCopy];
-    v11 = [v8 auxiliaryImageType];
-    if (v11 > 0xB)
+    auxiliaryImageType = [stateCopy auxiliaryImageType];
+    if (auxiliaryImageType > 0xB)
     {
       v12 = @"Invalid";
     }
 
     else
     {
-      v12 = off_1E8109908[v11];
+      v12 = off_1E8109908[auxiliaryImageType];
     }
 
     v13 = v12;
@@ -972,12 +972,12 @@ LABEL_25:
   return v10;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v8 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v41 = NUAssertLogger_15823();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -998,8 +998,8 @@ LABEL_25:
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v49 callStackSymbols];
+        v52 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v72 = v48;
         v73 = 2114;
@@ -1010,8 +1010,8 @@ LABEL_25:
 
     else if (v45)
     {
-      v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v47 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v72 = v47;
       _os_log_error_impl(&dword_1C0184000, v44, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1020,11 +1020,11 @@ LABEL_25:
     _NUAssertFailHandler("[NUCacheNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 183, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "error != NULL");
   }
 
-  v9 = v8;
+  v9 = stateCopy;
   if ([(NURenderNode *)self isCached])
   {
     -[NURenderNode setEvaluatedForMode:](self, "setEvaluatedForMode:", [v9 evaluationMode]);
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -1034,10 +1034,10 @@ LABEL_25:
     v12 = v69;
     if (v11)
     {
-      v13 = [v9 scale];
+      scale = [v9 scale];
       v15 = v14;
-      v16 = [v11 renderScale];
-      v18 = NUScaleDivide(v13, v15, v16, v17);
+      renderScale = [v11 renderScale];
+      v18 = NUScaleDivide(scale, v15, renderScale, v17);
       v20 = [(NUCacheNode *)self subsampleFactorForScale:v18, v19];
       v68 = 0;
       v21 = [(NUCacheNode *)self inputGeometryForPipelineState:v9 error:&v68];
@@ -1056,9 +1056,9 @@ LABEL_25:
         }
 
         v58 = v21;
-        v24 = [v21 renderScale];
+        renderScale2 = [v21 renderScale];
         v57 = v20;
-        v26 = NUScaleMultiply(1, v20, v24, v25);
+        v26 = NUScaleMultiply(1, v20, renderScale2, v25);
         [v23 setScale:{v26, v27}];
         v28 = v23;
         [v23 setSampleMode:{-[NUCacheNode sampleMode](self, "sampleMode")}];
@@ -1067,10 +1067,10 @@ LABEL_25:
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v29 = [(NURenderNode *)self inputs];
-        v30 = [v29 allKeys];
+        inputs = [(NURenderNode *)self inputs];
+        allKeys = [inputs allKeys];
 
-        v31 = [v30 countByEnumeratingWithState:&v64 objects:v70 count:16];
+        v31 = [allKeys countByEnumeratingWithState:&v64 objects:v70 count:16];
         if (v31)
         {
           v32 = v31;
@@ -1081,17 +1081,17 @@ LABEL_25:
             {
               if (*v65 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allKeys);
               }
 
               v35 = *(*(&v64 + 1) + 8 * i);
               v36 = [(NURenderNode *)self inputForKey:v35];
-              v37 = [v36 nodeByReplayingAgainstCache:v63 pipelineState:v28 error:a5];
+              v37 = [v36 nodeByReplayingAgainstCache:cacheCopy pipelineState:v28 error:error];
 
               if (!v37)
               {
-                [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get cached input node." object:0 underlyingError:*a5];
-                *a5 = v10 = 0;
+                [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get cached input node." object:0 underlyingError:*error];
+                *error = selfCopy = 0;
                 v9 = v61;
                 goto LABEL_20;
               }
@@ -1099,7 +1099,7 @@ LABEL_25:
               [v62 setObject:v37 forKeyedSubscript:v35];
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v64 objects:v70 count:16];
+            v32 = [allKeys countByEnumeratingWithState:&v64 objects:v70 count:16];
             if (v32)
             {
               continue;
@@ -1109,22 +1109,22 @@ LABEL_25:
           }
         }
 
-        v38 = [(NURenderNode *)self settings];
+        settings = [(NURenderNode *)self settings];
         v9 = v61;
-        v30 = [(NUCacheNode *)self evaluateSettings:v38 pipelineState:v61 error:a5];
+        allKeys = [(NUCacheNode *)self evaluateSettings:settings pipelineState:v61 error:error];
 
-        if (v30)
+        if (allKeys)
         {
-          v39 = [objc_alloc(objc_opt_class()) initWithInputs:v62 settings:v30 subsampleFactor:v57];
-          v10 = [NURenderNode nodeFromCache:v39 cache:v63];
+          v39 = [objc_alloc(objc_opt_class()) initWithInputs:v62 settings:allKeys subsampleFactor:v57];
+          selfCopy = [NURenderNode nodeFromCache:v39 cache:cacheCopy];
 
-          -[NURenderNode setEvaluatedForMode:](v10, "setEvaluatedForMode:", [v61 evaluationMode]);
+          -[NURenderNode setEvaluatedForMode:](selfCopy, "setEvaluatedForMode:", [v61 evaluationMode]);
         }
 
         else
         {
-          [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get resolve settings" object:0 underlyingError:*a5];
-          *a5 = v10 = 0;
+          [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get resolve settings" object:0 underlyingError:*error];
+          *error = selfCopy = 0;
         }
 
 LABEL_20:
@@ -1136,52 +1136,52 @@ LABEL_20:
       else
       {
         [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get input geometry" object:v9 underlyingError:v22];
-        *a5 = v10 = 0;
+        *error = selfCopy = 0;
       }
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"[NUCacheNode nodeByReplayingAgainstCache] could not get output geometry" object:v9 underlyingError:v12];
-      *a5 = v10 = 0;
+      *error = selfCopy = 0;
       v22 = v12;
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)outputGeometryForPipelineState:(id)a3 error:(id *)a4
+- (id)outputGeometryForPipelineState:(id)state error:(id *)error
 {
-  v6 = a3;
-  if ([v6 auxiliaryImageType] == 1)
+  stateCopy = state;
+  if ([stateCopy auxiliaryImageType] == 1)
   {
-    [(NURenderNode *)self outputImageGeometry:a4];
+    [(NURenderNode *)self outputImageGeometry:error];
   }
 
   else
   {
-    [(NUCacheNode *)self inputGeometryForPipelineState:v6 error:a4];
+    [(NUCacheNode *)self inputGeometryForPipelineState:stateCopy error:error];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)inputGeometryForPipelineState:(id)a3 error:(id *)a4
+- (id)inputGeometryForPipelineState:(id)state error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NUCacheNode *)self inputNode];
-  v8 = [v7 outputImageGeometry:a4];
+  stateCopy = state;
+  inputNode = [(NUCacheNode *)self inputNode];
+  v8 = [inputNode outputImageGeometry:error];
 
-  if (v8 && [v6 auxiliaryImageType] != 1)
+  if (v8 && [stateCopy auxiliaryImageType] != 1)
   {
-    v9 = [(NUCacheNode *)self inputNode];
-    v10 = [v9 imageProperties:a4];
+    inputNode2 = [(NUCacheNode *)self inputNode];
+    v10 = [inputNode2 imageProperties:error];
 
     if (v10)
     {
-      v11 = [v10 auxiliaryImagePropertiesForType:{objc_msgSend(v6, "auxiliaryImageType")}];
+      v11 = [v10 auxiliaryImagePropertiesForType:{objc_msgSend(stateCopy, "auxiliaryImageType")}];
       if (v11)
       {
         v12 = v11;
@@ -1198,19 +1198,19 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v17 = [v6 auxiliaryImageType];
-      if (v17 > 0xB)
+      auxiliaryImageType = [stateCopy auxiliaryImageType];
+      if (auxiliaryImageType > 0xB)
       {
         v18 = @"Invalid";
       }
 
       else
       {
-        v18 = off_1E8109908[v17];
+        v18 = off_1E8109908[auxiliaryImageType];
       }
 
       v19 = v18;
-      *a4 = [NUError missingError:@"Auxiliary image properties not found" object:v19];
+      *error = [NUError missingError:@"Auxiliary image properties not found" object:v19];
     }
 
     v16 = 0;
@@ -1222,15 +1222,15 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isEqualToRenderNode:(id)a3
+- (BOOL)isEqualToRenderNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v8.receiver = self;
   v8.super_class = NUCacheNode;
-  if ([(NURenderNode *)&v8 isEqualToRenderNode:v4])
+  if ([(NURenderNode *)&v8 isEqualToRenderNode:nodeCopy])
   {
     subsampleFactor = self->_subsampleFactor;
-    v6 = subsampleFactor == [v4 subsampleFactor];
+    v6 = subsampleFactor == [nodeCopy subsampleFactor];
   }
 
   else
@@ -1241,14 +1241,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
   v5.receiver = self;
   v5.super_class = NUCacheNode;
-  v4 = a3;
-  [(NURenderNode *)&v5 nu_updateDigest:v4];
-  [v4 addCString:{"subsample", v5.receiver, v5.super_class}];
-  [v4 addBytes:&self->_subsampleFactor length:8];
+  digestCopy = digest;
+  [(NURenderNode *)&v5 nu_updateDigest:digestCopy];
+  [digestCopy addCString:{"subsample", v5.receiver, v5.super_class}];
+  [digestCopy addBytes:&self->_subsampleFactor length:8];
 }
 
 - (unint64_t)_hash
@@ -1280,12 +1280,12 @@ LABEL_12:
   return v4;
 }
 
-- (NUCacheNode)initWithInputs:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5
+- (NUCacheNode)initWithInputs:(id)inputs settings:(id)settings subsampleFactor:(int64_t)factor
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKeyedSubscript:@"input"];
+  inputsCopy = inputs;
+  settingsCopy = settings;
+  v10 = [inputsCopy objectForKeyedSubscript:@"input"];
 
   if (!v10)
   {
@@ -1308,8 +1308,8 @@ LABEL_12:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v34;
         v55 = 2114;
@@ -1320,8 +1320,8 @@ LABEL_12:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1330,7 +1330,7 @@ LABEL_12:
     _NUAssertFailHandler("[NUCacheNode initWithInputs:settings:subsampleFactor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUCacheNode.m", 95, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "inputs[NUCacheNodeInputKey] != nil");
   }
 
-  if (a5 < 0)
+  if (factor < 0)
   {
     v27 = NUAssertLogger_15823();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1351,8 +1351,8 @@ LABEL_12:
         v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v44 callStackSymbols];
+        v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v43;
         v55 = 2114;
@@ -1363,8 +1363,8 @@ LABEL_12:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1375,8 +1375,8 @@ LABEL_12:
 
   v52.receiver = self;
   v52.super_class = NUCacheNode;
-  v11 = [(NURenderNode *)&v52 initWithSettings:v9 inputs:v8];
-  v11->_subsampleFactor = a5;
+  v11 = [(NURenderNode *)&v52 initWithSettings:settingsCopy inputs:inputsCopy];
+  v11->_subsampleFactor = factor;
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_create("NUCacheNode", v12);
   queue = v11->_queue;
@@ -1393,25 +1393,25 @@ LABEL_12:
   return v11;
 }
 
-- (NUCacheNode)initWithInput:(id)a3 settings:(id)a4 subsampleFactor:(int64_t)a5
+- (NUCacheNode)initWithInput:(id)input settings:(id)settings subsampleFactor:(int64_t)factor
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = @"input";
-  v15[0] = a3;
+  v15[0] = input;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a4;
-  v10 = a3;
+  settingsCopy = settings;
+  inputCopy = input;
   v11 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v12 = [(NUCacheNode *)self initWithInputs:v11 settings:v9 subsampleFactor:a5];
+  v12 = [(NUCacheNode *)self initWithInputs:v11 settings:settingsCopy subsampleFactor:factor];
   return v12;
 }
 
-- (NUCacheNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUCacheNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_308);
@@ -1455,8 +1455,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1472,8 +1472,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -1492,20 +1492,20 @@ LABEL_14:
 + (void)clearCacheDirectory
 {
   v6 = +[NUGlobalSettings cacheNodeDirectoryURL];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v6 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
-    [a1 _pruneCacheDirectory:v6 toSize:0];
+    [self _pruneCacheDirectory:v6 toSize:0];
   }
 }
 
-+ (void)_pruneCacheDirectory:(id)a3 toSize:(int64_t)a4
++ (void)_pruneCacheDirectory:(id)directory toSize:(int64_t)size
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   v5 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v6 = *MEMORY[0x1E695DB50];
   v7 = *MEMORY[0x1E695DAA8];
@@ -1513,8 +1513,8 @@ LABEL_14:
   v47[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
   v33 = v5;
-  v32 = v4;
-  v9 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:v8 options:1 errorHandler:0];
+  v32 = directoryCopy;
+  v9 = [v5 enumeratorAtURL:directoryCopy includingPropertiesForKeys:v8 options:1 errorHandler:0];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
@@ -1542,9 +1542,9 @@ LABEL_14:
         [v17 getResourceValue:&v37 forKey:v6 error:0];
         v18 = v37;
         [v10 insertObject:v17 atIndex:{objc_msgSend(v10, "indexOfObject:inSortedRange:options:usingComparator:", v17, 0, objc_msgSend(v10, "count"), 1024, &__block_literal_global_95)}];
-        v19 = [v18 integerValue];
+        integerValue = [v18 integerValue];
 
-        v14 += v19;
+        v14 += integerValue;
       }
 
       v13 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -1569,15 +1569,15 @@ LABEL_14:
     *buf = 134218240;
     v43 = v14;
     v44 = 2048;
-    v45 = a4;
+    sizeCopy = size;
     _os_log_impl(&dword_1C0184000, v20, OS_LOG_TYPE_DEFAULT, "Current cache size: %{iec-bytes}ld, max: %{iec-bytes}ld", buf, 0x16u);
   }
 
-  while (v14 > a4)
+  while (v14 > size)
   {
-    v21 = [v10 lastObject];
+    lastObject = [v10 lastObject];
     v36 = 0;
-    [v21 getResourceValue:&v36 forKey:v6 error:0];
+    [lastObject getResourceValue:&v36 forKey:v6 error:0];
     v22 = v36;
     if (_NULogOnceToken != -1)
     {
@@ -1588,17 +1588,17 @@ LABEL_14:
     if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v21 path];
-      v26 = [v22 longValue];
+      path = [lastObject path];
+      longValue = [v22 longValue];
       *buf = 138412546;
-      v43 = v25;
+      v43 = path;
       v44 = 2048;
-      v45 = v26;
+      sizeCopy = longValue;
       _os_log_impl(&dword_1C0184000, v24, OS_LOG_TYPE_DEFAULT, "Deleting file %@, size: %{iec-bytes}ld", buf, 0x16u);
     }
 
     v35 = 0;
-    v27 = [v33 removeItemAtURL:v21 error:&v35];
+    v27 = [v33 removeItemAtURL:lastObject error:&v35];
     v28 = v35;
     if ((v27 & 1) == 0)
     {
@@ -1611,11 +1611,11 @@ LABEL_14:
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
       {
         v30 = v29;
-        v31 = [v21 path];
+        path2 = [lastObject path];
         *buf = 138543618;
-        v43 = v31;
+        v43 = path2;
         v44 = 2114;
-        v45 = v28;
+        sizeCopy = v28;
         _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Failed to delete file at path: %{public}@, error: %{public}@", buf, 0x16u);
       }
     }
@@ -1639,14 +1639,14 @@ uint64_t __43__NUCacheNode__pruneCacheDirectory_toSize___block_invoke(uint64_t a
   return v7;
 }
 
-+ (void)_ensureCacheDirectoryURL:(id)a3
++ (void)_ensureCacheDirectoryURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v32 = 0;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v32];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v32];
 
   if (!v6)
   {
@@ -1662,9 +1662,9 @@ uint64_t __43__NUCacheNode__pruneCacheDirectory_toSize___block_invoke(uint64_t a
 
   else
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v31 = 0;
-    v10 = [v9 removeItemAtURL:v3 error:&v31];
+    v10 = [defaultManager2 removeItemAtURL:lCopy error:&v31];
     v7 = v31;
 
     if (v10)
@@ -1682,9 +1682,9 @@ uint64_t __43__NUCacheNode__pruneCacheDirectory_toSize___block_invoke(uint64_t a
     if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
     {
       v27 = v11;
-      v28 = [v3 path];
+      path2 = [lCopy path];
       *buf = 138412546;
-      v36 = v28;
+      v36 = path2;
       v37 = 2112;
       v38 = v7;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Failed to delete file at path: %@, error: %@", buf, 0x16u);
@@ -1704,13 +1704,13 @@ LABEL_12:
   v34[2] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = v16;
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v17 = defaultManager3;
   if (v8)
   {
-    v18 = [v3 path];
+    path3 = [lCopy path];
     v29 = v7;
-    v19 = [v17 setAttributes:v15 ofItemAtPath:v18 error:&v29];
+    v19 = [v17 setAttributes:v15 ofItemAtPath:path3 error:&v29];
     v20 = v29;
 
     if ((v19 & 1) == 0)
@@ -1724,9 +1724,9 @@ LABEL_12:
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
       {
         v22 = v21;
-        v23 = [v3 path];
+        path4 = [lCopy path];
         *buf = 138412546;
-        v36 = v23;
+        v36 = path4;
         v37 = 2112;
         v38 = v20;
         v24 = "Failed to set directory attributes at path: %@, error: %@";
@@ -1739,7 +1739,7 @@ LABEL_24:
   else
   {
     v30 = v7;
-    v25 = [v16 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:v15 error:&v30];
+    v25 = [defaultManager3 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:v15 error:&v30];
     v20 = v30;
 
     if ((v25 & 1) == 0)
@@ -1753,9 +1753,9 @@ LABEL_24:
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
       {
         v22 = v26;
-        v23 = [v3 path];
+        path4 = [lCopy path];
         *buf = 138412546;
-        v36 = v23;
+        v36 = path4;
         v37 = 2112;
         v38 = v20;
         v24 = "Failed to create temporary directory at path: %@, error: %@";
@@ -1773,13 +1773,13 @@ LABEL_24:
   }
 
   v3 = +[NUGlobalSettings cacheNodeDirectoryURL];
-  [a1 _ensureCacheDirectoryURL:v3];
+  [self _ensureCacheDirectoryURL:v3];
   v4 = cacheDirectoryURL_pruneCoalescer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__NUCacheNode_cacheDirectoryURL__block_invoke_2;
   v7[3] = &unk_1E810B078;
-  v9 = a1;
+  selfCopy = self;
   v5 = v3;
   v8 = v5;
   [v4 coalesceBlock:v7];
@@ -1806,11 +1806,11 @@ void __32__NUCacheNode_cacheDirectoryURL__block_invoke()
   cacheDirectoryURL_pruneCoalescer = v1;
 }
 
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithInput:v9 settings:v8];
+  settingsCopy = settings;
+  inputCopy = input;
+  v10 = [[self alloc] initWithInput:inputCopy settings:settingsCopy];
 
   return v10;
 }
@@ -1818,9 +1818,9 @@ void __32__NUCacheNode_cacheDirectoryURL__block_invoke()
 + (id)registry
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 cacheNodeRegistry];
+  cacheNodeRegistry = [v2 cacheNodeRegistry];
 
-  return v3;
+  return cacheNodeRegistry;
 }
 
 @end

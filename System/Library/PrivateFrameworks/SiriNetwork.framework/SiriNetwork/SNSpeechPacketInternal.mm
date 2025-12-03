@@ -1,8 +1,8 @@
 @interface SNSpeechPacketInternal
 - (NSArray)packets;
-- (id)serializedAceDataAndReturnError:(id *)a3;
-- (void)setPackets:(id)a3;
-- (void)setSessionRequestId:(id)a3;
+- (id)serializedAceDataAndReturnError:(id *)error;
+- (void)setPackets:(id)packets;
+- (void)setSessionRequestId:(id)id;
 @end
 
 @implementation SNSpeechPacketInternal
@@ -16,25 +16,25 @@
   return v2.super.isa;
 }
 
-- (void)setPackets:(id)a3
+- (void)setPackets:(id)packets
 {
   type metadata accessor for NSData();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   SpeechPacket.packets.setter(v4);
 }
 
-- (id)serializedAceDataAndReturnError:(id *)a3
+- (id)serializedAceDataAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = SpeechPacket.serializedAceData()();
 
   return v4;
 }
 
-- (void)setSessionRequestId:(id)a3
+- (void)setSessionRequestId:(id)id
 {
-  if (a3)
+  if (id)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

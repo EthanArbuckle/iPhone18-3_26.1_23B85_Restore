@@ -1,14 +1,14 @@
 @interface MapsSharedTripAnalyticsHelper
-+ (void)sendSuccessAnalyticFor:(id)a3;
++ (void)sendSuccessAnalyticFor:(id)for;
 - (_TtC4Maps29MapsSharedTripAnalyticsHelper)init;
 @end
 
 @implementation MapsSharedTripAnalyticsHelper
 
-+ (void)sendSuccessAnalyticFor:(id)a3
++ (void)sendSuccessAnalyticFor:(id)for
 {
-  v3 = a3;
-  _s4Maps0A25SharedTripAnalyticsHelperC19sendSuccessAnalytic3forySo09MSPSharedC7ContactC_tFZ_0(v3);
+  forCopy = for;
+  _s4Maps0A25SharedTripAnalyticsHelperC19sendSuccessAnalytic3forySo09MSPSharedC7ContactC_tFZ_0(forCopy);
 }
 
 - (_TtC4Maps29MapsSharedTripAnalyticsHelper)init

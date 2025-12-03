@@ -1,73 +1,73 @@
 @interface EDSortableThreadProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (EDSortableThreadProxy)initWithThread:(id)a3 originatingQuery:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (EDSortableThreadProxy)initWithThread:(id)thread originatingQuery:(id)query;
 - (NSString)ef_publicDescription;
-- (id)_setValueFromThreadAndReturnIfChanged:(id)a3 keyPath:(id)a4 isPrimary:(BOOL)a5;
-- (id)_sortValueForRawValue:(id)a3 keyPath:(id)a4;
-- (id)_targetForSelector:(SEL)a3;
-- (id)calculateChangeFromThread:(id)a3;
+- (id)_setValueFromThreadAndReturnIfChanged:(id)changed keyPath:(id)path isPrimary:(BOOL)primary;
+- (id)_sortValueForRawValue:(id)value keyPath:(id)path;
+- (id)_targetForSelector:(SEL)selector;
+- (id)calculateChangeFromThread:(id)thread;
 - (int64_t)conversationID;
-- (void)_copySortPropertiesForDescriptors:(id)a3 thread:(id)a4;
-- (void)updateFromThread:(id)a3 addingAdditionalInformation:(BOOL)a4 query:(id)a5;
+- (void)_copySortPropertiesForDescriptors:(id)descriptors thread:(id)thread;
+- (void)updateFromThread:(id)thread addingAdditionalInformation:(BOOL)information query:(id)query;
 @end
 
 @implementation EDSortableThreadProxy
 
-- (EDSortableThreadProxy)initWithThread:(id)a3 originatingQuery:(id)a4
+- (EDSortableThreadProxy)initWithThread:(id)thread originatingQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  threadCopy = thread;
+  queryCopy = query;
   v15.receiver = self;
   v15.super_class = EDSortableThreadProxy;
   v8 = [(EDSortableThreadProxy *)&v15 init];
   if (v8)
   {
-    v9 = [v6 objectID];
+    objectID = [threadCopy objectID];
     objectID = v8->_objectID;
-    v8->_objectID = v9;
+    v8->_objectID = objectID;
 
-    v11 = [v7 sortDescriptors];
-    [(EDSortableThreadProxy *)v8 _copySortPropertiesForDescriptors:v11 thread:v6];
+    sortDescriptors = [queryCopy sortDescriptors];
+    [(EDSortableThreadProxy *)v8 _copySortPropertiesForDescriptors:sortDescriptors thread:threadCopy];
 
-    v12 = [v6 date];
+    date = [threadCopy date];
     date = v8->_date;
-    v8->_date = v12;
+    v8->_date = date;
   }
 
   return v8;
 }
 
-- (void)_copySortPropertiesForDescriptors:(id)a3 thread:(id)a4
+- (void)_copySortPropertiesForDescriptors:(id)descriptors thread:(id)thread
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 firstObject];
-  v8 = [v7 key];
+  descriptorsCopy = descriptors;
+  threadCopy = thread;
+  firstObject = [descriptorsCopy firstObject];
+  v8 = [firstObject key];
 
-  v9 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:v6 keyPath:v8 isPrimary:1];
-  if ([v13 count] >= 2)
+  v9 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:threadCopy keyPath:v8 isPrimary:1];
+  if ([descriptorsCopy count] >= 2)
   {
-    v10 = [v13 objectAtIndexedSubscript:1];
+    v10 = [descriptorsCopy objectAtIndexedSubscript:1];
     v11 = [v10 key];
 
-    v12 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:v6 keyPath:v11 isPrimary:0];
+    v12 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:threadCopy keyPath:v11 isPrimary:0];
   }
 }
 
-- (id)_setValueFromThreadAndReturnIfChanged:(id)a3 keyPath:(id)a4 isPrimary:(BOOL)a5
+- (id)_setValueFromThreadAndReturnIfChanged:(id)changed keyPath:(id)path isPrimary:(BOOL)primary
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 valueForKeyPath:v8];
-  v10 = [(EDSortableThreadProxy *)self _sortValueForRawValue:v9 keyPath:v8];
-  v11 = [(EDSortableThreadProxy *)self primarySortValue];
-  if (v10 == v11)
+  primaryCopy = primary;
+  pathCopy = path;
+  v9 = [changed valueForKeyPath:pathCopy];
+  v10 = [(EDSortableThreadProxy *)self _sortValueForRawValue:v9 keyPath:pathCopy];
+  primarySortValue = [(EDSortableThreadProxy *)self primarySortValue];
+  if (v10 == primarySortValue)
   {
 
     v9 = 0;
   }
 
-  else if (v5)
+  else if (primaryCopy)
   {
     [(EDSortableThreadProxy *)self setPrimarySortValue:v10];
   }
@@ -75,31 +75,31 @@
   return v9;
 }
 
-- (id)_sortValueForRawValue:(id)a3 keyPath:(id)a4
+- (id)_sortValueForRawValue:(id)value keyPath:(id)path
 {
-  v7 = a3;
-  v8 = [a4 isEqualToString:*MEMORY[0x1E699A898]];
-  v9 = v7;
+  valueCopy = value;
+  v8 = [path isEqualToString:*MEMORY[0x1E699A898]];
+  v9 = valueCopy;
   if (v8)
   {
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    if (v7)
+    if (valueCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"EDSortableThreadProxy.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[rawSortValue isKindOfClass:[NSIndexSet class]]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EDSortableThreadProxy.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[rawSortValue isKindOfClass:[NSIndexSet class]]"}];
       }
 
-      v10 = v7;
+      v10 = valueCopy;
       if ([v10 lastIndex] >= 7)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"EDSortableThreadProxy.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"flagColors.lastIndex <= ECMessageFlagColorLast"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"EDSortableThreadProxy.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"flagColors.lastIndex <= ECMessageFlagColorLast"}];
       }
 
       v15[0] = MEMORY[0x1E69E9820];
@@ -125,87 +125,87 @@
   return v9;
 }
 
-- (void)updateFromThread:(id)a3 addingAdditionalInformation:(BOOL)a4 query:(id)a5
+- (void)updateFromThread:(id)thread addingAdditionalInformation:(BOOL)information query:(id)query
 {
-  v27 = a3;
-  v8 = a5;
-  v9 = [v8 sortDescriptors];
-  [(EDSortableThreadProxy *)self _copySortPropertiesForDescriptors:v9 thread:v27];
+  threadCopy = thread;
+  queryCopy = query;
+  sortDescriptors = [queryCopy sortDescriptors];
+  [(EDSortableThreadProxy *)self _copySortPropertiesForDescriptors:sortDescriptors thread:threadCopy];
 
-  v10 = [v27 date];
-  [(EDSortableThreadProxy *)self setDate:v10];
+  date = [threadCopy date];
+  [(EDSortableThreadProxy *)self setDate:date];
 
-  if (a4 || ([(EDSortableThreadProxy *)self properties], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (information || ([(EDSortableThreadProxy *)self properties], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [(EDSortableThreadProxy *)self properties];
+    properties = [(EDSortableThreadProxy *)self properties];
 
-    if (!v12)
+    if (!properties)
     {
       v13 = objc_alloc_init(EDSortableThreadProxyAdditionalProperties);
       [(EDSortableThreadProxy *)self setProperties:v13];
     }
 
-    v14 = [v27 displayMessageObjectID];
-    v15 = [v27 displayDate];
-    [(EDSortableThreadProxy *)self setDisplayDate:v15];
+    displayMessageObjectID = [threadCopy displayMessageObjectID];
+    displayDate = [threadCopy displayDate];
+    [(EDSortableThreadProxy *)self setDisplayDate:displayDate];
 
-    v16 = [v27 category];
-    [(EDSortableThreadProxy *)self setCategory:v16];
+    category = [threadCopy category];
+    [(EDSortableThreadProxy *)self setCategory:category];
 
-    -[EDSortableThreadProxy setBusinessID:](self, "setBusinessID:", [v27 businessID]);
-    v17 = [v27 businessLogoID];
-    [(EDSortableThreadProxy *)self setBusinessLogoID:v17];
+    -[EDSortableThreadProxy setBusinessID:](self, "setBusinessID:", [threadCopy businessID]);
+    businessLogoID = [threadCopy businessLogoID];
+    [(EDSortableThreadProxy *)self setBusinessLogoID:businessLogoID];
 
-    v18 = [v27 readLater];
-    [(EDSortableThreadProxy *)self setReadLater:v18];
+    readLater = [threadCopy readLater];
+    [(EDSortableThreadProxy *)self setReadLater:readLater];
 
-    v19 = [v27 sendLaterDate];
-    [(EDSortableThreadProxy *)self setSendLaterDate:v19];
+    sendLaterDate = [threadCopy sendLaterDate];
+    [(EDSortableThreadProxy *)self setSendLaterDate:sendLaterDate];
 
-    -[EDSortableThreadProxy setDisplayMessageGlobalID:](self, "setDisplayMessageGlobalID:", [v14 globalMessageID]);
-    v20 = [v27 senderList];
-    [(EDSortableThreadProxy *)self setSenderList:v20];
+    -[EDSortableThreadProxy setDisplayMessageGlobalID:](self, "setDisplayMessageGlobalID:", [displayMessageObjectID globalMessageID]);
+    senderList = [threadCopy senderList];
+    [(EDSortableThreadProxy *)self setSenderList:senderList];
 
-    v21 = [v27 toList];
-    [(EDSortableThreadProxy *)self setToList:v21];
+    toList = [threadCopy toList];
+    [(EDSortableThreadProxy *)self setToList:toList];
 
-    v22 = [v27 ccList];
-    [(EDSortableThreadProxy *)self setCcList:v22];
+    ccList = [threadCopy ccList];
+    [(EDSortableThreadProxy *)self setCcList:ccList];
 
-    v23 = [v27 flags];
-    [(EDSortableThreadProxy *)self setFlags:v23];
+    flags = [threadCopy flags];
+    [(EDSortableThreadProxy *)self setFlags:flags];
 
-    -[EDSortableThreadProxy setHasUnflagged:](self, "setHasUnflagged:", [v27 hasUnflagged]);
-    v24 = [v27 flagColors];
-    [(EDSortableThreadProxy *)self setFlagColors:v24];
+    -[EDSortableThreadProxy setHasUnflagged:](self, "setHasUnflagged:", [threadCopy hasUnflagged]);
+    flagColors = [threadCopy flagColors];
+    [(EDSortableThreadProxy *)self setFlagColors:flagColors];
 
-    -[EDSortableThreadProxy setIsVIP:](self, "setIsVIP:", [v27 isVIP]);
-    -[EDSortableThreadProxy setIsBlocked:](self, "setIsBlocked:", [v27 isBlocked]);
-    -[EDSortableThreadProxy setHasAttachments:](self, "setHasAttachments:", [v27 hasAttachments]);
-    -[EDSortableThreadProxy setIsAuthenticated:](self, "setIsAuthenticated:", [v27 isAuthenticated]);
-    -[EDSortableThreadProxy setAllowAuthenticationWarning:](self, "setAllowAuthenticationWarning:", [v27 allowAuthenticationWarning]);
-    -[EDSortableThreadProxy setNumberOfMessagesInThread:](self, "setNumberOfMessagesInThread:", [v27 count]);
-    v25 = [v27 mailboxObjectIDs];
-    [(EDSortableThreadProxy *)self setMailboxObjectIDs:v25];
+    -[EDSortableThreadProxy setIsVIP:](self, "setIsVIP:", [threadCopy isVIP]);
+    -[EDSortableThreadProxy setIsBlocked:](self, "setIsBlocked:", [threadCopy isBlocked]);
+    -[EDSortableThreadProxy setHasAttachments:](self, "setHasAttachments:", [threadCopy hasAttachments]);
+    -[EDSortableThreadProxy setIsAuthenticated:](self, "setIsAuthenticated:", [threadCopy isAuthenticated]);
+    -[EDSortableThreadProxy setAllowAuthenticationWarning:](self, "setAllowAuthenticationWarning:", [threadCopy allowAuthenticationWarning]);
+    -[EDSortableThreadProxy setNumberOfMessagesInThread:](self, "setNumberOfMessagesInThread:", [threadCopy count]);
+    mailboxObjectIDs = [threadCopy mailboxObjectIDs];
+    [(EDSortableThreadProxy *)self setMailboxObjectIDs:mailboxObjectIDs];
 
-    v26 = [v27 generatedSummary];
-    [(EDSortableThreadProxy *)self setGeneratedSummary:v26];
+    generatedSummary = [threadCopy generatedSummary];
+    [(EDSortableThreadProxy *)self setGeneratedSummary:generatedSummary];
   }
 }
 
-- (id)calculateChangeFromThread:(id)a3
+- (id)calculateChangeFromThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   v5 = objc_alloc_init(MEMORY[0x1E699AD98]);
-  v6 = [v4 query];
-  v7 = [v6 sortDescriptors];
+  query = [threadCopy query];
+  sortDescriptors = [query sortDescriptors];
 
-  v91 = v7;
-  v8 = [v7 firstObject];
-  v9 = [v8 key];
+  v91 = sortDescriptors;
+  firstObject = [sortDescriptors firstObject];
+  v9 = [firstObject key];
 
   v90 = v9;
-  v10 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:v4 keyPath:v9 isPrimary:1];
+  v10 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:threadCopy keyPath:v9 isPrimary:1];
   v11 = v10 != 0;
   v92 = v10;
   if (v10)
@@ -213,12 +213,12 @@
     [v5 setValue:v10 forKeyPath:v90];
   }
 
-  if ([v7 count] >= 2)
+  if ([sortDescriptors count] >= 2)
   {
-    v12 = [v7 objectAtIndexedSubscript:1];
+    v12 = [sortDescriptors objectAtIndexedSubscript:1];
     v13 = [v12 key];
 
-    v14 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:v4 keyPath:v13 isPrimary:0];
+    v14 = [(EDSortableThreadProxy *)self _setValueFromThreadAndReturnIfChanged:threadCopy keyPath:v13 isPrimary:0];
 
     if (v14)
     {
@@ -229,289 +229,289 @@
     v92 = v14;
   }
 
-  v15 = [v4 date];
-  v16 = [(EDSortableThreadProxy *)self date];
-  v17 = [v15 isEqualToDate:v16];
+  date = [threadCopy date];
+  date2 = [(EDSortableThreadProxy *)self date];
+  v17 = [date isEqualToDate:date2];
 
   if ((v17 & 1) == 0)
   {
-    v18 = [v4 date];
-    [v5 setDate:v18];
+    date3 = [threadCopy date];
+    [v5 setDate:date3];
 
     v11 = 1;
   }
 
-  v19 = [(EDSortableThreadProxy *)self properties];
+  properties = [(EDSortableThreadProxy *)self properties];
 
-  if (v19)
+  if (properties)
   {
-    v82 = [v4 displayMessageObjectID];
-    v20 = [v82 globalMessageID];
-    if (v20 != [(EDSortableThreadProxy *)self displayMessageGlobalID])
+    displayMessageObjectID = [threadCopy displayMessageObjectID];
+    globalMessageID = [displayMessageObjectID globalMessageID];
+    if (globalMessageID != [(EDSortableThreadProxy *)self displayMessageGlobalID])
     {
-      v21 = [v4 subject];
-      v22 = v21;
-      if (!v21)
+      subject = [threadCopy subject];
+      null = subject;
+      if (!subject)
       {
-        v22 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setSubject:v22];
-      if (!v21)
-      {
-      }
-
-      v23 = [v4 summary];
-      v24 = v23;
-      if (!v23)
-      {
-        v24 = [MEMORY[0x1E695DFB0] null];
-      }
-
-      [v5 setSummary:v24];
-      if (!v23)
+      [v5 setSubject:null];
+      if (!subject)
       {
       }
 
-      v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "unsubscribeType")}];
+      summary = [threadCopy summary];
+      null2 = summary;
+      if (!summary)
+      {
+        null2 = [MEMORY[0x1E695DFB0] null];
+      }
+
+      [v5 setSummary:null2];
+      if (!summary)
+      {
+      }
+
+      v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(threadCopy, "unsubscribeType")}];
       [v5 setUnsubscribeType:v25];
 
-      v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "conversationNotificationLevel")}];
+      v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(threadCopy, "conversationNotificationLevel")}];
       [v5 setConversationNotificationLevel:v26];
 
-      v27 = [v4 followUp];
-      v28 = v27;
-      if (!v27)
+      followUp = [threadCopy followUp];
+      null3 = followUp;
+      if (!followUp)
       {
-        v28 = [MEMORY[0x1E695DFB0] null];
+        null3 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setFollowUp:v28];
-      if (!v27)
+      [v5 setFollowUp:null3];
+      if (!followUp)
       {
       }
 
-      v29 = [v4 displayMessageItemID];
-      [v5 setDisplayMessageItemID:v29];
+      displayMessageItemID = [threadCopy displayMessageItemID];
+      [v5 setDisplayMessageItemID:displayMessageItemID];
 
       LOBYTE(v11) = 1;
     }
 
-    v30 = [v4 displayDate];
-    v31 = [(EDSortableThreadProxy *)self displayDate];
-    v32 = [v30 isEqualToDate:v31];
+    displayDate = [threadCopy displayDate];
+    displayDate2 = [(EDSortableThreadProxy *)self displayDate];
+    v32 = [displayDate isEqualToDate:displayDate2];
 
     if ((v32 & 1) == 0)
     {
-      v33 = [v4 displayDate];
-      [v5 setDisplayDate:v33];
+      displayDate3 = [threadCopy displayDate];
+      [v5 setDisplayDate:displayDate3];
 
       LOBYTE(v11) = 1;
     }
 
-    v86 = [v4 category];
-    v34 = [(EDSortableThreadProxy *)self category];
+    category = [threadCopy category];
+    category2 = [(EDSortableThreadProxy *)self category];
     v35 = EFObjectsAreEqual();
 
     if ((v35 & 1) == 0)
     {
-      v36 = v86;
-      if (!v86)
+      null4 = category;
+      if (!category)
       {
-        v36 = [MEMORY[0x1E695DFB0] null];
+        null4 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setCategory:v36];
-      if (!v86)
+      [v5 setCategory:null4];
+      if (!category)
       {
       }
 
       LOBYTE(v11) = 1;
     }
 
-    v37 = [v4 businessID];
-    if (v37 != [(EDSortableThreadProxy *)self businessID])
+    businessID = [threadCopy businessID];
+    if (businessID != [(EDSortableThreadProxy *)self businessID])
     {
-      v38 = [MEMORY[0x1E696AD98] numberWithLongLong:v37];
+      v38 = [MEMORY[0x1E696AD98] numberWithLongLong:businessID];
       [v5 setBusinessID:v38];
 
       LOBYTE(v11) = 1;
     }
 
-    v89 = [v4 businessLogoID];
-    v39 = [(EDSortableThreadProxy *)self businessLogoID];
+    businessLogoID = [threadCopy businessLogoID];
+    businessLogoID2 = [(EDSortableThreadProxy *)self businessLogoID];
 
-    if (v89 != v39)
+    if (businessLogoID != businessLogoID2)
     {
-      v40 = v89;
-      if (!v89)
+      null5 = businessLogoID;
+      if (!businessLogoID)
       {
-        v40 = [MEMORY[0x1E695DFB0] null];
+        null5 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setBusinessLogoID:v40];
-      if (!v89)
+      [v5 setBusinessLogoID:null5];
+      if (!businessLogoID)
       {
       }
 
       LOBYTE(v11) = 1;
     }
 
-    v85 = [v4 sendLaterDate];
-    v41 = [(EDSortableThreadProxy *)self sendLaterDate];
+    sendLaterDate = [threadCopy sendLaterDate];
+    sendLaterDate2 = [(EDSortableThreadProxy *)self sendLaterDate];
     v42 = EFObjectsAreEqual();
 
     if ((v42 & 1) == 0)
     {
-      v43 = v85;
-      if (!v85)
+      null6 = sendLaterDate;
+      if (!sendLaterDate)
       {
-        v43 = [MEMORY[0x1E695DFB0] null];
+        null6 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setSendLaterDate:v43];
-      if (!v85)
+      [v5 setSendLaterDate:null6];
+      if (!sendLaterDate)
       {
       }
 
       LOBYTE(v11) = 1;
     }
 
-    v84 = [v4 readLater];
-    v44 = [(EDSortableThreadProxy *)self readLater];
+    readLater = [threadCopy readLater];
+    readLater2 = [(EDSortableThreadProxy *)self readLater];
     v45 = EFObjectsAreEqual();
 
     if ((v45 & 1) == 0)
     {
-      v46 = v84;
-      if (!v84)
+      null7 = readLater;
+      if (!readLater)
       {
-        v46 = [MEMORY[0x1E695DFB0] null];
+        null7 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setReadLater:v46];
-      if (!v84)
+      [v5 setReadLater:null7];
+      if (!readLater)
       {
       }
 
       LOBYTE(v11) = 1;
     }
 
-    v83 = [v4 senderList];
-    v47 = [(EDSortableThreadProxy *)self senderList];
+    senderList = [threadCopy senderList];
+    senderList2 = [(EDSortableThreadProxy *)self senderList];
     v48 = EFArraysAreEqual();
 
     if ((v48 & 1) == 0)
     {
-      [v5 setSenderList:v83];
+      [v5 setSenderList:senderList];
       LOBYTE(v11) = 1;
     }
 
-    v88 = [v4 toList];
-    v49 = [(EDSortableThreadProxy *)self toList];
+    toList = [threadCopy toList];
+    toList2 = [(EDSortableThreadProxy *)self toList];
     v50 = EFArraysAreEqual();
 
     if ((v50 & 1) == 0)
     {
-      [v5 setToList:v88];
+      [v5 setToList:toList];
       LOBYTE(v11) = 1;
     }
 
-    v87 = [v4 ccList];
-    v51 = [(EDSortableThreadProxy *)self ccList];
+    ccList = [threadCopy ccList];
+    ccList2 = [(EDSortableThreadProxy *)self ccList];
     v52 = EFArraysAreEqual();
 
     if ((v52 & 1) == 0)
     {
-      [v5 setCcList:v87];
+      [v5 setCcList:ccList];
       LOBYTE(v11) = 1;
     }
 
-    v53 = [v4 flags];
-    v54 = [(EDSortableThreadProxy *)self flags];
+    flags = [threadCopy flags];
+    flags2 = [(EDSortableThreadProxy *)self flags];
     v55 = EFObjectsAreEqual();
 
     if ((v55 & 1) == 0)
     {
-      [v5 setFlags:v53];
+      [v5 setFlags:flags];
       LOBYTE(v11) = 1;
     }
 
-    v56 = [v4 hasUnflagged];
-    if (v56 != [(EDSortableThreadProxy *)self hasUnflagged])
+    hasUnflagged = [threadCopy hasUnflagged];
+    if (hasUnflagged != [(EDSortableThreadProxy *)self hasUnflagged])
     {
-      v57 = [MEMORY[0x1E696AD98] numberWithBool:v56];
+      v57 = [MEMORY[0x1E696AD98] numberWithBool:hasUnflagged];
       [v5 setHasUnflagged:v57];
 
       LOBYTE(v11) = 1;
     }
 
-    v58 = [v4 flagColors];
-    v59 = [(EDSortableThreadProxy *)self flagColors];
+    flagColors = [threadCopy flagColors];
+    flagColors2 = [(EDSortableThreadProxy *)self flagColors];
     v60 = EFObjectsAreEqual();
 
     if ((v60 & 1) == 0)
     {
-      v61 = v58;
-      if (!v58)
+      null8 = flagColors;
+      if (!flagColors)
       {
-        v61 = [MEMORY[0x1E695DFB0] null];
+        null8 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setFlagColors:v61];
-      if (!v58)
+      [v5 setFlagColors:null8];
+      if (!flagColors)
       {
       }
 
       LOBYTE(v11) = 1;
     }
 
-    v62 = [v4 isVIP];
-    if (v62 != [(EDSortableThreadProxy *)self isVIP])
+    isVIP = [threadCopy isVIP];
+    if (isVIP != [(EDSortableThreadProxy *)self isVIP])
     {
-      v63 = [MEMORY[0x1E696AD98] numberWithBool:v62];
+      v63 = [MEMORY[0x1E696AD98] numberWithBool:isVIP];
       [v5 setIsVIP:v63];
 
       LOBYTE(v11) = 1;
     }
 
-    v64 = [v4 isBlocked];
-    if (v64 != [(EDSortableThreadProxy *)self isBlocked])
+    isBlocked = [threadCopy isBlocked];
+    if (isBlocked != [(EDSortableThreadProxy *)self isBlocked])
     {
-      v65 = [MEMORY[0x1E696AD98] numberWithBool:v64];
+      v65 = [MEMORY[0x1E696AD98] numberWithBool:isBlocked];
       [v5 setIsBlocked:v65];
 
       LOBYTE(v11) = 1;
     }
 
-    v66 = [(EDSortableThreadProxy *)self hasAttachments];
-    if (v66 != [(EDSortableThreadProxy *)self hasAttachments])
+    hasAttachments = [(EDSortableThreadProxy *)self hasAttachments];
+    if (hasAttachments != [(EDSortableThreadProxy *)self hasAttachments])
     {
-      v67 = [MEMORY[0x1E696AD98] numberWithBool:v66];
+      v67 = [MEMORY[0x1E696AD98] numberWithBool:hasAttachments];
       [v5 setHasAttachments:v67];
 
       LOBYTE(v11) = 1;
     }
 
-    v68 = [(EDSortableThreadProxy *)self isAuthenticated];
-    if (v68 != [(EDSortableThreadProxy *)self isAuthenticated])
+    isAuthenticated = [(EDSortableThreadProxy *)self isAuthenticated];
+    if (isAuthenticated != [(EDSortableThreadProxy *)self isAuthenticated])
     {
-      v69 = [MEMORY[0x1E696AD98] numberWithBool:v68];
+      v69 = [MEMORY[0x1E696AD98] numberWithBool:isAuthenticated];
       [v5 setIsAuthenticated:v69];
 
       LOBYTE(v11) = 1;
     }
 
-    v70 = [(EDSortableThreadProxy *)self allowAuthenticationWarning];
-    if (v70 != [(EDSortableThreadProxy *)self allowAuthenticationWarning])
+    allowAuthenticationWarning = [(EDSortableThreadProxy *)self allowAuthenticationWarning];
+    if (allowAuthenticationWarning != [(EDSortableThreadProxy *)self allowAuthenticationWarning])
     {
-      v71 = [MEMORY[0x1E696AD98] numberWithBool:v70];
+      v71 = [MEMORY[0x1E696AD98] numberWithBool:allowAuthenticationWarning];
       [v5 setAllowAuthenticationWarning:v71];
 
       LOBYTE(v11) = 1;
     }
 
-    v72 = [v4 count];
+    v72 = [threadCopy count];
     if (v72 != [(EDSortableThreadProxy *)self numberOfMessagesInThread])
     {
       v73 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v72];
@@ -520,28 +520,28 @@
       LOBYTE(v11) = 1;
     }
 
-    v74 = [v4 mailboxObjectIDs];
-    v75 = [(EDSortableThreadProxy *)self mailboxObjectIDs];
+    mailboxObjectIDs = [threadCopy mailboxObjectIDs];
+    mailboxObjectIDs2 = [(EDSortableThreadProxy *)self mailboxObjectIDs];
     if ((EFArraysAreEqual() & 1) == 0)
     {
-      [v5 setMailboxObjectIDs:v74];
+      [v5 setMailboxObjectIDs:mailboxObjectIDs];
       LOBYTE(v11) = 1;
     }
 
-    v76 = [v4 generatedSummary];
-    v77 = [(EDSortableThreadProxy *)self generatedSummary];
-    v78 = [v76 isEqual:v77];
+    generatedSummary = [threadCopy generatedSummary];
+    generatedSummary2 = [(EDSortableThreadProxy *)self generatedSummary];
+    v78 = [generatedSummary isEqual:generatedSummary2];
 
     if ((v78 & 1) == 0)
     {
-      v79 = v76;
-      if (!v76)
+      null9 = generatedSummary;
+      if (!generatedSummary)
       {
-        v79 = [MEMORY[0x1E695DFB0] null];
+        null9 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [v5 setGeneratedSummary:v79];
-      if (!v76)
+      [v5 setGeneratedSummary:null9];
+      if (!generatedSummary)
       {
       }
 
@@ -569,30 +569,30 @@ LABEL_92:
 
 - (int64_t)conversationID
 {
-  v2 = [(EDSortableThreadProxy *)self objectID];
-  v3 = [v2 conversationID];
+  objectID = [(EDSortableThreadProxy *)self objectID];
+  conversationID = [objectID conversationID];
 
-  return v3;
+  return conversationID;
 }
 
-- (id)_targetForSelector:(SEL)a3
+- (id)_targetForSelector:(SEL)selector
 {
-  v3 = self;
-  v4 = [(EDSortableThreadProxy *)self properties];
+  selfCopy = self;
+  properties = [(EDSortableThreadProxy *)self properties];
   if (objc_opt_respondsToSelector())
   {
-    v3 = v4;
+    selfCopy = properties;
   }
 
-  v5 = v3;
+  v5 = selfCopy;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = [(EDSortableThreadProxy *)self properties];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  properties = [(EDSortableThreadProxy *)self properties];
+  if (properties && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v6 = 1;
   }
@@ -601,7 +601,7 @@ LABEL_92:
   {
     v8.receiver = self;
     v8.super_class = EDSortableThreadProxy;
-    v6 = [(EDSortableThreadProxy *)&v8 respondsToSelector:a3];
+    v6 = [(EDSortableThreadProxy *)&v8 respondsToSelector:selector];
   }
 
   return v6;
@@ -609,12 +609,12 @@ LABEL_92:
 
 - (NSString)ef_publicDescription
 {
-  v3 = [(EDSortableThreadProxy *)self primarySortValue];
+  primarySortValue = [(EDSortableThreadProxy *)self primarySortValue];
   objc_opt_class();
-  v4 = v3;
+  v4 = primarySortValue;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v3];
+    v5 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:primarySortValue];
 
     v4 = v5;
   }

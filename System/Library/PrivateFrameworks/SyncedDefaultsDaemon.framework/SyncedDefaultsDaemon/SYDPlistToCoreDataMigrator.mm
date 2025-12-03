@@ -1,26 +1,26 @@
 @interface SYDPlistToCoreDataMigrator
 + (BOOL)isSharedIPad;
-+ (BOOL)migrateAllPlistsToCoreDataStore:(id)a3 deleteMigratedPlists:(BOOL)a4 libraryDirectoryURL:(id)a5 error:(id *)a6;
-+ (BOOL)migratePlist:(id)a3 forStoreWithIdentifier:(id)a4 toCoreDataStore:(id)a5 error:(id *)a6;
-+ (BOOL)shouldIncrementFailureCountForError:(id)a3;
-+ (BOOL)shouldStopMigrationAfterError:(id)a3;
-+ (BOOL)shouldUseTransactionForPlistAtURL:(id)a3;
-+ (id)allPossibleStorePlistURLsWithLibraryDirectoryURL:(id)a3;
-+ (id)keyValueStorePlistFromURL:(id)a3 error:(id *)a4;
++ (BOOL)migrateAllPlistsToCoreDataStore:(id)store deleteMigratedPlists:(BOOL)plists libraryDirectoryURL:(id)l error:(id *)error;
++ (BOOL)migratePlist:(id)plist forStoreWithIdentifier:(id)identifier toCoreDataStore:(id)store error:(id *)error;
++ (BOOL)shouldIncrementFailureCountForError:(id)error;
++ (BOOL)shouldStopMigrationAfterError:(id)error;
++ (BOOL)shouldUseTransactionForPlistAtURL:(id)l;
++ (id)allPossibleStorePlistURLsWithLibraryDirectoryURL:(id)l;
++ (id)keyValueStorePlistFromURL:(id)l error:(id *)error;
 + (id)knownDaemons;
-+ (void)addPlistURLsAndStoreIdentifiersForBundleRecord:(id)a3 toDictionary:(id)a4 uncontainerizedSyncedPreferencesDirectoryURL:(id)a5;
-+ (void)addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:(id)a3 uncontainerizedSyncedPreferencesDirectoryURL:(id)a4;
-+ (void)addPlistURLsForBundleIdentifier:(id)a3 defaultStoreIdentifier:(id)a4 additionalStoreIdentifiers:(id)a5 toDictionary:(id)a6 syncedPreferencesDirectoryURL:(id)a7;
++ (void)addPlistURLsAndStoreIdentifiersForBundleRecord:(id)record toDictionary:(id)dictionary uncontainerizedSyncedPreferencesDirectoryURL:(id)l;
++ (void)addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:(id)dictionary uncontainerizedSyncedPreferencesDirectoryURL:(id)l;
++ (void)addPlistURLsForBundleIdentifier:(id)identifier defaultStoreIdentifier:(id)storeIdentifier additionalStoreIdentifiers:(id)identifiers toDictionary:(id)dictionary syncedPreferencesDirectoryURL:(id)l;
 @end
 
 @implementation SYDPlistToCoreDataMigrator
 
-+ (BOOL)migrateAllPlistsToCoreDataStore:(id)a3 deleteMigratedPlists:(BOOL)a4 libraryDirectoryURL:(id)a5 error:(id *)a6
++ (BOOL)migrateAllPlistsToCoreDataStore:(id)store deleteMigratedPlists:(BOOL)plists libraryDirectoryURL:(id)l error:(id *)error
 {
-  v8 = a4;
+  plistsCopy = plists;
   v55[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  storeCopy = store;
+  lCopy = l;
   v12 = _os_activity_create(&dword_26C384000, "kvs/migrate-all-plists", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -37,13 +37,13 @@
     v54 = *MEMORY[0x277CCA450];
     v55[0] = @"Cannot migrate the non-personal persona";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-    v16 = [v14 errorWithDomain:@"SyncedDefaults" code:1025 userInfo:v15];
+    date = [v14 errorWithDomain:@"SyncedDefaults" code:1025 userInfo:v15];
 
-    if (a6)
+    if (error)
     {
-      v17 = v16;
+      v17 = date;
       v18 = 0;
-      *a6 = v16;
+      *error = date;
     }
 
     else
@@ -54,8 +54,8 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 postNotificationName:@"SYDPlistToCoreDataMigratorWillMigrateNotification" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SYDPlistToCoreDataMigratorWillMigrateNotification" object:0 userInfo:0];
 
     v20 = SYDGetMigrationLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -63,7 +63,7 @@
       +[SYDPlistToCoreDataMigrator migrateAllPlistsToCoreDataStore:deleteMigratedPlists:libraryDirectoryURL:error:];
     }
 
-    v16 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v46 = 0;
     v47[0] = &v46;
     v47[1] = 0x2020000000;
@@ -74,7 +74,7 @@
     v43 = __Block_byref_object_copy__4;
     v44 = __Block_byref_object_dispose__4;
     v45 = 0;
-    v21 = [a1 allPossibleStorePlistURLsWithLibraryDirectoryURL:v11];
+    v21 = [self allPossibleStorePlistURLsWithLibraryDirectoryURL:lCopy];
     v22 = SYDGetMigrationLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -85,13 +85,13 @@
     v34[1] = 3221225472;
     v34[2] = __109__SYDPlistToCoreDataMigrator_migrateAllPlistsToCoreDataStore_deleteMigratedPlists_libraryDirectoryURL_error___block_invoke;
     v34[3] = &unk_279D30040;
-    v38 = a1;
+    selfCopy = self;
     v36 = &v40;
-    v35 = v10;
+    v35 = storeCopy;
     v37 = &v46;
-    v39 = v8;
+    v39 = plistsCopy;
     [v21 enumerateKeysAndObjectsUsingBlock:v34];
-    [v16 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     v24 = v23;
     v25 = SYDGetMigrationLog();
     v26 = -v24;
@@ -100,15 +100,15 @@
       [SYDPlistToCoreDataMigrator migrateAllPlistsToCoreDataStore:v47 deleteMigratedPlists:? libraryDirectoryURL:? error:?];
     }
 
-    if (v8)
+    if (plistsCopy)
     {
       v27 = v41[5];
       if (v27)
       {
         v51 = @"errorDomainAndCode";
         v28 = MEMORY[0x277CCACA8];
-        v29 = [v27 domain];
-        v30 = [v28 stringWithFormat:@"%@_%ld", v29, objc_msgSend(v41[5], "code")];
+        domain = [v27 domain];
+        v30 = [v28 stringWithFormat:@"%@_%ld", domain, objc_msgSend(v41[5], "code")];
         v52 = v30;
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       }
@@ -116,8 +116,8 @@
       else
       {
         v49[0] = @"storeCount";
-        v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(v47[0] + 24)];
-        v50[0] = v29;
+        domain = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(v47[0] + 24)];
+        v50[0] = domain;
         v49[1] = @"duration";
         v30 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
         v50[1] = v30;
@@ -127,9 +127,9 @@
       AnalyticsSendEvent();
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v41[5];
+      *error = v41[5];
     }
 
     v18 = v41[5] == 0;
@@ -307,46 +307,46 @@ LABEL_44:
   objc_autoreleasePoolPop(v9);
 }
 
-+ (BOOL)migratePlist:(id)a3 forStoreWithIdentifier:(id)a4 toCoreDataStore:(id)a5 error:(id *)a6
++ (BOOL)migratePlist:(id)plist forStoreWithIdentifier:(id)identifier toCoreDataStore:(id)store error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  plistCopy = plist;
+  identifierCopy = identifier;
+  storeCopy = store;
   v12 = SYDGetMigrationLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     +[SYDPlistToCoreDataMigrator migratePlist:forStoreWithIdentifier:toCoreDataStore:error:];
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__4;
   v30 = __Block_byref_object_dispose__4;
   v31 = 0;
-  v14 = [v9 objectForKeyedSubscript:@"values"];
+  v14 = [plistCopy objectForKeyedSubscript:@"values"];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __88__SYDPlistToCoreDataMigrator_migratePlist_forStoreWithIdentifier_toCoreDataStore_error___block_invoke;
   v22[3] = &unk_279D30068;
-  v15 = v10;
+  v15 = identifierCopy;
   v23 = v15;
-  v16 = v11;
+  v16 = storeCopy;
   v24 = v16;
   v25 = &v26;
   [v14 enumerateKeysAndObjectsUsingBlock:v22];
   v17 = SYDGetMigrationLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [v13 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     [SYDPlistToCoreDataMigrator migratePlist:v15 forStoreWithIdentifier:buf toCoreDataStore:v17 error:v18];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v27[5];
+    *error = v27[5];
   }
 
   v19 = v27[5] == 0;
@@ -509,10 +509,10 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)keyValueStorePlistFromURL:(id)a3 error:(id *)a4
++ (id)keyValueStorePlistFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v5];
+  lCopy = l;
+  v6 = [MEMORY[0x277CBEAE0] inputStreamWithURL:lCopy];
   [v6 open];
   v19 = 0;
   v7 = [MEMORY[0x277CCAC58] propertyListWithStream:v6 options:0 format:0 error:&v19];
@@ -520,25 +520,25 @@ LABEL_18:
   [v6 close];
   if (v8)
   {
-    v9 = [v8 domain];
-    if ([v9 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
-      v10 = [v8 code];
+      code = [v8 code];
 
-      if (v10 != 3842)
+      if (code != 3842)
       {
         goto LABEL_9;
       }
 
-      v11 = [v8 userInfo];
-      v9 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [v8 userInfo];
+      domain = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-      v12 = [v9 domain];
-      if ([v12 isEqualToString:*MEMORY[0x277CCA5B8]])
+      v9Domain = [domain domain];
+      if ([v9Domain isEqualToString:*MEMORY[0x277CCA5B8]])
       {
-        v13 = [v9 code];
+        code2 = [domain code];
 
-        if (v13 == 2)
+        if (code2 == 2)
         {
 
           v8 = 0;
@@ -554,8 +554,8 @@ LABEL_11:
     }
 
 LABEL_9:
-    v9 = SYDGetMigrationLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    domain = SYDGetMigrationLog();
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_ERROR))
     {
       __109__SYDPlistToCoreDataMigrator_migrateAllPlistsToCoreDataStore_deleteMigratedPlists_libraryDirectoryURL_error___block_invoke_cold_1();
     }
@@ -592,22 +592,22 @@ LABEL_12:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v17 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-+ (BOOL)shouldStopMigrationAfterError:(id)a3
++ (BOOL)shouldStopMigrationAfterError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    if (SYDIsFileProtectionError(v3))
+    if (SYDIsFileProtectionError(errorCopy))
     {
       v5 = 1;
     }
@@ -626,46 +626,46 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)shouldIncrementFailureCountForError:(id)a3
++ (BOOL)shouldIncrementFailureCountForError:(id)error
 {
-  v3 = a3;
-  if (SYDIsFileProtectionError(v3))
+  errorCopy = error;
+  if (SYDIsFileProtectionError(errorCopy))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = SYDIsDiskFullError(v3) ^ 1;
+    v4 = SYDIsDiskFullError(errorCopy) ^ 1;
   }
 
   return v4;
 }
 
-+ (BOOL)shouldUseTransactionForPlistAtURL:(id)a3
++ (BOOL)shouldUseTransactionForPlistAtURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v15 = 0;
   v4 = *MEMORY[0x277CBE838];
   v14 = 0;
-  v5 = [v3 getResourceValue:&v15 forKey:v4 error:&v14];
+  v5 = [lCopy getResourceValue:&v15 forKey:v4 error:&v14];
   v6 = v15;
   v7 = v14;
   if (v5)
   {
-    v8 = [v6 unsignedLongValue];
-    v9 = v8 < 0x500000;
+    unsignedLongValue = [v6 unsignedLongValue];
+    v9 = unsignedLongValue < 0x500000;
     v10 = SYDGetMigrationLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v3 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
       *buf = 138412802;
-      v17 = v11;
+      v17 = lastPathComponent;
       v18 = 1024;
-      v19 = v8 < 0x500000;
+      v19 = unsignedLongValue < 0x500000;
       v20 = 2048;
-      v21 = v8;
+      v21 = unsignedLongValue;
       _os_log_debug_impl(&dword_26C384000, v10, OS_LOG_TYPE_DEBUG, "Plist %@: useTransaction=%d size=%ld KB", buf, 0x1Cu);
     }
   }
@@ -687,16 +687,16 @@ LABEL_12:
 
 + (BOOL)isSharedIPad
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isSharedIPad];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isSharedIPad = [mEMORY[0x277D77BF8] isSharedIPad];
 
-  return v3;
+  return isSharedIPad;
 }
 
-+ (id)allPossibleStorePlistURLsWithLibraryDirectoryURL:(id)a3
++ (id)allPossibleStorePlistURLsWithLibraryDirectoryURL:(id)l
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = SYDGetMigrationLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -704,7 +704,7 @@ LABEL_12:
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v4 URLByAppendingPathComponent:@"SyncedPreferences" isDirectory:1];
+  v7 = [lCopy URLByAppendingPathComponent:@"SyncedPreferences" isDirectory:1];
   v8 = [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
   v24 = 0u;
   v25 = 0u;
@@ -724,7 +724,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        [a1 addPlistURLsAndStoreIdentifiersForBundleRecord:*(*(&v24 + 1) + 8 * i) toDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
+        [self addPlistURLsAndStoreIdentifiersForBundleRecord:*(*(&v24 + 1) + 8 * i) toDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -752,7 +752,7 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        [a1 addPlistURLsAndStoreIdentifiersForBundleRecord:*(*(&v20 + 1) + 8 * j) toDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
+        [self addPlistURLsAndStoreIdentifiersForBundleRecord:*(*(&v20 + 1) + 8 * j) toDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -761,61 +761,61 @@ LABEL_12:
     while (v15);
   }
 
-  [a1 addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
+  [self addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:v6 uncontainerizedSyncedPreferencesDirectoryURL:v7];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (void)addPlistURLsAndStoreIdentifiersForBundleRecord:(id)a3 toDictionary:(id)a4 uncontainerizedSyncedPreferencesDirectoryURL:(id)a5
++ (void)addPlistURLsAndStoreIdentifiersForBundleRecord:(id)record toDictionary:(id)dictionary uncontainerizedSyncedPreferencesDirectoryURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v11 = SYDGetMigrationLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:v8 toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
+    [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:recordCopy toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D6B878]) initWithBundleRecord:v8];
-  v13 = [v12 storeIdentifier];
-  v14 = [v12 additionalStoreIdentifiers];
+  v12 = [objc_alloc(MEMORY[0x277D6B878]) initWithBundleRecord:recordCopy];
+  storeIdentifier = [v12 storeIdentifier];
+  additionalStoreIdentifiers = [v12 additionalStoreIdentifiers];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v15 = [v8 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
   }
 
   else
   {
-    v15 = [v8 effectiveBundleIdentifier];
+    bundleIdentifier = [recordCopy effectiveBundleIdentifier];
   }
 
-  v16 = v15;
-  if (v13 || [v14 count])
+  v16 = bundleIdentifier;
+  if (storeIdentifier || [additionalStoreIdentifiers count])
   {
     if (v16)
     {
-      v17 = [v8 dataContainerURL];
-      v18 = v17;
-      if (v17)
+      dataContainerURL = [recordCopy dataContainerURL];
+      v18 = dataContainerURL;
+      if (dataContainerURL)
       {
-        [v17 URLByAppendingPathComponent:@"Library" isDirectory:1];
+        [dataContainerURL URLByAppendingPathComponent:@"Library" isDirectory:1];
         v27 = v12;
-        v19 = v13;
-        v20 = v14;
-        v21 = v9;
-        v22 = v10;
-        v24 = v23 = a1;
+        v19 = storeIdentifier;
+        v20 = additionalStoreIdentifiers;
+        v21 = dictionaryCopy;
+        v22 = lCopy;
+        v24 = v23 = self;
         v25 = [v24 URLByAppendingPathComponent:@"SyncedPreferences" isDirectory:1];
 
-        a1 = v23;
-        v10 = v22;
-        v9 = v21;
-        v14 = v20;
-        v13 = v19;
+        self = v23;
+        lCopy = v22;
+        dictionaryCopy = v21;
+        additionalStoreIdentifiers = v20;
+        storeIdentifier = v19;
         v12 = v27;
       }
 
@@ -824,13 +824,13 @@ LABEL_12:
         v26 = SYDGetMigrationLog();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:v8 toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
+          [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:recordCopy toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
         }
 
-        v25 = v10;
+        v25 = lCopy;
       }
 
-      [a1 addPlistURLsForBundleIdentifier:v16 defaultStoreIdentifier:v13 additionalStoreIdentifiers:v14 toDictionary:v9 syncedPreferencesDirectoryURL:v25];
+      [self addPlistURLsForBundleIdentifier:v16 defaultStoreIdentifier:storeIdentifier additionalStoreIdentifiers:additionalStoreIdentifiers toDictionary:dictionaryCopy syncedPreferencesDirectoryURL:v25];
     }
 
     else
@@ -838,7 +838,7 @@ LABEL_12:
       v25 = SYDGetMigrationLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
-        [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:v8 toDictionary:v25 uncontainerizedSyncedPreferencesDirectoryURL:?];
+        [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:recordCopy toDictionary:v25 uncontainerizedSyncedPreferencesDirectoryURL:?];
       }
     }
   }
@@ -848,32 +848,32 @@ LABEL_12:
     v25 = SYDGetMigrationLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:v8 toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
+      [SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForBundleRecord:recordCopy toDictionary:? uncontainerizedSyncedPreferencesDirectoryURL:?];
     }
   }
 }
 
-+ (void)addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:(id)a3 uncontainerizedSyncedPreferencesDirectoryURL:(id)a4
++ (void)addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:(id)dictionary uncontainerizedSyncedPreferencesDirectoryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v8 = SYDGetMigrationLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     +[SYDPlistToCoreDataMigrator addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary:uncontainerizedSyncedPreferencesDirectoryURL:];
   }
 
-  v9 = [a1 knownDaemons];
+  knownDaemons = [self knownDaemons];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __134__SYDPlistToCoreDataMigrator_addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary_uncontainerizedSyncedPreferencesDirectoryURL___block_invoke;
   v12[3] = &unk_279D30090;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  v14 = lCopy;
+  selfCopy = self;
+  v13 = dictionaryCopy;
+  v10 = lCopy;
+  v11 = dictionaryCopy;
+  [knownDaemons enumerateKeysAndObjectsUsingBlock:v12];
 }
 
 void __134__SYDPlistToCoreDataMigrator_addPlistURLsAndStoreIdentifiersForKnownDaemonsToDictionary_uncontainerizedSyncedPreferencesDirectoryURL___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -886,37 +886,37 @@ void __134__SYDPlistToCoreDataMigrator_addPlistURLsAndStoreIdentifiersForKnownDa
   [*(a1 + 48) addPlistURLsForBundleIdentifier:v6 defaultStoreIdentifier:v8 additionalStoreIdentifiers:v7 toDictionary:*(a1 + 32) syncedPreferencesDirectoryURL:*(a1 + 40)];
 }
 
-+ (void)addPlistURLsForBundleIdentifier:(id)a3 defaultStoreIdentifier:(id)a4 additionalStoreIdentifiers:(id)a5 toDictionary:(id)a6 syncedPreferencesDirectoryURL:(id)a7
++ (void)addPlistURLsForBundleIdentifier:(id)identifier defaultStoreIdentifier:(id)storeIdentifier additionalStoreIdentifiers:(id)identifiers toDictionary:(id)dictionary syncedPreferencesDirectoryURL:(id)l
 {
   v47 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v11 = a4;
-  v12 = a5;
-  v34 = a6;
-  v33 = a7;
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
+  identifiersCopy = identifiers;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v13 = SYDGetMigrationLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v12 componentsJoinedByString:{@", "}];
+    v30 = [identifiersCopy componentsJoinedByString:{@", "}];
     *buf = 138412802;
-    v42 = v35;
+    v42 = identifierCopy;
     v43 = 2112;
-    v44 = v11;
+    v44 = storeIdentifierCopy;
     v45 = 2112;
     v46 = v30;
     _os_log_debug_impl(&dword_26C384000, v13, OS_LOG_TYPE_DEBUG, "Adding plist URLs for bundle identifier %@ with defaultStoreIdentifier=(%@) additionalStoreIdentifiers=[%@]", buf, 0x20u);
   }
 
-  if (v11)
+  if (storeIdentifierCopy)
   {
-    v14 = [v33 URLByAppendingPathComponent:v35];
+    v14 = [lCopy URLByAppendingPathComponent:identifierCopy];
     v15 = [v14 URLByAppendingPathExtension:@"plist"];
 
-    [v34 setObject:v11 forKeyedSubscript:v15];
+    [dictionaryCopy setObject:storeIdentifierCopy forKeyedSubscript:v15];
   }
 
-  v16 = [v12 count];
-  if (v11)
+  v16 = [identifiersCopy count];
+  if (storeIdentifierCopy)
   {
     v17 = v16 + 1;
   }
@@ -928,18 +928,18 @@ void __134__SYDPlistToCoreDataMigrator_addPlistURLsAndStoreIdentifiersForKnownDa
 
   v18 = [MEMORY[0x277CBEB58] setWithCapacity:v17];
   v19 = v18;
-  if (v11)
+  if (storeIdentifierCopy)
   {
-    [v18 addObject:v11];
+    [v18 addObject:storeIdentifierCopy];
   }
 
-  v32 = v11;
-  if (v12)
+  v32 = storeIdentifierCopy;
+  if (identifiersCopy)
   {
-    [v19 addObjectsFromArray:v12];
+    [v19 addObjectsFromArray:identifiersCopy];
   }
 
-  v31 = v12;
+  v31 = identifiersCopy;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -960,11 +960,11 @@ void __134__SYDPlistToCoreDataMigrator_addPlistURLsAndStoreIdentifiersForKnownDa
         }
 
         v25 = *(*(&v36 + 1) + 8 * i);
-        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v35, v25];
+        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", identifierCopy, v25];
         v27 = [v26 stringByAppendingPathExtension:@"plist"];
 
-        v28 = [v33 URLByAppendingPathComponent:v27];
-        [v34 setObject:v25 forKeyedSubscript:v28];
+        v28 = [lCopy URLByAppendingPathComponent:v27];
+        [dictionaryCopy setObject:v25 forKeyedSubscript:v28];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v36 objects:v40 count:16];

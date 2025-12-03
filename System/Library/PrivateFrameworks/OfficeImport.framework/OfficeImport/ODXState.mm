@@ -1,29 +1,29 @@
 @interface ODXState
-- (ODXState)initWithOfficeArtState:(id)a3;
-- (void)setupNSForXMLFormat:(int)a3;
+- (ODXState)initWithOfficeArtState:(id)state;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation ODXState
 
-- (ODXState)initWithOfficeArtState:(id)a3
+- (ODXState)initWithOfficeArtState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = ODXState;
   v6 = [(OCXState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mOfficeArtState, a3);
+    objc_storeStrong(&v6->mOfficeArtState, state);
     [(ODXState *)v7 setupNSForXMLFormat:[(OCXState *)v7->mOfficeArtState xmlFormat]];
   }
 
   return v7;
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v9.receiver = self;
   v9.super_class = ODXState;
   [(OCXState *)&v9 setupNSForXMLFormat:?];

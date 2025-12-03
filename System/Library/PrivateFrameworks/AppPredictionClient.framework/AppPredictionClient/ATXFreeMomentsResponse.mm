@@ -1,20 +1,20 @@
 @interface ATXFreeMomentsResponse
-- (ATXFreeMomentsResponse)initWithCoder:(id)a3;
-- (ATXFreeMomentsResponse)initWithFreeMoments:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXFreeMomentsResponse)initWithCoder:(id)coder;
+- (ATXFreeMomentsResponse)initWithFreeMoments:(id)moments;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXFreeMomentsResponse
 
-- (ATXFreeMomentsResponse)initWithFreeMoments:(id)a3
+- (ATXFreeMomentsResponse)initWithFreeMoments:(id)moments
 {
-  v4 = a3;
+  momentsCopy = moments;
   v9.receiver = self;
   v9.super_class = ATXFreeMomentsResponse;
   v5 = [(ATXFreeMomentsResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [momentsCopy copy];
     freeMoments = v5->_freeMoments;
     v5->_freeMoments = v6;
   }
@@ -22,32 +22,32 @@
   return v5;
 }
 
-- (ATXFreeMomentsResponse)initWithCoder:(id)a3
+- (ATXFreeMomentsResponse)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 setWithObject:objc_opt_class()];
-  v7 = [v5 decodeArrayOfObjectsOfClasses:v6 forKey:@"freeMoments"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClasses:v6 forKey:@"freeMoments"];
 
   if (v7)
   {
     self = [(ATXFreeMomentsResponse *)self initWithFreeMoments:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXFreeMomentsResponse *)self freeMoments];
-  [v4 encodeObject:v5 forKey:@"freeMoments"];
+  coderCopy = coder;
+  freeMoments = [(ATXFreeMomentsResponse *)self freeMoments];
+  [coderCopy encodeObject:freeMoments forKey:@"freeMoments"];
 }
 
 @end

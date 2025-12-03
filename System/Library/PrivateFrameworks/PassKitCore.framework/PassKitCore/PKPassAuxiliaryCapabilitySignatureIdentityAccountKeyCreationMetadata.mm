@@ -1,24 +1,24 @@
 @interface PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithCoder:(id)a3;
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithDictionary:(id)a3;
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithSubcredentialIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithCoder:(id)coder;
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithDictionary:(id)dictionary;
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithSubcredentialIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata
 
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithDictionary:(id)a3
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"subcredentialIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"subcredentialIdentifier"];
     subcredentialIdentifier = v5->_subcredentialIdentifier;
     v5->_subcredentialIdentifier = v6;
 
@@ -32,49 +32,49 @@
   return v5;
 }
 
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithSubcredentialIdentifier:(id)a3
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithSubcredentialIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata;
-  v6 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, identifier);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata alloc] _init];
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:v4];
+  _init = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata alloc] _init];
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:_init];
   v5 = [(NSString *)self->_subcredentialIdentifier copy];
-  v6 = v4[1];
-  v4[1] = v5;
+  v6 = _init[1];
+  _init[1] = v5;
 
   v7 = [(NSString *)self->_existingAccountKeyIdentifier copy];
-  v8 = v4[2];
-  v4[2] = v7;
+  v8 = _init[2];
+  _init[2] = v7;
 
-  return v4;
+  return _init;
 }
 
-- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithCoder:(id)a3
+- (PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v11 initWithCoder:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
     subcredentialIdentifier = v5->_subcredentialIdentifier;
     v5->_subcredentialIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"existingAccountKeyIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"existingAccountKeyIdentifier"];
     existingAccountKeyIdentifier = v5->_existingAccountKeyIdentifier;
     v5->_existingAccountKeyIdentifier = v8;
   }
@@ -82,14 +82,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassAuxiliaryCapabilitySignatureIdentityAccountKeyCreationMetadata;
-  v4 = a3;
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_subcredentialIdentifier forKey:{@"subcredentialIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_existingAccountKeyIdentifier forKey:@"existingAccountKeyIdentifier"];
+  coderCopy = coder;
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_subcredentialIdentifier forKey:{@"subcredentialIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_existingAccountKeyIdentifier forKey:@"existingAccountKeyIdentifier"];
 }
 
 - (id)description

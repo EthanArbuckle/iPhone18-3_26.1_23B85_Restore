@@ -1,35 +1,35 @@
 @interface AWDIDSSessionEnded
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCallDuration:(BOOL)a3;
-- (void)setHasConferenceMiscError:(BOOL)a3;
-- (void)setHasConnectDuration:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasCurrentNatType:(BOOL)a3;
-- (void)setHasDataRate:(BOOL)a3;
-- (void)setHasEndedReason:(BOOL)a3;
-- (void)setHasGameKitError:(BOOL)a3;
-- (void)setHasGenericError:(BOOL)a3;
-- (void)setHasGksError:(BOOL)a3;
-- (void)setHasGksReturnCode:(BOOL)a3;
-- (void)setHasIsInitiator:(BOOL)a3;
-- (void)setHasIsNetworkActive:(BOOL)a3;
-- (void)setHasIsNetworkEnabled:(BOOL)a3;
-- (void)setHasIsNetworkReachable:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasLocalNetworkConnection:(BOOL)a3;
-- (void)setHasNetworkCheckResult:(BOOL)a3;
-- (void)setHasRelayConnectDuration:(BOOL)a3;
-- (void)setHasRemoteNatType:(BOOL)a3;
-- (void)setHasRemoteNetworkConnection:(BOOL)a3;
-- (void)setHasUsesRelay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCallDuration:(BOOL)duration;
+- (void)setHasConferenceMiscError:(BOOL)error;
+- (void)setHasConnectDuration:(BOOL)duration;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasCurrentNatType:(BOOL)type;
+- (void)setHasDataRate:(BOOL)rate;
+- (void)setHasEndedReason:(BOOL)reason;
+- (void)setHasGameKitError:(BOOL)error;
+- (void)setHasGenericError:(BOOL)error;
+- (void)setHasGksError:(BOOL)error;
+- (void)setHasGksReturnCode:(BOOL)code;
+- (void)setHasIsInitiator:(BOOL)initiator;
+- (void)setHasIsNetworkActive:(BOOL)active;
+- (void)setHasIsNetworkEnabled:(BOOL)enabled;
+- (void)setHasIsNetworkReachable:(BOOL)reachable;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasLocalNetworkConnection:(BOOL)connection;
+- (void)setHasNetworkCheckResult:(BOOL)result;
+- (void)setHasRelayConnectDuration:(BOOL)duration;
+- (void)setHasRemoteNatType:(BOOL)type;
+- (void)setHasRemoteNetworkConnection:(BOOL)connection;
+- (void)setHasUsesRelay:(BOOL)relay;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSessionEnded
@@ -42,9 +42,9 @@
   [(AWDIDSSessionEnded *)&v3 dealloc];
 }
 
-- (void)setHasEndedReason:(BOOL)a3
+- (void)setHasEndedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 128;
   }
@@ -57,9 +57,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasGenericError:(BOOL)a3
+- (void)setHasGenericError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 512;
   }
@@ -72,9 +72,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasGameKitError:(BOOL)a3
+- (void)setHasGameKitError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 256;
   }
@@ -87,9 +87,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasConferenceMiscError:(BOOL)a3
+- (void)setHasConferenceMiscError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -102,9 +102,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCallDuration:(BOOL)a3
+- (void)setHasCallDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -117,9 +117,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasIsNetworkEnabled:(BOOL)a3
+- (void)setHasIsNetworkEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x4000;
   }
@@ -132,9 +132,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsNetworkActive:(BOOL)a3
+- (void)setHasIsNetworkActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x2000;
   }
@@ -147,9 +147,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasIsNetworkReachable:(BOOL)a3
+- (void)setHasIsNetworkReachable:(BOOL)reachable
 {
-  if (a3)
+  if (reachable)
   {
     v3 = 0x8000;
   }
@@ -162,9 +162,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNetworkCheckResult:(BOOL)a3
+- (void)setHasNetworkCheckResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 0x40000;
   }
@@ -177,9 +177,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasDataRate:(BOOL)a3
+- (void)setHasDataRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 64;
   }
@@ -192,9 +192,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasGksError:(BOOL)a3
+- (void)setHasGksError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 1024;
   }
@@ -207,9 +207,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasConnectDuration:(BOOL)a3
+- (void)setHasConnectDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -222,9 +222,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasRemoteNetworkConnection:(BOOL)a3
+- (void)setHasRemoteNetworkConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x200000;
   }
@@ -237,9 +237,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasLocalNetworkConnection:(BOOL)a3
+- (void)setHasLocalNetworkConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 0x20000;
   }
@@ -252,9 +252,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -267,9 +267,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasUsesRelay:(BOOL)a3
+- (void)setHasUsesRelay:(BOOL)relay
 {
-  if (a3)
+  if (relay)
   {
     v3 = 0x400000;
   }
@@ -282,9 +282,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasCurrentNatType:(BOOL)a3
+- (void)setHasCurrentNatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -297,9 +297,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasRemoteNatType:(BOOL)a3
+- (void)setHasRemoteNatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x100000;
   }
@@ -312,9 +312,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasRelayConnectDuration:(BOOL)a3
+- (void)setHasRelayConnectDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x80000;
   }
@@ -327,9 +327,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasIsInitiator:(BOOL)a3
+- (void)setHasIsInitiator:(BOOL)initiator
 {
-  if (a3)
+  if (initiator)
   {
     v3 = 4096;
   }
@@ -342,9 +342,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 0x10000;
   }
@@ -357,9 +357,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasGksReturnCode:(BOOL)a3
+- (void)setHasGksReturnCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2048;
   }
@@ -381,22 +381,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_endedReason), @"endedReason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_endedReason), @"endedReason"}];
     has = self->_has;
     if ((*&has & 0x200) == 0)
     {
@@ -415,7 +415,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_genericError), @"genericError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_genericError), @"genericError"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -429,7 +429,7 @@ LABEL_8:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gameKitError), @"gameKitError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gameKitError), @"gameKitError"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -443,7 +443,7 @@ LABEL_9:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_conferenceMiscError), @"conferenceMiscError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_conferenceMiscError), @"conferenceMiscError"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -457,7 +457,7 @@ LABEL_10:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callDuration), @"callDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callDuration), @"callDuration"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -471,7 +471,7 @@ LABEL_11:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkEnabled), @"isNetworkEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkEnabled), @"isNetworkEnabled"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -485,7 +485,7 @@ LABEL_12:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkActive), @"isNetworkActive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkActive), @"isNetworkActive"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -499,7 +499,7 @@ LABEL_13:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkReachable), @"isNetworkReachable"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isNetworkReachable), @"isNetworkReachable"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -513,7 +513,7 @@ LABEL_14:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkCheckResult), @"networkCheckResult"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkCheckResult), @"networkCheckResult"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -527,7 +527,7 @@ LABEL_15:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataRate), @"dataRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataRate), @"dataRate"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -541,7 +541,7 @@ LABEL_16:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gksError), @"gksError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gksError), @"gksError"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -555,7 +555,7 @@ LABEL_17:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectDuration), @"connectDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectDuration), @"connectDuration"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -569,7 +569,7 @@ LABEL_18:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteNetworkConnection), @"remoteNetworkConnection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteNetworkConnection), @"remoteNetworkConnection"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -583,7 +583,7 @@ LABEL_19:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_localNetworkConnection), @"localNetworkConnection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_localNetworkConnection), @"localNetworkConnection"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -597,7 +597,7 @@ LABEL_20:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -611,7 +611,7 @@ LABEL_21:
   }
 
 LABEL_44:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usesRelay), @"usesRelay"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usesRelay), @"usesRelay"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -625,7 +625,7 @@ LABEL_22:
   }
 
 LABEL_45:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_currentNatType), @"currentNatType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_currentNatType), @"currentNatType"}];
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -639,7 +639,7 @@ LABEL_23:
   }
 
 LABEL_46:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteNatType), @"remoteNatType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteNatType), @"remoteNatType"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -653,7 +653,7 @@ LABEL_24:
   }
 
 LABEL_47:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_relayConnectDuration), @"relayConnectDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_relayConnectDuration), @"relayConnectDuration"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -664,17 +664,17 @@ LABEL_25:
     }
 
 LABEL_49:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
     if ((*&self->_has & 0x800) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_27;
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isInitiator), @"isInitiator"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isInitiator), @"isInitiator"}];
   has = self->_has;
   if ((*&has & 0x10000) != 0)
   {
@@ -685,13 +685,13 @@ LABEL_26:
   if ((*&has & 0x800) != 0)
   {
 LABEL_27:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gksReturnCode), @"gksReturnCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gksReturnCode), @"gksReturnCode"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -1025,24 +1025,24 @@ LABEL_49:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 29) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 29) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
-    *(a3 + 10) = self->_endedReason;
-    *(a3 + 29) |= 0x80u;
+    *(to + 10) = self->_endedReason;
+    *(to + 29) |= 0x80u;
     has = self->_has;
     if ((*&has & 0x200) == 0)
     {
@@ -1061,8 +1061,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 12) = self->_genericError;
-  *(a3 + 29) |= 0x200u;
+  *(to + 12) = self->_genericError;
+  *(to + 29) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1076,8 +1076,8 @@ LABEL_8:
   }
 
 LABEL_31:
-  *(a3 + 11) = self->_gameKitError;
-  *(a3 + 29) |= 0x100u;
+  *(to + 11) = self->_gameKitError;
+  *(to + 29) |= 0x100u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1091,8 +1091,8 @@ LABEL_9:
   }
 
 LABEL_32:
-  *(a3 + 5) = self->_conferenceMiscError;
-  *(a3 + 29) |= 4u;
+  *(to + 5) = self->_conferenceMiscError;
+  *(to + 29) |= 4u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1106,8 +1106,8 @@ LABEL_10:
   }
 
 LABEL_33:
-  *(a3 + 4) = self->_callDuration;
-  *(a3 + 29) |= 2u;
+  *(to + 4) = self->_callDuration;
+  *(to + 29) |= 2u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1121,8 +1121,8 @@ LABEL_11:
   }
 
 LABEL_34:
-  *(a3 + 20) = self->_isNetworkEnabled;
-  *(a3 + 29) |= 0x4000u;
+  *(to + 20) = self->_isNetworkEnabled;
+  *(to + 29) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1136,8 +1136,8 @@ LABEL_12:
   }
 
 LABEL_35:
-  *(a3 + 19) = self->_isNetworkActive;
-  *(a3 + 29) |= 0x2000u;
+  *(to + 19) = self->_isNetworkActive;
+  *(to + 29) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1151,8 +1151,8 @@ LABEL_13:
   }
 
 LABEL_36:
-  *(a3 + 21) = self->_isNetworkReachable;
-  *(a3 + 29) |= 0x8000u;
+  *(to + 21) = self->_isNetworkReachable;
+  *(to + 29) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1166,8 +1166,8 @@ LABEL_14:
   }
 
 LABEL_37:
-  *(a3 + 24) = self->_networkCheckResult;
-  *(a3 + 29) |= 0x40000u;
+  *(to + 24) = self->_networkCheckResult;
+  *(to + 29) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1181,8 +1181,8 @@ LABEL_15:
   }
 
 LABEL_38:
-  *(a3 + 9) = self->_dataRate;
-  *(a3 + 29) |= 0x40u;
+  *(to + 9) = self->_dataRate;
+  *(to + 29) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1196,8 +1196,8 @@ LABEL_16:
   }
 
 LABEL_39:
-  *(a3 + 13) = self->_gksError;
-  *(a3 + 29) |= 0x400u;
+  *(to + 13) = self->_gksError;
+  *(to + 29) |= 0x400u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1211,8 +1211,8 @@ LABEL_17:
   }
 
 LABEL_40:
-  *(a3 + 6) = self->_connectDuration;
-  *(a3 + 29) |= 8u;
+  *(to + 6) = self->_connectDuration;
+  *(to + 29) |= 8u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1226,8 +1226,8 @@ LABEL_18:
   }
 
 LABEL_41:
-  *(a3 + 27) = self->_remoteNetworkConnection;
-  *(a3 + 29) |= 0x200000u;
+  *(to + 27) = self->_remoteNetworkConnection;
+  *(to + 29) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1241,8 +1241,8 @@ LABEL_19:
   }
 
 LABEL_42:
-  *(a3 + 23) = self->_localNetworkConnection;
-  *(a3 + 29) |= 0x20000u;
+  *(to + 23) = self->_localNetworkConnection;
+  *(to + 29) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1256,8 +1256,8 @@ LABEL_20:
   }
 
 LABEL_43:
-  *(a3 + 7) = self->_connectionType;
-  *(a3 + 29) |= 0x10u;
+  *(to + 7) = self->_connectionType;
+  *(to + 29) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1271,8 +1271,8 @@ LABEL_21:
   }
 
 LABEL_44:
-  *(a3 + 28) = self->_usesRelay;
-  *(a3 + 29) |= 0x400000u;
+  *(to + 28) = self->_usesRelay;
+  *(to + 29) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1286,8 +1286,8 @@ LABEL_22:
   }
 
 LABEL_45:
-  *(a3 + 8) = self->_currentNatType;
-  *(a3 + 29) |= 0x20u;
+  *(to + 8) = self->_currentNatType;
+  *(to + 29) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1301,8 +1301,8 @@ LABEL_23:
   }
 
 LABEL_46:
-  *(a3 + 26) = self->_remoteNatType;
-  *(a3 + 29) |= 0x100000u;
+  *(to + 26) = self->_remoteNatType;
+  *(to + 29) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1316,8 +1316,8 @@ LABEL_24:
   }
 
 LABEL_47:
-  *(a3 + 25) = self->_relayConnectDuration;
-  *(a3 + 29) |= 0x80000u;
+  *(to + 25) = self->_relayConnectDuration;
+  *(to + 29) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1331,8 +1331,8 @@ LABEL_25:
   }
 
 LABEL_48:
-  *(a3 + 18) = self->_isInitiator;
-  *(a3 + 29) |= 0x1000u;
+  *(to + 18) = self->_isInitiator;
+  *(to + 29) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1346,21 +1346,21 @@ LABEL_26:
   }
 
 LABEL_49:
-  *(a3 + 22) = self->_linkQuality;
-  *(a3 + 29) |= 0x10000u;
+  *(to + 22) = self->_linkQuality;
+  *(to + 29) |= 0x10000u;
   if ((*&self->_has & 0x800) == 0)
   {
     return;
   }
 
 LABEL_27:
-  *(a3 + 14) = self->_gksReturnCode;
-  *(a3 + 29) |= 0x800u;
+  *(to + 14) = self->_gksReturnCode;
+  *(to + 29) |= 0x800u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1368,7 +1368,7 @@ LABEL_27:
     *(v5 + 116) |= 1u;
   }
 
-  *(v6 + 64) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 64) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if ((*&has & 0x80) != 0)
   {
@@ -1689,16 +1689,16 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 29);
+    v7 = *(equal + 29);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_119;
       }
@@ -1712,7 +1712,7 @@ LABEL_119:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 8))
+    if (guid | *(equal + 8))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -1723,10 +1723,10 @@ LABEL_119:
       has = self->_has;
     }
 
-    v9 = *(a3 + 29);
+    v9 = *(equal + 29);
     if ((*&has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_endedReason != *(a3 + 10))
+      if ((v9 & 0x80) == 0 || self->_endedReason != *(equal + 10))
       {
         goto LABEL_119;
       }
@@ -1739,7 +1739,7 @@ LABEL_119:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v9 & 0x200) == 0 || self->_genericError != *(a3 + 12))
+      if ((v9 & 0x200) == 0 || self->_genericError != *(equal + 12))
       {
         goto LABEL_119;
       }
@@ -1752,7 +1752,7 @@ LABEL_119:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v9 & 0x100) == 0 || self->_gameKitError != *(a3 + 11))
+      if ((v9 & 0x100) == 0 || self->_gameKitError != *(equal + 11))
       {
         goto LABEL_119;
       }
@@ -1765,7 +1765,7 @@ LABEL_119:
 
     if ((*&has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_conferenceMiscError != *(a3 + 5))
+      if ((v9 & 4) == 0 || self->_conferenceMiscError != *(equal + 5))
       {
         goto LABEL_119;
       }
@@ -1778,7 +1778,7 @@ LABEL_119:
 
     if ((*&has & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_callDuration != *(a3 + 4))
+      if ((v9 & 2) == 0 || self->_callDuration != *(equal + 4))
       {
         goto LABEL_119;
       }
@@ -1791,7 +1791,7 @@ LABEL_119:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v9 & 0x4000) == 0 || self->_isNetworkEnabled != *(a3 + 20))
+      if ((v9 & 0x4000) == 0 || self->_isNetworkEnabled != *(equal + 20))
       {
         goto LABEL_119;
       }
@@ -1804,7 +1804,7 @@ LABEL_119:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v9 & 0x2000) == 0 || self->_isNetworkActive != *(a3 + 19))
+      if ((v9 & 0x2000) == 0 || self->_isNetworkActive != *(equal + 19))
       {
         goto LABEL_119;
       }
@@ -1817,7 +1817,7 @@ LABEL_119:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v9 & 0x8000) == 0 || self->_isNetworkReachable != *(a3 + 21))
+      if ((v9 & 0x8000) == 0 || self->_isNetworkReachable != *(equal + 21))
       {
         goto LABEL_119;
       }
@@ -1830,7 +1830,7 @@ LABEL_119:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v9 & 0x40000) == 0 || self->_networkCheckResult != *(a3 + 24))
+      if ((v9 & 0x40000) == 0 || self->_networkCheckResult != *(equal + 24))
       {
         goto LABEL_119;
       }
@@ -1843,7 +1843,7 @@ LABEL_119:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_dataRate != *(a3 + 9))
+      if ((v9 & 0x40) == 0 || self->_dataRate != *(equal + 9))
       {
         goto LABEL_119;
       }
@@ -1856,7 +1856,7 @@ LABEL_119:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v9 & 0x400) == 0 || self->_gksError != *(a3 + 13))
+      if ((v9 & 0x400) == 0 || self->_gksError != *(equal + 13))
       {
         goto LABEL_119;
       }
@@ -1869,7 +1869,7 @@ LABEL_119:
 
     if ((*&has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_connectDuration != *(a3 + 6))
+      if ((v9 & 8) == 0 || self->_connectDuration != *(equal + 6))
       {
         goto LABEL_119;
       }
@@ -1882,7 +1882,7 @@ LABEL_119:
 
     if ((*&has & 0x200000) != 0)
     {
-      if ((v9 & 0x200000) == 0 || self->_remoteNetworkConnection != *(a3 + 27))
+      if ((v9 & 0x200000) == 0 || self->_remoteNetworkConnection != *(equal + 27))
       {
         goto LABEL_119;
       }
@@ -1895,7 +1895,7 @@ LABEL_119:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v9 & 0x20000) == 0 || self->_localNetworkConnection != *(a3 + 23))
+      if ((v9 & 0x20000) == 0 || self->_localNetworkConnection != *(equal + 23))
       {
         goto LABEL_119;
       }
@@ -1908,7 +1908,7 @@ LABEL_119:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_connectionType != *(a3 + 7))
+      if ((v9 & 0x10) == 0 || self->_connectionType != *(equal + 7))
       {
         goto LABEL_119;
       }
@@ -1921,7 +1921,7 @@ LABEL_119:
 
     if ((*&has & 0x400000) != 0)
     {
-      if ((v9 & 0x400000) == 0 || self->_usesRelay != *(a3 + 28))
+      if ((v9 & 0x400000) == 0 || self->_usesRelay != *(equal + 28))
       {
         goto LABEL_119;
       }
@@ -1934,7 +1934,7 @@ LABEL_119:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_currentNatType != *(a3 + 8))
+      if ((v9 & 0x20) == 0 || self->_currentNatType != *(equal + 8))
       {
         goto LABEL_119;
       }
@@ -1947,7 +1947,7 @@ LABEL_119:
 
     if ((*&has & 0x100000) != 0)
     {
-      if ((v9 & 0x100000) == 0 || self->_remoteNatType != *(a3 + 26))
+      if ((v9 & 0x100000) == 0 || self->_remoteNatType != *(equal + 26))
       {
         goto LABEL_119;
       }
@@ -1960,7 +1960,7 @@ LABEL_119:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v9 & 0x80000) == 0 || self->_relayConnectDuration != *(a3 + 25))
+      if ((v9 & 0x80000) == 0 || self->_relayConnectDuration != *(equal + 25))
       {
         goto LABEL_119;
       }
@@ -1973,7 +1973,7 @@ LABEL_119:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v9 & 0x1000) == 0 || self->_isInitiator != *(a3 + 18))
+      if ((v9 & 0x1000) == 0 || self->_isInitiator != *(equal + 18))
       {
         goto LABEL_119;
       }
@@ -1986,7 +1986,7 @@ LABEL_119:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v9 & 0x10000) == 0 || self->_linkQuality != *(a3 + 22))
+      if ((v9 & 0x10000) == 0 || self->_linkQuality != *(equal + 22))
       {
         goto LABEL_119;
       }
@@ -1997,10 +1997,10 @@ LABEL_119:
       goto LABEL_119;
     }
 
-    LOBYTE(v5) = (*(a3 + 29) & 0x800) == 0;
+    LOBYTE(v5) = (*(equal + 29) & 0x800) == 0;
     if ((*&has & 0x800) != 0)
     {
-      if ((v9 & 0x800) == 0 || self->_gksReturnCode != *(a3 + 14))
+      if ((v9 & 0x800) == 0 || self->_gksReturnCode != *(equal + 14))
       {
         goto LABEL_119;
       }
@@ -2330,25 +2330,25 @@ LABEL_26:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 116))
+  if (*(from + 116))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDIDSSessionEnded *)self setGuid:?];
   }
 
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x80) != 0)
   {
-    self->_endedReason = *(a3 + 10);
+    self->_endedReason = *(from + 10);
     *&self->_has |= 0x80u;
-    v5 = *(a3 + 29);
+    v5 = *(from + 29);
     if ((v5 & 0x200) == 0)
     {
 LABEL_7:
@@ -2366,9 +2366,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_genericError = *(a3 + 12);
+  self->_genericError = *(from + 12);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -2381,9 +2381,9 @@ LABEL_8:
   }
 
 LABEL_31:
-  self->_gameKitError = *(a3 + 11);
+  self->_gameKitError = *(from + 11);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -2396,9 +2396,9 @@ LABEL_9:
   }
 
 LABEL_32:
-  self->_conferenceMiscError = *(a3 + 5);
+  self->_conferenceMiscError = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -2411,9 +2411,9 @@ LABEL_10:
   }
 
 LABEL_33:
-  self->_callDuration = *(a3 + 4);
+  self->_callDuration = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_11:
@@ -2426,9 +2426,9 @@ LABEL_11:
   }
 
 LABEL_34:
-  self->_isNetworkEnabled = *(a3 + 20);
+  self->_isNetworkEnabled = *(from + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_12:
@@ -2441,9 +2441,9 @@ LABEL_12:
   }
 
 LABEL_35:
-  self->_isNetworkActive = *(a3 + 19);
+  self->_isNetworkActive = *(from + 19);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_13:
@@ -2456,9 +2456,9 @@ LABEL_13:
   }
 
 LABEL_36:
-  self->_isNetworkReachable = *(a3 + 21);
+  self->_isNetworkReachable = *(from + 21);
   *&self->_has |= 0x8000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_14:
@@ -2471,9 +2471,9 @@ LABEL_14:
   }
 
 LABEL_37:
-  self->_networkCheckResult = *(a3 + 24);
+  self->_networkCheckResult = *(from + 24);
   *&self->_has |= 0x40000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x40) == 0)
   {
 LABEL_15:
@@ -2486,9 +2486,9 @@ LABEL_15:
   }
 
 LABEL_38:
-  self->_dataRate = *(a3 + 9);
+  self->_dataRate = *(from + 9);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x400) == 0)
   {
 LABEL_16:
@@ -2501,9 +2501,9 @@ LABEL_16:
   }
 
 LABEL_39:
-  self->_gksError = *(a3 + 13);
+  self->_gksError = *(from + 13);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 8) == 0)
   {
 LABEL_17:
@@ -2516,9 +2516,9 @@ LABEL_17:
   }
 
 LABEL_40:
-  self->_connectDuration = *(a3 + 6);
+  self->_connectDuration = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_18:
@@ -2531,9 +2531,9 @@ LABEL_18:
   }
 
 LABEL_41:
-  self->_remoteNetworkConnection = *(a3 + 27);
+  self->_remoteNetworkConnection = *(from + 27);
   *&self->_has |= 0x200000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_19:
@@ -2546,9 +2546,9 @@ LABEL_19:
   }
 
 LABEL_42:
-  self->_localNetworkConnection = *(a3 + 23);
+  self->_localNetworkConnection = *(from + 23);
   *&self->_has |= 0x20000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x10) == 0)
   {
 LABEL_20:
@@ -2561,9 +2561,9 @@ LABEL_20:
   }
 
 LABEL_43:
-  self->_connectionType = *(a3 + 7);
+  self->_connectionType = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_21:
@@ -2576,9 +2576,9 @@ LABEL_21:
   }
 
 LABEL_44:
-  self->_usesRelay = *(a3 + 28);
+  self->_usesRelay = *(from + 28);
   *&self->_has |= 0x400000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x20) == 0)
   {
 LABEL_22:
@@ -2591,9 +2591,9 @@ LABEL_22:
   }
 
 LABEL_45:
-  self->_currentNatType = *(a3 + 8);
+  self->_currentNatType = *(from + 8);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_23:
@@ -2606,9 +2606,9 @@ LABEL_23:
   }
 
 LABEL_46:
-  self->_remoteNatType = *(a3 + 26);
+  self->_remoteNatType = *(from + 26);
   *&self->_has |= 0x100000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_24:
@@ -2621,9 +2621,9 @@ LABEL_24:
   }
 
 LABEL_47:
-  self->_relayConnectDuration = *(a3 + 25);
+  self->_relayConnectDuration = *(from + 25);
   *&self->_has |= 0x80000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_25:
@@ -2636,9 +2636,9 @@ LABEL_25:
   }
 
 LABEL_48:
-  self->_isInitiator = *(a3 + 18);
+  self->_isInitiator = *(from + 18);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 29);
+  v5 = *(from + 29);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_26:
@@ -2651,15 +2651,15 @@ LABEL_26:
   }
 
 LABEL_49:
-  self->_linkQuality = *(a3 + 22);
+  self->_linkQuality = *(from + 22);
   *&self->_has |= 0x10000u;
-  if ((*(a3 + 29) & 0x800) == 0)
+  if ((*(from + 29) & 0x800) == 0)
   {
     return;
   }
 
 LABEL_27:
-  self->_gksReturnCode = *(a3 + 14);
+  self->_gksReturnCode = *(from + 14);
   *&self->_has |= 0x800u;
 }
 

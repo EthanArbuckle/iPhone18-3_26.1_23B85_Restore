@@ -4,8 +4,8 @@
 + (double)_determinDefaultExitDisplayOnBudget;
 + (id)defaultVisitsSensitiveLOITypes;
 - (TAFilterVisitsSettings)initWithDefaults;
-- (TAFilterVisitsSettings)initWithMaxSuspiciousDuration:(double)a3 minInterVisitDistance:(double)a4 minNSigmaBetweenVisits:(unint64_t)a5 entryDisplayOnBudget:(double)a6 exitDisplayOnBudget:(double)a7 sensitiveLOITypes:(id)a8 minObservationInterval:(double)a9 threeVisitImmediacyType:(unint64_t)a10;
-- (TAFilterVisitsSettings)initWithMaxSuspiciousDurationOrDefault:(id)a3 minInterVisitDistanceOrDefault:(id)a4 minNSigmaBetweenVisitsOrDefault:(id)a5 entryDisplayOnBudgetOrDefault:(id)a6 exitDisplayOnBudgetOrDefault:(id)a7 sensitiveLOITypesOrDefault:(id)a8 minObservationIntervalOrDefault:(id)a9 threeVisitImmediacyTypeOrDefault:(id)a10;
+- (TAFilterVisitsSettings)initWithMaxSuspiciousDuration:(double)duration minInterVisitDistance:(double)distance minNSigmaBetweenVisits:(unint64_t)visits entryDisplayOnBudget:(double)budget exitDisplayOnBudget:(double)onBudget sensitiveLOITypes:(id)types minObservationInterval:(double)interval threeVisitImmediacyType:(unint64_t)self0;
+- (TAFilterVisitsSettings)initWithMaxSuspiciousDurationOrDefault:(id)default minInterVisitDistanceOrDefault:(id)orDefault minNSigmaBetweenVisitsOrDefault:(id)visitsOrDefault entryDisplayOnBudgetOrDefault:(id)budgetOrDefault exitDisplayOnBudgetOrDefault:(id)onBudgetOrDefault sensitiveLOITypesOrDefault:(id)typesOrDefault minObservationIntervalOrDefault:(id)intervalOrDefault threeVisitImmediacyTypeOrDefault:(id)self0;
 - (id)sensitiveLOITypesToString;
 @end
 
@@ -20,26 +20,26 @@
   return v4;
 }
 
-- (TAFilterVisitsSettings)initWithMaxSuspiciousDuration:(double)a3 minInterVisitDistance:(double)a4 minNSigmaBetweenVisits:(unint64_t)a5 entryDisplayOnBudget:(double)a6 exitDisplayOnBudget:(double)a7 sensitiveLOITypes:(id)a8 minObservationInterval:(double)a9 threeVisitImmediacyType:(unint64_t)a10
+- (TAFilterVisitsSettings)initWithMaxSuspiciousDuration:(double)duration minInterVisitDistance:(double)distance minNSigmaBetweenVisits:(unint64_t)visits entryDisplayOnBudget:(double)budget exitDisplayOnBudget:(double)onBudget sensitiveLOITypes:(id)types minObservationInterval:(double)interval threeVisitImmediacyType:(unint64_t)self0
 {
-  v18 = a8;
+  typesCopy = types;
   v24.receiver = self;
   v24.super_class = TAFilterVisitsSettings;
   v19 = [(TAFilterVisitsSettings *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    v19->_maxSuspiciousDuration = a3;
-    v19->_minInterVisitDistance = a4;
-    v19->_minNSigmaBetweenVisits = a5;
-    v19->_entryDisplayOnBudget = a6;
-    v19->_exitDisplayOnBudget = a7;
-    v21 = [v18 copy];
+    v19->_maxSuspiciousDuration = duration;
+    v19->_minInterVisitDistance = distance;
+    v19->_minNSigmaBetweenVisits = visits;
+    v19->_entryDisplayOnBudget = budget;
+    v19->_exitDisplayOnBudget = onBudget;
+    v21 = [typesCopy copy];
     sensitiveLOITypes = v20->_sensitiveLOITypes;
     v20->_sensitiveLOITypes = v21;
 
-    v20->_minObservationInterval = a9;
-    v20->_threeVisitImmediacyType = a10;
+    v20->_minObservationInterval = interval;
+    v20->_threeVisitImmediacyType = type;
   }
 
   return v20;
@@ -57,28 +57,28 @@
   return v8;
 }
 
-- (TAFilterVisitsSettings)initWithMaxSuspiciousDurationOrDefault:(id)a3 minInterVisitDistanceOrDefault:(id)a4 minNSigmaBetweenVisitsOrDefault:(id)a5 entryDisplayOnBudgetOrDefault:(id)a6 exitDisplayOnBudgetOrDefault:(id)a7 sensitiveLOITypesOrDefault:(id)a8 minObservationIntervalOrDefault:(id)a9 threeVisitImmediacyTypeOrDefault:(id)a10
+- (TAFilterVisitsSettings)initWithMaxSuspiciousDurationOrDefault:(id)default minInterVisitDistanceOrDefault:(id)orDefault minNSigmaBetweenVisitsOrDefault:(id)visitsOrDefault entryDisplayOnBudgetOrDefault:(id)budgetOrDefault exitDisplayOnBudgetOrDefault:(id)onBudgetOrDefault sensitiveLOITypesOrDefault:(id)typesOrDefault minObservationIntervalOrDefault:(id)intervalOrDefault threeVisitImmediacyTypeOrDefault:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (v15)
+  defaultCopy = default;
+  orDefaultCopy = orDefault;
+  visitsOrDefaultCopy = visitsOrDefault;
+  budgetOrDefaultCopy = budgetOrDefault;
+  onBudgetOrDefaultCopy = onBudgetOrDefault;
+  typesOrDefaultCopy = typesOrDefault;
+  intervalOrDefaultCopy = intervalOrDefault;
+  typeOrDefaultCopy = typeOrDefault;
+  if (defaultCopy)
   {
-    [v15 doubleValue];
+    [defaultCopy doubleValue];
     v24 = v23;
-    if (v16)
+    if (orDefaultCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v26 = 100.0;
-    if (v17)
+    if (visitsOrDefaultCopy)
     {
       goto LABEL_4;
     }
@@ -87,28 +87,28 @@ LABEL_6:
   }
 
   v24 = 300.0;
-  if (!v16)
+  if (!orDefaultCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  [v16 doubleValue];
+  [orDefaultCopy doubleValue];
   v26 = v25;
-  if (v17)
+  if (visitsOrDefaultCopy)
   {
 LABEL_4:
-    v27 = [v17 unsignedIntValue];
+    unsignedIntValue = [visitsOrDefaultCopy unsignedIntValue];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v27 = 2;
+  unsignedIntValue = 2;
 LABEL_8:
-  v38 = v27;
-  if (v18)
+  v38 = unsignedIntValue;
+  if (budgetOrDefaultCopy)
   {
-    [v18 doubleValue];
+    [budgetOrDefaultCopy doubleValue];
   }
 
   else
@@ -117,9 +117,9 @@ LABEL_8:
   }
 
   v29 = v28;
-  if (v19)
+  if (onBudgetOrDefaultCopy)
   {
-    [v19 doubleValue];
+    [onBudgetOrDefaultCopy doubleValue];
   }
 
   else
@@ -128,17 +128,17 @@ LABEL_8:
   }
 
   v31 = v30;
-  v32 = v20;
-  if (v20)
+  v32 = typesOrDefaultCopy;
+  if (typesOrDefaultCopy)
   {
-    if (v21)
+    if (intervalOrDefaultCopy)
     {
       goto LABEL_16;
     }
 
 LABEL_19:
     v34 = 300.0;
-    if (v22)
+    if (typeOrDefaultCopy)
     {
       goto LABEL_17;
     }
@@ -147,26 +147,26 @@ LABEL_19:
   }
 
   v32 = +[TAFilterVisitsSettings defaultVisitsSensitiveLOITypes];
-  if (!v21)
+  if (!intervalOrDefaultCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_16:
-  [v21 doubleValue];
+  [intervalOrDefaultCopy doubleValue];
   v34 = v33;
-  if (v22)
+  if (typeOrDefaultCopy)
   {
 LABEL_17:
-    v35 = [v22 unsignedIntValue];
+    unsignedIntValue2 = [typeOrDefaultCopy unsignedIntValue];
     goto LABEL_21;
   }
 
 LABEL_20:
-  v35 = 3;
+  unsignedIntValue2 = 3;
 LABEL_21:
-  v36 = [(TAFilterVisitsSettings *)self initWithMaxSuspiciousDuration:v38 minInterVisitDistance:v32 minNSigmaBetweenVisits:v35 entryDisplayOnBudget:v24 exitDisplayOnBudget:v26 sensitiveLOITypes:v29 minObservationInterval:v31 threeVisitImmediacyType:v34, v38];
-  if (!v20)
+  v36 = [(TAFilterVisitsSettings *)self initWithMaxSuspiciousDuration:v38 minInterVisitDistance:v32 minNSigmaBetweenVisits:unsignedIntValue2 entryDisplayOnBudget:v24 exitDisplayOnBudget:v26 sensitiveLOITypes:v29 minObservationInterval:v31 threeVisitImmediacyType:v34, v38];
+  if (!typesOrDefaultCopy)
   {
   }
 
@@ -248,14 +248,14 @@ LABEL_21:
 
 - (id)sensitiveLOITypesToString
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   sensitiveLOITypes = self->_sensitiveLOITypes;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__TAFilterVisitsSettings_sensitiveLOITypesToString__block_invoke;
   v8[3] = &unk_279DD1868;
-  v9 = v3;
-  v5 = v3;
+  v9 = array;
+  v5 = array;
   [(NSSet *)sensitiveLOITypes enumerateObjectsUsingBlock:v8];
   v6 = [v5 componentsJoinedByString:{@", "}];
 

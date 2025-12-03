@@ -2,14 +2,14 @@
 - (BOOL)isEnabled;
 - (NSArray)providers;
 - (SharePlayProviderController)init;
-- (id)mutableProviderForBundleIdentifier:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)applicationPolicyManager:(id)a3 authorizationChangedForBundleIdentifier:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setProvider:(id)a3 forBundleIdentifier:(id)a4;
-- (void)setProviders:(id)a3;
-- (void)setSharePlayEnabled:(BOOL)a3 forProvider:(id)a4;
+- (id)mutableProviderForBundleIdentifier:(id)identifier;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)applicationPolicyManager:(id)manager authorizationChangedForBundleIdentifier:(id)identifier;
+- (void)removeDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setProvider:(id)provider forBundleIdentifier:(id)identifier;
+- (void)setProviders:(id)providers;
+- (void)setSharePlayEnabled:(BOOL)enabled forProvider:(id)provider;
 - (void)updateProviderByBundleIdentifier;
 - (void)updateProviders;
 @end
@@ -24,9 +24,9 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.SharePlaySettings.queue.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -61,17 +61,17 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v3 = [(SharePlayProviderController *)self applicationPolicyManager];
+  applicationPolicyManager = [(SharePlayProviderController *)self applicationPolicyManager];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SharePlayProviderController *)self queue];
+    queue = [(SharePlayProviderController *)self queue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_219C;
     v7[3] = &unk_C4A8;
     v9 = &v10;
-    v8 = v3;
-    dispatch_sync(v4, v7);
+    v8 = applicationPolicyManager;
+    dispatch_sync(queue, v7);
   }
 
   v5 = *(v11 + 24);
@@ -80,20 +80,20 @@
   return v5;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v5 = [(SharePlayProviderController *)self applicationPolicyManager];
+  applicationPolicyManager = [(SharePlayProviderController *)self applicationPolicyManager];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(SharePlayProviderController *)self queue];
+    queue = [(SharePlayProviderController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_229C;
     block[3] = &unk_C4D0;
-    v10 = a3;
-    v8 = v5;
-    v9 = self;
-    dispatch_async(v6, block);
+    enabledCopy = enabled;
+    v8 = applicationPolicyManager;
+    selfCopy = self;
+    dispatch_async(queue, block);
   }
 }
 
@@ -105,14 +105,14 @@
   v10 = sub_2548;
   v11 = sub_2558;
   v12 = 0;
-  v3 = [(SharePlayProviderController *)self queue];
+  queue = [(SharePlayProviderController *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_2560;
   v6[3] = &unk_C4A8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -120,70 +120,70 @@
   return v4;
 }
 
-- (void)setProviders:(id)a3
+- (void)setProviders:(id)providers
 {
-  v5 = a3;
-  v6 = [(SharePlayProviderController *)self queue];
-  dispatch_assert_queue_V2(v6);
+  providersCopy = providers;
+  queue = [(SharePlayProviderController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_providers != v5)
+  if (self->_providers != providersCopy)
   {
-    objc_storeStrong(&self->_providers, a3);
-    v7 = [(SharePlayProviderController *)self delegateController];
+    objc_storeStrong(&self->_providers, providers);
+    delegateController = [(SharePlayProviderController *)self delegateController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_265C;
     v8[3] = &unk_C548;
     v8[4] = self;
-    v9 = v5;
-    [v7 enumerateDelegatesUsingBlock:v8];
+    v9 = providersCopy;
+    [delegateController enumerateDelegatesUsingBlock:v8];
   }
 }
 
-- (void)setSharePlayEnabled:(BOOL)a3 forProvider:(id)a4
+- (void)setSharePlayEnabled:(BOOL)enabled forProvider:(id)provider
 {
-  v6 = a4;
-  v7 = [(SharePlayProviderController *)self queue];
+  providerCopy = provider;
+  queue = [(SharePlayProviderController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_27FC;
   block[3] = &unk_C4D0;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = providerCopy;
+  v8 = providerCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)setProvider:(id)a3 forBundleIdentifier:(id)a4
+- (void)setProvider:(id)provider forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SharePlayProviderController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  providerCopy = provider;
+  identifierCopy = identifier;
+  queue = [(SharePlayProviderController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  providerByBundleIdentifier = [(SharePlayProviderController *)self providerByBundleIdentifier];
+  v10 = [providerByBundleIdentifier objectForKeyedSubscript:identifierCopy];
 
   if ((TUObjectsAreEqualOrNil() & 1) == 0)
   {
-    v11 = [v6 copy];
-    v12 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-    [v12 setObject:v11 forKeyedSubscript:v7];
+    v11 = [providerCopy copy];
+    providerByBundleIdentifier2 = [(SharePlayProviderController *)self providerByBundleIdentifier];
+    [providerByBundleIdentifier2 setObject:v11 forKeyedSubscript:identifierCopy];
 
     [(SharePlayProviderController *)self updateProviders];
     if (v10)
     {
-      v13 = [(SharePlayProviderController *)self delegateController];
-      if (v6)
+      delegateController = [(SharePlayProviderController *)self delegateController];
+      if (providerCopy)
       {
         v28 = _NSConcreteStackBlock;
         v29 = 3221225472;
         v30 = sub_2A94;
         v31 = &unk_C548;
-        v32 = self;
+        selfCopy = self;
         v14 = &v33;
-        v33 = v6;
+        v33 = providerCopy;
         v15 = &v28;
       }
 
@@ -193,7 +193,7 @@
         v23 = 3221225472;
         v24 = sub_2B78;
         v25 = &unk_C548;
-        v26 = self;
+        selfCopy2 = self;
         v14 = &v27;
         v27 = v10;
         v15 = &v22;
@@ -202,40 +202,40 @@
 
     else
     {
-      v13 = [(SharePlayProviderController *)self delegateController];
+      delegateController = [(SharePlayProviderController *)self delegateController];
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
       v18 = sub_2C5C;
       v19 = &unk_C548;
-      v20 = self;
+      selfCopy3 = self;
       v14 = &v21;
-      v21 = v6;
+      v21 = providerCopy;
       v15 = &v16;
     }
 
-    [v13 enumerateDelegatesUsingBlock:{v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33}];
+    [delegateController enumerateDelegatesUsingBlock:{v15, v16, v17, v18, v19, selfCopy3, v21, v22, v23, v24, v25, selfCopy2, v27, v28, v29, v30, v31, selfCopy, v33}];
   }
 }
 
-- (id)mutableProviderForBundleIdentifier:(id)a3
+- (id)mutableProviderForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v10];
   v5 = v10;
   if (v4)
   {
-    v6 = [(SharePlayProvider *)[SharePlayMutableProvider alloc] initWithBundleIdentifier:v3];
-    v7 = [v4 localizedName];
-    [(SharePlayProvider *)v6 setLocalizedName:v7];
+    v6 = [(SharePlayProvider *)[SharePlayMutableProvider alloc] initWithBundleIdentifier:identifierCopy];
+    localizedName = [v4 localizedName];
+    [(SharePlayProvider *)v6 setLocalizedName:localizedName];
   }
 
   else
   {
-    v7 = SharePlaySettingsLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    localizedName = SharePlaySettingsLog();
+    if (os_log_type_enabled(localizedName, OS_LOG_TYPE_ERROR))
     {
-      sub_5A8C(v3, v5, v7);
+      sub_5A8C(identifierCopy, v5, localizedName);
     }
 
     v6 = 0;
@@ -248,21 +248,21 @@
 
 - (void)updateProviderByBundleIdentifier
 {
-  v3 = [(SharePlayProviderController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SharePlayProviderController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-  [v4 removeAllObjects];
+  providerByBundleIdentifier = [(SharePlayProviderController *)self providerByBundleIdentifier];
+  [providerByBundleIdentifier removeAllObjects];
 
-  v5 = [(SharePlayProviderController *)self applicationPolicyManager];
-  v6 = [v5 authorizedBundleIdentifiers];
+  applicationPolicyManager = [(SharePlayProviderController *)self applicationPolicyManager];
+  authorizedBundleIdentifiers = [applicationPolicyManager authorizedBundleIdentifiers];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [authorizedBundleIdentifiers allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -273,23 +273,23 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(SharePlayProviderController *)self mutableProviderForBundleIdentifier:v12];
         if (v13)
         {
-          v14 = [v6 objectForKeyedSubscript:v12];
+          v14 = [authorizedBundleIdentifiers objectForKeyedSubscript:v12];
           [v13 setEnabled:{objc_msgSend(v14, "BOOLValue")}];
 
           v15 = [v13 copy];
-          v16 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-          [v16 setObject:v15 forKeyedSubscript:v12];
+          providerByBundleIdentifier2 = [(SharePlayProviderController *)self providerByBundleIdentifier];
+          [providerByBundleIdentifier2 setObject:v15 forKeyedSubscript:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -300,50 +300,50 @@
 
 - (void)updateProviders
 {
-  v3 = [(SharePlayProviderController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SharePlayProviderController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-  v5 = [v4 allValues];
-  v6 = [v5 sortedArrayUsingComparator:&stru_C588];
+  providerByBundleIdentifier = [(SharePlayProviderController *)self providerByBundleIdentifier];
+  allValues = [providerByBundleIdentifier allValues];
+  v6 = [allValues sortedArrayUsingComparator:&stru_C588];
 
   [(SharePlayProviderController *)self setProviders:v6];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SharePlayProviderController *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(SharePlayProviderController *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SharePlayProviderController *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(SharePlayProviderController *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
-- (void)applicationPolicyManager:(id)a3 authorizationChangedForBundleIdentifier:(id)a4
+- (void)applicationPolicyManager:(id)manager authorizationChangedForBundleIdentifier:(id)identifier
 {
-  v12 = a4;
-  v5 = [(SharePlayProviderController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(SharePlayProviderController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(SharePlayProviderController *)self applicationPolicyManager];
-  v7 = [v6 authorizedBundleIdentifiers];
-  v8 = [v7 objectForKeyedSubscript:v12];
+  applicationPolicyManager = [(SharePlayProviderController *)self applicationPolicyManager];
+  authorizedBundleIdentifiers = [applicationPolicyManager authorizedBundleIdentifiers];
+  v8 = [authorizedBundleIdentifiers objectForKeyedSubscript:identifierCopy];
 
   if (v8)
   {
-    v9 = [(SharePlayProviderController *)self providerByBundleIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v12];
+    providerByBundleIdentifier = [(SharePlayProviderController *)self providerByBundleIdentifier];
+    v10 = [providerByBundleIdentifier objectForKeyedSubscript:identifierCopy];
     v11 = [v10 mutableCopy];
 
     if (!v11)
     {
-      v11 = [(SharePlayProviderController *)self mutableProviderForBundleIdentifier:v12];
+      v11 = [(SharePlayProviderController *)self mutableProviderForBundleIdentifier:identifierCopy];
     }
 
     [v11 setEnabled:{objc_msgSend(v8, "BOOLValue")}];
@@ -354,7 +354,7 @@
     v11 = 0;
   }
 
-  [(SharePlayProviderController *)self setProvider:v11 forBundleIdentifier:v12];
+  [(SharePlayProviderController *)self setProvider:v11 forBundleIdentifier:identifierCopy];
 }
 
 @end

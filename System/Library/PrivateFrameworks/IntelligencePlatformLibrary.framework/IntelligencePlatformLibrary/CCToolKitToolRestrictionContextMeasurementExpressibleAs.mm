@@ -1,26 +1,26 @@
 @interface CCToolKitToolRestrictionContextMeasurementExpressibleAs
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithUnit:(id)a3 unitAdjustForLocale:(id)a4 supportsNegativeNumbers:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithUnit:(id)unit unitAdjustForLocale:(id)locale supportsNegativeNumbers:(id)numbers error:(id *)error;
 - (NSString)unit;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextMeasurementExpressibleAs
 
-- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"unit"];
-    v10 = [v6 objectForKeyedSubscript:@"unitAdjustForLocale"];
-    v11 = [v6 objectForKeyedSubscript:@"supportsNegativeNumbers"];
-    v12 = [[CCToolKitToolRestrictionContextMeasurementExpressibleAs alloc] initWithUnit:v9 unitAdjustForLocale:v10 supportsNegativeNumbers:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"unit"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"unitAdjustForLocale"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"supportsNegativeNumbers"];
+    v12 = [[CCToolKitToolRestrictionContextMeasurementExpressibleAs alloc] initWithUnit:v9 unitAdjustForLocale:v10 supportsNegativeNumbers:v11 error:error];
   }
 
   else
@@ -37,8 +37,8 @@
   v3 = objc_opt_new();
   if (self->_unit)
   {
-    v4 = [(CCToolKitToolRestrictionContextMeasurementExpressibleAs *)self unit];
-    [v3 setObject:v4 forKeyedSubscript:@"unit"];
+    unit = [(CCToolKitToolRestrictionContextMeasurementExpressibleAs *)self unit];
+    [v3 setObject:unit forKeyedSubscript:@"unit"];
   }
 
   if (self->_hasUnitAdjustForLocale)
@@ -58,11 +58,11 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v10 = v5;
+  v10 = blockCopy;
   if (self->_unit)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_unit];
@@ -89,10 +89,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -103,7 +103,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v56 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -247,14 +247,14 @@ LABEL_48:
           {
             v46 = objc_opt_class();
             NSStringFromClass(v46);
-            v47 = a4;
-            v49 = v48 = v6;
+            errorCopy = error;
+            v49 = v48 = dataCopy;
             v50 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v48;
-            a4 = v47;
-            self = v56;
+            dataCopy = v48;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_59:
@@ -349,13 +349,13 @@ LABEL_66:
   return v54;
 }
 
-- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithUnit:(id)a3 unitAdjustForLocale:(id)a4 supportsNegativeNumbers:(id)a5 error:(id *)a6
+- (CCToolKitToolRestrictionContextMeasurementExpressibleAs)initWithUnit:(id)unit unitAdjustForLocale:(id)locale supportsNegativeNumbers:(id)numbers error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  unitCopy = unit;
+  localeCopy = locale;
+  numbersCopy = numbers;
   v13 = objc_opt_new();
-  if (v10)
+  if (unitCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -373,7 +373,7 @@ LABEL_66:
     v15 = 0;
   }
 
-  if (v11)
+  if (localeCopy)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -382,14 +382,14 @@ LABEL_66:
     if (!v16)
     {
       CCSetError();
-      v20 = 0;
+      selfCopy = 0;
       v15 = v17;
       goto LABEL_15;
     }
 
-    [v11 BOOLValue];
+    [localeCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
-    if (!v12)
+    if (!numbersCopy)
     {
       goto LABEL_8;
     }
@@ -398,7 +398,7 @@ LABEL_66:
   }
 
   v17 = v15;
-  if (v12)
+  if (numbersCopy)
   {
 LABEL_10:
     objc_opt_class();
@@ -407,27 +407,27 @@ LABEL_10:
 
     if (v18)
     {
-      [v12 BOOLValue];
+      [numbersCopy BOOLValue];
       CCPBDataWriterWriteBOOLField();
       goto LABEL_12;
     }
 
 LABEL_13:
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_8:
   v15 = v17;
 LABEL_12:
-  v19 = [v13 immutableData];
-  self = [(CCItemMessage *)self initWithData:v19 error:a6];
+  immutableData = [v13 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

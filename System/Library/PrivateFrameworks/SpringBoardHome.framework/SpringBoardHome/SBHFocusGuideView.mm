@@ -1,17 +1,17 @@
 @interface SBHFocusGuideView
-- (SBHFocusGuideView)initWithFrame:(CGRect)a3;
+- (SBHFocusGuideView)initWithFrame:(CGRect)frame;
 - (void)_updateTargetedView;
-- (void)setTargetView:(id)a3;
+- (void)setTargetView:(id)view;
 @end
 
 @implementation SBHFocusGuideView
 
-- (SBHFocusGuideView)initWithFrame:(CGRect)a3
+- (SBHFocusGuideView)initWithFrame:(CGRect)frame
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = SBHFocusGuideView;
-  v3 = [(SBHFocusGuideView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHFocusGuideView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCA20]);
@@ -20,21 +20,21 @@
 
     [(SBHFocusGuideView *)v3 addLayoutGuide:v3->_focusGuide];
     v16 = MEMORY[0x1E696ACD8];
-    v20 = [(UIFocusGuide *)v3->_focusGuide topAnchor];
-    v19 = [(SBHFocusGuideView *)v3 topAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    topAnchor = [(UIFocusGuide *)v3->_focusGuide topAnchor];
+    topAnchor2 = [(SBHFocusGuideView *)v3 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v22[0] = v18;
-    v17 = [(UIFocusGuide *)v3->_focusGuide bottomAnchor];
-    v6 = [(SBHFocusGuideView *)v3 bottomAnchor];
-    v7 = [v17 constraintEqualToAnchor:v6];
+    bottomAnchor = [(UIFocusGuide *)v3->_focusGuide bottomAnchor];
+    bottomAnchor2 = [(SBHFocusGuideView *)v3 bottomAnchor];
+    v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v22[1] = v7;
-    v8 = [(UIFocusGuide *)v3->_focusGuide leadingAnchor];
-    v9 = [(SBHFocusGuideView *)v3 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(UIFocusGuide *)v3->_focusGuide leadingAnchor];
+    leadingAnchor2 = [(SBHFocusGuideView *)v3 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[2] = v10;
-    v11 = [(UIFocusGuide *)v3->_focusGuide trailingAnchor];
-    v12 = [(SBHFocusGuideView *)v3 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIFocusGuide *)v3->_focusGuide trailingAnchor];
+    trailingAnchor2 = [(SBHFocusGuideView *)v3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
     [v16 activateConstraints:v14];
@@ -45,15 +45,15 @@
   return v3;
 }
 
-- (void)setTargetView:(id)a3
+- (void)setTargetView:(id)view
 {
-  v5 = a3;
-  if (self->_targetView != v5)
+  viewCopy = view;
+  if (self->_targetView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_targetView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_targetView, view);
     [(SBHFocusGuideView *)self _updateTargetedView];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 

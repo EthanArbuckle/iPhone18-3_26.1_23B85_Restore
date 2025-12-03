@@ -1,60 +1,60 @@
 @interface PRGadgetGridModel
-+ (id)correctedContainerBundleIdentifierForContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4;
++ (id)correctedContainerBundleIdentifierForContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier;
 - (APSubjectMonitorSubscription)appProtectionSubjectMonitorSubscription;
-- (BOOL)canAddGadgetDescriptor:(id)a3;
-- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)a3 error:(id *)a4;
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4;
-- (PRGadgetGridModel)initWithGadgetDescriptors:(id)a3 iconLayout:(id)a4 type:(unint64_t)a5;
+- (BOOL)canAddGadgetDescriptor:(id)descriptor;
+- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)options error:(id *)error;
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error;
+- (PRGadgetGridModel)initWithGadgetDescriptors:(id)descriptors iconLayout:(id)layout type:(unint64_t)type;
 - (PRGadgetGridModelDelegate)delegate;
 - (PRGadgetGridModelPresenting)presenter;
 - (SBIconListModel)listModel;
 - (SBRootFolder)rootFolder;
-- (id)_makeControlIconForDescriptor:(id)a3;
-- (id)_makeIconForDescriptor:(id)a3;
-- (id)_makeWidgetIconForComplicationDescriptor:(id)a3;
-- (id)_removeIconForDescriptor:(id)a3 animated:(BOOL)a4;
-- (id)_sizeClassFromDescriptor:(id)a3;
-- (id)_sizeClassFromIcon:(id)a3;
-- (id)gridSizeClassSizesForIconModel:(id)a3;
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4;
-- (void)_addIconForDescriptor:(id)a3 withGridIndex:(id)a4 animated:(BOOL)a5;
-- (void)_iconModelDidLayoutIconState:(id)a3;
+- (id)_makeControlIconForDescriptor:(id)descriptor;
+- (id)_makeIconForDescriptor:(id)descriptor;
+- (id)_makeWidgetIconForComplicationDescriptor:(id)descriptor;
+- (id)_removeIconForDescriptor:(id)descriptor animated:(BOOL)animated;
+- (id)_sizeClassFromDescriptor:(id)descriptor;
+- (id)_sizeClassFromIcon:(id)icon;
+- (id)gridSizeClassSizesForIconModel:(id)model;
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class;
+- (void)_addIconForDescriptor:(id)descriptor withGridIndex:(id)index animated:(BOOL)animated;
+- (void)_iconModelDidLayoutIconState:(id)state;
 - (void)_populateIntentsByDescriptorIdentifier;
 - (void)_setupFixedPositionsForRowLayout;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)iconList:(id)a3 didAddIcon:(id)a4;
-- (void)iconList:(id)a3 didMoveIcon:(id)a4;
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4;
-- (void)iconModel:(id)a3 didAddIcon:(id)a4;
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6;
+- (void)iconList:(id)list didAddIcon:(id)icon;
+- (void)iconList:(id)list didMoveIcon:(id)icon;
+- (void)iconList:(id)list didRemoveIcon:(id)icon;
+- (void)iconModel:(id)model didAddIcon:(id)icon;
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context;
 - (void)saveIconStateIfNeeded;
-- (void)setGadgetDescriptors:(id)a3;
-- (void)setGadgetDescriptors:(id)a3 iconLayout:(id)a4;
-- (void)updateIntent:(id)a3 forGadgetWithIdentifier:(id)a4;
+- (void)setGadgetDescriptors:(id)descriptors;
+- (void)setGadgetDescriptors:(id)descriptors iconLayout:(id)layout;
+- (void)updateIntent:(id)intent forGadgetWithIdentifier:(id)identifier;
 - (void)validateIconsForAvailableApps;
 @end
 
 @implementation PRGadgetGridModel
 
-+ (id)correctedContainerBundleIdentifierForContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4
++ (id)correctedContainerBundleIdentifierForContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (-[__CFString isEqualToString:](v5, "isEqualToString:", @"com.apple.Health.Sleep") && [v6 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (-[__CFString isEqualToString:](identifierCopy, "isEqualToString:", @"com.apple.Health.Sleep") && [bundleIdentifierCopy isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
   {
 
-    v5 = @"com.apple.Health";
+    identifierCopy = @"com.apple.Health";
   }
 
-  return v5;
+  return identifierCopy;
 }
 
-- (PRGadgetGridModel)initWithGadgetDescriptors:(id)a3 iconLayout:(id)a4 type:(unint64_t)a5
+- (PRGadgetGridModel)initWithGadgetDescriptors:(id)descriptors iconLayout:(id)layout type:(unint64_t)type
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  descriptorsCopy = descriptors;
+  layoutCopy = layout;
   v45.receiver = self;
   v45.super_class = PRGadgetGridModel;
   v11 = [(PRGadgetGridModel *)&v45 init];
@@ -64,21 +64,21 @@
     goto LABEL_24;
   }
 
-  objc_storeStrong(&v11->_gadgetDescriptors, a3);
-  objc_storeStrong(&v12->_iconLayout, a4);
-  v12->_type = a5;
-  if (a5 < 3)
+  objc_storeStrong(&v11->_gadgetDescriptors, descriptors);
+  objc_storeStrong(&v12->_iconLayout, layout);
+  v12->_type = type;
+  if (type < 3)
   {
     v12->_gridSize.columns = 4;
-    v13 = 1;
+    sidebarGridHeight = 1;
 LABEL_6:
-    v12->_gridSize.rows = v13;
+    v12->_gridSize.rows = sidebarGridHeight;
     goto LABEL_7;
   }
 
-  if (a5 == 3)
+  if (type == 3)
   {
-    v13 = [MEMORY[0x1E6999618] sidebarGridHeight];
+    sidebarGridHeight = [MEMORY[0x1E6999618] sidebarGridHeight];
     v12->_gridSize.columns = 2;
     goto LABEL_6;
   }
@@ -97,7 +97,7 @@ LABEL_7:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = v9;
+  v18 = descriptorsCopy;
   v19 = [v18 countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v19)
   {
@@ -114,8 +114,8 @@ LABEL_7:
 
         v23 = *(*(&v41 + 1) + 8 * i);
         v24 = v12->_gadgetDescriptorsByUniqueIdentifier;
-        v25 = [v23 uniqueIdentifier];
-        [(NSMutableDictionary *)v24 setObject:v23 forKey:v25];
+        uniqueIdentifier = [v23 uniqueIdentifier];
+        [(NSMutableDictionary *)v24 setObject:v23 forKey:uniqueIdentifier];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -125,18 +125,18 @@ LABEL_7:
   }
 
   v12->_layoutInsetsMode = 0;
-  v26 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v26 addObserver:v12 selector:sel__iconModelWillLayoutIconState_ name:*MEMORY[0x1E69D4168] object:v12->_iconModel];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v12 selector:sel__iconModelWillLayoutIconState_ name:*MEMORY[0x1E69D4168] object:v12->_iconModel];
 
-  v27 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v27 addObserver:v12 selector:sel__iconModelDidLayoutIconState_ name:*MEMORY[0x1E69D4160] object:v12->_iconModel];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v12 selector:sel__iconModelDidLayoutIconState_ name:*MEMORY[0x1E69D4160] object:v12->_iconModel];
 
   [(SBHIconModel *)v12->_iconModel layoutIfNeeded];
   v28 = PRSharedWidgetExtensionProvider();
   [v28 registerObserver:v12];
 
   [(PRGadgetGridModel *)v12 _populateIntentsByDescriptorIdentifier];
-  if (!v10)
+  if (!layoutCopy)
   {
     v39 = 0u;
     v40 = 0u;
@@ -167,8 +167,8 @@ LABEL_7:
     }
   }
 
-  v34 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-  v35 = [v34 addMonitor:v12 subjectMask:1 subscriptionOptions:1];
+  subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+  v35 = [subjectMonitorRegistry addMonitor:v12 subjectMask:1 subscriptionOptions:1];
   objc_storeWeak(&v12->_appProtectionSubjectMonitorSubscription, v35);
 
 LABEL_24:
@@ -188,18 +188,18 @@ LABEL_24:
   [(PRGadgetGridModel *)&v5 dealloc];
 }
 
-- (void)setGadgetDescriptors:(id)a3
+- (void)setGadgetDescriptors:(id)descriptors
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptorsCopy = descriptors;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_gadgetDescriptors, a3);
+    objc_storeStrong(&self->_gadgetDescriptors, descriptors);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v5;
+    v6 = descriptorsCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -216,8 +216,8 @@ LABEL_24:
 
           v11 = *(*(&v15 + 1) + 8 * i);
           gadgetDescriptorsByUniqueIdentifier = self->_gadgetDescriptorsByUniqueIdentifier;
-          v13 = [v11 uniqueIdentifier];
-          [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier setObject:v11 forKey:v13];
+          uniqueIdentifier = [v11 uniqueIdentifier];
+          [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier setObject:v11 forKey:uniqueIdentifier];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -227,27 +227,27 @@ LABEL_24:
     }
 
     [(PRGadgetGridModel *)self _populateIntentsByDescriptorIdentifier];
-    v14 = [(PRGadgetGridModel *)self delegate];
-    [v14 gadgetGridModelDidUpdateContent:self];
+    delegate = [(PRGadgetGridModel *)self delegate];
+    [delegate gadgetGridModelDidUpdateContent:self];
   }
 }
 
-- (void)setGadgetDescriptors:(id)a3 iconLayout:(id)a4
+- (void)setGadgetDescriptors:(id)descriptors iconLayout:(id)layout
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PRGadgetGridModel *)self setGadgetDescriptors:v6];
-  v8 = [(PRGadgetGridModel *)self iconModel];
-  [v8 importIconState:v7];
+  descriptorsCopy = descriptors;
+  layoutCopy = layout;
+  [(PRGadgetGridModel *)self setGadgetDescriptors:descriptorsCopy];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  [iconModel importIconState:layoutCopy];
 
-  if (!v7)
+  if (!layoutCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v6;
+    v9 = descriptorsCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -275,24 +275,24 @@ LABEL_24:
   }
 }
 
-- (BOOL)canAddGadgetDescriptor:(id)a3
+- (BOOL)canAddGadgetDescriptor:(id)descriptor
 {
-  v4 = [(PRGadgetGridModel *)self _sizeClassFromDescriptor:a3];
-  v5 = [(PRGadgetGridModel *)self listModel];
-  v6 = [v5 firstFreeGridCellIndexOfRangeOfSizeClass:v4 gridCellInfoOptions:0] != 0x7FFFFFFFFFFFFFFFLL;
+  v4 = [(PRGadgetGridModel *)self _sizeClassFromDescriptor:descriptor];
+  listModel = [(PRGadgetGridModel *)self listModel];
+  v6 = [listModel firstFreeGridCellIndexOfRangeOfSizeClass:v4 gridCellInfoOptions:0] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v6;
 }
 
-- (void)updateIntent:(id)a3 forGadgetWithIdentifier:(id)a4
+- (void)updateIntent:(id)intent forGadgetWithIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = [(PRGadgetGridModel *)self gadgetDescriptorForIdentifier:a4];
+  intentCopy = intent;
+  v6 = [(PRGadgetGridModel *)self gadgetDescriptorForIdentifier:identifier];
   v7 = [(NSArray *)self->_gadgetDescriptors indexOfObject:v6];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
-    v9 = [v6 copyWithIntent:v12];
+    v9 = [v6 copyWithIntent:intentCopy];
     v10 = [(NSArray *)self->_gadgetDescriptors mutableCopy];
     [v10 replaceObjectAtIndex:v8 withObject:v9];
     v11 = [v10 copy];
@@ -302,22 +302,22 @@ LABEL_24:
 
 - (void)saveIconStateIfNeeded
 {
-  v2 = [(PRGadgetGridModel *)self iconModel];
-  [v2 saveIconStateIfNeeded];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
 - (void)validateIconsForAvailableApps
 {
   v40 = *MEMORY[0x1E69E9840];
-  v2 = [(PRGadgetGridModel *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v29 = v3;
-  obj = [v3 icons];
+  v29 = rootFolder;
+  obj = [rootFolder icons];
   v4 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v4)
   {
@@ -336,48 +336,48 @@ LABEL_24:
 
         v9 = *(*(&v31 + 1) + 8 * i);
         gadgetDescriptorsByUniqueIdentifier = self->_gadgetDescriptorsByUniqueIdentifier;
-        v11 = [v9 uniqueIdentifier];
-        v12 = [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier objectForKeyedSubscript:v11];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v12 = [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
-        v13 = [v12 providerHasMatchingDescriptor];
-        if ((v13 & 1) == 0)
+        providerHasMatchingDescriptor = [v12 providerHasMatchingDescriptor];
+        if ((providerHasMatchingDescriptor & 1) == 0)
         {
           v14 = PRLogModel();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v12 uniqueIdentifier];
+            uniqueIdentifier2 = [v12 uniqueIdentifier];
             *buf = v27;
             v36 = v12;
             v37 = 2112;
-            v38 = v15;
+            v38 = uniqueIdentifier2;
             _os_log_impl(&dword_1A8AA7000, v14, OS_LOG_TYPE_DEFAULT, "Removing descriptor %@ with identifier %@ from gadget grid model because descriptor not found", buf, 0x16u);
           }
         }
 
-        v16 = [v12 extensionIdentity];
-        v17 = [v16 containerBundleIdentifier];
-        v18 = [v16 extensionBundleIdentifier];
-        v19 = [PRGadgetGridModel correctedContainerBundleIdentifierForContainerBundleIdentifier:v17 extensionBundleIdentifier:v18];
+        extensionIdentity = [v12 extensionIdentity];
+        containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+        extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+        v19 = [PRGadgetGridModel correctedContainerBundleIdentifierForContainerBundleIdentifier:containerBundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier];
 
-        if (!v13)
+        if (!providerHasMatchingDescriptor)
         {
           goto LABEL_20;
         }
 
-        v20 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v19 allowPlaceholder:0 error:0];
-        v21 = [v20 applicationState];
-        v22 = [v21 isRestricted];
+        firstList = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v19 allowPlaceholder:0 error:0];
+        applicationState = [firstList applicationState];
+        isRestricted = [applicationState isRestricted];
 
-        if (v22)
+        if (isRestricted)
         {
           v23 = PRLogModel();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v12 uniqueIdentifier];
+            uniqueIdentifier3 = [v12 uniqueIdentifier];
             *buf = v27;
             v36 = v12;
             v37 = 2112;
-            v38 = v24;
+            v38 = uniqueIdentifier3;
             v25 = v23;
             v26 = "Removing descriptor %@ with identifier %@ from gadget grid model because application restricted";
             goto LABEL_18;
@@ -386,17 +386,17 @@ LABEL_24:
           goto LABEL_19;
         }
 
-        v20 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v19];
-        if (([v20 isLocked] & 1) != 0 || objc_msgSend(v20, "isHidden"))
+        firstList = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v19];
+        if (([firstList isLocked] & 1) != 0 || objc_msgSend(firstList, "isHidden"))
         {
           v23 = PRLogModel();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v12 uniqueIdentifier];
+            uniqueIdentifier3 = [v12 uniqueIdentifier];
             *buf = v27;
             v36 = v12;
             v37 = 2112;
-            v38 = v24;
+            v38 = uniqueIdentifier3;
             v25 = v23;
             v26 = "Removing descriptor %@ with identifier %@ from gadget grid model because application hidden or locked";
 LABEL_18:
@@ -406,8 +406,8 @@ LABEL_18:
 LABEL_19:
 
 LABEL_20:
-          v20 = [v29 firstList];
-          [v20 removeIcon:v9];
+          firstList = [v29 firstList];
+          [firstList removeIcon:v9];
         }
       }
 
@@ -420,18 +420,18 @@ LABEL_20:
 
 - (SBIconListModel)listModel
 {
-  v2 = [(PRGadgetGridModel *)self rootFolder];
-  v3 = [v2 firstList];
+  rootFolder = [(PRGadgetGridModel *)self rootFolder];
+  firstList = [rootFolder firstList];
 
-  return v3;
+  return firstList;
 }
 
 - (SBRootFolder)rootFolder
 {
-  v2 = [(PRGadgetGridModel *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
-  return v3;
+  return rootFolder;
 }
 
 - (void)_setupFixedPositionsForRowLayout
@@ -439,38 +439,38 @@ LABEL_20:
   if ([(PRGadgetGridModel *)self type]!= 3)
   {
     [(PRGadgetGridModel *)self setConfiguringFixedPositions:1];
-    v3 = [(PRGadgetGridModel *)self iconModel];
-    v4 = [v3 rootFolder];
-    v5 = [v4 firstList];
+    iconModel = [(PRGadgetGridModel *)self iconModel];
+    rootFolder = [iconModel rootFolder];
+    firstList = [rootFolder firstList];
 
-    [v5 removeAllFixedIconLocations];
-    v6 = [v5 icons];
+    [firstList removeAllFixedIconLocations];
+    icons = [firstList icons];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__PRGadgetGridModel__setupFixedPositionsForRowLayout__block_invoke;
     v15[3] = &unk_1E7846000;
     v15[4] = self;
-    v7 = [v6 bs_filter:v15];
+    v7 = [icons bs_filter:v15];
 
-    v8 = [v5 icons];
+    icons2 = [firstList icons];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__PRGadgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2;
     v14[3] = &unk_1E7846000;
     v14[4] = self;
-    v9 = [v8 bs_filter:v14];
+    v9 = [icons2 bs_filter:v14];
 
     if ([v7 count] == 1 && objc_msgSend(v9, "count") == 1)
     {
-      v10 = [v5 gridSize] - 1;
-      v11 = [v9 firstObject];
-      v12 = [v5 moveContainedIcon:v11 toGridCellIndex:v10 gridCellInfoOptions:0 mutationOptions:128];
+      v10 = [firstList gridSize] - 1;
+      firstObject = [v9 firstObject];
+      v12 = [firstList moveContainedIcon:firstObject toGridCellIndex:v10 gridCellInfoOptions:0 mutationOptions:128];
     }
 
     if ([v7 count] == 1 && objc_msgSend(v9, "count") == 2)
     {
-      v13 = [v7 firstObject];
-      [v5 moveContainedIcon:v13 toIndex:0 options:0];
+      firstObject2 = [v7 firstObject];
+      [firstList moveContainedIcon:firstObject2 toIndex:0 options:0];
     }
 
     [(PRGadgetGridModel *)self setConfiguringFixedPositions:0];
@@ -493,27 +493,27 @@ BOOL __53__PRGadgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
   return v3;
 }
 
-- (void)_iconModelDidLayoutIconState:(id)a3
+- (void)_iconModelDidLayoutIconState:(id)state
 {
-  v6 = [(PRGadgetGridModel *)self listModel];
+  listModel = [(PRGadgetGridModel *)self listModel];
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
   v5 = [objc_alloc(MEMORY[0x1E69D4090]) initWithGridSizeClasses:v4];
-  [v6 setAllowedGridSizeClasses:v5];
-  [v6 setIconLayoutBehavior:3];
-  [v6 setFixedIconLocationBehavior:1];
-  [v6 addListObserver:self];
+  [listModel setAllowedGridSizeClasses:v5];
+  [listModel setIconLayoutBehavior:3];
+  [listModel setFixedIconLocationBehavior:1];
+  [listModel addListObserver:self];
   [(PRGadgetGridModel *)self validateIconsForAvailableApps];
   [(PRGadgetGridModel *)self didChangeValueForKey:@"listModel"];
 }
 
-- (void)_addIconForDescriptor:(id)a3 withGridIndex:(id)a4 animated:(BOOL)a5
+- (void)_addIconForDescriptor:(id)descriptor withGridIndex:(id)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PRGadgetGridModel *)self iconModel];
-  v11 = [v8 uniqueIdentifier];
-  v12 = [v10 leafIconForIdentifier:v11];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  indexCopy = index;
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+  v12 = [iconModel leafIconForIdentifier:uniqueIdentifier];
 
   if (!v12)
   {
@@ -522,7 +522,7 @@ BOOL __53__PRGadgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
     v28[1] = 3221225472;
     v28[2] = __66__PRGadgetGridModel__addIconForDescriptor_withGridIndex_animated___block_invoke;
     v28[3] = &unk_1E7846028;
-    v14 = v8;
+    v14 = descriptorCopy;
     v29 = v14;
     if (([(NSArray *)gadgetDescriptors bs_containsObjectPassingTest:v28]& 1) == 0)
     {
@@ -531,33 +531,33 @@ BOOL __53__PRGadgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
     }
 
     v16 = [(PRGadgetGridModel *)self _makeIconForDescriptor:v14];
-    v17 = [v9 unsignedLongValue];
-    v18 = [(PRGadgetGridModel *)self iconModel];
-    v19 = [v18 rootFolder];
-    v20 = [v19 firstList];
-    v21 = [v20 isValidGridCellIndex:v17 options:4];
+    unsignedLongValue = [indexCopy unsignedLongValue];
+    iconModel2 = [(PRGadgetGridModel *)self iconModel];
+    rootFolder = [iconModel2 rootFolder];
+    firstList = [rootFolder firstList];
+    v21 = [firstList isValidGridCellIndex:unsignedLongValue options:4];
 
-    v22 = [(PRGadgetGridModel *)self listModel];
-    v23 = v22;
-    if (v9 && (v21 & 1) != 0)
+    listModel = [(PRGadgetGridModel *)self listModel];
+    v23 = listModel;
+    if (indexCopy && (v21 & 1) != 0)
     {
-      v24 = [v22 insertIcon:v16 atGridCellIndex:v17 gridCellInfoOptions:4 mutationOptions:8];
+      v24 = [listModel insertIcon:v16 atGridCellIndex:unsignedLongValue gridCellInfoOptions:4 mutationOptions:8];
     }
 
     else
     {
-      v25 = [v22 addIcon:v16];
+      v25 = [listModel addIcon:v16];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
-      v26 = [(PRGadgetGridModel *)self presenter];
-      [v26 performAnimatedInsertionForIcon:v16];
+      presenter = [(PRGadgetGridModel *)self presenter];
+      [presenter performAnimatedInsertionForIcon:v16];
     }
 
     [(PRGadgetGridModel *)self _setupFixedPositionsForRowLayout];
-    v27 = [(PRGadgetGridModel *)self iconModel];
-    [v27 saveIconStateIfNeeded];
+    iconModel3 = [(PRGadgetGridModel *)self iconModel];
+    [iconModel3 saveIconStateIfNeeded];
   }
 }
 
@@ -570,35 +570,35 @@ uint64_t __66__PRGadgetGridModel__addIconForDescriptor_withGridIndex_animated___
   return v5;
 }
 
-- (id)_removeIconForDescriptor:(id)a3 animated:(BOOL)a4
+- (id)_removeIconForDescriptor:(id)descriptor animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PRGadgetGridModel *)self iconModel];
-  v8 = [v6 uniqueIdentifier];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
 
-  v9 = [v7 leafIconForIdentifier:v8];
+  v9 = [iconModel leafIconForIdentifier:uniqueIdentifier];
 
   if (v9)
   {
-    v10 = [(PRGadgetGridModel *)self iconModel];
-    v11 = [v10 rootFolder];
-    v12 = [v11 firstList];
+    iconModel2 = [(PRGadgetGridModel *)self iconModel];
+    rootFolder = [iconModel2 rootFolder];
+    firstList = [rootFolder firstList];
 
-    v13 = [v12 gridCellInfoWithOptions:0];
-    v14 = [v12 gridCellIndexForIcon:v9 gridCellInfo:v13];
-    v15 = [(PRGadgetGridModel *)self iconModel];
-    [v15 removeIcon:v9];
+    v13 = [firstList gridCellInfoWithOptions:0];
+    v14 = [firstList gridCellIndexForIcon:v9 gridCellInfo:v13];
+    iconModel3 = [(PRGadgetGridModel *)self iconModel];
+    [iconModel3 removeIcon:v9];
 
-    if (v4)
+    if (animatedCopy)
     {
-      v16 = [(PRGadgetGridModel *)self presenter];
-      [v16 performAnimatedRemovalForIcon:v9];
+      presenter = [(PRGadgetGridModel *)self presenter];
+      [presenter performAnimatedRemovalForIcon:v9];
     }
 
     [(PRGadgetGridModel *)self _setupFixedPositionsForRowLayout];
-    v17 = [(PRGadgetGridModel *)self iconModel];
-    [v17 saveIconStateIfNeeded];
+    iconModel4 = [(PRGadgetGridModel *)self iconModel];
+    [iconModel4 saveIconStateIfNeeded];
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v14];
   }
@@ -611,19 +611,19 @@ uint64_t __66__PRGadgetGridModel__addIconForDescriptor_withGridIndex_animated___
   return v18;
 }
 
-- (id)_makeIconForDescriptor:(id)a3
+- (id)_makeIconForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if ([v4 gadgetType])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy gadgetType])
   {
-    if ([v4 gadgetType] != 1)
+    if ([descriptorCopy gadgetType] != 1)
     {
       v11 = 0;
       goto LABEL_17;
     }
 
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = descriptorCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -650,7 +650,7 @@ uint64_t __66__PRGadgetGridModel__addIconForDescriptor_withGridIndex_animated___
   else
   {
     v8 = objc_opt_class();
-    v9 = v4;
+    v9 = descriptorCopy;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -681,44 +681,44 @@ LABEL_17:
   return v11;
 }
 
-- (id)_makeWidgetIconForComplicationDescriptor:(id)a3
+- (id)_makeWidgetIconForComplicationDescriptor:(id)descriptor
 {
   v3 = MEMORY[0x1E69D40E8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v21 = [v3 alloc];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v4 widget];
-  v7 = [v6 kind];
-  v8 = [v4 widget];
-  v9 = [v8 extensionIdentity];
-  v10 = [v9 extensionBundleIdentifier];
-  v11 = [v4 widget];
-  v12 = [v11 extensionIdentity];
-  v13 = [v12 containerBundleIdentifier];
-  v22 = [v21 initWithUniqueIdentifier:v5 kind:v7 extensionBundleIdentifier:v10 containerBundleIdentifier:v13];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+  widget = [descriptorCopy widget];
+  kind = [widget kind];
+  widget2 = [descriptorCopy widget];
+  extensionIdentity = [widget2 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  widget3 = [descriptorCopy widget];
+  extensionIdentity2 = [widget3 extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity2 containerBundleIdentifier];
+  v22 = [v21 initWithUniqueIdentifier:uniqueIdentifier kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier];
 
   v14 = [objc_alloc(MEMORY[0x1E69D4118]) initWithWidget:v22];
-  v15 = [v4 uniqueIdentifier];
-  v16 = [v14 copyWithLeafIdentifier:v15];
+  uniqueIdentifier2 = [descriptorCopy uniqueIdentifier];
+  v16 = [v14 copyWithLeafIdentifier:uniqueIdentifier2];
 
-  v17 = [v4 widget];
+  widget4 = [descriptorCopy widget];
 
-  v18 = [v17 family];
-  v19 = PRIconGridSizeClassForWidgetFamily(v18);
+  family = [widget4 family];
+  v19 = PRIconGridSizeClassForWidgetFamily(family);
   [v16 setGridSizeClass:v19];
 
   return v16;
 }
 
-- (id)_makeControlIconForDescriptor:(id)a3
+- (id)_makeControlIconForDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = [PRControlIcon alloc];
-  v5 = [v3 controlIdentity];
-  v6 = [v3 controlType];
-  v7 = [v3 uniqueIdentifier];
+  controlIdentity = [descriptorCopy controlIdentity];
+  controlType = [descriptorCopy controlType];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
 
-  v8 = [(PRControlIcon *)v4 initWithControlIdentity:v5 controlType:v6 leafIdentifier:v7];
+  v8 = [(PRControlIcon *)v4 initWithControlIdentity:controlIdentity controlType:controlType leafIdentifier:uniqueIdentifier];
   [(SBIcon *)v8 setGridSizeClass:@"PRIconGridSizeClassCircular"];
 
   return v8;
@@ -748,9 +748,9 @@ LABEL_17:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 intent];
-        v11 = [v9 uniqueIdentifier];
-        [v3 setObject:v10 forKeyedSubscript:v11];
+        intent = [v9 intent];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        [v3 setObject:intent forKeyedSubscript:uniqueIdentifier];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -763,15 +763,15 @@ LABEL_17:
   [(PRGadgetGridModel *)self setIntentsByDescriptorIdentifier:v12];
 }
 
-- (id)_sizeClassFromDescriptor:(id)a3
+- (id)_sizeClassFromDescriptor:(id)descriptor
 {
-  v3 = a3;
-  if ([v3 gadgetType])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy gadgetType])
   {
-    if ([v3 gadgetType] == 1)
+    if ([descriptorCopy gadgetType] == 1)
     {
       v4 = objc_opt_class();
-      v5 = v3;
+      v5 = descriptorCopy;
       if (v4)
       {
         v6 = (objc_opt_isKindOfClass() & 1) != 0 ? v5 : 0;
@@ -796,7 +796,7 @@ LABEL_17:
   else
   {
     v7 = objc_opt_class();
-    v8 = v3;
+    v8 = descriptorCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -819,8 +819,8 @@ LABEL_17:
 
     if (v10)
     {
-      v11 = [v10 widget];
-      v12 = PRIconGridSizeClassForWidgetFamily([v11 family]);
+      widget = [v10 widget];
+      v12 = PRIconGridSizeClassForWidgetFamily([widget family]);
 
       goto LABEL_20;
     }
@@ -829,7 +829,7 @@ LABEL_17:
   v14 = PRLogModel();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [PRGadgetGridModel _sizeClassFromDescriptor:v3];
+    [PRGadgetGridModel _sizeClassFromDescriptor:descriptorCopy];
   }
 
   v12 = @"PRIconGridSizeClassCircular";
@@ -838,11 +838,11 @@ LABEL_20:
   return v12;
 }
 
-- (id)_sizeClassFromIcon:(id)a3
+- (id)_sizeClassFromIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = iconCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -865,7 +865,7 @@ LABEL_20:
 
   if (v7)
   {
-    v8 = [v7 gridSizeClass];
+    gridSizeClass = [v7 gridSizeClass];
   }
 
   else
@@ -901,41 +901,41 @@ LABEL_20:
       }
     }
 
-    v8 = @"PRIconGridSizeClassCircular";
+    gridSizeClass = @"PRIconGridSizeClassCircular";
   }
 
-  return v8;
+  return gridSizeClass;
 }
 
-- (void)iconList:(id)a3 didAddIcon:(id)a4
+- (void)iconList:(id)list didAddIcon:(id)icon
 {
-  if (![(PRGadgetGridModel *)self isConfiguringFixedPositions:a3])
+  if (![(PRGadgetGridModel *)self isConfiguringFixedPositions:list])
   {
     [(PRGadgetGridModel *)self _setupFixedPositionsForRowLayout];
   }
 
-  v5 = [(PRGadgetGridModel *)self iconModel];
-  [v5 saveIconStateIfNeeded];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
-- (void)iconList:(id)a3 didMoveIcon:(id)a4
+- (void)iconList:(id)list didMoveIcon:(id)icon
 {
-  if (![(PRGadgetGridModel *)self isConfiguringFixedPositions:a3])
+  if (![(PRGadgetGridModel *)self isConfiguringFixedPositions:list])
   {
     [(PRGadgetGridModel *)self _setupFixedPositionsForRowLayout];
   }
 
-  v5 = [(PRGadgetGridModel *)self iconModel];
-  [v5 saveIconStateIfNeeded];
+  iconModel = [(PRGadgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4
+- (void)iconList:(id)list didRemoveIcon:(id)icon
 {
-  v5 = a4;
+  iconCopy = icon;
   gadgetDescriptorsByUniqueIdentifier = self->_gadgetDescriptorsByUniqueIdentifier;
-  v15 = v5;
-  v7 = [v5 uniqueIdentifier];
-  v8 = [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier objectForKeyedSubscript:v7];
+  v15 = iconCopy;
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  v8 = [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
   v9 = [(NSArray *)self->_gadgetDescriptors indexOfObject:v8];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -948,57 +948,57 @@ LABEL_20:
   }
 
   v13 = self->_gadgetDescriptorsByUniqueIdentifier;
-  v14 = [v15 uniqueIdentifier];
-  [(NSMutableDictionary *)v13 removeObjectForKey:v14];
+  uniqueIdentifier2 = [v15 uniqueIdentifier];
+  [(NSMutableDictionary *)v13 removeObjectForKey:uniqueIdentifier2];
 }
 
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error
 {
-  objc_storeStrong(&self->_iconLayout, a3);
-  v5 = [(PRGadgetGridModel *)self delegate];
-  [v5 gadgetGridModelDidUpdateContent:self];
+  objc_storeStrong(&self->_iconLayout, state);
+  delegate = [(PRGadgetGridModel *)self delegate];
+  [delegate gadgetGridModelDidUpdateContent:self];
 
   return 1;
 }
 
-- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)deleteCurrentIconStateWithOptions:(unint64_t)options error:(id *)error
 {
   iconLayout = self->_iconLayout;
   self->_iconLayout = 0;
 
-  v6 = [(PRGadgetGridModel *)self delegate];
-  [v6 gadgetGridModelDidUpdateContent:self];
+  delegate = [(PRGadgetGridModel *)self delegate];
+  [delegate gadgetGridModelDidUpdateContent:self];
 
   return 1;
 }
 
-- (id)gridSizeClassSizesForIconModel:(id)a3
+- (id)gridSizeClassSizesForIconModel:(id)model
 {
   v3 = [objc_alloc(MEMORY[0x1E69D4098]) initWithGridSizeClassesAndGridSizes:{@"PRIconGridSizeClassCircular", 65537, @"PRIconGridSizeClassRectangular", 65538, @"PRIconGridSizeClassSystemSmall", 131074, 0}];
 
   return v3;
 }
 
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", a4, @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
+  v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", class, @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
   v5 = [objc_alloc(MEMORY[0x1E69D4090]) initWithGridSizeClasses:v4];
 
   return v5;
 }
 
-- (void)iconModel:(id)a3 didAddIcon:(id)a4
+- (void)iconModel:(id)model didAddIcon:(id)icon
 {
-  v39 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_gadgetDescriptorsByUniqueIdentifier allKeys];
-  v8 = [v6 uniqueIdentifier];
-  v9 = [v7 containsObject:v8];
+  modelCopy = model;
+  iconCopy = icon;
+  allKeys = [(NSMutableDictionary *)self->_gadgetDescriptorsByUniqueIdentifier allKeys];
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  v9 = [allKeys containsObject:uniqueIdentifier];
 
   if ((v9 & 1) == 0)
   {
     v10 = objc_opt_class();
-    v11 = v6;
+    v11 = iconCopy;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -1021,21 +1021,21 @@ LABEL_20:
 
     if (v13)
     {
-      v14 = [v13 activeWidget];
-      v15 = [v11 gridSizeClass];
-      v16 = PRWidgetFamilyForIconGridSizeClass(v15);
+      activeWidget = [v13 activeWidget];
+      gridSizeClass = [v11 gridSizeClass];
+      v16 = PRWidgetFamilyForIconGridSizeClass(gridSizeClass);
       v17 = objc_alloc(MEMORY[0x1E6994290]);
-      v18 = [v14 extensionBundleIdentifier];
-      v19 = [v14 containerBundleIdentifier];
-      v20 = [v17 initWithExtensionBundleIdentifier:v18 containerBundleIdentifier:v19 deviceIdentifier:0];
+      extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
+      containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+      v20 = [v17 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
       v21 = objc_alloc(MEMORY[0x1E6994370]);
-      v22 = [v14 kind];
-      v23 = [v21 initWithExtensionIdentity:v20 kind:v22 family:v16 intent:0 activityIdentifier:0];
+      kind = [activeWidget kind];
+      v23 = [v21 initWithExtensionIdentity:v20 kind:kind family:v16 intent:0 activityIdentifier:0];
 
       v24 = [PRComplicationDescriptor alloc];
-      v25 = [v11 uniqueIdentifier];
-      v26 = [(PRComplicationDescriptor *)v24 initWithUniqueIdentifier:v25 widget:v23];
+      uniqueIdentifier2 = [v11 uniqueIdentifier];
+      v26 = [(PRComplicationDescriptor *)v24 initWithUniqueIdentifier:uniqueIdentifier2 widget:v23];
     }
 
     else
@@ -1068,9 +1068,9 @@ LABEL_20:
     if (v30)
     {
       v31 = [PRControlDescriptor alloc];
-      v32 = [v28 uniqueIdentifier];
-      v33 = [v30 controlIdentity];
-      v34 = -[PRControlDescriptor initWithUniqueIdentifier:controlIdentity:controlType:](v31, "initWithUniqueIdentifier:controlIdentity:controlType:", v32, v33, [v30 controlType]);
+      uniqueIdentifier3 = [v28 uniqueIdentifier];
+      controlIdentity = [v30 controlIdentity];
+      v34 = -[PRControlDescriptor initWithUniqueIdentifier:controlIdentity:controlType:](v31, "initWithUniqueIdentifier:controlIdentity:controlType:", uniqueIdentifier3, controlIdentity, [v30 controlType]);
 
       v26 = v34;
     }
@@ -1078,24 +1078,24 @@ LABEL_20:
     if (v26)
     {
       gadgetDescriptorsByUniqueIdentifier = self->_gadgetDescriptorsByUniqueIdentifier;
-      v36 = [v28 uniqueIdentifier];
-      [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier setObject:v26 forKey:v36];
+      uniqueIdentifier4 = [v28 uniqueIdentifier];
+      [(NSMutableDictionary *)gadgetDescriptorsByUniqueIdentifier setObject:v26 forKey:uniqueIdentifier4];
 
       v37 = [(NSArray *)self->_gadgetDescriptors mutableCopy];
       [v37 addObject:v26];
       v38 = [v37 copy];
       [(PRGadgetGridModel *)self setGadgetDescriptors:v38];
 
-      [v39 saveIconStateIfNeeded];
+      [modelCopy saveIconStateIfNeeded];
     }
   }
 }
 
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context
 {
-  v7 = a4;
-  v8 = [(PRGadgetGridModel *)self presenter];
-  [v8 handleLaunchRequestForIcon:v7];
+  iconCopy = icon;
+  presenter = [(PRGadgetGridModel *)self presenter];
+  [presenter handleLaunchRequestForIcon:iconCopy];
 }
 
 void __61__PRGadgetGridModel_extensionsDidChangeForExtensionProvider___block_invoke(uint64_t a1)
@@ -1105,16 +1105,16 @@ void __61__PRGadgetGridModel_extensionsDidChangeForExtensionProvider___block_inv
   [v3 importIconState:v2];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a4;
+  subscriptionCopy = subscription;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PRGadgetGridModel_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_1E7843070;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = subscriptionCopy;
+  selfCopy = self;
+  v6 = subscriptionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

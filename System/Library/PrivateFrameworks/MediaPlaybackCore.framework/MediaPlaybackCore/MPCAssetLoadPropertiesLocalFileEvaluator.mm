@@ -1,12 +1,12 @@
 @interface MPCAssetLoadPropertiesLocalFileEvaluator
-- (BOOL)_shouldUpgradeCacheOnPlay:(id)a3 assetCachingIsAllowed:(BOOL)a4;
-- (BOOL)_shouldUpgradeDownloadOnPlay:(id)a3 defaults:(id)a4;
-- (BOOL)isHLSFileAsset:(id)a3;
-- (MPCAssetLoadPropertiesLocalFileEvaluator)initWithPlaybackEngine:(id)a3;
+- (BOOL)_shouldUpgradeCacheOnPlay:(id)play assetCachingIsAllowed:(BOOL)allowed;
+- (BOOL)_shouldUpgradeDownloadOnPlay:(id)play defaults:(id)defaults;
+- (BOOL)isHLSFileAsset:(id)asset;
+- (MPCAssetLoadPropertiesLocalFileEvaluator)initWithPlaybackEngine:(id)engine;
 - (MPCPlaybackEngine)playbackEngine;
-- (id)evaluateAssetLoadProperties:(id)a3 allowingCachedAssets:(BOOL)a4 defaults:(id)a5;
-- (int64_t)_loadedAudioAssetTypeForFileAsset:(id)a3;
-- (int64_t)_recommendationForEvaluation:(id)a3 assetCachingIsAllowed:(BOOL)a4 userDefaults:(id)a5;
+- (id)evaluateAssetLoadProperties:(id)properties allowingCachedAssets:(BOOL)assets defaults:(id)defaults;
+- (int64_t)_loadedAudioAssetTypeForFileAsset:(id)asset;
+- (int64_t)_recommendationForEvaluation:(id)evaluation assetCachingIsAllowed:(BOOL)allowed userDefaults:(id)defaults;
 @end
 
 @implementation MPCAssetLoadPropertiesLocalFileEvaluator
@@ -18,43 +18,43 @@
   return WeakRetained;
 }
 
-- (BOOL)_shouldUpgradeCacheOnPlay:(id)a3 assetCachingIsAllowed:(BOOL)a4
+- (BOOL)_shouldUpgradeCacheOnPlay:(id)play assetCachingIsAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 fileIsDownloaded])
+  playCopy = play;
+  if ([playCopy fileIsDownloaded])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v6 status] == 3 || objc_msgSend(v6, "status") == 2;
-    if ([v6 fileIsCached])
+    v8 = [playCopy status] == 3 || objc_msgSend(playCopy, "status") == 2;
+    if ([playCopy fileIsCached])
     {
-      v9 = [v6 fileShouldBeUpdated];
+      fileShouldBeUpdated = [playCopy fileShouldBeUpdated];
     }
 
     else
     {
-      v9 = 0;
+      fileShouldBeUpdated = 0;
     }
 
-    v7 = v4 & (v8 | v9);
+    v7 = allowedCopy & (v8 | fileShouldBeUpdated);
     v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138544386;
-      v13 = self;
+      selfCopy = self;
       v14 = 1024;
-      v15 = v4;
+      v15 = allowedCopy;
       v16 = 1024;
       v17 = v8;
       v18 = 1024;
-      v19 = v9;
+      v19 = fileShouldBeUpdated;
       v20 = 1024;
-      v21 = v4 & (v8 | v9);
+      v21 = allowedCopy & (v8 | fileShouldBeUpdated);
       _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Caching decision process - assetCachingIsAllowed: %{BOOL}u - localFileDoesNotExist: %{BOOL}u - localFileIsCachedAndNeedsUpdating: %{BOOL}u => shouldUpgradeCacheOnPlay:%{BOOL}u.", &v12, 0x24u);
     }
   }
@@ -62,27 +62,27 @@
   return v7;
 }
 
-- (BOOL)_shouldUpgradeDownloadOnPlay:(id)a3 defaults:(id)a4
+- (BOOL)_shouldUpgradeDownloadOnPlay:(id)play defaults:(id)defaults
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 fileIsDownloaded])
+  playCopy = play;
+  defaultsCopy = defaults;
+  if ([playCopy fileIsDownloaded])
   {
-    v8 = [v6 fileShouldBeUpdated];
+    fileShouldBeUpdated = [playCopy fileShouldBeUpdated];
   }
 
   else
   {
-    v8 = 0;
+    fileShouldBeUpdated = 0;
   }
 
-  v9 = [v7 prefersSpatialDownloads];
-  v10 = [v7 preferredMusicDownloadResolution];
+  prefersSpatialDownloads = [defaultsCopy prefersSpatialDownloads];
+  preferredMusicDownloadResolution = [defaultsCopy preferredMusicDownloadResolution];
 
   if (_os_feature_enabled_impl())
   {
-    v11 = v8 & (v9 | (v10 > 47999));
+    v11 = fileShouldBeUpdated & (prefersSpatialDownloads | (preferredMusicDownloadResolution > 47999));
   }
 
   else
@@ -94,17 +94,17 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138544898;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
     v17 = _os_feature_enabled_impl();
     v18 = 1024;
-    v19 = [v6 fileIsDownloaded];
+    fileIsDownloaded = [playCopy fileIsDownloaded];
     v20 = 1024;
-    v21 = [v6 fileShouldBeUpdated];
+    fileShouldBeUpdated2 = [playCopy fileShouldBeUpdated];
     v22 = 1024;
-    v23 = v9;
+    v23 = prefersSpatialDownloads;
     v24 = 1024;
-    v25 = v10 > 47999;
+    v25 = preferredMusicDownloadResolution > 47999;
     v26 = 1024;
     v27 = v11;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Upgrade on play decision process - upgradeOnPlay enabled: %{BOOL}u - localFileIsDownloaded: %{BOOL}u - localFileShouldBeUpdated: %{BOOL}u - userExpectsSpatialDownload: %{BOOL}u - userExpectsLosslessDownload: %{BOOL}u => shouldUpgradeDownloadOnPlay: %{BOOL}u.", &v14, 0x30u);
@@ -113,21 +113,21 @@
   return v11;
 }
 
-- (int64_t)_recommendationForEvaluation:(id)a3 assetCachingIsAllowed:(BOOL)a4 userDefaults:(id)a5
+- (int64_t)_recommendationForEvaluation:(id)evaluation assetCachingIsAllowed:(BOOL)allowed userDefaults:(id)defaults
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([(MPCAssetLoadPropertiesLocalFileEvaluator *)self _shouldUpgradeCacheOnPlay:v8 assetCachingIsAllowed:v6])
+  allowedCopy = allowed;
+  evaluationCopy = evaluation;
+  defaultsCopy = defaults;
+  if ([(MPCAssetLoadPropertiesLocalFileEvaluator *)self _shouldUpgradeCacheOnPlay:evaluationCopy assetCachingIsAllowed:allowedCopy])
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self _shouldUpgradeDownloadOnPlay:v8 defaults:v9];
+    v11 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self _shouldUpgradeDownloadOnPlay:evaluationCopy defaults:defaultsCopy];
     v12 = 3;
-    if (!v6)
+    if (!allowedCopy)
     {
       v12 = 0;
     }
@@ -146,21 +146,21 @@
   return v10;
 }
 
-- (BOOL)isHLSFileAsset:(id)a3
+- (BOOL)isHLSFileAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 filePath];
-  v5 = [v4 length];
+  assetCopy = asset;
+  filePath = [assetCopy filePath];
+  v5 = [filePath length];
 
   if (v5)
   {
-    v6 = [v3 filePath];
-    v7 = [v6 pathExtension];
+    filePath2 = [assetCopy filePath];
+    pathExtension = [filePath2 pathExtension];
 
-    if (v7)
+    if (pathExtension)
     {
       v8 = MSVOfflineHLSFileExtensions();
-      LOBYTE(v5) = [v8 containsObject:v7];
+      LOBYTE(v5) = [v8 containsObject:pathExtension];
     }
 
     else
@@ -172,14 +172,14 @@
   return v5;
 }
 
-- (int64_t)_loadedAudioAssetTypeForFileAsset:(id)a3
+- (int64_t)_loadedAudioAssetTypeForFileAsset:(id)asset
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isNonPurgeable];
-  if ([(MPCAssetLoadPropertiesLocalFileEvaluator *)self isHLSFileAsset:v4])
+  assetCopy = asset;
+  isNonPurgeable = [assetCopy isNonPurgeable];
+  if ([(MPCAssetLoadPropertiesLocalFileEvaluator *)self isHLSFileAsset:assetCopy])
   {
-    v6 = [v4 traits];
+    traits = [assetCopy traits];
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -187,17 +187,17 @@ LABEL_28:
 
       v20 = 4;
       v21 = 5;
-      if ((v6 & 4) == 0)
+      if ((traits & 4) == 0)
       {
         v21 = 2;
       }
 
-      if ((v6 & 2) == 0)
+      if ((traits & 2) == 0)
       {
         v20 = v21;
       }
 
-      if ((v6 & 0x38) != 0)
+      if ((traits & 0x38) != 0)
       {
         v14 = 3;
       }
@@ -210,7 +210,7 @@ LABEL_28:
       goto LABEL_35;
     }
 
-    if (v5)
+    if (isNonPurgeable)
     {
       v8 = @"Downloaded";
     }
@@ -221,15 +221,15 @@ LABEL_28:
     }
 
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:6];
-    if (v6)
+    if (traits)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"adm"];
       [v9 addObject:v15];
 
-      if ((v6 & 2) == 0)
+      if ((traits & 2) == 0)
       {
 LABEL_8:
-        if ((v6 & 4) == 0)
+        if ((traits & 4) == 0)
         {
           goto LABEL_9;
         }
@@ -238,7 +238,7 @@ LABEL_8:
       }
     }
 
-    else if ((v6 & 2) == 0)
+    else if ((traits & 2) == 0)
     {
       goto LABEL_8;
     }
@@ -246,10 +246,10 @@ LABEL_8:
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"lossless"];
     [v9 addObject:v16];
 
-    if ((v6 & 4) == 0)
+    if ((traits & 4) == 0)
     {
 LABEL_9:
-      if ((v6 & 8) == 0)
+      if ((traits & 8) == 0)
       {
         goto LABEL_10;
       }
@@ -261,10 +261,10 @@ LABEL_22:
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"high-res lossless"];
     [v9 addObject:v17];
 
-    if ((v6 & 8) == 0)
+    if ((traits & 8) == 0)
     {
 LABEL_10:
-      if ((v6 & 0x10) == 0)
+      if ((traits & 0x10) == 0)
       {
         goto LABEL_11;
       }
@@ -276,10 +276,10 @@ LABEL_23:
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spatial"];
     [v9 addObject:v18];
 
-    if ((v6 & 0x10) == 0)
+    if ((traits & 0x10) == 0)
     {
 LABEL_11:
-      if ((v6 & 0x20) == 0)
+      if ((traits & 0x20) == 0)
       {
 LABEL_13:
         if ([v9 count])
@@ -293,7 +293,7 @@ LABEL_13:
         }
 
         v23 = 138543874;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2114;
         v26 = v8;
         v27 = 2114;
@@ -314,7 +314,7 @@ LABEL_24:
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"atmos"];
     [v9 addObject:v19];
 
-    if ((v6 & 0x20) == 0)
+    if ((traits & 0x20) == 0)
     {
       goto LABEL_13;
     }
@@ -326,13 +326,13 @@ LABEL_24:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"Cached";
-    if (v5)
+    if (isNonPurgeable)
     {
       v13 = @"Downloaded";
     }
 
     v23 = 138543618;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2114;
     v26 = v13;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - %{public}@ file is CRABS", &v23, 0x16u);
@@ -344,49 +344,49 @@ LABEL_35:
   return v14;
 }
 
-- (id)evaluateAssetLoadProperties:(id)a3 allowingCachedAssets:(BOOL)a4 defaults:(id)a5
+- (id)evaluateAssetLoadProperties:(id)properties allowingCachedAssets:(BOOL)assets defaults:(id)defaults
 {
-  v6 = a4;
+  assetsCopy = assets;
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  propertiesCopy = properties;
+  defaultsCopy = defaults;
   v10 = [MPCAssetLoadPropertiesLocalFileEvaluation alloc];
-  v11 = [v8 fileAsset];
-  v12 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v10 initWithFileAsset:v11];
+  fileAsset = [propertiesCopy fileAsset];
+  v12 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v10 initWithFileAsset:fileAsset];
 
   [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:0];
-  -[MPCAssetLoadPropertiesLocalFileEvaluation setHLSContentPolicy:](v12, "setHLSContentPolicy:", [v8 HLSContentPolicy]);
-  v13 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileAsset];
-  v14 = v13;
-  if (v13)
+  -[MPCAssetLoadPropertiesLocalFileEvaluation setHLSContentPolicy:](v12, "setHLSContentPolicy:", [propertiesCopy HLSContentPolicy]);
+  fileAsset2 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileAsset];
+  v14 = fileAsset2;
+  if (fileAsset2)
   {
-    -[MPCAssetLoadPropertiesLocalFileEvaluation setFileIsDownloaded:](v12, "setFileIsDownloaded:", [v13 isNonPurgeable]);
+    -[MPCAssetLoadPropertiesLocalFileEvaluation setFileIsDownloaded:](v12, "setFileIsDownloaded:", [fileAsset2 isNonPurgeable]);
     -[MPCAssetLoadPropertiesLocalFileEvaluation setFileIsCached:](v12, "setFileIsCached:", [v14 isNonPurgeable] ^ 1);
-    v15 = [v14 filePath];
-    if (![v15 length])
+    filePath = [v14 filePath];
+    if (![filePath length])
     {
       v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v59 = self;
+        selfCopy14 = self;
         _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [Missing cached or downloaded file]", buf, 0xCu);
       }
 
       [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:3];
-      v18 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:v6 userDefaults:v9];
+      v18 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:assetsCopy userDefaults:defaultsCopy];
       v17 = v12;
       goto LABEL_14;
     }
 
-    [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFilePath:v15];
-    if ([(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsCached]&& !v6)
+    [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFilePath:filePath];
+    if ([(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsCached]&& !assetsCopy)
     {
       v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v59 = self;
+        selfCopy14 = self;
         _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [Cached assets not allowed]", buf, 0xCu);
       }
 
@@ -402,9 +402,9 @@ LABEL_41:
 
     [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFileIsHLS:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self isHLSFileAsset:v14]];
     [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFileAssetType:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self _loadedAudioAssetTypeForFileAsset:v14]];
-    -[MPCAssetLoadPropertiesLocalFileEvaluation setExpectedAssetType:](v12, "setExpectedAssetType:", [v8 preferredAudioAssetType]);
+    -[MPCAssetLoadPropertiesLocalFileEvaluation setExpectedAssetType:](v12, "setExpectedAssetType:", [propertiesCopy preferredAudioAssetType]);
     -[MPCAssetLoadPropertiesLocalFileEvaluation setFileQualityType:](v12, "setFileQualityType:", [v14 qualityType]);
-    if ([v8 prefersHighQualityContent])
+    if ([propertiesCopy prefersHighQualityContent])
     {
       v21 = 2;
     }
@@ -415,7 +415,7 @@ LABEL_41:
     }
 
     [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setExpectedQualityType:v21];
-    if (-[MPCAssetLoadPropertiesLocalFileEvaluation fileIsHLS](v12, "fileIsHLS") && [v8 HLSContentPolicy] == 3)
+    if (-[MPCAssetLoadPropertiesLocalFileEvaluation fileIsHLS](v12, "fileIsHLS") && [propertiesCopy HLSContentPolicy] == 3)
     {
       v22 = 1;
     }
@@ -429,18 +429,18 @@ LABEL_41:
       }
     }
 
-    v23 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self playbackEngine];
-    if ([v23 isVocalAttenuationEnabled])
+    playbackEngine = [(MPCAssetLoadPropertiesLocalFileEvaluator *)self playbackEngine];
+    if ([playbackEngine isVocalAttenuationEnabled])
     {
-      v24 = [v8 supportsVocalAttenuation];
+      supportsVocalAttenuation = [propertiesCopy supportsVocalAttenuation];
 
-      if (v24)
+      if (supportsVocalAttenuation)
       {
         v25 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [vocal attenuation enabled for supported item]", buf, 0xCu);
         }
 
@@ -463,25 +463,25 @@ LABEL_41:
     }
 
 LABEL_29:
-    v57 = v6;
-    v27 = [v8 storeAsset];
-    if ([v27 endpointType] == 2)
+    v57 = assetsCopy;
+    storeAsset = [propertiesCopy storeAsset];
+    if ([storeAsset endpointType] == 2)
     {
 
       goto LABEL_33;
     }
 
     v28 = v22;
-    v29 = [v8 storeAsset];
-    v30 = self;
-    v31 = v15;
-    v32 = v9;
-    v33 = [v29 endpointType];
+    storeAsset2 = [propertiesCopy storeAsset];
+    selfCopy4 = self;
+    v31 = filePath;
+    v32 = defaultsCopy;
+    endpointType = [storeAsset2 endpointType];
 
-    v34 = v33 == 1;
-    v9 = v32;
-    v15 = v31;
-    self = v30;
+    v34 = endpointType == 1;
+    defaultsCopy = v32;
+    filePath = v31;
+    self = selfCopy4;
     if (v34)
     {
 LABEL_33:
@@ -489,7 +489,7 @@ LABEL_33:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v59 = self;
+        selfCopy14 = self;
         _os_log_impl(&dword_1C5C61000, v35, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Local file asset is usable as is [Purchased or matched content]", buf, 0xCu);
       }
 
@@ -516,9 +516,9 @@ LABEL_33:
       goto LABEL_39;
     }
 
-    v39 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedAssetType];
-    v40 = v39;
-    if (v39 < 2 || [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsHLS])
+    expectedAssetType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedAssetType];
+    v40 = expectedAssetType;
+    if (expectedAssetType < 2 || [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsHLS])
     {
       v41 = ![(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsHLS];
       if (v40 > 1)
@@ -546,13 +546,13 @@ LABEL_33:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = v30;
+          selfCopy14 = selfCopy4;
           _os_log_impl(&dword_1C5C61000, v43, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Local HLS asset of compatible quality [HLS file for CRABS desired playback] - Overriding HLSPolicyContentForbidden", buf, 0xCu);
         }
 
         [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFileMatchesRequiredQuality:1];
         [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:1];
-        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)v30 _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:v9]];
+        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)selfCopy4 _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:defaultsCopy]];
         v26 = _MPCLogCategoryPlayback();
         if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
@@ -566,14 +566,14 @@ LABEL_33:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = v30;
+          selfCopy14 = selfCopy4;
           _os_log_impl(&dword_1C5C61000, v47, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [HLS file not allowed for playback]", buf, 0xCu);
         }
 
         [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFileMatchesRequiredQuality:0];
         [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setFileMatchesRequiredFileFormat:0];
         [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:6];
-        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)v30 _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:v9]];
+        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)selfCopy4 _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:defaultsCopy]];
         v26 = _MPCLogCategoryPlayback();
         if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
@@ -584,11 +584,11 @@ LABEL_33:
       goto LABEL_39;
     }
 
-    v44 = [v14 hlsKeyServerURL];
-    if ([v44 length])
+    hlsKeyServerURL = [v14 hlsKeyServerURL];
+    if ([hlsKeyServerURL length])
     {
-      v45 = [v14 hlsKeyCertificateURL];
-      v46 = [v45 length] != 0;
+      hlsKeyCertificateURL = [v14 hlsKeyCertificateURL];
+      v46 = [hlsKeyCertificateURL length] != 0;
     }
 
     else
@@ -602,12 +602,12 @@ LABEL_33:
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v59 = self;
+        selfCopy14 = self;
         _os_log_impl(&dword_1C5C61000, v48, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [HLS file with missing hls keys]", buf, 0xCu);
       }
 
       [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:4];
-      [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:v9]];
+      [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:defaultsCopy]];
       v26 = _MPCLogCategoryPlayback();
       if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
@@ -615,11 +615,11 @@ LABEL_33:
       }
 
 LABEL_39:
-      v37 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 humanDescription];
+      humanDescription = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 humanDescription];
       *buf = 138543618;
-      v59 = self;
+      selfCopy14 = self;
       v60 = 2114;
-      v61 = v37;
+      v61 = humanDescription;
       _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - %{public}@", buf, 0x16u);
 
 LABEL_40:
@@ -627,9 +627,9 @@ LABEL_40:
     }
 
     [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:1];
-    v49 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsHLS];
+    fileIsHLS = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsHLS];
     v50 = _os_feature_enabled_impl();
-    if (v49)
+    if (fileIsHLS)
     {
       if ((v50 & 1) == 0 && [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileIsDownloaded])
       {
@@ -638,7 +638,7 @@ LABEL_40:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           v52 = "[AL] - %{public}@: [Asset caching] - Downloaded asset matches quality [Upgrade on play is off]";
 LABEL_94:
           _os_log_impl(&dword_1C5C61000, v51, OS_LOG_TYPE_DEFAULT, v52, buf, 0xCu);
@@ -658,7 +658,7 @@ LABEL_94:
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v59 = self;
+            selfCopy14 = self;
             v52 = "[AL] - %{public}@: [Asset caching] - Local HLS asset of compatible quality [HLS file for CRABS desired playback] - Overriding file format mismatch";
             goto LABEL_94;
           }
@@ -676,13 +676,13 @@ LABEL_94:
           }
 
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           v52 = "[AL] - %{public}@: [Asset caching] - Unexpected combination local HLS file for unspecified requirement [HLS file for non-specified desired playback] - Overriding file format mismatch";
           goto LABEL_94;
         }
 
 LABEL_103:
-        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:v9]];
+        [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:[(MPCAssetLoadPropertiesLocalFileEvaluator *)self _recommendationForEvaluation:v12 assetCachingIsAllowed:v57 userDefaults:defaultsCopy]];
         v26 = _MPCLogCategoryPlayback();
         if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
@@ -699,7 +699,7 @@ LABEL_103:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           v52 = "[AL] - %{public}@: [Asset caching] - Local asset of acceptable quality [Higher than desired quality]";
           goto LABEL_94;
         }
@@ -707,8 +707,8 @@ LABEL_103:
         goto LABEL_95;
       }
 
-      v55 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileAssetType];
-      v54 = v55 == [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedAssetType];
+      fileAssetType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileAssetType];
+      v54 = fileAssetType == [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedAssetType];
     }
 
     else
@@ -720,7 +720,7 @@ LABEL_103:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           v52 = "[AL] - %{public}@: [Asset caching] - Downloaded asset matches quality [Upgrade on play is off]";
           goto LABEL_94;
         }
@@ -737,7 +737,7 @@ LABEL_95:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = self;
+          selfCopy14 = self;
           v52 = "[AL] - %{public}@: [Asset caching] - Local asset of incorrect quality [File format differs from requirements]";
           goto LABEL_94;
         }
@@ -745,16 +745,16 @@ LABEL_95:
         goto LABEL_95;
       }
 
-      v53 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileQualityType];
-      if (v53 == [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedQualityType])
+      fileQualityType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileQualityType];
+      if (fileQualityType == [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedQualityType])
       {
         v54 = 1;
       }
 
       else
       {
-        v56 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileQualityType];
-        v54 = v56 > [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedQualityType];
+        fileQualityType2 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 fileQualityType];
+        v54 = fileQualityType2 > [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 expectedQualityType];
       }
     }
 
@@ -766,27 +766,27 @@ LABEL_95:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v59 = self;
+    selfCopy14 = self;
     _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: [Asset caching] - Unusable local file asset [No cached or downloaded file]", buf, 0xCu);
   }
 
   [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setStatus:2];
-  [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:v6];
+  [(MPCAssetLoadPropertiesLocalFileEvaluation *)v12 setRecommendation:assetsCopy];
 LABEL_42:
 
   return v12;
 }
 
-- (MPCAssetLoadPropertiesLocalFileEvaluator)initWithPlaybackEngine:(id)a3
+- (MPCAssetLoadPropertiesLocalFileEvaluator)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = MPCAssetLoadPropertiesLocalFileEvaluator;
   v5 = [(MPCAssetLoadPropertiesLocalFileEvaluator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
   }
 
   return v6;

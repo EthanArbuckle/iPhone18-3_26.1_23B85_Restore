@@ -1,10 +1,10 @@
 @interface CVACMUWBData
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVACMUWBData)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVACMUWBData)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMUWBData
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMUWBData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,30 +47,30 @@
   return v6;
 }
 
-- (CVACMUWBData)initWithCoder:(id)a3
+- (CVACMUWBData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CVACMUWBData;
   v5 = [(CVACMUWBData *)&v15 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"u"];
+    v7 = [coderCopy decodeObjectForKey:@"u"];
     uuid = v5->_uuid;
     v5->_uuid = v7;
 
-    v9 = [v4 decodeObjectForKey:@"b"];
+    v9 = [coderCopy decodeObjectForKey:@"b"];
     blePeerId = v5->_blePeerId;
     v5->_blePeerId = v9;
 
-    [v4 decodeFloatForKey:@"r"];
+    [coderCopy decodeFloatForKey:@"r"];
     v5->_range = v11;
-    v5->_model = [v4 decodeIntForKey:@"m"];
-    v5->_quality = [v4 decodeIntForKey:@"q"];
-    [v4 decodeDoubleForKey:@"st"];
+    v5->_model = [coderCopy decodeIntForKey:@"m"];
+    v5->_quality = [coderCopy decodeIntForKey:@"q"];
+    [coderCopy decodeDoubleForKey:@"st"];
     v5->_sampleTimestamp = v12;
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v13;
     objc_autoreleasePoolPop(v6);
   }
@@ -78,18 +78,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v6 encodeObject:self->_uuid forKey:@"u"];
-  [v6 encodeObject:self->_blePeerId forKey:@"b"];
+  [coderCopy encodeObject:self->_uuid forKey:@"u"];
+  [coderCopy encodeObject:self->_blePeerId forKey:@"b"];
   *&v5 = self->_range;
-  [v6 encodeFloat:@"r" forKey:v5];
-  [v6 encodeInt:LODWORD(self->_model) forKey:@"m"];
-  [v6 encodeInt:LODWORD(self->_quality) forKey:@"q"];
-  [v6 encodeDouble:@"st" forKey:self->_sampleTimestamp];
-  [v6 encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeFloat:@"r" forKey:v5];
+  [coderCopy encodeInt:LODWORD(self->_model) forKey:@"m"];
+  [coderCopy encodeInt:LODWORD(self->_quality) forKey:@"q"];
+  [coderCopy encodeDouble:@"st" forKey:self->_sampleTimestamp];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -100,21 +100,21 @@
   uuid = self->_uuid;
   if (uuid)
   {
-    v5 = [(NSUUID *)self->_uuid UUIDString];
-    v23[0] = v5;
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    v23[0] = uUIDString;
     v17 = @"blePeerId";
     blePeerId = self->_blePeerId;
     if (blePeerId)
     {
 LABEL_3:
-      v7 = [(NSUUID *)blePeerId UUIDString];
+      uUIDString2 = [(NSUUID *)blePeerId UUIDString];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v5 = @"000000-0000-0000-0000-000000000000";
+    uUIDString = @"000000-0000-0000-0000-000000000000";
     v23[0] = @"000000-0000-0000-0000-000000000000";
     v17 = @"blePeerId";
     blePeerId = self->_blePeerId;
@@ -124,9 +124,9 @@ LABEL_3:
     }
   }
 
-  v7 = @"000000-0000-0000-0000-000000000000";
+  uUIDString2 = @"000000-0000-0000-0000-000000000000";
 LABEL_6:
-  v23[1] = v7;
+  v23[1] = uUIDString2;
   v18 = @"range";
   *&v2 = self->_range;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v2];
@@ -162,8 +162,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMUWBData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMUWBData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

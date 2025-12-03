@@ -1,26 +1,26 @@
 @interface JSArcadeObject
 - (_TtC12GameStoreKit14JSArcadeObject)init;
-- (id)getMarketingItemFromMarketingItems:(id)a3;
-- (id)getMarketingItemWithTimeout:(id)a3 :(id)a4;
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3;
+- (id)getMarketingItemFromMarketingItems:(id)items;
+- (id)getMarketingItemWithTimeout:(id)timeout :(id)a4;
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout;
 @end
 
 @implementation JSArcadeObject
 
-- (id)getMarketingItemFromMarketingItems:(id)a3
+- (id)getMarketingItemFromMarketingItems:(id)items
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v4 = a3;
+  itemsCopy = items;
   v5 = sub_24F92C448();
   v6 = sub_24F92C458();
 
   return v6;
 }
 
-- (id)getMarketingItemWithTimeout:(id)a3 :(id)a4
+- (id)getMarketingItemWithTimeout:(id)timeout :(id)a4
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v6 = a3;
+  timeoutCopy = timeout;
   v7 = a4;
   v8 = sub_24F92C448();
   v9 = sub_24F92C458();
@@ -28,11 +28,11 @@
   return v9;
 }
 
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v5 = a3;
-  v6 = self;
+  timeoutCopy = timeout;
+  selfCopy = self;
   v7 = sub_24F92C448();
   v8 = sub_24F92C458();
 

@@ -1,15 +1,15 @@
 @interface SBKStoreURLBagContext
-+ (void)_findFirstValueInBag:(id)a3 keyEnumerator:(id)a4 valueTransformer:(id)a5 defaultValue:(id)a6 completionBlock:(id)a7;
-+ (void)enumerateRequestURLBagKeysWithBlock:(id)a3;
-+ (void)loadBagContextFromURLBag:(id)a3 domain:(id)a4 completionBlock:(id)a5;
++ (void)_findFirstValueInBag:(id)bag keyEnumerator:(id)enumerator valueTransformer:(id)transformer defaultValue:(id)value completionBlock:(id)block;
++ (void)enumerateRequestURLBagKeysWithBlock:(id)block;
++ (void)loadBagContextFromURLBag:(id)bag domain:(id)domain completionBlock:(id)block;
 - (SBKStoreURLBagContext)init;
-- (SBKStoreURLBagContext)initWithBag:(id)a3 domain:(id)a4;
+- (SBKStoreURLBagContext)initWithBag:(id)bag domain:(id)domain;
 - (double)pollingIntervalInSeconds;
-- (id)_initWithDomain:(id)a3 syncRequestURL:(id)a4 domainDisabled:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithDomain:(id)domain syncRequestURL:(id)l domainDisabled:(BOOL)disabled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setPollingIntervalInSeconds:(double)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setPollingIntervalInSeconds:(double)seconds;
 @end
 
 @implementation SBKStoreURLBagContext
@@ -25,21 +25,21 @@
   return result;
 }
 
-- (void)setPollingIntervalInSeconds:(double)a3
+- (void)setPollingIntervalInSeconds:(double)seconds
 {
-  if (fabs(a3) <= 0.00000011920929)
+  if (fabs(seconds) <= 0.00000011920929)
   {
-    a3 = 604800.0;
+    seconds = 604800.0;
   }
 
-  self->_pollingIntervalInSeconds = a3;
+  self->_pollingIntervalInSeconds = seconds;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SBKStoreURLBagContext *)self domain];
-  v6 = [v4 _initWithDomain:v5 syncRequestURL:0 domainDisabled:{-[SBKStoreURLBagContext domainDisabled](self, "domainDisabled")}];
+  domain = [(SBKStoreURLBagContext *)self domain];
+  v6 = [v4 _initWithDomain:domain syncRequestURL:0 domainDisabled:{-[SBKStoreURLBagContext domainDisabled](self, "domainDisabled")}];
 
   v7 = objc_opt_class();
   v12 = MEMORY[0x277D85DD0];
@@ -48,7 +48,7 @@
   v15 = &unk_279D22F88;
   v8 = v6;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   [v7 enumerateRequestURLBagKeysWithBlock:&v12];
   [(SBKStoreURLBagContext *)self pollingIntervalInSeconds:v12];
   v8[2] = v9;
@@ -66,17 +66,17 @@ void __45__SBKStoreURLBagContext_mutableCopyWithZone___block_invoke(uint64_t a1,
   [v3 setValue:v6 forKey:v5];
 }
 
-+ (void)loadBagContextFromURLBag:(id)a3 domain:(id)a4 completionBlock:(id)a5
++ (void)loadBagContextFromURLBag:(id)bag domain:(id)domain completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bagCopy = bag;
+  domainCopy = domain;
+  blockCopy = block;
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
   v47[3] = __Block_byref_object_copy__1218;
   v47[4] = __Block_byref_object_dispose__1219;
-  v48 = [[SBKStoreURLBagContext alloc] initWithBag:v8 domain:v9];
+  v48 = [[SBKStoreURLBagContext alloc] initWithBag:bagCopy domain:domainCopy];
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x3032000000;
@@ -102,8 +102,8 @@ void __45__SBKStoreURLBagContext_mutableCopyWithZone___block_invoke(uint64_t a1,
   v35[3] = &unk_279D22EF0;
   v16 = v14;
   v36 = v16;
-  v39 = a1;
-  v17 = v8;
+  selfCopy = self;
+  v17 = bagCopy;
   v37 = v17;
   v18 = v15;
   v38 = v18;
@@ -116,7 +116,7 @@ void __45__SBKStoreURLBagContext_mutableCopyWithZone___block_invoke(uint64_t a1,
   v21 = v19;
   v33 = v21;
   v34 = &__block_literal_global_53_1221;
-  v22 = v9;
+  v22 = domainCopy;
   v32 = v22;
   [v20 enumerateRequestURLBagKeysWithBlock:v31];
   (*(v21 + 2))(v21, @"domainDisabled", MEMORY[0x277CBEC28], &__block_literal_global_56, @"kvs-sync-disabled", v22, 0);
@@ -129,8 +129,8 @@ void __45__SBKStoreURLBagContext_mutableCopyWithZone___block_invoke(uint64_t a1,
   v29 = v45;
   v30 = v47;
   v27 = v16;
-  v28 = v10;
-  v24 = v10;
+  v28 = blockCopy;
+  v24 = blockCopy;
   v25 = v16;
   dispatch_async(v23, block);
 
@@ -311,32 +311,32 @@ void __73__SBKStoreURLBagContext_loadBagContextFromURLBag_domain_completionBlock
   }
 }
 
-+ (void)_findFirstValueInBag:(id)a3 keyEnumerator:(id)a4 valueTransformer:(id)a5 defaultValue:(id)a6 completionBlock:(id)a7
++ (void)_findFirstValueInBag:(id)bag keyEnumerator:(id)enumerator valueTransformer:(id)transformer defaultValue:(id)value completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 nextObject];
-  if (v17)
+  bagCopy = bag;
+  enumeratorCopy = enumerator;
+  transformerCopy = transformer;
+  valueCopy = value;
+  blockCopy = block;
+  nextObject = [enumeratorCopy nextObject];
+  if (nextObject)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __106__SBKStoreURLBagContext__findFirstValueInBag_keyEnumerator_valueTransformer_defaultValue_completionBlock___block_invoke;
     v18[3] = &unk_279D22E30;
-    v22 = v14;
-    v23 = v16;
-    v24 = a1;
-    v19 = v12;
-    v20 = v13;
-    v21 = v15;
-    [v19 loadValueForKey:v17 completionBlock:v18];
+    v22 = transformerCopy;
+    v23 = blockCopy;
+    selfCopy = self;
+    v19 = bagCopy;
+    v20 = enumeratorCopy;
+    v21 = valueCopy;
+    [v19 loadValueForKey:nextObject completionBlock:v18];
   }
 
   else
   {
-    (*(v16 + 2))(v16, v15, 0);
+    (*(blockCopy + 2))(blockCopy, valueCopy, 0);
   }
 }
 
@@ -356,23 +356,23 @@ void __106__SBKStoreURLBagContext__findFirstValueInBag_keyEnumerator_valueTransf
   }
 }
 
-+ (void)enumerateRequestURLBagKeysWithBlock:(id)a3
++ (void)enumerateRequestURLBagKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__SBKStoreURLBagContext_enumerateRequestURLBagKeysWithBlock___block_invoke;
   v5[3] = &unk_279D22E08;
-  v6 = v3;
-  v4 = v3;
+  v6 = blockCopy;
+  v4 = blockCopy;
   [&unk_287CA2888 enumerateKeysAndObjectsUsingBlock:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SBKStoreURLBagContext *)self domain];
-  v6 = [v4 _initWithDomain:v5 syncRequestURL:0 domainDisabled:{-[SBKStoreURLBagContext domainDisabled](self, "domainDisabled")}];
+  domain = [(SBKStoreURLBagContext *)self domain];
+  v6 = [v4 _initWithDomain:domain syncRequestURL:0 domainDisabled:{-[SBKStoreURLBagContext domainDisabled](self, "domainDisabled")}];
 
   v7 = objc_opt_class();
   v12 = MEMORY[0x277D85DD0];
@@ -381,7 +381,7 @@ void __106__SBKStoreURLBagContext__findFirstValueInBag_keyEnumerator_valueTransf
   v15 = &unk_279D22F88;
   v8 = v6;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   [v7 enumerateRequestURLBagKeysWithBlock:&v12];
   [(SBKStoreURLBagContext *)self pollingIntervalInSeconds:v12];
   v8[2] = v9;
@@ -399,16 +399,16 @@ void __38__SBKStoreURLBagContext_copyWithZone___block_invoke(uint64_t a1, uint64
   [v3 setValue:v6 forKey:v5];
 }
 
-- (SBKStoreURLBagContext)initWithBag:(id)a3 domain:(id)a4
+- (SBKStoreURLBagContext)initWithBag:(id)bag domain:(id)domain
 {
-  v6 = a4;
+  domainCopy = domain;
   v10.receiver = self;
   v10.super_class = SBKStoreURLBagContext;
   v7 = [(SBKStoreURLBagContext *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_domain, a4);
+    objc_storeStrong(&v7->_domain, domain);
   }
 
   return v8;
@@ -416,15 +416,15 @@ void __38__SBKStoreURLBagContext_copyWithZone___block_invoke(uint64_t a1, uint64
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_opt_class();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__SBKStoreURLBagContext_description__block_invoke;
   v11[3] = &unk_279D22F88;
-  v12 = v3;
-  v13 = self;
-  v5 = v3;
+  v12 = array;
+  selfCopy = self;
+  v5 = array;
   [v4 enumerateRequestURLBagKeysWithBlock:v11];
   v6 = MEMORY[0x277CCACA8];
   v10.receiver = self;
@@ -450,25 +450,25 @@ void __36__SBKStoreURLBagContext_description__block_invoke(uint64_t a1, void *a2
 
 - (SBKStoreURLBagContext)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBKStoreURLBagContext.m" lineNumber:194 description:@"Use +loadBagContextFromURLBag:domain:completionBlock:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBKStoreURLBagContext.m" lineNumber:194 description:@"Use +loadBagContextFromURLBag:domain:completionBlock:"];
 
   return 0;
 }
 
-- (id)_initWithDomain:(id)a3 syncRequestURL:(id)a4 domainDisabled:(BOOL)a5
+- (id)_initWithDomain:(id)domain syncRequestURL:(id)l domainDisabled:(BOOL)disabled
 {
-  v9 = a3;
-  v10 = a4;
+  domainCopy = domain;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = SBKStoreURLBagContext;
   v11 = [(SBKStoreURLBagContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_domain, a3);
-    objc_storeStrong(&v12->_syncRequestURL, a4);
-    v12->_domainDisabled = a5;
+    objc_storeStrong(&v11->_domain, domain);
+    objc_storeStrong(&v12->_syncRequestURL, l);
+    v12->_domainDisabled = disabled;
   }
 
   return v12;

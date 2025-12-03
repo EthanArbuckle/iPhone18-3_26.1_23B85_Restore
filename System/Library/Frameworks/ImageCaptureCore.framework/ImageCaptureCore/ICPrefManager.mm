@@ -9,11 +9,11 @@
 - (id)getControlAuthorizationStatus;
 - (id)remoteAuthManager;
 - (void)dealloc;
-- (void)endQuery:(id)a3;
+- (void)endQuery:(id)query;
 - (void)invalidateQueries;
-- (void)resetContentsAuthorizationWithCompletion:(id)a3;
-- (void)resetControlAuthorizationWithCompletion:(id)a3;
-- (void)startQuery:(id)a3;
+- (void)resetContentsAuthorizationWithCompletion:(id)completion;
+- (void)resetControlAuthorizationWithCompletion:(id)completion;
+- (void)startQuery:(id)query;
 @end
 
 @implementation ICPrefManager
@@ -51,13 +51,13 @@ uint64_t __35__ICPrefManager_defaultAuthManager__block_invoke()
 
 - (id)remoteAuthManager
 {
-  v3 = [(ICPrefManager *)self authConnection];
+  authConnection = [(ICPrefManager *)self authConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__ICPrefManager_remoteAuthManager__block_invoke;
   v6[3] = &unk_1E829C820;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [authConnection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -184,9 +184,9 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
 
 - (id)authManagerConnection
 {
-  v3 = [(ICPrefManager *)self authConnection];
+  authConnection = [(ICPrefManager *)self authConnection];
 
-  if (!v3)
+  if (!authConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.icprefd-xpc"];
     [(ICPrefManager *)self setAuthConnection:v4];
@@ -195,10 +195,10 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
   return [(ICPrefManager *)self authConnection];
 }
 
-- (void)startQuery:(id)a3
+- (void)startQuery:(id)query
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   os_unfair_lock_lock(&self->_authConnectionLock);
   __ICOSLogCreate();
   if (__ICLogTypeEnabled())
@@ -221,25 +221,25 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
       v12 = v5;
       v13 = v11;
       *buf = 136446466;
-      v16 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
   }
 
-  [(NSMutableArray *)self->_authConnectionSemaphores addObject:v4];
+  [(NSMutableArray *)self->_authConnectionSemaphores addObject:queryCopy];
   os_unfair_lock_unlock(&self->_authConnectionLock);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endQuery:(id)a3
+- (void)endQuery:(id)query
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   os_unfair_lock_lock(&self->_authConnectionLock);
-  if (v4)
+  if (queryCopy)
   {
     __ICOSLogCreate();
     if (__ICLogTypeEnabled())
@@ -262,14 +262,14 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
         v12 = v5;
         v13 = v11;
         *buf = 136446466;
-        v16 = [(__CFString *)v5 UTF8String];
+        uTF8String = [(__CFString *)v5 UTF8String];
         v17 = 2114;
         v18 = v10;
         _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    [(NSMutableArray *)self->_authConnectionSemaphores removeObject:v4];
+    [(NSMutableArray *)self->_authConnectionSemaphores removeObject:queryCopy];
   }
 
   os_unfair_lock_unlock(&self->_authConnectionLock);
@@ -304,7 +304,7 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
         v10 = v3;
         v11 = v9;
         *buf = 136446466;
-        v24 = [(__CFString *)v3 UTF8String];
+        uTF8String = [(__CFString *)v3 UTF8String];
         v25 = 2114;
         v26 = v8;
         _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -348,8 +348,8 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
 
 - (BOOL)openRemoteAuthenticationManager
 {
-  v3 = [(ICPrefManager *)self authManagerConnection];
-  if (v3)
+  authManagerConnection = [(ICPrefManager *)self authManagerConnection];
+  if (authManagerConnection)
   {
     v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F46A0418];
     v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F46A0418];
@@ -358,24 +358,24 @@ uint64_t __21__ICPrefManager_init__block_invoke(uint64_t a1)
     [(ICPrefManager *)self addSelectorToInterface:v5 selectorString:@"requestGoodNewsStatusWithReply:" origin:1];
     [(ICPrefManager *)self addSelectorToInterface:v5 selectorString:@"resetContentsAuthorizationStatusWithReply:" origin:1];
     [(ICPrefManager *)self addSelectorToInterface:v5 selectorString:@"resetControlAuthorizationStatusWithReply:" origin:1];
-    [v3 setExportedInterface:v4];
-    [v3 setRemoteObjectInterface:v5];
-    [v3 setExportedObject:self];
+    [authManagerConnection setExportedInterface:v4];
+    [authManagerConnection setRemoteObjectInterface:v5];
+    [authManagerConnection setExportedObject:self];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __48__ICPrefManager_openRemoteAuthenticationManager__block_invoke;
     v12 = &unk_1E829C870;
-    v13 = self;
-    v14 = self;
-    v6 = self;
-    [v3 setInvalidationHandler:&v9];
-    v7 = [v3 invalidationHandler];
-    [v3 setInterruptionHandler:v7];
+    selfCopy = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
+    [authManagerConnection setInvalidationHandler:&v9];
+    invalidationHandler = [authManagerConnection invalidationHandler];
+    [authManagerConnection setInterruptionHandler:invalidationHandler];
 
-    [v3 resume];
+    [authManagerConnection resume];
   }
 
-  return v3 != 0;
+  return authManagerConnection != 0;
 }
 
 void __48__ICPrefManager_openRemoteAuthenticationManager__block_invoke(uint64_t a1)
@@ -446,8 +446,8 @@ void __48__ICPrefManager_openRemoteAuthenticationManager__block_invoke_2(uint64_
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = @"ICAuthorizationStatusNotDetermined";
-  v3 = [(ICPrefManager *)self authConnection];
-  if (v3)
+  authConnection = [(ICPrefManager *)self authConnection];
+  if (authConnection)
   {
     v4 = dispatch_semaphore_create(0);
     [(ICPrefManager *)self startQuery:v4];
@@ -480,9 +480,9 @@ void __48__ICPrefManager_openRemoteAuthenticationManager__block_invoke_2(uint64_
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v7;
-    v11 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     *buf = 136446466;
-    v25 = v11;
+    v25 = uTF8String;
     v26 = 2114;
     v27 = v8;
     _os_log_impl(&dword_1C6F19000, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -526,8 +526,8 @@ intptr_t __69__ICPrefManager_requestContentsAuthorizationShouldPrompt_completion
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = @"ICAuthorizationStatusNotDetermined";
-  v3 = [(ICPrefManager *)self authConnection];
-  if (v3)
+  authConnection = [(ICPrefManager *)self authConnection];
+  if (authConnection)
   {
     v4 = dispatch_semaphore_create(0);
     [(ICPrefManager *)self startQuery:v4];
@@ -560,9 +560,9 @@ intptr_t __69__ICPrefManager_requestContentsAuthorizationShouldPrompt_completion
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v7;
-    v11 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     *buf = 136446466;
-    v25 = v11;
+    v25 = uTF8String;
     v26 = 2114;
     v27 = v8;
     _os_log_impl(&dword_1C6F19000, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -600,16 +600,16 @@ intptr_t __68__ICPrefManager_requestControlAuthorizationShouldPrompt_completion_
 - (BOOL)getGoodNewsStatus
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(ICPrefManager *)self authConnection];
+  authConnection = [(ICPrefManager *)self authConnection];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (v3)
+  if (authConnection)
   {
     v4 = dispatch_semaphore_create(0);
     [(ICPrefManager *)self startQuery:v4];
-    v5 = [(ICPrefManager *)self remoteAuthManager];
+    remoteAuthManager = [(ICPrefManager *)self remoteAuthManager];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __34__ICPrefManager_getGoodNewsStatus__block_invoke;
@@ -617,7 +617,7 @@ intptr_t __68__ICPrefManager_requestControlAuthorizationShouldPrompt_completion_
     v19 = &v20;
     v6 = v4;
     v18 = v6;
-    [v5 requestGoodNewsStatusWithReply:v17];
+    [remoteAuthManager requestGoodNewsStatusWithReply:v17];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     [(ICPrefManager *)self endQuery:v6];
   }
@@ -649,9 +649,9 @@ intptr_t __68__ICPrefManager_requestControlAuthorizationShouldPrompt_completion_
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v8;
-    v13 = [(__CFString *)v8 UTF8String];
+    uTF8String = [(__CFString *)v8 UTF8String];
     *buf = 136446466;
-    v25 = v13;
+    v25 = uTF8String;
     v26 = 2114;
     v27 = v10;
     _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -674,35 +674,35 @@ intptr_t __34__ICPrefManager_getGoodNewsStatus__block_invoke(uint64_t a1, void *
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)resetContentsAuthorizationWithCompletion:(id)a3
+- (void)resetContentsAuthorizationWithCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICPrefManager *)self authConnection];
-  if (v5)
+  completionCopy = completion;
+  authConnection = [(ICPrefManager *)self authConnection];
+  if (authConnection)
   {
     v6 = dispatch_semaphore_create(0);
     [(ICPrefManager *)self startQuery:v6];
-    v7 = [(ICPrefManager *)self remoteAuthManager];
+    remoteAuthManager = [(ICPrefManager *)self remoteAuthManager];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__ICPrefManager_resetContentsAuthorizationWithCompletion___block_invoke;
     v10[3] = &unk_1E829C8C0;
     v11 = v6;
-    v12 = v4;
+    v12 = completionCopy;
     v8 = v6;
-    [v7 resetContentsAuthorizationStatusWithReply:v10];
+    [remoteAuthManager resetContentsAuthorizationStatusWithReply:v10];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     [(ICPrefManager *)self endQuery:v8];
   }
 
   else
   {
-    v7 = [(ICPrefManager *)self getContentsAuthorizationStatus];
+    remoteAuthManager = [(ICPrefManager *)self getContentsAuthorizationStatus];
     v13 = @"ICAuthorizationStatus";
-    v14[0] = v7;
+    v14[0] = remoteAuthManager;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -716,35 +716,35 @@ intptr_t __58__ICPrefManager_resetContentsAuthorizationWithCompletion___block_in
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)resetControlAuthorizationWithCompletion:(id)a3
+- (void)resetControlAuthorizationWithCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICPrefManager *)self authConnection];
-  if (v5)
+  completionCopy = completion;
+  authConnection = [(ICPrefManager *)self authConnection];
+  if (authConnection)
   {
     v6 = dispatch_semaphore_create(0);
     [(ICPrefManager *)self startQuery:v6];
-    v7 = [(ICPrefManager *)self remoteAuthManager];
+    remoteAuthManager = [(ICPrefManager *)self remoteAuthManager];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__ICPrefManager_resetControlAuthorizationWithCompletion___block_invoke;
     v10[3] = &unk_1E829C8C0;
     v11 = v6;
-    v12 = v4;
+    v12 = completionCopy;
     v8 = v6;
-    [v7 resetControlAuthorizationStatusWithReply:v10];
+    [remoteAuthManager resetControlAuthorizationStatusWithReply:v10];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     [(ICPrefManager *)self endQuery:v8];
   }
 
   else
   {
-    v7 = [(ICPrefManager *)self getControlAuthorizationStatus];
+    remoteAuthManager = [(ICPrefManager *)self getControlAuthorizationStatus];
     v13 = @"ICAuthorizationStatus";
-    v14[0] = v7;
+    v14[0] = remoteAuthManager;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -762,7 +762,7 @@ intptr_t __57__ICPrefManager_resetControlAuthorizationWithCompletion___block_inv
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C6F19000, a2, OS_LOG_TYPE_ERROR, "%{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

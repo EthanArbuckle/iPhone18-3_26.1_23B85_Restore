@@ -1,12 +1,12 @@
 @interface SSDownloadPolicyUserDefaultState
 - (BOOL)currentBoolValue;
-- (BOOL)isEqual:(id)a3;
-- (SSDownloadPolicyUserDefaultState)initWithCoder:(id)a3;
-- (SSDownloadPolicyUserDefaultState)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SSDownloadPolicyUserDefaultState)initWithCoder:(id)coder;
+- (SSDownloadPolicyUserDefaultState)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSDownloadPolicyUserDefaultState
@@ -18,23 +18,23 @@
   return v4 ^ [(NSString *)self->_key hash]^ self->_shouldInvertBoolValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_11;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (domain = self->_domain, domain != v4->_domain) && ![(NSString *)domain isEqualToString:?]|| self->_shouldInvertBoolValue != v4->_shouldInvertBoolValue || (key = self->_key, key != v4->_key) && ![(NSString *)key isEqualToString:?])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (domain = self->_domain, domain != equalCopy->_domain) && ![(NSString *)domain isEqualToString:?]|| self->_shouldInvertBoolValue != equalCopy->_shouldInvertBoolValue || (key = self->_key, key != equalCopy->_key) && ![(NSString *)key isEqualToString:?])
   {
     v8 = 0;
     goto LABEL_12;
   }
 
   fallbackNumberValue = self->_fallbackNumberValue;
-  if (fallbackNumberValue == v4->_fallbackNumberValue)
+  if (fallbackNumberValue == equalCopy->_fallbackNumberValue)
   {
 LABEL_11:
     v8 = 1;
@@ -47,45 +47,45 @@ LABEL_12:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeObject:domain forKey:@"domain"];
-  [v5 encodeObject:self->_fallbackNumberValue forKey:@"fallnumval"];
-  [v5 encodeObject:self->_key forKey:@"key"];
-  [v5 encodeBool:self->_shouldInvertBoolValue forKey:@"sibv"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domain forKey:@"domain"];
+  [coderCopy encodeObject:self->_fallbackNumberValue forKey:@"fallnumval"];
+  [coderCopy encodeObject:self->_key forKey:@"key"];
+  [coderCopy encodeBool:self->_shouldInvertBoolValue forKey:@"sibv"];
 }
 
-- (SSDownloadPolicyUserDefaultState)initWithCoder:(id)a3
+- (SSDownloadPolicyUserDefaultState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SSDownloadPolicyUserDefaultState;
   v5 = [(SSDownloadPolicyUserDefaultState *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fallnumval"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallnumval"];
     fallbackNumberValue = v5->_fallbackNumberValue;
     v5->_fallbackNumberValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     key = v5->_key;
     v5->_key = v10;
 
-    v5->_shouldInvertBoolValue = [v4 decodeBoolForKey:@"sibv"];
+    v5->_shouldInvertBoolValue = [coderCopy decodeBoolForKey:@"sibv"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -108,11 +108,11 @@ LABEL_12:
   return v3;
 }
 
-- (SSDownloadPolicyUserDefaultState)initWithXPCEncoding:(id)a3
+- (SSDownloadPolicyUserDefaultState)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v14.receiver = self;
     v14.super_class = SSDownloadPolicyUserDefaultState;
@@ -151,12 +151,12 @@ LABEL_12:
 {
   keyExistsAndHasValidFormat = 0;
   key = self->_key;
-  if (!key || (domain = self->_domain) == 0 || (v5 = CFPreferencesGetAppBooleanValue(key, domain, &keyExistsAndHasValidFormat) != 0, !keyExistsAndHasValidFormat))
+  if (!key || (domain = self->_domain) == 0 || (bOOLValue = CFPreferencesGetAppBooleanValue(key, domain, &keyExistsAndHasValidFormat) != 0, !keyExistsAndHasValidFormat))
   {
-    v5 = [(NSNumber *)self->_fallbackNumberValue BOOLValue];
+    bOOLValue = [(NSNumber *)self->_fallbackNumberValue BOOLValue];
   }
 
-  return (v5 ^ self->_shouldInvertBoolValue) & 1;
+  return (bOOLValue ^ self->_shouldInvertBoolValue) & 1;
 }
 
 @end

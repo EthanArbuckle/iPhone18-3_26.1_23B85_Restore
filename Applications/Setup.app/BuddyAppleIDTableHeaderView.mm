@@ -2,20 +2,20 @@
 + (id)defaultDetailTextAttributes;
 + (id)defaultTitleTextAttributes;
 + (void)initialize;
-- (BuddyAppleIDTableHeaderView)initWithFrame:(CGRect)a3;
+- (BuddyAppleIDTableHeaderView)initWithFrame:(CGRect)frame;
 - (CGSize)iconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_getHeight:(double *)a3 forWidth:(double)a4 shouldLayoutViews:(BOOL)a5;
-- (void)setLinkButtonTitle:(id)a3;
-- (void)setTopIconHasRoundedCorners:(BOOL)a3;
-- (void)setTopIconName:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_getHeight:(double *)height forWidth:(double)width shouldLayoutViews:(BOOL)views;
+- (void)setLinkButtonTitle:(id)title;
+- (void)setTopIconHasRoundedCorners:(BOOL)corners;
+- (void)setTopIconName:(id)name;
 @end
 
 @implementation BuddyAppleIDTableHeaderView
 
 + (void)initialize
 {
-  if (a1 == objc_opt_class())
+  if (self == objc_opt_class())
   {
     if (BFFIsiPad())
     {
@@ -63,14 +63,14 @@
   return v2;
 }
 
-- (BuddyAppleIDTableHeaderView)initWithFrame:(CGRect)a3
+- (BuddyAppleIDTableHeaderView)initWithFrame:(CGRect)frame
 {
-  v25 = a3;
+  frameCopy = frame;
   v23 = a2;
   location = 0;
   v22.receiver = self;
   v22.super_class = BuddyAppleIDTableHeaderView;
-  location = [(BuddyAppleIDTableHeaderView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  location = [(BuddyAppleIDTableHeaderView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&location, location);
   if (location)
   {
@@ -121,43 +121,43 @@
   return v19;
 }
 
-- (void)setLinkButtonTitle:(id)a3
+- (void)setLinkButtonTitle:(id)title
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (location[0] && !v10->_linkButton)
+  objc_storeStrong(location, title);
+  if (location[0] && !selfCopy->_linkButton)
   {
     v3 = [UIButton buttonWithType:1];
-    linkButton = v10->_linkButton;
-    v10->_linkButton = v3;
+    linkButton = selfCopy->_linkButton;
+    selfCopy->_linkButton = v3;
 
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v6 = [(UIButton *)v10->_linkButton titleLabel];
-    [(UILabel *)v6 setFont:v5];
+    titleLabel = [(UIButton *)selfCopy->_linkButton titleLabel];
+    [(UILabel *)titleLabel setFont:v5];
 
-    v7 = [(UIButton *)v10->_linkButton titleLabel];
-    [(UILabel *)v7 setNumberOfLines:0];
+    titleLabel2 = [(UIButton *)selfCopy->_linkButton titleLabel];
+    [(UILabel *)titleLabel2 setNumberOfLines:0];
 
-    v8 = [(UIButton *)v10->_linkButton titleLabel];
-    [(UILabel *)v8 setTextAlignment:1];
+    titleLabel3 = [(UIButton *)selfCopy->_linkButton titleLabel];
+    [(UILabel *)titleLabel3 setTextAlignment:1];
 
-    [(BuddyAppleIDTableHeaderView *)v10 addSubview:v10->_linkButton];
+    [(BuddyAppleIDTableHeaderView *)selfCopy addSubview:selfCopy->_linkButton];
   }
 
-  [(UIButton *)v10->_linkButton setTitle:location[0] forState:0];
-  [(BuddyAppleIDTableHeaderView *)v10 setNeedsLayout];
+  [(UIButton *)selfCopy->_linkButton setTitle:location[0] forState:0];
+  [(BuddyAppleIDTableHeaderView *)selfCopy setNeedsLayout];
   objc_storeStrong(location, 0);
 }
 
-- (void)setTopIconName:(id)a3
+- (void)setTopIconName:(id)name
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v14->_topIconName == location[0])
+  objc_storeStrong(location, name);
+  if (selfCopy->_topIconName == location[0])
   {
     v12 = 1;
   }
@@ -165,23 +165,23 @@
   else
   {
     v3 = [location[0] copy];
-    topIconName = v14->_topIconName;
-    v14->_topIconName = v3;
+    topIconName = selfCopy->_topIconName;
+    selfCopy->_topIconName = v3;
 
-    if (![(NSString *)v14->_topIconName length]|| v14->_iconView)
+    if (![(NSString *)selfCopy->_topIconName length]|| selfCopy->_iconView)
     {
-      if ([(NSString *)v14->_topIconName length]|| !v14->_iconView)
+      if ([(NSString *)selfCopy->_topIconName length]|| !selfCopy->_iconView)
       {
-        if (v14->_iconView)
+        if (selfCopy->_iconView)
         {
           v9 = 0;
-          if ([(NSString *)v14->_topIconName length])
+          if ([(NSString *)selfCopy->_topIconName length])
           {
-            v10 = [UIImage imageNamed:v14->_topIconName];
+            v10 = [UIImage imageNamed:selfCopy->_topIconName];
             v9 = 1;
           }
 
-          [(BuddyRoundedRectImageView *)v14->_iconView setImage:?];
+          [(BuddyRoundedRectImageView *)selfCopy->_iconView setImage:?];
           if (v9)
           {
           }
@@ -190,44 +190,44 @@
 
       else
       {
-        [(BuddyRoundedRectImageView *)v14->_iconView removeFromSuperview];
-        objc_storeStrong(&v14->_iconView, 0);
-        [(BuddyAppleIDTableHeaderView *)v14 setNeedsLayout];
+        [(BuddyRoundedRectImageView *)selfCopy->_iconView removeFromSuperview];
+        objc_storeStrong(&selfCopy->_iconView, 0);
+        [(BuddyAppleIDTableHeaderView *)selfCopy setNeedsLayout];
       }
     }
 
     else
     {
-      v11 = [UIImage imageNamed:v14->_topIconName];
-      if (v14->_topIconTintColor)
+      v11 = [UIImage imageNamed:selfCopy->_topIconName];
+      if (selfCopy->_topIconTintColor)
       {
-        v5 = [v11 _flatImageWithColor:v14->_topIconTintColor];
+        v5 = [v11 _flatImageWithColor:selfCopy->_topIconTintColor];
         v6 = v11;
         v11 = v5;
       }
 
       v7 = [[BuddyRoundedRectImageView alloc] initWithImage:v11];
-      iconView = v14->_iconView;
-      v14->_iconView = v7;
+      iconView = selfCopy->_iconView;
+      selfCopy->_iconView = v7;
 
-      [(BuddyRoundedRectImageView *)v14->_iconView setContentMode:1];
-      [(BuddyAppleIDTableHeaderView *)v14 addSubview:v14->_iconView];
-      [(BuddyAppleIDTableHeaderView *)v14 setNeedsLayout];
+      [(BuddyRoundedRectImageView *)selfCopy->_iconView setContentMode:1];
+      [(BuddyAppleIDTableHeaderView *)selfCopy addSubview:selfCopy->_iconView];
+      [(BuddyAppleIDTableHeaderView *)selfCopy setNeedsLayout];
       objc_storeStrong(&v11, 0);
     }
 
-    [(BuddyRoundedRectImageView *)v14->_iconView setUsesMask:v14->_topIconHasRoundedCorners];
+    [(BuddyRoundedRectImageView *)selfCopy->_iconView setUsesMask:selfCopy->_topIconHasRoundedCorners];
     v12 = 0;
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setTopIconHasRoundedCorners:(BOOL)a3
+- (void)setTopIconHasRoundedCorners:(BOOL)corners
 {
-  if (self->_topIconHasRoundedCorners != a3)
+  if (self->_topIconHasRoundedCorners != corners)
   {
-    self->_topIconHasRoundedCorners = a3;
+    self->_topIconHasRoundedCorners = corners;
     if (self->_iconView)
     {
       [(BuddyRoundedRectImageView *)self->_iconView setUsesMask:self->_topIconHasRoundedCorners];
@@ -235,20 +235,20 @@
   }
 }
 
-- (void)_getHeight:(double *)a3 forWidth:(double)a4 shouldLayoutViews:(BOOL)a5
+- (void)_getHeight:(double *)height forWidth:(double)width shouldLayoutViews:(BOOL)views
 {
-  v124 = self;
+  selfCopy = self;
   v123 = a2;
-  v122 = a3;
-  v121 = a4;
-  v120 = a5;
+  heightCopy = height;
+  widthCopy = width;
+  viewsCopy = views;
   [(BuddyAppleIDTableHeaderView *)self layoutMargins];
   v115 = v6;
   v116 = v7;
   v117 = v8;
   v118 = v9;
-  v10 = a4 - v7;
-  [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+  v10 = width - v7;
+  [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
   v111 = v11;
   v112 = v12;
   v113 = v13;
@@ -256,7 +256,7 @@
   v119 = v10 - v14;
   v110 = 0.0;
   location = [UIFontMetrics metricsForTextStyle:UIFontTextStyleBody];
-  if (v124->_linkButton)
+  if (selfCopy->_linkButton)
   {
     v15 = sub_1001B6CCC();
     *(&v107 + 1) = v16;
@@ -268,9 +268,9 @@
     origin = CGRectZero.origin;
     size = CGRectZero.size;
     v105 = origin;
-    v20 = [(UIButton *)v124->_linkButton titleLabel];
-    v21 = [(UIButton *)v124->_linkButton titleLabel];
-    [(UILabel *)v20 textRectForBounds:[(UILabel *)v21 numberOfLines] limitedToNumberOfLines:v107, v108];
+    titleLabel = [(UIButton *)selfCopy->_linkButton titleLabel];
+    titleLabel2 = [(UIButton *)selfCopy->_linkButton titleLabel];
+    [(UILabel *)titleLabel textRectForBounds:[(UILabel *)titleLabel2 numberOfLines] limitedToNumberOfLines:v107, v108];
     v102 = v22;
     v101 = v23;
     v104 = v24;
@@ -278,7 +278,7 @@
     size.width = v25;
     size.height = v24;
 
-    [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+    [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
     v97 = v26;
     v98 = v27;
     v99 = v28;
@@ -293,14 +293,14 @@
 
     v33 = v30 - v32;
     v105.x = floorf(v33);
-    if (v124->_linkButtonTopPadding < 0.0)
+    if (selfCopy->_linkButtonTopPadding < 0.0)
     {
       linkButtonTopPadding = 10.0;
     }
 
     else
     {
-      linkButtonTopPadding = v124->_linkButtonTopPadding;
+      linkButtonTopPadding = selfCopy->_linkButtonTopPadding;
     }
 
     v96 = linkButtonTopPadding;
@@ -310,11 +310,11 @@
     v125.origin.y = linkButtonTopPadding;
     v125.origin.x = v105.x;
     v110 = CGRectGetMaxY(v125) - v96;
-    if (v120)
+    if (viewsCopy)
     {
       v95 = size;
       v94 = v105;
-      linkButton = v124->_linkButton;
+      linkButton = selfCopy->_linkButton;
       v93 = size;
       v92 = v105;
       [(UIButton *)linkButton setFrame:v105, size];
@@ -335,12 +335,12 @@
   __b.origin.x = CGRectZero.origin.x;
   __b.origin.y = CGRectZero.origin.y;
   __b.size = CGRectZero.size;
-  if (v124->_iconView)
+  if (selfCopy->_iconView)
   {
-    if (sub_1001B6D24(v124->_iconSize.width, v124->_iconSize.height, CGSizeZero.width, CGSizeZero.height))
+    if (sub_1001B6D24(selfCopy->_iconSize.width, selfCopy->_iconSize.height, CGSizeZero.width, CGSizeZero.height))
     {
-      [(BuddyRoundedRectImageView *)v124->_iconView sizeToFit];
-      [(BuddyRoundedRectImageView *)v124->_iconView frame];
+      [(BuddyRoundedRectImageView *)selfCopy->_iconView sizeToFit];
+      [(BuddyRoundedRectImageView *)selfCopy->_iconView frame];
     }
 
     else
@@ -352,18 +352,18 @@
     __b.origin.y = v40;
     __b.size.width = v41;
     __b.size.height = v42;
-    [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+    [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
     v44 = v43 + (v119 - __b.size.width) / 2.0;
     __b.origin.x = floorf(v44);
     __b.origin.y = v91;
-    if (v120)
+    if (viewsCopy)
     {
-      [(BuddyRoundedRectImageView *)v124->_iconView setFrame:__b.origin.x, __b.origin.y, __b.size.width, __b.size.height];
+      [(BuddyRoundedRectImageView *)selfCopy->_iconView setFrame:__b.origin.x, __b.origin.y, __b.size.width, __b.size.height];
     }
   }
 
   v87 = 0;
-  if (v124->_iconView)
+  if (selfCopy->_iconView)
   {
     MaxY = CGRectGetMaxY(__b);
     v46 = BFFIsiPhone();
@@ -395,24 +395,24 @@
   }
 
   v89 = v50;
-  v51 = [(UILabel *)v124->_textLabel text];
-  v52 = [(NSString *)v51 length];
+  text = [(UILabel *)selfCopy->_textLabel text];
+  v52 = [(NSString *)text length];
 
   if (v52)
   {
-    textLabel = v124->_textLabel;
+    textLabel = selfCopy->_textLabel;
     sub_1001B50D8();
     [(UILabel *)textLabel sizeThatFits:v54, v55];
     v86.size.width = v56;
     v86.size.height = v57;
-    [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+    [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
     v59 = v58 + (v119 - v86.size.width) / 2.0;
     v86.origin.x = floorf(v59);
-    [(UILabel *)v124->_textLabel _firstBaselineOffsetFromTop];
+    [(UILabel *)selfCopy->_textLabel _firstBaselineOffsetFromTop];
     v86.origin.y = v50 - v60;
-    if (v120)
+    if (viewsCopy)
     {
-      [(UILabel *)v124->_textLabel setFrame:v86.origin.x, v86.origin.y, v86.size.width, v86.size.height];
+      [(UILabel *)selfCopy->_textLabel setFrame:v86.origin.x, v86.origin.y, v86.size.width, v86.size.height];
     }
 
     CGRectGetMaxY(v86);
@@ -421,24 +421,24 @@
     v89 = v61;
   }
 
-  detailTextLabel = v124->_detailTextLabel;
+  detailTextLabel = selfCopy->_detailTextLabel;
   sub_1001B50D8();
   [(UILabel *)detailTextLabel sizeThatFits:v63, v64];
   v84 = v65;
   v85 = v66;
-  [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+  [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
   v68 = v67 + (v119 - v84) / 2.0;
   v82 = floorf(v68);
-  [(UILabel *)v124->_detailTextLabel _firstBaselineOffsetFromTop];
+  [(UILabel *)selfCopy->_detailTextLabel _firstBaselineOffsetFromTop];
   v83 = v89 - v69;
-  if (v120)
+  if (viewsCopy)
   {
-    [(UILabel *)v124->_detailTextLabel setFrame:v82, v83, v84, v85];
+    [(UILabel *)selfCopy->_detailTextLabel setFrame:v82, v83, v84, v85];
   }
 
-  if (v122)
+  if (heightCopy)
   {
-    [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
+    [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
     v71 = v85;
     if (v70 < 0.0)
     {
@@ -447,7 +447,7 @@
       v79 = v82;
       v80 = CGRectGetMaxY(*(&v71 - 3));
       [location scaledValueForValue:16.0];
-      *v122 = v80 + v81;
+      *heightCopy = v80 + v81;
     }
 
     else
@@ -456,18 +456,18 @@
       v73 = v83;
       v74 = v82;
       v75 = CGRectGetMaxY(*(&v71 - 3));
-      [(BuddyAppleIDTableHeaderView *)v124 layoutMargins];
-      *v122 = v75 + v76;
+      [(BuddyAppleIDTableHeaderView *)selfCopy layoutMargins];
+      *heightCopy = v75 + v76;
     }
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  if (a3.width == 0.0)
+  width = fits.width;
+  if (fits.width == 0.0)
   {
     v3 = +[UIScreen mainScreen];
     [(UIScreen *)v3 bounds];

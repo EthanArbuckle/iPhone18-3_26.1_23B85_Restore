@@ -2,13 +2,13 @@
 + (id)timebaseDictionary;
 - (BOOL)triggerArmedCapture;
 - (DYGuestAppClient)init;
-- (DYGuestAppClient)initWithTransport:(id)a3;
+- (DYGuestAppClient)initWithTransport:(id)transport;
 - (id)_buildLibraryLinkTimeVersionsDictionary;
 - (id)_buildQueueThreadLabelsDictionary;
 - (unint64_t)handleFrameBoundaryCommon;
-- (void)_appendLinkTimeLibrary:(const char *)a3 toVersionsDictionary:(id)a4;
+- (void)_appendLinkTimeLibrary:(const char *)library toVersionsDictionary:(id)dictionary;
 - (void)_armCapture;
-- (void)_handleActivateCaptureMessage:(id)a3;
+- (void)_handleActivateCaptureMessage:(id)message;
 - (void)_resetBufferUsageCounters;
 - (void)_sendBufferUsageCounters;
 - (void)_startCapture;
@@ -16,20 +16,20 @@
 - (void)_turnOnCapturing;
 - (void)atexit;
 - (void)dealloc;
-- (void)handleCaptureModeTransition:(BOOL)a3;
+- (void)handleCaptureModeTransition:(BOOL)transition;
 - (void)handleFrameBoundaryCommon;
 - (void)incrementCapturedFramesCounter;
 - (void)invalidateCapture;
-- (void)invalidateSavePointerMap:(id)a3;
-- (void)lockGraphicsAndWaitForThreads:(BOOL)a3;
+- (void)invalidateSavePointerMap:(id)map;
+- (void)lockGraphicsAndWaitForThreads:(BOOL)threads;
 - (void)notifyAllCaptureDataSent;
 - (void)notifyAllCaptureMetadataSent;
-- (void)notifyUsedDataSentWithDictionary:(id)a3;
-- (void)processMessage:(id)a3;
-- (void)resetPointerToUrlAssociation:(const void *)a3;
-- (void)sendCaptureData:(id)a3 name:(id)a4 inReplyTo:(id)a5;
+- (void)notifyUsedDataSentWithDictionary:(id)dictionary;
+- (void)processMessage:(id)message;
+- (void)resetPointerToUrlAssociation:(const void *)association;
+- (void)sendCaptureData:(id)data name:(id)name inReplyTo:(id)to;
 - (void)sendTimebaseUpdate;
-- (void)setTraceMode:(int)a3;
+- (void)setTraceMode:(int)mode;
 - (void)stopCapture;
 - (void)unlockGraphics;
 @end
@@ -57,12 +57,12 @@
   return 0;
 }
 
-- (void)setTraceMode:(int)a3
+- (void)setTraceMode:(int)mode
 {
   traceMode = self->_traceMode;
-  if (traceMode != a3)
+  if (traceMode != mode)
   {
-    self->_traceMode = a3;
+    self->_traceMode = mode;
     self->_previousTraceMode = traceMode;
   }
 
@@ -71,7 +71,7 @@
   [(DYGuestAppClient *)self sendMessage:v5];
 }
 
-- (DYGuestAppClient)initWithTransport:(id)a3
+- (DYGuestAppClient)initWithTransport:(id)transport
 {
   v10.receiver = self;
   v10.super_class = DYGuestAppClient;
@@ -166,14 +166,14 @@ intptr_t __38__DYGuestAppClient_initWithTransport___block_invoke_6(uint64_t a1)
   }
 }
 
-- (void)handleCaptureModeTransition:(BOOL)a3
+- (void)handleCaptureModeTransition:(BOOL)transition
 {
   globalSyncQueue = self->_globalSyncQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke;
   v4[3] = &unk_27930C710;
-  v5 = a3;
+  transitionCopy = transition;
   v4[4] = self;
   dispatch_sync(globalSyncQueue, v4);
 }
@@ -217,14 +217,14 @@ void __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke(uint64_t 
   }
 }
 
-- (void)processMessage:(id)a3
+- (void)processMessage:(id)message
 {
-  v5 = [a3 kind];
-  if (v5 > 1536)
+  kind = [message kind];
+  if (kind > 1536)
   {
-    if (v5 > 1544)
+    if (kind > 1544)
     {
-      switch(v5)
+      switch(kind)
       {
         case 1545:
 
@@ -244,7 +244,7 @@ void __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke(uint64_t 
 
     else
     {
-      switch(v5)
+      switch(kind)
       {
         case 1537:
           v10 = GPUTools::Interpose::gInterposeSemaphore;
@@ -254,11 +254,11 @@ void __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke(uint64_t 
         case 1539:
           v9 = +[DYTransportMessage messageWithKind:attributes:](DYTransportMessage, "messageWithKind:attributes:", 1539, [objc_opt_class() timebaseDictionary]);
 
-          [(DYGuestAppClient *)self sendMessage:v9 inReplyTo:a3];
+          [(DYGuestAppClient *)self sendMessage:v9 inReplyTo:message];
           break;
         case 1540:
 
-          [(DYGuestAppClient *)self invalidateSavePointerMap:a3];
+          [(DYGuestAppClient *)self invalidateSavePointerMap:message];
           break;
       }
     }
@@ -266,16 +266,16 @@ void __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke(uint64_t 
     return;
   }
 
-  if (v5 <= 262)
+  if (kind <= 262)
   {
-    if (v5 == 256)
+    if (kind == 256)
     {
       [(DYCaptureDescriptor *)self->_activeCaptureDescriptor setTriggerFrame:self->_globalFrameCounter];
     }
 
     else
     {
-      if (v5 != 260)
+      if (kind != 260)
       {
         return;
       }
@@ -294,34 +294,34 @@ void __48__DYGuestAppClient_handleCaptureModeTransition___block_invoke(uint64_t 
     }
 
 LABEL_36:
-    v6 = [objc_msgSend(a3 attributeForKey:{@"capture serial", "unsignedIntValue"}];
+    v6 = [objc_msgSend(message attributeForKey:{@"capture serial", "unsignedIntValue"}];
     if ([(DYCaptureDescriptor *)self->_activeCaptureDescriptor sessionId]== v6)
     {
       return;
     }
 
 LABEL_44:
-    dy_abort("received capture session message with invalid session serial: serial=%u expected=%u message=%s", v6, -[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId"), [objc_msgSend(a3 "description")]);
+    dy_abort("received capture session message with invalid session serial: serial=%u expected=%u message=%s", v6, -[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId"), [objc_msgSend(message "description")]);
   }
 
-  if (v5 == 263)
+  if (kind == 263)
   {
     [(DYCaptureState *)self->_activeCaptureState setAllDataReceivedAck:1];
     goto LABEL_36;
   }
 
-  if (v5 == 264)
+  if (kind == 264)
   {
-    [(DYGuestAppClient *)self _handleActivateCaptureMessage:a3];
+    [(DYGuestAppClient *)self _handleActivateCaptureMessage:message];
     goto LABEL_36;
   }
 
-  if (v5 != 265)
+  if (kind != 265)
   {
     return;
   }
 
-  v6 = [objc_msgSend(a3 attributeForKey:{@"capture serial", "unsignedIntValue"}];
+  v6 = [objc_msgSend(message attributeForKey:{@"capture serial", "unsignedIntValue"}];
   if ([(DYCaptureDescriptor *)self->_activeCaptureDescriptor sessionId]!= v6)
   {
     goto LABEL_44;
@@ -348,12 +348,12 @@ uint64_t __35__DYGuestAppClient_processMessage___block_invoke(uint64_t a1)
   return [v3 unlockGraphics];
 }
 
-- (void)sendCaptureData:(id)a3 name:(id)a4 inReplyTo:(id)a5
+- (void)sendCaptureData:(id)data name:(id)name inReplyTo:(id)to
 {
   v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v10 = [v9 initWithObjectsAndKeys:{a4, @"buffer name", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", -[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId")), @"capture serial", 0}];
-  v11 = [[DYTransportMessage alloc] initWithKind:258 attributes:v10 payload:a3];
-  [(DYGuestAppClient *)self sendMessage:v11 inReplyTo:a5];
+  v10 = [v9 initWithObjectsAndKeys:{name, @"buffer name", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", -[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId")), @"capture serial", 0}];
+  v11 = [[DYTransportMessage alloc] initWithKind:258 attributes:v10 payload:data];
+  [(DYGuestAppClient *)self sendMessage:v11 inReplyTo:to];
 }
 
 - (void)sendTimebaseUpdate
@@ -363,17 +363,17 @@ uint64_t __35__DYGuestAppClient_processMessage___block_invoke(uint64_t a1)
   [(DYGuestAppClient *)self sendMessage:v3 inReplyTo:0];
 }
 
-- (void)resetPointerToUrlAssociation:(const void *)a3
+- (void)resetPointerToUrlAssociation:(const void *)association
 {
   ptrUrlInfoDict = self->_ptrUrlInfoDict;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:association];
 
   [(NSMutableDictionary *)ptrUrlInfoDict removeObjectForKey:v4];
 }
 
-- (void)invalidateSavePointerMap:(id)a3
+- (void)invalidateSavePointerMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   saveptrQueue = self->_saveptrQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -381,10 +381,10 @@ uint64_t __35__DYGuestAppClient_processMessage___block_invoke(uint64_t a1)
   block[3] = &unk_27930C1E8;
   block[4] = self;
   dispatch_sync(saveptrQueue, block);
-  if (a3)
+  if (map)
   {
     v7 = [[DYTransportMessage alloc] initWithKind:1540 attributes:0 payload:0];
-    [(DYGuestAppClient *)self sendMessage:v7 inReplyTo:a3];
+    [(DYGuestAppClient *)self sendMessage:v7 inReplyTo:map];
   }
 }
 
@@ -414,11 +414,11 @@ uint64_t __45__DYGuestAppClient_invalidateSavePointerMap___block_invoke(uint64_t
       _os_signpost_emit_with_name_impl(&dword_24D66C000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CaptureSentAllData", &unk_24D6BAC2E, buf, 2u);
     }
 
-    v5 = [(DYGuestAppClient *)self _buildLibraryLinkTimeVersionsDictionary];
-    v6 = [(DYGuestAppClient *)self _buildQueueThreadLabelsDictionary];
+    _buildLibraryLinkTimeVersionsDictionary = [(DYGuestAppClient *)self _buildLibraryLinkTimeVersionsDictionary];
+    _buildQueueThreadLabelsDictionary = [(DYGuestAppClient *)self _buildQueueThreadLabelsDictionary];
     v7 = MEMORY[0x277CBEB38];
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[DYCaptureState capturedFrames](self->_activeCaptureState, "capturedFrames")}];
-    v9 = [v7 dictionaryWithObjectsAndKeys:{v8, @"captured frames counter", v5, @"library link-time versions", v6, @"queue/thread labels", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", _CFExecutableLinkedOnOrAfter() != 0), @"LinkedOnApexOrLater", 0}];
+    v9 = [v7 dictionaryWithObjectsAndKeys:{v8, @"captured frames counter", _buildLibraryLinkTimeVersionsDictionary, @"library link-time versions", _buildQueueThreadLabelsDictionary, @"queue/thread labels", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", _CFExecutableLinkedOnOrAfter() != 0), @"LinkedOnApexOrLater", 0}];
     [(DYGuestAppClient *)self _appendToAllCaptureDataSentMessagePayload:v9];
     v12 = @"capture serial";
     v13[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId")}];
@@ -428,7 +428,7 @@ uint64_t __45__DYGuestAppClient_invalidateSavePointerMap___block_invoke(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyUsedDataSentWithDictionary:(id)a3
+- (void)notifyUsedDataSentWithDictionary:(id)dictionary
 {
   v12[1] = *MEMORY[0x277D85DE8];
   if (self->_state != 4)
@@ -443,10 +443,10 @@ uint64_t __45__DYGuestAppClient_invalidateSavePointerMap___block_invoke(uint64_t
     _os_signpost_emit_with_name_impl(&dword_24D66C000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CaptureSentUsedData", &unk_24D6BAC2E, buf, 2u);
   }
 
-  v6 = [(DYGuestAppClient *)self _buildLibraryLinkTimeVersionsDictionary];
-  v7 = [(DYGuestAppClient *)self _buildQueueThreadLabelsDictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", -[DYCaptureState capturedFrames](self->_activeCaptureState, "capturedFrames")), @"captured frames counter", v6, @"library link-time versions", v7, @"queue/thread labels", 0}];
-  [v8 addEntriesFromDictionary:a3];
+  _buildLibraryLinkTimeVersionsDictionary = [(DYGuestAppClient *)self _buildLibraryLinkTimeVersionsDictionary];
+  _buildQueueThreadLabelsDictionary = [(DYGuestAppClient *)self _buildQueueThreadLabelsDictionary];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", -[DYCaptureState capturedFrames](self->_activeCaptureState, "capturedFrames")), @"captured frames counter", _buildLibraryLinkTimeVersionsDictionary, @"library link-time versions", _buildQueueThreadLabelsDictionary, @"queue/thread labels", 0}];
+  [v8 addEntriesFromDictionary:dictionary];
   [(DYGuestAppClient *)self _appendToAllCaptureDataSentMessagePayload:v8];
   v11 = @"capture serial";
   v12[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DYCaptureDescriptor sessionId](self->_activeCaptureDescriptor, "sessionId")}];
@@ -471,12 +471,12 @@ uint64_t __45__DYGuestAppClient_invalidateSavePointerMap___block_invoke(uint64_t
   [(DYGuestAppClient *)self sendMessage:[DYTransportMessage messageWithKind:267]];
 }
 
-- (void)lockGraphicsAndWaitForThreads:(BOOL)a3
+- (void)lockGraphicsAndWaitForThreads:(BOOL)threads
 {
-  v3 = a3;
+  threadsCopy = threads;
   dispatch_suspend(self->_graphicsLockWaitQueue);
   atomic_fetch_add(&self->_waitOnGraphicsSemaphoreAssertions, 1u);
-  if (v3)
+  if (threadsCopy)
   {
 
     [(DYGuestAppClient *)self _waitForGraphicsThreads];
@@ -607,12 +607,12 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
   dispatch_sync(saveptrQueue, block);
 }
 
-- (void)_appendLinkTimeLibrary:(const char *)a3 toVersionsDictionary:(id)a4
+- (void)_appendLinkTimeLibrary:(const char *)library toVersionsDictionary:(id)dictionary
 {
-  v6 = NSVersionOfLinkTimeLibrary(a3);
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:a3 length:strlen(a3) encoding:1 freeWhenDone:0];
+  v6 = NSVersionOfLinkTimeLibrary(library);
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:library length:strlen(library) encoding:1 freeWhenDone:0];
   v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v6];
-  [a4 setObject:v8 forKey:v7];
+  [dictionary setObject:v8 forKey:v7];
 }
 
 - (void)_startCapture
@@ -650,14 +650,14 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
 
         else
         {
-          v4 = [MEMORY[0x277CBEB38] dictionary];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedLong:", self->_lastSessionSerial), @"Serial"}];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedInteger:", 0), @"TriggerFrame"}];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedInteger:", 0), @"FrameLimit"}];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"TriggerOnNextGLCommand"}];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"LockOpenGLAfterCompletion"}];
-          [v4 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"SuspendAfterCompletion"}];
-          -[DYGuestAppClient sendMessage:](self, "sendMessage:", +[DYTransportMessage messageWithKind:attributes:plistPayload:](DYTransportMessage, "messageWithKind:attributes:plistPayload:", 264, [MEMORY[0x277CBEAC0] dictionaryWithObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedLong:", self->_lastSessionSerial), @"capture serial"}], v4));
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedLong:", self->_lastSessionSerial), @"Serial"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedInteger:", 0), @"TriggerFrame"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedInteger:", 0), @"FrameLimit"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"TriggerOnNextGLCommand"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"LockOpenGLAfterCompletion"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", 1), @"SuspendAfterCompletion"}];
+          -[DYGuestAppClient sendMessage:](self, "sendMessage:", +[DYTransportMessage messageWithKind:attributes:plistPayload:](DYTransportMessage, "messageWithKind:attributes:plistPayload:", 264, [MEMORY[0x277CBEAC0] dictionaryWithObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedLong:", self->_lastSessionSerial), @"capture serial"}], dictionary));
 
           [(DYGuestAppClient *)self lockGraphicsAndWaitForThreads:1];
         }
@@ -718,22 +718,22 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
   GPUTools::FB::Stream::Open(self->_startup1Stream, [MEMORY[0x277CCACA8] stringWithFormat:@"%@-1-%@", @"startup", @"platform"]);
 }
 
-- (void)_handleActivateCaptureMessage:(id)a3
+- (void)_handleActivateCaptureMessage:(id)message
 {
   state = self->_state;
   if (state)
   {
     if (state == 2)
     {
-      v5 = [a3 plistPayload];
-      v6 = [objc_msgSend(v5 objectForKey:{@"Serial", "unsignedIntValue"}];
+      plistPayload = [message plistPayload];
+      v6 = [objc_msgSend(plistPayload objectForKey:{@"Serial", "unsignedIntValue"}];
       if ([(DYCaptureDescriptor *)self->_activeCaptureDescriptor sessionId]!= v6)
       {
         [DYGuestAppClient _handleActivateCaptureMessage:];
       }
 
-      -[DYCaptureDescriptor setSuspendAfterCapture:](self->_activeCaptureDescriptor, "setSuspendAfterCapture:", [objc_msgSend(v5 objectForKey:{@"SuspendAfterCompletion", "BOOLValue"}]);
-      -[DYCaptureDescriptor setLockGraphicsAfterCapture:](self->_activeCaptureDescriptor, "setLockGraphicsAfterCapture:", [objc_msgSend(v5 objectForKey:{@"LockOpenGLAfterCompletion", "BOOLValue"}]);
+      -[DYCaptureDescriptor setSuspendAfterCapture:](self->_activeCaptureDescriptor, "setSuspendAfterCapture:", [objc_msgSend(plistPayload objectForKey:{@"SuspendAfterCompletion", "BOOLValue"}]);
+      -[DYCaptureDescriptor setLockGraphicsAfterCapture:](self->_activeCaptureDescriptor, "setLockGraphicsAfterCapture:", [objc_msgSend(plistPayload objectForKey:{@"LockOpenGLAfterCompletion", "BOOLValue"}]);
       if ([(DYCaptureDescriptor *)self->_activeCaptureDescriptor armPreparedCapture])
       {
         self->_state = 1;
@@ -755,7 +755,7 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
   else
   {
 
-    [(DYGuestAppClient *)self _armCaptureWithTransportMessage:a3];
+    [(DYGuestAppClient *)self _armCaptureWithTransportMessage:message];
   }
 }
 
@@ -768,12 +768,12 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
     [(DYGuestAppClient *)self _sendBufferUsageCounters];
     [(DYGuestAppClient *)self _handleTurnOffCapture];
     [(DYGuestAppClient *)self notifyAllCaptureDataSent];
-    v3 = [(DYCaptureDescriptor *)self->_activeCaptureDescriptor suspendAfterCapture]|| [(DYCaptureDescriptor *)self->_activeCaptureDescriptor lockGraphicsAfterCapture];
+    lockGraphicsAfterCapture = [(DYCaptureDescriptor *)self->_activeCaptureDescriptor suspendAfterCapture]|| [(DYCaptureDescriptor *)self->_activeCaptureDescriptor lockGraphicsAfterCapture];
   }
 
   else
   {
-    v3 = 0;
+    lockGraphicsAfterCapture = 0;
   }
 
   if ([(DYGuestAppClient *)self traceMode]== 5)
@@ -784,7 +784,7 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
     GPUTools::FB::Stream::Open(self->_defaultFbufStream, @"live");
   }
 
-  if (!v3)
+  if (!lockGraphicsAfterCapture)
   {
     [(DYGuestAppClient *)self unlockGraphics];
   }
@@ -837,21 +837,21 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
 
 - (unint64_t)handleFrameBoundaryCommon
 {
-  result = [*(a1 + 160) framesToCapture];
+  result = [*(self + 160) framesToCapture];
   if (*a2 == 1)
   {
-    v7 = *(a1 + 96);
-    result = [*(a1 + 160) triggerFrame];
+    v7 = *(self + 96);
+    result = [*(self + 160) triggerFrame];
     if (result <= v7)
     {
-      result = [*(a1 + 168) capturedFrames];
+      result = [*(self + 168) capturedFrames];
       if (!result)
       {
-        result = [a1 _canTriggerCaptureOnNextGraphicsCommand];
+        result = [self _canTriggerCaptureOnNextGraphicsCommand];
         if (result)
         {
 
-          return [a1 triggerArmedCapture];
+          return [self triggerArmedCapture];
         }
       }
     }
@@ -862,11 +862,11 @@ void __44__DYGuestAppClient__sendBufferUsageCounters__block_invoke_2(uint64_t a1
     v5 = result;
     if (*a2 == 3 && result != 0)
     {
-      result = [*(a1 + 168) capturedFrames];
+      result = [*(self + 168) capturedFrames];
       if (result >= v5)
       {
 
-        return [a1 stopCapture];
+        return [self stopCapture];
       }
     }
   }

@@ -1,31 +1,31 @@
 @interface CSMessageVolumeIncreaseResponse
 + (id)requiredParameters;
-- (CSMessageVolumeIncreaseResponse)initWithMessage:(id)a3;
-- (CSMessageVolumeIncreaseResponse)initWithVolume:(double)a3;
+- (CSMessageVolumeIncreaseResponse)initWithMessage:(id)message;
+- (CSMessageVolumeIncreaseResponse)initWithVolume:(double)volume;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSMessageVolumeIncreaseResponse
 
-- (CSMessageVolumeIncreaseResponse)initWithVolume:(double)a3
+- (CSMessageVolumeIncreaseResponse)initWithVolume:(double)volume
 {
   v5.receiver = self;
   v5.super_class = CSMessageVolumeIncreaseResponse;
   result = [(CSMessageVolumeIncreaseResponse *)&v5 init];
   if (result)
   {
-    result->_volume = a3;
+    result->_volume = volume;
   }
 
   return result;
 }
 
-- (CSMessageVolumeIncreaseResponse)initWithMessage:(id)a3
+- (CSMessageVolumeIncreaseResponse)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v10.receiver = self;
   v10.super_class = CSMessageVolumeIncreaseResponse;
-  v5 = [(CSMessage *)&v10 initWithMessage:v4];
+  v5 = [(CSMessage *)&v10 initWithMessage:messageCopy];
   if (v5)
   {
     v6 = NSDictionaryGetNSNumber();
@@ -42,7 +42,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSMessageVolumeIncreaseResponse;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -56,8 +56,8 @@
 {
   v7.receiver = self;
   v7.super_class = CSMessageVolumeIncreaseResponse;
-  v3 = [(CSMessage *)&v7 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v7 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_volume];
   [v4 setObject:v5 forKey:@"ContinuitySingMicrophoneVolume"];

@@ -1,21 +1,21 @@
 @interface ServingCellBeamInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)rxBeamIdAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)rxBeamIdAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellPci:(BOOL)a3;
-- (void)setHasCellRsrp:(BOOL)a3;
-- (void)setHasCellRsrq:(BOOL)a3;
-- (void)setHasNumDetectedTxBeams:(BOOL)a3;
-- (void)setHasRasterArfcn:(BOOL)a3;
-- (void)setHasRxBeamRsrp:(BOOL)a3;
-- (void)setHasSsbIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellPci:(BOOL)pci;
+- (void)setHasCellRsrp:(BOOL)rsrp;
+- (void)setHasCellRsrq:(BOOL)rsrq;
+- (void)setHasNumDetectedTxBeams:(BOOL)beams;
+- (void)setHasRasterArfcn:(BOOL)arfcn;
+- (void)setHasRxBeamRsrp:(BOOL)rsrp;
+- (void)setHasSsbIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ServingCellBeamInfo
@@ -28,9 +28,9 @@
   [(ServingCellBeamInfo *)&v3 dealloc];
 }
 
-- (void)setHasCellPci:(BOOL)a3
+- (void)setHasCellPci:(BOOL)pci
 {
-  if (a3)
+  if (pci)
   {
     v3 = 2;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSsbIndex:(BOOL)a3
+- (void)setHasSsbIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 0x80;
   }
@@ -58,23 +58,23 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (unsigned)rxBeamIdAtIndex:(unint64_t)a3
+- (unsigned)rxBeamIdAtIndex:(unint64_t)index
 {
   p_rxBeamIds = &self->_rxBeamIds;
   count = self->_rxBeamIds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rxBeamIds->list[a3];
+  return p_rxBeamIds->list[index];
 }
 
-- (void)setHasNumDetectedTxBeams:(BOOL)a3
+- (void)setHasNumDetectedTxBeams:(BOOL)beams
 {
-  if (a3)
+  if (beams)
   {
     v3 = 16;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCellRsrp:(BOOL)a3
+- (void)setHasCellRsrp:(BOOL)rsrp
 {
-  if (a3)
+  if (rsrp)
   {
     v3 = 4;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCellRsrq:(BOOL)a3
+- (void)setHasCellRsrq:(BOOL)rsrq
 {
-  if (a3)
+  if (rsrq)
   {
     v3 = 8;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRxBeamRsrp:(BOOL)a3
+- (void)setHasRxBeamRsrp:(BOOL)rsrp
 {
-  if (a3)
+  if (rsrp)
   {
     v3 = 64;
   }
@@ -132,9 +132,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasRasterArfcn:(BOOL)a3
+- (void)setHasRasterArfcn:(BOOL)arfcn
 {
-  if (a3)
+  if (arfcn)
   {
     v3 = 32;
   }
@@ -152,8 +152,8 @@
   v7.receiver = self;
   v7.super_class = ServingCellBeamInfo;
   v3 = [(ServingCellBeamInfo *)&v7 description];
-  v4 = [(ServingCellBeamInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ServingCellBeamInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -266,16 +266,16 @@ LABEL_12:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v17 = v4;
+  v17 = toCopy;
   if ((has & 2) != 0)
   {
     cellPci = self->_cellPci;
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
     has = self->_has;
   }
 
@@ -283,7 +283,7 @@ LABEL_12:
   {
     ssbIndex = self->_ssbIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_rxBeamIds.count)
@@ -293,7 +293,7 @@ LABEL_12:
     {
       v9 = self->_rxBeamIds.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v17;
+      toCopy = v17;
       ++v8;
     }
 
@@ -305,7 +305,7 @@ LABEL_12:
   {
     numDetectedTxBeams = self->_numDetectedTxBeams;
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
     v10 = self->_has;
     if ((v10 & 1) == 0)
     {
@@ -326,7 +326,7 @@ LABEL_10:
 
   antennaPanelIndex = self->_antennaPanelIndex;
   PBDataWriterWriteUint32Field();
-  v4 = v17;
+  toCopy = v17;
   v10 = self->_has;
   if ((v10 & 4) == 0)
   {
@@ -342,7 +342,7 @@ LABEL_11:
 LABEL_20:
   cellRsrp = self->_cellRsrp;
   PBDataWriterWriteInt32Field();
-  v4 = v17;
+  toCopy = v17;
   v10 = self->_has;
   if ((v10 & 8) == 0)
   {
@@ -358,7 +358,7 @@ LABEL_12:
 LABEL_21:
   cellRsrq = self->_cellRsrq;
   PBDataWriterWriteInt32Field();
-  v4 = v17;
+  toCopy = v17;
   v10 = self->_has;
   if ((v10 & 0x40) == 0)
   {
@@ -374,43 +374,43 @@ LABEL_13:
 LABEL_22:
   rxBeamRsrp = self->_rxBeamRsrp;
   PBDataWriterWriteInt32Field();
-  v4 = v17;
+  toCopy = v17;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
     rasterArfcn = self->_rasterArfcn;
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[9] = self->_cellPci;
-    *(v4 + 64) |= 2u;
+    toCopy[9] = self->_cellPci;
+    *(toCopy + 64) |= 2u;
     has = self->_has;
   }
 
   if (has < 0)
   {
-    v4[15] = self->_ssbIndex;
-    *(v4 + 64) |= 0x80u;
+    toCopy[15] = self->_ssbIndex;
+    *(toCopy + 64) |= 0x80u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(ServingCellBeamInfo *)self rxBeamIdsCount])
   {
     [v10 clearRxBeamIds];
-    v6 = [(ServingCellBeamInfo *)self rxBeamIdsCount];
-    if (v6)
+    rxBeamIdsCount = [(ServingCellBeamInfo *)self rxBeamIdsCount];
+    if (rxBeamIdsCount)
     {
-      v7 = v6;
+      v7 = rxBeamIdsCount;
       for (i = 0; i != v7; ++i)
       {
         [v10 addRxBeamId:{-[ServingCellBeamInfo rxBeamIdAtIndex:](self, "rxBeamIdAtIndex:", i)}];
@@ -498,9 +498,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 2) != 0)
@@ -597,37 +597,37 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_cellPci != *(v4 + 9))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_cellPci != *(equalCopy + 9))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 64) & 0x80) == 0 || self->_ssbIndex != *(v4 + 15))
+    if ((*(equalCopy + 64) & 0x80) == 0 || self->_ssbIndex != *(equalCopy + 15))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x80) != 0)
+  else if ((*(equalCopy + 64) & 0x80) != 0)
   {
 LABEL_42:
     v6 = 0;
@@ -641,73 +641,73 @@ LABEL_42:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_numDetectedTxBeams != *(v4 + 12))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_numDetectedTxBeams != *(equalCopy + 12))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_42;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_antennaPanelIndex != *(v4 + 8))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_antennaPanelIndex != *(equalCopy + 8))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_cellRsrp != *(v4 + 10))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_cellRsrp != *(equalCopy + 10))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_cellRsrq != *(v4 + 11))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_cellRsrq != *(equalCopy + 11))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 64) & 0x40) == 0 || self->_rxBeamRsrp != *(v4 + 14))
+    if ((*(equalCopy + 64) & 0x40) == 0 || self->_rxBeamRsrp != *(equalCopy + 14))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) != 0)
+  else if ((*(equalCopy + 64) & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
-  v6 = (*(v4 + 64) & 0x20) == 0;
+  v6 = (*(equalCopy + 64) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_rasterArfcn != *(v4 + 13))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_rasterArfcn != *(equalCopy + 13))
     {
       goto LABEL_42;
     }
@@ -825,28 +825,28 @@ LABEL_12:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 64);
+  fromCopy = from;
+  v5 = *(fromCopy + 64);
   if ((v5 & 2) != 0)
   {
-    self->_cellPci = *(v4 + 9);
+    self->_cellPci = *(fromCopy + 9);
     *&self->_has |= 2u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
   }
 
   if (v5 < 0)
   {
-    self->_ssbIndex = *(v4 + 15);
+    self->_ssbIndex = *(fromCopy + 15);
     *&self->_has |= 0x80u;
   }
 
-  v10 = v4;
-  v6 = [v4 rxBeamIdsCount];
-  if (v6)
+  v10 = fromCopy;
+  rxBeamIdsCount = [fromCopy rxBeamIdsCount];
+  if (rxBeamIdsCount)
   {
-    v7 = v6;
+    v7 = rxBeamIdsCount;
     for (i = 0; i != v7; ++i)
     {
       -[ServingCellBeamInfo addRxBeamId:](self, "addRxBeamId:", [v10 rxBeamIdAtIndex:i]);

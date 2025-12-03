@@ -1,10 +1,10 @@
 @interface EKCalendarValidateEditItem
 - (EKCalendarValidateEditItem)init;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
-- (void)setAnimateSpinner:(BOOL)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setURLIsSpam:(BOOL)a3;
+- (void)setAnimateSpinner:(BOOL)spinner;
+- (void)setButtonTitle:(id)title;
+- (void)setURLIsSpam:(BOOL)spam;
 @end
 
 @implementation EKCalendarValidateEditItem
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v31[4] = *MEMORY[0x1E69E9840];
   cell = self->_cell;
@@ -36,39 +36,39 @@
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(UILabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v7 setTextColor:v8];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v7 setTextColor:labelColor];
 
     [(UILabel *)v7 setText:self->_buttonTitle];
-    v9 = [(UITableViewCell *)self->_cell contentView];
-    [v9 addSubview:v7];
+    contentView = [(UITableViewCell *)self->_cell contentView];
+    [contentView addSubview:v7];
 
     v10 = objc_alloc_init(MEMORY[0x1E69DC638]);
     spinner = self->_spinner;
     self->_spinner = v10;
 
     [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(UITableViewCell *)self->_cell contentView];
-    [v12 addSubview:self->_spinner];
+    contentView2 = [(UITableViewCell *)self->_cell contentView];
+    [contentView2 addSubview:self->_spinner];
 
     v24 = MEMORY[0x1E696ACD8];
-    v29 = [(UILabel *)v7 centerXAnchor];
-    v30 = [(UITableViewCell *)self->_cell contentView];
-    v28 = [v30 centerXAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    centerXAnchor = [(UILabel *)v7 centerXAnchor];
+    contentView3 = [(UITableViewCell *)self->_cell contentView];
+    centerXAnchor2 = [contentView3 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v31[0] = v27;
-    v25 = [(UILabel *)v7 centerYAnchor];
-    v26 = [(UITableViewCell *)self->_cell contentView];
-    v23 = [v26 centerYAnchor];
-    v22 = [v25 constraintEqualToAnchor:v23];
+    centerYAnchor = [(UILabel *)v7 centerYAnchor];
+    contentView4 = [(UITableViewCell *)self->_cell contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v31[1] = v22;
-    v13 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-    v14 = [(UILabel *)v7 centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerYAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+    centerYAnchor4 = [(UILabel *)v7 centerYAnchor];
+    v15 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v31[2] = v15;
-    v16 = [(UIActivityIndicatorView *)self->_spinner leadingAnchor];
-    v17 = [(UILabel *)v7 trailingAnchor];
-    v18 = [v16 constraintEqualToSystemSpacingAfterAnchor:v17 multiplier:1.0];
+    leadingAnchor = [(UIActivityIndicatorView *)self->_spinner leadingAnchor];
+    trailingAnchor = [(UILabel *)v7 trailingAnchor];
+    v18 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     v31[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
     [v24 activateConstraints:v19];
@@ -82,18 +82,18 @@
   return cell;
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  objc_storeStrong(&self->_buttonTitle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_buttonTitle, title);
+  titleCopy = title;
   [(UILabel *)self->_buttonTextLabel setText:self->_buttonTitle];
 }
 
-- (void)setAnimateSpinner:(BOOL)a3
+- (void)setAnimateSpinner:(BOOL)spinner
 {
-  self->_animateSpinner = a3;
+  self->_animateSpinner = spinner;
   spinner = self->_spinner;
-  if (a3)
+  if (spinner)
   {
     [(UIActivityIndicatorView *)spinner startAnimating];
   }
@@ -104,15 +104,15 @@
   }
 }
 
-- (void)setURLIsSpam:(BOOL)a3
+- (void)setURLIsSpam:(BOOL)spam
 {
-  if (self->_URLIsSpam != a3)
+  if (self->_URLIsSpam != spam)
   {
-    v4 = a3;
-    self->_URLIsSpam = a3;
+    spamCopy = spam;
+    self->_URLIsSpam = spam;
     v6 = EventKitUIBundle();
     v7 = v6;
-    if (v4)
+    if (spamCopy)
     {
       v8 = @"Subscribe Anyway";
     }

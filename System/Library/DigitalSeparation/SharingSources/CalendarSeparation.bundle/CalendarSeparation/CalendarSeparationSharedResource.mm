@@ -1,21 +1,21 @@
 @interface CalendarSeparationSharedResource
-- (void)makePrivateWithCompletion:(id)a3;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (void)makePrivateWithCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation CalendarSeparationSharedResource
 
-- (void)makePrivateWithCompletion:(id)a3
+- (void)makePrivateWithCompletion:(id)completion
 {
   v7 = NSLocalizedDescriptionKey;
   v8 = @"Not supported on this resource type";
-  v4 = a3;
+  completionCopy = completion;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v6 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:v5];
-  (*(a3 + 2))(v4, 0, v6);
+  (*(completion + 2))(completionCopy, 0, v6);
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
   v6 = objc_opt_class();
 

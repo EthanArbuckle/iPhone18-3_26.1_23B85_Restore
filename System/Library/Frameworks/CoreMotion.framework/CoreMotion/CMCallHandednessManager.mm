@@ -2,7 +2,7 @@
 + (BOOL)isCallHandednessAvailable;
 - (CMCallHandednessManager)init;
 - (void)dealloc;
-- (void)onCallHandednessStateUpdated:(const Sample *)a3;
+- (void)onCallHandednessStateUpdated:(const Sample *)updated;
 - (void)startCallHandednessUpdates;
 - (void)stopCallHandednessUpdates;
 @end
@@ -89,9 +89,9 @@
   return sub_19B43B6EC();
 }
 
-- (void)onCallHandednessStateUpdated:(const Sample *)a3
+- (void)onCallHandednessStateUpdated:(const Sample *)updated
 {
-  timestamp_low = LOBYTE(a3->timestamp);
+  timestamp_low = LOBYTE(updated->timestamp);
   v4 = timestamp_low == 1;
   v5 = timestamp_low == 2;
   fPrivateQueue = self->fPrivateQueue;

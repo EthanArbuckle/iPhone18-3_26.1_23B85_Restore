@@ -8,18 +8,18 @@
 
 - (id)userIdentity
 {
-  v1 = [a1 _underlyingMediaLibrary];
-  v2 = [v1 userIdentity];
+  _underlyingMediaLibrary = [self _underlyingMediaLibrary];
+  userIdentity = [_underlyingMediaLibrary userIdentity];
 
-  return v2;
+  return userIdentity;
 }
 
 + (id)deviceMediaLibraryIdentifierForUserIdentity:()MusicKitInternal
 {
-  v1 = [a1 deviceMediaLibraryWithUserIdentity:?];
-  v2 = [v1 uniqueIdentifier];
+  v1 = [self deviceMediaLibraryWithUserIdentity:?];
+  uniqueIdentifier = [v1 uniqueIdentifier];
 
-  return v2;
+  return uniqueIdentifier;
 }
 
 + (id)deviceMediaLibraryWithUserIdentity:()MusicKitInternal

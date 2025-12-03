@@ -1,28 +1,28 @@
 @interface CKSQLiteCompiledStatementCacheKey
-- (BOOL)isEqual:(id)a3;
-- (CKSQLiteCompiledStatementCacheKey)initWithTable:(id)a3 label:(_CKSQLiteCompiledStatementLabel *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKSQLiteCompiledStatementCacheKey)initWithTable:(id)table label:(_CKSQLiteCompiledStatementLabel *)label;
 - (id)description;
 @end
 
 @implementation CKSQLiteCompiledStatementCacheKey
 
-- (CKSQLiteCompiledStatementCacheKey)initWithTable:(id)a3 label:(_CKSQLiteCompiledStatementLabel *)a4
+- (CKSQLiteCompiledStatementCacheKey)initWithTable:(id)table label:(_CKSQLiteCompiledStatementLabel *)label
 {
-  v6 = a3;
+  tableCopy = table;
   v17.receiver = self;
   v17.super_class = CKSQLiteCompiledStatementCacheKey;
   v9 = [(CKSQLiteCompiledStatementCacheKey *)&v17 init];
   if (v9)
   {
-    v10 = objc_msgSend_db(v6, v7, v8);
+    v10 = objc_msgSend_db(tableCopy, v7, v8);
     db = v9->_db;
     v9->_db = v10;
 
-    v14 = objc_msgSend_dbTableName(v6, v12, v13);
+    v14 = objc_msgSend_dbTableName(tableCopy, v12, v13);
     dbTableName = v9->_dbTableName;
     v9->_dbTableName = v14;
 
-    v9->_statementLabel = a4;
+    v9->_statementLabel = label;
   }
 
   return v9;
@@ -37,13 +37,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = v4;
-  if (self->_db == v4[1] && self->_statementLabel == v4[3])
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self->_db == equalCopy[1] && self->_statementLabel == equalCopy[3])
   {
-    isEqualToString = objc_msgSend_isEqualToString_(self->_dbTableName, v5, v4[2]);
+    isEqualToString = objc_msgSend_isEqualToString_(self->_dbTableName, v5, equalCopy[2]);
   }
 
   else

@@ -1,31 +1,31 @@
 @interface JFXTextEffect
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4;
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose;
 - (BOOL)textBakedIn;
-- (BOOL)textBounds:(CGRect *)a3 atIndex:(unint64_t)a4 time:(id *)a5 forcePosterFrame:(BOOL)a6 includeDropShadow:(BOOL)a7 includeMasks:(BOOL)a8;
-- (PVCGPointQuad)textCornersAtIndex:(SEL)a3 time:(unint64_t)a4 forcePosterFrame:(id *)a5 includeDropShadow:(BOOL)a6 scale:(BOOL)a7 relativeTo:(CGPoint)a8 basisOrigin:(CGRect)a9;
+- (BOOL)textBounds:(CGRect *)bounds atIndex:(unint64_t)index time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
+- (PVCGPointQuad)textCornersAtIndex:(SEL)index time:(unint64_t)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale relativeTo:(CGPoint)to basisOrigin:(CGRect)origin;
 - (UIColor)customTextEditTintColor;
 - (id)contentProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customTextEditColor;
-- (id)defaultAttributedString:(unint64_t)a3;
-- (id)defaultTypingAttributes:(unint64_t)a3;
+- (id)defaultAttributedString:(unint64_t)string;
+- (id)defaultTypingAttributes:(unint64_t)attributes;
 - (id)editUIProperties;
 - (id)localizedDefaultFontName;
 - (id)localizedDefaultText;
 - (id)strings;
-- (id)textBoundsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 includeMasks:(BOOL)a6;
+- (id)textBoundsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
 - (id)textEffectContentDataSource;
-- (id)textFrameAtIndex:(unint64_t)a3 time:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 relativeTo:(CGRect)a7 basisOrigin:(int)a8;
-- (id)textFramesAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7;
-- (int64_t)textHitTest:(CGPoint)a3 time:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6;
+- (id)textFrameAtIndex:(unint64_t)index time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (id)textFramesAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (int64_t)textHitTest:(CGPoint)test time:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin;
 - (unint64_t)maxCharacters;
 - (void)beginTextEditing;
-- (void)enableDynamicLineSpacingForDiacritics:(BOOL)a3;
+- (void)enableDynamicLineSpacingForDiacritics:(BOOL)diacritics;
 - (void)endTextEditing;
-- (void)setFont:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFontScale:(float)a3 atIndex:(unint64_t)a4;
-- (void)setFontSize:(float)a3 atIndex:(unint64_t)a4;
-- (void)setString:(id)a3 atIndex:(unint64_t)a4;
+- (void)setFont:(id)font atIndex:(unint64_t)index;
+- (void)setFontScale:(float)scale atIndex:(unint64_t)index;
+- (void)setFontSize:(float)size atIndex:(unint64_t)index;
+- (void)setString:(id)string atIndex:(unint64_t)index;
 - (void)setupLocalizedText;
 @end
 
@@ -33,32 +33,32 @@
 
 - (id)localizedDefaultText
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXTextEffect *)self textEffectContentDataSource];
-    v5 = v4;
-    if (v4)
+    textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+    v5 = textEffectContentDataSource;
+    if (textEffectContentDataSource)
     {
-      v6 = [v4 localizedDefaultText];
+      localizedDefaultText = [textEffectContentDataSource localizedDefaultText];
     }
 
     else
     {
-      v6 = 0;
+      localizedDefaultText = 0;
     }
   }
 
   else
   {
-    v7 = [(JFXEffect *)self effectID];
-    v8 = [v7 stringByAppendingString:@"_DEFAULT_TEXT"];
+    effectID = [(JFXEffect *)self effectID];
+    v8 = [effectID stringByAppendingString:@"_DEFAULT_TEXT"];
 
     v9 = MEMORY[0x277CCA8D8];
     v5 = v8;
-    v10 = [v9 jfxBundle];
-    v11 = [v10 localizedStringForKey:v5 value:&stru_28553D028 table:0];
+    jfxBundle = [v9 jfxBundle];
+    v11 = [jfxBundle localizedStringForKey:v5 value:&stru_28553D028 table:0];
 
     if ([v11 isEqualToString:v5])
     {
@@ -70,40 +70,40 @@
       v12 = v11;
     }
 
-    v6 = v12;
+    localizedDefaultText = v12;
   }
 
-  return v6;
+  return localizedDefaultText;
 }
 
 - (id)localizedDefaultFontName
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXTextEffect *)self textEffectContentDataSource];
-    v5 = v4;
-    if (v4)
+    textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+    v5 = textEffectContentDataSource;
+    if (textEffectContentDataSource)
     {
-      v6 = [v4 localizedDefaultFontName];
+      localizedDefaultFontName = [textEffectContentDataSource localizedDefaultFontName];
     }
 
     else
     {
-      v6 = 0;
+      localizedDefaultFontName = 0;
     }
   }
 
   else
   {
-    v7 = [(JFXEffect *)self effectID];
-    v8 = [v7 stringByAppendingString:@"_FONT"];
+    effectID = [(JFXEffect *)self effectID];
+    v8 = [effectID stringByAppendingString:@"_FONT"];
 
     v9 = MEMORY[0x277CCA8D8];
     v5 = v8;
-    v10 = [v9 jfxBundle];
-    v11 = [v10 localizedStringForKey:v5 value:&stru_28553D028 table:0];
+    jfxBundle = [v9 jfxBundle];
+    v11 = [jfxBundle localizedStringForKey:v5 value:&stru_28553D028 table:0];
 
     if ([v11 isEqualToString:v5])
     {
@@ -115,44 +115,44 @@
       v12 = v11;
     }
 
-    v6 = v12;
+    localizedDefaultFontName = v12;
   }
 
-  return v6;
+  return localizedDefaultFontName;
 }
 
 - (void)setupLocalizedText
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = JFXTextEffect;
   v3 = [(objc_super *)a2 description];
-  v4 = [a1 effectID];
+  effectID = [self effectID];
   OUTLINED_FUNCTION_0_4();
   OUTLINED_FUNCTION_1_2(&dword_242A3B000, v5, v6, "The font for '%@-%@' is not localized and there is no Default Text.", v7, v8, v9, v10, v11);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = JFXTextEffect;
-  return [(JFXEffect *)&v4 copyWithZone:a3];
+  return [(JFXEffect *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose
 {
-  v6 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = JFXTextEffect;
-  if ([(JFXEffect *)&v15 isAppearanceEqual:v6 forPurpose:a4])
+  if ([(JFXEffect *)&v15 isAppearanceEqual:equalCopy forPurpose:purpose])
   {
     v7 = *MEMORY[0x277D41B28];
     v8 = [(JFXEffect *)self parameterForKey:*MEMORY[0x277D41B28]];
-    v9 = [v6 parameterForKey:v7];
+    v9 = [equalCopy parameterForKey:v7];
     if (v8 == v9 || [v8 isEqualToString:v9])
     {
       v10 = *MEMORY[0x277D41B48];
       v11 = [(JFXEffect *)self parameterForKey:*MEMORY[0x277D41B48]];
-      v12 = [v6 parameterForKey:v10];
+      v12 = [equalCopy parameterForKey:v10];
       if (v11 == v12)
       {
         v13 = 1;
@@ -180,95 +180,95 @@
 
 - (id)textEffectContentDataSource
 {
-  v3 = [(JFXEffect *)self contentDataSource];
-  if (v3)
+  contentDataSource = [(JFXEffect *)self contentDataSource];
+  if (contentDataSource)
   {
-    v4 = v3;
-    v5 = [(JFXEffect *)self contentDataSource];
-    v6 = [v5 conformsToProtocol:&unk_2855DAE48];
+    v4 = contentDataSource;
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
+    v6 = [contentDataSource2 conformsToProtocol:&unk_2855DAE48];
 
     if (v6)
     {
-      v3 = [(JFXEffect *)self contentDataSource];
+      contentDataSource = [(JFXEffect *)self contentDataSource];
     }
 
     else
     {
-      v3 = 0;
+      contentDataSource = 0;
     }
   }
 
-  return v3;
+  return contentDataSource;
 }
 
 - (id)contentProperties
 {
-  v3 = [(JFXTextEffect *)self textEffectContentDataSource];
-  if (v3)
+  textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+  if (textEffectContentDataSource)
   {
     v22.receiver = self;
     v22.super_class = JFXTextEffect;
-    v4 = [(JFXEffect *)&v22 contentProperties];
-    v5 = [v4 mutableCopy];
+    contentProperties = [(JFXEffect *)&v22 contentProperties];
+    v5 = [contentProperties mutableCopy];
 
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:7];
-    v7 = [v3 localizedDefaultText];
+    contentProperties2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:7];
+    localizedDefaultText = [textEffectContentDataSource localizedDefaultText];
 
-    if (v7)
+    if (localizedDefaultText)
     {
-      v8 = [v3 localizedDefaultText];
-      [v6 setObject:v8 forKeyedSubscript:@"localizedDefaultText"];
+      localizedDefaultText2 = [textEffectContentDataSource localizedDefaultText];
+      [contentProperties2 setObject:localizedDefaultText2 forKeyedSubscript:@"localizedDefaultText"];
     }
 
-    v9 = [v3 localizedDefaultFontName];
+    localizedDefaultFontName = [textEffectContentDataSource localizedDefaultFontName];
 
-    if (v9)
+    if (localizedDefaultFontName)
     {
-      v10 = [v3 localizedDefaultFontName];
-      [v6 setObject:v10 forKeyedSubscript:@"localizedDefaultFontName"];
+      localizedDefaultFontName2 = [textEffectContentDataSource localizedDefaultFontName];
+      [contentProperties2 setObject:localizedDefaultFontName2 forKeyedSubscript:@"localizedDefaultFontName"];
     }
 
-    v11 = [v3 renderTextWithMotionWhenEditing];
+    renderTextWithMotionWhenEditing = [textEffectContentDataSource renderTextWithMotionWhenEditing];
 
-    if (v11)
+    if (renderTextWithMotionWhenEditing)
     {
-      v12 = [v3 renderTextWithMotionWhenEditing];
-      [v6 setObject:v12 forKeyedSubscript:@"renderTextWithMotionWhenEditing"];
+      renderTextWithMotionWhenEditing2 = [textEffectContentDataSource renderTextWithMotionWhenEditing];
+      [contentProperties2 setObject:renderTextWithMotionWhenEditing2 forKeyedSubscript:@"renderTextWithMotionWhenEditing"];
     }
 
-    v13 = [v3 textEditColor];
+    textEditColor = [textEffectContentDataSource textEditColor];
 
-    if (v13)
+    if (textEditColor)
     {
-      v14 = [v3 textEditColor];
-      [v6 setObject:v14 forKeyedSubscript:@"textEditColor"];
+      textEditColor2 = [textEffectContentDataSource textEditColor];
+      [contentProperties2 setObject:textEditColor2 forKeyedSubscript:@"textEditColor"];
     }
 
-    v15 = [v3 textEditSelectionTintColor];
+    textEditSelectionTintColor = [textEffectContentDataSource textEditSelectionTintColor];
 
-    if (v15)
+    if (textEditSelectionTintColor)
     {
-      v16 = [v3 textEditSelectionTintColor];
-      [v6 setObject:v16 forKeyedSubscript:@"textEditSelectionTintColor"];
+      textEditSelectionTintColor2 = [textEffectContentDataSource textEditSelectionTintColor];
+      [contentProperties2 setObject:textEditSelectionTintColor2 forKeyedSubscript:@"textEditSelectionTintColor"];
     }
 
-    v17 = [v3 maxCharacters];
+    maxCharacters = [textEffectContentDataSource maxCharacters];
 
-    if (v17)
+    if (maxCharacters)
     {
-      v18 = [v3 maxCharacters];
-      [v6 setObject:v18 forKeyedSubscript:@"maxCharacters"];
+      maxCharacters2 = [textEffectContentDataSource maxCharacters];
+      [contentProperties2 setObject:maxCharacters2 forKeyedSubscript:@"maxCharacters"];
     }
 
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isTextBakedIn")}];
-    [v6 setObject:v19 forKeyedSubscript:@"isTextBakedIn"];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(textEffectContentDataSource, "isTextBakedIn")}];
+    [contentProperties2 setObject:v19 forKeyedSubscript:@"isTextBakedIn"];
 
     if (v5)
     {
-      [v5 addEntriesFromDictionary:v6];
+      [v5 addEntriesFromDictionary:contentProperties2];
       v20 = v5;
 
-      v6 = v20;
+      contentProperties2 = v20;
     }
   }
 
@@ -276,20 +276,20 @@
   {
     v23.receiver = self;
     v23.super_class = JFXTextEffect;
-    v6 = [(JFXEffect *)&v23 contentProperties];
+    contentProperties2 = [(JFXEffect *)&v23 contentProperties];
   }
 
-  return v6;
+  return contentProperties2;
 }
 
 - (id)strings
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  v3 = [v2 effectParameters];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  effectParameters = [renderEffect effectParameters];
 
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D41B28]];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277D41B48]];
+  v5 = [effectParameters objectForKeyedSubscript:*MEMORY[0x277D41B28]];
+  v6 = [effectParameters objectForKeyedSubscript:*MEMORY[0x277D41B48]];
   if (v5)
   {
     [v4 addObject:v5];
@@ -303,17 +303,17 @@
   return v4;
 }
 
-- (void)setString:(id)a3 atIndex:(unint64_t)a4
+- (void)setString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v10 = v6;
+  stringCopy = string;
+  v10 = stringCopy;
   v7 = MEMORY[0x277D41B28];
-  if (a4)
+  if (index)
   {
     v7 = MEMORY[0x277D41B48];
   }
 
-  [(JFXEffect *)self setParameter:v6 forKey:*v7];
+  [(JFXEffect *)self setParameter:stringCopy forKey:*v7];
   if ([v10 length])
   {
     v8 = [v10 isEqualToString:@" "];
@@ -328,118 +328,118 @@
   [(JFXEffect *)self setParameter:v9 forKey:*MEMORY[0x277D41B00]];
 }
 
-- (void)enableDynamicLineSpacingForDiacritics:(BOOL)a3
+- (void)enableDynamicLineSpacingForDiacritics:(BOOL)diacritics
 {
   v4 = *MEMORY[0x277D41A58];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:diacritics];
   [(JFXEffect *)self setParameter:v5 forKey:v4];
 }
 
-- (void)setFont:(id)a3 atIndex:(unint64_t)a4
+- (void)setFont:(id)font atIndex:(unint64_t)index
 {
   v4 = MEMORY[0x277D41B10];
-  if (a4)
+  if (index)
   {
     v4 = MEMORY[0x277D41B30];
   }
 
-  [(JFXEffect *)self setParameter:a3 forKey:*v4];
+  [(JFXEffect *)self setParameter:font forKey:*v4];
 }
 
-- (void)setFontSize:(float)a3 atIndex:(unint64_t)a4
+- (void)setFontSize:(float)size atIndex:(unint64_t)index
 {
   v6 = MEMORY[0x277D41B20];
-  if (a4)
+  if (index)
   {
     v6 = MEMORY[0x277D41B40];
   }
 
   v7 = MEMORY[0x277CCABB0];
   v8 = *v6;
-  *&v9 = a3;
+  *&v9 = size;
   v10 = [v7 numberWithFloat:v9];
   [(JFXEffect *)self setParameter:v10 forKey:v8];
 }
 
-- (void)setFontScale:(float)a3 atIndex:(unint64_t)a4
+- (void)setFontScale:(float)scale atIndex:(unint64_t)index
 {
   v6 = MEMORY[0x277D41B18];
-  if (a4)
+  if (index)
   {
     v6 = MEMORY[0x277D41B38];
   }
 
   v7 = MEMORY[0x277CCABB0];
   v8 = *v6;
-  *&v9 = a3;
+  *&v9 = scale;
   v10 = [v7 numberWithFloat:v9];
   [(JFXEffect *)self setParameter:v10 forKey:v8];
 }
 
-- (id)defaultAttributedString:(unint64_t)a3
+- (id)defaultAttributedString:(unint64_t)string
 {
-  v4 = [(JFXEffect *)self renderEffect];
-  v5 = [v4 defaultAttributedString:a3];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v5 = [renderEffect defaultAttributedString:string];
 
   return v5;
 }
 
-- (id)defaultTypingAttributes:(unint64_t)a3
+- (id)defaultTypingAttributes:(unint64_t)attributes
 {
-  v4 = [(JFXEffect *)self renderEffect];
-  v5 = [v4 defaultAttributedString:a3];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v5 = [renderEffect defaultAttributedString:attributes];
 
   v6 = [v5 attributesAtIndex:0 effectiveRange:0];
 
   return v6;
 }
 
-- (id)textFramesAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7
+- (id)textFramesAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  v10 = *a3;
-  v7 = [JFXTextEffectFrame frameWithEffect:self relativeToSize:*&a7 origin:&v10 time:a4 forcePosterFrame:a5 includeDropShadow:1 includeTextFrames:a6.size.width, a6.size.height];
-  v8 = [v7 textFrames];
+  v10 = *time;
+  v7 = [JFXTextEffectFrame frameWithEffect:self relativeToSize:*&origin origin:&v10 time:frame forcePosterFrame:shadow includeDropShadow:1 includeTextFrames:to.size.width, to.size.height];
+  textFrames = [v7 textFrames];
 
-  return v8;
+  return textFrames;
 }
 
-- (id)textFrameAtIndex:(unint64_t)a3 time:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 relativeTo:(CGRect)a7 basisOrigin:(int)a8
+- (id)textFrameAtIndex:(unint64_t)index time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  v12 = *a4;
-  v9 = [(JFXTextEffect *)self textFramesAtTime:&v12 forcePosterFrame:a5 includeDropShadow:a6 relativeTo:*&a8 basisOrigin:a7.origin.x, a7.origin.y, a7.size.width, a7.size.height];
-  if ([v9 count] <= a3)
+  v12 = *time;
+  v9 = [(JFXTextEffect *)self textFramesAtTime:&v12 forcePosterFrame:frame includeDropShadow:shadow relativeTo:*&origin basisOrigin:to.origin.x, to.origin.y, to.size.width, to.size.height];
+  if ([v9 count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    v10 = [v9 objectAtIndexedSubscript:index];
   }
 
   return v10;
 }
 
-- (PVCGPointQuad)textCornersAtIndex:(SEL)a3 time:(unint64_t)a4 forcePosterFrame:(id *)a5 includeDropShadow:(BOOL)a6 scale:(BOOL)a7 relativeTo:(CGPoint)a8 basisOrigin:(CGRect)a9
+- (PVCGPointQuad)textCornersAtIndex:(SEL)index time:(unint64_t)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale relativeTo:(CGPoint)to basisOrigin:(CGRect)origin
 {
   v10 = *&a10;
-  v11 = a7;
-  v12 = a6;
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a8.y;
-  x = a8.x;
+  scaleCopy = scale;
+  shadowCopy = shadow;
+  height = origin.size.height;
+  width = origin.size.width;
+  y = to.y;
+  x = to.x;
   retstr->c = 0u;
   retstr->d = 0u;
   retstr->a = 0u;
   retstr->b = 0u;
-  v20 = [(JFXEffect *)self renderEffect];
-  v21 = v20;
-  if (v20)
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v21 = renderEffect;
+  if (renderEffect)
   {
-    v26 = *&a5->var0;
-    var3 = a5->var3;
-    [v20 textCornersAtTime:&v26 index:a4 forcePosterFrame:v12 includeDropShadow:v11 scale:v10 viewSize:x viewOrigin:{y, width, height}];
+    v26 = *&frame->var0;
+    var3 = frame->var3;
+    [renderEffect textCornersAtTime:&v26 index:time forcePosterFrame:shadowCopy includeDropShadow:scaleCopy scale:v10 viewSize:x viewOrigin:{y, width, height}];
   }
 
   else
@@ -464,54 +464,54 @@
   return result;
 }
 
-- (id)textBoundsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 includeMasks:(BOOL)a6
+- (id)textBoundsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = [(JFXEffect *)self renderEffect];
-  v13 = *a3;
-  v11 = [v10 textEditingBoundsAtTime:&v13 forcePosterFrame:v8 useParagraphBounds:1 includeDropShadow:v7 includeMasks:v6];
+  masksCopy = masks;
+  shadowCopy = shadow;
+  frameCopy = frame;
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v13 = *time;
+  v11 = [renderEffect textEditingBoundsAtTime:&v13 forcePosterFrame:frameCopy useParagraphBounds:1 includeDropShadow:shadowCopy includeMasks:masksCopy];
 
   return v11;
 }
 
-- (BOOL)textBounds:(CGRect *)a3 atIndex:(unint64_t)a4 time:(id *)a5 forcePosterFrame:(BOOL)a6 includeDropShadow:(BOOL)a7 includeMasks:(BOOL)a8
+- (BOOL)textBounds:(CGRect *)bounds atIndex:(unint64_t)index time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
-  v19 = *a5;
-  v10 = [(JFXTextEffect *)self textBoundsAtTime:&v19 forcePosterFrame:a6 includeDropShadow:a7 includeMasks:a8];
+  v19 = *time;
+  v10 = [(JFXTextEffect *)self textBoundsAtTime:&v19 forcePosterFrame:frame includeDropShadow:shadow includeMasks:masks];
   v11 = [v10 count];
-  if (v11 <= a4)
+  if (v11 <= index)
   {
     v17 = *(MEMORY[0x277CBF3A0] + 16);
-    a3->origin = *MEMORY[0x277CBF3A0];
-    a3->size = v17;
+    bounds->origin = *MEMORY[0x277CBF3A0];
+    bounds->size = v17;
   }
 
   else
   {
-    v12 = [v10 objectAtIndexedSubscript:a4];
+    v12 = [v10 objectAtIndexedSubscript:index];
     [v12 CGRectValue];
-    a3->origin.x = v13;
-    a3->origin.y = v14;
-    a3->size.width = v15;
-    a3->size.height = v16;
+    bounds->origin.x = v13;
+    bounds->origin.y = v14;
+    bounds->size.width = v15;
+    bounds->size.height = v16;
   }
 
-  return v11 > a4;
+  return v11 > index;
 }
 
-- (int64_t)textHitTest:(CGPoint)a3 time:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6
+- (int64_t)textHitTest:(CGPoint)test time:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  v6 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  v15 = [(JFXTextEffect *)self strings];
-  v16 = [v15 count];
+  v6 = *&origin;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v12 = test.y;
+  v13 = test.x;
+  strings = [(JFXTextEffect *)self strings];
+  v16 = [strings count];
 
   if (v16 < 1)
   {
@@ -522,8 +522,8 @@
   while (1)
   {
     memset(&v19[1], 0, sizeof(PVCGPointQuad));
-    v19[0].a = *&a4->var0;
-    *&v19[0].b.x = a4->var3;
+    v19[0].a = *&time->var0;
+    *&v19[0].b.x = time->var3;
     [(JFXTextEffect *)self textCornersAtIndex:v17 time:v19 forcePosterFrame:0 includeDropShadow:1 scale:v6 relativeTo:1.0 basisOrigin:1.0, x, y, width, height];
     v19[0] = v19[1];
     v20.x = v13;
@@ -544,105 +544,105 @@
 
 - (void)beginTextEditing
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  [v2 beginTextEditing];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect beginTextEditing];
 }
 
 - (void)endTextEditing
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  [v2 endTextEditing];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect endTextEditing];
 }
 
 - (unint64_t)maxCharacters
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (!v3)
+  if (!contentDataSource)
   {
     return -1;
   }
 
-  v4 = [(JFXTextEffect *)self textEffectContentDataSource];
-  v5 = v4;
-  if (v4 && ([v4 maxCharacters], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+  v5 = textEffectContentDataSource;
+  if (textEffectContentDataSource && ([textEffectContentDataSource maxCharacters], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)textBakedIn
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXTextEffect *)self textEffectContentDataSource];
-    v5 = v4;
-    if (v4)
+    textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+    editUIProperties = textEffectContentDataSource;
+    if (textEffectContentDataSource)
     {
-      v6 = [v4 isTextBakedIn];
+      isTextBakedIn = [textEffectContentDataSource isTextBakedIn];
     }
 
     else
     {
-      v6 = 1;
+      isTextBakedIn = 1;
     }
   }
 
   else
   {
-    v5 = [(JFXTextEffect *)self editUIProperties];
-    v7 = [(JFXEffect *)self effectID];
-    v8 = [v5 objectForKeyedSubscript:v7];
+    editUIProperties = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v8 = [editUIProperties objectForKeyedSubscript:effectID];
 
     if (v8 && ([v8 objectForKey:kJFXEffectPropertiesTextEditDisableTextEditing], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v9;
-      v6 = [v9 BOOLValue];
+      isTextBakedIn = [v9 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      isTextBakedIn = 0;
     }
   }
 
-  return v6;
+  return isTextBakedIn;
 }
 
 - (id)customTextEditColor
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXTextEffect *)self textEffectContentDataSource];
-    v5 = [v4 textEditColor];
+    textEffectContentDataSource = [(JFXTextEffect *)self textEffectContentDataSource];
+    textEditColor = [textEffectContentDataSource textEditColor];
   }
 
   else
   {
-    v6 = [(JFXEffect *)self effectID];
-    v7 = [JFXEffectEditingUtilities shouldRenderTextWithMotionWhileEditingTextForEffectID:v6];
+    effectID = [(JFXEffect *)self effectID];
+    v7 = [JFXEffectEditingUtilities shouldRenderTextWithMotionWhileEditingTextForEffectID:effectID];
 
     if (v7)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
+      textEditColor = [MEMORY[0x277D75348] clearColor];
       goto LABEL_13;
     }
 
-    v4 = [(JFXTextEffect *)self editUIProperties];
-    v8 = [(JFXEffect *)self effectID];
-    v9 = [v4 objectForKeyedSubscript:v8];
+    textEffectContentDataSource = [(JFXTextEffect *)self editUIProperties];
+    effectID2 = [(JFXEffect *)self effectID];
+    v9 = [textEffectContentDataSource objectForKeyedSubscript:effectID2];
 
     if (v9)
     {
@@ -658,46 +658,46 @@
         v17 = v16;
         v18 = [v10 objectAtIndexedSubscript:2];
         [v18 doubleValue];
-        v5 = [v11 colorWithRed:v14 green:v17 blue:v19 alpha:1.0];
+        textEditColor = [v11 colorWithRed:v14 green:v17 blue:v19 alpha:1.0];
       }
 
       else
       {
-        v5 = 0;
+        textEditColor = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      textEditColor = 0;
     }
   }
 
 LABEL_13:
 
-  return v5;
+  return textEditColor;
 }
 
 - (UIColor)customTextEditTintColor
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = objc_opt_self();
-    v5 = [v4 textEffectContentDataSource];
-    v6 = [v5 textEditSelectionTintColor];
+    editUIProperties = objc_opt_self();
+    textEffectContentDataSource = [editUIProperties textEffectContentDataSource];
+    textEditSelectionTintColor = [textEffectContentDataSource textEditSelectionTintColor];
   }
 
   else
   {
-    v4 = [(JFXTextEffect *)self editUIProperties];
-    v7 = [(JFXEffect *)self effectID];
-    v5 = [v4 objectForKeyedSubscript:v7];
+    editUIProperties = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    textEffectContentDataSource = [editUIProperties objectForKeyedSubscript:effectID];
 
-    if (v5)
+    if (textEffectContentDataSource)
     {
-      v8 = [v5 objectForKeyedSubscript:kJFXEffectPropertiesTextEditTintColorKey];
+      v8 = [textEffectContentDataSource objectForKeyedSubscript:kJFXEffectPropertiesTextEditTintColorKey];
       v9 = v8;
       if (v8)
       {
@@ -710,22 +710,22 @@ LABEL_13:
         v16 = v15;
         v17 = [v9 objectAtIndexedSubscript:2];
         [v17 floatValue];
-        v6 = [v10 colorWithRed:v13 green:v16 blue:v18 alpha:1.0];
+        textEditSelectionTintColor = [v10 colorWithRed:v13 green:v16 blue:v18 alpha:1.0];
       }
 
       else
       {
-        v6 = 0;
+        textEditSelectionTintColor = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      textEditSelectionTintColor = 0;
     }
   }
 
-  return v6;
+  return textEditSelectionTintColor;
 }
 
 - (id)editUIProperties

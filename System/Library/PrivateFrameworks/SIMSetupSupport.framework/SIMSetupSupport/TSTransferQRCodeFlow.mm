@@ -1,41 +1,41 @@
 @interface TSTransferQRCodeFlow
-- (TSTransferQRCodeFlow)initWithIccid:(id)a3;
-- (void)firstViewController:(id)a3;
+- (TSTransferQRCodeFlow)initWithIccid:(id)iccid;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSTransferQRCodeFlow
 
-- (TSTransferQRCodeFlow)initWithIccid:(id)a3
+- (TSTransferQRCodeFlow)initWithIccid:(id)iccid
 {
-  v5 = a3;
+  iccidCopy = iccid;
   v9.receiver = self;
   v9.super_class = TSTransferQRCodeFlow;
   v6 = [(TSSIMSetupFlow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iccid, a3);
+    objc_storeStrong(&v6->_iccid, iccid);
   }
 
   return v7;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     if (_os_feature_enabled_impl())
     {
       v5 = +[TSCellularPlanManagerCache sharedInstance];
-      v6 = [v5 planItems];
+      planItems = [v5 planItems];
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v7 = v6;
+      v7 = planItems;
       v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v8)
       {
@@ -50,14 +50,14 @@
             }
 
             v11 = *(*(&v25 + 1) + 8 * i);
-            v12 = [v11 iccid];
-            v13 = [v12 isEqualToString:self->_iccid];
+            iccid = [v11 iccid];
+            v13 = [iccid isEqualToString:self->_iccid];
 
             if (v13)
             {
-              v15 = [v11 carrierName];
+              carrierName = [v11 carrierName];
               carrierName = self->_carrierName;
-              self->_carrierName = v15;
+              self->_carrierName = carrierName;
 
               goto LABEL_16;
             }
@@ -75,7 +75,7 @@
 
 LABEL_16:
 
-      v17 = MEMORY[0x2667315D0](v4);
+      v17 = MEMORY[0x2667315D0](controllerCopy);
       objc_initWeak(buf, self);
       v18 = +[TSCoreTelephonyClientCache sharedInstance];
       iccid = self->_iccid;
@@ -103,7 +103,7 @@ LABEL_16:
         _os_log_impl(&dword_262AA8000, v14, OS_LOG_TYPE_DEFAULT, "SIMSetupSupport/MagnoliaOverQRCode is disabled @%s", buf, 0xCu);
       }
 
-      v4[2](v4, 0);
+      controllerCopy[2](controllerCopy, 0);
     }
   }
 

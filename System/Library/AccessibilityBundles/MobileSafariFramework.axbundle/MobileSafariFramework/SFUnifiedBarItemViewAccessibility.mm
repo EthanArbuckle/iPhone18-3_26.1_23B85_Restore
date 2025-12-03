@@ -9,8 +9,8 @@
 {
   v18.receiver = self;
   v18.super_class = SFUnifiedBarItemViewAccessibility;
-  v3 = [(SFUnifiedBarItemViewAccessibility *)&v18 accessibilityLabel];
-  if (!v3)
+  accessibilityLabel = [(SFUnifiedBarItemViewAccessibility *)&v18 accessibilityLabel];
+  if (!accessibilityLabel)
   {
     v4 = [(SFUnifiedBarItemViewAccessibility *)self safeValueForKey:@"item"];
     if (!v4)
@@ -25,17 +25,17 @@
       v7 = 3221225472;
       v8 = __55__SFUnifiedBarItemViewAccessibility_accessibilityLabel__block_invoke;
       v9 = &unk_29F2D6778;
-      v10 = self;
+      selfCopy = self;
       v11 = &v12;
       AXPerformSafeBlock();
       v4 = v13[5];
       _Block_object_dispose(&v12, 8);
     }
 
-    v3 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 void __55__SFUnifiedBarItemViewAccessibility_accessibilityLabel__block_invoke(uint64_t a1)
@@ -51,9 +51,9 @@ void __55__SFUnifiedBarItemViewAccessibility_accessibilityLabel__block_invoke(ui
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _allSubviews];
+  _allSubviews = [v2 _allSubviews];
 
-  return v3;
+  return _allSubviews;
 }
 
 @end

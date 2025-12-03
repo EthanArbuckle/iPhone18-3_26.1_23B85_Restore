@@ -7,9 +7,9 @@
 
 + (id)predicateForSyncablePodcastsForSyncType:()NSPredicate_App
 {
-  v4 = [a1 predicateForNotHiddenNotImplicitlyFollowedPodcasts];
+  predicateForNotHiddenNotImplicitlyFollowedPodcasts = [self predicateForNotHiddenNotImplicitlyFollowedPodcasts];
   v5 = [MEMORY[0x277D3DB38] predicateForSubscriptionSyncType:a3];
-  v6 = [v4 AND:v5];
+  v6 = [predicateForNotHiddenNotImplicitlyFollowedPodcasts AND:v5];
 
   return v6;
 }

@@ -1,16 +1,16 @@
 @interface ICBackoffTimer
 - (BOOL)isScheduled;
 - (ICBackoffTimer)init;
-- (ICBackoffTimer)initWithInitialInterval:(double)a3 maxInterval:(double)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7;
+- (ICBackoffTimer)initWithInitialInterval:(double)interval maxInterval:(double)maxInterval target:(id)target selector:(SEL)selector userInfo:(id)info;
 - (SEL)selector;
 - (double)nextTimeInterval;
 - (id)target;
 - (void)dealloc;
 - (void)fire;
-- (void)fire:(id)a3;
+- (void)fire:(id)fire;
 - (void)invalidate;
 - (void)scheduleToFire;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation ICBackoffTimer
@@ -22,21 +22,21 @@
   return 0;
 }
 
-- (ICBackoffTimer)initWithInitialInterval:(double)a3 maxInterval:(double)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7
+- (ICBackoffTimer)initWithInitialInterval:(double)interval maxInterval:(double)maxInterval target:(id)target selector:(SEL)selector userInfo:(id)info
 {
-  v12 = a5;
-  v13 = a7;
+  targetCopy = target;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = ICBackoffTimer;
   v14 = [(ICBackoffTimer *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(ICBackoffTimer *)v14 setInitialTimeInterval:a3];
-    [(ICBackoffTimer *)v15 setMaxTimeInterval:a4];
-    [(ICBackoffTimer *)v15 setTarget:v12];
-    [(ICBackoffTimer *)v15 setSelector:a6];
-    [(ICBackoffTimer *)v15 setUserInfo:v13];
+    [(ICBackoffTimer *)v14 setInitialTimeInterval:interval];
+    [(ICBackoffTimer *)v15 setMaxTimeInterval:maxInterval];
+    [(ICBackoffTimer *)v15 setTarget:targetCopy];
+    [(ICBackoffTimer *)v15 setSelector:selector];
+    [(ICBackoffTimer *)v15 setUserInfo:infoCopy];
     [(ICBackoffTimer *)v15 setBackoffCount:0];
   }
 
@@ -75,27 +75,27 @@ void __25__ICBackoffTimer_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)fire:(id)a3
+- (void)fire:(id)fire
 {
-  v4 = a3;
-  v9 = [(ICBackoffTimer *)self timer];
+  fireCopy = fire;
+  timer = [(ICBackoffTimer *)self timer];
 
-  v5 = v9;
-  if (v9 == v4)
+  v5 = timer;
+  if (timer == fireCopy)
   {
-    v6 = [(ICBackoffTimer *)self target];
+    target = [(ICBackoffTimer *)self target];
 
-    if (!v6)
+    if (!target)
     {
       return;
     }
 
-    v7 = [(ICBackoffTimer *)self target];
-    v8 = [v7 methodForSelector:{-[ICBackoffTimer selector](self, "selector")}];
+    target2 = [(ICBackoffTimer *)self target];
+    v8 = [target2 methodForSelector:{-[ICBackoffTimer selector](self, "selector")}];
 
-    v10 = [(ICBackoffTimer *)self target];
-    v8(v10, [(ICBackoffTimer *)self selector], self);
-    v5 = v10;
+    target3 = [(ICBackoffTimer *)self target];
+    v8(target3, [(ICBackoffTimer *)self selector], self);
+    v5 = target3;
   }
 }
 
@@ -214,19 +214,19 @@ uint64_t __22__ICBackoffTimer_fire__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

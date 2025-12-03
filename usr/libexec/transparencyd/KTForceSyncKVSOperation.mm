@@ -1,25 +1,25 @@
 @interface KTForceSyncKVSOperation
-- (KTForceSyncKVSOperation)initWithDependencies:(id)a3 timeout:(unint64_t)a4 intendedState:(id)a5 errorState:(id)a6;
+- (KTForceSyncKVSOperation)initWithDependencies:(id)dependencies timeout:(unint64_t)timeout intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
 @implementation KTForceSyncKVSOperation
 
-- (KTForceSyncKVSOperation)initWithDependencies:(id)a3 timeout:(unint64_t)a4 intendedState:(id)a5 errorState:(id)a6
+- (KTForceSyncKVSOperation)initWithDependencies:(id)dependencies timeout:(unint64_t)timeout intendedState:(id)state errorState:(id)errorState
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v17.receiver = self;
   v17.super_class = KTForceSyncKVSOperation;
   v14 = [(KTGroupOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_deps, a3);
-    v15->_timeout = a4;
-    objc_storeStrong(&v15->_intendedState, a5);
-    objc_storeStrong(&v15->_nextState, a6);
+    objc_storeStrong(&v14->_deps, dependencies);
+    v15->_timeout = timeout;
+    objc_storeStrong(&v15->_intendedState, state);
+    objc_storeStrong(&v15->_nextState, errorState);
   }
 
   return v15;
@@ -44,16 +44,16 @@
 
   v5 = objc_alloc_init(KTResultOperation);
   v6 = [(KTResultOperation *)v5 timeout:[(KTForceSyncKVSOperation *)self timeout]];
-  v7 = [(KTForceSyncKVSOperation *)self finishedOp];
-  [(KTResultOperation *)v5 addDependency:v7];
+  finishedOp = [(KTForceSyncKVSOperation *)self finishedOp];
+  [(KTResultOperation *)v5 addDependency:finishedOp];
 
   [(KTGroupOperation *)self dependOnBeforeGroupFinished:v5];
-  v8 = [(KTGroupOperation *)self operationQueue];
-  [v8 addOperation:v5];
+  operationQueue = [(KTGroupOperation *)self operationQueue];
+  [operationQueue addOperation:v5];
 
   objc_initWeak(buf, self);
-  v9 = [(KTForceSyncKVSOperation *)self deps];
-  v10 = [v9 kvs];
+  deps = [(KTForceSyncKVSOperation *)self deps];
+  v10 = [deps kvs];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001A2318;

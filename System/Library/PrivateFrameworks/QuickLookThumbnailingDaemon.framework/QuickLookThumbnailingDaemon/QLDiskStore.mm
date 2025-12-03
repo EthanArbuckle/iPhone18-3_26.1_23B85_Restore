@@ -1,17 +1,17 @@
 @interface QLDiskStore
-+ (id)diskStoreForURL:(id)a3;
++ (id)diskStoreForURL:(id)l;
 + (id)diskStores;
 - (BOOL)distant;
-- (QLDiskStore)initWithURL:(id)a3;
-- (void)executeBlock:(id)a3 onQueue:(id)a4;
+- (QLDiskStore)initWithURL:(id)l;
+- (void)executeBlock:(id)block onQueue:(id)queue;
 @end
 
 @implementation QLDiskStore
 
-- (QLDiskStore)initWithURL:(id)a3
+- (QLDiskStore)initWithURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = QLDiskStore;
   v5 = [(QLDiskStore *)&v14 init];
@@ -21,12 +21,12 @@
   }
 
   memset(&__src, 0, 512);
-  if (!CFURLGetFileSystemRepresentation(v4, 1u, buffer, 1024))
+  if (!CFURLGetFileSystemRepresentation(lCopy, 1u, buffer, 1024))
   {
     v6 = _log_2();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(QLDiskStore *)v4 initWithURL:v6];
+      [(QLDiskStore *)lCopy initWithURL:v6];
     }
 
     goto LABEL_8;
@@ -95,17 +95,17 @@ uint64_t __27__QLDiskStore_initWithURL___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)diskStoreForURL:(id)a3
++ (id)diskStoreForURL:(id)l
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   memset(&v11, 0, 512);
-  if (([v4 getFileSystemRepresentation:v10 maxLength:1024] & 1) == 0)
+  if (([lCopy getFileSystemRepresentation:v10 maxLength:1024] & 1) == 0)
   {
     v5 = _log_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(QLDiskStore *)v4 initWithURL:v5];
+      [(QLDiskStore *)lCopy initWithURL:v5];
     }
 
     goto LABEL_7;
@@ -136,7 +136,7 @@ LABEL_7:
   v6 = CFDictionaryGetValue(Mutable, &v11.f_fsid);
   if (!v6)
   {
-    v6 = [[a1 alloc] initWithURL:v4];
+    v6 = [[self alloc] initWithURL:lCopy];
   }
 
   pthread_mutex_unlock(&lock);
@@ -147,19 +147,19 @@ LABEL_8:
   return v6;
 }
 
-- (void)executeBlock:(id)a3 onQueue:(id)a4
+- (void)executeBlock:(id)block onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   afterInit = self->_afterInit;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__QLDiskStore_executeBlock_onQueue___block_invoke;
   v11[3] = &unk_279ADD550;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_async(afterInit, v11);
 }
 

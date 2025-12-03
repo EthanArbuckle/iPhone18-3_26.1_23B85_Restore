@@ -1,35 +1,35 @@
 @interface ESDAgentManager
 + (id)sharedManager;
-- (BOOL)_clearOrphanedStoresInCalendarDatabase:(CalDatabase *)a3 eventAccountIds:(id)a4 toDoAccountIds:(id)a5;
-- (BOOL)_hasDataclassWeCareAbout:(id)a3;
+- (BOOL)_clearOrphanedStoresInCalendarDatabase:(CalDatabase *)database eventAccountIds:(id)ids toDoAccountIds:(id)accountIds;
+- (BOOL)_hasDataclassWeCareAbout:(id)about;
 - (BOOL)_systemMayNowBeReady;
-- (BOOL)addPersistMonitoringAccountID:(id)a3 folderIDs:(id)a4 clientID:(id)a5;
-- (BOOL)clearPersistMonitoringAccountID:(id)a3 clientID:(id)a4;
+- (BOOL)addPersistMonitoringAccountID:(id)d folderIDs:(id)ds clientID:(id)iD;
+- (BOOL)clearPersistMonitoringAccountID:(id)d clientID:(id)iD;
 - (BOOL)hasActiveAccounts;
 - (BOOL)hasEASAccountConfigured;
-- (BOOL)processFolderChange:(id)a3 forAccountWithID:(id)a4 completionBlock:(id)a5;
-- (BOOL)removePersistMonitoringAccountID:(id)a3 folderIDs:(id)a4 clientID:(id)a5;
-- (BOOL)resetCertWarningsForAccountWithId:(id)a3 andDataclasses:(int64_t)a4;
-- (BOOL)resumeMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5 forAccountID:(id)a6;
-- (BOOL)startMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)stopMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)suspendMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)updateContentsOfAllFoldersForAccountID:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (BOOL)updateContentsOfFolders:(id)a3 forAccountID:(id)a4 andDataclasses:(int64_t)a5 isUserRequested:(BOOL)a6;
-- (BOOL)updateFolderListForAccountID:(id)a3 andDataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6;
+- (BOOL)processFolderChange:(id)change forAccountWithID:(id)d completionBlock:(id)block;
+- (BOOL)removePersistMonitoringAccountID:(id)d folderIDs:(id)ds clientID:(id)iD;
+- (BOOL)resetCertWarningsForAccountWithId:(id)id andDataclasses:(int64_t)dataclasses;
+- (BOOL)resumeMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag forAccountID:(id)d;
+- (BOOL)startMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)stopMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)suspendMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)updateContentsOfAllFoldersForAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (BOOL)updateContentsOfFolders:(id)folders forAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (BOOL)updateFolderListForAccountID:(id)d andDataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested;
 - (ESDAgentManager)init;
 - (NSArray)activeAgents;
 - (id)_accountInfoPath;
-- (id)_configFileForAgent:(id)a3;
+- (id)_configFileForAgent:(id)agent;
 - (id)_phoneVersion;
-- (id)accountWithAccountID:(id)a3;
-- (id)accountWithAccountID:(id)a3 andClassName:(id)a4;
-- (id)accountsProviderWithDBHelper:(id)a3;
+- (id)accountWithAccountID:(id)d;
+- (id)accountWithAccountID:(id)d andClassName:(id)name;
+- (id)accountsProviderWithDBHelper:(id)helper;
 - (id)activeAccountBundleIDs;
-- (id)agentWithAccountID:(id)a3;
-- (id)changeHistoryClerkWithDBHelper:(id)a3;
-- (id)currentPolicyKeyForAccount:(id)a3;
+- (id)agentWithAccountID:(id)d;
+- (id)changeHistoryClerkWithDBHelper:(id)helper;
+- (id)currentPolicyKeyForAccount:(id)account;
 - (id)stateString;
 - (unint64_t)disableMonitoringAgents;
 - (void)_addAccountAggdEntries;
@@ -48,15 +48,15 @@
 - (void)disableDaemon;
 - (void)enableActiveSync;
 - (void)enableDaemon;
-- (void)enableMonitoringAgentsWithToken:(unint64_t)a3;
-- (void)getStatusReportDictsWithCompletionBlock:(id)a3;
+- (void)enableMonitoringAgentsWithToken:(unint64_t)token;
+- (void)getStatusReportDictsWithCompletionBlock:(id)block;
 - (void)loadAgents;
 - (void)loadExchangeAgents;
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7 callback:(id)a8;
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId callback:(id)callback;
 - (void)registerForBuddy;
 - (void)removePendingAccountSetup;
-- (void)reportFolderItemsSyncSuccess:(BOOL)a3 forFolderWithID:(id)a4 withItemsCount:(unint64_t)a5 andAccountWithID:(id)a6;
-- (void)requestPolicyUpdateForAccount:(id)a3;
+- (void)reportFolderItemsSyncSuccess:(BOOL)success forFolderWithID:(id)d withItemsCount:(unint64_t)count andAccountWithID:(id)iD;
+- (void)requestPolicyUpdateForAccount:(id)account;
 - (void)saveAndReleaseAgents;
 @end
 
@@ -96,9 +96,9 @@ uint64_t __32__ESDAgentManager_sharedManager__block_invoke()
       v3->_pmRunLoopSource = RunLoopSource;
       if (RunLoopSource)
       {
-        v5 = [MEMORY[0x277D037D0] sharedRunLoop];
-        v6 = [v5 getCFRunLoop];
-        CFRunLoopAddSource(v6, v3->_pmRunLoopSource, *MEMORY[0x277CBF048]);
+        mEMORY[0x277D037D0] = [MEMORY[0x277D037D0] sharedRunLoop];
+        getCFRunLoop = [mEMORY[0x277D037D0] getCFRunLoop];
+        CFRunLoopAddSource(getCFRunLoop, v3->_pmRunLoopSource, *MEMORY[0x277CBF048]);
 
         v7 = DALoggingwithCategory();
         v8 = *(MEMORY[0x277D03988] + 6);
@@ -157,9 +157,9 @@ LABEL_10:
 {
   if (self->_pmRunLoopSource)
   {
-    v3 = [MEMORY[0x277D037D0] sharedRunLoop];
-    v4 = [v3 getCFRunLoop];
-    CFRunLoopRemoveSource(v4, self->_pmRunLoopSource, *MEMORY[0x277CBF048]);
+    mEMORY[0x277D037D0] = [MEMORY[0x277D037D0] sharedRunLoop];
+    getCFRunLoop = [mEMORY[0x277D037D0] getCFRunLoop];
+    CFRunLoopRemoveSource(getCFRunLoop, self->_pmRunLoopSource, *MEMORY[0x277CBF048]);
 
     CFRunLoopSourceInvalidate(self->_pmRunLoopSource);
   }
@@ -227,58 +227,58 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountsProviderWithDBHelper:(id)a3
+- (id)accountsProviderWithDBHelper:(id)helper
 {
-  v3 = a3;
-  v4 = [v3 useContacts];
+  helperCopy = helper;
+  useContacts = [helperCopy useContacts];
   v5 = MEMORY[0x277D03770];
-  if (v4)
+  if (useContacts)
   {
-    v6 = [v3 contactStore];
+    contactStore = [helperCopy contactStore];
 
-    v7 = [v5 providerWithContactStore:v6];
+    v7 = [v5 providerWithContactStore:contactStore];
   }
 
   else
   {
-    v8 = [v3 abDB];
+    abDB = [helperCopy abDB];
 
-    v7 = [v5 providerWithAddressBook:v8];
+    v7 = [v5 providerWithAddressBook:abDB];
   }
 
   return v7;
 }
 
-- (id)changeHistoryClerkWithDBHelper:(id)a3
+- (id)changeHistoryClerkWithDBHelper:(id)helper
 {
-  v3 = a3;
-  if ([v3 useContacts])
+  helperCopy = helper;
+  if ([helperCopy useContacts])
   {
-    v4 = [v3 contactStore];
+    contactStore = [helperCopy contactStore];
 
-    v5 = [DAChangeHistoryClerk clerkWithContactStore:v4];
+    v5 = [DAChangeHistoryClerk clerkWithContactStore:contactStore];
   }
 
   else
   {
-    v6 = [v3 abDB];
+    abDB = [helperCopy abDB];
 
-    v5 = [DAChangeHistoryClerk clerkWithAddressBook:v6];
+    v5 = [DAChangeHistoryClerk clerkWithAddressBook:abDB];
   }
 
   return v5;
 }
 
-- (id)agentWithAccountID:(id)a3
+- (id)agentWithAccountID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [activeAgents countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -290,13 +290,13 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeAgents);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 account];
-        v13 = [v12 accountID];
-        v14 = [v13 isEqualToString:v4];
+        account = [v11 account];
+        accountID = [account accountID];
+        v14 = [accountID isEqualToString:dCopy];
 
         if (v14)
         {
@@ -306,7 +306,7 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [activeAgents countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -322,51 +322,51 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)accountWithAccountID:(id)a3
+- (id)accountWithAccountID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [activeAgents countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    account = 0;
     v9 = 0;
     v10 = *v20;
     do
     {
       v11 = 0;
-      v12 = v8;
+      v12 = account;
       do
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * v11) account];
+        account = [*(*(&v19 + 1) + 8 * v11) account];
 
-        v13 = [v8 accountID];
-        v14 = [v13 isEqualToString:v4];
+        accountID = [account accountID];
+        v14 = [accountID isEqualToString:dCopy];
 
         if (v14)
         {
-          v15 = v8;
+          v15 = account;
 
           v9 = v15;
         }
 
         ++v11;
-        v12 = v8;
+        v12 = account;
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [activeAgents countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -374,7 +374,7 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = 0;
+    account = 0;
     v9 = 0;
   }
 
@@ -384,39 +384,39 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)accountWithAccountID:(id)a3 andClassName:(id)a4
+- (id)accountWithAccountID:(id)d andClassName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
-  NSClassFromString(v20);
-  v7 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  nameCopy = name;
+  NSClassFromString(nameCopy);
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    account = 0;
     v11 = 0;
     v12 = *v22;
     while (1)
     {
       v13 = 0;
-      v14 = v10;
+      v14 = account;
       do
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v10 = [*(*(&v21 + 1) + 8 * v13) account];
+        account = [*(*(&v21 + 1) + 8 * v13) account];
 
-        v15 = [v10 accountID];
-        if ([v15 isEqualToString:v6])
+        accountID = [account accountID];
+        if ([accountID isEqualToString:dCopy])
         {
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -425,17 +425,17 @@ void __31__ESDAgentManager_activeAgents__block_invoke(uint64_t a1)
             goto LABEL_10;
           }
 
-          v15 = v11;
-          v11 = v10;
+          accountID = v11;
+          v11 = account;
         }
 
 LABEL_10:
         ++v13;
-        v14 = v10;
+        v14 = account;
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [activeAgents countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v9)
       {
         goto LABEL_14;
@@ -443,7 +443,7 @@ LABEL_10:
     }
   }
 
-  v10 = 0;
+  account = 0;
   v11 = 0;
 LABEL_14:
   v17 = v11;
@@ -452,20 +452,20 @@ LABEL_14:
   return v11;
 }
 
-- (id)_configFileForAgent:(id)a3
+- (id)_configFileForAgent:(id)agent
 {
-  v3 = a3;
+  agentCopy = agent;
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v5 = [v4 objectAtIndexedSubscript:0];
 
   v6 = [v5 stringByAppendingPathComponent:@"DataAccess"];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v8 = [v3 account];
+  account = [agentCopy account];
 
-  v9 = [v8 accountID];
-  v10 = [v6 stringByAppendingPathComponent:v9];
+  accountID = [account accountID];
+  v10 = [v6 stringByAppendingPathComponent:accountID];
 
   return v10;
 }
@@ -476,8 +476,8 @@ LABEL_14:
   v3 = [v2 objectAtIndexedSubscript:0];
 
   v4 = [v3 stringByAppendingPathComponent:@"DataAccess"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   v6 = [v4 stringByAppendingPathComponent:@"AccountInformation.plist"];
 
@@ -523,26 +523,26 @@ LABEL_14:
   type = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, type))
   {
-    v4 = [(ESDAgentManager *)self _phoneVersion];
+    _phoneVersion = [(ESDAgentManager *)self _phoneVersion];
     *buf = 138412290;
-    v122 = v4;
+    v122 = _phoneVersion;
     _os_log_impl(&dword_24A184000, v3, type, "iPhone Version %@", buf, 0xCu);
   }
 
-  v76 = self;
-  objc_sync_enter(v76);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v82 = objc_opt_new();
   v88 = objc_opt_new();
   v86 = objc_opt_new();
-  v91 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v87 = sharedDAAccountStore();
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v5 = [MEMORY[0x277D079E8] _leafExchangeAccountTypes];
-  v6 = [v5 countByEnumeratingWithState:&v115 objects:v129 count:16];
-  obj = v5;
+  _leafExchangeAccountTypes = [MEMORY[0x277D079E8] _leafExchangeAccountTypes];
+  v6 = [_leafExchangeAccountTypes countByEnumeratingWithState:&v115 objects:v129 count:16];
+  obj = _leafExchangeAccountTypes;
   if (v6)
   {
     v81 = 0;
@@ -588,8 +588,8 @@ LABEL_14:
                 }
 
                 v16 = *(*(&v111 + 1) + 8 * i);
-                v17 = [MEMORY[0x277D079F0] sharedInstance];
-                v18 = [v17 daemonAppropriateAccountClassForACAccount:v16];
+                mEMORY[0x277D079F0] = [MEMORY[0x277D079F0] sharedInstance];
+                v18 = [mEMORY[0x277D079F0] daemonAppropriateAccountClassForACAccount:v16];
 
                 v19 = [[v18 alloc] initWithBackingAccountInfo:v16];
                 if (v19)
@@ -605,7 +605,7 @@ LABEL_14:
                     _os_log_impl(&dword_24A184000, v20, type, "Creating an agent for account info %@ (%{public}@)", buf, 0x16u);
                   }
 
-                  [v91 addObject:v19];
+                  [array addObject:v19];
                   v13 = 1;
                 }
 
@@ -657,14 +657,14 @@ LABEL_14:
     v81 = 0;
   }
 
-  v25 = [MEMORY[0x277D03788] sharedKeychain];
-  [v25 removePersistentCredentials];
+  mEMORY[0x277D03788] = [MEMORY[0x277D03788] sharedKeychain];
+  [mEMORY[0x277D03788] removePersistentCredentials];
 
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v26 = v91;
+  v26 = array;
   v27 = [v26 countByEnumeratingWithState:&v107 objects:v127 count:16];
   if (v27)
   {
@@ -679,10 +679,10 @@ LABEL_14:
         }
 
         v29 = *(*(&v107 + 1) + 8 * j);
-        v30 = [v29 accountID];
-        if (v30)
+        accountID = [v29 accountID];
+        if (accountID)
         {
-          [v86 addObject:v30];
+          [v86 addObject:accountID];
         }
 
         if ([v29 isDisabled])
@@ -690,14 +690,14 @@ LABEL_14:
           v31 = DALoggingwithCategory();
           if (os_log_type_enabled(v31, type))
           {
-            v32 = [v29 accountDescription];
-            v33 = [v29 accountID];
+            accountDescription = [v29 accountDescription];
+            accountID2 = [v29 accountID];
             v34 = objc_opt_class();
             v35 = NSStringFromClass(v34);
             *buf = 138543874;
-            v122 = v32;
+            v122 = accountDescription;
             v123 = 2112;
-            v124 = v33;
+            v124 = accountID2;
             v125 = 2114;
             v126 = v35;
             _os_log_impl(&dword_24A184000, v31, type, "Not loading an agent for account %{public}@ (%@) (%{public}@), because it is disabled", buf, 0x20u);
@@ -706,30 +706,30 @@ LABEL_14:
 
         else
         {
-          v36 = [MEMORY[0x277D079F0] sharedInstance];
-          v37 = [v29 backingAccountInfo];
-          v38 = [v36 agentClassForACAccount:v37];
+          mEMORY[0x277D079F0]2 = [MEMORY[0x277D079F0] sharedInstance];
+          backingAccountInfo = [v29 backingAccountInfo];
+          v38 = [mEMORY[0x277D079F0]2 agentClassForACAccount:backingAccountInfo];
 
           if (v38)
           {
             v39 = DALoggingwithCategory();
             if (os_log_type_enabled(v39, type))
             {
-              v40 = [v29 accountDescription];
-              v41 = [v29 accountID];
+              accountDescription2 = [v29 accountDescription];
+              accountID3 = [v29 accountID];
               v42 = objc_opt_class();
               v43 = NSStringFromClass(v42);
               *buf = 138543874;
-              v122 = v40;
+              v122 = accountDescription2;
               v123 = 2112;
-              v124 = v41;
+              v124 = accountID3;
               v125 = 2114;
               v126 = v43;
               _os_log_impl(&dword_24A184000, v39, type, "Loading up agent for account %{public}@ (%@) (%{public}@)", buf, 0x20u);
             }
 
-            v44 = [v29 accountID];
-            [v88 addObject:v44];
+            accountID4 = [v29 accountID];
+            [v88 addObject:accountID4];
 
             v31 = [[v38 alloc] initWithAccount:v29];
             [v82 addObject:v31];
@@ -740,14 +740,14 @@ LABEL_14:
             v31 = DALoggingwithCategory();
             if (os_log_type_enabled(v31, type))
             {
-              v45 = [v29 accountDescription];
-              v46 = [v29 accountID];
+              accountDescription3 = [v29 accountDescription];
+              accountID5 = [v29 accountID];
               v47 = objc_opt_class();
               v48 = NSStringFromClass(v47);
               *buf = 138543874;
-              v122 = v45;
+              v122 = accountDescription3;
               v123 = 2112;
-              v124 = v46;
+              v124 = accountID5;
               v125 = 2114;
               v126 = v48;
               _os_log_impl(&dword_24A184000, v31, type, "Not loading an agent for account %{public}@ (%@) (%{public}@), because agentClass is nil", buf, 0x20u);
@@ -764,15 +764,15 @@ LABEL_14:
 
   if ([v82 count])
   {
-    activeAgentsQueue = v76->_activeAgentsQueue;
+    activeAgentsQueue = selfCopy->_activeAgentsQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__ESDAgentManager_loadExchangeAgents__block_invoke;
     block[3] = &unk_278FCDB98;
-    block[4] = v76;
+    block[4] = selfCopy;
     v106 = v82;
     dispatch_sync(activeAgentsQueue, block);
-    [(ESDAgentManager *)v76 enableDaemon];
+    [(ESDAgentManager *)selfCopy enableDaemon];
   }
 
   if (v81)
@@ -784,7 +784,7 @@ LABEL_14:
       _os_log_impl(&dword_24A184000, v50, type, "Enable active sync", buf, 2u);
     }
 
-    [(ESDAgentManager *)v76 enableActiveSync];
+    [(ESDAgentManager *)selfCopy enableActiveSync];
   }
 
   else
@@ -796,14 +796,14 @@ LABEL_14:
       _os_log_impl(&dword_24A184000, v51, type, "Disable active sync", buf, 2u);
     }
 
-    [(ESDAgentManager *)v76 disableActiveSync];
+    [(ESDAgentManager *)selfCopy disableActiveSync];
   }
 
-  objc_sync_exit(v76);
+  objc_sync_exit(selfCopy);
   v90 = objc_opt_new();
   v52 = objc_alloc(MEMORY[0x277CBEA60]);
-  v53 = [(ESDAgentManager *)v76 _accountInfoPath];
-  v54 = [v52 initWithContentsOfFile:v53];
+  _accountInfoPath = [(ESDAgentManager *)selfCopy _accountInfoPath];
+  v54 = [v52 initWithContentsOfFile:_accountInfoPath];
 
   v103 = 0u;
   v104 = 0u;
@@ -858,7 +858,7 @@ LABEL_14:
 
   if ([v90 count])
   {
-    v65 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
@@ -880,7 +880,7 @@ LABEL_14:
 
           v70 = *(*(&v97 + 1) + 8 * m);
           v96 = 0;
-          v71 = [v65 applyRestrictionDictionary:0 clientType:@"com.apple.eas.account" clientUUID:v70 localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:&v96];
+          v71 = [mEMORY[0x277D262A0] applyRestrictionDictionary:0 clientType:@"com.apple.eas.account" clientUUID:v70 localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:&v96];
           v72 = v96;
           if ((v71 & 1) == 0)
           {
@@ -903,8 +903,8 @@ LABEL_14:
     }
   }
 
-  v74 = [MEMORY[0x277D262A0] sharedConnection];
-  [v74 removeOrphanedClientRestrictionsWithCompletion:0];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0]2 removeOrphanedClientRestrictionsWithCompletion:0];
 
   [MEMORY[0x277D03758] startDailyAggDReporter];
   v75 = *MEMORY[0x277D85DE8];
@@ -959,17 +959,17 @@ void __37__ESDAgentManager_loadExchangeAgents__block_invoke(uint64_t a1)
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 account];
+        account = [v7 account];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v8 accountID];
-        v12 = [v8 persistentUUID];
-        v13 = v12;
+        accountID = [account accountID];
+        persistentUUID = [account persistentUUID];
+        v13 = persistentUUID;
         v32[0] = @"DAAgentClass";
         v32[1] = @"Identifier";
-        if (v11)
+        if (accountID)
         {
-          v14 = v11;
+          v14 = accountID;
         }
 
         else
@@ -980,9 +980,9 @@ void __37__ESDAgentManager_loadExchangeAgents__block_invoke(uint64_t a1)
         v33[0] = v10;
         v33[1] = v14;
         v32[2] = v5;
-        if (v12)
+        if (persistentUUID)
         {
-          v15 = v12;
+          v15 = persistentUUID;
         }
 
         else
@@ -1002,11 +1002,11 @@ void __37__ESDAgentManager_loadExchangeAgents__block_invoke(uint64_t a1)
     while (v4);
   }
 
-  v17 = [(ESDAgentManager *)self _accountInfoPath];
-  [v24 writeToFile:v17 atomically:1];
+  _accountInfoPath = [(ESDAgentManager *)self _accountInfoPath];
+  [v24 writeToFile:_accountInfoPath atomically:1];
 
-  v18 = [MEMORY[0x277D262A0] sharedConnection];
-  [v18 removeOrphanedClientRestrictionsWithCompletion:0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeOrphanedClientRestrictionsWithCompletion:0];
 
   activeAgentsQueue = self->_activeAgentsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1014,7 +1014,7 @@ void __37__ESDAgentManager_loadExchangeAgents__block_invoke(uint64_t a1)
   block[2] = __39__ESDAgentManager_saveAndReleaseAgents__block_invoke;
   block[3] = &unk_278FCDB98;
   v26 = obj;
-  v27 = self;
+  selfCopy = self;
   v20 = obj;
   dispatch_sync(activeAgentsQueue, block);
 
@@ -1047,12 +1047,12 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
 - (void)_deviceWillSleep
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ESDAgentManager *)self activeAgents];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v3 = [activeAgents countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1063,14 +1063,14 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v7 = [*(*(&v14 + 1) + 8 * i) account];
-        [v7 deviceWillSleep];
+        account = [*(*(&v14 + 1) + 8 * i) account];
+        [account deviceWillSleep];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [activeAgents countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -1085,8 +1085,8 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
   }
 
   CFURLConnectionInvalidateConnectionCache();
-  v10 = [MEMORY[0x277CCAD30] sharedSession];
-  [v10 flushWithCompletionHandler:&__block_literal_global_56];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+  [mEMORY[0x277CCAD30] flushWithCompletionHandler:&__block_literal_global_56];
   v11 = DALoggingwithCategory();
   if (os_log_type_enabled(v11, v9))
   {
@@ -1100,12 +1100,12 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
 - (void)_deviceDidWake
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(ESDAgentManager *)self activeAgents];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [activeAgents countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1117,17 +1117,17 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * v6) account];
-        [v7 deviceDidWake];
+        account = [*(*(&v9 + 1) + 8 * v6) account];
+        [account deviceDidWake];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [activeAgents countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -1136,22 +1136,22 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)currentPolicyKeyForAccount:(id)a3
+- (id)currentPolicyKeyForAccount:(id)account
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   [(ESDAgentManager *)self activeAgents];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v5 = v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
-  if (v6)
+  currentPolicyKey = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (currentPolicyKey)
   {
     v7 = *v18;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != currentPolicyKey; i = i + 1)
       {
         if (*v18 != v7)
         {
@@ -1159,22 +1159,22 @@ void __39__ESDAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 account];
-        v11 = [v10 accountID];
-        v12 = [v11 isEqualToString:v4];
+        account = [v9 account];
+        accountID = [account accountID];
+        v12 = [accountID isEqualToString:accountCopy];
 
         if (v12)
         {
-          v13 = [v9 account];
-          v14 = [v13 policyManager];
-          v6 = [v14 currentPolicyKey];
+          account2 = [v9 account];
+          policyManager = [account2 policyManager];
+          currentPolicyKey = [policyManager currentPolicyKey];
 
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
-      if (v6)
+      currentPolicyKey = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      if (currentPolicyKey)
       {
         continue;
       }
@@ -1187,13 +1187,13 @@ LABEL_11:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return currentPolicyKey;
 }
 
-- (void)requestPolicyUpdateForAccount:(id)a3
+- (void)requestPolicyUpdateForAccount:(id)account
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   [(ESDAgentManager *)self activeAgents];
   v22 = 0u;
   v23 = 0u;
@@ -1214,9 +1214,9 @@ LABEL_11:
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 account];
-        v12 = [v11 accountID];
-        v13 = [v12 isEqualToString:v4];
+        account = [v10 account];
+        accountID = [account accountID];
+        v13 = [accountID isEqualToString:accountCopy];
 
         if (v13)
         {
@@ -1225,16 +1225,16 @@ LABEL_11:
           if (os_log_type_enabled(v16, v17))
           {
             *buf = 138412290;
-            v27 = v4;
+            v27 = accountCopy;
             _os_log_impl(&dword_24A184000, v16, v17, "Received policy update request through XPC for account with ID %@. Setting this as user initiated.", buf, 0xCu);
           }
 
-          v18 = [v10 account];
-          [v18 setWasUserInitiated:1];
+          account2 = [v10 account];
+          [account2 setWasUserInitiated:1];
 
-          v19 = [v10 account];
-          v20 = [v19 policyManager];
-          [v20 requestPolicyUpdate];
+          account3 = [v10 account];
+          policyManager = [account3 policyManager];
+          [policyManager requestPolicyUpdate];
 
           v14 = v5;
           goto LABEL_14;
@@ -1256,7 +1256,7 @@ LABEL_11:
   if (os_log_type_enabled(v14, v15))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = accountCopy;
     _os_log_impl(&dword_24A184000, v14, v15, "problem handling policy update request: no known account with ID %@", buf, 0xCu);
   }
 
@@ -1265,11 +1265,11 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)startMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v28 = a4;
+  dCopy = d;
+  dsCopy = ds;
   [(ESDAgentManager *)self activeAgents];
   v30 = 0u;
   v31 = 0u;
@@ -1295,14 +1295,14 @@ LABEL_14:
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        v10 = [v17 monitorFoldersWithIDs:v28];
+        account2 = [v13 account];
+        v10 = [account2 monitorFoldersWithIDs:dsCopy];
 
         v9 = 1;
       }
@@ -1321,7 +1321,7 @@ LABEL_14:
       if (os_log_type_enabled(v19, v20))
       {
         *buf = 138412290;
-        v35 = v28;
+        v35 = dsCopy;
         v21 = "Did not start monitoring folder ids %@, because the agent said nope";
         v22 = v19;
         v23 = v20;
@@ -1340,9 +1340,9 @@ LABEL_15:
     if (os_log_type_enabled(v19, v25))
     {
       *buf = 138412802;
-      v35 = v28;
+      v35 = dsCopy;
       v36 = 2112;
-      v37 = v6;
+      v37 = dCopy;
       v38 = 2112;
       v39 = obj;
       v21 = "Did not start monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@";
@@ -1365,17 +1365,17 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)stopMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)stopMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1390,24 +1390,24 @@ LABEL_19:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 stopMonitoringFoldersWithIDs:v23];
+        account2 = [v13 account];
+        [account2 stopMonitoringFoldersWithIDs:dsCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1424,11 +1424,11 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138412802;
-      v29 = v23;
+      v29 = dsCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_24A184000, v19, v20, "Did not stop monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1439,17 +1439,17 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)suspendMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)suspendMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1464,24 +1464,24 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 suspendMonitoringFoldersWithIDs:v23];
+        account2 = [v13 account];
+        [account2 suspendMonitoringFoldersWithIDs:dsCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1498,11 +1498,11 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138412802;
-      v29 = v23;
+      v29 = dsCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_24A184000, v19, v20, "Did not suspend monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1513,17 +1513,17 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)resumeMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)resumeMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1538,24 +1538,24 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 resumeMonitoringFoldersWithIDs:v23];
+        account2 = [v13 account];
+        [account2 resumeMonitoringFoldersWithIDs:dsCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1572,11 +1572,11 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138412802;
-      v29 = v23;
+      v29 = dsCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_24A184000, v19, v20, "Did not resume monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1587,12 +1587,12 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)addPersistMonitoringAccountID:(id)a3 folderIDs:(id)a4 clientID:(id)a5
+- (BOOL)addPersistMonitoringAccountID:(id)d folderIDs:(id)ds clientID:(id)iD
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v32 = a4;
-  v31 = a5;
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
   [(ESDAgentManager *)self activeAgents];
   v34 = 0u;
   v35 = 0u;
@@ -1618,15 +1618,15 @@ LABEL_12:
       }
 
       v15 = *(*(&v34 + 1) + 8 * i);
-      v16 = [v15 account];
-      v17 = [v16 accountID];
-      v18 = [v17 isEqualToString:v8];
+      account = [v15 account];
+      accountID = [account accountID];
+      v18 = [accountID isEqualToString:dCopy];
 
       if (v18)
       {
-        v19 = [v15 account];
-        v20 = [MEMORY[0x277CBEB98] setWithArray:v32];
-        v12 = [v19 setFolderIdsForPersistentPushAdded:v20 deleted:0 clientID:v31];
+        account2 = [v15 account];
+        v20 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+        v12 = [account2 setFolderIdsForPersistentPushAdded:v20 deleted:0 clientID:iDCopy];
 
         v11 = 1;
       }
@@ -1645,7 +1645,7 @@ LABEL_12:
       if (os_log_type_enabled(v22, v23))
       {
         *buf = 138412290;
-        v39 = v32;
+        v39 = dsCopy;
         v24 = "Did not add persistent monitoring folder ids %@, because the agent said nope";
         v25 = v22;
         v26 = v23;
@@ -1664,9 +1664,9 @@ LABEL_15:
     if (os_log_type_enabled(v22, v28))
     {
       *buf = 138412802;
-      v39 = v32;
+      v39 = dsCopy;
       v40 = 2112;
-      v41 = v8;
+      v41 = dCopy;
       v42 = 2112;
       v43 = obj;
       v24 = "Did not add persistent monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@";
@@ -1689,18 +1689,18 @@ LABEL_19:
   return v21;
 }
 
-- (BOOL)removePersistMonitoringAccountID:(id)a3 folderIDs:(id)a4 clientID:(id)a5
+- (BOOL)removePersistMonitoringAccountID:(id)d folderIDs:(id)ds clientID:(id)iD
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v27 = a4;
-  v26 = a5;
-  v9 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  v10 = [activeAgents countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (!v10)
   {
     goto LABEL_12;
@@ -1715,25 +1715,25 @@ LABEL_19:
     {
       if (*v29 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(activeAgents);
       }
 
       v15 = *(*(&v28 + 1) + 8 * i);
-      v16 = [v15 account];
-      v17 = [v16 accountID];
-      v18 = [v17 isEqualToString:v8];
+      account = [v15 account];
+      accountID = [account accountID];
+      v18 = [accountID isEqualToString:dCopy];
 
       if (v18)
       {
-        v19 = [v15 account];
-        v20 = [MEMORY[0x277CBEB98] setWithArray:v27];
-        [v19 setFolderIdsForPersistentPushAdded:0 deleted:v20 clientID:v26];
+        account2 = [v15 account];
+        v20 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+        [account2 setFolderIdsForPersistentPushAdded:0 deleted:v20 clientID:iDCopy];
 
         v12 = 1;
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+    v11 = [activeAgents countByEnumeratingWithState:&v28 objects:v38 count:16];
   }
 
   while (v11);
@@ -1750,11 +1750,11 @@ LABEL_12:
     if (os_log_type_enabled(v22, v23))
     {
       *buf = 138412802;
-      v33 = v27;
+      v33 = dsCopy;
       v34 = 2112;
-      v35 = v8;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v9;
+      v37 = activeAgents;
       _os_log_impl(&dword_24A184000, v22, v23, "Did not remove persistent monitoring folder ids %@, because I have no agent containing account id %@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1765,17 +1765,17 @@ LABEL_12:
   return v21;
 }
 
-- (BOOL)clearPersistMonitoringAccountID:(id)a3 clientID:(id)a4
+- (BOOL)clearPersistMonitoringAccountID:(id)d clientID:(id)iD
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  iDCopy = iD;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1790,24 +1790,24 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 clearFolderIdsForPersistentPushWithClientID:v23];
+        account2 = [v13 account];
+        [account2 clearFolderIdsForPersistentPushWithClientID:iDCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v32 count:16];
   }
 
   while (v9);
@@ -1824,9 +1824,9 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138412546;
-      v29 = v6;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v7;
+      v31 = activeAgents;
       _os_log_impl(&dword_24A184000, v19, v20, "Did not clear persistent monitoring folders, because I have no agent containing account id %@.  Agents: %@", buf, 0x16u);
     }
 
@@ -1839,22 +1839,22 @@ LABEL_12:
 
 - (void)_clearOrphanedStores
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"ESDAgentManager.m" lineNumber:702 description:{@"When clearing orphaned stores, we have an account with no accountID.  That's bad.  account: %@", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ESDAgentManager.m" lineNumber:702 description:{@"When clearing orphaned stores, we have an account with no accountID.  That's bad.  account: %@", a3}];
 }
 
-- (BOOL)_clearOrphanedStoresInCalendarDatabase:(CalDatabase *)a3 eventAccountIds:(id)a4 toDoAccountIds:(id)a5
+- (BOOL)_clearOrphanedStoresInCalendarDatabase:(CalDatabase *)database eventAccountIds:(id)ids toDoAccountIds:(id)accountIds
 {
   v49 = *MEMORY[0x277D85DE8];
-  v39 = a4;
-  v38 = a5;
+  idsCopy = ids;
+  accountIdsCopy = accountIds;
   v6 = DALoggingwithCategory();
   v7 = MEMORY[0x277D03988];
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v8))
   {
     *buf = 138412290;
-    v46 = v39;
+    v46 = idsCopy;
     _os_log_impl(&dword_24A184000, v6, v8, "ClearOrphanStores : Current DA CalDAV (events) Account IDs : %@", buf, 0xCu);
   }
 
@@ -1887,7 +1887,7 @@ LABEL_12:
       if (v15 == 1)
       {
         v17 = CalStoreCopyExternalID();
-        if (v17 && ([v39 containsObject:v17] & 1) == 0 && (objc_msgSend(v38, "containsObject:", v17) & 1) == 0)
+        if (v17 && ([idsCopy containsObject:v17] & 1) == 0 && (objc_msgSend(accountIdsCopy, "containsObject:", v17) & 1) == 0)
         {
           v18 = DALoggingwithCategory();
           if (os_log_type_enabled(v18, v12))
@@ -1895,9 +1895,9 @@ LABEL_12:
             *buf = 138412802;
             v46 = v17;
             v47 = 2112;
-            *v48 = v39;
+            *v48 = idsCopy;
             *&v48[8] = 2112;
-            *&v48[10] = v38;
+            *&v48[10] = accountIdsCopy;
             _os_log_impl(&dword_24A184000, v18, v12, "ClearOrphanStores : ACCOUNTDCOERROR Removing calendar store, as its account id %@ isn't one of the account ids I know about: %@ | %@", buf, 0x20u);
           }
 
@@ -1947,7 +1947,7 @@ LABEL_12:
                 if (v28 > [v14 length])
                 {
                   v29 = [v27 substringFromIndex:{objc_msgSend(v14, "length")}];
-                  if (v29 && (([v39 containsObject:v29] & 1) != 0 || objc_msgSend(v38, "containsObject:", v29)))
+                  if (v29 && (([idsCopy containsObject:v29] & 1) != 0 || objc_msgSend(accountIdsCopy, "containsObject:", v29)))
                   {
 
                     continue;
@@ -1960,9 +1960,9 @@ LABEL_12:
                   *buf = 138412802;
                   v46 = v27;
                   v47 = 2112;
-                  *v48 = v39;
+                  *v48 = idsCopy;
                   *&v48[8] = 2112;
-                  *&v48[10] = v38;
+                  *&v48[10] = accountIdsCopy;
                   _os_log_impl(&dword_24A184000, v30, v12, "ClearOrphanStores : Removing Calendar change tracking client, as its change tracking identifier %@ isn't one of the account ids I know about: %@ | %@", buf, 0x20u);
                 }
 
@@ -1994,10 +1994,10 @@ LABEL_12:
 - (BOOL)_systemMayNowBeReady
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277D03988];
-  if (!v2->_startAgentsWhenSystemReadyBlock)
+  if (!selfCopy->_startAgentsWhenSystemReadyBlock)
   {
     startAgentsWhenSystemReadyBlock = DALoggingwithCategory();
     v11 = v3[3];
@@ -2030,9 +2030,9 @@ LABEL_17:
 
   if (!(v5 & 1 | (v4 != 1)))
   {
-    v13 = MEMORY[0x24C212500](v2->_startAgentsWhenSystemReadyBlock);
-    startAgentsWhenSystemReadyBlock = v2->_startAgentsWhenSystemReadyBlock;
-    v2->_startAgentsWhenSystemReadyBlock = 0;
+    v13 = MEMORY[0x24C212500](selfCopy->_startAgentsWhenSystemReadyBlock);
+    startAgentsWhenSystemReadyBlock = selfCopy->_startAgentsWhenSystemReadyBlock;
+    selfCopy->_startAgentsWhenSystemReadyBlock = 0;
     goto LABEL_17;
   }
 
@@ -2065,14 +2065,14 @@ LABEL_14:
 
   v13 = 0;
 LABEL_18:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v13)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v2, *MEMORY[0x277D28B28], 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, *MEMORY[0x277D28B28], 0);
     v15 = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(v15, v2, @"com.apple.purplebuddy.setupdone", 0);
+    CFNotificationCenterRemoveObserver(v15, selfCopy, @"com.apple.purplebuddy.setupdone", 0);
     v16 = DALoggingwithCategory();
     v17 = v3[6];
     if (os_log_type_enabled(v16, v17))
@@ -2109,8 +2109,8 @@ LABEL_18:
     _os_log_impl(&dword_24A184000, v3, v4, "ESAgentManager: Clearing disableMonitoringAgentsTokens and Loading Agents", v6, 2u);
   }
 
-  v5 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  [v5 removeAllObjects];
+  disableMonitoringAgentsTokens = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  [disableMonitoringAgentsTokens removeAllObjects];
 
   [(ESDAgentManager *)self _loadAndStartExchangeMonitoringAgents];
 }
@@ -2118,15 +2118,15 @@ LABEL_18:
 - (void)_calDaysToSyncDidChange
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [(ESDAgentManager *)self activeAgents];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v3 = objc_opt_new();
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 transactionId];
+    transactionId = [v3 transactionId];
     *buf = 138412290;
-    v26 = v6;
+    v26 = transactionId;
     _os_log_impl(&dword_24A184000, v4, v5, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2134,7 +2134,7 @@ LABEL_18:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v2;
+  v7 = activeAgents;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -2278,8 +2278,8 @@ void __54__ESDAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
         }
 
         ctServerConnection = self->_ctServerConnection;
-        v9 = [*(*(&v18 + 1) + 8 * i) account];
-        v10 = [v9 onBehalfOfBundleIdentifier];
+        account = [*(*(&v18 + 1) + 8 * i) account];
+        onBehalfOfBundleIdentifier = [account onBehalfOfBundleIdentifier];
         _CTServerConnectionCopyCellularUsagePolicy();
       }
 
@@ -2482,8 +2482,8 @@ void __56__ESDAgentManager__loadAndStartExchangeMonitoringAgents__block_invoke(u
   }
 
   dispatch_suspend(gDADOperationQueue);
-  v12 = [(ESDAgentManager *)self activeAgents];
-  v13 = [v12 mutableCopy];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
+  v13 = [activeAgents mutableCopy];
   v14 = DALoggingwithCategory();
   v15 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v14, v15))
@@ -2497,7 +2497,7 @@ void __56__ESDAgentManager__loadAndStartExchangeMonitoringAgents__block_invoke(u
   if (os_log_type_enabled(v16, v15))
   {
     *buf = 138412290;
-    v42 = v12;
+    v42 = activeAgents;
     _os_log_impl(&dword_24A184000, v16, v15, "Stopping our agents (which are %@)", buf, 0xCu);
   }
 
@@ -2505,7 +2505,7 @@ void __56__ESDAgentManager__loadAndStartExchangeMonitoringAgents__block_invoke(u
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v12;
+  obj = activeAgents;
   v17 = [obj countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v17)
   {
@@ -2590,8 +2590,8 @@ void __56__ESDAgentManager__loadAndStartExchangeMonitoringAgents__block_invoke(u
   }
 
   dispatch_resume(gDADOperationQueue);
-  v32 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v32 postNotificationName:@"ESDAgentsStoppedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ESDAgentsStoppedNotification" object:0];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -2625,20 +2625,20 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 - (void)_addAccountAggdEntries
 {
   v39 = *MEMORY[0x277D85DE8];
-  v2 = [(ESDAgentManager *)self activeAgents];
-  [v2 count];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
+  [activeAgents count];
   ADClientSetValueForScalarKey();
-  if ([v2 count])
+  if ([activeAgents count])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v3 = v2;
+    v3 = activeAgents;
     v4 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v4)
     {
-      v27 = v2;
+      v27 = activeAgents;
       v28 = 0;
       v32 = 0;
       v33 = 0;
@@ -2657,9 +2657,9 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
             objc_enumerationMutation(v3);
           }
 
-          v9 = [*(*(&v34 + 1) + 8 * i) account];
-          v10 = [v9 accountTypeIdentifier];
-          v11 = [v10 isEqualToString:@"com.apple.account.SubscribedCalendar"];
+          account = [*(*(&v34 + 1) + 8 * i) account];
+          accountTypeIdentifier = [account accountTypeIdentifier];
+          v11 = [accountTypeIdentifier isEqualToString:@"com.apple.account.SubscribedCalendar"];
 
           if (v11)
           {
@@ -2668,8 +2668,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
           else
           {
-            v12 = [v9 accountTypeIdentifier];
-            v13 = [v12 isEqualToString:@"com.apple.account.CalDAV"];
+            accountTypeIdentifier2 = [account accountTypeIdentifier];
+            v13 = [accountTypeIdentifier2 isEqualToString:@"com.apple.account.CalDAV"];
 
             if (v13)
             {
@@ -2678,8 +2678,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
             else
             {
-              v14 = [v9 accountTypeIdentifier];
-              v15 = [v14 isEqualToString:@"com.apple.account.CardDAV"];
+              accountTypeIdentifier3 = [account accountTypeIdentifier];
+              v15 = [accountTypeIdentifier3 isEqualToString:@"com.apple.account.CardDAV"];
 
               if (v15)
               {
@@ -2688,8 +2688,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
               else
               {
-                v16 = [v9 accountTypeIdentifier];
-                v17 = [v16 isEqualToString:@"com.apple.account.BookmarkDAV"];
+                accountTypeIdentifier4 = [account accountTypeIdentifier];
+                v17 = [accountTypeIdentifier4 isEqualToString:@"com.apple.account.BookmarkDAV"];
 
                 if (v17)
                 {
@@ -2698,8 +2698,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                 else
                 {
-                  v18 = [v9 accountTypeIdentifier];
-                  v19 = [v18 isEqualToString:@"com.apple.account.Exchange"];
+                  accountTypeIdentifier5 = [account accountTypeIdentifier];
+                  v19 = [accountTypeIdentifier5 isEqualToString:@"com.apple.account.Exchange"];
 
                   if (v19)
                   {
@@ -2708,8 +2708,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                   else
                   {
-                    v20 = [v9 accountTypeIdentifier];
-                    v21 = [v20 isEqualToString:@"com.apple.account.Hotmail"];
+                    accountTypeIdentifier6 = [account accountTypeIdentifier];
+                    v21 = [accountTypeIdentifier6 isEqualToString:@"com.apple.account.Hotmail"];
 
                     if (v21)
                     {
@@ -2718,8 +2718,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                     else
                     {
-                      v22 = [v9 accountTypeIdentifier];
-                      v23 = [v22 isEqualToString:@"com.apple.account.LDAP"];
+                      accountTypeIdentifier7 = [account accountTypeIdentifier];
+                      v23 = [accountTypeIdentifier7 isEqualToString:@"com.apple.account.LDAP"];
 
                       if (v23)
                       {
@@ -2728,8 +2728,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                       else
                       {
-                        v24 = [v9 accountTypeIdentifier];
-                        v25 = [v24 isEqualToString:@"com.apple.account.IMAPNotes"];
+                        accountTypeIdentifier8 = [account accountTypeIdentifier];
+                        v25 = [accountTypeIdentifier8 isEqualToString:@"com.apple.account.IMAPNotes"];
 
                         v29 += v25;
                       }
@@ -2745,7 +2745,7 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
       }
 
       while (v4);
-      v2 = v27;
+      activeAgents = v27;
     }
   }
 
@@ -2767,18 +2767,18 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableMonitoringAgentsWithToken:(unint64_t)a3
+- (void)enableMonitoringAgentsWithToken:(unint64_t)token
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  v6 = [v5 count];
+  disableMonitoringAgentsTokens = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  v6 = [disableMonitoringAgentsTokens count];
 
-  v7 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 removeObjectForKey:v8];
+  disableMonitoringAgentsTokens2 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:token];
+  [disableMonitoringAgentsTokens2 removeObjectForKey:v8];
 
-  v9 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  v10 = [v9 count];
+  disableMonitoringAgentsTokens3 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  v10 = [disableMonitoringAgentsTokens3 count];
 
   v11 = DALoggingwithCategory();
   v12 = v11;
@@ -2788,7 +2788,7 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
     if (os_log_type_enabled(v11, v13))
     {
       v17 = 67109120;
-      v18 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_24A184000, v12, v13, "Ignoring call to enableMonitoringAgentsWithToken: with unrecognized token %d", &v17, 8u);
     }
   }
@@ -2799,7 +2799,7 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
     if (os_log_type_enabled(v11, v14))
     {
       v17 = 67109120;
-      v18 = v10;
+      tokenCopy = v10;
       _os_log_impl(&dword_24A184000, v12, v14, "ESDAgentManager asked to enableMonitoringAgents. New count = %d", &v17, 8u);
     }
 
@@ -2823,15 +2823,15 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 - (unint64_t)disableMonitoringAgents
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(ESDAgentManager *)self nextDisableMonitoringAgentsToken];
-  [(ESDAgentManager *)self setNextDisableMonitoringAgentsToken:v3 + 1];
+  nextDisableMonitoringAgentsToken = [(ESDAgentManager *)self nextDisableMonitoringAgentsToken];
+  [(ESDAgentManager *)self setNextDisableMonitoringAgentsToken:nextDisableMonitoringAgentsToken + 1];
   v4 = [objc_alloc(MEMORY[0x277D037F0]) initWithLabel:@"disableMonitoringAgents"];
-  v5 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3 + 1];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  disableMonitoringAgentsTokens = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:nextDisableMonitoringAgentsToken + 1];
+  [disableMonitoringAgentsTokens setObject:v4 forKeyedSubscript:v6];
 
-  v7 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
-  v8 = [v7 count];
+  disableMonitoringAgentsTokens2 = [(ESDAgentManager *)self disableMonitoringAgentsTokens];
+  v8 = [disableMonitoringAgentsTokens2 count];
 
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 6);
@@ -2855,15 +2855,15 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v3 + 1;
+  return nextDisableMonitoringAgentsToken + 1;
 }
 
-- (BOOL)updateFolderListForAccountID:(id)a3 andDataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6
+- (BOOL)updateFolderListForAccountID:(id)d andDataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested
 {
-  v6 = a6;
-  v7 = a5;
+  requestedCopy = requested;
+  foldersCopy = folders;
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dCopy = d;
   [(ESDAgentManager *)self activeAgents];
   v25 = 0u;
   v26 = 0u;
@@ -2873,8 +2873,8 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   if (v12)
   {
     v13 = v12;
-    v23 = v7;
-    v24 = v6;
+    v23 = foldersCopy;
+    v24 = requestedCopy;
     v14 = *v26;
     while (2)
     {
@@ -2886,13 +2886,13 @@ void __47__ESDAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 account];
-        v18 = [v17 accountID];
-        v19 = [v18 isEqualToString:v10];
+        account = [v16 account];
+        accountID = [account accountID];
+        v19 = [accountID isEqualToString:dCopy];
 
         if (v19)
         {
-          if ([v17 enabledForAnyDADataclasses:a4])
+          if ([account enabledForAnyDADataclasses:dataclasses])
           {
             [v16 refreshFolderListRequireChangedFolders:v23 isUserRequested:v24];
           }
@@ -2919,13 +2919,13 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)updateContentsOfFolders:(id)a3 forAccountID:(id)a4 andDataclasses:(int64_t)a5 isUserRequested:(BOOL)a6
+- (BOOL)updateContentsOfFolders:(id)folders forAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v30 = a6;
+  requestedCopy = requested;
   v40 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v9 = a4;
-  v10 = [v9 isEqualToString:*MEMORY[0x277D03880]];
+  foldersCopy = folders;
+  dCopy = d;
+  v10 = [dCopy isEqualToString:*MEMORY[0x277D03880]];
   [(ESDAgentManager *)self activeAgents];
   v35 = 0u;
   v36 = 0u;
@@ -2935,7 +2935,7 @@ LABEL_13:
   if (v12)
   {
     v13 = v12;
-    v32 = a5;
+    dataclassesCopy = dataclasses;
     v33 = 0;
     v14 = *v36;
     while (2)
@@ -2950,30 +2950,30 @@ LABEL_13:
         }
 
         v16 = *(*(&v35 + 1) + 8 * v15);
-        v17 = [v16 account];
-        v18 = v17;
+        account = [v16 account];
+        v18 = account;
         if (v10)
         {
-          if ([v17 isSubscribedCalendarAccount])
+          if ([account isSubscribedCalendarAccount])
           {
             [v18 backingAccountInfo];
             v19 = v14;
             v20 = v10;
             v21 = v11;
-            v23 = v22 = v9;
-            v24 = [v23 parentAccountIdentifier];
-            v25 = [v24 length];
+            v23 = v22 = dCopy;
+            parentAccountIdentifier = [v23 parentAccountIdentifier];
+            v25 = [parentAccountIdentifier length];
 
-            v9 = v22;
+            dCopy = v22;
             v11 = v21;
             v10 = v20;
             v14 = v19;
             v13 = v34;
             if (!v25)
             {
-              if ([v18 enabledForAnyDADataclasses:v32])
+              if ([v18 enabledForAnyDADataclasses:dataclassesCopy])
               {
-                [v16 syncFolderIDs:v31 forDataclasses:v32 isUserRequested:v30];
+                [v16 syncFolderIDs:foldersCopy forDataclasses:dataclassesCopy isUserRequested:requestedCopy];
               }
 
               v33 = 1;
@@ -2983,14 +2983,14 @@ LABEL_13:
 
         else
         {
-          v26 = [v17 accountID];
-          v27 = [v26 isEqualToString:v9];
+          accountID = [account accountID];
+          v27 = [accountID isEqualToString:dCopy];
 
           if (v27)
           {
-            if ([v18 enabledForAnyDADataclasses:v32])
+            if ([v18 enabledForAnyDADataclasses:dataclassesCopy])
             {
-              [v16 syncFolderIDs:v31 forDataclasses:v32 isUserRequested:v30];
+              [v16 syncFolderIDs:foldersCopy forDataclasses:dataclassesCopy isUserRequested:requestedCopy];
             }
 
             v33 = 1;
@@ -3023,12 +3023,12 @@ LABEL_20:
   return v33 & 1;
 }
 
-- (BOOL)updateContentsOfAllFoldersForAccountID:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (BOOL)updateContentsOfAllFoldersForAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v28 = a5;
+  requestedCopy = requested;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 isEqualToString:*MEMORY[0x277D03880]];
+  dCopy = d;
+  v8 = [dCopy isEqualToString:*MEMORY[0x277D03880]];
   [(ESDAgentManager *)self activeAgents];
   v32 = 0u;
   v33 = 0u;
@@ -3040,7 +3040,7 @@ LABEL_20:
     v11 = v10;
     v29 = 0;
     v12 = *v33;
-    v30 = a4;
+    dataclassesCopy = dataclasses;
     v31 = *v33;
     while (2)
     {
@@ -3053,22 +3053,22 @@ LABEL_20:
         }
 
         v14 = *(*(&v32 + 1) + 8 * v13);
-        v15 = [v14 account];
-        v16 = v15;
+        account = [v14 account];
+        v16 = account;
         if (v8)
         {
-          if ([v15 isSubscribedCalendarAccount])
+          if ([account isSubscribedCalendarAccount])
           {
             v17 = v8;
             v18 = v9;
-            v19 = v7;
-            v20 = [v16 backingAccountInfo];
-            v21 = [v20 parentAccountIdentifier];
-            v22 = [v21 length];
+            v19 = dCopy;
+            backingAccountInfo = [v16 backingAccountInfo];
+            parentAccountIdentifier = [backingAccountInfo parentAccountIdentifier];
+            v22 = [parentAccountIdentifier length];
 
             if (v22)
             {
-              v7 = v19;
+              dCopy = v19;
               v9 = v18;
               v8 = v17;
               v12 = v31;
@@ -3076,13 +3076,13 @@ LABEL_20:
 
             else
             {
-              v7 = v19;
+              dCopy = v19;
               v9 = v18;
               v8 = v17;
               v12 = v31;
-              if ([v16 enabledForAnyDADataclasses:v30])
+              if ([v16 enabledForAnyDADataclasses:dataclassesCopy])
               {
-                [v14 syncFolderIDs:0 forDataclasses:v30 isUserRequested:v28];
+                [v14 syncFolderIDs:0 forDataclasses:dataclassesCopy isUserRequested:requestedCopy];
                 v29 = 1;
               }
             }
@@ -3091,14 +3091,14 @@ LABEL_20:
 
         else
         {
-          v23 = [v15 accountID];
-          v24 = [v23 isEqualToString:v7];
+          accountID = [account accountID];
+          v24 = [accountID isEqualToString:dCopy];
 
           if (v24)
           {
-            if ([v16 enabledForAnyDADataclasses:v30])
+            if ([v16 enabledForAnyDADataclasses:dataclassesCopy])
             {
-              [v14 syncFolderIDs:0 forDataclasses:v30 isUserRequested:v28];
+              [v14 syncFolderIDs:0 forDataclasses:dataclassesCopy isUserRequested:requestedCopy];
             }
 
             v29 = 1;
@@ -3136,15 +3136,15 @@ LABEL_21:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v4 = [(ESDAgentManager *)self activeAgents];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  activeAgents = [(ESDAgentManager *)self activeAgents];
+  v5 = [v3 initWithCapacity:{objc_msgSend(activeAgents, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(ESDAgentManager *)self activeAgents];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  activeAgents2 = [(ESDAgentManager *)self activeAgents];
+  v7 = [activeAgents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3155,15 +3155,15 @@ LABEL_21:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeAgents2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) account];
-        v12 = [v11 onBehalfOfBundleIdentifier];
-        [v5 addObject:v12];
+        account = [*(*(&v15 + 1) + 8 * i) account];
+        onBehalfOfBundleIdentifier = [account onBehalfOfBundleIdentifier];
+        [v5 addObject:onBehalfOfBundleIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [activeAgents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -3199,9 +3199,9 @@ LABEL_21:
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 account];
-        v9 = [v8 accountTypeIdentifier];
-        if ([v9 isEqualToString:v4])
+        account = [v7 account];
+        accountTypeIdentifier = [account accountTypeIdentifier];
+        if ([accountTypeIdentifier isEqualToString:v4])
         {
 
 LABEL_13:
@@ -3209,9 +3209,9 @@ LABEL_13:
           v15 = *(MEMORY[0x277D03988] + 6);
           if (os_log_type_enabled(v14, v15))
           {
-            v16 = [v7 account];
+            account2 = [v7 account];
             *buf = 138412290;
-            v26 = v16;
+            v26 = account2;
             _os_log_impl(&dword_24A184000, v14, v15, "Found an EAS Account %@", buf, 0xCu);
           }
 
@@ -3219,9 +3219,9 @@ LABEL_13:
           goto LABEL_16;
         }
 
-        v10 = [v7 account];
-        v11 = [v10 accountTypeIdentifier];
-        v12 = [v11 isEqualToString:v5];
+        account3 = [v7 account];
+        accountTypeIdentifier2 = [account3 accountTypeIdentifier];
+        v12 = [accountTypeIdentifier2 isEqualToString:v5];
 
         if (v12)
         {
@@ -3251,15 +3251,15 @@ LABEL_16:
   return v13;
 }
 
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7 callback:(id)a8
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId callback:(id)callback
 {
   v42 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = a4;
-  v33 = a5;
-  v32 = a6;
-  v14 = a7;
-  v15 = a8;
+  datasCopy = datas;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  withIdCopy = withId;
+  callbackCopy = callback;
   [(ESDAgentManager *)self activeAgents];
   v37 = 0u;
   v38 = 0u;
@@ -3280,17 +3280,17 @@ LABEL_16:
         }
 
         v21 = *(*(&v37 + 1) + 8 * i);
-        v22 = [v21 account];
-        v23 = [v22 accountID];
-        v24 = [v23 isEqualToString:v14];
+        account = [v21 account];
+        accountID = [account accountID];
+        v24 = [accountID isEqualToString:withIdCopy];
 
         if (v24)
         {
-          v28 = v34;
-          v27 = v35;
-          v30 = v32;
-          v29 = v33;
-          [v21 processMeetingRequestDatas:v35 deliveryIdsToClear:v34 deliveryIdsToSoftClear:v33 inFolderWithId:v32 callback:v15];
+          v28 = clearCopy;
+          v27 = datasCopy;
+          v30 = idCopy;
+          v29 = softClearCopy;
+          [v21 processMeetingRequestDatas:datasCopy deliveryIdsToClear:clearCopy deliveryIdsToSoftClear:softClearCopy inFolderWithId:idCopy callback:callbackCopy];
 
           goto LABEL_13;
         }
@@ -3314,20 +3314,20 @@ LABEL_16:
     _os_log_impl(&dword_24A184000, v25, v26, "ProcessMeetingRequests: account agent not found", buf, 2u);
   }
 
-  v15[2](v15, 0);
-  v28 = v34;
-  v27 = v35;
-  v30 = v32;
-  v29 = v33;
+  callbackCopy[2](callbackCopy, 0);
+  v28 = clearCopy;
+  v27 = datasCopy;
+  v30 = idCopy;
+  v29 = softClearCopy;
 LABEL_13:
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)resetCertWarningsForAccountWithId:(id)a3 andDataclasses:(int64_t)a4
+- (BOOL)resetCertWarningsForAccountWithId:(id)id andDataclasses:(int64_t)dataclasses
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   [(ESDAgentManager *)self activeAgents];
   v19 = 0u;
   v20 = 0u;
@@ -3348,16 +3348,16 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) account];
-        v14 = v13;
-        if (v6)
+        account = [*(*(&v19 + 1) + 8 * i) account];
+        v14 = account;
+        if (idCopy)
         {
-          v15 = [v13 accountID];
-          v16 = [v15 isEqualToString:v6];
+          accountID = [account accountID];
+          v16 = [accountID isEqualToString:idCopy];
 
           if (v16)
           {
-            if ([v14 enabledForAnyDADataclasses:a4])
+            if ([v14 enabledForAnyDADataclasses:dataclasses])
             {
               LOBYTE(v11) = v11 & [v14 resetCertWarnings];
             }
@@ -3366,7 +3366,7 @@ LABEL_13:
           }
         }
 
-        else if ([v13 enabledForAnyDADataclasses:a4])
+        else if ([account enabledForAnyDADataclasses:dataclasses])
         {
           v11 &= [v14 resetCertWarnings];
         }
@@ -3393,13 +3393,13 @@ LABEL_18:
   return v11 & 1;
 }
 
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5 forAccountID:(id)a6
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag forAccountID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  addedCopy = added;
+  deletedCopy = deleted;
+  tagCopy = tag;
+  dCopy = d;
   [(ESDAgentManager *)self activeAgents];
   v31 = 0u;
   v32 = 0u;
@@ -3409,8 +3409,8 @@ LABEL_18:
   if (v15)
   {
     v16 = v15;
-    v29 = v12;
-    v30 = v10;
+    v29 = tagCopy;
+    v30 = addedCopy;
     v17 = *v32;
     while (2)
     {
@@ -3422,13 +3422,13 @@ LABEL_18:
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        v20 = [v19 account];
-        v21 = [v20 accountID];
-        v22 = [v21 isEqualToString:v13];
+        account = [v19 account];
+        accountID = [account accountID];
+        v22 = [accountID isEqualToString:dCopy];
 
         if (v22)
         {
-          v10 = v30;
+          addedCopy = v30;
           if (v30)
           {
             v24 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v30];
@@ -3439,10 +3439,10 @@ LABEL_18:
             v24 = 0;
           }
 
-          v12 = v29;
-          if (v11)
+          tagCopy = v29;
+          if (deletedCopy)
           {
-            v25 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v11];
+            v25 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:deletedCopy];
           }
 
           else
@@ -3450,8 +3450,8 @@ LABEL_18:
             v25 = 0;
           }
 
-          v26 = [v19 account];
-          v23 = [v26 setFolderIdsThatExternalClientsCareAboutAdded:v24 deleted:v25 foldersTag:v29];
+          account2 = [v19 account];
+          v23 = [account2 setFolderIdsThatExternalClientsCareAboutAdded:v24 deleted:v25 foldersTag:v29];
 
           goto LABEL_18;
         }
@@ -3467,8 +3467,8 @@ LABEL_18:
     }
 
     v23 = 0;
-    v12 = v29;
-    v10 = v30;
+    tagCopy = v29;
+    addedCopy = v30;
   }
 
   else
@@ -3482,19 +3482,19 @@ LABEL_18:
   return v23;
 }
 
-- (void)reportFolderItemsSyncSuccess:(BOOL)a3 forFolderWithID:(id)a4 withItemsCount:(unint64_t)a5 andAccountWithID:(id)a6
+- (void)reportFolderItemsSyncSuccess:(BOOL)success forFolderWithID:(id)d withItemsCount:(unint64_t)count andAccountWithID:(id)iD
 {
-  v22 = a5;
-  v23 = a3;
+  countCopy = count;
+  successCopy = success;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
-  v10 = [(ESDAgentManager *)self activeAgents];
+  dCopy = d;
+  iDCopy = iD;
+  activeAgents = [(ESDAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v11 = [activeAgents countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -3505,35 +3505,35 @@ LABEL_18:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeAgents);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 account];
-        v17 = [v16 accountID];
-        v18 = [v17 isEqualToString:v9];
+        account = [v15 account];
+        accountID = [account accountID];
+        v18 = [accountID isEqualToString:iDCopy];
 
         if (v18)
         {
-          v19 = [v15 account];
-          v20 = v19;
-          if (v23)
+          account2 = [v15 account];
+          v20 = account2;
+          if (successCopy)
           {
-            [v19 removeFolderIDFromPingBlacklist:v8];
-            if (v22)
+            [account2 removeFolderIDFromPingBlacklist:dCopy];
+            if (countCopy)
             {
-              [v20 removeFromAllPingHistoryBlacklistForFolderID:v8];
+              [v20 removeFromAllPingHistoryBlacklistForFolderID:dCopy];
             }
           }
 
           else
           {
-            [v19 addFolderIDToPingBlacklist:v8];
+            [account2 addFolderIDToPingBlacklist:dCopy];
           }
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v12 = [activeAgents countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v12);
@@ -3545,9 +3545,9 @@ LABEL_18:
 - (id)stateString
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(ESDAgentManager *)v2 activeAgents];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ESDAgentManager *)selfCopy activeAgents];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -3571,8 +3571,8 @@ LABEL_18:
 
         v5 = *(*(&v20 + 1) + 8 * v8);
 
-        v10 = [v5 stateString];
-        v11 = [(__CFString *)v7 stringByAppendingString:v10];
+        stateString = [v5 stateString];
+        v11 = [(__CFString *)v7 stringByAppendingString:stateString];
 
         v7 = [v11 stringByAppendingString:@"=======\n\n"];
 
@@ -3592,38 +3592,38 @@ LABEL_18:
     v7 = &stru_285D58A48;
   }
 
-  v12 = [MEMORY[0x277D03790] sharedGateKeeper];
-  v13 = [v12 stateString];
+  mEMORY[0x277D03790] = [MEMORY[0x277D03790] sharedGateKeeper];
+  stateString2 = [mEMORY[0x277D03790] stateString];
 
-  if (v13)
+  if (stateString2)
   {
-    v14 = [(__CFString *)v7 stringByAppendingString:v13];
+    v14 = [(__CFString *)v7 stringByAppendingString:stateString2];
 
     v7 = v14;
   }
 
-  v15 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-  v16 = [v15 stateString];
+  mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+  stateString3 = [mEMORY[0x277D037B0] stateString];
 
-  if (v16)
+  if (stateString3)
   {
-    v17 = [(__CFString *)v7 stringByAppendingString:v16];
+    v17 = [(__CFString *)v7 stringByAppendingString:stateString3];
 
     v7 = v17;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v18 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (BOOL)processFolderChange:(id)a3 forAccountWithID:(id)a4 completionBlock:(id)a5
+- (BOOL)processFolderChange:(id)change forAccountWithID:(id)d completionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changeCopy = change;
+  dCopy = d;
+  blockCopy = block;
   [(ESDAgentManager *)self activeAgents];
   v22 = 0u;
   v23 = 0u;
@@ -3632,7 +3632,7 @@ LABEL_18:
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
-    v21 = v8;
+    v21 = changeCopy;
     v13 = *v23;
     while (2)
     {
@@ -3644,14 +3644,14 @@ LABEL_18:
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 account];
-        v17 = [v16 accountID];
-        v18 = [v17 isEqualToString:v9];
+        account = [v15 account];
+        accountID = [account accountID];
+        v18 = [accountID isEqualToString:dCopy];
 
         if (v18)
         {
-          v8 = v21;
-          [v15 processDAFolderChange:v21 withCompletionBlock:v10];
+          changeCopy = v21;
+          [v15 processDAFolderChange:v21 withCompletionBlock:blockCopy];
           LOBYTE(v12) = 1;
           goto LABEL_11;
         }
@@ -3666,7 +3666,7 @@ LABEL_18:
       break;
     }
 
-    v8 = v21;
+    changeCopy = v21;
   }
 
 LABEL_11:
@@ -3675,12 +3675,12 @@ LABEL_11:
   return v12;
 }
 
-- (void)getStatusReportDictsWithCompletionBlock:(id)a3
+- (void)getStatusReportDictsWithCompletionBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v30 = [MEMORY[0x277D03768] sharedBabysitter];
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277D03768] = [MEMORY[0x277D03768] sharedBabysitter];
   [(ESDAgentManager *)self activeAgents];
   v35 = 0u;
   v36 = 0u;
@@ -3701,36 +3701,36 @@ LABEL_11:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [v9 account];
-        v11 = [v10 statusReport];
+        account = [v9 account];
+        statusReport = [account statusReport];
 
-        if (v11)
+        if (statusReport)
         {
-          v12 = [v9 account];
+          account2 = [v9 account];
           v13 = objc_opt_respondsToSelector();
-          v14 = [v9 account];
-          v15 = v14;
+          account3 = [v9 account];
+          v15 = account3;
           if (v13)
           {
-            [v14 waiterID];
+            [account3 waiterID];
           }
 
           else
           {
-            [v14 accountID];
+            [account3 accountID];
           }
           v16 = ;
 
-          [v11 setSyncingAllowed:{objc_msgSend(v30, "accountWithIDShouldContinue:", v16)}];
-          v17 = [v9 account];
-          v18 = [v17 protocolVersion];
-          [v11 setProtocolVersion:v18];
+          [statusReport setSyncingAllowed:{objc_msgSend(mEMORY[0x277D03768], "accountWithIDShouldContinue:", v16)}];
+          account4 = [v9 account];
+          protocolVersion = [account4 protocolVersion];
+          [statusReport setProtocolVersion:protocolVersion];
 
-          [v4 addObject:v11];
+          [array addObject:statusReport];
         }
 
-        v19 = [v9 account];
-        [v19 resetStatusReport];
+        account5 = [v9 account];
+        [account5 resetStatusReport];
       }
 
       v6 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -3739,14 +3739,14 @@ LABEL_11:
     while (v6);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v21 = v4;
+    v21 = array;
     v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v22)
     {
@@ -3761,8 +3761,8 @@ LABEL_11:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -3777,21 +3777,21 @@ LABEL_11:
     v20 = 0;
   }
 
-  v28[2](v28, v20);
+  blockCopy[2](blockCopy, v20);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasDataclassWeCareAbout:(id)a3
+- (BOOL)_hasDataclassWeCareAbout:(id)about
 {
   v3 = _hasDataclassWeCareAbout__onceToken;
-  v4 = a3;
+  aboutCopy = about;
   if (v3 != -1)
   {
     [ESDAgentManager _hasDataclassWeCareAbout:];
   }
 
-  v5 = [v4 intersectsSet:_hasDataclassWeCareAbout__dataclassesWeCareAbout];
+  v5 = [aboutCopy intersectsSet:_hasDataclassWeCareAbout__dataclassesWeCareAbout];
 
   return v5;
 }
@@ -3806,8 +3806,8 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
 
 - (void)removePendingAccountSetup
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"ESDAgentManager.m" lineNumber:1507 description:@"Somebody isn't maintaining their account setup correctly"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ESDAgentManager.m" lineNumber:1507 description:@"Somebody isn't maintaining their account setup correctly"];
 
   *a4 = *a3;
 }
@@ -3820,13 +3820,13 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [MEMORY[0x277D079E8] _leafExchangeAccountTypes];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  _leafExchangeAccountTypes = [MEMORY[0x277D079E8] _leafExchangeAccountTypes];
+  v5 = [_leafExchangeAccountTypes countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v29;
-    v23 = v4;
+    v23 = _leafExchangeAccountTypes;
     v21 = *v29;
     do
     {
@@ -3836,7 +3836,7 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_leafExchangeAccountTypes);
         }
 
         v9 = [v3 accountTypeWithAccountTypeIdentifier:*(*(&v28 + 1) + 8 * v8)];
@@ -3862,14 +3862,14 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
                   objc_enumerationMutation(v11);
                 }
 
-                v16 = [*(*(&v24 + 1) + 8 * i) enabledDataclasses];
-                v17 = [(ESDAgentManager *)self _hasDataclassWeCareAbout:v16];
+                enabledDataclasses = [*(*(&v24 + 1) + 8 * i) enabledDataclasses];
+                v17 = [(ESDAgentManager *)self _hasDataclassWeCareAbout:enabledDataclasses];
 
                 if (v17)
                 {
 
                   v18 = 1;
-                  v4 = v23;
+                  _leafExchangeAccountTypes = v23;
                   goto LABEL_21;
                 }
               }
@@ -3885,7 +3885,7 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
           }
 
           v6 = v22;
-          v4 = v23;
+          _leafExchangeAccountTypes = v23;
           v7 = v21;
         }
 
@@ -3893,7 +3893,7 @@ uint64_t __44__ESDAgentManager__hasDataclassWeCareAbout___block_invoke()
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [_leafExchangeAccountTypes countByEnumeratingWithState:&v28 objects:v33 count:16];
       v18 = 0;
     }
 

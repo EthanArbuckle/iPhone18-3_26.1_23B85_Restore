@@ -1,33 +1,33 @@
 @interface PGSinglePersonWallpaperAssetCandidate
-- (PGSinglePersonWallpaperAssetCandidate)initWithAsset:(id)a3;
+- (PGSinglePersonWallpaperAssetCandidate)initWithAsset:(id)asset;
 @end
 
 @implementation PGSinglePersonWallpaperAssetCandidate
 
-- (PGSinglePersonWallpaperAssetCandidate)initWithAsset:(id)a3
+- (PGSinglePersonWallpaperAssetCandidate)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v18.receiver = self;
   v18.super_class = PGSinglePersonWallpaperAssetCandidate;
   v6 = [(PGSinglePersonWallpaperAssetCandidate *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
-    v8 = [v5 uuid];
+    objc_storeStrong(&v6->_asset, asset);
+    uuid = [assetCopy uuid];
     assetUUID = v7->_assetUUID;
-    v7->_assetUUID = v8;
+    v7->_assetUUID = uuid;
 
-    v10 = [v5 creationDate];
+    creationDate = [assetCopy creationDate];
     creationDate = v7->_creationDate;
-    v7->_creationDate = v10;
+    v7->_creationDate = creationDate;
 
-    v7->_isFavorite = [v5 isFavorite];
-    v12 = [v5 mediaAnalysisProperties];
-    [v12 wallpaperScore];
+    v7->_isFavorite = [assetCopy isFavorite];
+    mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+    [mediaAnalysisProperties wallpaperScore];
     v7->_wallpaperScore = v13;
 
-    [v5 overallAestheticScore];
+    [assetCopy overallAestheticScore];
     v15 = v14;
     v16 = v15 + v7->_wallpaperScore;
     v7->_aestheticScore = v15;

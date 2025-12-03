@@ -1,40 +1,40 @@
 @interface searchToolL2_MobileSMSInput
-- (id)featureValueForName:(id)a3;
-- (searchToolL2_MobileSMSInput)initWithSparseL1:(double)a3 denseL1:(double)a4 documentEmbeddingAvailable:(double)a5 has_query_text_embedding:(double)a6 kMDItemTextContent_QUPP_ARG_SEARCH_TERM:(double)a7 kMDItemRecipients_QUPP_ARG_PERSON:(double)a8 kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM:(double)a9 kMDItemTextContent_QUPP_ARG_PERSON:(double)a10 kMDItemAuthors_QUPP_ARG_PERSON:(double)a11 kMDItemTextContent_QUPP_ARG_LOCATION:(double)a12 kMDItemAppEntityTitle_QUPP_ARG_LOCATION:(double)a13 kMDItemAuthors_QUPP_ARG_PERSON_SENDER:(double)a14 kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON:(double)a15 kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER:(double)a16;
+- (id)featureValueForName:(id)name;
+- (searchToolL2_MobileSMSInput)initWithSparseL1:(double)l1 denseL1:(double)denseL1 documentEmbeddingAvailable:(double)available has_query_text_embedding:(double)has_query_text_embedding kMDItemTextContent_QUPP_ARG_SEARCH_TERM:(double)m kMDItemRecipients_QUPP_ARG_PERSON:(double)n kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM:(double)rM kMDItemTextContent_QUPP_ARG_PERSON:(double)self0 kMDItemAuthors_QUPP_ARG_PERSON:(double)self1 kMDItemTextContent_QUPP_ARG_LOCATION:(double)self2 kMDItemAppEntityTitle_QUPP_ARG_LOCATION:(double)self3 kMDItemAuthors_QUPP_ARG_PERSON_SENDER:(double)self4 kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON:(double)self5 kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER:(double)self6;
 @end
 
 @implementation searchToolL2_MobileSMSInput
 
-- (searchToolL2_MobileSMSInput)initWithSparseL1:(double)a3 denseL1:(double)a4 documentEmbeddingAvailable:(double)a5 has_query_text_embedding:(double)a6 kMDItemTextContent_QUPP_ARG_SEARCH_TERM:(double)a7 kMDItemRecipients_QUPP_ARG_PERSON:(double)a8 kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM:(double)a9 kMDItemTextContent_QUPP_ARG_PERSON:(double)a10 kMDItemAuthors_QUPP_ARG_PERSON:(double)a11 kMDItemTextContent_QUPP_ARG_LOCATION:(double)a12 kMDItemAppEntityTitle_QUPP_ARG_LOCATION:(double)a13 kMDItemAuthors_QUPP_ARG_PERSON_SENDER:(double)a14 kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON:(double)a15 kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER:(double)a16
+- (searchToolL2_MobileSMSInput)initWithSparseL1:(double)l1 denseL1:(double)denseL1 documentEmbeddingAvailable:(double)available has_query_text_embedding:(double)has_query_text_embedding kMDItemTextContent_QUPP_ARG_SEARCH_TERM:(double)m kMDItemRecipients_QUPP_ARG_PERSON:(double)n kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM:(double)rM kMDItemTextContent_QUPP_ARG_PERSON:(double)self0 kMDItemAuthors_QUPP_ARG_PERSON:(double)self1 kMDItemTextContent_QUPP_ARG_LOCATION:(double)self2 kMDItemAppEntityTitle_QUPP_ARG_LOCATION:(double)self3 kMDItemAuthors_QUPP_ARG_PERSON_SENDER:(double)self4 kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON:(double)self5 kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER:(double)self6
 {
   v25.receiver = self;
   v25.super_class = searchToolL2_MobileSMSInput;
   result = [(searchToolL2_MobileSMSInput *)&v25 init];
   if (result)
   {
-    result->_sparseL1 = a3;
-    result->_denseL1 = a4;
-    result->_documentEmbeddingAvailable = a5;
-    result->_has_query_text_embedding = a6;
-    result->_kMDItemTextContent_QUPP_ARG_SEARCH_TERM = a7;
-    result->_kMDItemRecipients_QUPP_ARG_PERSON = a8;
-    result->_kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM = a9;
-    result->_kMDItemTextContent_QUPP_ARG_PERSON = a10;
-    result->_kMDItemAuthors_QUPP_ARG_PERSON = a11;
-    result->_kMDItemTextContent_QUPP_ARG_LOCATION = a12;
-    result->_kMDItemAppEntityTitle_QUPP_ARG_LOCATION = a13;
-    result->_kMDItemAuthors_QUPP_ARG_PERSON_SENDER = a14;
-    result->_kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON = a15;
-    result->_kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER = a16;
+    result->_sparseL1 = l1;
+    result->_denseL1 = denseL1;
+    result->_documentEmbeddingAvailable = available;
+    result->_has_query_text_embedding = has_query_text_embedding;
+    result->_kMDItemTextContent_QUPP_ARG_SEARCH_TERM = m;
+    result->_kMDItemRecipients_QUPP_ARG_PERSON = n;
+    result->_kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM = rM;
+    result->_kMDItemTextContent_QUPP_ARG_PERSON = oN;
+    result->_kMDItemAuthors_QUPP_ARG_PERSON = sON;
+    result->_kMDItemTextContent_QUPP_ARG_LOCATION = iON;
+    result->_kMDItemAppEntityTitle_QUPP_ARG_LOCATION = tION;
+    result->_kMDItemAuthors_QUPP_ARG_PERSON_SENDER = r;
+    result->_kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON = rSON;
+    result->_kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER = eR;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"sparseL1"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"sparseL1"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self sparseL1];
@@ -43,91 +43,91 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"denseL1"])
+  if ([nameCopy isEqualToString:@"denseL1"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self denseL1];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"documentEmbeddingAvailable"])
+  if ([nameCopy isEqualToString:@"documentEmbeddingAvailable"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self documentEmbeddingAvailable];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"has_query_text_embedding"])
+  if ([nameCopy isEqualToString:@"has_query_text_embedding"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self has_query_text_embedding];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemTextContent QUPP_ARG_SEARCH_TERM"])
+  if ([nameCopy isEqualToString:@"kMDItemTextContent QUPP_ARG_SEARCH_TERM"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemTextContent_QUPP_ARG_SEARCH_TERM];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemRecipients QUPP_ARG_PERSON"])
+  if ([nameCopy isEqualToString:@"kMDItemRecipients QUPP_ARG_PERSON"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemRecipients_QUPP_ARG_PERSON];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAppEntityTitle QUPP_ARG_SEARCH_TERM"])
+  if ([nameCopy isEqualToString:@"kMDItemAppEntityTitle QUPP_ARG_SEARCH_TERM"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAppEntityTitle_QUPP_ARG_SEARCH_TERM];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemTextContent QUPP_ARG_PERSON"])
+  if ([nameCopy isEqualToString:@"kMDItemTextContent QUPP_ARG_PERSON"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemTextContent_QUPP_ARG_PERSON];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAuthors QUPP_ARG_PERSON"])
+  if ([nameCopy isEqualToString:@"kMDItemAuthors QUPP_ARG_PERSON"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAuthors_QUPP_ARG_PERSON];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemTextContent QUPP_ARG_LOCATION"])
+  if ([nameCopy isEqualToString:@"kMDItemTextContent QUPP_ARG_LOCATION"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemTextContent_QUPP_ARG_LOCATION];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAppEntityTitle QUPP_ARG_LOCATION"])
+  if ([nameCopy isEqualToString:@"kMDItemAppEntityTitle QUPP_ARG_LOCATION"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAppEntityTitle_QUPP_ARG_LOCATION];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAuthors QUPP_ARG_PERSON_SENDER"])
+  if ([nameCopy isEqualToString:@"kMDItemAuthors QUPP_ARG_PERSON_SENDER"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAuthors_QUPP_ARG_PERSON_SENDER];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAuthorEmailAddresses QUPP_ARG_PERSON"])
+  if ([nameCopy isEqualToString:@"kMDItemAuthorEmailAddresses QUPP_ARG_PERSON"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAuthorEmailAddresses_QUPP_ARG_PERSON];
     goto LABEL_29;
   }
 
-  if ([v4 isEqualToString:@"kMDItemAuthorAddresses QUPP_ARG_PERSON_SENDER"])
+  if ([nameCopy isEqualToString:@"kMDItemAuthorAddresses QUPP_ARG_PERSON_SENDER"])
   {
     v5 = MEMORY[0x1E695FE60];
     [(searchToolL2_MobileSMSInput *)self kMDItemAuthorAddresses_QUPP_ARG_PERSON_SENDER];

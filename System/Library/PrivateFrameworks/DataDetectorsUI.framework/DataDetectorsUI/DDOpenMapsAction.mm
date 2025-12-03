@@ -1,28 +1,28 @@
 @interface DDOpenMapsAction
-+ (BOOL)actionAvailableForCachedEvent:(id)a3;
-+ (BOOL)actionAvailableForContact:(id)a3;
++ (BOOL)actionAvailableForCachedEvent:(id)event;
++ (BOOL)actionAvailableForContact:(id)contact;
 - (id)compactTitle;
 - (id)defaultAppRecord;
 - (id)localizedName;
 - (id)notificationIconBundleIdentifier;
 - (id)notificationTitle;
 - (id)notificationURL;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDOpenMapsAction
 
-+ (BOOL)actionAvailableForContact:(id)a3
++ (BOOL)actionAvailableForContact:(id)contact
 {
-  v3 = _displayString(0, 0, a3, 0, 0);
+  v3 = _displayString(0, 0, contact, 0, 0);
   v4 = [v3 length] != 0;
 
   return v4;
 }
 
-+ (BOOL)actionAvailableForCachedEvent:(id)a3
++ (BOOL)actionAvailableForCachedEvent:(id)event
 {
-  v3 = _displayString(0, 0, 0, a3, 0);
+  v3 = _displayString(0, 0, 0, event, 0);
   v4 = [v3 length] != 0;
 
   return v4;
@@ -34,9 +34,9 @@
   {
     if ([MEMORY[0x277CC1EE8] hasDatabaseAccess])
     {
-      v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v9 = 0;
-      v4 = [v3 defaultApplicationForCategory:5 error:&v9];
+      v4 = [defaultWorkspace defaultApplicationForCategory:5 error:&v9];
       v5 = v9;
       defaultAppRecord = self->_defaultAppRecord;
       self->_defaultAppRecord = v4;
@@ -52,10 +52,10 @@
 
 - (id)localizedName
 {
-  v3 = [(DDOpenMapsAction *)self defaultAppRecord];
-  v4 = [v3 localizedName];
+  defaultAppRecord = [(DDOpenMapsAction *)self defaultAppRecord];
+  localizedName = [defaultAppRecord localizedName];
 
-  if (![v4 length])
+  if (![localizedName length])
   {
     goto LABEL_5;
   }
@@ -65,7 +65,7 @@
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = DDLocalizedString(@"Open in %@");
-    v11 = [v9 stringWithFormat:v10, v4];
+    v11 = [v9 stringWithFormat:v10, localizedName];
   }
 
   else
@@ -87,17 +87,17 @@ LABEL_5:
 
   if ([v7 length])
   {
-    v8 = v7;
+    compactTitle = v7;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = DDOpenMapsAction;
-    v8 = [(DDAction *)&v11 compactTitle];
+    compactTitle = [(DDAction *)&v11 compactTitle];
   }
 
-  v9 = v8;
+  v9 = compactTitle;
 
   return v9;
 }
@@ -116,14 +116,14 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v8 = [(DDOpenMapsAction *)self defaultAppRecord];
-  v9 = [v8 localizedName];
+  defaultAppRecord = [(DDOpenMapsAction *)self defaultAppRecord];
+  localizedName = [defaultAppRecord localizedName];
 
-  v10 = [(NSURL *)self->super._url scheme];
-  v11 = [v10 lowercaseString];
-  v12 = [v11 isEqualToString:@"geo"];
+  scheme = [(NSURL *)self->super._url scheme];
+  lowercaseString = [scheme lowercaseString];
+  v12 = [lowercaseString isEqualToString:@"geo"];
 
-  v13 = [v9 length];
+  v13 = [localizedName length];
   v14 = MEMORY[0x277CCACA8];
   if (!v12)
   {
@@ -149,7 +149,7 @@ LABEL_11:
   v15 = @"View location “%@” in %@";
 LABEL_8:
   v17 = DDLocalizedString(v15);
-  [v14 stringWithFormat:v17, v7, v9];
+  [v14 stringWithFormat:v17, v7, localizedName];
   v16 = LABEL_12:;
 
 LABEL_13:
@@ -159,12 +159,12 @@ LABEL_13:
 
 - (id)notificationIconBundleIdentifier
 {
-  v2 = [(DDOpenMapsAction *)self defaultAppRecord];
-  v3 = [v2 bundleIdentifier];
-  v4 = v3;
-  if (v3)
+  defaultAppRecord = [(DDOpenMapsAction *)self defaultAppRecord];
+  bundleIdentifier = [defaultAppRecord bundleIdentifier];
+  v4 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v5 = v3;
+    v5 = bundleIdentifier;
   }
 
   else
@@ -261,14 +261,14 @@ LABEL_17:
   return v10;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v5 = a3;
-  v4 = [(DDOpenMapsAction *)self notificationURL];
-  if (v4)
+  viewCopy = view;
+  notificationURL = [(DDOpenMapsAction *)self notificationURL];
+  if (notificationURL)
   {
     [(DDAction *)self addToRecents];
-    [(DDAction *)self _performFromView:v5 byOpeningURL:v4];
+    [(DDAction *)self _performFromView:viewCopy byOpeningURL:notificationURL];
   }
 }
 

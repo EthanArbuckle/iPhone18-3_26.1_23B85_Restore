@@ -1,55 +1,55 @@
 @interface MomentGraphService
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)debugValidationFromQueryTemplate:(NSString *)a3 person:(NSString *)a4 city:(NSString *)a5 place:(NSString *)a6 time:(NSString *)a7 reply:(id)a8;
-- (void)fetchUnvalidatedPromptSuggestionsWithFetchLimit:(int64_t)a3 reply:(id)a4;
-- (void)generateContextualPromptSuggestionsWithReply:(id)a3;
-- (void)generateMagicSlotSuggestionsWithOptions:(NSDictionary *)a3 reply:(id)a4;
-- (void)generateWhimsicalPromptSuggestionsWithReply:(id)a3;
-- (void)performGraphIncrementalUpdateWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)performGraphRebuildWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)performGraphSearchEntityRankingDonationWithOperationID:(NSString *)a3 reply:(id)a4;
-- (void)performLibraryUnderstandingWithOperationID:(NSString *)a3 reply:(id)a4;
-- (void)performLocalMemoryEnrichmentForMemoryCategory:(int64_t)a3 reply:(id)a4;
-- (void)performLocalMemoryEnrichmentForUUIDs:(id)a3 reply:(id)a4;
-- (void)performLocalMemoryEventElectionWithElectionMode:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)performMemoryNodesRebuildForCategory:(int64_t)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)performPromptSuggestionCachingWithOperationID:(NSString *)a3 reply:(id)a4;
-- (void)performPublicEventCachingTaskWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestAssetSearchKeywordsForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 operationID:(NSString *)a5 reply:(id)a6;
-- (void)requestCharacterCurationInfoForCharacterUUIDs:(NSSet *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestExtendedTokenCollectionFromQueryTokensAsData:(NSData *)a3 representativeMomentUUIDByAssetUUID:(NSDictionary *)a4 personOrPetUUIDsWithNegativeFeedback:(NSSet *)a5 sharingFilter:(int64_t)a6 operationID:(NSString *)a7 reply:(id)a8;
-- (void)requestFilterLocationsByMomentLocationHierarchyForRecipeAsData:(NSData *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestGraphIsAvailableWithReply:(id)a3;
-- (void)requestGraphSearchMetadataWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestGraphStatusWithReply:(id)a3;
-- (void)requestMeaningsForMomentUUIDs:(NSSet *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPersonGroundingForPersonQuery:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPersonalEventMomentsForQueryTokenAsData:(NSData *)a3 associatedPersonUUID:(NSString *)a4 scopedMomentUUIDs:(NSSet *)a5 momentUUIDByAssetUUID:(NSDictionary *)a6 operationID:(NSString *)a7 reply:(id)a8;
-- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)a3 momentUUIDByAssetUUID:(NSDictionary *)a4 extendedTokenCollectionAsData:(NSData *)a5 configurationAsData:(NSData *)a6 sharingFilter:(int64_t)a7 operationID:(NSString *)a8 reply:(id)a9;
-- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPersonalTraitsForHighlightUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPrewarmQueryAnnotatorForOriginatorPID:(int64_t)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPublicEventDataForAssetUUID:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestPublicEventDataForMomentUUID:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)requestQueryAnnotationForQuery:(NSString *)a3 originatorPID:(int64_t)a4 operationID:(NSString *)a5 reply:(id)a6;
-- (void)requestSearchIndexKeywordsForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 operationID:(NSString *)a5 reply:(id)a6;
-- (void)requestSearchableAssetUUIDsBySocialGroupForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 isFullAnalysis:(BOOL)a5 operationID:(NSString *)a6 reply:(id)a7;
-- (void)requestSynonymsDictionariesWithOperationID:(NSString *)a3 reply:(id)a4;
-- (void)validatePromptSuggestionsWithSuggestionUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)warmupMomentGraphWorkerForDuration:(double)a3 operationID:(NSString *)a4 reply:(id)a5;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)debugValidationFromQueryTemplate:(NSString *)template person:(NSString *)person city:(NSString *)city place:(NSString *)place time:(NSString *)time reply:(id)reply;
+- (void)fetchUnvalidatedPromptSuggestionsWithFetchLimit:(int64_t)limit reply:(id)reply;
+- (void)generateContextualPromptSuggestionsWithReply:(id)reply;
+- (void)generateMagicSlotSuggestionsWithOptions:(NSDictionary *)options reply:(id)reply;
+- (void)generateWhimsicalPromptSuggestionsWithReply:(id)reply;
+- (void)performGraphIncrementalUpdateWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply;
+- (void)performGraphRebuildWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply;
+- (void)performGraphSearchEntityRankingDonationWithOperationID:(NSString *)d reply:(id)reply;
+- (void)performLibraryUnderstandingWithOperationID:(NSString *)d reply:(id)reply;
+- (void)performLocalMemoryEnrichmentForMemoryCategory:(int64_t)category reply:(id)reply;
+- (void)performLocalMemoryEnrichmentForUUIDs:(id)ds reply:(id)reply;
+- (void)performLocalMemoryEventElectionWithElectionMode:(NSString *)mode operationID:(NSString *)d reply:(id)reply;
+- (void)performMemoryNodesRebuildForCategory:(int64_t)category operationID:(NSString *)d reply:(id)reply;
+- (void)performPromptSuggestionCachingWithOperationID:(NSString *)d reply:(id)reply;
+- (void)performPublicEventCachingTaskWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply;
+- (void)requestAssetSearchKeywordsForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type operationID:(NSString *)d reply:(id)reply;
+- (void)requestCharacterCurationInfoForCharacterUUIDs:(NSSet *)ds operationID:(NSString *)d reply:(id)reply;
+- (void)requestExtendedTokenCollectionFromQueryTokensAsData:(NSData *)data representativeMomentUUIDByAssetUUID:(NSDictionary *)d personOrPetUUIDsWithNegativeFeedback:(NSSet *)feedback sharingFilter:(int64_t)filter operationID:(NSString *)iD reply:(id)reply;
+- (void)requestFilterLocationsByMomentLocationHierarchyForRecipeAsData:(NSData *)data operationID:(NSString *)d reply:(id)reply;
+- (void)requestGraphIsAvailableWithReply:(id)reply;
+- (void)requestGraphSearchMetadataWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply;
+- (void)requestGraphStatusWithReply:(id)reply;
+- (void)requestMeaningsForMomentUUIDs:(NSSet *)ds operationID:(NSString *)d reply:(id)reply;
+- (void)requestPersonGroundingForPersonQuery:(NSString *)query operationID:(NSString *)d reply:(id)reply;
+- (void)requestPersonalEventMomentsForQueryTokenAsData:(NSData *)data associatedPersonUUID:(NSString *)d scopedMomentUUIDs:(NSSet *)ds momentUUIDByAssetUUID:(NSDictionary *)iD operationID:(NSString *)operationID reply:(id)reply;
+- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)ds momentUUIDByAssetUUID:(NSDictionary *)d extendedTokenCollectionAsData:(NSData *)data configurationAsData:(NSData *)asData sharingFilter:(int64_t)filter operationID:(NSString *)iD reply:(id)reply;
+- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply;
+- (void)requestPersonalTraitsForHighlightUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply;
+- (void)requestPrewarmQueryAnnotatorForOriginatorPID:(int64_t)d operationID:(NSString *)iD reply:(id)reply;
+- (void)requestPublicEventDataForAssetUUID:(NSString *)d operationID:(NSString *)iD reply:(id)reply;
+- (void)requestPublicEventDataForMomentUUID:(NSString *)d operationID:(NSString *)iD reply:(id)reply;
+- (void)requestQueryAnnotationForQuery:(NSString *)query originatorPID:(int64_t)d operationID:(NSString *)iD reply:(id)reply;
+- (void)requestSearchIndexKeywordsForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type operationID:(NSString *)d reply:(id)reply;
+- (void)requestSearchableAssetUUIDsBySocialGroupForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type isFullAnalysis:(BOOL)analysis operationID:(NSString *)d reply:(id)reply;
+- (void)requestSynonymsDictionariesWithOperationID:(NSString *)d reply:(id)reply;
+- (void)validatePromptSuggestionsWithSuggestionUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply;
+- (void)warmupMomentGraphWorkerForDuration:(double)duration operationID:(NSString *)d reply:(id)reply;
 @end
 
 @implementation MomentGraphService
 
-- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20]();
   v10 = &v18 - v9;
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(reply);
   v12 = swift_allocObject();
-  v12[2] = a3;
-  v12[3] = a4;
+  v12[2] = ds;
+  v12[3] = d;
   v12[4] = v11;
   v12[5] = self;
   v13 = sub_22FCC8D14();
@@ -64,18 +64,18 @@
   v15[3] = 0;
   v15[4] = &unk_22FCDA690;
   v15[5] = v14;
-  v16 = a3;
-  v17 = a4;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v10, &unk_22FCDA698, v15);
 }
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(reply);
   v10 = sub_22FCC8C44();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
@@ -95,15 +95,15 @@
   sub_22FC3EE08(0, 0, v8, &unk_22FCDAA20, v14);
 }
 
-- (void)warmupMomentGraphWorkerForDuration:(double)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)warmupMomentGraphWorkerForDuration:(double)duration operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = duration;
+  *(v13 + 24) = d;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_22FCC8D14();
@@ -118,20 +118,20 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDAA10;
   v16[5] = v15;
-  v17 = a4;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDAA18, v16);
 }
 
-- (void)performGraphRebuildWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)performGraphRebuildWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = options;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -146,21 +146,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA9F0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  optionsCopy = options;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA9F8, v16);
 }
 
-- (void)performGraphIncrementalUpdateWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)performGraphIncrementalUpdateWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = options;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -175,21 +175,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA9D0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  optionsCopy = options;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA9D8, v16);
 }
 
-- (void)performMemoryNodesRebuildForCategory:(int64_t)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)performMemoryNodesRebuildForCategory:(int64_t)category operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = category;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -204,20 +204,20 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA9B0;
   v16[5] = v15;
-  v17 = a4;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA9B8, v16);
 }
 
-- (void)performLocalMemoryEventElectionWithElectionMode:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)performLocalMemoryEventElectionWithElectionMode:(NSString *)mode operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = mode;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -232,15 +232,15 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA990;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  modeCopy = mode;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA998, v16);
 }
 
-- (void)performLocalMemoryEnrichmentForUUIDs:(id)a3 reply:(id)a4
+- (void)performLocalMemoryEnrichmentForUUIDs:(id)ds reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = sub_22FCC8C44();
   _Block_copy(v5);
 
@@ -249,22 +249,22 @@
   _Block_release(v5);
 }
 
-- (void)performLocalMemoryEnrichmentForMemoryCategory:(int64_t)a3 reply:(id)a4
+- (void)performLocalMemoryEnrichmentForMemoryCategory:(int64_t)category reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
 
-  sub_22FBA5424(a3, self, v6);
+  sub_22FBA5424(category, self, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)requestGraphStatusWithReply:(id)a3
+- (void)requestGraphStatusWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -284,12 +284,12 @@
   sub_22FC0D8B4(0, 0, v7, &unk_22FCDA978, v12);
 }
 
-- (void)requestGraphIsAvailableWithReply:(id)a3
+- (void)requestGraphIsAvailableWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -309,14 +309,14 @@
   sub_22FC0D8B4(0, 0, v7, &unk_22FCDA958, v12);
 }
 
-- (void)generateMagicSlotSuggestionsWithOptions:(NSDictionary *)a3 reply:(id)a4
+- (void)generateMagicSlotSuggestionsWithOptions:(NSDictionary *)options reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = options;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -331,19 +331,19 @@
   v14[3] = 0;
   v14[4] = &unk_22FCDA930;
   v14[5] = v13;
-  v15 = a3;
+  optionsCopy = options;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA938, v14);
 }
 
-- (void)requestSynonymsDictionariesWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)requestSynonymsDictionariesWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -358,20 +358,20 @@
   v14[3] = 0;
   v14[4] = &unk_22FCDA910;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA918, v14);
 }
 
-- (void)requestGraphSearchMetadataWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestGraphSearchMetadataWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = options;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -386,22 +386,22 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA8F0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  optionsCopy = options;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA8F8, v16);
 }
 
-- (void)requestSearchIndexKeywordsForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 operationID:(NSString *)a5 reply:(id)a6
+- (void)requestSearchIndexKeywordsForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type operationID:(NSString *)d reply:(id)reply
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v11 - 8);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(reply);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = ds;
+  v15[3] = type;
+  v15[4] = d;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_22FCC8D14();
@@ -416,22 +416,22 @@
   v18[3] = 0;
   v18[4] = &unk_22FCDA8C8;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v13, &unk_22FCDA8D0, v18);
 }
 
-- (void)requestAssetSearchKeywordsForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 operationID:(NSString *)a5 reply:(id)a6
+- (void)requestAssetSearchKeywordsForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type operationID:(NSString *)d reply:(id)reply
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v11 - 8);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(reply);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = ds;
+  v15[3] = type;
+  v15[4] = d;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_22FCC8D14();
@@ -446,23 +446,23 @@
   v18[3] = 0;
   v18[4] = &unk_22FCDA8A0;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v13, &unk_22FCDA8A8, v18);
 }
 
-- (void)requestSearchableAssetUUIDsBySocialGroupForAssetCollectionUUIDs:(NSArray *)a3 ofType:(unint64_t)a4 isFullAnalysis:(BOOL)a5 operationID:(NSString *)a6 reply:(id)a7
+- (void)requestSearchableAssetUUIDsBySocialGroupForAssetCollectionUUIDs:(NSArray *)ds ofType:(unint64_t)type isFullAnalysis:(BOOL)analysis operationID:(NSString *)d reply:(id)reply
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v13 - 8);
   v15 = &v23 - v14;
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(reply);
   v17 = swift_allocObject();
-  *(v17 + 16) = a3;
-  *(v17 + 24) = a4;
-  *(v17 + 32) = a5;
-  *(v17 + 40) = a6;
+  *(v17 + 16) = ds;
+  *(v17 + 24) = type;
+  *(v17 + 32) = analysis;
+  *(v17 + 40) = d;
   *(v17 + 48) = v16;
   *(v17 + 56) = self;
   v18 = sub_22FCC8D14();
@@ -477,20 +477,20 @@
   v20[3] = 0;
   v20[4] = &unk_22FCDA880;
   v20[5] = v19;
-  v21 = a3;
-  v22 = a6;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v15, &unk_22FCDA888, v20);
 }
 
-- (void)performGraphSearchEntityRankingDonationWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)performGraphSearchEntityRankingDonationWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -505,19 +505,19 @@
   v14[3] = 0;
   v14[4] = &unk_22FCDA860;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA868, v14);
 }
 
-- (void)performLibraryUnderstandingWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)performLibraryUnderstandingWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -532,20 +532,20 @@
   v14[3] = 0;
   v14[4] = &unk_22FCDA840;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA848, v14);
 }
 
-- (void)requestPublicEventDataForMomentUUID:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPublicEventDataForMomentUUID:(NSString *)d operationID:(NSString *)iD reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = d;
+  v13[3] = iD;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -560,21 +560,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA820;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dCopy = d;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA828, v16);
 }
 
-- (void)requestPublicEventDataForAssetUUID:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPublicEventDataForAssetUUID:(NSString *)d operationID:(NSString *)iD reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = d;
+  v13[3] = iD;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -589,21 +589,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA800;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dCopy = d;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA808, v16);
 }
 
-- (void)performPublicEventCachingTaskWithOptions:(NSDictionary *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)performPublicEventCachingTaskWithOptions:(NSDictionary *)options operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = options;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -618,24 +618,24 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA7E0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  optionsCopy = options;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA7E8, v16);
 }
 
-- (void)requestExtendedTokenCollectionFromQueryTokensAsData:(NSData *)a3 representativeMomentUUIDByAssetUUID:(NSDictionary *)a4 personOrPetUUIDsWithNegativeFeedback:(NSSet *)a5 sharingFilter:(int64_t)a6 operationID:(NSString *)a7 reply:(id)a8
+- (void)requestExtendedTokenCollectionFromQueryTokensAsData:(NSData *)data representativeMomentUUIDByAssetUUID:(NSDictionary *)d personOrPetUUIDsWithNegativeFeedback:(NSSet *)feedback sharingFilter:(int64_t)filter operationID:(NSString *)iD reply:(id)reply
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v15 - 8);
   v17 = &v27 - v16;
-  v18 = _Block_copy(a8);
+  v18 = _Block_copy(reply);
   v19 = swift_allocObject();
-  v19[2] = a3;
-  v19[3] = a4;
-  v19[4] = a5;
-  v19[5] = a6;
-  v19[6] = a7;
+  v19[2] = data;
+  v19[3] = d;
+  v19[4] = feedback;
+  v19[5] = filter;
+  v19[6] = iD;
   v19[7] = v18;
   v19[8] = self;
   v20 = sub_22FCC8D14();
@@ -650,23 +650,23 @@
   v22[3] = 0;
   v22[4] = &unk_22FCDA7C0;
   v22[5] = v21;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a7;
+  dataCopy = data;
+  dCopy = d;
+  feedbackCopy = feedback;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v17, &unk_22FCDA7C8, v22);
 }
 
-- (void)requestMeaningsForMomentUUIDs:(NSSet *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestMeaningsForMomentUUIDs:(NSSet *)ds operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = ds;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -681,25 +681,25 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA7A0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA7A8, v16);
 }
 
-- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)a3 momentUUIDByAssetUUID:(NSDictionary *)a4 extendedTokenCollectionAsData:(NSData *)a5 configurationAsData:(NSData *)a6 sharingFilter:(int64_t)a7 operationID:(NSString *)a8 reply:(id)a9
+- (void)requestPersonalTraitsForAssetUUIDs:(NSArray *)ds momentUUIDByAssetUUID:(NSDictionary *)d extendedTokenCollectionAsData:(NSData *)data configurationAsData:(NSData *)asData sharingFilter:(int64_t)filter operationID:(NSString *)iD reply:(id)reply
 {
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v16 - 8);
   v18 = &v29 - v17;
-  v19 = _Block_copy(a9);
+  v19 = _Block_copy(reply);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
-  v20[7] = a8;
+  v20[2] = ds;
+  v20[3] = d;
+  v20[4] = data;
+  v20[5] = asData;
+  v20[6] = filter;
+  v20[7] = iD;
   v20[8] = v19;
   v20[9] = self;
   v21 = sub_22FCC8D14();
@@ -714,27 +714,27 @@
   v23[3] = 0;
   v23[4] = &unk_22FCDA780;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a8;
+  dsCopy = ds;
+  dCopy = d;
+  dataCopy = data;
+  asDataCopy = asData;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v18, &unk_22FCDA788, v23);
 }
 
-- (void)requestPersonalEventMomentsForQueryTokenAsData:(NSData *)a3 associatedPersonUUID:(NSString *)a4 scopedMomentUUIDs:(NSSet *)a5 momentUUIDByAssetUUID:(NSDictionary *)a6 operationID:(NSString *)a7 reply:(id)a8
+- (void)requestPersonalEventMomentsForQueryTokenAsData:(NSData *)data associatedPersonUUID:(NSString *)d scopedMomentUUIDs:(NSSet *)ds momentUUIDByAssetUUID:(NSDictionary *)iD operationID:(NSString *)operationID reply:(id)reply
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v15 - 8);
   v17 = &v28 - v16;
-  v18 = _Block_copy(a8);
+  v18 = _Block_copy(reply);
   v19 = swift_allocObject();
-  v19[2] = a3;
-  v19[3] = a4;
-  v19[4] = a5;
-  v19[5] = a6;
-  v19[6] = a7;
+  v19[2] = data;
+  v19[3] = d;
+  v19[4] = ds;
+  v19[5] = iD;
+  v19[6] = operationID;
   v19[7] = v18;
   v19[8] = self;
   v20 = sub_22FCC8D14();
@@ -749,24 +749,24 @@
   v22[3] = 0;
   v22[4] = &unk_22FCDA760;
   v22[5] = v21;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
+  dataCopy = data;
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
+  operationIDCopy = operationID;
 
   sub_22FC0D8B4(0, 0, v17, &unk_22FCDA768, v22);
 }
 
-- (void)requestFilterLocationsByMomentLocationHierarchyForRecipeAsData:(NSData *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestFilterLocationsByMomentLocationHierarchyForRecipeAsData:(NSData *)data operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = data;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -781,21 +781,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA740;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dataCopy = data;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA748, v16);
 }
 
-- (void)requestCharacterCurationInfoForCharacterUUIDs:(NSSet *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestCharacterCurationInfoForCharacterUUIDs:(NSSet *)ds operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = ds;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -810,21 +810,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA720;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA728, v16);
 }
 
-- (void)requestPrewarmQueryAnnotatorForOriginatorPID:(int64_t)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPrewarmQueryAnnotatorForOriginatorPID:(int64_t)d operationID:(NSString *)iD reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = d;
+  v13[3] = iD;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -839,21 +839,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA700;
   v16[5] = v15;
-  v17 = a4;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA708, v16);
 }
 
-- (void)requestQueryAnnotationForQuery:(NSString *)a3 originatorPID:(int64_t)a4 operationID:(NSString *)a5 reply:(id)a6
+- (void)requestQueryAnnotationForQuery:(NSString *)query originatorPID:(int64_t)d operationID:(NSString *)iD reply:(id)reply
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v11 - 8);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(reply);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = query;
+  v15[3] = d;
+  v15[4] = iD;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_22FCC8D14();
@@ -868,21 +868,21 @@
   v18[3] = 0;
   v18[4] = &unk_22FCDA6E0;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
+  queryCopy = query;
+  iDCopy = iD;
 
   sub_22FC0D8B4(0, 0, v13, &unk_22FCDA6E8, v18);
 }
 
-- (void)requestPersonGroundingForPersonQuery:(NSString *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPersonGroundingForPersonQuery:(NSString *)query operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = query;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -897,21 +897,21 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA6B0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  queryCopy = query;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA6B8, v16);
 }
 
-- (void)requestPersonalTraitsForHighlightUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)requestPersonalTraitsForHighlightUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = ds;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -926,20 +926,20 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA668;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA670, v16);
 }
 
-- (void)performPromptSuggestionCachingWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)performPromptSuggestionCachingWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -954,17 +954,17 @@
   v14[3] = 0;
   v14[4] = &unk_22FCDA648;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA650, v14);
 }
 
-- (void)generateWhimsicalPromptSuggestionsWithReply:(id)a3
+- (void)generateWhimsicalPromptSuggestionsWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -984,12 +984,12 @@
   sub_22FC0D8B4(0, 0, v7, &unk_22FCDA630, v12);
 }
 
-- (void)generateContextualPromptSuggestionsWithReply:(id)a3
+- (void)generateContextualPromptSuggestionsWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -1009,14 +1009,14 @@
   sub_22FC0D8B4(0, 0, v7, &unk_22FCDA610, v12);
 }
 
-- (void)fetchUnvalidatedPromptSuggestionsWithFetchLimit:(int64_t)a3 reply:(id)a4
+- (void)fetchUnvalidatedPromptSuggestionsWithFetchLimit:(int64_t)limit reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = limit;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -1035,15 +1035,15 @@
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA5F0, v14);
 }
 
-- (void)validatePromptSuggestionsWithSuggestionUUIDs:(NSArray *)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)validatePromptSuggestionsWithSuggestionUUIDs:(NSArray *)ds operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = ds;
+  v13[3] = d;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_22FCC8D14();
@@ -1058,24 +1058,24 @@
   v16[3] = 0;
   v16[4] = &unk_22FCDA5A8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  dsCopy = ds;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA5B0, v16);
 }
 
-- (void)debugValidationFromQueryTemplate:(NSString *)a3 person:(NSString *)a4 city:(NSString *)a5 place:(NSString *)a6 time:(NSString *)a7 reply:(id)a8
+- (void)debugValidationFromQueryTemplate:(NSString *)template person:(NSString *)person city:(NSString *)city place:(NSString *)place time:(NSString *)time reply:(id)reply
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v15 - 8);
   v17 = &v28 - v16;
-  v18 = _Block_copy(a8);
+  v18 = _Block_copy(reply);
   v19 = swift_allocObject();
-  v19[2] = a3;
-  v19[3] = a4;
-  v19[4] = a5;
-  v19[5] = a6;
-  v19[6] = a7;
+  v19[2] = template;
+  v19[3] = person;
+  v19[4] = city;
+  v19[5] = place;
+  v19[6] = time;
   v19[7] = v18;
   v19[8] = self;
   v20 = sub_22FCC8D14();
@@ -1090,11 +1090,11 @@
   v22[3] = 0;
   v22[4] = &unk_22FCD2CA0;
   v22[5] = v21;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
+  templateCopy = template;
+  personCopy = person;
+  cityCopy = city;
+  placeCopy = place;
+  timeCopy = time;
 
   sub_22FC0D8B4(0, 0, v17, &unk_22FCDA590, v22);
 }

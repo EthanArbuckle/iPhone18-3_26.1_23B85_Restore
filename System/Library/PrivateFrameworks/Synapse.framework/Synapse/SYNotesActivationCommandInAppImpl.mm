@@ -1,84 +1,84 @@
 @interface SYNotesActivationCommandInAppImpl
 + (id)fetchPresenterViewControllerInvocationBlock;
-+ (void)_activateWithActivity:(id)a3 completion:(id)a4;
-+ (void)_launchNotesWithUserActivity:(id)a3 completion:(id)a4;
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5;
-+ (void)setFetchPresenterViewControllerInvocationBlock:(id)a3;
++ (void)_activateWithActivity:(id)activity completion:(id)completion;
++ (void)_launchNotesWithUserActivity:(id)activity completion:(id)completion;
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion;
++ (void)setFetchPresenterViewControllerInvocationBlock:(id)block;
 @end
 
 @implementation SYNotesActivationCommandInAppImpl
 
 + (id)fetchPresenterViewControllerInvocationBlock
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x22AA6A360](__fetchPresenterViewControllerInvocationBlock);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (void)setFetchPresenterViewControllerInvocationBlock:(id)a3
++ (void)setFetchPresenterViewControllerInvocationBlock:(id)block
 {
-  v7 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [blockCopy copy];
   v6 = __fetchPresenterViewControllerInvocationBlock;
   __fetchPresenterViewControllerInvocationBlock = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = 0;
-  if (a3 && a4)
+  if (identifier && noteIdentifier)
   {
-    v17[0] = a3;
+    v17[0] = identifier;
     v10 = MEMORY[0x277CBEA60];
-    v11 = a4;
-    v12 = a3;
+    noteIdentifierCopy = noteIdentifier;
+    identifierCopy = identifier;
     v13 = [v10 arrayWithObjects:v17 count:1];
-    v16 = v11;
+    v16 = noteIdentifierCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
 
     v9 = SYMakeEditNoteUserActivity(v13, v14);
   }
 
-  [a1 _activateWithActivity:v9 completion:v8];
+  [self _activateWithActivity:v9 completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_activateWithActivity:(id)a3 completion:(id)a4
++ (void)_activateWithActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  objc_sync_enter(v8);
+  activityCopy = activity;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [__fetchPresenterViewControllerInvocationBlock copy];
   v10 = __fetchPresenterViewControllerInvocationBlock;
   __fetchPresenterViewControllerInvocationBlock = 0;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (SYIsPhone() && (SYIsQuickNoteOnPhoneEnabled() & 1) != 0)
   {
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    if ([v12 isEqual:@"com.apple.springboard"])
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if ([bundleIdentifier isEqual:@"com.apple.springboard"])
     {
 
 LABEL_10:
-      [v8 _launchNotesWithUserActivity:v6 completion:v7];
+      [selfCopy _launchNotesWithUserActivity:activityCopy completion:completionCopy];
       goto LABEL_15;
     }
 
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 bundleIdentifier];
-    v17 = [v16 isEqual:@"com.apple.BacklinkIndicator"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v17 = [bundleIdentifier2 isEqual:@"com.apple.BacklinkIndicator"];
 
     if (v17)
     {
@@ -90,8 +90,8 @@ LABEL_10:
     v19[2] = __70__SYNotesActivationCommandInAppImpl__activateWithActivity_completion___block_invoke;
     v19[3] = &unk_27856C4F8;
     v21 = v9;
-    v20 = v6;
-    v22 = v7;
+    v20 = activityCopy;
+    v22 = completionCopy;
     v18 = MEMORY[0x22AA6A360](v19);
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
@@ -112,10 +112,10 @@ LABEL_10:
       [SYNotesActivationCommandSynapseImpl _activateWithActivity:v13 completion:?];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.synapse" code:-127 userInfo:0];
-      (*(v7 + 2))(v7, v14);
+      (*(completionCopy + 2))(completionCopy, v14);
     }
   }
 
@@ -162,18 +162,18 @@ void __70__SYNotesActivationCommandInAppImpl__activateWithActivity_completion___
   [v5 presentSystemPaperWithUserActivityData:v4 presenter:v3 completion:v7];
 }
 
-+ (void)_launchNotesWithUserActivity:(id)a3 completion:(id)a4
++ (void)_launchNotesWithUserActivity:(id)activity completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__SYNotesActivationCommandInAppImpl__launchNotesWithUserActivity_completion___block_invoke;
   v21[3] = &unk_27856BFE0;
-  v7 = v5;
+  v7 = activityCopy;
   v22 = v7;
-  v8 = v6;
+  v8 = completionCopy;
   v23 = v8;
   v9 = MEMORY[0x22AA6A360](v21);
   if (v7)
@@ -196,13 +196,13 @@ void __70__SYNotesActivationCommandInAppImpl__activateWithActivity_completion___
 
     if (v10)
     {
-      v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __77__SYNotesActivationCommandInAppImpl__launchNotesWithUserActivity_completion___block_invoke_10;
       v18[3] = &unk_27856B738;
       v19 = v9;
-      [v13 openUserActivity:v7 usingApplicationRecord:v10 configuration:0 completionHandler:v18];
+      [defaultWorkspace openUserActivity:v7 usingApplicationRecord:v10 configuration:0 completionHandler:v18];
     }
 
     else if (v8)
@@ -213,13 +213,13 @@ void __70__SYNotesActivationCommandInAppImpl__activateWithActivity_completion___
 
   else
   {
-    v14 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __77__SYNotesActivationCommandInAppImpl__launchNotesWithUserActivity_completion___block_invoke_2;
     v16[3] = &unk_27856B738;
     v17 = v9;
-    [v14 openApplicationWithBundleIdentifier:@"com.apple.mobilenotes" usingConfiguration:0 completionHandler:v16];
+    [defaultWorkspace2 openApplicationWithBundleIdentifier:@"com.apple.mobilenotes" usingConfiguration:0 completionHandler:v16];
 
     v11 = v17;
   }

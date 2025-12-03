@@ -1,22 +1,22 @@
 @interface BLSSceneAttribute
-- (BLSSceneAttribute)initWithCoder:(id)a3;
-- (BLSSceneAttribute)initWithFBSScene:(id)a3;
-- (BLSSceneAttribute)initWithSceneIdentityToken:(id)a3;
-- (BLSSceneAttribute)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSSceneAttribute)initWithCoder:(id)coder;
+- (BLSSceneAttribute)initWithFBSScene:(id)scene;
+- (BLSSceneAttribute)initWithSceneIdentityToken:(id)token;
+- (BLSSceneAttribute)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSSceneAttribute
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendPointer:objc_opt_class()];
-  v5 = [v3 appendObject:self->_sceneIdentityToken];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendPointer:objc_opt_class()];
+  v5 = [builder appendObject:self->_sceneIdentityToken];
+  v6 = [builder hash];
 
   return v6;
 }
@@ -24,41 +24,41 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(FBSSceneIdentityToken *)self->_sceneIdentityToken stringRepresentation];
-  [v3 appendString:v4 withName:@"identityToken"];
+  stringRepresentation = [(FBSSceneIdentityToken *)self->_sceneIdentityToken stringRepresentation];
+  [v3 appendString:stringRepresentation withName:@"identityToken"];
 
-  v5 = [v3 build];
+  build = [v3 build];
+
+  return build;
+}
+
+- (BLSSceneAttribute)initWithFBSScene:(id)scene
+{
+  identityToken = [scene identityToken];
+  v5 = [(BLSSceneAttribute *)self initWithSceneIdentityToken:identityToken];
 
   return v5;
 }
 
-- (BLSSceneAttribute)initWithFBSScene:(id)a3
+- (BLSSceneAttribute)initWithSceneIdentityToken:(id)token
 {
-  v4 = [a3 identityToken];
-  v5 = [(BLSSceneAttribute *)self initWithSceneIdentityToken:v4];
-
-  return v5;
-}
-
-- (BLSSceneAttribute)initWithSceneIdentityToken:(id)a3
-{
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = BLSSceneAttribute;
   v6 = [(BLSAttribute *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sceneIdentityToken, a3);
+    objc_storeStrong(&v6->_sceneIdentityToken, token);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -69,8 +69,8 @@
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
     {
       sceneIdentityToken = self->_sceneIdentityToken;
-      v8 = [(BLSSceneAttribute *)v4 sceneIdentityToken];
-      v6 = [(FBSSceneIdentityToken *)sceneIdentityToken isEqual:v8];
+      sceneIdentityToken = [(BLSSceneAttribute *)equalCopy sceneIdentityToken];
+      v6 = [(FBSSceneIdentityToken *)sceneIdentityToken isEqual:sceneIdentityToken];
     }
 
     else
@@ -82,10 +82,10 @@
   return v6;
 }
 
-- (BLSSceneAttribute)initWithXPCDictionary:(id)a3
+- (BLSSceneAttribute)initWithXPCDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   [@"identityToken" UTF8String];
   v6 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
 
@@ -93,7 +93,7 @@
   if (objc_opt_isKindOfClass())
   {
     self = [(BLSSceneAttribute *)self initWithSceneIdentityToken:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -113,30 +113,30 @@
       _os_log_fault_impl(&dword_21FE25000, v8, OS_LOG_TYPE_FAULT, "%@ not a FBSSceneIdentityToken for [%@ %@]", &v14, 0x20u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   [@"identityToken" UTF8String];
   sceneIdentityToken = self->_sceneIdentityToken;
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (BLSSceneAttribute)initWithCoder:(id)a3
+- (BLSSceneAttribute)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identityToken"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identityToken"];
   if (v6)
   {
     self = [(BLSSceneAttribute *)self initWithSceneIdentityToken:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -148,7 +148,7 @@
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
       v14 = 138543874;
-      v15 = v5;
+      v15 = coderCopy;
       v16 = 2112;
       v17 = v12;
       v18 = 2112;
@@ -156,11 +156,11 @@
       _os_log_fault_impl(&dword_21FE25000, v8, OS_LOG_TYPE_FAULT, "invalid FBSSceneIdentityToken from %{public}@ for [%@ %@]", &v14, 0x20u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CMOdometerProxy
-- (CMOdometerProxy)initWithOdometer:(id)a3;
-- (void)_startCyclingWorkoutDistanceUpdatesWithHandler:(id)a3;
+- (CMOdometerProxy)initWithOdometer:(id)odometer;
+- (void)_startCyclingWorkoutDistanceUpdatesWithHandler:(id)handler;
 - (void)_startDaemonConnection;
-- (void)_startOdometerUpdatesWithHandler:(id)a3;
+- (void)_startOdometerUpdatesWithHandler:(id)handler;
 - (void)_stopCyclingWorkoutDistanceUpdates;
 - (void)_stopOdometerGpsAvailability;
 - (void)_stopOdometerUpdates;
@@ -12,7 +12,7 @@
 
 @implementation CMOdometerProxy
 
-- (CMOdometerProxy)initWithOdometer:(id)a3
+- (CMOdometerProxy)initWithOdometer:(id)odometer
 {
   v7.receiver = self;
   v7.super_class = CMOdometerProxy;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_odometer = a3;
+    v4->_odometer = odometer;
     v4->fInternalQueue = dispatch_queue_create("com.apple.CoreMotion.CMOdometer.internal", 0);
     v5->fCallbackQueue = dispatch_queue_create("com.apple.CoreMotion.CMOdometer.callback", 0);
     operator new();
@@ -72,12 +72,12 @@
   sub_19B627DE4();
 }
 
-- (void)_startOdometerUpdatesWithHandler:(id)a3
+- (void)_startOdometerUpdatesWithHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  objc_msgSend_setTotalDistance_(self, a2, a3, -1.0);
+  objc_msgSend_setTotalDistance_(self, a2, handler, -1.0);
 
-  self->fHandler = objc_msgSend_copy(a3, v5, v6);
+  self->fHandler = objc_msgSend_copy(handler, v5, v6);
   fLocationdConnection = self->fLocationdConnection;
   sub_19B428B50(&__p, "kCLConnectionMessageStartOdometerUpdate");
   CLConnectionClient::setHandlerForMessage();
@@ -110,10 +110,10 @@
   sub_19B5D379C();
 }
 
-- (void)_startCyclingWorkoutDistanceUpdatesWithHandler:(id)a3
+- (void)_startCyclingWorkoutDistanceUpdatesWithHandler:(id)handler
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  objc_msgSend_setTotalCyclingDistance_(self, a2, a3, -1.0);
+  objc_msgSend_setTotalCyclingDistance_(self, a2, handler, -1.0);
   fLocationdConnection = self->fLocationdConnection;
   sub_19B428B50(&__p, "kCLConnectionMessageCyclingWorkoutDistanceUpdate");
   CLConnectionClient::setHandlerForMessage();

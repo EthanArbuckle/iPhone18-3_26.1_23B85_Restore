@@ -1,79 +1,79 @@
 @interface USUsageQuerying
 + (_DKKnowledgeStore)userKnowledgeStore;
-+ (id)_chronologicalPublisherWithOptions:(id)a3 eventStreams:(id)a4;
-+ (id)_generatePickupsByBundleIdentifierWithPickupIntervals:(id)a3 applicationUsageIntervals:(id)a4 pickupsWithoutApplicationUsage:(unint64_t *)a5 firstPickup:(id *)a6;
-+ (id)_newReportWithNonIntersectingScreenTimeIntervals:(id)a3 pickupsByBundleIdentifier:(id)a4 pickupsWithoutApplicationUsage:(unint64_t)a5 firstPickup:(id)a6 longestSession:(id)a7 applicationUsageIntervals:(id)a8 webUsageIntervals:(id)a9 categoryUsageIntervals:(id)a10 aggregatedApplicationUsageIntervals:(id)a11 aggregatedWebUsageIntervals:(id)a12 categoryByBundleIdentifier:(id)a13 categoryByWebDomain:(id)a14 notifications:(id)a15 interval:(id)a16 timeZone:(id)a17 lastEventDate:(id)a18;
-+ (id)getLocalDeviceIdentifierAndReturnError:(id *)a3;
-+ (void)_completion:(id)a3 options:(id)a4;
-+ (void)queryUsageDuringInterval:(id)a3 partitionInterval:(double)a4 adjustedStartDate:(id)a5 eventStreams:(id)a6 categoryByBundleIdentifier:(id)a7 categoryByWebDomain:(id)a8 usageReportHandler:(id)a9 completionHandler:(id)a10;
-+ (void)synchronizeUsageWithCompletionHandler:(id)a3;
++ (id)_chronologicalPublisherWithOptions:(id)options eventStreams:(id)streams;
++ (id)_generatePickupsByBundleIdentifierWithPickupIntervals:(id)intervals applicationUsageIntervals:(id)usageIntervals pickupsWithoutApplicationUsage:(unint64_t *)usage firstPickup:(id *)pickup;
++ (id)_newReportWithNonIntersectingScreenTimeIntervals:(id)intervals pickupsByBundleIdentifier:(id)identifier pickupsWithoutApplicationUsage:(unint64_t)usage firstPickup:(id)pickup longestSession:(id)session applicationUsageIntervals:(id)usageIntervals webUsageIntervals:(id)webUsageIntervals categoryUsageIntervals:(id)self0 aggregatedApplicationUsageIntervals:(id)self1 aggregatedWebUsageIntervals:(id)self2 categoryByBundleIdentifier:(id)self3 categoryByWebDomain:(id)self4 notifications:(id)self5 interval:(id)self6 timeZone:(id)self7 lastEventDate:(id)self8;
++ (id)getLocalDeviceIdentifierAndReturnError:(id *)error;
++ (void)_completion:(id)_completion options:(id)options;
++ (void)queryUsageDuringInterval:(id)interval partitionInterval:(double)partitionInterval adjustedStartDate:(id)date eventStreams:(id)streams categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)domain usageReportHandler:(id)handler completionHandler:(id)self0;
++ (void)synchronizeUsageWithCompletionHandler:(id)handler;
 - (USUsageQuerying)init;
-- (USUsageQuerying)initWithContext:(id)a3 coreDuetStream:(id)a4;
-- (USUsageQuerying)initWithContext:(id)a3 eventStorage:(id)a4;
-- (double)_computeUsageForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 applicationUsageEvents:(id)a7 webUsageEvents:(id)a8 nowPlayingEvents:(id)a9 videoUsageEvents:(id)a10 categoryByBundleIdentifier:(id)a11 categoryByWebDomain:(id)a12 interval:(id)a13 referenceDate:(id)a14 focalOnly:(BOOL)a15;
-- (double)_generateUsageTimeWithApplicationUsageIntervals:(id)a3 webUsageIntervalsByDevice:(id)a4 categoryUsageIntervalsByDevice:(id)a5 aggregatedApplicationUsageIntervalsByDevice:(id)a6 aggregatedWebUsageIntervalsByDevice:(id)a7 categoryByBundleIdentifier:(id)a8 categoryByWebDomain:(id)a9 applications:(id)a10 webDomains:(id)a11 categories:(id)a12;
-- (id)_calculateAllExemptBundleIdentifiersFromExemptApplications:(id)a3 categoryByBundleIdentifier:(id)a4;
-- (id)_calculateAllExemptWebDomainsFromExemptApplications:(id)a3 categoryByBundleIdentifier:(id)a4;
-- (id)_computeApplicationUsageWithEvents:(id)a3 exemptApplications:(id)a4 exemptWebDomains:(id)a5 unboundApplicationUsageIntervalsByDevice:(id *)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8 categoryUsageIntervalsByDevice:(id)a9 aggregatedApplicationUsageIntervalsByDevice:(id)a10 categoryByBundleIdentifier:(id)a11 partition:(id)a12 referenceDate:(id)a13 focalOnly:(BOOL)a14;
-- (id)_computeNotificationsWithEvents:(id)a3 timeZoneByDevice:(id)a4 lastEventDateByDevice:(id)a5 partition:(id)a6;
-- (id)_computeScreenTime:(BOOL)a3 withEvents:(id)a4 intersectingScreenTimeIntervalsByDevice:(id *)a5 longestSessionByDevice:(id *)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8 partition:(id)a9 referenceDate:(id)a10;
-- (id)_computeWebUsageWithEvents:(id)a3 exemptWebDomains:(id)a4 timeZoneByDevice:(id)a5 lastEventDateByDevice:(id)a6 categoryUsageIntervalsByDevice:(id)a7 aggregatedApplicationUsageIntervalsByDevice:(id)a8 aggregatedWebUsageIntervalsByDevice:(id)a9 categoryByWebDomain:(id)a10 partition:(id)a11 referenceDate:(id)a12 focalOnly:(BOOL)a13;
-- (id)_currentNowPlayingUsageIntervalsDuringInterval:(id)a3 referenceDate:(id)a4;
-- (id)_currentScreenTimeIntervalDuringInterval:(id)a3 usageStartDate:(id *)a4 referenceDate:(id)a5;
-- (id)_generateUncategorizedLocalWebUsageWithWebUsageIntervals:(id)a3 uncategorizedDomains:(id)a4;
-- (id)_getBundleIdentiersFromApplicationUsageEvents:(id)a3 videoUsageEvents:(id)a4 interval:(id)a5 referenceDate:(id)a6 focalOnly:(BOOL)a7;
-- (id)_getWebDomainsFromWebUsageEvents:(id)a3 videoUsageEvents:(id)a4 interval:(id)a5 referenceDate:(id)a6 focalOnly:(BOOL)a7;
-- (id)queryForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 interval:(id)a7 focalOnly:(BOOL)a8 error:(id *)a9;
-- (id)queryForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 interval:(id)a7 segmentInterval:(double)a8 error:(id *)a9;
-- (void)_computeNowPlayingUsageWithEvents:(id)a3 categoryUsageIntervalsByDevice:(id)a4 timeZoneByDevice:(id)a5 lastEventDateByDevice:(id)a6 partition:(id)a7 referenceDate:(id)a8;
-- (void)_computeUncategorizedLocalWebUsageWithWebUsageEvents:(id)a3 uncategorizedDomains:(id)a4 interval:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7;
-- (void)_computeUsageWithDisplayBacklitEvents:(id)a3 applicationUsageEvents:(id)a4 webUsageEvents:(id)a5 nowPlayingEvents:(id)a6 videoUsageEvents:(id)a7 notificationEvents:(id)a8 categoryByBundleIdentifier:(id)a9 categoryByWebDomain:(id)a10 interval:(id)a11 partitionInterval:(double)a12 referenceDate:(id)a13 focalOnly:(BOOL)a14 completionHandler:(id)a15;
-- (void)_enumerateCurrentApplicationUsageIntervalsDuringInterval:(id)a3 exemptApplications:(id)a4 referenceDate:(id)a5 focalOnly:(BOOL)a6 block:(id)a7;
-- (void)_enumerateCurrentVideoUsageIntervalsDuringInterval:(id)a3 exemptApplications:(id)a4 exemptWebDomains:(id)a5 referenceDate:(id)a6 block:(id)a7;
-- (void)_enumerateCurrentWebUsageIntervalsDuringInterval:(id)a3 exemptWebDomains:(id)a4 referenceDate:(id)a5 focalOnly:(BOOL)a6 block:(id)a7;
-- (void)_enumerateEvents:(id)a3 intervalEndDate:(id)a4 block:(id)a5;
-- (void)_updateLocalReports:(id)a3 remoteReports:(id)a4 aggregateReports:(id)a5 nonIntersectingScreenTimeIntervals:(id)a6 intersectingScreenTimeIntervals:(id)a7 longestSessionByDevice:(id)a8 applicationUsageIntervals:(id)a9 unboundApplicationUsageIntervals:(id)a10 webUsageIntervalsByDevice:(id)a11 categoryUsageIntervalsByDevice:(id)a12 aggregatedApplicationUsageIntervalsByDevice:(id)a13 aggregatedWebUsageIntervalsByDevice:(id)a14 categoryByBundleIdentifier:(id)a15 categoryByWebDomain:(id)a16 notificationsByDevice:(id)a17 interval:(id)a18 timeZoneByDevice:(id)a19 lastEventDateByDevice:(id)a20;
-- (void)_updateNowPlayingUsageWithInterval:(id)a3 event:(id)a4 deviceIdentifier:(id)a5 categoryUsageIntervalsByDevice:(id)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8;
-- (void)_updateScreenTimeWithInterval:(id)a3 rawInterval:(id)a4 deviceIdentifier:(id)a5 partition:(id)a6 event:(id)a7 nonIntersectingScreenTimeIntervalsByDevice:(id)a8 intersectingScreenTimeIntervalsByDevice:(id)a9 longestSessionByDevice:(id)a10 timeZoneByDevice:(id)a11 lastEventDateByDevice:(id)a12;
-- (void)queryForUncategorizedLocalWebUsageDuringInterval:(id)a3 completionHandler:(id)a4;
-- (void)queryUsageDuringInterval:(id)a3 partitionInterval:(double)a4 focalOnly:(BOOL)a5 completionHandler:(id)a6;
+- (USUsageQuerying)initWithContext:(id)context coreDuetStream:(id)stream;
+- (USUsageQuerying)initWithContext:(id)context eventStorage:(id)storage;
+- (double)_computeUsageForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories applicationUsageEvents:(id)events webUsageEvents:(id)usageEvents nowPlayingEvents:(id)playingEvents videoUsageEvents:(id)self0 categoryByBundleIdentifier:(id)self1 categoryByWebDomain:(id)self2 interval:(id)self3 referenceDate:(id)self4 focalOnly:(BOOL)self5;
+- (double)_generateUsageTimeWithApplicationUsageIntervals:(id)intervals webUsageIntervalsByDevice:(id)device categoryUsageIntervalsByDevice:(id)byDevice aggregatedApplicationUsageIntervalsByDevice:(id)intervalsByDevice aggregatedWebUsageIntervalsByDevice:(id)usageIntervalsByDevice categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)domain applications:(id)self0 webDomains:(id)self1 categories:(id)self2;
+- (id)_calculateAllExemptBundleIdentifiersFromExemptApplications:(id)applications categoryByBundleIdentifier:(id)identifier;
+- (id)_calculateAllExemptWebDomainsFromExemptApplications:(id)applications categoryByBundleIdentifier:(id)identifier;
+- (id)_computeApplicationUsageWithEvents:(id)events exemptApplications:(id)applications exemptWebDomains:(id)domains unboundApplicationUsageIntervalsByDevice:(id *)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice categoryUsageIntervalsByDevice:(id)intervalsByDevice aggregatedApplicationUsageIntervalsByDevice:(id)self0 categoryByBundleIdentifier:(id)self1 partition:(id)self2 referenceDate:(id)self3 focalOnly:(BOOL)self4;
+- (id)_computeNotificationsWithEvents:(id)events timeZoneByDevice:(id)device lastEventDateByDevice:(id)byDevice partition:(id)partition;
+- (id)_computeScreenTime:(BOOL)time withEvents:(id)events intersectingScreenTimeIntervalsByDevice:(id *)device longestSessionByDevice:(id *)byDevice timeZoneByDevice:(id)zoneByDevice lastEventDateByDevice:(id)dateByDevice partition:(id)partition referenceDate:(id)self0;
+- (id)_computeWebUsageWithEvents:(id)events exemptWebDomains:(id)domains timeZoneByDevice:(id)device lastEventDateByDevice:(id)byDevice categoryUsageIntervalsByDevice:(id)intervalsByDevice aggregatedApplicationUsageIntervalsByDevice:(id)usageIntervalsByDevice aggregatedWebUsageIntervalsByDevice:(id)webUsageIntervalsByDevice categoryByWebDomain:(id)self0 partition:(id)self1 referenceDate:(id)self2 focalOnly:(BOOL)self3;
+- (id)_currentNowPlayingUsageIntervalsDuringInterval:(id)interval referenceDate:(id)date;
+- (id)_currentScreenTimeIntervalDuringInterval:(id)interval usageStartDate:(id *)date referenceDate:(id)referenceDate;
+- (id)_generateUncategorizedLocalWebUsageWithWebUsageIntervals:(id)intervals uncategorizedDomains:(id)domains;
+- (id)_getBundleIdentiersFromApplicationUsageEvents:(id)events videoUsageEvents:(id)usageEvents interval:(id)interval referenceDate:(id)date focalOnly:(BOOL)only;
+- (id)_getWebDomainsFromWebUsageEvents:(id)events videoUsageEvents:(id)usageEvents interval:(id)interval referenceDate:(id)date focalOnly:(BOOL)only;
+- (id)queryForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories interval:(id)interval focalOnly:(BOOL)only error:(id *)error;
+- (id)queryForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories interval:(id)interval segmentInterval:(double)segmentInterval error:(id *)error;
+- (void)_computeNowPlayingUsageWithEvents:(id)events categoryUsageIntervalsByDevice:(id)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice partition:(id)partition referenceDate:(id)date;
+- (void)_computeUncategorizedLocalWebUsageWithWebUsageEvents:(id)events uncategorizedDomains:(id)domains interval:(id)interval referenceDate:(id)date completionHandler:(id)handler;
+- (void)_computeUsageWithDisplayBacklitEvents:(id)events applicationUsageEvents:(id)usageEvents webUsageEvents:(id)webUsageEvents nowPlayingEvents:(id)playingEvents videoUsageEvents:(id)videoUsageEvents notificationEvents:(id)notificationEvents categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)self0 interval:(id)self1 partitionInterval:(double)self2 referenceDate:(id)self3 focalOnly:(BOOL)self4 completionHandler:(id)self5;
+- (void)_enumerateCurrentApplicationUsageIntervalsDuringInterval:(id)interval exemptApplications:(id)applications referenceDate:(id)date focalOnly:(BOOL)only block:(id)block;
+- (void)_enumerateCurrentVideoUsageIntervalsDuringInterval:(id)interval exemptApplications:(id)applications exemptWebDomains:(id)domains referenceDate:(id)date block:(id)block;
+- (void)_enumerateCurrentWebUsageIntervalsDuringInterval:(id)interval exemptWebDomains:(id)domains referenceDate:(id)date focalOnly:(BOOL)only block:(id)block;
+- (void)_enumerateEvents:(id)events intervalEndDate:(id)date block:(id)block;
+- (void)_updateLocalReports:(id)reports remoteReports:(id)remoteReports aggregateReports:(id)aggregateReports nonIntersectingScreenTimeIntervals:(id)intervals intersectingScreenTimeIntervals:(id)timeIntervals longestSessionByDevice:(id)device applicationUsageIntervals:(id)usageIntervals unboundApplicationUsageIntervals:(id)self0 webUsageIntervalsByDevice:(id)self1 categoryUsageIntervalsByDevice:(id)self2 aggregatedApplicationUsageIntervalsByDevice:(id)self3 aggregatedWebUsageIntervalsByDevice:(id)self4 categoryByBundleIdentifier:(id)self5 categoryByWebDomain:(id)self6 notificationsByDevice:(id)self7 interval:(id)self8 timeZoneByDevice:(id)self9 lastEventDateByDevice:(id)dateByDevice;
+- (void)_updateNowPlayingUsageWithInterval:(id)interval event:(id)event deviceIdentifier:(id)identifier categoryUsageIntervalsByDevice:(id)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice;
+- (void)_updateScreenTimeWithInterval:(id)interval rawInterval:(id)rawInterval deviceIdentifier:(id)identifier partition:(id)partition event:(id)event nonIntersectingScreenTimeIntervalsByDevice:(id)device intersectingScreenTimeIntervalsByDevice:(id)byDevice longestSessionByDevice:(id)self0 timeZoneByDevice:(id)self1 lastEventDateByDevice:(id)self2;
+- (void)queryForUncategorizedLocalWebUsageDuringInterval:(id)interval completionHandler:(id)handler;
+- (void)queryUsageDuringInterval:(id)interval partitionInterval:(double)partitionInterval focalOnly:(BOOL)only completionHandler:(id)handler;
 @end
 
 @implementation USUsageQuerying
 
-- (USUsageQuerying)initWithContext:(id)a3 coreDuetStream:(id)a4
+- (USUsageQuerying)initWithContext:(id)context coreDuetStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  streamCopy = stream;
   v13.receiver = self;
   v13.super_class = USUsageQuerying;
   v8 = [(USUsageQuerying *)&v13 init];
   context = v8->_context;
-  v8->_context = v6;
-  v10 = v6;
+  v8->_context = contextCopy;
+  v10 = contextCopy;
 
   duetStream = v8->_duetStream;
-  v8->_duetStream = v7;
+  v8->_duetStream = streamCopy;
 
   return v8;
 }
 
-- (USUsageQuerying)initWithContext:(id)a3 eventStorage:(id)a4
+- (USUsageQuerying)initWithContext:(id)context eventStorage:(id)storage
 {
   v6 = MEMORY[0x277CF1930];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithKnowledgeStore:v7 clientContext:v8 identifier:@"CoreDuetStream"];
+  storageCopy = storage;
+  contextCopy = context;
+  v9 = [[v6 alloc] initWithKnowledgeStore:storageCopy clientContext:contextCopy identifier:@"CoreDuetStream"];
 
-  v10 = [(USUsageQuerying *)self initWithContext:v8 coreDuetStream:v9];
+  v10 = [(USUsageQuerying *)self initWithContext:contextCopy coreDuetStream:v9];
   return v10;
 }
 
 - (USUsageQuerying)init
 {
-  v3 = [MEMORY[0x277CFE318] userContext];
-  v4 = [MEMORY[0x277CF1B58] coreDuetStream];
-  v5 = [(USUsageQuerying *)self initWithContext:v3 coreDuetStream:v4];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  coreDuetStream = [MEMORY[0x277CF1B58] coreDuetStream];
+  v5 = [(USUsageQuerying *)self initWithContext:userContext coreDuetStream:coreDuetStream];
 
   return v5;
 }
@@ -97,62 +97,62 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)getLocalDeviceIdentifierAndReturnError:(id *)a3
++ (id)getLocalDeviceIdentifierAndReturnError:(id *)error
 {
-  v4 = [a1 userKnowledgeStore];
-  v5 = [v4 sourceDeviceIdentityWithError:a3];
+  userKnowledgeStore = [self userKnowledgeStore];
+  v5 = [userKnowledgeStore sourceDeviceIdentityWithError:error];
 
   return v5;
 }
 
-+ (void)synchronizeUsageWithCompletionHandler:(id)a3
++ (void)synchronizeUsageWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   MainBundle = CFBundleGetMainBundle();
   Identifier = CFBundleGetIdentifier(MainBundle);
   if (Identifier)
   {
-    v6 = Identifier;
+    processName = Identifier;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = [v7 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = processName;
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Requesting high urgency synchronization on behalf of %{public}@", &v12, 0xCu);
   }
 
   v8 = qos_class_self();
   v9 = dispatch_get_global_queue(v8, 0);
-  v10 = [MEMORY[0x277CFE208] userKnowledgeStore];
-  [v10 synchronizeWithUrgency:10 client:@"UsageTracking" responseQueue:v9 completion:v3];
+  userKnowledgeStore = [MEMORY[0x277CFE208] userKnowledgeStore];
+  [userKnowledgeStore synchronizeWithUrgency:10 client:@"UsageTracking" responseQueue:v9 completion:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryUsageDuringInterval:(id)a3 partitionInterval:(double)a4 focalOnly:(BOOL)a5 completionHandler:(id)a6
+- (void)queryUsageDuringInterval:(id)interval partitionInterval:(double)partitionInterval focalOnly:(BOOL)only completionHandler:(id)handler
 {
-  v150 = a5;
+  onlyCopy = only;
   v170 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v146 = a6;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v147 = objc_opt_new();
-  v151 = self;
-  v10 = [(USUsageQuerying *)self duetStream];
-  v11 = v9;
+  selfCopy = self;
+  duetStream = [(USUsageQuerying *)self duetStream];
+  v11 = intervalCopy;
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277CFE1E0] allDevices];
-  [v12 setDeviceIDs:v13];
+  allDevices = [MEMORY[0x277CFE1E0] allDevices];
+  [v12 setDeviceIDs:allDevices];
 
-  v14 = [MEMORY[0x277CFE298] displayIsBacklit];
-  v161 = v14;
+  displayIsBacklit = [MEMORY[0x277CFE298] displayIsBacklit];
+  v161 = displayIsBacklit;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v161 count:1];
   [v12 setEventStreams:v15];
 
@@ -164,9 +164,9 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   [v12 setSortDescriptors:v18];
 
   v19 = MEMORY[0x277CFE260];
-  v20 = [v11 startDate];
-  v21 = [v11 endDate];
-  v22 = [v19 predicateForEventsIntersectingDateRangeFrom:v20 to:v21];
+  startDate = [v11 startDate];
+  endDate = [v11 endDate];
+  v22 = [v19 predicateForEventsIntersectingDateRangeFrom:startDate to:endDate];
 
   v23 = MEMORY[0x277CFE260];
   v24 = [MEMORY[0x277CFE1A0] yes];
@@ -180,20 +180,20 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v28 = [v26 initWithType:1 subpredicates:v27];
   [v12 setPredicate:v28];
 
-  v29 = [v10 publisherForQuery:v12];
+  v29 = [duetStream publisherForQuery:v12];
 
-  v145 = [v29 collect];
+  collect = [v29 collect];
 
-  v143 = [(USUsageQuerying *)self duetStream];
+  duetStream2 = [(USUsageQuerying *)self duetStream];
   v30 = MEMORY[0x277CFE260];
   v31 = v11;
-  v32 = [v31 startDate];
-  v33 = [v31 endDate];
-  v34 = [v30 predicateForEventsIntersectingDateRangeFrom:v32 to:v33];
+  startDate2 = [v31 startDate];
+  endDate2 = [v31 endDate];
+  v34 = [v30 predicateForEventsIntersectingDateRangeFrom:startDate2 to:endDate2];
 
-  v35 = [MEMORY[0x277CFE1D0] usageType];
-  v139 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v35 andIntegerValue:1];
-  v148 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v35];
+  usageType = [MEMORY[0x277CFE1D0] usageType];
+  v139 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType andIntegerValue:1];
+  v148 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType];
   v36 = [MEMORY[0x277CCA920] notPredicateWithSubpredicate:v148];
   v37 = MEMORY[0x277CCA920];
   v163 = v139;
@@ -208,15 +208,15 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v42 = [v40 initWithType:1 subpredicates:v41];
 
   v43 = objc_opt_new();
-  v44 = [MEMORY[0x277CFE1E0] allDevices];
-  [v43 setDeviceIDs:v44];
+  allDevices2 = [MEMORY[0x277CFE1E0] allDevices];
+  [v43 setDeviceIDs:allDevices2];
 
-  v45 = [MEMORY[0x277CFE298] appUsageStream];
-  v167 = v45;
+  appUsageStream = [MEMORY[0x277CFE298] appUsageStream];
+  v167 = appUsageStream;
   v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v167 count:1];
   [v43 setEventStreams:v46];
 
-  if (v150)
+  if (onlyCopy)
   {
     v47 = v42;
   }
@@ -234,23 +234,23 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v161 count:2];
 
   [v43 setSortDescriptors:v50];
-  v51 = [v143 publisherForQuery:v43];
+  v51 = [duetStream2 publisherForQuery:v43];
 
-  v149 = [v51 collect];
+  collect2 = [v51 collect];
 
-  v140 = [(USUsageQuerying *)v151 duetStream];
+  duetStream3 = [(USUsageQuerying *)selfCopy duetStream];
   v52 = v31;
   v53 = MEMORY[0x277CFE260];
-  v54 = [v52 startDate];
-  v55 = [v52 endDate];
-  v56 = [v53 predicateForEventsIntersectingDateRangeFrom:v54 to:v55];
+  startDate3 = [v52 startDate];
+  endDate3 = [v52 endDate];
+  v56 = [v53 predicateForEventsIntersectingDateRangeFrom:startDate3 to:endDate3];
 
-  v57 = [MEMORY[0x277CFE1D0] usageType];
-  v58 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v57 andIntegerValue:1];
+  usageType2 = [MEMORY[0x277CFE1D0] usageType];
+  v58 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType2 andIntegerValue:1];
   v59 = v58;
-  if (!v150)
+  if (!onlyCopy)
   {
-    v60 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v57 andIntegerValue:0];
+    v60 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType2 andIntegerValue:0];
     v61 = objc_alloc(MEMORY[0x277CCA920]);
     v163 = v58;
     v164 = v60;
@@ -259,11 +259,11 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   }
 
   v63 = objc_opt_new();
-  v64 = [MEMORY[0x277CFE1E0] allDevices];
-  [v63 setDeviceIDs:v64];
+  allDevices3 = [MEMORY[0x277CFE1E0] allDevices];
+  [v63 setDeviceIDs:allDevices3];
 
-  v65 = [MEMORY[0x277CFE298] appWebUsageStream];
-  v167 = v65;
+  appWebUsageStream = [MEMORY[0x277CFE298] appWebUsageStream];
+  v167 = appWebUsageStream;
   v66 = [MEMORY[0x277CBEA60] arrayWithObjects:&v167 count:1];
   [v63 setEventStreams:v66];
 
@@ -281,24 +281,24 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v72 = [MEMORY[0x277CBEA60] arrayWithObjects:&v161 count:2];
   [v63 setSortDescriptors:v72];
 
-  v73 = [v140 publisherForQuery:v63];
+  v73 = [duetStream3 publisherForQuery:v63];
 
-  v144 = [v73 collect];
+  collect3 = [v73 collect];
 
-  v137 = [(USUsageQuerying *)v151 duetStream];
+  duetStream4 = [(USUsageQuerying *)selfCopy duetStream];
   v74 = MEMORY[0x277CFE260];
   v75 = v52;
-  v76 = [v75 startDate];
-  v77 = [v75 endDate];
-  v135 = [v74 predicateForEventsIntersectingDateRangeFrom:v76 to:v77];
+  startDate4 = [v75 startDate];
+  endDate4 = [v75 endDate];
+  v135 = [v74 predicateForEventsIntersectingDateRangeFrom:startDate4 to:endDate4];
 
   v78 = MEMORY[0x277CFE260];
-  v79 = [MEMORY[0x277CFE248] playing];
-  v134 = [v78 predicateForObjectsWithMetadataKey:v79 andIntegerValue:1];
+  playing = [MEMORY[0x277CFE248] playing];
+  v134 = [v78 predicateForObjectsWithMetadataKey:playing andIntegerValue:1];
 
   v80 = MEMORY[0x277CFE260];
-  v81 = [MEMORY[0x277CFE248] mediaType];
-  v82 = [v80 predicateForObjectsWithMetadataKey:v81 andStringValue:*MEMORY[0x277D27CB8]];
+  mediaType = [MEMORY[0x277CFE248] mediaType];
+  v82 = [v80 predicateForObjectsWithMetadataKey:mediaType andStringValue:*MEMORY[0x277D27CB8]];
 
   v141 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:@"com.apple.quicklook.QuickLookUIService"];
   v136 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:@"com.apple.quicklook.extension.previewUI"];
@@ -309,11 +309,11 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v85 = [v83 initWithType:2 subpredicates:v84];
 
   v86 = objc_opt_new();
-  v87 = [MEMORY[0x277CFE1E0] allDevices];
-  [v86 setDeviceIDs:v87];
+  allDevices4 = [MEMORY[0x277CFE1E0] allDevices];
+  [v86 setDeviceIDs:allDevices4];
 
-  v88 = [MEMORY[0x277CFE298] nowPlayingStream];
-  v167 = v88;
+  nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+  v167 = nowPlayingStream;
   v89 = [MEMORY[0x277CBEA60] arrayWithObjects:&v167 count:1];
   [v86 setEventStreams:v89];
 
@@ -333,25 +333,25 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v95 = [MEMORY[0x277CBEA60] arrayWithObjects:&v161 count:2];
 
   [v86 setSortDescriptors:v95];
-  v96 = [v137 publisherForQuery:v86];
+  v96 = [duetStream4 publisherForQuery:v86];
 
-  v142 = [v96 collect];
+  collect4 = [v96 collect];
 
-  v97 = [(USUsageQuerying *)v151 duetStream];
+  duetStream5 = [(USUsageQuerying *)selfCopy duetStream];
   v98 = v75;
   v99 = objc_opt_new();
-  v100 = [MEMORY[0x277CFE1E0] allDevices];
-  [v99 setDeviceIDs:v100];
+  allDevices5 = [MEMORY[0x277CFE1E0] allDevices];
+  [v99 setDeviceIDs:allDevices5];
 
-  v101 = [MEMORY[0x277CFE298] appMediaUsageStream];
-  v168 = v101;
+  appMediaUsageStream = [MEMORY[0x277CFE298] appMediaUsageStream];
+  v168 = appMediaUsageStream;
   v102 = [MEMORY[0x277CBEA60] arrayWithObjects:&v168 count:1];
   [v99 setEventStreams:v102];
 
   v103 = MEMORY[0x277CFE260];
-  v104 = [v98 startDate];
-  v105 = [v98 endDate];
-  v106 = [v103 predicateForEventsIntersectingDateRangeFrom:v104 to:v105];
+  startDate5 = [v98 startDate];
+  endDate5 = [v98 endDate];
+  v106 = [v103 predicateForEventsIntersectingDateRangeFrom:startDate5 to:endDate5];
   [v99 setPredicate:v106];
 
   v107 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:1];
@@ -361,25 +361,25 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v109 = [MEMORY[0x277CBEA60] arrayWithObjects:&v163 count:2];
 
   [v99 setSortDescriptors:v109];
-  v110 = [v97 publisherForQuery:v99];
+  v110 = [duetStream5 publisherForQuery:v99];
 
-  v138 = [v110 collect];
+  collect5 = [v110 collect];
 
-  v111 = [(USUsageQuerying *)v151 duetStream];
+  duetStream6 = [(USUsageQuerying *)selfCopy duetStream];
   v112 = v98;
   v113 = objc_opt_new();
-  v114 = [MEMORY[0x277CFE1E0] allDevices];
-  [v113 setDeviceIDs:v114];
+  allDevices6 = [MEMORY[0x277CFE1E0] allDevices];
+  [v113 setDeviceIDs:allDevices6];
 
-  v115 = [MEMORY[0x277CFE298] notificationUsageStream];
-  v168 = v115;
+  notificationUsageStream = [MEMORY[0x277CFE298] notificationUsageStream];
+  v168 = notificationUsageStream;
   v116 = [MEMORY[0x277CBEA60] arrayWithObjects:&v168 count:1];
   [v113 setEventStreams:v116];
 
   v117 = MEMORY[0x277CFE260];
-  v118 = [v112 startDate];
-  v119 = [v112 endDate];
-  v120 = [v117 predicateForEventsWithStartInDateRangeFrom:v118 to:v119];
+  startDate6 = [v112 startDate];
+  endDate6 = [v112 endDate];
+  v120 = [v117 predicateForEventsWithStartInDateRangeFrom:startDate6 to:endDate6];
 
   v121 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:@"Receive"];
   v122 = objc_alloc(MEMORY[0x277CCA920]);
@@ -390,32 +390,32 @@ uint64_t __37__USUsageQuerying_userKnowledgeStore__block_invoke()
   v124 = [v122 initWithType:1 subpredicates:v123];
   [v113 setPredicate:v124];
 
-  v125 = [v111 publisherForQuery:v113];
+  v125 = [duetStream6 publisherForQuery:v113];
 
-  v126 = [v125 collect];
+  collect6 = [v125 collect];
 
-  v160[0] = v149;
-  v160[1] = v144;
-  v160[2] = v142;
-  v160[3] = v138;
-  v160[4] = v126;
+  v160[0] = collect2;
+  v160[1] = collect3;
+  v160[2] = collect4;
+  v160[3] = collect5;
+  v160[4] = collect6;
   v127 = [MEMORY[0x277CBEA60] arrayWithObjects:v160 count:5];
-  v128 = [v145 zipWithOthers:v127];
+  v128 = [collect zipWithOthers:v127];
   v158[0] = MEMORY[0x277D85DD0];
   v158[1] = 3221225472;
   v158[2] = __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalOnly_completionHandler___block_invoke;
   v158[3] = &unk_279E09C00;
-  v159 = v146;
+  v159 = handlerCopy;
   v152[0] = MEMORY[0x277D85DD0];
   v152[1] = 3221225472;
   v152[2] = __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalOnly_completionHandler___block_invoke_2;
   v152[3] = &unk_279E09C50;
-  v152[4] = v151;
+  v152[4] = selfCopy;
   v153 = v112;
-  v157 = v150;
+  v157 = onlyCopy;
   v154 = v147;
   v155 = v159;
-  v156 = a4;
+  partitionIntervalCopy = partitionInterval;
   v129 = v159;
   v130 = v147;
   v131 = v112;
@@ -632,59 +632,59 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
   }
 }
 
-- (void)_computeUsageWithDisplayBacklitEvents:(id)a3 applicationUsageEvents:(id)a4 webUsageEvents:(id)a5 nowPlayingEvents:(id)a6 videoUsageEvents:(id)a7 notificationEvents:(id)a8 categoryByBundleIdentifier:(id)a9 categoryByWebDomain:(id)a10 interval:(id)a11 partitionInterval:(double)a12 referenceDate:(id)a13 focalOnly:(BOOL)a14 completionHandler:(id)a15
+- (void)_computeUsageWithDisplayBacklitEvents:(id)events applicationUsageEvents:(id)usageEvents webUsageEvents:(id)webUsageEvents nowPlayingEvents:(id)playingEvents videoUsageEvents:(id)videoUsageEvents notificationEvents:(id)notificationEvents categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)self0 interval:(id)self1 partitionInterval:(double)self2 referenceDate:(id)self3 focalOnly:(BOOL)self4 completionHandler:(id)self5
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
-  v69 = a9;
-  v68 = a10;
-  v27 = a11;
-  v67 = a13;
-  v49 = a15;
+  eventsCopy = events;
+  usageEventsCopy = usageEvents;
+  webUsageEventsCopy = webUsageEvents;
+  playingEventsCopy = playingEvents;
+  videoUsageEventsCopy = videoUsageEvents;
+  notificationEventsCopy = notificationEvents;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  intervalCopy = interval;
+  dateCopy = date;
+  handlerCopy = handler;
   v66 = objc_opt_new();
   v65 = objc_opt_new();
   v64 = objc_opt_new();
-  v56 = v21;
-  v63 = [v21 mutableCopy];
-  v55 = v22;
-  v28 = [v22 mutableCopy];
-  v54 = v23;
-  v29 = [v23 mutableCopy];
-  v53 = v24;
-  v60 = [v24 mutableCopy];
-  v51 = v26;
-  v30 = [v26 mutableCopy];
+  v56 = eventsCopy;
+  v63 = [eventsCopy mutableCopy];
+  v55 = usageEventsCopy;
+  v28 = [usageEventsCopy mutableCopy];
+  v54 = webUsageEventsCopy;
+  v29 = [webUsageEventsCopy mutableCopy];
+  v53 = playingEventsCopy;
+  v60 = [playingEventsCopy mutableCopy];
+  v51 = notificationEventsCopy;
+  v30 = [notificationEventsCopy mutableCopy];
   v62 = v28;
-  [v28 addObjectsFromArray:v25];
+  [v28 addObjectsFromArray:videoUsageEventsCopy];
   v61 = v29;
-  v52 = v25;
-  [v29 addObjectsFromArray:v25];
-  v31 = [v27 startDate];
-  v32 = [v27 endDate];
-  v50 = v27;
-  [v27 duration];
-  if (v33 <= a12)
+  v52 = videoUsageEventsCopy;
+  [v29 addObjectsFromArray:videoUsageEventsCopy];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v50 = intervalCopy;
+  [intervalCopy duration];
+  if (v33 <= partitionInterval)
   {
-    v34 = v32;
+    v34 = endDate;
   }
 
   else
   {
-    v34 = [v31 dateByAddingTimeInterval:a12];
+    v34 = [startDate dateByAddingTimeInterval:partitionInterval];
   }
 
   v35 = v34;
   v59 = v30;
-  v58 = v32;
-  if ([v31 compare:v32] == -1)
+  v58 = endDate;
+  if ([startDate compare:endDate] == -1)
   {
     do
     {
-      v37 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v31 endDate:v35];
+      v37 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:v35];
       v38 = objc_opt_new();
       v39 = objc_opt_new();
       v40 = objc_opt_new();
@@ -692,17 +692,17 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
       v42 = objc_opt_new();
       v77 = 0;
       v78[0] = 0;
-      v75 = [(USUsageQuerying *)self _computeScreenTime:1 withEvents:v63 intersectingScreenTimeIntervalsByDevice:v78 longestSessionByDevice:&v77 timeZoneByDevice:v41 lastEventDateByDevice:v42 partition:v37 referenceDate:v67];
+      v75 = [(USUsageQuerying *)self _computeScreenTime:1 withEvents:v63 intersectingScreenTimeIntervalsByDevice:v78 longestSessionByDevice:&v77 timeZoneByDevice:v41 lastEventDateByDevice:v42 partition:v37 referenceDate:dateCopy];
       v74 = v78[0];
       v73 = v77;
       v76 = 0;
-      LOBYTE(v48) = a14;
-      v72 = [(USUsageQuerying *)self _computeApplicationUsageWithEvents:v62 exemptApplications:0 exemptWebDomains:0 unboundApplicationUsageIntervalsByDevice:&v76 timeZoneByDevice:v41 lastEventDateByDevice:v42 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 categoryByBundleIdentifier:v69 partition:v37 referenceDate:v67 focalOnly:v48];
+      LOBYTE(v48) = only;
+      v72 = [(USUsageQuerying *)self _computeApplicationUsageWithEvents:v62 exemptApplications:0 exemptWebDomains:0 unboundApplicationUsageIntervalsByDevice:&v76 timeZoneByDevice:v41 lastEventDateByDevice:v42 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 categoryByBundleIdentifier:identifierCopy partition:v37 referenceDate:dateCopy focalOnly:v48];
       v71 = v76;
-      LOBYTE(v47) = a14;
+      LOBYTE(v47) = only;
       v43 = v40;
-      v70 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v61 exemptWebDomains:0 timeZoneByDevice:v41 lastEventDateByDevice:v42 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 aggregatedWebUsageIntervalsByDevice:v40 categoryByWebDomain:v68 partition:v37 referenceDate:v67 focalOnly:v47];
-      [(USUsageQuerying *)self _computeNowPlayingUsageWithEvents:v60 categoryUsageIntervalsByDevice:v38 timeZoneByDevice:v41 lastEventDateByDevice:v42 partition:v37 referenceDate:v67];
+      v70 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v61 exemptWebDomains:0 timeZoneByDevice:v41 lastEventDateByDevice:v42 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 aggregatedWebUsageIntervalsByDevice:v40 categoryByWebDomain:domainCopy partition:v37 referenceDate:dateCopy focalOnly:v47];
+      [(USUsageQuerying *)self _computeNowPlayingUsageWithEvents:v60 categoryUsageIntervalsByDevice:v38 timeZoneByDevice:v41 lastEventDateByDevice:v42 partition:v37 referenceDate:dateCopy];
       if ([v59 count])
       {
         v44 = [(USUsageQuerying *)self _computeNotificationsWithEvents:v59 timeZoneByDevice:v41 lastEventDateByDevice:v42 partition:v37];
@@ -713,23 +713,23 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
         v44 = 0;
       }
 
-      [(USUsageQuerying *)self _updateLocalReports:v66 remoteReports:v65 aggregateReports:v64 nonIntersectingScreenTimeIntervals:v75 intersectingScreenTimeIntervals:v74 longestSessionByDevice:v73 applicationUsageIntervals:v72 unboundApplicationUsageIntervals:v71 webUsageIntervalsByDevice:v70 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 aggregatedWebUsageIntervalsByDevice:v43 categoryByBundleIdentifier:v69 categoryByWebDomain:v68 notificationsByDevice:v44 interval:v37 timeZoneByDevice:v41 lastEventDateByDevice:v42];
+      [(USUsageQuerying *)self _updateLocalReports:v66 remoteReports:v65 aggregateReports:v64 nonIntersectingScreenTimeIntervals:v75 intersectingScreenTimeIntervals:v74 longestSessionByDevice:v73 applicationUsageIntervals:v72 unboundApplicationUsageIntervals:v71 webUsageIntervalsByDevice:v70 categoryUsageIntervalsByDevice:v38 aggregatedApplicationUsageIntervalsByDevice:v39 aggregatedWebUsageIntervalsByDevice:v43 categoryByBundleIdentifier:identifierCopy categoryByWebDomain:domainCopy notificationsByDevice:v44 interval:v37 timeZoneByDevice:v41 lastEventDateByDevice:v42];
       v36 = v35;
 
       [v58 timeIntervalSinceDate:v36];
-      if (v45 <= a12)
+      if (v45 <= partitionInterval)
       {
         v46 = v58;
       }
 
       else
       {
-        v46 = [v36 dateByAddingTimeInterval:a12];
+        v46 = [v36 dateByAddingTimeInterval:partitionInterval];
       }
 
       v35 = v46;
 
-      v31 = v36;
+      startDate = v36;
     }
 
     while ([v36 compare:v58] == -1);
@@ -737,46 +737,46 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
 
   else
   {
-    v36 = v31;
+    v36 = startDate;
   }
 
-  v49[2](v49, v66, v65, v64, 0);
+  handlerCopy[2](handlerCopy, v66, v65, v64, 0);
 }
 
-- (void)_updateLocalReports:(id)a3 remoteReports:(id)a4 aggregateReports:(id)a5 nonIntersectingScreenTimeIntervals:(id)a6 intersectingScreenTimeIntervals:(id)a7 longestSessionByDevice:(id)a8 applicationUsageIntervals:(id)a9 unboundApplicationUsageIntervals:(id)a10 webUsageIntervalsByDevice:(id)a11 categoryUsageIntervalsByDevice:(id)a12 aggregatedApplicationUsageIntervalsByDevice:(id)a13 aggregatedWebUsageIntervalsByDevice:(id)a14 categoryByBundleIdentifier:(id)a15 categoryByWebDomain:(id)a16 notificationsByDevice:(id)a17 interval:(id)a18 timeZoneByDevice:(id)a19 lastEventDateByDevice:(id)a20
+- (void)_updateLocalReports:(id)reports remoteReports:(id)remoteReports aggregateReports:(id)aggregateReports nonIntersectingScreenTimeIntervals:(id)intervals intersectingScreenTimeIntervals:(id)timeIntervals longestSessionByDevice:(id)device applicationUsageIntervals:(id)usageIntervals unboundApplicationUsageIntervals:(id)self0 webUsageIntervalsByDevice:(id)self1 categoryUsageIntervalsByDevice:(id)self2 aggregatedApplicationUsageIntervalsByDevice:(id)self3 aggregatedWebUsageIntervalsByDevice:(id)self4 categoryByBundleIdentifier:(id)self5 categoryByWebDomain:(id)self6 notificationsByDevice:(id)self7 interval:(id)self8 timeZoneByDevice:(id)self9 lastEventDateByDevice:(id)dateByDevice
 {
-  v83 = a3;
-  v85 = a4;
-  v77 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
-  v30 = a11;
-  v31 = a12;
-  v32 = a13;
-  v33 = a14;
-  v82 = a15;
-  v81 = a16;
-  v80 = a17;
-  v79 = a18;
-  v34 = a19;
-  v78 = a20;
-  v84 = v34;
-  v35 = v34;
-  v36 = v85;
+  reportsCopy = reports;
+  remoteReportsCopy = remoteReports;
+  aggregateReportsCopy = aggregateReports;
+  intervalsCopy = intervals;
+  timeIntervalsCopy = timeIntervals;
+  deviceCopy = device;
+  usageIntervalsCopy = usageIntervals;
+  applicationUsageIntervalsCopy = applicationUsageIntervals;
+  byDeviceCopy = byDevice;
+  intervalsByDeviceCopy = intervalsByDevice;
+  usageIntervalsByDeviceCopy = usageIntervalsByDevice;
+  webUsageIntervalsByDeviceCopy = webUsageIntervalsByDevice;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  notificationsByDeviceCopy = notificationsByDevice;
+  intervalCopy = interval;
+  zoneByDeviceCopy = zoneByDevice;
+  dateByDeviceCopy = dateByDevice;
+  v84 = zoneByDeviceCopy;
+  v35 = zoneByDeviceCopy;
+  v36 = remoteReportsCopy;
   if ([v35 count])
   {
-    v67 = v33;
-    v68 = v32;
-    v69 = v31;
-    v70 = v30;
-    v71 = v29;
-    v72 = v28;
-    v73 = v27;
-    v74 = v26;
-    v75 = v25;
+    v67 = webUsageIntervalsByDeviceCopy;
+    v68 = usageIntervalsByDeviceCopy;
+    v69 = intervalsByDeviceCopy;
+    v70 = byDeviceCopy;
+    v71 = applicationUsageIntervalsCopy;
+    v72 = usageIntervalsCopy;
+    v73 = deviceCopy;
+    v74 = timeIntervalsCopy;
+    v75 = intervalsCopy;
     v114 = 0;
     v115 = &v114;
     v116 = 0x2020000000;
@@ -792,14 +792,14 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
     v86[1] = 3221225472;
     v86[2] = __473__USUsageQuerying__updateLocalReports_remoteReports_aggregateReports_nonIntersectingScreenTimeIntervals_intersectingScreenTimeIntervals_longestSessionByDevice_applicationUsageIntervals_unboundApplicationUsageIntervals_webUsageIntervalsByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_aggregatedWebUsageIntervalsByDevice_categoryByBundleIdentifier_categoryByWebDomain_notificationsByDevice_interval_timeZoneByDevice_lastEventDateByDevice___block_invoke;
     v86[3] = &unk_279E09CA0;
-    v38 = v25;
+    v38 = intervalsCopy;
     v87 = v38;
-    v39 = v28;
+    v39 = usageIntervalsCopy;
     v88 = v39;
-    v89 = v29;
-    v40 = v30;
+    v89 = applicationUsageIntervalsCopy;
+    v40 = byDeviceCopy;
     v90 = v40;
-    v41 = v31;
+    v41 = intervalsByDeviceCopy;
     v91 = v41;
     v42 = v68;
     v92 = v42;
@@ -808,24 +808,24 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
     v94 = v74;
     v44 = v73;
     v95 = v44;
-    v62 = v80;
+    v62 = notificationsByDeviceCopy;
     v96 = v62;
-    v97 = self;
+    selfCopy = self;
     v105 = &v114;
     v106 = &v108;
     v66 = v37;
     v98 = v66;
-    v45 = v78;
+    v45 = dateByDeviceCopy;
     v99 = v45;
     v107 = a2;
-    v61 = v82;
+    v61 = identifierCopy;
     v100 = v61;
-    v60 = v81;
+    v60 = domainCopy;
     v101 = v60;
-    v46 = v79;
+    v46 = intervalCopy;
     v102 = v46;
-    v103 = v83;
-    v104 = v85;
+    v103 = reportsCopy;
+    v104 = remoteReportsCopy;
     [v84 enumerateKeysAndObjectsUsingBlock:v86];
     v65 = [v84 objectForKeyedSubscript:@"AllDevices"];
     v64 = [v38 objectForKeyedSubscript:@"AllDevices"];
@@ -848,25 +848,25 @@ uint64_t __90__USUsageQuerying_queryUsageDuringInterval_partitionInterval_focalO
     v57 = [v45 objectForKeyedSubscript:@"AllDevices"];
     if (!v57)
     {
-      v59 = [MEMORY[0x277CCA890] currentHandler];
-      [v59 handleFailureInMethod:a2 object:self file:@"USUsageQuerying.m" lineNumber:359 description:@"lastEventDate for a USUsageReport must not be nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"USUsageQuerying.m" lineNumber:359 description:@"lastEventDate for a USUsageReport must not be nil"];
     }
 
     v58 = [objc_opt_class() _newReportWithNonIntersectingScreenTimeIntervals:v64 pickupsByBundleIdentifier:v66 pickupsWithoutApplicationUsage:v115[3] firstPickup:v109[5] longestSession:v52 applicationUsageIntervals:v47 webUsageIntervals:v48 categoryUsageIntervals:v49 aggregatedApplicationUsageIntervals:v50 aggregatedWebUsageIntervals:v51 categoryByBundleIdentifier:v61 categoryByWebDomain:v60 notifications:v56 interval:v46 timeZone:v65 lastEventDate:v57];
-    [v77 addObject:v58];
+    [aggregateReportsCopy addObject:v58];
 
     _Block_object_dispose(&v108, 8);
     _Block_object_dispose(&v114, 8);
-    v36 = v85;
-    v26 = v74;
-    v25 = v75;
-    v28 = v72;
-    v27 = v73;
-    v30 = v70;
-    v29 = v71;
-    v32 = v68;
-    v31 = v69;
-    v33 = v67;
+    v36 = remoteReportsCopy;
+    timeIntervalsCopy = v74;
+    intervalsCopy = v75;
+    usageIntervalsCopy = v72;
+    deviceCopy = v73;
+    byDeviceCopy = v70;
+    applicationUsageIntervalsCopy = v71;
+    usageIntervalsByDeviceCopy = v68;
+    intervalsByDeviceCopy = v69;
+    webUsageIntervalsByDeviceCopy = v67;
   }
 }
 
@@ -979,19 +979,19 @@ void __473__USUsageQuerying__updateLocalReports_remoteReports_aggregateReports_n
   [*(a1 + 32) setObject:v11 forKeyedSubscript:v7];
 }
 
-+ (id)_generatePickupsByBundleIdentifierWithPickupIntervals:(id)a3 applicationUsageIntervals:(id)a4 pickupsWithoutApplicationUsage:(unint64_t *)a5 firstPickup:(id *)a6
++ (id)_generatePickupsByBundleIdentifierWithPickupIntervals:(id)intervals applicationUsageIntervals:(id)usageIntervals pickupsWithoutApplicationUsage:(unint64_t *)usage firstPickup:(id *)pickup
 {
-  v25 = a6;
+  pickupCopy = pickup;
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v28 = a4;
+  intervalsCopy = intervals;
+  usageIntervalsCopy = usageIntervals;
   v30 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
-  v8 = 0;
+  obj = intervalsCopy;
+  startDate = 0;
   v9 = [obj countByEnumeratingWithState:&v31 objects:v48 count:16];
   if (!v9)
   {
@@ -1015,7 +1015,7 @@ void __473__USUsageQuerying__updateLocalReports_remoteReports_aggregateReports_n
       v14 = v13;
       if (v13 >= 5.0)
       {
-        v15 = v28;
+        v15 = usageIntervalsCopy;
         v16 = v12;
         v42 = 0;
         v43 = &v42;
@@ -1044,14 +1044,14 @@ void __473__USUsageQuerying__updateLocalReports_remoteReports_aggregateReports_n
         _Block_object_dispose(v40, 8);
         _Block_object_dispose(&v42, 8);
 
-        v19 = [v18 identifier];
-        if (v19)
+        identifier = [v18 identifier];
+        if (identifier)
         {
-          v20 = [v30 objectForKeyedSubscript:v19];
+          v20 = [v30 objectForKeyedSubscript:identifier];
           v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "unsignedIntegerValue") + 1}];
-          [v30 setObject:v21 forKeyedSubscript:v19];
+          [v30 setObject:v21 forKeyedSubscript:identifier];
 
-          if (!v8)
+          if (!startDate)
           {
             goto LABEL_9;
           }
@@ -1060,10 +1060,10 @@ void __473__USUsageQuerying__updateLocalReports_remoteReports_aggregateReports_n
         else if (v14 >= 9.0)
         {
           ++v27;
-          if (!v8)
+          if (!startDate)
           {
 LABEL_9:
-            v8 = [v17 startDate];
+            startDate = [v17 startDate];
           }
         }
 
@@ -1077,37 +1077,37 @@ LABEL_9:
   while (v9);
 LABEL_17:
 
-  *a5 = v27;
-  v22 = v8;
-  *v25 = v8;
+  *usage = v27;
+  v22 = startDate;
+  *pickupCopy = startDate;
 
   v23 = *MEMORY[0x277D85DE8];
 
   return v30;
 }
 
-+ (id)_newReportWithNonIntersectingScreenTimeIntervals:(id)a3 pickupsByBundleIdentifier:(id)a4 pickupsWithoutApplicationUsage:(unint64_t)a5 firstPickup:(id)a6 longestSession:(id)a7 applicationUsageIntervals:(id)a8 webUsageIntervals:(id)a9 categoryUsageIntervals:(id)a10 aggregatedApplicationUsageIntervals:(id)a11 aggregatedWebUsageIntervals:(id)a12 categoryByBundleIdentifier:(id)a13 categoryByWebDomain:(id)a14 notifications:(id)a15 interval:(id)a16 timeZone:(id)a17 lastEventDate:(id)a18
++ (id)_newReportWithNonIntersectingScreenTimeIntervals:(id)intervals pickupsByBundleIdentifier:(id)identifier pickupsWithoutApplicationUsage:(unint64_t)usage firstPickup:(id)pickup longestSession:(id)session applicationUsageIntervals:(id)usageIntervals webUsageIntervals:(id)webUsageIntervals categoryUsageIntervals:(id)self0 aggregatedApplicationUsageIntervals:(id)self1 aggregatedWebUsageIntervals:(id)self2 categoryByBundleIdentifier:(id)self3 categoryByWebDomain:(id)self4 notifications:(id)self5 interval:(id)self6 timeZone:(id)self7 lastEventDate:(id)self8
 {
   v107 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v61 = a4;
-  v63 = a6;
-  v64 = a7;
-  v69 = a8;
-  v68 = a9;
-  v70 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v71 = a15;
-  v65 = a16;
-  v66 = a17;
-  v67 = a18;
-  v59 = v22;
-  if (v22)
+  intervalsCopy = intervals;
+  identifierCopy = identifier;
+  pickupCopy = pickup;
+  sessionCopy = session;
+  usageIntervalsCopy = usageIntervals;
+  webUsageIntervalsCopy = webUsageIntervals;
+  categoryUsageIntervalsCopy = categoryUsageIntervals;
+  applicationUsageIntervalsCopy = applicationUsageIntervals;
+  aggregatedWebUsageIntervalsCopy = aggregatedWebUsageIntervals;
+  bundleIdentifierCopy = bundleIdentifier;
+  domainCopy = domain;
+  notificationsCopy = notifications;
+  intervalCopy = interval;
+  zoneCopy = zone;
+  dateCopy = date;
+  v59 = intervalsCopy;
+  if (intervalsCopy)
   {
-    v27 = v22;
+    v27 = intervalsCopy;
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
@@ -1147,7 +1147,7 @@ LABEL_17:
     v30 = 0.0;
   }
 
-  v33 = v23;
+  v33 = applicationUsageIntervalsCopy;
   v103 = 0;
   v104 = &v103;
   v105 = 0x2020000000;
@@ -1158,12 +1158,12 @@ LABEL_17:
   v91[2] = __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pickupsByBundleIdentifier_pickupsWithoutApplicationUsage_firstPickup_longestSession_applicationUsageIntervals_webUsageIntervals_categoryUsageIntervals_aggregatedApplicationUsageIntervals_aggregatedWebUsageIntervals_categoryByBundleIdentifier_categoryByWebDomain_notifications_interval_timeZone_lastEventDate___block_invoke;
   v91[3] = &unk_279E09CC8;
   v94 = &v103;
-  v35 = v25;
+  v35 = bundleIdentifierCopy;
   v92 = v35;
   v36 = v34;
   v93 = v36;
-  [v69 enumerateKeysAndObjectsUsingBlock:v91];
-  v37 = v24;
+  [usageIntervalsCopy enumerateKeysAndObjectsUsingBlock:v91];
+  v37 = aggregatedWebUsageIntervalsCopy;
   *&v95 = 0;
   *(&v95 + 1) = &v95;
   v96 = 0x2020000000uLL;
@@ -1174,13 +1174,13 @@ LABEL_17:
   v86[2] = __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pickupsByBundleIdentifier_pickupsWithoutApplicationUsage_firstPickup_longestSession_applicationUsageIntervals_webUsageIntervals_categoryUsageIntervals_aggregatedApplicationUsageIntervals_aggregatedWebUsageIntervals_categoryByBundleIdentifier_categoryByWebDomain_notifications_interval_timeZone_lastEventDate___block_invoke_2;
   v86[3] = &unk_279E09CF0;
   v90 = &v95;
-  v62 = v26;
+  v62 = domainCopy;
   v87 = v62;
   v40 = v38;
   v88 = v40;
   v41 = v39;
   v89 = v41;
-  [v68 enumerateKeysAndObjectsUsingBlock:v86];
+  [webUsageIntervalsCopy enumerateKeysAndObjectsUsingBlock:v86];
   if (v104[3] >= *(*(&v95 + 1) + 24))
   {
     v42 = v104[3];
@@ -1205,7 +1205,7 @@ LABEL_17:
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Adjusting total Screen Time usage (%f) to be at least as long as the max application or web usage (%f)", buf, 0x16u);
   }
 
-  v43 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v71, "count")}];
+  v43 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
   v83[2] = __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pickupsByBundleIdentifier_pickupsWithoutApplicationUsage_firstPickup_longestSession_applicationUsageIntervals_webUsageIntervals_categoryUsageIntervals_aggregatedApplicationUsageIntervals_aggregatedWebUsageIntervals_categoryByBundleIdentifier_categoryByWebDomain_notifications_interval_timeZone_lastEventDate___block_invoke_54;
@@ -1214,8 +1214,8 @@ LABEL_17:
   v84 = v58;
   v44 = v43;
   v85 = v44;
-  [v71 enumerateKeysAndObjectsUsingBlock:v83];
-  v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v70, "count")}];
+  [notificationsCopy enumerateKeysAndObjectsUsingBlock:v83];
+  v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(categoryUsageIntervalsCopy, "count")}];
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
   v74[2] = __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pickupsByBundleIdentifier_pickupsWithoutApplicationUsage_firstPickup_longestSession_applicationUsageIntervals_webUsageIntervals_categoryUsageIntervals_aggregatedApplicationUsageIntervals_aggregatedWebUsageIntervals_categoryByBundleIdentifier_categoryByWebDomain_notifications_interval_timeZone_lastEventDate___block_invoke_2_56;
@@ -1228,7 +1228,7 @@ LABEL_17:
   v77 = v48;
   v49 = v33;
   v78 = v49;
-  v50 = v61;
+  v50 = identifierCopy;
   v79 = v50;
   v51 = v41;
   v80 = v51;
@@ -1236,7 +1236,7 @@ LABEL_17:
   v81 = v52;
   v53 = v45;
   v82 = v53;
-  [v70 enumerateKeysAndObjectsUsingBlock:v74];
+  [categoryUsageIntervalsCopy enumerateKeysAndObjectsUsingBlock:v74];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pickupsByBundleIdentifier_pickupsWithoutApplicationUsage_firstPickup_longestSession_applicationUsageIntervals_webUsageIntervals_categoryUsageIntervals_aggregatedApplicationUsageIntervals_aggregatedWebUsageIntervals_categoryByBundleIdentifier_categoryByWebDomain_notifications_interval_timeZone_lastEventDate___block_invoke_7;
@@ -1244,7 +1244,7 @@ LABEL_17:
   v54 = v53;
   v73 = v54;
   [v47 enumerateKeysAndObjectsUsingBlock:v72];
-  v55 = [[USUsageReport alloc] initWithScreenTime:v64 longestSession:v54 categoryUsage:a5 pickupsWithoutApplicationUsage:v63 firstPickup:v65 interval:v66 timeZone:v42 lastEventDate:v67];
+  v55 = [[USUsageReport alloc] initWithScreenTime:sessionCopy longestSession:v54 categoryUsage:usage pickupsWithoutApplicationUsage:pickupCopy firstPickup:intervalCopy interval:zoneCopy timeZone:v42 lastEventDate:dateCopy];
 
   _Block_object_dispose(&v95, 8);
   _Block_object_dispose(&v103, 8);
@@ -2011,35 +2011,35 @@ void __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pic
   [v11 addObject:v14];
 }
 
-- (id)queryForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 interval:(id)a7 segmentInterval:(double)a8 error:(id *)a9
+- (id)queryForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories interval:(id)interval segmentInterval:(double)segmentInterval error:(id *)error
 {
-  v37 = a3;
-  v36 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [v18 endDate];
-  v20 = [v18 startDate];
-  v35 = v18;
-  [v18 duration];
-  if (v21 <= a8)
+  applicationsCopy = applications;
+  exemptApplicationsCopy = exemptApplications;
+  domainsCopy = domains;
+  categoriesCopy = categories;
+  intervalCopy = interval;
+  endDate = [intervalCopy endDate];
+  startDate = [intervalCopy startDate];
+  v35 = intervalCopy;
+  [intervalCopy duration];
+  if (v21 <= segmentInterval)
   {
-    v22 = v19;
+    v22 = endDate;
   }
 
   else
   {
-    v22 = [v20 dateByAddingTimeInterval:a8];
+    v22 = [startDate dateByAddingTimeInterval:segmentInterval];
   }
 
   v23 = v22;
   v24 = 0.0;
-  if ([v20 compare:v19] == -1)
+  if ([startDate compare:endDate] == -1)
   {
     while (1)
     {
-      v33 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v20 endDate:v23];
-      v34 = [(USUsageQuerying *)self queryForApplications:v37 exemptApplications:v36 webDomains:v16 categories:v17 interval:v33 focalOnly:1 error:a9];
+      v33 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:v23];
+      v34 = [(USUsageQuerying *)self queryForApplications:applicationsCopy exemptApplications:exemptApplicationsCopy webDomains:domainsCopy categories:categoriesCopy interval:v33 focalOnly:1 error:error];
       if (!v34)
       {
         break;
@@ -2050,22 +2050,22 @@ void __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pic
       v30 = v29;
       v25 = v23;
 
-      [v19 timeIntervalSinceDate:v25];
-      if (v31 <= a8)
+      [endDate timeIntervalSinceDate:v25];
+      if (v31 <= segmentInterval)
       {
-        v32 = v19;
+        v32 = endDate;
       }
 
       else
       {
-        v32 = [v25 dateByAddingTimeInterval:a8];
+        v32 = [v25 dateByAddingTimeInterval:segmentInterval];
       }
 
       v23 = v32;
       v24 = v24 + v30;
 
-      v20 = v25;
-      if ([v25 compare:v19] != -1)
+      startDate = v25;
+      if ([v25 compare:endDate] != -1)
       {
         goto LABEL_6;
       }
@@ -2076,36 +2076,36 @@ void __376__USUsageQuerying__newReportWithNonIntersectingScreenTimeIntervals_pic
 
   else
   {
-    v25 = v20;
+    v25 = startDate;
 LABEL_6:
     v26 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
-    v20 = v25;
+    startDate = v25;
   }
 
   return v26;
 }
 
-- (id)queryForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 interval:(id)a7 focalOnly:(BOOL)a8 error:(id *)a9
+- (id)queryForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories interval:(id)interval focalOnly:(BOOL)only error:(id *)error
 {
-  v127 = a8;
+  onlyCopy = only;
   v161[1] = *MEMORY[0x277D85DE8];
-  v116 = a3;
-  v117 = a4;
-  v118 = a5;
-  v119 = a6;
-  v14 = a7;
+  applicationsCopy = applications;
+  exemptApplicationsCopy = exemptApplications;
+  domainsCopy = domains;
+  categoriesCopy = categories;
+  intervalCopy = interval;
   v115 = objc_opt_new();
-  v128 = self;
-  v120 = [(USUsageQuerying *)self duetStream];
+  selfCopy = self;
+  duetStream = [(USUsageQuerying *)self duetStream];
   v15 = MEMORY[0x277CFE260];
-  v16 = v14;
-  v17 = [v16 startDate];
-  v18 = [v16 endDate];
-  v19 = [v15 predicateForEventsIntersectingDateRangeFrom:v17 to:v18];
+  v16 = intervalCopy;
+  startDate = [v16 startDate];
+  endDate = [v16 endDate];
+  v19 = [v15 predicateForEventsIntersectingDateRangeFrom:startDate to:endDate];
 
-  v20 = [MEMORY[0x277CFE1D0] usageType];
-  v123 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v20 andIntegerValue:1];
-  v125 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v20];
+  usageType = [MEMORY[0x277CFE1D0] usageType];
+  v123 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType andIntegerValue:1];
+  v125 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType];
   v21 = [MEMORY[0x277CCA920] notPredicateWithSubpredicate:v125];
   v22 = MEMORY[0x277CCA920];
   v153 = v123;
@@ -2120,15 +2120,15 @@ LABEL_6:
   v27 = [v25 initWithType:1 subpredicates:v26];
 
   v28 = objc_opt_new();
-  v29 = [MEMORY[0x277CFE1E0] allDevices];
-  [v28 setDeviceIDs:v29];
+  allDevices = [MEMORY[0x277CFE1E0] allDevices];
+  [v28 setDeviceIDs:allDevices];
 
-  v30 = [MEMORY[0x277CFE298] appUsageStream];
-  v161[0] = v30;
+  appUsageStream = [MEMORY[0x277CFE298] appUsageStream];
+  v161[0] = appUsageStream;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v161 count:1];
   [v28 setEventStreams:v31];
 
-  if (v127)
+  if (onlyCopy)
   {
     v32 = v27;
   }
@@ -2146,23 +2146,23 @@ LABEL_6:
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v159 count:2];
 
   [v28 setSortDescriptors:v35];
-  v36 = [v120 publisherForQuery:v28];
+  v36 = [duetStream publisherForQuery:v28];
 
-  v126 = [v36 collect];
+  collect = [v36 collect];
 
-  v37 = [(USUsageQuerying *)v128 duetStream];
+  duetStream2 = [(USUsageQuerying *)selfCopy duetStream];
   v38 = v16;
   v39 = MEMORY[0x277CFE260];
-  v40 = [v38 startDate];
-  v41 = [v38 endDate];
-  v42 = [v39 predicateForEventsIntersectingDateRangeFrom:v40 to:v41];
+  startDate2 = [v38 startDate];
+  endDate2 = [v38 endDate];
+  v42 = [v39 predicateForEventsIntersectingDateRangeFrom:startDate2 to:endDate2];
 
-  v43 = [MEMORY[0x277CFE1D0] usageType];
-  v44 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v43 andIntegerValue:1];
+  usageType2 = [MEMORY[0x277CFE1D0] usageType];
+  v44 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType2 andIntegerValue:1];
   v45 = v44;
-  if (!v127)
+  if (!onlyCopy)
   {
-    v46 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v43 andIntegerValue:0];
+    v46 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType2 andIntegerValue:0];
     v47 = objc_alloc(MEMORY[0x277CCA920]);
     v153 = v44;
     v154 = v46;
@@ -2171,11 +2171,11 @@ LABEL_6:
   }
 
   v49 = objc_opt_new();
-  v50 = [MEMORY[0x277CFE1E0] allDevices];
-  [v49 setDeviceIDs:v50];
+  allDevices2 = [MEMORY[0x277CFE1E0] allDevices];
+  [v49 setDeviceIDs:allDevices2];
 
-  v51 = [MEMORY[0x277CFE298] appWebUsageStream];
-  v161[0] = v51;
+  appWebUsageStream = [MEMORY[0x277CFE298] appWebUsageStream];
+  v161[0] = appWebUsageStream;
   v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v161 count:1];
   [v49 setEventStreams:v52];
 
@@ -2193,26 +2193,26 @@ LABEL_6:
   v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v159 count:2];
   [v49 setSortDescriptors:v58];
 
-  v59 = [v37 publisherForQuery:v49];
+  v59 = [duetStream2 publisherForQuery:v49];
 
-  v124 = [v59 collect];
+  collect2 = [v59 collect];
 
-  if ([v119 containsObject:*MEMORY[0x277CF95D0]])
+  if ([categoriesCopy containsObject:*MEMORY[0x277CF95D0]])
   {
-    v60 = [(USUsageQuerying *)v128 duetStream];
+    duetStream3 = [(USUsageQuerying *)selfCopy duetStream];
     v61 = MEMORY[0x277CFE260];
     v62 = v38;
-    v63 = [v62 startDate];
-    v64 = [v62 endDate];
-    v121 = [v61 predicateForEventsIntersectingDateRangeFrom:v63 to:v64];
+    startDate3 = [v62 startDate];
+    endDate3 = [v62 endDate];
+    v121 = [v61 predicateForEventsIntersectingDateRangeFrom:startDate3 to:endDate3];
 
     v65 = MEMORY[0x277CFE260];
-    v66 = [MEMORY[0x277CFE248] playing];
-    v114 = [v65 predicateForObjectsWithMetadataKey:v66 andIntegerValue:1];
+    playing = [MEMORY[0x277CFE248] playing];
+    v114 = [v65 predicateForObjectsWithMetadataKey:playing andIntegerValue:1];
 
     v67 = MEMORY[0x277CFE260];
-    v68 = [MEMORY[0x277CFE248] mediaType];
-    v113 = [v67 predicateForObjectsWithMetadataKey:v68 andStringValue:*MEMORY[0x277D27CB8]];
+    mediaType = [MEMORY[0x277CFE248] mediaType];
+    v113 = [v67 predicateForObjectsWithMetadataKey:mediaType andStringValue:*MEMORY[0x277D27CB8]];
 
     v69 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:@"com.apple.quicklook.QuickLookUIService"];
     v70 = [MEMORY[0x277CFE260] predicateForEventsWithStringValue:@"com.apple.quicklook.extension.previewUI"];
@@ -2223,11 +2223,11 @@ LABEL_6:
     v73 = [v71 initWithType:2 subpredicates:v72];
 
     v74 = objc_opt_new();
-    v75 = [MEMORY[0x277CFE1E0] allDevices];
-    [v74 setDeviceIDs:v75];
+    allDevices3 = [MEMORY[0x277CFE1E0] allDevices];
+    [v74 setDeviceIDs:allDevices3];
 
-    v76 = [MEMORY[0x277CFE298] nowPlayingStream];
-    v161[0] = v76;
+    nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+    v161[0] = nowPlayingStream;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v161 count:1];
     [v74 setEventStreams:v77];
 
@@ -2247,32 +2247,32 @@ LABEL_6:
     v83 = [MEMORY[0x277CBEA60] arrayWithObjects:&v159 count:2];
 
     [v74 setSortDescriptors:v83];
-    v84 = [v60 publisherForQuery:v74];
+    v84 = [duetStream3 publisherForQuery:v74];
 
-    v122 = [v84 collect];
+    collect3 = [v84 collect];
   }
 
   else
   {
-    v60 = [MEMORY[0x277CBEBF8] bpsPublisher];
-    v122 = [v60 collect];
+    duetStream3 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    collect3 = [duetStream3 collect];
   }
 
-  v85 = [(USUsageQuerying *)v128 duetStream];
+  duetStream4 = [(USUsageQuerying *)selfCopy duetStream];
   v86 = v38;
   v87 = objc_opt_new();
-  v88 = [MEMORY[0x277CFE1E0] allDevices];
-  [v87 setDeviceIDs:v88];
+  allDevices4 = [MEMORY[0x277CFE1E0] allDevices];
+  [v87 setDeviceIDs:allDevices4];
 
-  v89 = [MEMORY[0x277CFE298] appMediaUsageStream];
-  v147 = v89;
+  appMediaUsageStream = [MEMORY[0x277CFE298] appMediaUsageStream];
+  v147 = appMediaUsageStream;
   v90 = [MEMORY[0x277CBEA60] arrayWithObjects:&v147 count:1];
   [v87 setEventStreams:v90];
 
   v91 = MEMORY[0x277CFE260];
-  v92 = [v86 startDate];
-  v93 = [v86 endDate];
-  v94 = [v91 predicateForEventsIntersectingDateRangeFrom:v92 to:v93];
+  startDate4 = [v86 startDate];
+  endDate4 = [v86 endDate];
+  v94 = [v91 predicateForEventsIntersectingDateRangeFrom:startDate4 to:endDate4];
   [v87 setPredicate:v94];
 
   v95 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:1];
@@ -2282,9 +2282,9 @@ LABEL_6:
   v97 = [MEMORY[0x277CBEA60] arrayWithObjects:&v153 count:2];
 
   [v87 setSortDescriptors:v97];
-  v98 = [v85 publisherForQuery:v87];
+  v98 = [duetStream4 publisherForQuery:v87];
 
-  v99 = [v98 collect];
+  collect4 = [v98 collect];
 
   v153 = 0;
   v154 = &v153;
@@ -2299,11 +2299,11 @@ LABEL_6:
   v151 = __Block_byref_object_dispose__0;
   v152 = 0;
   v100 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-  v146[0] = v124;
-  v146[1] = v122;
-  v146[2] = v99;
+  v146[0] = collect2;
+  v146[1] = collect3;
+  v146[2] = collect4;
   v101 = [MEMORY[0x277CBEA60] arrayWithObjects:v146 count:3];
-  v102 = [v126 zipWithOthers:v101];
+  v102 = [collect zipWithOthers:v101];
   v142[0] = MEMORY[0x277D85DD0];
   v142[1] = 3221225472;
   v142[2] = __106__USUsageQuerying_queryForApplications_exemptApplications_webDomains_categories_interval_focalOnly_error___block_invoke;
@@ -2315,22 +2315,22 @@ LABEL_6:
   v130[1] = 3221225472;
   v130[2] = __106__USUsageQuerying_queryForApplications_exemptApplications_webDomains_categories_interval_focalOnly_error___block_invoke_2;
   v130[3] = &unk_279E09EA8;
-  v130[4] = v128;
+  v130[4] = selfCopy;
   v103 = v86;
   v131 = v103;
   v104 = v115;
   v132 = v104;
-  v141 = v127;
-  v129 = v116;
+  v141 = onlyCopy;
+  v129 = applicationsCopy;
   v133 = v129;
-  v105 = v117;
+  v105 = exemptApplicationsCopy;
   v134 = v105;
   v106 = v143;
   v135 = v106;
   v140 = 1;
-  v107 = v118;
+  v107 = domainsCopy;
   v136 = v107;
-  v108 = v119;
+  v108 = categoriesCopy;
   v137 = v108;
   v138 = &v153;
   v139 = &v147;
@@ -2338,9 +2338,9 @@ LABEL_6:
 
   [v106 lockWhenCondition:1];
   [v106 unlock];
-  if (a9)
+  if (error)
   {
-    *a9 = v148[5];
+    *error = v148[5];
   }
 
   v110 = v154[5];
@@ -2544,20 +2544,20 @@ void __106__USUsageQuerying_queryForApplications_exemptApplications_webDomains_c
   [*(a1 + 128) unlockWithCondition:*(a1 + 152)];
 }
 
-- (id)_calculateAllExemptBundleIdentifiersFromExemptApplications:(id)a3 categoryByBundleIdentifier:(id)a4
+- (id)_calculateAllExemptBundleIdentifiersFromExemptApplications:(id)applications categoryByBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  applicationsCopy = applications;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __105__USUsageQuerying__calculateAllExemptBundleIdentifiersFromExemptApplications_categoryByBundleIdentifier___block_invoke;
   v13[3] = &unk_279E09ED0;
-  v14 = v5;
+  v14 = identifierCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v5;
-  [v6 enumerateObjectsUsingBlock:v13];
+  v9 = identifierCopy;
+  [applicationsCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -2575,20 +2575,20 @@ void __105__USUsageQuerying__calculateAllExemptBundleIdentifiersFromExemptApplic
   }
 }
 
-- (id)_calculateAllExemptWebDomainsFromExemptApplications:(id)a3 categoryByBundleIdentifier:(id)a4
+- (id)_calculateAllExemptWebDomainsFromExemptApplications:(id)applications categoryByBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  applicationsCopy = applications;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_categoryByBundleIdentifier___block_invoke;
   v13[3] = &unk_279E09ED0;
-  v14 = v5;
+  v14 = identifierCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v5;
-  [v6 enumerateObjectsUsingBlock:v13];
+  v9 = identifierCopy;
+  [applicationsCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -2606,23 +2606,23 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
   }
 }
 
-- (double)_computeUsageForApplications:(id)a3 exemptApplications:(id)a4 webDomains:(id)a5 categories:(id)a6 applicationUsageEvents:(id)a7 webUsageEvents:(id)a8 nowPlayingEvents:(id)a9 videoUsageEvents:(id)a10 categoryByBundleIdentifier:(id)a11 categoryByWebDomain:(id)a12 interval:(id)a13 referenceDate:(id)a14 focalOnly:(BOOL)a15
+- (double)_computeUsageForApplications:(id)applications exemptApplications:(id)exemptApplications webDomains:(id)domains categories:(id)categories applicationUsageEvents:(id)events webUsageEvents:(id)usageEvents nowPlayingEvents:(id)playingEvents videoUsageEvents:(id)self0 categoryByBundleIdentifier:(id)self1 categoryByWebDomain:(id)self2 interval:(id)self3 referenceDate:(id)self4 focalOnly:(BOOL)self5
 {
-  v18 = a3;
-  v53 = a4;
-  v19 = a5;
-  v49 = a7;
-  v48 = a11;
-  v44 = a14;
-  v43 = a13;
-  v20 = v18;
-  v45 = a12;
-  v21 = a10;
-  v22 = a9;
-  v23 = a8;
-  v42 = a6;
-  v24 = [v42 count];
-  v25 = [v19 count];
+  applicationsCopy = applications;
+  exemptApplicationsCopy = exemptApplications;
+  domainsCopy = domains;
+  eventsCopy = events;
+  identifierCopy = identifier;
+  dateCopy = date;
+  intervalCopy = interval;
+  v20 = applicationsCopy;
+  domainCopy = domain;
+  videoUsageEventsCopy = videoUsageEvents;
+  playingEventsCopy = playingEvents;
+  usageEventsCopy = usageEvents;
+  categoriesCopy = categories;
+  v24 = [categoriesCopy count];
+  v25 = [domainsCopy count];
   v51 = v20;
   v26 = ([v20 count] | v25) != 0;
   if (v24)
@@ -2655,61 +2655,61 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
     v28 = 0;
   }
 
-  v29 = [v49 mutableCopy];
-  v30 = [v23 mutableCopy];
+  v29 = [eventsCopy mutableCopy];
+  v30 = [usageEventsCopy mutableCopy];
 
-  v40 = [v22 mutableCopy];
-  [v29 addObjectsFromArray:v21];
+  v40 = [playingEventsCopy mutableCopy];
+  [v29 addObjectsFromArray:videoUsageEventsCopy];
   v47 = v30;
-  [v30 addObjectsFromArray:v21];
+  [v30 addObjectsFromArray:videoUsageEventsCopy];
 
-  v31 = [(USUsageQuerying *)self _calculateAllExemptBundleIdentifiersFromExemptApplications:v53 categoryByBundleIdentifier:v48];
+  v31 = [(USUsageQuerying *)self _calculateAllExemptBundleIdentifiersFromExemptApplications:exemptApplicationsCopy categoryByBundleIdentifier:identifierCopy];
   if ([v31 count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [USUsageQuerying _computeUsageForApplications:exemptApplications:webDomains:categories:applicationUsageEvents:webUsageEvents:nowPlayingEvents:videoUsageEvents:categoryByBundleIdentifier:categoryByWebDomain:interval:referenceDate:focalOnly:];
   }
 
-  v32 = [(USUsageQuerying *)self _calculateAllExemptWebDomainsFromExemptApplications:v53 categoryByBundleIdentifier:v48];
+  v32 = [(USUsageQuerying *)self _calculateAllExemptWebDomainsFromExemptApplications:exemptApplicationsCopy categoryByBundleIdentifier:identifierCopy];
   if ([v32 count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [USUsageQuerying _computeUsageForApplications:exemptApplications:webDomains:categories:applicationUsageEvents:webUsageEvents:nowPlayingEvents:videoUsageEvents:categoryByBundleIdentifier:categoryByWebDomain:interval:referenceDate:focalOnly:];
   }
 
-  LOBYTE(v38) = a15;
-  v39 = [(USUsageQuerying *)self _computeApplicationUsageWithEvents:v29 exemptApplications:v31 exemptWebDomains:v32 unboundApplicationUsageIntervalsByDevice:0 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 categoryByBundleIdentifier:v48 partition:v43 referenceDate:v44 focalOnly:v38];
-  LOBYTE(v37) = a15;
-  v33 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v30 exemptWebDomains:v32 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 aggregatedWebUsageIntervalsByDevice:v41 categoryByWebDomain:v45 partition:v43 referenceDate:v44 focalOnly:v37];
-  [(USUsageQuerying *)self _computeNowPlayingUsageWithEvents:v40 categoryUsageIntervalsByDevice:v27 timeZoneByDevice:0 lastEventDateByDevice:0 partition:v43 referenceDate:v44];
+  LOBYTE(v38) = only;
+  v39 = [(USUsageQuerying *)self _computeApplicationUsageWithEvents:v29 exemptApplications:v31 exemptWebDomains:v32 unboundApplicationUsageIntervalsByDevice:0 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 categoryByBundleIdentifier:identifierCopy partition:intervalCopy referenceDate:dateCopy focalOnly:v38];
+  LOBYTE(v37) = only;
+  v33 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v30 exemptWebDomains:v32 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 aggregatedWebUsageIntervalsByDevice:v41 categoryByWebDomain:domainCopy partition:intervalCopy referenceDate:dateCopy focalOnly:v37];
+  [(USUsageQuerying *)self _computeNowPlayingUsageWithEvents:v40 categoryUsageIntervalsByDevice:v27 timeZoneByDevice:0 lastEventDateByDevice:0 partition:intervalCopy referenceDate:dateCopy];
 
-  [(USUsageQuerying *)self _generateUsageTimeWithApplicationUsageIntervals:v39 webUsageIntervalsByDevice:v33 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 aggregatedWebUsageIntervalsByDevice:v41 categoryByBundleIdentifier:v48 categoryByWebDomain:v45 applications:v51 webDomains:v19 categories:v42];
+  [(USUsageQuerying *)self _generateUsageTimeWithApplicationUsageIntervals:v39 webUsageIntervalsByDevice:v33 categoryUsageIntervalsByDevice:v27 aggregatedApplicationUsageIntervalsByDevice:v28 aggregatedWebUsageIntervalsByDevice:v41 categoryByBundleIdentifier:identifierCopy categoryByWebDomain:domainCopy applications:v51 webDomains:domainsCopy categories:categoriesCopy];
   v35 = v34;
 
   return v35;
 }
 
-- (double)_generateUsageTimeWithApplicationUsageIntervals:(id)a3 webUsageIntervalsByDevice:(id)a4 categoryUsageIntervalsByDevice:(id)a5 aggregatedApplicationUsageIntervalsByDevice:(id)a6 aggregatedWebUsageIntervalsByDevice:(id)a7 categoryByBundleIdentifier:(id)a8 categoryByWebDomain:(id)a9 applications:(id)a10 webDomains:(id)a11 categories:(id)a12
+- (double)_generateUsageTimeWithApplicationUsageIntervals:(id)intervals webUsageIntervalsByDevice:(id)device categoryUsageIntervalsByDevice:(id)byDevice aggregatedApplicationUsageIntervalsByDevice:(id)intervalsByDevice aggregatedWebUsageIntervalsByDevice:(id)usageIntervalsByDevice categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)domain applications:(id)self0 webDomains:(id)self1 categories:(id)self2
 {
   v182 = *MEMORY[0x277D85DE8];
-  v115 = a3;
-  v119 = a4;
-  v117 = a5;
-  v17 = a6;
-  v118 = a7;
-  v125 = a8;
-  v127 = a9;
-  v18 = a10;
-  v19 = a11;
-  v120 = a12;
+  intervalsCopy = intervals;
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  intervalsByDeviceCopy = intervalsByDevice;
+  usageIntervalsByDeviceCopy = usageIntervalsByDevice;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  applicationsCopy = applications;
+  domainsCopy = domains;
+  categoriesCopy = categories;
   v144 = objc_opt_new();
-  v116 = v18;
-  v140 = v17;
-  if ([v18 count])
+  v116 = applicationsCopy;
+  v140 = intervalsByDeviceCopy;
+  if ([applicationsCopy count])
   {
     v165 = 0u;
     v166 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v20 = v18;
+    v20 = applicationsCopy;
     v21 = [v20 countByEnumeratingWithState:&v163 objects:v175 count:16];
     if (v21)
     {
@@ -2725,17 +2725,17 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
             objc_enumerationMutation(v20);
           }
 
-          v26 = [v125 objectForKeyedSubscript:*(*(&v163 + 1) + 8 * i)];
-          v27 = [v26 equivalentBundleIdentifiers];
+          v26 = [identifierCopy objectForKeyedSubscript:*(*(&v163 + 1) + 8 * i)];
+          equivalentBundleIdentifiers = [v26 equivalentBundleIdentifiers];
 
-          if ([v27 count] >= 2)
+          if ([equivalentBundleIdentifiers count] >= 2)
           {
             if (!v23)
             {
               v23 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v20];
             }
 
-            [v23 addObjectsFromArray:v27];
+            [v23 addObjectsFromArray:equivalentBundleIdentifiers];
           }
         }
 
@@ -2813,17 +2813,17 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
     v43 = v39;
     [v41 enumerateKeysAndObjectsUsingBlock:&v176];
 
-    v17 = v140;
+    intervalsByDeviceCopy = v140;
   }
 
-  v124 = [v17 objectForKeyedSubscript:@"AllDevices"];
-  v122 = [v118 objectForKeyedSubscript:@"AllDevices"];
-  v121 = [v119 objectForKeyedSubscript:@"AllDevices"];
+  v124 = [intervalsByDeviceCopy objectForKeyedSubscript:@"AllDevices"];
+  v122 = [usageIntervalsByDeviceCopy objectForKeyedSubscript:@"AllDevices"];
+  v121 = [deviceCopy objectForKeyedSubscript:@"AllDevices"];
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
-  obj = v19;
+  obj = domainsCopy;
   v44 = 0x279E09000uLL;
   v128 = [obj countByEnumeratingWithState:&v155 objects:v173 count:16];
   if (v128)
@@ -2843,13 +2843,13 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
 
         v130 = v45;
         v47 = *(*(&v155 + 1) + 8 * v45);
-        v48 = [v127 objectForKeyedSubscript:v47];
-        v49 = [v48 canonicalBundleIdentifier];
-        v129 = v49;
-        if (v49)
+        v48 = [domainCopy objectForKeyedSubscript:v47];
+        canonicalBundleIdentifier = [v48 canonicalBundleIdentifier];
+        v129 = canonicalBundleIdentifier;
+        if (canonicalBundleIdentifier)
         {
-          v50 = v49;
-          [*(v44 + 1408) identifierWithIdentifier:v49 trusted:1];
+          v50 = canonicalBundleIdentifier;
+          [*(v44 + 1408) identifierWithIdentifier:canonicalBundleIdentifier trusted:1];
           v52 = v51 = v44;
           v53 = [v124 objectForKeyedSubscript:v52];
 
@@ -2931,13 +2931,13 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
                     if ([v69 intersectsDateInterval:v64])
                     {
                       v70 = v63;
-                      v71 = [v69 startDate];
-                      v72 = [v64 startDate];
-                      v73 = [v71 earlierDate:v72];
+                      startDate = [v69 startDate];
+                      startDate2 = [v64 startDate];
+                      v73 = [startDate earlierDate:startDate2];
 
-                      v74 = [v69 endDate];
-                      v75 = [v64 endDate];
-                      v76 = [v74 laterDate:v75];
+                      endDate = [v69 endDate];
+                      endDate2 = [v64 endDate];
+                      v76 = [endDate laterDate:endDate2];
 
                       v77 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v73 endDate:v76];
                       if (v145)
@@ -2967,7 +2967,7 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
                 }
 
                 v79 = v138;
-                v17 = v140;
+                intervalsByDeviceCopy = v140;
               }
 
               else
@@ -3036,13 +3036,13 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
                     if ([v89 intersectsDateInterval:v83])
                     {
                       v90 = v82;
-                      v91 = [v89 startDate];
-                      v92 = [v83 startDate];
-                      v93 = [v91 earlierDate:v92];
+                      startDate3 = [v89 startDate];
+                      startDate4 = [v83 startDate];
+                      v93 = [startDate3 earlierDate:startDate4];
 
-                      v94 = [v89 endDate];
-                      v95 = [v83 endDate];
-                      v96 = [v94 laterDate:v95];
+                      endDate3 = [v89 endDate];
+                      endDate4 = [v83 endDate];
+                      v96 = [endDate3 laterDate:endDate4];
 
                       v97 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v93 endDate:v96];
                       if (v86)
@@ -3074,7 +3074,7 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
                 }
 
                 v98 = v139;
-                v17 = v140;
+                intervalsByDeviceCopy = v140;
                 m = v143;
               }
 
@@ -3106,16 +3106,16 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
     while (v128);
   }
 
-  if ([v120 count])
+  if ([categoriesCopy count])
   {
-    if (!v117)
+    if (!byDeviceCopy)
     {
       [USUsageQuerying _generateUsageTimeWithApplicationUsageIntervals:a2 webUsageIntervalsByDevice:self categoryUsageIntervalsByDevice:? aggregatedApplicationUsageIntervalsByDevice:? aggregatedWebUsageIntervalsByDevice:? categoryByBundleIdentifier:? categoryByWebDomain:? applications:? webDomains:? categories:?];
     }
 
     v99 = v144;
-    v100 = v120;
-    v101 = [v117 objectForKeyedSubscript:@"AllDevices"];
+    v100 = categoriesCopy;
+    v101 = [byDeviceCopy objectForKeyedSubscript:@"AllDevices"];
     v176 = MEMORY[0x277D85DD0];
     v177 = 3221225472;
     v178 = __unionIntervalsWithUsageIntervalsByDeviceFilteredByItems_block_invoke;
@@ -3166,22 +3166,22 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
   return v108;
 }
 
-- (void)queryForUncategorizedLocalWebUsageDuringInterval:(id)a3 completionHandler:(id)a4
+- (void)queryForUncategorizedLocalWebUsageDuringInterval:(id)interval completionHandler:(id)handler
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v36 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v38 = objc_opt_new();
-  v35 = [(USUsageQuerying *)self duetStream];
+  duetStream = [(USUsageQuerying *)self duetStream];
   v7 = MEMORY[0x277CFE260];
-  v8 = v6;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
-  v34 = [v7 predicateForEventsIntersectingDateRangeFrom:v9 to:v10];
+  v8 = intervalCopy;
+  startDate = [v8 startDate];
+  endDate = [v8 endDate];
+  v34 = [v7 predicateForEventsIntersectingDateRangeFrom:startDate to:endDate];
 
-  v11 = [MEMORY[0x277CFE1D0] usageType];
-  v12 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v11 andIntegerValue:1];
-  v13 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:v11 andIntegerValue:0];
+  usageType = [MEMORY[0x277CFE1D0] usageType];
+  v12 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType andIntegerValue:1];
+  v13 = [MEMORY[0x277CFE260] predicateForObjectsWithMetadataKey:usageType andIntegerValue:0];
   v14 = objc_alloc(MEMORY[0x277CCA920]);
   v48[0] = v12;
   v48[1] = v13;
@@ -3189,11 +3189,11 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
   v16 = [v14 initWithType:2 subpredicates:v15];
 
   v17 = objc_opt_new();
-  v18 = [MEMORY[0x277CFE1E0] onlyLocalDevice];
-  [v17 setDeviceIDs:v18];
+  onlyLocalDevice = [MEMORY[0x277CFE1E0] onlyLocalDevice];
+  [v17 setDeviceIDs:onlyLocalDevice];
 
-  v19 = [MEMORY[0x277CFE298] appWebUsageStream];
-  v47 = v19;
+  appWebUsageStream = [MEMORY[0x277CFE298] appWebUsageStream];
+  v47 = appWebUsageStream;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
   [v17 setEventStreams:v20];
 
@@ -3211,15 +3211,15 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
 
   [v17 setSortDescriptors:v26];
-  v27 = [v35 publisherForQuery:v17];
+  v27 = [duetStream publisherForQuery:v17];
 
-  v28 = [v27 collect];
+  collect = [v27 collect];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __86__USUsageQuerying_queryForUncategorizedLocalWebUsageDuringInterval_completionHandler___block_invoke;
   v43[3] = &unk_279E09C00;
-  v44 = v36;
+  v44 = handlerCopy;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __86__USUsageQuerying_queryForUncategorizedLocalWebUsageDuringInterval_completionHandler___block_invoke_2;
@@ -3231,7 +3231,7 @@ void __98__USUsageQuerying__calculateAllExemptWebDomainsFromExemptApplications_c
   v29 = v44;
   v30 = v38;
   v31 = v8;
-  v32 = [v28 sinkWithCompletion:v43 receiveInput:v39];
+  v32 = [collect sinkWithCompletion:v43 receiveInput:v39];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -3298,26 +3298,26 @@ uint64_t __86__USUsageQuerying_queryForUncategorizedLocalWebUsageDuringInterval_
   }
 }
 
-- (void)_computeUncategorizedLocalWebUsageWithWebUsageEvents:(id)a3 uncategorizedDomains:(id)a4 interval:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7
+- (void)_computeUncategorizedLocalWebUsageWithWebUsageEvents:(id)events uncategorizedDomains:(id)domains interval:(id)interval referenceDate:(id)date completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v20 = [a3 mutableCopy];
+  handlerCopy = handler;
+  dateCopy = date;
+  intervalCopy = interval;
+  domainsCopy = domains;
+  v20 = [events mutableCopy];
   LOBYTE(v19) = 0;
-  v16 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v20 exemptWebDomains:0 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:0 aggregatedApplicationUsageIntervalsByDevice:0 aggregatedWebUsageIntervalsByDevice:0 categoryByWebDomain:0 partition:v14 referenceDate:v13 focalOnly:v19];
+  v16 = [(USUsageQuerying *)self _computeWebUsageWithEvents:v20 exemptWebDomains:0 timeZoneByDevice:0 lastEventDateByDevice:0 categoryUsageIntervalsByDevice:0 aggregatedApplicationUsageIntervalsByDevice:0 aggregatedWebUsageIntervalsByDevice:0 categoryByWebDomain:0 partition:intervalCopy referenceDate:dateCopy focalOnly:v19];
 
   v17 = [v16 objectForKeyedSubscript:@"LocalDevice"];
-  v18 = [(USUsageQuerying *)self _generateUncategorizedLocalWebUsageWithWebUsageIntervals:v17 uncategorizedDomains:v15];
+  v18 = [(USUsageQuerying *)self _generateUncategorizedLocalWebUsageWithWebUsageIntervals:v17 uncategorizedDomains:domainsCopy];
 
-  v12[2](v12, v18, 0);
+  handlerCopy[2](handlerCopy, v18, 0);
 }
 
-- (id)_generateUncategorizedLocalWebUsageWithWebUsageIntervals:(id)a3 uncategorizedDomains:(id)a4
+- (id)_generateUncategorizedLocalWebUsageWithWebUsageIntervals:(id)intervals uncategorizedDomains:(id)domains
 {
-  v5 = a3;
-  v6 = a4;
+  intervalsCopy = intervals;
+  domainsCopy = domains;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -3328,10 +3328,10 @@ uint64_t __86__USUsageQuerying_queryForUncategorizedLocalWebUsageDuringInterval_
   v15[1] = 3221225472;
   v15[2] = __97__USUsageQuerying__generateUncategorizedLocalWebUsageWithWebUsageIntervals_uncategorizedDomains___block_invoke;
   v15[3] = &unk_279E09F48;
-  v7 = v6;
+  v7 = domainsCopy;
   v16 = v7;
   v17 = &v18;
-  [v5 enumerateKeysAndObjectsUsingBlock:v15];
+  [intervalsCopy enumerateKeysAndObjectsUsingBlock:v15];
   v8 = v19[5];
   if (v8)
   {
@@ -3387,18 +3387,18 @@ void __97__USUsageQuerying__generateUncategorizedLocalWebUsageWithWebUsageInterv
   }
 }
 
-- (id)_computeScreenTime:(BOOL)a3 withEvents:(id)a4 intersectingScreenTimeIntervalsByDevice:(id *)a5 longestSessionByDevice:(id *)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8 partition:(id)a9 referenceDate:(id)a10
+- (id)_computeScreenTime:(BOOL)time withEvents:(id)events intersectingScreenTimeIntervalsByDevice:(id *)device longestSessionByDevice:(id *)byDevice timeZoneByDevice:(id)zoneByDevice lastEventDateByDevice:(id)dateByDevice partition:(id)partition referenceDate:(id)self0
 {
-  v14 = a3;
-  v40 = a4;
-  v16 = a7;
-  v36 = a8;
-  v17 = a9;
-  v18 = a10;
-  if (v14)
+  timeCopy = time;
+  eventsCopy = events;
+  zoneByDeviceCopy = zoneByDevice;
+  dateByDeviceCopy = dateByDevice;
+  partitionCopy = partition;
+  dateCopy = date;
+  if (timeCopy)
   {
     v19 = objc_opt_new();
-    if (a5)
+    if (device)
     {
 LABEL_3:
       v20 = objc_opt_new();
@@ -3409,7 +3409,7 @@ LABEL_3:
   else
   {
     v19 = 0;
-    if (a5)
+    if (device)
     {
       goto LABEL_3;
     }
@@ -3417,9 +3417,9 @@ LABEL_3:
 
   v20 = 0;
 LABEL_6:
-  v38 = a5;
-  v39 = a6;
-  if (a6)
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  if (byDevice)
   {
     v21 = objc_opt_new();
   }
@@ -3429,48 +3429,48 @@ LABEL_6:
     v21 = 0;
   }
 
-  v22 = [v17 endDate];
+  endDate = [partitionCopy endDate];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTimeIntervalsByDevice_longestSessionByDevice_timeZoneByDevice_lastEventDateByDevice_partition_referenceDate___block_invoke;
   v42[3] = &unk_279E09F70;
-  v23 = v17;
+  v23 = partitionCopy;
   v43 = v23;
-  v44 = self;
+  selfCopy = self;
   v24 = v19;
   v45 = v24;
   v25 = v20;
   v46 = v25;
   v26 = v21;
   v47 = v26;
-  v27 = v16;
+  v27 = zoneByDeviceCopy;
   v48 = v27;
-  v28 = v36;
+  v28 = dateByDeviceCopy;
   v49 = v28;
-  [(USUsageQuerying *)self _enumerateEvents:v40 intervalEndDate:v22 block:v42];
+  [(USUsageQuerying *)self _enumerateEvents:eventsCopy intervalEndDate:endDate block:v42];
 
   v41 = 0;
-  v29 = [(USUsageQuerying *)self _currentScreenTimeIntervalDuringInterval:v23 usageStartDate:&v41 referenceDate:v18];
+  v29 = [(USUsageQuerying *)self _currentScreenTimeIntervalDuringInterval:v23 usageStartDate:&v41 referenceDate:dateCopy];
   v30 = v41;
   if (v29)
   {
-    v37 = v18;
-    v31 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v30 endDate:v18];
+    v37 = dateCopy;
+    v31 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v30 endDate:dateCopy];
     [(USUsageQuerying *)self _updateScreenTimeWithInterval:v29 rawInterval:v31 deviceIdentifier:@"LocalDevice" partition:v23 event:0 nonIntersectingScreenTimeIntervalsByDevice:v24 intersectingScreenTimeIntervalsByDevice:v25 longestSessionByDevice:v26 timeZoneByDevice:v27 lastEventDateByDevice:v28];
 
-    v18 = v37;
+    dateCopy = v37;
   }
 
-  if (v38)
+  if (deviceCopy)
   {
     v32 = v25;
-    *v38 = v25;
+    *deviceCopy = v25;
   }
 
-  if (v39)
+  if (byDeviceCopy)
   {
     v33 = v26;
-    *v39 = v26;
+    *byDeviceCopy = v26;
   }
 
   v34 = v24;
@@ -3523,26 +3523,26 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
   }
 }
 
-- (void)_updateScreenTimeWithInterval:(id)a3 rawInterval:(id)a4 deviceIdentifier:(id)a5 partition:(id)a6 event:(id)a7 nonIntersectingScreenTimeIntervalsByDevice:(id)a8 intersectingScreenTimeIntervalsByDevice:(id)a9 longestSessionByDevice:(id)a10 timeZoneByDevice:(id)a11 lastEventDateByDevice:(id)a12
+- (void)_updateScreenTimeWithInterval:(id)interval rawInterval:(id)rawInterval deviceIdentifier:(id)identifier partition:(id)partition event:(id)event nonIntersectingScreenTimeIntervalsByDevice:(id)device intersectingScreenTimeIntervalsByDevice:(id)byDevice longestSessionByDevice:(id)self0 timeZoneByDevice:(id)self1 lastEventDateByDevice:(id)self2
 {
   v116 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v101 = a4;
-  v18 = a5;
-  v105 = a6;
-  v104 = a7;
-  v19 = a8;
-  v103 = a9;
-  v102 = a10;
-  v107 = a11;
-  v106 = a12;
-  v108 = v19;
-  if (v19)
+  intervalCopy = interval;
+  rawIntervalCopy = rawInterval;
+  identifierCopy = identifier;
+  partitionCopy = partition;
+  eventCopy = event;
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  sessionByDeviceCopy = sessionByDevice;
+  zoneByDeviceCopy = zoneByDevice;
+  dateByDeviceCopy = dateByDevice;
+  v108 = deviceCopy;
+  if (deviceCopy)
   {
-    v20 = v17;
-    v21 = [v19 objectForKeyedSubscript:v18];
-    v99 = v18;
-    v100 = v17;
+    v20 = intervalCopy;
+    v21 = [deviceCopy objectForKeyedSubscript:identifierCopy];
+    v99 = identifierCopy;
+    v100 = intervalCopy;
     if (v21)
     {
       v22 = v21;
@@ -3572,14 +3572,14 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
             if ([v29 intersectsDateInterval:v23])
             {
               v30 = v22;
-              v31 = [v29 startDate];
-              v32 = [v23 startDate];
-              v33 = [v31 earlierDate:v32];
+              startDate = [v29 startDate];
+              startDate2 = [v23 startDate];
+              v33 = [startDate earlierDate:startDate2];
 
-              v34 = [v29 endDate];
+              endDate = [v29 endDate];
               [v23 endDate];
               v36 = v35 = v26;
-              v37 = [v34 laterDate:v36];
+              v37 = [endDate laterDate:v36];
 
               v26 = v35;
               v38 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v33 endDate:v37];
@@ -3609,7 +3609,7 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
           [v22 removeObjectsInArray:v26];
         }
 
-        v19 = v108;
+        deviceCopy = v108;
         v20 = v97;
       }
 
@@ -3620,17 +3620,17 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
 
       [v22 addObject:v23];
 
-      v18 = v99;
-      v17 = v100;
+      identifierCopy = v99;
+      intervalCopy = v100;
     }
 
     else
     {
       v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v20, 0}];
-      [v19 setObject:v22 forKeyedSubscript:v18];
+      [deviceCopy setObject:v22 forKeyedSubscript:identifierCopy];
     }
 
-    v39 = v19;
+    v39 = deviceCopy;
     v40 = v20;
     v41 = [v39 objectForKeyedSubscript:@"AllDevices"];
     if (v41)
@@ -3662,13 +3662,13 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
             if ([v48 intersectsDateInterval:v43])
             {
               v49 = v42;
-              v50 = [v48 startDate];
-              v51 = [v43 startDate];
-              v52 = [v50 earlierDate:v51];
+              startDate3 = [v48 startDate];
+              startDate4 = [v43 startDate];
+              v52 = [startDate3 earlierDate:startDate4];
 
-              v53 = [v48 endDate];
-              v54 = [v43 endDate];
-              v55 = [v53 laterDate:v54];
+              endDate2 = [v48 endDate];
+              endDate3 = [v43 endDate];
+              v55 = [endDate2 laterDate:endDate3];
 
               v56 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v52 endDate:v55];
               if (v110)
@@ -3696,8 +3696,8 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
           [v42 removeObjectsInArray:v110];
         }
 
-        v18 = v99;
-        v19 = v108;
+        identifierCopy = v99;
+        deviceCopy = v108;
       }
 
       else
@@ -3707,7 +3707,7 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
 
       [v42 addObject:v43];
 
-      v17 = v100;
+      intervalCopy = v100;
       v40 = v96;
       v39 = v98;
     }
@@ -3719,89 +3719,89 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
     }
   }
 
-  v58 = v102;
-  v59 = v103;
-  if (v103)
+  v58 = sessionByDeviceCopy;
+  v59 = byDeviceCopy;
+  if (byDeviceCopy)
   {
-    v60 = [v101 startDate];
-    v61 = [v105 containsDate:v60];
+    startDate5 = [rawIntervalCopy startDate];
+    v61 = [partitionCopy containsDate:startDate5];
 
-    v19 = v108;
+    deviceCopy = v108;
     if (v61)
     {
-      v62 = [v103 objectForKeyedSubscript:v18];
+      v62 = [byDeviceCopy objectForKeyedSubscript:identifierCopy];
       if (v62)
       {
         v63 = v62;
-        [v62 addObject:v101];
+        [v62 addObject:rawIntervalCopy];
       }
 
       else
       {
-        v63 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v101, 0}];
-        [v103 setObject:v63 forKeyedSubscript:v18];
+        v63 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{rawIntervalCopy, 0}];
+        [byDeviceCopy setObject:v63 forKeyedSubscript:identifierCopy];
       }
 
-      v19 = v108;
+      deviceCopy = v108;
     }
   }
 
-  if (v102)
+  if (sessionByDeviceCopy)
   {
-    [v101 duration];
+    [rawIntervalCopy duration];
     v65 = v64;
-    v66 = [v102 objectForKeyedSubscript:v18];
+    v66 = [sessionByDeviceCopy objectForKeyedSubscript:identifierCopy];
     [v66 duration];
     v68 = v67;
 
     if (v65 > v68)
     {
-      [v102 setObject:v101 forKeyedSubscript:v18];
+      [sessionByDeviceCopy setObject:rawIntervalCopy forKeyedSubscript:identifierCopy];
     }
 
-    v69 = [v102 objectForKeyedSubscript:@"AllDevices"];
+    v69 = [sessionByDeviceCopy objectForKeyedSubscript:@"AllDevices"];
     [v69 duration];
     v71 = v70;
 
-    v19 = v108;
+    deviceCopy = v108;
     if (v65 > v71)
     {
-      [v102 setObject:v101 forKeyedSubscript:@"AllDevices"];
+      [sessionByDeviceCopy setObject:rawIntervalCopy forKeyedSubscript:@"AllDevices"];
     }
   }
 
-  if (v107 && v106)
+  if (zoneByDeviceCopy && dateByDeviceCopy)
   {
-    v72 = v107;
-    v73 = v106;
-    v74 = v18;
-    v75 = v104;
-    v76 = v17;
+    v72 = zoneByDeviceCopy;
+    v73 = dateByDeviceCopy;
+    v74 = identifierCopy;
+    v75 = eventCopy;
+    v76 = intervalCopy;
     v77 = v74;
     v78 = v74;
     v79 = [v72 objectForKeyedSubscript:v78];
 
     if (!v79)
     {
-      v80 = [v75 timeZone];
-      if (v80)
+      timeZone = [v75 timeZone];
+      if (timeZone)
       {
-        [v72 setObject:v80 forKeyedSubscript:v78];
+        [v72 setObject:timeZone forKeyedSubscript:v78];
       }
 
       else
       {
-        v81 = [MEMORY[0x277CBEBB0] localTimeZone];
-        [v72 setObject:v81 forKeyedSubscript:v78];
+        localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+        [v72 setObject:localTimeZone forKeyedSubscript:v78];
       }
     }
 
-    v82 = [v76 endDate];
+    endDate4 = [v76 endDate];
     v83 = [v73 objectForKeyedSubscript:v78];
     v84 = v83;
-    if (!v83 || [v83 compare:v82] == -1)
+    if (!v83 || [v83 compare:endDate4] == -1)
     {
-      [v73 setObject:v82 forKeyedSubscript:v78];
+      [v73 setObject:endDate4 forKeyedSubscript:v78];
     }
 
     v85 = v72;
@@ -3812,43 +3812,43 @@ void __175__USUsageQuerying__computeScreenTime_withEvents_intersectingScreenTime
 
     if (!v89)
     {
-      v90 = [v87 timeZone];
-      if (v90)
+      timeZone2 = [v87 timeZone];
+      if (timeZone2)
       {
-        [v85 setObject:v90 forKeyedSubscript:@"AllDevices"];
+        [v85 setObject:timeZone2 forKeyedSubscript:@"AllDevices"];
       }
 
       else
       {
-        v91 = [MEMORY[0x277CBEBB0] localTimeZone];
-        [v85 setObject:v91 forKeyedSubscript:@"AllDevices"];
+        localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
+        [v85 setObject:localTimeZone2 forKeyedSubscript:@"AllDevices"];
       }
     }
 
-    v92 = [v88 endDate];
+    endDate5 = [v88 endDate];
     v93 = [v86 objectForKeyedSubscript:@"AllDevices"];
     v94 = v93;
-    if (!v93 || [v93 compare:v92] == -1)
+    if (!v93 || [v93 compare:endDate5] == -1)
     {
-      [v86 setObject:v92 forKeyedSubscript:@"AllDevices"];
+      [v86 setObject:endDate5 forKeyedSubscript:@"AllDevices"];
     }
 
-    v18 = v77;
-    v19 = v108;
-    v58 = v102;
-    v59 = v103;
+    identifierCopy = v77;
+    deviceCopy = v108;
+    v58 = sessionByDeviceCopy;
+    v59 = byDeviceCopy;
   }
 
   v95 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_currentScreenTimeIntervalDuringInterval:(id)a3 usageStartDate:(id *)a4 referenceDate:(id)a5
+- (id)_currentScreenTimeIntervalDuringInterval:(id)interval usageStartDate:(id *)date referenceDate:(id)referenceDate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277CFE338] keyPathForBacklightOnStatus];
-  v11 = [(USUsageQuerying *)self context];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  intervalCopy = interval;
+  referenceDateCopy = referenceDate;
+  keyPathForBacklightOnStatus = [MEMORY[0x277CFE338] keyPathForBacklightOnStatus];
+  context = [(USUsageQuerying *)self context];
+  v12 = [context objectForKeyedSubscript:keyPathForBacklightOnStatus];
   v13 = v12;
   if (!v12)
   {
@@ -3867,18 +3867,18 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v14 = [v11 lastModifiedDateForContextualKeyPath:v10];
+  v14 = [context lastModifiedDateForContextualKeyPath:keyPathForBacklightOnStatus];
   if (v14)
   {
-    v25 = a4;
-    v15 = v8;
-    v16 = v9;
-    v17 = [v15 startDate];
-    v18 = [v17 laterDate:v14];
+    dateCopy = date;
+    v15 = intervalCopy;
+    v16 = referenceDateCopy;
+    startDate = [v15 startDate];
+    v18 = [startDate laterDate:v14];
 
     v24 = v15;
-    v19 = [v15 endDate];
-    v20 = [v19 earlierDate:v16];
+    endDate = [v15 endDate];
+    v20 = [endDate earlierDate:v16];
 
     if ([v18 compare:v20] == 1)
     {
@@ -3891,7 +3891,7 @@ LABEL_8:
     }
 
     v22 = v14;
-    *v25 = v14;
+    *dateCopy = v14;
   }
 
   else
@@ -3904,21 +3904,21 @@ LABEL_13:
   return v21;
 }
 
-- (id)_getBundleIdentiersFromApplicationUsageEvents:(id)a3 videoUsageEvents:(id)a4 interval:(id)a5 referenceDate:(id)a6 focalOnly:(BOOL)a7
+- (id)_getBundleIdentiersFromApplicationUsageEvents:(id)events videoUsageEvents:(id)usageEvents interval:(id)interval referenceDate:(id)date focalOnly:(BOOL)only
 {
-  v38 = a7;
+  onlyCopy = only;
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v37 = a4;
-  v40 = a5;
-  v11 = a6;
+  eventsCopy = events;
+  usageEventsCopy = usageEvents;
+  intervalCopy = interval;
+  dateCopy = date;
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277CFE158] appBundleID];
+  appBundleID = [MEMORY[0x277CFE158] appBundleID];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v14 = v10;
+  v14 = eventsCopy;
   v15 = [v14 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v15)
   {
@@ -3934,21 +3934,21 @@ LABEL_13:
         }
 
         v19 = *(*(&v49 + 1) + 8 * i);
-        v20 = [v19 metadata];
-        v21 = [v20 objectForKeyedSubscript:v13];
+        metadata = [v19 metadata];
+        v21 = [metadata objectForKeyedSubscript:appBundleID];
 
         if (v21)
         {
-          v22 = v21;
+          stringValue = v21;
         }
 
         else
         {
-          v23 = [v19 value];
-          v22 = [v23 stringValue];
+          value = [v19 value];
+          stringValue = [value stringValue];
         }
 
-        [v12 addObject:v22];
+        [v12 addObject:stringValue];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -3961,7 +3961,7 @@ LABEL_13:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v24 = v37;
+  v24 = usageEventsCopy;
   v25 = [v24 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v25)
   {
@@ -3976,10 +3976,10 @@ LABEL_13:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v45 + 1) + 8 * j) value];
-        v30 = [v29 stringValue];
+        value2 = [*(*(&v45 + 1) + 8 * j) value];
+        stringValue2 = [value2 stringValue];
 
-        [v12 addObject:v30];
+        [v12 addObject:stringValue2];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -3994,14 +3994,14 @@ LABEL_13:
   v43[3] = &unk_279E09F98;
   v31 = v12;
   v44 = v31;
-  [(USUsageQuerying *)self _enumerateCurrentApplicationUsageIntervalsDuringInterval:v40 exemptApplications:0 referenceDate:v11 focalOnly:v38 block:v43];
+  [(USUsageQuerying *)self _enumerateCurrentApplicationUsageIntervalsDuringInterval:intervalCopy exemptApplications:0 referenceDate:dateCopy focalOnly:onlyCopy block:v43];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __115__USUsageQuerying__getBundleIdentiersFromApplicationUsageEvents_videoUsageEvents_interval_referenceDate_focalOnly___block_invoke_2;
   v41[3] = &unk_279E09FC0;
   v32 = v31;
   v42 = v32;
-  [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:v40 exemptApplications:0 exemptWebDomains:0 referenceDate:v11 block:v41];
+  [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:intervalCopy exemptApplications:0 exemptWebDomains:0 referenceDate:dateCopy block:v41];
   v33 = v42;
   v34 = v32;
 
@@ -4035,20 +4035,20 @@ void __115__USUsageQuerying__getBundleIdentiersFromApplicationUsageEvents_videoU
   }
 }
 
-- (id)_computeApplicationUsageWithEvents:(id)a3 exemptApplications:(id)a4 exemptWebDomains:(id)a5 unboundApplicationUsageIntervalsByDevice:(id *)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8 categoryUsageIntervalsByDevice:(id)a9 aggregatedApplicationUsageIntervalsByDevice:(id)a10 categoryByBundleIdentifier:(id)a11 partition:(id)a12 referenceDate:(id)a13 focalOnly:(BOOL)a14
+- (id)_computeApplicationUsageWithEvents:(id)events exemptApplications:(id)applications exemptWebDomains:(id)domains unboundApplicationUsageIntervalsByDevice:(id *)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice categoryUsageIntervalsByDevice:(id)intervalsByDevice aggregatedApplicationUsageIntervalsByDevice:(id)self0 categoryByBundleIdentifier:(id)self1 partition:(id)self2 referenceDate:(id)self3 focalOnly:(BOOL)self4
 {
-  v18 = a4;
-  v61 = a7;
-  v59 = a8;
-  v19 = a9;
-  v51 = a10;
-  v49 = a11;
-  v20 = a12;
-  v55 = a13;
-  v21 = a3;
+  applicationsCopy = applications;
+  byDeviceCopy = byDevice;
+  dateByDeviceCopy = dateByDevice;
+  intervalsByDeviceCopy = intervalsByDevice;
+  usageIntervalsByDeviceCopy = usageIntervalsByDevice;
+  identifierCopy = identifier;
+  partitionCopy = partition;
+  dateCopy = date;
+  eventsCopy = events;
   v22 = objc_opt_new();
-  v63 = a6;
-  if (a6)
+  deviceCopy = device;
+  if (device)
   {
     v23 = objc_opt_new();
   }
@@ -4058,45 +4058,45 @@ void __115__USUsageQuerying__getBundleIdentiersFromApplicationUsageEvents_videoU
     v23 = 0;
   }
 
-  v24 = [MEMORY[0x277CFE158] appBundleID];
-  v25 = [MEMORY[0x277CFE1D0] isUsageTrusted];
-  v26 = [v20 endDate];
+  appBundleID = [MEMORY[0x277CFE158] appBundleID];
+  isUsageTrusted = [MEMORY[0x277CFE1D0] isUsageTrusted];
+  endDate = [partitionCopy endDate];
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
   v85[2] = __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplications_exemptWebDomains_unboundApplicationUsageIntervalsByDevice_timeZoneByDevice_lastEventDateByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_categoryByBundleIdentifier_partition_referenceDate_focalOnly___block_invoke;
   v85[3] = &unk_279E09FE8;
-  v54 = v20;
+  v54 = partitionCopy;
   v86 = v54;
-  v87 = v24;
-  v53 = v18;
+  v87 = appBundleID;
+  v53 = applicationsCopy;
   v88 = v53;
-  v89 = v25;
-  v90 = self;
+  v89 = isUsageTrusted;
+  selfCopy = self;
   v27 = v22;
   v91 = v27;
   v28 = v23;
   v92 = v28;
-  v29 = v19;
+  v29 = intervalsByDeviceCopy;
   v93 = v29;
-  v30 = v51;
+  v30 = usageIntervalsByDeviceCopy;
   v94 = v30;
-  v52 = v49;
+  v52 = identifierCopy;
   v95 = v52;
-  v31 = v61;
+  v31 = byDeviceCopy;
   v96 = v31;
-  v50 = v59;
+  v50 = dateByDeviceCopy;
   v97 = v50;
-  v62 = v25;
-  v60 = v24;
-  [(USUsageQuerying *)self _enumerateEvents:v21 intervalEndDate:v26 block:v85];
+  v62 = isUsageTrusted;
+  v60 = appBundleID;
+  [(USUsageQuerying *)self _enumerateEvents:eventsCopy intervalEndDate:endDate block:v85];
 
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplications_exemptWebDomains_unboundApplicationUsageIntervalsByDevice_timeZoneByDevice_lastEventDateByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_categoryByBundleIdentifier_partition_referenceDate_focalOnly___block_invoke_89;
   v75[3] = &unk_279E0A010;
-  v32 = v55;
+  v32 = dateCopy;
   v76 = v32;
-  v77 = self;
+  selfCopy2 = self;
   v33 = v27;
   v78 = v33;
   v56 = v28;
@@ -4111,13 +4111,13 @@ void __115__USUsageQuerying__getBundleIdentiersFromApplicationUsageEvents_videoU
   v83 = v37;
   v38 = v50;
   v84 = v38;
-  [(USUsageQuerying *)self _enumerateCurrentApplicationUsageIntervalsDuringInterval:v54 exemptApplications:v53 referenceDate:v32 focalOnly:a14 block:v75];
+  [(USUsageQuerying *)self _enumerateCurrentApplicationUsageIntervalsDuringInterval:v54 exemptApplications:v53 referenceDate:v32 focalOnly:only block:v75];
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplications_exemptWebDomains_unboundApplicationUsageIntervalsByDevice_timeZoneByDevice_lastEventDateByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_categoryByBundleIdentifier_partition_referenceDate_focalOnly___block_invoke_2;
   v65[3] = &unk_279E0A038;
   v66 = v32;
-  v67 = self;
+  selfCopy3 = self;
   v39 = v33;
   v68 = v39;
   v40 = v56;
@@ -4134,10 +4134,10 @@ void __115__USUsageQuerying__getBundleIdentiersFromApplicationUsageEvents_videoU
   v43 = v34;
   v44 = v32;
   [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:v54 exemptApplications:v53 exemptWebDomains:0 referenceDate:v44 block:v65];
-  if (v63)
+  if (deviceCopy)
   {
     v45 = v40;
-    *v63 = v40;
+    *deviceCopy = v40;
   }
 
   v46 = v74;
@@ -4259,25 +4259,25 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
   }
 }
 
-- (void)_enumerateCurrentApplicationUsageIntervalsDuringInterval:(id)a3 exemptApplications:(id)a4 referenceDate:(id)a5 focalOnly:(BOOL)a6 block:(id)a7
+- (void)_enumerateCurrentApplicationUsageIntervalsDuringInterval:(id)interval exemptApplications:(id)applications referenceDate:(id)date focalOnly:(BOOL)only block:(id)block
 {
-  v49 = a6;
+  onlyCopy = only;
   v60 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v11 = a4;
-  v45 = a5;
-  v41 = a7;
-  v12 = [MEMORY[0x277CFE338] keyPathForAppUsageDataDictionaries];
-  v13 = [(USUsageQuerying *)self context];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  intervalCopy = interval;
+  applicationsCopy = applications;
+  dateCopy = date;
+  blockCopy = block;
+  keyPathForAppUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppUsageDataDictionaries];
+  context = [(USUsageQuerying *)self context];
+  v14 = [context objectForKeyedSubscript:keyPathForAppUsageDataDictionaries];
   if (v14)
   {
-    v39 = v13;
-    v40 = v12;
-    v50 = [MEMORY[0x277CFE338] appUsageBundleID];
-    v44 = [MEMORY[0x277CFE338] appUsageStartDate];
-    v43 = [MEMORY[0x277CFE338] isUsageTrusted];
-    v52 = [MEMORY[0x277CFE338] appUsageType];
+    v39 = context;
+    v40 = keyPathForAppUsageDataDictionaries;
+    appUsageBundleID = [MEMORY[0x277CFE338] appUsageBundleID];
+    appUsageStartDate = [MEMORY[0x277CFE338] appUsageStartDate];
+    isUsageTrusted = [MEMORY[0x277CFE338] isUsageTrusted];
+    appUsageType = [MEMORY[0x277CFE338] appUsageType];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -4289,7 +4289,7 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
     {
       v16 = v15;
       v51 = *v54;
-      v42 = v11;
+      v42 = applicationsCopy;
       do
       {
         v17 = 0;
@@ -4302,13 +4302,13 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
           }
 
           v18 = *(*(&v53 + 1) + 8 * v17);
-          v19 = [v18 objectForKeyedSubscript:{v52, v38}];
+          v19 = [v18 objectForKeyedSubscript:{appUsageType, v38}];
           v20 = v19;
-          if (!v19 || (v21 = [v19 integerValue], !v49) || v21 == 1)
+          if (!v19 || (v21 = [v19 integerValue], !onlyCopy) || v21 == 1)
           {
-            v22 = [v18 objectForKeyedSubscript:v50];
+            v22 = [v18 objectForKeyedSubscript:appUsageBundleID];
             v23 = v22;
-            if (v11 && v22 && [v11 containsObject:v22])
+            if (applicationsCopy && v22 && [applicationsCopy containsObject:v22])
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
               {
@@ -4318,8 +4318,8 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
 
             else
             {
-              v24 = [v18 objectForKeyedSubscript:v44];
-              v25 = [v18 objectForKeyedSubscript:v43];
+              v24 = [v18 objectForKeyedSubscript:appUsageStartDate];
+              v25 = [v18 objectForKeyedSubscript:isUsageTrusted];
               v26 = v25;
               v27 = MEMORY[0x277CBEC38];
               if (v25)
@@ -4329,14 +4329,14 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
 
               v28 = v27;
 
-              v29 = v46;
+              v29 = intervalCopy;
               v30 = v24;
-              v31 = v45;
-              v32 = [v29 startDate];
-              v33 = [v32 laterDate:v30];
+              v31 = dateCopy;
+              startDate = [v29 startDate];
+              v33 = [startDate laterDate:v30];
 
-              v34 = [v29 endDate];
-              v35 = [v34 earlierDate:v31];
+              endDate = [v29 endDate];
+              v35 = [endDate earlierDate:v31];
 
               if ([v33 compare:v35] == 1)
               {
@@ -4350,10 +4350,10 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
 
               if (v36)
               {
-                v41[2](v41, v36, v30, v23, [v28 BOOLValue]);
+                blockCopy[2](blockCopy, v36, v30, v23, [v28 BOOLValue]);
               }
 
-              v11 = v42;
+              applicationsCopy = v42;
               v16 = v48;
             }
           }
@@ -4368,8 +4368,8 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
       while (v16);
     }
 
-    v13 = v39;
-    v12 = v40;
+    context = v39;
+    keyPathForAppUsageDataDictionaries = v40;
     v14 = v38;
   }
 
@@ -4381,21 +4381,21 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getWebDomainsFromWebUsageEvents:(id)a3 videoUsageEvents:(id)a4 interval:(id)a5 referenceDate:(id)a6 focalOnly:(BOOL)a7
+- (id)_getWebDomainsFromWebUsageEvents:(id)events videoUsageEvents:(id)usageEvents interval:(id)interval referenceDate:(id)date focalOnly:(BOOL)only
 {
-  v36 = a7;
+  onlyCopy = only;
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v38 = a6;
+  eventsCopy = events;
+  usageEventsCopy = usageEvents;
+  intervalCopy = interval;
+  dateCopy = date;
   v13 = objc_opt_new();
-  v14 = [MEMORY[0x277CFE1D0] webDomain];
+  webDomain = [MEMORY[0x277CFE1D0] webDomain];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v15 = v10;
+  v15 = eventsCopy;
   v16 = [v15 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v16)
   {
@@ -4410,8 +4410,8 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v47 + 1) + 8 * i) metadata];
-        v21 = [v20 objectForKeyedSubscript:v14];
+        metadata = [*(*(&v47 + 1) + 8 * i) metadata];
+        v21 = [metadata objectForKeyedSubscript:webDomain];
 
         if (v21)
         {
@@ -4425,16 +4425,16 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
     while (v17);
   }
 
-  if (v11)
+  if (usageEventsCopy)
   {
-    v34 = v12;
+    v34 = intervalCopy;
     v22 = [MEMORY[0x277CFE168] URL];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v35 = v11;
-    v23 = v11;
+    v35 = usageEventsCopy;
+    v23 = usageEventsCopy;
     v24 = [v23 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v24)
     {
@@ -4449,13 +4449,13 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v43 + 1) + 8 * j) metadata];
-          v29 = [v28 objectForKeyedSubscript:v22];
+          metadata2 = [*(*(&v43 + 1) + 8 * j) metadata];
+          v29 = [metadata2 objectForKeyedSubscript:v22];
 
-          v30 = [v29 host];
-          if (v30)
+          host = [v29 host];
+          if (host)
           {
-            [v13 addObject:v30];
+            [v13 addObject:host];
           }
         }
 
@@ -4465,8 +4465,8 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
       while (v25);
     }
 
-    v12 = v34;
-    v11 = v35;
+    intervalCopy = v34;
+    usageEventsCopy = v35;
   }
 
   v41[0] = MEMORY[0x277D85DD0];
@@ -4475,15 +4475,15 @@ void __306__USUsageQuerying__computeApplicationUsageWithEvents_exemptApplication
   v41[3] = &unk_279E0A060;
   v31 = v13;
   v42 = v31;
-  [(USUsageQuerying *)self _enumerateCurrentWebUsageIntervalsDuringInterval:v12 exemptWebDomains:0 referenceDate:v38 focalOnly:v36 block:v41];
-  if (v11)
+  [(USUsageQuerying *)self _enumerateCurrentWebUsageIntervalsDuringInterval:intervalCopy exemptWebDomains:0 referenceDate:dateCopy focalOnly:onlyCopy block:v41];
+  if (usageEventsCopy)
   {
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __102__USUsageQuerying__getWebDomainsFromWebUsageEvents_videoUsageEvents_interval_referenceDate_focalOnly___block_invoke_2;
     v39[3] = &unk_279E09FC0;
     v40 = v31;
-    [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:v12 exemptApplications:0 exemptWebDomains:0 referenceDate:v38 block:v39];
+    [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:intervalCopy exemptApplications:0 exemptWebDomains:0 referenceDate:dateCopy block:v39];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -4513,58 +4513,58 @@ void __102__USUsageQuerying__getWebDomainsFromWebUsageEvents_videoUsageEvents_in
   }
 }
 
-- (id)_computeWebUsageWithEvents:(id)a3 exemptWebDomains:(id)a4 timeZoneByDevice:(id)a5 lastEventDateByDevice:(id)a6 categoryUsageIntervalsByDevice:(id)a7 aggregatedApplicationUsageIntervalsByDevice:(id)a8 aggregatedWebUsageIntervalsByDevice:(id)a9 categoryByWebDomain:(id)a10 partition:(id)a11 referenceDate:(id)a12 focalOnly:(BOOL)a13
+- (id)_computeWebUsageWithEvents:(id)events exemptWebDomains:(id)domains timeZoneByDevice:(id)device lastEventDateByDevice:(id)byDevice categoryUsageIntervalsByDevice:(id)intervalsByDevice aggregatedApplicationUsageIntervalsByDevice:(id)usageIntervalsByDevice aggregatedWebUsageIntervalsByDevice:(id)webUsageIntervalsByDevice categoryByWebDomain:(id)self0 partition:(id)self1 referenceDate:(id)self2 focalOnly:(BOOL)self3
 {
-  v57 = a4;
-  v61 = a5;
-  v63 = a6;
-  v18 = a7;
-  v51 = a8;
-  v19 = a9;
-  v59 = a10;
-  v20 = a11;
-  v65 = a12;
-  v54 = a3;
+  domainsCopy = domains;
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  intervalsByDeviceCopy = intervalsByDevice;
+  usageIntervalsByDeviceCopy = usageIntervalsByDevice;
+  webUsageIntervalsByDeviceCopy = webUsageIntervalsByDevice;
+  domainCopy = domain;
+  partitionCopy = partition;
+  dateCopy = date;
+  eventsCopy = events;
   v21 = objc_opt_new();
-  v46 = [MEMORY[0x277CFE1D0] webDomain];
-  v22 = [MEMORY[0x277CFE1D0] isUsageTrusted];
+  webDomain = [MEMORY[0x277CFE1D0] webDomain];
+  isUsageTrusted = [MEMORY[0x277CFE1D0] isUsageTrusted];
   v47 = [MEMORY[0x277CFE168] URL];
-  v23 = [MEMORY[0x277CFE298] appMediaUsageStream];
-  v24 = [v23 name];
+  appMediaUsageStream = [MEMORY[0x277CFE298] appMediaUsageStream];
+  name = [appMediaUsageStream name];
 
-  v50 = [v20 endDate];
+  endDate = [partitionCopy endDate];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_timeZoneByDevice_lastEventDateByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_aggregatedWebUsageIntervalsByDevice_categoryByWebDomain_partition_referenceDate_focalOnly___block_invoke;
   v82[3] = &unk_279E0A088;
-  v83 = v24;
+  v83 = name;
   v84 = v47;
-  v85 = v46;
-  v86 = v57;
-  v87 = v20;
-  v88 = v22;
-  v89 = self;
+  v85 = webDomain;
+  v86 = domainsCopy;
+  v87 = partitionCopy;
+  v88 = isUsageTrusted;
+  selfCopy = self;
   v25 = v21;
   v90 = v25;
-  v26 = v18;
+  v26 = intervalsByDeviceCopy;
   v91 = v26;
-  v52 = v51;
+  v52 = usageIntervalsByDeviceCopy;
   v92 = v52;
-  v27 = v19;
+  v27 = webUsageIntervalsByDeviceCopy;
   v93 = v27;
-  v28 = v59;
+  v28 = domainCopy;
   v94 = v28;
-  v29 = v61;
+  v29 = deviceCopy;
   v95 = v29;
-  v49 = v63;
+  v49 = byDeviceCopy;
   v96 = v49;
-  v64 = v22;
-  v30 = v20;
-  v48 = v57;
-  v62 = v46;
+  v64 = isUsageTrusted;
+  v30 = partitionCopy;
+  v48 = domainsCopy;
+  v62 = webDomain;
   v60 = v47;
-  v58 = v24;
-  [(USUsageQuerying *)self _enumerateEvents:v54 intervalEndDate:v50 block:v82];
+  v58 = name;
+  [(USUsageQuerying *)self _enumerateEvents:eventsCopy intervalEndDate:endDate block:v82];
 
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
@@ -4585,7 +4585,7 @@ void __102__USUsageQuerying__getWebDomainsFromWebUsageEvents_videoUsageEvents_in
   v80 = v36;
   v37 = v49;
   v81 = v37;
-  [(USUsageQuerying *)self _enumerateCurrentWebUsageIntervalsDuringInterval:v30 exemptWebDomains:v48 referenceDate:v65 focalOnly:a13 block:v74];
+  [(USUsageQuerying *)self _enumerateCurrentWebUsageIntervalsDuringInterval:v30 exemptWebDomains:v48 referenceDate:dateCopy focalOnly:only block:v74];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_timeZoneByDevice_lastEventDateByDevice_categoryUsageIntervalsByDevice_aggregatedApplicationUsageIntervalsByDevice_aggregatedWebUsageIntervalsByDevice_categoryByWebDomain_partition_referenceDate_focalOnly___block_invoke_2;
@@ -4605,7 +4605,7 @@ void __102__USUsageQuerying__getWebDomainsFromWebUsageEvents_videoUsageEvents_in
   v40 = v34;
   v41 = v33;
   v42 = v32;
-  [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:v30 exemptApplications:0 exemptWebDomains:v48 referenceDate:v65 block:v66];
+  [(USUsageQuerying *)self _enumerateCurrentVideoUsageIntervalsDuringInterval:v30 exemptApplications:0 exemptWebDomains:v48 referenceDate:dateCopy block:v66];
 
   v43 = v73;
   v44 = v38;
@@ -4713,26 +4713,26 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
   return result;
 }
 
-- (void)_enumerateCurrentWebUsageIntervalsDuringInterval:(id)a3 exemptWebDomains:(id)a4 referenceDate:(id)a5 focalOnly:(BOOL)a6 block:(id)a7
+- (void)_enumerateCurrentWebUsageIntervalsDuringInterval:(id)interval exemptWebDomains:(id)domains referenceDate:(id)date focalOnly:(BOOL)only block:(id)block
 {
-  v8 = a6;
+  onlyCopy = only;
   v66 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v12 = a4;
-  v53 = a5;
-  v46 = a7;
-  v13 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
-  v14 = [(USUsageQuerying *)self context];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  intervalCopy = interval;
+  domainsCopy = domains;
+  dateCopy = date;
+  blockCopy = block;
+  keyPathForAppWebUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
+  context = [(USUsageQuerying *)self context];
+  v15 = [context objectForKeyedSubscript:keyPathForAppWebUsageDataDictionaries];
   if (v15)
   {
-    v43 = v14;
-    v44 = v13;
-    v56 = [MEMORY[0x277CFE338] appWebUsageWebDomain];
-    v52 = [MEMORY[0x277CFE338] appWebUsageStartDate];
-    v51 = [MEMORY[0x277CFE338] isUsageTrusted];
-    v45 = [MEMORY[0x277CFE338] appWebUsageBundleID];
-    v16 = [MEMORY[0x277CFE338] appWebUsageType];
+    v43 = context;
+    v44 = keyPathForAppWebUsageDataDictionaries;
+    appWebUsageWebDomain = [MEMORY[0x277CFE338] appWebUsageWebDomain];
+    appWebUsageStartDate = [MEMORY[0x277CFE338] appWebUsageStartDate];
+    isUsageTrusted = [MEMORY[0x277CFE338] isUsageTrusted];
+    appWebUsageBundleID = [MEMORY[0x277CFE338] appWebUsageBundleID];
+    appWebUsageType = [MEMORY[0x277CFE338] appWebUsageType];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
@@ -4744,10 +4744,10 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
     {
       v18 = v17;
       v19 = *v60;
-      v50 = v12;
-      v49 = v8;
+      v50 = domainsCopy;
+      v49 = onlyCopy;
       v47 = *v60;
-      v48 = v16;
+      v48 = appWebUsageType;
       do
       {
         v20 = 0;
@@ -4760,20 +4760,20 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
           }
 
           v21 = *(*(&v59 + 1) + 8 * v20);
-          v22 = [v21 objectForKeyedSubscript:{v16, v42}];
-          v23 = [v22 integerValue];
-          v24 = [v22 integerValue];
-          v25 = v23 == 1;
-          if (!v8)
+          v22 = [v21 objectForKeyedSubscript:{appWebUsageType, v42}];
+          integerValue = [v22 integerValue];
+          integerValue2 = [v22 integerValue];
+          v25 = integerValue == 1;
+          if (!onlyCopy)
           {
-            v25 = v23 == 1 || v24 == 0;
+            v25 = integerValue == 1 || integerValue2 == 0;
           }
 
           if (v25)
           {
-            v26 = [v21 objectForKeyedSubscript:v56];
+            v26 = [v21 objectForKeyedSubscript:appWebUsageWebDomain];
             v27 = v26;
-            if (v12 && v26 && [v12 containsObject:v26])
+            if (domainsCopy && v26 && [domainsCopy containsObject:v26])
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
               {
@@ -4783,8 +4783,8 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
 
             else
             {
-              v28 = [v21 objectForKeyedSubscript:v52];
-              v29 = [v21 objectForKeyedSubscript:v51];
+              v28 = [v21 objectForKeyedSubscript:appWebUsageStartDate];
+              v29 = [v21 objectForKeyedSubscript:isUsageTrusted];
               v30 = v29;
               v31 = MEMORY[0x277CBEC38];
               if (v29)
@@ -4794,14 +4794,14 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
 
               v58 = v31;
 
-              v32 = v54;
+              v32 = intervalCopy;
               v33 = v28;
-              v34 = v53;
-              v35 = [v32 startDate];
-              v36 = [v35 laterDate:v33];
+              v34 = dateCopy;
+              startDate = [v32 startDate];
+              v36 = [startDate laterDate:v33];
 
-              v37 = [v32 endDate];
-              v38 = [v37 earlierDate:v34];
+              endDate = [v32 endDate];
+              v38 = [endDate earlierDate:v34];
 
               if ([v36 compare:v38] == 1)
               {
@@ -4815,14 +4815,14 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
 
               if (v39)
               {
-                v40 = [v21 objectForKeyedSubscript:v45];
-                v46[2](v46, v39, v27, v40, [v58 BOOLValue]);
+                v40 = [v21 objectForKeyedSubscript:appWebUsageBundleID];
+                blockCopy[2](blockCopy, v39, v27, v40, [v58 BOOLValue]);
               }
 
-              v12 = v50;
-              v8 = v49;
+              domainsCopy = v50;
+              onlyCopy = v49;
               v19 = v47;
-              v16 = v48;
+              appWebUsageType = v48;
               v18 = v55;
             }
           }
@@ -4837,8 +4837,8 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
       while (v18);
     }
 
-    v14 = v43;
-    v13 = v44;
+    context = v43;
+    keyPathForAppWebUsageDataDictionaries = v44;
     v15 = v42;
   }
 
@@ -4850,33 +4850,33 @@ uint64_t __267__USUsageQuerying__computeWebUsageWithEvents_exemptWebDomains_time
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_computeNowPlayingUsageWithEvents:(id)a3 categoryUsageIntervalsByDevice:(id)a4 timeZoneByDevice:(id)a5 lastEventDateByDevice:(id)a6 partition:(id)a7 referenceDate:(id)a8
+- (void)_computeNowPlayingUsageWithEvents:(id)events categoryUsageIntervalsByDevice:(id)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice partition:(id)partition referenceDate:(id)date
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a3;
-  v20 = [v18 endDate];
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  dateByDeviceCopy = dateByDevice;
+  dateCopy = date;
+  partitionCopy = partition;
+  eventsCopy = events;
+  endDate = [partitionCopy endDate];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageIntervalsByDevice_timeZoneByDevice_lastEventDateByDevice_partition_referenceDate___block_invoke;
   v28 = &unk_279E0A100;
-  v29 = self;
-  v21 = v14;
+  selfCopy = self;
+  v21 = deviceCopy;
   v30 = v21;
-  v22 = v15;
+  v22 = byDeviceCopy;
   v31 = v22;
-  v23 = v16;
+  v23 = dateByDeviceCopy;
   v32 = v23;
-  [(USUsageQuerying *)self _enumerateEvents:v19 intervalEndDate:v20 block:&v25];
+  [(USUsageQuerying *)self _enumerateEvents:eventsCopy intervalEndDate:endDate block:&v25];
 
-  v24 = [(USUsageQuerying *)self _currentNowPlayingUsageIntervalsDuringInterval:v18 referenceDate:v17, v25, v26, v27, v28, v29];
+  selfCopy = [(USUsageQuerying *)self _currentNowPlayingUsageIntervalsDuringInterval:partitionCopy referenceDate:dateCopy, v25, v26, v27, v28, selfCopy];
 
-  if (v24)
+  if (selfCopy)
   {
-    [(USUsageQuerying *)self _updateNowPlayingUsageWithInterval:v24 event:0 deviceIdentifier:@"LocalDevice" categoryUsageIntervalsByDevice:v21 timeZoneByDevice:v22 lastEventDateByDevice:v23];
+    [(USUsageQuerying *)self _updateNowPlayingUsageWithInterval:selfCopy event:0 deviceIdentifier:@"LocalDevice" categoryUsageIntervalsByDevice:v21 timeZoneByDevice:v22 lastEventDateByDevice:v23];
   }
 }
 
@@ -4902,22 +4902,22 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
   [*(a1 + 32) _updateNowPlayingUsageWithInterval:v12 event:v3 deviceIdentifier:v8 categoryUsageIntervalsByDevice:*(a1 + 40) timeZoneByDevice:*(a1 + 48) lastEventDateByDevice:*(a1 + 56)];
 }
 
-- (void)_updateNowPlayingUsageWithInterval:(id)a3 event:(id)a4 deviceIdentifier:(id)a5 categoryUsageIntervalsByDevice:(id)a6 timeZoneByDevice:(id)a7 lastEventDateByDevice:(id)a8
+- (void)_updateNowPlayingUsageWithInterval:(id)interval event:(id)event deviceIdentifier:(id)identifier categoryUsageIntervalsByDevice:(id)device timeZoneByDevice:(id)byDevice lastEventDateByDevice:(id)dateByDevice
 {
   v128 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v114 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (v15)
+  intervalCopy = interval;
+  eventCopy = event;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  dateByDeviceCopy = dateByDevice;
+  if (deviceCopy)
   {
-    v106 = v17;
+    v106 = dateByDeviceCopy;
     v18 = *MEMORY[0x277CF95D0];
-    v19 = v13;
-    v20 = v15;
-    v21 = v14;
+    v19 = intervalCopy;
+    v20 = deviceCopy;
+    v21 = identifierCopy;
     v22 = v18;
     v107 = v19;
     v23 = v19;
@@ -4931,7 +4931,7 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
       {
         v100 = v22;
         v102 = v20;
-        v104 = v14;
+        v104 = identifierCopy;
         v28 = v27;
         v29 = v26;
         v123 = 0u;
@@ -4943,8 +4943,8 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
         if (v30)
         {
           v31 = v30;
-          v108 = v16;
-          v111 = v15;
+          v108 = byDeviceCopy;
+          v111 = deviceCopy;
           obj = 0;
           v32 = *v124;
           v115 = *v124;
@@ -4966,13 +4966,13 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
                 v35 = v25;
                 v36 = v21;
                 v37 = v23;
-                v38 = [v34 startDate];
-                v39 = [v29 startDate];
-                v40 = [v38 earlierDate:v39];
+                startDate = [v34 startDate];
+                startDate2 = [v29 startDate];
+                v40 = [startDate earlierDate:startDate2];
 
-                v41 = [v34 endDate];
-                v42 = [v29 endDate];
-                v43 = [v41 laterDate:v42];
+                endDate = [v34 endDate];
+                endDate2 = [v29 endDate];
+                v43 = [endDate laterDate:endDate2];
 
                 v44 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:v43];
                 if (obj)
@@ -5009,9 +5009,9 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
             [v28 removeObjectsInArray:obj];
           }
 
-          v14 = v104;
-          v16 = v108;
-          v15 = v111;
+          identifierCopy = v104;
+          byDeviceCopy = v108;
+          deviceCopy = v111;
         }
 
         else
@@ -5049,11 +5049,11 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
       v51 = v50;
       v52 = v49;
       v53 = [v51 objectForKeyedSubscript:v48];
-      v13 = v107;
+      intervalCopy = v107;
       if (v53)
       {
-        v112 = v15;
-        v105 = v14;
+        v112 = deviceCopy;
+        v105 = identifierCopy;
         v54 = v53;
         v55 = v52;
         v123 = 0u;
@@ -5070,7 +5070,7 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
           v116 = v49;
           v118 = v48;
           v120 = v47;
-          v109 = v16;
+          v109 = byDeviceCopy;
           v58 = 0;
           v59 = *v124;
           v60 = obja;
@@ -5086,13 +5086,13 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
               v62 = *(*(&v123 + 1) + 8 * i);
               if ([v62 intersectsDateInterval:v55])
               {
-                v63 = [v62 startDate];
-                v64 = [v55 startDate];
-                v65 = [v63 earlierDate:v64];
+                startDate3 = [v62 startDate];
+                startDate4 = [v55 startDate];
+                v65 = [startDate3 earlierDate:startDate4];
 
-                v66 = [v62 endDate];
-                v67 = [v55 endDate];
-                v68 = [v66 laterDate:v67];
+                endDate3 = [v62 endDate];
+                endDate4 = [v55 endDate];
+                v68 = [endDate3 laterDate:endDate4];
 
                 v69 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v65 endDate:v68];
                 if (v58)
@@ -5120,8 +5120,8 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
           }
 
           v51 = v103;
-          v14 = v105;
-          v16 = v109;
+          identifierCopy = v105;
+          byDeviceCopy = v109;
           v48 = v118;
           v47 = v120;
           v49 = v116;
@@ -5137,8 +5137,8 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
 
         [v70 addObject:v55];
 
-        v13 = v107;
-        v15 = v112;
+        intervalCopy = v107;
+        deviceCopy = v112;
       }
 
       else
@@ -5155,23 +5155,23 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
       v51 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v49, 0}];
       v71 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v51, v48, 0}];
       [v47 setObject:v71 forKeyedSubscript:@"AllDevices"];
-      v13 = v107;
+      intervalCopy = v107;
     }
 
-    v17 = v106;
+    dateByDeviceCopy = v106;
   }
 
-  if (v16 && v17)
+  if (byDeviceCopy && dateByDeviceCopy)
   {
-    v110 = v16;
-    v113 = v15;
-    v72 = v17;
-    v73 = v16;
+    v110 = byDeviceCopy;
+    v113 = deviceCopy;
+    v72 = dateByDeviceCopy;
+    v73 = byDeviceCopy;
     v74 = v72;
     v75 = v72;
-    v76 = v114;
-    v77 = v13;
-    v78 = v14;
+    v76 = eventCopy;
+    v77 = intervalCopy;
+    v78 = identifierCopy;
     v79 = v77;
     v80 = v78;
     v81 = v78;
@@ -5179,25 +5179,25 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
 
     if (!v82)
     {
-      v83 = [v76 timeZone];
-      if (v83)
+      timeZone = [v76 timeZone];
+      if (timeZone)
       {
-        [v73 setObject:v83 forKeyedSubscript:v81];
+        [v73 setObject:timeZone forKeyedSubscript:v81];
       }
 
       else
       {
-        v84 = [MEMORY[0x277CBEBB0] localTimeZone];
-        [v73 setObject:v84 forKeyedSubscript:v81];
+        localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+        [v73 setObject:localTimeZone forKeyedSubscript:v81];
       }
     }
 
-    v85 = [v79 endDate];
+    endDate5 = [v79 endDate];
     v86 = [v75 objectForKeyedSubscript:v81];
     v87 = v86;
-    if (!v86 || [v86 compare:v85] == -1)
+    if (!v86 || [v86 compare:endDate5] == -1)
     {
-      [v75 setObject:v85 forKeyedSubscript:v81];
+      [v75 setObject:endDate5 forKeyedSubscript:v81];
     }
 
     v88 = v73;
@@ -5208,57 +5208,57 @@ void __147__USUsageQuerying__computeNowPlayingUsageWithEvents_categoryUsageInter
 
     if (!v92)
     {
-      v93 = [v90 timeZone];
-      if (v93)
+      timeZone2 = [v90 timeZone];
+      if (timeZone2)
       {
-        [v88 setObject:v93 forKeyedSubscript:@"AllDevices"];
+        [v88 setObject:timeZone2 forKeyedSubscript:@"AllDevices"];
       }
 
       else
       {
-        v94 = [MEMORY[0x277CBEBB0] localTimeZone];
-        [v88 setObject:v94 forKeyedSubscript:@"AllDevices"];
+        localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
+        [v88 setObject:localTimeZone2 forKeyedSubscript:@"AllDevices"];
       }
     }
 
-    v95 = [v91 endDate];
+    endDate6 = [v91 endDate];
     v96 = [v89 objectForKeyedSubscript:@"AllDevices"];
     v97 = v96;
-    if (!v96 || [v96 compare:v95] == -1)
+    if (!v96 || [v96 compare:endDate6] == -1)
     {
-      [v89 setObject:v95 forKeyedSubscript:@"AllDevices"];
+      [v89 setObject:endDate6 forKeyedSubscript:@"AllDevices"];
     }
 
-    v14 = v80;
-    v16 = v110;
-    v15 = v113;
-    v17 = v74;
+    identifierCopy = v80;
+    byDeviceCopy = v110;
+    deviceCopy = v113;
+    dateByDeviceCopy = v74;
   }
 
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_currentNowPlayingUsageIntervalsDuringInterval:(id)a3 referenceDate:(id)a4
+- (id)_currentNowPlayingUsageIntervalsDuringInterval:(id)interval referenceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
-  v9 = [(USUsageQuerying *)self context];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  intervalCopy = interval;
+  dateCopy = date;
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+  context = [(USUsageQuerying *)self context];
+  v10 = [context objectForKeyedSubscript:keyPathForNowPlayingDataDictionary];
   v11 = v10;
   if (v10)
   {
     if (usageContextContainsPlayingQuickLookVideo(v10))
     {
-      v12 = [v9 lastModifiedDateForContextualKeyPath:v8];
-      v13 = v6;
-      v14 = v7;
-      v15 = [v13 startDate];
+      v12 = [context lastModifiedDateForContextualKeyPath:keyPathForNowPlayingDataDictionary];
+      v13 = intervalCopy;
+      v14 = dateCopy;
+      startDate = [v13 startDate];
       v21 = v12;
-      v16 = [v15 laterDate:v12];
+      v16 = [startDate laterDate:v12];
 
-      v17 = [v13 endDate];
-      v18 = [v17 earlierDate:v14];
+      endDate = [v13 endDate];
+      v18 = [endDate earlierDate:v14];
 
       if ([v16 compare:v18] == 1)
       {
@@ -5285,25 +5285,25 @@ LABEL_10:
   return v19;
 }
 
-- (void)_enumerateCurrentVideoUsageIntervalsDuringInterval:(id)a3 exemptApplications:(id)a4 exemptWebDomains:(id)a5 referenceDate:(id)a6 block:(id)a7
+- (void)_enumerateCurrentVideoUsageIntervalsDuringInterval:(id)interval exemptApplications:(id)applications exemptWebDomains:(id)domains referenceDate:(id)date block:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v12 = a4;
-  v49 = a5;
-  v46 = a6;
-  v39 = a7;
-  v13 = [MEMORY[0x277CFE338] keyPathForAppMediaUsageDataDictionaries];
-  v14 = [(USUsageQuerying *)self context];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  intervalCopy = interval;
+  applicationsCopy = applications;
+  domainsCopy = domains;
+  dateCopy = date;
+  blockCopy = block;
+  keyPathForAppMediaUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppMediaUsageDataDictionaries];
+  context = [(USUsageQuerying *)self context];
+  v15 = [context objectForKeyedSubscript:keyPathForAppMediaUsageDataDictionaries];
   if (v15)
   {
-    v36 = v14;
-    v37 = v13;
-    v45 = [MEMORY[0x277CFE338] appMediaUsageBundleID];
-    v44 = [MEMORY[0x277CFE338] appMediaUsageStartDate];
-    v43 = [MEMORY[0x277CFE338] appMediaUsageURL];
-    v42 = [MEMORY[0x277CFE338] isUsageTrusted];
+    v36 = context;
+    v37 = keyPathForAppMediaUsageDataDictionaries;
+    appMediaUsageBundleID = [MEMORY[0x277CFE338] appMediaUsageBundleID];
+    appMediaUsageStartDate = [MEMORY[0x277CFE338] appMediaUsageStartDate];
+    appMediaUsageURL = [MEMORY[0x277CFE338] appMediaUsageURL];
+    isUsageTrusted = [MEMORY[0x277CFE338] isUsageTrusted];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -5314,7 +5314,7 @@ LABEL_10:
     if (v48)
     {
       v40 = *v52;
-      v41 = v12;
+      v41 = applicationsCopy;
       do
       {
         for (i = 0; i != v48; ++i)
@@ -5325,8 +5325,8 @@ LABEL_10:
           }
 
           v17 = *(*(&v51 + 1) + 8 * i);
-          v18 = [v17 objectForKeyedSubscript:v45];
-          if (v12 && [v12 containsObject:v18])
+          v18 = [v17 objectForKeyedSubscript:appMediaUsageBundleID];
+          if (applicationsCopy && [applicationsCopy containsObject:v18])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
             {
@@ -5336,10 +5336,10 @@ LABEL_10:
             v18 = 0;
           }
 
-          v50 = [v17 objectForKeyedSubscript:v43];
-          v19 = [v50 host];
-          v20 = v19;
-          if (v49 && v19 && [v49 containsObject:v19])
+          v50 = [v17 objectForKeyedSubscript:appMediaUsageURL];
+          host = [v50 host];
+          v20 = host;
+          if (domainsCopy && host && [domainsCopy containsObject:host])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
             {
@@ -5349,8 +5349,8 @@ LABEL_10:
             v20 = 0;
           }
 
-          v21 = [v17 objectForKeyedSubscript:v44];
-          v22 = [v17 objectForKeyedSubscript:v42];
+          v21 = [v17 objectForKeyedSubscript:appMediaUsageStartDate];
+          v22 = [v17 objectForKeyedSubscript:isUsageTrusted];
           v23 = v22;
           v24 = MEMORY[0x277CBEC38];
           if (v22)
@@ -5360,14 +5360,14 @@ LABEL_10:
 
           v25 = v24;
 
-          v26 = v47;
+          v26 = intervalCopy;
           v27 = v21;
-          v28 = v46;
-          v29 = [v26 startDate];
-          v30 = [v29 laterDate:v27];
+          v28 = dateCopy;
+          startDate = [v26 startDate];
+          v30 = [startDate laterDate:v27];
 
-          v31 = [v26 endDate];
-          v32 = [v31 earlierDate:v28];
+          endDate = [v26 endDate];
+          v32 = [endDate earlierDate:v28];
 
           if ([v30 compare:v32] == 1)
           {
@@ -5381,10 +5381,10 @@ LABEL_10:
 
           if (v33)
           {
-            v39[2](v39, v33, v27, v18, v20, [v25 BOOLValue]);
+            blockCopy[2](blockCopy, v33, v27, v18, v20, [v25 BOOLValue]);
           }
 
-          v12 = v41;
+          applicationsCopy = v41;
         }
 
         v48 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -5393,8 +5393,8 @@ LABEL_10:
       while (v48);
     }
 
-    v14 = v36;
-    v13 = v37;
+    context = v36;
+    keyPathForAppMediaUsageDataDictionaries = v37;
     v15 = v35;
   }
 
@@ -5406,36 +5406,36 @@ LABEL_10:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_computeNotificationsWithEvents:(id)a3 timeZoneByDevice:(id)a4 lastEventDateByDevice:(id)a5 partition:(id)a6
+- (id)_computeNotificationsWithEvents:(id)events timeZoneByDevice:(id)device lastEventDateByDevice:(id)byDevice partition:(id)partition
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  deviceCopy = device;
+  byDeviceCopy = byDevice;
+  partitionCopy = partition;
+  eventsCopy = events;
   v14 = objc_opt_new();
-  v15 = [MEMORY[0x277CFE158] appBundleID];
-  v16 = [MEMORY[0x277CFE240] bundleID];
-  v17 = [MEMORY[0x277CFE1D0] isUsageTrusted];
-  v18 = [v12 endDate];
+  appBundleID = [MEMORY[0x277CFE158] appBundleID];
+  bundleID = [MEMORY[0x277CFE240] bundleID];
+  isUsageTrusted = [MEMORY[0x277CFE1D0] isUsageTrusted];
+  endDate = [partitionCopy endDate];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __100__USUsageQuerying__computeNotificationsWithEvents_timeZoneByDevice_lastEventDateByDevice_partition___block_invoke;
   v28[3] = &unk_279E09F70;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = self;
+  v29 = appBundleID;
+  v30 = bundleID;
+  v31 = isUsageTrusted;
+  selfCopy = self;
   v19 = v14;
   v33 = v19;
-  v34 = v10;
-  v35 = v11;
-  v20 = v11;
-  v21 = v10;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  [(USUsageQuerying *)self _enumerateEvents:v13 intervalEndDate:v18 block:v28];
+  v34 = deviceCopy;
+  v35 = byDeviceCopy;
+  v20 = byDeviceCopy;
+  v21 = deviceCopy;
+  v22 = isUsageTrusted;
+  v23 = bundleID;
+  v24 = appBundleID;
+  [(USUsageQuerying *)self _enumerateEvents:eventsCopy intervalEndDate:endDate block:v28];
 
   v25 = v35;
   v26 = v19;
@@ -5491,24 +5491,24 @@ void __100__USUsageQuerying__computeNotificationsWithEvents_timeZoneByDevice_las
   }
 }
 
-- (void)_enumerateEvents:(id)a3 intervalEndDate:(id)a4 block:(id)a5
+- (void)_enumerateEvents:(id)events intervalEndDate:(id)date block:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  dateCopy = date;
+  blockCopy = block;
+  eventsCopy = events;
   v10 = objc_opt_new();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke;
   v14[3] = &unk_279E0A128;
-  v15 = v7;
+  v15 = dateCopy;
   v16 = v10;
-  v17 = v8;
-  v11 = v8;
+  v17 = blockCopy;
+  v11 = blockCopy;
   v12 = v10;
-  v13 = v7;
-  [v9 enumerateObjectsUsingBlock:v14];
-  [v9 removeObjectsAtIndexes:v12];
+  v13 = dateCopy;
+  [eventsCopy enumerateObjectsUsingBlock:v14];
+  [eventsCopy removeObjectsAtIndexes:v12];
 }
 
 void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -5538,28 +5538,28 @@ void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke
   }
 }
 
-+ (void)queryUsageDuringInterval:(id)a3 partitionInterval:(double)a4 adjustedStartDate:(id)a5 eventStreams:(id)a6 categoryByBundleIdentifier:(id)a7 categoryByWebDomain:(id)a8 usageReportHandler:(id)a9 completionHandler:(id)a10
++ (void)queryUsageDuringInterval:(id)interval partitionInterval:(double)partitionInterval adjustedStartDate:(id)date eventStreams:(id)streams categoryByBundleIdentifier:(id)identifier categoryByWebDomain:(id)domain usageReportHandler:(id)handler completionHandler:(id)self0
 {
   v77 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v49 = a5;
-  v48 = a6;
-  v46 = a7;
-  v47 = a8;
-  v42 = a9;
-  v43 = a10;
-  v45 = v16;
-  v17 = [v16 startDate];
-  v44 = [[USUsageAccumulator alloc] initWithApplicationCategories:v46 webCategories:v47];
-  if ([v49 compare:v17] == -1)
+  intervalCopy = interval;
+  dateCopy = date;
+  streamsCopy = streams;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v45 = intervalCopy;
+  startDate = [intervalCopy startDate];
+  v44 = [[USUsageAccumulator alloc] initWithApplicationCategories:identifierCopy webCategories:domainCopy];
+  if ([dateCopy compare:startDate] == -1)
   {
-    v41 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v49 endDate:v17 maxEvents:0 lastN:0 reversed:0];
-    v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v48, "count")}];
+    v41 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:dateCopy endDate:startDate maxEvents:0 lastN:0 reversed:0];
+    v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(streamsCopy, "count")}];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v19 = v48;
+    v19 = streamsCopy;
     v20 = [v19 countByEnumeratingWithState:&v72 objects:v76 count:16];
     if (v20)
     {
@@ -5575,8 +5575,8 @@ void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke
           }
 
           v24 = *(*(&v72 + 1) + 8 * i);
-          v25 = [v24 identifier];
-          v26 = [v25 isEqualToString:v22];
+          identifier = [v24 identifier];
+          v26 = [identifier isEqualToString:v22];
 
           if ((v26 & 1) == 0)
           {
@@ -5590,19 +5590,19 @@ void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke
       while (v20);
     }
 
-    v27 = [a1 _chronologicalPublisherWithOptions:v41 eventStreams:v18];
+    v27 = [self _chronologicalPublisherWithOptions:v41 eventStreams:v18];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __184__USUsageQuerying_Biome__queryUsageDuringInterval_partitionInterval_adjustedStartDate_eventStreams_categoryByBundleIdentifier_categoryByWebDomain_usageReportHandler_completionHandler___block_invoke;
     v69[3] = &unk_279E0A330;
     v70 = v41;
-    v71 = a1;
+    selfCopy = self;
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __184__USUsageQuerying_Biome__queryUsageDuringInterval_partitionInterval_adjustedStartDate_eventStreams_categoryByBundleIdentifier_categoryByWebDomain_usageReportHandler_completionHandler___block_invoke_2;
     v66[3] = &unk_279E0A358;
     v67 = v44;
-    v68 = v17;
+    v68 = startDate;
     v28 = v41;
     v29 = [v27 sinkWithCompletion:v69 receiveInput:v66];
   }
@@ -5612,23 +5612,23 @@ void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke
   v64[2] = 0x3032000000;
   v64[3] = __Block_byref_object_copy__1;
   v64[4] = __Block_byref_object_dispose__1;
-  v65 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v17 duration:a4];
+  v65 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate duration:partitionInterval];
   v30 = objc_alloc(MEMORY[0x277CF1A50]);
-  v31 = [v45 endDate];
-  v32 = [v30 initWithStartDate:v17 endDate:v31 maxEvents:0 lastN:0 reversed:0];
+  endDate = [v45 endDate];
+  v32 = [v30 initWithStartDate:startDate endDate:endDate maxEvents:0 lastN:0 reversed:0];
 
-  v33 = [a1 _chronologicalPublisherWithOptions:v32 eventStreams:v48];
+  v33 = [self _chronologicalPublisherWithOptions:v32 eventStreams:streamsCopy];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __184__USUsageQuerying_Biome__queryUsageDuringInterval_partitionInterval_adjustedStartDate_eventStreams_categoryByBundleIdentifier_categoryByWebDomain_usageReportHandler_completionHandler___block_invoke_155;
   v57[3] = &unk_279E0A380;
   v58 = v44;
   v62 = v64;
-  v60 = v42;
-  v63 = a1;
+  v60 = handlerCopy;
+  selfCopy2 = self;
   v34 = v32;
   v59 = v34;
-  v35 = v43;
+  v35 = completionHandlerCopy;
   v61 = v35;
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -5641,7 +5641,7 @@ void __58__USUsageQuerying__enumerateEvents_intervalEndDate_block___block_invoke
   v53 = v37;
   v38 = v60;
   v54 = v38;
-  v56 = a4;
+  partitionIntervalCopy = partitionInterval;
   v39 = [v33 sinkWithCompletion:v57 receiveInput:v51];
 
   _Block_object_dispose(v64, 8);
@@ -5725,26 +5725,26 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_chronologicalPublisherWithOptions:(id)a3 eventStreams:(id)a4
++ (id)_chronologicalPublisherWithOptions:(id)options eventStreams:(id)streams
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  optionsCopy = options;
+  streamsCopy = streams;
+  if ([streamsCopy count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 publisherWithOptions:v5];
-    if ([v6 count] >= 2)
+    firstObject = [streamsCopy firstObject];
+    v8 = [firstObject publisherWithOptions:optionsCopy];
+    if ([streamsCopy count] >= 2)
     {
       v22 = v8;
-      v24 = v5;
-      v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count") - 1}];
+      v24 = optionsCopy;
+      v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(streamsCopy, "count") - 1}];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v23 = v6;
-      v10 = v6;
+      v23 = streamsCopy;
+      v10 = streamsCopy;
       v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
@@ -5760,9 +5760,9 @@ LABEL_12:
             }
 
             v15 = *(*(&v25 + 1) + 8 * i);
-            v16 = [v15 identifier];
-            v17 = [v7 identifier];
-            v18 = [v16 isEqualToString:v17];
+            identifier = [v15 identifier];
+            identifier2 = [firstObject identifier];
+            v18 = [identifier isEqualToString:identifier2];
 
             if ((v18 & 1) == 0)
             {
@@ -5779,8 +5779,8 @@ LABEL_12:
 
       v8 = [v22 orderedMergeWithOthers:v9 comparator:&__block_literal_global_0];
 
-      v6 = v23;
-      v5 = v24;
+      streamsCopy = v23;
+      optionsCopy = v24;
     }
   }
 
@@ -5822,24 +5822,24 @@ uint64_t __74__USUsageQuerying_Biome___chronologicalPublisherWithOptions_eventSt
   return v14;
 }
 
-+ (void)_completion:(id)a3 options:(id)a4
++ (void)_completion:(id)_completion options:(id)options
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 state];
-  if (v7 == 1)
+  _completionCopy = _completion;
+  optionsCopy = options;
+  state = [_completionCopy state];
+  if (state == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [USUsageQuerying(Biome) _completion:v6 options:v5];
+      [USUsageQuerying(Biome) _completion:optionsCopy options:_completionCopy];
     }
   }
 
-  else if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  else if (!state && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = optionsCopy;
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Successfully queried Biome for usage reports with options %{public}@", &v9, 0xCu);
   }
 

@@ -1,17 +1,17 @@
 @interface VSReverseValueTransformer
-+ (id)reverseValueTransformerWithValueTransformer:(id)a3;
++ (id)reverseValueTransformerWithValueTransformer:(id)transformer;
 - (VSReverseValueTransformer)init;
-- (VSReverseValueTransformer)initWithValueTransformer:(id)a3;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (VSReverseValueTransformer)initWithValueTransformer:(id)transformer;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSReverseValueTransformer
 
-+ (id)reverseValueTransformerWithValueTransformer:(id)a3
++ (id)reverseValueTransformerWithValueTransformer:(id)transformer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transformerCopy = transformer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -25,10 +25,10 @@
       [v4 raise:v5 format:{@"Unexpectedly, valueTransformer was %@, instead of VSReverseValueTransformer.", v7}];
     }
 
-    v8 = [v3 valueTransformer];
+    valueTransformer = [transformerCopy valueTransformer];
 LABEL_18:
-    v9 = v8;
-    if (v8)
+    v9 = valueTransformer;
+    if (valueTransformer)
     {
       goto LABEL_20;
     }
@@ -39,7 +39,7 @@ LABEL_18:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [[VSReverseValueTransformer alloc] initWithValueTransformer:v3];
+    valueTransformer = [[VSReverseValueTransformer alloc] initWithValueTransformer:transformerCopy];
     goto LABEL_18;
   }
 
@@ -59,10 +59,10 @@ LABEL_18:
     [v11 raise:v12 format:{@"Unexpectedly, valueTransformer was %@, instead of VSCompoundValueTransformer.", v14}];
   }
 
-  v15 = [v3 valueTransformers];
-  v16 = [v15 reverseObjectEnumerator];
+  valueTransformers = [transformerCopy valueTransformers];
+  reverseObjectEnumerator = [valueTransformers reverseObjectEnumerator];
 
-  v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v17)
   {
     v18 = v17;
@@ -73,14 +73,14 @@ LABEL_18:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v21 = [VSReverseValueTransformer reverseValueTransformerWithValueTransformer:*(*(&v23 + 1) + 8 * i)];
         [v10 addObject:v21];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v18);
@@ -108,35 +108,35 @@ LABEL_20:
   return 0;
 }
 
-- (VSReverseValueTransformer)initWithValueTransformer:(id)a3
+- (VSReverseValueTransformer)initWithValueTransformer:(id)transformer
 {
-  v5 = a3;
+  transformerCopy = transformer;
   v9.receiver = self;
   v9.super_class = VSReverseValueTransformer;
   v6 = [(VSReverseValueTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_valueTransformer, a3);
+    objc_storeStrong(&v6->_valueTransformer, transformer);
   }
 
   return v7;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(VSReverseValueTransformer *)self valueTransformer];
-  v6 = [v5 reverseTransformedValue:v4];
+  valueCopy = value;
+  valueTransformer = [(VSReverseValueTransformer *)self valueTransformer];
+  v6 = [valueTransformer reverseTransformedValue:valueCopy];
 
   return v6;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(VSReverseValueTransformer *)self valueTransformer];
-  v6 = [v5 transformedValue:v4];
+  valueCopy = value;
+  valueTransformer = [(VSReverseValueTransformer *)self valueTransformer];
+  v6 = [valueTransformer transformedValue:valueCopy];
 
   return v6;
 }

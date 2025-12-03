@@ -1,22 +1,22 @@
 @interface QLIPSPreviewProvider
-+ (id)plainTextDataReplyWithFileURL:(id)a3 reportType:(id)a4;
-- (void)providePreviewForFileRequest:(id)a3 completionHandler:(id)a4;
++ (id)plainTextDataReplyWithFileURL:(id)l reportType:(id)type;
+- (void)providePreviewForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation QLIPSPreviewProvider
 
-- (void)providePreviewForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)providePreviewForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 fileURL];
-  v7 = getxattr([v6 fileSystemRepresentation], "bug_type", value, 0x3FFuLL, 0, 0);
+  handlerCopy = handler;
+  fileURL = [request fileURL];
+  v7 = getxattr([fileURL fileSystemRepresentation], "bug_type", value, 0x3FFuLL, 0, 0);
   value[v7 & ~(v7 >> 63)] = 0;
   v8 = [NSString stringWithUTF8String:value];
   if (![v8 length])
   {
     v9 = [OSALog alloc];
-    v10 = [v6 path];
-    v11 = [v9 initWithPath:v10 forRouting:&stru_1000044A8 options:&off_100004568 error:0];
+    path = [fileURL path];
+    v11 = [v9 initWithPath:path forRouting:&stru_1000044A8 options:&off_100004568 error:0];
 
     if (v11 && ([v11 metaData], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
@@ -26,7 +26,7 @@
 
     else
     {
-      v14 = [NSInputStream inputStreamWithURL:v6];
+      v14 = [NSInputStream inputStreamWithURL:fileURL];
       v13 = v14;
       if (v14)
       {
@@ -51,16 +51,16 @@
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_100002BC4(v6);
+        sub_100002BC4(fileURL);
       }
     }
   }
 
-  v18 = [QLIPSPreviewProvider plainTextDataReplyWithFileURL:v6 reportType:v8];
-  v5[2](v5, v18, 0);
+  v18 = [QLIPSPreviewProvider plainTextDataReplyWithFileURL:fileURL reportType:v8];
+  handlerCopy[2](handlerCopy, v18, 0);
 }
 
-+ (id)plainTextDataReplyWithFileURL:(id)a3 reportType:(id)a4
++ (id)plainTextDataReplyWithFileURL:(id)l reportType:(id)type
 {
   v4 = *(*(sub_100002C94() - 8) + 64);
   (__chkstk_darwin)();

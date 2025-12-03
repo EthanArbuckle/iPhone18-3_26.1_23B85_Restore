@@ -1,17 +1,17 @@
 @interface TRUserNotificationManager
 + (id)sharedInstance;
-- (void)_showUserNotificationWithDictionary:(id)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)_showUserNotificationWithDictionary:(id)dictionary options:(unint64_t)options completion:(id)completion;
 - (void)cancel;
 - (void)dealloc;
-- (void)presentAuthenticationFailureWithMessage:(id)a3 completion:(id)a4;
-- (void)presentErrorWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)presentLegacyAuthenticationFailedDialogWithMessage:(id)a3 completion:(id)a4;
-- (void)presentWiFiNetworkConnectionError:(BOOL)a3 completion:(id)a4;
-- (void)requestAppleIDAuthenticationWithAccountID:(id)a3 completion:(id)a4;
-- (void)requestAuthenticationWithAccountID:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)requestLegacyAuthenticationWithAccountID:(id)a3 completion:(id)a4;
-- (void)requestPermissionForDiagnosticSubmissionWithCompletion:(id)a3;
-- (void)requestPermissionToInitiateSetupWithCompletion:(id)a3;
+- (void)presentAuthenticationFailureWithMessage:(id)message completion:(id)completion;
+- (void)presentErrorWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)presentLegacyAuthenticationFailedDialogWithMessage:(id)message completion:(id)completion;
+- (void)presentWiFiNetworkConnectionError:(BOOL)error completion:(id)completion;
+- (void)requestAppleIDAuthenticationWithAccountID:(id)d completion:(id)completion;
+- (void)requestAuthenticationWithAccountID:(id)d message:(id)message completion:(id)completion;
+- (void)requestLegacyAuthenticationWithAccountID:(id)d completion:(id)completion;
+- (void)requestPermissionForDiagnosticSubmissionWithCompletion:(id)completion;
+- (void)requestPermissionToInitiateSetupWithCompletion:(id)completion;
 @end
 
 @implementation TRUserNotificationManager
@@ -43,49 +43,49 @@ uint64_t __43__TRUserNotificationManager_sharedInstance__block_invoke()
   [(TRUserNotificationManager *)&v3 dealloc];
 }
 
-- (void)_showUserNotificationWithDictionary:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)_showUserNotificationWithDictionary:(id)dictionary options:(unint64_t)options completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
   if (_TRLogEnabled == 1)
   {
     v10 = TRLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = dictionaryCopy;
       _os_log_impl(&dword_26F2A2000, v10, OS_LOG_TYPE_DEFAULT, "[TRUserNotificationManager] Showing user notification: %@", &v14, 0xCu);
     }
   }
 
   v14 = 0;
-  v11 = [[_TRUserNotification alloc] initWithDictionary:v8 options:a4 error:&v14];
+  v11 = [[_TRUserNotification alloc] initWithDictionary:dictionaryCopy options:options error:&v14];
   if (v11)
   {
     [(TRUserNotificationManager *)self setActiveUserNotification:v11];
-    v12 = [(TRUserNotificationManager *)self activeUserNotification];
-    [v12 show];
+    activeUserNotification = [(TRUserNotificationManager *)self activeUserNotification];
+    [activeUserNotification show];
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, v11, 0);
+      completionCopy[2](completionCopy, v11, 0);
     }
 
     [(TRUserNotificationManager *)self setActiveUserNotification:0];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPermissionToInitiateSetupWithCompletion:(id)a3
+- (void)requestPermissionToInitiateSetupWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v13 localizedStringForKey:@"INITIATE_SETUP_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -100,8 +100,8 @@ uint64_t __43__TRUserNotificationManager_sharedInstance__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __76__TRUserNotificationManager_requestPermissionToInitiateSetupWithCompletion___block_invoke;
   v15[3] = &unk_279DCF728;
-  v16 = v14;
-  v12 = v14;
+  v16 = completionCopy;
+  v12 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v11 options:0 completion:v15];
 }
 
@@ -114,17 +114,17 @@ uint64_t __76__TRUserNotificationManager_requestPermissionToInitiateSetupWithCom
   return v4(v2, v3);
 }
 
-- (void)requestAuthenticationWithAccountID:(id)a3 message:(id)a4 completion:(id)a5
+- (void)requestAuthenticationWithAccountID:(id)d message:(id)message completion:(id)completion
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v8 = a4;
-  v29 = a5;
+  dCopy = d;
+  messageCopy = message;
+  completionCopy = completion;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"SIGN_IN_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
-  v11 = v8;
-  v31 = v8;
-  if (!v8)
+  v11 = messageCopy;
+  v31 = messageCopy;
+  if (!messageCopy)
   {
     v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v28 localizedStringForKey:@"SIGN_IN_MESSAGE" value:&stru_287F58968 table:@"TouchRemote"];
@@ -149,9 +149,9 @@ uint64_t __76__TRUserNotificationManager_requestPermissionToInitiateSetupWithCom
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   [v16 setObject:v21 forKeyedSubscript:*MEMORY[0x277CBF230]];
 
-  if (v30)
+  if (dCopy)
   {
-    v22 = v30;
+    v22 = dCopy;
   }
 
   else
@@ -172,12 +172,12 @@ uint64_t __76__TRUserNotificationManager_requestPermissionToInitiateSetupWithCom
   v32[2] = __83__TRUserNotificationManager_requestAuthenticationWithAccountID_message_completion___block_invoke;
   v32[3] = &unk_279DCF778;
   v32[4] = self;
-  v33 = v30;
+  v33 = dCopy;
   v34 = v31;
-  v35 = v29;
+  v35 = completionCopy;
   v24 = v31;
-  v25 = v30;
-  v26 = v29;
+  v25 = dCopy;
+  v26 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v16 options:0x20000 completion:v32];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -213,11 +213,11 @@ void __83__TRUserNotificationManager_requestAuthenticationWithAccountID_message_
   }
 }
 
-- (void)requestAppleIDAuthenticationWithAccountID:(id)a3 completion:(id)a4
+- (void)requestAppleIDAuthenticationWithAccountID:(id)d completion:(id)completion
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v26 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v24 localizedStringForKey:@"AUTH_APPLE_ID_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -237,9 +237,9 @@ void __83__TRUserNotificationManager_requestAuthenticationWithAccountID_message_
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
   [v12 setObject:v17 forKeyedSubscript:*MEMORY[0x277CBF230]];
 
-  if (v25)
+  if (dCopy)
   {
-    v18 = v25;
+    v18 = dCopy;
   }
 
   else
@@ -259,11 +259,11 @@ void __83__TRUserNotificationManager_requestAuthenticationWithAccountID_message_
   v27[1] = 3221225472;
   v27[2] = __82__TRUserNotificationManager_requestAppleIDAuthenticationWithAccountID_completion___block_invoke;
   v27[3] = &unk_279DCF7C8;
-  v28 = v25;
-  v29 = v26;
+  v28 = dCopy;
+  v29 = completionCopy;
   v27[4] = self;
-  v20 = v25;
-  v21 = v26;
+  v20 = dCopy;
+  v21 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v12 options:0x20000 completion:v27];
 
   v22 = *MEMORY[0x277D85DE8];
@@ -295,15 +295,15 @@ void __82__TRUserNotificationManager_requestAppleIDAuthenticationWithAccountID_c
   }
 }
 
-- (void)presentAuthenticationFailureWithMessage:(id)a3 completion:(id)a4
+- (void)presentAuthenticationFailureWithMessage:(id)message completion:(id)completion
 {
-  v18 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  messageCopy = message;
   v17 = [v6 bundleForClass:objc_opt_class()];
   v8 = [v17 localizedStringForKey:@"AUTH_FAILED_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
-  v9 = v7;
-  if (!v7)
+  v9 = messageCopy;
+  if (!messageCopy)
   {
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v16 localizedStringForKey:@"AUTH_FAILED_DEFAULT_MESSAGE" value:&stru_287F58968 table:@"TouchRemote"];
@@ -315,7 +315,7 @@ void __82__TRUserNotificationManager_requestAppleIDAuthenticationWithAccountID_c
   v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_287F58968 table:@"TouchRemote"];
   v14 = [_TRUserNotification userNotificationDictionaryWithTitle:v8 message:v9 defaultButtonTitle:v11 alternateButtonTitle:v13];
 
-  if (!v7)
+  if (!messageCopy)
   {
   }
 
@@ -323,8 +323,8 @@ void __82__TRUserNotificationManager_requestAppleIDAuthenticationWithAccountID_c
   v19[1] = 3221225472;
   v19[2] = __80__TRUserNotificationManager_presentAuthenticationFailureWithMessage_completion___block_invoke;
   v19[3] = &unk_279DCF728;
-  v20 = v18;
-  v15 = v18;
+  v20 = completionCopy;
+  v15 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v14 options:0 completion:v19];
 }
 
@@ -342,9 +342,9 @@ uint64_t __80__TRUserNotificationManager_presentAuthenticationFailureWithMessage
   return result;
 }
 
-- (void)requestPermissionForDiagnosticSubmissionWithCompletion:(id)a3
+- (void)requestPermissionForDiagnosticSubmissionWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v13 localizedStringForKey:@"DIAGNOSTIC_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -359,8 +359,8 @@ uint64_t __80__TRUserNotificationManager_presentAuthenticationFailureWithMessage
   v15[1] = 3221225472;
   v15[2] = __84__TRUserNotificationManager_requestPermissionForDiagnosticSubmissionWithCompletion___block_invoke;
   v15[3] = &unk_279DCF728;
-  v16 = v14;
-  v12 = v14;
+  v16 = completionCopy;
+  v12 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v11 options:0 completion:v15];
 }
 
@@ -378,22 +378,22 @@ uint64_t __84__TRUserNotificationManager_requestPermissionForDiagnosticSubmissio
   return result;
 }
 
-- (void)presentErrorWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)presentErrorWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277CCA8D8];
-  v10 = a4;
-  v11 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v12 = [v9 bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"OK" value:&stru_287F58968 table:@"TouchRemote"];
-  v14 = [_TRUserNotification userNotificationDictionaryWithTitle:v11 message:v10 defaultButtonTitle:v13 alternateButtonTitle:0];
+  v14 = [_TRUserNotification userNotificationDictionaryWithTitle:titleCopy message:messageCopy defaultButtonTitle:v13 alternateButtonTitle:0];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__TRUserNotificationManager_presentErrorWithTitle_message_completion___block_invoke;
   v16[3] = &unk_279DCF728;
-  v17 = v8;
-  v15 = v8;
+  v17 = completionCopy;
+  v15 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v14 options:0 completion:v16];
 }
 
@@ -408,13 +408,13 @@ uint64_t __70__TRUserNotificationManager_presentErrorWithTitle_message_completio
   return result;
 }
 
-- (void)presentWiFiNetworkConnectionError:(BOOL)a3 completion:(id)a4
+- (void)presentWiFiNetworkConnectionError:(BOOL)error completion:(id)completion
 {
-  v4 = a3;
-  v14 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v4)
+  if (errorCopy)
   {
     v8 = [v6 localizedStringForKey:@"CONNECT_TO_WIFI_MESSAGE_DHCP" value:&stru_287F58968 table:@"TouchRemote"];
 
@@ -445,20 +445,20 @@ uint64_t __70__TRUserNotificationManager_presentErrorWithTitle_message_completio
 LABEL_7:
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"CONNECT_TO_WIFI_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
-  [(TRUserNotificationManager *)self presentErrorWithTitle:v13 message:v8 completion:v14];
+  [(TRUserNotificationManager *)self presentErrorWithTitle:v13 message:v8 completion:completionCopy];
 }
 
 - (void)cancel
 {
-  v2 = [(TRUserNotificationManager *)self activeUserNotification];
-  [v2 cancel];
+  activeUserNotification = [(TRUserNotificationManager *)self activeUserNotification];
+  [activeUserNotification cancel];
 }
 
-- (void)requestLegacyAuthenticationWithAccountID:(id)a3 completion:(id)a4
+- (void)requestLegacyAuthenticationWithAccountID:(id)d completion:(id)completion
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v29 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"SIGN_IN_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
@@ -484,9 +484,9 @@ LABEL_7:
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
   [v6 setObject:v18 forKey:*MEMORY[0x277CBF230]];
 
-  if (v30)
+  if (dCopy)
   {
-    v19 = v30;
+    v19 = dCopy;
   }
 
   else
@@ -529,8 +529,8 @@ LABEL_7:
   v31[1] = 3221225472;
   v31[2] = __81__TRUserNotificationManager_requestLegacyAuthenticationWithAccountID_completion___block_invoke;
   v31[3] = &unk_279DCF728;
-  v32 = v29;
-  v27 = v29;
+  v32 = completionCopy;
+  v27 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v6 options:0x20000 completion:v31];
 
   v28 = *MEMORY[0x277D85DE8];
@@ -547,19 +547,19 @@ void __81__TRUserNotificationManager_requestLegacyAuthenticationWithAccountID_co
   (*(v5 + 16))(v5, v6, v7, v4);
 }
 
-- (void)presentLegacyAuthenticationFailedDialogWithMessage:(id)a3 completion:(id)a4
+- (void)presentLegacyAuthenticationFailedDialogWithMessage:(id)message completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"AUTH_FAILED_TITLE" value:&stru_287F58968 table:@"TouchRemote"];
   [v8 setObject:v10 forKey:*MEMORY[0x277CBF188]];
 
-  if (v6)
+  if (messageCopy)
   {
-    v11 = v6;
+    v11 = messageCopy;
   }
 
   else
@@ -596,8 +596,8 @@ void __81__TRUserNotificationManager_requestLegacyAuthenticationWithAccountID_co
   v21[1] = 3221225472;
   v21[2] = __91__TRUserNotificationManager_presentLegacyAuthenticationFailedDialogWithMessage_completion___block_invoke;
   v21[3] = &unk_279DCF728;
-  v22 = v7;
-  v19 = v7;
+  v22 = completionCopy;
+  v19 = completionCopy;
   [(TRUserNotificationManager *)self _showUserNotificationWithDictionary:v8 options:0 completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];

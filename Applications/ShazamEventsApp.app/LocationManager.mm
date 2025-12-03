@@ -1,6 +1,6 @@
 @interface LocationManager
 - (_TtC15ShazamEventsApp15LocationManager)init;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation LocationManager
@@ -18,20 +18,20 @@
   return [(LocationManager *)&v8 init];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v6 = sub_100009F70(&qword_10021F7D0);
   __chkstk_darwin(v6 - 8);
   v8 = &v16 - v7;
   sub_10005F1E0();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  [v10 stopUpdatingLocation];
+  managerCopy = manager;
+  selfCopy = self;
+  [managerCopy stopUpdatingLocation];
   v12 = type metadata accessor for TaskPriority();
   (*(*(v12 - 8) + 56))(v8, 1, 1, v12);
   type metadata accessor for MainActor();
-  v13 = v11;
+  v13 = selfCopy;
   v14 = static MainActor.shared.getter();
   v15 = swift_allocObject();
   v15[2] = v14;

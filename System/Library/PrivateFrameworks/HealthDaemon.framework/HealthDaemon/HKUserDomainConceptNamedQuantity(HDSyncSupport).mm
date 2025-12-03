@@ -8,23 +8,23 @@
 - (HDCodableUserDomainConceptNamedQuantity)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableUserDomainConceptNamedQuantity);
-  v3 = [a1 name];
-  [(HDCodableUserDomainConceptNamedQuantity *)v2 setName:v3];
+  name = [self name];
+  [(HDCodableUserDomainConceptNamedQuantity *)v2 setName:name];
 
-  v4 = [a1 quantity];
-  [v4 _value];
+  quantity = [self quantity];
+  [quantity _value];
   [(HDCodableUserDomainConceptNamedQuantity *)v2 setValue:?];
 
-  v5 = [a1 quantity];
-  v6 = [v5 _unit];
-  v7 = [v6 unitString];
-  [(HDCodableUserDomainConceptNamedQuantity *)v2 setUnit:v7];
+  quantity2 = [self quantity];
+  _unit = [quantity2 _unit];
+  unitString = [_unit unitString];
+  [(HDCodableUserDomainConceptNamedQuantity *)v2 setUnit:unitString];
 
-  -[HDCodableUserDomainConceptNamedQuantity setType:](v2, "setType:", [a1 type]);
-  -[HDCodableUserDomainConceptNamedQuantity setVersion:](v2, "setVersion:", [a1 version]);
-  [a1 timestamp];
+  -[HDCodableUserDomainConceptNamedQuantity setType:](v2, "setType:", [self type]);
+  -[HDCodableUserDomainConceptNamedQuantity setVersion:](v2, "setVersion:", [self version]);
+  [self timestamp];
   [(HDCodableUserDomainConceptNamedQuantity *)v2 setTimestamp:?];
-  -[HDCodableUserDomainConceptNamedQuantity setDeleted:](v2, "setDeleted:", [a1 isDeleted]);
+  -[HDCodableUserDomainConceptNamedQuantity setDeleted:](v2, "setDeleted:", [self isDeleted]);
 
   return v2;
 }
@@ -35,18 +35,18 @@
   v3 = a3;
   if ([v3 isMemberOfClass:objc_opt_class()])
   {
-    v4 = [v3 name];
+    name = [v3 name];
     [v3 value];
     v6 = v5;
-    v7 = [v3 unit];
-    if (v7)
+    unit = [v3 unit];
+    if (unit)
     {
-      v8 = [v3 type];
-      v9 = [v3 version];
+      type = [v3 type];
+      version = [v3 version];
       [v3 timestamp];
       v11 = v10;
-      v12 = [v3 deleted];
-      v13 = [objc_alloc(MEMORY[0x277CCDB18]) initWithName:v4 value:v7 unitString:v8 type:v9 version:v12 timestamp:v6 deleted:v11];
+      deleted = [v3 deleted];
+      v13 = [objc_alloc(MEMORY[0x277CCDB18]) initWithName:name value:unit unitString:type type:version version:deleted timestamp:v6 deleted:v11];
     }
 
     else

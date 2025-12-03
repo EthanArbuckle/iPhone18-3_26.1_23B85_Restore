@@ -1,23 +1,23 @@
 @interface BuddyDiagnosticsController
-+ (void)_writeValuesForKeysToIdMS:(id)a3;
-+ (void)clearDeviceAnalyticsSettingWithSettingsManager:(id)a3 buddyPreferences:(id)a4;
-+ (void)setDeviceAnalyticsSubmissionEnabled:(BOOL)a3 presented:(BOOL)a4 chronicle:(id)a5 settingsManager:(id)a6 buddyPreferences:(id)a7;
-+ (void)setiCloudAnalyticsEnabled:(BOOL)a3;
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3;
++ (void)_writeValuesForKeysToIdMS:(id)s;
++ (void)clearDeviceAnalyticsSettingWithSettingsManager:(id)manager buddyPreferences:(id)preferences;
++ (void)setDeviceAnalyticsSubmissionEnabled:(BOOL)enabled presented:(BOOL)presented chronicle:(id)chronicle settingsManager:(id)manager buddyPreferences:(id)preferences;
++ (void)setiCloudAnalyticsEnabled:(BOOL)enabled;
++ (void)skippedByCloudConfigWithEnvironment:(id)environment;
 - (BOOL)_determineDisplayModeShouldPotentiallyIncludeApps;
 - (BOOL)_shouldReportCombinedAnalyticsChoice;
 - (BOOL)controllerNeedsToRun;
 - (BuddyDiagnosticsController)init;
 - (id)_detailText;
-- (id)_privacyBundlesForDisplayMode:(unint64_t)a3;
+- (id)_privacyBundlesForDisplayMode:(unint64_t)mode;
 - (id)_titleText;
 - (void)_addButtons;
-- (void)_controllerDone:(BOOL)a3;
-- (void)_determineDisplayMode:(id)a3;
-- (void)_prepareAnalyticsWithCompletion:(id)a3;
+- (void)_controllerDone:(BOOL)done;
+- (void)_determineDisplayMode:(id)mode;
+- (void)_prepareAnalyticsWithCompletion:(id)completion;
 - (void)loadView;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyDiagnosticsController
@@ -51,104 +51,104 @@
 
 - (void)loadView
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9.receiver = self;
   v9.super_class = BuddyDiagnosticsController;
   [(BuddyDiagnosticsController *)&v9 loadView];
-  if ([(BuddyDiagnosticsController *)v11 mode]== 4)
+  if ([(BuddyDiagnosticsController *)selfCopy mode]== 4)
   {
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_100077E48(buf, [(BuddyDiagnosticsController *)v11 mode]);
+      sub_100077E48(buf, [(BuddyDiagnosticsController *)selfCopy mode]);
       _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Unsupported diagnostics display mode %ld", buf, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
   }
 
-  v2 = [(BuddyDiagnosticsController *)v11 headerView];
-  v3 = [(BuddyDiagnosticsController *)v11 _titleText];
-  [v2 setTitle:v3];
+  headerView = [(BuddyDiagnosticsController *)selfCopy headerView];
+  _titleText = [(BuddyDiagnosticsController *)selfCopy _titleText];
+  [headerView setTitle:_titleText];
 
-  v4 = [(BuddyDiagnosticsController *)v11 headerView];
-  v5 = [(BuddyDiagnosticsController *)v11 _detailText];
-  [v4 setDetailText:v5];
+  headerView2 = [(BuddyDiagnosticsController *)selfCopy headerView];
+  _detailText = [(BuddyDiagnosticsController *)selfCopy _detailText];
+  [headerView2 setDetailText:_detailText];
 
-  [(BuddyDiagnosticsController *)v11 _addButtons];
-  v6 = [(BuddyDiagnosticsController *)v11 buttonTray];
-  v7 = [(BuddyDiagnosticsController *)v11 _privacyBundlesForDisplayMode:[(BuddyDiagnosticsController *)v11 mode]];
-  [v6 setPrivacyLinkForBundles:v7];
+  [(BuddyDiagnosticsController *)selfCopy _addButtons];
+  buttonTray = [(BuddyDiagnosticsController *)selfCopy buttonTray];
+  v7 = [(BuddyDiagnosticsController *)selfCopy _privacyBundlesForDisplayMode:[(BuddyDiagnosticsController *)selfCopy mode]];
+  [buttonTray setPrivacyLinkForBundles:v7];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  appearCopy = appear;
   v18.receiver = self;
   v18.super_class = BuddyDiagnosticsController;
-  [(BuddyDiagnosticsController *)&v18 viewDidAppear:a3];
+  [(BuddyDiagnosticsController *)&v18 viewDidAppear:appear];
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100077E48(buf, [(BuddyDiagnosticsController *)v21 mode]);
+    sub_100077E48(buf, [(BuddyDiagnosticsController *)selfCopy mode]);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Analytics showing mode %ld", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (([(BuddyDiagnosticsController *)v21 isMovingToParentViewController]& 1) == 0)
+  if (([(BuddyDiagnosticsController *)selfCopy isMovingToParentViewController]& 1) == 0)
   {
-    v3 = [(BuddyDiagnosticsController *)v21 buddyPreferences];
-    [(BYPreferencesController *)v3 setObject:&__kCFBooleanFalse forKey:@"PBDiagnostics4Presented"];
+    buddyPreferences = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+    [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"PBDiagnostics4Presented"];
 
-    if (([(BuddyDiagnosticsController *)v21 mode]& 2) != 0)
+    if (([(BuddyDiagnosticsController *)selfCopy mode]& 2) != 0)
     {
-      if ([(BuddyDiagnosticsController *)v21 initialDeviceAnalyticsUserSetting])
+      if ([(BuddyDiagnosticsController *)selfCopy initialDeviceAnalyticsUserSetting])
       {
-        if ([(BuddyDiagnosticsController *)v21 initialDeviceAnalyticsUserSetting]== 2)
+        if ([(BuddyDiagnosticsController *)selfCopy initialDeviceAnalyticsUserSetting]== 2)
         {
           v8 = objc_opt_class();
-          v9 = [(BuddyDiagnosticsController *)v21 chronicle];
-          v10 = [(BuddyDiagnosticsController *)v21 settingsManager];
-          v11 = [(BuddyDiagnosticsController *)v21 buddyPreferences];
-          [v8 setDeviceAnalyticsSubmissionEnabled:0 presented:0 chronicle:v9 settingsManager:v10 buddyPreferences:v11];
+          chronicle = [(BuddyDiagnosticsController *)selfCopy chronicle];
+          settingsManager = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+          buddyPreferences2 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+          [v8 setDeviceAnalyticsSubmissionEnabled:0 presented:0 chronicle:chronicle settingsManager:settingsManager buddyPreferences:buddyPreferences2];
         }
       }
 
       else
       {
         v4 = objc_opt_class();
-        v5 = [(BuddyDiagnosticsController *)v21 settingsManager];
-        v6 = [(BuddyDiagnosticsController *)v21 buddyPreferences];
-        [v4 clearDeviceAnalyticsSettingWithSettingsManager:v5 buddyPreferences:v6];
+        settingsManager2 = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+        buddyPreferences3 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+        [v4 clearDeviceAnalyticsSettingWithSettingsManager:settingsManager2 buddyPreferences:buddyPreferences3];
 
-        v7 = [(BuddyDiagnosticsController *)v21 paneFeatureAnalyticsManager];
-        [(BYPaneFeatureAnalyticsManager *)v7 clearActionForFeature:5];
+        paneFeatureAnalyticsManager = [(BuddyDiagnosticsController *)selfCopy paneFeatureAnalyticsManager];
+        [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:5];
       }
     }
 
-    if (([(BuddyDiagnosticsController *)v21 mode]& 4) != 0)
+    if (([(BuddyDiagnosticsController *)selfCopy mode]& 4) != 0)
     {
-      if ([(BuddyDiagnosticsController *)v21 initialAppAnalyticsUserSetting])
+      if ([(BuddyDiagnosticsController *)selfCopy initialAppAnalyticsUserSetting])
       {
-        if ([(BuddyDiagnosticsController *)v21 initialAppAnalyticsUserSetting]== 2)
+        if ([(BuddyDiagnosticsController *)selfCopy initialAppAnalyticsUserSetting]== 2)
         {
-          v15 = [(BuddyDiagnosticsController *)v21 settingsManager];
-          v16 = [(BuddyDiagnosticsController *)v21 buddyPreferences];
-          [BuddyAppActivityController setAppActivityEnabled:0 presented:0 settingsManager:v15 buddyPreferences:v16];
+          settingsManager3 = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+          buddyPreferences4 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+          [BuddyAppActivityController setAppActivityEnabled:0 presented:0 settingsManager:settingsManager3 buddyPreferences:buddyPreferences4];
         }
       }
 
       else
       {
-        v12 = [(BuddyDiagnosticsController *)v21 paneFeatureAnalyticsManager];
-        [(BYPaneFeatureAnalyticsManager *)v12 clearActionForFeature:4];
+        paneFeatureAnalyticsManager2 = [(BuddyDiagnosticsController *)selfCopy paneFeatureAnalyticsManager];
+        [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager2 clearActionForFeature:4];
 
-        v13 = [(BuddyDiagnosticsController *)v21 settingsManager];
-        v14 = [(BuddyDiagnosticsController *)v21 buddyPreferences];
-        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:v13 buddyPreferences:v14];
+        settingsManager4 = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+        buddyPreferences5 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:settingsManager4 buddyPreferences:buddyPreferences5];
       }
     }
   }
@@ -165,17 +165,17 @@
 
   else
   {
-    v4 = [(BuddyDiagnosticsController *)self mode];
-    if (v4)
+    mode = [(BuddyDiagnosticsController *)self mode];
+    if (mode)
     {
-      if (v4 - 1 < 3)
+      if (mode - 1 < 3)
       {
         v5 = +[NSBundle mainBundle];
         v6 = [(NSBundle *)v5 localizedStringForKey:@"ENABLE_ANALYTICS" value:&stru_10032F900 table:@"Localizable"];
         [(BuddyWelcomeController *)self addBoldButton:v6 action:"_enableAnalytics"];
       }
 
-      else if (v4 != 4 && v4 - 6 < 2)
+      else if (mode != 4 && mode - 6 < 2)
       {
         v7 = +[NSBundle mainBundle];
         v8 = [(NSBundle *)v7 localizedStringForKey:@"ENABLE_ANALYTICS_INCLUDING_APPS" value:&stru_10032F900 table:@"Localizable"];
@@ -191,10 +191,10 @@
 
 - (id)_titleText
 {
-  v2 = [(BuddyDiagnosticsController *)self mode];
-  if (v2)
+  mode = [(BuddyDiagnosticsController *)self mode];
+  if (mode)
   {
-    if (v2 == 1)
+    if (mode == 1)
     {
       v5 = +[NSBundle mainBundle];
       v8 = [(NSBundle *)v5 localizedStringForKey:@"ANALYTICS_TITLE_ICLOUD" value:&stru_10032F900 table:@"Localizable"];
@@ -202,21 +202,21 @@
       goto LABEL_12;
     }
 
-    if (v2 != 2)
+    if (mode != 2)
     {
-      if (v2 == 3)
+      if (mode == 3)
       {
         goto LABEL_11;
       }
 
-      if (v2 == 4)
+      if (mode == 4)
       {
         goto LABEL_12;
       }
 
-      if (v2 != 6)
+      if (mode != 6)
       {
-        if (v2 != 7)
+        if (mode != 7)
         {
           goto LABEL_12;
         }
@@ -241,22 +241,22 @@ LABEL_12:
 
 - (id)_detailText
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   v28 = 0;
   v27 = 0;
-  v2 = [(BuddyDiagnosticsController *)self mode];
-  if (v2)
+  mode = [(BuddyDiagnosticsController *)self mode];
+  if (mode)
   {
-    switch(v2)
+    switch(mode)
     {
       case 1uLL:
         objc_storeStrong(location, @"ANALYTICS_DESCRIPTION_ICLOUD");
         v27 = 1;
         break;
       case 2uLL:
-        if ([(BuddyDiagnosticsController *)v30 imposeSeedPolicy])
+        if ([(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy])
         {
           objc_storeStrong(location, @"DIAGNOSTICS_DESCRIPTION_AUTO_OPT_IN");
         }
@@ -275,11 +275,11 @@ LABEL_12:
         v27 = 1;
         break;
       default:
-        if (v2 != 4)
+        if (mode != 4)
         {
-          if (v2 == 6)
+          if (mode == 6)
           {
-            if ([(BuddyDiagnosticsController *)v30 imposeSeedPolicy])
+            if ([(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy])
             {
               objc_storeStrong(location, @"ANALYTICS_DESCRIPTION_AUTO_OPT_IN_DEVICE_AND_APPS");
             }
@@ -292,7 +292,7 @@ LABEL_12:
             }
           }
 
-          else if (v2 == 7)
+          else if (mode == 7)
           {
             objc_storeStrong(location, @"ANALYTICS_DESCRIPTION_DEVICE_AND_APPS_AND_ICLOUD");
             v28 = 1;
@@ -307,10 +307,10 @@ LABEL_12:
   v26 = 0;
   if (v27)
   {
-    v3 = [(BuddyDiagnosticsController *)v30 flowItemDispositionProvider];
-    v4 = [(BuddyFlowItemDispositionProvider *)v3 dispositions];
+    flowItemDispositionProvider = [(BuddyDiagnosticsController *)selfCopy flowItemDispositionProvider];
+    dispositions = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions];
 
-    v25 = v4;
+    unsignedIntegerValue = dispositions;
     v5 = +[BYPreferencesController buddyPreferencesInternal];
     v24 = [v5 objectForKey:@"PBAnalyticsForceDisposition"];
 
@@ -319,11 +319,11 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [v24 unsignedIntegerValue];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
         oslog = _BYLoggingFacility();
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
-          sub_100077E48(buf, v25);
+          sub_100077E48(buf, unsignedIntegerValue);
           _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Analytics forcing disposition %lu", buf, 0xCu);
         }
 
@@ -331,9 +331,9 @@ LABEL_12:
       }
     }
 
-    if (v25 && v25 != 4)
+    if (unsignedIntegerValue && unsignedIntegerValue != 4)
     {
-      v6 = [BuddyLocalizationUtilities dispositionSpecificLocalizedStringKeyForKey:location[0] disposition:v25];
+      v6 = [BuddyLocalizationUtilities dispositionSpecificLocalizedStringKeyForKey:location[0] disposition:unsignedIntegerValue];
       v7 = location[0];
       location[0] = v6;
     }
@@ -359,9 +359,9 @@ LABEL_12:
   }
 
   v14 = +[UIDevice currentDevice];
-  v15 = [(UIDevice *)v14 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [(UIDevice *)v14 sf_isChinaRegionCellularDevice];
 
-  if (v15)
+  if (sf_isChinaRegionCellularDevice)
   {
     v16 = v26;
     v17 = +[NSBundle mainBundle];
@@ -377,26 +377,26 @@ LABEL_12:
   return v21;
 }
 
-+ (void)setDeviceAnalyticsSubmissionEnabled:(BOOL)a3 presented:(BOOL)a4 chronicle:(id)a5 settingsManager:(id)a6 buddyPreferences:(id)a7
++ (void)setDeviceAnalyticsSubmissionEnabled:(BOOL)enabled presented:(BOOL)presented chronicle:(id)chronicle settingsManager:(id)manager buddyPreferences:(id)preferences
 {
-  v18 = a1;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
+  enabledCopy = enabled;
+  presentedCopy = presented;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, chronicle);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, manager);
   v12 = 0;
-  objc_storeStrong(&v12, a7);
-  [v13 setBool:v16 forManagedConfigurationSetting:MCFeatureDiagnosticsSubmissionAllowed];
+  objc_storeStrong(&v12, preferences);
+  [v13 setBool:enabledCopy forManagedConfigurationSetting:MCFeatureDiagnosticsSubmissionAllowed];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, DiagnosticsShouldSubmitNotification, 0, 0, 0);
   v10 = v12;
-  v11 = [NSNumber numberWithBool:v15];
+  v11 = [NSNumber numberWithBool:presentedCopy];
   [v10 setObject:v11 forKey:@"PBDiagnostics4Presented"];
 
-  if (v15)
+  if (presentedCopy)
   {
     [location recordFeatureShown:2];
   }
@@ -406,26 +406,26 @@ LABEL_12:
   objc_storeStrong(&location, 0);
 }
 
-+ (void)clearDeviceAnalyticsSettingWithSettingsManager:(id)a3 buddyPreferences:(id)a4
++ (void)clearDeviceAnalyticsSettingWithSettingsManager:(id)manager buddyPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, preferences);
   [location[0] removeBoolSettingForManagedConfigurationSetting:MCFeatureDiagnosticsSubmissionAllowed];
   [v5 removeObjectForKey:@"PBDiagnostics4Presented"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (void)setiCloudAnalyticsEnabled:(BOOL)a3
++ (void)setiCloudAnalyticsEnabled:(BOOL)enabled
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v3 = @"1";
   }
@@ -439,15 +439,15 @@ LABEL_12:
   v9 = @"com.apple.idms.config.privacy.icloud.data";
   v10 = location;
   v4 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [v8 _writeValuesForKeysToIdMS:v4];
+  [selfCopy _writeValuesForKeysToIdMS:v4];
 
-  CFPreferencesSetAppValue(@"AllowiCloudAnalytics", [NSNumber numberWithBool:v6], @"com.apple.Preferences");
+  CFPreferencesSetAppValue(@"AllowiCloudAnalytics", [NSNumber numberWithBool:enabledCopy], @"com.apple.Preferences");
   objc_storeStrong(&location, 0);
 }
 
-- (id)_privacyBundlesForDisplayMode:(unint64_t)a3
+- (id)_privacyBundlesForDisplayMode:(unint64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 0uLL:
       goto LABEL_14;
@@ -484,101 +484,101 @@ LABEL_14:
   return v4;
 }
 
-- (void)_controllerDone:(BOOL)a3
+- (void)_controllerDone:(BOOL)done
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
+  doneCopy = done;
   [(BuddyDiagnosticsController *)self imposeSeedPolicy];
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1001DBF44(buf, [(BuddyDiagnosticsController *)v23 mode], v21, [(BuddyDiagnosticsController *)v23 imposeSeedPolicy]);
+    sub_1001DBF44(buf, [(BuddyDiagnosticsController *)selfCopy mode], doneCopy, [(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy]);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Analytics opt-in done, mode = %ld, choice = %d, automatic = %d", buf, 0x18u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (([(BuddyDiagnosticsController *)v23 mode]& 2) != 0)
+  if (([(BuddyDiagnosticsController *)selfCopy mode]& 2) != 0)
   {
-    v3 = v21;
-    v4 = [(BuddyDiagnosticsController *)v23 chronicle];
-    v5 = [(BuddyDiagnosticsController *)v23 settingsManager];
-    v6 = [(BuddyDiagnosticsController *)v23 buddyPreferences];
-    [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:v3 presented:1 chronicle:v4 settingsManager:v5 buddyPreferences:v6];
+    v3 = doneCopy;
+    chronicle = [(BuddyDiagnosticsController *)selfCopy chronicle];
+    settingsManager = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+    buddyPreferences = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+    [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:v3 presented:1 chronicle:chronicle settingsManager:settingsManager buddyPreferences:buddyPreferences];
 
-    if ([(BuddyDiagnosticsController *)v23 imposeSeedPolicy])
+    if ([(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy])
     {
-      v7 = [(BuddyDiagnosticsController *)v23 buddyPreferences];
-      [(BYPreferencesController *)v7 setObject:&__kCFBooleanTrue forKey:@"DiagnosticsAutoOptInSet"];
+      buddyPreferences2 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+      [(BYPreferencesController *)buddyPreferences2 setObject:&__kCFBooleanTrue forKey:@"DiagnosticsAutoOptInSet"];
     }
 
-    if (![(BuddyDiagnosticsController *)v23 imposeSeedPolicy])
+    if (![(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy])
     {
-      v8 = [(BuddyDiagnosticsController *)v23 paneFeatureAnalyticsManager];
-      v9 = [NSNumber numberWithBool:v21];
-      [(BYPaneFeatureAnalyticsManager *)v8 recordActionWithValue:v9 forFeature:5];
+      paneFeatureAnalyticsManager = [(BuddyDiagnosticsController *)selfCopy paneFeatureAnalyticsManager];
+      v9 = [NSNumber numberWithBool:doneCopy];
+      [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v9 forFeature:5];
     }
   }
 
   else
   {
-    v10 = [(BuddyDiagnosticsController *)v23 buddyPreferences];
-    [(BYPreferencesController *)v10 setObject:&__kCFBooleanTrue forKey:@"PBDiagnostics4Presented"];
+    buddyPreferences3 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+    [(BYPreferencesController *)buddyPreferences3 setObject:&__kCFBooleanTrue forKey:@"PBDiagnostics4Presented"];
   }
 
-  if (([(BuddyDiagnosticsController *)v23 mode]& 4) != 0)
+  if (([(BuddyDiagnosticsController *)selfCopy mode]& 4) != 0)
   {
-    v11 = v21;
-    v12 = [(BuddyDiagnosticsController *)v23 settingsManager];
-    v13 = [(BuddyDiagnosticsController *)v23 buddyPreferences];
-    [BuddyAppActivityController setAppActivityEnabled:v11 presented:1 settingsManager:v12 buddyPreferences:v13];
+    v11 = doneCopy;
+    settingsManager2 = [(BuddyDiagnosticsController *)selfCopy settingsManager];
+    buddyPreferences4 = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+    [BuddyAppActivityController setAppActivityEnabled:v11 presented:1 settingsManager:settingsManager2 buddyPreferences:buddyPreferences4];
 
-    v14 = [(BuddyDiagnosticsController *)v23 paneFeatureAnalyticsManager];
-    v15 = [NSNumber numberWithBool:v21];
-    [(BYPaneFeatureAnalyticsManager *)v14 recordActionWithValue:v15 forFeature:4];
+    paneFeatureAnalyticsManager2 = [(BuddyDiagnosticsController *)selfCopy paneFeatureAnalyticsManager];
+    v15 = [NSNumber numberWithBool:doneCopy];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager2 recordActionWithValue:v15 forFeature:4];
   }
 
-  if (([(BuddyDiagnosticsController *)v23 mode]& 1) != 0)
+  if (([(BuddyDiagnosticsController *)selfCopy mode]& 1) != 0)
   {
-    [objc_opt_class() setiCloudAnalyticsEnabled:v21];
-    v16 = [(BuddyDiagnosticsController *)v23 paneFeatureAnalyticsManager];
-    v17 = [NSNumber numberWithBool:v21];
-    [(BYPaneFeatureAnalyticsManager *)v16 recordActionWithValue:v17 forFeature:3];
+    [objc_opt_class() setiCloudAnalyticsEnabled:doneCopy];
+    paneFeatureAnalyticsManager3 = [(BuddyDiagnosticsController *)selfCopy paneFeatureAnalyticsManager];
+    v17 = [NSNumber numberWithBool:doneCopy];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager3 recordActionWithValue:v17 forFeature:3];
   }
 
-  if ([(BuddyDiagnosticsController *)v23 shouldReportCombinedAnalyticsChoice])
+  if ([(BuddyDiagnosticsController *)selfCopy shouldReportCombinedAnalyticsChoice])
   {
-    v18 = [(BuddyDiagnosticsController *)v23 analyticsManager];
-    [(BYAnalyticsManager *)v18 setCombinedAnalyticsRepromptChoice:v21];
+    analyticsManager = [(BuddyDiagnosticsController *)selfCopy analyticsManager];
+    [(BYAnalyticsManager *)analyticsManager setCombinedAnalyticsRepromptChoice:doneCopy];
   }
 
-  v19 = [(BuddyWelcomeController *)v23 delegate];
-  [(BFFFlowItemDelegate *)v19 flowItemDone:v23];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 }
 
-- (void)_determineDisplayMode:(id)a3
+- (void)_determineDisplayMode:(id)mode
 {
-  v50 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDiagnosticsController *)v50 buddyPreferences];
-  v4 = [(BYPreferencesController *)v3 BOOLForKey:@"PBDiagnostics4Presented"];
+  objc_storeStrong(location, mode);
+  buddyPreferences = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+  v4 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"PBDiagnostics4Presented"];
 
   v48 = v4 & 1;
-  v5 = [(BuddyDiagnosticsController *)v50 capabilities];
-  v6 = [(BYCapabilities *)v5 isDeviceAnalyticsRestricted];
+  capabilities = [(BuddyDiagnosticsController *)selfCopy capabilities];
+  isDeviceAnalyticsRestricted = [(BYCapabilities *)capabilities isDeviceAnalyticsRestricted];
 
-  v47 = v6 & 1;
-  v7 = [(BuddyDiagnosticsController *)v50 managedConfiguration];
-  v8 = [(MCProfileConnection *)v7 effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed]== 1;
+  v47 = isDeviceAnalyticsRestricted & 1;
+  managedConfiguration = [(BuddyDiagnosticsController *)selfCopy managedConfiguration];
+  v8 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed]== 1;
 
   v46 = v8;
   v45 = 0;
-  v9 = [(BuddyDiagnosticsController *)v50 miscState];
-  v10 = [(BuddyMiscState *)v9 launchedWithCombinedAnalyticsMismatch];
+  miscState = [(BuddyDiagnosticsController *)selfCopy miscState];
+  launchedWithCombinedAnalyticsMismatch = [(BuddyMiscState *)miscState launchedWithCombinedAnalyticsMismatch];
 
-  v45 = (v10 & 1) == 0 && v46;
+  v45 = (launchedWithCombinedAnalyticsMismatch & 1) == 0 && v46;
   v11 = 1;
   if ((v47 & 1) == 0)
   {
@@ -598,14 +598,14 @@ LABEL_14:
   if (v44)
   {
     v40[3] |= 2uLL;
-    if ([(BuddyDiagnosticsController *)v50 _determineDisplayModeShouldPotentiallyIncludeApps])
+    if ([(BuddyDiagnosticsController *)selfCopy _determineDisplayModeShouldPotentiallyIncludeApps])
     {
-      v12 = [(BuddyDiagnosticsController *)v50 capabilities];
-      v13 = [(BYCapabilities *)v12 isAppAnalyticsRestricted];
+      capabilities2 = [(BuddyDiagnosticsController *)selfCopy capabilities];
+      isAppAnalyticsRestricted = [(BYCapabilities *)capabilities2 isAppAnalyticsRestricted];
 
-      v38 = v13 & 1;
-      v37 = !(v13 & 1);
-      if ((v13 & 1) == 0)
+      v38 = isAppAnalyticsRestricted & 1;
+      v37 = !(isAppAnalyticsRestricted & 1);
+      if ((isAppAnalyticsRestricted & 1) == 0)
       {
         v40[3] |= 4uLL;
       }
@@ -613,21 +613,21 @@ LABEL_14:
   }
 
   v14 = +[ACAccountStore defaultStore];
-  v36 = [v14 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v14 aa_primaryAppleAccount];
 
   v34 = 0;
   v15 = 0;
-  if (![(BuddyDiagnosticsController *)v50 imposeSeedPolicy])
+  if (![(BuddyDiagnosticsController *)selfCopy imposeSeedPolicy])
   {
     v15 = 0;
     if ((v48 & 1) == 0)
     {
       v15 = 0;
-      if (v36)
+      if (aa_primaryAppleAccount)
       {
-        v35 = [(BuddyDiagnosticsController *)v50 capabilities];
+        capabilities3 = [(BuddyDiagnosticsController *)selfCopy capabilities];
         v34 = 1;
-        v15 = [(BYCapabilities *)v35 isCloudAnalyticsRestricted]^ 1;
+        v15 = [(BYCapabilities *)capabilities3 isCloudAnalyticsRestricted]^ 1;
       }
     }
   }
@@ -648,7 +648,7 @@ LABEL_14:
     v30[0] = location[0];
     v31 = v47 & 1;
     v32 = v46;
-    v29 = v50;
+    v29 = selfCopy;
     v33 = v48 & 1;
     [v16 primaryAccountIsChildAccount:&v24];
 
@@ -667,9 +667,9 @@ LABEL_14:
         v17 = v40[3];
         v18 = v47 & 1;
         v19 = v46;
-        v20 = [(BuddyDiagnosticsController *)v50 miscState];
-        v21 = [(BuddyMiscState *)v20 launchedWithCombinedAnalyticsMismatch];
-        sub_1001DC9C4(buf, v17, v18, v19, v21 & 1, v48 & 1);
+        miscState2 = [(BuddyDiagnosticsController *)selfCopy miscState];
+        launchedWithCombinedAnalyticsMismatch2 = [(BuddyMiscState *)miscState2 launchedWithCombinedAnalyticsMismatch];
+        sub_1001DC9C4(buf, v17, v18, v19, launchedWithCombinedAnalyticsMismatch2 & 1, v48 & 1);
         _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Diagnostics display mode = %ld, factors: Restricted = %d, AlreadyYes = %d, Mismatch = %d, AlreadyPresented = %d", buf, 0x24u);
       }
 
@@ -680,19 +680,19 @@ LABEL_14:
     v23 = 0;
   }
 
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   _Block_object_dispose(&v39, 8);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_determineDisplayModeShouldPotentiallyIncludeApps
 {
-  v17 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyDiagnosticsController *)self miscState];
-  v3 = [(BuddyMiscState *)v2 launchedWithCombinedAnalyticsMismatch];
+  miscState = [(BuddyDiagnosticsController *)self miscState];
+  launchedWithCombinedAnalyticsMismatch = [(BuddyMiscState *)miscState launchedWithCombinedAnalyticsMismatch];
 
-  if (v3)
+  if (launchedWithCombinedAnalyticsMismatch)
   {
     oslog[0] = _BYLoggingFacility();
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -710,10 +710,10 @@ LABEL_14:
 
   else
   {
-    v6 = [(BuddyDiagnosticsController *)v17 capabilities];
-    v7 = [(BYCapabilities *)v6 eligibleForChlorine];
+    capabilities = [(BuddyDiagnosticsController *)selfCopy capabilities];
+    eligibleForChlorine = [(BYCapabilities *)capabilities eligibleForChlorine];
 
-    if (v7)
+    if (eligibleForChlorine)
     {
       v13 = _BYLoggingFacility();
       v12 = OS_LOG_TYPE_DEFAULT;
@@ -736,18 +736,18 @@ LABEL_14:
   }
 }
 
-+ (void)_writeValuesForKeysToIdMS:(id)a3
++ (void)_writeValuesForKeysToIdMS:(id)s
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, s);
   v3 = +[ACAccountStore defaultStore];
-  v27 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
-  if (v27)
+  if (aa_primaryAppleAccount)
   {
-    v26 = [v27 aa_altDSID];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
     v25 = objc_opt_new();
     memset(__b, 0, sizeof(__b));
     v4 = location[0];
@@ -780,7 +780,7 @@ LABEL_14:
           v10 = v25;
           v11 = v22;
           v12 = v24;
-          v13 = v26;
+          v13 = aa_altDSID;
           v14 = _NSConcreteStackBlock;
           v15 = -1073741824;
           v16 = 0;
@@ -799,32 +799,32 @@ LABEL_14:
     }
 
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&aa_altDSID, 0);
   }
 
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_prepareAnalyticsWithCompletion:(id)a3
+- (void)_prepareAnalyticsWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDiagnosticsController *)v7 _shouldReportCombinedAnalyticsChoice];
-  [(BuddyDiagnosticsController *)v7 setShouldReportCombinedAnalyticsChoice:v3 & 1];
-  if ([(BuddyDiagnosticsController *)v7 shouldReportCombinedAnalyticsChoice])
+  objc_storeStrong(location, completion);
+  _shouldReportCombinedAnalyticsChoice = [(BuddyDiagnosticsController *)selfCopy _shouldReportCombinedAnalyticsChoice];
+  [(BuddyDiagnosticsController *)selfCopy setShouldReportCombinedAnalyticsChoice:_shouldReportCombinedAnalyticsChoice & 1];
+  if ([(BuddyDiagnosticsController *)selfCopy shouldReportCombinedAnalyticsChoice])
   {
-    v4 = [(BuddyDiagnosticsController *)v7 analyticsManager];
+    analyticsManager = [(BuddyDiagnosticsController *)selfCopy analyticsManager];
 
-    if (!v4)
+    if (!analyticsManager)
     {
       objc_exception_throw([NSException exceptionWithName:@"Missing analytics manager" reason:0 userInfo:0]);
     }
 
-    v5 = [(BuddyDiagnosticsController *)v7 analyticsManager];
-    [(BYAnalyticsManager *)v5 prepareForCombinedAnalyticsRepromptWithCompletion:location[0]];
+    analyticsManager2 = [(BuddyDiagnosticsController *)selfCopy analyticsManager];
+    [(BYAnalyticsManager *)analyticsManager2 prepareForCombinedAnalyticsRepromptWithCompletion:location[0]];
   }
 
   else
@@ -837,44 +837,44 @@ LABEL_14:
 
 - (BOOL)_shouldReportCombinedAnalyticsChoice
 {
-  v2 = [(BuddyDiagnosticsController *)self runState];
-  v3 = [(BYRunState *)v2 hasCompletedInitialRun]^ 1;
+  runState = [(BuddyDiagnosticsController *)self runState];
+  v3 = [(BYRunState *)runState hasCompletedInitialRun]^ 1;
 
   if (v3)
   {
     return 0;
   }
 
-  v4 = [(BuddyDiagnosticsController *)self miscState];
-  v5 = ![(BuddyMiscState *)v4 launchedWithCombinedAnalyticsMismatch];
+  miscState = [(BuddyDiagnosticsController *)self miscState];
+  v5 = ![(BuddyMiscState *)miscState launchedWithCombinedAnalyticsMismatch];
 
   return (v5 & 1) == 0 && ([(BuddyDiagnosticsController *)self mode]& 6) == 6;
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   if (![(BuddyDiagnosticsController *)self imposeSeedPolicy])
   {
     return 1;
   }
 
-  if (![(BuddyDiagnosticsController *)v14 isSeedBuild])
+  if (![(BuddyDiagnosticsController *)selfCopy isSeedBuild])
   {
     return 0;
   }
 
-  v2 = [(BuddyDiagnosticsController *)v14 capabilities];
-  v3 = [(BYCapabilities *)v2 isDeviceAnalyticsRestricted];
+  capabilities = [(BuddyDiagnosticsController *)selfCopy capabilities];
+  isDeviceAnalyticsRestricted = [(BYCapabilities *)capabilities isDeviceAnalyticsRestricted];
 
-  v12 = v3 & 1;
-  v4 = [(BuddyDiagnosticsController *)v14 managedConfiguration];
-  v5 = [(MCProfileConnection *)v4 effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed]== 1;
+  v12 = isDeviceAnalyticsRestricted & 1;
+  managedConfiguration = [(BuddyDiagnosticsController *)selfCopy managedConfiguration];
+  v5 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed]== 1;
 
   v11 = v5;
-  v6 = [(BuddyDiagnosticsController *)v14 buddyPreferences];
-  v7 = [(BYPreferencesController *)v6 BOOLForKey:@"PBDiagnostics4Presented"];
+  buddyPreferences = [(BuddyDiagnosticsController *)selfCopy buddyPreferences];
+  v7 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"PBDiagnostics4Presented"];
 
   v10 = v7 & 1;
   oslog = _BYLoggingFacility();
@@ -888,19 +888,19 @@ LABEL_14:
   return (v12 & 1) == 0 && !v11 && (v10 & 1) == 0;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDiagnosticsController *)v30 managedConfiguration];
-  v4 = [(MCProfileConnection *)v3 userBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed];
-  [(BuddyDiagnosticsController *)v30 setInitialDeviceAnalyticsUserSetting:v4];
+  objc_storeStrong(location, completion);
+  managedConfiguration = [(BuddyDiagnosticsController *)selfCopy managedConfiguration];
+  v4 = [(MCProfileConnection *)managedConfiguration userBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed];
+  [(BuddyDiagnosticsController *)selfCopy setInitialDeviceAnalyticsUserSetting:v4];
 
-  v5 = [(BuddyDiagnosticsController *)v30 managedConfiguration];
-  v6 = [(MCProfileConnection *)v5 userBoolValueForSetting:MCFeatureAppAnalyticsAllowed];
-  [(BuddyDiagnosticsController *)v30 setInitialAppAnalyticsUserSetting:v6];
+  managedConfiguration2 = [(BuddyDiagnosticsController *)selfCopy managedConfiguration];
+  v6 = [(MCProfileConnection *)managedConfiguration2 userBoolValueForSetting:MCFeatureAppAnalyticsAllowed];
+  [(BuddyDiagnosticsController *)selfCopy setInitialAppAnalyticsUserSetting:v6];
 
   v7 = +[BYPreferencesController buddyPreferencesInternal];
   v28 = [v7 objectForKey:@"PBAnalyticsForceMode"];
@@ -910,13 +910,13 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v28 unsignedIntegerValue];
-      [(BuddyDiagnosticsController *)v30 setMode:v8];
+      unsignedIntegerValue = [v28 unsignedIntegerValue];
+      [(BuddyDiagnosticsController *)selfCopy setMode:unsignedIntegerValue];
       oslog = _BYLoggingFacility();
       v26 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        sub_100077E48(buf, [(BuddyDiagnosticsController *)v30 mode]);
+        sub_100077E48(buf, [(BuddyDiagnosticsController *)selfCopy mode]);
         _os_log_debug_impl(&_mh_execute_header, oslog, v26, "Analytics forcing mode %lu", buf, 0xCu);
       }
 
@@ -929,10 +929,10 @@ LABEL_14:
   v20 = 0;
   v21 = sub_1001DD810;
   v22 = &unk_10032B020;
-  v23 = v30;
+  v23 = selfCopy;
   v24 = location[0];
   v25 = objc_retainBlock(&v18);
-  if ([(BuddyDiagnosticsController *)v30 mode])
+  if ([(BuddyDiagnosticsController *)selfCopy mode])
   {
     (*(v25 + 2))(v25, 1);
     v17 = 1;
@@ -946,7 +946,7 @@ LABEL_14:
     v12 = 0;
     v13 = sub_1001DD948;
     v14 = &unk_10032AFD0;
-    v15 = v30;
+    v15 = selfCopy;
     v16 = v25;
     dispatch_async(v9, &v10);
 
@@ -962,17 +962,17 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3
++ (void)skippedByCloudConfigWithEnvironment:(id)environment
 {
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v4 = [location[0] chronicle];
-  v5 = [location[0] settingsManager];
-  v6 = [location[0] buddyPreferences];
-  [v3 setDeviceAnalyticsSubmissionEnabled:0 presented:0 chronicle:v4 settingsManager:v5 buddyPreferences:v6];
+  objc_storeStrong(location, environment);
+  v3 = selfCopy;
+  chronicle = [location[0] chronicle];
+  settingsManager = [location[0] settingsManager];
+  buddyPreferences = [location[0] buddyPreferences];
+  [v3 setDeviceAnalyticsSubmissionEnabled:0 presented:0 chronicle:chronicle settingsManager:settingsManager buddyPreferences:buddyPreferences];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, DiagnosticsShouldSubmitNotification, 0, 0, 0);

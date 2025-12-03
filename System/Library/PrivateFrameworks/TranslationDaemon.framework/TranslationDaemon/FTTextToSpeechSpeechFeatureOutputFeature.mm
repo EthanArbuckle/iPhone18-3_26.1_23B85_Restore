@@ -1,7 +1,7 @@
 @interface FTTextToSpeechSpeechFeatureOutputFeature
-- (FTTextToSpeechSpeechFeatureOutputFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureOutputFeature *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechSpeechFeatureOutputFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureOutputFeature *)root verify:(BOOL)verify;
 - (NSString)phone_name;
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureOutputFeature>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureOutputFeature>)addObjectToBuffer:(void *)buffer;
 - (float)begin_time;
 - (float)duration;
 - (float)end_time;
@@ -13,10 +13,10 @@
 
 @implementation FTTextToSpeechSpeechFeatureOutputFeature
 
-- (FTTextToSpeechSpeechFeatureOutputFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureOutputFeature *)a4 verify:(BOOL)a5
+- (FTTextToSpeechSpeechFeatureOutputFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureOutputFeature *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechSpeechFeatureOutputFeature;
   v10 = [(FTTextToSpeechSpeechFeatureOutputFeature *)&v25 init];
@@ -25,35 +25,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -202,18 +202,18 @@ LABEL_13:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureOutputFeature>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureOutputFeature>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTTextToSpeechSpeechFeatureOutputFeature *)self phone_name];
-  v6 = v5;
-  if (!v5)
+  phone_name = [(FTTextToSpeechSpeechFeatureOutputFeature *)self phone_name];
+  v6 = phone_name;
+  if (!phone_name)
   {
-    v5 = &stru_284834138;
+    phone_name = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)phone_name UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   [(FTTextToSpeechSpeechFeatureOutputFeature *)self begin_time];
   v10 = v9;
@@ -225,19 +225,19 @@ LABEL_13:
   v16 = v15;
   [(FTTextToSpeechSpeechFeatureOutputFeature *)self energy];
   v18 = v17;
-  v19 = [(FTTextToSpeechSpeechFeatureOutputFeature *)self word_id];
-  *(a3 + 70) = 1;
-  v20 = *(a3 + 10);
-  v21 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v7);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 6, v10, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 8, v12, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 10, v14, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 12, v16, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 14, v18, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v19, 0);
+  word_id = [(FTTextToSpeechSpeechFeatureOutputFeature *)self word_id];
+  *(buffer + 70) = 1;
+  v20 = *(buffer + 10);
+  v21 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, uTF8String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 6, v10, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 8, v12, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 10, v14, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 12, v16, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 14, v18, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, word_id, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v21 + v20);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v21 + v20);
 }
 
 - (id)flatbuffData

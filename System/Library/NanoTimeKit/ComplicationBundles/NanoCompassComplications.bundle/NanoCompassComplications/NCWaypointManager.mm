@@ -5,51 +5,51 @@
 - (BOOL)_allowWriteAccess;
 - (BOOL)_commitToCoreData;
 - (BOOL)_useCloudKitContainer;
-- (BOOL)addWaypoints:(id)a3;
-- (BOOL)saveElevationForDatabaseWaypoints:(id)a3;
-- (BOOL)updateWaypoints:(id)a3;
-- (NCWaypointManager)initWithSupportsParkedCarWaypoint:(BOOL)a3;
+- (BOOL)addWaypoints:(id)waypoints;
+- (BOOL)saveElevationForDatabaseWaypoints:(id)waypoints;
+- (BOOL)updateWaypoints:(id)waypoints;
+- (NCWaypointManager)initWithSupportsParkedCarWaypoint:(BOOL)waypoint;
 - (NSArray)cellularWaypoints;
 - (NSManagedObjectContext)viewContext;
 - (NSPersistentContainer)persistentContainer;
 - (id)_appBundle;
-- (id)_convertToNCWaypointList:(id)a3;
-- (id)_coreDataWaypointWithUUID:(id)a3;
-- (id)_excludingDisabledWaypoints:(id)a3;
-- (id)_fetchCompassWaypointsFromCoreDataIncludingDisabled:(BOOL)a3;
-- (id)_fetchCompassWaypointsIncludingDisabled:(BOOL)a3;
-- (id)_fetchItemsWithRequest:(id)a3;
-- (id)addWaypointAtLocation:(id)a3 withAltitude:(id)a4 withLabel:(id)a5 withColor:(id)a6 withSymbol:(id)a7 withType:(int64_t)a8 isEnabled:(BOOL)a9;
-- (id)fetchCompassWaypointsWithAltitude:(BOOL)a3;
+- (id)_convertToNCWaypointList:(id)list;
+- (id)_coreDataWaypointWithUUID:(id)d;
+- (id)_excludingDisabledWaypoints:(id)waypoints;
+- (id)_fetchCompassWaypointsFromCoreDataIncludingDisabled:(BOOL)disabled;
+- (id)_fetchCompassWaypointsIncludingDisabled:(BOOL)disabled;
+- (id)_fetchItemsWithRequest:(id)request;
+- (id)addWaypointAtLocation:(id)location withAltitude:(id)altitude withLabel:(id)label withColor:(id)color withSymbol:(id)symbol withType:(int64_t)type isEnabled:(BOOL)enabled;
+- (id)fetchCompassWaypointsWithAltitude:(BOOL)altitude;
 - (id)fetchDatabaseWaypoints;
 - (id)fetchDatabaseWaypointsWithElevation;
 - (id)fetchTargetedWaypoint;
-- (id)fetchWaypointsWithType:(int64_t)a3;
-- (id)waypointWithUUID:(id)a3;
-- (int64_t)_fetchCountItemsWithRequest:(id)a3;
-- (int64_t)numWaypointsInElevationTableOfType:(int64_t)a3;
-- (int64_t)numWaypointsMissingElevationOfType:(int64_t)a3;
-- (unint64_t)waypointCountContainingKeyword:(id)a3;
-- (void)_deleteWaypointInViewContext:(id)a3;
-- (void)_deleteWaypointInViewContextByUUID:(id)a3;
+- (id)fetchWaypointsWithType:(int64_t)type;
+- (id)waypointWithUUID:(id)d;
+- (int64_t)_fetchCountItemsWithRequest:(id)request;
+- (int64_t)numWaypointsInElevationTableOfType:(int64_t)type;
+- (int64_t)numWaypointsMissingElevationOfType:(int64_t)type;
+- (unint64_t)waypointCountContainingKeyword:(id)keyword;
+- (void)_deleteWaypointInViewContext:(id)context;
+- (void)_deleteWaypointInViewContextByUUID:(id)d;
 - (void)_fetchOrCreateParkedCarWaypoint;
 - (void)_logSystemWaypointsAnalytics;
-- (void)_printWaypointList:(id)a3;
+- (void)_printWaypointList:(id)list;
 - (void)_publishCellularWaypointsUpdate;
-- (void)_saveWaypoint:(id)a3;
-- (void)_submitSystemWaypointsAnalytics:(unint64_t)a3;
-- (void)_updateWaypointInViewContext:(id)a3;
+- (void)_saveWaypoint:(id)waypoint;
+- (void)_submitSystemWaypointsAnalytics:(unint64_t)analytics;
+- (void)_updateWaypointInViewContext:(id)context;
 - (void)deleteAllWaypoints;
-- (void)deleteWaypoint:(id)a3;
-- (void)deleteWaypointsByUUIDs:(id)a3;
+- (void)deleteWaypoint:(id)waypoint;
+- (void)deleteWaypointsByUUIDs:(id)ds;
 - (void)resetCompassWaypointsInDemoMode;
-- (void)setClosestDataWaypoint:(id)a3;
-- (void)setClosestSOSWaypoint:(id)a3;
-- (void)setRecentDataWaypoint:(id)a3;
-- (void)setRecentSOSWaypoint:(id)a3;
-- (void)updateParkedCarWaypointWithLocation:(id)a3 withAltitude:(id)a4;
-- (void)updateWaypoint:(id)a3;
-- (void)updateWaypointWithUUID:(id)a3 withLocation:(id)a4 withAltitude:(id)a5;
+- (void)setClosestDataWaypoint:(id)waypoint;
+- (void)setClosestSOSWaypoint:(id)waypoint;
+- (void)setRecentDataWaypoint:(id)waypoint;
+- (void)setRecentSOSWaypoint:(id)waypoint;
+- (void)updateParkedCarWaypointWithLocation:(id)location withAltitude:(id)altitude;
+- (void)updateWaypoint:(id)waypoint;
+- (void)updateWaypointWithUUID:(id)d withLocation:(id)location withAltitude:(id)altitude;
 @end
 
 @implementation NCWaypointManager
@@ -90,9 +90,9 @@
   return v3;
 }
 
-- (NCWaypointManager)initWithSupportsParkedCarWaypoint:(BOOL)a3
+- (NCWaypointManager)initWithSupportsParkedCarWaypoint:(BOOL)waypoint
 {
-  v3 = a3;
+  waypointCopy = waypoint;
   v20.receiver = self;
   v20.super_class = NCWaypointManager;
   v4 = [(NCWaypointManager *)&v20 init];
@@ -109,7 +109,7 @@
     v4->_bundleIdentifier = v14;
 
     v4->_lastCellularWaypointCount = -1;
-    if (v3)
+    if (waypointCopy)
     {
       objc_msgSend__fetchOrCreateParkedCarWaypoint(v4, v16, v17, v18);
     }
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)updateParkedCarWaypointWithLocation:(id)a3 withAltitude:(id)a4
+- (void)updateParkedCarWaypointWithLocation:(id)location withAltitude:(id)altitude
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  altitudeCopy = altitude;
+  locationCopy = location;
   v11 = objc_msgSend_parkedCarWaypoint(self, v8, v9, v10);
 
   if (!v11)
@@ -179,9 +179,9 @@
     _os_log_impl(&dword_23BD26000, v15, OS_LOG_TYPE_DEFAULT, "%s: Updating parked car waypoint. Posting ParkedCarWaypointChangedNotification.", &v49, 0xCu);
   }
 
-  objc_msgSend_setLocation_(self->_parkedCarWaypoint, v16, v7, v17);
+  objc_msgSend_setLocation_(self->_parkedCarWaypoint, v16, locationCopy, v17);
   objc_msgSend__postParkedCarWaypointChangedNotification(self, v18, v19, v20);
-  if (!v7)
+  if (!locationCopy)
   {
     v25 = objc_msgSend_sharedManager(NCTargetedWaypointManager, v21, v22, v23);
     v29 = objc_msgSend_targetedWaypointUUID(v25, v26, v27, v28);
@@ -206,7 +206,7 @@
       }
     }
 
-    if (v6)
+    if (altitudeCopy)
     {
       goto LABEL_7;
     }
@@ -216,16 +216,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!altitudeCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_7:
-  objc_msgSend_doubleValue(v6, v21, v22, v23);
+  objc_msgSend_doubleValue(altitudeCopy, v21, v22, v23);
 LABEL_15:
   objc_msgSend_setAltitude_(self->_parkedCarWaypoint, v21, v22, v23, v24);
-  objc_msgSend_setAltitudePopulated_(self->_parkedCarWaypoint, v44, v6 != 0, v45);
+  objc_msgSend_setAltitudePopulated_(self->_parkedCarWaypoint, v44, altitudeCopy != 0, v45);
   objc_msgSend__logSystemWaypointsAnalytics(self, v46, v47, v48);
 }
 
@@ -270,27 +270,27 @@ LABEL_6:
   return v20;
 }
 
-- (id)fetchCompassWaypointsWithAltitude:(BOOL)a3
+- (id)fetchCompassWaypointsWithAltitude:(BOOL)altitude
 {
-  v5 = objc_msgSend_fetchRequestForCompassWaypointsWithAltitude_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForCompassWaypointsWithAltitude_(NCWaypointFetchRequests, a2, altitude, v3);
   v8 = objc_msgSend__fetchItemsWithRequest_(self, v6, v5, v7);
   v11 = objc_msgSend__convertToNCWaypointList_(self, v9, v8, v10);
 
   return v11;
 }
 
-- (id)fetchWaypointsWithType:(int64_t)a3
+- (id)fetchWaypointsWithType:(int64_t)type
 {
-  v5 = objc_msgSend_fetchRequestForCountOfWaypointsInElevationTableOfType_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForCountOfWaypointsInElevationTableOfType_(NCWaypointFetchRequests, a2, type, v3);
   v8 = objc_msgSend__fetchItemsWithRequest_(self, v6, v5, v7);
   v11 = objc_msgSend__convertToNCWaypointList_(self, v9, v8, v10);
 
   return v11;
 }
 
-- (unint64_t)waypointCountContainingKeyword:(id)a3
+- (unint64_t)waypointCountContainingKeyword:(id)keyword
 {
-  v5 = objc_msgSend_fetchRequestForWaypointContainingKeyword_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForWaypointContainingKeyword_(NCWaypointFetchRequests, a2, keyword, v3);
   v8 = objc_msgSend__fetchItemsWithRequest_(self, v6, v5, v7);
   v12 = v8;
   if (v8)
@@ -306,25 +306,25 @@ LABEL_6:
   return v13;
 }
 
-- (void)deleteWaypoint:(id)a3
+- (void)deleteWaypoint:(id)waypoint
 {
-  objc_msgSend__deleteWaypointInViewContext_(self, a2, a3, v3);
+  objc_msgSend__deleteWaypointInViewContext_(self, a2, waypoint, v3);
   objc_msgSend__commitToCoreData(self, v5, v6, v7);
 
   objc_msgSend__postWaypointListChangedNotification(self, v8, v9, v10);
 }
 
-- (void)deleteWaypointsByUUIDs:(id)a3
+- (void)deleteWaypointsByUUIDs:(id)ds
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v5, v6, v7))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v4;
+    v8 = dsCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v22, v26, 16);
     if (v10)
     {
@@ -355,14 +355,14 @@ LABEL_6:
   }
 }
 
-- (void)_deleteWaypointInViewContextByUUID:(id)a3
+- (void)_deleteWaypointInViewContextByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8 = objc_msgSend_viewContext(self, v5, v6, v7);
 
   if (v8)
   {
-    v14 = objc_msgSend__coreDataWaypointWithUUID_(self, v9, v4, v10);
+    v14 = objc_msgSend__coreDataWaypointWithUUID_(self, v9, dCopy, v10);
     if (v14)
     {
       v15 = objc_msgSend_viewContext(self, v11, v12, v13);
@@ -371,7 +371,7 @@ LABEL_6:
       v21 = objc_msgSend_sharedManager(NCTargetedWaypointManager, v18, v19, v20);
       v25 = objc_msgSend_targetedWaypointUUID(v21, v22, v23, v24);
 
-      if (v25 && objc_msgSend_isEqual_(v4, v26, v25, v27))
+      if (v25 && objc_msgSend_isEqual_(dCopy, v26, v25, v27))
       {
         v31 = objc_msgSend_sharedManager(NCTargetedWaypointManager, v28, v29, v30);
         objc_msgSend_setTargetedWaypointUUID_(v31, v32, 0, v33);
@@ -398,15 +398,15 @@ LABEL_6:
   }
 }
 
-- (void)_deleteWaypointInViewContext:(id)a3
+- (void)_deleteWaypointInViewContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = NCLogForCategory(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = objc_msgSend_label(v4, v6, v7, v8);
-    v13 = objc_msgSend_uuid(v4, v10, v11, v12);
+    v9 = objc_msgSend_label(contextCopy, v6, v7, v8);
+    v13 = objc_msgSend_uuid(contextCopy, v10, v11, v12);
     v17 = objc_msgSend_UUIDString(v13, v14, v15, v16);
     v24 = 138412546;
     v25 = v9;
@@ -415,7 +415,7 @@ LABEL_6:
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "Delete waypoint %@ with uuid %{public}@.", &v24, 0x16u);
   }
 
-  v21 = objc_msgSend_uuid(v4, v18, v19, v20);
+  v21 = objc_msgSend_uuid(contextCopy, v18, v19, v20);
   objc_msgSend__deleteWaypointInViewContextByUUID_(self, v22, v21, v23);
 }
 
@@ -485,15 +485,15 @@ LABEL_6:
   }
 }
 
-- (id)addWaypointAtLocation:(id)a3 withAltitude:(id)a4 withLabel:(id)a5 withColor:(id)a6 withSymbol:(id)a7 withType:(int64_t)a8 isEnabled:(BOOL)a9
+- (id)addWaypointAtLocation:(id)location withAltitude:(id)altitude withLabel:(id)label withColor:(id)color withSymbol:(id)symbol withType:(int64_t)type isEnabled:(BOOL)enabled
 {
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  symbolCopy = symbol;
+  colorCopy = color;
+  labelCopy = label;
+  altitudeCopy = altitude;
+  locationCopy = location;
   v20 = [NCWaypoint alloc];
-  isEnabled = objc_msgSend_initWithLabel_color_symbol_type_location_altitude_isEnabled_(v20, v21, v17, v16, v15, a8, v19, v18, a9);
+  isEnabled = objc_msgSend_initWithLabel_color_symbol_type_location_altitude_isEnabled_(v20, v21, labelCopy, colorCopy, symbolCopy, type, locationCopy, altitudeCopy, enabled);
 
   objc_msgSend__saveWaypoint_(self, v23, isEnabled, v24);
   objc_msgSend__commitToCoreData(self, v25, v26, v27);
@@ -502,17 +502,17 @@ LABEL_6:
   return isEnabled;
 }
 
-- (BOOL)addWaypoints:(id)a3
+- (BOOL)addWaypoints:(id)waypoints
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7))
+  waypointsCopy = waypoints;
+  if (objc_msgSend_count(waypointsCopy, v5, v6, v7))
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v4;
+    v8 = waypointsCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v24, v28, 16);
     if (v10)
     {
@@ -551,25 +551,25 @@ LABEL_13:
   return v22;
 }
 
-- (void)updateWaypoint:(id)a3
+- (void)updateWaypoint:(id)waypoint
 {
-  objc_msgSend__updateWaypointInViewContext_(self, a2, a3, v3);
+  objc_msgSend__updateWaypointInViewContext_(self, a2, waypoint, v3);
   objc_msgSend__commitToCoreData(self, v5, v6, v7);
 
   objc_msgSend__postWaypointListChangedNotification(self, v8, v9, v10);
 }
 
-- (BOOL)updateWaypoints:(id)a3
+- (BOOL)updateWaypoints:(id)waypoints
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7))
+  waypointsCopy = waypoints;
+  if (objc_msgSend_count(waypointsCopy, v5, v6, v7))
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v4;
+    v8 = waypointsCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v24, v28, 16);
     if (v10)
     {
@@ -608,36 +608,36 @@ LABEL_13:
   return v22;
 }
 
-- (void)_updateWaypointInViewContext:(id)a3
+- (void)_updateWaypointInViewContext:(id)context
 {
-  v4 = a3;
-  v8 = objc_msgSend_uuid(v4, v5, v6, v7);
+  contextCopy = context;
+  v8 = objc_msgSend_uuid(contextCopy, v5, v6, v7);
   v11 = objc_msgSend__coreDataWaypointWithUUID_(self, v9, v8, v10);
 
   if (v11)
   {
-    v15 = objc_msgSend_label(v4, v12, v13, v14);
+    v15 = objc_msgSend_label(contextCopy, v12, v13, v14);
     objc_msgSend_setLabel_(v11, v16, v15, v17);
 
-    v21 = objc_msgSend_labelColor(v4, v18, v19, v20);
+    v21 = objc_msgSend_labelColor(contextCopy, v18, v19, v20);
     objc_msgSend_setLabelColor_(v11, v22, v21, v23);
 
-    isEnabled = objc_msgSend_isEnabled(v4, v24, v25, v26);
+    isEnabled = objc_msgSend_isEnabled(contextCopy, v24, v25, v26);
     objc_msgSend_setEnabled_(v11, v28, isEnabled, v29);
-    v33 = objc_msgSend_symbol(v4, v30, v31, v32);
+    v33 = objc_msgSend_symbol(contextCopy, v30, v31, v32);
     objc_msgSend_setSymbol_(v11, v34, v33, v35);
 
-    v39 = objc_msgSend_timestampOfCreation(v4, v36, v37, v38);
+    v39 = objc_msgSend_timestampOfCreation(contextCopy, v36, v37, v38);
     objc_msgSend_setTimeOfCreation_(v11, v40, v39, v41);
 
-    v45 = objc_msgSend_location(v4, v42, v43, v44);
+    v45 = objc_msgSend_location(contextCopy, v42, v43, v44);
     objc_msgSend_setCoreLocation_(v11, v46, v45, v47);
 
-    objc_msgSend_altitude(v4, v48, v49, v50);
+    objc_msgSend_altitude(contextCopy, v48, v49, v50);
     objc_msgSend_setAltitude_(v11, v51, v52, v53);
-    isAltitudePopulated = objc_msgSend_isAltitudePopulated(v4, v54, v55, v56);
+    isAltitudePopulated = objc_msgSend_isAltitudePopulated(contextCopy, v54, v55, v56);
     objc_msgSend_setAltitudePopulated_(v11, v58, isAltitudePopulated, v59);
-    v63 = objc_msgSend_type(v4, v60, v61, v62);
+    v63 = objc_msgSend_type(contextCopy, v60, v61, v62);
     objc_msgSend_setType_(v11, v64, v63, v65);
   }
 
@@ -646,24 +646,24 @@ LABEL_13:
     v66 = NCLogForCategory(7uLL);
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
     {
-      sub_23BD6664C(v4, v66, v67, v68);
+      sub_23BD6664C(contextCopy, v66, v67, v68);
     }
   }
 }
 
-- (void)updateWaypointWithUUID:(id)a3 withLocation:(id)a4 withAltitude:(id)a5
+- (void)updateWaypointWithUUID:(id)d withLocation:(id)location withAltitude:(id)altitude
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend__coreDataWaypointWithUUID_(self, v11, v8, v12);
+  dCopy = d;
+  locationCopy = location;
+  altitudeCopy = altitude;
+  v13 = objc_msgSend__coreDataWaypointWithUUID_(self, v11, dCopy, v12);
   v16 = v13;
   if (v13)
   {
-    objc_msgSend_setCoreLocation_(v13, v14, v9, v15);
-    if (v10)
+    objc_msgSend_setCoreLocation_(v13, v14, locationCopy, v15);
+    if (altitudeCopy)
     {
-      objc_msgSend_doubleValue(v10, v17, v18, v19);
+      objc_msgSend_doubleValue(altitudeCopy, v17, v18, v19);
     }
 
     else
@@ -672,7 +672,7 @@ LABEL_13:
     }
 
     objc_msgSend_setAltitude_(v16, v17, v18, v19, v20);
-    objc_msgSend_setAltitudePopulated_(v16, v22, v10 != 0, v23);
+    objc_msgSend_setAltitudePopulated_(v16, v22, altitudeCopy != 0, v23);
     objc_msgSend__commitToCoreData(self, v24, v25, v26);
     objc_msgSend__postWaypointListChangedNotification(self, v27, v28, v29);
   }
@@ -687,9 +687,9 @@ LABEL_13:
   }
 }
 
-- (id)waypointWithUUID:(id)a3
+- (id)waypointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -701,7 +701,7 @@ LABEL_13:
   v14[1] = 3221225472;
   v14[2] = sub_23BD421A8;
   v14[3] = &unk_278B945F8;
-  v9 = v4;
+  v9 = dCopy;
   v15 = v9;
   v16 = &v17;
   objc_msgSend_enumerateObjectsUsingBlock_(v8, v10, v14, v11);
@@ -712,18 +712,18 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)saveElevationForDatabaseWaypoints:(id)a3
+- (BOOL)saveElevationForDatabaseWaypoints:(id)waypoints
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7))
+  waypointsCopy = waypoints;
+  if (objc_msgSend_count(waypointsCopy, v5, v6, v7))
   {
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v60 = v4;
-    obj = v4;
+    v60 = waypointsCopy;
+    obj = waypointsCopy;
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v63, v73, 16);
     if (v9)
     {
@@ -785,7 +785,7 @@ LABEL_13:
 
     v55 = objc_msgSend__commitToCoreData(self, v52, v53, v54);
     objc_msgSend__postWaypointListChangedNotification(self, v56, v57, v58);
-    v4 = v60;
+    waypointsCopy = v60;
   }
 
   else
@@ -844,17 +844,17 @@ LABEL_13:
 - (NSPersistentContainer)persistentContainer
 {
   v90[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_persistentContainer && isFullyFeaturedApp())
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_persistentContainer && isFullyFeaturedApp())
   {
-    bundle = v2->_bundle;
+    bundle = selfCopy->_bundle;
     if (bundle)
     {
       v5 = objc_msgSend_URLForResource_withExtension_(bundle, v3, @"CompassModel", @"momd");
       v6 = objc_alloc(MEMORY[0x277CBE450]);
       v9 = objc_msgSend_initWithContentsOfURL_(v6, v7, v5, v8);
-      v13 = objc_msgSend__useCloudKitContainer(v2, v10, v11, v12);
+      v13 = objc_msgSend__useCloudKitContainer(selfCopy, v10, v11, v12);
       v14 = 0x277CBE470;
       if (!v13)
       {
@@ -863,8 +863,8 @@ LABEL_13:
 
       v15 = objc_alloc(*v14);
       v17 = objc_msgSend_initWithName_managedObjectModel_(v15, v16, @"CompassModel", v9);
-      persistentContainer = v2->_persistentContainer;
-      v2->_persistentContainer = v17;
+      persistentContainer = selfCopy->_persistentContainer;
+      selfCopy->_persistentContainer = v17;
 
       v22 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v19, v20, v21);
       v25 = objc_msgSend_containerURLForSecurityApplicationGroupIdentifier_(v22, v23, @"group.com.apple.nanocompass", v24);
@@ -886,7 +886,7 @@ LABEL_13:
         v42 = objc_msgSend_persistentStoreDescriptionWithURL_(MEMORY[0x277CBE4E0], v37, v31, v38);
         if (v13)
         {
-          v43 = objc_msgSend__appBundle(v2, v39, v40, v41);
+          v43 = objc_msgSend__appBundle(selfCopy, v39, v40, v41);
           v90[0] = v43;
           v45 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v44, v90, 1);
           objc_msgSend_setOption_forKey_(v42, v46, v45, *MEMORY[0x277CBE220]);
@@ -897,7 +897,7 @@ LABEL_13:
           objc_msgSend_setCloudKitContainerOptions_(v42, v53, v50, v54);
         }
 
-        v55 = objc_msgSend__allowWriteAccess(v2, v39, v40, v41);
+        v55 = objc_msgSend__allowWriteAccess(selfCopy, v39, v40, v41);
         v57 = *MEMORY[0x277CBE2B0];
         if (v55)
         {
@@ -912,13 +912,13 @@ LABEL_13:
         }
 
         v66 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v59, v42, v60);
-        objc_msgSend_setPersistentStoreDescriptions_(v2->_persistentContainer, v67, v66, v68);
+        objc_msgSend_setPersistentStoreDescriptions_(selfCopy->_persistentContainer, v67, v66, v68);
 
-        objc_initWeak(&location, v2);
+        objc_initWeak(&location, selfCopy);
         v69 = NCLogForCategory(7uLL);
         if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
         {
-          bundleIdentifier = v2->_bundleIdentifier;
+          bundleIdentifier = selfCopy->_bundleIdentifier;
           Only = objc_msgSend_isReadOnly(v42, v70, v71, v72);
           v75 = @"not ";
           if (v13)
@@ -945,7 +945,7 @@ LABEL_13:
           _os_log_impl(&dword_23BD26000, v69, OS_LOG_TYPE_DEFAULT, "Start loading store for %@. It's %@a CloudKit container. It's %@.", buf, 0x20u);
         }
 
-        v77 = v2->_persistentContainer;
+        v77 = selfCopy->_persistentContainer;
         v81[0] = MEMORY[0x277D85DD0];
         v81[1] = 3221225472;
         v81[2] = sub_23BD42D0C;
@@ -964,13 +964,13 @@ LABEL_13:
         sub_23BD66768();
       }
 
-      v63 = v2->_persistentContainer;
-      v2->_persistentContainer = 0;
+      v63 = selfCopy->_persistentContainer;
+      selfCopy->_persistentContainer = 0;
 
-      viewContext = v2->_viewContext;
-      v2->_viewContext = 0;
+      viewContext = selfCopy->_viewContext;
+      selfCopy->_viewContext = 0;
 
-      v61 = v2->_persistentContainer;
+      v61 = selfCopy->_persistentContainer;
     }
 
     else
@@ -984,14 +984,14 @@ LABEL_13:
       v61 = 0;
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
     goto LABEL_30;
   }
 
 LABEL_29:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v61 = v2->_persistentContainer;
+  v61 = selfCopy->_persistentContainer;
 LABEL_30:
 
   return v61;
@@ -1041,36 +1041,36 @@ LABEL_30:
 
 - (NSManagedObjectContext)viewContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_viewContext)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_viewContext)
   {
-    v6 = objc_msgSend_persistentContainer(v2, v3, v4, v5);
+    v6 = objc_msgSend_persistentContainer(selfCopy, v3, v4, v5);
     v10 = objc_msgSend_viewContext(v6, v7, v8, v9);
-    viewContext = v2->_viewContext;
-    v2->_viewContext = v10;
+    viewContext = selfCopy->_viewContext;
+    selfCopy->_viewContext = v10;
 
-    objc_msgSend_setMergePolicy_(v2->_viewContext, v12, *MEMORY[0x277CBE1C8], v13);
+    objc_msgSend_setMergePolicy_(selfCopy->_viewContext, v12, *MEMORY[0x277CBE1C8], v13);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v14 = v2->_viewContext;
+  v14 = selfCopy->_viewContext;
 
   return v14;
 }
 
-- (id)_fetchItemsWithRequest:(id)a3
+- (id)_fetchItemsWithRequest:(id)request
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v8 = objc_msgSend_viewContext(self, v5, v6, v7);
 
   if (v8)
   {
     v12 = objc_msgSend_viewContext(self, v9, v10, v11);
     v36 = 0;
-    v14 = objc_msgSend_executeFetchRequest_error_(v12, v13, v4, &v36);
+    v14 = objc_msgSend_executeFetchRequest_error_(v12, v13, requestCopy, &v36);
     v15 = v36;
     v19 = objc_msgSend_mutableCopy(v14, v16, v17, v18);
 
@@ -1119,9 +1119,9 @@ LABEL_10:
   return v30;
 }
 
-- (int64_t)_fetchCountItemsWithRequest:(id)a3
+- (int64_t)_fetchCountItemsWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8 = objc_msgSend_viewContext(self, v5, v6, v7);
 
   if (!v8)
@@ -1137,7 +1137,7 @@ LABEL_10:
 
   v12 = objc_msgSend_viewContext(self, v9, v10, v11);
   v20 = 0;
-  Request_error = objc_msgSend_countForFetchRequest_error_(v12, v13, v4, &v20);
+  Request_error = objc_msgSend_countForFetchRequest_error_(v12, v13, requestCopy, &v20);
   v15 = v20;
 
   if (v15)
@@ -1213,23 +1213,23 @@ LABEL_14:
   return v24;
 }
 
-- (id)_fetchCompassWaypointsIncludingDisabled:(BOOL)a3
+- (id)_fetchCompassWaypointsIncludingDisabled:(BOOL)disabled
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)_fetchCompassWaypointsFromCoreDataIncludingDisabled:(BOOL)a3
+- (id)_fetchCompassWaypointsFromCoreDataIncludingDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
-    objc_msgSend_fetchRequestForCompassWaypoints(NCWaypointFetchRequests, a2, a3, v3);
+    objc_msgSend_fetchRequestForCompassWaypoints(NCWaypointFetchRequests, a2, disabled, v3);
   }
 
   else
   {
-    objc_msgSend_fetchRequestForEnabledCompassWaypoints(NCWaypointFetchRequests, a2, a3, v3);
+    objc_msgSend_fetchRequestForEnabledCompassWaypoints(NCWaypointFetchRequests, a2, disabled, v3);
   }
   v5 = ;
   v8 = objc_msgSend__fetchItemsWithRequest_(self, v6, v5, v7);
@@ -1238,9 +1238,9 @@ LABEL_14:
   return v11;
 }
 
-- (id)_coreDataWaypointWithUUID:(id)a3
+- (id)_coreDataWaypointWithUUID:(id)d
 {
-  v5 = objc_msgSend_fetchRequestForWaypointWithUUID_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForWaypointWithUUID_(NCWaypointFetchRequests, a2, d, v3);
   v8 = objc_msgSend__fetchItemsWithRequest_(self, v6, v5, v7);
   v12 = v8;
   if (v8 && objc_msgSend_count(v8, v9, v10, v11))
@@ -1256,16 +1256,16 @@ LABEL_14:
   return v15;
 }
 
-- (id)_excludingDisabledWaypoints:(id)a3
+- (id)_excludingDisabledWaypoints:(id)waypoints
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  waypointsCopy = waypoints;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = waypointsCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v25, v33, 16);
   if (v7)
   {
@@ -1309,14 +1309,14 @@ LABEL_14:
   return v4;
 }
 
-- (void)_printWaypointList:(id)a3
+- (void)_printWaypointList:(id)list
 {
   v68 = *MEMORY[0x277D85DE8];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = a3;
+  obj = list;
   v4 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v3, &v51, v67, 16);
   if (v4)
   {
@@ -1372,9 +1372,9 @@ LABEL_14:
   }
 }
 
-- (void)_saveWaypoint:(id)a3
+- (void)_saveWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   v8 = objc_msgSend_viewContext(self, v5, v6, v7);
 
   if (v8)
@@ -1383,31 +1383,31 @@ LABEL_14:
     v13 = objc_msgSend_viewContext(self, v9, v10, v11);
     v15 = objc_msgSend_insertNewObjectForEntityForName_inManagedObjectContext_(v12, v14, @"Waypoint", v13);
 
-    v19 = objc_msgSend_uuid(v4, v16, v17, v18);
+    v19 = objc_msgSend_uuid(waypointCopy, v16, v17, v18);
     objc_msgSend_setUuid_(v15, v20, v19, v21);
 
-    v25 = objc_msgSend_label(v4, v22, v23, v24);
+    v25 = objc_msgSend_label(waypointCopy, v22, v23, v24);
     objc_msgSend_setLabel_(v15, v26, v25, v27);
 
-    v31 = objc_msgSend_labelColor(v4, v28, v29, v30);
+    v31 = objc_msgSend_labelColor(waypointCopy, v28, v29, v30);
     objc_msgSend_setLabelColor_(v15, v32, v31, v33);
 
-    isEnabled = objc_msgSend_isEnabled(v4, v34, v35, v36);
+    isEnabled = objc_msgSend_isEnabled(waypointCopy, v34, v35, v36);
     objc_msgSend_setEnabled_(v15, v38, isEnabled, v39);
-    v43 = objc_msgSend_symbol(v4, v40, v41, v42);
+    v43 = objc_msgSend_symbol(waypointCopy, v40, v41, v42);
     objc_msgSend_setSymbol_(v15, v44, v43, v45);
 
-    v49 = objc_msgSend_timestampOfCreation(v4, v46, v47, v48);
+    v49 = objc_msgSend_timestampOfCreation(waypointCopy, v46, v47, v48);
     objc_msgSend_setTimeOfCreation_(v15, v50, v49, v51);
 
-    v55 = objc_msgSend_location(v4, v52, v53, v54);
+    v55 = objc_msgSend_location(waypointCopy, v52, v53, v54);
     objc_msgSend_setCoreLocation_(v15, v56, v55, v57);
 
-    objc_msgSend_altitude(v4, v58, v59, v60);
+    objc_msgSend_altitude(waypointCopy, v58, v59, v60);
     objc_msgSend_setAltitude_(v15, v61, v62, v63);
-    isAltitudePopulated = objc_msgSend_isAltitudePopulated(v4, v64, v65, v66);
+    isAltitudePopulated = objc_msgSend_isAltitudePopulated(waypointCopy, v64, v65, v66);
     objc_msgSend_setAltitudePopulated_(v15, v68, isAltitudePopulated, v69);
-    v73 = objc_msgSend_type(v4, v70, v71, v72);
+    v73 = objc_msgSend_type(waypointCopy, v70, v71, v72);
     objc_msgSend_setType_(v15, v74, v73, v75);
   }
 
@@ -1421,16 +1421,16 @@ LABEL_14:
   }
 }
 
-- (id)_convertToNCWaypointList:(id)a3
+- (id)_convertToNCWaypointList:(id)list
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v5 = v3;
+  v5 = listCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v46, v60, 16);
   if (v7)
   {
@@ -1500,17 +1500,17 @@ LABEL_14:
   return v4;
 }
 
-- (void)setClosestDataWaypoint:(id)a3
+- (void)setClosestDataWaypoint:(id)waypoint
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  waypointCopy = waypoint;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_closestDataWaypoint, v6, v5, v7) & 1) == 0)
+  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_closestDataWaypoint, v6, waypointCopy, v7) & 1) == 0)
   {
-    if (v5)
+    if (waypointCopy)
     {
-      v11 = objc_msgSend_uuid(v5, v8, v9, v10);
-      v15 = objc_msgSend_location(v5, v12, v13, v14);
+      v11 = objc_msgSend_uuid(waypointCopy, v8, v9, v10);
+      v15 = objc_msgSend_location(waypointCopy, v12, v13, v14);
       objc_msgSend_altitude(v15, v16, v17, v18);
       v20 = v19;
       v21 = NCLogForCategory(8uLL);
@@ -1533,7 +1533,7 @@ LABEL_14:
       {
 LABEL_9:
 
-        objc_storeStrong(&self->_closestDataWaypoint, a3);
+        objc_storeStrong(&self->_closestDataWaypoint, waypoint);
         objc_msgSend__publishCellularWaypointsUpdate(self, v25, v26, v27);
         goto LABEL_10;
       }
@@ -1550,17 +1550,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setClosestSOSWaypoint:(id)a3
+- (void)setClosestSOSWaypoint:(id)waypoint
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  waypointCopy = waypoint;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_closestSOSWaypoint, v6, v5, v7) & 1) == 0)
+  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_closestSOSWaypoint, v6, waypointCopy, v7) & 1) == 0)
   {
-    if (v5)
+    if (waypointCopy)
     {
-      v11 = objc_msgSend_uuid(v5, v8, v9, v10);
-      v15 = objc_msgSend_location(v5, v12, v13, v14);
+      v11 = objc_msgSend_uuid(waypointCopy, v8, v9, v10);
+      v15 = objc_msgSend_location(waypointCopy, v12, v13, v14);
       objc_msgSend_altitude(v15, v16, v17, v18);
       v20 = v19;
       v21 = NCLogForCategory(8uLL);
@@ -1583,7 +1583,7 @@ LABEL_10:
       {
 LABEL_9:
 
-        objc_storeStrong(&self->_closestSOSWaypoint, a3);
+        objc_storeStrong(&self->_closestSOSWaypoint, waypoint);
         objc_msgSend__publishCellularWaypointsUpdate(self, v25, v26, v27);
         goto LABEL_10;
       }
@@ -1600,17 +1600,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setRecentDataWaypoint:(id)a3
+- (void)setRecentDataWaypoint:(id)waypoint
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  waypointCopy = waypoint;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_recentDataWaypoint, v6, v5, v7) & 1) == 0)
+  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_recentDataWaypoint, v6, waypointCopy, v7) & 1) == 0)
   {
-    if (v5)
+    if (waypointCopy)
     {
-      v11 = objc_msgSend_uuid(v5, v8, v9, v10);
-      v15 = objc_msgSend_location(v5, v12, v13, v14);
+      v11 = objc_msgSend_uuid(waypointCopy, v8, v9, v10);
+      v15 = objc_msgSend_location(waypointCopy, v12, v13, v14);
       objc_msgSend_altitude(v15, v16, v17, v18);
       v20 = v19;
       v21 = NCLogForCategory(8uLL);
@@ -1633,7 +1633,7 @@ LABEL_10:
       {
 LABEL_9:
 
-        objc_storeStrong(&self->_recentDataWaypoint, a3);
+        objc_storeStrong(&self->_recentDataWaypoint, waypoint);
         objc_msgSend__publishCellularWaypointsUpdate(self, v25, v26, v27);
         goto LABEL_10;
       }
@@ -1651,17 +1651,17 @@ LABEL_10:
   objc_msgSend__logSystemWaypointsAnalytics(self, v8, v9, v10);
 }
 
-- (void)setRecentSOSWaypoint:(id)a3
+- (void)setRecentSOSWaypoint:(id)waypoint
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  waypointCopy = waypoint;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_recentSOSWaypoint, v6, v5, v7) & 1) == 0)
+  if ((objc_msgSend_isEquivalentCellularWaypoint_(self->_recentSOSWaypoint, v6, waypointCopy, v7) & 1) == 0)
   {
-    if (v5)
+    if (waypointCopy)
     {
-      v11 = objc_msgSend_uuid(v5, v8, v9, v10);
-      v15 = objc_msgSend_location(v5, v12, v13, v14);
+      v11 = objc_msgSend_uuid(waypointCopy, v8, v9, v10);
+      v15 = objc_msgSend_location(waypointCopy, v12, v13, v14);
       objc_msgSend_altitude(v15, v16, v17, v18);
       v20 = v19;
       v21 = NCLogForCategory(8uLL);
@@ -1684,7 +1684,7 @@ LABEL_10:
       {
 LABEL_9:
 
-        objc_storeStrong(&self->_recentSOSWaypoint, a3);
+        objc_storeStrong(&self->_recentSOSWaypoint, waypoint);
         objc_msgSend__publishCellularWaypointsUpdate(self, v25, v26, v27);
         goto LABEL_10;
       }
@@ -1832,17 +1832,17 @@ LABEL_31:
   objc_msgSend__postWaypointListChangedNotification(self, a2, v2, v3);
 }
 
-- (int64_t)numWaypointsMissingElevationOfType:(int64_t)a3
+- (int64_t)numWaypointsMissingElevationOfType:(int64_t)type
 {
-  v5 = objc_msgSend_fetchRequestForCountOfMissingElevationForWaypointsOfType_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForCountOfMissingElevationForWaypointsOfType_(NCWaypointFetchRequests, a2, type, v3);
   CountItemsWithRequest = objc_msgSend__fetchCountItemsWithRequest_(self, v6, v5, v7);
 
   return CountItemsWithRequest;
 }
 
-- (int64_t)numWaypointsInElevationTableOfType:(int64_t)a3
+- (int64_t)numWaypointsInElevationTableOfType:(int64_t)type
 {
-  v5 = objc_msgSend_fetchRequestForCountOfWaypointsInElevationTableOfType_(NCWaypointFetchRequests, a2, a3, v3);
+  v5 = objc_msgSend_fetchRequestForCountOfWaypointsInElevationTableOfType_(NCWaypointFetchRequests, a2, type, v3);
   CountItemsWithRequest = objc_msgSend__fetchCountItemsWithRequest_(self, v6, v5, v7);
 
   return CountItemsWithRequest;
@@ -1903,16 +1903,16 @@ LABEL_31:
   }
 }
 
-- (void)_submitSystemWaypointsAnalytics:(unint64_t)a3
+- (void)_submitSystemWaypointsAnalytics:(unint64_t)analytics
 {
-  v5 = a3 >> 2;
-  v6 = a3 >> 1;
-  v13 = objc_msgSend_now(MEMORY[0x277CBEAA8], a2, a3, v3);
+  v5 = analytics >> 2;
+  v6 = analytics >> 1;
+  v13 = objc_msgSend_now(MEMORY[0x277CBEAA8], a2, analytics, v3);
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v10 = objc_msgSend_initWithSuiteName_(v7, v8, @"com.apple.compass", v9);
-  objc_msgSend_setInteger_forKey_(v10, v11, a3, @"systemWaypointsAnalyticsLastLoggedWaypoints");
+  objc_msgSend_setInteger_forKey_(v10, v11, analytics, @"systemWaypointsAnalyticsLastLoggedWaypoints");
   objc_msgSend_setObject_forKey_(v10, v12, v13, @"systemWaypointsAnalyticsLastLoggedDate");
-  SendSystemWaypointAvailability(a3 & 1 | ((v6 & 1) << 8) | ((v5 & 1) << 16));
+  SendSystemWaypointAvailability(analytics & 1 | ((v6 & 1) << 8) | ((v5 & 1) << 16));
 }
 
 - (void)resetCompassWaypointsInDemoMode

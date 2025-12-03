@@ -1,56 +1,56 @@
 @interface RCWaveformGenerator
-- (BOOL)_appendAveragePowerLevelsByDigestingWaveformSegments:(id)a3;
-- (BOOL)_appendPowerMeterValuesFromDataInAudioFile:(id)a3 progressBlock:(id)a4;
-- (BOOL)appendAveragePowerLevel:(float)a3;
-- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)a3;
-- (BOOL)appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:(id)a3 progressBlock:(id)a4;
-- (BOOL)appendAveragePowerLevelsByDigestingSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BOOL)appendAveragePowerLevelsByDigestingWaveform:(id)a3;
-- (BOOL)appendAveragePowerLevelsByDigestingWaveformSegments:(id)a3;
+- (BOOL)_appendAveragePowerLevelsByDigestingWaveformSegments:(id)segments;
+- (BOOL)_appendPowerMeterValuesFromDataInAudioFile:(id)file progressBlock:(id)block;
+- (BOOL)appendAveragePowerLevel:(float)level;
+- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)buffer;
+- (BOOL)appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:(id)l progressBlock:(id)block;
+- (BOOL)appendAveragePowerLevelsByDigestingSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BOOL)appendAveragePowerLevelsByDigestingWaveform:(id)waveform;
+- (BOOL)appendAveragePowerLevelsByDigestingWaveformSegments:(id)segments;
 - (BOOL)finished;
 - (BOOL)idle;
 - (BOOL)loadable;
 - (BOOL)paused;
 - (RCWaveformGenerator)init;
-- (RCWaveformGenerator)initWithSamplingParametersFromGenerator:(id)a3 trackIndex:(unint64_t)a4;
-- (RCWaveformGenerator)initWithSegmentFlushInterval:(double)a3 trackIndex:(unint64_t)a4;
+- (RCWaveformGenerator)initWithSamplingParametersFromGenerator:(id)generator trackIndex:(unint64_t)index;
+- (RCWaveformGenerator)initWithSegmentFlushInterval:(double)interval trackIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)synchronouslyApproximateWaveformForAVContentURL:(id)a3 byReadingCurrentFileAheadTimeRange:(id)a4;
-- (void)_appendAveragePowerLevel:(float)a3;
-- (void)_appendAveragePowerLevelsByDigestingTimeRange:(id)a3 inAudioFile:(id)a4;
-- (void)_appendPowerMeterValuesFromAudioPCMBuffer:(id)a3;
-- (void)_appendPowerMeterValuesFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_onQueue_appendAveragePowerLevelsByDigestingTimeRange:(id)a3 inAudioFile:(id)a4;
-- (void)_onQueue_appendSegment:(id)a3;
-- (void)_onQueue_digestAveragePowerLevel:(float)a3;
+- (id)synchronouslyApproximateWaveformForAVContentURL:(id)l byReadingCurrentFileAheadTimeRange:(id)range;
+- (void)_appendAveragePowerLevel:(float)level;
+- (void)_appendAveragePowerLevelsByDigestingTimeRange:(id)range inAudioFile:(id)file;
+- (void)_appendPowerMeterValuesFromAudioPCMBuffer:(id)buffer;
+- (void)_appendPowerMeterValuesFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_onQueue_appendAveragePowerLevelsByDigestingTimeRange:(id)range inAudioFile:(id)file;
+- (void)_onQueue_appendSegment:(id)segment;
+- (void)_onQueue_digestAveragePowerLevel:(float)level;
 - (void)_onQueue_flushRemainingData;
-- (void)_onQueue_flushWaveformSegment:(id)a3;
-- (void)_onQueue_flushWithNextSegmentWithEndTime:(double)a3 isPredigest:(BOOL)a4;
+- (void)_onQueue_flushWaveformSegment:(id)segment;
+- (void)_onQueue_flushWithNextSegmentWithEndTime:(double)time isPredigest:(BOOL)predigest;
 - (void)_onQueue_performInternalFinishedLoadingBlocksAndFinishObservers;
-- (void)_onQueue_performLoadingFinishedBlock:(id)a3 internalBlockUUID:(id)a4 isTimeout:(BOOL)a5;
-- (void)_onQueue_performObserversBlock:(id)a3;
-- (void)_onQueue_pushAveragePowerLevel:(float)a3;
-- (void)addSegmentOutputObserver:(id)a3;
-- (void)async_finishLoadingByTerminating:(BOOL)a3 loadingFinishedBlockTimeout:(unint64_t)a4 loadingFinishedBlock:(id)a5;
+- (void)_onQueue_performLoadingFinishedBlock:(id)block internalBlockUUID:(id)d isTimeout:(BOOL)timeout;
+- (void)_onQueue_performObserversBlock:(id)block;
+- (void)_onQueue_pushAveragePowerLevel:(float)level;
+- (void)addSegmentOutputObserver:(id)observer;
+- (void)async_finishLoadingByTerminating:(BOOL)terminating loadingFinishedBlockTimeout:(unint64_t)timeout loadingFinishedBlock:(id)block;
 - (void)beginLoading;
 - (void)flushPendingCapturedSampleBuffers;
-- (void)removeSegmentOutputObserver:(id)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)removeSegmentOutputObserver:(id)observer;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation RCWaveformGenerator
 
 - (RCWaveformGenerator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:84 description:{@"use the class specific designated initializer for %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:84 description:{@"use the class specific designated initializer for %@", v6}];
 
   return 0;
 }
 
-- (RCWaveformGenerator)initWithSegmentFlushInterval:(double)a3 trackIndex:(unint64_t)a4
+- (RCWaveformGenerator)initWithSegmentFlushInterval:(double)interval trackIndex:(unint64_t)index
 {
   v19.receiver = self;
   v19.super_class = RCWaveformGenerator;
@@ -67,55 +67,55 @@
     *(v6 + 2) = v9;
 
     dispatch_semaphore_signal(*(v6 + 2));
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v12 = *(v6 + 6);
-    *(v6 + 6) = v11;
+    *(v6 + 6) = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = *(v6 + 7);
-    *(v6 + 7) = v13;
+    *(v6 + 7) = array;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v16 = *(v6 + 8);
-    *(v6 + 8) = v15;
+    *(v6 + 8) = array2;
 
     *(v6 + 33) = 160;
-    v17 = 0.0333333333;
-    if (a3 > 0.0)
+    intervalCopy = 0.0333333333;
+    if (interval > 0.0)
     {
-      v17 = a3;
+      intervalCopy = interval;
     }
 
-    *(v6 + 32) = v17;
-    *(v6 + 30) = a4;
+    *(v6 + 32) = intervalCopy;
+    *(v6 + 30) = index;
   }
 
   return v6;
 }
 
-- (RCWaveformGenerator)initWithSamplingParametersFromGenerator:(id)a3 trackIndex:(unint64_t)a4
+- (RCWaveformGenerator)initWithSamplingParametersFromGenerator:(id)generator trackIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(RCWaveformGenerator *)self initWithSegmentFlushInterval:a4 trackIndex:v6[32]];
+  generatorCopy = generator;
+  v7 = [(RCWaveformGenerator *)self initWithSegmentFlushInterval:index trackIndex:generatorCopy[32]];
   if (v7)
   {
-    -[RCWaveformGenerator setOverviewUnitsPerSecond:](v7, "setOverviewUnitsPerSecond:", [v6 overviewUnitsPerSecond]);
+    -[RCWaveformGenerator setOverviewUnitsPerSecond:](v7, "setOverviewUnitsPerSecond:", [generatorCopy overviewUnitsPerSecond]);
   }
 
   return v7;
 }
 
-- (void)addSegmentOutputObserver:(id)a3
+- (void)addSegmentOutputObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__RCWaveformGenerator_addSegmentOutputObserver___block_invoke;
   v7[3] = &unk_279E436F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -133,12 +133,12 @@ uint64_t __48__RCWaveformGenerator_addSegmentOutputObserver___block_invoke(uint6
   return result;
 }
 
-- (void)removeSegmentOutputObserver:(id)a3
+- (void)removeSegmentOutputObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (dispatch_get_specific(self) == self)
   {
-    [(NSHashTable *)self->_weakObservers removeObject:v4];
+    [(NSHashTable *)self->_weakObservers removeObject:observerCopy];
   }
 
   else
@@ -149,7 +149,7 @@ uint64_t __48__RCWaveformGenerator_addSegmentOutputObserver___block_invoke(uint6
     v6[2] = __51__RCWaveformGenerator_removeSegmentOutputObserver___block_invoke;
     v6[3] = &unk_279E436F0;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     dispatch_sync(queue, v6);
   }
 }
@@ -165,44 +165,44 @@ uint64_t __48__RCWaveformGenerator_addSegmentOutputObserver___block_invoke(uint6
   dispatch_sync(queue, block);
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)appendAveragePowerLevelsByDigestingSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v5 = _checkCanAppend(self, a2);
   if (v5)
   {
-    [(RCWaveformGenerator *)self _appendPowerMeterValuesFromSampleBuffer:a3];
+    [(RCWaveformGenerator *)self _appendPowerMeterValuesFromSampleBuffer:buffer];
   }
 
   return v5;
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)a3
+- (BOOL)appendAveragePowerLevelsByDigestingAudioPCMBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v6 = _checkCanAppend(self, a2);
   if (v6)
   {
-    [(RCWaveformGenerator *)self _appendPowerMeterValuesFromAudioPCMBuffer:v5];
+    [(RCWaveformGenerator *)self _appendPowerMeterValuesFromAudioPCMBuffer:bufferCopy];
   }
 
   return v6;
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:(id)a3 progressBlock:(id)a4
+- (BOOL)appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:(id)l progressBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  blockCopy = block;
   if (_checkCanAppend(self, a2))
   {
     v9 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v7 path];
-      [(RCWaveformGenerator *)v10 appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:v14 progressBlock:v9];
+      path = [lCopy path];
+      [(RCWaveformGenerator *)path appendAveragePowerLevelsByDigestingContentsOfAudioFileURL:v14 progressBlock:v9];
     }
 
-    v11 = [(RCWaveformGenerator *)self _appendPowerMeterValuesFromDataInAudioFile:v7 progressBlock:v8];
+    v11 = [(RCWaveformGenerator *)self _appendPowerMeterValuesFromDataInAudioFile:lCopy progressBlock:blockCopy];
   }
 
   else
@@ -214,40 +214,40 @@ uint64_t __48__RCWaveformGenerator_addSegmentOutputObserver___block_invoke(uint6
   return v11;
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingWaveformSegments:(id)a3
+- (BOOL)appendAveragePowerLevelsByDigestingWaveformSegments:(id)segments
 {
-  v5 = a3;
-  v6 = (_checkCanAppend(self, a2) & 1) != 0 && [(RCWaveformGenerator *)self _appendAveragePowerLevelsByDigestingWaveformSegments:v5];
+  segmentsCopy = segments;
+  v6 = (_checkCanAppend(self, a2) & 1) != 0 && [(RCWaveformGenerator *)self _appendAveragePowerLevelsByDigestingWaveformSegments:segmentsCopy];
 
   return v6;
 }
 
-- (BOOL)appendAveragePowerLevel:(float)a3
+- (BOOL)appendAveragePowerLevel:(float)level
 {
   v5 = _checkCanAppend(self, a2);
   if (v5)
   {
-    *&v6 = a3;
+    *&v6 = level;
     [(RCWaveformGenerator *)self _appendAveragePowerLevel:v6];
   }
 
   return v5;
 }
 
-- (BOOL)appendAveragePowerLevelsByDigestingWaveform:(id)a3
+- (BOOL)appendAveragePowerLevelsByDigestingWaveform:(id)waveform
 {
-  v5 = a3;
+  waveformCopy = waveform;
   v6 = _checkCanAppend(self, a2);
   if (v6)
   {
     v7 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(RCWaveformGenerator *)v5 appendAveragePowerLevelsByDigestingWaveform:v7];
+      [(RCWaveformGenerator *)waveformCopy appendAveragePowerLevelsByDigestingWaveform:v7];
     }
 
-    v8 = [v5 segmentsCopy];
-    [(RCWaveformGenerator *)self _appendAveragePowerLevelsByDigestingWaveformSegments:v8];
+    segmentsCopy = [waveformCopy segmentsCopy];
+    [(RCWaveformGenerator *)self _appendAveragePowerLevelsByDigestingWaveformSegments:segmentsCopy];
   }
 
   return v6;
@@ -389,14 +389,14 @@ void __35__RCWaveformGenerator_beginLoading__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__RCWaveformGenerator_setPaused___block_invoke;
   v4[3] = &unk_279E437B8;
-  v5 = a3;
+  pausedCopy = paused;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -463,9 +463,9 @@ LABEL_13:
   return v3;
 }
 
-- (void)async_finishLoadingByTerminating:(BOOL)a3 loadingFinishedBlockTimeout:(unint64_t)a4 loadingFinishedBlock:(id)a5
+- (void)async_finishLoadingByTerminating:(BOOL)terminating loadingFinishedBlockTimeout:(unint64_t)timeout loadingFinishedBlock:(id)block
 {
-  v9 = [a5 copy];
+  v9 = [block copy];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -473,9 +473,9 @@ LABEL_13:
   block[3] = &unk_279E43830;
   block[4] = self;
   v13 = v9;
-  v16 = a3;
+  terminatingCopy = terminating;
   v14 = a2;
-  v15 = a4;
+  timeoutCopy = timeout;
   v11 = v9;
   dispatch_async(queue, block);
 }
@@ -578,20 +578,20 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   return result;
 }
 
-- (void)_onQueue_performLoadingFinishedBlock:(id)a3 internalBlockUUID:(id)a4 isTimeout:(BOOL)a5
+- (void)_onQueue_performLoadingFinishedBlock:(id)block internalBlockUUID:(id)d isTimeout:(BOOL)timeout
 {
-  v5 = a5;
+  timeoutCopy = timeout;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableArray *)self->_internalFinishedLoadingBlockUUIDs indexOfObject:v9];
+  blockCopy = block;
+  dCopy = d;
+  v10 = [(NSMutableArray *)self->_internalFinishedLoadingBlockUUIDs indexOfObject:dCopy];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_internalFinishedLoadingBlockUUIDs removeObjectAtIndex:v10];
     [(NSMutableArray *)self->_internalFinishedLoadingBlocks removeObjectAtIndex:v10];
   }
 
-  if (v5)
+  if (timeoutCopy)
   {
     v11 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -599,7 +599,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
       v16 = 136315394;
       v17 = "[RCWaveformGenerator _onQueue_performLoadingFinishedBlock:internalBlockUUID:isTimeout:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_272442000, v11, OS_LOG_TYPE_INFO, "%s -- [FinishLoading] %@ WARNING: Encountered time out while trying to finish loading", &v16, 0x16u);
     }
 
@@ -612,9 +612,9 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   canceled = self->_canceled;
   v13 = self->_loadingError;
   v14 = v13;
-  if (v8)
+  if (blockCopy)
   {
-    v8[2](v8, (v13 == 0) & ~canceled, v13);
+    blockCopy[2](blockCopy, (v13 == 0) & ~canceled, v13);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -624,7 +624,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = [(NSMutableArray *)self->_internalFinishedLoadingBlocks copy];
-  v4 = [(NSHashTable *)self->_weakObservers allObjects];
+  allObjects = [(NSHashTable *)self->_weakObservers allObjects];
   [(NSMutableArray *)self->_internalFinishedLoadingBlocks removeAllObjects];
   [(NSMutableArray *)self->_internalFinishedLoadingBlockUUIDs removeAllObjects];
   self->_state = 3;
@@ -633,7 +633,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -667,10 +667,10 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onQueue_performObserversBlock:(id)a3
+- (void)_onQueue_performObserversBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -690,7 +690,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v8++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
@@ -703,7 +703,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendAveragePowerLevel:(float)a3
+- (void)_appendAveragePowerLevel:(float)level
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -711,19 +711,19 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
   v4[2] = __48__RCWaveformGenerator__appendAveragePowerLevel___block_invoke;
   v4[3] = &unk_279E43878;
   v4[4] = self;
-  v5 = a3;
+  levelCopy = level;
   dispatch_sync(queue, v4);
 }
 
-- (void)_appendPowerMeterValuesFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_appendPowerMeterValuesFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
   if (StreamBasicDescription)
   {
     v7 = StreamBasicDescription;
     bufferListSizeNeededOut = 0;
-    if (!CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(a3, &bufferListSizeNeededOut, 0, 0, 0, 0, 0, 0))
+    if (!CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(buffer, &bufferListSizeNeededOut, 0, 0, 0, 0, 0, 0))
     {
       v8 = objc_alloc(MEMORY[0x277CBEB28]);
       v9 = [v8 initWithLength:bufferListSizeNeededOut];
@@ -731,8 +731,8 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
       {
         v10 = v9;
         bufferListSizeNeededOut = 0;
-        v11 = [v9 mutableBytes];
-        AudioBufferListWithRetainedBlockBuffer = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(a3, 0, v11, [v10 length], 0, 0, 0, &bufferListSizeNeededOut);
+        mutableBytes = [v9 mutableBytes];
+        AudioBufferListWithRetainedBlockBuffer = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(buffer, 0, mutableBytes, [v10 length], 0, 0, 0, &bufferListSizeNeededOut);
         if (AudioBufferListWithRetainedBlockBuffer)
         {
           v13 = OSLogForCategory(@"Default");
@@ -749,7 +749,7 @@ intptr_t __105__RCWaveformGenerator_async_finishLoadingByTerminating_loadingFini
           v15[1] = 3221225472;
           v15[2] = __63__RCWaveformGenerator__appendPowerMeterValuesFromSampleBuffer___block_invoke;
           v15[3] = &unk_279E438A0;
-          v15[5] = v11;
+          v15[5] = mutableBytes;
           v15[6] = v7;
           v15[4] = self;
           dispatch_sync(queue, v15);
@@ -782,17 +782,17 @@ uint64_t __63__RCWaveformGenerator__appendPowerMeterValuesFromSampleBuffer___blo
   return result;
 }
 
-- (void)_appendPowerMeterValuesFromAudioPCMBuffer:(id)a3
+- (void)_appendPowerMeterValuesFromAudioPCMBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__RCWaveformGenerator__appendPowerMeterValuesFromAudioPCMBuffer___block_invoke;
   v7[3] = &unk_279E436F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = bufferCopy;
+  v6 = bufferCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -805,26 +805,26 @@ void __65__RCWaveformGenerator__appendPowerMeterValuesFromAudioPCMBuffer___block
   [v2 _onQueue_appendPowerMeterValuesFromRawAudioData:v3 frameCount:v4 format:objc_msgSend(v5 isPredigest:{"streamDescription"), 0}];
 }
 
-- (BOOL)_appendPowerMeterValuesFromDataInAudioFile:(id)a3 progressBlock:(id)a4
+- (BOOL)_appendPowerMeterValuesFromDataInAudioFile:(id)file progressBlock:(id)block
 {
   v98[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  blockCopy = block;
   if (_checkCanAppend(self, a2))
   {
     p_activeAsset = &self->_activeAsset;
     if (self->_activeAsset)
     {
-      v63 = [MEMORY[0x277CCA890] currentHandler];
-      [v63 handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:454 description:@"already loading"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:454 description:@"already loading"];
     }
 
-    v10 = [MEMORY[0x277CE63D8] assetWithURL:v7];
+    v10 = [MEMORY[0x277CE63D8] assetWithURL:fileCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 rc_audioTracks];
-      v13 = [v12 count];
+      rc_audioTracks = [v10 rc_audioTracks];
+      v13 = [rc_audioTracks count];
       if (v13)
       {
         queue = self->_queue;
@@ -896,11 +896,11 @@ void __65__RCWaveformGenerator__appendPowerMeterValuesFromAudioPCMBuffer___block
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:4];
         if (self->_trackIndex <= v13 - 1)
         {
-          v23 = [v12 objectAtIndexedSubscript:?];
+          v23 = [rc_audioTracks objectAtIndexedSubscript:?];
           v96 = v23;
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v96 count:1];
 
-          v12 = v24;
+          rc_audioTracks = v24;
         }
 
         v78.start.value = 0;
@@ -908,7 +908,7 @@ void __65__RCWaveformGenerator__appendPowerMeterValuesFromAudioPCMBuffer___block
         v78.start.epoch = 0x3032000000;
         v78.duration.value = __Block_byref_object_copy_;
         *&v78.duration.timescale = __Block_byref_object_dispose_;
-        v78.duration.epoch = [MEMORY[0x277CE6418] assetReaderAudioMixOutputWithAudioTracks:v12 audioSettings:v22];
+        v78.duration.epoch = [MEMORY[0x277CE6418] assetReaderAudioMixOutputWithAudioTracks:rc_audioTracks audioSettings:v22];
         v25 = *(*&v78.start.timescale + 40);
         if (v25)
         {
@@ -925,9 +925,9 @@ void __65__RCWaveformGenerator__appendPowerMeterValuesFromAudioPCMBuffer___block
             v71 = &v78;
             p_time = &time;
             v70 = &v80;
-            v68 = self;
+            selfCopy = self;
             v73 = v91;
-            v27 = v8;
+            v27 = blockCopy;
             v69 = v27;
             v74 = v90;
             v75 = v92;
@@ -995,10 +995,10 @@ LABEL_35:
 
     else
     {
-      v12 = OSLogForCategory(@"Default");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      rc_audioTracks = OSLogForCategory(@"Default");
+      if (os_log_type_enabled(rc_audioTracks, OS_LOG_TYPE_ERROR))
       {
-        [(RCWaveformGenerator *)v12 _appendPowerMeterValuesFromDataInAudioFile:v31 progressBlock:v32, v33, v34, v35, v36, v37];
+        [(RCWaveformGenerator *)rc_audioTracks _appendPowerMeterValuesFromDataInAudioFile:v31 progressBlock:v32, v33, v34, v35, v36, v37];
       }
     }
 
@@ -1131,11 +1131,11 @@ LABEL_2:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendAveragePowerLevelsByDigestingTimeRange:(id)a3 inAudioFile:(id)a4
+- (void)_appendAveragePowerLevelsByDigestingTimeRange:(id)range inAudioFile:(id)file
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  fileCopy = file;
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1144,27 +1144,27 @@ LABEL_2:
   v12 = var0;
   v13 = var1;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = fileCopy;
+  v9 = fileCopy;
   dispatch_sync(queue, v10);
 }
 
-- (void)_onQueue_appendAveragePowerLevelsByDigestingTimeRange:(id)a3 inAudioFile:(id)a4
+- (void)_onQueue_appendAveragePowerLevelsByDigestingTimeRange:(id)range inAudioFile:(id)file
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  fileCopy = file;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__RCWaveformGenerator__onQueue_appendAveragePowerLevelsByDigestingTimeRange_inAudioFile___block_invoke;
   block[3] = &unk_279E43918;
-  v12 = v8;
+  v12 = fileCopy;
   v13 = a2;
   block[4] = self;
   v14 = var0;
   v15 = var1;
-  v10 = v8;
+  v10 = fileCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1275,11 +1275,11 @@ void __89__RCWaveformGenerator__onQueue_appendAveragePowerLevelsByDigestingTimeR
   }
 }
 
-- (id)synchronouslyApproximateWaveformForAVContentURL:(id)a3 byReadingCurrentFileAheadTimeRange:(id)a4
+- (id)synchronouslyApproximateWaveformForAVContentURL:(id)l byReadingCurrentFileAheadTimeRange:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
+  var1 = range.var1;
+  var0 = range.var0;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1295,10 +1295,10 @@ void __89__RCWaveformGenerator__onQueue_appendAveragePowerLevelsByDigestingTimeR
   block[5] = &v26;
   dispatch_sync(queue, block);
   v9 = v27[5];
-  if (v9 && ([v9 url], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v7), v10, (v11 & 1) != 0) && !-[RCWaveformGenerator finished](self, "finished"))
+  if (v9 && ([v9 url], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", lCopy), v10, (v11 & 1) != 0) && !-[RCWaveformGenerator finished](self, "finished"))
   {
-    v14 = [(RCWaveformGenerator *)self paused];
-    if (!v14)
+    paused = [(RCWaveformGenerator *)self paused];
+    if (!paused)
     {
       [(RCWaveformGenerator *)self setPaused:1];
     }
@@ -1308,10 +1308,10 @@ void __89__RCWaveformGenerator__onQueue_appendAveragePowerLevelsByDigestingTimeR
     [(RCWaveformGenerator *)v15 _appendAveragePowerLevelsByDigestingTimeRange:v27[5] inAudioFile:var0, var1];
     [(RCWaveformSegmentAccumulator *)v16 waitUntilFinished];
     v17 = MEMORY[0x277CBEB18];
-    v18 = [(RCWaveformSegmentAccumulator *)v16 segments];
-    v19 = [v17 arrayWithCapacity:{objc_msgSend(v18, "count")}];
+    segments = [(RCWaveformSegmentAccumulator *)v16 segments];
+    v19 = [v17 arrayWithCapacity:{objc_msgSend(segments, "count")}];
 
-    v20 = [(RCWaveformSegmentAccumulator *)v16 segments];
+    segments2 = [(RCWaveformSegmentAccumulator *)v16 segments];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __106__RCWaveformGenerator_synchronouslyApproximateWaveformForAVContentURL_byReadingCurrentFileAheadTimeRange___block_invoke_2;
@@ -1320,9 +1320,9 @@ void __89__RCWaveformGenerator__onQueue_appendAveragePowerLevelsByDigestingTimeR
     v24 = var1;
     v12 = v19;
     v22 = v12;
-    [v20 enumerateObjectsUsingBlock:v21];
+    [segments2 enumerateObjectsUsingBlock:v21];
 
-    if (!v14)
+    if (!paused)
     {
       [(RCWaveformGenerator *)self setPaused:0];
     }
@@ -1346,9 +1346,9 @@ void __106__RCWaveformGenerator_synchronouslyApproximateWaveformForAVContentURL_
   [*(a1 + 32) addObject:?];
 }
 
-- (BOOL)_appendAveragePowerLevelsByDigestingWaveformSegments:(id)a3
+- (BOOL)_appendAveragePowerLevelsByDigestingWaveformSegments:(id)segments
 {
-  v5 = a3;
+  segmentsCopy = segments;
   if (_checkCanAppend(self, a2))
   {
     v13 = 0;
@@ -1360,8 +1360,8 @@ void __106__RCWaveformGenerator_synchronouslyApproximateWaveformForAVContentURL_
     block[1] = 3221225472;
     block[2] = __76__RCWaveformGenerator__appendAveragePowerLevelsByDigestingWaveformSegments___block_invoke;
     block[3] = &unk_279E43968;
-    v10 = v5;
-    v11 = self;
+    v10 = segmentsCopy;
+    selfCopy = self;
     v12 = &v13;
     dispatch_sync(queue, block);
     v7 = *(v14 + 24);
@@ -1424,16 +1424,16 @@ LABEL_3:
   return result;
 }
 
-- (void)_onQueue_flushWaveformSegment:(id)a3
+- (void)_onQueue_flushWaveformSegment:(id)segment
 {
-  v5 = a3;
+  segmentCopy = segment;
   if (_checkCanAppend(self, a2))
   {
     dispatch_semaphore_wait(self->_digestPausedSemaphore, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_semaphore_signal(self->_digestPausedSemaphore);
     if (!self->_canceled)
     {
-      [v5 timeRange];
+      [segmentCopy timeRange];
       if (v6 >= self->_totalFlushedTime)
       {
         [(RCWaveformGenerator *)self _onQueue_flushRemainingData];
@@ -1442,26 +1442,26 @@ LABEL_3:
       else
       {
         v7 = MEMORY[0x277CBEAD8];
-        [v5 timeRange];
+        [segmentCopy timeRange];
         objc_msgSend(v7, "raise:format:", *MEMORY[0x277CBE648], @"Invalid endTime (segment end time %f is less than total flushed time %f. Will regenerate waveform."), v8, *&self->_totalFlushedTime;
       }
 
       self->_framesConsumedSinceLastFlush = 0;
-      [v5 timeRange];
+      [segmentCopy timeRange];
       self->_totalFlushedTime = v9;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __53__RCWaveformGenerator__onQueue_flushWaveformSegment___block_invoke;
       v10[3] = &unk_279E43990;
       v10[4] = self;
-      v11 = v5;
+      v11 = segmentCopy;
       [(RCWaveformGenerator *)self _onQueue_performObserversBlock:v10];
       self->_powerLevelBuffer.__end_ = self->_powerLevelBuffer.__begin_;
     }
   }
 }
 
-- (void)_onQueue_flushWithNextSegmentWithEndTime:(double)a3 isPredigest:(BOOL)a4
+- (void)_onQueue_flushWithNextSegmentWithEndTime:(double)time isPredigest:(BOOL)predigest
 {
   if (_checkCanAppend(self, a2))
   {
@@ -1469,10 +1469,10 @@ LABEL_3:
     dispatch_semaphore_signal(self->_digestPausedSemaphore);
     if (!self->_canceled)
     {
-      if (self->_totalFlushedTime > a3)
+      if (self->_totalFlushedTime > time)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:782 description:@"Invalid endTime"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"RCWaveformGenerator.mm" lineNumber:782 description:@"Invalid endTime"];
 
         totalFlushedTime = self->_totalFlushedTime;
       }
@@ -1485,7 +1485,7 @@ LABEL_3:
       }
 
       v10 = [[RCWaveformSegment alloc] initWithTimeRange:&self->_powerLevelBuffer averagePowerLevelVector:v7, v9];
-      self->_totalFlushedTime = a3;
+      self->_totalFlushedTime = time;
       v11 = MEMORY[0x277D85DD0];
       self->_powerLevelsConsumedSinceLastFlush = 0;
       self->_framesConsumedSinceLastFlush = 0;
@@ -1517,22 +1517,22 @@ LABEL_3:
   }
 }
 
-- (void)_onQueue_digestAveragePowerLevel:(float)a3
+- (void)_onQueue_digestAveragePowerLevel:(float)level
 {
-  v5 = a3;
+  levelCopy = level;
   if (_checkCanAppend(self, a2))
   {
     dispatch_semaphore_wait(self->_digestPausedSemaphore, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_semaphore_signal(self->_digestPausedSemaphore);
     if (!self->_canceled)
     {
-      self->_powerLevelBufferLastPushedValue = a3;
-      std::vector<float>::push_back[abi:ne200100](&self->_powerLevelBuffer.__begin_, &v5);
+      self->_powerLevelBufferLastPushedValue = level;
+      std::vector<float>::push_back[abi:ne200100](&self->_powerLevelBuffer.__begin_, &levelCopy);
     }
   }
 }
 
-- (void)_onQueue_pushAveragePowerLevel:(float)a3
+- (void)_onQueue_pushAveragePowerLevel:(float)level
 {
   if (_checkCanAppend(self, a2))
   {
@@ -1549,7 +1549,7 @@ LABEL_3:
       v9 = v8 - totalFlushedTime < segmentFlushInterval + 4.4408921e-16;
       v10 = -1.0;
       v11 = v9 ? -1.0 : v8;
-      *&v10 = a3;
+      *&v10 = level;
       [(RCWaveformGenerator *)self _onQueue_digestAveragePowerLevel:v10];
       if (v11 > 0.0)
       {
@@ -1560,12 +1560,12 @@ LABEL_3:
   }
 }
 
-- (void)_onQueue_appendSegment:(id)a3
+- (void)_onQueue_appendSegment:(id)segment
 {
-  v5 = a3;
+  segmentCopy = segment;
   if (_checkCanAppend(self, a2))
   {
-    [(RCWaveformGenerator *)self _onQueue_flushWaveformSegment:v5];
+    [(RCWaveformGenerator *)self _onQueue_flushWaveformSegment:segmentCopy];
   }
 }
 

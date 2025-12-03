@@ -11,8 +11,8 @@
   v9.super_class = Prediction;
   v3 = [(Prediction *)&v9 debugDescription];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(Prediction *)self label];
-  v6 = [v4 stringWithFormat:@" - [%@]", v5];
+  label = [(Prediction *)self label];
+  v6 = [v4 stringWithFormat:@" - [%@]", label];
   v7 = [v3 stringByAppendingString:v6];
 
   return v7;

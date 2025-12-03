@@ -1,36 +1,36 @@
 @interface PPPBContactNameRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCityNames:(id)a3;
-- (void)addRelatedNames:(id)a3;
-- (void)addStreetNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChangeType:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCityNames:(id)names;
+- (void)addRelatedNames:(id)names;
+- (void)addStreetNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChangeType:(BOOL)type;
+- (void)setHasSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBContactNameRecord
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(PPPBContactNameRecord *)self setIdentifier:?];
   }
 
-  v5 = *(v4 + 144);
+  v5 = *(fromCopy + 144);
   if (v5)
   {
-    self->_score = *(v4 + 1);
+    self->_score = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 144);
+    v5 = *(fromCopy + 144);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -43,67 +43,67 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 144) & 4) == 0)
+  else if ((*(fromCopy + 144) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_source = *(v4 + 120);
+  self->_source = *(fromCopy + 120);
   *&self->_has |= 4u;
-  if ((*(v4 + 144) & 2) != 0)
+  if ((*(fromCopy + 144) & 2) != 0)
   {
 LABEL_6:
-    self->_changeType = *(v4 + 16);
+    self->_changeType = *(fromCopy + 16);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PPPBContactNameRecord *)self setSourceIdentifier:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PPPBContactNameRecord *)self setFirstName:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PPPBContactNameRecord *)self setPhoneticFirstName:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PPPBContactNameRecord *)self setMiddleName:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(PPPBContactNameRecord *)self setPhoneticMiddleName:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PPPBContactNameRecord *)self setLastName:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PPPBContactNameRecord *)self setPhoneticLastName:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PPPBContactNameRecord *)self setOrganizationName:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PPPBContactNameRecord *)self setJobTitle:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PPPBContactNameRecord *)self setNickname:?];
   }
@@ -112,7 +112,7 @@ LABEL_7:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = *(v4 + 14);
+  v6 = *(fromCopy + 14);
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
@@ -140,7 +140,7 @@ LABEL_7:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = *(v4 + 17);
+  v11 = *(fromCopy + 17);
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v12)
   {
@@ -168,7 +168,7 @@ LABEL_7:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = *(v4 + 3);
+  v16 = *(fromCopy + 3);
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v17)
   {
@@ -268,16 +268,16 @@ LABEL_14:
   return v19 ^ v23 ^ [(NSMutableArray *)self->_cityNames hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -285,16 +285,16 @@ LABEL_14:
     }
   }
 
-  v6 = v4[144];
+  v6 = equalCopy[144];
   if (*&self->_has)
   {
-    if ((v4[144] & 1) == 0 || self->_score != *(v4 + 1))
+    if ((equalCopy[144] & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (v4[144])
+  else if (equalCopy[144])
   {
 LABEL_45:
     v20 = 0;
@@ -303,38 +303,38 @@ LABEL_45:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[144] & 4) == 0 || self->_source != v4[120])
+    if ((equalCopy[144] & 4) == 0 || self->_source != equalCopy[120])
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[144] & 4) != 0)
+  else if ((equalCopy[144] & 4) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[144] & 2) == 0 || self->_changeType != v4[16])
+    if ((equalCopy[144] & 2) == 0 || self->_changeType != equalCopy[16])
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[144] & 2) != 0)
+  else if ((equalCopy[144] & 2) != 0)
   {
     goto LABEL_45;
   }
 
   sourceIdentifier = self->_sourceIdentifier;
-  if (sourceIdentifier | *(v4 + 16) && ![(NSString *)sourceIdentifier isEqual:?])
+  if (sourceIdentifier | *(equalCopy + 16) && ![(NSString *)sourceIdentifier isEqual:?])
   {
     goto LABEL_45;
   }
 
   firstName = self->_firstName;
-  if (firstName | *(v4 + 4))
+  if (firstName | *(equalCopy + 4))
   {
     if (![(NSString *)firstName isEqual:?])
     {
@@ -343,7 +343,7 @@ LABEL_45:
   }
 
   phoneticFirstName = self->_phoneticFirstName;
-  if (phoneticFirstName | *(v4 + 11))
+  if (phoneticFirstName | *(equalCopy + 11))
   {
     if (![(NSString *)phoneticFirstName isEqual:?])
     {
@@ -352,7 +352,7 @@ LABEL_45:
   }
 
   middleName = self->_middleName;
-  if (middleName | *(v4 + 8))
+  if (middleName | *(equalCopy + 8))
   {
     if (![(NSString *)middleName isEqual:?])
     {
@@ -361,7 +361,7 @@ LABEL_45:
   }
 
   phoneticMiddleName = self->_phoneticMiddleName;
-  if (phoneticMiddleName | *(v4 + 13))
+  if (phoneticMiddleName | *(equalCopy + 13))
   {
     if (![(NSString *)phoneticMiddleName isEqual:?])
     {
@@ -370,7 +370,7 @@ LABEL_45:
   }
 
   lastName = self->_lastName;
-  if (lastName | *(v4 + 7))
+  if (lastName | *(equalCopy + 7))
   {
     if (![(NSString *)lastName isEqual:?])
     {
@@ -379,7 +379,7 @@ LABEL_45:
   }
 
   phoneticLastName = self->_phoneticLastName;
-  if (phoneticLastName | *(v4 + 12))
+  if (phoneticLastName | *(equalCopy + 12))
   {
     if (![(NSString *)phoneticLastName isEqual:?])
     {
@@ -388,7 +388,7 @@ LABEL_45:
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 10))
+  if (organizationName | *(equalCopy + 10))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -397,7 +397,7 @@ LABEL_45:
   }
 
   jobTitle = self->_jobTitle;
-  if (jobTitle | *(v4 + 6))
+  if (jobTitle | *(equalCopy + 6))
   {
     if (![(NSString *)jobTitle isEqual:?])
     {
@@ -406,7 +406,7 @@ LABEL_45:
   }
 
   nickname = self->_nickname;
-  if (nickname | *(v4 + 9))
+  if (nickname | *(equalCopy + 9))
   {
     if (![(NSString *)nickname isEqual:?])
     {
@@ -415,7 +415,7 @@ LABEL_45:
   }
 
   relatedNames = self->_relatedNames;
-  if (relatedNames | *(v4 + 14))
+  if (relatedNames | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)relatedNames isEqual:?])
     {
@@ -424,7 +424,7 @@ LABEL_45:
   }
 
   streetNames = self->_streetNames;
-  if (streetNames | *(v4 + 17))
+  if (streetNames | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)streetNames isEqual:?])
     {
@@ -433,7 +433,7 @@ LABEL_45:
   }
 
   cityNames = self->_cityNames;
-  if (cityNames | *(v4 + 3))
+  if (cityNames | *(equalCopy + 3))
   {
     v20 = [(NSMutableArray *)cityNames isEqual:?];
   }
@@ -448,11 +448,11 @@ LABEL_46:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -489,43 +489,43 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_sourceIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_sourceIdentifier copyWithZone:zone];
   v10 = *(v5 + 128);
   *(v5 + 128) = v9;
 
-  v11 = [(NSString *)self->_firstName copyWithZone:a3];
+  v11 = [(NSString *)self->_firstName copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
-  v13 = [(NSString *)self->_phoneticFirstName copyWithZone:a3];
+  v13 = [(NSString *)self->_phoneticFirstName copyWithZone:zone];
   v14 = *(v5 + 88);
   *(v5 + 88) = v13;
 
-  v15 = [(NSString *)self->_middleName copyWithZone:a3];
+  v15 = [(NSString *)self->_middleName copyWithZone:zone];
   v16 = *(v5 + 64);
   *(v5 + 64) = v15;
 
-  v17 = [(NSString *)self->_phoneticMiddleName copyWithZone:a3];
+  v17 = [(NSString *)self->_phoneticMiddleName copyWithZone:zone];
   v18 = *(v5 + 104);
   *(v5 + 104) = v17;
 
-  v19 = [(NSString *)self->_lastName copyWithZone:a3];
+  v19 = [(NSString *)self->_lastName copyWithZone:zone];
   v20 = *(v5 + 56);
   *(v5 + 56) = v19;
 
-  v21 = [(NSString *)self->_phoneticLastName copyWithZone:a3];
+  v21 = [(NSString *)self->_phoneticLastName copyWithZone:zone];
   v22 = *(v5 + 96);
   *(v5 + 96) = v21;
 
-  v23 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v23 = [(NSString *)self->_organizationName copyWithZone:zone];
   v24 = *(v5 + 80);
   *(v5 + 80) = v23;
 
-  v25 = [(NSString *)self->_jobTitle copyWithZone:a3];
+  v25 = [(NSString *)self->_jobTitle copyWithZone:zone];
   v26 = *(v5 + 48);
   *(v5 + 48) = v25;
 
-  v27 = [(NSString *)self->_nickname copyWithZone:a3];
+  v27 = [(NSString *)self->_nickname copyWithZone:zone];
   v28 = *(v5 + 72);
   *(v5 + 72) = v27;
 
@@ -548,7 +548,7 @@ LABEL_5:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v57 + 1) + 8 * i) copyWithZone:a3];
+        v34 = [*(*(&v57 + 1) + 8 * i) copyWithZone:zone];
         [v5 addRelatedNames:v34];
       }
 
@@ -577,7 +577,7 @@ LABEL_5:
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v53 + 1) + 8 * j) copyWithZone:a3];
+        v40 = [*(*(&v53 + 1) + 8 * j) copyWithZone:zone];
         [v5 addStreetNames:v40];
       }
 
@@ -606,7 +606,7 @@ LABEL_5:
           objc_enumerationMutation(v41);
         }
 
-        v46 = [*(*(&v49 + 1) + 8 * k) copyWithZone:{a3, v49}];
+        v46 = [*(*(&v49 + 1) + 8 * k) copyWithZone:{zone, v49}];
         [v5 addCityNames:v46];
       }
 
@@ -620,21 +620,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v18;
+    [toCopy setIdentifier:?];
+    toCopy = v18;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_score;
-    *(v4 + 144) |= 1u;
+    *(toCopy + 1) = *&self->_score;
+    *(toCopy + 144) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -653,13 +653,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 120) = self->_source;
-  *(v4 + 144) |= 4u;
+  *(toCopy + 120) = self->_source;
+  *(toCopy + 144) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 16) = self->_changeType;
-    *(v4 + 144) |= 2u;
+    *(toCopy + 16) = self->_changeType;
+    *(toCopy + 144) |= 2u;
   }
 
 LABEL_7:
@@ -716,10 +716,10 @@ LABEL_7:
   if ([(PPPBContactNameRecord *)self relatedNamesCount])
   {
     [v18 clearRelatedNames];
-    v6 = [(PPPBContactNameRecord *)self relatedNamesCount];
-    if (v6)
+    relatedNamesCount = [(PPPBContactNameRecord *)self relatedNamesCount];
+    if (relatedNamesCount)
     {
-      v7 = v6;
+      v7 = relatedNamesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PPPBContactNameRecord *)self relatedNamesAtIndex:i];
@@ -731,10 +731,10 @@ LABEL_7:
   if ([(PPPBContactNameRecord *)self streetNamesCount])
   {
     [v18 clearStreetNames];
-    v10 = [(PPPBContactNameRecord *)self streetNamesCount];
-    if (v10)
+    streetNamesCount = [(PPPBContactNameRecord *)self streetNamesCount];
+    if (streetNamesCount)
     {
-      v11 = v10;
+      v11 = streetNamesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PPPBContactNameRecord *)self streetNamesAtIndex:j];
@@ -746,10 +746,10 @@ LABEL_7:
   if ([(PPPBContactNameRecord *)self cityNamesCount])
   {
     [v18 clearCityNames];
-    v14 = [(PPPBContactNameRecord *)self cityNamesCount];
-    if (v14)
+    cityNamesCount = [(PPPBContactNameRecord *)self cityNamesCount];
+    if (cityNamesCount)
     {
-      v15 = v14;
+      v15 = cityNamesCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(PPPBContactNameRecord *)self cityNamesAtIndex:k];
@@ -759,10 +759,10 @@ LABEL_7:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -944,12 +944,12 @@ LABEL_7:
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -977,15 +977,15 @@ LABEL_5:
   }
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:self->_source];
-  v32 = [v31 stringValue];
-  [v4 setObject:v32 forKey:@"source"];
+  stringValue = [v31 stringValue];
+  [v4 setObject:stringValue forKey:@"source"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:self->_changeType];
-    v8 = [v7 stringValue];
-    [v4 setObject:v8 forKey:@"changeType"];
+    stringValue2 = [v7 stringValue];
+    [v4 setObject:stringValue2 forKey:@"changeType"];
   }
 
 LABEL_7:
@@ -1071,8 +1071,8 @@ LABEL_7:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1107,69 +1107,69 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = PPPBContactNameRecord;
   v4 = [(PPPBContactNameRecord *)&v8 description];
-  v5 = [(PPPBContactNameRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBContactNameRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addCityNames:(id)a3
+- (void)addCityNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   cityNames = self->_cityNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!cityNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_cityNames;
     self->_cityNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     cityNames = self->_cityNames;
   }
 
-  [(NSMutableArray *)cityNames addObject:v4];
+  [(NSMutableArray *)cityNames addObject:namesCopy];
 }
 
-- (void)addStreetNames:(id)a3
+- (void)addStreetNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   streetNames = self->_streetNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!streetNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_streetNames;
     self->_streetNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     streetNames = self->_streetNames;
   }
 
-  [(NSMutableArray *)streetNames addObject:v4];
+  [(NSMutableArray *)streetNames addObject:namesCopy];
 }
 
-- (void)addRelatedNames:(id)a3
+- (void)addRelatedNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   relatedNames = self->_relatedNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!relatedNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_relatedNames;
     self->_relatedNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     relatedNames = self->_relatedNames;
   }
 
-  [(NSMutableArray *)relatedNames addObject:v4];
+  [(NSMutableArray *)relatedNames addObject:namesCopy];
 }
 
-- (void)setHasChangeType:(BOOL)a3
+- (void)setHasChangeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1182,9 +1182,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }

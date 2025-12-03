@@ -7,11 +7,11 @@
 - (CGRect)primaryLabelTileFrame;
 - (CGRect)secondaryLabelTileFrame;
 - (CGRect)tileFrame;
-- (HUGridServiceCell)initWithCoder:(id)a3;
-- (HUGridServiceCell)initWithFrame:(CGRect)a3;
+- (HUGridServiceCell)initWithCoder:(id)coder;
+- (HUGridServiceCell)initWithFrame:(CGRect)frame;
 - (double)backgroundCornerRadius;
 - (id)_backgroundColorForSupplementaryIcon;
-- (id)_descriptionTextAttributesWithColor:(id)a3;
+- (id)_descriptionTextAttributesWithColor:(id)color;
 - (id)_textConfiguration;
 - (id)baseIconViewConfiguration;
 - (id)prefixString;
@@ -22,33 +22,33 @@
 - (void)_setupServiceCell;
 - (void)_updateAccessoryView;
 - (void)_updateExclamationViewColor;
-- (void)_updateIconAnimated:(BOOL)a3;
+- (void)_updateIconAnimated:(BOOL)animated;
 - (void)_updateSecondaryContentDisplayStyle;
 - (void)_updateSupplementaryImageViewIfNecessary;
 - (void)_updateText;
 - (void)displayStyleDidChange;
-- (void)dragStateDidChange:(int64_t)a3;
+- (void)dragStateDidChange:(int64_t)change;
 - (void)layoutOptionsDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)reclaimIconIfPossible;
 - (void)renounceIcon;
-- (void)setAccessoryView:(id)a3;
-- (void)setDisableContinuousIconAnimation:(BOOL)a3;
-- (void)setShouldColorDescription:(BOOL)a3;
-- (void)setShouldShowRoomName:(BOOL)a3;
-- (void)setShowProgressIndicatorAfterDelay:(BOOL)a3;
-- (void)setShowUpdatingStateAfterDelay:(BOOL)a3;
-- (void)setShowingProgressIndicator:(BOOL)a3;
-- (void)setShowingUpdatingState:(BOOL)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setDisableContinuousIconAnimation:(BOOL)animation;
+- (void)setShouldColorDescription:(BOOL)description;
+- (void)setShouldShowRoomName:(BOOL)name;
+- (void)setShowProgressIndicatorAfterDelay:(BOOL)delay;
+- (void)setShowUpdatingStateAfterDelay:(BOOL)delay;
+- (void)setShowingProgressIndicator:(BOOL)indicator;
+- (void)setShowingUpdatingState:(BOOL)state;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUGridServiceCell
 
 - (id)prefixString
 {
-  v2 = self;
+  selfCopy = self;
   object = HUGridServiceCell.prefixString()().value._object;
 
   if (object)
@@ -66,13 +66,13 @@
 
 - (id)primaryString
 {
-  v2 = self;
-  v3 = [(HUGridServiceCell *)v2 serviceTextView];
-  v4 = [(HUGridServiceCellTextView *)v3 serviceNameComponents];
+  selfCopy = self;
+  serviceTextView = [(HUGridServiceCell *)selfCopy serviceTextView];
+  serviceNameComponents = [(HUGridServiceCellTextView *)serviceTextView serviceNameComponents];
 
-  if (v4)
+  if (serviceNameComponents)
   {
-    v5 = [(HFServiceNameComponents *)v4 serviceName];
+    serviceName = [(HFServiceNameComponents *)serviceNameComponents serviceName];
 
     sub_20D567838();
     v6 = sub_20D5677F8();
@@ -89,9 +89,9 @@
 
 - (CGRect)iconViewTileFrame
 {
-  v2 = self;
-  v3 = [(HUGridServiceCell *)v2 iconView];
-  [(HUIconView *)v3 frame];
+  selfCopy = self;
+  iconView = [(HUGridServiceCell *)selfCopy iconView];
+  [(HUIconView *)iconView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -110,24 +110,24 @@
 
 - (CGRect)prefixLabelTileFrame
 {
-  v2 = self;
-  v3 = [(HUGridServiceCell *)v2 serviceTextView];
-  v4 = [(HUGridServiceCellTextView *)v3 shouldShowRoomName];
+  selfCopy = self;
+  serviceTextView = [(HUGridServiceCell *)selfCopy serviceTextView];
+  shouldShowRoomName = [(HUGridServiceCellTextView *)serviceTextView shouldShowRoomName];
 
   v5 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  if (v4)
+  if (shouldShowRoomName)
   {
-    v9 = [(HUGridServiceCell *)v2 serviceTextView];
-    [(HUGridServiceCellTextView *)v9 frame];
+    serviceTextView2 = [(HUGridServiceCell *)selfCopy serviceTextView];
+    [(HUGridServiceCellTextView *)serviceTextView2 frame];
     v5 = v10;
     v6 = v11;
     v7 = v12;
 
-    v13 = [(HUGridServiceCell *)v2 serviceTextView];
-    [(HUGridServiceCellTextView *)v13 topToFirstBaselineDistance];
+    serviceTextView3 = [(HUGridServiceCell *)selfCopy serviceTextView];
+    [(HUGridServiceCellTextView *)serviceTextView3 topToFirstBaselineDistance];
     v8 = v14;
   }
 
@@ -144,7 +144,7 @@
 
 - (CGRect)primaryLabelTileFrame
 {
-  v2 = self;
+  selfCopy = self;
   v11 = HUGridServiceCell.primaryLabelTileFrame()();
   x = v11.origin.x;
   y = v11.origin.y;
@@ -187,12 +187,12 @@
 
 - (double)backgroundCornerRadius
 {
-  v2 = self;
-  v3 = [(HUGridCell *)v2 layoutOptions];
-  if (v3)
+  selfCopy = self;
+  layoutOptions = [(HUGridCell *)selfCopy layoutOptions];
+  if (layoutOptions)
   {
-    v4 = v3;
-    [(HUGridCellLayoutOptions *)v3 cellCornerRadius];
+    v4 = layoutOptions;
+    [(HUGridCellLayoutOptions *)layoutOptions cellCornerRadius];
     v6 = v5;
   }
 
@@ -206,7 +206,7 @@
 
 - (id)baseIconViewConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   HUGridServiceCell.baseIconViewConfiguration()(v11);
 
   v3 = v12;
@@ -230,11 +230,11 @@
   return v9;
 }
 
-- (HUGridServiceCell)initWithCoder:(id)a3
+- (HUGridServiceCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HUGridServiceCell;
-  v3 = [(HUGridCell *)&v6 initWithCoder:a3];
+  v3 = [(HUGridCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -244,11 +244,11 @@
   return v4;
 }
 
-- (HUGridServiceCell)initWithFrame:(CGRect)a3
+- (HUGridServiceCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUGridServiceCell;
-  v3 = [(HUGridCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -266,8 +266,8 @@
   [(HUGridServiceCell *)self setServiceItem:0];
   [(HUGridServiceCell *)self setShowProgressIndicatorAfterDelay:0];
   [(HUGridServiceCell *)self setShowUpdatingStateAfterDelay:0];
-  v3 = [(HUGridServiceCell *)self iconView];
-  [v3 updateWithIconDescriptor:0 displayStyle:-[HUGridCell iconDisplayStyle](self animated:{"iconDisplayStyle"), 0}];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView updateWithIconDescriptor:0 displayStyle:-[HUGridCell iconDisplayStyle](self animated:{"iconDisplayStyle"), 0}];
 
   [(HUGridServiceCell *)self setAccessoryView:0];
   [(HUGridServiceCell *)self setShouldColorDescription:1];
@@ -280,23 +280,23 @@
   v3 = objc_alloc_init(MEMORY[0x277D180D0]);
   [(HUGridServiceCell *)self setIconView:v3];
 
-  v4 = [objc_opt_class() _iconTintColor];
-  v5 = [(HUGridServiceCell *)self iconView];
-  [v5 setTintColor:v4];
+  _iconTintColor = [objc_opt_class() _iconTintColor];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView setTintColor:_iconTintColor];
 
-  v6 = [(HUGridServiceCell *)self contentView];
-  v7 = [(HUGridServiceCell *)self iconView];
-  [v6 addSubview:v7];
+  contentView = [(HUGridServiceCell *)self contentView];
+  iconView2 = [(HUGridServiceCell *)self iconView];
+  [contentView addSubview:iconView2];
 
   v8 = objc_alloc_init(MEMORY[0x277D755E8]);
   [(HUGridServiceCell *)self setSupplementaryImageView:v8];
 
-  v9 = [(HUGridServiceCell *)self contentView];
-  v10 = [(HUGridServiceCell *)self supplementaryImageView];
-  [v9 addSubview:v10];
+  contentView2 = [(HUGridServiceCell *)self contentView];
+  supplementaryImageView = [(HUGridServiceCell *)self supplementaryImageView];
+  [contentView2 addSubview:supplementaryImageView];
 
-  v11 = [(HUGridServiceCell *)self supplementaryImageView];
-  [v11 setHidden:1];
+  supplementaryImageView2 = [(HUGridServiceCell *)self supplementaryImageView];
+  [supplementaryImageView2 setHidden:1];
 
   [(HUGridServiceCell *)self _setupCommonServiceCell];
 }
@@ -304,51 +304,51 @@
 - (void)_setupCommonServiceCell
 {
   [(HUGridServiceCell *)self setShouldColorDescription:1];
-  v3 = [MEMORY[0x277D75348] systemGrayColor];
-  [(HUGridServiceCell *)self setDefaultDescriptionColor:v3];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(HUGridServiceCell *)self setDefaultDescriptionColor:systemGrayColor];
 
   [(HUGridServiceCell *)self setShouldShowLoadingState:1];
   self->_shouldShowRoomName = 1;
   v4 = objc_alloc_init(HUGridServiceCellTextView);
   [(HUGridServiceCell *)self setServiceTextView:v4];
 
-  v5 = [(HUGridCell *)self gridForegroundContentView];
-  v6 = [(HUGridServiceCell *)self serviceTextView];
-  [v5 addSubview:v6];
+  gridForegroundContentView = [(HUGridCell *)self gridForegroundContentView];
+  serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+  [gridForegroundContentView addSubview:serviceTextView];
 
   v7 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUGridServiceCell *)self setColoredDescriptionLabel:v7];
 
-  v8 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-  [v8 setNumberOfLines:1];
+  coloredDescriptionLabel = [(HUGridServiceCell *)self coloredDescriptionLabel];
+  [coloredDescriptionLabel setNumberOfLines:1];
 
-  LODWORD(v8) = [MEMORY[0x277D14670] isHomeControlService];
-  v9 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-  [v9 setAllowsDefaultTighteningForTruncation:v8 ^ 1];
+  LODWORD(coloredDescriptionLabel) = [MEMORY[0x277D14670] isHomeControlService];
+  coloredDescriptionLabel2 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+  [coloredDescriptionLabel2 setAllowsDefaultTighteningForTruncation:coloredDescriptionLabel ^ 1];
 
-  LODWORD(v8) = [MEMORY[0x277D14670] isHomeControlService];
-  v10 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-  [v10 setAdjustsFontSizeToFitWidth:v8 ^ 1];
+  LODWORD(coloredDescriptionLabel) = [MEMORY[0x277D14670] isHomeControlService];
+  coloredDescriptionLabel3 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+  [coloredDescriptionLabel3 setAdjustsFontSizeToFitWidth:coloredDescriptionLabel ^ 1];
 
   +[HUGridServiceCellTextView minimumDescriptionScaleFactor];
   v12 = v11;
-  v13 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-  [v13 setMinimumScaleFactor:v12];
+  coloredDescriptionLabel4 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+  [coloredDescriptionLabel4 setMinimumScaleFactor:v12];
 
   v14 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
   [(HUGridServiceCell *)self setDescriptionLabelEffectView:v14];
 
-  v15 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-  v16 = [v15 contentView];
-  v17 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-  [v16 addSubview:v17];
+  descriptionLabelEffectView = [(HUGridServiceCell *)self descriptionLabelEffectView];
+  contentView = [descriptionLabelEffectView contentView];
+  coloredDescriptionLabel5 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+  [contentView addSubview:coloredDescriptionLabel5];
 
-  v18 = [(HUGridServiceCell *)self contentView];
-  v19 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-  [v18 addSubview:v19];
+  contentView2 = [(HUGridServiceCell *)self contentView];
+  descriptionLabelEffectView2 = [(HUGridServiceCell *)self descriptionLabelEffectView];
+  [contentView2 addSubview:descriptionLabelEffectView2];
 
-  v20 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-  [v20 setHidden:1];
+  descriptionLabelEffectView3 = [(HUGridServiceCell *)self descriptionLabelEffectView];
+  [descriptionLabelEffectView3 setHidden:1];
 
   v21 = objc_alloc(MEMORY[0x277D750E8]);
   if ([MEMORY[0x277D14670] isSpringBoard])
@@ -364,19 +364,19 @@
   v23 = [v21 initWithActivityIndicatorStyle:v22];
   [(HUGridServiceCell *)self setActivityIndicator:v23];
 
-  v24 = [MEMORY[0x277D75348] systemGrayColor];
-  v25 = [(HUGridServiceCell *)self activityIndicator];
-  [v25 setColor:v24];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  activityIndicator = [(HUGridServiceCell *)self activityIndicator];
+  [activityIndicator setColor:systemGrayColor2];
 
-  v26 = [(HUGridServiceCell *)self activityIndicator];
-  [v26 setHidesWhenStopped:1];
+  activityIndicator2 = [(HUGridServiceCell *)self activityIndicator];
+  [activityIndicator2 setHidesWhenStopped:1];
 
   [(HUGridServiceCell *)self _updateAccessoryView];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  [(HUGridServiceCell *)self setOverrideAccessoryView:a3];
+  [(HUGridServiceCell *)self setOverrideAccessoryView:view];
 
   [(HUGridServiceCell *)self _updateAccessoryView];
 }
@@ -388,30 +388,30 @@
     return 1;
   }
 
-  v4 = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
-  v3 = v4 != 0;
+  showUpdatingStateAfterDelayToken = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
+  v3 = showUpdatingStateAfterDelayToken != 0;
 
   return v3;
 }
 
-- (void)setShowUpdatingStateAfterDelay:(BOOL)a3
+- (void)setShowUpdatingStateAfterDelay:(BOOL)delay
 {
-  v3 = a3;
-  v5 = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
-  v6 = v5;
-  if (v3)
+  delayCopy = delay;
+  showUpdatingStateAfterDelayToken = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
+  v6 = showUpdatingStateAfterDelayToken;
+  if (delayCopy)
   {
 
     if (!v6)
     {
       objc_initWeak(&location, self);
-      v7 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __52__HUGridServiceCell_setShowUpdatingStateAfterDelay___block_invoke;
       v12 = &unk_277DB8770;
       objc_copyWeak(&v13, &location);
-      v8 = [v7 afterDelay:&v9 performBlock:1.0];
+      v8 = [mainThreadScheduler afterDelay:&v9 performBlock:1.0];
       [(HUGridServiceCell *)self setShowUpdatingStateAfterDelayToken:v8, v9, v10, v11, v12];
 
       objc_destroyWeak(&v13);
@@ -421,7 +421,7 @@
 
   else
   {
-    [v5 cancel];
+    [showUpdatingStateAfterDelayToken cancel];
 
     [(HUGridServiceCell *)self setShowUpdatingStateAfterDelayToken:0];
 
@@ -443,30 +443,30 @@ void __52__HUGridServiceCell_setShowUpdatingStateAfterDelay___block_invoke(uint6
     return 1;
   }
 
-  v4 = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
-  v3 = v4 != 0;
+  showProgressIndicatorAfterDelayToken = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
+  v3 = showProgressIndicatorAfterDelayToken != 0;
 
   return v3;
 }
 
-- (void)setShowProgressIndicatorAfterDelay:(BOOL)a3
+- (void)setShowProgressIndicatorAfterDelay:(BOOL)delay
 {
-  v3 = a3;
-  v5 = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
-  v6 = v5;
-  if (v3)
+  delayCopy = delay;
+  showProgressIndicatorAfterDelayToken = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
+  v6 = showProgressIndicatorAfterDelayToken;
+  if (delayCopy)
   {
 
     if (!v6)
     {
       objc_initWeak(&location, self);
-      v7 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke;
       v12 = &unk_277DB8770;
       objc_copyWeak(&v13, &location);
-      v8 = [v7 afterDelay:&v9 performBlock:0.5];
+      v8 = [mainThreadScheduler afterDelay:&v9 performBlock:0.5];
       [(HUGridServiceCell *)self setShowProgressIndicatorAfterDelayToken:v8, v9, v10, v11, v12];
 
       objc_destroyWeak(&v13);
@@ -476,7 +476,7 @@ void __52__HUGridServiceCell_setShowUpdatingStateAfterDelay___block_invoke(uint6
 
   else
   {
-    [v5 cancel];
+    [showProgressIndicatorAfterDelayToken cancel];
 
     [(HUGridServiceCell *)self setShowProgressIndicatorAfterDelayToken:0];
 
@@ -491,63 +491,63 @@ void __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke(u
   [WeakRetained setShowProgressIndicatorAfterDelayToken:0];
 }
 
-- (void)setShowingUpdatingState:(BOOL)a3
+- (void)setShowingUpdatingState:(BOOL)state
 {
-  self->_showingUpdatingState = a3;
+  self->_showingUpdatingState = state;
   [(HUGridServiceCell *)self _updateText];
   [(HUGridServiceCell *)self _updateAccessoryView];
-  v4 = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
-  [v4 cancel];
+  showUpdatingStateAfterDelayToken = [(HUGridServiceCell *)self showUpdatingStateAfterDelayToken];
+  [showUpdatingStateAfterDelayToken cancel];
 
   [(HUGridServiceCell *)self setShowUpdatingStateAfterDelayToken:0];
 }
 
-- (void)setShowingProgressIndicator:(BOOL)a3
+- (void)setShowingProgressIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  self->_showingProgressIndicator = a3;
+  indicatorCopy = indicator;
+  self->_showingProgressIndicator = indicator;
   [(HUGridServiceCell *)self _updateAccessoryView];
-  v5 = [(HUGridServiceCell *)self activityIndicator];
-  v6 = v5;
-  if (v3)
+  activityIndicator = [(HUGridServiceCell *)self activityIndicator];
+  v6 = activityIndicator;
+  if (indicatorCopy)
   {
-    [v5 startAnimating];
+    [activityIndicator startAnimating];
   }
 
   else
   {
-    [v5 stopAnimating];
+    [activityIndicator stopAnimating];
   }
 
-  v7 = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
-  [v7 cancel];
+  showProgressIndicatorAfterDelayToken = [(HUGridServiceCell *)self showProgressIndicatorAfterDelayToken];
+  [showProgressIndicatorAfterDelayToken cancel];
 
   [(HUGridServiceCell *)self setShowProgressIndicatorAfterDelayToken:0];
 }
 
 - (BOOL)disableContinuousIconAnimation
 {
-  v2 = [(HUGridServiceCell *)self iconView];
-  v3 = [v2 disableContinuousAnimation];
+  iconView = [(HUGridServiceCell *)self iconView];
+  disableContinuousAnimation = [iconView disableContinuousAnimation];
 
-  return v3;
+  return disableContinuousAnimation;
 }
 
-- (void)setDisableContinuousIconAnimation:(BOOL)a3
+- (void)setDisableContinuousIconAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(HUGridServiceCell *)self iconView];
-  [v4 setDisableContinuousAnimation:v3];
+  animationCopy = animation;
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView setDisableContinuousAnimation:animationCopy];
 }
 
-- (void)setShouldColorDescription:(BOOL)a3
+- (void)setShouldColorDescription:(BOOL)description
 {
-  if (self->_shouldColorDescription != a3)
+  if (self->_shouldColorDescription != description)
   {
-    self->_shouldColorDescription = a3;
-    v4 = [(HUGridServiceCell *)self item];
+    self->_shouldColorDescription = description;
+    item = [(HUGridServiceCell *)self item];
 
-    if (v4)
+    if (item)
     {
 
       [(HUGridServiceCell *)self updateUIWithAnimation:0];
@@ -555,14 +555,14 @@ void __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke(u
   }
 }
 
-- (void)setShouldShowRoomName:(BOOL)a3
+- (void)setShouldShowRoomName:(BOOL)name
 {
-  if (self->_shouldShowRoomName != a3)
+  if (self->_shouldShowRoomName != name)
   {
-    self->_shouldShowRoomName = a3;
-    v4 = [(HUGridServiceCell *)self item];
+    self->_shouldShowRoomName = name;
+    item = [(HUGridServiceCell *)self item];
 
-    if (v4)
+    if (item)
     {
 
       [(HUGridServiceCell *)self updateUIWithAnimation:0];
@@ -570,25 +570,25 @@ void __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke(u
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUGridServiceCell *)self item];
+  item = [(HUGridServiceCell *)self item];
   v18[0] = *MEMORY[0x277D13E88];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v7 = [v5 resultsContainRequiredProperties:v6];
+  v7 = [item resultsContainRequiredProperties:v6];
 
   if (v7)
   {
     v17.receiver = self;
     v17.super_class = HUGridServiceCell;
-    [(HUGridCell *)&v17 updateUIWithAnimation:v3];
-    [(HUGridServiceCell *)self _updateIconAnimated:v3];
+    [(HUGridCell *)&v17 updateUIWithAnimation:animationCopy];
+    [(HUGridServiceCell *)self _updateIconAnimated:animationCopy];
     if ([(HUGridServiceCell *)self shouldShowLoadingState])
     {
-      v8 = [(HUGridServiceCell *)self item];
-      v9 = ([v8 loadingState] >> 1) & 1;
+      item2 = [(HUGridServiceCell *)self item];
+      v9 = ([item2 loadingState] >> 1) & 1;
     }
 
     else
@@ -598,8 +598,8 @@ void __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke(u
 
     if ([(HUGridServiceCell *)self shouldShowLoadingState])
     {
-      v11 = [(HUGridServiceCell *)self item];
-      v12 = [v11 loadingState] & 1;
+      item3 = [(HUGridServiceCell *)self item];
+      v12 = [item3 loadingState] & 1;
     }
 
     else
@@ -610,12 +610,12 @@ void __56__HUGridServiceCell_setShowProgressIndicatorAfterDelay___block_invoke(u
     if ([(HUGridServiceCell *)self hasUpdatedUISinceLastReuse])
     {
       [(HUGridServiceCell *)self setShowProgressIndicatorAfterDelay:v9];
-      v13 = [(HUGridServiceCell *)self item];
-      v14 = [v13 latestResults];
-      v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D14150]];
-      v16 = [v15 BOOLValue];
+      item4 = [(HUGridServiceCell *)self item];
+      latestResults = [item4 latestResults];
+      v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14150]];
+      bOOLValue = [v15 BOOLValue];
 
-      if (!v16)
+      if (!bOOLValue)
       {
         [(HUGridServiceCell *)self setShowUpdatingStateAfterDelay:v12];
 LABEL_14:
@@ -635,39 +635,39 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [(HUGridServiceCell *)self serviceTextView];
-  [v10 setServiceNameComponents:0];
+  serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView setServiceNameComponents:0];
 
-  [(HUGridServiceCell *)self _updateIconAnimated:v3];
+  [(HUGridServiceCell *)self _updateIconAnimated:animationCopy];
 LABEL_15:
   [(HUGridServiceCell *)self setHasUpdatedUISinceLastReuse:1];
 }
 
 - (void)renounceIcon
 {
-  v2 = [(HUGridServiceCell *)self iconView];
-  [v2 renounceIconIfPossible];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView renounceIconIfPossible];
 }
 
 - (void)reclaimIconIfPossible
 {
-  v2 = [(HUGridServiceCell *)self iconView];
-  [v2 reclaimIconIfPossible];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView reclaimIconIfPossible];
 }
 
-- (void)_updateIconAnimated:(BOOL)a3
+- (void)_updateIconAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HUGridCell *)self layoutOptions];
-  v6 = [v5 iconContentMode];
-  v7 = [(HUGridServiceCell *)self iconView];
-  [v7 setContentMode:v6];
+  animatedCopy = animated;
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  iconContentMode = [layoutOptions iconContentMode];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView setContentMode:iconContentMode];
 
-  v11 = [(HUGridServiceCell *)self iconView];
-  v8 = [(HUGridServiceCell *)self item];
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
-  [v11 updateWithIconDescriptor:v10 displayStyle:-[HUGridCell iconDisplayStyle](self animated:{"iconDisplayStyle"), v3}];
+  iconView2 = [(HUGridServiceCell *)self iconView];
+  item = [(HUGridServiceCell *)self item];
+  latestResults = [item latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  [iconView2 updateWithIconDescriptor:v10 displayStyle:-[HUGridCell iconDisplayStyle](self animated:{"iconDisplayStyle"), animatedCopy}];
 }
 
 - (void)layoutOptionsDidChange
@@ -675,30 +675,30 @@ LABEL_15:
   v14.receiver = self;
   v14.super_class = HUGridServiceCell;
   [(HUGridCell *)&v14 layoutOptionsDidChange];
-  v3 = [(HUGridCell *)self layoutOptions];
-  v4 = [v3 font];
-  v5 = [(HUGridServiceCell *)self serviceTextView];
-  [v5 setFont:v4];
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  font = [layoutOptions font];
+  serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView setFont:font];
 
-  v6 = [(HUGridCell *)self layoutOptions];
-  [v6 lineSpacing];
+  layoutOptions2 = [(HUGridCell *)self layoutOptions];
+  [layoutOptions2 lineSpacing];
   v8 = v7;
-  v9 = [(HUGridServiceCell *)self serviceTextView];
-  [v9 setLineHeight:v8];
+  serviceTextView2 = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView2 setLineHeight:v8];
 
-  v10 = [(HUGridCell *)self layoutOptions];
-  v11 = [v10 iconVibrancyEffect];
-  v12 = v11;
-  if (!v11)
+  layoutOptions3 = [(HUGridCell *)self layoutOptions];
+  iconVibrancyEffect = [layoutOptions3 iconVibrancyEffect];
+  vibrancyEffect = iconVibrancyEffect;
+  if (!iconVibrancyEffect)
   {
-    v5 = [(HUGridCell *)self layoutOptions];
-    v12 = [v5 vibrancyEffect];
+    serviceTextView = [(HUGridCell *)self layoutOptions];
+    vibrancyEffect = [serviceTextView vibrancyEffect];
   }
 
-  v13 = [(HUGridServiceCell *)self iconView];
-  [v13 setVibrancyEffect:v12];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView setVibrancyEffect:vibrancyEffect];
 
-  if (!v11)
+  if (!iconVibrancyEffect)
   {
   }
 
@@ -720,37 +720,37 @@ LABEL_15:
   v124.receiver = self;
   v124.super_class = HUGridServiceCell;
   [(HUGridCell *)&v124 layoutSubviews];
-  v3 = [(HUGridCell *)self layoutOptions];
-  [v3 cellInnerMargin];
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  [layoutOptions cellInnerMargin];
   v5 = v4;
 
-  v6 = [(HUGridCell *)self layoutOptions];
-  v7 = [v6 shouldShowIconOnly];
+  layoutOptions2 = [(HUGridCell *)self layoutOptions];
+  shouldShowIconOnly = [layoutOptions2 shouldShowIconOnly];
 
-  if (v7)
+  if (shouldShowIconOnly)
   {
-    v8 = [(HUGridServiceCell *)self contentView];
-    [v8 bounds];
+    contentView = [(HUGridServiceCell *)self contentView];
+    [contentView bounds];
     CGRectInset(v126, v5, v5);
 
-    v9 = [(HUGridServiceCell *)self contentView];
-    [v9 bounds];
+    contentView2 = [(HUGridServiceCell *)self contentView];
+    [contentView2 bounds];
     UIRectCenteredIntegralRect();
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(HUGridServiceCell *)self iconView];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    iconView = [(HUGridServiceCell *)self iconView];
+    [iconView setFrame:{v11, v13, v15, v17}];
 
     [(HUGridServiceCell *)self _updateSupplementaryImageViewIfNecessary];
   }
 
   else
   {
-    v19 = [(HUGridServiceCell *)self effectiveUserInterfaceLayoutDirection];
-    v20 = [(HUGridCell *)self layoutOptions];
-    if ([v20 shouldShowDescription])
+    effectiveUserInterfaceLayoutDirection = [(HUGridServiceCell *)self effectiveUserInterfaceLayoutDirection];
+    layoutOptions3 = [(HUGridCell *)self layoutOptions];
+    if ([layoutOptions3 shouldShowDescription])
     {
       v21 = v5;
     }
@@ -760,100 +760,100 @@ LABEL_15:
       v21 = v5 * 0.8;
     }
 
-    v22 = [(HUGridServiceCell *)self contentView];
-    [v22 bounds];
+    contentView3 = [(HUGridServiceCell *)self contentView];
+    [contentView3 bounds];
     MaxY = CGRectGetMaxY(v127);
 
-    v24 = [(HUGridServiceCell *)self serviceTextView];
-    [v24 sizeToFit];
+    serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView sizeToFit];
 
-    v25 = [(HUGridCell *)self layoutOptions];
-    v26 = [v25 shouldShowDescription];
-    v27 = [(HUGridServiceCell *)self serviceTextView];
-    [v27 frame];
+    layoutOptions4 = [(HUGridCell *)self layoutOptions];
+    shouldShowDescription = [layoutOptions4 shouldShowDescription];
+    serviceTextView2 = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView2 frame];
     Height = CGRectGetHeight(v128);
-    if ((v26 & 1) == 0)
+    if ((shouldShowDescription & 1) == 0)
     {
-      v29 = [(HUGridServiceCell *)self serviceTextView];
-      [v29 lineHeight];
+      serviceTextView3 = [(HUGridServiceCell *)self serviceTextView];
+      [serviceTextView3 lineHeight];
       Height = Height - v30;
     }
 
     v31 = MaxY - v21;
 
-    v32 = [(HUGridCell *)self layoutOptions];
-    v33 = [v32 shouldShowDescription];
-    v34 = [(HUGridServiceCell *)self serviceTextView];
-    v35 = v34;
-    if (v33)
+    layoutOptions5 = [(HUGridCell *)self layoutOptions];
+    shouldShowDescription2 = [layoutOptions5 shouldShowDescription];
+    serviceTextView4 = [(HUGridServiceCell *)self serviceTextView];
+    v35 = serviceTextView4;
+    if (shouldShowDescription2)
     {
-      [v34 lastBaselineToBottomDistance];
+      [serviceTextView4 lastBaselineToBottomDistance];
     }
 
     else
     {
-      [v34 lineHeight];
+      [serviceTextView4 lineHeight];
     }
 
     v37 = v36;
 
-    v38 = [(HUGridServiceCell *)self contentView];
-    [v38 bounds];
+    contentView4 = [(HUGridServiceCell *)self contentView];
+    [contentView4 bounds];
     v39 = v5 + CGRectGetMinX(v129);
-    v40 = [(HUGridServiceCell *)self serviceTextView];
-    [v40 frame];
+    serviceTextView5 = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView5 frame];
     v41 = CGRectGetHeight(v130);
     v42 = HURoundToScreenScale(v37 + v31 - v41);
-    v43 = [(HUGridServiceCell *)self contentView];
-    [v43 bounds];
+    contentView5 = [(HUGridServiceCell *)self contentView];
+    [contentView5 bounds];
     v44 = CGRectGetWidth(v131) + v5 * -2.0;
-    v45 = [(HUGridServiceCell *)self serviceTextView];
-    [v45 setFrame:{v39, v42, v44, Height}];
+    serviceTextView6 = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView6 setFrame:{v39, v42, v44, Height}];
 
-    v46 = [(HUGridCell *)self layoutOptions];
-    LODWORD(v40) = [v46 shouldShowDescription];
+    layoutOptions6 = [(HUGridCell *)self layoutOptions];
+    LODWORD(serviceTextView5) = [layoutOptions6 shouldShowDescription];
 
-    if (v40)
+    if (serviceTextView5)
     {
-      v47 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-      [v47 sizeToFit];
+      coloredDescriptionLabel = [(HUGridServiceCell *)self coloredDescriptionLabel];
+      [coloredDescriptionLabel sizeToFit];
 
-      v48 = [(HUGridServiceCell *)self contentView];
-      [v48 bounds];
+      contentView6 = [(HUGridServiceCell *)self contentView];
+      [contentView6 bounds];
       v49 = v5 + CGRectGetMinX(v132);
-      v50 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-      [v50 _lastLineBaseline];
+      coloredDescriptionLabel2 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+      [coloredDescriptionLabel2 _lastLineBaseline];
       v52 = HURoundToScreenScale(v31 - v51);
-      v53 = [(HUGridServiceCell *)self contentView];
-      [v53 bounds];
+      contentView7 = [(HUGridServiceCell *)self contentView];
+      [contentView7 bounds];
       v54 = CGRectGetWidth(v133) + v5 * -2.0;
-      v55 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-      [v55 bounds];
+      coloredDescriptionLabel3 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+      [coloredDescriptionLabel3 bounds];
       v56 = CGRectGetHeight(v134);
-      v57 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-      [v57 setFrame:{v49, v52, v54, v56}];
+      descriptionLabelEffectView = [(HUGridServiceCell *)self descriptionLabelEffectView];
+      [descriptionLabelEffectView setFrame:{v49, v52, v54, v56}];
 
-      v58 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-      [v58 bounds];
+      descriptionLabelEffectView2 = [(HUGridServiceCell *)self descriptionLabelEffectView];
+      [descriptionLabelEffectView2 bounds];
       v60 = v59;
       v62 = v61;
       v64 = v63;
       v66 = v65;
-      v67 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-      [v67 setFrame:{v60, v62, v64, v66}];
+      coloredDescriptionLabel4 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+      [coloredDescriptionLabel4 setFrame:{v60, v62, v64, v66}];
     }
 
-    v68 = [(HUGridServiceCell *)self item];
+    item = [(HUGridServiceCell *)self item];
     v69 = *MEMORY[0x277D13E88];
     v125[0] = *MEMORY[0x277D13E88];
     v70 = [MEMORY[0x277CBEA60] arrayWithObjects:v125 count:1];
-    v71 = [v68 resultsContainRequiredProperties:v70];
+    v71 = [item resultsContainRequiredProperties:v70];
 
     if (v71)
     {
-      v72 = [(HUGridServiceCell *)self item];
-      v73 = [v72 latestResults];
-      v74 = [v73 objectForKeyedSubscript:v69];
+      item2 = [(HUGridServiceCell *)self item];
+      latestResults = [item2 latestResults];
+      v74 = [latestResults objectForKeyedSubscript:v69];
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -875,15 +875,15 @@ LABEL_15:
       isKindOfClass = 0;
     }
 
-    v77 = [(HUGridServiceCell *)self serviceTextView];
-    [v77 frame];
+    serviceTextView7 = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView7 frame];
     v78 = CGRectGetMinY(v135) - v5;
-    v79 = [(HUGridCell *)self layoutOptions];
-    [v79 iconToTitleSpacing];
+    layoutOptions7 = [(HUGridCell *)self layoutOptions];
+    [layoutOptions7 iconToTitleSpacing];
     v81 = v78 - v80;
 
-    v82 = [(HUGridCell *)self layoutOptions];
-    [v82 iconSize];
+    layoutOptions8 = [(HUGridCell *)self layoutOptions];
+    [layoutOptions8 iconSize];
     v84 = v83;
 
     if (v81 >= v84)
@@ -896,12 +896,12 @@ LABEL_15:
       v85 = v81;
     }
 
-    v86 = [(HUGridCell *)self layoutOptions];
-    [v86 iconToTitleSpacing];
+    layoutOptions9 = [(HUGridCell *)self layoutOptions];
+    [layoutOptions9 iconToTitleSpacing];
     v88 = v5 + v85 + v87;
 
-    v89 = [(HUGridServiceCell *)self contentView];
-    [v89 bounds];
+    contentView8 = [(HUGridServiceCell *)self contentView];
+    [contentView8 bounds];
     v91 = v90 + v5 * -2.0 - v85;
 
     if (v85 >= v91)
@@ -917,8 +917,8 @@ LABEL_15:
     v93 = v88;
     if ((isKindOfClass & 1) == 0)
     {
-      v94 = [(HUGridServiceCell *)self iconView];
-      v95 = v94;
+      iconView2 = [(HUGridServiceCell *)self iconView];
+      v95 = iconView2;
       if (v85 >= v88)
       {
         v96 = v88;
@@ -929,7 +929,7 @@ LABEL_15:
         v96 = v85;
       }
 
-      [v94 sizeThatFits:{v92, v96}];
+      [iconView2 sizeThatFits:{v92, v96}];
       v91 = v97;
       v93 = v98;
     }
@@ -939,8 +939,8 @@ LABEL_15:
       v91 = v92 * 4.0 / 3.0;
     }
 
-    v99 = [(HUGridServiceCell *)self contentView];
-    [v99 bounds];
+    contentView9 = [(HUGridServiceCell *)self contentView];
+    [contentView9 bounds];
     v100 = v5 + CGRectGetMinY(v136);
 
     if (isKindOfClass)
@@ -948,9 +948,9 @@ LABEL_15:
       v100 = v100 + (v88 - v85) * -0.5;
     }
 
-    v101 = [(HUGridServiceCell *)self contentView];
-    [v101 bounds];
-    if (v19 == 1)
+    contentView10 = [(HUGridServiceCell *)self contentView];
+    [contentView10 bounds];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v106 = CGRectGetMaxX(*&v102) - v5 - v91;
     }
@@ -960,15 +960,15 @@ LABEL_15:
       v106 = v5 + CGRectGetMinX(*&v102);
     }
 
-    v107 = [(HUGridServiceCell *)self iconView];
-    [v107 setFrame:{v106, v100, v91, v93}];
+    iconView3 = [(HUGridServiceCell *)self iconView];
+    [iconView3 setFrame:{v106, v100, v91, v93}];
 
     [(HUGridServiceCell *)self _updateSupplementaryImageViewIfNecessary];
-    v108 = [(HUGridServiceCell *)self accessoryView];
-    [v108 sizeToFit];
+    accessoryView = [(HUGridServiceCell *)self accessoryView];
+    [accessoryView sizeToFit];
 
-    v109 = [(HUGridServiceCell *)self accessoryView];
-    [v109 frame];
+    accessoryView2 = [(HUGridServiceCell *)self accessoryView];
+    [accessoryView2 frame];
     v110 = CGRectGetHeight(v137);
 
     if (v110 >= v85)
@@ -976,16 +976,16 @@ LABEL_15:
       v110 = v85;
     }
 
-    v111 = [(HUGridServiceCell *)self accessoryView];
-    [v111 frame];
+    accessoryView3 = [(HUGridServiceCell *)self accessoryView];
+    [accessoryView3 frame];
     Width = CGRectGetWidth(v138);
-    v113 = [(HUGridServiceCell *)self accessoryView];
-    [v113 frame];
+    accessoryView4 = [(HUGridServiceCell *)self accessoryView];
+    [accessoryView4 frame];
     v114 = Width * (v110 / CGRectGetHeight(v139));
 
-    v115 = [(HUGridServiceCell *)self contentView];
-    [v115 bounds];
-    if (v19 == 1)
+    contentView11 = [(HUGridServiceCell *)self contentView];
+    [contentView11 bounds];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v120 = v5 + CGRectGetMinX(*&v116);
     }
@@ -995,127 +995,127 @@ LABEL_15:
       v120 = CGRectGetMaxX(*&v116) - v5 - v114;
     }
 
-    v121 = [(HUGridServiceCell *)self contentView];
-    [v121 bounds];
+    contentView12 = [(HUGridServiceCell *)self contentView];
+    [contentView12 bounds];
     v122 = v5 + CGRectGetMinY(v140);
-    v123 = [(HUGridServiceCell *)self accessoryView];
-    [v123 setFrame:{v120, v122, v114, v110}];
+    accessoryView5 = [(HUGridServiceCell *)self accessoryView];
+    [accessoryView5 setFrame:{v120, v122, v114, v110}];
   }
 }
 
 - (void)_updateText
 {
-  v26 = [(HUGridServiceCell *)self _textConfiguration];
-  v3 = [v26 nameComponents];
-  v4 = [(HUGridServiceCell *)self serviceTextView];
-  [v4 setServiceNameComponents:v3];
+  _textConfiguration = [(HUGridServiceCell *)self _textConfiguration];
+  nameComponents = [_textConfiguration nameComponents];
+  serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView setServiceNameComponents:nameComponents];
 
-  v5 = [(HUGridServiceCell *)self shouldShowRoomName];
-  v6 = [(HUGridServiceCell *)self serviceTextView];
-  [v6 setShouldShowRoomName:v5];
+  shouldShowRoomName = [(HUGridServiceCell *)self shouldShowRoomName];
+  serviceTextView2 = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView2 setShouldShowRoomName:shouldShowRoomName];
 
-  v7 = [(HUGridCell *)self layoutOptions];
-  LODWORD(v6) = [v7 shouldShowDescription];
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  LODWORD(serviceTextView2) = [layoutOptions shouldShowDescription];
 
-  if (!v6)
+  if (!serviceTextView2)
   {
-    v11 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-    [v11 setHidden:1];
+    descriptionLabelEffectView = [(HUGridServiceCell *)self descriptionLabelEffectView];
+    [descriptionLabelEffectView setHidden:1];
 
-    v12 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-    [v12 setAttributedText:0];
+    coloredDescriptionLabel = [(HUGridServiceCell *)self coloredDescriptionLabel];
+    [coloredDescriptionLabel setAttributedText:0];
 LABEL_7:
 
-    v19 = [(HUGridServiceCell *)self serviceTextView];
-    [v19 setDescriptionText:0];
+    serviceTextView3 = [(HUGridServiceCell *)self serviceTextView];
+    [serviceTextView3 setDescriptionText:0];
     goto LABEL_8;
   }
 
-  v8 = [v26 descriptionTextEffect];
-  v9 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-  [v9 setEffect:v8];
+  descriptionTextEffect = [_textConfiguration descriptionTextEffect];
+  descriptionLabelEffectView2 = [(HUGridServiceCell *)self descriptionLabelEffectView];
+  [descriptionLabelEffectView2 setEffect:descriptionTextEffect];
 
-  v10 = [v26 descriptionTextColor];
-  if (v10)
+  descriptionTextColor = [_textConfiguration descriptionTextColor];
+  if (descriptionTextColor)
   {
 
 LABEL_6:
-    v14 = [v26 descriptionText];
-    v15 = [v26 descriptionTextColor];
-    v16 = [(HUGridServiceCell *)self _descriptionTextAttributesWithColor:v15];
-    v17 = [v14 stringWithAttributes:v16];
-    v18 = [(HUGridServiceCell *)self coloredDescriptionLabel];
-    [v18 setAttributedText:v17];
+    descriptionText = [_textConfiguration descriptionText];
+    descriptionTextColor2 = [_textConfiguration descriptionTextColor];
+    v16 = [(HUGridServiceCell *)self _descriptionTextAttributesWithColor:descriptionTextColor2];
+    v17 = [descriptionText stringWithAttributes:v16];
+    coloredDescriptionLabel2 = [(HUGridServiceCell *)self coloredDescriptionLabel];
+    [coloredDescriptionLabel2 setAttributedText:v17];
 
-    v12 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-    [v12 setHidden:0];
+    coloredDescriptionLabel = [(HUGridServiceCell *)self descriptionLabelEffectView];
+    [coloredDescriptionLabel setHidden:0];
     goto LABEL_7;
   }
 
-  v13 = [v26 descriptionTextEffect];
+  descriptionTextEffect2 = [_textConfiguration descriptionTextEffect];
 
-  if (v13)
+  if (descriptionTextEffect2)
   {
     goto LABEL_6;
   }
 
-  v22 = [(HUGridServiceCell *)self descriptionLabelEffectView];
-  [v22 setHidden:1];
+  descriptionLabelEffectView3 = [(HUGridServiceCell *)self descriptionLabelEffectView];
+  [descriptionLabelEffectView3 setHidden:1];
 
-  v19 = [v26 descriptionText];
-  v23 = [v19 stringWithAttributes:MEMORY[0x277CBEC10]];
-  v24 = [v23 string];
-  v25 = [(HUGridServiceCell *)self serviceTextView];
-  [v25 setDescriptionText:v24];
+  serviceTextView3 = [_textConfiguration descriptionText];
+  v23 = [serviceTextView3 stringWithAttributes:MEMORY[0x277CBEC10]];
+  string = [v23 string];
+  serviceTextView4 = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView4 setDescriptionText:string];
 
 LABEL_8:
-  v20 = [v26 nameTextColor];
-  v21 = [(HUGridServiceCell *)self serviceTextView];
-  [v21 setTextColor:v20];
+  nameTextColor = [_textConfiguration nameTextColor];
+  serviceTextView5 = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView5 setTextColor:nameTextColor];
 }
 
-- (id)_descriptionTextAttributesWithColor:(id)a3
+- (id)_descriptionTextAttributesWithColor:(id)color
 {
   v4 = MEMORY[0x277D74240];
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_alloc_init(v4);
-  v7 = [(HUGridCell *)self layoutOptions];
-  [v7 lineSpacing];
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  [layoutOptions lineSpacing];
   [v6 setMinimumLineHeight:?];
 
-  v8 = [(HUGridCell *)self layoutOptions];
-  [v8 lineSpacing];
+  layoutOptions2 = [(HUGridCell *)self layoutOptions];
+  [layoutOptions2 lineSpacing];
   [v6 setMaximumLineHeight:?];
 
   [v6 setLineBreakMode:4];
   [v6 setAllowsDefaultTighteningForTruncation:{objc_msgSend(MEMORY[0x277D14670], "isHomeControlService") ^ 1}];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [(HUGridCell *)self layoutOptions];
-  v11 = [v10 font];
-  [v9 na_safeSetObject:v11 forKey:*MEMORY[0x277D740A8]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  layoutOptions3 = [(HUGridCell *)self layoutOptions];
+  font = [layoutOptions3 font];
+  [dictionary na_safeSetObject:font forKey:*MEMORY[0x277D740A8]];
 
-  [v9 na_safeSetObject:v5 forKey:*MEMORY[0x277D740C0]];
-  [v9 na_safeSetObject:v6 forKey:*MEMORY[0x277D74118]];
+  [dictionary na_safeSetObject:colorCopy forKey:*MEMORY[0x277D740C0]];
+  [dictionary na_safeSetObject:v6 forKey:*MEMORY[0x277D74118]];
 
-  return v9;
+  return dictionary;
 }
 
 - (id)_textConfiguration
 {
   v3 = objc_alloc_init(HUGridServiceCellTextConfiguration);
-  v4 = [(HUGridServiceCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F00]];
+  item = [(HUGridServiceCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F00]];
   [(HUGridServiceCellTextConfiguration *)v3 setNameComponents:v6];
 
-  v7 = [(HUGridServiceCell *)self item];
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  item2 = [(HUGridServiceCell *)self item];
+  latestResults2 = [item2 latestResults];
+  v9 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   [(HUGridServiceCellTextConfiguration *)v3 setDescriptionText:v9];
 
-  v10 = [(HUGridServiceCell *)self item];
-  v11 = [v10 latestResults];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13E28]];
+  item3 = [(HUGridServiceCell *)self item];
+  latestResults3 = [item3 latestResults];
+  v12 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E28]];
 
   if (v12)
   {
@@ -1127,9 +1127,9 @@ LABEL_8:
     v13 = 0;
   }
 
-  v14 = [(HUGridServiceCell *)self item];
-  v15 = [v14 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
+  item4 = [(HUGridServiceCell *)self item];
+  latestResults4 = [item4 latestResults];
+  v16 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
 
   if (v16)
   {
@@ -1141,11 +1141,11 @@ LABEL_8:
     v17 = 1;
   }
 
-  v18 = [(HUGridCell *)self backgroundState];
-  if (v18 == 1)
+  backgroundState = [(HUGridCell *)self backgroundState];
+  if (backgroundState == 1)
   {
-    v19 = [(HUGridServiceCell *)self defaultDescriptionColor];
-    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextColor:v19];
+    defaultDescriptionColor = [(HUGridServiceCell *)self defaultDescriptionColor];
+    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextColor:defaultDescriptionColor];
   }
 
   else
@@ -1160,14 +1160,14 @@ LABEL_8:
       goto LABEL_23;
     }
 
-    v20 = _HULocalizedStringWithDefaultValue(@"HUGridServiceCellReadingDescription", @"HUGridServiceCellReadingDescription", 1);
-    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionText:v20];
+    systemRedColor = _HULocalizedStringWithDefaultValue(@"HUGridServiceCellReadingDescription", @"HUGridServiceCellReadingDescription", 1);
+    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionText:systemRedColor];
     goto LABEL_22;
   }
 
   if ([(HUGridServiceCell *)self shouldColorDescription])
   {
-    if (v18 != 1 || v17)
+    if (backgroundState != 1 || v17)
     {
       [(HUGridServiceCell *)self defaultNameTextColor];
     }
@@ -1181,45 +1181,45 @@ LABEL_8:
 
     if (v13)
     {
-      v20 = [MEMORY[0x277D75348] systemRedColor];
-      [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextColor:v20];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+      [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextColor:systemRedColor];
 LABEL_22:
     }
   }
 
 LABEL_23:
-  v23 = [(HUGridServiceCellTextConfiguration *)v3 descriptionTextColor];
-  if (v23)
+  descriptionTextColor = [(HUGridServiceCellTextConfiguration *)v3 descriptionTextColor];
+  if (descriptionTextColor)
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v24 = [(HUGridCell *)self contentEffect];
-  v25 = [(HUGridCell *)self secondaryContentEffect];
-  v23 = v24;
-  v26 = v25;
+  contentEffect = [(HUGridCell *)self contentEffect];
+  secondaryContentEffect = [(HUGridCell *)self secondaryContentEffect];
+  descriptionTextColor = contentEffect;
+  v26 = secondaryContentEffect;
   v27 = v26;
-  if (v23 == v26)
+  if (descriptionTextColor == v26)
   {
 
     goto LABEL_31;
   }
 
-  if (!v23)
+  if (!descriptionTextColor)
   {
 
     goto LABEL_30;
   }
 
-  v28 = [v23 isEqual:v26];
+  v28 = [descriptionTextColor isEqual:v26];
 
   if ((v28 & 1) == 0)
   {
 LABEL_30:
-    v23 = [(HUGridCell *)self secondaryContentEffect];
-    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextEffect:v23];
+    descriptionTextColor = [(HUGridCell *)self secondaryContentEffect];
+    [(HUGridServiceCellTextConfiguration *)v3 setDescriptionTextEffect:descriptionTextColor];
     goto LABEL_31;
   }
 
@@ -1231,92 +1231,92 @@ LABEL_32:
 - (void)_updateSecondaryContentDisplayStyle
 {
   v3 = [(HUGridCell *)self iconDisplayStyle]== 2;
-  v4 = [(HUGridServiceCell *)self serviceTextView];
-  [v4 setTextColorFollowsTintColor:v3];
+  serviceTextView = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView setTextColorFollowsTintColor:v3];
 
   [(HUGridCell *)self secondaryContentDimmingFactor];
   v6 = v5;
-  v7 = [(HUGridServiceCell *)self serviceTextView];
-  [v7 setDescriptionTextColorDimmingFactor:v6];
+  serviceTextView2 = [(HUGridServiceCell *)self serviceTextView];
+  [serviceTextView2 setDescriptionTextColorDimmingFactor:v6];
 
   [(HUGridCell *)self secondaryContentDimmingFactor];
   v9 = v8;
-  v10 = [(HUGridServiceCell *)self exclamationView];
-  v11 = [v10 innerContentView];
-  [v11 setAlpha:v9];
+  exclamationView = [(HUGridServiceCell *)self exclamationView];
+  innerContentView = [exclamationView innerContentView];
+  [innerContentView setAlpha:v9];
 
-  v12 = [(HUGridCell *)self secondaryContentEffect];
-  v13 = [(HUGridServiceCell *)self exclamationView];
-  [v13 setEffect:v12];
+  secondaryContentEffect = [(HUGridCell *)self secondaryContentEffect];
+  exclamationView2 = [(HUGridServiceCell *)self exclamationView];
+  [exclamationView2 setEffect:secondaryContentEffect];
 
   [(HUGridCell *)self secondaryContentDimmingFactor];
   v15 = v14;
-  v16 = [(HUGridServiceCell *)self firmwareUpdateView];
-  v17 = [v16 innerContentView];
-  [v17 setAlpha:v15];
+  firmwareUpdateView = [(HUGridServiceCell *)self firmwareUpdateView];
+  innerContentView2 = [firmwareUpdateView innerContentView];
+  [innerContentView2 setAlpha:v15];
 
-  v19 = [(HUGridCell *)self secondaryContentEffect];
-  v18 = [(HUGridServiceCell *)self firmwareUpdateView];
-  [v18 setEffect:v19];
+  secondaryContentEffect2 = [(HUGridCell *)self secondaryContentEffect];
+  firmwareUpdateView2 = [(HUGridServiceCell *)self firmwareUpdateView];
+  [firmwareUpdateView2 setEffect:secondaryContentEffect2];
 }
 
 - (void)_updateAccessoryView
 {
-  v3 = [(HUGridCell *)self layoutOptions];
-  v4 = [v3 shouldShowAccessoryView];
+  layoutOptions = [(HUGridCell *)self layoutOptions];
+  shouldShowAccessoryView = [layoutOptions shouldShowAccessoryView];
 
-  if (!v4)
+  if (!shouldShowAccessoryView)
   {
     return;
   }
 
-  v5 = [(HUGridServiceCell *)self overrideAccessoryView];
-  if (!v5)
+  overrideAccessoryView = [(HUGridServiceCell *)self overrideAccessoryView];
+  if (!overrideAccessoryView)
   {
     if ([(HUGridServiceCell *)self showingProgressIndicator])
     {
-      v6 = [(HUGridServiceCell *)self activityIndicator];
+      activityIndicator = [(HUGridServiceCell *)self activityIndicator];
     }
 
     else
     {
-      v7 = [(HUGridServiceCell *)self item];
-      v8 = [v7 latestResults];
+      item = [(HUGridServiceCell *)self item];
+      latestResults = [item latestResults];
       v9 = *MEMORY[0x277D13DE0];
-      v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13DE0]];
-      v11 = [v10 integerValue];
+      v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE0]];
+      integerValue = [v10 integerValue];
 
-      if (v11 == 8)
+      if (integerValue == 8)
       {
         [(HUGridServiceCell *)self _createFirmwareUpdateViewIfNecessary];
-        v6 = [(HUGridServiceCell *)self firmwareUpdateView];
+        activityIndicator = [(HUGridServiceCell *)self firmwareUpdateView];
       }
 
       else
       {
         if (-[HUGridServiceCell showingUpdatingState](self, "showingUpdatingState") || (-[HUGridServiceCell item](self, "item"), v14 = objc_claimAutoreleasedReturnValue(), [v14 latestResults], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectForKeyedSubscript:", v9), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "integerValue"), v16, v15, v14, v17 != 1))
         {
-          v5 = 0;
+          overrideAccessoryView = 0;
           goto LABEL_9;
         }
 
         [(HUGridServiceCell *)self _createExclamationViewIfNecessary];
-        v6 = [(HUGridServiceCell *)self exclamationView];
+        activityIndicator = [(HUGridServiceCell *)self exclamationView];
       }
     }
 
-    v5 = v6;
+    overrideAccessoryView = activityIndicator;
   }
 
 LABEL_9:
   accessoryView = self->_accessoryView;
-  obj = v5;
-  if (v5 != accessoryView)
+  obj = overrideAccessoryView;
+  if (overrideAccessoryView != accessoryView)
   {
     [(UIView *)accessoryView removeFromSuperview];
     objc_storeStrong(&self->_accessoryView, obj);
-    v13 = [(HUGridServiceCell *)self contentView];
-    [v13 addSubview:self->_accessoryView];
+    contentView = [(HUGridServiceCell *)self contentView];
+    [contentView addSubview:self->_accessoryView];
 
     [(HUGridServiceCell *)self setNeedsLayout];
   }
@@ -1326,66 +1326,66 @@ LABEL_9:
 
 - (void)_createExclamationViewIfNecessary
 {
-  v3 = [(HUGridServiceCell *)self exclamationView];
+  exclamationView = [(HUGridServiceCell *)self exclamationView];
 
-  if (!v3)
+  if (!exclamationView)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
-    v5 = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
-    v11 = [v4 initWithImage:v5];
+    hu_exclamationMarkImage = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
+    v11 = [v4 initWithImage:hu_exclamationMarkImage];
 
-    v6 = [MEMORY[0x277D75348] hf_keyColor];
-    [v11 setTintColor:v6];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    [v11 setTintColor:hf_keyColor];
 
     v7 = [HUVisualEffectContainerView alloc];
-    v8 = [(HUGridCell *)self contentEffect];
-    v9 = [(HUVisualEffectContainerView *)v7 initWithEffect:v8];
+    contentEffect = [(HUGridCell *)self contentEffect];
+    v9 = [(HUVisualEffectContainerView *)v7 initWithEffect:contentEffect];
     [(HUGridServiceCell *)self setExclamationView:v9];
 
-    v10 = [(HUGridServiceCell *)self exclamationView];
-    [v10 setInnerContentView:v11];
+    exclamationView2 = [(HUGridServiceCell *)self exclamationView];
+    [exclamationView2 setInnerContentView:v11];
   }
 }
 
 - (void)_updateExclamationViewColor
 {
-  v3 = [(HUGridServiceCell *)self item];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13DD8]];
-  v6 = [v5 integerValue];
+  item = [(HUGridServiceCell *)self item];
+  latestResults = [item latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DD8]];
+  integerValue = [v5 integerValue];
 
   if ([(HUGridCell *)self iconDisplayStyle]== 3)
   {
-    v7 = [objc_opt_class() _iconTintColor];
+    _iconTintColor = [objc_opt_class() _iconTintColor];
   }
 
   else
   {
-    v7 = 0;
+    _iconTintColor = 0;
   }
 
-  v11 = v7;
-  if (v6)
+  v11 = _iconTintColor;
+  if (integerValue)
   {
-    v8 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    v8 = v7;
+    systemGrayColor = _iconTintColor;
   }
 
-  v9 = v8;
-  v10 = [(HUGridServiceCell *)self exclamationView];
-  [v10 setTintColor:v9];
+  v9 = systemGrayColor;
+  exclamationView = [(HUGridServiceCell *)self exclamationView];
+  [exclamationView setTintColor:v9];
 }
 
 - (void)_updateSupplementaryImageViewIfNecessary
 {
-  v3 = [(HUGridServiceCell *)self item];
-  if ([v3 conformsToProtocol:&unk_28251B0C8])
+  item = [(HUGridServiceCell *)self item];
+  if ([item conformsToProtocol:&unk_28251B0C8])
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -1395,19 +1395,19 @@ LABEL_9:
 
   v5 = v4;
 
-  v6 = [v5 accessories];
+  accessories = [v5 accessories];
 
-  v44 = [v6 anyObject];
+  anyObject = [accessories anyObject];
 
-  v7 = [(HUGridServiceCell *)self effectiveUserInterfaceLayoutDirection];
-  v8 = [v44 hf_siriEndpointProfile];
-  if (v8 && (v9 = v8, v10 = [v44 hf_needsOnboarding], v9, (v10 & 1) == 0))
+  effectiveUserInterfaceLayoutDirection = [(HUGridServiceCell *)self effectiveUserInterfaceLayoutDirection];
+  hf_siriEndpointProfile = [anyObject hf_siriEndpointProfile];
+  if (hf_siriEndpointProfile && (v9 = hf_siriEndpointProfile, v10 = [anyObject hf_needsOnboarding], v9, (v10 & 1) == 0))
   {
     objc_opt_class();
-    v15 = [(HUGridServiceCell *)self item];
+    item2 = [(HUGridServiceCell *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = item2;
     }
 
     else
@@ -1417,71 +1417,71 @@ LABEL_9:
 
     v17 = v16;
 
-    v18 = [v44 hf_siriEndpointProfile];
-    v19 = [v18 manuallyDisabled];
+    hf_siriEndpointProfile2 = [anyObject hf_siriEndpointProfile];
+    manuallyDisabled = [hf_siriEndpointProfile2 manuallyDisabled];
 
-    if ((v19 & 1) == 0 && ([v17 shouldShowMutedMicIcon] & 1) == 0)
+    if ((manuallyDisabled & 1) == 0 && ([v17 shouldShowMutedMicIcon] & 1) == 0)
     {
 
 LABEL_22:
-      v20 = [(HUGridServiceCell *)self supplementaryImageView];
-      [v20 setHidden:1];
+      supplementaryImageView = [(HUGridServiceCell *)self supplementaryImageView];
+      [supplementaryImageView setHidden:1];
       goto LABEL_23;
     }
   }
 
   else
   {
-    if (![v44 hf_isHomePod])
+    if (![anyObject hf_isHomePod])
     {
       goto LABEL_22;
     }
 
     objc_opt_class();
-    v11 = [(HUGridServiceCell *)self item];
-    v12 = (objc_opt_isKindOfClass() & 1) != 0 ? v11 : 0;
+    item3 = [(HUGridServiceCell *)self item];
+    v12 = (objc_opt_isKindOfClass() & 1) != 0 ? item3 : 0;
     v13 = v12;
 
-    v14 = [v13 shouldShowMutedMicIcon];
-    if (!v14)
+    shouldShowMutedMicIcon = [v13 shouldShowMutedMicIcon];
+    if (!shouldShowMutedMicIcon)
     {
       goto LABEL_22;
     }
   }
 
-  v20 = [(HUGridServiceCell *)self _backgroundColorForSupplementaryIcon];
+  supplementaryImageView = [(HUGridServiceCell *)self _backgroundColorForSupplementaryIcon];
   v21 = MEMORY[0x277D755B8];
-  v22 = [MEMORY[0x277D75348] systemRedColor];
-  v23 = [v21 hu_mutedMicrophoneImageInCircleWithTintColor:v22 backgroundColor:v20];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  v23 = [v21 hu_mutedMicrophoneImageInCircleWithTintColor:systemRedColor backgroundColor:supplementaryImageView];
 
-  v24 = [(HUGridServiceCell *)self supplementaryImageView];
-  [v24 setImage:v23];
+  supplementaryImageView2 = [(HUGridServiceCell *)self supplementaryImageView];
+  [supplementaryImageView2 setImage:v23];
 
-  v25 = [(HUGridServiceCell *)self iconView];
-  [v25 frame];
+  iconView = [(HUGridServiceCell *)self iconView];
+  [iconView frame];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
 
-  v34 = [(HUGridServiceCell *)self supplementaryImageView];
-  v35 = [v34 image];
-  [v35 size];
+  supplementaryImageView3 = [(HUGridServiceCell *)self supplementaryImageView];
+  image = [supplementaryImageView3 image];
+  [image size];
   v37 = v36;
   v39 = v38;
 
   v40 = 0.0;
-  if (v7 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     v40 = v31;
   }
 
   v41 = v27 + v40 + v37 * -0.5;
-  v42 = [(HUGridServiceCell *)self supplementaryImageView];
-  [v42 setFrame:{v41, v29 + v33 + v39 / -1.5, v37, v39}];
+  supplementaryImageView4 = [(HUGridServiceCell *)self supplementaryImageView];
+  [supplementaryImageView4 setFrame:{v41, v29 + v33 + v39 / -1.5, v37, v39}];
 
-  v43 = [(HUGridServiceCell *)self supplementaryImageView];
-  [v43 setHidden:0];
+  supplementaryImageView5 = [(HUGridServiceCell *)self supplementaryImageView];
+  [supplementaryImageView5 setHidden:0];
 
 LABEL_23:
 }
@@ -1491,18 +1491,18 @@ LABEL_23:
   v3 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
   if ([MEMORY[0x277D14670] isSpringBoard])
   {
-    v4 = 1;
+    isHomeControlService = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D14670] isHomeControlService];
+    isHomeControlService = [MEMORY[0x277D14670] isHomeControlService];
   }
 
-  v5 = [(HUGridServiceCell *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(HUGridServiceCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == 2 || v4)
+  if (userInterfaceStyle == 2 || isHomeControlService)
   {
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.3 alpha:1.0];
 
@@ -1511,49 +1511,49 @@ LABEL_23:
 
   if ([(HUGridCell *)self backgroundState]== 1)
   {
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
   else
   {
-    v8 = v3;
+    systemWhiteColor = v3;
   }
 
-  v9 = v8;
+  v9 = systemWhiteColor;
 
   return v9;
 }
 
 - (void)_createFirmwareUpdateViewIfNecessary
 {
-  v3 = [(HUGridServiceCell *)self firmwareUpdateView];
+  firmwareUpdateView = [(HUGridServiceCell *)self firmwareUpdateView];
 
-  if (!v3)
+  if (!firmwareUpdateView)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
     v5 = HUImageNamed(@"firmwareupdate");
     v6 = [v5 imageWithRenderingMode:2];
     v12 = [v4 initWithImage:v6];
 
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
-    [v12 setTintColor:v7];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [v12 setTintColor:systemGrayColor];
 
     v8 = [HUVisualEffectContainerView alloc];
-    v9 = [(HUGridCell *)self contentEffect];
-    v10 = [(HUVisualEffectContainerView *)v8 initWithEffect:v9];
+    contentEffect = [(HUGridCell *)self contentEffect];
+    v10 = [(HUVisualEffectContainerView *)v8 initWithEffect:contentEffect];
     [(HUGridServiceCell *)self setFirmwareUpdateView:v10];
 
-    v11 = [(HUGridServiceCell *)self firmwareUpdateView];
-    [v11 setInnerContentView:v12];
+    firmwareUpdateView2 = [(HUGridServiceCell *)self firmwareUpdateView];
+    [firmwareUpdateView2 setInnerContentView:v12];
   }
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
   v6.receiver = self;
   v6.super_class = HUGridServiceCell;
   [(HUGridServiceCell *)&v6 dragStateDidChange:?];
-  if (a3)
+  if (change)
   {
     [MEMORY[0x277D75348] systemGrayColor];
   }

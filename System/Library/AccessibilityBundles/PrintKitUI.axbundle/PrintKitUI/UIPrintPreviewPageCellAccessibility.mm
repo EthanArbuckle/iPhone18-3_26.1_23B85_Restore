@@ -1,5 +1,5 @@
 @interface UIPrintPreviewPageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsPageInSelection;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
@@ -8,19 +8,19 @@
 
 @implementation UIPrintPreviewPageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIPrintPreviewPageCell" hasInstanceMethod:@"pageLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIPrintPreviewPageCell" hasInstanceMethod:@"checkmarkImageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIPrintPreviewPageCell" hasInstanceMethod:@"pageLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIPrintPreviewPageCell" hasInstanceMethod:@"checkmarkImageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(UIPrintPreviewPageCellAccessibility *)self safeValueForKey:@"pageLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -41,15 +41,15 @@
 {
   v7.receiver = self;
   v7.super_class = UIPrintPreviewPageCellAccessibility;
-  v3 = [(UIPrintPreviewPageCellAccessibility *)&v7 accessibilityTraits];
-  v4 = [(UIPrintPreviewPageCellAccessibility *)self _axIsPageInSelection];
+  accessibilityTraits = [(UIPrintPreviewPageCellAccessibility *)&v7 accessibilityTraits];
+  _axIsPageInSelection = [(UIPrintPreviewPageCellAccessibility *)self _axIsPageInSelection];
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v4)
+  if (!_axIsPageInSelection)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (BOOL)_axIsPageInSelection

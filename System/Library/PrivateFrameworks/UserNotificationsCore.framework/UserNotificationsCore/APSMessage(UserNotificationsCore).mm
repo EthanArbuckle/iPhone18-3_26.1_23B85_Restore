@@ -6,15 +6,15 @@
 
 - (id)unc_bundleIdentifier
 {
-  v1 = [a1 topic];
-  if ([v1 hasPrefix:@"com.apple.icloud-container."])
+  topic = [self topic];
+  if ([topic hasPrefix:@"com.apple.icloud-container."])
   {
-    v2 = [v1 substringFromIndex:{objc_msgSend(@"com.apple.icloud-container.", "length")}];
+    v2 = [topic substringFromIndex:{objc_msgSend(@"com.apple.icloud-container.", "length")}];
   }
 
   else
   {
-    v2 = v1;
+    v2 = topic;
   }
 
   v3 = v2;

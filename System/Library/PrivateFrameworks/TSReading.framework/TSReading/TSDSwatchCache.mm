@@ -1,20 +1,20 @@
 @interface TSDSwatchCache
 + (id)swatchCache;
-- (CGImage)p_newImageWithConnectionLineKnobsForShape:(id)a3 atScale:(double)a4 ofSize:(CGSize)a5 overImage:(CGImage *)a6;
-- (CGSize)imageSizeForPreset:(id)a3 swatchSize:(CGSize)a4;
+- (CGImage)p_newImageWithConnectionLineKnobsForShape:(id)shape atScale:(double)scale ofSize:(CGSize)size overImage:(CGImage *)image;
+- (CGSize)imageSizeForPreset:(id)preset swatchSize:(CGSize)size;
 - (CGSize)shapeSwatchInset;
 - (TSDSwatchCache)init;
-- (id)imageForImagePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 imageInfo:(id)a6 shouldClipVertically:(BOOL)a7 documentRoot:(id)a8;
-- (id)imageForImagePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 imageInfo:(id)a7 shouldClipVertically:(BOOL)a8 documentRoot:(id)a9;
-- (id)imageForMoviePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 movieInfo:(id)a6 shouldClipVertically:(BOOL)a7 documentRoot:(id)a8;
-- (id)imageForMoviePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 movieInfo:(id)a7 shouldClipVertically:(BOOL)a8 documentRoot:(id)a9;
-- (id)imageForShapePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 shapeType:(int)a6 angle:(double)a7 documentRoot:(id)a8;
-- (id)imageForShapePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 shapeType:(int)a7 angle:(double)a8 documentRoot:(id)a9;
-- (id)p_maskInfoForMovieInfo:(id)a3 context:(id)a4;
-- (id)p_thumbnailImageDataForImageData:(id)a3;
-- (void)applyFakeShadowForWhitePresetsIfNecessary:(id)a3 documentRoot:(id)a4;
+- (id)imageForImagePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale imageInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root;
+- (id)imageForImagePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame imageInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root;
+- (id)imageForMoviePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale movieInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root;
+- (id)imageForMoviePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame movieInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root;
+- (id)imageForShapePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale shapeType:(int)type angle:(double)angle documentRoot:(id)root;
+- (id)imageForShapePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame shapeType:(int)type angle:(double)angle documentRoot:(id)root;
+- (id)p_maskInfoForMovieInfo:(id)info context:(id)context;
+- (id)p_thumbnailImageDataForImageData:(id)data;
+- (void)applyFakeShadowForWhitePresetsIfNecessary:(id)necessary documentRoot:(id)root;
 - (void)dealloc;
-- (void)warmStyle:(id)a3 withFillProperty:(int)a4 documentRoot:(id)a5;
+- (void)warmStyle:(id)style withFillProperty:(int)property documentRoot:(id)root;
 @end
 
 @implementation TSDSwatchCache
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __29__TSDSwatchCache_swatchCache__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (swatchCache_sSwatchCacheOnce != -1)
   {
     dispatch_once(&swatchCache_sSwatchCacheOnce, block);
@@ -63,9 +63,9 @@ id __29__TSDSwatchCache_swatchCache__block_invoke(uint64_t a1)
   [(TSDSwatchCache *)&v3 dealloc];
 }
 
-- (void)warmStyle:(id)a3 withFillProperty:(int)a4 documentRoot:(id)a5
+- (void)warmStyle:(id)style withFillProperty:(int)property documentRoot:(id)root
 {
-  v6 = -[TSDStyleWarmingOperation initWithStyle:property:accessController:]([TSDStyleWarmingOperation alloc], "initWithStyle:property:accessController:", a3, *&a4, [a5 accessController]);
+  v6 = -[TSDStyleWarmingOperation initWithStyle:property:accessController:]([TSDStyleWarmingOperation alloc], "initWithStyle:property:accessController:", style, *&property, [root accessController]);
   [(NSOperationQueue *)self->mOperationQueue addOperation:v6];
 }
 
@@ -82,24 +82,24 @@ id __29__TSDSwatchCache_swatchCache__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)applyFakeShadowForWhitePresetsIfNecessary:(id)a3 documentRoot:(id)a4
+- (void)applyFakeShadowForWhitePresetsIfNecessary:(id)necessary documentRoot:(id)root
 {
-  if (([objc_msgSend(a3 "fill")] && (objc_msgSend(objc_msgSend(a3, "stroke"), "isNullStroke") & 1) != 0 || objc_msgSend(a3, "stroke") && objc_msgSend(objc_msgSend(a3, "stroke"), "isNearlyWhite")) && (!objc_msgSend(a3, "shadow") || (objc_msgSend(objc_msgSend(a3, "shadow"), "isEnabled") & 1) == 0))
+  if (([objc_msgSend(necessary "fill")] && (objc_msgSend(objc_msgSend(necessary, "stroke"), "isNullStroke") & 1) != 0 || objc_msgSend(necessary, "stroke") && objc_msgSend(objc_msgSend(necessary, "stroke"), "isNearlyWhite")) && (!objc_msgSend(necessary, "shadow") || (objc_msgSend(objc_msgSend(necessary, "shadow"), "isEnabled") & 1) == 0))
   {
-    v6 = [objc_msgSend(a3 "style")];
+    v6 = [objc_msgSend(necessary "style")];
     [v6 setBoxedValue:+[TSDShadow shadowWithAngle:offset:radius:opacity:color:enabled:](TSDShadow forProperty:{"shadowWithAngle:offset:radius:opacity:color:enabled:", objc_msgSend(objc_msgSend(MEMORY[0x277D6C2A8], "blackColor"), "CGColor"), 1, 0.0, 0.0, 4.0, 0.45), 520}];
 
-    [a3 setStyle:v6];
+    [necessary setStyle:v6];
   }
 }
 
-- (id)imageForShapePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 shapeType:(int)a6 angle:(double)a7 documentRoot:(id)a8
+- (id)imageForShapePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale shapeType:(int)type angle:(double)angle documentRoot:(id)root
 {
-  v10 = *&a6;
-  height = a4.height;
-  width = a4.width;
+  v10 = *&type;
+  height = size.height;
+  width = size.width;
   objc_opt_class();
-  v14 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a8, "context")}];
+  v14 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
   [(TSDSwatchCache *)self shapeSwatchInset];
   v16 = v15;
   v18 = v17;
@@ -241,26 +241,26 @@ LABEL_33:
   }
 
   v18 = v25 * 0.5 + v18;
-  if (a7 != 0.0)
+  if (angle != 0.0)
   {
     v24 = hypot(v24, v25);
     v16 = 0.0;
   }
 
   v33 = 0.0;
-  v34 = [[TSDInfoGeometry alloc] initWithPosition:v16 size:v18 angle:v24, 0.0, a7];
-  if (v34)
+  angle = [[TSDInfoGeometry alloc] initWithPosition:v16 size:v18 angle:v24, 0.0, angle];
+  if (angle)
   {
-    v35 = v34;
-    v36 = a5;
+    v35 = angle;
+    scaleCopy2 = scale;
     goto LABEL_49;
   }
 
 LABEL_48:
-  v36 = a5;
+  scaleCopy2 = scale;
   v35 = [[TSDInfoGeometry alloc] initWithPosition:v16 size:v18, v24, v33];
 LABEL_49:
-  v47 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(a8 geometry:"context") style:v35 pathSource:{v14, +[TSDPathSource pathSourceForShapeType:naturalSize:](TSDPathSource, "pathSourceForShapeType:naturalSize:", v10, v24, v33)}];
+  v47 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(root geometry:"context") style:v35 pathSource:{v14, +[TSDPathSource pathSourceForShapeType:naturalSize:](TSDPathSource, "pathSourceForShapeType:naturalSize:", v10, v24, v33)}];
   if (v10 == 15)
   {
     [v47 setHeadLineEnd:{+[TSDLineEnd openArrow](TSDLineEnd, "openArrow")}];
@@ -272,34 +272,34 @@ LABEL_49:
     [v47 setHeadLineEnd:{+[TSDLineEnd simpleArrow](TSDLineEnd, "simpleArrow")}];
   }
 
-  [(TSDSwatchCache *)self applyFakeShadowForWhitePresetsIfNecessary:v47 documentRoot:a8];
-  v48 = [[TSDImager alloc] initWithDocumentRoot:a8];
-  [(TSDImager *)v48 setScaledImageSize:TSDMultiplySizeScalar(width, height, v36)];
+  [(TSDSwatchCache *)self applyFakeShadowForWhitePresetsIfNecessary:v47 documentRoot:root];
+  v48 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v48 setScaledImageSize:TSDMultiplySizeScalar(width, height, scaleCopy2)];
   TSDMultiplySizeScalar(width, height, v26);
   [(TSDImager *)v48 setUnscaledClipRect:TSDRectWithSize()];
   -[TSDImager setInfos:](v48, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v47]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v49 = [(TSDImager *)v48 newImage];
+  newImage = [(TSDImager *)v48 newImage];
   if (v10 <= 0x13 && ((1 << v10) & 0xC0004) != 0)
   {
     objc_opt_class();
-    v50 = [(TSDSwatchCache *)self p_newImageWithConnectionLineKnobsForShape:TSUDynamicCast() atScale:v49 ofSize:v36 overImage:width, height];
-    CGImageRelease(v49);
-    v49 = v50;
+    height = [(TSDSwatchCache *)self p_newImageWithConnectionLineKnobsForShape:TSUDynamicCast() atScale:newImage ofSize:scaleCopy2 overImage:width, height];
+    CGImageRelease(newImage);
+    newImage = height;
   }
 
-  v51 = [MEMORY[0x277D6C2F8] imageWithCGImage:v49 scale:0 orientation:v36];
-  CGImageRelease(v49);
+  v51 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scaleCopy2];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v51;
 }
 
-- (id)imageForImagePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 imageInfo:(id)a6 shouldClipVertically:(BOOL)a7 documentRoot:(id)a8
+- (id)imageForImagePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale imageInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14 = TSUPhoneUI();
   if (v14)
   {
@@ -332,8 +332,8 @@ LABEL_49:
   v116 = v15;
   v20 = v15 * (height - v16);
   objc_opt_class();
-  v21 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a8, "context")}];
-  [objc_msgSend(a6 "geometry")];
+  v21 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
+  [objc_msgSend(info "geometry")];
   v23 = v22;
   v25 = v24;
   objc_opt_class();
@@ -402,11 +402,11 @@ LABEL_49:
     }
   }
 
-  v44 = [a6 maskInfo];
+  maskInfo = [info maskInfo];
   v117 = height;
-  if (v44)
+  if (maskInfo)
   {
-    if (a7)
+    if (vertically)
     {
       goto LABEL_32;
     }
@@ -414,28 +414,28 @@ LABEL_49:
 
   else
   {
-    if (![a6 instantAlphaPath])
+    if (![info instantAlphaPath])
     {
-      if (a7)
+      if (vertically)
       {
         goto LABEL_39;
       }
 
-      v44 = 0;
+      maskInfo = 0;
       goto LABEL_43;
     }
 
-    v44 = [a6 defaultMaskInfoWithContext:{objc_msgSend(a8, "context")}];
-    if (a7)
+    maskInfo = [info defaultMaskInfoWithContext:{objc_msgSend(root, "context")}];
+    if (vertically)
     {
 LABEL_32:
-      if (v44)
+      if (maskInfo)
       {
-        v45 = [(TSDDrawableInfo *)v44 geometry];
-        [(TSDInfoGeometry *)v45 size];
+        geometry = [(TSDDrawableInfo *)maskInfo geometry];
+        [(TSDInfoGeometry *)geometry size];
         v48 = TSDScaleSizeWithinSize(v19, v20, v46, v47);
         v50 = v49;
-        [(TSDInfoGeometry *)v45 center];
+        [(TSDInfoGeometry *)geometry center];
         v52 = v51;
         v53 = width;
         v55 = v54;
@@ -465,9 +465,9 @@ LABEL_39:
       v61 = v67;
 LABEL_40:
       v71 = [(TSDInfoGeometry *)v57 initWithCenter:v58 size:v59, v60, v61];
-      v44 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a8 context], v71, v56);
+      maskInfo = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], v71, v56);
 
-      if (!v44)
+      if (!maskInfo)
       {
         goto LABEL_57;
       }
@@ -476,9 +476,9 @@ LABEL_40:
     }
   }
 
-  if (v44)
+  if (maskInfo)
   {
-    [(TSDInfoGeometry *)[(TSDDrawableInfo *)v44 geometry] size];
+    [(TSDInfoGeometry *)[(TSDDrawableInfo *)maskInfo geometry] size];
     goto LABEL_44;
   }
 
@@ -490,7 +490,7 @@ LABEL_44:
   if (v72 <= width / height)
   {
     v19 = v20 * v72;
-    if (!v44)
+    if (!maskInfo)
     {
       goto LABEL_57;
     }
@@ -499,15 +499,15 @@ LABEL_44:
   else
   {
     v20 = v19 / v72;
-    if (!v44)
+    if (!maskInfo)
     {
       goto LABEL_57;
     }
   }
 
 LABEL_48:
-  v73 = [(TSDDrawableInfo *)v44 geometry];
-  [(TSDInfoGeometry *)v73 size];
+  geometry2 = [(TSDDrawableInfo *)maskInfo geometry];
+  [(TSDInfoGeometry *)geometry2 size];
   v76 = v19 / v75;
   v77 = v75 <= 0.0;
   v78 = 1.0;
@@ -531,13 +531,13 @@ LABEL_48:
     v79 = v76;
   }
 
-  [(TSDInfoGeometry *)v73 position];
+  [(TSDInfoGeometry *)geometry2 position];
   v82 = TSDMultiplyPointScalar(v80, v81, v79);
   v83 = width;
   v85 = v84;
   v86 = [TSDScalarPathSource rectangleWithNaturalSize:v19, v20];
   v87 = [[TSDInfoGeometry alloc] initWithPosition:v82 size:v85, v19, v20];
-  v44 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a8 context], v87, v86);
+  maskInfo = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], v87, v86);
 
   width = v83;
 LABEL_57:
@@ -552,30 +552,30 @@ LABEL_57:
   }
 
   v95 = [[TSDInfoGeometry alloc] initWithPosition:v91 size:v93, v88, v90];
-  v96 = [a6 thumbnailImageData];
-  if (!v96)
+  thumbnailImageData = [info thumbnailImageData];
+  if (!thumbnailImageData)
   {
-    v96 = -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", [a6 imageData]);
+    thumbnailImageData = -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", [info imageData]);
   }
 
-  v97 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [a8 context], v95, v21, v96, 0);
-  [(TSDImageInfo *)v97 setMaskInfo:v44];
-  if ([a6 instantAlphaPath])
+  v97 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [root context], v95, v21, thumbnailImageData, 0);
+  [(TSDImageInfo *)v97 setMaskInfo:maskInfo];
+  if ([info instantAlphaPath])
   {
     [objc_msgSend(+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
     v99 = v98;
     v101 = v100;
-    [a6 naturalSize];
+    [info naturalSize];
     v103 = v99 / v102;
     v105 = v101 / v104;
-    v106 = [objc_msgSend(a6 "instantAlphaPath")];
+    v106 = [objc_msgSend(info "instantAlphaPath")];
     CGAffineTransformMakeScale(&v119, v103, v105);
     [v106 transformUsingAffineTransform:&v119];
     [(TSDImageInfo *)v97 setInstantAlphaPath:v106];
   }
 
-  v107 = [[TSDImager alloc] initWithDocumentRoot:a8];
-  [(TSDImager *)v107 setScaledImageSize:TSDMultiplySizeScalar(width, v117, a5)];
+  v107 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v107 setScaledImageSize:TSDMultiplySizeScalar(width, v117, scale)];
   v108.n128_u64[0] = TSDMultiplySizeScalar(width, v117, v116);
   v110.n128_u64[0] = v109;
   v111.n128_u64[0] = *MEMORY[0x277CBF348];
@@ -583,25 +583,25 @@ LABEL_57:
   -[TSDImager setInfos:](v107, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v97]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v113 = [(TSDImager *)v107 newImage];
-  v114 = [MEMORY[0x277D6C2F8] imageWithCGImage:v113 scale:0 orientation:a5];
-  CGImageRelease(v113);
+  newImage = [(TSDImager *)v107 newImage];
+  v114 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scale];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v114;
 }
 
-- (id)imageForShapePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 shapeType:(int)a7 angle:(double)a8 documentRoot:(id)a9
+- (id)imageForShapePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame shapeType:(int)type angle:(double)angle documentRoot:(id)root
 {
-  v10 = *&a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a4.height;
-  v17 = a4.width;
+  v10 = *&type;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v16 = size.height;
+  v17 = size.width;
   objc_opt_class();
-  v19 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a9, "context")}];
+  v19 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
   v20 = [v19 boxedValueForProperty:520];
   if (v20)
   {
@@ -848,20 +848,20 @@ LABEL_15:
 
   if (v21)
   {
-    v40 = 0.0;
+    angleCopy = 0.0;
   }
 
   else
   {
-    v40 = a8;
+    angleCopy = angle;
   }
 
-  v41 = [(TSDInfoGeometry *)[TSDMutableInfoGeometry alloc] initWithPosition:v32 size:v34 angle:v36, v38, v40];
-  [(TSDInfoGeometry *)v41 size];
+  angleCopy = [(TSDInfoGeometry *)[TSDMutableInfoGeometry alloc] initWithPosition:v32 size:v34 angle:v36, v38, angleCopy];
+  [(TSDInfoGeometry *)angleCopy size];
   v42 = [TSDPathSource pathSourceForShapeType:v10 naturalSize:?];
   [v42 naturalSize];
-  [(TSDMutableInfoGeometry *)v41 setSize:?];
-  v43 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(a9 geometry:"context") style:v41 pathSource:{v19, v42}];
+  [(TSDMutableInfoGeometry *)angleCopy setSize:?];
+  v43 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(root geometry:"context") style:angleCopy pathSource:{v19, v42}];
   if (v10 == 15)
   {
     [v43 setHeadLineEnd:{+[TSDLineEnd openArrow](TSDLineEnd, "openArrow")}];
@@ -873,32 +873,32 @@ LABEL_15:
     [v43 setHeadLineEnd:{+[TSDLineEnd simpleArrow](TSDLineEnd, "simpleArrow")}];
   }
 
-  [(TSDSwatchCache *)self applyFakeShadowForWhitePresetsIfNecessary:v43 documentRoot:a9, *&MinY];
-  v44 = [[TSDImager alloc] initWithDocumentRoot:a9];
-  [(TSDImager *)v44 setScaledImageSize:TSDMultiplySizeScalar(v17, v16, a5)];
+  [(TSDSwatchCache *)self applyFakeShadowForWhitePresetsIfNecessary:v43 documentRoot:root, *&MinY];
+  v44 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v44 setScaledImageSize:TSDMultiplySizeScalar(v17, v16, scale)];
   [(TSDImager *)v44 setUnscaledClipRect:0.0, 0.0, v17, v16];
   -[TSDImager setInfos:](v44, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v43]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v45 = [(TSDImager *)v44 newImage];
+  newImage = [(TSDImager *)v44 newImage];
   if (v10 <= 0x13 && ((1 << v10) & 0xC0004) != 0)
   {
     objc_opt_class();
-    v46 = [(TSDSwatchCache *)self p_newImageWithConnectionLineKnobsForShape:TSUDynamicCast() atScale:v45 ofSize:a5 overImage:v17, v16];
-    CGImageRelease(v45);
-    v45 = v46;
+    v46 = [(TSDSwatchCache *)self p_newImageWithConnectionLineKnobsForShape:TSUDynamicCast() atScale:newImage ofSize:scale overImage:v17, v16];
+    CGImageRelease(newImage);
+    newImage = v46;
   }
 
-  v47 = [MEMORY[0x277D6C2F8] imageWithCGImage:v45 scale:0 orientation:a5];
-  CGImageRelease(v45);
+  v47 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scale];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v47;
 }
 
-- (CGImage)p_newImageWithConnectionLineKnobsForShape:(id)a3 atScale:(double)a4 ofSize:(CGSize)a5 overImage:(CGImage *)a6
+- (CGImage)p_newImageWithConnectionLineKnobsForShape:(id)shape atScale:(double)scale ofSize:(CGSize)size overImage:(CGImage *)image
 {
-  v9 = TSDMultiplySizeScalar(a5.width, a5.height, a4);
+  v9 = TSDMultiplySizeScalar(size.width, size.height, scale);
   v11 = v10;
   v12 = TSDBitmapContextCreate(3, v9);
   v13 = [MEMORY[0x277D6C2F8] imageNamed:@"sf-ios-canvas-knob-blue" inBundle:TSDBundle()];
@@ -928,16 +928,16 @@ LABEL_15:
   v54[4] = &v65;
   v54[5] = &v60;
   v54[6] = &v55;
-  *&v54[7] = a4;
+  *&v54[7] = scale;
   *&v54[8] = v9;
   v54[9] = v11;
-  [a3 performBlockWithTemporaryLayout:v54];
+  [shape performBlockWithTemporaryLayout:v54];
   v19 = TSDRectWithSize();
   v52 = v20;
   v53 = v19;
   v50 = v22;
   v51 = v21;
-  v23 = TSDMultiplySizeScalar(v16, v18, a4);
+  v23 = TSDMultiplySizeScalar(v16, v18, scale);
   TSDRectWithCenterAndSize(v61[4], v61[5], v23);
   v47 = v25;
   v48 = v24;
@@ -957,20 +957,20 @@ LABEL_15:
   v70.origin.x = v53;
   v70.size.height = v50;
   v70.size.width = v51;
-  CGContextDrawImage(v12, v70, a6);
-  v39 = [v13 CGImageForContentsScale:a4];
+  CGContextDrawImage(v12, v70, image);
+  v39 = [v13 CGImageForContentsScale:scale];
   v71.origin.x = v36;
   v71.origin.y = v38;
   v71.size.width = v29;
   v71.size.height = rect;
   CGContextDrawImage(v12, v71, v39);
-  v40 = [v14 CGImageForContentsScale:a4];
+  v40 = [v14 CGImageForContentsScale:scale];
   v72.origin.x = v31;
   v72.origin.y = v33;
   v72.size.height = v47;
   v72.size.width = v48;
   CGContextDrawImage(v12, v72, v40);
-  v41 = [v13 CGImageForContentsScale:a4];
+  v41 = [v13 CGImageForContentsScale:scale];
   v73.origin.x = v34;
   v73.origin.y = v44;
   v73.size.height = v45;
@@ -1025,19 +1025,19 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   return result;
 }
 
-- (id)imageForImagePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 imageInfo:(id)a7 shouldClipVertically:(BOOL)a8 documentRoot:(id)a9
+- (id)imageForImagePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame imageInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a4.height;
-  v83 = a4.width;
-  if (a4.width < CGRectGetMaxX(a6) || (v87.origin.x = x, v87.origin.y = y, v87.size.width = width, v87.size.height = height, v15 < CGRectGetMaxY(v87)))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v15 = size.height;
+  v83 = size.width;
+  if (size.width < CGRectGetMaxX(frame) || (v87.origin.x = x, v87.origin.y = y, v87.size.width = width, v87.size.height = height, v15 < CGRectGetMaxY(v87)))
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSwatchCache imageForImagePreset:imageSize:imageScale:swatchFrame:imageInfo:shouldClipVertically:documentRoot:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSwatchCache.m"), 1059, @"imageSize must enclose swatchFrame"}];
+    [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSwatchCache.m"), 1059, @"imageSize must enclose swatchFrame"}];
   }
 
   v18 = TSDMultiplyRectScalar(x, y, width, height, 2.0);
@@ -1045,8 +1045,8 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   v22 = v21;
   v24 = v23;
   objc_opt_class();
-  v25 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a9, "context")}];
-  [objc_msgSend(a7 "geometry")];
+  v25 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
+  [objc_msgSend(info "geometry")];
   v81 = v27;
   v82 = v26;
   v28 = [v25 boxedValueForProperty:520];
@@ -1056,22 +1056,22 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   }
 
   v84 = v15;
-  v29 = [a7 maskInfo];
-  if (!v29)
+  maskInfo = [info maskInfo];
+  if (!maskInfo)
   {
-    v29 = [a7 defaultMaskInfoWithContext:{objc_msgSend(a9, "context")}];
+    maskInfo = [info defaultMaskInfoWithContext:{objc_msgSend(root, "context")}];
   }
 
-  v30 = [v29 geometry];
-  [v30 size];
+  geometry = [maskInfo geometry];
+  [geometry size];
   v33 = TSDScaleSizeWithinSize(v22, v24, v31, v32);
   v35 = v34;
-  [v30 center];
-  v38 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a9 context], -[TSDInfoGeometry initWithCenter:size:]([TSDInfoGeometry alloc], "initWithCenter:size:", v36, v37, v33, v35), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v33, v35));
+  [geometry center];
+  v38 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], -[TSDInfoGeometry initWithCenter:size:]([TSDInfoGeometry alloc], "initWithCenter:size:", v36, v37, v33, v35), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v33, v35));
   if (v38)
   {
-    v39 = [(TSDDrawableInfo *)v38 geometry];
-    [(TSDInfoGeometry *)v39 size];
+    geometry2 = [(TSDDrawableInfo *)v38 geometry];
+    [(TSDInfoGeometry *)geometry2 size];
     v41 = v22 / v40;
     v43 = v24 / v42;
     if (v41 <= v43)
@@ -1084,10 +1084,10 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
       v44 = v41;
     }
 
-    [(TSDInfoGeometry *)v39 position];
+    [(TSDInfoGeometry *)geometry2 position];
     v47 = TSDMultiplyPointScalar(v45, v46, v44);
     v49 = v48;
-    v50 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a9 context], -[TSDInfoGeometry initWithPosition:size:]([TSDInfoGeometry alloc], "initWithPosition:size:", v47, v48, v22, v24), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v22, v24));
+    v50 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], -[TSDInfoGeometry initWithPosition:size:]([TSDInfoGeometry alloc], "initWithPosition:size:", v47, v48, v22, v24), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v22, v24));
     v22 = v82 * v44;
     v24 = v81 * v44;
     v18 = v18 - v47;
@@ -1110,30 +1110,30 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   }
 
   v59 = [[TSDInfoGeometry alloc] initWithPosition:v51 size:v53, v55, v57];
-  v60 = [a7 thumbnailImageData];
-  if (!v60)
+  thumbnailImageData = [info thumbnailImageData];
+  if (!thumbnailImageData)
   {
-    v60 = -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", [a7 imageData]);
+    thumbnailImageData = -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", [info imageData]);
   }
 
-  v61 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [a9 context], v59, v25, v60, 0);
+  v61 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [root context], v59, v25, thumbnailImageData, 0);
   [(TSDImageInfo *)v61 setMaskInfo:v50];
-  if ([a7 instantAlphaPath])
+  if ([info instantAlphaPath])
   {
     [objc_msgSend(+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
     v63 = v62;
     v65 = v64;
-    [a7 naturalSize];
+    [info naturalSize];
     v67 = v63 / v66;
     v69 = v65 / v68;
-    v70 = [objc_msgSend(a7 "instantAlphaPath")];
+    v70 = [objc_msgSend(info "instantAlphaPath")];
     CGAffineTransformMakeScale(&v86, v67, v69);
     [v70 transformUsingAffineTransform:&v86];
     [(TSDImageInfo *)v61 setInstantAlphaPath:v70];
   }
 
-  v71 = [[TSDImager alloc] initWithDocumentRoot:a9];
-  [(TSDImager *)v71 setScaledImageSize:TSDMultiplySizeScalar(v83, v84, a5)];
+  v71 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v71 setScaledImageSize:TSDMultiplySizeScalar(v83, v84, scale)];
   v72.n128_u64[0] = TSDMultiplySizeScalar(v83, v84, 2.0);
   v74.n128_u64[0] = v73;
   v75.n128_u64[0] = *MEMORY[0x277CBF348];
@@ -1141,15 +1141,15 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   -[TSDImager setInfos:](v71, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v61]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v77 = [(TSDImager *)v71 newImage];
-  v78 = [MEMORY[0x277D6C2F8] imageWithCGImage:v77 scale:0 orientation:a5];
-  CGImageRelease(v77);
+  newImage = [(TSDImager *)v71 newImage];
+  v78 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scale];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v78;
 }
 
-- (CGSize)imageSizeForPreset:(id)a3 swatchSize:(CGSize)a4
+- (CGSize)imageSizeForPreset:(id)preset swatchSize:(CGSize)size
 {
   v4 = TSDRectWithSize();
   v6 = v5;
@@ -1210,26 +1210,26 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
   return result;
 }
 
-- (id)p_maskInfoForMovieInfo:(id)a3 context:(id)a4
+- (id)p_maskInfoForMovieInfo:(id)info context:(id)context
 {
-  v5 = [a3 geometry];
-  [v5 center];
+  geometry = [info geometry];
+  [geometry center];
   v7 = v6;
   v9 = v8;
-  [v5 position];
+  [geometry position];
   v11 = TSDSubtractPoints(v7, v9, v10);
   v13 = v12;
-  [v5 size];
+  [geometry size];
   v15 = v14;
   v17 = v16;
   v18 = [TSDScalarPathSource rectangleWithNaturalSize:?];
   v19 = [[TSDInfoGeometry alloc] initWithCenter:v11 size:v13, v15, v17];
-  v20 = [[TSDMaskInfo alloc] initWithContext:a4 geometry:v19 pathSource:v18];
+  v20 = [[TSDMaskInfo alloc] initWithContext:context geometry:v19 pathSource:v18];
 
   return v20;
 }
 
-- (id)p_thumbnailImageDataForImageData:(id)a3
+- (id)p_thumbnailImageDataForImageData:(id)data
 {
   if (p_thumbnailImageDataForImageData__sOnce != -1)
   {
@@ -1238,21 +1238,21 @@ float64x2_t __85__TSDSwatchCache_p_newImageWithConnectionLineKnobsForShape_atSca
 
   v4 = p_thumbnailImageDataForImageData__sCache;
   objc_sync_enter(p_thumbnailImageDataForImageData__sCache);
-  v5 = [p_thumbnailImageDataForImageData__sCache objectForKey:a3];
+  v5 = [p_thumbnailImageDataForImageData__sCache objectForKey:data];
   objc_sync_exit(v4);
-  if (a3 && !v5)
+  if (data && !v5)
   {
-    v5 = TSDResampleImageData(a3, 0, 0, 256.0, 256.0);
+    v5 = TSDResampleImageData(data, 0, 0, 256.0, 256.0);
   }
 
-  if (!v5 || v5 == a3)
+  if (!v5 || v5 == data)
   {
-    return a3;
+    return data;
   }
 
   v6 = p_thumbnailImageDataForImageData__sCache;
   objc_sync_enter(p_thumbnailImageDataForImageData__sCache);
-  [p_thumbnailImageDataForImageData__sCache setObject:v5 forKey:a3];
+  [p_thumbnailImageDataForImageData__sCache setObject:v5 forKey:data];
   objc_sync_exit(v6);
   return v5;
 }
@@ -1264,19 +1264,19 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   return result;
 }
 
-- (id)imageForMoviePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 movieInfo:(id)a7 shouldClipVertically:(BOOL)a8 documentRoot:(id)a9
+- (id)imageForMoviePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame movieInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a4.height;
-  v65 = a4.width;
-  if (a4.width < CGRectGetMaxX(a6) || (v68.origin.x = x, v68.origin.y = y, v68.size.width = width, v68.size.height = height, v15 < CGRectGetMaxY(v68)))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v15 = size.height;
+  v65 = size.width;
+  if (size.width < CGRectGetMaxX(frame) || (v68.origin.x = x, v68.origin.y = y, v68.size.width = width, v68.size.height = height, v15 < CGRectGetMaxY(v68)))
   {
-    v17 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSwatchCache imageForMoviePreset:imageSize:imageScale:swatchFrame:movieInfo:shouldClipVertically:documentRoot:]"];
-    [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSwatchCache.m"), 1392, @"imageSize must enclose swatchFrame"}];
+    [currentHandler handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSwatchCache.m"), 1392, @"imageSize must enclose swatchFrame"}];
   }
 
   v19 = TSDMultiplyRectScalar(x, y, width, height, 2.0);
@@ -1284,8 +1284,8 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   v23 = v22;
   v25 = v24;
   objc_opt_class();
-  v26 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a9, "context")}];
-  [objc_msgSend(a7 "geometry")];
+  v26 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
+  [objc_msgSend(info "geometry")];
   v28 = v27;
   v30 = v29;
   v31 = [v26 boxedValueForProperty:520];
@@ -1295,11 +1295,11 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   }
 
   v66 = v15;
-  v32 = -[TSDSwatchCache p_maskInfoForMovieInfo:context:](self, "p_maskInfoForMovieInfo:context:", a7, [a9 context]);
+  v32 = -[TSDSwatchCache p_maskInfoForMovieInfo:context:](self, "p_maskInfoForMovieInfo:context:", info, [root context]);
   if (v32)
   {
-    v33 = [v32 geometry];
-    [v33 size];
+    geometry = [v32 geometry];
+    [geometry size];
     v35 = v23 / v34;
     v37 = v25 / v36;
     if (v35 <= v37)
@@ -1312,13 +1312,13 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
       v38 = v35;
     }
 
-    [v33 position];
+    [geometry position];
     v64 = v19;
     v41 = v21;
     v42 = v28;
     v43 = TSDMultiplyPointScalar(v39, v40, v38);
     v45 = v44;
-    v46 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a9 context], -[TSDInfoGeometry initWithPosition:size:]([TSDInfoGeometry alloc], "initWithPosition:size:", v43, v44, v23, v25), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v23, v25));
+    v46 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], -[TSDInfoGeometry initWithPosition:size:]([TSDInfoGeometry alloc], "initWithPosition:size:", v43, v44, v23, v25), +[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", v23, v25));
     v23 = v42 * v38;
     v47 = v41;
     v25 = v30 * v38;
@@ -1339,10 +1339,10 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
 
   v49 = TSDRoundedRect(v19, v21, v23, v25);
   v53 = [[TSDInfoGeometry alloc] initWithPosition:v49 size:v50, v51, v52];
-  v54 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [a9 context], v53, v26, -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", objc_msgSend(a7, "posterImageData")), 0);
+  v54 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [root context], v53, v26, -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", objc_msgSend(info, "posterImageData")), 0);
   [(TSDImageInfo *)v54 setMaskInfo:v46];
-  v55 = [[TSDImager alloc] initWithDocumentRoot:a9];
-  [(TSDImager *)v55 setScaledImageSize:TSDMultiplySizeScalar(v65, v66, a5)];
+  v55 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v55 setScaledImageSize:TSDMultiplySizeScalar(v65, v66, scale)];
   v56.n128_u64[0] = TSDMultiplySizeScalar(v65, v66, 2.0);
   v58.n128_u64[0] = v57;
   v59.n128_u64[0] = *MEMORY[0x277CBF348];
@@ -1350,18 +1350,18 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   -[TSDImager setInfos:](v55, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v54]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v61 = [(TSDImager *)v55 newImage];
-  v62 = [MEMORY[0x277D6C2F8] imageWithCGImage:v61 scale:0 orientation:a5];
-  CGImageRelease(v61);
+  newImage = [(TSDImager *)v55 newImage];
+  v62 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scale];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v62;
 }
 
-- (id)imageForMoviePreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 movieInfo:(id)a6 shouldClipVertically:(BOOL)a7 documentRoot:(id)a8
+- (id)imageForMoviePreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale movieInfo:(id)info shouldClipVertically:(BOOL)vertically documentRoot:(id)root
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14 = TSUPhoneUI();
   if (v14)
   {
@@ -1394,8 +1394,8 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   v83 = v15;
   v20 = v15 * (height - v16);
   objc_opt_class();
-  v21 = [TSUDynamicCast() copyWithContext:{objc_msgSend(a8, "context")}];
-  [objc_msgSend(a6 "geometry")];
+  v21 = [TSUDynamicCast() copyWithContext:{objc_msgSend(root, "context")}];
+  [objc_msgSend(info "geometry")];
   v23 = v22;
   v25 = v24;
   objc_opt_class();
@@ -1462,7 +1462,7 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
 
   v84 = width;
   v85 = height;
-  if (a7)
+  if (vertically)
   {
     v43 = TSDScaleSizeWithinSize(v19, v20, v23, v25);
     v44 = v25;
@@ -1471,12 +1471,12 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
     v48 = v44 * 0.5;
     v49 = [TSDScalarPathSource rectangleWithNaturalSize:v43];
     v50 = [[TSDInfoGeometry alloc] initWithCenter:v47 size:v48, v43, v46];
-    v51 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a8 context], v50, v49);
+    v51 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], v50, v49);
 
     if (v51)
     {
-      v52 = [(TSDDrawableInfo *)v51 geometry];
-      [(TSDInfoGeometry *)v52 size];
+      geometry = [(TSDDrawableInfo *)v51 geometry];
+      [(TSDInfoGeometry *)geometry size];
       v54 = v19 / v53;
       v56 = v20 / v55;
       if (v54 <= v56)
@@ -1489,12 +1489,12 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
         v57 = v54;
       }
 
-      [(TSDInfoGeometry *)v52 position];
+      [(TSDInfoGeometry *)geometry position];
       v60 = TSDMultiplyPointScalar(v58, v59, v57);
       v62 = v61;
       v63 = [TSDScalarPathSource rectangleWithNaturalSize:v19, v20];
       v64 = [[TSDInfoGeometry alloc] initWithPosition:v60 size:v62, v19, v20];
-      v65 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [a8 context], v64, v63);
+      v65 = -[TSDMaskInfo initWithContext:geometry:pathSource:]([TSDMaskInfo alloc], "initWithContext:geometry:pathSource:", [root context], v64, v63);
     }
 
     else
@@ -1518,10 +1518,10 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   v69 = v68;
   v70 = TSDRoundedSize();
   v72 = [[TSDInfoGeometry alloc] initWithPosition:v67 size:v69, v70, v71];
-  v73 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [a8 context], v72, v21, -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", objc_msgSend(a6, "posterImageData")), 0);
+  v73 = -[TSDImageInfo initWithContext:geometry:style:imageData:originalImageData:]([TSDImageInfo alloc], "initWithContext:geometry:style:imageData:originalImageData:", [root context], v72, v21, -[TSDSwatchCache p_thumbnailImageDataForImageData:](self, "p_thumbnailImageDataForImageData:", objc_msgSend(info, "posterImageData")), 0);
   [(TSDImageInfo *)v73 setMaskInfo:v65];
-  v74 = [[TSDImager alloc] initWithDocumentRoot:a8];
-  [(TSDImager *)v74 setScaledImageSize:TSDMultiplySizeScalar(v84, v85, a5)];
+  v74 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [(TSDImager *)v74 setScaledImageSize:TSDMultiplySizeScalar(v84, v85, scale)];
   v75.n128_u64[0] = TSDMultiplySizeScalar(v84, v85, v83);
   v77.n128_u64[0] = v76;
   v78.n128_u64[0] = *MEMORY[0x277CBF348];
@@ -1529,9 +1529,9 @@ uint64_t __51__TSDSwatchCache_p_thumbnailImageDataForImageData___block_invoke()
   -[TSDImager setInfos:](v74, "setInfos:", [MEMORY[0x277CBEA60] arrayWithObject:v73]);
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v80 = [(TSDImager *)v74 newImage];
-  v81 = [MEMORY[0x277D6C2F8] imageWithCGImage:v80 scale:0 orientation:a5];
-  CGImageRelease(v80);
+  newImage = [(TSDImager *)v74 newImage];
+  v81 = [MEMORY[0x277D6C2F8] imageWithCGImage:newImage scale:0 orientation:scale];
+  CGImageRelease(newImage);
   [MEMORY[0x277CD9FF0] commit];
 
   return v81;

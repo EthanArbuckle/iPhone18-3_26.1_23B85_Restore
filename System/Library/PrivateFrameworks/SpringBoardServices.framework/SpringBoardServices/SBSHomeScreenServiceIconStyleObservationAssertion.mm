@@ -1,6 +1,6 @@
 @interface SBSHomeScreenServiceIconStyleObservationAssertion
 - (SBSHomeScreenService)service;
-- (SBSHomeScreenServiceIconStyleObservationAssertion)initWithObserver:(id)a3 service:(id)a4;
+- (SBSHomeScreenServiceIconStyleObservationAssertion)initWithObserver:(id)observer service:(id)service;
 - (SBSHomeScreenServiceIconStyleObserver)observer;
 - (void)dealloc;
 - (void)invalidate;
@@ -12,8 +12,8 @@
 {
   if (![(SBSHomeScreenServiceIconStyleObservationAssertion *)self isInvalidated])
   {
-    v3 = [(SBSHomeScreenServiceIconStyleObservationAssertion *)self service];
-    [v3 removeIconStyleObservationAssertion:self];
+    service = [(SBSHomeScreenServiceIconStyleObservationAssertion *)self service];
+    [service removeIconStyleObservationAssertion:self];
     [(SBSHomeScreenServiceIconStyleObservationAssertion *)self setService:0];
     [(SBSHomeScreenServiceIconStyleObservationAssertion *)self setInvalidated:1];
   }
@@ -52,18 +52,18 @@
   [(SBSHomeScreenServiceIconStyleObservationAssertion *)&v5 dealloc];
 }
 
-- (SBSHomeScreenServiceIconStyleObservationAssertion)initWithObserver:(id)a3 service:(id)a4
+- (SBSHomeScreenServiceIconStyleObservationAssertion)initWithObserver:(id)observer service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = SBSHomeScreenServiceIconStyleObservationAssertion;
   v8 = [(SBSHomeScreenServiceIconStyleObservationAssertion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeWeak(&v9->_service, v7);
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeWeak(&v9->_service, serviceCopy);
   }
 
   return v9;

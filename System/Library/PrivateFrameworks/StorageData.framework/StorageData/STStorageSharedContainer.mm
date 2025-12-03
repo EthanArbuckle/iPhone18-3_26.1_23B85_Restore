@@ -1,33 +1,33 @@
 @interface STStorageSharedContainer
-- (STStorageSharedContainer)initWithPath:(id)a3 owners:(id)a4;
-- (void)setOwners:(id)a3;
+- (STStorageSharedContainer)initWithPath:(id)path owners:(id)owners;
+- (void)setOwners:(id)owners;
 @end
 
 @implementation STStorageSharedContainer
 
-- (STStorageSharedContainer)initWithPath:(id)a3 owners:(id)a4
+- (STStorageSharedContainer)initWithPath:(id)path owners:(id)owners
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  ownersCopy = owners;
   v12.receiver = self;
   v12.super_class = STStorageSharedContainer;
   v9 = [(STStorageSharedContainer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a3);
-    [(STStorageSharedContainer *)v10 setOwners:v8];
+    objc_storeStrong(&v9->_path, path);
+    [(STStorageSharedContainer *)v10 setOwners:ownersCopy];
   }
 
   return v10;
 }
 
-- (void)setOwners:(id)a3
+- (void)setOwners:(id)owners
 {
   v40 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v4 = [v31 mutableCopy];
-  v29 = a3;
+  ownersCopy = owners;
+  v4 = [ownersCopy mutableCopy];
+  ownersCopy2 = owners;
   if ([v4 count])
   {
     v5 = 0;
@@ -35,12 +35,12 @@
     v6 = v4;
     do
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       [v6 removeObjectAtIndex:0];
-      v8 = [v7 vendorName];
-      if ([v8 length])
+      vendorName = [firstObject vendorName];
+      if ([vendorName length])
       {
-        v33 = v7;
+        v33 = firstObject;
         v34 = v5;
         v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
         v35 = 0u;
@@ -64,8 +64,8 @@
               }
 
               v15 = *(*(&v35 + 1) + 8 * i);
-              v16 = [v15 vendorName];
-              v17 = [v16 isEqualToString:v8];
+              vendorName2 = [v15 vendorName];
+              v17 = [vendorName2 isEqualToString:vendorName];
 
               if (v17)
               {
@@ -93,13 +93,13 @@
         v5 = v34;
         if (v18)
         {
-          v7 = v33;
+          firstObject = v33;
         }
 
         else
         {
           v5 = v34 + 1;
-          v7 = v33;
+          firstObject = v33;
           v19 = v33;
 
           obj = v19;
@@ -122,23 +122,23 @@
     obj = 0;
   }
 
-  objc_storeStrong(&self->_owners, v29);
-  v20 = obj;
+  objc_storeStrong(&self->_owners, ownersCopy2);
+  firstObject2 = obj;
   if (!obj)
   {
-    v20 = [(NSArray *)self->_owners firstObject];
+    firstObject2 = [(NSArray *)self->_owners firstObject];
   }
 
-  objc_storeStrong(&self->_appRep, v20);
+  objc_storeStrong(&self->_appRep, firstObject2);
   if (!obj)
   {
   }
 
-  v21 = [(STStorageApp *)self->_appRep appIdentifier];
-  [(STStorageApp *)self setAppIdentifier:v21];
+  appIdentifier = [(STStorageApp *)self->_appRep appIdentifier];
+  [(STStorageApp *)self setAppIdentifier:appIdentifier];
 
-  v22 = [(STStorageApp *)self->_appRep bundleIdentifier];
-  [(STStorageApp *)self setBundleIdentifier:v22];
+  bundleIdentifier = [(STStorageApp *)self->_appRep bundleIdentifier];
+  [(STStorageApp *)self setBundleIdentifier:bundleIdentifier];
 
   [(STStorageApp *)self setAppKind:2];
   appRep = self->_appRep;

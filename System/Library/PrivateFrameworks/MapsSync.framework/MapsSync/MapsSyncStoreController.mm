@@ -1,10 +1,10 @@
 @interface MapsSyncStoreController
 - (NSArray)storeSubscriptionTypes;
 - (_TtC8MapsSync23MapsSyncStoreController)init;
-- (_TtC8MapsSync23MapsSyncStoreController)initWithConfig:(id)a3 notifyForChanges:(id)a4 callbackQueue:(id)a5 delegate:(id)a6;
-- (_TtC8MapsSync23MapsSyncStoreController)initWithNotifyForChanges:(id)a3 delegate:(id)a4;
-- (void)setStoreSubscriptionTypes:(id)a3;
-- (void)storeDidChangeWithTypes:(id)a3;
+- (_TtC8MapsSync23MapsSyncStoreController)initWithConfig:(id)config notifyForChanges:(id)changes callbackQueue:(id)queue delegate:(id)delegate;
+- (_TtC8MapsSync23MapsSyncStoreController)initWithNotifyForChanges:(id)changes delegate:(id)delegate;
+- (void)setStoreSubscriptionTypes:(id)types;
+- (void)storeDidChangeWithTypes:(id)types;
 @end
 
 @implementation MapsSyncStoreController
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (void)setStoreSubscriptionTypes:(id)a3
+- (void)setStoreSubscriptionTypes:(id)types
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943408, &qword_1B63C5070);
   v4 = sub_1B63BECA4();
@@ -31,31 +31,31 @@
   *(self + v5) = v4;
 }
 
-- (_TtC8MapsSync23MapsSyncStoreController)initWithConfig:(id)a3 notifyForChanges:(id)a4 callbackQueue:(id)a5 delegate:(id)a6
+- (_TtC8MapsSync23MapsSyncStoreController)initWithConfig:(id)config notifyForChanges:(id)changes callbackQueue:(id)queue delegate:(id)delegate
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943408, &qword_1B63C5070);
   v9 = sub_1B63BECA4();
-  v10 = a3;
-  v11 = a5;
+  configCopy = config;
+  queueCopy = queue;
   swift_unknownObjectRetain();
-  return MapsSyncStoreController.init(config:notifyForChanges:callbackQueue:delegate:)(v10, v9, a5, a6);
+  return MapsSyncStoreController.init(config:notifyForChanges:callbackQueue:delegate:)(configCopy, v9, queue, delegate);
 }
 
-- (_TtC8MapsSync23MapsSyncStoreController)initWithNotifyForChanges:(id)a3 delegate:(id)a4
+- (_TtC8MapsSync23MapsSyncStoreController)initWithNotifyForChanges:(id)changes delegate:(id)delegate
 {
-  v6 = a3;
+  changesCopy = changes;
   swift_unknownObjectRetain();
   v7 = _s8MapsSync0aB11StoreConfigC07defaultcD0ACvgZ_0();
-  v8 = [(MapsSyncStoreController *)self initWithConfig:v7 notifyForChanges:v6 callbackQueue:0 delegate:a4];
+  v8 = [(MapsSyncStoreController *)self initWithConfig:v7 notifyForChanges:changesCopy callbackQueue:0 delegate:delegate];
 
   swift_unknownObjectRelease();
   return v8;
 }
 
-- (void)storeDidChangeWithTypes:(id)a3
+- (void)storeDidChangeWithTypes:(id)types
 {
   v4 = sub_1B63BECA4();
-  v5 = self;
+  selfCopy = self;
   sub_1B6351B28(v4);
 }
 

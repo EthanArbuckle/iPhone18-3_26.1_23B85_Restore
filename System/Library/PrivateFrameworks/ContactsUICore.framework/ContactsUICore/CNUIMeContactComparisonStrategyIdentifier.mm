@@ -1,49 +1,49 @@
 @interface CNUIMeContactComparisonStrategyIdentifier
-- (BOOL)isMeContact:(id)a3;
+- (BOOL)isMeContact:(id)contact;
 - (id)meContactIdentifiers;
-- (void)meContactChangedInStore:(id)a3;
+- (void)meContactChangedInStore:(id)store;
 @end
 
 @implementation CNUIMeContactComparisonStrategyIdentifier
 
-- (void)meContactChangedInStore:(id)a3
+- (void)meContactChangedInStore:(id)store
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v10[0] = *MEMORY[0x1E695C258];
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 arrayWithObjects:v10 count:1];
   v9 = 0;
-  v7 = [v5 _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:&v9];
+  v7 = [storeCopy _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:&v9];
 
-  v8 = [v7 identifier];
-  [(CNUIMeContactComparisonStrategyIdentifier *)self setMeContactIdentifierFound:v8];
+  identifier = [v7 identifier];
+  [(CNUIMeContactComparisonStrategyIdentifier *)self setMeContactIdentifierFound:identifier];
 }
 
-- (BOOL)isMeContact:(id)a3
+- (BOOL)isMeContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
-  v6 = [v4 identifier];
+  contactCopy = contact;
+  meContactIdentifierFound = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
+  identifier = [contactCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(contactCopy) = [meContactIdentifierFound isEqualToString:identifier];
+  return contactCopy;
 }
 
 - (id)meContactIdentifiers
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
-  if ((*(v3 + 16))(v3, v4))
+  meContactIdentifierFound = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
+  if ((*(v3 + 16))(v3, meContactIdentifierFound))
   {
     v5 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v6 = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
-    v8[0] = v6;
+    meContactIdentifierFound2 = [(CNUIMeContactComparisonStrategyIdentifier *)self meContactIdentifierFound];
+    v8[0] = meContactIdentifierFound2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 

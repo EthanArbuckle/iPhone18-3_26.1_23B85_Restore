@@ -1,34 +1,34 @@
 @interface NUArticlePageFactory
-- (NUArticlePageFactory)initWithArticleFactory:(id)a3 articleActivityFactory:(id)a4 articleHostViewControllerFactory:(id)a5;
-- (id)createPagesForArticleIDs:(id)a3;
+- (NUArticlePageFactory)initWithArticleFactory:(id)factory articleActivityFactory:(id)activityFactory articleHostViewControllerFactory:(id)controllerFactory;
+- (id)createPagesForArticleIDs:(id)ds;
 @end
 
 @implementation NUArticlePageFactory
 
-- (NUArticlePageFactory)initWithArticleFactory:(id)a3 articleActivityFactory:(id)a4 articleHostViewControllerFactory:(id)a5
+- (NUArticlePageFactory)initWithArticleFactory:(id)factory articleActivityFactory:(id)activityFactory articleHostViewControllerFactory:(id)controllerFactory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  activityFactoryCopy = activityFactory;
+  controllerFactoryCopy = controllerFactory;
   v15.receiver = self;
   v15.super_class = NUArticlePageFactory;
   v12 = [(NUArticlePageFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_articleFactory, a3);
-    objc_storeStrong(&v13->_articleHostViewControllerFactory, a5);
-    objc_storeStrong(&v13->_articleActivityFactory, a4);
+    objc_storeStrong(&v12->_articleFactory, factory);
+    objc_storeStrong(&v13->_articleHostViewControllerFactory, controllerFactory);
+    objc_storeStrong(&v13->_articleActivityFactory, activityFactory);
   }
 
   return v13;
 }
 
-- (id)createPagesForArticleIDs:(id)a3
+- (id)createPagesForArticleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(NUArticlePageFactory *)self articleFactory];
-  v6 = [v5 createArticlesForArticleIDs:v4];
+  dsCopy = ds;
+  articleFactory = [(NUArticlePageFactory *)self articleFactory];
+  v6 = [articleFactory createArticlesForArticleIDs:dsCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

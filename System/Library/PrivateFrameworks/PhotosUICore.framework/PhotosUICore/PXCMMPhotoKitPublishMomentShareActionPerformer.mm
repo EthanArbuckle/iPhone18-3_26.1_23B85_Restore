@@ -1,32 +1,32 @@
 @interface PXCMMPhotoKitPublishMomentShareActionPerformer
-+ (void)budgetOverridePromptAlertKeysForConfiguration:(id)a3 messageKey:(id *)a4 actionKey:(id *)a5;
-- (void)_acceptSuggestion:(id)a3 completionHandler:(id)a4;
-- (void)_budgetOverridePromptForMomentShare:(id)a3 completedWithOutcome:(BOOL)a4 error:(id)a5;
++ (void)budgetOverridePromptAlertKeysForConfiguration:(id)configuration messageKey:(id *)key actionKey:(id *)actionKey;
+- (void)_acceptSuggestion:(id)suggestion completionHandler:(id)handler;
+- (void)_budgetOverridePromptForMomentShare:(id)share completedWithOutcome:(BOOL)outcome error:(id)error;
 - (void)_createMomentShare;
-- (void)_createMomentShareWithCompletionHandler:(id)a3;
-- (void)_creatingMomentShareDidCompleteWithMomentShare:(id)a3 error:(id)a4;
-- (void)_finalizePublishWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_createMomentShareWithCompletionHandler:(id)handler;
+- (void)_creatingMomentShareDidCompleteWithMomentShare:(id)share error:(id)error;
+- (void)_finalizePublishWithSuccess:(BOOL)success error:(id)error;
 - (void)_handleSharingProgressCancellation;
 - (void)_performCleanupIfNeeded;
-- (void)_presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:(id)a3;
-- (void)_presentBudgetOverridePromptForMomentShare:(id)a3 completionHandler:(id)a4;
+- (void)_presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:(id)handler;
+- (void)_presentBudgetOverridePromptForMomentShare:(id)share completionHandler:(id)handler;
 - (void)_presentInternalSharingAlert;
 - (void)_presentSharingProgressAlertController;
-- (void)_publishMomentShare:(id)a3;
-- (void)_publishMomentShare:(id)a3 completionHandler:(id)a4;
-- (void)_publishingMomentShare:(id)a3 didCompleteWithShareURL:(id)a4 error:(id)a5;
-- (void)_requestPreviewImageForAsset:(id)a3 resultHandler:(id)a4;
+- (void)_publishMomentShare:(id)share;
+- (void)_publishMomentShare:(id)share completionHandler:(id)handler;
+- (void)_publishingMomentShare:(id)share didCompleteWithShareURL:(id)l error:(id)error;
+- (void)_requestPreviewImageForAsset:(id)asset resultHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXCMMPhotoKitPublishMomentShareActionPerformer
 
-+ (void)budgetOverridePromptAlertKeysForConfiguration:(id)a3 messageKey:(id *)a4 actionKey:(id *)a5
++ (void)budgetOverridePromptAlertKeysForConfiguration:(id)configuration messageKey:(id *)key actionKey:(id *)actionKey
 {
-  v23 = a3;
-  if (a4)
+  configurationCopy = configuration;
+  if (key)
   {
-    if (a5)
+    if (actionKey)
     {
       goto LABEL_3;
     }
@@ -34,23 +34,23 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"outMessageKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"outMessageKey"}];
 
-    if (a5)
+    if (actionKey)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:471 description:{@"Invalid parameter not satisfying: %@", @"outActionKey"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:471 description:{@"Invalid parameter not satisfying: %@", @"outActionKey"}];
 
 LABEL_3:
-  v9 = [v23 networkType];
-  v10 = [v23 useWLAN];
-  v11 = [v23 assetCount];
-  if (v10)
+  networkType = [configurationCopy networkType];
+  useWLAN = [configurationCopy useWLAN];
+  assetCount = [configurationCopy assetCount];
+  if (useWLAN)
   {
     v12 = @"WLAN";
   }
@@ -61,17 +61,17 @@ LABEL_3:
   }
 
   v13 = @"Single";
-  if (v11 > 1)
+  if (assetCount > 1)
   {
     v13 = @"Multiple";
   }
 
   v14 = v13;
   v15 = v12;
-  v16 = [v23 deviceModel];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PXCMMBudgetOverridePromptMessage_%@_%@_%@", v15, v14, v16];
+  deviceModel = [configurationCopy deviceModel];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PXCMMBudgetOverridePromptMessage_%@_%@_%@", v15, v14, deviceModel];
 
-  if (v9 == 2)
+  if (networkType == 2)
   {
     v18 = [v17 stringByAppendingString:@"_Connected"];
 
@@ -85,8 +85,8 @@ LABEL_3:
   }
 
   v20 = v17;
-  *a4 = v17;
-  *a5 = v19;
+  *key = v17;
+  *actionKey = v19;
 }
 
 - (void)_performCleanupIfNeeded
@@ -100,11 +100,11 @@ LABEL_3:
 
 - (void)_handleSharingProgressCancellation
 {
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  [v3 cancelImageRequest:self->_thumbnailRequestID];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:self->_thumbnailRequestID];
 
-  v4 = [MEMORY[0x1E6978860] defaultManager];
-  [v4 cancelImageRequest:self->_previewRequestID];
+  defaultManager2 = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager2 cancelImageRequest:self->_previewRequestID];
 
   progressAlertToken = self->_progressAlertToken;
   self->_progressAlertToken = 0;
@@ -113,18 +113,18 @@ LABEL_3:
   [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:v6];
 }
 
-- (void)_presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:(id)a3
+- (void)_presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   momentShare = self->_momentShare;
-  v6 = [MEMORY[0x1E69BE688] sharedBundleController];
-  v7 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v8 = [v7 libraryURL];
-  v9 = [v6 openBundleAtLibraryURL:v8];
+  mEMORY[0x1E69BE688] = [MEMORY[0x1E69BE688] sharedBundleController];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  libraryURL = [systemLibraryPathManager libraryURL];
+  v9 = [mEMORY[0x1E69BE688] openBundleAtLibraryURL:libraryURL];
 
-  v10 = [v9 indicatorFileCoordinator];
-  if ([v10 isUserPause])
+  indicatorFileCoordinator = [v9 indicatorFileCoordinator];
+  if ([indicatorFileCoordinator isUserPause])
   {
     v11 = 0;
     if (!momentShare)
@@ -136,13 +136,13 @@ LABEL_3:
   else
   {
     v12 = +[PXCompleteMyMomentSettings sharedInstance];
-    v13 = [v12 simulateCPLAlertOnPublish];
+    simulateCPLAlertOnPublish = [v12 simulateCPLAlertOnPublish];
 
-    v11 = v13 ^ 1;
+    v11 = simulateCPLAlertOnPublish ^ 1;
     if (!momentShare)
     {
 LABEL_11:
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
       goto LABEL_12;
     }
   }
@@ -155,7 +155,7 @@ LABEL_11:
   v14 = PXLocalizedStringFromTable(@"PXCMMUploadingPausedAlertTitle", @"PhotosUICore");
   v15 = PXLocalizedStringFromTable(@"PXCMMUploadingPausedUserInteractionMessage", @"PhotosUICore");
   PXLocalizedStringFromTable(@"PXCMMUploadingPausedResumeButtonTitle", @"PhotosUICore");
-  v28 = self;
+  selfCopy = self;
   v17 = v16 = v9;
   v18 = PXLocalizedStringFromTable(@"PXCMMUploadingPausedUploadLaterButtonTitle", @"PhotosUICore");
   v30 = v15;
@@ -166,7 +166,7 @@ LABEL_11:
   v34[1] = 3221225472;
   v34[2] = __121__PXCMMPhotoKitPublishMomentShareActionPerformer__presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler___block_invoke;
   v34[3] = &unk_1E7748000;
-  v21 = v4;
+  v21 = handlerCopy;
   v35 = v21;
   v29 = v17;
   v22 = v17;
@@ -184,7 +184,7 @@ LABEL_11:
   v26 = [v24 actionWithTitle:v18 style:0 handler:v32];
   [v19 addAction:v26];
 
-  if (![(PXActionPerformer *)v28 presentViewController:v19])
+  if (![(PXActionPerformer *)selfCopy presentViewController:v19])
   {
     v27 = PLSharingGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -211,32 +211,32 @@ void __121__PXCMMPhotoKitPublishMomentShareActionPerformer__presentAlertControll
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_finalizePublishWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_finalizePublishWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (self->_didFinalize)
   {
     PXAssertGetLog();
   }
 
   self->_didFinalize = 1;
-  if (!a3)
+  if (!success)
   {
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _performCleanupIfNeeded];
   }
 
   if (self->_progressAlertToken)
   {
-    v7 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     progressAlertToken = self->_progressAlertToken;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __84__PXCMMPhotoKitPublishMomentShareActionPerformer__finalizePublishWithSuccess_error___block_invoke;
     v12[3] = &unk_1E774B368;
     v12[4] = self;
-    v14 = a3;
-    v13 = v6;
-    PXSharedLibraryDismissProgressAlertWithPresentationEnvironment(progressAlertToken, v7, v12);
+    successCopy = success;
+    v13 = errorCopy;
+    PXSharedLibraryDismissProgressAlertWithPresentationEnvironment(progressAlertToken, presentationEnvironment, v12);
   }
 
   else
@@ -246,8 +246,8 @@ void __121__PXCMMPhotoKitPublishMomentShareActionPerformer__presentAlertControll
     v9[2] = __84__PXCMMPhotoKitPublishMomentShareActionPerformer__finalizePublishWithSuccess_error___block_invoke_3;
     v9[3] = &unk_1E774B368;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
+    successCopy2 = success;
+    v10 = errorCopy;
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:v9];
   }
 }
@@ -269,34 +269,34 @@ void __84__PXCMMPhotoKitPublishMomentShareActionPerformer__finalizePublishWithSu
   [v4 _presentAlertControllerForCurrentCPLStateIfNeededWithCompletionHandler:v5];
 }
 
-- (void)_acceptSuggestion:(id)a3 completionHandler:(id)a4
+- (void)_acceptSuggestion:(id)suggestion completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
   v7 = PLSharingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = suggestionCopy;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Publishing performer: Will mark suggestion as accepted: %@", buf, 0xCu);
   }
 
-  v8 = [v5 photoLibrary];
+  photoLibrary = [suggestionCopy photoLibrary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__PXCMMPhotoKitPublishMomentShareActionPerformer__acceptSuggestion_completionHandler___block_invoke;
   v14[3] = &unk_1E774C648;
-  v15 = v5;
+  v15 = suggestionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__PXCMMPhotoKitPublishMomentShareActionPerformer__acceptSuggestion_completionHandler___block_invoke_2;
   v11[3] = &unk_1E774BD88;
   v12 = v15;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v15;
-  [v8 performChanges:v14 completionHandler:v11];
+  [photoLibrary performChanges:v14 completionHandler:v11];
 }
 
 void __86__PXCMMPhotoKitPublishMomentShareActionPerformer__acceptSuggestion_completionHandler___block_invoke(uint64_t a1)
@@ -344,56 +344,56 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2, v5, v14);
 }
 
-- (void)_publishingMomentShare:(id)a3 didCompleteWithShareURL:(id)a4 error:(id)a5
+- (void)_publishingMomentShare:(id)share didCompleteWithShareURL:(id)l error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PXCMMActionPerformer *)self progress];
-  v13 = [v12 isCancelled];
+  shareCopy = share;
+  lCopy = l;
+  errorCopy = error;
+  progress = [(PXCMMActionPerformer *)self progress];
+  isCancelled = [progress isCancelled];
 
-  if (v13)
+  if (isCancelled)
   {
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _performCleanupIfNeeded];
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!lCopy)
   {
-    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:v11];
+    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:errorCopy];
     goto LABEL_13;
   }
 
   v14 = PLSharingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 pl_redactedShareURL];
+    pl_redactedShareURL = [lCopy pl_redactedShareURL];
     *buf = 138543618;
-    v30 = v15;
+    v30 = pl_redactedShareURL;
     v31 = 2112;
-    v32 = v11;
+    v32 = errorCopy;
     _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "Publishing performer: Publish Moment Share succeeded with URL: %{public}@ error: %@", buf, 0x16u);
   }
 
-  [(PXCMMPublishActionPerformer *)self setPublishedURL:v10];
-  v16 = [(PXCMMActionPerformer *)self session];
-  v17 = [v16 viewModel];
+  [(PXCMMPublishActionPerformer *)self setPublishedURL:lCopy];
+  session = [(PXCMMActionPerformer *)self session];
+  viewModel = [session viewModel];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __103__PXCMMPhotoKitPublishMomentShareActionPerformer__publishingMomentShare_didCompleteWithShareURL_error___block_invoke;
   v26[3] = &unk_1E77346D0;
-  v27 = v10;
-  v28 = v9;
-  [v17 performChanges:v26];
+  v27 = lCopy;
+  v28 = shareCopy;
+  [viewModel performChanges:v26];
 
-  v18 = [(PXCMMActionPerformer *)self session];
-  if (!v18)
+  session2 = [(PXCMMActionPerformer *)self session];
+  if (!session2)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v20 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v22}];
 LABEL_16:
 
     goto LABEL_8;
@@ -402,25 +402,25 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v22 = NSStringFromClass(v23);
-    v24 = [v18 px_descriptionForAssertionMessage];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v22, v24}];
+    px_descriptionForAssertionMessage = [session2 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v22, px_descriptionForAssertionMessage}];
 
     goto LABEL_16;
   }
 
 LABEL_8:
-  v19 = [v18 suggestion];
-  if (v19)
+  suggestion = [session2 suggestion];
+  if (suggestion)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __103__PXCMMPhotoKitPublishMomentShareActionPerformer__publishingMomentShare_didCompleteWithShareURL_error___block_invoke_2;
     v25[3] = &unk_1E774C5C0;
     v25[4] = self;
-    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _acceptSuggestion:v19 completionHandler:v25];
+    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _acceptSuggestion:suggestion completionHandler:v25];
   }
 
   else
@@ -440,35 +440,35 @@ void __103__PXCMMPhotoKitPublishMomentShareActionPerformer__publishingMomentShar
   [v4 setShareUUID:v5];
 }
 
-- (void)_publishMomentShare:(id)a3 completionHandler:(id)a4
+- (void)_publishMomentShare:(id)share completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v8 = +[PXCompleteMyMomentSettings sharedInstance];
-  v9 = [v8 simulateMomentShareCreationError];
+  simulateMomentShareCreationError = [v8 simulateMomentShareCreationError];
 
   v10 = +[PXSharingSettings sharedInstance];
-  v11 = [v10 simulateError];
+  simulateError = [v10 simulateError];
 
   v12 = +[PXCompleteMyMomentSettings sharedInstance];
-  v13 = [v12 fakeMomentShareURL];
+  fakeMomentShareURL = [v12 fakeMomentShareURL];
 
-  if (v13)
+  if (fakeMomentShareURL)
   {
-    v14 = [v6 localIdentifier];
-    v15 = PXURLForCMMShare(0, v14);
+    localIdentifier = [shareCopy localIdentifier];
+    v15 = PXURLForCMMShare(0, localIdentifier);
 
-    v7[2](v7, v15, 0);
+    handlerCopy[2](handlerCopy, v15, 0);
     goto LABEL_21;
   }
 
-  if ((v9 | v11))
+  if ((simulateMomentShareCreationError | simulateError))
   {
     v16 = +[PXSharingSettings sharedInstance];
-    v17 = [v16 simulateUserCloudNotAuthenticated];
+    simulateUserCloudNotAuthenticated = [v16 simulateUserCloudNotAuthenticated];
 
-    if (v17)
+    if (simulateUserCloudNotAuthenticated)
     {
       v18 = MEMORY[0x1E696ABC0];
       v19 = @"CloudPhotoLibraryErrorDomain";
@@ -478,7 +478,7 @@ void __103__PXCMMPhotoKitPublishMomentShareActionPerformer__publishingMomentShar
 
     else
     {
-      if (v11)
+      if (simulateError)
       {
         v18 = MEMORY[0x1E696ABC0];
         v19 = @"PXSharingSettingsErrorDomain";
@@ -487,7 +487,7 @@ void __103__PXCMMPhotoKitPublishMomentShareActionPerformer__publishingMomentShar
 
       else
       {
-        if (!v9)
+        if (!simulateMomentShareCreationError)
         {
           v27 = 0;
           goto LABEL_18;
@@ -511,7 +511,7 @@ LABEL_18:
       _os_log_impl(&dword_1A3C1C000, v28, OS_LOG_TYPE_DEFAULT, "Publishing performer: Simulating an error due to internal settings: %{public}@", buf, 0xCu);
     }
 
-    (v7)[2](v7, 0, v27);
+    (handlerCopy)[2](handlerCopy, 0, v27);
     goto LABEL_21;
   }
 
@@ -530,9 +530,9 @@ LABEL_18:
   v25 = PLSharingGetLog();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v6 localIdentifier];
+    localIdentifier2 = [shareCopy localIdentifier];
     *buf = 138412290;
-    v33 = v26;
+    v33 = localIdentifier2;
     _os_log_impl(&dword_1A3C1C000, v25, OS_LOG_TYPE_DEFAULT, "Publishing performer: Will publish moment share %@", buf, 0xCu);
   }
 
@@ -541,8 +541,8 @@ LABEL_18:
   v29[2] = __88__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare_completionHandler___block_invoke;
   v29[3] = &unk_1E77346A8;
   v29[4] = self;
-  v30 = v6;
-  v31 = v7;
+  v30 = shareCopy;
+  v31 = handlerCopy;
   [v30 publishMomentShareWithCompletionHandler:v29];
 
 LABEL_21:
@@ -671,13 +671,13 @@ void __88__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare_co
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_publishMomentShare:(id)a3
+- (void)_publishMomentShare:(id)share
 {
-  v4 = a3;
-  v5 = [(PXCMMActionPerformer *)self progress];
-  v6 = [v5 isCancelled];
+  shareCopy = share;
+  progress = [(PXCMMActionPerformer *)self progress];
+  isCancelled = [progress isCancelled];
 
-  if (v6)
+  if (isCancelled)
   {
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _performCleanupIfNeeded];
   }
@@ -689,7 +689,7 @@ void __88__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare_co
     v7[2] = __70__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare___block_invoke;
     v7[3] = &unk_1E77462D0;
     v7[4] = self;
-    v8 = v4;
+    v8 = shareCopy;
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _publishMomentShare:v8 completionHandler:v7];
   }
 }
@@ -706,13 +706,13 @@ void __70__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare___
 
 - (void)_presentSharingProgressAlertController
 {
-  v3 = [(PXCMMActionPerformer *)self progress];
+  progress = [(PXCMMActionPerformer *)self progress];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__PXCMMPhotoKitPublishMomentShareActionPerformer__presentSharingProgressAlertController__block_invoke;
   v14[3] = &unk_1E774C648;
   v14[4] = self;
-  [v3 setCancellationHandler:v14];
+  [progress setCancellationHandler:v14];
   v4 = PXLocalizedStringFromTable(@"PXCMMSharingProgressTitle", @"PhotosUICore");
   [MEMORY[0x1E69BE6A8] sharingDisplayNameIncludingEmail:1 allowsEmail:1];
   if (objc_claimAutoreleasedReturnValue())
@@ -722,42 +722,42 @@ void __70__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare___
     PXLocalizedStringWithValidatedFormat();
   }
 
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  v6 = v5;
-  if (v5)
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v6 = presentationEnvironment;
+  if (presentationEnvironment)
   {
-    v7 = v5;
+    v7 = presentationEnvironment;
   }
 
   else
   {
-    v8 = [(PXActionPerformer *)self delegate];
-    v7 = [v8 presentationEnvironmentForActionPerformer:self];
+    delegate = [(PXActionPerformer *)self delegate];
+    v7 = [delegate presentationEnvironmentForActionPerformer:self];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__PXCMMPhotoKitPublishMomentShareActionPerformer__presentSharingProgressAlertController__block_invoke_3;
   v12[3] = &unk_1E774C648;
-  v13 = v3;
-  v9 = v3;
+  v13 = progress;
+  v9 = progress;
   v10 = PXSharedLibraryPresentProgressAlertWithMessagePresentationEnvironment(v4, 0, v7, v12);
   progressAlertToken = self->_progressAlertToken;
   self->_progressAlertToken = v10;
 }
 
-- (void)_budgetOverridePromptForMomentShare:(id)a3 completedWithOutcome:(BOOL)a4 error:(id)a5
+- (void)_budgetOverridePromptForMomentShare:(id)share completedWithOutcome:(BOOL)outcome error:(id)error
 {
-  v6 = a4;
+  outcomeCopy = outcome;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  shareCopy = share;
+  v9 = shareCopy;
+  if (error)
   {
-    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:a5];
+    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:error];
   }
 
-  else if ([v8 shouldIgnoreBudgets] == v6)
+  else if ([shareCopy shouldIgnoreBudgets] == outcomeCopy)
   {
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _publishMomentShare:v9];
   }
@@ -767,7 +767,7 @@ void __70__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare___
     v10 = PLSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (v6)
+      if (outcomeCopy)
       {
         v11 = @"YES";
       }
@@ -777,28 +777,28 @@ void __70__PXCMMPhotoKitPublishMomentShareActionPerformer__publishMomentShare___
         v11 = @"NO";
       }
 
-      v12 = [v9 localIdentifier];
+      localIdentifier = [v9 localIdentifier];
       *buf = 138412546;
       v21 = v11;
       v22 = 2112;
-      v23 = v12;
+      v23 = localIdentifier;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Publishing performer: Will change moment share shouldIgnoreBudget to %@: %@", buf, 0x16u);
     }
 
-    v13 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+    mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __113__PXCMMPhotoKitPublishMomentShareActionPerformer__budgetOverridePromptForMomentShare_completedWithOutcome_error___block_invoke;
     v17[3] = &unk_1E7749428;
     v18 = v9;
-    v19 = v6;
+    v19 = outcomeCopy;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __113__PXCMMPhotoKitPublishMomentShareActionPerformer__budgetOverridePromptForMomentShare_completedWithOutcome_error___block_invoke_2;
     v14[3] = &unk_1E774B730;
     v15 = v18;
-    v16 = self;
-    [v13 performChanges:v17 completionHandler:v14];
+    selfCopy = self;
+    [mEMORY[0x1E69789A8] performChanges:v17 completionHandler:v14];
   }
 }
 
@@ -852,17 +852,17 @@ uint64_t __113__PXCMMPhotoKitPublishMomentShareActionPerformer__budgetOverridePr
   }
 }
 
-- (void)_presentBudgetOverridePromptForMomentShare:(id)a3 completionHandler:(id)a4
+- (void)_presentBudgetOverridePromptForMomentShare:(id)share completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v8 = PLSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 localIdentifier];
+    localIdentifier = [shareCopy localIdentifier];
     *buf = 138412290;
-    v25 = v9;
+    v25 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "Publishing performer: confirming whether or not to override budgets for moment share %@", buf, 0xCu);
   }
 
@@ -871,17 +871,17 @@ uint64_t __113__PXCMMPhotoKitPublishMomentShareActionPerformer__budgetOverridePr
   aBlock[1] = 3221225472;
   aBlock[2] = __111__PXCMMPhotoKitPublishMomentShareActionPerformer__presentBudgetOverridePromptForMomentShare_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7749350;
-  v11 = v6;
+  v11 = shareCopy;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v23 = progressAlertToken != 0;
-  v12 = v7;
+  v12 = handlerCopy;
   v22 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
   if (progressAlertToken)
   {
-    v15 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     v16 = self->_progressAlertToken;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -889,7 +889,7 @@ uint64_t __113__PXCMMPhotoKitPublishMomentShareActionPerformer__budgetOverridePr
     v17[3] = &unk_1E774C2F0;
     v17[4] = self;
     v18 = v14;
-    PXSharedLibraryDismissProgressAlertWithPresentationEnvironment(v16, v15, v17);
+    PXSharedLibraryDismissProgressAlertWithPresentationEnvironment(v16, presentationEnvironment, v17);
   }
 
   else
@@ -1013,55 +1013,55 @@ void __111__PXCMMPhotoKitPublishMomentShareActionPerformer__presentBudgetOverrid
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_creatingMomentShareDidCompleteWithMomentShare:(id)a3 error:(id)a4
+- (void)_creatingMomentShareDidCompleteWithMomentShare:(id)share error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_momentShare, a3);
-  v9 = [(PXCMMActionPerformer *)self progress];
-  v10 = [v9 isCancelled];
+  shareCopy = share;
+  errorCopy = error;
+  objc_storeStrong(&self->_momentShare, share);
+  progress = [(PXCMMActionPerformer *)self progress];
+  isCancelled = [progress isCancelled];
 
-  if (v10)
+  if (isCancelled)
   {
     [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _performCleanupIfNeeded];
   }
 
-  else if (v7)
+  else if (shareCopy)
   {
-    if (([v7 shouldPromptUserToIgnoreBudgets] & 1) != 0 || (+[PXCompleteMyMomentSettings sharedInstance](PXCompleteMyMomentSettings, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "simulateShouldPromptUserToIgnoreBudgets"), v11, v12))
+    if (([shareCopy shouldPromptUserToIgnoreBudgets] & 1) != 0 || (+[PXCompleteMyMomentSettings sharedInstance](PXCompleteMyMomentSettings, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "simulateShouldPromptUserToIgnoreBudgets"), v11, v12))
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __103__PXCMMPhotoKitPublishMomentShareActionPerformer__creatingMomentShareDidCompleteWithMomentShare_error___block_invoke;
       v13[3] = &unk_1E774B730;
       v13[4] = self;
-      v14 = v7;
+      v14 = shareCopy;
       [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _presentBudgetOverridePromptForMomentShare:v14 completionHandler:v13];
     }
 
     else
     {
-      [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _publishMomentShare:v7];
+      [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _publishMomentShare:shareCopy];
     }
   }
 
   else
   {
-    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:v8];
+    [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _finalizePublishWithSuccess:0 error:errorCopy];
   }
 }
 
-- (void)_createMomentShareWithCompletionHandler:(id)a3
+- (void)_createMomentShareWithCompletionHandler:(id)handler
 {
   v71 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v5 = [(PXCMMActionPerformer *)self session];
-  if (!v5)
+  handlerCopy = handler;
+  session = [(PXCMMActionPerformer *)self session];
+  if (!session)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v47 = objc_opt_class();
     v48 = NSStringFromClass(v47);
-    [v46 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v48}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v48}];
 LABEL_28:
 
     goto LABEL_3;
@@ -1070,21 +1070,21 @@ LABEL_28:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v49 = objc_opt_class();
     v48 = NSStringFromClass(v49);
-    v50 = [v5 px_descriptionForAssertionMessage];
-    [v46 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v48, v50}];
+    px_descriptionForAssertionMessage = [session px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:330 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v48, px_descriptionForAssertionMessage}];
 
     goto LABEL_28;
   }
 
 LABEL_3:
-  v6 = [v5 viewModel];
-  v7 = [v6 selectionManager];
-  v8 = [v7 selectionSnapshot];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v9 = [v8 selectedIndexPaths];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v10 = PLSharingGetLog();
   v11 = os_signpost_id_make_with_pointer(v10, self);
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -1097,67 +1097,67 @@ LABEL_3:
     }
   }
 
-  v13 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   initialStartDate = self->_initialStartDate;
-  self->_initialStartDate = v13;
+  self->_initialStartDate = date;
 
-  v15 = [v8 dataSource];
-  if ([v9 count])
+  dataSource = [selectionSnapshot dataSource];
+  if ([selectedIndexPaths count])
   {
-    v16 = v9;
+    allItemIndexPaths = selectedIndexPaths;
   }
 
   else
   {
-    v16 = [v15 allItemIndexPaths];
+    allItemIndexPaths = [dataSource allItemIndexPaths];
 
-    if ([v16 count] <= 0)
+    if ([allItemIndexPaths count] <= 0)
     {
-      v51 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v51 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"selectedIndexPaths.count > 0"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"selectedIndexPaths.count > 0"}];
     }
   }
 
-  v54 = v15;
-  v52 = [v15 photosDataSource];
-  v53 = v16;
-  v17 = [v52 assetsAtIndexPaths:v16];
-  v18 = [v6 originalTitle];
-  if (!v18)
+  v54 = dataSource;
+  photosDataSource = [dataSource photosDataSource];
+  v53 = allItemIndexPaths;
+  v17 = [photosDataSource assetsAtIndexPaths:allItemIndexPaths];
+  originalTitle = [viewModel originalTitle];
+  if (!originalTitle)
   {
     v19 = +[PXCompleteMyMomentSettings sharedInstance];
-    v20 = [v19 preventNilTitles];
+    preventNilTitles = [v19 preventNilTitles];
 
-    if (v20)
+    if (preventNilTitles)
     {
-      v18 = &stru_1F1741150;
+      originalTitle = &stru_1F1741150;
     }
 
     else
     {
-      v18 = 0;
+      originalTitle = 0;
     }
   }
 
-  v21 = [v5 originatingMomentShare];
+  originatingMomentShare = [session originatingMomentShare];
   v22 = [MEMORY[0x1E6978630] fetchPreviewAssetsForMomentShareCreationWithAssets:v17 options:0];
-  v23 = [v22 firstObject];
-  v24 = v23;
-  v57 = v6;
-  v55 = v8;
-  if (v23)
+  firstObject = [v22 firstObject];
+  v24 = firstObject;
+  v57 = viewModel;
+  v55 = selectionSnapshot;
+  if (firstObject)
   {
-    v25 = v23;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v25 = [v17 firstObject];
+    firstObject2 = [v17 firstObject];
   }
 
-  v26 = v25;
+  v26 = firstObject2;
 
-  v27 = [(PXCMMActionPerformer *)self progress];
+  progress = [(PXCMMActionPerformer *)self progress];
   v28 = PLSharingGetLog();
   v29 = os_signpost_id_make_with_pointer(v28, self);
   if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -1185,13 +1185,13 @@ LABEL_3:
   v34 = PLSharingGetLog();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     previewRequestStartDate = self->_previewRequestStartDate;
-    self->_previewRequestStartDate = v35;
+    self->_previewRequestStartDate = date2;
 
-    [(NSDate *)v35 timeIntervalSinceDate:self->_initialStartDate];
+    [(NSDate *)date2 timeIntervalSinceDate:self->_initialStartDate];
     *buf = 138412546;
-    v68 = self;
+    selfCopy = self;
     v69 = 2048;
     v70 = v37;
     _os_log_impl(&dword_1A3C1C000, v34, OS_LOG_TYPE_DEFAULT, "Publishing performer: %@ Did get assets to publish in %f seconds.", buf, 0x16u);
@@ -1204,18 +1204,18 @@ LABEL_3:
   v58[4] = self;
   v59 = v26;
   v60 = v22;
-  v61 = v27;
-  v62 = v5;
+  v61 = progress;
+  v62 = session;
   v63 = v17;
-  v64 = v18;
-  v65 = v21;
-  v66 = v56;
-  v38 = v56;
-  v39 = v21;
-  v40 = v18;
+  v64 = originalTitle;
+  v65 = originatingMomentShare;
+  v66 = handlerCopy;
+  v38 = handlerCopy;
+  v39 = originatingMomentShare;
+  v40 = originalTitle;
   v41 = v17;
-  v42 = v5;
-  v43 = v27;
+  v42 = session;
+  v43 = progress;
   v44 = v22;
   v45 = v26;
   [(PXCMMPhotoKitPublishMomentShareActionPerformer *)self _requestPreviewImageForAsset:v45 resultHandler:v58];
@@ -1542,8 +1542,8 @@ void __68__PXCMMPhotoKitPublishMomentShareActionPerformer__createMomentShare__bl
 
 - (void)_presentInternalSharingAlert
 {
-  v4 = [(PXCMMActionPerformer *)self session];
-  if (v4)
+  session = [(PXCMMActionPerformer *)self session];
+  if (session)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1551,27 +1551,27 @@ void __68__PXCMMPhotoKitPublishMomentShareActionPerformer__createMomentShare__bl
       goto LABEL_3;
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v23 = NSStringFromClass(v24);
-    v25 = [v4 px_descriptionForAssertionMessage];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:243 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v23, v25}];
+    px_descriptionForAssertionMessage = [session px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:243 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.session", v23, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v21 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:243 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:243 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.session", v23}];
   }
 
 LABEL_3:
-  v5 = [v4 viewModel];
-  v6 = [v5 selectionManager];
-  v7 = [v6 selectionSnapshot];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  if ([PXSharingConfidentialityController confidentialWarningRequiredForShareableSelection:v7])
+  if ([PXSharingConfidentialityController confidentialWarningRequiredForShareableSelection:selectionSnapshot])
   {
     v8 = PLSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1689,14 +1689,14 @@ void __78__PXCMMPhotoKitPublishMomentShareActionPerformer__presentInternalSharin
   }
 }
 
-- (void)_requestPreviewImageForAsset:(id)a3 resultHandler:(id)a4
+- (void)_requestPreviewImageForAsset:(id)asset resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  handlerCopy = handler;
+  if (!assetCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitPublishMomentShareActionPerformer.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E6978868]);
@@ -1705,20 +1705,20 @@ void __78__PXCMMPhotoKitPublishMomentShareActionPerformer__presentInternalSharin
   [v9 setDeliveryMode:1];
   [v9 setResizeMode:1];
   [v9 setNetworkAccessAllowed:1];
-  v10 = [v7 pixelWidth];
-  v11 = [v7 pixelHeight];
-  v12 = v10 * v11;
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
+  v12 = pixelWidth * pixelHeight;
   v13 = fminf(sqrtf(607500.0 / v12), 1.0);
-  v14 = v11 * v13;
-  v15 = v10 * v13;
-  v16 = [MEMORY[0x1E6978860] defaultManager];
+  v14 = pixelHeight * v13;
+  v15 = pixelWidth * v13;
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __93__PXCMMPhotoKitPublishMomentShareActionPerformer__requestPreviewImageForAsset_resultHandler___block_invoke;
   v19[3] = &unk_1E774B680;
-  v20 = v8;
-  v17 = v8;
-  self->_previewRequestID = [v16 requestImageForAsset:v7 targetSize:0 contentMode:v9 options:v19 resultHandler:{v15, v14}];
+  v20 = handlerCopy;
+  v17 = handlerCopy;
+  self->_previewRequestID = [defaultManager requestImageForAsset:assetCopy targetSize:0 contentMode:v9 options:v19 resultHandler:{v15, v14}];
 }
 
 void __93__PXCMMPhotoKitPublishMomentShareActionPerformer__requestPreviewImageForAsset_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)

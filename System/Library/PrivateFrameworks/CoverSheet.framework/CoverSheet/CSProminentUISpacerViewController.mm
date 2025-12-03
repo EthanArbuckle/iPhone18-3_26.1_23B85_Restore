@@ -2,9 +2,9 @@
 - (CSProminentUISpacerViewController)init;
 - (void)_updatePreferredContentSize;
 - (void)loadView;
-- (void)setContainerSize:(CGSize)a3;
-- (void)setTopMarginToMimic:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setContainerSize:(CGSize)size;
+- (void)setTopMarginToMimic:(double)mimic;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)viewDidLoad;
 @end
 
@@ -38,35 +38,35 @@
   v6.super_class = CSProminentUISpacerViewController;
   [(CSCoverSheetViewControllerBase *)&v6 viewDidLoad];
   v3 = +[CSLockScreenDomain rootSettings];
-  v4 = [v3 dashBoardRemoteContentSettings];
+  dashBoardRemoteContentSettings = [v3 dashBoardRemoteContentSettings];
   remoteContentSettings = self->_remoteContentSettings;
-  self->_remoteContentSettings = v4;
+  self->_remoteContentSettings = dashBoardRemoteContentSettings;
 
   [(PTSettings *)self->_remoteContentSettings addKeyObserver:self];
   [(CSProminentUISpacerViewController *)self _updatePreferredContentSize];
 }
 
-- (void)setTopMarginToMimic:(double)a3
+- (void)setTopMarginToMimic:(double)mimic
 {
-  if (self->_topMarginToMimic != a3)
+  if (self->_topMarginToMimic != mimic)
   {
-    self->_topMarginToMimic = a3;
+    self->_topMarginToMimic = mimic;
     [(CSProminentUISpacerViewController *)self _updatePreferredContentSize];
   }
 }
 
-- (void)setContainerSize:(CGSize)a3
+- (void)setContainerSize:(CGSize)size
 {
-  if (self->_containerSize.width != a3.width || self->_containerSize.height != a3.height)
+  if (self->_containerSize.width != size.width || self->_containerSize.height != size.height)
   {
-    self->_containerSize = a3;
+    self->_containerSize = size;
     [(CSProminentUISpacerViewController *)self _updatePreferredContentSize];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_remoteContentSettings == a3)
+  if (self->_remoteContentSettings == settings)
   {
     [(CSProminentUISpacerViewController *)self _updatePreferredContentSize];
   }
@@ -76,8 +76,8 @@
 {
   width = self->_containerSize.width;
   topMarginToMimic = self->_topMarginToMimic;
-  v5 = [(CSProminentUISpacerViewController *)self viewIfLoaded];
-  [v5 setFrame:{0.0, 0.0, width, topMarginToMimic}];
+  viewIfLoaded = [(CSProminentUISpacerViewController *)self viewIfLoaded];
+  [viewIfLoaded setFrame:{0.0, 0.0, width, topMarginToMimic}];
 
   [(CSProminentUISpacerViewController *)self setPreferredContentSize:width, topMarginToMimic];
 }

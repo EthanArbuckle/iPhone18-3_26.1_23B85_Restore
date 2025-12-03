@@ -1,28 +1,28 @@
 @interface ACCCommunicationsServer
 + (id)sharedServer;
-- (ACCCommunicationsServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
+- (ACCCommunicationsServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
 - (BOOL)endAllCalls;
 - (BOOL)initiateCallToVoicemail;
 - (BOOL)initiateRedial;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)mergeCalls;
 - (BOOL)swapCalls;
 - (NSXPCConnection)activeConnection;
-- (unint64_t)invokeBlockOnClients:(id)a3 synchronous:(BOOL)a4;
+- (unint64_t)invokeBlockOnClients:(id)clients synchronous:(BOOL)synchronous;
 - (void)refreshClientData;
 - (void)sendUpdatedSubscriberList;
 - (void)triggerCallStateUpdates;
 - (void)triggerCommunicationsUpdate;
-- (void)triggerUpdateForListType:(int)a3 coalesce:(BOOL)a4;
+- (void)triggerUpdateForListType:(int)type coalesce:(BOOL)coalesce;
 @end
 
 @implementation ACCCommunicationsServer
 
-- (ACCCommunicationsServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCCommunicationsServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
   v10.receiver = self;
   v10.super_class = ACCCommunicationsServer;
-  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:a3 andFeatureNotification:a4];
+  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:name andFeatureNotification:notification];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -39,10 +39,10 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -78,16 +78,16 @@
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCCommunicationsXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCCommunicationsServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCCommunicationsServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
 
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCCommunicationsXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __62__ACCCommunicationsServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -95,9 +95,9 @@
   objc_copyWeak(&v29, &from);
   v28[4] = self;
   objc_copyWeak(&v30, &location);
-  [v7 setInvalidationHandler:v28];
-  v15 = [(ACCCommunicationsServer *)self clientConnections];
-  [v15 addObject:v7];
+  [connectionCopy setInvalidationHandler:v28];
+  clientConnections = [(ACCCommunicationsServer *)self clientConnections];
+  [clientConnections addObject:connectionCopy];
 
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -117,22 +117,22 @@
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(ACCCommunicationsServer *)self clientConnections];
-    v19 = [v18 count];
+    clientConnections2 = [(ACCCommunicationsServer *)self clientConnections];
+    v19 = [clientConnections2 count];
     *buf = 134217984;
     v34 = v19;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[#Communications] There are now %lu client(s).", buf, 0xCu);
   }
 
-  [v7 resume];
-  v20 = [(ACCCommunicationsServer *)self clientConnections];
-  v21 = [v20 count] == 1;
+  [connectionCopy resume];
+  clientConnections3 = [(ACCCommunicationsServer *)self clientConnections];
+  v21 = [clientConnections3 count] == 1;
 
   if (v21)
   {
-    [(ACCCommunicationsServer *)self setActiveConnection:v7];
-    v22 = [(ACCCommunicationsServer *)self activeConnection];
-    v23 = [v22 remoteObjectProxyWithErrorHandler:&__block_literal_global_44];
+    [(ACCCommunicationsServer *)self setActiveConnection:connectionCopy];
+    activeConnection = [(ACCCommunicationsServer *)self activeConnection];
+    v23 = [activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_44];
     [(ACCCommunicationsServer *)self setRemoteObject:v23];
 
     if (gLogObjects && gNumLogObjects >= 5)
@@ -153,8 +153,8 @@
 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(ACCCommunicationsServer *)self remoteObject];
-      [(ACCCommunicationsServer *)v26 listener:buf shouldAcceptNewConnection:v24];
+      remoteObject = [(ACCCommunicationsServer *)self remoteObject];
+      [(ACCCommunicationsServer *)remoteObject listener:buf shouldAcceptNewConnection:v24];
     }
   }
 
@@ -287,12 +287,12 @@ void __62__ACCCommunicationsServer_listener_shouldAcceptNewConnection___block_in
   }
 }
 
-- (unint64_t)invokeBlockOnClients:(id)a3 synchronous:(BOOL)a4
+- (unint64_t)invokeBlockOnClients:(id)clients synchronous:(BOOL)synchronous
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ACCCommunicationsServer *)self clientConnections];
-  v8 = [v7 copy];
+  synchronousCopy = synchronous;
+  clientsCopy = clients;
+  clientConnections = [(ACCCommunicationsServer *)self clientConnections];
+  v8 = [clientConnections copy];
 
   if (gLogObjects)
   {
@@ -348,7 +348,7 @@ void __62__ACCCommunicationsServer_listener_shouldAcceptNewConnection___block_in
         }
 
         v18 = *(*(&v21 + 1) + 8 * i);
-        if (v4)
+        if (synchronousCopy)
         {
           [v18 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_85];
         }
@@ -358,9 +358,9 @@ void __62__ACCCommunicationsServer_listener_shouldAcceptNewConnection___block_in
           [v18 remoteObjectProxyWithErrorHandler:{&__block_literal_global_88, v21}];
         }
         v19 = ;
-        if (v6)
+        if (clientsCopy)
         {
-          v6[2](v6, v19);
+          clientsCopy[2](clientsCopy, v19);
           ++v15;
         }
       }
@@ -483,40 +483,40 @@ void __60__ACCCommunicationsServer_invokeBlockOnClients_synchronous___block_invo
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[#Communications] Refreshing client data...", v16, 2u);
   }
 
-  v6 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v7 = [v6 containsObject:@"CallStateUpdates"];
+  subFeatureSubscribers = [(ACCFeatureServer *)self subFeatureSubscribers];
+  v7 = [subFeatureSubscribers containsObject:@"CallStateUpdates"];
 
   if (v7)
   {
     [(ACCCommunicationsServer *)self triggerCallStateUpdates];
   }
 
-  v8 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v9 = [v8 containsObject:@"CommunicationsUpdates"];
+  subFeatureSubscribers2 = [(ACCFeatureServer *)self subFeatureSubscribers];
+  v9 = [subFeatureSubscribers2 containsObject:@"CommunicationsUpdates"];
 
   if (v9)
   {
     [(ACCCommunicationsServer *)self triggerCommunicationsUpdate];
   }
 
-  v10 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v11 = [v10 containsObject:@"ListUpdates_Recents"];
+  subFeatureSubscribers3 = [(ACCFeatureServer *)self subFeatureSubscribers];
+  v11 = [subFeatureSubscribers3 containsObject:@"ListUpdates_Recents"];
 
   if (v11)
   {
     [(ACCCommunicationsServer *)self triggerUpdateForListType:0 coalesce:0];
   }
 
-  v12 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v13 = [v12 containsObject:@"ListUpdates_Recents_Coalesced"];
+  subFeatureSubscribers4 = [(ACCFeatureServer *)self subFeatureSubscribers];
+  v13 = [subFeatureSubscribers4 containsObject:@"ListUpdates_Recents_Coalesced"];
 
   if (v13)
   {
     [(ACCCommunicationsServer *)self triggerUpdateForListType:0 coalesce:1];
   }
 
-  v14 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v15 = [v14 containsObject:@"ListUpdates_Favorites"];
+  subFeatureSubscribers5 = [(ACCFeatureServer *)self subFeatureSubscribers];
+  v15 = [subFeatureSubscribers5 containsObject:@"ListUpdates_Favorites"];
 
   if (v15)
   {
@@ -795,7 +795,7 @@ void __54__ACCCommunicationsServer_triggerCommunicationsUpdate__block_invoke_3(i
   }
 }
 
-- (void)triggerUpdateForListType:(int)a3 coalesce:(BOOL)a4
+- (void)triggerUpdateForListType:(int)type coalesce:(BOOL)coalesce
 {
   v13 = 0;
   v14 = &v13;
@@ -805,8 +805,8 @@ void __54__ACCCommunicationsServer_triggerCommunicationsUpdate__block_invoke_3(i
   v10[1] = 3221225472;
   v10[2] = __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___block_invoke;
   v10[3] = &unk_10022AB10;
-  v11 = a3;
-  v12 = a4;
+  typeCopy = type;
+  coalesceCopy = coalesce;
   v10[4] = &v13;
   [(ACCCommunicationsServer *)self invokeBlockOnClients:v10 synchronous:1];
   if ((v14[3] & 1) == 0)
@@ -816,8 +816,8 @@ void __54__ACCCommunicationsServer_triggerCommunicationsUpdate__block_invoke_3(i
     block[1] = 3221225472;
     block[2] = __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___block_invoke_3;
     block[3] = &__block_descriptor_37_e5_v8__0l;
-    v8 = a3;
-    v9 = a4;
+    typeCopy2 = type;
+    coalesceCopy2 = coalesce;
     dispatch_async(v6, block);
   }
 
@@ -887,12 +887,12 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (BOOL)initiateCallToVoicemail
 {
-  v3 = [(ACCCommunicationsServer *)self remoteObject];
+  remoteObject = [(ACCCommunicationsServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCCommunicationsServer *)self remoteObject];
-    [v4 initiateCallToVoicemail];
+    remoteObject2 = [(ACCCommunicationsServer *)self remoteObject];
+    [remoteObject2 initiateCallToVoicemail];
   }
 
   return 1;
@@ -900,12 +900,12 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (BOOL)initiateRedial
 {
-  v3 = [(ACCCommunicationsServer *)self remoteObject];
+  remoteObject = [(ACCCommunicationsServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCCommunicationsServer *)self remoteObject];
-    [v4 initiateRedial];
+    remoteObject2 = [(ACCCommunicationsServer *)self remoteObject];
+    [remoteObject2 initiateRedial];
   }
 
   return 1;
@@ -913,12 +913,12 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (BOOL)endAllCalls
 {
-  v3 = [(ACCCommunicationsServer *)self remoteObject];
+  remoteObject = [(ACCCommunicationsServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCCommunicationsServer *)self remoteObject];
-    [v4 endAllCalls];
+    remoteObject2 = [(ACCCommunicationsServer *)self remoteObject];
+    [remoteObject2 endAllCalls];
   }
 
   return 1;
@@ -926,12 +926,12 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (BOOL)swapCalls
 {
-  v3 = [(ACCCommunicationsServer *)self remoteObject];
+  remoteObject = [(ACCCommunicationsServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCCommunicationsServer *)self remoteObject];
-    [v4 swapCalls];
+    remoteObject2 = [(ACCCommunicationsServer *)self remoteObject];
+    [remoteObject2 swapCalls];
   }
 
   return 1;
@@ -939,12 +939,12 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (BOOL)mergeCalls
 {
-  v3 = [(ACCCommunicationsServer *)self remoteObject];
+  remoteObject = [(ACCCommunicationsServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCCommunicationsServer *)self remoteObject];
-    [v4 mergeCalls];
+    remoteObject2 = [(ACCCommunicationsServer *)self remoteObject];
+    [remoteObject2 mergeCalls];
   }
 
   return 1;
@@ -952,13 +952,13 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
 
 - (NSXPCConnection)activeConnection
 {
-  v3 = [(ACCCommunicationsServer *)self clientConnections];
-  v4 = [v3 count];
+  clientConnections = [(ACCCommunicationsServer *)self clientConnections];
+  v4 = [clientConnections count];
 
   if (v4)
   {
-    v5 = [(ACCCommunicationsServer *)self clientConnections];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    clientConnections2 = [(ACCCommunicationsServer *)self clientConnections];
+    v6 = [clientConnections2 objectAtIndexedSubscript:0];
   }
 
   else
@@ -975,7 +975,7 @@ unint64_t __61__ACCCommunicationsServer_triggerUpdateForListType_coalesce___bloc
   block[1] = 3221225472;
   block[2] = __39__ACCCommunicationsServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_12 != -1)
   {
     dispatch_once(&sharedServer_once_12, block);

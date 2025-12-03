@@ -1,21 +1,21 @@
 @interface MusicModelBrickItem
 + (id)requiredStoreLibraryPersonalizationProperties;
 - (id)backgroundArtworkCatalog;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
-- (id)storeContentItemObjectPropertiesFor:(id)a3;
+- (id)storeContentItemObjectPropertiesFor:(id)for;
 @end
 
 @implementation MusicModelBrickItem
 
 - (id)backgroundArtworkCatalog
 {
-  v3 = [(MusicModelBrickItem *)self backgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  backgroundArtworkCatalogBlock = [(MusicModelBrickItem *)self backgroundArtworkCatalogBlock];
+  v4 = backgroundArtworkCatalogBlock;
+  if (backgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(backgroundArtworkCatalogBlock + 16))(backgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -46,20 +46,20 @@
   return v5;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MusicModelBrickItem *)self contentItem];
-  v6 = [v4 relationships];
+  propertiesCopy = properties;
+  contentItem = [(MusicModelBrickItem *)self contentItem];
+  relationships = [propertiesCopy relationships];
 
-  v7 = [v6 objectForKey:@"MusicModelRelationshipBrickItemContentItem"];
+  v7 = [relationships objectForKey:@"MusicModelRelationshipBrickItemContentItem"];
   v8 = v7;
   if (!v7)
   {
     v8 = +[MPPropertySet emptyPropertySet];
   }
 
-  v9 = [v5 personalizationScopedPropertiesForProperties:v8];
+  v9 = [contentItem personalizationScopedPropertiesForProperties:v8];
   v10 = v9;
   if (v9)
   {
@@ -82,24 +82,24 @@
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v2 = [(MusicModelBrickItem *)self contentItem];
-  v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+  contentItem = [(MusicModelBrickItem *)self contentItem];
+  relativeModelObjectForStoreLibraryPersonalization = [contentItem relativeModelObjectForStoreLibraryPersonalization];
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MusicModelBrickItem *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MusicModelBrickItem *)self identifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __80__MusicModelBrickItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_CEF2E0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MusicModelBrickItem *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MusicModelBrickItem *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -114,11 +114,11 @@ void __80__MusicModelBrickItem_objectWithStoreLibraryPersonalizationRelativeMode
   [v4 setContentItem:v6];
 }
 
-- (id)storeContentItemObjectPropertiesFor:(id)a3
+- (id)storeContentItemObjectPropertiesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_272264(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_272264(forCopy);
 
   return v6;
 }

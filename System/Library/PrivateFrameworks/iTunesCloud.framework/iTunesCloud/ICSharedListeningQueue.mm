@@ -3,27 +3,27 @@
 - (BOOL)isAutoPlayAvailable;
 - (BOOL)isAutoPlayEnabled;
 - (ICLiveLink)liveLink;
-- (ICSharedListeningQueue)initWithProtobuf:(id)a3 serverQueueContext:(id)a4 liveLink:(id)a5 playbackControlSettings:(id)a6;
-- (id)_itemForIdentifier:(id)a3 outIndexPath:(id *)a4;
-- (id)_playbackItemProtosForTracklist:(id)a3 withPreferredStartItemIndexPath:(id)a4;
-- (id)_tracklistForQueueProto:(id)a3;
-- (id)containerForIdentifier:(id)a3;
-- (int64_t)_afterItemPositionForItemIdentifier:(id)a3;
-- (void)_detectTrackGenerationSourceForTracklist:(id)a3 detectedCompletion:(id)a4;
-- (void)addMediaIdentifiers:(id)a3 afterItemIdentifier:(id)a4;
-- (void)getExpectedCurrentItemWithCompletion:(id)a3;
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 completion:(id)a5;
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 playNowWithPreferredStartIndexPath:(id)a5 completion:(id)a6;
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 playNowWithPreferredStartIndexPath:(id)a5 completionEx:(id)a6;
-- (void)insertTracklist:(id)a3 atPosition:(id)a4 completion:(id)a5;
-- (void)insertTracklist:(id)a3 atPosition:(id)a4 completionEx:(id)a5;
-- (void)moveItemIdentifier:(id)a3 afterItemIdentifier:(id)a4;
-- (void)moveItemIdentifier:(id)a3 beforeItemIdentifier:(id)a4;
-- (void)removeAllItemIdentifiersAfterItemIdentifier:(id)a3;
-- (void)removeItemIdentifier:(id)a3;
-- (void)removeItemIdentifiers:(id)a3;
-- (void)replaceTracklist:(id)a3 preferredStartIndexPath:(id)a4 completion:(id)a5;
-- (void)setAutoPlayEnabled:(BOOL)a3 completion:(id)a4;
+- (ICSharedListeningQueue)initWithProtobuf:(id)protobuf serverQueueContext:(id)context liveLink:(id)link playbackControlSettings:(id)settings;
+- (id)_itemForIdentifier:(id)identifier outIndexPath:(id *)path;
+- (id)_playbackItemProtosForTracklist:(id)tracklist withPreferredStartItemIndexPath:(id)path;
+- (id)_tracklistForQueueProto:(id)proto;
+- (id)containerForIdentifier:(id)identifier;
+- (int64_t)_afterItemPositionForItemIdentifier:(id)identifier;
+- (void)_detectTrackGenerationSourceForTracklist:(id)tracklist detectedCompletion:(id)completion;
+- (void)addMediaIdentifiers:(id)identifiers afterItemIdentifier:(id)identifier;
+- (void)getExpectedCurrentItemWithCompletion:(id)completion;
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier completion:(id)completion;
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier playNowWithPreferredStartIndexPath:(id)path completion:(id)completion;
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier playNowWithPreferredStartIndexPath:(id)path completionEx:(id)ex;
+- (void)insertTracklist:(id)tracklist atPosition:(id)position completion:(id)completion;
+- (void)insertTracklist:(id)tracklist atPosition:(id)position completionEx:(id)ex;
+- (void)moveItemIdentifier:(id)identifier afterItemIdentifier:(id)itemIdentifier;
+- (void)moveItemIdentifier:(id)identifier beforeItemIdentifier:(id)itemIdentifier;
+- (void)removeAllItemIdentifiersAfterItemIdentifier:(id)identifier;
+- (void)removeItemIdentifier:(id)identifier;
+- (void)removeItemIdentifiers:(id)identifiers;
+- (void)replaceTracklist:(id)tracklist preferredStartIndexPath:(id)path completion:(id)completion;
+- (void)setAutoPlayEnabled:(BOOL)enabled completion:(id)completion;
 @end
 
 @implementation ICSharedListeningQueue
@@ -35,18 +35,18 @@
   return WeakRetained;
 }
 
-- (id)_tracklistForQueueProto:(id)a3
+- (id)_tracklistForQueueProto:(id)proto
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(MEMORY[0x1E69B1458]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  if (v3)
+  if (protoCopy)
   {
-    v5 = v3[6];
+    v5 = protoCopy[6];
   }
 
   else
@@ -56,7 +56,7 @@
 
   obj = v5;
   v33 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
-  v29 = v3;
+  v29 = protoCopy;
   v6 = 0;
   if (v33)
   {
@@ -89,7 +89,7 @@
         v14 = [WeakRetained _participantForParticipantID:v13];
         v15 = [(ICSharedListeningItem *)v10 initWithProtobuf:v8 identity:v14];
 
-        v16 = [v6 identifier];
+        identifier = [v6 identifier];
         if (v8)
         {
           v17 = *(v8 + 16);
@@ -109,7 +109,7 @@
         v19 = 0;
 LABEL_13:
         v20 = v19;
-        v21 = [v16 isEqual:v20];
+        v21 = [identifier isEqual:v20];
 
         if ((v21 & 1) == 0)
         {
@@ -150,10 +150,10 @@ LABEL_13:
   return v27;
 }
 
-- (void)_detectTrackGenerationSourceForTracklist:(id)a3 detectedCompletion:(id)a4
+- (void)_detectTrackGenerationSourceForTracklist:(id)tracklist detectedCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  tracklistCopy = tracklist;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -172,8 +172,8 @@ LABEL_13:
   v7[3] = &unk_1E7BF5490;
   v7[4] = &v14;
   v7[5] = &v8;
-  [v5 reverseEnumerateSectionsUsingBlock:v7];
-  v6[2](v6, v15[5], v9[5]);
+  [tracklistCopy reverseEnumerateSectionsUsingBlock:v7];
+  completionCopy[2](completionCopy, v15[5], v9[5]);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -261,27 +261,27 @@ LABEL_17:
 LABEL_18:
 }
 
-- (id)_playbackItemProtosForTracklist:(id)a3 withPreferredStartItemIndexPath:(id)a4
+- (id)_playbackItemProtosForTracklist:(id)tracklist withPreferredStartItemIndexPath:(id)path
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 msv_section];
-  v9 = [v7 msv_item];
+  tracklistCopy = tracklist;
+  pathCopy = path;
+  msv_section = [pathCopy msv_section];
+  msv_item = [pathCopy msv_item];
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v33[3] = -1;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "totalItemCount")}];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tracklistCopy, "totalItemCount")}];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __90__ICSharedListeningQueue__playbackItemProtosForTracklist_withPreferredStartItemIndexPath___block_invoke;
   v26 = &unk_1E7BF5468;
-  v11 = v6;
+  v11 = tracklistCopy;
   v27 = v11;
-  v12 = v7;
-  v31 = v8;
-  v32 = v9;
+  v12 = pathCopy;
+  v31 = msv_section;
+  v32 = msv_item;
   v28 = v12;
   v30 = v33;
   v13 = v10;
@@ -291,9 +291,9 @@ LABEL_18:
   v15 = v14;
   if ([v14 count] >= 0x7D1)
   {
-    if (v9 > 99)
+    if (msv_item > 99)
     {
-      v18 = v9 - [v14 count];
+      v18 = msv_item - [v14 count];
       if (v18 <= -1901)
       {
         v18 = -1901;
@@ -305,7 +305,7 @@ LABEL_18:
         v19 = 99;
       }
 
-      v17 = v9 - v19;
+      v17 = msv_item - v19;
       v16 = [v14 subarrayWithRange:{v17, 2000}];
       v15 = [v16 mutableCopy];
     }
@@ -322,7 +322,7 @@ LABEL_18:
     {
       v21 = [v14 count];
       *buf = 134219008;
-      v35 = self;
+      selfCopy = self;
       v36 = 2048;
       v37 = v21;
       v38 = 1024;
@@ -425,9 +425,9 @@ void __90__ICSharedListeningQueue__playbackItemProtosForTracklist_withPreferredS
   [*(a1 + 48) addObject:v9];
 }
 
-- (id)_itemForIdentifier:(id)a3 outIndexPath:(id *)a4
+- (id)_itemForIdentifier:(id)identifier outIndexPath:(id *)path
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -445,14 +445,14 @@ void __90__ICSharedListeningQueue__playbackItemProtosForTracklist_withPreferredS
   v11[1] = 3221225472;
   v11[2] = __58__ICSharedListeningQueue__itemForIdentifier_outIndexPath___block_invoke;
   v11[3] = &unk_1E7BF5418;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
   v13 = &v21;
   v14 = &v15;
   [(MSVSectionedCollection *)tracklist enumerateItemsUsingBlock:v11];
-  if (a4)
+  if (path)
   {
-    *a4 = v16[5];
+    *path = v16[5];
   }
 
   v9 = v22[5];
@@ -478,18 +478,18 @@ void __58__ICSharedListeningQueue__itemForIdentifier_outIndexPath___block_invoke
   }
 }
 
-- (int64_t)_afterItemPositionForItemIdentifier:(id)a3
+- (int64_t)_afterItemPositionForItemIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v12 = 0;
-    v6 = [(ICSharedListeningQueue *)self _itemForIdentifier:v5 outIndexPath:&v12];
+    v6 = [(ICSharedListeningQueue *)self _itemForIdentifier:identifierCopy outIndexPath:&v12];
     v7 = v12;
     if (!v7 || (v8 = v7, v9 = [(MSVSectionedCollection *)self->_tracklist globalIndexForIndexPath:v7]+ 1, v8, v9 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2512 description:{@"Could not find item to insert after: %@", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2512 description:{@"Could not find item to insert after: %@", identifierCopy}];
 
       v9 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -503,17 +503,17 @@ void __58__ICSharedListeningQueue__itemForIdentifier_outIndexPath___block_invoke
   return v9;
 }
 
-- (void)getExpectedCurrentItemWithCompletion:(id)a3
+- (void)getExpectedCurrentItemWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_liveLink);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__ICSharedListeningQueue_getExpectedCurrentItemWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF53F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [WeakRetained fetchPlaybackSyncStateWithCompletion:v7];
 }
 
@@ -584,30 +584,30 @@ LABEL_17:
   v4();
 }
 
-- (void)moveItemIdentifier:(id)a3 afterItemIdentifier:(id)a4
+- (void)moveItemIdentifier:(id)identifier afterItemIdentifier:(id)itemIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
   v48 = 0;
-  v9 = [(ICSharedListeningQueue *)self _itemForIdentifier:v7 outIndexPath:&v48];
+  v9 = [(ICSharedListeningQueue *)self _itemForIdentifier:identifierCopy outIndexPath:&v48];
   v10 = v48;
   v11 = [(MSVSectionedCollection *)self->_tracklist globalIndexForIndexPath:v10];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2405 description:{@"Could not find item to move: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2405 description:{@"Could not find item to move: %@", identifierCopy}];
   }
 
-  if (v8)
+  if (itemIdentifierCopy)
   {
     v47 = 0;
-    v12 = [(ICSharedListeningQueue *)self _itemForIdentifier:v8 outIndexPath:&v47];
+    v12 = [(ICSharedListeningQueue *)self _itemForIdentifier:itemIdentifierCopy outIndexPath:&v47];
     v13 = v47;
     v14 = [(MSVSectionedCollection *)self->_tracklist globalIndexForIndexPath:v13];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2432 description:{@"Could not find item to insert after: %@", v8}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2432 description:{@"Could not find item to insert after: %@", itemIdentifierCopy}];
     }
 
     if (v14 >= v11)
@@ -741,7 +741,7 @@ LABEL_28:
 
 LABEL_30:
   v39 = v38;
-  [(_ICLLMoveQueueItemCommand *)v39 setItemId:v7];
+  [(_ICLLMoveQueueItemCommand *)v39 setItemId:identifierCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_liveLink);
   v45[0] = MEMORY[0x1E69E9820];
@@ -846,30 +846,30 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)moveItemIdentifier:(id)a3 beforeItemIdentifier:(id)a4
+- (void)moveItemIdentifier:(id)identifier beforeItemIdentifier:(id)itemIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
   v48 = 0;
-  v9 = [(ICSharedListeningQueue *)self _itemForIdentifier:v7 outIndexPath:&v48];
+  v9 = [(ICSharedListeningQueue *)self _itemForIdentifier:identifierCopy outIndexPath:&v48];
   v10 = v48;
   v11 = [(MSVSectionedCollection *)self->_tracklist globalIndexForIndexPath:v10];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2332 description:{@"Could not find item to move: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2332 description:{@"Could not find item to move: %@", identifierCopy}];
   }
 
-  if (v8)
+  if (itemIdentifierCopy)
   {
     v47 = 0;
-    v12 = [(ICSharedListeningQueue *)self _itemForIdentifier:v8 outIndexPath:&v47];
+    v12 = [(ICSharedListeningQueue *)self _itemForIdentifier:itemIdentifierCopy outIndexPath:&v47];
     v13 = v47;
     v14 = [(MSVSectionedCollection *)self->_tracklist globalIndexForIndexPath:v13];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2359 description:{@"Could not find item to insert after: %@", v8}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2359 description:{@"Could not find item to insert after: %@", itemIdentifierCopy}];
     }
 
     v15 = v14 - (v14 > v11);
@@ -995,7 +995,7 @@ LABEL_25:
 
 LABEL_27:
   v39 = v38;
-  [(_ICLLMoveQueueItemCommand *)v39 setItemId:v7];
+  [(_ICLLMoveQueueItemCommand *)v39 setItemId:identifierCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_liveLink);
   v45[0] = MEMORY[0x1E69E9820];
@@ -1100,9 +1100,9 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)removeAllItemIdentifiersAfterItemIdentifier:(id)a3
+- (void)removeAllItemIdentifiersAfterItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -1152,7 +1152,7 @@ LABEL_21:
   v13 = *(v11 + 11);
 LABEL_7:
   v14 = v13;
-  [(_ICLLRemoveQueueItemCommand *)v14 setItemId:v4];
+  [(_ICLLRemoveQueueItemCommand *)v14 setItemId:identifierCopy];
 
   if (v6 && (v15 = v6[2]) != 0)
   {
@@ -1296,9 +1296,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)removeItemIdentifiers:(id)a3
+- (void)removeItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -1338,7 +1338,7 @@ LABEL_16:
   v11 = v10;
   [(_ICLLCommandMessage *)v11 setRemoveItem:v9];
 
-  v12 = [v4 mutableCopy];
+  v12 = [identifiersCopy mutableCopy];
   if (v6 && (v13 = v6[2]) != 0)
   {
     v14 = v13;
@@ -1502,9 +1502,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)removeItemIdentifier:(id)a3
+- (void)removeItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -1555,7 +1555,7 @@ LABEL_16:
   v13 = 0;
 LABEL_7:
   v14 = v13;
-  [(_ICLLRemoveQueueItemCommand *)v14 setItemId:v4];
+  [(_ICLLRemoveQueueItemCommand *)v14 setItemId:identifierCopy];
 
   serverQueueContext = self->_serverQueueContext;
   if (!v6)
@@ -1698,13 +1698,13 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 playNowWithPreferredStartIndexPath:(id)a5 completionEx:(id)a6
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier playNowWithPreferredStartIndexPath:(id)path completionEx:(id)ex
 {
   v71 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v55 = a4;
-  v57 = a5;
-  v56 = a6;
+  tracklistCopy = tracklist;
+  identifierCopy = identifier;
+  pathCopy = path;
+  exCopy = ex;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2020000000;
@@ -1714,31 +1714,31 @@ LABEL_16:
   v64[2] = __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWithPreferredStartIndexPath_completionEx___block_invoke;
   v64[3] = &unk_1E7BF5300;
   v64[4] = &v65;
-  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v11 detectedCompletion:v64];
-  if ([v11 totalItemCount] || (v66[3] & 1) != 0)
+  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v64];
+  if ([tracklistCopy totalItemCount] || (v66[3] & 1) != 0)
   {
-    v12 = v57;
-    if (v57)
+    v12 = pathCopy;
+    if (pathCopy)
     {
-      v13 = [v57 msv_section];
-      if (v13 >= [v11 numberOfSections])
+      msv_section = [pathCopy msv_section];
+      if (msv_section >= [tracklistCopy numberOfSections])
       {
-        v52 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v52 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2155 description:{@"preferredStartIndexPath section out of bounds (%ld/%ld)", objc_msgSend(v57, "msv_section"), objc_msgSend(v11, "numberOfSections")}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2155 description:{@"preferredStartIndexPath section out of bounds (%ld/%ld)", objc_msgSend(pathCopy, "msv_section"), objc_msgSend(tracklistCopy, "numberOfSections")}];
 
-        v12 = v57;
+        v12 = pathCopy;
       }
 
-      v14 = [v12 msv_item];
-      if (v14 >= [v11 numberOfItemsInSection:{objc_msgSend(v12, "msv_section")}])
+      msv_item = [v12 msv_item];
+      if (msv_item >= [tracklistCopy numberOfItemsInSection:{objc_msgSend(v12, "msv_section")}])
       {
-        v53 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v53 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2156 description:{@"preferredStartIndexPath item out of bounds (%ld/%ld)", objc_msgSend(v12, "msv_item"), objc_msgSend(v11, "numberOfItemsInSection:", objc_msgSend(v12, "msv_section"))}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2156 description:{@"preferredStartIndexPath item out of bounds (%ld/%ld)", objc_msgSend(v12, "msv_item"), objc_msgSend(tracklistCopy, "numberOfItemsInSection:", objc_msgSend(v12, "msv_section"))}];
 
-        v12 = v57;
+        v12 = pathCopy;
       }
 
-      v15 = [v11 itemAtIndexPath:v12];
+      v15 = [tracklistCopy itemAtIndexPath:v12];
       obj = [v15 identifier];
     }
 
@@ -1794,7 +1794,7 @@ LABEL_16:
       objc_storeStrong(v22 + 7, v20);
     }
 
-    v24 = [(ICSharedListeningQueue *)self _afterItemPositionForItemIdentifier:v55];
+    v24 = [(ICSharedListeningQueue *)self _afterItemPositionForItemIdentifier:identifierCopy];
     if (v17 && (v25 = v24, (v26 = v17[2]) != 0))
     {
       v27 = v26;
@@ -1838,7 +1838,7 @@ LABEL_28:
 
 LABEL_31:
 
-        v38 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:v11 withPreferredStartItemIndexPath:v57];
+        v38 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:tracklistCopy withPreferredStartItemIndexPath:pathCopy];
         if (v17 && (v39 = v17[2]) != 0)
         {
           v40 = v39;
@@ -1884,7 +1884,7 @@ LABEL_39:
         v62[3] = &unk_1E7BF5328;
         v47 = v17;
         v63 = v47;
-        [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v11 detectedCompletion:v62];
+        [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v62];
         WeakRetained = objc_loadWeakRetained(&self->_liveLink);
         v58[0] = MEMORY[0x1E69E9820];
         v58[1] = 3221225472;
@@ -1893,7 +1893,7 @@ LABEL_39:
         v58[4] = self;
         v49 = WeakRetained;
         v59 = v49;
-        v61 = v56;
+        v61 = exCopy;
         v50 = obj;
         v60 = v50;
         [v49 sendMessage:v47 completion:v58];
@@ -1920,11 +1920,11 @@ LABEL_47:
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v70 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v51, OS_LOG_TYPE_DEFAULT, "ILL %p: insertTracklistPlayNow completing immediately [tracklist.totalItemCount = 0, hasRadioTrackGenerationSource = NO]", buf, 0xCu);
   }
 
-  (*(v56 + 2))(v56, 0, 0);
+  (*(exCopy + 2))(exCopy, 0, 0);
 LABEL_40:
   _Block_object_dispose(&v65, 8);
 }
@@ -2237,11 +2237,11 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
   }
 }
 
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 playNowWithPreferredStartIndexPath:(id)a5 completion:(id)a6
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier playNowWithPreferredStartIndexPath:(id)path completion:(id)completion
 {
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (completionCopy)
   {
     v13 = v18;
     v18[0] = MEMORY[0x1E69E9820];
@@ -2249,7 +2249,7 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
     v18[2] = __108__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWithPreferredStartIndexPath_completion___block_invoke;
     v18[3] = &unk_1E7BF6908;
     v6 = &v19;
-    v19 = v11;
+    v19 = completionCopy;
   }
 
   else
@@ -2257,28 +2257,28 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
     v13 = 0;
   }
 
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  pathCopy = path;
+  identifierCopy = identifier;
+  tracklistCopy = tracklist;
   v17 = MEMORY[0x1B8C781E0](v13);
-  [(ICSharedListeningQueue *)self insertTracklist:v16 afterItemIdentifier:v15 playNowWithPreferredStartIndexPath:v14 completionEx:v17];
+  [(ICSharedListeningQueue *)self insertTracklist:tracklistCopy afterItemIdentifier:identifierCopy playNowWithPreferredStartIndexPath:pathCopy completionEx:v17];
 
   if (v12)
   {
   }
 }
 
-- (void)insertTracklist:(id)a3 atPosition:(id)a4 completionEx:(id)a5
+- (void)insertTracklist:(id)tracklist atPosition:(id)position completionEx:(id)ex
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v50 = a5;
-  v51 = v10;
-  if (!v10)
+  tracklistCopy = tracklist;
+  positionCopy = position;
+  exCopy = ex;
+  v51 = positionCopy;
+  if (!positionCopy)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2049 description:{@"Invalid parameter not satisfying: %@", @"position"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2049 description:{@"Invalid parameter not satisfying: %@", @"position"}];
   }
 
   v58 = 0;
@@ -2290,8 +2290,8 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
   v57[2] = __66__ICSharedListeningQueue_insertTracklist_atPosition_completionEx___block_invoke;
   v57[3] = &unk_1E7BF5300;
   v57[4] = &v58;
-  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v9 detectedCompletion:v57];
-  if ([v9 totalItemCount] || (v59[3] & 1) != 0)
+  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v57];
+  if ([tracklistCopy totalItemCount] || (v59[3] & 1) != 0)
   {
     v11 = objc_opt_new();
     v12 = v11;
@@ -2340,8 +2340,8 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
       objc_storeStrong(v17 + 1, v15);
     }
 
-    v19 = [v10 type];
-    if (v19 == 1)
+    type = [positionCopy type];
+    if (type == 1)
     {
       v20 = 2;
     }
@@ -2351,7 +2351,7 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
       v20 = 1;
     }
 
-    if (v19 == 2)
+    if (type == 2)
     {
       v21 = 3;
     }
@@ -2378,8 +2378,8 @@ void __110__ICSharedListeningQueue_insertTracklist_afterItemIdentifier_playNowWi
       v23 = 0;
     }
 
-    v25 = [v51 afterItemIdentifier];
-    v26 = [(ICSharedListeningQueue *)self _afterItemPositionForItemIdentifier:v25];
+    afterItemIdentifier = [v51 afterItemIdentifier];
+    v26 = [(ICSharedListeningQueue *)self _afterItemPositionForItemIdentifier:afterItemIdentifier];
     if (v12 && (v27 = v26, (v28 = v12[2]) != 0))
     {
       v29 = v28;
@@ -2433,7 +2433,7 @@ LABEL_50:
     v38 = 0;
 LABEL_36:
 
-    v40 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:v9 withPreferredStartItemIndexPath:0];
+    v40 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:tracklistCopy withPreferredStartItemIndexPath:0];
     if (v12 && (v41 = v12[2]) != 0)
     {
       v42 = v41;
@@ -2457,7 +2457,7 @@ LABEL_36:
     v55[3] = &unk_1E7BF5328;
     v45 = v12;
     v56 = v45;
-    [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v9 detectedCompletion:v55];
+    [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v55];
     WeakRetained = objc_loadWeakRetained(&self->_liveLink);
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
@@ -2466,7 +2466,7 @@ LABEL_36:
     v52[4] = self;
     v47 = WeakRetained;
     v53 = v47;
-    v54 = v50;
+    v54 = exCopy;
     [v47 sendMessage:v45 completion:v52];
 
     goto LABEL_41;
@@ -2476,11 +2476,11 @@ LABEL_36:
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v63 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v48, OS_LOG_TYPE_DEFAULT, "ILL %p: insertTracklist completing immediately [tracklist.totalItemCount = 0, hasRadioTrackGenerationSource = NO]", buf, 0xCu);
   }
 
-  (*(v50 + 2))(v50, 0, 0);
+  (*(exCopy + 2))(exCopy, 0, 0);
 LABEL_41:
   _Block_object_dispose(&v58, 8);
 }
@@ -2762,15 +2762,15 @@ void __66__ICSharedListeningQueue_insertTracklist_atPosition_completionEx___bloc
   }
 }
 
-- (void)insertTracklist:(id)a3 atPosition:(id)a4 completion:(id)a5
+- (void)insertTracklist:(id)tracklist atPosition:(id)position completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  tracklistCopy = tracklist;
+  positionCopy = position;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (positionCopy)
   {
-    if (v12)
+    if (completionCopy)
     {
 LABEL_3:
       v14 = v16;
@@ -2778,7 +2778,7 @@ LABEL_3:
       v16[1] = 3221225472;
       v16[2] = __64__ICSharedListeningQueue_insertTracklist_atPosition_completion___block_invoke;
       v16[3] = &unk_1E7BF6908;
-      v5 = &v17;
+      currentHandler = &v17;
       v17 = v13;
       goto LABEL_6;
     }
@@ -2786,8 +2786,8 @@ LABEL_3:
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2041 description:{@"Invalid parameter not satisfying: %@", @"position"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:2041 description:{@"Invalid parameter not satisfying: %@", @"position"}];
 
     if (v13)
     {
@@ -2798,36 +2798,36 @@ LABEL_3:
   v14 = 0;
 LABEL_6:
   v15 = MEMORY[0x1B8C781E0](v14);
-  [(ICSharedListeningQueue *)self insertTracklist:v10 atPosition:v11 completionEx:v15];
+  [(ICSharedListeningQueue *)self insertTracklist:tracklistCopy atPosition:positionCopy completionEx:v15];
 
   if (v13)
   {
   }
 }
 
-- (void)insertTracklist:(id)a3 afterItemIdentifier:(id)a4 completion:(id)a5
+- (void)insertTracklist:(id)tracklist afterItemIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [ICSharedTracklistPosition specifiedPositionAfterItemIdentifier:a4];
-  [(ICSharedListeningQueue *)self insertTracklist:v9 atPosition:v10 completion:v8];
+  completionCopy = completion;
+  tracklistCopy = tracklist;
+  v10 = [ICSharedTracklistPosition specifiedPositionAfterItemIdentifier:identifier];
+  [(ICSharedListeningQueue *)self insertTracklist:tracklistCopy atPosition:v10 completion:completionCopy];
 }
 
-- (void)addMediaIdentifiers:(id)a3 afterItemIdentifier:(id)a4
+- (void)addMediaIdentifiers:(id)identifiers afterItemIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  if ([identifiersCopy count])
   {
-    v8 = v6;
+    v8 = identifiersCopy;
     if ([v8 count] >= 0x7D1)
     {
       v9 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218496;
-        v25 = self;
+        selfCopy = self;
         v26 = 2048;
         v27 = [v8 count];
         v28 = 1024;
@@ -2877,16 +2877,16 @@ LABEL_6:
       while (v15);
     }
 
-    [(ICSharedListeningQueue *)self insertTracklist:v11 afterItemIdentifier:v7 completion:0];
+    [(ICSharedListeningQueue *)self insertTracklist:v11 afterItemIdentifier:identifierCopy completion:0];
   }
 }
 
-- (void)replaceTracklist:(id)a3 preferredStartIndexPath:(id)a4 completion:(id)a5
+- (void)replaceTracklist:(id)tracklist preferredStartIndexPath:(id)path completion:(id)completion
 {
   v68 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v50 = a4;
-  v49 = a5;
+  tracklistCopy = tracklist;
+  pathCopy = path;
+  completionCopy = completion;
   v58 = 0;
   v59 = &v58;
   v60 = 0x2020000000;
@@ -2896,31 +2896,31 @@ LABEL_6:
   v57[2] = __78__ICSharedListeningQueue_replaceTracklist_preferredStartIndexPath_completion___block_invoke;
   v57[3] = &unk_1E7BF5300;
   v57[4] = &v58;
-  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v9 detectedCompletion:v57];
-  if ([v9 totalItemCount] || (v59[3] & 1) != 0)
+  [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v57];
+  if ([tracklistCopy totalItemCount] || (v59[3] & 1) != 0)
   {
-    v10 = v50;
-    if (v50)
+    v10 = pathCopy;
+    if (pathCopy)
     {
-      v11 = [v50 msv_section];
-      if (v11 >= [v9 numberOfSections])
+      msv_section = [pathCopy msv_section];
+      if (msv_section >= [tracklistCopy numberOfSections])
       {
-        v46 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v46 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1927 description:{@"preferredStartIndexPath section out of bounds (%ld/%ld)", objc_msgSend(v50, "msv_section"), objc_msgSend(v9, "numberOfSections")}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1927 description:{@"preferredStartIndexPath section out of bounds (%ld/%ld)", objc_msgSend(pathCopy, "msv_section"), objc_msgSend(tracklistCopy, "numberOfSections")}];
 
-        v10 = v50;
+        v10 = pathCopy;
       }
 
-      v12 = [v10 msv_item];
-      if (v12 >= [v9 numberOfItemsInSection:{objc_msgSend(v10, "msv_section")}])
+      msv_item = [v10 msv_item];
+      if (msv_item >= [tracklistCopy numberOfItemsInSection:{objc_msgSend(v10, "msv_section")}])
       {
-        v47 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v47 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1928 description:{@"preferredStartIndexPath item out of bounds (%ld/%ld)", objc_msgSend(v10, "msv_item"), objc_msgSend(v9, "numberOfItemsInSection:", objc_msgSend(v10, "msv_section"))}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1928 description:{@"preferredStartIndexPath item out of bounds (%ld/%ld)", objc_msgSend(v10, "msv_item"), objc_msgSend(tracklistCopy, "numberOfItemsInSection:", objc_msgSend(v10, "msv_section"))}];
 
-        v10 = v50;
+        v10 = pathCopy;
       }
 
-      v13 = [v9 itemAtIndexPath:v10];
+      v13 = [tracklistCopy itemAtIndexPath:v10];
       obj = [v13 identifier];
     }
 
@@ -3006,7 +3006,7 @@ LABEL_6:
 
 LABEL_27:
 
-      v31 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:v9 withPreferredStartItemIndexPath:v50];
+      v31 = [(ICSharedListeningQueue *)self _playbackItemProtosForTracklist:tracklistCopy withPreferredStartItemIndexPath:pathCopy];
       if (v15 && (v32 = v15[2]) != 0)
       {
         v33 = v32;
@@ -3052,17 +3052,17 @@ LABEL_35:
       v55[3] = &unk_1E7BF5328;
       v40 = v15;
       v56 = v40;
-      [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:v9 detectedCompletion:v55];
+      [(ICSharedListeningQueue *)self _detectTrackGenerationSourceForTracklist:tracklistCopy detectedCompletion:v55];
       WeakRetained = objc_loadWeakRetained(&self->_liveLink);
       v42 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v63 = self;
+        selfCopy2 = self;
         v64 = 2114;
         v65 = obj;
         v66 = 2114;
-        v67 = v9;
+        v67 = tracklistCopy;
         _os_log_impl(&dword_1B4491000, v42, OS_LOG_TYPE_DEFAULT, "ILL %p: [replaceTracklist] preferredStartItemID=%{public}@ tracklist=%{public}@", buf, 0x20u);
       }
 
@@ -3073,7 +3073,7 @@ LABEL_35:
       v51[4] = self;
       v43 = WeakRetained;
       v52 = v43;
-      v54 = v49;
+      v54 = completionCopy;
       v44 = obj;
       v53 = v44;
       [v43 sendMessage:v40 completion:v51];
@@ -3091,11 +3091,11 @@ LABEL_45:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v63 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4491000, v45, OS_LOG_TYPE_DEFAULT, "ILL %p: replaceTracklist completing immediately [tracklist.totalItemCount = 0, hasRadioTrackGenerationSource = NO]", buf, 0xCu);
   }
 
-  (*(v49 + 2))(v49, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_38:
   _Block_object_dispose(&v58, 8);
 }
@@ -3462,10 +3462,10 @@ void __78__ICSharedListeningQueue_replaceTracklist_preferredStartIndexPath_compl
   }
 }
 
-- (void)setAutoPlayEnabled:(BOOL)a3 completion:(id)a4
+- (void)setAutoPlayEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
+  enabledCopy = enabled;
+  completionCopy = completion;
   v6 = objc_opt_new();
   v7 = v6;
   if (v6)
@@ -3516,7 +3516,7 @@ void __78__ICSharedListeningQueue_replaceTracklist_preferredStartIndexPath_compl
     v15 = 0;
   }
 
-  if (v4)
+  if (enabledCopy)
   {
     v18 = objc_opt_new();
     if (v7 && (v19 = v7[2]) != 0)
@@ -3594,10 +3594,10 @@ LABEL_25:
   v36[2] = __56__ICSharedListeningQueue_setAutoPlayEnabled_completion___block_invoke;
   v36[3] = &unk_1E7BF52D8;
   v37 = WeakRetained;
-  v38 = v5;
-  v39 = v4;
+  v38 = completionCopy;
+  v39 = enabledCopy;
   v33 = WeakRetained;
-  v34 = v5;
+  v34 = completionCopy;
   [v33 sendMessage:v7 completion:v36];
 }
 
@@ -3744,23 +3744,23 @@ void __56__ICSharedListeningQueue_setAutoPlayEnabled_completion___block_invoke_4
     return 0;
   }
 
-  v3 = [(ICSharedListeningQueue *)self playbackControlSettings];
-  v4 = v3 && (*(v3 + 52) & 4) != 0 && *(v3 + 48) == 1;
+  playbackControlSettings = [(ICSharedListeningQueue *)self playbackControlSettings];
+  v4 = playbackControlSettings && (*(playbackControlSettings + 52) & 4) != 0 && *(playbackControlSettings + 48) == 1;
 
   return v4;
 }
 
 - (BOOL)isAutoPlayAvailable
 {
-  v2 = [(ICSharedListeningQueue *)self playbackControlSettings];
-  v3 = v2;
-  if (!v2)
+  playbackControlSettings = [(ICSharedListeningQueue *)self playbackControlSettings];
+  v3 = playbackControlSettings;
+  if (!playbackControlSettings)
   {
     v4 = 0;
     goto LABEL_6;
   }
 
-  v4 = *(v2 + 16);
+  v4 = *(playbackControlSettings + 16);
   if (!v4)
   {
 LABEL_6:
@@ -3776,23 +3776,23 @@ LABEL_4:
 
 - (BOOL)hasActiveRadioStation
 {
-  v2 = [(ICSharedListeningQueue *)self playbackControlSettings];
-  v3 = v2 && (*(v2 + 52) & 4) != 0 && *(v2 + 48) == 2;
+  playbackControlSettings = [(ICSharedListeningQueue *)self playbackControlSettings];
+  v3 = playbackControlSettings && (*(playbackControlSettings + 52) & 4) != 0 && *(playbackControlSettings + 48) == 2;
 
   return v3;
 }
 
-- (id)containerForIdentifier:(id)a3
+- (id)containerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MSVSectionedCollection *)self->_tracklist allSections];
+  identifierCopy = identifier;
+  allSections = [(MSVSectionedCollection *)self->_tracklist allSections];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__ICSharedListeningQueue_containerForIdentifier___block_invoke;
   v9[3] = &unk_1E7BF52B0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 msv_firstWhere:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allSections msv_firstWhere:v9];
 
   return v7;
 }
@@ -3805,12 +3805,12 @@ uint64_t __49__ICSharedListeningQueue_containerForIdentifier___block_invoke(uint
   return v4;
 }
 
-- (ICSharedListeningQueue)initWithProtobuf:(id)a3 serverQueueContext:(id)a4 liveLink:(id)a5 playbackControlSettings:(id)a6
+- (ICSharedListeningQueue)initWithProtobuf:(id)protobuf serverQueueContext:(id)context liveLink:(id)link playbackControlSettings:(id)settings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  protobufCopy = protobuf;
+  contextCopy = context;
+  linkCopy = link;
+  settingsCopy = settings;
   v26.receiver = self;
   v26.super_class = ICSharedListeningQueue;
   v14 = [(ICSharedListeningQueue *)&v26 init];
@@ -3820,13 +3820,13 @@ uint64_t __49__ICSharedListeningQueue_containerForIdentifier___block_invoke(uint
     goto LABEL_10;
   }
 
-  objc_storeWeak(&v14->_liveLink, v12);
-  if (v10)
+  objc_storeWeak(&v14->_liveLink, linkCopy);
+  if (protobufCopy)
   {
-    objc_storeStrong(&v15->_identifier, v10[7]);
-    if ((*(v10 + 68) & 2) != 0)
+    objc_storeStrong(&v15->_identifier, protobufCopy[7]);
+    if ((*(protobufCopy + 68) & 2) != 0)
     {
-      v17 = *(v10 + 11);
+      v17 = *(protobufCopy + 11);
       v18 = v17 == 1;
       v19 = v17 == 2;
       v16 = 2;
@@ -3847,13 +3847,13 @@ uint64_t __49__ICSharedListeningQueue_containerForIdentifier___block_invoke(uint
   v16 = 0;
 LABEL_7:
   v15->_explicitContentState = v16;
-  v20 = [v11 copy];
+  v20 = [contextCopy copy];
   serverQueueContext = v15->_serverQueueContext;
   v15->_serverQueueContext = v20;
 
-  if (v10)
+  if (protobufCopy)
   {
-    v22 = *(v10 + 16);
+    v22 = *(protobufCopy + 16);
   }
 
   else
@@ -3862,11 +3862,11 @@ LABEL_7:
   }
 
   v15->_serverRevision = v22;
-  v23 = [(ICSharedListeningQueue *)v15 _tracklistForQueueProto:v10];
+  v23 = [(ICSharedListeningQueue *)v15 _tracklistForQueueProto:protobufCopy];
   tracklist = v15->_tracklist;
   v15->_tracklist = v23;
 
-  objc_storeStrong(&v15->_playbackControlSettings, a6);
+  objc_storeStrong(&v15->_playbackControlSettings, settings);
 LABEL_10:
 
   return v15;

@@ -1,12 +1,12 @@
 @interface NWRemoteConnectionActor
-- (BOOL)receiveRemoteCommand:(id)a3;
-- (NWRemoteConnectionActor)initWithDelegate:(id)a3;
+- (BOOL)receiveRemoteCommand:(id)command;
+- (NWRemoteConnectionActor)initWithDelegate:(id)delegate;
 - (NWRemoteConnectionActorDelegate)delegate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scheduleReadsOnConnection:(id)a3;
-- (void)sendData:(id)a3 forConnection:(id)a4;
-- (void)updateEndpointsForBrowser:(id)a3;
-- (void)updatePathForConnection:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scheduleReadsOnConnection:(id)connection;
+- (void)sendData:(id)data forConnection:(id)connection;
+- (void)updateEndpointsForBrowser:(id)browser;
+- (void)updatePathForConnection:(id)connection;
 @end
 
 @implementation NWRemoteConnectionActor
@@ -18,13 +18,13 @@
   return WeakRetained;
 }
 
-- (BOOL)receiveRemoteCommand:(id)a3
+- (BOOL)receiveRemoteCommand:(id)command
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  commandCopy = command;
+  if (commandCopy)
   {
-    v5 = [[NWPBCommandMessage alloc] initWithData:v4];
+    v5 = [[NWPBCommandMessage alloc] initWithData:commandCopy];
     v6 = v5;
     if (!v5)
     {
@@ -36,7 +36,7 @@
         *buf = 136446466;
         v84 = "[NWRemoteConnectionActor receiveRemoteCommand:]";
         v85 = 2114;
-        v86 = v4;
+        v86 = commandCopy;
         v8 = "%{public}s Could not parse command: %{public}@";
         v9 = v7;
         v10 = 22;
@@ -121,19 +121,19 @@ LABEL_21:
             if (v16)
             {
               v17 = v7[2].isa;
-              v18 = [(objc_class *)v17 data];
-              v19 = [NWEndpoint endpointWithProtocolBufferData:v18];
+              data = [(objc_class *)v17 data];
+              connection = [NWEndpoint endpointWithProtocolBufferData:data];
 
               v20 = v7[3].isa;
-              v21 = [(objc_class *)v20 data];
-              v22 = [NWParameters parametersWithProtocolBufferData:v21];
+              data2 = [(objc_class *)v20 data];
+              v22 = [NWParameters parametersWithProtocolBufferData:data2];
 
-              v23 = [NWConnection connectionWithEndpoint:v19 parameters:v22];
+              v23 = [NWConnection connectionWithEndpoint:connection parameters:v22];
               v24 = objc_alloc_init(NWRemoteConnectionWrapper);
               [(NWRemoteConnectionWrapper *)v24 setClientID:v16];
               [(NWRemoteConnectionWrapper *)v24 setConnection:v23];
-              v25 = [(NWRemoteConnectionActor *)self connections];
-              [v25 setObject:v24 forKeyedSubscript:v16];
+              connections = [(NWRemoteConnectionActor *)self connections];
+              [connections setObject:v24 forKeyedSubscript:v16];
 
               [v23 addObserver:self forKeyPath:@"connectionState" options:5 context:v24];
               [v23 addObserver:self forKeyPath:@"currentPath" options:5 context:v24];
@@ -234,21 +234,21 @@ LABEL_55:
 
       if (v16)
       {
-        v46 = [(NWRemoteConnectionActor *)self connections];
-        v47 = [v46 objectForKeyedSubscript:v16];
-        v19 = [v47 connection];
+        connections2 = [(NWRemoteConnectionActor *)self connections];
+        v47 = [connections2 objectForKeyedSubscript:v16];
+        connection = [v47 connection];
 
-        [v19 removeObserver:self forKeyPath:@"connectionState"];
-        [v19 removeObserver:self forKeyPath:@"currentPath"];
+        [connection removeObserver:self forKeyPath:@"connectionState"];
+        [connection removeObserver:self forKeyPath:@"currentPath"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v19 writeCloseWithCompletionHandler:&__block_literal_global_50293];
+          [connection writeCloseWithCompletionHandler:&__block_literal_global_50293];
         }
 
-        [v19 cancel];
-        v48 = [(NWRemoteConnectionActor *)self connections];
-        [v48 setObject:0 forKeyedSubscript:v16];
+        [connection cancel];
+        connections3 = [(NWRemoteConnectionActor *)self connections];
+        [connections3 setObject:0 forKeyedSubscript:v16];
 
         goto LABEL_36;
       }
@@ -315,14 +315,14 @@ LABEL_84:
 
       if (v16)
       {
-        v53 = [(NWRemoteConnectionActor *)self browsers];
-        v54 = [v53 objectForKeyedSubscript:v16];
-        v55 = [v54 browser];
+        browsers = [(NWRemoteConnectionActor *)self browsers];
+        v54 = [browsers objectForKeyedSubscript:v16];
+        browser = [v54 browser];
 
-        [v55 removeObserver:self forKeyPath:@"discoveredEndpoints"];
-        [v55 cancel];
-        v56 = [(NWRemoteConnectionActor *)self browsers];
-        [v56 setObject:0 forKeyedSubscript:v16];
+        [browser removeObserver:self forKeyPath:@"discoveredEndpoints"];
+        [browser cancel];
+        browsers2 = [(NWRemoteConnectionActor *)self browsers];
+        [browsers2 setObject:0 forKeyedSubscript:v16];
 
         goto LABEL_42;
       }
@@ -369,12 +369,12 @@ LABEL_85:
 
       if (v32)
       {
-        v61 = [(NWRemoteConnectionActor *)self connections];
-        v62 = [v61 objectForKeyedSubscript:v32];
-        v35 = [v62 connection];
+        connections4 = [(NWRemoteConnectionActor *)self connections];
+        v62 = [connections4 objectForKeyedSubscript:v32];
+        connection2 = [v62 connection];
 
-        v26 = v35 != 0;
-        if (v35)
+        v26 = connection2 != 0;
+        if (connection2)
         {
           v38 = v7[2].isa;
           if (v38)
@@ -382,7 +382,7 @@ LABEL_85:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v35 writeData:v38 completionHandler:&__block_literal_global_55];
+              [connection2 writeData:v38 completionHandler:&__block_literal_global_55];
             }
 
             else
@@ -392,7 +392,7 @@ LABEL_85:
               {
                 v82 = v38;
                 v70 = MEMORY[0x1E695DEC8];
-                v71 = v35;
+                v71 = connection2;
                 v72 = [v70 arrayWithObjects:&v82 count:1];
                 [v71 writeDatagrams:v72 completionHandler:&__block_literal_global_58_50300];
               }
@@ -416,14 +416,14 @@ LABEL_85:
         goto LABEL_94;
       }
 
-      v35 = __nwlog_obj();
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      connection2 = __nwlog_obj();
+      if (os_log_type_enabled(connection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446210;
         v84 = "[NWRemoteConnectionActor receiveRemoteCommand:]";
         v66 = "%{public}s Send data missing client ID";
 LABEL_77:
-        _os_log_impl(&dword_181A37000, v35, OS_LOG_TYPE_ERROR, v66, buf, 0xCu);
+        _os_log_impl(&dword_181A37000, connection2, OS_LOG_TYPE_ERROR, v66, buf, 0xCu);
         v26 = 0;
 LABEL_95:
 
@@ -458,23 +458,23 @@ LABEL_95:
       if (v32)
       {
         v33 = v7[2].isa;
-        v34 = [(objc_class *)v33 data];
-        v35 = [NWBrowseDescriptor descriptorWithProtocolBufferData:v34];
+        data3 = [(objc_class *)v33 data];
+        connection2 = [NWBrowseDescriptor descriptorWithProtocolBufferData:data3];
 
-        if (v35)
+        if (connection2)
         {
           v36 = v7[3].isa;
-          v37 = [(objc_class *)v36 data];
-          v38 = [NWParameters parametersWithProtocolBufferData:v37];
+          data4 = [(objc_class *)v36 data];
+          v38 = [NWParameters parametersWithProtocolBufferData:data4];
 
           if (v38)
           {
-            v39 = [[NWBrowser alloc] initWithDescriptor:v35 parameters:v38];
+            v39 = [[NWBrowser alloc] initWithDescriptor:connection2 parameters:v38];
             v40 = objc_alloc_init(NWRemoteBrowserWrapper);
             [(NWRemoteBrowserWrapper *)v40 setClientID:v32];
             [(NWRemoteBrowserWrapper *)v40 setBrowser:v39];
-            v41 = [(NWRemoteConnectionActor *)self browsers];
-            [v41 setObject:v40 forKeyedSubscript:v32];
+            browsers3 = [(NWRemoteConnectionActor *)self browsers];
+            [browsers3 setObject:v40 forKeyedSubscript:v32];
 
             [(NWBrowser *)v39 addObserver:self forKeyPath:@"discoveredEndpoints" options:5 context:v40];
             v26 = 1;
@@ -509,8 +509,8 @@ LABEL_94:
         goto LABEL_94;
       }
 
-      v35 = __nwlog_obj();
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      connection2 = __nwlog_obj();
+      if (os_log_type_enabled(connection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446210;
         v84 = "[NWRemoteConnectionActor receiveRemoteCommand:]";
@@ -666,18 +666,18 @@ void __48__NWRemoteConnectionActor_receiveRemoteCommand___block_invoke(uint64_t 
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if ([v9 isEqualToString:@"connectionState"])
+  pathCopy = path;
+  objectCopy = object;
+  if ([pathCopy isEqualToString:@"connectionState"])
   {
-    v11 = v10;
-    v12 = a6;
-    v13 = [v12 connection];
+    v11 = objectCopy;
+    contextCopy2 = context;
+    connection = [contextCopy2 connection];
 
-    if (v13 != v11)
+    if (connection != v11)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -685,11 +685,11 @@ void __48__NWRemoteConnectionActor_receiveRemoteCommand___block_invoke(uint64_t 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
 LABEL_4:
-        v15 = [v12 connection];
+        connection2 = [contextCopy2 connection];
         v21 = 136446722;
         v22 = "[NWRemoteConnectionActor observeValueForKeyPath:ofObject:change:context:]";
         v23 = 2048;
-        v24 = v15;
+        v24 = connection2;
         v25 = 2048;
         v26 = v11;
         v16 = "%{public}s Connection wrapper invalid: %p != %p";
@@ -705,19 +705,19 @@ LABEL_18:
 
     if ([v11 connectionState] == 3)
     {
-      [(NWRemoteConnectionActor *)self scheduleReadsOnConnection:v12];
+      [(NWRemoteConnectionActor *)self scheduleReadsOnConnection:contextCopy2];
     }
 
     goto LABEL_17;
   }
 
-  if ([v9 isEqualToString:@"currentPath"])
+  if ([pathCopy isEqualToString:@"currentPath"])
   {
-    v11 = v10;
-    v12 = a6;
-    v17 = [v12 connection];
+    v11 = objectCopy;
+    contextCopy2 = context;
+    connection3 = [contextCopy2 connection];
 
-    if (v17 != v11)
+    if (connection3 != v11)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -731,19 +731,19 @@ LABEL_18:
     }
 
 LABEL_17:
-    [(NWRemoteConnectionActor *)self updatePathForConnection:v12];
+    [(NWRemoteConnectionActor *)self updatePathForConnection:contextCopy2];
     goto LABEL_18;
   }
 
-  if ([v9 isEqualToString:@"discoveredEndpoints"])
+  if ([pathCopy isEqualToString:@"discoveredEndpoints"])
   {
-    v18 = v10;
-    v19 = a6;
-    v20 = [v19 browser];
+    v18 = objectCopy;
+    contextCopy3 = context;
+    browser = [contextCopy3 browser];
 
-    if (v20 == v18)
+    if (browser == v18)
     {
-      [(NWRemoteConnectionActor *)self updateEndpointsForBrowser:v19];
+      [(NWRemoteConnectionActor *)self updateEndpointsForBrowser:contextCopy3];
       goto LABEL_18;
     }
 
@@ -755,11 +755,11 @@ LABEL_17:
       goto LABEL_14;
     }
 
-    v15 = [v19 browser];
+    connection2 = [contextCopy3 browser];
     v21 = 136446722;
     v22 = "[NWRemoteConnectionActor observeValueForKeyPath:ofObject:change:context:]";
     v23 = 2048;
-    v24 = v15;
+    v24 = connection2;
     v25 = 2048;
     v26 = v18;
     v16 = "%{public}s Browser wrapper invalid: %p != %p";
@@ -769,14 +769,14 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)scheduleReadsOnConnection:(id)a3
+- (void)scheduleReadsOnConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 connection];
+  connectionCopy = connection;
+  connection = [connectionCopy connection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 connection];
+  connection2 = [connectionCopy connection];
   if (isKindOfClass)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -785,8 +785,8 @@ LABEL_19:
     v12[3] = &unk_1E6A341C0;
     v12[4] = self;
     v8 = &v13;
-    v13 = v4;
-    [v7 readDataWithMinimumLength:1 maximumLength:0x100000 completionHandler:v12];
+    v13 = connectionCopy;
+    [connection2 readDataWithMinimumLength:1 maximumLength:0x100000 completionHandler:v12];
 LABEL_5:
 
     goto LABEL_6;
@@ -797,15 +797,15 @@ LABEL_5:
 
   if (v9)
   {
-    v7 = [v4 connection];
+    connection2 = [connectionCopy connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36;
     v10[3] = &unk_1E6A341E8;
     v10[4] = self;
     v8 = &v11;
-    v11 = v4;
-    [v7 readDatagramsWithMinimumCount:1 maximumCount:1 completionHandler:v10];
+    v11 = connectionCopy;
+    [connection2 readDatagramsWithMinimumCount:1 maximumCount:1 completionHandler:v10];
     goto LABEL_5;
   }
 
@@ -904,29 +904,29 @@ void __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36(u
   }
 }
 
-- (void)updateEndpointsForBrowser:(id)a3
+- (void)updateEndpointsForBrowser:(id)browser
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  browserCopy = browser;
+  v5 = browserCopy;
+  if (browserCopy)
   {
-    v6 = [v4 browser];
-    v7 = [v6 discoveredEndpoints];
+    browser = [browserCopy browser];
+    discoveredEndpoints = [browser discoveredEndpoints];
 
     v8 = objc_alloc_init(NWPBUpdateBrowse);
-    v9 = [v5 clientID];
-    v10 = [v9 UUIDString];
+    clientID = [v5 clientID];
+    uUIDString = [clientID UUIDString];
     if (v8)
     {
-      objc_storeStrong(&v8->_clientUUID, v10);
+      objc_storeStrong(&v8->_clientUUID, uUIDString);
     }
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = v7;
+    v11 = discoveredEndpoints;
     v12 = [v11 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v12)
     {
@@ -941,7 +941,7 @@ void __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36(u
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v37 + 1) + 8 * i) createProtocolBufferObject];
+          createProtocolBufferObject = [*(*(&v37 + 1) + 8 * i) createProtocolBufferObject];
           if (v8)
           {
             discoveredEndpoints = v8->_discoveredEndpoints;
@@ -954,7 +954,7 @@ void __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36(u
               discoveredEndpoints = v8->_discoveredEndpoints;
             }
 
-            [(NSMutableArray *)discoveredEndpoints addObject:v16];
+            [(NSMutableArray *)discoveredEndpoints addObject:createProtocolBufferObject];
           }
         }
 
@@ -970,13 +970,13 @@ void __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36(u
     {
       *&v20->_has |= 1u;
       v20->_command = 6;
-      v22 = [(NWPBUpdateBrowse *)v8 data];
-      objc_storeStrong(p_isa + 2, v22);
+      data = [(NWPBUpdateBrowse *)v8 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v22 = [(NWPBUpdateBrowse *)v8 data];
+      data = [(NWPBUpdateBrowse *)v8 data];
     }
 
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -985,22 +985,22 @@ void __53__NWRemoteConnectionActor_scheduleReadsOnConnection___block_invoke_36(u
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       v24 = [v11 count];
-      v25 = [v5 clientID];
-      v26 = [v25 UUIDString];
+      clientID2 = [v5 clientID];
+      uUIDString2 = [clientID2 UUIDString];
       *buf = 136446722;
       v45 = "[NWRemoteConnectionActor updateEndpointsForBrowser:]";
       v46 = 1024;
       LODWORD(v47[0]) = v24;
       WORD2(v47[0]) = 2114;
-      *(v47 + 6) = v26;
+      *(v47 + 6) = uUIDString2;
       _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_DEBUG, "%{public}s Updating browse results (%u) for %{public}@", buf, 0x1Cu);
     }
 
-    v27 = [(NWRemoteConnectionActor *)self delegate];
-    v28 = [p_isa data];
-    v43 = v28;
+    delegate = [(NWRemoteConnectionActor *)self delegate];
+    data2 = [p_isa data];
+    v43 = data2;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
-    [v27 sendRemoteReplies:v29];
+    [delegate sendRemoteReplies:v29];
 
     goto LABEL_20;
   }
@@ -1085,13 +1085,13 @@ LABEL_36:
 LABEL_20:
 }
 
-- (void)sendData:(id)a3 forConnection:(id)a4
+- (void)sendData:(id)data forConnection:(id)connection
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (!dataCopy)
   {
     v20 = __nwlog_obj();
     *buf = 136446210;
@@ -1175,17 +1175,17 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (v7)
+  if (connectionCopy)
   {
     v9 = objc_alloc_init(NWPBSendData);
     messageData = [v8 clientID];
-    v11 = [messageData UUIDString];
-    v12 = v11;
+    uUIDString = [messageData UUIDString];
+    v12 = uUIDString;
     if (v9)
     {
-      objc_storeStrong(&v9->_clientUUID, v11);
+      objc_storeStrong(&v9->_clientUUID, uUIDString);
 
-      v13 = v6;
+      v13 = dataCopy;
       messageData = v9->_messageData;
       v9->_messageData = v13;
     }
@@ -1200,20 +1200,20 @@ LABEL_37:
     {
       *&v14->_has |= 1u;
       v14->_command = 4;
-      v16 = [(NWPBSendData *)v9 data];
-      objc_storeStrong(p_isa + 2, v16);
+      data = [(NWPBSendData *)v9 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v16 = [(NWPBSendData *)v9 data];
+      data = [(NWPBSendData *)v9 data];
     }
 
-    v17 = [(NWRemoteConnectionActor *)self delegate];
-    v18 = [p_isa data];
-    v32 = v18;
+    delegate = [(NWRemoteConnectionActor *)self delegate];
+    data2 = [p_isa data];
+    v32 = data2;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-    [v17 sendRemoteReplies:v19];
+    [delegate sendRemoteReplies:v19];
 
     goto LABEL_8;
   }
@@ -1295,58 +1295,58 @@ LABEL_37:
 LABEL_8:
 }
 
-- (void)updatePathForConnection:(id)a3
+- (void)updatePathForConnection:(id)connection
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
-    v6 = [v4 connection];
-    v7 = [v6 connectionState];
+    connection = [connectionCopy connection];
+    connectionState = [connection connectionState];
 
-    if (v7 == 2)
+    if (connectionState == 2)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v8 = gLogObj;
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      currentPath = gLogObj;
+      if (os_log_type_enabled(currentPath, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136446210;
         v40 = "[NWRemoteConnectionActor updatePathForConnection:]";
-        _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEBUG, "%{public}s Skipping update path for connection in preparing state", buf, 0xCu);
+        _os_log_impl(&dword_181A37000, currentPath, OS_LOG_TYPE_DEBUG, "%{public}s Skipping update path for connection in preparing state", buf, 0xCu);
       }
     }
 
     else
     {
-      v9 = [v5 connection];
-      v8 = [v9 currentPath];
+      connection2 = [v5 connection];
+      currentPath = [connection2 currentPath];
 
-      if (v8)
+      if (currentPath)
       {
-        v10 = [v8 createProtocolBufferObject];
-        v11 = [v5 clientID];
-        v12 = [v11 UUIDString];
-        if (v10)
+        createProtocolBufferObject = [currentPath createProtocolBufferObject];
+        clientID = [v5 clientID];
+        uUIDString = [clientID UUIDString];
+        if (createProtocolBufferObject)
         {
-          objc_storeStrong(&v10[2].isa, v12);
+          objc_storeStrong(&createProtocolBufferObject[2].isa, uUIDString);
         }
 
-        v13 = [v5 connection];
-        v14 = [v13 connectionState];
+        connection3 = [v5 connection];
+        connectionState2 = [connection3 connectionState];
 
-        if (v14 != 3 && v10)
+        if (connectionState2 != 3 && createProtocolBufferObject)
         {
-          LOBYTE(v10[8].isa) |= 1u;
-          LODWORD(v10[7].isa) = 2;
+          LOBYTE(createProtocolBufferObject[8].isa) |= 1u;
+          LODWORD(createProtocolBufferObject[7].isa) = 2;
         }
 
         v15 = objc_alloc_init(NWPBUpdatePath);
         v16 = v15;
         if (v15)
         {
-          objc_storeStrong(&v15->_responsePath, v10);
+          objc_storeStrong(&v15->_responsePath, createProtocolBufferObject);
         }
 
         v17 = objc_alloc_init(NWPBCommandMessage);
@@ -1355,13 +1355,13 @@ LABEL_8:
         {
           *&v17->_has |= 1u;
           v17->_command = 2;
-          v19 = [(NWPBUpdatePath *)v16 data];
-          objc_storeStrong(p_isa + 2, v19);
+          data = [(NWPBUpdatePath *)v16 data];
+          objc_storeStrong(p_isa + 2, data);
         }
 
         else
         {
-          v19 = [(NWPBUpdatePath *)v16 data];
+          data = [(NWPBUpdatePath *)v16 data];
         }
 
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -1369,11 +1369,11 @@ LABEL_8:
         v20 = gLogObj;
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          if (v10)
+          if (createProtocolBufferObject)
           {
-            if (v10[8].isa)
+            if (createProtocolBufferObject[8].isa)
             {
-              isa_low = SLODWORD(v10[7].isa);
+              isa_low = SLODWORD(createProtocolBufferObject[7].isa);
             }
 
             else
@@ -1382,7 +1382,7 @@ LABEL_8:
             }
 
             v23 = [NWPath createStringFromStatus:isa_low];
-            isa = v10[2].isa;
+            isa = createProtocolBufferObject[2].isa;
           }
 
           else
@@ -1401,26 +1401,26 @@ LABEL_8:
           _os_log_impl(&dword_181A37000, v20, OS_LOG_TYPE_DEBUG, "%{public}s Updating path (%{public}@) for %{public}@", buf, 0x20u);
         }
 
-        v26 = [(NWRemoteConnectionActor *)self delegate];
-        v27 = [p_isa data];
-        v38 = v27;
+        delegate = [(NWRemoteConnectionActor *)self delegate];
+        data2 = [p_isa data];
+        v38 = data2;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
-        [v26 sendRemoteReplies:v28];
+        [delegate sendRemoteReplies:v28];
       }
 
       else
       {
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
-        v10 = gLogObj;
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+        createProtocolBufferObject = gLogObj;
+        if (os_log_type_enabled(createProtocolBufferObject, OS_LOG_TYPE_DEBUG))
         {
-          v22 = [v5 connection];
+          connection4 = [v5 connection];
           *buf = 136446466;
           v40 = "[NWRemoteConnectionActor updatePathForConnection:]";
           v41 = 2114;
-          v42 = v22;
-          _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_DEBUG, "%{public}s No path for %{public}@", buf, 0x16u);
+          v42 = connection4;
+          _os_log_impl(&dword_181A37000, createProtocolBufferObject, OS_LOG_TYPE_DEBUG, "%{public}s No path for %{public}@", buf, 0x16u);
         }
       }
     }
@@ -1508,11 +1508,11 @@ LABEL_43:
 LABEL_27:
 }
 
-- (NWRemoteConnectionActor)initWithDelegate:(id)a3
+- (NWRemoteConnectionActor)initWithDelegate:(id)delegate
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     v26.receiver = self;
     v26.super_class = NWRemoteConnectionActor;
@@ -1520,7 +1520,7 @@ LABEL_27:
     if (v5)
     {
       v6 = v5;
-      objc_storeWeak(&v5->_delegate, v4);
+      objc_storeWeak(&v5->_delegate, delegateCopy);
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       connections = v6->_connections;
       v6->_connections = v7;

@@ -1,5 +1,5 @@
 @interface PXUIMapWidgetAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateMapImageView;
 - (void)_loadContainerView;
@@ -7,13 +7,13 @@
 
 @implementation PXUIMapWidgetAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXImageUIView"];
-  [v3 validateClass:@"PXUIMapWidget" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXImageUIView" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXUIMapWidget" hasInstanceMethod:@"_loadContainerView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXImageUIView"];
+  [validationsCopy validateClass:@"PXUIMapWidget" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXImageUIView" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXUIMapWidget" hasInstanceMethod:@"_loadContainerView" withFullSignature:{"v", 0}];
 }
 
 - (void)_axUpdateMapImageView

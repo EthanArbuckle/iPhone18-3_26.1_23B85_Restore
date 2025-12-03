@@ -1,14 +1,14 @@
 @interface MXUIService_ServerDelegate
-- (id)init:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)showConnectButton:(id)a3 completionHandler:(id)a4;
-- (void)showDisconnectedButton:(id)a3 completionHandler:(id)a4;
-- (void)showUndoButton:(id)a3 completionHandler:(id)a4;
+- (id)init:(id)init;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)showConnectButton:(id)button completionHandler:(id)handler;
+- (void)showDisconnectedButton:(id)button completionHandler:(id)handler;
+- (void)showUndoButton:(id)button completionHandler:(id)handler;
 @end
 
 @implementation MXUIService_ServerDelegate
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   if (listener_didReceiveConnection_withContext__onceToken != -1)
   {
@@ -22,18 +22,18 @@
   v8[2] = __72__MXUIService_ServerDelegate_listener_didReceiveConnection_withContext___block_invoke_2;
   v8[3] = &unk_279851050;
   v8[4] = self;
-  [a4 configureConnection:v8];
-  [a4 activate];
+  [connection configureConnection:v8];
+  [connection activate];
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  if (a3)
+  if (init)
   {
     v6.receiver = self;
     v6.super_class = MXUIService_ServerDelegate;
     v4 = [(MXUIService_ServerDelegate *)&v6 init];
-    v4->_uiDelegate = a3;
+    v4->_uiDelegate = init;
   }
 
   else
@@ -45,37 +45,37 @@
   return v4;
 }
 
-- (void)showConnectButton:(id)a3 completionHandler:(id)a4
+- (void)showConnectButton:(id)button completionHandler:(id)handler
 {
   uiDelegate = self->_uiDelegate;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__MXUIService_ServerDelegate_showConnectButton_completionHandler___block_invoke;
   v5[3] = &unk_279851078;
-  v5[4] = a4;
-  [(MXUIServiceDelegateProtocol *)uiDelegate showConnectButton:a3 completionHandler:v5];
+  v5[4] = handler;
+  [(MXUIServiceDelegateProtocol *)uiDelegate showConnectButton:button completionHandler:v5];
 }
 
-- (void)showUndoButton:(id)a3 completionHandler:(id)a4
+- (void)showUndoButton:(id)button completionHandler:(id)handler
 {
   uiDelegate = self->_uiDelegate;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __63__MXUIService_ServerDelegate_showUndoButton_completionHandler___block_invoke;
   v5[3] = &unk_279851078;
-  v5[4] = a4;
-  [(MXUIServiceDelegateProtocol *)uiDelegate showUndoButton:a3 completionHandler:v5];
+  v5[4] = handler;
+  [(MXUIServiceDelegateProtocol *)uiDelegate showUndoButton:button completionHandler:v5];
 }
 
-- (void)showDisconnectedButton:(id)a3 completionHandler:(id)a4
+- (void)showDisconnectedButton:(id)button completionHandler:(id)handler
 {
   uiDelegate = self->_uiDelegate;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __71__MXUIService_ServerDelegate_showDisconnectedButton_completionHandler___block_invoke;
   v5[3] = &unk_279851078;
-  v5[4] = a4;
-  [(MXUIServiceDelegateProtocol *)uiDelegate showDisconnectedButton:a3 completionHandler:v5];
+  v5[4] = handler;
+  [(MXUIServiceDelegateProtocol *)uiDelegate showDisconnectedButton:button completionHandler:v5];
 }
 
 @end

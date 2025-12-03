@@ -35,16 +35,16 @@
         }
 
         v18 = v12;
-        if ([a1 compare:v18] == -1)
+        if ([self compare:v18] == -1)
         {
           goto LABEL_63;
         }
 
 LABEL_53:
-        v19 = a1;
+        selfCopy2 = self;
         v20 = v7;
 LABEL_54:
-        v21 = [v19 isEqualToString:v20];
+        v21 = [selfCopy2 isEqualToString:v20];
 LABEL_74:
         v8 = v21;
         goto LABEL_75;
@@ -70,7 +70,7 @@ LABEL_74:
       }
 
       v22 = v13;
-      v23 = [a1 compare:v22];
+      v23 = [self compare:v22];
 
       v24 = v23 == -1;
       goto LABEL_69;
@@ -99,7 +99,7 @@ LABEL_74:
         }
 
         v18 = v15;
-        v21 = [v18 containsObject:a1];
+        v21 = [v18 containsObject:self];
         goto LABEL_74;
       case 9:
         if (v6)
@@ -122,7 +122,7 @@ LABEL_74:
         }
 
         v18 = v17;
-        v21 = [a1 containsString:v18];
+        v21 = [self containsString:v18];
         goto LABEL_74;
       case 10:
         if (v6)
@@ -145,7 +145,7 @@ LABEL_74:
         }
 
         v25 = v10;
-        v26 = [a1 containsString:v25];
+        v26 = [self containsString:v25];
         goto LABEL_66;
     }
   }
@@ -178,7 +178,7 @@ LABEL_74:
           }
 
           v18 = v9;
-          if ([a1 compare:v18] == 1)
+          if ([self compare:v18] == 1)
           {
 LABEL_63:
             v8 = 1;
@@ -210,7 +210,7 @@ LABEL_75:
         }
 
         v28 = v16;
-        v29 = [a1 compare:v28];
+        v29 = [self compare:v28];
 
         v24 = v29 == 1;
 LABEL_69:
@@ -238,7 +238,7 @@ LABEL_69:
       }
 
       v25 = v14;
-      v26 = [a1 isEqualToString:v25];
+      v26 = [self isEqualToString:v25];
 LABEL_66:
       v27 = v26;
 
@@ -273,7 +273,7 @@ LABEL_66:
       }
 
       v18 = v11;
-      v19 = a1;
+      selfCopy2 = self;
       v20 = v18;
       goto LABEL_54;
     }

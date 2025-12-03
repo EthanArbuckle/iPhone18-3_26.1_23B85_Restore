@@ -1,24 +1,24 @@
 @interface _UIActionSheetPresentationController
-- (BOOL)actionSheetCompactPresentationControllerShouldPresentInCurrentContext:(id)a3;
-- (BOOL)dimmingViewWasTapped:(id)a3 withDismissCompletion:(id)a4;
+- (BOOL)actionSheetCompactPresentationControllerShouldPresentInCurrentContext:(id)context;
+- (BOOL)dimmingViewWasTapped:(id)tapped withDismissCompletion:(id)completion;
 - (UIActionSheetPresentationControllerDelegate)actionSheetDelegate;
 - (id)_compactPresentationController;
 - (id)_exceptionStringForNilSourceViewOrBarButtonItem;
-- (id)_presentationControllerForTraitCollection:(id)a3;
-- (id)_visualStyleForTraitCollection:(id)a3;
-- (int64_t)_presentationContextForViewController:(id)a3;
-- (void)actionSheetCompactPresentationControllerDidDismiss:(id)a3;
+- (id)_presentationControllerForTraitCollection:(id)collection;
+- (id)_visualStyleForTraitCollection:(id)collection;
+- (int64_t)_presentationContextForViewController:(id)controller;
+- (void)actionSheetCompactPresentationControllerDidDismiss:(id)dismiss;
 - (void)beginPseudoAlertPresentationMode;
 - (void)dealloc;
 - (void)endPseudoAlertPresentationMode;
-- (void)setAvoidsKeyboardDisabled:(BOOL)a3;
-- (void)setDismissActionTitle:(id)a3;
-- (void)setDismissActionUsesShorterHeightWhenCompactVertically:(BOOL)a3;
+- (void)setAvoidsKeyboardDisabled:(BOOL)disabled;
+- (void)setDismissActionTitle:(id)title;
+- (void)setDismissActionUsesShorterHeightWhenCompactVertically:(BOOL)vertically;
 @end
 
 @implementation _UIActionSheetPresentationController
 
-- (id)_visualStyleForTraitCollection:(id)a3
+- (id)_visualStyleForTraitCollection:(id)collection
 {
   v3 = objc_alloc_init(_UIActionSheetPresentationControllerVisualStyleiOS);
 
@@ -27,21 +27,21 @@
 
 - (id)_compactPresentationController
 {
-  v3 = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
 
-  if (!v3)
+  if (!compactPresentationController)
   {
     v4 = [_UIActionSheetCompactPresentationController alloc];
-    v5 = [(UIPresentationController *)self presentedViewController];
-    v6 = [(UIPresentationController *)self presentingViewController];
-    v7 = [(UIPresentationController *)self traitCollection];
-    v8 = [(_UIActionSheetPresentationController *)self _visualStyleForTraitCollection:v7];
-    v9 = [(_UIActionSheetCompactPresentationController *)v4 initWithPresentedViewController:v5 presentingViewController:v6 visualStyle:v8];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    traitCollection = [(UIPresentationController *)self traitCollection];
+    v8 = [(_UIActionSheetPresentationController *)self _visualStyleForTraitCollection:traitCollection];
+    v9 = [(_UIActionSheetCompactPresentationController *)v4 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController visualStyle:v8];
 
     [(_UIActionSheetPresentationController *)self setCompactPresentationController:v9];
     [(_UIActionSheetCompactPresentationController *)v9 setActionSheetDelegate:self];
-    v10 = [(_UIActionSheetPresentationController *)self dismissActionTitle];
-    [(_UIActionSheetCompactPresentationController *)v9 setDismissActionTitle:v10];
+    dismissActionTitle = [(_UIActionSheetPresentationController *)self dismissActionTitle];
+    [(_UIActionSheetCompactPresentationController *)v9 setDismissActionTitle:dismissActionTitle];
 
     [(_UIActionSheetCompactPresentationController *)v9 setDismissActionUsesShorterHeightWhenCompactVertically:self->_dismissActionUsesShorterHeightWhenCompactVertically];
   }
@@ -49,20 +49,20 @@
   return [(_UIActionSheetPresentationController *)self compactPresentationController];
 }
 
-- (int64_t)_presentationContextForViewController:(id)a3
+- (int64_t)_presentationContextForViewController:(id)controller
 {
-  v3 = a3;
-  if ([v3 _isInPopoverPresentation])
+  controllerCopy = controller;
+  if ([controllerCopy _isInPopoverPresentation])
   {
     v4 = 1;
   }
 
-  else if ([v3 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1])
+  else if ([controllerCopy _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1])
   {
     v4 = 2;
   }
 
-  else if ([v3 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1])
+  else if ([controllerCopy _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1])
   {
     v4 = 2;
   }
@@ -75,29 +75,29 @@
   return v4;
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(_UIActionSheetPresentationController *)self _compactPresentationController];
-  v6 = [(UIPresentationController *)self presentingViewController];
-  v7 = UIActionSheetPresentationControllerToUse(v4, [(_UIActionSheetPresentationController *)self _presentationContextForViewController:v6], self, v5, [(_UIActionSheetPresentationController *)self _shouldUseCompactPresentationControllerWhenPresentedInSheet]);
+  collectionCopy = collection;
+  _compactPresentationController = [(_UIActionSheetPresentationController *)self _compactPresentationController];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  v7 = UIActionSheetPresentationControllerToUse(collectionCopy, [(_UIActionSheetPresentationController *)self _presentationContextForViewController:presentingViewController], self, _compactPresentationController, [(_UIActionSheetPresentationController *)self _shouldUseCompactPresentationControllerWhenPresentedInSheet]);
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v3 setActionSheetDelegate:0];
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController setActionSheetDelegate:0];
 
   v4.receiver = self;
   v4.super_class = _UIActionSheetPresentationController;
   [(UIPopoverPresentationController *)&v4 dealloc];
 }
 
-- (BOOL)dimmingViewWasTapped:(id)a3 withDismissCompletion:(id)a4
+- (BOOL)dimmingViewWasTapped:(id)tapped withDismissCompletion:(id)completion
 {
-  v5 = a3;
+  tappedCopy = tapped;
   if ([(UIPopoverPresentationController *)self _popoverIsDismissingBecauseDismissInteractionOccurred])
   {
     v6 = 0;
@@ -112,7 +112,7 @@
     v9[4] = self;
     v8.receiver = self;
     v8.super_class = _UIActionSheetPresentationController;
-    v6 = [(UIPopoverPresentationController *)&v8 dimmingViewWasTapped:v5 withDismissCompletion:v9];
+    v6 = [(UIPopoverPresentationController *)&v8 dimmingViewWasTapped:tappedCopy withDismissCompletion:v9];
   }
 
   return v6;
@@ -120,69 +120,69 @@
 
 - (id)_exceptionStringForNilSourceViewOrBarButtonItem
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(UIPresentationController *)self presentedViewController];
-  v8 = [v7 description];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  v8 = [presentedViewController2 description];
   v9 = [v6 stringWithFormat:@"Your application has presented a %@ (%@). In its current trait environment, the modalPresentationStyle of a %@ with this style is UIModalPresentationPopover. You must provide location information for this popover through the view controller's popoverPresentationController. You must provide either a sourceView and sourceRect or a barButtonItem.  If this information is not known when you present the view controller, you may provide it in the UIPopoverPresentationControllerDelegate method -prepareForPopoverPresentation.", v5, v8, v5];
 
   return v9;
 }
 
-- (void)setDismissActionTitle:(id)a3
+- (void)setDismissActionTitle:(id)title
 {
-  objc_storeStrong(&self->_dismissActionTitle, a3);
-  v5 = a3;
-  v6 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v6 setDismissActionTitle:v5];
+  objc_storeStrong(&self->_dismissActionTitle, title);
+  titleCopy = title;
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController setDismissActionTitle:titleCopy];
 }
 
-- (void)setDismissActionUsesShorterHeightWhenCompactVertically:(BOOL)a3
+- (void)setDismissActionUsesShorterHeightWhenCompactVertically:(BOOL)vertically
 {
-  self->_dismissActionUsesShorterHeightWhenCompactVertically = a3;
-  v3 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v3 setDismissActionUsesShorterHeightWhenCompactVertically:1];
+  self->_dismissActionUsesShorterHeightWhenCompactVertically = vertically;
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController setDismissActionUsesShorterHeightWhenCompactVertically:1];
 }
 
 - (void)beginPseudoAlertPresentationMode
 {
-  v2 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v2 beginPseudoAlertPresentationMode];
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController beginPseudoAlertPresentationMode];
 }
 
 - (void)endPseudoAlertPresentationMode
 {
-  v2 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v2 endPseudoAlertPresentationMode];
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController endPseudoAlertPresentationMode];
 }
 
-- (void)setAvoidsKeyboardDisabled:(BOOL)a3
+- (void)setAvoidsKeyboardDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_avoidsKeyboardDisabled = a3;
-  v4 = [(_UIActionSheetPresentationController *)self compactPresentationController];
-  [v4 setAvoidsKeyboardDisabled:v3];
+  disabledCopy = disabled;
+  self->_avoidsKeyboardDisabled = disabled;
+  compactPresentationController = [(_UIActionSheetPresentationController *)self compactPresentationController];
+  [compactPresentationController setAvoidsKeyboardDisabled:disabledCopy];
 }
 
-- (void)actionSheetCompactPresentationControllerDidDismiss:(id)a3
+- (void)actionSheetCompactPresentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(_UIActionSheetPresentationController *)self actionSheetDelegate];
+  actionSheetDelegate = [(_UIActionSheetPresentationController *)self actionSheetDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_UIActionSheetPresentationController *)self actionSheetDelegate];
-    [v6 actionSheetPresentationControllerDidDismissActionSheet:self];
+    actionSheetDelegate2 = [(_UIActionSheetPresentationController *)self actionSheetDelegate];
+    [actionSheetDelegate2 actionSheetPresentationControllerDidDismissActionSheet:self];
   }
 }
 
-- (BOOL)actionSheetCompactPresentationControllerShouldPresentInCurrentContext:(id)a3
+- (BOOL)actionSheetCompactPresentationControllerShouldPresentInCurrentContext:(id)context
 {
-  v4 = [a3 presentingViewController];
-  v5 = [(_UIActionSheetPresentationController *)self _presentationContextForViewController:v4];
+  presentingViewController = [context presentingViewController];
+  v5 = [(_UIActionSheetPresentationController *)self _presentationContextForViewController:presentingViewController];
 
   return v5 == 1;
 }

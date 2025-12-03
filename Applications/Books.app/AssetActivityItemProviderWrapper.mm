@@ -1,7 +1,7 @@
 @interface AssetActivityItemProviderWrapper
-- (_NSRange)pageRangeForAnnotation:(id)a3;
+- (_NSRange)pageRangeForAnnotation:(id)annotation;
 - (_TtC5Books32AssetActivityItemProviderWrapper)init;
-- (id)chapterTitleForAnnotation:(id)a3;
+- (id)chapterTitleForAnnotation:(id)annotation;
 @end
 
 @implementation AssetActivityItemProviderWrapper
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (_NSRange)pageRangeForAnnotation:(id)a3
+- (_NSRange)pageRangeForAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_100216B30(a3);
+  selfCopy = self;
+  v6 = sub_100216B30(annotation);
   v8 = v7;
   swift_unknownObjectRelease();
 
@@ -28,9 +28,9 @@
   return result;
 }
 
-- (id)chapterTitleForAnnotation:(id)a3
+- (id)chapterTitleForAnnotation:(id)annotation
 {
-  v3 = self;
+  selfCopy = self;
   v4 = swift_unknownObjectRetain();
   sub_100216DF0(v4);
   v6 = v5;

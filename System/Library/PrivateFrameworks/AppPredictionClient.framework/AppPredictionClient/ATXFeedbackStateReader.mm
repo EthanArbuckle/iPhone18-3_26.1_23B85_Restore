@@ -1,32 +1,32 @@
 @interface ATXFeedbackStateReader
-+ (id)numberKeyWithData:(id)a3;
-+ (id)stringKeyWithData:(id)a3;
-- (ATXFeedbackStateReader)initWithData:(id)a3 predictedItemKeyClass:(Class)a4;
-- (void)enumerateApps:(id)a3;
++ (id)numberKeyWithData:(id)data;
++ (id)stringKeyWithData:(id)data;
+- (ATXFeedbackStateReader)initWithData:(id)data predictedItemKeyClass:(Class)class;
+- (void)enumerateApps:(id)apps;
 @end
 
 @implementation ATXFeedbackStateReader
 
-+ (id)stringKeyWithData:(id)a3
++ (id)stringKeyWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[ATXFeedbackStateReader alloc] initWithData:v3 predictedItemKeyClass:objc_opt_class()];
+  dataCopy = data;
+  v4 = [[ATXFeedbackStateReader alloc] initWithData:dataCopy predictedItemKeyClass:objc_opt_class()];
 
   return v4;
 }
 
-+ (id)numberKeyWithData:(id)a3
++ (id)numberKeyWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[ATXFeedbackStateReader alloc] initWithData:v3 predictedItemKeyClass:objc_opt_class()];
+  dataCopy = data;
+  v4 = [[ATXFeedbackStateReader alloc] initWithData:dataCopy predictedItemKeyClass:objc_opt_class()];
 
   return v4;
 }
 
-- (ATXFeedbackStateReader)initWithData:(id)a3 predictedItemKeyClass:(Class)a4
+- (ATXFeedbackStateReader)initWithData:(id)data predictedItemKeyClass:(Class)class
 {
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [ATXFeedbackStateReader initWithData:predictedItemKeyClass:];
   }
@@ -40,8 +40,8 @@
     goto LABEL_17;
   }
 
-  v7->_predictedItemKeyClass = a4;
-  v9 = [MEMORY[0x1E69C5CE0] decompress:v6];
+  v7->_predictedItemKeyClass = class;
+  v9 = [MEMORY[0x1E69C5CE0] decompress:dataCopy];
   data = v8->_data;
   v8->_data = v9;
 
@@ -50,19 +50,19 @@
     goto LABEL_5;
   }
 
-  v12 = [(NSData *)v8->_data bytes];
-  v13 = [(NSData *)v8->_data bytes];
-  if (*v12 == 2146895485)
+  bytes = [(NSData *)v8->_data bytes];
+  bytes2 = [(NSData *)v8->_data bytes];
+  if (*bytes == 2146895485)
   {
     goto LABEL_15;
   }
 
-  if (*v12 != 466107951)
+  if (*bytes != 466107951)
   {
     v20 = __atxlog_handle_default();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [ATXFeedbackStateReader initWithData:v12 predictedItemKeyClass:v20];
+      [ATXFeedbackStateReader initWithData:bytes predictedItemKeyClass:v20];
     }
 
 LABEL_15:
@@ -71,9 +71,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (*(v12 + 20) == 828)
+  if (*(bytes + 20) == 828)
   {
-    v14 = *(v12 + 16);
+    v14 = *(bytes + 16);
     v8->_predictionCount = v14;
     if (v14 < 0)
     {
@@ -86,16 +86,16 @@ LABEL_15:
       goto LABEL_5;
     }
 
-    v15 = v13;
-    v8->_assetVersion = *(v12 + 8);
-    if ([(NSData *)v8->_data length]>= *(v12 + 24) + 32)
+    v15 = bytes2;
+    v8->_assetVersion = *(bytes + 8);
+    if ([(NSData *)v8->_data length]>= *(bytes + 24) + 32)
     {
       v16 = v15 + 32;
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v16 length:*(v12 + 24) encoding:4];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v16 length:*(bytes + 24) encoding:4];
       abGroup = v8->_abGroup;
       v8->_abGroup = v17;
 
-      v19 = (v16 + *(v12 + 24));
+      v19 = (v16 + *(bytes + 24));
 LABEL_16:
       v8->_perPredictionDataStart = v19;
 LABEL_17:
@@ -111,13 +111,13 @@ LABEL_18:
   return v11;
 }
 
-- (void)enumerateApps:(id)a3
+- (void)enumerateApps:(id)apps
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appsCopy = apps;
   data = self->_data;
   perPredictionDataStart = self->_perPredictionDataStart;
-  v6 = [(NSData *)data bytes];
+  bytes = [(NSData *)data bytes];
   v7 = [(NSData *)self->_data length];
   __dst = 0.0;
   v21 = 0;
@@ -138,20 +138,20 @@ LABEL_18:
       v13 = self->_predictedItemKeyClass;
       if (v13 == objc_opt_class())
       {
-        v15 = [*(v10 + 3480) numberWithInteger:{ATXCacheReadInteger(&perPredictionDataStart, v6 + v8)}];
+        v15 = [*(v10 + 3480) numberWithInteger:{ATXCacheReadInteger(&perPredictionDataStart, bytes + v8)}];
         goto LABEL_8;
       }
 
       v14 = 0;
 LABEL_9:
-      ATXCacheReadFloats(&perPredictionDataStart, v6 + v8, &__dst, 1);
-      ATXCacheReadFloats(&perPredictionDataStart, v6 + v8, v24, 828);
-      UnsignedInteger = ATXCacheReadUnsignedInteger(&perPredictionDataStart, v6 + v8);
-      Boolean = ATXCacheReadBoolean(&perPredictionDataStart, v6 + v8);
-      v18 = ATXCacheReadBoolean(&perPredictionDataStart, v6 + v8);
+      ATXCacheReadFloats(&perPredictionDataStart, bytes + v8, &__dst, 1);
+      ATXCacheReadFloats(&perPredictionDataStart, bytes + v8, v24, 828);
+      UnsignedInteger = ATXCacheReadUnsignedInteger(&perPredictionDataStart, bytes + v8);
+      Boolean = ATXCacheReadBoolean(&perPredictionDataStart, bytes + v8);
+      v18 = ATXCacheReadBoolean(&perPredictionDataStart, bytes + v8);
       if (v14)
       {
-        v4[2](v4, &v21, v14, UnsignedInteger, v24, Boolean, v18, __dst);
+        appsCopy[2](appsCopy, &v21, v14, UnsignedInteger, v24, Boolean, v18, __dst);
       }
 
       v19 = v21;
@@ -167,7 +167,7 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v15 = ATXCacheReadString(&perPredictionDataStart, v6 + v8);
+    v15 = ATXCacheReadString(&perPredictionDataStart, bytes + v8);
 LABEL_8:
     v14 = v15;
     goto LABEL_9;

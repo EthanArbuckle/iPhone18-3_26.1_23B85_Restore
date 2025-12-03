@@ -1,5 +1,5 @@
 @interface SUScriptSplitViewController
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (BOOL)usesSharedPlaceholder;
 - (NSNumber)splitShadowOpacity;
@@ -14,15 +14,15 @@
 - (id)scriptAttributeKeys;
 - (id)splitPosition;
 - (id)splitShadowColor;
-- (void)setFirstViewController:(id)a3;
-- (void)setMinimumPaneSize:(id)a3;
-- (void)setSecondViewController:(id)a3;
-- (void)setSplitPosition:(id)a3;
-- (void)setSplitShadowColor:(id)a3;
-- (void)setSplitShadowOpacity:(id)a3;
-- (void)setSplitShadowRadius:(id)a3;
-- (void)setSplitType:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setFirstViewController:(id)controller;
+- (void)setMinimumPaneSize:(id)size;
+- (void)setSecondViewController:(id)controller;
+- (void)setSplitPosition:(id)position;
+- (void)setSplitShadowColor:(id)color;
+- (void)setSplitShadowOpacity:(id)opacity;
+- (void)setSplitShadowRadius:(id)radius;
+- (void)setSplitType:(id)type;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUScriptSplitViewController
@@ -46,20 +46,20 @@
   v8 = 3221225472;
   v9 = __50__SUScriptSplitViewController_firstViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __50__SUScriptSplitViewController_firstViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __50__SUScriptSplitViewController_firstViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -84,15 +84,15 @@ uint64_t __50__SUScriptSplitViewController_firstViewController__block_invoke(uin
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -128,20 +128,20 @@ uint64_t __46__SUScriptSplitViewController_minimumPaneSize__block_invoke(uint64_
   v8 = 3221225472;
   v9 = __51__SUScriptSplitViewController_secondViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __51__SUScriptSplitViewController_secondViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __51__SUScriptSplitViewController_secondViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -153,9 +153,9 @@ uint64_t __51__SUScriptSplitViewController_secondViewController__block_invoke(ui
   return result;
 }
 
-- (void)setFirstViewController:(id)a3
+- (void)setFirstViewController:(id)controller
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (controller && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -176,7 +176,7 @@ uint64_t __54__SUScriptSplitViewController_setFirstViewController___block_invoke
   return [v2 setFirstViewController:v3];
 }
 
-- (void)setMinimumPaneSize:(id)a3
+- (void)setMinimumPaneSize:(id)size
 {
   if ([SUSplitViewController isValidSplitPositionValue:?])
   {
@@ -223,9 +223,9 @@ LABEL_5:
   return [v2 setMinimumPaneSize:v6];
 }
 
-- (void)setSecondViewController:(id)a3
+- (void)setSecondViewController:(id)controller
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (controller && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -246,7 +246,7 @@ uint64_t __55__SUScriptSplitViewController_setSecondViewController___block_invok
   return [v2 setSecondViewController:v3];
 }
 
-- (void)setSplitPosition:(id)a3
+- (void)setSplitPosition:(id)position
 {
   if ([SUSplitViewController isValidSplitPositionValue:?])
   {
@@ -269,18 +269,18 @@ uint64_t __48__SUScriptSplitViewController_setSplitPosition___block_invoke(uint6
   return [v2 setSplitPositionAndLayoutTypeFromValue:v3];
 }
 
-- (void)setSplitShadowColor:(id)a3
+- (void)setSplitShadowColor:(id)color
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    color = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SUScriptColor alloc] initWithStyleString:a3];
+    colorCopy = [[SUScriptColor alloc] initWithStyleString:color];
   }
 
   else
@@ -291,11 +291,11 @@ uint64_t __48__SUScriptSplitViewController_setSplitPosition___block_invoke(uint6
       goto LABEL_10;
     }
 
-    v4 = a3;
+    colorCopy = color;
   }
 
-  v5 = v4;
-  if (v4)
+  v5 = colorCopy;
+  if (colorCopy)
   {
     WebThreadRunOnMainThread();
 
@@ -316,7 +316,7 @@ void __51__SUScriptSplitViewController_setSplitShadowColor___block_invoke(uint64
   [v2 setSplitShadow:v3];
 }
 
-- (void)setSplitShadowOpacity:(id)a3
+- (void)setSplitShadowOpacity:(id)opacity
 {
   if (objc_opt_respondsToSelector())
   {
@@ -340,7 +340,7 @@ void __53__SUScriptSplitViewController_setSplitShadowOpacity___block_invoke(uint
   [v2 setSplitShadow:v4];
 }
 
-- (void)setSplitShadowRadius:(id)a3
+- (void)setSplitShadowRadius:(id)radius
 {
   if (objc_opt_respondsToSelector())
   {
@@ -364,7 +364,7 @@ void __52__SUScriptSplitViewController_setSplitShadowRadius___block_invoke(uint6
   [v2 setSplitShadow:v4];
 }
 
-- (void)setSplitType:(id)a3
+- (void)setSplitType:(id)type
 {
   if ([SUSplitViewController isValidSplitTypeString:?])
   {
@@ -387,9 +387,9 @@ uint64_t __44__SUScriptSplitViewController_setSplitType___block_invoke(uint64_t 
   return [v2 setSplitTypeString:v3];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (title && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -431,15 +431,15 @@ uint64_t __56__SUScriptSplitViewController_setUsesSharedPlaceholder___block_invo
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -464,15 +464,15 @@ id __44__SUScriptSplitViewController_splitPosition__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -504,15 +504,15 @@ uint64_t __47__SUScriptSplitViewController_splitShadowColor__block_invoke(uint64
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -550,15 +550,15 @@ uint64_t __49__SUScriptSplitViewController_splitShadowOpacity__block_invoke(uint
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -596,15 +596,15 @@ uint64_t __48__SUScriptSplitViewController_splitShadowRadius__block_invoke(uint6
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -629,15 +629,15 @@ id __40__SUScriptSplitViewController_splitType__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -670,11 +670,11 @@ uint64_t __52__SUScriptSplitViewController_usesSharedPlaceholder__block_invoke(u
 
 - (id)_splitViewController
 {
-  v2 = [(SUScriptViewController *)self nativeViewController];
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return nativeViewController;
   }
 
   else
@@ -683,14 +683,14 @@ uint64_t __52__SUScriptSplitViewController_usesSharedPlaceholder__block_invoke(u
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_28 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSplitViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -700,14 +700,14 @@ uint64_t __52__SUScriptSplitViewController_usesSharedPlaceholder__block_invoke(u
 {
   v4.receiver = self;
   v4.super_class = SUScriptSplitViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_28, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_28, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_28 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"firstViewController", @"minimumPaneSize", @"minimumPaneSize", @"secondViewController", @"secondViewController", @"splitPosition", @"splitPosition", @"splitShadowColor", @"splitShadowColor", @"splitShadowOpacity", @"splitShadowOpacity", @"splitShadowRadius", @"splitShadowRadius", @"splitType", @"splitType", @"title", @"title", @"usesSharedPlaceholder", @"usesSharedPlaceholder", 0}];
   }

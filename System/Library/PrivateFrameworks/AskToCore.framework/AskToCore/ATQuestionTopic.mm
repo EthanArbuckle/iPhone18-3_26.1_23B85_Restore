@@ -1,12 +1,12 @@
 @interface ATQuestionTopic
 - (ATQuestionTopic)init;
-- (ATQuestionTopic)initWithRawValue:(id)a3;
+- (ATQuestionTopic)initWithRawValue:(id)value;
 - (int64_t)hash;
 @end
 
 @implementation ATQuestionTopic
 
-- (ATQuestionTopic)initWithRawValue:(id)a3
+- (ATQuestionTopic)initWithRawValue:(id)value
 {
   ObjectType = swift_getObjectType();
   v5 = sub_2410DF0C0();
@@ -22,7 +22,7 @@
 {
   v2 = *(self + OBJC_IVAR___ATQuestionTopic_rawValue);
   v3 = *(self + OBJC_IVAR___ATQuestionTopic_rawValue + 8);
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x245CD9690](v2, v3);
 
   return v5;

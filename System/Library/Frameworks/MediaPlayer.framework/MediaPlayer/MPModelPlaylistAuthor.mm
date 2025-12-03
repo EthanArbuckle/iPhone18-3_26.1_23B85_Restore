@@ -10,32 +10,32 @@
 
 + (void)__MPModelPropertyPlaylistAuthorPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistAuthor.m" lineNumber:51 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistAuthor.m" lineNumber:51 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorPosition"];
 }
 
 + (void)__MPModelPropertyPlaylistAuthorIsPendingApproval__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistAuthor.m" lineNumber:50 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorIsPendingApproval"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistAuthor.m" lineNumber:50 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorIsPendingApproval"];
 }
 
 + (void)__MPModelPropertyPlaylistAuthorRole__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistAuthor.m" lineNumber:49 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorRole"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistAuthor.m" lineNumber:49 description:@"Translator was missing mapping for MPModelPropertyPlaylistAuthorRole"];
 }
 
 + (void)__MPModelRelationshipPlaylistAuthorSocialProfile__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistAuthor.m" lineNumber:48 description:@"Translator was missing mapping for MPModelRelationshipPlaylistAuthorSocialProfile"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistAuthor.m" lineNumber:48 description:@"Translator was missing mapping for MPModelRelationshipPlaylistAuthorSocialProfile"];
 }
 
 + (void)__MPModelRelationshipPlaylistAuthorPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistAuthor.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipPlaylistAuthorPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistAuthor.m" lineNumber:47 description:@"Translator was missing mapping for MPModelRelationshipPlaylistAuthorPlaylist"];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface CALNDefaultAppURLHandler
-- (CALNDefaultAppURLHandler)initWithFallbackHandler:(id)a3;
-- (void)openURL:(id)a3 response:(id)a4;
+- (CALNDefaultAppURLHandler)initWithFallbackHandler:(id)handler;
+- (void)openURL:(id)l response:(id)response;
 @end
 
 @implementation CALNDefaultAppURLHandler
 
-- (CALNDefaultAppURLHandler)initWithFallbackHandler:(id)a3
+- (CALNDefaultAppURLHandler)initWithFallbackHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8.receiver = self;
   v8.super_class = CALNDefaultAppURLHandler;
   v5 = [(CALNDefaultAppURLHandler *)&v8 init];
   fallbackHandler = v5->_fallbackHandler;
-  v5->_fallbackHandler = v4;
+  v5->_fallbackHandler = handlerCopy;
 
   return v5;
 }
 
-- (void)openURL:(id)a3 response:(id)a4
+- (void)openURL:(id)l response:(id)response
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  lCopy = l;
+  responseCopy = response;
+  v8 = responseCopy;
+  if (!responseCopy)
   {
     goto LABEL_8;
   }
 
-  v9 = [v7 actionIdentifier];
-  if (([v9 isEqualToString:@"CALNNotificationDirectionsAction"] & 1) == 0)
+  actionIdentifier = [responseCopy actionIdentifier];
+  if (([actionIdentifier isEqualToString:@"CALNNotificationDirectionsAction"] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CD4FB0] canHandleURL:v6];
+  v10 = [MEMORY[0x277CD4FB0] canHandleURL:lCopy];
 
   if (!v10)
   {
 LABEL_8:
-    [(CALNURLHandler *)self->_fallbackHandler openURL:v6 response:v8];
+    [(CALNURLHandler *)self->_fallbackHandler openURL:lCopy response:v8];
     goto LABEL_9;
   }
 
@@ -48,7 +48,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = lCopy;
     _os_log_impl(&dword_242909000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to open url: %@ with default app", buf, 0xCu);
   }
 
@@ -57,7 +57,7 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __45__CALNDefaultAppURLHandler_openURL_response___block_invoke;
   v14[3] = &unk_278D6F9F0;
-  v15 = v6;
+  v15 = lCopy;
   [v12 _openDefaultNavigationWithURL:v15 fromScene:0 completionHandler:v14];
 
 LABEL_9:

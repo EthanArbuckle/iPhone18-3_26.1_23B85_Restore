@@ -1,27 +1,27 @@
 @interface HFTriggerNaturalLanguageDetailOptions
-+ (id)detailOptionsWithOptions:(id)a3;
-- (void)_copyFromOptions:(id)a3;
++ (id)detailOptionsWithOptions:(id)options;
+- (void)_copyFromOptions:(id)options;
 @end
 
 @implementation HFTriggerNaturalLanguageDetailOptions
 
-+ (id)detailOptionsWithOptions:(id)a3
++ (id)detailOptionsWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v3 home];
-  v6 = [v4 initWithHome:v5 nameType:{objc_msgSend(v3, "nameType")}];
+  home = [optionsCopy home];
+  v6 = [v4 initWithHome:home nameType:{objc_msgSend(optionsCopy, "nameType")}];
 
-  [v6 _copyFromOptions:v3];
+  [v6 _copyFromOptions:optionsCopy];
 
   return v6;
 }
 
-- (void)_copyFromOptions:(id)a3
+- (void)_copyFromOptions:(id)options
 {
   v3.receiver = self;
   v3.super_class = HFTriggerNaturalLanguageDetailOptions;
-  [(HFTriggerNaturalLanguageOptions *)&v3 _copyFromOptions:a3];
+  [(HFTriggerNaturalLanguageOptions *)&v3 _copyFromOptions:options];
 }
 
 @end

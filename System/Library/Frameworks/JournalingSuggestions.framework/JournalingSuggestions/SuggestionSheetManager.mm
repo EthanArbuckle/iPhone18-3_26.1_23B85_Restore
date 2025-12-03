@@ -1,31 +1,31 @@
 @interface SuggestionSheetManager
-- (void)suggestionSheetController:(id)a3 didTransitionTo:(unint64_t)a4;
-- (void)suggestionSheetController:(id)a3 shouldPerformTask:(unint64_t)a4 forSuggestion:(id)a5;
-- (void)suggestionSheetControllerDidCancel:(id)a3;
+- (void)suggestionSheetController:(id)controller didTransitionTo:(unint64_t)to;
+- (void)suggestionSheetController:(id)controller shouldPerformTask:(unint64_t)task forSuggestion:(id)suggestion;
+- (void)suggestionSheetControllerDidCancel:(id)cancel;
 @end
 
 @implementation SuggestionSheetManager
 
-- (void)suggestionSheetController:(id)a3 didTransitionTo:(unint64_t)a4
+- (void)suggestionSheetController:(id)controller didTransitionTo:(unint64_t)to
 {
-  v6 = a3;
-  v7 = self;
-  specialized SuggestionSheetManager.suggestionSheetController(_:didTransitionTo:)(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized SuggestionSheetManager.suggestionSheetController(_:didTransitionTo:)(to);
 }
 
-- (void)suggestionSheetControllerDidCancel:(id)a3
+- (void)suggestionSheetControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   specialized SuggestionSheetManager.suggestionSheetControllerDidCancel(_:)();
 }
 
-- (void)suggestionSheetController:(id)a3 shouldPerformTask:(unint64_t)a4 forSuggestion:(id)a5
+- (void)suggestionSheetController:(id)controller shouldPerformTask:(unint64_t)task forSuggestion:(id)suggestion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  SuggestionSheetManager.suggestionSheetController(_:shouldPerform:for:)(v8, a4, v9);
+  controllerCopy = controller;
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  SuggestionSheetManager.suggestionSheetController(_:shouldPerform:for:)(controllerCopy, task, suggestionCopy);
 }
 
 @end

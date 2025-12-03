@@ -1,13 +1,13 @@
 @interface OKWidgetContentColorControlsFilter
-+ (id)filterWithInputSaturation:(id)a3 inputBrightness:(id)a4 inputContrast:(id)a5;
++ (id)filterWithInputSaturation:(id)saturation inputBrightness:(id)brightness inputContrast:(id)contrast;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputBrightness:(id)a3;
-- (void)setSettingInputContrast:(id)a3;
-- (void)setSettingInputSaturation:(id)a3;
+- (void)setSettingInputBrightness:(id)brightness;
+- (void)setSettingInputContrast:(id)contrast;
+- (void)setSettingInputSaturation:(id)saturation;
 @end
 
 @implementation OKWidgetContentColorControlsFilter
@@ -43,7 +43,7 @@
 + (id)supportedSettings
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10[0] = @"inputSaturation";
   v8 = @"type";
   v9 = &unk_287AF0260;
@@ -56,11 +56,11 @@
   v4 = @"type";
   v5 = &unk_287AF0260;
   v11[2] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v5 forKeys:&v4 count:1];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, v10, 3)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, v10, 3)}];
+  return dictionary;
 }
 
-- (void)setSettingInputSaturation:(id)a3
+- (void)setSettingInputSaturation:(id)saturation
 {
   inputSaturation = self->_inputSaturation;
   if (inputSaturation)
@@ -69,10 +69,10 @@
     self->_inputSaturation = 0;
   }
 
-  self->_inputSaturation = a3;
+  self->_inputSaturation = saturation;
 }
 
-- (void)setSettingInputBrightness:(id)a3
+- (void)setSettingInputBrightness:(id)brightness
 {
   inputBrightness = self->_inputBrightness;
   if (inputBrightness)
@@ -81,10 +81,10 @@
     self->_inputBrightness = 0;
   }
 
-  self->_inputBrightness = a3;
+  self->_inputBrightness = brightness;
 }
 
-- (void)setSettingInputContrast:(id)a3
+- (void)setSettingInputContrast:(id)contrast
 {
   inputContrast = self->_inputContrast;
   if (inputContrast)
@@ -93,7 +93,7 @@
     self->_inputContrast = 0;
   }
 
-  self->_inputContrast = a3;
+  self->_inputContrast = contrast;
 }
 
 - (id)inputKeys
@@ -109,27 +109,27 @@
 {
   v3 = MEMORY[0x277CBF750];
   v4 = *MEMORY[0x277CBFAF0];
-  v5 = [(OKWidgetBasicFilter *)self inputImage];
-  v6 = [v3 filterWithName:@"CIColorControls" keysAndValues:{v4, v5, *MEMORY[0x277CBFAC0], self->_inputBrightness, *MEMORY[0x277CBFB10], self->_inputSaturation, *MEMORY[0x277CBFAD8], self->_inputContrast, 0}];
+  inputImage = [(OKWidgetBasicFilter *)self inputImage];
+  v6 = [v3 filterWithName:@"CIColorControls" keysAndValues:{v4, inputImage, *MEMORY[0x277CBFAC0], self->_inputBrightness, *MEMORY[0x277CBFB10], self->_inputSaturation, *MEMORY[0x277CBFAD8], self->_inputContrast, 0}];
   v7 = *MEMORY[0x277CBFB50];
 
   return [v6 valueForKey:v7];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorControlsFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorControlsFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithInputSaturation:(id)a3 inputBrightness:(id)a4 inputContrast:(id)a5
++ (id)filterWithInputSaturation:(id)saturation inputBrightness:(id)brightness inputContrast:(id)contrast
 {
   v8 = objc_alloc_init(OKWidgetContentColorControlsFilter);
-  [(OKWidgetContentColorControlsFilter *)v8 setInputSaturation:a3];
-  [(OKWidgetContentColorControlsFilter *)v8 setInputBrightness:a4];
-  [(OKWidgetContentColorControlsFilter *)v8 setInputContrast:a5];
+  [(OKWidgetContentColorControlsFilter *)v8 setInputSaturation:saturation];
+  [(OKWidgetContentColorControlsFilter *)v8 setInputBrightness:brightness];
+  [(OKWidgetContentColorControlsFilter *)v8 setInputContrast:contrast];
 
   return v8;
 }

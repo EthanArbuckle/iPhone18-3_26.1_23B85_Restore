@@ -2,12 +2,12 @@
 + (void)initialize;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (NWCDailyForecastViewBuildable)viewBuilder;
-- (id)_setupViewBuilderForDevice:(id)a3;
-- (id)initFullColorImageViewWithDevice:(id)a3;
-- (void)_addDailyForecastViewsToStackView:(id)a3;
+- (id)_setupViewBuilderForDevice:(id)device;
+- (id)initFullColorImageViewWithDevice:(id)device;
+- (void)_addDailyForecastViewsToStackView:(id)view;
 - (void)_applyConstraints;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -28,9 +28,9 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_addDailyForecastViewsToStackView:(id)a3
+- (void)_addDailyForecastViewsToStackView:(id)view
 {
-  v29 = [(NWCSevenDayForecastView *)self viewBuilder];
+  viewBuilder = [(NWCSevenDayForecastView *)self viewBuilder];
   v4 = +[NWCSevenDayForecastView maximumDailyConditionCount];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
   v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
@@ -38,15 +38,15 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   v7 = objc_opt_new();
   [(NWCSevenDayForecastView *)self setDailyForecastRangeView:v7];
 
-  v8 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v9 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-  [v8 addArrangedSubview:v9];
+  horizontalStackView = [(NWCSevenDayForecastView *)self horizontalStackView];
+  dailyForecastRangeView = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+  [horizontalStackView addArrangedSubview:dailyForecastRangeView];
 
-  v10 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-  v11 = [v10 widthAnchor];
-  v12 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v13 = [v12 widthAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 multiplier:0.1];
+  dailyForecastRangeView2 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+  widthAnchor = [dailyForecastRangeView2 widthAnchor];
+  horizontalStackView2 = [(NWCSevenDayForecastView *)self horizontalStackView];
+  widthAnchor2 = [horizontalStackView2 widthAnchor];
+  v14 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.1];
   v15 = v5;
   [v5 addObject:v14];
 
@@ -54,25 +54,25 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   {
     v16 = objc_opt_new();
     [v6 addObject:v16];
-    v17 = [(NWCSevenDayForecastView *)self horizontalStackView];
-    [v17 addArrangedSubview:v16];
+    horizontalStackView3 = [(NWCSevenDayForecastView *)self horizontalStackView];
+    [horizontalStackView3 addArrangedSubview:v16];
 
-    v18 = [v29 createDailyForecastView];
-    [v28 addObject:v18];
-    v19 = [(NWCSevenDayForecastView *)self horizontalStackView];
-    [v19 addArrangedSubview:v18];
+    createDailyForecastView = [viewBuilder createDailyForecastView];
+    [v28 addObject:createDailyForecastView];
+    horizontalStackView4 = [(NWCSevenDayForecastView *)self horizontalStackView];
+    [horizontalStackView4 addArrangedSubview:createDailyForecastView];
 
-    v20 = [v18 widthAnchor];
-    v21 = [(NWCSevenDayForecastView *)self horizontalStackView];
-    v22 = [v21 widthAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 multiplier:0.121];
+    widthAnchor3 = [createDailyForecastView widthAnchor];
+    horizontalStackView5 = [(NWCSevenDayForecastView *)self horizontalStackView];
+    widthAnchor4 = [horizontalStackView5 widthAnchor];
+    v23 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.121];
     [v15 addObject:v23];
   }
 
   v24 = objc_opt_new();
   [v6 addObject:v24];
-  v25 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  [v25 addArrangedSubview:v24];
+  horizontalStackView6 = [(NWCSevenDayForecastView *)self horizontalStackView];
+  [horizontalStackView6 addArrangedSubview:v24];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v15];
   v26 = [v28 copy];
@@ -85,25 +85,25 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
 - (void)_applyConstraints
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v20 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v19 = [v20 topAnchor];
-  v18 = [(NWCSevenDayForecastView *)self topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  horizontalStackView = [(NWCSevenDayForecastView *)self horizontalStackView];
+  topAnchor = [horizontalStackView topAnchor];
+  topAnchor2 = [(NWCSevenDayForecastView *)self topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[0] = v17;
-  v15 = [(NWCSevenDayForecastView *)self bottomAnchor];
-  v16 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v14 = [v16 bottomAnchor];
-  v3 = [v15 constraintEqualToAnchor:v14];
+  bottomAnchor = [(NWCSevenDayForecastView *)self bottomAnchor];
+  horizontalStackView2 = [(NWCSevenDayForecastView *)self horizontalStackView];
+  bottomAnchor2 = [horizontalStackView2 bottomAnchor];
+  v3 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[1] = v3;
-  v4 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(NWCSevenDayForecastView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  horizontalStackView3 = [(NWCSevenDayForecastView *)self horizontalStackView];
+  leadingAnchor = [horizontalStackView3 leadingAnchor];
+  leadingAnchor2 = [(NWCSevenDayForecastView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[2] = v7;
-  v8 = [(NWCSevenDayForecastView *)self trailingAnchor];
-  v9 = [(NWCSevenDayForecastView *)self horizontalStackView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(NWCSevenDayForecastView *)self trailingAnchor];
+  horizontalStackView4 = [(NWCSevenDayForecastView *)self horizontalStackView];
+  trailingAnchor2 = [horizontalStackView4 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
@@ -111,14 +111,14 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = [(NWCSevenDayForecastView *)self initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     [(UIStackView *)v8 setAxis:0];
     [(UIStackView *)v8 setDistribution:3];
@@ -134,10 +134,10 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   return v7;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v7 = [v5 objectForKeyedSubscript:@"NWCDailyForecastMetadata_Simple"];
+  metadata = [provider metadata];
+  v7 = [metadata objectForKeyedSubscript:@"NWCDailyForecastMetadata_Simple"];
 
   v6 = v7;
   if (v7)
@@ -147,63 +147,63 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(NWCSevenDayForecastView *)self filterProvider];
-  v6 = [v5 colorForView:self accented:0];
-  v7 = [(NWCSevenDayForecastView *)self device];
-  v8 = [v7 supportsCapability:GossamerCapability_0];
+  filterProvider = [(NWCSevenDayForecastView *)self filterProvider];
+  v6 = [filterProvider colorForView:self accented:0];
+  device = [(NWCSevenDayForecastView *)self device];
+  v8 = [device supportsCapability:GossamerCapability_0];
 
   if (v8)
   {
-    v9 = [v5 filtersForView:self style:2 fraction:a3];
-    v10 = [v5 filtersForView:self style:0 fraction:a3];
-    v11 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-    v12 = [v11 layer];
-    [v12 setFilters:v10];
+    v9 = [filterProvider filtersForView:self style:2 fraction:fraction];
+    v10 = [filterProvider filtersForView:self style:0 fraction:fraction];
+    dailyForecastRangeView = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+    layer = [dailyForecastRangeView layer];
+    [layer setFilters:v10];
 
-    v13 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    dailyForecastViews = [(NWCSevenDayForecastView *)self dailyForecastViews];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_invoke;
     v33[3] = &unk_279962238;
-    v37 = a3;
+    fractionCopy = fraction;
     v34 = v9;
     v35 = v10;
     v36 = v6;
     v14 = v10;
     v15 = v9;
-    [v13 enumerateObjectsUsingBlock:v33];
+    [dailyForecastViews enumerateObjectsUsingBlock:v33];
   }
 
   else
   {
-    v16 = [v5 colorForView:self accented:1];
-    v17 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    v16 = [filterProvider colorForView:self accented:1];
+    dailyForecastViews2 = [(NWCSevenDayForecastView *)self dailyForecastViews];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_invoke_2;
     v30[3] = &unk_279962260;
     v31 = v16;
-    v32 = a3;
+    fractionCopy2 = fraction;
     v15 = v16;
-    [v17 enumerateObjectsUsingBlock:v30];
+    [dailyForecastViews2 enumerateObjectsUsingBlock:v30];
 
-    v18 = [(NWCSevenDayForecastView *)self filterProvider];
-    v19 = [v18 filtersForView:self style:0 fraction:a3];
+    filterProvider2 = [(NWCSevenDayForecastView *)self filterProvider];
+    v19 = [filterProvider2 filtersForView:self style:0 fraction:fraction];
 
-    v20 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-    v21 = [v20 layer];
-    [v21 setFilters:v19];
+    dailyForecastRangeView2 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+    layer2 = [dailyForecastRangeView2 layer];
+    [layer2 setFilters:v19];
 
-    v22 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    dailyForecastViews3 = [(NWCSevenDayForecastView *)self dailyForecastViews];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_invoke_3;
     v28[3] = &unk_279962288;
     v29 = v19;
     v23 = v19;
-    [v22 enumerateObjectsUsingBlock:v28];
+    [dailyForecastViews3 enumerateObjectsUsingBlock:v28];
 
     v14 = v31;
   }
@@ -212,8 +212,8 @@ uint64_t __37__NWCSevenDayForecastView_initialize__block_invoke()
   v25 = +[NWCForecastSeparatorView defaultColor];
   v26 = NWMInterpolateBetweenColors();
 
-  v27 = [(NWCSevenDayForecastView *)self separatorViews];
-  [v27 makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v26];
+  separatorViews = [(NWCSevenDayForecastView *)self separatorViews];
+  [separatorViews makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v26];
 }
 
 void __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_invoke(double *a1, void *a2)
@@ -228,20 +228,20 @@ void __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_in
 
 - (void)updateMonochromeColor
 {
-  v3 = [(NWCSevenDayForecastView *)self filterProvider];
-  v4 = [v3 colorForView:self accented:0];
-  v5 = [(NWCSevenDayForecastView *)self device];
-  v6 = [v5 supportsCapability:GossamerCapability_0];
+  filterProvider = [(NWCSevenDayForecastView *)self filterProvider];
+  v4 = [filterProvider colorForView:self accented:0];
+  device = [(NWCSevenDayForecastView *)self device];
+  v6 = [device supportsCapability:GossamerCapability_0];
 
   if (v6)
   {
-    v7 = [v3 filtersForView:self style:2];
-    v8 = [v3 filtersForView:self style:0];
-    v9 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-    v10 = [v9 layer];
-    [v10 setFilters:v8];
+    v7 = [filterProvider filtersForView:self style:2];
+    v8 = [filterProvider filtersForView:self style:0];
+    dailyForecastRangeView = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+    layer = [dailyForecastRangeView layer];
+    [layer setFilters:v8];
 
-    v11 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    dailyForecastViews = [(NWCSevenDayForecastView *)self dailyForecastViews];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke;
@@ -251,45 +251,45 @@ void __62__NWCSevenDayForecastView_transitionToMonochromeWithFraction___block_in
     v30 = v4;
     v12 = v8;
     v13 = v7;
-    [v11 enumerateObjectsUsingBlock:v27];
+    [dailyForecastViews enumerateObjectsUsingBlock:v27];
   }
 
   else
   {
-    v14 = [v3 colorForView:self accented:1];
-    v15 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    v14 = [filterProvider colorForView:self accented:1];
+    dailyForecastViews2 = [(NWCSevenDayForecastView *)self dailyForecastViews];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke_2;
     v25[3] = &unk_279962288;
     v13 = v14;
     v26 = v13;
-    [v15 enumerateObjectsUsingBlock:v25];
+    [dailyForecastViews2 enumerateObjectsUsingBlock:v25];
 
-    v16 = [(NWCSevenDayForecastView *)self filterProvider];
-    v17 = [v16 filtersForView:self style:0 fraction:1.0];
+    filterProvider2 = [(NWCSevenDayForecastView *)self filterProvider];
+    v17 = [filterProvider2 filtersForView:self style:0 fraction:1.0];
 
     if ([v17 count])
     {
-      v18 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-      v19 = [v18 layer];
-      [v19 setFilters:v17];
+      dailyForecastRangeView2 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+      layer2 = [dailyForecastRangeView2 layer];
+      [layer2 setFilters:v17];
 
-      v20 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+      dailyForecastViews3 = [(NWCSevenDayForecastView *)self dailyForecastViews];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke_3;
       v23[3] = &unk_279962288;
       v24 = v17;
-      [v20 enumerateObjectsUsingBlock:v23];
+      [dailyForecastViews3 enumerateObjectsUsingBlock:v23];
     }
 
     v12 = v26;
   }
 
   v21 = [v4 colorWithAlphaComponent:0.25];
-  v22 = [(NWCSevenDayForecastView *)self separatorViews];
-  [v22 makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v21];
+  separatorViews = [(NWCSevenDayForecastView *)self separatorViews];
+  [separatorViews makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v21];
 }
 
 void __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke(void *a1, void *a2)
@@ -301,7 +301,7 @@ void __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke(void *a1,
   [v4 updateWithHighlightColor:a1[6] fraction:1.0];
 }
 
-- (id)_setupViewBuilderForDevice:(id)a3
+- (id)_setupViewBuilderForDevice:(id)device
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -317,8 +317,8 @@ void __48__NWCSevenDayForecastView_updateMonochromeColor__block_invoke(void *a1,
   viewBuilder = self->_viewBuilder;
   if (!viewBuilder)
   {
-    v4 = [(NWCSevenDayForecastView *)self device];
-    v5 = [(NWCSevenDayForecastView *)self _setupViewBuilderForDevice:v4];
+    device = [(NWCSevenDayForecastView *)self device];
+    v5 = [(NWCSevenDayForecastView *)self _setupViewBuilderForDevice:device];
     v6 = self->_viewBuilder;
     self->_viewBuilder = v5;
 

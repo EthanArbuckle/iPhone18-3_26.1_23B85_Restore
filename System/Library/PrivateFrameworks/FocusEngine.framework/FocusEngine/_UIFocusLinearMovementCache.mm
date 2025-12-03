@@ -1,24 +1,24 @@
 @interface _UIFocusLinearMovementCache
-- (_UIFocusLinearMovementCache)initWithFocusBehavior:(id)a3;
-- (id)nextItemForRequest:(id)a3;
+- (_UIFocusLinearMovementCache)initWithFocusBehavior:(id)behavior;
+- (id)nextItemForRequest:(id)request;
 - (void)_invalidateOnTimeout;
 - (void)_updateParentEnvironmentIfNecessary;
-- (void)environmentDidAppear:(id)a3;
-- (void)environmentWillDisappear:(id)a3;
-- (void)updateCacheWithContext:(id)a3;
+- (void)environmentDidAppear:(id)appear;
+- (void)environmentWillDisappear:(id)disappear;
+- (void)updateCacheWithContext:(id)context;
 @end
 
 @implementation _UIFocusLinearMovementCache
 
-- (_UIFocusLinearMovementCache)initWithFocusBehavior:(id)a3
+- (_UIFocusLinearMovementCache)initWithFocusBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v8.receiver = self;
   v8.super_class = _UIFocusLinearMovementCache;
   v5 = [(_UIFocusLinearMovementCache *)&v8 init];
   if (v5)
   {
-    [v4 stabilizedLinearFocusMovementTimeout];
+    [behaviorCopy stabilizedLinearFocusMovementTimeout];
     v5->_cooldownThreshold = v6;
   }
 
@@ -38,22 +38,22 @@
   }
 }
 
-- (id)nextItemForRequest:(id)a3
+- (id)nextItemForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   linearItems = self->_linearItems;
   if (linearItems && [(NSArray *)linearItems count]&& (*&self->_flags & 1) == 0)
   {
     if ((*&self->_flags & 2) == 0 || CFAbsoluteTimeGetCurrent() - self->_lastUpdate <= self->_cooldownThreshold)
     {
-      v6 = [v4 focusedItemInfo];
-      v7 = [v6 item];
+      focusedItemInfo = [requestCopy focusedItemInfo];
+      item = [focusedItemInfo item];
 
       v8 = self->_linearItems;
-      v9 = [v4 movementInfo];
-      v10 = [v9 heading];
-      v11 = [v4 movementInfo];
-      v12 = _UIFocusGetNextItemFromList(v7, v8, v10, [v11 _isLooping]);
+      movementInfo = [requestCopy movementInfo];
+      heading = [movementInfo heading];
+      movementInfo2 = [requestCopy movementInfo];
+      v12 = _UIFocusGetNextItemFromList(item, v8, heading, [movementInfo2 _isLooping]);
 
       goto LABEL_9;
     }
@@ -67,22 +67,22 @@ LABEL_9:
   return v12;
 }
 
-- (void)updateCacheWithContext:(id)a3
+- (void)updateCacheWithContext:(id)context
 {
-  v17 = a3;
-  v4 = [v17 _request];
-  v5 = [v4 isMovementRequest];
+  contextCopy = context;
+  _request = [contextCopy _request];
+  isMovementRequest = [_request isMovementRequest];
 
-  if (v5 && ([v17 _request], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "movementInfo"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_linearHeading"), v9 = (objc_msgSend(v7, "heading") | v8) & 0x330, v7, v6, v9))
+  if (isMovementRequest && ([contextCopy _request], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "movementInfo"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_linearHeading"), v9 = (objc_msgSend(v7, "heading") | v8) & 0x330, v7, v6, v9))
   {
     self->_lastUpdate = CFAbsoluteTimeGetCurrent();
-    v10 = [v17 _focusMapSearchInfo];
-    v11 = v10;
-    if (v10)
+    _focusMapSearchInfo = [contextCopy _focusMapSearchInfo];
+    v11 = _focusMapSearchInfo;
+    if (_focusMapSearchInfo)
     {
-      v12 = [v10 linearSortedFocusItems];
+      linearSortedFocusItems = [_focusMapSearchInfo linearSortedFocusItems];
 
-      if (v12)
+      if (linearSortedFocusItems)
       {
         if ([v11 hasOnlyStaticContent])
         {
@@ -95,9 +95,9 @@ LABEL_9:
         }
 
         *&self->_flags = *&self->_flags & 0xFC | v13;
-        v14 = [v11 linearSortedFocusItems];
-        v15 = v14;
-        if (!self->_linearItems || ([v14 isEqual:?] & 1) == 0)
+        linearSortedFocusItems2 = [v11 linearSortedFocusItems];
+        v15 = linearSortedFocusItems2;
+        if (!self->_linearItems || ([linearSortedFocusItems2 isEqual:?] & 1) == 0)
         {
           objc_storeStrong(&self->_linearItems, v15);
           parentEnvironments = self->_parentEnvironments;
@@ -118,9 +118,9 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
   if (!self->_parentEnvironments)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     parentEnvironments = self->_parentEnvironments;
-    self->_parentEnvironments = v3;
+    self->_parentEnvironments = weakObjectsHashTable;
 
     v15 = 0u;
     v16 = 0u;
@@ -154,12 +154,12 @@ LABEL_9:
               }
 
               [(NSHashTable *)self->_parentEnvironments addObject:v11];
-              v12 = [v11 parentFocusEnvironment];
+              parentFocusEnvironment = [v11 parentFocusEnvironment];
 
-              v11 = v12;
+              v11 = parentFocusEnvironment;
             }
 
-            while (v12);
+            while (parentFocusEnvironment);
           }
 
           ++v9;
@@ -174,11 +174,11 @@ LABEL_9:
   }
 }
 
-- (void)environmentWillDisappear:(id)a3
+- (void)environmentWillDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   [(_UIFocusLinearMovementCache *)self _updateParentEnvironmentIfNecessary];
-  v5 = [(NSHashTable *)self->_parentEnvironments containsObject:v4];
+  v5 = [(NSHashTable *)self->_parentEnvironments containsObject:disappearCopy];
 
   if (v5)
   {
@@ -188,14 +188,14 @@ LABEL_9:
   }
 }
 
-- (void)environmentDidAppear:(id)a3
+- (void)environmentDidAppear:(id)appear
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [UIFocusSystem focusSystemForEnvironment:v4];
-  if (![v5 _isEnvironmentLocked:v4])
+  appearCopy = appear;
+  v5 = [UIFocusSystem focusSystemForEnvironment:appearCopy];
+  if (![v5 _isEnvironmentLocked:appearCopy])
   {
-    v6 = _UIFocusItemSafeCast(v4);
+    v6 = _UIFocusItemSafeCast(appearCopy);
     v7 = v6;
     if (v6 && _UIFocusItemIsFocusedOrFocusable(v6))
     {
@@ -205,10 +205,10 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v8 = [v4 parentFocusEnvironment];
-    if (v8)
+    parentFocusEnvironment = [appearCopy parentFocusEnvironment];
+    if (parentFocusEnvironment)
     {
-      v9 = v8;
+      v9 = parentFocusEnvironment;
       do
       {
         v10 = _UIFocusItemSafeCast(v9);
@@ -223,14 +223,14 @@ LABEL_29:
           IsFocusedOrFocusable = 0;
         }
 
-        v13 = [v9 parentFocusEnvironment];
+        parentFocusEnvironment2 = [v9 parentFocusEnvironment];
 
-        if (!v13)
+        if (!parentFocusEnvironment2)
         {
           break;
         }
 
-        v9 = v13;
+        v9 = parentFocusEnvironment2;
       }
 
       while (!IsFocusedOrFocusable);
@@ -297,7 +297,7 @@ LABEL_27:
 
     else
     {
-      v13 = 0;
+      parentFocusEnvironment2 = 0;
       if (v7)
       {
         goto LABEL_15;

@@ -1,11 +1,11 @@
 @interface KmlMailboxMappingData
-- (BOOL)isKeyAttestationSetByCarInSignalingBitmap:(unsigned __int8)a3;
-- (BOOL)isKeyAttestationSetByDeviceInSignalingBitmap:(unsigned __int8)a3;
-- (BOOL)isOemPropDataSetByCarInSignalingBitmap:(unsigned __int8)a3;
-- (BOOL)isOemPropDataSetByDeviceInSignalingBitmap:(unsigned __int8)a3;
-- (BOOL)isSlotIdListSetByCarInSignalingBitmap:(unsigned __int8)a3;
+- (BOOL)isKeyAttestationSetByCarInSignalingBitmap:(unsigned __int8)bitmap;
+- (BOOL)isKeyAttestationSetByDeviceInSignalingBitmap:(unsigned __int8)bitmap;
+- (BOOL)isOemPropDataSetByCarInSignalingBitmap:(unsigned __int8)bitmap;
+- (BOOL)isOemPropDataSetByDeviceInSignalingBitmap:(unsigned __int8)bitmap;
+- (BOOL)isSlotIdListSetByCarInSignalingBitmap:(unsigned __int8)bitmap;
 - (BOOL)isValid;
-- (KmlMailboxMappingData)initWithData:(id)a3 preferredVersion:(unsigned __int16)a4;
+- (KmlMailboxMappingData)initWithData:(id)data preferredVersion:(unsigned __int16)version;
 - (id)asData;
 - (unsigned)getMaskToIndicateKeyAttestationConsumed;
 - (unsigned)getMaskToIndicateKeyAttestationSaved;
@@ -16,10 +16,10 @@
 
 @implementation KmlMailboxMappingData
 
-- (KmlMailboxMappingData)initWithData:(id)a3 preferredVersion:(unsigned __int16)a4
+- (KmlMailboxMappingData)initWithData:(id)data preferredVersion:(unsigned __int16)version
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v65.receiver = self;
   v65.super_class = KmlMailboxMappingData;
   v7 = [(KmlMailboxMappingData *)&v65 init];
@@ -37,13 +37,13 @@
     v10 = v8->_preferredVersionTlvs;
     v8->_preferredVersionTlvs = 0;
 
-    v8->_preferredVersion = a4;
+    v8->_preferredVersion = version;
     v11 = objc_opt_new();
     v8->_useOldSignalingBitmap = [v11 useOldSignalingBitmap];
 
-    if (v6)
+    if (dataCopy)
     {
-      [KmlTlv TLVsWithData:v6];
+      [KmlTlv TLVsWithData:dataCopy];
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
@@ -90,8 +90,8 @@ LABEL_5:
           _os_log_impl(&dword_248BF3000, v18, OS_LOG_TYPE_INFO, "%s : %i : Found Mailbox mapping data to parse", buf, 0x12u);
         }
 
-        v19 = [v17 value];
-        v20 = [KmlTlv TLVsWithData:v19];
+        value = [v17 value];
+        v20 = [KmlTlv TLVsWithData:value];
         allMailboxMappingTlvs = v8->_allMailboxMappingTlvs;
         v8->_allMailboxMappingTlvs = v20;
 
@@ -139,8 +139,8 @@ LABEL_5:
                     _os_log_impl(&dword_248BF3000, v31, OS_LOG_TYPE_INFO, "%s : %i : Car sent SharingInAChain version mailboxMapping Data", buf, 0x12u);
                   }
 
-                  v32 = [v28 value];
-                  v33 = [KmlTlv TLVsWithData:v32];
+                  value2 = [v28 value];
+                  v33 = [KmlTlv TLVsWithData:value2];
                   v34 = v8->_preferredVersionTlvs;
                   v8->_preferredVersionTlvs = v33;
 
@@ -363,7 +363,7 @@ LABEL_36:
   v27 = *MEMORY[0x277D85DE8];
   if (self->_allMailboxMappingTlvs)
   {
-    v3 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -383,8 +383,8 @@ LABEL_36:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v16 + 1) + 8 * i) asData];
-          [v3 appendData:v9];
+          asData = [*(*(&v16 + 1) + 8 * i) asData];
+          [data appendData:asData];
         }
 
         v6 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v26 count:16];
@@ -393,13 +393,13 @@ LABEL_36:
       while (v6);
     }
 
-    v10 = [KmlTlv TLVWithTag:32589 value:v3];
-    v11 = [v10 asData];
+    v10 = [KmlTlv TLVWithTag:32589 value:data];
+    asData2 = [v10 asData];
 
     v12 = KmlLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = kmlUtilHexStringFromData(v11);
+      v13 = kmlUtilHexStringFromData(asData2);
       *buf = 136315650;
       v21 = "[KmlMailboxMappingData asData]";
       v22 = 1024;
@@ -412,22 +412,22 @@ LABEL_36:
 
   else
   {
-    v3 = KmlLogger();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    data = KmlLogger();
+    if (os_log_type_enabled(data, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v21 = "[KmlMailboxMappingData asData]";
       v22 = 1024;
       v23 = 173;
-      _os_log_impl(&dword_248BF3000, v3, OS_LOG_TYPE_INFO, "%s : %i : Invalid MailboxMapping Data", buf, 0x12u);
+      _os_log_impl(&dword_248BF3000, data, OS_LOG_TYPE_INFO, "%s : %i : Invalid MailboxMapping Data", buf, 0x12u);
     }
 
-    v11 = 0;
+    asData2 = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return asData2;
 }
 
 - (BOOL)isValid
@@ -528,7 +528,7 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)isSlotIdListSetByCarInSignalingBitmap:(unsigned __int8)a3
+- (BOOL)isSlotIdListSetByCarInSignalingBitmap:(unsigned __int8)bitmap
 {
   v3 = 1;
   if (self->_mailboxVersion == 128)
@@ -544,7 +544,7 @@ LABEL_23:
     }
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & bitmap) != 0;
 }
 
 - (unsigned)getMaskToIndicateSlotIdListConsumed
@@ -562,7 +562,7 @@ LABEL_23:
   return -4;
 }
 
-- (BOOL)isOemPropDataSetByCarInSignalingBitmap:(unsigned __int8)a3
+- (BOOL)isOemPropDataSetByCarInSignalingBitmap:(unsigned __int8)bitmap
 {
   if (self->_mailboxVersion == 128)
   {
@@ -582,10 +582,10 @@ LABEL_23:
     v3 = 4;
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & bitmap) != 0;
 }
 
-- (BOOL)isOemPropDataSetByDeviceInSignalingBitmap:(unsigned __int8)a3
+- (BOOL)isOemPropDataSetByDeviceInSignalingBitmap:(unsigned __int8)bitmap
 {
   v3 = 4;
   if (self->_mailboxVersion == 128)
@@ -601,7 +601,7 @@ LABEL_23:
     }
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & bitmap) != 0;
 }
 
 - (unsigned)getMaskToIndicateOemPropDataConsumed
@@ -639,7 +639,7 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)isKeyAttestationSetByCarInSignalingBitmap:(unsigned __int8)a3
+- (BOOL)isKeyAttestationSetByCarInSignalingBitmap:(unsigned __int8)bitmap
 {
   if (self->_mailboxVersion == 128)
   {
@@ -659,10 +659,10 @@ LABEL_23:
     v3 = 8;
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & bitmap) != 0;
 }
 
-- (BOOL)isKeyAttestationSetByDeviceInSignalingBitmap:(unsigned __int8)a3
+- (BOOL)isKeyAttestationSetByDeviceInSignalingBitmap:(unsigned __int8)bitmap
 {
   if (self->_mailboxVersion == 128)
   {
@@ -682,7 +682,7 @@ LABEL_23:
     v3 = 8;
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & bitmap) != 0;
 }
 
 - (unsigned)getMaskToIndicateKeyAttestationConsumed

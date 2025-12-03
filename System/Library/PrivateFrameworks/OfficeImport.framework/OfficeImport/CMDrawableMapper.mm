@@ -2,24 +2,24 @@
 - (CGRect)box;
 - (CGRect)shapeTextBoxRect;
 - (CGRect)uncroppedBox;
-- (CMDrawableMapper)initWithOadDrawable:(id)a3 parent:(id)a4;
-- (CMDrawableMapper)initWithParent:(id)a3;
-- (id)blipAtIndex:(unsigned int)a3;
+- (CMDrawableMapper)initWithOadDrawable:(id)drawable parent:(id)parent;
+- (CMDrawableMapper)initWithParent:(id)parent;
+- (id)blipAtIndex:(unsigned int)index;
 - (id)convertMetafileToPdf;
-- (id)saveResourceAndReturnPath:(id)a3 withType:(int)a4;
-- (void)calculateUncroppedBox:(id)a3;
-- (void)mapDrawingContext:(id)a3 at:(id)a4 relative:(BOOL)a5 withState:(id)a6;
-- (void)mapShapeGraphicsAt:(id)a3 withState:(id)a4;
-- (void)setWithOadImage:(id)a3;
+- (id)saveResourceAndReturnPath:(id)path withType:(int)type;
+- (void)calculateUncroppedBox:(id)box;
+- (void)mapDrawingContext:(id)context at:(id)at relative:(BOOL)relative withState:(id)state;
+- (void)mapShapeGraphicsAt:(id)at withState:(id)state;
+- (void)setWithOadImage:(id)image;
 @end
 
 @implementation CMDrawableMapper
 
 - (id)convertMetafileToPdf
 {
-  v3 = [(OADDrawable *)self->mDrawable drawableProperties];
-  v4 = [v3 orientedBounds];
-  [v4 bounds];
+  drawableProperties = [(OADDrawable *)self->mDrawable drawableProperties];
+  orientedBounds = [drawableProperties orientedBounds];
+  [orientedBounds bounds];
   width = v5;
   height = v7;
 
@@ -29,9 +29,9 @@
     height = self->mBox.size.height;
   }
 
-  v9 = [MFConverter play:self->mImageBinaryData frame:0 colorMap:0 fillMap:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), width, height];
+  height = [MFConverter play:self->mImageBinaryData frame:0 colorMap:0 fillMap:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), width, height];
 
-  return v9;
+  return height;
 }
 
 - (CGRect)box
@@ -49,20 +49,20 @@
 
 - (CGRect)shapeTextBoxRect
 {
-  v3 = [(OADDrawable *)self->mDrawable geometry];
+  geometry = [(OADDrawable *)self->mDrawable geometry];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    equivalentCustomGeometry = geometry;
   }
 
   else
   {
-    v4 = [v3 equivalentCustomGeometry];
+    equivalentCustomGeometry = [geometry equivalentCustomGeometry];
   }
 
-  v5 = v4;
-  if ([v4 textBodyRectCount])
+  v5 = equivalentCustomGeometry;
+  if ([equivalentCustomGeometry textBodyRectCount])
   {
     v6 = [v5 textBodyRectAtIndex:0];
     if (v5)
@@ -151,11 +151,11 @@
   return result;
 }
 
-- (CMDrawableMapper)initWithParent:(id)a3
+- (CMDrawableMapper)initWithParent:(id)parent
 {
   v12.receiver = self;
   v12.super_class = CMDrawableMapper;
-  v3 = [(CMMapper *)&v12 initWithParent:a3];
+  v3 = [(CMMapper *)&v12 initWithParent:parent];
   v4 = v3;
   if (v3)
   {
@@ -183,17 +183,17 @@
   return v4;
 }
 
-- (CMDrawableMapper)initWithOadDrawable:(id)a3 parent:(id)a4
+- (CMDrawableMapper)initWithOadDrawable:(id)drawable parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  drawableCopy = drawable;
+  parentCopy = parent;
   v14.receiver = self;
   v14.super_class = CMDrawableMapper;
-  v9 = [(CMMapper *)&v14 initWithParent:v8];
+  v9 = [(CMMapper *)&v14 initWithParent:parentCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mDrawable, a3);
+    objc_storeStrong(&v9->mDrawable, drawable);
     v11 = objc_alloc_init(CMDrawableStyle);
     mStyle = v10->mStyle;
     v10->mStyle = v11;
@@ -202,67 +202,67 @@
   return v10;
 }
 
-- (void)setWithOadImage:(id)a3
+- (void)setWithOadImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   self->mIsSupported = 0;
-  v24 = v4;
-  v5 = [v4 imageProperties];
-  v6 = [v5 imageFill];
-  if (![v6 isBlipRefOverridden])
+  v24 = imageCopy;
+  imageProperties = [imageCopy imageProperties];
+  imageFill = [imageProperties imageFill];
+  if (![imageFill isBlipRefOverridden])
   {
     goto LABEL_12;
   }
 
-  v7 = [v6 blipRef];
-  v8 = [v7 blip];
-  if (v8)
+  blipRef = [imageFill blipRef];
+  blip = [blipRef blip];
+  if (blip)
   {
 
     goto LABEL_4;
   }
 
-  v20 = [v7 index];
-  if (v20 <= 0)
+  index = [blipRef index];
+  if (index <= 0)
   {
 
 LABEL_12:
-    v8 = 0;
+    blip = 0;
     goto LABEL_24;
   }
 
-  v8 = [(CMDrawableMapper *)self blipAtIndex:v20];
+  blip = [(CMDrawableMapper *)self blipAtIndex:index];
 
-  if (v8)
+  if (blip)
   {
 LABEL_4:
-    v9 = [v8 mainSubBlip];
-    v10 = [v9 load];
+    mainSubBlip = [blip mainSubBlip];
+    load = [mainSubBlip load];
 
-    if ((v10 & 1) == 0)
+    if ((load & 1) == 0)
     {
       goto LABEL_24;
     }
 
-    v11 = [v8 mainSubBlip];
-    v12 = [v11 data];
+    mainSubBlip2 = [blip mainSubBlip];
+    data = [mainSubBlip2 data];
     mImageBinaryData = self->mImageBinaryData;
-    self->mImageBinaryData = v12;
+    self->mImageBinaryData = data;
 
-    v14 = [v8 mainSubBlip];
-    v15 = [v14 type];
+    mainSubBlip3 = [blip mainSubBlip];
+    type = [mainSubBlip3 type];
 
-    self->mResourceType = [CMArchiveManager blipTypeToResourceType:v15];
-    if (v15 <= 3)
+    self->mResourceType = [CMArchiveManager blipTypeToResourceType:type];
+    if (type <= 3)
     {
-      if (v15 == 2)
+      if (type == 2)
       {
         mExtension = self->mExtension;
         v22 = @"jpg";
         goto LABEL_22;
       }
 
-      if (v15 == 3)
+      if (type == 3)
       {
         mExtension = self->mExtension;
         v22 = @"png";
@@ -272,14 +272,14 @@ LABEL_4:
 
     else
     {
-      if ((v15 - 4) < 3)
+      if ((type - 4) < 3)
       {
         v16 = self->mExtension;
         self->mExtension = @"pdf";
 
-        v17 = [(CMDrawableMapper *)self convertMetafileToPdf];
+        convertMetafileToPdf = [(CMDrawableMapper *)self convertMetafileToPdf];
         v18 = self->mImageBinaryData;
-        self->mImageBinaryData = v17;
+        self->mImageBinaryData = convertMetafileToPdf;
 
         v19 = self->mImageBinaryData != 0;
 LABEL_23:
@@ -287,14 +287,14 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (v15 == 7)
+      if (type == 7)
       {
         mExtension = self->mExtension;
         v22 = @"gif";
         goto LABEL_22;
       }
 
-      if (v15 == 8)
+      if (type == 8)
       {
         mExtension = self->mExtension;
         v22 = @"tiff";
@@ -313,26 +313,26 @@ LABEL_22:
 LABEL_24:
 }
 
-- (id)saveResourceAndReturnPath:(id)a3 withType:(int)a4
+- (id)saveResourceAndReturnPath:(id)path withType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(CMMapper *)self archiver];
-  v8 = [v7 addResource:v6 withType:v4];
+  v4 = *&type;
+  pathCopy = path;
+  archiver = [(CMMapper *)self archiver];
+  v8 = [archiver addResource:pathCopy withType:v4];
 
   return v8;
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(CMMapper *)self root];
-  v6 = [v5 conformsToProtocol:&unk_286FC5D90];
+  v3 = *&index;
+  root = [(CMMapper *)self root];
+  v6 = [root conformsToProtocol:&unk_286FC5D90];
 
   if (v6)
   {
-    v7 = [(CMMapper *)self root];
-    v8 = [v7 blipAtIndex:v3];
+    root2 = [(CMMapper *)self root];
+    v8 = [root2 blipAtIndex:v3];
   }
 
   else
@@ -343,14 +343,14 @@ LABEL_24:
   return v8;
 }
 
-- (void)calculateUncroppedBox:(id)a3
+- (void)calculateUncroppedBox:(id)box
 {
-  v22 = a3;
-  if ([v22 isSourceRectOverridden])
+  boxCopy = box;
+  if ([boxCopy isSourceRectOverridden])
   {
-    v4 = [v22 sourceRect];
-    v5 = v4;
-    if (!v4 || ([v4 left], v6 == 0.0) && (objc_msgSend(v5, "right"), v7 == 0.0) && (objc_msgSend(v5, "top"), v8 == 0.0) && (objc_msgSend(v5, "bottom"), v9 == 0.0))
+    sourceRect = [boxCopy sourceRect];
+    v5 = sourceRect;
+    if (!sourceRect || ([sourceRect left], v6 == 0.0) && (objc_msgSend(v5, "right"), v7 == 0.0) && (objc_msgSend(v5, "top"), v8 == 0.0) && (objc_msgSend(v5, "bottom"), v9 == 0.0))
     {
       self->mIsCropped = 0;
     }
@@ -383,30 +383,30 @@ LABEL_24:
   }
 }
 
-- (void)mapShapeGraphicsAt:(id)a3 withState:(id)a4
+- (void)mapShapeGraphicsAt:(id)at withState:(id)state
 {
-  v34 = a3;
-  v33 = a4;
+  atCopy = at;
+  stateCopy = state;
   v6 = self->mDrawable;
-  v7 = [(OADDrawable *)v6 type];
-  if (!v7)
+  type = [(OADDrawable *)v6 type];
+  if (!type)
   {
     if ([CMShapeUtils isShapeALine:v6])
     {
-      v7 = 20;
+      type = 20;
     }
 
     else
     {
-      v7 = 0;
+      type = 0;
     }
   }
 
-  v8 = [(OADDrawable *)v6 shapeProperties];
-  v9 = [v8 orientedBounds];
+  shapeProperties = [(OADDrawable *)v6 shapeProperties];
+  orientedBounds = [shapeProperties orientedBounds];
 
   mOrientedBounds = self->mOrientedBounds;
-  v32 = v9;
+  v32 = orientedBounds;
   if (mOrientedBounds)
   {
     [(OADOrientedBounds *)mOrientedBounds bounds];
@@ -420,61 +420,61 @@ LABEL_24:
     height = self->mBox.size.height;
   }
 
-  [v9 setBounds:{x, y, width, height}];
+  [orientedBounds setBounds:{x, y, width, height}];
   v35 = [[CMDrawingContext alloc] initWithFrame:self->mBox.origin.x, self->mBox.origin.y, self->mBox.size.width, self->mBox.size.height];
-  if (v7 > 0x3F)
+  if (type > 0x3F)
   {
     goto LABEL_13;
   }
 
-  if (((1 << v7) & 0xFD8001FF0041BFFELL) != 0)
+  if (((1 << type) & 0xFD8001FF0041BFFELL) != 0)
   {
 LABEL_22:
-    v31 = [(OADDrawable *)v6 shapeProperties];
-    v16 = [v31 fill];
-    v17 = [(OADDrawable *)v6 shapeProperties];
-    v18 = [v17 stroke];
-    v21 = [(OADDrawable *)v6 geometry];
-    v22 = [v21 adjustValues];
-    [CMShapeRenderer renderCanonicalShape:v7 fill:v16 stroke:v18 adjustValues:v22 orientedBounds:v32 state:v33 drawingContext:v35];
+    shapeProperties2 = [(OADDrawable *)v6 shapeProperties];
+    fill = [shapeProperties2 fill];
+    shapeProperties3 = [(OADDrawable *)v6 shapeProperties];
+    stroke = [shapeProperties3 stroke];
+    geometry = [(OADDrawable *)v6 geometry];
+    adjustValues = [geometry adjustValues];
+    [CMShapeRenderer renderCanonicalShape:type fill:fill stroke:stroke adjustValues:adjustValues orientedBounds:v32 state:stateCopy drawingContext:v35];
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!type)
   {
-    v31 = [(OADDrawable *)v6 geometry];
+    shapeProperties2 = [(OADDrawable *)v6 geometry];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_25;
     }
 
-    v29 = [(OADDrawable *)v6 geometry];
-    v30 = [v29 pathCount];
+    geometry2 = [(OADDrawable *)v6 geometry];
+    pathCount = [geometry2 pathCount];
 
-    if (!v30)
+    if (!pathCount)
     {
       goto LABEL_26;
     }
 
-    v31 = [(OADDrawable *)v6 geometry];
-    v16 = [(OADDrawable *)v6 shapeProperties];
-    v17 = [v16 fill];
-    v18 = [(OADDrawable *)v6 shapeProperties];
-    v21 = [v18 stroke];
-    [CMShapeRenderer renderFreeForm:v31 fill:v17 stroke:v21 orientedBounds:v32 state:v33 drawingContext:v35];
+    shapeProperties2 = [(OADDrawable *)v6 geometry];
+    fill = [(OADDrawable *)v6 shapeProperties];
+    shapeProperties3 = [fill fill];
+    stroke = [(OADDrawable *)v6 shapeProperties];
+    geometry = [stroke stroke];
+    [CMShapeRenderer renderFreeForm:shapeProperties2 fill:shapeProperties3 stroke:geometry orientedBounds:v32 state:stateCopy drawingContext:v35];
     goto LABEL_23;
   }
 
-  if (v7 != 20)
+  if (type != 20)
   {
 LABEL_13:
-    if ((v7 - 66) > 0x1A || ((1 << (v7 - 66)) & 0x403FE1F) == 0)
+    if ((type - 66) > 0x1A || ((1 << (type - 66)) & 0x403FE1F) == 0)
     {
-      v20 = v7 + 92;
-      if ((v7 - 164) > 0x2F)
+      v20 = type + 92;
+      if ((type - 164) > 0x2F)
       {
         goto LABEL_29;
       }
@@ -486,22 +486,22 @@ LABEL_13:
           goto LABEL_29;
         }
 
-        v7 = 1;
+        type = 1;
       }
     }
 
     goto LABEL_22;
   }
 
-  v15 = [(OADDrawable *)v6 geometry];
+  geometry3 = [(OADDrawable *)v6 geometry];
   objc_opt_class();
   objc_opt_isKindOfClass();
 
-  v31 = [(OADDrawable *)v6 shapeProperties];
-  v16 = [v31 stroke];
-  v17 = [(OADDrawable *)v6 geometry];
-  v18 = [v17 adjustValues];
-  [CMShapeRenderer renderLine:20 stroke:v16 adjustValues:v18 orientedBounds:v9 state:v33 drawingContext:v35];
+  shapeProperties2 = [(OADDrawable *)v6 shapeProperties];
+  fill = [shapeProperties2 stroke];
+  shapeProperties3 = [(OADDrawable *)v6 geometry];
+  stroke = [shapeProperties3 adjustValues];
+  [CMShapeRenderer renderLine:20 stroke:fill adjustValues:stroke orientedBounds:orientedBounds state:stateCopy drawingContext:v35];
 LABEL_24:
 
 LABEL_25:
@@ -510,45 +510,45 @@ LABEL_26:
   [(CMDrawingContext *)v35 pdfFrame];
   [(CMDrawableStyle *)v23 addPositionUsingOffsets:v24 - self->mBox.origin.x, v25 - self->mBox.origin.y];
   v26 = [OIXMLElement elementWithType:9];
-  v27 = [(CMDrawingContext *)v35 copyPDF];
-  if (v27)
+  copyPDF = [(CMDrawingContext *)v35 copyPDF];
+  if (copyPDF)
   {
-    v28 = [(CMDrawableMapper *)self saveResourceAndReturnPath:v27 withType:7];
+    v28 = [(CMDrawableMapper *)self saveResourceAndReturnPath:copyPDF withType:7];
     [(CMMapper *)self addAttribute:0x286F07DB0 toNode:v26 value:v28];
   }
 
   v36.receiver = self;
   v36.super_class = CMDrawableMapper;
   [(CMMapper *)&v36 addStyleUsingGlobalCacheTo:v26 style:v23 embedStyle:1];
-  [v34 addChild:v26];
+  [atCopy addChild:v26];
 
 LABEL_29:
 }
 
-- (void)mapDrawingContext:(id)a3 at:(id)a4 relative:(BOOL)a5 withState:(id)a6
+- (void)mapDrawingContext:(id)context at:(id)at relative:(BOOL)relative withState:(id)state
 {
-  v6 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 copyPDF];
-  if (v11)
+  relativeCopy = relative;
+  contextCopy = context;
+  atCopy = at;
+  copyPDF = [contextCopy copyPDF];
+  if (copyPDF)
   {
     v12 = [OIXMLElement elementWithType:9];
     v13 = objc_alloc_init(CMDrawableStyle);
-    [v9 pdfFrame];
-    if (v6)
+    [contextCopy pdfFrame];
+    if (relativeCopy)
     {
       v14 = v14 - self->mBox.origin.x;
       v15 = v15 - self->mBox.origin.y;
     }
 
     [(CMDrawableStyle *)v13 addPositionUsingOffsets:v14, v15];
-    v16 = [(CMDrawableMapper *)self saveResourceAndReturnPath:v11 withType:7];
+    v16 = [(CMDrawableMapper *)self saveResourceAndReturnPath:copyPDF withType:7];
     [(CMMapper *)self addAttribute:0x286F07DB0 toNode:v12 value:v16];
     v17.receiver = self;
     v17.super_class = CMDrawableMapper;
     [(CMMapper *)&v17 addStyleUsingGlobalCacheTo:v12 style:v13 embedStyle:1];
-    [v10 addChild:v12];
+    [atCopy addChild:v12];
   }
 }
 

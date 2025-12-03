@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchBooleanClause
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isProhibited;
 - (BOOL)isRequired;
 - (BOOL)isScoring;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setOccurWithOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a3;
-- (void)setQueryWithOrgApacheLuceneSearchQuery:(id)a3;
+- (void)setOccurWithOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum;
+- (void)setQueryWithOrgApacheLuceneSearchQuery:(id)query;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanClause
@@ -66,9 +66,9 @@
   return v4 == qword_100557BA8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -82,10 +82,10 @@
       JreThrowNullPointerException();
     }
 
-    v6 = [(OrgApacheLuceneSearchQuery *)query isEqual:*(a3 + 1)];
+    v6 = [(OrgApacheLuceneSearchQuery *)query isEqual:*(equal + 1)];
     if (v6)
     {
-      LOBYTE(v6) = self->occur_ == *(a3 + 2);
+      LOBYTE(v6) = self->occur_ == *(equal + 2);
     }
   }
 
@@ -120,16 +120,16 @@
   return JreStrcat("$$", v6, v7, v8, v9, v10, v11, v12, v4);
 }
 
-- (void)setOccurWithOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)a3
+- (void)setOccurWithOrgApacheLuceneSearchBooleanClause_OccurEnum:(id)enum
 {
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(a3, @"Occur must not be null");
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(enum, @"Occur must not be null");
 
   JreStrongAssign(&self->occur_, v4);
 }
 
-- (void)setQueryWithOrgApacheLuceneSearchQuery:(id)a3
+- (void)setQueryWithOrgApacheLuceneSearchQuery:(id)query
 {
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(a3, @"Query must not be null");
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(query, @"Query must not be null");
 
   JreStrongAssign(&self->query_, v4);
 }

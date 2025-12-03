@@ -19,8 +19,8 @@
   v13 = v12;
   [(SXTextShadow *)self opacity];
   v15 = v14;
-  v16 = [(SXTextShadow *)self color];
-  v17 = [v11 shadowWithAngle:objc_msgSend(v16 offset:"CGColor") radius:1 opacity:v6 color:v10 enabled:{v13, v15}];
+  color = [(SXTextShadow *)self color];
+  v17 = [v11 shadowWithAngle:objc_msgSend(color offset:"CGColor") radius:1 opacity:v6 color:v10 enabled:{v13, v15}];
 
   return v17;
 }

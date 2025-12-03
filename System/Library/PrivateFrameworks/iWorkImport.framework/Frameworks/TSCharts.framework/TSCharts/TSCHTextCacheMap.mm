@@ -1,6 +1,6 @@
 @interface TSCHTextCacheMap
 - (TSCHTextCacheMap)init;
-- (id)textCacheForStyleProvidingSource:(id)a3;
+- (id)textCacheForStyleProvidingSource:(id)source;
 - (void)clear;
 @end
 
@@ -25,19 +25,19 @@
   return v2;
 }
 
-- (id)textCacheForStyleProvidingSource:(id)a3
+- (id)textCacheForStyleProvidingSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     objc_opt_class();
-    v9 = objc_msgSend_objectForKey_(self->_map, v5, v6, v7, v8, v4);
+    v9 = objc_msgSend_objectForKey_(self->_map, v5, v6, v7, v8, sourceCopy);
     v10 = TSUCheckedDynamicCast();
 
     if (!v10)
     {
       v10 = objc_alloc_init(TSCHTextCache);
-      objc_msgSend_setObject_forKey_(self->_map, v11, v12, v13, v14, v10, v4);
+      objc_msgSend_setObject_forKey_(self->_map, v11, v12, v13, v14, v10, sourceCopy);
       if (!v10)
       {
         v19 = MEMORY[0x277D81150];

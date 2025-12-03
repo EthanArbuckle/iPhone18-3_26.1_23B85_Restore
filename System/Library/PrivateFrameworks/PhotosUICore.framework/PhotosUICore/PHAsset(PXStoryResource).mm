@@ -11,32 +11,32 @@
 
 - (uint64_t)px_storyResourceFetchFaceCount
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 mediaAnalysisProperties];
-  v3 = [v2 faceCount];
+  [self fetchPropertySetsIfNeeded];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  faceCount = [mediaAnalysisProperties faceCount];
 
-  return v3;
+  return faceCount;
 }
 
 - (uint64_t)px_storyResourceFetchCurationScore
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
 
-  return [a1 curationScore];
+  return [self curationScore];
 }
 
 - (uint64_t)px_storyResourceFetchSceneClassifications
 {
-  [a1 fetchPropertySetsIfNeeded];
+  [self fetchPropertySetsIfNeeded];
 
-  return [a1 sceneClassifications];
+  return [self sceneClassifications];
 }
 
 - (double)px_storyResourceFetchBestPlaybackRect
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 mediaAnalysisProperties];
-  [v2 bestPlaybackRect];
+  [self fetchPropertySetsIfNeeded];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  [mediaAnalysisProperties bestPlaybackRect];
   v4 = v3;
 
   return v4;
@@ -48,14 +48,14 @@
   *(a2 + 16) = 0u;
   *(a2 + 32) = 0u;
   *a2 = 0u;
-  if (([a1 isVideo] & 1) != 0 || objc_msgSend(a1, "isPhotoIris"))
+  if (([self isVideo] & 1) != 0 || objc_msgSend(self, "isPhotoIris"))
   {
-    [a1 fetchPropertySetsIfNeeded];
-    v4 = [a1 mediaAnalysisProperties];
-    v5 = v4;
-    if (v4)
+    [self fetchPropertySetsIfNeeded];
+    mediaAnalysisProperties = [self mediaAnalysisProperties];
+    v5 = mediaAnalysisProperties;
+    if (mediaAnalysisProperties)
     {
-      [v4 bestVideoTimeRange];
+      [mediaAnalysisProperties bestVideoTimeRange];
       v6 = HIDWORD(v12);
       v7 = *(&v13 + 1);
       v8 = v13;
@@ -108,7 +108,7 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v1 = [MEMORY[0x1E69786D8] assetResourcesForAsset:{a1, 0}];
+  v1 = [MEMORY[0x1E69786D8] assetResourcesForAsset:{self, 0}];
   v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v2)
   {
@@ -126,8 +126,8 @@
         if ([v5 type] == 7)
         {
           v6 = objc_alloc(MEMORY[0x1E69C0910]);
-          v7 = [v5 privateFileURL];
-          v2 = [v6 initWithURL:v7];
+          privateFileURL = [v5 privateFileURL];
+          v2 = [v6 initWithURL:privateFileURL];
 
           goto LABEL_11;
         }

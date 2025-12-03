@@ -2,16 +2,16 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionHistoricalLocationAccuracyMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
-- (void)_updateStateWithLocation:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
+- (VLFSessionHistoricalLocationAccuracyMonitor)initWithObserver:(id)observer locationManager:(id)manager;
+- (void)_updateStateWithLocation:(id)location;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
 @end
 
 @implementation VLFSessionHistoricalLocationAccuracyMonitor
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   v4 = sub_100071310();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -20,15 +20,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "App backgrounded; clearing historical locations", v6, 2u);
   }
 
-  v5 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  [v5 removeAllObjects];
+  historicalLocationAccuracies = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  [historicalLocationAccuracies removeAllObjects];
 
   [(VLFSessionMonitor *)self setState:0];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -68,8 +68,8 @@
     }
   }
 
-  v8 = [v4 lastLocation];
-  [(VLFSessionHistoricalLocationAccuracyMonitor *)self _updateStateWithLocation:v8];
+  lastLocation = [locationCopy lastLocation];
+  [(VLFSessionHistoricalLocationAccuracyMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
 - (NSString)debugDescription
@@ -109,14 +109,14 @@
   }
 
   v9 = v8;
-  v10 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v11 = @"Hide";
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = @"EnablePuck";
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     v12 = @"EnablePuckAndBanner";
   }
@@ -126,28 +126,28 @@
     v12 = v11;
   }
 
-  v13 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v14 = [v13 count];
-  v15 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v16 = [v15 length];
-  v17 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v18 = [v17 debugDescription];
+  historicalLocationAccuracies = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v14 = [historicalLocationAccuracies count];
+  historicalLocationAccuracies2 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v16 = [historicalLocationAccuracies2 length];
+  historicalLocationAccuracies3 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v18 = [historicalLocationAccuracies3 debugDescription];
   v19 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentState: %@, historicalLocationAccuraciesCount: %lu, historicalLocationAccuraciesRequired: %lu, historicalLocationAccuracies: %@>", v21, v5, v7, v9, v12, v14, v16, v18];
 
   return v19;
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
-  v5 = sub_100071310();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (!v4)
+  locationCopy = location;
+  historicalLocationAccuracies6 = sub_100071310();
+  v6 = os_log_type_enabled(historicalLocationAccuracies6, OS_LOG_TYPE_DEBUG);
+  if (!locationCopy)
   {
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Got nil location; ignoring", buf, 2u);
+      _os_log_impl(&_mh_execute_header, historicalLocationAccuracies6, OS_LOG_TYPE_DEBUG, "Got nil location; ignoring", buf, 2u);
     }
 
     goto LABEL_23;
@@ -155,36 +155,36 @@
 
   if (v6)
   {
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     *buf = 134283521;
     v35 = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Got location with horizontal accuracy: %{private}f", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, historicalLocationAccuracies6, OS_LOG_TYPE_DEBUG, "Got location with horizontal accuracy: %{private}f", buf, 0xCu);
   }
 
-  v8 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  [v4 horizontalAccuracy];
+  historicalLocationAccuracies = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  [locationCopy horizontalAccuracy];
   v9 = [NSNumber numberWithDouble:?];
-  [v8 push:v9];
+  [historicalLocationAccuracies push:v9];
 
-  v10 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v11 = [v10 count];
-  v12 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v13 = [v12 length];
+  historicalLocationAccuracies2 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v11 = [historicalLocationAccuracies2 count];
+  historicalLocationAccuracies3 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v13 = [historicalLocationAccuracies3 length];
 
   if (v11 < v13)
   {
-    v5 = sub_100071310();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    historicalLocationAccuracies6 = sub_100071310();
+    if (os_log_type_enabled(historicalLocationAccuracies6, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-      v15 = COERCE_DOUBLE([v14 count]);
-      v16 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-      v17 = COERCE_DOUBLE([v16 length]);
+      historicalLocationAccuracies4 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+      v15 = COERCE_DOUBLE([historicalLocationAccuracies4 count]);
+      historicalLocationAccuracies5 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+      v17 = COERCE_DOUBLE([historicalLocationAccuracies5 length]);
       *buf = 134218240;
       v35 = v15;
       v36 = 2048;
       v37 = v17;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Still waiting for more location updates; got %lu/%lu", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, historicalLocationAccuracies6, OS_LOG_TYPE_DEBUG, "Still waiting for more location updates; got %lu/%lu", buf, 0x16u);
     }
 
 LABEL_23:
@@ -198,8 +198,8 @@ LABEL_23:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
-  v20 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  historicalLocationAccuracies6 = [(VLFSessionHistoricalLocationAccuracyMonitor *)self historicalLocationAccuracies];
+  v20 = [historicalLocationAccuracies6 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v20)
   {
     v21 = v20;
@@ -210,7 +210,7 @@ LABEL_23:
       {
         if (*v30 != v22)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(historicalLocationAccuracies6);
         }
 
         v24 = *(*(&v29 + 1) + 8 * i);
@@ -233,7 +233,7 @@ LABEL_23:
         }
       }
 
-      v21 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v21 = [historicalLocationAccuracies6 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v21)
       {
         continue;
@@ -263,11 +263,11 @@ LABEL_24:
   [(VLFSessionHistoricalLocationAccuracyMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionHistoricalLocationAccuracyMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionHistoricalLocationAccuracyMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!observerCopy)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -296,7 +296,7 @@ LABEL_24:
     }
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v16 = sub_10006D178();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -327,14 +327,14 @@ LABEL_24:
 
   v19.receiver = self;
   v19.super_class = VLFSessionHistoricalLocationAccuracyMonitor;
-  v8 = [(VLFSessionMonitor *)&v19 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v19 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = [[MapsRingBuffer alloc] initWithLength:GEOConfigGetUInteger()];
     historicalLocationAccuracies = v8->_historicalLocationAccuracies;
     v8->_historicalLocationAccuracies = v9;
 
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     [(MKLocationManager *)v8->_locationManager listenForLocationUpdates:v8];
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:v8 selector:"applicationDidEnterBackgroundNotification:" name:UIApplicationDidEnterBackgroundNotification object:0];

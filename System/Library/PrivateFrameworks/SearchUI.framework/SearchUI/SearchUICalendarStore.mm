@@ -1,8 +1,8 @@
 @interface SearchUICalendarStore
 + (id)colorForDefaultCalendarForNewEvents;
-+ (id)eventControllerWithIdentifier:(id)a3;
++ (id)eventControllerWithIdentifier:(id)identifier;
 + (id)sharedCalendarStore;
-+ (void)fetchCalendarItemFromEventIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)fetchCalendarItemFromEventIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation SearchUICalendarStore
@@ -30,10 +30,10 @@ uint64_t __44__SearchUICalendarStore_sharedCalendarStore__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)fetchCalendarItemFromEventIdentifier:(id)a3 completionHandler:(id)a4
++ (void)fetchCalendarItemFromEventIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 componentsSeparatedByString:@"."];
+  handlerCopy = handler;
+  v6 = [identifier componentsSeparatedByString:@"."];
   v7 = +[SearchUICalendarStore sharedCalendarStore];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -41,8 +41,8 @@ uint64_t __44__SearchUICalendarStore_sharedCalendarStore__block_invoke()
   v11[3] = &unk_1E85B44F8;
   v12 = v7;
   v13 = v6;
-  v14 = v5;
-  v8 = v5;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v6;
   v10 = v7;
   [v10 requestFullAccessToEventsWithCompletion:v11];
@@ -84,22 +84,22 @@ LABEL_8:
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)eventControllerWithIdentifier:(id)a3
++ (id)eventControllerWithIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [identifier componentsSeparatedByString:@"."];
   v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
   v5 = [v4 componentsJoinedByString:@"."];
   v6 = MEMORY[0x1E695DF00];
   [v5 doubleValue];
   v7 = [v6 dateWithTimeIntervalSinceReferenceDate:?];
   v8 = +[SearchUICalendarStore sharedCalendarStore];
-  v9 = [v3 firstObject];
-  v10 = [v8 calendarItemsWithExternalIdentifier:v9];
-  v11 = [v10 firstObject];
+  firstObject = [v3 firstObject];
+  v10 = [v8 calendarItemsWithExternalIdentifier:firstObject];
+  firstObject2 = [v10 firstObject];
 
   v12 = +[SearchUICalendarStore sharedCalendarStore];
-  v13 = [v11 uniqueId];
-  v14 = [v12 eventWithUniqueId:v13 occurrenceDate:v7];
+  uniqueId = [firstObject2 uniqueId];
+  v14 = [v12 eventWithUniqueId:uniqueId occurrenceDate:v7];
 
   if (v14)
   {
@@ -116,9 +116,9 @@ LABEL_8:
 
 + (id)colorForDefaultCalendarForNewEvents
 {
-  v2 = [a1 sharedCalendarStore];
-  v3 = [v2 defaultCalendarForNewEvents];
-  v4 = CGColorRetain([v3 CGColor]);
+  sharedCalendarStore = [self sharedCalendarStore];
+  defaultCalendarForNewEvents = [sharedCalendarStore defaultCalendarForNewEvents];
+  v4 = CGColorRetain([defaultCalendarForNewEvents CGColor]);
 
   if (v4)
   {

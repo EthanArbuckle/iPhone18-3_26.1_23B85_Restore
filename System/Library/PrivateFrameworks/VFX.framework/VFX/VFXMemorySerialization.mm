@@ -1,26 +1,26 @@
 @interface VFXMemorySerialization
-+ (id)readKeyframeAnimation:(void *)a3;
-+ (id)readString:(void *)a3;
-+ (int)readInt32:(void *)a3;
-+ (int64_t)readInt64:(void *)a3;
-+ (int64_t)readInt:(void *)a3;
-+ (unint64_t)readUInt64:(void *)a3;
-+ (unsigned)readUInt32:(void *)a3;
-+ (void)writeInt32:(int)a3 to:(void *)a4;
-+ (void)writeInt64:(int64_t)a3 to:(void *)a4;
-+ (void)writeInt:(int64_t)a3 to:(void *)a4;
-+ (void)writeKeyframeAnimation:(id)a3 to:(void *)a4;
-+ (void)writeSIMD3x3F:(__n128)a3 to:(uint64_t)a4;
-+ (void)writeSIMD4x4F:(__n128)a3 to:(__n128)a4;
-+ (void)writeString:(id)a3 to:(void *)a4;
-+ (void)writeUInt32:(unsigned int)a3 to:(void *)a4;
-+ (void)writeUInt64:(unint64_t)a3 to:(void *)a4;
++ (id)readKeyframeAnimation:(void *)animation;
++ (id)readString:(void *)string;
++ (int)readInt32:(void *)int32;
++ (int64_t)readInt64:(void *)int64;
++ (int64_t)readInt:(void *)int;
++ (unint64_t)readUInt64:(void *)int64;
++ (unsigned)readUInt32:(void *)int32;
++ (void)writeInt32:(int)int32 to:(void *)to;
++ (void)writeInt64:(int64_t)int64 to:(void *)to;
++ (void)writeInt:(int64_t)int to:(void *)to;
++ (void)writeKeyframeAnimation:(id)animation to:(void *)to;
++ (void)writeSIMD3x3F:(__n128)f to:(uint64_t)to;
++ (void)writeSIMD4x4F:(__n128)f to:(__n128)to;
++ (void)writeString:(id)string to:(void *)to;
++ (void)writeUInt32:(unsigned int)int32 to:(void *)to;
++ (void)writeUInt64:(unint64_t)int64 to:(void *)to;
 - (VFXMemorySerialization)init;
 @end
 
 @implementation VFXMemorySerialization
 
-+ (id)readString:(void *)a3
++ (id)readString:(void *)string
 {
   sub_1AFDFCEB8();
   v3 = sub_1AFDFCEC8();
@@ -28,23 +28,23 @@
   return v3;
 }
 
-+ (void)writeString:(id)a3 to:(void *)a4
++ (void)writeString:(id)string to:(void *)to
 {
   v5 = sub_1AFDFCEF8();
-  _s3VFX22VFXMemorySerializationC11writeString_2toySS_SvtFZ_0(v5, v6, a4);
+  _s3VFX22VFXMemorySerializationC11writeString_2toySS_SvtFZ_0(v5, v6, to);
 }
 
-+ (id)readKeyframeAnimation:(void *)a3
++ (id)readKeyframeAnimation:(void *)animation
 {
-  v3 = [objc_allocWithZone(MEMORY[0x1E6979390]) initWithSerializedVFXBindingDataPointer_];
+  initWithSerializedVFXBindingDataPointer_ = [objc_allocWithZone(MEMORY[0x1E6979390]) initWithSerializedVFXBindingDataPointer_];
 
-  return v3;
+  return initWithSerializedVFXBindingDataPointer_;
 }
 
-+ (void)writeKeyframeAnimation:(id)a3 to:(void *)a4
++ (void)writeKeyframeAnimation:(id)animation to:(void *)to
 {
-  v4 = a3;
-  _s3VFX22VFXMemorySerializationC22writeKeyframeAnimation_2toySo010CAKeyframeF0C_SvtFZ_0(v4);
+  animationCopy = animation;
+  _s3VFX22VFXMemorySerializationC22writeKeyframeAnimation_2toySo010CAKeyframeF0C_SvtFZ_0(animationCopy);
 }
 
 - (VFXMemorySerialization)init
@@ -54,79 +54,79 @@
   return [(VFXMemorySerialization *)&v3 init];
 }
 
-+ (void)writeSIMD3x3F:(__n128)a3 to:(uint64_t)a4
++ (void)writeSIMD3x3F:(__n128)f to:(uint64_t)to
 {
-  *a6 = a1;
+  *a6 = self;
   a6[1] = a2;
-  a6[2] = a3;
+  a6[2] = f;
 }
 
-+ (void)writeSIMD4x4F:(__n128)a3 to:(__n128)a4
++ (void)writeSIMD4x4F:(__n128)f to:(__n128)to
 {
-  *a7 = a1;
+  *a7 = self;
   a7[1] = a2;
-  a7[2] = a3;
-  a7[3] = a4;
+  a7[2] = f;
+  a7[3] = to;
 }
 
-+ (int64_t)readInt:(void *)a3
++ (int64_t)readInt:(void *)int
 {
 
-  return sub_1AF0F2358(a1, a2, a3);
+  return sub_1AF0F2358(self, a2, int);
 }
 
-+ (unint64_t)readUInt64:(void *)a3
++ (unint64_t)readUInt64:(void *)int64
 {
 
-  return sub_1AF0F2358(a1, a2, a3);
+  return sub_1AF0F2358(self, a2, int64);
 }
 
-+ (int)readInt32:(void *)a3
++ (int)readInt32:(void *)int32
 {
 
-  return sub_1AF0F230C(a1, a2, a3);
+  return sub_1AF0F230C(self, a2, int32);
 }
 
-+ (unsigned)readUInt32:(void *)a3
++ (unsigned)readUInt32:(void *)int32
 {
 
-  return sub_1AF0F230C(a1, a2, a3);
+  return sub_1AF0F230C(self, a2, int32);
 }
 
-+ (int64_t)readInt64:(void *)a3
++ (int64_t)readInt64:(void *)int64
 {
 
-  return sub_1AF0F2358(a1, a2, a3);
+  return sub_1AF0F2358(self, a2, int64);
 }
 
-+ (void)writeInt:(int64_t)a3 to:(void *)a4
++ (void)writeInt:(int64_t)int to:(void *)to
 {
 
-  sub_1AF0F23A4(a1, a2, a3, a4);
+  sub_1AF0F23A4(self, a2, int, to);
 }
 
-+ (void)writeUInt64:(unint64_t)a3 to:(void *)a4
++ (void)writeUInt64:(unint64_t)int64 to:(void *)to
 {
 
-  sub_1AF0F23A4(a1, a2, a3, a4);
+  sub_1AF0F23A4(self, a2, int64, to);
 }
 
-+ (void)writeUInt32:(unsigned int)a3 to:(void *)a4
++ (void)writeUInt32:(unsigned int)int32 to:(void *)to
 {
 
-  sub_1AF0F23F0(a1, a2, a3, a4);
+  sub_1AF0F23F0(self, a2, int32, to);
 }
 
-+ (void)writeInt32:(int)a3 to:(void *)a4
++ (void)writeInt32:(int)int32 to:(void *)to
 {
 
-  sub_1AF0F23F0(a1, a2, a3, a4);
+  sub_1AF0F23F0(self, a2, int32, to);
 }
 
-+ (void)writeInt64:(int64_t)a3 to:(void *)a4
++ (void)writeInt64:(int64_t)int64 to:(void *)to
 {
 
-  sub_1AF0F23A4(a1, a2, a3, a4);
+  sub_1AF0F23A4(self, a2, int64, to);
 }
 
 @end

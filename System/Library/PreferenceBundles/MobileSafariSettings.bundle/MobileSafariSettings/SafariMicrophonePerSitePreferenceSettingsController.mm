@@ -6,10 +6,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariMediaCapturePerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 microphoneMediaCapturePreference];
+  preferenceManager = [(SafariMediaCapturePerSitePreferenceSettingsController *)self preferenceManager];
+  microphoneMediaCapturePreference = [preferenceManager microphoneMediaCapturePreference];
 
-  return v3;
+  return microphoneMediaCapturePreference;
 }
 
 @end

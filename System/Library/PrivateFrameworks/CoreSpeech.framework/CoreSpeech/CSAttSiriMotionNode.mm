@@ -1,9 +1,9 @@
 @interface CSAttSiriMotionNode
 - (CSAttSiriController)attSiriController;
-- (CSAttSiriMotionNode)initWithAttSiriController:(id)a3;
-- (void)_hasDeviceMotionAvailable:(id)a3;
-- (void)addReceiver:(id)a3;
-- (void)removeReceiver:(id)a3;
+- (CSAttSiriMotionNode)initWithAttSiriController:(id)controller;
+- (void)_hasDeviceMotionAvailable:(id)available;
+- (void)addReceiver:(id)receiver;
+- (void)removeReceiver:(id)receiver;
 - (void)start;
 - (void)stop;
 @end
@@ -28,37 +28,37 @@
   dispatch_async(queue, block);
 }
 
-- (void)_hasDeviceMotionAvailable:(id)a3
+- (void)_hasDeviceMotionAvailable:(id)available
 {
   v27[0] = @"timestamp";
-  v4 = a3;
+  availableCopy = available;
   v24 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
   v28[0] = v24;
   v27[1] = @"pitch";
-  v23 = [v4 attitude];
-  [v23 pitch];
+  attitude = [availableCopy attitude];
+  [attitude pitch];
   v22 = [NSNumber numberWithDouble:?];
   v28[1] = v22;
   v27[2] = @"yaw";
-  v21 = [v4 attitude];
-  [v21 yaw];
+  attitude2 = [availableCopy attitude];
+  [attitude2 yaw];
   v20 = [NSNumber numberWithDouble:?];
   v28[2] = v20;
   v27[3] = @"roll";
-  v19 = [v4 attitude];
-  [v19 roll];
+  attitude3 = [availableCopy attitude];
+  [attitude3 roll];
   v5 = [NSNumber numberWithDouble:?];
   v28[3] = v5;
   v27[4] = @"x";
-  [v4 userAcceleration];
+  [availableCopy userAcceleration];
   v6 = [NSNumber numberWithDouble:?];
   v28[4] = v6;
   v27[5] = @"y";
-  [v4 userAcceleration];
+  [availableCopy userAcceleration];
   v8 = [NSNumber numberWithDouble:v7];
   v28[5] = v8;
   v27[6] = @"z";
-  [v4 userAcceleration];
+  [availableCopy userAcceleration];
   v10 = v9;
 
   v11 = [NSNumber numberWithDouble:v10];
@@ -99,37 +99,37 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000ED888;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000ED974;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriMotionNode)initWithAttSiriController:(id)a3
+- (CSAttSiriMotionNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = CSAttSiriMotionNode;
   v5 = [(CSAttSiriMotionNode *)&v13 init];
@@ -148,7 +148,7 @@
     requiredNodes = v5->_requiredNodes;
     v5->_requiredNodes = 0;
 
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
     mhId = v5->_mhId;
     v5->_mhId = 0;
   }

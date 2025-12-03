@@ -1,14 +1,14 @@
 @interface TSTWidthHeightCollection
 - (id).cxx_construct;
-- (void)addFittingHeight:(double)a3 forCellID:(TSUCellCoord)a4;
-- (void)addFittingWidth:(double)a3 forCellID:(TSUCellCoord)a4;
-- (void)enumerateFittingHeightsUsingBlock:(id)a3;
-- (void)enumerateFittingWidthsUsingBlock:(id)a3;
+- (void)addFittingHeight:(double)height forCellID:(TSUCellCoord)d;
+- (void)addFittingWidth:(double)width forCellID:(TSUCellCoord)d;
+- (void)enumerateFittingHeightsUsingBlock:(id)block;
+- (void)enumerateFittingWidthsUsingBlock:(id)block;
 @end
 
 @implementation TSTWidthHeightCollection
 
-- (void)addFittingHeight:(double)a3 forCellID:(TSUCellCoord)a4
+- (void)addFittingHeight:(double)height forCellID:(TSUCellCoord)d
 {
   end = self->_fittingHeights.__end_;
   cap = self->_fittingHeights.__cap_;
@@ -44,8 +44,8 @@
     }
 
     v13 = 16 * v9;
-    *v13 = a4;
-    *(v13 + 8) = a3;
+    *v13 = d;
+    *(v13 + 8) = height;
     v7 = (16 * v9 + 16);
     v14 = self->_fittingHeights.__begin_;
     v15 = (self->_fittingHeights.__end_ - v14);
@@ -63,35 +63,35 @@
 
   else
   {
-    *end = a4;
-    end[1] = a3;
+    *end = d;
+    end[1] = height;
     v7 = end + 2;
   }
 
   self->_fittingHeights.__end_ = v7;
 }
 
-- (void)addFittingWidth:(double)a3 forCellID:(TSUCellCoord)a4
+- (void)addFittingWidth:(double)width forCellID:(TSUCellCoord)d
 {
-  HIDWORD(v7[0]) = *&a4.column;
+  HIDWORD(v7[0]) = *&d.column;
   v6 = sub_2210C3024(&self->_columnToMaxFittingWidths.__table_.__bucket_list_.__ptr_, v7 + 2);
-  if (v6 && *(v6 + 3) > a3)
+  if (v6 && *(v6 + 3) > width)
   {
-    a3 = *(v6 + 3);
+    width = *(v6 + 3);
   }
 
   v7[2] = v7 + 4;
-  *(sub_2210C30DC(&self->_columnToMaxFittingWidths.__table_.__bucket_list_.__ptr_, v7 + 2) + 3) = a3;
+  *(sub_2210C30DC(&self->_columnToMaxFittingWidths.__table_.__bucket_list_.__ptr_, v7 + 2) + 3) = width;
 }
 
-- (void)enumerateFittingHeightsUsingBlock:(id)a3
+- (void)enumerateFittingHeightsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = 0;
   begin = self->_fittingHeights.__begin_;
   for (i = self->_fittingHeights.__end_; begin != i; begin += 2)
   {
-    v4[2](v4, *begin, &v7, begin[1]);
+    blockCopy[2](blockCopy, *begin, &v7, begin[1]);
     if (v7)
     {
       break;
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)enumerateFittingWidthsUsingBlock:(id)a3
+- (void)enumerateFittingWidthsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = 0;
   p_first_node = &self->_columnToMaxFittingWidths.__table_.__first_node_;
   do
@@ -112,7 +112,7 @@
       break;
     }
 
-    v4[2](v4, LOWORD(p_first_node[2].__next_), &v6, *&p_first_node[3].__next_);
+    blockCopy[2](blockCopy, LOWORD(p_first_node[2].__next_), &v6, *&p_first_node[3].__next_);
   }
 
   while ((v6 & 1) == 0);

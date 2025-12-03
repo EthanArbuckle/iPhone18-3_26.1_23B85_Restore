@@ -1,24 +1,24 @@
 @interface ContextSyncClient
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDeviceTypes:(int64_t)a7 withError:(id *)a8;
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDevices:(id)a7 withError:(id *)a8;
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6;
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6 withError:(id *)a7;
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDevices:(id)a6 withError:(id *)a7;
-- (ContextSyncClient)initWithClientName:(id)a3;
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withError:(id *)error;
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDevices:(id)devices withError:(id *)error;
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types;
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types withError:(id *)error;
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDevices:(id)devices withError:(id *)error;
+- (ContextSyncClient)initWithClientName:(id)name;
 @end
 
 @implementation ContextSyncClient
 
-- (ContextSyncClient)initWithClientName:(id)a3
+- (ContextSyncClient)initWithClientName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = ContextSyncClient;
   v6 = [(ContextSyncClient *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientName, a3);
+    objc_storeStrong(&v6->_clientName, name);
     v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.biome.ContextSync" options:4096];
     connection = v7->_connection;
     v7->_connection = v8;
@@ -87,17 +87,17 @@ void __92__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_should
   }
 }
 
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDeviceTypes:(int64_t)a7 withError:(id *)a8
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  caseCopy = case;
   v17 = __biome_log_for_category();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:types];
     *buf = 138412546;
     *&buf[4] = v18;
     *&buf[12] = 2112;
@@ -105,12 +105,12 @@ void __92__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_should
     _os_log_impl(&dword_244177000, v17, OS_LOG_TYPE_INFO, "Received DSL with options %@ for device types %@", buf, 0x16u);
   }
 
-  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:v14 useCase:v16 withError:a8])
+  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:updatesCopy useCase:caseCopy withError:error])
   {
     goto LABEL_15;
   }
 
-  if (!v15)
+  if (!identifierCopy)
   {
     v24 = __biome_log_for_category();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -118,7 +118,7 @@ void __92__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_should
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    [BMDistributedContextUtilities updateDescriptionForError:a8 withErrorCode:5];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:5];
 LABEL_15:
     v23 = 0;
     goto LABEL_16;
@@ -149,7 +149,7 @@ LABEL_15:
   v28[3] = &unk_278E07B60;
   v28[4] = &v30;
   v28[5] = buf;
-  [v21 registerForUpdates:v14 withIdentifier:v15 forUseCase:v16 withOptions:a6 forDeviceTypes:a7 withErrorHandler:v28];
+  [v21 registerForUpdates:updatesCopy withIdentifier:identifierCopy forUseCase:caseCopy withOptions:options forDeviceTypes:types withErrorHandler:v28];
 
   if ((v31[3] & 1) == 0 && *(*&buf[8] + 40))
   {
@@ -161,9 +161,9 @@ LABEL_15:
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
   }
 
@@ -192,30 +192,30 @@ void __103__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_withO
   *(v5 + 40) = v3;
 }
 
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDevices:(id)a7 withError:(id *)a8
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDevices:(id)devices withError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  caseCopy = case;
+  devicesCopy = devices;
   v19 = __biome_log_for_category();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
     *buf = 138412546;
     *&buf[4] = v20;
     *&buf[12] = 2112;
-    *&buf[14] = v18;
+    *&buf[14] = devicesCopy;
     _os_log_impl(&dword_244177000, v19, OS_LOG_TYPE_INFO, "Received DSL with options %@ for devices %@", buf, 0x16u);
   }
 
-  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:v15 useCase:v17 withError:a8])
+  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:updatesCopy useCase:caseCopy withError:error])
   {
     goto LABEL_15;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     v25 = __biome_log_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -223,7 +223,7 @@ void __103__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_withO
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    [BMDistributedContextUtilities updateDescriptionForError:a8 withErrorCode:5];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:5];
 LABEL_15:
     v24 = 0;
     goto LABEL_16;
@@ -254,7 +254,7 @@ LABEL_15:
   v28[3] = &unk_278E07B60;
   v28[4] = &v30;
   v28[5] = buf;
-  [v22 registerForUpdates:v15 withIdentifier:v16 forUseCase:v17 withOptions:a6 forDevices:v18 withErrorHandler:v28];
+  [v22 registerForUpdates:updatesCopy withIdentifier:identifierCopy forUseCase:caseCopy withOptions:options forDevices:devicesCopy withErrorHandler:v28];
 
   if ((v31[3] & 1) == 0 && *(*&buf[8] + 40))
   {
@@ -266,9 +266,9 @@ LABEL_15:
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
   }
 
@@ -297,27 +297,27 @@ void __99__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_withOp
   *(v5 + 40) = v3;
 }
 
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6 withError:(id *)a7
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  caseCopy = case;
   v16 = __biome_log_for_category();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:types];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v17;
     _os_log_impl(&dword_244177000, v16, OS_LOG_TYPE_INFO, "Client unregistered DSL for devices types %@", &buf, 0xCu);
   }
 
-  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:v13 useCase:v15 withError:a7])
+  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:updatesCopy useCase:caseCopy withError:error])
   {
     goto LABEL_15;
   }
 
-  if (!v14)
+  if (!identifierCopy)
   {
     v22 = __biome_log_for_category();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -325,7 +325,7 @@ void __99__ContextSyncClient_registerForUpdates_withIdentifier_forUseCase_withOp
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:5];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:5];
 LABEL_15:
     v21 = 0;
     goto LABEL_16;
@@ -356,7 +356,7 @@ LABEL_15:
   v25[3] = &unk_278E07B60;
   v25[4] = &v27;
   v25[5] = &buf;
-  [v19 unregisterForUpdates:v13 withIdentifier:v14 forUseCase:v15 forDeviceTypes:a6 withErrorHandler:v25];
+  [v19 unregisterForUpdates:updatesCopy withIdentifier:identifierCopy forUseCase:caseCopy forDeviceTypes:types withErrorHandler:v25];
 
   if ((v28[3] & 1) == 0 && *(*(&buf + 1) + 40))
   {
@@ -368,9 +368,9 @@ LABEL_15:
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -399,27 +399,27 @@ void __93__ContextSyncClient_unregisterForUpdates_withIdentifier_forUseCase_forD
   *(v5 + 40) = v3;
 }
 
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDevices:(id)a6 withError:(id *)a7
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDevices:(id)devices withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  caseCopy = case;
+  devicesCopy = devices;
   v17 = __biome_log_for_category();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = devicesCopy;
     _os_log_impl(&dword_244177000, v17, OS_LOG_TYPE_INFO, "Client unregistered DSL for devices types %@", &buf, 0xCu);
   }
 
-  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:v13 useCase:v15 withError:a7])
+  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:updatesCopy useCase:caseCopy withError:error])
   {
     goto LABEL_15;
   }
 
-  if (!v14)
+  if (!identifierCopy)
   {
     v22 = __biome_log_for_category();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -427,7 +427,7 @@ void __93__ContextSyncClient_unregisterForUpdates_withIdentifier_forUseCase_forD
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:5];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:5];
 LABEL_15:
     v21 = 0;
     goto LABEL_16;
@@ -458,7 +458,7 @@ LABEL_15:
   v25[3] = &unk_278E07B60;
   v25[4] = &v27;
   v25[5] = &buf;
-  [v19 unregisterForUpdates:v13 withIdentifier:v14 forUseCase:v15 forDevices:v16 withErrorHandler:v25];
+  [v19 unregisterForUpdates:updatesCopy withIdentifier:identifierCopy forUseCase:caseCopy forDevices:devicesCopy withErrorHandler:v25];
 
   if ((v28[3] & 1) == 0 && *(*(&buf + 1) + 40))
   {
@@ -470,9 +470,9 @@ LABEL_15:
       [ContextSyncClient registerForUpdates:withIdentifier:forUseCase:shouldWake:forDeviceTypes:withError:];
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -501,27 +501,27 @@ void __89__ContextSyncClient_unregisterForUpdates_withIdentifier_forUseCase_forD
   *(v5 + 40) = v3;
 }
 
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  caseCopy = case;
   v14 = __biome_log_for_category();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:types];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v15;
     _os_log_impl(&dword_244177000, v14, OS_LOG_TYPE_INFO, "Client unregistered DSL for devices types %@", &buf, 0xCu);
   }
 
-  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:v11 useCase:v13 withError:0])
+  if (![BMDistributedContextUtilities isSupportEnabledForBMDSL:updatesCopy useCase:caseCopy withError:0])
   {
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
     v19 = __biome_log_for_category();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -551,8 +551,8 @@ LABEL_9:
   v22[2] = __83__ContextSyncClient_unregisterForUpdates_withIdentifier_forUseCase_forDeviceTypes___block_invoke_66;
   v22[3] = &unk_278E07BB0;
   p_buf = &buf;
-  v23 = v12;
-  [v17 unregisterForUpdates:v11 withIdentifier:v23 forUseCase:v13 forDeviceTypes:a6 withErrorHandler:v22];
+  v23 = identifierCopy;
+  [v17 unregisterForUpdates:updatesCopy withIdentifier:v23 forUseCase:caseCopy forDeviceTypes:types withErrorHandler:v22];
 
   v18 = *(*(&buf + 1) + 24);
   _Block_object_dispose(&buf, 8);

@@ -3,8 +3,8 @@
 + ($9FE6E10C8CE45DBC9A88DFDEA39A390D)currentOSVersionStruct;
 + (BOOL)_condensesHeartRateSamples;
 + (BOOL)_futureMigrationsEnabled;
-+ (BOOL)_hasCompletedBuddyWithKey:(id)a3 version:(int64_t)a4;
-+ (BOOL)_hasCompletedBuddyWithVersion:(int64_t)a3;
++ (BOOL)_hasCompletedBuddyWithKey:(id)key version:(int64_t)version;
++ (BOOL)_hasCompletedBuddyWithVersion:(int64_t)version;
 + (BOOL)_healthAppHidden;
 + (BOOL)_healthAppNotInstalled;
 + (BOOL)_isAppleInternalInstall;
@@ -50,15 +50,15 @@
 + (id)currentOSName;
 + (id)currentOSVersion;
 + (id)sharedBehavior;
-+ (int)nanoSyncProtocolVersionForCompanionSystemBuildVersion:(id)a3;
-+ (int)nanoSyncProtocolVersionForWatchSystemBuildVersion:(id)a3;
++ (int)nanoSyncProtocolVersionForCompanionSystemBuildVersion:(id)version;
++ (int)nanoSyncProtocolVersionForWatchSystemBuildVersion:(id)version;
 + (unint64_t)_fitnessMode;
 + (void)_healthAppNotInstalled;
-+ (void)_setHasCompletedBuddyWithKey:(id)a3 version:(int64_t)a4;
-+ (void)_setHasCompletedBuddyWithVersion:(int64_t)a3;
++ (void)_setHasCompletedBuddyWithKey:(id)key version:(int64_t)version;
++ (void)_setHasCompletedBuddyWithVersion:(int64_t)version;
 + (void)resetSharedBehavior;
-+ (void)setSharedBehavior:(id)a3;
-- (BOOL)_hasProductTypePrefix:(id)a3;
++ (void)setSharedBehavior:(id)behavior;
+- (BOOL)_hasProductTypePrefix:(id)prefix;
 - (BOOL)enableBloodPressureValidations;
 - (BOOL)futureMigrationsEnabled;
 - (BOOL)healthAppHidden;
@@ -115,36 +115,36 @@
 - (void)_setDeviceSpecificBehaviors;
 - (void)_setSharedBehaviors;
 - (void)resetSupportsCloudSync;
-- (void)setCurrentDeviceDisplayName:(id)a3;
-- (void)setCurrentOSVersionStruct:(id *)a3;
-- (void)setFitnessMode:(unint64_t)a3;
-- (void)setFutureMigrationsEnabled:(BOOL)a3;
-- (void)setIsAppleWatch:(BOOL)a3;
-- (void)setIsProdFused:(BOOL)a3;
-- (void)setIsRealityDevice:(BOOL)a3;
-- (void)setIsRunningStoreDemoMode:(BOOL)a3;
-- (void)setIsVirtualDevice:(BOOL)a3;
-- (void)setIsiPad:(BOOL)a3;
-- (void)setPerformsAutomaticUserDomainConceptProcessing:(BOOL)a3;
-- (void)setRunningInStoreDemoModeF201:(BOOL)a3;
-- (void)setShouldReceiveECGSamples:(BOOL)a3;
-- (void)setSupportsCloudSync:(BOOL)a3;
-- (void)setSupportsCloudSyncSharding:(BOOL)a3;
-- (void)setSupportsCloudSyncStagingShard:(BOOL)a3;
-- (void)setSupportsCoordinatedCloudSync:(BOOL)a3;
-- (void)setSupportsOntologyDatabaseFutureMigrations:(BOOL)a3;
-- (void)setSupportsPeriodicFullCloudSync:(BOOL)a3;
-- (void)setSupportsPeriodicLiteCloudSync:(BOOL)a3;
+- (void)setCurrentDeviceDisplayName:(id)name;
+- (void)setCurrentOSVersionStruct:(id *)struct;
+- (void)setFitnessMode:(unint64_t)mode;
+- (void)setFutureMigrationsEnabled:(BOOL)enabled;
+- (void)setIsAppleWatch:(BOOL)watch;
+- (void)setIsProdFused:(BOOL)fused;
+- (void)setIsRealityDevice:(BOOL)device;
+- (void)setIsRunningStoreDemoMode:(BOOL)mode;
+- (void)setIsVirtualDevice:(BOOL)device;
+- (void)setIsiPad:(BOOL)pad;
+- (void)setPerformsAutomaticUserDomainConceptProcessing:(BOOL)processing;
+- (void)setRunningInStoreDemoModeF201:(BOOL)f201;
+- (void)setShouldReceiveECGSamples:(BOOL)samples;
+- (void)setSupportsCloudSync:(BOOL)sync;
+- (void)setSupportsCloudSyncSharding:(BOOL)sharding;
+- (void)setSupportsCloudSyncStagingShard:(BOOL)shard;
+- (void)setSupportsCoordinatedCloudSync:(BOOL)sync;
+- (void)setSupportsOntologyDatabaseFutureMigrations:(BOOL)migrations;
+- (void)setSupportsPeriodicFullCloudSync:(BOOL)sync;
+- (void)setSupportsPeriodicLiteCloudSync:(BOOL)sync;
 @end
 
 @implementation _HKBehavior
 
 + (BOOL)isAppleInternalInstall
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isAppleInternalInstall];
+  sharedBehavior = [self sharedBehavior];
+  isAppleInternalInstall = [sharedBehavior isAppleInternalInstall];
 
-  return v3;
+  return isAppleInternalInstall;
 }
 
 + (id)sharedBehavior
@@ -176,9 +176,9 @@
 
 + (BOOL)activePairedWatchHasSmartFitnessCoaching
 {
-  v2 = [objc_opt_class() _getActivePairedDevice];
+  _getActivePairedDevice = [objc_opt_class() _getActivePairedDevice];
   v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"6ADE877A-70EB-43A1-A4D1-3E4BB50EFA54"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [_getActivePairedDevice supportsCapability:v3];
 
   return v4;
 }
@@ -186,10 +186,10 @@
 - (BOOL)futureMigrationsEnabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   v7[0] = &unk_1F05F5FD8;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v8 = v7;
   os_unfair_lock_lock(&self->_futureMigrationsEnabled._loadLock);
   if (self->_futureMigrationsEnabled._hasLoaded)
@@ -211,7 +211,7 @@
 
   os_unfair_lock_unlock(&self->_futureMigrationsEnabled._loadLock);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v7);
-  os_unfair_lock_unlock(&v6->_overrideBehaviorLock);
+  os_unfair_lock_unlock(&selfCopy->_overrideBehaviorLock);
   v4 = *MEMORY[0x1E69E9840];
   return value & 1;
 }
@@ -247,18 +247,18 @@
 
 + (id)currentDeviceProductType
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceProductType];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceProductType = [sharedBehavior currentDeviceProductType];
 
-  return v3;
+  return currentDeviceProductType;
 }
 
 + (id)currentDeviceDisplayName
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceDisplayName];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceDisplayName = [sharedBehavior currentDeviceDisplayName];
 
-  return v3;
+  return currentDeviceDisplayName;
 }
 
 - (NSString)currentDeviceDisplayName
@@ -283,12 +283,12 @@
   return v6;
 }
 
-+ (void)setSharedBehavior:(id)a3
++ (void)setSharedBehavior:(id)behavior
 {
-  v3 = a3;
+  behaviorCopy = behavior;
   os_unfair_lock_lock(&_sharedBehaviorLock);
   v4 = _sharedBehaviorOverride;
-  _sharedBehaviorOverride = v3;
+  _sharedBehaviorOverride = behaviorCopy;
 
   os_unfair_lock_unlock(&_sharedBehaviorLock);
 }
@@ -302,60 +302,60 @@
   os_unfair_lock_unlock(&_sharedBehaviorLock);
 }
 
-+ (int)nanoSyncProtocolVersionForWatchSystemBuildVersion:(id)a3
++ (int)nanoSyncProtocolVersionForWatchSystemBuildVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 hk_compareBuildVersionWithString:@"15R1"] == -1)
+  versionCopy = version;
+  if ([versionCopy hk_compareBuildVersionWithString:@"15R1"] == -1)
   {
     v4 = 5;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16R1"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16R1"] == -1)
   {
     v4 = 6;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16R565"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16R5000", @"16R5565") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16R565"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16R5000", @"16R5565") & 1) != 0)
   {
     v4 = 8;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16S36"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16S5000", @"16S5036") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16S36"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16S5000", @"16S5036") & 1) != 0)
   {
     v4 = 9;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"17R540"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"17R5000", @"17R5540") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"17R540"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"17R5000", @"17R5540") & 1) != 0)
   {
     v4 = 10;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"18R325"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"18R5000", @"18R5325") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"18R325"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"18R5000", @"18R5325") & 1) != 0)
   {
     v4 = 11;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"19R321"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"19R5000", @"19R5321") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"19R321"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"19R5000", @"19R5321") & 1) != 0)
   {
     v4 = 12;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"20R263"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"20R263"] == -1)
   {
     v4 = 13;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"21R305"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"21R5000", @"21R5304") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"21R305"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"21R5000", @"21R5304") & 1) != 0)
   {
     v4 = 14;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"22R278"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"22R278"] == -1)
   {
     v4 = 15;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"23R278"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"23R278"] == -1)
   {
     v4 = 16;
   }
@@ -368,60 +368,60 @@
   return v4;
 }
 
-+ (int)nanoSyncProtocolVersionForCompanionSystemBuildVersion:(id)a3
++ (int)nanoSyncProtocolVersionForCompanionSystemBuildVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 hk_compareBuildVersionWithString:@"15A1"] == -1)
+  versionCopy = version;
+  if ([versionCopy hk_compareBuildVersionWithString:@"15A1"] == -1)
   {
     v4 = 5;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16A1"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16A1"] == -1)
   {
     v4 = 6;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16B65"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16B5000", @"16B5065") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16B65"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16B5000", @"16B5065") & 1) != 0)
   {
     v4 = 8;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"16C37"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16C5000", @"16C5037") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"16C37"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"16C5000", @"16C5037") & 1) != 0)
   {
     v4 = 9;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"17A540"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"17A5000", @"17A5540") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"17A540"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"17A5000", @"17A5540") & 1) != 0)
   {
     v4 = 10;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"18A315"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"18A5000", @"18A5315") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"18A315"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"18A5000", @"18A5315") & 1) != 0)
   {
     v4 = 11;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"19A316"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"19A5000", @"19A5316") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"19A316"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"19A5000", @"19A5316") & 1) != 0)
   {
     v4 = 12;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"20A260"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"20A260"] == -1)
   {
     v4 = 13;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"21A277"] == -1 || (objc_msgSend(v3, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"21A5000", @"21A5276") & 1) != 0)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"21A277"] == -1 || (objc_msgSend(versionCopy, "hk_isBetweenLowerBuildVersion:upperBuildVersion:", @"21A5000", @"21A5276") & 1) != 0)
   {
     v4 = 14;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"22A276"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"22A276"] == -1)
   {
     v4 = 15;
   }
 
-  else if ([v3 hk_compareBuildVersionWithString:@"23A258"] == -1)
+  else if ([versionCopy hk_compareBuildVersionWithString:@"23A258"] == -1)
   {
     v4 = 16;
   }
@@ -436,30 +436,30 @@
 
 + (BOOL)hasPairedWatch
 {
-  v2 = [objc_opt_class() _getActivePairedDevice];
-  v3 = v2 != 0;
+  _getActivePairedDevice = [objc_opt_class() _getActivePairedDevice];
+  v3 = _getActivePairedDevice != 0;
 
   return v3;
 }
 
 + (id)_getActivePairedDevice
 {
-  v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  return v3;
+  return getActivePairedDevice;
 }
 
 + (BOOL)anyPairedWatchHasFlightsClimbedCapability
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 getSetupCompletedDevices];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  getSetupCompletedDevices = [sharedInstance getSetupCompletedDevices];
+  v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -469,7 +469,7 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getSetupCompletedDevices);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
@@ -483,7 +483,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -502,9 +502,9 @@ LABEL_11:
 
 + (BOOL)activePairedWatchSupportsHeartRateMotionContexts
 {
-  v2 = [objc_opt_class() _getActivePairedDevice];
+  _getActivePairedDevice = [objc_opt_class() _getActivePairedDevice];
   v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E17D2903-B868-4E6C-8E76-6D4939BEED44"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [_getActivePairedDevice supportsCapability:v3];
 
   return v4;
 }
@@ -512,13 +512,13 @@ LABEL_11:
 + (BOOL)allPairedWatchesSupportHeartRateMotionContexts
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 getSetupCompletedDevices];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  getSetupCompletedDevices = [sharedInstance getSetupCompletedDevices];
+  v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -528,7 +528,7 @@ LABEL_11:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getSetupCompletedDevices);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
@@ -542,7 +542,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -561,27 +561,27 @@ LABEL_11:
 
 + (BOOL)activePairedWatchSupportsBradycardiaDetection
 {
-  v2 = [a1 activePairedWatchSupportsHeartRateMotionContexts];
-  v3 = [objc_opt_class() _getActivePairedDevice];
-  getNRWatchOSVersionForRemoteDevice(v3);
+  activePairedWatchSupportsHeartRateMotionContexts = [self activePairedWatchSupportsHeartRateMotionContexts];
+  _getActivePairedDevice = [objc_opt_class() _getActivePairedDevice];
+  getNRWatchOSVersionForRemoteDevice(_getActivePairedDevice);
   v5 = v4;
 
   getNRVersionIsGreaterThanOrEqual(v5);
-  return v2 & v6;
+  return activePairedWatchSupportsHeartRateMotionContexts & v6;
 }
 
 + (BOOL)allPairedWatchesSupportBradycardiaDetection
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ([a1 allPairedWatchesSupportHeartRateMotionContexts])
+  if ([self allPairedWatchesSupportHeartRateMotionContexts])
   {
-    v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [v2 getSetupCompletedDevices];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    getSetupCompletedDevices = [sharedInstance getSetupCompletedDevices];
+    v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = *v13;
@@ -591,7 +591,7 @@ LABEL_11:
         {
           if (*v13 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(getSetupCompletedDevices);
           }
 
           getNRWatchOSVersionForRemoteDevice(*(*(&v12 + 1) + 8 * i));
@@ -603,7 +603,7 @@ LABEL_11:
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v4 = [getSetupCompletedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v4)
         {
           continue;
@@ -675,33 +675,33 @@ LABEL_13:
 
 + (BOOL)hasTelephonyCapability
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 hasTelephonyCapability];
+  sharedBehavior = [self sharedBehavior];
+  hasTelephonyCapability = [sharedBehavior hasTelephonyCapability];
 
-  return v3;
+  return hasTelephonyCapability;
 }
 
 + (BOOL)isDeviceSupported
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isDeviceSupported];
+  sharedBehavior = [self sharedBehavior];
+  isDeviceSupported = [sharedBehavior isDeviceSupported];
 
-  return v3;
+  return isDeviceSupported;
 }
 
 + (BOOL)isRunningStoreDemoMode
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isRunningStoreDemoMode];
+  sharedBehavior = [self sharedBehavior];
+  isRunningStoreDemoMode = [sharedBehavior isRunningStoreDemoMode];
 
-  return v3;
+  return isRunningStoreDemoMode;
 }
 
 + (BOOL)isiPod
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceName];
-  v4 = [v3 isEqualToString:@"iPod touch"];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceName = [sharedBehavior currentDeviceName];
+  v4 = [currentDeviceName isEqualToString:@"iPod touch"];
 
   return v4;
 }
@@ -743,11 +743,11 @@ LABEL_13:
   return value & 1;
 }
 
-- (void)setIsProdFused:(BOOL)a3
+- (void)setIsProdFused:(BOOL)fused
 {
   os_unfair_lock_lock(&self->_isProdFused._loadLock);
   self->_isProdFused._hasLoaded = 1;
-  self->_isProdFused._value = a3;
+  self->_isProdFused._value = fused;
 
   os_unfair_lock_unlock(&self->_isProdFused._loadLock);
 }
@@ -781,126 +781,126 @@ LABEL_13:
   return value & 1;
 }
 
-- (void)setIsVirtualDevice:(BOOL)a3
+- (void)setIsVirtualDevice:(BOOL)device
 {
   os_unfair_lock_lock(&self->_isVirtualDevice._loadLock);
   self->_isVirtualDevice._hasLoaded = 1;
-  self->_isVirtualDevice._value = a3;
+  self->_isVirtualDevice._value = device;
 
   os_unfair_lock_unlock(&self->_isVirtualDevice._loadLock);
 }
 
 + (BOOL)runningInStoreDemoModeF201
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 runningInStoreDemoModeF201];
+  sharedBehavior = [self sharedBehavior];
+  runningInStoreDemoModeF201 = [sharedBehavior runningInStoreDemoModeF201];
 
-  return v3;
+  return runningInStoreDemoModeF201;
 }
 
 + (BOOL)isTestingDevice
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isTestingDevice];
+  sharedBehavior = [self sharedBehavior];
+  isTestingDevice = [sharedBehavior isTestingDevice];
 
-  return v3;
+  return isTestingDevice;
 }
 
 + (id)currentDeviceName
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceName];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceName = [sharedBehavior currentDeviceName];
 
-  return v3;
+  return currentDeviceName;
 }
 
 + (id)currentDeviceManufacturer
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceManufacturer];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceManufacturer = [sharedBehavior currentDeviceManufacturer];
 
-  return v3;
+  return currentDeviceManufacturer;
 }
 
 + (id)currentDeviceHWModelString
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceHWModelString];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceHWModelString = [sharedBehavior currentDeviceHWModelString];
 
-  return v3;
+  return currentDeviceHWModelString;
 }
 
 + (id)currentDeviceRegionCode
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceRegionCode];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceRegionCode = [sharedBehavior currentDeviceRegionCode];
 
-  return v3;
+  return currentDeviceRegionCode;
 }
 
 + (id)currentDeviceRegionInfo
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceRegionInfo];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceRegionInfo = [sharedBehavior currentDeviceRegionInfo];
 
-  return v3;
+  return currentDeviceRegionInfo;
 }
 
 + (id)currentDeviceClass
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceClass];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceClass = [sharedBehavior currentDeviceClass];
 
-  return v3;
+  return currentDeviceClass;
 }
 
 + (id)currentDeviceReleaseType
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceReleaseType];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceReleaseType = [sharedBehavior currentDeviceReleaseType];
 
-  return v3;
+  return currentDeviceReleaseType;
 }
 
 + (id)currentDeviceSupportsDynamicIsland
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentDeviceSupportsDynamicIsland];
+  sharedBehavior = [self sharedBehavior];
+  currentDeviceSupportsDynamicIsland = [sharedBehavior currentDeviceSupportsDynamicIsland];
 
-  return v3;
+  return currentDeviceSupportsDynamicIsland;
 }
 
 + (id)currentOSName
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentOSName];
+  sharedBehavior = [self sharedBehavior];
+  currentOSName = [sharedBehavior currentOSName];
 
-  return v3;
+  return currentOSName;
 }
 
 + (id)currentOSBuild
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentOSBuild];
+  sharedBehavior = [self sharedBehavior];
+  currentOSBuild = [sharedBehavior currentOSBuild];
 
-  return v3;
+  return currentOSBuild;
 }
 
 + (id)currentOSVersion
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 currentOSVersion];
+  sharedBehavior = [self sharedBehavior];
+  currentOSVersion = [sharedBehavior currentOSVersion];
 
-  return v3;
+  return currentOSVersion;
 }
 
 + ($9FE6E10C8CE45DBC9A88DFDEA39A390D)currentOSVersionStruct
 {
-  v4 = [a2 sharedBehavior];
-  v6 = v4;
-  if (v4)
+  sharedBehavior = [a2 sharedBehavior];
+  v6 = sharedBehavior;
+  if (sharedBehavior)
   {
-    [v4 currentOSVersionStruct];
+    [sharedBehavior currentOSVersionStruct];
   }
 
   else
@@ -916,43 +916,43 @@ LABEL_13:
 + (BOOL)_healthAppHidden
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  isAppleWatch = [v2 isAppleWatch];
 
-  if (v3)
+  if (isAppleWatch)
   {
-    v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v5 = [v4 restrictedAppBundleIDs];
-    v6 = [v5 containsObject:@"com.apple.Health"];
-    v7 = [v4 parentalControlsBlockedAppBundleIDs];
-    v8 = [v7 containsObject:@"com.apple.Health"];
-    v9 = ([v4 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE98]] == 2) | v6 | v8;
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    restrictedAppBundleIDs = [mEMORY[0x1E69ADFB8] restrictedAppBundleIDs];
+    v6 = [restrictedAppBundleIDs containsObject:@"com.apple.Health"];
+    parentalControlsBlockedAppBundleIDs = [mEMORY[0x1E69ADFB8] parentalControlsBlockedAppBundleIDs];
+    v8 = [parentalControlsBlockedAppBundleIDs containsObject:@"com.apple.Health"];
+    isRestricted = ([mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE98]] == 2) | v6 | v8;
   }
 
   else
   {
     v10 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:@"com.apple.Health" placeholder:0];
-    v4 = v10;
+    mEMORY[0x1E69ADFB8] = v10;
     if (!v10)
     {
-      v9 = 0;
+      isRestricted = 0;
       goto LABEL_6;
     }
 
-    v5 = [v10 appState];
-    v9 = [v5 isRestricted];
+    restrictedAppBundleIDs = [v10 appState];
+    isRestricted = [restrictedAppBundleIDs isRestricted];
   }
 
 LABEL_6:
-  return v9 & 1;
+  return isRestricted & 1;
 }
 
 + (BOOL)_healthAppNotInstalled
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  sharedBehavior = [self sharedBehavior];
+  isAppleWatch = [sharedBehavior isAppleWatch];
 
-  if (v3)
+  if (isAppleWatch)
   {
     v4 = 0;
   }
@@ -970,8 +970,8 @@ LABEL_6:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v9 = objc_opt_class();
-        v10 = [v7 localizedDescription];
-        [(_HKBehavior *)v9 _healthAppNotInstalled:v10];
+        localizedDescription = [v7 localizedDescription];
+        [(_HKBehavior *)v9 _healthAppNotInstalled:localizedDescription];
       }
 
       v4 = 0;
@@ -1010,9 +1010,9 @@ LABEL_6:
   overriddenTinkerModeEnabled = self->_overriddenTinkerModeEnabled;
   if (overriddenTinkerModeEnabled)
   {
-    v4 = [(NSNumber *)overriddenTinkerModeEnabled BOOLValue];
+    bOOLValue = [(NSNumber *)overriddenTinkerModeEnabled BOOLValue];
     os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-    return v4;
+    return bOOLValue;
   }
 
   else
@@ -1088,9 +1088,9 @@ LABEL_6:
   overriddenFitnessMode = self->_overriddenFitnessMode;
   if (overriddenFitnessMode)
   {
-    v4 = [(NSNumber *)overriddenFitnessMode unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)overriddenFitnessMode unsignedIntegerValue];
     os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-    return v4;
+    return unsignedIntegerValue;
   }
 
   else
@@ -1102,10 +1102,10 @@ LABEL_6:
   }
 }
 
-- (void)setFitnessMode:(unint64_t)a3
+- (void)setFitnessMode:(unint64_t)mode
 {
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   overriddenFitnessMode = self->_overriddenFitnessMode;
   self->_overriddenFitnessMode = v5;
 
@@ -1118,9 +1118,9 @@ LABEL_6:
   overriddenSupportsCachedStatisticsCollectionQueries = self->_overriddenSupportsCachedStatisticsCollectionQueries;
   if (overriddenSupportsCachedStatisticsCollectionQueries)
   {
-    v4 = [(NSNumber *)overriddenSupportsCachedStatisticsCollectionQueries BOOLValue];
+    bOOLValue = [(NSNumber *)overriddenSupportsCachedStatisticsCollectionQueries BOOLValue];
     os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-    return v4;
+    return bOOLValue;
   }
 
   else
@@ -1137,9 +1137,9 @@ LABEL_6:
   overriddenSupportsCachedSleepDaySummaryQueries = self->_overriddenSupportsCachedSleepDaySummaryQueries;
   if (overriddenSupportsCachedSleepDaySummaryQueries)
   {
-    v4 = [(NSNumber *)overriddenSupportsCachedSleepDaySummaryQueries BOOLValue];
+    bOOLValue = [(NSNumber *)overriddenSupportsCachedSleepDaySummaryQueries BOOLValue];
     os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-    return v4;
+    return bOOLValue;
   }
 
   else
@@ -1156,9 +1156,9 @@ LABEL_6:
   overriddenSupportsActiveQueryDaemonTransactions = self->_overriddenSupportsActiveQueryDaemonTransactions;
   if (overriddenSupportsActiveQueryDaemonTransactions)
   {
-    v4 = [(NSNumber *)overriddenSupportsActiveQueryDaemonTransactions BOOLValue];
+    bOOLValue = [(NSNumber *)overriddenSupportsActiveQueryDaemonTransactions BOOLValue];
     os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-    return v4;
+    return bOOLValue;
   }
 
   else
@@ -1198,11 +1198,11 @@ LABEL_6:
   return !v0;
 }
 
-- (void)setIsRunningStoreDemoMode:(BOOL)a3
+- (void)setIsRunningStoreDemoMode:(BOOL)mode
 {
   os_unfair_lock_lock(&self->_isRunningStoreDemoMode._loadLock);
   self->_isRunningStoreDemoMode._hasLoaded = 1;
-  self->_isRunningStoreDemoMode._value = a3;
+  self->_isRunningStoreDemoMode._value = mode;
 
   os_unfair_lock_unlock(&self->_isRunningStoreDemoMode._loadLock);
 }
@@ -1236,11 +1236,11 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setRunningInStoreDemoModeF201:(BOOL)a3
+- (void)setRunningInStoreDemoModeF201:(BOOL)f201
 {
   os_unfair_lock_lock(&self->_runningInStoreDemoModeF201._loadLock);
   self->_runningInStoreDemoModeF201._hasLoaded = 1;
-  self->_runningInStoreDemoModeF201._value = a3;
+  self->_runningInStoreDemoModeF201._value = f201;
 
   os_unfair_lock_unlock(&self->_runningInStoreDemoModeF201._loadLock);
 }
@@ -1281,18 +1281,18 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setShouldReceiveECGSamples:(BOOL)a3
+- (void)setShouldReceiveECGSamples:(BOOL)samples
 {
   os_unfair_lock_lock(&self->_shouldReceiveECGSamples._loadLock);
   self->_shouldReceiveECGSamples._hasLoaded = 1;
-  self->_shouldReceiveECGSamples._value = a3;
+  self->_shouldReceiveECGSamples._value = samples;
 
   os_unfair_lock_unlock(&self->_shouldReceiveECGSamples._loadLock);
 }
 
-- (void)setIsAppleWatch:(BOOL)a3
+- (void)setIsAppleWatch:(BOOL)watch
 {
-  if (a3)
+  if (watch)
   {
     v4 = 2;
   }
@@ -1306,9 +1306,9 @@ LABEL_6:
   [(_HKBehavior *)self setDeviceType:v4];
 }
 
-- (void)setIsRealityDevice:(BOOL)a3
+- (void)setIsRealityDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v4 = 3;
   }
@@ -1322,9 +1322,9 @@ LABEL_6:
   [(_HKBehavior *)self setDeviceType:v4];
 }
 
-- (void)setIsiPad:(BOOL)a3
+- (void)setIsiPad:(BOOL)pad
 {
-  if (a3)
+  if (pad)
   {
     v4 = 1;
   }
@@ -1344,17 +1344,17 @@ LABEL_6:
   self->_isAppleInternalInstall = [objc_opt_class() _isAppleInternalInstall];
   self->_isCompanionCapable = MGGetBoolAnswer();
   self->_hasTelephonyCapability = [objc_opt_class() _hasTelephonyCapability];
-  v3 = [objc_opt_class() _currentDeviceName];
+  _currentDeviceName = [objc_opt_class() _currentDeviceName];
   currentDeviceName = self->_currentDeviceName;
-  self->_currentDeviceName = v3;
+  self->_currentDeviceName = _currentDeviceName;
 
-  v5 = [objc_opt_class() _currentOSBuild];
+  _currentOSBuild = [objc_opt_class() _currentOSBuild];
   currentOSBuild = self->_currentOSBuild;
-  self->_currentOSBuild = v5;
+  self->_currentOSBuild = _currentOSBuild;
 
-  v7 = [objc_opt_class() _currentOSVersion];
+  _currentOSVersion = [objc_opt_class() _currentOSVersion];
   currentOSVersion = self->_currentOSVersion;
-  self->_currentOSVersion = v7;
+  self->_currentOSVersion = _currentOSVersion;
 
   v9 = objc_opt_class();
   if (v9)
@@ -1391,15 +1391,15 @@ LABEL_6:
   self->_supportsAWDMetricSubmission = ![(_HKBehavior *)self isAppleWatch];
   v4 = [(_HKBehavior *)self isAppleWatch]|| self->_isCompanionCapable;
   self->_supportsNanoSync = v4;
-  v5 = [(_HKBehavior *)self isAppleWatch];
-  self->_supportsSampleExpiration = v5;
-  self->_supportsComputedUserCharacteristicCaching = !v5;
+  isAppleWatch = [(_HKBehavior *)self isAppleWatch];
+  self->_supportsSampleExpiration = isAppleWatch;
+  self->_supportsComputedUserCharacteristicCaching = !isAppleWatch;
   self->_supportsHeartRateDataCollection = [(_HKBehavior *)self isAppleWatch];
   self->_collectsCalorimetry = [(_HKBehavior *)self isAppleWatch];
   self->_performsAutomaticConceptIndexing = ![(_HKBehavior *)self isAppleWatch];
   self->_performsWorkoutCondensation = [(_HKBehavior *)self isIPhone];
-  v6 = [(_HKBehavior *)self isAppleWatch]|| [(_HKBehavior *)self isIPhone]|| [(_HKBehavior *)self isiPad];
-  self->_supportsWorkouts = v6;
+  isiPad = [(_HKBehavior *)self isAppleWatch]|| [(_HKBehavior *)self isIPhone]|| [(_HKBehavior *)self isiPad];
+  self->_supportsWorkouts = isiPad;
   if ([(_HKBehavior *)self isAppleWatch])
   {
     LOBYTE(v7) = 0;
@@ -1413,20 +1413,20 @@ LABEL_6:
   self->_supportsSharedSummarySync = v7;
   self->_supportsMedicalIDSync = ![(_HKBehavior *)self isRealityDevice];
   self->_canPerformOwnershipTakeover = ![(_HKBehavior *)self isAppleWatch];
-  v8 = [(_HKBehavior *)self isAppleWatch];
-  self->_supportsOntology = !v8;
-  self->_supportsOntologyDatabaseUpdates = !v8;
-  self->_supportsOntologyFeatureEvaluation = !v8;
+  isAppleWatch2 = [(_HKBehavior *)self isAppleWatch];
+  self->_supportsOntology = !isAppleWatch2;
+  self->_supportsOntologyDatabaseUpdates = !isAppleWatch2;
+  self->_supportsOntologyFeatureEvaluation = !isAppleWatch2;
   self->_supportsPeriodicCountryMonitoring = ![(_HKBehavior *)self isAppleWatch];
   self->_ontologyIndexingEnabled = self->_supportsOntology;
   self->_supportsCoreOSDatabaseAssertion = ![(_HKBehavior *)self isAppleWatch];
 }
 
-- (void)setCurrentDeviceDisplayName:(id)a3
+- (void)setCurrentDeviceDisplayName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   overriddenCurrentDeviceDisplayName = self->_overriddenCurrentDeviceDisplayName;
   self->_overriddenCurrentDeviceDisplayName = v4;
 
@@ -1467,15 +1467,15 @@ LABEL_6:
 {
   if ([(_HKBehavior *)self isAppleInternalInstall])
   {
-    v3 = [(_HKBehavior *)self currentDeviceHWModelString];
+    currentDeviceHWModelString = [(_HKBehavior *)self currentDeviceHWModelString];
   }
 
   else
   {
-    v3 = 0;
+    currentDeviceHWModelString = 0;
   }
 
-  return v3;
+  return currentDeviceHWModelString;
 }
 
 - (NSString)currentDeviceReleaseType
@@ -1492,11 +1492,11 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)_hasProductTypePrefix:(id)a3
+- (BOOL)_hasProductTypePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(_HKBehavior *)self currentDeviceProductType];
-  v6 = [v5 hasPrefix:v4];
+  prefixCopy = prefix;
+  currentDeviceProductType = [(_HKBehavior *)self currentDeviceProductType];
+  v6 = [currentDeviceProductType hasPrefix:prefixCopy];
 
   return v6;
 }
@@ -1576,11 +1576,11 @@ LABEL_6:
 
 + ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_currentOSVersionStruct
 {
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = v4;
-  if (v4)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v6 = processInfo;
+  if (processInfo)
   {
-    [v4 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   else
@@ -1602,42 +1602,42 @@ LABEL_6:
 
 - (unint64_t)totalDiskCapacity
 {
-  v2 = [(_HKBehavior *)self currentDiskUsage];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69E5128]];
-  v4 = [v3 unsignedLongLongValue];
+  currentDiskUsage = [(_HKBehavior *)self currentDiskUsage];
+  v3 = [currentDiskUsage objectForKeyedSubscript:*MEMORY[0x1E69E5128]];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)currentDiskSpaceAvailable
 {
-  v2 = [(_HKBehavior *)self currentDiskUsage];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69E5108]];
-  v4 = [v3 unsignedLongLongValue];
+  currentDiskUsage = [(_HKBehavior *)self currentDiskUsage];
+  v3 = [currentDiskUsage objectForKeyedSubscript:*MEMORY[0x1E69E5108]];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)supportsSwimmingWorkoutSessions
 {
-  v3 = HKCoreMotionSupportsSwimmingWorkoutSessions();
+  bOOLValue = HKCoreMotionSupportsSwimmingWorkoutSessions();
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   overriddenSupportsSwimmingWorkoutSessions = self->_overriddenSupportsSwimmingWorkoutSessions;
   if (overriddenSupportsSwimmingWorkoutSessions)
   {
-    v3 = [(NSNumber *)overriddenSupportsSwimmingWorkoutSessions BOOLValue];
+    bOOLValue = [(NSNumber *)overriddenSupportsSwimmingWorkoutSessions BOOLValue];
   }
 
   os_unfair_lock_unlock(&self->_overrideBehaviorLock);
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setFutureMigrationsEnabled:(BOOL)a3
+- (void)setFutureMigrationsEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   os_unfair_lock_lock(&self->_futureMigrationsEnabled._loadLock);
   self->_futureMigrationsEnabled._hasLoaded = 1;
-  self->_futureMigrationsEnabled._value = a3;
+  self->_futureMigrationsEnabled._value = enabled;
   os_unfair_lock_unlock(&self->_futureMigrationsEnabled._loadLock);
 
   os_unfair_lock_unlock(&self->_overrideBehaviorLock);
@@ -1646,10 +1646,10 @@ LABEL_6:
 - (BOOL)supportsOntologyDatabaseFutureMigrations
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   v7[0] = &unk_1F05F6058;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v8 = v7;
   os_unfair_lock_lock(&self->_ontologyDatabaseFutureMigrationsEnabled._loadLock);
   if (self->_ontologyDatabaseFutureMigrationsEnabled._hasLoaded)
@@ -1671,17 +1671,17 @@ LABEL_6:
 
   os_unfair_lock_unlock(&self->_ontologyDatabaseFutureMigrationsEnabled._loadLock);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v7);
-  os_unfair_lock_unlock(&v6->_overrideBehaviorLock);
+  os_unfair_lock_unlock(&selfCopy->_overrideBehaviorLock);
   v4 = *MEMORY[0x1E69E9840];
   return value & 1;
 }
 
-- (void)setSupportsOntologyDatabaseFutureMigrations:(BOOL)a3
+- (void)setSupportsOntologyDatabaseFutureMigrations:(BOOL)migrations
 {
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   os_unfair_lock_lock(&self->_ontologyDatabaseFutureMigrationsEnabled._loadLock);
   self->_ontologyDatabaseFutureMigrationsEnabled._hasLoaded = 1;
-  self->_ontologyDatabaseFutureMigrationsEnabled._value = a3;
+  self->_ontologyDatabaseFutureMigrationsEnabled._value = migrations;
   os_unfair_lock_unlock(&self->_ontologyDatabaseFutureMigrationsEnabled._loadLock);
 
   os_unfair_lock_unlock(&self->_overrideBehaviorLock);
@@ -1690,10 +1690,10 @@ LABEL_6:
 - (BOOL)performsAutomaticUserDomainConceptProcessing
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   v7[0] = &unk_1F05F60D8;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v8 = v7;
   os_unfair_lock_lock(&self->_performsAutomaticUserDomainConceptProcessing._loadLock);
   if (self->_performsAutomaticUserDomainConceptProcessing._hasLoaded)
@@ -1715,28 +1715,28 @@ LABEL_6:
 
   os_unfair_lock_unlock(&self->_performsAutomaticUserDomainConceptProcessing._loadLock);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v7);
-  os_unfair_lock_unlock(&v6->_overrideBehaviorLock);
+  os_unfair_lock_unlock(&selfCopy->_overrideBehaviorLock);
   v4 = *MEMORY[0x1E69E9840];
   return value & 1;
 }
 
-- (void)setPerformsAutomaticUserDomainConceptProcessing:(BOOL)a3
+- (void)setPerformsAutomaticUserDomainConceptProcessing:(BOOL)processing
 {
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   os_unfair_lock_lock(&self->_performsAutomaticUserDomainConceptProcessing._loadLock);
   self->_performsAutomaticUserDomainConceptProcessing._hasLoaded = 1;
-  self->_performsAutomaticUserDomainConceptProcessing._value = a3;
+  self->_performsAutomaticUserDomainConceptProcessing._value = processing;
   os_unfair_lock_unlock(&self->_performsAutomaticUserDomainConceptProcessing._loadLock);
 
   os_unfair_lock_unlock(&self->_overrideBehaviorLock);
 }
 
-- (void)setSupportsCloudSync:(BOOL)a3
+- (void)setSupportsCloudSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_overrideBehaviorLock);
   os_unfair_lock_lock(&self->_supportsCloudSync._loadLock);
   self->_supportsCloudSync._hasLoaded = 1;
-  self->_supportsCloudSync._value = a3;
+  self->_supportsCloudSync._value = sync;
   os_unfair_lock_unlock(&self->_supportsCloudSync._loadLock);
 
   os_unfair_lock_unlock(&self->_overrideBehaviorLock);
@@ -1816,11 +1816,11 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setSupportsCloudSyncSharding:(BOOL)a3
+- (void)setSupportsCloudSyncSharding:(BOOL)sharding
 {
   os_unfair_lock_lock(&self->_supportsCloudSyncSharding._loadLock);
   self->_supportsCloudSyncSharding._hasLoaded = 1;
-  self->_supportsCloudSyncSharding._value = a3;
+  self->_supportsCloudSyncSharding._value = sharding;
 
   os_unfair_lock_unlock(&self->_supportsCloudSyncSharding._loadLock);
 }
@@ -1861,11 +1861,11 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setSupportsCloudSyncStagingShard:(BOOL)a3
+- (void)setSupportsCloudSyncStagingShard:(BOOL)shard
 {
   os_unfair_lock_lock(&self->_supportsCloudSyncStagingShard._loadLock);
   self->_supportsCloudSyncStagingShard._hasLoaded = 1;
-  self->_supportsCloudSyncStagingShard._value = a3;
+  self->_supportsCloudSyncStagingShard._value = shard;
 
   os_unfair_lock_unlock(&self->_supportsCloudSyncStagingShard._loadLock);
 }
@@ -1906,11 +1906,11 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setSupportsPeriodicFullCloudSync:(BOOL)a3
+- (void)setSupportsPeriodicFullCloudSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_supportsPeriodicFullCloudSync._loadLock);
   self->_supportsPeriodicFullCloudSync._hasLoaded = 1;
-  self->_supportsPeriodicFullCloudSync._value = a3;
+  self->_supportsPeriodicFullCloudSync._value = sync;
 
   os_unfair_lock_unlock(&self->_supportsPeriodicFullCloudSync._loadLock);
 }
@@ -1951,11 +1951,11 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setSupportsPeriodicLiteCloudSync:(BOOL)a3
+- (void)setSupportsPeriodicLiteCloudSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_supportsPeriodicLiteCloudSync._loadLock);
   self->_supportsPeriodicLiteCloudSync._hasLoaded = 1;
-  self->_supportsPeriodicLiteCloudSync._value = a3;
+  self->_supportsPeriodicLiteCloudSync._value = sync;
 
   os_unfair_lock_unlock(&self->_supportsPeriodicLiteCloudSync._loadLock);
 }
@@ -1996,21 +1996,21 @@ LABEL_6:
   return value & 1;
 }
 
-- (void)setSupportsCoordinatedCloudSync:(BOOL)a3
+- (void)setSupportsCoordinatedCloudSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_supportsCoordinatedCloudSync._loadLock);
   self->_supportsCoordinatedCloudSync._hasLoaded = 1;
-  self->_supportsCoordinatedCloudSync._value = a3;
+  self->_supportsCoordinatedCloudSync._value = sync;
 
   os_unfair_lock_unlock(&self->_supportsCoordinatedCloudSync._loadLock);
 }
 
 - (BOOL)enableBloodPressureValidations
 {
-  v2 = [(_HKBehavior *)self features];
-  v3 = [v2 bloodPressureValidationsEnabled];
+  features = [(_HKBehavior *)self features];
+  bloodPressureValidationsEnabled = [features bloodPressureValidationsEnabled];
 
-  return v3;
+  return bloodPressureValidationsEnabled;
 }
 
 - (BOOL)processHasLoadedUIKit
@@ -2027,7 +2027,7 @@ LABEL_6:
     return 1;
   }
 
-  if ([a1 _isAppleInternalInstall] && (objc_msgSend(MEMORY[0x1E695E000], "standardUserDefaults"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "BOOLForKey:", @"HealthKitOverrideDeviceSupported"), v4, v5))
+  if ([self _isAppleInternalInstall] && (objc_msgSend(MEMORY[0x1E695E000], "standardUserDefaults"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "BOOLForKey:", @"HealthKitOverrideDeviceSupported"), v4, v5))
   {
     v6 = v10;
     v10[0] = MEMORY[0x1E69E9820];
@@ -2047,7 +2047,7 @@ LABEL_6:
 
   v6[2] = v7;
   v6[3] = &__block_descriptor_40_e5_v8__0l;
-  v6[4] = a1;
+  v6[4] = self;
   HKDispatchAsyncOnGlobalConcurrentQueue(0x15u, v6);
   return v3;
 }
@@ -2066,93 +2066,93 @@ LABEL_6:
 
 + (BOOL)_isForceBuddyEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v2 BOOLForKey:@"ForceBuddy"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"ForceBuddy"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 environment];
-    v6 = [v5 objectForKeyedSubscript:@"WD_FORCE_BUDDY"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v6 = [environment objectForKeyedSubscript:@"WD_FORCE_BUDDY"];
     v3 = [v6 isEqualToString:@"YES"];
   }
 
   return v3;
 }
 
-+ (BOOL)_hasCompletedBuddyWithVersion:(int64_t)a3
++ (BOOL)_hasCompletedBuddyWithVersion:(int64_t)version
 {
-  v5 = [a1 sharedBehavior];
-  v6 = [v5 isiPad];
+  sharedBehavior = [self sharedBehavior];
+  isiPad = [sharedBehavior isiPad];
 
   v7 = &kHKHAKeyCompletedBuddyOniPadVersion;
-  if (!v6)
+  if (!isiPad)
   {
     v7 = &kHKHAKeyCompletedBuddyVersion;
   }
 
   v8 = *v7;
 
-  return [a1 _hasCompletedBuddyWithKey:v8 version:a3];
+  return [self _hasCompletedBuddyWithKey:v8 version:version];
 }
 
-+ (void)_setHasCompletedBuddyWithVersion:(int64_t)a3
++ (void)_setHasCompletedBuddyWithVersion:(int64_t)version
 {
-  [a1 _setHasCompletedBuddyWithKey:@"CompletedBuddyVersion" version:a3];
-  v5 = [a1 sharedBehavior];
-  v6 = [v5 isiPad];
+  [self _setHasCompletedBuddyWithKey:@"CompletedBuddyVersion" version:version];
+  sharedBehavior = [self sharedBehavior];
+  isiPad = [sharedBehavior isiPad];
 
-  if (v6)
+  if (isiPad)
   {
 
-    [a1 _setHasCompletedBuddyWithKey:@"CompletedBuddyOniPadVersion" version:a3];
+    [self _setHasCompletedBuddyWithKey:@"CompletedBuddyOniPadVersion" version:version];
   }
 }
 
-+ (BOOL)_hasCompletedBuddyWithKey:(id)a3 version:(int64_t)a4
++ (BOOL)_hasCompletedBuddyWithKey:(id)key version:(int64_t)version
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.health.shared"];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v10 integerForKey:v5];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    integerValue = [standardUserDefaults integerForKey:keyCopy];
 
-    [v6 setInteger:v9 forKey:v5];
+    [v6 setInteger:integerValue forKey:keyCopy];
   }
 
-  return v9 >= a4;
+  return integerValue >= version;
 }
 
-+ (void)_setHasCompletedBuddyWithKey:(id)a3 version:(int64_t)a4
++ (void)_setHasCompletedBuddyWithKey:(id)key version:(int64_t)version
 {
-  v7 = a3;
+  keyCopy = key;
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.health.shared"];
-  [v5 setInteger:a4 forKey:v7];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 setInteger:a4 forKey:v7];
+  [v5 setInteger:version forKey:keyCopy];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:version forKey:keyCopy];
 }
 
 + (BOOL)_shouldShowBuddy
 {
-  if ([a1 _isAppleInternalInstall] && (objc_msgSend(a1, "_isForceBuddyEnabled") & 1) != 0)
+  if ([self _isAppleInternalInstall] && (objc_msgSend(self, "_isForceBuddyEnabled") & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a1 hasCompletedBuddyWithVersion:2] ^ 1;
+    return [self hasCompletedBuddyWithVersion:2] ^ 1;
   }
 }
 
@@ -2163,8 +2163,8 @@ LABEL_6:
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2 = [v3 BOOLForKey:@"DisableBuddy"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2 = [standardUserDefaults BOOLForKey:@"DisableBuddy"];
 
   return v2;
 }
@@ -2195,46 +2195,46 @@ LABEL_6:
 
 + (BOOL)_futureMigrationsEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.healthd"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.healthd"];
 
   v4 = [v3 objectForKey:@"EnableFutureMigrations"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)_ontologyDatabaseFutureMigrationsEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.healthd"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.healthd"];
 
   v4 = [v3 objectForKey:@"EnableOntologyFutureMigrations"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)_condensesHeartRateSamples
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"HDWorkoutCondenser-heartRate"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"HDWorkoutCondenser-heartRate"];
 
   return v3;
 }
 
 + (BOOL)_isAutomaticProcessingEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"DisableAutomaticUDCProcessing"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"DisableAutomaticUDCProcessing"];
 
   return v3 ^ 1;
 }
 
-- (void)setCurrentOSVersionStruct:(id *)a3
+- (void)setCurrentOSVersionStruct:(id *)struct
 {
-  v3 = *&a3->var0;
-  self->_currentOSVersionStruct.patchVersion = a3->var2;
+  v3 = *&struct->var0;
+  self->_currentOSVersionStruct.patchVersion = struct->var2;
   *&self->_currentOSVersionStruct.majorVersion = v3;
 }
 
@@ -2266,7 +2266,7 @@ LABEL_6:
 - (uint64_t)isProdFused
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2278,7 +2278,7 @@ LABEL_6:
 - (uint64_t)isVirtualDevice
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2290,7 +2290,7 @@ LABEL_6:
 - (uint64_t)isRunningStoreDemoMode
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2302,7 +2302,7 @@ LABEL_6:
 - (uint64_t)runningInStoreDemoModeF201
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2314,7 +2314,7 @@ LABEL_6:
 - (uint64_t)futureMigrationsEnabled
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2326,7 +2326,7 @@ LABEL_6:
 - (uint64_t)supportsOntologyDatabaseFutureMigrations
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2338,7 +2338,7 @@ LABEL_6:
 - (uint64_t)performsAutomaticUserDomainConceptProcessing
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2349,7 +2349,7 @@ LABEL_6:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _HKBehavior.description.getter();
 
   v3 = sub_191CC6778();
@@ -2360,7 +2360,7 @@ LABEL_6:
 + (void)_healthAppNotInstalled
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_19197B000, log, OS_LOG_TYPE_ERROR, "%{public}@: Assuming installed due to error in getting Health app install state: %{public}@", buf, 0x16u);

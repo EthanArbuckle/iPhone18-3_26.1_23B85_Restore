@@ -1,14 +1,14 @@
 @interface AVCStatisticsCollector
-- (BOOL)shouldProcessAtTime:(double)a3;
-- (BOOL)unregisterStatisticsChangeHandlerWithType:(int)a3 handlerIndex:(int)a4;
-- (id)getStatistics:(id)a3;
-- (id)initForSimulation:(BOOL)a3 useExternalThread:(BOOL)a4;
-- (int)registerStatisticsChangeHandlerWithType:(int)a3 handler:(id)a4;
-- (tagVCStatisticsMessage)getVCStatisticsWithType:(SEL)a3 time:(int)a4;
+- (BOOL)shouldProcessAtTime:(double)time;
+- (BOOL)unregisterStatisticsChangeHandlerWithType:(int)type handlerIndex:(int)index;
+- (id)getStatistics:(id)statistics;
+- (id)initForSimulation:(BOOL)simulation useExternalThread:(BOOL)thread;
+- (int)registerStatisticsChangeHandlerWithType:(int)type handler:(id)handler;
+- (tagVCStatisticsMessage)getVCStatisticsWithType:(SEL)type time:(int)time;
 - (void)dealloc;
-- (void)setMode:(unsigned int)a3;
-- (void)setServerBag:(id)a3;
-- (void)setStatistics:(id)a3;
+- (void)setMode:(unsigned int)mode;
+- (void)setServerBag:(id)bag;
+- (void)setStatistics:(id)statistics;
 - (void)start;
 - (void)stop;
 - (void)unregisterAllStatisticsChangeHandlers;
@@ -16,10 +16,10 @@
 
 @implementation AVCStatisticsCollector
 
-- (id)initForSimulation:(BOOL)a3 useExternalThread:(BOOL)a4
+- (id)initForSimulation:(BOOL)simulation useExternalThread:(BOOL)thread
 {
-  v4 = a4;
-  v5 = a3;
+  threadCopy = thread;
+  simulationCopy = simulation;
   v34 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AVCStatisticsCollector;
@@ -40,10 +40,10 @@
     v6->_bandwidthEstimatorMap = objc_alloc_init(VCRateControlBandwidthEstimatorMap);
     v6->_owrdEstimator = objc_alloc_init(VCRateControlOWRDEstimator);
     v6->_history = objc_alloc_init(VCStatisticsHistory);
-    v9 = [+[VCDefaults sharedInstance](VCDefaults rateControlStatisticsQueueWaitTime];
-    v6->_forceQueueWaitTimeMs = v9 & ~(v9 >> 31);
-    v6->_useExternalThread = v4;
-    if (v5)
+    rateControlStatisticsQueueWaitTime = [+[VCDefaults sharedInstance](VCDefaults rateControlStatisticsQueueWaitTime];
+    v6->_forceQueueWaitTimeMs = rateControlStatisticsQueueWaitTime & ~(rateControlStatisticsQueueWaitTime >> 31);
+    v6->_useExternalThread = threadCopy;
+    if (simulationCopy)
     {
       v10 = 1;
     }
@@ -53,7 +53,7 @@
       v10 = 300;
     }
 
-    v6->_queue = [[VCStatisticsCollectorQueue alloc] initWithQueueSize:v10 shouldBlockWhenFull:v5 queueWaitTimeMs:v6->_forceQueueWaitTimeMs useExternalThread:v4];
+    v6->_queue = [[VCStatisticsCollectorQueue alloc] initWithQueueSize:v10 shouldBlockWhenFull:simulationCopy queueWaitTimeMs:v6->_forceQueueWaitTimeMs useExternalThread:threadCopy];
     v6->_changeHandlerRequestsLock._os_unfair_lock_opaque = 0;
     pthread_rwlock_init(&v6->_statisticsChangeHandlersLock, 0);
     pthread_rwlock_init(&v6->_processCompletionHandlerLock, 0);
@@ -78,7 +78,7 @@
           v25 = 1024;
           v26 = 175;
           v27 = 1024;
-          LODWORD(v28) = v4;
+          LODWORD(v28) = threadCopy;
           v14 = "VCRC [%s] %s:%d statisticsCollector is initiated with useExternalThread=%{BOOL}d";
           v15 = v13;
           v16 = 34;
@@ -117,7 +117,7 @@ LABEL_17:
           v29 = 2048;
           v30 = v6;
           v31 = 1024;
-          v32 = v4;
+          v32 = threadCopy;
           v14 = "VCRC [%s] %s:%d %@(%p) statisticsCollector is initiated with useExternalThread=%{BOOL}d";
           v15 = v18;
           v16 = 54;
@@ -146,7 +146,7 @@ LABEL_17:
       v13 = 1024;
       v14 = 181;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCRC [%s] %s:%d dealloc called %p", buf, 0x26u);
     }
   }
@@ -202,7 +202,7 @@ LABEL_17:
 
 - (void)start
 {
-  if (a1 >= 7)
+  if (self >= 7)
   {
     VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
@@ -217,7 +217,7 @@ LABEL_17:
 
 - (void)stop
 {
-  if (a1 >= 7)
+  if (self >= 7)
   {
     VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
@@ -230,13 +230,13 @@ LABEL_17:
   }
 }
 
-- (void)setStatistics:(id)a3
+- (void)setStatistics:(id)statistics
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v4 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+    v4 = statistics ? [objc_msgSend(statistics "description")] : "<nil>";
     asprintf(&__str, "newStatistics=%s", v4);
     if (__str)
     {
@@ -283,13 +283,13 @@ LABEL_17:
   }
 }
 
-- (id)getStatistics:(id)a3
+- (id)getStatistics:(id)statistics
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v4 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+    v4 = statistics ? [objc_msgSend(statistics "description")] : "<nil>";
     asprintf(&__str, "keys=%s", v4);
     if (__str)
     {
@@ -338,33 +338,33 @@ LABEL_17:
   return 0;
 }
 
-- (void)setMode:(unsigned int)a3
+- (void)setMode:(unsigned int)mode
 {
-  v3 = *&a3;
-  self->_mode = a3;
+  v3 = *&mode;
+  self->_mode = mode;
   [(VCRateControlBandwidthEstimatorMap *)self->_bandwidthEstimatorMap setMode:?];
   owrdEstimator = self->_owrdEstimator;
 
   [(VCRateControlOWRDEstimator *)owrdEstimator setMode:v3];
 }
 
-- (void)setServerBag:(id)a3
+- (void)setServerBag:(id)bag
 {
   serverBag = self->_serverBag;
-  if (serverBag != a3)
+  if (serverBag != bag)
   {
 
-    self->_serverBag = a3;
+    self->_serverBag = bag;
   }
 
   bandwidthEstimatorMap = self->_bandwidthEstimatorMap;
 
-  [(VCRateControlBandwidthEstimatorMap *)bandwidthEstimatorMap setServerBag:a3];
+  [(VCRateControlBandwidthEstimatorMap *)bandwidthEstimatorMap setServerBag:bag];
 }
 
-- (int)registerStatisticsChangeHandlerWithType:(int)a3 handler:(id)a4
+- (int)registerStatisticsChangeHandlerWithType:(int)type handler:(id)handler
 {
-  if ((a3 - 1) > 0xF)
+  if ((type - 1) > 0xF)
   {
     nextChangeHandlerIdentifier = -1;
   }
@@ -376,7 +376,7 @@ LABEL_17:
     self->_nextChangeHandlerIdentifier = nextChangeHandlerIdentifier + 1;
     pthread_rwlock_unlock(&self->_statisticsCollectionLock);
     os_unfair_lock_lock(&self->_changeHandlerRequestsLock);
-    _AVCStatisticsCollector_PushChangeHandlerRequest(self, 0, a3, nextChangeHandlerIdentifier, a4);
+    _AVCStatisticsCollector_PushChangeHandlerRequest(self, 0, type, nextChangeHandlerIdentifier, handler);
     os_unfair_lock_unlock(&self->_changeHandlerRequestsLock);
   }
 
@@ -390,9 +390,9 @@ LABEL_17:
   return nextChangeHandlerIdentifier;
 }
 
-- (BOOL)unregisterStatisticsChangeHandlerWithType:(int)a3 handlerIndex:(int)a4
+- (BOOL)unregisterStatisticsChangeHandlerWithType:(int)type handlerIndex:(int)index
 {
-  if ((a3 - 1) > 0xF)
+  if ((type - 1) > 0xF)
   {
     v7 = 0;
   }
@@ -400,7 +400,7 @@ LABEL_17:
   else
   {
     os_unfair_lock_lock(&self->_changeHandlerRequestsLock);
-    v7 = _AVCStatisticsCollector_PushChangeHandlerRequest(self, 1, a3, a4, 0);
+    v7 = _AVCStatisticsCollector_PushChangeHandlerRequest(self, 1, type, index, 0);
     os_unfair_lock_unlock(&self->_changeHandlerRequestsLock);
   }
 
@@ -428,20 +428,20 @@ LABEL_17:
   pthread_mutex_unlock(&self->_startMutex);
 }
 
-- (BOOL)shouldProcessAtTime:(double)a3
+- (BOOL)shouldProcessAtTime:(double)time
 {
   forceQueueWaitTimeMs = self->_forceQueueWaitTimeMs;
-  v4 = a3 == 0.0 || forceQueueWaitTimeMs == 0;
-  if (!v4 && a3 - self->_previousProcessTime <= forceQueueWaitTimeMs / 1000.0)
+  v4 = time == 0.0 || forceQueueWaitTimeMs == 0;
+  if (!v4 && time - self->_previousProcessTime <= forceQueueWaitTimeMs / 1000.0)
   {
     return 0;
   }
 
-  self->_previousProcessTime = a3;
+  self->_previousProcessTime = time;
   return 1;
 }
 
-- (tagVCStatisticsMessage)getVCStatisticsWithType:(SEL)a3 time:(int)a4
+- (tagVCStatisticsMessage)getVCStatisticsWithType:(SEL)type time:(int)time
 {
   *(&retstr->var0.addRemoveEndPoint + 21) = 0;
   *(&retstr->var0.addRemoveEndPoint + 17) = 0u;
@@ -456,7 +456,7 @@ LABEL_17:
   *(&retstr->var0.addRemoveEndPoint + 3) = 0u;
   *&retstr->type = 0u;
   *&retstr->isVCRCInternal = 0u;
-  _AVCStatisticsCollector_GetVCStatisticsWithType(self, a4, retstr, a5);
+  _AVCStatisticsCollector_GetVCStatisticsWithType(self, time, retstr, a5);
   return result;
 }
 

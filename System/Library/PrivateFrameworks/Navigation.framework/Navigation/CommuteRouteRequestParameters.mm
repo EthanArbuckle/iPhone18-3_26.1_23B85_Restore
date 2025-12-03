@@ -1,6 +1,6 @@
 @interface CommuteRouteRequestParameters
 - (_TtC10Navigation29CommuteRouteRequestParameters)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CommuteRouteRequestParameters
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CommuteRouteRequestParameters.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CommuteRouteRequestParameters.encode(with:)(coderCopy);
 }
 
 @end

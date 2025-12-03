@@ -1,40 +1,40 @@
 @interface PXSharedLibraryFaceTileImageProvider
 - (PXSharedLibraryFaceTileImageProvider)init;
-- (void)_setMeContact:(id)a3;
+- (void)_setMeContact:(id)contact;
 - (void)_updateCombinedImage;
 - (void)_updateContext;
 - (void)_updateIncludeMeContact;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCombinedImage:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCombinedImage:(id)image;
 @end
 
 @implementation PXSharedLibraryFaceTileImageProvider
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXSharedLibraryFaceTileImageProviderModelObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryFaceTileImageProviderModelObservationContext == context)
   {
-    v9 = v8;
-    if (v6)
+    v9 = observableCopy;
+    if (changeCopy)
     {
       [(PXSharedLibraryFaceTileImageProvider *)self _updateIncludeMeContact];
-      v8 = v9;
+      observableCopy = v9;
     }
 
-    if ((v6 & 0x1FE) != 0)
+    if ((changeCopy & 0x1FE) != 0)
     {
       [(PXSharedLibraryFaceTileImageProvider *)self _updateContext];
     }
 
-    else if ((v6 & 0x201) == 0)
+    else if ((changeCopy & 0x201) == 0)
     {
       goto LABEL_8;
     }
 
     [(PXSharedLibraryFaceTileImageProvider *)self _updateCombinedImage];
-    v8 = v9;
+    observableCopy = v9;
   }
 
 LABEL_8:
@@ -48,8 +48,8 @@ LABEL_8:
     [v3 addObject:self->_meContact];
   }
 
-  v4 = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel faceTileCombinerItems];
-  [v3 addObjectsFromArray:v4];
+  faceTileCombinerItems = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel faceTileCombinerItems];
+  [v3 addObjectsFromArray:faceTileCombinerItems];
 
   v5 = [v3 count];
   if (v5 > [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel includeMeContact]&& self->_context)
@@ -115,23 +115,23 @@ void __60__PXSharedLibraryFaceTileImageProvider__updateCombinedImage__block_invo
 {
   [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel displayScale];
   v4 = v3;
-  v5 = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel isRTL];
-  v6 = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel isAscending];
+  isRTL = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel isRTL];
+  isAscending = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel isAscending];
   [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel imageDiameter];
   v8 = v7;
   [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel imageOffset];
   v10 = v9;
-  v17 = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel backgroundColor];
-  v11 = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel borderColor];
+  backgroundColor = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel backgroundColor];
+  borderColor = [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel borderColor];
   [(PXSharedLibraryFaceTileImageProviderModel *)self->_providerModel borderWidth];
-  if (v4 <= 0.0 || v17 == 0 || v11 == 0)
+  if (v4 <= 0.0 || backgroundColor == 0 || borderColor == 0)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [[PXFaceTileImageCombinerContext alloc] initWithDisplayScale:v5 isRTL:v6 isAscending:v17 imageSize:v11 imageOffset:v4 backgroundColor:v8 borderColor:round(v8 * v10) borderWidth:v12];
+    v15 = [[PXFaceTileImageCombinerContext alloc] initWithDisplayScale:isRTL isRTL:isAscending isAscending:backgroundColor imageSize:borderColor imageOffset:v4 backgroundColor:v8 borderColor:round(v8 * v10) borderWidth:v12];
   }
 
   context = self->_context;
@@ -167,12 +167,12 @@ void __63__PXSharedLibraryFaceTileImageProvider__updateIncludeMeContact__block_i
   [WeakRetained _setMeContact:v3];
 }
 
-- (void)_setMeContact:(id)a3
+- (void)_setMeContact:(id)contact
 {
-  v8 = a3;
+  contactCopy = contact;
   v5 = self->_meContact;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == contactCopy)
   {
   }
 
@@ -182,19 +182,19 @@ void __63__PXSharedLibraryFaceTileImageProvider__updateIncludeMeContact__block_i
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_meContact, a3);
+      objc_storeStrong(&self->_meContact, contact);
       [(PXSharedLibraryFaceTileImageProvider *)self _updateCombinedImage];
     }
   }
 }
 
-- (void)setCombinedImage:(id)a3
+- (void)setCombinedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   combinedImage = self->_combinedImage;
-  if (combinedImage != v4 && ([(UIImage *)combinedImage isEqual:v4]& 1) == 0)
+  if (combinedImage != imageCopy && ([(UIImage *)combinedImage isEqual:imageCopy]& 1) == 0)
   {
-    v6 = [(UIImage *)v4 copy];
+    v6 = [(UIImage *)imageCopy copy];
     v7 = self->_combinedImage;
     self->_combinedImage = v6;
 

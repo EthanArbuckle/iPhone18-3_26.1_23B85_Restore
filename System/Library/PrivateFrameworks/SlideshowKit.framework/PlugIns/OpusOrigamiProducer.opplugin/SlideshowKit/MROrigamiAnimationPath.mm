@@ -1,20 +1,20 @@
 @interface MROrigamiAnimationPath
 - (MROrigamiAnimationPath)initWithControlPoints:(double *)(a3 keyTimes:values:length:;
-- (MROrigamiAnimationPath)initWithSwingType:(int)a3;
-- (float)valueAtTime:(float)a3;
+- (MROrigamiAnimationPath)initWithSwingType:(int)type;
+- (float)valueAtTime:(float)time;
 - (void)dealloc;
 @end
 
 @implementation MROrigamiAnimationPath
 
-- (MROrigamiAnimationPath)initWithSwingType:(int)a3
+- (MROrigamiAnimationPath)initWithSwingType:(int)type
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return v3;
       }
@@ -46,7 +46,7 @@
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2:
       v16 = xmmword_163B50;
@@ -195,16 +195,16 @@ LABEL_13:
   [(MROrigamiAnimationPath *)&v4 dealloc];
 }
 
-- (float)valueAtTime:(float)a3
+- (float)valueAtTime:(float)time
 {
-  if (a3 >= 1.0)
+  if (time >= 1.0)
   {
     return self->_values[self->_length - 1];
   }
 
   else
   {
-    ValueFromBezierPath(self->_curves, self->_keyTimes, self->_values, self->_length, 0.0, 1.0, a3);
+    ValueFromBezierPath(self->_curves, self->_keyTimes, self->_values, self->_length, 0.0, 1.0, time);
   }
 
   return v3;

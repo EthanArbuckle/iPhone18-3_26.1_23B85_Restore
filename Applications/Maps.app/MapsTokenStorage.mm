@@ -1,20 +1,20 @@
 @interface MapsTokenStorage
 - (BOOL)_callbackQueueIsMainQueue;
-- (MapsTokenStorage)initWithDelegate:(id)a3 tokenGroupName:(id)a4;
-- (MapsTokenStorage)initWithDelegate:(id)a3 tokenGroupName:(id)a4 callbackQueue:(id)a5;
+- (MapsTokenStorage)initWithDelegate:(id)delegate tokenGroupName:(id)name;
+- (MapsTokenStorage)initWithDelegate:(id)delegate tokenGroupName:(id)name callbackQueue:(id)queue;
 - (NSArray)allTokenReasons;
 - (NSArray)tokens;
-- (id)tokenWithReason:(id)a3;
-- (id)tokenWithUserInfo:(id)a3;
+- (id)tokenWithReason:(id)reason;
+- (id)tokenWithUserInfo:(id)info;
 - (unint64_t)count;
-- (void)_performBlockOnCallbackQueue:(id)a3;
-- (void)addToken:(id)a3;
-- (void)notifyObserversAddedToken:(id)a3;
-- (void)notifyObserversForRemovedToken:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)removeToken:(id)a3;
-- (void)setObserverCallbackQueue:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_performBlockOnCallbackQueue:(id)queue;
+- (void)addToken:(id)token;
+- (void)notifyObserversAddedToken:(id)token;
+- (void)notifyObserversForRemovedToken:(id)token;
+- (void)registerObserver:(id)observer;
+- (void)removeToken:(id)token;
+- (void)setObserverCallbackQueue:(id)queue;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MapsTokenStorage
@@ -81,15 +81,15 @@
   return v3;
 }
 
-- (void)_performBlockOnCallbackQueue:(id)a3
+- (void)_performBlockOnCallbackQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
     if (!self->_callbackQueue)
     {
 LABEL_8:
-      v4[2](v4);
+      queueCopy[2](queueCopy);
       goto LABEL_16;
     }
 
@@ -112,8 +112,8 @@ LABEL_8:
     v13[1] = 3221225472;
     v14 = sub_100FB525C;
     v15 = &unk_101661090;
-    v16 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = queueCopy;
     v8 = callbackQueue;
     v9 = v13;
     v10 = dispatch_queue_get_label(v8);
@@ -134,13 +134,13 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)setObserverCallbackQueue:(id)a3
+- (void)setObserverCallbackQueue:(id)queue
 {
-  v5 = a3;
-  objc_storeStrong(&self->_callbackQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_callbackQueue, queue);
   v6 = sub_10000B170();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (queueCopy)
   {
     if (v7)
     {
@@ -148,7 +148,7 @@ LABEL_16:
       v13 = 138543618;
       v14 = tokenGroupName;
       v15 = 2114;
-      v16 = v5;
+      v16 = queueCopy;
       v9 = "Updated callback queue for %{public}@: %{public}@";
       v10 = v6;
       v11 = 22;
@@ -169,9 +169,9 @@ LABEL_6:
   }
 }
 
-- (void)notifyObserversForRemovedToken:(id)a3
+- (void)notifyObserversForRemovedToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -193,7 +193,7 @@ LABEL_6:
     *buf = 134218242;
     v20 = v7;
     v21 = 2114;
-    v22 = v4;
+    v22 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "NOTIFY %lu observers DID REMOVE %{public}@", buf, 0x16u);
   }
 
@@ -202,16 +202,16 @@ LABEL_6:
   v9[2] = sub_100FB569C;
   v9[3] = &unk_101661600;
   v11 = &v13;
-  v8 = v4;
+  v8 = tokenCopy;
   v10 = v8;
   [(MapsTokenStorage *)self _performBlockOnCallbackQueue:v9];
 
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)notifyObserversAddedToken:(id)a3
+- (void)notifyObserversAddedToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -233,7 +233,7 @@ LABEL_6:
     *buf = 134218242;
     v20 = v7;
     v21 = 2114;
-    v22 = v4;
+    v22 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "NOTIFY %lu observers DID ADD %{public}@", buf, 0x16u);
   }
 
@@ -242,20 +242,20 @@ LABEL_6:
   v9[2] = sub_100FB5B4C;
   v9[3] = &unk_101661600;
   v11 = &v13;
-  v8 = v4;
+  v8 = tokenCopy;
   v10 = v8;
   [(MapsTokenStorage *)self _performBlockOnCallbackQueue:v9];
 
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10000B170();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = v4;
+    v6 = observerCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -294,18 +294,18 @@ LABEL_10:
   block[2] = sub_100FB5FB4;
   block[3] = &unk_101661A90;
   block[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = observerCopy;
+  v14 = observerCopy;
   dispatch_sync(isolationQueue, block);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10000B170();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = v4;
+    v6 = observerCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -344,8 +344,8 @@ LABEL_10:
   block[2] = sub_100FB6220;
   block[3] = &unk_101661A90;
   block[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = observerCopy;
+  v14 = observerCopy;
   dispatch_sync(isolationQueue, block);
 }
 
@@ -371,14 +371,14 @@ LABEL_10:
   return v3;
 }
 
-- (void)removeToken:(id)a3
+- (void)removeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_10000B170();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "REMOVE %{public}@", &buf, 0xCu);
   }
 
@@ -392,7 +392,7 @@ LABEL_10:
   block[2] = sub_100FB65B4;
   block[3] = &unk_101660778;
   block[4] = self;
-  v7 = v4;
+  v7 = tokenCopy;
   v9 = v7;
   p_buf = &buf;
   dispatch_sync(isolationQueue, block);
@@ -404,14 +404,14 @@ LABEL_10:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)addToken:(id)a3
+- (void)addToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_10000B170();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "ADD %{public}@", &buf, 0xCu);
   }
 
@@ -424,9 +424,9 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_100FB68E0;
   block[3] = &unk_101660778;
-  v7 = v4;
+  v7 = tokenCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   p_buf = &buf;
   dispatch_sync(isolationQueue, block);
   if (*(*(&buf + 1) + 24) == 1)
@@ -437,39 +437,39 @@ LABEL_10:
   _Block_object_dispose(&buf, 8);
 }
 
-- (id)tokenWithReason:(id)a3
+- (id)tokenWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[MapsToken alloc] initWithDelegate:self tokenGroupName:self->_tokenGroupName reason:v4];
+  reasonCopy = reason;
+  v5 = [[MapsToken alloc] initWithDelegate:self tokenGroupName:self->_tokenGroupName reason:reasonCopy];
 
   return v5;
 }
 
-- (id)tokenWithUserInfo:(id)a3
+- (id)tokenWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[MapsToken alloc] initWithDelegate:self tokenGroupName:self->_tokenGroupName userInfo:v4];
+  infoCopy = info;
+  v5 = [[MapsToken alloc] initWithDelegate:self tokenGroupName:self->_tokenGroupName userInfo:infoCopy];
 
   return v5;
 }
 
-- (MapsTokenStorage)initWithDelegate:(id)a3 tokenGroupName:(id)a4 callbackQueue:(id)a5
+- (MapsTokenStorage)initWithDelegate:(id)delegate tokenGroupName:(id)name callbackQueue:(id)queue
 {
-  v8 = a5;
-  v9 = [(MapsTokenStorage *)self initWithDelegate:a3 tokenGroupName:a4];
+  queueCopy = queue;
+  v9 = [(MapsTokenStorage *)self initWithDelegate:delegate tokenGroupName:name];
   v10 = v9;
   if (v9)
   {
-    [(MapsTokenStorage *)v9 setObserverCallbackQueue:v8];
+    [(MapsTokenStorage *)v9 setObserverCallbackQueue:queueCopy];
   }
 
   return v10;
 }
 
-- (MapsTokenStorage)initWithDelegate:(id)a3 tokenGroupName:(id)a4
+- (MapsTokenStorage)initWithDelegate:(id)delegate tokenGroupName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = MapsTokenStorage;
   v8 = [(MapsTokenStorage *)&v28 init];
@@ -480,7 +480,7 @@ LABEL_10:
     {
 LABEL_12:
 
-      v16 = [v7 copy];
+      v16 = [nameCopy copy];
       tokenGroupName = v8->_tokenGroupName;
       v8->_tokenGroupName = v16;
 
@@ -488,11 +488,11 @@ LABEL_12:
       observers = v8->_observers;
       v8->_observers = v18;
 
-      [(NSHashTable *)v8->_observers addObject:v6];
-      v20 = [NSString stringWithFormat:@"com.apple.Maps.Tokens.%@", v7];
-      v21 = [v20 UTF8String];
+      [(NSHashTable *)v8->_observers addObject:delegateCopy];
+      nameCopy = [NSString stringWithFormat:@"com.apple.Maps.Tokens.%@", nameCopy];
+      uTF8String = [nameCopy UTF8String];
       v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v23 = dispatch_queue_create(v21, v22);
+      v23 = dispatch_queue_create(uTF8String, v22);
       isolationQueue = v8->_isolationQueue;
       v8->_isolationQueue = v23;
 
@@ -503,7 +503,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = v6;
+    v10 = delegateCopy;
     if (!v10)
     {
       v15 = @"<nil>";
@@ -529,7 +529,7 @@ LABEL_9:
 
 LABEL_11:
     *buf = 138543618;
-    v30 = v7;
+    v30 = nameCopy;
     v31 = 2114;
     v32 = v15;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "CREATE %{public}@ storage for %{public}@", buf, 0x16u);

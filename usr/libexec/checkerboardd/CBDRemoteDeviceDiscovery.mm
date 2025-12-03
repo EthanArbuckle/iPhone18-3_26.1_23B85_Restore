@@ -33,7 +33,7 @@
   }
 
   objc_initWeak(buf, self);
-  v4 = [(CBDRemoteDeviceDiscovery *)self dispatchQueue];
+  dispatchQueue = [(CBDRemoteDeviceDiscovery *)self dispatchQueue];
   objc_copyWeak(&v6, buf);
   started = remote_device_start_browsing();
   [(CBDRemoteDeviceDiscovery *)self setBrowser:started, _NSConcreteStackBlock, 3221225472, sub_100001004, &unk_1000103F8, self];
@@ -44,11 +44,11 @@
 
 - (void)invalidate
 {
-  v3 = [(CBDRemoteDeviceDiscovery *)self browser];
+  browser = [(CBDRemoteDeviceDiscovery *)self browser];
 
-  if (v3)
+  if (browser)
   {
-    v4 = [(CBDRemoteDeviceDiscovery *)self browser];
+    browser2 = [(CBDRemoteDeviceDiscovery *)self browser];
     remote_device_browser_cancel();
 
     [(CBDRemoteDeviceDiscovery *)self setBrowser:0];

@@ -1,18 +1,18 @@
 @interface NTKFaceColorMonochromeEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
 @end
 
 @implementation NTKFaceColorMonochromeEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__NTKFaceColorMonochromeEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __60__NTKFaceColorMonochromeEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __60__NTKFaceColorMonochromeEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -46,11 +46,11 @@ id __60__NTKFaceColorMonochromeEditOption__orderedValuesForDevice___block_invoke
   return v8;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___NTKFaceColorMonochromeEditOption;
-  v3 = objc_msgSendSuper2(&v6, sel___orderedValuesForDevice_, a3);
+  v3 = objc_msgSendSuper2(&v6, sel___orderedValuesForDevice_, device);
   v4 = [v3 mutableCopy];
 
   [v4 insertObject:&unk_284185380 atIndex:0];

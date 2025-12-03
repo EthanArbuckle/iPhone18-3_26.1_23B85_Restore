@@ -1,7 +1,7 @@
 @interface NowPlayingArtworkMotionReplicatorLayer
 - (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)init;
-- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithLayer:(id)a3;
+- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer_originalContent) = 0;
   result = sub_1C5BCBBC4();
@@ -27,11 +27,11 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5AFB1B4();
 }
 
-- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithLayer:(id)a3
+- (_TtC11MediaCoreUI38NowPlayingArtworkMotionReplicatorLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C5BCB8D4();

@@ -1,59 +1,59 @@
 @interface CKKSZoneChangeFetcher
-- (CKKSZoneChangeFetcher)initWithContainer:(id)a3 fetchClass:(Class)a4 reachabilityTracker:(id)a5 altDSID:(id)a6 sendMetric:(BOOL)a7;
+- (CKKSZoneChangeFetcher)initWithContainer:(id)container fetchClass:(Class)class reachabilityTracker:(id)tracker altDSID:(id)d sendMetric:(BOOL)metric;
 - (NSString)description;
 - (id)createSuccessfulFetchDependency;
 - (id)inflightFetch;
-- (id)requestFetchDueToAPNS:(id)a3;
-- (id)requestSuccessfulFetch:(id)a3;
-- (id)requestSuccessfulFetchForManyReasons:(id)a3;
+- (id)requestFetchDueToAPNS:(id)s;
+- (id)requestSuccessfulFetch:(id)fetch;
+- (id)requestSuccessfulFetchForManyReasons:(id)reasons;
 - (id)strongClientMap;
 - (void)_onqueueCreateNewFetch;
 - (void)cancel;
 - (void)halt;
 - (void)maybeCreateNewFetch;
 - (void)maybeCreateNewFetchOnQueue;
-- (void)notifyZoneChange:(id)a3;
-- (void)registerClient:(id)a3 zoneID:(id)a4;
+- (void)notifyZoneChange:(id)change;
+- (void)registerClient:(id)client zoneID:(id)d;
 @end
 
 @implementation CKKSZoneChangeFetcher
 
 - (void)halt
 {
-  v3 = [(CKKSZoneChangeFetcher *)self fetchScheduler];
-  [v3 cancel];
+  fetchScheduler = [(CKKSZoneChangeFetcher *)self fetchScheduler];
+  [fetchScheduler cancel];
 
-  v4 = [(CKKSZoneChangeFetcher *)self queue];
+  queue = [(CKKSZoneChangeFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F4BA4;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
-  v5 = [(CKKSZoneChangeFetcher *)self currentFetch];
-  [v5 cancel];
+  currentFetch = [(CKKSZoneChangeFetcher *)self currentFetch];
+  [currentFetch cancel];
 
-  v6 = [(CKKSZoneChangeFetcher *)self holdOperation];
+  holdOperation = [(CKKSZoneChangeFetcher *)self holdOperation];
 
-  if (v6)
+  if (holdOperation)
   {
-    v7 = [(CKKSZoneChangeFetcher *)self currentFetch];
-    v8 = [(CKKSZoneChangeFetcher *)self holdOperation];
-    [v7 removeDependency:v8];
+    currentFetch2 = [(CKKSZoneChangeFetcher *)self currentFetch];
+    holdOperation2 = [(CKKSZoneChangeFetcher *)self holdOperation];
+    [currentFetch2 removeDependency:holdOperation2];
   }
 
-  v9 = [(CKKSZoneChangeFetcher *)self currentFetch];
-  [v9 waitUntilFinished];
+  currentFetch3 = [(CKKSZoneChangeFetcher *)self currentFetch];
+  [currentFetch3 waitUntilFinished];
 
-  v10 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  [v10 waitUntilFinished];
+  currentProcessResult = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  [currentProcessResult waitUntilFinished];
 }
 
 - (void)cancel
 {
-  v2 = [(CKKSZoneChangeFetcher *)self fetchScheduler];
-  [v2 cancel];
+  fetchScheduler = [(CKKSZoneChangeFetcher *)self fetchScheduler];
+  [fetchScheduler cancel];
 }
 
 - (id)createSuccessfulFetchDependency
@@ -68,27 +68,27 @@
 
 - (void)_onqueueCreateNewFetch
 {
-  v3 = [(CKKSZoneChangeFetcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKKSZoneChangeFetcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
-  v38 = [(CKKSZoneChangeFetcher *)self successfulFetchDependency];
-  [(CKKSZoneChangeFetcher *)self setInflightFetchDependency:v38];
-  v4 = [(CKKSZoneChangeFetcher *)self inflightFetchDependencies];
-  [v4 addObject:v38];
+  successfulFetchDependency = [(CKKSZoneChangeFetcher *)self successfulFetchDependency];
+  [(CKKSZoneChangeFetcher *)self setInflightFetchDependency:successfulFetchDependency];
+  inflightFetchDependencies = [(CKKSZoneChangeFetcher *)self inflightFetchDependencies];
+  [inflightFetchDependencies addObject:successfulFetchDependency];
 
   [(CKKSZoneChangeFetcher *)self setNewRequests:0];
-  v5 = [(CKKSZoneChangeFetcher *)self createSuccessfulFetchDependency];
-  [(CKKSZoneChangeFetcher *)self setSuccessfulFetchDependency:v5];
+  createSuccessfulFetchDependency = [(CKKSZoneChangeFetcher *)self createSuccessfulFetchDependency];
+  [(CKKSZoneChangeFetcher *)self setSuccessfulFetchDependency:createSuccessfulFetchDependency];
 
-  v6 = [(CKKSZoneChangeFetcher *)self currentFetchReasons];
+  currentFetchReasons = [(CKKSZoneChangeFetcher *)self currentFetchReasons];
   v7 = objc_alloc_init(NSMutableSet);
   [(CKKSZoneChangeFetcher *)self setCurrentFetchReasons:v7];
 
   v8 = [NSSortDescriptor sortDescriptorWithKey:@"description" ascending:1];
   v47 = v8;
   v9 = [NSArray arrayWithObjects:&v47 count:1];
-  v10 = [v6 sortedArrayUsingDescriptors:v9];
+  v10 = [currentFetchReasons sortedArrayUsingDescriptors:v9];
   v11 = [v10 componentsJoinedByString:{@", "}];
 
   v12 = sub_100019104(@"ckksfetcher", 0);
@@ -99,13 +99,13 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Starting a new fetch, reasons: %@", buf, 0xCu);
   }
 
-  v13 = [(CKKSZoneChangeFetcher *)self apnsPushes];
+  apnsPushes = [(CKKSZoneChangeFetcher *)self apnsPushes];
   v14 = objc_alloc_init(NSMutableSet);
   [(CKKSZoneChangeFetcher *)self setApnsPushes:v14];
 
   v15 = [CKOperationGroup CKKSGroupWithName:v11];
-  v16 = [(CKKSZoneChangeFetcher *)self strongClientMap];
-  if (![v16 count])
+  strongClientMap = [(CKKSZoneChangeFetcher *)self strongClientMap];
+  if (![strongClientMap count])
   {
     v17 = sub_100019104(@"ckksfetcher", 0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -116,13 +116,13 @@
   }
 
   v18 = [CKKSFetchAllRecordZoneChangesOperation alloc];
-  v19 = [(CKKSZoneChangeFetcher *)self container];
-  v20 = [(CKKSZoneChangeFetcher *)self fetchRecordZoneChangesOperationClass];
-  v21 = [(CKKSZoneChangeFetcher *)self altDSID];
+  container = [(CKKSZoneChangeFetcher *)self container];
+  fetchRecordZoneChangesOperationClass = [(CKKSZoneChangeFetcher *)self fetchRecordZoneChangesOperationClass];
+  altDSID = [(CKKSZoneChangeFetcher *)self altDSID];
   LOBYTE(v37) = [(CKKSZoneChangeFetcher *)self sendMetric];
-  v22 = [(CKKSFetchAllRecordZoneChangesOperation *)v18 initWithContainer:v19 fetchClass:v20 clientMap:v16 fetchReasons:v6 apnsPushes:v13 forceResync:0 ckoperationGroup:v15 altDSID:v21 sendMetric:v37];
+  v22 = [(CKKSFetchAllRecordZoneChangesOperation *)v18 initWithContainer:container fetchClass:fetchRecordZoneChangesOperationClass clientMap:strongClientMap fetchReasons:currentFetchReasons apnsPushes:apnsPushes forceResync:0 ckoperationGroup:v15 altDSID:altDSID sendMetric:v37];
 
-  if ([v6 containsObject:@"network"])
+  if ([currentFetchReasons containsObject:@"network"])
   {
     v23 = sub_100019104(@"ckksfetcher", 0);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -131,13 +131,13 @@
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "blocking fetch on network reachability", buf, 2u);
     }
 
-    v24 = [(CKKSZoneChangeFetcher *)self reachabilityTracker];
-    v25 = [v24 reachabilityDependency];
-    [(CKKSFetchAllRecordZoneChangesOperation *)v22 addNullableDependency:v25];
+    reachabilityTracker = [(CKKSZoneChangeFetcher *)self reachabilityTracker];
+    reachabilityDependency = [reachabilityTracker reachabilityDependency];
+    [(CKKSFetchAllRecordZoneChangesOperation *)v22 addNullableDependency:reachabilityDependency];
   }
 
-  v26 = [(CKKSZoneChangeFetcher *)self holdOperation];
-  [(CKKSFetchAllRecordZoneChangesOperation *)v22 addNullableDependency:v26];
+  holdOperation = [(CKKSZoneChangeFetcher *)self holdOperation];
+  [(CKKSFetchAllRecordZoneChangesOperation *)v22 addNullableDependency:holdOperation];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -146,27 +146,27 @@
   objc_copyWeak(&v43, &location);
   v27 = v22;
   v40 = v27;
-  v28 = v6;
+  v28 = currentFetchReasons;
   v41 = v28;
-  v29 = v13;
+  v29 = apnsPushes;
   v42 = v29;
   v30 = [CKKSResultOperation operationWithBlock:v39];
   [(CKKSZoneChangeFetcher *)self setCurrentProcessResult:v30];
 
-  v31 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  [v31 setName:@"zone-change-fetcher-worker"];
+  currentProcessResult = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  [currentProcessResult setName:@"zone-change-fetcher-worker"];
 
-  v32 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  [v32 addDependency:v27];
+  currentProcessResult2 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  [currentProcessResult2 addDependency:v27];
 
-  v33 = [(CKKSZoneChangeFetcher *)self operationQueue];
-  v34 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  [v33 addOperation:v34];
+  operationQueue = [(CKKSZoneChangeFetcher *)self operationQueue];
+  currentProcessResult3 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  [operationQueue addOperation:currentProcessResult3];
 
   [(CKKSZoneChangeFetcher *)self setCurrentFetch:v27];
-  v35 = [(CKKSZoneChangeFetcher *)self operationQueue];
-  v36 = [(CKKSZoneChangeFetcher *)self currentFetch];
-  [v35 addOperation:v36];
+  operationQueue2 = [(CKKSZoneChangeFetcher *)self operationQueue];
+  currentFetch = [(CKKSZoneChangeFetcher *)self currentFetch];
+  [operationQueue2 addOperation:currentFetch];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(&location);
@@ -174,19 +174,19 @@
 
 - (void)maybeCreateNewFetch
 {
-  v3 = [(CKKSZoneChangeFetcher *)self queue];
+  queue = [(CKKSZoneChangeFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F5990;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)maybeCreateNewFetchOnQueue
 {
-  v3 = [(CKKSZoneChangeFetcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKKSZoneChangeFetcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CKKSZoneChangeFetcher *)self halted])
   {
@@ -205,36 +205,36 @@
     return;
   }
 
-  v9 = [(CKKSZoneChangeFetcher *)self currentFetch];
-  if (v9)
+  currentFetch = [(CKKSZoneChangeFetcher *)self currentFetch];
+  if (currentFetch)
   {
-    v3 = [(CKKSZoneChangeFetcher *)self currentFetch];
-    if (([v3 isFinished]& 1) == 0)
+    queue = [(CKKSZoneChangeFetcher *)self currentFetch];
+    if (([queue isFinished]& 1) == 0)
     {
 
       return;
     }
   }
 
-  v5 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  if (!v5)
+  currentProcessResult = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  if (!currentProcessResult)
   {
-    if (v9)
+    if (currentFetch)
     {
     }
 
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
-  v8 = [v7 isFinished];
+  v6 = currentProcessResult;
+  currentProcessResult2 = [(CKKSZoneChangeFetcher *)self currentProcessResult];
+  isFinished = [currentProcessResult2 isFinished];
 
-  if (v9)
+  if (currentFetch)
   {
   }
 
-  if (v8)
+  if (isFinished)
   {
 LABEL_18:
 
@@ -250,14 +250,14 @@ LABEL_18:
   v10 = sub_1001F5C54;
   v11 = sub_1001F5C64;
   v12 = 0;
-  v3 = [(CKKSZoneChangeFetcher *)self queue];
+  queue = [(CKKSZoneChangeFetcher *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001F5C6C;
   v6[3] = &unk_100344E90;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -265,25 +265,25 @@ LABEL_18:
   return v4;
 }
 
-- (id)requestSuccessfulFetchForManyReasons:(id)a3
+- (id)requestSuccessfulFetchForManyReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1001F5C54;
   v16 = sub_1001F5C64;
   v17 = 0;
-  v5 = [(CKKSZoneChangeFetcher *)self queue];
+  queue = [(CKKSZoneChangeFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F5E30;
   block[3] = &unk_100344920;
-  v10 = v4;
+  v10 = reasonsCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = reasonsCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -291,20 +291,20 @@ LABEL_18:
   return v7;
 }
 
-- (id)requestFetchDueToAPNS:(id)a3
+- (id)requestFetchDueToAPNS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  v5 = [(CKKSZoneChangeFetcher *)self strongClientMap];
+  strongClientMap = [(CKKSZoneChangeFetcher *)self strongClientMap];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  allKeys = [strongClientMap allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -314,11 +314,11 @@ LABEL_18:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v5 objectForKeyedSubscript:v10];
+        v11 = [strongClientMap objectForKeyedSubscript:v10];
         if ([v11 zoneIsReadyForFetching:v10])
         {
           *(v27 + 24) = 0;
@@ -327,7 +327,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v7)
       {
         continue;
@@ -339,16 +339,16 @@ LABEL_18:
 
 LABEL_11:
 
-  v12 = [(CKKSZoneChangeFetcher *)self queue];
+  queue = [(CKKSZoneChangeFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F619C;
   block[3] = &unk_100344920;
-  v13 = v4;
+  v13 = sCopy;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v21 = &v26;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue, block);
 
   if (*(v27 + 24) == 1)
   {
@@ -373,25 +373,25 @@ LABEL_11:
   return v15;
 }
 
-- (void)notifyZoneChange:(id)a3
+- (void)notifyZoneChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100019104(@"ckkspush", 0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "received a zone change notification for %@ %@", &v7, 0x16u);
   }
 
-  v6 = [(CKKSZoneChangeFetcher *)self requestFetchDueToAPNS:v4];
+  v6 = [(CKKSZoneChangeFetcher *)self requestFetchDueToAPNS:changeCopy];
 }
 
-- (id)requestSuccessfulFetch:(id)a3
+- (id)requestSuccessfulFetch:(id)fetch
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:fetch];
   v5 = [(CKKSZoneChangeFetcher *)self requestSuccessfulFetchForManyReasons:v4];
 
   return v5;
@@ -400,16 +400,16 @@ LABEL_11:
 - (id)strongClientMap
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CKKSZoneChangeFetcher *)self clientMap];
-  objc_sync_enter(v4);
+  clientMap = [(CKKSZoneChangeFetcher *)self clientMap];
+  objc_sync_enter(clientMap);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CKKSZoneChangeFetcher *)self clientMap];
-  v6 = [v5 keyEnumerator];
+  clientMap2 = [(CKKSZoneChangeFetcher *)self clientMap];
+  keyEnumerator = [clientMap2 keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -419,12 +419,12 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(CKKSZoneChangeFetcher *)self clientMap];
-        v12 = [v11 objectForKey:v10];
+        clientMap3 = [(CKKSZoneChangeFetcher *)self clientMap];
+        v12 = [clientMap3 objectForKey:v10];
 
         if (v12)
         {
@@ -432,66 +432,66 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(clientMap);
 
   return v3;
 }
 
-- (void)registerClient:(id)a3 zoneID:(id)a4
+- (void)registerClient:(id)client zoneID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CKKSZoneChangeFetcher *)self clientMap];
-  objc_sync_enter(v7);
-  v8 = [(CKKSZoneChangeFetcher *)self clientMap];
-  [v8 setObject:v9 forKey:v6];
+  clientCopy = client;
+  dCopy = d;
+  clientMap = [(CKKSZoneChangeFetcher *)self clientMap];
+  objc_sync_enter(clientMap);
+  clientMap2 = [(CKKSZoneChangeFetcher *)self clientMap];
+  [clientMap2 setObject:clientCopy forKey:dCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(clientMap);
 }
 
 - (NSString)description
 {
-  v3 = [(CKKSZoneChangeFetcher *)self fetchScheduler];
-  v4 = [v3 nextFireTime];
+  fetchScheduler = [(CKKSZoneChangeFetcher *)self fetchScheduler];
+  nextFireTime = [fetchScheduler nextFireTime];
 
-  if (v4)
+  if (nextFireTime)
   {
-    v5 = objc_alloc_init(NSDateFormatter);
-    [v5 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    v6 = [(CKKSZoneChangeFetcher *)self name];
-    v7 = [v5 stringFromDate:v4];
-    v8 = [NSString stringWithFormat:@"<CKKSZoneChangeFetcher(%@): next fetch at %@", v6, v7];
+    name2 = objc_alloc_init(NSDateFormatter);
+    [name2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    name = [(CKKSZoneChangeFetcher *)self name];
+    v7 = [name2 stringFromDate:nextFireTime];
+    v8 = [NSString stringWithFormat:@"<CKKSZoneChangeFetcher(%@): next fetch at %@", name, v7];
   }
 
   else
   {
-    v5 = [(CKKSZoneChangeFetcher *)self name];
-    v8 = [NSString stringWithFormat:@"<CKKSZoneChangeFetcher(%@): no pending fetches", v5];
+    name2 = [(CKKSZoneChangeFetcher *)self name];
+    v8 = [NSString stringWithFormat:@"<CKKSZoneChangeFetcher(%@): no pending fetches", name2];
   }
 
   return v8;
 }
 
-- (CKKSZoneChangeFetcher)initWithContainer:(id)a3 fetchClass:(Class)a4 reachabilityTracker:(id)a5 altDSID:(id)a6 sendMetric:(BOOL)a7
+- (CKKSZoneChangeFetcher)initWithContainer:(id)container fetchClass:(Class)class reachabilityTracker:(id)tracker altDSID:(id)d sendMetric:(BOOL)metric
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  containerCopy = container;
+  trackerCopy = tracker;
+  dCopy = d;
   v48.receiver = self;
   v48.super_class = CKKSZoneChangeFetcher;
   v16 = [(CKKSZoneChangeFetcher *)&v48 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_container, a3);
-    objc_storeStrong(&v17->_fetchRecordZoneChangesOperationClass, a4);
-    objc_storeStrong(&v17->_reachabilityTracker, a5);
+    objc_storeStrong(&v16->_container, container);
+    objc_storeStrong(&v17->_fetchRecordZoneChangesOperationClass, class);
+    objc_storeStrong(&v17->_reachabilityTracker, tracker);
     v18 = objc_alloc_init(NSMutableSet);
     currentFetchReasons = v17->_currentFetchReasons;
     v17->_currentFetchReasons = v18;
@@ -507,9 +507,9 @@ LABEL_11:
     name = v17->_name;
     v17->_name = @"zone-change-fetcher";
 
-    v25 = [(NSString *)v17->_name UTF8String];
+    uTF8String = [(NSString *)v17->_name UTF8String];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v27 = dispatch_queue_create(v25, v26);
+    v27 = dispatch_queue_create(uTF8String, v26);
     queue = v17->_queue;
     v17->_queue = v27;
 
@@ -517,9 +517,9 @@ LABEL_11:
     operationQueue = v17->_operationQueue;
     v17->_operationQueue = v29;
 
-    v31 = [(CKKSZoneChangeFetcher *)v17 createSuccessfulFetchDependency];
+    createSuccessfulFetchDependency = [(CKKSZoneChangeFetcher *)v17 createSuccessfulFetchDependency];
     successfulFetchDependency = v17->_successfulFetchDependency;
-    v17->_successfulFetchDependency = v31;
+    v17->_successfulFetchDependency = createSuccessfulFetchDependency;
 
     v33 = +[NSMutableSet set];
     inflightFetchDependencies = v17->_inflightFetchDependencies;
@@ -529,8 +529,8 @@ LABEL_11:
     v17->_inflightFetchDependency = 0;
 
     v17->_newRequests = 0;
-    objc_storeStrong(&v17->_altDSID, a6);
-    v17->_sendMetric = a7;
+    objc_storeStrong(&v17->_altDSID, d);
+    v17->_sendMetric = metric;
     if (qword_10039DEC8 != -1)
     {
       dispatch_once(&qword_10039DEC8, &stru_100337248);

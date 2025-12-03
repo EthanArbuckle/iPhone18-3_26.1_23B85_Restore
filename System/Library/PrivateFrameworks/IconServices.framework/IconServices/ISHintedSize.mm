@@ -1,44 +1,44 @@
 @interface ISHintedSize
-- (CGSize)hintedSizeForSize:(CGSize)a3;
-- (CGSize)hintedSizeForSize:(CGSize)a3 options:(unint64_t)a4;
-- (void)addHintedSize:(CGSize)a3 forSize:(CGSize)a4;
+- (CGSize)hintedSizeForSize:(CGSize)size;
+- (CGSize)hintedSizeForSize:(CGSize)size options:(unint64_t)options;
+- (void)addHintedSize:(CGSize)size forSize:(CGSize)forSize;
 @end
 
 @implementation ISHintedSize
 
-- (void)addHintedSize:(CGSize)a3 forSize:(CGSize)a4
+- (void)addHintedSize:(CGSize)size forSize:(CGSize)forSize
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [MEMORY[0x1E696B098] valueWithSize:{a3.width, a3.height}];
+  height = forSize.height;
+  width = forSize.width;
+  v7 = [MEMORY[0x1E696B098] valueWithSize:{size.width, size.height}];
   v8.receiver = self;
   v8.super_class = ISHintedSize;
   [(ISHintedValue *)&v8 addHintedValue:v7 forSize:width, height];
 }
 
-- (CGSize)hintedSizeForSize:(CGSize)a3
+- (CGSize)hintedSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ISHintedValue *)self options];
+  height = size.height;
+  width = size.width;
+  options = [(ISHintedValue *)self options];
 
-  [(ISHintedSize *)self hintedSizeForSize:v6 options:width, height];
+  [(ISHintedSize *)self hintedSizeForSize:options options:width, height];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (CGSize)hintedSizeForSize:(CGSize)a3 options:(unint64_t)a4
+- (CGSize)hintedSizeForSize:(CGSize)size options:(unint64_t)options
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  optionsCopy = options;
+  height = size.height;
+  width = size.width;
   v8 = [(ISHintedValue *)self indexForSize:?];
   v9 = [(ISHintedValue *)self hintedValueForIndex:v8];
   [v9 sizeValue];
   v11 = v10;
   v13 = v12;
-  if (v4)
+  if (optionsCopy)
   {
     v14 = v8 < 1;
     v15 = v8 - 1;
@@ -55,7 +55,7 @@
 
   v21 = round(v11);
   v22 = round(v13);
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v13 = v22;
     v11 = v21;

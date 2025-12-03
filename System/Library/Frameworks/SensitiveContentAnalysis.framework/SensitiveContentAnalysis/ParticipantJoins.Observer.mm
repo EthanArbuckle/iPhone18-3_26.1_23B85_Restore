@@ -1,18 +1,18 @@
 @interface ParticipantJoins.Observer
 - (_TtCV24SensitiveContentAnalysis16ParticipantJoinsP33_A1B455ED37557BDC9F886674143C91148Observer)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ParticipantJoins.Observer
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (!a4)
+  if (!object)
   {
     memset(v13, 0, sizeof(v13));
-    v11 = a5;
-    v12 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_3;
     }
@@ -22,12 +22,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = a5;
-  v9 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_1AEAF9CCC();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_5;
   }

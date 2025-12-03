@@ -1,61 +1,61 @@
 @interface CNVCardStringStorage
-+ (id)storageWithString:(id)a3;
-- (CNVCardStringStorage)initWithString:(id)a3;
++ (id)storageWithString:(id)string;
+- (CNVCardStringStorage)initWithString:(id)string;
 - (id)insertionMarker;
 - (unint64_t)estimatedDataLength;
-- (void)appendData:(id)a3;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
-- (void)insertString:(id)a3 atMarker:(id)a4;
+- (void)appendData:(id)data;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
+- (void)insertString:(id)string atMarker:(id)marker;
 @end
 
 @implementation CNVCardStringStorage
 
-+ (id)storageWithString:(id)a3
++ (id)storageWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-- (CNVCardStringStorage)initWithString:(id)a3
+- (CNVCardStringStorage)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = [(CNVCardStringStorage *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_string, a3);
+    objc_storeStrong(&v6->_string, string);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    [(NSMutableString *)self->_string appendString:v4];
+    [(NSMutableString *)self->_string appendString:stringCopy];
   }
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(CNVCardStringStorage *)self appendString:v6];
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5 encoding:4];
+  dataCopy = data;
+  v6 = [[v4 alloc] initWithData:dataCopy encoding:4];
 
   [(CNVCardStringStorage *)self appendString:v6];
 }
@@ -76,13 +76,13 @@
   return v3;
 }
 
-- (void)insertString:(id)a3 atMarker:(id)a4
+- (void)insertString:(id)string atMarker:(id)marker
 {
-  v7 = a3;
-  v6 = a4;
+  stringCopy = string;
+  markerCopy = marker;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    -[NSMutableString insertString:atIndex:](self->_string, "insertString:atIndex:", v7, [v6 unsignedIntegerValue]);
+    -[NSMutableString insertString:atIndex:](self->_string, "insertString:atIndex:", stringCopy, [markerCopy unsignedIntegerValue]);
   }
 }
 

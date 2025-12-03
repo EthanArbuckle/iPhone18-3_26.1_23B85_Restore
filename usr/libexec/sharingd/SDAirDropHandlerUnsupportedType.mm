@@ -1,6 +1,6 @@
 @interface SDAirDropHandlerUnsupportedType
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerUnsupportedType)initWithTransfer:(id)a3;
+- (SDAirDropHandlerUnsupportedType)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (void)triggerAppStoreSearch;
 - (void)updatePossibleActions;
@@ -8,15 +8,15 @@
 
 @implementation SDAirDropHandlerUnsupportedType
 
-- (SDAirDropHandlerUnsupportedType)initWithTransfer:(id)a3
+- (SDAirDropHandlerUnsupportedType)initWithTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v10.receiver = self;
   v10.super_class = SDAirDropHandlerUnsupportedType;
-  v5 = [(SDAirDropHandler *)&v10 initWithTransfer:v4];
+  v5 = [(SDAirDropHandler *)&v10 initWithTransfer:transferCopy];
   if (v5)
   {
-    v6 = [[SDAirDropHandleriCloudDrive alloc] initWithTransfer:v4];
+    v6 = [[SDAirDropHandleriCloudDrive alloc] initWithTransfer:transferCopy];
     icloudDriveHandler = v5->_icloudDriveHandler;
     v5->_icloudDriveHandler = v6;
 
@@ -29,24 +29,24 @@
 
 - (BOOL)canHandleTransfer
 {
-  v2 = [(SDAirDropHandler *)self transfer];
-  v3 = [v2 metaData];
-  v4 = [v3 items];
-  v5 = [v4 count] == 1;
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
+  v5 = [items count] == 1;
 
   return v5;
 }
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  [v4 isVerifiableIdentity];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  [metaData isVerifiableIdentity];
 
   [(SDAirDropHandler *)self isJustFiles];
   v5 = SFLocalizedStringForKey();
-  v6 = [(SDAirDropHandler *)self senderName];
-  v7 = [NSString stringWithFormat:v5, v6];
+  senderName = [(SDAirDropHandler *)self senderName];
+  v7 = [NSString stringWithFormat:v5, senderName];
 
   return v7;
 }
@@ -57,8 +57,8 @@
   v16.super_class = SDAirDropHandlerUnsupportedType;
   [(SDAirDropHandler *)&v16 updatePossibleActions];
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
-  v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v4];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy];
 
   v6 = SFLocalizedStringForKey();
   [v5 setSingleItemLocalizedTitle:v6];
@@ -75,15 +75,15 @@
   [v3 addObject:{v5, v10, v11, v12, v13}];
   if ([(SDAirDropHandleriCloudDrive *)self->_icloudDriveHandler canHandleTransfer])
   {
-    v7 = [(SDAirDropHandler *)self completionHandler];
-    [(SDAirDropHandler *)self->_icloudDriveHandler setCompletionHandler:v7];
+    completionHandler = [(SDAirDropHandler *)self completionHandler];
+    [(SDAirDropHandler *)self->_icloudDriveHandler setCompletionHandler:completionHandler];
 
-    v8 = [(SDAirDropHandleriCloudDrive *)self->_icloudDriveHandler action];
-    [v3 addObject:v8];
+    action = [(SDAirDropHandleriCloudDrive *)self->_icloudDriveHandler action];
+    [v3 addObject:action];
   }
 
-  v9 = [(SDAirDropHandler *)self transfer];
-  [v9 setPossibleActions:v3];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v3];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -91,12 +91,12 @@
 
 - (void)triggerAppStoreSearch
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 items];
-  v6 = [v5 anyObject];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
+  anyObject = [items anyObject];
 
-  if ([v6 isFile])
+  if ([anyObject isFile])
   {
     v7 = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/docTypeLookup?uti=%@";
   }
@@ -106,8 +106,8 @@
     v7 = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/docTypeLookup?scheme=%@";
   }
 
-  v8 = [v6 type];
-  v9 = [NSString stringWithFormat:v7, v8];
+  type = [anyObject type];
+  v9 = [NSString stringWithFormat:v7, type];
   v10 = [NSURL URLWithString:v9];
 
   v11 = airdrop_log();

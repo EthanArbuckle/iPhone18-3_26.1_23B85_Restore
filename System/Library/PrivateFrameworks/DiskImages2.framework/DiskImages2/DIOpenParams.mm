@@ -1,37 +1,37 @@
 @interface DIOpenParams
-- (DIOpenParams)initWithURL:(id)a3 openMode:(int64_t)a4 error:(id *)a5;
+- (DIOpenParams)initWithURL:(id)l openMode:(int64_t)mode error:(id *)error;
 - (expected<void,)unlockImageWithOpenParams:(DIOpenParams *)self;
-- (id)openWithError:(id *)a3;
+- (id)openWithError:(id *)error;
 @end
 
 @implementation DIOpenParams
 
-- (DIOpenParams)initWithURL:(id)a3 openMode:(int64_t)a4 error:(id *)a5
+- (DIOpenParams)initWithURL:(id)l openMode:(int64_t)mode error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = DIOpenParams;
-  v9 = [(DIBaseParams *)&v14 initWithURL:v8 error:a5];
+  v9 = [(DIBaseParams *)&v14 initWithURL:lCopy error:error];
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  if (([v8 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v11 = @"Only file URLs are supported by DIOpenParams";
 LABEL_8:
-    v10 = [DIError nilWithPOSIXCode:22 verboseInfo:v11 error:a5];
+    v10 = [DIError nilWithPOSIXCode:22 verboseInfo:v11 error:error];
     goto LABEL_9;
   }
 
-  if (a4 >= 3)
+  if (mode >= 3)
   {
     v11 = @"Invalid open mode specified";
     goto LABEL_8;
   }
 
-  v9->_UIOOpenMode = dword_248FADDF8[a4];
+  v9->_UIOOpenMode = dword_248FADDF8[mode];
 LABEL_5:
   v10 = v9;
 LABEL_9:
@@ -74,14 +74,14 @@ LABEL_9:
 
       v7 = diskimage_uio::crypto::auth_table::const_iterator::operator*(&v21);
       entry = diskimage_uio::crypto::auth_table_entry::get_entry(v7);
-      v20 = self;
+      selfCopy = self;
       v9 = *(entry + 16);
       if (v9 == -1)
       {
         std::__throw_bad_variant_access[abi:ne200100]();
       }
 
-      *&v12 = &v20;
+      *&v12 = &selfCopy;
       (off_285C05330[v9])(&v14, &v12, entry);
 
       if ((v15[8] & 1) == 0)
@@ -130,12 +130,12 @@ LABEL_16:
   return result;
 }
 
-- (id)openWithError:(id *)a3
+- (id)openWithError:(id *)error
 {
   [(DIBaseParams *)self inputURL];
   [objc_claimAutoreleasedReturnValue() path];
-  v5 = [objc_claimAutoreleasedReturnValue() fileSystemRepresentation];
-  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &v5);
+  fileSystemRepresentation = [objc_claimAutoreleasedReturnValue() fileSystemRepresentation];
+  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &fileSystemRepresentation);
   [(DIOpenParams *)self UIOOpenMode];
   diskimage_uio::diskimage_open_params::create();
 }

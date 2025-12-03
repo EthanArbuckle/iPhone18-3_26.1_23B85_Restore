@@ -1,19 +1,19 @@
 @interface TSQRCodeScanFlow
-- (TSQRCodeScanFlow)initWithBackButton:(BOOL)a3 plans:(id)a4;
+- (TSQRCodeScanFlow)initWithBackButton:(BOOL)button plans:(id)plans;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)dealloc;
-- (void)firstViewController:(id)a3;
-- (void)handleError:(id)a3;
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4;
-- (void)setCancelNavigationBarItems:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)handleError:(id)error;
+- (void)planItemsUpdated:(id)updated planListError:(id)error;
+- (void)setCancelNavigationBarItems:(id)items;
 @end
 
 @implementation TSQRCodeScanFlow
 
-- (TSQRCodeScanFlow)initWithBackButton:(BOOL)a3 plans:(id)a4
+- (TSQRCodeScanFlow)initWithBackButton:(BOOL)button plans:(id)plans
 {
-  v7 = a4;
+  plansCopy = plans;
   v13.receiver = self;
   v13.super_class = TSQRCodeScanFlow;
   v8 = [(TSSIMSetupFlow *)&v13 init];
@@ -23,12 +23,12 @@
     cancelButton = v8->_cancelButton;
     v8->_cancelButton = v9;
 
-    v8->_withBackButton = a3;
+    v8->_withBackButton = button;
     v8->_confirmationCodeRequired = 0;
     v8->_userConsentType = 0;
     v8->_isPreinstallingViewControllerActive = 1;
     v8->_signupUserConsentResponse = 0;
-    objc_storeStrong(&v8->_plans, a4);
+    objc_storeStrong(&v8->_plans, plans);
     v11 = +[TSUserInPurchaseFlowAssertion sharedInstance];
     [v11 assertUserInPurchaseFlowStartOver:0 caller:v8];
   }
@@ -74,20 +74,20 @@
   return v4;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v5 = a3;
-    v6 = [(TSQRCodeScanFlow *)self firstViewController];
-    (*(a3 + 2))(v5, v6);
+    controllerCopy = controller;
+    firstViewController = [(TSQRCodeScanFlow *)self firstViewController];
+    (*(controller + 2))(controllerCopy, firstViewController);
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -106,8 +106,8 @@ LABEL_3:
     v31[0] = &unk_287583A60;
     v31[1] = MEMORY[0x277CBEC38];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-    v9 = [(TSSIMSetupFlow *)self navigationController];
-    v6 = [(TSSubFlowViewController *)v7 initWithOptions:v8 navigationController:v9 delegate:self];
+    navigationController = [(TSSIMSetupFlow *)self navigationController];
+    v6 = [(TSSubFlowViewController *)v7 initWithOptions:v8 navigationController:navigationController delegate:self];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -142,8 +142,8 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v4 confirmationCode];
-        v13 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_name consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:v10 acceptButtonTapped:0];
+        confirmationCode = [fromCopy confirmationCode];
+        v13 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_name consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:confirmationCode acceptButtonTapped:0];
         goto LABEL_31;
       }
 
@@ -154,7 +154,7 @@ LABEL_3:
         goto LABEL_33;
       }
 
-      if ([v4 consentType] != 4 || (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) != 2)
+      if ([fromCopy consentType] != 4 || (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) != 2)
       {
         self->_isPreinstallingViewControllerActive = 0;
         v20 = [TSSubFlowViewController alloc];
@@ -165,8 +165,8 @@ LABEL_3:
         v26[2] = @"PlanSetupTypeKey";
         v27[2] = &unk_287583A90;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
-        v22 = [(TSSIMSetupFlow *)self navigationController];
-        v6 = [(TSSubFlowViewController *)v20 initWithOptions:v21 navigationController:v22 delegate:self];
+        navigationController2 = [(TSSIMSetupFlow *)self navigationController];
+        v6 = [(TSSubFlowViewController *)v20 initWithOptions:v21 navigationController:navigationController2 delegate:self];
 
         goto LABEL_33;
       }
@@ -181,8 +181,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v10 = v4;
-  if (![v10 confirmationCodeRequired])
+  confirmationCode = fromCopy;
+  if (![confirmationCode confirmationCodeRequired])
   {
     if (self->_confirmationCodeRequired)
     {
@@ -191,16 +191,16 @@ LABEL_3:
       goto LABEL_32;
     }
 
-    if ([v10 isEnterManuallyTapped])
+    if ([confirmationCode isEnterManuallyTapped])
     {
       v13 = objc_alloc_init(SSCardManualEntryViewController);
     }
 
     else
     {
-      if ([v10 transferViaQRCode])
+      if ([confirmationCode transferViaQRCode])
       {
-        if (![v10 transferViaQRCode])
+        if (![confirmationCode transferViaQRCode])
         {
           v6 = 0;
           goto LABEL_32;
@@ -214,9 +214,9 @@ LABEL_3:
         v29[1] = MEMORY[0x277CBEC38];
         v28[2] = @"PlanSetupTypeKey";
         v29[2] = &unk_287583A78;
-        v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
-        v19 = [(TSSIMSetupFlow *)self navigationController];
-        v6 = [(TSSubFlowViewController *)v18 initWithOptions:v12 navigationController:v19 delegate:self];
+        fauxCardData = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
+        navigationController3 = [(TSSIMSetupFlow *)self navigationController];
+        v6 = [(TSSubFlowViewController *)v18 initWithOptions:fauxCardData navigationController:navigationController3 delegate:self];
 
         goto LABEL_9;
       }
@@ -230,8 +230,8 @@ LABEL_31:
   }
 
   v11 = [SSConfirmationCodeViewController alloc];
-  v12 = [v10 fauxCardData];
-  v6 = [(SSConfirmationCodeViewController *)v11 initWithCardData:v12];
+  fauxCardData = [confirmationCode fauxCardData];
+  v6 = [(SSConfirmationCodeViewController *)v11 initWithCardData:fauxCardData];
 LABEL_9:
 
 LABEL_32:
@@ -248,9 +248,9 @@ void __43__TSQRCodeScanFlow_nextViewControllerFrom___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"install.failed" object:*(*(a1 + 32) + 136)];
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (+[TSUtilities isPad])
   {
     if (+[TSUtilities inBuddy])
@@ -258,38 +258,38 @@ void __43__TSQRCodeScanFlow_nextViewControllerFrom___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    v4 = [v6 navigationItem];
-    [v4 setRightBarButtonItem:self->_cancelButton];
+    navigationItem = [itemsCopy navigationItem];
+    [navigationItem setRightBarButtonItem:self->_cancelButton];
   }
 
   else
   {
-    v5 = [v6 navigationItem];
-    [v5 setHidesBackButton:1 animated:0];
+    navigationItem2 = [itemsCopy navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
 
-    v4 = [v6 navigationItem];
-    [v4 setLeftBarButtonItem:self->_cancelButton];
+    navigationItem = [itemsCopy navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_cancelButton];
   }
 
 LABEL_6:
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v4 = a3;
-  v5 = [TSUtilities getErrorTitleDetail:v4 forCarrier:self->_name];
+  errorCopy = error;
+  v5 = [TSUtilities getErrorTitleDetail:errorCopy forCarrier:self->_name];
   v6 = MEMORY[0x277D75110];
   v7 = [v5 objectForKeyedSubscript:@"ErrorHeader"];
   v8 = [v5 objectForKeyedSubscript:@"ErrorDetail"];
   v9 = [v6 alertControllerWithTitle:v7 message:v8 preferredStyle:1];
 
   objc_initWeak(location, self);
-  v10 = [v4 domain];
-  if ([v10 isEqualToString:*MEMORY[0x277CF9680]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CF9680]])
   {
-    v11 = [v4 code];
+    code = [errorCopy code];
 
-    if (v11 == 75)
+    if (code == 75)
     {
       v12 = MEMORY[0x277D750F8];
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -320,7 +320,7 @@ LABEL_6:
   {
   }
 
-  v16 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v18 = MEMORY[0x277D750F8];
@@ -334,7 +334,7 @@ LABEL_6:
     v40[3] = &unk_279B44FF0;
     v21 = &v42;
     objc_copyWeak(&v42, location);
-    v41 = v16;
+    v41 = topViewController;
     v22 = [v18 actionWithTitle:v20 style:0 handler:v40];
     [v9 addAction:v22];
 
@@ -497,24 +497,24 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
   [v2 presentViewController:*(a1 + 32) animated:1 completion:0];
 }
 
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4
+- (void)planItemsUpdated:(id)updated planListError:(id)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  updatedCopy = updated;
+  errorCopy = error;
+  v8 = errorCopy;
   if (self->_planInstallError)
   {
-    v9 = _TSLogDomain();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    topViewController = _TSLogDomain();
+    if (os_log_type_enabled(topViewController, OS_LOG_TYPE_ERROR))
     {
-      [TSQRCodeScanFlow planItemsUpdated:v9 planListError:?];
+      [TSQRCodeScanFlow planItemsUpdated:topViewController planListError:?];
     }
 
     goto LABEL_4;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v11 = _TSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -522,12 +522,12 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
       [TSQRCodeScanFlow planItemsUpdated:v8 planListError:v11];
     }
 
-    v12 = [v8 domain];
-    if ([v12 isEqualToString:*MEMORY[0x277CF9680]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]])
     {
-      v13 = [v8 code];
+      code = [v8 code];
 
-      if (v13 == 19)
+      if (code == 19)
       {
         self->_confirmationCodeRequired = 1;
         goto LABEL_5;
@@ -539,7 +539,7 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
     }
 
     v32 = [TSUtilities isRegulatoryRestrictionActive:v8];
-    objc_storeStrong(&self->_planInstallError, a4);
+    objc_storeStrong(&self->_planInstallError, error);
     if (!v32)
     {
       [(TSQRCodeScanFlow *)self handleError:v8];
@@ -549,7 +549,7 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
     goto LABEL_39;
   }
 
-  if (v6)
+  if (updatedCopy)
   {
     if (self->_isPreinstallingViewControllerActive)
     {
@@ -557,7 +557,7 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v14 = [v6 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v14 = [updatedCopy countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v14)
       {
         v15 = v14;
@@ -571,24 +571,24 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
           {
             if (*v36 != v17)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(updatedCopy);
             }
 
             v19 = *(*(&v35 + 1) + 8 * i);
             if ([v19 isInstalling])
             {
-              v20 = [v19 plan];
-              v21 = [v20 status];
+              plan = [v19 plan];
+              status = [plan status];
 
-              if (v21 != 6)
+              if (status != 6)
               {
-                v22 = [v19 carrierName];
-                v23 = [v22 copy];
+                carrierName = [v19 carrierName];
+                v23 = [carrierName copy];
                 name = self->_name;
                 self->_name = v23;
 
-                v25 = [v19 iccid];
-                v16 = [v25 length] != 0;
+                iccid = [v19 iccid];
+                v16 = [iccid length] != 0;
 
                 v26 = _TSLogDomain();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -609,7 +609,7 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
             }
           }
 
-          v15 = [v6 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          v15 = [updatedCopy countByEnumeratingWithState:&v35 objects:v43 count:16];
         }
 
         while (v15);
@@ -617,7 +617,7 @@ void __32__TSQRCodeScanFlow_handleError___block_invoke_7(uint64_t a1)
         if (v16)
         {
           v28 = +[TSCellularPlanManagerCache sharedInstance];
-          v29 = [v28 calculateInstallConsentTextTypeFor:v6];
+          v29 = [v28 calculateInstallConsentTextTypeFor:updatedCopy];
 
           if (v29 <= 2)
           {
@@ -668,8 +668,8 @@ LABEL_35:
 
             *(&self->super.super.isa + v33) = 0;
 LABEL_39:
-            v9 = [(TSSIMSetupFlow *)self topViewController];
-            [(TSSIMSetupFlow *)self viewControllerDidComplete:v9];
+            topViewController = [(TSSIMSetupFlow *)self topViewController];
+            [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController];
 LABEL_4:
 
             goto LABEL_5;

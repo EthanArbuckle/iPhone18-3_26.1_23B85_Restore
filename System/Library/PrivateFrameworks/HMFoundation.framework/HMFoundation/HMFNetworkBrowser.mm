@@ -1,17 +1,17 @@
 @interface HMFNetworkBrowser
 + (id)logCategory;
-- (HMFNetworkBrowser)initWithQueue:(id)a3 domain:(id)a4 serviceTypes:(id)a5;
+- (HMFNetworkBrowser)initWithQueue:(id)queue domain:(id)domain serviceTypes:(id)types;
 - (HMFNetworkBrowserDelegate)delegate;
 - (NSArray)foundNetworkServices;
 - (id)_startBrowsing;
 - (id)_stopBrowsing;
 - (id)startBrowsing;
-- (id)startBrowsingWithTimeout:(double)a3;
+- (id)startBrowsingWithTimeout:(double)timeout;
 - (id)stopBrowsing;
 - (id)workContext;
-- (void)_addService:(id)a3;
-- (void)_removeService:(id)a3;
-- (void)_updateService:(id)a3;
+- (void)_addService:(id)service;
+- (void)_removeService:(id)service;
+- (void)_updateService:(id)service;
 @end
 
 @implementation HMFNetworkBrowser
@@ -32,31 +32,31 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (HMFNetworkBrowser)initWithQueue:(id)a3 domain:(id)a4 serviceTypes:(id)a5
+- (HMFNetworkBrowser)initWithQueue:(id)queue domain:(id)domain serviceTypes:(id)types
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v34 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  domainCopy = domain;
+  typesCopy = types;
   v39.receiver = self;
   v39.super_class = HMFNetworkBrowser;
   v10 = [(HMFNetworkBrowser *)&v39 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_domain, a4);
-    objc_storeStrong(&v11->_serviceTypes, a5);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v10->_domain, domain);
+    objc_storeStrong(&v11->_serviceTypes, types);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     networkServices = v11->_networkServices;
-    v11->_networkServices = v12;
+    v11->_networkServices = dictionary;
 
     v14 = MEMORY[0x277CBEB18];
-    v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(typesCopy, "count")}];
     internalBrowsers = v11->_internalBrowsers;
     v11->_internalBrowsers = v15;
 
-    v17 = v8;
-    if (!v8)
+    v17 = queueCopy;
+    if (!queueCopy)
     {
       v18 = HMFDispatchQueueName(v11, 0);
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -64,8 +64,8 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
     }
 
     objc_storeStrong(&v11->_workQueue, v17);
-    v32 = v8;
-    if (!v8)
+    v32 = queueCopy;
+    if (!queueCopy)
     {
     }
 
@@ -73,7 +73,7 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [MEMORY[0x277CBEB98] setWithArray:{v9, v9}];
+    obj = [MEMORY[0x277CBEB98] setWithArray:{typesCopy, typesCopy}];
     v19 = [obj countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v19)
     {
@@ -90,7 +90,7 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
 
           v23 = *(*(&v35 + 1) + 8 * i);
           v24 = [_HMFNetworkBrowser alloc];
-          v25 = [(HMFNetworkBrowser *)v11 workQueue];
+          workQueue = [(HMFNetworkBrowser *)v11 workQueue];
           v26 = v11;
           aBlock[0] = MEMORY[0x277D85DD0];
           aBlock[1] = 3221225472;
@@ -99,7 +99,7 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
           v41 = v26;
           v27 = _Block_copy(aBlock);
 
-          v28 = [(_HMFNetworkBrowser *)v24 initWithQueue:v25 domain:v34 serviceType:v23 updateBlock:v27];
+          v28 = [(_HMFNetworkBrowser *)v24 initWithQueue:workQueue domain:domainCopy serviceType:v23 updateBlock:v27];
           [(NSMutableArray *)v11->_internalBrowsers addObject:v28];
         }
 
@@ -109,8 +109,8 @@ uint64_t __33___HMFNetworkBrowser_logCategory__block_invoke()
       while (v20);
     }
 
-    v9 = v31;
-    v8 = v32;
+    typesCopy = v31;
+    queueCopy = v32;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -141,24 +141,24 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
   qword_280AFC3D0 = v3;
 }
 
-- (void)_addService:(id)a3
+- (void)_addService:(id)service
 {
-  v11 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock_with_options();
-  if (v11 && (v4 = self->_networkServices, [v11 host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  if (serviceCopy && (v4 = self->_networkServices, [serviceCopy host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
     networkServices = self->_networkServices;
-    v8 = [v11 host];
-    [(NSMutableDictionary *)networkServices setObject:v11 forKey:v8];
+    host = [serviceCopy host];
+    [(NSMutableDictionary *)networkServices setObject:serviceCopy forKey:host];
 
     os_unfair_lock_unlock(&self->_lock);
-    v9 = [(HMFNetworkBrowser *)self browserDelegate];
+    browserDelegate = [(HMFNetworkBrowser *)self browserDelegate];
     LOBYTE(networkServices) = objc_opt_respondsToSelector();
 
     if (networkServices)
     {
-      v10 = [(HMFNetworkBrowser *)self browserDelegate];
-      [v10 browser:self didFindNetworkService:v11];
+      browserDelegate2 = [(HMFNetworkBrowser *)self browserDelegate];
+      [browserDelegate2 browser:self didFindNetworkService:serviceCopy];
     }
   }
 
@@ -168,24 +168,24 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_removeService:(id)a3
+- (void)_removeService:(id)service
 {
-  v11 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock_with_options();
-  if (v11 && (v4 = self->_networkServices, [v11 host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (serviceCopy && (v4 = self->_networkServices, [serviceCopy host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     networkServices = self->_networkServices;
-    v8 = [v11 host];
-    [(NSMutableDictionary *)networkServices removeObjectForKey:v8];
+    host = [serviceCopy host];
+    [(NSMutableDictionary *)networkServices removeObjectForKey:host];
 
     os_unfair_lock_unlock(&self->_lock);
-    v9 = [(HMFNetworkBrowser *)self browserDelegate];
+    browserDelegate = [(HMFNetworkBrowser *)self browserDelegate];
     LOBYTE(networkServices) = objc_opt_respondsToSelector();
 
     if (networkServices)
     {
-      v10 = [(HMFNetworkBrowser *)self browserDelegate];
-      [v10 browser:self didLoseNetworkService:v11];
+      browserDelegate2 = [(HMFNetworkBrowser *)self browserDelegate];
+      [browserDelegate2 browser:self didLoseNetworkService:serviceCopy];
     }
   }
 
@@ -195,29 +195,29 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateService:(id)a3
+- (void)_updateService:(id)service
 {
-  v14 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock_with_options();
-  if (v14 && (v4 = self->_networkServices, [v14 host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (serviceCopy && (v4 = self->_networkServices, [serviceCopy host], v5 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v4, "objectForKey:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     networkServices = self->_networkServices;
-    v8 = [v14 host];
-    v9 = [(NSMutableDictionary *)networkServices objectForKey:v8];
-    [v9 updateWithService:v14];
+    host = [serviceCopy host];
+    v9 = [(NSMutableDictionary *)networkServices objectForKey:host];
+    [v9 updateWithService:serviceCopy];
 
     v10 = self->_networkServices;
-    v11 = [v14 host];
-    [(NSMutableDictionary *)v10 setObject:v14 forKey:v11];
+    host2 = [serviceCopy host];
+    [(NSMutableDictionary *)v10 setObject:serviceCopy forKey:host2];
 
     os_unfair_lock_unlock(&self->_lock);
-    v12 = [(HMFNetworkBrowser *)self browserDelegate];
+    browserDelegate = [(HMFNetworkBrowser *)self browserDelegate];
     LOBYTE(v10) = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v13 = [(HMFNetworkBrowser *)self browserDelegate];
-      [v13 browser:self didUpdateNetworkService:v14];
+      browserDelegate2 = [(HMFNetworkBrowser *)self browserDelegate];
+      [browserDelegate2 browser:self didUpdateNetworkService:serviceCopy];
     }
   }
 
@@ -231,8 +231,8 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HMFNetworkBrowser *)self internalBrowsers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  internalBrowsers = [(HMFNetworkBrowser *)self internalBrowsers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(internalBrowsers, "count")}];
 
   v21 = 0u;
   v22 = 0u;
@@ -254,14 +254,14 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 startBrowsing];
+        startBrowsing = [v10 startBrowsing];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __35__HMFNetworkBrowser__startBrowsing__block_invoke;
         v18[3] = &unk_2786E77E8;
         v18[4] = self;
         v18[5] = v10;
-        v12 = [v11 then:v18];
+        v12 = [startBrowsing then:v18];
 
         [v5 addObject:v12];
       }
@@ -273,11 +273,11 @@ void __32__HMFNetworkBrowser_workContext__block_invoke(uint64_t a1)
   }
 
   v13 = [HMFFuture allSettled:v5];
-  v14 = [v13 ignoreResult];
+  ignoreResult = [v13 ignoreResult];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return ignoreResult;
 }
 
 uint64_t __35__HMFNetworkBrowser__startBrowsing__block_invoke(uint64_t a1)
@@ -300,8 +300,8 @@ uint64_t __35__HMFNetworkBrowser__startBrowsing__block_invoke(uint64_t a1)
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HMFNetworkBrowser *)self internalBrowsers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  internalBrowsers = [(HMFNetworkBrowser *)self internalBrowsers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(internalBrowsers, "count")}];
 
   v21 = 0u;
   v22 = 0u;
@@ -323,14 +323,14 @@ uint64_t __35__HMFNetworkBrowser__startBrowsing__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 stopBrowsing];
+        stopBrowsing = [v10 stopBrowsing];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __34__HMFNetworkBrowser__stopBrowsing__block_invoke;
         v18[3] = &unk_2786E77E8;
         v18[4] = self;
         v18[5] = v10;
-        v12 = [v11 then:v18];
+        v12 = [stopBrowsing then:v18];
 
         [v5 addObject:v12];
       }
@@ -342,11 +342,11 @@ uint64_t __35__HMFNetworkBrowser__startBrowsing__block_invoke(uint64_t a1)
   }
 
   v13 = [HMFFuture allSettled:v5];
-  v14 = [v13 ignoreResult];
+  ignoreResult = [v13 ignoreResult];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return ignoreResult;
 }
 
 uint64_t __34__HMFNetworkBrowser__stopBrowsing__block_invoke(uint64_t a1)
@@ -367,13 +367,13 @@ uint64_t __34__HMFNetworkBrowser__stopBrowsing__block_invoke(uint64_t a1)
 
 - (id)stopBrowsing
 {
-  v3 = [(HMFNetworkBrowser *)self workContext];
+  workContext = [(HMFNetworkBrowser *)self workContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__HMFNetworkBrowser_stopBrowsing__block_invoke;
   v6[3] = &unk_2786E7630;
   v6[4] = self;
-  v4 = [HMFFuture inContext:v3 perform:v6];
+  v4 = [HMFFuture inContext:workContext perform:v6];
 
   return v4;
 }
@@ -393,13 +393,13 @@ uint64_t __33__HMFNetworkBrowser_stopBrowsing__block_invoke(uint64_t a1)
 
 - (id)startBrowsing
 {
-  v3 = [(HMFNetworkBrowser *)self workContext];
+  workContext = [(HMFNetworkBrowser *)self workContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__HMFNetworkBrowser_startBrowsing__block_invoke;
   v6[3] = &unk_2786E7630;
   v6[4] = self;
-  v4 = [HMFFuture inContext:v3 perform:v6];
+  v4 = [HMFFuture inContext:workContext perform:v6];
 
   return v4;
 }
@@ -417,16 +417,16 @@ uint64_t __34__HMFNetworkBrowser_startBrowsing__block_invoke(uint64_t a1)
   return 3;
 }
 
-- (id)startBrowsingWithTimeout:(double)a3
+- (id)startBrowsingWithTimeout:(double)timeout
 {
-  v5 = [(HMFNetworkBrowser *)self workContext];
+  workContext = [(HMFNetworkBrowser *)self workContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HMFNetworkBrowser_startBrowsingWithTimeout___block_invoke;
   v8[3] = &unk_2786E7838;
   v8[4] = self;
-  *&v8[5] = a3;
-  v6 = [HMFFuture inContext:v5 perform:v8];
+  *&v8[5] = timeout;
+  v6 = [HMFFuture inContext:workContext perform:v8];
 
   return v6;
 }
@@ -487,8 +487,8 @@ uint64_t __46__HMFNetworkBrowser_startBrowsingWithTimeout___block_invoke_3(uint6
 - (NSArray)foundNetworkServices
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_networkServices allValues];
-  v4 = [v3 copy];
+  allValues = [(NSMutableDictionary *)self->_networkServices allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 

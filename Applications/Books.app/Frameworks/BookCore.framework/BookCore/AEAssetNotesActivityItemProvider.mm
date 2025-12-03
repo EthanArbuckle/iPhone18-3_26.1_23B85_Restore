@@ -1,36 +1,36 @@
 @interface AEAssetNotesActivityItemProvider
-- (AEAssetNotesActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4;
-- (BOOL)supportsActivityType:(id)a3;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
+- (AEAssetNotesActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source;
+- (BOOL)supportsActivityType:(id)type;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
 - (id)item;
 @end
 
 @implementation AEAssetNotesActivityItemProvider
 
-- (AEAssetNotesActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4
+- (AEAssetNotesActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v12.receiver = self;
   v12.super_class = AEAssetNotesActivityItemProvider;
-  v10 = [(AEAssetBaseActivityItemProvider *)&v12 initWithDelegate:v7 placeholderItem:v9 propertySource:v6];
+  v10 = [(AEAssetBaseActivityItemProvider *)&v12 initWithDelegate:delegateCopy placeholderItem:v9 propertySource:sourceCopy];
 
   return v10;
 }
 
-- (BOOL)supportsActivityType:(id)a3
+- (BOOL)supportsActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:UIActivityTypeSaveToNotes])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:UIActivityTypeSaveToNotes])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.Notes.SharingExtension"];
+    v4 = [typeCopy isEqualToString:@"com.apple.Notes.SharingExtension"];
   }
 
   return v4;
@@ -38,93 +38,93 @@
 
 - (id)item
 {
-  v3 = [(AEAssetNotesActivityItemProvider *)self activityType];
-  v4 = [(AEAssetBaseActivityItemProvider *)self shouldShareActivityType:v3];
+  activityType = [(AEAssetNotesActivityItemProvider *)self activityType];
+  v4 = [(AEAssetBaseActivityItemProvider *)self shouldShareActivityType:activityType];
 
   if (v4)
   {
-    v5 = [(AEAssetNotesActivityItemProvider *)self activityType];
-    v6 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    [v6 setActivityType:v5];
+    activityType2 = [(AEAssetNotesActivityItemProvider *)self activityType];
+    propertyProvider = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    [propertyProvider setActivityType:activityType2];
 
     v7 = +[NSMutableDictionary dictionary];
-    v8 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v9 = [v8 title];
+    propertyProvider2 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    title = [propertyProvider2 title];
 
-    if ([v9 length])
+    if ([title length])
     {
-      v10 = [v9 copy];
+      v10 = [title copy];
       [v7 setObject:v10 forKeyedSubscript:@"title"];
     }
 
-    v11 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v12 = [v11 author];
+    propertyProvider3 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    author = [propertyProvider3 author];
 
-    if ([v12 length])
+    if ([author length])
     {
-      v13 = [v12 copy];
+      v13 = [author copy];
       [v7 setObject:v13 forKeyedSubscript:@"author"];
     }
 
-    v14 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v15 = [v14 genre];
+    propertyProvider4 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    genre = [propertyProvider4 genre];
 
-    if ([v15 length])
+    if ([genre length])
     {
-      v16 = [v15 copy];
+      v16 = [genre copy];
       [v7 setObject:v16 forKeyedSubscript:@"genre"];
     }
 
-    v17 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v18 = [v17 publisherYear];
+    propertyProvider5 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    publisherYear = [propertyProvider5 publisherYear];
 
-    if ([v18 length])
+    if ([publisherYear length])
     {
-      v19 = [v18 copy];
+      v19 = [publisherYear copy];
       [v7 setObject:v19 forKeyedSubscript:@"publishing_date"];
     }
 
-    v20 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v21 = [v20 assetTypeString];
+    propertyProvider6 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    assetTypeString = [propertyProvider6 assetTypeString];
 
-    if ([v21 length])
+    if ([assetTypeString length])
     {
-      v22 = [v21 copy];
+      v22 = [assetTypeString copy];
       [v7 setObject:v22 forKeyedSubscript:@"media_type"];
     }
 
-    v23 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v24 = [v23 bookDescription];
+    propertyProvider7 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    bookDescription = [propertyProvider7 bookDescription];
 
-    if ([v24 length])
+    if ([bookDescription length])
     {
-      v25 = [v24 copy];
+      v25 = [bookDescription copy];
       [v7 setObject:v25 forKeyedSubscript:@"description"];
     }
 
-    v26 = v9;
-    v27 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v28 = [v27 seriesTitle];
+    v26 = title;
+    propertyProvider8 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    seriesTitle = [propertyProvider8 seriesTitle];
 
-    if ([v28 length])
+    if ([seriesTitle length])
     {
-      v29 = [v28 copy];
+      v29 = [seriesTitle copy];
       [v7 setObject:v29 forKeyedSubscript:@"series"];
     }
 
-    v30 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    v31 = [v30 isStoreAsset];
+    propertyProvider9 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    isStoreAsset = [propertyProvider9 isStoreAsset];
 
-    if (v31)
+    if (isStoreAsset)
     {
-      v32 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-      v33 = [v32 storeURL];
+      propertyProvider10 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+      storeURL = [propertyProvider10 storeURL];
 
-      if (v33)
+      if (storeURL)
       {
-        v34 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-        v35 = [v34 storeURL];
-        [v7 setObject:v35 forKeyedSubscript:@"url"];
+        propertyProvider11 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+        storeURL2 = [propertyProvider11 storeURL];
+        [v7 setObject:storeURL2 forKeyedSubscript:@"url"];
       }
     }
 
@@ -145,10 +145,10 @@
   return v36;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v4 = a4;
-  if (([v4 isEqualToString:UIActivityTypeSaveToNotes] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.Notes.SharingExtension"))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:UIActivityTypeSaveToNotes] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.Notes.SharingExtension"))
   {
     v5 = @"com.apple.notes.share-metadata";
   }

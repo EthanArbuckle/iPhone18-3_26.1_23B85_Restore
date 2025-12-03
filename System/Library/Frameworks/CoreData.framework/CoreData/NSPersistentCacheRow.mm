@@ -1,13 +1,13 @@
 @interface NSPersistentCacheRow
-- (double)timestampForProperty:(uint64_t)a1;
+- (double)timestampForProperty:(uint64_t)property;
 - (id)objectID;
 - (unint64_t)version;
 - (void)_initializeRelationshipCaches;
 - (void)copyRelationshipCachesFrom:(void *)result;
 - (void)dealloc;
 - (void)release;
-- (void)setAncillaryOrderKeys:(void *)a3 forProperty:options:andTimestamp:;
-- (void)setRelatedObjectIDs:(void *)a1 forProperty:(void *)a2 options:(void *)a3 andTimestamp:(double)a4;
+- (void)setAncillaryOrderKeys:(void *)keys forProperty:options:andTimestamp:;
+- (void)setRelatedObjectIDs:(void *)ds forProperty:(void *)property options:(void *)options andTimestamp:(double)timestamp;
 - (void)toManyOffsetForProperty:(void *)result;
 - (void)updateMissingRelationshipCachesFromOriginal:(void *)result;
 @end
@@ -195,84 +195,84 @@
   if (result)
   {
     v3 = result;
-    v4 = [a2 entity];
+    entity = [a2 entity];
     v5 = [objc_msgSend(v3 "objectID")];
-    v6 = [a2 _entitysReferenceID];
-    if (v4 == v5)
+    _entitysReferenceID = [a2 _entitysReferenceID];
+    if (entity == v5)
     {
-      return (v6 - *([v4 _propertyRangesByType] + 144));
+      return (_entitysReferenceID - *([entity _propertyRangesByType] + 144));
     }
 
     else
     {
       v7 = *([v5 _propertyRangesByType] + 144);
-      return ([v5 _offsetRelationshipIndex:v6 fromSuperEntity:v4 andIsToMany:{objc_msgSend(a2, "isToMany")}] - v7);
+      return ([v5 _offsetRelationshipIndex:_entitysReferenceID fromSuperEntity:entity andIsToMany:{objc_msgSend(a2, "isToMany")}] - v7);
     }
   }
 
   return result;
 }
 
-- (double)timestampForProperty:(uint64_t)a1
+- (double)timestampForProperty:(uint64_t)property
 {
-  if (!a1)
+  if (!property)
   {
     return 0.0;
   }
 
-  if (!*(a1 + 24))
+  if (!*(property + 24))
   {
     return *&NSSQLDistantPastTimeInterval;
   }
 
   v4 = *([objc_msgSend(a2 "entity")] + 144);
-  v5 = [a2 _entitysReferenceID];
+  _entitysReferenceID = [a2 _entitysReferenceID];
   result = *&NSSQLDistantPastTimeInterval;
-  if (*(*(a1 + 24) + 24 * (v5 - v4)))
+  if (*(*(property + 24) + 24 * (_entitysReferenceID - v4)))
   {
-    return *(*(a1 + 24) + 24 * (v5 - v4));
+    return *(*(property + 24) + 24 * (_entitysReferenceID - v4));
   }
 
   return result;
 }
 
-- (void)setRelatedObjectIDs:(void *)a1 forProperty:(void *)a2 options:(void *)a3 andTimestamp:(double)a4
+- (void)setRelatedObjectIDs:(void *)ds forProperty:(void *)property options:(void *)options andTimestamp:(double)timestamp
 {
-  if (a1)
+  if (ds)
   {
-    if (!a1[3])
+    if (!ds[3])
     {
-      [(NSPersistentCacheRow *)a1 _initializeRelationshipCaches];
+      [(NSPersistentCacheRow *)ds _initializeRelationshipCaches];
     }
 
-    if (a2 && ![a2 count])
+    if (property && ![property count])
     {
-      a2 = NSArray_EmptyArray;
+      property = NSArray_EmptyArray;
     }
 
-    v8 = [(NSPersistentCacheRow *)a1 toManyOffsetForProperty:a3];
+    v8 = [(NSPersistentCacheRow *)ds toManyOffsetForProperty:options];
     v9 = 3 * v8;
-    *(a1[3] + 24 * v8) = a4;
+    *(ds[3] + 24 * v8) = timestamp;
     v10 = 3 * v8 + 1;
-    v11 = *(a1[3] + 8 * v10);
-    if (v11 != a2)
+    v11 = *(ds[3] + 8 * v10);
+    if (v11 != property)
     {
-      *(a1[3] + 8 * v10) = a2;
+      *(ds[3] + 8 * v10) = property;
 
-      v12 = a1[3] + 8 * v9;
+      v12 = ds[3] + 8 * v9;
       v13 = *(v12 + 16);
       *(v12 + 16) = 0;
     }
   }
 }
 
-- (void)setAncillaryOrderKeys:(void *)a3 forProperty:options:andTimestamp:
+- (void)setAncillaryOrderKeys:(void *)keys forProperty:options:andTimestamp:
 {
-  if (a1)
+  if (self)
   {
-    if (!a1[3])
+    if (!self[3])
     {
-      [(NSPersistentCacheRow *)a1 _initializeRelationshipCaches];
+      [(NSPersistentCacheRow *)self _initializeRelationshipCaches];
     }
 
     if (a2 && ![a2 count])
@@ -280,12 +280,12 @@
       a2 = NSArray_EmptyArray;
     }
 
-    v6 = *([objc_msgSend(a3 "entity")] + 144);
-    v7 = 3 * ([a3 _entitysReferenceID] - v6) + 2;
-    if (*(a1[3] + 8 * v7) != a2)
+    v6 = *([objc_msgSend(keys "entity")] + 144);
+    v7 = 3 * ([keys _entitysReferenceID] - v6) + 2;
+    if (*(self[3] + 8 * v7) != a2)
     {
-      v8 = *(a1[3] + 8 * v7);
-      *(a1[3] + 8 * v7) = a2;
+      v8 = *(self[3] + 8 * v7);
+      *(self[3] + 8 * v7) = a2;
     }
   }
 }

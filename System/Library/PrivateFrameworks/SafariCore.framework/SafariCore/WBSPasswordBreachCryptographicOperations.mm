@@ -1,32 +1,32 @@
 @interface WBSPasswordBreachCryptographicOperations
-- (WBSPasswordBreachCryptographicOperations)initWithConfiguration:(id)a3;
-- (_CCECCryptor)_hashToCurve:(id)a3;
-- (id)_blindPasswordHash:(id)a3;
-- (id)_bucketIdentifierWithBitCount:(unint64_t)a3 ofData:(id)a4;
-- (id)_encodePasswordForLowFrequencyBucket:(id)a3 withHashSmoothingBits:(unsigned __int8)a4;
-- (id)_exportHashToCurve:(id)a3;
-- (id)_exportKeyFromCryptor:(_CCECCryptor *)a3;
-- (id)encodePasswordForHighFrequencyBucket:(id)a3;
-- (id)encodePasswordForLowFrequencyBucket:(id)a3;
+- (WBSPasswordBreachCryptographicOperations)initWithConfiguration:(id)configuration;
+- (_CCECCryptor)_hashToCurve:(id)curve;
+- (id)_blindPasswordHash:(id)hash;
+- (id)_bucketIdentifierWithBitCount:(unint64_t)count ofData:(id)data;
+- (id)_encodePasswordForLowFrequencyBucket:(id)bucket withHashSmoothingBits:(unsigned __int8)bits;
+- (id)_exportHashToCurve:(id)curve;
+- (id)_exportKeyFromCryptor:(_CCECCryptor *)cryptor;
+- (id)encodePasswordForHighFrequencyBucket:(id)bucket;
+- (id)encodePasswordForLowFrequencyBucket:(id)bucket;
 - (id)generateFakeEncodedPasswordForHighFrequencyBucket;
 - (id)generateFakeEncodedPasswordForLowFrequencyBucket;
-- (id)unblindHash:(id)a3;
+- (id)unblindHash:(id)hash;
 - (void)dealloc;
 - (void)generateFakeEncodedPasswordForHighFrequencyBucket;
 @end
 
 @implementation WBSPasswordBreachCryptographicOperations
 
-- (WBSPasswordBreachCryptographicOperations)initWithConfiguration:(id)a3
+- (WBSPasswordBreachCryptographicOperations)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = WBSPasswordBreachCryptographicOperations;
   v6 = [(WBSPasswordBreachCryptographicOperations *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_blindingKeys = CCECCryptorGenerateBlindingKeys();
     v8 = v7;
   }
@@ -46,25 +46,25 @@
   [(WBSPasswordBreachCryptographicOperations *)&v3 dealloc];
 }
 
-- (id)encodePasswordForHighFrequencyBucket:(id)a3
+- (id)encodePasswordForHighFrequencyBucket:(id)bucket
 {
-  v4 = [a3 dataUsingEncoding:4];
-  v5 = [(WBSPasswordBreachConfiguration *)self->_configuration highFrequencyBucketHashSalt];
-  v6 = [v5 dataUsingEncoding:4];
+  v4 = [bucket dataUsingEncoding:4];
+  highFrequencyBucketHashSalt = [(WBSPasswordBreachConfiguration *)self->_configuration highFrequencyBucketHashSalt];
+  v6 = [highFrequencyBucketHashSalt dataUsingEncoding:4];
 
   v7 = [v4 safari_scryptHashWithSalt:v6 N:-[WBSPasswordBreachConfiguration highFrequencyBucketHashWorkFactor](self->_configuration r:"highFrequencyBucketHashWorkFactor") p:-[WBSPasswordBreachConfiguration highFrequencyBucketScryptBlockSizeR](self->_configuration keyLength:{"highFrequencyBucketScryptBlockSizeR"), -[WBSPasswordBreachConfiguration highFrequencyBucketScryptParallelismFactorP](self->_configuration, "highFrequencyBucketScryptParallelismFactorP"), 32}];
 
   return v7;
 }
 
-- (id)_bucketIdentifierWithBitCount:(unint64_t)a3 ofData:(id)a4
+- (id)_bucketIdentifierWithBitCount:(unint64_t)count ofData:(id)data
 {
   v9 = 0;
-  [a4 getBytes:&v9 length:4];
-  v5 = bswap32(v9) >> -a3;
+  [data getBytes:&v9 length:4];
+  v5 = bswap32(v9) >> -count;
   v9 = v5;
-  v6 = a3 >> 2;
-  if ((a3 & 3) != 0)
+  v6 = count >> 2;
+  if ((count & 3) != 0)
   {
     v6 = (v6 + 1);
   }
@@ -79,15 +79,15 @@
   return v7;
 }
 
-- (id)_encodePasswordForLowFrequencyBucket:(id)a3 withHashSmoothingBits:(unsigned __int8)a4
+- (id)_encodePasswordForLowFrequencyBucket:(id)bucket withHashSmoothingBits:(unsigned __int8)bits
 {
-  v13 = a4;
-  v5 = [a3 dataUsingEncoding:4];
+  bitsCopy = bits;
+  v5 = [bucket dataUsingEncoding:4];
   v6 = [v5 mutableCopy];
 
-  [v6 appendBytes:&v13 length:1];
-  v7 = [(WBSPasswordBreachConfiguration *)self->_configuration lowFrequencyBucketHashSalt];
-  v8 = [v7 dataUsingEncoding:4];
+  [v6 appendBytes:&bitsCopy length:1];
+  lowFrequencyBucketHashSalt = [(WBSPasswordBreachConfiguration *)self->_configuration lowFrequencyBucketHashSalt];
+  v8 = [lowFrequencyBucketHashSalt dataUsingEncoding:4];
 
   v9 = [v6 safari_scryptHashWithSalt:v8 N:-[WBSPasswordBreachConfiguration lowFrequencyBucketHashWorkFactor](self->_configuration r:"lowFrequencyBucketHashWorkFactor") p:-[WBSPasswordBreachConfiguration lowFrequencyBucketScryptBlockSizeR](self->_configuration keyLength:{"lowFrequencyBucketScryptBlockSizeR"), -[WBSPasswordBreachConfiguration lowFrequencyBucketScryptParallelismFactorP](self->_configuration, "lowFrequencyBucketScryptParallelismFactorP"), 32}];
   v10 = [(WBSPasswordBreachCryptographicOperations *)self _bucketIdentifierWithBitCount:[(WBSPasswordBreachConfiguration *)self->_configuration lowFrequencyBucketIdentifierBitCount] ofData:v9];
@@ -96,19 +96,19 @@
   return v11;
 }
 
-- (id)encodePasswordForLowFrequencyBucket:(id)a3
+- (id)encodePasswordForLowFrequencyBucket:(id)bucket
 {
-  v4 = [(WBSPasswordBreachCryptographicOperations *)self _encodePasswordForLowFrequencyBucket:a3 withHashSmoothingBits:0];
+  v4 = [(WBSPasswordBreachCryptographicOperations *)self _encodePasswordForLowFrequencyBucket:bucket withHashSmoothingBits:0];
   v5 = [WBSPair alloc];
-  v6 = [v4 first];
-  v7 = [v4 second];
-  v8 = [(WBSPasswordBreachCryptographicOperations *)self _blindPasswordHash:v7];
-  v9 = [(WBSPair *)v5 initWithFirst:v6 second:v8];
+  first = [v4 first];
+  second = [v4 second];
+  v8 = [(WBSPasswordBreachCryptographicOperations *)self _blindPasswordHash:second];
+  v9 = [(WBSPair *)v5 initWithFirst:first second:v8];
 
   return v9;
 }
 
-- (id)_exportKeyFromCryptor:(_CCECCryptor *)a3
+- (id)_exportKeyFromCryptor:(_CCECCryptor *)cryptor
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = CCECCryptorExportKey();
@@ -134,9 +134,9 @@
   return v6;
 }
 
-- (id)_exportHashToCurve:(id)a3
+- (id)_exportHashToCurve:(id)curve
 {
-  v4 = a3;
+  curveCopy = curve;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -148,7 +148,7 @@
   v9[3] = &unk_1E7CF0630;
   v9[4] = &v10;
   [(WBSScopeExitHandler *)v5 setHandler:v9];
-  v6 = [(WBSPasswordBreachCryptographicOperations *)self _hashToCurve:v4];
+  v6 = [(WBSPasswordBreachCryptographicOperations *)self _hashToCurve:curveCopy];
   v11[3] = v6;
   if (v6)
   {
@@ -176,14 +176,14 @@ uint64_t __63__WBSPasswordBreachCryptographicOperations__exportHashToCurve___blo
   return result;
 }
 
-- (_CCECCryptor)_hashToCurve:(id)a3
+- (_CCECCryptor)_hashToCurve:(id)curve
 {
-  v3 = a3;
+  curveCopy = curve;
   v4 = [@"P256-SHA256-SSWU-RO-PBAv1" dataUsingEncoding:4];
   [v4 length];
   [v4 bytes];
-  [v3 length];
-  [v3 bytes];
+  [curveCopy length];
+  [curveCopy bytes];
 
   v5 = CCECCryptorH2C();
   if (!v5)
@@ -198,9 +198,9 @@ uint64_t __63__WBSPasswordBreachCryptographicOperations__exportHashToCurve___blo
   return v5;
 }
 
-- (id)_blindPasswordHash:(id)a3
+- (id)_blindPasswordHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -217,7 +217,7 @@ uint64_t __63__WBSPasswordBreachCryptographicOperations__exportHashToCurve___blo
   v12[4] = &v17;
   v12[5] = &v13;
   [(WBSScopeExitHandler *)v5 setHandler:v12];
-  v6 = [(WBSPasswordBreachCryptographicOperations *)self _hashToCurve:v4];
+  v6 = [(WBSPasswordBreachCryptographicOperations *)self _hashToCurve:hashCopy];
   v18[3] = v6;
   if (v6)
   {
@@ -263,9 +263,9 @@ uint64_t __63__WBSPasswordBreachCryptographicOperations__blindPasswordHash___blo
   return result;
 }
 
-- (id)unblindHash:(id)a3
+- (id)unblindHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -282,8 +282,8 @@ uint64_t __63__WBSPasswordBreachCryptographicOperations__blindPasswordHash___blo
   v14[4] = &v19;
   v14[5] = &v15;
   [(WBSScopeExitHandler *)v5 setHandler:v14];
-  [v4 bytes];
-  [v4 length];
+  [hashCopy bytes];
+  [hashCopy length];
   v6 = CCECCryptorImportKey();
   if (v6)
   {
@@ -342,9 +342,9 @@ uint64_t __56__WBSPasswordBreachCryptographicOperations_unblindHash___block_invo
 - (id)generateFakeEncodedPasswordForHighFrequencyBucket
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WBSPasswordBreachConfiguration *)self->_configuration fakePasswordLengthBytes];
-  v3 = v10 - ((v2 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v4 = SecRandomCopyBytes(*MEMORY[0x1E697B308], v2, v3);
+  fakePasswordLengthBytes = [(WBSPasswordBreachConfiguration *)self->_configuration fakePasswordLengthBytes];
+  v3 = v10 - ((fakePasswordLengthBytes + 15) & 0xFFFFFFFFFFFFFFF0);
+  v4 = SecRandomCopyBytes(*MEMORY[0x1E697B308], fakePasswordLengthBytes, v3);
   if (v4)
   {
     v5 = v4;
@@ -359,7 +359,7 @@ uint64_t __56__WBSPasswordBreachCryptographicOperations_unblindHash___block_invo
 
   else
   {
-    v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v3 length:v2];
+    v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v3 length:fakePasswordLengthBytes];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -369,11 +369,11 @@ uint64_t __56__WBSPasswordBreachCryptographicOperations_unblindHash___block_invo
 
 - (id)generateFakeEncodedPasswordForLowFrequencyBucket
 {
-  v3 = [(WBSPasswordBreachCryptographicOperations *)self generateFakeEncodedPasswordForHighFrequencyBucket];
-  if (v3)
+  generateFakeEncodedPasswordForHighFrequencyBucket = [(WBSPasswordBreachCryptographicOperations *)self generateFakeEncodedPasswordForHighFrequencyBucket];
+  if (generateFakeEncodedPasswordForHighFrequencyBucket)
   {
-    v4 = [(WBSPasswordBreachCryptographicOperations *)self _bucketIdentifierWithBitCount:[(WBSPasswordBreachConfiguration *)self->_configuration lowFrequencyBucketIdentifierBitCount] ofData:v3];
-    v5 = [(WBSPasswordBreachCryptographicOperations *)self _blindPasswordHash:v3];
+    v4 = [(WBSPasswordBreachCryptographicOperations *)self _bucketIdentifierWithBitCount:[(WBSPasswordBreachConfiguration *)self->_configuration lowFrequencyBucketIdentifierBitCount] ofData:generateFakeEncodedPasswordForHighFrequencyBucket];
+    v5 = [(WBSPasswordBreachCryptographicOperations *)self _blindPasswordHash:generateFakeEncodedPasswordForHighFrequencyBucket];
     if (v5)
     {
       v6 = [[WBSPair alloc] initWithFirst:v4 second:v5];
@@ -415,7 +415,7 @@ uint64_t __56__WBSPasswordBreachCryptographicOperations_unblindHash___block_invo
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B8447000, a2, OS_LOG_TYPE_ERROR, "Failed to generate random bytes for fake password: %d.", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

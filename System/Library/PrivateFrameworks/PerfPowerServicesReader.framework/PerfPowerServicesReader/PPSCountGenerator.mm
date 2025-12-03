@@ -1,17 +1,17 @@
 @interface PPSCountGenerator
-+ (id)countMapWithTimeSeries:(id)a3 block:(id)a4 groupingDimensions:(id)a5;
-+ (id)countWithTimeSeries:(id)a3 block:(id)a4;
++ (id)countMapWithTimeSeries:(id)series block:(id)block groupingDimensions:(id)dimensions;
++ (id)countWithTimeSeries:(id)series block:(id)block;
 @end
 
 @implementation PPSCountGenerator
 
-+ (id)countWithTimeSeries:(id)a3 block:(id)a4
++ (id)countWithTimeSeries:(id)series block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  seriesCopy = series;
+  blockCopy = block;
+  v7 = blockCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (seriesCopy && blockCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -19,14 +19,14 @@
     v17 = __Block_byref_object_copy_;
     v18 = __Block_byref_object_dispose_;
     v19 = &unk_287017EB0;
-    v9 = [v5 array];
+    array = [seriesCopy array];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__PPSCountGenerator_countWithTimeSeries_block___block_invoke;
     v11[3] = &unk_279A11268;
     v12 = v7;
     v13 = &v14;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [array enumerateObjectsUsingBlock:v11];
 
     v8 = v15[5];
     _Block_object_dispose(&v14, 8);
@@ -54,32 +54,32 @@ void __47__PPSCountGenerator_countWithTimeSeries_block___block_invoke(uint64_t a
   }
 }
 
-+ (id)countMapWithTimeSeries:(id)a3 block:(id)a4 groupingDimensions:(id)a5
++ (id)countMapWithTimeSeries:(id)series block:(id)block groupingDimensions:(id)dimensions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  seriesCopy = series;
+  blockCopy = block;
+  dimensionsCopy = dimensions;
+  v11 = dimensionsCopy;
   v12 = 0;
-  if (v8 && v9 && v10)
+  if (seriesCopy && blockCopy && dimensionsCopy)
   {
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy_;
     v25 = __Block_byref_object_dispose_;
-    v26 = [MEMORY[0x277CBEB38] dictionary];
-    v13 = [v8 array];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    array = [seriesCopy array];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__PPSCountGenerator_countMapWithTimeSeries_block_groupingDimensions___block_invoke;
     v15[3] = &unk_279A112E0;
     v16 = v11;
     v19 = &v21;
-    v20 = a1;
-    v17 = v8;
-    v18 = v9;
-    [v13 enumerateObjectsUsingBlock:v15];
+    selfCopy = self;
+    v17 = seriesCopy;
+    v18 = blockCopy;
+    [array enumerateObjectsUsingBlock:v15];
 
     v12 = [v22[5] copy];
     _Block_object_dispose(&v21, 8);

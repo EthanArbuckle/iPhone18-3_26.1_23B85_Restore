@@ -1,36 +1,36 @@
 @interface FMRecipient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC6FindMy11FMRecipient)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
 @implementation FMRecipient
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(type metadata accessor for FMRecipient());
-  v5 = self;
-  v6 = sub_1001C8604(v5);
+  selfCopy = self;
+  v6 = sub_1001C8604(selfCopy);
 
   return v6;
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
 
   v3 = String.hashValue.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -39,7 +39,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1001C5C08(v8);
@@ -50,7 +50,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C704C();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,20 +1,20 @@
 @interface PHPTPFetches
-+ (id)fetchAssetIdsToExcludeFromPTPInContext:(id)a3 isCloudPhotoLibraryEnabled:(BOOL)a4;
-+ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)a3 inLibrary:(id)a4;
-+ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)a3 inLibrary:(id)a4 isCloudPhotoLibraryEnabled:(BOOL)a5;
-+ (id)predicateForAssetsExposedByPHPTPExcludingObjectIDs:(id)a3;
++ (id)fetchAssetIdsToExcludeFromPTPInContext:(id)context isCloudPhotoLibraryEnabled:(BOOL)enabled;
++ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)ds inLibrary:(id)library;
++ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)ds inLibrary:(id)library isCloudPhotoLibraryEnabled:(BOOL)enabled;
++ (id)predicateForAssetsExposedByPHPTPExcludingObjectIDs:(id)ds;
 @end
 
 @implementation PHPTPFetches
 
-+ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)a3 inLibrary:(id)a4 isCloudPhotoLibraryEnabled:(BOOL)a5
++ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)ds inLibrary:(id)library isCloudPhotoLibraryEnabled:(BOOL)enabled
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dsCopy = ds;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHPTPFetches.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPTPFetches.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
   }
 
   v21 = 0;
@@ -23,14 +23,14 @@
   v24 = __Block_byref_object_copy__31662;
   v25 = __Block_byref_object_dispose__31663;
   v26 = 0;
-  v11 = [v10 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibrary_isCloudPhotoLibraryEnabled___block_invoke;
   v16[3] = &unk_1E75A8418;
-  v19 = a1;
-  v12 = v11;
-  v20 = a5;
+  selfCopy = self;
+  v12 = managedObjectContext;
+  enabledCopy = enabled;
   v17 = v12;
   v18 = &v21;
   [v12 performBlockAndWait:v16];
@@ -80,10 +80,10 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
   objc_autoreleasePoolPop(v2);
 }
 
-+ (id)predicateForAssetsExposedByPHPTPExcludingObjectIDs:(id)a3
++ (id)predicateForAssetsExposedByPHPTPExcludingObjectIDs:(id)ds
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  dsCopy = ds;
   v3 = MEMORY[0x1E696AB28];
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"visibilityState", 0];
   v23[0] = v20;
@@ -106,12 +106,12 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   v13 = [v3 andPredicateWithSubpredicates:v12];
 
-  if ([v21 count])
+  if ([dsCopy count])
   {
     v14 = MEMORY[0x1E696AB28];
     v22[0] = v13;
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT self IN %@", v21];
-    v22[1] = v15;
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT self IN %@", dsCopy];
+    v22[1] = dsCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v17 = [v14 andPredicateWithSubpredicates:v16];
 
@@ -121,16 +121,16 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
   return v13;
 }
 
-+ (id)fetchAssetIdsToExcludeFromPTPInContext:(id)a3 isCloudPhotoLibraryEnabled:(BOOL)a4
++ (id)fetchAssetIdsToExcludeFromPTPInContext:(id)context isCloudPhotoLibraryEnabled:(BOOL)enabled
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (enabled)
   {
     v4 = MEMORY[0x1E69BE428];
     v5 = MEMORY[0x1E69BE4D0];
-    v6 = a3;
-    v7 = [v5 entityName];
-    v8 = [v4 fetchRequestWithEntityName:v7];
+    contextCopy = context;
+    entityName = [v5 entityName];
+    v8 = [v4 fetchRequestWithEntityName:entityName];
 
     v37[0] = @"asset";
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
@@ -150,13 +150,13 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"dataStoreClassID", 0];
     v34[0] = v13;
     v14 = MEMORY[0x1E696AE18];
-    v15 = [MEMORY[0x1E69BE4D0] originalCPLResourceTypesForMaster];
-    v16 = [v14 predicateWithFormat:@"%K IN %@", @"dataStoreSubtype", v15];
+    originalCPLResourceTypesForMaster = [MEMORY[0x1E69BE4D0] originalCPLResourceTypesForMaster];
+    v16 = [v14 predicateWithFormat:@"%K IN %@", @"dataStoreSubtype", originalCPLResourceTypesForMaster];
     v34[1] = v16;
     v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"version", 0];
     v34[2] = v17;
-    v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %d", @"localAvailability", 0xFFFFFFFFLL];
-    v34[3] = v18;
+    0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %d", @"localAvailability", 0xFFFFFFFFLL];
+    v34[3] = 0xFFFFFFFFLL;
     v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"cloudLocalState", &unk_1F102E168];
     v34[4] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:5];
@@ -164,7 +164,7 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
 
     [v8 setPredicate:v21];
     v31 = 0;
-    v22 = [v6 executeFetchRequest:v8 error:&v31];
+    v22 = [contextCopy executeFetchRequest:v8 error:&v31];
 
     v23 = v31;
     if (v22)
@@ -212,11 +212,11 @@ void __102__PHPTPFetches_fetchObjectIDsForAssetsExposedToPTPFromObjectIDs_inLibr
   return v26;
 }
 
-+ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)a3 inLibrary:(id)a4
++ (id)fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:(id)ds inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:v7 inLibrary:v6 isCloudPhotoLibraryEnabled:{objc_msgSend(v6, "isCloudPhotoLibraryEnabled")}];
+  libraryCopy = library;
+  dsCopy = ds;
+  v8 = [self fetchObjectIDsForAssetsExposedToPTPFromObjectIDs:dsCopy inLibrary:libraryCopy isCloudPhotoLibraryEnabled:{objc_msgSend(libraryCopy, "isCloudPhotoLibraryEnabled")}];
 
   return v8;
 }

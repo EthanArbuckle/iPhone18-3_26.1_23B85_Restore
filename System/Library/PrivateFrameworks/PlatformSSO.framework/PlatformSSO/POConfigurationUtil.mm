@@ -1,7 +1,7 @@
 @interface POConfigurationUtil
 + (BOOL)appSSOEnabled;
 + (BOOL)platformSSOEnabled;
-+ (BOOL)platformSSOEnabledForUsername:(id)a3;
++ (BOOL)platformSSOEnabledForUsername:(id)username;
 + (void)appSSOEnabled;
 + (void)platformSSOEnabled;
 + (void)updateTriggerFile;
@@ -17,9 +17,9 @@
     +[POConfigurationUtil platformSSOEnabled];
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[POConfigurationUtil platformSSOTriggerFile];
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   if (v5)
   {
@@ -41,27 +41,27 @@
     +[POConfigurationUtil appSSOEnabled];
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:@"/var/mobile/Library/ExtensibleSSO/Configuration/com.apple.AppSSO.configuration.plist"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/ExtensibleSSO/Configuration/com.apple.AppSSO.configuration.plist"];
 
   return v4;
 }
 
-+ (BOOL)platformSSOEnabledForUsername:(id)a3
++ (BOOL)platformSSOEnabledForUsername:(id)username
 {
-  if (!a3)
+  if (!username)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [[POConfigurationManager alloc] initWithUserName:v3];
+  usernameCopy = username;
+  v4 = [[POConfigurationManager alloc] initWithUserName:usernameCopy];
 
-  v5 = [(POConfigurationManager *)v4 currentDeviceConfiguration];
-  if ([v5 registrationCompleted])
+  currentDeviceConfiguration = [(POConfigurationManager *)v4 currentDeviceConfiguration];
+  if ([currentDeviceConfiguration registrationCompleted])
   {
-    v6 = [(POConfigurationManager *)v4 currentUserConfiguration];
-    v7 = v6 != 0;
+    currentUserConfiguration = [(POConfigurationManager *)v4 currentUserConfiguration];
+    v7 = currentUserConfiguration != 0;
   }
 
   else

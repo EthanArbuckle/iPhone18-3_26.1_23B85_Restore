@@ -1,12 +1,12 @@
 @interface CLSDarwinNotificationCenter
 + (id)defaultCenter;
 - (CLSDarwinNotificationCenter)init;
-- (void)addObserver:(id)a3 notificationName:(id)a4 block:(id)a5;
+- (void)addObserver:(id)observer notificationName:(id)name block:(id)block;
 - (void)handleObserverRemoval;
-- (void)postLocalNotificationName:(id)a3;
-- (void)postNotificationName:(id)a3;
-- (void)removeObserver:(id)a3 notificationName:(id)a4;
-- (void)unregisterFromDarwinNotification:(id)a3;
+- (void)postLocalNotificationName:(id)name;
+- (void)postNotificationName:(id)name;
+- (void)removeObserver:(id)observer notificationName:(id)name;
+- (void)unregisterFromDarwinNotification:(id)notification;
 @end
 
 @implementation CLSDarwinNotificationCenter
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FA1308;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A300 != -1)
   {
     dispatch_once(&qword_280B2A300, block);
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (void)unregisterFromDarwinNotification:(id)a3
+- (void)unregisterFromDarwinNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKey_(self->_tokenByName, v5, v4);
+  notificationCopy = notification;
+  v6 = objc_msgSend_objectForKey_(self->_tokenByName, v5, notificationCopy);
   v9 = v6;
   if (v6)
   {
@@ -85,7 +85,7 @@
         if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_ERROR))
         {
           v15 = 138412546;
-          v16 = v4;
+          v16 = notificationCopy;
           v17 = 1024;
           v18 = v12;
         }
@@ -94,11 +94,11 @@
       else if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = notificationCopy;
       }
     }
 
-    objc_msgSend_removeObjectForKey_(self->_tokenByName, v11, v4);
+    objc_msgSend_removeObjectForKey_(self->_tokenByName, v11, notificationCopy);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -115,22 +115,22 @@
   dispatch_async(queue, block);
 }
 
-- (void)addObserver:(id)a3 notificationName:(id)a4 block:(id)a5
+- (void)addObserver:(id)observer notificationName:(id)name block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  observerCopy = observer;
+  nameCopy = name;
+  blockCopy = block;
+  if (!observerCopy)
   {
     __assert_rtn("[CLSDarwinNotificationCenter addObserver:notificationName:block:]", "CLSDarwinNotificationCenter.m", 161, "observer != nil");
   }
 
-  if (!v9)
+  if (!nameCopy)
   {
     __assert_rtn("[CLSDarwinNotificationCenter addObserver:notificationName:block:]", "CLSDarwinNotificationCenter.m", 162, "name != nil");
   }
 
-  if (!v10)
+  if (!blockCopy)
   {
     __assert_rtn("[CLSDarwinNotificationCenter addObserver:notificationName:block:]", "CLSDarwinNotificationCenter.m", 163, "block != nil");
   }
@@ -141,36 +141,36 @@
   v15[2] = sub_236FA1978;
   v15[3] = &unk_278A18358;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = nameCopy;
+  v17 = observerCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = observerCopy;
+  v14 = nameCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)postNotificationName:(id)a3
+- (void)postNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_236FA1FE0;
     block[3] = &unk_278A18210;
-    v8 = v4;
+    v8 = nameCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)postLocalNotificationName:(id)a3
+- (void)postLocalNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -178,22 +178,22 @@
     v7[2] = sub_236FA21CC;
     v7[3] = &unk_278A18380;
     v7[4] = self;
-    v8 = v4;
+    v8 = nameCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)removeObserver:(id)a3 notificationName:(id)a4
+- (void)removeObserver:(id)observer notificationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  nameCopy = name;
+  if (!observerCopy)
   {
     __assert_rtn("[CLSDarwinNotificationCenter removeObserver:notificationName:]", "CLSDarwinNotificationCenter.m", 269, "observer != nil");
   }
 
-  v10 = v7;
-  v11 = objc_msgSend_hash(v6, v8, v9);
+  v10 = nameCopy;
+  v11 = objc_msgSend_hash(observerCopy, v8, v9);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

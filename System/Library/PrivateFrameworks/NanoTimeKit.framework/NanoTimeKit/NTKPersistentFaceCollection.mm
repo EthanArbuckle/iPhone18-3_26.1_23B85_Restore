@@ -1,66 +1,66 @@
 @interface NTKPersistentFaceCollection
 - (BOOL)_lock_markLoaded;
 - (BOOL)hasLoaded;
-- (id)_initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
-- (void)_didAddFace:(id)a3 withUUID:(id)a4 atIndex:(unint64_t)a5;
-- (void)_didMoveFace:(id)a3 withUUID:(id)a4 toIndex:(unint64_t)a5;
-- (void)_didRemoveFace:(id)a3 withUUID:(id)a4;
-- (void)_didSelectFaceUUID:(id)a3 suppressingCallback:(BOOL)a4;
-- (void)_fromDaemon_addFace:(id)a3 forUUID:(id)a4;
+- (id)_initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
+- (void)_didAddFace:(id)face withUUID:(id)d atIndex:(unint64_t)index;
+- (void)_didMoveFace:(id)face withUUID:(id)d toIndex:(unint64_t)index;
+- (void)_didRemoveFace:(id)face withUUID:(id)d;
+- (void)_didSelectFaceUUID:(id)d suppressingCallback:(BOOL)callback;
+- (void)_fromDaemon_addFace:(id)face forUUID:(id)d;
 - (void)_fromDaemon_computeSelectedUUIDFromReferenceAndNotifySelected;
-- (void)_fromDaemon_removeFaceForUUID:(id)a3;
-- (void)_fromDaemon_updateFaceForUUID:(id)a3 withConfiguration:(id)a4;
-- (void)_fromDaemon_updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4;
-- (void)_handleFlushCompleteForIdentifier:(id)a3;
+- (void)_fromDaemon_removeFaceForUUID:(id)d;
+- (void)_fromDaemon_updateFaceForUUID:(id)d withConfiguration:(id)configuration;
+- (void)_fromDaemon_updateFaceForUUID:(id)d withResourceDirectory:(id)directory;
+- (void)_handleFlushCompleteForIdentifier:(id)identifier;
 - (void)_markLoaded;
 - (void)_notifyLoaded;
 - (void)_notifyReset;
-- (void)_performOrEnqueueUpdateOfType:(int64_t)a3 forFaceUUID:(id)a4 block:(id)a5;
-- (void)_performSuppressingFaceObserverCallbacks:(id)a3;
-- (void)_pruneEnqueuedUpdatesMadeObsoleteByNewUpdate:(id)a3;
+- (void)_performOrEnqueueUpdateOfType:(int64_t)type forFaceUUID:(id)d block:(id)block;
+- (void)_performSuppressingFaceObserverCallbacks:(id)callbacks;
+- (void)_pruneEnqueuedUpdatesMadeObsoleteByNewUpdate:(id)update;
 - (void)_register;
 - (void)_registerIfNeeded;
-- (void)_sendToDaemonAddedFace:(id)a3 forUUID:(id)a4;
-- (void)_sendToDaemonFlushWithIdentifier:(id)a3;
+- (void)_sendToDaemonAddedFace:(id)face forUUID:(id)d;
+- (void)_sendToDaemonFlushWithIdentifier:(id)identifier;
 - (void)_sendToDaemonOrderedUUIDs;
-- (void)_sendToDaemonRemovedFaceForUUID:(id)a3;
+- (void)_sendToDaemonRemovedFaceForUUID:(id)d;
 - (void)_sendToDaemonReset;
-- (void)_sendToDaemonSelectedUUIDSuppressingCallback:(BOOL)a3;
-- (void)_sendToDaemonUpdatedConfigurationForFace:(id)a3 withUUID:(id)a4;
-- (void)_sendToDaemonUpdatedResourceDirectoryForFace:(id)a3 withUUID:(id)a4;
-- (void)_sendToDaemonUpgradeForFace:(id)a3 withUUID:(id)a4;
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqId:(id)a5;
+- (void)_sendToDaemonSelectedUUIDSuppressingCallback:(BOOL)callback;
+- (void)_sendToDaemonUpdatedConfigurationForFace:(id)face withUUID:(id)d;
+- (void)_sendToDaemonUpdatedResourceDirectoryForFace:(id)face withUUID:(id)d;
+- (void)_sendToDaemonUpgradeForFace:(id)face withUUID:(id)d;
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqId:(id)id;
 - (void)dealloc;
-- (void)faceConfigurationDidChange:(id)a3;
-- (void)faceResourceDirectoryDidChange:(id)a3;
-- (void)faceUpgradeOccurred:(id)a3;
-- (void)flushCompleteForIdentifier:(id)a3;
-- (void)loadFullCollectionWithOrderedUUIDs:(id)a3 selectedUUID:(id)a4 facesDescriptorsByUUID:(id)a5 seqId:(id)a6 completion:(id)a7;
-- (void)removeFaceForUUID:(id)a3 seqId:(id)a4 completion:(id)a5;
-- (void)resetClientCollectionWithCompletion:(id)a3;
+- (void)faceConfigurationDidChange:(id)change;
+- (void)faceResourceDirectoryDidChange:(id)change;
+- (void)faceUpgradeOccurred:(id)occurred;
+- (void)flushCompleteForIdentifier:(id)identifier;
+- (void)loadFullCollectionWithOrderedUUIDs:(id)ds selectedUUID:(id)d facesDescriptorsByUUID:(id)iD seqId:(id)id completion:(id)completion;
+- (void)removeFaceForUUID:(id)d seqId:(id)id completion:(id)completion;
+- (void)resetClientCollectionWithCompletion:(id)completion;
 - (void)resumeUpdatesFromDaemon;
 - (void)suspendUpdatesFromDaemon;
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4 seqId:(id)a5;
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 seqId:(id)a5 completion:(id)a6;
-- (void)updateOrderedFaceUUIDs:(id)a3 seqId:(id)a4;
-- (void)updateSelectedFaceUUID:(id)a3 seqId:(id)a4;
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqID:(id)a5;
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation seqId:(id)id;
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id completion:(id)completion;
+- (void)updateOrderedFaceUUIDs:(id)ds seqId:(id)id;
+- (void)updateSelectedFaceUUID:(id)d seqId:(id)id;
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqID:(id)iD;
 @end
 
 @implementation NTKPersistentFaceCollection
 
-- (id)_initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (id)_initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v27.receiver = self;
   v27.super_class = NTKPersistentFaceCollection;
-  v8 = [(NTKFaceCollection *)&v27 initWithCollectionIdentifier:v6 deviceUUID:v7];
+  v8 = [(NTKFaceCollection *)&v27 initWithCollectionIdentifier:identifierCopy deviceUUID:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(NTKFaceCollection *)v8 collectionIdentifier];
-    v9->_isLibraryCollection = [v10 isEqualToString:@"LibraryFaces"];
+    collectionIdentifier = [(NTKFaceCollection *)v8 collectionIdentifier];
+    v9->_isLibraryCollection = [collectionIdentifier isEqualToString:@"LibraryFaces"];
 
     v11 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.nanotimekit.collectionserver" options:4096];
     connection = v9->_connection;
@@ -149,9 +149,9 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
 - (void)_markLoaded
 {
   os_unfair_lock_lock(&self->_loadedLock);
-  v3 = [(NTKPersistentFaceCollection *)self _lock_markLoaded];
+  _lock_markLoaded = [(NTKPersistentFaceCollection *)self _lock_markLoaded];
   os_unfair_lock_unlock(&self->_loadedLock);
-  if (v3)
+  if (_lock_markLoaded)
   {
 
     [(NTKPersistentFaceCollection *)self _notifyLoaded];
@@ -173,36 +173,36 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
 - (BOOL)hasLoaded
 {
   os_unfair_lock_lock(&self->_loadedLock);
-  v3 = [(NTKPersistentFaceCollection *)self _lock_hasLoaded];
+  _lock_hasLoaded = [(NTKPersistentFaceCollection *)self _lock_hasLoaded];
   os_unfair_lock_unlock(&self->_loadedLock);
-  return v3;
+  return _lock_hasLoaded;
 }
 
-- (void)_didAddFace:(id)a3 withUUID:(id)a4 atIndex:(unint64_t)a5
+- (void)_didAddFace:(id)face withUUID:(id)d atIndex:(unint64_t)index
 {
-  v13 = a3;
-  v8 = a4;
+  faceCopy = face;
+  dCopy = d;
   if (self->_isLibraryCollection)
   {
-    [v13 setIsLibraryFace:1];
-    [v13 didMoveToLibrary];
+    [faceCopy setIsLibraryFace:1];
+    [faceCopy didMoveToLibrary];
   }
 
   referenceOrderedUUIDs = self->_referenceOrderedUUIDs;
   self->_referenceOrderedUUIDs = 0;
 
   v10 = [(NTKFaceCollection *)self numberOfFaces]- 1;
-  v11 = [(NTKFaceCollection *)self orderedUUIDs];
-  v12 = [v11 objectAtIndex:a5];
-  [(NTKPersistentFaceCollection *)self _sendToDaemonAddedFace:v13 forUUID:v12];
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
+  v12 = [orderedUUIDs objectAtIndex:index];
+  [(NTKPersistentFaceCollection *)self _sendToDaemonAddedFace:faceCopy forUUID:v12];
 
-  if (v10 != a5)
+  if (v10 != index)
   {
     [(NTKPersistentFaceCollection *)self _sendToDaemonOrderedUUIDs];
   }
 }
 
-- (void)_didMoveFace:(id)a3 withUUID:(id)a4 toIndex:(unint64_t)a5
+- (void)_didMoveFace:(id)face withUUID:(id)d toIndex:(unint64_t)index
 {
   referenceOrderedUUIDs = self->_referenceOrderedUUIDs;
   self->_referenceOrderedUUIDs = 0;
@@ -210,28 +210,28 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   [(NTKPersistentFaceCollection *)self _sendToDaemonOrderedUUIDs];
 }
 
-- (void)_didSelectFaceUUID:(id)a3 suppressingCallback:(BOOL)a4
+- (void)_didSelectFaceUUID:(id)d suppressingCallback:(BOOL)callback
 {
-  v4 = a4;
+  callbackCopy = callback;
   referenceSelectedUUID = self->_referenceSelectedUUID;
   self->_referenceSelectedUUID = 0;
 
-  v7 = [(NTKFaceCollection *)self selectedUUID];
+  selectedUUID = [(NTKFaceCollection *)self selectedUUID];
 
-  if (v7)
+  if (selectedUUID)
   {
 
-    [(NTKPersistentFaceCollection *)self _sendToDaemonSelectedUUIDSuppressingCallback:v4];
+    [(NTKPersistentFaceCollection *)self _sendToDaemonSelectedUUIDSuppressingCallback:callbackCopy];
   }
 }
 
-- (void)_didRemoveFace:(id)a3 withUUID:(id)a4
+- (void)_didRemoveFace:(id)face withUUID:(id)d
 {
-  v6 = a3;
-  [(NTKPersistentFaceCollection *)self _sendToDaemonRemovedFaceForUUID:a4];
+  faceCopy = face;
+  [(NTKPersistentFaceCollection *)self _sendToDaemonRemovedFaceForUUID:d];
   if (self->_isLibraryCollection)
   {
-    [v6 setIsLibraryFace:0];
+    [faceCopy setIsLibraryFace:0];
   }
 }
 
@@ -241,23 +241,23 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   v3 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKFaceCollection *)self logIdentifier];
+    logIdentifier = [(NTKFaceCollection *)self logIdentifier];
     v10 = 138412290;
-    v11 = v4;
+    v11 = logIdentifier;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%@ suspend updates from daemon", &v10, 0xCu);
   }
 
   if (!self->_updatesFromDaemonEnqueuedWhileSuspended)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updatesFromDaemonEnqueuedWhileSuspended = self->_updatesFromDaemonEnqueuedWhileSuspended;
-    self->_updatesFromDaemonEnqueuedWhileSuspended = v5;
+    self->_updatesFromDaemonEnqueuedWhileSuspended = array;
   }
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   updateSuspensionIdentifier = self->_updateSuspensionIdentifier;
-  self->_updateSuspensionIdentifier = v8;
+  self->_updateSuspensionIdentifier = uUIDString;
 
   self->_updatesFromDaemonSuspended = 1;
 }
@@ -268,9 +268,9 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   v3 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKFaceCollection *)self logIdentifier];
+    logIdentifier = [(NTKFaceCollection *)self logIdentifier];
     v5 = 138412290;
-    v6 = v4;
+    v6 = logIdentifier;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%@ resume updates from daemon", &v5, 0xCu);
   }
 
@@ -280,17 +280,17 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   }
 }
 
-- (void)_handleFlushCompleteForIdentifier:(id)a3
+- (void)_handleFlushCompleteForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  if ([(NSString *)self->_updateSuspensionIdentifier isEqualToString:a3])
+  if ([(NSString *)self->_updateSuspensionIdentifier isEqualToString:identifier])
   {
     v4 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NTKFaceCollection *)self logIdentifier];
+      logIdentifier = [(NTKFaceCollection *)self logIdentifier];
       *buf = 138412290;
-      v19 = v5;
+      v19 = logIdentifier;
       _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "%@ playing back updates enqueued while suspended", buf, 0xCu);
     }
 
@@ -314,8 +314,8 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * v10) block];
-          v11[2]();
+          block = [*(*(&v13 + 1) + 8 * v10) block];
+          block[2]();
 
           ++v10;
         }
@@ -335,83 +335,83 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   }
 }
 
-- (void)faceConfigurationDidChange:(id)a3
+- (void)faceConfigurationDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (!self->_suppressingFaceObserverCallbacks)
   {
     v5 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NTKFaceCollection *)self logIdentifier];
+      logIdentifier = [(NTKFaceCollection *)self logIdentifier];
       v9 = 138412546;
-      v10 = v6;
+      v10 = logIdentifier;
       v11 = 2112;
-      v12 = v4;
+      v12 = changeCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "%@ face config did change (face = %@)", &v9, 0x16u);
     }
 
-    v7 = [(NTKFaceCollection *)self UUIDsByFace];
-    v8 = [v7 objectForKey:v4];
+    uUIDsByFace = [(NTKFaceCollection *)self UUIDsByFace];
+    v8 = [uUIDsByFace objectForKey:changeCopy];
 
     if (v8)
     {
-      [(NTKPersistentFaceCollection *)self _sendToDaemonUpdatedConfigurationForFace:v4 withUUID:v8];
+      [(NTKPersistentFaceCollection *)self _sendToDaemonUpdatedConfigurationForFace:changeCopy withUUID:v8];
     }
   }
 }
 
-- (void)faceResourceDirectoryDidChange:(id)a3
+- (void)faceResourceDirectoryDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (!self->_suppressingFaceObserverCallbacks)
   {
     v5 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NTKFaceCollection *)self logIdentifier];
+      logIdentifier = [(NTKFaceCollection *)self logIdentifier];
       v9 = 138412546;
-      v10 = v6;
+      v10 = logIdentifier;
       v11 = 2112;
-      v12 = v4;
+      v12 = changeCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "%@ face directory did change (face = %@)", &v9, 0x16u);
     }
 
-    v7 = [(NTKFaceCollection *)self UUIDsByFace];
-    v8 = [v7 objectForKey:v4];
+    uUIDsByFace = [(NTKFaceCollection *)self UUIDsByFace];
+    v8 = [uUIDsByFace objectForKey:changeCopy];
 
     if (v8)
     {
-      [(NTKPersistentFaceCollection *)self _sendToDaemonUpdatedResourceDirectoryForFace:v4 withUUID:v8];
+      [(NTKPersistentFaceCollection *)self _sendToDaemonUpdatedResourceDirectoryForFace:changeCopy withUUID:v8];
     }
   }
 }
 
-- (void)faceUpgradeOccurred:(id)a3
+- (void)faceUpgradeOccurred:(id)occurred
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  occurredCopy = occurred;
   if (!self->_suppressingFaceObserverCallbacks)
   {
     v5 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NTKFaceCollection *)self logIdentifier];
+      logIdentifier = [(NTKFaceCollection *)self logIdentifier];
       v9 = 138412546;
-      v10 = v6;
+      v10 = logIdentifier;
       v11 = 2112;
-      v12 = v4;
+      v12 = occurredCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "%@ face upgrade in progress (face = %@)", &v9, 0x16u);
     }
 
-    v7 = [(NTKFaceCollection *)self UUIDsByFace];
-    v8 = [v7 objectForKey:v4];
+    uUIDsByFace = [(NTKFaceCollection *)self UUIDsByFace];
+    v8 = [uUIDsByFace objectForKey:occurredCopy];
 
     if (v8)
     {
-      [(NTKPersistentFaceCollection *)self _sendToDaemonUpgradeForFace:v4 withUUID:v8];
+      [(NTKPersistentFaceCollection *)self _sendToDaemonUpgradeForFace:occurredCopy withUUID:v8];
     }
   }
 }
@@ -423,8 +423,8 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NTKFaceCollection *)self observers];
-  v4 = [v3 copy];
+  observers = [(NTKFaceCollection *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -465,8 +465,8 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NTKFaceCollection *)self observers];
-  v4 = [v3 copy];
+  observers = [(NTKFaceCollection *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -503,110 +503,110 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
 - (void)_sendToDaemonOrderedUUIDs
 {
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v4 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  v3 = [(NTKFaceCollection *)self orderedUUIDs];
-  [v4 setOrderedFaceUUIDs:v3];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
+  [_serverProxy setOrderedFaceUUIDs:orderedUUIDs];
 }
 
-- (void)_sendToDaemonSelectedUUIDSuppressingCallback:(BOOL)a3
+- (void)_sendToDaemonSelectedUUIDSuppressingCallback:(BOOL)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v6 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  v5 = [(NTKFaceCollection *)self selectedUUID];
-  [v6 setSelectedFaceUUID:v5 suppressingCallback:v3];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  selectedUUID = [(NTKFaceCollection *)self selectedUUID];
+  [_serverProxy setSelectedFaceUUID:selectedUUID suppressingCallback:callbackCopy];
 }
 
-- (void)_sendToDaemonUpdatedConfigurationForFace:(id)a3 withUUID:(id)a4
+- (void)_sendToDaemonUpdatedConfigurationForFace:(id)face withUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  faceCopy = face;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v9 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  v8 = [v7 configurationJSONRepresentation];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  configurationJSONRepresentation = [faceCopy configurationJSONRepresentation];
 
-  [v9 updateFaceForUUID:v6 withConfigurationJSONRepresentation:v8];
+  [_serverProxy updateFaceForUUID:dCopy withConfigurationJSONRepresentation:configurationJSONRepresentation];
 }
 
-- (void)_sendToDaemonUpdatedResourceDirectoryForFace:(id)a3 withUUID:(id)a4
+- (void)_sendToDaemonUpdatedResourceDirectoryForFace:(id)face withUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  faceCopy = face;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v9 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  v8 = [v7 resourceDirectory];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  resourceDirectory = [faceCopy resourceDirectory];
 
-  [v9 updateFaceForUUID:v6 withResourceDirectory:v8];
+  [_serverProxy updateFaceForUUID:dCopy withResourceDirectory:resourceDirectory];
 }
 
-- (void)_sendToDaemonUpgradeForFace:(id)a3 withUUID:(id)a4
+- (void)_sendToDaemonUpgradeForFace:(id)face withUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  faceCopy = face;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v9 = [v7 instanceDescriptor];
+  instanceDescriptor = [faceCopy instanceDescriptor];
 
-  v8 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  [v8 upgradeFaceInstanceDescriptor:v9 forUUID:v6];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  [_serverProxy upgradeFaceInstanceDescriptor:instanceDescriptor forUUID:dCopy];
 }
 
-- (void)_sendToDaemonAddedFace:(id)a3 forUUID:(id)a4
+- (void)_sendToDaemonAddedFace:(id)face forUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  faceCopy = face;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v9 = [v7 instanceDescriptor];
+  instanceDescriptor = [faceCopy instanceDescriptor];
 
-  v8 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  [v8 addFaceInstanceDescriptor:v9 forUUID:v6];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  [_serverProxy addFaceInstanceDescriptor:instanceDescriptor forUUID:dCopy];
 }
 
-- (void)_sendToDaemonRemovedFaceForUUID:(id)a3
+- (void)_sendToDaemonRemovedFaceForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v5 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  [v5 removeFaceForUUID:v4];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  [_serverProxy removeFaceForUUID:dCopy];
 }
 
 - (void)_sendToDaemonReset
 {
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v3 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  [v3 resetCollection];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  [_serverProxy resetCollection];
 }
 
-- (void)_sendToDaemonFlushWithIdentifier:(id)a3
+- (void)_sendToDaemonFlushWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NTKPersistentFaceCollection *)self _registerIfNeeded];
-  v5 = [(NTKPersistentFaceCollection *)self _serverProxy];
-  [v5 flushUpdatesWithIdentifier:v4];
+  _serverProxy = [(NTKPersistentFaceCollection *)self _serverProxy];
+  [_serverProxy flushUpdatesWithIdentifier:identifierCopy];
 }
 
-- (void)loadFullCollectionWithOrderedUUIDs:(id)a3 selectedUUID:(id)a4 facesDescriptorsByUUID:(id)a5 seqId:(id)a6 completion:(id)a7
+- (void)loadFullCollectionWithOrderedUUIDs:(id)ds selectedUUID:(id)d facesDescriptorsByUUID:(id)iD seqId:(id)id completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v29 = a4;
-  v33 = a5;
-  v30 = a6;
-  v31 = a7;
-  v28 = self;
-  v12 = [(NSXPCConnection *)self->_connection _queue];
-  dispatch_assert_queue_V2(v12);
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  idCopy = id;
+  completionCopy = completion;
+  selfCopy = self;
+  _queue = [(NSXPCConnection *)self->_connection _queue];
+  dispatch_assert_queue_V2(_queue);
 
   v13 = objc_opt_class();
-  NTKValidateArray(v32, v13);
+  NTKValidateArray(dsCopy, v13);
   v14 = objc_opt_class();
   v15 = objc_opt_class();
-  NTKValidateDictionary(v33, v14, v15);
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  NTKValidateDictionary(iDCopy, v14, v15);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v45 = 0u;
   v43 = 0u;
   v44 = 0u;
   v42 = 0u;
-  v16 = v33;
+  v16 = iDCopy;
   v17 = [v16 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v17)
   {
@@ -625,7 +625,7 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
         v22 = [NTKFace faceWithInstanceDescriptor:v21];
         if (v22)
         {
-          [v34 setObject:v22 forKey:v20];
+          [dictionary setObject:v22 forKey:v20];
         }
 
         else
@@ -634,11 +634,11 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             v24 = [v21 debugDescription];
-            v25 = [v20 UUIDString];
+            uUIDString = [v20 UUIDString];
             *buf = 138412546;
             v47 = v24;
             v48 = 2112;
-            v49 = v25;
+            v49 = uUIDString;
             _os_log_error_impl(&dword_22D9C5000, v23, OS_LOG_TYPE_ERROR, "Got a nil NTKFace when initalizing from descriptor %@, uuid %@", buf, 0x16u);
           }
         }
@@ -650,20 +650,20 @@ void __72__NTKPersistentFaceCollection__initWithCollectionIdentifier_deviceUUID_
     while (v17);
   }
 
-  v26 = [v34 copy];
+  v26 = [dictionary copy];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __119__NTKPersistentFaceCollection_loadFullCollectionWithOrderedUUIDs_selectedUUID_facesDescriptorsByUUID_seqId_completion___block_invoke;
   v35[3] = &unk_278780FD0;
-  v35[4] = v28;
-  v36 = v30;
+  v35[4] = selfCopy;
+  v36 = idCopy;
   v37 = v16;
-  v38 = v32;
+  v38 = dsCopy;
   v39 = v26;
-  v40 = v29;
-  v41 = v31;
+  v40 = dCopy;
+  v41 = completionCopy;
   v27 = v26;
-  [(NTKPersistentFaceCollection *)v28 _performOrEnqueueUpdateOfType:0 forFaceUUID:0 block:v35];
+  [(NTKPersistentFaceCollection *)selfCopy _performOrEnqueueUpdateOfType:0 forFaceUUID:0 block:v35];
 }
 
 void __119__NTKPersistentFaceCollection_loadFullCollectionWithOrderedUUIDs_selectedUUID_facesDescriptorsByUUID_seqId_completion___block_invoke(uint64_t a1)
@@ -896,16 +896,16 @@ void __119__NTKPersistentFaceCollection_loadFullCollectionWithOrderedUUIDs_selec
   [v4 setResourceDirectoryByTransferringOwnership:v5];
 }
 
-- (void)resetClientCollectionWithCompletion:(id)a3
+- (void)resetClientCollectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__NTKPersistentFaceCollection_resetClientCollectionWithCompletion___block_invoke;
   v6[3] = &unk_27877FF60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:0 forFaceUUID:0 block:v6];
 }
 
@@ -917,19 +917,19 @@ uint64_t __67__NTKPersistentFaceCollection_resetClientCollectionWithCompletion__
   return v2();
 }
 
-- (void)updateSelectedFaceUUID:(id)a3 seqId:(id)a4
+- (void)updateSelectedFaceUUID:(id)d seqId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  idCopy = id;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__NTKPersistentFaceCollection_updateSelectedFaceUUID_seqId___block_invoke;
   v10[3] = &unk_27877E238;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = idCopy;
+  v8 = idCopy;
+  v9 = dCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:5 forFaceUUID:0 block:v10];
 }
 
@@ -956,21 +956,21 @@ uint64_t __60__NTKPersistentFaceCollection_updateSelectedFaceUUID_seqId___block_
   return [a1[4] _fromDaemon_computeSelectedUUIDFromReferenceAndNotifySelected];
 }
 
-- (void)updateOrderedFaceUUIDs:(id)a3 seqId:(id)a4
+- (void)updateOrderedFaceUUIDs:(id)ds seqId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  idCopy = id;
   v8 = objc_opt_class();
-  NTKValidateArray(v6, v8);
+  NTKValidateArray(dsCopy, v8);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__NTKPersistentFaceCollection_updateOrderedFaceUUIDs_seqId___block_invoke;
   v11[3] = &unk_27877E238;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = dsCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:6 forFaceUUID:0 block:v11];
 }
 
@@ -997,15 +997,15 @@ uint64_t __60__NTKPersistentFaceCollection_updateOrderedFaceUUIDs_seqId___block_
   return [a1[4] _updateOrderedUUIDsFromReference:a1[5] andNotifyReordered:1];
 }
 
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4 seqId:(id)a5
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation seqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  representationCopy = representation;
+  idCopy = id;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"UUID"}];
-    if (v9)
+    if (representationCopy)
     {
       goto LABEL_3;
     }
@@ -1015,7 +1015,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!representationCopy)
   {
     goto LABEL_5;
   }
@@ -1026,12 +1026,12 @@ LABEL_3:
   v14[2] = __91__NTKPersistentFaceCollection_updateFaceForUUID_withConfigurationJSONRepresentation_seqId___block_invoke;
   v14[3] = &unk_278780FF8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = representationCopy;
+  v17 = idCopy;
+  v11 = idCopy;
+  v12 = representationCopy;
+  v13 = dCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:2 forFaceUUID:v13 block:v14];
 }
 
@@ -1067,13 +1067,13 @@ void __91__NTKPersistentFaceCollection_updateFaceForUUID_withConfigurationJSONRe
   [*(a1 + 32) _fromDaemon_updateFaceForUUID:*(a1 + 40) withConfiguration:v7];
 }
 
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 seqId:(id)a5 completion:(id)a6
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  dCopy = d;
+  directoryCopy = directory;
+  idCopy = id;
+  completionCopy = completion;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"UUID"}];
   }
@@ -1083,14 +1083,14 @@ void __91__NTKPersistentFaceCollection_updateFaceForUUID_withConfigurationJSONRe
   v18[2] = __88__NTKPersistentFaceCollection_updateFaceForUUID_withResourceDirectory_seqId_completion___block_invoke;
   v18[3] = &unk_278781020;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = dCopy;
+  v20 = directoryCopy;
+  v21 = idCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = idCopy;
+  v16 = directoryCopy;
+  v17 = dCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:3 forFaceUUID:v17 block:v18];
 }
 
@@ -1120,15 +1120,15 @@ uint64_t __88__NTKPersistentFaceCollection_updateFaceForUUID_withResourceDirecto
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqID:(id)a5
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  descriptorCopy = descriptor;
+  dCopy = d;
+  iDCopy = iD;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"UUID"}];
-    if (v8)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
@@ -1138,7 +1138,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!descriptorCopy)
   {
     goto LABEL_5;
   }
@@ -1149,12 +1149,12 @@ LABEL_3:
   v14[2] = __75__NTKPersistentFaceCollection_upgradeFaceInstanceDescriptor_forUUID_seqID___block_invoke;
   v14[3] = &unk_278780FF8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = descriptorCopy;
+  v16 = iDCopy;
+  v17 = dCopy;
+  v11 = dCopy;
+  v12 = iDCopy;
+  v13 = descriptorCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:7 forFaceUUID:v11 block:v14];
 }
 
@@ -1184,15 +1184,15 @@ void __75__NTKPersistentFaceCollection_upgradeFaceInstanceDescriptor_forUUID_seq
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqId:(id)a5
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  descriptorCopy = descriptor;
+  dCopy = d;
+  idCopy = id;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"UUID"}];
-    if (v8)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
@@ -1202,7 +1202,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!descriptorCopy)
   {
     goto LABEL_5;
   }
@@ -1213,12 +1213,12 @@ LABEL_3:
   v14[2] = __71__NTKPersistentFaceCollection_addFaceInstanceDescriptor_forUUID_seqId___block_invoke;
   v14[3] = &unk_278780FF8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = descriptorCopy;
+  v16 = dCopy;
+  v17 = idCopy;
+  v11 = idCopy;
+  v12 = dCopy;
+  v13 = descriptorCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:1 forFaceUUID:v12 block:v14];
 }
 
@@ -1270,12 +1270,12 @@ void __71__NTKPersistentFaceCollection_addFaceInstanceDescriptor_forUUID_seqId__
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeFaceForUUID:(id)a3 seqId:(id)a4 completion:(id)a5
+- (void)removeFaceForUUID:(id)d seqId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  idCopy = id;
+  completionCopy = completion;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ must be non-nil", @"UUID"}];
   }
@@ -1285,12 +1285,12 @@ void __71__NTKPersistentFaceCollection_addFaceInstanceDescriptor_forUUID_seqId__
   v14[2] = __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___block_invoke;
   v14[3] = &unk_2787808C8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = idCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = idCopy;
+  v13 = dCopy;
   [(NTKPersistentFaceCollection *)self _performOrEnqueueUpdateOfType:4 forFaceUUID:v13 block:v14];
 }
 
@@ -1317,28 +1317,28 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)flushCompleteForIdentifier:(id)a3
+- (void)flushCompleteForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__NTKPersistentFaceCollection_flushCompleteForIdentifier___block_invoke;
   v6[3] = &unk_27877E438;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_fromDaemon_addFace:(id)a3 forUUID:(id)a4
+- (void)_fromDaemon_addFace:(id)face forUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 resourceDirectory];
-  [v7 setResourceDirectoryByTransferringOwnership:v8];
+  dCopy = d;
+  faceCopy = face;
+  resourceDirectory = [faceCopy resourceDirectory];
+  [faceCopy setResourceDirectoryByTransferringOwnership:resourceDirectory];
 
-  v9 = [(NTKFaceCollection *)self orderedUUIDs];
-  -[NTKFaceCollection _addFace:forUUID:atIndex:](self, "_addFace:forUUID:atIndex:", v7, v6, [v9 count]);
+  orderedUUIDs = [(NTKFaceCollection *)self orderedUUIDs];
+  -[NTKFaceCollection _addFace:forUUID:atIndex:](self, "_addFace:forUUID:atIndex:", faceCopy, dCopy, [orderedUUIDs count]);
 
   referenceOrderedUUIDs = self->_referenceOrderedUUIDs;
   if (referenceOrderedUUIDs)
@@ -1349,29 +1349,29 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
   [(NTKPersistentFaceCollection *)self _fromDaemon_computeSelectedUUIDFromReferenceAndNotifySelected];
 }
 
-- (void)_fromDaemon_removeFaceForUUID:(id)a3
+- (void)_fromDaemon_removeFaceForUUID:(id)d
 {
-  v6 = a3;
-  v4 = [(NTKFaceCollection *)self facesByUUID];
-  v5 = [v4 objectForKey:v6];
+  dCopy = d;
+  facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+  v5 = [facesByUUID objectForKey:dCopy];
 
   if (v5)
   {
-    [(NTKFaceCollection *)self _removeFaceForUUID:v6];
+    [(NTKFaceCollection *)self _removeFaceForUUID:dCopy];
   }
 }
 
-- (void)_fromDaemon_updateFaceForUUID:(id)a3 withConfiguration:(id)a4
+- (void)_fromDaemon_updateFaceForUUID:(id)d withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKFaceCollection *)self facesByUUID];
-  v9 = [v8 objectForKey:v7];
+  configurationCopy = configuration;
+  dCopy = d;
+  facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+  v9 = [facesByUUID objectForKey:dCopy];
 
   if (v9)
   {
-    v10 = [v9 configuration];
-    v11 = [v10 isEqual:v6];
+    configuration = [v9 configuration];
+    v11 = [configuration isEqual:configurationCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -1380,26 +1380,26 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
       v12[2] = __79__NTKPersistentFaceCollection__fromDaemon_updateFaceForUUID_withConfiguration___block_invoke;
       v12[3] = &unk_27877E438;
       v13 = v9;
-      v14 = v6;
+      v14 = configurationCopy;
       [(NTKPersistentFaceCollection *)self _performSuppressingFaceObserverCallbacks:v12];
     }
   }
 }
 
-- (void)_fromDaemon_updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4
+- (void)_fromDaemon_updateFaceForUUID:(id)d withResourceDirectory:(id)directory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKFaceCollection *)self facesByUUID];
-  v9 = [v8 objectForKey:v7];
+  directoryCopy = directory;
+  dCopy = d;
+  facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+  v9 = [facesByUUID objectForKey:dCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__NTKPersistentFaceCollection__fromDaemon_updateFaceForUUID_withResourceDirectory___block_invoke;
   v12[3] = &unk_27877E438;
   v13 = v9;
-  v14 = v6;
-  v10 = v6;
+  v14 = directoryCopy;
+  v10 = directoryCopy;
   v11 = v9;
   [(NTKPersistentFaceCollection *)self _performSuppressingFaceObserverCallbacks:v12];
 }
@@ -1408,14 +1408,14 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
 {
   if (self->_referenceSelectedUUID)
   {
-    v3 = [(NTKFaceCollection *)self facesByUUID];
-    v7 = [v3 objectForKey:self->_referenceSelectedUUID];
+    facesByUUID = [(NTKFaceCollection *)self facesByUUID];
+    v7 = [facesByUUID objectForKey:self->_referenceSelectedUUID];
 
     if (v7)
     {
       referenceSelectedUUID = self->_referenceSelectedUUID;
-      v5 = [(NTKFaceCollection *)self selectedUUID];
-      LODWORD(referenceSelectedUUID) = NTKEqualObjects(referenceSelectedUUID, v5);
+      selectedUUID = [(NTKFaceCollection *)self selectedUUID];
+      LODWORD(referenceSelectedUUID) = NTKEqualObjects(referenceSelectedUUID, selectedUUID);
 
       [(NTKFaceCollection *)self _selectFaceUUID:self->_referenceSelectedUUID notify:referenceSelectedUUID ^ 1];
       v6 = self->_referenceSelectedUUID;
@@ -1426,10 +1426,10 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
 
 - (void)_register
 {
-  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  v4 = [(NTKFaceCollection *)self collectionIdentifier];
-  v5 = [(NTKFaceCollection *)self deviceUUID];
-  [v3 registerForCollectionIdentifier:v4 deviceUUID:v5 withSeqId:self->_seqId];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  collectionIdentifier = [(NTKFaceCollection *)self collectionIdentifier];
+  deviceUUID = [(NTKFaceCollection *)self deviceUUID];
+  [remoteObjectProxy registerForCollectionIdentifier:collectionIdentifier deviceUUID:deviceUUID withSeqId:self->_seqId];
 
   self->_registrationNeeded = 0;
 }
@@ -1442,20 +1442,20 @@ uint64_t __66__NTKPersistentFaceCollection_removeFaceForUUID_seqId_completion___
   }
 }
 
-- (void)_performOrEnqueueUpdateOfType:(int64_t)a3 forFaceUUID:(id)a4 block:(id)a5
+- (void)_performOrEnqueueUpdateOfType:(int64_t)type forFaceUUID:(id)d block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__NTKPersistentFaceCollection__performOrEnqueueUpdateOfType_forFaceUUID_block___block_invoke;
   v12[3] = &unk_27877FF10;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = dCopy;
+  v14 = blockCopy;
+  typeCopy = type;
+  v10 = blockCopy;
+  v11 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -1476,15 +1476,15 @@ void __79__NTKPersistentFaceCollection__performOrEnqueueUpdateOfType_forFaceUUID
   }
 }
 
-- (void)_pruneEnqueuedUpdatesMadeObsoleteByNewUpdate:(id)a3
+- (void)_pruneEnqueuedUpdatesMadeObsoleteByNewUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__NTKPersistentFaceCollection__pruneEnqueuedUpdatesMadeObsoleteByNewUpdate___block_invoke;
   aBlock[3] = &unk_278781048;
-  v5 = v4;
+  v5 = updateCopy;
   v18 = v5;
   v6 = _Block_copy(aBlock);
   v13 = 0u;
@@ -1558,10 +1558,10 @@ uint64_t __76__NTKPersistentFaceCollection__pruneEnqueuedUpdatesMadeObsoleteByNe
   return result;
 }
 
-- (void)_performSuppressingFaceObserverCallbacks:(id)a3
+- (void)_performSuppressingFaceObserverCallbacks:(id)callbacks
 {
   self->_suppressingFaceObserverCallbacks = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(callbacks + 2))(callbacks, a2);
   self->_suppressingFaceObserverCallbacks = 0;
 }
 

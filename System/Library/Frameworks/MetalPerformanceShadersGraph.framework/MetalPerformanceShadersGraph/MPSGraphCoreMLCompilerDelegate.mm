@@ -1,25 +1,25 @@
 @interface MPSGraphCoreMLCompilerDelegate
-- (MPSGraphCoreMLCompilerDelegate)initWithCoreMLBytecode:(id)a3 coreMLDirectory:(id)a4 precompilationDescriptor:(id)a5;
-- (id)getInitializedCoreMLBytecodeWithPayloadPrefix:(id)a3 delegateId:(id)a4;
-- (id)getSegmentedCoreMLBytecodeWithDelegateId:(id)a3;
+- (MPSGraphCoreMLCompilerDelegate)initWithCoreMLBytecode:(id)bytecode coreMLDirectory:(id)directory precompilationDescriptor:(id)descriptor;
+- (id)getInitializedCoreMLBytecodeWithPayloadPrefix:(id)prefix delegateId:(id)id;
+- (id)getSegmentedCoreMLBytecodeWithDelegateId:(id)id;
 @end
 
 @implementation MPSGraphCoreMLCompilerDelegate
 
-- (MPSGraphCoreMLCompilerDelegate)initWithCoreMLBytecode:(id)a3 coreMLDirectory:(id)a4 precompilationDescriptor:(id)a5
+- (MPSGraphCoreMLCompilerDelegate)initWithCoreMLBytecode:(id)bytecode coreMLDirectory:(id)directory precompilationDescriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bytecodeCopy = bytecode;
+  directoryCopy = directory;
+  descriptorCopy = descriptor;
   v16.receiver = self;
   v16.super_class = MPSGraphCoreMLCompilerDelegate;
   v12 = [(MPSGraphCoreMLCompilerDelegate *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->coreMLBytecode, a3);
-    objc_storeStrong(&v13->coreMLDirectory, a4);
-    objc_storeStrong(&v13->precompilationDescriptor, a5);
+    objc_storeStrong(&v12->coreMLBytecode, bytecode);
+    objc_storeStrong(&v13->coreMLDirectory, directory);
+    objc_storeStrong(&v13->precompilationDescriptor, descriptor);
     mpsgraphPackageName = v13->mpsgraphPackageName;
     v13->mpsgraphPackageName = @"mpsExecutable.mpsgraphpackage";
   }
@@ -27,11 +27,11 @@
   return v13;
 }
 
-- (id)getInitializedCoreMLBytecodeWithPayloadPrefix:(id)a3 delegateId:(id)a4
+- (id)getInitializedCoreMLBytecodeWithPayloadPrefix:(id)prefix delegateId:(id)id
 {
   v32[10] = *MEMORY[0x1E69E9840];
-  a3;
-  a4;
+  prefix;
+  id;
   v6 = self->precompilationDescriptor;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
@@ -48,17 +48,17 @@
   {
     [(MPSGraphDelegatePrecompilationDescriptor *)v6 validatePrecompilationOptions];
     v9 = [MPSGraphDeviceDescriptor alloc];
-    v10 = [(MPSGraphDelegatePrecompilationDescriptor *)v6 gpuCoreCount];
-    v11 = [(MPSGraphDelegatePrecompilationDescriptor *)v6 architecture];
-    v24 = [(MPSGraphDeviceDescriptor *)v9 initMetalDeviceWithGPUCoreCount:v10 architecture:v11];
+    gpuCoreCount = [(MPSGraphDelegatePrecompilationDescriptor *)v6 gpuCoreCount];
+    architecture = [(MPSGraphDelegatePrecompilationDescriptor *)v6 architecture];
+    v24 = [(MPSGraphDeviceDescriptor *)v9 initMetalDeviceWithGPUCoreCount:gpuCoreCount architecture:architecture];
 
-    v12 = [(MPSGraphDelegatePrecompilationDescriptor *)v6 aneOptionsURL];
-    if (v12)
+    aneOptionsURL = [(MPSGraphDelegatePrecompilationDescriptor *)v6 aneOptionsURL];
+    if (aneOptionsURL)
     {
       v13 = MEMORY[0x1E695DEF0];
-      v14 = [(MPSGraphDelegatePrecompilationDescriptor *)v6 aneOptionsURL];
+      aneOptionsURL2 = [(MPSGraphDelegatePrecompilationDescriptor *)v6 aneOptionsURL];
       v28 = 0;
-      v15 = [v13 dataWithContentsOfURL:v14 options:2 error:&v28];
+      v15 = [v13 dataWithContentsOfURL:aneOptionsURL2 options:2 error:&v28];
       v16 = v28;
 
       v29[0] = 0;
@@ -99,10 +99,10 @@
   operator new();
 }
 
-- (id)getSegmentedCoreMLBytecodeWithDelegateId:(id)a3
+- (id)getSegmentedCoreMLBytecodeWithDelegateId:(id)id
 {
   v5[32] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   llvm::MemoryBuffer::getMemBuffer([(NSData *)self->coreMLBytecode bytes], [(NSData *)self->coreMLBytecode length], "", 0, v5);
   operator new();
 }

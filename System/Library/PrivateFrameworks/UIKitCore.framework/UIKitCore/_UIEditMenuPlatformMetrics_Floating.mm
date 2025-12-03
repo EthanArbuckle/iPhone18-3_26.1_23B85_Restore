@@ -1,12 +1,12 @@
 @interface _UIEditMenuPlatformMetrics_Floating
-- (_UIEditMenuPlatformMetrics_Floating)initWithInstance:(id)a3;
+- (_UIEditMenuPlatformMetrics_Floating)initWithInstance:(id)instance;
 @end
 
 @implementation _UIEditMenuPlatformMetrics_Floating
 
-- (_UIEditMenuPlatformMetrics_Floating)initWithInstance:(id)a3
+- (_UIEditMenuPlatformMetrics_Floating)initWithInstance:(id)instance
 {
-  if (a3)
+  if (instance)
   {
     swift_unknownObjectRetain();
     sub_18A4A7DE8();

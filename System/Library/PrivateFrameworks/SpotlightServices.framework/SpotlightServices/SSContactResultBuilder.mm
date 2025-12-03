@@ -1,11 +1,11 @@
 @interface SSContactResultBuilder
-+ (BOOL)doesNotContainObject:(id)a3 inArray:(id)a4;
-+ (BOOL)supportsResult:(id)a3;
-+ (id)contactIdentifierFromResult:(id)a3 contactEntity:(id)a4;
-+ (id)contactIdentifiersFromResults:(id)a3;
-+ (id)labeledValuesFromStrings:(id)a3 labeledValues:(id)a4 withStringForLabeledValueBlock:(id)a5 labeledValueForStringBlock:(id)a6;
++ (BOOL)doesNotContainObject:(id)object inArray:(id)array;
++ (BOOL)supportsResult:(id)result;
++ (id)contactIdentifierFromResult:(id)result contactEntity:(id)entity;
++ (id)contactIdentifiersFromResults:(id)results;
++ (id)labeledValuesFromStrings:(id)strings labeledValues:(id)values withStringForLabeledValueBlock:(id)block labeledValueForStringBlock:(id)stringBlock;
 - (NSString)fullName;
-- (SSContactResultBuilder)initWithResult:(id)a3 contactEntity:(id)a4 contact:(id)a5;
+- (SSContactResultBuilder)initWithResult:(id)result contactEntity:(id)entity contact:(id)contact;
 - (id)buildAction;
 - (id)buildBackgroundColor;
 - (id)buildCommand;
@@ -24,22 +24,22 @@
 
 @implementation SSContactResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (supportsResult__onceToken != -1)
   {
     +[SSContactResultBuilder supportsResult:];
   }
 
-  v5 = [v4 applicationBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.contactsd"];
+  applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+  v6 = [applicationBundleIdentifier isEqualToString:@"com.apple.contactsd"];
 
   if ((isMacOS() & 1) == 0)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___SSContactResultBuilder;
-    if (objc_msgSendSuper2(&v12, sel_supportsResult_, v4))
+    if (objc_msgSendSuper2(&v12, sel_supportsResult_, resultCopy))
     {
       v6 = 1;
     }
@@ -47,12 +47,12 @@
     else
     {
       v7 = supportsResult__contactResultBundleIds;
-      v8 = [v4 resultBundleId];
-      v6 = [v7 containsObject:v8];
+      resultBundleId = [resultCopy resultBundleId];
+      v6 = [v7 containsObject:resultBundleId];
     }
   }
 
-  v9 = [v4 valueForAttribute:*MEMORY[0x1E6964528] withType:objc_opt_class()];
+  v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6964528] withType:objc_opt_class()];
   v10 = [v9 isEqual:@"vCard"];
 
   return v6 & (v10 ^ 1);
@@ -72,16 +72,16 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)contactIdentifiersFromResults:(id)a3
++ (id)contactIdentifiersFromResults:(id)results
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -97,9 +97,9 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([(objc_class *)[SSResultBuilder isSubclassOfClass:v11 resultBuilderClassForResult:v15 preferAppVendedView:?], "isSubclassOfClass:", a1])
+        if ([(objc_class *)[SSResultBuilder isSubclassOfClass:v11 resultBuilderClassForResult:v15 preferAppVendedView:?], "isSubclassOfClass:", self])
         {
-          v12 = [a1 contactIdentifierFromResult:v11 contactEntity:0];
+          v12 = [self contactIdentifierFromResult:v11 contactEntity:0];
           if (v12)
           {
             [v5 addObject:v12];
@@ -118,40 +118,40 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
   return v5;
 }
 
-+ (id)contactIdentifierFromResult:(id)a3 contactEntity:(id)a4
++ (id)contactIdentifierFromResult:(id)result contactEntity:(id)entity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 applicationBundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.contactsd"];
+  resultCopy = result;
+  entityCopy = entity;
+  applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier isEqualToString:@"com.apple.contactsd"];
 
-  v9 = [v5 contactIdentifier];
-  v10 = v9;
-  if (v9)
+  contactIdentifier = [resultCopy contactIdentifier];
+  v10 = contactIdentifier;
+  if (contactIdentifier)
   {
-    v11 = v9;
+    v11 = contactIdentifier;
   }
 
   else
   {
-    v12 = [v5 valueForAttribute:*MEMORY[0x1E6963E40] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E40] withType:objc_opt_class()];
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      contactIdentifier2 = v12;
     }
 
     else
     {
-      v14 = [v6 contactIdentifier];
+      contactIdentifier2 = [entityCopy contactIdentifier];
     }
 
-    v11 = v14;
+    v11 = contactIdentifier2;
   }
 
   if (v8)
   {
-    v15 = [v5 valueForAttribute:*MEMORY[0x1E69642B8] withType:objc_opt_class()];
+    v15 = [resultCopy valueForAttribute:*MEMORY[0x1E69642B8] withType:objc_opt_class()];
 
     v11 = v15;
   }
@@ -159,16 +159,16 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
   return v11;
 }
 
-+ (BOOL)doesNotContainObject:(id)a3 inArray:(id)a4
++ (BOOL)doesNotContainObject:(id)object inArray:(id)array
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -179,11 +179,11 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (([v5 isEqual:{v11, v15}] & 1) == 0)
+        if (([objectCopy isEqual:{v11, v15}] & 1) == 0)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -192,7 +192,7 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
           }
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 isLikePhoneNumber:v11] & 1) == 0)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || ([objectCopy isLikePhoneNumber:v11] & 1) == 0)
           {
             continue;
           }
@@ -202,7 +202,7 @@ void __41__SSContactResultBuilder_supportsResult___block_invoke()
         goto LABEL_14;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -219,19 +219,19 @@ LABEL_14:
   return v12;
 }
 
-+ (id)labeledValuesFromStrings:(id)a3 labeledValues:(id)a4 withStringForLabeledValueBlock:(id)a5 labeledValueForStringBlock:(id)a6
++ (id)labeledValuesFromStrings:(id)strings labeledValues:(id)values withStringForLabeledValueBlock:(id)block labeledValueForStringBlock:(id)stringBlock
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  stringsCopy = strings;
+  valuesCopy = values;
+  stringBlockCopy = stringBlock;
   v32 = objc_opt_new();
   v11 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v9;
+  obj = valuesCopy;
   v12 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v12)
   {
@@ -248,14 +248,14 @@ LABEL_14:
 
         v16 = *(*(&v37 + 1) + 8 * i);
         v17 = objc_opt_class();
-        v18 = [v16 value];
-        LODWORD(v17) = [v17 doesNotContainObject:v18 inArray:v11];
+        value = [v16 value];
+        LODWORD(v17) = [v17 doesNotContainObject:value inArray:v11];
 
         if (v17)
         {
           [v32 addObject:v16];
-          v19 = [v16 value];
-          [v11 addObject:v19];
+          value2 = [v16 value];
+          [v11 addObject:value2];
         }
       }
 
@@ -269,7 +269,7 @@ LABEL_14:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = v8;
+  v30 = stringsCopy;
   v20 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v20)
   {
@@ -284,16 +284,16 @@ LABEL_14:
           objc_enumerationMutation(v30);
         }
 
-        v24 = v10[2](v10, *(*(&v33 + 1) + 8 * j));
+        v24 = stringBlockCopy[2](stringBlockCopy, *(*(&v33 + 1) + 8 * j));
         v25 = objc_opt_class();
-        v26 = [v24 value];
-        LODWORD(v25) = [v25 doesNotContainObject:v26 inArray:v11];
+        value3 = [v24 value];
+        LODWORD(v25) = [v25 doesNotContainObject:value3 inArray:v11];
 
         if (v25)
         {
           [v32 addObject:v24];
-          v27 = [v24 value];
-          [v11 addObject:v27];
+          value4 = [v24 value];
+          [v11 addObject:value4];
         }
       }
 
@@ -308,44 +308,44 @@ LABEL_14:
   return v32;
 }
 
-- (SSContactResultBuilder)initWithResult:(id)a3 contactEntity:(id)a4 contact:(id)a5
+- (SSContactResultBuilder)initWithResult:(id)result contactEntity:(id)entity contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  entityCopy = entity;
+  contactCopy = contact;
   v61.receiver = self;
   v61.super_class = SSContactResultBuilder;
-  v11 = [(SSResultBuilder *)&v61 initWithResult:v8];
+  v11 = [(SSResultBuilder *)&v61 initWithResult:resultCopy];
   if (!v11)
   {
     goto LABEL_55;
   }
 
-  v12 = [v8 personIdentifier];
-  if (v12)
+  personIdentifier = [resultCopy personIdentifier];
+  if (personIdentifier)
   {
-    [(SSContactResultBuilder *)v11 setPersonIdentifier:v12];
+    [(SSContactResultBuilder *)v11 setPersonIdentifier:personIdentifier];
   }
 
   else
   {
-    v13 = [v9 personIdentifier];
-    [(SSContactResultBuilder *)v11 setPersonIdentifier:v13];
+    personIdentifier2 = [entityCopy personIdentifier];
+    [(SSContactResultBuilder *)v11 setPersonIdentifier:personIdentifier2];
   }
 
-  v14 = [v8 personQueryIdentifier];
-  if (v14)
+  personQueryIdentifier = [resultCopy personQueryIdentifier];
+  if (personQueryIdentifier)
   {
-    [(SSContactResultBuilder *)v11 setPersonQueryIdentifier:v14];
+    [(SSContactResultBuilder *)v11 setPersonQueryIdentifier:personQueryIdentifier];
   }
 
   else
   {
-    v15 = [v9 personQueryIdentifier];
-    [(SSContactResultBuilder *)v11 setPersonQueryIdentifier:v15];
+    personQueryIdentifier2 = [entityCopy personQueryIdentifier];
+    [(SSContactResultBuilder *)v11 setPersonQueryIdentifier:personQueryIdentifier2];
   }
 
-  v16 = [v8 valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
+  v16 = [resultCopy valueForAttribute:*MEMORY[0x1E6963F48] withType:objc_opt_class()];
   if (v16)
   {
     [(SSContactResultBuilder *)v11 setDisplayName:v16];
@@ -353,19 +353,19 @@ LABEL_14:
 
   else
   {
-    v17 = [v9 name];
-    [(SSContactResultBuilder *)v11 setDisplayName:v17];
+    name = [entityCopy name];
+    [(SSContactResultBuilder *)v11 setDisplayName:name];
   }
 
-  if (v8)
+  if (resultCopy)
   {
-    -[SSContactResultBuilder setResultType:](v11, "setResultType:", [v8 type]);
+    -[SSContactResultBuilder setResultType:](v11, "setResultType:", [resultCopy type]);
   }
 
   else
   {
-    v18 = [(SSContactResultBuilder *)v11 personIdentifier];
-    if (v18)
+    personIdentifier3 = [(SSContactResultBuilder *)v11 personIdentifier];
+    if (personIdentifier3)
     {
       v19 = 37;
     }
@@ -378,12 +378,12 @@ LABEL_14:
     [(SSContactResultBuilder *)v11 setResultType:v19];
   }
 
-  v20 = [objc_opt_class() contactIdentifierFromResult:v8 contactEntity:v9];
+  v20 = [objc_opt_class() contactIdentifierFromResult:resultCopy contactEntity:entityCopy];
   [(SSContactResultBuilder *)v11 setRealContactIdentifier:v20];
   v60 = v20;
-  if (v9)
+  if (entityCopy)
   {
-    v21 = v9;
+    v21 = entityCopy;
     goto LABEL_26;
   }
 
@@ -391,7 +391,7 @@ LABEL_14:
   if (v21)
   {
 LABEL_26:
-    v30 = [v10 mutableCopy];
+    v30 = [contactCopy mutableCopy];
     if (v20)
     {
       goto LABEL_27;
@@ -407,31 +407,31 @@ LABEL_35:
     goto LABEL_38;
   }
 
-  v22 = [(SSContactResultBuilder *)v11 personQueryIdentifier];
+  personQueryIdentifier3 = [(SSContactResultBuilder *)v11 personQueryIdentifier];
 
-  if (v22)
+  if (personQueryIdentifier3)
   {
-    v23 = [(SSContactResultBuilder *)v11 personQueryIdentifier];
+    personQueryIdentifier4 = [(SSContactResultBuilder *)v11 personQueryIdentifier];
     if (v20)
     {
-      v24 = [SPSearchContactEntity updatePersonQueryIdentifier:v23 withContactIdentifier:v20];
+      v24 = [SPSearchContactEntity updatePersonQueryIdentifier:personQueryIdentifier4 withContactIdentifier:v20];
 
-      v23 = v24;
+      personQueryIdentifier4 = v24;
     }
 
-    v25 = [(SSContactResultBuilder *)v11 personIdentifier];
+    personIdentifier4 = [(SSContactResultBuilder *)v11 personIdentifier];
 
-    if (v25)
+    if (personIdentifier4)
     {
-      v26 = [(SSContactResultBuilder *)v11 personIdentifier];
-      v27 = [SPSearchContactEntity updatePersonQueryIdentifier:v23 withContactIdentifier:v26];
+      personIdentifier5 = [(SSContactResultBuilder *)v11 personIdentifier];
+      v27 = [SPSearchContactEntity updatePersonQueryIdentifier:personQueryIdentifier4 withContactIdentifier:personIdentifier5];
 
-      v23 = v27;
+      personQueryIdentifier4 = v27;
     }
 
-    v28 = [(SSResultBuilder *)v11 result];
-    v29 = [v28 completion];
-    v21 = [SPSearchEntity searchEntityWithPersonQueryIdentifier:v23 personName:v29 fromSuggestion:1];
+    result = [(SSResultBuilder *)v11 result];
+    completion = [result completion];
+    v21 = [SPSearchEntity searchEntityWithPersonQueryIdentifier:personQueryIdentifier4 personName:completion fromSuggestion:1];
 
     v20 = v60;
     goto LABEL_26;
@@ -439,16 +439,16 @@ LABEL_35:
 
   if (!v20)
   {
-    v30 = [v10 mutableCopy];
+    v30 = [contactCopy mutableCopy];
     v21 = 0;
     goto LABEL_35;
   }
 
   v21 = [SPSearchEntity searchEntityWithContactIdentifier:v20 fromSuggestion:0];
-  v30 = [v10 mutableCopy];
+  v30 = [contactCopy mutableCopy];
 LABEL_27:
-  v31 = [v10 identifier];
-  v32 = [v20 isEqual:v31];
+  identifier = [contactCopy identifier];
+  v32 = [v20 isEqual:identifier];
 
   if (v32)
   {
@@ -469,8 +469,8 @@ LABEL_27:
     if (!v35)
     {
 LABEL_36:
-      v36 = [v21 contact];
-      v30 = [v36 mutableCopy];
+      contact = [v21 contact];
+      v30 = [contact mutableCopy];
 
       if (!v30)
       {
@@ -482,62 +482,62 @@ LABEL_36:
 LABEL_38:
   if (v33)
   {
-    v37 = [(SSContactResultBuilder *)v11 displayName];
-    v38 = [SSNameFormatManager contactFromName:v37];
+    displayName = [(SSContactResultBuilder *)v11 displayName];
+    v38 = [SSNameFormatManager contactFromName:displayName];
     v39 = [v38 mutableCopy];
 
     v30 = v39;
   }
 
-  v40 = [v21 emailAddresses];
-  v58 = v10;
-  if ([v40 count])
+  emailAddresses = [v21 emailAddresses];
+  v58 = contactCopy;
+  if ([emailAddresses count])
   {
     [v21 emailAddresses];
   }
 
   else
   {
-    [v8 valueForAttribute:*MEMORY[0x1E6963FC8] withType:objc_opt_class()];
+    [resultCopy valueForAttribute:*MEMORY[0x1E6963FC8] withType:objc_opt_class()];
   }
   v41 = ;
 
   v42 = objc_opt_class();
-  v43 = [v30 emailAddresses];
-  v44 = [v42 labeledValuesFromStrings:v41 labeledValues:v43 withStringForLabeledValueBlock:&__block_literal_global_30 labeledValueForStringBlock:&__block_literal_global_33_0];
+  emailAddresses2 = [v30 emailAddresses];
+  v44 = [v42 labeledValuesFromStrings:v41 labeledValues:emailAddresses2 withStringForLabeledValueBlock:&__block_literal_global_30 labeledValueForStringBlock:&__block_literal_global_33_0];
   [v30 setEmailAddresses:v44];
 
-  v45 = [v21 rawPhoneNumbers];
-  if ([v45 count])
+  rawPhoneNumbers = [v21 rawPhoneNumbers];
+  if ([rawPhoneNumbers count])
   {
     [v21 rawPhoneNumbers];
   }
 
   else
   {
-    [v8 valueForAttribute:*MEMORY[0x1E6964720] withType:objc_opt_class()];
+    [resultCopy valueForAttribute:*MEMORY[0x1E6964720] withType:objc_opt_class()];
   }
   v46 = ;
 
   v47 = objc_opt_class();
-  v48 = [v30 phoneNumbers];
-  v49 = [v47 labeledValuesFromStrings:v46 labeledValues:v48 withStringForLabeledValueBlock:&__block_literal_global_36 labeledValueForStringBlock:&__block_literal_global_38];
+  phoneNumbers = [v30 phoneNumbers];
+  v49 = [v47 labeledValuesFromStrings:v46 labeledValues:phoneNumbers withStringForLabeledValueBlock:&__block_literal_global_36 labeledValueForStringBlock:&__block_literal_global_38];
   [v30 setPhoneNumbers:v49];
 
-  v50 = [v21 addresses];
-  if ([v50 count])
+  addresses = [v21 addresses];
+  if ([addresses count])
   {
     [v21 addresses];
   }
 
   else
   {
-    [v8 valueForAttribute:*MEMORY[0x1E6963CE8] withType:objc_opt_class()];
+    [resultCopy valueForAttribute:*MEMORY[0x1E6963CE8] withType:objc_opt_class()];
   }
   v51 = ;
 
-  v52 = [v30 postalAddresses];
-  v53 = [v52 count];
+  postalAddresses = [v30 postalAddresses];
+  v53 = [postalAddresses count];
 
   if (!v53)
   {
@@ -545,20 +545,20 @@ LABEL_38:
     [v30 setPostalAddresses:v54];
   }
 
-  v55 = [v30 birthday];
-  if (v55)
+  birthday = [v30 birthday];
+  if (birthday)
   {
-    [v30 setBirthday:v55];
+    [v30 setBirthday:birthday];
   }
 
   else
   {
-    v56 = [v21 birthdayComponents];
-    [v30 setBirthday:v56];
+    birthdayComponents = [v21 birthdayComponents];
+    [v30 setBirthday:birthdayComponents];
   }
 
   [(SSContactResultBuilder *)v11 setContact:v30];
-  v10 = v59;
+  contactCopy = v59;
 LABEL_55:
 
   return v11;
@@ -618,8 +618,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
 - (NSString)fullName
 {
   v2 = MEMORY[0x1E695CD80];
-  v3 = [(SSContactResultBuilder *)self contact];
-  v4 = [v2 stringFromContact:v3 style:0];
+  contact = [(SSContactResultBuilder *)self contact];
+  v4 = [v2 stringFromContact:contact style:0];
 
   return v4;
 }
@@ -628,23 +628,23 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
 {
   v12.receiver = self;
   v12.super_class = SSContactResultBuilder;
-  v3 = [(SSResultBuilder *)&v12 buildResult];
-  v4 = [(SSContactResultBuilder *)self realContactIdentifier];
-  [v3 setContactIdentifier:v4];
+  buildResult = [(SSResultBuilder *)&v12 buildResult];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+  [buildResult setContactIdentifier:realContactIdentifier];
 
-  v5 = [(SSContactResultBuilder *)self personIdentifier];
-  [v3 setPersonIdentifier:v5];
+  personIdentifier = [(SSContactResultBuilder *)self personIdentifier];
+  [buildResult setPersonIdentifier:personIdentifier];
 
-  v6 = [(SSContactResultBuilder *)self personQueryIdentifier];
-  [v3 setPersonQueryIdentifier:v6];
+  personQueryIdentifier = [(SSContactResultBuilder *)self personQueryIdentifier];
+  [buildResult setPersonQueryIdentifier:personQueryIdentifier];
 
-  [v3 setResultBundleId:@"com.apple.MobileAddressBook"];
-  v7 = [(SSResultBuilder *)self result];
-  v8 = [v7 applicationBundleIdentifier];
-  v9 = v8;
-  if (v8)
+  [buildResult setResultBundleId:@"com.apple.MobileAddressBook"];
+  result = [(SSResultBuilder *)self result];
+  applicationBundleIdentifier = [result applicationBundleIdentifier];
+  v9 = applicationBundleIdentifier;
+  if (applicationBundleIdentifier)
   {
-    v10 = v8;
+    v10 = applicationBundleIdentifier;
   }
 
   else
@@ -652,24 +652,24 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v10 = @"com.apple.MobileAddressBook";
   }
 
-  [v3 setApplicationBundleIdentifier:v10];
+  [buildResult setApplicationBundleIdentifier:v10];
 
-  [v3 setType:{-[SSContactResultBuilder resultType](self, "resultType")}];
+  [buildResult setType:{-[SSContactResultBuilder resultType](self, "resultType")}];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildHeaderResultForEntity
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSContactResultBuilder *)self realContactIdentifier];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
   v4 = objc_opt_new();
-  [v4 setContactIdentifier:v3];
-  v5 = [(SSContactResultBuilder *)self personIdentifier];
-  [v4 setPersonIdentifier:v5];
+  [v4 setContactIdentifier:realContactIdentifier];
+  personIdentifier = [(SSContactResultBuilder *)self personIdentifier];
+  [v4 setPersonIdentifier:personIdentifier];
 
-  v6 = [(SSContactResultBuilder *)self fullName];
-  [v4 setDisplayName:v6];
+  fullName = [(SSContactResultBuilder *)self fullName];
+  [v4 setDisplayName:fullName];
 
   v7 = objc_opt_new();
   [v7 setPerson:v4];
@@ -687,29 +687,29 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
   [v11 setCardSections:v12];
 
-  v13 = [(SSContactResultBuilder *)self buildResult];
-  [v13 setResultBundleId:@"com.apple.MobileAddressBook"];
-  [v13 setApplicationBundleIdentifier:0];
-  [v13 setContactIdentifier:v3];
-  v14 = [(SSContactResultBuilder *)self personIdentifier];
-  [v13 setPersonIdentifier:v14];
+  buildResult = [(SSContactResultBuilder *)self buildResult];
+  [buildResult setResultBundleId:@"com.apple.MobileAddressBook"];
+  [buildResult setApplicationBundleIdentifier:0];
+  [buildResult setContactIdentifier:realContactIdentifier];
+  personIdentifier2 = [(SSContactResultBuilder *)self personIdentifier];
+  [buildResult setPersonIdentifier:personIdentifier2];
 
-  [v13 setInlineCard:v11];
-  [v13 setCompactCard:0];
-  if (v3)
+  [buildResult setInlineCard:v11];
+  [buildResult setCompactCard:0];
+  if (realContactIdentifier)
   {
-    v15 = v3;
+    personIdentifier3 = realContactIdentifier;
   }
 
   else
   {
-    v15 = [(SSContactResultBuilder *)self personIdentifier];
+    personIdentifier3 = [(SSContactResultBuilder *)self personIdentifier];
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = personIdentifier3;
+  if (personIdentifier3)
   {
-    v17 = v15;
+    v17 = personIdentifier3;
   }
 
   else
@@ -718,15 +718,15 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
   }
 
   v18 = [@"com.apple.spotlight.contactHeader" stringByAppendingString:v17];
-  [v13 setIdentifier:v18];
+  [buildResult setIdentifier:v18];
 
-  [v13 setNoGoTakeover:1];
-  v19 = [v13 identifier];
-  [v7 setResultIdentifier:v19];
+  [buildResult setNoGoTakeover:1];
+  identifier = [buildResult identifier];
+  [v7 setResultIdentifier:identifier];
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return buildResult;
 }
 
 - (id)buildFooterResultForEntity
@@ -738,12 +738,12 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
   }
 
   v3 = objc_opt_new();
-  v110 = self;
-  v4 = [(SSContactResultBuilder *)self contact];
-  v5 = [v4 phoneNumbers];
-  v6 = [v5 count];
+  selfCopy = self;
+  contact = [(SSContactResultBuilder *)self contact];
+  phoneNumbers = [contact phoneNumbers];
+  v6 = [phoneNumbers count];
 
-  v105 = v4;
+  v105 = contact;
   v106 = v3;
   if (v6)
   {
@@ -752,7 +752,7 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v125 = 0u;
     v126 = 0u;
     v127 = 0u;
-    obj = [v4 phoneNumbers];
+    obj = [contact phoneNumbers];
     v8 = [obj countByEnumeratingWithState:&v124 objects:v137 count:16];
     if (v8)
     {
@@ -770,8 +770,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
           v12 = *(*(&v124 + 1) + 8 * i);
           v13 = objc_opt_new();
           v14 = MEMORY[0x1E695CEE0];
-          v15 = [v12 label];
-          v16 = [v14 localizedStringForLabel:v15];
+          label = [v12 label];
+          v16 = [v14 localizedStringForLabel:label];
 
           if ([v16 length])
           {
@@ -785,11 +785,11 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
             [v13 setKey:v18];
           }
 
-          v19 = [v12 value];
-          v20 = [v19 formattedStringValue];
+          value = [v12 value];
+          formattedStringValue = [value formattedStringValue];
 
-          v21 = [(SSContactResultBuilder *)v110 contact];
-          v22 = [SSCommandConfiguration commandButtonItemForPhoneNumber:v20 contact:v21];
+          contact2 = [(SSContactResultBuilder *)selfCopy contact];
+          v22 = [SSCommandConfiguration commandButtonItemForPhoneNumber:formattedStringValue contact:contact2];
           v136 = v22;
           v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v136 count:1];
           [v13 setValues:v23];
@@ -808,11 +808,11 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v3 = v106;
     [v106 addObject:v24];
 
-    v4 = v105;
+    contact = v105;
   }
 
-  v25 = [v4 emailAddresses];
-  v26 = [v25 count];
+  emailAddresses = [contact emailAddresses];
+  v26 = [emailAddresses count];
 
   if (v26)
   {
@@ -821,8 +821,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v121 = 0u;
     v122 = 0u;
     v123 = 0u;
-    v28 = [v4 emailAddresses];
-    v29 = [v28 countByEnumeratingWithState:&v120 objects:v135 count:16];
+    emailAddresses2 = [contact emailAddresses];
+    v29 = [emailAddresses2 countByEnumeratingWithState:&v120 objects:v135 count:16];
     if (v29)
     {
       v30 = v29;
@@ -833,14 +833,14 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
         {
           if (*v121 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(emailAddresses2);
           }
 
           v33 = *(*(&v120 + 1) + 8 * j);
           v34 = objc_opt_new();
           v35 = MEMORY[0x1E695CEE0];
-          v36 = [v33 label];
-          v37 = [v35 localizedStringForLabel:v36];
+          label2 = [v33 label];
+          v37 = [v35 localizedStringForLabel:label2];
 
           if ([v37 length])
           {
@@ -854,8 +854,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
             [v34 setKey:v39];
           }
 
-          v40 = [v33 value];
-          v41 = [SSCommandConfiguration commandButtonItemForEmail:v40];
+          value2 = [v33 value];
+          v41 = [SSCommandConfiguration commandButtonItemForEmail:value2];
           v134 = v41;
           v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134 count:1];
           [v34 setValues:v42];
@@ -863,7 +863,7 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
           [v27 addObject:v34];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v120 objects:v135 count:16];
+        v30 = [emailAddresses2 countByEnumeratingWithState:&v120 objects:v135 count:16];
       }
 
       while (v30);
@@ -874,11 +874,11 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v3 = v106;
     [v106 addObject:v43];
 
-    v4 = v105;
+    contact = v105;
   }
 
-  v44 = [v4 postalAddresses];
-  v45 = [v44 count];
+  postalAddresses = [contact postalAddresses];
+  v45 = [postalAddresses count];
 
   if (v45)
   {
@@ -887,7 +887,7 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    obja = [v4 postalAddresses];
+    obja = [contact postalAddresses];
     v47 = [obja countByEnumeratingWithState:&v116 objects:v133 count:16];
     if (v47)
     {
@@ -905,8 +905,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
           v51 = *(*(&v116 + 1) + 8 * k);
           v52 = objc_opt_new();
           v53 = MEMORY[0x1E695CEE0];
-          v54 = [v51 label];
-          v55 = [v53 localizedStringForLabel:v54];
+          label3 = [v51 label];
+          v55 = [v53 localizedStringForLabel:label3];
 
           if ([v55 length])
           {
@@ -921,8 +921,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
           }
 
           v58 = MEMORY[0x1E695CF68];
-          v59 = [v51 value];
-          v60 = [v58 stringFromPostalAddress:v59 style:0];
+          value3 = [v51 value];
+          v60 = [v58 stringFromPostalAddress:value3 style:0];
 
           v61 = [SSCommandConfiguration commandButtonItemForAddressLocation:v60];
           v132 = v61;
@@ -943,20 +943,20 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v3 = v106;
     [v106 addObject:v63];
 
-    v4 = v105;
+    contact = v105;
   }
 
-  v64 = [v4 birthday];
+  birthday = [contact birthday];
 
-  if (v64)
+  if (birthday)
   {
     v65 = objc_opt_new();
     v66 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v67 = [v66 localizedStringForKey:@"BIRTHDAY_LABEL" value:&stru_1F556FE60 table:@"SpotlightServices"];
     [v65 setKey:v67];
 
-    v68 = [v4 birthday];
-    v69 = [SSCommandConfiguration commandButtonItemForBirthday:v68];
+    birthday2 = [contact birthday];
+    v69 = [SSCommandConfiguration commandButtonItemForBirthday:birthday2];
     v131 = v69;
     v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v131 count:1];
     [v65 setValues:v70];
@@ -974,20 +974,20 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v73 = objc_opt_new();
     [v73 setSymbolName:@"arrow.up.forward.app.fill"];
     [v73 setIsTemplate:1];
-    objb = [v4 identifier];
+    objb = [contact identifier];
     v74 = objc_opt_new();
     [v74 setCoreSpotlightIdentifier:objb];
     if (isMacOS())
     {
       [v74 setApplicationBundleIdentifier:@"com.apple.MobileAddressBook"];
-      v75 = v110;
+      v75 = selfCopy;
     }
 
     else
     {
-      v75 = v110;
-      v77 = [objc_opt_class() bundleId];
-      [v74 setApplicationBundleIdentifier:v77];
+      v75 = selfCopy;
+      bundleId = [objc_opt_class() bundleId];
+      [v74 setApplicationBundleIdentifier:bundleId];
     }
 
     v78 = objc_opt_new();
@@ -1017,27 +1017,27 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v129 count:1];
     [v87 setCardSections:v88];
 
-    v76 = [(SSContactResultBuilder *)v75 buildResult];
-    [v76 setContactIdentifier:objb];
-    v89 = [(SSContactResultBuilder *)v75 personIdentifier];
-    [v76 setPersonIdentifier:v89];
+    buildResult = [(SSContactResultBuilder *)v75 buildResult];
+    [buildResult setContactIdentifier:objb];
+    personIdentifier = [(SSContactResultBuilder *)v75 personIdentifier];
+    [buildResult setPersonIdentifier:personIdentifier];
 
-    [v76 setInlineCard:v87];
-    [v76 setCompactCard:v87];
+    [buildResult setInlineCard:v87];
+    [buildResult setCompactCard:v87];
     if (objb)
     {
-      v90 = objb;
+      personIdentifier2 = objb;
     }
 
     else
     {
-      v90 = [(SSContactResultBuilder *)v75 personIdentifier];
+      personIdentifier2 = [(SSContactResultBuilder *)v75 personIdentifier];
     }
 
-    v91 = v90;
-    if (v90)
+    v91 = personIdentifier2;
+    if (personIdentifier2)
     {
-      v92 = v90;
+      v92 = personIdentifier2;
     }
 
     else
@@ -1046,7 +1046,7 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
     }
 
     v93 = [@"com.apple.spotlight.contactInfo" stringByAppendingString:v92];
-    [v76 setIdentifier:v93];
+    [buildResult setIdentifier:v93];
 
     v114 = 0u;
     v115 = 0u;
@@ -1068,8 +1068,8 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
           }
 
           v99 = *(*(&v112 + 1) + 8 * m);
-          v100 = [v76 identifier];
-          [v99 setResultIdentifier:v100];
+          identifier = [buildResult identifier];
+          [v99 setResultIdentifier:identifier];
         }
 
         v96 = [v94 countByEnumeratingWithState:&v112 objects:v128 count:16];
@@ -1078,18 +1078,18 @@ id __63__SSContactResultBuilder_initWithResult_contactEntity_contact___block_inv
       while (v96);
     }
 
-    v4 = v105;
+    contact = v105;
     v3 = v106;
   }
 
   else
   {
-    v76 = 0;
+    buildResult = 0;
   }
 
   v101 = *MEMORY[0x1E69E9840];
 
-  return v76;
+  return buildResult;
 }
 
 uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
@@ -1124,12 +1124,12 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v49 = self;
-  v3 = [(SSContactResultBuilder *)self contact];
-  v4 = [v3 socialProfiles];
+  selfCopy = self;
+  contact = [(SSContactResultBuilder *)self contact];
+  socialProfiles = [contact socialProfiles];
 
-  obj = v4;
-  v53 = [v4 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  obj = socialProfiles;
+  v53 = [socialProfiles countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v53)
   {
     v51 = *v57;
@@ -1142,29 +1142,29 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v6 = [*(*(&v56 + 1) + 8 * i) value];
-        v7 = [v6 service];
-        v8 = [v6 urlString];
-        v9 = [v6 bundleIdentifiers];
-        v10 = [v9 firstObject];
-        if ([v10 length])
+        value = [*(*(&v56 + 1) + 8 * i) value];
+        service = [value service];
+        urlString = [value urlString];
+        bundleIdentifiers = [value bundleIdentifiers];
+        firstObject = [bundleIdentifiers firstObject];
+        if ([firstObject length])
         {
-          v11 = [v6 bundleIdentifiers];
-          v12 = [v11 firstObject];
+          bundleIdentifiers2 = [value bundleIdentifiers];
+          firstObject2 = [bundleIdentifiers2 firstObject];
         }
 
         else
         {
-          v12 = [buildSocialMediaResultForEntity_bundleIDForDefaultServices objectForKeyedSubscript:v7];
+          firstObject2 = [buildSocialMediaResultForEntity_bundleIDForDefaultServices objectForKeyedSubscript:service];
         }
 
-        v13 = [MEMORY[0x1E6963608] defaultWorkspace];
-        v14 = [v13 applicationIsInstalled:v12];
+        defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+        v14 = [defaultWorkspace applicationIsInstalled:firstObject2];
 
         if (v14)
         {
           v15 = objc_opt_new();
-          [v15 setBundleIdentifier:v12];
+          [v15 setBundleIdentifier:firstObject2];
         }
 
         else
@@ -1175,12 +1175,12 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
           [v15 setSize:{45.0, 45.0}];
         }
 
-        v55 = v12;
-        v54 = v8;
-        if ([v8 length])
+        v55 = firstObject2;
+        v54 = urlString;
+        if ([urlString length])
         {
           v16 = MEMORY[0x1E69CA320];
-          v17 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+          v17 = [MEMORY[0x1E695DFF8] URLWithString:urlString];
           v18 = [v16 punchoutWithURL:v17];
         }
 
@@ -1193,20 +1193,20 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
         [v19 setPunchout:v18];
         v20 = objc_opt_new();
         v21 = MEMORY[0x1E69CA3A0];
-        v22 = [MEMORY[0x1E695CFA0] localizedStringForService:v7];
+        v22 = [MEMORY[0x1E695CFA0] localizedStringForService:service];
         v23 = [v21 textWithString:v22];
         [v20 setTitle:v23];
 
-        v24 = [v20 title];
-        [v24 setMaxLines:1];
+        title = [v20 title];
+        [title setMaxLines:1];
 
         v25 = MEMORY[0x1E69CA3A0];
-        v26 = [v6 username];
-        v27 = [v25 textWithString:v26];
+        username = [value username];
+        v27 = [v25 textWithString:username];
         [v20 setSubtitle:v27];
 
-        v28 = [v20 subtitle];
-        [v28 setMaxLines:1];
+        subtitle = [v20 subtitle];
+        [subtitle setMaxLines:1];
 
         [v20 setImage:v15];
         [v20 setCardSectionId:@"com.apple.MobileAddressBook.SocialMedia"];
@@ -1238,30 +1238,30 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
     [v35 setCardSections:v36];
 
-    v37 = [(SSContactResultBuilder *)v49 buildResult];
-    [v37 setResultBundleId:@"com.apple.MobileAddressBook.SocialMedia"];
-    [v37 setApplicationBundleIdentifier:@"com.apple.MobileAddressBook.SocialMedia"];
-    v38 = [(SSContactResultBuilder *)v49 realContactIdentifier];
-    [v37 setContactIdentifier:v38];
+    buildResult = [(SSContactResultBuilder *)selfCopy buildResult];
+    [buildResult setResultBundleId:@"com.apple.MobileAddressBook.SocialMedia"];
+    [buildResult setApplicationBundleIdentifier:@"com.apple.MobileAddressBook.SocialMedia"];
+    realContactIdentifier = [(SSContactResultBuilder *)selfCopy realContactIdentifier];
+    [buildResult setContactIdentifier:realContactIdentifier];
 
-    v39 = [(SSContactResultBuilder *)v49 personIdentifier];
-    [v37 setPersonIdentifier:v39];
+    personIdentifier = [(SSContactResultBuilder *)selfCopy personIdentifier];
+    [buildResult setPersonIdentifier:personIdentifier];
 
-    [v37 setInlineCard:v35];
-    [v37 setCompactCard:0];
-    v40 = [(SSContactResultBuilder *)v49 realContactIdentifier];
-    v41 = v40;
-    if (v40)
+    [buildResult setInlineCard:v35];
+    [buildResult setCompactCard:0];
+    realContactIdentifier2 = [(SSContactResultBuilder *)selfCopy realContactIdentifier];
+    v41 = realContactIdentifier2;
+    if (realContactIdentifier2)
     {
-      v42 = v40;
+      personIdentifier2 = realContactIdentifier2;
     }
 
     else
     {
-      v42 = [(SSContactResultBuilder *)v49 personIdentifier];
+      personIdentifier2 = [(SSContactResultBuilder *)selfCopy personIdentifier];
     }
 
-    v43 = v42;
+    v43 = personIdentifier2;
 
     if (v43)
     {
@@ -1274,20 +1274,20 @@ uint64_t __52__SSContactResultBuilder_buildFooterResultForEntity__block_invoke()
     }
 
     v45 = [@"com.apple.MobileAddressBook.SocialMedia" stringByAppendingString:v44];
-    [v37 setIdentifier:v45];
+    [buildResult setIdentifier:v45];
 
-    v46 = [v37 identifier];
-    [v30 setResultIdentifier:v46];
+    identifier = [buildResult identifier];
+    [v30 setResultIdentifier:identifier];
   }
 
   else
   {
-    v37 = 0;
+    buildResult = 0;
   }
 
   v47 = *MEMORY[0x1E69E9840];
 
-  return v37;
+  return buildResult;
 }
 
 void __57__SSContactResultBuilder_buildSocialMediaResultForEntity__block_invoke()
@@ -1329,17 +1329,17 @@ void __57__SSContactResultBuilder_buildSocialMediaResultForEntity__block_invoke(
 - (id)buildPreviewCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSContactResultBuilder *)self realContactIdentifier];
-  [v3 setContactIdentifier:v4];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+  [v3 setContactIdentifier:realContactIdentifier];
 
   return v3;
 }
 
 - (id)highlightedMatchedText
 {
-  v3 = [(SSContactResultBuilder *)self buildTitle];
-  v4 = [v3 text];
-  v5 = [(SSResultBuilder *)self buildHighlightedMatchedTextWithTitle:v4 headTruncation:1];
+  buildTitle = [(SSContactResultBuilder *)self buildTitle];
+  text = [buildTitle text];
+  v5 = [(SSResultBuilder *)self buildHighlightedMatchedTextWithTitle:text headTruncation:1];
 
   [v5 setMaxLines:1];
 
@@ -1353,12 +1353,12 @@ void __57__SSContactResultBuilder_buildSocialMediaResultForEntity__block_invoke(
   {
     if ((isIpad() & 1) != 0 || isMacOS())
     {
-      v5 = [(SSContactResultBuilder *)self contact];
-      v6 = [v5 organizationName];
+      contact = [(SSContactResultBuilder *)self contact];
+      organizationName = [contact organizationName];
 
-      if ([v6 length] && (-[SSContactResultBuilder displayName](self, "displayName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqualToString:", v7), v7, !v8))
+      if ([organizationName length] && (-[SSContactResultBuilder displayName](self, "displayName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(organizationName, "isEqualToString:", v7), v7, !v8))
       {
-        v4 = [MEMORY[0x1E69CA3A0] textWithString:v6];
+        v4 = [MEMORY[0x1E69CA3A0] textWithString:organizationName];
         [v4 setMaxLines:1];
 
         if (v4)
@@ -1391,65 +1391,65 @@ LABEL_12:
 {
   if ([objc_opt_class() isSpotlight])
   {
-    v3 = objc_opt_new();
+    buildCommand = objc_opt_new();
     v4 = objc_opt_new();
     [v4 setSymbolName:@"person.crop.circle"];
     [v4 setIsTemplate:1];
-    v5 = [(SSContactResultBuilder *)self fullName];
-    [v3 setTokenString:v5];
+    fullName = [(SSContactResultBuilder *)self fullName];
+    [buildCommand setTokenString:fullName];
 
-    v6 = [(SSContactResultBuilder *)self realContactIdentifier];
-    v7 = [(SSContactResultBuilder *)self personQueryIdentifier];
-    if (v7)
+    realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+    personQueryIdentifier = [(SSContactResultBuilder *)self personQueryIdentifier];
+    if (personQueryIdentifier)
     {
-      [v3 setEntityIdentifier:v7];
+      [buildCommand setEntityIdentifier:personQueryIdentifier];
     }
 
     else
     {
-      v8 = [(SSResultBuilder *)self result];
-      v9 = [v8 personQueryIdentifier];
-      if (v9)
+      result = [(SSResultBuilder *)self result];
+      personQueryIdentifier2 = [result personQueryIdentifier];
+      if (personQueryIdentifier2)
       {
-        [v3 setEntityIdentifier:v9];
+        [buildCommand setEntityIdentifier:personQueryIdentifier2];
       }
 
       else
       {
-        v10 = [SPSearchContactEntity updatePersonQueryIdentifier:&stru_1F556FE60 withContactIdentifier:v6];
-        [v3 setEntityIdentifier:v10];
+        v10 = [SPSearchContactEntity updatePersonQueryIdentifier:&stru_1F556FE60 withContactIdentifier:realContactIdentifier];
+        [buildCommand setEntityIdentifier:v10];
       }
     }
 
-    [v3 setEntityType:2];
-    [v3 setSymbolImage:v4];
-    [v3 setTokenImage:v4];
-    v11 = [(SSContactResultBuilder *)self buildBackgroundColor];
-    [v3 setEntityBackgroundColor:v11];
+    [buildCommand setEntityType:2];
+    [buildCommand setSymbolImage:v4];
+    [buildCommand setTokenImage:v4];
+    buildBackgroundColor = [(SSContactResultBuilder *)self buildBackgroundColor];
+    [buildCommand setEntityBackgroundColor:buildBackgroundColor];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SSContactResultBuilder;
-    v3 = [(SSResultBuilder *)&v13 buildCommand];
+    buildCommand = [(SSResultBuilder *)&v13 buildCommand];
   }
 
-  return v3;
+  return buildCommand;
 }
 
 - (id)buildFillToolParameterCommand
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(SSContactResultBuilder *)self realContactIdentifier];
-  [v4 setContactIdentifier:v5];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+  [v4 setContactIdentifier:realContactIdentifier];
 
-  v6 = [(SSContactResultBuilder *)self personIdentifier];
-  [v4 setPersonIdentifier:v6];
+  personIdentifier = [(SSContactResultBuilder *)self personIdentifier];
+  [v4 setPersonIdentifier:personIdentifier];
 
-  v7 = [(SSContactResultBuilder *)self fullName];
-  [v4 setDisplayName:v7];
+  fullName = [(SSContactResultBuilder *)self fullName];
+  [v4 setDisplayName:fullName];
 
   [v3 setPerson:v4];
 
@@ -1458,46 +1458,46 @@ LABEL_12:
 
 - (id)buildTitle
 {
-  v3 = [(SSContactResultBuilder *)self displayName];
-  if (![v3 length])
+  displayName = [(SSContactResultBuilder *)self displayName];
+  if (![displayName length])
   {
-    v4 = [(SSContactResultBuilder *)self fullName];
+    fullName = [(SSContactResultBuilder *)self fullName];
 
-    if ([v4 length])
+    if ([fullName length])
     {
-      v3 = v4;
+      displayName = fullName;
     }
 
     else
     {
-      v5 = [(SSContactResultBuilder *)self contact];
-      v6 = [v5 phoneNumbers];
-      v7 = [v6 firstObject];
-      v8 = [v7 value];
-      v3 = [v8 stringValue];
+      contact = [(SSContactResultBuilder *)self contact];
+      phoneNumbers = [contact phoneNumbers];
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
+      displayName = [value stringValue];
 
-      if (![v3 length])
+      if (![displayName length])
       {
-        v9 = [(SSContactResultBuilder *)self contact];
-        v10 = [v9 emailAddresses];
-        v11 = [v10 firstObject];
-        v12 = [v11 value];
+        contact2 = [(SSContactResultBuilder *)self contact];
+        emailAddresses = [contact2 emailAddresses];
+        firstObject2 = [emailAddresses firstObject];
+        value2 = [firstObject2 value];
 
-        if ([v12 length])
+        if ([value2 length])
         {
-          v3 = v12;
+          displayName = value2;
         }
 
         else
         {
           v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-          v3 = [v13 localizedStringForKey:@"NO_NAME" value:&stru_1F556FE60 table:@"SpotlightServices"];
+          displayName = [v13 localizedStringForKey:@"NO_NAME" value:&stru_1F556FE60 table:@"SpotlightServices"];
         }
       }
     }
   }
 
-  v14 = [MEMORY[0x1E69CA3A0] textWithString:v3];
+  v14 = [MEMORY[0x1E69CA3A0] textWithString:displayName];
   [v14 setMaxLines:2];
 
   return v14;
@@ -1506,8 +1506,8 @@ LABEL_12:
 - (id)buildAction
 {
   v3 = objc_opt_new();
-  v4 = [(SSContactResultBuilder *)self realContactIdentifier];
-  [v3 setContactIdentifier:v4];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+  [v3 setContactIdentifier:realContactIdentifier];
 
   return v3;
 }
@@ -1515,22 +1515,22 @@ LABEL_12:
 - (id)buildThumbnail
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSContactResultBuilder *)self realContactIdentifier];
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
   v4 = objc_opt_new();
-  if (v3)
+  if (realContactIdentifier)
   {
     [v4 setThreeDTouchEnabled:1];
-    v10[0] = v3;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v4 setContactIdentifiers:v5];
+    v10[0] = realContactIdentifier;
+    contact = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+    [v4 setContactIdentifiers:contact];
   }
 
   else
   {
     [v4 setMonogramStyle:0];
     v6 = MEMORY[0x1E695CD80];
-    v5 = [(SSContactResultBuilder *)self contact];
-    v7 = [v6 stringFromContact:v5 style:1002];
+    contact = [(SSContactResultBuilder *)self contact];
+    v7 = [v6 stringFromContact:contact style:1002];
     [v4 setMonogramLetters:v7];
   }
 
@@ -1542,8 +1542,8 @@ LABEL_12:
 - (id)buildBackgroundColor
 {
   v3 = objc_opt_new();
-  v4 = [(SSContactResultBuilder *)self buildThumbnail];
-  [v3 setImage:v4];
+  buildThumbnail = [(SSContactResultBuilder *)self buildThumbnail];
+  [v3 setImage:buildThumbnail];
 
   return v3;
 }
@@ -1551,25 +1551,25 @@ LABEL_12:
 - (id)buildPreviewButtonItems
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSContactResultBuilder *)self realContactIdentifier];
-  if (v3)
+  realContactIdentifier = [(SSContactResultBuilder *)self realContactIdentifier];
+  if (realContactIdentifier)
   {
     v4 = objc_opt_new();
-    [v4 setContactIdentifier:v3];
+    [v4 setContactIdentifier:realContactIdentifier];
     v9[0] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    buildPreviewButtonItems = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SSContactResultBuilder;
-    v5 = [(SSResultBuilder *)&v8 buildPreviewButtonItems];
+    buildPreviewButtonItems = [(SSResultBuilder *)&v8 buildPreviewButtonItems];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return buildPreviewButtonItems;
 }
 
 @end

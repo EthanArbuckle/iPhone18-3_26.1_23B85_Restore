@@ -1,14 +1,14 @@
 @interface RadioRootViewController
-- (_TtC5Media23RadioRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Media23RadioRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doneEditingFavorites;
 - (void)editFavorites;
 - (void)invalidate;
 - (void)nowPlayingTapped;
-- (void)segmentedControlChangedWithSender:(id)a3;
-- (void)segmentedControlKnobSelectWithSender:(id)a3;
+- (void)segmentedControlChangedWithSender:(id)sender;
+- (void)segmentedControlKnobSelectWithSender:(id)sender;
 - (void)showSettings;
 - (void)showSoundSettings;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000943C0();
 }
 
@@ -30,47 +30,47 @@
   sub_100096720();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10009568C(a3);
+  selfCopy = self;
+  sub_10009568C(appear);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000957C0();
 }
 
 - (void)editFavorites
 {
-  v2 = self;
+  selfCopy = self;
   sub_100098240();
 }
 
 - (void)doneEditingFavorites
 {
-  v2 = self;
+  selfCopy = self;
   sub_100098290();
 }
 
-- (void)segmentedControlChangedWithSender:(id)a3
+- (void)segmentedControlChangedWithSender:(id)sender
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Media23RadioRootViewController_segmentedControl);
-  v4 = self;
+  selfCopy = self;
   sub_1000963F8([v3 selectedSegmentIndex] == 1);
 }
 
-- (void)segmentedControlKnobSelectWithSender:(id)a3
+- (void)segmentedControlKnobSelectWithSender:(id)sender
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Media23RadioRootViewController_segmentedControl);
-  v4 = self;
+  selfCopy = self;
   sub_1000963F8([v3 selectedSegmentIndex] == 0);
 }
 
 - (void)showSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000984AC();
 }
 
@@ -80,7 +80,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_100010424(0);
   }
 }
@@ -91,12 +91,12 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_100010040();
   }
 }
 
-- (_TtC5Media23RadioRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Media23RadioRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

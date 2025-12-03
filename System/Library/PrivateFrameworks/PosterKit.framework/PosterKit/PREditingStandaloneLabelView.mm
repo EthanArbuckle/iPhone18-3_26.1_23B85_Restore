@@ -1,12 +1,12 @@
 @interface PREditingStandaloneLabelView
 + (id)newLabel;
 - (CGSize)intrinsicContentSize;
-- (PREditingStandaloneLabelView)initWithFrame:(CGRect)a3;
-- (id)beginInteractiveTransitionToText:(id)a3;
-- (void)interactiveTransition:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)interactiveTransition:(id)a3 didUpdate:(double)a4;
-- (void)setDisplayedText:(id)a3;
-- (void)setText:(id)a3;
+- (PREditingStandaloneLabelView)initWithFrame:(CGRect)frame;
+- (id)beginInteractiveTransitionToText:(id)text;
+- (void)interactiveTransition:(id)transition didFinishSuccessfully:(BOOL)successfully;
+- (void)interactiveTransition:(id)transition didUpdate:(double)update;
+- (void)setDisplayedText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation PREditingStandaloneLabelView
@@ -16,8 +16,8 @@
   v2 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v2 setNumberOfLines:1];
   [v2 setTextAlignment:1];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setTextColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setTextColor:whiteColor];
 
   v4 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] weight:*MEMORY[0x1E69DB970]];
   [v2 setFont:v4];
@@ -29,39 +29,39 @@
   return v2;
 }
 
-- (PREditingStandaloneLabelView)initWithFrame:(CGRect)a3
+- (PREditingStandaloneLabelView)initWithFrame:(CGRect)frame
 {
   v24[4] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PREditingStandaloneLabelView;
-  v3 = [(PREditingStandaloneLabelView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PREditingStandaloneLabelView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     text = v3->_text;
     v3->_text = &stru_1F1C13D90;
 
-    v6 = [objc_opt_class() newLabel];
+    newLabel = [objc_opt_class() newLabel];
     label = v4->_label;
-    v4->_label = v6;
+    v4->_label = newLabel;
 
     [(PREditingStandaloneLabelView *)v4 addSubview:v4->_label];
     v18 = MEMORY[0x1E696ACD8];
-    v22 = [(PREditingStandaloneLabelView *)v4 topAnchor];
-    v21 = [(UILabel *)v4->_label topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    topAnchor = [(PREditingStandaloneLabelView *)v4 topAnchor];
+    topAnchor2 = [(UILabel *)v4->_label topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[0] = v20;
-    v19 = [(PREditingStandaloneLabelView *)v4 leftAnchor];
-    v8 = [(UILabel *)v4->_label leftAnchor];
-    v9 = [v19 constraintEqualToAnchor:v8];
+    leftAnchor = [(PREditingStandaloneLabelView *)v4 leftAnchor];
+    leftAnchor2 = [(UILabel *)v4->_label leftAnchor];
+    v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v24[1] = v9;
-    v10 = [(PREditingStandaloneLabelView *)v4 rightAnchor];
-    v11 = [(UILabel *)v4->_label rightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    rightAnchor = [(PREditingStandaloneLabelView *)v4 rightAnchor];
+    rightAnchor2 = [(UILabel *)v4->_label rightAnchor];
+    v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v24[2] = v12;
-    v13 = [(PREditingStandaloneLabelView *)v4 bottomAnchor];
-    v14 = [(UILabel *)v4->_label bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(PREditingStandaloneLabelView *)v4 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v4->_label bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v18 activateConstraints:v16];
@@ -70,39 +70,39 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
-    [(PREditingStandaloneLabelView *)self setDisplayedText:v6];
+    [(PREditingStandaloneLabelView *)self setDisplayedText:textCopy];
   }
 }
 
-- (void)setDisplayedText:(id)a3
+- (void)setDisplayedText:(id)text
 {
-  v4 = a3;
-  v5 = [(PREditingStandaloneLabelView *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(PREditingStandaloneLabelView *)self label];
+  [label setText:textCopy];
 
   [(PREditingStandaloneLabelView *)self invalidateIntrinsicContentSize];
 }
 
-- (id)beginInteractiveTransitionToText:(id)a3
+- (id)beginInteractiveTransitionToText:(id)text
 {
-  v5 = a3;
-  if (!v5)
+  textCopy = text;
+  if (!textCopy)
   {
     [(PREditingStandaloneLabelView *)a2 beginInteractiveTransitionToText:?];
   }
 
   v6 = [PREditingStandaloneLabelViewInteractiveTransition alloc];
-  v7 = [(PREditingStandaloneLabelView *)self text];
-  v8 = [(PREditingStandaloneLabelViewInteractiveTransition *)v6 initWithLabel:self currentText:v7 transitionText:v5];
+  text = [(PREditingStandaloneLabelView *)self text];
+  v8 = [(PREditingStandaloneLabelViewInteractiveTransition *)v6 initWithLabel:self currentText:text transitionText:textCopy];
 
   [(PREditingStandaloneLabelView *)self setCurrentTransition:v8];
   [(PREditingStandaloneLabelView *)self invalidateIntrinsicContentSize];
@@ -110,60 +110,60 @@
   return v8;
 }
 
-- (void)interactiveTransition:(id)a3 didUpdate:(double)a4
+- (void)interactiveTransition:(id)transition didUpdate:(double)update
 {
-  v9 = a3;
-  v6 = [(PREditingStandaloneLabelView *)self currentTransition];
+  transitionCopy = transition;
+  currentTransition = [(PREditingStandaloneLabelView *)self currentTransition];
 
-  v7 = v9;
-  if (v6 == v9)
+  v7 = transitionCopy;
+  if (currentTransition == transitionCopy)
   {
-    if (a4 >= 0.5)
+    if (update >= 0.5)
     {
-      [v9 transitionText];
+      [transitionCopy transitionText];
     }
 
     else
     {
-      [v9 currentText];
+      [transitionCopy currentText];
     }
     v8 = ;
     [(PREditingStandaloneLabelView *)self setDisplayedText:v8];
 
-    v7 = v9;
+    v7 = transitionCopy;
   }
 }
 
-- (void)interactiveTransition:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)interactiveTransition:(id)transition didFinishSuccessfully:(BOOL)successfully
 {
-  v9 = a3;
-  v6 = [(PREditingStandaloneLabelView *)self currentTransition];
+  transitionCopy = transition;
+  currentTransition = [(PREditingStandaloneLabelView *)self currentTransition];
 
-  v7 = v9;
-  if (v6 == v9)
+  v7 = transitionCopy;
+  if (currentTransition == transitionCopy)
   {
-    if (a4)
+    if (successfully)
     {
-      [v9 transitionText];
+      [transitionCopy transitionText];
     }
 
     else
     {
-      [v9 currentText];
+      [transitionCopy currentText];
     }
     v8 = ;
     [(PREditingStandaloneLabelView *)self setText:v8];
     [(PREditingStandaloneLabelView *)self setCurrentTransition:0];
     [(PREditingStandaloneLabelView *)self invalidateIntrinsicContentSize];
 
-    v7 = v9;
+    v7 = transitionCopy;
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PREditingStandaloneLabelView *)self label];
-  [v2 intrinsicContentSize];
+  label = [(PREditingStandaloneLabelView *)self label];
+  [label intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 

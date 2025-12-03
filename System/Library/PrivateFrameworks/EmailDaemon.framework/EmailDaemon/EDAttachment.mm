@@ -1,18 +1,18 @@
 @interface EDAttachment
 - (EDAttachment)init;
-- (EDAttachment)initWithAttachmentMetadata:(id)a3 messageMetadata:(id)a4;
+- (EDAttachment)initWithAttachmentMetadata:(id)metadata messageMetadata:(id)messageMetadata;
 @end
 
 @implementation EDAttachment
 
-- (EDAttachment)initWithAttachmentMetadata:(id)a3 messageMetadata:(id)a4
+- (EDAttachment)initWithAttachmentMetadata:(id)metadata messageMetadata:(id)messageMetadata
 {
-  *(&self->super.isa + OBJC_IVAR___EDAttachment_attachmentMetadata) = a3;
-  *(&self->super.isa + OBJC_IVAR___EDAttachment_messageMetadata) = a4;
+  *(&self->super.isa + OBJC_IVAR___EDAttachment_attachmentMetadata) = metadata;
+  *(&self->super.isa + OBJC_IVAR___EDAttachment_messageMetadata) = messageMetadata;
   v8.receiver = self;
   v8.super_class = EDAttachment;
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  messageMetadataCopy = messageMetadata;
   return [(EDAttachment *)&v8 init];
 }
 

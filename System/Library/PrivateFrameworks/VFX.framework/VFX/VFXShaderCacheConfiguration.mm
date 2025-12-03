@@ -1,8 +1,8 @@
 @interface VFXShaderCacheConfiguration
 - (VFXShaderCacheConfiguration)init;
-- (VFXShaderCacheConfiguration)initWithCoder:(id)a3;
+- (VFXShaderCacheConfiguration)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VFXShaderCacheConfiguration
@@ -31,34 +31,34 @@
   [(VFXShaderCacheConfiguration *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInt_forKey_(a3, a2, LODWORD(self->_pixelFormat), @"pixelFormat");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_name, @"name");
-  objc_msgSend_encodeInt_forKey_(a3, v6, LODWORD(self->_gpuFamily), @"gpuFamily");
-  objc_msgSend_encodeBool_forKey_(a3, v7, self->_usesMultisampling, @"usesMultisampling");
+  objc_msgSend_encodeInt_forKey_(coder, a2, LODWORD(self->_pixelFormat), @"pixelFormat");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_name, @"name");
+  objc_msgSend_encodeInt_forKey_(coder, v6, LODWORD(self->_gpuFamily), @"gpuFamily");
+  objc_msgSend_encodeBool_forKey_(coder, v7, self->_usesMultisampling, @"usesMultisampling");
   additiveWritesToAlpha = self->_additiveWritesToAlpha;
 
-  objc_msgSend_encodeBool_forKey_(a3, v8, additiveWritesToAlpha, @"additiveWritesToAlpha");
+  objc_msgSend_encodeBool_forKey_(coder, v8, additiveWritesToAlpha, @"additiveWritesToAlpha");
 }
 
-- (VFXShaderCacheConfiguration)initWithCoder:(id)a3
+- (VFXShaderCacheConfiguration)initWithCoder:(id)coder
 {
   v31.receiver = self;
   v31.super_class = VFXShaderCacheConfiguration;
   v6 = [(VFXShaderCacheConfiguration *)&v31 init];
   if (v6)
   {
-    v7 = objc_msgSend_decodeIntForKey_(a3, v4, @"pixelFormat", v5);
+    v7 = objc_msgSend_decodeIntForKey_(coder, v4, @"pixelFormat", v5);
     objc_msgSend_setPixelFormat_(v6, v8, v7, v9);
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"name");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"name");
     objc_msgSend_setName_(v6, v13, v12, v14);
-    v17 = objc_msgSend_decodeIntForKey_(a3, v15, @"gpuFamily", v16);
+    v17 = objc_msgSend_decodeIntForKey_(coder, v15, @"gpuFamily", v16);
     objc_msgSend_setGpuFamily_(v6, v18, v17, v19);
-    v22 = objc_msgSend_decodeBoolForKey_(a3, v20, @"usesMultisampling", v21);
+    v22 = objc_msgSend_decodeBoolForKey_(coder, v20, @"usesMultisampling", v21);
     objc_msgSend_setUsesMultisampling_(v6, v23, v22, v24);
-    v27 = objc_msgSend_decodeBoolForKey_(a3, v25, @"additiveWritesToAlpha", v26);
+    v27 = objc_msgSend_decodeBoolForKey_(coder, v25, @"additiveWritesToAlpha", v26);
     objc_msgSend_setAdditiveWritesToAlpha_(v6, v28, v27, v29);
   }
 

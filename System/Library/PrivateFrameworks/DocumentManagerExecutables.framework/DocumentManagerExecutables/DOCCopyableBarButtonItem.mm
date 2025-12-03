@@ -1,17 +1,17 @@
 @interface DOCCopyableBarButtonItem
 - (_TtC26DocumentManagerExecutables24DOCCopyableBarButtonItem)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation DOCCopyableBarButtonItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = (self + OBJC_IVAR____TtC26DocumentManagerExecutables24DOCCopyableBarButtonItem_creator);
   v4 = *(self + OBJC_IVAR____TtC26DocumentManagerExecutables24DOCCopyableBarButtonItem_creator);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = outlined copy of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v4);
     v7 = v4(v6);
     outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v4);

@@ -1,66 +1,66 @@
 @interface ARPlaneAnchor
-- (ARPlaneAnchor)initWithAnchor:(id)a3;
-- (ARPlaneAnchor)initWithCoder:(id)a3;
-- (ARPlaneAnchor)initWithIdentifier:(uint64_t)a3 transform:(int64_t)a4 alignment:;
+- (ARPlaneAnchor)initWithAnchor:(id)anchor;
+- (ARPlaneAnchor)initWithCoder:(id)coder;
+- (ARPlaneAnchor)initWithIdentifier:(uint64_t)identifier transform:(int64_t)transform alignment:;
 - (float)area;
-- (id)_description:(BOOL)a3;
-- (id)_hitTestFromOrigin:(ARPlaneAnchor *)self withDirection:(SEL)a2 usingExtent:(BOOL)a3 usingGeometry:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_description:(BOOL)_description;
+- (id)_hitTestFromOrigin:(ARPlaneAnchor *)self withDirection:(SEL)direction usingExtent:(BOOL)extent usingGeometry:(BOOL)geometry;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPlaneAnchor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ARPlaneAnchor;
-  v4 = a3;
-  [(ARAnchor *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_alignment forKey:{@"alignment", v6.receiver, v6.super_class}];
-  [v4 ar_encodeVector3:@"center" forKey:*self->_center];
-  [v4 ar_encodeVector3:@"extent" forKey:*self->_extent];
-  [v4 encodeObject:self->_planeExtent forKey:@"planeExtent"];
-  [v4 encodeObject:self->_geometry forKey:@"geometry"];
-  [v4 encodeInteger:self->_worldAlignmentRotation forKey:@"worldAlignmentRotation"];
-  [v4 encodeInteger:self->_classificationStatus forKey:@"classificationStatus"];
-  [v4 encodeInteger:self->_classification forKey:@"classification"];
+  coderCopy = coder;
+  [(ARAnchor *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_alignment forKey:{@"alignment", v6.receiver, v6.super_class}];
+  [coderCopy ar_encodeVector3:@"center" forKey:*self->_center];
+  [coderCopy ar_encodeVector3:@"extent" forKey:*self->_extent];
+  [coderCopy encodeObject:self->_planeExtent forKey:@"planeExtent"];
+  [coderCopy encodeObject:self->_geometry forKey:@"geometry"];
+  [coderCopy encodeInteger:self->_worldAlignmentRotation forKey:@"worldAlignmentRotation"];
+  [coderCopy encodeInteger:self->_classificationStatus forKey:@"classificationStatus"];
+  [coderCopy encodeInteger:self->_classification forKey:@"classification"];
   *&v5 = self->_uncertaintyAlongNormal;
-  [v4 encodeFloat:@"uncertaintyAlongNormal" forKey:v5];
-  [v4 encodeObject:self->_classificationLabel forKey:@"classificationLabel"];
-  [v4 encodeObject:self->_gridExtent forKey:@"gridExtent"];
+  [coderCopy encodeFloat:@"uncertaintyAlongNormal" forKey:v5];
+  [coderCopy encodeObject:self->_classificationLabel forKey:@"classificationLabel"];
+  [coderCopy encodeObject:self->_gridExtent forKey:@"gridExtent"];
 }
 
-- (ARPlaneAnchor)initWithCoder:(id)a3
+- (ARPlaneAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ARPlaneAnchor;
-  v5 = [(ARAnchor *)&v18 initWithCoder:v4];
+  v5 = [(ARAnchor *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_alignment = [v4 decodeIntegerForKey:@"alignment"];
-    [v4 ar_decodeVector3ForKey:@"center"];
+    v5->_alignment = [coderCopy decodeIntegerForKey:@"alignment"];
+    [coderCopy ar_decodeVector3ForKey:@"center"];
     *v5->_center = v6;
-    [v4 ar_decodeVector3ForKey:@"extent"];
+    [coderCopy ar_decodeVector3ForKey:@"extent"];
     *v5->_extent = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planeExtent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planeExtent"];
     planeExtent = v5->_planeExtent;
     v5->_planeExtent = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
     geometry = v5->_geometry;
     v5->_geometry = v10;
 
-    v5->_worldAlignmentRotation = [v4 decodeIntegerForKey:@"worldAlignmentRotation"];
-    v5->_classificationStatus = [v4 decodeIntegerForKey:@"classificationStatus"];
-    v5->_classification = [v4 decodeIntegerForKey:@"classification"];
-    [v4 decodeFloatForKey:@"uncertaintyAlongNormal"];
+    v5->_worldAlignmentRotation = [coderCopy decodeIntegerForKey:@"worldAlignmentRotation"];
+    v5->_classificationStatus = [coderCopy decodeIntegerForKey:@"classificationStatus"];
+    v5->_classification = [coderCopy decodeIntegerForKey:@"classification"];
+    [coderCopy decodeFloatForKey:@"uncertaintyAlongNormal"];
     v5->_uncertaintyAlongNormal = v12;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classificationLabel"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classificationLabel"];
     classificationLabel = v5->_classificationLabel;
     v5->_classificationLabel = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gridExtent"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gridExtent"];
     gridExtent = v5->_gridExtent;
     v5->_gridExtent = v15;
   }
@@ -68,15 +68,15 @@
   return v5;
 }
 
-- (ARPlaneAnchor)initWithIdentifier:(uint64_t)a3 transform:(int64_t)a4 alignment:
+- (ARPlaneAnchor)initWithIdentifier:(uint64_t)identifier transform:(int64_t)transform alignment:
 {
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = ARPlaneAnchor;
   v5 = [ARAnchor initWithIdentifier:sel_initWithIdentifier_transform_ transform:?];
   v6 = v5;
   if (v5)
   {
-    v5->_alignment = a4;
+    v5->_alignment = transform;
     *v5->_center = 0u;
     __asm { FMOV            V0.4S, #-1.0 }
 
@@ -89,10 +89,10 @@
   return v6;
 }
 
-- (id)_hitTestFromOrigin:(ARPlaneAnchor *)self withDirection:(SEL)a2 usingExtent:(BOOL)a3 usingGeometry:(BOOL)a4
+- (id)_hitTestFromOrigin:(ARPlaneAnchor *)self withDirection:(SEL)direction usingExtent:(BOOL)extent usingGeometry:(BOOL)geometry
 {
-  v6 = a4;
-  v7 = a3;
+  geometryCopy = geometry;
+  extentCopy = extent;
   v101 = v5;
   v103 = v4;
   [(ARAnchor *)self transform];
@@ -142,13 +142,13 @@
   v95 = *&v106;
   v93 = *&v108;
   v102 = v109;
-  if (!v7)
+  if (!extentCopy)
   {
     goto LABEL_17;
   }
 
-  v22 = [(ARPlaneAnchor *)self planeExtent];
-  [v22 rotationOnYAxis];
+  planeExtent = [(ARPlaneAnchor *)self planeExtent];
+  [planeExtent rotationOnYAxis];
   v24 = v23;
 
   if (v24 == 0.0)
@@ -158,8 +158,8 @@
 
   else
   {
-    v25 = [(ARPlaneAnchor *)self planeExtent];
-    [v25 rotationOnYAxis];
+    planeExtent2 = [(ARPlaneAnchor *)self planeExtent];
+    [planeExtent2 rotationOnYAxis];
     v28 = __sincosf_stret(v26 * -0.5);
     cosval = v28.__cosval;
     _Q0 = vmulq_n_f32(xmmword_1C25C8BC0, v28.__sinval);
@@ -229,20 +229,20 @@ LABEL_3:
   else
   {
 LABEL_17:
-    if (v6)
+    if (geometryCopy)
     {
-      v68 = [(ARPlaneAnchor *)self geometry];
-      v69 = [v68 boundaryVertices];
+      geometry = [(ARPlaneAnchor *)self geometry];
+      boundaryVertices = [geometry boundaryVertices];
 
-      v70 = [(ARPlaneAnchor *)self geometry];
-      v71 = [v70 boundaryVertexCount];
+      geometry2 = [(ARPlaneAnchor *)self geometry];
+      boundaryVertexCount = [geometry2 boundaryVertexCount];
 
-      v72 = v71 & ~(v71 >> 63);
+      v72 = boundaryVertexCount & ~(boundaryVertexCount >> 63);
       v73 = 1;
-      v74 = v69;
+      v74 = boundaryVertices;
       while (v72)
       {
-        if (v73 >= v71)
+        if (v73 >= boundaryVertexCount)
         {
           v75 = 0;
         }
@@ -259,7 +259,7 @@ LABEL_17:
         *v78.f32 = vrsqrte_f32(v79);
         *v78.f32 = vmul_f32(*v78.f32, vrsqrts_f32(v79, vmul_f32(*v78.f32, *v78.f32)));
         v80 = vmulq_n_f32(v77, vmul_f32(*v78.f32, vrsqrts_f32(v79, vmul_f32(*v78.f32, *v78.f32))).f32[0]);
-        v81 = vsubq_f32(*(v69 + 16 * v75), v102);
+        v81 = vsubq_f32(*(boundaryVertices + 16 * v75), v102);
         v82 = vmulq_f32(v81, v81);
         *&v83 = v82.f32[2] + vaddv_f32(*v82.f32);
         *v82.f32 = vrsqrte_f32(v83);
@@ -275,12 +275,12 @@ LABEL_17:
     }
 
     v85 = 8;
-    if (v7)
+    if (extentCopy)
     {
       v85 = 16;
     }
 
-    if (v6)
+    if (geometryCopy)
     {
       v86 = 32;
     }
@@ -300,17 +300,17 @@ LABEL_17:
   return v15;
 }
 
-- (id)_description:(BOOL)a3
+- (id)_description:(BOOL)_description
 {
-  v3 = a3;
-  v5 = [(ARPlaneAnchor *)self alignment];
+  _descriptionCopy = _description;
+  alignment = [(ARPlaneAnchor *)self alignment];
   v6 = @"vertical";
-  if (v5 != ARPlaneAnchorAlignmentVertical)
+  if (alignment != ARPlaneAnchorAlignmentVertical)
   {
     v6 = 0;
   }
 
-  if (v5 == ARPlaneAnchorAlignmentHorizontal)
+  if (alignment == ARPlaneAnchorAlignmentHorizontal)
   {
     v6 = @"horizontal";
   }
@@ -324,15 +324,15 @@ LABEL_17:
   v8 = MEMORY[0x1E696AEC0];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(ARAnchor *)self identifier];
+  identifier = [(ARAnchor *)self identifier];
   [(ARAnchor *)self transform];
-  v16 = ARMatrix4x4Description(v3, v12, v13, v14, v15);
+  v16 = ARMatrix4x4Description(_descriptionCopy, v12, v13, v14, v15);
   [(ARPlaneAnchor *)self center];
   v18 = ARVector3Description(v17);
   [(ARPlaneAnchor *)self extent];
   v20 = ARVector3Description(v19);
   v21 = NSStringFromARPlaneClassification([(ARPlaneAnchor *)self classification]);
-  v22 = [v8 stringWithFormat:@"<%@: %p identifier=%@ transform=%@ alignment=%@ center=%@ extent=%@ classification=%@", v10, self, v11, v16, v7, v18, v20, v21];
+  v22 = [v8 stringWithFormat:@"<%@: %p identifier=%@ transform=%@ alignment=%@ center=%@ extent=%@ classification=%@", v10, self, identifier, v16, v7, v18, v20, v21];
 
   v23 = [v22 stringByAppendingString:@">"];
 
@@ -341,17 +341,17 @@ LABEL_17:
 
 - (float)area
 {
-  v2 = [(ARPlaneAnchor *)self geometry];
-  v3 = [v2 boundaryVertexCount];
-  if (v3)
+  geometry = [(ARPlaneAnchor *)self geometry];
+  boundaryVertexCount = [geometry boundaryVertexCount];
+  if (boundaryVertexCount)
   {
-    v4 = v3;
+    v4 = boundaryVertexCount;
     v5 = 0;
     v6 = 0.0;
     do
     {
-      v12 = *([v2 boundaryVertices] + 16 * v5);
-      v7 = [v2 boundaryVertices];
+      v12 = *([geometry boundaryVertices] + 16 * v5);
+      boundaryVertices = [geometry boundaryVertices];
       if (--v4)
       {
         v8 = v5 + 1;
@@ -363,7 +363,7 @@ LABEL_17:
       }
 
       ++v5;
-      v6 = v6 + ((-*(&v12 + 2) * COERCE_FLOAT(*(v7 + 16 * v8))) + (*&v12 * COERCE_FLOAT(*(v7 + 16 * v8 + 8))));
+      v6 = v6 + ((-*(&v12 + 2) * COERCE_FLOAT(*(boundaryVertices + 16 * v8))) + (*&v12 * COERCE_FLOAT(*(boundaryVertices + 16 * v8 + 8))));
     }
 
     while (v4);
@@ -380,44 +380,44 @@ LABEL_17:
   return v10;
 }
 
-- (ARPlaneAnchor)initWithAnchor:(id)a3
+- (ARPlaneAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v23.receiver = self;
   v23.super_class = ARPlaneAnchor;
-  v5 = [(ARAnchor *)&v23 initWithAnchor:v4];
+  v5 = [(ARAnchor *)&v23 initWithAnchor:anchorCopy];
   if (v5)
   {
-    v5->_alignment = [v4 alignment];
-    [v4 center];
+    v5->_alignment = [anchorCopy alignment];
+    [anchorCopy center];
     *v5->_center = v6;
-    [v4 extent];
+    [anchorCopy extent];
     *v5->_extent = v7;
-    v8 = [v4 planeExtent];
-    v9 = [v8 copy];
+    planeExtent = [anchorCopy planeExtent];
+    v9 = [planeExtent copy];
     planeExtent = v5->_planeExtent;
     v5->_planeExtent = v9;
 
-    v11 = [v4 gridExtent];
+    gridExtent = [anchorCopy gridExtent];
     gridExtent = v5->_gridExtent;
-    v5->_gridExtent = v11;
+    v5->_gridExtent = gridExtent;
 
-    v13 = [v4 geometry];
+    geometry = [anchorCopy geometry];
     geometry = v5->_geometry;
-    v5->_geometry = v13;
+    v5->_geometry = geometry;
 
-    [v4 uncertaintyAlongNormal];
+    [anchorCopy uncertaintyAlongNormal];
     v5->_uncertaintyAlongNormal = v15;
-    v5->_worldAlignmentRotation = [v4 worldAlignmentRotation];
-    v5->_classificationStatus = [v4 classificationStatus];
-    v5->_classification = [v4 classification];
-    v16 = [v4 possibleClassifications];
-    v17 = [v16 copy];
+    v5->_worldAlignmentRotation = [anchorCopy worldAlignmentRotation];
+    v5->_classificationStatus = [anchorCopy classificationStatus];
+    v5->_classification = [anchorCopy classification];
+    possibleClassifications = [anchorCopy possibleClassifications];
+    v17 = [possibleClassifications copy];
     possibleClassifications = v5->_possibleClassifications;
     v5->_possibleClassifications = v17;
 
-    v19 = [v4 classificationLabel];
-    v20 = [v19 copy];
+    classificationLabel = [anchorCopy classificationLabel];
+    v20 = [classificationLabel copy];
     classificationLabel = v5->_classificationLabel;
     v5->_classificationLabel = v20;
   }

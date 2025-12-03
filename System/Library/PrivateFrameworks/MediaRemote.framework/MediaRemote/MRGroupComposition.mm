@@ -1,42 +1,42 @@
 @interface MRGroupComposition
 + (id)homePodHomeTheaterComposition;
-+ (id)homePodHomeTheaterCompositionWithHomePodModelIdentifier:(id)a3;
++ (id)homePodHomeTheaterCompositionWithHomePodModelIdentifier:(id)identifier;
 + (id)homePodMiniHomeTheaterComposition;
 + (id)homePodMiniStereoPairComposition;
 + (id)homePodStereoPairComposition;
-+ (id)homePodStereoPairCompositionWithModelIdentifier:(id)a3;
++ (id)homePodStereoPairCompositionWithModelIdentifier:(id)identifier;
 + (id)multiBuiltInComposition;
 + (id)unknownComposition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localizedGroupComposition;
-- (id)localizedGroupCompositionForDeviceClass:(int64_t)a3 modelID:(id)a4;
+- (id)localizedGroupCompositionForDeviceClass:(int64_t)class modelID:(id)d;
 - (unint64_t)totalCount;
-- (void)addHomePodWithModelIdentifier:(id)a3;
+- (void)addHomePodWithModelIdentifier:(id)identifier;
 @end
 
 @implementation MRGroupComposition
 
 - (unint64_t)totalCount
 {
-  v3 = [(MRGroupComposition *)self atvCount];
-  v4 = [(MRGroupComposition *)self homePodCount]+ v3;
-  v5 = [(MRGroupComposition *)self homePodMiniCount];
-  v6 = v4 + v5 + [(MRGroupComposition *)self headphoneCount];
-  v7 = [(MRGroupComposition *)self bluetoothSpeakerCount];
-  v8 = v7 + [(MRGroupComposition *)self setTopCount];
+  atvCount = [(MRGroupComposition *)self atvCount];
+  v4 = [(MRGroupComposition *)self homePodCount]+ atvCount;
+  homePodMiniCount = [(MRGroupComposition *)self homePodMiniCount];
+  v6 = v4 + homePodMiniCount + [(MRGroupComposition *)self headphoneCount];
+  bluetoothSpeakerCount = [(MRGroupComposition *)self bluetoothSpeakerCount];
+  v8 = bluetoothSpeakerCount + [(MRGroupComposition *)self setTopCount];
   v9 = v6 + v8 + [(MRGroupComposition *)self tvStickCount];
-  v10 = [(MRGroupComposition *)self tvCount];
-  v11 = v10 + [(MRGroupComposition *)self macCount];
+  tvCount = [(MRGroupComposition *)self tvCount];
+  v11 = tvCount + [(MRGroupComposition *)self macCount];
   v12 = v11 + [(MRGroupComposition *)self hifiCount];
   v13 = v9 + v12 + [(MRGroupComposition *)self lofiCount];
-  v14 = [(MRGroupComposition *)self builtInCount];
-  v15 = v14 + [(MRGroupComposition *)self legacyBeatsCount];
+  builtInCount = [(MRGroupComposition *)self builtInCount];
+  v15 = builtInCount + [(MRGroupComposition *)self legacyBeatsCount];
   v16 = v15 + [(MRGroupComposition *)self iPhoneCount];
   v17 = v16 + [(MRGroupComposition *)self visionCount];
   v18 = v13 + v17 + [(MRGroupComposition *)self displayCount];
-  v19 = [(MRGroupComposition *)self carplayCount];
-  v20 = v19 + [(MRGroupComposition *)self vehicleCount];
+  carplayCount = [(MRGroupComposition *)self carplayCount];
+  v20 = carplayCount + [(MRGroupComposition *)self vehicleCount];
   v21 = v20 + [(MRGroupComposition *)self hearingDeviceCount];
   v22 = v21 + [(MRGroupComposition *)self earPodCount];
   return v18 + v22 + [(MRGroupComposition *)self unknownCount];
@@ -50,12 +50,12 @@
   return v2;
 }
 
-+ (id)homePodStereoPairCompositionWithModelIdentifier:(id)a3
++ (id)homePodStereoPairCompositionWithModelIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MRGroupComposition);
-  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:v3];
-  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:v3];
+  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:identifierCopy];
+  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:identifierCopy];
 
   return v4;
 }
@@ -76,11 +76,11 @@
   return v2;
 }
 
-+ (id)homePodHomeTheaterCompositionWithHomePodModelIdentifier:(id)a3
++ (id)homePodHomeTheaterCompositionWithHomePodModelIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MRGroupComposition);
-  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:v3];
+  [(MRGroupComposition *)v4 addHomePodWithModelIdentifier:identifierCopy];
 
   [(MRGroupComposition *)v4 setAtvCount:1];
 
@@ -113,16 +113,16 @@
   return v2;
 }
 
-- (void)addHomePodWithModelIdentifier:(id)a3
+- (void)addHomePodWithModelIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E695DFD8];
   v9[0] = @"AudioAccessory5,1";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [v5 setWithArray:v6];
 
-  if (v4 && [v7 containsObject:v4])
+  if (identifierCopy && [v7 containsObject:identifierCopy])
   {
     [(MRGroupComposition *)self setHomePodMiniCount:[(MRGroupComposition *)self homePodMiniCount]+ 1];
   }
@@ -142,61 +142,61 @@
 
   if (v4)
   {
-    v5 = [v4 deviceClass];
+    deviceClass = [v4 deviceClass];
     [v4 modelID];
   }
 
   else
   {
-    v5 = +[MRDeviceInfo deviceClass];
+    deviceClass = +[MRDeviceInfo deviceClass];
     MSVGetDeviceProductType();
   }
   v6 = ;
-  v7 = [(MRGroupComposition *)self localizedGroupCompositionForDeviceClass:v5 modelID:v6];
+  v7 = [(MRGroupComposition *)self localizedGroupCompositionForDeviceClass:deviceClass modelID:v6];
 
   return v7;
 }
 
-- (id)localizedGroupCompositionForDeviceClass:(int64_t)a3 modelID:(id)a4
+- (id)localizedGroupCompositionForDeviceClass:(int64_t)class modelID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   if ([(MRGroupComposition *)self builtInCount])
   {
     v7 = [(MRGroupComposition *)self copy];
-    v8 = v7;
-    switch(a3)
+    selfCopy = v7;
+    switch(class)
     {
       case 7:
         [(MRGroupComposition *)v7 setBuiltInCount:0];
-        [(MRGroupComposition *)v8 addHomePodWithModelIdentifier:v6];
+        [(MRGroupComposition *)selfCopy addHomePodWithModelIdentifier:dCopy];
         break;
       case 4:
         [(MRGroupComposition *)v7 setBuiltInCount:0];
-        [(MRGroupComposition *)v8 setAtvCount:[(MRGroupComposition *)v8 atvCount]+ 1];
+        [(MRGroupComposition *)selfCopy setAtvCount:[(MRGroupComposition *)selfCopy atvCount]+ 1];
         break;
       case 1:
         [(MRGroupComposition *)v7 setBuiltInCount:0];
-        [(MRGroupComposition *)v8 setIPhoneCount:[(MRGroupComposition *)v8 iPhoneCount]+ 1];
+        [(MRGroupComposition *)selfCopy setIPhoneCount:[(MRGroupComposition *)selfCopy iPhoneCount]+ 1];
         break;
     }
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MRGroupComposition allocWithZone:?]];
-  v5 = [(MRGroupComposition *)self soloProductIdentifier];
-  [(MRGroupComposition *)v4 setSoloProductIdentifier:v5];
+  soloProductIdentifier = [(MRGroupComposition *)self soloProductIdentifier];
+  [(MRGroupComposition *)v4 setSoloProductIdentifier:soloProductIdentifier];
 
-  v6 = [(MRGroupComposition *)self soloModelIdentifier];
-  [(MRGroupComposition *)v4 setSoloModelIdentifier:v6];
+  soloModelIdentifier = [(MRGroupComposition *)self soloModelIdentifier];
+  [(MRGroupComposition *)v4 setSoloModelIdentifier:soloModelIdentifier];
 
   [(MRGroupComposition *)v4 setAtvCount:[(MRGroupComposition *)self atvCount]];
   [(MRGroupComposition *)v4 setHomePodCount:[(MRGroupComposition *)self homePodCount]];
@@ -229,11 +229,11 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p); ", v5, self];
 
-  v7 = [(MRGroupComposition *)self soloModelIdentifier];
-  [v6 appendFormat:@"soloModelIdentifier: %@, ", v7];
+  soloModelIdentifier = [(MRGroupComposition *)self soloModelIdentifier];
+  [v6 appendFormat:@"soloModelIdentifier: %@, ", soloModelIdentifier];
 
-  v8 = [(MRGroupComposition *)self soloProductIdentifier];
-  [v6 appendFormat:@"soloProductIdentifier: %@;", v8];
+  soloProductIdentifier = [(MRGroupComposition *)self soloProductIdentifier];
+  [v6 appendFormat:@"soloProductIdentifier: %@;", soloProductIdentifier];
 
   [v6 appendFormat:@"total count: %lu;", -[MRGroupComposition totalCount](self, "totalCount")];
   if ([(MRGroupComposition *)self atvCount])

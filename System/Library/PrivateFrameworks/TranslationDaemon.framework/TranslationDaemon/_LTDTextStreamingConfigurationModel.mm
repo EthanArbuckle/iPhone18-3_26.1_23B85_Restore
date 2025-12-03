@@ -1,18 +1,18 @@
 @interface _LTDTextStreamingConfigurationModel
-- (_LTDTextStreamingConfigurationModel)initWithDictionary:(id)a3;
+- (_LTDTextStreamingConfigurationModel)initWithDictionary:(id)dictionary;
 @end
 
 @implementation _LTDTextStreamingConfigurationModel
 
-- (_LTDTextStreamingConfigurationModel)initWithDictionary:(id)a3
+- (_LTDTextStreamingConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = _LTDTextStreamingConfigurationModel;
   v5 = [(_LTDTextStreamingConfigurationModel *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"TextStreaming"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"TextStreaming"];
     v7 = [v6 objectForKeyedSubscript:@"MinTimeBetweenTranslations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())

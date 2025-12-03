@@ -1,16 +1,16 @@
 @interface CarWidgetController
-- (CarWidgetController)initWithCarSceneType:(int64_t)a3;
+- (CarWidgetController)initWithCarSceneType:(int64_t)type;
 - (void)_mapsCar_rebuildContextsForCurrentAppState;
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options;
 - (void)dealloc;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation CarWidgetController
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = sub_100005610();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -18,14 +18,14 @@
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] sceneDidEnterBackground, widgetControllerClass: %@", &v7, 0x16u);
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = sub_100005610();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -33,17 +33,17 @@
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] sceneWillEnterForeground, widgetControllerClass: %@", &v8, 0x16u);
   }
 
-  v7 = [(CarWidgetController *)self chromeViewController];
-  [v7 setSuppressed:0];
+  chromeViewController = [(CarWidgetController *)self chromeViewController];
+  [chromeViewController setSuppressed:0];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = sub_100005610();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -51,14 +51,14 @@
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] sceneDidDisconnect, widgetControllerClass: %@", &v9, 0x16u);
   }
 
-  v7 = [(CarWidgetController *)self chromeViewController];
-  [v7 setSuppressed:1];
+  chromeViewController = [(CarWidgetController *)self chromeViewController];
+  [chromeViewController setSuppressed:1];
 
   [(CarWidgetController *)self setChromeViewController:0];
   v8 = +[CarSessionController sharedInstance];
@@ -67,15 +67,15 @@
 
 - (void)_mapsCar_rebuildContextsForCurrentAppState
 {
-  v3 = [(CarWidgetController *)self chromeViewController];
-  v4 = [(CarWidgetController *)self contextsForCurrentAppState];
-  [v3 setContexts:v4 animated:0 completion:0];
+  chromeViewController = [(CarWidgetController *)self chromeViewController];
+  contextsForCurrentAppState = [(CarWidgetController *)self contextsForCurrentAppState];
+  [chromeViewController setContexts:contextsForCurrentAppState animated:0 completion:0];
 
-  v5 = [(CarWidgetController *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"accessories" animated:0];
+  chromeViewController2 = [(CarWidgetController *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"accessories" animated:0];
 }
 
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options
 {
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -83,7 +83,7 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     *buf = 134349314;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] willConnectToSession:options, widgetControllerClass: %@", buf, 0x16u);
@@ -95,25 +95,25 @@
   v10 = [objc_msgSend(objc_msgSend(objc_opt_class() "chromeViewControllerClass")];
   [(CarWidgetController *)self setChromeViewController:v10];
 
-  v11 = [(CarWidgetController *)self chromeViewController];
-  [v11 setSuppressed:1];
+  chromeViewController = [(CarWidgetController *)self chromeViewController];
+  [chromeViewController setSuppressed:1];
 
   v12 = objc_opt_class();
-  v13 = [(CarWidgetController *)self chromeViewController];
+  chromeViewController2 = [(CarWidgetController *)self chromeViewController];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100DF9DB0;
   v18[3] = &unk_101655578;
   v18[4] = v12;
-  [v13 setFallbackContextCoordinationBlock:v18];
+  [chromeViewController2 setFallbackContextCoordinationBlock:v18];
 
-  v14 = [(CarWidgetController *)self chromeViewController];
-  v15 = [(CarWidgetController *)self contextsForCurrentAppState];
-  [v14 setContexts:v15 animated:0 completion:0];
+  chromeViewController3 = [(CarWidgetController *)self chromeViewController];
+  contextsForCurrentAppState = [(CarWidgetController *)self contextsForCurrentAppState];
+  [chromeViewController3 setContexts:contextsForCurrentAppState animated:0 completion:0];
 
   v16 = +[CarChromeModeCoordinator sharedInstance];
-  v17 = [(CarWidgetController *)self chromeViewController];
-  [v16 addChromeViewController:v17];
+  chromeViewController4 = [(CarWidgetController *)self chromeViewController];
+  [v16 addChromeViewController:chromeViewController4];
 }
 
 - (void)dealloc
@@ -162,7 +162,7 @@
   [(CarWidgetController *)&v9 dealloc];
 }
 
-- (CarWidgetController)initWithCarSceneType:(int64_t)a3
+- (CarWidgetController)initWithCarSceneType:(int64_t)type
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -203,7 +203,7 @@
     }
   }
 
-  if (a3 <= 6 && ((1 << a3) & 0x72) != 0 && a3 <= 3)
+  if (type <= 6 && ((1 << type) & 0x72) != 0 && type <= 3)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -237,7 +237,7 @@
   result = [(CarWidgetController *)&v15 init];
   if (result)
   {
-    result->_sceneType = a3;
+    result->_sceneType = type;
   }
 
   return result;

@@ -1,15 +1,15 @@
 @interface DateRange
 - (_TtC9MomentsUI9DateRange)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DateRange
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  DateRange.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  DateRange.encode(with:)(coderCopy);
 }
 
 - (_TtC9MomentsUI9DateRange)init

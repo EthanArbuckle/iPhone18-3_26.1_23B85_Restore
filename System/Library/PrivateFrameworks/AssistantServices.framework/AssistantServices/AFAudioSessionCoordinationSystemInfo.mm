@@ -1,15 +1,15 @@
 @interface AFAudioSessionCoordinationSystemInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationSystemInfo)initWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationSystemInfo)initWithCoder:(id)a3;
-- (AFAudioSessionCoordinationSystemInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFAudioSessionCoordinationSystemInfo)initWithIsSupportedAndEnabled:(BOOL)a3 homeKitRoomName:(id)a4 homeKitMediaSystemIdentifier:(id)a5 mediaRemoteGroupIdentifier:(id)a6 mediaRemoteRouteIdentifier:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationSystemInfo)initWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationSystemInfo)initWithCoder:(id)coder;
+- (AFAudioSessionCoordinationSystemInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFAudioSessionCoordinationSystemInfo)initWithIsSupportedAndEnabled:(BOOL)enabled homeKitRoomName:(id)name homeKitMediaSystemIdentifier:(id)identifier mediaRemoteGroupIdentifier:(id)groupIdentifier mediaRemoteRouteIdentifier:(id)routeIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAudioSessionCoordinationSystemInfo
@@ -49,13 +49,13 @@
   return v9;
 }
 
-- (AFAudioSessionCoordinationSystemInfo)initWithDictionaryRepresentation:(id)a3
+- (AFAudioSessionCoordinationSystemInfo)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"isSupportedAndEnabled"];
+    v6 = [representationCopy objectForKey:@"isSupportedAndEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       v7 = 0;
     }
 
-    v9 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     v10 = [v5 objectForKey:@"homeKitRoomName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -116,51 +116,51 @@
       v17 = 0;
     }
 
-    self = [(AFAudioSessionCoordinationSystemInfo *)self initWithIsSupportedAndEnabled:v9 homeKitRoomName:v11 homeKitMediaSystemIdentifier:v13 mediaRemoteGroupIdentifier:v15 mediaRemoteRouteIdentifier:v17];
-    v8 = self;
+    self = [(AFAudioSessionCoordinationSystemInfo *)self initWithIsSupportedAndEnabled:bOOLValue homeKitRoomName:v11 homeKitMediaSystemIdentifier:v13 mediaRemoteGroupIdentifier:v15 mediaRemoteRouteIdentifier:v17];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   isSupportedAndEnabled = self->_isSupportedAndEnabled;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:isSupportedAndEnabled];
-  [v7 encodeObject:v6 forKey:@"AFAudioSessionCoordinationSystemInfo::isSupportedAndEnabled"];
+  [coderCopy encodeObject:v6 forKey:@"AFAudioSessionCoordinationSystemInfo::isSupportedAndEnabled"];
 
-  [v7 encodeObject:self->_homeKitRoomName forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitRoomName"];
-  [v7 encodeObject:self->_homeKitMediaSystemIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitMediaSystemIdentifier"];
-  [v7 encodeObject:self->_mediaRemoteGroupIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteGroupIdentifier"];
-  [v7 encodeObject:self->_mediaRemoteRouteIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteRouteIdentifier"];
+  [coderCopy encodeObject:self->_homeKitRoomName forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitRoomName"];
+  [coderCopy encodeObject:self->_homeKitMediaSystemIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitMediaSystemIdentifier"];
+  [coderCopy encodeObject:self->_mediaRemoteGroupIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteGroupIdentifier"];
+  [coderCopy encodeObject:self->_mediaRemoteRouteIdentifier forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteRouteIdentifier"];
 }
 
-- (AFAudioSessionCoordinationSystemInfo)initWithCoder:(id)a3
+- (AFAudioSessionCoordinationSystemInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::isSupportedAndEnabled"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::isSupportedAndEnabled"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitRoomName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitMediaSystemIdentifier"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteGroupIdentifier"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteRouteIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitRoomName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::homeKitMediaSystemIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteGroupIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSystemInfo::mediaRemoteRouteIdentifier"];
 
-  v11 = [(AFAudioSessionCoordinationSystemInfo *)self initWithIsSupportedAndEnabled:v6 homeKitRoomName:v7 homeKitMediaSystemIdentifier:v8 mediaRemoteGroupIdentifier:v9 mediaRemoteRouteIdentifier:v10];
+  v11 = [(AFAudioSessionCoordinationSystemInfo *)self initWithIsSupportedAndEnabled:bOOLValue homeKitRoomName:v7 homeKitMediaSystemIdentifier:v8 mediaRemoteGroupIdentifier:v9 mediaRemoteRouteIdentifier:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -170,25 +170,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isSupportedAndEnabled = self->_isSupportedAndEnabled;
       if (isSupportedAndEnabled == [(AFAudioSessionCoordinationSystemInfo *)v5 isSupportedAndEnabled])
       {
-        v7 = [(AFAudioSessionCoordinationSystemInfo *)v5 homeKitRoomName];
+        homeKitRoomName = [(AFAudioSessionCoordinationSystemInfo *)v5 homeKitRoomName];
         homeKitRoomName = self->_homeKitRoomName;
-        if (homeKitRoomName == v7 || [(NSString *)homeKitRoomName isEqual:v7])
+        if (homeKitRoomName == homeKitRoomName || [(NSString *)homeKitRoomName isEqual:homeKitRoomName])
         {
-          v9 = [(AFAudioSessionCoordinationSystemInfo *)v5 homeKitMediaSystemIdentifier];
+          homeKitMediaSystemIdentifier = [(AFAudioSessionCoordinationSystemInfo *)v5 homeKitMediaSystemIdentifier];
           homeKitMediaSystemIdentifier = self->_homeKitMediaSystemIdentifier;
-          if (homeKitMediaSystemIdentifier == v9 || [(NSUUID *)homeKitMediaSystemIdentifier isEqual:v9])
+          if (homeKitMediaSystemIdentifier == homeKitMediaSystemIdentifier || [(NSUUID *)homeKitMediaSystemIdentifier isEqual:homeKitMediaSystemIdentifier])
           {
-            v11 = [(AFAudioSessionCoordinationSystemInfo *)v5 mediaRemoteGroupIdentifier];
+            mediaRemoteGroupIdentifier = [(AFAudioSessionCoordinationSystemInfo *)v5 mediaRemoteGroupIdentifier];
             mediaRemoteGroupIdentifier = self->_mediaRemoteGroupIdentifier;
-            if (mediaRemoteGroupIdentifier == v11 || [(NSString *)mediaRemoteGroupIdentifier isEqual:v11])
+            if (mediaRemoteGroupIdentifier == mediaRemoteGroupIdentifier || [(NSString *)mediaRemoteGroupIdentifier isEqual:mediaRemoteGroupIdentifier])
             {
-              v13 = [(AFAudioSessionCoordinationSystemInfo *)v5 mediaRemoteRouteIdentifier];
+              mediaRemoteRouteIdentifier = [(AFAudioSessionCoordinationSystemInfo *)v5 mediaRemoteRouteIdentifier];
               mediaRemoteRouteIdentifier = self->_mediaRemoteRouteIdentifier;
-              v15 = mediaRemoteRouteIdentifier == v13 || [(NSString *)mediaRemoteRouteIdentifier isEqual:v13];
+              v15 = mediaRemoteRouteIdentifier == mediaRemoteRouteIdentifier || [(NSString *)mediaRemoteRouteIdentifier isEqual:mediaRemoteRouteIdentifier];
             }
 
             else
@@ -236,7 +236,7 @@
   return v7 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10.receiver = self;
@@ -254,25 +254,25 @@
   return v8;
 }
 
-- (AFAudioSessionCoordinationSystemInfo)initWithIsSupportedAndEnabled:(BOOL)a3 homeKitRoomName:(id)a4 homeKitMediaSystemIdentifier:(id)a5 mediaRemoteGroupIdentifier:(id)a6 mediaRemoteRouteIdentifier:(id)a7
+- (AFAudioSessionCoordinationSystemInfo)initWithIsSupportedAndEnabled:(BOOL)enabled homeKitRoomName:(id)name homeKitMediaSystemIdentifier:(id)identifier mediaRemoteGroupIdentifier:(id)groupIdentifier mediaRemoteRouteIdentifier:(id)routeIdentifier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  routeIdentifierCopy = routeIdentifier;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __169__AFAudioSessionCoordinationSystemInfo_initWithIsSupportedAndEnabled_homeKitRoomName_homeKitMediaSystemIdentifier_mediaRemoteGroupIdentifier_mediaRemoteRouteIdentifier___block_invoke;
   v22[3] = &unk_1E7343848;
-  v27 = a3;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  enabledCopy = enabled;
+  v23 = nameCopy;
+  v24 = identifierCopy;
+  v25 = groupIdentifierCopy;
+  v26 = routeIdentifierCopy;
+  v16 = routeIdentifierCopy;
+  v17 = groupIdentifierCopy;
+  v18 = identifierCopy;
+  v19 = nameCopy;
   v20 = [(AFAudioSessionCoordinationSystemInfo *)self initWithBuilder:v22];
 
   return v20;
@@ -289,37 +289,37 @@ void __169__AFAudioSessionCoordinationSystemInfo_initWithIsSupportedAndEnabled_h
   [v4 setMediaRemoteRouteIdentifier:*(a1 + 56)];
 }
 
-- (AFAudioSessionCoordinationSystemInfo)initWithBuilder:(id)a3
+- (AFAudioSessionCoordinationSystemInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = AFAudioSessionCoordinationSystemInfo;
   v5 = [(AFAudioSessionCoordinationSystemInfo *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAudioSessionCoordinationSystemInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAudioSessionCoordinationSystemInfoMutation *)v7 isDirty])
     {
       v6->_isSupportedAndEnabled = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getIsSupportedAndEnabled];
-      v8 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getHomeKitRoomName];
-      v9 = [v8 copy];
+      getHomeKitRoomName = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getHomeKitRoomName];
+      v9 = [getHomeKitRoomName copy];
       homeKitRoomName = v6->_homeKitRoomName;
       v6->_homeKitRoomName = v9;
 
-      v11 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getHomeKitMediaSystemIdentifier];
-      v12 = [v11 copy];
+      getHomeKitMediaSystemIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getHomeKitMediaSystemIdentifier];
+      v12 = [getHomeKitMediaSystemIdentifier copy];
       homeKitMediaSystemIdentifier = v6->_homeKitMediaSystemIdentifier;
       v6->_homeKitMediaSystemIdentifier = v12;
 
-      v14 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getMediaRemoteGroupIdentifier];
-      v15 = [v14 copy];
+      getMediaRemoteGroupIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getMediaRemoteGroupIdentifier];
+      v15 = [getMediaRemoteGroupIdentifier copy];
       mediaRemoteGroupIdentifier = v6->_mediaRemoteGroupIdentifier;
       v6->_mediaRemoteGroupIdentifier = v15;
 
-      v17 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getMediaRemoteRouteIdentifier];
-      v18 = [v17 copy];
+      getMediaRemoteRouteIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v7 getMediaRemoteRouteIdentifier];
+      v18 = [getMediaRemoteRouteIdentifier copy];
       mediaRemoteRouteIdentifier = v6->_mediaRemoteRouteIdentifier;
       v6->_mediaRemoteRouteIdentifier = v18;
     }
@@ -328,42 +328,42 @@ void __169__AFAudioSessionCoordinationSystemInfo_initWithIsSupportedAndEnabled_h
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAudioSessionCoordinationSystemInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAudioSessionCoordinationSystemInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAudioSessionCoordinationSystemInfo);
       v6->_isSupportedAndEnabled = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getIsSupportedAndEnabled];
-      v7 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getHomeKitRoomName];
-      v8 = [v7 copy];
+      getHomeKitRoomName = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getHomeKitRoomName];
+      v8 = [getHomeKitRoomName copy];
       homeKitRoomName = v6->_homeKitRoomName;
       v6->_homeKitRoomName = v8;
 
-      v10 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getHomeKitMediaSystemIdentifier];
-      v11 = [v10 copy];
+      getHomeKitMediaSystemIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getHomeKitMediaSystemIdentifier];
+      v11 = [getHomeKitMediaSystemIdentifier copy];
       homeKitMediaSystemIdentifier = v6->_homeKitMediaSystemIdentifier;
       v6->_homeKitMediaSystemIdentifier = v11;
 
-      v13 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getMediaRemoteGroupIdentifier];
-      v14 = [v13 copy];
+      getMediaRemoteGroupIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getMediaRemoteGroupIdentifier];
+      v14 = [getMediaRemoteGroupIdentifier copy];
       mediaRemoteGroupIdentifier = v6->_mediaRemoteGroupIdentifier;
       v6->_mediaRemoteGroupIdentifier = v14;
 
-      v16 = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getMediaRemoteRouteIdentifier];
-      v17 = [v16 copy];
+      getMediaRemoteRouteIdentifier = [(_AFAudioSessionCoordinationSystemInfoMutation *)v5 getMediaRemoteRouteIdentifier];
+      v17 = [getMediaRemoteRouteIdentifier copy];
       mediaRemoteRouteIdentifier = v6->_mediaRemoteRouteIdentifier;
       v6->_mediaRemoteRouteIdentifier = v17;
     }

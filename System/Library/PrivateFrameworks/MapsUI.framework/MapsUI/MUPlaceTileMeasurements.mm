@@ -6,8 +6,8 @@
 
 + (id)defaultMeasurements
 {
-  v2 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v2 screenScale];
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
   v4 = v3;
 
   v5 = objc_alloc_init(MUPlaceTileMeasurements);

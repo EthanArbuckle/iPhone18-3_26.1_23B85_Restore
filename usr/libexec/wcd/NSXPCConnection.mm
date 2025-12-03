@@ -1,5 +1,5 @@
 @interface NSXPCConnection
-- (BOOL)wc_connectionHasEntitlement:(id)a3;
+- (BOOL)wc_connectionHasEntitlement:(id)entitlement;
 - (BOOL)wc_connectionIsiOSExtension;
 - (NSString)wc_connectionBundleID;
 - (NSString)wc_connectionCommunicationID;
@@ -9,7 +9,7 @@
 
 - (BOOL)wc_connectionIsiOSExtension
 {
-  v2 = [(NSXPCConnection *)self _xpcConnection];
+  _xpcConnection = [(NSXPCConnection *)self _xpcConnection];
   is_extension = xpc_connection_is_extension();
 
   return is_extension;
@@ -32,21 +32,21 @@
 
   if (v3)
   {
-    v6 = [v3 bundleIdentifier];
-    if (v6)
+    bundleIdentifier = [v3 bundleIdentifier];
+    if (bundleIdentifier)
     {
       goto LABEL_10;
     }
   }
 
-  v7 = [(NSXPCConnection *)self _xpcConnection];
+  _xpcConnection = [(NSXPCConnection *)self _xpcConnection];
   v8 = xpc_connection_copy_bundle_id();
 
   if (!v8 || ([NSString stringWithUTF8String:v8], v9 = objc_claimAutoreleasedReturnValue(), free(v8), !v9))
   {
-    v6 = [(NSXPCConnection *)self valueForEntitlement:@"application-identifier"];
+    bundleIdentifier = [(NSXPCConnection *)self valueForEntitlement:@"application-identifier"];
 LABEL_10:
-    v9 = v6;
+    v9 = bundleIdentifier;
   }
 
   return v9;
@@ -54,15 +54,15 @@ LABEL_10:
 
 - (NSString)wc_connectionCommunicationID
 {
-  v3 = [(NSXPCConnection *)self wc_connectionBundleID];
+  wc_connectionBundleID = [(NSXPCConnection *)self wc_connectionBundleID];
   v4 = +[WCDSystemMonitor sharedSystemMonitor];
-  v5 = [v4 applicationWorkspace];
-  v6 = [v5 applicationInfoForBundleIdentifier:v3 type:7];
+  applicationWorkspace = [v4 applicationWorkspace];
+  v6 = [applicationWorkspace applicationInfoForBundleIdentifier:wc_connectionBundleID type:7];
 
-  v7 = [v6 companionAppBundleIdentifier];
-  if (!v7)
+  companionAppBundleIdentifier = [v6 companionAppBundleIdentifier];
+  if (!companionAppBundleIdentifier)
   {
-    v8 = [(NSXPCConnection *)self _xpcConnection];
+    _xpcConnection = [(NSXPCConnection *)self _xpcConnection];
     is_extension = xpc_connection_is_extension();
 
     if (is_extension)
@@ -73,34 +73,34 @@ LABEL_10:
         sub_10002C4EC(v10);
       }
 
-      v7 = 0;
+      companionAppBundleIdentifier = 0;
     }
 
     else
     {
-      v7 = v3;
+      companionAppBundleIdentifier = wc_connectionBundleID;
     }
   }
 
-  v11 = v7;
+  v11 = companionAppBundleIdentifier;
 
-  return v7;
+  return companionAppBundleIdentifier;
 }
 
-- (BOOL)wc_connectionHasEntitlement:(id)a3
+- (BOOL)wc_connectionHasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

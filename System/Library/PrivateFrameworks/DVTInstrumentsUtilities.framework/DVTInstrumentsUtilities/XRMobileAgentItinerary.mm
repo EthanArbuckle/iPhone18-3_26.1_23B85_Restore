@@ -1,16 +1,16 @@
 @interface XRMobileAgentItinerary
-- (void)_visitNextStop:(id)a3;
-- (void)finishedWithMode:(id)a3;
-- (void)setNextStop:(id)a3 mode:(id)a4 ticket:(id)a5 desiredQoS:(unsigned int)a6;
+- (void)_visitNextStop:(id)stop;
+- (void)finishedWithMode:(id)mode;
+- (void)setNextStop:(id)stop mode:(id)mode ticket:(id)ticket desiredQoS:(unsigned int)s;
 @end
 
 @implementation XRMobileAgentItinerary
 
-- (void)_visitNextStop:(id)a3
+- (void)_visitNextStop:(id)stop
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = v4;
+  stopCopy = stop;
+  v9 = stopCopy;
   self->_updated = 0;
   nextMovementType = self->_nextMovementType;
   if ((nextMovementType - 1) < 2)
@@ -32,7 +32,7 @@
       goto LABEL_21;
     }
 
-    objc_msgSend_setMode_(v4, v5, self->_nextMode, v7, v8);
+    objc_msgSend_setMode_(stopCopy, v5, self->_nextMode, v7, v8);
     v11 = self->_nextStop;
     objc_storeStrong((v9 + 8), self->_nextStopTicket);
     *(v9 + 20) = self->_nextQoS;
@@ -54,7 +54,7 @@
         goto LABEL_15;
       }
 
-      objc_msgSend_setMode_(v4, v5, self->_nextMode, v7, v8);
+      objc_msgSend_setMode_(stopCopy, v5, self->_nextMode, v7, v8);
       v11 = self->_finalDestination;
       objc_storeStrong((v9 + 8), self->_finalDestinationTicket);
       *(v9 + 16) = 3;
@@ -139,9 +139,9 @@ LABEL_21:
   __break(1u);
 }
 
-- (void)finishedWithMode:(id)a3
+- (void)finishedWithMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   nextStop = self->_nextStop;
   self->_nextStop = 0;
 
@@ -149,34 +149,34 @@ LABEL_21:
   self->_nextStopTicket = 0;
 
   nextMode = self->_nextMode;
-  self->_nextMode = v4;
+  self->_nextMode = modeCopy;
 
   self->_nextMovementType = 3;
   self->_updated = 1;
 }
 
-- (void)setNextStop:(id)a3 mode:(id)a4 ticket:(id)a5 desiredQoS:(unsigned int)a6
+- (void)setNextStop:(id)stop mode:(id)mode ticket:(id)ticket desiredQoS:(unsigned int)s
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+  stopCopy = stop;
+  modeCopy = mode;
+  ticketCopy = ticket;
+  if (!stopCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     sub_2480B42CC(self);
   }
 
   nextStop = self->_nextStop;
-  self->_nextStop = v10;
-  v14 = v10;
+  self->_nextStop = stopCopy;
+  v14 = stopCopy;
 
   nextStopTicket = self->_nextStopTicket;
-  self->_nextStopTicket = v12;
-  v16 = v12;
+  self->_nextStopTicket = ticketCopy;
+  v16 = ticketCopy;
 
   nextMode = self->_nextMode;
-  self->_nextMode = v11;
+  self->_nextMode = modeCopy;
 
-  self->_nextQoS = a6;
+  self->_nextQoS = s;
   nextMovementType = self->_nextMovementType;
   if (nextMovementType <= 3 && nextMovementType != 1)
   {

@@ -1,14 +1,14 @@
 @interface VCShaders
-- (VCShaders)initWithContext:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (VCShaders)initWithContext:(id)context;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation VCShaders
 
-- (VCShaders)initWithContext:(id)a3
+- (VCShaders)initWithContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_context, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_context, context);
   v6 = 0;
   kernels = self->_kernels;
   v8 = 1;
@@ -30,22 +30,22 @@
     v6 = 1;
     if ((v9 & 1) == 0)
     {
-      v14 = self;
+      selfCopy = self;
       goto LABEL_6;
     }
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_6:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 <= 2)
+  if (subscript <= 2)
   {
-    v4 = self->_kernels[a3];
+    v4 = self->_kernels[subscript];
   }
 
   else

@@ -1173,33 +1173,33 @@ uint64_t __45__SBLocalDefaults_captureApplicationDefaults__block_invoke(uint64_t
 - (void)migrateAndRemoveOldDefaults
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 removeObjectForKey:@"SBShowVictoria"];
-  [v2 removeObjectForKey:@"SBHasAttemptedToSynchronizeCloudCriticalData"];
-  [v2 removePersistentDomainForName:@"com.apple.springboard.bkgndids"];
-  [v2 removeObjectForKey:@"SBCarrierDebuggingAlertVersion"];
-  [v2 removeObjectForKey:@"SBStackshotUIFeedback"];
-  [v2 removeObjectForKey:@"SBMostRecentFloatingApplicationState"];
-  [v2 removeObjectForKey:@"SBShouldShowAppLibraryOnBoardingAlert"];
-  [v2 removeObjectForKey:@"SBShouldShowAvocadoWidgetsOnBoardingAlert"];
-  [v2 removeObjectForKey:@"SBShouldShowPageHidingOnBoardingAlert"];
-  [v2 removeObjectForKey:@"SBHomeScreenPageHidingUIHasEverBeenShown"];
-  v3 = [v2 objectForKey:@"SBShowInternalWidgets"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"SBShowVictoria"];
+  [standardUserDefaults removeObjectForKey:@"SBHasAttemptedToSynchronizeCloudCriticalData"];
+  [standardUserDefaults removePersistentDomainForName:@"com.apple.springboard.bkgndids"];
+  [standardUserDefaults removeObjectForKey:@"SBCarrierDebuggingAlertVersion"];
+  [standardUserDefaults removeObjectForKey:@"SBStackshotUIFeedback"];
+  [standardUserDefaults removeObjectForKey:@"SBMostRecentFloatingApplicationState"];
+  [standardUserDefaults removeObjectForKey:@"SBShouldShowAppLibraryOnBoardingAlert"];
+  [standardUserDefaults removeObjectForKey:@"SBShouldShowAvocadoWidgetsOnBoardingAlert"];
+  [standardUserDefaults removeObjectForKey:@"SBShouldShowPageHidingOnBoardingAlert"];
+  [standardUserDefaults removeObjectForKey:@"SBHomeScreenPageHidingUIHasEverBeenShown"];
+  v3 = [standardUserDefaults objectForKey:@"SBShowInternalWidgets"];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.chronod"];
     [v4 setObject:v3 forKey:@"showInternalWidgets"];
-    [v2 removeObjectForKey:@"SBShowInternalWidgets"];
+    [standardUserDefaults removeObjectForKey:@"SBShowInternalWidgets"];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v2 dictionaryRepresentation];
-  v6 = [v5 allKeys];
+  dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1210,17 +1210,17 @@ uint64_t __45__SBLocalDefaults_captureApplicationDefaults__block_invoke(uint64_t
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
         if ([v11 containsString:@"SBOrientationActuation"])
         {
-          [v2 removeObjectForKey:v11];
+          [standardUserDefaults removeObjectForKey:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

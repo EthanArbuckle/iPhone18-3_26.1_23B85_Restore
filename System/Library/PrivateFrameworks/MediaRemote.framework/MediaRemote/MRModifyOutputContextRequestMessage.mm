@@ -1,6 +1,6 @@
 @interface MRModifyOutputContextRequestMessage
 - (MRGroupTopologyModificationRequest)request;
-- (MRModifyOutputContextRequestMessage)initWithRequest:(id)a3;
+- (MRModifyOutputContextRequestMessage)initWithRequest:(id)request;
 - (NSArray)addingOutputDeviceUIDs;
 - (NSArray)removingOutputDeviceUIDs;
 - (NSArray)settingOutputDeviceUIDs;
@@ -9,9 +9,9 @@
 
 @implementation MRModifyOutputContextRequestMessage
 
-- (MRModifyOutputContextRequestMessage)initWithRequest:(id)a3
+- (MRModifyOutputContextRequestMessage)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = MRModifyOutputContextRequestMessage;
   v5 = [(MRProtocolMessage *)&v13 init];
@@ -22,24 +22,24 @@
 
   v6 = objc_alloc_init(_MRAVModifyOutputContextRequestProtobuf);
   [(_MRAVModifyOutputContextRequestProtobuf *)v6 setOutputContextType:1];
-  v7 = [v4 protobuf];
-  [(_MRAVModifyOutputContextRequestProtobuf *)v6 setRequest:v7];
+  protobuf = [requestCopy protobuf];
+  [(_MRAVModifyOutputContextRequestProtobuf *)v6 setRequest:protobuf];
 
-  v8 = [v4 type];
-  if (v8 > 1)
+  type = [requestCopy type];
+  if (type > 1)
   {
-    if (v8 == 2)
+    if (type == 2)
     {
-      v9 = [v4 outputDeviceUIDs];
-      v10 = [v9 mutableCopy];
+      outputDeviceUIDs = [requestCopy outputDeviceUIDs];
+      v10 = [outputDeviceUIDs mutableCopy];
       [(_MRAVModifyOutputContextRequestProtobuf *)v6 setClusterAwareRemovingOutputDeviceUIDs:v10];
       goto LABEL_11;
     }
 
-    if (v8 == 3)
+    if (type == 3)
     {
-      v9 = [v4 outputDeviceUIDs];
-      v10 = [v9 mutableCopy];
+      outputDeviceUIDs = [requestCopy outputDeviceUIDs];
+      v10 = [outputDeviceUIDs mutableCopy];
       [(_MRAVModifyOutputContextRequestProtobuf *)v6 setClusterAwareSettingOutputDeviceUIDs:v10];
       goto LABEL_11;
     }
@@ -52,12 +52,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v8)
+  if (type)
   {
-    if (v8 == 1)
+    if (type == 1)
     {
-      v9 = [v4 outputDeviceUIDs];
-      v10 = [v9 mutableCopy];
+      outputDeviceUIDs = [requestCopy outputDeviceUIDs];
+      v10 = [outputDeviceUIDs mutableCopy];
       [(_MRAVModifyOutputContextRequestProtobuf *)v6 setClusterAwareAddingOutputDeviceUIDs:v10];
 LABEL_11:
 
@@ -75,16 +75,16 @@ LABEL_14:
 
 - (unsigned)contextType
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputContextType];
-  if (v3 - 1 >= 5)
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputContextType = [underlyingCodableMessage outputContextType];
+  if (outputContextType - 1 >= 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = outputContextType;
   }
 
   return v4;
@@ -94,15 +94,15 @@ LABEL_14:
 {
   if (!self->_request)
   {
-    v3 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v4 = [v3 hasRequest];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    hasRequest = [underlyingCodableMessage hasRequest];
 
-    if (v4)
+    if (hasRequest)
     {
       v5 = [MRGroupTopologyModificationRequest alloc];
-      v6 = [(MRProtocolMessage *)self underlyingCodableMessage];
-      v7 = [(MRRequestDetails *)v6 request];
-      v8 = [(MRGroupTopologyModificationRequest *)v5 initWithProtobuf:v7];
+      underlyingCodableMessage2 = [(MRProtocolMessage *)self underlyingCodableMessage];
+      request = [(MRRequestDetails *)underlyingCodableMessage2 request];
+      v8 = [(MRGroupTopologyModificationRequest *)v5 initWithProtobuf:request];
 LABEL_12:
       request = self->_request;
       self->_request = v8;
@@ -111,53 +111,53 @@ LABEL_12:
     }
 
     v9 = [MRRequestDetails alloc];
-    v10 = [(MRProtocolMessage *)self replyIdentifier];
-    v6 = [(MRRequestDetails *)v9 initWithName:@"MRModifyOutputContextRequestMessage" requestID:v10 reason:@"MRModifyOutputContextRequestMessage"];
+    replyIdentifier = [(MRProtocolMessage *)self replyIdentifier];
+    underlyingCodableMessage2 = [(MRRequestDetails *)v9 initWithName:@"MRModifyOutputContextRequestMessage" requestID:replyIdentifier reason:@"MRModifyOutputContextRequestMessage"];
 
-    v11 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v12 = [v11 clusterAwareAddingOutputDeviceUIDs];
-    v13 = [v12 count];
+    underlyingCodableMessage3 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    clusterAwareAddingOutputDeviceUIDs = [underlyingCodableMessage3 clusterAwareAddingOutputDeviceUIDs];
+    v13 = [clusterAwareAddingOutputDeviceUIDs count];
 
-    v14 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v15 = v14;
+    underlyingCodableMessage4 = [(MRProtocolMessage *)self underlyingCodableMessage];
+    underlyingCodableMessage6 = underlyingCodableMessage4;
     if (v13)
     {
-      v7 = [v14 clusterAwareAddingOutputDeviceUIDs];
+      request = [underlyingCodableMessage4 clusterAwareAddingOutputDeviceUIDs];
       v16 = 1;
     }
 
     else
     {
-      v17 = [v14 clusterAwareRemovingOutputDeviceUIDs];
-      v18 = [v17 count];
+      clusterAwareRemovingOutputDeviceUIDs = [underlyingCodableMessage4 clusterAwareRemovingOutputDeviceUIDs];
+      v18 = [clusterAwareRemovingOutputDeviceUIDs count];
 
-      v19 = [(MRProtocolMessage *)self underlyingCodableMessage];
-      v15 = v19;
+      underlyingCodableMessage5 = [(MRProtocolMessage *)self underlyingCodableMessage];
+      underlyingCodableMessage6 = underlyingCodableMessage5;
       if (v18)
       {
-        v7 = [v19 clusterAwareRemovingOutputDeviceUIDs];
+        request = [underlyingCodableMessage5 clusterAwareRemovingOutputDeviceUIDs];
         v16 = 2;
       }
 
       else
       {
-        v20 = [v19 clusterAwareSettingOutputDeviceUIDs];
-        v16 = [v20 count];
+        clusterAwareSettingOutputDeviceUIDs = [underlyingCodableMessage5 clusterAwareSettingOutputDeviceUIDs];
+        v16 = [clusterAwareSettingOutputDeviceUIDs count];
 
         if (!v16)
         {
-          v7 = 0;
+          request = 0;
           goto LABEL_11;
         }
 
-        v15 = [(MRProtocolMessage *)self underlyingCodableMessage];
-        v7 = [v15 clusterAwareSettingOutputDeviceUIDs];
+        underlyingCodableMessage6 = [(MRProtocolMessage *)self underlyingCodableMessage];
+        request = [underlyingCodableMessage6 clusterAwareSettingOutputDeviceUIDs];
         v16 = 3;
       }
     }
 
 LABEL_11:
-    v8 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v6 type:v16 outputDeviceUIDs:v7];
+    v8 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:underlyingCodableMessage2 type:v16 outputDeviceUIDs:request];
     goto LABEL_12;
   }
 
@@ -169,53 +169,53 @@ LABEL_13:
 
 - (NSArray)addingOutputDeviceUIDs
 {
-  v3 = [(MRModifyOutputContextRequestMessage *)self request];
-  if ([v3 type] == 1)
+  request = [(MRModifyOutputContextRequestMessage *)self request];
+  if ([request type] == 1)
   {
-    v4 = [(MRModifyOutputContextRequestMessage *)self request];
-    v5 = [v4 outputDeviceUIDs];
+    request2 = [(MRModifyOutputContextRequestMessage *)self request];
+    outputDeviceUIDs = [request2 outputDeviceUIDs];
   }
 
   else
   {
-    v5 = 0;
+    outputDeviceUIDs = 0;
   }
 
-  return v5;
+  return outputDeviceUIDs;
 }
 
 - (NSArray)removingOutputDeviceUIDs
 {
-  v3 = [(MRModifyOutputContextRequestMessage *)self request];
-  if ([v3 type] == 2)
+  request = [(MRModifyOutputContextRequestMessage *)self request];
+  if ([request type] == 2)
   {
-    v4 = [(MRModifyOutputContextRequestMessage *)self request];
-    v5 = [v4 outputDeviceUIDs];
+    request2 = [(MRModifyOutputContextRequestMessage *)self request];
+    outputDeviceUIDs = [request2 outputDeviceUIDs];
   }
 
   else
   {
-    v5 = 0;
+    outputDeviceUIDs = 0;
   }
 
-  return v5;
+  return outputDeviceUIDs;
 }
 
 - (NSArray)settingOutputDeviceUIDs
 {
-  v3 = [(MRModifyOutputContextRequestMessage *)self request];
-  if ([v3 type] == 3)
+  request = [(MRModifyOutputContextRequestMessage *)self request];
+  if ([request type] == 3)
   {
-    v4 = [(MRModifyOutputContextRequestMessage *)self request];
-    v5 = [v4 outputDeviceUIDs];
+    request2 = [(MRModifyOutputContextRequestMessage *)self request];
+    outputDeviceUIDs = [request2 outputDeviceUIDs];
   }
 
   else
   {
-    v5 = 0;
+    outputDeviceUIDs = 0;
   }
 
-  return v5;
+  return outputDeviceUIDs;
 }
 
 @end

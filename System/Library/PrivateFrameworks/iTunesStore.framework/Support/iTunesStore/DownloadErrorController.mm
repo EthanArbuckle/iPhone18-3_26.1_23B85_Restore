@@ -1,13 +1,13 @@
 @interface DownloadErrorController
 + (id)sharedErrorController;
 - (DownloadErrorController)init;
-- (void)_cancelErrorsPassingTest:(id)a3;
+- (void)_cancelErrorsPassingTest:(id)test;
 - (void)_displayScheduledErrors;
-- (void)_networkTypeChangedNotification:(id)a3;
-- (void)_scheduleErrorDisplay:(id)a3;
-- (void)cancelDialogsWithDownloadIdentifier:(int64_t)a3;
+- (void)_networkTypeChangedNotification:(id)notification;
+- (void)_scheduleErrorDisplay:(id)display;
+- (void)cancelDialogsWithDownloadIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)showDownloadError:(id)a3;
+- (void)showDownloadError:(id)error;
 @end
 
 @implementation DownloadErrorController
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_100185A9C;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383F80 != -1)
   {
     dispatch_once(&qword_100383F80, block);
@@ -62,7 +62,7 @@
   return qword_100383F78;
 }
 
-- (void)cancelDialogsWithDownloadIdentifier:(int64_t)a3
+- (void)cancelDialogsWithDownloadIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -70,13 +70,13 @@
   v4[2] = sub_100185B38;
   v4[3] = &unk_100327808;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)showDownloadError:(id)a3
+- (void)showDownloadError:(id)error
 {
-  v4 = [a3 copy];
+  v4 = [error copy];
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -87,9 +87,9 @@
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)_networkTypeChangedNotification:(id)a3
+- (void)_networkTypeChangedNotification:(id)notification
 {
-  if ([+[ISNetworkObserver networkType:a3]]>= 1)
+  if ([+[ISNetworkObserver networkType:notification]]>= 1)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -101,7 +101,7 @@
   }
 }
 
-- (void)_cancelErrorsPassingTest:(id)a3
+- (void)_cancelErrorsPassingTest:(id)test
 {
   v9 = objc_alloc_init(NSMutableArray);
   v5 = [(NSMutableArray *)self->_errors count];
@@ -111,12 +111,12 @@
     do
     {
       v7 = [(NSMutableArray *)self->_errors objectAtIndex:v6 - 2];
-      if ((*(a3 + 2))(a3, v7))
+      if ((*(test + 2))(test, v7))
       {
-        v8 = [v7 _notification];
-        if (v8)
+        _notification = [v7 _notification];
+        if (_notification)
         {
-          [v9 addObject:v8];
+          [v9 addObject:_notification];
         }
 
         [(NSMutableOrderedSet *)self->_scheduledErrors removeObject:v7];
@@ -154,7 +154,7 @@
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 copyUserNotification];
+        copyUserNotification = [v7 copyUserNotification];
         v9 = +[UserNotificationCenter defaultCenter];
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
@@ -162,7 +162,7 @@
         v12[3] = &unk_10032A7B0;
         v12[4] = v7;
         v12[5] = self;
-        [v7 _setNotification:{objc_msgSend(v9, "showUserNotification:withCompletionBlock:", v8, v12)}];
+        [v7 _setNotification:{objc_msgSend(v9, "showUserNotification:withCompletionBlock:", copyUserNotification, v12)}];
       }
 
       v4 = [(NSMutableOrderedSet *)obj countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -186,14 +186,14 @@
   }
 }
 
-- (void)_scheduleErrorDisplay:(id)a3
+- (void)_scheduleErrorDisplay:(id)display
 {
   if (![(NSMutableOrderedSet *)self->_scheduledErrors count])
   {
     [+[Daemon daemon](Daemon "daemon")];
   }
 
-  [(NSMutableOrderedSet *)self->_scheduledErrors addObject:a3];
+  [(NSMutableOrderedSet *)self->_scheduledErrors addObject:display];
   if (!self->_scheduledErrorTimer)
   {
     v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);

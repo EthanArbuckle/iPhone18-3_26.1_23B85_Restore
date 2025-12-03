@@ -13,61 +13,61 @@
   v4 = [(CoreDAVItem *)&v44 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVErrorItem *)self status];
+  status = [(CoreDAVErrorItem *)self status];
 
-  if (v5)
+  if (status)
   {
-    v6 = [(CoreDAVErrorItem *)self status];
-    v7 = [v6 payloadAsString];
-    [v3 appendFormat:@"\n  Status: [%@]", v7];
+    status2 = [(CoreDAVErrorItem *)self status];
+    payloadAsString = [status2 payloadAsString];
+    [v3 appendFormat:@"\n  Status: [%@]", payloadAsString];
   }
 
-  v8 = [(CoreDAVErrorItem *)self numberOfMatchesWithinLimits];
+  numberOfMatchesWithinLimits = [(CoreDAVErrorItem *)self numberOfMatchesWithinLimits];
 
-  if (v8)
+  if (numberOfMatchesWithinLimits)
   {
-    v9 = [(CoreDAVErrorItem *)self numberOfMatchesWithinLimits];
-    [v3 appendFormat:@"\n  Number of matches within limits: [%@]", v9];
+    numberOfMatchesWithinLimits2 = [(CoreDAVErrorItem *)self numberOfMatchesWithinLimits];
+    [v3 appendFormat:@"\n  Number of matches within limits: [%@]", numberOfMatchesWithinLimits2];
   }
 
-  v10 = [(CoreDAVErrorItem *)self validSyncToken];
+  validSyncToken = [(CoreDAVErrorItem *)self validSyncToken];
 
-  if (v10)
+  if (validSyncToken)
   {
-    v11 = [(CoreDAVErrorItem *)self validSyncToken];
-    [v3 appendFormat:@"\n  Valid sync token: [%@]", v11];
+    validSyncToken2 = [(CoreDAVErrorItem *)self validSyncToken];
+    [v3 appendFormat:@"\n  Valid sync token: [%@]", validSyncToken2];
   }
 
-  v12 = [(CoreDAVErrorItem *)self noUIDConflict];
+  noUIDConflict = [(CoreDAVErrorItem *)self noUIDConflict];
 
-  if (v12)
+  if (noUIDConflict)
   {
-    v13 = [(CoreDAVErrorItem *)self noUIDConflict];
-    [v3 appendFormat:@"\n  No UID conflict: [%@]", v13];
+    noUIDConflict2 = [(CoreDAVErrorItem *)self noUIDConflict];
+    [v3 appendFormat:@"\n  No UID conflict: [%@]", noUIDConflict2];
   }
 
-  v14 = [(CoreDAVErrorItem *)self validAddressData];
+  validAddressData = [(CoreDAVErrorItem *)self validAddressData];
 
-  if (v14)
+  if (validAddressData)
   {
-    v15 = [(CoreDAVErrorItem *)self validAddressData];
-    [v3 appendFormat:@"\n  Valid Address Data: [%@]", v15];
+    validAddressData2 = [(CoreDAVErrorItem *)self validAddressData];
+    [v3 appendFormat:@"\n  Valid Address Data: [%@]", validAddressData2];
   }
 
-  v16 = [(CoreDAVErrorItem *)self maxResourceSize];
+  maxResourceSize = [(CoreDAVErrorItem *)self maxResourceSize];
 
-  if (v16)
+  if (maxResourceSize)
   {
-    v17 = [(CoreDAVErrorItem *)self maxResourceSize];
-    [v3 appendFormat:@"\n  Max resource size: [%@]", v17];
+    maxResourceSize2 = [(CoreDAVErrorItem *)self maxResourceSize];
+    [v3 appendFormat:@"\n  Max resource size: [%@]", maxResourceSize2];
   }
 
-  v18 = [(CoreDAVErrorItem *)self ctagOkay];
+  ctagOkay = [(CoreDAVErrorItem *)self ctagOkay];
 
-  if (v18)
+  if (ctagOkay)
   {
-    v19 = [(CoreDAVErrorItem *)self ctagOkay];
-    [v3 appendFormat:@"\n  ctag okay: [%@]", v19];
+    ctagOkay2 = [(CoreDAVErrorItem *)self ctagOkay];
+    [v3 appendFormat:@"\n  ctag okay: [%@]", ctagOkay2];
   }
 
   v20 = [(CoreDAVErrorItem *)self uid];
@@ -75,70 +75,70 @@
   if (v20)
   {
     v21 = [(CoreDAVErrorItem *)self uid];
-    v22 = [v21 payloadAsString];
-    [v3 appendFormat:@"\n  uid: [%@]", v22];
+    payloadAsString2 = [v21 payloadAsString];
+    [v3 appendFormat:@"\n  uid: [%@]", payloadAsString2];
   }
 
-  v23 = [(CoreDAVErrorItem *)self maxImageSize];
+  maxImageSize = [(CoreDAVErrorItem *)self maxImageSize];
 
-  if (v23)
+  if (maxImageSize)
   {
-    v24 = [(CoreDAVErrorItem *)self maxImageSize];
-    v25 = [v24 payloadAsString];
-    [v3 appendFormat:@"\n  Max Image Size: [%@]", v25];
+    maxImageSize2 = [(CoreDAVErrorItem *)self maxImageSize];
+    payloadAsString3 = [maxImageSize2 payloadAsString];
+    [v3 appendFormat:@"\n  Max Image Size: [%@]", payloadAsString3];
   }
 
-  v26 = [(CoreDAVErrorItem *)self invalidImageType];
+  invalidImageType = [(CoreDAVErrorItem *)self invalidImageType];
 
-  if (v26)
+  if (invalidImageType)
   {
-    v27 = [(CoreDAVErrorItem *)self invalidImageType];
-    v28 = [v27 payloadAsString];
-    [v3 appendFormat:@"\n  Invalid Image Type: [%@]", v28];
+    invalidImageType2 = [(CoreDAVErrorItem *)self invalidImageType];
+    payloadAsString4 = [invalidImageType2 payloadAsString];
+    [v3 appendFormat:@"\n  Invalid Image Type: [%@]", payloadAsString4];
   }
 
-  v29 = [(CoreDAVErrorItem *)self imageError];
+  imageError = [(CoreDAVErrorItem *)self imageError];
 
-  if (v29)
+  if (imageError)
   {
-    v30 = [(CoreDAVErrorItem *)self imageError];
-    v31 = [v30 payloadAsString];
-    [v3 appendFormat:@"\n  Image Error: [%@]", v31];
+    imageError2 = [(CoreDAVErrorItem *)self imageError];
+    payloadAsString5 = [imageError2 payloadAsString];
+    [v3 appendFormat:@"\n  Image Error: [%@]", payloadAsString5];
   }
 
-  v32 = [(CoreDAVErrorItem *)self maxAttendees];
+  maxAttendees = [(CoreDAVErrorItem *)self maxAttendees];
 
-  if (v32)
+  if (maxAttendees)
   {
-    v33 = [(CoreDAVErrorItem *)self maxAttendees];
-    v34 = [v33 payloadAsString];
-    [v3 appendFormat:@"\n  Max Attendees Per Instance: [%@]", v34];
+    maxAttendees2 = [(CoreDAVErrorItem *)self maxAttendees];
+    payloadAsString6 = [maxAttendees2 payloadAsString];
+    [v3 appendFormat:@"\n  Max Attendees Per Instance: [%@]", payloadAsString6];
   }
 
-  v35 = [(CoreDAVErrorItem *)self quotaExceeded];
+  quotaExceeded = [(CoreDAVErrorItem *)self quotaExceeded];
 
-  if (v35)
+  if (quotaExceeded)
   {
-    v36 = [(CoreDAVErrorItem *)self quotaExceeded];
-    v37 = [v36 payloadAsString];
-    [v3 appendFormat:@"\n  Quota Exceeded: [%@]", v37];
+    quotaExceeded2 = [(CoreDAVErrorItem *)self quotaExceeded];
+    payloadAsString7 = [quotaExceeded2 payloadAsString];
+    [v3 appendFormat:@"\n  Quota Exceeded: [%@]", payloadAsString7];
   }
 
-  v38 = [(CoreDAVErrorItem *)self maxResources];
+  maxResources = [(CoreDAVErrorItem *)self maxResources];
 
-  if (v38)
+  if (maxResources)
   {
-    v39 = [(CoreDAVErrorItem *)self maxResources];
-    v40 = [v39 payloadAsString];
-    [v3 appendFormat:@"\n  Max Resources Exceeded: [%@]", v40];
+    maxResources2 = [(CoreDAVErrorItem *)self maxResources];
+    payloadAsString8 = [maxResources2 payloadAsString];
+    [v3 appendFormat:@"\n  Max Resources Exceeded: [%@]", payloadAsString8];
   }
 
-  v41 = [(CoreDAVErrorItem *)self guardianRestricted];
+  guardianRestricted = [(CoreDAVErrorItem *)self guardianRestricted];
 
-  if (v41)
+  if (guardianRestricted)
   {
-    v42 = [(CoreDAVErrorItem *)self guardianRestricted];
-    [v3 appendFormat:@"\n  Container is guardian restricted: [%@]", v42];
+    guardianRestricted2 = [(CoreDAVErrorItem *)self guardianRestricted];
+    [v3 appendFormat:@"\n  Container is guardian restricted: [%@]", guardianRestricted2];
   }
 
   return v3;
@@ -147,7 +147,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -192,7 +192,7 @@
     v5 = [v22 initWithObjectsAndKeys:{v45, v44, v43, v42, v41, v40, v39, v38, v37, v36, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v24, v20, v19, v18, v17, v16, v21, v15, v23, v14, v13, v12, v11, v6, v7, 0}];
 
     v8 = +[CoreDAVItem parseRuleCache];
-    v9 = NSStringFromClass(a1);
+    v9 = NSStringFromClass(self);
     [v8 setObject:v5 forKey:v9];
   }
 

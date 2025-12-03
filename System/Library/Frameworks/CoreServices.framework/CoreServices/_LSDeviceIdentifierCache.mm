@@ -1,15 +1,15 @@
 @interface _LSDeviceIdentifierCache
-- (_LSDeviceIdentifierCache)initWithPersona:(id)a3;
+- (_LSDeviceIdentifierCache)initWithPersona:(id)persona;
 - (id)allIdentifiersNotDispatched;
-- (id)applyPerUserEntropyNotDispatched:(id)a3 type:(int64_t)a4;
+- (id)applyPerUserEntropyNotDispatched:(id)dispatched type:(int64_t)type;
 - (id)deviceIdentifierVendorSeed;
-- (id)extractUUIDForKey:(id)a3;
+- (id)extractUUIDForKey:(id)key;
 - (id)generateSomePerUserEntropyNotDispatched;
-- (id)identifiersOfTypeNotDispatched:(int64_t)a3;
-- (void)clearAllIdentifiersOfType:(int64_t)a3;
-- (void)clearIdentifiersForUninstallationWithVendorName:(id)a3 bundleIdentifier:(id)a4;
+- (id)identifiersOfTypeNotDispatched:(int64_t)dispatched;
+- (void)clearAllIdentifiersOfType:(int64_t)type;
+- (void)clearIdentifiersForUninstallationWithVendorName:(id)name bundleIdentifier:(id)identifier;
 - (void)generatePerUserEntropyIfNeededNotDispatched;
-- (void)getIdentifierOfType:(int64_t)a3 vendorName:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6;
+- (void)getIdentifierOfType:(int64_t)type vendorName:(id)name bundleIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)save;
 @end
 
@@ -53,8 +53,8 @@ LABEL_5:
 
       if (v9)
       {
-        v10 = [MEMORY[0x1E695DF90] dictionary];
-        [(NSDictionary *)self->_identifiers setObject:v10 forKeyedSubscript:@"LSVendors"];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [(NSDictionary *)self->_identifiers setObject:dictionary forKeyedSubscript:@"LSVendors"];
 
         [(_LSDeviceIdentifierCache *)self save];
       }
@@ -71,9 +71,9 @@ LABEL_5:
     }
 
     v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:@"/var/db/lsd/com.apple.lsdidentifiers.plist" isDirectory:0];
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = [v15 path];
-    v18 = [v16 fileExistsAtPath:v17];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v15 path];
+    v18 = [defaultManager fileExistsAtPath:path];
 
     if (v18)
     {
@@ -98,8 +98,8 @@ LABEL_5:
         }
       }
 
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
-      [v22 removeItemAtURL:v15 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtURL:v15 error:0];
 
       if (!v20)
       {
@@ -121,8 +121,8 @@ LABEL_21:
       _os_log_impl(&dword_18162D000, v24, OS_LOG_TYPE_DEFAULT, "Creating identifiers table for the first time.", buf, 2u);
     }
 
-    v25 = [MEMORY[0x1E695DF90] dictionary];
-    v32 = v25;
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    v32 = dictionary2;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v27 = [v26 copy];
     v28 = self->_identifiers;
@@ -171,18 +171,18 @@ LABEL_21:
 
       if (!self->_perUserEntropy)
       {
-        v12 = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
-        v13 = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
-        v14 = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
-        v15 = v14;
-        if (v12 && v14)
+        generateSomePerUserEntropyNotDispatched = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
+        generateSomePerUserEntropyNotDispatched2 = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
+        generateSomePerUserEntropyNotDispatched3 = [(_LSDeviceIdentifierCache *)self generateSomePerUserEntropyNotDispatched];
+        v15 = generateSomePerUserEntropyNotDispatched3;
+        if (generateSomePerUserEntropyNotDispatched && generateSomePerUserEntropyNotDispatched3)
         {
           v23[0] = &unk_1EEF8EF60;
           v23[1] = &unk_1EEF8EF78;
-          v24[0] = v12;
-          v24[1] = v14;
+          v24[0] = generateSomePerUserEntropyNotDispatched;
+          v24[1] = generateSomePerUserEntropyNotDispatched3;
           v23[2] = &unk_1EEF8EF90;
-          v24[2] = v13;
+          v24[2] = generateSomePerUserEntropyNotDispatched2;
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
           v17 = self->_perUserEntropy;
           self->_perUserEntropy = v16;
@@ -220,9 +220,9 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (_LSDeviceIdentifierCache)initWithPersona:(id)a3
+- (_LSDeviceIdentifierCache)initWithPersona:(id)persona
 {
-  v5 = a3;
+  personaCopy = persona;
   v20.receiver = self;
   v20.super_class = _LSDeviceIdentifierCache;
   v6 = [(_LSDeviceIdentifierCache *)&v20 init];
@@ -230,7 +230,7 @@ LABEL_21:
   _LSAssertRunningInServer("[_LSDeviceIdentifierCache initWithPersona:]");
   if (v6)
   {
-    objc_storeStrong(&v6->_personaUniqueString, a3);
+    objc_storeStrong(&v6->_personaUniqueString, persona);
     identifiers = v6->_identifiers;
     v6->_identifiers = 0;
 
@@ -242,66 +242,66 @@ LABEL_21:
     queue = v6->_queue;
     v6->_queue = v11;
 
-    if (v5 && [v5 length])
+    if (personaCopy && [personaCopy length])
     {
-      v13 = [__LSDefaultsGetSharedInstance() identifiersFileURL];
-      v14 = [v13 URLByDeletingPathExtension];
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v5];
-      v16 = [v14 URLByAppendingPathExtension:v15];
+      identifiersFileURL = [__LSDefaultsGetSharedInstance() identifiersFileURL];
+      uRLByDeletingPathExtension = [identifiersFileURL URLByDeletingPathExtension];
+      personaCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", personaCopy];
+      v16 = [uRLByDeletingPathExtension URLByAppendingPathExtension:personaCopy];
       identifiersFileURL = v7->_identifiersFileURL;
       v7->_identifiersFileURL = v16;
     }
 
     else
     {
-      v18 = [__LSDefaultsGetSharedInstance() identifiersFileURL];
-      v13 = v6->_identifiersFileURL;
-      v6->_identifiersFileURL = v18;
+      identifiersFileURL2 = [__LSDefaultsGetSharedInstance() identifiersFileURL];
+      identifiersFileURL = v6->_identifiersFileURL;
+      v6->_identifiersFileURL = identifiersFileURL2;
     }
   }
 
   return v7;
 }
 
-- (void)getIdentifierOfType:(int64_t)a3 vendorName:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6
+- (void)getIdentifierOfType:(int64_t)type vendorName:(id)name bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94___LSDeviceIdentifierCache_getIdentifierOfType_vendorName_bundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E6A1BD10;
-  v18 = v10;
-  v19 = v11;
-  v21 = v12;
-  v22 = a3;
-  v20 = self;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = nameCopy;
+  v19 = identifierCopy;
+  v21 = handlerCopy;
+  typeCopy = type;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = nameCopy;
   dispatch_async(queue, block);
 }
 
-- (void)clearIdentifiersForUninstallationWithVendorName:(id)a3 bundleIdentifier:(id)a4
+- (void)clearIdentifiersForUninstallationWithVendorName:(id)name bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93___LSDeviceIdentifierCache_clearIdentifiersForUninstallationWithVendorName_bundleIdentifier___block_invoke;
   block[3] = &unk_1E6A1B140;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = identifierCopy;
+  selfCopy = self;
+  v9 = identifierCopy;
+  v10 = nameCopy;
   dispatch_async(queue, block);
 }
 
-- (void)clearAllIdentifiersOfType:(int64_t)a3
+- (void)clearAllIdentifiersOfType:(int64_t)type
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -309,7 +309,7 @@ LABEL_21:
   v4[2] = __54___LSDeviceIdentifierCache_clearAllIdentifiersOfType___block_invoke;
   v4[3] = &unk_1E6A18D78;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(queue, v4);
 }
 
@@ -342,39 +342,39 @@ LABEL_21:
   return v2;
 }
 
-- (id)applyPerUserEntropyNotDispatched:(id)a3 type:(int64_t)a4
+- (id)applyPerUserEntropyNotDispatched:(id)dispatched type:(int64_t)type
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dispatchedCopy = dispatched;
   [(_LSDeviceIdentifierCache *)self generatePerUserEntropyIfNeededNotDispatched];
-  if (v6)
+  if (dispatchedCopy)
   {
     perUserEntropy = self->_perUserEntropy;
-    v8 = v6;
+    v8 = dispatchedCopy;
     if (perUserEntropy)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       v10 = [(NSDictionary *)perUserEntropy objectForKeyedSubscript:v9];
       v11 = [v10 length];
 
-      v8 = v6;
+      v8 = dispatchedCopy;
       if (v11)
       {
         v22[0] = 0;
         v22[1] = 0;
-        [v6 getUUIDBytes:v22];
+        [dispatchedCopy getUUIDBytes:v22];
         v12 = MEMORY[0x1E695DF88];
         v13 = self->_perUserEntropy;
-        v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+        v14 = [MEMORY[0x1E696AD98] numberWithInteger:type];
         v15 = [(NSDictionary *)v13 objectForKeyedSubscript:v14];
         v16 = [v12 dataWithCapacity:{objc_msgSend(v15, "length") + 16}];
 
-        v8 = v6;
+        v8 = dispatchedCopy;
         if (v16)
         {
           [v16 appendBytes:v22 length:16];
           v17 = self->_perUserEntropy;
-          v18 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+          v18 = [MEMORY[0x1E696AD98] numberWithInteger:type];
           v19 = [(NSDictionary *)v17 objectForKeyedSubscript:v18];
           [v16 appendData:v19];
 
@@ -394,14 +394,14 @@ LABEL_21:
   return v8;
 }
 
-- (id)extractUUIDForKey:(id)a3
+- (id)extractUUIDForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_identifiers objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self->_identifiers objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v5];
-    [(NSDictionary *)self->_identifiers removeObjectForKey:v4];
+    [(NSDictionary *)self->_identifiers removeObjectForKey:keyCopy];
   }
 
   else
@@ -412,16 +412,16 @@ LABEL_21:
   return v6;
 }
 
-- (id)identifiersOfTypeNotDispatched:(int64_t)a3
+- (id)identifiersOfTypeNotDispatched:(int64_t)dispatched
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [(_LSDeviceIdentifierCache *)self allIdentifiersNotDispatched];
-  v5 = v4;
-  if (v4 && (a3 - 1) >= 2)
+  allIdentifiersNotDispatched = [(_LSDeviceIdentifierCache *)self allIdentifiersNotDispatched];
+  v5 = allIdentifiersNotDispatched;
+  if (allIdentifiersNotDispatched && (dispatched - 1) >= 2)
   {
-    if (!a3)
+    if (!dispatched)
     {
-      v6 = [v4 objectForKeyedSubscript:@"LSVendors"];
+      v6 = [allIdentifiersNotDispatched objectForKeyedSubscript:@"LSVendors"];
       goto LABEL_9;
     }
 
@@ -429,7 +429,7 @@ LABEL_21:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10[0] = 67109120;
-      v10[1] = a3;
+      v10[1] = dispatched;
       _os_log_impl(&dword_18162D000, v7, OS_LOG_TYPE_DEFAULT, "Failed to figure out string representation of identifier type %i", v10, 8u);
     }
   }
@@ -448,9 +448,9 @@ LABEL_9:
   vendorIdentifierSeed = self->_vendorIdentifierSeed;
   if (!vendorIdentifierSeed)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v5 = self->_vendorIdentifierSeed;
-    self->_vendorIdentifierSeed = v4;
+    self->_vendorIdentifierSeed = uUID;
 
     v6 = _LSDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))

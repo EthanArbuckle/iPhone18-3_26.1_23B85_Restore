@@ -1,31 +1,31 @@
 @interface HDOntologyMedsScanningResourcesImporter
-+ (BOOL)_deleteVisionAssetWithShardRegistry:(id)a3 reason:(id)a4 error:(id *)a5;
-+ (BOOL)_validateVisionAssetIntegrity:(id)a3 error:(id *)a4;
-+ (BOOL)canImportEntry:(id)a3;
-+ (BOOL)importOntologyShardEntry:(id)a3 shardRegistry:(id)a4 error:(id *)a5;
-+ (id)_visionAssetPathWithRegistry:(id)a3;
-+ (id)pruneEntries:(id)a3 options:(unint64_t)a4 shardRegistry:(id)a5 error:(id *)a6;
-+ (int64_t)purgeableSpaceForUrgency:(int)a3 shardRegistry:(id)a4;
++ (BOOL)_deleteVisionAssetWithShardRegistry:(id)registry reason:(id)reason error:(id *)error;
++ (BOOL)_validateVisionAssetIntegrity:(id)integrity error:(id *)error;
++ (BOOL)canImportEntry:(id)entry;
++ (BOOL)importOntologyShardEntry:(id)entry shardRegistry:(id)registry error:(id *)error;
++ (id)_visionAssetPathWithRegistry:(id)registry;
++ (id)pruneEntries:(id)entries options:(unint64_t)options shardRegistry:(id)registry error:(id *)error;
++ (int64_t)purgeableSpaceForUrgency:(int)urgency shardRegistry:(id)registry;
 @end
 
 @implementation HDOntologyMedsScanningResourcesImporter
 
-+ (BOOL)canImportEntry:(id)a3
++ (BOOL)canImportEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 schemaType];
+  entryCopy = entry;
+  schemaType = [entryCopy schemaType];
   v5 = *MEMORY[0x277CCC628];
-  if (v4 == *MEMORY[0x277CCC628])
+  if (schemaType == *MEMORY[0x277CCC628])
   {
-    LOBYTE(v5) = [v3 schemaVersion] == 2;
+    LOBYTE(v5) = [entryCopy schemaVersion] == 2;
   }
 
   else if (v5)
   {
-    v6 = [v3 schemaType];
-    if ([v6 isEqualToString:v5])
+    schemaType2 = [entryCopy schemaType];
+    if ([schemaType2 isEqualToString:v5])
     {
-      LOBYTE(v5) = [v3 schemaVersion] == 2;
+      LOBYTE(v5) = [entryCopy schemaVersion] == 2;
     }
 
     else
@@ -37,33 +37,33 @@
   return v5;
 }
 
-+ (BOOL)importOntologyShardEntry:(id)a3 shardRegistry:(id)a4 error:(id *)a5
++ (BOOL)importOntologyShardEntry:(id)entry shardRegistry:(id)registry error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([a1 canImportEntry:v8])
+  entryCopy = entry;
+  registryCopy = registry;
+  if ([self canImportEntry:entryCopy])
   {
-    v10 = [a1 _visionAssetPathWithRegistry:v9];
+    schemaType = [self _visionAssetPathWithRegistry:registryCopy];
     v11 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    if ([v11 fileExistsAtPath:v10] && !objc_msgSend(v11, "removeItemAtPath:error:", v10, a5))
+    if ([v11 fileExistsAtPath:schemaType] && !objc_msgSend(v11, "removeItemAtPath:error:", schemaType, error))
     {
       goto LABEL_8;
     }
 
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
-    v13 = [v11 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:a5];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:schemaType];
+    v13 = [v11 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:error];
 
     if (!v13)
     {
       goto LABEL_8;
     }
 
-    v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
-    v15 = [v9 unzipStagedShardFileForEntry:v8 toURL:v14 error:a5];
+    v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:schemaType];
+    v15 = [registryCopy unzipStagedShardFileForEntry:entryCopy toURL:v14 error:error];
 
     if (v15)
     {
-      v16 = [a1 _validateVisionAssetIntegrity:v10 error:a5];
+      v16 = [self _validateVisionAssetIntegrity:schemaType error:error];
     }
 
     else
@@ -77,8 +77,8 @@ LABEL_8:
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = objc_opt_class();
-    v10 = [v8 schemaType];
-    [v17 hk_assignError:a5 code:3 format:{@"%@ cannot import entry with schema type (%@, %ld)", v18, v10, objc_msgSend(v8, "schemaVersion")}];
+    schemaType = [entryCopy schemaType];
+    [v17 hk_assignError:error code:3 format:{@"%@ cannot import entry with schema type (%@, %ld)", v18, schemaType, objc_msgSend(entryCopy, "schemaVersion")}];
     v16 = 0;
   }
 
@@ -102,12 +102,12 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
   return v3;
 }
 
-+ (id)pruneEntries:(id)a3 options:(unint64_t)a4 shardRegistry:(id)a5 error:(id *)a6
++ (id)pruneEntries:(id)entries options:(unint64_t)options shardRegistry:(id)registry error:(id *)error
 {
-  v9 = a3;
-  if ([a1 _deleteVisionAssetWithShardRegistry:a5 reason:@"Prune request" error:a6])
+  entriesCopy = entries;
+  if ([self _deleteVisionAssetWithShardRegistry:registry reason:@"Prune request" error:error])
   {
-    v10 = v9;
+    v10 = entriesCopy;
   }
 
   else
@@ -118,12 +118,12 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
   return v10;
 }
 
-+ (int64_t)purgeableSpaceForUrgency:(int)a3 shardRegistry:(id)a4
++ (int64_t)purgeableSpaceForUrgency:(int)urgency shardRegistry:(id)registry
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 == 4)
+  if (urgency == 4)
   {
-    v5 = [a1 _visionAssetPathWithRegistry:a4];
+    v5 = [self _visionAssetPathWithRegistry:registry];
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
     v14 = 0;
     v7 = [v6 hk_fileSizeWithError:&v14];
@@ -131,7 +131,7 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
     v9 = v8;
     if (v7 || ([v8 hk_isCocoaNoSuchFileError] & 1) != 0)
     {
-      v10 = [v7 longLongValue];
+      longLongValue = [v7 longLongValue];
     }
 
     else
@@ -141,7 +141,7 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v16 = a1;
+        selfCopy = self;
         v17 = 2114;
         v18 = v5;
         v19 = 2114;
@@ -149,35 +149,35 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
         _os_log_error_impl(&dword_25181C000, v13, OS_LOG_TYPE_ERROR, "%{public}@: Error getting size of '%{public}@': %{public}@", buf, 0x20u);
       }
 
-      v10 = 0;
+      longLongValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    longLongValue = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return longLongValue;
 }
 
-+ (id)_visionAssetPathWithRegistry:(id)a3
++ (id)_visionAssetPathWithRegistry:(id)registry
 {
-  v3 = [a3 daemon];
-  v4 = [v3 healthDirectoryPath];
+  daemon = [registry daemon];
+  healthDirectoryPath = [daemon healthDirectoryPath];
 
-  v5 = [v4 stringByAppendingPathComponent:@"vision"];
+  v5 = [healthDirectoryPath stringByAppendingPathComponent:@"vision"];
 
   return v5;
 }
 
-+ (BOOL)_validateVisionAssetIntegrity:(id)a3 error:(id *)a4
++ (BOOL)_validateVisionAssetIntegrity:(id)integrity error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
+  integrityCopy = integrity;
   v7 = objc_alloc_init(v5);
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:a4];
+  v8 = [v7 contentsOfDirectoryAtPath:integrityCopy error:error];
 
   if (v8)
   {
@@ -187,10 +187,10 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
     if ((v11 & 1) == 0)
     {
       v12 = [v9 hk_minus:v10];
-      v13 = [v12 allObjects];
-      v14 = [v13 componentsJoinedByString:@" - "];
+      allObjects = [v12 allObjects];
+      v14 = [allObjects componentsJoinedByString:@" - "];
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:106 format:{@"Vision asset missing required file: %@", v14}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:106 format:{@"Vision asset missing required file: %@", v14}];
     }
   }
 
@@ -202,22 +202,22 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
   return v11;
 }
 
-+ (BOOL)_deleteVisionAssetWithShardRegistry:(id)a3 reason:(id)a4 error:(id *)a5
++ (BOOL)_deleteVisionAssetWithShardRegistry:(id)registry reason:(id)reason error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a1 _visionAssetPathWithRegistry:a3];
+  reasonCopy = reason;
+  v9 = [self _visionAssetPathWithRegistry:registry];
   v10 = objc_alloc_init(MEMORY[0x277CCAA00]);
   _HKInitializeLogging();
   v11 = HKLogMedication();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v23 = a1;
+    selfCopy2 = self;
     v24 = 2114;
     v25 = v9;
     v26 = 2114;
-    v27 = v8;
+    v27 = reasonCopy;
     _os_log_impl(&dword_25181C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing asset directory '%{public}@' for %{public}@", buf, 0x20u);
   }
 
@@ -237,11 +237,11 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v23 = a1;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v9;
       v26 = 2114;
-      v27 = v8;
+      v27 = reasonCopy;
       v28 = 2114;
       v29 = v14;
       _os_log_error_impl(&dword_25181C000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Error removing asset directory for %{public}@ '%{public}@': %{public}@", buf, 0x2Au);
@@ -250,10 +250,10 @@ uint64_t __88__HDOntologyMedsScanningResourcesImporter_willPruneEntries_options_
     v17 = v14;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v18 = v17;
-        *a5 = v17;
+        *error = v17;
       }
 
       else

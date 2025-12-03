@@ -1,7 +1,7 @@
 @interface SFStoreBanner
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SFAppSuggestionBannerDelegate)delegate;
-- (SFStoreBanner)initWithProductID:(id)a3 mainDocumentURL:(id)a4 affiliateData:(id)a5 applicationLaunchArgument:(id)a6;
+- (SFStoreBanner)initWithProductID:(id)d mainDocumentURL:(id)l affiliateData:(id)data applicationLaunchArgument:(id)argument;
 - (void)_openApp;
 - (void)_removeAppStoreLockUpView;
 - (void)_setBlockedByUser;
@@ -9,31 +9,31 @@
 - (void)_setUpStoreKitProductView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)productPage:(id)a3 didFailLoadWithError:(id)a4;
-- (void)productPage:(id)a3 didFinishPurchase:(id)a4 withError:(id)a5;
-- (void)productPage:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)productPage:(id)a3 willMakePurchases:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)productPage:(id)page didFailLoadWithError:(id)error;
+- (void)productPage:(id)page didFinishPurchase:(id)purchase withError:(id)error;
+- (void)productPage:(id)page didFinishWithResult:(int64_t)result;
+- (void)productPage:(id)page willMakePurchases:(id)purchases;
 - (void)themeDidChange;
 @end
 
 @implementation SFStoreBanner
 
-- (SFStoreBanner)initWithProductID:(id)a3 mainDocumentURL:(id)a4 affiliateData:(id)a5 applicationLaunchArgument:(id)a6
+- (SFStoreBanner)initWithProductID:(id)d mainDocumentURL:(id)l affiliateData:(id)data applicationLaunchArgument:(id)argument
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  lCopy = l;
+  dataCopy = data;
+  argumentCopy = argument;
   v15 = [(SFStoreBanner *)self init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_productID, a3);
-    objc_storeStrong(&v16->_affiliateData, a5);
-    objc_storeStrong(&v16->_mainDocumentURL, a4);
-    objc_storeStrong(&v16->_argument, a6);
+    objc_storeStrong(&v15->_productID, d);
+    objc_storeStrong(&v16->_affiliateData, data);
+    objc_storeStrong(&v16->_mainDocumentURL, l);
+    objc_storeStrong(&v16->_argument, argument);
     [(SFStoreBanner *)v16 setClipsToBounds:1];
     [(SFStoreBanner *)v16 _setUpAppStoreLockUpView];
     v17 = v16;
@@ -71,17 +71,17 @@
     [(SKProductPageViewController *)self->_productViewController setMainDocumentURL:self->_mainDocumentURL];
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:self->_argument forKeyedSubscript:@"applicationLaunchArgument"];
-  [v7 setObject:self->_affiliateData forKeyedSubscript:@"affiliateData"];
-  if ([v7 count])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_argument forKeyedSubscript:@"applicationLaunchArgument"];
+  [dictionary setObject:self->_affiliateData forKeyedSubscript:@"affiliateData"];
+  if ([dictionary count])
   {
-    [(SKProductPageViewController *)self->_productViewController setScriptContextDictionary:v7];
+    [(SKProductPageViewController *)self->_productViewController setScriptContextDictionary:dictionary];
   }
 
   [(SKProductPageViewController *)self->_productViewController setDelegate:self];
-  v8 = [(SKProductPageViewController *)self->_productViewController view];
-  [(SFStoreBanner *)self insertSubview:v8 atIndex:0];
+  view = [(SKProductPageViewController *)self->_productViewController view];
+  [(SFStoreBanner *)self insertSubview:view atIndex:0];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -152,8 +152,8 @@ void __42__SFStoreBanner__setUpStoreKitProductView__block_invoke(uint64_t a1)
   self->_lockupView = v6;
 
   [(ASCLockupView *)self->_lockupView setLayoutMargins:0.0, 0.0, 0.0, 14.0];
-  v8 = [getASCOfferThemeClass() blueTheme];
-  [(ASCLockupView *)self->_lockupView setOfferTheme:v8];
+  blueTheme = [getASCOfferThemeClass() blueTheme];
+  [(ASCLockupView *)self->_lockupView setOfferTheme:blueTheme];
 
   v49 = 0;
   v50 = &v49;
@@ -272,21 +272,21 @@ LABEL_24:
 
   [(ASCLockupView *)self->_lockupView setDelegate:self];
   [(SFStoreBanner *)self addSubview:self->_lockupView];
-  v28 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v29 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [v28 setBaseForegroundColor:v29];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [plainButtonConfiguration setBaseForegroundColor:tertiaryLabelColor];
 
   v30 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark"];
-  [v28 setImage:v30];
+  [plainButtonConfiguration setImage:v30];
 
   v31 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDD10] scale:-1];
-  [v28 setPreferredSymbolConfigurationForImage:v31];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v31];
 
   v32 = objc_alloc_init(MEMORY[0x1E69DC738]);
   closeButton = self->_closeButton;
   self->_closeButton = v32;
 
-  [(UIButton *)self->_closeButton setConfiguration:v28];
+  [(UIButton *)self->_closeButton setConfiguration:plainButtonConfiguration];
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
     v34 = [[SFCloseButton alloc] initWithStyle:0 primaryAction:0];
@@ -315,8 +315,8 @@ LABEL_24:
   separator = self->_separator;
   self->_separator = v40;
 
-  v42 = [MEMORY[0x1E69DC888] sf_barHairlineOutlineColor];
-  [(UIView *)self->_separator setBackgroundColor:v42];
+  sf_barHairlineOutlineColor = [MEMORY[0x1E69DC888] sf_barHairlineOutlineColor];
+  [(UIView *)self->_separator setBackgroundColor:sf_barHairlineOutlineColor];
 
   [(SFStoreBanner *)self addSubview:self->_separator];
 }
@@ -343,26 +343,26 @@ LABEL_24:
 
 - (void)themeDidChange
 {
-  v11 = [(SFPinnableBanner *)self theme];
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v11];
-  v3 = [v11 overrideTintColor];
-  [(UIView *)self->_separator setHidden:v3 != 0];
+  theme = [(SFPinnableBanner *)self theme];
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
+  overrideTintColor = [theme overrideTintColor];
+  [(UIView *)self->_separator setHidden:overrideTintColor != 0];
   ASCOfferThemeClass = getASCOfferThemeClass();
-  if (v3)
+  if (overrideTintColor)
   {
     v5 = [ASCOfferThemeClass alloc];
-    v6 = [v11 themeColor];
-    v7 = [v11 themeColor];
-    v8 = [v7 colorWithAlphaComponent:0.3];
-    v9 = [v11 themeColor];
-    v10 = [v5 initWithTitleBackgroundColor:v3 titleTextColor:v6 titleTextDisabledColor:v8 subtitleTextColor:v9 iconTintColor:v3 progressColor:v3];
+    themeColor = [theme themeColor];
+    themeColor2 = [theme themeColor];
+    v8 = [themeColor2 colorWithAlphaComponent:0.3];
+    themeColor3 = [theme themeColor];
+    v10 = [v5 initWithTitleBackgroundColor:overrideTintColor titleTextColor:themeColor titleTextDisabledColor:v8 subtitleTextColor:themeColor3 iconTintColor:overrideTintColor progressColor:overrideTintColor];
     [(ASCLockupView *)self->_lockupView setOfferTheme:v10];
   }
 
   else
   {
-    v6 = [(objc_class *)ASCOfferThemeClass blueTheme];
-    [(ASCLockupView *)self->_lockupView setOfferTheme:v6];
+    themeColor = [(objc_class *)ASCOfferThemeClass blueTheme];
+    [(ASCLockupView *)self->_lockupView setOfferTheme:themeColor];
   }
 }
 
@@ -376,8 +376,8 @@ LABEL_24:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SKProductPageViewController *)self->_productViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view = [(SKProductPageViewController *)self->_productViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
   if (self->_lockupView)
   {
@@ -420,13 +420,13 @@ LABEL_24:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   lockupView = self->_lockupView;
   if (lockupView)
   {
-    [(ASCLockupView *)lockupView sizeThatFits:a3.width, 1.79769313e308];
+    [(ASCLockupView *)lockupView sizeThatFits:fits.width, 1.79769313e308];
     v6 = v5 + 28.0;
   }
 
@@ -466,56 +466,56 @@ LABEL_24:
   [(SFStoreBanner *)&v3 dealloc];
 }
 
-- (void)productPage:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productPage:(id)page didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4 == 1)
+  pageCopy = page;
+  if (result == 1)
   {
-    v8 = v6;
+    v8 = pageCopy;
     [(SFStoreBanner *)self _setBlockedByUser];
   }
 
   else
   {
-    if (a4 != 2)
+    if (result != 2)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
+    v8 = pageCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained setAppSuggestionBanner:self isPinned:0];
   }
 
-  v6 = v8;
+  pageCopy = v8;
 LABEL_6:
 }
 
-- (void)productPage:(id)a3 didFailLoadWithError:(id)a4
+- (void)productPage:(id)page didFailLoadWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = WBS_LOG_CHANNEL_PREFIXBanners();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [SFStoreBanner productPage:v6 didFailLoadWithError:v5];
+    [SFStoreBanner productPage:v6 didFailLoadWithError:errorCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dismissAppSuggestionBanner:self];
 }
 
-- (void)productPage:(id)a3 willMakePurchases:(id)a4
+- (void)productPage:(id)page willMakePurchases:(id)purchases
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
+  purchasesCopy = purchases;
+  v6 = purchasesCopy;
   if (self->_affiliateData)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [purchasesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -542,26 +542,26 @@ LABEL_6:
   }
 }
 
-- (void)productPage:(id)a3 didFinishPurchase:(id)a4 withError:(id)a5
+- (void)productPage:(id)page didFinishPurchase:(id)purchase withError:(id)error
 {
-  if (!a5)
+  if (!error)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained setAppSuggestionBanner:self isPinned:1];
   }
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  [(SFStoreBanner *)self _removeAppStoreLockUpView:a3];
+  [(SFStoreBanner *)self _removeAppStoreLockUpView:view];
 
   [(SFStoreBanner *)self _setUpStoreKitProductView];
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v36 = 0;
   v37 = &v36;
@@ -589,7 +589,7 @@ LABEL_6:
   }
 
   v11 = *v9;
-  if ([v7 isEqualToString:v11])
+  if ([changeCopy isEqualToString:v11])
   {
     v12 = 1;
   }
@@ -624,7 +624,7 @@ LABEL_23:
       _Unwind_Resume(v27);
     }
 
-    v12 = [v7 isEqualToString:*v13];
+    v12 = [changeCopy isEqualToString:*v13];
   }
 
   [WeakRetained setAppSuggestionBanner:self isPinned:v12];
@@ -659,7 +659,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v7 isEqualToString:*v15])
+  if ([changeCopy isEqualToString:*v15])
   {
     v36 = 0;
     v37 = &v36;
@@ -708,9 +708,9 @@ LABEL_22:
     v28[3] = &unk_1E721BF08;
     objc_copyWeak(&v29, &location);
     v24 = [v23 initWithMetadata:v20 action:v28];
-    v25 = [v6 lockup];
-    v26 = [v25 lockupWithOffer:v24];
-    [v6 setLockup:v26];
+    lockup = [viewCopy lockup];
+    v26 = [lockup lockupWithOffer:v24];
+    [viewCopy setLockup:v26];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
@@ -727,8 +727,8 @@ void __46__SFStoreBanner_lockupView_appStateDidChange___block_invoke(uint64_t a1
 
 - (void)_openApp
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_4(&dword_18B7AC000, v5, v6, "Failed to look up application record to open app: %{public}@", v7, v8, v9, v10, 2u);
 }
 

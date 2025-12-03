@@ -1,70 +1,70 @@
 @interface HKAudiogramChartData
-+ (id)_clampedSensitivityDBHLForSensitivityTest:(id)a3;
-+ (id)_lowerClampedSensitivityDBHLForSensitivityTest:(id)a3;
-+ (id)_upperClampedSensitivityDBHLForSensitivityTest:(id)a3;
-- (HKAudiogramChartData)initWithFrequency:(double)a3 sensitivity:(double)a4 isLeftEar:(BOOL)a5;
-- (HKAudiogramChartData)initWithFrequency:(double)a3 test:(id)a4;
++ (id)_clampedSensitivityDBHLForSensitivityTest:(id)test;
++ (id)_lowerClampedSensitivityDBHLForSensitivityTest:(id)test;
++ (id)_upperClampedSensitivityDBHLForSensitivityTest:(id)test;
+- (HKAudiogramChartData)initWithFrequency:(double)frequency sensitivity:(double)sensitivity isLeftEar:(BOOL)ear;
+- (HKAudiogramChartData)initWithFrequency:(double)frequency test:(id)test;
 @end
 
 @implementation HKAudiogramChartData
 
-- (HKAudiogramChartData)initWithFrequency:(double)a3 sensitivity:(double)a4 isLeftEar:(BOOL)a5
+- (HKAudiogramChartData)initWithFrequency:(double)frequency sensitivity:(double)sensitivity isLeftEar:(BOOL)ear
 {
   v9.receiver = self;
   v9.super_class = HKAudiogramChartData;
   result = [(HKAudiogramChartData *)&v9 init];
   if (result)
   {
-    result->_frequencyHertz = a3;
-    result->_sensitivityDBHL = a4;
-    result->_isLeftEar = a5;
+    result->_frequencyHertz = frequency;
+    result->_sensitivityDBHL = sensitivity;
+    result->_isLeftEar = ear;
   }
 
   return result;
 }
 
-- (HKAudiogramChartData)initWithFrequency:(double)a3 test:(id)a4
+- (HKAudiogramChartData)initWithFrequency:(double)frequency test:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   v19.receiver = self;
   v19.super_class = HKAudiogramChartData;
   v7 = [(HKAudiogramChartData *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    v7->_frequencyHertz = a3;
-    v9 = [v6 sensitivity];
-    v10 = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
-    [v9 doubleValueForUnit:v10];
+    v7->_frequencyHertz = frequency;
+    sensitivity = [testCopy sensitivity];
+    decibelHearingLevelUnit = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
+    [sensitivity doubleValueForUnit:decibelHearingLevelUnit];
     v8->_sensitivityDBHL = v11;
 
-    v12 = [HKAudiogramChartData _clampedSensitivityDBHLForSensitivityTest:v6];
+    v12 = [HKAudiogramChartData _clampedSensitivityDBHLForSensitivityTest:testCopy];
     clampedSensitivityDBHL = v8->_clampedSensitivityDBHL;
     v8->_clampedSensitivityDBHL = v12;
 
-    v14 = [HKAudiogramChartData _upperClampedSensitivityDBHLForSensitivityTest:v6];
+    v14 = [HKAudiogramChartData _upperClampedSensitivityDBHLForSensitivityTest:testCopy];
     upperClampedSensitivityDBHL = v8->_upperClampedSensitivityDBHL;
     v8->_upperClampedSensitivityDBHL = v14;
 
-    v16 = [HKAudiogramChartData _lowerClampedSensitivityDBHLForSensitivityTest:v6];
+    v16 = [HKAudiogramChartData _lowerClampedSensitivityDBHLForSensitivityTest:testCopy];
     lowerClampedSensitivityDBHL = v8->_lowerClampedSensitivityDBHL;
     v8->_lowerClampedSensitivityDBHL = v16;
 
-    v8->_isMasked = [v6 masked];
-    v8->_isLeftEar = [v6 side] == 0;
+    v8->_isMasked = [testCopy masked];
+    v8->_isLeftEar = [testCopy side] == 0;
   }
 
   return v8;
 }
 
-+ (id)_clampedSensitivityDBHLForSensitivityTest:(id)a3
++ (id)_clampedSensitivityDBHLForSensitivityTest:(id)test
 {
-  v3 = [a3 clampedSensitivity];
-  if (v3)
+  clampedSensitivity = [test clampedSensitivity];
+  if (clampedSensitivity)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
-    [v3 doubleValueForUnit:v5];
+    decibelHearingLevelUnit = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
+    [clampedSensitivity doubleValueForUnit:decibelHearingLevelUnit];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -76,38 +76,38 @@
   return v6;
 }
 
-+ (id)_upperClampedSensitivityDBHLForSensitivityTest:(id)a3
++ (id)_upperClampedSensitivityDBHLForSensitivityTest:(id)test
 {
-  v3 = [a3 clampingRange];
-  v4 = [v3 upperBound];
+  clampingRange = [test clampingRange];
+  upperBound = [clampingRange upperBound];
 
-  if (v4)
+  if (upperBound)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [v3 upperBound];
-    v7 = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
-    [v6 doubleValueForUnit:v7];
-    v4 = [v5 numberWithDouble:?];
+    upperBound2 = [clampingRange upperBound];
+    decibelHearingLevelUnit = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
+    [upperBound2 doubleValueForUnit:decibelHearingLevelUnit];
+    upperBound = [v5 numberWithDouble:?];
   }
 
-  return v4;
+  return upperBound;
 }
 
-+ (id)_lowerClampedSensitivityDBHLForSensitivityTest:(id)a3
++ (id)_lowerClampedSensitivityDBHLForSensitivityTest:(id)test
 {
-  v3 = [a3 clampingRange];
-  v4 = [v3 lowerBound];
+  clampingRange = [test clampingRange];
+  lowerBound = [clampingRange lowerBound];
 
-  if (v4)
+  if (lowerBound)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [v3 lowerBound];
-    v7 = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
-    [v6 doubleValueForUnit:v7];
-    v4 = [v5 numberWithDouble:?];
+    lowerBound2 = [clampingRange lowerBound];
+    decibelHearingLevelUnit = [MEMORY[0x1E696C510] decibelHearingLevelUnit];
+    [lowerBound2 doubleValueForUnit:decibelHearingLevelUnit];
+    lowerBound = [v5 numberWithDouble:?];
   }
 
-  return v4;
+  return lowerBound;
 }
 
 @end

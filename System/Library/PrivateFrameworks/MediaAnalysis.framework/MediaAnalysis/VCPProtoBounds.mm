@@ -1,24 +1,24 @@
 @interface VCPProtoBounds
-+ (VCPProtoBounds)boundsWithCGRect:(CGRect)a3;
-- (BOOL)isEqual:(id)a3;
++ (VCPProtoBounds)boundsWithCGRect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)rectValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoBounds
 
-+ (VCPProtoBounds)boundsWithCGRect:(CGRect)a3
++ (VCPProtoBounds)boundsWithCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(VCPProtoBounds);
   [(VCPProtoBounds *)v7 setX0:x];
   [(VCPProtoBounds *)v7 setY0:y];
@@ -54,50 +54,50 @@
   v8.receiver = self;
   v8.super_class = VCPProtoBounds;
   v4 = [(VCPProtoBounds *)&v8 description];
-  v5 = [(VCPProtoBounds *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoBounds *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_x0];
-  [v3 setObject:v4 forKey:@"x0"];
+  [dictionary setObject:v4 forKey:@"x0"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_y0];
-  [v3 setObject:v5 forKey:@"y0"];
+  [dictionary setObject:v5 forKey:@"y0"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_width];
-  [v3 setObject:v6 forKey:@"width"];
+  [dictionary setObject:v6 forKey:@"width"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_height];
-  [v3 setObject:v7 forKey:@"height"];
+  [dictionary setObject:v7 forKey:@"height"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 3) = *&self->_x0;
-  *(a3 + 4) = *&self->_y0;
-  *(a3 + 2) = *&self->_width;
-  *(a3 + 1) = *&self->_height;
+  *(to + 3) = *&self->_x0;
+  *(to + 4) = *&self->_y0;
+  *(to + 2) = *&self->_width;
+  *(to + 1) = *&self->_height;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = *&self->_x0;
   *(result + 4) = *&self->_y0;
   *(result + 2) = *&self->_width;
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_x0 == v4[3] && self->_y0 == v4[4] && self->_width == v4[2] && self->_height == v4[1];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_x0 == equalCopy[3] && self->_y0 == equalCopy[4] && self->_width == equalCopy[2] && self->_height == equalCopy[1];
 
   return v5;
 }
@@ -215,12 +215,12 @@
   return v19 ^ v13 ^ v26 ^ v31;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_x0 = *(a3 + 3);
-  self->_y0 = *(a3 + 4);
-  self->_width = *(a3 + 2);
-  self->_height = *(a3 + 1);
+  self->_x0 = *(from + 3);
+  self->_y0 = *(from + 4);
+  self->_width = *(from + 2);
+  self->_height = *(from + 1);
 }
 
 @end

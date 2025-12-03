@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilPackedPackedReaderIterator
-- (id)nextWithInt:(int)a3;
+- (id)nextWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedReaderIterator
 
-- (id)nextWithInt:(int)a3
+- (id)nextWithInt:(int)int
 {
   self->nextValues_->offset_ += self->nextValues_->length_;
   valueCount = self->super.valueCount_;
@@ -16,7 +16,7 @@
     objc_exception_throw(v24);
   }
 
-  v6 = JavaLangMath_minWithInt_withInt_((valueCount + ~self->position_), a3);
+  v6 = JavaLangMath_minWithInt_withInt_((valueCount + ~self->position_), int);
   nextValues = self->nextValues_;
   offset = nextValues->offset_;
   size = nextValues->longs_->super.size_;

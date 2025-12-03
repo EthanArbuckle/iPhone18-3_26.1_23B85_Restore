@@ -1,41 +1,41 @@
 @interface SBFloatingDragAndDropGestureSwitcherModifier
 - (BOOL)_isPlatterPreviewIntersectingFloatingApplication;
 - (CGRect)containerViewBounds;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBFloatingDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3 floatingSwitcherVisible:(BOOL)a4 floatingConfiguration:(int64_t)a5 interfaceOrientation:(int64_t)a6;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBFloatingDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d floatingSwitcherVisible:(BOOL)visible floatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBFloatingDragAndDropGestureSwitcherModifier
 
-- (SBFloatingDragAndDropGestureSwitcherModifier)initWithGestureID:(id)a3 floatingSwitcherVisible:(BOOL)a4 floatingConfiguration:(int64_t)a5 interfaceOrientation:(int64_t)a6
+- (SBFloatingDragAndDropGestureSwitcherModifier)initWithGestureID:(id)d floatingSwitcherVisible:(BOOL)visible floatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
   v10.receiver = self;
   v10.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  result = [(SBGestureSwitcherModifier *)&v10 initWithGestureID:a3];
+  result = [(SBGestureSwitcherModifier *)&v10 initWithGestureID:d];
   if (result)
   {
-    result->_floatingSwitcherVisible = a4;
-    result->_floatingConfiguration = a5;
-    result->_interfaceOrientation = a6;
+    result->_floatingSwitcherVisible = visible;
+    result->_floatingConfiguration = configuration;
+    result->_interfaceOrientation = orientation;
   }
 
   return result;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v17 handleGestureEvent:v4];
-  if ([v4 type] == 4)
+  v5 = [(SBGestureSwitcherModifier *)&v17 handleGestureEvent:eventCopy];
+  if ([eventCopy type] == 4)
   {
-    v6 = v4;
+    v6 = eventCopy;
     self->_currentDropAction = [v6 dropAction];
     [v6 locationInContainerView];
     self->_location.x = v7;
@@ -59,26 +59,26 @@
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 phase] >= 2)
+  eventCopy = event;
+  if ([eventCopy phase] >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
 
   v7.receiver = self;
   v7.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:v4];
+  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
 
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v7 frameForIndex:a3 + [(SBFloatingDragAndDropGestureSwitcherModifier *)self _isPlatterPreviewIntersectingFloatingApplication]];
+  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v7 frameForIndex:index + [(SBFloatingDragAndDropGestureSwitcherModifier *)self _isPlatterPreviewIntersectingFloatingApplication]];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -86,39 +86,39 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v4.receiver = self;
   v4.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v4 scaleForIndex:a3 + [(SBFloatingDragAndDropGestureSwitcherModifier *)self _isPlatterPreviewIntersectingFloatingApplication]];
+  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v4 scaleForIndex:index + [(SBFloatingDragAndDropGestureSwitcherModifier *)self _isPlatterPreviewIntersectingFloatingApplication]];
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
   [v5 setUpdateMode:3];
-  v6 = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  v7 = [v6 resizeAnimationSettings];
-  [v5 setLayoutSettings:v7];
+  medusaSettings = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
+  [v5 setLayoutSettings:resizeAnimationSettings];
 
   return v5;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = SBFloatingDragAndDropGestureSwitcherModifier;
-  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:a3 inAppLayout:a4];
+  [(SBFloatingDragAndDropGestureSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:role inAppLayout:layout];
   v6 = v5;
   if ([(SBFloatingDragAndDropGestureSwitcherModifier *)self _isPlatterPreviewIntersectingFloatingApplication])
   {
-    v7 = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
-    [v7 replacementDimmingAlpha];
+    medusaSettings = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
+    [medusaSettings replacementDimmingAlpha];
     v6 = v6 + v8;
   }
 
@@ -145,8 +145,8 @@
     v4 = v4 + v11;
   }
 
-  v12 = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
-  [v12 draggingPlatterSideActivationGutterPadding];
+  medusaSettings = [(SBFloatingDragAndDropGestureSwitcherModifier *)self medusaSettings];
+  [medusaSettings draggingPlatterSideActivationGutterPadding];
   SBLayoutDefaultSideLayoutElementWidth();
   [(SBFloatingDragAndDropGestureSwitcherModifier *)self screenScale];
   BSFloatRoundForScale();

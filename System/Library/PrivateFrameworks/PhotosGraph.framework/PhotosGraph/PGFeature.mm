@@ -1,18 +1,18 @@
 @interface PGFeature
-+ (PGFeature)featureWithMeaningfulEvent:(id)a3;
-+ (PGFeature)featureWithNode:(id)a3;
-+ (PGFeature)featureWithType:(unint64_t)a3 name:(id)a4;
-+ (PGFeature)featureWithType:(unint64_t)a3 node:(id)a4;
-+ (id)featuresForEncodedFeatures:(id)a3;
-+ (id)nameForNode:(id)a3;
-+ (id)noneFeatureWithType:(unint64_t)a3;
-+ (id)stringForFeatureType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (PGFeature)featureWithMeaningfulEvent:(id)event;
++ (PGFeature)featureWithNode:(id)node;
++ (PGFeature)featureWithType:(unint64_t)type name:(id)name;
++ (PGFeature)featureWithType:(unint64_t)type node:(id)node;
++ (id)featuresForEncodedFeatures:(id)features;
++ (id)nameForNode:(id)node;
++ (id)noneFeatureWithType:(unint64_t)type;
++ (id)stringForFeatureType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
-- (PGFeature)initWithEncodedFeature:(id)a3;
+- (PGFeature)initWithEncodedFeature:(id)feature;
 - (id)description;
 - (id)encodedFeature;
-- (id)nodeInGraph:(id)a3;
+- (id)nodeInGraph:(id)graph;
 @end
 
 @implementation PGFeature
@@ -39,19 +39,19 @@
   v4 = v3;
   v5 = [(PGFeature *)&v10 description];
   v6 = [PGFeature stringForFeatureType:self->_type];
-  v7 = [(PGFeature *)self name];
-  v8 = [v5 stringByAppendingFormat:v4, v6, v7, v10.receiver, v10.super_class];
+  name = [(PGFeature *)self name];
+  v8 = [v5 stringByAppendingFormat:v4, v6, name, v10.receiver, v10.super_class];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     if (*(v7 + 2) == self->_type)
     {
@@ -62,9 +62,9 @@
 
       else
       {
-        v10 = [(PGFeature *)self name];
-        v11 = [v8 name];
-        v6 = [v11 isEqualToString:v10];
+        name = [(PGFeature *)self name];
+        name2 = [v8 name];
+        v6 = [name2 isEqualToString:name];
       }
     }
 
@@ -82,11 +82,11 @@
   return v6;
 }
 
-- (id)nodeInGraph:(id)a3
+- (id)nodeInGraph:(id)graph
 {
   v85[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  graphCopy = graph;
+  v5 = graphCopy;
   v6 = 0;
   switch(self->_type)
   {
@@ -108,13 +108,13 @@
     case 2uLL:
       goto LABEL_21;
     case 3uLL:
-      v37 = [v4 meNode];
-      v38 = [v37 localIdentifier];
-      v39 = [v38 isEqualToString:self->_typeSpecificIdentifier];
+      meNode = [graphCopy meNode];
+      localIdentifier = [meNode localIdentifier];
+      v39 = [localIdentifier isEqualToString:self->_typeSpecificIdentifier];
 
       if (v39)
       {
-        v40 = v37;
+        v40 = meNode;
       }
 
       else
@@ -150,8 +150,8 @@
 
       goto LABEL_51;
     case 7uLL:
-      v16 = [PGGraphAddressNodeCollection addressNodeAsCollectionForUUID:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphAddressNodeCollection addressNodeAsCollectionForUUID:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 8uLL:
     case 0x14uLL:
@@ -163,14 +163,14 @@
 
       goto LABEL_51;
     case 9uLL:
-      v15 = [v4 anyNodeForLabel:self->_typeSpecificIdentifier domain:502 properties:0];
+      v15 = [graphCopy anyNodeForLabel:self->_typeSpecificIdentifier domain:502 properties:0];
       goto LABEL_35;
     case 0xAuLL:
-      v15 = [v4 anyNodeForLabel:self->_typeSpecificIdentifier domain:501 properties:0];
+      v15 = [graphCopy anyNodeForLabel:self->_typeSpecificIdentifier domain:501 properties:0];
       goto LABEL_35;
     case 0xBuLL:
-      v16 = [PGGraphMomentNodeCollection momentNodeForUUID:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphMomentNodeCollection momentNodeForUUID:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0xCuLL:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@
 
       goto LABEL_60;
     case 0xDuLL:
-      v15 = [v4 anyNodeForLabel:self->_typeSpecificIdentifier domain:700 properties:0];
+      v15 = [graphCopy anyNodeForLabel:self->_typeSpecificIdentifier domain:700 properties:0];
       goto LABEL_35;
     case 0xEuLL:
       v31 = self->_typeSpecificIdentifier;
@@ -200,16 +200,16 @@
 
       goto LABEL_51;
     case 0x10uLL:
-      v16 = [(PGGraphHighlightNodeCollection *)PGGraphHighlightGroupNodeCollection highlightNodeForUUID:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [(PGGraphHighlightNodeCollection *)PGGraphHighlightGroupNodeCollection highlightNodeForUUID:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x11uLL:
       v50 = self->_typeSpecificIdentifier;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = +[PGGraphBusinessNodeCollection businessNodeForBusinessMuid:inGraph:](PGGraphBusinessNodeCollection, "businessNodeForBusinessMuid:inGraph:", [self->_typeSpecificIdentifier unsignedIntegerValue], v5);
-        v17 = [v16 anyNode];
+        name = +[PGGraphBusinessNodeCollection businessNodeForBusinessMuid:inGraph:](PGGraphBusinessNodeCollection, "businessNodeForBusinessMuid:inGraph:", [self->_typeSpecificIdentifier unsignedIntegerValue], v5);
+        anyNode = [name anyNode];
         goto LABEL_49;
       }
 
@@ -221,7 +221,7 @@
 
       goto LABEL_60;
     case 0x12uLL:
-      v15 = [v4 sceneNodeForSceneName:self->_typeSpecificIdentifier];
+      v15 = [graphCopy sceneNodeForSceneName:self->_typeSpecificIdentifier];
       goto LABEL_35;
     case 0x13uLL:
       v48 = self->_typeSpecificIdentifier;
@@ -240,13 +240,13 @@
 
       goto LABEL_51;
     case 0x17uLL:
-      v15 = [v4 meaningfulEventNodeForUUID:self->_typeSpecificIdentifier];
+      v15 = [graphCopy meaningfulEventNodeForUUID:self->_typeSpecificIdentifier];
       goto LABEL_35;
     case 0x18uLL:
-      v15 = [v4 anyNodeForLabel:self->_typeSpecificIdentifier domain:504 properties:0];
+      v15 = [graphCopy anyNodeForLabel:self->_typeSpecificIdentifier domain:504 properties:0];
       goto LABEL_35;
     case 0x19uLL:
-      v15 = [v4 anyNodeForLabel:self->_typeSpecificIdentifier domain:901 properties:0];
+      v15 = [graphCopy anyNodeForLabel:self->_typeSpecificIdentifier domain:901 properties:0];
 LABEL_35:
       v6 = v15;
       goto LABEL_51;
@@ -259,13 +259,13 @@ LABEL_35:
 
       goto LABEL_51;
     case 0x1BuLL:
-      v16 = [(PGFeature *)self name];
-      v46 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:v16 inGraph:v5];
-      v47 = [v46 anyNode];
+      name = [(PGFeature *)self name];
+      v46 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:name inGraph:v5];
+      anyNode2 = [v46 anyNode];
       goto LABEL_46;
     case 0x1CuLL:
-      v16 = [PGGraphHighlightNodeCollection highlightNodeForUUID:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphHighlightNodeCollection highlightNodeForUUID:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x1DuLL:
 LABEL_18:
@@ -289,10 +289,10 @@ LABEL_21:
       }
 
       v25 = +[PGGraphCalendarUnitNode monthDayValueForMonthDayNodeCalendarUnitValue:](PGGraphCalendarUnitNode, "monthDayValueForMonthDayNodeCalendarUnitValue:", [self->_typeSpecificIdentifier integerValue]);
-      v16 = [PGGraphMonthDayNodeCollection monthDayNodesForMonth:v25 day:v26 inGraph:v5];
-      v17 = [v16 anyNode];
+      name = [PGGraphMonthDayNodeCollection monthDayNodesForMonth:v25 day:v26 inGraph:v5];
+      anyNode = [name anyNode];
 LABEL_49:
-      v6 = v17;
+      v6 = anyNode;
       goto LABEL_50;
     case 0x1EuLL:
       *buf = 0;
@@ -301,7 +301,7 @@ LABEL_49:
       v59 = __Block_byref_object_copy__55574;
       v60 = __Block_byref_object_dispose__55575;
       v61 = 0;
-      v18 = [PGGraphHomeWorkNodeCollection homeNodesInGraph:v4];
+      v18 = [PGGraphHomeWorkNodeCollection homeNodesInGraph:graphCopy];
       v55[0] = MEMORY[0x277D85DD0];
       v55[1] = 3221225472;
       v55[2] = __25__PGFeature_nodeInGraph___block_invoke;
@@ -321,7 +321,7 @@ LABEL_49:
       v59 = __Block_byref_object_copy__55574;
       v60 = __Block_byref_object_dispose__55575;
       v61 = 0;
-      v19 = [PGGraphHomeWorkNodeCollection workNodesInGraph:v4];
+      v19 = [PGGraphHomeWorkNodeCollection workNodesInGraph:graphCopy];
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __25__PGFeature_nodeInGraph___block_invoke_2;
@@ -335,8 +335,8 @@ LABEL_49:
 
       goto LABEL_51;
     case 0x20uLL:
-      v16 = [PGGraphHighlightTypeNodeCollection typeNodesWithLabel:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphHighlightTypeNodeCollection typeNodesWithLabel:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x21uLL:
       *buf = 0;
@@ -345,7 +345,7 @@ LABEL_49:
       v59 = __Block_byref_object_copy__55574;
       v60 = __Block_byref_object_dispose__55575;
       v61 = 0;
-      v20 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v4];
+      v20 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __25__PGFeature_nodeInGraph___block_invoke_3;
@@ -359,22 +359,22 @@ LABEL_49:
 
       goto LABEL_51;
     case 0x22uLL:
-      v16 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:v4];
-      v17 = [v16 anyNode];
+      name = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection nodesInGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x23uLL:
-      v16 = [PGGraphPetNodeCollection petNodesForLocalIdentifier:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphPetNodeCollection petNodesForLocalIdentifier:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x24uLL:
       if (self->_name)
       {
         v45 = self->_typeSpecificIdentifier;
-        v16 = [MEMORY[0x277CBEB98] setWithObject:?];
-        v46 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabel:v45 personLocalIdentifiers:v16 inGraph:v5];
-        v47 = [v46 anyNode];
+        name = [MEMORY[0x277CBEB98] setWithObject:?];
+        v46 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabel:v45 personLocalIdentifiers:name inGraph:v5];
+        anyNode2 = [v46 anyNode];
 LABEL_46:
-        v6 = v47;
+        v6 = anyNode2;
 
 LABEL_50:
       }
@@ -397,8 +397,8 @@ LABEL_51:
 
       return v6;
     case 0x25uLL:
-      v16 = [PGGraphAudioFeatureNodeCollection audioFeatureNodesForLabel:self->_typeSpecificIdentifier inGraph:v4];
-      v17 = [v16 anyNode];
+      name = [PGGraphAudioFeatureNodeCollection audioFeatureNodesForLabel:self->_typeSpecificIdentifier inGraph:graphCopy];
+      anyNode = [name anyNode];
       goto LABEL_49;
     case 0x26uLL:
       v9 = self->_typeSpecificIdentifier;
@@ -502,22 +502,22 @@ void __25__PGFeature_nodeInGraph___block_invoke_3(uint64_t a1, void *a2, _BYTE *
   return v5;
 }
 
-- (PGFeature)initWithEncodedFeature:(id)a3
+- (PGFeature)initWithEncodedFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v12.receiver = self;
   v12.super_class = PGFeature;
   v5 = [(PGFeature *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [featureCopy objectForKeyedSubscript:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"spec"];
+    v7 = [featureCopy objectForKeyedSubscript:@"spec"];
     typeSpecificIdentifier = v5->_typeSpecificIdentifier;
     v5->_typeSpecificIdentifier = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"name"];
+    v9 = [featureCopy objectForKeyedSubscript:@"name"];
     name = v5->_name;
     v5->_name = v9;
   }
@@ -525,16 +525,16 @@ void __25__PGFeature_nodeInGraph___block_invoke_3(uint64_t a1, void *a2, _BYTE *
   return v5;
 }
 
-+ (id)featuresForEncodedFeatures:(id)a3
++ (id)featuresForEncodedFeatures:(id)features
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  featuresCopy = features;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(featuresCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = featuresCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -566,129 +566,129 @@ void __25__PGFeature_nodeInGraph___block_invoke_3(uint64_t a1, void *a2, _BYTE *
   return v4;
 }
 
-+ (id)stringForFeatureType:(unint64_t)a3
++ (id)stringForFeatureType:(unint64_t)type
 {
-  if (a3 > 0x27)
+  if (type > 0x27)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278886610[a3];
+    return off_278886610[type];
   }
 }
 
-+ (id)nameForNode:(id)a3
++ (id)nameForNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 label];
-  v5 = [v3 domain];
-  if ([v4 isEqualToString:@"SocialGroup"])
+  nodeCopy = node;
+  label = [nodeCopy label];
+  domain = [nodeCopy domain];
+  if ([label isEqualToString:@"SocialGroup"])
   {
-    v6 = v3;
-    v7 = [v6 socialGroupNameWithServiceManager:0];
+    name = nodeCopy;
+    stringValue = [name socialGroupNameWithServiceManager:0];
 LABEL_3:
-    v8 = v7;
+    v8 = stringValue;
 
     goto LABEL_15;
   }
 
-  if (v5 > 699)
+  if (domain > 699)
   {
-    if (v5 == 701)
+    if (domain == 701)
     {
-      v9 = [v3 personLocalIdentifier];
+      personLocalIdentifier = [nodeCopy personLocalIdentifier];
       goto LABEL_14;
     }
 
-    if (v5 != 700)
+    if (domain != 700)
     {
 LABEL_11:
-      v6 = [v3 name];
+      name = [nodeCopy name];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 stringValue];
+        stringValue = [name stringValue];
       }
 
       else
       {
-        v7 = v6;
+        stringValue = name;
       }
 
       goto LABEL_3;
     }
 
 LABEL_10:
-    v9 = v4;
+    personLocalIdentifier = label;
     goto LABEL_14;
   }
 
-  if (v5 == 502)
+  if (domain == 502)
   {
     goto LABEL_10;
   }
 
-  if (v5 != 600)
+  if (domain != 600)
   {
     goto LABEL_11;
   }
 
-  v9 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+  personLocalIdentifier = [label stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 LABEL_14:
-  v8 = v9;
+  v8 = personLocalIdentifier;
 LABEL_15:
 
   return v8;
 }
 
-+ (id)noneFeatureWithType:(unint64_t)a3
++ (id)noneFeatureWithType:(unint64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  v4[2] = a3;
+  v4 = objc_alloc_init(self);
+  v4[2] = type;
 
   return v4;
 }
 
-+ (PGFeature)featureWithType:(unint64_t)a3 name:(id)a4
++ (PGFeature)featureWithType:(unint64_t)type name:(id)name
 {
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
-  *(v8 + 2) = a3;
-  objc_storeStrong(v8 + 3, a4);
+  nameCopy = name;
+  v8 = objc_alloc_init(self);
+  *(v8 + 2) = type;
+  objc_storeStrong(v8 + 3, name);
   v9 = *(v8 + 1);
-  *(v8 + 1) = v7;
+  *(v8 + 1) = nameCopy;
 
   return v8;
 }
 
-+ (PGFeature)featureWithMeaningfulEvent:(id)a3
++ (PGFeature)featureWithMeaningfulEvent:(id)event
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  eventCopy = event;
+  v5 = objc_alloc_init(self);
   v5[2] = 23;
-  v6 = [v4 UUID];
+  uUID = [eventCopy UUID];
 
   v7 = v5[1];
-  v5[1] = v6;
+  v5[1] = uUID;
 
   return v5;
 }
 
-+ (PGFeature)featureWithType:(unint64_t)a3 node:(id)a4
++ (PGFeature)featureWithType:(unint64_t)type node:(id)node
 {
-  v6 = a4;
-  if (a3 == 23)
+  nodeCopy = node;
+  if (type == 23)
   {
-    v7 = [a1 featureWithMeaningfulEvent:v6];
+    v7 = [self featureWithMeaningfulEvent:nodeCopy];
   }
 
   else
   {
-    v8 = [a1 featureWithNode:v6];
+    v8 = [self featureWithNode:nodeCopy];
     v7 = v8;
-    if (a3 == 20 && [v8 type] == 8)
+    if (type == 20 && [v8 type] == 8)
     {
       v7[2] = 20;
     }
@@ -697,20 +697,20 @@ LABEL_15:
   return v7;
 }
 
-+ (PGFeature)featureWithNode:(id)a3
++ (PGFeature)featureWithNode:(id)node
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 domain];
-  v7 = [v4 label];
-  v8 = v7;
-  if (v6 > 401)
+  nodeCopy = node;
+  v5 = objc_alloc_init(self);
+  domain = [nodeCopy domain];
+  label = [nodeCopy label];
+  v8 = label;
+  if (domain > 401)
   {
-    if (v6 > 600)
+    if (domain > 600)
     {
-      if (v6 <= 899)
+      if (domain <= 899)
       {
-        switch(v6)
+        switch(domain)
         {
           case 601:
             v9 = 27;
@@ -728,16 +728,16 @@ LABEL_15:
         goto LABEL_61;
       }
 
-      if (v6 != 900)
+      if (domain != 900)
       {
-        if (v6 == 901)
+        if (domain == 901)
         {
           v9 = 25;
         }
 
         else
         {
-          if (v6 != 1201)
+          if (domain != 1201)
           {
             goto LABEL_64;
           }
@@ -748,7 +748,7 @@ LABEL_15:
         goto LABEL_61;
       }
 
-      if (![v7 isEqualToString:@"PublicEvent"])
+      if (![label isEqualToString:@"PublicEvent"])
       {
         if ([v8 isEqualToString:@"Performer"])
         {
@@ -764,12 +764,12 @@ LABEL_15:
 
     else
     {
-      if (v6 <= 502)
+      if (domain <= 502)
       {
-        switch(v6)
+        switch(domain)
         {
           case 402:
-            if (![v7 isEqualToString:@"OverTheYears"])
+            if (![label isEqualToString:@"OverTheYears"])
             {
               goto LABEL_64;
             }
@@ -792,16 +792,16 @@ LABEL_15:
         goto LABEL_61;
       }
 
-      if (v6 != 503)
+      if (domain != 503)
       {
-        if (v6 == 504)
+        if (domain == 504)
         {
           v9 = 24;
         }
 
         else
         {
-          if (v6 != 600)
+          if (domain != 600)
           {
             goto LABEL_64;
           }
@@ -816,19 +816,19 @@ LABEL_15:
     }
 
     v5[2] = v25;
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "muid")}];
+    featureIdentifier = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(nodeCopy, "muid")}];
     goto LABEL_62;
   }
 
-  if (v6 > 203)
+  if (domain > 203)
   {
-    if (v6 > 303)
+    if (domain > 303)
     {
-      if (v6 != 304)
+      if (domain != 304)
       {
-        if (v6 != 400)
+        if (domain != 400)
         {
-          if (v6 != 401 || ![v7 isEqualToString:@"Holiday"])
+          if (domain != 401 || ![label isEqualToString:@"Holiday"])
           {
             goto LABEL_64;
           }
@@ -837,7 +837,7 @@ LABEL_15:
           goto LABEL_49;
         }
 
-        if ([v7 isEqualToString:@"Year"])
+        if ([label isEqualToString:@"Year"])
         {
           v18 = 1;
         }
@@ -860,13 +860,13 @@ LABEL_15:
 
         v5[2] = v18;
         v10 = MEMORY[0x277CCABB0];
-        v11 = [v4 calendarUnitValue];
+        calendarUnitValue = [nodeCopy calendarUnitValue];
 LABEL_84:
-        v17 = [v10 numberWithInteger:v11];
+        featureIdentifier = [v10 numberWithInteger:calendarUnitValue];
         goto LABEL_62;
       }
 
-      if (![v7 isEqualToString:@"Pet"])
+      if (![label isEqualToString:@"Pet"])
       {
         goto LABEL_64;
       }
@@ -876,25 +876,25 @@ LABEL_84:
 
     else
     {
-      if (v6 == 204)
+      if (domain == 204)
       {
         v13 = 33;
 LABEL_59:
         v5[2] = v13;
-        v17 = [v4 featureIdentifier];
+        featureIdentifier = [nodeCopy featureIdentifier];
         goto LABEL_62;
       }
 
-      if (v6 != 300)
+      if (domain != 300)
       {
-        if (v6 != 302)
+        if (domain != 302)
         {
           goto LABEL_64;
         }
 
         v5[2] = 2;
         v10 = MEMORY[0x277CCABB0];
-        v11 = [v4 socialGroupID];
+        calendarUnitValue = [nodeCopy socialGroupID];
         goto LABEL_84;
       }
 
@@ -902,17 +902,17 @@ LABEL_59:
     }
 
     v5[2] = v16;
-    v17 = [v4 localIdentifier];
+    featureIdentifier = [nodeCopy localIdentifier];
     goto LABEL_62;
   }
 
-  if (v6 <= 199)
+  if (domain <= 199)
   {
-    if (v6 != 100)
+    if (domain != 100)
     {
-      if (v6 != 102)
+      if (domain != 102)
       {
-        if (v6 != 103)
+        if (domain != 103)
         {
           goto LABEL_64;
         }
@@ -920,11 +920,11 @@ LABEL_59:
         v9 = 32;
 LABEL_61:
         v5[2] = v9;
-        v17 = v7;
+        featureIdentifier = label;
         goto LABEL_62;
       }
 
-      if ([v7 isEqualToString:@"Highlight"])
+      if ([label isEqualToString:@"Highlight"])
       {
         v15 = 28;
       }
@@ -936,7 +936,7 @@ LABEL_61:
 
 LABEL_80:
       v5[2] = v15;
-      v17 = [v4 uuid];
+      featureIdentifier = [nodeCopy uuid];
       goto LABEL_62;
     }
 
@@ -944,16 +944,16 @@ LABEL_80:
     goto LABEL_55;
   }
 
-  if (v6 != 200)
+  if (domain != 200)
   {
-    if (v6 != 201)
+    if (domain != 201)
     {
-      if (v6 != 202)
+      if (domain != 202)
       {
         goto LABEL_64;
       }
 
-      v12 = [v7 isEqualToString:@"Home"];
+      v12 = [label isEqualToString:@"Home"];
       v13 = 30;
       if (!v12)
       {
@@ -966,16 +966,16 @@ LABEL_80:
     v14 = 8;
 LABEL_49:
     v5[2] = v14;
-    v17 = [v4 name];
+    featureIdentifier = [nodeCopy name];
 LABEL_62:
     v21 = v5[1];
-    v5[1] = v17;
+    v5[1] = featureIdentifier;
 LABEL_63:
 
     goto LABEL_64;
   }
 
-  if ([v7 isEqualToString:@"Address"])
+  if ([label isEqualToString:@"Address"])
   {
     v15 = 7;
     goto LABEL_80;
@@ -986,7 +986,7 @@ LABEL_63:
     v19 = 19;
 LABEL_55:
     v5[2] = v19;
-    v17 = [v4 UUID];
+    featureIdentifier = [nodeCopy UUID];
     goto LABEL_62;
   }
 
@@ -1023,7 +1023,7 @@ LABEL_55:
 LABEL_64:
   if (v5[2])
   {
-    v22 = [a1 nameForNode:v4];
+    v22 = [self nameForNode:nodeCopy];
     v23 = v5[3];
     v5[3] = v22;
   }

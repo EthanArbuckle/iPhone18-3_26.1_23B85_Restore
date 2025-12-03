@@ -4,8 +4,8 @@
 - (NSArray)excludedActivityTypes;
 - (NSArray)includedActivityTypes;
 - (NSData)pushSubmissionData;
-- (ShareItemRoute)initWithRoute:(id)a3 includeRoutingApps:(BOOL)a4;
-- (void)_selectCustomFeature:(id)a3;
+- (ShareItemRoute)initWithRoute:(id)route includeRoutingApps:(BOOL)apps;
+- (void)_selectCustomFeature:(id)feature;
 - (void)_setupCustomFeatureForMapItem;
 - (void)_setupCustomFeatureStore;
 - (void)_setupDataProvider;
@@ -15,26 +15,26 @@
 
 - (NSData)pushSubmissionData
 {
-  v2 = [(GEOComposedRoute *)self->_route bookmarkRepresentation];
-  v3 = [v2 data];
+  bookmarkRepresentation = [(GEOComposedRoute *)self->_route bookmarkRepresentation];
+  data = [bookmarkRepresentation data];
 
-  return v3;
+  return data;
 }
 
 - (void)_setupCustomFeatureForMapItem
 {
   v23 = +[NSMutableArray array];
-  v3 = [(ShareItemRoute *)self route];
-  v4 = [v3 origin];
-  v5 = [v4 geoMapItem];
+  route = [(ShareItemRoute *)self route];
+  origin = [route origin];
+  geoMapItem = [origin geoMapItem];
 
-  if (v5)
+  if (geoMapItem)
   {
     v6 = [MKMapItem alloc];
-    v7 = [(ShareItemRoute *)self route];
-    v8 = [v7 origin];
-    v9 = [v8 geoMapItem];
-    v10 = [v6 initWithGeoMapItem:v9 isPlaceHolderPlace:0];
+    route2 = [(ShareItemRoute *)self route];
+    origin2 = [route2 origin];
+    geoMapItem2 = [origin2 geoMapItem];
+    v10 = [v6 initWithGeoMapItem:geoMapItem2 isPlaceHolderPlace:0];
 
     v11 = [_ShareCustomFeature customFeatureForMapItem:v10];
     startCustomFeature = self->_startCustomFeature;
@@ -43,17 +43,17 @@
     [v23 addObject:self->_startCustomFeature];
   }
 
-  v13 = [(ShareItemRoute *)self route];
-  v14 = [v13 destination];
-  v15 = [v14 geoMapItem];
+  route3 = [(ShareItemRoute *)self route];
+  destination = [route3 destination];
+  geoMapItem3 = [destination geoMapItem];
 
-  if (v15)
+  if (geoMapItem3)
   {
     v16 = [MKMapItem alloc];
-    v17 = [(ShareItemRoute *)self route];
-    v18 = [v17 destination];
-    v19 = [v18 geoMapItem];
-    v20 = [v16 initWithGeoMapItem:v19 isPlaceHolderPlace:0];
+    route4 = [(ShareItemRoute *)self route];
+    destination2 = [route4 destination];
+    geoMapItem4 = [destination2 geoMapItem];
+    v20 = [v16 initWithGeoMapItem:geoMapItem4 isPlaceHolderPlace:0];
 
     v21 = [_ShareCustomFeature customFeatureForMapItem:v20];
     endCustomFeature = self->_endCustomFeature;
@@ -72,19 +72,19 @@
   self->_customFeatureStore = v3;
 }
 
-- (void)_selectCustomFeature:(id)a3
+- (void)_selectCustomFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   if (self->_customFeatureStore && self->_endCustomFeature)
   {
-    v6 = v4;
-    v5 = [v4 _labelMarkerForCustomFeatureAnnotation:?];
+    v6 = featureCopy;
+    v5 = [featureCopy _labelMarkerForCustomFeatureAnnotation:?];
     if (v5)
     {
       [v6 _selectLabelMarker:v5 animated:0];
     }
 
-    v4 = v6;
+    featureCopy = v6;
   }
 }
 
@@ -138,29 +138,29 @@
 - (NSArray)applicationActivities
 {
   v3 = +[NSMutableArray array];
-  v4 = +[UIDevice currentDevice];
-  if ([v4 userInterfaceIdiom] == 5)
+  pushSubmissionData = +[UIDevice currentDevice];
+  if ([pushSubmissionData userInterfaceIdiom] == 5)
   {
-    v5 = [(ShareItemRoute *)self route];
-    v6 = [v5 waypoints];
-    v7 = [v6 count];
+    route = [(ShareItemRoute *)self route];
+    waypoints = [route waypoints];
+    v7 = [waypoints count];
 
     if (v7 > 2)
     {
       goto LABEL_13;
     }
 
-    v4 = [(ShareItemRoute *)self pushSubmissionData];
-    if (v4)
+    pushSubmissionData = [(ShareItemRoute *)self pushSubmissionData];
+    if (pushSubmissionData)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
       v8 = +[MapsPushManager defaultManager];
-      v9 = [v8 devices];
+      devices = [v8 devices];
 
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [devices countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         v11 = v10;
@@ -171,14 +171,14 @@
           {
             if (*v20 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(devices);
             }
 
             v14 = [[PushToDeviceActivity alloc] initWithDevice:*(*(&v19 + 1) + 8 * i) place:self];
             [v3 addObject:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v11 = [devices countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v11);
@@ -206,16 +206,16 @@ LABEL_13:
   activityProviders = self->_activityProviders;
   if (!activityProviders)
   {
-    v4 = [(ShareItemRoute *)self route];
-    v5 = [v4 transportType];
-    if (v5 > 5)
+    route = [(ShareItemRoute *)self route];
+    transportType = [route transportType];
+    if (transportType > 5)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = qword_1012160D0[v5];
+      v6 = qword_1012160D0[transportType];
     }
 
     [(MURouteActivityDataProvider *)self->_dataProvider setTransportType:v6];
@@ -243,67 +243,67 @@ LABEL_13:
   self->_dataProvider = v3;
 }
 
-- (ShareItemRoute)initWithRoute:(id)a3 includeRoutingApps:(BOOL)a4
+- (ShareItemRoute)initWithRoute:(id)route includeRoutingApps:(BOOL)apps
 {
-  v7 = a3;
+  routeCopy = route;
   v33.receiver = self;
   v33.super_class = ShareItemRoute;
   v8 = [(ShareItemRoute *)&v33 init];
-  if (v8 && ([v7 isMultipointRoute] & 1) == 0)
+  if (v8 && ([routeCopy isMultipointRoute] & 1) == 0)
   {
-    objc_storeStrong(&v8->_route, a3);
-    v8->_includeRoutingApps = a4;
-    v10 = [v7 origin];
-    v11 = [v10 isCurrentLocation];
+    objc_storeStrong(&v8->_route, route);
+    v8->_includeRoutingApps = apps;
+    origin = [routeCopy origin];
+    isCurrentLocation = [origin isCurrentLocation];
 
-    if (v11)
+    if (isCurrentLocation)
     {
       v12 = [MKMapItem alloc];
-      v13 = [(ShareItemRoute *)v8 route];
-      v14 = [v13 origin];
-      v15 = [v14 geoMapItem];
-      v16 = [v12 initWithGeoMapItemAsCurrentLocation:v15];
+      route = [(ShareItemRoute *)v8 route];
+      origin2 = [route origin];
+      geoMapItem = [origin2 geoMapItem];
+      v16 = [v12 initWithGeoMapItemAsCurrentLocation:geoMapItem];
     }
 
     else
     {
-      v13 = [(ShareItemRoute *)v8 route];
-      v14 = [v13 origin];
-      v15 = [v14 geoMapItem];
-      v16 = [MKMapItem _itemWithGeoMapItem:v15];
+      route = [(ShareItemRoute *)v8 route];
+      origin2 = [route origin];
+      geoMapItem = [origin2 geoMapItem];
+      v16 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
     }
 
     origin = v8->_origin;
     v8->_origin = v16;
 
-    v18 = [v7 destination];
-    v19 = [v18 isCurrentLocation];
+    destination = [routeCopy destination];
+    isCurrentLocation2 = [destination isCurrentLocation];
 
-    if (v19)
+    if (isCurrentLocation2)
     {
       v20 = [MKMapItem alloc];
-      v21 = [(ShareItemRoute *)v8 route];
-      v22 = [v21 destination];
-      v23 = [v22 geoMapItem];
-      v24 = [v20 initWithGeoMapItemAsCurrentLocation:v23];
+      route2 = [(ShareItemRoute *)v8 route];
+      destination2 = [route2 destination];
+      geoMapItem2 = [destination2 geoMapItem];
+      v24 = [v20 initWithGeoMapItemAsCurrentLocation:geoMapItem2];
     }
 
     else
     {
-      v21 = [(ShareItemRoute *)v8 route];
-      v22 = [v21 destination];
-      v23 = [v22 geoMapItem];
-      v24 = [MKMapItem _itemWithGeoMapItem:v23];
+      route2 = [(ShareItemRoute *)v8 route];
+      destination2 = [route2 destination];
+      geoMapItem2 = [destination2 geoMapItem];
+      v24 = [MKMapItem _itemWithGeoMapItem:geoMapItem2];
     }
 
     destination = v8->_destination;
     v8->_destination = v24;
 
     v26 = [VKPolylineOverlay alloc];
-    v27 = [(ShareItemRoute *)v8 route];
-    v28 = [(ShareItemRoute *)v8 route];
-    v29 = [v28 traffic];
-    v30 = [v26 initWithComposedRoute:v27 traffic:v29];
+    route3 = [(ShareItemRoute *)v8 route];
+    route4 = [(ShareItemRoute *)v8 route];
+    traffic = [route4 traffic];
+    v30 = [v26 initWithComposedRoute:route3 traffic:traffic];
     polyline = v8->_polyline;
     v8->_polyline = v30;
 

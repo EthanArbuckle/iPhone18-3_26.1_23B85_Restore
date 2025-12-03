@@ -1,30 +1,30 @@
 @interface NSKeyValueIvarMutableSet
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
-- (id)member:(id)a3;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
+- (id)member:(id)member;
 - (id)objectEnumerator;
 - (unint64_t)count;
 - (void)_proxyNonGCFinalize;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation NSKeyValueIvarMutableSet
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSKeyValueIvarMutableSet;
-  v5 = [(NSKeyValueMutableSet *)&v7 _proxyInitWithContainer:a3 getter:?];
+  v5 = [(NSKeyValueMutableSet *)&v7 _proxyInitWithContainer:container getter:?];
   if (v5)
   {
-    v5[3] = [a4 ivar];
+    v5[3] = [getter ivar];
   }
 
   return v5;
@@ -47,12 +47,12 @@
   return [v3 count];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   container = self->super._container;
   v5 = *(&container->isa + ivar_getOffset(self->_ivar));
 
-  return [v5 member:a3];
+  return [v5 member:member];
 }
 
 - (id)objectEnumerator
@@ -73,17 +73,17 @@
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v7[0] = a3;
+  v7[0] = object;
   container = self->super._container;
   Offset = ivar_getOffset(self->_ivar);
   v6 = *(&container->isa + Offset);
   if (v6)
   {
 
-    [v6 addObject:a3];
+    [v6 addObject:object];
   }
 
   else
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   container = self->super._container;
   Offset = ivar_getOffset(self->_ivar);
@@ -100,29 +100,29 @@
   if (v6)
   {
 
-    [v6 addObjectsFromArray:a3];
+    [v6 addObjectsFromArray:array];
   }
 
   else
   {
-    *(&container->isa + Offset) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a3];
+    *(&container->isa + Offset) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:array];
   }
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   container = self->super._container;
   v5 = *(&container->isa + ivar_getOffset(self->_ivar));
 
-  [v5 intersectSet:a3];
+  [v5 intersectSet:set];
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   container = self->super._container;
   v5 = *(&container->isa + ivar_getOffset(self->_ivar));
 
-  [v5 minusSet:a3];
+  [v5 minusSet:set];
 }
 
 - (void)removeAllObjects
@@ -133,15 +133,15 @@
   [v3 removeAllObjects];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   container = self->super._container;
   v5 = *(&container->isa + ivar_getOffset(self->_ivar));
 
-  [v5 removeObject:a3];
+  [v5 removeObject:object];
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   container = self->super._container;
   Offset = ivar_getOffset(self->_ivar);
@@ -149,16 +149,16 @@
   if (v6)
   {
 
-    [v6 setSet:a3];
+    [v6 setSet:set];
   }
 
   else
   {
-    *(&container->isa + Offset) = [a3 mutableCopy];
+    *(&container->isa + Offset) = [set mutableCopy];
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   container = self->super._container;
   Offset = ivar_getOffset(self->_ivar);
@@ -166,12 +166,12 @@
   if (v6)
   {
 
-    [v6 unionSet:a3];
+    [v6 unionSet:set];
   }
 
   else
   {
-    *(&container->isa + Offset) = [a3 mutableCopy];
+    *(&container->isa + Offset) = [set mutableCopy];
   }
 }
 

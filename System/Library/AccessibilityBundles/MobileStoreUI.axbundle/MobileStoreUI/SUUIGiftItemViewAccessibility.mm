@@ -1,19 +1,19 @@
 @interface SUUIGiftItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SUUIGiftItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_subtitleLabel1" withType:"UILabel"];
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_subtitleLabel2" withType:"UILabel"];
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_price" withType:"NSString"];
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_numberOfUserRatings" withType:"NSInteger"];
-  [v3 validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_userRating" withType:"f"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_subtitleLabel1" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_subtitleLabel2" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_price" withType:"NSString"];
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_numberOfUserRatings" withType:"NSInteger"];
+  [validationsCopy validateClass:@"SUUIGiftItemView" hasInstanceVariable:@"_userRating" withType:"f"];
 }
 
 - (id)accessibilityLabel
@@ -25,11 +25,11 @@
   [v6 floatValue];
 
   v7 = [(SUUIGiftItemViewAccessibility *)self safeValueForKey:@"_numberOfUserRatings"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
   v9 = MEMORY[0x29EDBA0F8];
   v10 = accessibilityLocalizedString(@"USER_RATING_COUNT");
-  v11 = [v9 localizedStringWithFormat:v10, v8];
+  v11 = [v9 localizedStringWithFormat:v10, integerValue];
 
   v14 = UIAXStarRatingStringForRating();
   v12 = __UIAXStringForVariables();

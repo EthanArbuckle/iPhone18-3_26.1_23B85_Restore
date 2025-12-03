@@ -1,18 +1,18 @@
 @interface PSTextEditingPane
-- (PSTextEditingPane)initWithFrame:(CGRect)a3;
+- (PSTextEditingPane)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setPreferenceSpecifier:(id)a3;
+- (void)setPreferenceSpecifier:(id)specifier;
 @end
 
 @implementation PSTextEditingPane
 
-- (PSTextEditingPane)initWithFrame:(CGRect)a3
+- (PSTextEditingPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = PSTextEditingPane;
   v7 = [(PSEditingPane *)&v16 initWithFrame:?];
@@ -34,9 +34,9 @@
     v8->_cell = v11;
 
     [(PSTextEditingCell *)v8->_cell setOpaque:0];
-    v13 = [(PSTextEditingCell *)v8->_cell editableTextField];
+    editableTextField = [(PSTextEditingCell *)v8->_cell editableTextField];
     textField = v8->_textField;
-    v8->_textField = v13;
+    v8->_textField = editableTextField;
   }
 
   return v8;
@@ -65,20 +65,20 @@
   [(UITableView *)table setContentInset:v9, 0.0, 0.0, 0.0];
 }
 
-- (void)setPreferenceSpecifier:(id)a3
+- (void)setPreferenceSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = PSTextEditingPane;
-  [(PSEditingPane *)&v11 setPreferenceSpecifier:v4];
+  [(PSEditingPane *)&v11 setPreferenceSpecifier:specifierCopy];
   [(UITextField *)self->_textField setClearButtonStyle:2];
   [(UITextField *)self->_textField setClearButtonOffset:0.0, -1.0];
   textField = self->_textField;
-  if (v4[12])
+  if (specifierCopy[12])
   {
     [(UITextField *)textField setAutocorrectionType:1];
     [(UITextField *)self->_textField setAutocapitalizationType:0];
-    v6 = v4[12];
+    v6 = specifierCopy[12];
     if (v6 > 3)
     {
       if (v6 == 4 || v6 == 5)
@@ -125,27 +125,27 @@
 
   else
   {
-    if ([(UITextField *)textField autocapitalizationType]!= v4[10])
+    if ([(UITextField *)textField autocapitalizationType]!= specifierCopy[10])
     {
       [(UITextField *)self->_textField setAutocapitalizationType:?];
     }
 
-    if ([(UITextField *)self->_textField keyboardType]!= v4[9])
+    if ([(UITextField *)self->_textField keyboardType]!= specifierCopy[9])
     {
       [(UITextField *)self->_textField setKeyboardType:?];
     }
 
-    if ([(UITextField *)self->_textField autocorrectionType]!= v4[11])
+    if ([(UITextField *)self->_textField autocorrectionType]!= specifierCopy[11])
     {
       [(UITextField *)self->_textField setAutocorrectionType:?];
     }
   }
 
 LABEL_21:
-  v9 = [v4 propertyForKey:@"noAutoCorrect"];
-  v10 = [v9 BOOLValue];
+  v9 = [specifierCopy propertyForKey:@"noAutoCorrect"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     [(UITextField *)self->_textField setAutocorrectionType:1];
     [(UITextField *)self->_textField setAutocapitalizationType:0];

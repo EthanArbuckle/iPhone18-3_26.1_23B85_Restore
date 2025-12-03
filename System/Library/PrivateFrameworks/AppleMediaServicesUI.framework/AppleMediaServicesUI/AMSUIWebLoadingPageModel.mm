@@ -1,41 +1,41 @@
 @interface AMSUIWebLoadingPageModel
-- (AMSUIWebLoadingPageModel)initWithContext:(id)a3;
-- (AMSUIWebLoadingPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebLoadingPageModel)initWithContext:(id)context;
+- (AMSUIWebLoadingPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 @end
 
 @implementation AMSUIWebLoadingPageModel
 
-- (AMSUIWebLoadingPageModel)initWithContext:(id)a3
+- (AMSUIWebLoadingPageModel)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AMSUIWebLoadingPageModel;
   v6 = [(AMSUIWebLoadingPageModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (AMSUIWebLoadingPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebLoadingPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = [(AMSUIWebLoadingPageModel *)self init];
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"animateFadeIn"];
+      v10 = [objectCopy objectForKeyedSubscript:@"animateFadeIn"];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v6 objectForKeyedSubscript:@"animateFadeIn"];
+        v11 = [objectCopy objectForKeyedSubscript:@"animateFadeIn"];
         v9->_animateFadeIn = [v11 BOOLValue];
       }
 
@@ -44,15 +44,15 @@
         v9->_animateFadeIn = 1;
       }
 
-      v12 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+      v12 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
       backgroundColor = v9->_backgroundColor;
       v9->_backgroundColor = v12;
 
-      objc_storeStrong(&v9->_context, a4);
-      v14 = [v6 objectForKeyedSubscript:@"disableDelay"];
+      objc_storeStrong(&v9->_context, context);
+      v14 = [objectCopy objectForKeyedSubscript:@"disableDelay"];
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v6 objectForKeyedSubscript:@"disableDelay"];
+        v15 = [objectCopy objectForKeyedSubscript:@"disableDelay"];
         v9->_disableDelay = [v15 BOOLValue];
       }
 
@@ -61,11 +61,11 @@
         v9->_disableDelay = 0;
       }
 
-      v16 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+      v16 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
       impressionEvent = v9->_impressionEvent;
       v9->_impressionEvent = v16;
 
-      v18 = [v6 objectForKeyedSubscript:@"message"];
+      v18 = [objectCopy objectForKeyedSubscript:@"message"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -80,25 +80,25 @@
       message = v9->_message;
       v9->_message = v19;
 
-      v21 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+      v21 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
       navigationBar = v9->_navigationBar;
       v9->_navigationBar = v21;
 
-      [AMSUIWebModel windowSizeFromPageModel:v6];
+      [AMSUIWebModel windowSizeFromPageModel:objectCopy];
       v9->_windowSize.width = v23;
       v9->_windowSize.height = v24;
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -147,36 +147,36 @@
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
   v8 = [v7 mutableCopy];
 
-  v9 = [(AMSUIWebLoadingPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebLoadingPageModel *)self backgroundColor];
 
-  if (v9)
+  if (backgroundColor)
   {
-    v10 = [(AMSUIWebLoadingPageModel *)self backgroundColor];
-    [v8 setObject:v10 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebLoadingPageModel *)self backgroundColor];
+    [v8 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v11 = [(AMSUIWebLoadingPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebLoadingPageModel *)self impressionEvent];
 
-  if (v11)
+  if (impressionEvent)
   {
-    v12 = [(AMSUIWebLoadingPageModel *)self impressionEvent];
-    [v8 setObject:v12 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebLoadingPageModel *)self impressionEvent];
+    [v8 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v13 = [(AMSUIWebLoadingPageModel *)self message];
+  message = [(AMSUIWebLoadingPageModel *)self message];
 
-  if (v13)
+  if (message)
   {
-    v14 = [(AMSUIWebLoadingPageModel *)self message];
-    [v8 setObject:v14 forKey:@"message"];
+    message2 = [(AMSUIWebLoadingPageModel *)self message];
+    [v8 setObject:message2 forKey:@"message"];
   }
 
-  v15 = [(AMSUIWebLoadingPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebLoadingPageModel *)self navigationBar];
 
-  if (v15)
+  if (navigationBar)
   {
-    v16 = [(AMSUIWebLoadingPageModel *)self navigationBar];
-    [v8 setObject:v16 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebLoadingPageModel *)self navigationBar];
+    [v8 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
   v17 = [v8 description];
@@ -186,11 +186,11 @@
   return v17;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
   v4 = [AMSUIWebPlaceholderViewController alloc];
-  v5 = [(AMSUIWebLoadingPageModel *)self context];
-  v6 = [(AMSUIWebPlaceholderViewController *)v4 initWithModel:self context:v5 appearance:0];
+  context = [(AMSUIWebLoadingPageModel *)self context];
+  v6 = [(AMSUIWebPlaceholderViewController *)v4 initWithModel:self context:context appearance:0];
 
   [(AMSUIWebPlaceholderViewController *)v6 setAnimateFadeIn:[(AMSUIWebLoadingPageModel *)self animateFadeIn]];
 

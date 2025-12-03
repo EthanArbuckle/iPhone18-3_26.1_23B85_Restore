@@ -7,7 +7,7 @@
 
 - (uint64_t)tsu_BOOLValueForKey:()TSUAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     return 0;
@@ -24,7 +24,7 @@
 
 - (uint64_t)tsu_objectOfClass:()TSUAdditions forKey:
 {
-  result = [a1 objectForKey:a4];
+  result = [self objectForKey:a4];
   if (result)
   {
 

@@ -1,7 +1,7 @@
 @interface HSMessaging
-- (id)handleMessage:(id)a3;
-- (void)handleError:(id)a3;
-- (void)handleEvent:(id)a3 from:(id)a4;
+- (id)handleMessage:(id)message;
+- (void)handleError:(id)error;
+- (void)handleEvent:(id)event from:(id)from;
 - (void)startMessaging;
 @end
 
@@ -16,29 +16,29 @@
   v4 = dispatch_queue_create("com.apple.horizond.messaging", 0);
   [(HSMessaging *)self setQueue:v4];
 
-  v5 = [(HSMessaging *)self hostConnection];
+  hostConnection = [(HSMessaging *)self hostConnection];
   v6 = off_100014C38;
-  v7 = [(HSMessaging *)self queue];
+  queue = [(HSMessaging *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100004204;
   v8[3] = &unk_100010640;
   v8[4] = self;
   objc_copyWeak(&v9, &location);
-  [v5 acceptConnectionsForService:v6 InQueue:v7 withHandler:v8];
+  [hostConnection acceptConnectionsForService:v6 InQueue:queue withHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)handleEvent:(id)a3 from:(id)a4
+- (void)handleEvent:(id)event from:(id)from
 {
-  object = a3;
-  v6 = a4;
+  object = event;
+  fromCopy = from;
   v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-  v8 = [v7 lastPathComponent];
+  lastPathComponent = [v7 lastPathComponent];
   v35 = [NSString stringWithFormat:@"Received something from remote xpc connection."];
-  sub_100006E34(2, @"[%@:%d] %@\n", v9, v10, v11, v12, v13, v14, v8);
+  sub_100006E34(2, @"[%@:%d] %@\n", v9, v10, v11, v12, v13, v14, lastPathComponent);
 
   type = xpc_get_type(object);
   if (type == &_xpc_type_dictionary)
@@ -48,9 +48,9 @@
     if (v26)
     {
       v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-      v28 = [v27 lastPathComponent];
+      lastPathComponent2 = [v27 lastPathComponent];
       v37 = [NSString stringWithFormat:@"Server replying."];
-      sub_100006E34(2, @"[%@:%d] %@\n", v29, v30, v31, v32, v33, v34, v28);
+      sub_100006E34(2, @"[%@:%d] %@\n", v29, v30, v31, v32, v33, v34, lastPathComponent2);
 
       xpc_remote_connection_send_message();
     }
@@ -69,19 +69,19 @@
     else
     {
       v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent3 = [v17 lastPathComponent];
       v36 = [NSString stringWithFormat:@"Unrecognized message type: %@", v16, 102, v35];
-      sub_100006E34(4, @"[%@:%d] %@\n", v19, v20, v21, v22, v23, v24, v18);
+      sub_100006E34(4, @"[%@:%d] %@\n", v19, v20, v21, v22, v23, v24, lastPathComponent3);
     }
   }
 }
 
-- (id)handleMessage:(id)a3
+- (id)handleMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   length = 0;
-  reply = xpc_dictionary_create_reply(v3);
-  data = xpc_dictionary_get_data(v3, [@"SerializedMessage" UTF8String], &length);
+  reply = xpc_dictionary_create_reply(messageCopy);
+  data = xpc_dictionary_get_data(messageCopy, [@"SerializedMessage" UTF8String], &length);
   if (data)
   {
     v6 = data;
@@ -119,23 +119,23 @@ LABEL_6:
     goto LABEL_20;
   }
 
-  string = xpc_dictionary_get_string(v3, [@"Command" UTF8String]);
+  string = xpc_dictionary_get_string(messageCopy, [@"Command" UTF8String]);
   if (string)
   {
     v16 = string;
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-    v18 = [v17 lastPathComponent];
+    lastPathComponent = [v17 lastPathComponent];
     v72 = [NSString stringWithFormat:@"Received a horizon command: %s", v16];
-    sub_100006E34(2, @"[%@:%d] %@\n", v19, v20, v21, v22, v23, v24, v18);
+    sub_100006E34(2, @"[%@:%d] %@\n", v19, v20, v21, v22, v23, v24, lastPathComponent);
 
     xpc_dictionary_set_BOOL(reply, "done", 1);
     goto LABEL_20;
   }
 
-  v25 = xpc_dictionary_get_string(v3, [@"Query" UTF8String]);
+  v25 = xpc_dictionary_get_string(messageCopy, [@"Query" UTF8String]);
   if (!v25)
   {
-    if (xpc_dictionary_get_data(v3, [@"SerializedObject" UTF8String], &length))
+    if (xpc_dictionary_get_data(messageCopy, [@"SerializedObject" UTF8String], &length))
     {
       v78 = objc_alloc_init(HSMessageProcessor);
       v77 = objc_opt_class();
@@ -149,7 +149,7 @@ LABEL_6:
       v48 = objc_opt_class();
       v49 = objc_opt_class();
       v50 = [NSSet setWithObjects:v77, v76, v42, v43, v44, v45, v46, v47, v48, v49, objc_opt_class(), 0];
-      v51 = [NSKeyedUnarchiver unarchiveXPCObject:v3 allowedClasses:v50];
+      v51 = [NSKeyedUnarchiver unarchiveXPCObject:messageCopy allowedClasses:v50];
       if (sub_10000403C() == 1)
       {
         v52 = @"Ramdisk";
@@ -165,27 +165,27 @@ LABEL_6:
       [(HSMessageProcessor *)v78 processMessagev1:v51 response:&v79];
       v53 = v79;
       v54 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-      v55 = [v54 lastPathComponent];
+      lastPathComponent2 = [v54 lastPathComponent];
       v74 = [NSString stringWithFormat:@"Archiving Message Received from XPC Pluging"];
-      sub_100006E34(2, @"[%@:%d] %@\n", v56, v57, v58, v59, v60, v61, v55);
+      sub_100006E34(2, @"[%@:%d] %@\n", v56, v57, v58, v59, v60, v61, lastPathComponent2);
 
       [NSKeyedArchiver archiveObject:v53 to:reply];
       goto LABEL_20;
     }
 
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-    v63 = [(HSMessageProcessor *)v7 lastPathComponent];
+    lastPathComponent3 = [(HSMessageProcessor *)v7 lastPathComponent];
     v75 = [NSString stringWithFormat:@"Invalid message from host."];
-    sub_100006E34(2, @"[%@:%d] %@\n", v64, v65, v66, v67, v68, v69, v63);
+    sub_100006E34(2, @"[%@:%d] %@\n", v64, v65, v66, v67, v68, v69, lastPathComponent3);
 
     goto LABEL_6;
   }
 
   v26 = v25;
   v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-  v28 = [v27 lastPathComponent];
+  lastPathComponent4 = [v27 lastPathComponent];
   v73 = [NSString stringWithFormat:@"Got a query: %s", v26];
-  sub_100006E34(2, @"[%@:%d] %@\n", v29, v30, v31, v32, v33, v34, v28);
+  sub_100006E34(2, @"[%@:%d] %@\n", v29, v30, v31, v32, v33, v34, lastPathComponent4);
 
   v35 = [NSString stringWithUTF8String:v26];
   if (![&off_100011F80 containsObject:v35])
@@ -223,37 +223,37 @@ LABEL_20:
   return reply;
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v3 = a3;
-  v23 = v3;
-  if (v3 == &_xpc_error_connection_invalid)
+  errorCopy = error;
+  v23 = errorCopy;
+  if (errorCopy == &_xpc_error_connection_invalid)
   {
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v21 = [NSString stringWithFormat:@"Connection to client is invalid."];
   }
 
   else
   {
-    if (v3 != &_xpc_error_connection_interrupted)
+    if (errorCopy != &_xpc_error_connection_interrupted)
     {
-      v4 = xpc_copy_description(v3);
+      v4 = xpc_copy_description(errorCopy);
       v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent2 = [v5 lastPathComponent];
       v22 = [NSString stringWithFormat:@"Unrecognized XPC error: %s", v4];
-      sub_100006E34(4, @"[%@:%d] %@\n", v7, v8, v9, v10, v11, v12, v6);
+      sub_100006E34(4, @"[%@:%d] %@\n", v7, v8, v9, v10, v11, v12, lastPathComponent2);
 
       free(v4);
       goto LABEL_7;
     }
 
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/ComponentCheck/Daemon/CCCommunication/HSMessaging.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v21 = [NSString stringWithFormat:@"Connection to client interrupted."];
   }
 
-  sub_100006E34(4, @"[%@:%d] %@\n", v15, v16, v17, v18, v19, v20, v14);
+  sub_100006E34(4, @"[%@:%d] %@\n", v15, v16, v17, v18, v19, v20, lastPathComponent);
 
 LABEL_7:
 }

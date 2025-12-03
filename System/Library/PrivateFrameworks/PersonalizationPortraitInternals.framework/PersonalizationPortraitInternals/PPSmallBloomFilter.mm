@@ -1,7 +1,7 @@
 @interface PPSmallBloomFilter
-- (PPSmallBloomFilter)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromBatch:(id)a3 options:(id)a4 error:(id *)a5;
+- (PPSmallBloomFilter)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromBatch:(id)batch options:(id)options error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -15,12 +15,12 @@
   [(PPSmallBloomFilter *)&v3 dealloc];
 }
 
-- (id)predictionsFromBatch:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromBatch:(id)batch options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  batchCopy = batch;
+  optionsCopy = options;
   v11 = objc_opt_new();
-  if ([v9 count] < 1)
+  if ([batchCopy count] < 1)
   {
     v12 = 0;
   }
@@ -28,16 +28,16 @@
   else
   {
     v25 = a2;
-    v26 = a5;
+    errorCopy = error;
     v12 = 0;
     v13 = 0;
     do
     {
       v14 = v12;
       v15 = objc_autoreleasePoolPush();
-      v16 = [v9 featuresAtIndex:v13];
+      v16 = [batchCopy featuresAtIndex:v13];
       v28 = v12;
-      v17 = [(PPSmallBloomFilter *)self predictionFromFeatures:v16 options:v10 error:&v28];
+      v17 = [(PPSmallBloomFilter *)self predictionFromFeatures:v16 options:optionsCopy error:&v28];
       v12 = v28;
 
       if (v17)
@@ -54,8 +54,8 @@
 
         if (!v19)
         {
-          v21 = [MEMORY[0x277CCA890] currentHandler];
-          [v21 handleFailureInMethod:v25 object:self file:@"PPCoreMLUtils.m" lineNumber:242 description:@"Empty provider should not be null"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v25 object:self file:@"PPCoreMLUtils.m" lineNumber:242 description:@"Empty provider should not be null"];
         }
 
         [v11 addObject:{v19, v25}];
@@ -67,11 +67,11 @@
       ++v13;
     }
 
-    while (v13 < [v9 count]);
-    if (v26 && v12)
+    while (v13 < [batchCopy count]);
+    if (errorCopy && v12)
     {
       v22 = v12;
-      *v26 = v12;
+      *errorCopy = v12;
     }
   }
 
@@ -80,17 +80,17 @@
   return v23;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = [a3 featureValueForName:{self->_inputName, a4}];
-  v8 = [v7 stringValue];
-  v9 = [v8 localizedLowercaseString];
+  v7 = [features featureValueForName:{self->_inputName, options}];
+  stringValue = [v7 stringValue];
+  localizedLowercaseString = [stringValue localizedLowercaseString];
 
-  if (v9)
+  if (localizedLowercaseString)
   {
     pthread_mutex_lock(&self->_lock);
-    v10 = [(_PASBloomFilter *)self->_bloomFilter computeHashesForString:v9 reuse:0];
+    v10 = [(_PASBloomFilter *)self->_bloomFilter computeHashesForString:localizedLowercaseString reuse:0];
     v11 = [(_PASBloomFilter *)self->_bloomFilter getWithHashes:v10];
     pthread_mutex_unlock(&self->_lock);
   }
@@ -108,22 +108,22 @@
   v15 = [PPCoreMLUtils _multiArrayForNumberArray:v14];
   v22[0] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&outputName count:1];
-  v17 = [v12 initWithDictionary:v16 error:a5];
+  v17 = [v12 initWithDictionary:v16 error:error];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (PPSmallBloomFilter)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5
+- (PPSmallBloomFilter)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PPSmallBloomFilter;
   v7 = [(PPSmallBloomFilter *)&v21 init];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"trial_namespace_name"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"trial_namespace_name"];
     if (v8)
     {
       v9 = v8;
@@ -135,7 +135,7 @@
     }
 
     v10 = +[PPTrialWrapper sharedInstance];
-    v11 = [v6 objectForKeyedSubscript:@"path"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"path"];
     v12 = [v10 filepathForFactor:v11 namespaceName:v9];
 
     if (!v12)
@@ -153,11 +153,11 @@
     }
 
     pthread_mutex_init(&v7->_lock, 0);
-    v15 = [v6 objectForKeyedSubscript:@"inputName"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"inputName"];
     inputName = v7->_inputName;
     v7->_inputName = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"outputName"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"outputName"];
     outputName = v7->_outputName;
     v7->_outputName = v17;
   }

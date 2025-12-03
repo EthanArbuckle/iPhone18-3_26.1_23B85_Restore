@@ -33,9 +33,9 @@
 
 - (uint64_t)HeadphoneDevice
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 - (unint64_t)Data
@@ -54,9 +54,9 @@
 
 - (uint64_t)Data
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 - (unint64_t)HMDeviceRecord
@@ -75,8 +75,8 @@
 
 - (Class)NSObject
 {
-  v6 = *(a1 + 32);
-  v5 = *(a1 + 40);
+  v6 = *(self + 32);
+  v5 = *(self + 40);
 
   if (v6(v1))
   {
@@ -110,7 +110,7 @@
 
 - (void)HeadphoneDevice
 {
-  v4 = *a1;
+  v4 = *self;
 
   result = a2;
   *a2 = v4;
@@ -119,7 +119,7 @@
 
 - (void)HMDeviceRecord
 {
-  v4 = *a1;
+  v4 = *self;
 
   result = a2;
   *a2 = v4;

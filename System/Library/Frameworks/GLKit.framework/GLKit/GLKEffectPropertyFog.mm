@@ -1,5 +1,5 @@
 @interface GLKEffectPropertyFog
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4;
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot;
 - (GLKEffectPropertyFog)init;
 - (GLKVector4)color;
 - (id)description;
@@ -216,7 +216,7 @@
   }
 }
 
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot
 {
   v6 = 0;
   _allVshMasks = 0uLL;
@@ -224,7 +224,7 @@
   v7 = &qword_27DF40568;
   do
   {
-    v8 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs[v6], a3, [a3 index]);
+    v8 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", _maskStrs[v6], root, [root index]);
     *(v7 - 1) = v8;
     *v7 = v9;
     *&_allVshMasks = _allVshMasks | v8;
@@ -234,7 +234,7 @@
   }
 
   while (v6 != 4);
-  _staticFshMasks_0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"fog enabled", a4, [a4 index]);
+  _staticFshMasks_0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"fog enabled", fshRoot, [fshRoot index]);
   _staticFshMasks_1 = v10;
   *&_allFshMasks = _allFshMasks | _staticFshMasks_0;
   *(&_allFshMasks + 1) |= v10;

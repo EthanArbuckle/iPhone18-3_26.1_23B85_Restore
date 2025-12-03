@@ -1,24 +1,24 @@
 @interface PKPaymentRevokeSharedCredentialResponse
-- (PKPaymentRevokeSharedCredentialResponse)initWithData:(id)a3;
+- (PKPaymentRevokeSharedCredentialResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRevokeSharedCredentialResponse
 
-- (PKPaymentRevokeSharedCredentialResponse)initWithData:(id)a3
+- (PKPaymentRevokeSharedCredentialResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentRevokeSharedCredentialResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x1E695DFF8];
-      v7 = [v5 PKStringForKey:@"passURL"];
+      v7 = [jSONObject PKStringForKey:@"passURL"];
       v8 = [v6 URLWithString:v7];
       p_super = &v4->_passURL->super;
       v4->_passURL = v8;

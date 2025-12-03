@@ -1,6 +1,6 @@
 @interface ICFixNotesWithoutFoldersLaunchTask
-- (void)fixNotesWithNilFolderWithContext:(id)a3;
-- (void)fixNotesWithPlaceholderFoldersWithContext:(id)a3;
+- (void)fixNotesWithNilFolderWithContext:(id)context;
+- (void)fixNotesWithPlaceholderFoldersWithContext:(id)context;
 - (void)runLaunchTask;
 @end
 
@@ -18,9 +18,9 @@
   [v3 performBlockAndWait:v4];
 }
 
-- (void)fixNotesWithNilFolderWithContext:(id)a3
+- (void)fixNotesWithNilFolderWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = os_log_create("com.apple.notes", "LaunchTask");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -53,7 +53,7 @@
   {
     v11 = v10;
     v12 = *v33;
-    v30 = v3;
+    v30 = contextCopy;
     do
     {
       for (i = 0; i != v11; i = i + 1)
@@ -64,9 +64,9 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 account];
-        v16 = [v15 defaultFolder];
-        if (!v15)
+        account = [v14 account];
+        defaultFolder = [account defaultFolder];
+        if (!account)
         {
           v17 = os_log_create("com.apple.notes", "LaunchTask");
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -74,33 +74,33 @@
             sub_1004E0A9C(v42, v14, &v43, v17);
           }
 
-          v15 = [ICAccount defaultAccountInContext:v3];
-          v18 = [v15 defaultFolder];
+          account = [ICAccount defaultAccountInContext:contextCopy];
+          defaultFolder2 = [account defaultFolder];
 
-          v16 = v18;
+          defaultFolder = defaultFolder2;
         }
 
         v19 = os_log_create("com.apple.notes", "LaunchTask");
         v20 = v19;
-        if (v16)
+        if (defaultFolder)
         {
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v14 ic_loggingDescription];
-            v23 = [v16 identifier];
-            v24 = [v15 identifier];
+            ic_loggingDescription = [v14 ic_loggingDescription];
+            identifier = [defaultFolder identifier];
+            identifier2 = [account identifier];
             *buf = 138412802;
-            v37 = v22;
+            v37 = ic_loggingDescription;
             v38 = 2112;
-            v39 = v23;
+            v39 = identifier;
             v40 = 2112;
-            v41 = v24;
+            v41 = identifier2;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Moving note %@ without a folder to the default folder %@ in account %@.", buf, 0x20u);
 
-            v3 = v30;
+            contextCopy = v30;
           }
 
-          [v14 setFolder:v16];
+          [v14 setFolder:defaultFolder];
           v21 = +[NSDate date];
           [v14 setFolderModificationDate:v21];
 
@@ -111,12 +111,12 @@
         {
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v14 ic_loggingDescription];
-            v26 = [v15 identifier];
+            ic_loggingDescription2 = [v14 ic_loggingDescription];
+            identifier3 = [account identifier];
             *buf = 138412546;
-            v37 = v25;
+            v37 = ic_loggingDescription2;
             v38 = 2112;
-            v39 = v26;
+            v39 = identifier3;
             _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Couldn't move note %@ without a folder because default folder is nil in account %@.", buf, 0x16u);
           }
         }
@@ -128,12 +128,12 @@
     while (v11);
   }
 
-  [v3 ic_save];
+  [contextCopy ic_save];
 }
 
-- (void)fixNotesWithPlaceholderFoldersWithContext:(id)a3
+- (void)fixNotesWithPlaceholderFoldersWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = os_log_create("com.apple.notes", "LaunchTask");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -152,7 +152,7 @@
 
   v26 = v9;
   v25 = [NSCompoundPredicate andPredicateWithSubpredicates:v9];
-  v27 = v3;
+  v27 = contextCopy;
   v10 = [ICNote notesMatchingPredicate:"notesMatchingPredicate:context:" context:?];
   v11 = os_log_create("com.apple.notes", "LaunchTask");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -182,26 +182,26 @@
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
-        v18 = [v17 account];
-        v19 = [v17 folder];
+        account = [v17 account];
+        folder = [v17 folder];
         v20 = os_log_create("com.apple.notes", "LaunchTask");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v17 ic_loggingDescription];
-          v22 = [v19 identifier];
-          v23 = [v18 identifier];
+          ic_loggingDescription = [v17 ic_loggingDescription];
+          identifier = [folder identifier];
+          identifier2 = [account identifier];
           *buf = 138412802;
-          v34 = v21;
+          v34 = ic_loggingDescription;
           v35 = 2112;
-          v36 = v22;
+          v36 = identifier;
           v37 = 2112;
-          v38 = v23;
+          v38 = identifier2;
           _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Fetching note %@ and its placeholder folder %@ in account %@.", buf, 0x20u);
 
           v12 = v28;
         }
 
-        [v19 setNeedsToBeFetchedFromCloud:1];
+        [folder setNeedsToBeFetchedFromCloud:1];
         [v17 setNeedsToBeFetchedFromCloud:1];
       }
 

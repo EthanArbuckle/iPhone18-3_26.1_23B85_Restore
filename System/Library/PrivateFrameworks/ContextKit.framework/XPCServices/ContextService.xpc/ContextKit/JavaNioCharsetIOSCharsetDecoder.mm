@@ -1,19 +1,19 @@
 @interface JavaNioCharsetIOSCharsetDecoder
-- (id)decodeLoopWithJavaNioByteBuffer:(id)a3 withJavaNioCharBuffer:(id)a4;
-- (id)decodeWithJavaNioByteBuffer:(id)a3;
+- (id)decodeLoopWithJavaNioByteBuffer:(id)buffer withJavaNioCharBuffer:(id)charBuffer;
+- (id)decodeWithJavaNioByteBuffer:(id)buffer;
 - (int)available;
 - (void)dealloc;
 @end
 
 @implementation JavaNioCharsetIOSCharsetDecoder
 
-- (id)decodeLoopWithJavaNioByteBuffer:(id)a3 withJavaNioCharBuffer:(id)a4
+- (id)decodeLoopWithJavaNioByteBuffer:(id)buffer withJavaNioCharBuffer:(id)charBuffer
 {
   if (*(&self->inBuffer_ + 4))
   {
-    if (a4)
+    if (charBuffer)
     {
-      if ([a4 hasRemaining])
+      if ([charBuffer hasRemaining])
       {
         while (1)
         {
@@ -32,8 +32,8 @@
             IOSArray_throwOutOfBoundsWithMsg(v9, charBuffer_high);
           }
 
-          [a4 putWithChar:*(v7 + 12 + 2 * charBuffer_high)];
-          if (([a4 hasRemaining] & 1) == 0)
+          [charBuffer putWithChar:*(v7 + 12 + 2 * charBuffer_high)];
+          if (([charBuffer hasRemaining] & 1) == 0)
           {
             goto LABEL_10;
           }
@@ -66,17 +66,17 @@ LABEL_28:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_28;
   }
 
-  if (![a3 hasRemaining])
+  if (![buffer hasRemaining])
   {
     goto LABEL_25;
   }
 
-  v11 = sub_1002449F0(self, a3);
+  v11 = sub_1002449F0(self, buffer);
   if (!v11)
   {
     goto LABEL_28;
@@ -93,27 +93,27 @@ LABEL_28:
     return JavaNioCharsetCoderResult_UNDERFLOW__;
   }
 
-  if (!a4)
+  if (!charBuffer)
   {
     goto LABEL_28;
   }
 
-  v13 = [a4 remaining];
-  if (v13 >= [(__CFString *)v12 length])
+  remaining = [charBuffer remaining];
+  if (remaining >= [(__CFString *)v12 length])
   {
-    [a4 putWithNSString:v12];
+    [charBuffer putWithNSString:v12];
     goto LABEL_25;
   }
 
   JreStrongAssign((&self->inBuffer_ + 4), [(__CFString *)v12 toCharArray]);
   HIDWORD(self->charBuffer_) = 0;
 
-  return [(JavaNioCharsetIOSCharsetDecoder *)self decodeLoopWithJavaNioByteBuffer:a3 withJavaNioCharBuffer:a4];
+  return [(JavaNioCharsetIOSCharsetDecoder *)self decodeLoopWithJavaNioByteBuffer:buffer withJavaNioCharBuffer:charBuffer];
 }
 
-- (id)decodeWithJavaNioByteBuffer:(id)a3
+- (id)decodeWithJavaNioByteBuffer:(id)buffer
 {
-  v3 = sub_1002449F0(self, a3);
+  v3 = sub_1002449F0(self, buffer);
 
   return JavaNioCharBuffer_wrapWithJavaLangCharSequence_(v3);
 }

@@ -1,31 +1,31 @@
 @interface NTKCFaceDetailEditOptionCell
-+ (double)insetSpacingForStyle:(int64_t)a3;
++ (double)insetSpacingForStyle:(int64_t)style;
 + (id)reuseIdentifier;
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4;
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options;
 - (CGRect)swatchFrame;
-- (NTKCFaceDetailEditOptionCell)initWithCollection:(id)a3 forFaceView:(id)a4 face:(id)a5;
+- (NTKCFaceDetailEditOptionCell)initWithCollection:(id)collection forFaceView:(id)view face:(id)face;
 - (NTKCFaceDetailEditOptionCellDelegate)delegate;
 - (NTKFace)face;
 - (NTKFaceView)faceView;
 - (double)rowHeight;
-- (id)_dequeueCellForIndexPath:(id)a3;
-- (id)_imageForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_dequeueCellForIndexPath:(id)path;
+- (id)_imageForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int64_t)_swatchImageContentMode;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_ensureIndexPathVisible:(id)a3 animated:(BOOL)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_ensureIndexPathVisible:(id)visible animated:(BOOL)animated;
 - (void)_fontSizeDidChange;
-- (void)_setVerticalBottomBuffer:(double)a3;
-- (void)_setupCell:(id)a3;
+- (void)_setVerticalBottomBuffer:(double)buffer;
+- (void)_setupCell:(id)cell;
 - (void)_setupFromCollection;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)ensureIndexVisible:(int64_t)a3 animated:(BOOL)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)ensureIndexVisible:(int64_t)visible animated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)reloadVisibleCells;
-- (void)scrollToIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setOptionsText:(id)a3;
-- (void)setSelectedOptions:(id)a3;
+- (void)scrollToIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setOptionsText:(id)text;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCFaceDetailEditOptionCell
@@ -37,21 +37,21 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCFaceDetailEditOptionCell)initWithCollection:(id)a3 forFaceView:(id)a4 face:(id)a5
+- (NTKCFaceDetailEditOptionCell)initWithCollection:(id)collection forFaceView:(id)view face:(id)face
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  viewCopy = view;
+  faceCopy = face;
   v22.receiver = self;
   v22.super_class = NTKCFaceDetailEditOptionCell;
   v11 = [(NTKCDetailTableViewCell *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    [(NTKCFaceDetailEditOptionCell *)v11 setCollection:v8];
-    [(NTKCFaceDetailEditOptionCell *)v12 setFaceView:v9];
-    [v10 prepareEditOptions];
-    [(NTKCFaceDetailEditOptionCell *)v12 setFace:v10];
+    [(NTKCFaceDetailEditOptionCell *)v11 setCollection:collectionCopy];
+    [(NTKCFaceDetailEditOptionCell *)v12 setFaceView:viewCopy];
+    [faceCopy prepareEditOptions];
+    [(NTKCFaceDetailEditOptionCell *)v12 setFace:faceCopy];
     v13 = objc_opt_new();
     [(NTKCFaceDetailEditOptionCell *)v12 setLayout:v13];
 
@@ -71,12 +71,12 @@
     v18 = +[_NTKCFaceDetailCollectionCell reuseIdentifier];
     [(UICollectionView *)collectionView registerClass:v17 forCellWithReuseIdentifier:v18];
 
-    v19 = [(NTKCFaceDetailEditOptionCell *)v12 contentView];
-    [v19 addSubview:v12->_collectionView];
+    contentView = [(NTKCFaceDetailEditOptionCell *)v12 contentView];
+    [contentView addSubview:v12->_collectionView];
 
     [(NTKCFaceDetailEditOptionCell *)v12 _setVerticalBottomBuffer:50.0];
-    v20 = [(NTKEditOptionCollection *)v12->_collection optionsDescription];
-    [(NTKCFaceDetailEditOptionCell *)v12 setOptionsText:v20];
+    optionsDescription = [(NTKEditOptionCollection *)v12->_collection optionsDescription];
+    [(NTKCFaceDetailEditOptionCell *)v12 setOptionsText:optionsDescription];
     v12->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     [(NTKCFaceDetailEditOptionCell *)v12 _fontSizeDidChange];
   }
@@ -84,23 +84,23 @@
   return v12;
 }
 
-- (void)_setVerticalBottomBuffer:(double)a3
+- (void)_setVerticalBottomBuffer:(double)buffer
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_editOptionVerticalBottomBuffer = a3;
+    self->_editOptionVerticalBottomBuffer = buffer;
 
     [(NTKCFaceDetailEditOptionCell *)self _setupFromCollection];
   }
 }
 
-- (void)setOptionsText:(id)a3
+- (void)setOptionsText:(id)text
 {
-  v8 = a3;
-  if (v8)
+  textCopy = text;
+  if (textCopy)
   {
-    v4 = [(NTKCFaceDetailEditOptionCell *)self optionsDescription];
-    [v4 removeFromSuperview];
+    optionsDescription = [(NTKCFaceDetailEditOptionCell *)self optionsDescription];
+    [optionsDescription removeFromSuperview];
 
     v5 = objc_opt_new();
     [(NTKCFaceDetailEditOptionCell *)self setOptionsDescription:v5];
@@ -109,7 +109,7 @@
     [(UILabel *)self->_optionsDescription setTextColor:v6];
 
     [(UILabel *)self->_optionsDescription setNumberOfLines:0];
-    [(UILabel *)self->_optionsDescription setText:v8];
+    [(UILabel *)self->_optionsDescription setText:textCopy];
     [(UILabel *)self->_optionsDescription setLineBreakMode:0];
     optionsDescription = [(NTKCFaceDetailEditOptionCell *)self contentView];
     [optionsDescription addSubview:self->_optionsDescription];
@@ -137,9 +137,9 @@
   if ([(NTKEditOptionCollection *)self->_collection mode]== 11)
   {
     WeakRetained = objc_loadWeakRetained(&self->_faceView);
-    v11 = [WeakRetained faceStyle];
+    faceStyle = [WeakRetained faceStyle];
 
-    if (v11 == 1)
+    if (faceStyle == 1)
     {
       v9 = (114.0 - v4 + v8 * -2.0) * 0.5;
     }
@@ -150,10 +150,10 @@
   [(NTKCFaceDetailEditOptionCell *)self _spacing];
   [(UICollectionViewFlowLayout *)self->_layout setMinimumLineSpacing:?];
   v12 = self->_outlinePadding * -0.5 + 23.0;
-  v13 = [(NTKEditOptionCollection *)self->_collection collectionType];
+  collectionType = [(NTKEditOptionCollection *)self->_collection collectionType];
   outlinePadding = self->_outlinePadding;
   v15 = v12;
-  if (v13 != 1)
+  if (collectionType != 1)
   {
     v15 = self->_editOptionVerticalBottomBuffer + outlinePadding * -0.5;
   }
@@ -173,14 +173,14 @@
   {
     v5 = v3 - self->_editOptionVerticalBottomBuffer;
     [(NTKCFaceDetailEditOptionCell *)self layoutIfNeeded];
-    v6 = [(UILabel *)self->_optionsDescription font];
-    [v6 _scaledValueForValue:60.0];
+    font = [(UILabel *)self->_optionsDescription font];
+    [font _scaledValueForValue:60.0];
     v8 = v5 + v7;
     [(UILabel *)self->_optionsDescription _firstLineBaselineOffsetFromBoundsTop];
     v10 = v8 - v9;
     [(UILabel *)self->_optionsDescription bounds];
     v11 = v10 + CGRectGetHeight(v16);
-    [v6 _scaledValueForValue:25.0];
+    [font _scaledValueForValue:25.0];
     v13 = v12;
     [(UILabel *)self->_optionsDescription _baselineOffsetFromBottom];
     v4 = v11 + v13 - v14;
@@ -230,34 +230,34 @@
   }
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v104 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v7 = [(NTKCFaceDetailEditOptionCell *)self _isReloadCollectionRequired:v6 selectedOptions:v5];
+  optionsCopy = options;
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  v7 = [(NTKCFaceDetailEditOptionCell *)self _isReloadCollectionRequired:collection selectedOptions:optionsCopy];
 
   if (v7)
   {
-    objc_storeStrong(&self->_selectedOptions, a3);
+    objc_storeStrong(&self->_selectedOptions, options);
     [(NTKCFaceDetailEditOptionCell *)self _setupFromCollection];
     [(UICollectionView *)self->_collectionView reloadData];
     WeakRetained = objc_loadWeakRetained(&self->_face);
-    v9 = [WeakRetained editOptionsPrepared];
+    editOptionsPrepared = [WeakRetained editOptionsPrepared];
 
-    if ((v9 & 1) == 0)
+    if ((editOptionsPrepared & 1) == 0)
     {
       v10 = objc_loadWeakRetained(&self->_face);
       [v10 prepareEditOptions];
     }
 
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NTKEditOptionCollection mode](self->_collection, "mode")}];
-    v12 = [v5 objectForKeyedSubscript:v11];
+    v12 = [optionsCopy objectForKeyedSubscript:v11];
 
     v13 = objc_loadWeakRetained(&self->_face);
-    v14 = [(NTKEditOptionCollection *)self->_collection mode];
-    v15 = [(NTKEditOptionCollection *)self->_collection slot];
-    v16 = [v13 indexOfOption:v12 forCustomEditMode:v14 slot:v15];
+    mode = [(NTKEditOptionCollection *)self->_collection mode];
+    slot = [(NTKEditOptionCollection *)self->_collection slot];
+    v16 = [v13 indexOfOption:v12 forCustomEditMode:mode slot:slot];
 
     if (v16 != self->_selectedIndex)
     {
@@ -280,24 +280,24 @@
     goto LABEL_59;
   }
 
-  v82 = a3;
+  optionsCopy2 = options;
   v18 = objc_loadWeakRetained(&self->_faceView);
   v19 = objc_opt_class();
-  v20 = [(NTKEditOptionCollection *)self->_collection mode];
+  mode2 = [(NTKEditOptionCollection *)self->_collection mode];
   v21 = objc_loadWeakRetained(&self->_faceView);
-  v22 = [v21 device];
-  v23 = [v19 swatchForEditModeDependsOnOptions:v20 forDevice:v22];
+  device = [v21 device];
+  v23 = [v19 swatchForEditModeDependsOnOptions:mode2 forDevice:device];
 
   v89 = objc_opt_new();
   v88 = objc_opt_new();
-  v24 = [MEMORY[0x277CBEB38] dictionary];
-  v25 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
   obj = v23;
-  v84 = v5;
+  v84 = optionsCopy;
   v90 = [obj countByEnumeratingWithState:&v98 objects:v103 count:16];
   if (v90)
   {
@@ -315,18 +315,18 @@
 
         v92 = v27;
         v28 = *(*(&v98 + 1) + 8 * v27);
-        v29 = [(NSDictionary *)self->_selectedOptions objectForKeyedSubscript:v28, v82];
-        [v89 setObject:v29 forKeyedSubscript:v28];
+        optionsCopy2 = [(NSDictionary *)self->_selectedOptions objectForKeyedSubscript:v28, optionsCopy2];
+        [v89 setObject:optionsCopy2 forKeyedSubscript:v28];
 
-        v30 = [v5 objectForKeyedSubscript:v28];
+        v30 = [optionsCopy objectForKeyedSubscript:v28];
         [v88 setObject:v30 forKeyedSubscript:v28];
 
         v31 = v26[174];
         v32 = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v31));
-        v33 = [v32 dynamicEditMode];
-        v34 = [v28 integerValue];
+        dynamicEditMode = [v32 dynamicEditMode];
+        integerValue = [v28 integerValue];
 
-        if (v33 == v34)
+        if (dynamicEditMode == integerValue)
         {
           v35 = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v31));
           v36 = [v35 selectedSlotOptionsForCustomEditMode:{objc_msgSend(v35, "dynamicEditMode")}];
@@ -352,10 +352,10 @@
 
                 v42 = *(*(&v94 + 1) + 8 * i);
                 v43 = [(NSDictionary *)self->_selectedSlotOptions objectForKeyedSubscript:v42];
-                [v24 setObject:v43 forKeyedSubscript:v42];
+                [dictionary setObject:v43 forKeyedSubscript:v42];
 
                 v44 = [(NSDictionary *)v37 objectForKeyedSubscript:v42];
-                [v25 setObject:v44 forKeyedSubscript:v42];
+                [dictionary2 setObject:v44 forKeyedSubscript:v42];
               }
 
               v39 = [(NSDictionary *)v37 countByEnumeratingWithState:&v94 objects:v102 count:16];
@@ -367,7 +367,7 @@
           selectedSlotOptions = self->_selectedSlotOptions;
           self->_selectedSlotOptions = v37;
 
-          v5 = v84;
+          optionsCopy = v84;
           v26 = &OBJC_IVAR____NTKPhotosPhotoFaceUpgradeContext__bottomComplication;
         }
 
@@ -385,21 +385,21 @@
   v47 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NTKEditOptionCollection mode](self->_collection, "mode")}];
   v91 = [(NSDictionary *)selectedOptions objectForKeyedSubscript:v47];
 
-  v48 = [(NTKEditOptionCollection *)self->_collection slot];
+  slot2 = [(NTKEditOptionCollection *)self->_collection slot];
 
-  if (!v48)
+  if (!slot2)
   {
     v54 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NTKEditOptionCollection mode](self->_collection, "mode")}];
-    v55 = [v5 objectForKeyedSubscript:v54];
+    v55 = [optionsCopy objectForKeyedSubscript:v54];
 
-    objc_storeStrong(&self->_selectedOptions, v82);
+    objc_storeStrong(&self->_selectedOptions, optionsCopy2);
     goto LABEL_35;
   }
 
   v49 = objc_loadWeakRetained(&self->_face);
-  v50 = [(NTKEditOptionCollection *)self->_collection mode];
-  v51 = [(NTKEditOptionCollection *)self->_collection slot];
-  v52 = [v49 selectedOptionForCustomEditMode:v50 slot:v51];
+  mode3 = [(NTKEditOptionCollection *)self->_collection mode];
+  slot3 = [(NTKEditOptionCollection *)self->_collection slot];
+  v52 = [v49 selectedOptionForCustomEditMode:mode3 slot:slot3];
 
   if (v52)
   {
@@ -411,9 +411,9 @@
     if (!v91)
     {
       v78 = objc_loadWeakRetained(&self->_face);
-      v79 = [(NTKEditOptionCollection *)self->_collection mode];
-      v80 = [(NTKEditOptionCollection *)self->_collection slot];
-      v81 = [v78 defaultOptionForCustomEditMode:v79 slot:v80];
+      mode4 = [(NTKEditOptionCollection *)self->_collection mode];
+      slot4 = [(NTKEditOptionCollection *)self->_collection slot];
+      v81 = [v78 defaultOptionForCustomEditMode:mode4 slot:slot4];
 
       v55 = v81;
       goto LABEL_34;
@@ -434,18 +434,18 @@ LABEL_34:
 LABEL_35:
   v93 = v55;
   v59 = objc_loadWeakRetained(&self->_face);
-  v60 = [v59 editOptionsPrepared];
+  editOptionsPrepared2 = [v59 editOptionsPrepared];
 
-  if ((v60 & 1) == 0)
+  if ((editOptionsPrepared2 & 1) == 0)
   {
     v61 = objc_loadWeakRetained(&self->_face);
     [v61 prepareEditOptions];
   }
 
   v62 = objc_loadWeakRetained(&self->_face);
-  v63 = [(NTKEditOptionCollection *)self->_collection mode];
-  v64 = [(NTKEditOptionCollection *)self->_collection slot];
-  v65 = [v62 indexOfOption:v93 forCustomEditMode:v63 slot:v64];
+  mode5 = [(NTKEditOptionCollection *)self->_collection mode];
+  slot5 = [(NTKEditOptionCollection *)self->_collection slot];
+  v65 = [v62 indexOfOption:v93 forCustomEditMode:mode5 slot:slot5];
 
   v66 = v91;
   if ([v93 isEqual:v91] && v65 == self->_selectedIndex)
@@ -473,7 +473,7 @@ LABEL_35:
   {
     if ([v88 isEqualToDictionary:v89])
     {
-      v68 = [v25 isEqualToDictionary:v24] ^ 1;
+      v68 = [dictionary2 isEqualToDictionary:dictionary] ^ 1;
     }
 
     else
@@ -490,11 +490,11 @@ LABEL_35:
   }
 
   v69 = objc_loadWeakRetained(&self->_faceView);
-  v70 = [v69 _editModesDisabledByCurrentConfiguration];
+  _editModesDisabledByCurrentConfiguration = [v69 _editModesDisabledByCurrentConfiguration];
 
-  v71 = [(NTKEditOptionCollection *)self->_collection mode];
-  v72 = [MEMORY[0x277CCABB0] numberWithInteger:v71];
-  v73 = [v70 containsObject:v72];
+  mode6 = [(NTKEditOptionCollection *)self->_collection mode];
+  v72 = [MEMORY[0x277CCABB0] numberWithInteger:mode6];
+  v73 = [_editModesDisabledByCurrentConfiguration containsObject:v72];
 
   disabled = self->_disabled;
   if (disabled == v73)
@@ -511,8 +511,8 @@ LABEL_35:
     if ((v73 & 1) == 0)
     {
 LABEL_52:
-      v75 = [(NTKEditOptionCollection *)self->_collection optionsDescription];
-      [(NTKCFaceDetailEditOptionCell *)self setOptionsText:v75];
+      optionsDescription = [(NTKEditOptionCollection *)self->_collection optionsDescription];
+      [(NTKCFaceDetailEditOptionCell *)self setOptionsText:optionsDescription];
       [(UICollectionView *)self->_collectionView setScrollEnabled:1];
 
       goto LABEL_55;
@@ -520,7 +520,7 @@ LABEL_52:
   }
 
   v76 = objc_loadWeakRetained(&self->_face);
-  v77 = [v76 localizedExplanationMessageForDisabledEditMode:v71];
+  v77 = [v76 localizedExplanationMessageForDisabledEditMode:mode6];
   [(NTKCFaceDetailEditOptionCell *)self setOptionsText:v77];
 
   v66 = v91;
@@ -531,15 +531,15 @@ LABEL_55:
     [(NTKCFaceDetailEditOptionCell *)self reloadVisibleCells];
   }
 
-  v5 = v84;
+  optionsCopy = v84;
 LABEL_59:
 }
 
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options
 {
-  v6 = a4;
-  [(NTKCFaceDetailEditOptionCell *)self setCollection:a3];
-  [(NTKCFaceDetailEditOptionCell *)self setSelectedOptions:v6];
+  optionsCopy = options;
+  [(NTKCFaceDetailEditOptionCell *)self setCollection:changed];
+  [(NTKCFaceDetailEditOptionCell *)self setSelectedOptions:optionsCopy];
 
   [(NTKCFaceDetailEditOptionCell *)self _setupFromCollection];
   [(UICollectionView *)self->_collectionView reloadData];
@@ -551,8 +551,8 @@ LABEL_59:
   v48.receiver = self;
   v48.super_class = NTKCFaceDetailEditOptionCell;
   [(NTKCDetailTableViewCell *)&v48 layoutSubviews];
-  v3 = [(NTKCFaceDetailEditOptionCell *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKCFaceDetailEditOptionCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -606,8 +606,8 @@ LABEL_59:
   v37 = v36;
   [(UILabel *)self->_optionsDescription setFrame:v36, v33, v31, v35];
   MaxY = CGRectGetMaxY(self->_swatchFrame);
-  v39 = [(UILabel *)self->_optionsDescription font];
-  [v39 _scaledValueForValue:60.0];
+  font = [(UILabel *)self->_optionsDescription font];
+  [font _scaledValueForValue:60.0];
   v41 = MaxY + v40;
   [(UILabel *)self->_optionsDescription _firstLineBaselineOffsetFromBoundsTop];
   v43 = v41 - v42;
@@ -615,51 +615,51 @@ LABEL_59:
   [(UILabel *)self->_optionsDescription setFrame:v37, v43, v31, v35];
 }
 
-+ (double)insetSpacingForStyle:(int64_t)a3
++ (double)insetSpacingForStyle:(int64_t)style
 {
   v4 = NTKCScreenStyle();
   result = 20.0;
   if (v4 != 1)
   {
     result = 0.0;
-    if (a3 <= 4)
+    if (style <= 4)
     {
-      return dbl_22DCE7C20[a3];
+      return dbl_22DCE7C20[style];
     }
   }
 
   return result;
 }
 
-- (id)_dequeueCellForIndexPath:(id)a3
+- (id)_dequeueCellForIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v5 = a3;
+  pathCopy = path;
   v6 = +[_NTKCFaceDetailCollectionCell reuseIdentifier];
-  v7 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v5];
+  v7 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
   [(NTKCFaceDetailEditOptionCell *)self _setupCell:v7];
 
   return v7;
 }
 
-- (void)_setupCell:(id)a3
+- (void)_setupCell:(id)cell
 {
   x = self->_swatchFrame.origin.x;
   y = self->_swatchFrame.origin.y;
   width = self->_swatchFrame.size.width;
   height = self->_swatchFrame.size.height;
-  v8 = a3;
-  [v8 setSwatchFrame:{x, y, width, height}];
-  [v8 setOutlineOutset:self->_outlineOutset];
+  cellCopy = cell;
+  [cellCopy setSwatchFrame:{x, y, width, height}];
+  [cellCopy setOutlineOutset:self->_outlineOutset];
 }
 
-- (id)_imageForIndexPath:(id)a3
+- (id)_imageForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:v4];
-  v6 = [(NTKEditOptionCollection *)self->_collection options];
-  v7 = [v6 count];
+  pathCopy = path;
+  v5 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:pathCopy];
+  options = [(NTKEditOptionCollection *)self->_collection options];
+  v7 = [options count];
 
   if (v5 >= v7)
   {
@@ -670,17 +670,17 @@ LABEL_59:
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_faceView);
-    v9 = [(NTKEditOptionCollection *)self->_collection options];
-    v10 = [v9 objectAtIndexedSubscript:v5];
-    v11 = [(NTKEditOptionCollection *)self->_collection mode];
+    options2 = [(NTKEditOptionCollection *)self->_collection options];
+    v10 = [options2 objectAtIndexedSubscript:v5];
+    mode = [(NTKEditOptionCollection *)self->_collection mode];
     selectedOptions = self->_selectedOptions;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __51__NTKCFaceDetailEditOptionCell__imageForIndexPath___block_invoke;
     v15[3] = &unk_27877F610;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
-    v13 = [WeakRetained swatchImageForEditOption:v10 mode:v11 withSelectedOptions:selectedOptions refreshHandler:v15];
+    v16 = pathCopy;
+    v13 = [WeakRetained swatchImageForEditOption:v10 mode:mode withSelectedOptions:selectedOptions refreshHandler:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -728,33 +728,33 @@ void __51__NTKCFaceDetailEditOptionCell__imageForIndexPath___block_invoke_2(uint
 - (int64_t)_swatchImageContentMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  v3 = [WeakRetained swatchImageContentMode];
+  swatchImageContentMode = [WeakRetained swatchImageContentMode];
 
-  return v3;
+  return swatchImageContentMode;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(NTKEditOptionCollection *)self->_collection options:a3];
+  v4 = [(NTKEditOptionCollection *)self->_collection options:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NTKCFaceDetailEditOptionCell *)self _dequeueCellForIndexPath:v5];
-  v7 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(NTKCFaceDetailEditOptionCell *)self _dequeueCellForIndexPath:pathCopy];
+  v7 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:pathCopy];
 
-  v8 = [(NTKEditOptionCollection *)self->_collection options];
-  v9 = [v8 objectAtIndexedSubscript:v7];
+  options = [(NTKEditOptionCollection *)self->_collection options];
+  v9 = [options objectAtIndexedSubscript:v7];
 
   if ([(NTKEditOptionCollection *)self->_collection collectionType]!= 1)
   {
-    v10 = [v9 localizedName];
-    v11 = [v10 localizedUppercaseString];
-    [v6 setText:v11];
+    localizedName = [v9 localizedName];
+    localizedUppercaseString = [localizedName localizedUppercaseString];
+    [v6 setText:localizedUppercaseString];
   }
 
   [v6 setStyle:{objc_msgSend(v9, "swatchStyle")}];
@@ -766,32 +766,32 @@ void __51__NTKCFaceDetailEditOptionCell__imageForIndexPath___block_invoke_2(uint
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v9 = a4;
-  [v9 setActive:self->_selectedIndex == -[NTKCFaceDetailEditOptionCell _editOptionIndexForIndexPath:](self animated:{"_editOptionIndexForIndexPath:", v7), 0}];
-  [v9 setDisabled:self->_disabled];
-  v8 = [(NTKCFaceDetailEditOptionCell *)self _imageForIndexPath:v7];
+  pathCopy = path;
+  cellCopy = cell;
+  [cellCopy setActive:self->_selectedIndex == -[NTKCFaceDetailEditOptionCell _editOptionIndexForIndexPath:](self animated:{"_editOptionIndexForIndexPath:", pathCopy), 0}];
+  [cellCopy setDisabled:self->_disabled];
+  v8 = [(NTKCFaceDetailEditOptionCell *)self _imageForIndexPath:pathCopy];
 
-  [v9 setImage:v8];
-  [v9 setSwatchImageContentMode:{-[NTKCFaceDetailEditOptionCell _swatchImageContentMode](self, "_swatchImageContentMode")}];
+  [cellCopy setImage:v8];
+  [cellCopy setSwatchImageContentMode:{-[NTKCFaceDetailEditOptionCell _swatchImageContentMode](self, "_swatchImageContentMode")}];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (!self->_disabled)
   {
-    v7 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:v6];
+    v7 = [(NTKCFaceDetailEditOptionCell *)self _editOptionIndexForIndexPath:pathCopy];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = v7;
-      v9 = [(NTKCFaceDetailEditOptionCell *)self delegate];
-      [v9 editOptionCell:self didSelectOptionAtIndex:v8];
+      delegate = [(NTKCFaceDetailEditOptionCell *)self delegate];
+      [delegate editOptionCell:self didSelectOptionAtIndex:v8];
 
-      [(NTKCFaceDetailEditOptionCell *)self _ensureIndexPathVisible:v6 animated:1];
+      [(NTKCFaceDetailEditOptionCell *)self _ensureIndexPathVisible:pathCopy animated:1];
     }
   }
 }
@@ -810,26 +810,26 @@ void __51__NTKCFaceDetailEditOptionCell__imageForIndexPath___block_invoke_2(uint
   [(NTKCFaceDetailEditOptionCell *)self setNeedsLayout];
 }
 
-- (void)scrollToIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   collectionView = self->_collectionView;
-  v6 = [(NTKCFaceDetailEditOptionCell *)self _indexPathForEditOptionIndex:a3];
-  [(UICollectionView *)collectionView scrollToItemAtIndexPath:v6 atScrollPosition:16 animated:v4];
+  v6 = [(NTKCFaceDetailEditOptionCell *)self _indexPathForEditOptionIndex:index];
+  [(UICollectionView *)collectionView scrollToItemAtIndexPath:v6 atScrollPosition:16 animated:animatedCopy];
 }
 
-- (void)_ensureIndexPathVisible:(id)a3 animated:(BOOL)a4
+- (void)_ensureIndexPathVisible:(id)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  rect_16 = a3;
+  animatedCopy = animated;
+  rect_16 = visible;
   v6 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:rect_16];
   [v6 frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [rect_16 item];
-  if (v15 && v15 != -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", [rect_16 section]) - 1)
+  item = [rect_16 item];
+  if (item && item != -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", [rect_16 section]) - 1)
   {
     [(UICollectionView *)self->_collectionView bounds];
     v17 = v16;
@@ -886,14 +886,14 @@ void __51__NTKCFaceDetailEditOptionCell__imageForIndexPath___block_invoke_2(uint
     }
   }
 
-  [(UICollectionView *)self->_collectionView scrollRectToVisible:v4 animated:v8, v10, v12, v14];
+  [(UICollectionView *)self->_collectionView scrollRectToVisible:animatedCopy animated:v8, v10, v12, v14];
 }
 
-- (void)ensureIndexVisible:(int64_t)a3 animated:(BOOL)a4
+- (void)ensureIndexVisible:(int64_t)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(NTKCFaceDetailEditOptionCell *)self _indexPathForEditOptionIndex:a3];
-  [(NTKCFaceDetailEditOptionCell *)self _ensureIndexPathVisible:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [(NTKCFaceDetailEditOptionCell *)self _indexPathForEditOptionIndex:visible];
+  [(NTKCFaceDetailEditOptionCell *)self _ensureIndexPathVisible:v6 animated:animatedCopy];
 }
 
 - (NTKFaceView)faceView

@@ -1,32 +1,32 @@
 @interface JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator
 - (BOOL)hasNext;
 - (BOOL)hasPrevious;
-- (JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator)initWithJavaUtilListIterator:(id)a3 withJavaUtilAbstractList_SubAbstractList:(id)a4 withInt:(int)a5 withInt:(int)a6;
+- (JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator)initWithJavaUtilListIterator:(id)iterator withJavaUtilAbstractList_SubAbstractList:(id)list withInt:(int)int withInt:(int)withInt;
 - (id)next;
 - (id)previous;
 - (int)nextIndex;
 - (int)previousIndex;
-- (void)addWithId:(id)a3;
+- (void)addWithId:(id)id;
 - (void)dealloc;
 - (void)remove;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator
 
-- (JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator)initWithJavaUtilListIterator:(id)a3 withJavaUtilAbstractList_SubAbstractList:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (JavaUtilAbstractList_SubAbstractList_SubAbstractListIterator)initWithJavaUtilListIterator:(id)iterator withJavaUtilAbstractList_SubAbstractList:(id)list withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->iterator_, a3);
-  JreStrongAssign(&self->subList_, a4);
-  self->start_ = a5;
-  self->end_ = a6 + a5;
+  JreStrongAssign(&self->iterator_, iterator);
+  JreStrongAssign(&self->subList_, list);
+  self->start_ = int;
+  self->end_ = withInt + int;
   return self;
 }
 
-- (void)addWithId:(id)a3
+- (void)addWithId:(id)id
 {
   iterator = self->iterator_;
-  if (!iterator || ([(JavaUtilListIterator *)iterator addWithId:a3], (subList = self->subList_) == 0))
+  if (!iterator || ([(JavaUtilListIterator *)iterator addWithId:id], (subList = self->subList_) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -114,10 +114,10 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilListIterator *)iterator previousIndex];
+  previousIndex = [(JavaUtilListIterator *)iterator previousIndex];
   start = self->start_;
-  v6 = __OFSUB__(v4, start);
-  v7 = v4 - start;
+  v6 = __OFSUB__(previousIndex, start);
+  v7 = previousIndex - start;
   if (v7 < 0 != v6)
   {
     return -1;
@@ -141,7 +141,7 @@
   --self->end_;
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   iterator = self->iterator_;
   if (!iterator)
@@ -149,7 +149,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilListIterator *)iterator setWithId:a3];
+  [(JavaUtilListIterator *)iterator setWithId:id];
 }
 
 - (void)dealloc

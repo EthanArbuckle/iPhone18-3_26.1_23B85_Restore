@@ -1,8 +1,8 @@
 @interface SFTranscriberResult
 - ($105C7F46451D331BD7843CF46B2B4F94)range;
-- (SFTranscriberResult)initWithRange:(id *)a3 contextualizedTranscriberMultisegmentResult:(id)a4;
-- (SFTranscriberResult)initWithRange:(id *)a3 normalizedTranscriberMultisegmentResult:(id)a4 contextualizedTranscriberMultisegmentResult:(id)a5;
-- (SFTranscriberResult)initWithRange:(id *)a3 normalizedTranscriberSingleSegmentResult:(id)a4 contextualizedTranscriberSingleSegmentResult:(id)a5;
+- (SFTranscriberResult)initWithRange:(id *)range contextualizedTranscriberMultisegmentResult:(id)result;
+- (SFTranscriberResult)initWithRange:(id *)range normalizedTranscriberMultisegmentResult:(id)result contextualizedTranscriberMultisegmentResult:(id)multisegmentResult;
+- (SFTranscriberResult)initWithRange:(id *)range normalizedTranscriberSingleSegmentResult:(id)result contextualizedTranscriberSingleSegmentResult:(id)segmentResult;
 @end
 
 @implementation SFTranscriberResult
@@ -16,18 +16,18 @@
   return self;
 }
 
-- (SFTranscriberResult)initWithRange:(id *)a3 contextualizedTranscriberMultisegmentResult:(id)a4
+- (SFTranscriberResult)initWithRange:(id *)range contextualizedTranscriberMultisegmentResult:(id)result
 {
   v12.receiver = self;
   v12.super_class = SFTranscriberResult;
-  v5 = a4;
+  resultCopy = result;
   v6 = [(SFTranscriberResult *)&v12 init];
-  v8 = *&a3->var0.var3;
-  v7 = *&a3->var1.var1;
-  *(v6 + 40) = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  v7 = *&range->var1.var1;
+  *(v6 + 40) = *&range->var0.var0;
   *(v6 + 56) = v8;
   *(v6 + 72) = v7;
-  v9 = [v5 copy];
+  v9 = [resultCopy copy];
 
   v10 = *(v6 + 2);
   *(v6 + 2) = v9;
@@ -35,48 +35,48 @@
   return v6;
 }
 
-- (SFTranscriberResult)initWithRange:(id *)a3 normalizedTranscriberSingleSegmentResult:(id)a4 contextualizedTranscriberSingleSegmentResult:(id)a5
+- (SFTranscriberResult)initWithRange:(id *)range normalizedTranscriberSingleSegmentResult:(id)result contextualizedTranscriberSingleSegmentResult:(id)segmentResult
 {
   v17.receiver = self;
   v17.super_class = SFTranscriberResult;
-  v7 = a5;
-  v8 = a4;
+  segmentResultCopy = segmentResult;
+  resultCopy = result;
   v9 = [(SFTranscriberResult *)&v17 init];
-  v11 = *&a3->var0.var3;
-  v10 = *&a3->var1.var1;
-  *(v9 + 40) = *&a3->var0.var0;
+  v11 = *&range->var0.var3;
+  v10 = *&range->var1.var1;
+  *(v9 + 40) = *&range->var0.var0;
   *(v9 + 56) = v11;
   *(v9 + 72) = v10;
-  v12 = [v8 copy];
+  v12 = [resultCopy copy];
 
   v13 = *(v9 + 3);
   *(v9 + 3) = v12;
 
-  v14 = [v7 copy];
+  v14 = [segmentResultCopy copy];
   v15 = *(v9 + 4);
   *(v9 + 4) = v14;
 
   return v9;
 }
 
-- (SFTranscriberResult)initWithRange:(id *)a3 normalizedTranscriberMultisegmentResult:(id)a4 contextualizedTranscriberMultisegmentResult:(id)a5
+- (SFTranscriberResult)initWithRange:(id *)range normalizedTranscriberMultisegmentResult:(id)result contextualizedTranscriberMultisegmentResult:(id)multisegmentResult
 {
   v17.receiver = self;
   v17.super_class = SFTranscriberResult;
-  v7 = a5;
-  v8 = a4;
+  multisegmentResultCopy = multisegmentResult;
+  resultCopy = result;
   v9 = [(SFTranscriberResult *)&v17 init];
-  v11 = *&a3->var0.var3;
-  v10 = *&a3->var1.var1;
-  *(v9 + 40) = *&a3->var0.var0;
+  v11 = *&range->var0.var3;
+  v10 = *&range->var1.var1;
+  *(v9 + 40) = *&range->var0.var0;
   *(v9 + 56) = v11;
   *(v9 + 72) = v10;
-  v12 = [v8 copy];
+  v12 = [resultCopy copy];
 
   v13 = *(v9 + 1);
   *(v9 + 1) = v12;
 
-  v14 = [v7 copy];
+  v14 = [multisegmentResultCopy copy];
   v15 = *(v9 + 2);
   *(v9 + 2) = v14;
 

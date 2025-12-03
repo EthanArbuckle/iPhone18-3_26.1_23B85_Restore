@@ -1,8 +1,8 @@
 @interface _NSFileAccessAsynchronousProcessAssertionScheduler
 + (id)sharedInstance;
 - (_NSFileAccessAsynchronousProcessAssertionScheduler)init;
-- (id)addAssertionWithName:(id)a3 forPID:(int)a4;
-- (void)removeAssertionWithToken:(id)a3;
+- (id)addAssertionWithName:(id)name forPID:(int)d;
+- (void)removeAssertionWithToken:(id)token;
 @end
 
 @implementation _NSFileAccessAsynchronousProcessAssertionScheduler
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (id)addAssertionWithName:(id)a3 forPID:(int)a4
+- (id)addAssertionWithName:(id)name forPID:(int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableDictionary *)self->_assertionsPerPID objectForKey:[NSNumber numberWithInt:v4]];
   if (!v7)
@@ -44,7 +44,7 @@
   }
 
   v8 = [v7 count];
-  v9 = [[_NSFileAccessAsynchronousProcessAssertion alloc] initWithPID:v4 name:a3];
+  v9 = [[_NSFileAccessAsynchronousProcessAssertion alloc] initWithPID:v4 name:name];
   [v7 addObject:v9];
   os_unfair_lock_unlock(&self->_lock);
   if (v8 <= 1)
@@ -55,11 +55,11 @@
   return v9;
 }
 
-- (void)removeAssertionWithToken:(id)a3
+- (void)removeAssertionWithToken:(id)token
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = -[NSMutableDictionary objectForKey:](self->_assertionsPerPID, "objectForKey:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [a3 PID]));
-  v6 = [v5 indexOfObjectIdenticalTo:a3];
+  v5 = -[NSMutableDictionary objectForKey:](self->_assertionsPerPID, "objectForKey:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [token PID]));
+  v6 = [v5 indexOfObjectIdenticalTo:token];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -80,7 +80,7 @@
       v10 = 0;
     }
 
-    [a3 invalidate];
+    [token invalidate];
     [v5 removeObjectAtIndex:v7];
     os_unfair_lock_unlock(&self->_lock);
     if (v10)

@@ -1,25 +1,25 @@
 @interface BKMainDisplayObserver
 - (BKMainDisplayObserver)init;
 - (BKSHIDEventDisplay)display;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BKMainDisplayObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == @"BKHIDKVOWindowServerDisplayUUID" && self->_displayChangedHandler)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"BKHIDKVOWindowServerDisplayUUID" && self->_displayChangedHandler)
   {
-    v13 = [(BKMainDisplayObserver *)self display];
+    display = [(BKMainDisplayObserver *)self display];
     (*(self->_displayChangedHandler + 2))();
     v14 = BKLogEventDelivery();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v13;
+      v16 = display;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "_mainDisplay changed:%{public}@", &v15, 0xCu);
     }
   }
@@ -32,10 +32,10 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 uniqueId];
-    if (v5)
+    uniqueId = [v3 uniqueId];
+    if (uniqueId)
     {
-      v6 = [BKSHIDEventDisplay displayWithHardwareIdentifier:v5];
+      v6 = [BKSHIDEventDisplay displayWithHardwareIdentifier:uniqueId];
 
       v2 = v6;
     }

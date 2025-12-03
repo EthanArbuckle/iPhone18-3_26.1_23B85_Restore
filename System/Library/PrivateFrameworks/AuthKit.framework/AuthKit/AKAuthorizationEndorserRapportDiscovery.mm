@@ -1,50 +1,50 @@
 @interface AKAuthorizationEndorserRapportDiscovery
-- (AKAuthorizationEndorserRapportDiscovery)initWithClient:(id)a3;
-- (BOOL)activateWithError:(id *)a3;
-- (void)_handleFoundDevice:(id)a3;
-- (void)authorizationEndorserRapportClientDidFinish:(id)a3;
+- (AKAuthorizationEndorserRapportDiscovery)initWithClient:(id)client;
+- (BOOL)activateWithError:(id *)error;
+- (void)_handleFoundDevice:(id)device;
+- (void)authorizationEndorserRapportClientDidFinish:(id)finish;
 - (void)deactivate;
 @end
 
 @implementation AKAuthorizationEndorserRapportDiscovery
 
-- (AKAuthorizationEndorserRapportDiscovery)initWithClient:(id)a3
+- (AKAuthorizationEndorserRapportDiscovery)initWithClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKAuthorizationEndorserRapportDiscovery;
-  v8 = [(AKAuthorizationEndorserRapportDiscovery *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKAuthorizationEndorserRapportDiscovery *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
   }
 
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (BOOL)activateWithError:(id *)a3
+- (BOOL)activateWithError:(id *)error
 {
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  errorCopy = error;
   if ([(AKClient *)self->_client hasOwnerAccess])
   {
-    if (v32->_deviceDiscovery)
+    if (selfCopy->_deviceDiscovery)
     {
-      if (v30)
+      if (errorCopy)
       {
         v11 = [NSError ak_errorWithCode:-7071];
         v4 = v11;
-        *v30 = v11;
+        *errorCopy = v11;
       }
 
       v33 = 0;
@@ -75,8 +75,8 @@
 
       v26 = v5;
       [v5 setControlFlags:0x4000000];
-      objc_storeStrong(&v32->_deviceDiscovery, v26);
-      objc_initWeak(&v25, v32);
+      objc_storeStrong(&selfCopy->_deviceDiscovery, v26);
+      objc_initWeak(&v25, selfCopy);
       v8 = v26;
       v19 = _NSConcreteStackBlock;
       v20 = -1073741824;
@@ -103,11 +103,11 @@
 
   else
   {
-    if (v30)
+    if (errorCopy)
     {
       v12 = [NSError ak_errorWithCode:-7026];
       v3 = v12;
-      *v30 = v12;
+      *errorCopy = v12;
     }
 
     v33 = 0;
@@ -118,13 +118,13 @@
 
 - (void)deactivate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   [(RPCompanionLinkClient *)self->_deviceDiscovery invalidate];
-  objc_storeStrong(&v7->_deviceDiscovery, 0);
-  if (v7->_didDeactivateBlock)
+  objc_storeStrong(&selfCopy->_deviceDiscovery, 0);
+  if (selfCopy->_didDeactivateBlock)
   {
-    (*(v7->_didDeactivateBlock + 2))();
+    (*(selfCopy->_didDeactivateBlock + 2))();
   }
 
   location[0] = _AKLogSiwa();
@@ -140,23 +140,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)authorizationEndorserRapportClientDidFinish:(id)a3
+- (void)authorizationEndorserRapportClientDidFinish:(id)finish
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAuthorizationEndorserRapportDiscovery *)v4 deactivate];
+  objc_storeStrong(location, finish);
+  [(AKAuthorizationEndorserRapportDiscovery *)selfCopy deactivate];
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleFoundDevice:(id)a3
+- (void)_handleFoundDevice:(id)device
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v9->_authorizationEndorser)
+  objc_storeStrong(location, device);
+  if (selfCopy->_authorizationEndorser)
   {
     oslog = _AKLogSiwa();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -171,15 +171,15 @@
   else
   {
     v5 = [AKAuthorizationEndorserRapportClient alloc];
-    v6 = [location[0] identifier];
+    identifier = [location[0] identifier];
     v3 = [(AKAuthorizationEndorserRapportClient *)v5 initWithDeviceID:?];
-    authorizationEndorser = v9->_authorizationEndorser;
-    v9->_authorizationEndorser = v3;
+    authorizationEndorser = selfCopy->_authorizationEndorser;
+    selfCopy->_authorizationEndorser = v3;
     _objc_release(authorizationEndorser);
-    _objc_release(v6);
-    [(AKAuthorizationEndorserRapportClient *)v9->_authorizationEndorser setDelegate:v9];
-    [(AKAuthorizationEndorserRapportClient *)v9->_authorizationEndorser startAuthorization];
-    [(RPCompanionLinkClient *)v9->_deviceDiscovery invalidate];
+    _objc_release(identifier);
+    [(AKAuthorizationEndorserRapportClient *)selfCopy->_authorizationEndorser setDelegate:selfCopy];
+    [(AKAuthorizationEndorserRapportClient *)selfCopy->_authorizationEndorser startAuthorization];
+    [(RPCompanionLinkClient *)selfCopy->_deviceDiscovery invalidate];
   }
 
   objc_storeStrong(location, 0);

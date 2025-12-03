@@ -23,7 +23,7 @@
   v4 = a3;
   v5 = [objc_opt_class() mt_identityValueForMaterialSettingsProperty:v4];
 
-  v6 = [a1 isEqual:v5];
+  v6 = [self isEqual:v5];
   return v6;
 }
 

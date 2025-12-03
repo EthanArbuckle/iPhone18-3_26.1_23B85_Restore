@@ -1,17 +1,17 @@
 @interface STUIStatusBarDualCellularSignalViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_commonInit;
 @end
 
 @implementation STUIStatusBarDualCellularSignalViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceVariable:@"_topSignalView" withType:"STUIStatusBarCellularSignalView"];
-  [v3 validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceVariable:@"_bottomSignalView" withType:"STUIStatusBarCellularSignalView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceVariable:@"_topSignalView" withType:"STUIStatusBarCellularSignalView"];
+  [validationsCopy validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceVariable:@"_bottomSignalView" withType:"STUIStatusBarCellularSignalView"];
 }
 
 - (void)_commonInit

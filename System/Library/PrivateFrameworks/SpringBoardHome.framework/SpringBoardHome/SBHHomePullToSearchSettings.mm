@@ -51,22 +51,22 @@
   [(SBHHomePullToSearchSettings *)self setInjectsVelocityForNonInteractiveTransitions:0];
   [(SBHHomePullToSearchSettings *)self setInjectedVelocityForNonInteractiveTransitions:3000.0];
   [(SBHHomePullToSearchSettings *)self setKeyboardInjectedVelocityPercentageForNonInteractiveTransitions:0.0];
-  v3 = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
-  [v3 setDampingRatio:0.8];
-  [v3 setResponse:0.47];
-  [v3 setTrackingDampingRatio:0.92];
-  [v3 setTrackingResponse:0.08];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
+  [initWithDefaultValues setDampingRatio:0.8];
+  [initWithDefaultValues setResponse:0.47];
+  [initWithDefaultValues setTrackingDampingRatio:0.92];
+  [initWithDefaultValues setTrackingResponse:0.08];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v3 setFrameRateRange:1114138 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
-  [(SBHHomePullToSearchSettings *)self setPullTransitionAnimationSettings:v3];
+  [initWithDefaultValues setFrameRateRange:1114138 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [(SBHHomePullToSearchSettings *)self setPullTransitionAnimationSettings:initWithDefaultValues];
 }
 
 + (id)settingsControllerModule
 {
   v96[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C65E8];
-  v3 = [MEMORY[0x1E69C6640] action];
-  v75 = [v2 rowWithTitle:@"Restore Defaults" action:v3];
+  action = [MEMORY[0x1E69C6640] action];
+  v75 = [v2 rowWithTitle:@"Restore Defaults" action:action];
 
   v4 = MEMORY[0x1E69C6638];
   v96[0] = v75;

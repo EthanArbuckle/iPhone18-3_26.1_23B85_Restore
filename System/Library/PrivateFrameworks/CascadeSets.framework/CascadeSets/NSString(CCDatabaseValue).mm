@@ -7,15 +7,15 @@
 
 - (uint64_t)databaseValue_textRepresentation
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 UTF8String];
+  return [selfCopy UTF8String];
 }
 
 - (id)databaseValue_toNumber
 {
-  v2 = [a1 length];
-  v3 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+  v2 = [self length];
+  v3 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
   v15 = 0;
   if ([v3 scanUnsignedLongLong:&v15] && objc_msgSend(v3, "scanLocation") == v2)
   {
@@ -27,14 +27,14 @@ LABEL_6:
       goto LABEL_25;
     }
 
-    if ([a1 isEqualToString:@"18446744073709551615"])
+    if ([self isEqualToString:@"18446744073709551615"])
     {
       v4 = v15;
       goto LABEL_6;
     }
 
 LABEL_23:
-    v5 = [objc_alloc(MEMORY[0x1E696AB90]) initWithString:a1];
+    v5 = [objc_alloc(MEMORY[0x1E696AB90]) initWithString:self];
     goto LABEL_25;
   }
 
@@ -45,7 +45,7 @@ LABEL_23:
     v6 = v14;
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (([a1 isEqualToString:@"+9223372036854775807"] & 1) == 0)
+      if (([self isEqualToString:@"+9223372036854775807"] & 1) == 0)
       {
         goto LABEL_23;
       }
@@ -55,7 +55,7 @@ LABEL_23:
 
     if (v6 == 0x8000000000000000)
     {
-      if (![a1 isEqualToString:@"-9223372036854775808"])
+      if (![self isEqualToString:@"-9223372036854775808"])
       {
         goto LABEL_23;
       }

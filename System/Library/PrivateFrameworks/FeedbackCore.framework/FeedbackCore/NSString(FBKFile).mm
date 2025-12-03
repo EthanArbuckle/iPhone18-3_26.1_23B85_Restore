@@ -7,8 +7,8 @@
 
 - (uint64_t)fbkIsImageFile
 {
-  v2 = [a1 pathExtension];
-  if (v2)
+  pathExtension = [self pathExtension];
+  if (pathExtension)
   {
     if (commonImageFormats_onceToken != -1)
     {
@@ -16,9 +16,9 @@
     }
 
     v3 = commonImageFormats__commonExtensions;
-    v4 = [a1 pathExtension];
-    v5 = [v4 lowercaseString];
-    v6 = [v3 containsObject:v5];
+    pathExtension2 = [self pathExtension];
+    lowercaseString = [pathExtension2 lowercaseString];
+    v6 = [v3 containsObject:lowercaseString];
   }
 
   else
@@ -31,12 +31,12 @@
 
 - (uint64_t)fbkIsVideoFile
 {
-  v2 = [a1 pathExtension];
-  if (v2)
+  pathExtension = [self pathExtension];
+  if (pathExtension)
   {
-    v3 = [a1 pathExtension];
-    v4 = [v3 lowercaseString];
-    v5 = [v4 isEqualToString:@"mov"];
+    pathExtension2 = [self pathExtension];
+    lowercaseString = [pathExtension2 lowercaseString];
+    v5 = [lowercaseString isEqualToString:@"mov"];
   }
 
   else

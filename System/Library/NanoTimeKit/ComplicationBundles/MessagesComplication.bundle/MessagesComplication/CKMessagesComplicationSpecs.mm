@@ -1,5 +1,5 @@
 @interface CKMessagesComplicationSpecs
-- (BOOL)unreadCountShouldBeDrawnOnBubbleForFamily:(int64_t)a3;
+- (BOOL)unreadCountShouldBeDrawnOnBubbleForFamily:(int64_t)family;
 - (CGSize)canvasSizeCircular;
 - (CGSize)canvasSizeCircularMedium;
 - (CGSize)canvasSizeCircularSmall;
@@ -7,41 +7,41 @@
 - (CGSize)canvasSizeCorner;
 - (CGSize)canvasSizeCornerSmall;
 - (CGSize)canvasSizeExtraLarge;
-- (CGSize)canvasSizeForFamily:(int64_t)a3;
-- (CGSize)canvasSizeForFamily:(int64_t)a3 andTemplate:(id)a4;
+- (CGSize)canvasSizeForFamily:(int64_t)family;
+- (CGSize)canvasSizeForFamily:(int64_t)family andTemplate:(id)template;
 - (CGSize)canvasSizeModularSmall;
 - (CGSize)canvasSizeUtilitarianLarge;
 - (CGSize)canvasSizeUtilitarianSmall;
 - (CGSize)canvasSizeUtilitarianSmallFlat;
-- (CKMessagesComplicationSpecs)initWithDevice:(id)a3;
-- (double)imageFramePaddingForFamily:(int64_t)a3;
-- (double)verticalTextOffsetForFamily:(int64_t)a3 withTextBounds:(CGRect)a4;
-- (void)configureDeviceDependentSpecsForDevice:(id)a3;
+- (CKMessagesComplicationSpecs)initWithDevice:(id)device;
+- (double)imageFramePaddingForFamily:(int64_t)family;
+- (double)verticalTextOffsetForFamily:(int64_t)family withTextBounds:(CGRect)bounds;
+- (void)configureDeviceDependentSpecsForDevice:(id)device;
 @end
 
 @implementation CKMessagesComplicationSpecs
 
-- (CKMessagesComplicationSpecs)initWithDevice:(id)a3
+- (CKMessagesComplicationSpecs)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = CKMessagesComplicationSpecs;
   v5 = [(CKMessagesComplicationSpecs *)&v13 init];
   v11 = v5;
   if (v5)
   {
-    objc_msgSend_configureDeviceDependentSpecsForDevice_(v5, v6, v7, v8, v9, v10, v4);
+    objc_msgSend_configureDeviceDependentSpecsForDevice_(v5, v6, v7, v8, v9, v10, deviceCopy);
   }
 
   return v11;
 }
 
-- (void)configureDeviceDependentSpecsForDevice:(id)a3
+- (void)configureDeviceDependentSpecsForDevice:(id)device
 {
   v4 = MEMORY[0x277CBBAF8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 alloc];
-  v63 = objc_msgSend_initWithDevice_identitySizeClass_(v6, v7, v8, v9, v10, v11, v5, 2);
+  v63 = objc_msgSend_initWithDevice_identitySizeClass_(v6, v7, v8, v9, v10, v11, deviceCopy, 2);
 
   objc_msgSend_scaledSize_withOverride_forSizeClass_(v63, v12, 29.0, 29.0, 26.0, 26.0, 0);
   self->_canvasSizeModularSmall.width = v13;
@@ -78,24 +78,24 @@
   self->_canvasSizeExtraLarge.height = v62;
 }
 
-- (double)verticalTextOffsetForFamily:(int64_t)a3 withTextBounds:(CGRect)a4
+- (double)verticalTextOffsetForFamily:(int64_t)family withTextBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = objc_msgSend_currentDevice(MEMORY[0x277CBBAE8], a2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = objc_msgSend_currentDevice(MEMORY[0x277CBBAE8], a2, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
   v15 = objc_msgSend_deviceCategory(v9, v10, v11, v12, v13, v14);
 
   if (v15 < 2)
   {
     result = 0.0;
-    if (*MEMORY[0x277CBB668] != a3)
+    if (*MEMORY[0x277CBB668] != family)
     {
       result = -1.0;
-      if ((a3 - 2) <= 0xA)
+      if ((family - 2) <= 0xA)
       {
-        return dbl_23BD21CC0[a3 - 2];
+        return dbl_23BD21CC0[family - 2];
       }
     }
   }
@@ -103,7 +103,7 @@
   else
   {
     result = 0.0;
-    if (a3 <= 0xC && ((1 << a3) & 0x1600) != 0)
+    if (family <= 0xC && ((1 << family) & 0x1600) != 0)
     {
       v17.origin.x = x;
       v17.origin.y = y;
@@ -116,33 +116,33 @@
   return result;
 }
 
-- (double)imageFramePaddingForFamily:(int64_t)a3
+- (double)imageFramePaddingForFamily:(int64_t)family
 {
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
     return 0.1;
   }
 
   result = 0.0;
-  if ((a3 - 8) <= 4)
+  if ((family - 8) <= 4)
   {
-    return dbl_23BD21D18[a3 - 8];
+    return dbl_23BD21D18[family - 8];
   }
 
   return result;
 }
 
-- (BOOL)unreadCountShouldBeDrawnOnBubbleForFamily:(int64_t)a3
+- (BOOL)unreadCountShouldBeDrawnOnBubbleForFamily:(int64_t)family
 {
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
     LOBYTE(v3) = 1;
   }
 
   else
   {
-    v3 = 0x16D5u >> a3;
-    if (a3 > 0xC)
+    v3 = 0x16D5u >> family;
+    if (family > 0xC)
     {
       LOBYTE(v3) = 0;
     }
@@ -151,24 +151,24 @@
   return v3 & 1;
 }
 
-- (CGSize)canvasSizeForFamily:(int64_t)a3
+- (CGSize)canvasSizeForFamily:(int64_t)family
 {
-  objc_msgSend_canvasSizeForFamily_andTemplate_(self, a2, v3, v4, v5, v6, a3, 0);
+  objc_msgSend_canvasSizeForFamily_andTemplate_(self, a2, v3, v4, v5, v6, family, 0);
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (CGSize)canvasSizeForFamily:(int64_t)a3 andTemplate:(id)a4
+- (CGSize)canvasSizeForFamily:(int64_t)family andTemplate:(id)template
 {
-  v7 = a4;
-  if (*MEMORY[0x277CBB668] != a3)
+  templateCopy = template;
+  if (*MEMORY[0x277CBB668] != family)
   {
-    if (a3 > 6)
+    if (family > 6)
     {
-      if (a3 <= 8)
+      if (family <= 8)
       {
-        if (a3 == 7)
+        if (family == 7)
         {
           objc_msgSend_canvasSizeExtraLarge(self, v6, v8, v9, v10, v11);
         }
@@ -190,28 +190,28 @@
         goto LABEL_3;
       }
 
-      if ((a3 - 9) < 2)
+      if ((family - 9) < 2)
       {
         objc_msgSend_canvasSizeCircular(self, v6, v8, v9, v10, v11);
         goto LABEL_3;
       }
 
-      if (a3 == 12)
+      if (family == 12)
       {
         objc_msgSend_canvasSizeCircularXL(self, v6, v8, v9, v10, v11);
         goto LABEL_3;
       }
     }
 
-    else if (a3 <= 2)
+    else if (family <= 2)
     {
-      if (!a3)
+      if (!family)
       {
         objc_msgSend_canvasSizeModularSmall(self, v6, v8, v9, v10, v11);
         goto LABEL_3;
       }
 
-      if (a3 == 2)
+      if (family == 2)
       {
         objc_msgSend_canvasSizeUtilitarianSmall(self, v6, v8, v9, v10, v11);
         goto LABEL_3;
@@ -220,7 +220,7 @@
 
     else
     {
-      switch(a3)
+      switch(family)
       {
         case 3:
           objc_msgSend_canvasSizeUtilitarianLarge(self, v6, v8, v9, v10, v11);

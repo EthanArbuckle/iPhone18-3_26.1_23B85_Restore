@@ -1,10 +1,10 @@
 @interface _UIOClientAction
-- (void)handleClientActionToOverlayService:(id)a3;
+- (void)handleClientActionToOverlayService:(id)service;
 @end
 
 @implementation _UIOClientAction
 
-- (void)handleClientActionToOverlayService:(id)a3
+- (void)handleClientActionToOverlayService:(id)service
 {
   v13 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_diagnostics())
@@ -20,7 +20,7 @@
     v9 = 138412546;
     v10 = v7;
     v11 = 2048;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_fault_impl(&dword_188A29000, v5, OS_LOG_TYPE_FAULT, "_UIOClientAction subclass <%@: %p> did not override -handleClientActionToOverlayService:", &v9, 0x16u);
   }
 
@@ -38,7 +38,7 @@
     v9 = 138412546;
     v10 = v7;
     v11 = 2048;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "_UIOClientAction subclass <%@: %p> did not override -handleClientActionToOverlayService:", &v9, 0x16u);
   }
 

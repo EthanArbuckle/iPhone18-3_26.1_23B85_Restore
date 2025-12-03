@@ -1,14 +1,14 @@
 @interface PKPhoneGlyphLayer
 - (PKPhoneGlyphLayer)init;
-- (PKPhoneGlyphLayer)initWithFrame:(CGRect)a3 package:(id)a4;
-- (void)_applyEffectivePrimaryColorToQRCodeAnimated:(BOOL)a3;
+- (PKPhoneGlyphLayer)initWithFrame:(CGRect)frame package:(id)package;
+- (void)_applyEffectivePrimaryColorToQRCodeAnimated:(BOOL)animated;
 - (void)_endPhoneWiggle;
 - (void)_restartPhoneWiggleIfNecessary;
 - (void)_startPhoneWiggle;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowQRCode:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setShowQRCode:(BOOL)code;
 @end
 
 @implementation PKPhoneGlyphLayer
@@ -42,31 +42,31 @@
   return v8;
 }
 
-- (PKPhoneGlyphLayer)initWithFrame:(CGRect)a3 package:(id)a4
+- (PKPhoneGlyphLayer)initWithFrame:(CGRect)frame package:(id)package
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  packageCopy = package;
   v29.receiver = self;
   v29.super_class = PKPhoneGlyphLayer;
-  v10 = [(PKMicaLayer *)&v29 initWithFrame:v9 package:x, y, width, height];
-  if (v10)
+  height = [(PKMicaLayer *)&v29 initWithFrame:packageCopy package:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 publishedObjectWithName:@"(shape:secondary_highlight)"];
-    highlightLayer = v10->_highlightLayer;
-    v10->_highlightLayer = v11;
+    v11 = [packageCopy publishedObjectWithName:@"(shape:secondary_highlight)"];
+    highlightLayer = height->_highlightLayer;
+    height->_highlightLayer = v11;
 
-    v13 = v10->_highlightLayer;
+    v13 = height->_highlightLayer;
     v14 = PKLayerNullActions();
     [(CALayer *)v13 setActions:v14];
 
-    [(CALayer *)v10->_highlightLayer position];
-    v10->_highlightOffscreenPosition.x = v15;
-    v10->_highlightOffscreenPosition.y = v16;
-    v17 = [(CALayer *)v10->_highlightLayer superlayer];
-    [v17 bounds];
+    [(CALayer *)height->_highlightLayer position];
+    height->_highlightOffscreenPosition.x = v15;
+    height->_highlightOffscreenPosition.y = v16;
+    superlayer = [(CALayer *)height->_highlightLayer superlayer];
+    [superlayer bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -82,11 +82,11 @@
     v31.size.width = v23;
     v31.size.height = v25;
     MidY = CGRectGetMidY(v31);
-    v10->_highlightOnscreenPosition.x = MidX;
-    v10->_highlightOnscreenPosition.y = MidY;
+    height->_highlightOnscreenPosition.x = MidX;
+    height->_highlightOnscreenPosition.y = MidY;
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSublayers
@@ -97,11 +97,11 @@
   QRCodeLayer = self->_QRCodeLayer;
   if (QRCodeLayer)
   {
-    v4 = [(CALayer *)QRCodeLayer contents];
-    if (v4)
+    contents = [(CALayer *)QRCodeLayer contents];
+    if (contents)
     {
-      v5 = v4;
-      CGImageRetain(v4);
+      v5 = contents;
+      CGImageRetain(contents);
       CGImageGetWidth(v5);
       CGImageGetHeight(v5);
       CGImageRelease(v5);
@@ -150,12 +150,12 @@
   [(PKMicaLayer *)&v3 dealloc];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   v7 = &OBJC_IVAR___PKPhoneGlyphLayer__highlightOffscreenPosition;
-  if (a3)
+  if (highlighted)
   {
     v7 = &OBJC_IVAR___PKPhoneGlyphLayer__highlightOnscreenPosition;
   }
@@ -166,13 +166,13 @@
   [(CALayer *)self->_highlightLayer position];
   if (v9 != v11 || v10 != v12)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v14 = v11;
       v15 = v12;
       v16 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
       LODWORD(v19) = 1058642330;
-      if (!v5)
+      if (!highlightedCopy)
       {
         *&v19 = 0.75;
       }
@@ -194,13 +194,13 @@
   }
 }
 
-- (void)setShowQRCode:(BOOL)a3
+- (void)setShowQRCode:(BOOL)code
 {
-  if (self->_showQRCode == !a3)
+  if (self->_showQRCode == !code)
   {
-    self->_showQRCode = a3;
+    self->_showQRCode = code;
     v4 = 0.0;
-    if (a3)
+    if (code)
     {
       v4 = 1.0;
       if (!self->_QRCodeLayer)
@@ -260,12 +260,12 @@ void __35__PKPhoneGlyphLayer_setShowQRCode___block_invoke(uint64_t a1, void *a2)
   [v13 fillRect:20 blendMode:{v5, v7, v9, v11}];
 }
 
-- (void)_applyEffectivePrimaryColorToQRCodeAnimated:(BOOL)a3
+- (void)_applyEffectivePrimaryColorToQRCodeAnimated:(BOOL)animated
 {
   v16[1] = *MEMORY[0x277D85DE8];
   if (self->_QRCodeLayer)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if (!self->_QRCodeColorFilter)
     {
       v5 = objc_alloc(MEMORY[0x277CD9EA0]);
@@ -282,8 +282,8 @@ void __35__PKPhoneGlyphLayer_setShowQRCode___block_invoke(uint64_t a1, void *a2)
     }
 
     v10 = MEMORY[0x277D75348];
-    v11 = [(CALayer *)self->_QRCodeLayer presentationLayer];
-    v12 = [v11 valueForKeyPath:@"filters.QRCodeColorFilter.inputColor"];
+    presentationLayer = [(CALayer *)self->_QRCodeLayer presentationLayer];
+    v12 = [presentationLayer valueForKeyPath:@"filters.QRCodeColorFilter.inputColor"];
     if (!v12)
     {
       v12 = [(CALayer *)self->_QRCodeLayer valueForKeyPath:@"filters.QRCodeColorFilter.inputColor"];
@@ -292,7 +292,7 @@ void __35__PKPhoneGlyphLayer_setShowQRCode___block_invoke(uint64_t a1, void *a2)
     v13 = [v10 colorWithCGColor:v12];
 
     [(CALayer *)self->_QRCodeLayer setValue:self->_primaryColor forKeyPath:@"filters.QRCodeColorFilter.inputColor"];
-    if (v3)
+    if (animatedCopy)
     {
       v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"filters.QRCodeColorFilter.inputColor"];
       [v14 setDuration:0.15];

@@ -1,21 +1,21 @@
 @interface ICICloudProgressIndicatorTracker
-+ (BOOL)isMigratingICloudAccount:(id)a3;
++ (BOOL)isMigratingICloudAccount:(id)account;
 + (BOOL)isMigratingLocalAccount;
-- (ICICloudProgressIndicatorTracker)initWithDelegate:(id)a3;
+- (ICICloudProgressIndicatorTracker)initWithDelegate:(id)delegate;
 - (void)_performProgressUpdate;
-- (void)cloudOperationsDidChange:(id)a3;
+- (void)cloudOperationsDidChange:(id)change;
 - (void)dealloc;
 - (void)invalidate;
-- (void)migrationStateDidChange:(id)a3;
+- (void)migrationStateDidChange:(id)change;
 @end
 
 @implementation ICICloudProgressIndicatorTracker
 
-- (ICICloudProgressIndicatorTracker)initWithDelegate:(id)a3
+- (ICICloudProgressIndicatorTracker)initWithDelegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = ICICloudProgressIndicatorTracker;
-  v3 = [(ICProgressIndicatorTracker *)&v13 initWithDelegate:a3];
+  v3 = [(ICProgressIndicatorTracker *)&v13 initWithDelegate:delegate];
   if (v3)
   {
     v4 = [[ICSelectorDelayer alloc] initWithTarget:v3 selector:"updateMakingProgress" delay:0 waitToFireUntilRequestsStop:1 callOnMainThread:0.15];
@@ -49,8 +49,8 @@
   v4.receiver = self;
   v4.super_class = ICICloudProgressIndicatorTracker;
   [(ICProgressIndicatorTracker *)&v4 invalidate];
-  v3 = [(ICICloudProgressIndicatorTracker *)self updateMakingProgressDelayer];
-  [v3 cancelPreviousFireRequests];
+  updateMakingProgressDelayer = [(ICICloudProgressIndicatorTracker *)self updateMakingProgressDelayer];
+  [updateMakingProgressDelayer cancelPreviousFireRequests];
 }
 
 - (void)dealloc
@@ -63,9 +63,9 @@
   [(ICICloudProgressIndicatorTracker *)&v4 dealloc];
 }
 
-+ (BOOL)isMigratingICloudAccount:(id)a3
++ (BOOL)isMigratingICloudAccount:(id)account
 {
-  [ICAccount allActiveCloudKitAccountsInContext:a3];
+  [ICAccount allActiveCloudKitAccountsInContext:account];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -84,9 +84,9 @@
         }
 
         v7 = [ICDeviceMigrationState currentDeviceMigrationStateForAccount:*(*(&v10 + 1) + 8 * i) createIfNecessary:0, v10];
-        v8 = [v7 isMigrating];
+        isMigrating = [v7 isMigrating];
 
-        if (v8)
+        if (isMigrating)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
@@ -111,9 +111,9 @@ LABEL_11:
 + (BOOL)isMigratingLocalAccount
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 currentUser];
+  currentUser = [v2 currentUser];
 
-  if ([v3 userType] == 1 || !+[ICMigrationController didChooseToMigrateLocalAccount](ICMigrationController, "didChooseToMigrateLocalAccount"))
+  if ([currentUser userType] == 1 || !+[ICMigrationController didChooseToMigrateLocalAccount](ICMigrationController, "didChooseToMigrateLocalAccount"))
   {
     LOBYTE(v4) = 0;
   }
@@ -126,7 +126,7 @@ LABEL_11:
   return v4;
 }
 
-- (void)cloudOperationsDidChange:(id)a3
+- (void)cloudOperationsDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -136,7 +136,7 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)migrationStateDidChange:(id)a3
+- (void)migrationStateDidChange:(id)change
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

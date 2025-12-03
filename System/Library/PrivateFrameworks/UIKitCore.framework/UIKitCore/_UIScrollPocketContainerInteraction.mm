@@ -5,21 +5,21 @@
 - (UIView)view;
 - (_UIScrollPocketCollectorInteraction)_collectorInteraction;
 - (_UIScrollPocketContainerInteraction)init;
-- (_UIScrollPocketContainerInteraction)initWithEdge:(unint64_t)a3;
-- (_UIScrollPocketContainerInteraction)initWithScrollView:(id)a3 edge:(unint64_t)a4;
-- (void)_setActive:(BOOL)a3;
-- (void)_setEdge:(unint64_t)a3;
-- (void)_setFindsParentScrollView:(BOOL)a3;
+- (_UIScrollPocketContainerInteraction)initWithEdge:(unint64_t)edge;
+- (_UIScrollPocketContainerInteraction)initWithScrollView:(id)view edge:(unint64_t)edge;
+- (void)_setActive:(BOOL)active;
+- (void)_setEdge:(unint64_t)edge;
+- (void)_setFindsParentScrollView:(BOOL)view;
 - (void)_updateProperties;
 @end
 
 @implementation _UIScrollPocketContainerInteraction
 
-- (_UIScrollPocketContainerInteraction)initWithScrollView:(id)a3 edge:(unint64_t)a4
+- (_UIScrollPocketContainerInteraction)initWithScrollView:(id)view edge:(unint64_t)edge
 {
   objc_allocWithZone(type metadata accessor for ContainerImplementation());
-  v7 = a3;
-  *(&self->super.isa + OBJC_IVAR____UIScrollPocketContainerInteraction_implementation) = sub_188AF7050(a3, a4);
+  viewCopy = view;
+  *(&self->super.isa + OBJC_IVAR____UIScrollPocketContainerInteraction_implementation) = sub_188AF7050(view, edge);
   v10.receiver = self;
   v10.super_class = _UIScrollPocketContainerInteraction;
   v8 = [(_UIScrollPocketContainerInteraction *)&v10 init];
@@ -36,26 +36,26 @@
 
 - (void)_updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AF9204();
 }
 
-- (void)_setEdge:(unint64_t)a3
+- (void)_setEdge:(unint64_t)edge
 {
-  v4 = self;
-  sub_1891DC560(a3, &OBJC_IVAR____UIScrollPocketContainerInteraction_implementation);
+  selfCopy = self;
+  sub_1891DC560(edge, &OBJC_IVAR____UIScrollPocketContainerInteraction_implementation);
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  v4 = self;
-  sub_188CCEED0(a3);
+  selfCopy = self;
+  sub_188CCEED0(active);
 }
 
-- (_UIScrollPocketContainerInteraction)initWithEdge:(unint64_t)a3
+- (_UIScrollPocketContainerInteraction)initWithEdge:(unint64_t)edge
 {
   v5 = objc_allocWithZone(type metadata accessor for ContainerImplementation());
-  v6 = sub_188AF7050(0, a3);
+  v6 = sub_188AF7050(0, edge);
   *(&self->super.isa + OBJC_IVAR____UIScrollPocketContainerInteraction_implementation) = v6;
   v7 = v6;
   sub_188CD3560(1);
@@ -96,10 +96,10 @@
   return result;
 }
 
-- (void)_setFindsParentScrollView:(BOOL)a3
+- (void)_setFindsParentScrollView:(BOOL)view
 {
-  v4 = self;
-  sub_1891DC378(a3);
+  selfCopy = self;
+  sub_1891DC378(view);
 }
 
 + (double)_lumaUserInterfaceStyleSpringDuration

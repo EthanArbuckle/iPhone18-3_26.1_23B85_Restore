@@ -1,45 +1,45 @@
 @interface ATXAnchorModelActionPredictionPostProcessor
-+ (id)anchorPredictionScoredActionTuplesFromPredictions:(id)a3;
-+ (void)inPlaceDeduplicateAnchorPredictionScoredActionTuples:(id)a3;
-- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)a3;
-- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)a3 blacklist:(id)a4;
-- (BOOL)scoredActionIsBlacklisted:(id)a3;
-- (BOOL)shouldCheckUpcomingMediaForIntent:(id)a3;
-- (id)postProcessScoredAction:(id)a3;
++ (id)anchorPredictionScoredActionTuplesFromPredictions:(id)predictions;
++ (void)inPlaceDeduplicateAnchorPredictionScoredActionTuples:(id)tuples;
+- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)prediction;
+- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)prediction blacklist:(id)blacklist;
+- (BOOL)scoredActionIsBlacklisted:(id)blacklisted;
+- (BOOL)shouldCheckUpcomingMediaForIntent:(id)intent;
+- (id)postProcessScoredAction:(id)action;
 - (id)recoverATXScoredAction;
-- (id)replaceActionWithUpcomingMediaIfNeeded:(id)a3;
-- (id)replacementActionWithResolvedMediaIntentContainer:(id)a3 originalAction:(id)a4;
-- (id)replacementIntentFromUpcomingMediaForBundleId:(id)a3 intent:(id)a4;
+- (id)replaceActionWithUpcomingMediaIfNeeded:(id)needed;
+- (id)replacementActionWithResolvedMediaIntentContainer:(id)container originalAction:(id)action;
+- (id)replacementIntentFromUpcomingMediaForBundleId:(id)id intent:(id)intent;
 - (void)recoverATXScoredAction;
 @end
 
 @implementation ATXAnchorModelActionPredictionPostProcessor
 
-- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)a3
+- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   v5 = +[ATXActionPredictionBlacklist sharedInstanceWithAppPredictionBlacklist];
-  v6 = [(ATXAnchorModelActionPredictionPostProcessor *)self initWithAnchorModelPrediction:v4 blacklist:v5];
+  v6 = [(ATXAnchorModelActionPredictionPostProcessor *)self initWithAnchorModelPrediction:predictionCopy blacklist:v5];
 
   return v6;
 }
 
-- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)a3 blacklist:(id)a4
+- (ATXAnchorModelActionPredictionPostProcessor)initWithAnchorModelPrediction:(id)prediction blacklist:(id)blacklist
 {
-  v7 = a3;
-  v8 = a4;
+  predictionCopy = prediction;
+  blacklistCopy = blacklist;
   v14.receiver = self;
   v14.super_class = ATXAnchorModelActionPredictionPostProcessor;
   v9 = [(ATXAnchorModelActionPredictionPostProcessor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_anchorModelPrediction, a3);
+    objc_storeStrong(&v9->_anchorModelPrediction, prediction);
     v11 = objc_opt_new();
     storeWrapper = v10->_storeWrapper;
     v10->_storeWrapper = v11;
 
-    objc_storeStrong(&v10->_blacklist, a4);
+    objc_storeStrong(&v10->_blacklist, blacklist);
   }
 
   return v10;
@@ -48,8 +48,8 @@
 - (id)recoverATXScoredAction
 {
   p_anchorModelPrediction = &self->_anchorModelPrediction;
-  v4 = [(ATXAnchorModelPrediction *)self->_anchorModelPrediction candidateType];
-  v5 = [v4 isEqualToString:@"action"];
+  candidateType = [(ATXAnchorModelPrediction *)self->_anchorModelPrediction candidateType];
+  v5 = [candidateType isEqualToString:@"action"];
 
   if (v5)
   {
@@ -78,28 +78,28 @@
   return v7;
 }
 
-- (id)postProcessScoredAction:(id)a3
+- (id)postProcessScoredAction:(id)action
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  actionCopy = action;
+  if (!actionCopy)
   {
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [v4 predictedItem];
-  v7 = [v6 intent];
+  v5 = actionCopy;
+  predictedItem = [actionCopy predictedItem];
+  intent = [predictedItem intent];
 
-  if (!v7)
+  if (!intent)
   {
     goto LABEL_7;
   }
 
   v8 = objc_opt_new();
-  v9 = [v5 predictedItem];
-  v10 = [v9 intent];
-  v11 = [v8 shouldPredictIntent:v10];
+  predictedItem2 = [v5 predictedItem];
+  intent2 = [predictedItem2 intent];
+  v11 = [v8 shouldPredictIntent:intent2];
 
   if (v11)
   {
@@ -146,46 +146,46 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)scoredActionIsBlacklisted:(id)a3
+- (BOOL)scoredActionIsBlacklisted:(id)blacklisted
 {
-  v4 = a3;
-  v5 = [v4 predictedItem];
-  v6 = [v5 actionKey];
+  blacklistedCopy = blacklisted;
+  predictedItem = [blacklistedCopy predictedItem];
+  actionKey = [predictedItem actionKey];
 
-  if (v6)
+  if (actionKey)
   {
-    v7 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:v6];
-    v8 = v7;
+    v7 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:actionKey];
+    predictedItem2 = v7;
     if (!v7)
     {
       LOBYTE(self) = 1;
       goto LABEL_7;
     }
 
-    v9 = [v7 first];
-    v10 = [v8 second];
-    LODWORD(self) = ![(ATXActionPredictionBlacklist *)self->_blacklist shouldPredictBundleId:v9 action:v10];
+    first = [v7 first];
+    second = [predictedItem2 second];
+    LODWORD(self) = ![(ATXActionPredictionBlacklist *)self->_blacklist shouldPredictBundleId:first action:second];
   }
 
   else
   {
     self = self->_blacklist;
-    v8 = [v4 predictedItem];
-    v9 = [v8 bundleId];
-    LOBYTE(self) = [(ATXAnchorModelActionPredictionPostProcessor *)self isBundleIdBlacklisted:v9];
+    predictedItem2 = [blacklistedCopy predictedItem];
+    first = [predictedItem2 bundleId];
+    LOBYTE(self) = [(ATXAnchorModelActionPredictionPostProcessor *)self isBundleIdBlacklisted:first];
   }
 
 LABEL_7:
   return self;
 }
 
-- (id)replaceActionWithUpcomingMediaIfNeeded:(id)a3
+- (id)replaceActionWithUpcomingMediaIfNeeded:(id)needed
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 predictedItem];
-  v6 = [v5 intent];
-  v7 = [(ATXAnchorModelActionPredictionPostProcessor *)self shouldCheckUpcomingMediaForIntent:v6];
+  neededCopy = needed;
+  predictedItem = [neededCopy predictedItem];
+  intent = [predictedItem intent];
+  v7 = [(ATXAnchorModelActionPredictionPostProcessor *)self shouldCheckUpcomingMediaForIntent:intent];
 
   if (v7)
   {
@@ -196,15 +196,15 @@ LABEL_7:
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Checking Upcoming Media for Anchor Model prediction...", &v29, 2u);
     }
 
-    v9 = [v4 predictedItem];
-    v10 = [v9 bundleId];
-    v11 = [v4 predictedItem];
-    v12 = [v11 intent];
-    v13 = [(ATXAnchorModelActionPredictionPostProcessor *)self replacementIntentFromUpcomingMediaForBundleId:v10 intent:v12];
+    predictedItem2 = [neededCopy predictedItem];
+    bundleId = [predictedItem2 bundleId];
+    predictedItem3 = [neededCopy predictedItem];
+    intent2 = [predictedItem3 intent];
+    v13 = [(ATXAnchorModelActionPredictionPostProcessor *)self replacementIntentFromUpcomingMediaForBundleId:bundleId intent:intent2];
 
     if (v13)
     {
-      v14 = [(ATXAnchorModelActionPredictionPostProcessor *)self replacementActionWithResolvedMediaIntentContainer:v13 originalAction:v4];
+      v14 = [(ATXAnchorModelActionPredictionPostProcessor *)self replacementActionWithResolvedMediaIntentContainer:v13 originalAction:neededCopy];
       v15 = __atxlog_handle_anchor();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -215,28 +215,28 @@ LABEL_7:
       v16 = __atxlog_handle_anchor();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v4 predictedItem];
-        v18 = [v17 actionTitle];
-        v19 = [v4 predictedItem];
-        v20 = [v19 actionSubtitle];
+        predictedItem4 = [neededCopy predictedItem];
+        actionTitle = [predictedItem4 actionTitle];
+        predictedItem5 = [neededCopy predictedItem];
+        actionSubtitle = [predictedItem5 actionSubtitle];
         v29 = 138412546;
-        v30 = v18;
+        v30 = actionTitle;
         v31 = 2112;
-        v32 = v20;
+        v32 = actionSubtitle;
         _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_INFO, "Old action title: %@, subtitle: %@", &v29, 0x16u);
       }
 
       v21 = __atxlog_handle_anchor();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v14 predictedItem];
-        v23 = [v22 actionTitle];
-        v24 = [v14 predictedItem];
-        v25 = [v24 actionSubtitle];
+        predictedItem6 = [v14 predictedItem];
+        actionTitle2 = [predictedItem6 actionTitle];
+        predictedItem7 = [v14 predictedItem];
+        actionSubtitle2 = [predictedItem7 actionSubtitle];
         v29 = 138412546;
-        v30 = v23;
+        v30 = actionTitle2;
         v31 = 2112;
-        v32 = v25;
+        v32 = actionSubtitle2;
         _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_DEFAULT, "New action title: %@, subtitle: %@", &v29, 0x16u);
       }
     }
@@ -258,7 +258,7 @@ LABEL_7:
 
   else
   {
-    v14 = v4;
+    v14 = neededCopy;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -266,10 +266,10 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)shouldCheckUpcomingMediaForIntent:(id)a3
+- (BOOL)shouldCheckUpcomingMediaForIntent:(id)intent
 {
-  v3 = a3;
-  if (!v3)
+  intentCopy = intent;
+  if (!intentCopy)
   {
     v5 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -301,45 +301,45 @@ LABEL_9:
   return v4;
 }
 
-- (id)replacementIntentFromUpcomingMediaForBundleId:(id)a3 intent:(id)a4
+- (id)replacementIntentFromUpcomingMediaForBundleId:(id)id intent:(id)intent
 {
   v5 = MEMORY[0x277CEB3B8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 isSystemAppForBundleId:v7];
-  v9 = [MEMORY[0x277CEB8F0] getUpcomingMediaForBundle:v7 isInternalApplication:v8];
+  intentCopy = intent;
+  idCopy = id;
+  v8 = [v5 isSystemAppForBundleId:idCopy];
+  v9 = [MEMORY[0x277CEB8F0] getUpcomingMediaForBundle:idCopy isInternalApplication:v8];
 
-  v10 = [ATXMediaActionPrediction resolvePlayMediaIntent:v6 withUpcomingMedia:v9];
+  v10 = [ATXMediaActionPrediction resolvePlayMediaIntent:intentCopy withUpcomingMedia:v9];
 
   return v10;
 }
 
-- (id)replacementActionWithResolvedMediaIntentContainer:(id)a3 originalAction:(id)a4
+- (id)replacementActionWithResolvedMediaIntentContainer:(id)container originalAction:(id)action
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 first];
-  v9 = [v7 second];
+  actionCopy = action;
+  containerCopy = container;
+  first = [containerCopy first];
+  second = [containerCopy second];
 
-  v10 = [v9 BOOLValue];
-  if (v8)
+  bOOLValue = [second BOOLValue];
+  if (first)
   {
-    if (v10)
+    if (bOOLValue)
     {
-      v11 = [v6 predictedItem];
-      v12 = [v11 bundleId];
-      [v8 _setLaunchId:v12];
+      predictedItem = [actionCopy predictedItem];
+      bundleId = [predictedItem bundleId];
+      [first _setLaunchId:bundleId];
 
       v13 = objc_alloc(MEMORY[0x277CEB2C8]);
-      v14 = [MEMORY[0x277CCAD78] UUID];
-      v15 = [v6 predictedItem];
-      v16 = [v15 bundleId];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      predictedItem2 = [actionCopy predictedItem];
+      bundleId2 = [predictedItem2 bundleId];
       LOBYTE(v26) = 1;
-      v17 = [v13 initWithIntent:v8 actionUUID:v14 bundleId:v16 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v26 title:0 subtitle:0];
+      v17 = [v13 initWithIntent:first actionUUID:uUID bundleId:bundleId2 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v26 title:0 subtitle:0];
 
       v18 = objc_alloc(MEMORY[0x277CEB7F0]);
-      [v6 score];
+      [actionCopy score];
       v19 = [v18 initWithPredictedItem:v17 score:?];
     }
 
@@ -354,7 +354,7 @@ LABEL_9:
         _os_log_impl(&dword_2263AA000, v22, OS_LOG_TYPE_INFO, "Returning original Anchor Model prediction because we didn't use Upcoming Media to update the prediction. Prediction: \n%@", buf, 0xCu);
       }
 
-      v19 = v6;
+      v19 = actionCopy;
     }
   }
 
@@ -377,10 +377,10 @@ LABEL_9:
   return v19;
 }
 
-+ (id)anchorPredictionScoredActionTuplesFromPredictions:(id)a3
++ (id)anchorPredictionScoredActionTuplesFromPredictions:(id)predictions
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   v45 = objc_opt_new();
   v4 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -392,7 +392,7 @@ LABEL_9:
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v3 count];
+    v6 = [predictionsCopy count];
     *buf = 134217984;
     v54 = v6;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "Action prediction post processor STARTING processing anchor model %lu predictions", buf, 0xCu);
@@ -402,7 +402,7 @@ LABEL_9:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v3;
+  obj = predictionsCopy;
   v7 = [obj countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v7)
   {
@@ -439,8 +439,8 @@ LABEL_9:
           _os_log_impl(v10, v17, OS_LOG_TYPE_INFO, "Action prediction post processor STARTING processing anchor model prediction %lu.", buf, 0xCu);
         }
 
-        v18 = [v14 candidateType];
-        v19 = [v18 isEqualToString:v12];
+        candidateType = [v14 candidateType];
+        v19 = [candidateType isEqualToString:v12];
 
         if (v19)
         {
@@ -450,8 +450,8 @@ LABEL_9:
           v22 = v11;
           v23 = v10;
           v24 = [[ATXAnchorModelActionPredictionPostProcessor alloc] initWithAnchorModelPrediction:v14];
-          v25 = [(ATXAnchorModelActionPredictionPostProcessor *)v24 recoverATXScoredAction];
-          v26 = [(ATXAnchorModelActionPredictionPostProcessor *)v24 postProcessScoredAction:v25];
+          recoverATXScoredAction = [(ATXAnchorModelActionPredictionPostProcessor *)v24 recoverATXScoredAction];
+          v26 = [(ATXAnchorModelActionPredictionPostProcessor *)v24 postProcessScoredAction:recoverATXScoredAction];
 
           v27 = [ATXProactiveSuggestionBuilder predictionReasonForAnchorModelPrediction:v14];
           v28 = v27;
@@ -523,7 +523,7 @@ LABEL_9:
     while (v8);
   }
 
-  [a1 inPlaceDeduplicateAnchorPredictionScoredActionTuples:v45];
+  [self inPlaceDeduplicateAnchorPredictionScoredActionTuples:v45];
   v37 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
@@ -549,27 +549,27 @@ LABEL_9:
   return v41;
 }
 
-+ (void)inPlaceDeduplicateAnchorPredictionScoredActionTuples:(id)a3
++ (void)inPlaceDeduplicateAnchorPredictionScoredActionTuples:(id)tuples
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_33];
+  tuplesCopy = tuples;
+  v4 = [tuplesCopy _pas_mappedArrayWithTransform:&__block_literal_global_33];
   v5 = [ATXActionPredictionsProcessor indicesOfNonDuplicateScoredActions:v4];
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = [v3 count];
+    v12 = [tuplesCopy count];
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "Deduplicating action predictions. Number of original predictions: %lu...", &v11, 0xCu);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, objc_msgSend(v3, "count")}];
+  v7 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, objc_msgSend(tuplesCopy, "count")}];
   [v7 removeIndexes:v5];
-  [v3 removeObjectsAtIndexes:v7];
+  [tuplesCopy removeObjectsAtIndexes:v7];
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v3 count];
+    v9 = [tuplesCopy count];
     v11 = 134217984;
     v12 = v9;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "After deduplicating, number of action predictions: %lu. Done.", &v11, 0xCu);
@@ -589,7 +589,7 @@ id __100__ATXAnchorModelActionPredictionPostProcessor_inPlaceDeduplicateAnchorPr
 - (void)recoverATXScoredAction
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_fault_impl(&dword_2263AA000, a2, OS_LOG_TYPE_FAULT, "Unable to retrieve ATXScoredAction for Anchor Model prediction. Skipping this prediction. %@", &v4, 0xCu);

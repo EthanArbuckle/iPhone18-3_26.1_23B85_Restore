@@ -1,47 +1,47 @@
 @interface VCPProtoMovieStabilizationRecipe
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (float)homographyParamsAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (float)homographyParamsAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (int64_t)timeValueAtIndex:(unint64_t)a3;
+- (int64_t)timeValueAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieStabilizationRecipe
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v36 = v3;
-  v4 = [v3 objectForKeyedSubscript:@"stabCropRect"];
+  dictionaryCopy = dictionary;
+  v36 = dictionaryCopy;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"stabCropRect"];
   if (!v4)
   {
     goto LABEL_17;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"inputBounds"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"inputBounds"];
   if (!v5)
   {
 
     goto LABEL_17;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"sourceSize"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"sourceSize"];
   if (!v6)
   {
 
     goto LABEL_18;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"frameInstructions"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"frameInstructions"];
   v8 = [v7 count];
 
   if (!v8)
@@ -52,10 +52,10 @@ LABEL_17:
   }
 
   v9 = objc_alloc_init(VCPProtoMovieStabilizationRecipe);
-  v34 = [v3 objectForKeyedSubscript:@"frameInstructions"];
-  v32 = [v3 objectForKeyedSubscript:@"stabCropRect"];
-  v33 = [v3 objectForKeyedSubscript:@"inputBounds"];
-  v35 = [v3 objectForKeyedSubscript:@"sourceSize"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"frameInstructions"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"stabCropRect"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"inputBounds"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"sourceSize"];
   v10 = [v32 objectForKeyedSubscript:@"X"];
   [v10 floatValue];
   [(VCPProtoMovieStabilizationRecipe *)v9 setCropRectX:?];
@@ -221,14 +221,14 @@ LABEL_18:
     v49[1] = v23;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0;
     for (i = 0; [(VCPProtoMovieStabilizationRecipe *)self timeValuesCount]> i; ++i)
     {
-      v27 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
       memset(&v42, 0, sizeof(v42));
       CMTimeMake(&v42, [(VCPProtoMovieStabilizationRecipe *)self timeValues][8 * i], [(VCPProtoMovieStabilizationRecipe *)self timeScale]);
-      v28 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v29 = 9;
       v30 = v25;
       do
@@ -236,7 +236,7 @@ LABEL_18:
         v31 = MEMORY[0x1E696AD98];
         LODWORD(v32) = [(VCPProtoMovieStabilizationRecipe *)self homographyParams][v30];
         v33 = [v31 numberWithFloat:v32];
-        [v28 addObject:v33];
+        [array2 addObject:v33];
 
         v30 += 4;
         --v29;
@@ -248,14 +248,14 @@ LABEL_18:
       v34 = CMTimeCopyAsDictionary(&time, 0);
       v46[1] = @"homography";
       v47[0] = v34;
-      v47[1] = v28;
+      v47[1] = array2;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
 
-      [v24 addObject:v35];
+      [array addObject:v35];
       v25 += 36;
     }
 
-    v38 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
     v44[0] = @"stabCropRect";
     v44[1] = @"inputBounds";
     v45[0] = v39;
@@ -263,7 +263,7 @@ LABEL_18:
     v44[2] = @"sourceSize";
     v44[3] = @"frameInstructions";
     v45[2] = v41;
-    v45[3] = v24;
+    v45[3] = array;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:4];
   }
 
@@ -284,36 +284,36 @@ LABEL_18:
   [(VCPProtoMovieStabilizationRecipe *)&v3 dealloc];
 }
 
-- (int64_t)timeValueAtIndex:(unint64_t)a3
+- (int64_t)timeValueAtIndex:(unint64_t)index
 {
   p_timeValues = &self->_timeValues;
   count = self->_timeValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_timeValues->list[a3];
+  return p_timeValues->list[index];
 }
 
-- (float)homographyParamsAtIndex:(unint64_t)a3
+- (float)homographyParamsAtIndex:(unint64_t)index
 {
   p_homographyParams = &self->_homographyParams;
   count = self->_homographyParams.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_homographyParams->list[a3];
+  return p_homographyParams->list[index];
 }
 
 - (id)description
@@ -322,70 +322,70 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = VCPProtoMovieStabilizationRecipe;
   v4 = [(VCPProtoMovieStabilizationRecipe *)&v8 description];
-  v5 = [(VCPProtoMovieStabilizationRecipe *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieStabilizationRecipe *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_cropRectX;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"cropRectX"];
+  [dictionary setObject:v5 forKey:@"cropRectX"];
 
   *&v6 = self->_cropRectY;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"cropRectY"];
+  [dictionary setObject:v7 forKey:@"cropRectY"];
 
   *&v8 = self->_cropRectHeight;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  [v3 setObject:v9 forKey:@"cropRectHeight"];
+  [dictionary setObject:v9 forKey:@"cropRectHeight"];
 
   *&v10 = self->_cropRectWidth;
   v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
-  [v3 setObject:v11 forKey:@"cropRectWidth"];
+  [dictionary setObject:v11 forKey:@"cropRectWidth"];
 
   *&v12 = self->_inputBoundsX;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-  [v3 setObject:v13 forKey:@"inputBoundsX"];
+  [dictionary setObject:v13 forKey:@"inputBoundsX"];
 
   *&v14 = self->_inputBoundsY;
   v15 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
-  [v3 setObject:v15 forKey:@"inputBoundsY"];
+  [dictionary setObject:v15 forKey:@"inputBoundsY"];
 
   *&v16 = self->_inputBoundsHeight;
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
-  [v3 setObject:v17 forKey:@"inputBoundsHeight"];
+  [dictionary setObject:v17 forKey:@"inputBoundsHeight"];
 
   *&v18 = self->_inputBoundsWidth;
   v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
-  [v3 setObject:v19 forKey:@"inputBoundsWidth"];
+  [dictionary setObject:v19 forKey:@"inputBoundsWidth"];
 
   *&v20 = self->_sourceSizeHeight;
   v21 = [MEMORY[0x1E696AD98] numberWithFloat:v20];
-  [v3 setObject:v21 forKey:@"sourceSizeHeight"];
+  [dictionary setObject:v21 forKey:@"sourceSizeHeight"];
 
   *&v22 = self->_sourceSizeWidth;
   v23 = [MEMORY[0x1E696AD98] numberWithFloat:v22];
-  [v3 setObject:v23 forKey:@"sourceSizeWidth"];
+  [dictionary setObject:v23 forKey:@"sourceSizeWidth"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithInt:self->_timeScale];
-  [v3 setObject:v24 forKey:@"timeScale"];
+  [dictionary setObject:v24 forKey:@"timeScale"];
 
   v25 = PBRepeatedInt64NSArray();
-  [v3 setObject:v25 forKey:@"timeValue"];
+  [dictionary setObject:v25 forKey:@"timeValue"];
 
   v26 = PBRepeatedFloatNSArray();
-  [v3 setObject:v26 forKey:@"homographyParams"];
+  [dictionary setObject:v26 forKey:@"homographyParams"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
@@ -435,28 +435,28 @@ LABEL_18:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[16] = LODWORD(self->_cropRectX);
-  v4[17] = LODWORD(self->_cropRectY);
-  v4[14] = LODWORD(self->_cropRectHeight);
-  v4[15] = LODWORD(self->_cropRectWidth);
-  v4[20] = LODWORD(self->_inputBoundsX);
-  v4[21] = LODWORD(self->_inputBoundsY);
-  v4[18] = LODWORD(self->_inputBoundsHeight);
-  v4[19] = LODWORD(self->_inputBoundsWidth);
-  v4[22] = LODWORD(self->_sourceSizeHeight);
-  v4[23] = LODWORD(self->_sourceSizeWidth);
-  v11 = v4;
-  v4[24] = self->_timeScale;
+  toCopy = to;
+  toCopy[16] = LODWORD(self->_cropRectX);
+  toCopy[17] = LODWORD(self->_cropRectY);
+  toCopy[14] = LODWORD(self->_cropRectHeight);
+  toCopy[15] = LODWORD(self->_cropRectWidth);
+  toCopy[20] = LODWORD(self->_inputBoundsX);
+  toCopy[21] = LODWORD(self->_inputBoundsY);
+  toCopy[18] = LODWORD(self->_inputBoundsHeight);
+  toCopy[19] = LODWORD(self->_inputBoundsWidth);
+  toCopy[22] = LODWORD(self->_sourceSizeHeight);
+  toCopy[23] = LODWORD(self->_sourceSizeWidth);
+  v11 = toCopy;
+  toCopy[24] = self->_timeScale;
   if ([(VCPProtoMovieStabilizationRecipe *)self timeValuesCount])
   {
     [v11 clearTimeValues];
-    v5 = [(VCPProtoMovieStabilizationRecipe *)self timeValuesCount];
-    if (v5)
+    timeValuesCount = [(VCPProtoMovieStabilizationRecipe *)self timeValuesCount];
+    if (timeValuesCount)
     {
-      v6 = v5;
+      v6 = timeValuesCount;
       for (i = 0; i != v6; ++i)
       {
         [v11 addTimeValue:{-[VCPProtoMovieStabilizationRecipe timeValueAtIndex:](self, "timeValueAtIndex:", i)}];
@@ -467,10 +467,10 @@ LABEL_18:
   if ([(VCPProtoMovieStabilizationRecipe *)self homographyParamsCount])
   {
     [v11 clearHomographyParams];
-    v8 = [(VCPProtoMovieStabilizationRecipe *)self homographyParamsCount];
-    if (v8)
+    homographyParamsCount = [(VCPProtoMovieStabilizationRecipe *)self homographyParamsCount];
+    if (homographyParamsCount)
     {
-      v9 = v8;
+      v9 = homographyParamsCount;
       for (j = 0; j != v9; ++j)
       {
         [(VCPProtoMovieStabilizationRecipe *)self homographyParamsAtIndex:j];
@@ -480,9 +480,9 @@ LABEL_18:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 64) = self->_cropRectX;
   *(v4 + 68) = self->_cropRectY;
   *(v4 + 56) = self->_cropRectHeight;
@@ -499,10 +499,10 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_cropRectX == *(v4 + 16) && self->_cropRectY == *(v4 + 17) && self->_cropRectHeight == *(v4 + 14) && self->_cropRectWidth == *(v4 + 15) && self->_inputBoundsX == *(v4 + 20) && self->_inputBoundsY == *(v4 + 21) && self->_inputBoundsHeight == *(v4 + 18) && self->_inputBoundsWidth == *(v4 + 19) && self->_sourceSizeHeight == *(v4 + 22) && self->_sourceSizeWidth == *(v4 + 23) && self->_timeScale == *(v4 + 24) && PBRepeatedInt64IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_cropRectX == *(equalCopy + 16) && self->_cropRectY == *(equalCopy + 17) && self->_cropRectHeight == *(equalCopy + 14) && self->_cropRectWidth == *(equalCopy + 15) && self->_inputBoundsX == *(equalCopy + 20) && self->_inputBoundsY == *(equalCopy + 21) && self->_inputBoundsHeight == *(equalCopy + 18) && self->_inputBoundsWidth == *(equalCopy + 19) && self->_sourceSizeHeight == *(equalCopy + 22) && self->_sourceSizeWidth == *(equalCopy + 23) && self->_timeScale == *(equalCopy + 24) && PBRepeatedInt64IsEqual())
   {
     IsEqual = PBRepeatedFloatIsEqual();
   }
@@ -762,35 +762,35 @@ LABEL_18:
   return v73 ^ v74 ^ PBRepeatedFloatHash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_cropRectX = *(v4 + 16);
-  self->_cropRectY = *(v4 + 17);
-  self->_cropRectHeight = *(v4 + 14);
-  self->_cropRectWidth = *(v4 + 15);
-  self->_inputBoundsX = *(v4 + 20);
-  self->_inputBoundsY = *(v4 + 21);
-  self->_inputBoundsHeight = *(v4 + 18);
-  self->_inputBoundsWidth = *(v4 + 19);
-  self->_sourceSizeHeight = *(v4 + 22);
-  self->_sourceSizeWidth = *(v4 + 23);
-  self->_timeScale = *(v4 + 24);
-  v11 = v4;
-  v5 = [v4 timeValuesCount];
-  if (v5)
+  fromCopy = from;
+  self->_cropRectX = *(fromCopy + 16);
+  self->_cropRectY = *(fromCopy + 17);
+  self->_cropRectHeight = *(fromCopy + 14);
+  self->_cropRectWidth = *(fromCopy + 15);
+  self->_inputBoundsX = *(fromCopy + 20);
+  self->_inputBoundsY = *(fromCopy + 21);
+  self->_inputBoundsHeight = *(fromCopy + 18);
+  self->_inputBoundsWidth = *(fromCopy + 19);
+  self->_sourceSizeHeight = *(fromCopy + 22);
+  self->_sourceSizeWidth = *(fromCopy + 23);
+  self->_timeScale = *(fromCopy + 24);
+  v11 = fromCopy;
+  timeValuesCount = [fromCopy timeValuesCount];
+  if (timeValuesCount)
   {
-    v6 = v5;
+    v6 = timeValuesCount;
     for (i = 0; i != v6; ++i)
     {
       -[VCPProtoMovieStabilizationRecipe addTimeValue:](self, "addTimeValue:", [v11 timeValueAtIndex:i]);
     }
   }
 
-  v8 = [v11 homographyParamsCount];
-  if (v8)
+  homographyParamsCount = [v11 homographyParamsCount];
+  if (homographyParamsCount)
   {
-    v9 = v8;
+    v9 = homographyParamsCount;
     for (j = 0; j != v9; ++j)
     {
       [v11 homographyParamsAtIndex:j];

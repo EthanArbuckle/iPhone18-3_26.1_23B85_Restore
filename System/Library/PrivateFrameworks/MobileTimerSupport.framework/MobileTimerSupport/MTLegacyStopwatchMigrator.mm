@@ -1,6 +1,6 @@
 @interface MTLegacyStopwatchMigrator
 - (BOOL)needsMigration;
-- (MTLegacyStopwatchMigrator)initWithDefaults:(id)a3 manager:(id)a4;
+- (MTLegacyStopwatchMigrator)initWithDefaults:(id)defaults manager:(id)manager;
 - (id)generateStopwatchFromDefaults;
 - (id)migrateLegacyStopwatch;
 - (void)eraseLocalDefaults;
@@ -11,20 +11,20 @@
 
 - (void)loadInitialState
 {
-  v3 = [(MTLegacyStopwatchMigrator *)self defaults];
-  -[MTLegacyStopwatchMigrator setIsTimerRunning:](self, "setIsTimerRunning:", [v3 BOOLForKey:@"TIMERRUNNING"]);
+  defaults = [(MTLegacyStopwatchMigrator *)self defaults];
+  -[MTLegacyStopwatchMigrator setIsTimerRunning:](self, "setIsTimerRunning:", [defaults BOOLForKey:@"TIMERRUNNING"]);
 
-  v5 = [(MTLegacyStopwatchMigrator *)self defaults];
-  v4 = [v5 objectForKey:@"LASTTIME"];
+  defaults2 = [(MTLegacyStopwatchMigrator *)self defaults];
+  v4 = [defaults2 objectForKey:@"LASTTIME"];
   [v4 doubleValue];
   [(MTLegacyStopwatchMigrator *)self setCurrentInterval:?];
 }
 
-- (MTLegacyStopwatchMigrator)initWithDefaults:(id)a3 manager:(id)a4
+- (MTLegacyStopwatchMigrator)initWithDefaults:(id)defaults manager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = MTLegacyStopwatchMigrator;
   v8 = [(MTLegacyStopwatchMigrator *)&v12 init];
@@ -38,8 +38,8 @@
       _os_log_impl(&dword_22D741000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ initialized", buf, 0xCu);
     }
 
-    [(MTLegacyStopwatchMigrator *)v8 setDefaults:v6];
-    [(MTLegacyStopwatchMigrator *)v8 setManager:v7];
+    [(MTLegacyStopwatchMigrator *)v8 setDefaults:defaultsCopy];
+    [(MTLegacyStopwatchMigrator *)v8 setManager:managerCopy];
     [(MTLegacyStopwatchMigrator *)v8 loadInitialState];
   }
 
@@ -54,31 +54,31 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_22D741000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating legacy stopwatch", buf, 0xCu);
   }
 
-  v4 = [(MTLegacyStopwatchMigrator *)self generateStopwatchFromDefaults];
+  generateStopwatchFromDefaults = [(MTLegacyStopwatchMigrator *)self generateStopwatchFromDefaults];
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2114;
-    v17 = v4;
+    v17 = generateStopwatchFromDefaults;
     _os_log_impl(&dword_22D741000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ generated stopwatch from previous defaults: %{public}@", buf, 0x16u);
   }
 
-  v6 = [(MTLegacyStopwatchMigrator *)self manager];
-  v7 = [v6 getStopwatches];
+  manager = [(MTLegacyStopwatchMigrator *)self manager];
+  getStopwatches = [manager getStopwatches];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__MTLegacyStopwatchMigrator_migrateLegacyStopwatch__block_invoke;
   v12[3] = &unk_278770B28;
   v12[4] = self;
-  v13 = v4;
-  v8 = v4;
-  v9 = [v7 flatMap:v12];
+  v13 = generateStopwatchFromDefaults;
+  v8 = generateStopwatchFromDefaults;
+  v9 = [getStopwatches flatMap:v12];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -163,8 +163,8 @@ id __51__MTLegacyStopwatchMigrator_migrateLegacyStopwatch__block_invoke_16(uint6
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(MTLegacyStopwatchMigrator *)self defaults];
-  v5 = [v4 objectForKey:@"LAPS"];
+  defaults = [(MTLegacyStopwatchMigrator *)self defaults];
+  v5 = [defaults objectForKey:@"LAPS"];
 
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
@@ -198,13 +198,13 @@ id __51__MTLegacyStopwatchMigrator_migrateLegacyStopwatch__block_invoke_16(uint6
     v9 = 0.0;
   }
 
-  v13 = [(MTLegacyStopwatchMigrator *)self defaults];
-  v14 = [v13 objectForKey:@"OFFSET"];
+  defaults2 = [(MTLegacyStopwatchMigrator *)self defaults];
+  v14 = [defaults2 objectForKey:@"OFFSET"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [(MTLegacyStopwatchMigrator *)self defaults];
-  v18 = [v17 objectForKey:@"STARTTIME"];
+  defaults3 = [(MTLegacyStopwatchMigrator *)self defaults];
+  v18 = [defaults3 objectForKey:@"STARTTIME"];
 
   v19 = objc_opt_new();
   v20 = [v19 mutableCopy];
@@ -247,24 +247,24 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D741000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ erasing local defaults", &v10, 0xCu);
   }
 
-  v4 = [(MTLegacyStopwatchMigrator *)self defaults];
-  [v4 removeObjectForKey:@"TIMERRUNNING"];
+  defaults = [(MTLegacyStopwatchMigrator *)self defaults];
+  [defaults removeObjectForKey:@"TIMERRUNNING"];
 
-  v5 = [(MTLegacyStopwatchMigrator *)self defaults];
-  [v5 removeObjectForKey:@"LASTTIME"];
+  defaults2 = [(MTLegacyStopwatchMigrator *)self defaults];
+  [defaults2 removeObjectForKey:@"LASTTIME"];
 
-  v6 = [(MTLegacyStopwatchMigrator *)self defaults];
-  [v6 removeObjectForKey:@"LAPS"];
+  defaults3 = [(MTLegacyStopwatchMigrator *)self defaults];
+  [defaults3 removeObjectForKey:@"LAPS"];
 
-  v7 = [(MTLegacyStopwatchMigrator *)self defaults];
-  [v7 removeObjectForKey:@"OFFSET"];
+  defaults4 = [(MTLegacyStopwatchMigrator *)self defaults];
+  [defaults4 removeObjectForKey:@"OFFSET"];
 
-  v8 = [(MTLegacyStopwatchMigrator *)self defaults];
-  [v8 removeObjectForKey:@"STARTTIME"];
+  defaults5 = [(MTLegacyStopwatchMigrator *)self defaults];
+  [defaults5 removeObjectForKey:@"STARTTIME"];
 
   v9 = *MEMORY[0x277D85DE8];
 }

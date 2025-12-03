@@ -1,20 +1,20 @@
 @interface EQKitiOSEquationView
 - (CGPoint)offset;
 - (CGSize)intrinsicContentSize;
-- (EQKitiOSEquationView)initWithFrame:(CGRect)a3;
+- (EQKitiOSEquationView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setEquationLayout:(id)a3;
+- (void)setEquationLayout:(id)layout;
 @end
 
 @implementation EQKitiOSEquationView
 
-- (EQKitiOSEquationView)initWithFrame:(CGRect)a3
+- (EQKitiOSEquationView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = EQKitiOSEquationView;
-  result = [(EQKitiOSEquationView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(EQKitiOSEquationView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_viewScale = 1.0;
@@ -32,7 +32,7 @@
   [(EQKitiOSEquationView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextTranslateCTM(CurrentContext, self->_offset.x, self->_offset.y);
@@ -61,13 +61,13 @@
   objc_msgSend_renderIntoContext_offset_(equationLayout, v13, CurrentContext, v15, -MinX, -MinY);
 }
 
-- (void)setEquationLayout:(id)a3
+- (void)setEquationLayout:(id)layout
 {
   equationLayout = self->_equationLayout;
-  if (equationLayout != a3)
+  if (equationLayout != layout)
   {
 
-    self->_equationLayout = a3;
+    self->_equationLayout = layout;
 
     MEMORY[0x2821F9670](self, sel_setNeedsLayout, v6, v7);
   }

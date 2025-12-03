@@ -1,38 +1,38 @@
 @interface _CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl
-+ (id)fingerprintForPosterConfiguration:(id)a3 withConfigurationData:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)fingerprintForPosterConfiguration:(id)configuration withConfigurationData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithCoder:(id)a3;
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)a3 titleColor:(id)a4 titleFont:(id)a5 preferredTitleLayout:(unint64_t)a6 preferredTitleAlignment:(unint64_t)a7;
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)a3 titleStyleAttributes:(id)a4;
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithCoder:(id)coder;
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)data titleColor:(id)color titleFont:(id)font preferredTitleLayout:(unint64_t)layout preferredTitleAlignment:(unint64_t)alignment;
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)data titleStyleAttributes:(id)attributes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl
 
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithCoder:(id)a3
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterConfigurationData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleFont"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleColor"];
-  v8 = [v4 decodeIntegerForKey:@"preferredTitleLayout"];
-  v9 = [v4 decodeIntegerForKey:@"preferredTitleAlignment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterConfigurationData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleFont"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleColor"];
+  v8 = [coderCopy decodeIntegerForKey:@"preferredTitleLayout"];
+  v9 = [coderCopy decodeIntegerForKey:@"preferredTitleAlignment"];
 
   v10 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)self initWithPosterConfigurationData:v5 titleColor:v7 titleFont:v6 preferredTitleLayout:v8 preferredTitleAlignment:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   posterConfigurationData = self->_posterConfigurationData;
-  v5 = a3;
-  [v5 encodeObject:posterConfigurationData forKey:@"posterConfigurationData"];
-  [v5 encodeObject:self->_titleFont forKey:@"titleFont"];
-  [v5 encodeObject:self->_titleColor forKey:@"titleColor"];
-  [v5 encodeInteger:self->_preferredTitleLayout forKey:@"preferredTitleLayout"];
-  [v5 encodeInteger:self->_preferredTitleAlignment forKey:@"preferredTitleAlignment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:posterConfigurationData forKey:@"posterConfigurationData"];
+  [coderCopy encodeObject:self->_titleFont forKey:@"titleFont"];
+  [coderCopy encodeObject:self->_titleColor forKey:@"titleColor"];
+  [coderCopy encodeInteger:self->_preferredTitleLayout forKey:@"preferredTitleLayout"];
+  [coderCopy encodeInteger:self->_preferredTitleAlignment forKey:@"preferredTitleAlignment"];
 }
 
 - (unint64_t)hash
@@ -44,13 +44,13 @@
   return self->_preferredTitleAlignment - v6 + 32 * v6 + 486695567;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (preferredTitleLayout = self->_preferredTitleLayout, preferredTitleLayout != [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)v4 preferredTitleLayout]) || (preferredTitleAlignment = self->_preferredTitleAlignment, preferredTitleAlignment != [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)v4 preferredTitleAlignment]) || (titleFont = self->_titleFont, v8 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)v4 titleFont], titleFont | v8) && ![(UIFont *)titleFont isEqual:v8]|| (titleColor = self->_titleColor, v10 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)v4 titleColor], titleColor | v10) && ![(UIColor *)titleColor isEqual:v10]|| (posterConfigurationData = self->_posterConfigurationData, v12 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)v4 posterConfigurationData], posterConfigurationData | v12) && ![(NSData *)posterConfigurationData isEqual:v12])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (preferredTitleLayout = self->_preferredTitleLayout, preferredTitleLayout != [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)equalCopy preferredTitleLayout]) || (preferredTitleAlignment = self->_preferredTitleAlignment, preferredTitleAlignment != [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)equalCopy preferredTitleAlignment]) || (titleFont = self->_titleFont, v8 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)equalCopy titleFont], titleFont | v8) && ![(UIFont *)titleFont isEqual:v8]|| (titleColor = self->_titleColor, v10 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)equalCopy titleColor], titleColor | v10) && ![(UIColor *)titleColor isEqual:v10]|| (posterConfigurationData = self->_posterConfigurationData, v12 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)equalCopy posterConfigurationData], posterConfigurationData | v12) && ![(NSData *)posterConfigurationData isEqual:v12])
     {
       v13 = 0;
     }
@@ -67,51 +67,51 @@
   v6 = [v3 appendName:@"titleColor" object:self->_titleColor];
   v7 = [v3 appendName:@"preferredTitleLayout" unsignedInteger:self->_preferredTitleLayout];
   v8 = [v3 appendName:@"preferredTitleAlignment" unsignedInteger:self->_preferredTitleAlignment];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)a3 titleColor:(id)a4 titleFont:(id)a5 preferredTitleLayout:(unint64_t)a6 preferredTitleAlignment:(unint64_t)a7
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)data titleColor:(id)color titleFont:(id)font preferredTitleLayout:(unint64_t)layout preferredTitleAlignment:(unint64_t)alignment
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  dataCopy = data;
+  colorCopy = color;
+  fontCopy = font;
   v20.receiver = self;
   v20.super_class = _CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl;
   v16 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_posterConfigurationData, a3);
-    objc_storeStrong(&v17->_titleColor, a4);
-    objc_storeStrong(&v17->_titleFont, a5);
-    v17->_preferredTitleAlignment = a7;
-    v17->_preferredTitleLayout = a6;
+    objc_storeStrong(&v16->_posterConfigurationData, data);
+    objc_storeStrong(&v17->_titleColor, color);
+    objc_storeStrong(&v17->_titleFont, font);
+    v17->_preferredTitleAlignment = alignment;
+    v17->_preferredTitleLayout = layout;
     v18 = v17;
   }
 
   return v17;
 }
 
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)a3 titleStyleAttributes:(id)a4
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl)initWithPosterConfigurationData:(id)data titleStyleAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 titleColor];
-  v9 = [v6 titleFont];
-  v10 = [v6 preferredTitleLayout];
-  v11 = [v6 preferredTitleAlignment];
+  attributesCopy = attributes;
+  dataCopy = data;
+  titleColor = [attributesCopy titleColor];
+  titleFont = [attributesCopy titleFont];
+  preferredTitleLayout = [attributesCopy preferredTitleLayout];
+  preferredTitleAlignment = [attributesCopy preferredTitleAlignment];
 
-  v12 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)self initWithPosterConfigurationData:v7 titleColor:v8 titleFont:v9 preferredTitleLayout:v10 preferredTitleAlignment:v11];
+  v12 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl *)self initWithPosterConfigurationData:dataCopy titleColor:titleColor titleFont:titleFont preferredTitleLayout:preferredTitleLayout preferredTitleAlignment:preferredTitleAlignment];
   return v12;
 }
 
-+ (id)fingerprintForPosterConfiguration:(id)a3 withConfigurationData:(id)a4
++ (id)fingerprintForPosterConfiguration:(id)configuration withConfigurationData:(id)data
 {
-  v5 = a4;
-  v6 = [CNPRUISPosterTitleStyleAttributes attributesForCNConfiguration:a3];
-  v7 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl alloc] initWithPosterConfigurationData:v5 titleStyleAttributes:v6];
+  dataCopy = data;
+  v6 = [CNPRUISPosterTitleStyleAttributes attributesForCNConfiguration:configuration];
+  v7 = [[_CNAvatarPosterCarouselLikenessFingerprintPosterConfigurationImpl alloc] initWithPosterConfigurationData:dataCopy titleStyleAttributes:v6];
 
   return v7;
 }

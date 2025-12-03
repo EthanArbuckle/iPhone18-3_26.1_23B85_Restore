@@ -1,15 +1,15 @@
 @interface AWDPowerBBAppRRCMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppConnStats:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addAppConnStats:(id)stats;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumRRCConnections:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumRRCConnections:(BOOL)connections;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerBBAppRRCMetrics
@@ -22,7 +22,7 @@
   [(AWDPowerBBAppRRCMetrics *)&v3 dealloc];
 }
 
-- (void)addAppConnStats:(id)a3
+- (void)addAppConnStats:(id)stats
 {
   appConnStats = self->_appConnStats;
   if (!appConnStats)
@@ -31,12 +31,12 @@
     self->_appConnStats = appConnStats;
   }
 
-  [(NSMutableArray *)appConnStats addObject:a3];
+  [(NSMutableArray *)appConnStats addObject:stats];
 }
 
-- (void)setHasNumRRCConnections:(BOOL)a3
+- (void)setHasNumRRCConnections:(BOOL)connections
 {
-  if (a3)
+  if (connections)
   {
     v3 = 2;
   }
@@ -59,10 +59,10 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_appConnStats count])
@@ -96,19 +96,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"appConnStats"];
+    [dictionary setObject:v4 forKey:@"appConnStats"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numRRCConnections), @"numRRCConnections"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numRRCConnections), @"numRRCConnections"}];
   }
 
   v10 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -155,39 +155,39 @@
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if ([(AWDPowerBBAppRRCMetrics *)self appConnStatsCount])
   {
-    [a3 clearAppConnStats];
-    v5 = [(AWDPowerBBAppRRCMetrics *)self appConnStatsCount];
-    if (v5)
+    [to clearAppConnStats];
+    appConnStatsCount = [(AWDPowerBBAppRRCMetrics *)self appConnStatsCount];
+    if (appConnStatsCount)
     {
-      v6 = v5;
+      v6 = appConnStatsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addAppConnStats:{-[AWDPowerBBAppRRCMetrics appConnStatsAtIndex:](self, "appConnStatsAtIndex:", i)}];
+        [to addAppConnStats:{-[AWDPowerBBAppRRCMetrics appConnStatsAtIndex:](self, "appConnStatsAtIndex:", i)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 6) = self->_numRRCConnections;
-    *(a3 + 28) |= 2u;
+    *(to + 6) = self->_numRRCConnections;
+    *(to + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -214,7 +214,7 @@
           objc_enumerationMutation(appConnStats);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAppConnStats:v12];
       }
 
@@ -234,22 +234,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -257,7 +257,7 @@ LABEL_14:
     }
 
     appConnStats = self->_appConnStats;
-    if (appConnStats | *(a3 + 2))
+    if (appConnStats | *(equal + 2))
     {
       v5 = [(NSMutableArray *)appConnStats isEqual:?];
       if (!v5)
@@ -268,10 +268,10 @@ LABEL_14:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_numRRCConnections != *(a3 + 6))
+      if ((*(equal + 28) & 2) == 0 || self->_numRRCConnections != *(equal + 6))
       {
         goto LABEL_14;
       }
@@ -309,12 +309,12 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -322,7 +322,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -346,9 +346,9 @@ LABEL_14:
     while (v7);
   }
 
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
-    self->_numRRCConnections = *(a3 + 6);
+    self->_numRRCConnections = *(from + 6);
     *&self->_has |= 2u;
   }
 

@@ -1,52 +1,52 @@
 @interface AARequest
-+ (id)redactedHeadersFromHTTPHeaders:(id)a3;
-- (AARequest)initWithURLString:(id)a3;
++ (id)redactedHeadersFromHTTPHeaders:(id)headers;
+- (AARequest)initWithURLString:(id)string;
 - (NSURLRequest)urlRequest;
 - (id)bodyDictionary;
-- (id)redactedBodyStringWithPropertyList:(id)a3;
-- (void)_handleDataTaskCompletionWithData:(id)a3 response:(id)a4 error:(id)a5;
+- (id)redactedBodyStringWithPropertyList:(id)list;
+- (void)_handleDataTaskCompletionWithData:(id)data response:(id)response error:(id)error;
 - (void)dealloc;
-- (void)performPinnedOnlyRequestWithHandler:(id)a3;
-- (void)performPinnedRequestWithHandler:(id)a3;
-- (void)performRequestForDevice:(id)a3 anisetteDataProvider:(id)a4 withHandler:(id)a5;
-- (void)performRequestWithHandler:(id)a3;
-- (void)performRequestWithSession:(id)a3 withHandler:(id)a4;
-- (void)performSignedRequestWithHandler:(id)a3;
-- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)a3;
+- (void)performPinnedOnlyRequestWithHandler:(id)handler;
+- (void)performPinnedRequestWithHandler:(id)handler;
+- (void)performRequestForDevice:(id)device anisetteDataProvider:(id)provider withHandler:(id)handler;
+- (void)performRequestWithHandler:(id)handler;
+- (void)performRequestWithSession:(id)session withHandler:(id)handler;
+- (void)performSignedRequestWithHandler:(id)handler;
+- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)storage;
 @end
 
 @implementation AARequest
 
-- (AARequest)initWithURLString:(id)a3
+- (AARequest)initWithURLString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = AARequest;
   v6 = [(AARequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialURLString, a3);
+    objc_storeStrong(&v6->_initialURLString, string);
   }
 
   return v7;
 }
 
-- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)a3
+- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)storage
 {
   cookieStorage = self->_cookieStorage;
-  if (cookieStorage != a3)
+  if (cookieStorage != storage)
   {
     if (cookieStorage)
     {
       CFRelease(cookieStorage);
     }
 
-    self->_cookieStorage = a3;
-    if (a3)
+    self->_cookieStorage = storage;
+    if (storage)
     {
 
-      CFRetain(a3);
+      CFRetain(storage);
     }
   }
 }
@@ -54,10 +54,10 @@
 - (NSURLRequest)urlRequest
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [(AARequest *)self urlString];
-  if (v3)
+  urlString = [(AARequest *)self urlString];
+  if (urlString)
   {
-    v4 = v3;
+    v4 = urlString;
   }
 
   else
@@ -74,10 +74,10 @@
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Request URL: %@", buf, 0xCu);
   }
 
-  v7 = [(AARequest *)self flushCache];
+  flushCache = [(AARequest *)self flushCache];
   v8 = MEMORY[0x1E695AC18];
   v9 = [v5 URL];
-  v10 = [v8 requestWithURL:v9 cachePolicy:v7 timeoutInterval:60.0];
+  v10 = [v8 requestWithURL:v9 cachePolicy:flushCache timeoutInterval:60.0];
 
   v11 = +[AADeviceInfo clientInfoHeader];
   v12 = _AALogSystem();
@@ -89,13 +89,13 @@
   }
 
   [v10 addValue:v11 forHTTPHeaderField:@"X-MMe-Client-Info"];
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v13 objectForKey:*MEMORY[0x1E695D978]];
-  v15 = [v14 uppercaseString];
-  [v10 addValue:v15 forHTTPHeaderField:@"X-MMe-Country"];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v14 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+  uppercaseString = [v14 uppercaseString];
+  [v10 addValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
-  v16 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v17 = [v16 componentsJoinedByString:{@", "}];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v17 = [preferredLanguages componentsJoinedByString:{@", "}];
   v18 = v17;
   if (v17)
   {
@@ -110,8 +110,8 @@
   [v10 addValue:v19 forHTTPHeaderField:@"X-MMe-Language"];
 
   v20 = MEMORY[0x1E695DF58];
-  v21 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  v50 = v21;
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  v50 = _deviceLanguage;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
   v23 = [v20 minimizedLanguagesFromLanguages:v22];
   v24 = [v23 componentsJoinedByString:{@", "}];
@@ -226,21 +226,21 @@
 
 - (id)bodyDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [objc_opt_class() protocolVersion];
-  [v2 setObject:v3 forKey:@"protocolVersion"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  protocolVersion = [objc_opt_class() protocolVersion];
+  [dictionary setObject:protocolVersion forKey:@"protocolVersion"];
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v6 = [v5 name];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  name = [localTimeZone name];
 
-  [v4 setObject:v6 forKey:@"timezone"];
-  v7 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v8 = [v7 firstObject];
+  [dictionary2 setObject:name forKey:@"timezone"];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = v8;
+    v9 = firstObject;
   }
 
   else
@@ -248,61 +248,61 @@
     v9 = @"en";
   }
 
-  [v4 setObject:v9 forKey:@"language"];
+  [dictionary2 setObject:v9 forKey:@"language"];
   v10 = +[AADeviceInfo appleIDClientIdentifier];
-  [v4 setObject:v10 forKey:@"client-id"];
+  [dictionary2 setObject:v10 forKey:@"client-id"];
 
-  [v2 setObject:v4 forKey:@"userInfo"];
+  [dictionary setObject:dictionary2 forKey:@"userInfo"];
 
-  return v2;
+  return dictionary;
 }
 
-- (void)performRequestWithHandler:(id)a3
+- (void)performRequestWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[AAURLSession sharedSession];
-  [(AARequest *)self performRequestWithSession:v5 withHandler:v4];
+  [(AARequest *)self performRequestWithSession:v5 withHandler:handlerCopy];
 }
 
-- (void)performSignedRequestWithHandler:(id)a3
+- (void)performSignedRequestWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[AAURLSession sharedSigningSession];
-  [(AARequest *)self performRequestWithSession:v5 withHandler:v4];
+  [(AARequest *)self performRequestWithSession:v5 withHandler:handlerCopy];
 }
 
-- (void)performPinnedRequestWithHandler:(id)a3
+- (void)performPinnedRequestWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[AAURLSession sharedPinningSession];
-  [(AARequest *)self performRequestWithSession:v5 withHandler:v4];
+  [(AARequest *)self performRequestWithSession:v5 withHandler:handlerCopy];
 }
 
-- (void)performPinnedOnlyRequestWithHandler:(id)a3
+- (void)performPinnedOnlyRequestWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[AAURLSession sharedPinningOnlySession];
-  [(AARequest *)self performRequestWithSession:v5 withHandler:v4];
+  [(AARequest *)self performRequestWithSession:v5 withHandler:handlerCopy];
 }
 
-- (void)performRequestForDevice:(id)a3 anisetteDataProvider:(id)a4 withHandler:(id)a5
+- (void)performRequestForDevice:(id)device anisetteDataProvider:(id)provider withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  providerCopy = provider;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__8;
   v20 = __Block_byref_object_dispose__8;
-  v21 = [[AAURLSession alloc] initForProxiedDevice:v8 anisetteDataProvider:v9];
+  v21 = [[AAURLSession alloc] initForProxiedDevice:deviceCopy anisetteDataProvider:providerCopy];
   v11 = v17[5];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__AARequest_performRequestForDevice_anisetteDataProvider_withHandler___block_invoke;
   v13[3] = &unk_1E7C9C4A0;
   v15 = &v16;
-  v12 = v10;
+  v12 = handlerCopy;
   v14 = v12;
   [(AARequest *)self performRequestWithSession:v11 withHandler:v13];
 
@@ -321,20 +321,20 @@ void __70__AARequest_performRequestForDevice_anisetteDataProvider_withHandler___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performRequestWithSession:(id)a3 withHandler:(id)a4
+- (void)performRequestWithSession:(id)session withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__AARequest_performRequestWithSession_withHandler___block_invoke;
   block[3] = &unk_1E7C9C4C8;
-  v12 = v6;
-  v13 = v7;
+  v12 = sessionCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = sessionCopy;
+  v10 = handlerCopy;
   dispatch_async(v8, block);
 }
 
@@ -414,27 +414,27 @@ LABEL_12:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDataTaskCompletionWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)_handleDataTaskCompletionWithData:(id)data response:(id)response error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  responseCopy = response;
+  errorCopy = error;
+  dataCopy = data;
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v9;
+    v20 = errorCopy;
     _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "Data task did complete with error: %@", &v19, 0xCu);
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
     v12 = _AALogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v8;
+      v20 = responseCopy;
       _os_log_impl(&dword_1B6F6A000, v12, OS_LOG_TYPE_DEFAULT, "Response: %@", &v19, 0xCu);
     }
   }
@@ -451,11 +451,11 @@ LABEL_12:
     }
   }
 
-  v15 = [v9 _aa_userReadableError];
+  _aa_userReadableError = [errorCopy _aa_userReadableError];
   handler = self->_handler;
   if (handler)
   {
-    handler[2](handler, self, v13, v15);
+    handler[2](handler, self, v13, _aa_userReadableError);
     v17 = self->_handler;
     self->_handler = 0;
   }
@@ -476,10 +476,10 @@ LABEL_12:
   [(AARequest *)&v4 dealloc];
 }
 
-- (id)redactedBodyStringWithPropertyList:(id)a3
+- (id)redactedBodyStringWithPropertyList:(id)list
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [list mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -523,10 +523,10 @@ LABEL_12:
   return v14;
 }
 
-+ (id)redactedHeadersFromHTTPHeaders:(id)a3
++ (id)redactedHeadersFromHTTPHeaders:(id)headers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [headers mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;

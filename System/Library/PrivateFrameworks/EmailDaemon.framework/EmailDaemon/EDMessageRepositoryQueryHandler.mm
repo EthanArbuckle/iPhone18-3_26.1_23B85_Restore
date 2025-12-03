@@ -1,12 +1,12 @@
 @interface EDMessageRepositoryQueryHandler
-- (BOOL)keyPathsAffectSorting:(id)a3;
-- (EDMessageRepositoryQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 hookRegistry:(id)a5 remindMeNotificationController:(id)a6 observer:(id)a7 observationIdentifier:(id)a8;
+- (BOOL)keyPathsAffectSorting:(id)sorting;
+- (EDMessageRepositoryQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)observer observationIdentifier:(id)identifier;
 - (NSSet)mailboxes;
-- (id)_distinctObjectIDs:(id)a3 queryHandlerLog:(id)a4;
+- (id)_distinctObjectIDs:(id)ds queryHandlerLog:(id)log;
 - (id)messageReconciliationQueries;
 - (void)cancel;
 - (void)dealloc;
-- (void)requestSummaryForMessageObjectID:(id)a3;
+- (void)requestSummaryForMessageObjectID:(id)d;
 - (void)test_tearDown;
 @end
 
@@ -79,31 +79,31 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
   [(EDMessageRepositoryQueryHandler *)&v3 dealloc];
 }
 
-- (EDMessageRepositoryQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 hookRegistry:(id)a5 remindMeNotificationController:(id)a6 observer:(id)a7 observationIdentifier:(id)a8
+- (EDMessageRepositoryQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence hookRegistry:(id)registry remindMeNotificationController:(id)controller observer:(id)observer observationIdentifier:(id)identifier
 {
-  v14 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v15 = a7;
-  v16 = a8;
+  queryCopy = query;
+  persistenceCopy = persistence;
+  registryCopy = registry;
+  controllerCopy = controller;
+  observerCopy = observer;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = EDMessageRepositoryQueryHandler;
   v17 = [(EDMessageRepositoryQueryHandler *)&v31 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [queryCopy copy];
     query = v17->_query;
     v17->_query = v18;
 
-    objc_storeStrong(&v17->_messagePersistence, a4);
-    objc_storeStrong(&v17->_hookRegistry, a5);
-    objc_storeStrong(&v17->_remindMeNotificationController, a6);
-    objc_storeStrong(&v17->_resultsObserver, a7);
-    objc_storeStrong(&v17->_observationIdentifier, a8);
+    objc_storeStrong(&v17->_messagePersistence, persistence);
+    objc_storeStrong(&v17->_hookRegistry, registry);
+    objc_storeStrong(&v17->_remindMeNotificationController, controller);
+    objc_storeStrong(&v17->_resultsObserver, observer);
+    objc_storeStrong(&v17->_observationIdentifier, identifier);
     v20 = objc_alloc(MEMORY[0x1E699B7F0]);
-    v21 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-    v22 = [v20 initWithObject:v21];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    v22 = [v20 initWithObject:strongToWeakObjectsMapTable];
     summaryLoadersMapTable = v17->_summaryLoadersMapTable;
     v17->_summaryLoadersMapTable = v22;
 
@@ -111,8 +111,8 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
     v17->_mailboxes = 0;
 
     v25 = MEMORY[0x1E699ADA0];
-    v26 = [(EMQuery *)v17->_query sortDescriptors];
-    v17->_dateSortOrder = [v25 dateSortOrderFromSortDescriptors:v26];
+    sortDescriptors = [(EMQuery *)v17->_query sortDescriptors];
+    v17->_dateSortOrder = [v25 dateSortOrderFromSortDescriptors:sortDescriptors];
   }
 
   return v17;
@@ -122,8 +122,8 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"EDMessageRepositoryQueryHandler.m" lineNumber:48 description:{@"%s can only be called from unit tests", "-[EDMessageRepositoryQueryHandler test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMessageRepositoryQueryHandler.m" lineNumber:48 description:{@"%s can only be called from unit tests", "-[EDMessageRepositoryQueryHandler test_tearDown]"}];
   }
 
   [(EDMessageRepositoryQueryHandler *)self tearDown];
@@ -135,15 +135,15 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
   if (!mailboxes)
   {
     v4 = MEMORY[0x1E699ADA0];
-    v5 = [(EMQuery *)self->_query predicate];
-    v6 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-    v7 = [v6 mailboxPersistence];
-    v8 = [v4 mailboxScopeForPredicate:v5 withMailboxTypeResolver:v7];
+    predicate = [(EMQuery *)self->_query predicate];
+    messagePersistence = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+    mailboxPersistence = [messagePersistence mailboxPersistence];
+    v8 = [v4 mailboxScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
 
     v14 = 0;
-    v9 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-    v10 = [v9 mailboxPersistence];
-    v11 = [v8 allMailboxObjectIDsWithMailboxTypeResolver:v10 forExclusion:&v14];
+    messagePersistence2 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+    mailboxPersistence2 = [messagePersistence2 mailboxPersistence];
+    v11 = [v8 allMailboxObjectIDsWithMailboxTypeResolver:mailboxPersistence2 forExclusion:&v14];
     v12 = self->_mailboxes;
     self->_mailboxes = v11;
 
@@ -153,18 +153,18 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
   return mailboxes;
 }
 
-- (BOOL)keyPathsAffectSorting:(id)a3
+- (BOOL)keyPathsAffectSorting:(id)sorting
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sortingCopy = sorting;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(EDMessageRepositoryQueryHandler *)self query];
-  v6 = [v5 sortDescriptors];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  sortDescriptors = [query sortDescriptors];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [sortDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -174,11 +174,11 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sortDescriptors);
         }
 
         v10 = [*(*(&v14 + 1) + 8 * i) key];
-        v11 = [v4 containsObject:v10];
+        v11 = [sortingCopy containsObject:v10];
 
         if (v11)
         {
@@ -187,7 +187,7 @@ void __41__EDMessageRepositoryQueryHandler_cancel__block_invoke(uint64_t a1, voi
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [sortDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -203,9 +203,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)requestSummaryForMessageObjectID:(id)a3
+- (void)requestSummaryForMessageObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -218,7 +218,7 @@ LABEL_11:
   v16[2] = __68__EDMessageRepositoryQueryHandler_requestSummaryForMessageObjectID___block_invoke;
   v16[3] = &unk_1E82559D8;
   v18 = &v19;
-  v6 = v4;
+  v6 = dCopy;
   v17 = v6;
   [(EFLocked *)summaryLoadersMapTable performWhileLocked:v16];
   v7 = v20[5];
@@ -227,8 +227,8 @@ LABEL_11:
     [v7 cancel];
   }
 
-  v8 = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
-  v9 = [v8 requestSummaryForMessageObjectID:v6];
+  messagePersistence = [(EDMessageRepositoryQueryHandler *)self messagePersistence];
+  v9 = [messagePersistence requestSummaryForMessageObjectID:v6];
 
   v10 = self->_summaryLoadersMapTable;
   v13[0] = MEMORY[0x1E69E9820];
@@ -253,26 +253,26 @@ void __68__EDMessageRepositoryQueryHandler_requestSummaryForMessageObjectID___bl
   *(v4 + 40) = v3;
 }
 
-- (id)_distinctObjectIDs:(id)a3 queryHandlerLog:(id)a4
+- (id)_distinctObjectIDs:(id)ds queryHandlerLog:(id)log
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [MEMORY[0x1E699B7B0] currentDevice];
-  v9 = [v8 isInternal];
+  dsCopy = ds;
+  logCopy = log;
+  v7 = dsCopy;
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v9)
+  if (isInternal)
   {
     v10 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v7];
     v11 = [v10 count];
     if (v11 != [v7 count])
     {
-      v12 = v6;
+      v12 = logCopy;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v15 = [v10 array];
-        v16 = [v7 differenceFromArray:v15];
+        array = [v10 array];
+        v16 = [v7 differenceFromArray:array];
         v17 = [v16 debugDescription];
         __b[0] = 138412290;
         *&__b[1] = v17;
@@ -300,13 +300,13 @@ void __68__EDMessageRepositoryQueryHandler_requestSummaryForMessageObjectID___bl
 - (id)messageReconciliationQueries
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EDMessageRepositoryQueryHandler *)self query];
-  v4 = [v3 queryOptions];
+  query = [(EDMessageRepositoryQueryHandler *)self query];
+  queryOptions = [query queryOptions];
 
-  if ((v4 & 8) != 0)
+  if ((queryOptions & 8) != 0)
   {
-    v6 = [(EDMessageRepositoryQueryHandler *)self query];
-    v9[0] = v6;
+    query2 = [(EDMessageRepositoryQueryHandler *)self query];
+    v9[0] = query2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 

@@ -1,17 +1,17 @@
 @interface TSDSizedImageDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSizedImageDescription:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSizedImageDescription:(id)description;
 - (CGSize)size;
-- (TSDSizedImageDescription)initWithSize:(CGSize)a3 isWideGamut:(BOOL)a4 hasBakedMask:(BOOL)a5;
+- (TSDSizedImageDescription)initWithSize:(CGSize)size isWideGamut:(BOOL)gamut hasBakedMask:(BOOL)mask;
 - (unint64_t)hash;
 @end
 
 @implementation TSDSizedImageDescription
 
-- (TSDSizedImageDescription)initWithSize:(CGSize)a3 isWideGamut:(BOOL)a4 hasBakedMask:(BOOL)a5
+- (TSDSizedImageDescription)initWithSize:(CGSize)size isWideGamut:(BOOL)gamut hasBakedMask:(BOOL)mask
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = TSDSizedImageDescription;
   result = [(TSDSizedImageDescription *)&v10 init];
@@ -19,21 +19,21 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_isWideGamut = a4;
-    result->_hasBakedMask = a5;
+    result->_isWideGamut = gamut;
+    result->_hasBakedMask = mask;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -59,10 +59,10 @@
   return v7 ^ v8;
 }
 
-- (BOOL)isEqualToSizedImageDescription:(id)a3
+- (BOOL)isEqualToSizedImageDescription:(id)description
 {
-  v6 = a3;
-  if (self == v6)
+  descriptionCopy = description;
+  if (self == descriptionCopy)
   {
     LOBYTE(v23) = 1;
   }
@@ -72,12 +72,12 @@
     objc_msgSend_size(self, v4, v5);
     v8 = v7;
     v10 = v9;
-    objc_msgSend_size(v6, v11, v12);
+    objc_msgSend_size(descriptionCopy, v11, v12);
     v17 = v8 == v16 && v10 == v15;
-    if (v17 && (isWideGamut = objc_msgSend_isWideGamut(self, v13, v14), isWideGamut == objc_msgSend_isWideGamut(v6, v19, v20)))
+    if (v17 && (isWideGamut = objc_msgSend_isWideGamut(self, v13, v14), isWideGamut == objc_msgSend_isWideGamut(descriptionCopy, v19, v20)))
     {
       hasBakedMask = objc_msgSend_hasBakedMask(self, v21, v22);
-      v23 = hasBakedMask ^ objc_msgSend_hasBakedMask(v6, v25, v26) ^ 1;
+      v23 = hasBakedMask ^ objc_msgSend_hasBakedMask(descriptionCopy, v25, v26) ^ 1;
     }
 
     else

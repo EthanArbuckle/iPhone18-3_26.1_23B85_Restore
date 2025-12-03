@@ -1,25 +1,25 @@
 @interface CNContactGridCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)automationElements;
-- (void)_axPerformCustomAction:(id)a3;
+- (void)_axPerformCustomAction:(id)action;
 - (void)_createViewsIfNeeded;
 @end
 
 @implementation CNContactGridCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNContactGridCell" hasInstanceMethod:@"_createViewsIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNContactGridCell" hasInstanceMethod:@"animationBlockForPreparingToShowActions" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"CNContactGridCell" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNContactGridCell" hasInstanceMethod:@"actionsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAvatarView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNQuickAction" hasInstanceMethod:@"perform" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNQuickAction" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNContactGridCell" hasInstanceMethod:@"_createViewsIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNContactGridCell" hasInstanceMethod:@"animationBlockForPreparingToShowActions" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"CNContactGridCell" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNContactGridCell" hasInstanceMethod:@"actionsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAvatarView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNQuickAction" hasInstanceMethod:@"perform" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNQuickAction" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -39,17 +39,17 @@
 
     _Block_object_dispose(&v13, 8);
     v6 = [v3 safeBoolForKey:@"isExpanded"];
-    v7 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen bounds];
     v9 = v8;
 
-    v11 = 1;
+    isAccessibilityElement = 1;
     if ((v6 & 1) == 0)
     {
       v10 = v9 >= 500.0 ? 6 : 4;
       if ([v5 item] >= v10)
       {
-        v11 = 0;
+        isAccessibilityElement = 0;
       }
     }
   }
@@ -58,10 +58,10 @@
   {
     v19.receiver = self;
     v19.super_class = CNContactGridCellAccessibility;
-    v11 = [(CNContactGridCellAccessibility *)&v19 isAccessibilityElement];
+    isAccessibilityElement = [(CNContactGridCellAccessibility *)&v19 isAccessibilityElement];
   }
 
-  return v11;
+  return isAccessibilityElement;
 }
 
 uint64_t __56__CNContactGridCellAccessibility_isAccessibilityElement__block_invoke(uint64_t a1)
@@ -110,7 +110,7 @@ uint64_t __56__CNContactGridCellAccessibility_isAccessibilityElement__block_invo
     v32 = 3221225472;
     v33 = __60__CNContactGridCellAccessibility_accessibilityCustomActions__block_invoke;
     v34 = &unk_29F2B5B60;
-    v35 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     v2 = [(CNContactGridCellAccessibility *)self safeValueForKey:@"actionsView"];
   }
@@ -200,9 +200,9 @@ uint64_t __60__CNContactGridCellAccessibility_accessibilityCustomActions__block_
   [v3 setIsAccessibilityElement:0];
 }
 
-- (void)_axPerformCustomAction:(id)a3
+- (void)_axPerformCustomAction:(id)action
 {
-  v4 = [a3 _accessibilityValueForKey:@"AXCNActionKey"];
+  v4 = [action _accessibilityValueForKey:@"AXCNActionKey"];
   v3 = v4;
   AXPerformSafeBlock();
 }

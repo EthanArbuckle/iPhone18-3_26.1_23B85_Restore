@@ -1,22 +1,22 @@
 @interface STBackgroundActivitiesStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)attributions;
 - (NSSet)activeBackgroundActivities;
 - (NSSet)backgroundActivitiesWithVisualDescriptors;
 - (STBackgroundActivitiesStatusDomainData)init;
-- (STBackgroundActivitiesStatusDomainData)initWithBackgroundActivitiesAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4;
-- (STBackgroundActivitiesStatusDomainData)initWithCoder:(id)a3;
-- (STBackgroundActivitiesStatusDomainData)initWithData:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)_initWithBackgroundActivitiesAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STBackgroundActivitiesStatusDomainData)initWithBackgroundActivitiesAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData;
+- (STBackgroundActivitiesStatusDomainData)initWithCoder:(id)coder;
+- (STBackgroundActivitiesStatusDomainData)initWithData:(id)data;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)_initWithBackgroundActivitiesAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STBackgroundActivitiesStatusDomainData
@@ -32,8 +32,8 @@
 
 - (NSSet)activeBackgroundActivities
 {
-  v2 = [(STBackgroundActivitiesStatusDomainData *)self attributions];
-  v3 = [v2 bs_map:&__block_literal_global_20];
+  attributions = [(STBackgroundActivitiesStatusDomainData *)self attributions];
+  v3 = [attributions bs_map:&__block_literal_global_20];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
@@ -42,151 +42,151 @@
 
 - (NSArray)attributions
 {
-  v2 = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
-  v3 = [v2 objects];
+  backgroundActivitiesAttributionListData = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
+  objects = [backgroundActivitiesAttributionListData objects];
 
-  return v3;
+  return objects;
 }
 
 - (NSSet)backgroundActivitiesWithVisualDescriptors
 {
-  v2 = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  v3 = [v2 allKeys];
+  visualDescriptorsByIdentifierDictionaryData = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  allKeys = [visualDescriptorsByIdentifierDictionaryData allKeys];
 
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:allKeys];
 
   return v4;
 }
 
-- (STBackgroundActivitiesStatusDomainData)initWithData:(id)a3
+- (STBackgroundActivitiesStatusDomainData)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 backgroundActivitiesAttributionListData];
-  v6 = [v4 visualDescriptorsByIdentifierDictionaryData];
+  dataCopy = data;
+  backgroundActivitiesAttributionListData = [dataCopy backgroundActivitiesAttributionListData];
+  visualDescriptorsByIdentifierDictionaryData = [dataCopy visualDescriptorsByIdentifierDictionaryData];
 
-  v7 = [(STBackgroundActivitiesStatusDomainData *)self initWithBackgroundActivitiesAttributionListData:v5 visualDescriptorsByIdentifierDictionaryData:v6];
+  v7 = [(STBackgroundActivitiesStatusDomainData *)self initWithBackgroundActivitiesAttributionListData:backgroundActivitiesAttributionListData visualDescriptorsByIdentifierDictionaryData:visualDescriptorsByIdentifierDictionaryData];
   return v7;
 }
 
-- (STBackgroundActivitiesStatusDomainData)initWithBackgroundActivitiesAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4
+- (STBackgroundActivitiesStatusDomainData)initWithBackgroundActivitiesAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  dictionaryDataCopy = dictionaryData;
+  v7 = [data copy];
+  v8 = [dictionaryDataCopy copy];
 
   v9 = [(STBackgroundActivitiesStatusDomainData *)self _initWithBackgroundActivitiesAttributionListData:v7 visualDescriptorsByIdentifierDictionaryData:v8];
   return v9;
 }
 
-- (id)_initWithBackgroundActivitiesAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4
+- (id)_initWithBackgroundActivitiesAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dictionaryDataCopy = dictionaryData;
   v12.receiver = self;
   v12.super_class = STBackgroundActivitiesStatusDomainData;
   v9 = [(STBackgroundActivitiesStatusDomainData *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_backgroundActivitiesAttributionListData, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_backgroundActivitiesAttributionListData, data);
+    objc_storeStrong(p_isa + 2, dictionaryData);
   }
 
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
-  v7 = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
+  backgroundActivitiesAttributionListData = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __50__STBackgroundActivitiesStatusDomainData_isEqual___block_invoke;
   v19[3] = &unk_1E85DDCD8;
   v8 = v6;
   v20 = v8;
-  v9 = [v5 appendObject:v7 counterpart:v19];
+  v9 = [v5 appendObject:backgroundActivitiesAttributionListData counterpart:v19];
 
-  v10 = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __50__STBackgroundActivitiesStatusDomainData_isEqual___block_invoke_2;
   v17 = &unk_1E85DDCD8;
   v18 = v8;
   v11 = v8;
-  v12 = [v5 appendObject:v10 counterpart:&v14];
+  v12 = [v5 appendObject:visualDescriptorsByIdentifierDictionaryData counterpart:&v14];
 
-  LOBYTE(v10) = [v5 isEqual];
-  return v10;
+  LOBYTE(visualDescriptorsByIdentifierDictionaryData) = [v5 isEqual];
+  return visualDescriptorsByIdentifierDictionaryData;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  backgroundActivitiesAttributionListData = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
+  v5 = [builder appendObject:backgroundActivitiesAttributionListData];
 
-  v6 = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  v7 = [v3 appendObject:v6];
+  visualDescriptorsByIdentifierDictionaryData = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  v7 = [builder appendObject:visualDescriptorsByIdentifierDictionaryData];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableBackgroundActivitiesStatusDomainData allocWithZone:a3];
+  v4 = [STMutableBackgroundActivitiesStatusDomainData allocWithZone:zone];
 
   return [(STBackgroundActivitiesStatusDomainData *)v4 initWithData:self];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STBackgroundActivitiesStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBackgroundActivitiesStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivitiesStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivitiesStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivitiesStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivitiesStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v10 = v7;
-    v11 = v3;
+    v11 = selfCopy;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v9];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -200,13 +200,13 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
   v6 = [v5 appendObject:v7 withName:@"visualDescriptors"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STBackgroundActivitiesStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STBackgroundActivitiesStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -217,13 +217,13 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STBackgroundActivitiesStatusDomainData *)self copy];
     }
@@ -231,7 +231,7 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
     else
     {
       v5 = [(STBackgroundActivitiesStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -243,21 +243,21 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
-  [v4 encodeObject:v5 forKey:@"backgroundActivityAttributions"];
+  coderCopy = coder;
+  backgroundActivitiesAttributionListData = [(STBackgroundActivitiesStatusDomainData *)self backgroundActivitiesAttributionListData];
+  [coderCopy encodeObject:backgroundActivitiesAttributionListData forKey:@"backgroundActivityAttributions"];
 
-  v6 = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  [v4 encodeObject:v6 forKey:@"visualDescriptorsByIdentifier"];
+  visualDescriptorsByIdentifierDictionaryData = [(STBackgroundActivitiesStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  [coderCopy encodeObject:visualDescriptorsByIdentifierDictionaryData forKey:@"visualDescriptorsByIdentifier"];
 }
 
-- (STBackgroundActivitiesStatusDomainData)initWithCoder:(id)a3
+- (STBackgroundActivitiesStatusDomainData)initWithCoder:(id)coder
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundActivityAttributions"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundActivityAttributions"];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -280,7 +280,7 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
 
   _Block_object_dispose(&v16, 8);
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifier"];
 
   v21[0] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
@@ -291,7 +291,7 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
   if (((v6 != 0) & v10) == 1)
   {
     self = [(STBackgroundActivitiesStatusDomainData *)self initWithBackgroundActivitiesAttributionListData:v6 visualDescriptorsByIdentifierDictionaryData:v7];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -303,11 +303,11 @@ void __90__STBackgroundActivitiesStatusDomainData__descriptionBuilderWithMultili
       _os_log_error_impl(&dword_1DA9C2000, v12, OS_LOG_TYPE_ERROR, "decoded invalid background activities domain data", v15, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 void __56__STBackgroundActivitiesStatusDomainData_initWithCoder___block_invoke_2(uint64_t a1, void *a2, _BYTE *a3)

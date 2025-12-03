@@ -1,111 +1,111 @@
 @interface JERollItemsMediaActivityTracker
 - (JERollItemsMediaActivityTracker)init;
-- (JERollItemsMediaActivityTracker)initWithPipeline:(id)a3 playlist:(id)a4 eventData:(id)a5 topic:(id)a6;
-- (void)jumpFromOverallPosition:(unint64_t)a3 fromRollItem:(id)a4 toRollItem:(id)a5 eventData:(id)a6;
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 rollItem:(id)a7 eventData:(id)a8;
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6;
-- (void)resetEventData:(id)a3;
-- (void)seekStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 rollItem:(id)a6 eventData:(id)a7;
-- (void)updateEventData:(id)a3;
+- (JERollItemsMediaActivityTracker)initWithPipeline:(id)pipeline playlist:(id)playlist eventData:(id)data topic:(id)topic;
+- (void)jumpFromOverallPosition:(unint64_t)position fromRollItem:(id)item toRollItem:(id)rollItem eventData:(id)data;
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason rollItem:(id)item eventData:(id)data;
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)resetEventData:(id)data;
+- (void)seekStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason rollItem:(id)item eventData:(id)data;
+- (void)updateEventData:(id)data;
 @end
 
 @implementation JERollItemsMediaActivityTracker
 
-- (JERollItemsMediaActivityTracker)initWithPipeline:(id)a3 playlist:(id)a4 eventData:(id)a5 topic:(id)a6
+- (JERollItemsMediaActivityTracker)initWithPipeline:(id)pipeline playlist:(id)playlist eventData:(id)data topic:(id)topic
 {
-  v6 = a5;
-  if (a5)
+  dataCopy = data;
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
-    v6 = sub_1AB460954();
+    dataCopy = sub_1AB460954();
   }
 
   v9 = sub_1AB460544();
   v11 = v10;
-  v12 = a3;
+  pipelineCopy = pipeline;
   swift_unknownObjectRetain();
-  return RollItemsMediaActivityTracker.init(pipeline:playlist:eventData:topic:)(v12, a4, v6, v9, v11);
+  return RollItemsMediaActivityTracker.init(pipeline:playlist:eventData:topic:)(pipelineCopy, playlist, dataCopy, v9, v11);
 }
 
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 rollItem:(id)a7 eventData:(id)a8
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason rollItem:(id)item eventData:(id)data
 {
-  v8 = a8;
-  if (a8)
+  dataCopy = data;
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
-    v8 = sub_1AB460954();
+    dataCopy = sub_1AB460954();
   }
 
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = self;
-  _s9JetEngine29RollItemsMediaActivityTrackerC28playStartedAtOverallPosition_4type6reason8rollItem9eventDatays6UInt64V_So07JEMediaF11TriggerTypeaSo0tF15PlayStartReasonaSo09JEHLSRollP0CSaySDySSypGGSgtF_0(a4, v14, v15, v16, v8);
+  typeCopy = type;
+  reasonCopy = reason;
+  itemCopy = item;
+  selfCopy = self;
+  _s9JetEngine29RollItemsMediaActivityTrackerC28playStartedAtOverallPosition_4type6reason8rollItem9eventDatays6UInt64V_So07JEMediaF11TriggerTypeaSo0tF15PlayStartReasonaSo09JEHLSRollP0CSaySDySSypGGSgtF_0(position, typeCopy, reasonCopy, itemCopy, dataCopy);
 }
 
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v6 = a6;
-  if (a6)
+  dataCopy = data;
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
-    v6 = sub_1AB460954();
+    dataCopy = sub_1AB460954();
   }
 
   v11 = sub_1AB460544();
   v13 = v12;
   v14 = sub_1AB460544();
   v16 = v15;
-  v17 = a4;
-  v18 = a5;
-  v19 = self;
-  sub_1AB317F54(0, a3, v11, v13, v14, v16, v6);
+  typeCopy = type;
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_1AB317F54(0, position, v11, v13, v14, v16, dataCopy);
 }
 
-- (void)jumpFromOverallPosition:(unint64_t)a3 fromRollItem:(id)a4 toRollItem:(id)a5 eventData:(id)a6
+- (void)jumpFromOverallPosition:(unint64_t)position fromRollItem:(id)item toRollItem:(id)rollItem eventData:(id)data
 {
-  v6 = a6;
-  if (a6)
+  dataCopy = data;
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
-    v6 = sub_1AB460954();
+    dataCopy = sub_1AB460954();
   }
 
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v15.value._rawValue = v6;
-  RollItemsMediaActivityTracker.jumpFromOverallPosition(_:fromRollItem:toRollItem:eventData:)(a3, v11, v12, v15);
+  itemCopy = item;
+  rollItemCopy = rollItem;
+  selfCopy = self;
+  v15.value._rawValue = dataCopy;
+  RollItemsMediaActivityTracker.jumpFromOverallPosition(_:fromRollItem:toRollItem:eventData:)(position, itemCopy, rollItemCopy, v15);
 }
 
-- (void)seekStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 rollItem:(id)a6 eventData:(id)a7
+- (void)seekStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason rollItem:(id)item eventData:(id)data
 {
-  v7 = a7;
-  if (a7)
+  dataCopy = data;
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
-    v7 = sub_1AB460954();
+    dataCopy = sub_1AB460954();
   }
 
   v12 = sub_1AB460544();
   v14 = v13;
   v15 = sub_1AB460544();
   v17 = v16;
-  v18 = a4;
-  v19 = a5;
-  v20 = self;
-  sub_1AB317F54(1, a3, v12, v14, v15, v17, v7);
+  typeCopy = type;
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_1AB317F54(1, position, v12, v14, v15, v17, dataCopy);
 }
 
-- (void)updateEventData:(id)a3
+- (void)updateEventData:(id)data
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
   *(&self->super.isa + OBJC_IVAR___JERollItemsMediaActivityTracker_trackerEventData) = sub_1AB460954();
 }
 
-- (void)resetEventData:(id)a3
+- (void)resetEventData:(id)data
 {
-  if (a3)
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB436B70);
     v4 = sub_1AB460954();

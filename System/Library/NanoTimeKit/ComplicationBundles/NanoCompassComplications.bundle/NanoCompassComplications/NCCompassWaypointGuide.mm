@@ -1,14 +1,14 @@
 @interface NCCompassWaypointGuide
-- (NCCompassWaypointGuide)initWithName:(id)a3;
+- (NCCompassWaypointGuide)initWithName:(id)name;
 - (id)systemWaypoints;
 @end
 
 @implementation NCCompassWaypointGuide
 
-- (NCCompassWaypointGuide)initWithName:(id)a3
+- (NCCompassWaypointGuide)initWithName:(id)name
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_sharedAppManager(NCWaypointManager, v5, v6, v7);
   manager = self->_manager;
   self->_manager = v8;
@@ -42,7 +42,7 @@
 
   v36.receiver = self;
   v36.super_class = NCCompassWaypointGuide;
-  v34 = [(NCWaypointGuide *)&v36 initWithIdentifier:v23 name:v4 type:0];
+  v34 = [(NCWaypointGuide *)&v36 initWithIdentifier:v23 name:nameCopy type:0];
 
   return v34;
 }

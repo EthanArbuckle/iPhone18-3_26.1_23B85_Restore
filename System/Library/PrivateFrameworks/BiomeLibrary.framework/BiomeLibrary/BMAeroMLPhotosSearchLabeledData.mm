@@ -1,15 +1,15 @@
 @interface BMAeroMLPhotosSearchLabeledData
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAeroMLPhotosSearchLabeledData)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAeroMLPhotosSearchLabeledData)initWithSearchSessionUUID:(id)a3 uiSurface:(int)a4 matchedPeopleRatio:(id)a5 matchedLocationRatio:(id)a6 matchedSceneRatio:(id)a7 matchedSceneConfidence:(id)a8 matchedSceneBoundingBox:(id)a9 matchedOCRCharacterRatio:(id)a10 matchedOCRImportance:(id)a11 matchedFieldsCount:(id)a12 L1Score:(id)a13 freshness:(id)a14 favorited:(id)a15 aestheticScore:(id)a16 curationScore:(id)a17 hasEverClickInLastWeek:(id)a18 hasEverClickInLastMonth:(id)a19 hasEverShareInLastWeek:(id)a20 hasEverShareInLastMonth:(id)a21 clickCountInLastWeekNormalizedAcrossItems:(id)a22 clickCountInLastMonthNormalizedAcrossItems:(id)a23 shareCountInLastWeekNormalizedAcrossItems:(id)a24 shareCountInLastMonthNormalizedAcrossItems:(id)a25 clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)a26 clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)a27 clickCountGivenLocationInLastWeekNormalizedAcrossItems:(id)a28 clickCountGivenLocationInLastMonthNormalizedAcrossItems:(id)a29 clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)a30 clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)a31 clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)a32 clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)a33 clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)a34 clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)a35 clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)a36 clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)a37 shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)a38 shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)a39 shareCountGivenLocationInLastWeekNormalizedAcrossItems:(id)a40 shareCountGivenLocationInLastMonthNormalizedAcrossItems:(id)a41 shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)a42 shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)a43 shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)a44 shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)a45 shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)a46 shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)a47 shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)a48 shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)a49 clipScore:(id)a50 clicked:(id)a51 clickOrder:(id)a52 itemPosition:(id)a53 L2ModelScore:(id)a54 isDuplicate:(id)a55 isCompleteMatch:(id)a56;
-- (BOOL)isEqual:(id)a3;
+- (BMAeroMLPhotosSearchLabeledData)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAeroMLPhotosSearchLabeledData)initWithSearchSessionUUID:(id)d uiSurface:(int)surface matchedPeopleRatio:(id)ratio matchedLocationRatio:(id)locationRatio matchedSceneRatio:(id)sceneRatio matchedSceneConfidence:(id)confidence matchedSceneBoundingBox:(id)box matchedOCRCharacterRatio:(id)self0 matchedOCRImportance:(id)self1 matchedFieldsCount:(id)self2 L1Score:(id)self3 freshness:(id)self4 favorited:(id)self5 aestheticScore:(id)self6 curationScore:(id)self7 hasEverClickInLastWeek:(id)self8 hasEverClickInLastMonth:(id)self9 hasEverShareInLastWeek:(id)lastWeek hasEverShareInLastMonth:(id)lastMonth clickCountInLastWeekNormalizedAcrossItems:(id)items clickCountInLastMonthNormalizedAcrossItems:(id)acrossItems shareCountInLastWeekNormalizedAcrossItems:(id)normalizedAcrossItems shareCountInLastMonthNormalizedAcrossItems:(id)monthNormalizedAcrossItems clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)weekNormalizedAcrossItems clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)lastMonthNormalizedAcrossItems clickCountGivenLocationInLastWeekNormalizedAcrossItems:(id)lastWeekNormalizedAcrossItems clickCountGivenLocationInLastMonthNormalizedAcrossItems:(id)inLastMonthNormalizedAcrossItems clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)d0 clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)d1 clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)d2 clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)d3 clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)d4 clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)d5 clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)d6 clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)d7 shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)d8 shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)d9 shareCountGivenLocationInLastWeekNormalizedAcrossItems:(id)surface0 shareCountGivenLocationInLastMonthNormalizedAcrossItems:(id)surface1 shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)surface2 shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)surface3 shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)surface4 shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)surface5 shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)surface6 shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)surface7 shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)surface8 shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)surface9 clipScore:(id)ratio0 clicked:(id)ratio1 clickOrder:(id)ratio2 itemPosition:(id)ratio3 L2ModelScore:(id)ratio4 isDuplicate:(id)ratio5 isCompleteMatch:(id)ratio6;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAeroMLPhotosSearchLabeledData
@@ -132,25 +132,25 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
-    v7 = [v5 searchSessionUUID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    searchSessionUUID = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
+    searchSessionUUID2 = [v5 searchSessionUUID];
+    v8 = searchSessionUUID2;
+    if (searchSessionUUID == searchSessionUUID2)
     {
     }
 
     else
     {
-      v9 = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
-      v10 = [v5 searchSessionUUID];
-      v11 = [v9 isEqual:v10];
+      searchSessionUUID3 = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
+      searchSessionUUID4 = [v5 searchSessionUUID];
+      v11 = [searchSessionUUID3 isEqual:searchSessionUUID4];
 
       if (!v11)
       {
@@ -158,8 +158,8 @@
       }
     }
 
-    v13 = [(BMAeroMLPhotosSearchLabeledData *)self uiSurface];
-    if (v13 == [v5 uiSurface])
+    uiSurface = [(BMAeroMLPhotosSearchLabeledData *)self uiSurface];
+    if (uiSurface == [v5 uiSurface])
     {
       if (!-[BMAeroMLPhotosSearchLabeledData hasMatchedPeopleRatio](self, "hasMatchedPeopleRatio") && ![v5 hasMatchedPeopleRatio] || -[BMAeroMLPhotosSearchLabeledData hasMatchedPeopleRatio](self, "hasMatchedPeopleRatio") && objc_msgSend(v5, "hasMatchedPeopleRatio") && (-[BMAeroMLPhotosSearchLabeledData matchedPeopleRatio](self, "matchedPeopleRatio"), v15 = v14, objc_msgSend(v5, "matchedPeopleRatio"), v15 == v16))
       {
@@ -346,7 +346,7 @@ LABEL_270:
 - (id)jsonDictionary
 {
   v265[54] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
+  searchSessionUUID = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAeroMLPhotosSearchLabeledData uiSurface](self, "uiSurface")}];
   if (![(BMAeroMLPhotosSearchLabeledData *)self hasMatchedPeopleRatio]|| ([(BMAeroMLPhotosSearchLabeledData *)self matchedPeopleRatio], fabs(v5) == INFINITY))
   {
@@ -1010,491 +1010,491 @@ LABEL_270:
   }
 
   v264[0] = @"searchSessionUUID";
-  v105 = v3;
-  if (!v3)
+  null = searchSessionUUID;
+  if (!searchSessionUUID)
   {
-    v105 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v209 = v105;
-  v265[0] = v105;
+  v209 = null;
+  v265[0] = null;
   v264[1] = @"uiSurface";
-  v106 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v106 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v208 = v106;
-  v265[1] = v106;
+  v208 = null2;
+  v265[1] = null2;
   v264[2] = @"matchedPeopleRatio";
-  v107 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v107 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v207 = v107;
-  v265[2] = v107;
+  v207 = null3;
+  v265[2] = null3;
   v264[3] = @"matchedLocationRatio";
-  v108 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v108 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v206 = v108;
-  v265[3] = v108;
+  v206 = null4;
+  v265[3] = null4;
   v264[4] = @"matchedSceneRatio";
-  v109 = v13;
+  null5 = v13;
   if (!v13)
   {
-    v109 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v205 = v109;
-  v265[4] = v109;
+  v205 = null5;
+  v265[4] = null5;
   v264[5] = @"matchedSceneConfidence";
-  v110 = v16;
+  null6 = v16;
   if (!v16)
   {
-    v110 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v204 = v110;
-  v265[5] = v110;
+  v204 = null6;
+  v265[5] = null6;
   v264[6] = @"matchedSceneBoundingBox";
-  v111 = v19;
+  null7 = v19;
   if (!v19)
   {
-    v111 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v203 = v111;
-  v265[6] = v111;
+  v203 = null7;
+  v265[6] = null7;
   v264[7] = @"matchedOCRCharacterRatio";
-  v112 = v262;
+  null8 = v262;
   if (!v262)
   {
-    v112 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v265[7] = v112;
+  v265[7] = null8;
   v264[8] = @"matchedOCRImportance";
-  v113 = v261;
+  null9 = v261;
   if (!v261)
   {
-    v113 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v265[8] = v113;
+  v265[8] = null9;
   v264[9] = @"matchedFieldsCount";
-  v114 = v260;
+  null10 = v260;
   if (!v260)
   {
-    v114 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v212 = v114;
-  v265[9] = v114;
+  v212 = null10;
+  v265[9] = null10;
   v264[10] = @"L1Score";
-  v115 = v259;
+  null11 = v259;
   if (!v259)
   {
-    v115 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v211 = v115;
-  v265[10] = v115;
+  v211 = null11;
+  v265[10] = null11;
   v264[11] = @"freshness";
-  v116 = v258;
+  null12 = v258;
   if (!v258)
   {
-    v116 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v263 = v116;
-  v265[11] = v116;
+  v263 = null12;
+  v265[11] = null12;
   v264[12] = @"favorited";
-  v117 = v257;
+  null13 = v257;
   if (!v257)
   {
-    v117 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v201 = v117;
-  v265[12] = v117;
+  v201 = null13;
+  v265[12] = null13;
   v264[13] = @"aestheticScore";
-  v118 = v256;
+  null14 = v256;
   if (!v256)
   {
-    v118 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v200 = v118;
-  v265[13] = v118;
+  v200 = null14;
+  v265[13] = null14;
   v264[14] = @"curationScore";
-  v119 = v255;
+  null15 = v255;
   if (!v255)
   {
-    v119 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v199 = v119;
-  v265[14] = v119;
+  v199 = null15;
+  v265[14] = null15;
   v264[15] = @"hasEverClickInLastWeek";
-  v120 = v254;
+  null16 = v254;
   if (!v254)
   {
-    v120 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v198 = v120;
-  v265[15] = v120;
+  v198 = null16;
+  v265[15] = null16;
   v264[16] = @"hasEverClickInLastMonth";
-  v121 = v253;
+  null17 = v253;
   if (!v253)
   {
-    v121 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v197 = v121;
-  v265[16] = v121;
+  v197 = null17;
+  v265[16] = null17;
   v264[17] = @"hasEverShareInLastWeek";
-  v122 = v252;
+  null18 = v252;
   if (!v252)
   {
-    v122 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v196 = v122;
-  v265[17] = v122;
+  v196 = null18;
+  v265[17] = null18;
   v264[18] = @"hasEverShareInLastMonth";
-  v123 = v251;
+  null19 = v251;
   if (!v251)
   {
-    v123 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v195 = v123;
-  v265[18] = v123;
+  v195 = null19;
+  v265[18] = null19;
   v264[19] = @"clickCountInLastWeekNormalizedAcrossItems";
-  v124 = v250;
+  null20 = v250;
   if (!v250)
   {
-    v124 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v194 = v124;
-  v265[19] = v124;
+  v194 = null20;
+  v265[19] = null20;
   v264[20] = @"clickCountInLastMonthNormalizedAcrossItems";
-  v125 = v249;
+  null21 = v249;
   if (!v249)
   {
-    v125 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v193 = v125;
-  v265[20] = v125;
+  v193 = null21;
+  v265[20] = null21;
   v264[21] = @"shareCountInLastWeekNormalizedAcrossItems";
-  v126 = v248;
+  null22 = v248;
   if (!v248)
   {
-    v126 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v192 = v126;
-  v265[21] = v126;
+  v192 = null22;
+  v265[21] = null22;
   v264[22] = @"shareCountInLastMonthNormalizedAcrossItems";
-  v127 = v247;
+  null23 = v247;
   if (!v247)
   {
-    v127 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v191 = v127;
-  v265[22] = v127;
+  v191 = null23;
+  v265[22] = null23;
   v264[23] = @"clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems";
-  v128 = v246;
+  null24 = v246;
   if (!v246)
   {
-    v128 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v190 = v128;
-  v265[23] = v128;
+  v190 = null24;
+  v265[23] = null24;
   v264[24] = @"clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems";
-  v129 = v245;
+  null25 = v245;
   if (!v245)
   {
-    v129 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v189 = v129;
-  v265[24] = v129;
+  v189 = null25;
+  v265[24] = null25;
   v264[25] = @"clickCountGivenLocationInLastWeekNormalizedAcrossItems";
-  v130 = v244;
+  null26 = v244;
   if (!v244)
   {
-    v130 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v188 = v130;
-  v265[25] = v130;
+  v188 = null26;
+  v265[25] = null26;
   v264[26] = @"clickCountGivenLocationInLastMonthNormalizedAcrossItems";
-  v131 = v243;
+  null27 = v243;
   if (!v243)
   {
-    v131 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v187 = v131;
-  v265[26] = v131;
+  v187 = null27;
+  v265[26] = null27;
   v264[27] = @"clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems";
-  v132 = v242;
+  null28 = v242;
   if (!v242)
   {
-    v132 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v186 = v132;
-  v265[27] = v132;
+  v186 = null28;
+  v265[27] = null28;
   v264[28] = @"clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems";
-  v133 = v241;
+  null29 = v241;
   if (!v241)
   {
-    v133 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185 = v133;
-  v265[28] = v133;
+  v185 = null29;
+  v265[28] = null29;
   v264[29] = @"clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems";
-  v134 = v240;
+  null30 = v240;
   if (!v240)
   {
-    v134 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v184 = v134;
-  v265[29] = v134;
+  v184 = null30;
+  v265[29] = null30;
   v264[30] = @"clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems";
-  v135 = v239;
+  null31 = v239;
   if (!v239)
   {
-    v135 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v183 = v135;
-  v265[30] = v135;
+  v183 = null31;
+  v265[30] = null31;
   v264[31] = @"clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems";
-  v136 = v238;
+  null32 = v238;
   if (!v238)
   {
-    v136 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v182 = v136;
-  v265[31] = v136;
+  v182 = null32;
+  v265[31] = null32;
   v264[32] = @"clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems";
-  v137 = v237;
+  null33 = v237;
   if (!v237)
   {
-    v137 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v181 = v137;
-  v265[32] = v137;
+  v181 = null33;
+  v265[32] = null33;
   v264[33] = @"clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems";
-  v138 = v236;
+  null34 = v236;
   if (!v236)
   {
-    v138 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v180 = v138;
-  v265[33] = v138;
+  v180 = null34;
+  v265[33] = null34;
   v264[34] = @"clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems";
-  v139 = v235;
+  null35 = v235;
   if (!v235)
   {
-    v139 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v179 = v139;
-  v265[34] = v139;
+  v179 = null35;
+  v265[34] = null35;
   v264[35] = @"shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems";
-  v140 = v234;
+  null36 = v234;
   if (!v234)
   {
-    v140 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v178 = v140;
-  v265[35] = v140;
+  v178 = null36;
+  v265[35] = null36;
   v264[36] = @"shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems";
-  v141 = v233;
+  null37 = v233;
   if (!v233)
   {
-    v141 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v177 = v141;
-  v265[36] = v141;
+  v177 = null37;
+  v265[36] = null37;
   v264[37] = @"shareCountGivenLocationInLastWeekNormalizedAcrossItems";
-  v142 = v232;
+  null38 = v232;
   if (!v232)
   {
-    v142 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v176 = v142;
-  v265[37] = v142;
+  v176 = null38;
+  v265[37] = null38;
   v264[38] = @"shareCountGivenLocationInLastMonthNormalizedAcrossItems";
-  v143 = v231;
+  null39 = v231;
   if (!v231)
   {
-    v143 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v175 = v143;
-  v265[38] = v143;
+  v175 = null39;
+  v265[38] = null39;
   v264[39] = @"shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems";
-  v144 = v230;
+  null40 = v230;
   if (!v230)
   {
-    v144 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v174 = v144;
-  v265[39] = v144;
+  v174 = null40;
+  v265[39] = null40;
   v264[40] = @"shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems";
-  v145 = v229;
+  null41 = v229;
   if (!v229)
   {
-    v145 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v173 = v145;
-  v265[40] = v145;
+  v173 = null41;
+  v265[40] = null41;
   v264[41] = @"shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems";
-  v146 = v228;
+  null42 = v228;
   if (!v228)
   {
-    v146 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v172 = v146;
-  v265[41] = v146;
+  v172 = null42;
+  v265[41] = null42;
   v264[42] = @"shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems";
-  v147 = v227;
+  null43 = v227;
   if (!v227)
   {
-    v147 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v171 = v147;
-  v265[42] = v147;
+  v171 = null43;
+  v265[42] = null43;
   v264[43] = @"shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems";
-  v148 = v226;
+  null44 = v226;
   if (!v226)
   {
-    v148 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v170 = v148;
-  v265[43] = v148;
+  v170 = null44;
+  v265[43] = null44;
   v264[44] = @"shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems";
-  v149 = v225;
+  null45 = v225;
   if (!v225)
   {
-    v149 = [MEMORY[0x1E695DFB0] null];
+    null45 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v169 = v149;
-  v265[44] = v149;
+  v169 = null45;
+  v265[44] = null45;
   v264[45] = @"shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems";
-  v150 = v224;
+  null46 = v224;
   if (!v224)
   {
-    v150 = [MEMORY[0x1E695DFB0] null];
+    null46 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v168 = v150;
-  v265[45] = v150;
+  v168 = null46;
+  v265[45] = null46;
   v264[46] = @"shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems";
-  v151 = v223;
+  null47 = v223;
   if (!v223)
   {
-    v151 = [MEMORY[0x1E695DFB0] null];
+    null47 = [MEMORY[0x1E695DFB0] null];
   }
 
   v215 = v4;
-  v167 = v151;
-  v265[46] = v151;
+  v167 = null47;
+  v265[46] = null47;
   v264[47] = @"clipScore";
-  v152 = v222;
+  null48 = v222;
   if (!v222)
   {
-    v152 = [MEMORY[0x1E695DFB0] null];
+    null48 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v202 = v112;
-  v166 = v152;
-  v265[47] = v152;
+  v202 = null8;
+  v166 = null48;
+  v265[47] = null48;
   v264[48] = @"clicked";
-  v153 = v221;
+  null49 = v221;
   if (!v221)
   {
-    v153 = [MEMORY[0x1E695DFB0] null];
+    null49 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v214 = v3;
-  v164 = v153;
-  v265[48] = v153;
+  v214 = searchSessionUUID;
+  v164 = null49;
+  v265[48] = null49;
   v264[49] = @"clickOrder";
-  v154 = v220;
+  null50 = v220;
   if (!v220)
   {
-    v154 = [MEMORY[0x1E695DFB0] null];
+    null50 = [MEMORY[0x1E695DFB0] null];
   }
 
   v216 = v104;
   v213 = v7;
-  v265[49] = v154;
+  v265[49] = null50;
   v264[50] = @"itemPosition";
-  v155 = v219;
+  null51 = v219;
   if (!v219)
   {
-    v155 = [MEMORY[0x1E695DFB0] null];
+    null51 = [MEMORY[0x1E695DFB0] null];
   }
 
   v156 = v13;
-  v265[50] = v155;
+  v265[50] = null51;
   v264[51] = @"L2ModelScore";
-  v157 = v218;
+  null52 = v218;
   if (!v218)
   {
-    v157 = [MEMORY[0x1E695DFB0] null];
+    null52 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158 = v113;
-  v265[51] = v157;
+  v158 = null9;
+  v265[51] = null52;
   v264[52] = @"isDuplicate";
-  v159 = v217;
+  null53 = v217;
   if (!v217)
   {
-    v159 = [MEMORY[0x1E695DFB0] null];
+    null53 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v265[52] = v159;
+  v265[52] = null53;
   v264[53] = @"isCompleteMatch";
-  v160 = v216;
+  null54 = v216;
   if (!v216)
   {
-    v160 = [MEMORY[0x1E695DFB0] null];
+    null54 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v265[53] = v160;
+  v265[53] = null54;
   v210 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v265 forKeys:v264 count:{54, v164}];
   if (!v216)
   {
@@ -1864,11 +1864,11 @@ LABEL_412:
   return v210;
 }
 
-- (BMAeroMLPhotosSearchLabeledData)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAeroMLPhotosSearchLabeledData)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v715[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"searchSessionUUID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"searchSessionUUID"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -1880,7 +1880,7 @@ LABEL_412:
   {
     v7 = v6;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"uiSurface"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"uiSurface"];
     v606 = v8;
     v605 = v7;
     if (!v8 || (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1896,10 +1896,10 @@ LABEL_4:
 LABEL_15:
 
 LABEL_16:
-      v19 = [v5 objectForKeyedSubscript:@"matchedPeopleRatio"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"matchedPeopleRatio"];
       if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v20 = a4;
+        errorCopy2 = error;
         v21 = 0;
         goto LABEL_19;
       }
@@ -1907,10 +1907,10 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = a4;
+        errorCopy2 = error;
         v21 = v19;
 LABEL_19:
-        v22 = [v5 objectForKeyedSubscript:@"matchedLocationRatio"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"matchedLocationRatio"];
         v601 = v6;
         v603 = v10;
         if (!v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1926,7 +1926,7 @@ LABEL_19:
           v600 = v22;
           v604 = v22;
 LABEL_22:
-          v23 = [v5 objectForKeyedSubscript:@"matchedSceneRatio"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"matchedSceneRatio"];
           if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v602 = 0;
@@ -1938,37 +1938,37 @@ LABEL_22:
           {
             v602 = v23;
 LABEL_25:
-            v24 = [v5 objectForKeyedSubscript:@"matchedSceneConfidence"];
+            v24 = [dictionaryCopy objectForKeyedSubscript:@"matchedSceneConfidence"];
             v599 = v24;
             if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v561 = 0;
 LABEL_28:
-              v26 = [v5 objectForKeyedSubscript:@"matchedSceneBoundingBox"];
+              v26 = [dictionaryCopy objectForKeyedSubscript:@"matchedSceneBoundingBox"];
               v567 = v26;
               if (v26 && (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v20)
+                  if (!errorCopy2)
                   {
                     v566 = 0;
                     v17 = 0;
                     v51 = v600;
                     v67 = v561;
 LABEL_489:
-                    v20 = v604;
+                    errorCopy2 = v604;
                     goto LABEL_490;
                   }
 
                   v81 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v82 = *MEMORY[0x1E698F240];
                   v702 = *MEMORY[0x1E696A578];
-                  v83 = v20;
+                  v83 = errorCopy2;
                   v67 = v561;
-                  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"matchedSceneBoundingBox"];
-                  v703 = v20;
+                  errorCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"matchedSceneBoundingBox"];
+                  v703 = errorCopy2;
                   v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v703 forKeys:&v702 count:1];
                   v85 = v82;
                   v6 = v601;
@@ -1988,7 +1988,7 @@ LABEL_489:
                 v566 = 0;
               }
 
-              v28 = [v5 objectForKeyedSubscript:@"matchedOCRCharacterRatio"];
+              v28 = [dictionaryCopy objectForKeyedSubscript:@"matchedOCRCharacterRatio"];
               v560 = v28;
               if (!v28 || (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -2001,7 +2001,7 @@ LABEL_489:
               {
                 v30 = v29;
 LABEL_34:
-                v31 = [v5 objectForKeyedSubscript:@"matchedOCRImportance"];
+                v31 = [dictionaryCopy objectForKeyedSubscript:@"matchedOCRImportance"];
                 v557 = v31;
                 if (!v31 || (v32 = v31, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -2014,9 +2014,9 @@ LABEL_34:
                 {
                   v555 = v32;
 LABEL_37:
-                  v33 = [v5 objectForKeyedSubscript:@"matchedFieldsCount"];
+                  v33 = [dictionaryCopy objectForKeyedSubscript:@"matchedFieldsCount"];
                   v554 = v33;
-                  v558 = v20;
+                  v558 = errorCopy2;
                   if (!v33 || (v34 = v33, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v553 = 0;
@@ -2028,7 +2028,7 @@ LABEL_37:
                   {
                     v553 = v34;
 LABEL_40:
-                    v35 = [v5 objectForKeyedSubscript:@"L1Score"];
+                    v35 = [dictionaryCopy objectForKeyedSubscript:@"L1Score"];
                     v550 = v23;
                     v552 = v35;
                     if (!v35 || (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2042,7 +2042,7 @@ LABEL_40:
                     {
                       v551 = v36;
 LABEL_43:
-                      v37 = [v5 objectForKeyedSubscript:@"freshness"];
+                      v37 = [dictionaryCopy objectForKeyedSubscript:@"freshness"];
                       v545 = v21;
                       v549 = v37;
                       if (!v37 || (v38 = v37, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2056,7 +2056,7 @@ LABEL_43:
                       {
                         v548 = v38;
 LABEL_46:
-                        v39 = [v5 objectForKeyedSubscript:@"favorited"];
+                        v39 = [dictionaryCopy objectForKeyedSubscript:@"favorited"];
                         v547 = v39;
                         if (!v39 || (v40 = v39, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
@@ -2064,20 +2064,20 @@ LABEL_46:
                           v42 = v21;
                           v546 = 0;
 LABEL_49:
-                          v43 = [v5 objectForKeyedSubscript:@"aestheticScore"];
+                          v43 = [dictionaryCopy objectForKeyedSubscript:@"aestheticScore"];
                           v604 = v41;
                           v544 = v43;
                           if (!v43)
                           {
                             v46 = 0;
-                            v20 = v30;
+                            errorCopy2 = v30;
                             goto LABEL_89;
                           }
 
                           v44 = v43;
-                          v45 = v20;
+                          v45 = errorCopy2;
                           objc_opt_class();
-                          v20 = v30;
+                          errorCopy2 = v30;
                           if (objc_opt_isKindOfClass())
                           {
                             v46 = 0;
@@ -2092,7 +2092,7 @@ LABEL_89:
                           {
                             v46 = v44;
 LABEL_90:
-                            v91 = [v5 objectForKeyedSubscript:@"curationScore"];
+                            v91 = [dictionaryCopy objectForKeyedSubscript:@"curationScore"];
                             v543 = v46;
                             if (!v91 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -2107,7 +2107,7 @@ LABEL_90:
                               v539 = v91;
                               v542 = v91;
 LABEL_93:
-                              v92 = [v5 objectForKeyedSubscript:@"hasEverClickInLastWeek"];
+                              v92 = [dictionaryCopy objectForKeyedSubscript:@"hasEverClickInLastWeek"];
                               v21 = v42;
                               v541 = v92;
                               if (!v92 || (v93 = v92, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2121,14 +2121,14 @@ LABEL_93:
                               {
                                 v94 = v93;
 LABEL_96:
-                                v95 = [v5 objectForKeyedSubscript:@"hasEverClickInLastMonth"];
+                                v95 = [dictionaryCopy objectForKeyedSubscript:@"hasEverClickInLastMonth"];
                                 v540 = v94;
                                 v538 = v95;
                                 if (!v95 || (v96 = v95, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
                                   v537 = 0;
 LABEL_99:
-                                  v97 = [v5 objectForKeyedSubscript:@"hasEverShareInLastWeek"];
+                                  v97 = [dictionaryCopy objectForKeyedSubscript:@"hasEverShareInLastWeek"];
                                   v23 = v550;
                                   v88 = v555;
                                   if (!v97)
@@ -2154,13 +2154,13 @@ LABEL_99:
                                     v533 = v97;
                                     v536 = v97;
 LABEL_131:
-                                    v128 = [v5 objectForKeyedSubscript:@"hasEverShareInLastMonth"];
+                                    v128 = [dictionaryCopy objectForKeyedSubscript:@"hasEverShareInLastMonth"];
                                     v535 = v128;
                                     if (!v128 || (v129 = v128, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
                                       v534 = 0;
 LABEL_134:
-                                      v130 = [v5 objectForKeyedSubscript:@"clickCountInLastWeekNormalizedAcrossItems"];
+                                      v130 = [dictionaryCopy objectForKeyedSubscript:@"clickCountInLastWeekNormalizedAcrossItems"];
                                       v532 = v130;
                                       if (v130 && (v131 = v130, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                       {
@@ -2179,21 +2179,21 @@ LABEL_475:
                                           }
 
                                           v200 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                          v577 = v5;
+                                          v577 = dictionaryCopy;
                                           v201 = *MEMORY[0x1E698F240];
                                           v676 = *MEMORY[0x1E696A578];
-                                          v202 = v20;
+                                          v202 = errorCopy2;
                                           v203 = objc_alloc(MEMORY[0x1E696AEC0]);
                                           v443 = objc_opt_class();
                                           v204 = v203;
-                                          v20 = v202;
+                                          errorCopy2 = v202;
                                           v23 = v550;
                                           v531 = [v204 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v443, @"clickCountInLastWeekNormalizedAcrossItems"];
                                           v677 = v531;
                                           v134 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v677 forKeys:&v676 count:1];
                                           v205 = v201;
                                           v6 = v601;
-                                          v5 = v577;
+                                          dictionaryCopy = v577;
                                           v132 = 0;
                                           v17 = 0;
                                           *v558 = [v200 initWithDomain:v205 code:2 userInfo:v134];
@@ -2208,7 +2208,7 @@ LABEL_475:
                                         v132 = 0;
                                       }
 
-                                      v133 = [v5 objectForKeyedSubscript:@"clickCountInLastMonthNormalizedAcrossItems"];
+                                      v133 = [dictionaryCopy objectForKeyedSubscript:@"clickCountInLastMonthNormalizedAcrossItems"];
                                       v530 = v133;
                                       if (!v133 || (v134 = v133, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -2224,7 +2224,7 @@ LABEL_475:
                                         v135 = v132;
                                         v531 = v177;
 LABEL_140:
-                                        v136 = [v5 objectForKeyedSubscript:@"shareCountInLastWeekNormalizedAcrossItems"];
+                                        v136 = [dictionaryCopy objectForKeyedSubscript:@"shareCountInLastWeekNormalizedAcrossItems"];
                                         v526 = v135;
                                         v529 = v136;
                                         if (!v136 || (v137 = v136, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2238,7 +2238,7 @@ LABEL_140:
                                         {
                                           v528 = v137;
 LABEL_143:
-                                          v138 = [v5 objectForKeyedSubscript:@"shareCountInLastMonthNormalizedAcrossItems"];
+                                          v138 = [dictionaryCopy objectForKeyedSubscript:@"shareCountInLastMonthNormalizedAcrossItems"];
                                           v527 = v138;
                                           if (!v138 || (v139 = v138, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -2251,7 +2251,7 @@ LABEL_143:
                                           {
                                             v524 = v139;
 LABEL_146:
-                                            v140 = [v5 objectForKeyedSubscript:@"clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
+                                            v140 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
                                             v525 = v140;
                                             if (!v140 || (v141 = v140, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -2264,7 +2264,7 @@ LABEL_146:
                                             {
                                               v521 = v141;
 LABEL_149:
-                                              v142 = [v5 objectForKeyedSubscript:@"clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
+                                              v142 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
                                               v523 = v142;
                                               if (!v142 || (v143 = v142, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
@@ -2277,7 +2277,7 @@ LABEL_149:
                                               {
                                                 v522 = v143;
 LABEL_152:
-                                                v144 = [v5 objectForKeyedSubscript:@"clickCountGivenLocationInLastWeekNormalizedAcrossItems"];
+                                                v144 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenLocationInLastWeekNormalizedAcrossItems"];
                                                 v520 = v144;
                                                 if (!v144 || (v145 = v144, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                 {
@@ -2290,7 +2290,7 @@ LABEL_152:
                                                 {
                                                   v519 = v145;
 LABEL_155:
-                                                  v146 = [v5 objectForKeyedSubscript:@"clickCountGivenLocationInLastMonthNormalizedAcrossItems"];
+                                                  v146 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenLocationInLastMonthNormalizedAcrossItems"];
                                                   v518 = v146;
                                                   if (!v146 || (v147 = v146, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                   {
@@ -2303,7 +2303,7 @@ LABEL_155:
                                                   {
                                                     v517 = v147;
 LABEL_158:
-                                                    v148 = [v5 objectForKeyedSubscript:@"clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
+                                                    v148 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
                                                     v516 = v148;
                                                     if (!v148 || (v149 = v148, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                     {
@@ -2316,13 +2316,13 @@ LABEL_158:
                                                     {
                                                       v515 = v149;
 LABEL_161:
-                                                      v150 = [v5 objectForKeyedSubscript:@"clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
+                                                      v150 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
                                                       v514 = v150;
                                                       if (!v150 || (v151 = v150, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                       {
                                                         v513 = 0;
 LABEL_164:
-                                                        v152 = [v5 objectForKeyedSubscript:@"clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems"];
+                                                        v152 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems"];
                                                         v512 = v152;
                                                         if (!v152)
                                                         {
@@ -2345,7 +2345,7 @@ LABEL_164:
                                                         {
                                                           v511 = v153;
 LABEL_229:
-                                                          v242 = [v5 objectForKeyedSubscript:@"clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems"];
+                                                          v242 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems"];
                                                           v510 = v242;
                                                           if (!v242 || (v243 = v242, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                           {
@@ -2358,7 +2358,7 @@ LABEL_229:
                                                           {
                                                             v509 = v243;
 LABEL_232:
-                                                            v244 = [v5 objectForKeyedSubscript:@"clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems"];
+                                                            v244 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems"];
                                                             v508 = v244;
                                                             if (!v244 || (v245 = v244, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                             {
@@ -2371,7 +2371,7 @@ LABEL_232:
                                                             {
                                                               v507 = v245;
 LABEL_235:
-                                                              v246 = [v5 objectForKeyedSubscript:@"clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems"];
+                                                              v246 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems"];
                                                               v506 = v246;
                                                               if (!v246 || (v247 = v246, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                               {
@@ -2384,7 +2384,7 @@ LABEL_235:
                                                               {
                                                                 v505 = v247;
 LABEL_238:
-                                                                v248 = [v5 objectForKeyedSubscript:@"clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems"];
+                                                                v248 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems"];
                                                                 v504 = v248;
                                                                 if (!v248 || (v249 = v248, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                 {
@@ -2397,13 +2397,13 @@ LABEL_238:
                                                                 {
                                                                   v501 = v249;
 LABEL_241:
-                                                                  v250 = [v5 objectForKeyedSubscript:@"clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems"];
+                                                                  v250 = [dictionaryCopy objectForKeyedSubscript:@"clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems"];
                                                                   v500 = v250;
                                                                   if (!v250 || (v251 = v250, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                   {
                                                                     v499 = 0;
 LABEL_244:
-                                                                    v252 = [v5 objectForKeyedSubscript:@"shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
+                                                                    v252 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
                                                                     v497 = v252;
                                                                     if (v252 && (v253 = v252, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                     {
@@ -2422,14 +2422,14 @@ LABEL_458:
                                                                         }
 
                                                                         v339 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                        v592 = v5;
+                                                                        v592 = dictionaryCopy;
                                                                         v340 = *MEMORY[0x1E698F240];
                                                                         v644 = *MEMORY[0x1E696A578];
-                                                                        v341 = v20;
+                                                                        v341 = errorCopy2;
                                                                         v342 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                         v459 = objc_opt_class();
                                                                         v343 = v342;
-                                                                        v20 = v341;
+                                                                        errorCopy2 = v341;
                                                                         v134 = v530;
                                                                         v23 = v550;
                                                                         v496 = [v343 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v459, @"shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
@@ -2437,7 +2437,7 @@ LABEL_458:
                                                                         v344 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v645 forKeys:&v644 count:1];
                                                                         v345 = v340;
                                                                         v6 = v601;
-                                                                        v5 = v592;
+                                                                        dictionaryCopy = v592;
                                                                         v498 = 0;
                                                                         v17 = 0;
                                                                         *v558 = [v339 initWithDomain:v345 code:2 userInfo:v344];
@@ -2454,7 +2454,7 @@ LABEL_458:
                                                                       v498 = 0;
                                                                     }
 
-                                                                    v254 = [v5 objectForKeyedSubscript:@"shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
+                                                                    v254 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
                                                                     v495 = v254;
                                                                     if (!v254 || (v255 = v254, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                     {
@@ -2467,7 +2467,7 @@ LABEL_458:
                                                                     {
                                                                       v496 = v255;
 LABEL_250:
-                                                                      v256 = [v5 objectForKeyedSubscript:@"shareCountGivenLocationInLastWeekNormalizedAcrossItems"];
+                                                                      v256 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenLocationInLastWeekNormalizedAcrossItems"];
                                                                       v494 = v256;
                                                                       if (!v256 || (v257 = v256, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                       {
@@ -2480,7 +2480,7 @@ LABEL_250:
                                                                       {
                                                                         v493 = v257;
 LABEL_253:
-                                                                        v258 = [v5 objectForKeyedSubscript:@"shareCountGivenLocationInLastMonthNormalizedAcrossItems"];
+                                                                        v258 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenLocationInLastMonthNormalizedAcrossItems"];
                                                                         v492 = v258;
                                                                         if (!v258 || (v259 = v258, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                         {
@@ -2493,7 +2493,7 @@ LABEL_253:
                                                                         {
                                                                           v491 = v259;
 LABEL_256:
-                                                                          v260 = [v5 objectForKeyedSubscript:@"shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
+                                                                          v260 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
                                                                           v490 = v260;
                                                                           if (!v260 || (v261 = v260, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                           {
@@ -2506,7 +2506,7 @@ LABEL_256:
                                                                           {
                                                                             v489 = v261;
 LABEL_259:
-                                                                            v262 = [v5 objectForKeyedSubscript:@"shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
+                                                                            v262 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
                                                                             v488 = v262;
                                                                             if (!v262 || (v263 = v262, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                             {
@@ -2519,8 +2519,8 @@ LABEL_259:
                                                                             {
                                                                               v487 = v263;
 LABEL_262:
-                                                                              v264 = [v5 objectForKeyedSubscript:@"shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems"];
-                                                                              v503 = v20;
+                                                                              v264 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems"];
+                                                                              v503 = errorCopy2;
                                                                               v485 = v264;
                                                                               if (!v264 || (v265 = v264, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                               {
@@ -2533,7 +2533,7 @@ LABEL_262:
                                                                               {
                                                                                 v486 = v265;
 LABEL_265:
-                                                                                v266 = [v5 objectForKeyedSubscript:@"shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems"];
+                                                                                v266 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems"];
                                                                                 v565 = v266;
                                                                                 if (!v266 || (v267 = v266, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                 {
@@ -2546,7 +2546,7 @@ LABEL_265:
                                                                                 {
                                                                                   v482 = v267;
 LABEL_268:
-                                                                                  v484 = [v5 objectForKeyedSubscript:@"shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems"];
+                                                                                  v484 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems"];
                                                                                   if (!v484 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                   {
                                                                                     v483 = 0;
@@ -2558,12 +2558,12 @@ LABEL_268:
                                                                                   {
                                                                                     v483 = v484;
 LABEL_271:
-                                                                                    v481 = [v5 objectForKeyedSubscript:@"shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems"];
+                                                                                    v481 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems"];
                                                                                     if (!v481 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                     {
                                                                                       v480 = 0;
 LABEL_274:
-                                                                                      v268 = [v5 objectForKeyedSubscript:@"shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems"];
+                                                                                      v268 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems"];
                                                                                       v479 = v268;
                                                                                       if (!v268)
                                                                                       {
@@ -2583,7 +2583,7 @@ LABEL_274:
                                                                                         v268 = v479;
 LABEL_368:
                                                                                         v478 = v268;
-                                                                                        v477 = [v5 objectForKeyedSubscript:@"shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems"];
+                                                                                        v477 = [dictionaryCopy objectForKeyedSubscript:@"shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems"];
                                                                                         if (!v477 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                         {
                                                                                           v381 = 0;
@@ -2595,7 +2595,7 @@ LABEL_368:
                                                                                         {
                                                                                           v381 = v477;
 LABEL_371:
-                                                                                          v476 = [v5 objectForKeyedSubscript:@"clipScore"];
+                                                                                          v476 = [dictionaryCopy objectForKeyedSubscript:@"clipScore"];
                                                                                           if (v476)
                                                                                           {
                                                                                             v382 = v550;
@@ -2638,7 +2638,7 @@ LABEL_371:
                                                                                               v475 = v476;
                                                                                               v382 = v550;
 LABEL_380:
-                                                                                              [v5 objectForKeyedSubscript:@"clicked"];
+                                                                                              [dictionaryCopy objectForKeyedSubscript:@"clicked"];
                                                                                               v474 = v472 = v381;
                                                                                               if (v474 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                                               {
@@ -2681,7 +2681,7 @@ LABEL_380:
                                                                                                 v473 = 0;
                                                                                               }
 
-                                                                                              v386 = [v5 objectForKeyedSubscript:@"clickOrder"];
+                                                                                              v386 = [dictionaryCopy objectForKeyedSubscript:@"clickOrder"];
                                                                                               v470 = v386;
                                                                                               if (!v386 || (v387 = v386, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                               {
@@ -2700,7 +2700,7 @@ LABEL_380:
                                                                                                 v388 = v603;
 LABEL_386:
                                                                                                 v566 = v389;
-                                                                                                v468 = [v5 objectForKeyedSubscript:@"itemPosition"];
+                                                                                                v468 = [dictionaryCopy objectForKeyedSubscript:@"itemPosition"];
                                                                                                 if (!v468 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                                 {
                                                                                                   v469 = 0;
@@ -2712,10 +2712,10 @@ LABEL_386:
                                                                                                 {
                                                                                                   v469 = v468;
 LABEL_389:
-                                                                                                  v467 = [v5 objectForKeyedSubscript:@"L2ModelScore"];
+                                                                                                  v467 = [dictionaryCopy objectForKeyedSubscript:@"L2ModelScore"];
                                                                                                   if (v467)
                                                                                                   {
-                                                                                                    v390 = self;
+                                                                                                    selfCopy2 = self;
                                                                                                     objc_opt_class();
                                                                                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                                                     {
@@ -2724,7 +2724,7 @@ LABEL_389:
                                                                                                       {
                                                                                                         v598 = v467;
 LABEL_416:
-                                                                                                        v401 = [v5 objectForKeyedSubscript:@"isDuplicate"];
+                                                                                                        v401 = [dictionaryCopy objectForKeyedSubscript:@"isDuplicate"];
                                                                                                         if (v401 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                                                         {
                                                                                                           objc_opt_class();
@@ -2760,7 +2760,7 @@ LABEL_416:
                                                                                                           v402 = 0;
                                                                                                         }
 
-                                                                                                        v403 = [v5 objectForKeyedSubscript:@"isCompleteMatch"];
+                                                                                                        v403 = [dictionaryCopy objectForKeyedSubscript:@"isCompleteMatch"];
                                                                                                         if (v403)
                                                                                                         {
                                                                                                           v404 = v401;
@@ -2815,7 +2815,7 @@ LABEL_416:
                                                                                                         }
 
                                                                                                         v415 = v402;
-                                                                                                        v17 = objc_retainAutoreleasedReturnValue( -[BMAeroMLPhotosSearchLabeledData initWithSearchSessionUUID:uiSurface:matchedPeopleRatio:matchedLocationRatio:matchedSceneRatio:matchedSceneConfidence:matchedSceneBoundingBox:matchedOCRCharacterRatio:matchedOCRImportance:matchedFieldsCount:L1Score:freshness:favorited:aestheticScore:curationScore:hasEverClickInLastWeek:hasEverClickInLastMonth:hasEverShareInLastWeek:hasEverShareInLastMonth:clickCountInLastWeekNormalizedAcrossItems:clickCountInLastMonthNormalizedAcrossItems:shareCountInLastWeekNormalizedAcrossItems:shareCountInLastMonthNormalizedAcrossItems:clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:clickCountGivenLocationInLastWeekNormalizedAcrossItems:clickCountGivenLocationInLastMonthNormalizedAcrossItems:clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:shareCountGivenLocationInLastWeekNormalizedAcrossItems:shareCountGivenLocationInLastMonthNormalizedAcrossItems:shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:clipScore:clicked:clickOrder:itemPosition:L2ModelScore:isDuplicate:isCompleteMatch:]( v390,  "initWithSearchSessionUUID:uiSurface:matchedPeopleRatio:matchedLocationRatio:matchedSceneRatio:matchedSceneConfidence:matchedSceneBoundingBox:matchedOCRCharacterRatio:matchedOCRImportance:matchedFieldsCount:L1Score:freshness:favorited:aestheticScore:curationScore:hasEverClickInLastWeek:hasEverClickInLastMonth:hasEverShareInLastWeek:hasEverShareInLastMonth:clickCountInLastWeekNormalizedAcrossItems:clickCountInLastMonthNormalizedAcrossItems:shareCountInLastWeekNormalizedAcrossItems:shareCountInLastMonthNormalizedAcrossItems:clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:clickCountGivenLocationInLastWeekNormalizedAcrossItems:clickCountGivenLocationInLastMonthNormalizedAcrossItems:clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:shareCountGivenLocationInLastWeekNormalizedAcrossItems:shareCountGivenLocationInLastMonthNormalizedAcrossItems:shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:clipScore:clicked:clickOrder:itemPosition:L2ModelScore:isDuplicate:isCompleteMatch:",  v605,  [v388 intValue],  v545,  v604,  v602,  v561,  v566,  v503,  v555,  v553,  v551,  v548,  v546,  v543,  v542,  v540,  v537,  v536,  v534,  v526,  v531,  v528,  v524,  v521,  v522,  v519,  v517,  v515,  v513,  v511,  v509,  v507,  v505,  v501,  v499,  v498,  v496,  v493,  v491,  v489,  v487,  v486,  v482,  v483,  v480,  v478,
+                                                                                                        v17 = objc_retainAutoreleasedReturnValue( -[BMAeroMLPhotosSearchLabeledData initWithSearchSessionUUID:uiSurface:matchedPeopleRatio:matchedLocationRatio:matchedSceneRatio:matchedSceneConfidence:matchedSceneBoundingBox:matchedOCRCharacterRatio:matchedOCRImportance:matchedFieldsCount:L1Score:freshness:favorited:aestheticScore:curationScore:hasEverClickInLastWeek:hasEverClickInLastMonth:hasEverShareInLastWeek:hasEverShareInLastMonth:clickCountInLastWeekNormalizedAcrossItems:clickCountInLastMonthNormalizedAcrossItems:shareCountInLastWeekNormalizedAcrossItems:shareCountInLastMonthNormalizedAcrossItems:clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:clickCountGivenLocationInLastWeekNormalizedAcrossItems:clickCountGivenLocationInLastMonthNormalizedAcrossItems:clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:shareCountGivenLocationInLastWeekNormalizedAcrossItems:shareCountGivenLocationInLastMonthNormalizedAcrossItems:shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:clipScore:clicked:clickOrder:itemPosition:L2ModelScore:isDuplicate:isCompleteMatch:]( selfCopy2,  "initWithSearchSessionUUID:uiSurface:matchedPeopleRatio:matchedLocationRatio:matchedSceneRatio:matchedSceneConfidence:matchedSceneBoundingBox:matchedOCRCharacterRatio:matchedOCRImportance:matchedFieldsCount:L1Score:freshness:favorited:aestheticScore:curationScore:hasEverClickInLastWeek:hasEverClickInLastMonth:hasEverShareInLastWeek:hasEverShareInLastMonth:clickCountInLastWeekNormalizedAcrossItems:clickCountInLastMonthNormalizedAcrossItems:shareCountInLastWeekNormalizedAcrossItems:shareCountInLastMonthNormalizedAcrossItems:clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:clickCountGivenLocationInLastWeekNormalizedAcrossItems:clickCountGivenLocationInLastMonthNormalizedAcrossItems:clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:shareCountGivenLocationInLastWeekNormalizedAcrossItems:shareCountGivenLocationInLastMonthNormalizedAcrossItems:shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:clipScore:clicked:clickOrder:itemPosition:L2ModelScore:isDuplicate:isCompleteMatch:",  v605,  [v388 intValue],  v545,  v604,  v602,  v561,  v566,  v503,  v555,  v553,  v551,  v548,  v546,  v543,  v542,  v540,  v537,  v536,  v534,  v526,  v531,  v528,  v524,  v521,  v522,  v519,  v517,  v515,  v513,  v511,  v509,  v507,  v505,  v501,  v499,  v498,  v496,  v493,  v491,  v489,  v487,  v486,  v482,  v483,  v480,  v478,
                                                                                                                   v472,
                                                                                                                   v475,
                                                                                                                   v473,
@@ -2830,7 +2830,7 @@ LABEL_440:
 LABEL_441:
                                                                                                         v51 = v600;
 
-                                                                                                        v20 = v503;
+                                                                                                        errorCopy2 = v503;
                                                                                                         v159 = v539;
                                                                                                         v23 = v550;
 LABEL_442:
@@ -2872,7 +2872,7 @@ LABEL_520:
 
                                                                                                   else
                                                                                                   {
-                                                                                                    v390 = self;
+                                                                                                    selfCopy2 = self;
                                                                                                   }
 
                                                                                                   v598 = 0;
@@ -3120,14 +3120,14 @@ LABEL_452:
                                                                             if (v558)
                                                                             {
                                                                               v374 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                              v597 = v5;
+                                                                              v597 = dictionaryCopy;
                                                                               v375 = *MEMORY[0x1E698F240];
                                                                               v634 = *MEMORY[0x1E696A578];
-                                                                              v376 = v20;
+                                                                              v376 = errorCopy2;
                                                                               v377 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                               v464 = objc_opt_class();
                                                                               v378 = v377;
-                                                                              v20 = v376;
+                                                                              errorCopy2 = v376;
                                                                               v134 = v530;
                                                                               v23 = v550;
                                                                               v486 = [v378 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v464, @"shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
@@ -3135,7 +3135,7 @@ LABEL_452:
                                                                               v379 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v635 forKeys:&v634 count:1];
                                                                               v380 = v375;
                                                                               v6 = v601;
-                                                                              v5 = v597;
+                                                                              dictionaryCopy = v597;
                                                                               v485 = v379;
                                                                               v487 = 0;
                                                                               v17 = 0;
@@ -3159,14 +3159,14 @@ LABEL_453:
                                                                           if (v558)
                                                                           {
                                                                             v367 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                            v596 = v5;
+                                                                            v596 = dictionaryCopy;
                                                                             v368 = *MEMORY[0x1E698F240];
                                                                             v636 = *MEMORY[0x1E696A578];
-                                                                            v369 = v20;
+                                                                            v369 = errorCopy2;
                                                                             v370 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                             v463 = objc_opt_class();
                                                                             v371 = v370;
-                                                                            v20 = v369;
+                                                                            errorCopy2 = v369;
                                                                             v134 = v530;
                                                                             v23 = v550;
                                                                             v487 = [v371 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v463, @"shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
@@ -3174,7 +3174,7 @@ LABEL_453:
                                                                             v372 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v637 forKeys:&v636 count:1];
                                                                             v373 = v368;
                                                                             v6 = v601;
-                                                                            v5 = v596;
+                                                                            dictionaryCopy = v596;
                                                                             v488 = v372;
                                                                             v489 = 0;
                                                                             v17 = 0;
@@ -3196,14 +3196,14 @@ LABEL_454:
                                                                         if (v558)
                                                                         {
                                                                           v360 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                          v595 = v5;
+                                                                          v595 = dictionaryCopy;
                                                                           v361 = *MEMORY[0x1E698F240];
                                                                           v638 = *MEMORY[0x1E696A578];
-                                                                          v362 = v20;
+                                                                          v362 = errorCopy2;
                                                                           v363 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                           v462 = objc_opt_class();
                                                                           v364 = v363;
-                                                                          v20 = v362;
+                                                                          errorCopy2 = v362;
                                                                           v134 = v530;
                                                                           v23 = v550;
                                                                           v489 = [v364 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v462, @"shareCountGivenLocationInLastMonthNormalizedAcrossItems"];
@@ -3211,7 +3211,7 @@ LABEL_454:
                                                                           v365 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v639 forKeys:&v638 count:1];
                                                                           v366 = v361;
                                                                           v6 = v601;
-                                                                          v5 = v595;
+                                                                          dictionaryCopy = v595;
                                                                           v490 = v365;
                                                                           v491 = 0;
                                                                           v17 = 0;
@@ -3233,14 +3233,14 @@ LABEL_455:
                                                                       if (v558)
                                                                       {
                                                                         v353 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                        v594 = v5;
+                                                                        v594 = dictionaryCopy;
                                                                         v354 = *MEMORY[0x1E698F240];
                                                                         v640 = *MEMORY[0x1E696A578];
-                                                                        v355 = v20;
+                                                                        v355 = errorCopy2;
                                                                         v356 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                         v461 = objc_opt_class();
                                                                         v357 = v356;
-                                                                        v20 = v355;
+                                                                        errorCopy2 = v355;
                                                                         v134 = v530;
                                                                         v23 = v550;
                                                                         v491 = [v357 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v461, @"shareCountGivenLocationInLastWeekNormalizedAcrossItems"];
@@ -3248,7 +3248,7 @@ LABEL_455:
                                                                         v358 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v641 forKeys:&v640 count:1];
                                                                         v359 = v354;
                                                                         v6 = v601;
-                                                                        v5 = v594;
+                                                                        dictionaryCopy = v594;
                                                                         v492 = v358;
                                                                         v493 = 0;
                                                                         v17 = 0;
@@ -3269,15 +3269,15 @@ LABEL_456:
                                                                     if (v558)
                                                                     {
                                                                       v346 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                      v593 = v5;
+                                                                      v593 = dictionaryCopy;
                                                                       v347 = *MEMORY[0x1E698F240];
                                                                       v642 = *MEMORY[0x1E696A578];
-                                                                      v348 = v20;
+                                                                      v348 = errorCopy2;
                                                                       v349 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                       v344 = v495;
                                                                       v460 = objc_opt_class();
                                                                       v350 = v349;
-                                                                      v20 = v348;
+                                                                      errorCopy2 = v348;
                                                                       v134 = v530;
                                                                       v23 = v550;
                                                                       v493 = [v350 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v460, @"shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
@@ -3285,7 +3285,7 @@ LABEL_456:
                                                                       v351 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v643 forKeys:&v642 count:1];
                                                                       v352 = v347;
                                                                       v6 = v601;
-                                                                      v5 = v593;
+                                                                      dictionaryCopy = v593;
                                                                       v494 = v351;
                                                                       v496 = 0;
                                                                       v17 = 0;
@@ -3315,14 +3315,14 @@ LABEL_457:
                                                                   if (v558)
                                                                   {
                                                                     v332 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                    v591 = v5;
+                                                                    v591 = dictionaryCopy;
                                                                     v333 = *MEMORY[0x1E698F240];
                                                                     v646 = *MEMORY[0x1E696A578];
-                                                                    v334 = v20;
+                                                                    v334 = errorCopy2;
                                                                     v335 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                     v458 = objc_opt_class();
                                                                     v336 = v335;
-                                                                    v20 = v334;
+                                                                    errorCopy2 = v334;
                                                                     v134 = v530;
                                                                     v23 = v550;
                                                                     v498 = [v336 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v458, @"clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems"];
@@ -3330,7 +3330,7 @@ LABEL_457:
                                                                     v337 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v647 forKeys:&v646 count:1];
                                                                     v338 = v333;
                                                                     v6 = v601;
-                                                                    v5 = v591;
+                                                                    dictionaryCopy = v591;
                                                                     v499 = 0;
                                                                     v17 = 0;
                                                                     *v558 = [v332 initWithDomain:v338 code:2 userInfo:v337];
@@ -3355,14 +3355,14 @@ LABEL_460:
                                                                 if (v558)
                                                                 {
                                                                   v325 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                  v590 = v5;
+                                                                  v590 = dictionaryCopy;
                                                                   v326 = *MEMORY[0x1E698F240];
                                                                   v648 = *MEMORY[0x1E696A578];
-                                                                  v327 = v20;
+                                                                  v327 = errorCopy2;
                                                                   v328 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                   v457 = objc_opt_class();
                                                                   v329 = v328;
-                                                                  v20 = v327;
+                                                                  errorCopy2 = v327;
                                                                   v134 = v530;
                                                                   v23 = v550;
                                                                   v499 = [v329 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v457, @"clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems"];
@@ -3370,7 +3370,7 @@ LABEL_460:
                                                                   v330 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v649 forKeys:&v648 count:1];
                                                                   v331 = v326;
                                                                   v6 = v601;
-                                                                  v5 = v590;
+                                                                  dictionaryCopy = v590;
                                                                   v500 = v330;
                                                                   v501 = 0;
                                                                   v17 = 0;
@@ -3392,14 +3392,14 @@ LABEL_461:
                                                               if (v558)
                                                               {
                                                                 v318 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                                v589 = v5;
+                                                                v589 = dictionaryCopy;
                                                                 v319 = *MEMORY[0x1E698F240];
                                                                 v650 = *MEMORY[0x1E696A578];
-                                                                v320 = v20;
+                                                                v320 = errorCopy2;
                                                                 v321 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                                 v456 = objc_opt_class();
                                                                 v322 = v321;
-                                                                v20 = v320;
+                                                                errorCopy2 = v320;
                                                                 v134 = v530;
                                                                 v23 = v550;
                                                                 v501 = [v322 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v456, @"clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems"];
@@ -3407,7 +3407,7 @@ LABEL_461:
                                                                 v323 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v651 forKeys:&v650 count:1];
                                                                 v324 = v319;
                                                                 v6 = v601;
-                                                                v5 = v589;
+                                                                dictionaryCopy = v589;
                                                                 v504 = v323;
                                                                 v505 = 0;
                                                                 v17 = 0;
@@ -3429,14 +3429,14 @@ LABEL_462:
                                                             if (v558)
                                                             {
                                                               v311 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                              v588 = v5;
+                                                              v588 = dictionaryCopy;
                                                               v312 = *MEMORY[0x1E698F240];
                                                               v652 = *MEMORY[0x1E696A578];
-                                                              v313 = v20;
+                                                              v313 = errorCopy2;
                                                               v314 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                               v455 = objc_opt_class();
                                                               v315 = v314;
-                                                              v20 = v313;
+                                                              errorCopy2 = v313;
                                                               v134 = v530;
                                                               v23 = v550;
                                                               v505 = [v315 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v455, @"clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems"];
@@ -3444,7 +3444,7 @@ LABEL_462:
                                                               v316 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v653 forKeys:&v652 count:1];
                                                               v317 = v312;
                                                               v6 = v601;
-                                                              v5 = v588;
+                                                              dictionaryCopy = v588;
                                                               v506 = v316;
                                                               v507 = 0;
                                                               v17 = 0;
@@ -3466,14 +3466,14 @@ LABEL_463:
                                                           if (v558)
                                                           {
                                                             v304 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                            v587 = v5;
+                                                            v587 = dictionaryCopy;
                                                             v305 = *MEMORY[0x1E698F240];
                                                             v654 = *MEMORY[0x1E696A578];
-                                                            v306 = v20;
+                                                            v306 = errorCopy2;
                                                             v307 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                             v454 = objc_opt_class();
                                                             v308 = v307;
-                                                            v20 = v306;
+                                                            errorCopy2 = v306;
                                                             v134 = v530;
                                                             v23 = v550;
                                                             v507 = [v308 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v454, @"clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems"];
@@ -3481,7 +3481,7 @@ LABEL_463:
                                                             v309 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v655 forKeys:&v654 count:1];
                                                             v310 = v305;
                                                             v6 = v601;
-                                                            v5 = v587;
+                                                            dictionaryCopy = v587;
                                                             v508 = v309;
                                                             v509 = 0;
                                                             v17 = 0;
@@ -3503,14 +3503,14 @@ LABEL_464:
                                                         if (v558)
                                                         {
                                                           v297 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                          v586 = v5;
+                                                          v586 = dictionaryCopy;
                                                           v298 = *MEMORY[0x1E698F240];
                                                           v656 = *MEMORY[0x1E696A578];
-                                                          v299 = v20;
+                                                          v299 = errorCopy2;
                                                           v300 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                           v453 = objc_opt_class();
                                                           v301 = v300;
-                                                          v20 = v299;
+                                                          errorCopy2 = v299;
                                                           v134 = v530;
                                                           v23 = v550;
                                                           v509 = [v301 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v453, @"clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems"];
@@ -3518,7 +3518,7 @@ LABEL_464:
                                                           v302 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v657 forKeys:&v656 count:1];
                                                           v303 = v298;
                                                           v6 = v601;
-                                                          v5 = v586;
+                                                          dictionaryCopy = v586;
                                                           v510 = v302;
                                                           v511 = 0;
                                                           v17 = 0;
@@ -3547,14 +3547,14 @@ LABEL_465:
                                                       if (v558)
                                                       {
                                                         v290 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                        v585 = v5;
+                                                        v585 = dictionaryCopy;
                                                         v291 = *MEMORY[0x1E698F240];
                                                         v658 = *MEMORY[0x1E696A578];
-                                                        v292 = v20;
+                                                        v292 = errorCopy2;
                                                         v293 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                         v452 = objc_opt_class();
                                                         v294 = v293;
-                                                        v20 = v292;
+                                                        errorCopy2 = v292;
                                                         v134 = v530;
                                                         v23 = v550;
                                                         v511 = [v294 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v452, @"clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems"];
@@ -3562,7 +3562,7 @@ LABEL_465:
                                                         v295 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v659 forKeys:&v658 count:1];
                                                         v296 = v291;
                                                         v6 = v601;
-                                                        v5 = v585;
+                                                        dictionaryCopy = v585;
                                                         v512 = v295;
                                                         v513 = 0;
                                                         v17 = 0;
@@ -3585,14 +3585,14 @@ LABEL_466:
                                                     if (v558)
                                                     {
                                                       v283 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                      v584 = v5;
+                                                      v584 = dictionaryCopy;
                                                       v284 = *MEMORY[0x1E698F240];
                                                       v660 = *MEMORY[0x1E696A578];
-                                                      v285 = v20;
+                                                      v285 = errorCopy2;
                                                       v286 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                       v451 = objc_opt_class();
                                                       v287 = v286;
-                                                      v20 = v285;
+                                                      errorCopy2 = v285;
                                                       v134 = v530;
                                                       v23 = v550;
                                                       v513 = [v287 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v451, @"clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems"];
@@ -3600,7 +3600,7 @@ LABEL_466:
                                                       v288 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v661 forKeys:&v660 count:1];
                                                       v289 = v284;
                                                       v6 = v601;
-                                                      v5 = v584;
+                                                      dictionaryCopy = v584;
                                                       v514 = v288;
                                                       v515 = 0;
                                                       v17 = 0;
@@ -3625,14 +3625,14 @@ LABEL_467:
                                                   if (v558)
                                                   {
                                                     v276 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                    v583 = v5;
+                                                    v583 = dictionaryCopy;
                                                     v277 = *MEMORY[0x1E698F240];
                                                     v662 = *MEMORY[0x1E696A578];
-                                                    v278 = v20;
+                                                    v278 = errorCopy2;
                                                     v279 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                     v450 = objc_opt_class();
                                                     v280 = v279;
-                                                    v20 = v278;
+                                                    errorCopy2 = v278;
                                                     v134 = v530;
                                                     v23 = v550;
                                                     v515 = [v280 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v450, @"clickCountGivenLocationInLastMonthNormalizedAcrossItems"];
@@ -3640,7 +3640,7 @@ LABEL_467:
                                                     v281 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v663 forKeys:&v662 count:1];
                                                     v282 = v277;
                                                     v6 = v601;
-                                                    v5 = v583;
+                                                    dictionaryCopy = v583;
                                                     v516 = v281;
                                                     v517 = 0;
                                                     v17 = 0;
@@ -3665,14 +3665,14 @@ LABEL_468:
                                                 if (v558)
                                                 {
                                                   v269 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                  v582 = v5;
+                                                  v582 = dictionaryCopy;
                                                   v270 = *MEMORY[0x1E698F240];
                                                   v664 = *MEMORY[0x1E696A578];
-                                                  v271 = v20;
+                                                  v271 = errorCopy2;
                                                   v272 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                   v449 = objc_opt_class();
                                                   v273 = v272;
-                                                  v20 = v271;
+                                                  errorCopy2 = v271;
                                                   v134 = v530;
                                                   v23 = v550;
                                                   v517 = [v273 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v449, @"clickCountGivenLocationInLastWeekNormalizedAcrossItems"];
@@ -3680,7 +3680,7 @@ LABEL_468:
                                                   v274 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v665 forKeys:&v664 count:1];
                                                   v275 = v270;
                                                   v6 = v601;
-                                                  v5 = v582;
+                                                  dictionaryCopy = v582;
                                                   v518 = v274;
                                                   v519 = 0;
                                                   v17 = 0;
@@ -3705,14 +3705,14 @@ LABEL_469:
                                               if (v558)
                                               {
                                                 v235 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                                v581 = v5;
+                                                v581 = dictionaryCopy;
                                                 v236 = *MEMORY[0x1E698F240];
                                                 v666 = *MEMORY[0x1E696A578];
-                                                v237 = v20;
+                                                v237 = errorCopy2;
                                                 v238 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                 v448 = objc_opt_class();
                                                 v239 = v238;
-                                                v20 = v237;
+                                                errorCopy2 = v237;
                                                 v134 = v530;
                                                 v23 = v550;
                                                 v519 = [v239 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v448, @"clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems"];
@@ -3720,7 +3720,7 @@ LABEL_469:
                                                 v240 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v667 forKeys:&v666 count:1];
                                                 v241 = v236;
                                                 v6 = v601;
-                                                v5 = v581;
+                                                dictionaryCopy = v581;
                                                 v520 = v240;
                                                 v522 = 0;
                                                 v17 = 0;
@@ -3745,14 +3745,14 @@ LABEL_470:
                                             if (v558)
                                             {
                                               v228 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                              v580 = v5;
+                                              v580 = dictionaryCopy;
                                               v229 = *MEMORY[0x1E698F240];
                                               v668 = *MEMORY[0x1E696A578];
-                                              v230 = v20;
+                                              v230 = errorCopy2;
                                               v231 = objc_alloc(MEMORY[0x1E696AEC0]);
                                               v447 = objc_opt_class();
                                               v232 = v231;
-                                              v20 = v230;
+                                              errorCopy2 = v230;
                                               v134 = v530;
                                               v23 = v550;
                                               v522 = [v232 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v447, @"clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems"];
@@ -3760,7 +3760,7 @@ LABEL_470:
                                               v233 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v669 forKeys:&v668 count:1];
                                               v234 = v229;
                                               v6 = v601;
-                                              v5 = v580;
+                                              dictionaryCopy = v580;
                                               v523 = v233;
                                               v225 = 0;
                                               v17 = 0;
@@ -3784,14 +3784,14 @@ LABEL_471:
                                           if (v558)
                                           {
                                             v220 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                            v579 = v5;
+                                            v579 = dictionaryCopy;
                                             v221 = *MEMORY[0x1E698F240];
                                             v670 = *MEMORY[0x1E696A578];
-                                            v222 = v20;
+                                            v222 = errorCopy2;
                                             v223 = objc_alloc(MEMORY[0x1E696AEC0]);
                                             v446 = objc_opt_class();
                                             v224 = v223;
-                                            v20 = v222;
+                                            errorCopy2 = v222;
                                             v134 = v530;
                                             v23 = v550;
                                             v225 = [v224 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v446, @"shareCountInLastMonthNormalizedAcrossItems"];
@@ -3799,7 +3799,7 @@ LABEL_471:
                                             v226 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v671 forKeys:&v670 count:1];
                                             v227 = v221;
                                             v6 = v601;
-                                            v5 = v579;
+                                            dictionaryCopy = v579;
                                             v525 = v226;
                                             v524 = 0;
                                             v17 = 0;
@@ -3822,14 +3822,14 @@ LABEL_472:
                                         if (v558)
                                         {
                                           v212 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                          v578 = v5;
+                                          v578 = dictionaryCopy;
                                           v213 = *MEMORY[0x1E698F240];
                                           v672 = *MEMORY[0x1E696A578];
-                                          v214 = v20;
+                                          v214 = errorCopy2;
                                           v215 = objc_alloc(MEMORY[0x1E696AEC0]);
                                           v445 = objc_opt_class();
                                           v216 = v215;
-                                          v20 = v214;
+                                          errorCopy2 = v214;
                                           v134 = v530;
                                           v23 = v550;
                                           v217 = [v216 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v445, @"shareCountInLastWeekNormalizedAcrossItems"];
@@ -3837,7 +3837,7 @@ LABEL_472:
                                           v218 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v673 forKeys:&v672 count:1];
                                           v219 = v213;
                                           v6 = v601;
-                                          v5 = v578;
+                                          dictionaryCopy = v578;
                                           v527 = v218;
                                           v528 = 0;
                                           v17 = 0;
@@ -3864,11 +3864,11 @@ LABEL_473:
                                         v564 = v19;
                                         v207 = *MEMORY[0x1E698F240];
                                         v674 = *MEMORY[0x1E696A578];
-                                        v502 = v20;
+                                        v502 = errorCopy2;
                                         v208 = objc_alloc(MEMORY[0x1E696AEC0]);
                                         v444 = objc_opt_class();
                                         v209 = v208;
-                                        v20 = v502;
+                                        errorCopy2 = v502;
                                         v23 = v550;
                                         v528 = [v209 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v444, @"clickCountInLastMonthNormalizedAcrossItems"];
                                         v675 = v528;
@@ -3905,14 +3905,14 @@ LABEL_474:
                                     if (v558)
                                     {
                                       v193 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                      v576 = v5;
+                                      v576 = dictionaryCopy;
                                       v194 = *MEMORY[0x1E698F240];
                                       v678 = *MEMORY[0x1E696A578];
-                                      v195 = v20;
+                                      v195 = errorCopy2;
                                       v196 = objc_alloc(MEMORY[0x1E696AEC0]);
                                       v442 = objc_opt_class();
                                       v197 = v196;
-                                      v20 = v195;
+                                      errorCopy2 = v195;
                                       v97 = v533;
                                       v23 = v550;
                                       v132 = [v197 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v442, @"hasEverShareInLastMonth"];
@@ -3920,7 +3920,7 @@ LABEL_474:
                                       v198 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v679 forKeys:&v678 count:1];
                                       v199 = v194;
                                       v6 = v601;
-                                      v5 = v576;
+                                      dictionaryCopy = v576;
                                       v532 = v198;
                                       v534 = 0;
                                       v17 = 0;
@@ -3946,14 +3946,14 @@ LABEL_477:
                                   if (v558)
                                   {
                                     v185 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                    v575 = v5;
+                                    v575 = dictionaryCopy;
                                     v186 = *MEMORY[0x1E698F240];
                                     v680 = *MEMORY[0x1E696A578];
-                                    v187 = v20;
+                                    v187 = errorCopy2;
                                     v188 = objc_alloc(MEMORY[0x1E696AEC0]);
                                     v441 = objc_opt_class();
                                     v189 = v188;
-                                    v20 = v187;
+                                    errorCopy2 = v187;
                                     v88 = v555;
                                     v23 = v550;
                                     v534 = [v189 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v441, @"hasEverShareInLastWeek"];
@@ -3962,7 +3962,7 @@ LABEL_477:
                                     v191 = v185;
                                     v192 = v186;
                                     v6 = v601;
-                                    v5 = v575;
+                                    dictionaryCopy = v575;
                                     v535 = v190;
                                     v536 = 0;
                                     v17 = 0;
@@ -3993,14 +3993,14 @@ LABEL_478:
                                 if (v558)
                                 {
                                   v178 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                  v574 = v5;
+                                  v574 = dictionaryCopy;
                                   v179 = *MEMORY[0x1E698F240];
                                   v682 = *MEMORY[0x1E696A578];
-                                  v180 = v20;
+                                  v180 = errorCopy2;
                                   v181 = objc_alloc(MEMORY[0x1E696AEC0]);
                                   v440 = objc_opt_class();
                                   v182 = v181;
-                                  v20 = v180;
+                                  errorCopy2 = v180;
                                   v88 = v555;
                                   v23 = v550;
                                   v536 = [v182 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v440, @"hasEverClickInLastMonth"];
@@ -4009,7 +4009,7 @@ LABEL_478:
                                   v183 = v178;
                                   v184 = v179;
                                   v6 = v601;
-                                  v5 = v574;
+                                  dictionaryCopy = v574;
                                   v537 = 0;
                                   v17 = 0;
                                   *v558 = [v183 initWithDomain:v184 code:2 userInfo:v97];
@@ -4031,15 +4031,15 @@ LABEL_479:
                               if (v558)
                               {
                                 v169 = objc_alloc(MEMORY[0x1E696ABC0]);
-                                v573 = v5;
+                                v573 = dictionaryCopy;
                                 v170 = *MEMORY[0x1E698F240];
                                 v684 = *MEMORY[0x1E696A578];
                                 v171 = v88;
-                                v172 = v20;
+                                v172 = errorCopy2;
                                 v173 = objc_alloc(MEMORY[0x1E696AEC0]);
                                 v439 = objc_opt_class();
                                 v174 = v173;
-                                v20 = v172;
+                                errorCopy2 = v172;
                                 v88 = v171;
                                 v23 = v550;
                                 v21 = v545;
@@ -4048,7 +4048,7 @@ LABEL_479:
                                 v175 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v685 forKeys:&v684 count:1];
                                 v176 = v170;
                                 v6 = v601;
-                                v5 = v573;
+                                dictionaryCopy = v573;
                                 v538 = v175;
                                 v540 = 0;
                                 v17 = 0;
@@ -4073,15 +4073,15 @@ LABEL_480:
                             if (v558)
                             {
                               v161 = objc_alloc(MEMORY[0x1E696ABC0]);
-                              v572 = v5;
+                              v572 = dictionaryCopy;
                               v162 = *MEMORY[0x1E698F240];
                               v686 = *MEMORY[0x1E696A578];
                               v163 = v88;
-                              v164 = v20;
+                              v164 = errorCopy2;
                               v165 = objc_alloc(MEMORY[0x1E696AEC0]);
                               v438 = objc_opt_class();
                               v166 = v165;
-                              v20 = v164;
+                              errorCopy2 = v164;
                               v88 = v163;
                               v23 = v550;
                               v21 = v545;
@@ -4090,7 +4090,7 @@ LABEL_480:
                               v167 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v687 forKeys:&v686 count:1];
                               v168 = v162;
                               v6 = v601;
-                              v5 = v572;
+                              dictionaryCopy = v572;
                               v541 = v167;
                               v542 = 0;
                               v17 = 0;
@@ -4114,14 +4114,14 @@ LABEL_481:
                           if (v45)
                           {
                             v154 = objc_alloc(MEMORY[0x1E696ABC0]);
-                            v571 = v5;
+                            v571 = dictionaryCopy;
                             v155 = *MEMORY[0x1E698F240];
                             v688 = *MEMORY[0x1E696A578];
-                            v156 = v20;
+                            v156 = errorCopy2;
                             v157 = objc_alloc(MEMORY[0x1E696AEC0]);
                             v437 = objc_opt_class();
                             v158 = v157;
-                            v20 = v156;
+                            errorCopy2 = v156;
                             v88 = v555;
                             v23 = v550;
                             v21 = v545;
@@ -4130,7 +4130,7 @@ LABEL_481:
                             v159 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v689 forKeys:&v688 count:1];
                             v160 = v155;
                             v6 = v601;
-                            v5 = v571;
+                            dictionaryCopy = v571;
                             v543 = 0;
                             v17 = 0;
                             *v558 = [v154 initWithDomain:v160 code:2 userInfo:v159];
@@ -4158,22 +4158,22 @@ LABEL_482:
                           goto LABEL_49;
                         }
 
-                        if (v20)
+                        if (errorCopy2)
                         {
                           v122 = objc_alloc(MEMORY[0x1E696ABC0]);
-                          v570 = v5;
+                          v570 = dictionaryCopy;
                           v123 = *MEMORY[0x1E698F240];
                           v690 = *MEMORY[0x1E696A578];
                           v124 = objc_alloc(MEMORY[0x1E696AEC0]);
                           v436 = objc_opt_class();
                           v125 = v124;
-                          v20 = v30;
+                          errorCopy2 = v30;
                           v88 = v555;
                           v45 = [v125 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v436, @"favorited"];
                           v691 = v45;
                           v126 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v691 forKeys:&v690 count:1];
                           v127 = v123;
-                          v5 = v570;
+                          dictionaryCopy = v570;
                           v544 = v126;
                           v546 = 0;
                           v17 = 0;
@@ -4186,30 +4186,30 @@ LABEL_482:
                         v17 = 0;
                         v51 = v600;
                         v67 = v561;
-                        v20 = v30;
+                        errorCopy2 = v30;
                         v88 = v555;
 LABEL_483:
 
                         goto LABEL_484;
                       }
 
-                      if (v20)
+                      if (errorCopy2)
                       {
                         v116 = objc_alloc(MEMORY[0x1E696ABC0]);
-                        v569 = v5;
+                        v569 = dictionaryCopy;
                         v117 = *MEMORY[0x1E698F240];
                         v692 = *MEMORY[0x1E696A578];
                         v118 = objc_alloc(MEMORY[0x1E696AEC0]);
                         v435 = objc_opt_class();
                         v119 = v118;
                         v67 = v561;
-                        v20 = v30;
+                        errorCopy2 = v30;
                         v88 = v555;
                         v546 = [v119 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v435, @"freshness"];
                         v693 = v546;
                         v120 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v693 forKeys:&v692 count:1];
                         v121 = v117;
-                        v5 = v569;
+                        dictionaryCopy = v569;
                         v547 = v120;
                         v548 = 0;
                         v17 = 0;
@@ -4222,14 +4222,14 @@ LABEL_483:
                       v17 = 0;
                       v51 = v600;
                       v67 = v561;
-                      v20 = v30;
+                      errorCopy2 = v30;
                       v88 = v555;
 LABEL_484:
 
                       goto LABEL_485;
                     }
 
-                    if (v20)
+                    if (errorCopy2)
                     {
                       v110 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v563 = v19;
@@ -4239,7 +4239,7 @@ LABEL_484:
                       v434 = objc_opt_class();
                       v113 = v112;
                       v67 = v561;
-                      v20 = v30;
+                      errorCopy2 = v30;
                       v88 = v555;
                       v548 = [v113 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v434, @"L1Score"];
                       v695 = v548;
@@ -4258,14 +4258,14 @@ LABEL_484:
                     v17 = 0;
                     v51 = v600;
                     v67 = v561;
-                    v20 = v30;
+                    errorCopy2 = v30;
                     v88 = v555;
 LABEL_485:
 
                     goto LABEL_486;
                   }
 
-                  if (v20)
+                  if (errorCopy2)
                   {
                     v104 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v562 = v19;
@@ -4275,7 +4275,7 @@ LABEL_485:
                     v433 = objc_opt_class();
                     v107 = v106;
                     v67 = v561;
-                    v20 = v30;
+                    errorCopy2 = v30;
                     v88 = v555;
                     v551 = [v107 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v433, @"matchedFieldsCount"];
                     v697 = v551;
@@ -4294,24 +4294,24 @@ LABEL_485:
                   v17 = 0;
                   v51 = v600;
                   v67 = v561;
-                  v20 = v30;
+                  errorCopy2 = v30;
                   v88 = v555;
 LABEL_486:
 
                   goto LABEL_487;
                 }
 
-                if (v20)
+                if (errorCopy2)
                 {
                   v556 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v98 = *MEMORY[0x1E698F240];
                   v698 = *MEMORY[0x1E696A578];
-                  v99 = v20;
+                  v99 = errorCopy2;
                   v100 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v432 = objc_opt_class();
                   v101 = v100;
                   v67 = v561;
-                  v20 = v30;
+                  errorCopy2 = v30;
                   v553 = [v101 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v432, @"matchedOCRImportance"];
                   v699 = v553;
                   v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v699 forKeys:&v698 count:1];
@@ -4328,19 +4328,19 @@ LABEL_486:
                 v17 = 0;
                 v51 = v600;
                 v67 = v561;
-                v20 = v30;
+                errorCopy2 = v30;
                 v88 = 0;
 LABEL_487:
 
                 goto LABEL_488;
               }
 
-              if (v20)
+              if (errorCopy2)
               {
                 v86 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v87 = *MEMORY[0x1E698F240];
                 v700 = *MEMORY[0x1E696A578];
-                v559 = v20;
+                v559 = errorCopy2;
                 v67 = v561;
                 v88 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"matchedOCRCharacterRatio"];
                 v701 = v88;
@@ -4348,7 +4348,7 @@ LABEL_487:
                 v90 = v87;
                 v6 = v601;
                 v557 = v89;
-                v20 = 0;
+                errorCopy2 = 0;
                 v17 = 0;
                 *v559 = [v86 initWithDomain:v90 code:2 userInfo:?];
                 v51 = v600;
@@ -4370,16 +4370,16 @@ LABEL_488:
               goto LABEL_28;
             }
 
-            if (v20)
+            if (errorCopy2)
             {
               v70 = objc_alloc(MEMORY[0x1E696ABC0]);
               v71 = *MEMORY[0x1E698F240];
               v704 = *MEMORY[0x1E696A578];
-              v72 = v20;
+              v72 = errorCopy2;
               v73 = objc_alloc(MEMORY[0x1E696AEC0]);
               v431 = objc_opt_class();
               v74 = v73;
-              v20 = v604;
+              errorCopy2 = v604;
               v566 = [v74 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v431, @"matchedSceneConfidence"];
               v705 = v566;
               v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v705 forKeys:&v704 count:1];
@@ -4398,22 +4398,22 @@ LABEL_490:
             v67 = 0;
             v17 = 0;
             v51 = v600;
-            v20 = v604;
+            errorCopy2 = v604;
 LABEL_491:
 
             goto LABEL_492;
           }
 
-          if (v20)
+          if (errorCopy2)
           {
             v62 = objc_alloc(MEMORY[0x1E696ABC0]);
             v63 = *MEMORY[0x1E698F240];
             v706 = *MEMORY[0x1E696A578];
-            v64 = v20;
+            v64 = errorCopy2;
             v65 = objc_alloc(MEMORY[0x1E696AEC0]);
             v430 = objc_opt_class();
             v66 = v65;
-            v20 = v604;
+            errorCopy2 = v604;
             v67 = [v66 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v430, @"matchedSceneRatio"];
             v707 = v67;
             v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v707 forKeys:&v706 count:1];
@@ -4430,7 +4430,7 @@ LABEL_491:
           v602 = 0;
           v17 = 0;
           v51 = v600;
-          v20 = v604;
+          errorCopy2 = v604;
 LABEL_492:
 
           v10 = v603;
@@ -4438,24 +4438,24 @@ LABEL_492:
         }
 
         v51 = v22;
-        if (v20)
+        if (errorCopy2)
         {
-          v568 = v5;
+          v568 = dictionaryCopy;
           v54 = objc_alloc(MEMORY[0x1E696ABC0]);
           v55 = *MEMORY[0x1E698F240];
           v708 = *MEMORY[0x1E696A578];
           v56 = v21;
-          v57 = v20;
+          v57 = errorCopy2;
           v58 = v56;
           v602 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"matchedLocationRatio"];
           v709 = v602;
           v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v709 forKeys:&v708 count:1];
           v60 = v54;
           v6 = v601;
-          v5 = v568;
+          dictionaryCopy = v568;
           v61 = v55;
           v23 = v59;
-          v20 = 0;
+          errorCopy2 = 0;
           v17 = 0;
           *v57 = [v60 initWithDomain:v61 code:2 userInfo:v59];
           v21 = v58;
@@ -4469,7 +4469,7 @@ LABEL_493:
         goto LABEL_494;
       }
 
-      if (a4)
+      if (error)
       {
         v47 = v6;
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -4481,10 +4481,10 @@ LABEL_493:
         v52 = v48;
         v6 = v47;
         v53 = v49;
-        v20 = v50;
+        errorCopy2 = v50;
         v21 = 0;
         v17 = 0;
-        *a4 = [v52 initWithDomain:v53 code:2 userInfo:v51];
+        *error = [v52 initWithDomain:v53 code:2 userInfo:v51];
         goto LABEL_493;
       }
 
@@ -4505,7 +4505,7 @@ LABEL_494:
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
       v77 = objc_alloc(MEMORY[0x1E696ABC0]);
       v78 = v6;
@@ -4518,7 +4518,7 @@ LABEL_494:
       v6 = v78;
       v10 = 0;
       v17 = 0;
-      *a4 = [v77 initWithDomain:v80 code:2 userInfo:v19];
+      *error = [v77 initWithDomain:v80 code:2 userInfo:v19];
       goto LABEL_494;
     }
 
@@ -4529,7 +4529,7 @@ LABEL_495:
     goto LABEL_496;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v12 = v6;
@@ -4544,7 +4544,7 @@ LABEL_495:
     v9 = v15;
     v7 = 0;
     v17 = 0;
-    *a4 = [v11 initWithDomain:v16 code:2 userInfo:v15];
+    *error = [v11 initWithDomain:v16 code:2 userInfo:v15];
     goto LABEL_495;
   }
 
@@ -4560,14 +4560,14 @@ LABEL_496:
 {
   v3 = objc_opt_new();
   [(BMAeroMLPhotosSearchLabeledData *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v58 = a3;
+  toCopy = to;
   if (self->_searchSessionUUID)
   {
     PBDataWriterWriteStringField();
@@ -4587,366 +4587,366 @@ LABEL_496:
     PBDataWriterWriteDoubleField();
   }
 
-  v7 = v58;
+  v7 = toCopy;
   if (self->_hasMatchedSceneRatio)
   {
     matchedSceneRatio = self->_matchedSceneRatio;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasMatchedSceneConfidence)
   {
     matchedSceneConfidence = self->_matchedSceneConfidence;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasMatchedSceneBoundingBox)
   {
     matchedSceneBoundingBox = self->_matchedSceneBoundingBox;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasMatchedOCRCharacterRatio)
   {
     matchedOCRCharacterRatio = self->_matchedOCRCharacterRatio;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasMatchedOCRImportance)
   {
     matchedOCRImportance = self->_matchedOCRImportance;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasMatchedFieldsCount)
   {
     matchedFieldsCount = self->_matchedFieldsCount;
     PBDataWriterWriteUint32Field();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasL1Score)
   {
     L1Score = self->_L1Score;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasFreshness)
   {
     freshness = self->_freshness;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasFavorited)
   {
     favorited = self->_favorited;
     PBDataWriterWriteBOOLField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasAestheticScore)
   {
     aestheticScore = self->_aestheticScore;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasCurationScore)
   {
     curationScore = self->_curationScore;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasHasEverClickInLastWeek)
   {
     hasEverClickInLastWeek = self->_hasEverClickInLastWeek;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasHasEverClickInLastMonth)
   {
     hasEverClickInLastMonth = self->_hasEverClickInLastMonth;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasHasEverShareInLastWeek)
   {
     hasEverShareInLastWeek = self->_hasEverShareInLastWeek;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasHasEverShareInLastMonth)
   {
     hasEverShareInLastMonth = self->_hasEverShareInLastMonth;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountInLastWeekNormalizedAcrossItems)
   {
     clickCountInLastWeekNormalizedAcrossItems = self->_clickCountInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountInLastMonthNormalizedAcrossItems)
   {
     clickCountInLastMonthNormalizedAcrossItems = self->_clickCountInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountInLastWeekNormalizedAcrossItems)
   {
     shareCountInLastWeekNormalizedAcrossItems = self->_shareCountInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountInLastMonthNormalizedAcrossItems)
   {
     shareCountInLastMonthNormalizedAcrossItems = self->_shareCountInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenLocationInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenLocationInLastWeekNormalizedAcrossItems = self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenLocationInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenLocationInLastMonthNormalizedAcrossItems = self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems)
   {
     clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems)
   {
     clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenLocationInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenLocationInLastWeekNormalizedAcrossItems = self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenLocationInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenLocationInLastMonthNormalizedAcrossItems = self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems)
   {
     shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems)
   {
     shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClipScore)
   {
     clipScore = self->_clipScore;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClicked)
   {
     clicked = self->_clicked;
     PBDataWriterWriteBOOLField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasClickOrder)
   {
     clickOrder = self->_clickOrder;
     PBDataWriterWriteUint32Field();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasItemPosition)
   {
     itemPosition = self->_itemPosition;
     PBDataWriterWriteUint32Field();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasL2ModelScore)
   {
     L2ModelScore = self->_L2ModelScore;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasIsDuplicate)
   {
     isDuplicate = self->_isDuplicate;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 
   if (self->_hasIsCompleteMatch)
   {
     isCompleteMatch = self->_isCompleteMatch;
     PBDataWriterWriteDoubleField();
-    v7 = v58;
+    v7 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v9.receiver = self;
   v9.super_class = BMAeroMLPhotosSearchLabeledData;
   v5 = [(BMEventBase *)&v9 init];
   v6 = v5;
-  if (v5 && !BMAeroMLPhotosSearchLabeledDataReadFrom(v5, v4))
+  if (v5 && !BMAeroMLPhotosSearchLabeledDataReadFrom(v5, fromCopy))
   {
     v7 = 0;
   }
@@ -4962,7 +4962,7 @@ LABEL_496:
 - (NSString)description
 {
   v67 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v103 = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
+  searchSessionUUID = [(BMAeroMLPhotosSearchLabeledData *)self searchSessionUUID];
   v106 = BMAeroMLPhotosSearchLabeledDataUISurfaceTypeAsString([(BMAeroMLPhotosSearchLabeledData *)self uiSurface]);
   v3 = MEMORY[0x1E696AD98];
   [(BMAeroMLPhotosSearchLabeledData *)self matchedPeopleRatio];
@@ -5110,66 +5110,66 @@ LABEL_496:
   v51 = MEMORY[0x1E696AD98];
   [(BMAeroMLPhotosSearchLabeledData *)self isCompleteMatch];
   v52 = [v51 numberWithDouble:?];
-  v68 = [v67 initWithFormat:@"BMAeroMLPhotosSearchLabeledData with searchSessionUUID: %@, uiSurface: %@, matchedPeopleRatio: %@, matchedLocationRatio: %@, matchedSceneRatio: %@, matchedSceneConfidence: %@, matchedSceneBoundingBox: %@, matchedOCRCharacterRatio: %@, matchedOCRImportance: %@, matchedFieldsCount: %@, L1Score: %@, freshness: %@, favorited: %@, aestheticScore: %@, curationScore: %@, hasEverClickInLastWeek: %@, hasEverClickInLastMonth: %@, hasEverShareInLastWeek: %@, hasEverShareInLastMonth: %@, clickCountInLastWeekNormalizedAcrossItems: %@, clickCountInLastMonthNormalizedAcrossItems: %@, shareCountInLastWeekNormalizedAcrossItems: %@, shareCountInLastMonthNormalizedAcrossItems: %@, clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems: %@, clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems: %@, clickCountGivenLocationInLastWeekNormalizedAcrossItems: %@, clickCountGivenLocationInLastMonthNormalizedAcrossItems: %@, clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems: %@, shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems: %@, shareCountGivenLocationInLastWeekNormalizedAcrossItems: %@, shareCountGivenLocationInLastMonthNormalizedAcrossItems: %@, shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems: %@, clipScore: %@, clicked: %@, clickOrder: %@, itemPosition: %@, L2ModelScore: %@, isDuplicate: %@, isCompleteMatch: %@", v103, v106, v105, v104, v100, v102, v101, v97, v99, v98, v95, v96, v92, v94, v91, v93, v88, v90, v87, v86, v89, v83, v85, v82, v81, v80, v84, v77, v79, v76, v75, v74, v73, v78, v71, v72, v69, v66, v65, v64, v70, v63, v62, v59, v61, v60, v58, v57, v56, v55, v54, v48, v50, v52];
+  v68 = [v67 initWithFormat:@"BMAeroMLPhotosSearchLabeledData with searchSessionUUID: %@, uiSurface: %@, matchedPeopleRatio: %@, matchedLocationRatio: %@, matchedSceneRatio: %@, matchedSceneConfidence: %@, matchedSceneBoundingBox: %@, matchedOCRCharacterRatio: %@, matchedOCRImportance: %@, matchedFieldsCount: %@, L1Score: %@, freshness: %@, favorited: %@, aestheticScore: %@, curationScore: %@, hasEverClickInLastWeek: %@, hasEverClickInLastMonth: %@, hasEverShareInLastWeek: %@, hasEverShareInLastMonth: %@, clickCountInLastWeekNormalizedAcrossItems: %@, clickCountInLastMonthNormalizedAcrossItems: %@, shareCountInLastWeekNormalizedAcrossItems: %@, shareCountInLastMonthNormalizedAcrossItems: %@, clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems: %@, clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems: %@, clickCountGivenLocationInLastWeekNormalizedAcrossItems: %@, clickCountGivenLocationInLastMonthNormalizedAcrossItems: %@, clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems: %@, clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems: %@, clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems: %@, shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems: %@, shareCountGivenLocationInLastWeekNormalizedAcrossItems: %@, shareCountGivenLocationInLastMonthNormalizedAcrossItems: %@, shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems: %@, shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems: %@, shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems: %@, clipScore: %@, clicked: %@, clickOrder: %@, itemPosition: %@, L2ModelScore: %@, isDuplicate: %@, isCompleteMatch: %@", searchSessionUUID, v106, v105, v104, v100, v102, v101, v97, v99, v98, v95, v96, v92, v94, v91, v93, v88, v90, v87, v86, v89, v83, v85, v82, v81, v80, v84, v77, v79, v76, v75, v74, v73, v78, v71, v72, v69, v66, v65, v64, v70, v63, v62, v59, v61, v60, v58, v57, v56, v55, v54, v48, v50, v52];
 
   return v68;
 }
 
-- (BMAeroMLPhotosSearchLabeledData)initWithSearchSessionUUID:(id)a3 uiSurface:(int)a4 matchedPeopleRatio:(id)a5 matchedLocationRatio:(id)a6 matchedSceneRatio:(id)a7 matchedSceneConfidence:(id)a8 matchedSceneBoundingBox:(id)a9 matchedOCRCharacterRatio:(id)a10 matchedOCRImportance:(id)a11 matchedFieldsCount:(id)a12 L1Score:(id)a13 freshness:(id)a14 favorited:(id)a15 aestheticScore:(id)a16 curationScore:(id)a17 hasEverClickInLastWeek:(id)a18 hasEverClickInLastMonth:(id)a19 hasEverShareInLastWeek:(id)a20 hasEverShareInLastMonth:(id)a21 clickCountInLastWeekNormalizedAcrossItems:(id)a22 clickCountInLastMonthNormalizedAcrossItems:(id)a23 shareCountInLastWeekNormalizedAcrossItems:(id)a24 shareCountInLastMonthNormalizedAcrossItems:(id)a25 clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)a26 clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)a27 clickCountGivenLocationInLastWeekNormalizedAcrossItems:(id)a28 clickCountGivenLocationInLastMonthNormalizedAcrossItems:(id)a29 clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)a30 clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)a31 clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)a32 clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)a33 clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)a34 clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)a35 clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)a36 clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)a37 shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)a38 shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)a39 shareCountGivenLocationInLastWeekNormalizedAcrossItems:(id)a40 shareCountGivenLocationInLastMonthNormalizedAcrossItems:(id)a41 shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)a42 shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)a43 shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)a44 shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)a45 shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)a46 shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)a47 shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)a48 shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)a49 clipScore:(id)a50 clicked:(id)a51 clickOrder:(id)a52 itemPosition:(id)a53 L2ModelScore:(id)a54 isDuplicate:(id)a55 isCompleteMatch:(id)a56
+- (BMAeroMLPhotosSearchLabeledData)initWithSearchSessionUUID:(id)d uiSurface:(int)surface matchedPeopleRatio:(id)ratio matchedLocationRatio:(id)locationRatio matchedSceneRatio:(id)sceneRatio matchedSceneConfidence:(id)confidence matchedSceneBoundingBox:(id)box matchedOCRCharacterRatio:(id)self0 matchedOCRImportance:(id)self1 matchedFieldsCount:(id)self2 L1Score:(id)self3 freshness:(id)self4 favorited:(id)self5 aestheticScore:(id)self6 curationScore:(id)self7 hasEverClickInLastWeek:(id)self8 hasEverClickInLastMonth:(id)self9 hasEverShareInLastWeek:(id)lastWeek hasEverShareInLastMonth:(id)lastMonth clickCountInLastWeekNormalizedAcrossItems:(id)items clickCountInLastMonthNormalizedAcrossItems:(id)acrossItems shareCountInLastWeekNormalizedAcrossItems:(id)normalizedAcrossItems shareCountInLastMonthNormalizedAcrossItems:(id)monthNormalizedAcrossItems clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)weekNormalizedAcrossItems clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)lastMonthNormalizedAcrossItems clickCountGivenLocationInLastWeekNormalizedAcrossItems:(id)lastWeekNormalizedAcrossItems clickCountGivenLocationInLastMonthNormalizedAcrossItems:(id)inLastMonthNormalizedAcrossItems clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)d0 clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)d1 clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)d2 clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)d3 clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)d4 clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)d5 clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)d6 clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)d7 shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(id)d8 shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(id)d9 shareCountGivenLocationInLastWeekNormalizedAcrossItems:(id)surface0 shareCountGivenLocationInLastMonthNormalizedAcrossItems:(id)surface1 shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(id)surface2 shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(id)surface3 shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(id)surface4 shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(id)surface5 shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(id)surface6 shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(id)surface7 shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(id)surface8 shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(id)surface9 clipScore:(id)ratio0 clicked:(id)ratio1 clickOrder:(id)ratio2 itemPosition:(id)ratio3 L2ModelScore:(id)ratio4 isDuplicate:(id)ratio5 isCompleteMatch:(id)ratio6
 {
-  v123 = a3;
-  v167 = a5;
-  v168 = a6;
-  v164 = a7;
-  v166 = a8;
-  v163 = a9;
-  v162 = a10;
-  v161 = a11;
-  v60 = a12;
-  v61 = a13;
-  v124 = a14;
-  v160 = a15;
-  v62 = a16;
-  v63 = a17;
-  v64 = a18;
-  v65 = a19;
-  v66 = a20;
-  v67 = a21;
-  v159 = a22;
-  v158 = a23;
-  v157 = a24;
-  v156 = a25;
-  v155 = a26;
-  v154 = a27;
-  v153 = a28;
-  v152 = a29;
-  v151 = a30;
-  v150 = a31;
-  v149 = a32;
-  v148 = a33;
-  v147 = a34;
-  v146 = a35;
-  v145 = a36;
-  v144 = a37;
-  v143 = a38;
-  v142 = a39;
-  v141 = a40;
-  v140 = a41;
-  v139 = a42;
-  v138 = a43;
-  v137 = a44;
-  v136 = a45;
-  v135 = a46;
-  v134 = a47;
-  v133 = a48;
-  v132 = a49;
-  v131 = a50;
-  v130 = a51;
-  v129 = a52;
-  v128 = a53;
-  v127 = a54;
-  v126 = a55;
-  v125 = a56;
+  dCopy = d;
+  ratioCopy = ratio;
+  locationRatioCopy = locationRatio;
+  sceneRatioCopy = sceneRatio;
+  confidenceCopy = confidence;
+  boxCopy = box;
+  characterRatioCopy = characterRatio;
+  importanceCopy = importance;
+  countCopy = count;
+  scoreCopy = score;
+  freshnessCopy = freshness;
+  favoritedCopy = favorited;
+  aestheticScoreCopy = aestheticScore;
+  curationScoreCopy = curationScore;
+  weekCopy = week;
+  monthCopy = month;
+  lastWeekCopy = lastWeek;
+  lastMonthCopy = lastMonth;
+  itemsCopy = items;
+  acrossItemsCopy = acrossItems;
+  normalizedAcrossItemsCopy = normalizedAcrossItems;
+  monthNormalizedAcrossItemsCopy = monthNormalizedAcrossItems;
+  weekNormalizedAcrossItemsCopy = weekNormalizedAcrossItems;
+  lastMonthNormalizedAcrossItemsCopy = lastMonthNormalizedAcrossItems;
+  lastWeekNormalizedAcrossItemsCopy = lastWeekNormalizedAcrossItems;
+  inLastMonthNormalizedAcrossItemsCopy = inLastMonthNormalizedAcrossItems;
+  inLastWeekNormalizedAcrossItemsCopy = inLastWeekNormalizedAcrossItems;
+  categoryInLastMonthNormalizedAcrossItemsCopy = categoryInLastMonthNormalizedAcrossItems;
+  categoryInLastWeekNormalizedAcrossItemsCopy = categoryInLastWeekNormalizedAcrossItems;
+  recencyCategoryInLastMonthNormalizedAcrossItemsCopy = recencyCategoryInLastMonthNormalizedAcrossItems;
+  sceneCategoryInLastWeekNormalizedAcrossItemsCopy = sceneCategoryInLastWeekNormalizedAcrossItems;
+  sceneCategoryInLastMonthNormalizedAcrossItemsCopy = sceneCategoryInLastMonthNormalizedAcrossItems;
+  countCategoryInLastWeekNormalizedAcrossItemsCopy = countCategoryInLastWeekNormalizedAcrossItems;
+  countCategoryInLastMonthNormalizedAcrossItemsCopy = countCategoryInLastMonthNormalizedAcrossItems;
+  dayInLastWeekNormalizedAcrossItemsCopy = dayInLastWeekNormalizedAcrossItems;
+  dayInLastMonthNormalizedAcrossItemsCopy = dayInLastMonthNormalizedAcrossItems;
+  locationInLastWeekNormalizedAcrossItemsCopy = locationInLastWeekNormalizedAcrossItems;
+  locationInLastMonthNormalizedAcrossItemsCopy = locationInLastMonthNormalizedAcrossItems;
+  dayCategoryInLastWeekNormalizedAcrossItemsCopy = dayCategoryInLastWeekNormalizedAcrossItems;
+  dayCategoryInLastMonthNormalizedAcrossItemsCopy = dayCategoryInLastMonthNormalizedAcrossItems;
+  recencyCategoryInLastWeekNormalizedAcrossItemsCopy = recencyCategoryInLastWeekNormalizedAcrossItems;
+  givenRecencyCategoryInLastMonthNormalizedAcrossItemsCopy = givenRecencyCategoryInLastMonthNormalizedAcrossItems;
+  givenSceneCategoryInLastWeekNormalizedAcrossItemsCopy = givenSceneCategoryInLastWeekNormalizedAcrossItems;
+  givenSceneCategoryInLastMonthNormalizedAcrossItemsCopy = givenSceneCategoryInLastMonthNormalizedAcrossItems;
+  faceCountCategoryInLastWeekNormalizedAcrossItemsCopy = faceCountCategoryInLastWeekNormalizedAcrossItems;
+  faceCountCategoryInLastMonthNormalizedAcrossItemsCopy = faceCountCategoryInLastMonthNormalizedAcrossItems;
+  clipScoreCopy = clipScore;
+  clickedCopy = clicked;
+  orderCopy = order;
+  positionCopy = position;
+  modelScoreCopy = modelScore;
+  duplicateCopy = duplicate;
+  matchCopy = match;
   v169.receiver = self;
   v169.super_class = BMAeroMLPhotosSearchLabeledData;
   v68 = [(BMEventBase *)&v169 init];
@@ -5177,12 +5177,12 @@ LABEL_496:
   if (v68)
   {
     v68->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v68->_searchSessionUUID, a3);
-    v68->_uiSurface = a4;
-    if (v167)
+    objc_storeStrong(&v68->_searchSessionUUID, d);
+    v68->_uiSurface = surface;
+    if (ratioCopy)
     {
       v68->_hasMatchedPeopleRatio = 1;
-      [v167 doubleValue];
+      [ratioCopy doubleValue];
     }
 
     else
@@ -5192,10 +5192,10 @@ LABEL_496:
     }
 
     v68->_matchedPeopleRatio = v69;
-    if (v168)
+    if (locationRatioCopy)
     {
       v68->_hasMatchedLocationRatio = 1;
-      [v168 doubleValue];
+      [locationRatioCopy doubleValue];
     }
 
     else
@@ -5205,10 +5205,10 @@ LABEL_496:
     }
 
     v68->_matchedLocationRatio = v70;
-    if (v164)
+    if (sceneRatioCopy)
     {
       v68->_hasMatchedSceneRatio = 1;
-      [v164 doubleValue];
+      [sceneRatioCopy doubleValue];
     }
 
     else
@@ -5218,10 +5218,10 @@ LABEL_496:
     }
 
     v68->_matchedSceneRatio = v71;
-    if (v166)
+    if (confidenceCopy)
     {
       v68->_hasMatchedSceneConfidence = 1;
-      [v166 doubleValue];
+      [confidenceCopy doubleValue];
     }
 
     else
@@ -5231,10 +5231,10 @@ LABEL_496:
     }
 
     v68->_matchedSceneConfidence = v72;
-    if (v163)
+    if (boxCopy)
     {
       v68->_hasMatchedSceneBoundingBox = 1;
-      [v163 doubleValue];
+      [boxCopy doubleValue];
     }
 
     else
@@ -5244,10 +5244,10 @@ LABEL_496:
     }
 
     v68->_matchedSceneBoundingBox = v73;
-    if (v162)
+    if (characterRatioCopy)
     {
       v68->_hasMatchedOCRCharacterRatio = 1;
-      [v162 doubleValue];
+      [characterRatioCopy doubleValue];
     }
 
     else
@@ -5257,10 +5257,10 @@ LABEL_496:
     }
 
     v68->_matchedOCRCharacterRatio = v74;
-    if (v161)
+    if (importanceCopy)
     {
       v68->_hasMatchedOCRImportance = 1;
-      [v161 doubleValue];
+      [importanceCopy doubleValue];
     }
 
     else
@@ -5270,23 +5270,23 @@ LABEL_496:
     }
 
     v68->_matchedOCRImportance = v75;
-    if (v60)
+    if (countCopy)
     {
       v68->_hasMatchedFieldsCount = 1;
-      v76 = [v60 unsignedIntValue];
+      unsignedIntValue = [countCopy unsignedIntValue];
     }
 
     else
     {
-      v76 = 0;
+      unsignedIntValue = 0;
       v68->_hasMatchedFieldsCount = 0;
     }
 
-    v68->_matchedFieldsCount = v76;
-    if (v61)
+    v68->_matchedFieldsCount = unsignedIntValue;
+    if (scoreCopy)
     {
       v68->_hasL1Score = 1;
-      [v61 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -5296,10 +5296,10 @@ LABEL_496:
     }
 
     v68->_L1Score = v77;
-    if (v124)
+    if (freshnessCopy)
     {
       v68->_hasFreshness = 1;
-      [v124 doubleValue];
+      [freshnessCopy doubleValue];
     }
 
     else
@@ -5309,10 +5309,10 @@ LABEL_496:
     }
 
     v68->_freshness = v78;
-    if (v160)
+    if (favoritedCopy)
     {
       v68->_hasFavorited = 1;
-      v68->_favorited = [v160 BOOLValue];
+      v68->_favorited = [favoritedCopy BOOLValue];
     }
 
     else
@@ -5321,10 +5321,10 @@ LABEL_496:
       v68->_favorited = 0;
     }
 
-    if (v62)
+    if (aestheticScoreCopy)
     {
       v68->_hasAestheticScore = 1;
-      [v62 doubleValue];
+      [aestheticScoreCopy doubleValue];
     }
 
     else
@@ -5334,10 +5334,10 @@ LABEL_496:
     }
 
     v68->_aestheticScore = v79;
-    if (v63)
+    if (curationScoreCopy)
     {
       v68->_hasCurationScore = 1;
-      [v63 doubleValue];
+      [curationScoreCopy doubleValue];
     }
 
     else
@@ -5347,10 +5347,10 @@ LABEL_496:
     }
 
     v68->_curationScore = v80;
-    if (v64)
+    if (weekCopy)
     {
       v68->_hasHasEverClickInLastWeek = 1;
-      [v64 doubleValue];
+      [weekCopy doubleValue];
     }
 
     else
@@ -5360,10 +5360,10 @@ LABEL_496:
     }
 
     v68->_hasEverClickInLastWeek = v81;
-    if (v65)
+    if (monthCopy)
     {
       v68->_hasHasEverClickInLastMonth = 1;
-      [v65 doubleValue];
+      [monthCopy doubleValue];
     }
 
     else
@@ -5373,10 +5373,10 @@ LABEL_496:
     }
 
     v68->_hasEverClickInLastMonth = v82;
-    if (v66)
+    if (lastWeekCopy)
     {
       v68->_hasHasEverShareInLastWeek = 1;
-      [v66 doubleValue];
+      [lastWeekCopy doubleValue];
     }
 
     else
@@ -5386,10 +5386,10 @@ LABEL_496:
     }
 
     v68->_hasEverShareInLastWeek = v83;
-    if (v67)
+    if (lastMonthCopy)
     {
       v68->_hasHasEverShareInLastMonth = 1;
-      [v67 doubleValue];
+      [lastMonthCopy doubleValue];
     }
 
     else
@@ -5399,10 +5399,10 @@ LABEL_496:
     }
 
     v68->_hasEverShareInLastMonth = v84;
-    if (v159)
+    if (itemsCopy)
     {
       v68->_hasClickCountInLastWeekNormalizedAcrossItems = 1;
-      [v159 doubleValue];
+      [itemsCopy doubleValue];
     }
 
     else
@@ -5412,10 +5412,10 @@ LABEL_496:
     }
 
     v68->_clickCountInLastWeekNormalizedAcrossItems = v85;
-    if (v158)
+    if (acrossItemsCopy)
     {
       v68->_hasClickCountInLastMonthNormalizedAcrossItems = 1;
-      [v158 doubleValue];
+      [acrossItemsCopy doubleValue];
     }
 
     else
@@ -5425,10 +5425,10 @@ LABEL_496:
     }
 
     v68->_clickCountInLastMonthNormalizedAcrossItems = v86;
-    if (v157)
+    if (normalizedAcrossItemsCopy)
     {
       v68->_hasShareCountInLastWeekNormalizedAcrossItems = 1;
-      [v157 doubleValue];
+      [normalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5438,10 +5438,10 @@ LABEL_496:
     }
 
     v68->_shareCountInLastWeekNormalizedAcrossItems = v87;
-    if (v156)
+    if (monthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountInLastMonthNormalizedAcrossItems = 1;
-      [v156 doubleValue];
+      [monthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5451,10 +5451,10 @@ LABEL_496:
     }
 
     v68->_shareCountInLastMonthNormalizedAcrossItems = v88;
-    if (v155)
+    if (weekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = 1;
-      [v155 doubleValue];
+      [weekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5464,10 +5464,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = v89;
-    if (v154)
+    if (lastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = 1;
-      [v154 doubleValue];
+      [lastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5477,10 +5477,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = v90;
-    if (v153)
+    if (lastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenLocationInLastWeekNormalizedAcrossItems = 1;
-      [v153 doubleValue];
+      [lastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5490,10 +5490,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenLocationInLastWeekNormalizedAcrossItems = v91;
-    if (v152)
+    if (inLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenLocationInLastMonthNormalizedAcrossItems = 1;
-      [v152 doubleValue];
+      [inLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5503,10 +5503,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenLocationInLastMonthNormalizedAcrossItems = v92;
-    if (v151)
+    if (inLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v151 doubleValue];
+      [inLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5516,10 +5516,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = v93;
-    if (v150)
+    if (categoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v150 doubleValue];
+      [categoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5529,10 +5529,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = v94;
-    if (v149)
+    if (categoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v149 doubleValue];
+      [categoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5542,10 +5542,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = v95;
-    if (v148)
+    if (recencyCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v148 doubleValue];
+      [recencyCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5555,10 +5555,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = v96;
-    if (v147)
+    if (sceneCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v147 doubleValue];
+      [sceneCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5568,10 +5568,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = v97;
-    if (v146)
+    if (sceneCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v146 doubleValue];
+      [sceneCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5581,10 +5581,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = v98;
-    if (v145)
+    if (countCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v145 doubleValue];
+      [countCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5594,10 +5594,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = v99;
-    if (v144)
+    if (countCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v144 doubleValue];
+      [countCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5607,10 +5607,10 @@ LABEL_496:
     }
 
     v68->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = v100;
-    if (v143)
+    if (dayInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = 1;
-      [v143 doubleValue];
+      [dayInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5620,10 +5620,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = v101;
-    if (v142)
+    if (dayInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = 1;
-      [v142 doubleValue];
+      [dayInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5633,10 +5633,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = v102;
-    if (v141)
+    if (locationInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenLocationInLastWeekNormalizedAcrossItems = 1;
-      [v141 doubleValue];
+      [locationInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5646,10 +5646,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenLocationInLastWeekNormalizedAcrossItems = v103;
-    if (v140)
+    if (locationInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenLocationInLastMonthNormalizedAcrossItems = 1;
-      [v140 doubleValue];
+      [locationInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5659,10 +5659,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenLocationInLastMonthNormalizedAcrossItems = v104;
-    if (v139)
+    if (dayCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v139 doubleValue];
+      [dayCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5672,10 +5672,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = v105;
-    if (v138)
+    if (dayCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v138 doubleValue];
+      [dayCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5685,10 +5685,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = v106;
-    if (v137)
+    if (recencyCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v137 doubleValue];
+      [recencyCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5698,10 +5698,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = v107;
-    if (v136)
+    if (givenRecencyCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v136 doubleValue];
+      [givenRecencyCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5711,10 +5711,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = v108;
-    if (v135)
+    if (givenSceneCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v135 doubleValue];
+      [givenSceneCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5724,10 +5724,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = v109;
-    if (v134)
+    if (givenSceneCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v134 doubleValue];
+      [givenSceneCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5737,10 +5737,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = v110;
-    if (v133)
+    if (faceCountCategoryInLastWeekNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = 1;
-      [v133 doubleValue];
+      [faceCountCategoryInLastWeekNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5750,10 +5750,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = v111;
-    if (v132)
+    if (faceCountCategoryInLastMonthNormalizedAcrossItemsCopy)
     {
       v68->_hasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = 1;
-      [v132 doubleValue];
+      [faceCountCategoryInLastMonthNormalizedAcrossItemsCopy doubleValue];
     }
 
     else
@@ -5763,10 +5763,10 @@ LABEL_496:
     }
 
     v68->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = v112;
-    if (v131)
+    if (clipScoreCopy)
     {
       v68->_hasClipScore = 1;
-      [v131 doubleValue];
+      [clipScoreCopy doubleValue];
     }
 
     else
@@ -5776,10 +5776,10 @@ LABEL_496:
     }
 
     v68->_clipScore = v113;
-    if (v130)
+    if (clickedCopy)
     {
       v68->_hasClicked = 1;
-      v68->_clicked = [v130 BOOLValue];
+      v68->_clicked = [clickedCopy BOOLValue];
     }
 
     else
@@ -5788,11 +5788,11 @@ LABEL_496:
       v68->_clicked = 0;
     }
 
-    v114 = v129;
-    if (v129)
+    unsignedIntValue2 = orderCopy;
+    if (orderCopy)
     {
       v68->_hasClickOrder = 1;
-      v114 = [v129 unsignedIntValue];
+      unsignedIntValue2 = [orderCopy unsignedIntValue];
     }
 
     else
@@ -5800,12 +5800,12 @@ LABEL_496:
       v68->_hasClickOrder = 0;
     }
 
-    v68->_clickOrder = v114;
-    v115 = v128;
-    if (v128)
+    v68->_clickOrder = unsignedIntValue2;
+    unsignedIntValue3 = positionCopy;
+    if (positionCopy)
     {
       v68->_hasItemPosition = 1;
-      v115 = [v128 unsignedIntValue];
+      unsignedIntValue3 = [positionCopy unsignedIntValue];
     }
 
     else
@@ -5813,11 +5813,11 @@ LABEL_496:
       v68->_hasItemPosition = 0;
     }
 
-    v68->_itemPosition = v115;
-    if (v127)
+    v68->_itemPosition = unsignedIntValue3;
+    if (modelScoreCopy)
     {
       v68->_hasL2ModelScore = 1;
-      [v127 doubleValue];
+      [modelScoreCopy doubleValue];
     }
 
     else
@@ -5827,10 +5827,10 @@ LABEL_496:
     }
 
     v68->_L2ModelScore = v116;
-    if (v126)
+    if (duplicateCopy)
     {
       v68->_hasIsDuplicate = 1;
-      [v126 doubleValue];
+      [duplicateCopy doubleValue];
     }
 
     else
@@ -5840,10 +5840,10 @@ LABEL_496:
     }
 
     v68->_isDuplicate = v117;
-    if (v125)
+    if (matchCopy)
     {
       v68->_hasIsCompleteMatch = 1;
-      [v125 doubleValue];
+      [matchCopy doubleValue];
     }
 
     else
@@ -5978,9 +5978,9 @@ LABEL_496:
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -5988,8 +5988,8 @@ LABEL_496:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAeroMLPhotosSearchLabeledData alloc] initByReadFrom:v7];
     v4 = v8;

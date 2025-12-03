@@ -2,16 +2,16 @@
 - (CSVoiceTriggerXPCClient)init;
 - (CSVoiceTriggerXPCClientDelegate)delegate;
 - (id)fetchVoiceTriggerStats;
-- (void)_handleListenerDisconnectedError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5;
+- (void)_handleListenerDisconnectedError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion;
 - (void)connect;
 - (void)dealloc;
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5;
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp;
 - (void)notifyVoiceTriggeredSiriSessionCancelled;
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4;
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4;
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout;
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout;
 @end
 
 @implementation CSVoiceTriggerXPCClient
@@ -87,25 +87,25 @@ void __34__CSVoiceTriggerXPCClient_connect__block_invoke(uint64_t a1, void *a2)
   return WeakRetained;
 }
 
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8)
+  messageCopy = message;
+  connectionCopy = connection;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (messageCopy && connectionCopy)
   {
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __62__CSVoiceTriggerXPCClient__sendMessage_connection_completion___block_invoke;
     handler[3] = &unk_2784C6A48;
-    v12 = v9;
-    xpc_connection_send_message_with_reply(v8, v7, 0, handler);
+    v12 = completionCopy;
+    xpc_connection_send_message_with_reply(connectionCopy, messageCopy, 0, handler);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -184,14 +184,14 @@ LABEL_10:
   return v12;
 }
 
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   v18 = *MEMORY[0x277D85DE8];
   *keys = xmmword_2784C6A18;
   v17 = "bypassTimeout";
   values[0] = xpc_int64_create(4);
-  values[1] = xpc_BOOL_create(a3);
-  values[2] = xpc_double_create(a4);
+  values[1] = xpc_BOOL_create(bypassing);
+  values[2] = xpc_double_create(timeout);
   v7 = xpc_dictionary_create(keys, values, 3uLL);
   *v14 = xmmword_2784C6A30;
   v13[0] = xpc_int64_create(2);
@@ -231,14 +231,14 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   v18 = *MEMORY[0x277D85DE8];
   *keys = xmmword_2784C6A00;
   v17 = "bypassTimeout";
   values[0] = xpc_int64_create(1);
-  values[1] = xpc_BOOL_create(a3);
-  values[2] = xpc_double_create(a4);
+  values[1] = xpc_BOOL_create(bypassing);
+  values[2] = xpc_double_create(timeout);
   v7 = xpc_dictionary_create(keys, values, 3uLL);
   *v14 = xmmword_2784C6A30;
   v13[0] = xpc_int64_create(2);
@@ -258,16 +258,16 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  assertionCopy = assertion;
   *keys = xmmword_2784C69E0;
   v19 = *&off_2784C69F0;
   values[0] = xpc_int64_create(3);
-  values[1] = xpc_BOOL_create(a3);
-  values[2] = xpc_string_create([v8 UTF8String]);
-  values[3] = xpc_double_create(a5);
+  values[1] = xpc_BOOL_create(trigger);
+  values[2] = xpc_string_create([assertionCopy UTF8String]);
+  values[3] = xpc_double_create(timestamp);
   v9 = xpc_dictionary_create(keys, values, 4uLL);
   *v16 = xmmword_2784C6A30;
   v15[0] = xpc_int64_create(2);
@@ -287,9 +287,9 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleListenerDisconnectedError:(id)a3
+- (void)_handleListenerDisconnectedError:(id)error
 {
-  v4 = [(CSVoiceTriggerXPCClient *)self delegate];
+  delegate = [(CSVoiceTriggerXPCClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -299,12 +299,12 @@ LABEL_10:
   }
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v10 = *MEMORY[0x277D015D8];
     if (!os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -320,9 +320,9 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (v4 != MEMORY[0x277D863F8] && v4 != MEMORY[0x277D863F0])
+  if (errorCopy != MEMORY[0x277D863F8] && errorCopy != MEMORY[0x277D863F0])
   {
-    string = xpc_dictionary_get_string(v4, *MEMORY[0x277D86400]);
+    string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x277D86400]);
     v10 = *MEMORY[0x277D015D8];
     if (!os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
     {
@@ -353,14 +353,14 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if (MEMORY[0x223DD2E40](v4) == MEMORY[0x277D86480])
+    if (MEMORY[0x223DD2E40](eventCopy) == MEMORY[0x277D86480])
     {
       [(CSVoiceTriggerXPCClient *)self _handleListenerError:v5];
       goto LABEL_9;

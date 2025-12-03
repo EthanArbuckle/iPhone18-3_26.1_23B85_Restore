@@ -1,27 +1,27 @@
 @interface UIViewController
-- (void)accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:(id)a3 cancellationBlock:(id)a4;
-- (void)accessibilityPresentMedinaPreboardAlertWithTitle:(id)a3 message:(id)a4 completionBlock:(id)a5 cancellationBlock:(id)a6;
-- (void)clarityUI_presentLearnMoreViewForTopicID:(id)a3;
+- (void)accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:(id)conflicts cancellationBlock:(id)block;
+- (void)accessibilityPresentMedinaPreboardAlertWithTitle:(id)title message:(id)message completionBlock:(id)block cancellationBlock:(id)cancellationBlock;
+- (void)clarityUI_presentLearnMoreViewForTopicID:(id)d;
 - (void)resetAllSettings;
 @end
 
 @implementation UIViewController
 
-- (void)accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:(id)a3 cancellationBlock:(id)a4
+- (void)accessibilityPerformTripleClickAddingBlockConfirmingSOSConflicts:(id)conflicts cancellationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if (!v6)
+  conflictsCopy = conflicts;
+  blockCopy = block;
+  v8 = conflictsCopy;
+  if (!conflictsCopy)
   {
     _AXAssert();
     v8 = &__block_literal_global_465;
   }
 
   v9 = objc_retainBlock(v8);
-  if (v7)
+  if (blockCopy)
   {
-    v10 = v7;
+    v10 = blockCopy;
   }
 
   else
@@ -87,25 +87,25 @@ void __135__UIViewController_AXTripleClickConflictAvoidance__accessibilityPerfor
   CFNotificationCenterPostNotification(DarwinNotifyCenter, SOSTriggerMechanismChangedNotification, 0, 0, 1u);
 }
 
-- (void)accessibilityPresentMedinaPreboardAlertWithTitle:(id)a3 message:(id)a4 completionBlock:(id)a5 cancellationBlock:(id)a6
+- (void)accessibilityPresentMedinaPreboardAlertWithTitle:(id)title message:(id)message completionBlock:(id)block cancellationBlock:(id)cancellationBlock
 {
-  if (a5)
+  if (block)
   {
-    v9 = a5;
+    blockCopy = block;
   }
 
   else
   {
-    v9 = &__block_literal_global_493;
+    blockCopy = &__block_literal_global_493;
   }
 
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = objc_retainBlock(v9);
-  if (v10)
+  cancellationBlockCopy = cancellationBlock;
+  messageCopy = message;
+  titleCopy = title;
+  v13 = objc_retainBlock(blockCopy);
+  if (cancellationBlockCopy)
   {
-    v14 = v10;
+    v14 = cancellationBlockCopy;
   }
 
   else
@@ -115,7 +115,7 @@ void __135__UIViewController_AXTripleClickConflictAvoidance__accessibilityPerfor
 
   v15 = objc_retainBlock(v14);
 
-  v16 = [UIAlertController alertControllerWithTitle:v12 message:v11 preferredStyle:1];
+  v16 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
 
   v17 = settingsLocString(@"SECURE_INTENT_CUSTOM_SOUND_CANCEL", @"Accessibility-MedinaPreBoard");
   v28[0] = _NSConcreteStackBlock;
@@ -140,14 +140,14 @@ void __135__UIViewController_AXTripleClickConflictAvoidance__accessibilityPerfor
   [(UIViewController *)self presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)clarityUI_presentLearnMoreViewForTopicID:(id)a3
+- (void)clarityUI_presentLearnMoreViewForTopicID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v4 = MGCopyAnswer();
   v5 = [HLPHelpViewController helpViewControllerWithIdentifier:@"assistive-access" version:v4];
-  if (v7)
+  if (dCopy)
   {
-    [v5 setSelectedHelpTopicID:v7];
+    [v5 setSelectedHelpTopicID:dCopy];
   }
 
   v6 = [[UINavigationController alloc] initWithRootViewController:v5];

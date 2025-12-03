@@ -1,8 +1,8 @@
 @interface CKTuple2
-- (BOOL)isEqual:(id)a3;
-- (CKTuple2)initWithObject1:(id)a3 object2:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKTuple2)initWithObject1:(id)object1 object2:(id)object2;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (unint64_t)hash;
 @end
 
@@ -18,36 +18,36 @@
   return v13 ^ v7;
 }
 
-- (CKTuple2)initWithObject1:(id)a3 object2:(id)a4
+- (CKTuple2)initWithObject1:(id)object1 object2:(id)object2
 {
-  v6 = a3;
-  v7 = a4;
+  object1Copy = object1;
+  object2Copy = object2;
   v13.receiver = self;
   v13.super_class = CKTuple2;
   v8 = [(CKTuple2 *)&v13 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setV1_(v8, v9, v6);
-    objc_msgSend_setV2_(v10, v11, v7);
+    objc_msgSend_setV1_(v8, v9, object1Copy);
+    objc_msgSend_setV2_(v10, v11, object2Copy);
   }
 
   return v10;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 == 1)
+  if (subscript == 1)
   {
     v3 = objc_msgSend_v2(self, a2, 1);
   }
 
   else
   {
-    if (a3)
+    if (subscript)
     {
       v6 = [CKException alloc];
-      v8 = objc_msgSend_initWithCode_format_(v6, v7, 12, @"Invalid tuple index: %lu", a3);
+      v8 = objc_msgSend_initWithCode_format_(v6, v7, 12, @"Invalid tuple index: %lu", subscript);
       objc_exception_throw(v8);
     }
 
@@ -57,10 +57,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -70,7 +70,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_v1(self, v6, v7);
       v11 = objc_msgSend_v1(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -97,9 +97,9 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_v1(self, a2, a3);
+  v4 = objc_msgSend_v1(self, a2, zone);
   if ((objc_msgSend_conformsToProtocol_(v4, v5, &unk_1EFA87B00) & 1) == 0)
   {
 

@@ -1,12 +1,12 @@
 @interface OSLogStatisticsAggregation
-+ (id)_labelFromProxy:(id)a3 forTier:(unsigned __int8)a4;
-+ (id)_stringForTier:(unsigned __int8)a3;
++ (id)_labelFromProxy:(id)proxy forTier:(unsigned __int8)tier;
++ (id)_stringForTier:(unsigned __int8)tier;
 - (NSString)tierString;
-- (OSLogStatisticsAggregation)initWithLabel:(id)a3 tier:(unsigned __int8)a4;
+- (OSLogStatisticsAggregation)initWithLabel:(id)label tier:(unsigned __int8)tier;
 - (id)_descendingChildren;
 - (id)_tracePointSizeString;
-- (void)_addToChildren:(id)a3;
-- (void)_addTraceEvent:(id)a3;
+- (void)_addToChildren:(id)children;
+- (void)_addTraceEvent:(id)event;
 @end
 
 @implementation OSLogStatisticsAggregation
@@ -14,16 +14,16 @@
 - (id)_tracePointSizeString
 {
   v2 = MEMORY[0x277CCA8E8];
-  v3 = [(OSLogStatisticsAggregation *)self eventBytes];
+  eventBytes = [(OSLogStatisticsAggregation *)self eventBytes];
 
-  return [v2 stringFromByteCount:v3 countStyle:0];
+  return [v2 stringFromByteCount:eventBytes countStyle:0];
 }
 
 - (id)_descendingChildren
 {
-  v2 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_2600];
+  labelToChildTiers = [(OSLogStatisticsAggregation *)self labelToChildTiers];
+  allValues = [labelToChildTiers allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_2600];
 
   return v4;
 }
@@ -47,10 +47,10 @@ uint64_t __49__OSLogStatisticsAggregation__descendingChildren__block_invoke(uint
   return v7;
 }
 
-- (void)_addTraceEvent:(id)a3
+- (void)_addTraceEvent:(id)event
 {
   v6 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventCopy = event;
   if ([(OSLogStatisticsAggregation *)self tier]>= 9)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -60,53 +60,53 @@ uint64_t __49__OSLogStatisticsAggregation__descendingChildren__block_invoke(uint
   }
 
   [(OSLogStatisticsAggregation *)self setEventCount:[(OSLogStatisticsAggregation *)self eventCount]+ 1];
-  -[OSLogStatisticsAggregation setEventBytes:](self, "setEventBytes:", -[OSLogStatisticsAggregation eventBytes](self, "eventBytes") + [v5 size]);
+  -[OSLogStatisticsAggregation setEventBytes:](self, "setEventBytes:", -[OSLogStatisticsAggregation eventBytes](self, "eventBytes") + [eventCopy size]);
   if ([(OSLogStatisticsAggregation *)self tier]!= 8)
   {
-    [(OSLogStatisticsAggregation *)self _addToChildren:v5];
+    [(OSLogStatisticsAggregation *)self _addToChildren:eventCopy];
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToChildren:(id)a3
+- (void)_addToChildren:(id)children
 {
-  v12 = a3;
-  v4 = [(OSLogStatisticsAggregation *)self _childTier];
-  v5 = [objc_opt_class() _labelFromProxy:v12 forTier:v4];
-  v6 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
+  childrenCopy = children;
+  _childTier = [(OSLogStatisticsAggregation *)self _childTier];
+  v5 = [objc_opt_class() _labelFromProxy:childrenCopy forTier:_childTier];
+  labelToChildTiers = [(OSLogStatisticsAggregation *)self labelToChildTiers];
 
-  if (!v6)
+  if (!labelToChildTiers)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     labelToChildTiers = self->_labelToChildTiers;
-    self->_labelToChildTiers = v7;
+    self->_labelToChildTiers = dictionary;
   }
 
-  v9 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
-  v10 = [v9 objectForKeyedSubscript:v5];
+  labelToChildTiers2 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
+  v10 = [labelToChildTiers2 objectForKeyedSubscript:v5];
 
   if (!v10)
   {
-    v10 = [[OSLogStatisticsAggregation alloc] initWithOSLogProxy:v12 tier:v4];
-    v11 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
-    [v11 setObject:v10 forKeyedSubscript:v5];
+    v10 = [[OSLogStatisticsAggregation alloc] initWithOSLogProxy:childrenCopy tier:_childTier];
+    labelToChildTiers3 = [(OSLogStatisticsAggregation *)self labelToChildTiers];
+    [labelToChildTiers3 setObject:v10 forKeyedSubscript:v5];
   }
 
-  [(OSLogStatisticsAggregation *)v10 _addTraceEvent:v12];
+  [(OSLogStatisticsAggregation *)v10 _addTraceEvent:childrenCopy];
 }
 
-- (OSLogStatisticsAggregation)initWithLabel:(id)a3 tier:(unsigned __int8)a4
+- (OSLogStatisticsAggregation)initWithLabel:(id)label tier:(unsigned __int8)tier
 {
-  v7 = a3;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = OSLogStatisticsAggregation;
   v8 = [(OSLogStatisticsAggregation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_label, a3);
-    v9->_tier = a4;
+    objc_storeStrong(&v8->_label, label);
+    v9->_tier = tier;
   }
 
   return v9;
@@ -120,22 +120,22 @@ uint64_t __49__OSLogStatisticsAggregation__descendingChildren__block_invoke(uint
   return [v3 _stringForTier:tier];
 }
 
-+ (id)_labelFromProxy:(id)a3 forTier:(unsigned __int8)a4
++ (id)_labelFromProxy:(id)proxy forTier:(unsigned __int8)tier
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4 <= 3)
+  tierCopy = tier;
+  proxyCopy = proxy;
+  v6 = proxyCopy;
+  if (tierCopy <= 3)
   {
-    if (v4 <= 1)
+    if (tierCopy <= 1)
     {
-      if (!v4)
+      if (!tierCopy)
       {
         v13 = 0;
         goto LABEL_26;
       }
 
-      if (v4 == 1)
+      if (tierCopy == 1)
       {
         v13 = @"All";
         goto LABEL_26;
@@ -146,9 +146,9 @@ LABEL_32:
       goto LABEL_26;
     }
 
-    if (v4 == 2)
+    if (tierCopy == 2)
     {
-      if ([v5 type] == 1536)
+      if ([proxyCopy type] == 1536)
       {
         v13 = @"os_signpost";
       }
@@ -166,54 +166,54 @@ LABEL_32:
       goto LABEL_26;
     }
 
-    v14 = [v5 process];
+    process = [proxyCopy process];
 LABEL_22:
-    v8 = v14;
+    v8 = process;
     v15 = @"Unknown";
-    if (v14)
+    if (process)
     {
-      v15 = v14;
+      v15 = process;
     }
 
     v13 = v15;
     goto LABEL_25;
   }
 
-  if (v4 <= 5)
+  if (tierCopy <= 5)
   {
-    if (v4 == 4)
+    if (tierCopy == 4)
     {
-      [v5 sender];
+      [proxyCopy sender];
     }
 
     else
     {
-      [v5 subsystem];
+      [proxyCopy subsystem];
     }
-    v14 = ;
+    process = ;
     goto LABEL_22;
   }
 
-  if (v4 == 6)
+  if (tierCopy == 6)
   {
-    v14 = [v5 category];
+    process = [proxyCopy category];
     goto LABEL_22;
   }
 
-  if (v4 != 7)
+  if (tierCopy != 7)
   {
-    if (v4 == 8)
+    if (tierCopy == 8)
     {
-      v7 = [v5 senderImageUUID];
-      v8 = [v7 copy];
+      senderImageUUID = [proxyCopy senderImageUUID];
+      v8 = [senderImageUUID copy];
 
       if (v8)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = [v8 UUIDString];
-        v11 = [v6 senderImageOffset];
-        v12 = [v6 formatString];
-        v13 = [v9 stringWithFormat:@"%@ + %llu : %@", v10, v11, v12];
+        uUIDString = [v8 UUIDString];
+        senderImageOffset = [v6 senderImageOffset];
+        formatString = [v6 formatString];
+        v13 = [v9 stringWithFormat:@"%@ + %llu : %@", uUIDString, senderImageOffset, formatString];
       }
 
       else
@@ -229,12 +229,12 @@ LABEL_25:
     goto LABEL_32;
   }
 
-  if ([v5 type] == 1536)
+  if ([proxyCopy type] == 1536)
   {
-    v17 = [v6 signpostType];
-    if (v17 <= 2)
+    signpostType = [v6 signpostType];
+    if (signpostType <= 2)
     {
-      v13 = off_2787AE7B0[v17];
+      v13 = off_2787AE7B0[signpostType];
       goto LABEL_26;
     }
 
@@ -248,12 +248,12 @@ LABEL_46:
     goto LABEL_26;
   }
 
-  v18 = [v6 logType];
-  if (v18 <= 1)
+  logType = [v6 logType];
+  if (logType <= 1)
   {
-    if (v18)
+    if (logType)
     {
-      if (v18 == 1)
+      if (logType == 1)
       {
         v13 = @"Info";
         goto LABEL_26;
@@ -267,7 +267,7 @@ LABEL_46:
 
   else
   {
-    switch(v18)
+    switch(logType)
     {
       case 2:
         v13 = @"Debug";
@@ -288,16 +288,16 @@ LABEL_26:
   return v13;
 }
 
-+ (id)_stringForTier:(unsigned __int8)a3
++ (id)_stringForTier:(unsigned __int8)tier
 {
-  if (a3 > 8u)
+  if (tier > 8u)
   {
     return @"Unexpected";
   }
 
   else
   {
-    return off_2787AE768[a3];
+    return off_2787AE768[tier];
   }
 }
 

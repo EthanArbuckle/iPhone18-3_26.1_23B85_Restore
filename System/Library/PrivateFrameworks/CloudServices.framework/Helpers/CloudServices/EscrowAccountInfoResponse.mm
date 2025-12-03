@@ -1,14 +1,14 @@
 @interface EscrowAccountInfoResponse
 - (NSArray)accountInfo;
-- (id)initFromResponseFilterPCS:(id)a3;
+- (id)initFromResponseFilterPCS:(id)s;
 @end
 
 @implementation EscrowAccountInfoResponse
 
 - (NSArray)accountInfo
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"metadataList"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"metadataList"];
 
   v28 = objc_alloc_init(NSMutableArray);
   v32 = 0u;
@@ -105,30 +105,30 @@
   return v28;
 }
 
-- (id)initFromResponseFilterPCS:(id)a3
+- (id)initFromResponseFilterPCS:(id)s
 {
-  v4 = a3;
-  v5 = [v4 error];
+  sCopy = s;
+  error = [sCopy error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [v4 error];
+    error2 = [sCopy error];
     v31.receiver = self;
     v31.super_class = EscrowAccountInfoResponse;
-    v7 = [(LakituResponse *)&v31 initWithError:v6];
+    v7 = [(LakituResponse *)&v31 initWithError:error2];
 
     v8 = v7;
   }
 
   else
   {
-    v24 = self;
-    v9 = [v4 responseDictionary];
-    v23 = [v9 mutableCopy];
+    selfCopy = self;
+    responseDictionary = [sCopy responseDictionary];
+    v23 = [responseDictionary mutableCopy];
 
-    v25 = v4;
-    v10 = [v4 responseDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"metadataList"];
+    v25 = sCopy;
+    responseDictionary2 = [sCopy responseDictionary];
+    v11 = [responseDictionary2 objectForKeyedSubscript:@"metadataList"];
 
     v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
     v27 = 0u;
@@ -177,11 +177,11 @@
     }
 
     [v23 setObject:v12 forKeyedSubscript:@"metadataList"];
-    v26.receiver = v24;
+    v26.receiver = selfCopy;
     v26.super_class = EscrowAccountInfoResponse;
     v8 = [(LakituResponse *)&v26 initWithResponseDictionary:v23];
 
-    v4 = v25;
+    sCopy = v25;
   }
 
   return v8;

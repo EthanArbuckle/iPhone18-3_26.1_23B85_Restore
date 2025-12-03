@@ -1,38 +1,38 @@
 @interface FPModifyFavoritesOperation
-- (FPModifyFavoritesOperation)initWithItems:(id)a3 favoriteRanks:(id)a4 isUnfavorite:(BOOL)a5;
+- (FPModifyFavoritesOperation)initWithItems:(id)items favoriteRanks:(id)ranks isUnfavorite:(BOOL)unfavorite;
 - (id)fp_prettyDescription;
-- (id)replicateForItems:(id)a3;
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4;
+- (id)replicateForItems:(id)items;
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index;
 @end
 
 @implementation FPModifyFavoritesOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [FPModifyFavoritesOperation alloc];
-  v6 = [(FPTransformOperation *)self items];
-  v7 = [v6 fp_pickItemsFromArray:self->_ranks correspondingToIndexesOfItemsInArray:v4];
-  v8 = [(FPModifyFavoritesOperation *)v5 initWithItems:v4 favoriteRanks:v7 isUnfavorite:self->_isUnfavorite];
+  items = [(FPTransformOperation *)self items];
+  v7 = [items fp_pickItemsFromArray:self->_ranks correspondingToIndexesOfItemsInArray:itemsCopy];
+  v8 = [(FPModifyFavoritesOperation *)v5 initWithItems:itemsCopy favoriteRanks:v7 isUnfavorite:self->_isUnfavorite];
 
   return v8;
 }
 
-- (FPModifyFavoritesOperation)initWithItems:(id)a3 favoriteRanks:(id)a4 isUnfavorite:(BOOL)a5
+- (FPModifyFavoritesOperation)initWithItems:(id)items favoriteRanks:(id)ranks isUnfavorite:(BOOL)unfavorite
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  ranksCopy = ranks;
   v14.receiver = self;
   v14.super_class = FPModifyFavoritesOperation;
-  v10 = [(FPTransformOperation *)&v14 initWithItemsOfDifferentProviders:v8 action:0];
+  v10 = [(FPTransformOperation *)&v14 initWithItemsOfDifferentProviders:itemsCopy action:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ranks, a4);
-    v11->_isUnfavorite = a5;
-    if (!a5)
+    objc_storeStrong(&v10->_ranks, ranks);
+    v11->_isUnfavorite = unfavorite;
+    if (!unfavorite)
     {
-      v12 = [v8 count];
+      v12 = [itemsCopy count];
       if (v12 != [(NSArray *)v11->_ranks count])
       {
         [FPModifyFavoritesOperation initWithItems:favoriteRanks:isUnfavorite:];
@@ -45,18 +45,18 @@
   return v11;
 }
 
-- (unint64_t)transformItem:(id)a3 atIndex:(unint64_t)a4
+- (unint64_t)transformItem:(id)item atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  itemCopy = item;
+  v7 = itemCopy;
   if (self->_isUnfavorite)
   {
-    [v6 setFavoriteRank:0];
+    [itemCopy setFavoriteRank:0];
   }
 
   else
   {
-    v8 = [(NSArray *)self->_ranks objectAtIndexedSubscript:a4];
+    v8 = [(NSArray *)self->_ranks objectAtIndexedSubscript:index];
     [v7 setFavoriteRank:v8];
   }
 
@@ -69,9 +69,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = FPAbbreviatedArrayDescription(self->_ranks);
-  v5 = [(FPTransformOperation *)self items];
-  v6 = [v5 fp_itemIdentifiers];
-  v7 = FPAbbreviatedArrayDescription(v6);
+  items = [(FPTransformOperation *)self items];
+  fp_itemIdentifiers = [items fp_itemIdentifiers];
+  v7 = FPAbbreviatedArrayDescription(fp_itemIdentifiers);
   v8 = [v3 stringWithFormat:@"set favorite rank %@ on %@", v4, v7];
 
   return v8;

@@ -1,26 +1,26 @@
 @interface AMSDeviceOfferRegistrationPrivacyValidator
-+ (BOOL)_isPrivacyAcknowledgementForIdentifier:(id)a3 satisfiedOnAccount:(id)a4;
-+ (BOOL)_isPrivacyAcknowledgementForIdentifiers:(id)a3 satisfiedOnAccount:(id)a4;
-+ (id)_identifiersForValidationOptions:(unint64_t)a3;
-+ (id)_minimumAcknowledgementVersionForIdentifier:(id)a3;
++ (BOOL)_isPrivacyAcknowledgementForIdentifier:(id)identifier satisfiedOnAccount:(id)account;
++ (BOOL)_isPrivacyAcknowledgementForIdentifiers:(id)identifiers satisfiedOnAccount:(id)account;
++ (id)_identifiersForValidationOptions:(unint64_t)options;
++ (id)_minimumAcknowledgementVersionForIdentifier:(id)identifier;
 + (id)_privacyVersionMap;
-- (AMSDeviceOfferRegistrationPrivacyValidator)initWithAccount:(id)a3;
+- (AMSDeviceOfferRegistrationPrivacyValidator)initWithAccount:(id)account;
 - (BOOL)canMasterDevicePerformRegistration;
-- (BOOL)isPrivacyRequirementMetForOptions:(unint64_t)a3;
+- (BOOL)isPrivacyRequirementMetForOptions:(unint64_t)options;
 @end
 
 @implementation AMSDeviceOfferRegistrationPrivacyValidator
 
-- (AMSDeviceOfferRegistrationPrivacyValidator)initWithAccount:(id)a3
+- (AMSDeviceOfferRegistrationPrivacyValidator)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AMSDeviceOfferRegistrationPrivacyValidator;
   v6 = [(AMSDeviceOfferRegistrationPrivacyValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -28,25 +28,25 @@
 
 - (BOOL)canMasterDevicePerformRegistration
 {
-  v3 = [objc_opt_class() _masterEligibilityPrivacyOptionsIdentifiers];
+  _masterEligibilityPrivacyOptionsIdentifiers = [objc_opt_class() _masterEligibilityPrivacyOptionsIdentifiers];
   v4 = objc_opt_class();
-  v5 = [(AMSDeviceOfferRegistrationPrivacyValidator *)self account];
-  LOBYTE(v4) = [v4 _isPrivacyAcknowledgementForIdentifiers:v3 satisfiedOnAccount:v5];
+  account = [(AMSDeviceOfferRegistrationPrivacyValidator *)self account];
+  LOBYTE(v4) = [v4 _isPrivacyAcknowledgementForIdentifiers:_masterEligibilityPrivacyOptionsIdentifiers satisfiedOnAccount:account];
 
   return v4;
 }
 
-- (BOOL)isPrivacyRequirementMetForOptions:(unint64_t)a3
+- (BOOL)isPrivacyRequirementMetForOptions:(unint64_t)options
 {
-  v4 = [objc_opt_class() _identifiersForValidationOptions:a3];
+  v4 = [objc_opt_class() _identifiersForValidationOptions:options];
   v5 = objc_opt_class();
-  v6 = [(AMSDeviceOfferRegistrationPrivacyValidator *)self account];
-  LOBYTE(v5) = [v5 _isPrivacyAcknowledgementForIdentifiers:v4 satisfiedOnAccount:v6];
+  account = [(AMSDeviceOfferRegistrationPrivacyValidator *)self account];
+  LOBYTE(v5) = [v5 _isPrivacyAcknowledgementForIdentifiers:v4 satisfiedOnAccount:account];
 
   return v5;
 }
 
-+ (id)_identifiersForValidationOptions:(unint64_t)a3
++ (id)_identifiersForValidationOptions:(unint64_t)options
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = +[AMSLogConfig sharedConfig];
@@ -55,8 +55,8 @@
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -65,22 +65,22 @@
     v17 = 2114;
     v18 = v7;
     v19 = 2048;
-    v20 = a3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Identifier check value: %lu.", &v15, 0x20u);
+    optionsCopy = options;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Identifier check value: %lu.", &v15, 0x20u);
   }
 
-  if (a3)
+  if (options)
   {
     v8 = objc_opt_new();
-    if (a3)
+    if (options)
     {
       v12 = +[AMSAcknowledgePrivacyTask _appleIDPrivacyIdentifier];
       [v8 addObject:v12];
 
-      if ((a3 & 2) == 0)
+      if ((options & 2) == 0)
       {
 LABEL_8:
-        if ((a3 & 4) == 0)
+        if ((options & 4) == 0)
         {
           goto LABEL_9;
         }
@@ -89,7 +89,7 @@ LABEL_8:
       }
     }
 
-    else if ((a3 & 2) == 0)
+    else if ((options & 2) == 0)
     {
       goto LABEL_8;
     }
@@ -97,10 +97,10 @@ LABEL_8:
     v13 = +[AMSAcknowledgePrivacyTask _appleArcadePrivacyIdentifier];
     [v8 addObject:v13];
 
-    if ((a3 & 4) == 0)
+    if ((options & 4) == 0)
     {
 LABEL_9:
-      if ((a3 & 8) == 0)
+      if ((options & 8) == 0)
       {
 LABEL_11:
         v10 = [v8 copy];
@@ -119,7 +119,7 @@ LABEL_18:
     v14 = +[AMSAcknowledgePrivacyTask _appleMusicAppPrivacyIdentifier];
     [v8 addObject:v14];
 
-    if ((a3 & 8) == 0)
+    if ((options & 8) == 0)
     {
       goto LABEL_11;
     }
@@ -133,15 +133,15 @@ LABEL_13:
   return v10;
 }
 
-+ (BOOL)_isPrivacyAcknowledgementForIdentifier:(id)a3 satisfiedOnAccount:(id)a4
++ (BOOL)_isPrivacyAcknowledgementForIdentifier:(id)identifier satisfiedOnAccount:(id)account
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _minimumAcknowledgementVersionForIdentifier:v6];
+  identifierCopy = identifier;
+  accountCopy = account;
+  v8 = [self _minimumAcknowledgementVersionForIdentifier:identifierCopy];
   if (v8)
   {
-    v9 = [AMSAcknowledgePrivacyTask hasPreviouslyAcknowledgedPrivacyIdentifier:v6 account:v7 minimumVersion:v8];
+    v9 = [AMSAcknowledgePrivacyTask hasPreviouslyAcknowledgedPrivacyIdentifier:identifierCopy account:accountCopy minimumVersion:v8];
   }
 
   else
@@ -152,8 +152,8 @@ LABEL_13:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -162,8 +162,8 @@ LABEL_13:
       v17 = 2114;
       v18 = v13;
       v19 = 2114;
-      v20 = v6;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No version specified for GDPR identifier [%{public}@], returning false", &v15, 0x20u);
+      v20 = identifierCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No version specified for GDPR identifier [%{public}@], returning false", &v15, 0x20u);
     }
 
     v9 = 0;
@@ -172,25 +172,25 @@ LABEL_13:
   return v9;
 }
 
-+ (BOOL)_isPrivacyAcknowledgementForIdentifiers:(id)a3 satisfiedOnAccount:(id)a4
++ (BOOL)_isPrivacyAcknowledgementForIdentifiers:(id)identifiers satisfiedOnAccount:(id)account
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  accountCopy = account;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v6 && [v6 count])
+  if (identifiersCopy && [identifiersCopy count])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __105__AMSDeviceOfferRegistrationPrivacyValidator__isPrivacyAcknowledgementForIdentifiers_satisfiedOnAccount___block_invoke;
     v14[3] = &unk_1E73B6E88;
     v16 = &v18;
-    v17 = a1;
-    v15 = v7;
-    [v6 enumerateObjectsUsingBlock:v14];
+    selfCopy = self;
+    v15 = accountCopy;
+    [identifiersCopy enumerateObjectsUsingBlock:v14];
 
     v8 = *(v19 + 24);
   }
@@ -203,8 +203,8 @@ LABEL_13:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -212,7 +212,7 @@ LABEL_13:
       v23 = v11;
       v24 = 2114;
       v25 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No required GDPR identifiers.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No required GDPR identifiers.", buf, 0x16u);
     }
 
     v8 = 1;
@@ -270,13 +270,13 @@ void __105__AMSDeviceOfferRegistrationPrivacyValidator__isPrivacyAcknowledgement
   }
 }
 
-+ (id)_minimumAcknowledgementVersionForIdentifier:(id)a3
++ (id)_minimumAcknowledgementVersionForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [a1 _privacyVersionMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    identifierCopy = identifier;
+    _privacyVersionMap = [self _privacyVersionMap];
+    v6 = [_privacyVersionMap objectForKeyedSubscript:identifierCopy];
   }
 
   else

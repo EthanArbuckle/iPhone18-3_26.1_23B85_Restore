@@ -1,16 +1,16 @@
 @interface WMState
-- (BOOL)containsParagraph:(id)a3;
-- (BOOL)isCurrentListDefinitionId:(int)a3;
+- (BOOL)containsParagraph:(id)paragraph;
+- (BOOL)isCurrentListDefinitionId:(int)id;
 - (WMState)init;
 - (float)pageOffset;
-- (id)listStateForListDefinitionId:(int)a3;
-- (id)listStateForListDefinitionWithId:(int)a3 settingUpStateIfNeededWithDocument:(id)a4;
+- (id)listStateForListDefinitionId:(int)id;
+- (id)listStateForListDefinitionWithId:(int)id settingUpStateIfNeededWithDocument:(id)document;
 - (void)clearCurrentListState;
 - (void)dealloc;
 - (void)popParagraph;
-- (void)pushParagraph:(id)a3;
-- (void)setCurrentListState:(id)a3;
-- (void)setListState:(id)a3 forListDefinitionId:(int)a4;
+- (void)pushParagraph:(id)paragraph;
+- (void)setCurrentListState:(id)state;
+- (void)setListState:(id)state forListDefinitionId:(int)id;
 @end
 
 @implementation WMState
@@ -72,41 +72,41 @@
   }
 }
 
-- (void)setCurrentListState:(id)a3
+- (void)setCurrentListState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(WMState *)self clearCurrentListState];
   currentListState = self->currentListState;
-  self->currentListState = v4;
+  self->currentListState = stateCopy;
 }
 
-- (BOOL)isCurrentListDefinitionId:(int)a3
+- (BOOL)isCurrentListDefinitionId:(int)id
 {
   if (![(WMState *)self isCurrentListStateOverridden])
   {
     return 0;
   }
 
-  v5 = [(WMState *)self currentListState];
-  v6 = [v5 listDefinition];
-  v7 = [v6 listDefinitionId] == a3;
+  currentListState = [(WMState *)self currentListState];
+  listDefinition = [currentListState listDefinition];
+  v7 = [listDefinition listDefinitionId] == id;
 
   return v7;
 }
 
-- (id)listStateForListDefinitionId:(int)a3
+- (id)listStateForListDefinitionId:(int)id
 {
   listStates = self->listStates;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&id];
   v5 = [(NSMutableDictionary *)listStates objectForKey:v4];
 
   return v5;
 }
 
-- (id)listStateForListDefinitionWithId:(int)a3 settingUpStateIfNeededWithDocument:(id)a4
+- (id)listStateForListDefinitionWithId:(int)id settingUpStateIfNeededWithDocument:(id)document
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&id;
+  documentCopy = document;
   v7 = [(WMState *)self listStateForListDefinitionId:v4];
   if (v7)
   {
@@ -115,7 +115,7 @@
 
   else
   {
-    v9 = [v6 listDefinitionWithListDefinitionId:v4];
+    v9 = [documentCopy listDefinitionWithListDefinitionId:v4];
     v10 = [[CMOutlineState alloc] initWithListDefinition:v9];
     [(WMState *)self setListState:v10 forListDefinitionId:v4];
     v8 = v10;
@@ -124,10 +124,10 @@
   return v8;
 }
 
-- (void)setListState:(id)a3 forListDefinitionId:(int)a4
+- (void)setListState:(id)state forListDefinitionId:(int)id
 {
-  v4 = *&a4;
-  v10 = a3;
+  v4 = *&id;
+  stateCopy = state;
   listStates = self->listStates;
   if (!listStates)
   {
@@ -139,27 +139,27 @@
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithInt:v4];
-  [(NSMutableDictionary *)listStates setObject:v10 forKey:v9];
+  [(NSMutableDictionary *)listStates setObject:stateCopy forKey:v9];
 }
 
-- (void)pushParagraph:(id)a3
+- (void)pushParagraph:(id)paragraph
 {
-  v5 = a3;
-  v4 = [(WMState *)self paragraphStack];
-  [v4 addObject:v5];
+  paragraphCopy = paragraph;
+  paragraphStack = [(WMState *)self paragraphStack];
+  [paragraphStack addObject:paragraphCopy];
 }
 
 - (void)popParagraph
 {
-  v2 = [(WMState *)self paragraphStack];
-  [v2 removeLastObject];
+  paragraphStack = [(WMState *)self paragraphStack];
+  [paragraphStack removeLastObject];
 }
 
-- (BOOL)containsParagraph:(id)a3
+- (BOOL)containsParagraph:(id)paragraph
 {
-  v4 = a3;
-  v5 = [(WMState *)self paragraphStack];
-  v6 = [v5 containsObject:v4];
+  paragraphCopy = paragraph;
+  paragraphStack = [(WMState *)self paragraphStack];
+  v6 = [paragraphStack containsObject:paragraphCopy];
 
   return v6;
 }

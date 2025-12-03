@@ -1,32 +1,32 @@
 @interface CAMSharedLibraryStatusIndicator
 - (BOOL)shouldFillOutlineForCurrentState;
 - (BOOL)shouldUseActiveTintForCurrentState;
-- (void)setSharedLibraryMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)setSharedLibraryMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMSharedLibraryStatusIndicator
 
-- (void)setSharedLibraryMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setSharedLibraryMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_sharedLibraryMode != a3)
+  if (self->_sharedLibraryMode != mode)
   {
-    self->_sharedLibraryMode = a3;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a4];
+    self->_sharedLibraryMode = mode;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 
 - (BOOL)shouldUseActiveTintForCurrentState
 {
-  v2 = [(CAMSharedLibraryStatusIndicator *)self sharedLibraryMode];
+  sharedLibraryMode = [(CAMSharedLibraryStatusIndicator *)self sharedLibraryMode];
 
-  return CAMSharedLibraryModeIsOn(v2);
+  return CAMSharedLibraryModeIsOn(sharedLibraryMode);
 }
 
 - (BOOL)shouldFillOutlineForCurrentState
 {
-  v2 = [(CAMSharedLibraryStatusIndicator *)self sharedLibraryMode];
+  sharedLibraryMode = [(CAMSharedLibraryStatusIndicator *)self sharedLibraryMode];
 
-  return CAMSharedLibraryModeIsOn(v2);
+  return CAMSharedLibraryModeIsOn(sharedLibraryMode);
 }
 
 @end

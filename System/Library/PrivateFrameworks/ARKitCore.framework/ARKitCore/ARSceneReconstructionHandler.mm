@@ -1,32 +1,32 @@
 @interface ARSceneReconstructionHandler
 - (ARSceneReconstructionDelegate)delegate;
-- (ARSceneReconstructionHandler)initWithSceneReconstruction:(unint64_t)a3 options:(id)a4 slamSessionHandle:(CV3DSLAMSession *)a5;
-- (BOOL)_canReconfigureExistingSessionForSceneReconstruction:(unint64_t)a3 options:(id)a4;
-- (BOOL)_configureMeshingConfiguration:(CV3DReconMeshingConfiguration *)a3 error:(id *)a4;
-- (BOOL)_lockAndExecuteBlock:(id)a3;
-- (BOOL)_lockAndExecuteCFErrorBlockWithErrorMessage:(id)a3 cfErrorBlock:(id)a4 failSession:(BOOL)a5;
-- (BOOL)_lockAndExecuteNSErrorBlock:(id)a3;
-- (BOOL)_reconfigureSession:(CV3DReconSession *)a3 error:(id *)a4;
-- (BOOL)_recreateReconstructionSessionWithError:(id *)a3;
-- (BOOL)queryOccupancyWithPoints:(id)a3 callback:(id)a4;
-- (__CVBuffer)postProcessConfidenceBuffer:(__CVBuffer *)a3 fromSegmentationData:(id)a4;
+- (ARSceneReconstructionHandler)initWithSceneReconstruction:(unint64_t)reconstruction options:(id)options slamSessionHandle:(CV3DSLAMSession *)handle;
+- (BOOL)_canReconfigureExistingSessionForSceneReconstruction:(unint64_t)reconstruction options:(id)options;
+- (BOOL)_configureMeshingConfiguration:(CV3DReconMeshingConfiguration *)configuration error:(id *)error;
+- (BOOL)_lockAndExecuteBlock:(id)block;
+- (BOOL)_lockAndExecuteCFErrorBlockWithErrorMessage:(id)message cfErrorBlock:(id)block failSession:(BOOL)session;
+- (BOOL)_lockAndExecuteNSErrorBlock:(id)block;
+- (BOOL)_reconfigureSession:(CV3DReconSession *)session error:(id *)error;
+- (BOOL)_recreateReconstructionSessionWithError:(id *)error;
+- (BOOL)queryOccupancyWithPoints:(id)points callback:(id)callback;
+- (__CVBuffer)postProcessConfidenceBuffer:(__CVBuffer *)buffer fromSegmentationData:(id)data;
 - (id).cxx_construct;
 - (int64_t)_reconfigureSessionAndHandleError;
 - (int64_t)_recreateSessionAndHandleError;
-- (int64_t)reconfigureSceneReconstruction:(unint64_t)a3 options:(id)a4;
-- (uint64_t)bufferSlamState:(uint64_t)a1;
-- (void)_didReceiveKeyframeListUpdateCallbackWithKeyframeList:(CV3DReconKeyframeList *)a3 timestamp:(double)a4 error:(__CFError *)a5;
-- (void)_didReceiveMeshListUpdateCallbackWithMeshList:(CV3DReconMeshList *)a3 timestamp:(double)a4 error:(__CFError *)a5;
+- (int64_t)reconfigureSceneReconstruction:(unint64_t)reconstruction options:(id)options;
+- (uint64_t)bufferSlamState:(uint64_t)state;
+- (void)_didReceiveKeyframeListUpdateCallbackWithKeyframeList:(CV3DReconKeyframeList *)list timestamp:(double)timestamp error:(__CFError *)error;
+- (void)_didReceiveMeshListUpdateCallbackWithMeshList:(CV3DReconMeshList *)list timestamp:(double)timestamp error:(__CFError *)error;
 - (void)_setupSLAMStateBuffering;
-- (void)bufferSlamState:(CV3DSLAMStateContext *)a3;
-- (void)bufferSlamState:(std::__shared_weak_count *)a1;
+- (void)bufferSlamState:(CV3DSLAMStateContext *)state;
+- (void)bufferSlamState:(std::__shared_weak_count *)state;
 - (void)dealloc;
-- (void)failWithError:(id)a3;
-- (void)handleCFError:(__CFError *)a3 withErrorMessage:(id)a4 failSession:(BOOL)a5;
-- (void)meshPlaneHarmonizationShouldEnable:(BOOL)a3;
+- (void)failWithError:(id)error;
+- (void)handleCFError:(__CFError *)error withErrorMessage:(id)message failSession:(BOOL)session;
+- (void)meshPlaneHarmonizationShouldEnable:(BOOL)enable;
 - (void)pause;
-- (void)processPlaneList:(CV3DPlaneDetectionPlaneList *)a3;
-- (void)pushDepth:(id)a3 semanticSegmentation:(id)a4 personSegmentation:(id)a5 pose:(id)a6;
+- (void)processPlaneList:(CV3DPlaneDetectionPlaneList *)list;
+- (void)pushDepth:(id)depth semanticSegmentation:(id)segmentation personSegmentation:(id)personSegmentation pose:(id)pose;
 - (void)reset;
 - (void)start;
 - (void)swapSlamStateBuffers;
@@ -34,9 +34,9 @@
 
 @implementation ARSceneReconstructionHandler
 
-- (ARSceneReconstructionHandler)initWithSceneReconstruction:(unint64_t)a3 options:(id)a4 slamSessionHandle:(CV3DSLAMSession *)a5
+- (ARSceneReconstructionHandler)initWithSceneReconstruction:(unint64_t)reconstruction options:(id)options slamSessionHandle:(CV3DSLAMSession *)handle
 {
-  v9 = a4;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = ARSceneReconstructionHandler;
   v10 = [(ARSceneReconstructionHandler *)&v13 init];
@@ -44,9 +44,9 @@
   if (v10)
   {
     v10->_sessionActivated = 0;
-    v10->_sceneReconstruction = a3;
-    objc_storeStrong(&v10->_options, a4);
-    v11->_slamSessionHandle = a5;
+    v10->_sceneReconstruction = reconstruction;
+    objc_storeStrong(&v10->_options, options);
+    v11->_slamSessionHandle = handle;
     CV3DSLAMSessionRetain();
     v11->_slamStateBufferBackLock._os_unfair_lock_opaque = 0;
     v11->_reconstructionSessionLock._os_unfair_lock_opaque = 0;
@@ -55,10 +55,10 @@
   return v11;
 }
 
-- (void)bufferSlamState:(CV3DSLAMStateContext *)a3
+- (void)bufferSlamState:(CV3DSLAMStateContext *)state
 {
   CV3DSLAMStateRetain();
-  v4 = a3;
+  stateCopy = state;
   operator new();
 }
 
@@ -85,7 +85,7 @@
         v13 = 138543618;
         v14 = v8;
         v15 = 2048;
-        v16 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unexpected non-empty slam state buffer; discarding...", &v13, 0x16u);
       }
     }
@@ -97,7 +97,7 @@
       v13 = 138543618;
       v14 = v10;
       v15 = 2048;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unexpected non-empty slam state buffer; discarding...", &v13, 0x16u);
     }
 
@@ -114,7 +114,7 @@
   os_unfair_lock_unlock(&self->_slamStateBufferBackLock);
 }
 
-- (BOOL)_recreateReconstructionSessionWithError:(id *)a3
+- (BOOL)_recreateReconstructionSessionWithError:(id *)error
 {
   v98 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_reconstructionSessionLock);
@@ -177,7 +177,7 @@
             if ((CV3DReconSessionConfigurationSetMinDepthConfidence() & 1) == 0)
             {
               v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error setting reconstruction session minimum depth confidence to %f", v11];
-              ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, v19);
+              ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, v19);
               goto LABEL_35;
             }
 
@@ -192,7 +192,7 @@ LABEL_60:
               v35 = CV3DReconMeshingConfigurationCreateWithPrivatePreset();
               if (!v35)
               {
-                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error creating meshing configuration");
+                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error creating meshing configuration");
                 goto LABEL_31;
               }
 
@@ -201,7 +201,7 @@ LABEL_60:
               v71 = __72__ARSceneReconstructionHandler__recreateReconstructionSessionWithError___block_invoke_38;
               v72 = &__block_descriptor_40_e5_v8__0l;
               v73 = v35;
-              if ([(ARSceneReconstructionHandler *)self _configureMeshingConfiguration:v35 error:a3])
+              if ([(ARSceneReconstructionHandler *)self _configureMeshingConfiguration:v35 error:error])
               {
                 if (CV3DReconMeshingConfigurationAddPrivateMeshIntegrationAttribute())
                 {
@@ -211,7 +211,7 @@ LABEL_60:
                     goto LABEL_77;
                   }
 
-                  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error setting meshing configuration");
+                  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error setting meshing configuration");
                 }
 
                 else
@@ -233,7 +233,7 @@ LABEL_60:
                       *buf = 138543874;
                       v93 = v41;
                       v94 = 2048;
-                      v95 = self;
+                      selfCopy8 = self;
                       v96 = 2112;
                       v97 = v91;
                       loga = v41;
@@ -251,7 +251,7 @@ LABEL_60:
                       *buf = 138543874;
                       v93 = v43;
                       v94 = 2048;
-                      v95 = self;
+                      selfCopy8 = self;
                       v96 = 2112;
                       v97 = v91;
                       logb = v43;
@@ -272,7 +272,7 @@ LABEL_77:
 LABEL_78:
               if ((CV3DReconSessionConfigurationEnableSynchronousScheduling() & 1) == 0)
               {
-                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error setting scheduling mode in reconstruction session configuration");
+                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error setting scheduling mode in reconstruction session configuration");
                 goto LABEL_31;
               }
 
@@ -300,7 +300,7 @@ LABEL_78:
                       objc_copyWeak(&v65, &location);
                       if ((CV3DReconSessionAddOnMeshListUpdateCallback() & 1) == 0)
                       {
-                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error setting meshing list update callback");
+                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error setting meshing list update callback");
                         objc_destroyWeak(&v65);
                         goto LABEL_110;
                       }
@@ -313,7 +313,7 @@ LABEL_78:
                       objc_copyWeak(v64, &location);
                       if ((CV3DReconSessionAddOnKeyframeListUpdateCallback() & 1) == 0)
                       {
-                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error setting keyframe list update callback");
+                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error setting keyframe list update callback");
                         objc_destroyWeak(v64);
                         goto LABEL_110;
                       }
@@ -321,13 +321,13 @@ LABEL_78:
                       objc_destroyWeak(v64);
                     }
 
-                    if ([(ARSceneReconstructionHandler *)self _reconfigureSession:v46 error:a3])
+                    if ([(ARSceneReconstructionHandler *)self _reconfigureSession:v46 error:error])
                     {
                       if ((sceneReconstruction & 0x80) != 0 && (CV3DReconSessionEnablePerFrameMeshColor() & 1) == 0)
                       {
                         v54 = v91;
                         v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error enabling per-frame mesh color"];
-                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v54, v55);
+                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v54, v55);
                       }
 
                       else
@@ -350,7 +350,7 @@ LABEL_111:
                         }
 
                         v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error %@ per-frame mesh color", v57];
-                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v56, v58);
+                        ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v56, v58);
                       }
                     }
 
@@ -359,7 +359,7 @@ LABEL_110:
                     goto LABEL_111;
                   }
 
-                  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error creating reconstruction session");
+                  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error creating reconstruction session");
 LABEL_31:
                   v7 = 0;
 LABEL_32:
@@ -379,22 +379,22 @@ LABEL_32:
                 }
 
                 v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error %s consume VIO metadata in reconstruction session configuration", v53];
-                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v52, v19);
+                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v52, v19);
               }
 
               else
               {
                 v48 = v91;
                 v49 = MEMORY[0x1E696AEC0];
-                v50 = [(ARSceneReconstructionOptions *)self->_options deterministicMode];
+                deterministicMode = [(ARSceneReconstructionOptions *)self->_options deterministicMode];
                 v51 = "disabling";
-                if (v50)
+                if (deterministicMode)
                 {
                   v51 = "enabling";
                 }
 
                 v19 = [v49 stringWithFormat:@"Error %s deterministic mode in reconstruction session configuration", v51];
-                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v48, v19);
+                ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v48, v19);
               }
 
 LABEL_35:
@@ -405,7 +405,7 @@ LABEL_35:
             v12 = CV3DReconMeshingConfigurationCreateWithPrivatePreset();
             if (!v12)
             {
-              ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error creating meshing configuration");
+              ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error creating meshing configuration");
               goto LABEL_31;
             }
 
@@ -414,7 +414,7 @@ LABEL_35:
             v75 = __72__ARSceneReconstructionHandler__recreateReconstructionSessionWithError___block_invoke_5;
             v76 = &__block_descriptor_40_e5_v8__0l;
             v77 = v12;
-            if (![(ARSceneReconstructionHandler *)self _configureMeshingConfiguration:v12 error:a3])
+            if (![(ARSceneReconstructionHandler *)self _configureMeshingConfiguration:v12 error:error])
             {
               goto LABEL_58;
             }
@@ -438,7 +438,7 @@ LABEL_35:
                   *buf = 138543874;
                   v93 = v23;
                   v94 = 2048;
-                  v95 = self;
+                  selfCopy8 = self;
                   v96 = 2112;
                   v97 = v91;
                   _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error adding semantics to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -452,7 +452,7 @@ LABEL_35:
                 *buf = 138543874;
                 v93 = v26;
                 v94 = 2048;
-                v95 = self;
+                selfCopy8 = self;
                 v96 = 2112;
                 v97 = v91;
                 _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error adding semantics to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -482,7 +482,7 @@ LABEL_35:
                     *buf = 138543874;
                     v93 = v30;
                     v94 = 2048;
-                    v95 = self;
+                    selfCopy8 = self;
                     v96 = 2112;
                     v97 = v91;
                     _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error removing color to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -496,7 +496,7 @@ LABEL_35:
                   *buf = 138543874;
                   v93 = v34;
                   v94 = 2048;
-                  v95 = self;
+                  selfCopy8 = self;
                   v96 = 2112;
                   v97 = v91;
                   _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error removing color to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -525,7 +525,7 @@ LABEL_35:
                   *buf = 138543874;
                   v93 = v16;
                   v94 = 2048;
-                  v95 = self;
+                  selfCopy8 = self;
                   v96 = 2112;
                   v97 = v91;
                   _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error adding color to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -539,7 +539,7 @@ LABEL_35:
                 *buf = 138543874;
                 v93 = v32;
                 v94 = 2048;
-                v95 = self;
+                selfCopy8 = self;
                 v96 = 2112;
                 v97 = v91;
                 _os_log_impl(&dword_1C241C000, log, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error adding color to reconstruction session meshing configuration: %@", buf, 0x20u);
@@ -556,7 +556,7 @@ LABEL_57:
               goto LABEL_59;
             }
 
-            ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error setting meshing configuration");
+            ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error setting meshing configuration");
 LABEL_58:
             v24 = 0;
 LABEL_59:
@@ -589,11 +589,11 @@ LABEL_59:
       v17 = @"Error setting reconstruction session configuration slam adapter callbacks";
     }
 
-    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, v17);
+    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, v17);
     goto LABEL_31;
   }
 
-  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a3, v91, @"Error enabling color attribute");
+  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, v91, @"Error enabling color attribute");
   v7 = 0;
 LABEL_33:
   v88(v87);
@@ -660,16 +660,16 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
   [WeakRetained bufferSlamState:a2];
 }
 
-- (BOOL)_canReconfigureExistingSessionForSceneReconstruction:(unint64_t)a3 options:(id)a4
+- (BOOL)_canReconfigureExistingSessionForSceneReconstruction:(unint64_t)reconstruction options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   os_unfair_lock_assert_owner(&self->_reconstructionSessionLock);
-  v7 = self->_reconstructionSession && [(ARSceneReconstructionOptions *)self->_options isEqual:v6]&& (self->_sceneReconstruction ^ a3) == 2;
+  v7 = self->_reconstructionSession && [(ARSceneReconstructionOptions *)self->_options isEqual:optionsCopy]&& (self->_sceneReconstruction ^ reconstruction) == 2;
 
   return v7;
 }
 
-- (BOOL)_reconfigureSession:(CV3DReconSession *)a3 error:(id *)a4
+- (BOOL)_reconfigureSession:(CV3DReconSession *)session error:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_reconstructionSessionLock);
   if ((self->_sceneReconstruction & 1) == 0)
@@ -692,7 +692,7 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
     }
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error %@ per-frame mesh color", v8];
-    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a4, 0, v9);
+    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, 0, v9);
   }
 
   else
@@ -704,13 +704,13 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
     }
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error %@ per-frame mesh semantics", v10];
-    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a4, 0, v9);
+    ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, 0, v9);
   }
 
   return 0;
 }
 
-- (BOOL)_configureMeshingConfiguration:(CV3DReconMeshingConfiguration *)a3 error:(id *)a4
+- (BOOL)_configureMeshingConfiguration:(CV3DReconMeshingConfiguration *)configuration error:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_reconstructionSessionLock);
   ARVoxelSizeForSceneReconstructionOptions(self->_options);
@@ -748,14 +748,14 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
     v6 = @"Error setting meshing configuration voxel size";
   }
 
-  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(a4, 0, v6);
+  ARSetNSErrorByWrappingCFErrorWithFailureReasonMessage(error, 0, v6);
   return 0;
 }
 
-- (void)_didReceiveMeshListUpdateCallbackWithMeshList:(CV3DReconMeshList *)a3 timestamp:(double)a4 error:(__CFError *)a5
+- (void)_didReceiveMeshListUpdateCallbackWithMeshList:(CV3DReconMeshList *)list timestamp:(double)timestamp error:(__CFError *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -771,13 +771,13 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
       {
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [(__CFError *)a5 localizedFailureReason];
+        localizedFailureReason = [(__CFError *)error localizedFailureReason];
         v20 = 138543874;
         v21 = v13;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
-        v25 = v14;
+        v25 = localizedFailureReason;
         _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error received in mesh list update callback: %@", &v20, 0x20u);
       }
     }
@@ -786,13 +786,13 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(__CFError *)a5 localizedFailureReason];
+      localizedFailureReason2 = [(__CFError *)error localizedFailureReason];
       v20 = 138543874;
       v21 = v18;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v19;
+      v25 = localizedFailureReason2;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error received in mesh list update callback: %@", &v20, 0x20u);
     }
 
@@ -804,12 +804,12 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
   {
     CV3DReconMeshListGetCount();
     kdebug_trace();
-    v15 = [(ARSceneReconstructionHandler *)self delegate];
+    delegate = [(ARSceneReconstructionHandler *)self delegate];
 
-    if (v15)
+    if (delegate)
     {
-      v16 = [(ARSceneReconstructionHandler *)self delegate];
-      [v16 sceneReconstructionHandler:self didOutputMeshList:a3 withTimestamp:a4];
+      delegate2 = [(ARSceneReconstructionHandler *)self delegate];
+      [delegate2 sceneReconstructionHandler:self didOutputMeshList:list withTimestamp:timestamp];
     }
 
     else
@@ -819,10 +819,10 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
   }
 }
 
-- (void)_didReceiveKeyframeListUpdateCallbackWithKeyframeList:(CV3DReconKeyframeList *)a3 timestamp:(double)a4 error:(__CFError *)a5
+- (void)_didReceiveKeyframeListUpdateCallbackWithKeyframeList:(CV3DReconKeyframeList *)list timestamp:(double)timestamp error:(__CFError *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
     if (ARShouldUseLogTypeError(void)::onceToken != -1)
     {
@@ -838,13 +838,13 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
       {
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [(__CFError *)a5 localizedFailureReason];
+        localizedFailureReason = [(__CFError *)error localizedFailureReason];
         v20 = 138543874;
         v21 = v12;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
-        v25 = v13;
+        v25 = localizedFailureReason;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error received in keyframe list update callback: %@", &v20, 0x20u);
       }
     }
@@ -853,30 +853,30 @@ void __56__ARSceneReconstructionHandler__setupSLAMStateBuffering__block_invoke(u
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(__CFError *)a5 localizedFailureReason];
+      localizedFailureReason2 = [(__CFError *)error localizedFailureReason];
       v20 = 138543874;
       v21 = v18;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v19;
+      v25 = localizedFailureReason2;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Error received in keyframe list update callback: %@", &v20, 0x20u);
     }
 
     goto LABEL_12;
   }
 
-  v15 = [(ARSceneReconstructionHandler *)self delegate];
+  delegate = [(ARSceneReconstructionHandler *)self delegate];
 
-  if (!v15)
+  if (!delegate)
   {
 LABEL_12:
     CV3DReconKeyframeListRelease();
     goto LABEL_13;
   }
 
-  v16 = [(ARSceneReconstructionHandler *)self delegate];
-  [v16 sceneReconstructionHandler:self didOutputKeyframeList:a3 withTimestamp:a4];
+  delegate2 = [(ARSceneReconstructionHandler *)self delegate];
+  [delegate2 sceneReconstructionHandler:self didOutputKeyframeList:list withTimestamp:timestamp];
 
 LABEL_13:
 }
@@ -903,11 +903,11 @@ LABEL_13:
   }
 }
 
-- (int64_t)reconfigureSceneReconstruction:(unint64_t)a3 options:(id)a4
+- (int64_t)reconfigureSceneReconstruction:(unint64_t)reconstruction options:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
-  if (self->_sceneReconstruction == a3 && [(ARSceneReconstructionOptions *)self->_options isEqual:v7])
+  if (self->_sceneReconstruction == reconstruction && [(ARSceneReconstructionOptions *)self->_options isEqual:optionsCopy])
   {
     v8 = 1;
   }
@@ -919,22 +919,22 @@ LABEL_13:
     v12[2] = __71__ARSceneReconstructionHandler_reconfigureSceneReconstruction_options___block_invoke;
     v12[3] = &unk_1E817CB10;
     v12[4] = self;
-    v14 = a3;
-    v13 = v7;
+    reconstructionCopy = reconstruction;
+    v13 = optionsCopy;
     v9 = [(ARSceneReconstructionHandler *)self _lockAndExecuteBlock:v12];
-    self->_sceneReconstruction = a3;
-    objc_storeStrong(&self->_options, a4);
+    self->_sceneReconstruction = reconstruction;
+    objc_storeStrong(&self->_options, options);
     if (v9)
     {
-      v10 = [(ARSceneReconstructionHandler *)self _reconfigureSessionAndHandleError];
+      _reconfigureSessionAndHandleError = [(ARSceneReconstructionHandler *)self _reconfigureSessionAndHandleError];
     }
 
     else
     {
-      v10 = [(ARSceneReconstructionHandler *)self _recreateSessionAndHandleError];
+      _reconfigureSessionAndHandleError = [(ARSceneReconstructionHandler *)self _recreateSessionAndHandleError];
     }
 
-    v8 = v10;
+    v8 = _reconfigureSessionAndHandleError;
   }
 
   return v8;
@@ -1036,9 +1036,9 @@ LABEL_13:
   }
 }
 
-- (void)meshPlaneHarmonizationShouldEnable:(BOOL)a3
+- (void)meshPlaneHarmonizationShouldEnable:(BOOL)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   os_unfair_lock_lock(&self->_reconstructionSessionLock);
@@ -1054,13 +1054,13 @@ LABEL_13:
       v9 = "disabled";
       *buf = 138543874;
       v11 = v8;
-      if (v3)
+      if (enableCopy)
       {
         v9 = "enabled";
       }
 
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2080;
       v15 = v9;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Scene reconstruction plane harmonization is %s", buf, 0x20u);
@@ -1073,47 +1073,47 @@ LABEL_13:
   }
 }
 
-- (void)pushDepth:(id)a3 semanticSegmentation:(id)a4 personSegmentation:(id)a5 pose:(id)a6
+- (void)pushDepth:(id)depth semanticSegmentation:(id)segmentation personSegmentation:(id)personSegmentation pose:(id)pose
 {
   v72 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v54 = a4;
-  v52 = a5;
-  v53 = a6;
-  v11 = [v53 worldTrackingState];
-  v12 = [v11 state];
+  depthCopy = depth;
+  segmentationCopy = segmentation;
+  personSegmentationCopy = personSegmentation;
+  poseCopy = pose;
+  worldTrackingState = [poseCopy worldTrackingState];
+  state = [worldTrackingState state];
 
-  if (v12 == 2)
+  if (state == 2)
   {
-    if ([v54 maskedSemanticsSampledForDepth])
+    if ([segmentationCopy maskedSemanticsSampledForDepth])
     {
-      v13 = [v10 sourceImageData];
-      [v13 timestamp];
+      sourceImageData = [depthCopy sourceImageData];
+      [sourceImageData timestamp];
       kdebug_trace();
 
-      v14 = [v10 sourceImageData];
-      [v14 cameraIntrinsics];
+      sourceImageData2 = [depthCopy sourceImageData];
+      [sourceImageData2 cameraIntrinsics];
       v50 = v16;
       v51 = v15;
       v49 = v17;
-      v18 = [v10 sourceImageData];
-      [v18 imageResolution];
+      sourceImageData3 = [depthCopy sourceImageData];
+      [sourceImageData3 imageResolution];
       v20 = v19;
       v22 = v21;
-      [v10 depthBufferSize];
+      [depthCopy depthBufferSize];
       ARAdjustIntrinsicsForViewportSize(v51, v50, v49, v20, v22, v23, v24);
       v48 = v25;
 
-      [v53 visionCameraTransform];
+      [poseCopy visionCameraTransform];
       kdebug_trace();
       kdebug_trace();
       kdebug_trace();
       kdebug_trace();
       kdebug_trace();
-      v26 = [v54 sourceImageData];
-      [v26 timestamp];
-      [v10 depthBufferSize];
-      [v10 depthBufferSize];
+      sourceImageData4 = [segmentationCopy sourceImageData];
+      [sourceImageData4 timestamp];
+      [depthCopy depthBufferSize];
+      [depthCopy depthBufferSize];
       v27 = CV3DReconFrameBundleCreate();
 
       if (v27)
@@ -1124,8 +1124,8 @@ LABEL_13:
         v65 = &__block_descriptor_40_e5_v8__0l;
         v66 = v27;
         *buf = 0;
-        v28 = [v53 slamState];
-        -[ARSceneReconstructionHandler bufferSlamState:](self, "bufferSlamState:", [v28 slamState]);
+        slamState = [poseCopy slamState];
+        -[ARSceneReconstructionHandler bufferSlamState:](self, "bufferSlamState:", [slamState slamState]);
 
         [(ARSceneReconstructionHandler *)self swapSlamStateBuffers];
         begin = self->_slamStateBufferFront.__begin_;
@@ -1176,7 +1176,7 @@ LABEL_13:
 
 LABEL_11:
         std::vector<std::shared_ptr<CV3DSLAMStateContext const>>::clear[abi:ne200100](&self->_slamStateBufferFront);
-        [v10 singleFrameDepthBuffer];
+        [depthCopy singleFrameDepthBuffer];
         if ((CV3DReconFrameBundleSetDepthImage() & 1) == 0)
         {
           [(ARSceneReconstructionHandler *)self handleCFError:*buf withErrorMessage:@"Error setting depth image to frame bundle" failSession:0];
@@ -1185,36 +1185,36 @@ LABEL_35:
           goto LABEL_26;
         }
 
-        v33 = -[ARSceneReconstructionHandler postProcessConfidenceBuffer:fromSegmentationData:](self, "postProcessConfidenceBuffer:fromSegmentationData:", [v10 singleFrameConfidenceBuffer], v52);
+        v33 = -[ARSceneReconstructionHandler postProcessConfidenceBuffer:fromSegmentationData:](self, "postProcessConfidenceBuffer:fromSegmentationData:", [depthCopy singleFrameConfidenceBuffer], personSegmentationCopy);
         v55[0] = MEMORY[0x1E69E9820];
         v55[1] = 3221225472;
         v56 = __87__ARSceneReconstructionHandler_pushDepth_semanticSegmentation_personSegmentation_pose___block_invoke_3;
         v57 = &__block_descriptor_40_e5_v8__0l;
         v58 = v33;
-        if ([v10 normalsBuffer] && (objc_msgSend(v10, "normalsBuffer"), (CV3DReconFrameBundleSetNormalsImage() & 1) == 0))
+        if ([depthCopy normalsBuffer] && (objc_msgSend(depthCopy, "normalsBuffer"), (CV3DReconFrameBundleSetNormalsImage() & 1) == 0))
         {
           v45 = @"Error setting normals image to frame bundle";
         }
 
         else if (CV3DReconFrameBundleSetDepthConfidenceImage())
         {
-          [v54 maskedSemanticsSampledForDepth];
+          [segmentationCopy maskedSemanticsSampledForDepth];
           if (CV3DReconFrameBundleSetSemanticsImage())
           {
             sceneReconstruction = self->_sceneReconstruction;
-            if (~sceneReconstruction & 0x11) != 0 && (~sceneReconstruction & 0x18) != 0 && (sceneReconstruction & 0x80) == 0 || ([v10 sourceImageData], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "pixelBuffer"), v36 = CV3DReconFrameBundleSetColorImage(), v35, (v36))
+            if (~sceneReconstruction & 0x11) != 0 && (~sceneReconstruction & 0x18) != 0 && (sceneReconstruction & 0x80) == 0 || ([depthCopy sourceImageData], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "pixelBuffer"), v36 = CV3DReconFrameBundleSetColorImage(), v35, (v36))
             {
-              CVPixelBufferGetWidth([v10 singleFrameDepthBuffer]);
-              CVPixelBufferGetHeight([v10 singleFrameDepthBuffer]);
-              CVPixelBufferGetWidth([v54 maskedSemanticsSampledForDepth]);
-              CVPixelBufferGetHeight([v54 maskedSemanticsSampledForDepth]);
+              CVPixelBufferGetWidth([depthCopy singleFrameDepthBuffer]);
+              CVPixelBufferGetHeight([depthCopy singleFrameDepthBuffer]);
+              CVPixelBufferGetWidth([segmentationCopy maskedSemanticsSampledForDepth]);
+              CVPixelBufferGetHeight([segmentationCopy maskedSemanticsSampledForDepth]);
               kdebug_trace();
               kdebug_trace();
               os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
               os_unfair_lock_lock(&self->_reconstructionSessionLock);
-              [v10 timestamp];
-              v46 = [v54 sourceImageData];
-              [v46 timestamp];
+              [depthCopy timestamp];
+              sourceImageData5 = [segmentationCopy sourceImageData];
+              [sourceImageData5 timestamp];
               kdebug_trace();
 
               v47 = CV3DReconSessionProcessFrameBundle();
@@ -1256,7 +1256,7 @@ LABEL_34:
         *buf = 138543618;
         *&buf[4] = v44;
         v68 = 2048;
-        v69 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v37, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Error creating frame bundle, skipping pushing to spatial mapping", buf, 0x16u);
       }
     }
@@ -1271,7 +1271,7 @@ LABEL_34:
         *buf = 138543618;
         *&buf[4] = v42;
         v68 = 2048;
-        v69 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v37, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Skipping pushing to spatial mapping since masked semantics sampled for depth is not available", buf, 0x16u);
       }
     }
@@ -1284,13 +1284,13 @@ LABEL_34:
     {
       v38 = objc_opt_class();
       v39 = NSStringFromClass(v38);
-      v40 = [v53 worldTrackingState];
+      worldTrackingState2 = [poseCopy worldTrackingState];
       *buf = 138543874;
       *&buf[4] = v39;
       v68 = 2048;
-      v69 = self;
+      selfCopy3 = self;
       v70 = 2048;
-      v71 = [v40 state];
+      state2 = [worldTrackingState2 state];
       _os_log_impl(&dword_1C241C000, v37, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Skipping pushing to spatial mapping since world tracking state is not normal: %ld", buf, 0x20u);
     }
   }
@@ -1298,20 +1298,20 @@ LABEL_34:
 LABEL_26:
 }
 
-- (__CVBuffer)postProcessConfidenceBuffer:(__CVBuffer *)a3 fromSegmentationData:(id)a4
+- (__CVBuffer)postProcessConfidenceBuffer:(__CVBuffer *)buffer fromSegmentationData:(id)data
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || ![v6 segmentationBuffer])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy || ![dataCopy segmentationBuffer])
   {
     goto LABEL_32;
   }
 
-  if (a3)
+  if (buffer)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
   }
 
   else
@@ -1320,11 +1320,11 @@ LABEL_26:
     Height = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v10 = [v7 segmentationBuffer];
-  v11 = v10;
-  if (v10)
+  segmentationBuffer = [v7 segmentationBuffer];
+  v11 = segmentationBuffer;
+  if (segmentationBuffer)
   {
-    v12 = CVPixelBufferGetWidth(v10);
+    v12 = CVPixelBufferGetWidth(segmentationBuffer);
     v13 = CVPixelBufferGetHeight(v11);
   }
 
@@ -1353,7 +1353,7 @@ LABEL_26:
         v37 = 138544642;
         v38 = v19;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v41 = 1024;
         v42 = v12;
         v43 = 1024;
@@ -1373,7 +1373,7 @@ LABEL_26:
       v37 = 138544642;
       v38 = v34;
       v39 = 2048;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 1024;
       v42 = v12;
       v43 = 1024;
@@ -1385,16 +1385,16 @@ LABEL_26:
       _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Confidence buffer and person segmentation buffer do not match size. (%d,%d) vs. (%d,%d).", &v37, 0x2Eu);
     }
 
-    v35 = CVPixelBufferRetain(a3);
+    v35 = CVPixelBufferRetain(buffer);
     goto LABEL_33;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v21 = ARCreateCVPixelBufferFromPool(&self->_postProcessedDepthConfidencePool, PixelFormatType, self, @"Post processed confidence buffer", Width, Height);
   if (!v21)
   {
 LABEL_32:
-    v35 = CVPixelBufferRetain(a3);
+    v35 = CVPixelBufferRetain(buffer);
 LABEL_33:
     v21 = v35;
     goto LABEL_34;
@@ -1402,12 +1402,12 @@ LABEL_33:
 
   CVPixelBufferLockBaseAddress([v7 segmentationBuffer], 1uLL);
   CVPixelBufferLockBaseAddress(v21, 0);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   BaseAddress = CVPixelBufferGetBaseAddress(v21);
-  v23 = CVPixelBufferGetBaseAddress(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  v23 = CVPixelBufferGetBaseAddress(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   memcpy(BaseAddress, v23, (Height * BytesPerRow));
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   v25 = CVPixelBufferGetBytesPerRow([v7 segmentationBuffer]);
   v26 = CVPixelBufferGetBytesPerRow(v21);
   v27 = 0;
@@ -1438,7 +1438,7 @@ LABEL_34:
   return v21;
 }
 
-- (void)processPlaneList:(CV3DPlaneDetectionPlaneList *)a3
+- (void)processPlaneList:(CV3DPlaneDetectionPlaneList *)list
 {
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   os_unfair_lock_lock(&self->_reconstructionSessionLock);
@@ -1450,16 +1450,16 @@ LABEL_34:
   }
 }
 
-- (BOOL)queryOccupancyWithPoints:(id)a3 callback:(id)a4
+- (BOOL)queryOccupancyWithPoints:(id)points callback:(id)callback
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pointsCopy = points;
+  callbackCopy = callback;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   if (self->_occupancyMappingEnabled)
   {
     *buf = 0;
-    v8 = MEMORY[0x1C6919230](v6);
+    v8 = MEMORY[0x1C6919230](pointsCopy);
     os_unfair_lock_lock(&self->_reconstructionSessionLock);
     OccupancyAsync = CV3DReconSessionQueryOccupancyAsync();
     os_unfair_lock_unlock(&self->_reconstructionSessionLock);
@@ -1497,7 +1497,7 @@ LABEL_34:
         *buf = 138543618;
         *&buf[4] = v15;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Occupancy mapping is not enabled.", buf, 0x16u);
       }
     }
@@ -1509,7 +1509,7 @@ LABEL_34:
       *buf = 138543618;
       *&buf[4] = v17;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Occupancy mapping is not enabled.", buf, 0x16u);
     }
 
@@ -1519,61 +1519,61 @@ LABEL_34:
   return OccupancyAsync;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
-  v4 = [(ARSceneReconstructionHandler *)self delegate];
-  [v4 sceneReconstructionHandler:self didFailWithError:v5];
+  delegate = [(ARSceneReconstructionHandler *)self delegate];
+  [delegate sceneReconstructionHandler:self didFailWithError:errorCopy];
 }
 
-- (void)handleCFError:(__CFError *)a3 withErrorMessage:(id)a4 failSession:(BOOL)a5
+- (void)handleCFError:(__CFError *)error withErrorMessage:(id)message failSession:(BOOL)session
 {
-  v5 = a5;
+  sessionCopy = session;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  messageCopy = message;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
-  if (a3)
+  if (error)
   {
     v9 = _ARLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(__CFError *)a3 localizedFailureReason];
+      localizedFailureReason = [(__CFError *)error localizedFailureReason];
       v13 = 138544130;
       v14 = v11;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v8;
+      v18 = messageCopy;
       v19 = 2112;
-      v20 = v12;
+      v20 = localizedFailureReason;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@: %@", &v13, 0x2Au);
     }
 
-    if (v5)
+    if (sessionCopy)
     {
-      [(ARSceneReconstructionHandler *)self failWithError:a3];
+      [(ARSceneReconstructionHandler *)self failWithError:error];
     }
   }
 }
 
-- (BOOL)_lockAndExecuteBlock:(id)a3
+- (BOOL)_lockAndExecuteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   os_unfair_lock_lock(&self->_reconstructionSessionLock);
-  v5 = v4[2](v4);
+  v5 = blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->_reconstructionSessionLock);
   return v5;
 }
 
-- (BOOL)_lockAndExecuteNSErrorBlock:(id)a3
+- (BOOL)_lockAndExecuteNSErrorBlock:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   v31 = 0;
   v32 = &v31;
@@ -1585,7 +1585,7 @@ LABEL_34:
   v26 = 3221225472;
   v27 = __60__ARSceneReconstructionHandler__lockAndExecuteNSErrorBlock___block_invoke;
   v28 = &unk_1E817CB38;
-  v5 = v4;
+  v5 = blockCopy;
   v29 = v5;
   v30 = &v31;
   v6 = [(ARSceneReconstructionHandler *)self _lockAndExecuteBlock:&v25];
@@ -1605,18 +1605,18 @@ LABEL_34:
       {
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        v12 = [v32[5] localizedFailureReason];
-        v13 = [v32[5] underlyingErrors];
-        v14 = [v13 firstObject];
-        v15 = [v14 localizedFailureReason];
+        localizedFailureReason = [v32[5] localizedFailureReason];
+        underlyingErrors = [v32[5] underlyingErrors];
+        firstObject = [underlyingErrors firstObject];
+        localizedFailureReason2 = [firstObject localizedFailureReason];
         *buf = 138544130;
         v38 = v11;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v41 = 2112;
-        v42 = v12;
+        v42 = localizedFailureReason;
         v43 = 2112;
-        v44 = v15;
+        v44 = localizedFailureReason2;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: %@: %@", buf, 0x2Au);
       }
     }
@@ -1625,24 +1625,24 @@ LABEL_34:
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v32[5] localizedFailureReason];
-      v19 = [v32[5] underlyingErrors];
-      v20 = [v19 firstObject];
-      v21 = [v20 localizedFailureReason];
+      localizedFailureReason3 = [v32[5] localizedFailureReason];
+      underlyingErrors2 = [v32[5] underlyingErrors];
+      firstObject2 = [underlyingErrors2 firstObject];
+      localizedFailureReason4 = [firstObject2 localizedFailureReason];
       *buf = 138544130;
       v38 = v17;
       v39 = 2048;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2112;
-      v42 = v18;
+      v42 = localizedFailureReason3;
       v43 = 2112;
-      v44 = v21;
+      v44 = localizedFailureReason4;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: %@: %@", buf, 0x2Au);
     }
 
-    v22 = [v32[5] underlyingErrors];
-    v23 = [v22 firstObject];
-    [(ARSceneReconstructionHandler *)self failWithError:v23];
+    underlyingErrors3 = [v32[5] underlyingErrors];
+    firstObject3 = [underlyingErrors3 firstObject];
+    [(ARSceneReconstructionHandler *)self failWithError:firstObject3];
   }
 
   _Block_object_dispose(&v31, 8);
@@ -1659,11 +1659,11 @@ uint64_t __60__ARSceneReconstructionHandler__lockAndExecuteNSErrorBlock___block_
   return v3;
 }
 
-- (BOOL)_lockAndExecuteCFErrorBlockWithErrorMessage:(id)a3 cfErrorBlock:(id)a4 failSession:(BOOL)a5
+- (BOOL)_lockAndExecuteCFErrorBlockWithErrorMessage:(id)message cfErrorBlock:(id)block failSession:(BOOL)session
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  messageCopy = message;
+  blockCopy = block;
   os_unfair_lock_assert_not_owner(&self->_reconstructionSessionLock);
   v19 = 0;
   v20 = &v19;
@@ -1673,13 +1673,13 @@ uint64_t __60__ARSceneReconstructionHandler__lockAndExecuteNSErrorBlock___block_
   v14 = 3221225472;
   v15 = __101__ARSceneReconstructionHandler__lockAndExecuteCFErrorBlockWithErrorMessage_cfErrorBlock_failSession___block_invoke;
   v16 = &unk_1E817CB38;
-  v10 = v9;
+  v10 = blockCopy;
   v17 = v10;
   v18 = &v19;
   v11 = [(ARSceneReconstructionHandler *)self _lockAndExecuteBlock:&v13];
   if (!v11)
   {
-    [(ARSceneReconstructionHandler *)self handleCFError:v20[3] withErrorMessage:v8 failSession:v5, v13, v14, v15, v16];
+    [(ARSceneReconstructionHandler *)self handleCFError:v20[3] withErrorMessage:messageCopy failSession:sessionCopy, v13, v14, v15, v16];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -1732,17 +1732,17 @@ uint64_t __60__ARSceneReconstructionHandler__lockAndExecuteNSErrorBlock___block_
   return self;
 }
 
-- (void)bufferSlamState:(std::__shared_weak_count *)a1
+- (void)bufferSlamState:(std::__shared_weak_count *)state
 {
-  std::__shared_weak_count::~__shared_weak_count(a1);
+  std::__shared_weak_count::~__shared_weak_count(state);
 
   JUMPOUT(0x1C691A790);
 }
 
-- (uint64_t)bufferSlamState:(uint64_t)a1
+- (uint64_t)bufferSlamState:(uint64_t)state
 {
   {
-    return a1;
+    return state;
   }
 
   else

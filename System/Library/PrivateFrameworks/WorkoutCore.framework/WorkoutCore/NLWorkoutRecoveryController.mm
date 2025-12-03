@@ -1,119 +1,119 @@
 @interface NLWorkoutRecoveryController
-- (NLWorkoutRecoveryController)initWithHealthStore:(id)a3 userDefaults:(id)a4;
-- (NLWorkoutRecoveryController)initWithHealthStore:(id)a3 userDefaults:(id)a4 workoutController:(id)a5;
-- (void)attemptRecoveryWithCompletion:(id)a3;
-- (void)setAppInWorkoutSession:(BOOL)a3;
-- (void)workoutController:(id)a3 mirroredStart:(id)a4;
-- (void)workoutController:(id)a3 startSource:(unint64_t)a4 sessionControl:(id)a5;
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5;
+- (NLWorkoutRecoveryController)initWithHealthStore:(id)store userDefaults:(id)defaults;
+- (NLWorkoutRecoveryController)initWithHealthStore:(id)store userDefaults:(id)defaults workoutController:(id)controller;
+- (void)attemptRecoveryWithCompletion:(id)completion;
+- (void)setAppInWorkoutSession:(BOOL)session;
+- (void)workoutController:(id)controller mirroredStart:(id)start;
+- (void)workoutController:(id)controller startSource:(unint64_t)source sessionControl:(id)control;
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state;
 @end
 
 @implementation NLWorkoutRecoveryController
 
-- (NLWorkoutRecoveryController)initWithHealthStore:(id)a3 userDefaults:(id)a4 workoutController:(id)a5
+- (NLWorkoutRecoveryController)initWithHealthStore:(id)store userDefaults:(id)defaults workoutController:(id)controller
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, store);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, defaults);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v5 = v18;
-  v18 = 0;
+  objc_storeStrong(&v15, controller);
+  v5 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v5;
   v14.super_class = NLWorkoutRecoveryController;
   v11 = [(NLWorkoutRecoveryController *)&v14 init];
-  v18 = v11;
-  objc_storeStrong(&v18, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
-    objc_storeStrong(&v18->_healthStore, location[0]);
-    objc_storeStrong(&v18->_userDefaults, v16);
+    objc_storeStrong(&selfCopy->_healthStore, location[0]);
+    objc_storeStrong(&selfCopy->_userDefaults, v16);
     v6 = objc_alloc(MEMORY[0x277CCDE60]);
     v7 = [v6 initWithHealthStore:location[0]];
-    workoutObserver = v18->_workoutObserver;
-    v18->_workoutObserver = v7;
+    workoutObserver = selfCopy->_workoutObserver;
+    selfCopy->_workoutObserver = v7;
     MEMORY[0x277D82BD8](workoutObserver);
-    objc_storeStrong(&v18->_workoutController, v15);
+    objc_storeStrong(&selfCopy->_workoutController, v15);
   }
 
-  [(NLWorkoutController *)v18->_workoutController addObserver:v18];
-  v10 = MEMORY[0x277D82BE0](v18);
+  [(NLWorkoutController *)selfCopy->_workoutController addObserver:selfCopy];
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (NLWorkoutRecoveryController)initWithHealthStore:(id)a3 userDefaults:(id)a4
+- (NLWorkoutRecoveryController)initWithHealthStore:(id)store userDefaults:(id)defaults
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, store);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(NLWorkoutRecoveryController *)v4 initWithHealthStore:location[0] userDefaults:v8 workoutController:0];
-  v7 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v8, defaults);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(NLWorkoutRecoveryController *)v4 initWithHealthStore:location[0] userDefaults:v8 workoutController:0];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)setAppInWorkoutSession:(BOOL)a3
+- (void)setAppInWorkoutSession:(BOOL)session
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
-  if (a3 != [(NLWorkoutRecoveryController *)self hintSuggestsRecoveryNeeded])
+  sessionCopy = session;
+  if (session != [(NLWorkoutRecoveryController *)self hintSuggestsRecoveryNeeded])
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v7, v4);
+      __os_log_helper_16_0_1_4_0(v7, sessionCopy);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[RecoveryController] Setting workout in session hint to %{BOOL}d", v7, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(NSUserDefaults *)v6->_userDefaults setBool:v4 forKey:@"WorkoutRecoveryInSessionHint"];
+    [(NSUserDefaults *)selfCopy->_userDefaults setBool:sessionCopy forKey:@"WorkoutRecoveryInSessionHint"];
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)attemptRecoveryWithCompletion:(id)a3
+- (void)attemptRecoveryWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v5 description];
+    date = [MEMORY[0x277CBEAA8] date];
+    v4 = [date description];
     v14 = MEMORY[0x277D82BE0](v4);
     __os_log_helper_16_2_1_8_64(v19, v14);
     _os_log_impl(&dword_20AEA4000, v16, v15, "[RecoveryController] Fetching possible session for recovery at: %@", v19, 0xCu);
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](date);
     objc_storeStrong(&v14, 0);
   }
 
   objc_storeStrong(&v16, 0);
-  objc_initWeak(&from, v18);
-  workoutObserver = v18->_workoutObserver;
+  objc_initWeak(&from, selfCopy);
+  workoutObserver = selfCopy->_workoutObserver;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -160,40 +160,40 @@ void __61__NLWorkoutRecoveryController_attemptRecoveryWithCompletion___block_inv
   *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  -[NLWorkoutRecoveryController setAppInWorkoutSession:](v8, "setAppInWorkoutSession:", [location[0] hasCurrentSession]);
+  objc_storeStrong(&v6, workout);
+  -[NLWorkoutRecoveryController setAppInWorkoutSession:](selfCopy, "setAppInWorkoutSession:", [location[0] hasCurrentSession]);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)workoutController:(id)a3 startSource:(unint64_t)a4 sessionControl:(id)a5
+- (void)workoutController:(id)controller startSource:(unint64_t)source sessionControl:(id)control
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7[1] = a4;
+  objc_storeStrong(location, controller);
+  v7[1] = source;
   v7[0] = 0;
-  objc_storeStrong(v7, a5);
+  objc_storeStrong(v7, control);
   objc_storeStrong(v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)workoutController:(id)a3 mirroredStart:(id)a4
+- (void)workoutController:(id)controller mirroredStart:(id)start
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, start);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }

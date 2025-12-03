@@ -1,61 +1,61 @@
 @interface BRLTBrailleChar
-+ (id)charWithBrf:(id)a3;
-+ (id)charWithUnicode:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BRLTBrailleChar)initWithBits:(unsigned __int8)a3;
-- (BRLTBrailleChar)initWithBrf:(id)a3;
-- (BRLTBrailleChar)initWithUnicode:(id)a3;
++ (id)charWithBrf:(id)brf;
++ (id)charWithUnicode:(id)unicode;
+- (BOOL)isEqual:(id)equal;
+- (BRLTBrailleChar)initWithBits:(unsigned __int8)bits;
+- (BRLTBrailleChar)initWithBrf:(id)brf;
+- (BRLTBrailleChar)initWithUnicode:(id)unicode;
 - (NSString)unicode;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_setDot:(int)a3 up:(BOOL)a4;
+- (void)_setDot:(int)dot up:(BOOL)up;
 @end
 
 @implementation BRLTBrailleChar
 
-- (BRLTBrailleChar)initWithBits:(unsigned __int8)a3
+- (BRLTBrailleChar)initWithBits:(unsigned __int8)bits
 {
   v5.receiver = self;
   v5.super_class = BRLTBrailleChar;
   result = [(BRLTBrailleChar *)&v5 init];
-  result->_bits = a3;
+  result->_bits = bits;
   return result;
 }
 
-- (BRLTBrailleChar)initWithUnicode:(id)a3
+- (BRLTBrailleChar)initWithUnicode:(id)unicode
 {
-  v4 = [a3 characterAtIndex:0];
+  v4 = [unicode characterAtIndex:0];
 
   return [(BRLTBrailleChar *)self initWithUnichar:v4];
 }
 
-- (BRLTBrailleChar)initWithBrf:(id)a3
+- (BRLTBrailleChar)initWithBrf:(id)brf
 {
-  v4 = [BRLTBrailleString brfToUnicode:a3];
+  v4 = [BRLTBrailleString brfToUnicode:brf];
   v5 = [(BRLTBrailleChar *)self initWithUnicode:v4];
 
   return v5;
 }
 
-+ (id)charWithUnicode:(id)a3
++ (id)charWithUnicode:(id)unicode
 {
-  v3 = a3;
-  v4 = [[BRLTBrailleChar alloc] initWithUnicode:v3];
+  unicodeCopy = unicode;
+  v4 = [[BRLTBrailleChar alloc] initWithUnicode:unicodeCopy];
 
   return v4;
 }
 
-+ (id)charWithBrf:(id)a3
++ (id)charWithBrf:(id)brf
 {
-  v3 = a3;
-  v4 = [[BRLTBrailleChar alloc] initWithBrf:v3];
+  brfCopy = brf;
+  v4 = [[BRLTBrailleChar alloc] initWithBrf:brfCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BRLTBrailleChar allocWithZone:a3];
+  v4 = [BRLTBrailleChar allocWithZone:zone];
   bits = self->_bits;
 
   return [(BRLTBrailleChar *)v4 initWithBits:bits];
@@ -69,13 +69,13 @@
   return v2;
 }
 
-- (void)_setDot:(int)a3 up:(BOOL)a4
+- (void)_setDot:(int)dot up:(BOOL)up
 {
-  v4 = 1 << (a3 - 1);
+  v4 = 1 << (dot - 1);
   bits = self->_bits;
   v6 = bits & ~v4;
   v7 = bits | v4;
-  if (!a4)
+  if (!up)
   {
     v7 = v6;
   }
@@ -83,10 +83,10 @@
   self->_bits = v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -94,7 +94,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTBrailleChar *)self isEqualToBrailleChar:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTBrailleChar *)self isEqualToBrailleChar:equalCopy];
   }
 
   return v5;
@@ -102,8 +102,8 @@
 
 - (id)description
 {
-  v2 = [(BRLTBrailleChar *)self unicode];
-  v3 = [BRLTBrailleString unicodeToBestEffortBrf:v2];
+  unicode = [(BRLTBrailleChar *)self unicode];
+  v3 = [BRLTBrailleString unicodeToBestEffortBrf:unicode];
 
   return v3;
 }

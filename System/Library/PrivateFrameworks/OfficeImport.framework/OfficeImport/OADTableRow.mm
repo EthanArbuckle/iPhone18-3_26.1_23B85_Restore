@@ -90,12 +90,12 @@ LABEL_11:
     do
     {
       v12 = [(OADTableRow *)self cellAtIndex:v11];
-      v13 = [v12 properties];
-      v14 = [v13 leftStroke];
-      v15 = [v13 rightStroke];
-      [v13 setLeftStroke:v15];
+      properties = [v12 properties];
+      leftStroke = [properties leftStroke];
+      rightStroke = [properties rightStroke];
+      [properties setLeftStroke:rightStroke];
 
-      [v13 setRightStroke:v14];
+      [properties setRightStroke:leftStroke];
       ++v11;
     }
 

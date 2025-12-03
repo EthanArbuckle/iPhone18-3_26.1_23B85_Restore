@@ -55,8 +55,8 @@
 
     v13 = logKey;
     v14 = [v96 count];
-    v15 = [v96 array];
-    v16 = [v15 componentsJoinedByString:{@", "}];
+    array = [v96 array];
+    v16 = [array componentsJoinedByString:{@", "}];
     *buf = 138412802;
     *&buf[4] = logKey;
     *&buf[12] = 2048;
@@ -126,8 +126,8 @@
 
     v26 = v25;
     v27 = [v98 count];
-    v28 = [v98 array];
-    v29 = [v28 componentsJoinedByString:{@", "}];
+    array2 = [v98 array];
+    v29 = [array2 componentsJoinedByString:{@", "}];
     *buf = 138412802;
     *&buf[4] = v25;
     *&buf[12] = 2048;
@@ -245,7 +245,7 @@
     *&buf[8] = 3221225472;
     *&buf[16] = sub_1003D9E14;
     v129 = &unk_1005279A8;
-    v130 = self;
+    selfCopy = self;
     v135 = &v102;
     v136 = &address;
     v53 = v52;

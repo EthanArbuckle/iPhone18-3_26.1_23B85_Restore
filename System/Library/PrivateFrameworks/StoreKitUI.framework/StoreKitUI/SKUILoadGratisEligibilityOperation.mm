@@ -1,10 +1,10 @@
 @interface SKUILoadGratisEligibilityOperation
 - (SKUILoadGratisEligibilityOperation)init;
-- (SKUILoadGratisEligibilityOperation)initWithBundleIdentifiers:(id)a3 clientContext:(id)a4;
+- (SKUILoadGratisEligibilityOperation)initWithBundleIdentifiers:(id)identifiers clientContext:(id)context;
 - (id)_bodyData;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUILoadGratisEligibilityOperation
@@ -17,10 +17,10 @@
   return v4;
 }
 
-- (SKUILoadGratisEligibilityOperation)initWithBundleIdentifiers:(id)a3 clientContext:(id)a4
+- (SKUILoadGratisEligibilityOperation)initWithBundleIdentifiers:(id)identifiers clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadGratisEligibilityOperation initWithBundleIdentifiers:clientContext:];
@@ -31,11 +31,11 @@
   v8 = [(SKUILoadGratisEligibilityOperation *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     bundleIDs = v8->_bundleIDs;
     v8->_bundleIDs = v9;
 
-    objc_storeStrong(&v8->_clientContext, a4);
+    objc_storeStrong(&v8->_clientContext, context);
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.StoreKitUI.SKUILoadGratisEligibilityOperation"];
     v12 = dispatch_queue_create([v11 UTF8String], 0);
     dispatchQueue = v8->_dispatchQueue;
@@ -77,17 +77,17 @@ uint64_t __49__SKUILoadGratisEligibilityOperation_outputBlock__block_invoke(uint
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SKUILoadGratisEligibilityOperation_setOutputBlock___block_invoke;
   v7[3] = &unk_2781F98F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -129,7 +129,7 @@ void *__53__SKUILoadGratisEligibilityOperation_setOutputBlock___block_invoke(uin
   v22 = __Block_byref_object_dispose__7;
   v23 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(SKUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__SKUILoadGratisEligibilityOperation_main__block_invoke;
@@ -138,21 +138,21 @@ void *__53__SKUILoadGratisEligibilityOperation_setOutputBlock___block_invoke(uin
   v17 = &v24;
   v5 = v3;
   v15 = v5;
-  [v4 loadValueForKey:@"up-to-date-eligibility-read" completionBlock:v14];
+  [uRLBag loadValueForKey:@"up-to-date-eligibility-read" completionBlock:v14];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   if (v19[5])
   {
     v6 = objc_alloc(MEMORY[0x277CBAB50]);
     v7 = [v6 initWithURL:v19[5]];
-    v8 = [(SKUILoadGratisEligibilityOperation *)self _bodyData];
-    [v7 setHTTPBody:v8];
+    _bodyData = [(SKUILoadGratisEligibilityOperation *)self _bodyData];
+    [v7 setHTTPBody:_bodyData];
 
     [v7 setHTTPMethod:@"POST"];
     [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     v9 = [(SKUIClientContext *)self->_clientContext newLoadStoreURLOperationWithURLRequest:v7];
-    v10 = [MEMORY[0x277D69D48] consumer];
-    [v9 setDataConsumer:v10];
+    consumer = [MEMORY[0x277D69D48] consumer];
+    [v9 setDataConsumer:consumer];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -164,11 +164,11 @@ void *__53__SKUILoadGratisEligibilityOperation_setOutputBlock___block_invoke(uin
     [v9 main];
   }
 
-  v11 = [(SKUILoadGratisEligibilityOperation *)self outputBlock];
-  v12 = v11;
-  if (v11)
+  outputBlock = [(SKUILoadGratisEligibilityOperation *)self outputBlock];
+  v12 = outputBlock;
+  if (outputBlock)
   {
-    (*(v11 + 16))(v11, v31[5], v25[5]);
+    (*(outputBlock + 16))(outputBlock, v31[5], v25[5]);
   }
 
   _Block_object_dispose(&v18, 8);
@@ -272,15 +272,15 @@ void __42__SKUILoadGratisEligibilityOperation_main__block_invoke_2(uint64_t a1, 
 - (id)_bodyData
 {
   v3 = objc_alloc_init(MEMORY[0x277D69CD0]);
-  v4 = [MEMORY[0x277D69A20] defaultStore];
-  v5 = [v4 activeAccount];
-  v6 = [v5 uniqueIdentifier];
-  [v3 setAccountIdentifier:v6];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  [v3 setAccountIdentifier:uniqueIdentifier];
 
   [v3 setBundleIdentifiers:self->_bundleIDs];
-  v7 = [v3 JSONBodyData];
+  jSONBodyData = [v3 JSONBodyData];
 
-  return v7;
+  return jSONBodyData;
 }
 
 - (void)initWithBundleIdentifiers:clientContext:.cold.1()

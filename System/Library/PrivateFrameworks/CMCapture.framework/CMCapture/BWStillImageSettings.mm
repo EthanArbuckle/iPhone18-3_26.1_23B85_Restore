@@ -1,26 +1,26 @@
 @interface BWStillImageSettings
-- (BOOL)isEqual:(id)a3;
-- (BWStillImageSettings)initWithCoder:(id)a3;
-- (BWStillImageSettings)initWithRequestedSettings:(id)a3 captureSettings:(id)a4 processingSettings:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BWStillImageSettings)initWithCoder:(id)coder;
+- (BWStillImageSettings)initWithRequestedSettings:(id)settings captureSettings:(id)captureSettings processingSettings:(id)processingSettings;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWStillImageSettings
 
-- (BWStillImageSettings)initWithRequestedSettings:(id)a3 captureSettings:(id)a4 processingSettings:(id)a5
+- (BWStillImageSettings)initWithRequestedSettings:(id)settings captureSettings:(id)captureSettings processingSettings:(id)processingSettings
 {
-  if (a3)
+  if (settings)
   {
     v10.receiver = self;
     v10.super_class = BWStillImageSettings;
     v8 = [(BWStillImageSettings *)&v10 init];
     if (v8)
     {
-      v8->_requestedSettings = a3;
-      v8->_captureSettings = a4;
-      v8->_processingSettings = a5;
+      v8->_requestedSettings = settings;
+      v8->_captureSettings = captureSettings;
+      v8->_processingSettings = processingSettings;
     }
   }
 
@@ -40,31 +40,31 @@
   [(BWStillImageSettings *)&v3 dealloc];
 }
 
-- (BWStillImageSettings)initWithCoder:(id)a3
+- (BWStillImageSettings)initWithCoder:(id)coder
 {
   v4 = [(BWStillImageSettings *)self init];
   if (v4)
   {
-    v4->_requestedSettings = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestedSettings"];
-    v4->_captureSettings = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"captureSettings"];
-    v4->_processingSettings = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"processingSettings"];
+    v4->_requestedSettings = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestedSettings"];
+    v4->_captureSettings = [coder decodeObjectOfClass:objc_opt_class() forKey:@"captureSettings"];
+    v4->_processingSettings = [coder decodeObjectOfClass:objc_opt_class() forKey:@"processingSettings"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_requestedSettings forKey:@"requestedSettings"];
-  [a3 encodeObject:self->_captureSettings forKey:@"captureSettings"];
+  [coder encodeObject:self->_requestedSettings forKey:@"requestedSettings"];
+  [coder encodeObject:self->_captureSettings forKey:@"captureSettings"];
   processingSettings = self->_processingSettings;
 
-  [a3 encodeObject:processingSettings forKey:@"processingSettings"];
+  [coder encodeObject:processingSettings forKey:@"processingSettings"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -77,14 +77,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(BWStillImageSettings *)self requestedSettings];
-      if (v11 == [a3 requestedSettings] || (v12 = -[FigCaptureStillImageSettings isEqual:](-[BWStillImageSettings requestedSettings](self, "requestedSettings"), "isEqual:", objc_msgSend(a3, "requestedSettings"))))
+      requestedSettings = [(BWStillImageSettings *)self requestedSettings];
+      if (requestedSettings == [equal requestedSettings] || (v12 = -[FigCaptureStillImageSettings isEqual:](-[BWStillImageSettings requestedSettings](self, "requestedSettings"), "isEqual:", objc_msgSend(equal, "requestedSettings"))))
       {
         v13 = [(BWStillImageSettings *)self captureSettings:v6];
-        if (v13 == [a3 captureSettings] || (v12 = -[BWStillImageCaptureSettings isEqual:](-[BWStillImageSettings captureSettings](self, "captureSettings"), "isEqual:", objc_msgSend(a3, "captureSettings"))))
+        if (v13 == [equal captureSettings] || (v12 = -[BWStillImageCaptureSettings isEqual:](-[BWStillImageSettings captureSettings](self, "captureSettings"), "isEqual:", objc_msgSend(equal, "captureSettings"))))
         {
-          v14 = [(BWStillImageSettings *)self processingSettings];
-          if (v14 == [a3 processingSettings] || (v12 = -[BWStillImageProcessingSettings isEqual:](-[BWStillImageSettings processingSettings](self, "processingSettings"), "isEqual:", objc_msgSend(a3, "processingSettings"))))
+          processingSettings = [(BWStillImageSettings *)self processingSettings];
+          if (processingSettings == [equal processingSettings] || (v12 = -[BWStillImageProcessingSettings isEqual:](-[BWStillImageSettings processingSettings](self, "processingSettings"), "isEqual:", objc_msgSend(equal, "processingSettings"))))
           {
             LOBYTE(v12) = 1;
           }

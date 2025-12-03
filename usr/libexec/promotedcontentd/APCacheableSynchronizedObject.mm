@@ -1,17 +1,17 @@
 @interface APCacheableSynchronizedObject
-- (APCacheableSynchronizedObject)initWithCoder:(id)a3;
-- (APCacheableSynchronizedObject)initWithIdentifier:(id)a3;
+- (APCacheableSynchronizedObject)initWithCoder:(id)coder;
+- (APCacheableSynchronizedObject)initWithIdentifier:(id)identifier;
 - (void)lockObject;
 - (void)unlockObject;
 @end
 
 @implementation APCacheableSynchronizedObject
 
-- (APCacheableSynchronizedObject)initWithCoder:(id)a3
+- (APCacheableSynchronizedObject)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = APCacheableSynchronizedObject;
-  v3 = [(APCacheableBaseObject *)&v7 initWithCoder:a3];
+  v3 = [(APCacheableBaseObject *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = objc_alloc_init(APUnfairRecursiveLock);
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (APCacheableSynchronizedObject)initWithIdentifier:(id)a3
+- (APCacheableSynchronizedObject)initWithIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = APCacheableSynchronizedObject;
-  v3 = [(APCacheableBaseObject *)&v7 initWithIdentifier:a3];
+  v3 = [(APCacheableBaseObject *)&v7 initWithIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(APUnfairRecursiveLock);
@@ -39,14 +39,14 @@
 
 - (void)lockObject
 {
-  v2 = [(APCacheableSynchronizedObject *)self lock];
-  [v2 lock];
+  lock = [(APCacheableSynchronizedObject *)self lock];
+  [lock lock];
 }
 
 - (void)unlockObject
 {
-  v2 = [(APCacheableSynchronizedObject *)self lock];
-  [v2 unlock];
+  lock = [(APCacheableSynchronizedObject *)self lock];
+  [lock unlock];
 }
 
 @end

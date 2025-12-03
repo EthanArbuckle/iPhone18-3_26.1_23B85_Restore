@@ -1,56 +1,56 @@
 @interface _UIFocusSystemSceneComponent
 + (BOOL)__applicationIsSpringBoard;
-+ (id)_screenForScene:(id)a3;
-+ (id)sceneComponentForEnvironment:(id)a3;
-+ (id)sceneComponentForFocusSystem:(id)a3;
-- (BOOL)_focusSystem:(id)a3 handleFailedMovementRequest:(id)a4;
-- (BOOL)_focusSystem:(id)a3 isScrollingScrollableContainer:(id)a4 targetContentOffset:(CGPoint *)a5;
-- (BOOL)_focusSystem:(id)a3 shouldRestoreFocusInContext:(id)a4;
-- (BOOL)_focusSystem:(id)a3 shouldReverseLayoutDirectionForEnvironment:(id)a4;
-- (BOOL)_focusSystem:(id)a3 shouldReverseLinearWrappingForEnvironment:(id)a4;
-- (BOOL)_focusSystemExplicitlyDisabledForBehavior:(id)a3;
++ (id)_screenForScene:(id)scene;
++ (id)sceneComponentForEnvironment:(id)environment;
++ (id)sceneComponentForFocusSystem:(id)system;
+- (BOOL)_focusSystem:(id)system handleFailedMovementRequest:(id)request;
+- (BOOL)_focusSystem:(id)system isScrollingScrollableContainer:(id)container targetContentOffset:(CGPoint *)offset;
+- (BOOL)_focusSystem:(id)system shouldRestoreFocusInContext:(id)context;
+- (BOOL)_focusSystem:(id)system shouldReverseLayoutDirectionForEnvironment:(id)environment;
+- (BOOL)_focusSystem:(id)system shouldReverseLinearWrappingForEnvironment:(id)environment;
+- (BOOL)_focusSystemExplicitlyDisabledForBehavior:(id)behavior;
 - (BOOL)_isFocusSystemActive;
 - (BOOL)_isSceneActive;
-- (BOOL)_shouldForwardFocusMovementRequest:(id)a3;
-- (BOOL)_shouldWaitForFocusMovementActionToEnableFocusSystem:(id)a3;
-- (CGRect)_clippingRectForFocusSystem:(id)a3 inCoordinateSpace:(id)a4;
+- (BOOL)_shouldForwardFocusMovementRequest:(id)request;
+- (BOOL)_shouldWaitForFocusMovementActionToEnableFocusSystem:(id)system;
+- (CGRect)_clippingRectForFocusSystem:(id)system inCoordinateSpace:(id)space;
 - (NSString)description;
 - (UICoordinateSpace)coordinateSpace;
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
 - (UIWindowScene)_windowScene;
 - (_UIFocusEffectManager)_focusEffectManager;
-- (_UIFocusSystemSceneComponent)initWithScene:(id)a3;
-- (id)_focusBehaviorRespectingApplicationOverride:(BOOL)a3;
-- (id)_overridingPreferredFocusEnvironmentForFocusSystem:(id)a3;
-- (id)_preferredFocusEnvironmentsForFocusSystem:(id)a3;
-- (id)_syncResponderWithFocusUpdateContext:(id)a3;
-- (id)_topEnvironmentForFocusSystem:(id)a3;
+- (_UIFocusSystemSceneComponent)initWithScene:(id)scene;
+- (id)_focusBehaviorRespectingApplicationOverride:(BOOL)override;
+- (id)_overridingPreferredFocusEnvironmentForFocusSystem:(id)system;
+- (id)_preferredFocusEnvironmentsForFocusSystem:(id)system;
+- (id)_syncResponderWithFocusUpdateContext:(id)context;
+- (id)_topEnvironmentForFocusSystem:(id)system;
 - (id)_windowsForFocusSearch;
-- (void)_adjustFocusSystemAvailabilityUpdatingTraits:(BOOL)a3;
+- (void)_adjustFocusSystemAvailabilityUpdatingTraits:(BOOL)traits;
 - (void)_delayedSetupFocusDebugWindow;
-- (void)_firstResponderDidUpdateFromResponder:(id)a3;
-- (void)_focusBehaviorDidChange:(id)a3;
-- (void)_focusSystem:(id)a3 didFinishUpdatingFocusInContext:(id)a4;
-- (void)_focusSystem:(id)a3 didUpdateFocusInContext:(id)a4;
-- (void)_focusSystem:(id)a3 environment:(id)a4 didUpdateFocusInContext:(id)a5;
-- (void)_focusSystem:(id)a3 willMessageNewFocusNodes:(id)a4;
-- (void)_focusSystem:(id)a3 willMessageOldFocusNodes:(id)a4;
-- (void)_focusSystem:(id)a3 willUpdateFocusInContext:(id)a4;
+- (void)_firstResponderDidUpdateFromResponder:(id)responder;
+- (void)_focusBehaviorDidChange:(id)change;
+- (void)_focusSystem:(id)system didFinishUpdatingFocusInContext:(id)context;
+- (void)_focusSystem:(id)system didUpdateFocusInContext:(id)context;
+- (void)_focusSystem:(id)system environment:(id)environment didUpdateFocusInContext:(id)context;
+- (void)_focusSystem:(id)system willMessageNewFocusNodes:(id)nodes;
+- (void)_focusSystem:(id)system willMessageOldFocusNodes:(id)nodes;
+- (void)_focusSystem:(id)system willUpdateFocusInContext:(id)context;
 - (void)_notifyDidPerformFocusSystemInitialSetup;
-- (void)_requestFocusEffectUpdateToEnvironment:(id)a3;
+- (void)_requestFocusEffectUpdateToEnvironment:(id)environment;
 - (void)_resetFocusEventRecognizers;
 - (void)_setupFocusSystem;
 - (void)_tearDownFocusSystem;
 - (void)_updateDeviceCapabilityObserver;
-- (void)_updateFocusEffectForItem:(id)a3;
+- (void)_updateFocusEffectForItem:(id)item;
 - (void)_updateFocusSystemCapabilities;
 - (void)_updateFocusSystemState;
 - (void)_updateWantsModernRing;
-- (void)_validateFocusedItemForFirstResponder:(id)a3;
-- (void)pushPreferredFocusEnvironmentOverride:(id)a3;
-- (void)removePreferredFocusEnvironmentOverride:(id)a3;
-- (void)setOverrideFocusSystemEnabled:(BOOL)a3 withIdentifier:(id)a4;
+- (void)_validateFocusedItemForFirstResponder:(id)responder;
+- (void)pushPreferredFocusEnvironmentOverride:(id)override;
+- (void)removePreferredFocusEnvironmentOverride:(id)override;
+- (void)setOverrideFocusSystemEnabled:(BOOL)enabled withIdentifier:(id)identifier;
 @end
 
 @implementation _UIFocusSystemSceneComponent
@@ -80,32 +80,32 @@
 
 - (UITraitCollection)_traitOverrides
 {
-  v3 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v4 = v3;
-  if (v3)
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  v4 = focusSystem;
+  if (focusSystem)
   {
-    if ([v3 _isEnabled])
+    if ([focusSystem _isEnabled])
     {
-      v5 = 2;
+      isActive = 2;
     }
 
     else
     {
-      v5 = 1;
+      isActive = 1;
     }
   }
 
   else
   {
     v6 = [(_UIFocusSystemSceneComponent *)self _focusSystemExplicitlyDisabledForBehavior:0];
-    v5 = 0;
+    isActive = 0;
     if (v6)
     {
-      v5 = [(_UIFocusHardwareKeyboardObserver *)self->_hardwareKeyboardObserver isActive];
+      isActive = [(_UIFocusHardwareKeyboardObserver *)self->_hardwareKeyboardObserver isActive];
     }
   }
 
-  v7 = [UITraitCollection _traitCollectionWithFocusSystemState:v5];
+  v7 = [UITraitCollection _traitCollectionWithFocusSystemState:isActive];
 
   return v7;
 }
@@ -114,28 +114,28 @@
 {
   v11[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v4 = [WeakRetained _FBSScene];
-  v5 = [v4 identityToken];
-  v6 = [v5 stringRepresentation];
+  _FBSScene = [WeakRetained _FBSScene];
+  identityToken = [_FBSScene identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
 
-  if (v6)
+  if (stringRepresentation)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     focusSystem = self->_focusSystem;
     v10 = 0x1EFB17090;
-    v11[0] = v6;
+    v11[0] = stringRepresentation;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v7 postNotificationName:@"_UIFocusSystemSceneComponentDidFinishInitialization" object:focusSystem userInfo:v9];
+    [defaultCenter postNotificationName:@"_UIFocusSystemSceneComponentDidFinishInitialization" object:focusSystem userInfo:v9];
   }
 }
 
 - (void)_updateDeviceCapabilityObserver
 {
   v3 = [(_UIFocusSystemSceneComponent *)self _focusBehaviorRespectingApplicationOverride:0];
-  v4 = [v3 requiredInputDevices];
+  requiredInputDevices = [v3 requiredInputDevices];
   objc_initWeak(&location, self);
   hardwareKeyboardObserver = self->_hardwareKeyboardObserver;
-  if (v4)
+  if (requiredInputDevices)
   {
     if (!hardwareKeyboardObserver)
     {
@@ -160,7 +160,7 @@
   }
 
   gameControllerObserver = self->_gameControllerObserver;
-  if ((v4 & 2) != 0)
+  if ((requiredInputDevices & 2) != 0)
   {
     if (!gameControllerObserver)
     {
@@ -195,7 +195,7 @@
   {
     if (!+[_UIFocusSystemSceneComponent __applicationIsSpringBoard](_UIFocusSystemSceneComponent, "__applicationIsSpringBoard") || (-[_UIFocusSystemSceneComponent _windowScene](self, "_windowScene"), v4 = objc_claimAutoreleasedReturnValue(), [v4 traitCollection], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v4, v6 == 3))
     {
-      v7 = [v3 _coordinateSpace];
+      _coordinateSpace = [v3 _coordinateSpace];
       goto LABEL_10;
     }
   }
@@ -210,10 +210,10 @@
     dispatch_once(&qword_1ED49E1F0, block);
   }
 
-  v8 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v9 = [v8 screen];
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  screen = [_windowScene screen];
 
-  if (!v9)
+  if (!screen)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -226,25 +226,25 @@
       if (self)
       {
         v25 = MEMORY[0x1E696AEC0];
-        v26 = self;
+        selfCopy = self;
         v27 = objc_opt_class();
         v28 = NSStringFromClass(v27);
-        v24 = [v25 stringWithFormat:@"<%@: %p>", v28, v26];
+        selfCopy = [v25 stringWithFormat:@"<%@: %p>", v28, selfCopy];
       }
 
       else
       {
-        v24 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
-      v17 = v24;
-      v18 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-      if (v18)
+      v17 = selfCopy;
+      _windowScene2 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+      if (_windowScene2)
       {
         v29 = MEMORY[0x1E696AEC0];
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v22 = [v29 stringWithFormat:@"<%@: %p>", v31, v18];
+        v22 = [v29 stringWithFormat:@"<%@: %p>", v31, _windowScene2];
       }
 
       else
@@ -266,8 +266,8 @@
       {
 LABEL_23:
 
-        v23 = [objc_opt_self() mainScreen];
-        v7 = [v23 coordinateSpace];
+        mainScreen = [objc_opt_self() mainScreen];
+        _coordinateSpace = [mainScreen coordinateSpace];
 
         goto LABEL_9;
       }
@@ -275,25 +275,25 @@ LABEL_23:
       if (self)
       {
         v12 = MEMORY[0x1E696AEC0];
-        v13 = self;
+        selfCopy2 = self;
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [v12 stringWithFormat:@"<%@: %p>", v15, v13];
+        selfCopy2 = [v12 stringWithFormat:@"<%@: %p>", v15, selfCopy2];
       }
 
       else
       {
-        v16 = @"(nil)";
+        selfCopy2 = @"(nil)";
       }
 
-      v17 = v16;
-      v18 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-      if (v18)
+      v17 = selfCopy2;
+      _windowScene2 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+      if (_windowScene2)
       {
         v19 = MEMORY[0x1E696AEC0];
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
-        v22 = [v19 stringWithFormat:@"<%@: %p>", v21, v18];
+        v22 = [v19 stringWithFormat:@"<%@: %p>", v21, _windowScene2];
       }
 
       else
@@ -311,12 +311,12 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v7 = [v9 coordinateSpace];
+  _coordinateSpace = [screen coordinateSpace];
 LABEL_9:
 
 LABEL_10:
 
-  return v7;
+  return _coordinateSpace;
 }
 
 + (BOOL)__applicationIsSpringBoard
@@ -334,11 +334,11 @@ LABEL_10:
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = _forceUnwrappedScene(self);
   v4 = [_UIFocusSystemSceneComponent _screenForScene:v3];
-  v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v6 = [v5 behavior];
-  v7 = [v6 supportsMultipleWindows];
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
+  supportsMultipleWindows = [behavior supportsMultipleWindows];
 
-  if (v7)
+  if (supportsMultipleWindows)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -347,25 +347,25 @@ LABEL_10:
       goto LABEL_16;
     }
 
-    v8 = [v3 _allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1];
-    v9 = [v8 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_272];
+    _preferredFocusedWindow = [v3 _allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1];
+    v9 = [_preferredFocusedWindow sortedArrayWithOptions:16 usingComparator:&__block_literal_global_272];
   }
 
   else
   {
-    v10 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-    v11 = [v10 behavior];
-    v12 = [v11 requiresLegacyScreenBasedWindowLookup];
+    focusSystem2 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+    behavior2 = [focusSystem2 behavior];
+    requiresLegacyScreenBasedWindowLookup = [behavior2 requiresLegacyScreenBasedWindowLookup];
 
-    if (v12)
+    if (requiresLegacyScreenBasedWindowLookup)
     {
-      v8 = [v4 _preferredFocusedWindow];
-      v13 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-      v14 = [v13 keyWindow];
+      _preferredFocusedWindow = [v4 _preferredFocusedWindow];
+      _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+      keyWindow = [_windowScene keyWindow];
 
-      if (v8 && ([v8 windowScene], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v3))
+      if (_preferredFocusedWindow && ([_preferredFocusedWindow windowScene], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v3))
       {
-        v20[0] = v8;
+        v20[0] = _preferredFocusedWindow;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       }
 
@@ -377,16 +377,16 @@ LABEL_10:
       goto LABEL_15;
     }
 
-    v17 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v8 = [v17 keyWindow];
+    _windowScene2 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    _preferredFocusedWindow = [_windowScene2 keyWindow];
 
-    if (!v8)
+    if (!_preferredFocusedWindow)
     {
       v16 = MEMORY[0x1E695E0F0];
       goto LABEL_15;
     }
 
-    v19 = v8;
+    v19 = _preferredFocusedWindow;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   }
 
@@ -423,15 +423,15 @@ LABEL_16:
 
 - (void)_updateFocusSystemCapabilities
 {
-  v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v2 = [v5 behavior];
-  v3 = [v2 focusCastingMode];
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
+  focusCastingMode = [behavior focusCastingMode];
 
-  if (v3)
+  if (focusCastingMode)
   {
     v4 = objc_alloc_init(_UIFocusCastingController);
-    [v5 _setFocusCasting:v4];
-    if (v3 == 2)
+    [focusSystem _setFocusCasting:v4];
+    if (focusCastingMode == 2)
     {
       [(_UIFocusCastingController *)v4 setEntryPointMemorizationTimeout:0.0];
     }
@@ -439,34 +439,34 @@ LABEL_16:
 
   else
   {
-    [v5 _setFocusCasting:0];
+    [focusSystem _setFocusCasting:0];
   }
 }
 
 - (void)_updateFocusSystemState
 {
-  v3 = [(_UIFocusSystemSceneComponent *)self _isSceneActive];
-  v4 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v5 = [v4 behavior];
-  v6 = [v5 focusSystemDeactivationMode];
+  _isSceneActive = [(_UIFocusSystemSceneComponent *)self _isSceneActive];
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
+  focusSystemDeactivationMode = [behavior focusSystemDeactivationMode];
 
-  if (v6 == 1)
+  if (focusSystemDeactivationMode == 1)
   {
     v8 = &unk_1EFE30940;
-    if (v3)
+    if (_isSceneActive)
     {
       v8 = 0;
     }
 
     v7 = v8;
-    v3 = 1;
+    _isSceneActive = 1;
   }
 
   else
   {
-    if (!v6)
+    if (!focusSystemDeactivationMode)
     {
-      v3 = [(_UIFocusSystemSceneComponent *)self _isFocusSystemActive];
+      _isSceneActive = [(_UIFocusSystemSceneComponent *)self _isFocusSystemActive];
     }
 
     v7 = 0;
@@ -474,7 +474,7 @@ LABEL_16:
 
   v9 = v7;
   [(UIFocusSystem *)self->_focusSystem _setOverrideFocusDeferralBehavior:v7];
-  [(UIFocusSystem *)self->_focusSystem _setEnabled:v3];
+  [(UIFocusSystem *)self->_focusSystem _setEnabled:_isSceneActive];
 }
 
 - (void)_setupFocusSystem
@@ -550,17 +550,17 @@ LABEL_16:
       focusAnimationCoordinatorManager = self->_focusAnimationCoordinatorManager;
       self->_focusAnimationCoordinatorManager = v24;
 
-      v26 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-      v27 = [v26 _allWindows];
+      _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+      _allWindows = [_windowScene _allWindows];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __49___UIFocusSystemSceneComponent__setupFocusSystem__block_invoke_3;
       v30[3] = &unk_1E710ACE8;
       v30[4] = self;
-      [v27 enumerateObjectsUsingBlock:v30];
+      [_allWindows enumerateObjectsUsingBlock:v30];
 
-      v28 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v28 addObserver:self selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self->_focusSystem];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self->_focusSystem];
 
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -577,17 +577,17 @@ LABEL_16:
 
 - (void)_updateWantsModernRing
 {
-  v3 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v4 = [v3 behavior];
-  v5 = [v4 focusRingVisibility];
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
+  focusRingVisibility = [behavior focusRingVisibility];
 
-  if (((v5 & 0xFFFFFFFFFFFFFFFELL) == 2) == ((*&self->_flags & 2) == 0))
+  if (((focusRingVisibility & 0xFFFFFFFFFFFFFFFELL) == 2) == ((*&self->_flags & 2) == 0))
   {
     [UIFocusRingManager moveRingToFocusItem:0];
-    v6 = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
-    [v6 moveFocusToItem:0];
+    _focusEffectManager = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
+    [_focusEffectManager moveFocusToItem:0];
 
-    *&self->_flags = *&self->_flags & 0xFD | (2 * ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2));
+    *&self->_flags = *&self->_flags & 0xFD | (2 * ((focusRingVisibility & 0xFFFFFFFFFFFFFFFELL) == 2));
   }
 }
 
@@ -596,8 +596,8 @@ LABEL_16:
   if (self->_focusSystem && +[_UIFocusDebugWindow hasAnyModules])
   {
     v3 = [_UIFocusDebugWindow alloc];
-    v4 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v5 = [(_UIFocusDebugWindow *)v3 initWithWindowScene:v4];
+    _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    v5 = [(_UIFocusDebugWindow *)v3 initWithWindowScene:_windowScene];
     debugWindow = self->_debugWindow;
     self->_debugWindow = v5;
 
@@ -609,23 +609,23 @@ LABEL_16:
 
 - (void)_tearDownFocusSystem
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self->_focusSystem];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self->_focusSystem];
 
-  v4 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v5 = [v4 _allWindows];
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  _allWindows = [_windowScene _allWindows];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52___UIFocusSystemSceneComponent__tearDownFocusSystem__block_invoke;
   v18[3] = &unk_1E710ACE8;
   v18[4] = self;
-  [v5 enumerateObjectsUsingBlock:v18];
+  [_allWindows enumerateObjectsUsingBlock:v18];
 
-  v6 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  [v6 _updateFocusImmediatelyToEnvironment:0];
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  [focusSystem _updateFocusImmediatelyToEnvironment:0];
 
-  v7 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  [v7 _prepareForTeardown];
+  focusSystem2 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  [focusSystem2 _prepareForTeardown];
 
   focusSystem = self->_focusSystem;
   self->_focusSystem = 0;
@@ -659,35 +659,35 @@ LABEL_16:
   self->_debugWindow = 0;
 }
 
-+ (id)sceneComponentForFocusSystem:(id)a3
++ (id)sceneComponentForFocusSystem:(id)system
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  systemCopy = system;
+  if (!systemCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"_UIFocusSystemSceneComponent.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusSystemSceneComponent.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
   }
 
-  v6 = [v5 _hostFocusSystem];
+  _hostFocusSystem = [systemCopy _hostFocusSystem];
 
-  if (v6)
+  if (_hostFocusSystem)
   {
     do
     {
-      v7 = [v5 _hostFocusSystem];
+      _hostFocusSystem2 = [systemCopy _hostFocusSystem];
 
-      v8 = [v7 _hostFocusSystem];
+      v7_hostFocusSystem = [_hostFocusSystem2 _hostFocusSystem];
 
-      v5 = v7;
+      systemCopy = _hostFocusSystem2;
     }
 
-    while (v8);
+    while (v7_hostFocusSystem);
   }
 
   else
   {
-    v7 = v5;
+    _hostFocusSystem2 = systemCopy;
   }
 
   v20 = 0u;
@@ -709,12 +709,12 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) _focusSystemSceneComponent];
+        _focusSystemSceneComponent = [*(*(&v18 + 1) + 8 * i) _focusSystemSceneComponent];
         if ([objc_opt_class() needsFocusSystem])
         {
-          v15 = [v14 focusSystem];
+          focusSystem = [_focusSystemSceneComponent focusSystem];
 
-          if (v15 == v7)
+          if (focusSystem == _hostFocusSystem2)
           {
 
             goto LABEL_18;
@@ -733,75 +733,75 @@ LABEL_16:
   }
 
   os_variant_has_internal_diagnostics();
-  v14 = 0;
+  _focusSystemSceneComponent = 0;
 LABEL_18:
 
-  return v14;
+  return _focusSystemSceneComponent;
 }
 
-+ (id)sceneComponentForEnvironment:(id)a3
++ (id)sceneComponentForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 sceneComponentForFocusSystem:v4];
+    v5 = [self sceneComponentForFocusSystem:environmentCopy];
 LABEL_5:
-    v6 = v5;
+    _focusSystemSceneComponent = v5;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = environmentCopy;
     goto LABEL_5;
   }
 
-  v7 = _UIFocusEnvironmentContainingView(v4);
-  v8 = [v7 _window];
-  v9 = [v8 windowScene];
-  v6 = [v9 _focusSystemSceneComponent];
-  if (!v6)
+  v7 = _UIFocusEnvironmentContainingView(environmentCopy);
+  _window = [v7 _window];
+  windowScene = [_window windowScene];
+  _focusSystemSceneComponent = [windowScene _focusSystemSceneComponent];
+  if (!_focusSystemSceneComponent)
   {
     os_variant_has_internal_diagnostics();
   }
 
 LABEL_9:
 
-  return v6;
+  return _focusSystemSceneComponent;
 }
 
-+ (id)_screenForScene:(id)a3
++ (id)_screenForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 screen];
+    screen = [sceneCopy screen];
   }
 
   else
   {
-    v4 = 0;
+    screen = 0;
   }
 
-  return v4;
+  return screen;
 }
 
-- (_UIFocusSystemSceneComponent)initWithScene:(id)a3
+- (_UIFocusSystemSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = _UIFocusSystemSceneComponent;
   v5 = [(_UIFocusSystemSceneComponent *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     *&v6->_flags |= 1u;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__focusBehaviorDidChange_ name:@"_UIFocusBehaviorDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__focusBehaviorDidChange_ name:@"_UIFocusBehaviorDidChangeNotification" object:0];
 
     [(_UIFocusSystemSceneComponent *)v6 _updateDeviceCapabilityObserver];
     [(_UIFocusSystemSceneComponent *)v6 _adjustFocusSystemAvailabilityUpdatingTraits:0];
@@ -834,24 +834,24 @@ LABEL_9:
   return focusEffectManager;
 }
 
-- (void)_requestFocusEffectUpdateToEnvironment:(id)a3
+- (void)_requestFocusEffectUpdateToEnvironment:(id)environment
 {
-  v4 = a3;
-  v7 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v5 = [v7 _focusedItemIsContainedInEnvironment:v4 includeSelf:1];
+  environmentCopy = environment;
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  v5 = [focusSystem _focusedItemIsContainedInEnvironment:environmentCopy includeSelf:1];
 
   if (v5)
   {
-    v6 = [v7 focusedItem];
-    [(_UIFocusSystemSceneComponent *)self _updateFocusEffectForItem:v6];
+    focusedItem = [focusSystem focusedItem];
+    [(_UIFocusSystemSceneComponent *)self _updateFocusEffectForItem:focusedItem];
   }
 }
 
-- (void)_updateFocusEffectForItem:(id)a3
+- (void)_updateFocusEffectForItem:(id)item
 {
-  v12 = a3;
-  v4 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  if (![v4 _isEnabled])
+  itemCopy = item;
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  if (![focusSystem _isEnabled])
   {
 
     if ((*&self->_flags & 2) == 0)
@@ -860,21 +860,21 @@ LABEL_9:
     }
 
 LABEL_10:
-    v9 = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
-    v10 = v9;
+    _focusEffectManager = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
+    v10 = _focusEffectManager;
     v11 = 0;
     goto LABEL_11;
   }
 
-  v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v6 = [v5 behavior];
-  v7 = [v6 showsFocusRingForItem:v12];
+  focusSystem2 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem2 behavior];
+  v7 = [behavior showsFocusRingForItem:itemCopy];
 
   if ((*&self->_flags & 2) == 0)
   {
     if (v7)
     {
-      v8 = v12;
+      v8 = itemCopy;
 LABEL_7:
       [UIFocusRingManager moveRingToFocusItem:v8];
       goto LABEL_12;
@@ -890,34 +890,34 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v9 = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
-  v10 = v9;
-  v11 = v12;
+  _focusEffectManager = [(_UIFocusSystemSceneComponent *)self _focusEffectManager];
+  v10 = _focusEffectManager;
+  v11 = itemCopy;
 LABEL_11:
-  [v9 moveFocusToItem:v11];
+  [_focusEffectManager moveFocusToItem:v11];
 
 LABEL_12:
 }
 
-- (void)setOverrideFocusSystemEnabled:(BOOL)a3 withIdentifier:(id)a4
+- (void)setOverrideFocusSystemEnabled:(BOOL)enabled withIdentifier:(id)identifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIFocusSystemSceneComponent.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusSystemSceneComponent.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifier"}];
   }
 
   v8 = MEMORY[0x1E696AEC0];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v8 stringWithFormat:@"<%@ %p>", v10, v7];
+  identifierCopy = [v8 stringWithFormat:@"<%@ %p>", v10, identifierCopy];
 
-  v12 = [(_UIFocusSystemSceneComponent *)self isOverrideFocusSystemEnabled];
+  isOverrideFocusSystemEnabled = [(_UIFocusSystemSceneComponent *)self isOverrideFocusSystemEnabled];
   overrideFocusSystemEnablementIdentifiers = self->_overrideFocusSystemEnablementIdentifiers;
-  if (v4)
+  if (enabledCopy)
   {
     if (!overrideFocusSystemEnablementIdentifiers)
     {
@@ -928,21 +928,21 @@ LABEL_12:
       overrideFocusSystemEnablementIdentifiers = self->_overrideFocusSystemEnablementIdentifiers;
     }
 
-    if (([(NSMutableSet *)overrideFocusSystemEnablementIdentifiers containsObject:v11]& 1) == 0)
+    if (([(NSMutableSet *)overrideFocusSystemEnablementIdentifiers containsObject:identifierCopy]& 1) == 0)
     {
-      [(NSMutableSet *)self->_overrideFocusSystemEnablementIdentifiers addObject:v11];
+      [(NSMutableSet *)self->_overrideFocusSystemEnablementIdentifiers addObject:identifierCopy];
     }
   }
 
   else
   {
-    [(NSMutableSet *)overrideFocusSystemEnablementIdentifiers removeObject:v11];
+    [(NSMutableSet *)overrideFocusSystemEnablementIdentifiers removeObject:identifierCopy];
   }
 
-  v16 = [(_UIFocusSystemSceneComponent *)self isOverrideFocusSystemEnabled];
-  if (v12 != v16)
+  isOverrideFocusSystemEnabled2 = [(_UIFocusSystemSceneComponent *)self isOverrideFocusSystemEnabled];
+  if (isOverrideFocusSystemEnabled != isOverrideFocusSystemEnabled2)
   {
-    v17 = v16;
+    v17 = isOverrideFocusSystemEnabled2;
     v18 = *(__UILogGetCategoryCachedImpl("UIFocusSystemSceneComponent", &setOverrideFocusSystemEnabled_withIdentifier____s_category) + 8);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -952,7 +952,7 @@ LABEL_12:
         v19 = @"DISABLED";
       }
 
-      v20 = v7;
+      v20 = identifierCopy;
       if (v17)
       {
         v20 = self->_overrideFocusSystemEnablementIdentifiers;
@@ -965,18 +965,18 @@ LABEL_12:
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEFAULT, "Override focusSystemState: (%@) for reason(s): %@", buf, 0x16u);
     }
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"_UIFocusBehaviorDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIFocusBehaviorDidChangeNotification" object:0];
   }
 }
 
-- (void)_focusBehaviorDidChange:(id)a3
+- (void)_focusBehaviorDidChange:(id)change
 {
   if (*&self->_flags)
   {
     v5 = [(_UIFocusSystemSceneComponent *)self _focusBehaviorRespectingApplicationOverride:1];
-    v6 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-    [v6 setBehavior:v5];
+    focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+    [focusSystem setBehavior:v5];
 
     [(_UIFocusSystemSceneComponent *)self _updateWantsModernRing];
     [(_UIFocusSystemSceneComponent *)self _updateDeviceCapabilityObserver];
@@ -985,20 +985,20 @@ LABEL_12:
   }
 }
 
-- (void)_adjustFocusSystemAvailabilityUpdatingTraits:(BOOL)a3
+- (void)_adjustFocusSystemAvailabilityUpdatingTraits:(BOOL)traits
 {
-  v3 = a3;
-  v15 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  traitsCopy = traits;
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
   v5 = [(_UIFocusSystemSceneComponent *)self _focusBehaviorRespectingApplicationOverride:1];
   hardwareKeyboardObserver = self->_hardwareKeyboardObserver;
   if (hardwareKeyboardObserver)
   {
-    v7 = [(_UIFocusHardwareKeyboardObserver *)hardwareKeyboardObserver isActive];
+    isActive = [(_UIFocusHardwareKeyboardObserver *)hardwareKeyboardObserver isActive];
     gameControllerObserver = self->_gameControllerObserver;
     if (gameControllerObserver)
     {
 LABEL_3:
-      v9 = [(_UIFocusGameControllerObserver *)gameControllerObserver isActive];
+      isActive2 = [(_UIFocusGameControllerObserver *)gameControllerObserver isActive];
       goto LABEL_6;
     }
   }
@@ -1006,16 +1006,16 @@ LABEL_3:
   else
   {
     gameControllerObserver = self->_gameControllerObserver;
-    v7 = gameControllerObserver == 0;
+    isActive = gameControllerObserver == 0;
     if (gameControllerObserver)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = 0;
+  isActive2 = 0;
 LABEL_6:
-  if (v15)
+  if (_windowScene)
   {
     v10 = [v5 wantsFocusSystemForScene:?];
   }
@@ -1025,7 +1025,7 @@ LABEL_6:
     v10 = 0;
   }
 
-  v11 = v7 || v9;
+  v11 = isActive || isActive2;
   focusSystem = self->_focusSystem;
   v13 = v10 & v11;
   if (!focusSystem || (v13 & 1) != 0)
@@ -1033,10 +1033,10 @@ LABEL_6:
     if (((focusSystem == 0) & v13) == 1)
     {
       [(_UIFocusSystemSceneComponent *)self _setupFocusSystem];
-      if (v3)
+      if (traitsCopy)
       {
 LABEL_21:
-        [v15 _componentDidUpdateTraitOverrides:self];
+        [_windowScene _componentDidUpdateTraitOverrides:self];
         if (focusSystem)
         {
           goto LABEL_25;
@@ -1049,13 +1049,13 @@ LABEL_21:
     else if (v13)
     {
       [(_UIFocusSystemSceneComponent *)self _updateFocusSystemCapabilities];
-      if (v3)
+      if (traitsCopy)
       {
         goto LABEL_21;
       }
     }
 
-    else if (v3)
+    else if (traitsCopy)
     {
       goto LABEL_21;
     }
@@ -1064,7 +1064,7 @@ LABEL_21:
   else
   {
     [(_UIFocusSystemSceneComponent *)self _tearDownFocusSystem];
-    if (v3)
+    if (traitsCopy)
     {
       goto LABEL_21;
     }
@@ -1078,9 +1078,9 @@ LABEL_21:
 LABEL_22:
   if ([(UIFocusSystem *)self->_focusSystem _isEnabled])
   {
-    v14 = [(UIFocusSystem *)self->_focusSystem focusedItem];
+    focusedItem = [(UIFocusSystem *)self->_focusSystem focusedItem];
 
-    if (!v14)
+    if (!focusedItem)
     {
       [(UIFocusSystem *)self->_focusSystem requestFocusUpdateToEnvironment:self->_focusSystem];
       [(UIFocusSystem *)self->_focusSystem updateFocusIfNeeded];
@@ -1090,19 +1090,19 @@ LABEL_22:
 LABEL_25:
 }
 
-- (BOOL)_focusSystemExplicitlyDisabledForBehavior:(id)a3
+- (BOOL)_focusSystemExplicitlyDisabledForBehavior:(id)behavior
 {
-  v4 = a3;
-  if (v4)
+  behaviorCopy = behavior;
+  if (behaviorCopy)
   {
-    v5 = v4;
+    v5 = behaviorCopy;
   }
 
   else
   {
-    v6 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v7 = [v6 traitCollection];
-    v5 = _UIFocusBaseBehaviorForTraitCollection(v7);
+    _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    traitCollection = [_windowScene traitCollection];
+    v5 = _UIFocusBaseBehaviorForTraitCollection(traitCollection);
 
     if (!v5)
     {
@@ -1125,14 +1125,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)_focusBehaviorRespectingApplicationOverride:(BOOL)a3
+- (id)_focusBehaviorRespectingApplicationOverride:(BOOL)override
 {
-  v3 = a3;
-  v5 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v6 = [v5 traitCollection];
+  overrideCopy = override;
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  traitCollection = [_windowScene traitCollection];
 
-  v7 = _UIFocusBaseBehaviorForTraitCollection(v6);
-  if (v3 && [(_UIFocusSystemSceneComponent *)self _focusSystemExplicitlyDisabledForBehavior:v7])
+  v7 = _UIFocusBaseBehaviorForTraitCollection(traitCollection);
+  if (overrideCopy && [(_UIFocusSystemSceneComponent *)self _focusSystemExplicitlyDisabledForBehavior:v7])
   {
 
     v7 = 0;
@@ -1144,12 +1144,12 @@ LABEL_8:
 - (void)_resetFocusEventRecognizers
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(_UIFocusSystemSceneComponent *)self _windowsForFocusSearch];
+  _windowsForFocusSearch = [(_UIFocusSystemSceneComponent *)self _windowsForFocusSearch];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [_windowsForFocusSearch countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1161,45 +1161,45 @@ LABEL_8:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_windowsForFocusSearch);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _resetFocusEventRecognizer];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_windowsForFocusSearch countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)pushPreferredFocusEnvironmentOverride:(id)a3
+- (void)pushPreferredFocusEnvironmentOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
+  overrideCopy = override;
+  preferredFocusEnvironmentOverride = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
 
-  if (!v5)
+  if (!preferredFocusEnvironmentOverride)
   {
-    v6 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     preferredFocusEnvironmentOverride = self->_preferredFocusEnvironmentOverride;
-    self->_preferredFocusEnvironmentOverride = v6;
+    self->_preferredFocusEnvironmentOverride = weakObjectsPointerArray;
   }
 
-  v8 = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
-  [v8 addPointer:v4];
+  preferredFocusEnvironmentOverride2 = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
+  [preferredFocusEnvironmentOverride2 addPointer:overrideCopy];
 }
 
-- (void)removePreferredFocusEnvironmentOverride:(id)a3
+- (void)removePreferredFocusEnvironmentOverride:(id)override
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
-  [v5 compact];
-  if ([v5 count])
+  overrideCopy = override;
+  preferredFocusEnvironmentOverride = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
+  [preferredFocusEnvironmentOverride compact];
+  if ([preferredFocusEnvironmentOverride count])
   {
-    v6 = [v5 count] - 1;
+    v6 = [preferredFocusEnvironmentOverride count] - 1;
     while (1)
     {
       v7 = v6;
@@ -1208,11 +1208,11 @@ LABEL_8:
         break;
       }
 
-      v8 = [v5 pointerAtIndex:v6 & 0x7FFFFFFF];
+      0x7FFFFFFF = [preferredFocusEnvironmentOverride pointerAtIndex:v6 & 0x7FFFFFFF];
       v6 = v7 - 1;
-      if (v8 == v4)
+      if (0x7FFFFFFF == overrideCopy)
       {
-        [v5 removePointerAtIndex:v7 & 0x7FFFFFFF];
+        [preferredFocusEnvironmentOverride removePointerAtIndex:v7 & 0x7FFFFFFF];
         goto LABEL_18;
       }
     }
@@ -1220,7 +1220,7 @@ LABEL_8:
     v9 = *(__UILogGetCategoryCachedImpl("UIFocusSystemSceneComponent", &qword_1ED49E1C8) + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = v4;
+      v15 = overrideCopy;
       if (v15)
       {
         v16 = MEMORY[0x1E696AEC0];
@@ -1247,7 +1247,7 @@ LABEL_16:
     v9 = *(__UILogGetCategoryCachedImpl("UIFocusSystemSceneComponent", &qword_1ED49E1D0) + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v4;
+      v10 = overrideCopy;
       if (v10)
       {
         v11 = MEMORY[0x1E696AEC0];
@@ -1271,28 +1271,28 @@ LABEL_16:
 LABEL_18:
 }
 
-- (id)_syncResponderWithFocusUpdateContext:(id)a3
+- (id)_syncResponderWithFocusUpdateContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v6 = [v5 behavior];
+  contextCopy = context;
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
 
-  if ([v6 syncsFocusAndResponder])
+  if ([behavior syncsFocusAndResponder])
   {
-    v7 = [v4 nextFocusedItem];
-    v8 = v7;
-    if (v7)
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    v8 = nextFocusedItem;
+    if (nextFocusedItem)
     {
-      v9 = _UIFirstResponderCandidateForEnvironment(v7);
-      v10 = [v9 _nextResponderThatCanBecomeFirstResponder];
-      v11 = v10;
-      if (!v10 || ([v10 isFirstResponder] & 1) == 0 && objc_msgSend(v11, "_allowsChangingFirstResponderForFocusUpdateWithContext:", v4))
+      v9 = _UIFirstResponderCandidateForEnvironment(nextFocusedItem);
+      _nextResponderThatCanBecomeFirstResponder = [v9 _nextResponderThatCanBecomeFirstResponder];
+      v11 = _nextResponderThatCanBecomeFirstResponder;
+      if (!_nextResponderThatCanBecomeFirstResponder || ([_nextResponderThatCanBecomeFirstResponder isFirstResponder] & 1) == 0 && objc_msgSend(v11, "_allowsChangingFirstResponderForFocusUpdateWithContext:", contextCopy))
       {
         v12 = _UIFocusEnvironmentContainingView(v8);
-        v13 = [v12 _window];
-        v14 = [v13 firstResponder];
-        v15 = v14;
-        if ((!v14 || [v14 _allowsChangingFirstResponderForFocusUpdateWithContext:v4]) && (!v11 || !+[UIResponder _callBecomeFirstResponder:withIntent:](UIResponder, "_callBecomeFirstResponder:withIntent:", v11, 1)))
+        _window = [v12 _window];
+        firstResponder = [_window firstResponder];
+        v15 = firstResponder;
+        if ((!firstResponder || [firstResponder _allowsChangingFirstResponderForFocusUpdateWithContext:contextCopy]) && (!v11 || !+[UIResponder _callBecomeFirstResponder:withIntent:](UIResponder, "_callBecomeFirstResponder:withIntent:", v11, 1)))
         {
           [UIResponder _callResignFirstResponder:v15 withIntent:1];
         }
@@ -1325,18 +1325,18 @@ LABEL_18:
   return v17;
 }
 
-- (void)_firstResponderDidUpdateFromResponder:(id)a3
+- (void)_firstResponderDidUpdateFromResponder:(id)responder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responderCopy = responder;
   if (+[UIResponder _currentChangeIntent]!= 1)
   {
-    v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-    v6 = [v5 behavior];
+    focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+    behavior = [focusSystem behavior];
 
-    if ([v6 syncsFocusAndResponder])
+    if ([behavior syncsFocusAndResponder])
     {
-      v26 = v6;
+      v26 = behavior;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -1357,41 +1357,41 @@ LABEL_18:
             }
 
             v11 = *(*(&v28 + 1) + 8 * i);
-            v12 = [v11 _hostFocusSystem];
+            _hostFocusSystem = [v11 _hostFocusSystem];
 
-            if (v12)
+            if (_hostFocusSystem)
             {
               do
               {
-                v13 = [v11 _hostFocusSystem];
+                _hostFocusSystem2 = [v11 _hostFocusSystem];
 
-                v14 = [v13 _hostFocusSystem];
+                v13_hostFocusSystem = [_hostFocusSystem2 _hostFocusSystem];
 
-                v11 = v13;
+                v11 = _hostFocusSystem2;
               }
 
-              while (v14);
+              while (v13_hostFocusSystem);
             }
 
             else
             {
-              v13 = v11;
+              _hostFocusSystem2 = v11;
             }
 
-            v15 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+            focusSystem2 = [(_UIFocusSystemSceneComponent *)self focusSystem];
 
-            if (v13 == v15)
+            if (_hostFocusSystem2 == focusSystem2)
             {
               v16 = +[UIWindow _applicationKeyWindow];
-              v17 = [v16 firstResponder];
+              firstResponder = [v16 firstResponder];
 
-              v18 = _UIFocusEnvironmentSafeCast(v17);
-              if (v4)
+              v18 = _UIFocusEnvironmentSafeCast(firstResponder);
+              if (responderCopy)
               {
-                v19 = _UIFocusEnvironmentSafeCast(v4);
+                v19 = _UIFocusEnvironmentSafeCast(responderCopy);
                 if (v19)
                 {
-                  v20 = [v13 _focusedItemIsContainedInEnvironment:v4 includeSelf:1] ^ 1;
+                  v20 = [_hostFocusSystem2 _focusedItemIsContainedInEnvironment:responderCopy includeSelf:1] ^ 1;
                 }
 
                 else
@@ -1407,7 +1407,7 @@ LABEL_18:
 
               if (!v18)
               {
-                if (v17)
+                if (firstResponder)
                 {
                   v24 = 0;
                 }
@@ -1424,8 +1424,8 @@ LABEL_18:
 
                 else
                 {
-                  v25 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-                  [v25 _updateFocusImmediatelyToEnvironment:0];
+                  focusSystem3 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+                  [focusSystem3 _updateFocusImmediatelyToEnvironment:0];
 
 LABEL_32:
                 }
@@ -1433,21 +1433,21 @@ LABEL_32:
                 goto LABEL_34;
               }
 
-              if (v20 & ((v17 == 0) | [v13 _focusedItemIsContainedInEnvironment:v18 includeSelf:1]))
+              if (v20 & ((firstResponder == 0) | [_hostFocusSystem2 _focusedItemIsContainedInEnvironment:v18 includeSelf:1]))
               {
                 goto LABEL_32;
               }
 
-              v21 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-              v22 = [v21 focusedItem];
+              focusSystem4 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+              focusedItem = [focusSystem4 focusedItem];
 
-              if (v22 == v18)
+              if (focusedItem == v18)
               {
                 goto LABEL_32;
               }
 
-              v23 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-              [v23 _updateFocusImmediatelyToEnvironment:v18];
+              focusSystem5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+              [focusSystem5 _updateFocusImmediatelyToEnvironment:v18];
             }
           }
 
@@ -1463,34 +1463,34 @@ LABEL_32:
 
 LABEL_34:
 
-      v6 = v26;
+      behavior = v26;
     }
   }
 }
 
-- (void)_validateFocusedItemForFirstResponder:(id)a3
+- (void)_validateFocusedItemForFirstResponder:(id)responder
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-  v6 = [v5 behavior];
+  responderCopy = responder;
+  focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+  behavior = [focusSystem behavior];
 
-  if ([v6 syncsFocusAndResponder])
+  if ([behavior syncsFocusAndResponder])
   {
-    v7 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-    v8 = [v7 focusedItem];
+    focusSystem2 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+    focusedItem = [focusSystem2 focusedItem];
 
-    if (v4 && v8 && ([v4 isFirstResponder] & 1) == 0)
+    if (responderCopy && focusedItem && ([responderCopy isFirstResponder] & 1) == 0)
     {
       v9 = +[UIWindow _applicationKeyWindow];
-      v10 = [v9 firstResponder];
+      firstResponder = [v9 firstResponder];
 
-      if (v10)
+      if (firstResponder)
       {
-        v11 = _UIFocusEnvironmentSafeCast(v10);
+        v11 = _UIFocusEnvironmentSafeCast(firstResponder);
 
         v12 = @"N";
-        if (v11 && _UIFocusEnvironmentIsAncestorOfEnvironment(v10, v8))
+        if (v11 && _UIFocusEnvironmentIsAncestorOfEnvironment(firstResponder, focusedItem))
         {
           v12 = @"Y";
         }
@@ -1501,33 +1501,33 @@ LABEL_34:
         v12 = @"N";
       }
 
-      v13 = _UIFocusEnvironmentSafeCast(v4);
+      v13 = _UIFocusEnvironmentSafeCast(responderCopy);
 
       v14 = @"N";
-      if (v13 && _UIFocusEnvironmentIsAncestorOfEnvironment(v4, v8))
+      if (v13 && _UIFocusEnvironmentIsAncestorOfEnvironment(responderCopy, focusedItem))
       {
         v14 = @"Y";
       }
 
       v15 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49E1D8) + 8);
       v78 = v12;
-      v79 = v10;
+      v79 = firstResponder;
       v77 = v14;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v67 = v15;
         v16 = MEMORY[0x1E696AEC0];
-        v74 = v8;
-        v17 = v8;
+        v74 = focusedItem;
+        v17 = focusedItem;
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = [v16 stringWithFormat:@"<%@: %p>", v19, v17];
 
         v21 = v20;
-        v10 = v79;
+        firstResponder = v79;
         v69 = v21;
         v22 = MEMORY[0x1E696AEC0];
-        v23 = v4;
+        v23 = responderCopy;
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
         v26 = [v22 stringWithFormat:@"<%@: %p>", v25, v23];
@@ -1541,7 +1541,7 @@ LABEL_34:
           v31 = NSStringFromClass(v30);
           v32 = [v29 stringWithFormat:@"<%@: %p>", v31, v28];
 
-          v10 = v79;
+          firstResponder = v79;
         }
 
         else
@@ -1564,7 +1564,7 @@ LABEL_34:
         v89 = v78;
         _os_log_impl(&dword_188A29000, v67, OS_LOG_TYPE_ERROR, "Received a call to becomeFirstResponder while processing a focus update. Focused item: %@, expected responder: %@ (%@), actual responder: %@ (%@)", buf, 0x34u);
 
-        v8 = v74;
+        focusedItem = v74;
       }
 
       if (os_variant_has_internal_diagnostics())
@@ -1575,22 +1575,22 @@ LABEL_34:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
           v70 = MEMORY[0x1E696AEC0];
-          v76 = v8;
-          v55 = v8;
+          v76 = focusedItem;
+          v55 = focusedItem;
           v56 = objc_opt_class();
           v57 = NSStringFromClass(v56);
           v71 = [v70 stringWithFormat:@"<%@: %p>", v57, v55];
 
           v68 = v71;
           v72 = MEMORY[0x1E696AEC0];
-          v58 = v4;
+          v58 = responderCopy;
           v59 = objc_opt_class();
           v60 = NSStringFromClass(v59);
           v61 = [v72 stringWithFormat:@"<%@: %p>", v60, v58];
 
           v73 = v61;
-          v62 = v10;
-          if (v10)
+          v62 = firstResponder;
+          if (firstResponder)
           {
             v64 = MEMORY[0x1E696AEC0];
             v65 = objc_opt_class();
@@ -1615,7 +1615,7 @@ LABEL_34:
           v89 = v54;
           _os_log_fault_impl(&dword_188A29000, v33, OS_LOG_TYPE_FAULT, "Received a call to becomeFirstResponder while processing a focus update. Focused item: %@, expected responder: %@ (%@), actual responder: %@ (%@)", buf, 0x34u);
 
-          v8 = v76;
+          focusedItem = v76;
         }
       }
 
@@ -1626,15 +1626,15 @@ LABEL_34:
         {
           v75 = v33;
           v34 = MEMORY[0x1E696AEC0];
-          v35 = v10;
-          v36 = v8;
+          v35 = firstResponder;
+          v36 = focusedItem;
           v37 = objc_opt_class();
           v38 = NSStringFromClass(v37);
           v39 = [v34 stringWithFormat:@"<%@: %p>", v38, v36];
 
           v40 = v39;
           v41 = MEMORY[0x1E696AEC0];
-          v42 = v4;
+          v42 = responderCopy;
           v43 = objc_opt_class();
           v44 = NSStringFromClass(v43);
           v45 = [v41 stringWithFormat:@"<%@: %p>", v44, v42];
@@ -1667,21 +1667,21 @@ LABEL_34:
           v89 = v78;
           _os_log_impl(&dword_188A29000, v75, OS_LOG_TYPE_ERROR, "Received a call to becomeFirstResponder while processing a focus update. Focused item: %@, expected responder: %@ (%@), actual responder: %@ (%@)", buf, 0x34u);
 
-          v10 = v79;
+          firstResponder = v79;
         }
       }
 
-      v52 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-      [v52 _updateFocusImmediatelyToEnvironment:0];
+      focusSystem3 = [(_UIFocusSystemSceneComponent *)self focusSystem];
+      [focusSystem3 _updateFocusImmediatelyToEnvironment:0];
     }
   }
 }
 
-- (id)_overridingPreferredFocusEnvironmentForFocusSystem:(id)a3
+- (id)_overridingPreferredFocusEnvironmentForFocusSystem:(id)system
 {
-  v3 = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
-  v4 = v3;
-  if (v3 && ([v3 compact], objc_msgSend(v4, "count")))
+  preferredFocusEnvironmentOverride = [(_UIFocusSystemSceneComponent *)self preferredFocusEnvironmentOverride];
+  v4 = preferredFocusEnvironmentOverride;
+  if (preferredFocusEnvironmentOverride && ([preferredFocusEnvironmentOverride compact], objc_msgSend(v4, "count")))
   {
     v5 = [v4 pointerAtIndex:{objc_msgSend(v4, "count") - 1}];
   }
@@ -1694,30 +1694,30 @@ LABEL_34:
   return v5;
 }
 
-- (id)_topEnvironmentForFocusSystem:(id)a3
+- (id)_topEnvironmentForFocusSystem:(id)system
 {
-  v4 = a3;
-  v5 = [v4 behavior];
-  if (([v5 syncsFocusAndResponder] & 1) == 0)
+  systemCopy = system;
+  behavior = [systemCopy behavior];
+  if (([behavior syncsFocusAndResponder] & 1) == 0)
   {
 
 LABEL_6:
-    v11 = v4;
+    v11 = systemCopy;
     goto LABEL_7;
   }
 
-  v6 = [v4 _hostFocusSystem];
+  _hostFocusSystem = [systemCopy _hostFocusSystem];
 
-  if (v6)
+  if (_hostFocusSystem)
   {
     goto LABEL_6;
   }
 
-  v7 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v8 = [(UIWindowScene *)v7 _keyWindow];
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  _keyWindow = [(UIWindowScene *)_windowScene _keyWindow];
 
-  v9 = [v8 firstResponder];
-  v10 = _UIFocusEnvironmentSafeCast(v9);
+  firstResponder = [_keyWindow firstResponder];
+  v10 = _UIFocusEnvironmentSafeCast(firstResponder);
   if (v10)
   {
     v11 = v10;
@@ -1725,7 +1725,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!firstResponder)
   {
     goto LABEL_6;
   }
@@ -1736,19 +1736,19 @@ LABEL_7:
   return v11;
 }
 
-- (id)_preferredFocusEnvironmentsForFocusSystem:(id)a3
+- (id)_preferredFocusEnvironmentsForFocusSystem:(id)system
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 behavior];
-  v5 = [v4 requiresLegacyScreenBasedWindowLookup];
+  behavior = [system behavior];
+  requiresLegacyScreenBasedWindowLookup = [behavior requiresLegacyScreenBasedWindowLookup];
 
-  if (v5)
+  if (requiresLegacyScreenBasedWindowLookup)
   {
-    v6 = _forceUnwrappedScene(self);
-    v7 = [_UIFocusSystemSceneComponent _screenForScene:v6];
-    v8 = [v7 _preferredFocusedWindow];
-    v9 = v8;
-    if (v8 && ([v8 windowScene], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v6))
+    _windowScene = _forceUnwrappedScene(self);
+    v7 = [_UIFocusSystemSceneComponent _screenForScene:_windowScene];
+    _preferredFocusedWindow = [v7 _preferredFocusedWindow];
+    v9 = _preferredFocusedWindow;
+    if (_preferredFocusedWindow && ([_preferredFocusedWindow windowScene], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == _windowScene))
     {
       v15[0] = v9;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -1762,12 +1762,12 @@ LABEL_7:
 
   else
   {
-    v6 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v12 = [v6 keyWindow];
-    v7 = v12;
-    if (v12)
+    _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    keyWindow = [_windowScene keyWindow];
+    v7 = keyWindow;
+    if (keyWindow)
     {
-      v14 = v12;
+      v14 = keyWindow;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
     }
 
@@ -1780,42 +1780,42 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)_focusSystem:(id)a3 shouldRestoreFocusInContext:(id)a4
+- (BOOL)_focusSystem:(id)system shouldRestoreFocusInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 nextFocusedItem];
-  v9 = _UIFocusEnvironmentContainingView(v8);
-  v10 = [v9 window];
-  v11 = [v10 allowsWeakReference];
+  systemCopy = system;
+  contextCopy = context;
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v9 = _UIFocusEnvironmentContainingView(nextFocusedItem);
+  window = [v9 window];
+  allowsWeakReference = [window allowsWeakReference];
 
-  if (v11 && ([v7 nextFocusedItem], v12 = objc_claimAutoreleasedReturnValue(), _UIFocusEnvironmentContainingView(v12), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "window"), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v14, v14) && (objc_msgSend(v6, "behavior"), v15 = objc_claimAutoreleasedReturnValue(), -[_UIFocusSystemSceneComponent _windowScene](self, "_windowScene"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "screen"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v15, "allowsRestoringFocusForScreen:", v17), v17, v16, v15, v18) && (objc_msgSend(v7, "nextFocusedItem"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  if (allowsWeakReference && ([contextCopy nextFocusedItem], v12 = objc_claimAutoreleasedReturnValue(), _UIFocusEnvironmentContainingView(v12), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "window"), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v14, v14) && (objc_msgSend(systemCopy, "behavior"), v15 = objc_claimAutoreleasedReturnValue(), -[_UIFocusSystemSceneComponent _windowScene](self, "_windowScene"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "screen"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v15, "allowsRestoringFocusForScreen:", v17), v17, v16, v15, v18) && (objc_msgSend(contextCopy, "nextFocusedItem"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
-    v20 = [v6 behavior];
-    v21 = [v20 ignoresKeyWindowStatusWhenRestoringFocus];
+    behavior = [systemCopy behavior];
+    ignoresKeyWindowStatusWhenRestoringFocus = [behavior ignoresKeyWindowStatusWhenRestoringFocus];
 
-    if (v21)
+    if (ignoresKeyWindowStatusWhenRestoringFocus)
     {
       v22 = 1;
     }
 
     else
     {
-      v24 = [v7 nextFocusedItem];
-      v25 = _UIFocusEnvironmentContainingView(v24);
-      v26 = [v25 window];
+      nextFocusedItem2 = [contextCopy nextFocusedItem];
+      v25 = _UIFocusEnvironmentContainingView(nextFocusedItem2);
+      window2 = [v25 window];
 
       v27 = UIApp;
-      v28 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-      v29 = [v28 screen];
-      v30 = [v27 _keyWindowForScreen:v29];
+      _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+      screen = [_windowScene screen];
+      v30 = [v27 _keyWindowForScreen:screen];
 
       v22 = 0;
-      if (v30 && v26 == v30)
+      if (v30 && window2 == v30)
       {
-        v31 = [v30 windowScene];
-        v32 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-        v22 = v31 == v32;
+        windowScene = [v30 windowScene];
+        _windowScene2 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+        v22 = windowScene == _windowScene2;
       }
     }
   }
@@ -1828,22 +1828,22 @@ LABEL_7:
   return v22;
 }
 
-- (void)_focusSystem:(id)a3 willUpdateFocusInContext:(id)a4
+- (void)_focusSystem:(id)system willUpdateFocusInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIFocusSystemSceneComponent *)self focusAnimationCoordinatorManager];
-  v9 = [v8 willUpdateFocusInContext:v7];
+  systemCopy = system;
+  contextCopy = context;
+  focusAnimationCoordinatorManager = [(_UIFocusSystemSceneComponent *)self focusAnimationCoordinatorManager];
+  v9 = [focusAnimationCoordinatorManager willUpdateFocusInContext:contextCopy];
 
-  v10 = [v7 previouslyFocusedItem];
-  IsKindOfUIView = _IsKindOfUIView(v10);
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
+  IsKindOfUIView = _IsKindOfUIView(previouslyFocusedItem);
 
-  v12 = [v7 nextFocusedItem];
-  v13 = _IsKindOfUIView(v12);
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v13 = _IsKindOfUIView(nextFocusedItem);
 
   if ((IsKindOfUIView & 1) != 0 || v13)
   {
-    v30 = v6;
+    v30 = systemCopy;
     v38 = 0;
     v39 = &v38;
     v40 = 0x2050000000;
@@ -1852,18 +1852,18 @@ LABEL_7:
     v32 = 3221225472;
     v33 = __70___UIFocusSystemSceneComponent__focusSystem_willUpdateFocusInContext___block_invoke;
     v34 = &unk_1E710AD30;
-    v14 = v7;
+    v14 = contextCopy;
     v35 = v14;
     v15 = v9;
     v36 = v15;
     v37 = &v38;
     v16 = _Block_copy(&aBlock);
     v39[3] = v16;
-    v17 = [v14 previouslyFocusedItem];
-    v18 = [v14 nextFocusedItem];
-    v19 = _UIFocusEnvironmentFirstCommonAncestor(v17, v18);
+    previouslyFocusedItem2 = [v14 previouslyFocusedItem];
+    nextFocusedItem2 = [v14 nextFocusedItem];
+    v19 = _UIFocusEnvironmentFirstCommonAncestor(previouslyFocusedItem2, nextFocusedItem2);
     v20 = v19;
-    if (v19 && (v17 == v19 ? (v21 = IsKindOfUIView) : (v21 = 0), v18 == v19 ? (v22 = v13) : (v22 = 0), (v21 & 1) != 0 || v22))
+    if (v19 && (previouslyFocusedItem2 == v19 ? (v21 = IsKindOfUIView) : (v21 = 0), nextFocusedItem2 == v19 ? (v22 = v13) : (v22 = 0), (v21 & 1) != 0 || v22))
     {
       [v15 _prepareForFocusAnimation:{1, v30, aBlock, v32, v33, v34, v35}];
       v16[2](v16, v20);
@@ -1874,60 +1874,60 @@ LABEL_7:
       if (IsKindOfUIView)
       {
         [v15 _prepareForFocusAnimation:1];
-        v16[2](v16, v17);
+        v16[2](v16, previouslyFocusedItem2);
       }
 
       if (v13)
       {
         [v15 _prepareForFocusAnimation:0];
-        v16[2](v16, v18);
+        v16[2](v16, nextFocusedItem2);
       }
     }
 
     _Block_object_dispose(&v38, 8);
-    v6 = v30;
+    systemCopy = v30;
   }
 
-  v23 = [(_UIFocusSystemSceneComponent *)self _syncResponderWithFocusUpdateContext:v7, v30];
+  v23 = [(_UIFocusSystemSceneComponent *)self _syncResponderWithFocusUpdateContext:contextCopy, v30];
   expectedFirstResponder = self->_expectedFirstResponder;
   self->_expectedFirstResponder = v23;
 
-  v25 = [v7 nextFocusedView];
-  v26 = [v25 _responderWindow];
+  nextFocusedView = [contextCopy nextFocusedView];
+  _responderWindow = [nextFocusedView _responderWindow];
 
-  v27 = [v7 previouslyFocusedView];
-  v28 = [v27 _responderWindow];
-  if (v28 == v26 || ![v26 canBecomeKeyWindow] || (objc_msgSend(v26, "isKeyWindow") & 1) != 0)
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  _responderWindow2 = [previouslyFocusedView _responderWindow];
+  if (_responderWindow2 == _responderWindow || ![_responderWindow canBecomeKeyWindow] || (objc_msgSend(_responderWindow, "isKeyWindow") & 1) != 0)
   {
   }
 
   else
   {
-    v29 = [v26 _isTextEffectsWindow];
+    _isTextEffectsWindow = [_responderWindow _isTextEffectsWindow];
 
-    if ((v29 & 1) == 0)
+    if ((_isTextEffectsWindow & 1) == 0)
     {
-      [v26 makeKeyWindow];
+      [_responderWindow makeKeyWindow];
     }
   }
 }
 
-- (void)_focusSystem:(id)a3 didUpdateFocusInContext:(id)a4
+- (void)_focusSystem:(id)system didUpdateFocusInContext:(id)context
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v7];
+  systemCopy = system;
+  contextCopy = context;
+  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
   v9 = v8;
-  if (self->_focusSystem == v6)
+  if (self->_focusSystem == systemCopy)
   {
     v22[0] = @"UIFocusUpdateContextKey";
     v22[1] = @"UIFocusUpdateAnimationCoordinatorKey";
-    v23[0] = v7;
+    v23[0] = contextCopy;
     v23[1] = v8;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"UIFocusDidUpdateNotification" object:v6 userInfo:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIFocusDidUpdateNotification" object:systemCopy userInfo:v10];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
@@ -1935,36 +1935,36 @@ LABEL_7:
   v20[2] = __69___UIFocusSystemSceneComponent__focusSystem_didUpdateFocusInContext___block_invoke;
   v20[3] = &unk_1E70F35B8;
   v20[4] = self;
-  v12 = v7;
+  v12 = contextCopy;
   v21 = v12;
   [v9 addCoordinatedAnimations:v20 completion:0];
-  v13 = [(_UIFocusSystemSceneComponent *)self focusAnimationCoordinatorManager];
-  v14 = [v12 previouslyFocusedItem];
-  [v13 didUpdateFocusInContext:v12 fromItem:v14];
+  focusAnimationCoordinatorManager = [(_UIFocusSystemSceneComponent *)self focusAnimationCoordinatorManager];
+  previouslyFocusedItem = [v12 previouslyFocusedItem];
+  [focusAnimationCoordinatorManager didUpdateFocusInContext:v12 fromItem:previouslyFocusedItem];
 
-  v15 = [v12 _request];
-  LODWORD(v14) = [v15 shouldPerformHapticFeedback];
+  _request = [v12 _request];
+  LODWORD(previouslyFocusedItem) = [_request shouldPerformHapticFeedback];
 
-  if (v14)
+  if (previouslyFocusedItem)
   {
-    v16 = [(_UIFocusSystemSceneComponent *)self hapticFeedbackGenerator];
-    [v16 performHapticFeedbackForFocusUpdateInContext:v12];
+    hapticFeedbackGenerator = [(_UIFocusSystemSceneComponent *)self hapticFeedbackGenerator];
+    [hapticFeedbackGenerator performHapticFeedbackForFocusUpdateInContext:v12];
   }
 
-  v17 = [v12 _request];
-  v18 = [v17 shouldPlayFocusSound];
+  _request2 = [v12 _request];
+  shouldPlayFocusSound = [_request2 shouldPlayFocusSound];
 
-  if (v18)
+  if (shouldPlayFocusSound)
   {
-    v19 = [(_UIFocusSystemSceneComponent *)self soundGenerator];
-    [v19 playSoundForFocusUpdateInContext:v12];
+    soundGenerator = [(_UIFocusSystemSceneComponent *)self soundGenerator];
+    [soundGenerator playSoundForFocusUpdateInContext:v12];
   }
 }
 
-- (void)_focusSystem:(id)a3 didFinishUpdatingFocusInContext:(id)a4
+- (void)_focusSystem:(id)system didFinishUpdatingFocusInContext:(id)context
 {
-  v17 = a3;
-  v6 = a4;
+  systemCopy = system;
+  contextCopy = context;
   expectedFirstResponder = self->_expectedFirstResponder;
   if (expectedFirstResponder)
   {
@@ -1974,52 +1974,52 @@ LABEL_7:
     [(_UIFocusSystemSceneComponent *)self _validateFocusedItemForFirstResponder:v8];
   }
 
-  v9 = [(_UIFocusSystemSceneComponent *)self scrollManager];
-  [v9 performScrollingIfNeededForFocusUpdateInContext:v6];
+  scrollManager = [(_UIFocusSystemSceneComponent *)self scrollManager];
+  [scrollManager performScrollingIfNeededForFocusUpdateInContext:contextCopy];
 
-  v10 = [v6 _focusMovement];
-  v11 = [v10 _isVelocityBased];
+  _focusMovement = [contextCopy _focusMovement];
+  _isVelocityBased = [_focusMovement _isVelocityBased];
 
-  if ((v11 & 1) == 0)
+  if ((_isVelocityBased & 1) == 0)
   {
     v12 = UIApp;
-    v13 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v14 = [v13 screen];
-    v15 = [v12 _keyWindowForScreen:v14];
+    _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    screen = [_windowScene screen];
+    v15 = [v12 _keyWindowForScreen:screen];
 
-    v16 = [v15 _focusEventRecognizer];
-    [v16 _resetProgressAccumulator];
+    _focusEventRecognizer = [v15 _focusEventRecognizer];
+    [_focusEventRecognizer _resetProgressAccumulator];
   }
 }
 
-- (void)_focusSystem:(id)a3 willMessageOldFocusNodes:(id)a4
+- (void)_focusSystem:(id)system willMessageOldFocusNodes:(id)nodes
 {
-  v4 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:a4];
+  v4 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:nodes];
   [v4 _prepareForFocusAnimation:1];
 }
 
-- (void)_focusSystem:(id)a3 willMessageNewFocusNodes:(id)a4
+- (void)_focusSystem:(id)system willMessageNewFocusNodes:(id)nodes
 {
-  v4 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:a4];
+  v4 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:nodes];
   [v4 _prepareForFocusAnimation:0];
 }
 
-- (void)_focusSystem:(id)a3 environment:(id)a4 didUpdateFocusInContext:(id)a5
+- (void)_focusSystem:(id)system environment:(id)environment didUpdateFocusInContext:(id)context
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v6];
-  [v7 didUpdateFocusInContext:v6 withAnimationCoordinator:v8];
+  contextCopy = context;
+  environmentCopy = environment;
+  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
+  [environmentCopy didUpdateFocusInContext:contextCopy withAnimationCoordinator:v8];
 }
 
-- (CGRect)_clippingRectForFocusSystem:(id)a3 inCoordinateSpace:(id)a4
+- (CGRect)_clippingRectForFocusSystem:(id)system inCoordinateSpace:(id)space
 {
-  v5 = a4;
-  v6 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v7 = [v6 _coordinateSpace];
-  v8 = [v6 _coordinateSpace];
-  [v8 bounds];
-  [v7 convertRect:v5 toCoordinateSpace:?];
+  spaceCopy = space;
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  _coordinateSpace = [_windowScene _coordinateSpace];
+  _coordinateSpace2 = [_windowScene _coordinateSpace];
+  [_coordinateSpace2 bounds];
+  [_coordinateSpace convertRect:spaceCopy toCoordinateSpace:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2036,62 +2036,62 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_shouldWaitForFocusMovementActionToEnableFocusSystem:(id)a3
+- (BOOL)_shouldWaitForFocusMovementActionToEnableFocusSystem:(id)system
 {
-  v3 = [a3 behavior];
-  v4 = [v3 waitForFocusMovementActionToEnableFocusSystem];
+  behavior = [system behavior];
+  waitForFocusMovementActionToEnableFocusSystem = [behavior waitForFocusMovementActionToEnableFocusSystem];
 
-  return v4;
+  return waitForFocusMovementActionToEnableFocusSystem;
 }
 
-- (BOOL)_focusSystem:(id)a3 handleFailedMovementRequest:(id)a4
+- (BOOL)_focusSystem:(id)system handleFailedMovementRequest:(id)request
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 movementInfo];
-  v9 = [(_UIFocusSystemSceneComponent *)self _shouldForwardFocusMovementRequest:v7];
+  systemCopy = system;
+  requestCopy = request;
+  movementInfo = [requestCopy movementInfo];
+  v9 = [(_UIFocusSystemSceneComponent *)self _shouldForwardFocusMovementRequest:requestCopy];
   if (v9)
   {
-    v10 = [v6 focusedItem];
-    v11 = [(_UIFocusSystemSceneComponent *)self coordinateSpace];
-    v12 = _UIFocusItemFrameInCoordinateSpace(v10, v11);
+    focusedItem = [systemCopy focusedItem];
+    coordinateSpace = [(_UIFocusSystemSceneComponent *)self coordinateSpace];
+    v12 = _UIFocusItemFrameInCoordinateSpace(focusedItem, coordinateSpace);
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
     v19 = [UIFocusMovementAction alloc];
-    v20 = [v7 inputDeviceInfo];
-    v21 = -[UIFocusMovementAction initWithFocusMovementInfo:inputDeviceInfo:shouldPerformHapticFeedback:focusedFrameInSceneCoordinateSpace:](v19, "initWithFocusMovementInfo:inputDeviceInfo:shouldPerformHapticFeedback:focusedFrameInSceneCoordinateSpace:", v8, v20, [v7 shouldPerformHapticFeedback], v12, v14, v16, v18);
+    inputDeviceInfo = [requestCopy inputDeviceInfo];
+    v21 = -[UIFocusMovementAction initWithFocusMovementInfo:inputDeviceInfo:shouldPerformHapticFeedback:focusedFrameInSceneCoordinateSpace:](v19, "initWithFocusMovementInfo:inputDeviceInfo:shouldPerformHapticFeedback:focusedFrameInSceneCoordinateSpace:", movementInfo, inputDeviceInfo, [requestCopy shouldPerformHapticFeedback], v12, v14, v16, v18);
 
-    v22 = [(_UIFocusSystemSceneComponent *)self focusSystem];
-    v23 = [v22 behavior];
-    v24 = [v23 requiresLegacyScreenBasedWindowLookup];
+    focusSystem = [(_UIFocusSystemSceneComponent *)self focusSystem];
+    behavior = [focusSystem behavior];
+    requiresLegacyScreenBasedWindowLookup = [behavior requiresLegacyScreenBasedWindowLookup];
 
-    v25 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v26 = v25;
-    v37 = v10;
-    if (v24)
+    _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    v26 = _windowScene;
+    v37 = focusedItem;
+    if (requiresLegacyScreenBasedWindowLookup)
     {
-      v27 = [v25 screen];
-      v28 = [v27 _preferredFocusedWindow];
-      [v28 _forwardFocusMovementAction:v21];
+      screen = [_windowScene screen];
+      _preferredFocusedWindow = [screen _preferredFocusedWindow];
+      [_preferredFocusedWindow _forwardFocusMovementAction:v21];
     }
 
     else
     {
-      v27 = [v25 keyWindow];
-      [v27 _forwardFocusMovementAction:v21];
+      screen = [_windowScene keyWindow];
+      [screen _forwardFocusMovementAction:v21];
     }
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v29 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-    v30 = [v29 _allWindows];
+    _windowScene2 = [(_UIFocusSystemSceneComponent *)self _windowScene];
+    _allWindows = [_windowScene2 _allWindows];
 
-    v31 = [v30 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v31 = [_allWindows countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v31)
     {
       v32 = v31;
@@ -2103,17 +2103,17 @@ LABEL_7:
         {
           if (*v39 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(_allWindows);
           }
 
-          v35 = [*(*(&v38 + 1) + 8 * v34) _focusEventRecognizer];
-          [v35 reset];
+          _focusEventRecognizer = [*(*(&v38 + 1) + 8 * v34) _focusEventRecognizer];
+          [_focusEventRecognizer reset];
 
           ++v34;
         }
 
         while (v32 != v34);
-        v32 = [v30 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v32 = [_allWindows countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v32);
@@ -2123,39 +2123,39 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_focusSystem:(id)a3 isScrollingScrollableContainer:(id)a4 targetContentOffset:(CGPoint *)a5
+- (BOOL)_focusSystem:(id)system isScrollingScrollableContainer:(id)container targetContentOffset:(CGPoint *)offset
 {
-  v7 = a4;
-  v8 = [(_UIFocusSystemSceneComponent *)self scrollManager];
-  v9 = [v8 isScrollingScrollableContainer:v7];
+  containerCopy = container;
+  scrollManager = [(_UIFocusSystemSceneComponent *)self scrollManager];
+  v9 = [scrollManager isScrollingScrollableContainer:containerCopy];
 
-  if (a5 && v9)
+  if (offset && v9)
   {
-    v10 = [(_UIFocusSystemSceneComponent *)self scrollManager];
-    [v10 targetContentOffsetForScrollableContainer:v7];
-    a5->x = v11;
-    a5->y = v12;
+    scrollManager2 = [(_UIFocusSystemSceneComponent *)self scrollManager];
+    [scrollManager2 targetContentOffsetForScrollableContainer:containerCopy];
+    offset->x = v11;
+    offset->y = v12;
   }
 
   return v9;
 }
 
-- (BOOL)_shouldForwardFocusMovementRequest:(id)a3
+- (BOOL)_shouldForwardFocusMovementRequest:(id)request
 {
-  v4 = [a3 movementInfo];
-  v5 = [(_UIFocusSystemSceneComponent *)self _windowScene];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  movementInfo = [request movementInfo];
+  _windowScene = [(_UIFocusSystemSceneComponent *)self _windowScene];
+  traitCollection = [_windowScene traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if ([(_UIFocusSystemSceneComponent *)self _uiktest_allowsForwardingFocusMovementActions])
   {
     v8 = 0;
-    if ([v4 _isInitialMovement] && v7 != 2)
+    if ([movementInfo _isInitialMovement] && userInterfaceIdiom != 2)
     {
-      v9 = [v5 traitCollection];
-      v10 = [v9 userInterfaceIdiom];
+      traitCollection2 = [_windowScene traitCollection];
+      userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-      v8 = v10 == 3 || ([v4 heading] & 0x300) == 0;
+      v8 = userInterfaceIdiom2 == 3 || ([movementInfo heading] & 0x300) == 0;
     }
   }
 
@@ -2167,21 +2167,21 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_focusSystem:(id)a3 shouldReverseLayoutDirectionForEnvironment:(id)a4
+- (BOOL)_focusSystem:(id)system shouldReverseLayoutDirectionForEnvironment:(id)environment
 {
-  v4 = __viewOrWindowFallbackForRTLProbing(self, a4);
-  v5 = [v4 _shouldReverseLayoutDirection];
+  v4 = __viewOrWindowFallbackForRTLProbing(self, environment);
+  _shouldReverseLayoutDirection = [v4 _shouldReverseLayoutDirection];
 
-  return v5;
+  return _shouldReverseLayoutDirection;
 }
 
-- (BOOL)_focusSystem:(id)a3 shouldReverseLinearWrappingForEnvironment:(id)a4
+- (BOOL)_focusSystem:(id)system shouldReverseLinearWrappingForEnvironment:(id)environment
 {
-  v4 = __viewOrWindowFallbackForRTLProbing(self, a4);
-  v5 = [v4 _window];
-  v6 = [v5 _reversesLinearFocusWrapping];
+  v4 = __viewOrWindowFallbackForRTLProbing(self, environment);
+  _window = [v4 _window];
+  _reversesLinearFocusWrapping = [_window _reversesLinearFocusWrapping];
 
-  return v6;
+  return _reversesLinearFocusWrapping;
 }
 
 - (NSString)description
@@ -2191,9 +2191,9 @@ LABEL_7:
   v5 = [v3 appendObject:WeakRetained withName:@"scene"];
 
   v6 = [v3 appendObject:self->_focusSystem withName:@"focusSystem"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (UIScene)_scene

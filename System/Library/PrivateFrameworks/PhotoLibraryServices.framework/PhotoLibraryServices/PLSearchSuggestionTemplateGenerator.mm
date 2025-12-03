@@ -199,26 +199,26 @@
 + (id)allTemplates
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v15 = [a1 allPersonTemplates];
-  [v3 addObjectsFromArray:v15];
-  v14 = [a1 allPetTemplates];
-  [v3 addObjectsFromArray:v14];
-  v4 = [a1 allSceneTemplates];
-  [v3 addObjectsFromArray:v4];
-  v5 = [a1 allHolidayTemplates];
-  [v3 addObjectsFromArray:v5];
-  v6 = [a1 allSeasonTemplates];
-  [v3 addObjectsFromArray:v6];
-  v7 = [a1 allMiscellaneousTemplates];
-  [v3 addObjectsFromArray:v7];
-  v8 = [a1 allDateTemplates];
-  [v3 addObjectsFromArray:v8];
-  v9 = [a1 allMeaningTemplates];
-  [v3 addObjectsFromArray:v9];
-  v10 = [a1 allTripTemplates];
-  [v3 addObjectsFromArray:v10];
-  v11 = [a1 allAtTheSceneTemplates];
-  [v3 addObjectsFromArray:v11];
+  allPersonTemplates = [self allPersonTemplates];
+  [v3 addObjectsFromArray:allPersonTemplates];
+  allPetTemplates = [self allPetTemplates];
+  [v3 addObjectsFromArray:allPetTemplates];
+  allSceneTemplates = [self allSceneTemplates];
+  [v3 addObjectsFromArray:allSceneTemplates];
+  allHolidayTemplates = [self allHolidayTemplates];
+  [v3 addObjectsFromArray:allHolidayTemplates];
+  allSeasonTemplates = [self allSeasonTemplates];
+  [v3 addObjectsFromArray:allSeasonTemplates];
+  allMiscellaneousTemplates = [self allMiscellaneousTemplates];
+  [v3 addObjectsFromArray:allMiscellaneousTemplates];
+  allDateTemplates = [self allDateTemplates];
+  [v3 addObjectsFromArray:allDateTemplates];
+  allMeaningTemplates = [self allMeaningTemplates];
+  [v3 addObjectsFromArray:allMeaningTemplates];
+  allTripTemplates = [self allTripTemplates];
+  [v3 addObjectsFromArray:allTripTemplates];
+  allAtTheSceneTemplates = [self allAtTheSceneTemplates];
+  [v3 addObjectsFromArray:allAtTheSceneTemplates];
   v12 = [v3 copy];
 
   return v12;

@@ -2,9 +2,9 @@
 - (NSArray)filters;
 - (NSString)title;
 - (_TtC18Feedback_Assistant14FBAFilterGroup)init;
-- (_TtC18Feedback_Assistant14FBAFilterGroup)initWithName:(id)a3 filters:(id)a4;
-- (void)setFilters:(id)a3;
-- (void)setTitle:(id)a3;
+- (_TtC18Feedback_Assistant14FBAFilterGroup)initWithName:(id)name filters:(id)filters;
+- (void)setFilters:(id)filters;
+- (void)setTitle:(id)title;
 @end
 
 @implementation FBAFilterGroup
@@ -19,7 +19,7 @@
   return v3.super.isa;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
   type metadata accessor for FBAFilter();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -64,9 +64,9 @@
   v6[1] = v5;
 }
 
-- (_TtC18Feedback_Assistant14FBAFilterGroup)initWithName:(id)a3 filters:(id)a4
+- (_TtC18Feedback_Assistant14FBAFilterGroup)initWithName:(id)name filters:(id)filters
 {
-  if (a3)
+  if (name)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;

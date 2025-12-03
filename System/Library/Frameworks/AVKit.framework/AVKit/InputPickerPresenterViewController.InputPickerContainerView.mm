@@ -1,27 +1,27 @@
 @interface InputPickerPresenterViewController.InputPickerContainerView
-- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithCoder:(id)a3;
-- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithFrame:(CGRect)a3;
+- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithCoder:(id)coder;
+- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation InputPickerPresenterViewController.InputPickerContainerView
 
-- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithFrame:(CGRect)a3
+- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(InputPickerPresenterViewController.InputPickerContainerView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithCoder:(id)a3
+- (_TtCC5AVKit34InputPickerPresenterViewController24InputPickerContainerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(InputPickerPresenterViewController.InputPickerContainerView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(InputPickerPresenterViewController.InputPickerContainerView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

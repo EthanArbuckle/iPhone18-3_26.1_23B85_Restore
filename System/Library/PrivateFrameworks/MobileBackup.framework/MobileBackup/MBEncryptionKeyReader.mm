@@ -1,19 +1,19 @@
 @interface MBEncryptionKeyReader
-+ (id)encryptionKeyReaderForFileAtPath:(id)a3 error:(id *)a4;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4;
-- (MBEncryptionKeyReader)initWithHandle:(_mkbbackupref *)a3;
-- (id)encryptionKeyWithError:(id *)a3;
-- (id)updatedEncryptionKeyForCurrentKey:(id)a3 withError:(id *)a4;
++ (id)encryptionKeyReaderForFileAtPath:(id)path error:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error;
+- (MBEncryptionKeyReader)initWithHandle:(_mkbbackupref *)handle;
+- (id)encryptionKeyWithError:(id *)error;
+- (id)updatedEncryptionKeyForCurrentKey:(id)key withError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBEncryptionKeyReader
 
-+ (id)encryptionKeyReaderForFileAtPath:(id)a3 error:(id *)a4
++ (id)encryptionKeyReaderForFileAtPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  [v5 fileSystemRepresentation];
+  pathCopy = path;
+  [pathCopy fileSystemRepresentation];
   v6 = MKBBackupOpen();
   v7 = MBGetDefaultLog();
   v8 = v7;
@@ -25,7 +25,7 @@
     }
 
     *buf = 138412546;
-    v12 = v5;
+    v12 = pathCopy;
     v13 = 1024;
     v14 = -2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "MKBBackupOpen(%@): %d", buf, 0x12u);
@@ -40,7 +40,7 @@
     }
 
     *buf = 138412546;
-    v12 = v5;
+    v12 = pathCopy;
     v13 = 1024;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "MKBBackupOpen(%@): %d", buf, 0x12u);
@@ -48,10 +48,10 @@ LABEL_10:
     _MBLog();
 LABEL_11:
 
-    if (a4)
+    if (error)
     {
-      [MBKeyBag errorWithReturnCode:v6 path:v5 description:@"MKBBackupOpen error"];
-      *a4 = v9 = 0;
+      [MBKeyBag errorWithReturnCode:v6 path:pathCopy description:@"MKBBackupOpen error"];
+      *error = v9 = 0;
     }
 
     else
@@ -65,7 +65,7 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v12 = v5;
+    v12 = pathCopy;
     v13 = 1024;
     v14 = 0;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "MKBBackupOpen(%@): %d", buf, 0x12u);
@@ -78,14 +78,14 @@ LABEL_14:
   return v9;
 }
 
-- (MBEncryptionKeyReader)initWithHandle:(_mkbbackupref *)a3
+- (MBEncryptionKeyReader)initWithHandle:(_mkbbackupref *)handle
 {
   v5.receiver = self;
   v5.super_class = MBEncryptionKeyReader;
   result = [(MBEncryptionKeyReader *)&v5 init];
   if (result)
   {
-    result->_handle = a3;
+    result->_handle = handle;
   }
 
   return result;
@@ -103,7 +103,7 @@ LABEL_14:
   [(MBEncryptionKeyReader *)&v3 dealloc];
 }
 
-- (id)encryptionKeyWithError:(id *)a3
+- (id)encryptionKeyWithError:(id *)error
 {
   handle = self->_handle;
   v6 = MKBBackupCopyKeyWithError();
@@ -162,9 +162,9 @@ LABEL_10:
 
 LABEL_11:
 
-  if (a3)
+  if (error)
   {
-    *a3 = [MBKeyBag errorWithReturnCode:v6 description:@"MKBBackupCopyKey error"];
+    *error = [MBKeyBag errorWithReturnCode:v6 description:@"MKBBackupCopyKey error"];
   }
 
 LABEL_13:
@@ -172,10 +172,10 @@ LABEL_13:
   return 0;
 }
 
-- (id)updatedEncryptionKeyForCurrentKey:(id)a3 withError:(id *)a4
+- (id)updatedEncryptionKeyForCurrentKey:(id)key withError:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
 LABEL_14:
     v12 = 0;
@@ -225,9 +225,9 @@ LABEL_11:
     _MBLog();
 LABEL_12:
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBKeyBag errorWithReturnCode:updated description:@"MKBBackupUpdateKey error"];
+      *error = [MBKeyBag errorWithReturnCode:updated description:@"MKBBackupUpdateKey error"];
     }
 
     goto LABEL_14;
@@ -245,13 +245,13 @@ LABEL_12:
     _MBLog();
   }
 
-  v12 = v6;
+  v12 = keyCopy;
 LABEL_15:
 
   return v12;
 }
 
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error
 {
   handle = self->_handle;
   v7 = MKBBackupValidateKey();
@@ -294,9 +294,9 @@ LABEL_15:
     _MBLog();
 LABEL_11:
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBKeyBag errorWithReturnCode:v7 description:@"MKBBackupValidateKey error"];
+      *error = [MBKeyBag errorWithReturnCode:v7 description:@"MKBBackupValidateKey error"];
     }
 
     return v7 == 0;
@@ -318,7 +318,7 @@ LABEL_11:
   return v7 == 0;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   handle = self->_handle;
   v5 = MKBBackupClose();
@@ -333,9 +333,9 @@ LABEL_11:
     _MBLog();
   }
 
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = [MBKeyBag errorWithReturnCode:v5 description:@"MKBBackupClose error"];
+    *error = [MBKeyBag errorWithReturnCode:v5 description:@"MKBBackupClose error"];
   }
 
   return v5 == 0;

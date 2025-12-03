@@ -1,70 +1,70 @@
 @interface _SFPBRFSimpleItemVisualElementCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithFacade:(id)a3;
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithJSON:(id)a3;
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithFacade:(id)facade;
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFSimpleItemVisualElementCardSection
 
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithFacade:(id)a3
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [_SFPBRFVisualProperty alloc];
-      v8 = [v4 image];
-      v9 = [(_SFPBRFVisualProperty *)v7 initWithFacade:v8];
+      image2 = [facadeCopy image];
+      v9 = [(_SFPBRFVisualProperty *)v7 initWithFacade:image2];
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setImage:v9];
     }
 
-    v10 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v10)
+    if (text)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      text2 = [facadeCopy text];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:text2];
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setText_1:v13];
     }
 
-    v14 = [v4 text];
+    text3 = [facadeCopy text];
 
-    if (v14)
+    if (text3)
     {
       v15 = [_SFPBRFTextProperty alloc];
-      v16 = [v4 text];
-      v17 = [(_SFPBRFTextProperty *)v15 initWithFacade:v16];
+      text4 = [facadeCopy text];
+      v17 = [(_SFPBRFTextProperty *)v15 initWithFacade:text4];
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setText_2:v17];
     }
 
-    v18 = [v4 footnote];
+    footnote = [facadeCopy footnote];
 
-    if (v18)
+    if (footnote)
     {
       v19 = [_SFPBRFTextProperty alloc];
-      v20 = [v4 footnote];
-      v21 = [(_SFPBRFTextProperty *)v19 initWithFacade:v20];
+      footnote2 = [facadeCopy footnote];
+      v21 = [(_SFPBRFTextProperty *)v19 initWithFacade:footnote2];
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setFootnote:v21];
     }
 
-    if ([v4 hasHorizontal_alignment])
+    if ([facadeCopy hasHorizontal_alignment])
     {
-      -[_SFPBRFSimpleItemVisualElementCardSection setHorizontal_alignment:](v5, "setHorizontal_alignment:", [v4 horizontal_alignment]);
+      -[_SFPBRFSimpleItemVisualElementCardSection setHorizontal_alignment:](v5, "setHorizontal_alignment:", [facadeCopy horizontal_alignment]);
     }
 
-    if ([v4 hasAttribution_style])
+    if ([facadeCopy hasAttribution_style])
     {
-      -[_SFPBRFSimpleItemVisualElementCardSection setAttribution_style:](v5, "setAttribution_style:", [v4 attribution_style]);
+      -[_SFPBRFSimpleItemVisualElementCardSection setAttribution_style:](v5, "setAttribution_style:", [facadeCopy attribution_style]);
     }
 
     v22 = v5;
@@ -73,15 +73,15 @@
   return v5;
 }
 
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithDictionary:(id)a3
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = _SFPBRFSimpleItemVisualElementCardSection;
   v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"image"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setImage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"text1"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"text2"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"text2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setText_2:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"footnote"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"footnote"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,14 +113,14 @@
       [(_SFPBRFSimpleItemVisualElementCardSection *)v5 setFootnote:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"horizontalAlignment"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"horizontalAlignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFSimpleItemVisualElementCardSection setHorizontal_alignment:](v5, "setHorizontal_alignment:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"attributionStyle"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"attributionStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,30 +133,30 @@
   return v5;
 }
 
-- (_SFPBRFSimpleItemVisualElementCardSection)initWithJSON:(id)a3
+- (_SFPBRFSimpleItemVisualElementCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFSimpleItemVisualElementCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFSimpleItemVisualElementCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFSimpleItemVisualElementCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -169,20 +169,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_attribution_style)
   {
-    v4 = [(_SFPBRFSimpleItemVisualElementCardSection *)self attribution_style];
-    if (v4)
+    attribution_style = [(_SFPBRFSimpleItemVisualElementCardSection *)self attribution_style];
+    if (attribution_style)
     {
-      if (v4 == 1)
+      if (attribution_style == 1)
       {
         v5 = @"1";
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", attribution_style];
       }
     }
 
@@ -191,90 +191,90 @@
       v5 = @"0";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"attributionStyle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"attributionStyle"];
   }
 
   if (self->_footnote)
   {
-    v6 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    footnote = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
+    dictionaryRepresentation = [footnote dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"footnote"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"footnote"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"footnote"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"footnote"];
     }
   }
 
   if (self->_horizontal_alignment)
   {
-    v9 = [(_SFPBRFSimpleItemVisualElementCardSection *)self horizontal_alignment];
-    if (v9 >= 4)
+    horizontal_alignment = [(_SFPBRFSimpleItemVisualElementCardSection *)self horizontal_alignment];
+    if (horizontal_alignment >= 4)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", horizontal_alignment];
     }
 
     else
     {
-      v10 = off_1E7ACE560[v9];
+      v10 = off_1E7ACE560[horizontal_alignment];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"horizontalAlignment"];
+    [dictionary setObject:v10 forKeyedSubscript:@"horizontalAlignment"];
   }
 
   if (self->_image)
   {
-    v11 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    image = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
+    dictionaryRepresentation2 = [image dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"image"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_text_1)
   {
-    v14 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    text = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+    dictionaryRepresentation3 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"text1"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"text1"];
     }
   }
 
   if (self->_text_2)
   {
-    v17 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    text2 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+    dictionaryRepresentation4 = [text2 dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"text2"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"text2"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"text2"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"text2"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -285,28 +285,28 @@
   return v4 ^ v3 ^ v5 ^ [(_SFPBRFTextProperty *)self->_footnote hash]^ (2654435761 * self->_horizontal_alignment) ^ (2654435761 * self->_attribution_style);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
+  image2 = [equalCopy image];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
-  if (v7)
+  image3 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
+  if (image3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
-    v10 = [v4 image];
-    v11 = [v9 isEqual:v10];
+    v8 = image3;
+    image4 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
+    image5 = [equalCopy image];
+    v11 = [image4 isEqual:image5];
 
     if (!v11)
     {
@@ -318,20 +318,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  image2 = [equalCopy text];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  if (v12)
+  text = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  if (text)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text;
+    text2 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+    text3 = [equalCopy text];
+    v16 = [text2 isEqual:text3];
 
     if (!v16)
     {
@@ -343,20 +343,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  image2 = [equalCopy text];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  if (v17)
+  text4 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  if (text4)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-    v20 = [v4 text];
-    v21 = [v19 isEqual:v20];
+    v18 = text4;
+    text5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+    text6 = [equalCopy text];
+    v21 = [text5 isEqual:text6];
 
     if (!v21)
     {
@@ -368,22 +368,22 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
-  v6 = [v4 footnote];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
+  image2 = [equalCopy footnote];
+  if ((image != 0) == (image2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
-  if (v22)
+  footnote = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
+  if (footnote)
   {
-    v23 = v22;
-    v24 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
-    v25 = [v4 footnote];
-    v26 = [v24 isEqual:v25];
+    v23 = footnote;
+    footnote2 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
+    footnote3 = [equalCopy footnote];
+    v26 = [footnote2 isEqual:footnote3];
 
     if (!v26)
     {
@@ -396,10 +396,10 @@ LABEL_21:
   }
 
   horizontal_alignment = self->_horizontal_alignment;
-  if (horizontal_alignment == [v4 horizontal_alignment])
+  if (horizontal_alignment == [equalCopy horizontal_alignment])
   {
     attribution_style = self->_attribution_style;
-    v27 = attribution_style == [v4 attribution_style];
+    v27 = attribution_style == [equalCopy attribution_style];
     goto LABEL_23;
   }
 
@@ -410,29 +410,29 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
-  if (v4)
+  toCopy = to;
+  image = [(_SFPBRFSimpleItemVisualElementCardSection *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  if (v5)
+  text = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
-  if (v6)
+  text2 = [(_SFPBRFSimpleItemVisualElementCardSection *)self text];
+  if (text2)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
-  if (v7)
+  footnote = [(_SFPBRFSimpleItemVisualElementCardSection *)self footnote];
+  if (footnote)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -442,12 +442,12 @@ LABEL_23:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_SFPBRFSimpleItemVisualElementCardSection *)self attribution_style];
-  v9 = v10;
-  if (v8)
+  attribution_style = [(_SFPBRFSimpleItemVisualElementCardSection *)self attribution_style];
+  v9 = toCopy;
+  if (attribution_style)
   {
     PBDataWriterWriteInt32Field();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 

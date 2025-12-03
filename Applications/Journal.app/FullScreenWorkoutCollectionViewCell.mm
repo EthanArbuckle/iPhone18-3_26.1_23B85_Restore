@@ -1,10 +1,10 @@
 @interface FullScreenWorkoutCollectionViewCell
-- (_TtC7Journal35FullScreenWorkoutCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal35FullScreenWorkoutCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenWorkoutCollectionViewCell
 
-- (_TtC7Journal35FullScreenWorkoutCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal35FullScreenWorkoutCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal35FullScreenWorkoutCollectionViewCell_workoutActivityView;
   type metadata accessor for WorkoutActivityGridView();

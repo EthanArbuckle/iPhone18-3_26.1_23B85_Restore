@@ -1,26 +1,26 @@
 @interface CXChannelJoinAction
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (CXChannelJoinAction)initWithChannelUUID:(id)a3 name:(id)a4;
-- (CXChannelJoinAction)initWithCoder:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (CXChannelJoinAction)initWithChannelUUID:(id)d name:(id)name;
+- (CXChannelJoinAction)initWithCoder:(id)coder;
 - (NSString)name;
 - (NSURL)imageURL;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImageURL:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImageURL:(id)l;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXChannelJoinAction
 
-- (CXChannelJoinAction)initWithChannelUUID:(id)a3 name:(id)a4
+- (CXChannelJoinAction)initWithChannelUUID:(id)d name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CXChannelJoinAction;
-  v7 = [(CXChannelAction *)&v11 initWithChannelUUID:a3];
+  v7 = [(CXChannelAction *)&v11 initWithChannelUUID:d];
   if (v7)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXChannelJoinAction initWithChannelUUID:name:]", @"name"}];
     }
@@ -29,7 +29,7 @@
     channelUpdate = v7->_channelUpdate;
     v7->_channelUpdate = v8;
 
-    [(CXChannelUpdate *)v7->_channelUpdate setName:v6];
+    [(CXChannelUpdate *)v7->_channelUpdate setName:nameCopy];
   }
 
   return v7;
@@ -37,47 +37,47 @@
 
 - (NSURL)imageURL
 {
-  v2 = [(CXChannelJoinAction *)self channelUpdate];
-  v3 = [v2 imageURL];
+  channelUpdate = [(CXChannelJoinAction *)self channelUpdate];
+  imageURL = [channelUpdate imageURL];
 
-  return v3;
+  return imageURL;
 }
 
-- (void)setImageURL:(id)a3
+- (void)setImageURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CXChannelJoinAction *)self channelUpdate];
-  [v5 setImageURL:v4];
+  lCopy = l;
+  channelUpdate = [(CXChannelJoinAction *)self channelUpdate];
+  [channelUpdate setImageURL:lCopy];
 }
 
 - (NSString)name
 {
-  v2 = [(CXChannelJoinAction *)self channelUpdate];
-  v3 = [v2 name];
+  channelUpdate = [(CXChannelJoinAction *)self channelUpdate];
+  name = [channelUpdate name];
 
-  return v3;
+  return name;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXChannelJoinAction;
-  v6 = a3;
-  [(CXChannelAction *)&v7 updateSanitizedCopy:v6 withZone:a4];
-  objc_storeStrong(v6 + 8, self->_channelUpdate);
+  copyCopy = copy;
+  [(CXChannelAction *)&v7 updateSanitizedCopy:copyCopy withZone:zone];
+  objc_storeStrong(copyCopy + 8, self->_channelUpdate);
 }
 
-- (CXChannelJoinAction)initWithCoder:(id)a3
+- (CXChannelJoinAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CXChannelJoinAction;
-  v5 = [(CXChannelAction *)&v11 initWithCoder:v4];
+  v5 = [(CXChannelAction *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_channelUpdate);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     channelUpdate = v5->_channelUpdate;
     v5->_channelUpdate = v8;
   }
@@ -85,15 +85,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXChannelJoinAction;
-  v4 = a3;
-  [(CXChannelAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXChannelAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXChannelJoinAction *)self channelUpdate:v7.receiver];
   v6 = NSStringFromSelector(sel_channelUpdate);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 + (id)unarchivedObjectClasses
@@ -104,12 +104,12 @@
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

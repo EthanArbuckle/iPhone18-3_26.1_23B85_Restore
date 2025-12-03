@@ -1,20 +1,20 @@
 @interface BYDaemonClientConnection
-- (BYDaemonClientConnection)initWithConnection:(id)a3;
+- (BYDaemonClientConnection)initWithConnection:(id)connection;
 - (NSXPCConnection)connection;
 @end
 
 @implementation BYDaemonClientConnection
 
-- (BYDaemonClientConnection)initWithConnection:(id)a3
+- (BYDaemonClientConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = BYDaemonClientConnection;
   v5 = [(BYDaemonClientConnection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BYDaemonClientConnection *)v5 setConnection:v4];
+    [(BYDaemonClientConnection *)v5 setConnection:connectionCopy];
   }
 
   return v6;

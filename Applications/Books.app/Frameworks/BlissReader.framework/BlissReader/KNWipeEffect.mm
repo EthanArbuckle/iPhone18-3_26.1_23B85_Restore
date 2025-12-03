@@ -1,36 +1,36 @@
 @interface KNWipeEffect
 - (CATransform3D)MVPMatrix;
-- (KNWipeEffect)initWithContext:(id)a3;
-- (double)p_animationPercentWithPercent:(double)a3;
-- (void)renderEffectAtPercent:(double)a3 atBufferIndex:(unint64_t)a4 withEncoder:(id)a5;
-- (void)setMVPMatrix:(CATransform3D *)a3;
-- (void)setTexture:(id)a3;
+- (KNWipeEffect)initWithContext:(id)context;
+- (double)p_animationPercentWithPercent:(double)percent;
+- (void)renderEffectAtPercent:(double)percent atBufferIndex:(unint64_t)index withEncoder:(id)encoder;
+- (void)setMVPMatrix:(CATransform3D *)matrix;
+- (void)setTexture:(id)texture;
 - (void)setupEffectIfNecessary;
 @end
 
 @implementation KNWipeEffect
 
-- (KNWipeEffect)initWithContext:(id)a3
+- (KNWipeEffect)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = KNWipeEffect;
   v5 = [(KNWipeEffect *)&v17 init];
   if (v5)
   {
-    v6 = [v4 metalContext];
+    metalContext = [contextCopy metalContext];
     v7 = *(v5 + 8);
-    *(v5 + 8) = v6;
+    *(v5 + 8) = metalContext;
 
     *(v5 + 4) = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    v8 = [v4 animatedBuild];
-    v5[8] = [v8 isBuildIn];
+    animatedBuild = [contextCopy animatedBuild];
+    v5[8] = [animatedBuild isBuildIn];
 
-    v9 = [v4 animatedBuild];
-    *(v5 + 9) = [v9 direction];
+    animatedBuild2 = [contextCopy animatedBuild];
+    *(v5 + 9) = [animatedBuild2 direction];
 
-    v10 = [v4 animatedBuild];
-    [v10 duration];
+    animatedBuild3 = [contextCopy animatedBuild];
+    [animatedBuild3 duration];
     *(v5 + 10) = v11;
 
     v12 = *&CATransform3DIdentity.m33;
@@ -51,49 +51,49 @@
   return v5;
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
-  self->_texture = a3;
-  [a3 singleTextureOpacity];
+  self->_texture = texture;
+  [texture singleTextureOpacity];
   self->_opacity = v4;
 }
 
-- (void)setMVPMatrix:(CATransform3D *)a3
+- (void)setMVPMatrix:(CATransform3D *)matrix
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m21;
-  *&self->_MVPMatrix.m23 = *&a3->m23;
+  v3 = *&matrix->m11;
+  v4 = *&matrix->m13;
+  v5 = *&matrix->m21;
+  *&self->_MVPMatrix.m23 = *&matrix->m23;
   *&self->_MVPMatrix.m21 = v5;
   *&self->_MVPMatrix.m13 = v4;
   *&self->_MVPMatrix.m11 = v3;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m41;
-  *&self->_MVPMatrix.m43 = *&a3->m43;
+  v6 = *&matrix->m31;
+  v7 = *&matrix->m33;
+  v8 = *&matrix->m41;
+  *&self->_MVPMatrix.m43 = *&matrix->m43;
   *&self->_MVPMatrix.m41 = v8;
   *&self->_MVPMatrix.m33 = v7;
   *&self->_MVPMatrix.m31 = v6;
   wipeDataBuffer = self->_wipeDataBuffer;
   if (wipeDataBuffer)
   {
-    v10 = *&a3->m33;
-    v14[4] = *&a3->m31;
+    v10 = *&matrix->m33;
+    v14[4] = *&matrix->m31;
     v14[5] = v10;
-    v11 = *&a3->m43;
-    v14[6] = *&a3->m41;
+    v11 = *&matrix->m43;
+    v14[6] = *&matrix->m41;
     v14[7] = v11;
-    v12 = *&a3->m13;
-    v14[0] = *&a3->m11;
+    v12 = *&matrix->m13;
+    v14[0] = *&matrix->m11;
     v14[1] = v12;
-    v13 = *&a3->m23;
-    v14[2] = *&a3->m21;
+    v13 = *&matrix->m23;
+    v14[2] = *&matrix->m21;
     v14[3] = v13;
     [(KNWipeDataBuffer *)wipeDataBuffer setMVPMatrix:v14];
   }
 }
 
-- (double)p_animationPercentWithPercent:(double)a3
+- (double)p_animationPercentWithPercent:(double)percent
 {
   TSUClamp();
   v5 = fmin(fmax((v4 - self->_startWipeAtPercent) / (self->_stopWipeAtPercent - self->_startWipeAtPercent), 0.0), 1.0);
@@ -165,9 +165,9 @@
   [(KNWipeDataBuffer *)self->_wipeDataBuffer setMVPMatrix:v15];
 }
 
-- (void)renderEffectAtPercent:(double)a3 atBufferIndex:(unint64_t)a4 withEncoder:(id)a5
+- (void)renderEffectAtPercent:(double)percent atBufferIndex:(unint64_t)index withEncoder:(id)encoder
 {
-  v16 = a5;
+  encoderCopy = encoder;
   if (!self->_metalContext)
   {
     v7 = +[TSUAssertionHandler currentHandler];
@@ -187,12 +187,12 @@
     texture = self->_texture;
   }
 
-  v14 = [(TSDTexturedRectangle *)texture metalTexture];
-  [v16 setFragmentTexture:v14 atIndex:0];
+  metalTexture = [(TSDTexturedRectangle *)texture metalTexture];
+  [encoderCopy setFragmentTexture:metalTexture atIndex:0];
 
   wipeDataBuffer = self->_wipeDataBuffer;
-  [(KNWipeEffect *)self p_animationPercentWithPercent:a3];
-  [KNWipeDataBuffer drawWipeWithPercent:"drawWipeWithPercent:opacity:renderEncoder:" opacity:v16 renderEncoder:?];
+  [(KNWipeEffect *)self p_animationPercentWithPercent:percent];
+  [KNWipeDataBuffer drawWipeWithPercent:"drawWipeWithPercent:opacity:renderEncoder:" opacity:encoderCopy renderEncoder:?];
 }
 
 - (CATransform3D)MVPMatrix

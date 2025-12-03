@@ -1,14 +1,14 @@
 @interface IdentifierPath
-+ (IdentifierPath)identifierPathWithIdentifier:(id)a3;
-+ (IdentifierPath)identifierPathWithIdentifiers:(id)a3;
++ (IdentifierPath)identifierPathWithIdentifier:(id)identifier;
++ (IdentifierPath)identifierPathWithIdentifiers:(id)identifiers;
 + (id)identifierPath;
-- (BOOL)hasPrefix:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasPrefix:(id)prefix;
+- (BOOL)isEqual:(id)equal;
 - (IdentifierPath)init;
-- (IdentifierPath)initWithIdentifiers:(id)a3;
+- (IdentifierPath)initWithIdentifiers:(id)identifiers;
 - (NSString)visualDescription;
-- (id)identifierPathByAppendingIdentifier:(id)a3;
-- (id)identifierPathByPrependingIdentifier:(id)a3;
+- (id)identifierPathByAppendingIdentifier:(id)identifier;
+- (id)identifierPathByPrependingIdentifier:(id)identifier;
 - (id)identifierPathByRemovingFirstIdentifier;
 - (id)identifierPathByRemovingLastIdentifier;
 - (unint64_t)hash;
@@ -16,19 +16,19 @@
 
 @implementation IdentifierPath
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 length], v6 <= -[NSArray count](self->_identifiers, "count")))
+  prefixCopy = prefix;
+  v5 = prefixCopy;
+  if (prefixCopy && (v6 = [prefixCopy length], v6 <= -[NSArray count](self->_identifiers, "count")))
   {
     if ([v5 length])
     {
       v9 = 0;
       do
       {
-        v10 = [v5 identifiers];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        identifiers = [v5 identifiers];
+        v11 = [identifiers objectAtIndexedSubscript:v9];
         v12 = [(NSArray *)self->_identifiers objectAtIndexedSubscript:v9];
         v7 = [v11 isEqualToString:v12];
 
@@ -63,23 +63,23 @@
   {
     v3 = objc_alloc(objc_opt_class());
     v4 = [(NSArray *)self->_identifiers subarrayWithRange:1, [(NSArray *)self->_identifiers count]- 1];
-    v5 = [v3 initWithIdentifiers:v4];
+    selfCopy = [v3 initWithIdentifiers:v4];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)identifierPathByPrependingIdentifier:(id)a3
+- (id)identifierPathByPrependingIdentifier:(id)identifier
 {
   identifiers = self->_identifiers;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [NSMutableArray arrayWithCapacity:[(NSArray *)identifiers count]+ 1];
-  [v6 addObject:v5];
+  [v6 addObject:identifierCopy];
 
   [v6 addObjectsFromArray:self->_identifiers];
   v7 = [objc_alloc(objc_opt_class()) initWithIdentifiers:v6];
@@ -93,22 +93,22 @@
   {
     v3 = objc_alloc(objc_opt_class());
     v4 = [(NSArray *)self->_identifiers subarrayWithRange:0, [(NSArray *)self->_identifiers count]- 1];
-    v5 = [v3 initWithIdentifiers:v4];
+    selfCopy = [v3 initWithIdentifiers:v4];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)identifierPathByAppendingIdentifier:(id)a3
+- (id)identifierPathByAppendingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(NSArray *)self->_identifiers arrayByAddingObject:v4];
+  v6 = [(NSArray *)self->_identifiers arrayByAddingObject:identifierCopy];
 
   v7 = [v5 initWithIdentifiers:v6];
 
@@ -117,17 +117,17 @@
 
 - (NSString)visualDescription
 {
-  v2 = [(IdentifierPath *)self identifiers];
-  v3 = [v2 componentsJoinedByString:@" - "];
+  identifiers = [(IdentifierPath *)self identifiers];
+  v3 = [identifiers componentsJoinedByString:@" - "];
   v4 = [NSString stringWithFormat:@"{%@}", v3];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -137,8 +137,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(IdentifierPath *)v4 identifiers];
-      v6 = [v5 isEqualToArray:self->_identifiers];
+      identifiers = [(IdentifierPath *)equalCopy identifiers];
+      v6 = [identifiers isEqualToArray:self->_identifiers];
     }
 
     else
@@ -168,15 +168,15 @@
   return v3;
 }
 
-- (IdentifierPath)initWithIdentifiers:(id)a3
+- (IdentifierPath)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = IdentifierPath;
   v5 = [(IdentifierPath *)&v9 init];
   if (v5)
   {
-    v6 = [NSArray arrayWithArray:v4];
+    v6 = [NSArray arrayWithArray:identifiersCopy];
     identifiers = v5->_identifiers;
     v5->_identifiers = v6;
   }
@@ -199,19 +199,19 @@
   return v3;
 }
 
-+ (IdentifierPath)identifierPathWithIdentifiers:(id)a3
++ (IdentifierPath)identifierPathWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  v5 = [[self alloc] initWithIdentifiers:identifiersCopy];
 
   return v5;
 }
 
-+ (IdentifierPath)identifierPathWithIdentifier:(id)a3
++ (IdentifierPath)identifierPathWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v9 = v4;
+  identifierCopy = identifier;
+  v5 = [self alloc];
+  v9 = identifierCopy;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
 
   v7 = [v5 initWithIdentifiers:v6];
@@ -221,7 +221,7 @@
 
 + (id)identifierPath
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

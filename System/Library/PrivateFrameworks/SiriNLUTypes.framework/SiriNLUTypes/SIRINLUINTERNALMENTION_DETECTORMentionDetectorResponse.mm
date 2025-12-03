@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMentions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMentions:(id)mentions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (requestId)
   {
     if (v6)
@@ -34,7 +34,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[2])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[2])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")))
   {
     mentions = self->_mentions;
-    if (mentions | v4[1])
+    if (mentions | equalCopy[1])
     {
       v7 = [(NSMutableArray *)mentions isEqual:?];
     }
@@ -86,11 +86,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addMentions:v13];
 
         ++v12;
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v8 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if ([(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self mentionsCount])
   {
-    [v8 clearMentions];
-    v4 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self mentionsCount];
-    if (v4)
+    [toCopy clearMentions];
+    mentionsCount = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self mentionsCount];
+    if (mentionsCount)
     {
-      v5 = v4;
+      v5 = mentionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self mentionsAtIndex:i];
-        [v8 addMentions:v7];
+        [toCopy addMentions:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -202,12 +202,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   if ([(NSMutableArray *)self->_mentions count])
@@ -232,8 +232,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -242,12 +242,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"mentions"];
+    [dictionary setObject:v6 forKey:@"mentions"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -256,28 +256,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse;
   v4 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMentions:(id)a3
+- (void)addMentions:(id)mentions
 {
-  v4 = a3;
+  mentionsCopy = mentions;
   mentions = self->_mentions;
-  v8 = v4;
+  v8 = mentionsCopy;
   if (!mentions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_mentions;
     self->_mentions = v6;
 
-    v4 = v8;
+    mentionsCopy = v8;
     mentions = self->_mentions;
   }
 
-  [(NSMutableArray *)mentions addObject:v4];
+  [(NSMutableArray *)mentions addObject:mentionsCopy];
 }
 
 @end

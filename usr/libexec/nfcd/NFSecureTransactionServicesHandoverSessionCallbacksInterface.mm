@@ -1,6 +1,6 @@
 @interface NFSecureTransactionServicesHandoverSessionCallbacksInterface
 + (id)interface;
-- (NFSecureTransactionServicesHandoverSessionCallbacksInterface)initWithProtocol:(id)a3;
+- (NFSecureTransactionServicesHandoverSessionCallbacksInterface)initWithProtocol:(id)protocol;
 - (void)setupInterface;
 @end
 
@@ -9,16 +9,16 @@
 + (id)interface
 {
   v2 = [[NFSecureTransactionServicesHandoverSessionCallbacksInterface alloc] initWithProtocol:&OBJC_PROTOCOL___NFSecureTransactionServicesHandoverSessionCallbacksInterface];
-  v3 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
+  protocolInterface = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
 
-  return v3;
+  return protocolInterface;
 }
 
-- (NFSecureTransactionServicesHandoverSessionCallbacksInterface)initWithProtocol:(id)a3
+- (NFSecureTransactionServicesHandoverSessionCallbacksInterface)initWithProtocol:(id)protocol
 {
   v4.receiver = self;
   v4.super_class = NFSecureTransactionServicesHandoverSessionCallbacksInterface;
-  return [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)&v4 initWithProtocol:a3];
+  return [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)&v4 initWithProtocol:protocol];
 }
 
 - (void)setupInterface
@@ -26,8 +26,8 @@
   v4.receiver = self;
   v4.super_class = NFSecureTransactionServicesHandoverSessionCallbacksInterface;
   [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)&v4 setupInterface];
-  v3 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)self protocolInterface];
-  sub_100260674(v3);
+  protocolInterface = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)self protocolInterface];
+  sub_100260674(protocolInterface);
 }
 
 @end

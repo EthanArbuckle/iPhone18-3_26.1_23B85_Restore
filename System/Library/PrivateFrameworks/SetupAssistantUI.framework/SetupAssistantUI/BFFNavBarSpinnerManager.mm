@@ -1,9 +1,9 @@
 @interface BFFNavBarSpinnerManager
 + (id)sharedSpinnerManager;
 - (BFFNavBarSpinnerManager)init;
-- (BOOL)isAnimatingForIdentifier:(id)a3;
-- (void)startAnimatingInNavigationItemOfViewController:(id)a3 forIdentifier:(id)a4;
-- (void)stopAnimatingForIdentifier:(id)a3;
+- (BOOL)isAnimatingForIdentifier:(id)identifier;
+- (void)startAnimatingInNavigationItemOfViewController:(id)controller forIdentifier:(id)identifier;
+- (void)stopAnimatingForIdentifier:(id)identifier;
 @end
 
 @implementation BFFNavBarSpinnerManager
@@ -46,66 +46,66 @@
   return v2;
 }
 
-- (void)startAnimatingInNavigationItemOfViewController:(id)a3 forIdentifier:(id)a4
+- (void)startAnimatingInNavigationItemOfViewController:(id)controller forIdentifier:(id)identifier
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 navigationItem];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  navigationItem = [controllerCopy navigationItem];
   v9 = _BYLoggingFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(BFFNavBarSpinnerManager *)v7 startAnimatingInNavigationItemOfViewController:v8 forIdentifier:v9];
+    [(BFFNavBarSpinnerManager *)identifierCopy startAnimatingInNavigationItemOfViewController:navigationItem forIdentifier:v9];
   }
 
-  v10 = [(NSMutableDictionary *)self->_navigationItems objectForKey:v7];
+  v10 = [(NSMutableDictionary *)self->_navigationItems objectForKey:identifierCopy];
 
-  if (!v10 && v8)
+  if (!v10 && navigationItem)
   {
-    [(NSMutableDictionary *)self->_navigationItems setObject:v8 forKey:v7];
-    v11 = [v8 rightBarButtonItems];
-    if (v11)
+    [(NSMutableDictionary *)self->_navigationItems setObject:navigationItem forKey:identifierCopy];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    if (rightBarButtonItems)
     {
-      [(NSMutableDictionary *)self->_savedRightItems setObject:v11 forKey:v7];
+      [(NSMutableDictionary *)self->_savedRightItems setObject:rightBarButtonItems forKey:identifierCopy];
     }
 
-    v12 = [v8 leftBarButtonItems];
-    if (v12)
+    leftBarButtonItems = [navigationItem leftBarButtonItems];
+    if (leftBarButtonItems)
     {
-      [(NSMutableDictionary *)self->_savedLeftItems setObject:v12 forKey:v7];
+      [(NSMutableDictionary *)self->_savedLeftItems setObject:leftBarButtonItems forKey:identifierCopy];
     }
 
     v13 = objc_alloc_init(BFFBarButtonSpinnerView);
     v17[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v8 setRightBarButtonItems:v14 animated:1];
-    [v8 setLeftBarButtonItems:0 animated:1];
+    [navigationItem setRightBarButtonItems:v14 animated:1];
+    [navigationItem setLeftBarButtonItems:0 animated:1];
     [MEMORY[0x277CD9FF0] begin];
     [(BFFBarButtonSpinnerView *)v13 startAnimating];
     [MEMORY[0x277CD9FF0] commit];
-    v15 = [v6 traitCollection];
-    if ([v15 userInterfaceStyle] == 1)
+    traitCollection = [controllerCopy traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
-      v16 = [v6 conformsToProtocol:&unk_287795D60];
+      v16 = [controllerCopy conformsToProtocol:&unk_287795D60];
 
-      if (!v16 || ![v6 hasBlackBackground])
+      if (!v16 || ![controllerCopy hasBlackBackground])
       {
         goto LABEL_14;
       }
 
-      v15 = [(BFFBarButtonSpinnerView *)v13 customView];
-      [v15 setOverrideUserInterfaceStyle:2];
+      traitCollection = [(BFFBarButtonSpinnerView *)v13 customView];
+      [traitCollection setOverrideUserInterfaceStyle:2];
     }
 
 LABEL_14:
   }
 }
 
-- (void)stopAnimatingForIdentifier:(id)a3
+- (void)stopAnimatingForIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_navigationItems objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_navigationItems objectForKey:identifierCopy];
 
   v6 = _BYLoggingFacility();
   v7 = v6;
@@ -113,38 +113,38 @@ LABEL_14:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(BFFNavBarSpinnerManager *)v4 stopAnimatingForIdentifier:v7];
+      [(BFFNavBarSpinnerManager *)identifierCopy stopAnimatingForIdentifier:v7];
     }
 
-    v7 = [(NSMutableDictionary *)self->_navigationItems objectForKey:v4];
-    v8 = [v7 rightBarButtonItems];
-    v9 = [v8 lastObject];
+    v7 = [(NSMutableDictionary *)self->_navigationItems objectForKey:identifierCopy];
+    rightBarButtonItems = [v7 rightBarButtonItems];
+    lastObject = [rightBarButtonItems lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 stopAnimating];
+      [lastObject stopAnimating];
     }
 
-    v10 = [(NSMutableDictionary *)self->_savedRightItems objectForKey:v4];
-    v11 = [(NSMutableDictionary *)self->_savedLeftItems objectForKey:v4];
+    v10 = [(NSMutableDictionary *)self->_savedRightItems objectForKey:identifierCopy];
+    v11 = [(NSMutableDictionary *)self->_savedLeftItems objectForKey:identifierCopy];
     [v7 setLeftBarButtonItems:v11 animated:1];
     [v7 setRightBarButtonItems:v10 animated:1];
-    [(NSMutableDictionary *)self->_savedRightItems removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_savedLeftItems removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_navigationItems removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_savedRightItems removeObjectForKey:identifierCopy];
+    [(NSMutableDictionary *)self->_savedLeftItems removeObjectForKey:identifierCopy];
+    [(NSMutableDictionary *)self->_navigationItems removeObjectForKey:identifierCopy];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&dword_265AC5000, v7, OS_LOG_TYPE_DEFAULT, "Unbalanced nav bar spinner animation for %@!", &v12, 0xCu);
   }
 }
 
-- (BOOL)isAnimatingForIdentifier:(id)a3
+- (BOOL)isAnimatingForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_navigationItems objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_navigationItems objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;

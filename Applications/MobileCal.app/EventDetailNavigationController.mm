@@ -1,34 +1,34 @@
 @interface EventDetailNavigationController
 - (CGSize)preferredContentSize;
 - (EKEvent)event;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EventDetailNavigationController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = EventDetailNavigationController;
-  [(EventDetailNavigationController *)&v6 viewWillDisappear:a3];
-  v4 = [(EventDetailNavigationController *)self doneBlock];
+  [(EventDetailNavigationController *)&v6 viewWillDisappear:disappear];
+  doneBlock = [(EventDetailNavigationController *)self doneBlock];
 
-  if (v4)
+  if (doneBlock)
   {
-    v5 = [(EventDetailNavigationController *)self doneBlock];
-    (v5)[2](v5, self, 0);
+    doneBlock2 = [(EventDetailNavigationController *)self doneBlock];
+    (doneBlock2)[2](doneBlock2, self, 0);
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(EventDetailNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(EventDetailNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4)
   {
-    v5 = [(EventDetailNavigationController *)self viewControllers];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    viewControllers2 = [(EventDetailNavigationController *)self viewControllers];
+    v6 = [viewControllers2 objectAtIndexedSubscript:0];
 
     [v6 preferredContentSize];
     width = v7;
@@ -50,13 +50,13 @@
 
 - (EKEvent)event
 {
-  v3 = [(EventDetailNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(EventDetailNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4)
   {
-    v5 = [(EventDetailNavigationController *)self viewControllers];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    viewControllers2 = [(EventDetailNavigationController *)self viewControllers];
+    v6 = [viewControllers2 objectAtIndexedSubscript:0];
 
     v7 = 0;
     if (objc_opt_respondsToSelector())

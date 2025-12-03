@@ -1,20 +1,20 @@
 @interface DMFPolicyRegistration
-- (BOOL)isEqual:(id)a3;
-- (DMFPolicyRegistration)initWithCoder:(id)a3;
-- (DMFPolicyRegistration)initWithIdentifier:(id)a3 policyTypes:(id)a4 callback:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (DMFPolicyRegistration)initWithCoder:(id)coder;
+- (DMFPolicyRegistration)initWithIdentifier:(id)identifier policyTypes:(id)types callback:(id)callback;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFPolicyRegistration
 
-- (DMFPolicyRegistration)initWithIdentifier:(id)a3 policyTypes:(id)a4 callback:(id)a5
+- (DMFPolicyRegistration)initWithIdentifier:(id)identifier policyTypes:(id)types callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v10 count])
+  identifierCopy = identifier;
+  typesCopy = types;
+  callbackCopy = callback;
+  if (![typesCopy count])
   {
     [DMFPolicyRegistration initWithIdentifier:a2 policyTypes:self callback:?];
   }
@@ -24,15 +24,15 @@
   v12 = [(DMFPolicyRegistration *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [typesCopy copy];
     policyTypes = v12->_policyTypes;
     v12->_policyTypes = v15;
 
-    v17 = MEMORY[0x1E128DE70](v11);
+    v17 = MEMORY[0x1E128DE70](callbackCopy);
     callback = v12->_callback;
     v12->_callback = v17;
   }
@@ -40,9 +40,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   policyTypes = self->_policyTypes;
   callback = self->_callback;
@@ -50,27 +50,27 @@
   return [v4 initWithIdentifier:identifier policyTypes:policyTypes callback:callback];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_policyTypes forKey:@"policyTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_policyTypes forKey:@"policyTypes"];
 }
 
-- (DMFPolicyRegistration)initWithCoder:(id)a3
+- (DMFPolicyRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = DMFPolicyRegistration;
   v5 = [(DMFPolicyRegistration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"policyTypes"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"policyTypes"];
 
     v11 = [v6 copy];
     identifier = v5->_identifier;
@@ -84,10 +84,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -97,11 +97,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DMFPolicyRegistration *)self identifier];
-      v7 = [(DMFPolicyRegistration *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(DMFPolicyRegistration *)self identifier];
+      identifier2 = [(DMFPolicyRegistration *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -115,8 +115,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DMFPolicyRegistration *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(DMFPolicyRegistration *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

@@ -1,24 +1,24 @@
 @interface _EXSceneHostViewController
-- (_EXSceneHostViewController)initWithExtensionProcess:(id)a3 sessionUUID:(id)a4 role:(id)a5;
+- (_EXSceneHostViewController)initWithExtensionProcess:(id)process sessionUUID:(id)d role:(id)role;
 - (void)loadView;
 @end
 
 @implementation _EXSceneHostViewController
 
-- (_EXSceneHostViewController)initWithExtensionProcess:(id)a3 sessionUUID:(id)a4 role:(id)a5
+- (_EXSceneHostViewController)initWithExtensionProcess:(id)process sessionUUID:(id)d role:(id)role
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  processCopy = process;
+  dCopy = d;
+  roleCopy = role;
   v15.receiver = self;
   v15.super_class = _EXSceneHostViewController;
   v12 = [(_EXSceneHostViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionUUID, a4);
-    objc_storeStrong(&v13->_extensionProcess, a3);
-    objc_storeStrong(&v13->_role, a5);
+    objc_storeStrong(&v12->_sessionUUID, d);
+    objc_storeStrong(&v13->_extensionProcess, process);
+    objc_storeStrong(&v13->_role, role);
   }
 
   return v13;
@@ -27,9 +27,9 @@
 - (void)loadView
 {
   v3 = [_EXSceneHostView alloc];
-  v4 = [(_EXSceneHostViewController *)self extensionProcess];
-  v5 = [(_EXSceneHostViewController *)self sessionUUID];
-  v6 = [(_EXSceneHostView *)v3 initWithExtensionProcess:v4 sessionUUID:v5 role:self->_role];
+  extensionProcess = [(_EXSceneHostViewController *)self extensionProcess];
+  sessionUUID = [(_EXSceneHostViewController *)self sessionUUID];
+  v6 = [(_EXSceneHostView *)v3 initWithExtensionProcess:extensionProcess sessionUUID:sessionUUID role:self->_role];
 
   [(_EXSceneHostView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_EXSceneHostView *)v6 creatScene];

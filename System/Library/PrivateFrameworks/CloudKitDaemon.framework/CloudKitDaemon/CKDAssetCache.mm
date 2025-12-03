@@ -1,47 +1,47 @@
 @interface CKDAssetCache
 + (id)_sharedCachesByDirectory;
 + (id)_sharedCachesQueue;
-+ (id)assetCacheWithApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 didInit:(BOOL *)a6 error:(id *)a7;
-- (BOOL)parseCachedPath:(id)a3 assetHandleUUID:(id *)a4 assetSignature:(id *)a5;
-- (BOOL)parseCachedPath:(id)a3 assetHandleUUIDString:(id *)a4 assetSignatureString:(id *)a5;
-- (BOOL)startTrackingGetAssetHandles:(id)a3 operationType:(int64_t)a4 error:(id *)a5;
-- (BOOL)startTrackingRegisterOrPutAssetHandles:(id)a3 operationType:(int64_t)a4 error:(id *)a5;
-- (BOOL)updateAssetHandlesForGetMMCSItems:(id)a3 cloneItems:(BOOL)a4 error:(id *)a5;
-- (BOOL)updateAssetHandlesForPutMMCSItems:(id)a3 cloneItems:(BOOL)a4 error:(id *)a5;
++ (id)assetCacheWithApplicationBundleID:(id)d directoryContext:(id)context database:(id)database didInit:(BOOL *)init error:(id *)error;
+- (BOOL)parseCachedPath:(id)path assetHandleUUID:(id *)d assetSignature:(id *)signature;
+- (BOOL)parseCachedPath:(id)path assetHandleUUIDString:(id *)string assetSignatureString:(id *)signatureString;
+- (BOOL)startTrackingGetAssetHandles:(id)handles operationType:(int64_t)type error:(id *)error;
+- (BOOL)startTrackingRegisterOrPutAssetHandles:(id)handles operationType:(int64_t)type error:(id *)error;
+- (BOOL)updateAssetHandlesForGetMMCSItems:(id)items cloneItems:(BOOL)cloneItems error:(id *)error;
+- (BOOL)updateAssetHandlesForPutMMCSItems:(id)items cloneItems:(BOOL)cloneItems error:(id *)error;
 - (CKDMMCS)MMCS;
 - (NSString)fileDownloadPath;
-- (id)_evictWithEvictionInfo:(id)a3;
-- (id)_getAssetHandlesForCachedButNotRegisteredMMCSItems:(id)a3 error:(id *)a4;
-- (id)_initWithApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 error:(id *)a6;
-- (id)_saveData:(id)a3 error:(id *)a4;
-- (id)assetHandleWithCachedPath:(id)a3;
+- (id)_evictWithEvictionInfo:(id)info;
+- (id)_getAssetHandlesForCachedButNotRegisteredMMCSItems:(id)items error:(id *)error;
+- (id)_initWithApplicationBundleID:(id)d directoryContext:(id)context database:(id)database error:(id *)error;
+- (id)_saveData:(id)data error:(id *)error;
+- (id)assetHandleWithCachedPath:(id)path;
 - (id)clonedFileCache;
-- (id)deviceIDForVolumeIndex:(id)a3;
-- (id)existingEntriesForRegisterOrPutHandles:(id)a3 volumeIndex:(id)a4;
-- (id)findAssetHandleForItemID:(unint64_t)a3 error:(id *)a4;
+- (id)deviceIDForVolumeIndex:(id)index;
+- (id)existingEntriesForRegisterOrPutHandles:(id)handles volumeIndex:(id)index;
+- (id)findAssetHandleForItemID:(unint64_t)d error:(id *)error;
 - (id)mmcsEngineContext;
-- (id)registeredMMCSItemForRereferencedAsset:(id)a3 copyBlock:(id)a4;
-- (id)trackCachedButNotRegisteredMMCSItems:(id)a3 error:(id *)a4;
-- (id)trackDownloadedData:(id)a3 signature:(id)a4 error:(id *)a5;
-- (id)updateAssetHandlesForChunkedMMCSItems:(id)a3 error:(id *)a4;
-- (id)updateAssetHandlesForRegisteredMMCSItems:(id)a3 error:(id *)a4;
-- (id)volumeIndexForDeviceID:(id)a3;
+- (id)registeredMMCSItemForRereferencedAsset:(id)asset copyBlock:(id)block;
+- (id)trackCachedButNotRegisteredMMCSItems:(id)items error:(id *)error;
+- (id)trackDownloadedData:(id)data signature:(id)signature error:(id *)error;
+- (id)updateAssetHandlesForChunkedMMCSItems:(id)items error:(id *)error;
+- (id)updateAssetHandlesForRegisteredMMCSItems:(id)items error:(id *)error;
+- (id)volumeIndexForDeviceID:(id)d;
 - (void)_deleteAssetHandlesAndUnregisterItemsForUnmountedAssetVolumes;
-- (void)_expireAssetHandlesWithExpiryDate:(id)a3;
+- (void)_expireAssetHandlesWithExpiryDate:(id)date;
 - (void)_resetAssetInflight;
 - (void)_scheduleEvictionForDownloadedFiles;
-- (void)checkAssetHandlesForRegisteredMMCSItems:(id)a3;
+- (void)checkAssetHandlesForRegisteredMMCSItems:(id)items;
 - (void)clearAssetCache;
 - (void)dealloc;
 - (void)drop;
-- (void)enumerateAssetHandlesSegregatedByVolume:(id)a3 block:(id)a4;
+- (void)enumerateAssetHandlesSegregatedByVolume:(id)volume block:(id)block;
 - (void)expireAssetHandlesIfNecessary;
 - (void)setupPersistentStateAtStartup;
-- (void)showAssetCacheInContainer:(id)a3;
-- (void)stopTrackingAssetHandlesByItemIDs:(id)a3;
-- (void)unregisterItemIDsAndDeleteAssetHandlesWithEvictionInfo:(id)a3;
-- (void)unregisterItemsAndDeleteUnregisteredAssetHandlesWithIDs:(id)a3 deleteUnregisteredAssetHandlesWithIDs:(id)a4;
-- (void)updateLastAccessTimeForUUID:(id)a3;
+- (void)showAssetCacheInContainer:(id)container;
+- (void)stopTrackingAssetHandlesByItemIDs:(id)ds;
+- (void)unregisterItemIDsAndDeleteAssetHandlesWithEvictionInfo:(id)info;
+- (void)unregisterItemsAndDeleteUnregisteredAssetHandlesWithIDs:(id)ds deleteUnregisteredAssetHandlesWithIDs:(id)iDs;
+- (void)updateLastAccessTimeForUUID:(id)d;
 @end
 
 @implementation CKDAssetCache
@@ -98,7 +98,7 @@
       v15 = v14;
       v16 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v16;
       _os_log_error_impl(&dword_22506F000, v15, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -136,7 +136,7 @@
       v19 = v18;
       v20 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v20;
       _os_log_error_impl(&dword_22506F000, v19, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -188,7 +188,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "Dropping: %@", buf, 0xCu);
   }
 
@@ -246,7 +246,7 @@
   block[1] = 3221225472;
   block[2] = sub_2251174F4;
   block[3] = &unk_278545AD0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D54F60 != -1)
   {
     dispatch_once(&qword_280D54F60, block);
@@ -271,7 +271,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22506F000, v5, OS_LOG_TYPE_DEBUG, "Deallocating: %@", buf, 0xCu);
   }
 
@@ -286,7 +286,7 @@
     if (os_log_type_enabled(*v4, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_22506F000, v8, OS_LOG_TYPE_FAULT, "Failed to drop: %@", buf, 0xCu);
     }
   }
@@ -297,15 +297,15 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)assetCacheWithApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 didInit:(BOOL *)a6 error:(id *)a7
++ (id)assetCacheWithApplicationBundleID:(id)d directoryContext:(id)context database:(id)database didInit:(BOOL *)init error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v17 = a5;
-  if (!v13)
+  dCopy = d;
+  contextCopy = context;
+  databaseCopy = database;
+  if (!dCopy)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v15, v16);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, a1, @"CKDAssetCache.m", 384, @"Expected non-nil application bundle ID");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDAssetCache.m", 384, @"Expected non-nil application bundle ID");
   }
 
   v44 = 0;
@@ -329,26 +329,26 @@
   v27[1] = 3221225472;
   v27[2] = sub_225117868;
   v27[3] = &unk_278545D58;
-  v19 = v14;
+  v19 = contextCopy;
   v28 = v19;
   v31 = &v44;
-  v20 = v13;
+  v20 = dCopy;
   v29 = v20;
-  v21 = v17;
+  v21 = databaseCopy;
   v30 = v21;
   v32 = &v38;
   v33 = &v34;
   dispatch_sync(v18, v27);
 
-  if (a6)
+  if (init)
   {
-    *a6 = *(v35 + 24);
+    *init = *(v35 + 24);
   }
 
   v22 = v45[5];
-  if (a7 && !v22)
+  if (error && !v22)
   {
-    *a7 = v39[5];
+    *error = v39[5];
     v22 = v45[5];
   }
 
@@ -362,12 +362,12 @@
   return v23;
 }
 
-- (id)_initWithApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 error:(id *)a6
+- (id)_initWithApplicationBundleID:(id)d directoryContext:(id)context database:(id)database error:(id *)error
 {
   v99[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  contextCopy = context;
+  databaseCopy = database;
   v90.receiver = self;
   v90.super_class = CKDAssetCache;
   v14 = [(CKDAssetCache *)&v90 init];
@@ -375,7 +375,7 @@
   {
     v26 = 0;
     v29 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -384,10 +384,10 @@
   }
 
   v15 = v14;
-  v87 = v11;
-  v88 = v13;
-  objc_storeStrong(&v14->_directoryContext, a4);
-  v18 = objc_msgSend_fileDownloadDirectory(v12, v16, v17);
+  v87 = dCopy;
+  v88 = databaseCopy;
+  objc_storeStrong(&v14->_directoryContext, context);
+  v18 = objc_msgSend_fileDownloadDirectory(contextCopy, v16, v17);
   v21 = objc_msgSend_path(v18, v19, v20);
   v98 = *MEMORY[0x277CBBF30];
   v22 = CKBootDate();
@@ -399,20 +399,20 @@
 
   if (v25)
   {
-    objc_storeStrong((v15 + 56), a3);
+    objc_storeStrong((v15 + 56), d);
     if (v26)
     {
       objc_msgSend_setDidDrop_(v15, v27, 1);
       v29 = 0;
-      v11 = v87;
-      v13 = v88;
+      dCopy = v87;
+      databaseCopy = v88;
     }
 
     else
     {
       v31 = MEMORY[0x277CCACA8];
-      v32 = objc_msgSend_containerIdentifier(v12, v27, v28);
-      v35 = objc_msgSend_dataSeparationHash(v12, v33, v34);
+      v32 = objc_msgSend_containerIdentifier(contextCopy, v27, v28);
+      v35 = objc_msgSend_dataSeparationHash(contextCopy, v33, v34);
       v37 = objc_msgSend_stringWithFormat_(v31, v36, @"%@.%@", v32, v35);
 
       v38 = MEMORY[0x277CBC660];
@@ -420,12 +420,12 @@
       v40 = NSStringFromClass(v39);
       v42 = objc_msgSend_groupNameWithDomain_domainIdentifier_groupName_(v38, v41, 2, v37, v40);
 
-      v45 = objc_msgSend_containerID(v12, v43, v44);
+      v45 = objc_msgSend_containerID(contextCopy, v43, v44);
       v48 = objc_msgSend_specialContainerType(v45, v46, v47);
       v50 = objc_msgSend_tableGroupOptionsForContainerType_(CKDAssetCacheTableGroup, v49, v48);
 
       v89[0] = 0;
-      v13 = v88;
+      databaseCopy = v88;
       v52 = objc_msgSend_tableGroupInDatabase_withName_options_error_(CKDAssetCacheTableGroup, v51, v88, v42, v50, v89);
       v26 = v89[0];
       v53 = *(v15 + 32);
@@ -440,7 +440,7 @@
         {
           v86 = *(v15 + 32);
           v92 = *MEMORY[0x277CBC080];
-          v60 = objc_msgSend_mmcsWorkingDirectory(v12, v58, v59);
+          v60 = objc_msgSend_mmcsWorkingDirectory(contextCopy, v58, v59);
           v63 = objc_msgSend_path(v60, v61, v62);
           v91 = v63;
           v65 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v64, &v91, 1);
@@ -448,7 +448,7 @@
           v67 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v66, &v93, &v92, 1);
           v69 = objc_msgSend_updateGroupData_(v86, v68, v67);
 
-          v13 = v88;
+          databaseCopy = v88;
         }
 
         v70 = objc_msgSend_assetHandleTable(*(v15 + 32), v58, v59);
@@ -469,7 +469,7 @@
       v29 = v15;
 
       v15 = v37;
-      v11 = v87;
+      dCopy = v87;
     }
   }
 
@@ -480,13 +480,13 @@
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
     }
 
-    v11 = v87;
-    v13 = v88;
+    dCopy = v87;
+    databaseCopy = v88;
     v30 = *MEMORY[0x277CBC828];
     if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_ERROR))
     {
       v79 = v30;
-      v82 = objc_msgSend_fileDownloadDirectory(v12, v80, v81);
+      v82 = objc_msgSend_fileDownloadDirectory(contextCopy, v80, v81);
       v85 = objc_msgSend_CKSanitizedPath(v82, v83, v84);
       *buf = 138543618;
       v95 = v85;
@@ -498,13 +498,13 @@
     v29 = 0;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_19:
     if (!v29)
     {
       v76 = v26;
-      *a6 = v26;
+      *error = v26;
     }
   }
 
@@ -514,11 +514,11 @@ LABEL_21:
   return v29;
 }
 
-- (id)deviceIDForVolumeIndex:(id)a3
+- (id)deviceIDForVolumeIndex:(id)index
 {
-  if (a3)
+  if (index)
   {
-    v3 = objc_msgSend_volumeUUIDWithVolumeIndex_(self->_assetVolumeTable, a2, a3);
+    v3 = objc_msgSend_volumeUUIDWithVolumeIndex_(self->_assetVolumeTable, a2, index);
     v5 = v3;
     if (v3)
     {
@@ -536,10 +536,10 @@ LABEL_21:
   return v6;
 }
 
-- (id)volumeIndexForDeviceID:(id)a3
+- (id)volumeIndexForDeviceID:(id)d
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -552,9 +552,9 @@ LABEL_21:
     v11[1] = 3221225472;
     v11[2] = sub_225118090;
     v11[3] = &unk_278545DA8;
-    v13 = self;
+    selfCopy = self;
     v14 = &v15;
-    v12 = v6;
+    v12 = dCopy;
     objc_msgSend_MMCSSerializeSyncRecursive_(v7, v8, v11);
 
     v9 = v16[5];
@@ -616,10 +616,10 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkAssetHandlesForRegisteredMMCSItems:(id)a3
+- (void)checkAssetHandlesForRegisteredMMCSItems:(id)items
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v8 = objc_msgSend_MMCS(self, v6, v7);
   v9 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
@@ -657,7 +657,7 @@ LABEL_21:
   v28[3] = &unk_278545E20;
   v28[4] = self;
   v30 = a2;
-  v20 = v5;
+  v20 = itemsCopy;
   v29 = v20;
   objc_msgSend_MMCSSerializeSyncRecursive_(v19, v21, v28);
 
@@ -679,25 +679,25 @@ LABEL_21:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showAssetCacheInContainer:(id)a3
+- (void)showAssetCacheInContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v8 = objc_msgSend_mmcsEngineContext(self, v6, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_225119110;
   v11[3] = &unk_278545E20;
-  v12 = v5;
+  v12 = containerCopy;
   v13 = a2;
   v11[4] = self;
-  v9 = v5;
+  v9 = containerCopy;
   objc_msgSend_MMCSSerializeSyncRecursive_(v8, v10, v11);
 }
 
-- (void)unregisterItemsAndDeleteUnregisteredAssetHandlesWithIDs:(id)a3 deleteUnregisteredAssetHandlesWithIDs:(id)a4
+- (void)unregisterItemsAndDeleteUnregisteredAssetHandlesWithIDs:(id)ds deleteUnregisteredAssetHandlesWithIDs:(id)iDs
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v10 = objc_msgSend_mmcsEngineContext(self, v8, v9);
   objc_msgSend_assertMMCSSerialized(v10, v11, v12);
 
@@ -708,9 +708,9 @@ LABEL_21:
   }
 
   v18 = v15;
-  if (objc_msgSend_count(v6, v16, v17))
+  if (objc_msgSend_count(dsCopy, v16, v17))
   {
-    v21 = objc_msgSend_array(v6, v19, v20);
+    v21 = objc_msgSend_array(dsCopy, v19, v20);
     objc_msgSend_unregisterItemIDs_(v18, v22, v21);
 
 LABEL_5:
@@ -722,16 +722,16 @@ LABEL_5:
     v28[3] = &unk_278545EC0;
     v29 = &unk_2838C8D00;
     v30 = v23;
-    v31 = self;
-    v32 = v6;
-    v33 = v7;
+    selfCopy = self;
+    v32 = dsCopy;
+    v33 = iDsCopy;
     v25 = v23;
     v27 = objc_msgSend_performTransaction_(assetHandleTable, v26, v28);
 
     goto LABEL_6;
   }
 
-  if (objc_msgSend_count(v7, v19, v20))
+  if (objc_msgSend_count(iDsCopy, v19, v20))
   {
     goto LABEL_5;
   }
@@ -739,20 +739,20 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)unregisterItemIDsAndDeleteAssetHandlesWithEvictionInfo:(id)a3
+- (void)unregisterItemIDsAndDeleteAssetHandlesWithEvictionInfo:(id)info
 {
-  v4 = a3;
-  v11 = objc_msgSend_itemIDsToUnregister(v4, v5, v6);
-  v9 = objc_msgSend_assetHandleItemIDsToDelete(v4, v7, v8);
+  infoCopy = info;
+  v11 = objc_msgSend_itemIDsToUnregister(infoCopy, v5, v6);
+  v9 = objc_msgSend_assetHandleItemIDsToDelete(infoCopy, v7, v8);
 
   objc_msgSend_unregisterItemsAndDeleteUnregisteredAssetHandlesWithIDs_deleteUnregisteredAssetHandlesWithIDs_(self, v10, v11, v9);
 }
 
-- (id)_saveData:(id)a3 error:(id *)a4
+- (id)_saveData:(id)data error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v38 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v38, v39, a2, self, @"CKDAssetCache.m", 819, @"Expected non-nil data");
@@ -768,7 +768,7 @@ LABEL_6:
   if (v21)
   {
     v40 = 0;
-    v23 = objc_msgSend_writeToURL_options_error_(v9, v22, v21, 0, &v40);
+    v23 = objc_msgSend_writeToURL_options_error_(dataCopy, v22, v21, 0, &v40);
     v24 = v40;
     v25 = v24;
     if (v23)
@@ -778,10 +778,10 @@ LABEL_6:
       goto LABEL_16;
     }
 
-    if (a4)
+    if (error)
     {
       v27 = v24;
-      *a4 = v25;
+      *error = v25;
     }
 
     if (*MEMORY[0x277CBC880] != -1)
@@ -793,7 +793,7 @@ LABEL_6:
     if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_ERROR))
     {
       v31 = v28;
-      v34 = objc_msgSend_length(v9, v32, v33);
+      v34 = objc_msgSend_length(dataCopy, v32, v33);
       v37 = objc_msgSend_CKSanitizedPath(v21, v35, v36);
       *buf = 134218498;
       v42 = v34;
@@ -805,10 +805,10 @@ LABEL_6:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v22, *MEMORY[0x277CBC120], 1000, @"Invalid path");
-    *a4 = v26 = 0;
+    *error = v26 = 0;
     goto LABEL_16;
   }
 
@@ -820,24 +820,24 @@ LABEL_16:
   return v26;
 }
 
-- (id)_getAssetHandlesForCachedButNotRegisteredMMCSItems:(id)a3 error:(id *)a4
+- (id)_getAssetHandlesForCachedButNotRegisteredMMCSItems:(id)items error:(id *)error
 {
   v172 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
     v151 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v151, v152, a2, self, @"CKDAssetCache.m", 837, @"Expected non-nil MMCS items array");
   }
 
   v8 = objc_alloc(MEMORY[0x277CBEB18]);
-  v11 = objc_msgSend_count(v7, v9, v10);
+  v11 = objc_msgSend_count(itemsCopy, v9, v10);
   v13 = objc_msgSend_initWithCapacity_(v8, v12, v11);
   v165 = 0u;
   v166 = 0u;
   v167 = 0u;
   v168 = 0u;
-  v14 = v7;
+  v14 = itemsCopy;
   v160 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v165, v171, 16);
   if (!v160)
   {
@@ -846,7 +846,7 @@ LABEL_16:
     goto LABEL_48;
   }
 
-  v156 = a4;
+  errorCopy = error;
   v18 = 0;
   v159 = *v166;
   obj = v14;
@@ -1067,10 +1067,10 @@ LABEL_18:
 LABEL_45:
   v14 = obj;
 
-  if (v156)
+  if (errorCopy)
   {
     v145 = v49;
-    *v156 = v49;
+    *errorCopy = v49;
   }
 
   v144 = v13;
@@ -1088,9 +1088,9 @@ LABEL_48:
   return v13;
 }
 
-- (id)updateAssetHandlesForRegisteredMMCSItems:(id)a3 error:(id *)a4
+- (id)updateAssetHandlesForRegisteredMMCSItems:(id)items error:(id *)error
 {
-  v6 = a3;
+  itemsCopy = items;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v11 = objc_msgSend_mmcsEngineContext(self, v9, v10);
@@ -1101,28 +1101,28 @@ LABEL_48:
   v20 = v8;
   v21 = a2;
   v17[4] = self;
-  v18 = v6;
+  v18 = itemsCopy;
   v19 = v7;
   v12 = v8;
   v13 = v7;
-  v14 = v6;
+  v14 = itemsCopy;
   objc_msgSend_MMCSSerializeSyncRecursive_(v11, v15, v17);
 
   return 0;
 }
 
-- (id)updateAssetHandlesForChunkedMMCSItems:(id)a3 error:(id *)a4
+- (id)updateAssetHandlesForChunkedMMCSItems:(id)items error:(id *)error
 {
-  v6 = a3;
+  itemsCopy = items;
   v9 = objc_msgSend_mmcsEngineContext(self, v7, v8);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_22511BDC4;
   v13[3] = &unk_278545E20;
-  v14 = v6;
+  v14 = itemsCopy;
   v15 = a2;
   v13[4] = self;
-  v10 = v6;
+  v10 = itemsCopy;
   objc_msgSend_MMCSSerializeSyncRecursive_(v9, v11, v13);
 
   return 0;
@@ -1147,9 +1147,9 @@ LABEL_48:
   return clonedFileCache;
 }
 
-- (BOOL)updateAssetHandlesForGetMMCSItems:(id)a3 cloneItems:(BOOL)a4 error:(id *)a5
+- (BOOL)updateAssetHandlesForGetMMCSItems:(id)items cloneItems:(BOOL)cloneItems error:(id *)error
 {
-  v8 = a3;
+  itemsCopy = items;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v13 = objc_msgSend_mmcsEngineContext(self, v11, v12);
@@ -1159,22 +1159,22 @@ LABEL_48:
   v24 = &unk_278545F10;
   v28 = v10;
   v29 = a2;
-  v25 = self;
-  v26 = v8;
-  v30 = a4;
+  selfCopy = self;
+  v26 = itemsCopy;
+  cloneItemsCopy = cloneItems;
   v27 = v9;
   v14 = v10;
   v15 = v9;
-  v16 = v8;
+  v16 = itemsCopy;
   objc_msgSend_MMCSSerializeSyncRecursive_(v13, v17, &v21);
 
-  objc_msgSend__scheduleEvictionForDownloadedFiles(self, v18, v19, v21, v22, v23, v24, v25);
+  objc_msgSend__scheduleEvictionForDownloadedFiles(self, v18, v19, v21, v22, v23, v24, selfCopy);
   return 1;
 }
 
-- (BOOL)updateAssetHandlesForPutMMCSItems:(id)a3 cloneItems:(BOOL)a4 error:(id *)a5
+- (BOOL)updateAssetHandlesForPutMMCSItems:(id)items cloneItems:(BOOL)cloneItems error:(id *)error
 {
-  v8 = a3;
+  itemsCopy = items;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v13 = objc_msgSend_mmcsEngineContext(self, v11, v12);
@@ -1184,23 +1184,23 @@ LABEL_48:
   v24 = &unk_278545F10;
   v28 = v10;
   v29 = a2;
-  v25 = self;
-  v26 = v8;
-  v30 = a4;
+  selfCopy = self;
+  v26 = itemsCopy;
+  cloneItemsCopy = cloneItems;
   v27 = v9;
   v14 = v10;
   v15 = v9;
-  v16 = v8;
+  v16 = itemsCopy;
   objc_msgSend_MMCSSerializeSyncRecursive_(v13, v17, &v21);
 
-  objc_msgSend__scheduleEvictionForDownloadedFiles(self, v18, v19, v21, v22, v23, v24, v25);
+  objc_msgSend__scheduleEvictionForDownloadedFiles(self, v18, v19, v21, v22, v23, v24, selfCopy);
   return 1;
 }
 
-- (id)trackCachedButNotRegisteredMMCSItems:(id)a3 error:(id *)a4
+- (id)trackCachedButNotRegisteredMMCSItems:(id)items error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
     v35 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v35, v36, a2, self, @"CKDAssetCache.m", 1194, @"Expected non-nil cached but not registered MMCS items");
@@ -1214,7 +1214,7 @@ LABEL_48:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v37, v38, a2, self, @"CKDAssetCache.m", 1195, @"Expected non-nil file download path");
   }
 
-  if (objc_msgSend_count(v9, v11, v12))
+  if (objc_msgSend_count(itemsCopy, v11, v12))
   {
     v48 = 0;
     v49 = &v48;
@@ -1223,12 +1223,12 @@ LABEL_48:
     v52 = sub_2250734C4;
     v53 = 0;
     obj = 0;
-    v14 = objc_msgSend__getAssetHandlesForCachedButNotRegisteredMMCSItems_error_(self, v13, v9, &obj);
+    v14 = objc_msgSend__getAssetHandlesForCachedButNotRegisteredMMCSItems_error_(self, v13, itemsCopy, &obj);
     objc_storeStrong(&v53, obj);
     if (v14)
     {
       v15 = objc_alloc(MEMORY[0x277CBEB38]);
-      v18 = objc_msgSend_count(v9, v16, v17);
+      v18 = objc_msgSend_count(itemsCopy, v16, v17);
       v20 = objc_msgSend_initWithCapacity_(v15, v19, v18);
       v23 = objc_msgSend_mmcsEngineContext(self, v21, v22);
       v41[0] = MEMORY[0x277D85DD0];
@@ -1239,7 +1239,7 @@ LABEL_48:
       v45 = &v48;
       v46 = a2;
       v42 = v14;
-      v24 = v9;
+      v24 = itemsCopy;
       v43 = v24;
       v25 = v20;
       v44 = v25;
@@ -1248,9 +1248,9 @@ LABEL_48:
       v28 = v49[5];
       if (v28)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v28;
+          *error = v28;
         }
 
         v24 = 0;
@@ -1268,17 +1268,17 @@ LABEL_48:
         objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v39, v40, a2, self, @"CKDAssetCache.m", 1288, @"Expected non-nil error");
       }
 
-      v9 = v24;
+      itemsCopy = v24;
 
-      v31 = v9;
+      v31 = itemsCopy;
     }
 
     else
     {
       v31 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v49[5];
+        *error = v49[5];
       }
     }
 
@@ -1287,29 +1287,29 @@ LABEL_48:
 
   else
   {
-    v9 = v9;
-    v31 = v9;
+    itemsCopy = itemsCopy;
+    v31 = itemsCopy;
   }
 
   return v31;
 }
 
-- (id)trackDownloadedData:(id)a3 signature:(id)a4 error:(id *)a5
+- (id)trackDownloadedData:(id)data signature:(id)signature error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v11 = objc_msgSend__saveData_error_(self, v10, v8, a5);
+  dataCopy = data;
+  signatureCopy = signature;
+  v11 = objc_msgSend__saveData_error_(self, v10, dataCopy, error);
   if (v11)
   {
     v12 = objc_alloc_init(CKDMMCSItem);
     objc_msgSend_setFileURL_(v12, v13, v11);
-    objc_msgSend_setSignature_(v12, v14, v9);
-    v17 = objc_msgSend_length(v8, v15, v16);
+    objc_msgSend_setSignature_(v12, v14, signatureCopy);
+    v17 = objc_msgSend_length(dataCopy, v15, v16);
     objc_msgSend_setFileSize_(v12, v18, v17);
     v36[0] = v12;
     v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v36, 1);
-    v22 = objc_msgSend_trackCachedButNotRegisteredMMCSItems_error_(self, v21, v20, a5);
+    v22 = objc_msgSend_trackCachedButNotRegisteredMMCSItems_error_(self, v21, v20, error);
 
     if (v22 || (objc_msgSend_fileURL(v12, v23, v24), (v28 = objc_claimAutoreleasedReturnValue()) == 0) || (v29 = v28, objc_msgSend_trackingUUID(v12, v23, v24), v30 = objc_claimAutoreleasedReturnValue(), v30, v29, v30))
     {
@@ -1336,16 +1336,16 @@ LABEL_48:
   return v25;
 }
 
-- (void)enumerateAssetHandlesSegregatedByVolume:(id)a3 block:(id)a4
+- (void)enumerateAssetHandlesSegregatedByVolume:(id)volume block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = objc_msgSend_objectAtIndex_(v7, v9, 0);
+  volumeCopy = volume;
+  blockCopy = block;
+  v10 = objc_msgSend_objectAtIndex_(volumeCopy, v9, 0);
   v13 = objc_msgSend_volumeIndex(v10, v11, v12);
-  v16 = objc_msgSend_count(v7, v14, v15);
+  v16 = objc_msgSend_count(volumeCopy, v14, v15);
   if (v16 == 1)
   {
-    v8[2](v8, v13, v7);
+    blockCopy[2](blockCopy, v13, volumeCopy);
   }
 
   else
@@ -1358,7 +1358,7 @@ LABEL_48:
       while (1)
       {
         v22 = v20;
-        v20 = objc_msgSend_objectAtIndex_(v7, v17, v21);
+        v20 = objc_msgSend_objectAtIndex_(volumeCopy, v17, v21);
 
         v26 = objc_msgSend_volumeIndex(v20, v23, v24);
         if ((v13 != 0) == (v26 == 0) || v13 && !objc_msgSend_isEqualToNumber_(v13, v25, v26))
@@ -1384,7 +1384,7 @@ LABEL_48:
     if (v21 == v19)
     {
 LABEL_12:
-      v8[2](v8, v13, v7);
+      blockCopy[2](blockCopy, v13, volumeCopy);
     }
 
     else
@@ -1403,7 +1403,7 @@ LABEL_12:
 
       v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      objc_msgSend_replaceObjectsInRange_withObjectsFromArray_range_(v30, v31, 0, 0, v7, 0, v21);
+      objc_msgSend_replaceObjectsInRange_withObjectsFromArray_range_(v30, v31, 0, 0, volumeCopy, 0, v21);
       v62 = v30;
       v63 = v10;
       if (v13)
@@ -1435,7 +1435,7 @@ LABEL_12:
       {
         do
         {
-          v47 = objc_msgSend_objectAtIndex_(v7, v45, v46);
+          v47 = objc_msgSend_objectAtIndex_(volumeCopy, v45, v46);
           v50 = objc_msgSend_volumeIndex(v47, v48, v49);
           v53 = v50;
           if (v50)
@@ -1473,7 +1473,7 @@ LABEL_12:
       v64[1] = 3221225472;
       v64[2] = sub_22511E6E4;
       v64[3] = &unk_278545FA8;
-      v65 = v8;
+      v65 = blockCopy;
       objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v29, v61, v64);
 
       v10 = v63;
@@ -1481,27 +1481,27 @@ LABEL_12:
   }
 }
 
-- (id)existingEntriesForRegisterOrPutHandles:(id)a3 volumeIndex:(id)a4
+- (id)existingEntriesForRegisterOrPutHandles:(id)handles volumeIndex:(id)index
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  handlesCopy = handles;
+  indexCopy = index;
+  if (!indexCopy)
   {
     v37 = 0;
     goto LABEL_26;
   }
 
-  v55 = self;
+  selfCopy = self;
   v8 = objc_alloc(MEMORY[0x277CBEB58]);
-  v11 = objc_msgSend_count(v6, v9, v10);
+  v11 = objc_msgSend_count(handlesCopy, v9, v10);
   v13 = objc_msgSend_initWithCapacity_(v8, v12, v11);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v57 = v6;
-  v14 = v6;
+  v57 = handlesCopy;
+  v14 = handlesCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v64, v71, 16);
   if (!v16)
   {
@@ -1549,10 +1549,10 @@ LABEL_14:
 
   v69[0] = @"VOL";
   v69[1] = @"STATUS";
-  v70[0] = v7;
+  v70[0] = indexCopy;
   v70[1] = &unk_2838C8160;
   v32 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, v70, v69, 2);
-  assetHandleTable = v55->_assetHandleTable;
+  assetHandleTable = selfCopy->_assetHandleTable;
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = sub_22511EA90;
@@ -1603,7 +1603,7 @@ LABEL_14:
     while (v43);
   }
 
-  v6 = v57;
+  handlesCopy = v57;
 LABEL_26:
 
   v53 = *MEMORY[0x277D85DE8];
@@ -1611,17 +1611,17 @@ LABEL_26:
   return v37;
 }
 
-- (BOOL)startTrackingRegisterOrPutAssetHandles:(id)a3 operationType:(int64_t)a4 error:(id *)a5
+- (BOOL)startTrackingRegisterOrPutAssetHandles:(id)handles operationType:(int64_t)type error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  handlesCopy = handles;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = sub_225073E70;
   v38 = sub_2250734C4;
   v39 = 0;
-  v10 = a4 == 6;
+  v10 = type == 6;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
   v15 = objc_msgSend_mmcsEngineContext(self, v13, v14);
@@ -1631,7 +1631,7 @@ LABEL_26:
   v27[3] = &unk_278546020;
   v27[4] = self;
   v32 = a2;
-  v16 = v9;
+  v16 = handlesCopy;
   v28 = v16;
   v31 = &v34;
   v33 = v10;
@@ -1644,9 +1644,9 @@ LABEL_26:
   v20 = v35[5];
   if (v20)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v20;
+      *error = v20;
     }
 
     if (*MEMORY[0x277CBC880] != -1)
@@ -1689,10 +1689,10 @@ LABEL_26:
   return v24;
 }
 
-- (BOOL)startTrackingGetAssetHandles:(id)a3 operationType:(int64_t)a4 error:(id *)a5
+- (BOOL)startTrackingGetAssetHandles:(id)handles operationType:(int64_t)type error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlesCopy = handles;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1707,16 +1707,16 @@ LABEL_26:
   v23 = &v25;
   v24 = a2;
   v21[4] = self;
-  v12 = v8;
+  v12 = handlesCopy;
   v22 = v12;
   objc_msgSend_MMCSSerializeSyncRecursive_(v11, v13, v21);
 
   v14 = v26[5];
   if (v14)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v14;
+      *error = v14;
     }
 
     if (*MEMORY[0x277CBC880] != -1)
@@ -1759,10 +1759,10 @@ LABEL_26:
   return v18;
 }
 
-- (void)updateLastAccessTimeForUUID:(id)a3
+- (void)updateLastAccessTimeForUUID:(id)d
 {
-  v7 = a3;
-  if (v7)
+  dCopy = d;
+  if (dCopy)
   {
     v8 = objc_msgSend_mmcsEngineContext(self, v5, v6);
     v10[0] = MEMORY[0x277D85DD0];
@@ -1771,16 +1771,16 @@ LABEL_26:
     v10[3] = &unk_278545E20;
     v10[4] = self;
     v12 = a2;
-    v11 = v7;
+    v11 = dCopy;
     objc_msgSend_MMCSSerializeSyncRecursive_(v8, v9, v10);
   }
 }
 
-- (void)stopTrackingAssetHandlesByItemIDs:(id)a3
+- (void)stopTrackingAssetHandlesByItemIDs:(id)ds
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_count(v5, v6, v7))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v6, v7))
   {
     v32[0] = 0;
     v32[1] = v32;
@@ -1796,7 +1796,7 @@ LABEL_26:
     v8 = *MEMORY[0x277CBC828];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v14 = v5;
+      v14 = dsCopy;
       v17 = objc_msgSend_string(MEMORY[0x277CCAB68], v15, v16);
       objc_msgSend_appendString_(v17, v18, @"(");
       v36 = 0u;
@@ -1845,7 +1845,7 @@ LABEL_26:
     v28[3] = &unk_278546070;
     v28[4] = self;
     v31 = a2;
-    v29 = v5;
+    v29 = dsCopy;
     v30 = v32;
     objc_msgSend_MMCSSerializeSyncRecursive_(v11, v12, v28);
 
@@ -1855,7 +1855,7 @@ LABEL_26:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findAssetHandleForItemID:(unint64_t)a3 error:(id *)a4
+- (id)findAssetHandleForItemID:(unint64_t)d error:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -1869,7 +1869,7 @@ LABEL_26:
   v22 = sub_225073E70;
   v23 = sub_2250734C4;
   v24 = 0;
-  v8 = objc_msgSend_mmcsEngineContext(self, a2, a3);
+  v8 = objc_msgSend_mmcsEngineContext(self, a2, d);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_225120950;
@@ -1877,7 +1877,7 @@ LABEL_26:
   v18[4] = self;
   v18[5] = &v25;
   v18[7] = a2;
-  v18[8] = a3;
+  v18[8] = d;
   v18[6] = &v19;
   objc_msgSend_MMCSSerializeSyncRecursive_(v8, v9, v18);
 
@@ -1895,22 +1895,22 @@ LABEL_26:
 
   if (v20[5])
   {
-    if (a4)
+    if (error)
     {
 LABEL_6:
       v14 = 0;
-      *a4 = v20[5];
+      *error = v20[5];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v15 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v10, *MEMORY[0x277CBC120], 3002, @"couldn't find item ID %llu", a3);
+    v15 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v10, *MEMORY[0x277CBC120], 3002, @"couldn't find item ID %llu", d);
     v16 = v20[5];
     v20[5] = v15;
 
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -1925,12 +1925,12 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)parseCachedPath:(id)a3 assetHandleUUIDString:(id *)a4 assetSignatureString:(id *)a5
+- (BOOL)parseCachedPath:(id)path assetHandleUUIDString:(id *)string assetSignatureString:(id *)signatureString
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v11 = objc_msgSend_lastPathComponent(v8, v9, v10);
-  v14 = objc_msgSend_stringByDeletingLastPathComponent(v8, v12, v13);
+  pathCopy = path;
+  v11 = objc_msgSend_lastPathComponent(pathCopy, v9, v10);
+  v14 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v12, v13);
   v17 = objc_msgSend_fileDownloadPath(self, v15, v16);
   isEqualToString = objc_msgSend_isEqualToString_(v17, v18, v14);
 
@@ -1951,7 +1951,7 @@ LABEL_9:
       if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_ERROR))
       {
         v49 = v42;
-        v52 = objc_msgSend_CKSanitizedPath(v8, v50, v51);
+        v52 = objc_msgSend_CKSanitizedPath(pathCopy, v50, v51);
         v55 = objc_msgSend_fileDownloadPath(self, v53, v54);
         v58 = objc_msgSend_CKSanitizedPath(v55, v56, v57);
         v59 = 138543618;
@@ -1978,7 +1978,7 @@ LABEL_9:
     if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_ERROR))
     {
       v45 = v41;
-      v48 = objc_msgSend_CKSanitizedPath(v8, v46, v47);
+      v48 = objc_msgSend_CKSanitizedPath(pathCopy, v46, v47);
       v59 = 138543362;
       v60 = v48;
       _os_log_error_impl(&dword_22506F000, v45, OS_LOG_TYPE_ERROR, "Attempt to find asset by path that is not parsable %{public}@", &v59, 0xCu);
@@ -1997,16 +1997,16 @@ LABEL_20:
   v38 = 0;
   if (v35 && v37)
   {
-    if (a4)
+    if (string)
     {
       v39 = v35;
-      *a4 = v35;
+      *string = v35;
     }
 
-    if (a5)
+    if (signatureString)
     {
       v40 = v37;
-      *a5 = v37;
+      *signatureString = v37;
     }
 
     v38 = 1;
@@ -2018,11 +2018,11 @@ LABEL_21:
   return v38;
 }
 
-- (BOOL)parseCachedPath:(id)a3 assetHandleUUID:(id *)a4 assetSignature:(id *)a5
+- (BOOL)parseCachedPath:(id)path assetHandleUUID:(id *)d assetSignature:(id *)signature
 {
   v22 = 0;
   v23 = 0;
-  v7 = objc_msgSend_parseCachedPath_assetHandleUUIDString_assetSignatureString_(self, a2, a3, &v23, &v22);
+  v7 = objc_msgSend_parseCachedPath_assetHandleUUIDString_assetSignatureString_(self, a2, path, &v23, &v22);
   v8 = v23;
   v9 = v22;
   v10 = v9;
@@ -2036,12 +2036,12 @@ LABEL_21:
       v17 = objc_msgSend_CKDataWithHexString_stringIsUppercase_(MEMORY[0x277CBEA90], v16, v10, 0);
       v18 = v17;
       v11 = 0;
-      if (a5 && a4 && v15 && v17)
+      if (signature && d && v15 && v17)
       {
         v19 = v15;
-        *a4 = v15;
+        *d = v15;
         v20 = v18;
-        *a5 = v18;
+        *signature = v18;
         v11 = 1;
       }
     }
@@ -2050,9 +2050,9 @@ LABEL_21:
   return v11;
 }
 
-- (id)assetHandleWithCachedPath:(id)a3
+- (id)assetHandleWithCachedPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2066,7 +2066,7 @@ LABEL_21:
   v13[3] = &unk_278546070;
   v13[4] = self;
   v16 = a2;
-  v9 = v5;
+  v9 = pathCopy;
   v14 = v9;
   v15 = &v17;
   objc_msgSend_MMCSSerializeSyncRecursive_(v8, v10, v13);
@@ -2077,15 +2077,15 @@ LABEL_21:
   return v11;
 }
 
-- (id)registeredMMCSItemForRereferencedAsset:(id)a3 copyBlock:(id)a4
+- (id)registeredMMCSItemForRereferencedAsset:(id)asset copyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   v8 = [CKDMMCSItem alloc];
-  v10 = objc_msgSend_initWithAsset_temporary_(v8, v9, v6, 1);
-  if (objc_msgSend_isReference(v6, v11, v12))
+  v10 = objc_msgSend_initWithAsset_temporary_(v8, v9, assetCopy, 1);
+  if (objc_msgSend_isReference(assetCopy, v11, v12))
   {
-    v15 = objc_msgSend_reReferenceItemID(v6, v13, v14);
+    v15 = objc_msgSend_reReferenceItemID(assetCopy, v13, v14);
     assetHandleTable = self->_assetHandleTable;
     v102 = 0;
     v18 = objc_msgSend_assetHandleWithItemID_error_(assetHandleTable, v17, v15, &v102);
@@ -2111,7 +2111,7 @@ LABEL_12:
     {
       v29 = objc_msgSend_itemID(v18, v27, v28);
       objc_msgSend_setItemID_(v18, v30, 0);
-      v33 = objc_msgSend_boundaryKey(v6, v31, v32);
+      v33 = objc_msgSend_boundaryKey(assetCopy, v31, v32);
       objc_msgSend_setBoundaryKeyHashUsingBoundaryKey_(v18, v34, v33);
 
       v96 = 0;
@@ -2129,7 +2129,7 @@ LABEL_12:
       v36 = v18;
       v92 = v36;
       v95 = &v96;
-      v94 = v7;
+      v94 = blockCopy;
       v37 = v29;
       v93 = v37;
       v21 = objc_msgSend_performTransaction_(v35, v38, v91);
@@ -2162,10 +2162,10 @@ LABEL_12:
         objc_msgSend_setChunkCount_(v10, v80, v79);
 
         objc_msgSend_setIsAlreadyRegistered_(v10, v81, 1);
-        v84 = objc_msgSend_UUID(v6, v82, v83);
+        v84 = objc_msgSend_UUID(assetCopy, v82, v83);
         objc_msgSend_setTrackingUUID_(v10, v85, v84);
 
-        v88 = objc_msgSend_boundaryKey(v6, v86, v87);
+        v88 = objc_msgSend_boundaryKey(assetCopy, v86, v87);
         objc_msgSend_setBoundaryKey_(v10, v89, v88);
       }
 
@@ -2200,11 +2200,11 @@ LABEL_13:
   objc_msgSend_MMCSSerializeSyncRecursive_(v5, v6, v7);
 }
 
-- (id)_evictWithEvictionInfo:(id)a3
+- (id)_evictWithEvictionInfo:(id)info
 {
   v227[2] = *MEMORY[0x277D85DE8];
-  v174 = a3;
-  v179 = self;
+  infoCopy = info;
+  selfCopy = self;
   v6 = objc_msgSend_mmcsEngineContext(self, v4, v5);
   objc_msgSend_assertMMCSSerialized(v6, v7, v8);
 
@@ -2212,7 +2212,7 @@ LABEL_13:
   v215 = &v214;
   v216 = 0x2020000000;
   v217 = 0;
-  if (objc_msgSend_didDrop(v179, v9, v10))
+  if (objc_msgSend_didDrop(selfCopy, v9, v10))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -2224,7 +2224,7 @@ LABEL_13:
     {
       v153 = NSStringFromSelector(a2);
       *buf = 138412546;
-      *&buf[4] = v179;
+      *&buf[4] = selfCopy;
       *&buf[12] = 2114;
       *&buf[14] = v153;
       _os_log_error_impl(&dword_22506F000, v152, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -2235,13 +2235,13 @@ LABEL_13:
 
   v178 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v11, v12);
   v213 = 0;
-  v17 = objc_msgSend_fileDownloadPath(v179, v13, v14);
+  v17 = objc_msgSend_fileDownloadPath(selfCopy, v13, v14);
   if (!v17)
   {
     goto LABEL_28;
   }
 
-  v18 = objc_msgSend_fileDownloadPath(v179, v15, v16);
+  v18 = objc_msgSend_fileDownloadPath(selfCopy, v15, v16);
   v172 = v17;
   if (objc_msgSend_fileExistsAtPath_isDirectory_(v178, v19, v18, &v213))
   {
@@ -2250,7 +2250,7 @@ LABEL_13:
     if (v20)
     {
       v23 = MEMORY[0x277CBEBC0];
-      v24 = objc_msgSend_fileDownloadPath(v179, v21, v22);
+      v24 = objc_msgSend_fileDownloadPath(selfCopy, v21, v22);
       v172 = objc_msgSend_fileURLWithPath_isDirectory_(v23, v25, v24, 1);
 
       context = objc_autoreleasePoolPush();
@@ -2320,7 +2320,7 @@ LABEL_13:
       while (v37);
 
       objc_autoreleasePoolPop(context);
-      if ((objc_msgSend_forced(v174, v50, v51) & 1) != 0 || v173 > 0x64 || v171 > 0xA00000)
+      if ((objc_msgSend_forced(infoCopy, v50, v51) & 1) != 0 || v173 > 0x64 || v171 > 0xA00000)
       {
         v167 = objc_autoreleasePoolPush();
         v226[0] = v26;
@@ -2369,7 +2369,7 @@ LABEL_13:
               v85 = objc_msgSend_path(v77, v83, v84);
               v205 = 0;
               v206 = 0;
-              v87 = objc_msgSend_parseCachedPath_assetHandleUUID_assetSignature_(v179, v86, v85, &v206, &v205);
+              v87 = objc_msgSend_parseCachedPath_assetHandleUUID_assetSignature_(selfCopy, v86, v85, &v206, &v205);
               v88 = v206;
               v169 = v205;
 
@@ -2378,7 +2378,7 @@ LABEL_13:
                 if (!v88 || !v169)
                 {
                   v117 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v89, v90, v166);
-                  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v117, v118, a2, v179, @"CKDAssetCache.m", 1829, @"should have thrown by now");
+                  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v117, v118, a2, selfCopy, @"CKDAssetCache.m", 1829, @"should have thrown by now");
                 }
 
                 v203 = 0;
@@ -2399,7 +2399,7 @@ LABEL_13:
 
                 if (v95 == 1)
                 {
-                  v96 = objc_msgSend_assetHandleWithUUID_(v179->_assetHandleTable, v94, v88);
+                  v96 = objc_msgSend_assetHandleWithUUID_(selfCopy->_assetHandleTable, v94, v88);
                   v99 = v96;
                   if (v96)
                   {
@@ -2410,7 +2410,7 @@ LABEL_13:
                     if (v103)
                     {
                       objc_msgSend_setLastUsedTime_(v99, v104, v92);
-                      v106 = objc_msgSend_saveLastUsedTime_(v179->_assetHandleTable, v105, v99);
+                      v106 = objc_msgSend_saveLastUsedTime_(selfCopy->_assetHandleTable, v105, v99);
                     }
                   }
 
@@ -2421,7 +2421,7 @@ LABEL_13:
                     objc_msgSend_setFileSignature_(v99, v111, v169);
                     objc_msgSend_setStatus_(v99, v112, &unk_2838C8130);
                     objc_msgSend_setLastUsedTime_(v99, v113, v92);
-                    v115 = objc_msgSend_insertObject_(v179->_assetHandleTable, v114, v99);
+                    v115 = objc_msgSend_insertObject_(selfCopy->_assetHandleTable, v114, v99);
                   }
                 }
               }
@@ -2485,9 +2485,9 @@ LABEL_13:
         v136 = *MEMORY[0x277CBC828];
         if (os_log_type_enabled(v136, OS_LOG_TYPE_DEBUG))
         {
-          v158 = objc_msgSend_fileDownloadPath(v179, v137, v138);
+          v158 = objc_msgSend_fileDownloadPath(selfCopy, v137, v138);
           v161 = objc_msgSend_CKSanitizedPath(v158, v159, v160);
-          v164 = objc_msgSend_forced(v174, v162, v163);
+          v164 = objc_msgSend_forced(infoCopy, v162, v163);
           v165 = @"NO";
           *buf = 134219266;
           *&buf[4] = v173;
@@ -2522,15 +2522,15 @@ LABEL_13:
         v197 = 0x2020000000;
         v198 = v171;
         v139 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-        assetHandleTable = v179->_assetHandleTable;
+        assetHandleTable = selfCopy->_assetHandleTable;
         v182[0] = MEMORY[0x277D85DD0];
         v182[1] = 3221225472;
         v182[2] = sub_225122E10;
         v182[3] = &unk_278546158;
-        v182[4] = v179;
+        v182[4] = selfCopy;
         v141 = v139;
         v183 = v141;
-        v142 = v174;
+        v142 = infoCopy;
         v194 = v124;
         v184 = v142;
         v186 = &v199;
@@ -2545,12 +2545,12 @@ LABEL_13:
         v144 = objc_msgSend_performTransaction_(assetHandleTable, v143, v182);
         if (objc_msgSend_clearRegisteredItems(v142, v145, v146))
         {
-          v147 = v179->_assetHandleTable;
+          v147 = selfCopy->_assetHandleTable;
           v180[0] = MEMORY[0x277D85DD0];
           v180[1] = 3221225472;
           v180[2] = sub_22512367C;
           v180[3] = &unk_278546180;
-          v180[4] = v179;
+          v180[4] = selfCopy;
           v181 = v142;
           v149 = objc_msgSend_performTransaction_(v147, v148, v180);
         }
@@ -2573,7 +2573,7 @@ LABEL_13:
         v52 = *MEMORY[0x277CBC828];
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
         {
-          v154 = objc_msgSend_fileDownloadPath(v179, v53, v54);
+          v154 = objc_msgSend_fileDownloadPath(selfCopy, v53, v54);
           v157 = objc_msgSend_CKSanitizedPath(v154, v155, v156);
           *buf = 134218498;
           *&buf[4] = v173;
@@ -2607,10 +2607,10 @@ LABEL_31:
   return v57;
 }
 
-- (void)_expireAssetHandlesWithExpiryDate:(id)a3
+- (void)_expireAssetHandlesWithExpiryDate:(id)date
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v7 = objc_msgSend_mmcsEngineContext(self, v5, v6);
   objc_msgSend_assertMMCSSerialized(v7, v8, v9);
 
@@ -2622,7 +2622,7 @@ LABEL_31:
   v43 = 0;
   v50[0] = @"EXPIRYDATE";
   v50[1] = @"NOT_REGISTERED";
-  v51[0] = v4;
+  v51[0] = dateCopy;
   v51[1] = &unk_2838C8130;
   v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v51, v50, 2);
   v16 = objc_msgSend_deleteEntriesMatching_label_error_predicate_(self->_assetHandleTable, v15, v14, off_27D719A48, 0, &unk_28385C5A0);
@@ -2632,9 +2632,9 @@ LABEL_31:
   v33 = 3221225472;
   v34 = sub_225123D88;
   v35 = &unk_2785461D0;
-  v18 = v4;
+  v18 = dateCopy;
   v36 = v18;
-  v37 = self;
+  selfCopy = self;
   v39 = &v40;
   v19 = v12;
   v38 = v19;

@@ -1,40 +1,40 @@
 @interface USOSchemaUSONode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSONode)initWithDictionary:(id)a3;
-- (USOSchemaUSONode)initWithJSON:(id)a3;
+- (USOSchemaUSONode)initWithDictionary:(id)dictionary;
+- (USOSchemaUSONode)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUsoVerbElementId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUsoVerbElementId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSONode
 
-- (USOSchemaUSONode)initWithDictionary:(id)a3
+- (USOSchemaUSONode)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = USOSchemaUSONode;
   v5 = [(USOSchemaUSONode *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoElementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoElementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSONode setUsoElementId:](v5, "setUsoElementId:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"usoVerbElementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"usoVerbElementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSONode setUsoVerbElementId:](v5, "setUsoVerbElementId:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"entityLabel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"entityLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(USOSchemaUSONode *)v5 setEntityLabel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"verbLabel"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"verbLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (USOSchemaUSONode)initWithJSON:(id)a3
+- (USOSchemaUSONode)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSONode *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSONode *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSONode *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,19 +92,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entityLabel)
   {
-    v4 = [(USOSchemaUSONode *)self entityLabel];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"entityLabel"];
+    entityLabel = [(USOSchemaUSONode *)self entityLabel];
+    v5 = [entityLabel copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"entityLabel"];
   }
 
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSONode usoElementId](self, "usoElementId")}];
-    [v3 setObject:v7 forKeyedSubscript:@"usoElementId"];
+    [dictionary setObject:v7 forKeyedSubscript:@"usoElementId"];
 
     has = self->_has;
   }
@@ -112,19 +112,19 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSONode usoVerbElementId](self, "usoVerbElementId")}];
-    [v3 setObject:v8 forKeyedSubscript:@"usoVerbElementId"];
+    [dictionary setObject:v8 forKeyedSubscript:@"usoVerbElementId"];
   }
 
   if (self->_verbLabel)
   {
-    v9 = [(USOSchemaUSONode *)self verbLabel];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"verbLabel"];
+    verbLabel = [(USOSchemaUSONode *)self verbLabel];
+    v10 = [verbLabel copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"verbLabel"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -155,16 +155,16 @@ LABEL_6:
   return v5 ^ [(NSString *)self->_verbLabel hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -173,13 +173,13 @@ LABEL_6:
   if (*&has)
   {
     usoElementId = self->_usoElementId;
-    if (usoElementId != [v4 usoElementId])
+    if (usoElementId != [equalCopy usoElementId])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -191,26 +191,26 @@ LABEL_6:
   if (v8)
   {
     usoVerbElementId = self->_usoVerbElementId;
-    if (usoVerbElementId != [v4 usoVerbElementId])
+    if (usoVerbElementId != [equalCopy usoVerbElementId])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(USOSchemaUSONode *)self entityLabel];
-  v11 = [v4 entityLabel];
-  if ((v10 != 0) == (v11 == 0))
+  entityLabel = [(USOSchemaUSONode *)self entityLabel];
+  entityLabel2 = [equalCopy entityLabel];
+  if ((entityLabel != 0) == (entityLabel2 == 0))
   {
     goto LABEL_18;
   }
 
-  v12 = [(USOSchemaUSONode *)self entityLabel];
-  if (v12)
+  entityLabel3 = [(USOSchemaUSONode *)self entityLabel];
+  if (entityLabel3)
   {
-    v13 = v12;
-    v14 = [(USOSchemaUSONode *)self entityLabel];
-    v15 = [v4 entityLabel];
-    v16 = [v14 isEqual:v15];
+    v13 = entityLabel3;
+    entityLabel4 = [(USOSchemaUSONode *)self entityLabel];
+    entityLabel5 = [equalCopy entityLabel];
+    v16 = [entityLabel4 isEqual:entityLabel5];
 
     if (!v16)
     {
@@ -222,12 +222,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(USOSchemaUSONode *)self verbLabel];
-  v11 = [v4 verbLabel];
-  if ((v10 != 0) != (v11 == 0))
+  entityLabel = [(USOSchemaUSONode *)self verbLabel];
+  entityLabel2 = [equalCopy verbLabel];
+  if ((entityLabel != 0) != (entityLabel2 == 0))
   {
-    v17 = [(USOSchemaUSONode *)self verbLabel];
-    if (!v17)
+    verbLabel = [(USOSchemaUSONode *)self verbLabel];
+    if (!verbLabel)
     {
 
 LABEL_22:
@@ -235,10 +235,10 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    v18 = v17;
-    v19 = [(USOSchemaUSONode *)self verbLabel];
-    v20 = [v4 verbLabel];
-    v21 = [v19 isEqual:v20];
+    v18 = verbLabel;
+    verbLabel2 = [(USOSchemaUSONode *)self verbLabel];
+    verbLabel3 = [equalCopy verbLabel];
+    v21 = [verbLabel2 isEqual:verbLabel3];
 
     if (v21)
     {
@@ -258,9 +258,9 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -273,26 +273,26 @@ LABEL_20:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(USOSchemaUSONode *)self entityLabel];
+  entityLabel = [(USOSchemaUSONode *)self entityLabel];
 
-  if (v5)
+  if (entityLabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(USOSchemaUSONode *)self verbLabel];
+  verbLabel = [(USOSchemaUSONode *)self verbLabel];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (verbLabel)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasUsoVerbElementId:(BOOL)a3
+- (void)setHasUsoVerbElementId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }

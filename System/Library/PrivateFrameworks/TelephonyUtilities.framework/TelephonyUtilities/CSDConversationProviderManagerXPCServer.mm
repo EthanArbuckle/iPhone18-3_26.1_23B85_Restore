@@ -1,26 +1,26 @@
 @interface CSDConversationProviderManagerXPCServer
-- (CSDConversationProviderManagerXPCServer)initWithConversationProviderManager:(id)a3;
+- (CSDConversationProviderManagerXPCServer)initWithConversationProviderManager:(id)manager;
 - (TUConversationManager)conversationManager;
 - (TUFeatureFlags)featureFlags;
-- (void)conversationProviderForIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)conversationProviderForIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5;
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6;
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler;
 - (void)invalidate;
 - (void)notifyClientsToConnectIfNecessary;
-- (void)registerClient:(id)a3;
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4;
-- (void)registerForCallbacksForProvider:(id)a3 completionHandler:(id)a4;
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6;
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5;
-- (void)unregisterClient:(id)a3;
+- (void)registerClient:(id)client;
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)registerForCallbacksForProvider:(id)provider completionHandler:(id)handler;
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler;
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)unregisterClient:(id)client;
 @end
 
 @implementation CSDConversationProviderManagerXPCServer
 
-- (CSDConversationProviderManagerXPCServer)initWithConversationProviderManager:(id)a3
+- (CSDConversationProviderManagerXPCServer)initWithConversationProviderManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = CSDConversationProviderManagerXPCServer;
   v6 = [(CSDConversationProviderManagerXPCServer *)&v19 init];
@@ -30,7 +30,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_providerManager, a3);
+    objc_storeStrong(&v6->_providerManager, manager);
     v9 = [[CSDClientManager alloc] initWithSerialQueue:v6->_queue];
     clientManager = v6->_clientManager;
     v6->_clientManager = v9;
@@ -43,13 +43,13 @@
     v12 = v6;
     v18 = v12;
     dispatch_sync(v11, block);
-    v13 = [(CSDConversationProviderManagerXPCServer *)v12 queue];
+    queue = [(CSDConversationProviderManagerXPCServer *)v12 queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000D2348;
     v15[3] = &unk_100619D38;
     v16 = v12;
-    dispatch_async(v13, v15);
+    dispatch_async(queue, v15);
   }
 
   return v6;
@@ -79,19 +79,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "invalidating ProviderManagerXPCServer", buf, 2u);
   }
 
-  v4 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D2520;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)notifyClientsToConnectIfNecessary
 {
-  v3 = [(CSDConversationProviderManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -134,188 +134,188 @@
   return conversationManager;
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  clientCopy = client;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D2758;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)unregisterClient:(id)a3
+- (void)unregisterClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  clientCopy = client;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D2860;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)conversationProviderForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)conversationProviderForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D298C;
   block[3] = &unk_10061AF20;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  providerCopy = provider;
+  iCopy = i;
+  handlerCopy = handler;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D2B98;
   block[3] = &unk_10061AF48;
-  v18 = v11;
-  v19 = self;
-  v22 = a4;
-  v20 = v10;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = iCopy;
+  selfCopy = self;
+  durationCopy = duration;
+  v20 = providerCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = providerCopy;
+  v16 = iCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  handleCopy = handle;
+  providerCopy = provider;
+  dateCopy = date;
+  handlerCopy = handler;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D2DA0;
   block[3] = &unk_10061AF70;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = handleCopy;
+  selfCopy = self;
+  v22 = providerCopy;
+  v23 = dateCopy;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = dateCopy;
+  v17 = providerCopy;
+  v18 = handleCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D2F6C;
   v15[3] = &unk_10061AF98;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = handleCopy;
+  selfCopy = self;
+  v18 = providerCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = providerCopy;
+  v14 = handleCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSDConversationProviderManagerXPCServer *)self queue];
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
+  queue = [(CSDConversationProviderManagerXPCServer *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D3134;
   v15[3] = &unk_10061AF98;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = handleCopy;
+  selfCopy = self;
+  v18 = providerCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = providerCopy;
+  v14 = handleCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)registerForCallbacksForProvider:(id)a3 completionHandler:(id)a4
+- (void)registerForCallbacksForProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationProviderManagerXPCServer *)self clientManager];
-  v9 = [v8 currentClient];
+  providerCopy = provider;
+  handlerCopy = handler;
+  clientManager = [(CSDConversationProviderManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = providerCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = currentClient;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "registerForCallbacksForProvider received over XPC with providerIdentifier: %@ client: %@", &v12, 0x16u);
   }
 
   v11 = +[CSDConversationProviderManager sharedInstance];
-  [v11 startTrackingClient:v9 forProviderIdentifier:v6];
+  [v11 startTrackingClient:currentClient forProviderIdentifier:providerCopy];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationProviderManagerXPCServer *)self clientManager];
-  v9 = [v8 currentClient];
+  providerCopy = provider;
+  handlerCopy = handler;
+  clientManager = [(CSDConversationProviderManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = providerCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "registerConversationProvider received over XPC with provider: %@", buf, 0xCu);
   }
 
-  v11 = [(CSDConversationProviderManagerXPCServer *)self providerManager];
+  providerManager = [(CSDConversationProviderManagerXPCServer *)self providerManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D34C4;
   v15[3] = &unk_10061AFC0;
-  v16 = v6;
-  v17 = v9;
-  v18 = v7;
-  v12 = v7;
-  v13 = v9;
-  v14 = v6;
-  [v11 registerConversationProvider:v14 completionHandler:v15];
+  v16 = providerCopy;
+  v17 = currentClient;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = currentClient;
+  v14 = providerCopy;
+  [providerManager registerConversationProvider:v14 completionHandler:v15];
 }
 
 @end

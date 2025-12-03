@@ -1,7 +1,7 @@
 @interface MRDSleepObserver
 - (MRDSleepObserver)init;
 - (MRDSleepObserverDelegate)delegate;
-- (void)notifyDelegateOfSleepWithCompletion:(id)a3;
+- (void)notifyDelegateOfSleepWithCompletion:(id)completion;
 - (void)notifyDelegateOfWake;
 @end
 
@@ -36,21 +36,21 @@
   return v3;
 }
 
-- (void)notifyDelegateOfSleepWithCompletion:(id)a3
+- (void)notifyDelegateOfSleepWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 sleepObserverSystemWillSleep:self completion:v7];
+    [v6 sleepObserverSystemWillSleep:self completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2]();
+    completionCopy[2]();
   }
 }
 

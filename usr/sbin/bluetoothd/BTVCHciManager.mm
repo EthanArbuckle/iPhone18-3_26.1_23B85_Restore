@@ -1,52 +1,52 @@
 @interface BTVCHciManager
 + (BTVCHciManager)sharedManager;
-- (BOOL)transportWriteCmd:(char *)a3 length:(unsigned __int16)a4 amountWritten:(unsigned __int16 *)a5 dtor:(void *)a6;
-- (BOOL)transportWriteData:(char *)a3 length:(unsigned __int16)a4 amountWritten:(unsigned __int16 *)a5 dtor:(void *)a6;
+- (BOOL)transportWriteCmd:(char *)cmd length:(unsigned __int16)length amountWritten:(unsigned __int16 *)written dtor:(void *)dtor;
+- (BOOL)transportWriteData:(char *)data length:(unsigned __int16)length amountWritten:(unsigned __int16 *)written dtor:(void *)dtor;
 - (BTVCHciManager)init;
 - (id)description;
 - (void)_activate;
 - (void)_invalidate;
-- (void)_sendHciCommandCompleteEvent:(unsigned __int16)a3 status:(unsigned __int8)a4 params:(char *)a5 length:(unsigned __int8)a6;
-- (void)_sendHciEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5;
-- (void)_sendLeMetaEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5;
-- (void)_sendingHciData:(id)a3;
-- (void)_sendingHciEvent:(id)a3;
-- (void)_sendingLmpEvent:(id)a3;
+- (void)_sendHciCommandCompleteEvent:(unsigned __int16)event status:(unsigned __int8)status params:(char *)params length:(unsigned __int8)length;
+- (void)_sendHciEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length;
+- (void)_sendLeMetaEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length;
+- (void)_sendingHciData:(id)data;
+- (void)_sendingHciEvent:(id)event;
+- (void)_sendingLmpEvent:(id)event;
 - (void)_update;
 - (void)activate;
-- (void)handleHciCommand:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciCommandsForConnection:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciCommandsForLinkAgent:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciCreateConnectionCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciInquiryCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeCreateConnectionCancelCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeExtendedCreateConnectionCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeRandCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetAdvertisingSetRandomAddressCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetEventMaskCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetExtendedAdvertisingDataCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetExtendedAdvertisingEnableCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetExtendedAdvertisingParametersCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetExtendedScanEnableCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciLeSetRandomAddressCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciReadRssiCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciResetCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciSetEventMaskCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)handleHciVscWriteBdAddrCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
+- (void)handleHciCommand:(unsigned __int16)command params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciCommandsForConnection:(unsigned __int16)connection params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciCommandsForLinkAgent:(unsigned __int16)agent params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciCreateConnectionCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciInquiryCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeCreateConnectionCancelCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeExtendedCreateConnectionCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeRandCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetAdvertisingSetRandomAddressCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetEventMaskCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetExtendedAdvertisingDataCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetExtendedAdvertisingEnableCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetExtendedAdvertisingParametersCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetExtendedScanEnableCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciLeSetRandomAddressCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciReadRssiCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciResetCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciSetEventMaskCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
+- (void)handleHciVscWriteBdAddrCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)receivedDatePacket:(unsigned __int16)a3 payload:(char *)a4 lenght:(unsigned __int16)a5;
-- (void)sendHciCommandCompleteEvent:(unsigned __int16)a3 status:(unsigned __int8)a4 params:(id)a5;
-- (void)sendHciCommandStatusEvent:(unsigned __int16)a3 status:(unsigned __int8)a4;
-- (void)sendHciConnectionCompleteEvent:(id)a3 status:(unsigned __int8)a4 delay:(unsigned int)a5;
-- (void)sendHciData:(BTVirtualHCIPacket *)a3;
-- (void)sendHciEventPacket:(BTVirtualHCIPacket *)a3;
-- (void)sendHciInquiryCompleteEvent:(unsigned int)a3;
-- (void)sendLmpEvent:(id)a3;
-- (void)sendLmpEventPacket:(BTVirtualHCIPacket *)a3;
-- (void)setDataReadCompletionBlock:(id)a3;
-- (void)setEventReadCompletionBlock:(id)a3;
-- (void)setLmpEventReadCompletionBlock:(id)a3;
+- (void)receivedDatePacket:(unsigned __int16)packet payload:(char *)payload lenght:(unsigned __int16)lenght;
+- (void)sendHciCommandCompleteEvent:(unsigned __int16)event status:(unsigned __int8)status params:(id)params;
+- (void)sendHciCommandStatusEvent:(unsigned __int16)event status:(unsigned __int8)status;
+- (void)sendHciConnectionCompleteEvent:(id)event status:(unsigned __int8)status delay:(unsigned int)delay;
+- (void)sendHciData:(BTVirtualHCIPacket *)data;
+- (void)sendHciEventPacket:(BTVirtualHCIPacket *)packet;
+- (void)sendHciInquiryCompleteEvent:(unsigned int)event;
+- (void)sendLmpEvent:(id)event;
+- (void)sendLmpEventPacket:(BTVirtualHCIPacket *)packet;
+- (void)setDataReadCompletionBlock:(id)block;
+- (void)setEventReadCompletionBlock:(id)block;
+- (void)setLmpEventReadCompletionBlock:(id)block;
 - (void)update;
 @end
 
@@ -251,12 +251,12 @@
   }
 }
 
-- (BOOL)transportWriteCmd:(char *)a3 length:(unsigned __int16)a4 amountWritten:(unsigned __int16 *)a5 dtor:(void *)a6
+- (BOOL)transportWriteCmd:(char *)cmd length:(unsigned __int16)length amountWritten:(unsigned __int16 *)written dtor:(void *)dtor
 {
-  if (a3)
+  if (cmd)
   {
-    v9 = *a3;
-    v10 = a3[2];
+    v9 = *cmd;
+    v10 = cmd[2];
     v11 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
@@ -269,10 +269,10 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: opCode 0x%04X, payload length: %d", &v21, 0x18u);
     }
 
-    [(BTVCHciManager *)self handleHciCommand:v9 params:a3 + 3 length:v10];
-    if (a6)
+    [(BTVCHciManager *)self handleHciCommand:v9 params:cmd + 3 length:v10];
+    if (dtor)
     {
-      (a6)(a3);
+      (dtor)(cmd);
     }
   }
 
@@ -285,30 +285,30 @@
     }
   }
 
-  return a3 != 0;
+  return cmd != 0;
 }
 
-- (BOOL)transportWriteData:(char *)a3 length:(unsigned __int16)a4 amountWritten:(unsigned __int16 *)a5 dtor:(void *)a6
+- (BOOL)transportWriteData:(char *)data length:(unsigned __int16)length amountWritten:(unsigned __int16 *)written dtor:(void *)dtor
 {
   v7 = qword_100BCEA70;
-  if (a3)
+  if (data)
   {
-    v9 = a4;
+    lengthCopy = length;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 136315394;
       v21 = "[BTVCHciManager transportWriteData:length:amountWritten:dtor:]";
       v22 = 1024;
-      v23 = v9;
+      v23 = lengthCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: data length: %d", &v20, 0x12u);
     }
 
-    v11 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
-    [v11 sendDataToPeer:a3 dataLength:v9];
+    getConnectionManager = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
+    [getConnectionManager sendDataToPeer:data dataLength:lengthCopy];
 
-    if (a6)
+    if (dtor)
     {
-      (a6)(a3);
+      (dtor)(data);
     }
   }
 
@@ -317,34 +317,34 @@
     sub_100821FC8(v7, v12, v13, v14, v15, v16, v17, v18);
   }
 
-  return a3 != 0;
+  return data != 0;
 }
 
-- (void)setEventReadCompletionBlock:(id)a3
+- (void)setEventReadCompletionBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   transportSendEvent = self->_transportSendEvent;
   self->_transportSendEvent = v4;
 }
 
-- (void)setDataReadCompletionBlock:(id)a3
+- (void)setDataReadCompletionBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   transportSendData = self->_transportSendData;
   self->_transportSendData = v4;
 }
 
-- (void)setLmpEventReadCompletionBlock:(id)a3
+- (void)setLmpEventReadCompletionBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   transportSendLmpEvent = self->_transportSendLmpEvent;
   self->_transportSendLmpEvent = v4;
 }
 
-- (void)sendHciEventPacket:(BTVirtualHCIPacket *)a3
+- (void)sendHciEventPacket:(BTVirtualHCIPacket *)packet
 {
-  v4 = *a3->var0;
-  v5 = *(a3->var0 + 5);
+  v4 = *packet->var0;
+  v5 = *(packet->var0 + 5);
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -359,12 +359,12 @@
   [(BTVCPacketControl *)self->_eventPacketControl sendPacket:v7 completion:0];
 }
 
-- (void)_sendingHciEvent:(id)a3
+- (void)_sendingHciEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 length];
+  eventCopy = event;
+  v5 = [eventCopy length];
   v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
-  memcpy(v6, [v4 bytes], v5);
+  memcpy(v6, [eventCopy bytes], v5);
   if (self->_transportSendEvent)
   {
     v16 = 0;
@@ -393,13 +393,13 @@
     }
   }
 
-  [(BTVCPacketControl *)self->_eventPacketControl didSendPacket:v4 error:0];
+  [(BTVCPacketControl *)self->_eventPacketControl didSendPacket:eventCopy error:0];
 }
 
-- (void)sendHciData:(BTVirtualHCIPacket *)a3
+- (void)sendHciData:(BTVirtualHCIPacket *)data
 {
-  v4 = *a3->var0;
-  v5 = *(a3->var0 + 5);
+  v4 = *data->var0;
+  v5 = *(data->var0 + 5);
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,12 +414,12 @@
   [(BTVCPacketControl *)self->_dataPacketControl sendPacket:v7 completion:0];
 }
 
-- (void)_sendingHciData:(id)a3
+- (void)_sendingHciData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
-  memcpy(v6, [v4 bytes], v5);
+  memcpy(v6, [dataCopy bytes], v5);
   if (self->_transportSendData)
   {
     v16 = 0;
@@ -448,13 +448,13 @@
     }
   }
 
-  [(BTVCPacketControl *)self->_dataPacketControl didSendPacket:v4 error:0];
+  [(BTVCPacketControl *)self->_dataPacketControl didSendPacket:dataCopy error:0];
 }
 
-- (void)sendLmpEventPacket:(BTVirtualHCIPacket *)a3
+- (void)sendLmpEventPacket:(BTVirtualHCIPacket *)packet
 {
-  v4 = *a3->var0;
-  v5 = *(a3->var0 + 5);
+  v4 = *packet->var0;
+  v5 = *(packet->var0 + 5);
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -469,12 +469,12 @@
   [(BTVCPacketControl *)self->_lmpEventPacketControl sendPacket:v7 completion:0];
 }
 
-- (void)_sendingLmpEvent:(id)a3
+- (void)_sendingLmpEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 length];
+  eventCopy = event;
+  v5 = [eventCopy length];
   v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
-  memcpy(v6, [v4 bytes], v5);
+  memcpy(v6, [eventCopy bytes], v5);
   if (self->_transportSendLmpEvent)
   {
     v16 = 0;
@@ -503,17 +503,17 @@
     }
   }
 
-  [(BTVCPacketControl *)self->_lmpEventPacketControl didSendPacket:v4 error:0];
+  [(BTVCPacketControl *)self->_lmpEventPacketControl didSendPacket:eventCopy error:0];
 }
 
-- (void)handleHciCommand:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciCommand:(unsigned __int16)command params:(char *)params length:(unsigned __int16)length
 {
   v5 = &selRef_handleHciCmdDefault_params_length_;
-  if (a3 > 0x2000)
+  if (command > 0x2000)
   {
-    if (a3 <= 8287)
+    if (command <= 8287)
     {
-      switch(a3)
+      switch(command)
       {
         case 0x2001u:
           v5 = &selRef_handleHciLeSetEventMaskCmd_params_length_;
@@ -587,12 +587,12 @@
 
     v6 = 65278;
     v18 = &selRef_handleHciCommandsForLinkAgent_params_length_;
-    if (a3 != 65479)
+    if (command != 65479)
     {
       v18 = &selRef_handleHciCmdDefault_params_length_;
     }
 
-    if (a3 == 65279)
+    if (command == 65279)
     {
       v11 = &selRef_handleHciCommandsForLinkAgent_params_length_;
     }
@@ -602,12 +602,12 @@
       v11 = v18;
     }
 
-    if (a3 == 64518)
+    if (command == 64518)
     {
       v5 = &selRef_handleHciVscWriteBdAddrCmd_params_length_;
     }
 
-    if (a3 == 8288)
+    if (command == 8288)
     {
       v5 = &selRef_handleHciLeReadBufferSizeV2Cmd_params_length_;
     }
@@ -615,28 +615,28 @@
     goto LABEL_58;
   }
 
-  if (a3 > 3096)
+  if (command > 3096)
   {
     v6 = 4099;
     v7 = &selRef_handleHciReadBdaddrCmd_params_length_;
     v8 = &selRef_handleHciReadRssiCmd_params_length_;
-    if (a3 != 5125)
+    if (command != 5125)
     {
       v8 = &selRef_handleHciCmdDefault_params_length_;
     }
 
-    if (a3 != 4105)
+    if (command != 4105)
     {
       v7 = v8;
     }
 
     v9 = &selRef_handleHciReadBufferSizeCmd_params_length_;
-    if (a3 != 4101)
+    if (command != 4101)
     {
       v9 = &selRef_handleHciCmdDefault_params_length_;
     }
 
-    if (a3 == 4100)
+    if (command == 4100)
     {
       v10 = &selRef_handleHciReadLocalExtFeaturesCmd_params_length_;
     }
@@ -646,7 +646,7 @@
       v10 = v9;
     }
 
-    if (a3 <= 4104)
+    if (command <= 4104)
     {
       v11 = v10;
     }
@@ -657,12 +657,12 @@
     }
 
     v12 = &selRef_handleHciReadLocalFeaturesCmd_params_length_;
-    if (a3 != 4099)
+    if (command != 4099)
     {
       v12 = &selRef_handleHciCmdDefault_params_length_;
     }
 
-    if (a3 == 4098)
+    if (command == 4098)
     {
       v13 = &selRef_handleHciReadLocalSupCmdsCmd_params_length_;
     }
@@ -672,23 +672,23 @@
       v13 = v12;
     }
 
-    if (a3 == 4097)
+    if (command == 4097)
     {
       v5 = &selRef_handleHciReadLocalVerInfoCmd_params_length_;
     }
 
-    if (a3 == 3097)
+    if (command == 3097)
     {
       v5 = &selRef_handleHciReadScanEnableCmd_params_length_;
     }
 
-    if (a3 > 4097)
+    if (command > 4097)
     {
       v5 = v13;
     }
 
 LABEL_58:
-    if (a3 > v6)
+    if (command > v6)
     {
       v5 = v11;
     }
@@ -698,49 +698,49 @@ LABEL_58:
 
   v14 = &selRef_handleHciResetCmd_params_length_;
   v15 = &selRef_handleHciReadStoredLinkKeyCmd_params_length_;
-  if (a3 != 3085)
+  if (command != 3085)
   {
     v15 = &selRef_handleHciCmdDefault_params_length_;
   }
 
-  if (a3 != 3075)
+  if (command != 3075)
   {
     v14 = v15;
   }
 
   v16 = &selRef_handleHciCommandsForConnection_params_length_;
   v17 = &selRef_handleHciSetEventMaskCmd_params_length_;
-  if (a3 != 3073)
+  if (command != 3073)
   {
     v17 = &selRef_handleHciCmdDefault_params_length_;
   }
 
-  if (a3 != 1053)
+  if (command != 1053)
   {
     v16 = v17;
   }
 
-  if (a3 <= 3074)
+  if (command <= 3074)
   {
     v14 = v16;
   }
 
-  if (a3 == 1030)
+  if (command == 1030)
   {
     v5 = &selRef_handleHciCommandsForConnection_params_length_;
   }
 
-  if (a3 == 1029)
+  if (command == 1029)
   {
     v5 = &selRef_handleHciCreateConnectionCmd_params_length_;
   }
 
-  if (a3 == 1025)
+  if (command == 1025)
   {
     v5 = &selRef_handleHciInquiryCmd_params_length_;
   }
 
-  if (a3 > 1052)
+  if (command > 1052)
   {
     v5 = v14;
   }
@@ -749,24 +749,24 @@ LABEL_78:
   [self *v5];
 }
 
-- (void)handleHciCommandsForLinkAgent:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciCommandsForLinkAgent:(unsigned __int16)agent params:(char *)params length:(unsigned __int16)length
 {
-  v5 = a3;
-  v7 = [[NSData alloc] initWithBytes:a4 length:a5];
-  [(BTVCLinkAgent *)self->_linkAgent handleHciCommands:v5 params:?];
+  agentCopy = agent;
+  v7 = [[NSData alloc] initWithBytes:params length:length];
+  [(BTVCLinkAgent *)self->_linkAgent handleHciCommands:agentCopy params:?];
 }
 
-- (void)handleHciCommandsForConnection:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciCommandsForConnection:(unsigned __int16)connection params:(char *)params length:(unsigned __int16)length
 {
-  v5 = a3;
-  v8 = [[NSData alloc] initWithBytes:a4 length:a5];
-  v7 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
-  [v7 handleHciCommandsForConnection:v5 params:v8];
+  connectionCopy = connection;
+  v8 = [[NSData alloc] initWithBytes:params length:length];
+  getConnectionManager = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
+  [getConnectionManager handleHciCommandsForConnection:connectionCopy params:v8];
 }
 
-- (void)handleHciInquiryCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciInquiryCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  [(BTVCHciManager *)self sendHciCommandStatusEvent:a3 status:0, a5];
+  [(BTVCHciManager *)self sendHciCommandStatusEvent:cmd status:0, length];
   v6 = dispatch_time(0, 12000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -776,18 +776,18 @@ LABEL_78:
   dispatch_after(v6, &_dispatch_main_q, block);
 }
 
-- (void)handleHciCreateConnectionCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciCreateConnectionCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
   v12 = 0;
   v11 = 0;
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 621, "(uint8_t *)params");
   }
 
-  v5 = a3;
-  sub_1000075EC(&v11, a4, 6uLL);
-  [(BTVCHciManager *)self sendHciCommandStatusEvent:v5 status:0];
+  cmdCopy = cmd;
+  sub_1000075EC(&v11, params, 6uLL);
+  [(BTVCHciManager *)self sendHciCommandStatusEvent:cmdCopy status:0];
   v7 = dispatch_time(0, 5000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -799,9 +799,9 @@ LABEL_78:
   dispatch_after(v7, &_dispatch_main_q, block);
 }
 
-- (void)handleHciSetEventMaskCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciSetEventMaskCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -810,11 +810,11 @@ LABEL_78:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s\n", &v9, 0xCu);
   }
 
-  self->_hciEventMask = *a4;
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:0 params:0 length:0];
+  self->_hciEventMask = *params;
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:0 params:0 length:0];
 }
 
-- (void)handleHciResetCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciResetCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -834,20 +834,20 @@ LABEL_78:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)handleHciReadRssiCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciReadRssiCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[BTVCHciManager handleHciReadRssiCmd:params:length:]";
     v10 = 1024;
-    v11 = v6;
+    v11 = cmdCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: opCode 0x%04X", &v8, 0x12u);
   }
 
-  if (a4)
+  if (params)
   {
     operator new();
   }
@@ -855,9 +855,9 @@ LABEL_78:
   sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 873, "(uint8_t *)params");
 }
 
-- (void)handleHciLeSetEventMaskCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetEventMaskCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -866,50 +866,50 @@ LABEL_78:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s\n", &v9, 0xCu);
   }
 
-  self->_hciLeEventMask = *a4;
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:0 params:0 length:0];
+  self->_hciLeEventMask = *params;
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:0 params:0 length:0];
 }
 
-- (void)handleHciLeSetRandomAddressCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetRandomAddressCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 136315394;
     *&v12[4] = "[BTVCHciManager handleHciLeSetRandomAddressCmd:params:length:]";
     v13 = 1024;
-    v14 = v6;
+    v14 = cmdCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: opCode 0x%04X", v12, 0x12u);
   }
 
   *&v12[4] = 0;
   *v12 = 0;
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 970, "(uint8_t *)params");
   }
 
-  sub_1000075EC(v12, a4, 6uLL);
+  sub_1000075EC(v12, params, 6uLL);
   v9 = [NSData dataWithBytes:v12 length:6];
-  v10 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
-  v11 = [v10 leSetRandomAddress:v9];
+  getConnectionManager = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
+  v11 = [getConnectionManager leSetRandomAddress:v9];
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:v11 params:0 length:0];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v11 params:0 length:0];
 }
 
-- (void)handleHciLeCreateConnectionCancelCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeCreateConnectionCancelCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v5 = a3;
-  v7 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager:a3];
-  v8 = [v7 leCreateConnectionCancel];
+  cmdCopy = cmd;
+  v7 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager:cmd];
+  leCreateConnectionCancel = [v7 leCreateConnectionCancel];
 
-  [(BTVCHciManager *)self sendHciCommandStatusEvent:v5 status:v8];
+  [(BTVCHciManager *)self sendHciCommandStatusEvent:cmdCopy status:leCreateConnectionCancel];
 }
 
-- (void)handleHciLeRandCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeRandCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v5 = a3;
+  cmdCopy = cmd;
   v7 = 0;
   v8 = 0;
   do
@@ -918,21 +918,21 @@ LABEL_78:
   }
 
   while (v7 != 8);
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v5 status:0 params:&v8 length:8];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:0 params:&v8 length:8];
 }
 
-- (void)handleHciLeSetAdvertisingSetRandomAddressCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetAdvertisingSetRandomAddressCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
   v12 = 0;
   v11 = 0;
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1093, "(uint8_t *)params");
   }
 
-  v5 = a3;
-  v7 = *a4;
-  sub_1000075EC(&v11, (a4 + 1), 6uLL);
+  cmdCopy = cmd;
+  v7 = *params;
+  sub_1000075EC(&v11, (params + 1), 6uLL);
   if (v7 <= 7)
   {
     v9 = +[NSMutableDictionary dictionary];
@@ -949,25 +949,25 @@ LABEL_78:
     v8 = 18;
   }
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v5 status:v8 params:0 length:0];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v8 params:0 length:0];
 }
 
-- (void)handleHciLeSetExtendedAdvertisingParametersCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetExtendedAdvertisingParametersCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
   v23 = 0;
   v22 = 0;
-  if (a4)
+  if (params)
   {
-    v7 = *a4;
-    v8 = *(a4 + 1);
-    v9 = a4[10];
-    sub_1000075EC(&v22, (a4 + 12), 6uLL);
+    v7 = *params;
+    v8 = *(params + 1);
+    v9 = params[10];
+    sub_1000075EC(&v22, (params + 12), 6uLL);
     if (v7 <= 7)
     {
-      v10 = a4[19];
-      v11 = a4[20];
-      v12 = a4[21];
-      v13 = a4[23];
+      v10 = params[19];
+      v11 = params[20];
+      v12 = params[21];
+      v13 = params[23];
       v14 = +[NSMutableDictionary dictionary];
       v15 = [NSNumber numberWithUnsignedChar:v9];
       [v14 setObject:v15 forKeyedSubscript:@"at"];
@@ -1002,14 +1002,14 @@ LABEL_78:
   sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1138, "(uint8_t *)params");
 }
 
-- (void)handleHciLeSetExtendedAdvertisingDataCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetExtendedAdvertisingDataCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1214, "(uint8_t *)params");
   }
 
-  v5 = a3;
+  cmdCopy = cmd;
   v26 = 0u;
   memset(v27, 0, 27);
   v24 = 0u;
@@ -1025,11 +1025,11 @@ LABEL_78:
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  v7 = *a4;
-  v8 = a4[3];
+  v7 = *params;
+  v8 = params[3];
   if (v8 <= 0xFB)
   {
-    memcpy(&v13, a4 + 4, a4[3]);
+    memcpy(&v13, params + 4, params[3]);
   }
 
   if (v7 <= 7)
@@ -1047,23 +1047,23 @@ LABEL_78:
     v9 = 18;
   }
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v5 status:v9 params:0 length:0, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, *v27, *&v27[8], *&v27[24]];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v9 params:0 length:0, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, *v27, *&v27[8], *&v27[24]];
 }
 
-- (void)handleHciLeSetExtendedAdvertisingEnableCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetExtendedAdvertisingEnableCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1258, "(uint8_t *)params");
   }
 
-  v5 = a3;
+  cmdCopy = cmd;
   v14 = 0;
-  v7 = *a4;
-  v8 = a4[1];
+  v7 = *params;
+  v8 = params[1];
   if ((v8 - 1) <= 7u)
   {
-    memcpy(&v14, a4 + 2, a4[1]);
+    memcpy(&v14, params + 2, params[1]);
   }
 
   if (v8 <= 7)
@@ -1095,18 +1095,18 @@ LABEL_78:
     v9 = 18;
   }
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v5 status:v9 params:0 length:0, v14];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v9 params:0 length:0, v14];
 }
 
-- (void)handleHciLeSetExtendedScanEnableCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeSetExtendedScanEnableCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1335, "(uint8_t *)params");
   }
 
-  v5 = a3;
-  v7 = *a4;
+  cmdCopy = cmd;
+  v7 = *params;
   if (v7 == [(BTVCLinkAgent *)self->_linkAgent isScanningEnabled])
   {
     v8 = 12;
@@ -1117,17 +1117,17 @@ LABEL_78:
     v8 = [(BTVCLinkAgent *)self->_linkAgent leSetExtendedScanEnable:v7 != 0];
   }
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v5 status:v8 params:0 length:0];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v8 params:0 length:0];
 }
 
-- (void)handleHciLeExtendedCreateConnectionCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciLeExtendedCreateConnectionCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v41) = v6;
+    LODWORD(v41) = cmdCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "handleHciCmd: opCode 0x%04X", buf, 8u);
   }
 
@@ -1139,16 +1139,16 @@ LABEL_78:
   v34 = 0;
   v33 = 0;
   v32 = 0;
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1379, "(uint8_t *)params");
   }
 
-  v9 = *a4;
-  v10 = a4[1];
-  v11 = a4[2];
-  sub_1000075EC(&v38, (a4 + 3), 6uLL);
-  v12 = a4[9];
+  v9 = *params;
+  v10 = params[1];
+  v11 = params[2];
+  sub_1000075EC(&v38, (params + 3), 6uLL);
+  v12 = params[9];
   v13 = vdupq_n_s32(v12);
   v14 = vbicq_s8(xmmword_1008A6910, vuzp1q_s16(vceqzq_s32(vandq_s8(v13, xmmword_1008A68F0)), vceqzq_s32(vandq_s8(v13, xmmword_1008A6900))));
   v15 = vaddvq_s16(v14);
@@ -1166,7 +1166,7 @@ LABEL_78:
     if (v15)
     {
       v18 = 0;
-      v19 = a4 + 21;
+      v19 = params + 21;
       do
       {
         *(&v36 + v18) = *(v19 - 7);
@@ -1216,7 +1216,7 @@ LABEL_78:
     *buf = 136315650;
     v41 = "[BTVCHciManager handleHciLeExtendedCreateConnectionCmd:params:length:]";
     v42 = 1024;
-    v43 = v6;
+    v43 = cmdCopy;
     v44 = 2112;
     v45 = v22;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%s: LeExtendedCreateConnectionCmd (opCode 0x%04X), params %@\n", buf, 0x1Cu);
@@ -1225,48 +1225,48 @@ LABEL_78:
   if (v17 <= 3u)
   {
     [(BTVCLinkAgent *)self->_linkAgent leSetExtendedScanEnable:0];
-    v31 = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
-    v21 = [v31 leExtendedCreateConnection:v22];
+    getConnectionManager = [(BTVCLinkAgent *)self->_linkAgent getConnectionManager];
+    v21 = [getConnectionManager leExtendedCreateConnection:v22];
 
     [(BTVCLinkAgent *)self->_linkAgent leSetExtendedScanEnable:1];
   }
 
   if (v21)
   {
-    [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:v21 params:0 length:0];
+    [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:v21 params:0 length:0];
   }
 
   else
   {
-    [(BTVCHciManager *)self sendHciCommandStatusEvent:v6 status:0];
+    [(BTVCHciManager *)self sendHciCommandStatusEvent:cmdCopy status:0];
   }
 }
 
-- (void)handleHciVscWriteBdAddrCmd:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)handleHciVscWriteBdAddrCmd:(unsigned __int16)cmd params:(char *)params length:(unsigned __int16)length
 {
-  v6 = a3;
+  cmdCopy = cmd;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 136315394;
     *&v9[4] = "[BTVCHciManager handleHciVscWriteBdAddrCmd:params:length:]";
     v10 = 1024;
-    v11 = v6;
+    v11 = cmdCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: opCode 0x%04X", v9, 0x12u);
   }
 
   *&v9[4] = 0;
   *v9 = 0;
-  if (!a4)
+  if (!params)
   {
     sub_1000E78B4("/Library/Caches/com.apple.xbs/Sources/MobileBluetooth_base/Server/Platforms/Darwin/VirtualController/BTVCHciManager.m", 1475, "(uint8_t *)params");
   }
 
-  sub_1000075EC(v9, a4, 6uLL);
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:0 params:0 length:0, *v9];
+  sub_1000075EC(v9, params, 6uLL);
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:cmdCopy status:0 params:0 length:0, *v9];
 }
 
-- (void)sendHciInquiryCompleteEvent:(unsigned int)a3
+- (void)sendHciInquiryCompleteEvent:(unsigned int)event
 {
   if ([(BTVCHciManager *)self _isHciEventEnabled:1])
   {
@@ -1274,7 +1274,7 @@ LABEL_78:
   }
 }
 
-- (void)sendHciConnectionCompleteEvent:(id)a3 status:(unsigned __int8)a4 delay:(unsigned int)a5
+- (void)sendHciConnectionCompleteEvent:(id)event status:(unsigned __int8)status delay:(unsigned int)delay
 {
   if ([(BTVCHciManager *)self _isHciEventEnabled:3])
   {
@@ -1282,27 +1282,27 @@ LABEL_78:
   }
 }
 
-- (void)sendHciCommandCompleteEvent:(unsigned __int16)a3 status:(unsigned __int8)a4 params:(id)a5
+- (void)sendHciCommandCompleteEvent:(unsigned __int16)event status:(unsigned __int8)status params:(id)params
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v10 = v8;
-  if (v8)
+  statusCopy = status;
+  eventCopy = event;
+  paramsCopy = params;
+  v10 = paramsCopy;
+  if (paramsCopy)
   {
-    v9 = [v8 bytes];
-    LOBYTE(v8) = [v10 length];
+    bytes = [paramsCopy bytes];
+    LOBYTE(paramsCopy) = [v10 length];
   }
 
   else
   {
-    v9 = 0;
+    bytes = 0;
   }
 
-  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:v6 status:v5 params:v9 length:v8];
+  [(BTVCHciManager *)self _sendHciCommandCompleteEvent:eventCopy status:statusCopy params:bytes length:paramsCopy];
 }
 
-- (void)_sendHciCommandCompleteEvent:(unsigned __int16)a3 status:(unsigned __int8)a4 params:(char *)a5 length:(unsigned __int8)a6
+- (void)_sendHciCommandCompleteEvent:(unsigned __int16)event status:(unsigned __int8)status params:(char *)params length:(unsigned __int8)length
 {
   if ([(BTVCHciManager *)self _isHciEventEnabled:14])
   {
@@ -1310,7 +1310,7 @@ LABEL_78:
   }
 }
 
-- (void)sendHciCommandStatusEvent:(unsigned __int16)a3 status:(unsigned __int8)a4
+- (void)sendHciCommandStatusEvent:(unsigned __int16)event status:(unsigned __int8)status
 {
   if ([(BTVCHciManager *)self _isHciEventEnabled:15])
   {
@@ -1318,54 +1318,54 @@ LABEL_78:
   }
 }
 
-- (void)_sendHciEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5
+- (void)_sendHciEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length
 {
-  v5 = a5;
-  v6 = a3;
+  lengthCopy = length;
+  eventCopy = event;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[BTVCHciManager _sendHciEvent:parameters:length:]";
     v11 = 1024;
-    v12 = v6;
+    v12 = eventCopy;
     v13 = 1024;
-    v14 = v5;
+    v14 = lengthCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: eventCode 0x%02X, total length 0x%02X", &v9, 0x18u);
   }
 
-  if ([(BTVCHciManager *)self _isHciEventEnabled:v6])
+  if ([(BTVCHciManager *)self _isHciEventEnabled:eventCopy])
   {
     operator new();
   }
 }
 
-- (void)_sendLeMetaEvent:(unsigned __int8)a3 parameters:(char *)a4 length:(unsigned __int8)a5
+- (void)_sendLeMetaEvent:(unsigned __int8)event parameters:(char *)parameters length:(unsigned __int8)length
 {
-  v5 = a5;
-  v6 = a3;
+  lengthCopy = length;
+  eventCopy = event;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[BTVCHciManager _sendLeMetaEvent:parameters:length:]";
     v11 = 1024;
-    v12 = v6;
+    v12 = eventCopy;
     v13 = 1024;
-    v14 = v5;
+    v14 = lengthCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: subeventCode 0x%02X, total length 0x%02X", &v9, 0x18u);
   }
 
-  if ([(BTVCHciManager *)self _isHciLeEventEnabled:v6])
+  if ([(BTVCHciManager *)self _isHciLeEventEnabled:eventCopy])
   {
     operator new();
   }
 }
 
-- (void)receivedDatePacket:(unsigned __int16)a3 payload:(char *)a4 lenght:(unsigned __int16)a5
+- (void)receivedDatePacket:(unsigned __int16)packet payload:(char *)payload lenght:(unsigned __int16)lenght
 {
-  v5 = a5;
-  v6 = a3;
+  lenghtCopy = lenght;
+  packetCopy = packet;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_ERROR))
   {
@@ -1378,31 +1378,31 @@ LABEL_78:
     v16 = 136315650;
     v17 = "[BTVCHciManager receivedDatePacket:payload:lenght:]";
     v18 = 1024;
-    v19 = v6;
+    v19 = packetCopy;
     v20 = 1024;
-    v21 = v5;
+    v21 = lenghtCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s connectionHandle: 0x%04X length %d", &v16, 0x18u);
   }
 
   operator new();
 }
 
-- (void)sendLmpEvent:(id)a3
+- (void)sendLmpEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[BTVCHciManager sendLmpEvent:]";
     v8 = 2112;
-    v9 = v3;
+    v9 = eventCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: params %@", &v6, 0x16u);
   }
 
-  v5 = v3;
-  [v3 bytes];
-  [v3 length];
+  v5 = eventCopy;
+  [eventCopy bytes];
+  [eventCopy length];
   operator new();
 }
 

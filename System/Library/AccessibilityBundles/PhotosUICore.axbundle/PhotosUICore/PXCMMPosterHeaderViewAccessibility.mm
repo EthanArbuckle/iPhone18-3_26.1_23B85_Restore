@@ -1,15 +1,15 @@
 @interface PXCMMPosterHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PXCMMPosterHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PXCMMPosterHeaderView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
 }
 
 @end

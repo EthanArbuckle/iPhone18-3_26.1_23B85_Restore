@@ -1,23 +1,23 @@
 @interface PSContext
-- (BOOL)containsResourceStreamsForExecutionSession:(id)a3;
+- (BOOL)containsResourceStreamsForExecutionSession:(id)session;
 - (PSContext)init;
 - (id)allExternalStreams;
 - (id)allResourceKeys;
 - (id)allStreams;
-- (id)initForExecutionSession:(id)a3;
+- (id)initForExecutionSession:(id)session;
 - (id)initForLocalResources;
-- (id)producingExecutionSessionForResourceKey:(id)a3;
-- (id)resourceKeysForCategory:(unint64_t)a3;
-- (id)resourceStreamForKey:(id)a3;
-- (id)resourceStreamsForExecutionSession:(id)a3;
-- (id)streamsForType:(unint64_t)a3;
-- (unint64_t)availabilityForResource:(id)a3;
-- (void)addBuiltInResourceStream:(id)a3;
-- (void)addEncodedResourceStreams:(id)a3 forExecutionSession:(id)a4;
-- (void)addResourceStream:(id)a3 withInitialAvailability:(unint64_t)a4;
+- (id)producingExecutionSessionForResourceKey:(id)key;
+- (id)resourceKeysForCategory:(unint64_t)category;
+- (id)resourceStreamForKey:(id)key;
+- (id)resourceStreamsForExecutionSession:(id)session;
+- (id)streamsForType:(unint64_t)type;
+- (unint64_t)availabilityForResource:(id)resource;
+- (void)addBuiltInResourceStream:(id)stream;
+- (void)addEncodedResourceStreams:(id)streams forExecutionSession:(id)session;
+- (void)addResourceStream:(id)stream withInitialAvailability:(unint64_t)availability;
 - (void)dealloc;
-- (void)enforceLocalStreamStorageMode:(id)a3;
-- (void)updateResourceAvailability:(id)a3;
+- (void)enforceLocalStreamStorageMode:(id)mode;
+- (void)updateResourceAvailability:(id)availability;
 @end
 
 @implementation PSContext
@@ -43,9 +43,9 @@
     executionSession = v3->_executionSession;
     v3->_executionSession = &stru_2870D2A60;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     resourceStreamsByExecutionSession = v3->_resourceStreamsByExecutionSession;
-    v3->_resourceStreamsByExecutionSession = v8;
+    v3->_resourceStreamsByExecutionSession = dictionary;
 
     v10 = [MEMORY[0x277CBEB58] set];
     [(NSMutableDictionary *)v3->_resourceStreamsByExecutionSession setObject:v10 forKeyedSubscript:v3->_executionSession];
@@ -62,9 +62,9 @@ LABEL_4:
   return v4;
 }
 
-- (id)initForExecutionSession:(id)a3
+- (id)initForExecutionSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = PSContext;
   v6 = [(PSContext *)&v17 init];
@@ -77,14 +77,14 @@ LABEL_4:
   v8 = 0;
   if (!pthread_rwlock_init(&v6->_lock, 0))
   {
-    objc_storeStrong(&v7->_executionSession, a3);
+    objc_storeStrong(&v7->_executionSession, session);
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     resourceStream = v7->_resourceStream;
     v7->_resourceStream = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     resourceStreamsByExecutionSession = v7->_resourceStreamsByExecutionSession;
-    v7->_resourceStreamsByExecutionSession = v11;
+    v7->_resourceStreamsByExecutionSession = dictionary;
 
     v13 = [MEMORY[0x277CBEB58] set];
     [(NSMutableDictionary *)v7->_resourceStreamsByExecutionSession setObject:v13 forKeyedSubscript:v7->_executionSession];
@@ -122,63 +122,63 @@ LABEL_4:
   [(PSContext *)&v3 dealloc];
 }
 
-- (id)resourceStreamForKey:(id)a3
+- (id)resourceStreamForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_rwlock_rdlock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_resourceStream objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_resourceStream objectForKeyedSubscript:keyCopy];
 
   pthread_rwlock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)enforceLocalStreamStorageMode:(id)a3
+- (void)enforceLocalStreamStorageMode:(id)mode
 {
-  v5 = a3;
-  if (-[PSContext forceAllResourcesLocal](self, "forceAllResourcesLocal") && [v5 options] == 2)
+  modeCopy = mode;
+  if (-[PSContext forceAllResourcesLocal](self, "forceAllResourcesLocal") && [modeCopy options] == 2)
   {
-    [v5 setOptions:{1, v4}];
+    [modeCopy setOptions:{1, v4}];
   }
 }
 
-- (void)addResourceStream:(id)a3 withInitialAvailability:(unint64_t)a4
+- (void)addResourceStream:(id)stream withInitialAvailability:(unint64_t)availability
 {
-  v6 = a3;
-  [(PSContext *)self enforceLocalStreamStorageMode:v6];
-  v9 = [v6 key];
+  streamCopy = stream;
+  [(PSContext *)self enforceLocalStreamStorageMode:streamCopy];
+  v9 = [streamCopy key];
   pthread_rwlock_wrlock(&self->_lock);
-  [(NSMutableDictionary *)self->_resourceStream setObject:v6 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_resourceStream setObject:streamCopy forKeyedSubscript:v9];
   v7 = [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession objectForKeyedSubscript:self->_executionSession];
-  [v7 addObject:v6];
+  [v7 addObject:streamCopy];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:availability];
   [(NSMutableDictionary *)self->_resourceAvailability setObject:v8 forKeyedSubscript:v9];
 
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (void)addBuiltInResourceStream:(id)a3
+- (void)addBuiltInResourceStream:(id)stream
 {
-  v4 = a3;
-  [(PSContext *)self enforceLocalStreamStorageMode:v4];
-  v5 = [v4 key];
+  streamCopy = stream;
+  [(PSContext *)self enforceLocalStreamStorageMode:streamCopy];
+  v5 = [streamCopy key];
   pthread_rwlock_wrlock(&self->_lock);
-  [(NSMutableDictionary *)self->_resourceStream setObject:v4 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_resourceStream setObject:streamCopy forKeyedSubscript:v5];
 
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (id)producingExecutionSessionForResourceKey:(id)a3
+- (id)producingExecutionSessionForResourceKey:(id)key
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   pthread_rwlock_rdlock(&self->_lock);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_resourceStreamsByExecutionSession;
   v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
@@ -199,7 +199,7 @@ LABEL_4:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [(NSMutableDictionary *)v21->_resourceStreamsByExecutionSession objectForKeyedSubscript:v8];
+        v9 = [(NSMutableDictionary *)selfCopy->_resourceStreamsByExecutionSession objectForKeyedSubscript:v8];
         v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
@@ -215,7 +215,7 @@ LABEL_8:
             }
 
             v14 = [*(*(&v22 + 1) + 8 * v13) key];
-            v15 = [v14 isEqualToString:v4];
+            v15 = [v14 isEqualToString:keyCopy];
 
             if (v15)
             {
@@ -257,7 +257,7 @@ LABEL_14:
   v16 = 0;
 LABEL_19:
 
-  pthread_rwlock_unlock(&v21->_lock);
+  pthread_rwlock_unlock(&selfCopy->_lock);
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
@@ -266,23 +266,23 @@ LABEL_19:
 - (id)allResourceKeys
 {
   pthread_rwlock_rdlock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_resourceStream allKeys];
+  allKeys = [(NSMutableDictionary *)self->_resourceStream allKeys];
   pthread_rwlock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)streamsForType:(unint64_t)a3
+- (id)streamsForType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   pthread_rwlock_rdlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NSMutableDictionary *)self->_resourceStream allValues];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_resourceStream allValues];
+  v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -293,17 +293,17 @@ LABEL_19:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 type] == a3)
+        if ([v11 type] == type)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -312,10 +312,10 @@ LABEL_19:
   pthread_rwlock_unlock(&self->_lock);
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)resourceKeysForCategory:(unint64_t)a3
+- (id)resourceKeysForCategory:(unint64_t)category
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB58] set];
@@ -324,8 +324,8 @@ LABEL_19:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_resourceStream allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->_resourceStream allValues];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -336,18 +336,18 @@ LABEL_19:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 category] == a3)
+        if ([v11 category] == category)
         {
           v12 = [v11 key];
           [v5 addObject:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -361,33 +361,33 @@ LABEL_19:
 
 - (id)allStreams
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   pthread_rwlock_rdlock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_resourceStream allValues];
-  [v3 addObjectsFromArray:v4];
+  allValues = [(NSMutableDictionary *)self->_resourceStream allValues];
+  [array addObjectsFromArray:allValues];
 
   pthread_rwlock_unlock(&self->_lock);
 
-  return v3;
+  return array;
 }
 
-- (BOOL)containsResourceStreamsForExecutionSession:(id)a3
+- (BOOL)containsResourceStreamsForExecutionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   pthread_rwlock_rdlock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession objectForKeyedSubscript:sessionCopy];
 
   pthread_rwlock_unlock(&self->_lock);
   return v5 != 0;
 }
 
-- (void)addEncodedResourceStreams:(id)a3 forExecutionSession:(id)a4
+- (void)addEncodedResourceStreams:(id)streams forExecutionSession:(id)session
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  streamsCopy = streams;
+  sessionCopy = session;
   v29 = 0;
-  v8 = [MEMORY[0x277CCAAC8] unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:v6 error:&v29];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:streamsCopy error:&v29];
   v9 = v29;
   v10 = [MEMORY[0x277CBEB58] set];
   if (PSLogInstance_onceToken != -1)
@@ -399,18 +399,18 @@ LABEL_19:
   if (os_log_type_enabled(PSLogInstance_log, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v6 length];
+    v13 = [streamsCopy length];
     *buf = 134218498;
     v32 = v13;
     v33 = 2112;
-    v34 = v7;
+    v34 = sessionCopy;
     v35 = 2112;
     v36 = v9;
     _os_log_impl(&dword_25EC85000, v12, OS_LOG_TYPE_INFO, "Created streams from encoded data of size %lu for session %@ error: %@", buf, 0x20u);
   }
 
   v23 = v9;
-  v24 = v6;
+  v24 = streamsCopy;
   pthread_rwlock_wrlock(&self->_lock);
   v25 = 0u;
   v26 = 0u;
@@ -446,17 +446,17 @@ LABEL_19:
     while (v16);
   }
 
-  [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession setObject:v10 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession setObject:v10 forKeyedSubscript:sessionCopy];
   pthread_rwlock_unlock(&self->_lock);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resourceStreamsForExecutionSession:(id)a3
+- (id)resourceStreamsForExecutionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   pthread_rwlock_rdlock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_resourceStreamsByExecutionSession objectForKeyedSubscript:sessionCopy];
 
   v6 = [v5 copy];
   pthread_rwlock_unlock(&self->_lock);
@@ -516,28 +516,28 @@ LABEL_19:
   return v3;
 }
 
-- (unint64_t)availabilityForResource:(id)a3
+- (unint64_t)availabilityForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   pthread_rwlock_rdlock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_resourceAvailability objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_resourceAvailability objectForKeyedSubscript:resourceCopy];
 
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
   pthread_rwlock_unlock(&self->_lock);
-  return v6;
+  return unsignedIntValue;
 }
 
-- (void)updateResourceAvailability:(id)a3
+- (void)updateResourceAvailability:(id)availability
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availabilityCopy = availability;
   pthread_rwlock_rdlock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [availabilityCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -548,15 +548,15 @@ LABEL_19:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [availabilityCopy objectForKeyedSubscript:v10];
         [(NSMutableDictionary *)self->_resourceAvailability setObject:v11 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

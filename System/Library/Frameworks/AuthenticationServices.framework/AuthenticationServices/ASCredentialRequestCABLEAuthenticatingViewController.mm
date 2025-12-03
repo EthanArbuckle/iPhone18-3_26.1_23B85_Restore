@@ -1,43 +1,43 @@
 @interface ASCredentialRequestCABLEAuthenticatingViewController
-- (ASCredentialRequestCABLEAuthenticatingViewController)initWithPresentationContext:(id)a3;
-- (ASCredentialRequestCABLEAuthenticatingViewController)initWithServiceName:(id)a3 serviceType:(unint64_t)a4 isRegistrationRequest:(BOOL)a5;
+- (ASCredentialRequestCABLEAuthenticatingViewController)initWithPresentationContext:(id)context;
+- (ASCredentialRequestCABLEAuthenticatingViewController)initWithServiceName:(id)name serviceType:(unint64_t)type isRegistrationRequest:(BOOL)request;
 @end
 
 @implementation ASCredentialRequestCABLEAuthenticatingViewController
 
-- (ASCredentialRequestCABLEAuthenticatingViewController)initWithPresentationContext:(id)a3
+- (ASCredentialRequestCABLEAuthenticatingViewController)initWithPresentationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 serviceName];
-  v6 = [v4 serviceType];
-  v7 = [v4 isRegistrationRequest];
+  contextCopy = context;
+  serviceName = [contextCopy serviceName];
+  serviceType = [contextCopy serviceType];
+  isRegistrationRequest = [contextCopy isRegistrationRequest];
 
-  v8 = [(ASCredentialRequestCABLEAuthenticatingViewController *)self initWithServiceName:v5 serviceType:v6 isRegistrationRequest:v7];
+  v8 = [(ASCredentialRequestCABLEAuthenticatingViewController *)self initWithServiceName:serviceName serviceType:serviceType isRegistrationRequest:isRegistrationRequest];
   return v8;
 }
 
-- (ASCredentialRequestCABLEAuthenticatingViewController)initWithServiceName:(id)a3 serviceType:(unint64_t)a4 isRegistrationRequest:(BOOL)a5
+- (ASCredentialRequestCABLEAuthenticatingViewController)initWithServiceName:(id)name serviceType:(unint64_t)type isRegistrationRequest:(BOOL)request
 {
-  v7 = a3;
-  if (a4 == 1)
+  nameCopy = name;
+  if (type == 1)
   {
     v8 = MEMORY[0x1E696AEC0];
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!type)
   {
     v8 = MEMORY[0x1E696AEC0];
 LABEL_6:
     v10 = _WBSLocalizedString();
-    v9 = [v8 localizedStringWithFormat:v10, v7];
+    nameCopy = [v8 localizedStringWithFormat:v10, nameCopy];
 
     goto LABEL_7;
   }
 
-  v9 = 0;
+  nameCopy = 0;
 LABEL_7:
-  v11 = [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:v9 subtitle:0];
+  v11 = [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:nameCopy subtitle:0];
   v14.receiver = self;
   v14.super_class = ASCredentialRequestCABLEAuthenticatingViewController;
   v12 = [(ASCredentialRequestBasicPaneViewController *)&v14 initWithConfiguration:v11];

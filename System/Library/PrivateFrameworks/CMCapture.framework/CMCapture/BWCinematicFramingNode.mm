@@ -2,43 +2,43 @@
 + (void)initialize;
 - ($1981ABD3383123DE67D3222CA4FC2B97)cinematicFramingControls;
 - (BOOL)cinematicFramingControlsSuspended;
-- (BWCinematicFramingNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 deviceOrientationCorrectionEnabled:(BOOL)a7 stillImageCaptureEnabled:(BOOL)a8 objectMetadataIdentifiers:(id)a9 maxLossyCompressionLevel:(int)a10 portTypes:(id)a11 cinematicFramingControls:(id *)a12 cameraHasDistortionCoefficients:(BOOL)a13 cameraHasCalibrationValidMaxRadius:(BOOL)a14 centerStageMetadataDeliveryEnabled:(BOOL)a15 pipelineType:(unint64_t)a16 downStreamRequires10BitPixelFormat:(BOOL)a17;
+- (BWCinematicFramingNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor deviceOrientationCorrectionEnabled:(BOOL)enabled stillImageCaptureEnabled:(BOOL)captureEnabled objectMetadataIdentifiers:(id)identifiers maxLossyCompressionLevel:(int)self0 portTypes:(id)self1 cinematicFramingControls:(id *)self2 cameraHasDistortionCoefficients:(BOOL)self3 cameraHasCalibrationValidMaxRadius:(BOOL)self4 centerStageMetadataDeliveryEnabled:(BOOL)self5 pipelineType:(unint64_t)self6 downStreamRequires10BitPixelFormat:(BOOL)self7;
 - (CGRect)regionOfInterestForCameraControls;
-- (double)_getDeviceToCameraSpaceTransform:(uint64_t)a1;
+- (double)_getDeviceToCameraSpaceTransform:(uint64_t)transform;
 - (double)manualFramingVideoZoomFactor;
-- (id)copyCameraStatesForPTS:(id *)a3;
+- (id)copyCameraStatesForPTS:(id *)s;
 - (uint64_t)_initVirtualCameraProcessor;
-- (uint64_t)_isSampleBufferFromPrimaryStream:(void *)a3 metadataDict:;
+- (uint64_t)_isSampleBufferFromPrimaryStream:(void *)stream metadataDict:;
 - (uint64_t)_reportCinematicFramingSessionCoreAnalyticsData;
 - (uint64_t)_updateOutputRequirements;
 - (uint64_t)_updateVCProcessorWithCinematicFramingControls;
-- (void)_addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:(uint64_t)a1;
+- (void)_addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:(uint64_t)identifiers;
 - (void)_addVideoCaptureInputsAndOutput;
-- (void)_saveCameraStatesForStillImageCaptureRequestsWithInputCamera:(void *)a3 outputCamera:(void *)a4 outputROI:(double)a5 pts:(double)a6;
+- (void)_saveCameraStatesForStillImageCaptureRequestsWithInputCamera:(void *)camera outputCamera:(void *)outputCamera outputROI:(double)i pts:(double)pts;
 - (void)_supportedOutputPixelFormats;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didChangeCenterStageFramingMode:(int)a3;
-- (void)didChangeCenterStageMetadataDeliveryEnabled:(BOOL)a3;
-- (void)didChangeCenterStageRectOfInterest:(CGRect)a3;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)panWithTranslation:(CGPoint)a3;
+- (void)didChangeCenterStageFramingMode:(int)mode;
+- (void)didChangeCenterStageMetadataDeliveryEnabled:(BOOL)enabled;
+- (void)didChangeCenterStageRectOfInterest:(CGRect)interest;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)panWithTranslation:(CGPoint)translation;
 - (void)performOneShotFraming;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 - (void)resetFraming;
-- (void)restrictCenterStageFieldOfViewToWide:(BOOL)a3;
-- (void)setCinematicFramingControls:(id *)a3;
-- (void)setCinematicFramingControlsSuspended:(BOOL)a3;
-- (void)setManualFramingVideoZoomFactor:(double)a3;
-- (void)startPanningAtPoint:(CGPoint)a3;
+- (void)restrictCenterStageFieldOfViewToWide:(BOOL)wide;
+- (void)setCinematicFramingControls:(id *)controls;
+- (void)setCinematicFramingControlsSuspended:(BOOL)suspended;
+- (void)setManualFramingVideoZoomFactor:(double)factor;
+- (void)startPanningAtPoint:(CGPoint)point;
 @end
 
 @implementation BWCinematicFramingNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -47,33 +47,33 @@
   }
 }
 
-- (BWCinematicFramingNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 deviceOrientationCorrectionEnabled:(BOOL)a7 stillImageCaptureEnabled:(BOOL)a8 objectMetadataIdentifiers:(id)a9 maxLossyCompressionLevel:(int)a10 portTypes:(id)a11 cinematicFramingControls:(id *)a12 cameraHasDistortionCoefficients:(BOOL)a13 cameraHasCalibrationValidMaxRadius:(BOOL)a14 centerStageMetadataDeliveryEnabled:(BOOL)a15 pipelineType:(unint64_t)a16 downStreamRequires10BitPixelFormat:(BOOL)a17
+- (BWCinematicFramingNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor deviceOrientationCorrectionEnabled:(BOOL)enabled stillImageCaptureEnabled:(BOOL)captureEnabled objectMetadataIdentifiers:(id)identifiers maxLossyCompressionLevel:(int)self0 portTypes:(id)self1 cinematicFramingControls:(id *)self2 cameraHasDistortionCoefficients:(BOOL)self3 cameraHasCalibrationValidMaxRadius:(BOOL)self4 centerStageMetadataDeliveryEnabled:(BOOL)self5 pipelineType:(unint64_t)self6 downStreamRequires10BitPixelFormat:(BOOL)self7
 {
-  v17 = a8;
+  captureEnabledCopy = captureEnabled;
   v31.receiver = self;
   v31.super_class = BWCinematicFramingNode;
   v23 = [(BWNode *)&v31 init];
   v24 = v23;
   if (v23)
   {
-    v23->_outputDimensions = a3;
-    v23->_cameraInfoByPortType = a4;
-    v25 = a11;
-    *(v24 + 480) = v25;
-    [v24 setSupportsConcurrentLiveInputCallbacks:{objc_msgSend(v25, "count") > 1}];
+    v23->_outputDimensions = dimensions;
+    v23->_cameraInfoByPortType = type;
+    typesCopy = types;
+    *(v24 + 480) = typesCopy;
+    [v24 setSupportsConcurrentLiveInputCallbacks:{objc_msgSend(typesCopy, "count") > 1}];
     *(v24 + 168) = 0;
-    if ((a5 - 3) >= 0xFFFFFFFE && (*(v24 + 172) = a5, (a6 - 3) >= 0xFFFFFFFE))
+    if ((factor - 3) >= 0xFFFFFFFE && (*(v24 + 172) = factor, (binningFactor - 3) >= 0xFFFFFFFE))
     {
-      *(v24 + 176) = a6;
-      *(v24 + 476) = a10;
+      *(v24 + 176) = binningFactor;
+      *(v24 + 476) = level;
       *(v24 + 440) = objc_alloc_init(BWDeviceOrientationMonitor);
-      *(v24 + 473) = a7;
-      *(v24 + 553) = a17;
-      *(v24 + 128) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a11, "count")}];
-      *(v24 + 544) = a16;
+      *(v24 + 473) = enabled;
+      *(v24 + 553) = format;
+      *(v24 + 128) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(types, "count")}];
+      *(v24 + 544) = pipelineType;
       [(BWCinematicFramingNode *)v24 _addVideoCaptureInputsAndOutput];
-      *(v24 + 472) = v17;
-      if (v17)
+      *(v24 + 472) = captureEnabledCopy;
+      if (captureEnabledCopy)
       {
         *(v24 + 348) = 0;
         *(v24 + 264) = 0;
@@ -89,24 +89,24 @@
         *(v24 + 344) = 0;
       }
 
-      if (a9)
+      if (identifiers)
       {
-        *(v24 + 144) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a11, "count")}];
-        [(BWCinematicFramingNode *)v24 _addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:a9];
+        *(v24 + 144) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(types, "count")}];
+        [(BWCinematicFramingNode *)v24 _addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:identifiers];
       }
 
       *(v24 + 468) = 5;
-      v28 = *&a12->var3.origin.y;
-      v27 = *&a12->var3.size.height;
-      v29 = *&a12->var9;
-      *(v24 + 408) = *&a12->var6;
+      v28 = *&controls->var3.origin.y;
+      v27 = *&controls->var3.size.height;
+      v29 = *&controls->var9;
+      *(v24 + 408) = *&controls->var6;
       *(v24 + 424) = v29;
       *(v24 + 376) = v28;
       *(v24 + 392) = v27;
-      *(v24 + 360) = *&a12->var0;
-      *(v24 + 498) = a13;
-      *(v24 + 499) = a14;
-      *(v24 + 552) = a15;
+      *(v24 + 360) = *&controls->var0;
+      *(v24 + 498) = coefficients;
+      *(v24 + 499) = radius;
+      *(v24 + 552) = deliveryEnabled;
       [(BWCinematicFramingNode *)v24 _updateOutputRequirements];
       *(v24 + 501) = 0;
       v30 = *(MEMORY[0x1E695F050] + 16);
@@ -153,7 +153,7 @@
   [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor start];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   p_videoOutputFormatIsLive = &self->_videoOutputFormatIsLive;
@@ -178,7 +178,7 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if ([-[NSMutableDictionary allValues](self->_videoCaptureInputsByPortType "allValues")])
@@ -217,39 +217,39 @@ LABEL_8:
   }
 }
 
-- (void)didChangeCenterStageRectOfInterest:(CGRect)a3
+- (void)didChangeCenterStageRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [(VCProcessor *)self->_vcProcessor setOutputROI:x, y, width, height];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didChangeCenterStageFramingMode:(int)a3
+- (void)didChangeCenterStageFramingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [-[VCProcessor framingSession](self->_vcProcessor "framingSession")];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didChangeCenterStageMetadataDeliveryEnabled:(BOOL)a3
+- (void)didChangeCenterStageMetadataDeliveryEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_centerStageMetadataDeliveryEnabled = a3;
+  self->_centerStageMetadataDeliveryEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)restrictCenterStageFieldOfViewToWide:(BOOL)a3
+- (void)restrictCenterStageFieldOfViewToWide:(BOOL)wide
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_cinematicFramingControls.fieldOfViewRestrictedToWide = a3;
+  self->_cinematicFramingControls.fieldOfViewRestrictedToWide = wide;
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
@@ -269,14 +269,14 @@ LABEL_8:
   return result;
 }
 
-- (void)setCinematicFramingControls:(id *)a3
+- (void)setCinematicFramingControls:(id *)controls
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  *&self->_cinematicFramingControls.autoFramingEnabled = *&a3->var0;
-  v5 = *&a3->var9;
-  v7 = *&a3->var3.origin.y;
-  v6 = *&a3->var3.size.height;
-  *&self->_cinematicFramingControls.panningAngleX = *&a3->var6;
+  *&self->_cinematicFramingControls.autoFramingEnabled = *&controls->var0;
+  v5 = *&controls->var9;
+  v7 = *&controls->var3.origin.y;
+  v6 = *&controls->var3.size.height;
+  *&self->_cinematicFramingControls.panningAngleX = *&controls->var6;
   *&self->_cinematicFramingControls.defaultVirtualCameraRotationAngleX = v5;
   *&self->_cinematicFramingControls.outputFramingRectOfInterest.origin.y = v7;
   *&self->_cinematicFramingControls.outputFramingRectOfInterest.size.height = v6;
@@ -293,28 +293,28 @@ LABEL_8:
   return cinematicFramingControlsSuspended;
 }
 
-- (void)setCinematicFramingControlsSuspended:(BOOL)a3
+- (void)setCinematicFramingControlsSuspended:(BOOL)suspended
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_cinematicFramingControlsSuspended = a3;
+  self->_cinematicFramingControlsSuspended = suspended;
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3
+- (void)startPanningAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [(VCProcessor *)self->_vcProcessor startRotatingFromPoint:x, y];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)panWithTranslation:(CGPoint)a3
+- (void)panWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [(VCProcessor *)self->_vcProcessor continueRotatingToPoint:x, y];
 
@@ -346,7 +346,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)setManualFramingVideoZoomFactor:(double)a3
+- (void)setManualFramingVideoZoomFactor:(double)factor
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (self->_cinematicFramingControlsSuspended)
@@ -361,7 +361,7 @@ LABEL_8:
 
   else
   {
-    *&v5 = a3;
+    *&v5 = factor;
     [(VCProcessor *)self->_vcProcessor setVideoZoomFactor:v5];
   }
 
@@ -383,68 +383,68 @@ LABEL_8:
 
 - (void)_addVideoCaptureInputsAndOutput
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
-    if ([*(a1 + 480) count])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([*(self + 480) count])
     {
       v3 = 0;
       do
       {
-        v4 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:a1 index:v3];
+        v4 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:self index:v3];
         v5 = objc_alloc_init(BWVideoFormatRequirements);
-        [(BWVideoFormatRequirements *)v5 setSupportedPixelFormats:FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248460, *(a1 + 476))];
+        [(BWVideoFormatRequirements *)v5 setSupportedPixelFormats:FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248460, *(self + 476))];
         [(BWNodeInput *)v4 setFormatRequirements:v5];
         [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v4 primaryMediaConfiguration] setPassthroughMode:0];
         [(BWNodeInput *)v4 setDelayedBufferCount:[(BWNodeInput *)v4 delayedBufferCount]+ 1];
-        [a1 addInput:v4];
-        [*(a1 + 128) setObject:v4 forKeyedSubscript:{objc_msgSend(*(a1 + 480), "objectAtIndexedSubscript:", v3)}];
+        [self addInput:v4];
+        [*(self + 128) setObject:v4 forKeyedSubscript:{objc_msgSend(*(self + 480), "objectAtIndexedSubscript:", v3)}];
 
-        [v2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v3++)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v3++)}];
       }
 
-      while (v3 < [*(a1 + 480) count]);
+      while (v3 < [*(self + 480) count]);
     }
 
-    v7 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:a1];
+    v7 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:self];
     v6 = objc_alloc_init(BWVideoFormatRequirements);
-    [(BWVideoFormatRequirements *)v6 setSupportedPixelFormats:[(BWCinematicFramingNode *)a1 _supportedOutputPixelFormats]];
+    [(BWVideoFormatRequirements *)v6 setSupportedPixelFormats:[(BWCinematicFramingNode *)self _supportedOutputPixelFormats]];
     [(BWNodeOutput *)v7 setFormatRequirements:v6];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v7 primaryMediaConfiguration] setPassthroughMode:0];
-    *(a1 + 136) = v7;
-    [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v7 primaryMediaConfiguration] setIndexesOfInputsWhichDrivesThisOutput:v2];
-    if (*(a1 + 544) == 1)
+    *(self + 136) = v7;
+    [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v7 primaryMediaConfiguration] setIndexesOfInputsWhichDrivesThisOutput:array];
+    if (*(self + 544) == 1)
     {
       [(BWNodeOutput *)v7 setOwningNodeRetainedBufferCount:3];
     }
 
-    [a1 addOutput:v7];
+    [self addOutput:v7];
   }
 }
 
-- (void)_addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:(uint64_t)a1
+- (void)_addMetadaInputsAndOutputsWithObjectMetadataIdentifiers:(uint64_t)identifiers
 {
-  if (a1)
+  if (identifiers)
   {
-    if ([*(a1 + 480) count])
+    if ([*(identifiers + 480) count])
     {
       v4 = 0;
       do
       {
-        v5 = -[BWNodeInput initWithMediaType:node:index:]([BWNodeInput alloc], "initWithMediaType:node:index:", 1835365473, a1, [*(a1 + 128) count] + v4);
-        [a1 addInput:v5];
-        [*(a1 + 144) setObject:v5 forKeyedSubscript:{objc_msgSend(*(a1 + 480), "objectAtIndexedSubscript:", v4)}];
+        v5 = -[BWNodeInput initWithMediaType:node:index:]([BWNodeInput alloc], "initWithMediaType:node:index:", 1835365473, identifiers, [*(identifiers + 128) count] + v4);
+        [identifiers addInput:v5];
+        [*(identifiers + 144) setObject:v5 forKeyedSubscript:{objc_msgSend(*(identifiers + 480), "objectAtIndexedSubscript:", v4)}];
 
         ++v4;
       }
 
-      while (v4 < [*(a1 + 480) count]);
+      while (v4 < [*(identifiers + 480) count]);
     }
 
-    v6 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:a1];
+    v6 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:identifiers];
     [(BWNodeOutput *)v6 setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:a2]];
-    [a1 addOutput:v6];
-    *(a1 + 152) = v6;
+    [identifiers addOutput:v6];
+    *(identifiers + 152) = v6;
   }
 }
 
@@ -461,12 +461,12 @@ LABEL_8:
       v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v6 count:1];
     }
 
-    v4 = [(BWCinematicFramingNode *)v1 _supportedOutputPixelFormats];
-    v5 = [*(v1 + 136) formatRequirements];
-    [v5 setWidth:*(v1 + 192)];
-    [v5 setHeight:*(v1 + 196)];
-    [v5 setSupportedColorSpaceProperties:v3];
-    return [v5 setSupportedPixelFormats:v4];
+    _supportedOutputPixelFormats = [(BWCinematicFramingNode *)v1 _supportedOutputPixelFormats];
+    formatRequirements = [*(v1 + 136) formatRequirements];
+    [formatRequirements setWidth:*(v1 + 192)];
+    [formatRequirements setHeight:*(v1 + 196)];
+    [formatRequirements setSupportedColorSpaceProperties:v3];
+    return [formatRequirements setSupportedPixelFormats:_supportedOutputPixelFormats];
   }
 
   return result;
@@ -561,9 +561,9 @@ LABEL_8:
       [OUTLINED_FUNCTION_1_45() setOutputROI:?];
       OUTLINED_FUNCTION_3_34();
       v3 = *(v2 + 40);
-      v4 = [OUTLINED_FUNCTION_1_45() framingSession];
+      framingSession = [OUTLINED_FUNCTION_1_45() framingSession];
 
-      return [v4 setFramingStyle:v3];
+      return [framingSession setFramingStyle:v3];
     }
 
     else
@@ -586,7 +586,7 @@ LABEL_8:
   return result;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
@@ -733,20 +733,20 @@ LABEL_8:
               [*(v9 + 352) setInputMetadata:v21];
               v31 = v98;
               [*(v9 + 352) setOutputPixelBuffer:v98];
-              v51 = [*(v9 + 352) process];
-              if (!v51)
+              process = [*(v9 + 352) process];
+              if (!process)
               {
-                v51 = [*(v9 + 352) finishProcessing];
-                if (!v51)
+                process = [*(v9 + 352) finishProcessing];
+                if (!process)
                 {
                   if (*(v9 + 544) == 1)
                   {
                     if (*(v9 + 501) == 1 && *(v9 + 536))
                     {
                       v52 = MEMORY[0x1E6994588];
-                      v53 = [*(v9 + 352) outputCamera];
+                      outputCamera = [*(v9 + 352) outputCamera];
                       [*(v9 + 352) inputCamera];
-                      [v52 warpCGRect:v53 fromCamera:OUTLINED_FUNCTION_8_22() toCamera:?];
+                      [v52 warpCGRect:outputCamera fromCamera:OUTLINED_FUNCTION_8_22() toCamera:?];
                       v55 = v54;
                       v57 = v56;
                       v59 = v58;
@@ -844,13 +844,13 @@ LABEL_47:
 
                     if (*(v9 + 472) == 1)
                     {
-                      v89 = [*(v9 + 352) inputCamera];
-                      v90 = [*(v9 + 352) outputCamera];
+                      inputCamera = [*(v9 + 352) inputCamera];
+                      outputCamera2 = [*(v9 + 352) outputCamera];
                       [*(v9 + 352) outputROI];
                       *v102 = v107;
-                      v91 = v90;
+                      v91 = outputCamera2;
                       v18 = &OBJC_IVAR___BWStreamingFilterNode__maxLossyCompressionLevel;
-                      [(BWCinematicFramingNode *)v9 _saveCameraStatesForStillImageCaptureRequestsWithInputCamera:v89 outputCamera:v91 outputROI:v102 pts:v92, v93, v94, v95];
+                      [(BWCinematicFramingNode *)v9 _saveCameraStatesForStillImageCaptureRequestsWithInputCamera:inputCamera outputCamera:v91 outputROI:v102 pts:v92, v93, v94, v95];
                     }
 
 LABEL_56:
@@ -898,7 +898,7 @@ LABEL_46:
                 }
               }
 
-              v12 = v51;
+              v12 = process;
               OUTLINED_FUNCTION_16_0();
               FigDebugAssert3();
               v6 = v100;
@@ -967,11 +967,11 @@ LABEL_77:
   os_unfair_lock_unlock((v9 + 168));
 }
 
-- (uint64_t)_isSampleBufferFromPrimaryStream:(void *)a3 metadataDict:
+- (uint64_t)_isSampleBufferFromPrimaryStream:(void *)stream metadataDict:
 {
   if (result)
   {
-    if ([*(result + 128) count] >= 2 && (v4 = objc_msgSend(a3, "objectForKeyedSubscript:", *off_1E798B710)) != 0)
+    if ([*(result + 128) count] >= 2 && (v4 = objc_msgSend(stream, "objectForKeyedSubscript:", *off_1E798B710)) != 0)
     {
 
       return [v4 BOOLValue];
@@ -986,9 +986,9 @@ LABEL_77:
   return result;
 }
 
-- (double)_getDeviceToCameraSpaceTransform:(uint64_t)a1
+- (double)_getDeviceToCameraSpaceTransform:(uint64_t)transform
 {
-  if (a1)
+  if (transform)
   {
     v3 = *off_1E798B540;
     if ([objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0E0}])
@@ -1028,12 +1028,12 @@ LABEL_77:
   return *&v8;
 }
 
-- (void)_saveCameraStatesForStillImageCaptureRequestsWithInputCamera:(void *)a3 outputCamera:(void *)a4 outputROI:(double)a5 pts:(double)a6
+- (void)_saveCameraStatesForStillImageCaptureRequestsWithInputCamera:(void *)camera outputCamera:(void *)outputCamera outputROI:(double)i pts:(double)pts
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 87);
-    v16 = &a1[18 * a1[86]._os_unfair_lock_opaque + 50];
+    os_unfair_lock_lock(self + 87);
+    v16 = &self[18 * self[86]._os_unfair_lock_opaque + 50];
     v17 = *(v16 + 8);
     if (*v16)
     {
@@ -1044,28 +1044,28 @@ LABEL_77:
     }
 
     v18 = [a2 copy];
-    v19 = [a3 copy];
-    v20 = &a1[18 * a1[86]._os_unfair_lock_opaque + 50];
+    v19 = [camera copy];
+    v20 = &self[18 * self[86]._os_unfair_lock_opaque + 50];
     *v20 = v18;
     *(v20 + 8) = v19;
     *(v20 + 32) = v23;
     *(v20 + 16) = v22;
-    *(v20 + 40) = a5;
-    *(v20 + 48) = a6;
-    os_unfair_lock_opaque = a1[86]._os_unfair_lock_opaque;
+    *(v20 + 40) = i;
+    *(v20 + 48) = pts;
+    os_unfair_lock_opaque = self[86]._os_unfair_lock_opaque;
     *(v20 + 56) = a7;
     *(v20 + 64) = a8;
-    a1[86]._os_unfair_lock_opaque = (os_unfair_lock_opaque & 1) == 0;
-    os_unfair_lock_unlock(a1 + 87);
+    self[86]._os_unfair_lock_opaque = (os_unfair_lock_opaque & 1) == 0;
+    os_unfair_lock_unlock(self + 87);
   }
 }
 
-- (id)copyCameraStatesForPTS:(id *)a3
+- (id)copyCameraStatesForPTS:(id *)s
 {
   os_unfair_lock_lock(&self->_stillCaptureQueueLock);
   v5 = 0;
   stillCaptureQueue = self->_stillCaptureQueue;
-  var0 = a3->var0;
+  var0 = s->var0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   v9 = 1;
   v10 = 72;
@@ -1104,18 +1104,18 @@ LABEL_77:
 
 - (void)_supportedOutputPixelFormats
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 553))
+  if (*(self + 553))
   {
     return &unk_1F2248478;
   }
 
-  v2 = [MEMORY[0x1E695DF70] arrayWithArray:{FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248460, *(a1 + 476))}];
-  v3 = [objc_msgSend(objc_msgSend(objc_msgSend(*(a1 + 128) "allValues")];
+  v2 = [MEMORY[0x1E695DF70] arrayWithArray:{FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248460, *(self + 476))}];
+  v3 = [objc_msgSend(objc_msgSend(objc_msgSend(*(self + 128) "allValues")];
   if (v3)
   {
     IsFullRange = FigCapturePixelFormatIsFullRange(v3);

@@ -1,28 +1,28 @@
 @interface FidesSelfHelper
-- (FidesSelfHelper)initWithExperimentId:(id)a3;
-- (id)_audioFileResultsFromResultDict:(id)a3 privateAudioFileResultsOut:(id *)a4;
-- (id)_choiceInfosFromChoiceInfoDicts:(id)a3 privateTokens:(id)a4;
-- (id)_decodingMetricsFromMetricsDict:(id)a3;
-- (id)_decodingResultsWithAudioDict:(id)a3 privateTokensOut:(id *)a4;
-- (id)_lmMetricsFromEvalDict:(id)a3 perplexityName:(id)a4 timesDict:(id)a5;
-- (id)_plmMetricsFromPlmDict:(id)a3;
-- (id)_resultInfosFromResultInfoDict:(id)a3 privateTokens:(id)a4;
-- (id)_tokensFromTokenDict:(id)a3 privateTokens:(id)a4;
-- (id)_tokensFromTokensArray:(id)a3 privateTokens:(id)a4;
-- (id)_transcriptMetadataFromPopDict:(id)a3;
-- (id)_utteranceInfosFromUtteranceInfoDict:(id)a3 privateTokens:(id)a4;
-- (void)_wrapAndEmitTopLevelEvent:(id)a3;
-- (void)logDictationPersonalizationExperimentEndedAndTier1WithResultsDict:(id)a3;
+- (FidesSelfHelper)initWithExperimentId:(id)id;
+- (id)_audioFileResultsFromResultDict:(id)dict privateAudioFileResultsOut:(id *)out;
+- (id)_choiceInfosFromChoiceInfoDicts:(id)dicts privateTokens:(id)tokens;
+- (id)_decodingMetricsFromMetricsDict:(id)dict;
+- (id)_decodingResultsWithAudioDict:(id)dict privateTokensOut:(id *)out;
+- (id)_lmMetricsFromEvalDict:(id)dict perplexityName:(id)name timesDict:(id)timesDict;
+- (id)_plmMetricsFromPlmDict:(id)dict;
+- (id)_resultInfosFromResultInfoDict:(id)dict privateTokens:(id)tokens;
+- (id)_tokensFromTokenDict:(id)dict privateTokens:(id)tokens;
+- (id)_tokensFromTokensArray:(id)array privateTokens:(id)tokens;
+- (id)_transcriptMetadataFromPopDict:(id)dict;
+- (id)_utteranceInfosFromUtteranceInfoDict:(id)dict privateTokens:(id)tokens;
+- (void)_wrapAndEmitTopLevelEvent:(id)event;
+- (void)logDictationPersonalizationExperimentEndedAndTier1WithResultsDict:(id)dict;
 - (void)logDictationPersonalizationExperimentStartedOrChanged;
-- (void)logUserEditExperimentEndedAndTier1WithResultsDict:(id)a3;
+- (void)logUserEditExperimentEndedAndTier1WithResultsDict:(id)dict;
 - (void)logUserEditExperimentStartedOrChanged;
 @end
 
 @implementation FidesSelfHelper
 
-- (void)_wrapAndEmitTopLevelEvent:(id)a3
+- (void)_wrapAndEmitTopLevelEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(DODMLSchemaDODMLClientEventMetadata);
   v6 = [[SISchemaUUID alloc] initWithNSUUID:self->_dodmlId];
   [v5 setDodMlId:v6];
@@ -32,7 +32,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setPersonalizationExperimentContext:v4];
+    [v7 setPersonalizationExperimentContext:eventCopy];
 LABEL_9:
     v8 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
@@ -56,21 +56,21 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setUserEditExperimentContext:v4];
+    [v7 setUserEditExperimentContext:eventCopy];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setUserEditExperimentEndedTier1:v4];
+    [v7 setUserEditExperimentEndedTier1:eventCopy];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setAudioFileResultTier1:v4];
+    [v7 setAudioFileResultTier1:eventCopy];
     goto LABEL_9;
   }
 
@@ -85,12 +85,12 @@ LABEL_9:
 LABEL_12:
 }
 
-- (id)_lmMetricsFromEvalDict:(id)a3 perplexityName:(id)a4 timesDict:(id)a5
+- (id)_lmMetricsFromEvalDict:(id)dict perplexityName:(id)name timesDict:(id)timesDict
 {
-  v7 = a4;
-  v36 = a5;
-  v37 = v7;
-  v8 = [a3 objectForKeyedSubscript:v7];
+  nameCopy = name;
+  timesDictCopy = timesDict;
+  v37 = nameCopy;
+  v8 = [dict objectForKeyedSubscript:nameCopy];
   if (v8)
   {
     v35 = objc_alloc_init(NSMutableArray);
@@ -121,7 +121,7 @@ LABEL_12:
           [v35 addObject:v12];
           [v10 floatValue];
           [v12 setLinearInterpolationWeight:?];
-          v13 = [v36 objectForKeyedSubscript:v37];
+          v13 = [timesDictCopy objectForKeyedSubscript:v37];
           v14 = [v13 objectForKeyedSubscript:v10];
           [v14 doubleValue];
           v16 = [NSNumber numberWithDouble:v15 * 1000.0];
@@ -204,58 +204,58 @@ LABEL_12:
   return v35;
 }
 
-- (id)_transcriptMetadataFromPopDict:(id)a3
+- (id)_transcriptMetadataFromPopDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_alloc_init(DODMLASRSchemaDODMLASRTranscriptMetadata);
-  v5 = [v3 objectForKeyedSubscript:@"numDocumentsRejected"];
+  v5 = [dictCopy objectForKeyedSubscript:@"numDocumentsRejected"];
   [v4 setNumDocumentsRejected:{objc_msgSend(v5, "unsignedIntValue")}];
 
-  v6 = [v3 objectForKeyedSubscript:@"numSentencesRejected"];
+  v6 = [dictCopy objectForKeyedSubscript:@"numSentencesRejected"];
   [v4 setNumSentencesRejected:{objc_msgSend(v6, "unsignedIntValue")}];
 
-  v7 = [v3 objectForKeyedSubscript:@"numDocuments"];
+  v7 = [dictCopy objectForKeyedSubscript:@"numDocuments"];
   [v4 setNumDocumentsAccepted:{objc_msgSend(v7, "unsignedIntValue")}];
 
-  v8 = [v3 objectForKeyedSubscript:@"numSentences"];
+  v8 = [dictCopy objectForKeyedSubscript:@"numSentences"];
   [v4 setNumSentencesAccepted:{objc_msgSend(v8, "unsignedIntValue")}];
 
-  v9 = [v3 objectForKeyedSubscript:@"numTokens"];
+  v9 = [dictCopy objectForKeyedSubscript:@"numTokens"];
   [v4 setNumTokensAccepted:{objc_msgSend(v9, "unsignedIntValue")}];
 
-  v10 = [v3 objectForKeyedSubscript:@"numTokensOOV"];
+  v10 = [dictCopy objectForKeyedSubscript:@"numTokensOOV"];
   [v4 setNumTokensOutOfVocabularyAccepted:{objc_msgSend(v10, "unsignedIntValue")}];
 
-  v11 = [v3 objectForKeyedSubscript:@"numDocumentsDictated"];
+  v11 = [dictCopy objectForKeyedSubscript:@"numDocumentsDictated"];
   [v4 setNumDocumentsDictated:{objc_msgSend(v11, "unsignedIntValue")}];
 
-  v12 = [v3 objectForKeyedSubscript:@"numDocumentsTyped"];
+  v12 = [dictCopy objectForKeyedSubscript:@"numDocumentsTyped"];
   [v4 setNumDocumentsTyped:{objc_msgSend(v12, "unsignedIntValue")}];
 
-  v13 = [v3 objectForKeyedSubscript:@"numTokensDictated"];
+  v13 = [dictCopy objectForKeyedSubscript:@"numTokensDictated"];
   [v4 setNumTokensDictated:{objc_msgSend(v13, "unsignedIntValue")}];
 
-  v14 = [v3 objectForKeyedSubscript:@"numTokensTyped"];
+  v14 = [dictCopy objectForKeyedSubscript:@"numTokensTyped"];
   [v4 setNumTokensTyped:{objc_msgSend(v14, "unsignedIntValue")}];
 
-  v15 = [v3 objectForKeyedSubscript:@"numSentencesMungeRejected"];
+  v15 = [dictCopy objectForKeyedSubscript:@"numSentencesMungeRejected"];
   [v4 setNumSentencesMungeRejected:{objc_msgSend(v15, "unsignedIntValue")}];
 
-  v16 = [v3 objectForKeyedSubscript:@"numSentencesMungeChanged"];
+  v16 = [dictCopy objectForKeyedSubscript:@"numSentencesMungeChanged"];
   [v4 setNumSentencesMungeChanged:{objc_msgSend(v16, "unsignedIntValue")}];
 
-  v17 = [v3 objectForKeyedSubscript:@"numTokensEstimatedExamined"];
+  v17 = [dictCopy objectForKeyedSubscript:@"numTokensEstimatedExamined"];
   [v4 setNumTokensEstimatedExamined:{objc_msgSend(v17, "unsignedIntValue")}];
 
-  [v3 removeObjectForKey:@"numTokensEstimatedExamined"];
+  [dictCopy removeObjectForKey:@"numTokensEstimatedExamined"];
 
   return v4;
 }
 
-- (id)_plmMetricsFromPlmDict:(id)a3
+- (id)_plmMetricsFromPlmDict:(id)dict
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"train"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"train"];
   v6 = objc_alloc_init(DODMLASRSchemaDODMLASRTranscriptionMetrics);
   v7 = [v5 objectForKeyedSubscript:@"data"];
   v8 = [v7 objectForKeyedSubscript:@"train"];
@@ -345,15 +345,15 @@ LABEL_12:
   [v34 setNumFiniteStateTransducerArcs:{objc_msgSend(v52, "unsignedIntValue")}];
 
   [v35 removeObjectForKey:@"numArcs"];
-  v53 = v4;
-  v54 = [v4 objectForKeyedSubscript:@"trainErrorCode"];
+  v53 = dictCopy;
+  v54 = [dictCopy objectForKeyedSubscript:@"trainErrorCode"];
   [v34 setModelTrainingStatusCode:{objc_msgSend(v54, "unsignedIntValue")}];
 
-  [v4 removeObjectForKey:@"trainErrorCode"];
+  [dictCopy removeObjectForKey:@"trainErrorCode"];
   v55 = objc_alloc_init(DODMLASRSchemaDODMLASRPersonalizedLanguageModelMetrics);
   [v55 setTranscriptionMetrics:v59];
   [v55 setEvaluationMetrics:v19];
-  v56 = [v4 objectForKeyedSubscript:@"userLanguage"];
+  v56 = [dictCopy objectForKeyedSubscript:@"userLanguage"];
 
   v57 = [v56 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   [v55 setUserLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v57)}];
@@ -363,16 +363,16 @@ LABEL_12:
   return v55;
 }
 
-- (id)_tokensFromTokenDict:(id)a3 privateTokens:(id)a4
+- (id)_tokensFromTokenDict:(id)dict privateTokens:(id)tokens
 {
-  v5 = a3;
-  v6 = a4;
+  dictCopy = dict;
+  tokensCopy = tokens;
   v7 = objc_alloc_init(NSMutableArray);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = dictCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
@@ -418,15 +418,15 @@ LABEL_12:
         v27 = [v12 objectForKeyedSubscript:@"phoneSequence"];
         [v25 setPhoneSequence:v27];
 
-        if ([v6 containsObject:v25])
+        if ([tokensCopy containsObject:v25])
         {
-          [v13 setLinkIndex:{objc_msgSend(v6, "indexOfObject:", v25)}];
+          [v13 setLinkIndex:{objc_msgSend(tokensCopy, "indexOfObject:", v25)}];
         }
 
         else
         {
-          [v13 setLinkIndex:{objc_msgSend(v6, "count")}];
-          [v6 addObject:v25];
+          [v13 setLinkIndex:{objc_msgSend(tokensCopy, "count")}];
+          [tokensCopy addObject:v25];
         }
       }
 
@@ -439,16 +439,16 @@ LABEL_12:
   return v7;
 }
 
-- (id)_tokensFromTokensArray:(id)a3 privateTokens:(id)a4
+- (id)_tokensFromTokensArray:(id)array privateTokens:(id)tokens
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  tokensCopy = tokens;
   v32 = objc_alloc_init(NSMutableArray);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = arrayCopy;
   v7 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v7)
   {
@@ -504,15 +504,15 @@ LABEL_12:
         v29 = [v11 objectAtIndexedSubscript:4];
         [v27 setPhoneSequence:v29];
 
-        if ([v6 containsObject:v27])
+        if ([tokensCopy containsObject:v27])
         {
-          [v13 setLinkIndex:{objc_msgSend(v6, "indexOfObject:", v27)}];
+          [v13 setLinkIndex:{objc_msgSend(tokensCopy, "indexOfObject:", v27)}];
         }
 
         else
         {
-          [v13 setLinkIndex:{objc_msgSend(v6, "count")}];
-          [v6 addObject:v27];
+          [v13 setLinkIndex:{objc_msgSend(tokensCopy, "count")}];
+          [tokensCopy addObject:v27];
         }
       }
 
@@ -525,16 +525,16 @@ LABEL_12:
   return v32;
 }
 
-- (id)_choiceInfosFromChoiceInfoDicts:(id)a3 privateTokens:(id)a4
+- (id)_choiceInfosFromChoiceInfoDicts:(id)dicts privateTokens:(id)tokens
 {
-  v6 = a3;
-  v7 = a4;
+  dictsCopy = dicts;
+  tokensCopy = tokens;
   v8 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = dictsCopy;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -553,7 +553,7 @@ LABEL_12:
         v14 = objc_alloc_init(DODMLASRSchemaDODMLASRChoiceInfo);
         [v8 addObject:v14];
         v15 = [v13 objectForKeyedSubscript:@"tokens"];
-        v16 = [(FidesSelfHelper *)self _tokensFromTokensArray:v15 privateTokens:v7];
+        v16 = [(FidesSelfHelper *)self _tokensFromTokensArray:v15 privateTokens:tokensCopy];
         [v14 setTokens:v16];
 
         v17 = [v13 objectForKeyedSubscript:@"graphCost"];
@@ -574,16 +574,16 @@ LABEL_12:
   return v8;
 }
 
-- (id)_resultInfosFromResultInfoDict:(id)a3 privateTokens:(id)a4
+- (id)_resultInfosFromResultInfoDict:(id)dict privateTokens:(id)tokens
 {
-  v5 = a3;
-  v6 = a4;
+  dictCopy = dict;
+  tokensCopy = tokens;
   v7 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = dictCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -607,7 +607,7 @@ LABEL_12:
         [v15 setIsAligned:v16 != 0];
 
         v17 = [v14 objectForKeyedSubscript:@"choices"];
-        v18 = [(FidesSelfHelper *)self _choiceInfosFromChoiceInfoDicts:v17 privateTokens:v6];
+        v18 = [(FidesSelfHelper *)self _choiceInfosFromChoiceInfoDicts:v17 privateTokens:tokensCopy];
         [v15 setChoices:v18];
       }
 
@@ -620,19 +620,19 @@ LABEL_12:
   return v7;
 }
 
-- (id)_utteranceInfosFromUtteranceInfoDict:(id)a3 privateTokens:(id)a4
+- (id)_utteranceInfosFromUtteranceInfoDict:(id)dict privateTokens:(id)tokens
 {
-  v6 = a3;
-  v25 = a4;
-  if (v6)
+  dictCopy = dict;
+  tokensCopy = tokens;
+  if (dictCopy)
   {
     v7 = objc_alloc_init(NSMutableArray);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v23 = v6;
-    obj = v6;
+    v23 = dictCopy;
+    obj = dictCopy;
     v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
@@ -651,7 +651,7 @@ LABEL_12:
           v13 = objc_alloc_init(DODMLASRSchemaDODMLASRUtteranceInfo);
           [v7 addObject:v13];
           v14 = [v12 objectForKeyedSubscript:@"results"];
-          v15 = [(FidesSelfHelper *)self _resultInfosFromResultInfoDict:v14 privateTokens:v25];
+          v15 = [(FidesSelfHelper *)self _resultInfosFromResultInfoDict:v14 privateTokens:tokensCopy];
           [v13 setResults:v15];
 
           v16 = [v12 objectForKeyedSubscript:@"startMillis"];
@@ -671,7 +671,7 @@ LABEL_12:
       while (v9);
     }
 
-    v6 = v23;
+    dictCopy = v23;
   }
 
   else
@@ -682,12 +682,12 @@ LABEL_12:
   return v7;
 }
 
-- (id)_decodingMetricsFromMetricsDict:(id)a3
+- (id)_decodingMetricsFromMetricsDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_alloc_init(DODMLASRSchemaDODMLASRDecodingMetrics);
-  v33 = v3;
-  v5 = [v3 objectForKeyedSubscript:@"WallRTF"];
+  v33 = dictCopy;
+  v5 = [dictCopy objectForKeyedSubscript:@"WallRTF"];
   [v5 floatValue];
   [v4 setWallRealTimeFactor:?];
 
@@ -789,25 +789,25 @@ LABEL_12:
   return v32;
 }
 
-- (id)_decodingResultsWithAudioDict:(id)a3 privateTokensOut:(id *)a4
+- (id)_decodingResultsWithAudioDict:(id)dict privateTokensOut:(id *)out
 {
-  v5 = a3;
+  dictCopy = dict;
   v42 = objc_alloc_init(NSMutableArray);
   v43 = objc_alloc_init(NSMutableArray);
-  v6 = [v5 objectForKeyedSubscript:@"tokens"];
-  v7 = [v5 objectForKeyedSubscript:@"metrics"];
+  v6 = [dictCopy objectForKeyedSubscript:@"tokens"];
+  v7 = [dictCopy objectForKeyedSubscript:@"metrics"];
   v41 = v6;
-  v8 = [v6 allKeys];
-  v9 = [v5 objectForKeyedSubscript:@"uttInfos"];
+  allKeys = [v6 allKeys];
+  v9 = [dictCopy objectForKeyedSubscript:@"uttInfos"];
 
-  v37 = v5;
+  v37 = dictCopy;
   if (v9)
   {
-    v40 = [v5 objectForKeyedSubscript:@"uttInfos"];
+    v40 = [dictCopy objectForKeyedSubscript:@"uttInfos"];
     goto LABEL_11;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"uttInfosCompressed"];
+  v10 = [dictCopy objectForKeyedSubscript:@"uttInfosCompressed"];
 
   if (!v10)
   {
@@ -816,7 +816,7 @@ LABEL_12:
   }
 
   v11 = [NSData alloc];
-  v12 = [v5 objectForKeyedSubscript:@"uttInfosCompressed"];
+  v12 = [dictCopy objectForKeyedSubscript:@"uttInfosCompressed"];
   v13 = [v11 initWithBase64EncodedString:v12 options:0];
 
   v49 = 0;
@@ -862,7 +862,7 @@ LABEL_11:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
+  obj = allKeys;
   v20 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v20)
   {
@@ -907,22 +907,22 @@ LABEL_11:
     while (v21);
   }
 
-  if (a4)
+  if (out)
   {
     v34 = v42;
-    *a4 = v42;
+    *out = v42;
   }
 
   return v43;
 }
 
-- (id)_audioFileResultsFromResultDict:(id)a3 privateAudioFileResultsOut:(id *)a4
+- (id)_audioFileResultsFromResultDict:(id)dict privateAudioFileResultsOut:(id *)out
 {
-  v4 = a3;
+  dictCopy = dict;
   v27 = objc_alloc_init(NSMutableArray);
   v28 = objc_alloc_init(NSMutableArray);
-  v23 = v4;
-  [v4 objectForKeyedSubscript:@"audioResults"];
+  v23 = dictCopy;
+  [dictCopy objectForKeyedSubscript:@"audioResults"];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -976,20 +976,20 @@ LABEL_11:
     while (v29);
   }
 
-  if (a4)
+  if (out)
   {
     v20 = v27;
-    *a4 = v27;
+    *out = v27;
   }
 
   return v28;
 }
 
-- (void)logDictationPersonalizationExperimentEndedAndTier1WithResultsDict:(id)a3
+- (void)logDictationPersonalizationExperimentEndedAndTier1WithResultsDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_alloc_init(DODMLASRSchemaDODMLASRPersonalizationExperimentEnded);
-  [v4 objectForKeyedSubscript:@"languageMetadata"];
+  [dictCopy objectForKeyedSubscript:@"languageMetadata"];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -998,7 +998,7 @@ LABEL_11:
   if (v7)
   {
     v8 = v7;
-    v29 = v4;
+    v29 = dictCopy;
     v9 = *v36;
     while (2)
     {
@@ -1015,7 +1015,7 @@ LABEL_11:
         {
 
           v12 = &off_11620;
-          v4 = v29;
+          dictCopy = v29;
           goto LABEL_13;
         }
       }
@@ -1029,7 +1029,7 @@ LABEL_11:
       break;
     }
 
-    v4 = v29;
+    dictCopy = v29;
   }
 
   v12 = &off_11608;
@@ -1037,27 +1037,27 @@ LABEL_13:
 
   [v5 setExperimentStatusCode:{objc_msgSend(v12, "intValue")}];
   [v5 setDatapackVersion:self->_datapackVersion];
-  v13 = [v4 objectForKeyedSubscript:@"numAudio"];
+  v13 = [dictCopy objectForKeyedSubscript:@"numAudio"];
   [v5 setNumAudioFilesAvailable:{objc_msgSend(v13, "unsignedIntValue")}];
 
-  v14 = [v4 objectForKeyedSubscript:@"numSelectedAudio"];
+  v14 = [dictCopy objectForKeyedSubscript:@"numSelectedAudio"];
   [v5 setNumAudioFilesSelected:{objc_msgSend(v14, "unsignedIntValue")}];
 
-  v15 = [v4 objectForKeyedSubscript:@"textProcessingDuration"];
+  v15 = [dictCopy objectForKeyedSubscript:@"textProcessingDuration"];
   [v15 doubleValue];
   v17 = [NSNumber numberWithDouble:v16 * 1000000000.0];
   [v5 setTextProcessingDurationInNs:{objc_msgSend(v17, "unsignedLongLongValue")}];
 
-  [v4 removeObjectForKey:@"textProcessingDuration"];
+  [dictCopy removeObjectForKey:@"textProcessingDuration"];
   v18 = +[NSProcessInfo processInfo];
   [v5 setDeviceThermalState:{objc_msgSend(v18, "thermalState")}];
 
   v34 = 0;
-  v19 = [(FidesSelfHelper *)self _audioFileResultsFromResultDict:v4 privateAudioFileResultsOut:&v34];
+  v19 = [(FidesSelfHelper *)self _audioFileResultsFromResultDict:dictCopy privateAudioFileResultsOut:&v34];
   v20 = v34;
   [v5 setAudioFileResults:v19];
 
-  v21 = [v4 objectForKeyedSubscript:@"personalizedLM"];
+  v21 = [dictCopy objectForKeyedSubscript:@"personalizedLM"];
   v22 = [(FidesSelfHelper *)self _plmMetricsFromPlmDict:v21];
   [v5 setPersonalizedLanguageModelMetrics:v22];
 
@@ -1105,17 +1105,17 @@ LABEL_13:
   [(FidesSelfHelper *)self _wrapAndEmitTopLevelEvent:v4];
 }
 
-- (void)logUserEditExperimentEndedAndTier1WithResultsDict:(id)a3
+- (void)logUserEditExperimentEndedAndTier1WithResultsDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v32 = objc_alloc_init(NSMutableArray);
   v31 = objc_alloc_init(NSMutableArray);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v29 = v3;
-  obj = [v3 objectForKeyedSubscript:@"confusionPairs"];
+  v29 = dictCopy;
+  obj = [dictCopy objectForKeyedSubscript:@"confusionPairs"];
   v4 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v4)
   {
@@ -1198,9 +1198,9 @@ LABEL_13:
   [(FidesSelfHelper *)self _wrapAndEmitTopLevelEvent:v3];
 }
 
-- (FidesSelfHelper)initWithExperimentId:(id)a3
+- (FidesSelfHelper)initWithExperimentId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = FidesSelfHelper;
   v6 = [(FidesSelfHelper *)&v15 init];
@@ -1210,18 +1210,18 @@ LABEL_13:
     dodmlId = v6->_dodmlId;
     v6->_dodmlId = v7;
 
-    objc_storeStrong(&v6->_experimentId, a3);
+    objc_storeStrong(&v6->_experimentId, id);
     v9 = AFSiriLogContextFides;
     if (os_log_type_enabled(AFSiriLogContextFides, OS_LOG_TYPE_INFO))
     {
       v10 = v6->_dodmlId;
       v11 = v9;
-      v12 = [(NSUUID *)v10 UUIDString];
+      uUIDString = [(NSUUID *)v10 UUIDString];
       experimentId = v6->_experimentId;
       *buf = 136315650;
       v17 = "[FidesSelfHelper initWithExperimentId:]";
       v18 = 2112;
-      v19 = v12;
+      v19 = uUIDString;
       v20 = 2112;
       v21 = experimentId;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%s Fides SELF: Logging object created successfully: dodmlId=%@, experimentId=%@", buf, 0x20u);

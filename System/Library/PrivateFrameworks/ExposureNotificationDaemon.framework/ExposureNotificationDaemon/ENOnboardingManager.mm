@@ -4,11 +4,11 @@
 - (BOOL)isIdealTimeForBuddy;
 - (ENOnboardingManager)init;
 - (ENOnboardingManagerDelegate)delegate;
-- (void)_cameraIrisStateChangedWithToken:(int)a3;
-- (void)_deviceLockStateChangedWithToken:(int)a3;
+- (void)_cameraIrisStateChangedWithToken:(int)token;
+- (void)_deviceLockStateChangedWithToken:(int)token;
 - (void)_observeCameraIrisNotifications;
 - (void)dealloc;
-- (void)setShouldObserveDeviceUnlocks:(BOOL)a3;
+- (void)setShouldObserveDeviceUnlocks:(BOOL)unlocks;
 @end
 
 @implementation ENOnboardingManager
@@ -61,9 +61,9 @@ void __54__ENOnboardingManager__observeCameraIrisNotifications__block_invoke(uin
     return 0;
   }
 
-  v3 = [(ENOnboardingManager *)self callObserver];
-  v4 = [v3 calls];
-  v5 = [v4 count];
+  callObserver = [(ENOnboardingManager *)self callObserver];
+  calls = [callObserver calls];
+  v5 = [calls count];
 
   if (v5)
   {
@@ -91,9 +91,9 @@ void __54__ENOnboardingManager__observeCameraIrisNotifications__block_invoke(uin
   return result;
 }
 
-- (void)setShouldObserveDeviceUnlocks:(BOOL)a3
+- (void)setShouldObserveDeviceUnlocks:(BOOL)unlocks
 {
-  if (a3)
+  if (unlocks)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
@@ -164,25 +164,25 @@ void __53__ENOnboardingManager_setShouldObserveDeviceUnlocks___block_invoke(uint
 
 - (BOOL)_isInLostMode
 {
-  v2 = [MEMORY[0x277D08F70] sharedInstance];
-  if ([v2 lostModeIsActive])
+  mEMORY[0x277D08F70] = [MEMORY[0x277D08F70] sharedInstance];
+  if ([mEMORY[0x277D08F70] lostModeIsActive])
   {
-    v3 = 1;
+    isManagedLostModeActive = 1;
   }
 
   else
   {
-    v3 = [v2 isManagedLostModeActive];
+    isManagedLostModeActive = [mEMORY[0x277D08F70] isManagedLostModeActive];
   }
 
-  return v3;
+  return isManagedLostModeActive;
 }
 
-- (void)_deviceLockStateChangedWithToken:(int)a3
+- (void)_deviceLockStateChangedWithToken:(int)token
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
-  v4 = [(ENOnboardingManager *)self delegate];
+  notify_get_state(token, &state64);
+  delegate = [(ENOnboardingManager *)self delegate];
   if (state64 || ![(ENOnboardingManager *)self isDeviceUnlocked])
   {
     if (!CFPrefs_GetInt64())
@@ -202,16 +202,16 @@ void __53__ENOnboardingManager_setShouldObserveDeviceUnlocks___block_invoke(uint
     block[1] = 3221225472;
     block[2] = __56__ENOnboardingManager__deviceLockStateChangedWithToken___block_invoke;
     block[3] = &unk_278FD1120;
-    v6 = v4;
-    v7 = self;
+    v6 = delegate;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)_cameraIrisStateChangedWithToken:(int)a3
+- (void)_cameraIrisStateChangedWithToken:(int)token
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
+  notify_get_state(token, &state64);
   [(ENOnboardingManager *)self setIsCaptureSessionRunning:state64 == 1];
 }
 

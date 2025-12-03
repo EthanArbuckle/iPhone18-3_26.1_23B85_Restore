@@ -1,75 +1,75 @@
 @interface SCATHardwareAction
-+ (id)actionForHardwareActionString:(id)a3;
-+ (id)crownPress:(unint64_t)a3;
-+ (id)crownRotationClockwise:(BOOL)a3;
-+ (id)topButtonPress:(unint64_t)a3;
-+ (void)_performPress:(unint64_t)a3 numberOfPresses:(unint64_t)a4;
++ (id)actionForHardwareActionString:(id)string;
++ (id)crownPress:(unint64_t)press;
++ (id)crownRotationClockwise:(BOOL)clockwise;
++ (id)topButtonPress:(unint64_t)press;
++ (void)_performPress:(unint64_t)press numberOfPresses:(unint64_t)presses;
 - (void)performAction;
 @end
 
 @implementation SCATHardwareAction
 
-+ (id)crownPress:(unint64_t)a3
++ (id)crownPress:(unint64_t)press
 {
   v4 = objc_alloc_init(SCATHardwareAction);
   [(SCATHardwareAction *)v4 setActionType:0];
-  [(SCATHardwareAction *)v4 setNumberOfPresses:a3];
+  [(SCATHardwareAction *)v4 setNumberOfPresses:press];
 
   return v4;
 }
 
-+ (id)crownRotationClockwise:(BOOL)a3
++ (id)crownRotationClockwise:(BOOL)clockwise
 {
-  v3 = a3;
+  clockwiseCopy = clockwise;
   v4 = objc_alloc_init(SCATHardwareAction);
   [(SCATHardwareAction *)v4 setActionType:1];
-  [(SCATHardwareAction *)v4 setClockwise:v3];
+  [(SCATHardwareAction *)v4 setClockwise:clockwiseCopy];
 
   return v4;
 }
 
-+ (id)topButtonPress:(unint64_t)a3
++ (id)topButtonPress:(unint64_t)press
 {
   v4 = objc_alloc_init(SCATHardwareAction);
   [(SCATHardwareAction *)v4 setActionType:2];
-  [(SCATHardwareAction *)v4 setNumberOfPresses:a3];
+  [(SCATHardwareAction *)v4 setNumberOfPresses:press];
 
   return v4;
 }
 
-+ (id)actionForHardwareActionString:(id)a3
++ (id)actionForHardwareActionString:(id)string
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"pressCrown"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"pressCrown"])
   {
-    v5 = a1;
+    selfCopy2 = self;
     v6 = 1;
 LABEL_5:
-    v7 = [v5 crownPress:v6];
+    v7 = [selfCopy2 crownPress:v6];
 LABEL_6:
     v8 = v7;
     goto LABEL_7;
   }
 
-  if ([v4 hasPrefix:@"doublePressCrown"])
+  if ([stringCopy hasPrefix:@"doublePressCrown"])
   {
-    v5 = a1;
+    selfCopy2 = self;
     v6 = 2;
     goto LABEL_5;
   }
 
-  if ([v4 hasPrefix:@"pressTopButton"])
+  if ([stringCopy hasPrefix:@"pressTopButton"])
   {
-    v10 = a1;
+    selfCopy4 = self;
     v11 = 1;
 LABEL_14:
-    v7 = [v10 topButtonPress:v11];
+    v7 = [selfCopy4 topButtonPress:v11];
     goto LABEL_6;
   }
 
-  if ([v4 hasPrefix:@"triplePressLock"])
+  if ([stringCopy hasPrefix:@"triplePressLock"])
   {
-    v10 = a1;
+    selfCopy4 = self;
     v11 = 3;
     goto LABEL_14;
   }
@@ -82,21 +82,21 @@ LABEL_7:
 
 - (void)performAction
 {
-  v3 = [(SCATHardwareAction *)self actionType];
-  if (v3 == 2)
+  actionType = [(SCATHardwareAction *)self actionType];
+  if (actionType == 2)
   {
 LABEL_4:
     v4 = objc_opt_class();
-    v5 = [(SCATHardwareAction *)self actionType];
-    v6 = [(SCATHardwareAction *)self numberOfPresses];
+    actionType2 = [(SCATHardwareAction *)self actionType];
+    numberOfPresses = [(SCATHardwareAction *)self numberOfPresses];
 
-    [v4 _performPress:v5 numberOfPresses:v6];
+    [v4 _performPress:actionType2 numberOfPresses:numberOfPresses];
     return;
   }
 
-  if (v3 != 1)
+  if (actionType != 1)
   {
-    if (v3)
+    if (actionType)
     {
       return;
     }
@@ -118,9 +118,9 @@ LABEL_4:
   [v8 turnDigitalCrown:v7];
 }
 
-+ (void)_performPress:(unint64_t)a3 numberOfPresses:(unint64_t)a4
++ (void)_performPress:(unint64_t)press numberOfPresses:(unint64_t)presses
 {
-  if (a3 == 2)
+  if (press == 2)
   {
     v11 = +[AXPISystemActionHelper sharedInstance];
     [v11 pressLockButtonDown];
@@ -128,7 +128,7 @@ LABEL_4:
     v12 = +[AXPISystemActionHelper sharedInstance];
     [v12 liftLockButtonUp];
 
-    if (a4 < 2)
+    if (presses < 2)
     {
       return;
     }
@@ -140,7 +140,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!press)
   {
     v7 = +[AXPISystemActionHelper sharedInstance];
     [v7 pressHomeButtonDown];
@@ -148,7 +148,7 @@ LABEL_4:
     v8 = +[AXPISystemActionHelper sharedInstance];
     [v8 liftHomeButtonUp];
 
-    if (a4 >= 2)
+    if (presses >= 2)
     {
       v9 = v14;
       v14[0] = _NSConcreteStackBlock;
@@ -157,9 +157,9 @@ LABEL_4:
 LABEL_7:
       v9[2] = v10;
       v9[3] = &unk_1001D56A8;
-      v9[4] = a1;
-      v9[5] = a3;
-      v9[6] = a4;
+      v9[4] = self;
+      v9[5] = press;
+      v9[6] = presses;
       AXPerformBlockOnMainThreadAfterDelay();
     }
   }

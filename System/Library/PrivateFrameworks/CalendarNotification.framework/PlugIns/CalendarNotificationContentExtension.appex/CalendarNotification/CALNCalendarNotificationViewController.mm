@@ -1,12 +1,12 @@
 @interface CALNCalendarNotificationViewController
-- (BOOL)_isEventInvitationNotificationCategoryIdentifier:(id)a3;
+- (BOOL)_isEventInvitationNotificationCategoryIdentifier:(id)identifier;
 - (CGSize)preferredContentSize;
-- (void)_configureForLocation:(id)a3;
-- (void)_configureForLocation:(id)a3 gridOnly:(BOOL)a4;
-- (void)_configureWithPreviewForEvent:(id)a3;
-- (void)_setContentView:(id)a3;
-- (void)_snapshotCompleted:(id)a3 error:(id)a4 generation:(unint64_t)a5 gridOnly:(BOOL)a6;
-- (void)didReceiveNotification:(id)a3;
+- (void)_configureForLocation:(id)location;
+- (void)_configureForLocation:(id)location gridOnly:(BOOL)only;
+- (void)_configureWithPreviewForEvent:(id)event;
+- (void)_setContentView:(id)view;
+- (void)_snapshotCompleted:(id)completed error:(id)error generation:(unint64_t)generation gridOnly:(BOOL)only;
+- (void)didReceiveNotification:(id)notification;
 @end
 
 @implementation CALNCalendarNotificationViewController
@@ -20,29 +20,29 @@
   return result;
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 request];
-    v7 = [v6 identifier];
+    request = [notificationCopy request];
+    identifier = [request identifier];
     *buf = 138543618;
-    v28 = v7;
+    v28 = identifier;
     v29 = 2112;
-    v30 = v4;
+    v30 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did receive notification. identifier = %{public}@, notification = %@", buf, 0x16u);
   }
 
   ++self->_generation;
-  v8 = [v4 request];
-  v9 = [v8 content];
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKeyedSubscript:kCALNEventEntityIDUserInfoKey];
+  request2 = [notificationCopy request];
+  content = [request2 content];
+  userInfo = [content userInfo];
+  v11 = [userInfo objectForKeyedSubscript:kCALNEventEntityIDUserInfoKey];
   if (v11)
   {
-    v26 = v9;
+    v26 = content;
     if (!self->_eventStore)
     {
       v12 = objc_opt_new();
@@ -50,29 +50,29 @@
       self->_eventStore = v12;
     }
 
-    v14 = [NSURL URLWithString:v11];
-    v15 = [(EKEventStore *)self->_eventStore _eventWithURI:v14 checkValid:1];
-    v16 = [v4 request];
-    v17 = [v16 content];
-    v18 = [v17 categoryIdentifier];
+    identifier2 = [NSURL URLWithString:v11];
+    v15 = [(EKEventStore *)self->_eventStore _eventWithURI:identifier2 checkValid:1];
+    request3 = [notificationCopy request];
+    content2 = [request3 content];
+    categoryIdentifier = [content2 categoryIdentifier];
 
-    if ([v18 hasPrefix:kCALNTriggeredEventNotificationCategoryIdentifierPrefix])
+    if ([categoryIdentifier hasPrefix:kCALNTriggeredEventNotificationCategoryIdentifierPrefix])
     {
-      v25 = v8;
-      v19 = [v15 structuredLocation];
-      if (!v19)
+      v25 = request2;
+      structuredLocation = [v15 structuredLocation];
+      if (!structuredLocation)
       {
         goto LABEL_14;
       }
 
-      v20 = v19;
-      v21 = [v15 structuredLocation];
-      v22 = [v21 geoLocation];
+      v20 = structuredLocation;
+      structuredLocation2 = [v15 structuredLocation];
+      geoLocation = [structuredLocation2 geoLocation];
 
-      if (v22)
+      if (geoLocation)
       {
-        v23 = [v15 structuredLocation];
-        [(CALNCalendarNotificationViewController *)self _configureForLocation:v23];
+        structuredLocation3 = [v15 structuredLocation];
+        [(CALNCalendarNotificationViewController *)self _configureForLocation:structuredLocation3];
       }
 
       else
@@ -81,49 +81,49 @@ LABEL_14:
         [(CALNCalendarNotificationViewController *)self _configureWithPreviewForEvent:v15];
       }
 
-      v8 = v25;
+      request2 = v25;
     }
 
-    else if ([(CALNCalendarNotificationViewController *)self _isEventInvitationNotificationCategoryIdentifier:v18])
+    else if ([(CALNCalendarNotificationViewController *)self _isEventInvitationNotificationCategoryIdentifier:categoryIdentifier])
     {
       [(CALNCalendarNotificationViewController *)self _configureWithPreviewForEvent:v15];
     }
 
-    v9 = v26;
+    content = v26;
   }
 
   else
   {
-    v24 = [v4 request];
-    v14 = [v24 identifier];
+    request4 = [notificationCopy request];
+    identifier2 = [request4 identifier];
 
     v15 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_100001DD0(v14, v4, v15);
+      sub_100001DD0(identifier2, notificationCopy, v15);
     }
   }
 }
 
-- (BOOL)_isEventInvitationNotificationCategoryIdentifier:(id)a3
+- (BOOL)_isEventInvitationNotificationCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kCALNEventInvitationNotificationDefaultCategoryIdentifier])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:kCALNEventInvitationNotificationDefaultCategoryIdentifier])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:kCALNEventInvitationNotificationCouldBeJunkCategoryIdentifier];
+    v4 = [identifierCopy isEqualToString:kCALNEventInvitationNotificationCouldBeJunkCategoryIdentifier];
   }
 
   return v4;
 }
 
-- (void)_setContentView:(id)a3
+- (void)_setContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
   if (contentView)
   {
@@ -131,67 +131,67 @@ LABEL_14:
   }
 
   v6 = self->_contentView;
-  self->_contentView = v4;
-  v7 = v4;
+  self->_contentView = viewCopy;
+  v7 = viewCopy;
 
   [(UIView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(CALNCalendarNotificationViewController *)self view];
-  [v8 addSubview:v7];
+  view = [(CALNCalendarNotificationViewController *)self view];
+  [view addSubview:v7];
 
-  v24 = [(UIView *)v7 leadingAnchor];
-  v25 = [(CALNCalendarNotificationViewController *)self view];
-  v23 = [v25 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  leadingAnchor = [(UIView *)v7 leadingAnchor];
+  view2 = [(CALNCalendarNotificationViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v22;
-  v20 = [(UIView *)v7 topAnchor];
-  v21 = [(CALNCalendarNotificationViewController *)self view];
-  v19 = [v21 topAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  topAnchor = [(UIView *)v7 topAnchor];
+  view3 = [(CALNCalendarNotificationViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[1] = v18;
-  v9 = [(UIView *)v7 widthAnchor];
-  v10 = [(CALNCalendarNotificationViewController *)self view];
-  v11 = [v10 widthAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  widthAnchor = [(UIView *)v7 widthAnchor];
+  view4 = [(CALNCalendarNotificationViewController *)self view];
+  widthAnchor2 = [view4 widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v26[2] = v12;
-  v13 = [(UIView *)v7 heightAnchor];
-  v14 = [(CALNCalendarNotificationViewController *)self view];
-  v15 = [v14 heightAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  heightAnchor = [(UIView *)v7 heightAnchor];
+  view5 = [(CALNCalendarNotificationViewController *)self view];
+  heightAnchor2 = [view5 heightAnchor];
+  v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v26[3] = v16;
   v17 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)_configureWithPreviewForEvent:(id)a3
+- (void)_configureWithPreviewForEvent:(id)event
 {
-  v4 = a3;
-  v9 = [v4 startDate];
+  eventCopy = event;
+  startDate = [eventCopy startDate];
   v5 = [EKDayPreviewController alloc];
-  v6 = [v4 endDate];
-  v7 = [v5 initWithDate:v9 event:v4 overriddenEventStartDate:v9 overriddenEventEndDate:v6 model:0];
+  endDate = [eventCopy endDate];
+  v7 = [v5 initWithDate:startDate event:eventCopy overriddenEventStartDate:startDate overriddenEventEndDate:endDate model:0];
 
   [v7 setHidesAllDayEvents:1];
   [v7 setHostingViewController:self];
   [v7 setRespectsSelectedCalendarsFilter:1];
   [v7 setStyle:1];
-  v8 = [v7 view];
-  [(CALNCalendarNotificationViewController *)self _setContentView:v8];
+  view = [v7 view];
+  [(CALNCalendarNotificationViewController *)self _setContentView:view];
 }
 
-- (void)_configureForLocation:(id)a3
+- (void)_configureForLocation:(id)location
 {
-  v4 = a3;
-  [(CALNCalendarNotificationViewController *)self _configureForLocation:v4 gridOnly:1];
-  [(CALNCalendarNotificationViewController *)self _configureForLocation:v4 gridOnly:0];
+  locationCopy = location;
+  [(CALNCalendarNotificationViewController *)self _configureForLocation:locationCopy gridOnly:1];
+  [(CALNCalendarNotificationViewController *)self _configureForLocation:locationCopy gridOnly:0];
 }
 
-- (void)_configureForLocation:(id)a3 gridOnly:(BOOL)a4
+- (void)_configureForLocation:(id)location gridOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
+  onlyCopy = only;
+  locationCopy = location;
   generation = self->_generation;
-  v8 = [v6 isImprecise];
-  if (v8)
+  isImprecise = [locationCopy isImprecise];
+  if (isImprecise)
   {
     v9 = 50.0;
   }
@@ -201,14 +201,14 @@ LABEL_14:
     v9 = 804.67;
   }
 
-  [v6 radius];
+  [locationCopy radius];
   if (v10 > v9)
   {
-    [v6 radius];
+    [locationCopy radius];
     v9 = v11;
   }
 
-  if (v8)
+  if (isImprecise)
   {
     v12 = 3.0;
   }
@@ -218,13 +218,13 @@ LABEL_14:
     v12 = 1.0;
   }
 
-  v13 = [v6 geoLocation];
-  [v13 coordinate];
+  geoLocation = [locationCopy geoLocation];
+  [geoLocation coordinate];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v6 geoLocation];
-  [v18 coordinate];
+  geoLocation2 = [locationCopy geoLocation];
+  [geoLocation2 coordinate];
   v41 = MKCoordinateRegionMakeWithDistance(v40, v12 * v9, v12 * v9);
   latitude = v41.center.latitude;
   longitude = v41.center.longitude;
@@ -237,16 +237,16 @@ LABEL_14:
   v24 = [[GEOApplicationAuditToken alloc] initWithProxiedApplicationBundleId:@"com.apple.mobilecal"];
   [v23 _setAuditToken:v24];
 
-  v25 = [(CALNCalendarNotificationViewController *)self view];
-  [v25 bounds];
+  view = [(CALNCalendarNotificationViewController *)self view];
+  [view bounds];
   [v23 setSize:{CGRectGetWidth(v42), 200.0}];
 
-  if (v4)
+  if (onlyCopy)
   {
     [v23 setMapType:105];
   }
 
-  if (v8)
+  if (isImprecise)
   {
     v26 = [MKCircle circleWithCenterCoordinate:v15 radius:v17, v9];
     v27 = [[MKCircleRenderer alloc] initWithCircle:v26];
@@ -280,55 +280,55 @@ LABEL_14:
   v34[3] = &unk_1000041C8;
   objc_copyWeak(v35, &location);
   v35[1] = generation;
-  v36 = v4;
+  v36 = onlyCopy;
   [v32 startWithQueue:&_dispatch_main_q completionHandler:v34];
 
   objc_destroyWeak(v35);
   objc_destroyWeak(&location);
 }
 
-- (void)_snapshotCompleted:(id)a3 error:(id)a4 generation:(unint64_t)a5 gridOnly:(BOOL)a6
+- (void)_snapshotCompleted:(id)completed error:(id)error generation:(unint64_t)generation gridOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (self->_generation == a5)
+  onlyCopy = only;
+  completedCopy = completed;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (self->_generation == generation)
   {
-    if (v6 && self->_mapLoaded)
+    if (onlyCopy && self->_mapLoaded)
     {
-      v13 = +[CALNLogSubsystem calendar];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      image = +[CALNLogSubsystem calendar];
+      if (os_log_type_enabled(image, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v20[0]) = 0;
         v14 = "map already loaded, dropping grid";
-        v15 = v13;
+        v15 = image;
         v16 = 2;
 LABEL_8:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, v14, v20, v16);
       }
     }
 
-    else if (v11)
+    else if (errorCopy)
     {
-      v13 = +[CALNLogSubsystem calendar];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      image = +[CALNLogSubsystem calendar];
+      if (os_log_type_enabled(image, OS_LOG_TYPE_ERROR))
       {
         sub_100001E58();
       }
     }
 
-    else if (v10)
+    else if (completedCopy)
     {
-      v13 = [v10 image];
-      if (v13)
+      image = [completedCopy image];
+      if (image)
       {
-        if (!v6)
+        if (!onlyCopy)
         {
           self->_mapLoaded = 1;
         }
 
-        v18 = [[UIImageView alloc] initWithImage:v13];
+        v18 = [[UIImageView alloc] initWithImage:image];
         [v18 setContentMode:9];
         [(CALNCalendarNotificationViewController *)self _setContentView:v18];
       }
@@ -345,8 +345,8 @@ LABEL_8:
 
     else
     {
-      v13 = +[CALNLogSubsystem calendar];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      image = +[CALNLogSubsystem calendar];
+      if (os_log_type_enabled(image, OS_LOG_TYPE_ERROR))
       {
         sub_100001F50();
       }
@@ -355,18 +355,18 @@ LABEL_8:
 
   else
   {
-    v13 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    image = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(image, OS_LOG_TYPE_DEFAULT))
     {
       generation = self->_generation;
       v20[0] = 67109632;
-      v20[1] = v6;
+      v20[1] = onlyCopy;
       v21 = 2048;
-      v22 = a5;
+      generationCopy = generation;
       v23 = 2048;
-      v24 = generation;
+      generationCopy2 = generation;
       v14 = "generation mismatch (gridOnly: %d): %lu != %lu";
-      v15 = v13;
+      v15 = image;
       v16 = 28;
       goto LABEL_8;
     }

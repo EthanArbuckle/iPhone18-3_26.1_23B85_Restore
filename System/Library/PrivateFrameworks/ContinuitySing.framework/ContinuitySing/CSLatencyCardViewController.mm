@@ -1,33 +1,33 @@
 @interface CSLatencyCardViewController
-- (CSLatencyCardViewController)initWithRequestClient:(id)a3;
+- (CSLatencyCardViewController)initWithRequestClient:(id)client;
 - (id)_buttonTitleForCurrentState;
 - (id)_setUpContentView;
 - (id)_setupActionButton;
-- (id)_titleForProgressEvent:(unint64_t)a3;
+- (id)_titleForProgressEvent:(unint64_t)event;
 - (void)_cancel;
 - (void)_handleButtonAction;
 - (void)_setupViews;
-- (void)_showLatencyCheckConfirmationIfNeededWithCompletion:(id)a3;
+- (void)_showLatencyCheckConfirmationIfNeededWithCompletion:(id)completion;
 - (void)_startAudioLatencyEstimator;
-- (void)_updateCardForEvent:(unint64_t)a3 info:(id)a4;
+- (void)_updateCardForEvent:(unint64_t)event info:(id)info;
 - (void)_updateContentViewFromCurrentState;
-- (void)_updateViewFromCurrentStateAnimated:(BOOL)a3;
+- (void)_updateViewFromCurrentStateAnimated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation CSLatencyCardViewController
 
-- (CSLatencyCardViewController)initWithRequestClient:(id)a3
+- (CSLatencyCardViewController)initWithRequestClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = CSLatencyCardViewController;
   v6 = [(CSLatencyCardViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestClient, a3);
-    [v5 activateAudioLatencyEstimator];
+    objc_storeStrong(&v6->_requestClient, client);
+    [clientCopy activateAudioLatencyEstimator];
     v7->_cardState = 0;
     v7->_latency = 0;
   }
@@ -45,32 +45,32 @@
 
 - (void)_setupViews
 {
-  v3 = [(CSLatencyCardViewController *)self view];
-  v4 = [MEMORY[0x277D75340] quaternarySystemFillColor];
-  [v3 setBackgroundColor:v4];
+  view = [(CSLatencyCardViewController *)self view];
+  quaternarySystemFillColor = [MEMORY[0x277D75340] quaternarySystemFillColor];
+  [view setBackgroundColor:quaternarySystemFillColor];
 
-  v5 = [(CSLatencyCardViewController *)self view];
-  [v5 _setContinuousCornerRadius:27.0];
+  view2 = [(CSLatencyCardViewController *)self view];
+  [view2 _setContinuousCornerRadius:27.0];
 
-  v6 = [(CSLatencyCardViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view3 = [(CSLatencyCardViewController *)self view];
+  [view3 setClipsToBounds:1];
 
-  v45 = [(CSLatencyCardViewController *)self _setUpContentView];
-  v7 = [(CSLatencyCardViewController *)self _setupActionButton];
+  _setUpContentView = [(CSLatencyCardViewController *)self _setUpContentView];
+  _setupActionButton = [(CSLatencyCardViewController *)self _setupActionButton];
   actionButton = self->_actionButton;
-  self->_actionButton = v7;
-  v43 = v7;
+  self->_actionButton = _setupActionButton;
+  v43 = _setupActionButton;
 
-  v9 = [(CSLatencyCardViewController *)self view];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:0.0];
+  view4 = [(CSLatencyCardViewController *)self view];
+  heightAnchor = [view4 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:0.0];
 
   LODWORD(v12) = 1112014848;
   v13 = v11;
   v42 = v11;
   [v11 setPriority:v12];
   v14 = objc_alloc(MEMORY[0x277D75A70]);
-  v47[0] = v45;
+  v47[0] = _setUpContentView;
   v47[1] = v43;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
   v16 = [v14 initWithArrangedSubviews:v15];
@@ -83,38 +83,38 @@
   v17 = [[CSPaddingView alloc] initWithWrappedView:v16];
   [(CSPaddingView *)v17 setHorizontalPadding:20.0];
   [(CSPaddingView *)v17 setBottomPadding:20.0];
-  v18 = [(CSLatencyCardViewController *)self view];
-  [v18 addSubview:v17];
+  view5 = [(CSLatencyCardViewController *)self view];
+  [view5 addSubview:v17];
 
   [(CSPaddingView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   v32 = MEMORY[0x277CCAAD0];
-  v41 = [(CSLatencyCardViewController *)self view];
-  v40 = [v41 heightAnchor];
-  v39 = [v40 constraintGreaterThanOrEqualToConstant:228.0];
+  view6 = [(CSLatencyCardViewController *)self view];
+  heightAnchor2 = [view6 heightAnchor];
+  v39 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:228.0];
   v46[0] = v39;
   v46[1] = v13;
-  v38 = [(UIButton *)self->_actionButton heightAnchor];
-  v37 = [v38 constraintGreaterThanOrEqualToConstant:48.0];
+  heightAnchor3 = [(UIButton *)self->_actionButton heightAnchor];
+  v37 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:48.0];
   v46[2] = v37;
-  v35 = [(CSPaddingView *)v17 topAnchor];
-  v36 = [(CSLatencyCardViewController *)self view];
-  v34 = [v36 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor = [(CSPaddingView *)v17 topAnchor];
+  view7 = [(CSLatencyCardViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[3] = v33;
-  v30 = [(CSPaddingView *)v17 bottomAnchor];
-  v31 = [(CSLatencyCardViewController *)self view];
-  v29 = [v31 bottomAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor = [(CSPaddingView *)v17 bottomAnchor];
+  view8 = [(CSLatencyCardViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[4] = v28;
-  v27 = [(CSPaddingView *)v17 leadingAnchor];
-  v19 = [(CSLatencyCardViewController *)self view];
-  v20 = [v19 leadingAnchor];
-  v21 = [v27 constraintEqualToAnchor:v20];
+  leadingAnchor = [(CSPaddingView *)v17 leadingAnchor];
+  view9 = [(CSLatencyCardViewController *)self view];
+  leadingAnchor2 = [view9 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[5] = v21;
-  v22 = [(CSPaddingView *)v17 trailingAnchor];
-  v23 = [(CSLatencyCardViewController *)self view];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  trailingAnchor = [(CSPaddingView *)v17 trailingAnchor];
+  view10 = [(CSLatencyCardViewController *)self view];
+  trailingAnchor2 = [view10 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[6] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:7];
   [v32 activateConstraints:v26];
@@ -156,8 +156,8 @@
   [(UILabel *)v15 setFont:v17];
 
   v18 = self->_instructionDescriptionLabel;
-  v19 = [MEMORY[0x277D75340] secondaryLabelColor];
-  [(UILabel *)v18 setTextColor:v19];
+  secondaryLabelColor = [MEMORY[0x277D75340] secondaryLabelColor];
+  [(UILabel *)v18 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_instructionDescriptionLabel setNumberOfLines:0];
   [(UILabel *)self->_instructionDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -184,8 +184,8 @@
   v27 = [MEMORY[0x277D755B0] systemImageNamed:@"arrow.trianglehead.clockwise"];
   [v25 setImage:v27];
 
-  v28 = [MEMORY[0x277D75340] secondaryLabelColor];
-  [v25 setTintColor:v28];
+  secondaryLabelColor2 = [MEMORY[0x277D75340] secondaryLabelColor];
+  [v25 setTintColor:secondaryLabelColor2];
 
   v29 = objc_alloc_init(MEMORY[0x277D756C0]);
   v30 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -195,9 +195,9 @@
   v32 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v16 weight:v26];
   [v29 setFont:v32];
 
-  v33 = [MEMORY[0x277D75340] labelColor];
+  labelColor = [MEMORY[0x277D75340] labelColor];
   v106 = v29;
-  [v29 setTextColor:v33];
+  [v29 setTextColor:labelColor];
 
   v34 = objc_alloc(MEMORY[0x277D75A70]);
   v112[0] = v25;
@@ -217,91 +217,91 @@
   [v99 addSubview:self->_resultView];
   [v99 addSubview:self->_failedInfoView];
   v82 = MEMORY[0x277CCAAD0];
-  v105 = [(UILabel *)self->_instructionTitleLabel topAnchor];
-  v104 = [v99 topAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104 constant:50.0];
+  topAnchor = [(UILabel *)self->_instructionTitleLabel topAnchor];
+  topAnchor2 = [v99 topAnchor];
+  v103 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:50.0];
   v111[0] = v103;
-  v102 = [(UILabel *)self->_instructionTitleLabel centerXAnchor];
-  v101 = [v99 centerXAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  centerXAnchor = [(UILabel *)self->_instructionTitleLabel centerXAnchor];
+  centerXAnchor2 = [v99 centerXAnchor];
+  v100 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v111[1] = v100;
-  v98 = [(UILabel *)self->_instructionTitleLabel leadingAnchor];
-  v97 = [v99 leadingAnchor];
-  v96 = [v98 constraintGreaterThanOrEqualToAnchor:v97];
+  leadingAnchor = [(UILabel *)self->_instructionTitleLabel leadingAnchor];
+  leadingAnchor2 = [v99 leadingAnchor];
+  v96 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v111[2] = v96;
-  v95 = [(UILabel *)self->_instructionTitleLabel trailingAnchor];
-  v94 = [v99 trailingAnchor];
-  v93 = [v95 constraintLessThanOrEqualToAnchor:v94];
+  trailingAnchor = [(UILabel *)self->_instructionTitleLabel trailingAnchor];
+  trailingAnchor2 = [v99 trailingAnchor];
+  v93 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v111[3] = v93;
-  v92 = [(UILabel *)self->_instructionDescriptionLabel topAnchor];
-  v91 = [(UILabel *)self->_instructionTitleLabel bottomAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91 constant:12.0];
+  topAnchor3 = [(UILabel *)self->_instructionDescriptionLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_instructionTitleLabel bottomAnchor];
+  v90 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:12.0];
   v111[4] = v90;
-  v89 = [(UILabel *)self->_instructionDescriptionLabel centerXAnchor];
-  v88 = [v99 centerXAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88];
+  centerXAnchor3 = [(UILabel *)self->_instructionDescriptionLabel centerXAnchor];
+  centerXAnchor4 = [v99 centerXAnchor];
+  v87 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v111[5] = v87;
-  v85 = [(UILabel *)self->_instructionDescriptionLabel leadingAnchor];
-  v84 = [v99 leadingAnchor];
-  v83 = [v85 constraintGreaterThanOrEqualToAnchor:v84];
+  leadingAnchor3 = [(UILabel *)self->_instructionDescriptionLabel leadingAnchor];
+  leadingAnchor4 = [v99 leadingAnchor];
+  v83 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v111[6] = v83;
-  v81 = [(UILabel *)self->_instructionDescriptionLabel trailingAnchor];
-  v80 = [v99 trailingAnchor];
-  v79 = [v81 constraintLessThanOrEqualToAnchor:v80];
+  trailingAnchor3 = [(UILabel *)self->_instructionDescriptionLabel trailingAnchor];
+  trailingAnchor4 = [v99 trailingAnchor];
+  v79 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
   v111[7] = v79;
-  v78 = [(UIActivityIndicatorView *)self->_activityIndicatorView centerXAnchor];
-  v77 = [v99 centerXAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  centerXAnchor5 = [(UIActivityIndicatorView *)self->_activityIndicatorView centerXAnchor];
+  centerXAnchor6 = [v99 centerXAnchor];
+  v76 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v111[8] = v76;
-  v75 = [(UIActivityIndicatorView *)self->_activityIndicatorView centerYAnchor];
-  v74 = [v99 centerYAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicatorView centerYAnchor];
+  centerYAnchor2 = [v99 centerYAnchor];
+  v73 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v111[9] = v73;
-  v72 = [(CSLatencyCardResultView *)self->_resultView leadingAnchor];
-  v71 = [v99 leadingAnchor];
-  v70 = [v72 constraintGreaterThanOrEqualToAnchor:v71];
+  leadingAnchor5 = [(CSLatencyCardResultView *)self->_resultView leadingAnchor];
+  leadingAnchor6 = [v99 leadingAnchor];
+  v70 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
   v111[10] = v70;
-  v69 = [(CSLatencyCardResultView *)self->_resultView trailingAnchor];
-  v68 = [v99 trailingAnchor];
-  v67 = [v69 constraintLessThanOrEqualToAnchor:v68];
+  trailingAnchor5 = [(CSLatencyCardResultView *)self->_resultView trailingAnchor];
+  trailingAnchor6 = [v99 trailingAnchor];
+  v67 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
   v111[11] = v67;
-  v66 = [(CSLatencyCardResultView *)self->_resultView centerXAnchor];
-  v65 = [v99 centerXAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  centerXAnchor7 = [(CSLatencyCardResultView *)self->_resultView centerXAnchor];
+  centerXAnchor8 = [v99 centerXAnchor];
+  v64 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v111[12] = v64;
-  v63 = [(CSLatencyCardResultView *)self->_resultView bottomAnchor];
-  v62 = [v99 bottomAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62 constant:-28.0];
+  bottomAnchor2 = [(CSLatencyCardResultView *)self->_resultView bottomAnchor];
+  bottomAnchor3 = [v99 bottomAnchor];
+  v61 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-28.0];
   v111[13] = v61;
-  v60 = [(UIStackView *)self->_failedInfoView centerXAnchor];
-  v59 = [v99 centerXAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  centerXAnchor9 = [(UIStackView *)self->_failedInfoView centerXAnchor];
+  centerXAnchor10 = [v99 centerXAnchor];
+  v58 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   v111[14] = v58;
-  v38 = [(UIStackView *)self->_failedInfoView bottomAnchor];
-  v39 = [v99 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39 constant:-46.0];
+  bottomAnchor4 = [(UIStackView *)self->_failedInfoView bottomAnchor];
+  bottomAnchor5 = [v99 bottomAnchor];
+  v40 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-46.0];
   v111[15] = v40;
   v86 = v25;
-  v41 = [v25 widthAnchor];
-  v42 = [v41 constraintEqualToConstant:28.0];
+  widthAnchor = [v25 widthAnchor];
+  v42 = [widthAnchor constraintEqualToConstant:28.0];
   v111[16] = v42;
-  v43 = [v25 heightAnchor];
-  v44 = [v43 constraintEqualToConstant:28.0];
+  heightAnchor = [v25 heightAnchor];
+  v44 = [heightAnchor constraintEqualToConstant:28.0];
   v111[17] = v44;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v111 count:18];
   [v82 activateConstraints:v45];
 
-  v46 = [(UILabel *)self->_instructionDescriptionLabel bottomAnchor];
-  v47 = [v99 bottomAnchor];
-  v48 = [v46 constraintLessThanOrEqualToAnchor:v47 constant:-44.0];
+  bottomAnchor6 = [(UILabel *)self->_instructionDescriptionLabel bottomAnchor];
+  bottomAnchor7 = [v99 bottomAnchor];
+  v48 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:-44.0];
   v110 = v48;
   v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v110 count:1];
   idleStateConstraints = self->_idleStateConstraints;
   self->_idleStateConstraints = v49;
 
-  v51 = [(CSLatencyCardResultView *)self->_resultView topAnchor];
-  v52 = [v99 topAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52 constant:36.0];
+  topAnchor4 = [(CSLatencyCardResultView *)self->_resultView topAnchor];
+  topAnchor5 = [v99 topAnchor];
+  v53 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:36.0];
   v109 = v53;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v109 count:1];
   resultStateConstraints = self->_resultStateConstraints;
@@ -315,14 +315,14 @@
 
 - (id)_setupActionButton
 {
-  v3 = [MEMORY[0x277D751C8] clearConfiguration];
-  v4 = [MEMORY[0x277D75340] tertiarySystemFillColor];
-  [v3 setBackgroundColor:v4];
+  clearConfiguration = [MEMORY[0x277D751C8] clearConfiguration];
+  tertiarySystemFillColor = [MEMORY[0x277D75340] tertiarySystemFillColor];
+  [clearConfiguration setBackgroundColor:tertiarySystemFillColor];
 
-  v5 = [MEMORY[0x277D75228] borderedButtonConfiguration];
-  [v5 setCornerStyle:4];
-  [v5 setTitleAlignment:2];
-  [v5 setBackground:v3];
+  borderedButtonConfiguration = [MEMORY[0x277D75228] borderedButtonConfiguration];
+  [borderedButtonConfiguration setCornerStyle:4];
+  [borderedButtonConfiguration setTitleAlignment:2];
+  [borderedButtonConfiguration setBackground:clearConfiguration];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D75220];
   v7 = MEMORY[0x277D750C0];
@@ -332,11 +332,11 @@
   v15 = &unk_278E0B3C0;
   objc_copyWeak(&v16, &location);
   v8 = [v7 actionWithHandler:&v12];
-  v9 = [v6 buttonWithConfiguration:v5 primaryAction:{v8, v12, v13, v14, v15}];
+  v9 = [v6 buttonWithConfiguration:borderedButtonConfiguration primaryAction:{v8, v12, v13, v14, v15}];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(CSLatencyCardViewController *)self _buttonTitleForCurrentState];
-  [v9 setTitle:v10 forState:0];
+  _buttonTitleForCurrentState = [(CSLatencyCardViewController *)self _buttonTitleForCurrentState];
+  [v9 setTitle:_buttonTitleForCurrentState forState:0];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -350,12 +350,12 @@ void __49__CSLatencyCardViewController__setupActionButton__block_invoke(uint64_t
   [WeakRetained _handleButtonAction];
 }
 
-- (void)_updateViewFromCurrentStateAnimated:(BOOL)a3
+- (void)_updateViewFromCurrentStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   actionButton = self->_actionButton;
-  v6 = [(CSLatencyCardViewController *)self _buttonTitleForCurrentState];
-  [(UIButton *)actionButton setTitle:v6 forState:0];
+  _buttonTitleForCurrentState = [(CSLatencyCardViewController *)self _buttonTitleForCurrentState];
+  [(UIButton *)actionButton setTitle:_buttonTitleForCurrentState forState:0];
 
   [(UIButton *)self->_actionButton layoutIfNeeded];
   if (self->_cardState == 2)
@@ -364,7 +364,7 @@ void __49__CSLatencyCardViewController__setupActionButton__block_invoke(uint64_t
     [(CSLatencyCardResultView *)self->_resultView layoutIfNeeded];
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -464,11 +464,11 @@ void __67__CSLatencyCardViewController__updateViewFromCurrentStateAnimated___blo
   return v6;
 }
 
-- (id)_titleForProgressEvent:(unint64_t)a3
+- (id)_titleForProgressEvent:(unint64_t)event
 {
-  if (a3 <= 5)
+  if (event <= 5)
   {
-    v4 = off_278E0B458[a3];
+    v4 = off_278E0B458[event];
     v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
     v3 = [v5 localizedStringForKey:v4 value:&stru_285797E10 table:0];
   }
@@ -476,9 +476,9 @@ void __67__CSLatencyCardViewController__updateViewFromCurrentStateAnimated___blo
   return v3;
 }
 
-- (void)_updateCardForEvent:(unint64_t)a3 info:(id)a4
+- (void)_updateCardForEvent:(unint64_t)event info:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = ContinuitySingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,13 +487,13 @@ void __67__CSLatencyCardViewController__updateViewFromCurrentStateAnimated___blo
     v13 = 2080;
     v14 = "[CSLatencyCardViewController _updateCardForEvent:info:]";
     v15 = 2048;
-    v16 = a3;
+    eventCopy = event;
     _os_log_impl(&dword_2441FB000, v7, OS_LOG_TYPE_DEFAULT, "%s: %s - Audio Latency card updating for event: %ld", &v11, 0x20u);
   }
 
-  v8 = [v6 objectForKey:@"LATENCY"];
+  v8 = [infoCopy objectForKey:@"LATENCY"];
 
-  if (a3 == 4 && v8)
+  if (event == 4 && v8)
   {
     [v8 floatValue];
     self->_latency = llroundf(v9 * 1000.0);
@@ -506,16 +506,16 @@ LABEL_7:
 
   self->_cardState = 1;
   self->_latency = 0;
-  if (a3 > 2)
+  if (event > 2)
   {
-    if (a3 != 3)
+    if (event != 3)
     {
-      if (a3 == 4)
+      if (event == 4)
       {
         goto LABEL_6;
       }
 
-      if (a3 != 5)
+      if (event != 5)
       {
         goto LABEL_8;
       }
@@ -525,13 +525,13 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a3 - 1 < 2)
+  if (event - 1 < 2)
   {
     v10 = 1;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!event)
   {
     self->_cardState = 0;
   }
@@ -599,15 +599,15 @@ void __58__CSLatencyCardViewController__startAudioLatencyEstimator__block_invoke
   }
 }
 
-- (void)_showLatencyCheckConfirmationIfNeededWithCompletion:(id)a3
+- (void)_showLatencyCheckConfirmationIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[CSShieldManager sharedManager];
-  v6 = [v5 isMicLocal];
+  isMicLocal = [v5 isMicLocal];
 
   v7 = ContinuitySingLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isMicLocal)
   {
     if (v8)
     {
@@ -616,12 +616,12 @@ void __58__CSLatencyCardViewController__startAudioLatencyEstimator__block_invoke
       _os_log_impl(&dword_2441FB000, v7, OS_LOG_TYPE_DEFAULT, "%s: Mic is local. Don't need confirmation to start audio latency estimator.", buf, 0xCu);
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
-    v23 = self;
+    selfCopy = self;
     if (v8)
     {
       *buf = 136315138;
@@ -644,7 +644,7 @@ void __58__CSLatencyCardViewController__startAudioLatencyEstimator__block_invoke
     v26[1] = 3221225472;
     v26[2] = __83__CSLatencyCardViewController__showLatencyCheckConfirmationIfNeededWithCompletion___block_invoke;
     v26[3] = &unk_278E0B438;
-    v15 = v4;
+    v15 = completionCopy;
     v27 = v15;
     v16 = [v14 actionWithTitle:v13 style:2 handler:v26];
     v17 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -659,7 +659,7 @@ void __58__CSLatencyCardViewController__startAudioLatencyEstimator__block_invoke
     v20 = [v19 actionWithTitle:v18 style:1 handler:v24];
     [v11 addAction:v16];
     [v11 addAction:v20];
-    [(CSLatencyCardViewController *)v23 presentViewController:v11 animated:1 completion:&__block_literal_global_5];
+    [(CSLatencyCardViewController *)selfCopy presentViewController:v11 animated:1 completion:&__block_literal_global_5];
   }
 }
 
@@ -710,8 +710,8 @@ void __83__CSLatencyCardViewController__showLatencyCheckConfirmationIfNeededWith
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: Cancel audio latency estimator", &v5, 0xCu);
   }
 
-  v4 = [(CSLatencyCardViewController *)self requestClient];
-  [v4 cancelAudioLatencyEstimator];
+  requestClient = [(CSLatencyCardViewController *)self requestClient];
+  [requestClient cancelAudioLatencyEstimator];
 
   self->_cardState = 0;
   [(CSLatencyCardViewController *)self _updateViewFromCurrentStateAnimated:1];

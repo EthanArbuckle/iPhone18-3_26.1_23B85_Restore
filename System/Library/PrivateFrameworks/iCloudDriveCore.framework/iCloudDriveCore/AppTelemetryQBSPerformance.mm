@@ -1,22 +1,22 @@
 @interface AppTelemetryQBSPerformance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecordsFetchedTotalMetadataSize:(BOOL)a3;
-- (void)setHasTotalTime:(BOOL)a3;
-- (void)setHasXattrsFetchedTotalSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecordsFetchedTotalMetadataSize:(BOOL)size;
+- (void)setHasTotalTime:(BOOL)time;
+- (void)setHasXattrsFetchedTotalSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryQBSPerformance
 
-- (void)setHasTotalTime:(BOOL)a3
+- (void)setHasTotalTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRecordsFetchedTotalMetadataSize:(BOOL)a3
+- (void)setHasRecordsFetchedTotalMetadataSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasXattrsFetchedTotalSize:(BOOL)a3
+- (void)setHasXattrsFetchedTotalSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 8;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryQBSPerformance;
   v4 = [(AppTelemetryQBSPerformance *)&v8 description];
-  v5 = [(AppTelemetryQBSPerformance *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryQBSPerformance *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   operationType = self->_operationType;
   if (operationType)
   {
-    [v3 setObject:operationType forKey:@"operationType"];
+    [dictionary setObject:operationType forKey:@"operationType"];
   }
 
   has = self->_has;
@@ -136,14 +136,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_operationType)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     totalTime = self->_totalTime;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   recordsFetched = self->_recordsFetched;
   PBDataWriterWriteUint64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   recordsFetchedTotalMetadataSize = self->_recordsFetchedTotalMetadataSize;
   PBDataWriterWriteUint64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     xattrsFetchedTotalSize = self->_xattrsFetchedTotalSize;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_operationType)
   {
-    v6 = v4;
-    [v4 setOperationType:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setOperationType:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_totalTime;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 3) = self->_totalTime;
+    *(toCopy + 48) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_recordsFetched;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = self->_recordsFetched;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 2) = self->_recordsFetchedTotalMetadataSize;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = self->_recordsFetchedTotalMetadataSize;
+  *(toCopy + 48) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = self->_xattrsFetchedTotalSize;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 4) = self->_xattrsFetchedTotalSize;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_operationType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_operationType copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   operationType = self->_operationType;
-  if (operationType | *(v4 + 5))
+  if (operationType | *(equalCopy + 5))
   {
     if (![(NSString *)operationType isEqual:?])
     {
@@ -336,13 +336,13 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_totalTime != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_totalTime != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
 LABEL_23:
     v6 = 0;
@@ -351,34 +351,34 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_recordsFetched != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_recordsFetched != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_recordsFetchedTotalMetadataSize != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_recordsFetchedTotalMetadataSize != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 48) & 8) == 0;
+  v6 = (*(equalCopy + 48) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_xattrsFetchedTotalSize != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_xattrsFetchedTotalSize != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
@@ -446,22 +446,22 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AppTelemetryQBSPerformance *)self setOperationType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) != 0)
   {
-    self->_totalTime = v4[3];
+    self->_totalTime = fromCopy[3];
     *&self->_has |= 4u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -474,14 +474,14 @@ LABEL_5:
     }
   }
 
-  else if ((v4[6] & 1) == 0)
+  else if ((fromCopy[6] & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_recordsFetched = v4[1];
+  self->_recordsFetched = fromCopy[1];
   *&self->_has |= 1u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -494,12 +494,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_recordsFetchedTotalMetadataSize = v4[2];
+  self->_recordsFetchedTotalMetadataSize = fromCopy[2];
   *&self->_has |= 2u;
-  if ((v4[6] & 8) != 0)
+  if ((fromCopy[6] & 8) != 0)
   {
 LABEL_7:
-    self->_xattrsFetchedTotalSize = v4[4];
+    self->_xattrsFetchedTotalSize = fromCopy[4];
     *&self->_has |= 8u;
   }
 

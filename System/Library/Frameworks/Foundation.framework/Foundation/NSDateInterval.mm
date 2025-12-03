@@ -1,8 +1,8 @@
 @interface NSDateInterval
-+ (NSDateInterval)allocWithZone:(_NSZone *)a3;
++ (NSDateInterval)allocWithZone:(_NSZone *)zone;
 - (BOOL)containsDate:(NSDate *)date;
 - (BOOL)intersectsDateInterval:(NSDateInterval *)dateInterval;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToDateInterval:(NSDateInterval *)dateInterval;
 - (NSComparisonResult)compare:(NSDateInterval *)dateInterval;
 - (NSDateInterval)init;
@@ -10,7 +10,7 @@
 - (NSDateInterval)intersectionWithDateInterval:(NSDateInterval *)dateInterval;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSDateInterval
@@ -29,25 +29,25 @@
   v7.receiver = self;
   v7.super_class = NSDateInterval;
   v3 = [(NSDateInterval *)&v7 description];
-  v4 = [(NSDateInterval *)self startDate];
+  startDate = [(NSDateInterval *)self startDate];
   [(NSDateInterval *)self duration];
-  return [NSString stringWithFormat:@"%@ (Start Date) %@ + (Duration) %f seconds = (End Date) %@", v3, v4, v5, [(NSDateInterval *)self endDate]];
+  return [NSString stringWithFormat:@"%@ (Start Date) %@ + (Duration) %f seconds = (End Date) %@", v3, startDate, v5, [(NSDateInterval *)self endDate]];
 }
 
-+ (NSDateInterval)allocWithZone:(_NSZone *)a3
++ (NSDateInterval)allocWithZone:(_NSZone *)zone
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSDateInterval == a1)
+  if (NSDateInterval == self)
   {
 
-    return [(NSDateInterval *)_NSConcreteDateInterval allocWithZone:a3];
+    return [(NSDateInterval *)_NSConcreteDateInterval allocWithZone:zone];
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___NSDateInterval;
-    return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   }
 }
 
@@ -93,14 +93,14 @@
   return CFHashBytes();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -111,7 +111,7 @@
     return 0;
   }
 
-  return [(NSDateInterval *)self isEqualToDateInterval:a3];
+  return [(NSDateInterval *)self isEqualToDateInterval:equal];
 }
 
 - (BOOL)isEqualToDateInterval:(NSDateInterval *)dateInterval
@@ -192,12 +192,12 @@
     v14 = v12 + v13;
     if (v12 >= v8)
     {
-      v15 = [(NSDateInterval *)dateInterval startDate];
+      startDate = [(NSDateInterval *)dateInterval startDate];
     }
 
     else
     {
-      v15 = [(NSDateInterval *)self startDate];
+      startDate = [(NSDateInterval *)self startDate];
       v12 = v8;
     }
 
@@ -211,7 +211,7 @@
       v16 = v10;
     }
 
-    v5 = [[NSDateInterval alloc] initWithStartDate:v15 duration:v16 - v12];
+    v5 = [[NSDateInterval alloc] initWithStartDate:startDate duration:v16 - v12];
   }
 
   return v5;
@@ -273,18 +273,18 @@ LABEL_8:
   return [(NSDateInterval *)self initWithStartDate:v6 endDate:v10];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Encoder does not allow keyed coding!" userInfo:0]);
   }
 
-  [a3 encodeObject:-[NSDateInterval startDate](self forKey:{"startDate"), @"NS.startDate"}];
-  [a3 encodeObject:-[NSDateInterval endDate](self forKey:{"endDate"), @"NS.endDate"}];
+  [coder encodeObject:-[NSDateInterval startDate](self forKey:{"startDate"), @"NS.startDate"}];
+  [coder encodeObject:-[NSDateInterval endDate](self forKey:{"endDate"), @"NS.endDate"}];
   [(NSDateInterval *)self duration];
 
-  [a3 encodeDouble:@"NS.duration" forKey:?];
+  [coder encodeDouble:@"NS.duration" forKey:?];
 }
 
 @end

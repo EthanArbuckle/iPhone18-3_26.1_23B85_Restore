@@ -1,22 +1,22 @@
 @interface VolumeControl
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews13VolumeControl)initWithFrame:(CGRect)a3;
-- (void)didSlideWithGestureRecognizer:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews13VolumeControl)initWithFrame:(CGRect)frame;
+- (void)didSlideWithGestureRecognizer:(id)recognizer;
 - (void)didTap;
 - (void)layoutSubviews;
-- (void)volumeChangedWithNotification:(id)a3;
+- (void)volumeChangedWithNotification:(id)notification;
 @end
 
 @implementation VolumeControl
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2FB5B0();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 190.0;
   v4 = 47.0;
@@ -25,18 +25,18 @@
   return result;
 }
 
-- (void)didSlideWithGestureRecognizer:(id)a3
+- (void)didSlideWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_2FC004(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_2FC004(recognizerCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_2FC1F0(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_2FC1F0(beginCopy);
 
   return self & 1;
 }
@@ -45,18 +45,18 @@
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13VolumeControl_isExpanded);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13VolumeControl_isExpanded) = v2 ^ 1;
-  v3 = self;
+  selfCopy = self;
   sub_2FA8A8(v2);
 }
 
-- (void)volumeChangedWithNotification:(id)a3
+- (void)volumeChangedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_2FCB20(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_2FCB20(notificationCopy);
 }
 
-- (_TtC23ShelfKitCollectionViews13VolumeControl)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews13VolumeControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

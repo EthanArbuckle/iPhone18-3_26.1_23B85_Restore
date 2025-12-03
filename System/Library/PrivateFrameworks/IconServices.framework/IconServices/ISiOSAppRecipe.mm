@@ -1,8 +1,8 @@
 @interface ISiOSAppRecipe
 - (ISiOSAppRecipe)init;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
-- (id)primaryResourceEffectReturningBackgroundContentOverride:(id *)a3;
-- (void)updateRecipeWithImageDescriptor:(id)a3;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
+- (id)primaryResourceEffectReturningBackgroundContentOverride:(id *)override;
+- (void)updateRecipeWithImageDescriptor:(id)descriptor;
 @end
 
 @implementation ISiOSAppRecipe
@@ -25,31 +25,31 @@
   return v3;
 }
 
-- (void)updateRecipeWithImageDescriptor:(id)a3
+- (void)updateRecipeWithImageDescriptor:(id)descriptor
 {
-  v4 = a3;
-  -[ISiOSAppRecipe setShouldApplyMask:](self, "setShouldApplyMask:", [v4 shouldApplyMask]);
-  -[ISiOSAppRecipe setShouldDrawBorder:](self, "setShouldDrawBorder:", [v4 drawBorder]);
-  v5 = [v4 tintColor];
-  [(ISiOSAppRecipe *)self setTintColor:v5];
+  descriptorCopy = descriptor;
+  -[ISiOSAppRecipe setShouldApplyMask:](self, "setShouldApplyMask:", [descriptorCopy shouldApplyMask]);
+  -[ISiOSAppRecipe setShouldDrawBorder:](self, "setShouldDrawBorder:", [descriptorCopy drawBorder]);
+  tintColor = [descriptorCopy tintColor];
+  [(ISiOSAppRecipe *)self setTintColor:tintColor];
 
-  -[ISiOSAppRecipe setAppearance:](self, "setAppearance:", [v4 appearance]);
-  -[ISiOSAppRecipe setBackground:](self, "setBackground:", [v4 background]);
-  -[ISiOSAppRecipe setTemplateVariant:](self, "setTemplateVariant:", [v4 templateVariant]);
-  LOBYTE(v5) = [v4 specialIconOptions];
+  -[ISiOSAppRecipe setAppearance:](self, "setAppearance:", [descriptorCopy appearance]);
+  -[ISiOSAppRecipe setBackground:](self, "setBackground:", [descriptorCopy background]);
+  -[ISiOSAppRecipe setTemplateVariant:](self, "setTemplateVariant:", [descriptorCopy templateVariant]);
+  LOBYTE(tintColor) = [descriptorCopy specialIconOptions];
 
-  if ((v5 & 2) != 0)
+  if ((tintColor & 2) != 0)
   {
 
     [(ISiOSAppRecipe *)self setAllowDarkAndTintable:1];
   }
 }
 
-- (id)primaryResourceEffectReturningBackgroundContentOverride:(id *)a3
+- (id)primaryResourceEffectReturningBackgroundContentOverride:(id *)override
 {
   if ([(ISiOSAppRecipe *)self templateVariant])
   {
-    *a3 = 0;
+    *override = 0;
     v5 = objc_opt_new();
 LABEL_3:
     v6 = v5;
@@ -61,11 +61,11 @@ LABEL_3:
     if (![(ISiOSAppRecipe *)self allowDarkAndTintable]|| [(ISiOSAppRecipe *)self appearance]!= 1)
     {
       [MEMORY[0x1E69A8968] white];
-      *a3 = v6 = 0;
+      *override = v6 = 0;
       goto LABEL_16;
     }
 
-    *a3 = objc_alloc_init(ISDarkBackgroundResource);
+    *override = objc_alloc_init(ISDarkBackgroundResource);
     if ([(ISiOSAppRecipe *)self segment])
     {
       v9 = ISSegmentDarkEffect;
@@ -74,9 +74,9 @@ LABEL_3:
     else
     {
       v11 = +[ISDefaults sharedInstance];
-      v12 = [v11 isDarkIconDimmingForDedicatedAssetsEnabled];
+      isDarkIconDimmingForDedicatedAssetsEnabled = [v11 isDarkIconDimmingForDedicatedAssetsEnabled];
 
-      if (!v12)
+      if (!isDarkIconDimmingForDedicatedAssetsEnabled)
       {
 LABEL_26:
         v6 = 0;
@@ -90,10 +90,10 @@ LABEL_26:
     goto LABEL_3;
   }
 
-  *a3 = objc_alloc_init(ISDarkBackgroundResource);
+  *override = objc_alloc_init(ISDarkBackgroundResource);
   if ([(ISiOSAppRecipe *)self generic])
   {
-    *a3 = [objc_alloc(MEMORY[0x1E69A8968]) initWithRed:0.0784 green:0.0784 blue:0.0784 alpha:1.0];
+    *override = [objc_alloc(MEMORY[0x1E69A8968]) initWithRed:0.0784 green:0.0784 blue:0.0784 alpha:1.0];
   }
 
   if (![(ISiOSAppRecipe *)self segment])
@@ -108,31 +108,31 @@ LABEL_26:
   }
 
   v7 = [ISSegmentTintEffect alloc];
-  v8 = [(ISiOSAppRecipe *)self tintColor];
-  if (v8)
+  tintColor = [(ISiOSAppRecipe *)self tintColor];
+  if (tintColor)
   {
-    v6 = [(ISSegmentTintEffect *)v7 initWithColor:v8];
+    v6 = [(ISSegmentTintEffect *)v7 initWithColor:tintColor];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69A8968] white];
-    v6 = [(ISSegmentTintEffect *)v7 initWithColor:v13];
+    white = [MEMORY[0x1E69A8968] white];
+    v6 = [(ISSegmentTintEffect *)v7 initWithColor:white];
   }
 
 LABEL_16:
   if ([(ISiOSAppRecipe *)self background]== 1)
   {
-    *a3 = 0;
+    *override = 0;
   }
 
   return v6;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(ISLayer);
   [(ISLayer *)v8 setSize:width, height];
   [(ISLayer *)v8 setName:@"root layer"];
@@ -173,7 +173,7 @@ LABEL_16:
     [v16 setLineColor:v17];
 
     [v16 setFillColor:0];
-    [v16 setLineWidth:1.0 / a4];
+    [v16 setLineWidth:1.0 / scale];
     [(ISContentLayer *)v15 setContent:v16];
     [(ISLayer *)v8 addSublayer:v15];
   }

@@ -1,22 +1,22 @@
 @interface UARPAccessoryInternal
 + (id)encodedClasses;
-- (BOOL)isEqual:(id)a3;
-- (UARPAccessoryInternal)initWithAccessoryID:(id)a3 assetID:(id)a4;
-- (UARPAccessoryInternal)initWithCoder:(id)a3;
-- (id)analyticsUpdateStateForAssetID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPAccessoryInternal)initWithAccessoryID:(id)d assetID:(id)iD;
+- (UARPAccessoryInternal)initWithCoder:(id)coder;
+- (id)analyticsUpdateStateForAssetID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createUpdateFirmwareEvent;
 - (unint64_t)hash;
-- (void)analyticsSendUpdateFirmwareEventForAssetID:(id)a3 frameworkParams:(id)a4;
-- (void)analyticsSetDownloadAvailableForAssetID:(id)a3;
-- (void)analyticsSetDownloadCompleteForAssetID:(id)a3 status:(int64_t)a4;
-- (void)analyticsSetDownloadConsentRequestedForAssetID:(id)a3;
+- (void)analyticsSendUpdateFirmwareEventForAssetID:(id)d frameworkParams:(id)params;
+- (void)analyticsSetDownloadAvailableForAssetID:(id)d;
+- (void)analyticsSetDownloadCompleteForAssetID:(id)d status:(int64_t)status;
+- (void)analyticsSetDownloadConsentRequestedForAssetID:(id)d;
 - (void)checkDropbox;
 - (void)dealloc;
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeUpdateState:(id)a3;
-- (void)sendUpdateFirmwareEventForState:(id)a3;
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeUpdateState:(id)state;
+- (void)sendUpdateFirmwareEventForState:(id)state;
 @end
 
 @implementation UARPAccessoryInternal
@@ -76,15 +76,15 @@
   return v5;
 }
 
-- (UARPAccessoryInternal)initWithAccessoryID:(id)a3 assetID:(id)a4
+- (UARPAccessoryInternal)initWithAccessoryID:(id)d assetID:(id)iD
 {
   v11.receiver = self;
   v11.super_class = UARPAccessoryInternal;
   v6 = [(UARPAccessoryInternal *)&v11 init];
   if (v6)
   {
-    v6->_accessoryID = [a3 copy];
-    v6->_assetID = a4;
+    v6->_accessoryID = [d copy];
+    v6->_assetID = iD;
     if ([(UARPAccessoryID *)v6->_accessoryID productGroup]&& [(UARPAccessoryID *)v6->_accessoryID productNumber])
     {
       v7 = [[NSString alloc] initWithFormat:@"%@-%@", -[UARPAccessoryID productGroup](v6->_accessoryID, "productGroup"), -[UARPAccessoryID productNumber](v6->_accessoryID, "productNumber")];
@@ -126,7 +126,7 @@ LABEL_9:
   [(UARPAccessoryInternal *)&v3 dealloc];
 }
 
-- (void)analyticsSetDownloadAvailableForAssetID:(id)a3
+- (void)analyticsSetDownloadAvailableForAssetID:(id)d
 {
   analyticsLog = self->_analyticsLog;
   if (os_log_type_enabled(analyticsLog, OS_LOG_TYPE_INFO))
@@ -134,11 +134,11 @@ LABEL_9:
     v7 = 136315394;
     v8 = "[UARPAccessoryInternal analyticsSetDownloadAvailableForAssetID:]";
     v9 = 2112;
-    v10 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, analyticsLog, OS_LOG_TYPE_INFO, "%s: %@", &v7, 0x16u);
   }
 
-  v6 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:a3];
+  v6 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:d];
   if (!v6)
   {
     v6 = [[UARPAnalyticsAUDUpdateFirmwareState alloc] initWithAccessoryID:self->_accessoryID assetID:self->_assetID];
@@ -148,7 +148,7 @@ LABEL_9:
   [(UARPAnalyticsAUDUpdateFirmwareState *)v6 setAssetAvailableForDownload];
 }
 
-- (void)analyticsSetDownloadConsentRequestedForAssetID:(id)a3
+- (void)analyticsSetDownloadConsentRequestedForAssetID:(id)d
 {
   analyticsLog = self->_analyticsLog;
   if (os_log_type_enabled(analyticsLog, OS_LOG_TYPE_INFO))
@@ -156,11 +156,11 @@ LABEL_9:
     v7 = 136315394;
     v8 = "[UARPAccessoryInternal analyticsSetDownloadConsentRequestedForAssetID:]";
     v9 = 2112;
-    v10 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, analyticsLog, OS_LOG_TYPE_INFO, "%s: %@", &v7, 0x16u);
   }
 
-  v6 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:a3];
+  v6 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:d];
   if (v6)
   {
     [v6 setDownloadConsentRequested];
@@ -172,7 +172,7 @@ LABEL_9:
   }
 }
 
-- (void)analyticsSetDownloadCompleteForAssetID:(id)a3 status:(int64_t)a4
+- (void)analyticsSetDownloadCompleteForAssetID:(id)d status:(int64_t)status
 {
   analyticsLog = self->_analyticsLog;
   if (os_log_type_enabled(analyticsLog, OS_LOG_TYPE_INFO))
@@ -180,18 +180,18 @@ LABEL_9:
     v10 = 136315650;
     v11 = "[UARPAccessoryInternal analyticsSetDownloadCompleteForAssetID:status:]";
     v12 = 2112;
-    v13 = a3;
+    dCopy = d;
     v14 = 2080;
-    v15 = sub_100019FF4(a4);
+    v15 = sub_100019FF4(status);
     _os_log_impl(&_mh_execute_header, analyticsLog, OS_LOG_TYPE_INFO, "%s: %@ status=%s", &v10, 0x20u);
   }
 
-  v8 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:a3];
+  v8 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:d];
   if (v8)
   {
     v9 = v8;
-    [v8 setDownloadComplete:a4];
-    if ((a4 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    [v8 setDownloadComplete:status];
+    if ((status - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       [(UARPAccessoryInternal *)self sendUpdateFirmwareEventForState:v9];
       [(UARPAccessoryInternal *)self removeUpdateState:v9];
@@ -204,7 +204,7 @@ LABEL_9:
   }
 }
 
-- (void)analyticsSendUpdateFirmwareEventForAssetID:(id)a3 frameworkParams:(id)a4
+- (void)analyticsSendUpdateFirmwareEventForAssetID:(id)d frameworkParams:(id)params
 {
   analyticsLog = self->_analyticsLog;
   if (os_log_type_enabled(analyticsLog, OS_LOG_TYPE_INFO))
@@ -212,20 +212,20 @@ LABEL_9:
     v11 = 136315394;
     v12 = "[UARPAccessoryInternal analyticsSendUpdateFirmwareEventForAssetID:frameworkParams:]";
     v13 = 2112;
-    v14 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, analyticsLog, OS_LOG_TYPE_INFO, "%s: %@", &v11, 0x16u);
   }
 
-  v8 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:a3];
+  v8 = [(UARPAccessoryInternal *)self analyticsUpdateStateForAssetID:d];
   if (v8)
   {
     v9 = v8;
-    v10 = [(UARPAccessoryInternal *)self createUpdateFirmwareEvent];
-    [v10 setDownloadConsentDuration:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(v9, "downloadConsentDuration"))}];
-    [v10 setDownloadUserInitiated:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", objc_msgSend(v9, "downloadUserIntent"))}];
-    [v10 setDownloadStatus:{objc_msgSend(v9, "downloadStatus")}];
-    [v10 updateWithFrameworkParams:a4];
-    [v10 send];
+    createUpdateFirmwareEvent = [(UARPAccessoryInternal *)self createUpdateFirmwareEvent];
+    [createUpdateFirmwareEvent setDownloadConsentDuration:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(v9, "downloadConsentDuration"))}];
+    [createUpdateFirmwareEvent setDownloadUserInitiated:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", objc_msgSend(v9, "downloadUserIntent"))}];
+    [createUpdateFirmwareEvent setDownloadStatus:{objc_msgSend(v9, "downloadStatus")}];
+    [createUpdateFirmwareEvent updateWithFrameworkParams:params];
+    [createUpdateFirmwareEvent send];
 
     [(UARPAccessoryInternal *)self removeUpdateState:v9];
   }
@@ -236,7 +236,7 @@ LABEL_9:
   }
 }
 
-- (id)analyticsUpdateStateForAssetID:(id)a3
+- (id)analyticsUpdateStateForAssetID:(id)d
 {
   v12 = 0u;
   v13 = 0u;
@@ -262,7 +262,7 @@ LABEL_3:
 
     v9 = *(*(&v12 + 1) + 8 * v8);
     v10 = [objc_msgSend(v9 "assetID")];
-    if (v10 == [a3 type] && objc_msgSend(objc_msgSend(objc_msgSend(v9, "assetID"), "remoteURL"), "isEqual:", objc_msgSend(a3, "remoteURL")) && (objc_msgSend(objc_msgSend(objc_msgSend(v9, "assetID"), "assetVersion"), "isEqual:", objc_msgSend(a3, "assetVersion")) & 1) != 0)
+    if (v10 == [d type] && objc_msgSend(objc_msgSend(objc_msgSend(v9, "assetID"), "remoteURL"), "isEqual:", objc_msgSend(d, "remoteURL")) && (objc_msgSend(objc_msgSend(objc_msgSend(v9, "assetID"), "assetVersion"), "isEqual:", objc_msgSend(d, "assetVersion")) & 1) != 0)
     {
       return v9;
     }
@@ -280,13 +280,13 @@ LABEL_3:
   }
 }
 
-- (void)sendUpdateFirmwareEventForState:(id)a3
+- (void)sendUpdateFirmwareEventForState:(id)state
 {
-  v4 = [(UARPAccessoryInternal *)self createUpdateFirmwareEvent];
-  [v4 setDownloadConsentDuration:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(a3, "downloadConsentDuration"))}];
-  [v4 setDownloadUserInitiated:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", objc_msgSend(a3, "downloadUserIntent"))}];
-  [v4 setDownloadStatus:{objc_msgSend(a3, "downloadStatus")}];
-  [v4 send];
+  createUpdateFirmwareEvent = [(UARPAccessoryInternal *)self createUpdateFirmwareEvent];
+  [createUpdateFirmwareEvent setDownloadConsentDuration:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(state, "downloadConsentDuration"))}];
+  [createUpdateFirmwareEvent setDownloadUserInitiated:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", objc_msgSend(state, "downloadUserIntent"))}];
+  [createUpdateFirmwareEvent setDownloadStatus:{objc_msgSend(state, "downloadStatus")}];
+  [createUpdateFirmwareEvent send];
 }
 
 - (id)createUpdateFirmwareEvent
@@ -296,47 +296,47 @@ LABEL_3:
   return v3;
 }
 
-- (void)removeUpdateState:(id)a3
+- (void)removeUpdateState:(id)state
 {
   analyticsLog = self->_analyticsLog;
   if (os_log_type_enabled(analyticsLog, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, analyticsLog, OS_LOG_TYPE_INFO, "%@ tracking complete", &v6, 0xCu);
   }
 
-  [(NSMutableArray *)self->_analyticsUpdateStates removeObject:a3];
+  [(NSMutableArray *)self->_analyticsUpdateStates removeObject:state];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UARPAccessoryInternal alloc] initWithAccessoryID:self->_accessoryID assetID:self->_assetID];
   v4->_record = [self->_record copy];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_identifier forKey:@"identifier"];
-  [a3 encodeObject:self->_accessoryID forKey:@"accessoryID"];
-  [a3 encodeObject:self->_assetID forKey:@"assetID"];
-  [a3 encodeObject:self->_dropboxFirmwarePath forKey:@"dropboxFirmwarePath"];
-  [a3 encodeObject:self->_dropboxReleaseNotesPath forKey:@"dropboxReleaseNotesPath"];
+  [coder encodeObject:self->_identifier forKey:@"identifier"];
+  [coder encodeObject:self->_accessoryID forKey:@"accessoryID"];
+  [coder encodeObject:self->_assetID forKey:@"assetID"];
+  [coder encodeObject:self->_dropboxFirmwarePath forKey:@"dropboxFirmwarePath"];
+  [coder encodeObject:self->_dropboxReleaseNotesPath forKey:@"dropboxReleaseNotesPath"];
   analyticsUpdateStates = self->_analyticsUpdateStates;
 
-  [a3 encodeObject:analyticsUpdateStates forKey:@"analyticsUpdateStates"];
+  [coder encodeObject:analyticsUpdateStates forKey:@"analyticsUpdateStates"];
 }
 
-- (UARPAccessoryInternal)initWithCoder:(id)a3
+- (UARPAccessoryInternal)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryID"];
-  v6 = -[UARPAccessoryInternal initWithAccessoryID:assetID:](self, "initWithAccessoryID:assetID:", v5, [a3 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"]);
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"accessoryID"];
+  v6 = -[UARPAccessoryInternal initWithAccessoryID:assetID:](self, "initWithAccessoryID:assetID:", v5, [coder decodeObjectOfClass:objc_opt_class() forKey:@"assetID"]);
   if (v6)
   {
-    v6->_identifier = [a3 decodeObjectForKey:@"identifier"];
-    v6->_dropboxFirmwarePath = [a3 decodeObjectForKey:@"dropboxFirmwarePath"];
-    v6->_dropboxReleaseNotesPath = [a3 decodeObjectForKey:@"dropboxReleaseNotesPath"];
+    v6->_identifier = [coder decodeObjectForKey:@"identifier"];
+    v6->_dropboxFirmwarePath = [coder decodeObjectForKey:@"dropboxFirmwarePath"];
+    v6->_dropboxReleaseNotesPath = [coder decodeObjectForKey:@"dropboxReleaseNotesPath"];
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = objc_opt_class();
@@ -351,7 +351,7 @@ LABEL_3:
       v6->_analyticsUpdateStates = 0;
     }
 
-    v6->_analyticsUpdateStates = [objc_msgSend(a3 decodeObjectOfClasses:v8 forKey:{@"analyticsUpdateStates", "mutableCopy"}];
+    v6->_analyticsUpdateStates = [objc_msgSend(coder decodeObjectOfClasses:v8 forKey:{@"analyticsUpdateStates", "mutableCopy"}];
   }
 
   return v6;
@@ -359,17 +359,17 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(UARPAccessoryInternal *)self identifier];
+  identifier = [(UARPAccessoryInternal *)self identifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == a3)
+    if (self == equal)
     {
       LOBYTE(v5) = 1;
     }
@@ -377,27 +377,27 @@ LABEL_3:
     else
     {
       [(UARPAccessoryInternal *)self identifier];
-      [a3 identifier];
+      [equal identifier];
       v5 = nullableObjectsEqual();
       if (v5)
       {
         [(UARPAccessoryInternal *)self accessoryID];
-        [a3 accessoryID];
+        [equal accessoryID];
         v5 = nullableObjectsEqual();
         if (v5)
         {
           [(UARPAccessoryInternal *)self assetID];
-          [a3 assetID];
+          [equal assetID];
           v5 = nullableObjectsEqual();
           if (v5)
           {
             [(UARPAccessoryInternal *)self dropboxFirmwarePath];
-            [a3 dropboxFirmwarePath];
+            [equal dropboxFirmwarePath];
             v5 = nullableObjectsEqual();
             if (v5)
             {
               [(UARPAccessoryInternal *)self dropboxReleaseNotesPath];
-              [a3 dropboxReleaseNotesPath];
+              [equal dropboxReleaseNotesPath];
 
               LOBYTE(v5) = nullableObjectsEqual();
             }
@@ -451,29 +451,29 @@ LABEL_3:
   }
 }
 
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string
 {
-  [a4 appendWithTabDepth:a3 format:{@"%@\n", self->_accessoryID}];
+  [string appendWithTabDepth:depth format:{@"%@\n", self->_accessoryID}];
   if (self->_identifier)
   {
-    [a4 appendWithTabDepth:a3 + 1 format:{@"Identifier: %@\n", self->_identifier}];
+    [string appendWithTabDepth:depth + 1 format:{@"Identifier: %@\n", self->_identifier}];
   }
 
-  [(UARPAssetID *)self->_assetID dumpWithTabDepth:a3 + 1 dumpString:a4];
+  [(UARPAssetID *)self->_assetID dumpWithTabDepth:depth + 1 dumpString:string];
   if (self->_dropboxFirmwarePath)
   {
-    [a4 appendWithTabDepth:a3 + 1 format:{@"Dropbox Firmware Path: %@\n", self->_dropboxFirmwarePath}];
+    [string appendWithTabDepth:depth + 1 format:{@"Dropbox Firmware Path: %@\n", self->_dropboxFirmwarePath}];
   }
 
-  [a4 appendWithTabDepth:a3 + 1 format:{@"Remote Check Status: %s\n", -[UARPAccessoryInternal remoteCheckStatusString](self, "remoteCheckStatusString")}];
+  [string appendWithTabDepth:depth + 1 format:{@"Remote Check Status: %s\n", -[UARPAccessoryInternal remoteCheckStatusString](self, "remoteCheckStatusString")}];
   if (self->_dropboxReleaseNotesPath)
   {
-    [a4 appendWithTabDepth:a3 + 1 format:{@"Dropbox Release Notes Path: %@\n", self->_dropboxReleaseNotesPath}];
+    [string appendWithTabDepth:depth + 1 format:{@"Dropbox Release Notes Path: %@\n", self->_dropboxReleaseNotesPath}];
   }
 
   if ([(NSMutableArray *)self->_analyticsUpdateStates count])
   {
-    [a4 appendWithTabDepth:a3 + 1 format:@"Analytics Firmware Update States:\n"];
+    [string appendWithTabDepth:depth + 1 format:@"Analytics Firmware Update States:\n"];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -493,7 +493,7 @@ LABEL_3:
             objc_enumerationMutation(analyticsUpdateStates);
           }
 
-          [*(*(&v13 + 1) + 8 * i) dumpWithTabDepth:a3 + 2 dumpString:a4];
+          [*(*(&v13 + 1) + 8 * i) dumpWithTabDepth:depth + 2 dumpString:string];
         }
 
         v9 = [(NSMutableArray *)analyticsUpdateStates countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -506,7 +506,7 @@ LABEL_3:
   record = self->_record;
   if (objc_opt_respondsToSelector())
   {
-    [self->_record dumpWithTabDepth:a3 + 1 dumpString:a4];
+    [self->_record dumpWithTabDepth:depth + 1 dumpString:string];
   }
 }
 

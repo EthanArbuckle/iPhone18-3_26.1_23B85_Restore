@@ -1,15 +1,15 @@
 @interface _UISceneCarPlaySessionSettings
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation _UISceneCarPlaySessionSettings
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if (([v3 matchesProperty:sel_carPlayAvailableInteractionModels] & 1) != 0 || (objc_msgSend(v3, "matchesProperty:", sel_carPlayPrimaryInteractionModel) & 1) != 0 || (objc_msgSend(v3, "matchesProperty:", sel_carPlayTouchLevel) & 1) != 0 || objc_msgSend(v3, "matchesProperty:", sel_carPlayTouchpads))
+  settingCopy = setting;
+  if (([settingCopy matchesProperty:sel_carPlayAvailableInteractionModels] & 1) != 0 || (objc_msgSend(settingCopy, "matchesProperty:", sel_carPlayPrimaryInteractionModel) & 1) != 0 || (objc_msgSend(settingCopy, "matchesProperty:", sel_carPlayTouchLevel) & 1) != 0 || objc_msgSend(settingCopy, "matchesProperty:", sel_carPlayTouchpads))
   {
-    [v3 setPropagating:1];
+    [settingCopy setPropagating:1];
   }
 }
 

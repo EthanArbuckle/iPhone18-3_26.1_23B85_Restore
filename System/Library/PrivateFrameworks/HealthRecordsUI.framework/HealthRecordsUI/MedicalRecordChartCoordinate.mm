@@ -3,7 +3,7 @@
 - (_TtC15HealthRecordsUI28MedicalRecordChartCoordinate)init;
 - (double)endXValue;
 - (double)startXValue;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation MedicalRecordChartCoordinate
@@ -46,13 +46,13 @@
   return v2;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
-  v4 = *&a3->c;
-  v8[0] = *&a3->a;
+  v4 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v4;
-  v8[2] = *&a3->tx;
-  v5 = self;
+  v8[2] = *&transform->tx;
+  selfCopy = self;
   v6 = sub_1D12618E4(v8);
 
   return v6;

@@ -1,14 +1,14 @@
 @interface MTLHeapDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device;
 - (MTLHeapDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
-- (void)setAddressRanges:(id)a3;
-- (void)setCpuCacheMode:(unint64_t)a3;
-- (void)setResourceOptions:(unint64_t)a3;
-- (void)setStorageMode:(unint64_t)a3;
+- (void)setAddressRanges:(id)ranges;
+- (void)setCpuCacheMode:(unint64_t)mode;
+- (void)setResourceOptions:(unint64_t)options;
+- (void)setStorageMode:(unint64_t)mode;
 @end
 
 @implementation MTLHeapDescriptorInternal
@@ -52,9 +52,9 @@
   [(MTLHeapDescriptorInternal *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -62,23 +62,23 @@
   else
   {
     Class = object_getClass(self);
-    if (Class != object_getClass(a3) || ([(MTLHeapDescriptorInternal *)self addressRanges]== 0) == (*(a3 + 4) != 0))
+    if (Class != object_getClass(equal) || ([(MTLHeapDescriptorInternal *)self addressRanges]== 0) == (*(equal + 4) != 0))
     {
       LOBYTE(v6) = 0;
     }
 
     else if (!-[MTLHeapDescriptorInternal addressRanges](self, "addressRanges") || (v6 = [-[MTLHeapDescriptorInternal addressRanges](self "addressRanges")]) != 0)
     {
-      LOBYTE(v6) = memcmp(self->_private, *(a3 + 3), 0x58uLL) == 0;
+      LOBYTE(v6) = memcmp(self->_private, *(equal + 3), 0x58uLL) == 0;
     }
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -100,24 +100,24 @@
   return v5;
 }
 
-- (void)setCpuCacheMode:(unint64_t)a3
+- (void)setCpuCacheMode:(unint64_t)mode
 {
   v3 = self->_private;
-  v3->var2 = a3;
-  v3->var6 = v3->var6 & 0xFFFFFFFFFFFFFFF0 | a3;
+  v3->var2 = mode;
+  v3->var6 = v3->var6 & 0xFFFFFFFFFFFFFFF0 | mode;
 }
 
-- (void)setStorageMode:(unint64_t)a3
+- (void)setStorageMode:(unint64_t)mode
 {
   v3 = self->_private;
-  v3->var1 = a3;
-  v3->var6 = v3->var6 & 0xFFFFFFFFFFFFFF0FLL | (16 * a3);
+  v3->var1 = mode;
+  v3->var6 = v3->var6 & 0xFFFFFFFFFFFFFF0FLL | (16 * mode);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v23[24] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   var6 = self->_private->var6;
   v7 = @"MTLStorageModePrivate";
   if (var6 >> 4 != 2)
@@ -192,7 +192,7 @@
   addressRanges = self->_addressRanges;
   if (addressRanges)
   {
-    v18 = [(MTLResourceAddressRangeArray *)addressRanges formattedDescription:a3 + 4];
+    v18 = [(MTLResourceAddressRangeArray *)addressRanges formattedDescription:description + 4];
     v13 = self->_private;
   }
 
@@ -211,20 +211,20 @@
   return result;
 }
 
-- (void)setResourceOptions:(unint64_t)a3
+- (void)setResourceOptions:(unint64_t)options
 {
   v3 = self->_private;
-  v3->var6 = a3;
-  v3->var1 = a3 >> 4;
-  v3->var2 = a3 & 0xF;
+  v3->var6 = options;
+  v3->var1 = options >> 4;
+  v3->var2 = options & 0xF;
 }
 
-- (BOOL)validateWithDevice:(id)a3
+- (BOOL)validateWithDevice:(id)device
 {
   v25 = 0;
   memset(v24, 0, sizeof(v24));
-  _MTLMessageContextBegin_(v24, "[MTLHeapDescriptorInternal validateWithDevice:]", 381, a3, 2, "Heap Descriptor Validation");
-  v10 = [a3 supportsSharedStorageHeapResources];
+  _MTLMessageContextBegin_(v24, "[MTLHeapDescriptorInternal validateWithDevice:]", 381, device, 2, "Heap Descriptor Validation");
+  supportsSharedStorageHeapResources = [device supportsSharedStorageHeapResources];
   var5 = self->_private->var5;
   v12 = 1;
   if (!var5)
@@ -235,7 +235,7 @@
   if (var5 == 2)
   {
     v12 = 0;
-    if (([a3 supportsSparseHeaps] & 1) == 0)
+    if (([device supportsSparseHeaps] & 1) == 0)
     {
       v13 = @"Sparse heaps are not supported.";
       goto LABEL_10;
@@ -250,7 +250,7 @@
     goto LABEL_10;
   }
 
-  if ([a3 isPlacementHeapSupported])
+  if ([device isPlacementHeapSupported])
   {
 LABEL_7:
     v14 = 1;
@@ -283,7 +283,7 @@ LABEL_11:
 
   else
   {
-    if (v10 & v12)
+    if (supportsSharedStorageHeapResources & v12)
     {
 LABEL_16:
       v18 = 1;
@@ -325,13 +325,13 @@ LABEL_23:
   return v21;
 }
 
-- (void)setAddressRanges:(id)a3
+- (void)setAddressRanges:(id)ranges
 {
   addressRanges = self->_addressRanges;
-  if (addressRanges != a3)
+  if (addressRanges != ranges)
   {
 
-    self->_addressRanges = a3;
+    self->_addressRanges = ranges;
   }
 }
 

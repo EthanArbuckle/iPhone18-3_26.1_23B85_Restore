@@ -1,21 +1,21 @@
 @interface BWPhotonicEngineNode
 + (void)initialize;
-- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)a3 outputPixelBufferDimensionsForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8;
-- (BOOL)_processingNeededForSettings:(uint64_t)a3 portType:;
+- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)controller outputPixelBufferDimensionsForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions;
+- (BOOL)_processingNeededForSettings:(uint64_t)settings portType:;
 - (BOOL)_shouldPassthroughWithStillImageSettings:(_BOOL8)result;
-- (BOOL)demosaicedRawSupportedForCaptureType:(int)a3;
-- (BOOL)learnedFusionSupportedForPortType:(id)a3;
-- (BOOL)processingOnBeginMomentSupportedForCaptureSettings:(id)a3;
-- (BOOL)rawNightModeSupportedForPortType:(id)a3;
-- (BWPhotonicEngineNode)initWithNodeConfiguration:(id)a3 captureDevice:(id)a4;
-- (__CVBuffer)_newOutputPixelBufferForProcessorController:(void *)a3 processorInput:(uint64_t)a4 type:(void *)a5 pixelBufferProvider:;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8 dimensionAlignment:(int)a9;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 dimensions:(id)a6;
+- (BOOL)demosaicedRawSupportedForCaptureType:(int)type;
+- (BOOL)learnedFusionSupportedForPortType:(id)type;
+- (BOOL)processingOnBeginMomentSupportedForCaptureSettings:(id)settings;
+- (BOOL)rawNightModeSupportedForPortType:(id)type;
+- (BWPhotonicEngineNode)initWithNodeConfiguration:(id)configuration captureDevice:(id)device;
+- (__CVBuffer)_newOutputPixelBufferForProcessorController:(void *)controller processorInput:(uint64_t)input type:(void *)type pixelBufferProvider:;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions dimensionAlignment:(int)alignment;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type dimensions:(id)dimensions;
 - (id)_bufferTypesExcludingErrorRecoveryTypesForCaptureSettings:(id)result;
-- (id)_bufferTypesForCaptureSettings:(uint64_t)a1;
+- (id)_bufferTypesForCaptureSettings:(uint64_t)settings;
 - (id)_nextNRInputForPortType:(id)result;
 - (id)_nrfOutputSbufRouter;
 - (id)_setupProcessorControllerConfigurations;
@@ -23,105 +23,105 @@
 - (id)_standardNROutputRouterWithExpectedQueue:(id)result;
 - (id)_ubInferenceInputRouter;
 - (id)_ubRERRouter;
-- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)a3 wait:(BOOL)a4;
-- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)a3 frameStatistics:(id)a4 stationary:(BOOL)a5 sphereOffsetEnabled:(BOOL)a6 detectedObjects:(id)a7;
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4 inferenceInputBufferType:(unint64_t)a5;
+- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)type wait:(BOOL)wait;
+- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)mode frameStatistics:(id)statistics stationary:(BOOL)stationary sphereOffsetEnabled:(BOOL)enabled detectedObjects:(id)objects;
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input inferenceInputBufferType:(unint64_t)type;
 - (int)activeAspectRatio;
-- (uint64_t)_deepFusionProcessorInputNeededForSettings:(uint64_t)a1 portType:;
+- (uint64_t)_deepFusionProcessorInputNeededForSettings:(uint64_t)settings portType:;
 - (uint64_t)_deferredCaptureAddSecondaryStereoPhotoCaptureSampleBufferIfReadyForSettings:(uint64_t)result;
 - (uint64_t)_ensureDeepZoomInputEnqueued:(uint64_t)result;
 - (uint64_t)_generateDisparityForSettings:(uint64_t)result;
 - (uint64_t)_handleLidarDepthPointCloudSampleBuffer:(uint64_t)result;
-- (uint64_t)_handleSampleBuffer:(uint64_t)a3 input:;
+- (uint64_t)_handleSampleBuffer:(uint64_t)buffer input:;
 - (uint64_t)_infoForCaptureType:(uint64_t)result isSupportedCaptureTypeOut:isFusionCaptureTypeOut:;
 - (uint64_t)_nrfProcessorInputNeededForSettings:(uint64_t)result portType:;
-- (uint64_t)_processRawErrorRecoveryFrameWithNRFProcessorInput:(int)a3 processErrorRecoveryProxy:(uint64_t)a4 failureMetadata:;
+- (uint64_t)_processRawErrorRecoveryFrameWithNRFProcessorInput:(int)input processErrorRecoveryProxy:(uint64_t)proxy failureMetadata:;
 - (uint64_t)_propagatedErrorRecoveryMetadataIfNeededForSampleBuffer:(uint64_t)result;
 - (uint64_t)_releaseResources;
 - (uint64_t)_scaleInferenceInputForRedEyeReductionFromPixelBuffer:(CVPixelBufferRef)destinationBuffer outputPixelBuffer:;
-- (uint64_t)_serviceNextSoftISPInputWithSampleBuffer:(unint64_t)a3 processingMode:(uint64_t)a4 transferOwnership:;
-- (uint64_t)_setupProcessingStateForClientBracketWithSettings:(uint64_t)a1 processingPlan:;
-- (uint64_t)_setupProcessingStateForColorConstancyCaptureWithSettings:(uint64_t)a1 processingPlan:;
-- (uint64_t)_setupProcessingStateForDeferredCaptureIfNeededWithSettings:(uint64_t)a1;
-- (uint64_t)_setupProcessingStateForDisparityIfNeededWithSettings:(uint64_t)a3 sequenceNumber:(void *)a4 processingPlan:;
-- (uint64_t)_setupProcessingStateForInferenceWithSettings:(uint64_t)a3 portType:(unint64_t)a4 inferenceInputBufferType:;
-- (uint64_t)_setupProcessingStateForScalerIfNeededWithSettings:(uint64_t)a3 sequenceNumber:(uint64_t)a4 portType:(int)a5 preNoiseReductionScaler:(void *)a6 processingPlan:;
+- (uint64_t)_serviceNextSoftISPInputWithSampleBuffer:(unint64_t)buffer processingMode:(uint64_t)mode transferOwnership:;
+- (uint64_t)_setupProcessingStateForClientBracketWithSettings:(uint64_t)settings processingPlan:;
+- (uint64_t)_setupProcessingStateForColorConstancyCaptureWithSettings:(uint64_t)settings processingPlan:;
+- (uint64_t)_setupProcessingStateForDeferredCaptureIfNeededWithSettings:(uint64_t)settings;
+- (uint64_t)_setupProcessingStateForDisparityIfNeededWithSettings:(uint64_t)settings sequenceNumber:(void *)number processingPlan:;
+- (uint64_t)_setupProcessingStateForInferenceWithSettings:(uint64_t)settings portType:(unint64_t)type inferenceInputBufferType:;
+- (uint64_t)_setupProcessingStateForScalerIfNeededWithSettings:(uint64_t)settings sequenceNumber:(uint64_t)number portType:(int)type preNoiseReductionScaler:(void *)scaler processingPlan:;
 - (uint64_t)_setupProcessingStateForSmartStyleWithSettings:(uint64_t)result sequenceNumber:portType:processingPlan:;
-- (uint64_t)_setupProcessingStateIfNeededWithBeginMomentSettings:(uint64_t)a1;
+- (uint64_t)_setupProcessingStateIfNeededWithBeginMomentSettings:(uint64_t)settings;
 - (uint64_t)_setupResourceCoordinator;
 - (uint64_t)_setupSoftISPProcessingStateIfNeededWithSettings:(uint64_t)result portType:processingPlan:;
-- (uint64_t)_singleImageProcessSampleBuffer:(uint64_t)a1 settings:(uint64_t)a2 portType:(uint64_t)a3;
+- (uint64_t)_singleImageProcessSampleBuffer:(uint64_t)buffer settings:(uint64_t)settings portType:(uint64_t)type;
 - (unint64_t)_softISPProcessingModeForSettings:(unint64_t)result captureFrameFlags:;
-- (void)_attemptDisparityReferenceFrameResolutionForSettings:(uint64_t)a1 portType:;
-- (void)_attemptPiecemealEncodingForGainMapSbuf:(uint64_t)a3 primarySbuf:(uint64_t)a4 portType:;
-- (void)_attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:(uint64_t)a1 portType:(uint64_t)a2;
+- (void)_attemptDisparityReferenceFrameResolutionForSettings:(uint64_t)settings portType:;
+- (void)_attemptPiecemealEncodingForGainMapSbuf:(uint64_t)sbuf primarySbuf:(uint64_t)primarySbuf portType:;
+- (void)_attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:(uint64_t)buffer portType:(uint64_t)type;
 - (void)_beginStereoPhotoProcessingIfNeededForSettings:(void *)result;
-- (void)_checkIfProcessingCompletedForNRFProcessorInput:(uint64_t)a1;
+- (void)_checkIfProcessingCompletedForNRFProcessorInput:(uint64_t)input;
 - (void)_copyNextSoftISPInputUsingProcessingOrderByPortType:processingMode:;
 - (void)_deferredCaptureAddBuffer:bufferType:captureFrameFlags:metadata:rawThumbnailsBuffer:rawThumbnailsMetadata:portType:;
-- (void)_deferredCaptureHandleSensorRawSampleBuffer:(int)a3;
-- (void)_drainStashedBeginMomentBuffersIfNeededWithSettings:(uint64_t)a1;
-- (void)_emitError:(uint64_t)a3 stillImageSettings:(uint64_t)a4 metadata:(uint64_t)a5 description:(uint64_t)a6;
-- (void)_emitSampleBuffer:(uint64_t)a3 description:;
-- (void)_enqueueSoftISPInput:(uint64_t)a1;
+- (void)_deferredCaptureHandleSensorRawSampleBuffer:(int)buffer;
+- (void)_drainStashedBeginMomentBuffersIfNeededWithSettings:(uint64_t)settings;
+- (void)_emitError:(uint64_t)error stillImageSettings:(uint64_t)settings metadata:(uint64_t)metadata description:(uint64_t)description;
+- (void)_emitSampleBuffer:(uint64_t)buffer description:;
+- (void)_enqueueSoftISPInput:(uint64_t)input;
 - (void)_ensureSmartStyleRenderingInputEnqueued:(void *)result;
-- (void)_errorRecoveryBufferTypesForBufferTypes:(uint64_t)a1;
-- (void)_handleDeepFusionError:(void *)a3 processorInput:;
-- (void)_handleDeferredCaptureProxyOrErrorRecoverySampleBuffer:(uint64_t)a3 bufferType:(uint64_t)a4;
-- (void)_handleSampleBufferForFocusPixelDisparityInputIfNeeded:(uint64_t)a3;
-- (void)_handleSupplementalPointCloudSampleBuffer:(uint64_t)a3;
-- (void)_inferenceProcessRedEyeReductionSampleBuffer:(uint64_t)a3 settings:(uint64_t)a4 portType:;
+- (void)_errorRecoveryBufferTypesForBufferTypes:(uint64_t)types;
+- (void)_handleDeepFusionError:(void *)error processorInput:;
+- (void)_handleDeferredCaptureProxyOrErrorRecoverySampleBuffer:(uint64_t)buffer bufferType:(uint64_t)type;
+- (void)_handleSampleBufferForFocusPixelDisparityInputIfNeeded:(uint64_t)needed;
+- (void)_handleSupplementalPointCloudSampleBuffer:(uint64_t)buffer;
+- (void)_inferenceProcessRedEyeReductionSampleBuffer:(uint64_t)buffer settings:(uint64_t)settings portType:;
 - (void)_liveReconfigureResourceCoordinatorIfNeeded;
-- (void)_piecemealEncodeAttachedMediaByKey:(uint64_t)a1 primarySbuf:portType:;
-- (void)_processingOrderByPortTypeForSettings:(uint64_t)a1;
+- (void)_piecemealEncodeAttachedMediaByKey:(uint64_t)key primarySbuf:portType:;
+- (void)_processingOrderByPortTypeForSettings:(uint64_t)settings;
 - (void)_processorControllerDidFinishProcessingInputForPortType:processorType:captureRequestIdentifier:;
-- (void)_releaseNodeResourcesIfNeededBeforeEmittingSampleBuffer:(uint64_t)a1;
-- (void)_releaseResourcesWithSettings:(uint64_t)a1;
-- (void)_removeNonPropagatedAttachedMediaFromSampleBuffer:(uint64_t)a1;
+- (void)_releaseNodeResourcesIfNeededBeforeEmittingSampleBuffer:(uint64_t)buffer;
+- (void)_releaseResourcesWithSettings:(uint64_t)settings;
+- (void)_removeNonPropagatedAttachedMediaFromSampleBuffer:(uint64_t)buffer;
 - (void)_resetProcessingState;
 - (void)_resetProcessingStateIfDone;
-- (void)_setupDeferredProcessingWithSettings:(uint64_t)a3 portType:;
+- (void)_setupDeferredProcessingWithSettings:(uint64_t)settings portType:;
 - (void)_setupProcessingStateForDeepFusionWithSettings:processingPlan:;
 - (void)_setupProcessingStateForDeepZoomWithSettings:sequenceNumber:portType:processingPlan:;
 - (void)_setupProcessingStateForFlashCaptureWithSettings:processingPlan:;
 - (void)_setupProcessingStateForIntelligentDistortionCorrectionIfNeededWithSettings:sequenceNumber:portType:processingPlan:;
-- (void)_setupProcessingStateForJasperDisparityIfNeededWithSettings:(uint64_t)a1 processingPlan:;
-- (void)_setupProcessingStateForPointCloudDepthIfNeededWithSettings:(uint64_t)a1 processingPlan:;
+- (void)_setupProcessingStateForJasperDisparityIfNeededWithSettings:(uint64_t)settings processingPlan:;
+- (void)_setupProcessingStateForPointCloudDepthIfNeededWithSettings:(uint64_t)settings processingPlan:;
 - (void)_setupProcessingStateForSingleImageCaptureWithSettings:processingPlan:;
-- (void)_setupProcessingStateForStereoPhotoDeepZoomTransferWithSettings:(uint64_t)a3 processingPlan:(uint64_t)a4;
+- (void)_setupProcessingStateForStereoPhotoDeepZoomTransferWithSettings:(uint64_t)settings processingPlan:(uint64_t)plan;
 - (void)_setupProcessingStateWithSettings:;
 - (void)_setupSoftISPOutputRoutingIfNeededWithOutputSampleBufferRouter:processingPlan:;
-- (void)_stashAWBMetadataIfNeededForSampleBuffer:(int)a3 processingMode:;
-- (void)_stashSensorRawErrorRecoveryFrameIfNeededUsingSampleBuffer:(uint64_t)a1;
-- (void)_waitForAndMergeInferencesIfNeededForSampleBuffer:(uint64_t)a1 processorInput:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_stashAWBMetadataIfNeededForSampleBuffer:(int)buffer processingMode:;
+- (void)_stashSensorRawErrorRecoveryFrameIfNeededUsingSampleBuffer:(uint64_t)buffer;
+- (void)_waitForAndMergeInferencesIfNeededForSampleBuffer:(uint64_t)buffer processorInput:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)didSelectFormat:(id)a3 forOutput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)didSelectFormat:(id)format forOutput:(id)output;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)processingCoordinator:(id)a3 didEncounterError:(int)a4 stillImageSettings:(id)a5 description:(id)a6;
-- (void)processingCoordinator:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 description:(id)a5;
-- (void)processingCoordinatorComplete:(id)a3;
-- (void)processorController:(id)a3 didDetermineReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5 err:(int)a6;
-- (void)processorController:(id)a3 didFinishProcessingBuffer:(__CVBuffer *)a4 metadata:(id)a5 type:(unint64_t)a6 captureFrameFlags:(unint64_t)a7 processorInput:(id)a8 err:(int)a9;
-- (void)processorController:(id)a3 didFinishProcessingInference:(id)a4 inferenceAttachmentKey:(id)a5 processorInput:(id)a6 err:(int)a7;
-- (void)processorController:(id)a3 didFinishProcessingInferenceAttachedMediaMetadata:(id)a4 processorInput:(id)a5;
-- (void)processorController:(id)a3 didFinishProcessingInferenceBuffer:(__CVBuffer *)a4 metadata:(id)a5 inferenceAttachedMediaKey:(id)a6 processorInput:(id)a7 err:(int)a8;
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)processorController:(id)a3 didSelectFusionMode:(int)a4 processorInput:(id)a5;
-- (void)processorController:(id)a3 didSelectLowLightReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5;
-- (void)processorController:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 processorInput:(id)a6;
-- (void)processorController:(id)a3 willAddBuffer:(__CVBuffer *)a4 metadata:(id)a5 bufferType:(unint64_t)a6 processorInput:(id)a7;
-- (void)processorController:(id)a3 willAddSampleBuffer:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5;
-- (void)processorController:(id)a3 willProcessRedEyeReductionForProcessorInput:(id)a4;
-- (void)processorControllerWillProcessInferences:(id)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setActiveAspectRatio:(int)a3;
-- (void)stopAdaptiveBracketingForSettings:(id)a3 withGroup:(int)a4;
+- (void)processingCoordinator:(id)coordinator didEncounterError:(int)error stillImageSettings:(id)settings description:(id)description;
+- (void)processingCoordinator:(id)coordinator didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer description:(id)description;
+- (void)processingCoordinatorComplete:(id)complete;
+- (void)processorController:(id)controller didDetermineReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(unint64_t)type captureFrameFlags:(unint64_t)flags processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInference:(id)inference inferenceAttachmentKey:(id)key processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInferenceAttachedMediaMetadata:(id)metadata processorInput:(id)input;
+- (void)processorController:(id)controller didFinishProcessingInferenceBuffer:(__CVBuffer *)buffer metadata:(id)metadata inferenceAttachedMediaKey:(id)key processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didSelectFusionMode:(int)mode processorInput:(id)input;
+- (void)processorController:(id)controller didSelectLowLightReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input;
+- (void)processorController:(id)controller didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform processorInput:(id)input;
+- (void)processorController:(id)controller willAddBuffer:(__CVBuffer *)buffer metadata:(id)metadata bufferType:(unint64_t)type processorInput:(id)input;
+- (void)processorController:(id)controller willAddSampleBuffer:(opaqueCMSampleBuffer *)buffer processorInput:(id)input;
+- (void)processorController:(id)controller willProcessRedEyeReductionForProcessorInput:(id)input;
+- (void)processorControllerWillProcessInferences:(id)inferences;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setActiveAspectRatio:(int)ratio;
+- (void)stopAdaptiveBracketingForSettings:(id)settings withGroup:(int)group;
 @end
 
 @implementation BWPhotonicEngineNode
@@ -181,11 +181,11 @@
       if ([OUTLINED_FUNCTION_40_18() deepFusionProcessorControllerConfiguration])
       {
         *(v1 + 43) = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v14 = [OUTLINED_FUNCTION_40_18() deepFusionEnhancedResolutionDimensions];
-        v15 = v14;
-        v16 = HIDWORD(v14);
-        v17 = [OUTLINED_FUNCTION_40_18() softISPProcessorControllerConfiguration];
-        v20 = (v15 < 1 || v16 < 1) && v17 != 0;
+        deepFusionEnhancedResolutionDimensions = [OUTLINED_FUNCTION_40_18() deepFusionEnhancedResolutionDimensions];
+        v15 = deepFusionEnhancedResolutionDimensions;
+        v16 = HIDWORD(deepFusionEnhancedResolutionDimensions);
+        softISPProcessorControllerConfiguration = [OUTLINED_FUNCTION_40_18() softISPProcessorControllerConfiguration];
+        v20 = (v15 < 1 || v16 < 1) && softISPProcessorControllerConfiguration != 0;
         [objc_msgSend(OUTLINED_FUNCTION_40_18() "deepFusionProcessorControllerConfiguration")];
       }
 
@@ -279,7 +279,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -288,7 +288,7 @@
   }
 }
 
-- (BWPhotonicEngineNode)initWithNodeConfiguration:(id)a3 captureDevice:(id)a4
+- (BWPhotonicEngineNode)initWithNodeConfiguration:(id)configuration captureDevice:(id)device
 {
   v36.receiver = self;
   v36.super_class = BWPhotonicEngineNode;
@@ -300,24 +300,24 @@
   }
 
   [(BWNode *)v6 setSupportsLiveReconfiguration:1];
-  if (!a3)
+  if (!configuration)
   {
 
     return 0;
   }
 
-  v7->_nodeConfiguration = a3;
+  v7->_nodeConfiguration = configuration;
   v7->_activeAspectRatioLock._os_unfair_lock_opaque = 0;
-  v7->_activeAspectRatio = [(BWPhotonicEngineNodeConfiguration *)a3 processingAspectRatio];
+  v7->_activeAspectRatio = [(BWPhotonicEngineNodeConfiguration *)configuration processingAspectRatio];
   v8 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v7 index:0];
   v9 = objc_alloc_init(BWVideoFormatRequirements);
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration depthDataType];
-  v34 = a4;
+  array = [MEMORY[0x1E695DF70] array];
+  depthDataType = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration depthDataType];
+  deviceCopy = device;
   if (![(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit])
   {
-    [v10 addObject:&unk_1F22479E0];
-    if (v11 == 7)
+    [array addObject:&unk_1F22479E0];
+    if (depthDataType == 7)
     {
       goto LABEL_12;
     }
@@ -326,32 +326,32 @@
     goto LABEL_11;
   }
 
-  [v10 addObject:&unk_1F2247980];
-  if (v11 != 7)
+  [array addObject:&unk_1F2247980];
+  if (depthDataType != 7)
   {
-    [v10 addObject:&unk_1F2247998];
+    [array addObject:&unk_1F2247998];
   }
 
-  if (([(BWPhotonicEngineNodeConfiguration *)a3 semanticStyleRenderingEnabled]& 1) == 0)
+  if (([(BWPhotonicEngineNodeConfiguration *)configuration semanticStyleRenderingEnabled]& 1) == 0)
   {
-    [v10 addObject:&unk_1F22479B0];
-    if (v11 != 7)
+    [array addObject:&unk_1F22479B0];
+    if (depthDataType != 7)
     {
       v12 = &unk_1F22479C8;
 LABEL_11:
-      [v10 addObject:v12];
+      [array addObject:v12];
     }
   }
 
 LABEL_12:
-  v33 = v11;
-  v13 = v11 != 7;
-  v14 = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration maxLossyCompressionLevel];
-  v15 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
-  v16 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
+  v33 = depthDataType;
+  v13 = depthDataType != 7;
+  maxLossyCompressionLevel = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration maxLossyCompressionLevel];
+  inputIs10Bit = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
+  inputIs10Bit2 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
   v17 = 1;
-  [v10 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, v14, v13, 1, 0, v15 ^ 1u, v16, 0)}];
-  [(BWVideoFormatRequirements *)v9 setSupportedPixelFormats:v10];
+  [array addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, maxLossyCompressionLevel, v13, 1, 0, inputIs10Bit ^ 1u, inputIs10Bit2, 0)}];
+  [(BWVideoFormatRequirements *)v9 setSupportedPixelFormats:array];
   if ([(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit])
   {
     v18 = 64;
@@ -369,7 +369,7 @@ LABEL_12:
   [(BWNodeInput *)v8 setPassthroughMode:0];
   [(BWNodeInput *)v8 setRetainedBufferCount:[(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration retainedBufferCount]];
   [(BWNode *)v7 addInput:v8];
-  if ([v34 sensorRawStillImageOutputsEnabled])
+  if ([deviceCopy sensorRawStillImageOutputsEnabled])
   {
     v19 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v7 index:1];
     v20 = objc_alloc_init(BWVideoFormatRequirements);
@@ -385,17 +385,17 @@ LABEL_12:
     v17 = 2;
   }
 
-  v21 = [a3 depthDataType];
-  v22 = [v34 supplementalPointCloudCaptureDevice];
-  if (v21 == 7)
+  depthDataType2 = [configuration depthDataType];
+  supplementalPointCloudCaptureDevice = [deviceCopy supplementalPointCloudCaptureDevice];
+  if (depthDataType2 == 7)
   {
-    if (v22)
+    if (supplementalPointCloudCaptureDevice)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"We should not be generating LiDAR depth and using the ToF camera in the supplemental mode at the same time" userInfo:0]);
     }
   }
 
-  else if (!v22)
+  else if (!supplementalPointCloudCaptureDevice)
   {
     goto LABEL_22;
   }
@@ -409,8 +409,8 @@ LABEL_12:
 LABEL_22:
   v23 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v7];
   [(BWNodeOutput *)v23 setOwningNodeRetainedBufferCount:[(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration outputBufferCount]- 1];
-  v24 = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration stereoPhotoOutputDimensions];
-  if (v24 >= 1 && SHIDWORD(v24) >= 1)
+  stereoPhotoOutputDimensions = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration stereoPhotoOutputDimensions];
+  if (stereoPhotoOutputDimensions >= 1 && SHIDWORD(stereoPhotoOutputDimensions) >= 1)
   {
     [(BWNodeOutput *)v23 setOwningNodeRetainedBufferCount:[(BWNodeOutput *)v23 owningNodeRetainedBufferCount]+ 2];
   }
@@ -422,10 +422,10 @@ LABEL_22:
   {
     v25 = objc_alloc_init(BWVideoFormatRequirements);
     v26 = [MEMORY[0x1E695DF70] arrayWithObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", -[BWPhotonicEngineNodeConfiguration outputPixelFormat](v7->_nodeConfiguration))}];
-    v27 = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration maxLossyCompressionLevel];
-    v28 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
-    v29 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
-    [v26 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, v27, v33 != 7, 1, 0, v28 ^ 1u, v29, 0)}];
+    maxLossyCompressionLevel2 = [(BWStillImageNodeConfiguration *)v7->_nodeConfiguration maxLossyCompressionLevel];
+    inputIs10Bit3 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
+    inputIs10Bit4 = [(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration inputIs10Bit];
+    [v26 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, maxLossyCompressionLevel2, v33 != 7, 1, 0, inputIs10Bit3 ^ 1u, inputIs10Bit4, 0)}];
     [(BWVideoFormatRequirements *)v25 setSupportedPixelFormats:v26];
     if ([(BWPhotonicEngineNodeConfiguration *)v7->_nodeConfiguration outputColorSpaceProperties])
     {
@@ -443,7 +443,7 @@ LABEL_22:
   }
 
   [(BWNode *)v7 addOutput:v23];
-  v31 = v34;
+  v31 = deviceCopy;
   v7->_device = v31;
   [(BWFigVideoCaptureDevice *)v31 setAdaptiveUnifiedBracketingController:v7];
   [(BWPhotonicEngineNode *)v7 _setupProcessorControllerConfigurations];
@@ -461,43 +461,43 @@ LABEL_22:
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)setActiveAspectRatio:(int)a3
+- (void)setActiveAspectRatio:(int)ratio
 {
   os_unfair_lock_lock(&self->_activeAspectRatioLock);
-  self->_activeAspectRatio = a3;
+  self->_activeAspectRatio = ratio;
 
   os_unfair_lock_unlock(&self->_activeAspectRatioLock);
 }
 
-- (BOOL)demosaicedRawSupportedForCaptureType:(int)a3
+- (BOOL)demosaicedRawSupportedForCaptureType:(int)type
 {
-  if (a3 > 0xD || ((1 << a3) & 0x3C86) == 0)
+  if (type > 0xD || ((1 << type) & 0x3C86) == 0)
   {
     return 0;
   }
 
-  v5 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration nrfProcessorControllerConfiguration];
+  nrfProcessorControllerConfiguration = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration nrfProcessorControllerConfiguration];
 
-  return [v5 demosaicedRawEnabled];
+  return [nrfProcessorControllerConfiguration demosaicedRawEnabled];
 }
 
-- (BOOL)rawNightModeSupportedForPortType:(id)a3
+- (BOOL)rawNightModeSupportedForPortType:(id)type
 {
-  v4 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration portTypesWithRawNightModeEnabled];
+  portTypesWithRawNightModeEnabled = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration portTypesWithRawNightModeEnabled];
 
-  return [v4 containsObject:a3];
+  return [portTypesWithRawNightModeEnabled containsObject:type];
 }
 
-- (BOOL)learnedFusionSupportedForPortType:(id)a3
+- (BOOL)learnedFusionSupportedForPortType:(id)type
 {
-  v4 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration portTypesWithLearnedFusionEnabled];
+  portTypesWithLearnedFusionEnabled = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration portTypesWithLearnedFusionEnabled];
 
-  return [v4 containsObject:a3];
+  return [portTypesWithLearnedFusionEnabled containsObject:type];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  if (self->_pointCloudInput == a4)
+  if (self->_pointCloudInput == input)
   {
     return;
   }
@@ -506,7 +506,7 @@ LABEL_22:
   v155 = v6;
   v156 = v4;
   v157 = v5;
-  if (self->_sensorRawInput == a4)
+  if (self->_sensorRawInput == input)
   {
     if (![(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration softISPProcessorControllerConfiguration])
     {
@@ -514,7 +514,7 @@ LABEL_22:
     }
 
     v16 = [-[BWPhotonicEngineNodeConfiguration softISPProcessorControllerConfiguration](self->_nodeConfiguration "softISPProcessorControllerConfiguration")];
-    if (v16 == [a3 pixelFormat])
+    if (v16 == [format pixelFormat])
     {
       return;
     }
@@ -527,7 +527,7 @@ LABEL_22:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     [-[BWPhotonicEngineNodeConfiguration softISPProcessorControllerConfiguration](self->_nodeConfiguration "softISPProcessorControllerConfiguration")];
     v112 = BWStringForOSType();
-    [a3 pixelFormat];
+    [format pixelFormat];
     v148 = 138412546;
     v149 = v112;
     v150 = 2112;
@@ -539,8 +539,8 @@ LABEL_129:
     return;
   }
 
-  v10 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator hasSuccessfullySetupProcessorControllersAndMemoryResources];
-  if (!v10)
+  hasSuccessfullySetupProcessorControllersAndMemoryResources = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator hasSuccessfullySetupProcessorControllersAndMemoryResources];
+  if (!hasSuccessfullySetupProcessorControllersAndMemoryResources)
   {
     goto LABEL_6;
   }
@@ -561,7 +561,7 @@ LABEL_129:
     goto LABEL_129;
   }
 
-  if (([(BWFormat *)[(BWNodeInput *)self->super._input liveFormat] isEqual:a3]& 1) == 0)
+  if (([(BWFormat *)[(BWNodeInput *)self->super._input liveFormat] isEqual:format]& 1) == 0)
   {
     v153 = 0;
     v152 = 0;
@@ -578,15 +578,15 @@ LABEL_129:
   }
 
 LABEL_6:
-  v119 = v10;
-  v11 = -[BWPhotonicEngineNodeConfiguration requiresResizedOutputDimensionsWithInputDimensions:](self->_nodeConfiguration, "requiresResizedOutputDimensionsWithInputDimensions:", [a3 width] | (objc_msgSend(a3, "height") << 32));
+  v119 = hasSuccessfullySetupProcessorControllersAndMemoryResources;
+  v11 = -[BWPhotonicEngineNodeConfiguration requiresResizedOutputDimensionsWithInputDimensions:](self->_nodeConfiguration, "requiresResizedOutputDimensionsWithInputDimensions:", [format width] | (objc_msgSend(format, "height") << 32));
   if (v11)
   {
     [objc_msgSend(-[BWPhotonicEngineNodeConfiguration intelligentDistortionCorrectionProcessorControllerConfiguration](self->_nodeConfiguration "intelligentDistortionCorrectionProcessorControllerConfiguration")];
   }
 
-  v118 = [(BWNodeOutput *)self->super._output owningNodeRetainedBufferCount];
-  dcOutputBufferCount = v118 + 1;
+  owningNodeRetainedBufferCount = [(BWNodeOutput *)self->super._output owningNodeRetainedBufferCount];
+  dcOutputBufferCount = owningNodeRetainedBufferCount + 1;
   if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration intelligentDistortionCorrectionProcessorControllerConfiguration])
   {
     v13 = v11;
@@ -597,13 +597,13 @@ LABEL_6:
     v13 = 1;
   }
 
-  if (v13 != 1 || (v14 = v118 + 1, [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration constantColorVersion]>= 1))
+  if (v13 != 1 || (v14 = owningNodeRetainedBufferCount + 1, [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration constantColorVersion]>= 1))
   {
     v14 = 2 * dcOutputBufferCount;
     self->_dcOutputBufferCount = 2 * dcOutputBufferCount;
   }
 
-  v15 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration smartStyleRenderingProcessorControllerConfiguration];
+  smartStyleRenderingProcessorControllerConfiguration = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration smartStyleRenderingProcessorControllerConfiguration];
   if ([-[BWPhotonicEngineNodeConfiguration nrfProcessorControllerConfiguration](self->_nodeConfiguration "nrfProcessorControllerConfiguration")])
   {
     if ([objc_msgSend(-[BWPhotonicEngineNodeConfiguration intelligentDistortionCorrectionProcessorControllerConfiguration](self->_nodeConfiguration "intelligentDistortionCorrectionProcessorControllerConfiguration")] && -[BWPhotonicEngineNodeConfiguration softISPProcessorControllerConfiguration](self->_nodeConfiguration, "softISPProcessorControllerConfiguration"))
@@ -631,9 +631,9 @@ LABEL_25:
 
   if (v13)
   {
-    v111 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
+    gainMapMainImageDownscalingFactor = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
     v124 = 0;
-    v20 = *&v111 > 0.0;
+    v20 = *&gainMapMainImageDownscalingFactor > 0.0;
     goto LABEL_25;
   }
 
@@ -641,10 +641,10 @@ LABEL_25:
   v116 = v14 >> 1;
   v117 = 1;
 LABEL_26:
-  v21 = v14 + (v15 != 0);
+  v21 = v14 + (smartStyleRenderingProcessorControllerConfiguration != 0);
   obj = self->_demosaicedRawOutputBufferCount;
   v122 = objc_alloc_init(BWVideoFormatRequirements);
-  if (FigCapturePixelFormatIsFullRange([a3 pixelFormat]))
+  if (FigCapturePixelFormatIsFullRange([format pixelFormat]))
   {
     v22 = 875704422;
   }
@@ -657,10 +657,10 @@ LABEL_26:
   v147 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v22];
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v147 count:1];
   v24 = FigCapturePlatformSupportsUniversalCompression();
-  v120 = v15;
+  v120 = smartStyleRenderingProcessorControllerConfiguration;
   if (![(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepZoomProcessorControllerConfiguration]&& v24)
   {
-    v25 = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration maxLossyCompressionLevel];
+    maxLossyCompressionLevel = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration maxLossyCompressionLevel];
     if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepFusionProcessorControllerConfiguration])
     {
       v26 = 0;
@@ -668,7 +668,7 @@ LABEL_26:
 
     else
     {
-      v26 = v25;
+      v26 = maxLossyCompressionLevel;
     }
 
     v23 = FigCapturePixelFormatsByAddingCompressedVariants(v23, v26);
@@ -683,13 +683,13 @@ LABEL_26:
 
   else
   {
-    if (![a3 colorSpaceProperties])
+    if (![format colorSpaceProperties])
     {
       v29 = 0;
       goto LABEL_40;
     }
 
-    v145 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v145 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v28 = &v145;
   }
 
@@ -697,7 +697,7 @@ LABEL_26:
 LABEL_40:
   v30 = v27 - 1;
   [(BWVideoFormatRequirements *)v122 setSupportedColorSpaceProperties:v29];
-  v31 = [(BWPhotonicEngineNode *)self activeAspectRatio];
+  activeAspectRatio = [(BWPhotonicEngineNode *)self activeAspectRatio];
   if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration processingAspectRatio])
   {
     if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration processingAspectRatio]== 6)
@@ -707,7 +707,7 @@ LABEL_40:
 
     else
     {
-      v32 = v31;
+      v32 = activeAspectRatio;
     }
   }
 
@@ -717,23 +717,23 @@ LABEL_40:
   }
 
   [(BWVideoFormatRequirements *)v122 setSupportedPixelFormats:v23];
-  v121 = v31;
+  v121 = activeAspectRatio;
   if (v11)
   {
-    v33 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration outputDimensions];
+    outputDimensions = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration outputDimensions];
   }
 
   else
   {
-    v33 = [a3 dimensions];
+    outputDimensions = [format dimensions];
     if (v32)
     {
       v34 = BWAspectRatioValueFromAspectRatio(v32);
-      v33 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v33, v34);
+      outputDimensions = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(outputDimensions, v34);
     }
   }
 
-  [(BWVideoFormatRequirements *)v122 setDimensions:v33];
+  [(BWVideoFormatRequirements *)v122 setDimensions:outputDimensions];
   [(BWVideoFormatRequirements *)v122 setBytesPerRowAlignment:64];
   [(BWVideoFormatRequirements *)v122 setHeightAlignment:16];
   [(BWVideoFormatRequirements *)v122 setWidthAlignment:16];
@@ -745,41 +745,41 @@ LABEL_40:
   [-[BWPhotonicEngineNodeConfiguration nrfProcessorControllerConfiguration](self->_nodeConfiguration "nrfProcessorControllerConfiguration")];
   [-[BWPhotonicEngineNodeConfiguration deepFusionProcessorControllerConfiguration](self->_nodeConfiguration "deepFusionProcessorControllerConfiguration")];
   [-[BWPhotonicEngineNodeConfiguration deepZoomProcessorControllerConfiguration](self->_nodeConfiguration "deepZoomProcessorControllerConfiguration")];
-  v125 = [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)self->super._output primaryMediaConfiguration] pixelBufferPoolProvidesBackPressure];
+  pixelBufferPoolProvidesBackPressure = [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)self->super._output primaryMediaConfiguration] pixelBufferPoolProvidesBackPressure];
   if ([-[BWPhotonicEngineNodeConfiguration nrfProcessorControllerConfiguration](self->_nodeConfiguration "nrfProcessorControllerConfiguration")])
   {
     v35 = -[BWPhotonicEngineNodeConfiguration demosaicedRawFormatRequirementsWithDimensions:colorSpaceProperties:](self->_nodeConfiguration, "demosaicedRawFormatRequirementsWithDimensions:colorSpaceProperties:", -[BWVideoFormatRequirements width](v122, "width") | (-[BWVideoFormatRequirements height](v122, "height") << 32), [-[NSArray firstObject](-[BWVideoFormatRequirements supportedColorSpaceProperties](v122 "supportedColorSpaceProperties")]);
     if ([(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredPhotoProcessorEnabled])
     {
-      v36 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration ultraHighResolutionProcessingEnabled];
+      ultraHighResolutionProcessingEnabled = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration ultraHighResolutionProcessingEnabled];
     }
 
     else
     {
-      v36 = 0;
+      ultraHighResolutionProcessingEnabled = 0;
     }
 
     v38 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v38 setFormatRequirements:v35];
     [(BWNodeOutputMediaConfiguration *)v38 setPassthroughMode:0];
-    [(BWNodeOutputMediaConfiguration *)v38 setProvidesPixelBufferPool:v36 ^ 1u];
-    if ((v36 & 1) == 0)
+    [(BWNodeOutputMediaConfiguration *)v38 setProvidesPixelBufferPool:ultraHighResolutionProcessingEnabled ^ 1u];
+    if ((ultraHighResolutionProcessingEnabled & 1) == 0)
     {
       [(BWNodeOutputMediaConfiguration *)v38 setOwningNodeRetainedBufferCount:(obj - 1)];
-      [(BWNodeOutputMediaConfiguration *)v38 setPixelBufferPoolProvidesBackPressure:v125];
-      [(BWNodeOutputMediaConfiguration *)v38 setPixelBufferPoolReportSlowBackPressureAllocations:v125];
+      [(BWNodeOutputMediaConfiguration *)v38 setPixelBufferPoolProvidesBackPressure:pixelBufferPoolProvidesBackPressure];
+      [(BWNodeOutputMediaConfiguration *)v38 setPixelBufferPoolReportSlowBackPressureAllocations:pixelBufferPoolProvidesBackPressure];
     }
 
     [(BWNodeOutput *)self->super._output setMediaConfiguration:v38 forAttachedMediaKey:0x1F21AAE10];
   }
 
-  v39 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration providedInferenceAttachedMediaModesByAttachedMediaKey];
+  providedInferenceAttachedMediaModesByAttachedMediaKey = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration providedInferenceAttachedMediaModesByAttachedMediaKey];
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
-  obja = v39;
-  v126 = [(NSDictionary *)v39 countByEnumeratingWithState:&v141 objects:v140 count:16];
+  obja = providedInferenceAttachedMediaModesByAttachedMediaKey;
+  v126 = [(NSDictionary *)providedInferenceAttachedMediaModesByAttachedMediaKey countByEnumeratingWithState:&v141 objects:v140 count:16];
   if (v126)
   {
     v123 = *v142;
@@ -795,8 +795,8 @@ LABEL_40:
         v41 = *(*(&v141 + 1) + 8 * i);
         if ([BWMattingV2InferenceConfiguration isMattingOutputAttachedMediaKey:v41])
         {
-          v42 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
-          if (*&v42 == 0.0)
+          inferenceMainImageDownscalingFactor = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
+          if (*&inferenceMainImageDownscalingFactor == 0.0)
           {
             v43 = 0;
           }
@@ -804,12 +804,12 @@ LABEL_40:
           else
           {
             v43 = objc_alloc_init(BWVideoFormatRequirements);
-            v44 = [(BWVideoFormatRequirements *)v122 width];
-            v45 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
-            [(BWVideoFormatRequirements *)v43 setWidth:FigCaptureRoundFloatToMultipleOf(2, v44 / *&v45)];
-            v46 = [(BWVideoFormatRequirements *)v122 height];
-            v47 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
-            [(BWVideoFormatRequirements *)v43 setHeight:FigCaptureRoundFloatToMultipleOf(2, v46 / *&v47)];
+            width = [(BWVideoFormatRequirements *)v122 width];
+            inferenceMainImageDownscalingFactor2 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
+            [(BWVideoFormatRequirements *)v43 setWidth:FigCaptureRoundFloatToMultipleOf(2, width / *&inferenceMainImageDownscalingFactor2)];
+            height = [(BWVideoFormatRequirements *)v122 height];
+            inferenceMainImageDownscalingFactor3 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceMainImageDownscalingFactor];
+            [(BWVideoFormatRequirements *)v43 setHeight:FigCaptureRoundFloatToMultipleOf(2, height / *&inferenceMainImageDownscalingFactor3)];
             [(BWVideoFormatRequirements *)v43 setSupportedPixelFormats:&unk_1F224A2C0];
             [(BWVideoFormatRequirements *)v43 setBytesPerRowAlignment:64];
             [(BWVideoFormatRequirements *)v43 setPlaneAlignment:64];
@@ -858,25 +858,25 @@ LABEL_40:
                 objc_enumerationMutation(v49);
               }
 
-              v55 = [*(*(&v136 + 1) + 8 * j) intValue];
-              if (v55 == 3 || v55 == 2)
+              intValue = [*(*(&v136 + 1) + 8 * j) intValue];
+              if (intValue == 3 || intValue == 2)
               {
-                v56 = [(BWNodeOutput *)self->super._output owningNodeRetainedBufferCount];
+                owningNodeRetainedBufferCount2 = [(BWNodeOutput *)self->super._output owningNodeRetainedBufferCount];
               }
 
-              else if (v55 == 1)
+              else if (intValue == 1)
               {
-                v56 = self->_demosaicedRawOutputBufferCount - 1;
+                owningNodeRetainedBufferCount2 = self->_demosaicedRawOutputBufferCount - 1;
               }
 
               else
               {
-                v56 = 0;
+                owningNodeRetainedBufferCount2 = 0;
               }
 
-              if (v52 <= v56)
+              if (v52 <= owningNodeRetainedBufferCount2)
               {
-                v52 = v56;
+                v52 = owningNodeRetainedBufferCount2;
               }
 
               else
@@ -896,7 +896,7 @@ LABEL_40:
           v52 = 0;
         }
 
-        v57 = v125 | [(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredCaptureSupportEnabled];
+        v57 = pixelBufferPoolProvidesBackPressure | [(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredCaptureSupportEnabled];
         v58 = objc_alloc_init(BWNodeOutputMediaConfiguration);
         [(BWNodeOutputMediaConfiguration *)v58 setFormatRequirements:v43];
         [(BWNodeOutputMediaConfiguration *)v58 setPassthroughMode:0];
@@ -913,26 +913,26 @@ LABEL_40:
     while (v126);
   }
 
-  v59 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
-  if (*&v59 != 0.0)
+  gainMapMainImageDownscalingFactor2 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
+  if (*&gainMapMainImageDownscalingFactor2 != 0.0)
   {
     v60 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     v61 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v61 setSupportedPixelFormats:&unk_1F224A2F0];
-    v62 = [(BWVideoFormatRequirements *)v122 width];
-    v63 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
-    [(BWVideoFormatRequirements *)v61 setWidth:(v62 / *&v63)];
-    v64 = [(BWVideoFormatRequirements *)v122 height];
-    v65 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
-    [(BWVideoFormatRequirements *)v61 setHeight:(v64 / *&v65)];
+    width2 = [(BWVideoFormatRequirements *)v122 width];
+    gainMapMainImageDownscalingFactor3 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
+    [(BWVideoFormatRequirements *)v61 setWidth:(width2 / *&gainMapMainImageDownscalingFactor3)];
+    height2 = [(BWVideoFormatRequirements *)v122 height];
+    gainMapMainImageDownscalingFactor4 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration gainMapMainImageDownscalingFactor];
+    [(BWVideoFormatRequirements *)v61 setHeight:(height2 / *&gainMapMainImageDownscalingFactor4)];
     [(BWVideoFormatRequirements *)v61 setWidthAlignment:16];
     [(BWVideoFormatRequirements *)v61 setHeightAlignment:16];
     [(BWNodeOutputMediaConfiguration *)v60 setFormatRequirements:v61];
     [(BWNodeOutputMediaConfiguration *)v60 setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)v60 setProvidesPixelBufferPool:v117];
     [(BWNodeOutputMediaConfiguration *)v60 setOwningNodeRetainedBufferCount:v116 - 1];
-    [(BWNodeOutputMediaConfiguration *)v60 setPixelBufferPoolProvidesBackPressure:v125];
-    [(BWNodeOutputMediaConfiguration *)v60 setPixelBufferPoolReportSlowBackPressureAllocations:v125];
+    [(BWNodeOutputMediaConfiguration *)v60 setPixelBufferPoolProvidesBackPressure:pixelBufferPoolProvidesBackPressure];
+    [(BWNodeOutputMediaConfiguration *)v60 setPixelBufferPoolReportSlowBackPressureAllocations:pixelBufferPoolProvidesBackPressure];
     [(BWNodeOutput *)self->super._output setMediaConfiguration:v60 forAttachedMediaKey:0x1F217BF50];
   }
 
@@ -949,14 +949,14 @@ LABEL_40:
   if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceControllerConfiguration]&& v119 && !v66)
   {
     v67 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator waitAndSafelyGetProcessorControllerForType:3];
-    v68 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
+    inferenceControllerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
     v133[0] = MEMORY[0x1E69E9820];
     v133[1] = 3221225472;
     v133[2] = __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke;
     v133[3] = &unk_1E7991CF0;
     v133[4] = v67;
     v134 = v121;
-    ubn_dispatch_sync(v68, v133);
+    ubn_dispatch_sync(inferenceControllerQueue, v133);
   }
 
   if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration constantColorVersion]>= 1)
@@ -969,9 +969,9 @@ LABEL_40:
     [(BWNodeOutputMediaConfiguration *)v69 setFormatRequirements:v70];
     [(BWNodeOutputMediaConfiguration *)v69 setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)v69 setProvidesPixelBufferPool:1];
-    [(BWNodeOutputMediaConfiguration *)v69 setOwningNodeRetainedBufferCount:v118];
-    [(BWNodeOutputMediaConfiguration *)v69 setPixelBufferPoolProvidesBackPressure:v125];
-    [(BWNodeOutputMediaConfiguration *)v69 setPixelBufferPoolReportSlowBackPressureAllocations:v125];
+    [(BWNodeOutputMediaConfiguration *)v69 setOwningNodeRetainedBufferCount:owningNodeRetainedBufferCount];
+    [(BWNodeOutputMediaConfiguration *)v69 setPixelBufferPoolProvidesBackPressure:pixelBufferPoolProvidesBackPressure];
+    [(BWNodeOutputMediaConfiguration *)v69 setPixelBufferPoolReportSlowBackPressureAllocations:pixelBufferPoolProvidesBackPressure];
     [(BWNodeOutput *)self->super._output setMediaConfiguration:v69 forAttachedMediaKey:0x1F21AB170];
   }
 
@@ -990,8 +990,8 @@ LABEL_40:
     v71 = 1;
   }
 
-  v72 = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration depthDataOutputDimensions];
-  if (v72.var0 >= 1 && v72.var1 >= 1 && (v71 & 1) == 0)
+  depthDataOutputDimensions = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration depthDataOutputDimensions];
+  if (depthDataOutputDimensions.var0 >= 1 && depthDataOutputDimensions.var1 >= 1 && (v71 & 1) == 0)
   {
     v73 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     v74 = objc_alloc_init(BWVideoFormatRequirements);
@@ -1016,13 +1016,13 @@ LABEL_40:
     [(BWNodeOutputMediaConfiguration *)v75 setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)v75 setProvidesPixelBufferPool:0];
     [(BWNodeOutput *)self->super._output setMediaConfiguration:v75 forAttachedMediaKey:0x1F21AAB10];
-    v77 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters maxFocusPixelHorizontalPixelBufferDimensions];
+    maxFocusPixelHorizontalPixelBufferDimensions = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters maxFocusPixelHorizontalPixelBufferDimensions];
     v78 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     v79 = +[BWVideoFormatRequirements formatRequirements];
-    v80 = v77;
-    [v79 setWidth:v77];
-    v77 >>= 32;
-    [v79 setHeight:v77];
+    v80 = maxFocusPixelHorizontalPixelBufferDimensions;
+    [v79 setWidth:maxFocusPixelHorizontalPixelBufferDimensions];
+    maxFocusPixelHorizontalPixelBufferDimensions >>= 32;
+    [v79 setHeight:maxFocusPixelHorizontalPixelBufferDimensions];
     [v79 setSupportedPixelFormats:&unk_1F224A350];
     [(BWNodeOutputMediaConfiguration *)v78 setFormatRequirements:v79];
     [(BWNodeOutputMediaConfiguration *)v78 setPassthroughMode:0];
@@ -1031,7 +1031,7 @@ LABEL_40:
     v81 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     v82 = +[BWVideoFormatRequirements formatRequirements];
     [v82 setWidth:v80];
-    [v82 setHeight:v77];
+    [v82 setHeight:maxFocusPixelHorizontalPixelBufferDimensions];
     [v82 setSupportedPixelFormats:&unk_1F224A368];
     [(BWNodeOutputMediaConfiguration *)v81 setFormatRequirements:v82];
     [(BWNodeOutputMediaConfiguration *)v81 setPassthroughMode:0];
@@ -1134,7 +1134,7 @@ uint64_t __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke(uint
   return [v1 prepareForReconfigurationWithInputAspectRatio:v2];
 }
 
-- (void)didSelectFormat:(id)a3 forOutput:(id)a4
+- (void)didSelectFormat:(id)format forOutput:(id)output
 {
   [-[BWPhotonicEngineNodeConfiguration nrfProcessorControllerConfiguration](self->_nodeConfiguration nrfProcessorControllerConfiguration];
   if ([-[BWPhotonicEngineNodeConfiguration deepZoomProcessorControllerConfiguration](self->_nodeConfiguration "deepZoomProcessorControllerConfiguration")] != 3)
@@ -1142,15 +1142,15 @@ uint64_t __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke(uint
     [-[BWPhotonicEngineNodeConfiguration deepZoomProcessorControllerConfiguration](self->_nodeConfiguration "deepZoomProcessorControllerConfiguration")];
   }
 
-  v6 = [a3 dimensions];
+  dimensions = [format dimensions];
   v7 = [-[BWPhotonicEngineNodeConfiguration deepFusionProcessorControllerConfiguration](self->_nodeConfiguration "deepFusionProcessorControllerConfiguration")];
-  if (v6 > v7 || SHIDWORD(v6) > SHIDWORD(v7))
+  if (dimensions > v7 || SHIDWORD(dimensions) > SHIDWORD(v7))
   {
     LODWORD(v9) = [-[BWPhotonicEngineNodeConfiguration deepFusionProcessorControllerConfiguration](self->_nodeConfiguration "deepFusionProcessorControllerConfiguration")];
-    v10 = [a3 dimensions];
-    if (v9 <= v10)
+    dimensions2 = [format dimensions];
+    if (v9 <= dimensions2)
     {
-      v9 = v10;
+      v9 = dimensions2;
     }
 
     else
@@ -1159,10 +1159,10 @@ uint64_t __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke(uint
     }
 
     v11 = [-[BWPhotonicEngineNodeConfiguration deepFusionProcessorControllerConfiguration](self->_nodeConfiguration "deepFusionProcessorControllerConfiguration")] >> 32;
-    v12 = [a3 dimensions];
-    if (v11 <= SHIDWORD(v12))
+    dimensions3 = [format dimensions];
+    if (v11 <= SHIDWORD(dimensions3))
     {
-      v13 = HIDWORD(v12);
+      v13 = HIDWORD(dimensions3);
     }
 
     else
@@ -1171,9 +1171,9 @@ uint64_t __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke(uint
     }
 
     v14 = v9 | (v13 << 32);
-    v15 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepFusionProcessorControllerConfiguration];
+    deepFusionProcessorControllerConfiguration = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepFusionProcessorControllerConfiguration];
 
-    [v15 setMaxOutputDimensions:v14];
+    [deepFusionProcessorControllerConfiguration setMaxOutputDimensions:v14];
   }
 }
 
@@ -1191,13 +1191,13 @@ uint64_t __49__BWPhotonicEngineNode_didSelectFormat_forInput___block_invoke(uint
   v6.receiver = self;
   v6.super_class = BWPhotonicEngineNode;
   [(BWNode *)&v6 prepareForCurrentConfigurationToBecomeLive];
-  v4 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+  workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__block_invoke;
   v5[3] = &unk_1E798F870;
   v5[4] = self;
-  ubn_dispatch_sync(v4, v5);
+  ubn_dispatch_sync(workerQueue, v5);
 }
 
 void __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__block_invoke(uint64_t a1)
@@ -1217,7 +1217,7 @@ void __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__bloc
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (dword_1EB58E340)
   {
@@ -1232,7 +1232,7 @@ void __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__bloc
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(BWNode *)self inputs:a3];
+  v9 = [(BWNode *)self inputs:d];
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v10)
   {
@@ -1247,7 +1247,7 @@ void __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__bloc
           objc_enumerationMutation(v9);
         }
 
-        if (self->_pointCloudInput == a5 && ![*(*(&v21 + 1) + 8 * i) liveFormat])
+        if (self->_pointCloudInput == input && ![*(*(&v21 + 1) + 8 * i) liveFormat])
         {
           v14 = 0;
           goto LABEL_14;
@@ -1266,15 +1266,15 @@ void __66__BWPhotonicEngineNode_prepareForCurrentConfigurationToBecomeLive__bloc
 
   v14 = 1;
 LABEL_14:
-  v15 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
+  emitQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeLiveForInput___block_invoke;
   v18[3] = &unk_1E7991948;
   v19 = v14;
   v18[4] = self;
-  v18[5] = a3;
-  ubn_dispatch_async(v15, v18);
+  v18[5] = d;
+  ubn_dispatch_async(emitQueue, v18);
 }
 
 uint64_t __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeLiveForInput___block_invoke(uint64_t result)
@@ -1303,7 +1303,7 @@ uint64_t __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeL
   return result;
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (dword_1EB58E340)
   {
@@ -1317,9 +1317,9 @@ uint64_t __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeL
   if ([(BWNode *)self input:self->super._input hasReachedState:0, v16, v17])
   {
     sensorRawInput = self->_sensorRawInput;
-    if ((!sensorRawInput || [(BWNode *)self input:sensorRawInput hasReachedState:0]) && self->_pointCloudInput != a4 && !self->_resourcesReleased)
+    if ((!sensorRawInput || [(BWNode *)self input:sensorRawInput hasReachedState:0]) && self->_pointCloudInput != input && !self->_resourcesReleased)
     {
-      if (!a3)
+      if (!d)
       {
 
         self->_device = 0;
@@ -1330,20 +1330,20 @@ uint64_t __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeL
         ubn_dispatch_sync([(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue], &__block_literal_global_137);
       }
 
-      v9 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+      workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __66__BWPhotonicEngineNode_didReachEndOfDataForConfigurationID_input___block_invoke_2;
       v21[3] = &unk_1E798F870;
       v21[4] = self;
-      ubn_dispatch_sync(v9, v21);
-      v10 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+      ubn_dispatch_sync(workerQueue, v21);
+      workerQueue2 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __66__BWPhotonicEngineNode_didReachEndOfDataForConfigurationID_input___block_invoke_5;
       v20[3] = &unk_1E798F870;
       v20[4] = self;
-      ubn_dispatch_sync(v10, v20);
+      ubn_dispatch_sync(workerQueue2, v20);
     }
   }
 
@@ -1359,32 +1359,32 @@ uint64_t __80__BWPhotonicEngineNode_configurationWithID_updatedFormat_didBecomeL
       v11 = 1;
     }
 
-    v12 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceControllerConfiguration];
-    if (a3 && v12 && !v11)
+    inferenceControllerConfiguration = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration inferenceControllerConfiguration];
+    if (d && inferenceControllerConfiguration && !v11)
     {
       v13 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator waitAndSafelyGetProcessorControllerForType:3];
-      v14 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
+      inferenceControllerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __66__BWPhotonicEngineNode_didReachEndOfDataForConfigurationID_input___block_invoke_6;
       v19[3] = &unk_1E798F870;
       v19[4] = v13;
-      ubn_dispatch_sync(v14, v19);
+      ubn_dispatch_sync(inferenceControllerQueue, v19);
     }
 
-    else if (!a3)
+    else if (!d)
     {
       [(BWPhotonicEngineNode *)self _releaseResources];
     }
 
-    v15 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
+    emitQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __66__BWPhotonicEngineNode_didReachEndOfDataForConfigurationID_input___block_invoke_7;
     v18[3] = &unk_1E798F898;
     v18[4] = self;
-    v18[5] = a3;
-    ubn_dispatch_async(v15, v18);
+    v18[5] = d;
+    ubn_dispatch_async(emitQueue, v18);
   }
 }
 
@@ -1423,7 +1423,7 @@ uint64_t __66__BWPhotonicEngineNode_didReachEndOfDataForConfigurationID_input___
   return result;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (self->_resourcesReleased)
   {
@@ -1442,21 +1442,21 @@ LABEL_9:
     return;
   }
 
-  if (self->_pointCloudInput != a4)
+  if (self->_pointCloudInput != input)
   {
-    v5 = [[BWPhotonicEngineNodeSampleBufferAndInput alloc] initWithSampleBuffer:a3 nodeInput:a4];
+    v5 = [[BWPhotonicEngineNodeSampleBufferAndInput alloc] initWithSampleBuffer:buffer nodeInput:input];
     if (v5)
     {
       v6 = v5;
       [(BWPhotonicEngineNodeSampleBufferAndInputQueue *)self->_sampleBufferAndInputQueue enqueue:v5];
 
-      v7 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+      workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __52__BWPhotonicEngineNode_renderSampleBuffer_forInput___block_invoke;
       v11[3] = &unk_1E798F870;
       v11[4] = self;
-      ubn_dispatch_async(v7, v11);
+      ubn_dispatch_async(workerQueue, v11);
       return;
     }
 
@@ -1475,7 +1475,7 @@ uint64_t __50__BWPhotonicEngineNode__handleSampleBuffer_input___block_invoke(uin
   return [v1 setContainer:v2 photoIdentifier:v3];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   if (!_FigIsNotCurrentDispatchQueue())
@@ -1483,22 +1483,22 @@ uint64_t __50__BWPhotonicEngineNode__handleSampleBuffer_input___block_invoke(uin
     [BWPhotonicEngineNode handleNodeError:forInput:];
   }
 
-  if (self->_pointCloudInput != a4)
+  if (self->_pointCloudInput != input)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 1;
-    if (self->_resourcesReleased || (v7 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue], v10[0] = MEMORY[0x1E69E9820], v10[1] = 3221225472, v10[2] = __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke, v10[3] = &unk_1E79906C0, v10[4] = a3, v10[5] = self, v10[6] = &v11, ubn_dispatch_sync(v7, v10), (v12[3] & 1) != 0))
+    if (self->_resourcesReleased || (v7 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue], v10[0] = MEMORY[0x1E69E9820], v10[1] = 3221225472, v10[2] = __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke, v10[3] = &unk_1E79906C0, v10[4] = error, v10[5] = self, v10[6] = &v11, ubn_dispatch_sync(v7, v10), (v12[3] & 1) != 0))
     {
-      v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
+      emitQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator emitQueue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke_2;
       v9[3] = &unk_1E798F898;
       v9[4] = self;
-      v9[5] = a3;
-      ubn_dispatch_async(v8, v9);
+      v9[5] = error;
+      ubn_dispatch_async(emitQueue, v9);
     }
 
     _Block_object_dispose(&v11, 8);
@@ -1596,7 +1596,7 @@ void __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke(uint64_t
   }
 }
 
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input
 {
   if (self->_resourcesReleased)
   {
@@ -1611,20 +1611,20 @@ void __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke(uint64_t
 
   else
   {
-    if ([(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator stereoDisparityProcessorControllerQueue:a3])
+    if ([(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator stereoDisparityProcessorControllerQueue:settings])
     {
       v14 = 0;
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 0;
-      v7 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+      workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConfig_forInput___block_invoke;
       v13[3] = &unk_1E798FAF8;
       v13[4] = self;
       v13[5] = &v14;
-      ubn_dispatch_sync(v7, v13);
+      ubn_dispatch_sync(workerQueue, v13);
       if (*(v15 + 24) == 1)
       {
         ubn_dispatch_sync([(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator stereoDisparityProcessorControllerQueue], &__block_literal_global_266);
@@ -1639,14 +1639,14 @@ void __49__BWPhotonicEngineNode_handleNodeError_forInput___block_invoke(uint64_t
       ubn_dispatch_sync([(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue], &__block_literal_global_268_0);
     }
 
-    v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+    workerQueue2 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConfig_forInput___block_invoke_4;
     v12[3] = &unk_1E798F898;
     v12[4] = self;
-    v12[5] = a3;
-    ubn_dispatch_sync(v8, v12);
+    v12[5] = settings;
+    ubn_dispatch_sync(workerQueue2, v12);
   }
 }
 
@@ -1753,42 +1753,42 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
   }
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions
 {
-  v9 = *&a7;
-  v10 = a6;
+  v9 = *&format;
+  keyCopy2 = key;
   if (dword_1EB58E340)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v10 = a6;
+    keyCopy2 = key;
   }
 
-  if (a5 == 28)
+  if (type == 28)
   {
-    v16 = [BWOnDemandPixelBufferAllocator onDemandAllocatorWithDimensions:a8 pixelFormat:v9 name:BWStillImageBufferTypeToShortString(28) memoryPool:[(BWNodeOutput *)self->super._output memoryPool]];
+    v16 = [BWOnDemandPixelBufferAllocator onDemandAllocatorWithDimensions:dimensions pixelFormat:v9 name:BWStillImageBufferTypeToShortString(28) memoryPool:[(BWNodeOutput *)self->super._output memoryPool]];
   }
 
   else
   {
-    v16 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:a3 processorInput:a4 type:a5 dimensions:a8 pixelFormat:v9 attachedMediaKey:v10];
+    v16 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:controller processorInput:input type:type dimensions:dimensions pixelFormat:v9 attachedMediaKey:keyCopy2];
   }
 
-  return [(BWPhotonicEngineNode *)self _newOutputPixelBufferForProcessorController:a3 processorInput:a4 type:a5 pixelBufferProvider:v16];
+  return [(BWPhotonicEngineNode *)self _newOutputPixelBufferForProcessorController:controller processorInput:input type:type pixelBufferProvider:v16];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)a3 outputPixelBufferDimensionsForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8
+- ($2825F4736939C4A6D3AD43837233062D)processorController:(id)controller outputPixelBufferDimensionsForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions
 {
-  v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:a3 processorInput:a4 type:a5 dimensions:a8 pixelFormat:*&a7 attachedMediaKey:a6];
+  v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator pixelBufferProviderForProcessorController:controller processorInput:input type:type dimensions:dimensions pixelFormat:*&format attachedMediaKey:key];
 
   return [v8 dimensions];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  v7 = *&a7;
-  if (!a4 && !a7)
+  v7 = *&err;
+  if (!buffer && !err)
   {
     v121 = 0;
     v120 = OS_LOG_TYPE_DEFAULT;
@@ -1804,16 +1804,16 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
   }
 
   v92 = v7;
-  BWPixelBufferDimensionsFromSampleBuffer(a4);
-  v88 = BWStillImageCaptureFrameFlagsForSampleBuffer(a4);
-  if (a4)
+  BWPixelBufferDimensionsFromSampleBuffer(buffer);
+  v88 = BWStillImageCaptureFrameFlagsForSampleBuffer(buffer);
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     CVPixelBufferGetPixelFormatType(ImageBuffer);
   }
 
-  v93 = a6;
-  v94 = self;
+  inputCopy = input;
+  selfCopy = self;
   if (dword_1EB58E340)
   {
     v121 = 0;
@@ -1823,7 +1823,7 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (([objc_msgSend(objc_msgSend(a6 settings] & 1) == 0)
+  if (([objc_msgSend(objc_msgSend(input settings] & 1) == 0)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     v121 = 0;
@@ -1835,22 +1835,22 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
     LODWORD(sampleBufferOut[0].value) = 138412546;
     *(&sampleBufferOut[0].value + 4) = currentCaptureRequestIdentifier;
     LOWORD(sampleBufferOut[0].flags) = 2112;
-    *(&sampleBufferOut[0].flags + 2) = [objc_msgSend(a6 "settings")];
+    *(&sampleBufferOut[0].flags + 2) = [objc_msgSend(input "settings")];
     v17 = _os_log_send_and_compose_impl();
     v82 = 0;
     FigCapturePleaseFileRadar(FrameworkRadarComponent, v17, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWPhotonicEngineNode.m", 2116, @"LastShownDate:BWPhotonicEngineNode.m:2116", @"LastShownBuild:BWPhotonicEngineNode.m:2116", 0);
     free(v17);
   }
 
-  if (!v7 && -[BWStillImageNodeConfiguration deferredPhotoProcessorEnabled](self->_nodeConfiguration, "deferredPhotoProcessorEnabled") && ([a3 type] == 2 || objc_msgSend(a3, "type") == 6))
+  if (!v7 && -[BWStillImageNodeConfiguration deferredPhotoProcessorEnabled](self->_nodeConfiguration, "deferredPhotoProcessorEnabled") && ([controller type] == 2 || objc_msgSend(controller, "type") == 6))
   {
-    BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(a4);
+    BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(buffer);
   }
 
-  v18 = [a3 type];
-  if (v18 > 7)
+  type = [controller type];
+  if (type > 7)
   {
-    if (v18 == 8)
+    if (type == 8)
     {
       [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator stereoDisparityProcessorControllerQueue];
       if (!_FigIsCurrentDispatchQueue())
@@ -1858,10 +1858,10 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
         [BWPhotonicEngineNode processorController:didFinishProcessingSampleBuffer:type:processorInput:err:];
       }
 
-      v20 = [objc_msgSend(a6 "captureSettings")];
-      if (a5 == 20 && v20)
+      v20 = [objc_msgSend(input "captureSettings")];
+      if (type == 20 && v20)
       {
-        AttachedMedia = BWSampleBufferGetAttachedMedia(a4, @"Depth");
+        AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
         v22 = AttachedMedia;
         if (AttachedMedia)
         {
@@ -1874,11 +1874,11 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
         }
 
         v30 = CMGetAttachment(v22, *off_1E798A3C8, 0);
-        v31 = CMGetAttachment(a4, *off_1E798D2E8, 0);
-        v87 = CMGetAttachment(a4, *off_1E798D2B8, 0);
-        v84 = [a6 portType];
-        v89 = [objc_msgSend(a6 "settings")];
-        [objc_msgSend(a6 "settings")];
+        v31 = CMGetAttachment(buffer, *off_1E798D2E8, 0);
+        v87 = CMGetAttachment(buffer, *off_1E798D2B8, 0);
+        portType = [input portType];
+        v89 = [objc_msgSend(input "settings")];
+        [objc_msgSend(input "settings")];
         if (v7)
         {
           v32 = 1;
@@ -1890,7 +1890,7 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
         }
 
         v33 = !v32;
-        v34 = v94;
+        v34 = selfCopy;
         if (dword_1EB58E340)
         {
           v121 = 0;
@@ -1898,7 +1898,7 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
           v35 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
           os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);
           fig_log_call_emit_and_clean_up_after_send_and_compose();
-          v34 = v94;
+          v34 = selfCopy;
         }
 
         if (v23)
@@ -1906,34 +1906,34 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
           CFRetain(v23);
         }
 
-        if ((BWCIFilterArrayContainsPortraitFilters([objc_msgSend(v93 settings]) & 1) == 0)
+        if ((BWCIFilterArrayContainsPortraitFilters([objc_msgSend(inputCopy settings]) & 1) == 0)
         {
-          BWSampleBufferRemoveAttachedMedia(a4, @"Depth");
+          BWSampleBufferRemoveAttachedMedia(buffer, @"Depth");
         }
 
-        v36 = [(BWPhotonicEngineNodeResourceCoordinator *)v34->_resourceCoordinator workerQueue];
+        workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)v34->_resourceCoordinator workerQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __100__BWPhotonicEngineNode_processorController_didFinishProcessingSampleBuffer_type_processorInput_err___block_invoke_325;
         block[3] = &unk_1E7997228;
         v104 = v33;
-        block[4] = v84;
+        block[4] = portType;
         block[5] = v34;
         block[6] = v31;
         block[7] = v87;
         block[9] = v23;
         block[8] = v30;
         block[10] = v89;
-        dispatch_async(v36, block);
-        a6 = v93;
+        dispatch_async(workerQueue, block);
+        input = inputCopy;
       }
     }
 
-    else if (v18 == 12)
+    else if (type == 12)
     {
-      if (([objc_msgSend(a6 "captureSettings")] == 12 || objc_msgSend(objc_msgSend(a6, "captureSettings"), "captureType") == 13) && (v88 & 0x10) != 0 && -[BWStillImageNodeConfiguration depthDataType](self->_nodeConfiguration, "depthDataType") == 9)
+      if (([objc_msgSend(input "captureSettings")] == 12 || objc_msgSend(objc_msgSend(input, "captureSettings"), "captureType") == 13) && (v88 & 0x10) != 0 && -[BWStillImageNodeConfiguration depthDataType](self->_nodeConfiguration, "depthDataType") == 9)
       {
-        v26 = -[NSMutableDictionary objectForKeyedSubscript:](self->_deepFusionProcessorInputByPortType, "objectForKeyedSubscript:", [a6 portType]);
+        v26 = -[NSMutableDictionary objectForKeyedSubscript:](self->_deepFusionProcessorInputByPortType, "objectForKeyedSubscript:", [input portType]);
         v27 = [objc_msgSend(v26 "evZeroReferenceFrameAttachments")];
         if (v27)
         {
@@ -1944,13 +1944,13 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
             v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
           }
 
-          [v29 setObject:BWSampleBufferGetAttachedMedia(a4 forKeyedSubscript:{0x1F21AAB10), 0x1F21AAB10}];
-          [v29 setObject:BWSampleBufferGetAttachedMedia(a4 forKeyedSubscript:{0x1F21AAB70), 0x1F21AAB70}];
-          [v29 setObject:BWSampleBufferGetAttachedMedia(a4 forKeyedSubscript:{0x1F21AAB90), 0x1F21AAB90}];
+          [v29 setObject:BWSampleBufferGetAttachedMedia(buffer forKeyedSubscript:{0x1F21AAB10), 0x1F21AAB10}];
+          [v29 setObject:BWSampleBufferGetAttachedMedia(buffer forKeyedSubscript:{0x1F21AAB70), 0x1F21AAB70}];
+          [v29 setObject:BWSampleBufferGetAttachedMedia(buffer forKeyedSubscript:{0x1F21AAB90), 0x1F21AAB90}];
           [v28 setObject:v29 forKeyedSubscript:0x1F2180F50];
 
           [v26 setEvZeroReferenceFrameAttachments:v28];
-          CMSampleBufferGetPresentationTimeStamp(&v111, a4);
+          CMSampleBufferGetPresentationTimeStamp(&v111, buffer);
           sampleBufferOut[0] = v111;
           [v26 setEvZeroReferenceFramePTS:sampleBufferOut];
         }
@@ -1963,16 +1963,16 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
       }
     }
 
-    else if (v18 == 16 && [(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredPhotoProcessorEnabled])
+    else if (type == 16 && [(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredPhotoProcessorEnabled])
     {
-      [a6 portType];
-      [BWPhotonicEngineNode _attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:a4 portType:?];
+      [input portType];
+      [BWPhotonicEngineNode _attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:buffer portType:?];
     }
   }
 
   else
   {
-    switch(v18)
+    switch(type)
     {
       case 2:
         [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
@@ -1993,7 +1993,7 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
           }
         }
 
-        if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepFusionSupportEnabled]&& ![(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredPhotoProcessorEnabled]&& a5 != 15 && a5 != 36)
+        if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepFusionSupportEnabled]&& ![(BWStillImageNodeConfiguration *)self->_nodeConfiguration deferredPhotoProcessorEnabled]&& type != 15 && type != 36)
         {
           [BWPhotonicEngineNode processorController:didFinishProcessingSampleBuffer:type:processorInput:err:];
         }
@@ -2018,22 +2018,22 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
           }
         }
 
-        PortType = BWSampleBufferGetPortType(a4);
-        v25 = [PortType isEqualToString:{objc_msgSend(objc_msgSend(a6, "captureSettings"), "masterPortType")}];
-        if (([objc_msgSend(a6 "captureStreamSettings")] & 0x4000000000) != 0 && (objc_msgSend(objc_msgSend(a6, "captureSettings"), "learnedNRStereoPhotoFrameFlag") & v88) != 0)
+        PortType = BWSampleBufferGetPortType(buffer);
+        v25 = [PortType isEqualToString:{objc_msgSend(objc_msgSend(input, "captureSettings"), "masterPortType")}];
+        if (([objc_msgSend(input "captureStreamSettings")] & 0x4000000000) != 0 && (objc_msgSend(objc_msgSend(input, "captureSettings"), "learnedNRStereoPhotoFrameFlag") & v88) != 0)
         {
           sampleBufferOut[0].value = 0;
           if (v25)
           {
-            BWCMSampleBufferCreateCopyIncludingMetadata(a4, sampleBufferOut);
+            BWCMSampleBufferCreateCopyIncludingMetadata(buffer, sampleBufferOut);
             [CMGetAttachment(sampleBufferOut[0].value *off_1E798A3C8];
           }
 
           else
           {
-            if (a4)
+            if (buffer)
             {
-              v37 = CFRetain(a4);
+              v37 = CFRetain(buffer);
             }
 
             else
@@ -2044,11 +2044,11 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
             sampleBufferOut[0].value = v37;
           }
 
-          stereoPhotoSensorRawFrameByPortType = v94->_stereoPhotoSensorRawFrameByPortType;
+          stereoPhotoSensorRawFrameByPortType = selfCopy->_stereoPhotoSensorRawFrameByPortType;
           if (!stereoPhotoSensorRawFrameByPortType)
           {
             stereoPhotoSensorRawFrameByPortType = objc_alloc_init(MEMORY[0x1E695DF90]);
-            v94->_stereoPhotoSensorRawFrameByPortType = stereoPhotoSensorRawFrameByPortType;
+            selfCopy->_stereoPhotoSensorRawFrameByPortType = stereoPhotoSensorRawFrameByPortType;
           }
 
           [(NSMutableDictionary *)stereoPhotoSensorRawFrameByPortType setObject:sampleBufferOut[0].value forKeyedSubscript:PortType];
@@ -2060,19 +2060,19 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
 
         if (v25)
         {
-          if (a4)
+          if (buffer)
           {
-            CFRetain(a4);
+            CFRetain(buffer);
           }
 
-          v56 = [(BWPhotonicEngineNodeResourceCoordinator *)v94->_resourceCoordinator workerQueue];
+          workerQueue2 = [(BWPhotonicEngineNodeResourceCoordinator *)selfCopy->_resourceCoordinator workerQueue];
           v112[0] = MEMORY[0x1E69E9820];
           v112[1] = 3221225472;
           v112[2] = __100__BWPhotonicEngineNode_processorController_didFinishProcessingSampleBuffer_type_processorInput_err___block_invoke;
           v112[3] = &unk_1E7990178;
-          v112[4] = v94;
-          v112[5] = a4;
-          ubn_dispatch_async(v56, v112);
+          v112[4] = selfCopy;
+          v112[5] = buffer;
+          ubn_dispatch_async(workerQueue2, v112);
         }
 
         break;
@@ -2083,45 +2083,45 @@ void __84__BWPhotonicEngineNode_handleStillImagePrewarmWithSettings_resourceConf
           [BWPhotonicEngineNode processorController:didFinishProcessingSampleBuffer:type:processorInput:err:];
         }
 
-        if ([objc_msgSend(a6 "captureSettings")] == 13 && objc_msgSend(objc_msgSend(a6, "captureSettings"), "deliverDeferredPhotoProxyImage") && (a5 == 53 || a5 == 51))
+        if ([objc_msgSend(input "captureSettings")] == 13 && objc_msgSend(objc_msgSend(input, "captureSettings"), "deliverDeferredPhotoProxyImage") && (type == 53 || type == 51))
         {
-          [(BWDeferredCaptureControllerInput *)self->_deferredCaptureControllerInput setLearnedFusionProxyGenerationUsedEVMinus:a5 == 51];
+          [(BWDeferredCaptureControllerInput *)self->_deferredCaptureControllerInput setLearnedFusionProxyGenerationUsedEVMinus:type == 51];
         }
 
-        if (!v7 && a5 <= 0x35 && ((1 << a5) & 0x28000020000080) != 0)
+        if (!v7 && type <= 0x35 && ((1 << type) & 0x28000020000080) != 0)
         {
-          v86 = [objc_msgSend(a6 "captureSettings")];
-          if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && ([objc_msgSend(a6 "captureStreamSettings")] & 0x200000000) == 0)
+          v86 = [objc_msgSend(input "captureSettings")];
+          if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && ([objc_msgSend(input "captureStreamSettings")] & 0x200000000) == 0)
           {
-            v19 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepZoomMode];
-            if (([objc_msgSend(a6 "captureStreamSettings")] & 0x4000000000) != 0)
+            deepZoomMode = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepZoomMode];
+            if (([objc_msgSend(input "captureStreamSettings")] & 0x4000000000) != 0)
             {
-              v19 = 5;
+              deepZoomMode = 5;
             }
 
-            else if ([objc_msgSend(a6 "captureSettings")] == 13 || !+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", a4, 1, objc_msgSend(-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration), "objectForKeyedSubscript:", objc_msgSend(a6, "portType")), 0, 0))
+            else if ([objc_msgSend(input "captureSettings")] == 13 || !+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", buffer, 1, objc_msgSend(-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration), "objectForKeyedSubscript:", objc_msgSend(input, "portType")), 0, 0))
             {
               goto LABEL_87;
             }
 
             [(BWDeferredPipelineParameters *)[(BWDeferredCaptureControllerInput *)self->_deferredCaptureControllerInput pipelineParameters] setDeepZoomVersion:[(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration deepZoomVersion]];
-            [(BWDeferredPipelineParameters *)[(BWDeferredCaptureControllerInput *)self->_deferredCaptureControllerInput pipelineParameters] setDeepZoomMode:v19];
+            [(BWDeferredPipelineParameters *)[(BWDeferredCaptureControllerInput *)self->_deferredCaptureControllerInput pipelineParameters] setDeepZoomMode:deepZoomMode];
           }
 
 LABEL_87:
-          if (([objc_msgSend(a6 "captureSettings")] & 0x8000000000) != 0)
+          if (([objc_msgSend(input "captureSettings")] & 0x8000000000) != 0)
           {
-            v38 = CMGetAttachment(a4, *off_1E798A3C8, 0);
-            v39 = [MEMORY[0x1E695DF90] dictionary];
-            BWCopyWhiteBalanceMetadata(v38, v39);
-            -[BWDeferredCaptureControllerInput addDictionary:tag:](self->_deferredCaptureControllerInput, "addDictionary:tag:", v39, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagWhiteBalanceMetadataByPortTypePrefix, objc_msgSend(a6, "portType")]);
+            v38 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            BWCopyWhiteBalanceMetadata(v38, dictionary);
+            -[BWDeferredCaptureControllerInput addDictionary:tag:](self->_deferredCaptureControllerInput, "addDictionary:tag:", dictionary, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagWhiteBalanceMetadataByPortTypePrefix, objc_msgSend(input, "portType")]);
           }
 
           v107 = 0u;
           v108 = 0u;
           v109 = 0u;
           v110 = 0u;
-          v40 = [CMGetAttachment(a4 @"PhotoManifest"];
+          v40 = [CMGetAttachment(buffer @"PhotoManifest"];
           v41 = [v40 countByEnumeratingWithState:&v107 objects:v106 count:16];
           if (v41)
           {
@@ -2137,12 +2137,12 @@ LABEL_87:
                 }
 
                 v45 = *(*(&v107 + 1) + 8 * i);
-                CMSampleBufferGetPresentationTimeStamp(&v105, a4);
+                CMSampleBufferGetPresentationTimeStamp(&v105, buffer);
                 sampleBufferOut[0] = v105;
                 [v45 setPresentationTimeStamp:sampleBufferOut];
                 [v45 setTime:{objc_msgSend(MEMORY[0x1E695DF00], "now")}];
                 [v45 setTimeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "systemTimeZone")}];
-                [(BWDeferredCaptureControllerInput *)v94->_deferredCaptureControllerInput addPhotoDescriptor:v45];
+                [(BWDeferredCaptureControllerInput *)selfCopy->_deferredCaptureControllerInput addPhotoDescriptor:v45];
               }
 
               v42 = [v40 countByEnumeratingWithState:&v107 objects:v106 count:16];
@@ -2151,46 +2151,46 @@ LABEL_87:
             while (v42);
           }
 
-          a6 = v93;
-          v46 = v94;
-          if ([objc_msgSend(v93 "processingSettings")])
+          input = inputCopy;
+          v46 = selfCopy;
+          if ([objc_msgSend(inputCopy "processingSettings")])
           {
-            v47 = BWSampleBufferGetAttachedMedia(a4, 0x1F21AAE10);
+            v47 = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAE10);
             v48 = CMGetAttachment(v47, @"RawDNGDictionary", 0);
-            v49 = [v93 settings];
+            settings = [inputCopy settings];
             if (v48)
             {
-              v50 = BWCreateDNGDictionaryWithUpdatedDimensionsIfNeeded(v48, [v49 deferredPhotoProxyWidth] | (objc_msgSend(v49, "deferredPhotoProxyHeight") << 32), objc_msgSend(v49, "deferredPhotoFinalWidth") | (objc_msgSend(v49, "deferredPhotoFinalHeight") << 32));
+              v50 = BWCreateDNGDictionaryWithUpdatedDimensionsIfNeeded(v48, [settings deferredPhotoProxyWidth] | (objc_msgSend(settings, "deferredPhotoProxyHeight") << 32), objc_msgSend(settings, "deferredPhotoFinalWidth") | (objc_msgSend(settings, "deferredPhotoFinalHeight") << 32));
               if (v50)
               {
                 v48 = v50;
               }
 
-              a6 = v93;
-              v46 = v94;
-              -[BWDeferredCaptureControllerInput addDictionary:tag:](v94->_deferredCaptureControllerInput, "addDictionary:tag:", v48, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagDNGDictionaryPrefix, objc_msgSend(v93, "portType")]);
+              input = inputCopy;
+              v46 = selfCopy;
+              -[BWDeferredCaptureControllerInput addDictionary:tag:](selfCopy->_deferredCaptureControllerInput, "addDictionary:tag:", v48, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagDNGDictionaryPrefix, objc_msgSend(inputCopy, "portType")]);
             }
 
-            else if (![v49 outputFormat])
+            else if (![settings outputFormat])
             {
-              [(BWDeferredCaptureControllerInput *)v94->_deferredCaptureControllerInput encounteredProcessingError:0];
-              v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(CMGetAttachment(a4, @"StillImageProcessingFlags", 0), "unsignedIntValue") ^ 0x1000}];
-              CMSetAttachment(a4, @"StillImageProcessingFlags", v51, 1u);
+              [(BWDeferredCaptureControllerInput *)selfCopy->_deferredCaptureControllerInput encounteredProcessingError:0];
+              v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(CMGetAttachment(buffer, @"StillImageProcessingFlags", 0), "unsignedIntValue") ^ 0x1000}];
+              CMSetAttachment(buffer, @"StillImageProcessingFlags", v51, 1u);
             }
           }
 
-          v52 = [(BWStillImageNodeConfiguration *)v46->_nodeConfiguration depthDataType];
-          if ((v52 - 9) >= 2)
+          depthDataType = [(BWStillImageNodeConfiguration *)v46->_nodeConfiguration depthDataType];
+          if ((depthDataType - 9) >= 2)
           {
-            if (v52 != 3)
+            if (depthDataType != 3)
             {
               goto LABEL_107;
             }
 
-            v53 = BWSampleBufferGetAttachedMedia(a4, @"Depth");
+            v53 = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
             if (!v53)
             {
-              [(BWDeferredCaptureControllerInput *)v94->_deferredCaptureControllerInput depthDataGenerationFailed];
+              [(BWDeferredCaptureControllerInput *)selfCopy->_deferredCaptureControllerInput depthDataGenerationFailed];
 LABEL_107:
               if ((v86 & 0x4000000000) == 0)
               {
@@ -2203,32 +2203,32 @@ LABEL_107:
             v74 = v53;
             CMSampleBufferGetImageBuffer(v53);
             CMGetAttachment(v74, *off_1E798A3C8, 0);
-            [a6 portType];
+            [input portType];
             [BWPhotonicEngineNode _deferredCaptureAddBuffer:bufferType:captureFrameFlags:metadata:rawThumbnailsBuffer:rawThumbnailsMetadata:portType:];
             v75 = CMGetAttachment(v74, *off_1E798A328, 0);
             v76 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v75];
             [v76 setObject:CMGetAttachment(v74 forKeyedSubscript:{@"DepthPixelBufferType", 0), @"DepthPixelBufferType"}];
             if ([v75 count])
             {
-              a6 = v93;
-              -[BWDeferredCaptureControllerInput addDictionary:tag:](v94->_deferredCaptureControllerInput, "addDictionary:tag:", v76, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagDepthData, objc_msgSend(v93, "portType")]);
+              input = inputCopy;
+              -[BWDeferredCaptureControllerInput addDictionary:tag:](selfCopy->_deferredCaptureControllerInput, "addDictionary:tag:", v76, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagDepthData, objc_msgSend(inputCopy, "portType")]);
             }
 
-            -[BWDeferredCaptureControllerInput addDictionary:tag:](v94->_deferredCaptureControllerInput, "addDictionary:tag:", [objc_msgSend(-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](v94->_nodeConfiguration) objectForKeyedSubscript:{*off_1E798A0E8), "cameraInfo"}], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%@", BWDeferredIntermediateTagCameraInfoByPortTypePrefix, *off_1E798A0E8));
-            if ((BWCIFilterArrayContainsPortraitFilters([objc_msgSend(a6 "settings")]) & 1) == 0)
+            -[BWDeferredCaptureControllerInput addDictionary:tag:](selfCopy->_deferredCaptureControllerInput, "addDictionary:tag:", [objc_msgSend(-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](selfCopy->_nodeConfiguration) objectForKeyedSubscript:{*off_1E798A0E8), "cameraInfo"}], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%@", BWDeferredIntermediateTagCameraInfoByPortTypePrefix, *off_1E798A0E8));
+            if ((BWCIFilterArrayContainsPortraitFilters([objc_msgSend(input "settings")]) & 1) == 0)
             {
-              BWSampleBufferRemoveAttachedMedia(a4, @"Depth");
+              BWSampleBufferRemoveAttachedMedia(buffer, @"Depth");
             }
           }
 
 LABEL_108:
-          v54 = [MEMORY[0x1E695DF90] dictionary];
-          [v54 setObject:CMGetAttachment(a4 forKeyedSubscript:{@"OriginalCameraIntrinsicMatrix", 0), @"OriginalCameraIntrinsicMatrix"}];
-          [v54 setObject:CMGetAttachment(a4 forKeyedSubscript:{@"OriginalCameraIntrinsicMatrixReferenceDimensions", 0), @"OriginalCameraIntrinsicMatrixReferenceDimensions"}];
-          if ([v54 count])
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary2 setObject:CMGetAttachment(buffer forKeyedSubscript:{@"OriginalCameraIntrinsicMatrix", 0), @"OriginalCameraIntrinsicMatrix"}];
+          [dictionary2 setObject:CMGetAttachment(buffer forKeyedSubscript:{@"OriginalCameraIntrinsicMatrixReferenceDimensions", 0), @"OriginalCameraIntrinsicMatrixReferenceDimensions"}];
+          if ([dictionary2 count])
           {
-            a6 = v93;
-            -[BWDeferredCaptureControllerInput addDictionary:tag:](v94->_deferredCaptureControllerInput, "addDictionary:tag:", v54, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagSampleBufferOriginalCameraIntrinsicsPrefix, objc_msgSend(v93, "portType")]);
+            input = inputCopy;
+            -[BWDeferredCaptureControllerInput addDictionary:tag:](selfCopy->_deferredCaptureControllerInput, "addDictionary:tag:", dictionary2, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", BWDeferredIntermediateTagSampleBufferOriginalCameraIntrinsicsPrefix, objc_msgSend(inputCopy, "portType")]);
           }
         }
 
@@ -2236,26 +2236,26 @@ LABEL_108:
     }
   }
 
-  v57 = [a6 outputSampleBufferRouterForBufferType:a5];
+  v57 = [input outputSampleBufferRouterForBufferType:type];
   if (![v57 outputSampleBufferRouter])
   {
     v77 = MEMORY[0x1E696AEC0];
-    v78 = BWStillImageProcessorTypeToShortString([a3 type]);
-    v73 = [v77 stringWithFormat:@"No output router for output sample buffer of %@ (buffer type: %@, err: %d)", v78, BWStillImageBufferTypeToShortString(a5), v92];
+    v78 = BWStillImageProcessorTypeToShortString([controller type]);
+    v73 = [v77 stringWithFormat:@"No output router for output sample buffer of %@ (buffer type: %@, err: %d)", v78, BWStillImageBufferTypeToShortString(type), v92];
     goto LABEL_148;
   }
 
   v58 = objc_autoreleasePoolPush();
-  v59 = [v57 outputSampleBufferRouter];
-  (*(v59 + 16))(v59, a4, a5, a6, v92);
+  outputSampleBufferRouter = [v57 outputSampleBufferRouter];
+  (*(outputSampleBufferRouter + 16))(outputSampleBufferRouter, buffer, type, input, v92);
   objc_autoreleasePoolPop(v58);
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v60 = [v57 bypassedProcessorsTypes];
-  v61 = [v60 countByEnumeratingWithState:&v99 objects:v98 count:16];
-  v62 = v94;
+  bypassedProcessorsTypes = [v57 bypassedProcessorsTypes];
+  v61 = [bypassedProcessorsTypes countByEnumeratingWithState:&v99 objects:v98 count:16];
+  v62 = selfCopy;
   if (!v61)
   {
     return;
@@ -2269,10 +2269,10 @@ LABEL_108:
     {
       if (*v100 != v64)
       {
-        objc_enumerationMutation(v60);
+        objc_enumerationMutation(bypassedProcessorsTypes);
       }
 
-      v66 = [*(*(&v99 + 1) + 8 * j) intValue];
+      intValue = [*(*(&v99 + 1) + 8 * j) intValue];
       if (dword_1EB58E340)
       {
         v121 = 0;
@@ -2291,30 +2291,30 @@ LABEL_108:
 
         if (v69)
         {
-          v70 = BWStillImageProcessorTypeToShortString(v66);
+          v70 = BWStillImageProcessorTypeToShortString(intValue);
           v113 = 136315651;
           v114 = "[BWPhotonicEngineNode processorController:didFinishProcessingSampleBuffer:type:processorInput:err:]";
           v115 = 2114;
           v116 = v70;
           v117 = 2113;
-          v118 = v93;
+          v118 = inputCopy;
           LODWORD(v82) = 32;
           v80 = &v113;
           _os_log_send_and_compose_impl();
         }
 
         fig_log_call_emit_and_clean_up_after_send_and_compose();
-        v62 = v94;
+        v62 = selfCopy;
       }
 
-      if (v66 > 0x13)
+      if (intValue > 0x13)
       {
         goto LABEL_139;
       }
 
-      if (v66 == 10)
+      if (intValue == 10)
       {
-        v71 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
+        workerQueue3 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
         v96[0] = MEMORY[0x1E69E9820];
         v96[1] = 3221225472;
         v96[2] = __100__BWPhotonicEngineNode_processorController_didFinishProcessingSampleBuffer_type_processorInput_err___block_invoke_2;
@@ -2324,17 +2324,17 @@ LABEL_108:
         goto LABEL_143;
       }
 
-      if (v66 != 16)
+      if (intValue != 16)
       {
-        if (((1 << v66) & 0xEFB00) != 0)
+        if (((1 << intValue) & 0xEFB00) != 0)
         {
           goto LABEL_147;
         }
 
 LABEL_139:
-        if (v66 == 7)
+        if (intValue == 7)
         {
-          v71 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
+          workerQueue3 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
           v97[0] = MEMORY[0x1E69E9820];
           v97[1] = 3221225472;
           v97[2] = __100__BWPhotonicEngineNode_processorController_didFinishProcessingSampleBuffer_type_processorInput_err___block_invoke_329;
@@ -2344,18 +2344,18 @@ LABEL_139:
           goto LABEL_143;
         }
 
-        if ((v66 - 1) >= 6)
+        if ((intValue - 1) >= 6)
         {
           continue;
         }
 
 LABEL_147:
-        v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Processor bypassing support has not been implemented for %@", BWStillImageProcessorTypeToShortString(v66), v82, v83];
+        v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Processor bypassing support has not been implemented for %@", BWStillImageProcessorTypeToShortString(intValue), v82, v83];
 LABEL_148:
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v73 userInfo:0]);
       }
 
-      v71 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
+      workerQueue3 = [(BWPhotonicEngineNodeResourceCoordinator *)v62->_resourceCoordinator workerQueue];
       v95[0] = MEMORY[0x1E69E9820];
       v95[1] = 3221225472;
       v95[2] = __100__BWPhotonicEngineNode_processorController_didFinishProcessingSampleBuffer_type_processorInput_err___block_invoke_3;
@@ -2363,10 +2363,10 @@ LABEL_148:
       v95[4] = v62;
       v72 = v95;
 LABEL_143:
-      ubn_dispatch_async(v71, v72);
+      ubn_dispatch_async(workerQueue3, v72);
     }
 
-    v63 = [v60 countByEnumeratingWithState:&v99 objects:v98 count:16];
+    v63 = [bypassedProcessorsTypes countByEnumeratingWithState:&v99 objects:v98 count:16];
   }
 
   while (v63);
@@ -2495,30 +2495,30 @@ void __75__BWPhotonicEngineNode__emitError_stillImageSettings_metadata_descripti
   v2 = *(a1 + 40);
 }
 
-- (void)processorController:(id)a3 willAddSampleBuffer:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5
+- (void)processorController:(id)controller willAddSampleBuffer:(opaqueCMSampleBuffer *)buffer processorInput:(id)input
 {
-  if (a3 && a4 && a5)
+  if (controller && buffer && input)
   {
-    v9 = CMGetAttachment(a4, *off_1E798A3C8, 0);
-    v10 = [a3 type];
-    if (v10 == 12)
+    v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+    type = [controller type];
+    if (type == 12)
     {
-      if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && ([objc_msgSend(a5 "captureStreamSettings")] & 0x200000000) != 0)
+      if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && ([objc_msgSend(input "captureStreamSettings")] & 0x200000000) != 0)
       {
         v12 = *(MEMORY[0x1E695F050] + 16);
         v16.origin = *MEMORY[0x1E695F050];
         v16.size = v12;
-        if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomTransferForSampleBuffer:sensorConfiguration:intermediateZoomSrcRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomTransferForSampleBuffer:sensorConfiguration:intermediateZoomSrcRectOut:", a4, [-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration) objectForKeyedSubscript:{objc_msgSend(a5, "portType")}], &v16))
+        if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomTransferForSampleBuffer:sensorConfiguration:intermediateZoomSrcRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomTransferForSampleBuffer:sensorConfiguration:intermediateZoomSrcRectOut:", buffer, [-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration) objectForKeyedSubscript:{objc_msgSend(input, "portType")}], &v16))
         {
           if ([objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B588), "intValue"}] == 1 && !CGRectIsNull(v16))
           {
-            [objc_msgSend(objc_msgSend(a5 "captureSettings")];
+            [objc_msgSend(objc_msgSend(input "captureSettings")];
             if (v13 >= 1.4118)
             {
-              [objc_msgSend(objc_msgSend(a5 "captureSettings")];
+              [objc_msgSend(objc_msgSend(input "captureSettings")];
               if (v14 < 2.0)
               {
-                if ([-[BWPhotonicEngineNodeConfiguration deepZoomProcessorControllerConfiguration](self->_nodeConfiguration "deepZoomProcessorControllerConfiguration")] != 4 && -[FigCaptureCameraParameters deepZoomTransferWithZoomedImageEnabledForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "deepZoomTransferWithZoomedImageEnabledForPortType:sensorIDString:", objc_msgSend(a5, "portType"), +[FigCaptureCameraParameters sensorIDStringFromMetadata:](FigCaptureCameraParameters, "sensorIDStringFromMetadata:", v9)))
+                if ([-[BWPhotonicEngineNodeConfiguration deepZoomProcessorControllerConfiguration](self->_nodeConfiguration "deepZoomProcessorControllerConfiguration")] != 4 && -[FigCaptureCameraParameters deepZoomTransferWithZoomedImageEnabledForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "deepZoomTransferWithZoomedImageEnabledForPortType:sensorIDString:", objc_msgSend(input, "portType"), +[FigCaptureCameraParameters sensorIDStringFromMetadata:](FigCaptureCameraParameters, "sensorIDStringFromMetadata:", v9)))
                 {
                   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Deep Zoom Transfer wrongly configured userInfo:{processing mode should be 'FuseHighResolutionWithZoomedImage'", 0}]);
                 }
@@ -2531,16 +2531,16 @@ void __75__BWPhotonicEngineNode__emitError_stillImageSettings_metadata_descripti
       }
     }
 
-    else if (v10 == 6)
+    else if (type == 6)
     {
-      if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && [objc_msgSend(a5 "captureStreamSettings")] == 12 && (objc_msgSend(objc_msgSend(a5, "captureStreamSettings"), "captureFlags") & 0x4200000000) == 0)
+      if (-[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && [objc_msgSend(input "captureStreamSettings")] == 12 && (objc_msgSend(objc_msgSend(input, "captureStreamSettings"), "captureFlags") & 0x4200000000) == 0)
       {
         v11 = *(MEMORY[0x1E695F050] + 16);
         v16.origin = *MEMORY[0x1E695F050];
         v16.size = v11;
         v15.origin = v16.origin;
         v15.size = v11;
-        if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", a4, 1, [-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration) objectForKeyedSubscript:{objc_msgSend(a5, "portType")}], &v16, &v15))
+        if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForSampleBuffer:type:sensorConfiguration:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", buffer, 1, [-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration) objectForKeyedSubscript:{objc_msgSend(input, "portType")}], &v16, &v15))
         {
           if (!CGRectIsNull(v16) && !CGRectIsNull(v15))
           {
@@ -2550,24 +2550,24 @@ void __75__BWPhotonicEngineNode__emitError_stillImageSettings_metadata_descripti
         }
       }
 
-      if (-[BWPhotonicEngineNodeConfiguration processingAspectRatio](self->_nodeConfiguration) && -[BWPhotonicEngineNodeConfiguration processingAspectRatio](self->_nodeConfiguration) != 6 && ([objc_msgSend(a5 "captureSettings")] & 4) == 0)
+      if (-[BWPhotonicEngineNodeConfiguration processingAspectRatio](self->_nodeConfiguration) && -[BWPhotonicEngineNodeConfiguration processingAspectRatio](self->_nodeConfiguration) != 6 && ([objc_msgSend(input "captureSettings")] & 4) == 0)
       {
-        BWPixelBufferDimensionsFromSampleBuffer(a4);
+        BWPixelBufferDimensionsFromSampleBuffer(buffer);
         [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] dimensions];
       }
     }
   }
 }
 
-- (void)processorController:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 processorInput:(id)a6
+- (void)processorController:(id)controller didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform processorInput:(id)input
 {
-  if ([a6 isMaster])
+  if ([input isMaster])
   {
-    v10 = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration referenceFrameSelectionDelegate];
-    v11 = [a6 stillImageSettings];
-    v12 = *&a4->var0;
-    var3 = a4->var3;
-    [v10 node:self didSelectNewReferenceFrameWithPTS:&v12 transform:a5 forSettings:v11];
+    referenceFrameSelectionDelegate = [(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration referenceFrameSelectionDelegate];
+    stillImageSettings = [input stillImageSettings];
+    v12 = *&s->var0;
+    var3 = s->var3;
+    [referenceFrameSelectionDelegate node:self didSelectNewReferenceFrameWithPTS:&v12 transform:transform forSettings:stillImageSettings];
   }
 }
 
@@ -2592,26 +2592,26 @@ uint64_t __110__BWPhotonicEngineNode__handleQueuedSampleBufferForDisparityWithSe
   return [objc_msgSend(objc_msgSend(*(a1 + 32) "requestedSettings")] & ~v6 & (v5 & ((~v8 & 0x12) == 0) | (v4 && (v8 & 4) != 0));
 }
 
-- (void)processorController:(id)a3 didSelectFusionMode:(int)a4 processorInput:(id)a5
+- (void)processorController:(id)controller didSelectFusionMode:(int)mode processorInput:(id)input
 {
-  v6 = *&a4;
-  if ([a5 isMaster])
+  v6 = *&mode;
+  if ([input isMaster])
   {
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_stillImageFusionModeByCaptureRequestIdentifier, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v6], self->_currentCaptureRequestIdentifier);
-    -[BWPhotonicEngineNode _handleQueuedSampleBufferForDisparityWithSettingsIfNeeded:resolvedFusionMode:portType:](self, [a5 stillImageSettings], v6, objc_msgSend(a5, "portType"));
-    [a5 stillImageSettings];
-    [a5 portType];
+    -[BWPhotonicEngineNode _handleQueuedSampleBufferForDisparityWithSettingsIfNeeded:resolvedFusionMode:portType:](self, [input stillImageSettings], v6, objc_msgSend(input, "portType"));
+    [input stillImageSettings];
+    [input portType];
     [BWPhotonicEngineNode _attemptDisparityReferenceFrameResolutionForSettings:? portType:?];
-    [a5 stillImageSettings];
+    [input stillImageSettings];
     [BWPhotonicEngineNode _deferredCaptureAddSecondaryStereoPhotoCaptureSampleBufferIfReadyForSettings:?];
-    if ([a3 type] == 6)
+    if ([controller type] == 6)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(NSMutableDictionary *)self->_nrfProcessorInputsByPortType allValues];
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      allValues = [(NSMutableDictionary *)self->_nrfProcessorInputsByPortType allValues];
+      v10 = [allValues countByEnumeratingWithState:&v16 objects:v15 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2622,7 +2622,7 @@ uint64_t __110__BWPhotonicEngineNode__handleQueuedSampleBufferForDisparityWithSe
           {
             if (*v17 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             v14 = *(*(&v16 + 1) + 8 * i);
@@ -2630,7 +2630,7 @@ uint64_t __110__BWPhotonicEngineNode__handleQueuedSampleBufferForDisparityWithSe
             -[BWPhotonicEngineNode _checkIfProcessingCompletedForNRFProcessorInput:](self, [v14 firstObject]);
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v16 objects:v15 count:16];
         }
 
         while (v11);
@@ -2639,63 +2639,63 @@ uint64_t __110__BWPhotonicEngineNode__handleQueuedSampleBufferForDisparityWithSe
   }
 }
 
-- (void)processorControllerWillProcessInferences:(id)a3
+- (void)processorControllerWillProcessInferences:(id)inferences
 {
-  if ([a3 type] == 8 && -[BWPhotonicEngineNodeResourceCoordinator inferenceControllerGroup](self->_resourceCoordinator, "inferenceControllerGroup"))
+  if ([inferences type] == 8 && -[BWPhotonicEngineNodeResourceCoordinator inferenceControllerGroup](self->_resourceCoordinator, "inferenceControllerGroup"))
   {
-    v4 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerGroup];
+    inferenceControllerGroup = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerGroup];
 
-    dispatch_group_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_group_wait(inferenceControllerGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
 
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4 inferenceInputBufferType:(unint64_t)a5
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input inferenceInputBufferType:(unint64_t)type
 {
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue:a3];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue:controller];
   if (!_FigIsNotCurrentDispatchQueue())
   {
     [BWPhotonicEngineNode processorController:newInferencesForProcessorInput:inferenceInputBufferType:];
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = BWStillImageProcessorTypeToShortString([a3 type]);
-  [v8 stringWithFormat:@"%@ processor controller getting inferences of type '%@'", v9, BWStillImageBufferTypeToShortString(a5)];
-  v10 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator syncGetInferencesForInferenceInputBufferType:a5];
+  v9 = BWStillImageProcessorTypeToShortString([controller type]);
+  [v8 stringWithFormat:@"%@ processor controller getting inferences of type '%@'", v9, BWStillImageBufferTypeToShortString(type)];
+  v10 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator syncGetInferencesForInferenceInputBufferType:type];
 
   return v10;
 }
 
-- (void)processorController:(id)a3 didDetermineReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5 err:(int)a6
+- (void)processorController:(id)controller didDetermineReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input err:(int)err
 {
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue:a3];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue:controller];
   if (!_FigIsCurrentDispatchQueue())
   {
     [BWPhotonicEngineNode processorController:didDetermineReferenceFrame:processorInput:err:];
   }
 
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a4, 0x1F217BF50);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(frame, 0x1F217BF50);
   if (AttachedMedia)
   {
     v10 = AttachedMedia;
     if (BWPhotoEncoderSupportsPiecemealEnocding(self->_currentStillImageSettings))
     {
-      -[BWPhotonicEngineNode _attemptPiecemealEncodingForGainMapSbuf:primarySbuf:portType:](self, v10, a4, [a5 portType]);
+      -[BWPhotonicEngineNode _attemptPiecemealEncodingForGainMapSbuf:primarySbuf:portType:](self, v10, frame, [input portType]);
     }
   }
 
   memset(&v15, 0, sizeof(v15));
-  CMSampleBufferGetPresentationTimeStamp(&v15, a4);
-  v11 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], a4, 1u);
-  v12 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+  CMSampleBufferGetPresentationTimeStamp(&v15, frame);
+  v11 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], frame, 1u);
+  workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_processorInput_err___block_invoke;
   v13[3] = &unk_1E79974B8;
   v13[4] = self;
-  v13[5] = a5;
+  v13[5] = input;
   v13[6] = v11;
   v14 = v15;
-  ubn_dispatch_async(v12, v13);
+  ubn_dispatch_async(workerQueue, v13);
 }
 
 void __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_processorInput_err___block_invoke(uint64_t a1)
@@ -2707,7 +2707,7 @@ void __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_p
   [v2 setEvZeroReferenceFramePTS:&v3];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInferenceBuffer:(__CVBuffer *)a4 metadata:(id)a5 inferenceAttachedMediaKey:(id)a6 processorInput:(id)a7 err:(int)a8
+- (void)processorController:(id)controller didFinishProcessingInferenceBuffer:(__CVBuffer *)buffer metadata:(id)metadata inferenceAttachedMediaKey:(id)key processorInput:(id)input err:(int)err
 {
   [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue];
   if (!_FigIsCurrentDispatchQueue())
@@ -2724,10 +2724,10 @@ void __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_p
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInferenceBuffer:a4 metadata:a5 inferenceAttachedMediaKey:a6, v13, v14];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInferenceBuffer:buffer metadata:metadata inferenceAttachedMediaKey:key, v13, v14];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInference:(id)a4 inferenceAttachmentKey:(id)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingInference:(id)inference inferenceAttachmentKey:(id)key processorInput:(id)input err:(int)err
 {
   [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue];
   if (!_FigIsCurrentDispatchQueue())
@@ -2744,10 +2744,10 @@ void __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_p
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInference:a4 inferenceAttachmentKey:a5, v11, v12];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInference:inference inferenceAttachmentKey:key, v11, v12];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInferenceAttachedMediaMetadata:(id)a4 processorInput:(id)a5
+- (void)processorController:(id)controller didFinishProcessingInferenceAttachedMediaMetadata:(id)metadata processorInput:(id)input
 {
   [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue];
   if (!_FigIsCurrentDispatchQueue())
@@ -2755,16 +2755,16 @@ void __90__BWPhotonicEngineNode_processorController_didDetermineReferenceFrame_p
     [BWPhotonicEngineNode processorController:didFinishProcessingInferenceAttachedMediaMetadata:processorInput:];
   }
 
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInferenceAttachedMediaMetadata:a4];
-  v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator asyncSetInferenceAttachedMediaMetadata:metadata];
+  inferenceControllerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __109__BWPhotonicEngineNode_processorController_didFinishProcessingInferenceAttachedMediaMetadata_processorInput___block_invoke;
   v9[3] = &unk_1E798FD58;
-  v9[4] = a5;
+  v9[4] = input;
   v9[5] = self;
-  v9[6] = a4;
-  ubn_dispatch_async(v8, v9);
+  v9[6] = metadata;
+  ubn_dispatch_async(inferenceControllerQueue, v9);
 }
 
 void __109__BWPhotonicEngineNode_processorController_didFinishProcessingInferenceAttachedMediaMetadata_processorInput___block_invoke(uint64_t a1)
@@ -2792,7 +2792,7 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
   return [v3 setProvidedInferenceAttachedMedia:v2];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingBuffer:(__CVBuffer *)a4 metadata:(id)a5 type:(unint64_t)a6 captureFrameFlags:(unint64_t)a7 processorInput:(id)a8 err:(int)a9
+- (void)processorController:(id)controller didFinishProcessingBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(unint64_t)type captureFrameFlags:(unint64_t)flags processorInput:(id)input err:(int)err
 {
   if (dword_1EB58E340)
   {
@@ -2803,13 +2803,13 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a9)
+  if (err)
   {
     [BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:];
     return;
   }
 
-  if (([objc_msgSend(objc_msgSend(a8 "settings")] & 1) == 0)
+  if (([objc_msgSend(objc_msgSend(input "settings")] & 1) == 0)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     v61 = 0;
@@ -2829,19 +2829,19 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
     if (v17)
     {
       currentCaptureRequestIdentifier = self->_currentCaptureRequestIdentifier;
-      v19 = [objc_msgSend(a8 "settings")];
+      v19 = [objc_msgSend(input "settings")];
       v53 = 136315650;
       v54 = "[BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]";
       v55 = 2112;
-      v56 = currentCaptureRequestIdentifier;
+      inputCopy2 = currentCaptureRequestIdentifier;
       v57 = 2112;
-      v58 = v19;
+      inputCopy = v19;
       _os_log_send_and_compose_impl();
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     v20 = self->_currentCaptureRequestIdentifier;
-    v21 = [objc_msgSend(a8 "settings")];
+    v21 = [objc_msgSend(input "settings")];
     LODWORD(v59[0].value) = 138412546;
     *(&v59[0].value + 4) = v20;
     LOWORD(v59[0].flags) = 2112;
@@ -2852,7 +2852,7 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
     free(v22);
   }
 
-  if (a6 != 19 && [objc_msgSend(a8 "captureSettings")] != 12 && objc_msgSend(objc_msgSend(a8, "captureSettings"), "captureType") != 13 && (objc_msgSend(objc_msgSend(a8, "captureSettings"), "captureFlags") & 0x80) == 0)
+  if (type != 19 && [objc_msgSend(input "captureSettings")] != 12 && objc_msgSend(objc_msgSend(input, "captureSettings"), "captureType") != 13 && (objc_msgSend(objc_msgSend(input, "captureSettings"), "captureFlags") & 0x80) == 0)
   {
     v42 = FigCaptureGetFrameworkRadarComponent();
     v61 = 0;
@@ -2874,9 +2874,9 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
       v53 = 136315650;
       v54 = "[BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]";
       v55 = 2112;
-      v56 = @" Learned Fusion,";
+      inputCopy2 = @" Learned Fusion,";
       v57 = 2112;
-      v58 = a8;
+      inputCopy = input;
       _os_log_send_and_compose_impl();
     }
 
@@ -2884,19 +2884,19 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
     LODWORD(v59[0].value) = 138412546;
     *(&v59[0].value + 4) = @" Learned Fusion,";
     LOWORD(v59[0].flags) = 2112;
-    *(&v59[0].flags + 2) = a8;
+    *(&v59[0].flags + 2) = input;
     v29 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v42, v29, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWPhotonicEngineNode.m", 3306, @"LastShownDate:BWPhotonicEngineNode.m:3306", @"LastShownBuild:BWPhotonicEngineNode.m:3306", 0);
     goto LABEL_23;
   }
 
-  v23 = [a3 type];
-  if (v23 > 0x13)
+  type = [controller type];
+  if (type > 0x13)
   {
     return;
   }
 
-  if (((1 << v23) & 0xFFF9E) != 0)
+  if (((1 << type) & 0xFFF9E) != 0)
   {
     v61 = 0;
     v60 = OS_LOG_TYPE_DEFAULT;
@@ -2914,16 +2914,16 @@ uint64_t __109__BWPhotonicEngineNode_processorController_didFinishProcessingInfe
 
     if (v26)
     {
-      v27 = BWStillImageProcessorTypeToShortString([a3 type]);
+      v27 = BWStillImageProcessorTypeToShortString([controller type]);
       v53 = 136315394;
       v54 = "[BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]";
       v55 = 2112;
-      v56 = v27;
+      inputCopy2 = v27;
       _os_log_send_and_compose_impl();
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v28 = BWStillImageProcessorTypeToShortString([a3 type]);
+    v28 = BWStillImageProcessorTypeToShortString([controller type]);
     LODWORD(v59[0].value) = 138412290;
     *(&v59[0].value + 4) = v28;
     v29 = _os_log_send_and_compose_impl();
@@ -2933,7 +2933,7 @@ LABEL_23:
     return;
   }
 
-  if (v23 == 5)
+  if (type == 5)
   {
     [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator deferredProcessorControllerQueue];
     if (!_FigIsCurrentDispatchQueue())
@@ -2941,7 +2941,7 @@ LABEL_23:
       [BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:];
     }
 
-    if ([objc_msgSend(a8 "captureSettings")] != 12 && objc_msgSend(objc_msgSend(a8, "captureSettings"), "captureType") != 13)
+    if ([objc_msgSend(input "captureSettings")] != 12 && objc_msgSend(objc_msgSend(input, "captureSettings"), "captureType") != 13)
     {
       v38 = FigCaptureGetFrameworkRadarComponent();
       v61 = 0;
@@ -2963,38 +2963,38 @@ LABEL_23:
         v53 = 136315394;
         v54 = "[BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]";
         v55 = 2112;
-        v56 = a8;
+        inputCopy2 = input;
         _os_log_send_and_compose_impl();
       }
 
       fig_log_call_emit_and_clean_up_after_send_and_compose();
       LODWORD(v59[0].value) = 138412290;
-      *(&v59[0].value + 4) = a8;
+      *(&v59[0].value + 4) = input;
       v29 = _os_log_send_and_compose_impl();
       FigCapturePleaseFileRadar(v38, v29, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWPhotonicEngineNode.m", 3417, @"LastShownDate:BWPhotonicEngineNode.m:3417", @"LastShownBuild:BWPhotonicEngineNode.m:3417", 0);
       goto LABEL_23;
     }
 
-    if (a4)
+    if (buffer)
     {
-      CFRetain(a4);
+      CFRetain(buffer);
     }
 
-    v35 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+    workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __121__BWPhotonicEngineNode_processorController_didFinishProcessingBuffer_metadata_type_captureFrameFlags_processorInput_err___block_invoke;
     v51[3] = &unk_1E79974B8;
     v51[4] = self;
-    v51[5] = a8;
-    v51[6] = a5;
-    v51[7] = a4;
-    v51[8] = a6;
-    v51[9] = a7;
-    ubn_dispatch_async(v35, v51);
+    v51[5] = input;
+    v51[6] = metadata;
+    v51[7] = buffer;
+    v51[8] = type;
+    v51[9] = flags;
+    ubn_dispatch_async(workerQueue, v51);
   }
 
-  else if (v23 == 6)
+  else if (type == 6)
   {
     [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
     if (!_FigIsCurrentDispatchQueue())
@@ -3002,31 +3002,31 @@ LABEL_23:
       [BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:];
     }
 
-    v30 = [a8 referenceFrame];
-    v31 = [a8 errorRecoveryFrame];
-    if (v30)
+    referenceFrame = [input referenceFrame];
+    errorRecoveryFrame = [input errorRecoveryFrame];
+    if (referenceFrame)
     {
-      v32 = v30;
+      v32 = referenceFrame;
     }
 
     else
     {
-      v32 = v31;
+      v32 = errorRecoveryFrame;
     }
 
-    if (a6 == 19 && ![a5 count])
+    if (type == 19 && ![metadata count])
     {
       if ([(BWPhotonicEngineNodeConfiguration *)self->_nodeConfiguration isSmartStyleRenderingCapture:self->_currentStillImageSettings]&& v32)
       {
         v59[0].value = 0;
-        if (BWSampleBufferCreateAttachedMediaFromPixelBuffer(v32, 0x1F217BF50, a4, &self->_gainMapFormatDescription, 0, 0, 1, v59))
+        if (BWSampleBufferCreateAttachedMediaFromPixelBuffer(v32, 0x1F217BF50, buffer, &self->_gainMapFormatDescription, 0, 0, 1, v59))
         {
           [BWPhotonicEngineNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:];
         }
 
         else
         {
-          -[BWPhotonicEngineNode _attemptPiecemealEncodingForGainMapSbuf:primarySbuf:portType:](self, v59[0].value, v32, [a8 portType]);
+          -[BWPhotonicEngineNode _attemptPiecemealEncodingForGainMapSbuf:primarySbuf:portType:](self, v59[0].value, v32, [input portType]);
         }
 
         if (v59[0].value)
@@ -3036,45 +3036,45 @@ LABEL_23:
       }
     }
 
-    else if ([objc_msgSend(a8 "captureSettings")])
+    else if ([objc_msgSend(input "captureSettings")])
     {
-      if (a6 == 8)
+      if (type == 8)
       {
-        if (([objc_msgSend(a8 "captureSettings")] & 4) != 0)
+        if (([objc_msgSend(input "captureSettings")] & 4) != 0)
         {
           v34 = &BWDeferredIntermediateTagSyntheticReferenceFrameMetadataByPortTypePrefix;
-          v33 = a5;
+          metadataCopy = metadata;
         }
 
         else
         {
-          v33 = CMGetAttachment(v30, *off_1E798A3C8, 0);
+          metadataCopy = CMGetAttachment(referenceFrame, *off_1E798A3C8, 0);
           v34 = &BWDeferredIntermediateTagReferenceFrameMetadataByPortTypePrefix;
         }
 
-        -[BWDeferredCaptureControllerInput addDictionary:tag:](self->_deferredCaptureControllerInput, "addDictionary:tag:", v33, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", *v34, objc_msgSend(a8, "portType")]);
+        -[BWDeferredCaptureControllerInput addDictionary:tag:](self->_deferredCaptureControllerInput, "addDictionary:tag:", metadataCopy, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", *v34, objc_msgSend(input, "portType")]);
       }
 
-      if (a4 && (a6 != 19 || ([objc_msgSend(a8 "captureStreamSettings")] & 0x100000000) == 0))
+      if (buffer && (type != 19 || ([objc_msgSend(input "captureStreamSettings")] & 0x100000000) == 0))
       {
-        [a8 portType];
+        [input portType];
         [BWPhotonicEngineNode _deferredCaptureAddBuffer:bufferType:captureFrameFlags:metadata:rawThumbnailsBuffer:rawThumbnailsMetadata:portType:];
       }
     }
 
-    else if ([objc_msgSend(a8 "captureSettings")] == 12 || objc_msgSend(objc_msgSend(a8, "captureSettings"), "captureType") == 13)
+    else if ([objc_msgSend(input "captureSettings")] == 12 || objc_msgSend(objc_msgSend(input, "captureSettings"), "captureType") == 13)
     {
-      v36 = -[NSMutableDictionary objectForKeyedSubscript:](self->_deepFusionProcessorInputByPortType, "objectForKeyedSubscript:", [a8 portType]);
-      if (a6 == 8)
+      v36 = -[NSMutableDictionary objectForKeyedSubscript:](self->_deepFusionProcessorInputByPortType, "objectForKeyedSubscript:", [input portType]);
+      if (type == 8)
       {
-        v37 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], v30, 1u);
+        v37 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], referenceFrame, 1u);
         [v36 setEvZeroReferenceFrameAttachments:v37];
-        CMSampleBufferGetPresentationTimeStamp(&v52, v30);
+        CMSampleBufferGetPresentationTimeStamp(&v52, referenceFrame);
         v59[0] = v52;
         [v36 setEvZeroReferenceFramePTS:v59];
       }
 
-      [v36 addBuffer:a4 metadata:a5 bufferType:a6 captureFrameFlags:a7];
+      [v36 addBuffer:buffer metadata:metadata bufferType:type captureFrameFlags:flags];
     }
   }
 }
@@ -3090,12 +3090,12 @@ void __121__BWPhotonicEngineNode_processorController_didFinishProcessingBuffer_m
   }
 }
 
-- (void)processorController:(id)a3 willProcessRedEyeReductionForProcessorInput:(id)a4
+- (void)processorController:(id)controller willProcessRedEyeReductionForProcessorInput:(id)input
 {
-  if (-[BWPhotonicEngineNodeConfiguration isSWFRFlashCapture:](self->_nodeConfiguration, "isSWFRFlashCapture:", [a4 stillImageSettings]))
+  if (-[BWPhotonicEngineNodeConfiguration isSWFRFlashCapture:](self->_nodeConfiguration, "isSWFRFlashCapture:", [input stillImageSettings]))
   {
-    v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_swfrRawRedEyeReductionAuxImageByPortType, "objectForKeyedSubscript:", [a4 portType]);
-    if (!v6 || (v7 = v6, v8 = -[BWSoftISPProcessorControllerInput initWithSettings:portType:resolutionFlavor:]([BWSoftISPProcessorControllerInput alloc], "initWithSettings:portType:resolutionFlavor:", [a4 stillImageSettings], objc_msgSend(a4, "portType"), -[BWPhotonicEngineNodeConfiguration resolvedProcessingResolutionFlavorForInput:](self->_nodeConfiguration, "resolvedProcessingResolutionFlavorForInput:", a4)), v9 = -[BWPhotonicEngineNode _ubRERRouter](self), -[BWStillImageProcessorControllerInput addOutputSampleBufferRouter:forBufferTypes:name:](v8, "addOutputSampleBufferRouter:forBufferTypes:name:", v9, -[BWPhotonicEngineNode _bufferTypesForCaptureSettings:](self, objc_msgSend(objc_msgSend(a4, "stillImageSettings"), "captureSettings")), @"RER Aux SoftISP --> RER"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_softISPRemainingInputsByPortType, "objectForKeyedSubscript:", objc_msgSend(a4, "portType")), "addObject:", v8), -[BWPhotonicEngineNode _enqueueSoftISPInput:](self), LODWORD(v9) = v10, v8, v9))
+    v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_swfrRawRedEyeReductionAuxImageByPortType, "objectForKeyedSubscript:", [input portType]);
+    if (!v6 || (v7 = v6, v8 = -[BWSoftISPProcessorControllerInput initWithSettings:portType:resolutionFlavor:]([BWSoftISPProcessorControllerInput alloc], "initWithSettings:portType:resolutionFlavor:", [input stillImageSettings], objc_msgSend(input, "portType"), -[BWPhotonicEngineNodeConfiguration resolvedProcessingResolutionFlavorForInput:](self->_nodeConfiguration, "resolvedProcessingResolutionFlavorForInput:", input)), v9 = -[BWPhotonicEngineNode _ubRERRouter](self), -[BWStillImageProcessorControllerInput addOutputSampleBufferRouter:forBufferTypes:name:](v8, "addOutputSampleBufferRouter:forBufferTypes:name:", v9, -[BWPhotonicEngineNode _bufferTypesForCaptureSettings:](self, objc_msgSend(objc_msgSend(input, "stillImageSettings"), "captureSettings")), @"RER Aux SoftISP --> RER"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_softISPRemainingInputsByPortType, "objectForKeyedSubscript:", objc_msgSend(input, "portType")), "addObject:", v8), -[BWPhotonicEngineNode _enqueueSoftISPInput:](self), LODWORD(v9) = v10, v8, v9))
     {
       [BWPhotonicEngineNode processorController:? willProcessRedEyeReductionForProcessorInput:?];
     }
@@ -3104,14 +3104,14 @@ void __121__BWPhotonicEngineNode_processorController_didFinishProcessingBuffer_m
     {
       [(BWSoftISPProcessorControllerInput *)v8 addFrame:v7 processingMode:2];
       swfrRawRedEyeReductionAuxImageByPortType = self->_swfrRawRedEyeReductionAuxImageByPortType;
-      v12 = [a4 portType];
+      portType = [input portType];
 
-      [(NSMutableDictionary *)swfrRawRedEyeReductionAuxImageByPortType setObject:0 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)swfrRawRedEyeReductionAuxImageByPortType setObject:0 forKeyedSubscript:portType];
     }
   }
 }
 
-- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)a3 frameStatistics:(id)a4 stationary:(BOOL)a5 sphereOffsetEnabled:(BOOL)a6 detectedObjects:(id)a7
+- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)mode frameStatistics:(id)statistics stationary:(BOOL)stationary sphereOffsetEnabled:(BOOL)enabled detectedObjects:(id)objects
 {
   v20 = 0;
   v21 = &v20;
@@ -3119,34 +3119,34 @@ void __121__BWPhotonicEngineNode_processorController_didFinishProcessingBuffer_m
   v23 = __Block_byref_object_copy__46;
   v24 = __Block_byref_object_dispose__46;
   v25 = 0;
-  v13 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+  workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __135__BWPhotonicEngineNode_adaptiveBracketingParametersForDigitalFlashMode_frameStatistics_stationary_sphereOffsetEnabled_detectedObjects___block_invoke;
   v16[3] = &unk_1E79992A0;
-  v17 = a3;
+  modeCopy = mode;
   v16[4] = self;
-  v16[5] = a4;
-  v18 = a5;
-  v19 = a6;
-  v16[6] = a7;
+  v16[5] = statistics;
+  stationaryCopy = stationary;
+  enabledCopy = enabled;
+  v16[6] = objects;
   v16[7] = &v20;
-  ubn_dispatch_sync(v13, v16);
+  ubn_dispatch_sync(workerQueue, v16);
   v14 = v21[5];
   _Block_object_dispose(&v20, 8);
   return v14;
 }
 
-- (void)stopAdaptiveBracketingForSettings:(id)a3 withGroup:(int)a4
+- (void)stopAdaptiveBracketingForSettings:(id)settings withGroup:(int)group
 {
-  v6 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+  workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__BWPhotonicEngineNode_stopAdaptiveBracketingForSettings_withGroup___block_invoke;
   v7[3] = &unk_1E7991CF0;
   v7[4] = self;
-  v8 = a4;
-  ubn_dispatch_async(v6, v7);
+  groupCopy = group;
+  ubn_dispatch_async(workerQueue, v7);
 }
 
 uint64_t __68__BWPhotonicEngineNode_stopAdaptiveBracketingForSettings_withGroup___block_invoke(uint64_t a1)
@@ -3185,24 +3185,24 @@ uint64_t __68__BWPhotonicEngineNode_stopAdaptiveBracketingForSettings_withGroup_
   return result;
 }
 
-- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)a3 wait:(BOOL)a4
+- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)type wait:(BOOL)wait
 {
-  v4 = a4;
+  waitCopy = wait;
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
-  if (v4 && ![(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator hasSuccessfullySetupProcessorControllersAndMemoryResources])
+  if (waitCopy && ![(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator hasSuccessfullySetupProcessorControllersAndMemoryResources])
   {
-    v8 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+    workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __100__BWPhotonicEngineNode_adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType_wait___block_invoke;
     v13[3] = &unk_1E798F870;
     v13[4] = self;
-    ubn_dispatch_sync(v8, v13);
+    ubn_dispatch_sync(workerQueue, v13);
   }
 
-  v9 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:a3];
+  v9 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:type];
   v10 = FigGetUpTimeNanoseconds();
-  if (!v4 && v10 - UpTimeNanoseconds >= 100000001)
+  if (!waitCopy && v10 - UpTimeNanoseconds >= 100000001)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -3343,9 +3343,9 @@ LABEL_9:
   }
 }
 
-- (uint64_t)_setupProcessingStateForInferenceWithSettings:(uint64_t)a3 portType:(unint64_t)a4 inferenceInputBufferType:
+- (uint64_t)_setupProcessingStateForInferenceWithSettings:(uint64_t)settings portType:(unint64_t)type inferenceInputBufferType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -3354,22 +3354,22 @@ LABEL_9:
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  v8 = [a1[26] controllerForType:3];
+  v8 = [self[26] controllerForType:3];
   if (v8)
   {
-    v9 = [a1[19] shouldProvideInferenceAttachedMediaWithSettings:a2];
-    if (([a1[19] areInferencesRequiredByProcessorControllersForSettings:a2] | v9))
+    v9 = [self[19] shouldProvideInferenceAttachedMediaWithSettings:a2];
+    if (([self[19] areInferencesRequiredByProcessorControllersForSettings:a2] | v9))
     {
-      if (a4 <= 0x27 && ((1 << a4) & 0x9000008000) != 0)
+      if (type <= 0x27 && ((1 << type) & 0x9000008000) != 0)
       {
-        v10 = [a1[45] objectForKeyedSubscript:a3];
-        v11 = [a1[26] inferenceControllerQueue];
+        v10 = [self[45] objectForKeyedSubscript:settings];
+        inferenceControllerQueue = [self[26] inferenceControllerQueue];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_portType_inferenceInputBufferType___block_invoke;
         v40[3] = &unk_1E798F870;
         v40[4] = v8;
-        ubn_dispatch_sync(v11, v40);
+        ubn_dispatch_sync(inferenceControllerQueue, v40);
         if ([v10 inferenceImage])
         {
           v12 = BWSampleBufferCopyDictionaryOfAttachedMedia([v10 inferenceImage]);
@@ -3414,33 +3414,33 @@ LABEL_9:
           BWSampleBufferRemoveAllAttachedMedia([v10 inferenceImage]);
         }
 
-        [a1[26] syncReleaseInferencesForInferenceInputBufferType:a4];
-        v19 = [[BWInferenceEngineControllerInput alloc] initWithSettings:a2 portType:a3 inferenceInputBufferType:a4];
-        [a1[19] configureInferenceEngineControllerInput:v19];
-        v20 = [a1[19] isSWFRFlashCapture:a2];
-        v21 = [a1[19] isRedEyeReductionFlashCapture:a2];
+        [self[26] syncReleaseInferencesForInferenceInputBufferType:type];
+        v19 = [[BWInferenceEngineControllerInput alloc] initWithSettings:a2 portType:settings inferenceInputBufferType:type];
+        [self[19] configureInferenceEngineControllerInput:v19];
+        v20 = [self[19] isSWFRFlashCapture:a2];
+        v21 = [self[19] isRedEyeReductionFlashCapture:a2];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_portType_inferenceInputBufferType___block_invoke_2;
         v32[3] = &unk_1E799DFA0;
-        v32[4] = a1;
-        v32[5] = a3;
+        v32[4] = self;
+        v32[5] = settings;
         v33 = v21;
         v34 = v20;
         [(BWStillImageProcessorControllerInput *)v19 addOutputSampleBufferRouter:v32 forBufferTypes:&unk_1F224A5A8 name:@"Inference --> Stash"];
-        v22 = [a1[26] inferenceControllerQueue];
+        inferenceControllerQueue2 = [self[26] inferenceControllerQueue];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_portType_inferenceInputBufferType___block_invoke_715;
         v31[3] = &unk_1E79992F0;
         v31[4] = v8;
         v31[5] = v19;
-        v31[6] = a1;
+        v31[6] = self;
         v31[7] = &v45;
-        ubn_dispatch_sync(v22, v31);
+        ubn_dispatch_sync(inferenceControllerQueue2, v31);
         if (!*(v46 + 6))
         {
-          [a1[45] setObject:v19 forKeyedSubscript:a3];
+          [self[45] setObject:v19 forKeyedSubscript:settings];
         }
 
         goto LABEL_22;
@@ -3453,7 +3453,7 @@ LABEL_9:
       os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
       fig_log_call_emit_and_clean_up_after_send_and_compose();
       v41 = 138412290;
-      v42 = BWStillImageBufferTypeToShortString(a4);
+      v42 = BWStillImageBufferTypeToShortString(type);
       v25 = _os_log_send_and_compose_impl();
       FigCapturePleaseFileRadar(FrameworkRadarComponent, v25, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWPhotonicEngineNode.m", 7131, @"LastShownDate:BWPhotonicEngineNode.m:7131", @"LastShownBuild:BWPhotonicEngineNode.m:7131", 0);
     }
@@ -3538,16 +3538,16 @@ void __97__BWPhotonicEngineNode__setupSoftISPProcessingStateIfNeededWithSettings
   [objc_msgSend(*(*(a1 + 32) + 280) objectForKeyedSubscript:{objc_msgSend(a4, "portType")), "addObject:", v10}];
 }
 
-- (uint64_t)_setupProcessingStateForDisparityIfNeededWithSettings:(uint64_t)a3 sequenceNumber:(void *)a4 processingPlan:
+- (uint64_t)_setupProcessingStateForDisparityIfNeededWithSettings:(uint64_t)settings sequenceNumber:(void *)number processingPlan:
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    [*(a1 + 208) workerQueue];
+    [*(self + 208) workerQueue];
     if (!_FigIsCurrentDispatchQueue())
     {
       v15 = v4;
@@ -3555,42 +3555,42 @@ void __97__BWPhotonicEngineNode__setupSoftISPProcessingStateIfNeededWithSettings
       FigDebugAssert3();
     }
 
-    if (([(BWPhotonicEngineNode *)v5 _generateDisparityForSettings:a2]& 1) != 0)
+    if (([(BWPhotonicEngineNode *)selfCopy _generateDisparityForSettings:a2]& 1) != 0)
     {
-      v9 = [*(v5 + 208) controllerForType:8];
+      v9 = [*(selfCopy + 208) controllerForType:8];
       if (v9)
       {
         v10 = -[BWStereoDisparityProcessorInput initWithSettings:portType:]([BWStereoDisparityProcessorInput alloc], "initWithSettings:portType:", a2, [objc_msgSend(a2 "captureSettings")]);
-        ++*(v5 + 464);
-        v11 = [*(v5 + 208) stereoDisparityProcessorControllerQueue];
+        ++*(selfCopy + 464);
+        stereoDisparityProcessorControllerQueue = [*(selfCopy + 208) stereoDisparityProcessorControllerQueue];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __65__BWPhotonicEngineNode__standardNROutputRouterWithExpectedQueue___block_invoke;
         v21[3] = &unk_1E7999390;
-        v21[4] = v11;
-        v21[5] = v5;
+        v21[4] = stereoDisparityProcessorControllerQueue;
+        v21[5] = selfCopy;
         -[BWStillImageProcessorControllerInput addOutputSampleBufferRouter:forBufferTypes:name:](v10, "addOutputSampleBufferRouter:forBufferTypes:name:", [v21 copy], &unk_1F224A5C0, @"StereoDisparity ReferenceFrame --> Emit");
-        [a4 addInput:v10 sequenceNumber:a3 portType:objc_msgSend(objc_msgSend(a2 bufferType:{"captureSettings"), "masterPortType"), 20}];
+        [number addInput:v10 sequenceNumber:settings portType:objc_msgSend(objc_msgSend(a2 bufferType:{"captureSettings"), "masterPortType"), 20}];
         if ([objc_msgSend(a2 "captureSettings")] == 7)
         {
-          [*(v5 + 480) setObject:v10 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", a3)}];
+          [*(selfCopy + 480) setObject:v10 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", settings)}];
         }
 
         else
         {
-          *(v5 + 456) = v10;
+          *(selfCopy + 456) = v10;
         }
 
-        v12 = [*(v5 + 208) stereoDisparityProcessorControllerQueue];
+        stereoDisparityProcessorControllerQueue2 = [*(selfCopy + 208) stereoDisparityProcessorControllerQueue];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __108__BWPhotonicEngineNode__setupProcessingStateForDisparityIfNeededWithSettings_sequenceNumber_processingPlan___block_invoke;
         v16[3] = &unk_1E79992F0;
         v16[4] = v9;
         v16[5] = v10;
-        v16[6] = v5;
+        v16[6] = selfCopy;
         v16[7] = &v17;
-        ubn_dispatch_sync(v12, v16);
+        ubn_dispatch_sync(stereoDisparityProcessorControllerQueue2, v16);
       }
 
       else
@@ -3599,11 +3599,11 @@ void __97__BWPhotonicEngineNode__setupSoftISPProcessingStateIfNeededWithSettings
       }
     }
 
-    v5 = *(v18 + 6);
+    selfCopy = *(v18 + 6);
     _Block_object_dispose(&v17, 8);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __94__BWPhotonicEngineNode__setupProcessingStateForSingleImageCaptureWithSettings_processingPlan___block_invoke_575(uint64_t a1, const void *a2, uint64_t a3, void *a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9, uint64_t a10, char a11, uint64_t a12, void (*a13)(uint64_t a1), void *a14, uint64_t a15, uint64_t a16, __int128 a17, __int128 a18, uint64_t a19, uint64_t a20, uint64_t a21, uint64_t a22, uint64_t a23, uint64_t a24, uint64_t a25, uint64_t a26, uint64_t a27, uint64_t a28, uint64_t a29, uint64_t a30, uint64_t a31, uint64_t a32, uint64_t a33, uint64_t a34, uint64_t a35, uint64_t a36, __int16 a37, char a38, char a39, int a40, uint64_t a41, uint64_t a42, uint64_t a43, uint64_t a44, uint64_t a45, uint64_t a46, uint64_t a47, uint64_t a48, uint64_t a49, uint64_t a50, uint64_t a51, uint64_t a52, uint64_t a53)
@@ -4117,11 +4117,11 @@ uint64_t __36__BWPhotonicEngineNode__ubRERRouter__block_invoke(uint64_t a1, uint
   return [v7 addFrame:a2 faceObservations:{v8, v11, v12}];
 }
 
-- (void)processingCoordinator:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 description:(id)a5
+- (void)processingCoordinator:(id)coordinator didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer description:(id)description
 {
-  if (self->_processingCoordinator == a3)
+  if (self->_processingCoordinator == coordinator)
   {
-    CMGetAttachment(a4, @"StillSettings", 0);
+    CMGetAttachment(buffer, @"StillSettings", 0);
     if (dword_1EB58E340)
     {
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -4129,7 +4129,7 @@ uint64_t __36__BWPhotonicEngineNode__ubRERRouter__block_invoke(uint64_t a1, uint
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(BWPhotonicEngineNode *)self _emitSampleBuffer:a4 description:a5];
+    [(BWPhotonicEngineNode *)self _emitSampleBuffer:buffer description:description];
   }
 
   else
@@ -4140,10 +4140,10 @@ uint64_t __36__BWPhotonicEngineNode__ubRERRouter__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)processingCoordinator:(id)a3 didEncounterError:(int)a4 stillImageSettings:(id)a5 description:(id)a6
+- (void)processingCoordinator:(id)coordinator didEncounterError:(int)error stillImageSettings:(id)settings description:(id)description
 {
-  v9 = *&a4;
-  if (self->_processingCoordinator == a3)
+  v9 = *&error;
+  if (self->_processingCoordinator == coordinator)
   {
     if (dword_1EB58E340)
     {
@@ -4154,14 +4154,14 @@ uint64_t __36__BWPhotonicEngineNode__ubRERRouter__block_invoke(uint64_t a1, uint
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(BWPhotonicEngineNode *)self _emitError:v9 stillImageSettings:a5 metadata:0 description:a6, a6, v6, v7, v15, v16, v17, block, v19, v20, v21, v22, v23, v24, v25, v26, v27[0], v27[1], v27[2], v27[3], v27[4], v27[5], v27[6], v27[7], v27[8], v27[9], v27[10], v27[11], v27[12], v27[13], v27[14], v27[15], v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44];
-    v13 = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
+    [(BWPhotonicEngineNode *)self _emitError:v9 stillImageSettings:settings metadata:0 description:description, description, v6, v7, v15, v16, v17, block, v19, v20, v21, selfCopy, v23, v24, v25, v26, v27[0], v27[1], v27[2], v27[3], v27[4], v27[5], v27[6], v27[7], v27[8], v27[9], v27[10], v27[11], v27[12], v27[13], v27[14], v27[15], v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44];
+    workerQueue = [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
     block = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __95__BWPhotonicEngineNode_processingCoordinator_didEncounterError_stillImageSettings_description___block_invoke;
     v21 = &unk_1E798F870;
-    v22 = self;
-    dispatch_async(v13, &block);
+    selfCopy = self;
+    dispatch_async(workerQueue, &block);
   }
 
   else
@@ -4172,9 +4172,9 @@ uint64_t __36__BWPhotonicEngineNode__ubRERRouter__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)processingCoordinatorComplete:(id)a3
+- (void)processingCoordinatorComplete:(id)complete
 {
-  if (self->_processingCoordinator == a3)
+  if (self->_processingCoordinator == complete)
   {
     if (dword_1EB58E340)
     {
@@ -4363,11 +4363,11 @@ void __54__BWPhotonicEngineNode_processingCoordinatorComplete___block_invoke(uin
   return result;
 }
 
-- (BOOL)processingOnBeginMomentSupportedForCaptureSettings:(id)a3
+- (BOOL)processingOnBeginMomentSupportedForCaptureSettings:(id)settings
 {
-  if (([a3 captureFlags] & 4) != 0 && self->_sensorRawInput)
+  if (([settings captureFlags] & 4) != 0 && self->_sensorRawInput)
   {
-    [a3 captureType];
+    [settings captureType];
     [BWPhotonicEngineNode _infoForCaptureType:? isSupportedCaptureTypeOut:? isFusionCaptureTypeOut:?];
   }
 
@@ -4433,7 +4433,7 @@ LABEL_6:
 
 - (void)_liveReconfigureResourceCoordinatorIfNeeded
 {
-  if (a1 && [*(a1 + 208) liveReconfigureIfNeeded])
+  if (self && [*(self + 208) liveReconfigureIfNeeded])
   {
     v12 = 0;
     v11[139] = 0;
@@ -4504,7 +4504,7 @@ LABEL_6:
 
 - (void)_resetProcessingState
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_58_2();
     v36 = v35;
@@ -4610,10 +4610,10 @@ LABEL_6:
   }
 }
 
-- (uint64_t)_handleSampleBuffer:(uint64_t)a3 input:
+- (uint64_t)_handleSampleBuffer:(uint64_t)buffer input:
 {
-  v94 = a3;
-  if (!a1)
+  bufferCopy = buffer;
+  if (!self)
   {
     return 0;
   }
@@ -4847,7 +4847,7 @@ LABEL_42:
           v46 = @"YUV";
         }
 
-        v47 = [v10 settingsID];
+        settingsID = [v10 settingsID];
         v48 = *(v3 + 608);
         *v103 = 136316418;
         *&v103[4] = "[BWPhotonicEngineNode _handleSampleBuffer:input:]";
@@ -4858,7 +4858,7 @@ LABEL_42:
         *v105 = 2114;
         *&v105[2] = v46;
         *&v105[10] = 2050;
-        *&v105[12] = v47;
+        *&v105[12] = settingsID;
         *&v105[20] = 2114;
         *&v105[22] = v48;
         LODWORD(v92) = 62;
@@ -4879,19 +4879,19 @@ LABEL_42:
   v31 = OUTLINED_FUNCTION_192_0(560);
   v32 = OUTLINED_FUNCTION_192_0(408);
   v33 = OUTLINED_FUNCTION_192_0(328);
-  v34 = [OUTLINED_FUNCTION_192_0(304) firstObject];
+  firstObject = [OUTLINED_FUNCTION_192_0(304) firstObject];
   HIBYTE(v102) = 0;
   OUTLINED_FUNCTION_135_5();
   OUTLINED_FUNCTION_223_0();
-  v36 = [v35 isScalerRequiredForSettings:? portType:? preNoiseReductionScalerOut:?];
-  if (v36 && HIBYTE(v102) == 1)
+  firstObject2 = [v35 isScalerRequiredForSettings:? portType:? preNoiseReductionScalerOut:?];
+  if (firstObject2 && HIBYTE(v102) == 1)
   {
-    v36 = [OUTLINED_FUNCTION_192_0(448) firstObject];
-    v37 = v36;
+    firstObject2 = [OUTLINED_FUNCTION_192_0(448) firstObject];
+    v37 = firstObject2;
     if (v31)
     {
 LABEL_26:
-      v38 = OUTLINED_FUNCTION_7_24(v36, @"DeferredProcessingContainer");
+      v38 = OUTLINED_FUNCTION_7_24(firstObject2, @"DeferredProcessingContainer");
       v39 = [objc_msgSend(OUTLINED_FUNCTION_7_24(v38 @"PhotoManifest")];
       [*(v3 + 208) deferredProcessorControllerQueue];
       OUTLINED_FUNCTION_20_30();
@@ -4941,8 +4941,8 @@ LABEL_26:
 
     else
     {
-      v59 = [(BWPhotonicEngineNode *)v3 _ubRERRouter];
-      v59[2](v59, v4, 1, v32, 0);
+      _ubRERRouter = [(BWPhotonicEngineNode *)v3 _ubRERRouter];
+      _ubRERRouter[2](_ubRERRouter, v4, 1, v32, 0);
     }
 
     goto LABEL_27;
@@ -4961,22 +4961,22 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v34)
+  if (firstObject)
   {
-    [v34 addFrame:v4];
+    [firstObject addFrame:v4];
     if (([objc_msgSend(v10 "captureSettings")] & 4) == 0)
     {
       if ([objc_msgSend(v10 "captureSettings")] == 7)
       {
         v60 = OUTLINED_FUNCTION_3_19();
         [BWPhotonicEngineNode _handleClientBracketFrameEmissionForSampleBuffer:v60];
-        [v34 stillImageSettings];
-        [v34 portType];
+        [firstObject stillImageSettings];
+        [firstObject portType];
         v61 = OUTLINED_FUNCTION_3_19();
-        if (!-[BWPhotonicEngineNode _processingNeededForSettings:portType:](v61, v62, v63) && [v34 receivedAllFrames])
+        if (!-[BWPhotonicEngineNode _processingNeededForSettings:portType:](v61, v62, v63) && [firstObject receivedAllFrames])
         {
-          [v34 portType];
-          [objc_msgSend(v34 "settings")];
+          [firstObject portType];
+          [objc_msgSend(firstObject "settings")];
           OUTLINED_FUNCTION_3_19();
           [BWPhotonicEngineNode _processorControllerDidFinishProcessingInputForPortType:processorType:captureRequestIdentifier:];
         }
@@ -4985,7 +4985,7 @@ LABEL_26:
       else
       {
         v64 = OUTLINED_FUNCTION_3_19();
-        [(BWPhotonicEngineNode *)v64 _emitOrEnqueueDisparityReferenceFrameIfNeededForSampleBuffer:v65, v66, v67, v68, v69, v70, v71, v91, v92, v6, SHIDWORD(v6), v94, SWORD2(v94), v95, v96, v97, v98, v99, v100, v101, v102, *v103, *&v103[8], *&v103[16], v104, *v105, *&v105[8], *&v105[16], *&v105[24], v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125];
+        [(BWPhotonicEngineNode *)v64 _emitOrEnqueueDisparityReferenceFrameIfNeededForSampleBuffer:v65, v66, v67, v68, v69, v70, v71, v91, v92, v6, SHIDWORD(v6), bufferCopy, SWORD2(bufferCopy), v95, v96, v97, v98, v99, v100, v101, v102, *v103, *&v103[8], *&v103[16], v104, *v105, *&v105[8], *&v105[16], *&v105[24], v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125];
       }
     }
 
@@ -5014,9 +5014,9 @@ LABEL_43:
   return v41;
 }
 
-- (void)_emitError:(uint64_t)a3 stillImageSettings:(uint64_t)a4 metadata:(uint64_t)a5 description:(uint64_t)a6
+- (void)_emitError:(uint64_t)error stillImageSettings:(uint64_t)settings metadata:(uint64_t)metadata description:(uint64_t)description
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_227_0();
     a52 = v54;
@@ -5034,7 +5034,7 @@ LABEL_43:
       OUTLINED_FUNCTION_37_1();
       if (v53)
       {
-        v65 = [v58 settingsID];
+        settingsID = [v58 settingsID];
         LODWORD(a17) = 136315907;
         *(&a17 + 4) = "[BWPhotonicEngineNode _emitError:stillImageSettings:metadata:description:]";
         WORD6(a17) = 1026;
@@ -5042,7 +5042,7 @@ LABEL_43:
         WORD1(a18) = 2113;
         *(&a18 + 4) = v63;
         WORD6(a18) = 2050;
-        *(&a18 + 14) = v65;
+        *(&a18 + 14) = settingsID;
         OUTLINED_FUNCTION_77_0();
         OUTLINED_FUNCTION_13();
         OUTLINED_FUNCTION_193();
@@ -5087,9 +5087,9 @@ LABEL_43:
   return result;
 }
 
-- (void)_handleSupplementalPointCloudSampleBuffer:(uint64_t)a3
+- (void)_handleSupplementalPointCloudSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_91();
     a48 = v51;
@@ -5162,9 +5162,9 @@ LABEL_43:
 
 - (void)_resetProcessingStateIfDone
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 208) workerQueue];
+    [*(self + 208) workerQueue];
     if (!_FigIsCurrentDispatchQueue())
     {
       OUTLINED_FUNCTION_0();
@@ -5172,10 +5172,10 @@ LABEL_43:
       FigDebugAssert3();
     }
 
-    if (*(a1 + 192) && (*(a1 + 272) & 1) == 0 && ![*(a1 + 232) count] && !objc_msgSend(*(a1 + 240), "count") && !objc_msgSend(*(a1 + 280), "count") && !objc_msgSend(*(a1 + 288), "count") && !*(a1 + 536) && !objc_msgSend(*(a1 + 328), "count") && !objc_msgSend(*(a1 + 304), "count") && !objc_msgSend(*(a1 + 344), "count") && !objc_msgSend(*(a1 + 360), "count") && !objc_msgSend(*(a1 + 424), "count") && !objc_msgSend(*(a1 + 440), "count") && !objc_msgSend(*(a1 + 448), "count") && !objc_msgSend(*(a1 + 488), "count") && !objc_msgSend(*(a1 + 384), "count") && !objc_msgSend(*(a1 + 400), "count") && !objc_msgSend(*(a1 + 408), "count") && !objc_msgSend(*(a1 + 560), "count") && *(a1 + 464) <= 0 && !objc_msgSend(*(a1 + 480), "count") && !objc_msgSend(*(a1 + 520), "count") && !objc_msgSend(*(a1 + 528), "count") && !*(a1 + 608))
+    if (*(self + 192) && (*(self + 272) & 1) == 0 && ![*(self + 232) count] && !objc_msgSend(*(self + 240), "count") && !objc_msgSend(*(self + 280), "count") && !objc_msgSend(*(self + 288), "count") && !*(self + 536) && !objc_msgSend(*(self + 328), "count") && !objc_msgSend(*(self + 304), "count") && !objc_msgSend(*(self + 344), "count") && !objc_msgSend(*(self + 360), "count") && !objc_msgSend(*(self + 424), "count") && !objc_msgSend(*(self + 440), "count") && !objc_msgSend(*(self + 448), "count") && !objc_msgSend(*(self + 488), "count") && !objc_msgSend(*(self + 384), "count") && !objc_msgSend(*(self + 400), "count") && !objc_msgSend(*(self + 408), "count") && !objc_msgSend(*(self + 560), "count") && *(self + 464) <= 0 && !objc_msgSend(*(self + 480), "count") && !objc_msgSend(*(self + 520), "count") && !objc_msgSend(*(self + 528), "count") && !*(self + 608))
     {
 
-      [(BWPhotonicEngineNode *)a1 _resetProcessingState:v36];
+      [(BWPhotonicEngineNode *)self _resetProcessingState:v36];
     }
   }
 }
@@ -5227,13 +5227,13 @@ LABEL_43:
     {
       if (v3)
       {
-        v5 = [v3 requestedSettings];
-        v6 = [v3 captureSettings];
+        requestedSettings = [v3 requestedSettings];
+        captureSettings = [v3 captureSettings];
         v7 = &OBJC_IVAR___FigCaptureCinematographyPipeline__videoCaptureOutputIndex;
-        [v5 captureRequestIdentifier];
+        [requestedSettings captureRequestIdentifier];
         v8 = [OUTLINED_FUNCTION_17() isEqualToString:?];
         v16 = v8;
-        if (v8 && (*(v4 + 272) != 1 || ([v5 isBeginMomentCaptureSettings] & 1) != 0))
+        if (v8 && (*(v4 + 272) != 1 || ([requestedSettings isBeginMomentCaptureSettings] & 1) != 0))
         {
 LABEL_33:
           v41 = v65;
@@ -5244,7 +5244,7 @@ LABEL_34:
 
         if (dword_1EB58E340)
         {
-          v17 = v6;
+          v17 = captureSettings;
           OUTLINED_FUNCTION_11_58();
           os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
           OUTLINED_FUNCTION_229(os_log_and_send_and_compose_flags_and_os_log_type);
@@ -5262,8 +5262,8 @@ LABEL_34:
           if (v21)
           {
             LODWORD(FrameworkRadarComponent) = *(v4 + 272);
-            LODWORD(v69) = [v5 isBeginMomentCaptureSettings];
-            v22 = [v17 settingsID];
+            LODWORD(v69) = [requestedSettings isBeginMomentCaptureSettings];
+            settingsID = [v17 settingsID];
             if (*(v4 + 184) && (*(v4 + 272) & 1) == 0)
             {
               v59 = *(v4 + 184);
@@ -5282,7 +5282,7 @@ LABEL_34:
             *&v90[4] = 1026;
             *&v90[6] = v69;
             *v91 = 2050;
-            *&v91[2] = v22;
+            *&v91[2] = settingsID;
             *v92 = 2114;
             *&v92[2] = v23;
             OUTLINED_FUNCTION_48_16();
@@ -5292,17 +5292,17 @@ LABEL_34:
 
           OUTLINED_FUNCTION_2_4();
           OUTLINED_FUNCTION_128();
-          v6 = v17;
+          captureSettings = v17;
           LODWORD(v7) = -346521600;
         }
 
-        v66 = v6;
+        v66 = captureSettings;
         if (*(v4 + 272) == 1)
         {
           if (v16)
           {
 LABEL_30:
-            if (([v6 captureFlags] & 0x200) != 0)
+            if (([captureSettings captureFlags] & 0x200) != 0)
             {
               os_unfair_lock_lock((v4 + 504));
               *(v4 + 508) = 0;
@@ -5310,7 +5310,7 @@ LABEL_30:
             }
 
             v86 = 0;
-            [v6 captureType];
+            [captureSettings captureType];
             [BWPhotonicEngineNode _infoForCaptureType:v4 isSupportedCaptureTypeOut:? isFusionCaptureTypeOut:?];
             FigCaptureGetFrameworkRadarComponent();
             OUTLINED_FUNCTION_11_58();
@@ -5333,14 +5333,14 @@ LABEL_30:
               v87 = 136315394;
               v88 = "[BWPhotonicEngineNode _setupProcessingStateWithSettings:]";
               v89 = 2112;
-              *v90 = BWPhotoEncoderStringFromEncodingScheme([v6 captureType]);
+              *v90 = BWPhotoEncoderStringFromEncodingScheme([captureSettings captureType]);
               OUTLINED_FUNCTION_48_16();
               OUTLINED_FUNCTION_58_1();
             }
 
             OUTLINED_FUNCTION_8_1();
             OUTLINED_FUNCTION_13_0();
-            v50 = BWPhotoEncoderStringFromEncodingScheme([v6 captureType]);
+            v50 = BWPhotoEncoderStringFromEncodingScheme([captureSettings captureType]);
             v93 = 138412290;
             v94 = v50;
             OUTLINED_FUNCTION_43_0();
@@ -5353,7 +5353,7 @@ LABEL_30:
             goto LABEL_33;
           }
 
-          v24 = v6;
+          v24 = captureSettings;
           FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
           OUTLINED_FUNCTION_11_58();
           v25 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -5394,12 +5394,12 @@ LABEL_30:
           OUTLINED_FUNCTION_8_1();
           OUTLINED_FUNCTION_128();
           v30 = *(v4 + v28[265]);
-          v31 = [v3 settingsID];
+          settingsID2 = [v3 settingsID];
           v32 = BWPhotoEncoderStringFromEncodingScheme([v66 captureType]);
           v93 = 134349570;
           v94 = v30;
           v95 = 2050;
-          v96 = v31;
+          v96 = settingsID2;
           v97 = 2112;
           v98 = v32;
           LODWORD(v60) = 32;
@@ -5408,7 +5408,7 @@ LABEL_30:
           OUTLINED_FUNCTION_10();
           FigCapturePleaseFileRadar(v34, v35, v36, v37, v38, 5175, v39, v40, &v93);
           free(v33);
-          v6 = v66;
+          captureSettings = v66;
         }
 
         [(BWPhotonicEngineNode *)v4 _resetProcessingState:v9];
@@ -5450,9 +5450,9 @@ LABEL_35:
   OUTLINED_FUNCTION_81();
 }
 
-- (void)_inferenceProcessRedEyeReductionSampleBuffer:(uint64_t)a3 settings:(uint64_t)a4 portType:
+- (void)_inferenceProcessRedEyeReductionSampleBuffer:(uint64_t)buffer settings:(uint64_t)settings portType:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -5467,20 +5467,20 @@ LABEL_35:
   }
 
   cf = 0;
-  v9 = [OUTLINED_FUNCTION_207_0() inferenceControllerGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  inferenceControllerGroup = [OUTLINED_FUNCTION_207_0() inferenceControllerGroup];
+  dispatch_group_wait(inferenceControllerGroup, 0xFFFFFFFFFFFFFFFFLL);
   ImageBuffer = CMSampleBufferGetImageBuffer(v4);
   if (!ImageBuffer)
   {
     v12 = 0;
 LABEL_16:
     CVPixelBufferRelease(v12);
-    [objc_msgSend(v5[51] objectForKeyedSubscript:{a4), "addFrame:faceObservations:", v4, 0}];
+    [objc_msgSend(v5[51] objectForKeyedSubscript:{settings), "addFrame:faceObservations:", v4, 0}];
     return;
   }
 
   v11 = ImageBuffer;
-  [v5[19] resolvedProcessingResolutionFlavorForSettings:a3 portType:a4];
+  [v5[19] resolvedProcessingResolutionFlavorForSettings:buffer portType:settings];
   v12 = [objc_msgSend(OUTLINED_FUNCTION_207_0() "pixelBufferProviderForInferencesWithResolutionFlavor:"newPixelBuffer"")];
   if (!v12)
   {
@@ -5498,12 +5498,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([(BWPhotonicEngineNode *)v5 _setupProcessingStateForInferenceWithSettings:a3 portType:a4 inferenceInputBufferType:0xFuLL])
+  if ([(BWPhotonicEngineNode *)v5 _setupProcessingStateForInferenceWithSettings:buffer portType:settings inferenceInputBufferType:0xFuLL])
   {
     goto LABEL_16;
   }
 
-  v17 = [v5[45] objectForKeyedSubscript:a4];
+  v17 = [v5[45] objectForKeyedSubscript:settings];
   if (!v17)
   {
     goto LABEL_16;
@@ -5515,7 +5515,7 @@ LABEL_16:
     CFRetain(v4);
   }
 
-  v19 = [OUTLINED_FUNCTION_207_0() inferenceControllerGroup];
+  inferenceControllerGroup2 = [OUTLINED_FUNCTION_207_0() inferenceControllerGroup];
   [OUTLINED_FUNCTION_207_0() inferenceControllerQueue];
   OUTLINED_FUNCTION_33_1();
   OUTLINED_FUNCTION_175_0();
@@ -5524,7 +5524,7 @@ LABEL_16:
   v24 = v18;
   v25 = cf;
   v26 = v4;
-  ubn_dispatch_group_async(v19, v20, v21);
+  ubn_dispatch_group_async(inferenceControllerGroup2, v20, v21);
   CVPixelBufferRelease(v12);
   if (cf)
   {
@@ -5544,7 +5544,7 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)_processingNeededForSettings:(uint64_t)a3 portType:
+- (BOOL)_processingNeededForSettings:(uint64_t)settings portType:
 {
   if (result)
   {
@@ -5757,14 +5757,14 @@ LABEL_26:
   OUTLINED_FUNCTION_90_3();
 }
 
-- (uint64_t)_singleImageProcessSampleBuffer:(uint64_t)a1 settings:(uint64_t)a2 portType:(uint64_t)a3
+- (uint64_t)_singleImageProcessSampleBuffer:(uint64_t)buffer settings:(uint64_t)settings portType:(uint64_t)type
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
-  [*(a1 + 208) workerQueue];
+  [*(buffer + 208) workerQueue];
   if (!_FigIsCurrentDispatchQueue())
   {
     OUTLINED_FUNCTION_0();
@@ -5772,7 +5772,7 @@ LABEL_26:
     FigDebugAssert3();
   }
 
-  v5 = [[BWStillImageProcessingPlan alloc] initWithSettings:a3];
+  v5 = [[BWStillImageProcessingPlan alloc] initWithSettings:type];
   OUTLINED_FUNCTION_46_19();
   OUTLINED_FUNCTION_144_0();
   [v6 resolvedProcessingResolutionFlavorForSettings:? portType:?];
@@ -5788,24 +5788,24 @@ LABEL_26:
     OUTLINED_FUNCTION_21_34();
     v28 = v11;
     v29 = &unk_1E79992C8;
-    v30 = a1;
+    bufferCopy = buffer;
     [v9 addOutputSampleBufferRouter:objc_msgSend(v26 forBufferTypes:"copy") name:{&unk_1F224A428, @"SingleImage InferenceInput NRF --> Inference"}];
     OUTLINED_FUNCTION_214();
     [v12 addInput:? sequenceNumber:? portType:? bufferType:?];
   }
 
-  [*(a1 + 208) workerQueue];
+  [*(buffer + 208) workerQueue];
   OUTLINED_FUNCTION_20_30();
   v27 = 3221225472;
   v28 = __65__BWPhotonicEngineNode__standardNROutputRouterWithExpectedQueue___block_invoke;
   v29 = &unk_1E7999390;
-  v30 = v13;
-  v31 = a1;
+  bufferCopy = v13;
+  bufferCopy2 = buffer;
   [v9 addOutputSampleBufferRouter:objc_msgSend(v26 forBufferTypes:"copy") name:{&unk_1F224A440, @"SingleImage --> Emit"}];
   [OUTLINED_FUNCTION_98_7() addFrame:?];
   OUTLINED_FUNCTION_214();
   [v14 addInput:? sequenceNumber:? portType:? bufferType:?];
-  [OUTLINED_FUNCTION_46_19() areInferencesRequiredByProcessorControllersForSettings:a3];
+  [OUTLINED_FUNCTION_46_19() areInferencesRequiredByProcessorControllersForSettings:type];
   v15 = OUTLINED_FUNCTION_1_19();
   [BWPhotonicEngineNode _setupProcessingStateForJasperDisparityIfNeededWithSettings:v15 processingPlan:?];
   if (!v16)
@@ -5825,7 +5825,7 @@ LABEL_26:
         goto LABEL_11;
       }
 
-      [*(a1 + 208) controllerForType:6];
+      [*(buffer + 208) controllerForType:6];
       OUTLINED_FUNCTION_177_0();
       OUTLINED_FUNCTION_72();
       v16 = [v23 enqueueInputForProcessing:? delegate:? processErrorRecoveryFrame:? processErrorRecoveryProxy:? processOriginalImage:? processToneMapping:? processInferenceInputImage:? clientBracketSequenceNumber:? processSemanticRendering:? provideInferenceInputImageForProcessing:? processSmartStyleRenderingInput:? inferencesAvailable:?];
@@ -5838,11 +5838,11 @@ LABEL_11:
   return v24;
 }
 
-- (void)_emitSampleBuffer:(uint64_t)a3 description:
+- (void)_emitSampleBuffer:(uint64_t)buffer description:
 {
-  if (a1)
+  if (self)
   {
-    [(BWPhotonicEngineNode *)a1 _removeNonPropagatedAttachedMediaFromSampleBuffer:a2];
+    [(BWPhotonicEngineNode *)self _removeNonPropagatedAttachedMediaFromSampleBuffer:a2];
     v6 = OUTLINED_FUNCTION_17_26();
     [BWPhotonicEngineNode _propagatedErrorRecoveryMetadataIfNeededForSampleBuffer:v6];
     if (a2)
@@ -5850,21 +5850,21 @@ LABEL_11:
       CFRetain(a2);
     }
 
-    [*(a1 + 208) emitQueue];
+    [*(self + 208) emitQueue];
     OUTLINED_FUNCTION_7_1();
     OUTLINED_FUNCTION_136_4();
     v9 = __54__BWPhotonicEngineNode__emitSampleBuffer_description___block_invoke;
     v10 = &unk_1E798FE50;
-    v12 = a1;
+    selfCopy = self;
     v13 = a2;
-    v11 = a3;
+    bufferCopy = buffer;
     ubn_dispatch_async(v7, v8);
   }
 }
 
-- (void)_stashSensorRawErrorRecoveryFrameIfNeededUsingSampleBuffer:(uint64_t)a1
+- (void)_stashSensorRawErrorRecoveryFrameIfNeededUsingSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     OUTLINED_FUNCTION_54();
     if ((BWStillImageCaptureFrameFlagsForSampleBuffer(v3) & 0x20) != 0)
@@ -5880,7 +5880,7 @@ LABEL_11:
   }
 }
 
-- (void)_deferredCaptureHandleSensorRawSampleBuffer:(int)a3
+- (void)_deferredCaptureHandleSensorRawSampleBuffer:(int)buffer
 {
   OUTLINED_FUNCTION_58_2();
   a44 = v45;
@@ -5928,9 +5928,9 @@ LABEL_36:
         }
 
         v57 = OUTLINED_FUNCTION_178();
-        v58 = [(BWPhotonicEngineNodeConfiguration *)v57 deepZoomVersion];
-        HIBYTE(a32) = v58 > 0;
-        if (v58 >= 1 && BWDeepFusionEnhancedResolutionCanProcessUsingQuadraFrame(v49, &a32 + 7) && dword_1EB58E340)
+        deepZoomVersion = [(BWPhotonicEngineNodeConfiguration *)v57 deepZoomVersion];
+        HIBYTE(a32) = deepZoomVersion > 0;
+        if (deepZoomVersion >= 1 && BWDeepFusionEnhancedResolutionCanProcessUsingQuadraFrame(v49, &a32 + 7) && dword_1EB58E340)
         {
           v59 = OUTLINED_FUNCTION_165();
           v60 = a32;
@@ -5961,7 +5961,7 @@ LABEL_36:
         {
           [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
           v64 = OUTLINED_FUNCTION_178();
-          v65 = [(BWPhotonicEngineNodeConfiguration *)v64 deepZoomVersion];
+          deepZoomVersion2 = [(BWPhotonicEngineNodeConfiguration *)v64 deepZoomVersion];
           [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
           [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
           [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_45_13() "captureSettings")];
@@ -6011,9 +6011,9 @@ LABEL_35:
           if (([objc_msgSend(OUTLINED_FUNCTION_45_13() "captureStreamSettings")] & 0x4000000000) != 0)
           {
             v74 = OUTLINED_FUNCTION_178();
-            v75 = [(BWPhotonicEngineNodeConfiguration *)v74 deepZoomVersion];
+            deepZoomVersion3 = [(BWPhotonicEngineNodeConfiguration *)v74 deepZoomVersion];
             [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
-            v76 = [OUTLINED_FUNCTION_45_13() pipelineParameters];
+            pipelineParameters = [OUTLINED_FUNCTION_45_13() pipelineParameters];
             v77 = 5;
           }
 
@@ -6022,7 +6022,7 @@ LABEL_35:
             if ([BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForSampleBuffer:v71 type:1 sensorConfiguration:v70 intermediateZoomSrcRectOut:0 intermediateZoomDstRectOut:0])
             {
               v72 = OUTLINED_FUNCTION_178();
-              v73 = [(BWPhotonicEngineNodeConfiguration *)v72 deepZoomVersion];
+              deepZoomVersion4 = [(BWPhotonicEngineNodeConfiguration *)v72 deepZoomVersion];
               [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
               [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
               v68 = 1;
@@ -6031,11 +6031,11 @@ LABEL_35:
             }
 
             [objc_msgSend(OUTLINED_FUNCTION_45_13() "pipelineParameters")];
-            v76 = [OUTLINED_FUNCTION_45_13() pipelineParameters];
+            pipelineParameters = [OUTLINED_FUNCTION_45_13() pipelineParameters];
             v77 = 0;
           }
 
-          [v76 setDeepZoomMode:v77];
+          [pipelineParameters setDeepZoomMode:v77];
         }
 
         v68 = 0;
@@ -6095,9 +6095,9 @@ LABEL_47:
   [v53 addObject:?];
 }
 
-- (void)_handleSampleBufferForFocusPixelDisparityInputIfNeeded:(uint64_t)a3
+- (void)_handleSampleBufferForFocusPixelDisparityInputIfNeeded:(uint64_t)needed
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_227_0();
     a51 = v55;
@@ -6150,11 +6150,11 @@ LABEL_47:
   }
 }
 
-- (uint64_t)_setupProcessingStateIfNeededWithBeginMomentSettings:(uint64_t)a1
+- (uint64_t)_setupProcessingStateIfNeededWithBeginMomentSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
-    [*(a1 + 208) workerQueue];
+    [*(settings + 208) workerQueue];
     if (!_FigIsCurrentDispatchQueue())
     {
       OUTLINED_FUNCTION_0();
@@ -6162,7 +6162,7 @@ LABEL_47:
       FigDebugAssert3();
     }
 
-    if ([*(a1 + 208) hasSuccessfullySetupProcessorControllersAndMemoryResources])
+    if ([*(settings + 208) hasSuccessfullySetupProcessorControllersAndMemoryResources])
     {
       if ([objc_msgSend(a2 "requestedSettings")])
       {
@@ -6181,9 +6181,9 @@ LABEL_47:
               if (&dword_1EB58E000)
               {
                 [a2 settingsID];
-                if (*(a1 + 184))
+                if (*(settings + 184))
                 {
-                  v31 = *(a1 + 184);
+                  v31 = *(settings + 184);
                   [MEMORY[0x1E696AEC0] stringWithFormat:@", resetting state for captureID:%lld"];
                 }
 
@@ -6197,14 +6197,14 @@ LABEL_47:
               OUTLINED_FUNCTION_56_0();
             }
 
-            [(BWPhotonicEngineNode *)a1 _resetProcessingState:v4];
-            *(a1 + 184) = [a2 settingsID];
-            *(a1 + 192) = [objc_msgSend(a2 "requestedSettings")];
-            *(a1 + 272) = 1;
+            [(BWPhotonicEngineNode *)settings _resetProcessingState:v4];
+            *(settings + 184) = [a2 settingsID];
+            *(settings + 192) = [objc_msgSend(a2 "requestedSettings")];
+            *(settings + 272) = 1;
             v12 = OUTLINED_FUNCTION_45_0();
             [BWPhotonicEngineNode _releaseResourcesWithSettings:v12];
-            [*(a1 + 208) prepareSharedExternalMemoryResourceForProcessorControllersIfNeededWithSettings:a2];
-            [*(a1 + 208) kickoffAnyPostonedResourceAllocations];
+            [*(settings + 208) prepareSharedExternalMemoryResourceForProcessorControllersIfNeededWithSettings:a2];
+            [*(settings + 208) kickoffAnyPostonedResourceAllocations];
             v13 = OUTLINED_FUNCTION_45_0();
             [BWPhotonicEngineNode _processingOrderByPortTypeForSettings:v13];
             v15 = v14;
@@ -6294,51 +6294,51 @@ LABEL_31:
   return 0;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type
 {
   if (self)
   {
-    return OUTLINED_FUNCTION_85_3(self, a2, a3, a4, a5, 0);
+    return OUTLINED_FUNCTION_85_3(self, a2, controller, input, type, 0);
   }
 
   return self;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 dimensions:(id)a6
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type dimensions:(id)dimensions
 {
   if (self)
   {
-    return OUTLINED_FUNCTION_111_5(self, a2, a3, a4, a5, 0);
+    return OUTLINED_FUNCTION_111_5(self, a2, controller, input, type, 0);
   }
 
   return self;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key
 {
   if (self)
   {
-    return OUTLINED_FUNCTION_85_3(self, a2, a3, a4, a5, a6);
+    return OUTLINED_FUNCTION_85_3(self, a2, controller, input, type, key);
   }
 
   return self;
 }
 
-- (__CVBuffer)_newOutputPixelBufferForProcessorController:(void *)a3 processorInput:(uint64_t)a4 type:(void *)a5 pixelBufferProvider:
+- (__CVBuffer)_newOutputPixelBufferForProcessorController:(void *)controller processorInput:(uint64_t)input type:(void *)type pixelBufferProvider:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   mach_absolute_time();
-  if (a5)
+  if (type)
   {
-    v10 = [a5 newPixelBuffer];
-    v11 = v10;
-    if (a4 == 41 && v10)
+    newPixelBuffer = [type newPixelBuffer];
+    v11 = newPixelBuffer;
+    if (input == 41 && newPixelBuffer)
     {
-      CVBufferSetAttachment(v10, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FC8], kCVAttachmentMode_ShouldPropagate);
+      CVBufferSetAttachment(newPixelBuffer, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FC8], kCVAttachmentMode_ShouldPropagate);
       CVBufferSetAttachment(v11, *MEMORY[0x1E6965D88], *MEMORY[0x1E6965DD0], kCVAttachmentMode_ShouldPropagate);
       CVBufferSetAttachment(v11, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
     }
@@ -6365,11 +6365,11 @@ LABEL_31:
         objc_opt_isKindOfClass();
       }
 
-      BWStillImageBufferTypeToShortString(a4);
+      BWStillImageBufferTypeToShortString(input);
       BWStillImageProcessorTypeToShortString([a2 type]);
-      v13 = [a3 portType];
-      BWPortTypeToDisplayString(v13, v14);
-      [objc_msgSend(a3 "captureSettings")];
+      portType = [controller portType];
+      BWPortTypeToDisplayString(portType, v14);
+      [objc_msgSend(controller "captureSettings")];
       BWStringFromPixelBuffer();
       BWStringFromPixelBufferSurface(v11);
       OUTLINED_FUNCTION_2_1();
@@ -6384,7 +6384,7 @@ LABEL_31:
   return v11;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8 dimensionAlignment:(int)a9
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions dimensionAlignment:(int)alignment
 {
   OUTLINED_FUNCTION_84();
   +[BWOnDemandPixelBufferAllocator onDemandAllocatorWithDimensions:dimensionAlignment:pixelFormat:name:memoryPool:](BWOnDemandPixelBufferAllocator, "onDemandAllocatorWithDimensions:dimensionAlignment:pixelFormat:name:memoryPool:", v12, v20, v11, BWStillImageBufferTypeToShortString(v9), [*(v10 + 16) memoryPool]);
@@ -6394,9 +6394,9 @@ LABEL_31:
   return [(BWPhotonicEngineNode *)v13 _newOutputPixelBufferForProcessorController:v14 processorInput:v15 type:v16 pixelBufferProvider:v17];
 }
 
-- (void)_attemptPiecemealEncodingForGainMapSbuf:(uint64_t)a3 primarySbuf:(uint64_t)a4 portType:
+- (void)_attemptPiecemealEncodingForGainMapSbuf:(uint64_t)sbuf primarySbuf:(uint64_t)primarySbuf portType:
 {
-  if (a1 && a2 && a3 && [objc_msgSend(*(a1 + 424) objectForKeyedSubscript:{a4), "intValue"}] <= 0)
+  if (self && a2 && sbuf && [objc_msgSend(*(self + 424) objectForKeyedSubscript:{primarySbuf), "intValue"}] <= 0)
   {
     v6 = 0x1F217BF50;
     v7 = a2;
@@ -6407,9 +6407,9 @@ LABEL_31:
   }
 }
 
-- (void)_piecemealEncodeAttachedMediaByKey:(uint64_t)a1 primarySbuf:portType:
+- (void)_piecemealEncodeAttachedMediaByKey:(uint64_t)key primarySbuf:portType:
 {
-  if (a1)
+  if (key)
   {
     OUTLINED_FUNCTION_91();
     v2 = v1;
@@ -6448,8 +6448,8 @@ LABEL_31:
                   }
                 }
 
-                v13 = [MEMORY[0x1E695DF70] array];
-                v14 = [v4 allKeys];
+                array = [MEMORY[0x1E695DF70] array];
+                allKeys = [v4 allKeys];
                 OUTLINED_FUNCTION_17_20();
                 v16 = [v15 countByEnumeratingWithState:? objects:? count:?];
                 if (v16)
@@ -6462,7 +6462,7 @@ LABEL_31:
                     {
                       if (MEMORY[0] != v18)
                       {
-                        objc_enumerationMutation(v14);
+                        objc_enumerationMutation(allKeys);
                       }
 
                       v20 = *(8 * i);
@@ -6470,7 +6470,7 @@ LABEL_31:
                       if (BWPhotonicEngineUtilitiesSampleBufferEligibleForPiecemealEncoding(v21))
                       {
                         [v11 addSbufForPiecemealEncoding:v21 attachedMediakey:v20 primaryImageMetadata:v26 processingFlags:v12];
-                        [v13 addObject:v20];
+                        [array addObject:v20];
                       }
                     }
 
@@ -6491,13 +6491,13 @@ LABEL_31:
   }
 }
 
-- (void)_attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:(uint64_t)a1 portType:(uint64_t)a2
+- (void)_attemptPiecemealEncodingOfAuxImagesForSmartStylesCaptureWithSampleBuffer:(uint64_t)buffer portType:(uint64_t)type
 {
-  if (a1)
+  if (buffer)
   {
-    if (a2)
+    if (type)
     {
-      BWPhotoEncoderSmartStylesAttachedMediaKeysForPiecemealEncoding(*(a1 + 200));
+      BWPhotoEncoderSmartStylesAttachedMediaKeysForPiecemealEncoding(*(buffer + 200));
       if ([objc_msgSend(OUTLINED_FUNCTION_64_11(208) "attachedMediaFromInferencesOrSampleBuffer:"count" attachedMediaKeys:?")])
       {
         OUTLINED_FUNCTION_2_7();
@@ -6536,9 +6536,9 @@ uint64_t __100__BWPhotonicEngineNode_processorController_didFinishProcessingSamp
   }
 }
 
-- (void)_removeNonPropagatedAttachedMediaFromSampleBuffer:(uint64_t)a1
+- (void)_removeNonPropagatedAttachedMediaFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAE70);
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAE90);
@@ -6588,9 +6588,9 @@ uint64_t __100__BWPhotonicEngineNode_processorController_didFinishProcessingSamp
   return result;
 }
 
-- (void)_releaseNodeResourcesIfNeededBeforeEmittingSampleBuffer:(uint64_t)a1
+- (void)_releaseNodeResourcesIfNeededBeforeEmittingSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     OUTLINED_FUNCTION_80();
     [*(v3 + 208) workerQueue];
@@ -6656,7 +6656,7 @@ uint64_t __100__BWPhotonicEngineNode_processorController_didFinishProcessingSamp
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err
 {
   OUTLINED_FUNCTION_84();
   v118 = v8;
@@ -6687,11 +6687,11 @@ LABEL_24:
     return;
   }
 
-  v17 = [v11 portType];
-  v18 = [v13 type];
-  v19 = [v11 stillImageSettings];
+  portType = [v11 portType];
+  type = [v13 type];
+  stillImageSettings = [v11 stillImageSettings];
   v20 = [objc_msgSend(v11 "settings")];
-  switch(v18)
+  switch(type)
   {
     case 2:
       [*(v15 + 208) workerQueue];
@@ -6741,13 +6741,13 @@ LABEL_28:
         FigDebugAssert3();
       }
 
-      v21 = [*(v15 + 208) workerQueue];
+      workerQueue = [*(v15 + 208) workerQueue];
       v96 = MEMORY[0x1E69E9820];
       v97 = 3221225472;
       v98 = __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err___block_invoke;
       v99 = &unk_1E7998980;
       v100 = v15;
-      v101 = v17;
+      v101 = portType;
       v102 = v20;
       v103 = 3;
       v22 = &v96;
@@ -6777,7 +6777,7 @@ LABEL_28:
         FigDebugAssert3();
       }
 
-      v21 = [*(v15 + 208) workerQueue];
+      workerQueue = [*(v15 + 208) workerQueue];
       *(&v77 + 1) = MEMORY[0x1E69E9820];
       v78 = 3221225472;
       v79 = __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err___block_invoke_3;
@@ -6785,9 +6785,9 @@ LABEL_28:
       LODWORD(v87) = v10;
       v81 = v15;
       v82 = v11;
-      v83 = v17;
+      v83 = portType;
       v84 = v20;
-      v85 = v19;
+      v85 = stillImageSettings;
       v86 = 5;
       v22 = &v77 + 1;
       goto LABEL_23;
@@ -6850,13 +6850,13 @@ LABEL_28:
         FigDebugAssert3();
       }
 
-      v21 = [*(v15 + 208) workerQueue];
+      workerQueue = [*(v15 + 208) workerQueue];
       v88 = MEMORY[0x1E69E9820];
       v89 = 3221225472;
       v90 = __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err___block_invoke_2;
       v91 = &unk_1E7998980;
       v92 = v15;
-      v93 = v17;
+      v93 = portType;
       v94 = v20;
       v95 = 8;
       v22 = &v88;
@@ -6877,12 +6877,12 @@ LABEL_28:
       v73 = __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err___block_invoke_4;
       v74 = &unk_1E7998980;
       v75 = v15;
-      *&v76 = v17;
+      *&v76 = portType;
       *(&v76 + 1) = v20;
-      *&v77 = v18;
+      *&v77 = type;
       v22 = &v71;
 LABEL_23:
-      ubn_dispatch_async(v21, v22);
+      ubn_dispatch_async(workerQueue, v22);
       goto LABEL_24;
     case 12:
       [*(v15 + 208) workerQueue];
@@ -6910,7 +6910,7 @@ LABEL_71:
           WORD2(v104[1]) = 1026;
           *(&v104[1] + 6) = v10;
           WORD1(v104[2]) = 2050;
-          *(&v104[2] + 4) = [v19 settingsID];
+          *(&v104[2] + 4) = [stillImageSettings settingsID];
           LODWORD(v67) = 28;
           v65 = v104;
           OUTLINED_FUNCTION_11_0();
@@ -6968,12 +6968,12 @@ LABEL_29:
   }
 }
 
-- (void)_handleDeepFusionError:(void *)a3 processorInput:
+- (void)_handleDeepFusionError:(void *)error processorInput:
 {
-  if (a1)
+  if (self)
   {
     HIDWORD(v36) = a2;
-    [a1[26] workerQueue];
+    [self[26] workerQueue];
     if (!_FigIsCurrentDispatchQueue())
     {
       OUTLINED_FUNCTION_2_9();
@@ -6981,31 +6981,31 @@ LABEL_29:
       FigDebugAssert3();
     }
 
-    v5 = [a3 portType];
-    v6 = [a3 stillImageSettings];
-    v7 = [objc_msgSend(a1[38] objectForKeyedSubscript:{v5), "firstObject"}];
+    portType = [error portType];
+    stillImageSettings = [error stillImageSettings];
+    v7 = [objc_msgSend(self[38] objectForKeyedSubscript:{portType), "firstObject"}];
     if (!v7)
     {
-      v7 = -[BWNRFProcessorInput initWithSettings:portType:resolutionFlavor:]([BWNRFProcessorInput alloc], "initWithSettings:portType:resolutionFlavor:", v6, v5, [a1[19] resolvedProcessingResolutionFlavorForInput:a3]);
-      if ([a1[19] isInferenceInputImageRequiredForSettings:v6 portType:{-[BWStillImageProcessorControllerInput portType](v7, "portType")}])
+      v7 = -[BWNRFProcessorInput initWithSettings:portType:resolutionFlavor:]([BWNRFProcessorInput alloc], "initWithSettings:portType:resolutionFlavor:", stillImageSettings, portType, [self[19] resolvedProcessingResolutionFlavorForInput:error]);
+      if ([self[19] isInferenceInputImageRequiredForSettings:stillImageSettings portType:{-[BWStillImageProcessorControllerInput portType](v7, "portType")}])
       {
         OUTLINED_FUNCTION_25_16();
         v58 = 3221225472;
         OUTLINED_FUNCTION_21_34();
         v59 = v8;
         v60 = &unk_1E79992C8;
-        v61 = a1;
+        selfCopy = self;
         -[BWStillImageProcessorControllerInput addOutputSampleBufferRouter:forBufferTypes:name:](v7, "addOutputSampleBufferRouter:forBufferTypes:name:", [&v57 copy], &unk_1F224A3F8, @"DeepFusion ErrorRecovery InferenceInput NRF --> Inference");
       }
 
-      [a1[38] setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"arrayWithObject:", v7), v5}];
+      [self[38] setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"arrayWithObject:", v7), portType}];
     }
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v9 = -[BWPhotonicEngineNode _bufferTypesForCaptureSettings:](a1, [v6 captureSettings]);
+    v9 = -[BWPhotonicEngineNode _bufferTypesForCaptureSettings:](self, [stillImageSettings captureSettings]);
     OUTLINED_FUNCTION_19_25();
     v11 = [v10 countByEnumeratingWithState:? objects:? count:?];
     if (v11)
@@ -7022,7 +7022,7 @@ LABEL_29:
           }
 
           v15 = *(*(&v52 + 1) + 8 * i);
-          v16 = [objc_msgSend(a3 outputSampleBufferRouterForBufferType:{objc_msgSend(v15, "intValue")), "outputSampleBufferRouter"}];
+          v16 = [objc_msgSend(error outputSampleBufferRouterForBufferType:{objc_msgSend(v15, "intValue")), "outputSampleBufferRouter"}];
           v37 = v15;
           -[BWStillImageProcessorControllerInput addOutputSampleBufferRouter:forBufferTypes:name:](v7, "addOutputSampleBufferRouter:forBufferTypes:name:", v16, [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1], @"Transferred DeepFusion ErrorRecovery NRF");
         }
@@ -7037,18 +7037,18 @@ LABEL_29:
     v21 = HIDWORD(v36);
     if (HIDWORD(v36))
     {
-      v22 = a1;
+      selfCopy3 = self;
       if (v7)
       {
-        if (([objc_msgSend(v6 "captureSettings")] & 4) != 0)
+        if (([objc_msgSend(stillImageSettings "captureSettings")] & 4) != 0)
         {
-          v21 = [(BWPhotonicEngineNode *)a1 _processRawErrorRecoveryFrameWithNRFProcessorInput:v7 processErrorRecoveryProxy:0 failureMetadata:0];
+          v21 = [(BWPhotonicEngineNode *)self _processRawErrorRecoveryFrameWithNRFProcessorInput:v7 processErrorRecoveryProxy:0 failureMetadata:0];
         }
 
         else
         {
           [(BWNRFProcessorInput *)v7 setRemainingProcessingCount:[(BWNRFProcessorInput *)v7 remainingProcessingCount]+ 1];
-          [a1[26] controllerForType:6];
+          [self[26] controllerForType:6];
           OUTLINED_FUNCTION_179();
           OUTLINED_FUNCTION_182_0();
           v24 = [v23 enqueueInputForProcessing:? delegate:? processErrorRecoveryFrame:? processErrorRecoveryProxy:? processOriginalImage:? processToneMapping:? processInferenceInputImage:? clientBracketSequenceNumber:? processSemanticRendering:? provideInferenceInputImageForProcessing:? processSmartStyleRenderingInput:? inferencesAvailable:?];
@@ -7056,7 +7056,7 @@ LABEL_29:
           if (v24)
           {
             v25 = v24;
-            [objc_msgSend(v6 "requestedSettings")];
+            [objc_msgSend(stillImageSettings "requestedSettings")];
             OUTLINED_FUNCTION_1_15();
             [BWPhotonicEngineNode _processorControllerDidFinishProcessingInputForPortType:processorType:captureRequestIdentifier:];
             v21 = v25;
@@ -7067,19 +7067,19 @@ LABEL_29:
 
     else
     {
-      v22 = a1;
+      selfCopy3 = self;
     }
 
-    [v22[40] setObject:&unk_1F2247B00 forKeyedSubscript:v22[24]];
+    [selfCopy3[40] setObject:&unk_1F2247B00 forKeyedSubscript:selfCopy3[24]];
     v26 = OUTLINED_FUNCTION_70();
     [BWPhotonicEngineNode _attemptDisparityReferenceFrameResolutionForSettings:v26 portType:?];
     v27 = OUTLINED_FUNCTION_70();
     [BWPhotonicEngineNode _deferredCaptureAddSecondaryStereoPhotoCaptureSampleBufferIfReadyForSettings:v27];
     if (v21)
     {
-      [a3 description];
+      [error description];
       v28 = OUTLINED_FUNCTION_113_4();
-      [(BWPhotonicEngineNode *)v28 _emitError:v21 stillImageSettings:v6 metadata:0 description:v29, v30, v31, v32, v33, v34, v35, v36, v5, v6, a1, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, *(&v52 + 1), v53, *(&v53 + 1), v54, *(&v54 + 1), v55, SBYTE2(v55), SBYTE3(v55), SDWORD1(v55), *(&v55 + 1), v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67];
+      [(BWPhotonicEngineNode *)v28 _emitError:v21 stillImageSettings:stillImageSettings metadata:0 description:v29, v30, v31, v32, v33, v34, v35, v36, portType, stillImageSettings, self, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, *(&v52 + 1), v53, *(&v53 + 1), v54, *(&v54 + 1), v55, SBYTE2(v55), SBYTE3(v55), SDWORD1(v55), *(&v55 + 1), v56, v57, v58, v59, v60, selfCopy, v62, v63, v64, v65, v66, v67];
     }
   }
 }
@@ -7108,17 +7108,17 @@ void __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err
   [(BWPhotonicEngineNode *)v43 _resetProcessingStateIfDone:v36];
 }
 
-- (void)processorController:(id)a3 willAddBuffer:(__CVBuffer *)a4 metadata:(id)a5 bufferType:(unint64_t)a6 processorInput:(id)a7
+- (void)processorController:(id)controller willAddBuffer:(__CVBuffer *)buffer metadata:(id)metadata bufferType:(unint64_t)type processorInput:(id)input
 {
-  if (a5)
+  if (metadata)
   {
-    if (a3)
+    if (controller)
     {
-      if (a4)
+      if (buffer)
       {
-        if (a7)
+        if (input)
         {
-          if ([a3 type] == 2 && -[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && (objc_msgSend(objc_msgSend(a7, "captureStreamSettings"), "captureFlags") & 0x4200000000) == 0 && a6 <= 0x1B && ((1 << a6) & 0x9C00000) != 0)
+          if ([controller type] == 2 && -[BWPhotonicEngineNodeConfiguration deepZoomVersion](self->_nodeConfiguration) >= 1 && (objc_msgSend(objc_msgSend(input, "captureStreamSettings"), "captureFlags") & 0x4200000000) == 0 && type <= 0x1B && ((1 << type) & 0x9C00000) != 0)
           {
             v12 = *(MEMORY[0x1E695F050] + 16);
             v16.origin = *MEMORY[0x1E695F050];
@@ -7130,7 +7130,7 @@ void __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err
             [OUTLINED_FUNCTION_7() objectForKeyedSubscript:?];
             v13 = OUTLINED_FUNCTION_25_0();
             Width = CVPixelBufferGetWidth(v13);
-            if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", 1, self, Width | (CVPixelBufferGetHeight(a4) << 32), a5, [a7 stillImageSettings], &v16, &v15))
+            if (+[BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:](BWDeepZoomProcessorControllerConfiguration, "doDeepZoomStandardOrLiteForType:sensorConfiguration:dimensions:metadata:stillImageSettings:intermediateZoomSrcRectOut:intermediateZoomDstRectOut:", 1, self, Width | (CVPixelBufferGetHeight(buffer) << 32), metadata, [input stillImageSettings], &v16, &v15))
             {
               if (!CGRectIsNull(v16) && !CGRectIsNull(v15))
               {
@@ -7145,9 +7145,9 @@ void __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err
   }
 }
 
-- (void)_attemptDisparityReferenceFrameResolutionForSettings:(uint64_t)a1 portType:
+- (void)_attemptDisparityReferenceFrameResolutionForSettings:(uint64_t)settings portType:
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_84();
     v2 = v1;
@@ -7155,13 +7155,13 @@ void __73__BWPhotonicEngineNode_processorController_didFinishProcessingInput_err
     if ([OUTLINED_FUNCTION_217_0(v3 152)])
     {
       v5 = [objc_msgSend(*(v4 + 320) objectForKeyedSubscript:{*(v4 + 192)), "intValue"}];
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if (v5 == 1 || ([objc_msgSend(v2 "captureSettings")] & 0x1000) == 0)
       {
-        [v6 addObjectsFromArray:{objc_msgSend(*(v4 + 248), "allKeys")}];
+        [array addObjectsFromArray:{objc_msgSend(*(v4 + 248), "allKeys")}];
         v7 = 2;
 LABEL_6:
-        if ([v6 count])
+        if ([array count])
         {
           *v70 = 0u;
           v71 = 0u;
@@ -7179,7 +7179,7 @@ LABEL_6:
                 OUTLINED_FUNCTION_89();
                 if (!v15)
                 {
-                  objc_enumerationMutation(v6);
+                  objc_enumerationMutation(array);
                 }
 
                 v16 = *(v68[1] + 8 * i);
@@ -7210,7 +7210,7 @@ LABEL_6:
         {
           v31 = v30;
           v49 = v2;
-          v50 = v6;
+          v50 = array;
           v32 = *v74;
           v33 = *off_1E798A3C8;
           v47 = v4;
@@ -7251,7 +7251,7 @@ LABEL_6:
           }
 
           while (v31);
-          v6 = v50;
+          array = v50;
         }
 
         v7 = 4;
@@ -7282,14 +7282,14 @@ LABEL_14:
           if (result)
           {
             v4 = result;
-            v5 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             CMGetAttachment(v4, @"OriginalCameraIntrinsicMatrix", 0);
             [OUTLINED_FUNCTION_8() setObject:? forKeyedSubscript:?];
             CMGetAttachment(v4, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0);
             [OUTLINED_FUNCTION_8() setObject:? forKeyedSubscript:?];
-            if ([v5 count])
+            if ([dictionary count])
             {
-              [*(v1 + 536) addDictionary:v5 tag:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%@", BWDeferredIntermediateTagSampleBufferOriginalCameraIntrinsicsPrefix, BWSampleBufferGetPortType(v4))}];
+              [*(v1 + 536) addDictionary:dictionary tag:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@-%@", BWDeferredIntermediateTagSampleBufferOriginalCameraIntrinsicsPrefix, BWSampleBufferGetPortType(v4))}];
             }
 
             [OUTLINED_FUNCTION_123(536) addSensorRawSampleBuffer:?];
@@ -7305,16 +7305,16 @@ LABEL_14:
   return result;
 }
 
-- (void)_checkIfProcessingCompletedForNRFProcessorInput:(uint64_t)a1
+- (void)_checkIfProcessingCompletedForNRFProcessorInput:(uint64_t)input
 {
-  if (a1)
+  if (input)
   {
-    v3 = [a2 portType];
+    portType = [a2 portType];
     [a2 stillImageSettings];
     if ([OUTLINED_FUNCTION_89_4(152) isReferenceOrClientBracketFrameEmissionNeededForSettings:? portType:?])
     {
       v4 = OUTLINED_FUNCTION_1_19();
-      if (!-[BWPhotonicEngineNode _processingNeededForSettings:portType:](v4, v5, v3) && [a2 receivedAllFrames] && objc_msgSend(OUTLINED_FUNCTION_123(312), "objectForKeyedSubscript:"))
+      if (!-[BWPhotonicEngineNode _processingNeededForSettings:portType:](v4, v5, portType) && [a2 receivedAllFrames] && objc_msgSend(OUTLINED_FUNCTION_123(312), "objectForKeyedSubscript:"))
       {
         [objc_msgSend(a2 "settings")];
         OUTLINED_FUNCTION_3_19();
@@ -7325,7 +7325,7 @@ LABEL_14:
   }
 }
 
-- (void)processorController:(id)a3 didSelectLowLightReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5
+- (void)processorController:(id)controller didSelectLowLightReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input
 {
   [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator workerQueue];
   if (!_FigIsCurrentDispatchQueue())
@@ -7356,7 +7356,7 @@ LABEL_14:
       OUTLINED_FUNCTION_164();
       *v30 = v14;
       *&v30[8] = 2114;
-      v31 = a5;
+      inputCopy = input;
       OUTLINED_FUNCTION_5();
       OUTLINED_FUNCTION_11_0();
       OUTLINED_FUNCTION_141();
@@ -7366,31 +7366,31 @@ LABEL_14:
     OUTLINED_FUNCTION_56_0();
   }
 
-  if (([objc_msgSend(a5 "captureSettings")] & 0x200) != 0)
+  if (([objc_msgSend(input "captureSettings")] & 0x200) != 0)
   {
-    [a5 portType];
+    [input portType];
     [OUTLINED_FUNCTION_7() objectForKeyedSubscript:?];
     OUTLINED_FUNCTION_90_6();
     [v15 setColorBufferPTS:&time exposureTime:v12];
-    [a5 portType];
+    [input portType];
     [OUTLINED_FUNCTION_7() objectForKeyedSubscript:?];
     OUTLINED_FUNCTION_90_6();
     [v16 setColorBufferPTS:&time exposureTime:v12];
   }
 
   v17 = OUTLINED_FUNCTION_44();
-  [(BWPhotonicEngineNode *)v17 _emitOrEnqueueDisparityReferenceFrameIfNeededForSampleBuffer:v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, *v29, *&v29[4], *&v30[2], v31, time.value, *&time.timescale, time.epoch, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47.value, *&v47.timescale, v47.epoch, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, vars0, vars8];
+  [(BWPhotonicEngineNode *)v17 _emitOrEnqueueDisparityReferenceFrameIfNeededForSampleBuffer:v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, *v29, *&v29[4], *&v30[2], inputCopy, time.value, *&time.timescale, time.epoch, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47.value, *&v47.timescale, v47.epoch, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, vars0, vars8];
 }
 
-- (uint64_t)_processRawErrorRecoveryFrameWithNRFProcessorInput:(int)a3 processErrorRecoveryProxy:(uint64_t)a4 failureMetadata:
+- (uint64_t)_processRawErrorRecoveryFrameWithNRFProcessorInput:(int)input processErrorRecoveryProxy:(uint64_t)proxy failureMetadata:
 {
-  v4 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v4;
+    return selfCopy;
   }
 
-  [*(a1 + 208) workerQueue];
+  [*(self + 208) workerQueue];
   if (_FigIsCurrentDispatchQueue())
   {
     if (!a2)
@@ -7419,23 +7419,23 @@ LABEL_14:
 
   v9 = v8;
   v10 = CMGetAttachment(v8, *off_1E798A3C8, 0);
-  [v10 addEntriesFromDictionary:a4];
+  [v10 addEntriesFromDictionary:proxy];
   OUTLINED_FUNCTION_33_1();
   OUTLINED_FUNCTION_175_0();
   v19 = __117__BWPhotonicEngineNode__processRawErrorRecoveryFrameWithNRFProcessorInput_processErrorRecoveryProxy_failureMetadata___block_invoke;
   v20 = &unk_1E799DF28;
-  v21 = v4;
+  v21 = selfCopy;
   v22 = a2;
-  v24 = a3;
+  inputCopy = input;
   v23 = v10;
   [a2 stillImageSettings];
   [OUTLINED_FUNCTION_129_4() portType];
   v11 = [OUTLINED_FUNCTION_98_7() gdcSourceForSettings:? portType:?] == 3;
   v12 = [BWSoftISPProcessorControllerInput alloc];
-  v13 = [OUTLINED_FUNCTION_129_4() stillImageSettings];
-  v14 = [v10 initWithSettings:v13 portType:objc_msgSend(a2 resolutionFlavor:"portType") gdcEnabled:{objc_msgSend(OUTLINED_FUNCTION_86_4(152), "resolvedProcessingResolutionFlavorForInput:"), v11}];
+  stillImageSettings = [OUTLINED_FUNCTION_129_4() stillImageSettings];
+  v14 = [v10 initWithSettings:stillImageSettings portType:objc_msgSend(a2 resolutionFlavor:"portType") gdcEnabled:{objc_msgSend(OUTLINED_FUNCTION_86_4(152), "resolvedProcessingResolutionFlavorForInput:"), v11}];
   [v14 addOutputSampleBufferRouter:v18 forBufferTypes:&unk_1F224A3E0 name:@"Raw ErrorRecovery SoftISP --> NRF"];
-  if (a3)
+  if (input)
   {
     if ([objc_msgSend(a2 "captureStreamSettings")] == 13)
     {
@@ -7454,20 +7454,20 @@ LABEL_14:
   }
 
   [v14 addFrame:v9 processingMode:v15];
-  [BWPhotonicEngineNode _enqueueSoftISPInput:v4];
-  v4 = v16;
+  [BWPhotonicEngineNode _enqueueSoftISPInput:selfCopy];
+  selfCopy = v16;
 
-  if (!v4)
+  if (!selfCopy)
   {
     [a2 setRemainingProcessingCount:{objc_msgSend(a2, "remainingProcessingCount") + 1}];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_bufferTypesForCaptureSettings:(uint64_t)a1
+- (id)_bufferTypesForCaptureSettings:(uint64_t)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
@@ -7514,16 +7514,16 @@ LABEL_14:
 
       break;
     case 0xCu:
-      v4 = [a2 deliverDeferredPhotoProxyImage];
+      deliverDeferredPhotoProxyImage = [a2 deliverDeferredPhotoProxyImage];
       v5 = &unk_1F224A680;
       v6 = &unk_1F224A668;
       goto LABEL_10;
     case 0xDu:
-      v4 = [a2 deliverDeferredPhotoProxyImage];
+      deliverDeferredPhotoProxyImage = [a2 deliverDeferredPhotoProxyImage];
       v5 = &unk_1F224A6B0;
       v6 = &unk_1F224A698;
 LABEL_10:
-      if (v4)
+      if (deliverDeferredPhotoProxyImage)
       {
         v3 = v6;
       }
@@ -7550,9 +7550,9 @@ LABEL_10:
   return v8;
 }
 
-- (void)_enqueueSoftISPInput:(uint64_t)a1
+- (void)_enqueueSoftISPInput:(uint64_t)input
 {
-  if (!a1)
+  if (!input)
   {
     goto LABEL_11;
   }
@@ -7627,9 +7627,9 @@ id __135__BWPhotonicEngineNode_adaptiveBracketingParametersForDigitalFlashMode_f
   return result;
 }
 
-- (uint64_t)_deepFusionProcessorInputNeededForSettings:(uint64_t)a1 portType:
+- (uint64_t)_deepFusionProcessorInputNeededForSettings:(uint64_t)settings portType:
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
@@ -7674,9 +7674,9 @@ id __135__BWPhotonicEngineNode_adaptiveBracketingParametersForDigitalFlashMode_f
   return result;
 }
 
-- (void)_handleDeferredCaptureProxyOrErrorRecoverySampleBuffer:(uint64_t)a3 bufferType:(uint64_t)a4
+- (void)_handleDeferredCaptureProxyOrErrorRecoverySampleBuffer:(uint64_t)buffer bufferType:(uint64_t)type
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_58_2();
     v38 = v35;
@@ -7754,9 +7754,9 @@ LABEL_11:
   }
 }
 
-- (void)_waitForAndMergeInferencesIfNeededForSampleBuffer:(uint64_t)a1 processorInput:
+- (void)_waitForAndMergeInferencesIfNeededForSampleBuffer:(uint64_t)buffer processorInput:
 {
-  if (a1)
+  if (buffer)
   {
     OUTLINED_FUNCTION_159_0();
     [OUTLINED_FUNCTION_155_0(v4) inferenceControllerQueue];
@@ -7845,9 +7845,9 @@ LABEL_12:
   return result;
 }
 
-- (void)_setupProcessingStateForJasperDisparityIfNeededWithSettings:(uint64_t)a1 processingPlan:
+- (void)_setupProcessingStateForJasperDisparityIfNeededWithSettings:(uint64_t)settings processingPlan:
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_84();
     v2 = v1;
@@ -7880,9 +7880,9 @@ LABEL_12:
           v56 = v6;
           v75[4] = v6;
           v75[5] = v8;
-          v61 = [MEMORY[0x1E695DF70] array];
-          v11 = [OUTLINED_FUNCTION_234_0() portTypes];
-          v60 = OUTLINED_FUNCTION_194(v11, v12, v73, v72);
+          array = [MEMORY[0x1E695DF70] array];
+          portTypes = [OUTLINED_FUNCTION_234_0() portTypes];
+          v60 = OUTLINED_FUNCTION_194(portTypes, v12, v73, v72);
           if (v60)
           {
             v58 = *v74;
@@ -7904,7 +7904,7 @@ LABEL_12:
                 v70 = 0u;
                 v71 = 0u;
                 OUTLINED_FUNCTION_86_0();
-                v24 = OUTLINED_FUNCTION_240_0(v16, v17, v18, v19, v20, v21, v22, v23, v52, v53, v54, v55, v56, obj, v58, v59, v60, v61, v13, v63);
+                v24 = OUTLINED_FUNCTION_240_0(v16, v17, v18, v19, v20, v21, v22, v23, v52, v53, v54, v55, v56, obj, v58, v59, v60, array, v13, v63);
                 if (v24)
                 {
                   v25 = v24;
@@ -7919,22 +7919,22 @@ LABEL_12:
                       }
 
                       v28 = *(*(&v68 + 1) + 8 * i);
-                      v29 = [v28 intValue];
+                      intValue = [v28 intValue];
                       v67 = v28;
                       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1];
-                      v31 = [v2 lastAddedInputForSequenceNumber:0 portType:v14 bufferType:v29];
+                      v31 = [v2 lastAddedInputForSequenceNumber:0 portType:v14 bufferType:intValue];
                       if (v31)
                       {
                         v32 = v31;
-                        [objc_msgSend(v31 outputSampleBufferRouterForBufferType:{v29), "outputSampleBufferRouter"}];
+                        [objc_msgSend(v31 outputSampleBufferRouterForBufferType:{intValue), "outputSampleBufferRouter"}];
                         [OUTLINED_FUNCTION_4() addOutputSampleBufferRouter:? forBufferTypes:? name:?];
-                        [v2 addInput:v15 sequenceNumber:0 portType:v14 bufferType:v29];
+                        [v2 addInput:v15 sequenceNumber:0 portType:v14 bufferType:intValue];
                         [v32 addOutputSampleBufferRouter:v75 forBufferTypes:v30 name:@"ColorImage --> JasperDisparity"];
                       }
                     }
 
                     OUTLINED_FUNCTION_86_0();
-                    v25 = OUTLINED_FUNCTION_240_0(v33, v34, v35, v36, v37, v38, v39, v40, v52, v53, v54, v55, v56, obj, v58, v59, v60, v61, v62, v63);
+                    v25 = OUTLINED_FUNCTION_240_0(v33, v34, v35, v36, v37, v38, v39, v40, v52, v53, v54, v55, v56, obj, v58, v59, v60, array, v62, v63);
                   }
 
                   while (v25);
@@ -7943,12 +7943,12 @@ LABEL_12:
                 v4 = v59;
                 if ([v14 isEqualToString:{objc_msgSend(objc_msgSend(v59, "captureSettings"), "masterPortType")}])
                 {
-                  v41 = [v61 insertObject:v15 atIndex:0];
+                  v41 = [array insertObject:v15 atIndex:0];
                 }
 
                 else
                 {
-                  v41 = [v61 addObject:v15];
+                  v41 = [array addObject:v15];
                 }
 
                 v13 = v62 + 1;
@@ -7961,7 +7961,7 @@ LABEL_12:
             while (v60);
           }
 
-          v47 = [v61 countByEnumeratingWithState:OUTLINED_FUNCTION_56_14() objects:? count:?];
+          v47 = [array countByEnumeratingWithState:OUTLINED_FUNCTION_56_14() objects:? count:?];
           if (v47)
           {
             v48 = v47;
@@ -7972,7 +7972,7 @@ LABEL_12:
                 OUTLINED_FUNCTION_49_7();
                 if (!v50)
                 {
-                  objc_enumerationMutation(v61);
+                  objc_enumerationMutation(array);
                 }
 
                 v51 = *(v66 + 8 * j);
@@ -7981,7 +7981,7 @@ LABEL_12:
                 [OUTLINED_FUNCTION_8_8() setObject:? forKeyedSubscript:?];
               }
 
-              v48 = [v61 countByEnumeratingWithState:v65 objects:v64 count:16];
+              v48 = [array countByEnumeratingWithState:v65 objects:v64 count:16];
             }
 
             while (v48);
@@ -8041,13 +8041,13 @@ LABEL_12:
 
   v88 = v10;
   v90 = v7;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = [objc_msgSend(v6 "captureSettings")];
   HIDWORD(v87) = v12 != 0;
   HIDWORD(v89) = v8;
   if (v12)
   {
-    [v11 addObject:&unk_1F2247B48];
+    [array addObject:&unk_1F2247B48];
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
@@ -8062,7 +8062,7 @@ LABEL_9:
 
   [BWPhotonicEngineNode _errorRecoveryBufferTypesForBufferTypes:v7];
   v13 = v82;
-  [v11 addObjectsFromArray:v82];
+  [array addObjectsFromArray:v82];
 LABEL_10:
   v172[0] = MEMORY[0x1E69E9820];
   v172[1] = 3221225472;
@@ -8112,15 +8112,15 @@ LABEL_10:
           OUTLINED_FUNCTION_89();
           if (!v20)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(array);
           }
 
-          v40 = [*(*(&v164 + 1) + 8 * v39) intValue];
+          intValue = [*(*(&v164 + 1) + 8 * v39) intValue];
           OUTLINED_FUNCTION_117_6();
           v42 = [v41 lastAddedInputForSequenceNumber:? portType:? bufferType:?];
           if (v42)
           {
-            if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v172, v38, v42, v40, @"PreviousInput --> DC Processing"))
+            if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v172, v38, v42, intValue, @"PreviousInput --> DC Processing"))
             {
               goto LABEL_72;
             }
@@ -8219,10 +8219,10 @@ LABEL_50:
         v70 = [objc_msgSend(OUTLINED_FUNCTION_119_4() "intelligentDistortionCorrectionProcessorControllerConfiguration")];
         [objc_msgSend(OUTLINED_FUNCTION_118_4() "pipelineParameters")];
         v71 = OUTLINED_FUNCTION_119_4();
-        v72 = [(BWPhotonicEngineNodeConfiguration *)v71 dcProcessingWithDepthSupported];
+        dcProcessingWithDepthSupported = [(BWPhotonicEngineNodeConfiguration *)v71 dcProcessingWithDepthSupported];
         [objc_msgSend(OUTLINED_FUNCTION_118_4() "pipelineParameters")];
         v73 = OUTLINED_FUNCTION_119_4();
-        v74 = [(BWPhotonicEngineNodeConfiguration *)v73 stillImageGDCSourceMode];
+        stillImageGDCSourceMode = [(BWPhotonicEngineNodeConfiguration *)v73 stillImageGDCSourceMode];
         [objc_msgSend(OUTLINED_FUNCTION_118_4() "pipelineParameters")];
       }
 
@@ -8240,15 +8240,15 @@ LABEL_18:
     OUTLINED_FUNCTION_89();
     if (!v20)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(array);
     }
 
-    v21 = [*(*(&v168 + 1) + 8 * v19) intValue];
+    intValue2 = [*(*(&v168 + 1) + 8 * v19) intValue];
     OUTLINED_FUNCTION_117_6();
     v23 = [v22 lastAddedInputForSequenceNumber:? portType:? bufferType:?];
     if (v23)
     {
-      if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v172, v14, v23, v21, @"PreviousInput --> DC Processing"))
+      if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v172, v14, v23, intValue2, @"PreviousInput --> DC Processing"))
       {
         break;
       }
@@ -8283,7 +8283,7 @@ LABEL_54:
     v76 = [objc_msgSend(OUTLINED_FUNCTION_119_4() "intelligentDistortionCorrectionProcessorControllerConfiguration")];
     [objc_msgSend(OUTLINED_FUNCTION_118_4() "pipelineParameters")];
     v77 = OUTLINED_FUNCTION_119_4();
-    v78 = [(BWPhotonicEngineNodeConfiguration *)v77 stillImageGDCSourceMode];
+    stillImageGDCSourceMode2 = [(BWPhotonicEngineNodeConfiguration *)v77 stillImageGDCSourceMode];
     [objc_msgSend(OUTLINED_FUNCTION_118_4() "pipelineParameters")];
   }
 
@@ -8359,9 +8359,9 @@ LABEL_69:
   return result;
 }
 
-- (void)_releaseResourcesWithSettings:(uint64_t)a1
+- (void)_releaseResourcesWithSettings:(uint64_t)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return;
   }
@@ -8407,13 +8407,13 @@ LABEL_69:
   }
 
   LODWORD(v43) = v6;
-  v7 = [(BWPhotonicEngineNodeConfiguration *)*(v2 + 152) minimumOutputBufferCount];
+  minimumOutputBufferCount = [(BWPhotonicEngineNodeConfiguration *)*(v2 + 152) minimumOutputBufferCount];
   if ([objc_msgSend(v1 "requestedSettings")])
   {
-    v8 = [(BWPhotonicEngineNodeConfiguration *)*(v2 + 152) maxNumberOfBurstCapturesAllowedInFlight];
-    if (v7 <= v8)
+    maxNumberOfBurstCapturesAllowedInFlight = [(BWPhotonicEngineNodeConfiguration *)*(v2 + 152) maxNumberOfBurstCapturesAllowedInFlight];
+    if (minimumOutputBufferCount <= maxNumberOfBurstCapturesAllowedInFlight)
     {
-      v7 = v8;
+      minimumOutputBufferCount = maxNumberOfBurstCapturesAllowedInFlight;
     }
   }
 
@@ -8463,7 +8463,7 @@ LABEL_16:
   }
 
 LABEL_30:
-  v9 = v7;
+  v9 = minimumOutputBufferCount;
 LABEL_17:
   if (v43 && [objc_msgSend(OUTLINED_FUNCTION_150_1() "livePixelBufferPool")])
   {
@@ -8522,8 +8522,8 @@ LABEL_17:
               objc_enumerationMutation(v21);
             }
 
-            v27 = [*(8 * i) intValue];
-            switch(v27)
+            intValue = [*(8 * i) intValue];
+            switch(intValue)
             {
               case 3:
 LABEL_48:
@@ -8583,26 +8583,26 @@ LABEL_58:
   OUTLINED_FUNCTION_81();
 }
 
-- (void)_setupDeferredProcessingWithSettings:(uint64_t)a3 portType:
+- (void)_setupDeferredProcessingWithSettings:(uint64_t)settings portType:
 {
-  if (a1)
+  if (self)
   {
-    if ([OUTLINED_FUNCTION_35_21(a1) controllerForType:5])
+    if ([OUTLINED_FUNCTION_35_21(self) controllerForType:5])
     {
       v7 = OUTLINED_FUNCTION_70();
-      if ([(BWPhotonicEngineNode *)v7 _processingNeededForSettings:v8 portType:a3])
+      if ([(BWPhotonicEngineNode *)v7 _processingNeededForSettings:v8 portType:settings])
       {
         if (![objc_msgSend(a2 "captureSettings")] || (objc_msgSend(objc_msgSend(a2, "captureSettings"), "masterPortType"), objc_msgSend(OUTLINED_FUNCTION_4(), "isEqualToString:")))
         {
-          v9 = [(BWStillImageProcessorControllerInput *)[BWDeferredProcessorControllerInput alloc] initWithSettings:a2 portType:a3];
+          v9 = [(BWStillImageProcessorControllerInput *)[BWDeferredProcessorControllerInput alloc] initWithSettings:a2 portType:settings];
           OUTLINED_FUNCTION_7_1();
           OUTLINED_FUNCTION_136_4();
           v13 = __70__BWPhotonicEngineNode__setupDeferredProcessingWithSettings_portType___block_invoke;
           v14 = &unk_1E79992C8;
-          v15 = a1;
+          selfCopy = self;
           [v10 addOutputSampleBufferRouter:v12 forBufferTypes:&unk_1F224A458 name:@"DeferredProcessing"];
           [OUTLINED_FUNCTION_76_7(560) setObject:? forKeyedSubscript:?];
-          [*(a1 + *(v3 + 1032)) controllerForType:5];
+          [*(self + *(v3 + 1032)) controllerForType:5];
           OUTLINED_FUNCTION_53();
           [v11 enqueueInputForProcessing:? delegate:?];
         }
@@ -8611,13 +8611,13 @@ LABEL_58:
   }
 }
 
-- (void)_processingOrderByPortTypeForSettings:(uint64_t)a1
+- (void)_processingOrderByPortTypeForSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_58_2();
     OUTLINED_FUNCTION_80();
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v3 = [objc_msgSend(v1 "captureSettings")];
     OUTLINED_FUNCTION_43();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
@@ -8640,12 +8640,12 @@ LABEL_58:
           {
             if ([v9 isEqualToString:{objc_msgSend(objc_msgSend(v1, "captureSettings"), "masterPortType")}])
             {
-              [v2 insertObject:v9 atIndex:0];
+              [array insertObject:v9 atIndex:0];
             }
 
             else
             {
-              [v2 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
@@ -8657,7 +8657,7 @@ LABEL_58:
       while (v6);
     }
 
-    v11 = [v2 copy];
+    v11 = [array copy];
     OUTLINED_FUNCTION_56();
   }
 }
@@ -8694,8 +8694,8 @@ LABEL_58:
     v28 = __97__BWPhotonicEngineNode__setupSoftISPProcessingStateIfNeededWithSettings_portType_processingPlan___block_invoke;
     v29 = &unk_1E79992C8;
     v30 = v3;
-    v7 = [v5 expectedFrameCount];
-    v8 = [v5 captureFlags];
+    expectedFrameCount = [v5 expectedFrameCount];
+    captureFlags = [v5 captureFlags];
     if ([OUTLINED_FUNCTION_41_15() isDeferredRawDeepFusionCapture:?])
     {
       if (([v5 captureFlags] & 0x100000) != 0)
@@ -8774,7 +8774,7 @@ LABEL_35:
       return 0;
     }
 
-    v9 = v7 + ((v8 >> 10) >> 31);
+    v9 = expectedFrameCount + ((captureFlags >> 10) >> 31);
     if ([OUTLINED_FUNCTION_41_15() isDeferredRawLearnedNRCapture:?])
     {
       OUTLINED_FUNCTION_243_0([MEMORY[0x1E695DF70] array], 288);
@@ -8815,9 +8815,9 @@ LABEL_35:
   return result;
 }
 
-- (void)_drainStashedBeginMomentBuffersIfNeededWithSettings:(uint64_t)a1
+- (void)_drainStashedBeginMomentBuffersIfNeededWithSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_84();
     v2 = v1;
@@ -8852,7 +8852,7 @@ LABEL_35:
         v140 = 136315394;
         v141 = "[BWPhotonicEngineNode _drainStashedBeginMomentBuffersIfNeededWithSettings:]";
         v142 = 2050;
-        v143 = [v2 settingsID];
+        settingsID = [v2 settingsID];
         LODWORD(v91) = 22;
         v89 = &v140;
         OUTLINED_FUNCTION_11_0();
@@ -8952,8 +8952,8 @@ LABEL_35:
         }
 
         memset(v130, 0, sizeof(v130));
-        v30 = [*(v98 + 248) allKeys];
-        v31 = [v30 countByEnumeratingWithState:v130 objects:v129 count:16];
+        allKeys = [*(v98 + 248) allKeys];
+        v31 = [allKeys countByEnumeratingWithState:v130 objects:v129 count:16];
         if (v31)
         {
           v32 = v31;
@@ -8964,7 +8964,7 @@ LABEL_35:
               OUTLINED_FUNCTION_42();
               if (!v7)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allKeys);
               }
 
               [BWPhotonicEngineNode _attemptDisparityReferenceFrameResolutionForSettings:v98 portType:?];
@@ -9019,8 +9019,8 @@ LABEL_35:
                     {
                       v51 = objc_autoreleasePoolPush();
                       BWStillImageCoordinatorUpdateBeginMomentAttachmentsForSampleBuffer([v49 outputSampleBuffer], v2);
-                      v52 = [v50 outputSampleBufferRouter];
-                      (*(v52 + 16))(v52, [v49 outputSampleBuffer], 1, objc_msgSend(v49, "input"), objc_msgSend(v49, "error"));
+                      outputSampleBufferRouter = [v50 outputSampleBufferRouter];
+                      (*(outputSampleBufferRouter + 16))(outputSampleBufferRouter, [v49 outputSampleBuffer], 1, objc_msgSend(v49, "input"), objc_msgSend(v49, "error"));
                       objc_autoreleasePoolPop(v51);
                     }
 
@@ -9109,9 +9109,9 @@ LABEL_35:
   }
 }
 
-- (void)_stashAWBMetadataIfNeededForSampleBuffer:(int)a3 processingMode:
+- (void)_stashAWBMetadataIfNeededForSampleBuffer:(int)buffer processingMode:
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_15;
   }
@@ -9140,12 +9140,12 @@ LABEL_35:
 
   v7 = OUTLINED_FUNCTION_7_24(IsCurrentDispatchQueue, @"StillSettings");
   v8 = [objc_msgSend(v7 "captureSettings")];
-  v9 = [v7 captureSettings];
-  if (a3 != 6 || !v8)
+  captureSettings = [v7 captureSettings];
+  if (buffer != 6 || !v8)
   {
-    if (([v9 captureFlags] & 0x8000000000) != 0)
+    if (([captureSettings captureFlags] & 0x8000000000) != 0)
     {
-      v10 = 16;
+      learnedNRStereoPhotoFrameFlag = 16;
       goto LABEL_9;
     }
 
@@ -9154,10 +9154,10 @@ LABEL_15:
     return;
   }
 
-  v10 = [v9 learnedNRStereoPhotoFrameFlag];
+  learnedNRStereoPhotoFrameFlag = [captureSettings learnedNRStereoPhotoFrameFlag];
 LABEL_9:
   v11 = BWStillImageCaptureFrameFlagsForSampleBuffer(v3);
-  if ((v11 & v10) == 0)
+  if ((v11 & learnedNRStereoPhotoFrameFlag) == 0)
   {
     goto LABEL_15;
   }
@@ -9327,7 +9327,7 @@ LABEL_33:
   OUTLINED_FUNCTION_81();
 }
 
-- (uint64_t)_setupProcessingStateForScalerIfNeededWithSettings:(uint64_t)a3 sequenceNumber:(uint64_t)a4 portType:(int)a5 preNoiseReductionScaler:(void *)a6 processingPlan:
+- (uint64_t)_setupProcessingStateForScalerIfNeededWithSettings:(uint64_t)settings sequenceNumber:(uint64_t)number portType:(int)type preNoiseReductionScaler:(void *)scaler processingPlan:
 {
   if (result)
   {
@@ -9345,9 +9345,9 @@ LABEL_33:
     if (result)
     {
       v49[0] = 0;
-      if ([*(v11 + *(v7 + 1000)) isScalerRequiredForSettings:a2 portType:a4 preNoiseReductionScalerOut:v49])
+      if ([*(v11 + *(v7 + 1000)) isScalerRequiredForSettings:a2 portType:number preNoiseReductionScalerOut:v49])
       {
-        v13 = v49[0] == a5;
+        v13 = v49[0] == type;
       }
 
       else
@@ -9365,11 +9365,11 @@ LABEL_33:
           v47[2] = __138__BWPhotonicEngineNode__setupProcessingStateForScalerIfNeededWithSettings_sequenceNumber_portType_preNoiseReductionScaler_processingPlan___block_invoke;
           v47[3] = &unk_1E799DF28;
           v47[4] = v11;
-          v47[5] = a4;
+          v47[5] = number;
           v47[6] = a2;
-          v48 = a5;
+          typeCopy = type;
           v35 = v14;
-          if (a5)
+          if (type)
           {
             v46[0] = MEMORY[0x1E69E9820];
             v46[1] = 3221225472;
@@ -9384,10 +9384,10 @@ LABEL_33:
             v37 = 0;
           }
 
-          v15 = a4;
-          v38 = [[BWScalerProcessorControllerInput alloc] initWithSettings:a2 portType:a4];
+          numberCopy = number;
+          v38 = [[BWScalerProcessorControllerInput alloc] initWithSettings:a2 portType:number];
           v36 = v11;
-          if (a5)
+          if (type)
           {
             v16 = &unk_1F224A590;
           }
@@ -9419,14 +9419,14 @@ LABEL_33:
                 }
 
                 v26 = *(*(&v42 + 1) + 8 * v24);
-                v27 = [v26 intValue];
-                v28 = [a6 lastAddedInputForSequenceNumber:a3 portType:v15 bufferType:v27];
-                if (v28 || a5)
+                intValue = [v26 intValue];
+                v28 = [scaler lastAddedInputForSequenceNumber:settings portType:numberCopy bufferType:intValue];
+                if (v28 || type)
                 {
                   v29 = [objc_msgSend(a2 "captureSettings")];
-                  if (!a5 || (v29 & 4) != 0)
+                  if (!type || (v29 & 4) != 0)
                   {
-                    if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v47, v38, v28, v27, @"PreviousInput --> Scaler"))
+                    if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v47, v38, v28, intValue, @"PreviousInput --> Scaler"))
                     {
                       return 4294954516;
                     }
@@ -9453,12 +9453,12 @@ LABEL_33:
             while (v34);
           }
 
-          if (![*(v36 + 448) objectForKeyedSubscript:v15])
+          if (![*(v36 + 448) objectForKeyedSubscript:numberCopy])
           {
-            [*(v36 + 448) setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"array"), v15}];
+            [*(v36 + 448) setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"array"), numberCopy}];
           }
 
-          [objc_msgSend(*(v36 + 448) objectForKeyedSubscript:{v15), "addObject:", v38}];
+          [objc_msgSend(*(v36 + 448) objectForKeyedSubscript:{numberCopy), "addObject:", v38}];
 
           return [v35 enqueueInputForProcessing:v38 delegate:v36];
         }
@@ -9481,16 +9481,16 @@ LABEL_33:
   return result;
 }
 
-- (uint64_t)_setupProcessingStateForDeferredCaptureIfNeededWithSettings:(uint64_t)a1
+- (uint64_t)_setupProcessingStateForDeferredCaptureIfNeededWithSettings:(uint64_t)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
 
   v2 = a2;
-  v3 = a1;
-  if (![objc_msgSend(a2 "captureSettings")] || *(v3 + 536))
+  settingsCopy = settings;
+  if (![objc_msgSend(a2 "captureSettings")] || *(settingsCopy + 536))
   {
     v28 = 0;
     v46 = 0;
@@ -9498,11 +9498,11 @@ LABEL_33:
 
   else
   {
-    v4 = [*(v3 + 208) controllerForType:14];
+    v4 = [*(settingsCopy + 208) controllerForType:14];
     if (v4)
     {
       v48 = v4;
-      v49 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
@@ -9532,16 +9532,16 @@ LABEL_33:
               v14 = v13;
               v51 = [MEMORY[0x1E696AD98] numberWithInt:v13];
               v15 = OUTLINED_FUNCTION_46_19();
-              v16 = v3;
+              v16 = settingsCopy;
               v17 = v8;
               v18 = [-[BWPhotonicEngineNodeConfiguration dimensionsByResolutionFlavorByPortType](v15) objectForKeyedSubscript:v12];
               v19 = [MEMORY[0x1E696AD98] numberWithInt:v14];
               v20 = v18;
               v8 = v17;
-              v3 = v16;
+              settingsCopy = v16;
               v2 = v50;
               v52[0] = [v20 objectForKeyedSubscript:v19];
-              [v49 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v52, &v51, 1), v12}];
+              [dictionary setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v52, &v51, 1), v12}];
             }
           }
 
@@ -9552,9 +9552,9 @@ LABEL_33:
         while (v9);
       }
 
-      if ([v49 count])
+      if ([dictionary count])
       {
-        v25 = [v49 copy];
+        v25 = [dictionary copy];
       }
 
       else
@@ -9564,7 +9564,7 @@ LABEL_33:
 
       v26 = [BWDeferredCaptureControllerInput alloc];
       [OUTLINED_FUNCTION_133() configuration];
-      [objc_msgSend(*(v3 + 8) "videoFormat")];
+      [objc_msgSend(*(settingsCopy + 8) "videoFormat")];
       OUTLINED_FUNCTION_223_0();
       v28 = [v27 initWithSettings:? configuration:? sourceNodePixelBufferAttributes:?];
       v29 = OUTLINED_FUNCTION_46_19();
@@ -9595,21 +9595,21 @@ LABEL_33:
         [OUTLINED_FUNCTION_167() setDepthDataType:v25];
         [OUTLINED_FUNCTION_46_19() pearlModuleType];
         [OUTLINED_FUNCTION_167() setPearlModuleType:v25];
-        v36 = [OUTLINED_FUNCTION_46_19() depthDataOutputDimensions];
+        depthDataOutputDimensions = [OUTLINED_FUNCTION_46_19() depthDataOutputDimensions];
         if ([objc_msgSend(v50 "requestedSettings")])
         {
-          v37 = FigCaptureAspectRatioForDimensions(v36);
+          v37 = FigCaptureAspectRatioForDimensions(depthDataOutputDimensions);
           v38 = BWAspectRatioValueFromAspectRatio([objc_msgSend(v50 "requestedSettings")]);
           v39 = v38 <= 1.0 || v37 <= 1.0;
-          v40 = __ROR8__(v36, 32);
+          v40 = __ROR8__(depthDataOutputDimensions, 32);
           if (!v39)
           {
-            v40 = v36;
+            v40 = depthDataOutputDimensions;
           }
 
           if (v37 >= 1.0 || v38 >= 1.0)
           {
-            v36 = v40;
+            depthDataOutputDimensions = v40;
           }
         }
 
@@ -9619,13 +9619,13 @@ LABEL_33:
       v42 = OUTLINED_FUNCTION_46_19();
       [objc_msgSend(v28 "pipelineParameters")];
       v43 = OUTLINED_FUNCTION_46_19();
-      v44 = [(BWPhotonicEngineNodeConfiguration *)v43 sensorCenterOffset];
+      sensorCenterOffset = [(BWPhotonicEngineNodeConfiguration *)v43 sensorCenterOffset];
       [objc_msgSend(v28 "pipelineParameters")];
       [objc_msgSend(v28 "pipelineParameters")];
-      v46 = [v48 enqueueInputForProcessing:v28 delegate:v3];
+      v46 = [v48 enqueueInputForProcessing:v28 delegate:settingsCopy];
       if (!v46)
       {
-        *(v3 + 536) = v28;
+        *(settingsCopy + 536) = v28;
       }
     }
 
@@ -9639,9 +9639,9 @@ LABEL_33:
   return v46;
 }
 
-- (uint64_t)_setupProcessingStateForClientBracketWithSettings:(uint64_t)a1 processingPlan:
+- (uint64_t)_setupProcessingStateForClientBracketWithSettings:(uint64_t)settings processingPlan:
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_2_74();
     if (![OUTLINED_FUNCTION_82_7(v4) controllerForType:6])
@@ -9693,10 +9693,10 @@ LABEL_33:
           [v18 addOutputSampleBufferRouter:v42 forBufferTypes:? name:?];
           OUTLINED_FUNCTION_159([MEMORY[0x1E695DF70] arrayWithObject:v15], 304);
 
-          v20 = [v15 stillImageSettings];
+          stillImageSettings = [v15 stillImageSettings];
           [v15 portType];
           v21 = OUTLINED_FUNCTION_7();
-          v23 = [(BWPhotonicEngineNode *)v21 _processingNeededForSettings:v20 portType:v22];
+          v23 = [(BWPhotonicEngineNode *)v21 _processingNeededForSettings:stillImageSettings portType:v22];
           if (v23)
           {
             v24 = v44;
@@ -9789,9 +9789,9 @@ LABEL_23:
   return 0;
 }
 
-- (uint64_t)_setupProcessingStateForColorConstancyCaptureWithSettings:(uint64_t)a1 processingPlan:
+- (uint64_t)_setupProcessingStateForColorConstancyCaptureWithSettings:(uint64_t)settings processingPlan:
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
@@ -9902,10 +9902,10 @@ LABEL_7:
 
           [v37 setRemainingProcessingCount:{objc_msgSend(v37, "remainingProcessingCount") + 1}];
 
-          v38 = [v37 stillImageSettings];
+          stillImageSettings = [v37 stillImageSettings];
           [v37 portType];
           v39 = OUTLINED_FUNCTION_7();
-          if ([(BWPhotonicEngineNode *)v39 _processingNeededForSettings:v38 portType:v40])
+          if ([(BWPhotonicEngineNode *)v39 _processingNeededForSettings:stillImageSettings portType:v40])
           {
             v41 = [BWColorConstancyProcessorControllerInput alloc];
             OUTLINED_FUNCTION_53();
@@ -10059,10 +10059,10 @@ LABEL_22:
               [v5[38] setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"arrayWithObject:", v27), v23}];
               [v27 setRemainingProcessingCount:{objc_msgSend(v27, "remainingProcessingCount") + 1}];
 
-              v28 = [v27 stillImageSettings];
+              stillImageSettings = [v27 stillImageSettings];
               [v27 portType];
               v29 = OUTLINED_FUNCTION_7();
-              if ([(BWPhotonicEngineNode *)v29 _processingNeededForSettings:v28 portType:v30])
+              if ([(BWPhotonicEngineNode *)v29 _processingNeededForSettings:stillImageSettings portType:v30])
               {
                 v98 = i;
                 OUTLINED_FUNCTION_73_6();
@@ -10110,7 +10110,7 @@ LABEL_22:
                           objc_enumerationMutation(v17);
                         }
 
-                        v45 = [*(*(&v111 + 1) + 8 * j) intValue];
+                        intValue = [*(*(&v111 + 1) + 8 * j) intValue];
                         memset(v109, 0, sizeof(v109));
                         v46 = OUTLINED_FUNCTION_247_0(232);
                         v47 = [v46 countByEnumeratingWithState:v109 objects:v108 count:16];
@@ -10127,7 +10127,7 @@ LABEL_30:
                               objc_enumerationMutation(v46);
                             }
 
-                            inserted = ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v118, v42, *(*(&v109[0] + 1) + 8 * v49), v45, @"PreviousInput --> SWFR");
+                            inserted = ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v118, v42, *(*(&v109[0] + 1) + 8 * v49), intValue, @"PreviousInput --> SWFR");
                             if (!inserted)
                             {
                               goto LABEL_63;
@@ -10334,7 +10334,7 @@ LABEL_63:
       v97[4] = v8;
       [*&v8[*(v0 + 1032)] workerQueue];
       v83 = [BWPhotonicEngineNode _standardNROutputRouterWithExpectedQueue:v8];
-      v89 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v85 = -[BWPhotonicEngineNode _bufferTypesForCaptureSettings:](v8, [v7 captureSettings]);
       memset(v96, 0, 64);
       v10 = v8;
@@ -10357,7 +10357,7 @@ LABEL_63:
             v16 = *(v96[1] + 8 * i);
             v17 = -[BWNRFProcessorInput initWithSettings:portType:resolutionFlavor:]([BWNRFProcessorInput alloc], "initWithSettings:portType:resolutionFlavor:", v7, v16, [v10[19] resolvedProcessingResolutionFlavorForSettings:v7 portType:v16]);
             [v10[38] setObject:objc_msgSend(MEMORY[0x1E695DF70] forKeyedSubscript:{"arrayWithObject:", v17), v16}];
-            [v89 addObject:v17];
+            [array addObject:v17];
           }
 
           v13 = [obj countByEnumeratingWithState:v96 objects:v95 count:16];
@@ -10381,7 +10381,7 @@ LABEL_63:
 
       v19 = v6;
       OUTLINED_FUNCTION_56_14();
-      v28 = OUTLINED_FUNCTION_240_0(v20, v21, v22, v23, v24, v25, v26, v27, v69, v71, v5, v74, v76, v6, v79, v81, v83, v85, obj, v89);
+      v28 = OUTLINED_FUNCTION_240_0(v20, v21, v22, v23, v24, v25, v26, v27, v69, v71, v5, v74, v76, v6, v79, v81, v83, v85, obj, array);
       v29 = v75;
       if (v28)
       {
@@ -10398,10 +10398,10 @@ LABEL_63:
             }
 
             v32 = *(v93 + 8 * v31);
-            v33 = [v32 stillImageSettings];
+            stillImageSettings = [v32 stillImageSettings];
             [v32 portType];
             v34 = OUTLINED_FUNCTION_8();
-            if (![(BWPhotonicEngineNode *)v34 _processingNeededForSettings:v33 portType:v35])
+            if (![(BWPhotonicEngineNode *)v34 _processingNeededForSettings:stillImageSettings portType:v35])
             {
               goto LABEL_33;
             }
@@ -10607,12 +10607,12 @@ LABEL_25:
                     objc_enumerationMutation(v23);
                   }
 
-                  v34 = [*(*(&v66 + 1) + 8 * v32) intValue];
+                  intValue = [*(*(&v66 + 1) + 8 * v32) intValue];
                   OUTLINED_FUNCTION_117_6();
                   v36 = [v35 lastAddedInputForSequenceNumber:? portType:? bufferType:?];
                   if (v36)
                   {
-                    if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v71, v60, v36, v34, @"PreviousInput --> DeepZoom"))
+                    if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v71, v60, v36, intValue, @"PreviousInput --> DeepZoom"))
                     {
                       v11 = v60;
                       goto LABEL_47;
@@ -10774,12 +10774,12 @@ LABEL_47:
               objc_enumerationMutation(v8);
             }
 
-            v14 = [*(8 * v13) intValue];
+            intValue = [*(8 * v13) intValue];
             OUTLINED_FUNCTION_117_6();
             v16 = [v15 lastAddedInputForSequenceNumber:? portType:? bufferType:?];
             if (v16)
             {
-              if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v24, v7, v16, v14, @"PreviousInput --> SmartStyle"))
+              if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v24, v7, v16, intValue, @"PreviousInput --> SmartStyle"))
               {
                 return 4294954516;
               }
@@ -10910,11 +10910,11 @@ LABEL_19:
             v23 = OUTLINED_FUNCTION_26_13();
             [(BWPhotonicEngineNode *)v23 _bufferTypesForCaptureSettings:v24];
             [v22 addOutputSampleBufferRouter:v98 forBufferTypes:? name:?];
-            v25 = [MEMORY[0x1E695DF70] array];
-            v26 = v25;
+            array = [MEMORY[0x1E695DF70] array];
+            v26 = array;
             if (v19)
             {
-              [v25 addObject:&unk_1F2247B18];
+              [array addObject:&unk_1F2247B18];
             }
 
             if (v20)
@@ -11075,9 +11075,9 @@ LABEL_50:
   OUTLINED_FUNCTION_81();
 }
 
-- (void)_setupProcessingStateForPointCloudDepthIfNeededWithSettings:(uint64_t)a1 processingPlan:
+- (void)_setupProcessingStateForPointCloudDepthIfNeededWithSettings:(uint64_t)settings processingPlan:
 {
-  if (a1)
+  if (settings)
   {
     OUTLINED_FUNCTION_84();
     v3 = v2;
@@ -11109,7 +11109,7 @@ LABEL_50:
           v55[4] = v7;
           v55[5] = v9;
           v47 = v9;
-          v49 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           obj = [OUTLINED_FUNCTION_234_0() portTypes];
           v13 = [obj countByEnumeratingWithState:v54 objects:v53 count:16];
           if (v13)
@@ -11149,16 +11149,16 @@ LABEL_50:
                           objc_enumerationMutation(v12);
                         }
 
-                        v26 = [*(8 * v25) intValue];
-                        v27 = [v3 lastAddedInputForSequenceNumber:0 portType:v17 bufferType:v26];
+                        intValue = [*(8 * v25) intValue];
+                        v27 = [v3 lastAddedInputForSequenceNumber:0 portType:v17 bufferType:intValue];
                         if (v27)
                         {
-                          if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v55, v18, v27, v26, @"PreviousInput --> Jasper ColorStillsExecutor"))
+                          if (!ubn_insertOutputRouterForInputAfterPreviousInputForBufferTypeAndName(v55, v18, v27, intValue, @"PreviousInput --> Jasper ColorStillsExecutor"))
                           {
                             goto LABEL_37;
                           }
 
-                          [v3 addInput:v18 sequenceNumber:0 portType:v17 bufferType:v26];
+                          [v3 addInput:v18 sequenceNumber:0 portType:v17 bufferType:intValue];
                         }
 
                         ++v25;
@@ -11177,12 +11177,12 @@ LABEL_50:
                   [objc_msgSend(v48 "captureSettings")];
                   if ([OUTLINED_FUNCTION_47() isEqualToString:?])
                   {
-                    [v49 insertObject:v18 atIndex:0];
+                    [array insertObject:v18 atIndex:0];
                   }
 
                   else
                   {
-                    [v49 addObject:v18];
+                    [array addObject:v18];
                   }
 
                   v14 = v50;
@@ -11212,7 +11212,7 @@ LABEL_50:
                 OUTLINED_FUNCTION_115_6();
                 if (v41 != v39)
                 {
-                  objc_enumerationMutation(v49);
+                  objc_enumerationMutation(array);
                 }
 
                 v42 = *(8 * i);
@@ -11295,9 +11295,9 @@ void __86__BWPhotonicEngineNode__setupProcessingStateForDeepFusionWithSettings_p
       v23 = 0;
       v24 = 0;
       v6 = OUTLINED_FUNCTION_121_4();
-      v7 = [(BWPhotonicEngineNodeConfiguration *)v6 sensorConfigurationsByPortType];
-      v8 = [OUTLINED_FUNCTION_121_4() stereoPhotoOutputDimensions];
-      if (BWPhotonicEngineUtilitiesComputeStereoPhotoDistortionCorrectionProcessorInputConfigurations(v2, v7, v8, v4, v5, &v24, &v23))
+      sensorConfigurationsByPortType = [(BWPhotonicEngineNodeConfiguration *)v6 sensorConfigurationsByPortType];
+      stereoPhotoOutputDimensions = [OUTLINED_FUNCTION_121_4() stereoPhotoOutputDimensions];
+      if (BWPhotonicEngineUtilitiesComputeStereoPhotoDistortionCorrectionProcessorInputConfigurations(v2, sensorConfigurationsByPortType, stereoPhotoOutputDimensions, v4, v5, &v24, &v23))
       {
         OUTLINED_FUNCTION_1_5();
         return FigDebugAssert3();
@@ -11350,14 +11350,14 @@ void __86__BWPhotonicEngineNode__setupProcessingStateForDeepFusionWithSettings_p
                   }
 
                   [*(v1 + 568) setObject:0 forKeyedSubscript:v15];
-                  v18 = [*(v1 + 208) workerQueue];
+                  workerQueue = [*(v1 + 208) workerQueue];
                   v20[0] = MEMORY[0x1E69E9820];
                   v20[1] = 3221225472;
                   v20[2] = __71__BWPhotonicEngineNode__beginStereoPhotoProcessingIfNeededForSettings___block_invoke;
                   v20[3] = &unk_1E7990178;
                   v20[4] = v1;
                   v20[5] = v17;
-                  ubn_dispatch_async(v18, v20);
+                  ubn_dispatch_async(workerQueue, v20);
                   v13 = v13 + 1;
                 }
 
@@ -11377,7 +11377,7 @@ void __86__BWPhotonicEngineNode__setupProcessingStateForDeepFusionWithSettings_p
   return result;
 }
 
-- (void)_setupProcessingStateForStereoPhotoDeepZoomTransferWithSettings:(uint64_t)a3 processingPlan:(uint64_t)a4
+- (void)_setupProcessingStateForStereoPhotoDeepZoomTransferWithSettings:(uint64_t)settings processingPlan:(uint64_t)plan
 {
   OUTLINED_FUNCTION_227_0();
   a51 = v52;
@@ -11483,15 +11483,15 @@ LABEL_4:
           break;
         }
 
-        v7 = [v6 remainingProcessingCount];
-        if (v7 > 1)
+        remainingProcessingCount = [v6 remainingProcessingCount];
+        if (remainingProcessingCount > 1)
         {
           break;
         }
 
         if (v3 == ++v4)
         {
-          v3 = OUTLINED_FUNCTION_1_18(v7, v8, v10, v9);
+          v3 = OUTLINED_FUNCTION_1_18(remainingProcessingCount, v8, v10, v9);
           v6 = 0;
           if (v3)
           {
@@ -11531,13 +11531,13 @@ LABEL_4:
   return result;
 }
 
-- (void)_errorRecoveryBufferTypesForBufferTypes:(uint64_t)a1
+- (void)_errorRecoveryBufferTypesForBufferTypes:(uint64_t)types
 {
-  if (a1)
+  if (types)
   {
     OUTLINED_FUNCTION_59_0();
     v2 = v1;
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     OUTLINED_FUNCTION_43();
     v8 = OUTLINED_FUNCTION_1_18(v4, v5, v6, v7);
     if (!v8)
@@ -11556,25 +11556,25 @@ LABEL_4:
           objc_enumerationMutation(v2);
         }
 
-        v11 = [*(8 * i) intValue];
-        if ((v11 - 51) < 2)
+        intValue = [*(8 * i) intValue];
+        if ((intValue - 51) < 2)
         {
           v13 = &unk_1F224A710;
         }
 
-        else if (v11 == 2)
+        else if (intValue == 2)
         {
           v13 = &unk_1F224A6C8;
         }
 
-        else if (v11 == 33)
+        else if (intValue == 33)
         {
           v13 = &unk_1F224A728;
         }
 
         else
         {
-          v12 = v11 == 7 || v11 == 13;
+          v12 = intValue == 7 || intValue == 13;
           if (v12)
           {
             v13 = &unk_1F224A6F8;
@@ -11582,7 +11582,7 @@ LABEL_4:
 
           else
           {
-            if (v11 != 5)
+            if (intValue != 5)
             {
               continue;
             }
@@ -11591,7 +11591,7 @@ LABEL_4:
           }
         }
 
-        [v3 addObjectsFromArray:v13];
+        [array addObjectsFromArray:v13];
       }
 
       OUTLINED_FUNCTION_43();
@@ -11599,7 +11599,7 @@ LABEL_4:
       if (!v9)
       {
 LABEL_24:
-        v18 = [v3 copy];
+        v18 = [array copy];
         OUTLINED_FUNCTION_58_0();
         return;
       }
@@ -11660,11 +11660,11 @@ LABEL_24:
       FigDebugAssert3();
     }
 
-    v5 = [v1 isEnqueued];
+    isEnqueued = [v1 isEnqueued];
     result = 0;
     if (v1)
     {
-      if ((v5 & 1) == 0)
+      if ((isEnqueued & 1) == 0)
       {
         result = [*(v2 + *(v3 + 1032)) controllerForType:16];
         if (result)
@@ -11709,10 +11709,10 @@ void __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_p
     else
     {
       v4 = [OUTLINED_FUNCTION_41_15() isDeferredRawLearnedNRCapture:?];
-      v5 = [v2 captureSettings];
+      captureSettings = [v2 captureSettings];
       if (v4)
       {
-        if (([v5 captureFlags] & 0x100000000) != 0)
+        if (([captureSettings captureFlags] & 0x100000000) != 0)
         {
           return 5;
         }
@@ -11725,7 +11725,7 @@ void __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_p
 
       else
       {
-        return ([v5 captureType] == 11) & (v1 >> 5);
+        return ([captureSettings captureType] == 11) & (v1 >> 5);
       }
     }
   }
@@ -11733,14 +11733,14 @@ void __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_p
   return result;
 }
 
-- (uint64_t)_serviceNextSoftISPInputWithSampleBuffer:(unint64_t)a3 processingMode:(uint64_t)a4 transferOwnership:
+- (uint64_t)_serviceNextSoftISPInputWithSampleBuffer:(unint64_t)buffer processingMode:(uint64_t)mode transferOwnership:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [*(a1 + 208) workerQueue];
+  [*(self + 208) workerQueue];
   if (_FigIsCurrentDispatchQueue())
   {
     if (a2)
@@ -11762,7 +11762,7 @@ void __104__BWPhotonicEngineNode__setupProcessingStateForInferenceWithSettings_p
 LABEL_4:
   v8 = CMGetAttachment(a2, @"StillSettings", 0);
   PortType = BWSampleBufferGetPortType(a2);
-  if (![(BWPhotonicEngineNode *)a1 _processingNeededForSettings:v8 portType:PortType])
+  if (![(BWPhotonicEngineNode *)self _processingNeededForSettings:v8 portType:PortType])
   {
     return 0;
   }
@@ -11771,7 +11771,7 @@ LABEL_4:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [*(a1 + 232) objectForKeyedSubscript:PortType];
+  v10 = [*(self + 232) objectForKeyedSubscript:PortType];
   OUTLINED_FUNCTION_47_0();
   v12 = [v11 countByEnumeratingWithState:? objects:? count:?];
   if (v12)
@@ -11810,17 +11810,17 @@ LABEL_7:
     }
 
     a2 = v14;
-    if (!a3)
+    if (!buffer)
     {
       BWStillImageCaptureFrameFlagsForSampleBuffer(v14);
       v28 = OUTLINED_FUNCTION_8();
-      a3 = [BWPhotonicEngineNode _softISPProcessingModeForSettings:v28 captureFrameFlags:?];
+      buffer = [BWPhotonicEngineNode _softISPProcessingModeForSettings:v28 captureFrameFlags:?];
     }
 
-    [v17 addFrame:v14 processingMode:a3 transferOwnership:a4];
+    [v17 addFrame:v14 processingMode:buffer transferOwnership:mode];
     if (v17)
     {
-      if ([*(a1 + 232) count] < 2)
+      if ([*(self + 232) count] < 2)
       {
         v29[0] = PortType;
         [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -11828,7 +11828,7 @@ LABEL_7:
 
       else
       {
-        [BWPhotonicEngineNode _processingOrderByPortTypeForSettings:a1];
+        [BWPhotonicEngineNode _processingOrderByPortTypeForSettings:self];
       }
 
       while (1)
@@ -11841,7 +11841,7 @@ LABEL_7:
 
         v24 = v23;
         v25 = objc_autoreleasePoolPush();
-        [BWPhotonicEngineNode _enqueueSoftISPInput:a1];
+        [BWPhotonicEngineNode _enqueueSoftISPInput:self];
         v22 = v26;
         objc_autoreleasePoolPop(v25);
 
@@ -11854,7 +11854,7 @@ LABEL_7:
 
     v22 = 4294954516;
 LABEL_22:
-    if ((a4 & 1) == 0)
+    if ((mode & 1) == 0)
     {
       return v22;
     }
@@ -11863,7 +11863,7 @@ LABEL_22:
   }
 
   v22 = 4294954516;
-  if (a4)
+  if (mode)
   {
 LABEL_29:
     CFRelease(a2);

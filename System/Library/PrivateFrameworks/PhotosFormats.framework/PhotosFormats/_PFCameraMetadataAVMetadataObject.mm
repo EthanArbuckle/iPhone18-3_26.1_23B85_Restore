@@ -1,7 +1,7 @@
 @interface _PFCameraMetadataAVMetadataObject
-+ (id)objectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 type:(id)a4;
++ (id)objectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary type:(id)type;
 - (CGRect)bounds;
-- (_PFCameraMetadataAVMetadataObject)initWithType:(id)a3 bounds:(CGRect)a4 confidence:(int)a5;
+- (_PFCameraMetadataAVMetadataObject)initWithType:(id)type bounds:(CGRect)bounds confidence:(int)confidence;
 @end
 
 @implementation _PFCameraMetadataAVMetadataObject
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (_PFCameraMetadataAVMetadataObject)initWithType:(id)a3 bounds:(CGRect)a4 confidence:(int)a5
+- (_PFCameraMetadataAVMetadataObject)initWithType:(id)type bounds:(CGRect)bounds confidence:(int)confidence
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = _PFCameraMetadataAVMetadataObject;
   v13 = [(_PFCameraMetadataAVMetadataObject *)&v16 init];
@@ -37,29 +37,29 @@
     v13->_bounds.origin.y = y;
     v13->_bounds.size.width = width;
     v13->_bounds.size.height = height;
-    objc_storeStrong(&v13->_type, a3);
-    v14->_confidence = a5;
+    objc_storeStrong(&v13->_type, type);
+    v14->_confidence = confidence;
   }
 
   return v14;
 }
 
-+ (id)objectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 type:(id)a4
++ (id)objectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary type:(id)type
 {
   v5 = *(MEMORY[0x1E695F058] + 16);
   v15.origin = *MEMORY[0x1E695F058];
   v15.size = v5;
   v6 = *MEMORY[0x1E69910D8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  dictionaryCopy = dictionary;
+  v9 = [dictionaryCopy objectForKeyedSubscript:v6];
   CGRectMakeWithDictionaryRepresentation(v9, &v15);
 
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6990FA0]];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6990FA0]];
 
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
   v12 = [_PFCameraMetadataAVMetadataObject alloc];
-  v13 = [(_PFCameraMetadataAVMetadataObject *)v12 initWithType:v7 bounds:v11 confidence:*&v15.origin, *&v15.size];
+  v13 = [(_PFCameraMetadataAVMetadataObject *)v12 initWithType:typeCopy bounds:intValue confidence:*&v15.origin, *&v15.size];
 
   return v13;
 }

@@ -558,7 +558,7 @@ LABEL_145:
 
   if ((v27 - 2100) >= 0xFFFFFF39 && ((v27 & 3) == 0 ? (v68 = v21 < 2) : (v68 = 0), v68 ? (v69 = -2) : (v69 = -1), v77 == (v27 - 1900 + v22 + ((v27 - 1900) >> 2) + v69 + monthStarts[v21]) % 7))
   {
-    v70 = 0;
+    date = 0;
     if (v41 <= 23 && v45 <= 59 && v76 <= 59)
     {
       if (v51)
@@ -582,23 +582,23 @@ LABEL_145:
       [v74 setMinute:v45];
       [v74 setSecond:v76];
       [v74 setTimeZone:v73];
-      v70 = [v74 date];
+      date = [v74 date];
     }
   }
 
   else
   {
 LABEL_173:
-    v70 = 0;
+    date = 0;
   }
 
-  if (!v70)
+  if (!date)
   {
-    v70 = [MEMORY[0x1E695DF00] mf_copyLenientDateInCommonFormatsWithString:v3];
+    date = [MEMORY[0x1E695DF00] mf_copyLenientDateInCommonFormatsWithString:v3];
   }
 
   v71 = *MEMORY[0x1E69E9840];
-  return v70;
+  return date;
 }
 
 @end

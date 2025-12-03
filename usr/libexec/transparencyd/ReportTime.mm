@@ -2,8 +2,8 @@
 - (NSDate)lastReport;
 - (_TtC13transparencyd10ReportTime)init;
 - (double)timeBetweenReports;
-- (void)setLastReport:(id)a3;
-- (void)setTimeBetweenReports:(double)a3;
+- (void)setLastReport:(id)report;
+- (void)setTimeBetweenReports:(double)reports;
 @end
 
 @implementation ReportTime
@@ -31,13 +31,13 @@
   return v11;
 }
 
-- (void)setLastReport:(id)a3
+- (void)setLastReport:(id)report
 {
   v5 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (report)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();
@@ -52,7 +52,7 @@
 
   v11 = OBJC_IVAR____TtC13transparencyd10ReportTime_lastReport;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1000BECD4(v8, self + v11);
   swift_endAccess();
 }
@@ -64,11 +64,11 @@
   return *(self + v3);
 }
 
-- (void)setTimeBetweenReports:(double)a3
+- (void)setTimeBetweenReports:(double)reports
 {
   v5 = OBJC_IVAR____TtC13transparencyd10ReportTime_timeBetweenReports;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reports;
 }
 
 - (_TtC13transparencyd10ReportTime)init

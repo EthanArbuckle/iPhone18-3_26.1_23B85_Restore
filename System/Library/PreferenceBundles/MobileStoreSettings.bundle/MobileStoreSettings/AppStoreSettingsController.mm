@@ -1,12 +1,12 @@
 @interface AppStoreSettingsController
-- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithCoder:(id)a3;
-- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithCoder:(id)coder;
+- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation AppStoreSettingsController
 
-- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_3A7F8();
   sub_3A7E8();
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithCoder:(id)a3
+- (_TtC19MobileStoreSettings26AppStoreSettingsController)initWithCoder:(id)coder
 {
   sub_3A7F8();
   sub_3A7E8();
@@ -48,7 +48,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_2E0FC();
 }
 

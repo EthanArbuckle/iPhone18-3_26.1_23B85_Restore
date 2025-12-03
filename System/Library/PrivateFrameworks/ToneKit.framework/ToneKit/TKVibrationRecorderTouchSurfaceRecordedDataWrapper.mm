@@ -1,15 +1,15 @@
 @interface TKVibrationRecorderTouchSurfaceRecordedDataWrapper
-- (BOOL)getNormalizedTouchLocation:(CGPoint *)a3 touchPhase:(int *)a4 forTimeInterval:(double)a5;
-- (TKVibrationRecorderTouchSurfaceRecordedDataWrapper)initWithVibrationPatternMaximumDuration:(double)a3;
-- (void)_prepareRecordedDataBufferForStoringEnoughElementsForRecordingDuration:(double)a3;
-- (void)_updateMaximumFramesPerSecondRate:(id)a3;
+- (BOOL)getNormalizedTouchLocation:(CGPoint *)location touchPhase:(int *)phase forTimeInterval:(double)interval;
+- (TKVibrationRecorderTouchSurfaceRecordedDataWrapper)initWithVibrationPatternMaximumDuration:(double)duration;
+- (void)_prepareRecordedDataBufferForStoringEnoughElementsForRecordingDuration:(double)duration;
+- (void)_updateMaximumFramesPerSecondRate:(id)rate;
 - (void)dealloc;
 - (void)didStopRecording;
 @end
 
 @implementation TKVibrationRecorderTouchSurfaceRecordedDataWrapper
 
-- (TKVibrationRecorderTouchSurfaceRecordedDataWrapper)initWithVibrationPatternMaximumDuration:(double)a3
+- (TKVibrationRecorderTouchSurfaceRecordedDataWrapper)initWithVibrationPatternMaximumDuration:(double)duration
 {
   v14.receiver = self;
   v14.super_class = TKVibrationRecorderTouchSurfaceRecordedDataWrapper;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_vibrationPatternMaximumDuration = a3;
+    v4->_vibrationPatternMaximumDuration = duration;
     v4->_maximumFramesPerSecondRate = 60;
     v4->_isWarmUpModeEnabled = 1;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -50,9 +50,9 @@
   [(TKVibrationRecorderTouchSurfaceRecordedDataWrapper *)&v4 dealloc];
 }
 
-- (void)_prepareRecordedDataBufferForStoringEnoughElementsForRecordingDuration:(double)a3
+- (void)_prepareRecordedDataBufferForStoringEnoughElementsForRecordingDuration:(double)duration
 {
-  v4 = vcvtpd_u64_f64(self->_maximumFramesPerSecondRate * a3);
+  v4 = vcvtpd_u64_f64(self->_maximumFramesPerSecondRate * duration);
   recordedData = self->_recordedData;
   if (recordedData)
   {
@@ -85,16 +85,16 @@
   }
 }
 
-- (BOOL)getNormalizedTouchLocation:(CGPoint *)a3 touchPhase:(int *)a4 forTimeInterval:(double)a5
+- (BOOL)getNormalizedTouchLocation:(CGPoint *)location touchPhase:(int *)phase forTimeInterval:(double)interval
 {
   v5 = *MEMORY[0x277CBF348];
-  v6 = vcvtmd_u64_f64(self->_maximumFramesPerSecondRate * a5);
+  v6 = vcvtmd_u64_f64(self->_maximumFramesPerSecondRate * interval);
   recordedDataCursor = self->_recordedDataCursor;
   if (recordedDataCursor < v6 || (recordedData = self->_recordedData, v9 = recordedData[4 * v6 + 3], v9 > recordedDataCursor))
   {
     v10 = 0;
     result = 0;
-    if (!a3)
+    if (!location)
     {
       goto LABEL_5;
     }
@@ -106,30 +106,30 @@
   v13 = *v12;
   v10 = *(v12 + 4);
   result = 1;
-  if (a3)
+  if (location)
   {
 LABEL_4:
-    *a3 = v13;
+    *location = v13;
   }
 
 LABEL_5:
-  if (a4)
+  if (phase)
   {
-    *a4 = v10;
+    *phase = v10;
   }
 
   return result;
 }
 
-- (void)_updateMaximumFramesPerSecondRate:(id)a3
+- (void)_updateMaximumFramesPerSecondRate:(id)rate
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rateCopy = rate;
   if (self->_isWarmUpModeEnabled)
   {
     if (self->_displayLinkHasRefreshedAtLeastOnce)
     {
-      v12[0] = v4;
+      v12[0] = rateCopy;
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       if (v5 - self->_warmUpModeDidStartTimestamp >= 0.5)
       {
@@ -156,7 +156,7 @@ LABEL_5:
           [(TKVibrationRecorderTouchSurfaceRecordedDataWrapper *)self _prepareRecordedDataBufferForStoringEnoughElementsForRecordingDuration:self->_vibrationPatternMaximumDuration * 1.2];
         }
 
-        v4 = v12[0];
+        rateCopy = v12[0];
         self->_isWarmUpModeEnabled = 0;
         if (self->_displayLinkManagerObserverToken)
         {
@@ -164,14 +164,14 @@ LABEL_5:
           displayLinkManagerObserverToken = self->_displayLinkManagerObserverToken;
           self->_displayLinkManagerObserverToken = 0;
 
-          v4 = v12[0];
+          rateCopy = v12[0];
         }
       }
 
       else
       {
         [v12[0] duration];
-        v4 = v12[0];
+        rateCopy = v12[0];
         v7 = vcvtpd_u64_f64(1.0 / v6);
         if (self->_maximumFramesPerSecondRate < v7)
         {

@@ -1,14 +1,14 @@
 @interface _INPBSearchForMessagesIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForMessagesIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForMessagesIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttributes:(id)a3;
+- (int)StringAsAttributes:(id)attributes;
 - (unint64_t)hash;
-- (void)addAttribute:(int)a3;
+- (void)addAttribute:(int)attribute;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForMessagesIntent
@@ -23,7 +23,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_attributes.count)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBSearchForMessagesIntent attributesCount](self, "attributesCount")}];
@@ -51,54 +51,54 @@
       while (v5 < [(_INPBSearchForMessagesIntent *)self attributesCount]);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"attribute"];
+    [dictionary setObject:v4 forKeyedSubscript:@"attribute"];
   }
 
-  v8 = [(_INPBSearchForMessagesIntent *)self content];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"content"];
+  content = [(_INPBSearchForMessagesIntent *)self content];
+  dictionaryRepresentation = [content dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"content"];
 
-  v10 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"conversationIdentifier"];
+  conversationIdentifier = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+  dictionaryRepresentation2 = [conversationIdentifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"conversationIdentifier"];
 
-  v12 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"dateTimeRange"];
+  dateTimeRange = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+  dictionaryRepresentation3 = [dateTimeRange dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"dateTimeRange"];
 
-  v14 = [(_INPBSearchForMessagesIntent *)self groupName];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBSearchForMessagesIntent *)self groupName];
+  dictionaryRepresentation4 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"groupName"];
 
-  v16 = [(_INPBSearchForMessagesIntent *)self identifier];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"identifier"];
+  identifier = [(_INPBSearchForMessagesIntent *)self identifier];
+  dictionaryRepresentation5 = [identifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"identifier"];
 
-  v18 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+  dictionaryRepresentation6 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"intentMetadata"];
 
-  v20 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"notificationIdentifier"];
+  notificationIdentifier = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+  dictionaryRepresentation7 = [notificationIdentifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"notificationIdentifier"];
 
-  v22 = [(_INPBSearchForMessagesIntent *)self recipient];
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"recipient"];
+  recipient = [(_INPBSearchForMessagesIntent *)self recipient];
+  dictionaryRepresentation8 = [recipient dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"recipient"];
 
-  v24 = [(_INPBSearchForMessagesIntent *)self searchTerm];
-  v25 = [v24 dictionaryRepresentation];
-  [v3 setObject:v25 forKeyedSubscript:@"searchTerm"];
+  searchTerm = [(_INPBSearchForMessagesIntent *)self searchTerm];
+  dictionaryRepresentation9 = [searchTerm dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"searchTerm"];
 
-  v26 = [(_INPBSearchForMessagesIntent *)self sender];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"sender"];
+  sender = [(_INPBSearchForMessagesIntent *)self sender];
+  dictionaryRepresentation10 = [sender dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"sender"];
 
-  v28 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
-  v29 = [v28 dictionaryRepresentation];
-  [v3 setObject:v29 forKeyedSubscript:@"speakableGroupName"];
+  speakableGroupName = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+  dictionaryRepresentation11 = [speakableGroupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"speakableGroupName"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -117,28 +117,28 @@
   return v13 ^ [(_INPBDataStringList *)self->_speakableGroupName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
   {
     goto LABEL_58;
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self content];
+  content2 = [equalCopy content];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v7 = [(_INPBSearchForMessagesIntent *)self content];
-  if (v7)
+  content3 = [(_INPBSearchForMessagesIntent *)self content];
+  if (content3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForMessagesIntent *)self content];
-    v10 = [v4 content];
-    v11 = [v9 isEqual:v10];
+    v8 = content3;
+    content4 = [(_INPBSearchForMessagesIntent *)self content];
+    content5 = [equalCopy content];
+    v11 = [content4 isEqual:content5];
 
     if (!v11)
     {
@@ -150,20 +150,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
-  v6 = [v4 conversationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+  content2 = [equalCopy conversationIdentifier];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v12 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
-  if (v12)
+  conversationIdentifier = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+  if (conversationIdentifier)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
-    v15 = [v4 conversationIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = conversationIdentifier;
+    conversationIdentifier2 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+    conversationIdentifier3 = [equalCopy conversationIdentifier];
+    v16 = [conversationIdentifier2 isEqual:conversationIdentifier3];
 
     if (!v16)
     {
@@ -175,20 +175,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
-  v6 = [v4 dateTimeRange];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+  content2 = [equalCopy dateTimeRange];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v17 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
-  if (v17)
+  dateTimeRange = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+  if (dateTimeRange)
   {
-    v18 = v17;
-    v19 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
-    v20 = [v4 dateTimeRange];
-    v21 = [v19 isEqual:v20];
+    v18 = dateTimeRange;
+    dateTimeRange2 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+    dateTimeRange3 = [equalCopy dateTimeRange];
+    v21 = [dateTimeRange2 isEqual:dateTimeRange3];
 
     if (!v21)
     {
@@ -200,20 +200,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self groupName];
+  content2 = [equalCopy groupName];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v22 = [(_INPBSearchForMessagesIntent *)self groupName];
-  if (v22)
+  groupName = [(_INPBSearchForMessagesIntent *)self groupName];
+  if (groupName)
   {
-    v23 = v22;
-    v24 = [(_INPBSearchForMessagesIntent *)self groupName];
-    v25 = [v4 groupName];
-    v26 = [v24 isEqual:v25];
+    v23 = groupName;
+    groupName2 = [(_INPBSearchForMessagesIntent *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v26 = [groupName2 isEqual:groupName3];
 
     if (!v26)
     {
@@ -225,20 +225,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self identifier];
+  content2 = [equalCopy identifier];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v27 = [(_INPBSearchForMessagesIntent *)self identifier];
-  if (v27)
+  identifier = [(_INPBSearchForMessagesIntent *)self identifier];
+  if (identifier)
   {
-    v28 = v27;
-    v29 = [(_INPBSearchForMessagesIntent *)self identifier];
-    v30 = [v4 identifier];
-    v31 = [v29 isEqual:v30];
+    v28 = identifier;
+    identifier2 = [(_INPBSearchForMessagesIntent *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v31 = [identifier2 isEqual:identifier3];
 
     if (!v31)
     {
@@ -250,20 +250,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+  content2 = [equalCopy intentMetadata];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v32 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
-  if (v32)
+  intentMetadata = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v33 = v32;
-    v34 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
-    v35 = [v4 intentMetadata];
-    v36 = [v34 isEqual:v35];
+    v33 = intentMetadata;
+    intentMetadata2 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v36 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v36)
     {
@@ -275,20 +275,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
-  v6 = [v4 notificationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+  content2 = [equalCopy notificationIdentifier];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v37 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
-  if (v37)
+  notificationIdentifier = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+  if (notificationIdentifier)
   {
-    v38 = v37;
-    v39 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
-    v40 = [v4 notificationIdentifier];
-    v41 = [v39 isEqual:v40];
+    v38 = notificationIdentifier;
+    notificationIdentifier2 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+    notificationIdentifier3 = [equalCopy notificationIdentifier];
+    v41 = [notificationIdentifier2 isEqual:notificationIdentifier3];
 
     if (!v41)
     {
@@ -300,20 +300,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self recipient];
-  v6 = [v4 recipient];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self recipient];
+  content2 = [equalCopy recipient];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v42 = [(_INPBSearchForMessagesIntent *)self recipient];
-  if (v42)
+  recipient = [(_INPBSearchForMessagesIntent *)self recipient];
+  if (recipient)
   {
-    v43 = v42;
-    v44 = [(_INPBSearchForMessagesIntent *)self recipient];
-    v45 = [v4 recipient];
-    v46 = [v44 isEqual:v45];
+    v43 = recipient;
+    recipient2 = [(_INPBSearchForMessagesIntent *)self recipient];
+    recipient3 = [equalCopy recipient];
+    v46 = [recipient2 isEqual:recipient3];
 
     if (!v46)
     {
@@ -325,20 +325,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self searchTerm];
-  v6 = [v4 searchTerm];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self searchTerm];
+  content2 = [equalCopy searchTerm];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v47 = [(_INPBSearchForMessagesIntent *)self searchTerm];
-  if (v47)
+  searchTerm = [(_INPBSearchForMessagesIntent *)self searchTerm];
+  if (searchTerm)
   {
-    v48 = v47;
-    v49 = [(_INPBSearchForMessagesIntent *)self searchTerm];
-    v50 = [v4 searchTerm];
-    v51 = [v49 isEqual:v50];
+    v48 = searchTerm;
+    searchTerm2 = [(_INPBSearchForMessagesIntent *)self searchTerm];
+    searchTerm3 = [equalCopy searchTerm];
+    v51 = [searchTerm2 isEqual:searchTerm3];
 
     if (!v51)
     {
@@ -350,20 +350,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self sender];
-  v6 = [v4 sender];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self sender];
+  content2 = [equalCopy sender];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_57;
   }
 
-  v52 = [(_INPBSearchForMessagesIntent *)self sender];
-  if (v52)
+  sender = [(_INPBSearchForMessagesIntent *)self sender];
+  if (sender)
   {
-    v53 = v52;
-    v54 = [(_INPBSearchForMessagesIntent *)self sender];
-    v55 = [v4 sender];
-    v56 = [v54 isEqual:v55];
+    v53 = sender;
+    sender2 = [(_INPBSearchForMessagesIntent *)self sender];
+    sender3 = [equalCopy sender];
+    v56 = [sender2 isEqual:sender3];
 
     if (!v56)
     {
@@ -375,12 +375,12 @@
   {
   }
 
-  v5 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
-  v6 = [v4 speakableGroupName];
-  if ((v5 != 0) != (v6 == 0))
+  content = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+  content2 = [equalCopy speakableGroupName];
+  if ((content != 0) != (content2 == 0))
   {
-    v57 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
-    if (!v57)
+    speakableGroupName = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+    if (!speakableGroupName)
     {
 
 LABEL_61:
@@ -388,10 +388,10 @@ LABEL_61:
       goto LABEL_59;
     }
 
-    v58 = v57;
-    v59 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
-    v60 = [v4 speakableGroupName];
-    v61 = [v59 isEqual:v60];
+    v58 = speakableGroupName;
+    speakableGroupName2 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+    speakableGroupName3 = [equalCopy speakableGroupName];
+    v61 = [speakableGroupName2 isEqual:speakableGroupName3];
 
     if (v61)
     {
@@ -411,74 +411,74 @@ LABEL_59:
   return v62;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForMessagesIntent allocWithZone:](_INPBSearchForMessagesIntent init];
   PBRepeatedInt32Copy();
-  v6 = [(_INPBStringList *)self->_content copyWithZone:a3];
+  v6 = [(_INPBStringList *)self->_content copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setContent:v6];
 
-  v7 = [(_INPBStringList *)self->_conversationIdentifier copyWithZone:a3];
+  v7 = [(_INPBStringList *)self->_conversationIdentifier copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setConversationIdentifier:v7];
 
-  v8 = [(_INPBDateTimeRange *)self->_dateTimeRange copyWithZone:a3];
+  v8 = [(_INPBDateTimeRange *)self->_dateTimeRange copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setDateTimeRange:v8];
 
-  v9 = [(_INPBStringList *)self->_groupName copyWithZone:a3];
+  v9 = [(_INPBStringList *)self->_groupName copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setGroupName:v9];
 
-  v10 = [(_INPBStringList *)self->_identifier copyWithZone:a3];
+  v10 = [(_INPBStringList *)self->_identifier copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setIdentifier:v10];
 
-  v11 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v11 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setIntentMetadata:v11];
 
-  v12 = [(_INPBStringList *)self->_notificationIdentifier copyWithZone:a3];
+  v12 = [(_INPBStringList *)self->_notificationIdentifier copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setNotificationIdentifier:v12];
 
-  v13 = [(_INPBContactList *)self->_recipient copyWithZone:a3];
+  v13 = [(_INPBContactList *)self->_recipient copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setRecipient:v13];
 
-  v14 = [(_INPBStringList *)self->_searchTerm copyWithZone:a3];
+  v14 = [(_INPBStringList *)self->_searchTerm copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setSearchTerm:v14];
 
-  v15 = [(_INPBContactList *)self->_sender copyWithZone:a3];
+  v15 = [(_INPBContactList *)self->_sender copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setSender:v15];
 
-  v16 = [(_INPBDataStringList *)self->_speakableGroupName copyWithZone:a3];
+  v16 = [(_INPBDataStringList *)self->_speakableGroupName copyWithZone:zone];
   [(_INPBSearchForMessagesIntent *)v5 setSpeakableGroupName:v16];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForMessagesIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForMessagesIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForMessagesIntent)initWithCoder:(id)a3
+- (_INPBSearchForMessagesIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForMessagesIntent *)self initWithData:v6];
+    self = [(_INPBSearchForMessagesIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_attributes = &self->_attributes;
-  v30 = a3;
+  toCopy = to;
   if (self->_attributes.count)
   {
     v5 = 0;
@@ -492,122 +492,122 @@ LABEL_59:
     while (v5 < self->_attributes.count);
   }
 
-  v7 = [(_INPBSearchForMessagesIntent *)self content];
+  content = [(_INPBSearchForMessagesIntent *)self content];
 
-  if (v7)
+  if (content)
   {
-    v8 = [(_INPBSearchForMessagesIntent *)self content];
+    content2 = [(_INPBSearchForMessagesIntent *)self content];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+  conversationIdentifier = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
 
-  if (v9)
+  if (conversationIdentifier)
   {
-    v10 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
+    conversationIdentifier2 = [(_INPBSearchForMessagesIntent *)self conversationIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+  dateTimeRange = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
 
-  if (v11)
+  if (dateTimeRange)
   {
-    v12 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
+    dateTimeRange2 = [(_INPBSearchForMessagesIntent *)self dateTimeRange];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBSearchForMessagesIntent *)self groupName];
+  groupName = [(_INPBSearchForMessagesIntent *)self groupName];
 
-  if (v13)
+  if (groupName)
   {
-    v14 = [(_INPBSearchForMessagesIntent *)self groupName];
+    groupName2 = [(_INPBSearchForMessagesIntent *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBSearchForMessagesIntent *)self identifier];
+  identifier = [(_INPBSearchForMessagesIntent *)self identifier];
 
-  if (v15)
+  if (identifier)
   {
-    v16 = [(_INPBSearchForMessagesIntent *)self identifier];
+    identifier2 = [(_INPBSearchForMessagesIntent *)self identifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchForMessagesIntent *)self intentMetadata];
 
-  if (v17)
+  if (intentMetadata)
   {
-    v18 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForMessagesIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+  notificationIdentifier = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
 
-  if (v19)
+  if (notificationIdentifier)
   {
-    v20 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
+    notificationIdentifier2 = [(_INPBSearchForMessagesIntent *)self notificationIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_INPBSearchForMessagesIntent *)self recipient];
+  recipient = [(_INPBSearchForMessagesIntent *)self recipient];
 
-  if (v21)
+  if (recipient)
   {
-    v22 = [(_INPBSearchForMessagesIntent *)self recipient];
+    recipient2 = [(_INPBSearchForMessagesIntent *)self recipient];
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(_INPBSearchForMessagesIntent *)self searchTerm];
+  searchTerm = [(_INPBSearchForMessagesIntent *)self searchTerm];
 
-  if (v23)
+  if (searchTerm)
   {
-    v24 = [(_INPBSearchForMessagesIntent *)self searchTerm];
+    searchTerm2 = [(_INPBSearchForMessagesIntent *)self searchTerm];
     PBDataWriterWriteSubmessage();
   }
 
-  v25 = [(_INPBSearchForMessagesIntent *)self sender];
+  sender = [(_INPBSearchForMessagesIntent *)self sender];
 
-  if (v25)
+  if (sender)
   {
-    v26 = [(_INPBSearchForMessagesIntent *)self sender];
+    sender2 = [(_INPBSearchForMessagesIntent *)self sender];
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+  speakableGroupName = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
 
-  v28 = v30;
-  if (v27)
+  v28 = toCopy;
+  if (speakableGroupName)
   {
-    v29 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
+    speakableGroupName2 = [(_INPBSearchForMessagesIntent *)self speakableGroupName];
     PBDataWriterWriteSubmessage();
 
-    v28 = v30;
+    v28 = toCopy;
   }
 }
 
-- (int)StringAsAttributes:(id)a3
+- (int)StringAsAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"READ"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"READ"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UNREAD"])
+  else if ([attributesCopy isEqualToString:@"UNREAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([attributesCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNFLAGGED"])
+  else if ([attributesCopy isEqualToString:@"UNFLAGGED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLAYED"])
+  else if ([attributesCopy isEqualToString:@"PLAYED"])
   {
     v4 = 5;
   }
@@ -620,9 +620,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)addAttribute:(int)a3
+- (void)addAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

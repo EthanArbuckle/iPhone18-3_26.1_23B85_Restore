@@ -2,38 +2,38 @@
 - (BOOL)_allowsLinkPreviewInteractionInViewServices;
 - (BOOL)_shouldPropagateTraitCollectionChanges;
 - (CGRect)_usableBounds;
-- (_UIHostedWindow)initWithFrame:(CGRect)a3;
+- (_UIHostedWindow)initWithFrame:(CGRect)frame;
 - (_UIHostedWindowDelegate)_hostedWindowDelegate;
 - (double)_systemReferenceAngle;
 - (id)_normalInheritedTintColor;
 - (id)_remoteContentParent;
 - (id)_systemReferenceAngleProvider;
-- (id)_traitCollectionForSize:(CGSize)a3 parentCollection:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_traitCollectionForSize:(CGSize)size parentCollection:(id)collection;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_defaultTintAdjustmentMode;
 - (unint64_t)_systemReferenceAngleMode;
 - (unsigned)contextID;
-- (void)_configureContextOptions:(id)a3;
+- (void)_configureContextOptions:(id)options;
 - (void)_didCreateRootPresentationController;
-- (void)_registerScrollToTopView:(id)a3;
-- (void)_setFirstResponder:(id)a3;
-- (void)_setHostBundleIdentifier:(uint64_t)a1;
-- (void)_setHostTintAdjustmentMode:(int64_t)a3;
-- (void)_setHostTintColor:(id)a3;
-- (void)_setHostTraitCollection:(id)a3;
-- (void)_unregisterScrollToTopView:(id)a3;
+- (void)_registerScrollToTopView:(id)view;
+- (void)_setFirstResponder:(id)responder;
+- (void)_setHostBundleIdentifier:(uint64_t)identifier;
+- (void)_setHostTintAdjustmentMode:(int64_t)mode;
+- (void)_setHostTintColor:(id)color;
+- (void)_setHostTraitCollection:(id)collection;
+- (void)_unregisterScrollToTopView:(id)view;
 - (void)_updateStrictTouchVerificationIfNecessary;
-- (void)_updateWindowTraitsAndNotify:(BOOL)a3;
+- (void)_updateWindowTraitsAndNotify:(BOOL)notify;
 - (void)dealloc;
 @end
 
 @implementation _UIHostedWindow
 
-- (_UIHostedWindow)initWithFrame:(CGRect)a3
+- (_UIHostedWindow)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIHostedWindow;
-  v3 = [(UIWindow *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWindow *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,23 +61,23 @@
 
 - (unsigned)contextID
 {
-  v2 = [(_UIHostedWindow *)self hostingHandle];
-  v3 = [v2 contextID];
+  hostingHandle = [(_UIHostedWindow *)self hostingHandle];
+  contextID = [hostingHandle contextID];
 
-  return v3;
+  return contextID;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = +[UIKeyShortcutHUDService _existingHUDService];
-  [v8 handleTouchEvent:v7];
+  [v8 handleTouchEvent:eventCopy];
 
   v11.receiver = self;
   v11.super_class = _UIHostedWindow;
-  v9 = [(UIView *)&v11 hitTest:v7 withEvent:x, y];
+  v9 = [(UIView *)&v11 hitTest:eventCopy withEvent:x, y];
 
   return v9;
 }
@@ -99,72 +99,72 @@
   v7.receiver = self;
   v7.super_class = _UIHostedWindow;
   [(UIWindow *)&v7 _didCreateRootPresentationController];
-  v3 = [(UIWindow *)self rootViewController];
-  v4 = [v3 conformsToProtocol:&unk_1F00EBE08];
+  rootViewController = [(UIWindow *)self rootViewController];
+  v4 = [rootViewController conformsToProtocol:&unk_1F00EBE08];
 
   if (v4)
   {
-    v5 = [(UIWindow *)self rootViewController];
-    v6 = [(UIWindow *)self _rootPresentationController];
-    [v6 _setClientRemotePresentationDelegate:v5];
+    rootViewController2 = [(UIWindow *)self rootViewController];
+    _rootPresentationController = [(UIWindow *)self _rootPresentationController];
+    [_rootPresentationController _setClientRemotePresentationDelegate:rootViewController2];
   }
 }
 
-- (void)_registerScrollToTopView:(id)a3
+- (void)_registerScrollToTopView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = _UIHostedWindow;
-  v4 = a3;
-  [(UIWindow *)&v7 _registerScrollToTopView:v4];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  viewCopy = view;
+  [(UIWindow *)&v7 _registerScrollToTopView:viewCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = @"_UIHostedWindowScrollToTopNotificationView";
-  v9[0] = v4;
+  v9[0] = viewCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v5 postNotificationName:@"_UIHostedWindowDidRegisterScrollToTopViewNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"_UIHostedWindowDidRegisterScrollToTopViewNotification" object:self userInfo:v6];
 }
 
-- (void)_unregisterScrollToTopView:(id)a3
+- (void)_unregisterScrollToTopView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = _UIHostedWindow;
-  v4 = a3;
-  [(UIWindow *)&v7 _unregisterScrollToTopView:v4];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  viewCopy = view;
+  [(UIWindow *)&v7 _unregisterScrollToTopView:viewCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = @"_UIHostedWindowScrollToTopNotificationView";
-  v9[0] = v4;
+  v9[0] = viewCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v5 postNotificationName:@"_UIHostedWindowDidUnregisterScrollToTopViewNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"_UIHostedWindowDidUnregisterScrollToTopViewNotification" object:self userInfo:v6];
 }
 
-- (void)_setHostTintAdjustmentMode:(int64_t)a3
+- (void)_setHostTintAdjustmentMode:(int64_t)mode
 {
-  if (self->_hostTintAdjustmentMode != a3)
+  if (self->_hostTintAdjustmentMode != mode)
   {
-    self->_hostTintAdjustmentMode = a3;
+    self->_hostTintAdjustmentMode = mode;
     [(UIView *)self _dispatchTintColorVisitorWithReasons:0 installTrackingVisitor:?];
   }
 }
 
-- (void)_setHostTintColor:(id)a3
+- (void)_setHostTintColor:(id)color
 {
-  v8 = a3;
-  v5 = [(_UIHostedWindow *)self _hostTintColor];
-  if (v5 == v8)
+  colorCopy = color;
+  _hostTintColor = [(_UIHostedWindow *)self _hostTintColor];
+  if (_hostTintColor == colorCopy)
   {
   }
 
   else
   {
-    v6 = [(_UIHostedWindow *)self _hostTintColor];
-    v7 = [v6 isEqual:v8];
+    _hostTintColor2 = [(_UIHostedWindow *)self _hostTintColor];
+    v7 = [_hostTintColor2 isEqual:colorCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->__hostTintColor, a3);
+      objc_storeStrong(&self->__hostTintColor, color);
       [(UIView *)self _dispatchTintColorVisitorWithReasons:0 installTrackingVisitor:?];
     }
   }
@@ -174,19 +174,19 @@
 {
   v8.receiver = self;
   v8.super_class = _UIHostedWindow;
-  v3 = [(UIWindow *)&v8 _normalInheritedTintColor];
-  v4 = v3;
-  if (v3)
+  _normalInheritedTintColor = [(UIWindow *)&v8 _normalInheritedTintColor];
+  v4 = _normalInheritedTintColor;
+  if (_normalInheritedTintColor)
   {
-    v5 = v3;
+    _hostTintColor = _normalInheritedTintColor;
   }
 
   else
   {
-    v5 = [(_UIHostedWindow *)self _hostTintColor];
+    _hostTintColor = [(_UIHostedWindow *)self _hostTintColor];
   }
 
-  v6 = v5;
+  v6 = _hostTintColor;
 
   return v6;
 }
@@ -207,78 +207,78 @@
   }
 }
 
-- (void)_configureContextOptions:(id)a3
+- (void)_configureContextOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5.receiver = self;
   v5.super_class = _UIHostedWindow;
-  [(UIWindow *)&v5 _configureContextOptions:v4];
-  [v4 setObject:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69796A8]];
+  [(UIWindow *)&v5 _configureContextOptions:optionsCopy];
+  [optionsCopy setObject:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E69796A8]];
   if (_UITouchAuthenticationIsEnabledForCurrentProcess())
   {
-    [v4 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69796D8]];
+    [optionsCopy setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69796D8]];
   }
 }
 
-- (void)_setFirstResponder:(id)a3
+- (void)_setFirstResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v6.receiver = self;
   v6.super_class = _UIHostedWindow;
-  [(UIWindow *)&v6 _setFirstResponder:v4];
-  if (v4)
+  [(UIWindow *)&v6 _setFirstResponder:responderCopy];
+  if (responderCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->__hostedWindowDelegate);
-    [WeakRetained hostedWindow:self didSetFirstResponder:v4];
+    [WeakRetained hostedWindow:self didSetFirstResponder:responderCopy];
   }
 }
 
 - (id)_systemReferenceAngleProvider
 {
-  v3 = [(UIWindow *)self rootViewController];
-  v4 = [v3 conformsToProtocol:&unk_1F00EBBF0];
+  rootViewController = [(UIWindow *)self rootViewController];
+  v4 = [rootViewController conformsToProtocol:&unk_1F00EBBF0];
 
   if (v4)
   {
-    v5 = [(UIWindow *)self rootViewController];
+    rootViewController2 = [(UIWindow *)self rootViewController];
   }
 
   else
   {
-    v5 = 0;
+    rootViewController2 = 0;
   }
 
-  return v5;
+  return rootViewController2;
 }
 
 - (unint64_t)_systemReferenceAngleMode
 {
-  v3 = [(_UIHostedWindow *)self _systemReferenceAngleProvider];
-  v4 = v3;
-  if (v3)
+  _systemReferenceAngleProvider = [(_UIHostedWindow *)self _systemReferenceAngleProvider];
+  v4 = _systemReferenceAngleProvider;
+  if (_systemReferenceAngleProvider)
   {
-    v5 = [v3 _systemReferenceAngleModeFromHost];
+    _systemReferenceAngleModeFromHost = [_systemReferenceAngleProvider _systemReferenceAngleModeFromHost];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _UIHostedWindow;
-    v5 = [(UIWindow *)&v8 _systemReferenceAngleMode];
+    _systemReferenceAngleModeFromHost = [(UIWindow *)&v8 _systemReferenceAngleMode];
   }
 
-  v6 = v5;
+  v6 = _systemReferenceAngleModeFromHost;
 
   return v6;
 }
 
 - (double)_systemReferenceAngle
 {
-  v3 = [(_UIHostedWindow *)self _systemReferenceAngleProvider];
-  v4 = v3;
-  if (v3)
+  _systemReferenceAngleProvider = [(_UIHostedWindow *)self _systemReferenceAngleProvider];
+  v4 = _systemReferenceAngleProvider;
+  if (_systemReferenceAngleProvider)
   {
-    [v3 _systemReferenceAngleFromHost];
+    [_systemReferenceAngleProvider _systemReferenceAngleFromHost];
   }
 
   else
@@ -311,9 +311,9 @@
     }
 
     v4 = UITouchAuthenticationBundleRecordForAuditToken(&v8);
-    v5 = [v4 SDKVersion];
+    sDKVersion = [v4 SDKVersion];
     hostSDKVersion = self->_hostSDKVersion;
-    self->_hostSDKVersion = v5;
+    self->_hostSDKVersion = sDKVersion;
 
     v7 = *&self->_hostAuditToken.val[4];
     v8 = *self->_hostAuditToken.val;
@@ -329,8 +329,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIWindow *)self screen];
-  [v11 bounds];
+  screen = [(UIWindow *)self screen];
+  [screen bounds];
   v19.origin.x = v12;
   v19.origin.y = v13;
   v19.size.width = v14;
@@ -373,9 +373,9 @@
   return v5;
 }
 
-- (void)_setHostTraitCollection:(id)a3
+- (void)_setHostTraitCollection:(id)collection
 {
-  v4 = [_UISceneHostingTraitCollectionPropagationClientComponent modifiedTraitCollectionForHostTraitCollection:a3];
+  v4 = [_UISceneHostingTraitCollectionPropagationClientComponent modifiedTraitCollectionForHostTraitCollection:collection];
   v5 = v4;
   if (v4 != self->_hostTraitCollection)
   {
@@ -393,22 +393,22 @@
   }
 }
 
-- (void)_updateWindowTraitsAndNotify:(BOOL)a3
+- (void)_updateWindowTraitsAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   if ([(_UIHostedWindow *)self _shouldPropagateTraitCollectionChanges])
   {
     v5.receiver = self;
     v5.super_class = _UIHostedWindow;
-    [(UIWindow *)&v5 _updateWindowTraitsAndNotify:v3];
+    [(UIWindow *)&v5 _updateWindowTraitsAndNotify:notifyCopy];
   }
 }
 
-- (id)_traitCollectionForSize:(CGSize)a3 parentCollection:(id)a4
+- (id)_traitCollectionForSize:(CGSize)size parentCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   hostTraitCollection = self->_hostTraitCollection;
   if (!hostTraitCollection)
   {
@@ -465,7 +465,7 @@
       {
       }
 
-      v19 = self->_hostTraitCollection;
+      height = self->_hostTraitCollection;
 
 LABEL_19:
       goto LABEL_20;
@@ -477,7 +477,7 @@ LABEL_19:
 LABEL_16:
   v21.receiver = self;
   v21.super_class = _UIHostedWindow;
-  v19 = [(UIWindow *)&v21 _traitCollectionForSize:v9 parentCollection:width, height];
+  height = [(UIWindow *)&v21 _traitCollectionForSize:collectionCopy parentCollection:width, height];
   if (v14)
   {
   }
@@ -489,14 +489,14 @@ LABEL_16:
 
 LABEL_20:
 
-  return v19;
+  return height;
 }
 
 - (id)_remoteContentParent
 {
-  v2 = [(UIWindow *)self rootViewController];
+  rootViewController = [(UIWindow *)self rootViewController];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = rootViewController;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -522,11 +522,11 @@ LABEL_20:
   return WeakRetained;
 }
 
-- (void)_setHostBundleIdentifier:(uint64_t)a1
+- (void)_setHostBundleIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    objc_storeStrong((a1 + 968), a2);
+    objc_storeStrong((identifier + 968), a2);
   }
 }
 

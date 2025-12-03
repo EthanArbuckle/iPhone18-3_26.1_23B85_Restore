@@ -6,8 +6,8 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = _UISheetPresentationControllerStylesSheetsAsCards(v3);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v4 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   if (v4)
   {
@@ -18,8 +18,8 @@
 
   else
   {
-    v9 = [(UIPresentationController *)self containerView];
-    [v9 bounds];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView bounds];
     v11 = v10;
     v13 = v12;
 

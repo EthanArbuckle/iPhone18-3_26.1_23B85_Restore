@@ -1,53 +1,53 @@
 @interface PGNamingQuestionFactory
-- (BOOL)_persistQuestions:(id)a3 questionsToRemove:(id)a4;
-- (BOOL)_shouldAddNewNamingQuestionForPersonUUID:(id)a3;
+- (BOOL)_persistQuestions:(id)questions questionsToRemove:(id)remove;
+- (BOOL)_shouldAddNewNamingQuestionForPersonUUID:(id)d;
 - (PHFetchResult)persons;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGNamingQuestionFactory
 
-- (BOOL)_persistQuestions:(id)a3 questionsToRemove:(id)a4
+- (BOOL)_persistQuestions:(id)questions questionsToRemove:(id)remove
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  questionsCopy = questions;
+  removeCopy = remove;
+  if ([questionsCopy count] || objc_msgSend(removeCopy, "count"))
   {
-    v8 = [(PGSurveyQuestionFactory *)self workingContext];
-    v9 = [v8 photoLibrary];
+    workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary = [workingContext photoLibrary];
 
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __63__PGNamingQuestionFactory__persistQuestions_questionsToRemove___block_invoke;
     v20[3] = &unk_278889470;
-    v21 = v7;
-    v22 = v6;
-    v11 = v10;
+    v21 = removeCopy;
+    v22 = questionsCopy;
+    v11 = date;
     v23 = v11;
-    v24 = self;
+    selfCopy = self;
     v19 = 0;
-    v12 = [v9 performChangesAndWait:v20 error:&v19];
+    v12 = [photoLibrary performChangesAndWait:v20 error:&v19];
     v13 = v19;
     v14 = +[PGLogging sharedLogging];
-    v15 = [v14 loggingConnection];
+    loggingConnection = [v14 loggingConnection];
 
     if (v12)
     {
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "[Questions] Succeeded persisting naming questions", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[Questions] Succeeded persisting naming questions", buf, 2u);
       }
     }
 
-    else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v18 = [v13 description];
       *buf = 138412290;
       v26 = v18;
-      _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for naming questions: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[Questions] Error performing library changes for naming questions: %@", buf, 0xCu);
     }
   }
 
@@ -97,10 +97,10 @@ void __63__PGNamingQuestionFactory__persistQuestions_questionsToRemove___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldAddNewNamingQuestionForPersonUUID:(id)a3
+- (BOOL)_shouldAddNewNamingQuestionForPersonUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:a3];
+  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:d];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -143,26 +143,26 @@ LABEL_11:
   return v8;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __68__PGNamingQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __68__PGNamingQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)
@@ -458,9 +458,9 @@ void __68__PGNamingQuestionFactory_generateQuestionsWithLimit_progressBlock___bl
   persons = self->_persons;
   if (!persons)
   {
-    v4 = [(PGSurveyQuestionFactory *)self workingContext];
-    v5 = [v4 photoLibrary];
-    v6 = [PGPeopleQuestionFactoryUtils personsWithPeopleHomeContextForPhotoLibrary:v5];
+    workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary = [workingContext photoLibrary];
+    v6 = [PGPeopleQuestionFactoryUtils personsWithPeopleHomeContextForPhotoLibrary:photoLibrary];
     v7 = self->_persons;
     self->_persons = v6;
 

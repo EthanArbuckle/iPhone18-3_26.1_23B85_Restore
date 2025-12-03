@@ -7,7 +7,7 @@
 - (BOOL)hk_isAppExtension
 {
   v17 = *MEMORY[0x1E69E9840];
-  [a1 auditToken];
+  [self auditToken];
   v2 = [_HKXPCAuditToken signingIdentifierFromAuditToken:buf];
   if (v2)
   {
@@ -24,7 +24,7 @@
         if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v12 = a1;
+          selfCopy = self;
           v13 = 2114;
           v14 = v2;
           v15 = 2114;

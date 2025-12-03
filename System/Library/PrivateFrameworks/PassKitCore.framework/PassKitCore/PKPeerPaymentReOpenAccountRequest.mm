@@ -1,25 +1,25 @@
 @interface PKPeerPaymentReOpenAccountRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentReOpenAccountRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (informationCopy)
     {
-      v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B4820 queryParameters:0 appleAccountInformation:v7];
+      v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4820 queryParameters:0 appleAccountInformation:informationCopy];
       [v9 setHTTPMethod:@"POST"];
       [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-      v10 = [MEMORY[0x1E695DF90] dictionary];
-      [v10 setObject:@"reopen" forKey:@"action"];
-      v11 = [objc_opt_class() _HTTPBodyWithDictionary:v10];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:@"reopen" forKey:@"action"];
+      v11 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
       [v9 setHTTPBody:v11];
 
       v12 = [v9 copy];

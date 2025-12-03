@@ -1,16 +1,16 @@
 @interface MapDataSubscriptionMapContentConfiguration
-- (MapDataSubscriptionMapContentConfiguration)initWithSubscriptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MapDataSubscriptionMapContentConfiguration)initWithSubscriptions:(id)subscriptions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
 @end
 
 @implementation MapDataSubscriptionMapContentConfiguration
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v4 = a4;
-  v5 = [[MKPolygonRenderer alloc] initWithOverlay:v4];
+  overlayCopy = overlay;
+  v5 = [[MKPolygonRenderer alloc] initWithOverlay:overlayCopy];
 
   v6 = +[UIColor systemBlueColor];
   [v5 setStrokeColor:v6];
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MapDataSubscriptionMapContentConfiguration allocWithZone:a3];
+  v4 = [MapDataSubscriptionMapContentConfiguration allocWithZone:zone];
   subscriptions = self->_subscriptions;
 
   return [(MapDataSubscriptionMapContentConfiguration *)v4 initWithSubscriptions:subscriptions];
@@ -61,45 +61,45 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v51 + 1) + 8 * i) subscription];
-        v11 = [v10 region];
+        subscription = [*(*(&v51 + 1) + 8 * i) subscription];
+        region = [subscription region];
 
-        if ([v11 vertexsCount])
+        if ([region vertexsCount])
         {
-          v12 = malloc_type_calloc([v11 vertexsCount], 0x10uLL, 0x1000040451B5BE8uLL);
-          v13 = [v11 vertexs];
+          v12 = malloc_type_calloc([region vertexsCount], 0x10uLL, 0x1000040451B5BE8uLL);
+          vertexs = [region vertexs];
           v50[0] = _NSConcreteStackBlock;
           v50[1] = 3221225472;
           v50[2] = sub_1009367A8;
           v50[3] = &unk_10162F110;
           v50[4] = v12;
-          [v13 enumerateObjectsUsingBlock:v50];
+          [vertexs enumerateObjectsUsingBlock:v50];
 
-          v14 = +[MKPolygon polygonWithCoordinates:count:](MKPolygon, "polygonWithCoordinates:count:", v12, [v11 vertexsCount]);
+          v14 = +[MKPolygon polygonWithCoordinates:count:](MKPolygon, "polygonWithCoordinates:count:", v12, [region vertexsCount]);
           free(v12);
           [v4 addObject:v14];
         }
 
         else
         {
-          [v11 northLat];
+          [region northLat];
           v16 = v15;
-          [v11 westLng];
+          [region westLng];
           v56[0] = v16;
           v56[1] = v17;
-          [v11 southLat];
+          [region southLat];
           v19 = v18;
-          [v11 westLng];
+          [region westLng];
           v56[2] = v19;
           v56[3] = v20;
-          [v11 southLat];
+          [region southLat];
           v22 = v21;
-          [v11 eastLng];
+          [region eastLng];
           v56[4] = v22;
           v56[5] = v23;
-          [v11 northLat];
+          [region northLat];
           v25 = v24;
-          [v11 eastLng];
+          [region eastLng];
           v56[6] = v25;
           v56[7] = v26;
           v27 = [MKPolygon polygonWithCoordinates:v56 count:4];
@@ -181,15 +181,15 @@
   return v45;
 }
 
-- (MapDataSubscriptionMapContentConfiguration)initWithSubscriptions:(id)a3
+- (MapDataSubscriptionMapContentConfiguration)initWithSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   v10.receiver = self;
   v10.super_class = MapDataSubscriptionMapContentConfiguration;
   v5 = [(MapDataSubscriptionMapContentConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [subscriptionsCopy copy];
     subscriptions = v5->_subscriptions;
     v5->_subscriptions = v6;
 

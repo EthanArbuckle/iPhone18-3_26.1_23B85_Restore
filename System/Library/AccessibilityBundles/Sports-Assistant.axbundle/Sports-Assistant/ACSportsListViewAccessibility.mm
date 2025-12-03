@@ -11,7 +11,7 @@
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
-  v12 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v3 = [(ACSportsListViewAccessibility *)self safeValueForKey:@"domainObjectViews"];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;

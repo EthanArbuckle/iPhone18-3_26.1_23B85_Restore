@@ -1,25 +1,25 @@
 @interface SUNavigationMenuViewController
-- (SUNavigationMenuViewController)initWithNavigationMenu:(id)a3;
-- (id)titleOfMenuItemAtIndex:(int64_t)a3;
+- (SUNavigationMenuViewController)initWithNavigationMenu:(id)menu;
+- (id)titleOfMenuItemAtIndex:(int64_t)index;
 - (int64_t)numberOfMenuItems;
-- (void)_cancelAction:(id)a3;
-- (void)_protocolButtonAction:(id)a3;
+- (void)_cancelAction:(id)action;
+- (void)_protocolButtonAction:(id)action;
 - (void)dealloc;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUNavigationMenuViewController
 
-- (SUNavigationMenuViewController)initWithNavigationMenu:(id)a3
+- (SUNavigationMenuViewController)initWithNavigationMenu:(id)menu
 {
   v7.receiver = self;
   v7.super_class = SUNavigationMenuViewController;
   v4 = [(SUMenuViewController *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_navigationMenu = v5;
-    [(SUMenuViewController *)v4 setSelectedIndex:[(SUNavigationMenu *)v5 initialSelectedIndex]];
+    menuCopy = menu;
+    v4->_navigationMenu = menuCopy;
+    [(SUMenuViewController *)v4 setSelectedIndex:[(SUNavigationMenu *)menuCopy initialSelectedIndex]];
   }
 
   return v4;
@@ -34,48 +34,48 @@
 
 - (int64_t)numberOfMenuItems
 {
-  v2 = [(SUNavigationMenu *)self->_navigationMenu menuItems];
+  menuItems = [(SUNavigationMenu *)self->_navigationMenu menuItems];
 
-  return [(NSArray *)v2 count];
+  return [(NSArray *)menuItems count];
 }
 
-- (id)titleOfMenuItemAtIndex:(int64_t)a3
+- (id)titleOfMenuItemAtIndex:(int64_t)index
 {
-  v3 = [(NSArray *)[(SUNavigationMenu *)self->_navigationMenu menuItems] objectAtIndex:a3];
+  v3 = [(NSArray *)[(SUNavigationMenu *)self->_navigationMenu menuItems] objectAtIndex:index];
 
   return [v3 title];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUClientInterface *)[(SUViewController *)self clientInterface] appearance];
-  v6 = [(SUViewController *)self navigationItem];
+  appearCopy = appear;
+  appearance = [(SUClientInterface *)[(SUViewController *)self clientInterface] appearance];
+  navigationItem = [(SUViewController *)self navigationItem];
   if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] != 1)
   {
-    v7 = [(SUNavigationMenu *)self->_navigationMenu cancelTitle];
-    if (![(NSString *)v7 length])
+    cancelTitle = [(SUNavigationMenu *)self->_navigationMenu cancelTitle];
+    if (![(NSString *)cancelTitle length])
     {
-      v7 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"CANCEL", &stru_1F41B3660, 0}];
+      cancelTitle = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"CANCEL", &stru_1F41B3660, 0}];
     }
 
-    v8 = [[SUBarButtonItem alloc] initWithTitle:v7 style:0 target:self action:sel__cancelAction_];
-    [(SUUIAppearance *)v5 styleBarButtonItem:v8];
-    [(SUNavigationItem *)v6 setLeftBarButtonItem:v8];
+    v8 = [[SUBarButtonItem alloc] initWithTitle:cancelTitle style:0 target:self action:sel__cancelAction_];
+    [(SUUIAppearance *)appearance styleBarButtonItem:v8];
+    [(SUNavigationItem *)navigationItem setLeftBarButtonItem:v8];
   }
 
-  v9 = [(SUNavigationMenu *)self->_navigationMenu openTitle];
-  if (!v9)
+  openTitle = [(SUNavigationMenu *)self->_navigationMenu openTitle];
+  if (!openTitle)
   {
-    v9 = [(SUNavigationMenu *)self->_navigationMenu closedTitle];
+    openTitle = [(SUNavigationMenu *)self->_navigationMenu closedTitle];
   }
 
-  [(SUViewController *)self setTitle:v9];
+  [(SUViewController *)self setTitle:openTitle];
   v10 = [(SUNavigationMenu *)self->_navigationMenu navigationButtonForLocation:@"left"];
   v11 = [(SUNavigationMenu *)self->_navigationMenu navigationButtonForLocation:@"right"];
   if (v10)
   {
-    if ([(SUNavigationItem *)v6 leftBarButtonItem])
+    if ([(SUNavigationItem *)navigationItem leftBarButtonItem])
     {
       if (!v11)
       {
@@ -86,24 +86,24 @@
     }
 
     v12 = -[SUBarButtonItem initWithTitle:style:target:action:]([SUBarButtonItem alloc], "initWithTitle:style:target:action:", [v10 buttonTitle], 0, self, sel__protocolButtonAction_);
-    [(SUUIAppearance *)v5 styleBarButtonItem:v12];
-    [(SUNavigationItem *)v6 setLeftBarButtonItem:v12];
+    [(SUUIAppearance *)appearance styleBarButtonItem:v12];
+    [(SUNavigationItem *)navigationItem setLeftBarButtonItem:v12];
   }
 
   if (v11)
   {
 LABEL_14:
     v13 = -[SUBarButtonItem initWithTitle:style:target:action:]([SUBarButtonItem alloc], "initWithTitle:style:target:action:", [v11 buttonTitle], 0, self, sel__protocolButtonAction_);
-    [(SUUIAppearance *)v5 styleBarButtonItem:v13];
-    [(SUNavigationItem *)v6 setRightBarButtonItem:v13];
+    [(SUUIAppearance *)appearance styleBarButtonItem:v13];
+    [(SUNavigationItem *)navigationItem setRightBarButtonItem:v13];
   }
 
   v14.receiver = self;
   v14.super_class = SUNavigationMenuViewController;
-  [(SUViewController *)&v14 viewWillAppear:v3];
+  [(SUViewController *)&v14 viewWillAppear:appearCopy];
 }
 
-- (void)_cancelAction:(id)a3
+- (void)_cancelAction:(id)action
 {
   if (![(SUMenuViewController *)self _sendDidCancel])
   {
@@ -112,16 +112,16 @@ LABEL_14:
   }
 }
 
-- (void)_protocolButtonAction:(id)a3
+- (void)_protocolButtonAction:(id)action
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return;
   }
 
-  v5 = [(SUNavigationItem *)[(SUViewController *)self navigationItem] leftBarButtonItem];
+  leftBarButtonItem = [(SUNavigationItem *)[(SUViewController *)self navigationItem] leftBarButtonItem];
   navigationMenu = self->_navigationMenu;
-  if (v5 == a3)
+  if (leftBarButtonItem == action)
   {
     goto LABEL_5;
   }
@@ -139,9 +139,9 @@ LABEL_5:
   }
 
   [(SUMenuViewControllerDelegate *)self->super._delegate menuViewController:self didTapButton:v7];
-  v8 = self;
+  selfCopy = self;
 
-  v9 = v8;
+  v9 = selfCopy;
 }
 
 @end

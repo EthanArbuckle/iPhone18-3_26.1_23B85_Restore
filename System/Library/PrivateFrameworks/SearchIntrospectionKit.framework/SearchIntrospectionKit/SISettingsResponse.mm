@@ -1,24 +1,24 @@
 @interface SISettingsResponse
 - (_TtC22SearchIntrospectionKit18SISettingsResponse)init;
-- (_TtC22SearchIntrospectionKit18SISettingsResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC22SearchIntrospectionKit18SISettingsResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SISettingsResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC22SearchIntrospectionKit18SISettingsResponse_query);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_264E899B4();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
-- (_TtC22SearchIntrospectionKit18SISettingsResponse)initWithCoder:(id)a3
+- (_TtC22SearchIntrospectionKit18SISettingsResponse)initWithCoder:(id)coder
 {
   type metadata accessor for SettingsQuery();
-  v5 = a3;
+  coderCopy = coder;
   v6 = sub_264E89C04();
   if (v6)
   {

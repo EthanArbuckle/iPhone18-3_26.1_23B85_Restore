@@ -1,13 +1,13 @@
 @interface WatchFaceSettingsManager
-- (void)faceCollectionDidLoad:(id)a3;
+- (void)faceCollectionDidLoad:(id)load;
 @end
 
 @implementation WatchFaceSettingsManager
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
-  v4 = a3;
-  v5 = self;
+  loadCopy = load;
+  selfCopy = self;
   sub_24B9ECB50();
 }
 

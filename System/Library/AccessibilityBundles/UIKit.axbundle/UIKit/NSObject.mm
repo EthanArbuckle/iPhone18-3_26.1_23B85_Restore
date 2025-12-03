@@ -1,18 +1,18 @@
 @interface NSObject
 - (uint64_t)__accessibilityRespondsToKeyInput;
-- (void)_accessibilitySetTextSelection:(uint64_t)a3;
+- (void)_accessibilitySetTextSelection:(uint64_t)selection;
 @end
 
 @implementation NSObject
 
 - (uint64_t)__accessibilityRespondsToKeyInput
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (objc_opt_respondsToSelector())
     {
-      location = [v4 _accessibilityValueForKey:@"AXRespondsToKeyInput"];
+      location = [selfCopy _accessibilityValueForKey:@"AXRespondsToKeyInput"];
       if (location)
       {
         v5 = [location BOOLValue] & 1;
@@ -20,8 +20,8 @@
 
       else
       {
-        v2 = [v4 conformsToProtocol:&unk_2A23B1FF8];
-        [v4 _accessibilitySetBoolValue:v2 & 1 forKey:@"AXRespondsToKeyInput"];
+        v2 = [selfCopy conformsToProtocol:&unk_2A23B1FF8];
+        [selfCopy _accessibilitySetBoolValue:v2 & 1 forKey:@"AXRespondsToKeyInput"];
         v5 = v2 & 1;
       }
 
@@ -42,24 +42,24 @@
   return v5 & 1;
 }
 
-- (void)_accessibilitySetTextSelection:(uint64_t)a3
+- (void)_accessibilitySetTextSelection:(uint64_t)selection
 {
   v10 = a2;
-  v11 = a3;
-  v9 = a1;
-  if (a1)
+  selectionCopy = selection;
+  selfCopy = self;
+  if (self)
   {
-    if (([v9 conformsToProtocol:&unk_2A23BD4B8] & 1) == 0)
+    if (([selfCopy conformsToProtocol:&unk_2A23BD4B8] & 1) == 0)
     {
       _AXAssert();
     }
 
-    if ([v9 conformsToProtocol:&unk_2A23BD4B8])
+    if ([selfCopy conformsToProtocol:&unk_2A23BD4B8])
     {
-      v8 = MEMORY[0x29EDC9748](v9);
+      v8 = MEMORY[0x29EDC9748](selfCopy);
       v7 = [v8 safeValueForKey:@"beginningOfDocument"];
       v6 = [v8 positionFromPosition:v7 offset:v10];
-      v5 = [v8 positionFromPosition:v6 offset:v11];
+      v5 = [v8 positionFromPosition:v6 offset:selectionCopy];
       if (v6 && v5)
       {
         v4 = 0;

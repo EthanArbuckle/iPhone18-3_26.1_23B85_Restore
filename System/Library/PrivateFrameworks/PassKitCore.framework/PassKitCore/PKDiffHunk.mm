@@ -1,28 +1,28 @@
 @interface PKDiffHunk
-+ (id)hunkWithKey:(id)a3 oldValue:(id)a4 newValue:(id)a5 message:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDiffHunk:(id)a3;
-- (PKDiffHunk)initWithCoder:(id)a3;
-- (int64_t)compare:(id)a3;
++ (id)hunkWithKey:(id)key oldValue:(id)value newValue:(id)newValue message:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDiffHunk:(id)hunk;
+- (PKDiffHunk)initWithCoder:(id)coder;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDiffHunk
 
-+ (id)hunkWithKey:(id)a3 oldValue:(id)a4 newValue:(id)a5 message:(id)a6
++ (id)hunkWithKey:(id)key oldValue:(id)value newValue:(id)newValue message:(id)message
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  messageCopy = message;
+  newValueCopy = newValue;
+  valueCopy = value;
+  keyCopy = key;
   v13 = objc_alloc_init(PKDiffHunk);
-  [(PKDiffHunk *)v13 setKey:v12];
+  [(PKDiffHunk *)v13 setKey:keyCopy];
 
-  [(PKDiffHunk *)v13 setValueOld:v11];
-  [(PKDiffHunk *)v13 setValueNew:v10];
+  [(PKDiffHunk *)v13 setValueOld:valueCopy];
+  [(PKDiffHunk *)v13 setValueNew:newValueCopy];
 
-  [(PKDiffHunk *)v13 setMessage:v9];
+  [(PKDiffHunk *)v13 setMessage:messageCopy];
 
   return v13;
 }
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDiffHunk *)self isEqualToDiffHunk:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDiffHunk *)self isEqualToDiffHunk:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDiffHunk:(id)a3
+- (BOOL)isEqualToDiffHunk:(id)hunk
 {
-  v4 = a3;
-  if (-[NSString isEqual:](self->_key, "isEqual:", v4[1]) && [self->_oldValue isEqual:v4[2]] && objc_msgSend(self->_newValue, "isEqual:", v4[3]))
+  hunkCopy = hunk;
+  if (-[NSString isEqual:](self->_key, "isEqual:", hunkCopy[1]) && [self->_oldValue isEqual:hunkCopy[2]] && objc_msgSend(self->_newValue, "isEqual:", hunkCopy[3]))
   {
-    v5 = [(NSString *)self->_message isEqual:v4[4]];
+    v5 = [(NSString *)self->_message isEqual:hunkCopy[4]];
   }
 
   else
@@ -72,24 +72,24 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (v4)
+  compareCopy = compare;
+  if (compareCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSString *)self->_key compare:v4[1]];
+      v5 = [(NSString *)self->_key compare:compareCopy[1]];
       if (v5 == NSOrderedSame)
       {
-        v5 = [self->_oldValue compare:v4[2]];
+        v5 = [self->_oldValue compare:compareCopy[2]];
         if (v5 == NSOrderedSame)
         {
-          v5 = [self->_newValue compare:v4[3]];
+          v5 = [self->_newValue compare:compareCopy[3]];
           if (v5 == NSOrderedSame)
           {
-            v5 = [(NSString *)self->_message compare:v4[4]];
+            v5 = [(NSString *)self->_message compare:compareCopy[4]];
           }
         }
       }
@@ -120,15 +120,15 @@
   return v6;
 }
 
-- (PKDiffHunk)initWithCoder:(id)a3
+- (PKDiffHunk)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKDiffHunk;
   v5 = [(PKDiffHunk *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     [(PKDiffHunk *)v5 setKey:v6];
 
     v7 = MEMORY[0x1E695DFD8];
@@ -136,33 +136,33 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"oldValue"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"oldValue"];
     [(PKDiffHunk *)v5 setValueOld:v12];
 
-    v13 = [v4 decodeObjectOfClasses:v11 forKey:@"newValue"];
+    v13 = [coderCopy decodeObjectOfClasses:v11 forKey:@"newValue"];
     [(PKDiffHunk *)v5 setValueNew:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     [(PKDiffHunk *)v5 setMessage:v14];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKDiffHunk *)self key];
-  [v4 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  v6 = [(PKDiffHunk *)self valueOld];
-  [v4 encodeObject:v6 forKey:@"oldValue"];
+  valueOld = [(PKDiffHunk *)self valueOld];
+  [coderCopy encodeObject:valueOld forKey:@"oldValue"];
 
-  v7 = [(PKDiffHunk *)self valueNew];
-  [v4 encodeObject:v7 forKey:@"newValue"];
+  valueNew = [(PKDiffHunk *)self valueNew];
+  [coderCopy encodeObject:valueNew forKey:@"newValue"];
 
-  v8 = [(PKDiffHunk *)self message];
-  [v4 encodeObject:v8 forKey:@"message"];
+  message = [(PKDiffHunk *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 }
 
 @end

@@ -7,31 +7,31 @@
 
 - (uint64_t)needToGeneratePreviews
 {
-  v2 = [a1 attachment];
-  if ([v2 usesLinkPresentation])
+  attachment = [self attachment];
+  if ([attachment usesLinkPresentation])
   {
-    v3 = [a1 attachment];
-    v4 = [v3 media];
-    v5 = [v4 mediaURL];
-    if ([v5 isFileURL])
+    attachment2 = [self attachment];
+    media = [attachment2 media];
+    mediaURL = [media mediaURL];
+    if ([mediaURL isFileURL])
     {
-      v6 = [a1 attachment];
-      if ([v6 attachmentType] == 4)
+      attachment3 = [self attachment];
+      if ([attachment3 attachmentType] == 4)
       {
         v7 = 0;
       }
 
       else
       {
-        v8 = [a1 attachment];
-        if ([v8 metadataExists])
+        attachment4 = [self attachment];
+        if ([attachment4 metadataExists])
         {
           v7 = 0;
         }
 
         else
         {
-          v7 = [a1 isGeneratingPreviews] ^ 1;
+          v7 = [self isGeneratingPreviews] ^ 1;
         }
       }
     }
@@ -53,30 +53,30 @@
 - (uint64_t)generatePreviewsInOperation:()PreviewGeneration
 {
   v4 = a3;
-  if ([a1 isGeneratingPreviews])
+  if ([self isGeneratingPreviews])
   {
     v5 = 0;
   }
 
   else
   {
-    [a1 setGeneratingPreviews:1];
+    [self setGeneratingPreviews:1];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__63;
     v31 = __Block_byref_object_dispose__63;
     v32 = 0;
-    v6 = [a1 attachment];
-    v7 = [v6 managedObjectContext];
+    attachment = [self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __75__ICAttachmentGenericModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
     v24[3] = &unk_1E8468FA8;
     v26 = &v27;
-    v8 = v6;
+    v8 = attachment;
     v25 = v8;
-    [v7 performBlockAndWait:v24];
+    [managedObjectContext performBlockAndWait:v24];
 
     if ([v28[5] isFileURL])
     {
@@ -98,7 +98,7 @@
       v18 = v14;
       [v12 startFetchingMetadataForURL:v13 completionHandler:v16];
       dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-      [a1 setGeneratingPreviews:0];
+      [self setGeneratingPreviews:0];
       v5 = *(v21 + 24);
 
       _Block_object_dispose(&v20, 8);
@@ -106,7 +106,7 @@
 
     else
     {
-      [a1 setGeneratingPreviews:0];
+      [self setGeneratingPreviews:0];
       v5 = 0;
     }
 

@@ -1,18 +1,18 @@
 @interface ASCMiniProductPageTitleView
-- (ASCMiniProductPageTitleView)initWithFrame:(CGRect)a3;
+- (ASCMiniProductPageTitleView)initWithFrame:(CGRect)frame;
 - (CGRect)lastLineFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (unint64_t)displayedNumberOfLines;
 - (void)layoutSubviews;
 @end
 
 @implementation ASCMiniProductPageTitleView
 
-- (ASCMiniProductPageTitleView)initWithFrame:(CGRect)a3
+- (ASCMiniProductPageTitleView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = ASCMiniProductPageTitleView;
-  v3 = [(ASCMiniProductPageTitleView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCMiniProductPageTitleView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [ASCAgeRatingView alloc];
@@ -33,17 +33,17 @@
     [(ASCMiniProductPageTitleView *)v3 setSelectable:0];
     [(ASCMiniProductPageTitleView *)v3 setScrollEnabled:0];
     [(ASCMiniProductPageTitleView *)v3 setBorderStyle:0];
-    v12 = [(ASCMiniProductPageTitleView *)v3 textContainer];
-    [v12 setLineFragmentPadding:0.0];
+    textContainer = [(ASCMiniProductPageTitleView *)v3 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v13 = [(ASCMiniProductPageTitleView *)v3 textContainer];
-    [v13 setLineBreakMode:4];
+    textContainer2 = [(ASCMiniProductPageTitleView *)v3 textContainer];
+    [textContainer2 setLineBreakMode:4];
 
-    v14 = [(ASCMiniProductPageTitleView *)v3 textContainer];
-    [v14 setWidthTracksTextView:1];
+    textContainer3 = [(ASCMiniProductPageTitleView *)v3 textContainer];
+    [textContainer3 setWidthTracksTextView:1];
 
-    v15 = [(ASCMiniProductPageTitleView *)v3 textContainer];
-    [v15 setHeightTracksTextView:1];
+    textContainer4 = [(ASCMiniProductPageTitleView *)v3 textContainer];
+    [textContainer4 setHeightTracksTextView:1];
 
     [(ASCMiniProductPageTitleView *)v3 addSubview:v3->_ageRatingView];
   }
@@ -51,28 +51,28 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCMiniProductPageTitleView *)self textContainer];
-  [v6 setSize:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  textContainer = [(ASCMiniProductPageTitleView *)self textContainer];
+  [textContainer setSize:{width, height}];
 
-  v7 = [(ASCMiniProductPageTitleView *)self textContainer];
-  [v7 setExclusionPaths:MEMORY[0x277CBEBF8]];
+  textContainer2 = [(ASCMiniProductPageTitleView *)self textContainer];
+  [textContainer2 setExclusionPaths:MEMORY[0x277CBEBF8]];
 
   v27.receiver = self;
   v27.super_class = ASCMiniProductPageTitleView;
   [(ASCSkeletonTextView *)&v27 sizeThatFits:width, height];
   v9 = v8;
   v11 = v10;
-  v12 = [(ASCMiniProductPageTitleView *)self ageRatingView];
-  [v12 sizeThatFits:{width, height}];
+  ageRatingView = [(ASCMiniProductPageTitleView *)self ageRatingView];
+  [ageRatingView sizeThatFits:{width, height}];
   v14 = v13;
 
   [(ASCMiniProductPageTitleView *)self lastLineFrame];
   v16 = v15;
-  v17 = [(ASCMiniProductPageTitleView *)self displayedNumberOfLines];
+  displayedNumberOfLines = [(ASCMiniProductPageTitleView *)self displayedNumberOfLines];
   v18 = v14 + 6.0;
   if (width - v16 >= v18)
   {
@@ -84,23 +84,23 @@
 
   else
   {
-    v19 = v17;
-    v20 = [(ASCMiniProductPageTitleView *)self textContainer];
-    if (v19 < [v20 maximumNumberOfLines])
+    v19 = displayedNumberOfLines;
+    textContainer3 = [(ASCMiniProductPageTitleView *)self textContainer];
+    if (v19 < [textContainer3 maximumNumberOfLines])
     {
 
 LABEL_11:
-      v23 = [(ASCMiniProductPageTitleView *)self font];
-      [v23 lineHeight];
+      font = [(ASCMiniProductPageTitleView *)self font];
+      [font lineHeight];
       v11 = v11 + v24;
 
       goto LABEL_12;
     }
 
-    v21 = [(ASCMiniProductPageTitleView *)self textContainer];
-    v22 = [v21 maximumNumberOfLines];
+    textContainer4 = [(ASCMiniProductPageTitleView *)self textContainer];
+    maximumNumberOfLines = [textContainer4 maximumNumberOfLines];
 
-    if (!v22)
+    if (!maximumNumberOfLines)
     {
       goto LABEL_11;
     }
@@ -125,14 +125,14 @@ LABEL_12:
   v49.receiver = self;
   v49.super_class = ASCMiniProductPageTitleView;
   [(ASCMiniProductPageTitleView *)&v49 layoutSubviews];
-  v3 = [(ASCMiniProductPageTitleView *)self textContainer];
-  [v3 setExclusionPaths:MEMORY[0x277CBEBF8]];
+  textContainer = [(ASCMiniProductPageTitleView *)self textContainer];
+  [textContainer setExclusionPaths:MEMORY[0x277CBEBF8]];
 
   [(ASCMiniProductPageTitleView *)self bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(ASCMiniProductPageTitleView *)self ageRatingView];
-  [v8 sizeThatFits:{v5, v7}];
+  ageRatingView = [(ASCMiniProductPageTitleView *)self ageRatingView];
+  [ageRatingView sizeThatFits:{v5, v7}];
   v10 = v9;
   v12 = v11;
 
@@ -141,15 +141,15 @@ LABEL_12:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(ASCMiniProductPageTitleView *)self displayedNumberOfLines];
+  displayedNumberOfLines = [(ASCMiniProductPageTitleView *)self displayedNumberOfLines];
   if (v10 != 0.0)
   {
     if (v5 - v18 < v10 + 6.0)
     {
       v48 = v12;
-      v22 = v21;
-      v23 = [(ASCMiniProductPageTitleView *)self textContainer];
-      if (v22 < [v23 maximumNumberOfLines])
+      v22 = displayedNumberOfLines;
+      textContainer2 = [(ASCMiniProductPageTitleView *)self textContainer];
+      if (v22 < [textContainer2 maximumNumberOfLines])
       {
 
         v12 = v48;
@@ -157,19 +157,19 @@ LABEL_12:
 
       else
       {
-        v24 = [(ASCMiniProductPageTitleView *)self textContainer];
-        v25 = [v24 maximumNumberOfLines];
+        textContainer3 = [(ASCMiniProductPageTitleView *)self textContainer];
+        maximumNumberOfLines = [textContainer3 maximumNumberOfLines];
 
         v12 = v48;
-        if (v25)
+        if (maximumNumberOfLines)
         {
           [(ASCMiniProductPageTitleView *)self bounds];
           [__ASCLayoutProxy rectWithLayoutDirectionForRect:self inTraitEnvironment:v5 - (v10 + 6.0) relativeTo:v16, v10 + 6.0, v20, v26, v27, v28, v29];
           v30 = [MEMORY[0x277D75208] bezierPathWithRect:?];
           v50[0] = v30;
           v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
-          v32 = [(ASCMiniProductPageTitleView *)self textContainer];
-          [v32 setExclusionPaths:v31];
+          textContainer4 = [(ASCMiniProductPageTitleView *)self textContainer];
+          [textContainer4 setExclusionPaths:v31];
 
           [(ASCMiniProductPageTitleView *)self lastLineFrame];
           v14 = v33;
@@ -185,8 +185,8 @@ LABEL_9:
           v42 = v41;
           v44 = v43;
           v46 = v45;
-          v47 = [(ASCMiniProductPageTitleView *)self ageRatingView];
-          [v47 setFrame:{v40, v42, v44, v46}];
+          ageRatingView2 = [(ASCMiniProductPageTitleView *)self ageRatingView];
+          [ageRatingView2 setFrame:{v40, v42, v44, v46}];
 
           return;
         }
@@ -212,15 +212,15 @@ LABEL_9:
   v3 = *(MEMORY[0x277CBF3A0] + 16);
   v20 = *MEMORY[0x277CBF3A0];
   v21 = v3;
-  v4 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
-  v5 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
-  v6 = [v5 documentRange];
+  textLayoutManager = [(ASCMiniProductPageTitleView *)self textLayoutManager];
+  textLayoutManager2 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
+  documentRange = [textLayoutManager2 documentRange];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__ASCMiniProductPageTitleView_lastLineFrame__block_invoke;
   v15[3] = &unk_2781CCA48;
   v15[4] = &v16;
-  [v4 enumerateTextSegmentsInRange:v6 type:0 options:1 usingBlock:v15];
+  [textLayoutManager enumerateTextSegmentsInRange:documentRange type:0 options:1 usingBlock:v15];
 
   v7 = v17[4];
   v8 = v17[5];
@@ -254,15 +254,15 @@ uint64_t __44__ASCMiniProductPageTitleView_lastLineFrame__block_invoke(uint64_t 
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
-  v4 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
-  v5 = [v4 documentRange];
+  textLayoutManager = [(ASCMiniProductPageTitleView *)self textLayoutManager];
+  textLayoutManager2 = [(ASCMiniProductPageTitleView *)self textLayoutManager];
+  documentRange = [textLayoutManager2 documentRange];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__ASCMiniProductPageTitleView_displayedNumberOfLines__block_invoke;
   v8[3] = &unk_2781CCA48;
   v8[4] = &v9;
-  [v3 enumerateTextSegmentsInRange:v5 type:0 options:1 usingBlock:v8];
+  [textLayoutManager enumerateTextSegmentsInRange:documentRange type:0 options:1 usingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);

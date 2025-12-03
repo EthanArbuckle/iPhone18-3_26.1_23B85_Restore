@@ -1,44 +1,44 @@
 @interface IPXPCClient
-- (IPXPCClient)initWithConnection:(id)a3 serviceQueue:(id)a4;
+- (IPXPCClient)initWithConnection:(id)connection serviceQueue:(id)queue;
 - (IPXPCClientDelegate)delegate;
-- (void)getActiveInstallations:(id)a3;
-- (void)getAllInstallableStates:(id)a3;
-- (void)getProgressForIdentity:(id)a3 completion:(id)a4;
-- (void)registerAsProgressObserver:(id)a3;
+- (void)getActiveInstallations:(id)installations;
+- (void)getAllInstallableStates:(id)states;
+- (void)getProgressForIdentity:(id)identity completion:(id)completion;
+- (void)registerAsProgressObserver:(id)observer;
 - (void)resume;
-- (void)sendProgressEndForIdentity:(id)a3 reason:(unint64_t)a4;
-- (void)sendUpdateForIdentity:(id)a3 currentProgress:(id)a4;
+- (void)sendProgressEndForIdentity:(id)identity reason:(unint64_t)reason;
+- (void)sendUpdateForIdentity:(id)identity currentProgress:(id)progress;
 @end
 
 @implementation IPXPCClient
 
-- (IPXPCClient)initWithConnection:(id)a3 serviceQueue:(id)a4
+- (IPXPCClient)initWithConnection:(id)connection serviceQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = IPXPCClient;
   v9 = [(IPXPCClient *)&v18 init];
   if (v9)
   {
-    [v7 _setQueue:v8];
+    [connectionCopy _setQueue:queueCopy];
     v10 = IPServerExportedInterface();
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v7 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
     v11 = IPClientExportedInterface();
-    [v7 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     objc_initWeak(&location, v9);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __47__IPXPCClient_initWithConnection_serviceQueue___block_invoke;
     v13[3] = &unk_2797B1E50;
     objc_copyWeak(&v14, &location);
     objc_copyWeak(&v15, &from);
-    [v7 setInvalidationHandler:v13];
-    objc_storeStrong(&v9->_connection, a3);
+    [connectionCopy setInvalidationHandler:v13];
+    objc_storeStrong(&v9->_connection, connection);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v14);
     objc_destroyWeak(&from);
@@ -77,17 +77,17 @@ void __47__IPXPCClient_initWithConnection_serviceQueue___block_invoke(uint64_t a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendUpdateForIdentity:(id)a3 currentProgress:(id)a4
+- (void)sendUpdateForIdentity:(id)identity currentProgress:(id)progress
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__IPXPCClient_sendUpdateForIdentity_currentProgress___block_invoke;
   v9[3] = &unk_2797B1E78;
   v9[4] = self;
-  v6 = a4;
-  v7 = a3;
+  progressCopy = progress;
+  identityCopy = identity;
   v8 = [(IPXPCClient *)self asyncProxy:v9];
-  [v8 installableForIdentity:v7 progressChanged:v6];
+  [v8 installableForIdentity:identityCopy progressChanged:progressCopy];
 }
 
 void __53__IPXPCClient_sendUpdateForIdentity_currentProgress___block_invoke(uint64_t a1, void *a2)
@@ -100,16 +100,16 @@ void __53__IPXPCClient_sendUpdateForIdentity_currentProgress___block_invoke(uint
   }
 }
 
-- (void)sendProgressEndForIdentity:(id)a3 reason:(unint64_t)a4
+- (void)sendProgressEndForIdentity:(id)identity reason:(unint64_t)reason
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__IPXPCClient_sendProgressEndForIdentity_reason___block_invoke;
   v8[3] = &unk_2797B1E78;
   v8[4] = self;
-  v6 = a3;
+  identityCopy = identity;
   v7 = [(IPXPCClient *)self asyncProxy:v8];
-  [v7 installableForIdentity:v6 progressEndedForReason:a4];
+  [v7 installableForIdentity:identityCopy progressEndedForReason:reason];
 }
 
 void __49__IPXPCClient_sendProgressEndForIdentity_reason___block_invoke(uint64_t a1, void *a2)
@@ -122,25 +122,25 @@ void __49__IPXPCClient_sendProgressEndForIdentity_reason___block_invoke(uint64_t
   }
 }
 
-- (void)registerAsProgressObserver:(id)a3
+- (void)registerAsProgressObserver:(id)observer
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = _IPServerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254C69000, v5, OS_LOG_TYPE_DEFAULT, "Client %@ registering as progress observer.", &v7, 0xCu);
   }
 
-  v4[2](v4, 0);
+  observerCopy[2](observerCopy, 0);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getActiveInstallations:(id)a3
+- (void)getActiveInstallations:(id)installations
 {
-  v9 = a3;
+  installationsCopy = installations;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained activeInstallationsForClient:self];
   v6 = v5;
@@ -152,12 +152,12 @@ void __49__IPXPCClient_sendProgressEndForIdentity_reason___block_invoke(uint64_t
 
   v8 = v7;
 
-  v9[2](v9, v8, 0);
+  installationsCopy[2](installationsCopy, v8, 0);
 }
 
-- (void)getAllInstallableStates:(id)a3
+- (void)getAllInstallableStates:(id)states
 {
-  v9 = a3;
+  statesCopy = states;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained allInstallableStatesForClient:self];
   v6 = v5;
@@ -169,19 +169,19 @@ void __49__IPXPCClient_sendProgressEndForIdentity_reason___block_invoke(uint64_t
 
   v8 = v7;
 
-  v9[2](v9, v8, 0);
+  statesCopy[2](statesCopy, v8, 0);
 }
 
-- (void)getProgressForIdentity:(id)a3 completion:(id)a4
+- (void)getProgressForIdentity:(id)identity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = 0;
-  v9 = [WeakRetained progressForIdentity:v7 forClient:self error:&v11];
+  v9 = [WeakRetained progressForIdentity:identityCopy forClient:self error:&v11];
 
   v10 = v11;
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
 - (IPXPCClientDelegate)delegate

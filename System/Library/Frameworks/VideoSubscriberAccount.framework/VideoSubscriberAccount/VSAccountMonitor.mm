@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (VSAccountMonitor)init;
 - (void)_sendNotification;
-- (void)accountCredentialChanged:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)accountCredentialChanged:(id)changed;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 @end
 
 @implementation VSAccountMonitor
@@ -67,64 +67,64 @@ void __24__VSAccountMonitor_init__block_invoke(uint64_t a1, void *a2, void *a3)
 
 - (void)_sendNotification
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"VSAccountMonitorAccountDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VSAccountMonitorAccountDidChange" object:0];
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = addedCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "VSAccountMonitor - accountWasAdded: %@", &v6, 0xCu);
   }
 
   [(VSAccountMonitor *)self _sendNotification];
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = modifiedCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "VSAccountMonitor - accountWasModified: %@", &v6, 0xCu);
   }
 
   [(VSAccountMonitor *)self _sendNotification];
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removedCopy = removed;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = removedCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "VSAccountMonitor - accountWasRemoved: %@", &v6, 0xCu);
   }
 
   [(VSAccountMonitor *)self _sendNotification];
 }
 
-- (void)accountCredentialChanged:(id)a3
+- (void)accountCredentialChanged:(id)changed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "VSAccountMonitor - accountCredentialChanged: %@", &v6, 0xCu);
   }
 

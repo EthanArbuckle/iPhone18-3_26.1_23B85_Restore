@@ -1,20 +1,20 @@
 @interface ShelfPageControl
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation ShelfPageControl
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   ObjectType = swift_getObjectType();
-  v9 = a4;
-  v10 = self;
-  v11 = [(ShelfPageControl *)v10 layoutMarginsGuide];
-  [v11 layoutFrame];
+  eventCopy = event;
+  selfCopy = self;
+  layoutMarginsGuide = [(ShelfPageControl *)selfCopy layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -34,9 +34,9 @@
 
   else
   {
-    v22.receiver = v10;
+    v22.receiver = selfCopy;
     v22.super_class = ObjectType;
-    v21 = [(ShelfPageControl *)&v22 pointInside:v9 withEvent:x, y];
+    v21 = [(ShelfPageControl *)&v22 pointInside:eventCopy withEvent:x, y];
 
     return v21;
   }
@@ -44,13 +44,13 @@
 
 - (void)layoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   ShelfPageControl.layoutMarginsDidChange()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ShelfPageControl.layoutSubviews()();
 }
 

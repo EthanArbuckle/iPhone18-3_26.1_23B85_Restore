@@ -1,17 +1,17 @@
 @interface PHASESessionInterfaceImpl
-- (BOOL)registerActivateAudioSessionBlock:(id)a3;
-- (BOOL)registerFadeClientsInAudioSessionBlock:(id)a3;
-- (BOOL)registerMuteInputClientsInAudioSessionBlock:(id)a3;
-- (BOOL)setClientStateOnSession:(unsigned int)a3 clientToken:(void *)a4 modes:(unsigned int)a5 state:(unsigned int)a6 outDuckingInfo:(AudioSessionDuckingInfo *)a7;
-- (BOOL)setInputMuteStateOnSession:(unsigned int)a3 clientToken:(void *)a4 isMuted:(BOOL)a5;
+- (BOOL)registerActivateAudioSessionBlock:(id)block;
+- (BOOL)registerFadeClientsInAudioSessionBlock:(id)block;
+- (BOOL)registerMuteInputClientsInAudioSessionBlock:(id)block;
+- (BOOL)setClientStateOnSession:(unsigned int)session clientToken:(void *)token modes:(unsigned int)modes state:(unsigned int)state outDuckingInfo:(AudioSessionDuckingInfo *)info;
+- (BOOL)setInputMuteStateOnSession:(unsigned int)session clientToken:(void *)token isMuted:(BOOL)muted;
 - (PHASESessionInterfaceImpl)init;
-- (PHASESessionInterfaceImpl)initWithPhasePlatform:(id)a3;
+- (PHASESessionInterfaceImpl)initWithPhasePlatform:(id)platform;
 - (id).cxx_construct;
-- (id)getInputMuteStateForSession:(unsigned int)a3 fromCallback:(BOOL)a4;
+- (id)getInputMuteStateForSession:(unsigned int)session fromCallback:(BOOL)callback;
 - (uint64_t)getInputMuteStateForSession:fromCallback:;
 - (void)dealloc;
-- (void)refreshInputMuteOnAllSessions:(float)a3;
-- (void)removeInputClientToken:(void *)a3 fromSessionID:(unsigned int)a4;
+- (void)refreshInputMuteOnAllSessions:(float)sessions;
+- (void)removeInputClientToken:(void *)token fromSessionID:(unsigned int)d;
 @end
 
 @implementation PHASESessionInterfaceImpl
@@ -25,18 +25,18 @@
   return self;
 }
 
-- (BOOL)registerActivateAudioSessionBlock:(id)a3
+- (BOOL)registerActivateAudioSessionBlock:(id)block
 {
-  v4 = a3;
-  if (self->_activateSessionBlock != v4)
+  blockCopy = block;
+  if (self->_activateSessionBlock != blockCopy)
   {
     std::recursive_mutex::lock(&self->_callbackMutex);
     activateSessionBlock = self->_activateSessionBlock;
     self->_activateSessionBlock = 0;
 
-    if (v4)
+    if (blockCopy)
     {
-      v6 = [v4 copy];
+      v6 = [blockCopy copy];
       v7 = self->_activateSessionBlock;
       self->_activateSessionBlock = v6;
     }
@@ -47,18 +47,18 @@
   return 1;
 }
 
-- (BOOL)registerFadeClientsInAudioSessionBlock:(id)a3
+- (BOOL)registerFadeClientsInAudioSessionBlock:(id)block
 {
-  v4 = a3;
-  if (self->_fadeSessionOutputBlock != v4)
+  blockCopy = block;
+  if (self->_fadeSessionOutputBlock != blockCopy)
   {
     std::recursive_mutex::lock(&self->_callbackMutex);
     fadeSessionOutputBlock = self->_fadeSessionOutputBlock;
     self->_fadeSessionOutputBlock = 0;
 
-    if (v4)
+    if (blockCopy)
     {
-      v6 = [v4 copy];
+      v6 = [blockCopy copy];
       v7 = self->_fadeSessionOutputBlock;
       self->_fadeSessionOutputBlock = v6;
     }
@@ -69,18 +69,18 @@
   return 1;
 }
 
-- (BOOL)registerMuteInputClientsInAudioSessionBlock:(id)a3
+- (BOOL)registerMuteInputClientsInAudioSessionBlock:(id)block
 {
-  v4 = a3;
-  if (self->_muteSessionInputBlock != v4)
+  blockCopy = block;
+  if (self->_muteSessionInputBlock != blockCopy)
   {
     std::recursive_mutex::lock(&self->_callbackMutex);
     muteSessionInputBlock = self->_muteSessionInputBlock;
     self->_muteSessionInputBlock = 0;
 
-    if (v4)
+    if (blockCopy)
     {
-      v6 = [v4 copy];
+      v6 = [blockCopy copy];
       v7 = self->_muteSessionInputBlock;
       self->_muteSessionInputBlock = v6;
     }
@@ -91,7 +91,7 @@
   return 1;
 }
 
-- (BOOL)setInputMuteStateOnSession:(unsigned int)a3 clientToken:(void *)a4 isMuted:(BOOL)a5
+- (BOOL)setInputMuteStateOnSession:(unsigned int)session clientToken:(void *)token isMuted:(BOOL)muted
 {
   v15 = 0;
   v16 = &v15;
@@ -113,10 +113,10 @@
     v12[1] = 3221225472;
     v12[2] = __76__PHASESessionInterfaceImpl_setInputMuteStateOnSession_clientToken_isMuted___block_invoke;
     v12[3] = &unk_1E7ECF278;
-    v13 = a3;
+    sessionCopy = session;
     v12[5] = &v15;
-    v12[6] = a4;
-    v14 = a5;
+    v12[6] = token;
+    mutedCopy = muted;
     v12[4] = self;
     AT::DispatchBlock(v9, v12, 0, "[PHASESessionInterfaceImpl setInputMuteStateOnSession:clientToken:isMuted:]", "ATPhasePlatform.mm", 330);
   }
@@ -158,7 +158,7 @@ void __76__PHASESessionInterfaceImpl_setInputMuteStateOnSession_clientToken_isMu
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getInputMuteStateForSession:(unsigned int)a3 fromCallback:(BOOL)a4
+- (id)getInputMuteStateForSession:(unsigned int)session fromCallback:(BOOL)callback
 {
   v24[4] = *MEMORY[0x1E69E9840];
   v24[0] = &unk_1F37BE6A8;
@@ -171,7 +171,7 @@ void __76__PHASESessionInterfaceImpl_setInputMuteStateOnSession_clientToken_isMu
   v18 = 0;
   v19 = 0;
   v20 = 1;
-  if (!a4)
+  if (!callback)
   {
     if (AudioControlQueue(void)::once != -1)
     {
@@ -185,7 +185,7 @@ void __76__PHASESessionInterfaceImpl_setInputMuteStateOnSession_clientToken_isMu
     v22[3] = &unk_1F37BE668;
     v22[4] = &v13;
     std::__function::__value_func<caulk::expected<BOOL,int> ()>::__value_func[abi:ne200100](v23, v24);
-    v23[8] = a3;
+    v23[8] = session;
     AT::DispatchBlock(v8, v22, 0, "[PHASESessionInterfaceImpl getInputMuteStateForSession:fromCallback:]", "ATPhasePlatform.mm", 305);
 
     std::__function::__value_func<caulk::expected<BOOL,int> ()>::~__value_func[abi:ne200100](v23);
@@ -200,8 +200,8 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v21 = a3;
-  v5 = std::__function::__func<[PHASESessionInterfaceImpl getInputMuteStateForSession:fromCallback:]::$_0,std::allocator<[PHASESessionInterfaceImpl getInputMuteStateForSession:fromCallback:]::$_0>,caulk::expected<BOOL,int> ()>::operator()(self, &v21);
+  sessionCopy = session;
+  v5 = std::__function::__func<[PHASESessionInterfaceImpl getInputMuteStateForSession:fromCallback:]::$_0,std::allocator<[PHASESessionInterfaceImpl getInputMuteStateForSession:fromCallback:]::$_0>,caulk::expected<BOOL,int> ()>::operator()(self, &sessionCopy);
   v6 = v14;
   v7 = *(v14 + 52);
   if ((v5 & 0x100000000) == 0)
@@ -337,7 +337,7 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
   return result;
 }
 
-- (void)refreshInputMuteOnAllSessions:(float)a3
+- (void)refreshInputMuteOnAllSessions:(float)sessions
 {
   v33 = *MEMORY[0x1E69E9840];
   {
@@ -374,7 +374,7 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
           v25 = 1024;
           v26 = 269;
           v27 = 2048;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 1024;
           v30 = v11;
           v31 = 1024;
@@ -382,7 +382,7 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
           _os_log_impl(&dword_1B9A08000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d platform@%p: refreshAudioSessionInputMute mute=%d for session=0x%x", buf, 0x28u);
         }
 
-        *&v13 = a3;
+        *&v13 = sessions;
         [(PHASESessionInterfaceImpl *)self muteSessionInput:v20 mute:v11 fadeTime:v13];
       }
 
@@ -396,7 +396,7 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
           v25 = 1024;
           v26 = 272;
           v27 = 2048;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 1024;
           v30 = v15;
           v31 = 1024;
@@ -427,10 +427,10 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeInputClientToken:(void *)a3 fromSessionID:(unsigned int)a4
+- (void)removeInputClientToken:(void *)token fromSessionID:(unsigned int)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = std::__hash_table<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>>>::find<unsigned int>(&self->audioSessionInputClients.__table_.__bucket_list_.__ptr_, a4);
+  v7 = std::__hash_table<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>>>::find<unsigned int>(&self->audioSessionInputClients.__table_.__bucket_list_.__ptr_, d);
   if (!v7)
   {
     v15 = gPhaseManagerLog();
@@ -441,11 +441,11 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
       v27 = 1024;
       v28 = 171;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2048;
-      v32 = a3;
+      tokenCopy2 = token;
       v33 = 1024;
-      v34 = a4;
+      dCopy2 = d;
       _os_log_impl(&dword_1B9A08000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d sessioninterface@%p: can't remove client@%p from unknown session 0x%x", &v25, 0x2Cu);
     }
 
@@ -453,7 +453,7 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
   }
 
   v8 = v7;
-  v9 = std::__hash_table<void *,std::hash<void *>,std::equal_to<void *>,std::allocator<void *>>::find<void *>(v7 + 3, a3);
+  v9 = std::__hash_table<void *,std::hash<void *>,std::equal_to<void *>,std::allocator<void *>>::find<void *>(v7 + 3, token);
   if (!v9)
   {
     v15 = gPhaseManagerLog();
@@ -464,11 +464,11 @@ unint64_t __70__PHASESessionInterfaceImpl_getInputMuteStateForSession_fromCallba
       v27 = 1024;
       v28 = 165;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2048;
-      v32 = a3;
+      tokenCopy2 = token;
       v33 = 1024;
-      v34 = a4;
+      dCopy2 = d;
       _os_log_impl(&dword_1B9A08000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d sessioninterface@%p: can't remove unknown client@%p from session 0x%x", &v25, 0x2Cu);
     }
 
@@ -485,7 +485,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = std::__hash_table<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>>>::find<unsigned int>(&self->audioSessionInputClients.__table_.__bucket_list_.__ptr_, a4);
+  v10 = std::__hash_table<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::unique_ptr<SSClientCompletionProcInfo>>>>::find<unsigned int>(&self->audioSessionInputClients.__table_.__bucket_list_.__ptr_, d);
   if (!v10)
   {
     goto LABEL_13;
@@ -599,7 +599,7 @@ LABEL_30:
   operator delete(v11);
 }
 
-- (BOOL)setClientStateOnSession:(unsigned int)a3 clientToken:(void *)a4 modes:(unsigned int)a5 state:(unsigned int)a6 outDuckingInfo:(AudioSessionDuckingInfo *)a7
+- (BOOL)setClientStateOnSession:(unsigned int)session clientToken:(void *)token modes:(unsigned int)modes state:(unsigned int)state outDuckingInfo:(AudioSessionDuckingInfo *)info
 {
   v22 = 0;
   v23 = &v22;
@@ -611,10 +611,10 @@ LABEL_30:
 
   if (CASIsDarwinOS(void)::global)
   {
-    if (a7)
+    if (info)
     {
-      *&a7->var1 = 0x3F80000000000000;
-      a7->var0 = 0;
+      *&info->var1 = 0x3F80000000000000;
+      info->var0 = 0;
     }
   }
 
@@ -633,11 +633,11 @@ LABEL_30:
     v16[3] = &unk_1E7ECF250;
     objc_copyWeak(v17, &location);
     v16[4] = &v22;
-    v17[1] = a4;
-    v17[2] = a7;
-    v18 = a3;
-    v19 = a5;
-    v20 = a6;
+    v17[1] = token;
+    v17[2] = info;
+    sessionCopy = session;
+    modesCopy = modes;
+    stateCopy = state;
     AT::DispatchBlock(v13, v16, 0, "[PHASESessionInterfaceImpl setClientStateOnSession:clientToken:modes:state:outDuckingInfo:]", "ATPhasePlatform.mm", 134);
 
     objc_destroyWeak(v17);
@@ -685,16 +685,16 @@ void __92__PHASESessionInterfaceImpl_setClientStateOnSession_clientToken_modes_s
   [(PHASESessionInterfaceImpl *)&v7 dealloc];
 }
 
-- (PHASESessionInterfaceImpl)initWithPhasePlatform:(id)a3
+- (PHASESessionInterfaceImpl)initWithPhasePlatform:(id)platform
 {
-  v4 = a3;
+  platformCopy = platform;
   v11.receiver = self;
   v11.super_class = PHASESessionInterfaceImpl;
   v5 = [(PHASESessionInterfaceImpl *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_phasePlatform, v4);
+    objc_storeWeak(&v5->_phasePlatform, platformCopy);
     muteSessionInputBlock = v6->_muteSessionInputBlock;
     v6->_muteSessionInputBlock = 0;
 

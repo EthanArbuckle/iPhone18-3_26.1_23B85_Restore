@@ -1,24 +1,24 @@
 @interface LegacyStorytellingService
-- (void)cancelOperationsWithIdentifiers:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)dumpAnalysisStatusWithContext:(id)a3 reply:(id)a4;
-- (void)warmupLegacyStorytellingWorkerForDuration:(double)a3 operationID:(NSString *)a4 reply:(id)a5;
-- (void)writeQALog:(id)a3;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers context:(id)context reply:(id)reply;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)dumpAnalysisStatusWithContext:(id)context reply:(id)reply;
+- (void)warmupLegacyStorytellingWorkerForDuration:(double)duration operationID:(NSString *)d reply:(id)reply;
+- (void)writeQALog:(id)log;
 @end
 
 @implementation LegacyStorytellingService
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(reply);
   v4[2](v4, 0);
 
   _Block_release(v4);
 }
 
-- (void)dumpAnalysisStatusWithContext:(id)a3 reply:(id)a4
+- (void)dumpAnalysisStatusWithContext:(id)context reply:(id)reply
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(reply);
   sub_22FAE1210();
   v5 = swift_allocError();
   *v6 = 0xD000000000000026;
@@ -32,12 +32,12 @@
   _Block_release(v4);
 }
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 context:(id)a4 reply:(id)a5
+- (void)cancelOperationsWithIdentifiers:(id)identifiers context:(id)context reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(reply);
   v11 = sub_22FCC8C44();
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
@@ -57,7 +57,7 @@
   sub_22FC3EE08(0, 0, v9, &unk_22FCDC690, v15);
 }
 
-- (void)writeQALog:(id)a3
+- (void)writeQALog:(id)log
 {
   v3 = sub_22FCC8A84();
   v5 = v4;
@@ -65,15 +65,15 @@
   sub_22FC11B9C(v3, v5);
 }
 
-- (void)warmupLegacyStorytellingWorkerForDuration:(double)a3 operationID:(NSString *)a4 reply:(id)a5
+- (void)warmupLegacyStorytellingWorkerForDuration:(double)duration operationID:(NSString *)d reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = duration;
+  *(v13 + 24) = d;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_22FCC8D14();
@@ -88,7 +88,7 @@
   v16[3] = 0;
   v16[4] = &unk_22FCD2CA0;
   v16[5] = v15;
-  v17 = a4;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v11, &unk_22FCDA590, v16);
 }

@@ -1,54 +1,54 @@
 @interface SCATAuxiliaryElementManager
-- (void)driver:(id)a3 willFocusOnContext:(id)a4;
-- (void)setContextElement:(id)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)driver:(id)driver willFocusOnContext:(id)context;
+- (void)setContextElement:(id)element;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)willBecomeCurrentAuxiliaryElementManager;
 - (void)willResignCurrentAuxiliaryElementManager;
 @end
 
 @implementation SCATAuxiliaryElementManager
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_enabled == a3)
+  if (self->_enabled == enabled)
   {
     return;
   }
 
-  v5 = a4;
-  v6 = a3;
-  self->_enabled = a3;
-  v16 = [(SCATAuxiliaryElementManager *)self viewController];
-  v8 = [v16 view];
-  v9 = v8;
-  if (v6)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  self->_enabled = enabled;
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
+  view = [viewController view];
+  v9 = view;
+  if (enabledCopy)
   {
-    v10 = [(SCATAuxiliaryElementManager *)self isVisibilityTiedToFocus];
+    isVisibilityTiedToFocus = [(SCATAuxiliaryElementManager *)self isVisibilityTiedToFocus];
     v11 = 1.0;
-    if (v10)
+    if (isVisibilityTiedToFocus)
     {
       v11 = 0.0;
     }
 
     [v9 setAlpha:v11];
-    v12 = [v9 window];
+    window = [v9 window];
 
-    if (!v12)
+    if (!window)
     {
       v14 = +[SCATScannerManager sharedManager];
-      v15 = [v14 scatUIContext];
+      scatUIContext = [v14 scatUIContext];
 
-      [v15 bounds];
+      [scatUIContext bounds];
       [v9 setFrame:?];
-      [v16 viewWillAppear:v5];
-      [v15 addSubview:v9];
+      [viewController viewWillAppear:animatedCopy];
+      [scatUIContext addSubview:v9];
       [v9 setHidden:0];
-      [v16 viewDidAppear:v5];
+      [viewController viewDidAppear:animatedCopy];
 
       goto LABEL_9;
     }
 
-    v8 = v9;
+    view = v9;
     v13 = 0;
   }
 
@@ -57,35 +57,35 @@
     v13 = 1;
   }
 
-  [v8 setHidden:v13];
+  [view setHidden:v13];
 LABEL_9:
 }
 
-- (void)setContextElement:(id)a3
+- (void)setContextElement:(id)element
 {
-  objc_storeStrong(&self->_contextElement, a3);
-  v5 = a3;
-  v6 = [(SCATAuxiliaryElementManager *)self viewController];
-  [v6 updateWithContextElement:v5];
+  objc_storeStrong(&self->_contextElement, element);
+  elementCopy = element;
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
+  [viewController updateWithContextElement:elementCopy];
 }
 
 - (void)willBecomeCurrentAuxiliaryElementManager
 {
   if ([(SCATAuxiliaryElementManager *)self isVisibilityTiedToFocus])
   {
-    v3 = [(SCATAuxiliaryElementManager *)self viewController];
-    [v3 setTransitioningToOrFromActive:1];
+    viewController = [(SCATAuxiliaryElementManager *)self viewController];
+    [viewController setTransitioningToOrFromActive:1];
 
-    v4 = [(SCATAuxiliaryElementManager *)self viewController];
-    v5 = [v4 view];
+    viewController2 = [(SCATAuxiliaryElementManager *)self viewController];
+    view = [viewController2 view];
 
-    v6 = [v5 superview];
-    [v6 bringSubviewToFront:v5];
+    superview = [view superview];
+    [superview bringSubviewToFront:view];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000EA8C;
     v12[3] = &unk_1001D3488;
-    v7 = v5;
+    v7 = view;
     v13 = v7;
     [UIView animateWithDuration:4 delay:v12 options:0 animations:0.3 completion:0.0];
     v9[4] = self;
@@ -107,8 +107,8 @@ LABEL_9:
 {
   if ([(SCATAuxiliaryElementManager *)self isVisibilityTiedToFocus])
   {
-    v3 = [(SCATAuxiliaryElementManager *)self viewController];
-    [v3 setTransitioningToOrFromActive:1];
+    viewController = [(SCATAuxiliaryElementManager *)self viewController];
+    [viewController setTransitioningToOrFromActive:1];
 
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -124,13 +124,13 @@ LABEL_9:
   }
 }
 
-- (void)driver:(id)a3 willFocusOnContext:(id)a4
+- (void)driver:(id)driver willFocusOnContext:(id)context
 {
-  v5 = a4;
-  v7 = [(SCATAuxiliaryElementManager *)self viewController];
-  v6 = [v5 element];
+  contextCopy = context;
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
+  element = [contextCopy element];
 
-  [v7 updateCustomFocusingViewStateForViewsWithElement:v6];
+  [viewController updateCustomFocusingViewStateForViewsWithElement:element];
 }
 
 @end

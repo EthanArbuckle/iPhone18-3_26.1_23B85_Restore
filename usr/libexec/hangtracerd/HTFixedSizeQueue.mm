@@ -1,12 +1,12 @@
 @interface HTFixedSizeQueue
-- (HTFixedSizeQueue)initWithSize:(unint64_t)a3;
-- (id)getDescription:(unint64_t)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (HTFixedSizeQueue)initWithSize:(unint64_t)size;
+- (id)getDescription:(unint64_t)description;
+- (void)addObjectsFromArray:(id)array;
 @end
 
 @implementation HTFixedSizeQueue
 
-- (HTFixedSizeQueue)initWithSize:(unint64_t)a3
+- (HTFixedSizeQueue)initWithSize:(unint64_t)size
 {
   v13.receiver = self;
   v13.super_class = HTFixedSizeQueue;
@@ -18,7 +18,7 @@
     *(v4 + 1) = v5;
 
     v7 = *(v4 + 3);
-    *(v4 + 2) = a3;
+    *(v4 + 2) = size;
     *(v4 + 3) = 0;
 
     v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
@@ -37,13 +37,13 @@
   return v4;
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = a3;
-  if (v4)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v10 = v4;
-    if ([v4 count])
+    v10 = arrayCopy;
+    if ([arrayCopy count])
     {
       [(NSMutableArray *)self->allRecordsMutable addObjectsFromArray:v10];
       if ([(NSMutableArray *)self->allRecordsMutable count]> self->_maxSize)
@@ -71,12 +71,12 @@
   _objc_release_x1();
 }
 
-- (id)getDescription:(unint64_t)a3
+- (id)getDescription:(unint64_t)description
 {
-  v3 = [(NSMutableArray *)self->allRecordsMutable objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->allRecordsMutable objectAtIndex:description];
   v9[0] = @"processName";
-  v4 = [v3 processName];
-  v10[0] = v4;
+  processName = [v3 processName];
+  v10[0] = processName;
   v9[1] = @"processID";
   v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 pid]);
   v10[1] = v5;

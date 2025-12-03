@@ -13,8 +13,8 @@
     return 44.0;
   }
 
-  v4 = [(ICNoteResultsCollaboratorsBadgeView *)self traitCollection];
-  if ([v4 ic_hasCompactSize])
+  traitCollection = [(ICNoteResultsCollaboratorsBadgeView *)self traitCollection];
+  if ([traitCollection ic_hasCompactSize])
   {
     v3 = 24.0;
   }
@@ -41,8 +41,8 @@
   v3 = -28.0;
   if ((+[UIDevice ic_isVision]& 1) == 0)
   {
-    v4 = [(ICNoteResultsCollaboratorsBadgeView *)self traitCollection];
-    if ([v4 ic_hasCompactSize])
+    traitCollection = [(ICNoteResultsCollaboratorsBadgeView *)self traitCollection];
+    if ([traitCollection ic_hasCompactSize])
     {
       v3 = -12.0;
     }

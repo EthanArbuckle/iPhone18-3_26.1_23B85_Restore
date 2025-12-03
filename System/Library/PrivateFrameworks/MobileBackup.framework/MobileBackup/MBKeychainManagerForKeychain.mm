@@ -1,28 +1,28 @@
 @interface MBKeychainManagerForKeychain
-+ (BOOL)addKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5;
-+ (BOOL)addValue:(id)a3 forServiceName:(id)a4 accountName:(id)a5 withAccessibility:(id)a6 error:(id *)a7;
-+ (BOOL)removeValueWithServiceName:(id)a3 accountName:(id)a4 error:(id *)a5;
-+ (BOOL)removeValueWithServiceName:(id)a3 error:(id *)a4;
-+ (BOOL)updateKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5;
-+ (BOOL)updateValue:(id)a3 forServiceName:(id)a4 accountName:(id)a5 withAccessibility:(id)a6 error:(id *)a7;
-+ (id)fetchKeybagSecretForUUID:(id)a3 error:(id *)a4;
-+ (id)fetchValueForServiceName:(id)a3 accountName:(id)a4 error:(id *)a5;
++ (BOOL)addKeybagSecret:(id)secret forUUID:(id)d error:(id *)error;
++ (BOOL)addValue:(id)value forServiceName:(id)name accountName:(id)accountName withAccessibility:(id)accessibility error:(id *)error;
++ (BOOL)removeValueWithServiceName:(id)name accountName:(id)accountName error:(id *)error;
++ (BOOL)removeValueWithServiceName:(id)name error:(id *)error;
++ (BOOL)updateKeybagSecret:(id)secret forUUID:(id)d error:(id *)error;
++ (BOOL)updateValue:(id)value forServiceName:(id)name accountName:(id)accountName withAccessibility:(id)accessibility error:(id *)error;
++ (id)fetchKeybagSecretForUUID:(id)d error:(id *)error;
++ (id)fetchValueForServiceName:(id)name accountName:(id)accountName error:(id *)error;
 @end
 
 @implementation MBKeychainManagerForKeychain
 
-+ (id)fetchValueForServiceName:(id)a3 accountName:(id)a4 error:(id *)a5
++ (id)fetchValueForServiceName:(id)name accountName:(id)accountName error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  accountNameCopy = accountName;
   result = 0;
   v19[0] = kSecClass;
   v19[1] = kSecAttrService;
   v20[0] = kSecClassGenericPassword;
-  v20[1] = v7;
+  v20[1] = nameCopy;
   v19[2] = kSecAttrAccount;
   v19[3] = kSecReturnData;
-  v20[2] = v8;
+  v20[2] = accountNameCopy;
   v20[3] = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:4];
   v10 = MBGetDefaultLog();
@@ -45,27 +45,27 @@
 
   if (v11 == -25308)
   {
-    if (a5)
+    if (error)
     {
-      [MBError errorWithCode:208 format:@"Cannot fetch %@:%@ from keychain while device is locked", v7, v8, v15];
+      [MBError errorWithCode:208 format:@"Cannot fetch %@:%@ from keychain while device is locked", nameCopy, accountNameCopy, v15];
       goto LABEL_14;
     }
   }
 
   else if (v11 == -25300)
   {
-    if (a5)
+    if (error)
     {
-      [MBError errorWithCode:4 format:@"%@:%@ not found in keychain", v7, v8, v15];
+      [MBError errorWithCode:4 format:@"%@:%@ not found in keychain", nameCopy, accountNameCopy, v15];
 LABEL_14:
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_16;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    [MBError errorWithCode:1 format:@"Error copying %@:%@ from keychain (%d)", v7, v8, v11];
+    [MBError errorWithCode:1 format:@"Error copying %@:%@ from keychain (%d)", nameCopy, accountNameCopy, v11];
     goto LABEL_14;
   }
 
@@ -75,9 +75,9 @@ LABEL_16:
   return v13;
 }
 
-+ (id)fetchKeybagSecretForUUID:(id)a3 error:(id *)a4
++ (id)fetchKeybagSecretForUUID:(id)d error:(id *)error
 {
-  v4 = [a1 fetchValueForServiceName:@"BackupKeybagSecret" accountName:a3 error:a4];
+  v4 = [self fetchValueForServiceName:@"BackupKeybagSecret" accountName:d error:error];
   if (v4)
   {
     v5 = [[NSData alloc] initWithBase64EncodedString:v4 options:0];
@@ -91,23 +91,23 @@ LABEL_16:
   return v5;
 }
 
-+ (BOOL)addValue:(id)a3 forServiceName:(id)a4 accountName:(id)a5 withAccessibility:(id)a6 error:(id *)a7
++ (BOOL)addValue:(id)value forServiceName:(id)name accountName:(id)accountName withAccessibility:(id)accessibility error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  accountNameCopy = accountName;
+  accessibilityCopy = accessibility;
   v23[0] = kSecClass;
   v23[1] = kSecAttrService;
   v24[0] = kSecClassGenericPassword;
-  v24[1] = v11;
+  v24[1] = nameCopy;
   v23[2] = kSecAttrAccount;
   v23[3] = kSecAttrAccessible;
-  v24[2] = v12;
-  v24[3] = v13;
+  v24[2] = accountNameCopy;
+  v24[3] = accessibilityCopy;
   v24[4] = &__kCFBooleanFalse;
   v23[4] = kSecReturnData;
   v23[5] = kSecValueData;
-  v14 = [a3 dataUsingEncoding:4];
+  v14 = [value dataUsingEncoding:4];
   v24[5] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:6];
 
@@ -126,16 +126,16 @@ LABEL_16:
   {
     if (v17 == -25308)
     {
-      if (a7)
+      if (error)
       {
-        [MBError errorWithCode:208 format:@"Cannot add %@:%@ while device is locked", v11, v12, v20];
-        *a7 = LABEL_9:;
+        [MBError errorWithCode:208 format:@"Cannot add %@:%@ while device is locked", nameCopy, accountNameCopy, v20];
+        *error = LABEL_9:;
       }
     }
 
-    else if (a7)
+    else if (error)
     {
-      [MBError errorWithCode:1 format:@"Error adding %@:%@ to keychain (%d)", v11, v12, v17];
+      [MBError errorWithCode:1 format:@"Error adding %@:%@ to keychain (%d)", nameCopy, accountNameCopy, v17];
       goto LABEL_9;
     }
   }
@@ -143,36 +143,36 @@ LABEL_16:
   return v18 == 0;
 }
 
-+ (BOOL)addKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5
++ (BOOL)addKeybagSecret:(id)secret forUUID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 base64EncodedStringWithOptions:0];
-  LOBYTE(a5) = [a1 addValue:v9 forServiceName:@"BackupKeybagSecret" accountName:v8 withAccessibility:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly error:a5];
+  dCopy = d;
+  v9 = [secret base64EncodedStringWithOptions:0];
+  LOBYTE(error) = [self addValue:v9 forServiceName:@"BackupKeybagSecret" accountName:dCopy withAccessibility:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)updateValue:(id)a3 forServiceName:(id)a4 accountName:(id)a5 withAccessibility:(id)a6 error:(id *)a7
++ (BOOL)updateValue:(id)value forServiceName:(id)name accountName:(id)accountName withAccessibility:(id)accessibility error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  accountNameCopy = accountName;
+  accessibilityCopy = accessibility;
   v29[0] = kSecClass;
   v29[1] = kSecAttrService;
   v30[0] = kSecClassGenericPassword;
-  v30[1] = v11;
+  v30[1] = nameCopy;
   v29[2] = kSecAttrAccount;
   v29[3] = kSecReturnData;
-  v30[2] = v12;
+  v30[2] = accountNameCopy;
   v30[3] = &__kCFBooleanFalse;
-  v14 = a3;
+  valueCopy = value;
   v15 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:4];
   v27[0] = kSecValueData;
-  v16 = [v14 dataUsingEncoding:4];
+  v16 = [valueCopy dataUsingEncoding:4];
 
   v27[1] = kSecAttrAccessible;
   v28[0] = v16;
-  v28[1] = v13;
+  v28[1] = accessibilityCopy;
   v17 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
 
   v18 = MBGetDefaultLog();
@@ -192,16 +192,16 @@ LABEL_16:
   {
     if (v19 == -25308)
     {
-      if (a7)
+      if (error)
       {
-        [MBError errorWithCode:208 format:@"Cannot update %@:%@ while device is locked", v11, v12, v22];
-        *a7 = LABEL_9:;
+        [MBError errorWithCode:208 format:@"Cannot update %@:%@ while device is locked", nameCopy, accountNameCopy, v22];
+        *error = LABEL_9:;
       }
     }
 
-    else if (a7)
+    else if (error)
     {
-      [MBError errorWithCode:1 format:@"Error updating %@:%@ in keychain (%d)", v11, v12, v19];
+      [MBError errorWithCode:1 format:@"Error updating %@:%@ in keychain (%d)", nameCopy, accountNameCopy, v19];
       goto LABEL_9;
     }
   }
@@ -209,26 +209,26 @@ LABEL_16:
   return v20 == 0;
 }
 
-+ (BOOL)updateKeybagSecret:(id)a3 forUUID:(id)a4 error:(id *)a5
++ (BOOL)updateKeybagSecret:(id)secret forUUID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 base64EncodedStringWithOptions:0];
-  LOBYTE(a5) = [a1 updateValue:v9 forServiceName:@"BackupKeybagSecret" accountName:v8 withAccessibility:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly error:a5];
+  dCopy = d;
+  v9 = [secret base64EncodedStringWithOptions:0];
+  LOBYTE(error) = [self updateValue:v9 forServiceName:@"BackupKeybagSecret" accountName:dCopy withAccessibility:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)removeValueWithServiceName:(id)a3 accountName:(id)a4 error:(id *)a5
++ (BOOL)removeValueWithServiceName:(id)name accountName:(id)accountName error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  accountNameCopy = accountName;
   v17[0] = kSecClass;
   v17[1] = kSecAttrService;
   v18[0] = kSecClassGenericPassword;
-  v18[1] = v7;
+  v18[1] = nameCopy;
   v17[2] = kSecAttrAccount;
   v17[3] = kSecReturnData;
-  v18[2] = v8;
+  v18[2] = accountNameCopy;
   v18[3] = &__kCFBooleanFalse;
   v9 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:4];
   v10 = MBGetDefaultLog();
@@ -246,16 +246,16 @@ LABEL_16:
   {
     if (v11 == -25308)
     {
-      if (a5)
+      if (error)
       {
-        [MBError errorWithCode:208 format:@"Cannot remove %@:%@ while device is locked", v7, v8, v14];
-        *a5 = LABEL_9:;
+        [MBError errorWithCode:208 format:@"Cannot remove %@:%@ while device is locked", nameCopy, accountNameCopy, v14];
+        *error = LABEL_9:;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      [MBError errorWithCode:1 format:@"Error removing %@:%@ from keychain (%d)", v7, v8, v11];
+      [MBError errorWithCode:1 format:@"Error removing %@:%@ from keychain (%d)", nameCopy, accountNameCopy, v11];
       goto LABEL_9;
     }
   }
@@ -263,13 +263,13 @@ LABEL_16:
   return v12 == 0;
 }
 
-+ (BOOL)removeValueWithServiceName:(id)a3 error:(id *)a4
++ (BOOL)removeValueWithServiceName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v14[0] = kSecClass;
   v14[1] = kSecAttrService;
   v15[0] = kSecClassGenericPassword;
-  v15[1] = v5;
+  v15[1] = nameCopy;
   v14[2] = kSecReturnData;
   v15[2] = &__kCFBooleanFalse;
   v6 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
@@ -288,16 +288,16 @@ LABEL_16:
   {
     if (v8 == -25308)
     {
-      if (a4)
+      if (error)
       {
-        [MBError errorWithCode:208 format:@"Cannot remove %@ while device is locked", v5, v11];
-        *a4 = LABEL_9:;
+        [MBError errorWithCode:208 format:@"Cannot remove %@ while device is locked", nameCopy, v11];
+        *error = LABEL_9:;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      [MBError errorWithCode:1 format:@"Error removing %@ from keychain (%d)", v5, v8];
+      [MBError errorWithCode:1 format:@"Error removing %@ from keychain (%d)", nameCopy, v8];
       goto LABEL_9;
     }
   }

@@ -1,19 +1,19 @@
 @interface UIApplication
 + (id)jsa_sharedApplicationIfNotExtension;
-- (void)jsa_openExternalURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)jsa_openExternalURL:(id)l options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation UIApplication
 
-- (void)jsa_openExternalURL:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)jsa_openExternalURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v15 = a3;
-  v14 = a4;
-  v8 = a5;
-  v13 = v8;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v13 = handlerCopy;
   if (_UIApplicationIsExtension())
   {
-    v9 = objc_retainBlock(v8);
+    v9 = objc_retainBlock(handlerCopy);
     v10 = v9;
     if (v9)
     {
@@ -28,12 +28,12 @@
 
     [v12 setSelector:"openURL:options:completionHandler:"];
     [v12 setTarget:self];
-    [v12 setArgument:&v15 atIndex:2];
-    [v12 setArgument:&v14 atIndex:3];
+    [v12 setArgument:&lCopy atIndex:2];
+    [v12 setArgument:&optionsCopy atIndex:3];
     [v12 setArgument:&v13 atIndex:4];
     [v12 invoke];
 
-    v8 = v13;
+    handlerCopy = v13;
   }
 }
 

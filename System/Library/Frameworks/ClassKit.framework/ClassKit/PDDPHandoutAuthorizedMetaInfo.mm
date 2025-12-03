@@ -1,14 +1,14 @@
 @interface PDDPHandoutAuthorizedMetaInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttachmentType:(id)a3;
+- (int)StringAsAttachmentType:(id)type;
 - (int)attachmentType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandoutAuthorizedMetaInfo
@@ -26,45 +26,45 @@
   }
 }
 
-- (int)StringAsAttachmentType:(id)a3
+- (int)StringAsAttachmentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"URL_TYPE"])
+  else if ([typeCopy isEqualToString:@"URL_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ASSET_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSET_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APP_TYPE"])
+  else if ([typeCopy isEqualToString:@"APP_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HAND_IN_REQUEST_TYPE"])
+  else if ([typeCopy isEqualToString:@"HAND_IN_REQUEST_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_TYPE"])
+  else if ([typeCopy isEqualToString:@"SURVEY_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ASSESSMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSESSMENT_TYPE"])
   {
     v4 = 7;
   }
@@ -82,8 +82,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandoutAuthorizedMetaInfo;
   v3 = [(PDDPHandoutAuthorizedMetaInfo *)&v7 description];
-  v4 = [(PDDPHandoutAuthorizedMetaInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandoutAuthorizedMetaInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -134,80 +134,80 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     attachmentType = self->_attachmentType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attachmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_handoutAuthorizedObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_handoutId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_attachmentType;
-    *(v4 + 48) |= 1u;
+    toCopy[4] = self->_attachmentType;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_attachmentId)
   {
-    [v4 setAttachmentId:?];
-    v4 = v5;
+    [toCopy setAttachmentId:?];
+    toCopy = v5;
   }
 
   if (self->_handoutAuthorizedObjectId)
   {
     [v5 setHandoutAuthorizedObjectId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_classId)
   {
     [v5 setClassId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoutId)
   {
     [v5 setHandoutId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -215,43 +215,43 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_attachmentId copyWithZone:a3];
+  v7 = [(NSString *)self->_attachmentId copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:a3];
+  v9 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(NSString *)self->_classId copyWithZone:a3];
+  v11 = [(NSString *)self->_classId copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
-  v13 = [(NSString *)self->_handoutId copyWithZone:a3];
+  v13 = [(NSString *)self->_handoutId copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_attachmentType != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_attachmentType != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -259,13 +259,13 @@ LABEL_15:
   }
 
   attachmentId = self->_attachmentId;
-  if (attachmentId | *(v4 + 1) && ![(NSString *)attachmentId isEqual:?])
+  if (attachmentId | *(equalCopy + 1) && ![(NSString *)attachmentId isEqual:?])
   {
     goto LABEL_15;
   }
 
   handoutAuthorizedObjectId = self->_handoutAuthorizedObjectId;
-  if (handoutAuthorizedObjectId | *(v4 + 4))
+  if (handoutAuthorizedObjectId | *(equalCopy + 4))
   {
     if (![(NSString *)handoutAuthorizedObjectId isEqual:?])
     {
@@ -274,7 +274,7 @@ LABEL_15:
   }
 
   classId = self->_classId;
-  if (classId | *(v4 + 3))
+  if (classId | *(equalCopy + 3))
   {
     if (![(NSString *)classId isEqual:?])
     {
@@ -283,7 +283,7 @@ LABEL_15:
   }
 
   handoutId = self->_handoutId;
-  if (handoutId | *(v4 + 5))
+  if (handoutId | *(equalCopy + 5))
   {
     v10 = [(NSString *)handoutId isEqual:?];
   }
@@ -316,38 +316,38 @@ LABEL_16:
   return v6 ^ [(NSString *)self->_handoutId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[12])
+  fromCopy = from;
+  if (fromCopy[12])
   {
-    self->_attachmentType = v4[4];
+    self->_attachmentType = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PDDPHandoutAuthorizedMetaInfo *)self setAttachmentId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPHandoutAuthorizedMetaInfo *)self setHandoutAuthorizedObjectId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPHandoutAuthorizedMetaInfo *)self setClassId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPHandoutAuthorizedMetaInfo *)self setHandoutId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

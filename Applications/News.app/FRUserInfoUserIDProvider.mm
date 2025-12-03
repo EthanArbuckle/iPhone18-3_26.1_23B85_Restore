@@ -1,6 +1,6 @@
 @interface FRUserInfoUserIDProvider
 - (FRUserInfoUserIDProvider)init;
-- (FRUserInfoUserIDProvider)initWithUserInfo:(id)a3;
+- (FRUserInfoUserIDProvider)initWithUserInfo:(id)info;
 - (NSString)userID;
 @end
 
@@ -29,10 +29,10 @@
   objc_exception_throw(v4);
 }
 
-- (FRUserInfoUserIDProvider)initWithUserInfo:(id)a3
+- (FRUserInfoUserIDProvider)initWithUserInfo:(id)info
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  if (!infoCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072184();
   }
@@ -43,7 +43,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userInfo, a3);
+    objc_storeStrong(&v6->_userInfo, info);
   }
 
   return v7;
@@ -51,10 +51,10 @@
 
 - (NSString)userID
 {
-  v2 = [(FRUserInfoUserIDProvider *)self userInfo];
-  v3 = [v2 feldsparID];
+  userInfo = [(FRUserInfoUserIDProvider *)self userInfo];
+  feldsparID = [userInfo feldsparID];
 
-  return v3;
+  return feldsparID;
 }
 
 @end

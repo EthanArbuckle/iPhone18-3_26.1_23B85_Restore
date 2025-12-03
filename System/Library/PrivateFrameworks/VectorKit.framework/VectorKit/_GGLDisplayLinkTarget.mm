@@ -1,7 +1,7 @@
 @interface _GGLDisplayLinkTarget
-- (_GGLDisplayLinkTarget)initWithCallbacker:(weak_ptr<ggl::RunLoop::_RunLoopCallbacker>)a3;
+- (_GGLDisplayLinkTarget)initWithCallbacker:(weak_ptr<ggl::RunLoop::_RunLoopCallbacker>)callbacker;
 - (id).cxx_construct;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 @end
 
 @implementation _GGLDisplayLinkTarget
@@ -13,9 +13,9 @@
   return self;
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v8 = a3;
+  firedCopy = fired;
   cntrl = self->_callbacker.__cntrl_;
   if (cntrl)
   {
@@ -26,7 +26,7 @@
       ptr = self->_callbacker.__ptr_;
       if (ptr)
       {
-        [v8 targetTimestamp];
+        [firedCopy targetTimestamp];
         (*(**ptr + 40))();
         (*(**ptr + 24))();
       }
@@ -36,12 +36,12 @@
   }
 }
 
-- (_GGLDisplayLinkTarget)initWithCallbacker:(weak_ptr<ggl::RunLoop::_RunLoopCallbacker>)a3
+- (_GGLDisplayLinkTarget)initWithCallbacker:(weak_ptr<ggl::RunLoop::_RunLoopCallbacker>)callbacker
 {
-  ptr = a3.__ptr_;
+  ptr = callbacker.__ptr_;
   v11.receiver = self;
   v11.super_class = _GGLDisplayLinkTarget;
-  v4 = [(_GGLDisplayLinkTarget *)&v11 init:a3.__ptr_];
+  v4 = [(_GGLDisplayLinkTarget *)&v11 init:callbacker.__ptr_];
   v5 = v4;
   if (v4)
   {

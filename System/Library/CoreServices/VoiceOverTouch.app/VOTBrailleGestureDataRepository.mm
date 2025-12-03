@@ -1,69 +1,69 @@
 @interface VOTBrailleGestureDataRepository
-- (BOOL)_allDotsAreOnScreen:(id)a3 withDrift:(CGPoint)a4;
+- (BOOL)_allDotsAreOnScreen:(id)screen withDrift:(CGPoint)drift;
 - (BOOL)_isTypingModeSingleHandVariant;
 - (BOOL)_shouldReverseDots;
 - (BOOL)saveDrift;
 - (CGPoint)_averageLeftDrift;
-- (CGPoint)_averageRecentDriftFromDrifts:(id)a3;
+- (CGPoint)_averageRecentDriftFromDrifts:(id)drifts;
 - (CGPoint)_averageRightDrift;
-- (CGPoint)_driftByAddingDisplacementOfPointValue:(id)a3 fromPointValue:(id)a4 toDrift:(CGPoint)a5;
-- (CGPoint)_driftOfHalfPattern:(id)a3 relativeToDotPositions:(id)a4;
-- (VOTBrailleGestureDataRepository)initWithTypingMode:(int64_t)a3 keyboardSize:(CGSize)a4 shouldUseEightDotBraille:(BOOL)a5;
-- (id)_adjustPointValue:(id)a3 withDrift:(CGPoint)a4;
-- (id)_arrayOfDictionariesFromPointValues:(id)a3;
+- (CGPoint)_driftByAddingDisplacementOfPointValue:(id)value fromPointValue:(id)pointValue toDrift:(CGPoint)drift;
+- (CGPoint)_driftOfHalfPattern:(id)pattern relativeToDotPositions:(id)positions;
+- (VOTBrailleGestureDataRepository)initWithTypingMode:(int64_t)mode keyboardSize:(CGSize)size shouldUseEightDotBraille:(BOOL)braille;
+- (id)_adjustPointValue:(id)value withDrift:(CGPoint)drift;
+- (id)_arrayOfDictionariesFromPointValues:(id)values;
 - (id)_calibratedDotPositionsFilePath;
 - (id)_filenameSuffix;
 - (id)_gestureDataDirectory;
-- (id)_loadDataFromFile:(id)a3;
-- (id)_mutableArrayOfPointValuesFromDictionaries:(id)a3;
-- (id)_mutableArrayOfZeroPointValues:(unint64_t)a3;
+- (id)_loadDataFromFile:(id)file;
+- (id)_mutableArrayOfPointValuesFromDictionaries:(id)dictionaries;
+- (id)_mutableArrayOfZeroPointValues:(unint64_t)values;
 - (id)_recordedDriftsFilePath;
 - (id)dotNumberPositions;
-- (id)halfPatternsForNumberOfDots:(unint64_t)a3 side:(unint64_t)a4;
+- (id)halfPatternsForNumberOfDots:(unint64_t)dots side:(unint64_t)side;
 - (unint64_t)_totalNumberOfDots;
-- (void)_addInstanceOfDrift:(CGPoint)a3 toArray:(id)a4 forPattern:(id)a5;
-- (void)_appendDots:(id)a3 toPositionsArray:(id)a4 withDrift:(CGPoint)a5;
+- (void)_addInstanceOfDrift:(CGPoint)drift toArray:(id)array forPattern:(id)pattern;
+- (void)_appendDots:(id)dots toPositionsArray:(id)array withDrift:(CGPoint)drift;
 - (void)_deleteCalibratedData;
 - (void)_generateInitialData;
 - (void)_generateScreenAwayInitialData;
 - (void)_generateSingleHandInitialData;
-- (void)_generateStylusInitialData:(BOOL)a3;
+- (void)_generateStylusInitialData:(BOOL)data;
 - (void)_generateTableTopInitialData;
-- (void)_getEightDotTableTopMiddleLeftDot:(CGPoint *)a3 middleRightDot:(CGPoint *)a4 bottomLeftDot:(CGPoint *)a5 bottomRightDot:(CGPoint *)a6 angleFromXAxisToLineOfHand:(double)a7 topLeftDot:(CGPoint)a8;
-- (void)_getMiddleDotsForSixDotTableTopInitialDataForLeft:(CGPoint *)a3 right:(CGPoint *)a4 angleFromXAxisToLineOfHand:(double)a5 topLeftDot:(CGPoint)a6;
+- (void)_getEightDotTableTopMiddleLeftDot:(CGPoint *)dot middleRightDot:(CGPoint *)rightDot bottomLeftDot:(CGPoint *)leftDot bottomRightDot:(CGPoint *)bottomRightDot angleFromXAxisToLineOfHand:(double)hand topLeftDot:(CGPoint)topLeftDot;
+- (void)_getMiddleDotsForSixDotTableTopInitialDataForLeft:(CGPoint *)left right:(CGPoint *)right angleFromXAxisToLineOfHand:(double)hand topLeftDot:(CGPoint)dot;
 - (void)_loadAllDataFromFiles;
-- (void)_orderedLeftDots:(id *)a3 rightDots:(id *)a4;
-- (void)_removeInstanceOfDriftFromArray:(id)a3;
-- (void)_repairFileProtectionClassOnPathIfNecessary:(id)a3;
+- (void)_orderedLeftDots:(id *)dots rightDots:(id *)rightDots;
+- (void)_removeInstanceOfDriftFromArray:(id)array;
+- (void)_repairFileProtectionClassOnPathIfNecessary:(id)necessary;
 - (void)_resetLearnedData;
-- (void)calibrateWithDotNumberPositions:(id)a3;
-- (void)removeDriftAddedByPattern:(id)a3;
-- (void)updateDriftWithPattern:(id)a3;
+- (void)calibrateWithDotNumberPositions:(id)positions;
+- (void)removeDriftAddedByPattern:(id)pattern;
+- (void)updateDriftWithPattern:(id)pattern;
 @end
 
 @implementation VOTBrailleGestureDataRepository
 
-- (VOTBrailleGestureDataRepository)initWithTypingMode:(int64_t)a3 keyboardSize:(CGSize)a4 shouldUseEightDotBraille:(BOOL)a5
+- (VOTBrailleGestureDataRepository)initWithTypingMode:(int64_t)mode keyboardSize:(CGSize)size shouldUseEightDotBraille:(BOOL)braille
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = VOTBrailleGestureDataRepository;
   v9 = [(VOTBrailleGestureDataRepository *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    v9->_typingMode = a3;
+    v9->_typingMode = mode;
     v9->_keyboardSize.width = width;
     v9->_keyboardSize.height = height;
-    v9->_shouldUseEightDotBraille = a5;
+    v9->_shouldUseEightDotBraille = braille;
     [(VOTBrailleGestureDataRepository *)v9 _loadAllDataFromFiles];
   }
 
   return v10;
 }
 
-- (id)halfPatternsForNumberOfDots:(unint64_t)a3 side:(unint64_t)a4
+- (id)halfPatternsForNumberOfDots:(unint64_t)dots side:(unint64_t)side
 {
   v29 = +[NSMutableArray array];
   v7 = exp2(([(VOTBrailleGestureDataRepository *)self _totalNumberOfDots]>> 1));
@@ -71,9 +71,9 @@
   {
     v8 = v7;
     v9 = 0;
-    v30 = self;
-    v22 = a3;
-    while ((v9 & 1) + ((v9 & 2) >> 1) + ((v9 & 4) >> 2) + ((v9 & 8) >> 3) != a3)
+    selfCopy = self;
+    dotsCopy = dots;
+    while ((v9 & 1) + ((v9 & 2) >> 1) + ((v9 & 4) >> 2) + ((v9 & 8) >> 3) != dots)
     {
 LABEL_23:
       if (v8 <= ++v9)
@@ -82,15 +82,15 @@ LABEL_23:
       }
     }
 
-    if (a4)
+    if (side)
     {
-      v31 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+      rightDotPositions = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
       [(VOTBrailleGestureDataRepository *)self _averageRightDrift];
     }
 
     else
     {
-      v31 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+      rightDotPositions = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
       [(VOTBrailleGestureDataRepository *)self _averageLeftDrift];
     }
 
@@ -98,13 +98,13 @@ LABEL_23:
     v13 = v11;
     if (v9)
     {
-      v26 = [v31 topDot];
+      topDot = [rightDotPositions topDot];
       v14 = [(VOTBrailleGestureDataRepository *)self _adjustPointValue:v12 withDrift:v13];
       v23 = v14;
       if ((v9 & 2) != 0)
       {
 LABEL_9:
-        v27 = [v31 middleDot];
+        middleDot = [rightDotPositions middleDot];
         v15 = [(VOTBrailleGestureDataRepository *)self _adjustPointValue:v12 withDrift:v13];
         v24 = v15;
         if ((v9 & 4) != 0)
@@ -129,7 +129,7 @@ LABEL_9:
     if ((v9 & 4) != 0)
     {
 LABEL_10:
-      v28 = [v31 bottomDot];
+      bottomDot = [rightDotPositions bottomDot];
       v16 = [(VOTBrailleGestureDataRepository *)self _adjustPointValue:v12 withDrift:v13];
       v25 = v16;
       if ((v9 & 8) != 0)
@@ -145,13 +145,13 @@ LABEL_15:
     if ((v9 & 8) != 0)
     {
 LABEL_11:
-      [v31 fourthDot];
-      v18 = v17 = a4;
-      v19 = [(VOTBrailleGestureDataRepository *)v30 _adjustPointValue:v18 withDrift:v12, v13];
+      [rightDotPositions fourthDot];
+      v18 = v17 = side;
+      v19 = [(VOTBrailleGestureDataRepository *)selfCopy _adjustPointValue:v18 withDrift:v12, v13];
       v20 = [VOTBrailleGestureHalfPattern halfPatternWithTopDot:v14 middleDot:v15 bottomDot:v16 fourthDot:v19];
 
-      a4 = v17;
-      a3 = v22;
+      side = v17;
+      dots = dotsCopy;
       if ((v9 & 4) == 0)
       {
         goto LABEL_18;
@@ -165,7 +165,7 @@ LABEL_16:
     if ((v9 & 4) == 0)
     {
 LABEL_18:
-      self = v30;
+      self = selfCopy;
       if ((v9 & 2) != 0)
       {
       }
@@ -189,23 +189,23 @@ LABEL_24:
   return v29;
 }
 
-- (void)updateDriftWithPattern:(id)a3
+- (void)updateDriftWithPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [v4 leftDots];
-  v6 = [v5 count];
+  patternCopy = pattern;
+  leftDots = [patternCopy leftDots];
+  v6 = [leftDots count];
 
   if (v6)
   {
-    v7 = [v4 leftDots];
-    v8 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-    [(VOTBrailleGestureDataRepository *)self _driftOfHalfPattern:v7 relativeToDotPositions:v8];
+    leftDots2 = [patternCopy leftDots];
+    leftDotPositions = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+    [(VOTBrailleGestureDataRepository *)self _driftOfHalfPattern:leftDots2 relativeToDotPositions:leftDotPositions];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-    v14 = [v4 leftDots];
-    [(VOTBrailleGestureDataRepository *)self _addInstanceOfDrift:v13 toArray:v14 forPattern:v10, v12];
+    leftDrifts = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+    leftDots3 = [patternCopy leftDots];
+    [(VOTBrailleGestureDataRepository *)self _addInstanceOfDrift:leftDrifts toArray:leftDots3 forPattern:v10, v12];
 
     v15 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -213,29 +213,29 @@ LABEL_24:
       v35.x = v10;
       v35.y = v12;
       v16 = NSStringFromPoint(v35);
-      v17 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+      leftDrifts2 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
       v31 = 138543618;
       v32 = v16;
       v33 = 2114;
-      v34 = v17;
+      v34 = leftDrifts2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Added left drift %{public}@.  Recorded drifts are now %{public}@", &v31, 0x16u);
     }
   }
 
-  v18 = [v4 rightDots];
-  v19 = [v18 count];
+  rightDots = [patternCopy rightDots];
+  v19 = [rightDots count];
 
   if (v19)
   {
-    v20 = [v4 rightDots];
-    v21 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-    [(VOTBrailleGestureDataRepository *)self _driftOfHalfPattern:v20 relativeToDotPositions:v21];
+    rightDots2 = [patternCopy rightDots];
+    rightDotPositions = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+    [(VOTBrailleGestureDataRepository *)self _driftOfHalfPattern:rightDots2 relativeToDotPositions:rightDotPositions];
     v23 = v22;
     v25 = v24;
 
-    v26 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-    v27 = [v4 rightDots];
-    [(VOTBrailleGestureDataRepository *)self _addInstanceOfDrift:v26 toArray:v27 forPattern:v23, v25];
+    rightDrifts = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+    rightDots3 = [patternCopy rightDots];
+    [(VOTBrailleGestureDataRepository *)self _addInstanceOfDrift:rightDrifts toArray:rightDots3 forPattern:v23, v25];
 
     v28 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -243,51 +243,51 @@ LABEL_24:
       v36.x = v23;
       v36.y = v25;
       v29 = NSStringFromPoint(v36);
-      v30 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+      rightDrifts2 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
       v31 = 138543618;
       v32 = v29;
       v33 = 2114;
-      v34 = v30;
+      v34 = rightDrifts2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Added right drift %{public}@.  Recorded drifts are now %{public}@", &v31, 0x16u);
     }
   }
 }
 
-- (void)removeDriftAddedByPattern:(id)a3
+- (void)removeDriftAddedByPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [v4 leftDots];
-  v6 = [v5 count];
+  patternCopy = pattern;
+  leftDots = [patternCopy leftDots];
+  v6 = [leftDots count];
 
   if (v6)
   {
-    v7 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-    [(VOTBrailleGestureDataRepository *)self _removeInstanceOfDriftFromArray:v7];
+    leftDrifts = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+    [(VOTBrailleGestureDataRepository *)self _removeInstanceOfDriftFromArray:leftDrifts];
 
     v8 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+      leftDrifts2 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
       v15 = 138543362;
-      v16 = v9;
+      v16 = leftDrifts2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removed left drift.  Recorded drifts are now %{public}@", &v15, 0xCu);
     }
   }
 
-  v10 = [v4 rightDots];
-  v11 = [v10 count];
+  rightDots = [patternCopy rightDots];
+  v11 = [rightDots count];
 
   if (v11)
   {
-    v12 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-    [(VOTBrailleGestureDataRepository *)self _removeInstanceOfDriftFromArray:v12];
+    rightDrifts = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+    [(VOTBrailleGestureDataRepository *)self _removeInstanceOfDriftFromArray:rightDrifts];
 
     v13 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+      rightDrifts2 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
       v15 = 138543362;
-      v16 = v14;
+      v16 = rightDrifts2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Removed right drift.  Recorded drifts are now %{public}@", &v15, 0xCu);
     }
   }
@@ -295,41 +295,41 @@ LABEL_24:
 
 - (BOOL)saveDrift
 {
-  v3 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-  v4 = [v3 count];
+  leftDrifts = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+  v4 = [leftDrifts count];
 
   if (v4 >= 6)
   {
-    v5 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-    v6 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-    [v5 removeObjectsInRange:{0, objc_msgSend(v6, "count") - 5}];
+    leftDrifts2 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+    leftDrifts3 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+    [leftDrifts2 removeObjectsInRange:{0, objc_msgSend(leftDrifts3, "count") - 5}];
   }
 
-  v7 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-  v8 = [v7 count];
+  rightDrifts = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+  v8 = [rightDrifts count];
 
   if (v8 >= 6)
   {
-    v9 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-    v10 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-    [v9 removeObjectsInRange:{0, objc_msgSend(v10, "count") - 5}];
+    rightDrifts2 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+    rightDrifts3 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+    [rightDrifts2 removeObjectsInRange:{0, objc_msgSend(rightDrifts3, "count") - 5}];
   }
 
   v20[0] = @"Left";
-  v11 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-  v12 = [(VOTBrailleGestureDataRepository *)self _arrayOfDictionariesFromPointValues:v11];
+  leftDrifts4 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+  v12 = [(VOTBrailleGestureDataRepository *)self _arrayOfDictionariesFromPointValues:leftDrifts4];
   v20[1] = @"Right";
   v21[0] = v12;
-  v13 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-  v14 = [(VOTBrailleGestureDataRepository *)self _arrayOfDictionariesFromPointValues:v13];
+  rightDrifts4 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+  v14 = [(VOTBrailleGestureDataRepository *)self _arrayOfDictionariesFromPointValues:rightDrifts4];
   v21[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-  v16 = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
-  v17 = [v15 writeToFile:v16 atomically:1];
+  _recordedDriftsFilePath = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
+  v17 = [v15 writeToFile:_recordedDriftsFilePath atomically:1];
   if (v17)
   {
-    [(VOTBrailleGestureDataRepository *)self _repairFileProtectionClassOnPathIfNecessary:v16];
+    [(VOTBrailleGestureDataRepository *)self _repairFileProtectionClassOnPathIfNecessary:_recordedDriftsFilePath];
   }
 
   else
@@ -360,33 +360,33 @@ LABEL_24:
   return v3;
 }
 
-- (void)_orderedLeftDots:(id *)a3 rightDots:(id *)a4
+- (void)_orderedLeftDots:(id *)dots rightDots:(id *)rightDots
 {
-  v7 = [(VOTBrailleGestureDataRepository *)self _shouldReverseDots];
-  if (a3)
+  _shouldReverseDots = [(VOTBrailleGestureDataRepository *)self _shouldReverseDots];
+  if (dots)
   {
-    v8 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-    *a3 = [v8 dotArrayReversed:v7];
+    leftDotPositions = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+    *dots = [leftDotPositions dotArrayReversed:_shouldReverseDots];
   }
 
-  if (a4)
+  if (rightDots)
   {
-    v9 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-    *a4 = [v9 dotArrayReversed:v7];
+    rightDotPositions = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+    *rightDots = [rightDotPositions dotArrayReversed:_shouldReverseDots];
   }
 }
 
-- (void)_appendDots:(id)a3 toPositionsArray:(id)a4 withDrift:(CGPoint)a5
+- (void)_appendDots:(id)dots toPositionsArray:(id)array withDrift:(CGPoint)drift
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = drift.y;
+  x = drift.x;
+  dotsCopy = dots;
+  arrayCopy = array;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v11 = [dotsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -398,28 +398,28 @@ LABEL_24:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(dotsCopy);
         }
 
         v15 = [(VOTBrailleGestureDataRepository *)self _adjustPointValue:*(*(&v16 + 1) + 8 * v14) withDrift:x, y];
-        [v10 addObject:v15];
+        [arrayCopy addObject:v15];
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [dotsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 }
 
-- (BOOL)_allDotsAreOnScreen:(id)a3 withDrift:(CGPoint)a4
+- (BOOL)_allDotsAreOnScreen:(id)screen withDrift:(CGPoint)drift
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = drift.y;
+  x = drift.x;
+  screenCopy = screen;
   v8 = *(&xmmword_1001FF150 + 1);
   v9 = *&xmmword_1001FF150;
   if ([(VOTBrailleGestureDataRepository *)self _isTypingModeSingleHandVariant])
@@ -432,7 +432,7 @@ LABEL_24:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v7;
+  v10 = screenCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v11)
   {
@@ -503,22 +503,22 @@ LABEL_13:
   return v19;
 }
 
-- (void)calibrateWithDotNumberPositions:(id)a3
+- (void)calibrateWithDotNumberPositions:(id)positions
 {
-  v4 = a3;
-  v5 = [(VOTBrailleGestureDataRepository *)self _isTypingModeInputColumnsVariant];
-  v6 = [v4 count];
-  v7 = [(VOTBrailleGestureDataRepository *)self _totalNumberOfDots];
-  if (v5)
+  positionsCopy = positions;
+  _isTypingModeInputColumnsVariant = [(VOTBrailleGestureDataRepository *)self _isTypingModeInputColumnsVariant];
+  v6 = [positionsCopy count];
+  _totalNumberOfDots = [(VOTBrailleGestureDataRepository *)self _totalNumberOfDots];
+  if (_isTypingModeInputColumnsVariant)
   {
-    if (v6 != (v7 >> 1))
+    if (v6 != (_totalNumberOfDots >> 1))
     {
       _AXAssert();
     }
 
     if (self->_shouldUseEightDotBraille)
     {
-      v8 = [v4 objectAtIndexedSubscript:3];
+      v8 = [positionsCopy objectAtIndexedSubscript:3];
     }
 
     else
@@ -526,23 +526,23 @@ LABEL_13:
       v8 = 0;
     }
 
-    v9 = [v4 objectAtIndexedSubscript:0];
-    v10 = [v4 objectAtIndexedSubscript:1];
-    v11 = [v4 objectAtIndexedSubscript:2];
+    v9 = [positionsCopy objectAtIndexedSubscript:0];
+    v10 = [positionsCopy objectAtIndexedSubscript:1];
+    v11 = [positionsCopy objectAtIndexedSubscript:2];
     v12 = [VOTBrailleGestureHalfPattern halfPatternWithTopDot:v9 middleDot:v10 bottomDot:v11 fourthDot:v8];
     [(VOTBrailleGestureDataRepository *)self setLeftDotPositions:v12];
   }
 
   else
   {
-    if (v6 != v7)
+    if (v6 != _totalNumberOfDots)
     {
       _AXAssert();
     }
 
     if (self->_shouldUseEightDotBraille)
     {
-      v8 = [v4 objectAtIndexedSubscript:6];
+      v8 = [positionsCopy objectAtIndexedSubscript:6];
     }
 
     else
@@ -552,7 +552,7 @@ LABEL_13:
 
     if (self->_shouldUseEightDotBraille)
     {
-      v9 = [v4 objectAtIndexedSubscript:7];
+      v9 = [positionsCopy objectAtIndexedSubscript:7];
     }
 
     else
@@ -560,34 +560,34 @@ LABEL_13:
       v9 = 0;
     }
 
-    v13 = [v4 objectAtIndexedSubscript:0];
-    v14 = [v4 objectAtIndexedSubscript:1];
-    v15 = [v4 objectAtIndexedSubscript:2];
+    v13 = [positionsCopy objectAtIndexedSubscript:0];
+    v14 = [positionsCopy objectAtIndexedSubscript:1];
+    v15 = [positionsCopy objectAtIndexedSubscript:2];
     v16 = [VOTBrailleGestureHalfPattern halfPatternWithTopDot:v13 middleDot:v14 bottomDot:v15 fourthDot:v8];
     [(VOTBrailleGestureDataRepository *)self setLeftDotPositions:v16];
 
-    v10 = [v4 objectAtIndexedSubscript:3];
-    v11 = [v4 objectAtIndexedSubscript:4];
-    v12 = [v4 objectAtIndexedSubscript:5];
+    v10 = [positionsCopy objectAtIndexedSubscript:3];
+    v11 = [positionsCopy objectAtIndexedSubscript:4];
+    v12 = [positionsCopy objectAtIndexedSubscript:5];
     v17 = [VOTBrailleGestureHalfPattern halfPatternWithTopDot:v10 middleDot:v11 bottomDot:v12 fourthDot:v9];
     [(VOTBrailleGestureDataRepository *)self setRightDotPositions:v17];
   }
 
-  v18 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-  v19 = [v18 dictionaryRepresentation];
+  leftDotPositions = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+  dictionaryRepresentation = [leftDotPositions dictionaryRepresentation];
 
-  v20 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-  v21 = [v20 dictionaryRepresentation];
+  rightDotPositions = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+  dictionaryRepresentation2 = [rightDotPositions dictionaryRepresentation];
 
   v25[0] = @"Left";
   v25[1] = @"Right";
-  v26[0] = v19;
-  v26[1] = v21;
+  v26[0] = dictionaryRepresentation;
+  v26[1] = dictionaryRepresentation2;
   v22 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-  v23 = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
-  if ([v22 writeToFile:v23 atomically:1])
+  _calibratedDotPositionsFilePath = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
+  if ([v22 writeToFile:_calibratedDotPositionsFilePath atomically:1])
   {
-    [(VOTBrailleGestureDataRepository *)self _repairFileProtectionClassOnPathIfNecessary:v23];
+    [(VOTBrailleGestureDataRepository *)self _repairFileProtectionClassOnPathIfNecessary:_calibratedDotPositionsFilePath];
     [(VOTBrailleGestureDataRepository *)self _resetLearnedData];
   }
 
@@ -601,23 +601,23 @@ LABEL_13:
   }
 }
 
-- (CGPoint)_driftByAddingDisplacementOfPointValue:(id)a3 fromPointValue:(id)a4 toDrift:(CGPoint)a5
+- (CGPoint)_driftByAddingDisplacementOfPointValue:(id)value fromPointValue:(id)pointValue toDrift:(CGPoint)drift
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  y = drift.y;
+  x = drift.x;
+  valueCopy = value;
+  pointValueCopy = pointValue;
+  if (!pointValueCopy)
   {
     _AXAssert();
   }
 
-  [v9 ax_CGPointValue];
-  if (v8)
+  [pointValueCopy ax_CGPointValue];
+  if (valueCopy)
   {
     v12 = v10;
     v13 = v11;
-    [v8 ax_CGPointValue];
+    [valueCopy ax_CGPointValue];
     x = x + v14 - v12;
     y = y + v15 - v13;
   }
@@ -629,39 +629,39 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)_driftOfHalfPattern:(id)a3 relativeToDotPositions:(id)a4
+- (CGPoint)_driftOfHalfPattern:(id)pattern relativeToDotPositions:(id)positions
 {
-  v6 = a3;
-  v7 = a4;
+  patternCopy = pattern;
+  positionsCopy = positions;
   y = CGPointZero.y;
-  v9 = [v6 topDot];
-  v10 = [v7 topDot];
-  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:v9 fromPointValue:v10 toDrift:CGPointZero.x, y];
+  topDot = [patternCopy topDot];
+  topDot2 = [positionsCopy topDot];
+  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:topDot fromPointValue:topDot2 toDrift:CGPointZero.x, y];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v6 middleDot];
-  v16 = [v7 middleDot];
-  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:v15 fromPointValue:v16 toDrift:v12, v14];
+  middleDot = [patternCopy middleDot];
+  middleDot2 = [positionsCopy middleDot];
+  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:middleDot fromPointValue:middleDot2 toDrift:v12, v14];
   v18 = v17;
   v20 = v19;
 
-  v21 = [v6 bottomDot];
-  v22 = [v7 bottomDot];
-  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:v21 fromPointValue:v22 toDrift:v18, v20];
+  bottomDot = [patternCopy bottomDot];
+  bottomDot2 = [positionsCopy bottomDot];
+  [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:bottomDot fromPointValue:bottomDot2 toDrift:v18, v20];
   v24 = v23;
   v26 = v25;
 
   if (self->_shouldUseEightDotBraille)
   {
-    v27 = [v6 fourthDot];
-    v28 = [v7 fourthDot];
-    [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:v27 fromPointValue:v28 toDrift:v24, v26];
+    fourthDot = [patternCopy fourthDot];
+    fourthDot2 = [positionsCopy fourthDot];
+    [(VOTBrailleGestureDataRepository *)self _driftByAddingDisplacementOfPointValue:fourthDot fromPointValue:fourthDot2 toDrift:v24, v26];
     v24 = v29;
     v26 = v30;
   }
 
-  v31 = [v6 count];
+  v31 = [patternCopy count];
   if (v31)
   {
     v24 = v24 / v31;
@@ -680,24 +680,24 @@ LABEL_13:
   return result;
 }
 
-- (void)_addInstanceOfDrift:(CGPoint)a3 toArray:(id)a4 forPattern:(id)a5
+- (void)_addInstanceOfDrift:(CGPoint)drift toArray:(id)array forPattern:(id)pattern
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  y = drift.y;
+  x = drift.x;
+  arrayCopy = array;
+  patternCopy = pattern;
+  if (!arrayCopy)
   {
     _AXAssert();
   }
 
   v11 = [NSValue ax_valueWithCGPoint:x, y];
-  [v9 addObject:v11];
+  [arrayCopy addObject:v11];
 
-  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:v9];
+  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:arrayCopy];
   v13 = v12;
   v15 = v14;
-  v16 = [v10 dotArrayReversed:{-[VOTBrailleGestureDataRepository _shouldReverseDots](self, "_shouldReverseDots")}];
+  v16 = [patternCopy dotArrayReversed:{-[VOTBrailleGestureDataRepository _shouldReverseDots](self, "_shouldReverseDots")}];
   if (![(VOTBrailleGestureDataRepository *)self _allDotsAreOnScreen:v16 withDrift:v13, v15])
   {
     v17 = VOTLogBrailleGestures();
@@ -706,19 +706,19 @@ LABEL_13:
       sub_10012EBD8(v17, x, y);
     }
 
-    [v9 removeLastObject];
+    [arrayCopy removeLastObject];
   }
 }
 
-- (void)_removeInstanceOfDriftFromArray:(id)a3
+- (void)_removeInstanceOfDriftFromArray:(id)array
 {
-  v3 = a3;
-  if (!v3)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     _AXAssert();
   }
 
-  if ([v3 count] < 6)
+  if ([arrayCopy count] < 6)
   {
     v4 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -730,14 +730,14 @@ LABEL_13:
 
   else
   {
-    [v3 removeLastObject];
+    [arrayCopy removeLastObject];
   }
 }
 
-- (CGPoint)_averageRecentDriftFromDrifts:(id)a3
+- (CGPoint)_averageRecentDriftFromDrifts:(id)drifts
 {
-  v3 = a3;
-  v4 = [v3 count];
+  driftsCopy = drifts;
+  v4 = [driftsCopy count];
   if (v4 <= 4)
   {
     x = CGPointZero.x;
@@ -747,7 +747,7 @@ LABEL_13:
 
   else
   {
-    v5 = [v3 subarrayWithRange:{v4 - 5, 5}];
+    v5 = [driftsCopy subarrayWithRange:{v4 - 5, 5}];
     x = sub_10003D830(v5);
     y = v7;
   }
@@ -761,8 +761,8 @@ LABEL_13:
 
 - (CGPoint)_averageLeftDrift
 {
-  v3 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:v3];
+  leftDrifts = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:leftDrifts];
   v5 = v4;
   v7 = v6;
 
@@ -775,8 +775,8 @@ LABEL_13:
 
 - (CGPoint)_averageRightDrift
 {
-  v3 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
-  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:v3];
+  rightDrifts = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+  [(VOTBrailleGestureDataRepository *)self _averageRecentDriftFromDrifts:rightDrifts];
   v5 = v4;
   v7 = v6;
 
@@ -787,13 +787,13 @@ LABEL_13:
   return result;
 }
 
-- (id)_adjustPointValue:(id)a3 withDrift:(CGPoint)a4
+- (id)_adjustPointValue:(id)value withDrift:(CGPoint)drift
 {
-  if (a3)
+  if (value)
   {
-    y = a4.y;
-    x = a4.x;
-    [a3 ax_CGPointValue];
+    y = drift.y;
+    x = drift.x;
+    [value ax_CGPointValue];
     v9 = [NSValue ax_valueWithCGPoint:x + v7, y + v8];
   }
 
@@ -821,8 +821,8 @@ LABEL_13:
 - (void)_resetLearnedData
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  _recordedDriftsFilePath = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
+  v5 = [v3 fileExistsAtPath:_recordedDriftsFilePath];
 
   if (v5)
   {
@@ -833,9 +833,9 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Deleting recorded drifts", buf, 2u);
     }
 
-    v7 = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
+    _recordedDriftsFilePath2 = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
     v11 = 0;
-    v8 = [v3 removeItemAtPath:v7 error:&v11];
+    v8 = [v3 removeItemAtPath:_recordedDriftsFilePath2 error:&v11];
     v9 = v11;
 
     if ((v8 & 1) == 0)
@@ -854,8 +854,8 @@ LABEL_13:
 - (void)_deleteCalibratedData
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
-  if ([v3 fileExistsAtPath:v4])
+  _calibratedDotPositionsFilePath = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
+  if ([v3 fileExistsAtPath:_calibratedDotPositionsFilePath])
   {
     v5 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -865,7 +865,7 @@ LABEL_13:
     }
 
     v9 = 0;
-    v6 = [v3 removeItemAtPath:v4 error:&v9];
+    v6 = [v3 removeItemAtPath:_calibratedDotPositionsFilePath error:&v9];
     v7 = v9;
     if ((v6 & 1) == 0)
     {
@@ -907,12 +907,12 @@ LABEL_13:
 - (id)_gestureDataDirectory
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
   v14 = NSFileProtectionKey;
   v15 = NSFileProtectionNone;
   v5 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  v6 = [v4 stringByAppendingPathComponent:@"Accessibility"];
+  v6 = [lastObject stringByAppendingPathComponent:@"Accessibility"];
   v7 = [v6 stringByAppendingPathComponent:@"BrailleGestures"];
   v8 = +[NSFileManager defaultManager];
   v13 = 0;
@@ -938,10 +938,10 @@ LABEL_13:
   calibratedDotPositionsFilePath = self->_calibratedDotPositionsFilePath;
   if (!calibratedDotPositionsFilePath)
   {
-    v4 = [(VOTBrailleGestureDataRepository *)self _gestureDataDirectory];
-    v5 = [(VOTBrailleGestureDataRepository *)self _filenameSuffix];
-    v6 = [NSString stringWithFormat:@"CalibratedDotPositions.%@", v5];
-    v7 = [v4 stringByAppendingPathComponent:v6];
+    _gestureDataDirectory = [(VOTBrailleGestureDataRepository *)self _gestureDataDirectory];
+    _filenameSuffix = [(VOTBrailleGestureDataRepository *)self _filenameSuffix];
+    v6 = [NSString stringWithFormat:@"CalibratedDotPositions.%@", _filenameSuffix];
+    v7 = [_gestureDataDirectory stringByAppendingPathComponent:v6];
     v8 = self->_calibratedDotPositionsFilePath;
     self->_calibratedDotPositionsFilePath = v7;
 
@@ -956,10 +956,10 @@ LABEL_13:
   recordedDriftsFilePath = self->_recordedDriftsFilePath;
   if (!recordedDriftsFilePath)
   {
-    v4 = [(VOTBrailleGestureDataRepository *)self _gestureDataDirectory];
-    v5 = [(VOTBrailleGestureDataRepository *)self _filenameSuffix];
-    v6 = [NSString stringWithFormat:@"RecordedDrifts.%@", v5];
-    v7 = [v4 stringByAppendingPathComponent:v6];
+    _gestureDataDirectory = [(VOTBrailleGestureDataRepository *)self _gestureDataDirectory];
+    _filenameSuffix = [(VOTBrailleGestureDataRepository *)self _filenameSuffix];
+    v6 = [NSString stringWithFormat:@"RecordedDrifts.%@", _filenameSuffix];
+    v7 = [_gestureDataDirectory stringByAppendingPathComponent:v6];
     v8 = self->_recordedDriftsFilePath;
     self->_recordedDriftsFilePath = v7;
 
@@ -1057,62 +1057,62 @@ LABEL_13:
   }
 }
 
-- (void)_getEightDotTableTopMiddleLeftDot:(CGPoint *)a3 middleRightDot:(CGPoint *)a4 bottomLeftDot:(CGPoint *)a5 bottomRightDot:(CGPoint *)a6 angleFromXAxisToLineOfHand:(double)a7 topLeftDot:(CGPoint)a8
+- (void)_getEightDotTableTopMiddleLeftDot:(CGPoint *)dot middleRightDot:(CGPoint *)rightDot bottomLeftDot:(CGPoint *)leftDot bottomRightDot:(CGPoint *)bottomRightDot angleFromXAxisToLineOfHand:(double)hand topLeftDot:(CGPoint)topLeftDot
 {
-  y = a8.y;
-  x = a8.x;
+  y = topLeftDot.y;
+  x = topLeftDot.x;
   v16 = acos(0.958333333);
-  v17 = __sincos_stret(v16 + a7);
+  v17 = __sincos_stret(v16 + hand);
   v18 = x + v17.__cosval * -120.0;
   v19 = y + v17.__sinval * -120.0;
   width = self->_keyboardSize.width;
-  v21 = __sincos_stret(a7);
-  if (a3)
+  v21 = __sincos_stret(hand);
+  if (dot)
   {
-    a3->x = v18;
-    a3->y = v19;
+    dot->x = v18;
+    dot->y = v19;
   }
 
-  if (a4)
+  if (rightDot)
   {
-    a4->x = width - v18;
-    a4->y = v19;
+    rightDot->x = width - v18;
+    rightDot->y = v19;
   }
 
   v22 = v18 + v21.__cosval * -120.0;
   v23 = v19 + v21.__sinval * -120.0;
-  if (a5)
+  if (leftDot)
   {
-    a5->x = v22;
-    a5->y = v23;
+    leftDot->x = v22;
+    leftDot->y = v23;
   }
 
-  if (a6)
+  if (bottomRightDot)
   {
-    a6->x = width - v22;
-    a6->y = v23;
+    bottomRightDot->x = width - v22;
+    bottomRightDot->y = v23;
   }
 }
 
-- (void)_getMiddleDotsForSixDotTableTopInitialDataForLeft:(CGPoint *)a3 right:(CGPoint *)a4 angleFromXAxisToLineOfHand:(double)a5 topLeftDot:(CGPoint)a6
+- (void)_getMiddleDotsForSixDotTableTopInitialDataForLeft:(CGPoint *)left right:(CGPoint *)right angleFromXAxisToLineOfHand:(double)hand topLeftDot:(CGPoint)dot
 {
-  y = a6.y;
-  x = a6.x;
+  y = dot.y;
+  x = dot.x;
   v12 = acos(0.958333333);
-  v13 = __sincos_stret(v12 + a5);
+  v13 = __sincos_stret(v12 + hand);
   v14 = x + v13.__cosval * -120.0;
   v15 = y + v13.__sinval * -120.0;
   width = self->_keyboardSize.width;
-  if (a3)
+  if (left)
   {
-    a3->x = v14;
-    a3->y = v15;
+    left->x = v14;
+    left->y = v15;
   }
 
-  if (a4)
+  if (right)
   {
-    a4->x = width - v14;
-    a4->y = v15;
+    right->x = width - v14;
+    right->y = v15;
   }
 }
 
@@ -1226,9 +1226,9 @@ LABEL_13:
   [(VOTBrailleGestureDataRepository *)self setRightDotPositions:v18];
 }
 
-- (void)_generateStylusInitialData:(BOOL)a3
+- (void)_generateStylusInitialData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v5 = self->_keyboardSize.width * 0.25;
   v6 = 6.0;
   if (self->_shouldUseEightDotBraille)
@@ -1267,7 +1267,7 @@ LABEL_13:
   v15 = [NSValue ax_valueWithCGPoint:v5, v7 * 5.0];
   v16 = [VOTBrailleGestureHalfPattern halfPatternWithTopDot:v13 middleDot:v14 bottomDot:v15 fourthDot:v8];
 
-  if (v3)
+  if (dataCopy)
   {
     v17 = v16;
   }
@@ -1277,7 +1277,7 @@ LABEL_13:
     v17 = v12;
   }
 
-  if (v3)
+  if (dataCopy)
   {
     v18 = v12;
   }
@@ -1322,10 +1322,10 @@ LABEL_13:
   }
 }
 
-- (id)_mutableArrayOfZeroPointValues:(unint64_t)a3
+- (id)_mutableArrayOfZeroPointValues:(unint64_t)values
 {
   v4 = [NSMutableArray arrayWithCapacity:?];
-  if (a3)
+  if (values)
   {
     y = CGPointZero.y;
     do
@@ -1333,24 +1333,24 @@ LABEL_13:
       v6 = [NSValue ax_valueWithCGPoint:CGPointZero.x, y];
       [v4 addObject:v6];
 
-      --a3;
+      --values;
     }
 
-    while (a3);
+    while (values);
   }
 
   return v4;
 }
 
-- (id)_mutableArrayOfPointValuesFromDictionaries:(id)a3
+- (id)_mutableArrayOfPointValuesFromDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dictionariesCopy = dictionaries;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1378,15 +1378,15 @@ LABEL_13:
   return v4;
 }
 
-- (id)_arrayOfDictionariesFromPointValues:(id)a3
+- (id)_arrayOfDictionariesFromPointValues:(id)values
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  valuesCopy = values;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [valuesCopy count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = valuesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1414,12 +1414,12 @@ LABEL_13:
   return v4;
 }
 
-- (void)_repairFileProtectionClassOnPathIfNecessary:(id)a3
+- (void)_repairFileProtectionClassOnPathIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = +[NSFileManager defaultManager];
   v15 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v15];
+  v5 = [v4 attributesOfItemAtPath:necessaryCopy error:&v15];
   v6 = v15;
   if (!v5)
   {
@@ -1448,7 +1448,7 @@ LABEL_13:
     v17 = NSFileProtectionNone;
     v10 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v14 = v6;
-    v11 = [v4 setAttributes:v10 ofItemAtPath:v3 error:&v14];
+    v11 = [v4 setAttributes:v10 ofItemAtPath:necessaryCopy error:&v14];
     v12 = v14;
 
     if (v11)
@@ -1469,13 +1469,13 @@ LABEL_12:
   }
 }
 
-- (id)_loadDataFromFile:(id)a3
+- (id)_loadDataFromFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:fileCopy])
   {
-    v5 = [NSDictionary dictionaryWithContentsOfFile:v3];
+    v5 = [NSDictionary dictionaryWithContentsOfFile:fileCopy];
     if (v5)
     {
       goto LABEL_7;
@@ -1496,8 +1496,8 @@ LABEL_7:
 
 - (void)_loadAllDataFromFiles
 {
-  v3 = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
-  v4 = [(VOTBrailleGestureDataRepository *)self _loadDataFromFile:v3];
+  _calibratedDotPositionsFilePath = [(VOTBrailleGestureDataRepository *)self _calibratedDotPositionsFilePath];
+  v4 = [(VOTBrailleGestureDataRepository *)self _loadDataFromFile:_calibratedDotPositionsFilePath];
 
   if (!v4)
   {
@@ -1518,17 +1518,17 @@ LABEL_7:
   v9 = [VOTBrailleGestureHalfPattern halfPatternWithDictionaryRepresentation:v8];
   [(VOTBrailleGestureDataRepository *)self setRightDotPositions:v9];
 
-  v10 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-  v11 = [v10 topDot];
-  if (!v11)
+  leftDotPositions = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+  topDot = [leftDotPositions topDot];
+  if (!topDot)
   {
     goto LABEL_18;
   }
 
-  v12 = v11;
-  v13 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-  v14 = [v13 middleDot];
-  if (!v14)
+  v12 = topDot;
+  leftDotPositions2 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+  middleDot = [leftDotPositions2 middleDot];
+  if (!middleDot)
   {
 LABEL_17:
 
@@ -1544,55 +1544,55 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  v15 = v14;
-  v16 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-  v17 = [v16 bottomDot];
-  if (!v17)
+  v15 = middleDot;
+  leftDotPositions3 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+  bottomDot = [leftDotPositions3 bottomDot];
+  if (!bottomDot)
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v18 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-  v19 = [v18 topDot];
-  if (!v19)
+  rightDotPositions = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+  topDot2 = [rightDotPositions topDot];
+  if (!topDot2)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v49 = v19;
-  v20 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-  v21 = [v20 middleDot];
-  if (!v21)
+  v49 = topDot2;
+  rightDotPositions2 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+  middleDot2 = [rightDotPositions2 middleDot];
+  if (!middleDot2)
   {
 
     goto LABEL_15;
   }
 
-  v47 = v20;
-  v48 = v21;
-  v46 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-  v22 = [v46 bottomDot];
-  if (v22)
+  v47 = rightDotPositions2;
+  v48 = middleDot2;
+  rightDotPositions3 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+  bottomDot2 = [rightDotPositions3 bottomDot];
+  if (bottomDot2)
   {
     if (self->_shouldUseEightDotBraille)
     {
-      v45 = v22;
-      v44 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-      v23 = [v44 fourthDot];
-      if (v23)
+      v45 = bottomDot2;
+      leftDotPositions4 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+      fourthDot = [leftDotPositions4 fourthDot];
+      if (fourthDot)
       {
         if (self->_shouldUseEightDotBraille)
         {
-          v43 = v23;
-          v42 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
-          v24 = [v42 fourthDot];
-          v25 = v24 == 0;
+          v43 = fourthDot;
+          rightDotPositions4 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+          fourthDot2 = [rightDotPositions4 fourthDot];
+          v25 = fourthDot2 == 0;
 
-          v23 = v43;
+          fourthDot = v43;
         }
 
         else
@@ -1606,7 +1606,7 @@ LABEL_15:
         v25 = 1;
       }
 
-      v22 = v45;
+      bottomDot2 = v45;
     }
 
     else
@@ -1639,30 +1639,30 @@ LABEL_22:
   }
 
   [(VOTBrailleGestureDataRepository *)self _generateInitialData];
-  v28 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
-  if (!v28)
+  leftDotPositions5 = [(VOTBrailleGestureDataRepository *)self leftDotPositions];
+  if (!leftDotPositions5)
   {
     goto LABEL_29;
   }
 
-  v29 = v28;
+  v29 = leftDotPositions5;
   if ([(VOTBrailleGestureDataRepository *)self _isTypingModeInputColumnsVariant])
   {
 
     goto LABEL_30;
   }
 
-  v30 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
+  rightDotPositions5 = [(VOTBrailleGestureDataRepository *)self rightDotPositions];
 
-  if (!v30)
+  if (!rightDotPositions5)
   {
 LABEL_29:
     _AXAssert();
   }
 
 LABEL_30:
-  v31 = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
-  v32 = [(VOTBrailleGestureDataRepository *)self _loadDataFromFile:v31];
+  _recordedDriftsFilePath = [(VOTBrailleGestureDataRepository *)self _recordedDriftsFilePath];
+  v32 = [(VOTBrailleGestureDataRepository *)self _loadDataFromFile:_recordedDriftsFilePath];
 
   if (v32)
   {
@@ -1677,12 +1677,12 @@ LABEL_30:
     v37 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(VOTBrailleGestureDataRepository *)self leftDrifts];
-      v39 = [(VOTBrailleGestureDataRepository *)self rightDrifts];
+      leftDrifts = [(VOTBrailleGestureDataRepository *)self leftDrifts];
+      rightDrifts = [(VOTBrailleGestureDataRepository *)self rightDrifts];
       *buf = 138543618;
-      v51 = v38;
+      v51 = leftDrifts;
       v52 = 2114;
-      v53 = v39;
+      v53 = rightDrifts;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Had recorded left drifts: %{public}@\nright drifts: %{public}@", buf, 0x16u);
     }
   }

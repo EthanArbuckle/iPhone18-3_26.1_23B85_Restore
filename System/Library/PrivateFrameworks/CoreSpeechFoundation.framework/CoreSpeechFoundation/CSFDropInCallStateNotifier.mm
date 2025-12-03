@@ -1,24 +1,24 @@
 @interface CSFDropInCallStateNotifier
 - (CSFDropInCallStateNotifier)init;
 - (void)_registerForDropInCallbacks;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CSFDropInCallStateNotifier
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v5 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__CSFDropInCallStateNotifier_notifyObserver_didReceiveNotificationWithToken___block_invoke;
   v8[3] = &unk_1E865C970;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -159,7 +159,7 @@ uint64_t __35__CSFDropInCallStateNotifier_start__block_invoke(uint64_t a1)
 {
   if (+[CSUtils isDarwinOS](CSUtils, "isDarwinOS") || !+[CSUtils supportDropInCall])
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -175,10 +175,10 @@ uint64_t __35__CSFDropInCallStateNotifier_start__block_invoke(uint64_t a1)
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

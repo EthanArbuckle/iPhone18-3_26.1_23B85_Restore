@@ -1,10 +1,10 @@
 @interface MeProfilePictureCachePublisher.SharePublisherCache
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation MeProfilePictureCachePublisher.SharePublisherCache
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   v4 = sub_1BA4A1018();
   v5 = *(v4 - 8);

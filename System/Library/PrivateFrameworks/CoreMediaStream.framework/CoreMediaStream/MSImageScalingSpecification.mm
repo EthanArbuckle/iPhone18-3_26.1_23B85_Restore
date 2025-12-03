@@ -1,7 +1,7 @@
 @interface MSImageScalingSpecification
-+ (MSImageScalingSpecification)specificationWithSharedAlbumSpecificationString:(id)a3;
-+ (id)assetsToGenerateFromImageWithInputSize:(CGSize)a3 toConformToSpecifications:(id)a4;
-- (double)scaleFactorForInputSize:(CGSize)a3;
++ (MSImageScalingSpecification)specificationWithSharedAlbumSpecificationString:(id)string;
++ (id)assetsToGenerateFromImageWithInputSize:(CGSize)size toConformToSpecifications:(id)specifications;
+- (double)scaleFactorForInputSize:(CGSize)size;
 - (id)description;
 @end
 
@@ -23,26 +23,26 @@
   return v10;
 }
 
-- (double)scaleFactorForInputSize:(CGSize)a3
+- (double)scaleFactorForInputSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
   [(MSImageScalingSpecification *)self nominalShortSideLength];
@@ -76,17 +76,17 @@ LABEL_12:
   return result;
 }
 
-+ (id)assetsToGenerateFromImageWithInputSize:(CGSize)a3 toConformToSpecifications:(id)a4
++ (id)assetsToGenerateFromImageWithInputSize:(CGSize)size toConformToSpecifications:(id)specifications
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v50 = *MEMORY[0x277D85DE8];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  specificationsCopy = specifications;
+  v7 = [specificationsCopy countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v7)
   {
     v8 = *v44;
@@ -96,7 +96,7 @@ LABEL_12:
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(specificationsCopy);
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
@@ -107,7 +107,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v7 = [specificationsCopy countByEnumeratingWithState:&v43 objects:v49 count:16];
       if (v7)
       {
         continue;
@@ -119,7 +119,7 @@ LABEL_12:
 
 LABEL_11:
 
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(specificationsCopy, "count")}];
   if (v7)
   {
     [v7 scaleFactorForInputSize:{width, height}];
@@ -131,8 +131,8 @@ LABEL_11:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v34 = v6;
-    v15 = v6;
+    v34 = specificationsCopy;
+    v15 = specificationsCopy;
     v16 = [v15 countByEnumeratingWithState:&v35 objects:v47 count:16];
     if (v16)
     {
@@ -154,10 +154,10 @@ LABEL_11:
             if (v21 <= v13)
             {
               v24 = [v14 objectForKey:@"MSAssetMetadataAssetTypeFlags"];
-              v25 = [v24 intValue];
+              intValue = [v24 intValue];
 
               [v14 setObject:@"derivative" forKey:@"MSAssetMetadataAssetType"];
-              v23 = [MEMORY[0x277CCABB0] numberWithInt:v25 | 2u];
+              v23 = [MEMORY[0x277CCABB0] numberWithInt:intValue | 2u];
               [v14 setObject:v23 forKey:@"MSAssetMetadataAssetTypeFlags"];
             }
 
@@ -176,7 +176,7 @@ LABEL_11:
       while (v17);
     }
 
-    v6 = v34;
+    specificationsCopy = v34;
   }
 
   else
@@ -185,7 +185,7 @@ LABEL_11:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v14 = v6;
+    v14 = specificationsCopy;
     v26 = [v14 countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v26)
     {
@@ -234,11 +234,11 @@ id __96__MSImageScalingSpecification_assetsToGenerateFromImageWithInputSize_toCo
   return v7;
 }
 
-+ (MSImageScalingSpecification)specificationWithSharedAlbumSpecificationString:(id)a3
++ (MSImageScalingSpecification)specificationWithSharedAlbumSpecificationString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MSImageScalingSpecification);
-  v5 = [v3 componentsSeparatedByString:@":"];
+  v5 = [stringCopy componentsSeparatedByString:@":"];
 
   if ([v5 count] == 3)
   {

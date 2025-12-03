@@ -6,27 +6,27 @@
 
 - (id)resolvedCacheURL
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 bookmark];
-    if (!v2)
+    bookmark = [self bookmark];
+    if (!bookmark)
     {
-      v1 = 0;
+      selfCopy = 0;
 LABEL_11:
 
       goto LABEL_12;
     }
 
     v12 = 0;
-    v3 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:v2 options:0 relativeToURL:0 bookmarkDataIsStale:0 error:&v12];
+    v3 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:bookmark options:0 relativeToURL:0 bookmarkDataIsStale:0 error:&v12];
     v4 = v12;
     v5 = v4;
     if (v3)
     {
       if ([v3 checkResourceIsReachableAndReturnError:0])
       {
-        v1 = v3;
+        selfCopy = v3;
 LABEL_10:
 
         goto LABEL_11;
@@ -36,9 +36,9 @@ LABEL_10:
       v8[1] = 3221225472;
       v8[2] = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_138;
       v8[3] = &unk_1E7C397D0;
-      v8[4] = v1;
+      v8[4] = selfCopy;
       v9 = v5;
-      v1 = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_138(v8);
+      selfCopy = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_138(v8);
       v6 = v9;
     }
 
@@ -48,9 +48,9 @@ LABEL_10:
       v10[1] = 3221225472;
       v10[2] = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_2;
       v10[3] = &unk_1E7C397D0;
-      v10[4] = v1;
+      v10[4] = selfCopy;
       v11 = v4;
-      v1 = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_2(v10);
+      selfCopy = __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_2(v10);
       v6 = v11;
     }
 
@@ -59,7 +59,7 @@ LABEL_10:
 
 LABEL_12:
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __41__NTPBAVAsset_Bookmark__resolvedCacheURL__block_invoke_2(uint64_t a1)

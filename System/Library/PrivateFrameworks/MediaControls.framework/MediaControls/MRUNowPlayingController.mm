@@ -1,51 +1,51 @@
 @interface MRUNowPlayingController
 - (MRUMediaSuggestionsController)mediaSuggestionsController;
-- (MRUNowPlayingController)initWithEndpointController:(id)a3;
+- (MRUNowPlayingController)initWithEndpointController:(id)controller;
 - (NSString)description;
 - (NSString)nowPlayingInfoIdentifier;
 - (id)deviceSymbolName;
 - (id)outputDevicesSymbolName;
-- (void)addObserver:(id)a3;
-- (void)endpointController:(id)a3 didChangeRoute:(id)a4;
-- (void)imageForRoute:(id)a3 completion:(id)a4;
-- (void)mediaSuggestionsController:(id)a3 didChangeMediaSuggestions:(id)a4;
-- (void)metadataController:(id)a3 didChangeArtwork:(id)a4;
-- (void)metadataController:(id)a3 didChangeBundleID:(id)a4;
-- (void)metadataController:(id)a3 didChangeNowPlayingInfo:(id)a4;
-- (void)metadataController:(id)a3 didChangeTimeControls:(id)a4;
-- (void)metadataController:(id)a3 didChangeTransportControls:(id)a4;
-- (void)queueHandoffCoordinator:(id)a3 didChangeResponse:(id)a4;
-- (void)queueHandoffCoordinator:(id)a3 didChangeState:(int64_t)a4;
-- (void)removeObserver:(id)a3;
-- (void)routingDeviceImage:(id)a3;
-- (void)setQueueHandoffCoordinator:(id)a3;
-- (void)tvRemoteController:(id)a3 didChangeShowTVRemote:(BOOL)a4;
+- (void)addObserver:(id)observer;
+- (void)endpointController:(id)controller didChangeRoute:(id)route;
+- (void)imageForRoute:(id)route completion:(id)completion;
+- (void)mediaSuggestionsController:(id)controller didChangeMediaSuggestions:(id)suggestions;
+- (void)metadataController:(id)controller didChangeArtwork:(id)artwork;
+- (void)metadataController:(id)controller didChangeBundleID:(id)d;
+- (void)metadataController:(id)controller didChangeNowPlayingInfo:(id)info;
+- (void)metadataController:(id)controller didChangeTimeControls:(id)controls;
+- (void)metadataController:(id)controller didChangeTransportControls:(id)controls;
+- (void)queueHandoffCoordinator:(id)coordinator didChangeResponse:(id)response;
+- (void)queueHandoffCoordinator:(id)coordinator didChangeState:(int64_t)state;
+- (void)removeObserver:(id)observer;
+- (void)routingDeviceImage:(id)image;
+- (void)setQueueHandoffCoordinator:(id)coordinator;
+- (void)tvRemoteController:(id)controller didChangeShowTVRemote:(BOOL)remote;
 - (void)updateAutomaticResponseLoading;
 - (void)updateQuickTransportItem;
 @end
 
 @implementation MRUNowPlayingController
 
-- (MRUNowPlayingController)initWithEndpointController:(id)a3
+- (MRUNowPlayingController)initWithEndpointController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = MRUNowPlayingController;
   v6 = [(MRUNowPlayingController *)&v16 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_endpointController, a3);
+    objc_storeStrong(&v6->_endpointController, controller);
     [(MRUEndpointController *)v6->_endpointController addObserver:v6];
-    v9 = [[MRUTVRemoteController alloc] initWithEndpointController:v5];
+    v9 = [[MRUTVRemoteController alloc] initWithEndpointController:controllerCopy];
     tvRemoteController = v6->_tvRemoteController;
     v6->_tvRemoteController = v9;
 
     [(MRUTVRemoteController *)v6->_tvRemoteController setDelegate:v6];
-    v11 = [[MRUMPCMetadataDataSource alloc] initWithEndpointController:v5];
+    v11 = [[MRUMPCMetadataDataSource alloc] initWithEndpointController:controllerCopy];
     metadataDataSource = v6->_metadataDataSource;
     v6->_metadataDataSource = v11;
 
@@ -63,27 +63,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRUEndpointController *)self->_endpointController route];
-  v6 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v5];
+  route = [(MRUEndpointController *)self->_endpointController route];
+  v6 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, route];
 
   return v6;
 }
 
 - (NSString)nowPlayingInfoIdentifier
 {
-  v3 = [(MRUNowPlayingController *)self identifier];
-  v4 = [(MRUNowPlayingController *)self metadataController];
-  v5 = [v4 nowPlayingInfo];
-  v6 = [v5 identifier];
-  v7 = [v3 stringByAppendingFormat:@"|%@", v6];
+  identifier = [(MRUNowPlayingController *)self identifier];
+  metadataController = [(MRUNowPlayingController *)self metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
+  identifier2 = [nowPlayingInfo identifier];
+  v7 = [identifier stringByAppendingFormat:@"|%@", identifier2];
 
   return v7;
 }
 
-- (void)setQueueHandoffCoordinator:(id)a3
+- (void)setQueueHandoffCoordinator:(id)coordinator
 {
-  objc_storeStrong(&self->_queueHandoffCoordinator, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_queueHandoffCoordinator, coordinator);
+  coordinatorCopy = coordinator;
   [(MRUNowPlayingQueueHandoffCoordinator *)self->_queueHandoffCoordinator setDelegate:self];
 }
 
@@ -101,9 +101,9 @@
 
     v6 = objc_alloc_init(*v5);
     v7 = [MRUMediaSuggestionsController alloc];
-    v8 = [(MRUNowPlayingController *)self endpointController];
-    v9 = [(MRUNowPlayingController *)self metadataController];
-    v10 = [(MRUMediaSuggestionsController *)v7 initWithEndpointController:v8 metadataController:v9 dataSource:v6];
+    endpointController = [(MRUNowPlayingController *)self endpointController];
+    metadataController = [(MRUNowPlayingController *)self metadataController];
+    v10 = [(MRUMediaSuggestionsController *)v7 initWithEndpointController:endpointController metadataController:metadataController dataSource:v6];
     v11 = self->_mediaSuggestionsController;
     self->_mediaSuggestionsController = v10;
 
@@ -114,9 +114,9 @@
   return mediaSuggestionsController;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
 
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
 
@@ -175,37 +175,37 @@
     LOBYTE(v6) = 0;
   }
 
-  v10 = [(MRUEndpointController *)self->_endpointController endpointController];
-  [v10 setAllowsAutomaticResponseLoading:v6 & 1];
-  [v10 setOnScreen:v6 & 1];
-  [v10 setDeviceUnlocked:v6 & 1];
-  v11 = [v10 proxyDelegate];
-  v12 = v11;
+  endpointController = [(MRUEndpointController *)self->_endpointController endpointController];
+  [endpointController setAllowsAutomaticResponseLoading:v6 & 1];
+  [endpointController setOnScreen:v6 & 1];
+  [endpointController setDeviceUnlocked:v6 & 1];
+  proxyDelegate = [endpointController proxyDelegate];
+  v12 = proxyDelegate;
   if (v6)
   {
-    [v11 beginObserving];
+    [proxyDelegate beginObserving];
   }
 
   else
   {
-    [v11 endObserving];
+    [proxyDelegate endObserving];
   }
 }
 
 - (id)deviceSymbolName
 {
-  v3 = [(MRUEndpointController *)self->_endpointController route];
-  if (v3 && [(MRUEndpointController *)self->_endpointController isDeviceSystemRoute])
+  route = [(MRUEndpointController *)self->_endpointController route];
+  if (route && [(MRUEndpointController *)self->_endpointController isDeviceSystemRoute])
   {
-    v4 = [MEMORY[0x1E6970490] _currentDeviceRoutingSymbolName];
+    _currentDeviceRoutingSymbolName = [MEMORY[0x1E6970490] _currentDeviceRoutingSymbolName];
   }
 
   else
   {
-    v4 = [(MRUNowPlayingController *)self outputDevicesSymbolName];
+    _currentDeviceRoutingSymbolName = [(MRUNowPlayingController *)self outputDevicesSymbolName];
   }
 
-  v5 = v4;
+  v5 = _currentDeviceRoutingSymbolName;
 
   return v5;
 }
@@ -213,56 +213,56 @@
 - (id)outputDevicesSymbolName
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MRUEndpointController *)self->_endpointController route];
+  route = [(MRUEndpointController *)self->_endpointController route];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 endpointObject];
-    v4 = [v3 predictedOutputDevice];
+    endpointObject = [route endpointObject];
+    predictedOutputDevice = [endpointObject predictedOutputDevice];
   }
 
   else
   {
-    v3 = 0;
-    v4 = 0;
+    endpointObject = 0;
+    predictedOutputDevice = 0;
   }
 
-  if ([v2 isSplitRoute])
+  if ([route isSplitRoute])
   {
     v5 = @"person.2.fill";
   }
 
   else
   {
-    v6 = [v2 isDeviceSpeakerRoute] ^ 1;
-    if (v4)
+    v6 = [route isDeviceSpeakerRoute] ^ 1;
+    if (predictedOutputDevice)
     {
       v6 = 1;
     }
 
-    if (v6 != 1 || v3 == 0)
+    if (v6 != 1 || endpointObject == 0)
     {
       v5 = @"airplayaudio";
     }
 
     else
     {
-      v8 = [v3 outputDevices];
-      v23 = v3;
-      if (v4)
+      outputDevices = [endpointObject outputDevices];
+      v23 = endpointObject;
+      if (predictedOutputDevice)
       {
-        v34[0] = v4;
+        v34[0] = predictedOutputDevice;
         v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
 
-        v8 = v9;
+        outputDevices = v9;
       }
 
-      v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+      v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = v8;
+      v11 = outputDevices;
       v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
       if (v12)
       {
@@ -304,52 +304,52 @@
 
       v5 = [MEMORY[0x1E6970490] _symbolNameForRoutes:v10];
 
-      v3 = v23;
+      endpointObject = v23;
     }
   }
 
   return v5;
 }
 
-- (void)imageForRoute:(id)a3 completion:(id)a4
+- (void)imageForRoute:(id)route completion:(id)completion
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 endpointObject];
-    v9 = [v8 predictedOutputDevice];
+    endpointObject = [routeCopy endpointObject];
+    predictedOutputDevice = [endpointObject predictedOutputDevice];
   }
 
   else
   {
-    v8 = 0;
-    v9 = 0;
+    endpointObject = 0;
+    predictedOutputDevice = 0;
   }
 
-  if ([v6 isSplitRoute])
+  if ([routeCopy isSplitRoute])
   {
     v10 = +[MRUAssetsProvider wirelessSharing];
 LABEL_6:
     v11 = v10;
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 
     goto LABEL_25;
   }
 
-  v12 = [v6 isDeviceSpeakerRoute] ^ 1;
-  if (v9)
+  v12 = [routeCopy isDeviceSpeakerRoute] ^ 1;
+  if (predictedOutputDevice)
   {
     v12 = 1;
   }
 
-  if (v12 != 1 || !v8)
+  if (v12 != 1 || !endpointObject)
   {
-    v28 = [(MRUMetadataController *)self->_metadataController bundleID];
+    bundleID = [(MRUMetadataController *)self->_metadataController bundleID];
 
-    if (v28)
+    if (bundleID)
     {
       metadataController = self->_metadataController;
       v36[0] = MEMORY[0x1E69E9820];
@@ -357,7 +357,7 @@ LABEL_6:
       v36[2] = __52__MRUNowPlayingController_imageForRoute_completion___block_invoke;
       v36[3] = &unk_1E7664700;
       v36[4] = self;
-      v37 = v7;
+      v37 = completionCopy;
       [(MRUMetadataController *)metadataController representsLongFormVideoContentWithCompletion:v36];
 
       goto LABEL_25;
@@ -367,23 +367,23 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v13 = [v8 outputDevices];
-  v31 = v7;
-  v30 = v9;
-  if (v9)
+  outputDevices = [endpointObject outputDevices];
+  v31 = completionCopy;
+  v30 = predictedOutputDevice;
+  if (predictedOutputDevice)
   {
-    v44[0] = v9;
+    v44[0] = predictedOutputDevice;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
 
-    v13 = v14;
+    outputDevices = v14;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
+  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v16 = v13;
+  v16 = outputDevices;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v43 count:16];
   if (v17)
   {
@@ -424,10 +424,10 @@ LABEL_6:
   }
 
   v27 = [MEMORY[0x1E6970490] _symbolImageForRoutes:v15];
-  v7 = v31;
+  completionCopy = v31;
   v31[2](v31, v27);
 
-  v9 = v30;
+  predictedOutputDevice = v30;
 LABEL_25:
 }
 
@@ -458,19 +458,19 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)routingDeviceImage:(id)a3
+- (void)routingDeviceImage:(id)image
 {
   endpointController = self->_endpointController;
-  v5 = a3;
-  v6 = [(MRUEndpointController *)endpointController route];
-  [(MRUNowPlayingController *)self imageForRoute:v6 completion:v5];
+  imageCopy = image;
+  route = [(MRUEndpointController *)endpointController route];
+  [(MRUNowPlayingController *)self imageForRoute:route completion:imageCopy];
 }
 
-- (void)endpointController:(id)a3 didChangeRoute:(id)a4
+- (void)endpointController:(id)controller didChangeRoute:(id)route
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  routeCopy = route;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -494,7 +494,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 nowPlayingController:self endpointController:v6 didChangeRoute:v7];
+          [v13 nowPlayingController:self endpointController:controllerCopy didChangeRoute:routeCopy];
         }
 
         ++v12;
@@ -508,11 +508,11 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   }
 }
 
-- (void)tvRemoteController:(id)a3 didChangeShowTVRemote:(BOOL)a4
+- (void)tvRemoteController:(id)controller didChangeShowTVRemote:(BOOL)remote
 {
-  v4 = a4;
+  remoteCopy = remote;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -536,7 +536,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v12 = *(*(&v15 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 nowPlayingController:self tvRemoteController:v6 didChangeShowTVRemote:v4];
+          [v12 nowPlayingController:self tvRemoteController:controllerCopy didChangeShowTVRemote:remoteCopy];
         }
 
         ++v11;
@@ -549,25 +549,25 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
     while (v9);
   }
 
-  if (v4)
+  if (remoteCopy)
   {
-    v13 = [(MRUEndpointController *)self->_endpointController endpointController];
-    v14 = [v13 allowsAutomaticResponseLoading];
+    endpointController = [(MRUEndpointController *)self->_endpointController endpointController];
+    allowsAutomaticResponseLoading = [endpointController allowsAutomaticResponseLoading];
 
-    if (v14)
+    if (allowsAutomaticResponseLoading)
     {
-      [v6 prewarmIfNeeded];
+      [controllerCopy prewarmIfNeeded];
     }
   }
 
   [(MRUNowPlayingController *)self updateQuickTransportItem];
 }
 
-- (void)metadataController:(id)a3 didChangeBundleID:(id)a4
+- (void)metadataController:(id)controller didChangeBundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -591,7 +591,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 nowPlayingController:self metadataController:v6 didChangeBundleID:v7];
+          [v13 nowPlayingController:self metadataController:controllerCopy didChangeBundleID:dCopy];
         }
 
         ++v12;
@@ -605,11 +605,11 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   }
 }
 
-- (void)metadataController:(id)a3 didChangeArtwork:(id)a4
+- (void)metadataController:(id)controller didChangeArtwork:(id)artwork
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  artworkCopy = artwork;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -633,7 +633,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 nowPlayingController:self metadataController:v6 didChangeArtwork:v7];
+          [v13 nowPlayingController:self metadataController:controllerCopy didChangeArtwork:artworkCopy];
         }
 
         ++v12;
@@ -647,11 +647,11 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   }
 }
 
-- (void)metadataController:(id)a3 didChangeNowPlayingInfo:(id)a4
+- (void)metadataController:(id)controller didChangeNowPlayingInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -675,93 +675,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 nowPlayingController:self metadataController:v6 didChangeNowPlayingInfo:v7];
-        }
-
-        ++v12;
-      }
-
-      while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
-    }
-
-    while (v10);
-  }
-
-  [(MRUNowPlayingController *)self updateQuickTransportItem];
-}
-
-- (void)metadataController:(id)a3 didChangeTimeControls:(id)a4
-{
-  v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v14 = 0u;
-  v15 = 0u;
-  v16 = 0u;
-  v17 = 0u;
-  v8 = [(NSHashTable *)self->_observers copy];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v9)
-  {
-    v10 = v9;
-    v11 = *v15;
-    do
-    {
-      v12 = 0;
-      do
-      {
-        if (*v15 != v11)
-        {
-          objc_enumerationMutation(v8);
-        }
-
-        v13 = *(*(&v14 + 1) + 8 * v12);
-        if (objc_opt_respondsToSelector())
-        {
-          [v13 nowPlayingController:self metadataController:v6 didChangeTimeControls:v7];
-        }
-
-        ++v12;
-      }
-
-      while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
-    }
-
-    while (v10);
-  }
-}
-
-- (void)metadataController:(id)a3 didChangeTransportControls:(id)a4
-{
-  v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v14 = 0u;
-  v15 = 0u;
-  v16 = 0u;
-  v17 = 0u;
-  v8 = [(NSHashTable *)self->_observers copy];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v9)
-  {
-    v10 = v9;
-    v11 = *v15;
-    do
-    {
-      v12 = 0;
-      do
-      {
-        if (*v15 != v11)
-        {
-          objc_enumerationMutation(v8);
-        }
-
-        v13 = *(*(&v14 + 1) + 8 * v12);
-        if (objc_opt_respondsToSelector())
-        {
-          [v13 nowPlayingController:self metadataController:v6 didChangeTransportControls:v7];
+          [v13 nowPlayingController:self metadataController:controllerCopy didChangeNowPlayingInfo:infoCopy];
         }
 
         ++v12;
@@ -777,11 +691,11 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   [(MRUNowPlayingController *)self updateQuickTransportItem];
 }
 
-- (void)mediaSuggestionsController:(id)a3 didChangeMediaSuggestions:(id)a4
+- (void)metadataController:(id)controller didChangeTimeControls:(id)controls
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  controlsCopy = controls;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -805,7 +719,7 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 nowPlayingController:self mediaSuggestionsController:v6 didChangeMediaSuggestions:v7];
+          [v13 nowPlayingController:self metadataController:controllerCopy didChangeTimeControls:controlsCopy];
         }
 
         ++v12;
@@ -819,11 +733,97 @@ void __52__MRUNowPlayingController_imageForRoute_completion___block_invoke(uint6
   }
 }
 
-- (void)queueHandoffCoordinator:(id)a3 didChangeState:(int64_t)a4
+- (void)metadataController:(id)controller didChangeTransportControls:(id)controls
+{
+  v19 = *MEMORY[0x1E69E9840];
+  controllerCopy = controller;
+  controlsCopy = controls;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v8 = [(NSHashTable *)self->_observers copy];
+  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v15;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v15 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = *(*(&v14 + 1) + 8 * v12);
+        if (objc_opt_respondsToSelector())
+        {
+          [v13 nowPlayingController:self metadataController:controllerCopy didChangeTransportControls:controlsCopy];
+        }
+
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v10);
+  }
+
+  [(MRUNowPlayingController *)self updateQuickTransportItem];
+}
+
+- (void)mediaSuggestionsController:(id)controller didChangeMediaSuggestions:(id)suggestions
+{
+  v19 = *MEMORY[0x1E69E9840];
+  controllerCopy = controller;
+  suggestionsCopy = suggestions;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v8 = [(NSHashTable *)self->_observers copy];
+  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v15;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v15 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = *(*(&v14 + 1) + 8 * v12);
+        if (objc_opt_respondsToSelector())
+        {
+          [v13 nowPlayingController:self mediaSuggestionsController:controllerCopy didChangeMediaSuggestions:suggestionsCopy];
+        }
+
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v10);
+  }
+}
+
+- (void)queueHandoffCoordinator:(id)coordinator didChangeState:(int64_t)state
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 4)
+  coordinatorCopy = coordinator;
+  if (state == 4)
   {
     queueHandoffCoordinator = self->_queueHandoffCoordinator;
     self->_queueHandoffCoordinator = 0;
@@ -838,23 +838,23 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a4 != 1)
+  if (state != 1)
   {
     goto LABEL_8;
   }
 
   v7 = [MRUMRMetadataDataSource alloc];
   endpointController = self->_endpointController;
-  v9 = [v6 response];
-  v10 = [(MRUMRMetadataDataSource *)v7 initWithEndpointController:endpointController response:v9];
+  response = [coordinatorCopy response];
+  v10 = [(MRUMRMetadataDataSource *)v7 initWithEndpointController:endpointController response:response];
   p_metadataDataSource = &self->_handoffDataSource;
   v11 = self->_handoffDataSource;
   self->_handoffDataSource = v10;
 
-  v13 = [v6 response];
+  response2 = [coordinatorCopy response];
 
   v14 = 1;
-  if (v13)
+  if (response2)
   {
     goto LABEL_6;
   }
@@ -885,7 +885,7 @@ LABEL_8:
         v22 = *(*(&v23 + 1) + 8 * v21);
         if (objc_opt_respondsToSelector())
         {
-          [v22 nowPlayingController:self queueHandoffCoordinator:v6 didChangeState:a4];
+          [v22 nowPlayingController:self queueHandoffCoordinator:coordinatorCopy didChangeState:state];
         }
 
         ++v21;
@@ -899,13 +899,13 @@ LABEL_8:
   }
 }
 
-- (void)queueHandoffCoordinator:(id)a3 didChangeResponse:(id)a4
+- (void)queueHandoffCoordinator:(id)coordinator didChangeResponse:(id)response
 {
-  v6 = [a3 response];
-  [(MRUMRMetadataDataSource *)self->_handoffDataSource setResponse:v6];
+  response = [coordinator response];
+  [(MRUMRMetadataDataSource *)self->_handoffDataSource setResponse:response];
 
   v7 = 64;
-  if (!a4)
+  if (!response)
   {
     v7 = 72;
   }
@@ -919,26 +919,26 @@ LABEL_8:
 - (void)updateQuickTransportItem
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
-  v4 = [(MRUNowPlayingController *)self tvRemoteController];
-  objc_initWeak(&location, v4);
+  nowPlayingInfo = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
+  tvRemoteController = [(MRUNowPlayingController *)self tvRemoteController];
+  objc_initWeak(&location, tvRemoteController);
 
-  if (-[MRUEndpointController state](self->_endpointController, "state") == 3 && ([v3 showPlaceholder] & 1) == 0)
+  if (-[MRUEndpointController state](self->_endpointController, "state") == 3 && ([nowPlayingInfo showPlaceholder] & 1) == 0)
   {
-    v6 = [(MRUMetadataController *)self->_metadataController transportControls];
-    v8 = [v6 centerItem];
+    transportControls = [(MRUMetadataController *)self->_metadataController transportControls];
+    centerItem = [transportControls centerItem];
   }
 
   else
   {
-    if (!-[MRUTVRemoteController showTVRemote](self->_tvRemoteController, "showTVRemote") || ![v3 showPlaceholder])
+    if (!-[MRUTVRemoteController showTVRemote](self->_tvRemoteController, "showTVRemote") || ![nowPlayingInfo showPlaceholder])
     {
-      v8 = 0;
+      centerItem = 0;
       goto LABEL_9;
     }
 
     v5 = +[MRUAssetsProvider tvRemote];
-    v6 = [MRUAsset image:v5];
+    transportControls = [MRUAsset image:v5];
 
     v7 = [MRUTransportControlItem alloc];
     v20[0] = MEMORY[0x1E69E9820];
@@ -946,12 +946,12 @@ LABEL_8:
     v20[2] = __51__MRUNowPlayingController_updateQuickTransportItem__block_invoke;
     v20[3] = &unk_1E7663AE8;
     objc_copyWeak(&v21, &location);
-    v8 = [(MRUTransportControlItem *)v7 initWithIdentifier:@"tvremote" asset:v6 mainAction:v20];
+    centerItem = [(MRUTransportControlItem *)v7 initWithIdentifier:@"tvremote" asset:transportControls mainAction:v20];
     objc_destroyWeak(&v21);
   }
 
 LABEL_9:
-  objc_storeStrong(&self->_quickControlItem, v8);
+  objc_storeStrong(&self->_quickControlItem, centerItem);
   v9 = MCLogCategoryDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -959,7 +959,7 @@ LABEL_9:
     *buf = 138543618;
     v25 = v10;
     v26 = 2114;
-    v27 = v8;
+    v27 = centerItem;
     _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ update quick transport controls: %{public}@", buf, 0x16u);
   }
 
@@ -985,7 +985,7 @@ LABEL_9:
         v15 = *(*(&v16 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 nowPlayingController:self didChangeQuickControlItem:v8];
+          [v15 nowPlayingController:self didChangeQuickControlItem:centerItem];
         }
 
         ++v14;

@@ -6,19 +6,19 @@
 
 - (FSVolumeIdentifier)volumeIdentifier
 {
-  v3 = [(FSEntityIdentifier *)self qualifier];
+  qualifier = [(FSEntityIdentifier *)self qualifier];
 
   v4 = [FSVolumeIdentifier alloc];
-  v5 = [(FSEntityIdentifier *)self uuid];
-  if (v3)
+  uuid = [(FSEntityIdentifier *)self uuid];
+  if (qualifier)
   {
-    v6 = [(FSEntityIdentifier *)self qualifier];
-    v7 = [(FSEntityIdentifier *)v4 initWithUUID:v5 data:v6];
+    qualifier2 = [(FSEntityIdentifier *)self qualifier];
+    v7 = [(FSEntityIdentifier *)v4 initWithUUID:uuid data:qualifier2];
   }
 
   else
   {
-    v7 = [(FSEntityIdentifier *)v4 initWithUUID:v5];
+    v7 = [(FSEntityIdentifier *)v4 initWithUUID:uuid];
   }
 
   return v7;

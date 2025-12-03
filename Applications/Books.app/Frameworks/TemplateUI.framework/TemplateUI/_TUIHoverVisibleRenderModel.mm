@@ -1,19 +1,19 @@
 @interface _TUIHoverVisibleRenderModel
-- (_TUIHoverVisibleRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 hoverIdentifier:(id)a5;
+- (_TUIHoverVisibleRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel hoverIdentifier:(id)hoverIdentifier;
 @end
 
 @implementation _TUIHoverVisibleRenderModel
 
-- (_TUIHoverVisibleRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 hoverIdentifier:(id)a5
+- (_TUIHoverVisibleRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel hoverIdentifier:(id)hoverIdentifier
 {
-  v9 = a5;
+  hoverIdentifierCopy = hoverIdentifier;
   v13.receiver = self;
   v13.super_class = _TUIHoverVisibleRenderModel;
-  v10 = [(TUIRenderModelView *)&v13 initWithReuseIdentifier:@"TUIReuseIdentifierHoverVisibleView" identifier:a3 submodel:a4];
+  v10 = [(TUIRenderModelView *)&v13 initWithReuseIdentifier:@"TUIReuseIdentifierHoverVisibleView" identifier:identifier submodel:submodel];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_hoverIdentifier, a5);
+    objc_storeStrong(&v10->_hoverIdentifier, hoverIdentifier);
   }
 
   return v11;

@@ -1,10 +1,10 @@
 @interface RERankingRule
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REConditionEvaluator)comparisonConditionEvaluator;
 - (REConditionEvaluator)leftConditionEvaluator;
 - (REConditionEvaluator)rightConditionEvaluator;
-- (RERankingRule)initWithLeftCondition:(id)a3 rightCondition:(id)a4 comparisonCondition:(id)a5 order:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RERankingRule)initWithLeftCondition:(id)condition rightCondition:(id)rightCondition comparisonCondition:(id)comparisonCondition order:(int64_t)order;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -20,22 +20,22 @@
   return v4 ^ v5 ^ [(REComparisonCondition *)self->_comparison hash]^ self->_order;
 }
 
-- (RERankingRule)initWithLeftCondition:(id)a3 rightCondition:(id)a4 comparisonCondition:(id)a5 order:(int64_t)a6
+- (RERankingRule)initWithLeftCondition:(id)condition rightCondition:(id)rightCondition comparisonCondition:(id)comparisonCondition order:(int64_t)order
 {
-  v11 = a3;
-  v12 = a4;
-  v19 = a5;
+  conditionCopy = condition;
+  rightConditionCopy = rightCondition;
+  comparisonConditionCopy = comparisonCondition;
   v20 = MEMORY[0x277CBE660];
-  if (v11)
+  if (conditionCopy)
   {
-    if (v12)
+    if (rightConditionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
     RERaiseInternalException(*v20, @"Condition must be non-nil", v13, v14, v15, v16, v17, v18, v41.receiver);
-    if (v19)
+    if (comparisonConditionCopy)
     {
       goto LABEL_4;
     }
@@ -44,13 +44,13 @@ LABEL_14:
   }
 
   RERaiseInternalException(*MEMORY[0x277CBE660], @"Condition must be non-nil", v13, v14, v15, v16, v17, v18, v41.receiver);
-  if (!v12)
+  if (!rightConditionCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v19)
+  if (comparisonConditionCopy)
   {
     goto LABEL_4;
   }
@@ -63,34 +63,34 @@ LABEL_4:
   v21 = [(RERule *)&v41 init];
   if (v21)
   {
-    if ([v11 _validForRanking])
+    if ([conditionCopy _validForRanking])
     {
       RERaiseInternalException(*v20, @"REComparisonCondition cannot be used for the left condition", v22, v23, v24, v25, v26, v27, v41.receiver);
     }
 
-    if ([v12 _validForRanking])
+    if ([rightConditionCopy _validForRanking])
     {
       RERaiseInternalException(*v20, @"REComparisonCondition cannot be used for the right condition", v28, v29, v30, v31, v32, v33, v41.receiver);
     }
 
-    if (([v19 _validForRanking] & 1) == 0)
+    if (([comparisonConditionCopy _validForRanking] & 1) == 0)
     {
       RERaiseInternalException(*v20, @"REComparisonCondition must be used for the comparison condition", v34, v35, v36, v37, v38, v39, v41.receiver);
     }
 
-    objc_storeStrong(&v21->_leftCondition, a3);
-    objc_storeStrong(&v21->_rightCondition, a4);
-    objc_storeStrong(&v21->_comparison, a5);
-    v21->_order = a6;
+    objc_storeStrong(&v21->_leftCondition, condition);
+    objc_storeStrong(&v21->_rightCondition, rightCondition);
+    objc_storeStrong(&v21->_comparison, comparisonCondition);
+    v21->_order = order;
   }
 
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -102,9 +102,9 @@ LABEL_4:
     {
       v20.receiver = self;
       v20.super_class = RERankingRule;
-      if ([(RERule *)&v20 isEqual:v4])
+      if ([(RERule *)&v20 isEqual:equalCopy])
       {
-        v5 = v4;
+        v5 = equalCopy;
         leftCondition = v5->_leftCondition;
         v7 = self->_leftCondition;
         v8 = v7;
@@ -173,9 +173,9 @@ LABEL_20:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithLeftCondition:rightCondition:comparisonCondition:order:", self->_leftCondition, self->_rightCondition, self->_comparison, self->_order}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithLeftCondition:rightCondition:comparisonCondition:order:", self->_leftCondition, self->_rightCondition, self->_comparison, self->_order}];
   [(RERule *)self priority];
   [v4 setPriority:?];
   return v4;

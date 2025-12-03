@@ -1,42 +1,42 @@
 @interface AutocompleteSearchCoordinator
 - (_TtC14CloudSharingUI29AutocompleteSearchCoordinator)init;
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4;
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4;
-- (void)searchController:(id)a3 didTapTableAccessoryForRecipient:(id)a4;
-- (void)searchController:(id)a3 textViewDidChangeSize:(CGSize)a4;
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address;
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view;
+- (void)searchController:(id)controller didTapTableAccessoryForRecipient:(id)recipient;
+- (void)searchController:(id)controller textViewDidChangeSize:(CGSize)size;
 @end
 
 @implementation AutocompleteSearchCoordinator
 
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address
 {
-  v4 = [objc_allocWithZone(MEMORY[0x277CFBCA0]) initWithContact:0 address:a4 kind:0];
+  v4 = [objc_allocWithZone(MEMORY[0x277CFBCA0]) initWithContact:0 address:address kind:0];
 
   return v4;
 }
 
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  viewCopy = view;
+  selfCopy = self;
   sub_243B32A2C();
 }
 
-- (void)searchController:(id)a3 didTapTableAccessoryForRecipient:(id)a4
+- (void)searchController:(id)controller didTapTableAccessoryForRecipient:(id)recipient
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_243B31CB0(v6, v7);
+  controllerCopy = controller;
+  recipientCopy = recipient;
+  selfCopy = self;
+  sub_243B31CB0(controllerCopy, recipientCopy);
 }
 
-- (void)searchController:(id)a3 textViewDidChangeSize:(CGSize)a4
+- (void)searchController:(id)controller textViewDidChangeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_243B32AFC(width, height);
 }
 

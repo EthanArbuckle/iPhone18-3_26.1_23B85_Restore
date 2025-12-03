@@ -1,20 +1,20 @@
 @interface HFValueTransformer
 + (id)identityTransformer;
-+ (id)transformerForValueClass:(Class)a3 transformBlock:(id)a4 reverseTransformBlock:(id)a5;
-- (id)transformedValueForValue:(id)a3;
-- (id)valueForTransformedValue:(id)a3;
++ (id)transformerForValueClass:(Class)class transformBlock:(id)block reverseTransformBlock:(id)transformBlock;
+- (id)transformedValueForValue:(id)value;
+- (id)valueForTransformedValue:(id)value;
 @end
 
 @implementation HFValueTransformer
 
-+ (id)transformerForValueClass:(Class)a3 transformBlock:(id)a4 reverseTransformBlock:(id)a5
++ (id)transformerForValueClass:(Class)class transformBlock:(id)block reverseTransformBlock:(id)transformBlock
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  blockCopy = block;
+  transformBlockCopy = transformBlock;
+  v11 = transformBlockCopy;
+  if (blockCopy)
   {
-    if (v10)
+    if (transformBlockCopy)
     {
       goto LABEL_3;
     }
@@ -22,8 +22,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HFValueTransformer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"transformBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFValueTransformer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"transformBlock"}];
 
     if (v11)
     {
@@ -31,13 +31,13 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"HFValueTransformer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"reverseTransformBlock"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFValueTransformer.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"reverseTransformBlock"}];
 
 LABEL_3:
   v12 = objc_opt_new();
-  [v12 setValueClass:a3];
-  [v12 setTransformBlock:v9];
+  [v12 setValueClass:class];
+  [v12 setTransformBlock:blockCopy];
   [v12 setReverseTransformBlock:v11];
 
   return v12;
@@ -52,13 +52,13 @@ LABEL_3:
   return v2;
 }
 
-- (id)transformedValueForValue:(id)a3
+- (id)transformedValueForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([(HFValueTransformer *)self valueClass])
   {
     [(HFValueTransformer *)self valueClass];
-    v5 = v4;
+    v5 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -69,20 +69,20 @@ LABEL_3:
       v6 = 0;
     }
 
-    v4 = v6;
+    valueCopy = v6;
   }
 
-  v7 = [(HFValueTransformer *)self transformBlock];
-  v8 = (v7)[2](v7, v4);
+  transformBlock = [(HFValueTransformer *)self transformBlock];
+  v8 = (transformBlock)[2](transformBlock, valueCopy);
 
   return v8;
 }
 
-- (id)valueForTransformedValue:(id)a3
+- (id)valueForTransformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HFValueTransformer *)self reverseTransformBlock];
-  v6 = (v5)[2](v5, v4);
+  valueCopy = value;
+  reverseTransformBlock = [(HFValueTransformer *)self reverseTransformBlock];
+  v6 = (reverseTransformBlock)[2](reverseTransformBlock, valueCopy);
 
   return v6;
 }

@@ -1,19 +1,19 @@
 @interface IPAVideoAdjustmentStackSerializer_v10
-- (id)archiveFromData:(id)a3 error:(id *)a4;
-- (id)dataFromArchive:(id)a3 error:(id *)a4;
-- (id)dataFromVideoAdjustmentStack:(id)a3 error:(id *)a4;
-- (id)videoAdjustmentFromArchive:(id)a3 error:(id *)a4;
-- (id)videoAdjustmentStackFromData:(id)a3 error:(id *)a4;
+- (id)archiveFromData:(id)data error:(id *)error;
+- (id)dataFromArchive:(id)archive error:(id *)error;
+- (id)dataFromVideoAdjustmentStack:(id)stack error:(id *)error;
+- (id)videoAdjustmentFromArchive:(id)archive error:(id *)error;
+- (id)videoAdjustmentStackFromData:(id)data error:(id *)error;
 @end
 
 @implementation IPAVideoAdjustmentStackSerializer_v10
 
-- (id)archiveFromData:(id)a3 error:(id *)a4
+- (id)archiveFromData:(id)data error:(id *)error
 {
-  v5 = [IPAAdjustmentStackSerializer decompressData:a3 error:?];
+  v5 = [IPAAdjustmentStackSerializer decompressData:data error:?];
   if (v5)
   {
-    v6 = [IPAAdjustmentStackSerializer JSONFromData:v5 error:a4];
+    v6 = [IPAAdjustmentStackSerializer JSONFromData:v5 error:error];
   }
 
   else
@@ -24,11 +24,11 @@
   return v6;
 }
 
-- (id)videoAdjustmentStackFromData:(id)a3 error:(id *)a4
+- (id)videoAdjustmentStackFromData:(id)data error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0;
-  v5 = [IPAAdjustmentStackSerializer decompressData:a3 error:&v40];
+  v5 = [IPAAdjustmentStackSerializer decompressData:data error:&v40];
   v6 = v40;
   if (v5)
   {
@@ -55,7 +55,7 @@
       {
         v30 = v7;
         v31 = v5;
-        v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
+        array = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
@@ -82,7 +82,7 @@ LABEL_9:
 
             if (v18)
             {
-              [v11 addObject:v18];
+              [array addObject:v18];
             }
 
             if (v19)
@@ -113,7 +113,7 @@ LABEL_9:
 
         v7 = v30;
         v5 = v31;
-        if (v11)
+        if (array)
         {
           goto LABEL_23;
         }
@@ -124,11 +124,11 @@ LABEL_9:
         v19 = v6;
       }
 
-      v11 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
 LABEL_23:
       v26 = objc_opt_new();
-      [v26 setAdjustments:v11];
-      v6 = v11;
+      [v26 setAdjustments:array];
+      v6 = array;
       goto LABEL_24;
     }
   }
@@ -157,17 +157,17 @@ LABEL_24:
   return v26;
 }
 
-- (id)videoAdjustmentFromArchive:(id)a3 error:(id *)a4
+- (id)videoAdjustmentFromArchive:(id)archive error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"identifier"];
-  v7 = [v5 objectForKeyedSubscript:@"version"];
+  archiveCopy = archive;
+  v6 = [archiveCopy objectForKeyedSubscript:@"identifier"];
+  v7 = [archiveCopy objectForKeyedSubscript:@"version"];
   if (!v7)
   {
-    v7 = [v5 objectForKeyedSubscript:@"formatVersion"];
+    v7 = [archiveCopy objectForKeyedSubscript:@"formatVersion"];
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"settings"];
+  v8 = [archiveCopy objectForKeyedSubscript:@"settings"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![v6 length])
   {
     v32 = objc_opt_class();
@@ -181,7 +181,7 @@ LABEL_24:
     IPAAdjustmentError(1001, @"bad input: settings missing or wrong type: %@, expected NSDictionary", v26, v27, v28, v29, v30, v31, v33);
     v16 = LABEL_12:;
     v23 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -214,7 +214,7 @@ LABEL_24:
   [v23 setVersion:v15];
   [v23 setSettings:v8];
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_15;
   }
@@ -223,7 +223,7 @@ LABEL_13:
   if (v16)
   {
     v24 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_15:
@@ -231,12 +231,12 @@ LABEL_15:
   return v23;
 }
 
-- (id)dataFromArchive:(id)a3 error:(id *)a4
+- (id)dataFromArchive:(id)archive error:(id *)error
 {
-  v5 = [IPAAdjustmentStackSerializer dataFromJSON:a3 error:?];
+  v5 = [IPAAdjustmentStackSerializer dataFromJSON:archive error:?];
   if (v5)
   {
-    v6 = [IPAAdjustmentStackSerializer compressData:v5 error:a4];
+    v6 = [IPAAdjustmentStackSerializer compressData:v5 error:error];
   }
 
   else
@@ -247,19 +247,19 @@ LABEL_15:
   return v6;
 }
 
-- (id)dataFromVideoAdjustmentStack:(id)a3 error:(id *)a4
+- (id)dataFromVideoAdjustmentStack:(id)stack error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stackCopy = stack;
   v32 = objc_opt_new();
-  v34 = v4;
+  v34 = stackCopy;
   v35 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [v4 adjustments];
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  adjustments = [stackCopy adjustments];
+  v6 = [adjustments countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -274,31 +274,31 @@ LABEL_15:
       {
         if (*v41 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(adjustments);
         }
 
         v12 = *(*(&v40 + 1) + 8 * v11);
-        v13 = [v12 identifier];
-        if (v13)
+        identifier = [v12 identifier];
+        if (identifier)
         {
-          v14 = [v12 version];
-          v15 = v14;
-          if (v14)
+          version = [v12 version];
+          v15 = version;
+          if (version)
           {
-            v16 = [v14 archivalRepresentation];
-            if (v16)
+            archivalRepresentation = [version archivalRepresentation];
+            if (archivalRepresentation)
             {
               v17 = v10;
-              v18 = v5;
+              v18 = adjustments;
               v19 = v9;
               v20 = v8;
-              v21 = [v12 settings];
-              if (v21)
+              settings = [v12 settings];
+              if (settings)
               {
                 v22 = objc_opt_new();
-                [v22 setObject:v13 forKeyedSubscript:@"identifier"];
-                [v22 setObject:v16 forKeyedSubscript:@"formatVersion"];
-                [v22 setObject:v21 forKeyedSubscript:@"settings"];
+                [v22 setObject:identifier forKeyedSubscript:@"identifier"];
+                [v22 setObject:archivalRepresentation forKeyedSubscript:@"formatVersion"];
+                [v22 setObject:settings forKeyedSubscript:@"settings"];
                 [v35 addObject:v22];
               }
 
@@ -310,7 +310,7 @@ LABEL_15:
 
               v8 = v20;
               v9 = v19;
-              v5 = v18;
+              adjustments = v18;
               v10 = v17;
               v7 = v36;
             }
@@ -339,7 +339,7 @@ LABEL_15:
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v7 = [adjustments countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v7);
@@ -374,10 +374,10 @@ LABEL_15:
   v25 = [(IPAVideoAdjustmentStackSerializer_v10 *)self dataFromArchive:v32 error:&v37];
   v26 = v37;
   v27 = v26;
-  if (a4 && v26)
+  if (error && v26)
   {
     v28 = v26;
-    *a4 = v27;
+    *error = v27;
   }
 
   return v25;

@@ -1,12 +1,12 @@
 @interface SASBulletinCache
-- (BOOL)removeBulletinForID:(id)a3;
+- (BOOL)removeBulletinForID:(id)d;
 - (SASBulletinCache)init;
-- (id)_findNodeForBulletinID:(id)a3;
+- (id)_findNodeForBulletinID:(id)d;
 - (id)allBulletins;
-- (id)cachedBulletinForID:(id)a3;
-- (void)_deleteNode:(id)a3;
+- (id)cachedBulletinForID:(id)d;
+- (void)_deleteNode:(id)node;
 - (void)_purgeOldestNodes;
-- (void)insertBulletin:(id)a3 fromFeed:(unint64_t)a4;
+- (void)insertBulletin:(id)bulletin fromFeed:(unint64_t)feed;
 @end
 
 @implementation SASBulletinCache
@@ -30,18 +30,18 @@
   return v3;
 }
 
-- (void)insertBulletin:(id)a3 fromFeed:(unint64_t)a4
+- (void)insertBulletin:(id)bulletin fromFeed:(unint64_t)feed
 {
-  v6 = a3;
-  v7 = [v6 bulletinID];
+  bulletinCopy = bulletin;
+  bulletinID = [bulletinCopy bulletinID];
 
-  if (v7)
+  if (bulletinID)
   {
     os_unfair_lock_lock(&cacheLock);
-    if ([(SASBulletinCache *)self _isFeedRelevant:a4])
+    if ([(SASBulletinCache *)self _isFeedRelevant:feed])
     {
-      v8 = [v6 bulletinID];
-      v9 = [(SASBulletinCache *)self _findNodeForBulletinID:v8];
+      bulletinID2 = [bulletinCopy bulletinID];
+      v9 = [(SASBulletinCache *)self _findNodeForBulletinID:bulletinID2];
 
       if (v9)
       {
@@ -54,7 +54,7 @@
       }
 
       v10 = objc_alloc_init(SASBulletinCacheNode);
-      [(SASBulletinCacheNode *)v10 setBulletin:v6];
+      [(SASBulletinCacheNode *)v10 setBulletin:bulletinCopy];
       if (!self->_oldestNode)
       {
         objc_storeStrong(&self->_oldestNode, v10);
@@ -80,16 +80,16 @@
     v12 = *MEMORY[0x1E698D0A0];
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
     {
-      [SASBulletinCache insertBulletin:v6 fromFeed:v12];
+      [SASBulletinCache insertBulletin:bulletinCopy fromFeed:v12];
     }
   }
 }
 
-- (BOOL)removeBulletinForID:(id)a3
+- (BOOL)removeBulletinForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&cacheLock);
-  v5 = [(SASBulletinCache *)self _findNodeForBulletinID:v4];
+  v5 = [(SASBulletinCache *)self _findNodeForBulletinID:dCopy];
 
   if (v5)
   {
@@ -104,7 +104,7 @@
 - (id)allBulletins
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   os_unfair_lock_lock(&cacheLock);
   v4 = self->_oldestNode;
   v5 = MEMORY[0x1E698D0A0];
@@ -112,14 +112,14 @@
   v16 = v6;
   do
   {
-    v7 = [(SASBulletinCacheNode *)v4 bulletin];
-    v8 = v7;
-    if (v7)
+    bulletin = [(SASBulletinCacheNode *)v4 bulletin];
+    v8 = bulletin;
+    if (bulletin)
     {
-      v9 = [v7 bulletinID];
-      if (v9)
+      bulletinID = [bulletin bulletinID];
+      if (bulletinID)
       {
-        [v3 setObject:v8 forKey:v9];
+        [dictionary setObject:v8 forKey:bulletinID];
       }
 
       else
@@ -128,93 +128,93 @@
         if (os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
         {
           v12 = v10;
-          v13 = [v8 bbBulletin];
+          bbBulletin = [v8 bbBulletin];
           *buf = v16;
           v18 = "[SASBulletinCache allBulletins]";
           v19 = 2112;
           v20 = v8;
           v21 = 2112;
-          v22 = v13;
+          v22 = bbBulletin;
           _os_log_error_impl(&dword_1C8137000, v12, OS_LOG_TYPE_ERROR, "%s Bulletin cache contains a bulletin with a nil identifier; not including the bulletin as part of the return value of -allBulletins (bulletin: %@; bbBulletin: %@)", buf, 0x20u);
         }
       }
     }
 
-    v11 = [(SASBulletinCacheNode *)v4 nextNode];
+    nextNode = [(SASBulletinCacheNode *)v4 nextNode];
 
-    v4 = v11;
+    v4 = nextNode;
   }
 
-  while (v11);
+  while (nextNode);
   os_unfair_lock_unlock(&cacheLock);
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)cachedBulletinForID:(id)a3
+- (id)cachedBulletinForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&cacheLock);
-  v5 = [(SASBulletinCache *)self _findNodeForBulletinID:v4];
+  v5 = [(SASBulletinCache *)self _findNodeForBulletinID:dCopy];
 
-  v6 = [v5 bulletin];
+  bulletin = [v5 bulletin];
   os_unfair_lock_unlock(&cacheLock);
 
-  return v6;
+  return bulletin;
 }
 
-- (id)_findNodeForBulletinID:(id)a3
+- (id)_findNodeForBulletinID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_oldestNode;
   do
   {
-    v6 = [(SASBulletinCacheNode *)v5 bulletin];
-    v7 = [v6 bulletinID];
-    v8 = [v7 isEqualToString:v4];
+    bulletin = [(SASBulletinCacheNode *)v5 bulletin];
+    bulletinID = [bulletin bulletinID];
+    v8 = [bulletinID isEqualToString:dCopy];
 
     if (v8)
     {
       break;
     }
 
-    v9 = [(SASBulletinCacheNode *)v5 nextNode];
+    nextNode = [(SASBulletinCacheNode *)v5 nextNode];
 
-    v5 = v9;
+    v5 = nextNode;
   }
 
-  while (v9);
+  while (nextNode);
 
   return v5;
 }
 
-- (void)_deleteNode:(id)a3
+- (void)_deleteNode:(id)node
 {
-  v4 = a3;
-  v10 = [v4 previousNode];
-  v5 = [v4 nextNode];
-  [v10 setNextNode:v5];
-  [v5 setPreviousNode:v10];
-  v6 = [v4 previousNode];
+  nodeCopy = node;
+  previousNode = [nodeCopy previousNode];
+  nextNode = [nodeCopy nextNode];
+  [previousNode setNextNode:nextNode];
+  [nextNode setPreviousNode:previousNode];
+  previousNode2 = [nodeCopy previousNode];
 
-  if (!v6)
+  if (!previousNode2)
   {
-    objc_storeStrong(&self->_oldestNode, v5);
+    objc_storeStrong(&self->_oldestNode, nextNode);
   }
 
-  v7 = [v4 nextNode];
+  nextNode2 = [nodeCopy nextNode];
 
-  if (!v7)
+  if (!nextNode2)
   {
-    v8 = [v4 previousNode];
+    previousNode3 = [nodeCopy previousNode];
     newestNode = self->_newestNode;
-    self->_newestNode = v8;
+    self->_newestNode = previousNode3;
   }
 
-  [v4 setBulletin:0];
-  [v4 setPreviousNode:0];
-  [v4 setNextNode:0];
+  [nodeCopy setBulletin:0];
+  [nodeCopy setPreviousNode:0];
+  [nodeCopy setNextNode:0];
 
   --self->_count;
 }

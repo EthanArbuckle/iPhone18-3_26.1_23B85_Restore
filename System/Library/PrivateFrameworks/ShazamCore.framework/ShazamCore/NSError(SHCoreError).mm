@@ -17,18 +17,18 @@
 
 - (uint64_t)sh_isShazamCoreError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"com.apple.ShazamCore"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"com.apple.ShazamCore"];
 
   return v2;
 }
 
 - (uint64_t)sh_isCoreJSONLFileParsingError
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 300;
+    return [self code] == 300;
   }
 
   return result;
@@ -36,10 +36,10 @@
 
 - (uint64_t)sh_isCoreCompressionError
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 301;
+    return [self code] == 301;
   }
 
   return result;
@@ -47,10 +47,10 @@
 
 - (uint64_t)sh_isCoreDecompressionError
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 302;
+    return [self code] == 302;
   }
 
   return result;
@@ -58,10 +58,10 @@
 
 - (uint64_t)sh_isCoreDaemonExit
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 100;
+    return [self code] == 100;
   }
 
   return result;
@@ -69,10 +69,10 @@
 
 - (uint64_t)sh_isCoreMatchAttemptRejectedError
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 101;
+    return [self code] == 101;
   }
 
   return result;
@@ -80,10 +80,10 @@
 
 - (uint64_t)sh_isCoreMissingEntitlementsError
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 102;
+    return [self code] == 102;
   }
 
   return result;
@@ -91,10 +91,10 @@
 
 - (uint64_t)sh_isCoreMediaItemMissingRequiredProperties
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 400;
+    return [self code] == 400;
   }
 
   return result;
@@ -102,10 +102,10 @@
 
 - (uint64_t)sh_isCoreServerResponseMissingRequiredProperties
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 401;
+    return [self code] == 401;
   }
 
   return result;
@@ -113,10 +113,10 @@
 
 - (uint64_t)sh_isCoreFailedToStartAudioRecording
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 104;
+    return [self code] == 104;
   }
 
   return result;
@@ -124,10 +124,10 @@
 
 - (uint64_t)sh_isCoreToldNotToResumeAudioRecordingAfterInterruption
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 105;
+    return [self code] == 105;
   }
 
   return result;
@@ -135,10 +135,10 @@
 
 - (uint64_t)sh_isCoreServerResponseWorkerAlreadyRegistered
 {
-  result = [a1 sh_isShazamCoreError];
+  result = [self sh_isShazamCoreError];
   if (result)
   {
-    return [a1 code] == 106;
+    return [self code] == 106;
   }
 
   return result;

@@ -8,16 +8,16 @@
 - (VTKAssert)VisualTestKitAssert
 {
   v3 = [VTKAssert alloc];
-  v4 = [(XCTestCase *)self VisualTestKitConfiguration];
-  v5 = [(VTKAssert *)v3 initWithTestCase:self configuration:v4];
+  visualTestKitConfiguration = [(XCTestCase *)self VisualTestKitConfiguration];
+  v5 = [(VTKAssert *)v3 initWithTestCase:self configuration:visualTestKitConfiguration];
 
   return v5;
 }
 
 - (VTKInternalConfiguration)VisualTestKitConfiguration
 {
-  v3 = [(XCTestCase *)self invocation];
-  v4 = NSStringFromSelector([v3 selector]);
+  invocation = [(XCTestCase *)self invocation];
+  v4 = NSStringFromSelector([invocation selector]);
 
   v5 = objc_getAssociatedObject(self, "VTKConfigurationObjectToken");
   if (v5 && ([v4 isEqualToString:v5] & 1) != 0)
@@ -33,16 +33,16 @@
     v11 = __55__XCTestCase_VisualTestKit__VisualTestKitConfiguration__block_invoke;
     v12 = &unk_C1C0;
     objc_copyWeak(&v13, &location);
-    v7 = self;
+    selfCopy = self;
     v8 = v10;
-    v6 = objc_getAssociatedObject(v7, "VTKConfigurationObject");
+    v6 = objc_getAssociatedObject(selfCopy, "VTKConfigurationObject");
     if (!v6)
     {
       v6 = v11(v8);
-      objc_setAssociatedObject(v7, "VTKConfigurationObject", v6, &dword_0 + 1);
+      objc_setAssociatedObject(selfCopy, "VTKConfigurationObject", v6, &dword_0 + 1);
     }
 
-    objc_setAssociatedObject(v7, "VTKConfigurationObjectToken", v4, &dword_0 + 1);
+    objc_setAssociatedObject(selfCopy, "VTKConfigurationObjectToken", v4, &dword_0 + 1);
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }

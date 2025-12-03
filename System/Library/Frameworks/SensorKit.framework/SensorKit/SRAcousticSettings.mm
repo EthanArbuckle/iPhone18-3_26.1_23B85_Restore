@@ -1,27 +1,27 @@
 @interface SRAcousticSettings
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRAcousticSettings)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAcousticSettings)initWithCoder:(id)a3;
-- (SRAcousticSettings)initWithEnvironmentalSoundMeasurementsEnabled:(BOOL)a3 audioExposureSampleLifetime:(int64_t)a4 headphoneSafetyAudioLevel:(id)a5 musicEQSettings:(id)a6 accessibilitySettings:(id)a7;
+- (SRAcousticSettings)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAcousticSettings)initWithCoder:(id)coder;
+- (SRAcousticSettings)initWithEnvironmentalSoundMeasurementsEnabled:(BOOL)enabled audioExposureSampleLifetime:(int64_t)lifetime headphoneSafetyAudioLevel:(id)level musicEQSettings:(id)settings accessibilitySettings:(id)accessibilitySettings;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAcousticSettings
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAcousticSettings = os_log_create("com.apple.SensorKit", "SRLogAcousticSettings");
   }
 }
 
-- (SRAcousticSettings)initWithEnvironmentalSoundMeasurementsEnabled:(BOOL)a3 audioExposureSampleLifetime:(int64_t)a4 headphoneSafetyAudioLevel:(id)a5 musicEQSettings:(id)a6 accessibilitySettings:(id)a7
+- (SRAcousticSettings)initWithEnvironmentalSoundMeasurementsEnabled:(BOOL)enabled audioExposureSampleLifetime:(int64_t)lifetime headphoneSafetyAudioLevel:(id)level musicEQSettings:(id)settings accessibilitySettings:(id)accessibilitySettings
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -29,14 +29,14 @@
   v12 = [(SRAcousticSettings *)&v19 init];
   if (v12)
   {
-    [a5 doubleValue];
+    [level doubleValue];
     if (v13 >= 0.0 && v13 <= 100.0)
     {
-      v12->_environmentalSoundMeasurementsEnabled = a3;
-      v12->_audioExposureSampleLifetime = a4;
-      v12->_headphoneSafetyAudioLevel = a5;
-      v12->_musicEQSettings = a6;
-      v12->_accessibilitySettings = a7;
+      v12->_environmentalSoundMeasurementsEnabled = enabled;
+      v12->_audioExposureSampleLifetime = lifetime;
+      v12->_headphoneSafetyAudioLevel = level;
+      v12->_musicEQSettings = settings;
+      v12->_accessibilitySettings = accessibilitySettings;
     }
 
     else
@@ -44,7 +44,7 @@
       v15 = SRLogAcousticSettings;
       if (os_log_type_enabled(SRLogAcousticSettings, OS_LOG_TYPE_FAULT))
       {
-        [a5 doubleValue];
+        [level doubleValue];
         *buf = 138412546;
         v21 = @"accessibilityBackgroundSoundsRelativeVolume";
         v22 = 2048;
@@ -60,10 +60,10 @@
   return v12;
 }
 
-- (SRAcousticSettings)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAcousticSettings)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -75,7 +75,7 @@
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -144,9 +144,9 @@ LABEL_8:
   [(SRAcousticSettings *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v10) = 1;
   }
@@ -154,15 +154,15 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (environmentalSoundMeasurementsEnabled = self->_environmentalSoundMeasurementsEnabled, environmentalSoundMeasurementsEnabled == [a3 isEnvironmentalSoundMeasurementsEnabled]) && (audioExposureSampleLifetime = self->_audioExposureSampleLifetime, audioExposureSampleLifetime == objc_msgSend(a3, "audioExposureSampleLifetime")) && (-[NSNumber doubleValue](self->_headphoneSafetyAudioLevel, "doubleValue"), v8 = v7, objc_msgSend(objc_msgSend(a3, "headphoneSafetyAudioLevel"), "doubleValue"), vabdd_f64(v8, v9) < 0.00000011920929))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (environmentalSoundMeasurementsEnabled = self->_environmentalSoundMeasurementsEnabled, environmentalSoundMeasurementsEnabled == [equal isEnvironmentalSoundMeasurementsEnabled]) && (audioExposureSampleLifetime = self->_audioExposureSampleLifetime, audioExposureSampleLifetime == objc_msgSend(equal, "audioExposureSampleLifetime")) && (-[NSNumber doubleValue](self->_headphoneSafetyAudioLevel, "doubleValue"), v8 = v7, objc_msgSend(objc_msgSend(equal, "headphoneSafetyAudioLevel"), "doubleValue"), vabdd_f64(v8, v9) < 0.00000011920929))
     {
-      v10 = -[SRAcousticSettingsMusicEQ isEqual:](self->_musicEQSettings, "isEqual:", [a3 musicEQSettings]);
+      v10 = -[SRAcousticSettingsMusicEQ isEqual:](self->_musicEQSettings, "isEqual:", [equal musicEQSettings]);
       if (v10)
       {
         accessibilitySettings = self->_accessibilitySettings;
-        v12 = [a3 accessibilitySettings];
+        accessibilitySettings = [equal accessibilitySettings];
 
-        LOBYTE(v10) = [(SRAcousticSettingsAccessibility *)accessibilitySettings isEqual:v12];
+        LOBYTE(v10) = [(SRAcousticSettingsAccessibility *)accessibilitySettings isEqual:accessibilitySettings];
       }
     }
 
@@ -191,35 +191,35 @@ LABEL_8:
   return [v3 stringWithFormat:@"%@ (%p) {Acoustic Settings environmentalSoundMeasurementsIsEnabled: %d, audioExposureSampleLifetime: %ld, headphoneSafetyAudioLevel: %@, MusicEQSettings: %@, AccessibilitySettings: %@}", NSStringFromClass(v4), self, -[SRAcousticSettings isEnvironmentalSoundMeasurementsEnabled](self, "isEnvironmentalSoundMeasurementsEnabled"), -[SRAcousticSettings audioExposureSampleLifetime](self, "audioExposureSampleLifetime"), -[SRAcousticSettings headphoneSafetyAudioLevel](self, "headphoneSafetyAudioLevel"), -[SRAcousticSettings musicEQSettings](self, "musicEQSettings"), -[SRAcousticSettings accessibilitySettings](self, "accessibilitySettings")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeBool:-[SRAcousticSettings isEnvironmentalSoundMeasurementsEnabled](self forKey:{"isEnvironmentalSoundMeasurementsEnabled"), @"environmentalSoundMeasurementsEnabled"}];
-  [a3 encodeInteger:-[SRAcousticSettings audioExposureSampleLifetime](self forKey:{"audioExposureSampleLifetime"), @"audioExposureSampleLifetime"}];
-  [a3 encodeObject:-[SRAcousticSettings headphoneSafetyAudioLevel](self forKey:{"headphoneSafetyAudioLevel"), @"headphoneSafetyAudioLevel"}];
-  [a3 encodeObject:-[SRAcousticSettings musicEQSettings](self forKey:{"musicEQSettings"), @"SRAcousticSettingsMusicEQ"}];
-  v6 = [(SRAcousticSettings *)self accessibilitySettings];
+  [coder encodeBool:-[SRAcousticSettings isEnvironmentalSoundMeasurementsEnabled](self forKey:{"isEnvironmentalSoundMeasurementsEnabled"), @"environmentalSoundMeasurementsEnabled"}];
+  [coder encodeInteger:-[SRAcousticSettings audioExposureSampleLifetime](self forKey:{"audioExposureSampleLifetime"), @"audioExposureSampleLifetime"}];
+  [coder encodeObject:-[SRAcousticSettings headphoneSafetyAudioLevel](self forKey:{"headphoneSafetyAudioLevel"), @"headphoneSafetyAudioLevel"}];
+  [coder encodeObject:-[SRAcousticSettings musicEQSettings](self forKey:{"musicEQSettings"), @"SRAcousticSettingsMusicEQ"}];
+  accessibilitySettings = [(SRAcousticSettings *)self accessibilitySettings];
 
-  [a3 encodeObject:v6 forKey:@"SRAcousticSettingsAccessibility"];
+  [coder encodeObject:accessibilitySettings forKey:@"SRAcousticSettingsAccessibility"];
 }
 
-- (SRAcousticSettings)initWithCoder:(id)a3
+- (SRAcousticSettings)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeBoolForKey:@"environmentalSoundMeasurementsEnabled"];
-  v7 = [a3 decodeIntegerForKey:@"audioExposureSampleLifetime"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"headphoneSafetyAudioLevel"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsMusicEQ"];
-  v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibility"];
+  v6 = [coder decodeBoolForKey:@"environmentalSoundMeasurementsEnabled"];
+  v7 = [coder decodeIntegerForKey:@"audioExposureSampleLifetime"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"headphoneSafetyAudioLevel"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsMusicEQ"];
+  v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SRAcousticSettingsAccessibility"];
   if (!v9)
   {
     v16 = SRLogAcousticSettings;

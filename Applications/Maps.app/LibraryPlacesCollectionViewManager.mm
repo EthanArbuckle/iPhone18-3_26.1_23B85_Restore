@@ -7,7 +7,7 @@
 
 - (UICollectionViewDataSource)dataSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004A39F0();
 
   return v3;

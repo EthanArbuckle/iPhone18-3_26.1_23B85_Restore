@@ -1,30 +1,30 @@
 @interface WLDetailViewController
-- (WLDetailViewController)initWithContext:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WLDetailViewController)initWithContext:(id)context;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)setCustomNavigationTitleView;
 - (void)viewDidLoad;
 @end
 
 @implementation WLDetailViewController
 
-- (WLDetailViewController)initWithContext:(id)a3
+- (WLDetailViewController)initWithContext:(id)context
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v38.receiver = self;
   v38.super_class = WLDetailViewController;
   v5 = [(WLDetailViewController *)&v38 init];
   if (v5)
   {
     v37 = 0;
-    v6 = [WLDetailItem items:v4 size:&v37];
+    v6 = [WLDetailItem items:contextCopy size:&v37];
     data = v5->_data;
     v5->_data = v6;
 
-    v36 = v4;
+    v36 = contextCopy;
     if ([(NSArray *)v5->_data count])
     {
       v8 = [(NSArray *)v5->_data objectAtIndexedSubscript:0];
@@ -44,40 +44,40 @@
     v11 = objc_alloc(MEMORY[0x277D75B40]);
     v12 = [v11 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"WLDetailViewCell"];
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v12 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v12 setBackgroundColor:systemBackgroundColor];
 
     [v12 setDataSource:v5];
     [v12 setDelegate:v5];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(WLDetailViewController *)v5 view];
-    [v14 addSubview:v12];
+    view = [(WLDetailViewController *)v5 view];
+    [view addSubview:v12];
 
     v27 = MEMORY[0x277CCAAD0];
-    v33 = [v12 topAnchor];
-    v34 = [(WLDetailViewController *)v5 view];
-    v32 = [v34 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [v12 topAnchor];
+    view2 = [(WLDetailViewController *)v5 view];
+    topAnchor2 = [view2 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[0] = v31;
-    v29 = [v12 leftAnchor];
-    v30 = [(WLDetailViewController *)v5 view];
-    v28 = [v30 leftAnchor];
-    v26 = [v29 constraintEqualToAnchor:v28];
+    leftAnchor = [v12 leftAnchor];
+    view3 = [(WLDetailViewController *)v5 view];
+    leftAnchor2 = [view3 leftAnchor];
+    v26 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v39[1] = v26;
-    v25 = [v12 rightAnchor];
-    v15 = [(WLDetailViewController *)v5 view];
-    v16 = [v15 rightAnchor];
-    v17 = [v25 constraintEqualToAnchor:v16];
+    rightAnchor = [v12 rightAnchor];
+    view4 = [(WLDetailViewController *)v5 view];
+    rightAnchor2 = [view4 rightAnchor];
+    v17 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v39[2] = v17;
-    v18 = [v12 bottomAnchor];
-    v19 = [(WLDetailViewController *)v5 view];
-    v20 = [v19 bottomAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    bottomAnchor = [v12 bottomAnchor];
+    view5 = [(WLDetailViewController *)v5 view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
     [v27 activateConstraints:v22];
 
-    v4 = v36;
+    contextCopy = v36;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -93,8 +93,8 @@
   [(WLDetailViewController *)self setTitle:v3];
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismiss];
-  v5 = [(WLDetailViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(WLDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   [(WLDetailViewController *)self setCustomNavigationTitleView];
 }
@@ -103,135 +103,135 @@
 {
   v47[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v5 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v5 setBackgroundColor:clearColor2];
 
   v7 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
   [v5 setFont:v7];
 
   [v5 setTextAlignment:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [MEMORY[0x277D75348] labelColor];
-  [v5 setTextColor:v8];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v5 setTextColor:labelColor];
 
-  v44 = self;
-  v9 = [(WLDetailViewController *)self title];
-  [v5 setText:v9];
+  selfCopy = self;
+  title = [(WLDetailViewController *)self title];
+  [v5 setText:title];
 
   [v3 addSubview:v5];
   v10 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v10 setBackgroundColor:v11];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  [v10 setBackgroundColor:clearColor3];
 
   [v10 setTextAlignment:1];
   v12 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
   [v10 setFont:v12];
 
-  v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v10 setTextColor:v13];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v10 setTextColor:secondaryLabelColor];
 
   [v10 setText:self->_size];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addSubview:v10];
   v32 = MEMORY[0x277CCAAD0];
-  v42 = [v5 topAnchor];
-  v40 = [v3 topAnchor];
-  v38 = [v42 constraintEqualToAnchor:v40];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[0] = v38;
-  v36 = [v5 leftAnchor];
+  leftAnchor = [v5 leftAnchor];
   v45 = v3;
-  v34 = [v3 leftAnchor];
-  v14 = [v36 constraintEqualToAnchor:v34];
+  leftAnchor2 = [v3 leftAnchor];
+  v14 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v47[1] = v14;
-  v15 = [v5 rightAnchor];
-  v16 = [v3 rightAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  rightAnchor = [v5 rightAnchor];
+  rightAnchor2 = [v3 rightAnchor];
+  v17 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v47[2] = v17;
-  v18 = [v5 bottomAnchor];
-  v19 = [v10 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  bottomAnchor = [v5 bottomAnchor];
+  topAnchor3 = [v10 topAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v47[3] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
   [v32 activateConstraints:v21];
 
   v33 = MEMORY[0x277CCAAD0];
-  v43 = [v10 topAnchor];
-  v41 = [v5 bottomAnchor];
-  v39 = [v43 constraintEqualToAnchor:v41];
+  topAnchor4 = [v10 topAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
+  v39 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v46[0] = v39;
-  v37 = [v10 leftAnchor];
-  v35 = [v45 leftAnchor];
-  v22 = [v37 constraintEqualToAnchor:v35];
+  leftAnchor3 = [v10 leftAnchor];
+  leftAnchor4 = [v45 leftAnchor];
+  v22 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v46[1] = v22;
-  v23 = [v10 rightAnchor];
-  v24 = [v45 rightAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  rightAnchor3 = [v10 rightAnchor];
+  rightAnchor4 = [v45 rightAnchor];
+  v25 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v46[2] = v25;
-  v26 = [v10 bottomAnchor];
-  v27 = [v45 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  bottomAnchor3 = [v10 bottomAnchor];
+  bottomAnchor4 = [v45 bottomAnchor];
+  v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v46[3] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
   [v33 activateConstraints:v29];
 
-  v30 = [(WLDetailViewController *)v44 navigationItem];
-  [v30 setTitleView:v45];
+  navigationItem = [(WLDetailViewController *)selfCopy navigationItem];
+  [navigationItem setTitleView:v45];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_data objectAtIndex:self->_isNothingImported + a4];
-  v5 = [v4 count];
+  section = [(NSArray *)self->_data objectAtIndex:self->_isNothingImported + section];
+  v5 = [section count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WLDetailViewCell" forIndexPath:v6];
-  v8 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v7 setBackgroundColor:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WLDetailViewCell" forIndexPath:pathCopy];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v7 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v9 = -[NSArray objectAtIndex:](self->_data, "objectAtIndex:", [v6 section] + self->_isNothingImported);
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  v9 = -[NSArray objectAtIndex:](self->_data, "objectAtIndex:", [pathCopy section] + self->_isNothingImported);
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v12 = [v10 symbolTintColor];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  symbolTintColor = [v10 symbolTintColor];
 
-  if (v12)
+  if (symbolTintColor)
   {
-    v13 = [v10 symbolTintColor];
-    v14 = [v11 imageProperties];
-    [v14 setTintColor:v13];
+    symbolTintColor2 = [v10 symbolTintColor];
+    imageProperties = [valueCellConfiguration imageProperties];
+    [imageProperties setTintColor:symbolTintColor2];
   }
 
   v15 = MEMORY[0x277D755B8];
-  v16 = [v10 symbol];
-  v17 = [v15 systemImageNamed:v16];
-  [v11 setImage:v17];
+  symbol = [v10 symbol];
+  v17 = [v15 systemImageNamed:symbol];
+  [valueCellConfiguration setImage:v17];
 
-  v18 = [v10 text];
-  [v11 setText:v18];
+  text = [v10 text];
+  [valueCellConfiguration setText:text];
 
-  v19 = [v10 secondaryText];
-  [v11 setSecondaryText:v19];
+  secondaryText = [v10 secondaryText];
+  [valueCellConfiguration setSecondaryText:secondaryText];
 
-  [v7 setContentConfiguration:v11];
+  [v7 setContentConfiguration:valueCellConfiguration];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_isNothingImported + a4 > 1)
+  viewCopy = view;
+  if (self->_isNothingImported + section > 1)
   {
     v7 = 0;
   }
@@ -244,10 +244,10 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self->_isNothingImported + a4;
+  viewCopy = view;
+  v7 = self->_isNothingImported + section;
   if (!v7)
   {
     v8 = @"DETAIL_SUCCESS_SECTION_FOOTER_TITLE";

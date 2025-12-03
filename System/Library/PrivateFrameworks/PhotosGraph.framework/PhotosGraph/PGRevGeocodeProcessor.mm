@@ -1,20 +1,20 @@
 @interface PGRevGeocodeProcessor
-+ (id)momentsRequiringRevGeocodingWithUUIDs:(id)a3 inPhotoLibrary:(id)a4 defaultToAllAssets:(BOOL)a5 loggingConnection:(id)a6;
-+ (id)reverseGeoFetchOptionsForPhotoLibrary:(id)a3;
-- (BOOL)_populateCacheWithRegions:(id)a3 withProgressBlock:(id)a4;
-- (BOOL)_regionIsHome:(id)a3;
-- (BOOL)_revGeocodeAssetClusters:(id)a3 progressBlock:(id)a4;
-- (BOOL)_setRevGeoLocationData:(id)a3 onAssets:(id)a4;
-- (BOOL)revGeocodeAssets:(id)a3 progressBlock:(id)a4;
-- (BOOL)revGeocodeMoments:(id)a3 progressBlock:(id)a4;
-- (PGRevGeocodeProcessor)initWithPhotoLibrary:(id)a3 homeLocations:(id)a4 loggingConnection:(id)a5 locationCache:(id)a6;
++ (id)momentsRequiringRevGeocodingWithUUIDs:(id)ds inPhotoLibrary:(id)library defaultToAllAssets:(BOOL)assets loggingConnection:(id)connection;
++ (id)reverseGeoFetchOptionsForPhotoLibrary:(id)library;
+- (BOOL)_populateCacheWithRegions:(id)regions withProgressBlock:(id)block;
+- (BOOL)_regionIsHome:(id)home;
+- (BOOL)_revGeocodeAssetClusters:(id)clusters progressBlock:(id)block;
+- (BOOL)_setRevGeoLocationData:(id)data onAssets:(id)assets;
+- (BOOL)revGeocodeAssets:(id)assets progressBlock:(id)block;
+- (BOOL)revGeocodeMoments:(id)moments progressBlock:(id)block;
+- (PGRevGeocodeProcessor)initWithPhotoLibrary:(id)library homeLocations:(id)locations loggingConnection:(id)connection locationCache:(id)cache;
 - (PHPhotoLibrary)photoLibrary;
-- (id)_clusterAssets:(id)a3 assetsWithInvalidLocationInMoment:(id *)a4;
-- (id)_clusterAssetsInMoment:(id)a3 assetsWithInvalidLocationInMoment:(id *)a4;
-- (id)_revGeoLocationDataForRegion:(id)a3;
-- (void)_processMetricsOfAssetClustersInMoment:(id)a3;
+- (id)_clusterAssets:(id)assets assetsWithInvalidLocationInMoment:(id *)moment;
+- (id)_clusterAssetsInMoment:(id)moment assetsWithInvalidLocationInMoment:(id *)inMoment;
+- (id)_revGeoLocationDataForRegion:(id)region;
+- (void)_processMetricsOfAssetClustersInMoment:(id)moment;
 - (void)_resetMetrics;
-- (void)_updateGeoInfoForAssetClusters:(id)a3 progressBlock:(id)a4;
+- (void)_updateGeoInfoForAssetClusters:(id)clusters progressBlock:(id)block;
 @end
 
 @implementation PGRevGeocodeProcessor
@@ -36,14 +36,14 @@
   *&self->_sumNumberOfAssetClustersPerMoment = 0u;
 }
 
-- (void)_processMetricsOfAssetClustersInMoment:(id)a3
+- (void)_processMetricsOfAssetClustersInMoment:(id)moment
 {
   v41 = *MEMORY[0x277D85DE8];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = a3;
+  obj = moment;
   v28 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v28)
   {
@@ -58,21 +58,21 @@
         }
 
         v5 = *(*(&v35 + 1) + 8 * i);
-        v6 = [v5 assets];
-        v7 = [v6 count];
+        assets = [v5 assets];
+        v7 = [assets count];
 
-        v8 = [v5 region];
+        region = [v5 region];
         v33 = 0;
         v34 = 0;
-        [v8 center];
+        [region center];
         v33 = v9;
         v34 = v10;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v11 = [v5 assets];
-        v12 = [v11 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        assets2 = [v5 assets];
+        v12 = [assets2 countByEnumeratingWithState:&v29 objects:v39 count:16];
         if (v12)
         {
           v13 = v12;
@@ -84,11 +84,11 @@ LABEL_8:
           {
             if (*v30 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(assets2);
             }
 
-            v17 = [*(*(&v29 + 1) + 8 * v16) location];
-            [v17 coordinate];
+            location = [*(*(&v29 + 1) + 8 * v16) location];
+            [location coordinate];
 
             CLLocationCoordinate2DGetDistanceFrom();
             if (v15 < v18)
@@ -103,7 +103,7 @@ LABEL_8:
 
             if (v13 == ++v16)
             {
-              v13 = [v11 countByEnumeratingWithState:&v29 objects:v39 count:16];
+              v13 = [assets2 countByEnumeratingWithState:&v29 objects:v39 count:16];
               if (v13)
               {
                 goto LABEL_8;
@@ -165,17 +165,17 @@ LABEL_8:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clusterAssets:(id)a3 assetsWithInvalidLocationInMoment:(id *)a4
+- (id)_clusterAssets:(id)assets assetsWithInvalidLocationInMoment:(id *)moment
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  assetsCopy = assets;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v5;
+  obj = assetsCopy;
   v8 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v8)
   {
@@ -195,12 +195,12 @@ LABEL_8:
         [v12 locationCoordinate];
         if ([v13 canUseCoordinate:?])
         {
-          v14 = v7;
+          v14 = array2;
         }
 
         else
         {
-          v14 = v6;
+          v14 = array;
         }
 
         [v14 addObject:v12];
@@ -212,22 +212,22 @@ LABEL_8:
     while (v9);
   }
 
-  if (a4)
+  if (moment)
   {
-    v15 = v6;
-    *a4 = v6;
+    v15 = array;
+    *moment = array;
   }
 
-  if ([v7 count])
+  if ([array2 count])
   {
-    v40 = v6;
+    v40 = array;
     v16 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:&__block_literal_global_56004];
     [v16 setMaximumDistance:20.0];
     [v16 setMinimumNumberOfObjects:1];
     v38 = v16;
-    v39 = v7;
-    v17 = [v16 performWithDataset:v7 progressBlock:0];
-    v43 = [MEMORY[0x277CBEB18] array];
+    v39 = array2;
+    v17 = [v16 performWithDataset:array2 progressBlock:0];
+    array3 = [MEMORY[0x277CBEB18] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -256,8 +256,8 @@ LABEL_8:
             v48 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v25 = [v23 objects];
-            v26 = [v25 countByEnumeratingWithState:&v45 objects:v57 count:16];
+            objects = [v23 objects];
+            v26 = [objects countByEnumeratingWithState:&v45 objects:v57 count:16];
             v27 = v21;
             if (v26)
             {
@@ -270,15 +270,15 @@ LABEL_8:
                 {
                   if (*v46 != v29)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(objects);
                   }
 
-                  v31 = [*(*(&v45 + 1) + 8 * k) coarseLocationProperties];
-                  [v31 gpsHorizontalAccuracy];
+                  coarseLocationProperties = [*(*(&v45 + 1) + 8 * k) coarseLocationProperties];
+                  [coarseLocationProperties gpsHorizontalAccuracy];
                   v27 = fmax(v27, v32);
                 }
 
-                v28 = [v25 countByEnumeratingWithState:&v45 objects:v57 count:16];
+                v28 = [objects countByEnumeratingWithState:&v45 objects:v57 count:16];
               }
 
               while (v28);
@@ -286,10 +286,10 @@ LABEL_8:
 
             [v24 setClsHorizontalAccuracy:v27];
             v33 = [PGAssetCluster alloc];
-            v34 = [v23 objects];
-            v35 = [(PGAssetCluster *)v33 initWithAssets:v34 region:v24];
+            objects2 = [v23 objects];
+            v35 = [(PGAssetCluster *)v33 initWithAssets:objects2 region:v24];
 
-            [v43 addObject:v35];
+            [array3 addObject:v35];
           }
         }
 
@@ -299,19 +299,19 @@ LABEL_8:
       while (v19);
     }
 
-    [(PGRevGeocodeProcessor *)self _processMetricsOfAssetClustersInMoment:v43];
-    v7 = v39;
-    v6 = v40;
+    [(PGRevGeocodeProcessor *)self _processMetricsOfAssetClustersInMoment:array3];
+    array2 = v39;
+    array = v40;
   }
 
   else
   {
-    v43 = MEMORY[0x277CBEBF8];
+    array3 = MEMORY[0x277CBEBF8];
   }
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v43;
+  return array3;
 }
 
 double __74__PGRevGeocodeProcessor__clusterAssets_assetsWithInvalidLocationInMoment___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -339,35 +339,35 @@ double __74__PGRevGeocodeProcessor__clusterAssets_assetsWithInvalidLocationInMom
   return v12;
 }
 
-- (id)_clusterAssetsInMoment:(id)a3 assetsWithInvalidLocationInMoment:(id *)a4
+- (id)_clusterAssetsInMoment:(id)moment assetsWithInvalidLocationInMoment:(id *)inMoment
 {
-  v6 = a3;
+  momentCopy = moment;
   v7 = objc_opt_class();
-  v8 = [(PGRevGeocodeProcessor *)self photoLibrary];
-  v9 = [v7 reverseGeoFetchOptionsForPhotoLibrary:v8];
+  photoLibrary = [(PGRevGeocodeProcessor *)self photoLibrary];
+  v9 = [v7 reverseGeoFetchOptionsForPhotoLibrary:photoLibrary];
 
-  v10 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v6 options:v9];
+  v10 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:momentCopy options:v9];
 
-  v11 = [(PGRevGeocodeProcessor *)self _clusterAssets:v10 assetsWithInvalidLocationInMoment:a4];
+  v11 = [(PGRevGeocodeProcessor *)self _clusterAssets:v10 assetsWithInvalidLocationInMoment:inMoment];
 
   return v11;
 }
 
-- (BOOL)_regionIsHome:(id)a3
+- (BOOL)_regionIsHome:(id)home
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 radius];
+  homeCopy = home;
+  [homeCopy radius];
   v6 = v5;
-  [v4 center];
+  [homeCopy center];
   v25 = v7;
   v26 = v8;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(PGRevGeocodeProcessor *)self homeLocations];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  homeLocations = [(PGRevGeocodeProcessor *)self homeLocations];
+  v10 = [homeLocations countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
     v11 = v6 + 100.0;
@@ -378,7 +378,7 @@ double __74__PGRevGeocodeProcessor__clusterAssets_assetsWithInvalidLocationInMom
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(homeLocations);
         }
 
         [*(*(&v21 + 1) + 8 * i) coordinate];
@@ -392,7 +392,7 @@ double __74__PGRevGeocodeProcessor__clusterAssets_assetsWithInvalidLocationInMom
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:{16, v19, v20}];
+      v10 = [homeLocations countByEnumeratingWithState:&v21 objects:v27 count:{16, v19, v20}];
       if (v10)
       {
         continue;
@@ -408,11 +408,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)_revGeoLocationDataForRegion:(id)a3
+- (id)_revGeoLocationDataForRegion:(id)region
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CLSLocationCache *)self->_locationCache placemarksForLocation:v4];
+  regionCopy = region;
+  [(CLSLocationCache *)self->_locationCache placemarksForLocation:regionCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -431,15 +431,15 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) revGeoLocationData];
-        if (v10)
+        revGeoLocationData = [*(*(&v18 + 1) + 8 * i) revGeoLocationData];
+        if (revGeoLocationData)
         {
-          v14 = v10;
-          v15 = [MEMORY[0x277D3AD68] infoFromPlistData:v10];
-          [v15 setIsHome:{-[PGRevGeocodeProcessor _regionIsHome:](self, "_regionIsHome:", v4)}];
-          v13 = [v15 plistData];
+          v14 = revGeoLocationData;
+          v15 = [MEMORY[0x277D3AD68] infoFromPlistData:revGeoLocationData];
+          [v15 setIsHome:{-[PGRevGeocodeProcessor _regionIsHome:](self, "_regionIsHome:", regionCopy)}];
+          plistData = [v15 plistData];
 
-          v12 = v5;
+          loggingConnection = v5;
           goto LABEL_13;
         }
       }
@@ -455,54 +455,54 @@ LABEL_11:
   }
 
   v11 = +[PGLogging sharedLogging];
-  v12 = [v11 loggingConnection];
+  loggingConnection = [v11 loggingConnection];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 138478083;
-    v23 = v4;
+    v23 = regionCopy;
     v24 = 2113;
     v25 = v5;
-    _os_log_error_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: placemarks for region (%{private}@) did not contain rev geo data: (%{private}@)", buf, 0x16u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: placemarks for region (%{private}@) did not contain rev geo data: (%{private}@)", buf, 0x16u);
   }
 
-  v13 = 0;
+  plistData = 0;
 LABEL_13:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return plistData;
 }
 
-- (BOOL)_populateCacheWithRegions:(id)a3 withProgressBlock:(id)a4
+- (BOOL)_populateCacheWithRegions:(id)regions withProgressBlock:(id)block
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D27720];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  regionsCopy = regions;
   v9 = [[v6 alloc] initWithLocationCache:self->_locationCache];
   v10 = objc_alloc(MEMORY[0x277D277A0]);
   v23[0] = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v12 = [v10 initWithQueryPerformers:v11];
 
-  v13 = [(PGRevGeocodeProcessor *)self loggingConnection];
-  [v12 setLoggingConnection:v13];
+  loggingConnection = [(PGRevGeocodeProcessor *)self loggingConnection];
+  [v12 setLoggingConnection:loggingConnection];
 
   v20 = 0;
-  v14 = [v12 createCacheForRegions:v8 progressBlock:v7 error:&v20];
+  v14 = [v12 createCacheForRegions:regionsCopy progressBlock:blockCopy error:&v20];
 
   v15 = v20;
   if ((v14 & 1) == 0)
   {
     v16 = +[PGLogging sharedLogging];
-    v17 = [v16 loggingConnection];
+    loggingConnection2 = [v16 loggingConnection];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v22 = v15;
-      _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: Could not create cache for regions with error (%@)", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: Could not create cache for regions with error (%@)", buf, 0xCu);
     }
   }
 
@@ -510,23 +510,23 @@ LABEL_13:
   return v14;
 }
 
-- (void)_updateGeoInfoForAssetClusters:(id)a3 progressBlock:(id)a4
+- (void)_updateGeoInfoForAssetClusters:(id)clusters progressBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  clustersCopy = clusters;
+  blockCopy = block;
+  v8 = [clustersCopy count];
   if (v8)
   {
     v9 = v8;
-    v26 = v7;
-    v10 = _Block_copy(v7);
+    v26 = blockCopy;
+    v10 = _Block_copy(blockCopy);
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v6;
-    v11 = v6;
+    v27 = clustersCopy;
+    v11 = clustersCopy;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v12)
     {
@@ -566,8 +566,8 @@ LABEL_13:
 
                 objc_autoreleasePoolPop(v20);
 
-                v7 = v26;
-                v6 = v27;
+                blockCopy = v26;
+                clustersCopy = v27;
                 goto LABEL_23;
               }
 
@@ -575,11 +575,11 @@ LABEL_13:
             }
           }
 
-          v22 = [v19 region];
-          v23 = [(PGRevGeocodeProcessor *)self _revGeoLocationDataForRegion:v22];
+          region = [v19 region];
+          v23 = [(PGRevGeocodeProcessor *)self _revGeoLocationDataForRegion:region];
 
-          v24 = [v19 assets];
-          [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:v23 onAssets:v24];
+          assets = [v19 assets];
+          [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:v23 onAssets:assets];
 
           v16 = v14 + v16;
           objc_autoreleasePoolPop(v20);
@@ -600,8 +600,8 @@ LABEL_13:
       v17 = 0.0;
     }
 
-    v7 = v26;
-    v6 = v27;
+    blockCopy = v26;
+    clustersCopy = v27;
     if (v10)
     {
       if (CFAbsoluteTimeGetCurrent() - v17 >= 0.01)
@@ -628,12 +628,12 @@ LABEL_23:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_revGeocodeAssetClusters:(id)a3 progressBlock:(id)a4
+- (BOOL)_revGeocodeAssetClusters:(id)clusters progressBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  clustersCopy = clusters;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -642,12 +642,12 @@ LABEL_23:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v6;
+  v10 = clustersCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v11)
   {
@@ -661,8 +661,8 @@ LABEL_23:
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v32 + 1) + 8 * i) region];
-        [v9 addObject:v14];
+        region = [*(*(&v32 + 1) + 8 * i) region];
+        [array addObject:region];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v32 objects:v48 count:16];
@@ -680,7 +680,7 @@ LABEL_23:
   v29 = &v36;
   v30 = &v40;
   v31 = 0x3F847AE147AE147BLL;
-  if ([(PGRevGeocodeProcessor *)self _populateCacheWithRegions:v9 withProgressBlock:v27])
+  if ([(PGRevGeocodeProcessor *)self _populateCacheWithRegions:array withProgressBlock:v27])
   {
     if (!v15 || (Current = CFAbsoluteTimeGetCurrent(), Current - v37[3] < 0.01) || (v37[3] = Current, v26 = 0, (*(v15 + 2))(v15, &v26, 0.5), v17 = *(v41 + 24) | v26, *(v41 + 24) = v17, (v17 & 1) == 0))
     {
@@ -756,18 +756,18 @@ void __64__PGRevGeocodeProcessor__revGeocodeAssetClusters_progressBlock___block_
   }
 }
 
-- (BOOL)_setRevGeoLocationData:(id)a3 onAssets:(id)a4
+- (BOOL)_setRevGeoLocationData:(id)data onAssets:(id)assets
 {
   v55 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v5 = a4;
-  v40 = [MEMORY[0x277D27728] sharedLocationShifter];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  dataCopy = data;
+  assetsCopy = assets;
+  mEMORY[0x277D27728] = [MEMORY[0x277D27728] sharedLocationShifter];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v8)
   {
@@ -783,32 +783,32 @@ void __64__PGRevGeocodeProcessor__revGeocodeAssetClusters_progressBlock___block_
         }
 
         v12 = *(*(&v48 + 1) + 8 * i);
-        v13 = [v12 photosOneUpProperties];
-        v14 = [v13 shiftedLocationIsValid];
+        photosOneUpProperties = [v12 photosOneUpProperties];
+        shiftedLocationIsValid = [photosOneUpProperties shiftedLocationIsValid];
 
-        if (v14)
+        if (shiftedLocationIsValid)
         {
-          v15 = [MEMORY[0x277CBEB68] null];
-          [v6 addObject:v15];
+          null = [MEMORY[0x277CBEB68] null];
+          [v6 addObject:null];
         }
 
         else
         {
-          v16 = [v12 location];
-          v15 = v16;
-          if (v16 && ([v16 coordinate], v18 = v17, v20 = v19, (objc_msgSend(MEMORY[0x277D3ACD0], "canUseCoordinate:") & 1) != 0) && (objc_msgSend(MEMORY[0x277D27728], "isLocationShiftRequiredForCoordinate:", v18, v20) & 1) != 0)
+          location = [v12 location];
+          null = location;
+          if (location && ([location coordinate], v18 = v17, v20 = v19, (objc_msgSend(MEMORY[0x277D3ACD0], "canUseCoordinate:") & 1) != 0) && (objc_msgSend(MEMORY[0x277D27728], "isLocationShiftRequiredForCoordinate:", v18, v20) & 1) != 0)
           {
-            [v40 shiftedCoordinateForOriginalCoordinate:{v18, v20}];
-            v23 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v21 longitude:v22];
+            [mEMORY[0x277D27728] shiftedCoordinateForOriginalCoordinate:{v18, v20}];
+            null2 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v21 longitude:v22];
           }
 
           else
           {
-            v23 = [MEMORY[0x277CBEB68] null];
+            null2 = [MEMORY[0x277CBEB68] null];
           }
 
-          v24 = v23;
-          [v6 addObject:v23];
+          v24 = null2;
+          [v6 addObject:null2];
         }
       }
 
@@ -827,7 +827,7 @@ void __64__PGRevGeocodeProcessor__revGeocodeAssetClusters_progressBlock___block_
     {
       v28 = v27 + 1000;
       v29 = v27 + 1000 >= v26 ? v26 : v27 + 1000;
-      v30 = [(PGRevGeocodeProcessor *)self photoLibrary];
+      photoLibrary = [(PGRevGeocodeProcessor *)self photoLibrary];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __57__PGRevGeocodeProcessor__setRevGeoLocationData_onAssets___block_invoke;
@@ -836,9 +836,9 @@ void __64__PGRevGeocodeProcessor__revGeocodeAssetClusters_progressBlock___block_
       v47 = v29;
       v43 = v7;
       v44 = v6;
-      v45 = v39;
+      v45 = dataCopy;
       v41 = 0;
-      v31 = [v30 performChangesAndWait:v42 error:&v41];
+      v31 = [photoLibrary performChangesAndWait:v42 error:&v41];
       v32 = v41;
 
       if ((v31 & 1) == 0)
@@ -854,13 +854,13 @@ void __64__PGRevGeocodeProcessor__revGeocodeAssetClusters_progressBlock___block_
     }
 
     v34 = +[PGLogging sharedLogging];
-    v35 = [v34 loggingConnection];
+    loggingConnection = [v34 loggingConnection];
 
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v53 = v32;
-      _os_log_error_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: Error saving reverse geocoding data to database: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: Error saving reverse geocoding data to database: %@", buf, 0xCu);
     }
 
     v33 = 0;
@@ -894,12 +894,12 @@ void __57__PGRevGeocodeProcessor__setRevGeoLocationData_onAssets___block_invoke(
   }
 }
 
-- (BOOL)revGeocodeMoments:(id)a3 progressBlock:(id)a4
+- (BOOL)revGeocodeMoments:(id)moments progressBlock:(id)block
 {
   v81 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v53 = a4;
-  v5 = _Block_copy(v53);
+  momentsCopy = moments;
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v73 = 0;
   v74 = &v73;
   v75 = 0x2020000000;
@@ -935,16 +935,16 @@ void __57__PGRevGeocodeProcessor__setRevGeoLocationData_onAssets___block_invoke(
     }
   }
 
-  v9 = [v55 count];
+  v9 = [momentsCopy count];
   if (!v9)
   {
     v8 = 1;
     goto LABEL_62;
   }
 
-  v10 = [(PGRevGeocodeProcessor *)self loggingConnection];
-  v11 = os_signpost_id_generate(v10);
-  v12 = v10;
+  loggingConnection = [(PGRevGeocodeProcessor *)self loggingConnection];
+  v11 = os_signpost_id_generate(loggingConnection);
+  v12 = loggingConnection;
   v13 = v12;
   spid = v11;
   v51 = v11 - 1;
@@ -960,9 +960,9 @@ void __57__PGRevGeocodeProcessor__setRevGeoLocationData_onAssets___block_invoke(
   mach_timebase_info(&info);
   v14 = mach_absolute_time();
   [(PGRevGeocodeProcessor *)self _resetMetrics];
-  v58 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v49 = v14;
-  v56 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v54 = 0;
   v15 = 0.7 / v9;
   v16 = -v9;
@@ -974,14 +974,14 @@ void __57__PGRevGeocodeProcessor__setRevGeoLocationData_onAssets___block_invoke(
     v20 = objc_autoreleasePoolPush();
     if (!v5 || (v21 = CFAbsoluteTimeGetCurrent(), v21 - v70[3] < 0.01) || (v70[3] = v21, v67 = 0, v5[2](v5, &v67, v17), v22 = *(v74 + 24) | v67, *(v74 + 24) = v22, (v22 & 1) == 0))
     {
-      v24 = [v55 objectAtIndexedSubscript:v18 - 1];
+      v24 = [momentsCopy objectAtIndexedSubscript:v18 - 1];
       v66 = 0;
       v25 = [(PGRevGeocodeProcessor *)self _clusterAssetsInMoment:v24 assetsWithInvalidLocationInMoment:&v66];
       v26 = v66;
-      [v58 addObjectsFromArray:v25];
+      [array addObjectsFromArray:v25];
       if (v26)
       {
-        [v56 addObjectsFromArray:v26];
+        [array2 addObjectsFromArray:v26];
       }
 
       if (v5)
@@ -1012,28 +1012,28 @@ LABEL_40:
         }
       }
 
-      v29 = [v56 count];
+      v29 = [array2 count];
       v30 = v16 + v18;
       if (v29 && (v29 > 0x3E7 || !v30))
       {
-        v31 = [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:0 onAssets:v56];
-        [v56 removeAllObjects];
+        v31 = [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:0 onAssets:array2];
+        [array2 removeAllObjects];
         if (!v31)
         {
           v34 = +[PGLogging sharedLogging];
-          v35 = [v34 loggingConnection];
+          loggingConnection2 = [v34 loggingConnection];
 
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_error_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: stopping reverse geocoding early", buf, 2u);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: stopping reverse geocoding early", buf, 2u);
           }
 
           goto LABEL_40;
         }
       }
 
-      if ([v58 count] > 0x3E7 || !v30)
+      if ([array count] > 0x3E7 || !v30)
       {
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
@@ -1045,21 +1045,21 @@ LABEL_40:
         v61 = &v69;
         v65 = 0x3F847AE147AE147BLL;
         v62 = &v73;
-        if (![(PGRevGeocodeProcessor *)self _revGeocodeAssetClusters:v58 progressBlock:v59])
+        if (![(PGRevGeocodeProcessor *)self _revGeocodeAssetClusters:array progressBlock:v59])
         {
           v32 = +[PGLogging sharedLogging];
-          v33 = [v32 loggingConnection];
+          loggingConnection3 = [v32 loggingConnection];
 
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_error_impl(&dword_22F0FC000, v33, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: stopping reverse geocoding early", buf, 2u);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_ERROR, "AssetsRevGeocoding: stopping reverse geocoding early", buf, 2u);
           }
 
           goto LABEL_40;
         }
 
-        [v58 removeAllObjects];
+        [array removeAllObjects];
 
         v17 = v17 + v15 * (v18 - v54);
         v54 = v18;
@@ -1088,7 +1088,7 @@ LABEL_42:
     {
       v8 = 0;
 LABEL_60:
-      v45 = v56;
+      v45 = array2;
       goto LABEL_61;
     }
 
@@ -1129,7 +1129,7 @@ LABEL_60:
   }
 
   v44 = CFAbsoluteTimeGetCurrent();
-  v45 = v56;
+  v45 = array2;
   if (v44 - v70[3] >= 0.01 && (v70[3] = v44, v67 = 0, v5[2](v5, &v67, 1.0), v46 = *(v74 + 24) | v67, *(v74 + 24) = v46, (v46 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1180,18 +1180,18 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
   }
 }
 
-- (BOOL)revGeocodeAssets:(id)a3 progressBlock:(id)a4
+- (BOOL)revGeocodeAssets:(id)assets progressBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v30 = a4;
-  v31 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  assetsCopy = assets;
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v8)
   {
@@ -1207,20 +1207,20 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 locationDataProperties];
-        [v13 coordinate];
+        locationDataProperties = [v12 locationDataProperties];
+        [locationDataProperties coordinate];
         v15 = v14;
         v17 = v16;
 
         if ([MEMORY[0x277D3ACD0] canUseCoordinate:{v15, v17}])
         {
           v18 = objc_alloc(MEMORY[0x277CBFBC8]);
-          v19 = [MEMORY[0x277CCAD78] UUID];
-          v20 = [v19 UUIDString];
-          v21 = [v18 initWithCenter:v20 radius:v15 identifier:{v17, 20.0}];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          v21 = [v18 initWithCenter:uUIDString radius:v15 identifier:{v17, 20.0}];
 
-          v22 = [v12 coarseLocationProperties];
-          [v22 gpsHorizontalAccuracy];
+          coarseLocationProperties = [v12 coarseLocationProperties];
+          [coarseLocationProperties gpsHorizontalAccuracy];
           [v21 setClsHorizontalAccuracy:?];
 
           v23 = [PGAssetCluster alloc];
@@ -1228,12 +1228,12 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
           v25 = [(PGAssetCluster *)v23 initWithAssets:v24 region:v21];
 
-          [v31 addObject:v25];
+          [array addObject:v25];
         }
 
         else
         {
-          [v6 addObject:v12];
+          [array2 addObject:v12];
         }
       }
 
@@ -1243,60 +1243,60 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
     while (v9);
   }
 
-  [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:0 onAssets:v6];
-  v26 = [(PGRevGeocodeProcessor *)self _revGeocodeAssetClusters:v31 progressBlock:v30];
+  [(PGRevGeocodeProcessor *)self _setRevGeoLocationData:0 onAssets:array2];
+  v26 = [(PGRevGeocodeProcessor *)self _revGeocodeAssetClusters:array progressBlock:blockCopy];
 
   v27 = *MEMORY[0x277D85DE8];
   return v26;
 }
 
-- (PGRevGeocodeProcessor)initWithPhotoLibrary:(id)a3 homeLocations:(id)a4 loggingConnection:(id)a5 locationCache:(id)a6
+- (PGRevGeocodeProcessor)initWithPhotoLibrary:(id)library homeLocations:(id)locations loggingConnection:(id)connection locationCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  libraryCopy = library;
+  locationsCopy = locations;
+  connectionCopy = connection;
+  cacheCopy = cache;
   v17.receiver = self;
   v17.super_class = PGRevGeocodeProcessor;
   v14 = [(PGRevGeocodeProcessor *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_photoLibrary, v10);
-    objc_storeStrong(&v15->_homeLocations, a4);
-    objc_storeStrong(&v15->_loggingConnection, a5);
-    objc_storeStrong(&v15->_locationCache, a6);
+    objc_storeWeak(&v14->_photoLibrary, libraryCopy);
+    objc_storeStrong(&v15->_homeLocations, locations);
+    objc_storeStrong(&v15->_loggingConnection, connection);
+    objc_storeStrong(&v15->_locationCache, cache);
   }
 
   return v15;
 }
 
-+ (id)reverseGeoFetchOptionsForPhotoLibrary:(id)a3
++ (id)reverseGeoFetchOptionsForPhotoLibrary:(id)library
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v3 = [a3 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v4 = *MEMORY[0x277CD9AC8];
   v8[0] = *MEMORY[0x277CD9A70];
   v8[1] = v4;
   v8[2] = *MEMORY[0x277CD9AF8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  [v3 addFetchPropertySets:v5];
+  [librarySpecificFetchOptions addFetchPropertySets:v5];
 
-  [v3 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v6 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)momentsRequiringRevGeocodingWithUUIDs:(id)a3 inPhotoLibrary:(id)a4 defaultToAllAssets:(BOOL)a5 loggingConnection:(id)a6
++ (id)momentsRequiringRevGeocodingWithUUIDs:(id)ds inPhotoLibrary:(id)library defaultToAllAssets:(BOOL)assets loggingConnection:(id)connection
 {
-  v7 = a5;
+  assetsCopy = assets;
   v44[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = os_signpost_id_generate(v10);
-  v13 = v10;
+  dsCopy = ds;
+  connectionCopy = connection;
+  libraryCopy = library;
+  v12 = os_signpost_id_generate(connectionCopy);
+  v13 = connectionCopy;
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
@@ -1307,16 +1307,16 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
   info = 0;
   mach_timebase_info(&info);
   v15 = mach_absolute_time();
-  v16 = [v11 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
   v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SUBQUERY(%K, $asset, $asset.%K == NO).@count != 0", @"assets", @"additionalAttributes.reverseLocationDataIsValid"];
-  if ([v9 count])
+  if ([dsCopy count])
   {
     v35 = v15;
-    v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"uuid", v9];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"uuid", dsCopy];
     v19 = MEMORY[0x277CCA920];
     v44[0] = v17;
-    v44[1] = v18;
+    v44[1] = dsCopy;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     v21 = [v19 andPredicateWithSubpredicates:v20];
 
@@ -1325,7 +1325,7 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
 
   else
   {
-    if (!v7)
+    if (!assetsCopy)
     {
       v24 = 0;
       goto LABEL_14;
@@ -1334,13 +1334,13 @@ void __57__PGRevGeocodeProcessor_revGeocodeMoments_progressBlock___block_invoke(
     v35 = v15;
   }
 
-  [v16 setInternalPredicate:v17];
+  [librarySpecificFetchOptions setInternalPredicate:v17];
   v22 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v43 = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-  [v16 setSortDescriptors:v23];
+  [librarySpecificFetchOptions setSortDescriptors:v23];
 
-  v24 = [MEMORY[0x277CD97B8] fetchMomentsWithOptions:v16];
+  v24 = [MEMORY[0x277CD97B8] fetchMomentsWithOptions:librarySpecificFetchOptions];
   v25 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;

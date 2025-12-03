@@ -1,5 +1,5 @@
 @interface MTUIAlarmViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
@@ -9,14 +9,14 @@
 
 @implementation MTUIAlarmViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTUIAlarmView" hasInstanceMethod:@"enabledSwitch" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIAlarmView" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIAlarmView" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIAlarmView" hasInstanceMethod:@"repeatText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTUIAlarmView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTUIAlarmView" hasInstanceMethod:@"enabledSwitch" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIAlarmView" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIAlarmView" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIAlarmView" hasInstanceMethod:@"repeatText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTUIAlarmView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -28,27 +28,27 @@
     return 0;
   }
 
-  v5 = [(MTUIAlarmViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(MTUIAlarmViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v5)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v6 = [(MTUIAlarmViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v7 = [v6 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(MTUIAlarmViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"name"];
   v4 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"timeLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v6 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"repeatText"];
   v7 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"detailLabel"];
-  v10 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;
@@ -57,17 +57,17 @@
 - (id)accessibilityValue
 {
   v2 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"enabledSwitch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(MTUIAlarmViewAccessibility *)self safeValueForKey:@"enabledSwitch"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint

@@ -1,5 +1,5 @@
 @interface _MFMailboxUidChildrenEnumerator
-- (id)_initWithMailbox:(id)a3 includeHiddenChildren:(BOOL)a4;
+- (id)_initWithMailbox:(id)mailbox includeHiddenChildren:(BOOL)children;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -13,15 +13,15 @@
   [(_MFMailboxUidChildrenEnumerator *)&v3 dealloc];
 }
 
-- (id)_initWithMailbox:(id)a3 includeHiddenChildren:(BOOL)a4
+- (id)_initWithMailbox:(id)mailbox includeHiddenChildren:(BOOL)children
 {
   v8.receiver = self;
   v8.super_class = _MFMailboxUidChildrenEnumerator;
   v6 = [(_MFMailboxUidChildrenEnumerator *)&v8 init];
   if (v6)
   {
-    v6->_mailboxes = [a3 _mutableChildren];
-    v6->_includeHidden = a4;
+    v6->_mailboxes = [mailbox _mutableChildren];
+    v6->_includeHidden = children;
   }
 
   return v6;

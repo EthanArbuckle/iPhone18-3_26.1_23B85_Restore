@@ -7,7 +7,7 @@
 - (id)ic_attributedStringByAppendingAttributedString:()ICAttributedString
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a1];
+  v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self];
   v6 = [v5 ic_attributedStringByAppendingAttributedString:v4];
 
   return v6;

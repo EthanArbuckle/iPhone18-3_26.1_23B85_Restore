@@ -1,12 +1,12 @@
 @interface TUUIXPCClientConnection
 - (TUCallCenter)callCenter;
-- (TUUIXPCClientConnection)initWithListenerEndpoint:(id)a3 callCenter:(id)a4;
+- (TUUIXPCClientConnection)initWithListenerEndpoint:(id)endpoint callCenter:(id)center;
 - (id)host;
-- (id)hostWithErrorHandler:(id)a3;
+- (id)hostWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchInCallUIState:(id)a3;
-- (void)fetchRemoteControlStatus:(id)a3;
-- (void)handleRedialCommandWhileScreening:(id)a3;
+- (void)fetchInCallUIState:(id)state;
+- (void)fetchRemoteControlStatus:(id)status;
+- (void)handleRedialCommandWhileScreening:(id)screening;
 - (void)ping;
 @end
 
@@ -18,16 +18,16 @@
   [v2 ping];
 }
 
-- (TUUIXPCClientConnection)initWithListenerEndpoint:(id)a3 callCenter:(id)a4
+- (TUUIXPCClientConnection)initWithListenerEndpoint:(id)endpoint callCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  centerCopy = center;
   v22.receiver = self;
   v22.super_class = TUUIXPCClientConnection;
   v8 = [(TUUIXPCClientConnection *)&v22 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v6];
+    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     connection = v8->_connection;
     v8->_connection = v9;
 
@@ -35,12 +35,12 @@
     queue = v8->_queue;
     v8->_queue = v11;
 
-    objc_storeWeak(&v8->_callCenter, v7);
-    v13 = [MEMORY[0x1E696B0D0] hostInterface];
-    [(NSXPCConnection *)v8->_connection setRemoteObjectInterface:v13];
+    objc_storeWeak(&v8->_callCenter, centerCopy);
+    hostInterface = [MEMORY[0x1E696B0D0] hostInterface];
+    [(NSXPCConnection *)v8->_connection setRemoteObjectInterface:hostInterface];
 
-    v14 = [MEMORY[0x1E696B0D0] clientInterface];
-    [(NSXPCConnection *)v8->_connection setExportedInterface:v14];
+    clientInterface = [MEMORY[0x1E696B0D0] clientInterface];
+    [(NSXPCConnection *)v8->_connection setExportedInterface:clientInterface];
 
     v15 = [[TUUIXPClientConnectionWeakWrapper alloc] initWithWrappedObject:v8];
     [(NSXPCConnection *)v8->_connection setExportedObject:v15];
@@ -143,17 +143,17 @@ void __63__TUUIXPCClientConnection_initWithListenerEndpoint_callCenter___block_i
 
 - (id)host
 {
-  v2 = [(TUUIXPCClientConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(TUUIXPCClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)hostWithErrorHandler:(id)a3
+- (id)hostWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUUIXPCClientConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(TUUIXPCClientConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -211,15 +211,15 @@ void __81__TUUIXPCClientConnection_shouldHostHandleMRCommand_sourceIdentifier_co
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRedialCommandWhileScreening:(id)a3
+- (void)handleRedialCommandWhileScreening:(id)screening
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  screeningCopy = screening;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = screeningCopy;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "handleRedialCommandWhileScreening: %@", buf, 0xCu);
   }
 
@@ -227,8 +227,8 @@ void __81__TUUIXPCClientConnection_shouldHostHandleMRCommand_sourceIdentifier_co
   v9[1] = 3221225472;
   v9[2] = __61__TUUIXPCClientConnection_handleRedialCommandWhileScreening___block_invoke;
   v9[3] = &unk_1E7425828;
-  v10 = v4;
-  v6 = v4;
+  v10 = screeningCopy;
+  v6 = screeningCopy;
   v7 = [(TUUIXPCClientConnection *)self hostWithErrorHandler:v9];
   [v7 handleRedialCommandWhileScreening:v6];
 
@@ -253,10 +253,10 @@ void __61__TUUIXPCClientConnection_handleRedialCommandWhileScreening___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchInCallUIState:(id)a3
+- (void)fetchInCallUIState:(id)state
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,16 +265,16 @@ void __61__TUUIXPCClientConnection_handleRedialCommandWhileScreening___block_inv
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "%s: ", buf, 0xCu);
   }
 
-  v6 = [(TUUIXPCClientConnection *)self callCenter];
-  v7 = [v6 queue];
+  callCenter = [(TUUIXPCClientConnection *)self callCenter];
+  queue = [callCenter queue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__TUUIXPCClientConnection_fetchInCallUIState___block_invoke;
   v10[3] = &unk_1E7424E20;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  dispatch_async(v7, v10);
+  v11 = stateCopy;
+  v8 = stateCopy;
+  dispatch_async(queue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -321,10 +321,10 @@ void __46__TUUIXPCClientConnection_fetchInCallUIState___block_invoke_92(uint64_t
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchRemoteControlStatus:(id)a3
+- (void)fetchRemoteControlStatus:(id)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statusCopy = status;
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -337,8 +337,8 @@ void __46__TUUIXPCClientConnection_fetchInCallUIState___block_invoke_92(uint64_t
   v9[1] = 3221225472;
   v9[2] = __52__TUUIXPCClientConnection_fetchRemoteControlStatus___block_invoke;
   v9[3] = &unk_1E7424A10;
-  v10 = v4;
-  v6 = v4;
+  v10 = statusCopy;
+  v6 = statusCopy;
   v7 = [(TUUIXPCClientConnection *)self hostWithErrorHandler:v9];
   [v7 fetchRemoteControlStatus:v6];
 

@@ -1,14 +1,14 @@
 @interface MTLDebugAccelerationStructure
-- (MTLDebugAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTLDebugAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5;
-- (id)formattedDescription:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (MTLDebugAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent;
+- (MTLDebugAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap;
+- (id)formattedDescription:(unint64_t)description;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (void)dealloc;
 @end
 
 @implementation MTLDebugAccelerationStructure
 
-- (MTLDebugAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLDebugAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent
 {
   v10.receiver = self;
   v10.super_class = MTLDebugAccelerationStructure;
@@ -18,17 +18,17 @@
   {
     atomic_store(0, &v6->_purgeableStateToken);
     v6->_purgeableStateHasBeenSet = 0;
-    v8 = [a3 buffer];
-    if (v8)
+    buffer = [object buffer];
+    if (buffer)
     {
-      v7->_debugBuffer = -[MTLDebugBuffer initWithBuffer:device:options:]([MTLDebugBuffer alloc], "initWithBuffer:device:options:", v8, a4, [v8 resourceOptions]);
+      v7->_debugBuffer = -[MTLDebugBuffer initWithBuffer:device:options:]([MTLDebugBuffer alloc], "initWithBuffer:device:options:", buffer, parent, [buffer resourceOptions]);
     }
   }
 
   return v7;
 }
 
-- (MTLDebugAccelerationStructure)initWithBaseObject:(id)a3 parent:(id)a4 heap:(id)a5
+- (MTLDebugAccelerationStructure)initWithBaseObject:(id)object parent:(id)parent heap:(id)heap
 {
   v12.receiver = self;
   v12.super_class = MTLDebugAccelerationStructure;
@@ -38,10 +38,10 @@
   {
     atomic_store(0, &v8->_purgeableStateToken);
     v8->_purgeableStateHasBeenSet = 0;
-    v10 = [a3 buffer];
-    if (v10)
+    buffer = [object buffer];
+    if (buffer)
     {
-      v9->_debugBuffer = -[MTLDebugBuffer initWithBuffer:heap:device:options:]([MTLDebugBuffer alloc], "initWithBuffer:heap:device:options:", v10, a5, a4, [v10 resourceOptions]);
+      v9->_debugBuffer = -[MTLDebugBuffer initWithBuffer:heap:device:options:]([MTLDebugBuffer alloc], "initWithBuffer:heap:device:options:", buffer, heap, parent, [buffer resourceOptions]);
     }
   }
 
@@ -55,16 +55,16 @@
   [(MTLToolsAccelerationStructure *)&v3 dealloc];
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   if ([-[MTLToolsObject baseObject](self "baseObject")])
   {
     [MTLDebugAccelerationStructure setPurgeableState:];
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       if (atomic_load(&self->_purgeableStateToken))
       {
@@ -75,12 +75,12 @@
     self->_purgeableStateHasBeenSet = 1;
   }
 
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 setPurgeableState:a3];
+  return [baseObject setPurgeableState:state];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v4.receiver = self;
   v4.super_class = MTLDebugAccelerationStructure;

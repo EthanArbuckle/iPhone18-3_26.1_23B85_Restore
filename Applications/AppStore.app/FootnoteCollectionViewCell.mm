@@ -1,14 +1,14 @@
 @interface FootnoteCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtC8AppStore26FootnoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore26FootnoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation FootnoteCollectionViewCell
 
-- (_TtC8AppStore26FootnoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore26FootnoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore26FootnoteCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -23,7 +23,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004C60CC();
 }
 
@@ -34,7 +34,7 @@
   v2 = v13.receiver;
   [(FootnoteCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8AppStore26FootnoteCollectionViewCell_footnoteView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100028004();
   LayoutMarginsAware<>.layoutFrame.getter();
   v6 = v5;
@@ -52,10 +52,10 @@
   return [(FootnoteCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1004C6574(a3);
+  selfCopy = self;
+  sub_1004C6574(highlighted);
 }
 
 @end

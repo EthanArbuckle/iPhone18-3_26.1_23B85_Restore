@@ -1,33 +1,33 @@
 @interface AWDProactiveAppPredictionAppLaunchSequence
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBundleid:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBundleid:(id)bundleid;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveAppPredictionAppLaunchSequence
 
-- (void)addBundleid:(id)a3
+- (void)addBundleid:(id)bundleid
 {
-  v4 = a3;
+  bundleidCopy = bundleid;
   bundleids = self->_bundleids;
-  v8 = v4;
+  v8 = bundleidCopy;
   if (!bundleids)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bundleids;
     self->_bundleids = v6;
 
-    v4 = v8;
+    bundleidCopy = v8;
     bundleids = self->_bundleids;
   }
 
-  [(NSMutableArray *)bundleids addObject:v4];
+  [(NSMutableArray *)bundleids addObject:bundleidCopy];
 }
 
 - (id)description
@@ -36,34 +36,34 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveAppPredictionAppLaunchSequence;
   v4 = [(AWDProactiveAppPredictionAppLaunchSequence *)&v8 description];
-  v5 = [(AWDProactiveAppPredictionAppLaunchSequence *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveAppPredictionAppLaunchSequence *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   bundleids = self->_bundleids;
   if (bundleids)
   {
-    [v3 setObject:bundleids forKey:@"bundleid"];
+    [dictionary setObject:bundleids forKey:@"bundleid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -105,23 +105,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(AWDProactiveAppPredictionAppLaunchSequence *)self bundleidsCount])
   {
     [v9 clearBundleids];
-    v5 = [(AWDProactiveAppPredictionAppLaunchSequence *)self bundleidsCount];
-    if (v5)
+    bundleidsCount = [(AWDProactiveAppPredictionAppLaunchSequence *)self bundleidsCount];
+    if (bundleidsCount)
     {
-      v6 = v5;
+      v6 = bundleidsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDProactiveAppPredictionAppLaunchSequence *)self bundleidAtIndex:i];
@@ -131,10 +131,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addBundleid:v12];
 
         ++v11;
@@ -179,24 +179,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -204,7 +204,7 @@ LABEL_9:
   }
 
   bundleids = self->_bundleids;
-  if (bundleids | *(v4 + 2))
+  if (bundleids | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)bundleids isEqual:?];
   }
@@ -234,14 +234,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_bundleids hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -249,7 +249,7 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

@@ -1,28 +1,28 @@
 @interface _PIDynamicGuidedProcessorKernel
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation _PIDynamicGuidedProcessorKernel
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"imageExtents"];
+  argumentsCopy = arguments;
+  v7 = [argumentsCopy objectForKeyedSubscript:@"imageExtents"];
   if (!v7)
   {
     __assert_rtn("+[_PIDynamicGuidedProcessorKernel roiForInput:arguments:outputRect:]", "PIParallaxStyleRecipe.m", 731, "arguments[@imageExtents]");
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"imageExtents"];
-  if ([v8 count] <= a3)
+  v8 = [argumentsCopy objectForKeyedSubscript:@"imageExtents"];
+  if ([v8 count] <= input)
   {
     __assert_rtn("+[_PIDynamicGuidedProcessorKernel roiForInput:arguments:outputRect:]", "PIParallaxStyleRecipe.m", 732, "(int)[(NSArray *)arguments[@imageExtents] count] > input");
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"imageExtents"];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  v9 = [argumentsCopy objectForKeyedSubscript:@"imageExtents"];
+  v10 = [v9 objectAtIndexedSubscript:input];
   [v10 CGRectValue];
   v12 = v11;
   v14 = v13;
@@ -40,11 +40,11 @@
   return result;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       __assert_rtn("+[_PIDynamicGuidedProcessorKernel formatForInputAtIndex:]", "PIParallaxStyleRecipe.m", 720, "0");
     }
@@ -60,21 +60,21 @@
   return *v3;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 metalCommandBuffer];
-  v12 = [v11 device];
-  v13 = [v10 objectAtIndexedSubscript:0];
-  v14 = [v10 objectAtIndexedSubscript:1];
+  outputCopy = output;
+  argumentsCopy = arguments;
+  inputsCopy = inputs;
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  device = [metalCommandBuffer device];
+  v13 = [inputsCopy objectAtIndexedSubscript:0];
+  v14 = [inputsCopy objectAtIndexedSubscript:1];
 
   [v13 region];
   v16 = v15;
   [v13 region];
   v18 = v17;
-  v19 = [v9 objectForKeyedSubscript:@"guidedFilterEpsilon"];
+  v19 = [argumentsCopy objectForKeyedSubscript:@"guidedFilterEpsilon"];
 
   [v19 floatValue];
   v21 = v20;
@@ -82,17 +82,17 @@
   LOBYTE(v31) = 1;
   LODWORD(v22) = v21;
   v23 = [MEMORY[0x1E6974620] filterDescriptorWithWidth:v16 height:v18 arrayLength:1 kernelSpatialDiameter:3 kernelTemporalDiameter:1 epsilon:1 sourceChannels:v22 guideChannels:3 preallocateIntermediates:v31];
-  v24 = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:v12 filterDescriptor:v23];
+  v24 = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:device filterDescriptor:v23];
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v27 = [v13 metalTexture];
-  [v25 addObject:v27];
+  metalTexture = [v13 metalTexture];
+  [v25 addObject:metalTexture];
 
-  v28 = [v8 metalTexture];
+  metalTexture2 = [outputCopy metalTexture];
 
-  [v26 addObject:v28];
-  v29 = [v14 metalTexture];
-  [v24 encodeToCommandBuffer:v11 sourceTextureArray:v25 guidanceTexture:v29 constraintsTextureArray:0 numberOfIterations:1 destinationTextureArray:v26];
+  [v26 addObject:metalTexture2];
+  metalTexture3 = [v14 metalTexture];
+  [v24 encodeToCommandBuffer:metalCommandBuffer sourceTextureArray:v25 guidanceTexture:metalTexture3 constraintsTextureArray:0 numberOfIterations:1 destinationTextureArray:v26];
 
   return 1;
 }

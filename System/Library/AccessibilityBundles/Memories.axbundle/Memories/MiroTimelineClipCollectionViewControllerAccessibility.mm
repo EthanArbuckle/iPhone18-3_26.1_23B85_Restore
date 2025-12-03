@@ -1,19 +1,19 @@
 @interface MiroTimelineClipCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MiroTimelineClipCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroEditorFlowLayout"];
-  [v3 validateClass:@"MiroTimelineClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"snappedIndexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"collectionView: didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroEditorFlowLayout"];
+  [validationsCopy validateClass:@"MiroTimelineClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"snappedIndexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MiroTimelineClipCollectionViewController" hasInstanceMethod:@"collectionView: didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,9 +22,9 @@
   v9.receiver = self;
   v9.super_class = MiroTimelineClipCollectionViewControllerAccessibility;
   [(MiroTimelineClipCollectionViewControllerAccessibility *)&v9 _accessibilityLoadAccessibilityInformation];
-  v3 = [(MiroTimelineClipCollectionViewControllerAccessibility *)self _axMiroPhotoScrubber];
+  _axMiroPhotoScrubber = [(MiroTimelineClipCollectionViewControllerAccessibility *)self _axMiroPhotoScrubber];
 
-  if (!v3)
+  if (!_axMiroPhotoScrubber)
   {
     v4 = [[AXMiroPhotoScrubber alloc] initWithAccessibilityContainer:self];
     [(MiroTimelineClipCollectionViewControllerAccessibility *)self _setAXMiroPhotoScrubber:v4];

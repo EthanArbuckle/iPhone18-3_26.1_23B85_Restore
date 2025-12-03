@@ -1,5 +1,5 @@
 @interface TTSStringTransformation
-- (TTSStringTransformation)initWithRange:(_NSRange)a3 andReplacement:(id)a4;
+- (TTSStringTransformation)initWithRange:(_NSRange)range andReplacement:(id)replacement;
 - (_NSRange)finalRange;
 - (_NSRange)range;
 - (int64_t)sizeDelta;
@@ -7,11 +7,11 @@
 
 @implementation TTSStringTransformation
 
-- (TTSStringTransformation)initWithRange:(_NSRange)a3 andReplacement:(id)a4
+- (TTSStringTransformation)initWithRange:(_NSRange)range andReplacement:(id)replacement
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  replacementCopy = replacement;
   v12.receiver = self;
   v12.super_class = TTSStringTransformation;
   v9 = [(TTSStringTransformation *)&v12 init];
@@ -20,7 +20,7 @@
   {
     v9->_range.location = location;
     v9->_range.length = length;
-    objc_storeStrong(&v9->_replacement, a4);
+    objc_storeStrong(&v9->_replacement, replacement);
   }
 
   return v10;

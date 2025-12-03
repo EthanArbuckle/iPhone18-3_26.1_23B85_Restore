@@ -1,15 +1,15 @@
 @interface SBHWidgetStackViewController
-+ (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)a3 widgetViewController:(id)a4;
++ (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)widget widgetViewController:(id)controller;
 - (BOOL)_alwaysShowStackBorder;
 - (BOOL)_alwaysShowStackPageControl;
-- (BOOL)_containerRequiresClippingToBoundsForWidget:(id)a3;
-- (BOOL)_createViewControllerForWidgetIfNecessary:(id)a3 usingIconImageInfo:(SBIconImageInfo *)a4;
+- (BOOL)_containerRequiresClippingToBoundsForWidget:(id)widget;
+- (BOOL)_createViewControllerForWidgetIfNecessary:(id)necessary usingIconImageInfo:(SBIconImageInfo *)info;
 - (BOOL)_insetWidgetsForTrackingAppearance;
 - (BOOL)_isContentViewExtendingOutsideBounds;
 - (BOOL)_isScrollViewTracking;
-- (BOOL)_scrollToActiveWidgetAnimated:(BOOL)a3;
-- (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)a3;
-- (BOOL)_shouldHideWidgetWithUniqueIdentifier:(id)a3;
+- (BOOL)_scrollToActiveWidgetAnimated:(BOOL)animated;
+- (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)widget;
+- (BOOL)_shouldHideWidgetWithUniqueIdentifier:(id)identifier;
 - (BOOL)isWidgetHitTestingDisabled;
 - (BOOL)wantsCaptureOnlyBackgroundView;
 - (CGPoint)_restingContentOffset;
@@ -17,8 +17,8 @@
 - (CGSize)_scrollViewContentSize;
 - (NSArray)applicationShortcutItems;
 - (NSArray)widgetViewControllers;
-- (SBHWidgetStackViewController)initWithIcon:(id)a3 iconListLayoutProvider:(id)a4;
-- (SBHWidgetStackViewController)initWithIcon:(id)a3 iconListLayoutProvider:(id)a4 widgetSettings:(id)a5;
+- (SBHWidgetStackViewController)initWithIcon:(id)icon iconListLayoutProvider:(id)provider;
+- (SBHWidgetStackViewController)initWithIcon:(id)icon iconListLayoutProvider:(id)provider widgetSettings:(id)settings;
 - (SBHWidgetStackViewControllerDataSource)dataSource;
 - (SBHWidgetStackViewControllerDelegate)delegate;
 - (SBIconApproximateLayoutPosition)approximateLayoutPosition;
@@ -27,44 +27,44 @@
 - (UIView)snapshotView;
 - (UIView)springLoadingEffectTargetView;
 - (UIViewController)currentWidgetViewController;
-- (id)_backgroundColorForWidgetWithDistanceFromRestingContentOffset:(double)a3;
+- (id)_backgroundColorForWidgetWithDistanceFromRestingContentOffset:(double)offset;
 - (id)_createBackgroundView;
-- (id)_disableImageUpdatesForReason:(id)a3 animateChangesUponInvalidation:(BOOL)a4;
-- (id)_widgetContainerViewControllersForListLayoutProvider:(id)a3;
+- (id)_disableImageUpdatesForReason:(id)reason animateChangesUponInvalidation:(BOOL)invalidation;
+- (id)_widgetContainerViewControllersForListLayoutProvider:(id)provider;
 - (id)_widgetContextMenuController;
-- (id)_widgetWithUniqueIdentifier:(id)a3;
-- (id)backdropGroupNameForActiveDataSource:(id)a3;
+- (id)_widgetWithUniqueIdentifier:(id)identifier;
+- (id)backdropGroupNameForActiveDataSource:(id)source;
 - (id)cancelTouchesForCurrentEventInHostedContent;
 - (id)effectiveIconImageAppearance;
 - (id)sbh_underlyingAvocadoHostViewControllers;
-- (id)sourceBackgroundView:(id)a3;
+- (id)sourceBackgroundView:(id)view;
 - (id)sourceView;
-- (int64_t)_newActiveWidgetIndexForContentOffset:(CGPoint)a3;
-- (void)_configureBackgroundViewIfNecessary:(id)a3;
-- (void)_createBackgroundViewIfNecessary:(BOOL)a3;
+- (int64_t)_newActiveWidgetIndexForContentOffset:(CGPoint)offset;
+- (void)_configureBackgroundViewIfNecessary:(id)necessary;
+- (void)_createBackgroundViewIfNecessary:(BOOL)necessary;
 - (void)_decrementBackgroundAnimationCount;
 - (void)_decrementWidgetScaleAnimationCount;
 - (void)_decrementWidgetSnapshotAnimationCount;
-- (void)_handleInstalledAppsChanged:(id)a3;
+- (void)_handleInstalledAppsChanged:(id)changed;
 - (void)_incrementBackgroundAnimationCount;
 - (void)_incrementWidgetScaleAnimationCount;
-- (void)_layoutWithAnimationUpdateMode:(int64_t)a3;
+- (void)_layoutWithAnimationUpdateMode:(int64_t)mode;
 - (void)_logAllViewControllers;
-- (void)_removeWidget:(id)a3 animated:(BOOL)a4;
-- (void)_removeWidget:(id)a3 widgetContainerViewControllers:(id)a4 animated:(BOOL)a5;
-- (void)_removeWidgetContainerViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)_removeWidgetWithUniqueIdentifier:(id)a3 widgetContainerViewControllers:(id)a4 animated:(BOOL)a5;
-- (void)_requireLayoutUponActivationForWidgetContainerViewController:(id)a3;
-- (void)_restartPageControlTimerWithTimeInterval:(double)a3;
-- (void)_setPageControlHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)_removeWidget:(id)widget animated:(BOOL)animated;
+- (void)_removeWidget:(id)widget widgetContainerViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)_removeWidgetContainerViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)_removeWidgetWithUniqueIdentifier:(id)identifier widgetContainerViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)_requireLayoutUponActivationForWidgetContainerViewController:(id)controller;
+- (void)_restartPageControlTimerWithTimeInterval:(double)interval;
+- (void)_setPageControlHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)_setupStateCapture;
-- (void)_teardownBackgroundView:(id)a3 contactDelegate:(BOOL)a4;
+- (void)_teardownBackgroundView:(id)view contactDelegate:(BOOL)delegate;
 - (void)_teardownStateCapture;
 - (void)_updateAccessibilityValue;
 - (void)_updateActiveWidgetIndexAndScrollViewContentOffset;
 - (void)_updateApproximateLayoutPositionForWidgetViewControllers;
-- (void)_updateBackgroundViewWithAnimationUpdateMode:(int64_t)a3 allowingOutsetting:(BOOL)a4;
-- (void)_updatePageControlWithAnimationUpdateMode:(int64_t)a3;
+- (void)_updateBackgroundViewWithAnimationUpdateMode:(int64_t)mode allowingOutsetting:(BOOL)outsetting;
+- (void)_updatePageControlWithAnimationUpdateMode:(int64_t)mode;
 - (void)_updatePauseReasonForWidgetViewControllers;
 - (void)_updatePresentationModeForWidgetViewControllers;
 - (void)_updateScrollViewDelaysContentTouches;
@@ -75,69 +75,69 @@
 - (void)_updateWidgetViewEdgeAntialiasing;
 - (void)_updateWidgetViewHitTesting;
 - (void)_updateWidgetViewStyleConfiguration;
-- (void)_updateWidgetViewsWithAnimationUpdateMode:(int64_t)a3;
-- (void)addCustomImageViewControllerObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applyGlassIfDesiredToView:(id)a3 forIconImageAppearance:(id)a4 sourceView:(id)a5;
-- (void)customImageViewControllerWantsLabelHiddenDidChange:(id)a3;
+- (void)_updateWidgetViewsWithAnimationUpdateMode:(int64_t)mode;
+- (void)addCustomImageViewControllerObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)applyGlassIfDesiredToView:(id)view forIconImageAppearance:(id)appearance sourceView:(id)sourceView;
+- (void)customImageViewControllerWantsLabelHiddenDidChange:(id)change;
 - (void)dealloc;
-- (void)didSelectApplicationShortcutItem:(id)a3;
+- (void)didSelectApplicationShortcutItem:(id)item;
 - (void)discardAllWidgetViewControllers;
-- (void)enumerateWidgetContainerViewControllersForListLayoutProviderUsingBlock:(id)a3;
-- (void)enumerateWidgetViewControllersUsingBlock:(id)a3;
+- (void)enumerateWidgetContainerViewControllersForListLayoutProviderUsingBlock:(id)block;
+- (void)enumerateWidgetViewControllersUsingBlock:(id)block;
 - (void)evaluateBackground;
-- (void)flashPageControlAnimated:(BOOL)a3 withTimeInterval:(double)a4;
-- (void)leafIcon:(id)a3 didAddIconDataSource:(id)a4;
-- (void)leafIcon:(id)a3 didChangeActiveDataSource:(id)a4;
-- (void)leafIcon:(id)a3 didRemoveIconDataSource:(id)a4;
+- (void)flashPageControlAnimated:(BOOL)animated withTimeInterval:(double)interval;
+- (void)leafIcon:(id)icon didAddIconDataSource:(id)source;
+- (void)leafIcon:(id)icon didChangeActiveDataSource:(id)source;
+- (void)leafIcon:(id)icon didRemoveIconDataSource:(id)source;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)resizeSnapshotsForWidgetContainerViewControllers:(id)a3 isFakeWidget:(BOOL)a4 reason:(id)a5;
-- (void)scrollViewDidEndScrolling:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginScrolling:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setAlwaysShowsAsStack:(BOOL)a3 animated:(BOOL)a4;
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3;
-- (void)setBackgroundViewConfigurator:(id)a3;
-- (void)setBackgroundViewProvider:(id)a3;
-- (void)setBrightness:(double)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFixedPageControlOffset:(id)a3 animated:(BOOL)a4;
-- (void)setForcesEdgeAntialiasing:(BOOL)a3;
-- (void)setHost:(id)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setImageViewAlignment:(unint64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setListLayoutProvider:(id)a3;
-- (void)setOverlapping:(BOOL)a3;
-- (void)setOverrideIconImageAppearance:(id)a3;
-- (void)setOverrideIconImageStyleConfiguration:(id)a3;
-- (void)setPauseReasons:(unint64_t)a3;
-- (void)setPresentationMode:(int64_t)a3;
-- (void)setShowingContextMenu:(BOOL)a3;
-- (void)setShowsSnapshotWhenDeactivated:(BOOL)a3;
-- (void)setShowsSquareCorners:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setUserVisibilityStatus:(unint64_t)a3;
-- (void)setWidgetIcon:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)updateImageAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)resizeSnapshotsForWidgetContainerViewControllers:(id)controllers isFakeWidget:(BOOL)widget reason:(id)reason;
+- (void)scrollViewDidEndScrolling:(id)scrolling;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginScrolling:(id)scrolling;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setAlwaysShowsAsStack:(BOOL)stack animated:(BOOL)animated;
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position;
+- (void)setBackgroundViewConfigurator:(id)configurator;
+- (void)setBackgroundViewProvider:(id)provider;
+- (void)setBrightness:(double)brightness;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFixedPageControlOffset:(id)offset animated:(BOOL)animated;
+- (void)setForcesEdgeAntialiasing:(BOOL)antialiasing;
+- (void)setHost:(id)host;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setImageViewAlignment:(unint64_t)alignment;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setListLayoutProvider:(id)provider;
+- (void)setOverlapping:(BOOL)overlapping;
+- (void)setOverrideIconImageAppearance:(id)appearance;
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration;
+- (void)setPauseReasons:(unint64_t)reasons;
+- (void)setPresentationMode:(int64_t)mode;
+- (void)setShowingContextMenu:(BOOL)menu;
+- (void)setShowsSnapshotWhenDeactivated:(BOOL)deactivated;
+- (void)setShowsSquareCorners:(BOOL)corners;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setUserVisibilityStatus:(unint64_t)status;
+- (void)setWidgetIcon:(id)icon;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)updateImageAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)widgetContainerViewControllerContentViewControllerDidActivate:(id)a3;
-- (void)widgetContainerViewControllerContentViewControllerDidUpdateStyleConfiguration:(id)a3;
-- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)a3 widgetContentIsReady:(BOOL)a4;
-- (void)willShowContextMenuAtLocation:(CGPoint)a3;
+- (void)widgetContainerViewControllerContentViewControllerDidActivate:(id)activate;
+- (void)widgetContainerViewControllerContentViewControllerDidUpdateStyleConfiguration:(id)configuration;
+- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)changed widgetContentIsReady:(BOOL)ready;
+- (void)willShowContextMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation SBHWidgetStackViewController
@@ -145,16 +145,16 @@
 - (void)_updateAccessibilityValue
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHWidgetStackViewController *)self widgetIcon];
-  if ([v3 isWidgetStackIcon])
+  widgetIcon = [(SBHWidgetStackViewController *)self widgetIcon];
+  if ([widgetIcon isWidgetStackIcon])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [v3 iconDataSources];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    iconDataSources = [widgetIcon iconDataSources];
+    v6 = [iconDataSources countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -165,24 +165,24 @@
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(iconDataSources);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) icon:v3 displayNameForLocation:@"SBIconLocationRoot"];
+          v10 = [*(*(&v17 + 1) + 8 * i) icon:widgetIcon displayNameForLocation:@"SBIconLocationRoot"];
           if (v10)
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
 
           else
           {
             v11 = objc_opt_class();
             v12 = NSStringFromClass(v11);
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [iconDataSources countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
@@ -190,7 +190,7 @@
 
     containerView = self->_containerView;
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v4 componentsJoinedByString:{@", "}];
+    v15 = [array componentsJoinedByString:{@", "}];
     v16 = [v14 stringWithFormat:@"widget-stack:<%@>", v15];
     [(UIView *)containerView setAccessibilityIdentifier:v16];
   }
@@ -206,15 +206,15 @@
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_UPDATE_WIDGET_VIEW_HIT_TESTING", " isAnimation=YES ", buf, 2u);
   }
 
-  v4 = [(SBHWidgetStackViewController *)self isWidgetHitTestingDisabled];
+  isWidgetHitTestingDisabled = [(SBHWidgetStackViewController *)self isWidgetHitTestingDisabled];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v6 = [v5 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -225,17 +225,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 view];
-        [v12 bs_setHitTestingDisabled:v4];
+        view = [v11 view];
+        [view bs_setHitTestingDisabled:isWidgetHitTestingDisabled];
 
-        [v11 setInteractionDisabled:v4];
+        [v11 setInteractionDisabled:isWidgetHitTestingDisabled];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
@@ -254,12 +254,12 @@
   v23.receiver = self;
   v23.super_class = SBHWidgetStackViewController;
   [(SBHWidgetStackViewController *)&v23 loadView];
-  v3 = [(SBHWidgetStackViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:1];
+  view = [(SBHWidgetStackViewController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:1];
 
-  v5 = [(SBHWidgetStackViewController *)self view];
-  [v5 bounds];
+  view2 = [(SBHWidgetStackViewController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -270,8 +270,8 @@
   self->_containerView = v14;
 
   [(UIView *)self->_containerView setClipsToBounds:0];
-  v16 = [(SBHWidgetStackViewController *)self view];
-  [v16 addSubview:self->_containerView];
+  view3 = [(SBHWidgetStackViewController *)self view];
+  [view3 addSubview:self->_containerView];
 
   v17 = [(BSUIScrollView *)[SBHWidgetStackScrollView alloc] initWithFrame:v7, v9, v11, v13];
   scrollView = self->_scrollView;
@@ -296,11 +296,11 @@
   [(UIPageControl *)self->_pageControl setDirection:3];
   [(UIPageControl *)self->_pageControl setHidesForSinglePage:1];
   [(UIPageControl *)self->_pageControl _setPreferredNumberOfVisibleIndicators:[(SBHWidgetSettings *)self->_widgetSettings maximumWidgetsInAStack]];
-  v21 = [(SBHWidgetStackViewController *)self view];
-  [v21 addSubview:self->_pageControl];
+  view4 = [(SBHWidgetStackViewController *)self view];
+  [view4 addSubview:self->_pageControl];
 
-  v22 = [(SBHWidgetStackViewController *)self view];
-  [v22 addObserver:self forKeyPath:@"alpha" options:0 context:0];
+  view5 = [(SBHWidgetStackViewController *)self view];
+  [view5 addObserver:self forKeyPath:@"alpha" options:0 context:0];
 
   [(SBHWidgetStackViewController *)self _updateAccessibilityValue];
 }
@@ -346,8 +346,8 @@
 
 - (BOOL)_alwaysShowStackBorder
 {
-  v3 = [(SBHWidgetStackViewController *)self icon];
-  if ([v3 isWidgetStackIcon])
+  icon = [(SBHWidgetStackViewController *)self icon];
+  if ([icon isWidgetStackIcon])
   {
   }
 
@@ -378,8 +378,8 @@
 
 - (BOOL)_insetWidgetsForTrackingAppearance
 {
-  v3 = [(SBHWidgetStackViewController *)self icon];
-  if ([v3 isWidgetStackIcon])
+  icon = [(SBHWidgetStackViewController *)self icon];
+  if ([icon isWidgetStackIcon])
   {
   }
 
@@ -437,12 +437,12 @@
       v6 = 1;
     }
 
-    v7 = [(SBHWidgetStackViewController *)self clipsWidgetsToViewBounds];
-    v8 = [(SBHWidgetStackViewController *)self _showAdjacentWidgets];
-    v9 = [(SBHWidgetStackViewController *)self _isContentViewExtendingOutsideBounds];
-    if (v7)
+    clipsWidgetsToViewBounds = [(SBHWidgetStackViewController *)self clipsWidgetsToViewBounds];
+    _showAdjacentWidgets = [(SBHWidgetStackViewController *)self _showAdjacentWidgets];
+    _isContentViewExtendingOutsideBounds = [(SBHWidgetStackViewController *)self _isContentViewExtendingOutsideBounds];
+    if (clipsWidgetsToViewBounds)
     {
-      v10 = v8 | (v9 && self->_widgetSnapshotAnimationCount == 0);
+      v10 = _showAdjacentWidgets | (_isContentViewExtendingOutsideBounds && self->_widgetSnapshotAnimationCount == 0);
     }
 
     else
@@ -463,11 +463,11 @@
 
 - (BOOL)_isContentViewExtendingOutsideBounds
 {
-  v3 = [(SBHWidgetStackViewController *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBHWidgetStackViewController *)self traitCollection];
+  [traitCollection displayScale];
 
-  v4 = [(SBHWidgetStackViewController *)self view];
-  [v4 bounds];
+  view = [(SBHWidgetStackViewController *)self view];
+  [view bounds];
 
   [(SBHWidgetStackViewController *)self iconImageInfo];
   BSRectWithSize();
@@ -566,17 +566,17 @@
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_UPDATE_VISIBLY_SETTLED_FOR_WIDGET_VIEW_CONTROLLERS", " isAnimation=YES ", buf, 2u);
   }
 
-  v4 = [(SBHWidgetStackViewController *)self userVisibilityStatus];
-  if (v4 == 3)
+  userVisibilityStatus = [(SBHWidgetStackViewController *)self userVisibilityStatus];
+  if (userVisibilityStatus == 3)
   {
     if ([(BSUIScrollView *)self->_scrollView isScrolling])
     {
-      v4 = 2;
+      userVisibilityStatus = 2;
     }
 
     else
     {
-      v4 = 3;
+      userVisibilityStatus = 3;
     }
   }
 
@@ -584,10 +584,10 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v6 = [v5 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -598,13 +598,13 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v12 + 1) + 8 * i) setUserVisibilityStatus:v4];
+        [*(*(&v12 + 1) + 8 * i) setUserVisibilityStatus:userVisibilityStatus];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -625,10 +625,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v4 = [v3 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v24 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v14 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -640,7 +640,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -649,13 +649,13 @@
         {
           logIdentifier = self->_logIdentifier;
           v11 = NSStringFromSBIconViewCustomIconImageViewControllerPresentationMode(self->_presentationMode);
-          v12 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+          _effectiveWidgetContainerViewControllers2 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
           *buf = 138543874;
           v19 = logIdentifier;
           v20 = 2112;
           v21 = v11;
           v22 = 2112;
-          v23 = v12;
+          v23 = _effectiveWidgetContainerViewControllers2;
           _os_log_debug_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEBUG, "<%{public}@> Update presentation mode (%@) for widget view controllers: %@", buf, 0x20u);
         }
 
@@ -664,7 +664,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v24 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v24 count:16];
     }
 
     while (v6);
@@ -680,10 +680,10 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-    v4 = [v3 allValues];
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -695,14 +695,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) setShowsSnapshotWhenDeactivated:self->_showsSnapshotWhenDeactivated];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -718,10 +718,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v4 = [v3 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -733,14 +733,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setPaused:pauseReasons != 0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -750,16 +750,16 @@
 - (void)_updateApproximateLayoutPositionForWidgetViewControllers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHWidgetStackViewController *)self approximateLayoutPosition];
+  approximateLayoutPosition = [(SBHWidgetStackViewController *)self approximateLayoutPosition];
   v5 = v4;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v7 = [v6 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -771,14 +771,14 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setApproximateLayoutPosition:{v3, v5}];
+        [*(*(&v12 + 1) + 8 * v11++) setApproximateLayoutPosition:{approximateLayoutPosition, v5}];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -812,8 +812,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(SBLeafIcon *)self->_icon iconDataSources];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
+    v6 = [iconDataSources countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -824,7 +824,7 @@
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(iconDataSources);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
@@ -852,29 +852,29 @@
           v4 &= v13;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v7 = [iconDataSources countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v7);
     }
   }
 
-  v14 = [(SBHWidgetStackViewController *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(SBHWidgetStackViewController *)self traitCollection];
+  [traitCollection displayScale];
   v16 = v15;
 
-  v17 = [(SBHWidgetStackViewController *)self scrollView];
-  v18 = [v17 layer];
+  scrollView = [(SBHWidgetStackViewController *)self scrollView];
+  layer = [scrollView layer];
 
-  [v18 setAllowsEdgeAntialiasing:v4 & 1];
-  [v18 setShouldRasterize:v4 & 1];
-  [v18 setRasterizationScale:v16];
-  v19 = [(SBHWidgetStackViewController *)self dimmingView];
-  v20 = [v19 layer];
+  [layer setAllowsEdgeAntialiasing:v4 & 1];
+  [layer setShouldRasterize:v4 & 1];
+  [layer setRasterizationScale:v16];
+  dimmingView = [(SBHWidgetStackViewController *)self dimmingView];
+  layer2 = [dimmingView layer];
 
-  [v20 setAllowsEdgeAntialiasing:v4 & 1];
-  [v20 setShouldRasterize:v4 & 1];
-  [v20 setRasterizationScale:v16];
+  [layer2 setAllowsEdgeAntialiasing:v4 & 1];
+  [layer2 setShouldRasterize:v4 & 1];
+  [layer2 setRasterizationScale:v16];
   v21 = SBLogWidgets();
   if (os_signpost_enabled(v21))
   {
@@ -888,11 +888,11 @@
   [(SBHWidgetStackScrollView *)self->_scrollView contentOffset];
   v4 = v3;
   v5 = [(SBHWidgetStackViewController *)self _newActiveWidgetIndexForContentOffset:?];
-  v18 = [(SBLeafIcon *)self->_icon iconDataSources];
-  v6 = [v18 count];
+  iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
+  v6 = [iconDataSources count];
   if (v5 < v6)
   {
-    v7 = [v18 objectAtIndex:v5];
+    v7 = [iconDataSources objectAtIndex:v5];
     activeWidget = self->_activeWidget;
     self->_activeWidget = v7;
   }
@@ -919,15 +919,15 @@
   }
 
   [(SBHWidgetStackScrollView *)self->_scrollView setContentOffset:v12, v14 + v15];
-  v16 = [(SBHWidgetStackViewController *)self view];
-  [v16 setNeedsLayout];
+  view = [(SBHWidgetStackViewController *)self view];
+  [view setNeedsLayout];
 
   if (([(SBHWidgetStackScrollView *)self->_scrollView isScrollAnimating]& 1) == 0)
   {
-    v17 = [(SBHWidgetStackViewController *)self delegate];
+    delegate = [(SBHWidgetStackViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v17 widgetStackViewController:self didActivateDataSource:self->_activeWidget fromUserInteraction:{-[SBHWidgetStackScrollView isTracking](self->_scrollView, "isTracking")}];
+      [delegate widgetStackViewController:self didActivateDataSource:self->_activeWidget fromUserInteraction:{-[SBHWidgetStackScrollView isTracking](self->_scrollView, "isTracking")}];
     }
   }
 }
@@ -972,14 +972,14 @@
 
 - (NSArray)widgetViewControllers
 {
-  v3 = [(SBHWidgetStackViewController *)self widgetIcon];
-  v4 = [v3 iconDataSources];
+  widgetIcon = [(SBHWidgetStackViewController *)self widgetIcon];
+  iconDataSources = [widgetIcon iconDataSources];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__SBHWidgetStackViewController_widgetViewControllers__block_invoke;
   v7[3] = &unk_1E808F678;
   v7[4] = self;
-  v5 = [v4 bs_compactMap:v7];
+  v5 = [iconDataSources bs_compactMap:v7];
 
   return v5;
 }
@@ -996,13 +996,13 @@ id __53__SBHWidgetStackViewController_widgetViewControllers__block_invoke(uint64
 
 - (id)cancelTouchesForCurrentEventInHostedContent
 {
-  v3 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
-  v4 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v5 = [v4 objectForKey:v3];
+  uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  v5 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-  v6 = [v5 cancelTouchesForCurrentEventInHostedContent];
+  cancelTouchesForCurrentEventInHostedContent = [v5 cancelTouchesForCurrentEventInHostedContent];
 
-  return v6;
+  return cancelTouchesForCurrentEventInHostedContent;
 }
 
 - (SBIconViewCustomImageViewHosting)host
@@ -1033,11 +1033,11 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 - (void)dealloc
 {
   [(SBHWidgetStackViewController *)self _teardownStateCapture];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 
-  v4 = [(SBHWidgetStackViewController *)self view];
-  [v4 removeObserver:self forKeyPath:@"alpha"];
+  view = [(SBHWidgetStackViewController *)self view];
+  [view removeObserver:self forKeyPath:@"alpha"];
 
   [(SBLeafIcon *)self->_icon removeObserver:self];
   [(PTSettings *)self->_widgetSettings removeKeyObserver:self];
@@ -1065,8 +1065,8 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SBHWidgetStackViewController *)self widgetViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  widgetViewControllers = [(SBHWidgetStackViewController *)self widgetViewControllers];
+  v5 = [widgetViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1077,15 +1077,15 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(widgetViewControllers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) sbh_underlyingAvocadoHostViewControllers];
-        v10 = [v9 allObjects];
-        [v3 addObjectsFromArray:v10];
+        sbh_underlyingAvocadoHostViewControllers = [*(*(&v12 + 1) + 8 * i) sbh_underlyingAvocadoHostViewControllers];
+        allObjects = [sbh_underlyingAvocadoHostViewControllers allObjects];
+        [v3 addObjectsFromArray:allObjects];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [widgetViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1094,31 +1094,31 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   return v3;
 }
 
-- (SBHWidgetStackViewController)initWithIcon:(id)a3 iconListLayoutProvider:(id)a4
+- (SBHWidgetStackViewController)initWithIcon:(id)icon iconListLayoutProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  iconCopy = icon;
   v8 = +[SBHHomeScreenDomain rootSettings];
-  v9 = [v8 widgetSettings];
-  v10 = [(SBHWidgetStackViewController *)self initWithIcon:v7 iconListLayoutProvider:v6 widgetSettings:v9];
+  widgetSettings = [v8 widgetSettings];
+  v10 = [(SBHWidgetStackViewController *)self initWithIcon:iconCopy iconListLayoutProvider:providerCopy widgetSettings:widgetSettings];
 
   return v10;
 }
 
-- (SBHWidgetStackViewController)initWithIcon:(id)a3 iconListLayoutProvider:(id)a4 widgetSettings:(id)a5
+- (SBHWidgetStackViewController)initWithIcon:(id)icon iconListLayoutProvider:(id)provider widgetSettings:(id)settings
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  iconCopy = icon;
+  providerCopy = provider;
+  settingsCopy = settings;
   v28.receiver = self;
   v28.super_class = SBHWidgetStackViewController;
   v12 = [(SBHWidgetStackViewController *)&v28 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_icon, a3);
-    [v9 addObserver:v13];
+    objc_storeStrong(&v12->_icon, icon);
+    [iconCopy addObserver:v13];
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
@@ -1126,7 +1126,7 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
     logIdentifier = v13->_logIdentifier;
     v13->_logIdentifier = v17;
 
-    objc_storeStrong(&v13->_widgetSettings, a5);
+    objc_storeStrong(&v13->_widgetSettings, settings);
     [(PTSettings *)v13->_widgetSettings addKeyObserver:v13];
     v13->_userInteractionEnabled = 1;
     v13->_showStackBorderWhenShowingPageControl = 0;
@@ -1135,22 +1135,22 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
     v13->_preferredDirection = 0;
     v13->_backgroundViewFadeAnimationEnabled = 0;
     v13->_allowsGlassGrouping = 1;
-    v19 = [v9 activeDataSource];
+    activeDataSource = [iconCopy activeDataSource];
     activeWidget = v13->_activeWidget;
-    v13->_activeWidget = v19;
+    v13->_activeWidget = activeDataSource;
 
-    objc_storeStrong(&v13->_listLayoutProvider, a4);
+    objc_storeStrong(&v13->_listLayoutProvider, provider);
     v13->_imageViewAlignment = 0;
     v13->_presentationMode = 2;
-    v21 = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
     animationSettings = v13->_animationSettings;
-    v13->_animationSettings = v21;
+    v13->_animationSettings = initWithDefaultValues;
 
     [(SBFFluidBehaviorSettings *)v13->_animationSettings setDampingRatio:1.0];
     [(SBFFluidBehaviorSettings *)v13->_animationSettings setResponse:0.35];
     v13->_automaticallyUpdatesVisiblySettled = 1;
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v13 selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 
     [(SBHWidgetStackViewController *)v13 _setupStateCapture];
     v24 = objc_opt_self();
@@ -1162,9 +1162,9 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   return v13;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1177,12 +1177,12 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v7.receiver = self;
   v7.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v7 viewWillAppear:v3];
+  [(SBHWidgetStackViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v20 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1195,14 +1195,14 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v16.receiver = self;
   v16.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v16 viewIsAppearing:v3];
+  [(SBHWidgetStackViewController *)&v16 viewIsAppearing:appearingCopy];
   [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:1];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(SBHWidgetStackViewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  childViewControllers = [(SBHWidgetStackViewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1214,14 +1214,14 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [(SBHWidgetStackViewController *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v11++) toVisible:1 animated:v3];
+        [(SBHWidgetStackViewController *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v11++) toVisible:1 animated:appearingCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v9);
@@ -1233,9 +1233,9 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v20 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1248,13 +1248,13 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v16.receiver = self;
   v16.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v16 viewDidAppear:v3];
+  [(SBHWidgetStackViewController *)&v16 viewDidAppear:appearCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(SBHWidgetStackViewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  childViewControllers = [(SBHWidgetStackViewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1266,14 +1266,14 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [(SBHWidgetStackViewController *)self bs_endAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v11++) toVisible:1];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v9);
@@ -1291,9 +1291,9 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v20 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1306,13 +1306,13 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v16.receiver = self;
   v16.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v16 viewWillDisappear:v3];
+  [(SBHWidgetStackViewController *)&v16 viewWillDisappear:disappearCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(SBHWidgetStackViewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  childViewControllers = [(SBHWidgetStackViewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1324,14 +1324,14 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [(SBHWidgetStackViewController *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v11++) toVisible:0 animated:v3];
+        [(SBHWidgetStackViewController *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v11++) toVisible:0 animated:disappearCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v9);
@@ -1343,9 +1343,9 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v21 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1358,13 +1358,13 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v17.receiver = self;
   v17.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v17 viewDidDisappear:v3];
+  [(SBHWidgetStackViewController *)&v17 viewDidDisappear:disappearCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(SBHWidgetStackViewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  childViewControllers = [(SBHWidgetStackViewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1376,14 +1376,14 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [(SBHWidgetStackViewController *)self bs_endAppearanceTransitionForChildViewController:*(*(&v13 + 1) + 8 * v11++) toVisible:0];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v9);
@@ -1401,22 +1401,22 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   self->_backgroundView = 0;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  windowCopy = window;
   v7 = SBLogWidgets();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"YES";
-    if (!v6)
+    if (!windowCopy)
     {
       v8 = @"NO";
     }
 
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v8;
     _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@> viewDidMoveToWindow (hasWindow=%@)", buf, 0x16u);
@@ -1424,36 +1424,36 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
 
   v9.receiver = self;
   v9.super_class = SBHWidgetStackViewController;
-  [(SBHWidgetStackViewController *)&v9 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(SBHWidgetStackViewController *)&v9 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
 }
 
-- (void)setForcesEdgeAntialiasing:(BOOL)a3
+- (void)setForcesEdgeAntialiasing:(BOOL)antialiasing
 {
-  if (self->_forcesEdgeAntialiasing != a3)
+  if (self->_forcesEdgeAntialiasing != antialiasing)
   {
-    self->_forcesEdgeAntialiasing = a3;
+    self->_forcesEdgeAntialiasing = antialiasing;
     [(SBHWidgetStackViewController *)self _updateWidgetViewEdgeAntialiasing];
   }
 }
 
-- (void)setShowsSnapshotWhenDeactivated:(BOOL)a3
+- (void)setShowsSnapshotWhenDeactivated:(BOOL)deactivated
 {
-  if (self->_showsSnapshotWhenDeactivated != a3)
+  if (self->_showsSnapshotWhenDeactivated != deactivated)
   {
-    self->_showsSnapshotWhenDeactivated = a3;
+    self->_showsSnapshotWhenDeactivated = deactivated;
     [(SBHWidgetStackViewController *)self _updateShowsSnapshotWhenDeactivatedForWidgetViewControllers];
   }
 }
 
-- (void)setFixedPageControlOffset:(id)a3 animated:(BOOL)a4
+- (void)setFixedPageControlOffset:(id)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_fixedPageControlOffset != v7)
+  animatedCopy = animated;
+  offsetCopy = offset;
+  if (self->_fixedPageControlOffset != offsetCopy)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_fixedPageControlOffset, a3);
-    if (v4)
+    v9 = offsetCopy;
+    objc_storeStrong(&self->_fixedPageControlOffset, offset);
+    if (animatedCopy)
     {
       v8 = 3;
     }
@@ -1464,18 +1464,18 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
     }
 
     [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:v8];
-    v7 = v9;
+    offsetCopy = v9;
   }
 }
 
-- (void)setAlwaysShowsAsStack:(BOOL)a3 animated:(BOOL)a4
+- (void)setAlwaysShowsAsStack:(BOOL)stack animated:(BOOL)animated
 {
-  if (self->_alwaysShowsAsStack != a3)
+  if (self->_alwaysShowsAsStack != stack)
   {
-    v5 = a4;
-    self->_alwaysShowsAsStack = a3;
-    [(SBHWidgetStackViewController *)self _setPageControlHidden:!a3 animated:?];
-    if (v5)
+    animatedCopy = animated;
+    self->_alwaysShowsAsStack = stack;
+    [(SBHWidgetStackViewController *)self _setPageControlHidden:!stack animated:?];
+    if (animatedCopy)
     {
       v7 = 3;
     }
@@ -1494,38 +1494,38 @@ void __63__SBHWidgetStackViewController_discardAllWidgetViewControllers__block_i
   activeWidget = self->_activeWidget;
   if (activeWidget)
   {
-    v4 = [(SBLeafIconDataSource *)activeWidget uniqueIdentifier];
-    v5 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-    v6 = [v5 objectForKey:v4];
+    uniqueIdentifier = [(SBLeafIconDataSource *)activeWidget uniqueIdentifier];
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    v6 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-    v7 = [v6 widgetViewController];
-    if ([v7 sbh_isMultiplexingViewController])
+    widgetViewController = [v6 widgetViewController];
+    if ([widgetViewController sbh_isMultiplexingViewController])
     {
-      v8 = [v7 multiplexedViewController];
+      multiplexedViewController = [widgetViewController multiplexedViewController];
 
-      v7 = v8;
+      widgetViewController = multiplexedViewController;
     }
   }
 
   else
   {
-    v7 = 0;
+    widgetViewController = 0;
   }
 
-  return v7;
+  return widgetViewController;
 }
 
-- (void)enumerateWidgetViewControllersUsingBlock:(id)a3
+- (void)enumerateWidgetViewControllersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  blockCopy = block;
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__SBHWidgetStackViewController_enumerateWidgetViewControllersUsingBlock___block_invoke;
   v7[3] = &unk_1E808F6A0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [_effectiveWidgetContainerViewControllers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __73__SBHWidgetStackViewController_enumerateWidgetViewControllersUsingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1547,66 +1547,66 @@ void __73__SBHWidgetStackViewController_enumerateWidgetViewControllersUsingBlock
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)flashPageControlAnimated:(BOOL)a3 withTimeInterval:(double)a4
+- (void)flashPageControlAnimated:(BOOL)animated withTimeInterval:(double)interval
 {
-  v5 = a3;
-  v7 = [(SBHWidgetStackViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v7 widgetStackViewControllerCanFlashPageControl:self])
+  animatedCopy = animated;
+  delegate = [(SBHWidgetStackViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate widgetStackViewControllerCanFlashPageControl:self])
   {
-    [(SBHWidgetStackViewController *)self _setPageControlHidden:0 animated:v5];
-    [(SBHWidgetStackViewController *)self _restartPageControlTimerWithTimeInterval:a4];
+    [(SBHWidgetStackViewController *)self _setPageControlHidden:0 animated:animatedCopy];
+    [(SBHWidgetStackViewController *)self _restartPageControlTimerWithTimeInterval:interval];
     if (objc_opt_respondsToSelector())
     {
-      [v7 widgetStackViewControllerDidFlashPageControl:self];
+      [delegate widgetStackViewControllerDidFlashPageControl:self];
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)leafIcon:(id)a3 didAddIconDataSource:(id)a4
+- (void)leafIcon:(id)icon didAddIconDataSource:(id)source
 {
-  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:3, a4];
+  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:3, source];
   [(SBHWidgetStackViewController *)self _updateAccessibilityValue];
-  v5 = [(SBHWidgetStackViewController *)self delegate];
+  delegate = [(SBHWidgetStackViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 widgetStackViewControllerWidgetCountDidChange:self];
+    [delegate widgetStackViewControllerWidgetCountDidChange:self];
   }
 }
 
-- (void)leafIcon:(id)a3 didRemoveIconDataSource:(id)a4
+- (void)leafIcon:(id)icon didRemoveIconDataSource:(id)source
 {
-  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:3, a4];
+  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:3, source];
   [(SBHWidgetStackViewController *)self _updateAccessibilityValue];
-  v5 = [(SBHWidgetStackViewController *)self delegate];
+  delegate = [(SBHWidgetStackViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 widgetStackViewControllerWidgetCountDidChange:self];
+    [delegate widgetStackViewControllerWidgetCountDidChange:self];
   }
 }
 
-- (void)leafIcon:(id)a3 didChangeActiveDataSource:(id)a4
+- (void)leafIcon:(id)icon didChangeActiveDataSource:(id)source
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  sourceCopy = source;
   v8 = SBLogWidgets();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1614,15 +1614,15 @@ void __73__SBHWidgetStackViewController_enumerateWidgetViewControllersUsingBlock
     v19 = 138543618;
     v20 = logIdentifier;
     v21 = 2114;
-    v22 = v7;
+    v22 = sourceCopy;
     _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@> didChangeActiveDataSource:%{public}@", &v19, 0x16u);
   }
 
-  if ([v6 isWidgetIcon])
+  if ([iconCopy isWidgetIcon])
   {
-    v10 = v6;
-    v11 = [v10 iconDataSources];
-    v12 = [v11 containsObject:self->_activeWidget];
+    v10 = iconCopy;
+    iconDataSources = [v10 iconDataSources];
+    v12 = [iconDataSources containsObject:self->_activeWidget];
     if (self->_pauseReasons)
     {
       if ((v12 & 1) == 0)
@@ -1630,13 +1630,13 @@ void __73__SBHWidgetStackViewController_enumerateWidgetViewControllersUsingBlock
         [(SBHWidgetStackViewController *)self _removeWidget:self->_activeWidget animated:0];
       }
 
-      v13 = [v10 activeDataSource];
+      activeDataSource = [v10 activeDataSource];
       activeWidget = self->_activeWidget;
-      self->_activeWidget = v13;
+      self->_activeWidget = activeDataSource;
 
       pageControl = self->_pageControl;
-      v16 = [v10 iconDataSources];
-      -[UIPageControl setCurrentPage:](pageControl, "setCurrentPage:", [v16 indexOfObject:self->_activeWidget]);
+      iconDataSources2 = [v10 iconDataSources];
+      -[UIPageControl setCurrentPage:](pageControl, "setCurrentPage:", [iconDataSources2 indexOfObject:self->_activeWidget]);
     }
 
     else
@@ -1651,13 +1651,13 @@ LABEL_11:
       }
 
       [(SBHWidgetStackViewController *)self _removeWidget:self->_activeWidget animated:1];
-      v17 = [v10 activeDataSource];
-      v16 = self->_activeWidget;
-      self->_activeWidget = v17;
+      activeDataSource2 = [v10 activeDataSource];
+      iconDataSources2 = self->_activeWidget;
+      self->_activeWidget = activeDataSource2;
     }
 
-    v18 = [(SBHWidgetStackViewController *)self view];
-    [v18 setNeedsLayout];
+    view = [(SBHWidgetStackViewController *)self view];
+    [view setNeedsLayout];
 
     goto LABEL_11;
   }
@@ -1665,7 +1665,7 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -1678,24 +1678,24 @@ LABEL_12:
     p_iconImageInfo->size.height = v9;
     p_iconImageInfo->scale = v8;
     p_iconImageInfo->continuousCornerRadius = v7;
-    v13 = [(SBHWidgetStackViewController *)self view];
-    v15 = [v13 layer];
+    view = [(SBHWidgetStackViewController *)self view];
+    layer = [view layer];
 
-    [v15 setCornerRadius:v7];
-    [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
-    v14 = [(SBHWidgetStackViewController *)self view];
-    [v14 setNeedsLayout];
+    [layer setCornerRadius:v7];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    view2 = [(SBHWidgetStackViewController *)self view];
+    [view2 setNeedsLayout];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v5 = a4;
-    self->_editing = a3;
-    [(SBHWidgetStackViewController *)self _flashPageControlAnimated:a4];
-    if (v5)
+    animatedCopy = animated;
+    self->_editing = editing;
+    [(SBHWidgetStackViewController *)self _flashPageControlAnimated:animated];
+    if (animatedCopy)
     {
       v7 = 3;
     }
@@ -1709,19 +1709,19 @@ LABEL_12:
   }
 }
 
-- (void)setWidgetIcon:(id)a3
+- (void)setWidgetIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   icon = self->_icon;
-  if (icon != v5)
+  if (icon != iconCopy)
   {
-    v9 = v5;
+    v9 = iconCopy;
     [(SBLeafIcon *)icon removeObserver:self];
-    objc_storeStrong(&self->_icon, a3);
+    objc_storeStrong(&self->_icon, icon);
     [(SBLeafIcon *)v9 addObserver:self];
-    v7 = [(SBLeafIcon *)v9 activeDataSource];
+    activeDataSource = [(SBLeafIcon *)v9 activeDataSource];
     activeWidget = self->_activeWidget;
-    self->_activeWidget = v7;
+    self->_activeWidget = activeDataSource;
 
     if (v9)
     {
@@ -1729,17 +1729,17 @@ LABEL_12:
     }
 
     icon = [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2];
-    v5 = v9;
+    iconCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](icon, v5);
+  MEMORY[0x1EEE66BB8](icon, iconCopy);
 }
 
-- (void)setListLayoutProvider:(id)a3
+- (void)setListLayoutProvider:(id)provider
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_listLayoutProvider != v4)
+  providerCopy = provider;
+  if (self->_listLayoutProvider != providerCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1747,34 +1747,34 @@ LABEL_12:
     {
       if (objc_opt_respondsToSelector())
       {
-        v6 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+        uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
       }
 
       else
       {
-        v6 = 0;
+        uniqueIdentifier = 0;
       }
 
-      v7 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-      v8 = [v7 objectForKey:v6];
+      _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+      v8 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-      v9 = [(SBHWidgetStackViewController *)self _widgetContainerViewControllersForListLayoutProvider:v4];
-      [v9 bs_setSafeObject:v8 forKey:v6];
+      v9 = [(SBHWidgetStackViewController *)self _widgetContainerViewControllersForListLayoutProvider:providerCopy];
+      [v9 bs_setSafeObject:v8 forKey:uniqueIdentifier];
     }
 
     if (!self->_widgetContainerViewControllersToRemove)
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       widgetContainerViewControllersToRemove = self->_widgetContainerViewControllersToRemove;
-      self->_widgetContainerViewControllersToRemove = v10;
+      self->_widgetContainerViewControllersToRemove = dictionary;
     }
 
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __54__SBHWidgetStackViewController_setListLayoutProvider___block_invoke;
     v22 = &unk_1E8088F18;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = providerCopy;
     v12 = _Block_copy(&v19);
     v13 = [(NSMutableDictionary *)self->_widgetContainerViewControllersToRemove count:v19];
     v14 = SBLogWidgets();
@@ -1788,15 +1788,15 @@ LABEL_12:
       _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@> received new iconListLayoutProvider. canReuseViewControllerFromLastFullyRenderedLayoutProvider: %{public}d", buf, 0x12u);
     }
 
-    v16 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    _effectiveWidgetContainerViewControllers2 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
     if (v13)
     {
       v12[2](v12);
-      v17 = [(NSMutableDictionary *)self->_widgetContainerViewControllersToRemove allValues];
-      [(SBHWidgetStackViewController *)self resizeSnapshotsForWidgetContainerViewControllers:v17 isFakeWidget:isKindOfClass & 1 reason:@"List Layout Provider Change Animation"];
+      allValues = [(NSMutableDictionary *)self->_widgetContainerViewControllersToRemove allValues];
+      [(SBHWidgetStackViewController *)self resizeSnapshotsForWidgetContainerViewControllers:allValues isFakeWidget:isKindOfClass & 1 reason:@"List Layout Provider Change Animation"];
 
-      [(SBHWidgetStackViewController *)self _removeWidgetContainerViewControllers:v16 animated:0];
-      v18 = self->_widgetContainerViewControllersToRemove;
+      [(SBHWidgetStackViewController *)self _removeWidgetContainerViewControllers:_effectiveWidgetContainerViewControllers2 animated:0];
+      allValues2 = self->_widgetContainerViewControllersToRemove;
       self->_widgetContainerViewControllersToRemove = 0;
     }
 
@@ -1804,12 +1804,12 @@ LABEL_12:
     {
       if ((isKindOfClass & 1) == 0)
       {
-        objc_storeStrong(&self->_widgetContainerViewControllersToRemove, v16);
+        objc_storeStrong(&self->_widgetContainerViewControllersToRemove, _effectiveWidgetContainerViewControllers2);
       }
 
       v12[2](v12);
-      v18 = [v16 allValues];
-      [(SBHWidgetStackViewController *)self resizeSnapshotsForWidgetContainerViewControllers:v18 isFakeWidget:isKindOfClass & 1 reason:@"List Layout Provider Change Animation"];
+      allValues2 = [_effectiveWidgetContainerViewControllers2 allValues];
+      [(SBHWidgetStackViewController *)self resizeSnapshotsForWidgetContainerViewControllers:allValues2 isFakeWidget:isKindOfClass & 1 reason:@"List Layout Provider Change Animation"];
     }
   }
 }
@@ -1832,11 +1832,11 @@ void __54__SBHWidgetStackViewController_setListLayoutProvider___block_invoke(uin
   objc_storeStrong((*(a1 + 32) + 1136), *(a1 + 40));
 }
 
-- (void)resizeSnapshotsForWidgetContainerViewControllers:(id)a3 isFakeWidget:(BOOL)a4 reason:(id)a5
+- (void)resizeSnapshotsForWidgetContainerViewControllers:(id)controllers isFakeWidget:(BOOL)widget reason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  reasonCopy = reason;
+  controllersCopy = controllers;
   v10 = SBLogWidgets();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1852,11 +1852,11 @@ void __54__SBHWidgetStackViewController_setListLayoutProvider___block_invoke(uin
   v13[1] = 3221225472;
   v13[2] = __101__SBHWidgetStackViewController_resizeSnapshotsForWidgetContainerViewControllers_isFakeWidget_reason___block_invoke;
   v13[3] = &unk_1E808F6C8;
-  v15 = a4;
+  widgetCopy = widget;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v9 enumerateObjectsUsingBlock:v13];
+  v14 = reasonCopy;
+  v12 = reasonCopy;
+  [controllersCopy enumerateObjectsUsingBlock:v13];
 }
 
 void __101__SBHWidgetStackViewController_resizeSnapshotsForWidgetContainerViewControllers_isFakeWidget_reason___block_invoke(uint64_t a1, void *a2)
@@ -1912,22 +1912,22 @@ uint64_t __101__SBHWidgetStackViewController_resizeSnapshotsForWidgetContainerVi
   return [v3 _layoutWithAnimationUpdateMode:1];
 }
 
-- (void)setShowingContextMenu:(BOOL)a3
+- (void)setShowingContextMenu:(BOOL)menu
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_showingContextMenu != a3)
+  if (self->_showingContextMenu != menu)
   {
-    v3 = a3;
-    self->_showingContextMenu = a3;
-    if (a3)
+    menuCopy = menu;
+    self->_showingContextMenu = menu;
+    if (menu)
     {
       if (self->_imageUpdatesDisabledForContextMenuAssertion)
       {
 LABEL_10:
         [(SBHWidgetStackViewController *)self _flashPageControlAnimated:1];
         [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:3];
-        v11 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
-        [v11 setShowingContextMenu:v3];
+        _widgetContextMenuController = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
+        [_widgetContextMenuController setShowingContextMenu:menuCopy];
 
         return;
       }
@@ -1979,8 +1979,8 @@ LABEL_10:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SBHWidgetStackViewController *)self view];
-    [v11 bounds];
+    view = [(SBHWidgetStackViewController *)self view];
+    [view bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -2031,34 +2031,34 @@ LABEL_10:
   return result;
 }
 
-- (void)willShowContextMenuAtLocation:(CGPoint)a3
+- (void)willShowContextMenuAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
+  y = location.y;
+  x = location.x;
+  _widgetContextMenuController = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
-    [v8 willShowContextMenuAtLocation:{x, y}];
+    _widgetContextMenuController2 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
+    [_widgetContextMenuController2 willShowContextMenuAtLocation:{x, y}];
   }
 }
 
-- (void)setOverlapping:(BOOL)a3
+- (void)setOverlapping:(BOOL)overlapping
 {
-  if (self->_overlapping != a3)
+  if (self->_overlapping != overlapping)
   {
-    self->_overlapping = a3;
+    self->_overlapping = overlapping;
     [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:3];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  if (self->_userInteractionEnabled != a3)
+  if (self->_userInteractionEnabled != enabled)
   {
-    self->_userInteractionEnabled = a3;
+    self->_userInteractionEnabled = enabled;
     [(SBHWidgetStackViewController *)self _updateWidgetViewHitTesting];
   }
 }
@@ -2084,23 +2084,23 @@ LABEL_10:
   return [(SBHWidgetStackViewController *)self _shouldDrawSystemBackgroundMaterialForWidget:activeWidget];
 }
 
-- (id)backdropGroupNameForActiveDataSource:(id)a3
+- (id)backdropGroupNameForActiveDataSource:(id)source
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [v3 alloc];
-  v6 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [sourceCopy uniqueIdentifier];
 
-  v7 = [v5 initWithFormat:@"SBWidget-%@", v6];
+  v7 = [v5 initWithFormat:@"SBWidget-%@", uniqueIdentifier];
 
   return v7;
 }
 
-- (void)setBackgroundViewProvider:(id)a3
+- (void)setBackgroundViewProvider:(id)provider
 {
-  if (self->_backgroundViewProvider != a3)
+  if (self->_backgroundViewProvider != provider)
   {
-    v4 = [a3 copy];
+    v4 = [provider copy];
     backgroundViewProvider = self->_backgroundViewProvider;
     self->_backgroundViewProvider = v4;
 
@@ -2114,11 +2114,11 @@ LABEL_10:
   }
 }
 
-- (void)setBackgroundViewConfigurator:(id)a3
+- (void)setBackgroundViewConfigurator:(id)configurator
 {
-  if (self->_backgroundViewConfigurator != a3)
+  if (self->_backgroundViewConfigurator != configurator)
   {
-    v4 = [a3 copy];
+    v4 = [configurator copy];
     backgroundViewConfigurator = self->_backgroundViewConfigurator;
     self->_backgroundViewConfigurator = v4;
 
@@ -2133,12 +2133,12 @@ LABEL_10:
   }
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
-  if (self->_brightness != a3)
+  if (self->_brightness != brightness)
   {
-    self->_brightness = a3;
-    if (a3 < 1.0 && !self->_dimmingView)
+    self->_brightness = brightness;
+    if (brightness < 1.0 && !self->_dimmingView)
     {
       v5 = objc_alloc(MEMORY[0x1E69DD250]);
       [(UIView *)self->_containerView bounds];
@@ -2148,8 +2148,8 @@ LABEL_10:
 
       [(UIView *)self->_dimmingView setAutoresizingMask:18];
       v8 = self->_dimmingView;
-      v9 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)v8 setBackgroundColor:v9];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)v8 setBackgroundColor:blackColor];
 
       v10 = self->_dimmingView;
       [(SBHWidgetStackViewController *)self continuousCornerRadius];
@@ -2157,7 +2157,7 @@ LABEL_10:
       [(UIView *)self->_containerView addSubview:self->_dimmingView];
     }
 
-    v11 = [(SBHWidgetStackViewController *)self icon];
+    icon = [(SBHWidgetStackViewController *)self icon];
     IsOne = BSFloatIsOne();
     v13 = MEMORY[0x1E69DD250];
     v16[1] = 3221225472;
@@ -2175,9 +2175,9 @@ LABEL_10:
     }
 
     v16[4] = self;
-    v17 = v11;
-    v18 = a3;
-    v15 = v11;
+    v17 = icon;
+    brightnessCopy = brightness;
+    v15 = icon;
     [v13 animateWithDuration:v16 animations:v14];
   }
 }
@@ -2235,68 +2235,68 @@ LABEL_13:
   [v11 setAlpha:v3];
 }
 
-- (void)setUserVisibilityStatus:(unint64_t)a3
+- (void)setUserVisibilityStatus:(unint64_t)status
 {
-  if (self->_userVisibilityStatus != a3)
+  if (self->_userVisibilityStatus != status)
   {
-    self->_userVisibilityStatus = a3;
+    self->_userVisibilityStatus = status;
     [(SBHWidgetStackViewController *)self _updateVisiblySettledForWidgetViewControllers];
   }
 }
 
-- (void)setPresentationMode:(int64_t)a3
+- (void)setPresentationMode:(int64_t)mode
 {
-  if (self->_presentationMode != a3)
+  if (self->_presentationMode != mode)
   {
-    self->_presentationMode = a3;
+    self->_presentationMode = mode;
     [(SBHWidgetStackViewController *)self _updatePresentationModeForWidgetViewControllers];
   }
 }
 
-- (void)setPauseReasons:(unint64_t)a3
+- (void)setPauseReasons:(unint64_t)reasons
 {
-  if (self->_pauseReasons != a3)
+  if (self->_pauseReasons != reasons)
   {
-    self->_pauseReasons = a3;
+    self->_pauseReasons = reasons;
     [(SBHWidgetStackViewController *)self _updatePauseReasonForWidgetViewControllers];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v9 = a3;
+  settingsCopy = settings;
   if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:?])
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     pageControl = self->_pageControl;
-    v6 = [v9 primaryColor];
-    [(UIPageControl *)pageControl setCurrentPageIndicatorTintColor:v6];
+    primaryColor = [settingsCopy primaryColor];
+    [(UIPageControl *)pageControl setCurrentPageIndicatorTintColor:primaryColor];
 
     v7 = self->_pageControl;
-    v8 = [v9 secondaryColor];
-    [(UIPageControl *)v7 setPageIndicatorTintColor:v8];
+    secondaryColor = [settingsCopy secondaryColor];
+    [(UIPageControl *)v7 setPageIndicatorTintColor:secondaryColor];
   }
 }
 
-- (void)setImageViewAlignment:(unint64_t)a3
+- (void)setImageViewAlignment:(unint64_t)alignment
 {
-  if (self->_imageViewAlignment != a3)
+  if (self->_imageViewAlignment != alignment)
   {
-    self->_imageViewAlignment = a3;
-    v5 = [(SBHWidgetStackViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_imageViewAlignment = alignment;
+    view = [(SBHWidgetStackViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(SBHWidgetStackViewController *)self view];
-    [v6 layoutIfNeeded];
+    view2 = [(SBHWidgetStackViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = position.vertical;
+  horizontal = position.horizontal;
   p_approximateLayoutPosition = &self->_approximateLayoutPosition;
-  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, a3.horizontal, a3.vertical))
+  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, position.horizontal, position.vertical))
   {
     p_approximateLayoutPosition->horizontal = horizontal;
     p_approximateLayoutPosition->vertical = vertical;
@@ -2307,67 +2307,67 @@ LABEL_13:
 
 - (NSArray)applicationShortcutItems
 {
-  v2 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
-  v3 = [v2 applicationShortcutItems];
+  _widgetContextMenuController = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
+  applicationShortcutItems = [_widgetContextMenuController applicationShortcutItems];
 
-  return v3;
+  return applicationShortcutItems;
 }
 
-- (void)didSelectApplicationShortcutItem:(id)a3
+- (void)didSelectApplicationShortcutItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
-  [v5 didSelectApplicationShortcutItem:v4];
+  itemCopy = item;
+  _widgetContextMenuController = [(SBHWidgetStackViewController *)self _widgetContextMenuController];
+  [_widgetContextMenuController didSelectApplicationShortcutItem:itemCopy];
 }
 
 - (id)_widgetContextMenuController
 {
-  v3 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v4 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
-  v5 = [v3 objectForKey:v4];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+  v5 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-  v6 = [v5 widgetContextMenuController];
+  widgetContextMenuController = [v5 widgetContextMenuController];
 
-  return v6;
+  return widgetContextMenuController;
 }
 
-- (void)addCustomImageViewControllerObserver:(id)a3
+- (void)addCustomImageViewControllerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   customImageViewObservers = self->_customImageViewObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!customImageViewObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_customImageViewObservers;
-    self->_customImageViewObservers = v6;
+    self->_customImageViewObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     customImageViewObservers = self->_customImageViewObservers;
   }
 
-  [(NSHashTable *)customImageViewObservers addObject:v4];
+  [(NSHashTable *)customImageViewObservers addObject:observerCopy];
 }
 
-- (void)updateImageAnimated:(BOOL)a3
+- (void)updateImageAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(SBHWidgetStackScrollView *)self->_scrollView isTracking]& 1) == 0 && ![(SBHWidgetStackViewController *)self isOverlapping])
   {
 
-    [(SBHWidgetStackViewController *)self _scrollToActiveWidgetAnimated:v3];
+    [(SBHWidgetStackViewController *)self _scrollToActiveWidgetAnimated:animatedCopy];
   }
 }
 
-- (id)_disableImageUpdatesForReason:(id)a3 animateChangesUponInvalidation:(BOOL)a4
+- (id)_disableImageUpdatesForReason:(id)reason animateChangesUponInvalidation:(BOOL)invalidation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   if (!self->_imageUpdateDisableAssertions)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     imageUpdateDisableAssertions = self->_imageUpdateDisableAssertions;
-    self->_imageUpdateDisableAssertions = v7;
+    self->_imageUpdateDisableAssertions = weakObjectsHashTable;
   }
 
   objc_initWeak(&location, self);
@@ -2377,9 +2377,9 @@ LABEL_13:
   v16 = __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateChangesUponInvalidation___block_invoke;
   v17 = &unk_1E808F6F0;
   objc_copyWeak(&v19, &location);
-  v20 = a4;
-  v18 = self;
-  v10 = [v9 initWithIdentifier:@"widgetStack.disableImageUpdates" forReason:v6 invalidationBlock:&v14];
+  invalidationCopy = invalidation;
+  selfCopy = self;
+  v10 = [v9 initWithIdentifier:@"widgetStack.disableImageUpdates" forReason:reasonCopy invalidationBlock:&v14];
   v11 = SBLogWidgets();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2433,35 +2433,35 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
 - (UIView)snapshotView
 {
   [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2];
-  v3 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
-  v4 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v5 = [v4 objectForKey:v3];
+  uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  v5 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-  v6 = [v5 snapshotView];
-  if (!v6)
+  snapshotView = [v5 snapshotView];
+  if (!snapshotView)
   {
-    v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    snapshotView = objc_alloc_init(MEMORY[0x1E69DD250]);
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [snapshotView setBackgroundColor:systemBackgroundColor];
   }
 
-  return v6;
+  return snapshotView;
 }
 
 - (UIView)springLoadingEffectTargetView
 {
-  v3 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
-  v4 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v5 = [v4 objectForKey:v3];
+  uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  v5 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-  v6 = [v5 view];
+  view = [v5 view];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)_scrollToActiveWidgetAnimated:(BOOL)a3
+- (BOOL)_scrollToActiveWidgetAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(NSHashTable *)self->_imageUpdateDisableAssertions count])
   {
     return 0;
@@ -2469,9 +2469,9 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
 
   [(SBHWidgetStackScrollView *)self->_scrollView contentOffset];
   v5 = [(SBHWidgetStackViewController *)self _newActiveWidgetIndexForContentOffset:?];
-  v6 = [(SBLeafIcon *)self->_icon iconDataSources];
-  v7 = [(SBLeafIcon *)self->_icon activeDataSource];
-  v8 = [v6 indexOfObject:v7];
+  iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
+  activeDataSource = [(SBLeafIcon *)self->_icon activeDataSource];
+  v8 = [iconDataSources indexOfObject:activeDataSource];
 
   if (v8 == v5)
   {
@@ -2480,27 +2480,27 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
 
   self->_showStackBorderWhenShowingPageControl = 1;
   [(SBHWidgetStackViewController *)self _setPageControlHidden:0 animated:1];
-  if (!v3)
+  if (!animatedCopy)
   {
     [(SBHWidgetStackViewController *)self _restartPageControlTimer];
-    v17 = [(SBLeafIcon *)self->_icon activeDataSource];
+    activeDataSource2 = [(SBLeafIcon *)self->_icon activeDataSource];
     activeWidget = self->_activeWidget;
-    self->_activeWidget = v17;
+    self->_activeWidget = activeDataSource2;
 
     [(UIPageControl *)self->_pageControl setCurrentPage:v8];
     scrollView = self->_scrollView;
     [(SBHWidgetStackViewController *)self _restingContentOffset];
     [(SBHWidgetStackScrollView *)scrollView setContentOffset:?];
-    v20 = [(SBHWidgetStackViewController *)self view];
-    [v20 setNeedsLayout];
+    view = [(SBHWidgetStackViewController *)self view];
+    [view setNeedsLayout];
 
-    v21 = [(SBHWidgetStackViewController *)self view];
-    [v21 layoutIfNeeded];
+    view2 = [(SBHWidgetStackViewController *)self view];
+    [view2 layoutIfNeeded];
 
     return 1;
   }
 
-  v10 = [(SBLeafIcon *)self->_icon iconDataSourceCount];
+  iconDataSourceCount = [(SBLeafIcon *)self->_icon iconDataSourceCount];
   v28[0] = MEMORY[0x1E69E9820];
   v11 = v8 - v5;
   if (v8 <= v5)
@@ -2510,7 +2510,7 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
 
   else
   {
-    v12 = v10;
+    v12 = iconDataSourceCount;
   }
 
   v28[1] = 3221225472;
@@ -2518,7 +2518,7 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
   v28[3] = &unk_1E808F718;
   if (v8 <= v5)
   {
-    v13 = v10;
+    v13 = iconDataSourceCount;
   }
 
   else
@@ -2531,8 +2531,8 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
   v28[6] = v11 - v12;
   v29 = v8;
   v30 = v5;
-  v14 = [(SBHWidgetStackViewController *)self preferredDirection];
-  if (!v14)
+  preferredDirection = [(SBHWidgetStackViewController *)self preferredDirection];
+  if (!preferredDirection)
   {
     v16 = 5;
     if (v29 < v30)
@@ -2543,14 +2543,14 @@ void __93__SBHWidgetStackViewController__disableImageUpdatesForReason_animateCha
     goto LABEL_19;
   }
 
-  if (v14 == 1)
+  if (preferredDirection == 1)
   {
     v16 = 5;
     goto LABEL_19;
   }
 
   v15 = 0.0;
-  if (v14 == 2)
+  if (preferredDirection == 2)
   {
     v16 = 6;
 LABEL_19:
@@ -2596,56 +2596,56 @@ uint64_t __62__SBHWidgetStackViewController__scrollToActiveWidgetAnimated___bloc
   return v3;
 }
 
-- (void)_removeWidgetContainerViewControllers:(id)a3 animated:(BOOL)a4
+- (void)_removeWidgetContainerViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v6 = a3;
+  controllersCopy = controllers;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__SBHWidgetStackViewController__removeWidgetContainerViewControllers_animated___block_invoke;
   v8[3] = &unk_1E808F740;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = controllersCopy;
+  animatedCopy = animated;
+  v7 = controllersCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v8];
 }
 
-- (void)_removeWidget:(id)a3 animated:(BOOL)a4
+- (void)_removeWidget:(id)widget animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  [(SBHWidgetStackViewController *)self _removeWidget:v6 widgetContainerViewControllers:v7 animated:v4];
+  animatedCopy = animated;
+  widgetCopy = widget;
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  [(SBHWidgetStackViewController *)self _removeWidget:widgetCopy widgetContainerViewControllers:_effectiveWidgetContainerViewControllers animated:animatedCopy];
 }
 
-- (void)_removeWidget:(id)a3 widgetContainerViewControllers:(id)a4 animated:(BOOL)a5
+- (void)_removeWidget:(id)widget widgetContainerViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 uniqueIdentifier];
-  [(SBHWidgetStackViewController *)self _removeWidgetWithUniqueIdentifier:v9 widgetContainerViewControllers:v8 animated:v5];
+  animatedCopy = animated;
+  controllersCopy = controllers;
+  uniqueIdentifier = [widget uniqueIdentifier];
+  [(SBHWidgetStackViewController *)self _removeWidgetWithUniqueIdentifier:uniqueIdentifier widgetContainerViewControllers:controllersCopy animated:animatedCopy];
 }
 
-- (void)_removeWidgetWithUniqueIdentifier:(id)a3 widgetContainerViewControllers:(id)a4 animated:(BOOL)a5
+- (void)_removeWidgetWithUniqueIdentifier:(id)identifier widgetContainerViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKey:v8];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  controllersCopy = controllers;
+  v10 = [controllersCopy objectForKey:identifierCopy];
   if (v10)
   {
-    [v9 removeObjectForKey:v8];
+    [controllersCopy removeObjectForKey:identifierCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_widgetContainerViewControllers_animated___block_invoke;
     aBlock[3] = &unk_1E8088F88;
     aBlock[4] = self;
-    v35 = v8;
+    v35 = identifierCopy;
     v11 = v10;
     v36 = v11;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v5)
+    if (animatedCopy)
     {
       v14 = objc_alloc(MEMORY[0x1E69DD250]);
       [(UIView *)self->_containerView bounds];
@@ -2654,14 +2654,14 @@ uint64_t __62__SBHWidgetStackViewController__scrollToActiveWidgetAnimated___bloc
       [v15 setCenter:?];
       [v15 setClipsToBounds:1];
       [v15 _setContinuousCornerRadius:self->_iconImageInfo.continuousCornerRadius];
-      v16 = [v15 layer];
-      [v16 setAllowsGroupOpacity:1];
+      layer = [v15 layer];
+      [layer setAllowsGroupOpacity:1];
 
-      v17 = [(SBHWidgetStackViewController *)self view];
-      [v17 addSubview:v15];
+      view = [(SBHWidgetStackViewController *)self view];
+      [view addSubview:v15];
 
-      v18 = [(SBHWidgetStackViewController *)self view];
-      [v18 bounds];
+      view2 = [(SBHWidgetStackViewController *)self view];
+      [view2 bounds];
       [v15 bounds];
       UIRectCenteredIntegralRect();
       v20 = v19;
@@ -2669,8 +2669,8 @@ uint64_t __62__SBHWidgetStackViewController__scrollToActiveWidgetAnimated___bloc
       v24 = v23;
       v26 = v25;
 
-      v27 = [v11 view];
-      [v27 setFrame:{v20, v22, v24, v26}];
+      view3 = [v11 view];
+      [view3 setFrame:{v20, v22, v24, v26}];
       v28 = MEMORY[0x1E69DD250];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -2728,59 +2728,59 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   return [v2 removeFromSuperview];
 }
 
-- (void)setOverrideIconImageAppearance:(id)a3
+- (void)setOverrideIconImageAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [appearanceCopy copy];
     overrideIconImageAppearance = self->_overrideIconImageAppearance;
     self->_overrideIconImageAppearance = v5;
 
-    v7 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__SBHWidgetStackViewController_setOverrideIconImageAppearance___block_invoke;
     v8[3] = &unk_1E808F790;
-    v9 = v4;
-    [v7 enumerateKeysAndObjectsUsingBlock:v8];
+    v9 = appearanceCopy;
+    [_effectiveWidgetContainerViewControllers enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
 
-- (void)setOverrideIconImageStyleConfiguration:(id)a3
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [configurationCopy copy];
     overrideIconImageStyleConfiguration = self->_overrideIconImageStyleConfiguration;
     self->_overrideIconImageStyleConfiguration = v5;
 
-    v7 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __71__SBHWidgetStackViewController_setOverrideIconImageStyleConfiguration___block_invoke;
     v8[3] = &unk_1E808F790;
-    v9 = v4;
-    [v7 enumerateKeysAndObjectsUsingBlock:v8];
+    v9 = configurationCopy;
+    [_effectiveWidgetContainerViewControllers enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
 
 - (id)effectiveIconImageAppearance
 {
-  v3 = [(SBHWidgetStackViewController *)self overrideIconImageAppearance];
-  v4 = [(SBHWidgetStackViewController *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBHWidgetStackViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:v5 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
-  v8 = [v7 widgetAppearanceWithUserInterfaceStyle:v6];
+  overrideIconImageAppearance = [(SBHWidgetStackViewController *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBHWidgetStackViewController *)self overrideIconImageStyleConfiguration];
+  traitCollection = [(SBHWidgetStackViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:traitCollection overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
+  v8 = [v7 widgetAppearanceWithUserInterfaceStyle:userInterfaceStyle];
 
   return v8;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   v6 = obj;
@@ -2789,18 +2789,18 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     objc_storeWeak(&self->_host, obj);
     if (obj)
     {
-      v5 = [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2];
+      discardAllWidgetViewControllers = [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2];
     }
 
     else
     {
-      v5 = [(SBHWidgetStackViewController *)self discardAllWidgetViewControllers];
+      discardAllWidgetViewControllers = [(SBHWidgetStackViewController *)self discardAllWidgetViewControllers];
     }
 
     v6 = obj;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](discardAllWidgetViewControllers, v6);
 }
 
 - (void)prepareForReuse
@@ -2836,7 +2836,7 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
 - (id)sourceView
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
+  uniqueIdentifier = [(SBLeafIconDataSource *)self->_activeWidget uniqueIdentifier];
   activeWidget = self->_activeWidget;
   if (activeWidget)
   {
@@ -2849,11 +2849,11 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     v5 = 1;
   }
 
-  v6 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v7 = v6;
-  if (v3)
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  v7 = _effectiveWidgetContainerViewControllers;
+  if (uniqueIdentifier)
   {
-    v8 = [v6 objectForKey:v3];
+    v8 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
   }
 
   else
@@ -2884,17 +2884,17 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
 
     [(SBHWidgetStackViewController *)self bs_removeChildViewController:v8];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v8 widgetViewController];
-    [WeakRetained widgetStackViewController:self didRemoveViewController:v13];
+    widgetViewController = [v8 widgetViewController];
+    [WeakRetained widgetStackViewController:self didRemoveViewController:widgetViewController];
 
-    [v7 removeObjectForKey:v3];
+    [v7 removeObjectForKey:uniqueIdentifier];
   }
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v14 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v9 setBackgroundColor:v14];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v9 setBackgroundColor:systemBackgroundColor];
 
     v15 = SBLogWidgets();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2911,12 +2911,12 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   return v9;
 }
 
-- (id)sourceBackgroundView:(id)a3
+- (id)sourceBackgroundView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (objc_getAssociatedObject(v4, "SBHTransparentWidgetKey"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 BOOLValue], v6, v7))
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy && (objc_getAssociatedObject(viewCopy, "SBHTransparentWidgetKey"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 BOOLValue], v6, v7))
   {
     v8 = SBLogWidgets();
     if (os_signpost_enabled(v8))
@@ -2927,8 +2927,8 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
       _os_signpost_emit_with_name_impl(&dword_1BEB18000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_CREATE_BACKGROUND", "%{public}@", &v13, 0xCu);
     }
 
-    v10 = [(SBHWidgetStackViewController *)self _createBackgroundView];
-    [(SBHWidgetStackViewController *)self _configureBackgroundViewIfNecessary:v10];
+    _createBackgroundView = [(SBHWidgetStackViewController *)self _createBackgroundView];
+    [(SBHWidgetStackViewController *)self _configureBackgroundViewIfNecessary:_createBackgroundView];
     v11 = SBLogWidgets();
     if (os_signpost_enabled(v11))
     {
@@ -2939,26 +2939,26 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
 
   else
   {
-    v10 = 0;
+    _createBackgroundView = 0;
   }
 
-  return v10;
+  return _createBackgroundView;
 }
 
-- (void)applyGlassIfDesiredToView:(id)a3 forIconImageAppearance:(id)a4 sourceView:(id)a5
+- (void)applyGlassIfDesiredToView:(id)view forIconImageAppearance:(id)appearance sourceView:(id)sourceView
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [(SBHWidgetStackViewController *)self activeWidget];
-  if (([v7 hasGlass] & 1) != 0 || -[SBHWidgetStackViewController _shouldDrawSystemBackgroundMaterialForWidget:](self, "_shouldDrawSystemBackgroundMaterialForWidget:", v8))
+  viewCopy = view;
+  appearanceCopy = appearance;
+  activeWidget = [(SBHWidgetStackViewController *)self activeWidget];
+  if (([appearanceCopy hasGlass] & 1) != 0 || -[SBHWidgetStackViewController _shouldDrawSystemBackgroundMaterialForWidget:](self, "_shouldDrawSystemBackgroundMaterialForWidget:", activeWidget))
   {
-    v9 = [v7 tintColor];
-    [v10 sbh_applyWidgetGlassWithTintColor:v9 userInterfaceStyle:objc_msgSend(v7 allowingGrouping:"iconGlassUserInterfaceStyle") boostsWhitePoint:1 meshed:{0, 1}];
+    tintColor = [appearanceCopy tintColor];
+    [viewCopy sbh_applyWidgetGlassWithTintColor:tintColor userInterfaceStyle:objc_msgSend(appearanceCopy allowingGrouping:"iconGlassUserInterfaceStyle") boostsWhitePoint:1 meshed:{0, 1}];
   }
 
   else
   {
-    [v10 sbh_removeGlass];
+    [viewCopy sbh_removeGlass];
   }
 }
 
@@ -2976,34 +2976,34 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   return result;
 }
 
-- (void)setShowsSquareCorners:(BOOL)a3
+- (void)setShowsSquareCorners:(BOOL)corners
 {
-  if (self->_showsSquareCorners != a3)
+  if (self->_showsSquareCorners != corners)
   {
-    self->_showsSquareCorners = a3;
-    [(UIView *)self->_backgroundView setClipsToBounds:!a3];
+    self->_showsSquareCorners = corners;
+    [(UIView *)self->_backgroundView setClipsToBounds:!corners];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v14 = a3;
+  scrollCopy = scroll;
   [(SBHWidgetStackViewController *)self _pageSize];
   v5 = v4;
   [(SBHWidgetStackViewController *)self _scrollViewContentSize];
   v7 = v6;
-  [v14 contentOffset];
+  [scrollCopy contentOffset];
   v10 = v9;
   if (v8 >= 0.0 && v8 <= v7 - v5)
   {
     v12 = v8;
-    if ([v14 isScrollAnimating])
+    if ([scrollCopy isScrollAnimating])
     {
       [(UIPageControl *)self->_pageControl setCurrentPage:[(SBHWidgetStackViewController *)self _newActiveWidgetIndexForContentOffset:v10, v12]];
     }
 
-    v13 = [(SBHWidgetStackViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(SBHWidgetStackViewController *)self view];
+    [view setNeedsLayout];
   }
 
   else
@@ -3012,10 +3012,10 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   }
 }
 
-- (void)scrollViewWillBeginScrolling:(id)a3
+- (void)scrollViewWillBeginScrolling:(id)scrolling
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scrollingCopy = scrolling;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -3052,17 +3052,17 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     while (v7);
   }
 
-  [v4 sbh_createGlassGroup];
+  [scrollingCopy sbh_createGlassGroup];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(SBHWidgetStackViewController *)self _updateActiveWidgetIndexAndScrollViewContentOffset];
   if (!self->_scrollingTouchCancellationAssertion)
   {
-    v4 = [(SBHWidgetStackViewController *)self cancelTouchesForCurrentEventInHostedContent];
+    cancelTouchesForCurrentEventInHostedContent = [(SBHWidgetStackViewController *)self cancelTouchesForCurrentEventInHostedContent];
     scrollingTouchCancellationAssertion = self->_scrollingTouchCancellationAssertion;
-    self->_scrollingTouchCancellationAssertion = v4;
+    self->_scrollingTouchCancellationAssertion = cancelTouchesForCurrentEventInHostedContent;
   }
 
   self->_showStackBorderWhenShowingPageControl = 1;
@@ -3070,9 +3070,9 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   [(SBHWidgetStackViewController *)self _setPageControlHidden:0 animated:1];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v13 = a3;
+  draggingCopy = dragging;
   scrollingTouchCancellationAssertion = self->_scrollingTouchCancellationAssertion;
   if (scrollingTouchCancellationAssertion)
   {
@@ -3081,36 +3081,36 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     self->_scrollingTouchCancellationAssertion = 0;
   }
 
-  v9 = [(SBHWidgetStackViewController *)self _newActiveWidgetIndexForContentOffset:a5->x, a5->y];
+  v9 = [(SBHWidgetStackViewController *)self _newActiveWidgetIndexForContentOffset:offset->x, offset->y];
   [(UIPageControl *)self->_pageControl setCurrentPage:v9];
-  v10 = [(SBHWidgetStackViewController *)self delegate];
+  delegate = [(SBHWidgetStackViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(SBLeafIcon *)self->_icon iconDataSources];
-    v12 = [v11 objectAtIndex:v9];
-    [v10 widgetStackViewController:self didActivateDataSource:v12 fromUserInteraction:1];
+    iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
+    v12 = [iconDataSources objectAtIndex:v9];
+    [delegate widgetStackViewController:self didActivateDataSource:v12 fromUserInteraction:1];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v3 = a3;
-  if ([v3 isScrollAnimating])
+  animationCopy = animation;
+  if ([animationCopy isScrollAnimating])
   {
-    [v3 stopScrollingAndZooming];
+    [animationCopy stopScrollingAndZooming];
   }
 }
 
-- (void)scrollViewDidEndScrolling:(id)a3
+- (void)scrollViewDidEndScrolling:(id)scrolling
 {
-  [a3 sbh_removeGlass];
+  [scrolling sbh_removeGlass];
   [(SBHWidgetStackViewController *)self _updateActiveWidgetIndexAndScrollViewContentOffset];
   [(SBHWidgetStackViewController *)self _restartPageControlTimer];
 
   [(SBHWidgetStackViewController *)self _updateWidgetViewsWithAnimationUpdateMode:3];
 }
 
-- (void)customImageViewControllerWantsLabelHiddenDidChange:(id)a3
+- (void)customImageViewControllerWantsLabelHiddenDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = SBLogWidgets();
@@ -3161,10 +3161,10 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   }
 }
 
-- (void)widgetContainerViewControllerContentViewControllerDidActivate:(id)a3
+- (void)widgetContainerViewControllerContentViewControllerDidActivate:(id)activate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activateCopy = activate;
   v5 = SBLogWidgets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3176,12 +3176,12 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@> %{public}s", &v10, 0x16u);
   }
 
-  if ([(NSHashTable *)self->_containerViewControllersRequiringLayoutUponActivation containsObject:v4])
+  if ([(NSHashTable *)self->_containerViewControllersRequiringLayoutUponActivation containsObject:activateCopy])
   {
-    [(NSHashTable *)self->_containerViewControllersRequiringLayoutUponActivation removeObject:v4];
-    v7 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-    v8 = [v7 allValues];
-    v9 = [v8 containsObject:v4];
+    [(NSHashTable *)self->_containerViewControllersRequiringLayoutUponActivation removeObject:activateCopy];
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+    allValues = [_effectiveWidgetContainerViewControllers allValues];
+    v9 = [allValues containsObject:activateCopy];
 
     if (v9)
     {
@@ -3190,11 +3190,11 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
   }
 }
 
-- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)a3 widgetContentIsReady:(BOOL)a4
+- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)changed widgetContentIsReady:(BOOL)ready
 {
-  v4 = a4;
+  readyCopy = ready;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changedCopy = changed;
   v7 = SBLogWidgets();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3204,14 +3204,14 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     v17 = 2082;
     v18 = "[SBHWidgetStackViewController widgetContainerViewControllerInitialWidgetContentReadinessChanged:widgetContentIsReady:]";
     v19 = 1026;
-    v20 = v4;
+    v20 = readyCopy;
     _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@> %{public}s. Widget content is ready? %{public}d", buf, 0x1Cu);
   }
 
   v9 = self->_widgetContainerViewControllersToRemove;
   if ([(NSMutableDictionary *)v9 count])
   {
-    if (v4)
+    if (readyCopy)
     {
       v10 = 0;
     }
@@ -3228,7 +3228,7 @@ uint64_t __106__SBHWidgetStackViewController__removeWidgetWithUniqueIdentifier_w
     block[3] = &unk_1E8088F88;
     block[4] = self;
     v13 = v9;
-    v14 = v6;
+    v14 = changedCopy;
     dispatch_after(v11, MEMORY[0x1E69E96A0], block);
   }
 }
@@ -3248,9 +3248,9 @@ void __119__SBHWidgetStackViewController_widgetContainerViewControllerInitialWid
   }
 }
 
-- (void)widgetContainerViewControllerContentViewControllerDidUpdateStyleConfiguration:(id)a3
+- (void)widgetContainerViewControllerContentViewControllerDidUpdateStyleConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (self->_overlapping || [(BSUIScrollView *)self->_scrollView isScrolling]|| [(SBHWidgetStackViewController *)self _alwaysShowStackBorder])
   {
     if (!self->_backgroundView)
@@ -3269,55 +3269,55 @@ void __119__SBHWidgetStackViewController_widgetContainerViewControllerInitialWid
   }
 }
 
-- (void)_requireLayoutUponActivationForWidgetContainerViewController:(id)a3
+- (void)_requireLayoutUponActivationForWidgetContainerViewController:(id)controller
 {
-  v10 = a3;
-  v4 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v5 = [v4 allValues];
-  v6 = [v5 containsObject:v10];
+  controllerCopy = controller;
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
+  v6 = [allValues containsObject:controllerCopy];
 
   if (v6)
   {
     containerViewControllersRequiringLayoutUponActivation = self->_containerViewControllersRequiringLayoutUponActivation;
     if (!containerViewControllersRequiringLayoutUponActivation)
     {
-      v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v9 = self->_containerViewControllersRequiringLayoutUponActivation;
-      self->_containerViewControllersRequiringLayoutUponActivation = v8;
+      self->_containerViewControllersRequiringLayoutUponActivation = weakObjectsHashTable;
 
       containerViewControllersRequiringLayoutUponActivation = self->_containerViewControllersRequiringLayoutUponActivation;
     }
 
-    [(NSHashTable *)containerViewControllersRequiringLayoutUponActivation addObject:v10];
+    [(NSHashTable *)containerViewControllersRequiringLayoutUponActivation addObject:controllerCopy];
   }
 }
 
-- (BOOL)_shouldHideWidgetWithUniqueIdentifier:(id)a3
+- (BOOL)_shouldHideWidgetWithUniqueIdentifier:(id)identifier
 {
   widgetContainerViewControllersToRemove = self->_widgetContainerViewControllersToRemove;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)widgetContainerViewControllersToRemove allKeys];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  allKeys = [(NSMutableDictionary *)widgetContainerViewControllersToRemove allKeys];
+  v6 = [allKeys containsObject:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)_createViewControllerForWidgetIfNecessary:(id)a3 usingIconImageInfo:(SBIconImageInfo *)a4
+- (BOOL)_createViewControllerForWidgetIfNecessary:(id)necessary usingIconImageInfo:(SBIconImageInfo *)info
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
   v11 = v4;
-  v13 = a3;
+  necessaryCopy = necessary;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v15 = [v13 uniqueIdentifier];
-  v16 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  uniqueIdentifier = [necessaryCopy uniqueIdentifier];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__19;
   v51 = __Block_byref_object_dispose__19;
-  v52 = [v16 objectForKey:v15];
+  v52 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
   v17 = v48[5];
   if (!v17)
   {
@@ -3327,7 +3327,7 @@ void __119__SBHWidgetStackViewController_widgetContainerViewControllerInitialWid
       [SBHWidgetStackViewController _createViewControllerForWidgetIfNecessary:usingIconImageInfo:];
     }
 
-    v21 = [WeakRetained widgetStackViewController:self viewControllerForDataSource:v13];
+    v21 = [WeakRetained widgetStackViewController:self viewControllerForDataSource:necessaryCopy];
     if (!v21 || self->_widgetSnapshotAnimationCount)
     {
       v19 = 0;
@@ -3336,11 +3336,11 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v22 = [(SBHWidgetStackViewController *)self widgetIcon];
-    v23 = [v22 gridSizeClass];
+    widgetIcon = [(SBHWidgetStackViewController *)self widgetIcon];
+    gridSizeClass = [widgetIcon gridSizeClass];
 
-    v24 = [WeakRetained widgetStackViewController:self containerApplicationNameForDataSource:v13];
-    LOBYTE(v22) = [WeakRetained widgetStackViewController:self isDataSourceBlockedForScreenTimeExpiration:v13];
+    v24 = [WeakRetained widgetStackViewController:self containerApplicationNameForDataSource:necessaryCopy];
+    LOBYTE(widgetIcon) = [WeakRetained widgetStackViewController:self isDataSourceBlockedForScreenTimeExpiration:necessaryCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __93__SBHWidgetStackViewController__createViewControllerForWidgetIfNecessary_usingIconImageInfo___block_invoke;
@@ -3348,31 +3348,31 @@ LABEL_20:
     v41 = &v47;
     v25 = v21;
     v34 = v25;
-    v35 = v13;
-    v26 = v23;
+    v35 = necessaryCopy;
+    v26 = gridSizeClass;
     v36 = v26;
-    v37 = self;
+    selfCopy = self;
     v27 = v24;
     v38 = v27;
     v42 = v11;
     v43 = v10;
     v44 = v9;
     v45 = v8;
-    v39 = v15;
-    v46 = v22;
-    v40 = v16;
+    v39 = uniqueIdentifier;
+    v46 = widgetIcon;
+    v40 = _effectiveWidgetContainerViewControllers;
     v28 = _Block_copy(aBlock);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = v25;
+      multiplexedViewController = v25;
 LABEL_12:
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __93__SBHWidgetStackViewController__createViewControllerForWidgetIfNecessary_usingIconImageInfo___block_invoke_4;
       v31[3] = &unk_1E8089600;
       v32 = v28;
-      [v29 performBatchUpdate:v31];
+      [multiplexedViewController performBatchUpdate:v31];
 
 LABEL_19:
       v19 = 1;
@@ -3382,11 +3382,11 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [v25 multiplexedViewController];
+      multiplexedViewController = [v25 multiplexedViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v29)
+        if (multiplexedViewController)
         {
           goto LABEL_12;
         }
@@ -3401,9 +3401,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v18 = [v17 parentViewController];
+  parentViewController = [v17 parentViewController];
 
-  if (!v18)
+  if (!parentViewController)
   {
     [(SBHWidgetStackViewController *)self bs_addChildViewController:v48[5] withSuperview:self->_scrollView];
   }
@@ -3534,11 +3534,11 @@ uint64_t __93__SBHWidgetStackViewController__createViewControllerForWidgetIfNece
   return [v4 setRequiresClippingToBounds:v5];
 }
 
-- (void)_createBackgroundViewIfNecessary:(BOOL)a3
+- (void)_createBackgroundViewIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v12 = *MEMORY[0x1E69E9840];
-  if ([(SBHWidgetStackViewController *)self _appearState]&& !self->_backgroundView && (!v3 || self->_overlapping || [(BSUIScrollView *)self->_scrollView isScrolling]|| [(SBHWidgetStackViewController *)self _alwaysShowStackBorder]))
+  if ([(SBHWidgetStackViewController *)self _appearState]&& !self->_backgroundView && (!necessaryCopy || self->_overlapping || [(BSUIScrollView *)self->_scrollView isScrolling]|| [(SBHWidgetStackViewController *)self _alwaysShowStackBorder]))
   {
     v5 = SBLogWidgets();
     if (os_signpost_enabled(v5))
@@ -3549,9 +3549,9 @@ uint64_t __93__SBHWidgetStackViewController__createViewControllerForWidgetIfNece
       _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_CREATE_BACKGROUND", "%{public}@", &v10, 0xCu);
     }
 
-    v7 = [(SBHWidgetStackViewController *)self _createBackgroundView];
+    _createBackgroundView = [(SBHWidgetStackViewController *)self _createBackgroundView];
     backgroundView = self->_backgroundView;
-    self->_backgroundView = v7;
+    self->_backgroundView = _createBackgroundView;
 
     if (self->_backgroundView)
     {
@@ -3589,29 +3589,29 @@ uint64_t __93__SBHWidgetStackViewController__createViewControllerForWidgetIfNece
   return v5;
 }
 
-- (void)_teardownBackgroundView:(id)a3 contactDelegate:(BOOL)a4
+- (void)_teardownBackgroundView:(id)view contactDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  viewCopy = view;
+  if (!viewCopy)
   {
     goto LABEL_12;
   }
 
   backgroundView = self->_backgroundView;
-  v10 = v6;
-  if (backgroundView != v6)
+  v10 = viewCopy;
+  if (backgroundView != viewCopy)
   {
-    if (!v4)
+    if (!delegateCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_6:
-    v8 = [(SBHWidgetStackViewController *)self delegate];
+    delegate = [(SBHWidgetStackViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 widgetStackViewController:self didFinishUsingBackgroundView:v10];
+      [delegate widgetStackViewController:self didFinishUsingBackgroundView:v10];
     }
 
     goto LABEL_9;
@@ -3619,32 +3619,32 @@ LABEL_6:
 
   self->_backgroundView = 0;
 
-  if (v4)
+  if (delegateCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_9:
-  v9 = [(SBHWidgetStackViewController *)self view];
-  if ([(UIView *)v10 isDescendantOfView:v9])
+  view = [(SBHWidgetStackViewController *)self view];
+  if ([(UIView *)v10 isDescendantOfView:view])
   {
     [(UIView *)v10 removeFromSuperview];
   }
 
-  v6 = v10;
+  viewCopy = v10;
 LABEL_12:
 }
 
-- (BOOL)_containerRequiresClippingToBoundsForWidget:(id)a3
+- (BOOL)_containerRequiresClippingToBoundsForWidget:(id)widget
 {
-  v3 = a3;
+  widgetCopy = widget;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_layoutWithAnimationUpdateMode:(int64_t)a3
+- (void)_layoutWithAnimationUpdateMode:(int64_t)mode
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = SBLogWidgets();
@@ -3661,16 +3661,16 @@ LABEL_12:
 
   if ([MEMORY[0x1E69DD250] _isInRetargetableAnimationBlock])
   {
-    a3 = 1;
+    mode = 1;
   }
 
-  [(SBHWidgetStackViewController *)self _updateBackgroundViewWithAnimationUpdateMode:a3];
-  [(SBHWidgetStackViewController *)self _updateWidgetViewsWithAnimationUpdateMode:a3];
+  [(SBHWidgetStackViewController *)self _updateBackgroundViewWithAnimationUpdateMode:mode];
+  [(SBHWidgetStackViewController *)self _updateWidgetViewsWithAnimationUpdateMode:mode];
   [(SBHWidgetStackViewController *)self _updateWidgetViewClippingAndBackgroundView];
   [(SBHWidgetStackViewController *)self _updateWidgetViewHitTesting];
   [(SBHWidgetStackViewController *)self _updateWidgetViewEdgeAntialiasing];
   [(SBHWidgetStackViewController *)self _updateScrollViewDelaysContentTouches];
-  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:a3];
+  [(SBHWidgetStackViewController *)self _updatePageControlWithAnimationUpdateMode:mode];
   v10 = SBLogWidgets();
   if (os_signpost_enabled(v10))
   {
@@ -3679,9 +3679,9 @@ LABEL_12:
   }
 }
 
-- (void)_updateWidgetViewsWithAnimationUpdateMode:(int64_t)a3
+- (void)_updateWidgetViewsWithAnimationUpdateMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   v130 = *MEMORY[0x1E69E9840];
   if (![(NSHashTable *)self->_imageUpdateDisableAssertions count])
   {
@@ -3689,7 +3689,7 @@ LABEL_12:
     if (os_signpost_enabled(v5))
     {
       v6 = MEMORY[0x1E696AEC0];
-      logIdentifier = v4->_logIdentifier;
+      logIdentifier = selfCopy->_logIdentifier;
       v8 = SBStringFromAnimationUpdateMode();
       v9 = [v6 stringWithFormat:@"<%@> updateMode: %@>", logIdentifier, v8];
       LODWORD(buf.a) = 138543362;
@@ -3697,7 +3697,7 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_WIDGET_VIEWS", "updateMode=%{public}@", &buf, 0xCu);
     }
 
-    [(SBHWidgetStackViewController *)v4 iconImageInfo];
+    [(SBHWidgetStackViewController *)selfCopy iconImageInfo];
     v97 = v11;
     v98 = v10;
     v99 = v13;
@@ -3705,38 +3705,38 @@ LABEL_12:
     BSRectWithSize();
     v15 = v14;
     v17 = v16;
-    v18 = [(SBLeafIcon *)v4->_icon iconDataSources];
-    v111 = [v18 indexOfObject:v4->_activeWidget];
+    iconDataSources = [(SBLeafIcon *)selfCopy->_icon iconDataSources];
+    v111 = [iconDataSources indexOfObject:selfCopy->_activeWidget];
 
-    [(SBHWidgetStackScrollView *)v4->_scrollView contentOffset];
+    [(SBHWidgetStackScrollView *)selfCopy->_scrollView contentOffset];
     v101 = v19;
-    [(SBHWidgetStackViewController *)v4 _restingContentOffset];
+    [(SBHWidgetStackViewController *)selfCopy _restingContentOffset];
     v21 = v20;
     BSRectWithSize();
     v109 = v23;
     v110 = v22;
     v107 = v25;
     v108 = v24;
-    continuousCornerRadius = v4->_iconImageInfo.continuousCornerRadius;
-    v104 = [(SBHWidgetStackViewController *)v4 _effectiveWidgetContainerViewControllers];
-    v115 = [(SBLeafIcon *)v4->_icon iconDataSources];
-    v26 = [v115 count];
-    v103 = a3;
-    if ([(SBHWidgetStackViewController *)v4 _appearState])
+    continuousCornerRadius = selfCopy->_iconImageInfo.continuousCornerRadius;
+    _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)selfCopy _effectiveWidgetContainerViewControllers];
+    iconDataSources2 = [(SBLeafIcon *)selfCopy->_icon iconDataSources];
+    v26 = [iconDataSources2 count];
+    modeCopy = mode;
+    if ([(SBHWidgetStackViewController *)selfCopy _appearState])
     {
       v114 = 0;
     }
 
     else
     {
-      v114 = ![(SBHWidgetStackViewController *)v4 forcesVisible];
+      v114 = ![(SBHWidgetStackViewController *)selfCopy forcesVisible];
     }
 
     v27 = SBLogWidgets();
-    v28 = v104;
+    v28 = _effectiveWidgetContainerViewControllers;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      [(SBHWidgetStackViewController *)v4 _updateWidgetViewsWithAnimationUpdateMode:v111];
+      [(SBHWidgetStackViewController *)selfCopy _updateWidgetViewsWithAnimationUpdateMode:v111];
     }
 
     if (v26)
@@ -3764,7 +3764,7 @@ LABEL_12:
 
       v95 = v33;
       v35 = v26;
-      v112 = v4;
+      v112 = selfCopy;
       v102 = v26;
       while (1)
       {
@@ -3815,19 +3815,19 @@ LABEL_12:
           v39 = v36;
         }
 
-        v40 = [(SBHWidgetStackViewController *)v4 _showAdjacentWidgets];
-        v41 = v40;
-        v42 = v40 << 63 >> 63;
+        _showAdjacentWidgets = [(SBHWidgetStackViewController *)selfCopy _showAdjacentWidgets];
+        v41 = _showAdjacentWidgets;
+        v42 = _showAdjacentWidgets << 63 >> 63;
         v43 = SBLogWidgets();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
-          v79 = v4->_logIdentifier;
+          v79 = selfCopy->_logIdentifier;
           v80 = [MEMORY[0x1E696AD98] numberWithInteger:v39];
           v81 = [MEMORY[0x1E696AD98] numberWithInteger:v42];
           v82 = [MEMORY[0x1E696AD98] numberWithInteger:v41];
           LODWORD(buf.a) = 138544130;
           *(&buf.a + 4) = v79;
-          v28 = v104;
+          v28 = _effectiveWidgetContainerViewControllers;
           WORD2(buf.b) = 2112;
           *(&buf.b + 6) = v80;
           HIWORD(buf.c) = 2112;
@@ -3836,22 +3836,22 @@ LABEL_12:
           *(&buf.tx + 2) = v82;
           _os_log_debug_impl(&dword_1BEB18000, v43, OS_LOG_TYPE_DEBUG, "<%{public}@> _updateWidgetViewsWithAnimationUpdateMode: relativeIndex: %@, minRelativeIndex: %@, maxRelativeIndex: %@", &buf, 0x2Au);
 
-          v4 = v112;
+          selfCopy = v112;
           v26 = v102;
         }
 
-        v44 = [v115 objectAtIndex:v32];
-        v45 = [v44 uniqueIdentifier];
-        v46 = v45;
+        v44 = [iconDataSources2 objectAtIndex:v32];
+        uniqueIdentifier = [v44 uniqueIdentifier];
+        v46 = uniqueIdentifier;
         v47 = v39 >= v42 && v39 <= v41;
         v48 = !v47;
-        v116 = v45;
+        v116 = uniqueIdentifier;
         if (((v48 | v114) & 1) == 0)
         {
           break;
         }
 
-        v49 = [v28 objectForKey:v45];
+        v49 = [v28 objectForKey:uniqueIdentifier];
         if (!v49)
         {
           goto LABEL_80;
@@ -3860,7 +3860,7 @@ LABEL_12:
         v50 = SBLogWidgets();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
         {
-          v84 = v4->_logIdentifier;
+          v84 = selfCopy->_logIdentifier;
           LODWORD(buf.a) = 138543874;
           *(&buf.a + 4) = v84;
           WORD2(buf.b) = 2112;
@@ -3872,18 +3872,18 @@ LABEL_12:
 
         [v49 setUserVisibilityStatus:1];
         [v49 setPresentationMode:2];
-        [(SBHWidgetStackViewController *)v4 bs_removeChildViewController:v49];
-        if ([(BSUIScrollView *)v4->_scrollView isScrolling])
+        [(SBHWidgetStackViewController *)selfCopy bs_removeChildViewController:v49];
+        if ([(BSUIScrollView *)selfCopy->_scrollView isScrolling])
         {
           goto LABEL_80;
         }
 
         [v28 removeObjectForKey:v116];
-        v51 = [(SBHWidgetStackViewController *)v4 delegate];
+        delegate = [(SBHWidgetStackViewController *)selfCopy delegate];
         if (objc_opt_respondsToSelector())
         {
-          v52 = [v49 widgetViewController];
-          [v51 widgetStackViewController:v4 didRemoveViewController:v52];
+          widgetViewController = [v49 widgetViewController];
+          [delegate widgetStackViewController:selfCopy didRemoveViewController:widgetViewController];
 LABEL_78:
         }
 
@@ -3895,8 +3895,8 @@ LABEL_80:
         }
       }
 
-      v53 = [(SBHWidgetStackViewController *)v4 _createViewControllerForWidgetIfNecessary:v44 usingIconImageInfo:v100, v99, v98, v97];
-      v54 = v103;
+      v53 = [(SBHWidgetStackViewController *)selfCopy _createViewControllerForWidgetIfNecessary:v44 usingIconImageInfo:v100, v99, v98, v97];
+      v54 = modeCopy;
       if (v53)
       {
         v54 = 1;
@@ -3904,37 +3904,37 @@ LABEL_80:
 
       v105 = v54;
       v49 = [v28 objectForKey:v46];
-      v51 = [v49 view];
+      delegate = [v49 view];
       v55 = v96 + v17 * v39;
-      v56 = [(SBHWidgetStackViewController *)v4 _containerRequiresClippingToBoundsForWidget:v44];
-      [v51 center];
+      v56 = [(SBHWidgetStackViewController *)selfCopy _containerRequiresClippingToBoundsForWidget:v44];
+      [delegate center];
       v58 = v57;
       v60 = v59;
-      [v51 bounds];
+      [delegate bounds];
       v132.origin.y = v109;
       v132.origin.x = v110;
       v132.size.height = v107;
       v132.size.width = v108;
       v61 = CGRectEqualToRect(v131, v132);
-      [v51 _continuousCornerRadius];
+      [delegate _continuousCornerRadius];
       v63 = v62;
-      v64 = [v49 requiresClippingToBounds];
+      requiresClippingToBounds = [v49 requiresClippingToBounds];
       if (v58 != v31 || v60 != v55)
       {
-        [v51 setCenter:{v31, v55}];
+        [delegate setCenter:{v31, v55}];
       }
 
       if (!v61)
       {
-        [v51 setBounds:{v110, v109, v108, v107}];
+        [delegate setBounds:{v110, v109, v108, v107}];
       }
 
       if (vabdd_f64(v63, continuousCornerRadius) >= 2.22044605e-16)
       {
-        [v51 _setContinuousCornerRadius:continuousCornerRadius];
+        [delegate _setContinuousCornerRadius:continuousCornerRadius];
       }
 
-      if (v56 != v64)
+      if (v56 != requiresClippingToBounds)
       {
         [v49 setRequiresClippingToBounds:v56];
       }
@@ -3946,12 +3946,12 @@ LABEL_80:
       }
 
       v66 = fmin(v65, 1.0);
-      if ([(SBHWidgetStackViewController *)v4 _insetWidgetsForTrackingAppearance])
+      if ([(SBHWidgetStackViewController *)selfCopy _insetWidgetsForTrackingAppearance])
       {
         v67 = v90 * v66;
       }
 
-      else if (v4->_overlapping)
+      else if (selfCopy->_overlapping)
       {
         v67 = v91;
       }
@@ -3961,7 +3961,7 @@ LABEL_80:
         v67 = v66;
       }
 
-      if ([(SBHWidgetStackViewController *)v4 isOverlapping])
+      if ([(SBHWidgetStackViewController *)selfCopy isOverlapping])
       {
         v68 = 0.75;
       }
@@ -3971,14 +3971,14 @@ LABEL_80:
         v68 = 1.0;
       }
 
-      v52 = [(SBHWidgetStackViewController *)v4 _backgroundColorForWidgetWithDistanceFromRestingContentOffset:v95];
-      [v52 alphaComponent];
+      widgetViewController = [(SBHWidgetStackViewController *)selfCopy _backgroundColorForWidgetWithDistanceFromRestingContentOffset:v95];
+      [widgetViewController alphaComponent];
       v70 = v69;
       memset(&buf, 0, sizeof(buf));
       CGAffineTransformMakeScale(&buf, v67, v67);
-      if (v51)
+      if (delegate)
       {
-        [v51 transform];
+        [delegate transform];
       }
 
       else
@@ -3990,7 +3990,7 @@ LABEL_80:
       v71 = CGAffineTransformEqualToTransform(&t1, &t2);
       v72 = v71;
       v73 = !v71;
-      [v51 alpha];
+      [delegate alpha];
       v75 = vabdd_f64(v74, v70);
       v76 = v75 >= 2.22044605e-16;
       if (v75 >= 2.22044605e-16 || v73)
@@ -4007,7 +4007,7 @@ LABEL_80:
         v121[2] = __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdateMode___block_invoke;
         v121[3] = &unk_1E808F858;
         v125 = v73;
-        v77 = v51;
+        v77 = delegate;
         v123 = buf;
         v122 = v77;
         v126 = v76;
@@ -4022,7 +4022,7 @@ LABEL_80:
       }
 
       v78 = SBLogWidgets();
-      v4 = v112;
+      selfCopy = v112;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
       {
         v83 = v112->_logIdentifier;
@@ -4035,13 +4035,13 @@ LABEL_80:
         _os_log_debug_impl(&dword_1BEB18000, v78, OS_LOG_TYPE_DEBUG, "<%{public}@> _updateWidgetViewsWithAnimationUpdateMode: CREATED widget VC in stack: widget=%@, %@", &t2, 0x20u);
       }
 
-      v28 = v104;
+      v28 = _effectiveWidgetContainerViewControllers;
       v26 = v102;
       goto LABEL_78;
     }
 
 LABEL_81:
-    v85 = [v115 bs_map:&__block_literal_global_63];
+    v85 = [iconDataSources2 bs_map:&__block_literal_global_63];
     v117[0] = MEMORY[0x1E69E9820];
     v117[1] = 3221225472;
     v117[2] = __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdateMode___block_invoke_2_126;
@@ -4051,7 +4051,7 @@ LABEL_81:
     v87 = [v28 bs_filter:v117];
     v88 = [v87 mutableCopy];
 
-    [(SBHWidgetStackViewController *)v4 _removeWidgetContainerViewControllers:v88 animated:v103 != 2];
+    [(SBHWidgetStackViewController *)selfCopy _removeWidgetContainerViewControllers:v88 animated:modeCopy != 2];
     v89 = SBLogWidgets();
     if (os_signpost_enabled(v89))
     {
@@ -4059,11 +4059,11 @@ LABEL_81:
       _os_signpost_emit_with_name_impl(&dword_1BEB18000, v89, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_WIDGET_VIEWS", " isAnimation=YES ", &buf, 2u);
     }
 
-    [(SBHWidgetStackViewController *)v4 _updateVisiblySettledForWidgetViewControllers];
-    [(SBHWidgetStackViewController *)v4 _updatePresentationModeForWidgetViewControllers];
-    [(SBHWidgetStackViewController *)v4 _updateShowsSnapshotWhenDeactivatedForWidgetViewControllers];
-    [(SBHWidgetStackViewController *)v4 _updatePauseReasonForWidgetViewControllers];
-    [(SBHWidgetStackViewController *)v4 _updateApproximateLayoutPositionForWidgetViewControllers];
+    [(SBHWidgetStackViewController *)selfCopy _updateVisiblySettledForWidgetViewControllers];
+    [(SBHWidgetStackViewController *)selfCopy _updatePresentationModeForWidgetViewControllers];
+    [(SBHWidgetStackViewController *)selfCopy _updateShowsSnapshotWhenDeactivatedForWidgetViewControllers];
+    [(SBHWidgetStackViewController *)selfCopy _updatePauseReasonForWidgetViewControllers];
+    [(SBHWidgetStackViewController *)selfCopy _updateApproximateLayoutPositionForWidgetViewControllers];
   }
 }
 
@@ -4098,9 +4098,9 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
   return result;
 }
 
-- (void)_updateBackgroundViewWithAnimationUpdateMode:(int64_t)a3 allowingOutsetting:(BOOL)a4
+- (void)_updateBackgroundViewWithAnimationUpdateMode:(int64_t)mode allowingOutsetting:(BOOL)outsetting
 {
-  v4 = a4;
+  outsettingCopy = outsetting;
   v153 = *MEMORY[0x1E69E9840];
   v7 = SBLogWidgets();
   if (os_signpost_enabled(v7))
@@ -4115,10 +4115,10 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
   }
 
   [(SBHWidgetStackViewController *)self _createBackgroundViewIfNecessary:1];
-  v12 = [(SBHWidgetStackViewController *)self _alwaysShowStackBorder];
-  v13 = [(SBHWidgetStackViewController *)self isOverlapping];
-  v14 = [(SBHWidgetStackViewController *)self view];
-  [v14 bounds];
+  _alwaysShowStackBorder = [(SBHWidgetStackViewController *)self _alwaysShowStackBorder];
+  isOverlapping = [(SBHWidgetStackViewController *)self isOverlapping];
+  view = [(SBHWidgetStackViewController *)self view];
+  [view bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -4132,20 +4132,20 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
   v118 = v26;
   [(SBHWidgetStackViewController *)self iconImageInfo];
   v28 = v27;
-  v29 = [(SBHWidgetStackViewController *)self imageViewAlignment];
+  imageViewAlignment = [(SBHWidgetStackViewController *)self imageViewAlignment];
   v30 = self->_containerView;
   v31 = self->_backgroundView;
   v117 = self->_scrollView;
   v116 = self->_dimmingView;
-  v32 = !v4;
-  if (v13 && v4)
+  v32 = !outsettingCopy;
+  if (isOverlapping && outsettingCopy)
   {
     v33 = v20 + 16.0;
     v34 = v22 + 16.0;
     v35 = v28 + 8.0;
   }
 
-  else if ([(SBHWidgetStackViewController *)self _insetWidgetsForTrackingAppearance]&& v4)
+  else if ([(SBHWidgetStackViewController *)self _insetWidgetsForTrackingAppearance]&& outsettingCopy)
   {
     v35 = v28;
     v34 = v22;
@@ -4166,7 +4166,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v33 = v20;
   }
 
-  if (v13 || !v12 || v32)
+  if (isOverlapping || !_alwaysShowStackBorder || v32)
   {
     v37 = v35;
   }
@@ -4176,7 +4176,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v37 = v35 + 3.0;
   }
 
-  if (v13 || !v12 || v32)
+  if (isOverlapping || !_alwaysShowStackBorder || v32)
   {
     v38 = v34;
   }
@@ -4186,7 +4186,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v38 = v34 + 6.0;
   }
 
-  if (v13 || !v12 || v32)
+  if (isOverlapping || !_alwaysShowStackBorder || v32)
   {
     v39 = v33;
   }
@@ -4197,7 +4197,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
   }
 
   v115 = 1.0;
-  if (v4 && self->_backgroundViewFadeAnimationEnabled)
+  if (outsettingCopy && self->_backgroundViewFadeAnimationEnabled)
   {
     v155.origin.x = v16;
     v155.origin.y = v18;
@@ -4239,12 +4239,12 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v37 = v28 + v44;
   }
 
-  v107 = a3;
+  modeCopy = mode;
   UIRectGetCenter();
   v114 = v45;
   v110 = v46;
   v47 = -((v22 - v118) * 0.5);
-  if (v29)
+  if (imageViewAlignment)
   {
     v47 = (v22 - v118) * 0.5;
   }
@@ -4358,7 +4358,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v130 = v39;
     v131 = v38;
     v121 = v61;
-    v122 = self;
+    selfCopy = self;
     v140 = v63 > 2.22044605e-16;
     v132 = v48;
     v141 = v104;
@@ -4380,7 +4380,7 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     v119[2] = __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdateMode_allowingOutsetting___block_invoke_131;
     v119[3] = &unk_1E808BF28;
     v119[4] = self;
-    [v84 sb_animateWithSettings:animationSettings mode:v107 animations:v120 completion:v119];
+    [v84 sb_animateWithSettings:animationSettings mode:modeCopy animations:v120 completion:v119];
   }
 
   [(SBHWidgetStackScrollView *)self->_scrollView bounds];
@@ -4431,10 +4431,10 @@ uint64_t __74__SBHWidgetStackViewController__updateWidgetViewsWithAnimationUpdat
     [(SBHWidgetStackScrollView *)scrollView setContentOffset:?];
   }
 
-  v96 = [(SBLeafIcon *)self->_icon iconDataSourceCount];
-  if (v96 > 1 != [(SBHWidgetStackScrollView *)self->_scrollView isScrollEnabled])
+  iconDataSourceCount = [(SBLeafIcon *)self->_icon iconDataSourceCount];
+  if (iconDataSourceCount > 1 != [(SBHWidgetStackScrollView *)self->_scrollView isScrollEnabled])
   {
-    [(SBHWidgetStackScrollView *)self->_scrollView setScrollEnabled:v96 > 1];
+    [(SBHWidgetStackScrollView *)self->_scrollView setScrollEnabled:iconDataSourceCount > 1];
   }
 
   [(SBHWidgetStackViewController *)self _configureBackgroundViewIfNecessary];
@@ -4608,7 +4608,7 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
   }
 }
 
-- (void)_updatePageControlWithAnimationUpdateMode:(int64_t)a3
+- (void)_updatePageControlWithAnimationUpdateMode:(int64_t)mode
 {
   v66 = *MEMORY[0x1E69E9840];
   if ([(SBHWidgetStackViewController *)self _appearState])
@@ -4625,29 +4625,29 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
       _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LAYOUT_STACK_PAGE_CONTROL", "updateMode=%{public}@", &buf, 0xCu);
     }
 
-    v10 = [(SBLeafIcon *)self->_icon iconDataSourceCount];
-    if (v10 == [(UIPageControl *)self->_pageControl numberOfPages])
+    iconDataSourceCount = [(SBLeafIcon *)self->_icon iconDataSourceCount];
+    if (iconDataSourceCount == [(UIPageControl *)self->_pageControl numberOfPages])
     {
-      v11 = a3;
+      modeCopy = mode;
     }
 
     else
     {
-      v11 = 2;
+      modeCopy = 2;
     }
 
     v12 = self->_pageControl;
     [(SBHWidgetSettings *)self->_widgetSettings stackPageControlScale];
     v14 = v13;
-    v15 = [(SBHWidgetStackViewController *)self _pageControlIsHorizontallyConstrained];
-    v16 = [(SBHWidgetStackViewController *)self _alwaysShowStackBorder];
-    v17 = [(SBHWidgetStackViewController *)self view];
-    [v17 bounds];
+    _pageControlIsHorizontallyConstrained = [(SBHWidgetStackViewController *)self _pageControlIsHorizontallyConstrained];
+    _alwaysShowStackBorder = [(SBHWidgetStackViewController *)self _alwaysShowStackBorder];
+    view = [(SBHWidgetStackViewController *)self view];
+    [view bounds];
     v19 = v18;
     v21 = v20;
 
     v22 = MEMORY[0x1E695EFF8];
-    [(UIPageControl *)v12 sizeForNumberOfPages:v10];
+    [(UIPageControl *)v12 sizeForNumberOfPages:iconDataSourceCount];
     v24 = v23;
     v26 = v25;
     fixedPageControlOffset = self->_fixedPageControlOffset;
@@ -4661,13 +4661,13 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
     {
       v30 = 0.0;
       v31 = 3.0;
-      if (!v16)
+      if (!_alwaysShowStackBorder)
       {
         v31 = 0.0;
       }
 
       v32 = v31 + v23 * 0.25;
-      if (v15)
+      if (_pageControlIsHorizontallyConstrained)
       {
         v30 = 2.0;
       }
@@ -4692,8 +4692,8 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
     CGAffineTransformMakeScale(&buf, v14, v14);
     [(UIPageControl *)self->_pageControl center];
     v39 = v36 != v38 || v35 != v37;
-    v40 = [(UIPageControl *)self->_pageControl numberOfPages];
-    v41 = v40 != v10;
+    numberOfPages = [(UIPageControl *)self->_pageControl numberOfPages];
+    v41 = numberOfPages != iconDataSourceCount;
     pageControl = self->_pageControl;
     if (pageControl)
     {
@@ -4713,7 +4713,7 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
     v68.size.width = v24;
     v68.size.height = v26;
     v44 = !CGRectEqualToRect(v67, v68);
-    if (v39 || v40 != v10 || v43 || v44)
+    if (v39 || numberOfPages != iconDataSourceCount || v43 || v44)
     {
       v46 = MEMORY[0x1E69DD250];
       animationSettings = self->_animationSettings;
@@ -4723,7 +4723,7 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
       v49[3] = &unk_1E808F918;
       v59 = v41;
       v50 = v12;
-      v51 = v10;
+      v51 = iconDataSourceCount;
       v60 = v44;
       v52 = v33;
       v53 = v34;
@@ -4734,7 +4734,7 @@ void __96__SBHWidgetStackViewController__updateBackgroundViewWithAnimationUpdate
       v62 = v39;
       v57 = v35;
       v58 = v36;
-      [v46 sb_animateWithSettings:animationSettings mode:v11 animations:v49 completion:0];
+      [v46 sb_animateWithSettings:animationSettings mode:modeCopy animations:v49 completion:0];
       v48 = SBLogWidgets();
       if (os_signpost_enabled(v48))
       {
@@ -4787,58 +4787,58 @@ uint64_t __74__SBHWidgetStackViewController__updatePageControlWithAnimationUpdat
   return [*(a1 + 32) layoutIfNeeded];
 }
 
-- (id)_widgetContainerViewControllersForListLayoutProvider:(id)a3
+- (id)_widgetContainerViewControllersForListLayoutProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (!self->_widgetContainerViewControllersForLayoutOptions)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     widgetContainerViewControllersForLayoutOptions = self->_widgetContainerViewControllersForLayoutOptions;
-    self->_widgetContainerViewControllersForLayoutOptions = v5;
+    self->_widgetContainerViewControllersForLayoutOptions = dictionary;
   }
 
-  v7 = _SBHLayoutOptionsKeyTypeForListLayoutProvider(v4);
-  v8 = [(NSMutableDictionary *)self->_widgetContainerViewControllersForLayoutOptions objectForKey:v7];
-  if (!v8)
+  v7 = _SBHLayoutOptionsKeyTypeForListLayoutProvider(providerCopy);
+  dictionary2 = [(NSMutableDictionary *)self->_widgetContainerViewControllersForLayoutOptions objectForKey:v7];
+  if (!dictionary2)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_widgetContainerViewControllersForLayoutOptions setObject:v8 forKey:v7];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_widgetContainerViewControllersForLayoutOptions setObject:dictionary2 forKey:v7];
   }
 
-  return v8;
+  return dictionary2;
 }
 
-- (void)enumerateWidgetContainerViewControllersForListLayoutProviderUsingBlock:(id)a3
+- (void)enumerateWidgetContainerViewControllersForListLayoutProviderUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   widgetContainerViewControllersForLayoutOptions = self->_widgetContainerViewControllersForLayoutOptions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __103__SBHWidgetStackViewController_enumerateWidgetContainerViewControllersForListLayoutProviderUsingBlock___block_invoke;
   v7[3] = &unk_1E808F940;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)widgetContainerViewControllersForLayoutOptions enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)_backgroundColorForWidgetWithDistanceFromRestingContentOffset:(double)a3
+- (id)_backgroundColorForWidgetWithDistanceFromRestingContentOffset:(double)offset
 {
-  v3 = fmin(fmax(a3 / 60.0, 0.0), 0.3);
+  v3 = fmin(fmax(offset / 60.0, 0.0), 0.3);
   if ([(SBHWidgetStackViewController *)self _alwaysShowStackBorder])
   {
     v3 = v3 + 0.2;
   }
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [v4 colorWithAlphaComponent:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v5 = [systemBackgroundColor colorWithAlphaComponent:v3];
 
   return v5;
 }
 
-- (void)_setPageControlHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPageControlHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(SBHWidgetStackViewController *)self _alwaysShowStackPageControl]|| (v7 = 0.0, !a3))
+  animatedCopy = animated;
+  if ([(SBHWidgetStackViewController *)self _alwaysShowStackPageControl]|| (v7 = 0.0, !hidden))
   {
     pageControlHidingTimer = self->_pageControlHidingTimer;
     v7 = 1.0;
@@ -4854,7 +4854,7 @@ uint64_t __74__SBHWidgetStackViewController__updatePageControlWithAnimationUpdat
   [(UIPageControl *)v10 alpha];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v11 = 3;
     }
@@ -4877,7 +4877,7 @@ uint64_t __74__SBHWidgetStackViewController__updatePageControlWithAnimationUpdat
   }
 }
 
-- (void)_restartPageControlTimerWithTimeInterval:(double)a3
+- (void)_restartPageControlTimerWithTimeInterval:(double)interval
 {
   pageControlHidingTimer = self->_pageControlHidingTimer;
   if (pageControlHidingTimer)
@@ -4894,7 +4894,7 @@ uint64_t __74__SBHWidgetStackViewController__updatePageControlWithAnimationUpdat
   v10[2] = __73__SBHWidgetStackViewController__restartPageControlTimerWithTimeInterval___block_invoke;
   v10[3] = &unk_1E808BC98;
   objc_copyWeak(&v11, &location);
-  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v10 block:a3];
+  v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v10 block:interval];
   v9 = self->_pageControlHidingTimer;
   self->_pageControlHidingTimer = v8;
 
@@ -4918,19 +4918,19 @@ void __73__SBHWidgetStackViewController__restartPageControlTimerWithTimeInterval
   }
 }
 
-- (int64_t)_newActiveWidgetIndexForContentOffset:(CGPoint)a3
+- (int64_t)_newActiveWidgetIndexForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
+  y = offset.y;
   [(SBHWidgetStackViewController *)self _pageSize];
   v6 = v5;
   [(SBHWidgetStackViewController *)self _restingContentOffset];
   v8 = (y - v7) / v6;
-  v9 = [(SBLeafIcon *)self->_icon iconDataSources];
-  v10 = [v9 indexOfObject:self->_activeWidget];
+  iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
+  v10 = [iconDataSources indexOfObject:self->_activeWidget];
 
   v11 = (round(v8) + v10);
-  v12 = [(SBLeafIcon *)self->_icon iconDataSourceCount];
-  if (v12 <= v11)
+  iconDataSourceCount = [(SBLeafIcon *)self->_icon iconDataSourceCount];
+  if (iconDataSourceCount <= v11)
   {
     v13 = 0;
   }
@@ -4947,7 +4947,7 @@ void __73__SBHWidgetStackViewController__restartPageControlTimerWithTimeInterval
 
   else
   {
-    return v12 - 1;
+    return iconDataSourceCount - 1;
   }
 }
 
@@ -4990,10 +4990,10 @@ void __73__SBHWidgetStackViewController__restartPageControlTimerWithTimeInterval
   }
 }
 
-+ (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)a3 widgetViewController:(id)a4
++ (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)widget widgetViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  widgetCopy = widget;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -5008,9 +5008,9 @@ void __73__SBHWidgetStackViewController__restartPageControlTimerWithTimeInterval
         {
           if (objc_opt_respondsToSelector())
           {
-            v9 = [v6 isTransparent];
+            isTransparent = [controllerCopy isTransparent];
 LABEL_11:
-            v7 = v9;
+            v7 = isTransparent;
             goto LABEL_5;
           }
         }
@@ -5022,7 +5022,7 @@ LABEL_11:
 
           if (isKindOfClass)
           {
-            v9 = [v6 usesSystemBackgroundMaterial];
+            isTransparent = [controllerCopy usesSystemBackgroundMaterial];
             goto LABEL_11;
           }
         }
@@ -5039,16 +5039,16 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)a3
+- (BOOL)_shouldDrawSystemBackgroundMaterialForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v6 = [v4 uniqueIdentifier];
-  v7 = [v5 objectForKey:v6];
+  widgetCopy = widget;
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  v7 = [_effectiveWidgetContainerViewControllers objectForKey:uniqueIdentifier];
 
-  v8 = [v7 widgetViewController];
+  widgetViewController = [v7 widgetViewController];
   v9 = objc_opt_class();
-  v10 = v8;
+  v10 = widgetViewController;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -5069,15 +5069,15 @@ LABEL_5:
 
   v12 = v11;
 
-  v13 = [v12 multiplexedViewController];
+  multiplexedViewController = [v12 multiplexedViewController];
 
-  v14 = [objc_opt_class() _shouldDrawSystemBackgroundMaterialForWidget:v4 widgetViewController:v13];
+  v14 = [objc_opt_class() _shouldDrawSystemBackgroundMaterialForWidget:widgetCopy widgetViewController:multiplexedViewController];
   return v14;
 }
 
-- (void)_configureBackgroundViewIfNecessary:(id)a3
+- (void)_configureBackgroundViewIfNecessary:(id)necessary
 {
-  backgroundViewConfigurator = a3;
+  backgroundViewConfigurator = necessary;
   v5 = backgroundViewConfigurator;
   if (backgroundViewConfigurator)
   {
@@ -5101,8 +5101,8 @@ LABEL_5:
     [(UIView *)self->_backgroundView sbh_applyClearGlassWithGrouping:1];
     backgroundView = self->_backgroundView;
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v8 = [(SBHWidgetStackViewController *)self activeWidget];
-    v9 = [(SBHWidgetStackViewController *)self backdropGroupNameForActiveDataSource:v8];
+    activeWidget = [(SBHWidgetStackViewController *)self activeWidget];
+    v9 = [(SBHWidgetStackViewController *)self backdropGroupNameForActiveDataSource:activeWidget];
     v10 = [v7 initWithFormat:@"%@-Stack", v9];
     [(UIView *)backgroundView sbh_backdropGroupName:v10];
 
@@ -5115,11 +5115,11 @@ LABEL_9:
   MEMORY[0x1EEE66BB8](backgroundViewConfigurator, v5);
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  if (self->_allowsGlassGrouping != a3)
+  if (self->_allowsGlassGrouping != grouping)
   {
-    self->_allowsGlassGrouping = a3;
+    self->_allowsGlassGrouping = grouping;
     [(SBHWidgetStackViewController *)self _configureBackgroundViewIfNecessary];
 
     [(SBHWidgetStackViewController *)self _updateWidgetGlassGrouping];
@@ -5133,10 +5133,10 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v4 = [v3 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5147,7 +5147,7 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -5158,7 +5158,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -5172,10 +5172,10 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
-  v3 = [v2 allValues];
+  _effectiveWidgetContainerViewControllers = [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
+  allValues = [_effectiveWidgetContainerViewControllers allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5187,14 +5187,14 @@ LABEL_9:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) updateStyleConfiguration];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -5214,22 +5214,22 @@ LABEL_9:
   }
 }
 
-- (void)_handleInstalledAppsChanged:(id)a3
+- (void)_handleInstalledAppsChanged:(id)changed
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v7 = [(SBLeafIcon *)self->_icon iconDataSources];
+  iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
   if ([v5 count])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v7;
-    obj = v7;
+    v20 = iconDataSources;
+    obj = iconDataSources;
     v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
@@ -5250,11 +5250,11 @@ LABEL_9:
           v13 = [WeakRetained widgetStackViewController:self containerBundleIdentifierForDataSource:v12];
           if (v13 && [v5 containsObject:v13])
           {
-            v14 = [v12 uniqueIdentifier];
+            uniqueIdentifier = [v12 uniqueIdentifier];
             [(SBHWidgetStackViewController *)self _effectiveWidgetContainerViewControllers];
             v15 = v10;
             v17 = v16 = WeakRetained;
-            [v17 objectForKey:v14];
+            [v17 objectForKey:uniqueIdentifier];
             v19 = v18 = v5;
 
             WeakRetained = v16;
@@ -5275,21 +5275,21 @@ LABEL_9:
       while (v9);
     }
 
-    v7 = v20;
+    iconDataSources = v20;
   }
 }
 
-- (id)_widgetWithUniqueIdentifier:(id)a3
+- (id)_widgetWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBLeafIcon *)self->_icon iconDataSources];
+  identifierCopy = identifier;
+  iconDataSources = [(SBLeafIcon *)self->_icon iconDataSources];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__SBHWidgetStackViewController__widgetWithUniqueIdentifier___block_invoke;
   v9[3] = &unk_1E808E7A8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [iconDataSources bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -5305,7 +5305,7 @@ uint64_t __60__SBHWidgetStackViewController__widgetWithUniqueIdentifier___block_
 - (void)_logAllViewControllers
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 1024);
+  v2 = *(self + 1024);
   v3 = 138543362;
   v4 = v2;
   _os_log_debug_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_DEBUG, "<%{public}@> [ViewControllerDebug] Beginning view controller enumeration ------------------------------------------", &v3, 0xCu);
@@ -5339,16 +5339,16 @@ void __54__SBHWidgetStackViewController__logAllViewControllers__block_invoke_155
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a4;
-  v8 = a3;
-  v9 = [(SBHWidgetStackViewController *)self view];
-  v10 = [v8 isEqualToString:@"alpha"];
+  objectCopy = object;
+  pathCopy = path;
+  view = [(SBHWidgetStackViewController *)self view];
+  v10 = [pathCopy isEqualToString:@"alpha"];
 
   if (v10 && BSEqualObjects())
   {
-    [v9 alpha];
+    [view alpha];
     if (BSFloatIsZero())
     {
       self->_flashPageControlOnNextAlphaChange = 1;
@@ -5361,11 +5361,11 @@ void __54__SBHWidgetStackViewController__logAllViewControllers__block_invoke_155
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_widgetSettings == a3)
+  if (self->_widgetSettings == settings)
   {
-    [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2, a4];
+    [(SBHWidgetStackViewController *)self _layoutWithAnimationUpdateMode:2, key];
 
     [(SBHWidgetStackViewController *)self _flashPageControlAnimated:1];
   }

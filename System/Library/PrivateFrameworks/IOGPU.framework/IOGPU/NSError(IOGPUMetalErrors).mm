@@ -67,7 +67,7 @@ LABEL_15:
     [NSError(IOGPUMetalErrors) initWithIOGPUError:v10 MTL4QueueError:?];
   }
 
-  return [a1 initWithDomain:v6 code:v9 userInfo:v14];
+  return [self initWithDomain:v6 code:v9 userInfo:v14];
 }
 
 - (void)initWithIOGPUError:()IOGPUMetalErrors MTL4QueueError:.cold.1(uint64_t a1)

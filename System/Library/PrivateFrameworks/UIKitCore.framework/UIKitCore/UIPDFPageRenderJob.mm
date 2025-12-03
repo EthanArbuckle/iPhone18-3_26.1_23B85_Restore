@@ -2,18 +2,18 @@
 - (BOOL)hasPage;
 - (CGSize)size;
 - (UIImage)image;
-- (UIPDFPageRenderJob)initWithPage:(id)a3 maxSize:(CGSize)a4 queuePriority:(int64_t)a5;
+- (UIPDFPageRenderJob)initWithPage:(id)page maxSize:(CGSize)size queuePriority:(int64_t)priority;
 - (UIPDFPageRenderOperation)operation;
 - (void)cancel;
 - (void)cancelOperation;
-- (void)cancelOperationForTarget:(id)a3;
+- (void)cancelOperationForTarget:(id)target;
 - (void)dealloc;
 - (void)releaseOperation;
 - (void)renderImage;
 - (void)sendImage;
-- (void)sendImageTo:(id)a3 callback:(SEL)a4 userData:(id)a5;
-- (void)setOperation:(id)a3;
-- (void)setTarget:(id)a3 callback:(SEL)a4 userData:(id)a5;
+- (void)sendImageTo:(id)to callback:(SEL)callback userData:(id)data;
+- (void)setOperation:(id)operation;
+- (void)setTarget:(id)target callback:(SEL)callback userData:(id)data;
 @end
 
 @implementation UIPDFPageRenderJob
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (UIPDFPageRenderJob)initWithPage:(id)a3 maxSize:(CGSize)a4 queuePriority:(int64_t)a5
+- (UIPDFPageRenderJob)initWithPage:(id)page maxSize:(CGSize)size queuePriority:(int64_t)priority
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = UIPDFPageRenderJob;
   v9 = [(UIPDFPageRenderJob *)&v16 init];
@@ -37,11 +37,11 @@
   if (v9)
   {
     v9->_target = 0;
-    v11 = a3;
-    v10->_page = v11;
-    v12 = [(UIPDFPage *)v11 pageNumber];
-    v13 = v12 - 1;
-    if (!v12)
+    pageCopy = page;
+    v10->_page = pageCopy;
+    pageNumber = [(UIPDFPage *)pageCopy pageNumber];
+    v13 = pageNumber - 1;
+    if (!pageNumber)
     {
       v13 = 0;
     }
@@ -49,10 +49,10 @@
     v10->_pageIndex = v13;
     v10->_size.width = width;
     v10->_size.height = height;
-    v10->_priority = a5;
+    v10->_priority = priority;
     v14 = [[UIPDFPageRenderOperation alloc] initWithJob:v10];
     v10->_operation = v14;
-    [(UIPDFPageRenderOperation *)v14 setQueuePriority:a5];
+    [(UIPDFPageRenderOperation *)v14 setQueuePriority:priority];
     v10->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -69,7 +69,7 @@
 - (void)cancel
 {
   os_unfair_lock_lock(&self->_lock);
-  v2 = self;
+  selfCopy6 = self;
   sendPending = self->_sendPending;
   if (sendPending && self->_target && self->_callback)
   {
@@ -87,7 +87,7 @@
     }
 
     v15 = self->_userData;
-    v2 = self;
+    selfCopy6 = self;
     v9 = v15;
     v8 = 1;
   }
@@ -102,37 +102,37 @@
     releaseWhenDone = self->_releaseWhenDone && sendPending;
   }
 
-  operation = v2->_operation;
+  operation = selfCopy6->_operation;
   if (operation)
   {
     [(UIPDFPageRenderOperation *)operation cancel];
-    v2 = self;
+    selfCopy6 = self;
     self->_operation = 0;
   }
 
-  image = v2->_image;
+  image = selfCopy6->_image;
   if (image)
   {
 
-    v2 = self;
+    selfCopy6 = self;
   }
 
-  userData = v2->_userData;
+  userData = selfCopy6->_userData;
   if (userData)
   {
 
-    v2 = self;
+    selfCopy6 = self;
   }
 
-  p_target = &v2->_target;
-  target = v2->_target;
+  p_target = &selfCopy6->_target;
+  target = selfCopy6->_target;
   if (target)
   {
 
-    v2 = self;
+    selfCopy6 = self;
   }
 
-  v2->_image = 0;
+  selfCopy6->_image = 0;
   p_target[1] = 0;
   p_target[2] = 0;
   *p_target = 0;
@@ -153,7 +153,7 @@
 - (void)cancelOperation
 {
   os_unfair_lock_lock(&self->_lock);
-  v2 = self;
+  selfCopy5 = self;
   sendPending = self->_sendPending;
   if (sendPending && self->_target && self->_callback)
   {
@@ -171,7 +171,7 @@
     }
 
     v14 = self->_userData;
-    v2 = self;
+    selfCopy5 = self;
     v9 = v14;
     v8 = 1;
   }
@@ -186,27 +186,27 @@
     releaseWhenDone = self->_releaseWhenDone && sendPending;
   }
 
-  operation = v2->_operation;
+  operation = selfCopy5->_operation;
   if (operation)
   {
     [(UIPDFPageRenderOperation *)operation cancel];
-    v2 = self;
+    selfCopy5 = self;
     self->_operation = 0;
   }
 
-  userData = v2->_userData;
+  userData = selfCopy5->_userData;
   if (userData)
   {
 
-    v2 = self;
+    selfCopy5 = self;
   }
 
-  p_target = &v2->_target;
-  target = v2->_target;
+  p_target = &selfCopy5->_target;
+  target = selfCopy5->_target;
   if (target)
   {
 
-    v2 = self;
+    selfCopy5 = self;
   }
 
   *p_target = 0;
@@ -226,15 +226,15 @@
   }
 }
 
-- (void)cancelOperationForTarget:(id)a3
+- (void)cancelOperationForTarget:(id)target
 {
   os_unfair_lock_lock(&self->_lock);
-  v4 = self;
+  selfCopy5 = self;
   p_target = &self->_target;
-  if (self->_target == a3)
+  if (self->_target == target)
   {
     sendPending = self->_sendPending;
-    if (a3 && self->_sendPending && self->_callback)
+    if (target && self->_sendPending && self->_callback)
     {
       v7 = self->_releaseWhenDone && sendPending;
       v8 = self->_image;
@@ -250,7 +250,7 @@
       }
 
       v13 = self->_userData;
-      v4 = self;
+      selfCopy5 = self;
       v12 = v13;
       v11 = 1;
     }
@@ -265,25 +265,25 @@
       v7 = self->_releaseWhenDone && sendPending;
     }
 
-    operation = v4->_operation;
+    operation = selfCopy5->_operation;
     if (operation)
     {
       [(UIPDFPageRenderOperation *)operation cancel];
-      v4 = self;
+      selfCopy5 = self;
       self->_operation = 0;
     }
 
-    userData = v4->_userData;
+    userData = selfCopy5->_userData;
     if (userData)
     {
 
-      v4 = self;
+      selfCopy5 = self;
     }
 
     if (*p_target)
     {
 
-      v4 = self;
+      selfCopy5 = self;
     }
 
     *p_target = 0;
@@ -316,7 +316,7 @@
   }
 }
 
-- (void)setTarget:(id)a3 callback:(SEL)a4 userData:(id)a5
+- (void)setTarget:(id)target callback:(SEL)callback userData:(id)data
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_sendPending && self->_target && self->_callback)
@@ -356,19 +356,19 @@
   {
   }
 
-  self->_target = a3;
-  if (a4)
+  self->_target = target;
+  if (callback)
   {
-    v15 = a4;
+    callbackCopy = callback;
   }
 
   else
   {
-    v15 = 0;
+    callbackCopy = 0;
   }
 
-  self->_callback = v15;
-  self->_userData = a5;
+  self->_callback = callbackCopy;
+  self->_userData = data;
   self->_sendPending = 1;
   os_unfair_lock_unlock(&self->_lock);
   if (v11)
@@ -377,14 +377,14 @@
   }
 }
 
-- (void)setOperation:(id)a3
+- (void)setOperation:(id)operation
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_operation != a3)
+  if (self->_operation != operation)
   {
-    v5 = a3;
+    operationCopy = operation;
 
-    self->_operation = a3;
+    self->_operation = operation;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -472,11 +472,11 @@
       v37.size.height = v8;
       CGContextFillRect(v13, v37);
       CGContextScaleCTM(v13, v11, v6);
-      v14 = [(UIPDFPage *)self->_page rotation];
-      if (v14)
+      rotation = [(UIPDFPage *)self->_page rotation];
+      if (rotation)
       {
         memset(&v33, 0, sizeof(v33));
-        CGAffineTransformMakeRotation(&v33, v14 * -0.0174532925);
+        CGAffineTransformMakeRotation(&v33, rotation * -0.0174532925);
         [(UIPDFPage *)self->_page cropBox];
         transform = v33;
         v39 = CGRectApplyAffineTransform(v38, &transform);
@@ -492,7 +492,7 @@
       }
 
       v17 = CGPDFPageRetain([(UIPDFPage *)self->_page CGPage]);
-      v18 = self;
+      selfCopy = self;
       os_unfair_lock_unlock(&self->_lock);
       CGContextDrawPDFPageWithProgressCallback();
       CGPDFPageRelease(v17);
@@ -503,12 +503,12 @@
         {
           if ([self->_userData objectForKey:kUIPDFPageRenderAnnotationToImage])
           {
-            v19 = [(UIPDFPage *)self->_page annotations];
+            annotations = [(UIPDFPage *)self->_page annotations];
             v28 = 0u;
             v29 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v20 = [v19 countByEnumeratingWithState:&v28 objects:v34 count:16];
+            v20 = [annotations countByEnumeratingWithState:&v28 objects:v34 count:16];
             if (v20)
             {
               v21 = v20;
@@ -519,7 +519,7 @@
                 {
                   if (*v29 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(annotations);
                   }
 
                   v24 = *(*(&v28 + 1) + 8 * i);
@@ -530,7 +530,7 @@
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v28 objects:v34 count:16];
+                v21 = [annotations countByEnumeratingWithState:&v28 objects:v34 count:16];
               }
 
               while (v21);
@@ -585,7 +585,7 @@
 - (void)sendImage
 {
   os_unfair_lock_lock(&self->_lock);
-  v2 = self;
+  selfCopy4 = self;
   sendPending = self->_sendPending;
   if (sendPending && self->_target && self->_callback)
   {
@@ -603,7 +603,7 @@
     }
 
     v9 = self->_userData;
-    v2 = self;
+    selfCopy4 = self;
     v8 = 1;
   }
 
@@ -617,26 +617,26 @@
     releaseWhenDone = self->_releaseWhenDone && sendPending;
   }
 
-  userData = v2->_userData;
+  userData = selfCopy4->_userData;
   if (userData)
   {
 
-    v2 = self;
+    selfCopy4 = self;
   }
 
-  p_target = &v2->_target;
-  target = v2->_target;
+  p_target = &selfCopy4->_target;
+  target = selfCopy4->_target;
   if (target)
   {
 
-    v2 = self;
+    selfCopy4 = self;
   }
 
   *p_target = 0;
   p_target[1] = 0;
   *(p_target + 24) = 0;
   p_target[2] = 0;
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy4->_lock);
   if (v8)
   {
     [v6 performSelector:callback withObject:v5 withObject:v9];
@@ -647,7 +647,7 @@
   }
 }
 
-- (void)sendImageTo:(id)a3 callback:(SEL)a4 userData:(id)a5
+- (void)sendImageTo:(id)to callback:(SEL)callback userData:(id)data
 {
   os_unfair_lock_lock(&self->_lock);
   image = self->_image;
@@ -656,7 +656,7 @@
     v20 = self->_image;
     v10 = image;
     os_unfair_lock_unlock(&self->_lock);
-    [a3 performSelector:a4 withObject:v20 withObject:a5];
+    [to performSelector:callback withObject:v20 withObject:data];
   }
 
   else
@@ -696,19 +696,19 @@
     {
     }
 
-    self->_target = a3;
-    if (a4)
+    self->_target = to;
+    if (callback)
     {
-      v18 = a4;
+      callbackCopy = callback;
     }
 
     else
     {
-      v18 = 0;
+      callbackCopy = 0;
     }
 
-    self->_callback = v18;
-    self->_userData = a5;
+    self->_callback = callbackCopy;
+    self->_userData = data;
     self->_sendPending = 1;
     operation = self->_operation;
     if (operation && ![(UIPDFPageRenderOperation *)operation isExecuting])

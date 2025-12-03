@@ -1,33 +1,33 @@
 @interface TSWPFontFace
-+ (id)fontFaceWithPostScriptName:(id)a3 faceName:(id)a4;
-- (TSWPFontFace)initWithPostScriptName:(id)a3 faceName:(id)a4;
++ (id)fontFaceWithPostScriptName:(id)name faceName:(id)faceName;
+- (TSWPFontFace)initWithPostScriptName:(id)name faceName:(id)faceName;
 - (id)description;
 @end
 
 @implementation TSWPFontFace
 
-+ (id)fontFaceWithPostScriptName:(id)a3 faceName:(id)a4
++ (id)fontFaceWithPostScriptName:(id)name faceName:(id)faceName
 {
-  v5 = a4;
-  v6 = a3;
+  faceNameCopy = faceName;
+  nameCopy = name;
   v7 = objc_alloc(objc_opt_class());
-  v9 = objc_msgSend_initWithPostScriptName_faceName_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithPostScriptName_faceName_(v7, v8, nameCopy, faceNameCopy);
 
   return v9;
 }
 
-- (TSWPFontFace)initWithPostScriptName:(id)a3 faceName:(id)a4
+- (TSWPFontFace)initWithPostScriptName:(id)name faceName:(id)faceName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  faceNameCopy = faceName;
   v13.receiver = self;
   v13.super_class = TSWPFontFace;
   v8 = [(TSWPFontFace *)&v13 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setPostScriptName_(v8, v9, v6);
-    objc_msgSend_setFaceName_(v10, v11, v7);
+    objc_msgSend_setPostScriptName_(v8, v9, nameCopy);
+    objc_msgSend_setFaceName_(v10, v11, faceNameCopy);
   }
 
   return v10;

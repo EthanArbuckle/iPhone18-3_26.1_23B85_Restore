@@ -1,7 +1,7 @@
 @interface CardStackViewController
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B423CardStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B423CardStackViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)popWithCard:(id)a3;
+- (void)popWithCard:(id)card;
 - (void)viewDidLoad;
 @end
 
@@ -9,28 +9,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_599684();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_599B64();
 
   return v3;
 }
 
-- (void)popWithCard:(id)a3
+- (void)popWithCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  sub_599C50(v4);
+  cardCopy = card;
+  selfCopy = self;
+  sub_599C50(cardCopy);
 }
 
-- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B423CardStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProviderP33_B2CE61E316D584CC4A2ADF6070E311B423CardStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_769240();
     v7 = v6;
@@ -42,8 +42,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_59A988(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_59A988(v5, v7, bundle);
 }
 
 @end

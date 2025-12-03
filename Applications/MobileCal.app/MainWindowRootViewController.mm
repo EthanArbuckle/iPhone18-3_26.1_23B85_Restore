@@ -1,80 +1,80 @@
 @interface MainWindowRootViewController
-+ (double)sidebarWidthForViewHierarchy:(id)a3;
-+ (id)sanitizeCalSubCal:(id)a3;
++ (double)sidebarWidthForViewHierarchy:(id)hierarchy;
++ (id)sanitizeCalSubCal:(id)cal;
 - (BOOL)_shouldUseSideBar;
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection;
 - (BOOL)paletteShouldShowAvatarView;
-- (BOOL)showsSearchBarForTraitCollection:(id)a3;
+- (BOOL)showsSearchBarForTraitCollection:(id)collection;
 - (CGSize)mainContentSize;
-- (MainWindowRootViewController)initWithRootNavigationController:(id)a3;
+- (MainWindowRootViewController)initWithRootNavigationController:(id)controller;
 - (double)searchFieldWidth;
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3;
-- (id)viewControllerForSidebarState:(unint64_t)a3;
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection;
+- (id)viewControllerForSidebarState:(unint64_t)state;
 - (unint64_t)focusFilterMode;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_delegatesChanged:(id)a3;
-- (void)_identityChanged:(id)a3;
-- (void)_updateAfterExtendedLaunch:(id)a3;
+- (void)_delegatesChanged:(id)changed;
+- (void)_identityChanged:(id)changed;
+- (void)_updateAfterExtendedLaunch:(id)launch;
 - (void)attemptDisplayReviewPrompt;
 - (void)calendarButtonTapped;
-- (void)continueSearchWithTerm:(id)a3;
+- (void)continueSearchWithTerm:(id)term;
 - (void)createSearchBarIfNeeded;
 - (void)dealloc;
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleURL:(id)a3 context:(id)a4;
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleURL:(id)l context:(id)context;
 - (void)inboxButtonTapped;
 - (void)inboxWillDismiss;
 - (void)layoutSearchControl;
-- (void)newEventButtonTapped:(id)a3;
-- (void)paletteAvatarViewTapped:(id)a3;
-- (void)paletteTodayButtonTapped:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)newEventButtonTapped:(id)tapped;
+- (void)paletteAvatarViewTapped:(id)tapped;
+- (void)paletteTodayButtonTapped:(id)tapped;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)routeNewEventKeyCommand;
 - (void)routeSearchKeyCommand;
 - (void)searchBegan;
-- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)a3;
+- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)bar;
 - (void)searchEnded;
 - (void)searchEnding;
 - (void)searchTapped;
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4;
-- (void)setFocusFilterMode:(unint64_t)a3;
-- (void)setupSearchControlForTraitCollection:(id)a3;
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion;
+- (void)setFocusFilterMode:(unint64_t)mode;
+- (void)setupSearchControlForTraitCollection:(id)collection;
 - (void)showAddEvent;
-- (void)showAddEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 location:(id)a6 suggestionsKey:(id)a7 allDay:(BOOL)a8;
-- (void)showCalendarsSideBarWithCompletion:(id)a3;
-- (void)showCalendarsViewWithCompletion:(id)a3;
+- (void)showAddEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location suggestionsKey:(id)key allDay:(BOOL)day;
+- (void)showCalendarsSideBarWithCompletion:(id)completion;
+- (void)showCalendarsViewWithCompletion:(id)completion;
 - (void)showDayView;
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5;
-- (void)showIdentitySwitcherFromSourceView:(id)a3;
-- (void)showInboxSideBarWithCompletion:(id)a3;
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode;
+- (void)showIdentitySwitcherFromSourceView:(id)view;
+- (void)showInboxSideBarWithCompletion:(id)completion;
 - (void)showInboxView;
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4;
-- (void)showListSideBarWithCompletion:(id)a3;
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially;
+- (void)showListSideBarWithCompletion:(id)completion;
 - (void)showListView;
 - (void)showSearchView;
 - (void)showSplitMonthView;
-- (void)splitViewController:(id)a3 willExpandToProposedDisplayMode:(int64_t *)a4;
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4;
+- (void)splitViewController:(id)controller willExpandToProposedDisplayMode:(int64_t *)mode;
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column;
 - (void)todayToolbarItemPressed;
-- (void)toggleSidebar:(id)a3;
+- (void)toggleSidebar:(id)sidebar;
 - (void)updateErrorState;
 - (void)updateInboxCount;
 - (void)updateNewEventButtonEnabledness;
 - (void)updatePrimaryViewControllerNavBar;
 - (void)updatePrimaryViewControllerToolbar;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willEnterForeground;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MainWindowRootViewController
 
-+ (double)sidebarWidthForViewHierarchy:(id)a3
++ (double)sidebarWidthForViewHierarchy:(id)hierarchy
 {
   v3 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
   result = 320.0;
@@ -86,40 +86,40 @@
   return result;
 }
 
-- (MainWindowRootViewController)initWithRootNavigationController:(id)a3
+- (MainWindowRootViewController)initWithRootNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = MainWindowRootViewController;
   v6 = [(MainWindowRootViewController *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootNavigationController, a3);
+    objc_storeStrong(&v6->_rootNavigationController, controller);
     v8 = +[NSNotificationCenter defaultCenter];
     v9 = CUIKCalendarModelNotificationCountsChangedNotification;
-    v10 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_notificationCountChanged:" name:v9 object:v10];
+    model = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_notificationCountChanged:" name:v9 object:model];
 
     v11 = CUIKCalendarModelIdentityChangedNotification;
-    v12 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_identityChanged:" name:v11 object:v12];
+    model2 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_identityChanged:" name:v11 object:model2];
 
     v13 = CUIKCalendarModelDelegatesChangedNotification;
-    v14 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_delegatesChanged:" name:v13 object:v14];
+    model3 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_delegatesChanged:" name:v13 object:model3];
 
     v15 = CUIKCalendarModelCalendarsChangedNotification;
-    v16 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_calendarsChanged:" name:v15 object:v16];
+    model4 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_calendarsChanged:" name:v15 object:model4];
 
     v17 = CUIKCalendarModelAccountErrorCountChangedNotification;
-    v18 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_calendarErrorCountChanged:" name:v17 object:v18];
+    model5 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_calendarErrorCountChanged:" name:v17 object:model5];
 
     v19 = CUIKCalendarModelDisplayedOccurrencesChangedForTheFirstTimeNotification;
-    v20 = [(RootNavigationController *)v7->_rootNavigationController model];
-    [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v19 object:v20];
+    model6 = [(RootNavigationController *)v7->_rootNavigationController model];
+    [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:v19 object:model6];
 
     [v8 addObserver:v7 selector:"_updateAfterExtendedLaunch:" name:@"MainViewControllerDidCompleteExtendedLaunchNotification" object:0];
   }
@@ -142,12 +142,12 @@
   v65.receiver = self;
   v65.super_class = MainWindowRootViewController;
   [(MainWindowRootViewController *)&v65 viewDidLoad];
-  v3 = [(MainWindowRootViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(MainWindowRootViewController *)self view];
+  [view setAutoresizingMask:18];
 
   v4 = +[UIColor systemBackgroundColor];
-  v5 = [(MainWindowRootViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(MainWindowRootViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
   v6 = [[UISplitViewController alloc] initWithStyle:1];
   splitViewController = self->_splitViewController;
@@ -158,15 +158,15 @@
   self->_primaryVC = v8;
 
   v10 = +[UIColor systemBackgroundColor];
-  v11 = [(UINavigationController *)self->_primaryVC view];
-  [v11 setBackgroundColor:v10];
+  view3 = [(UINavigationController *)self->_primaryVC view];
+  [view3 setBackgroundColor:v10];
 
   v12 = +[UIColor secondarySystemBackgroundColor];
-  v13 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v13 setBarTintColor:v12];
+  navigationBar = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar setBarTintColor:v12];
 
-  v14 = [(UINavigationController *)self->_primaryVC navigationBar];
-  [v14 setForceFullHeightInLandscape:1];
+  navigationBar2 = [(UINavigationController *)self->_primaryVC navigationBar];
+  [navigationBar2 setForceFullHeightInLandscape:1];
 
   v15 = [[MainWindowContentContainerViewController alloc] initWithRootNavigationController:self->_rootNavigationController];
   secondaryContainerVC = self->_secondaryContainerVC;
@@ -178,67 +178,67 @@
   [(UISplitViewController *)self->_splitViewController setDelegate:self];
   [(UISplitViewController *)self->_splitViewController setPreferredDisplayMode:1];
   [(UISplitViewController *)self->_splitViewController setPresentsWithGesture:0];
-  v18 = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
-  [MainWindowRootViewController sidebarWidthForViewHierarchy:v18];
+  eKUI_viewHierarchy = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
+  [MainWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
   [(UISplitViewController *)self->_splitViewController setMinimumPrimaryColumnWidth:?];
-  v63 = v18;
-  [MainWindowRootViewController sidebarWidthForViewHierarchy:v18];
+  v63 = eKUI_viewHierarchy;
+  [MainWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
   [(UISplitViewController *)self->_splitViewController setMaximumPrimaryColumnWidth:?];
   [(UISplitViewController *)self->_splitViewController setViewController:self->_primaryVC forColumn:0];
   v64 = v17;
   [(UISplitViewController *)self->_splitViewController setViewController:v17 forColumn:2];
   [(MainWindowRootViewController *)self addChildViewController:self->_splitViewController];
-  v19 = [(MainWindowRootViewController *)self view];
-  v20 = [(UISplitViewController *)self->_splitViewController view];
-  [v19 addSubview:v20];
+  view4 = [(MainWindowRootViewController *)self view];
+  view5 = [(UISplitViewController *)self->_splitViewController view];
+  [view4 addSubview:view5];
 
   [(UISplitViewController *)self->_splitViewController didMoveToParentViewController:self];
   v21 = [MainWindowControlHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v25 = [(MainWindowControlHeaderView *)v21 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(MainWindowControlHeaderView *)v21 initWithFrame:CGRectZero.origin.x, y, width, height];
   headerView = self->_headerView;
-  self->_headerView = v25;
+  self->_headerView = height;
 
   [(MainWindowControlHeaderView *)self->_headerView setDelegate:self];
   [(MainWindowRootViewController *)self updateInboxCount];
-  v27 = [[MasterNavigationPaletteView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[MasterNavigationPaletteView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   paletteView = self->_paletteView;
-  self->_paletteView = v27;
+  self->_paletteView = height2;
 
   [(MasterNavigationPaletteView *)self->_paletteView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v29 = [(RootNavigationController *)self->_rootNavigationController model];
-  [(MasterNavigationPaletteView *)self->_paletteView setModel:v29];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [(MasterNavigationPaletteView *)self->_paletteView setModel:model];
 
   [(MasterNavigationPaletteView *)self->_paletteView setDelegate:self];
-  v30 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v30 containsDelegateSources]);
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model2 containsDelegateSources]);
 
   v31 = self->_paletteView;
-  v32 = [(MainWindowRootViewController *)self view];
-  [v32 bounds];
+  view6 = [(MainWindowRootViewController *)self view];
+  [view6 bounds];
   [(MasterNavigationPaletteView *)v31 sizeThatFits:v33, v34];
   v36 = v35;
   v38 = v37;
 
   v39 = [[UIView alloc] initWithFrame:{0.0, 0.0, v36, v38}];
   [v39 addSubview:self->_paletteView];
-  v62 = [(MasterNavigationPaletteView *)self->_paletteView leadingAnchor];
-  v61 = [v39 leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  leadingAnchor = [(MasterNavigationPaletteView *)self->_paletteView leadingAnchor];
+  leadingAnchor2 = [v39 leadingAnchor];
+  v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v66[0] = v60;
-  v59 = [(MasterNavigationPaletteView *)self->_paletteView trailingAnchor];
-  v58 = [v39 trailingAnchor];
-  v40 = [v59 constraintEqualToAnchor:v58];
+  trailingAnchor = [(MasterNavigationPaletteView *)self->_paletteView trailingAnchor];
+  trailingAnchor2 = [v39 trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v66[1] = v40;
-  v41 = [(MasterNavigationPaletteView *)self->_paletteView topAnchor];
-  v42 = [v39 topAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  topAnchor = [(MasterNavigationPaletteView *)self->_paletteView topAnchor];
+  topAnchor2 = [v39 topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v66[2] = v43;
-  v44 = [(MasterNavigationPaletteView *)self->_paletteView bottomAnchor];
-  v45 = [v39 bottomAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  bottomAnchor = [(MasterNavigationPaletteView *)self->_paletteView bottomAnchor];
+  bottomAnchor2 = [v39 bottomAnchor];
+  v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v66[3] = v46;
   v47 = [NSArray arrayWithObjects:v66 count:4];
   [NSLayoutConstraint activateConstraints:v47];
@@ -248,20 +248,20 @@
   self->_palette = v48;
 
   [(_UINavigationBarPalette *)self->_palette setPreferredHeight:v38];
-  v50 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v50 setDelegate:self];
+  paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView setDelegate:self];
 
-  v51 = [(MainWindowRootViewController *)self traitCollection];
-  v52 = [v51 horizontalSizeClass];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v52 == 2)
+  if (horizontalSizeClass == 2)
   {
-    v53 = [(MainWindowRootViewController *)self view];
-    [v53 addSubview:self->_headerView];
+    view7 = [(MainWindowRootViewController *)self view];
+    [view7 addSubview:self->_headerView];
 
     rootNavigationController = self->_rootNavigationController;
-    v55 = [(MainWindowRootViewController *)self traitCollection];
-    [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v55]];
+    traitCollection2 = [(MainWindowRootViewController *)self traitCollection];
+    [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:traitCollection2]];
   }
 
   else
@@ -271,23 +271,23 @@
   }
 
   v56 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:self->_currentSidebarState];
-  v57 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-  [v57 setShouldHideInlineFocusBanner:v56];
+  paletteView2 = [(RootNavigationController *)self->_rootNavigationController paletteView];
+  [paletteView2 setShouldHideInlineFocusBanner:v56];
 }
 
 - (void)willEnterForeground
 {
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:v3];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection];
 
   secondaryContainerVC = self->_secondaryContainerVC;
 
   [(MainWindowContentContainerViewController *)secondaryContainerVC layoutSegmentedControl];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_didAppear = 1;
   if (self->_needsSidebarSetup)
   {
@@ -299,19 +299,19 @@
     self->_needsSidebarSetup = 0;
   }
 
-  v5 = [(MainWindowRootViewController *)self traitCollection];
-  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:v5];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection];
 
   [(MainWindowRootViewController *)self layoutSearchControl];
   headerView = self->_headerView;
-  v7 = [(MainWindowRootViewController *)self view];
-  [v7 bounds];
+  view = [(MainWindowRootViewController *)self view];
+  [view bounds];
   [(MainWindowControlHeaderView *)headerView layoutForWidth:v8];
 
   [(MainWindowRootViewController *)self updateNewEventButtonEnabledness];
   v9.receiver = self;
   v9.super_class = MainWindowRootViewController;
-  [(MainWindowRootViewController *)&v9 viewDidAppear:v3];
+  [(MainWindowRootViewController *)&v9 viewDidAppear:appearCopy];
 }
 
 - (BOOL)_viewControllerExistsInPresentationChainThatShouldNotRotate
@@ -323,10 +323,10 @@
     [v3 addObject:v4];
   }
 
-  v5 = [(MainWindowRootViewController *)self presentedViewController];
-  if (v5)
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     do
     {
       v7 = [v3 containsObject:objc_opt_class()];
@@ -335,12 +335,12 @@
         break;
       }
 
-      v8 = [v6 presentedViewController];
+      presentedViewController2 = [v6 presentedViewController];
 
-      v6 = v8;
+      v6 = presentedViewController2;
     }
 
-    while (v8);
+    while (presentedViewController2);
   }
 
   else
@@ -353,50 +353,50 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(MainWindowRootViewController *)self presentedViewController];
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
   v4 = EKUIUseLargeFormatPhoneUI();
   objc_opt_class();
   if (((objc_opt_isKindOfClass() & 1) != 0 || v4 && self->_isSearching || -[MainWindowRootViewController _viewControllerExistsInPresentationChainThatShouldNotRotate](self, "_viewControllerExistsInPresentationChainThatShouldNotRotate")) && (-[MainWindowRootViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "windowScene"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "interfaceOrientation"), v7, v6, v5, v8))
   {
-    v9 = 1 << v8;
+    supportedInterfaceOrientations = 1 << v8;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MainWindowRootViewController;
-    v9 = [(MainWindowRootViewController *)&v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(MainWindowRootViewController *)&v11 supportedInterfaceOrientations];
   }
 
-  return v9;
+  return supportedInterfaceOrientations;
 }
 
 - (void)viewWillLayoutSubviews
 {
   [(MainWindowContentContainerViewController *)self->_secondaryContainerVC layoutSegmentedControl];
-  v3 = [(MainWindowControlHeaderView *)self->_headerView superview];
+  superview = [(MainWindowControlHeaderView *)self->_headerView superview];
 
-  if (v3)
+  if (superview)
   {
-    v23 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
-    v4 = [(MainWindowRootViewController *)self view];
-    [v23 bounds];
-    [v4 convertRect:v23 fromView:?];
+    viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+    view = [(MainWindowRootViewController *)self view];
+    [viewSwitcher bounds];
+    [view convertRect:viewSwitcher fromView:?];
     MidY = CGRectGetMidY(v25);
 
-    v6 = [(MainWindowRootViewController *)self view];
-    [v6 bounds];
+    view2 = [(MainWindowRootViewController *)self view];
+    [view2 bounds];
     v8 = v7;
     +[MainWindowRootViewController minimumStandardWindowWidth];
     v10 = dbl_1001F81B0[v8 < v9];
 
-    LODWORD(v6) = CalInterfaceIsLeftToRight();
-    v11 = [(MainWindowRootViewController *)self view];
-    [v11 safeAreaInsets];
+    LODWORD(view2) = CalInterfaceIsLeftToRight();
+    view3 = [(MainWindowRootViewController *)self view];
+    [view3 safeAreaInsets];
     v13 = v12;
     v15 = v14;
 
-    if (v6)
+    if (view2)
     {
       v16 = v13;
     }
@@ -417,8 +417,8 @@
 
     else
     {
-      v11 = [(MainWindowRootViewController *)self view];
-      [v11 bounds];
+      view3 = [(MainWindowRootViewController *)self view];
+      [view3 bounds];
       v21 = v22 - v17;
     }
 
@@ -434,12 +434,12 @@
   }
 }
 
-- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)a3
+- (id)traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 horizontalSizeClass] == 1 && objc_msgSend(v3, "verticalSizeClass") == 1)
+  collectionCopy = collection;
+  if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
-    v4 = [v3 traitCollectionByModifyingTraits:&stru_100211878];
+    v4 = [collectionCopy traitCollectionByModifyingTraits:&stru_100211878];
   }
 
   else
@@ -450,77 +450,77 @@
   return v4;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   if (([(MainWindowRootViewController *)self isViewLoaded]& 1) == 0)
   {
-    v8 = [(MainWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:v6];
+    v8 = [(MainWindowRootViewController *)self traitCollectionToUseWhileLoadingViewsDuringTransitioningToTraitCollection:collectionCopy];
     if (v8)
     {
       [(MainWindowRootViewController *)self setEkui_futureTraitCollection:v8];
-      v9 = [(MainWindowRootViewController *)self view];
-      [v9 setNeedsLayout];
+      view = [(MainWindowRootViewController *)self view];
+      [view setNeedsLayout];
 
       [(MainWindowRootViewController *)self setEkui_futureTraitCollection:0];
     }
 
     else
     {
-      v10 = [(MainWindowRootViewController *)self view];
-      [v10 setNeedsLayout];
+      view2 = [(MainWindowRootViewController *)self view];
+      [view2 setNeedsLayout];
     }
   }
 
-  v40 = v7;
-  v11 = [v6 horizontalSizeClass];
-  v12 = [(MainWindowRootViewController *)self traitCollection];
-  v13 = [v12 horizontalSizeClass];
+  v40 = coordinatorCopy;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  v14 = [v6 horizontalSizeClass];
-  v38 = v14 == 2;
-  v15 = [(MainWindowRootViewController *)self view];
-  v16 = [v15 window];
-  v17 = [v16 windowScene];
-  v18 = [v17 activationState];
-  v39 = v18 == 2;
+  horizontalSizeClass3 = [collectionCopy horizontalSizeClass];
+  v38 = horizontalSizeClass3 == 2;
+  view3 = [(MainWindowRootViewController *)self view];
+  window = [view3 window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
+  v39 = activationState == 2;
 
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  [(UINavigationController *)self->_primaryVC setNavigationBarHidden:v14 != 2 animated:0];
-  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:v6];
-  if (v18 == 2)
+  [(UINavigationController *)self->_primaryVC setNavigationBarHidden:horizontalSizeClass3 != 2 animated:0];
+  [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:collectionCopy];
+  if (activationState == 2)
   {
-    v19 = 0;
+    firstResponder = 0;
   }
 
   else
   {
-    v19 = [(MainWindowRootViewController *)self firstResponder];
+    firstResponder = [(MainWindowRootViewController *)self firstResponder];
   }
 
-  if (v11 != v13 && v14 == 2)
+  if (horizontalSizeClass != horizontalSizeClass2 && horizontalSizeClass3 == 2)
   {
-    v20 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-    if (!v20)
+    presentedViewController = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+    if (!presentedViewController)
     {
-      v20 = [(MainWindowRootViewController *)self presentedViewController];
+      presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v20 preservedState];
+      preservedState = [presentedViewController preservedState];
       calendarsPreservedState = self->_calendarsPreservedState;
-      self->_calendarsPreservedState = v21;
+      self->_calendarsPreservedState = preservedState;
 
-      v23 = [v20 presentingViewController];
-      [v23 dismissViewControllerAnimated:0 completion:0];
+      presentingViewController = [presentedViewController presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-      v24 = 0;
+      displayedDetailViewControllers = 0;
       v55[3] = 1;
     }
 
@@ -531,52 +531,52 @@
       {
         [(RootNavigationController *)self->_rootNavigationController dismissViewControllerAnimated:0 completion:0];
         v55[3] = 2;
-        objc_storeStrong(&self->_presentedInboxVC, v20);
-        v24 = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
+        objc_storeStrong(&self->_presentedInboxVC, presentedViewController);
+        displayedDetailViewControllers = [(InboxViewController *)self->_presentedInboxVC displayedDetailViewControllers];
       }
 
       else
       {
-        v24 = 0;
+        displayedDetailViewControllers = 0;
       }
     }
 
-    v27 = [(MainWindowRootViewController *)self view];
-    [v27 addSubview:self->_headerView];
+    view4 = [(MainWindowRootViewController *)self view];
+    [view4 addSubview:self->_headerView];
 
     goto LABEL_28;
   }
 
-  if (v11 == v13)
+  if (horizontalSizeClass == horizontalSizeClass2)
   {
-    v24 = 0;
+    displayedDetailViewControllers = 0;
     goto LABEL_29;
   }
 
-  v20 = [(MainWindowRootViewController *)self presentedViewController];
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
   if ([(MainWindowRootViewController *)self currentSidebarState]== 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [v20 viewControllers];
-      v26 = [v25 firstObject];
+      viewControllers = [presentedViewController viewControllers];
+      firstObject = [viewControllers firstObject];
       NSClassFromString(@"EKCalendarEditor");
       if (objc_opt_isKindOfClass())
       {
 
 LABEL_26:
-        v31 = [(UINavigationController *)self->_primaryVC topViewController];
-        v32 = [v31 preservedState];
+        topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+        preservedState2 = [topViewController preservedState];
         v33 = self->_calendarsPreservedState;
-        self->_calendarsPreservedState = v32;
+        self->_calendarsPreservedState = preservedState2;
 
         [(MainWindowRootViewController *)self dismissViewControllerAnimated:0 completion:0];
         goto LABEL_27;
       }
 
-      v28 = [v20 viewControllers];
-      v29 = [v28 firstObject];
+      viewControllers2 = [presentedViewController viewControllers];
+      firstObject2 = [viewControllers2 firstObject];
       NSClassFromString(@"EKSubscribedCalendarEditor");
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -589,7 +589,7 @@ LABEL_26:
 
 LABEL_27:
   [(MainWindowControlHeaderView *)self->_headerView removeFromSuperview];
-  v24 = 0;
+  displayedDetailViewControllers = 0;
 LABEL_28:
 
 LABEL_29:
@@ -597,7 +597,7 @@ LABEL_29:
   [(UISplitViewController *)self->_splitViewController setOverrideTraitCollection:0 forChildViewController:self->_primaryVC];
   v53.receiver = self;
   v53.super_class = MainWindowRootViewController;
-  [(MainWindowRootViewController *)&v53 willTransitionToTraitCollection:v6 withTransitionCoordinator:v40];
+  [(MainWindowRootViewController *)&v53 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:v40];
   if (v40)
   {
     [v40 targetTransform];
@@ -621,29 +621,29 @@ LABEL_29:
   v41[1] = 3221225472;
   v41[2] = sub_100107314;
   v41[3] = &unk_1002118A0;
-  v35 = v19;
+  v35 = firstResponder;
   v42 = v35;
-  v43 = self;
+  selfCopy = self;
   v36 = v34;
   v44 = v36;
   v46 = &v54;
   v47 = v39;
-  v37 = v24;
+  v37 = displayedDetailViewControllers;
   v45 = v37;
   [v40 animateAlongsideTransition:v48 completion:v41];
 
   _Block_object_dispose(&v54, 8);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     IsIdentity = CGAffineTransformIsIdentity(&v47);
     [v8 targetTransform];
     v10 = *(&v44 + 1);
@@ -672,20 +672,20 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  v13 = [(UISplitViewController *)self->_splitViewController splitBehavior];
-  v14 = [(MainWindowRootViewController *)self view];
-  v15 = [v14 window];
-  v16 = [v15 windowScene];
-  v17 = [v16 activationState];
+  splitBehavior = [(UISplitViewController *)self->_splitViewController splitBehavior];
+  view = [(MainWindowRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  v18 = [(MainWindowRootViewController *)self ekui_futureTraitCollection];
-  v19 = [v18 horizontalSizeClass];
-  v20 = [(MainWindowRootViewController *)self traitCollection];
-  v21 = [v20 horizontalSizeClass];
+  ekui_futureTraitCollection = [(MainWindowRootViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  if (v19 != v21 || v17 == 2)
+  if (horizontalSizeClass != horizontalSizeClass2 || activationState == 2)
   {
-    if (v19 == v21)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_8;
     }
@@ -695,9 +695,9 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v22 = [(MainWindowRootViewController *)self presentedViewController];
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
 
-  if (!v22)
+  if (!presentedViewController)
   {
     goto LABEL_33;
   }
@@ -708,8 +708,8 @@ LABEL_8:
   v25 = v24;
   v27 = v26;
 
-  v28 = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
-  v29 = [v28 ekui_interfaceOrientation] - 3 < 2 && v17 == 2;
+  eKUI_viewHierarchy = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
+  v29 = [eKUI_viewHierarchy ekui_interfaceOrientation] - 3 < 2 && activationState == 2;
   if (v29)
   {
     v30 = 1;
@@ -717,7 +717,7 @@ LABEL_8:
 
   else
   {
-    v30 = v13;
+    v30 = splitBehavior;
   }
 
   v31 = fabs(v12);
@@ -780,35 +780,35 @@ LABEL_34:
   [(MainWindowRootViewController *)&v38 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
 }
 
-- (void)splitViewController:(id)a3 willExpandToProposedDisplayMode:(int64_t *)a4
+- (void)splitViewController:(id)controller willExpandToProposedDisplayMode:(int64_t *)mode
 {
   if (self->_currentSidebarState)
   {
-    v6 = [(UISplitViewController *)self->_splitViewController splitBehavior];
+    splitBehavior = [(UISplitViewController *)self->_splitViewController splitBehavior];
     v7 = 2;
-    if (v6 == UISplitViewControllerSplitBehaviorOverlay)
+    if (splitBehavior == UISplitViewControllerSplitBehaviorOverlay)
     {
       v7 = 3;
     }
 
-    *a4 = v7;
+    *mode = v7;
 
     [(MainWindowRootViewController *)self updatePrimaryViewControllerToolbar];
   }
 }
 
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column
 {
-  v6 = a3;
-  if (!a4 && self->_currentSidebarState && ![(UISplitViewController *)self->_splitViewController isCollapsed])
+  controllerCopy = controller;
+  if (!column && self->_currentSidebarState && ![(UISplitViewController *)self->_splitViewController isCollapsed])
   {
-    v7 = [(MainWindowRootViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 activationState];
+    view = [(MainWindowRootViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    activationState = [windowScene activationState];
 
     currentSidebarState = self->_currentSidebarState;
-    if (v10 != 2)
+    if (activationState != 2)
     {
       if (currentSidebarState == 2)
       {
@@ -826,12 +826,12 @@ LABEL_34:
     v15[3] = &unk_10020EB00;
     v15[4] = self;
     v12 = objc_retainBlock(v15);
-    v13 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
 
-    if (v13)
+    if (transitionCoordinator)
     {
-      v14 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-      [v14 animateAlongsideTransition:v12 completion:0];
+      transitionCoordinator2 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      [transitionCoordinator2 animateAlongsideTransition:v12 completion:0];
     }
 
     else
@@ -843,8 +843,8 @@ LABEL_34:
 
 - (CGSize)mainContentSize
 {
-  v2 = [(RootNavigationController *)self->_rootNavigationController view];
-  [v2 bounds];
+  view = [(RootNavigationController *)self->_rootNavigationController view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
 
@@ -855,71 +855,71 @@ LABEL_34:
   return result;
 }
 
-- (void)continueSearchWithTerm:(id)a3
+- (void)continueSearchWithTerm:(id)term
 {
-  v6 = a3;
-  v4 = [(MainWindowRootViewController *)self ekui_futureTraitCollection];
-  v5 = [v4 horizontalSizeClass];
+  termCopy = term;
+  ekui_futureTraitCollection = [(MainWindowRootViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
 
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
-    [(RootNavigationController *)self->_rootNavigationController continueSearchWithTerm:v6 animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
+    [(RootNavigationController *)self->_rootNavigationController continueSearchWithTerm:termCopy animated:1 removeViewControllersIncapableOfSearchIfNeeded:1];
   }
 
   else
   {
-    [(MainWindowContentContainerViewController *)self->_secondaryContainerVC continueSearchWithTerm:v6];
+    [(MainWindowContentContainerViewController *)self->_secondaryContainerVC continueSearchWithTerm:termCopy];
   }
 }
 
 - (void)showAddEvent
 {
   rootNavigationController = self->_rootNavigationController;
-  v3 = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
-  [(RootNavigationController *)rootNavigationController showAddEventAnimated:0 fromBarButtonItem:v3];
+  newEventBarButtonItem = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
+  [(RootNavigationController *)rootNavigationController showAddEventAnimated:0 fromBarButtonItem:newEventBarButtonItem];
 }
 
-- (void)showAddEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 location:(id)a6 suggestionsKey:(id)a7 allDay:(BOOL)a8
+- (void)showAddEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location suggestionsKey:(id)key allDay:(BOOL)day
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(MainWindowRootViewController *)self traitCollection];
-  if ([v19 horizontalSizeClass] == 2)
+  keyCopy = key;
+  locationCopy = location;
+  endDateCopy = endDate;
+  dateCopy = date;
+  titleCopy = title;
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v21 = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
+    newEventBarButtonItem = [(MainWindowControlHeaderView *)self->_headerView newEventBarButtonItem];
   }
 
   else
   {
-    v21 = 0;
+    newEventBarButtonItem = 0;
   }
 
-  LOBYTE(v20) = a8;
-  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:v21 withTitle:v18 startDate:0 exactStartDate:v17 endDate:v16 location:v15 suggestionKey:v14 allDay:v20 completion:0];
+  LOBYTE(v20) = day;
+  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:newEventBarButtonItem withTitle:titleCopy startDate:0 exactStartDate:dateCopy endDate:endDateCopy location:locationCopy suggestionKey:keyCopy allDay:v20 completion:0];
 }
 
-+ (id)sanitizeCalSubCal:(id)a3
++ (id)sanitizeCalSubCal:(id)cal
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"calsubcal"];
+  calCopy = cal;
+  scheme = [calCopy scheme];
+  v5 = [scheme isEqualToString:@"calsubcal"];
 
   if (v5)
   {
-    v6 = [v3 resourceSpecifier];
-    v7 = [v6 stringByRemovingPercentEncoding];
+    resourceSpecifier = [calCopy resourceSpecifier];
+    stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-    if (v7)
+    if (stringByRemovingPercentEncoding)
     {
-      v8 = [NSURL URLWithString:v7];
+      v8 = [NSURL URLWithString:stringByRemovingPercentEncoding];
     }
 
     else
     {
-      v8 = v3;
+      v8 = calCopy;
     }
 
     v9 = v8;
@@ -927,28 +927,28 @@ LABEL_34:
 
   else
   {
-    v9 = v3;
+    v9 = calCopy;
   }
 
   return v9;
 }
 
-- (void)handleURL:(id)a3 context:(id)a4
+- (void)handleURL:(id)l context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [(MainWindowRootViewController *)self traitCollection];
-  v10 = [v9 horizontalSizeClass];
+  lCopy = l;
+  contextCopy = context;
+  scheme = [lCopy scheme];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v10 == 2)
+  if (horizontalSizeClass == 2)
   {
-    if ([v8 isEqualToString:@"calinvitelist"])
+    if ([scheme isEqualToString:@"calinvitelist"])
     {
-      v11 = [(RootNavigationController *)self->_rootNavigationController model];
-      v12 = [v11 allEventNotificationsCount];
+      model = [(RootNavigationController *)self->_rootNavigationController model];
+      allEventNotificationsCount = [model allEventNotificationsCount];
 
-      if (v12)
+      if (allEventNotificationsCount)
       {
         [(MainWindowRootViewController *)self setCurrentSidebarState:2];
         goto LABEL_23;
@@ -956,10 +956,10 @@ LABEL_34:
     }
   }
 
-  v13 = [(MainWindowRootViewController *)self traitCollection];
-  if ([v13 horizontalSizeClass] == 2)
+  traitCollection2 = [(MainWindowRootViewController *)self traitCollection];
+  if ([traitCollection2 horizontalSizeClass] == 2)
   {
-    if ([v8 isEqualToString:@"calsubcal"])
+    if ([scheme isEqualToString:@"calsubcal"])
     {
 
 LABEL_18:
@@ -968,18 +968,18 @@ LABEL_18:
         [(MainWindowRootViewController *)self setCurrentSidebarState:1];
       }
 
-      v17 = [(UINavigationController *)self->_primaryVC topViewController];
-      v18 = [MainWindowRootViewController sanitizeCalSubCal:v6];
+      topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+      v18 = [MainWindowRootViewController sanitizeCalSubCal:lCopy];
       if (v18)
       {
         [(MainWindowContentContainerViewController *)self->_secondaryContainerVC cancelSearch];
-        [v17 showAddSubscribedCalendarWithURL:v18];
+        [topViewController showAddSubscribedCalendarWithURL:v18];
       }
 
       goto LABEL_23;
     }
 
-    v16 = [v8 isEqualToString:@"webcal"];
+    v16 = [scheme isEqualToString:@"webcal"];
 
     if (v16)
     {
@@ -991,7 +991,7 @@ LABEL_18:
   {
   }
 
-  if (v10 == 2 && [v8 isEqualToString:@"calshow"] && (objc_msgSend(v6, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"familyCalendar"), v14, v15))
+  if (horizontalSizeClass == 2 && [scheme isEqualToString:@"calshow"] && (objc_msgSend(lCopy, "host"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"familyCalendar"), v14, v15))
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -1009,20 +1009,20 @@ LABEL_18:
     }
 
     [(MainWindowContentContainerViewController *)self->_secondaryContainerVC cancelSearch];
-    [(RootNavigationController *)self->_rootNavigationController handleURL:v6 context:v7];
+    [(RootNavigationController *)self->_rootNavigationController handleURL:lCopy context:contextCopy];
   }
 
 LABEL_23:
 }
 
-- (BOOL)showsSearchBarForTraitCollection:(id)a3
+- (BOOL)showsSearchBarForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(MainWindowRootViewController *)self view];
+  collectionCopy = collection;
+  view = [(MainWindowRootViewController *)self view];
   EKUICurrentWindowWidthWithViewHierarchy();
   v7 = v6;
 
-  v8 = v7 > 750.0 && (EKUIUsesLargeTextLayout() & 1) == 0 && [v4 userInterfaceIdiom] != 0;
+  v8 = v7 > 750.0 && (EKUIUsesLargeTextLayout() & 1) == 0 && [collectionCopy userInterfaceIdiom] != 0;
   return v8;
 }
 
@@ -1041,8 +1041,8 @@ LABEL_23:
     [(UISearchBar *)self->_searchBar setDrawsBackground:0];
     [(UISearchBar *)self->_searchBar setDelegate:self->_secondaryContainerVC];
     [(UISearchBar *)self->_searchBar _setAutoDisableCancelButton:0];
-    v7 = [(UISearchBar *)self->_searchBar searchField];
-    [v7 setAccessibilityIdentifier:@"searchbar-button"];
+    searchField = [(UISearchBar *)self->_searchBar searchField];
+    [searchField setAccessibilityIdentifier:@"searchbar-button"];
 
     v8 = self->_searchBar;
     secondaryContainerVC = self->_secondaryContainerVC;
@@ -1051,9 +1051,9 @@ LABEL_23:
   }
 }
 
-- (void)setupSearchControlForTraitCollection:(id)a3
+- (void)setupSearchControlForTraitCollection:(id)collection
 {
-  v16 = a3;
+  collectionCopy = collection;
   if ([(MainWindowRootViewController *)self showsSearchBarForTraitCollection:?]|| self->_isSearching)
   {
     [(MainWindowRootViewController *)self createSearchBarIfNeeded];
@@ -1088,15 +1088,15 @@ LABEL_23:
   }
 
   v13 = *(&self->super.super.super.isa + v5);
-  if ([v16 horizontalSizeClass] == 2)
+  if ([collectionCopy horizontalSizeClass] == 2)
   {
     [v13 removeFromSuperview];
-    v14 = [(UISearchBar *)v4 superview];
+    superview = [(UISearchBar *)v4 superview];
 
-    if (!v14)
+    if (!superview)
     {
-      v15 = [(MainWindowRootViewController *)self view];
-      [v15 addSubview:v4];
+      view = [(MainWindowRootViewController *)self view];
+      [view addSubview:v4];
     }
   }
 
@@ -1109,7 +1109,7 @@ LABEL_23:
 
 - (double)searchFieldWidth
 {
-  v2 = [(MainWindowRootViewController *)self view];
+  view = [(MainWindowRootViewController *)self view];
   EKUICurrentWindowWidthWithViewHierarchy();
   v4 = v3;
 
@@ -1135,32 +1135,32 @@ LABEL_23:
 - (void)layoutSearchControl
 {
   p_searchBar = &self->_searchBar;
-  v4 = [(UISearchBar *)self->_searchBar superview];
-  if (v4)
+  superview = [(UISearchBar *)self->_searchBar superview];
+  if (superview)
   {
   }
 
   else
   {
-    v5 = [(UIButton *)self->_searchButton superview];
+    superview2 = [(UIButton *)self->_searchButton superview];
 
-    if (!v5)
+    if (!superview2)
     {
       return;
     }
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
-  [v6 frame];
+  viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+  [viewSwitcher frame];
   MidY = CGRectGetMidY(v41);
 
-  LODWORD(v6) = CalInterfaceIsLeftToRight();
-  v8 = [(MainWindowRootViewController *)self view];
-  [v8 safeAreaInsets];
+  LODWORD(viewSwitcher) = CalInterfaceIsLeftToRight();
+  view = [(MainWindowRootViewController *)self view];
+  [view safeAreaInsets];
   v10 = v9;
   v12 = v11;
 
-  if (v6)
+  if (viewSwitcher)
   {
     v13 = v12;
   }
@@ -1181,8 +1181,8 @@ LABEL_23:
     v21 = v20;
     if (self->_isSearching)
     {
-      v22 = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
-      [MainWindowRootViewController sidebarWidthForViewHierarchy:v22];
+      eKUI_viewHierarchy = [(MainWindowRootViewController *)self EKUI_viewHierarchy];
+      [MainWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
       v17 = v23 - (v14 + 16.0);
     }
 
@@ -1191,8 +1191,8 @@ LABEL_23:
     v26 = v25;
     if (CalInterfaceIsLeftToRight())
     {
-      v27 = [(MainWindowRootViewController *)self view];
-      [v27 bounds];
+      view2 = [(MainWindowRootViewController *)self view];
+      [view2 bounds];
       v14 = v28 - v24 - (v14 - v21);
     }
 
@@ -1201,11 +1201,11 @@ LABEL_23:
       v14 = v14 - v19;
     }
 
-    v36 = [(MainWindowRootViewController *)self traitCollection];
+    traitCollection = [(MainWindowRootViewController *)self traitCollection];
     if (EKUIUsesLargeTextLayout())
     {
-      v37 = [(MainWindowRootViewController *)self view];
-      [v37 safeAreaInsets];
+      view3 = [(MainWindowRootViewController *)self view];
+      [view3 safeAreaInsets];
       v35 = v38;
     }
 
@@ -1224,9 +1224,9 @@ LABEL_23:
       return;
     }
 
-    v30 = [(UIButton *)searchButton superview];
+    superview3 = [(UIButton *)searchButton superview];
 
-    if (!v30)
+    if (!superview3)
     {
       return;
     }
@@ -1237,8 +1237,8 @@ LABEL_23:
     v26 = v32;
     if (CalInterfaceIsLeftToRight())
     {
-      v33 = [(MainWindowRootViewController *)self view];
-      [v33 bounds];
+      view4 = [(MainWindowRootViewController *)self view];
+      [view4 bounds];
       v14 = v34 - v24 - v14;
     }
 
@@ -1250,22 +1250,22 @@ LABEL_23:
   [v39 setFrame:{v14, v35, v24, v26}];
 }
 
-- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)a3
+- (void)searchButtonTappedCreateAndAddSearchBar:(BOOL)bar
 {
   if (!self->_isEndingSearch)
   {
-    v3 = a3;
+    barCopy = bar;
     [(UIButton *)self->_searchButton removeFromSuperview];
-    if (v3)
+    if (barCopy)
     {
       [(MainWindowRootViewController *)self createSearchBarIfNeeded];
-      v5 = [(MainWindowRootViewController *)self view];
-      [v5 addSubview:self->_searchBar];
+      view = [(MainWindowRootViewController *)self view];
+      [view addSubview:self->_searchBar];
     }
 
     self->_isSearching = 1;
     [(UISearchBar *)self->_searchBar setShowsCancelButton:1 animated:0];
-    if (v3)
+    if (barCopy)
     {
       [(MainWindowRootViewController *)self layoutSearchControl];
       [(UISearchBar *)self->_searchBar layoutIfNeeded];
@@ -1275,8 +1275,8 @@ LABEL_23:
       v11 = v10;
       if (CalInterfaceIsLeftToRight())
       {
-        v12 = [(MainWindowRootViewController *)self view];
-        [v12 bounds];
+        view2 = [(MainWindowRootViewController *)self view];
+        [view2 bounds];
         v14 = v13;
       }
 
@@ -1288,7 +1288,7 @@ LABEL_23:
       [(UISearchBar *)self->_searchBar setFrame:v14, v7, v9, v11];
     }
 
-    v15 = [(MainWindowContentContainerViewController *)self->_secondaryContainerVC startSearch];
+    startSearch = [(MainWindowContentContainerViewController *)self->_secondaryContainerVC startSearch];
     v16[4] = self;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -1299,17 +1299,17 @@ LABEL_23:
     v16[1] = 3221225472;
     v16[2] = sub_100108C88;
     v16[3] = &unk_10020F240;
-    [v15 animateAlongsideTransition:v17 completion:v16];
+    [startSearch animateAlongsideTransition:v17 completion:v16];
   }
 }
 
 - (void)updatePrimaryViewControllerNavBar
 {
-  v8 = [(UINavigationController *)self->_primaryVC topViewController];
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(MasterNavigationPaletteView *)self->_paletteView sizeToFit];
     [(MasterNavigationPaletteView *)self->_paletteView frame];
@@ -1322,34 +1322,34 @@ LABEL_23:
     palette = 0;
   }
 
-  v7 = [v8 navigationItem];
-  [v7 _setBottomPalette:palette];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem _setBottomPalette:palette];
 }
 
 - (void)updatePrimaryViewControllerToolbar
 {
-  v5 = [(UINavigationController *)self->_primaryVC topViewController];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___SideBarViewController] && (objc_opt_respondsToSelector() & 1) != 0)
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  if ([topViewController conformsToProtocol:&OBJC_PROTOCOL___SideBarViewController] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v5 toolbarVisibleInSplitBehavior:{-[UISplitViewController splitBehavior](self->_splitViewController, "splitBehavior")}];
+    v3 = [topViewController toolbarVisibleInSplitBehavior:{-[UISplitViewController splitBehavior](self->_splitViewController, "splitBehavior")}];
   }
 
   else
   {
-    v4 = [v5 toolbarItems];
-    v3 = v4 != 0;
+    toolbarItems = [topViewController toolbarItems];
+    v3 = toolbarItems != 0;
   }
 
   [(UINavigationController *)self->_primaryVC setToolbarHidden:v3 ^ 1];
 }
 
-- (BOOL)canShowAvatarViewWithTraitCollection:(id)a3
+- (BOOL)canShowAvatarViewWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  if ([v5 containsDelegateSources])
+  collectionCopy = collection;
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  if ([model containsDelegateSources])
   {
-    v6 = [v4 horizontalSizeClass] == 2;
+    v6 = [collectionCopy horizontalSizeClass] == 2;
   }
 
   else
@@ -1360,35 +1360,35 @@ LABEL_23:
   return v6;
 }
 
-- (id)viewControllerForSidebarState:(unint64_t)a3
+- (id)viewControllerForSidebarState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 3uLL:
       v12 = [CompactListViewController alloc];
-      v13 = [(RootNavigationController *)self->_rootNavigationController model];
-      v14 = [(MainWindowRootViewController *)self view];
-      v15 = [v14 window];
-      v6 = [(ListViewController *)v12 initWithModel:v13 window:v15];
+      model = [(RootNavigationController *)self->_rootNavigationController model];
+      view = [(MainWindowRootViewController *)self view];
+      window = [view window];
+      switcherViewController = [(ListViewController *)v12 initWithModel:model window:window];
 
-      [(ListViewController *)v6 setDelegate:self];
-      [(ListViewController *)v6 setOverrideExtendedEdges:0];
-      [(ListViewController *)v6 setDestination:2];
-      v7 = 0;
+      [(ListViewController *)switcherViewController setDelegate:self];
+      [(ListViewController *)switcherViewController setOverrideExtendedEdges:0];
+      [(ListViewController *)switcherViewController setDestination:2];
+      segmentedControl = 0;
       v8 = @"Today";
       goto LABEL_11;
     case 2uLL:
       presentedInboxVC = self->_presentedInboxVC;
       if (presentedInboxVC)
       {
-        v6 = [(InboxViewController *)presentedInboxVC switcherViewController];
-        [(CompactListViewController *)v6 willMoveToParentViewController:0];
-        v10 = [(CompactListViewController *)v6 view];
-        [v10 removeFromSuperview];
+        switcherViewController = [(InboxViewController *)presentedInboxVC switcherViewController];
+        [(CompactListViewController *)switcherViewController willMoveToParentViewController:0];
+        view2 = [(CompactListViewController *)switcherViewController view];
+        [view2 removeFromSuperview];
 
-        [(CompactListViewController *)v6 removeFromParentViewController];
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
-        [(ListViewController *)v6 setDestination:2];
+        [(CompactListViewController *)switcherViewController removeFromParentViewController];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
+        [(ListViewController *)switcherViewController setDestination:2];
         v11 = self->_presentedInboxVC;
         self->_presentedInboxVC = 0;
       }
@@ -1396,21 +1396,21 @@ LABEL_23:
       else
       {
         v17 = [InboxSwitcherViewController alloc];
-        v18 = [(RootNavigationController *)self->_rootNavigationController model];
-        v6 = [(InboxSwitcherViewController *)v17 initWithModel:v18 destination:2];
+        model2 = [(RootNavigationController *)self->_rootNavigationController model];
+        switcherViewController = [(InboxSwitcherViewController *)v17 initWithModel:model2 destination:2];
 
-        [(CompactListViewController *)v6 setSwitcherDelegate:self];
+        [(CompactListViewController *)switcherViewController setSwitcherDelegate:self];
       }
 
-      v7 = [(CompactListViewController *)v6 segmentedControl];
+      segmentedControl = [(CompactListViewController *)switcherViewController segmentedControl];
       v8 = @"Inbox";
       goto LABEL_11;
     case 1uLL:
       v4 = [CalendarsViewController alloc];
-      v5 = [(RootNavigationController *)self->_rootNavigationController model];
-      v6 = [(CalendarsViewController *)v4 initWithModel:v5 destination:2];
+      model3 = [(RootNavigationController *)self->_rootNavigationController model];
+      switcherViewController = [(CalendarsViewController *)v4 initWithModel:model3 destination:2];
 
-      v7 = 0;
+      segmentedControl = 0;
       v8 = @"Calendars";
 LABEL_11:
       v19 = +[NSBundle mainBundle];
@@ -1420,66 +1420,66 @@ LABEL_11:
   }
 
   v16 = 0;
-  v7 = 0;
-  v6 = 0;
+  segmentedControl = 0;
+  switcherViewController = 0;
 LABEL_12:
   [(MasterNavigationPaletteView *)self->_paletteView setTitle:v16];
-  [(MasterNavigationPaletteView *)self->_paletteView setSegmentedControl:v7];
+  [(MasterNavigationPaletteView *)self->_paletteView setSegmentedControl:segmentedControl];
   [(MasterNavigationPaletteView *)self->_paletteView setNeedsLayout];
   [(MasterNavigationPaletteView *)self->_paletteView layoutIfNeeded];
   paletteView = self->_paletteView;
-  v21 = [(UINavigationController *)self->_primaryVC view];
-  [v21 bounds];
+  view3 = [(UINavigationController *)self->_primaryVC view];
+  [view3 bounds];
   [(MasterNavigationPaletteView *)paletteView sizeThatFits:v22, v23];
 
   [(_UINavigationBarPalette *)self->_palette frame];
   [(_UINavigationBarPalette *)self->_palette setFrame:?];
-  v24 = [(CompactListViewController *)v6 navigationItem];
-  [v24 _setAutoScrollEdgeTransitionDistance:16.0];
+  navigationItem = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:16.0];
 
-  v25 = [(CompactListViewController *)v6 navigationItem];
-  [v25 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(CompactListViewController *)switcherViewController navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v26 = v6;
-  return v6;
+  v26 = switcherViewController;
+  return switcherViewController;
 }
 
-- (void)setCurrentSidebarState:(unint64_t)a3 completion:(id)a4
+- (void)setCurrentSidebarState:(unint64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (state)
   {
-    self->_lastOpenSidebarState = a3;
+    self->_lastOpenSidebarState = state;
   }
 
   if (!self->_didAppear || [(UISplitViewController *)self->_splitViewController isCollapsed])
   {
-    if (self->_currentSidebarState != a3)
+    if (self->_currentSidebarState != state)
     {
       self->_needsSidebarSetup = 1;
-      self->_pendingState = a3;
+      self->_pendingState = state;
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_42;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (!a3)
+    if (!state)
     {
       goto LABEL_19;
     }
 
     currentSidebarState = self->_currentSidebarState;
 LABEL_18:
-    if (currentSidebarState != a3)
+    if (currentSidebarState != state)
     {
-      v11 = [(MainWindowRootViewController *)self viewControllerForSidebarState:a3];
+      v11 = [(MainWindowRootViewController *)self viewControllerForSidebarState:state];
       if (v11)
       {
         if (self->_currentSidebarState == 2)
@@ -1494,16 +1494,16 @@ LABEL_18:
 
         if (self->_currentSidebarState)
         {
-          v14 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:a3];
-          v15 = [(RootNavigationController *)self->_rootNavigationController paletteView];
-          [v15 setShouldHideInlineFocusBanner:v14];
+          v14 = [objc_opt_class() shouldHideInlineFocusBannerForSidebarState:state];
+          paletteView = [(RootNavigationController *)self->_rootNavigationController paletteView];
+          [paletteView setShouldHideInlineFocusBanner:v14];
         }
 
         else
         {
-          v25 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+          transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
 
-          if (v25)
+          if (transitionCoordinator)
           {
 
             goto LABEL_41;
@@ -1511,23 +1511,23 @@ LABEL_18:
 
           self->_animatingSidebar = [(UISplitViewController *)self->_splitViewController splitBehavior]== 1;
           [(UISplitViewController *)self->_splitViewController showColumn:0];
-          v26 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+          transitionCoordinator2 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_100109900;
           v29[3] = &unk_10020F488;
           v29[4] = self;
-          v29[5] = a3;
+          v29[5] = state;
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
           v27[2] = sub_1001099B8;
           v27[3] = &unk_10020F1F0;
           v27[4] = self;
           v28 = v11;
-          [v26 animateAlongsideTransition:v29 completion:v27];
+          [transitionCoordinator2 animateAlongsideTransition:v29 completion:v27];
         }
 
-        if (a3 == 3)
+        if (state == 3)
         {
           v16 = [UIBarButtonItem alloc];
           v17 = +[NSBundle mainBundle];
@@ -1546,14 +1546,14 @@ LABEL_18:
         [(MainWindowRootViewController *)self updatePrimaryViewControllerToolbar];
       }
 
-      self->_currentSidebarState = a3;
+      self->_currentSidebarState = state;
 
 LABEL_31:
       self->_animatingSidebar = 0;
       [(MainWindowControlHeaderView *)self->_headerView updateButtonStateForSidebar:self->_currentSidebarState];
-      if (v6)
+      if (completionCopy)
       {
-        (v6)[2](v6, v11);
+        (completionCopy)[2](completionCopy, v11);
       }
 
       goto LABEL_41;
@@ -1571,9 +1571,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v22 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator3 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
 
-    if (!v22)
+    if (!transitionCoordinator3)
     {
       if (self->_currentSidebarState == 2)
       {
@@ -1582,10 +1582,10 @@ LABEL_19:
 
       self->_animatingSidebar = [(UISplitViewController *)self->_splitViewController splitBehavior]== 1;
       [(UISplitViewController *)self->_splitViewController hideColumn:0];
-      v23 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-      if (v23)
+      transitionCoordinator4 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      if (transitionCoordinator4)
       {
-        v24 = v23;
+        v24 = transitionCoordinator4;
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = sub_1001098F0;
@@ -1623,32 +1623,32 @@ LABEL_41:
     goto LABEL_18;
   }
 
-  v8 = [(UINavigationController *)self->_primaryVC topViewController];
-  [v8 restorePreservedState:self->_calendarsPreservedState];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  [topViewController restorePreservedState:self->_calendarsPreservedState];
   calendarsPreservedState = self->_calendarsPreservedState;
   self->_calendarsPreservedState = 0;
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_42:
 }
 
-- (void)showCalendarsSideBarWithCompletion:(id)a3
+- (void)showCalendarsSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MainWindowRootViewController *)self currentSidebarState]== 1)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1656,7 +1656,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1666,16 +1666,16 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_100109B58;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(MainWindowRootViewController *)self setCurrentSidebarState:1 completion:v8];
   }
 }
 
 - (void)calendarButtonTapped
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController currentViewType];
+  currentViewType = [(RootNavigationController *)self->_rootNavigationController currentViewType];
   v6 = @"currentView";
-  v4 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:v3]];
+  v4 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:currentViewType]];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
@@ -1683,19 +1683,19 @@ LABEL_42:
   [(MainWindowRootViewController *)self setCurrentSidebarState:1];
 }
 
-- (void)showInboxSideBarWithCompletion:(id)a3
+- (void)showInboxSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MainWindowRootViewController *)self currentSidebarState]== 2)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1703,7 +1703,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1713,16 +1713,16 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_100109DBC;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(MainWindowRootViewController *)self setCurrentSidebarState:2 completion:v8];
   }
 }
 
 - (void)inboxButtonTapped
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController currentViewType];
+  currentViewType = [(RootNavigationController *)self->_rootNavigationController currentViewType];
   v6 = @"currentView";
-  v4 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:v3]];
+  v4 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:currentViewType]];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
@@ -1730,19 +1730,19 @@ LABEL_42:
   [(MainWindowRootViewController *)self setCurrentSidebarState:2];
 }
 
-- (void)showListSideBarWithCompletion:(id)a3
+- (void)showListSideBarWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MainWindowRootViewController *)self currentSidebarState]== 3)
   {
-    v5 = [(UINavigationController *)self->_primaryVC topViewController];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (completionCopy)
     {
       if (isKindOfClass)
       {
-        v7 = v5;
+        v7 = topViewController;
       }
 
       else
@@ -1750,7 +1750,7 @@ LABEL_42:
         v7 = 0;
       }
 
-      (v4)[2](v4, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 
@@ -1760,27 +1760,27 @@ LABEL_42:
     v8[1] = 3221225472;
     v8[2] = sub_10010A020;
     v8[3] = &unk_10020F4B0;
-    v9 = v4;
+    v9 = completionCopy;
     [(MainWindowRootViewController *)self setCurrentSidebarState:3 completion:v8];
   }
 }
 
-- (void)newEventButtonTapped:(id)a3
+- (void)newEventButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_isSearching)
   {
     [(MainWindowContentContainerViewController *)self->_secondaryContainerVC cancelSearch];
   }
 
-  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:v4];
-  v5 = [(RootNavigationController *)self->_rootNavigationController currentViewType];
+  [(RootNavigationController *)self->_rootNavigationController showAddEventAnimated:1 fromBarButtonItem:tappedCopy];
+  currentViewType = [(RootNavigationController *)self->_rootNavigationController currentViewType];
   v8[0] = @"view";
   v8[1] = @"triggerLocation";
   v9[0] = @"navigationBar";
   v9[1] = @"Button";
   v8[2] = @"currentView";
-  v6 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:v5]];
+  v6 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:currentViewType]];
   v9[2] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:3];
 
@@ -1789,20 +1789,20 @@ LABEL_42:
 
 - (void)todayToolbarItemPressed
 {
-  v3 = [(UINavigationController *)self->_primaryVC topViewController];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
   v2 = CUIKTodayDate();
-  [v3 scrollToDate:v2 animated:1];
+  [topViewController scrollToDate:v2 animated:1];
 }
 
 - (void)searchTapped
 {
   [(MainWindowRootViewController *)self setCurrentSidebarState:0];
-  v3 = [(UISearchBar *)self->_searchBar superview];
-  [(MainWindowRootViewController *)self searchButtonTappedCreateAndAddSearchBar:v3 == 0];
+  superview = [(UISearchBar *)self->_searchBar superview];
+  [(MainWindowRootViewController *)self searchButtonTappedCreateAndAddSearchBar:superview == 0];
 
-  v4 = [(RootNavigationController *)self->_rootNavigationController currentViewType];
+  currentViewType = [(RootNavigationController *)self->_rootNavigationController currentViewType];
   v7 = @"currentView";
-  v5 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:v4]];
+  v5 = [NSNumber numberWithInt:[(RootNavigationController *)self->_rootNavigationController currentViewTypeInt:currentViewType]];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
@@ -1821,8 +1821,8 @@ LABEL_42:
 {
   self->_isSearching = 0;
   self->_isEndingSearch = 1;
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  v4 = [(MainWindowRootViewController *)self showsSearchBarForTraitCollection:v3];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  v4 = [(MainWindowRootViewController *)self showsSearchBarForTraitCollection:traitCollection];
 
   if (v4)
   {
@@ -1837,8 +1837,8 @@ LABEL_42:
     v10 = v9;
     if (CalInterfaceIsLeftToRight())
     {
-      v11 = [(MainWindowRootViewController *)self view];
-      [v11 bounds];
+      view = [(MainWindowRootViewController *)self view];
+      [view bounds];
       v13 = v12;
     }
 
@@ -1869,20 +1869,20 @@ LABEL_42:
 - (void)searchEnded
 {
   self->_isEndingSearch = 0;
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  v4 = [(MainWindowRootViewController *)self showsSearchBarForTraitCollection:v3];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  v4 = [(MainWindowRootViewController *)self showsSearchBarForTraitCollection:traitCollection];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(MainWindowRootViewController *)self traitCollection];
-    [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:v5];
+    traitCollection2 = [(MainWindowRootViewController *)self traitCollection];
+    [(MainWindowRootViewController *)self setupSearchControlForTraitCollection:traitCollection2];
   }
 }
 
-- (void)showEventAndCloseSidebarIfNeeded:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5
+- (void)showEventAndCloseSidebarIfNeeded:(id)needed animated:(BOOL)animated showMode:(unint64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  neededCopy = needed;
   if (self->_currentSidebarState && [(UISplitViewController *)self->_splitViewController splitBehavior]== 2 && ([(MainWindowRootViewController *)self setCurrentSidebarState:0], [(UISplitViewController *)self->_splitViewController transitionCoordinator], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
@@ -1891,46 +1891,46 @@ LABEL_42:
     v11[2] = sub_10010A82C;
     v11[3] = &unk_10020F4D8;
     v11[4] = self;
-    v14 = v6;
-    v12 = v8;
-    v13 = a5;
+    v14 = animatedCopy;
+    v12 = neededCopy;
+    modeCopy = mode;
     [v10 animateAlongsideTransition:v11 completion:0];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showEvent:v8 animated:v6 showMode:a5 context:0];
+    [(RootNavigationController *)self->_rootNavigationController showEvent:neededCopy animated:animatedCopy showMode:mode context:0];
   }
 }
 
 - (void)inboxWillDismiss
 {
-  v3 = [(UINavigationController *)self->_primaryVC topViewController];
-  v2 = [v3 view];
-  [v2 endEditing:1];
+  topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+  view = [topViewController view];
+  [view endEditing:1];
 
-  [v3 inboxWillDismiss];
+  [topViewController inboxWillDismiss];
 }
 
 - (void)attemptDisplayReviewPrompt
 {
-  v6 = [(MainWindowRootViewController *)self view];
-  v3 = [v6 window];
-  v4 = [v3 windowScene];
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:v4 calendarModel:v5];
+  view = [(MainWindowRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:windowScene calendarModel:model];
 }
 
-- (void)showIdentitySwitcherFromSourceView:(id)a3
+- (void)showIdentitySwitcherFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [IdentitySwitcherViewController alloc];
-  v6 = [(RootNavigationController *)self->_rootNavigationController model];
-  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:v6];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  v7 = [(IdentitySwitcherViewController *)v5 initWithModel:model];
 
   [(IdentitySwitcherViewController *)v7 setModalPresentationStyle:7];
-  v8 = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
-  [v8 setSourceView:v4];
+  popoverPresentationController = [(IdentitySwitcherViewController *)v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
   if (CalInterfaceIsLeftToRight())
   {
@@ -1942,7 +1942,7 @@ LABEL_42:
     v9 = 8;
   }
 
-  [v8 setPermittedArrowDirections:v9];
+  [popoverPresentationController setPermittedArrowDirections:v9];
   v10 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -1953,13 +1953,13 @@ LABEL_42:
   [(MainWindowRootViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)paletteTodayButtonTapped:(id)a3
+- (void)paletteTodayButtonTapped:(id)tapped
 {
   [(RootNavigationController *)self->_rootNavigationController todayPressed];
   if (self->_currentSidebarState == 3)
   {
-    v4 = [(UINavigationController *)self->_primaryVC topViewController];
-    [v4 scrollToTodayAnimated:1];
+    topViewController = [(UINavigationController *)self->_primaryVC topViewController];
+    [topViewController scrollToTodayAnimated:1];
   }
 
   secondaryContainerVC = self->_secondaryContainerVC;
@@ -1967,16 +1967,16 @@ LABEL_42:
   [(MainWindowContentContainerViewController *)secondaryContainerVC todayTapped];
 }
 
-- (void)paletteAvatarViewTapped:(id)a3
+- (void)paletteAvatarViewTapped:(id)tapped
 {
-  v4 = [a3 avatarView];
-  [(MainWindowRootViewController *)self showIdentitySwitcherFromSourceView:v4];
+  avatarView = [tapped avatarView];
+  [(MainWindowRootViewController *)self showIdentitySwitcherFromSourceView:avatarView];
 }
 
 - (BOOL)paletteShouldShowAvatarView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
-  if ([(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v3])
+  ekui_futureTraitCollection = [(RootNavigationController *)self->_rootNavigationController ekui_futureTraitCollection];
+  if ([(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:ekui_futureTraitCollection])
   {
     v4 = self->_currentSidebarState == 0;
   }
@@ -1991,16 +1991,16 @@ LABEL_42:
 
 - (unint64_t)focusFilterMode
 {
-  v2 = [(RootNavigationController *)self->_rootNavigationController model];
-  v3 = [v2 focusFilterMode];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  focusFilterMode = [model focusFilterMode];
 
-  return v3;
+  return focusFilterMode;
 }
 
-- (void)setFocusFilterMode:(unint64_t)a3
+- (void)setFocusFilterMode:(unint64_t)mode
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  [v4 setFocusFilterMode:a3];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  [model setFocusFilterMode:mode];
 }
 
 - (void)updateNewEventButtonEnabledness
@@ -2051,22 +2051,22 @@ LABEL_42:
 
 - (void)updateErrorState
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController model];
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  v5 = [v4 sourceForSelectedIdentity];
-  v6 = [v3 displayableAccountErrorsForSource:v5] > 0;
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  model2 = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+  v6 = [model displayableAccountErrorsForSource:sourceForSelectedIdentity] > 0;
 
   headerView = self->_headerView;
 
   [(MainWindowControlHeaderView *)headerView updateErrorState:v6];
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
   paletteView = self->_paletteView;
-  v5 = [(RootNavigationController *)self->_rootNavigationController model];
-  v6 = [v5 sourceForSelectedIdentity];
-  [(MasterNavigationPaletteView *)paletteView updateIdentity:v6];
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  sourceForSelectedIdentity = [model sourceForSelectedIdentity];
+  [(MasterNavigationPaletteView *)paletteView updateIdentity:sourceForSelectedIdentity];
 
   [(MainWindowRootViewController *)self updateNewEventButtonEnabledness];
   [(MainWindowRootViewController *)self updateErrorState];
@@ -2074,19 +2074,19 @@ LABEL_42:
   [(MainWindowRootViewController *)self updateInboxCount];
 }
 
-- (void)_delegatesChanged:(id)a3
+- (void)_delegatesChanged:(id)changed
 {
-  v4 = [(RootNavigationController *)self->_rootNavigationController model];
-  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [v4 containsDelegateSources]);
+  model = [(RootNavigationController *)self->_rootNavigationController model];
+  -[MasterNavigationPaletteView setShowIdentity:](self->_paletteView, "setShowIdentity:", [model containsDelegateSources]);
 
   rootNavigationController = self->_rootNavigationController;
-  v6 = [(MainWindowRootViewController *)self traitCollection];
-  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:v6]];
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  [(RootNavigationController *)rootNavigationController setAvatarViewVisible:[(MainWindowRootViewController *)self canShowAvatarViewWithTraitCollection:traitCollection]];
 
   [(MainWindowRootViewController *)self updateNewEventButtonEnabledness];
 }
 
-- (void)_updateAfterExtendedLaunch:(id)a3
+- (void)_updateAfterExtendedLaunch:(id)launch
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2096,20 +2096,20 @@ LABEL_42:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   rootNavigationController = self->_rootNavigationController;
-  v7 = a4;
-  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:a3])
+  senderCopy = sender;
+  if ([(RootNavigationController *)rootNavigationController shouldHandleCanPerformActionForSelector:action])
   {
-    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:a3 withSender:v7];
+    v8 = [(RootNavigationController *)self->_rootNavigationController canPerformAction:action withSender:senderCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MainWindowRootViewController;
-    v8 = [(MainWindowRootViewController *)&v11 canPerformAction:a3 withSender:v7];
+    v8 = [(MainWindowRootViewController *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
   v9 = v8;
@@ -2119,14 +2119,14 @@ LABEL_42:
 
 - (void)routeNewEventKeyCommand
 {
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(MainWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -2137,17 +2137,17 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
 
-  v7 = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
-  v8 = [v7 isEnabled];
+  addEventBarButtonItem = [(RootNavigationController *)self->_rootNavigationController addEventBarButtonItem];
+  isEnabled = [addEventBarButtonItem isEnabled];
 
-  if (v8)
+  if (isEnabled)
   {
 
     [(MainWindowRootViewController *)self showAddEvent];
@@ -2156,14 +2156,14 @@ LABEL_5:
 
 - (void)routeSearchKeyCommand
 {
-  v3 = [(MainWindowRootViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2)
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [(MainWindowRootViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
+  if (presentedViewController)
   {
 
 LABEL_4:
@@ -2174,9 +2174,9 @@ LABEL_5:
     return;
   }
 
-  v6 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
 
-  if (v6)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
@@ -2187,11 +2187,11 @@ LABEL_5:
   [(UISearchBar *)searchBar becomeFirstResponder];
 }
 
-- (void)toggleSidebar:(id)a3
+- (void)toggleSidebar:(id)sidebar
 {
   if ([(MainWindowRootViewController *)self currentSidebarState])
   {
-    v4 = self;
+    selfCopy2 = self;
     lastOpenSidebarState = 0;
   }
 
@@ -2204,31 +2204,31 @@ LABEL_5:
       self->_lastOpenSidebarState = 1;
     }
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  [(MainWindowRootViewController *)v4 setCurrentSidebarState:lastOpenSidebarState];
+  [(MainWindowRootViewController *)selfCopy2 setCurrentSidebarState:lastOpenSidebarState];
 }
 
 - (BOOL)_shouldUseSideBar
 {
-  v2 = [(MainWindowRootViewController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 2;
+  traitCollection = [(MainWindowRootViewController *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 2;
 
   return v3;
 }
 
-- (void)showCalendarsViewWithCompletion:(id)a3
+- (void)showCalendarsViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MainWindowRootViewController *)self _shouldUseSideBar])
   {
-    [(MainWindowRootViewController *)self showCalendarsSideBarWithCompletion:v4];
+    [(MainWindowRootViewController *)self showCalendarsSideBarWithCompletion:completionCopy];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:v4];
+    [(RootNavigationController *)self->_rootNavigationController showCalendarsAnimated:1 completion:completionCopy];
   }
 }
 
@@ -2256,9 +2256,9 @@ LABEL_5:
 
   else
   {
-    v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+    resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-    if (v3)
+    if (resetToDayView)
     {
       rootNavigationController = self->_rootNavigationController;
 
@@ -2283,9 +2283,9 @@ LABEL_5:
 
 - (void)showSplitMonthView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
+  resetToMonthView = [(RootNavigationController *)self->_rootNavigationController resetToMonthView];
 
-  if (v3)
+  if (resetToMonthView)
   {
     if ([(MainWindowRootViewController *)self _shouldUseSideBar])
     {
@@ -2302,9 +2302,9 @@ LABEL_5:
 
 - (void)showDayView
 {
-  v3 = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
+  resetToDayView = [(RootNavigationController *)self->_rootNavigationController resetToDayView];
 
-  if (v3)
+  if (resetToDayView)
   {
     rootNavigationController = self->_rootNavigationController;
 
@@ -2312,39 +2312,39 @@ LABEL_5:
   }
 }
 
-- (void)showInspectorForCalendar:(id)a3 enableDoneInitially:(BOOL)a4
+- (void)showInspectorForCalendar:(id)calendar enableDoneInitially:(BOOL)initially
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010BC44;
   v7[3] = &unk_10020F528;
-  v8 = a3;
-  v9 = a4;
-  v6 = v8;
+  calendarCopy = calendar;
+  initiallyCopy = initially;
+  v6 = calendarCopy;
   [(MainWindowRootViewController *)self showCalendarsViewWithCompletion:v7];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MainWindowRootViewController *)self isFirstResponder];
-  v48 = self;
-  v10 = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
-  v11 = [v10 wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
+  beganCopy = began;
+  eventCopy = event;
+  isFirstResponder = [(MainWindowRootViewController *)self isFirstResponder];
+  selfCopy = self;
+  topMainViewControllerContainer = [(RootNavigationController *)self->_rootNavigationController topMainViewControllerContainer];
+  wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder = [topMainViewControllerContainer wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = v7;
+  v12 = beganCopy;
   v13 = [v12 countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v13)
   {
     v14 = v13;
-    v44 = v8;
+    v44 = eventCopy;
     v49 = *v52;
-    v15 = v9 | v11;
+    v15 = isFirstResponder | wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
     v45 = 1;
     v47 = v12;
     while (1)
@@ -2362,12 +2362,12 @@ LABEL_5:
         {
           [v17 key];
           v20 = v19 = v4;
-          v21 = [v20 modifierFlags];
+          modifierFlags = [v20 modifierFlags];
 
           v4 = v19;
-          if (!v21)
+          if (!modifierFlags)
           {
-            [(RootNavigationController *)v48->_rootNavigationController handleSpaceBarKeyCommand];
+            [(RootNavigationController *)selfCopy->_rootNavigationController handleSpaceBarKeyCommand];
           }
         }
 
@@ -2377,21 +2377,21 @@ LABEL_5:
 
         if (v15)
         {
-          v22 = [(MainWindowRootViewController *)v48 presentedViewController];
+          presentedViewController = [(MainWindowRootViewController *)selfCopy presentedViewController];
 
-          if (!v22)
+          if (!presentedViewController)
           {
             v23 = [v17 key];
             if ([v23 keyCode] == 43)
             {
               [v17 key];
               v25 = v24 = v4;
-              v26 = [v25 modifierFlags];
+              modifierFlags2 = [v25 modifierFlags];
 
               v4 = v24;
-              if (v26 == 0x20000)
+              if (modifierFlags2 == 0x20000)
               {
-                v27 = [(MainWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v27 = [(MainWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v27;
                 if (v27)
                 {
@@ -2412,12 +2412,12 @@ LABEL_5:
             {
               [v17 key];
               v31 = v30 = v4;
-              v32 = [v31 modifierFlags];
+              modifierFlags3 = [v31 modifierFlags];
 
               v4 = v30;
-              if (!v32)
+              if (!modifierFlags3)
               {
-                v33 = [(MainWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+                v33 = [(MainWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
                 v28 = v33;
                 if (v33)
                 {
@@ -2437,21 +2437,21 @@ LABEL_43:
             }
 
             v34 = [v17 key];
-            v35 = [v34 keyCode];
-            if (v35 == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
+            keyCode = [v34 keyCode];
+            if (keyCode == 82 || ([v17 key], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "keyCode") == 80))
             {
               v36 = v4;
               v37 = [v17 key];
-              v38 = [v37 modifierFlags];
+              modifierFlags4 = [v37 modifierFlags];
 
-              if (v35 != 82)
+              if (keyCode != 82)
               {
               }
 
               v12 = v47;
-              if (!v38)
+              if (!modifierFlags4)
               {
-                v39 = [(MainWindowRootViewController *)v48 targetForAction:"handleSelectPreviousEventCommand" withSender:0];
+                v39 = [(MainWindowRootViewController *)selfCopy targetForAction:"handleSelectPreviousEventCommand" withSender:0];
                 v28 = v39;
                 if (v39)
                 {
@@ -2471,25 +2471,25 @@ LABEL_43:
             }
 
             v28 = [v17 key];
-            v40 = [v28 keyCode];
-            if (v40 == 81 || ([v17 key], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "keyCode") == 79))
+            keyCode2 = [v28 keyCode];
+            if (keyCode2 == 81 || ([v17 key], eventCopy = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "keyCode") == 79))
             {
               v46 = v4;
               v41 = [v17 key];
-              v42 = [v41 modifierFlags];
+              modifierFlags5 = [v41 modifierFlags];
 
-              if (v40 != 81)
+              if (keyCode2 != 81)
               {
               }
 
               v12 = v47;
-              if (v42)
+              if (modifierFlags5)
               {
                 v4 = v46;
                 continue;
               }
 
-              v43 = [(MainWindowRootViewController *)v48 targetForAction:"handleSelectNextEventCommand" withSender:0];
+              v43 = [(MainWindowRootViewController *)selfCopy targetForAction:"handleSelectNextEventCommand" withSender:0];
               v28 = v43;
               if (v43)
               {
@@ -2513,7 +2513,7 @@ LABEL_43:
       if (!v14)
       {
 
-        v8 = v44;
+        eventCopy = v44;
         if ((v45 & 1) == 0)
         {
           goto LABEL_50;
@@ -2525,33 +2525,33 @@ LABEL_43:
   }
 
 LABEL_49:
-  v50.receiver = v48;
+  v50.receiver = selfCopy;
   v50.super_class = MainWindowRootViewController;
-  [(MainWindowRootViewController *)&v50 pressesBegan:v12 withEvent:v8];
+  [(MainWindowRootViewController *)&v50 pressesBegan:v12 withEvent:eventCopy];
 LABEL_50:
 }
 
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MainWindowRootViewController *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(MainWindowRootViewController *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10010C1BC;
     v8[3] = &unk_10020F550;
     v8[4] = self;
-    v10 = v4;
-    v9 = v6;
-    [(MainWindowRootViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+    v10 = animatedCopy;
+    v9 = completionCopy;
+    [(MainWindowRootViewController *)self dismissViewControllerAnimated:animatedCopy completion:v8];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:v4 completion:v6];
+    [(RootNavigationController *)self->_rootNavigationController dismissPresentedViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 

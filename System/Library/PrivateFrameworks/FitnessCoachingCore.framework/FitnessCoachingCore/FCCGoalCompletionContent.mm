@@ -1,27 +1,27 @@
 @interface FCCGoalCompletionContent
-- (FCCGoalCompletionContent)initWithActivitySummaryIndex:(int64_t)a3 identifier:(id)a4 completedGoalTypes:(id)a5;
-- (FCCGoalCompletionContent)initWithTransportData:(id)a3;
+- (FCCGoalCompletionContent)initWithActivitySummaryIndex:(int64_t)index identifier:(id)identifier completedGoalTypes:(id)types;
+- (FCCGoalCompletionContent)initWithTransportData:(id)data;
 - (id)transportData;
 @end
 
 @implementation FCCGoalCompletionContent
 
-- (FCCGoalCompletionContent)initWithActivitySummaryIndex:(int64_t)a3 identifier:(id)a4 completedGoalTypes:(id)a5
+- (FCCGoalCompletionContent)initWithActivitySummaryIndex:(int64_t)index identifier:(id)identifier completedGoalTypes:(id)types
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  typesCopy = types;
   v17.receiver = self;
   v17.super_class = FCCGoalCompletionContent;
   v10 = [(FCCGoalCompletionContent *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_activitySummaryIndex = a3;
-    v12 = [v8 copy];
+    v10->_activitySummaryIndex = index;
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [typesCopy copy];
     completedGoalTypes = v11->_completedGoalTypes;
     v11->_completedGoalTypes = v14;
   }
@@ -29,12 +29,12 @@
   return v11;
 }
 
-- (FCCGoalCompletionContent)initWithTransportData:(id)a3
+- (FCCGoalCompletionContent)initWithTransportData:(id)data
 {
-  v4 = a3;
-  v5 = [[FCCGoalCompletionProtobuf alloc] initWithData:v4];
-  v6 = [(FCCGoalCompletionProtobuf *)v5 activitySummaryIndex];
-  v7 = [(FCCGoalCompletionProtobuf *)v5 identifier];
+  dataCopy = data;
+  v5 = [[FCCGoalCompletionProtobuf alloc] initWithData:dataCopy];
+  activitySummaryIndex = [(FCCGoalCompletionProtobuf *)v5 activitySummaryIndex];
+  identifier = [(FCCGoalCompletionProtobuf *)v5 identifier];
   if ([(FCCGoalCompletionProtobuf *)v5 completedGoalTypesCount])
   {
     v8 = 0;
@@ -56,7 +56,7 @@
     v11 = MEMORY[0x277CBEBF8];
   }
 
-  v12 = [(FCCGoalCompletionContent *)self initWithActivitySummaryIndex:v6 identifier:v7 completedGoalTypes:v11];
+  v12 = [(FCCGoalCompletionContent *)self initWithActivitySummaryIndex:activitySummaryIndex identifier:identifier completedGoalTypes:v11];
 
   return v12;
 }
@@ -95,11 +95,11 @@
     while (v6);
   }
 
-  v9 = [(FCCGoalCompletionProtobuf *)v3 data];
+  data = [(FCCGoalCompletionProtobuf *)v3 data];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return data;
 }
 
 @end

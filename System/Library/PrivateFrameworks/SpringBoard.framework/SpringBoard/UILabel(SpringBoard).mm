@@ -9,7 +9,7 @@
 - (uint64_t)sb_yPositionForLabelWithContainerBounds:()SpringBoard lineHeight:baselineOffset:font:
 {
   v11 = a7;
-  v14.origin.x = a1;
+  v14.origin.x = self;
   v14.origin.y = a2;
   v14.size.width = a3;
   v14.size.height = a4;
@@ -22,7 +22,7 @@
 - (uint64_t)sb_yPositionForLabelWithContainerBounds:()SpringBoard baselineOffset:font:
 {
   v11 = a7;
-  v14.origin.x = a1;
+  v14.origin.x = self;
   v14.origin.y = a2;
   v14.size.width = a3;
   v14.size.height = a4;
@@ -39,8 +39,8 @@
   CGRectGetMaxY(v9);
   [v4 _baselineOffsetFromBottom];
 
-  v5 = [a1 font];
-  [v5 ascender];
+  font = [self font];
+  [font ascender];
   SBFloatRoundForScale();
   v7 = v6;
 

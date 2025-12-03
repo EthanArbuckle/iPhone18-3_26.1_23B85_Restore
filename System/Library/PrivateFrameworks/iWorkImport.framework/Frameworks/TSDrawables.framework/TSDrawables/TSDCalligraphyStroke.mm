@@ -1,26 +1,26 @@
 @interface TSDCalligraphyStroke
-- (CGAffineTransform)transformInContext:(SEL)a3;
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7;
-- (CGRect)boundsForPath:(id)a3;
-- (CGRect)p_superBoundsForPath:(id)a3;
-- (TSDCalligraphyStroke)initWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7 miterLimit:(double)a8;
+- (CGAffineTransform)transformInContext:(SEL)context;
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform;
+- (CGRect)boundsForPath:(id)path;
+- (CGRect)p_superBoundsForPath:(id)path;
+- (TSDCalligraphyStroke)initWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
 - (double)horizontalMarginForSwatch;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
 @end
 
 @implementation TSDCalligraphyStroke
 
-- (TSDCalligraphyStroke)initWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7 miterLimit:(double)a8
+- (TSDCalligraphyStroke)initWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
   v9.receiver = self;
   v9.super_class = TSDCalligraphyStroke;
-  return [(TSDSmartStroke *)&v9 initWithName:@"Calligraphy" color:a3 width:*&a5 cap:*&a6 join:a7 pattern:a4 miterLimit:a8];
+  return [(TSDSmartStroke *)&v9 initWithName:@"Calligraphy" color:color width:*&cap cap:*&join join:pattern pattern:width miterLimit:limit];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableCalligraphyStroke alloc];
   v7 = objc_msgSend_color(self, v5, v6);
@@ -35,11 +35,11 @@
   return v25;
 }
 
-- (CGRect)p_superBoundsForPath:(id)a3
+- (CGRect)p_superBoundsForPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TSDCalligraphyStroke;
-  [(TSDStroke *)&v7 boundsForPath:a3];
+  [(TSDStroke *)&v7 boundsForPath:path];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -47,13 +47,13 @@
   return result;
 }
 
-- (CGRect)boundsForPath:(id)a3
+- (CGRect)boundsForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_mutableCopy(self, v5, v6);
   objc_msgSend_setCap_(v7, v8, 2);
   objc_msgSend_setJoin_(v7, v9, 1);
-  objc_msgSend_p_superBoundsForPath_(v7, v10, v4);
+  objc_msgSend_p_superBoundsForPath_(v7, v10, pathCopy);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (CGAffineTransform)transformInContext:(SEL)a3
+- (CGAffineTransform)transformInContext:(SEL)context
 {
   v7 = MEMORY[0x277CBF2C0];
   v27 = *(MEMORY[0x277CBF2C0] + 16);
@@ -126,29 +126,29 @@
   return result;
 }
 
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke
 {
   v5.receiver = self;
   v5.super_class = TSDCalligraphyStroke;
-  [(TSDStroke *)&v5 applyToContext:a3 insideStroke:a4];
-  CGContextSetLineCap(a3, kCGLineCapRound);
-  CGContextSetLineJoin(a3, kCGLineJoinRound);
+  [(TSDStroke *)&v5 applyToContext:context insideStroke:stroke];
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v9 = a4;
-  if (objc_msgSend_shouldRender(self, a2, a3, a4, a5, a6, a7, a8))
+  strokeCopy = stroke;
+  if (objc_msgSend_shouldRender(self, a2, path, stroke, context, drawing, parameterized, order))
   {
     memset(&v36, 0, sizeof(v36));
-    objc_msgSend_transformInContext_(self, v11, a5);
+    objc_msgSend_transformInContext_(self, v11, context);
     transform = v36;
     v12 = sub_2767B2030();
-    CGContextSaveGState(a5);
-    objc_msgSend_applyToContext_insideStroke_(self, v13, a5, v9);
+    CGContextSaveGState(context);
+    objc_msgSend_applyToContext_insideStroke_(self, v13, context, strokeCopy);
     v34 = v36;
     CGAffineTransformInvert(&transform, &v34);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     if (objc_msgSend_chisel(self, v14, v15))
     {
       v17 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v16, v12);
@@ -161,49 +161,49 @@
       CGContextAddPathSafe();
       v30 = objc_msgSend_color(self, v28, v29);
       v33 = objc_msgSend_CGColor(v30, v31, v32);
-      CGContextSetFillColorWithColor(a5, v33);
+      CGContextSetFillColorWithColor(context, v33);
 
-      CGContextFillPath(a5);
+      CGContextFillPath(context);
     }
 
     else
     {
       CGContextAddPathSafe();
-      CGContextStrokePath(a5);
+      CGContextStrokePath(context);
     }
 
     CGPathRelease(v12);
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  CGContextSaveGState(a7);
-  objc_msgSend_applyToContext_insideStroke_(self, v15, a7, 0);
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  CGContextSaveGState(context);
+  objc_msgSend_applyToContext_insideStroke_(self, v15, context, 0);
   memset(&v43, 0, sizeof(v43));
-  objc_msgSend_transformInContext_(self, v16, a7);
+  objc_msgSend_transformInContext_(self, v16, context);
   v41 = v43;
   CGAffineTransformInvert(&transform, &v41);
-  CGContextConcatCTM(a7, &transform);
+  CGContextConcatCTM(context, &transform);
   memset(&transform, 0, sizeof(transform));
   CGAffineTransformMakeTranslation(&transform, x, y);
   t1 = transform;
-  CGAffineTransformScale(&v41, &t1, a6, a6);
+  CGAffineTransformScale(&v41, &t1, scale, scale);
   transform = v41;
   t1 = v41;
-  CGAffineTransformRotate(&v41, &t1, a5);
+  CGAffineTransformRotate(&v41, &t1, angle);
   transform = v41;
-  objc_msgSend_endPoint(v14, v17, v18);
+  objc_msgSend_endPoint(endCopy, v17, v18);
   v20 = -v19;
-  objc_msgSend_endPoint(v14, v21, v22);
+  objc_msgSend_endPoint(endCopy, v21, v22);
   t1 = transform;
   CGAffineTransformTranslate(&v41, &t1, v20, -v23);
   transform = v41;
-  v26 = objc_msgSend_path(v14, v24, v25);
+  v26 = objc_msgSend_path(endCopy, v24, v25);
   v27 = v26;
   objc_msgSend_CGPath(v27, v28, v29);
   t1 = transform;
@@ -213,40 +213,40 @@
 
   CGContextAddPathSafe();
   CGPathRelease(v30);
-  if (objc_msgSend_isFilled(v14, v31, v32))
+  if (objc_msgSend_isFilled(endCopy, v31, v32))
   {
-    CGContextFillPath(a7);
+    CGContextFillPath(context);
   }
 
   else
   {
     objc_msgSend_width(self, v33, v34);
-    CGContextSetLineWidth(a7, v35);
-    v38 = objc_msgSend_lineJoin(v14, v36, v37);
-    CGContextSetLineJoin(a7, v38);
-    CGContextStrokePath(a7);
+    CGContextSetLineWidth(context, v35);
+    v38 = objc_msgSend_lineJoin(endCopy, v36, v37);
+    CGContextSetLineJoin(context, v38);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v40.receiver = self;
   v40.super_class = TSDCalligraphyStroke;
-  v12 = *&a7->c;
-  v37 = *&a7->a;
+  v12 = *&transform->c;
+  v37 = *&transform->a;
   v38 = v12;
-  v39 = *&a7->tx;
-  v13 = a3;
-  [(TSDStroke *)&v40 boundsForLineEnd:v13 atPoint:&v37 atAngle:x withScale:y transform:a5, a6];
+  v39 = *&transform->tx;
+  endCopy = end;
+  [(TSDStroke *)&v40 boundsForLineEnd:endCopy atPoint:&v37 atAngle:x withScale:y transform:angle, scale];
   v15 = v14;
   v17 = v16;
   width = v18;
   height = v20;
-  isFilled = objc_msgSend_isFilled(v13, v22, v23, v37, v38, v39, v40.receiver, v40.super_class);
+  isFilled = objc_msgSend_isFilled(endCopy, v22, v23, v37, v38, v39, v40.receiver, v40.super_class);
 
   if ((isFilled & 1) == 0)
   {

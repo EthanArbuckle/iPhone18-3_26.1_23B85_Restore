@@ -1,10 +1,10 @@
 @interface DeviceMonitor
 - (_TtC11photosfacedP33_8C086EDF4440DE29CC98029F05504C4213DeviceMonitor)init;
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4;
-- (void)deviceIsClassCConnectedDidChange:(id)a3 isClassCConnected:(BOOL)a4;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4;
-- (void)devicePluggedInStateDidChange:(id)a3 pluggedIn:(BOOL)a4;
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep;
+- (void)deviceIsClassCConnectedDidChange:(id)change isClassCConnected:(BOOL)connected;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby;
+- (void)devicePluggedInStateDidChange:(id)change pluggedIn:(BOOL)in;
 @end
 
 @implementation DeviceMonitor
@@ -31,39 +31,39 @@
   return [(DeviceMonitor *)&v8 init];
 }
 
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby
 {
-  v6 = a3;
-  v7 = self;
-  sub_100087348(a4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100087348(nearby);
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v6 = a3;
-  v7 = self;
-  sub_100087568(a4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100087568(connected);
 }
 
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep
 {
-  v6 = a3;
-  v7 = self;
-  sub_100087788(a4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100087788(asleep);
 }
 
-- (void)deviceIsClassCConnectedDidChange:(id)a3 isClassCConnected:(BOOL)a4
+- (void)deviceIsClassCConnectedDidChange:(id)change isClassCConnected:(BOOL)connected
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000879A8(a4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1000879A8(connected);
 }
 
-- (void)devicePluggedInStateDidChange:(id)a3 pluggedIn:(BOOL)a4
+- (void)devicePluggedInStateDidChange:(id)change pluggedIn:(BOOL)in
 {
-  v6 = a3;
-  v7 = self;
-  sub_100087BC8(a4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100087BC8(in);
 }
 
 @end

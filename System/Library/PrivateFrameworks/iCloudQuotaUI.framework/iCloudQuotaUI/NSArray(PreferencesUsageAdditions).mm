@@ -10,7 +10,7 @@
   if (a4)
   {
     v9 = a3 + (a4 >> 1);
-    v10 = [a1 objectAtIndex:v9];
+    v10 = [self objectAtIndex:v9];
     v11 = v8[2](v8, v10, v9);
     if (v11)
     {
@@ -30,7 +30,7 @@ LABEL_8:
       v12 = a4 >> 1;
     }
 
-    v9 = [a1 sortedInsertionIndexWithRange:a3 block:{v12, v8}];
+    v9 = [self sortedInsertionIndexWithRange:a3 block:{v12, v8}];
     goto LABEL_8;
   }
 

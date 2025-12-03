@@ -1,11 +1,11 @@
 @interface AEPluginRegistry
 + (id)sharedInstance;
 - (AEPluginRegistry)init;
-- (id)pluginForExtension:(id)a3;
-- (id)pluginForURL:(id)a3;
-- (void)prewarmSharedResourcesWithCompletion:(id)a3;
-- (void)registerAssetEnginePlugin:(id)a3;
-- (void)registerAssetEnginePlugin:(id)a3 forExtension:(id)a4;
+- (id)pluginForExtension:(id)extension;
+- (id)pluginForURL:(id)l;
+- (void)prewarmSharedResourcesWithCompletion:(id)completion;
+- (void)registerAssetEnginePlugin:(id)plugin;
+- (void)registerAssetEnginePlugin:(id)plugin forExtension:(id)extension;
 @end
 
 @implementation AEPluginRegistry
@@ -45,46 +45,46 @@
   return v2;
 }
 
-- (void)registerAssetEnginePlugin:(id)a3 forExtension:(id)a4
+- (void)registerAssetEnginePlugin:(id)plugin forExtension:(id)extension
 {
-  v12 = a3;
+  pluginCopy = plugin;
   assetTypePlugins = self->_assetTypePlugins;
-  v7 = a4;
-  v8 = [v12 associatedAssetType];
-  [(NSMutableDictionary *)assetTypePlugins setObject:v12 forKey:v8];
+  extensionCopy = extension;
+  associatedAssetType = [pluginCopy associatedAssetType];
+  [(NSMutableDictionary *)assetTypePlugins setObject:pluginCopy forKey:associatedAssetType];
 
-  v9 = [v7 lowercaseString];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  v10 = [(NSMutableDictionary *)self->_extensionPlugins objectForKey:v9];
+  v10 = [(NSMutableDictionary *)self->_extensionPlugins objectForKey:lowercaseString];
   if (v10)
   {
     objc_opt_class();
     v11 = BUDynamicCast();
     if (!v11)
     {
-      v11 = [[AEAggregationPlugin alloc] initWithFileExtension:v9];
+      v11 = [[AEAggregationPlugin alloc] initWithFileExtension:lowercaseString];
       [(AEAggregationPlugin *)v11 addPlugin:v10];
-      [(NSMutableDictionary *)self->_extensionPlugins setValue:v11 forKey:v9];
+      [(NSMutableDictionary *)self->_extensionPlugins setValue:v11 forKey:lowercaseString];
     }
 
-    [(AEAggregationPlugin *)v11 addPlugin:v12];
+    [(AEAggregationPlugin *)v11 addPlugin:pluginCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_extensionPlugins setValue:v12 forKey:v9];
+    [(NSMutableDictionary *)self->_extensionPlugins setValue:pluginCopy forKey:lowercaseString];
   }
 }
 
-- (void)registerAssetEnginePlugin:(id)a3
+- (void)registerAssetEnginePlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [v4 supportedFileExtensions];
+  pluginCopy = plugin;
+  supportedFileExtensions = [pluginCopy supportedFileExtensions];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v6 = [supportedFileExtensions countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -95,25 +95,25 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedFileExtensions);
         }
 
-        [(AEPluginRegistry *)self registerAssetEnginePlugin:v4 forExtension:*(*(&v23 + 1) + 8 * i)];
+        [(AEPluginRegistry *)self registerAssetEnginePlugin:pluginCopy forExtension:*(*(&v23 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [supportedFileExtensions countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  v18 = v5;
-  v10 = [v4 supportedUrlSchemes];
+  v18 = supportedFileExtensions;
+  supportedUrlSchemes = [pluginCopy supportedUrlSchemes];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v11 = [supportedUrlSchemes countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -124,7 +124,7 @@
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(supportedUrlSchemes);
         }
 
         v15 = *(*(&v19 + 1) + 8 * j);
@@ -144,32 +144,32 @@
             [(NSMutableDictionary *)self->_schemePlugins setValue:v17 forKey:v15];
           }
 
-          [(AEAggregationPlugin *)v17 addPlugin:v4];
+          [(AEAggregationPlugin *)v17 addPlugin:pluginCopy];
         }
 
         else
         {
-          [(NSMutableDictionary *)self->_schemePlugins setValue:v4 forKey:v15];
+          [(NSMutableDictionary *)self->_schemePlugins setValue:pluginCopy forKey:v15];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v12 = [supportedUrlSchemes countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)prewarmSharedResourcesWithCompletion:(id)a3
+- (void)prewarmSharedResourcesWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   v4 = dispatch_group_create();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(NSMutableDictionary *)self->_assetTypePlugins allValues];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_assetTypePlugins allValues];
+  v6 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -180,7 +180,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -213,7 +213,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v7);
@@ -223,18 +223,18 @@
   block[1] = 3221225472;
   block[2] = sub_154B20;
   block[3] = &unk_2C8398;
-  v16 = v14;
-  v13 = v14;
+  v16 = completionCopy;
+  v13 = completionCopy;
   dispatch_group_notify(v4, &_dispatch_main_q, block);
 }
 
-- (id)pluginForExtension:(id)a3
+- (id)pluginForExtension:(id)extension
 {
-  v4 = a3;
-  if (-[NSMutableDictionary count](self->_extensionPlugins, "count") && [v4 length])
+  extensionCopy = extension;
+  if (-[NSMutableDictionary count](self->_extensionPlugins, "count") && [extensionCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [(NSMutableDictionary *)self->_extensionPlugins objectForKey:v5];
+    lowercaseString = [extensionCopy lowercaseString];
+    v6 = [(NSMutableDictionary *)self->_extensionPlugins objectForKey:lowercaseString];
   }
 
   else
@@ -245,20 +245,20 @@
   return v6;
 }
 
-- (id)pluginForURL:(id)a3
+- (id)pluginForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [(AEPluginRegistry *)self pluginForExtension:v5];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v6 = [(AEPluginRegistry *)self pluginForExtension:pathExtension];
 
   if (!v6)
   {
     if ([(NSMutableDictionary *)self->_schemePlugins count])
     {
-      v7 = [v4 scheme];
-      if ([v7 length])
+      scheme = [lCopy scheme];
+      if ([scheme length])
       {
-        v6 = [(NSMutableDictionary *)self->_schemePlugins objectForKey:v7];
+        v6 = [(NSMutableDictionary *)self->_schemePlugins objectForKey:scheme];
       }
 
       else

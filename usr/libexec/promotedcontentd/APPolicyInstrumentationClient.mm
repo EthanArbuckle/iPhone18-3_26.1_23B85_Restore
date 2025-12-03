@@ -1,18 +1,18 @@
 @interface APPolicyInstrumentationClient
-- (BOOL)adFiltered:(id)a3 policyIdentifier:(int64_t)a4 policyReason:(int64_t)a5 secondaryReason:(id)a6;
-- (BOOL)adImpressed:(id)a3 impressionType:(int64_t)a4;
-- (BOOL)adPlaced:(id)a3;
-- (BOOL)adReceived:(id)a3 contextId:(id)a4 adUnitId:(id)a5 rank:(int64_t)a6 placement:(int64_t)a7;
-- (void)_recordMetric:(int64_t)a3 adIdentifier:(id)a4 contextIdentifier:(id)a5 withProperties:(id)a6;
+- (BOOL)adFiltered:(id)filtered policyIdentifier:(int64_t)identifier policyReason:(int64_t)reason secondaryReason:(id)secondaryReason;
+- (BOOL)adImpressed:(id)impressed impressionType:(int64_t)type;
+- (BOOL)adPlaced:(id)placed;
+- (BOOL)adReceived:(id)received contextId:(id)id adUnitId:(id)unitId rank:(int64_t)rank placement:(int64_t)placement;
+- (void)_recordMetric:(int64_t)metric adIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier withProperties:(id)properties;
 @end
 
 @implementation APPolicyInstrumentationClient
 
-- (BOOL)adReceived:(id)a3 contextId:(id)a4 adUnitId:(id)a5 rank:(int64_t)a6 placement:(int64_t)a7
+- (BOOL)adReceived:(id)received contextId:(id)id adUnitId:(id)unitId rank:(int64_t)rank placement:(int64_t)placement
 {
-  if (a3)
+  if (received)
   {
-    v7 = a4 == 0;
+    v7 = id == 0;
   }
 
   else
@@ -23,30 +23,30 @@
   v8 = !v7;
   if (!v7)
   {
-    v22[0] = a5;
+    v22[0] = unitId;
     v21[0] = @"unit_id";
     v21[1] = @"rank";
-    v14 = a5;
-    v15 = a4;
-    v16 = a3;
-    v17 = [NSNumber numberWithInteger:a6];
+    unitIdCopy = unitId;
+    idCopy = id;
+    receivedCopy = received;
+    v17 = [NSNumber numberWithInteger:rank];
     v22[1] = v17;
     v21[2] = @"placement";
-    v18 = [NSNumber numberWithInteger:a7];
+    v18 = [NSNumber numberWithInteger:placement];
     v22[2] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-    [(APPolicyInstrumentationClient *)self _recordMetric:15101 adIdentifier:v16 contextIdentifier:v15 withProperties:v19];
+    [(APPolicyInstrumentationClient *)self _recordMetric:15101 adIdentifier:receivedCopy contextIdentifier:idCopy withProperties:v19];
   }
 
   return v8;
 }
 
-- (BOOL)adFiltered:(id)a3 policyIdentifier:(int64_t)a4 policyReason:(int64_t)a5 secondaryReason:(id)a6
+- (BOOL)adFiltered:(id)filtered policyIdentifier:(int64_t)identifier policyReason:(int64_t)reason secondaryReason:(id)secondaryReason
 {
-  if (a3)
+  if (filtered)
   {
-    v6 = a4 == -1;
+    v6 = identifier == -1;
   }
 
   else
@@ -58,64 +58,64 @@
   if (!v6)
   {
     v18[0] = @"policy_id";
-    v12 = a6;
-    v13 = a3;
-    v14 = [NSNumber numberWithInteger:a4];
+    secondaryReasonCopy = secondaryReason;
+    filteredCopy = filtered;
+    v14 = [NSNumber numberWithInteger:identifier];
     v19[0] = v14;
     v18[1] = @"policy_reason";
-    v15 = [NSNumber numberWithInteger:a5];
+    v15 = [NSNumber numberWithInteger:reason];
     v18[2] = @"policy_detail";
     v19[1] = v15;
-    v19[2] = v12;
+    v19[2] = secondaryReasonCopy;
     v16 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
 
-    [(APPolicyInstrumentationClient *)self _recordMetric:15102 adIdentifier:v13 contextIdentifier:0 withProperties:v16];
+    [(APPolicyInstrumentationClient *)self _recordMetric:15102 adIdentifier:filteredCopy contextIdentifier:0 withProperties:v16];
   }
 
   return v7;
 }
 
-- (BOOL)adPlaced:(id)a3
+- (BOOL)adPlaced:(id)placed
 {
-  if (a3)
+  if (placed)
   {
-    [(APPolicyInstrumentationClient *)self _recordMetric:15103 adIdentifier:a3 contextIdentifier:0 withProperties:0];
+    [(APPolicyInstrumentationClient *)self _recordMetric:15103 adIdentifier:placed contextIdentifier:0 withProperties:0];
   }
 
-  return a3 != 0;
+  return placed != 0;
 }
 
-- (BOOL)adImpressed:(id)a3 impressionType:(int64_t)a4
+- (BOOL)adImpressed:(id)impressed impressionType:(int64_t)type
 {
-  if (a3)
+  if (impressed)
   {
     v11 = @"impression_type";
-    v7 = a3;
-    v8 = [NSNumber numberWithInteger:a4];
+    impressedCopy = impressed;
+    v8 = [NSNumber numberWithInteger:type];
     v12 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-    [(APPolicyInstrumentationClient *)self _recordMetric:15104 adIdentifier:v7 contextIdentifier:0 withProperties:v9];
+    [(APPolicyInstrumentationClient *)self _recordMetric:15104 adIdentifier:impressedCopy contextIdentifier:0 withProperties:v9];
   }
 
-  return a3 != 0;
+  return impressed != 0;
 }
 
-- (void)_recordMetric:(int64_t)a3 adIdentifier:(id)a4 contextIdentifier:(id)a5 withProperties:(id)a6
+- (void)_recordMetric:(int64_t)metric adIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier withProperties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
+  propertiesCopy = properties;
   v12 = +[MetricsModule storage];
   v13 = +[MetricsModuleClasses metricClass];
-  v14 = v10;
-  v20 = v9;
+  v14 = contextIdentifierCopy;
+  v20 = identifierCopy;
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v16 substringFromIndex:12];
+  uUIDString = [v15 UUIDString];
+  v17 = [uUIDString substringFromIndex:12];
   v18 = [NSString stringWithFormat:@"%@_%@", v20, v17];
 
-  v19 = [[v13 alloc] initWithPurpose:-1 metric:a3 contentIdentifier:v20 contextIdentifier:v14 handle:v18 secondaryHandle:0 branch:0 properties:0 internalProperties:v11 relayData:0 environment:0 order:0 options:0];
+  v19 = [[v13 alloc] initWithPurpose:-1 metric:metric contentIdentifier:v20 contextIdentifier:v14 handle:v18 secondaryHandle:0 branch:0 properties:0 internalProperties:propertiesCopy relayData:0 environment:0 order:0 options:0];
   [v12 receivedMetric:v19];
 }
 

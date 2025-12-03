@@ -1,68 +1,68 @@
 @interface SHMediaItemPropertyUtilities
-+ (BOOL)isShazamKitDefinedMediaItemProperty:(id)a3;
-+ (Class)jsonRepresentationTypeForProperty:(id)a3;
-+ (Class)typeForShazamKitProperty:(id)a3;
-+ (int64_t)categoryForShazamKitProperty:(id)a3;
++ (BOOL)isShazamKitDefinedMediaItemProperty:(id)property;
++ (Class)jsonRepresentationTypeForProperty:(id)property;
++ (Class)typeForShazamKitProperty:(id)property;
++ (int64_t)categoryForShazamKitProperty:(id)property;
 + (void)buildPropertySets;
 @end
 
 @implementation SHMediaItemPropertyUtilities
 
-+ (int64_t)categoryForShazamKitProperty:(id)a3
++ (int64_t)categoryForShazamKitProperty:(id)property
 {
-  v4 = a3;
-  [a1 buildPropertySets];
-  if ([stringProperties containsObject:v4])
+  propertyCopy = property;
+  [self buildPropertySets];
+  if ([stringProperties containsObject:propertyCopy])
   {
     v5 = 0;
   }
 
-  else if ([URLProperties containsObject:v4])
+  else if ([URLProperties containsObject:propertyCopy])
   {
     v5 = 4;
   }
 
-  else if ([dateProperties containsObject:v4])
+  else if ([dateProperties containsObject:propertyCopy])
   {
     v5 = 3;
   }
 
-  else if ([numberProperties containsObject:v4])
+  else if ([numberProperties containsObject:propertyCopy])
   {
     v5 = 1;
   }
 
-  else if ([stringArrayProperties containsObject:v4])
+  else if ([stringArrayProperties containsObject:propertyCopy])
   {
     v5 = 5;
   }
 
-  else if ([rangeArrayProperties containsObject:v4])
+  else if ([rangeArrayProperties containsObject:propertyCopy])
   {
     v5 = 6;
   }
 
-  else if ([BOOLeanProperties containsObject:v4])
+  else if ([BOOLeanProperties containsObject:propertyCopy])
   {
     v5 = 2;
   }
 
-  else if ([uuidProperties containsObject:v4])
+  else if ([uuidProperties containsObject:propertyCopy])
   {
     v5 = 7;
   }
 
-  else if ([signatureAlignmentArrayProperties containsObject:v4])
+  else if ([signatureAlignmentArrayProperties containsObject:propertyCopy])
   {
     v5 = 8;
   }
 
-  else if ([locationCoordinateValueProperties containsObject:v4])
+  else if ([locationCoordinateValueProperties containsObject:propertyCopy])
   {
     v5 = 9;
   }
 
-  else if ([codableDictionaryProperties containsObject:v4])
+  else if ([codableDictionaryProperties containsObject:propertyCopy])
   {
     v5 = 10;
   }
@@ -75,18 +75,18 @@
   return v5;
 }
 
-+ (BOOL)isShazamKitDefinedMediaItemProperty:(id)a3
++ (BOOL)isShazamKitDefinedMediaItemProperty:(id)property
 {
-  v4 = a3;
-  [a1 buildPropertySets];
-  LOBYTE(a1) = [allProperties containsObject:v4];
+  propertyCopy = property;
+  [self buildPropertySets];
+  LOBYTE(self) = [allProperties containsObject:propertyCopy];
 
-  return a1;
+  return self;
 }
 
-+ (Class)jsonRepresentationTypeForProperty:(id)a3
++ (Class)jsonRepresentationTypeForProperty:(id)property
 {
-  v3 = [a1 typeForShazamKitProperty:a3];
+  v3 = [self typeForShazamKitProperty:property];
   if (v3 == objc_opt_class() || v3 == objc_opt_class() || v3 == objc_opt_class())
   {
     v4 = objc_opt_class();
@@ -100,10 +100,10 @@
   return v4;
 }
 
-+ (Class)typeForShazamKitProperty:(id)a3
++ (Class)typeForShazamKitProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 categoryForShazamKitProperty:v4];
+  propertyCopy = property;
+  v5 = [self categoryForShazamKitProperty:propertyCopy];
   if (v5 <= 4)
   {
     if (v5 > 2)
@@ -160,7 +160,7 @@
       v6 = 0x277CCAE60;
 LABEL_20:
       v7 = *v6;
-      a1 = objc_opt_class();
+      self = objc_opt_class();
       goto LABEL_21;
     }
 
@@ -179,8 +179,8 @@ LABEL_10:
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE660];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Encountered ShazamKit property that we did know the type of: %@", v4];
-    v12 = [v9 exceptionWithName:v10 reason:v11 userInfo:0];
+    propertyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Encountered ShazamKit property that we did know the type of: %@", propertyCopy];
+    v12 = [v9 exceptionWithName:v10 reason:propertyCopy userInfo:0];
     v13 = v12;
 
     objc_exception_throw(v12);
@@ -188,7 +188,7 @@ LABEL_10:
 
 LABEL_21:
 
-  return a1;
+  return self;
 }
 
 + (void)buildPropertySets

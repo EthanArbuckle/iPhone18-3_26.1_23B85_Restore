@@ -1,7 +1,7 @@
 @interface FCBalancedCounter
 - (FCBalancedCounter)init;
-- (void)_bumpCounterPositively:(BOOL)a3;
-- (void)notifyWhenCountReachesZeroOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)_bumpCounterPositively:(BOOL)positively;
+- (void)notifyWhenCountReachesZeroOnQueue:(id)queue usingBlock:(id)block;
 @end
 
 @implementation FCBalancedCounter
@@ -23,12 +23,12 @@
   return v3;
 }
 
-- (void)notifyWhenCountReachesZeroOnQueue:(id)a3 usingBlock:(id)a4
+- (void)notifyWhenCountReachesZeroOnQueue:(id)queue usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "queue"];
     *buf = 136315906;
@@ -41,13 +41,13 @@
     v18 = v9;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -67,18 +67,18 @@
   }
 
 LABEL_6:
-  dispatch_group_notify(self->_dispatchGroup, v6, v7);
+  dispatch_group_notify(self->_dispatchGroup, queueCopy, blockCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_bumpCounterPositively:(BOOL)a3
+- (void)_bumpCounterPositively:(BOOL)positively
 {
-  v3 = a3;
+  positivelyCopy = positively;
   os_unfair_lock_lock_with_options();
   count = self->_count;
   v6 = count - 1;
-  if (v3)
+  if (positivelyCopy)
   {
     v6 = count + 1;
   }

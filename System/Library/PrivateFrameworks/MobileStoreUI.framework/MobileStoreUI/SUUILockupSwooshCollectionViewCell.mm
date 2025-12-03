@@ -1,15 +1,15 @@
 @interface SUUILockupSwooshCollectionViewCell
-- (SUUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForItem:(id)a3 clientContext:(id)a4;
+- (SUUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForItem:(id)item clientContext:(id)context;
 @end
 
 @implementation SUUILockupSwooshCollectionViewCell
 
-- (SUUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUILockupSwooshCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUILockupSwooshCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SUUILockupSwooshCellLayout alloc] initWithCollectionViewCell:v3];
@@ -22,36 +22,36 @@
   return v3;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4
+- (void)configureForItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   layout = self->_layout;
-  v9 = [v6 artistName];
-  [(SUUILockupSwooshCellLayout *)layout setArtistName:v9];
+  artistName = [itemCopy artistName];
+  [(SUUILockupSwooshCellLayout *)layout setArtistName:artistName];
 
   v10 = self->_layout;
-  v11 = [v6 categoryName];
-  [(SUUILockupSwooshCellLayout *)v10 setCategory:v11];
+  categoryName = [itemCopy categoryName];
+  [(SUUILockupSwooshCellLayout *)v10 setCategory:categoryName];
 
   v12 = self->_layout;
-  v13 = SUUILockupItemCountString(v6, v7);
+  v13 = SUUILockupItemCountString(itemCopy, contextCopy);
   [(SUUILockupSwooshCellLayout *)v12 setItemCountString:v13];
 
   v14 = self->_layout;
-  v15 = [v6 title];
-  [(SUUILockupSwooshCellLayout *)v14 setTitle:v15];
+  title = [itemCopy title];
+  [(SUUILockupSwooshCellLayout *)v14 setTitle:title];
 
-  v16 = [v6 primaryItemOffer];
-  if (!SUUIItemKindIsSoftwareKind([v6 itemKind]))
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  if (!SUUIItemKindIsSoftwareKind([itemCopy itemKind]))
   {
     v17 = configureForItem_clientContext__sViewOffer_0;
     if (!configureForItem_clientContext__sViewOffer_0)
     {
       v18 = [SUUIItemOffer alloc];
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"VIEW_BUTTON"];
+        [contextCopy localizedStringForKey:@"VIEW_BUTTON"];
       }
 
       else
@@ -68,13 +68,13 @@
 
     v22 = v17;
 
-    v16 = v22;
+    primaryItemOffer = v22;
   }
 
-  [(SUUILockupSwooshCellLayout *)self->_layout setItemOffer:v16];
+  [(SUUILockupSwooshCellLayout *)self->_layout setItemOffer:primaryItemOffer];
   v23.receiver = self;
   v23.super_class = SUUILockupSwooshCollectionViewCell;
-  [(SUUIItemCollectionViewCell *)&v23 configureForItem:v6 clientContext:v7];
+  [(SUUIItemCollectionViewCell *)&v23 configureForItem:itemCopy clientContext:contextCopy];
 }
 
 @end

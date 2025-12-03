@@ -1,24 +1,24 @@
 @interface FCObservable
-- (FCObservable)initWithValue:(id)a3;
-- (id)observe:(id)a3;
+- (FCObservable)initWithValue:(id)value;
+- (id)observe:(id)observe;
 - (void)dealloc;
-- (void)next:(id)a3;
-- (void)quietNext:(id)a3;
-- (void)setValue:(id)a3;
+- (void)next:(id)next;
+- (void)quietNext:(id)next;
+- (void)setValue:(id)value;
 @end
 
 @implementation FCObservable
 
-- (FCObservable)initWithValue:(id)a3
+- (FCObservable)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = FCObservable;
   v6 = [(FCObservable *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
     v7->_token = 0;
     v8 = objc_opt_new();
     observers = v7->_observers;
@@ -41,53 +41,53 @@
   [(FCObservable *)&v5 dealloc];
 }
 
-- (id)observe:(id)a3
+- (id)observe:(id)observe
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  observeCopy = observe;
   [v4 isMainThread];
   v6 = [FCObserver alloc];
-  v7 = [(FCObservable *)self token];
-  [(FCObservable *)self setToken:v7 + 1];
-  v8 = [(FCObserver *)v6 initWithToken:v7];
-  [(FCObserver *)v8 setObserverBlock:v5];
+  token = [(FCObservable *)self token];
+  [(FCObservable *)self setToken:token + 1];
+  v8 = [(FCObserver *)v6 initWithToken:token];
+  [(FCObserver *)v8 setObserverBlock:observeCopy];
 
   [(FCObserver *)v8 setKeepAliveObject:self];
-  v9 = [(FCObservable *)self observers];
-  [v9 addObject:v8];
+  observers = [(FCObservable *)self observers];
+  [observers addObject:v8];
 
   return v8;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  valueCopy = value;
   [v4 isMainThread];
-  [(FCObservable *)self next:v5];
+  [(FCObservable *)self next:valueCopy];
 }
 
-- (void)quietNext:(id)a3
+- (void)quietNext:(id)next
 {
-  v4 = a3;
+  nextCopy = next;
   [MEMORY[0x1E696AF00] isMainThread];
   value = self->_value;
-  self->_value = v4;
+  self->_value = nextCopy;
 }
 
-- (void)next:(id)a3
+- (void)next:(id)next
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nextCopy = next;
   [MEMORY[0x1E696AF00] isMainThread];
-  objc_storeStrong(&self->_value, a3);
+  objc_storeStrong(&self->_value, next);
   v6 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [(FCObservable *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  observers = [(FCObservable *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -98,16 +98,16 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 keepAliveObject];
+        keepAliveObject = [v12 keepAliveObject];
 
-        if (v13)
+        if (keepAliveObject)
         {
-          v14 = [v12 observerBlock];
-          (v14)[2](v14, self->_value);
+          observerBlock = [v12 observerBlock];
+          (observerBlock)[2](observerBlock, self->_value);
         }
 
         else
@@ -116,7 +116,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v9 = [observers countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v9);
@@ -142,8 +142,8 @@
         }
 
         v20 = *(*(&v23 + 1) + 8 * j);
-        v21 = [(FCObservable *)self observers];
-        [v21 removeObject:v20];
+        observers2 = [(FCObservable *)self observers];
+        [observers2 removeObject:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];

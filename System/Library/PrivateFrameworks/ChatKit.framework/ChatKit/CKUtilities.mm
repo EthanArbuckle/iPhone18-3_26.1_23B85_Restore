@@ -1,27 +1,27 @@
 @interface CKUtilities
-+ (BOOL)isIMStickerSaveable:(id)a3;
++ (BOOL)isIMStickerSaveable:(id)saveable;
 + (BOOL)isIpad;
 + (BOOL)isIphone;
 + (BOOL)isMessagePromotionsNotificationDisabled;
 + (BOOL)isMessageTransactionsNotificationDisabled;
 + (BOOL)isMessageUnknownSenderNotificationDisabled;
-+ (BOOL)userDefaultBoolForKey:(id)a3;
-+ (double)_intervalSinceDate:(id)a3;
-+ (id)deviceSpecificNameForKey:(id)a3;
-+ (id)imMessageForIMMessageItem:(id)a3;
-+ (id)quickSaveConfirmationAlertForMediaObjects:(id)a3 momentShareURL:(id)a4 popoverSource:(id)a5 metricsSource:(id)a6 cancelHandler:(id)a7 preSaveHandler:(id)a8 postSaveHandler:(id)a9 postAnyActionHandler:(id)a10;
-+ (id)quickSaveConfirmationAlertWithPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 otherCount:(unint64_t)a5 alreadySavedCount:(unint64_t)a6 popoverSource:(id)a7 cancelHandler:(id)a8 saveHandler:(id)a9 navigationHandler:(id)a10;
-+ (id)saveableStickerForMediaObject:(id)a3;
-+ (id)saveableStickerFromChatItem:(id)a3;
-+ (id)threadIdentifierForMessagePart:(id)a3;
-+ (id)threadOriginatorForMessagePart:(id)a3;
++ (BOOL)userDefaultBoolForKey:(id)key;
++ (double)_intervalSinceDate:(id)date;
++ (id)deviceSpecificNameForKey:(id)key;
++ (id)imMessageForIMMessageItem:(id)item;
++ (id)quickSaveConfirmationAlertForMediaObjects:(id)objects momentShareURL:(id)l popoverSource:(id)source metricsSource:(id)metricsSource cancelHandler:(id)handler preSaveHandler:(id)saveHandler postSaveHandler:(id)postSaveHandler postAnyActionHandler:(id)self0;
++ (id)quickSaveConfirmationAlertWithPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount otherCount:(unint64_t)otherCount alreadySavedCount:(unint64_t)savedCount popoverSource:(id)source cancelHandler:(id)handler saveHandler:(id)saveHandler navigationHandler:(id)self0;
++ (id)saveableStickerForMediaObject:(id)object;
++ (id)saveableStickerFromChatItem:(id)item;
++ (id)threadIdentifierForMessagePart:(id)part;
++ (id)threadOriginatorForMessagePart:(id)part;
 + (int64_t)systemGlassLegibilitySetting;
-+ (unint64_t)daysUntilJunkFilterDeletionForDate:(id)a3;
-+ (unint64_t)indexOfChatItem:(id)a3 inChatItemsArray:(id)a4;
++ (unint64_t)daysUntilJunkFilterDeletionForDate:(id)date;
++ (unint64_t)indexOfChatItem:(id)item inChatItemsArray:(id)array;
 + (unint64_t)messageJunkStatus;
-+ (unint64_t)orientationMaskFromInterfaceOrientation:(int64_t)a3;
++ (unint64_t)orientationMaskFromInterfaceOrientation:(int64_t)orientation;
 + (void)_loadUIKitGlassLegibilityFunctions;
-+ (void)onboardRecentlyDeletedIfNeeded:(id)a3 deviceType:(int64_t)a4 actionHandler:(id)a5;
++ (void)onboardRecentlyDeletedIfNeeded:(id)needed deviceType:(int64_t)type actionHandler:(id)handler;
 + (void)openCKVSettings;
 @end
 
@@ -45,11 +45,11 @@ void __21__CKUtilities_isIpad__block_invoke()
   isIpad_isIpad = (v1 & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-+ (BOOL)userDefaultBoolForKey:(id)a3
++ (BOOL)userDefaultBoolForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 nsUserDefaultsStandardUserDefaults];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  nsUserDefaultsStandardUserDefaults = [self nsUserDefaultsStandardUserDefaults];
+  v6 = [nsUserDefaultsStandardUserDefaults BOOLForKey:keyCopy];
 
   return v6;
 }
@@ -70,49 +70,49 @@ void __23__CKUtilities_isIphone__block_invoke()
   isIphone_isIphone = [v0 userInterfaceIdiom] == 0;
 }
 
-+ (id)threadIdentifierForMessagePart:(id)a3
++ (id)threadIdentifierForMessagePart:(id)part
 {
-  v3 = a3;
-  v4 = [v3 threadIdentifier];
-  if (![v4 length])
+  partCopy = part;
+  threadIdentifier = [partCopy threadIdentifier];
+  if (![threadIdentifier length])
   {
-    v5 = [v3 message];
-    v6 = [v5 guid];
+    message = [partCopy message];
+    guid = [message guid];
 
-    [v3 originalMessagePartRange];
-    [v3 index];
+    [partCopy originalMessagePartRange];
+    [partCopy index];
     ThreadIdentifierWithOriginatorGUID = IMMessageCreateThreadIdentifierWithOriginatorGUID();
 
-    v4 = ThreadIdentifierWithOriginatorGUID;
+    threadIdentifier = ThreadIdentifierWithOriginatorGUID;
   }
 
-  return v4;
+  return threadIdentifier;
 }
 
-+ (id)threadOriginatorForMessagePart:(id)a3
++ (id)threadOriginatorForMessagePart:(id)part
 {
-  v3 = a3;
-  v4 = [v3 threadIdentifier];
-  if ([v4 length])
+  partCopy = part;
+  threadIdentifier = [partCopy threadIdentifier];
+  if ([threadIdentifier length])
   {
-    v5 = [v3 threadOriginator];
+    threadOriginator = [partCopy threadOriginator];
   }
 
   else
   {
-    v6 = [v3 message];
+    message = [partCopy message];
 
-    v5 = [v6 _imMessageItem];
-    v3 = v6;
+    threadOriginator = [message _imMessageItem];
+    partCopy = message;
   }
 
-  return v5;
+  return threadOriginator;
 }
 
-+ (id)imMessageForIMMessageItem:(id)a3
++ (id)imMessageForIMMessageItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 account];
+  itemCopy = item;
+  account = [itemCopy account];
   v5 = _IMBestAccountForIMItem();
 
   IMMessageFromIMItem = _CreateIMMessageFromIMItem();
@@ -120,20 +120,20 @@ void __23__CKUtilities_isIphone__block_invoke()
   return IMMessageFromIMItem;
 }
 
-+ (id)deviceSpecificNameForKey:(id)a3
++ (id)deviceSpecificNameForKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E699BE70] sharedInstance];
-  v5 = [v4 deviceType];
+  keyCopy = key;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if ((v5 - 1) > 6)
+  if ((deviceType - 1) > 6)
   {
-    v6 = v3;
+    v6 = keyCopy;
   }
 
   else
   {
-    v6 = [v3 stringByAppendingString:off_1E72EF690[v5 - 1]];
+    v6 = [keyCopy stringByAppendingString:off_1E72EF690[deviceType - 1]];
   }
 
   v7 = v6;
@@ -189,21 +189,21 @@ void __23__CKUtilities_isIphone__block_invoke()
 + (void)openCKVSettings
 {
   v3 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=APPLE_ACCOUNT&path=TRANSPARENCY"];
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v2 openSensitiveURL:v3 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-+ (id)quickSaveConfirmationAlertWithPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 otherCount:(unint64_t)a5 alreadySavedCount:(unint64_t)a6 popoverSource:(id)a7 cancelHandler:(id)a8 saveHandler:(id)a9 navigationHandler:(id)a10
++ (id)quickSaveConfirmationAlertWithPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount otherCount:(unint64_t)otherCount alreadySavedCount:(unint64_t)savedCount popoverSource:(id)source cancelHandler:(id)handler saveHandler:(id)saveHandler navigationHandler:(id)self0
 {
-  v76 = a7;
-  v75 = a8;
-  v15 = a9;
-  v16 = a10;
-  v17 = a4 + a3 + a5;
-  if (!a3 || a5 | a4)
+  sourceCopy = source;
+  handlerCopy = handler;
+  saveHandlerCopy = saveHandler;
+  navigationHandlerCopy = navigationHandler;
+  v17 = videoCount + count + otherCount;
+  if (!count || otherCount | videoCount)
   {
-    v19 = a4 != 0;
-    v20 = (a5 | a3) == 0;
+    v19 = videoCount != 0;
+    v20 = (otherCount | count) == 0;
     if (v19 && v20)
     {
       v18 = @"_VIDEO";
@@ -216,12 +216,12 @@ void __23__CKUtilities_isIphone__block_invoke()
 
     if (v19 && v20)
     {
-      a3 = a4;
+      count = videoCount;
     }
 
     else
     {
-      a3 += a4 + a5;
+      count += videoCount + otherCount;
     }
   }
 
@@ -230,14 +230,14 @@ void __23__CKUtilities_isIphone__block_invoke()
     v18 = @"_PHOTO";
   }
 
-  v21 = v76;
-  v74 = v15;
-  if (a6)
+  v21 = sourceCopy;
+  v74 = saveHandlerCopy;
+  if (savedCount)
   {
-    if (v17 <= a6)
+    if (v17 <= savedCount)
     {
       v27 = @"ALREADY_SAVED_CONFIRMATION_SINGLE";
-      if (a3 > 1)
+      if (count > 1)
       {
         v27 = @"ALREADY_SAVED_CONFIRMATION_MULTIPLE";
       }
@@ -248,8 +248,8 @@ void __23__CKUtilities_isIphone__block_invoke()
 
     else
     {
-      v22 = a6 != 1;
-      if (a6 == 1)
+      v22 = savedCount != 1;
+      if (savedCount == 1)
       {
         v23 = @"ALREADY_SAVED_CONFIRMATION_PARTIAL_SINGLE";
       }
@@ -262,10 +262,10 @@ void __23__CKUtilities_isIphone__block_invoke()
 
     v72 = IMGetCachedDomainBoolForKeyWithDefaultValue();
 LABEL_30:
-    v28 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v29 = [v28 isRedesignedDetailsViewEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-    if (v29)
+    if (isRedesignedDetailsViewEnabled)
     {
       [MEMORY[0x1E69789A8] openPhotoLibraryWithWellKnownIdentifier:1 error:0];
     }
@@ -292,12 +292,12 @@ LABEL_30:
       v34 = CKFrameworkBundle();
       v35 = [v34 localizedStringForKey:v33 value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v36 = [v32 localizedStringWithFormat:v35, a6];
+      savedCount = [v32 localizedStringWithFormat:v35, savedCount];
 
-      v37 = [MEMORY[0x1E69DC668] sharedApplication];
-      v38 = [v37 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v38 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v39 = @"\u200F";
       }
@@ -307,23 +307,23 @@ LABEL_30:
         v39 = @"\u200E";
       }
 
-      v40 = [(__CFString *)v39 stringByAppendingString:v36];
+      v40 = [(__CFString *)v39 stringByAppendingString:savedCount];
     }
 
     else
     {
-      v36 = CKFrameworkBundle();
-      v40 = [v36 localizedStringForKey:v31 value:&stru_1F04268F8 table:@"ChatKit"];
+      savedCount = CKFrameworkBundle();
+      v40 = [savedCount localizedStringForKey:v31 value:&stru_1F04268F8 table:@"ChatKit"];
     }
 
     v70 = v40;
 
-    v41 = v17 - a6;
-    v71 = v17 == a6;
-    if (v17 == a6)
+    v41 = v17 - savedCount;
+    v71 = v17 == savedCount;
+    if (v17 == savedCount)
     {
       v42 = @"SAVE_MULTIPLE_DUPLICATES";
-      if (a6 == 1)
+      if (savedCount == 1)
       {
         v42 = @"SAVE_SINGLE_DUPLICATE";
       }
@@ -339,7 +339,7 @@ LABEL_30:
       v83[1] = 3221225472;
       v83[2] = __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_otherCount_alreadySavedCount_popoverSource_cancelHandler_saveHandler_navigationHandler___block_invoke;
       v83[3] = &unk_1E72EC218;
-      v84 = v16;
+      v84 = navigationHandlerCopy;
       v49 = [v46 actionWithTitle:v48 style:0 handler:v83];
     }
 
@@ -370,10 +370,10 @@ LABEL_30:
         v53 = [v52 localizedStringForKey:v50 value:&stru_1F04268F8 table:@"ChatKit"];
         v54 = [v51 localizedStringWithFormat:v53, v41];
 
-        v55 = [MEMORY[0x1E69DC668] sharedApplication];
-        v56 = [v55 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-        if (v56 == 1)
+        if (userInterfaceLayoutDirection2 == 1)
         {
           v57 = @"\u200F";
         }
@@ -398,7 +398,7 @@ LABEL_30:
     v81[1] = 3221225472;
     v81[2] = __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_otherCount_alreadySavedCount_popoverSource_cancelHandler_saveHandler_navigationHandler___block_invoke_2;
     v81[3] = &unk_1E72EC218;
-    v82 = v75;
+    v82 = handlerCopy;
     v63 = [v60 actionWithTitle:v62 style:1 handler:v81];
 
     v64 = MEMORY[0x1E69DC648];
@@ -406,15 +406,15 @@ LABEL_30:
     v77[1] = 3221225472;
     v77[2] = __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_otherCount_alreadySavedCount_popoverSource_cancelHandler_saveHandler_navigationHandler___block_invoke_3;
     v77[3] = &unk_1E72EF500;
-    v15 = v74;
+    saveHandlerCopy = v74;
     v78 = v74;
     v79 = v71;
     v80 = v72;
     v65 = [v64 actionWithTitle:v45 style:0 handler:v77];
     v66 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v70 preferredStyle:0];
     v26 = v66;
-    v21 = v76;
-    if (v16 && v49)
+    v21 = sourceCopy;
+    if (navigationHandlerCopy && v49)
     {
       [v66 addAction:v49];
     }
@@ -426,8 +426,8 @@ LABEL_30:
     v23 = v69;
     if (objc_opt_isKindOfClass())
     {
-      v67 = [v26 popoverPresentationController];
-      [v67 setBarButtonItem:v76];
+      popoverPresentationController = [v26 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:sourceCopy];
     }
 
     else
@@ -440,16 +440,16 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      v67 = [v26 popoverPresentationController];
-      [v67 setSourceView:v76];
+      popoverPresentationController = [v26 popoverPresentationController];
+      [popoverPresentationController setSourceView:sourceCopy];
     }
 
-    v15 = v74;
+    saveHandlerCopy = v74;
     goto LABEL_63;
   }
 
   v24 = @"QUICK_SAVE_CONFIRMATION_SINGLE";
-  if (a3 > 1)
+  if (count > 1)
   {
     v24 = @"QUICK_SAVE_CONFIRMATION_MULTIPLE";
   }
@@ -472,9 +472,9 @@ LABEL_63:
     }
   }
 
-  if (v15)
+  if (saveHandlerCopy)
   {
-    (*(v15 + 2))(v15, 0);
+    (*(saveHandlerCopy + 2))(saveHandlerCopy, 0);
   }
 
   v26 = 0;
@@ -509,27 +509,27 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
   }
 }
 
-+ (id)quickSaveConfirmationAlertForMediaObjects:(id)a3 momentShareURL:(id)a4 popoverSource:(id)a5 metricsSource:(id)a6 cancelHandler:(id)a7 preSaveHandler:(id)a8 postSaveHandler:(id)a9 postAnyActionHandler:(id)a10
++ (id)quickSaveConfirmationAlertForMediaObjects:(id)objects momentShareURL:(id)l popoverSource:(id)source metricsSource:(id)metricsSource cancelHandler:(id)handler preSaveHandler:(id)saveHandler postSaveHandler:(id)postSaveHandler postAnyActionHandler:(id)self0
 {
   v108 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v54 = a4;
-  v55 = a5;
-  v56 = a6;
-  v58 = a7;
-  v57 = a8;
-  v59 = a9;
-  v60 = a10;
-  v51 = v16;
-  v52 = [v16 count];
+  objectsCopy = objects;
+  lCopy = l;
+  sourceCopy = source;
+  metricsSourceCopy = metricsSource;
+  handlerCopy = handler;
+  saveHandlerCopy = saveHandler;
+  postSaveHandlerCopy = postSaveHandler;
+  actionHandlerCopy = actionHandler;
+  v51 = objectsCopy;
+  v52 = [objectsCopy count];
   if (v52)
   {
-    v50 = a1;
+    selfCopy = self;
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v17 = v16;
+    v17 = objectsCopy;
     v18 = 0;
     v19 = 0;
     v20 = 0;
@@ -546,7 +546,7 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
             objc_enumerationMutation(v17);
           }
 
-          v24 = [*(*(&v100 + 1) + 8 * i) UTIType];
+          uTIType = [*(*(&v100 + 1) + 8 * i) UTIType];
           if (IMUTITypeIsPhoto())
           {
             ++v20;
@@ -599,10 +599,10 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
           }
 
           v28 = *(*(&v86 + 1) + 8 * j);
-          v29 = [v28 syndicationIdentifier];
-          if (v29)
+          syndicationIdentifier = [v28 syndicationIdentifier];
+          if (syndicationIdentifier)
           {
-            [v63 addObject:v29];
+            [v63 addObject:syndicationIdentifier];
           }
 
           else
@@ -627,7 +627,7 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
     {
       v31 = dispatch_group_create();
       dispatch_group_enter(v31);
-      v32 = [MEMORY[0x1E69A5C30] sharedInstance];
+      mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
       v82[2] = __166__CKUtilities_quickSaveConfirmationAlertForMediaObjects_momentShareURL_popoverSource_metricsSource_cancelHandler_preSaveHandler_postSaveHandler_postAnyActionHandler___block_invoke;
@@ -636,12 +636,12 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
       v85 = &v90;
       v33 = v31;
       v83 = v33;
-      [v32 fetchInfoForSyndicationIdentifiersSavedToSystemPhotoLibrary:v63 completion:v82];
+      [mEMORY[0x1E69A5C30] fetchInfoForSyndicationIdentifiersSavedToSystemPhotoLibrary:v63 completion:v82];
 
       if (v20)
       {
-        v34 = [MEMORY[0x1E69A82F0] sharedInstance];
-        [v34 sendSavePhotoEvent];
+        mEMORY[0x1E69A82F0] = [MEMORY[0x1E69A82F0] sharedInstance];
+        [mEMORY[0x1E69A82F0] sendSavePhotoEvent];
       }
 
       v35 = dispatch_time(0, 1000000000);
@@ -676,7 +676,7 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
       v80[1] = &v90;
       v81 = v39;
       v49 = v80;
-      v80[0] = v60;
+      v80[0] = actionHandlerCopy;
     }
 
     else
@@ -690,8 +690,8 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
     aBlock[2] = __166__CKUtilities_quickSaveConfirmationAlertForMediaObjects_momentShareURL_popoverSource_metricsSource_cancelHandler_preSaveHandler_postSaveHandler_postAnyActionHandler___block_invoke_2;
     aBlock[3] = &unk_1E72EF578;
     v78 = v39;
-    v76 = v58;
-    v42 = v60;
+    v76 = handlerCopy;
+    v42 = actionHandlerCopy;
     v77 = v42;
     v43 = _Block_copy(aBlock);
     v72[0] = MEMORY[0x1E69E9820];
@@ -700,22 +700,22 @@ void __154__CKUtilities_quickSaveConfirmationAlertWithPhotoCount_videoCount_othe
     v72[3] = &unk_1E72EF5A0;
     v53 = v63;
     v73 = v53;
-    v74 = v59;
+    v74 = postSaveHandlerCopy;
     v44 = _Block_copy(v72);
     v45 = v97[3];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __166__CKUtilities_quickSaveConfirmationAlertForMediaObjects_momentShareURL_popoverSource_metricsSource_cancelHandler_preSaveHandler_postSaveHandler_postAnyActionHandler___block_invoke_2_1787;
     v64[3] = &unk_1E72EF5C8;
-    v68 = v57;
+    v68 = saveHandlerCopy;
     v65 = obj;
-    v66 = v54;
+    v66 = lCopy;
     v46 = v44;
     v69 = v46;
-    v67 = v56;
+    v67 = metricsSourceCopy;
     v70 = v42;
     v71 = v39;
-    v38 = [v50 quickSaveConfirmationAlertWithPhotoCount:v20 videoCount:v19 otherCount:v18 alreadySavedCount:v45 popoverSource:v55 cancelHandler:v43 saveHandler:v64 navigationHandler:v61];
+    v38 = [selfCopy quickSaveConfirmationAlertWithPhotoCount:v20 videoCount:v19 otherCount:v18 alreadySavedCount:v45 popoverSource:sourceCopy cancelHandler:v43 saveHandler:v64 navigationHandler:v61];
     if (!v38 && IMOSLoggingEnabled())
     {
       v47 = OSLogHandleForIMFoundationCategory();
@@ -959,24 +959,24 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-+ (unint64_t)orientationMaskFromInterfaceOrientation:(int64_t)a3
++ (unint64_t)orientationMaskFromInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) > 3)
+  if ((orientation - 1) > 3)
   {
     return 30;
   }
 
   else
   {
-    return qword_190DCEFE0[a3 - 1];
+    return qword_190DCEFE0[orientation - 1];
   }
 }
 
-+ (unint64_t)indexOfChatItem:(id)a3 inChatItemsArray:(id)a4
++ (unint64_t)indexOfChatItem:(id)item inChatItemsArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfObject:v5];
+  itemCopy = item;
+  arrayCopy = array;
+  v7 = [arrayCopy indexOfObject:itemCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_15;
@@ -989,8 +989,8 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v8 = v5;
-  if (![v6 count])
+  v8 = itemCopy;
+  if (![arrayCopy count])
   {
 LABEL_11:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1000,13 +1000,13 @@ LABEL_11:
   v7 = 0;
   while (1)
   {
-    v9 = [v6 objectAtIndex:v7];
+    v9 = [arrayCopy objectAtIndex:v7];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 transferGUIDs];
-      v11 = [v8 transferGUID];
-      v12 = [v10 containsObject:v11];
+      transferGUIDs = [v9 transferGUIDs];
+      transferGUID = [v8 transferGUID];
+      v12 = [transferGUIDs containsObject:transferGUID];
       goto LABEL_9;
     }
 
@@ -1018,15 +1018,15 @@ LABEL_11:
 
 LABEL_10:
 
-    if (++v7 >= [v6 count])
+    if (++v7 >= [arrayCopy count])
     {
       goto LABEL_11;
     }
   }
 
-  v10 = [v9 transferGUID];
-  v11 = [v8 transferGUID];
-  v12 = [v10 isEqualToString:v11];
+  transferGUIDs = [v9 transferGUID];
+  transferGUID = [v8 transferGUID];
+  v12 = [transferGUIDs isEqualToString:transferGUID];
 LABEL_9:
   v13 = v12;
 
@@ -1041,15 +1041,15 @@ LABEL_15:
   return v7;
 }
 
-+ (void)onboardRecentlyDeletedIfNeeded:(id)a3 deviceType:(int64_t)a4 actionHandler:(id)a5
++ (void)onboardRecentlyDeletedIfNeeded:(id)needed deviceType:(int64_t)type actionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 integerForKey:@"CKRecentlyDeletedOnboardingVersion"];
+  neededCopy = needed;
+  handlerCopy = handler;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults integerForKey:@"CKRecentlyDeletedOnboardingVersion"];
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v11 = [v10 BOOLForKey:@"CKRecentlyDeletedAlwaysShowOnboarding"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v11 = [standardUserDefaults2 BOOLForKey:@"CKRecentlyDeletedAlwaysShowOnboarding"];
 
   if (!v9 || (v11 & 1) != 0)
   {
@@ -1066,16 +1066,16 @@ LABEL_15:
     v20[1] = 3221225472;
     v20[2] = __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler___block_invoke;
     v20[3] = &unk_1E72EC218;
-    v21 = v7;
+    v21 = handlerCopy;
     v19 = [CKAlertAction actionWithTitle:v18 style:0 handler:v20];
     [v16 addAction:v19];
 
-    [v16 presentFromViewController:v6 animated:1 completion:&__block_literal_global_1800];
+    [v16 presentFromViewController:neededCopy animated:1 completion:&__block_literal_global_1800];
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1096,20 +1096,20 @@ void __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler__
   [v0 setInteger:1 forKey:@"CKRecentlyDeletedOnboardingVersion"];
 }
 
-+ (unint64_t)daysUntilJunkFilterDeletionForDate:(id)a3
++ (unint64_t)daysUntilJunkFilterDeletionForDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 90;
   }
 
-  [a1 _daysSinceDate:?];
+  [self _daysSinceDate:?];
   return vcvtpd_u64_f64(90.0 - v3);
 }
 
-+ (double)_intervalSinceDate:(id)a3
++ (double)_intervalSinceDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v4 = v3;
   v5 = [MEMORY[0x1E695DF00] now];
   [v5 timeIntervalSinceReferenceDate];
@@ -1118,23 +1118,23 @@ void __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler__
   return v7 - v4;
 }
 
-+ (BOOL)isIMStickerSaveable:(id)a3
++ (BOOL)isIMStickerSaveable:(id)saveable
 {
-  v3 = a3;
+  saveableCopy = saveable;
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 stickerSavingEnabled];
+  stickerSavingEnabled = [v4 stickerSavingEnabled];
 
-  if (v5)
+  if (stickerSavingEnabled)
   {
-    v6 = [v3 stickerPackGUID];
-    if ([v6 containsString:*MEMORY[0x1E69A68F8]])
+    stickerPackGUID = [saveableCopy stickerPackGUID];
+    if ([stickerPackGUID containsString:*MEMORY[0x1E69A68F8]])
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v6 containsString:*MEMORY[0x1E69A69D8]];
+      v7 = [stickerPackGUID containsString:*MEMORY[0x1E69A69D8]];
     }
   }
 
@@ -1156,25 +1156,25 @@ void __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler__
   return v7;
 }
 
-+ (id)saveableStickerFromChatItem:(id)a3
++ (id)saveableStickerFromChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 stickerSavingEnabled];
+  stickerSavingEnabled = [v5 stickerSavingEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((stickerSavingEnabled & 1) == 0)
   {
-    v11 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    sticker = IMLogHandleForCategory();
+    if (os_log_type_enabled(sticker, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Saving stickers is not supported.", buf, 2u);
+      _os_log_impl(&dword_19020E000, sticker, OS_LOG_TYPE_INFO, "Saving stickers is not supported.", buf, 2u);
     }
 
     goto LABEL_23;
   }
 
-  if (!v4)
+  if (!itemCopy)
   {
     goto LABEL_21;
   }
@@ -1182,19 +1182,19 @@ void __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler__
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 mediaObject];
-    v8 = [v7 transfer];
-    v9 = [v8 attributionInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x1E69A6F98]];
+    mediaObject = [itemCopy mediaObject];
+    transfer = [mediaObject transfer];
+    attributionInfo = [transfer attributionInfo];
+    v7MediaObject = [attributionInfo objectForKey:*MEMORY[0x1E69A6F98]];
 
-    if ([v10 isEqualToString:&stru_1F04268F8] && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+    if ([v7MediaObject isEqualToString:&stru_1F04268F8] && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
     {
-      v11 = [v7 sticker];
+      sticker = [mediaObject sticker];
     }
 
     else
     {
-      v11 = 0;
+      sticker = 0;
     }
   }
 
@@ -1206,28 +1206,28 @@ void __71__CKUtilities_onboardRecentlyDeletedIfNeeded_deviceType_actionHandler__
       goto LABEL_21;
     }
 
-    v7 = v4;
-    v10 = [v7 mediaObject];
-    v12 = [v10 transfer];
-    v13 = [v12 attributionInfo];
-    v14 = [v13 objectForKey:*MEMORY[0x1E69A6F98]];
+    mediaObject = itemCopy;
+    v7MediaObject = [mediaObject mediaObject];
+    transfer2 = [v7MediaObject transfer];
+    attributionInfo2 = [transfer2 attributionInfo];
+    v14 = [attributionInfo2 objectForKey:*MEMORY[0x1E69A6F98]];
 
     if ([v14 isEqualToString:&stru_1F04268F8])
     {
-      v11 = [v7 sticker];
+      sticker = [mediaObject sticker];
     }
 
     else
     {
-      v11 = 0;
+      sticker = 0;
     }
   }
 
-  if (!v11)
+  if (!sticker)
   {
 LABEL_21:
-    v11 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    sticker = IMLogHandleForCategory();
+    if (os_log_type_enabled(sticker, OS_LOG_TYPE_ERROR))
     {
       +[CKUtilities saveableStickerFromChatItem:];
     }
@@ -1235,7 +1235,7 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  if ([a1 isIMStickerSaveable:v11])
+  if ([self isIMStickerSaveable:sticker])
   {
     goto LABEL_24;
   }
@@ -1248,27 +1248,27 @@ LABEL_21:
   }
 
 LABEL_23:
-  v11 = 0;
+  sticker = 0;
 LABEL_24:
 
-  return v11;
+  return sticker;
 }
 
-+ (id)saveableStickerForMediaObject:(id)a3
++ (id)saveableStickerForMediaObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 stickerSavingEnabled];
+  stickerSavingEnabled = [v5 stickerSavingEnabled];
 
-  if (v6)
+  if (stickerSavingEnabled)
   {
-    v7 = [v4 sticker];
-    if (v7)
+    sticker = [objectCopy sticker];
+    if (sticker)
     {
-      if ([a1 isIMStickerSaveable:v7])
+      if ([self isIMStickerSaveable:sticker])
       {
-        v7 = v7;
-        v8 = v7;
+        sticker = sticker;
+        v8 = sticker;
         goto LABEL_13;
       }
 
@@ -1292,11 +1292,11 @@ LABEL_24:
 
   else
   {
-    v7 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    sticker = IMLogHandleForCategory();
+    if (os_log_type_enabled(sticker, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Saving stickers is not supported.", buf, 2u);
+      _os_log_impl(&dword_19020E000, sticker, OS_LOG_TYPE_INFO, "Saving stickers is not supported.", buf, 2u);
     }
   }
 
@@ -1328,7 +1328,7 @@ __CFBundle *__49__CKUtilities__loadUIKitGlassLegibilityFunctions__block_invoke()
 
 + (int64_t)systemGlassLegibilitySetting
 {
-  [a1 _loadUIKitGlassLegibilityFunctions];
+  [self _loadUIKitGlassLegibilityFunctions];
   result = CKUIViewGlassGetLegibilitySetting;
   if (CKUIViewGlassGetLegibilitySetting)
   {

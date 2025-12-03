@@ -1,5 +1,5 @@
 @interface RecentsCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,15 +7,15 @@
 
 @implementation RecentsCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.RecentsCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"ConversationKit.RecentsCollectionViewCell" hasInstanceMethod:@"trailingAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.RecentsCollectionViewCell" hasSwiftField:@"listItemViewHelper" withSwiftType:"Optional<RecentsListItemViewHelper>"];
-  [v3 validateClass:@"TelephonyUI.RecentsListItemViewHelper" hasSwiftField:@"messageIndicatorView" withSwiftType:"Optional<MessageIndicatorView>"];
-  [v3 validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"TelephonyUI.MessageIndicatorView" hasInstanceMethod:@"handleTapGesture" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.RecentsCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"ConversationKit.RecentsCollectionViewCell" hasInstanceMethod:@"trailingAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.RecentsCollectionViewCell" hasSwiftField:@"listItemViewHelper" withSwiftType:"Optional<RecentsListItemViewHelper>"];
+  [validationsCopy validateClass:@"TelephonyUI.RecentsListItemViewHelper" hasSwiftField:@"messageIndicatorView" withSwiftType:"Optional<MessageIndicatorView>"];
+  [validationsCopy validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"TelephonyUI.MessageIndicatorView" hasInstanceMethod:@"handleTapGesture" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityLabel
@@ -86,19 +86,19 @@ LABEL_13:
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v31 = 0;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   v5 = v4;
-  v6 = [v4 accessories];
+  accessories = [v4 accessories];
   v29[0] = MEMORY[0x29EDCA5F8];
   v29[1] = 3221225472;
   v29[2] = __68__RecentsCollectionViewCellAccessibility_accessibilityCustomActions__block_invoke;
   v29[3] = &unk_29F2B7BF0;
-  v7 = v3;
+  v7 = array;
   v30 = v7;
-  [v6 enumerateObjectsUsingBlock:v29];
+  [accessories enumerateObjectsUsingBlock:v29];
 
   v31 = 0;
   objc_opt_class();
@@ -113,13 +113,13 @@ LABEL_13:
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v11 = [v9 accessibilityLabel];
+    accessibilityLabel = [v9 accessibilityLabel];
     v27[0] = MEMORY[0x29EDCA5F8];
     v27[1] = 3221225472;
     v27[2] = __68__RecentsCollectionViewCellAccessibility_accessibilityCustomActions__block_invoke_3;
     v27[3] = &unk_29F2B7BC8;
     v28 = v9;
-    v12 = [v10 initWithName:v11 actionHandler:v27];
+    v12 = [v10 initWithName:accessibilityLabel actionHandler:v27];
 
     [v7 addObject:v12];
   }
@@ -130,12 +130,12 @@ LABEL_13:
   if (v14)
   {
     v16 = [v14 safeSwiftValueForKey:@"titleLabel"];
-    v17 = [v16 accessibilityLabel];
+    accessibilityLabel2 = [v16 accessibilityLabel];
 
     v18 = objc_alloc(MEMORY[0x29EDC78E0]);
     v19 = MEMORY[0x29EDBA0F8];
     v20 = accessibilityLocalizedString(@"play.message");
-    v21 = [v19 stringWithFormat:v20, v17];
+    v21 = [v19 stringWithFormat:v20, accessibilityLabel2];
     v25[0] = MEMORY[0x29EDCA5F8];
     v25[1] = 3221225472;
     v25[2] = __68__RecentsCollectionViewCellAccessibility_accessibilityCustomActions__block_invoke_4;

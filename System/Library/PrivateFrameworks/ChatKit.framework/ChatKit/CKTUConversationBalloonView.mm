@@ -9,24 +9,24 @@
 - (CGSize)_preferredSessionImageViewSize;
 - (CGSize)imageViewSize;
 - (CGSize)joinButtonRenderedAsIconSize;
-- (CGSize)layoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CGSize)stackedLayoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4;
-- (CGSize)standardLayoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4;
-- (CKTUConversationBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)layoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CGSize)stackedLayoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout;
+- (CGSize)standardLayoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout;
+- (CKTUConversationBalloonView)initWithFrame:(CGRect)frame;
 - (char)color;
 - (id)_currentCall;
 - (id)_iconJoinButtonConfiguration;
 - (id)_joinButtonText;
-- (id)_sharePlayImageWithDiameter:(double)a3;
+- (id)_sharePlayImageWithDiameter:(double)diameter;
 - (id)_textJoinButtonConfiguration;
 - (id)subtitleColor;
 - (id)tuConversation;
 - (unint64_t)conversationAVMode;
-- (void)_joinButtonTapped:(id)a3;
-- (void)_multiWayCallStateChanged:(id)a3;
-- (void)configureForCurrentStateWithLayoutPass:(BOOL)a3;
-- (void)configureForTUConversationChatItem:(id)a3;
+- (void)_joinButtonTapped:(id)tapped;
+- (void)_multiWayCallStateChanged:(id)changed;
+- (void)configureForCurrentStateWithLayoutPass:(BOOL)pass;
+- (void)configureForTUConversationChatItem:(id)item;
 - (void)configureIconView;
 - (void)configureImageView;
 - (void)configureJoinButton;
@@ -34,7 +34,7 @@
 - (void)configureSubtitle1;
 - (void)configureSubtitle2;
 - (void)configureTitle;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)formatIconViewForActivity;
 - (void)formatIconViewForFaceTime;
 - (void)formatImageViewForActivity;
@@ -49,9 +49,9 @@
 + (BOOL)_shouldUseStackedLayout
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v2 isAccessibilityPreferredContentSizeCategory];
 
-  return v3;
+  return isAccessibilityPreferredContentSizeCategory;
 }
 
 + (BOOL)_shouldAlwaysHideSessionImageView
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (CKTUConversationBalloonView)initWithFrame:(CGRect)a3
+- (CKTUConversationBalloonView)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = CKTUConversationBalloonView;
-  v3 = [(CKColoredBalloonView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -99,8 +99,8 @@
     v13 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     v14 = MEMORY[0x1E69DB878];
     v15 = +[CKUIBehavior sharedBehaviors];
-    v16 = [v15 tuConversationBalloonTitleFont];
-    v17 = [v14 __ck_emphasizedFontFromFont:v16];
+    tuConversationBalloonTitleFont = [v15 tuConversationBalloonTitleFont];
+    v17 = [v14 __ck_emphasizedFontFromFont:tuConversationBalloonTitleFont];
     [v13 setFont:v17];
 
     [v13 setLineBreakMode:4];
@@ -109,8 +109,8 @@
     [(CKTUConversationBalloonView *)v4 setTitleLabel:v13];
     v18 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 tuConversationBalloonSubtitleFont];
-    [v18 setFont:v20];
+    tuConversationBalloonSubtitleFont = [v19 tuConversationBalloonSubtitleFont];
+    [v18 setFont:tuConversationBalloonSubtitleFont];
 
     [v18 setLineBreakMode:4];
     [v18 setNumberOfLines:2];
@@ -118,8 +118,8 @@
     [(CKTUConversationBalloonView *)v4 setSubtitleLabel1:v18];
     v21 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     v22 = +[CKUIBehavior sharedBehaviors];
-    v23 = [v22 tuConversationBalloonSubtitleFont];
-    [v21 setFont:v23];
+    tuConversationBalloonSubtitleFont2 = [v22 tuConversationBalloonSubtitleFont];
+    [v21 setFont:tuConversationBalloonSubtitleFont2];
 
     [v21 setLineBreakMode:4];
     [v21 setNumberOfLines:2];
@@ -135,25 +135,25 @@
 
     [(CKTUConversationBalloonView *)v4 addSubview:v24];
     [(CKTUConversationBalloonView *)v4 setJoinButton:v24];
-    v26 = [(CKBalloonView *)v4 tapGestureRecognizer];
-    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:v26];
+    tapGestureRecognizer = [(CKBalloonView *)v4 tapGestureRecognizer];
+    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:tapGestureRecognizer];
 
-    v27 = [(CKBalloonView *)v4 doubleTapGestureRecognizer];
-    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:v27];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v4 doubleTapGestureRecognizer];
+    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:doubleTapGestureRecognizer];
 
-    v28 = [(CKBalloonView *)v4 longPressGestureRecognizer];
-    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:v28];
+    longPressGestureRecognizer = [(CKBalloonView *)v4 longPressGestureRecognizer];
+    [(CKTUConversationBalloonView *)v4 removeGestureRecognizer:longPressGestureRecognizer];
 
     [(CKTUConversationBalloonView *)v4 setState:1];
     [(CKTUConversationBalloonView *)v4 configureForCurrentStateWithLayoutPass:0];
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v4 selector:sel__multiWayCallStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__multiWayCallStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v31 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v31 addObserver:v4 selector:sel_chatParticipantsChanged_ name:*MEMORY[0x1E69A5848] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_chatParticipantsChanged_ name:*MEMORY[0x1E69A5848] object:0];
   }
 
   return v4;
@@ -171,21 +171,21 @@
   }
 }
 
-- (CGSize)layoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4
+- (CGSize)layoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   if ([objc_opt_class() _shouldUseStackedLayout])
   {
 
-    [(CKTUConversationBalloonView *)self stackedLayoutSizeForSize:v4 applyLayout:width, height];
+    [(CKTUConversationBalloonView *)self stackedLayoutSizeForSize:layoutCopy applyLayout:width, height];
   }
 
   else
   {
 
-    [(CKTUConversationBalloonView *)self standardLayoutSizeForSize:v4 applyLayout:width, height];
+    [(CKTUConversationBalloonView *)self standardLayoutSizeForSize:layoutCopy applyLayout:width, height];
   }
 
   result.height = v9;
@@ -195,21 +195,21 @@
 
 - (CGSize)_preferredSessionImageViewSize
 {
-  v3 = [(CKTUConversationBalloonView *)self sessionImageView];
-  v4 = [v3 isHidden];
+  sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+  isHidden = [sessionImageView isHidden];
 
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  if ((v4 & 1) == 0 && ([objc_opt_class() _shouldAlwaysHideSessionImageView] & 1) == 0)
+  if ((isHidden & 1) == 0 && ([objc_opt_class() _shouldAlwaysHideSessionImageView] & 1) == 0)
   {
     v7 = MEMORY[0x1E69A5B78];
-    v8 = [(CKTUConversationBalloonView *)self tuConversation];
-    LODWORD(v7) = [v7 activeTUConversationHasActivitySession:v8];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    LODWORD(v7) = [v7 activeTUConversationHasActivitySession:tuConversation];
 
     if (v7)
     {
-      v9 = +[CKUIBehavior sharedBehaviors];
-      [v9 tuConversationBalloonImageDimensions];
+      sessionImageView2 = +[CKUIBehavior sharedBehaviors];
+      [sessionImageView2 tuConversationBalloonImageDimensions];
       v5 = v10;
       v11 = +[CKUIBehavior sharedBehaviors];
       [v11 tuConversationBalloonImageDimensions];
@@ -218,8 +218,8 @@
 
     else
     {
-      v9 = [(CKTUConversationBalloonView *)self sessionImageView];
-      [v9 sizeThatFits:{*(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
+      sessionImageView2 = [(CKTUConversationBalloonView *)self sessionImageView];
+      [sessionImageView2 sizeThatFits:{*(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
       v5 = v13;
       v6 = v14;
     }
@@ -234,10 +234,10 @@
 
 - (CGSize)_preferredJoinButtonSize
 {
-  v3 = [(CKTUConversationBalloonView *)self joinButton];
-  v4 = [v3 isHidden];
+  joinButton = [(CKTUConversationBalloonView *)self joinButton];
+  isHidden = [joinButton isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     v5 = *MEMORY[0x1E695F060];
     v6 = *(MEMORY[0x1E695F060] + 8);
@@ -245,8 +245,8 @@
 
   else
   {
-    v7 = [(CKTUConversationBalloonView *)self joinButton];
-    [v7 sizeThatFits:{*(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
+    joinButton2 = [(CKTUConversationBalloonView *)self joinButton];
+    [joinButton2 sizeThatFits:{*(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
     v5 = v8;
     v6 = v9;
 
@@ -270,10 +270,10 @@
   return result;
 }
 
-- (CGSize)stackedLayoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4
+- (CGSize)stackedLayoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  v6 = [(CKTUConversationBalloonView *)self _shouldReverseLayoutDirection:a3.width];
+  layoutCopy = layout;
+  v6 = [(CKTUConversationBalloonView *)self _shouldReverseLayoutDirection:size.width];
   v7 = +[CKUIBehavior sharedBehaviors];
   [(CKTUConversationBalloonView *)self bounds];
   [(CKTUConversationBalloonView *)self alignmentRectForFrame:?];
@@ -284,8 +284,8 @@
   v104 = v12;
   v109 = v13;
   v14 = MEMORY[0x1E69DC738];
-  v15 = [(CKTUConversationBalloonView *)self _textJoinButtonConfiguration];
-  v16 = [v14 buttonWithConfiguration:v15 primaryAction:0];
+  _textJoinButtonConfiguration = [(CKTUConversationBalloonView *)self _textJoinButtonConfiguration];
+  v16 = [v14 buttonWithConfiguration:_textJoinButtonConfiguration primaryAction:0];
 
   v17 = *(MEMORY[0x1E695F040] + 24);
   [v16 sizeThatFits:{*(MEMORY[0x1E695F040] + 16), v17}];
@@ -295,18 +295,18 @@
   [(CKTUConversationBalloonView *)self _preferredJoinButtonSize];
   v20 = v19;
   v105 = v21;
-  v22 = [(CKTUConversationBalloonView *)self titleLabel];
-  [v22 sizeThatFits:{v11, v17}];
+  titleLabel = [(CKTUConversationBalloonView *)self titleLabel];
+  [titleLabel sizeThatFits:{v11, v17}];
   v24 = v23;
   v26 = v25;
 
-  v27 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-  [v27 sizeThatFits:{v11, v17}];
+  subtitleLabel1 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+  [subtitleLabel1 sizeThatFits:{v11, v17}];
   v29 = v28;
   v31 = v30;
 
-  v32 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-  [v32 sizeThatFits:{v11, v17}];
+  subtitleLabel2 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+  [subtitleLabel2 sizeThatFits:{v11, v17}];
   v34 = v33;
   v36 = v35;
 
@@ -341,10 +341,10 @@
   rect = v26;
   [v7 tuConversationBalloonContentTopPadding];
   v40 = v39;
-  v41 = [(CKTUConversationBalloonView *)self sessionImageView];
-  v42 = [v41 isHidden];
+  sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+  isHidden = [sessionImageView isHidden];
 
-  if ((v42 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [v7 tuConversationBalloonContentBottomPadding];
     v40 = v109 + v40 + v43;
@@ -352,10 +352,10 @@
 
   [v7 tuConversationBalloonContentBottomPadding];
   v45 = v26 + v31 + v36 + v40 + v44;
-  v46 = [(CKTUConversationBalloonView *)self joinButton];
-  v47 = [v46 isHidden];
+  joinButton = [(CKTUConversationBalloonView *)self joinButton];
+  isHidden2 = [joinButton isHidden];
 
-  if ((v47 & 1) == 0)
+  if ((isHidden2 & 1) == 0)
   {
     [v7 tuConversationBalloonContentBottomPadding];
     v45 = v105 + v45 + v48;
@@ -367,10 +367,10 @@
     v45 = v45 + v49;
   }
 
-  if (v4)
+  if (layoutCopy)
   {
-    v50 = [(CKTUConversationBalloonView *)self sessionImageView];
-    if ([v50 isHidden])
+    sessionImageView2 = [(CKTUConversationBalloonView *)self sessionImageView];
+    if ([sessionImageView2 isHidden])
     {
       v111.origin.y = v106;
       v111.origin.x = v107;
@@ -405,8 +405,8 @@
       MinX = CGRectGetMinX(*&v54);
     }
 
-    v59 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-    [v59 frame];
+    sessionAccessoryView = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+    [sessionAccessoryView frame];
     v61 = v60;
     v96 = v62;
 
@@ -491,25 +491,25 @@
       v71 = v100;
     }
 
-    v74 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v74 setFrame:{MinX, MinY, v72, v73}];
+    sessionImageView3 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView3 setFrame:{MinX, MinY, v72, v73}];
 
-    v75 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-    [v75 setFrame:{v92, v91, v97, v96}];
+    sessionAccessoryView2 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+    [sessionAccessoryView2 setFrame:{v92, v91, v97, v96}];
 
-    v76 = [(CKTUConversationBalloonView *)self titleLabel];
-    [v76 setFrame:{v67, v98, v99, rect}];
+    titleLabel2 = [(CKTUConversationBalloonView *)self titleLabel];
+    [titleLabel2 setFrame:{v67, v98, v99, rect}];
 
-    v77 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-    [v77 setFrame:{v67, v68, v99, v102}];
+    subtitleLabel12 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+    [subtitleLabel12 setFrame:{v67, v68, v99, v102}];
 
-    v78 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    subtitleLabel22 = [(CKTUConversationBalloonView *)self subtitleLabel2];
     v79 = v67;
     v38 = v99;
-    [v78 setFrame:{v79, y, v99, v101}];
+    [subtitleLabel22 setFrame:{v79, y, v99, v101}];
 
-    v80 = [(CKTUConversationBalloonView *)self joinButton];
-    [v80 setFrame:{v108, v95, v71, v105}];
+    joinButton2 = [(CKTUConversationBalloonView *)self joinButton];
+    [joinButton2 setFrame:{v108, v95, v71, v105}];
   }
 
   [(CKBalloonView *)self alignmentRectInsets];
@@ -528,10 +528,10 @@
   return result;
 }
 
-- (CGSize)standardLayoutSizeForSize:(CGSize)a3 applyLayout:(BOOL)a4
+- (CGSize)standardLayoutSizeForSize:(CGSize)size applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  [(CKTUConversationBalloonView *)self configureJoinButton:a3.width];
+  layoutCopy = layout;
+  [(CKTUConversationBalloonView *)self configureJoinButton:size.width];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 tuConversationBalloonContentMinHeight];
   v8 = v7;
@@ -540,19 +540,19 @@
   rect = v9;
   rect_16 = v10;
   v12 = v11;
-  v13 = [(CKTUConversationBalloonView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CKTUConversationBalloonView *)self _shouldReverseLayoutDirection];
   v14 = *(MEMORY[0x1E695F040] + 16);
   v15 = *(MEMORY[0x1E695F040] + 24);
-  v16 = [(CKTUConversationBalloonView *)self titleLabel];
-  [v16 sizeThatFits:{v14, v15}];
+  titleLabel = [(CKTUConversationBalloonView *)self titleLabel];
+  [titleLabel sizeThatFits:{v14, v15}];
   v18 = v17;
 
-  v19 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-  [v19 sizeThatFits:{v14, v15}];
+  subtitleLabel1 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+  [subtitleLabel1 sizeThatFits:{v14, v15}];
   v21 = v20;
 
-  v22 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-  [v22 sizeThatFits:{v14, v15}];
+  subtitleLabel2 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+  [subtitleLabel2 sizeThatFits:{v14, v15}];
   v24 = v23;
 
   if (v18 >= v21)
@@ -576,8 +576,8 @@
   }
 
   v27 = MEMORY[0x1E69DC738];
-  v28 = [(CKTUConversationBalloonView *)self _textJoinButtonConfiguration];
-  v29 = [v27 buttonWithConfiguration:v28 primaryAction:0];
+  _textJoinButtonConfiguration = [(CKTUConversationBalloonView *)self _textJoinButtonConfiguration];
+  v29 = [v27 buttonWithConfiguration:_textJoinButtonConfiguration primaryAction:0];
 
   [v29 sizeThatFits:{v14, v15}];
   v31 = v30;
@@ -593,10 +593,10 @@
   v144 = v38;
   [v6 tuConversationBalloonLabelLeadingPadding];
   v40 = v39;
-  v41 = [(CKTUConversationBalloonView *)self sessionImageView];
-  v42 = [v41 isHidden];
+  sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+  isHidden = [sessionImageView isHidden];
 
-  if (v42)
+  if (isHidden)
   {
     v43 = 0.0;
   }
@@ -610,10 +610,10 @@
 
   [v6 tuConversationBalloonLabelTrailingPadding];
   v46 = v45 + v26 + v40 + v43;
-  v47 = [(CKTUConversationBalloonView *)self joinButton];
-  v48 = [v47 isHidden];
+  joinButton = [(CKTUConversationBalloonView *)self joinButton];
+  isHidden2 = [joinButton isHidden];
 
-  if ((v48 & 1) == 0)
+  if ((isHidden2 & 1) == 0)
   {
     [v6 tuConversationBalloonJoinButtonLeadingPadding];
     v46 = v37 + v46 + v49;
@@ -629,10 +629,10 @@
     v50 = v46;
   }
 
-  v51 = [(CKTUConversationBalloonView *)self joinButton];
-  v52 = [v51 isHidden];
+  joinButton2 = [(CKTUConversationBalloonView *)self joinButton];
+  isHidden3 = [joinButton2 isHidden];
 
-  if ((v52 & 1) == 0)
+  if ((isHidden3 & 1) == 0)
   {
     if ([(CKTUConversationBalloonView *)self shouldRenderJoinButtonAsIcon])
     {
@@ -650,11 +650,11 @@
     }
   }
 
-  v54 = [(CKTUConversationBalloonView *)self sessionImageView];
-  v55 = [v54 isHidden];
+  sessionImageView2 = [(CKTUConversationBalloonView *)self sessionImageView];
+  isHidden4 = [sessionImageView2 isHidden];
 
   v142 = v40;
-  if (v55)
+  if (isHidden4)
   {
     v56 = v50;
   }
@@ -666,26 +666,26 @@
 
   [v6 tuConversationBalloonLabelTrailingPadding];
   v58 = v56 - v57;
-  v59 = [(CKTUConversationBalloonView *)self joinButton];
-  v60 = [v59 isHidden];
+  joinButton3 = [(CKTUConversationBalloonView *)self joinButton];
+  isHidden5 = [joinButton3 isHidden];
 
   rect_8 = v34;
-  if ((v60 & 1) == 0)
+  if ((isHidden5 & 1) == 0)
   {
     [v6 tuConversationBalloonJoinButtonLeadingPadding];
     v58 = v58 - v61 - v37;
   }
 
-  v62 = [(CKTUConversationBalloonView *)self titleLabel];
-  [v62 sizeThatFits:{v58, 1.79769313e308}];
+  titleLabel2 = [(CKTUConversationBalloonView *)self titleLabel];
+  [titleLabel2 sizeThatFits:{v58, 1.79769313e308}];
   v64 = v63;
 
-  v65 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-  [v65 sizeThatFits:{v58, 1.79769313e308}];
+  subtitleLabel12 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+  [subtitleLabel12 sizeThatFits:{v58, 1.79769313e308}];
   v67 = v66;
 
-  v68 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-  [v68 sizeThatFits:{v58, 1.79769313e308}];
+  subtitleLabel22 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+  [subtitleLabel22 sizeThatFits:{v58, 1.79769313e308}];
   v70 = v69;
 
   v146 = v64;
@@ -711,7 +711,7 @@
     v8 = v76;
   }
 
-  if (v4)
+  if (layoutCopy)
   {
     if (CKMainScreenScale_once_7 != -1)
     {
@@ -732,7 +732,7 @@
     v79 = rect;
     v80 = v12;
     v81 = v8;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       v82 = rect_8;
       MinX = CGRectGetMaxX(*&v79) - rect_8;
@@ -744,8 +744,8 @@
       v82 = rect_8;
     }
 
-    v84 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-    [v84 frame];
+    sessionAccessoryView = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+    [sessionAccessoryView frame];
     v140 = v85;
     v135 = v86;
 
@@ -775,7 +775,7 @@
     v91 = v145;
     v92 = rect_8;
     v93 = rect_24;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       v94 = CGRectGetMinX(*&v90) - v142 - v58;
     }
@@ -821,7 +821,7 @@
     v107 = rect;
     v108 = v138;
     v109 = v8;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       rect_16a = CGRectGetMinX(*&v107);
       v110 = v137;
@@ -843,20 +843,20 @@
     v115 = [(CKTUConversationBalloonView *)self sessionImageView:*&v131];
     [v115 setFrame:{MinX, v145, rect_8, rect_24}];
 
-    v116 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-    [v116 setFrame:{v134, v132, v140, v135}];
+    sessionAccessoryView2 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+    [sessionAccessoryView2 setFrame:{v134, v132, v140, v135}];
 
-    v117 = [(CKTUConversationBalloonView *)self titleLabel];
-    [v117 setFrame:{v94, v139, v58, v146}];
+    titleLabel3 = [(CKTUConversationBalloonView *)self titleLabel];
+    [titleLabel3 setFrame:{v94, v139, v58, v146}];
 
-    v118 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-    [v118 setFrame:{v94, y, v58, v147}];
+    subtitleLabel13 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+    [subtitleLabel13 setFrame:{v94, y, v58, v147}];
 
-    v119 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-    [v119 setFrame:{v94, v102, v58, v141}];
+    subtitleLabel23 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    [subtitleLabel23 setFrame:{v94, v102, v58, v141}];
 
-    v120 = [(CKTUConversationBalloonView *)self joinButton];
-    [v120 setFrame:{rect_16a, v106, v110, v104}];
+    joinButton4 = [(CKTUConversationBalloonView *)self joinButton];
+    [joinButton4 setFrame:{rect_16a, v106, v110, v104}];
 
     v50 = v136;
   }
@@ -893,11 +893,11 @@
   [(CKTUConversationBalloonView *)self configureForCurrentStateWithLayoutPass:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  [(CKTUConversationBalloonView *)self configureForCurrentStateWithLayoutPass:0, a5];
+  height = fits.height;
+  width = fits.width;
+  [(CKTUConversationBalloonView *)self configureForCurrentStateWithLayoutPass:0, tailInsets];
 
   [(CKTUConversationBalloonView *)self layoutSizeForSize:0 applyLayout:width, height];
   result.height = v9;
@@ -920,11 +920,11 @@
 
 - (unint64_t)conversationAVMode
 {
-  v3 = [(CKTUConversationBalloonView *)self tuConversation];
-  v4 = v3;
-  if (v3)
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  v4 = tuConversation;
+  if (tuConversation)
   {
-    conversationAVMode = [v3 avMode];
+    conversationAVMode = [tuConversation avMode];
   }
 
   else
@@ -937,18 +937,18 @@
 
 - (id)tuConversation
 {
-  v3 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v4 = [(CKTUConversationBalloonView *)self tuConversationUUID];
-  v5 = [v3 existingConversationForTelephonyConversationUUID:v4];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  tuConversationUUID = [(CKTUConversationBalloonView *)self tuConversationUUID];
+  v5 = [mEMORY[0x1E69A5AF8] existingConversationForTelephonyConversationUUID:tuConversationUUID];
 
   return v5;
 }
 
-- (void)configureForCurrentStateWithLayoutPass:(BOOL)a3
+- (void)configureForCurrentStateWithLayoutPass:(BOOL)pass
 {
-  v3 = a3;
-  v5 = [(CKTUConversationBalloonView *)self tuConversation];
-  [(CKTUConversationBalloonView *)self setState:[CKTUConversationViewUtilities ckTUConversationStateForTUConversation:v5]];
+  passCopy = pass;
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  [(CKTUConversationBalloonView *)self setState:[CKTUConversationViewUtilities ckTUConversationStateForTUConversation:tuConversation]];
 
   [(CKTUConversationBalloonView *)self configureImageView];
   [(CKTUConversationBalloonView *)self configureSessionAccessoryView];
@@ -956,7 +956,7 @@
   [(CKTUConversationBalloonView *)self configureSubtitle1];
   [(CKTUConversationBalloonView *)self configureSubtitle2];
   [(CKTUConversationBalloonView *)self configureJoinButton];
-  if (v3)
+  if (passCopy)
   {
     [(CKTUConversationBalloonView *)self setNeedsLayout];
 
@@ -977,24 +977,24 @@
   }
 
   v4 = MEMORY[0x1E69A5B78];
-  v5 = [(CKTUConversationBalloonView *)self tuConversation];
-  LOBYTE(v4) = [v4 activeTUConversationHasActivitySession:v5];
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  LOBYTE(v4) = [v4 activeTUConversationHasActivitySession:tuConversation];
 
   return v4;
 }
 
 - (void)configureImageView
 {
-  v3 = [(CKTUConversationBalloonView *)self _shouldShowSessionView];
-  v4 = [(CKTUConversationBalloonView *)self sessionImageView];
-  v7 = v4;
-  if (v3)
+  _shouldShowSessionView = [(CKTUConversationBalloonView *)self _shouldShowSessionView];
+  sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+  v7 = sessionImageView;
+  if (_shouldShowSessionView)
   {
-    [v4 setHidden:0];
+    [sessionImageView setHidden:0];
 
     v5 = MEMORY[0x1E69A5B78];
-    v6 = [(CKTUConversationBalloonView *)self tuConversation];
-    LODWORD(v5) = [v5 activeTUConversationHasActivitySession:v6];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    LODWORD(v5) = [v5 activeTUConversationHasActivitySession:tuConversation];
 
     if (v5)
     {
@@ -1011,7 +1011,7 @@
 
   else
   {
-    [v4 setHidden:1];
+    [sessionImageView setHidden:1];
   }
 }
 
@@ -1036,23 +1036,23 @@
 
 - (void)configureSessionAccessoryView
 {
-  v3 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-  [v3 removeFromSuperview];
+  sessionAccessoryView = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+  [sessionAccessoryView removeFromSuperview];
 
   v4 = MEMORY[0x1E69A5B78];
-  v5 = [(CKTUConversationBalloonView *)self tuConversation];
-  LODWORD(v4) = [v4 isScreenShareActivityForTUConversation:v5];
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  LODWORD(v4) = [v4 isScreenShareActivityForTUConversation:tuConversation];
 
   if (v4)
   {
-    v6 = [(CKTUConversationBalloonView *)self avatarView];
+    avatarView = [(CKTUConversationBalloonView *)self avatarView];
   }
 
   else
   {
     v7 = MEMORY[0x1E69A5B78];
-    v8 = [(CKTUConversationBalloonView *)self tuConversation];
-    LODWORD(v7) = [v7 activeTUConversationHasActivitySession:v8];
+    tuConversation2 = [(CKTUConversationBalloonView *)self tuConversation];
+    LODWORD(v7) = [v7 activeTUConversationHasActivitySession:tuConversation2];
 
     if (!v7)
     {
@@ -1060,45 +1060,45 @@
     }
 
     [(CKTUConversationBalloonView *)self configureIconView];
-    v6 = [(CKTUConversationBalloonView *)self iconView];
+    avatarView = [(CKTUConversationBalloonView *)self iconView];
   }
 
-  v9 = v6;
-  [(CKTUConversationBalloonView *)self setSessionAccessoryView:v6];
+  v9 = avatarView;
+  [(CKTUConversationBalloonView *)self setSessionAccessoryView:avatarView];
 
-  v10 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
-  [(CKTUConversationBalloonView *)self addSubview:v10];
+  sessionAccessoryView2 = [(CKTUConversationBalloonView *)self sessionAccessoryView];
+  [(CKTUConversationBalloonView *)self addSubview:sessionAccessoryView2];
 }
 
 - (void)configureTitle
 {
-  v3 = [(CKTUConversationBalloonView *)self conversationAVMode];
+  conversationAVMode = [(CKTUConversationBalloonView *)self conversationAVMode];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = v5;
-  if (v3)
+  theme = [v4 theme];
+  v6 = theme;
+  if (conversationAVMode)
   {
-    [v5 multiwayTitleTextColor];
+    [theme multiwayTitleTextColor];
   }
 
   else
   {
-    [v5 sharePlayTitleTextColor];
+    [theme sharePlayTitleTextColor];
   }
   v18 = ;
 
-  v7 = [(CKTUConversationBalloonView *)self titleLabel];
-  [v7 setTextColor:v18];
+  titleLabel = [(CKTUConversationBalloonView *)self titleLabel];
+  [titleLabel setTextColor:v18];
 
   state = self->_state;
   if (state - 1 < 2)
   {
-    v12 = [(CKTUConversationBalloonView *)self titleLabel];
-    v14 = [(CKTUConversationBalloonView *)self tuConversation];
-    v16 = [CKTUConversationViewUtilities activityTitleForTUConversation:v14];
+    titleLabel2 = [(CKTUConversationBalloonView *)self titleLabel];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    v16 = [CKTUConversationViewUtilities activityTitleForTUConversation:tuConversation];
 LABEL_11:
     v17 = v16;
-    [v12 setText:v16];
+    [titleLabel2 setText:v16];
 
 LABEL_12:
     goto LABEL_13;
@@ -1107,12 +1107,12 @@ LABEL_12:
   if (state - 3 < 2)
   {
     v9 = MEMORY[0x1E69A5B78];
-    v10 = [(CKTUConversationBalloonView *)self tuConversation];
-    v11 = [v9 isScreenShareActivityForTUConversation:v10];
+    tuConversation2 = [(CKTUConversationBalloonView *)self tuConversation];
+    v11 = [v9 isScreenShareActivityForTUConversation:tuConversation2];
 
-    v12 = [(CKTUConversationBalloonView *)self titleLabel];
+    titleLabel2 = [(CKTUConversationBalloonView *)self titleLabel];
     v13 = CKFrameworkBundle();
-    v14 = v13;
+    tuConversation = v13;
     if (v11)
     {
       v15 = @"EXPANSE_SCREENSHARE_DEFAULT";
@@ -1129,9 +1129,9 @@ LABEL_12:
 
   if (!state)
   {
-    v12 = [(CKTUConversationBalloonView *)self titleLabel];
-    v14 = [CKTUConversationViewUtilities titleForAVMode:[(CKTUConversationBalloonView *)self conversationAVMode]];
-    [v12 setText:v14];
+    titleLabel2 = [(CKTUConversationBalloonView *)self titleLabel];
+    tuConversation = [CKTUConversationViewUtilities titleForAVMode:[(CKTUConversationBalloonView *)self conversationAVMode]];
+    [titleLabel2 setText:tuConversation];
     goto LABEL_12;
   }
 
@@ -1140,18 +1140,18 @@ LABEL_13:
 
 - (id)subtitleColor
 {
-  v2 = [(CKTUConversationBalloonView *)self conversationAVMode];
+  conversationAVMode = [(CKTUConversationBalloonView *)self conversationAVMode];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = v4;
-  if (v2)
+  theme = [v3 theme];
+  v5 = theme;
+  if (conversationAVMode)
   {
-    [v4 multiwayCaptionTextColor];
+    [theme multiwayCaptionTextColor];
   }
 
   else
   {
-    [v4 sharePlayCaptionTextColor];
+    [theme sharePlayCaptionTextColor];
   }
   v6 = ;
 
@@ -1160,40 +1160,40 @@ LABEL_13:
 
 - (void)configureSubtitle1
 {
-  v3 = [(CKTUConversationBalloonView *)self subtitleColor];
-  v4 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-  [v4 setTextColor:v3];
+  subtitleColor = [(CKTUConversationBalloonView *)self subtitleColor];
+  subtitleLabel1 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+  [subtitleLabel1 setTextColor:subtitleColor];
 
   state = self->_state;
   if (state - 1 < 2)
   {
-    v16 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-    v8 = [(CKTUConversationBalloonView *)self tuConversation];
-    v10 = [CKTUConversationViewUtilities joinStateStatusStringForTUConversation:v8];
+    subtitleLabel12 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    v10 = [CKTUConversationViewUtilities joinStateStatusStringForTUConversation:tuConversation];
   }
 
   else
   {
     if (state - 3 < 2)
     {
-      v6 = [(CKTUConversationBalloonView *)self tuConversation];
-      v16 = [CKTUConversationViewUtilities activityTitleForTUConversation:v6];
+      tuConversation2 = [(CKTUConversationBalloonView *)self tuConversation];
+      subtitleLabel12 = [CKTUConversationViewUtilities activityTitleForTUConversation:tuConversation2];
 
-      v7 = [(CKTUConversationBalloonView *)self tuConversation];
-      v8 = [CKTUConversationViewUtilities activityTextForTUConversation:v7];
+      tuConversation3 = [(CKTUConversationBalloonView *)self tuConversation];
+      tuConversation = [CKTUConversationViewUtilities activityTextForTUConversation:tuConversation3];
 
-      v9 = [(CKTUConversationBalloonView *)self subtitleLabel1];
-      if (v8)
+      subtitleLabel13 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+      if (tuConversation)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ ⋅ %@", v16, v8];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ ⋅ %@", subtitleLabel12, tuConversation];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v16, v15];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", subtitleLabel12, v15];
       }
       v14 = ;
-      [v9 setText:v14];
+      [subtitleLabel13 setText:v14];
 
       goto LABEL_15;
     }
@@ -1203,11 +1203,11 @@ LABEL_13:
       return;
     }
 
-    v11 = [(CKTUConversationBalloonView *)self conversationAVMode];
-    v16 = [(CKTUConversationBalloonView *)self subtitleLabel1];
+    conversationAVMode = [(CKTUConversationBalloonView *)self conversationAVMode];
+    subtitleLabel12 = [(CKTUConversationBalloonView *)self subtitleLabel1];
     v12 = CKFrameworkBundle();
-    v8 = v12;
-    if (v11)
+    tuConversation = v12;
+    if (conversationAVMode)
     {
       v13 = @"CALL_ENDED";
     }
@@ -1220,16 +1220,16 @@ LABEL_13:
     v10 = [v12 localizedStringForKey:v13 value:&stru_1F04268F8 table:@"ChatKit"];
   }
 
-  v9 = v10;
-  [v16 setText:v10];
+  subtitleLabel13 = v10;
+  [subtitleLabel12 setText:v10];
 LABEL_15:
 }
 
 - (void)configureSubtitle2
 {
-  v3 = [(CKTUConversationBalloonView *)self subtitleColor];
-  v4 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-  [v4 setTextColor:v3];
+  subtitleColor = [(CKTUConversationBalloonView *)self subtitleColor];
+  subtitleLabel2 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+  [subtitleLabel2 setTextColor:subtitleColor];
 
   state = self->_state;
   v6 = state >= 3;
@@ -1241,22 +1241,22 @@ LABEL_15:
       return;
     }
 
-    v9 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-    [v9 setHidden:0];
+    subtitleLabel22 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    [subtitleLabel22 setHidden:0];
 
-    v12 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-    v10 = [(CKTUConversationBalloonView *)self tuConversation];
-    v11 = [CKTUConversationViewUtilities joinStateStatusStringForTUConversation:v10];
-    [v12 setText:v11];
+    subtitleLabel23 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    v11 = [CKTUConversationViewUtilities joinStateStatusStringForTUConversation:tuConversation];
+    [subtitleLabel23 setText:v11];
   }
 
   else
   {
-    v8 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-    [v8 setHidden:1];
+    subtitleLabel24 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    [subtitleLabel24 setHidden:1];
 
-    v12 = [(CKTUConversationBalloonView *)self subtitleLabel2];
-    [v12 setText:0];
+    subtitleLabel23 = [(CKTUConversationBalloonView *)self subtitleLabel2];
+    [subtitleLabel23 setText:0];
   }
 }
 
@@ -1267,19 +1267,19 @@ LABEL_15:
   {
     if (((1 << state) & 0x15) != 0)
     {
-      v10 = [(CKTUConversationBalloonView *)self joinButton];
-      [v10 setHidden:1];
+      joinButton = [(CKTUConversationBalloonView *)self joinButton];
+      [joinButton setHidden:1];
     }
 
     else
     {
-      v5 = [(CKTUConversationBalloonView *)self joinButton];
-      [v5 setHidden:0];
+      joinButton2 = [(CKTUConversationBalloonView *)self joinButton];
+      [joinButton2 setHidden:0];
 
-      v6 = [(CKTUConversationBalloonView *)self joinButton];
+      joinButton3 = [(CKTUConversationBalloonView *)self joinButton];
       v7 = CKFrameworkBundle();
       v8 = [v7 localizedStringForKey:@"JOIN" value:&stru_1F04268F8 table:@"ChatKit"];
-      [v6 setAccessibilityLabel:v8];
+      [joinButton3 setAccessibilityLabel:v8];
 
       if ([(CKTUConversationBalloonView *)self shouldRenderJoinButtonAsIcon])
       {
@@ -1290,9 +1290,9 @@ LABEL_15:
       {
         [(CKTUConversationBalloonView *)self _textJoinButtonConfiguration];
       }
-      v10 = ;
-      v9 = [(CKTUConversationBalloonView *)self joinButton];
-      [v9 setConfiguration:v10];
+      joinButton = ;
+      joinButton4 = [(CKTUConversationBalloonView *)self joinButton];
+      [joinButton4 setConfiguration:joinButton];
     }
   }
 }
@@ -1300,23 +1300,23 @@ LABEL_15:
 - (id)_textJoinButtonConfiguration
 {
   v3 = CKIsRunningInMacCatalyst();
-  v4 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v5 = v4;
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  v5 = filledButtonConfiguration;
   if (v3)
   {
-    [v4 setMacIdiomStyle:1];
+    [filledButtonConfiguration setMacIdiomStyle:1];
   }
 
   else
   {
-    [v4 setButtonSize:1];
+    [filledButtonConfiguration setButtonSize:1];
     [v5 setCornerStyle:4];
   }
 
-  v6 = [objc_opt_class() _shouldUseStackedLayout];
+  _shouldUseStackedLayout = [objc_opt_class() _shouldUseStackedLayout];
   v7 = +[CKUIBehavior sharedBehaviors];
   v8 = v7;
-  if (v6)
+  if (_shouldUseStackedLayout)
   {
     [v7 tuConversationBalloonContentStackedLayoutJoinButtonInsets];
   }
@@ -1328,18 +1328,18 @@ LABEL_15:
 
   [v5 setContentInsets:?];
 
-  v9 = [(CKTUConversationBalloonView *)self _joinButtonText];
-  v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9];
+  _joinButtonText = [(CKTUConversationBalloonView *)self _joinButtonText];
+  v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_joinButtonText];
   v11 = *MEMORY[0x1E69DB648];
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 tuConversationBalloonActionButtonFont];
-  [v10 addAttribute:v11 value:v13 range:{0, objc_msgSend(v9, "length")}];
+  tuConversationBalloonActionButtonFont = [v12 tuConversationBalloonActionButtonFont];
+  [v10 addAttribute:v11 value:tuConversationBalloonActionButtonFont range:{0, objc_msgSend(_joinButtonText, "length")}];
 
   [v5 setAttributedTitle:v10];
   v14 = +[CKUIBehavior sharedBehaviors];
-  v15 = [v14 theme];
-  v16 = [v15 multiwayButtonColor];
-  [v5 setBaseBackgroundColor:v16];
+  theme = [v14 theme];
+  multiwayButtonColor = [theme multiwayButtonColor];
+  [v5 setBaseBackgroundColor:multiwayButtonColor];
 
   return v5;
 }
@@ -1347,22 +1347,22 @@ LABEL_15:
 - (id)_iconJoinButtonConfiguration
 {
   v3 = MEMORY[0x1E69A5B78];
-  v4 = [(CKTUConversationBalloonView *)self tuConversation];
-  v5 = [v3 conversationIsVideoCall:v4];
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  v5 = [v3 conversationIsVideoCall:tuConversation];
 
   v6 = MEMORY[0x1E69A5B78];
-  v7 = [(CKTUConversationBalloonView *)self tuConversation];
-  v8 = [v6 conversationIsAVLessSharePlay:v7];
+  tuConversation2 = [(CKTUConversationBalloonView *)self tuConversation];
+  v8 = [v6 conversationIsAVLessSharePlay:tuConversation2];
 
   v9 = *MEMORY[0x1E69DDD58];
   if (CKIsRunningInMacCatalyst())
   {
-    v10 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v10 setMacIdiomStyle:1];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setMacIdiomStyle:1];
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 theme];
-    v13 = [v12 multiwayButtonColor];
-    [v10 setBaseBackgroundColor:v13];
+    theme = [v11 theme];
+    multiwayButtonColor = [theme multiwayButtonColor];
+    [filledButtonConfiguration setBaseBackgroundColor:multiwayButtonColor];
 
     v14 = @"phone.fill";
     if (v5)
@@ -1382,13 +1382,13 @@ LABEL_15:
 
     v19 = [v18 imageWithRenderingMode:2];
 
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    v21 = [v19 imageWithTintColor:v20];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v21 = [v19 imageWithTintColor:whiteColor];
 
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v22 = @"phone.circle.fill";
   if (v5)
   {
@@ -1401,31 +1401,31 @@ LABEL_15:
   v26 = [v24 configurationWithTextStyle:v9 scale:2];
   v27 = [v23 systemImageNamed:v25 withConfiguration:v26];
 
-  v20 = [v27 imageWithRenderingMode:1];
+  whiteColor = [v27 imageWithRenderingMode:1];
 
   if (v8)
   {
-    [v20 size];
+    [whiteColor size];
     v21 = [(CKTUConversationBalloonView *)self _sharePlayImageWithDiameter:v28];
 LABEL_11:
 
-    v20 = v21;
+    whiteColor = v21;
   }
 
-  [v10 setImage:v20];
-  [v10 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [filledButtonConfiguration setImage:whiteColor];
+  [filledButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
 
-  return v10;
+  return filledButtonConfiguration;
 }
 
-- (id)_sharePlayImageWithDiameter:(double)a3
+- (id)_sharePlayImageWithDiameter:(double)diameter
 {
-  v4 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{a3, a3}];
+  v4 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{diameter, diameter}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invoke;
   v7[3] = &__block_descriptor_40_e40_v16__0__UIGraphicsImageRendererContext_8l;
-  *&v7[4] = a3;
+  *&v7[4] = diameter;
   v5 = [v4 imageWithActions:v7];
 
   return v5;
@@ -1458,8 +1458,8 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
 {
   if ([(CKTUConversationBalloonView *)self conversationAVMode])
   {
-    v3 = [(CKTUConversationBalloonView *)self tuConversation];
-    v15 = [CKTUConversationViewUtilities faceTimeIconForTUConversation:v3];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    v15 = [CKTUConversationViewUtilities faceTimeIconForTUConversation:tuConversation];
 
     [MEMORY[0x1E69DC888] systemWhiteColor];
   }
@@ -1470,68 +1470,68 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
     [MEMORY[0x1E69DC888] labelColor];
   }
   v4 = ;
-  v5 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v5 setImage:v15];
+  sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView setImage:v15];
 
-  v6 = [(CKTUConversationBalloonView *)self sessionImageView];
+  sessionImageView2 = [(CKTUConversationBalloonView *)self sessionImageView];
   [v15 size];
   v8 = v7;
   [v15 size];
-  [v6 setBounds:{0.0, 0.0, v8, v9}];
+  [sessionImageView2 setBounds:{0.0, 0.0, v8, v9}];
 
-  v10 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v10 setBackgroundColor:0];
+  sessionImageView3 = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView3 setBackgroundColor:0];
 
-  v11 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v11 setTintColor:v4];
+  sessionImageView4 = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView4 setTintColor:v4];
 
-  v12 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v12 _setCornerRadius:0.0];
+  sessionImageView5 = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView5 _setCornerRadius:0.0];
 
-  v13 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v13 setClipsToBounds:1];
+  sessionImageView6 = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView6 setClipsToBounds:1];
 
-  v14 = [(CKTUConversationBalloonView *)self sessionImageView];
-  [v14 setContentMode:4];
+  sessionImageView7 = [(CKTUConversationBalloonView *)self sessionImageView];
+  [sessionImageView7 setContentMode:4];
 }
 
 - (void)formatImageViewForActivity
 {
   if ([(CKTUConversationBalloonView *)self isUnknownSender])
   {
-    v22 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v22 setHidden:1];
+    sessionImageView = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView setHidden:1];
   }
 
   else
   {
-    v3 = [(CKTUConversationBalloonView *)self tuConversation];
-    v22 = [CKTUConversationViewUtilities activityImageForTUConversation:v3];
+    tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+    sessionImageView = [CKTUConversationViewUtilities activityImageForTUConversation:tuConversation];
 
-    if (!v22)
+    if (!sessionImageView)
     {
-      v4 = [(CKTUConversationBalloonView *)self tuConversation];
+      tuConversation2 = [(CKTUConversationBalloonView *)self tuConversation];
       v5 = +[CKUIBehavior sharedBehaviors];
       [v5 tuConversationBalloonImageDimensions];
-      v22 = [CKTUConversationViewUtilities activityIconForTUConversation:v4 iconSize:?];
+      sessionImageView = [CKTUConversationViewUtilities activityIconForTUConversation:tuConversation2 iconSize:?];
     }
 
-    v6 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v6 setImage:v22];
+    sessionImageView2 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView2 setImage:sessionImageView];
 
     v7 = MEMORY[0x1E69A5B78];
-    v8 = [(CKTUConversationBalloonView *)self tuConversation];
-    v9 = [v7 isScreenShareActivityForTUConversation:v8];
+    tuConversation3 = [(CKTUConversationBalloonView *)self tuConversation];
+    v9 = [v7 isScreenShareActivityForTUConversation:tuConversation3];
 
-    v10 = [(CKTUConversationBalloonView *)self sessionImageView];
-    v11 = v10;
+    sessionImageView3 = [(CKTUConversationBalloonView *)self sessionImageView];
+    v11 = sessionImageView3;
     if (v9)
     {
-      v12 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-      [v11 setBackgroundColor:v12];
+      systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+      [v11 setBackgroundColor:systemDarkGrayColor];
 
-      v10 = [(CKTUConversationBalloonView *)self sessionImageView];
-      v11 = v10;
+      sessionImageView3 = [(CKTUConversationBalloonView *)self sessionImageView];
+      v11 = sessionImageView3;
       v13 = 4;
     }
 
@@ -1540,22 +1540,22 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
       v13 = 2;
     }
 
-    [v10 setContentMode:v13];
+    [sessionImageView3 setContentMode:v13];
 
     [(CKTUConversationBalloonView *)self imageViewSize];
     v15 = v14;
     v17 = v16;
-    v18 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v18 setBounds:{0.0, 0.0, v15, v17}];
+    sessionImageView4 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView4 setBounds:{0.0, 0.0, v15, v17}];
 
-    v19 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v19 _setCornerRadius:5.0];
+    sessionImageView5 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView5 _setCornerRadius:5.0];
 
-    v20 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v20 setClipsToBounds:1];
+    sessionImageView6 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView6 setClipsToBounds:1];
 
-    v21 = [(CKTUConversationBalloonView *)self sessionImageView];
-    [v21 setHidden:0];
+    sessionImageView7 = [(CKTUConversationBalloonView *)self sessionImageView];
+    [sessionImageView7 setHidden:0];
   }
 }
 
@@ -1566,11 +1566,11 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v2 = [MEMORY[0x1E69D8A58] sharedInstance];
-  v3 = [v2 currentAudioAndVideoCalls];
+  mEMORY[0x1E69D8A58] = [MEMORY[0x1E69D8A58] sharedInstance];
+  currentAudioAndVideoCalls = [mEMORY[0x1E69D8A58] currentAudioAndVideoCalls];
 
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  obj = currentAudioAndVideoCalls;
+  v4 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1586,13 +1586,13 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E69D8A58] sharedInstance];
-        v11 = [v10 activeConversationForCall:v9];
+        mEMORY[0x1E69D8A58]2 = [MEMORY[0x1E69D8A58] sharedInstance];
+        v11 = [mEMORY[0x1E69D8A58]2 activeConversationForCall:v9];
 
-        v12 = [v11 UUID];
-        v13 = [(CKTUConversationBalloonView *)self tuConversation];
-        v14 = [v13 UUID];
-        v15 = [v12 isEqual:v14];
+        uUID = [v11 UUID];
+        tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+        uUID2 = [tuConversation UUID];
+        v15 = [uUID isEqual:uUID2];
 
         if (v15)
         {
@@ -1616,15 +1616,15 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
   return v6;
 }
 
-- (void)_joinButtonTapped:(id)a3
+- (void)_joinButtonTapped:(id)tapped
 {
-  v4 = [(CKBalloonView *)self delegate];
+  delegate = [(CKBalloonView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKBalloonView *)self delegate];
-    [v6 tuConversationBalloonJoinButtonTapped:self];
+    delegate2 = [(CKBalloonView *)self delegate];
+    [delegate2 tuConversationBalloonJoinButtonTapped:self];
   }
 }
 
@@ -1635,13 +1635,13 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
 
   if (CKIsRunningUnitTests())
   {
-    v5 = [(CKTUConversationBalloonView *)self joinButtonText_TestingOverride];
+    joinButtonText_TestingOverride = [(CKTUConversationBalloonView *)self joinButtonText_TestingOverride];
 
-    if (v5)
+    if (joinButtonText_TestingOverride)
     {
-      v6 = [(CKTUConversationBalloonView *)self joinButtonText_TestingOverride];
+      joinButtonText_TestingOverride2 = [(CKTUConversationBalloonView *)self joinButtonText_TestingOverride];
 
-      v4 = v6;
+      v4 = joinButtonText_TestingOverride2;
     }
   }
 
@@ -1650,8 +1650,8 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
 
 - (BOOL)joinButtonIsShowingImageContent
 {
-  v2 = [(CKTUConversationBalloonView *)self joinButton];
-  v3 = [v2 imageForState:0];
+  joinButton = [(CKTUConversationBalloonView *)self joinButton];
+  v3 = [joinButton imageForState:0];
   v4 = v3 != 0;
 
   return v4;
@@ -1659,8 +1659,8 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
 
 - (BOOL)joinButtonIsShowingTextContent
 {
-  v2 = [(CKTUConversationBalloonView *)self joinButton];
-  v3 = [v2 titleForState:0];
+  joinButton = [(CKTUConversationBalloonView *)self joinButton];
+  v3 = [joinButton titleForState:0];
 
   return v3 != 0;
 }
@@ -1672,9 +1672,9 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
   v4 = v3;
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
-  if (v6)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v7 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD28]];
     [v7 scaledValueForValue:v4];
@@ -1712,9 +1712,9 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
   v4 = v3;
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
-  if (v6)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v7 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD28]];
     [v7 scaledValueForValue:v4];
@@ -1730,88 +1730,88 @@ void __59__CKTUConversationBalloonView__sharePlayImageWithDiameter___block_invok
 
 - (void)formatIconViewForFaceTime
 {
-  v3 = [(CKTUConversationBalloonView *)self iconView];
-  [v3 setHidden:1];
+  iconView = [(CKTUConversationBalloonView *)self iconView];
+  [iconView setHidden:1];
 
-  v4 = [(CKTUConversationBalloonView *)self avatarView];
-  [v4 setHidden:1];
+  avatarView = [(CKTUConversationBalloonView *)self avatarView];
+  [avatarView setHidden:1];
 }
 
 - (void)formatIconViewForActivity
 {
   if (([objc_opt_class() _shouldUseStackedLayout] & 1) != 0 || (-[CKTUConversationBalloonView tuConversation](self, "tuConversation"), v3 = objc_claimAutoreleasedReturnValue(), v4 = +[CKTUConversationViewUtilities activityHasImageForTUConversation:](CKTUConversationViewUtilities, "activityHasImageForTUConversation:", v3), v3, !v4))
   {
-    v17 = [(CKTUConversationBalloonView *)self iconView];
-    [v17 setHidden:1];
+    iconView = [(CKTUConversationBalloonView *)self iconView];
+    [iconView setHidden:1];
     goto LABEL_13;
   }
 
-  v17 = [(CKTUConversationBalloonView *)self tuConversation];
+  iconView = [(CKTUConversationBalloonView *)self tuConversation];
   if (![MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:?])
   {
     if (![(CKTUConversationBalloonView *)self isUnknownSender])
     {
       v7 = +[CKUIBehavior sharedBehaviors];
       [v7 tuConversationBalloonIconDimensions];
-      v6 = [CKTUConversationViewUtilities activityIconForTUConversation:v17 iconSize:?];
+      avatarView2 = [CKTUConversationViewUtilities activityIconForTUConversation:iconView iconSize:?];
 
-      if (v6)
+      if (avatarView2)
       {
         v8 = +[CKUIBehavior sharedBehaviors];
         [v8 tuConversationBalloonIconDimensions];
         v10 = v9;
 
-        v11 = [(CKTUConversationBalloonView *)self iconView];
-        [v11 setHidden:{objc_msgSend(MEMORY[0x1E69A5B78], "isScreenShareActivityForTUConversation:", v17)}];
+        iconView2 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView2 setHidden:{objc_msgSend(MEMORY[0x1E69A5B78], "isScreenShareActivityForTUConversation:", iconView)}];
 
-        v12 = [(CKTUConversationBalloonView *)self iconView];
-        [v12 setContentMode:1];
+        iconView3 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView3 setContentMode:1];
 
-        v13 = [(CKTUConversationBalloonView *)self iconView];
-        [v13 setImage:v6];
+        iconView4 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView4 setImage:avatarView2];
 
-        v14 = [(CKTUConversationBalloonView *)self iconView];
-        [v14 setBounds:{0.0, 0.0, v10, v10}];
+        iconView5 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView5 setBounds:{0.0, 0.0, v10, v10}];
 
-        v15 = [(CKTUConversationBalloonView *)self iconView];
-        [v15 setBackgroundColor:0];
+        iconView6 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView6 setBackgroundColor:0];
       }
 
       else
       {
-        v15 = [(CKTUConversationBalloonView *)self iconView];
-        [v15 setHidden:1];
+        iconView6 = [(CKTUConversationBalloonView *)self iconView];
+        [iconView6 setHidden:1];
       }
 
-      v16 = [(CKTUConversationBalloonView *)self avatarView];
-      [v16 setHidden:1];
+      avatarView = [(CKTUConversationBalloonView *)self avatarView];
+      [avatarView setHidden:1];
 
       goto LABEL_12;
     }
 
-    v5 = [(CKTUConversationBalloonView *)self iconView];
-    [v5 setHidden:1];
+    iconView7 = [(CKTUConversationBalloonView *)self iconView];
+    [iconView7 setHidden:1];
   }
 
-  v6 = [(CKTUConversationBalloonView *)self avatarView];
-  [v6 setHidden:1];
+  avatarView2 = [(CKTUConversationBalloonView *)self avatarView];
+  [avatarView2 setHidden:1];
 LABEL_12:
 
 LABEL_13:
 }
 
-- (void)_multiWayCallStateChanged:(id)a3
+- (void)_multiWayCallStateChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v11 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A5838]];
+  userInfo = [changed userInfo];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A5838]];
 
-  v5 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v6 = [v5 existingConversationForTelephonyConversationUUID:v11];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  v6 = [mEMORY[0x1E69A5AF8] existingConversationForTelephonyConversationUUID:v11];
 
-  v7 = [v6 UUID];
-  v8 = [(CKTUConversationBalloonView *)self tuConversation];
-  v9 = [v8 UUID];
-  v10 = [v7 isEqual:v9];
+  uUID = [v6 UUID];
+  tuConversation = [(CKTUConversationBalloonView *)self tuConversation];
+  uUID2 = [tuConversation UUID];
+  v10 = [uUID isEqual:uUID2];
 
   if (v10)
   {
@@ -1819,34 +1819,34 @@ LABEL_13:
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(CKTUConversationBalloonView *)self setNeedsLayout];
 
   [(CKTUConversationBalloonView *)self layoutIfNeeded];
 }
 
-- (void)configureForTUConversationChatItem:(id)a3
+- (void)configureForTUConversationChatItem:(id)item
 {
-  v4 = a3;
-  -[CKTUConversationBalloonView setOrientation:](self, "setOrientation:", [v4 balloonOrientation]);
-  -[CKColoredBalloonView setHasTail:](self, "setHasTail:", [v4 hasTail]);
-  [v4 textAlignmentInsets];
+  itemCopy = item;
+  -[CKTUConversationBalloonView setOrientation:](self, "setOrientation:", [itemCopy balloonOrientation]);
+  -[CKColoredBalloonView setHasTail:](self, "setHasTail:", [itemCopy hasTail]);
+  [itemCopy textAlignmentInsets];
   [(CKBalloonView *)self setTextAlignmentInsets:?];
-  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [v4 balloonCorners]);
+  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [itemCopy balloonCorners]);
   [(CKBalloonView *)self setBalloonStyle:0];
-  -[CKColoredBalloonView setColor:](self, "setColor:", [v4 color]);
+  -[CKColoredBalloonView setColor:](self, "setColor:", [itemCopy color]);
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 balloonCornerRadius];
   [(CKBalloonView *)self setCornerRadius:?];
 
-  v6 = [v4 tuConversationUUID];
-  [(CKTUConversationBalloonView *)self setTuConversationUUID:v6];
+  tuConversationUUID = [itemCopy tuConversationUUID];
+  [(CKTUConversationBalloonView *)self setTuConversationUUID:tuConversationUUID];
 
-  -[CKTUConversationBalloonView setUnknownSender:](self, "setUnknownSender:", [v4 isSenderUnknown]);
-  v7 = [v4 conversationAVMode];
+  -[CKTUConversationBalloonView setUnknownSender:](self, "setUnknownSender:", [itemCopy isSenderUnknown]);
+  conversationAVMode = [itemCopy conversationAVMode];
 
-  [(CKTUConversationBalloonView *)self setConversationAVMode:v7];
+  [(CKTUConversationBalloonView *)self setConversationAVMode:conversationAVMode];
 }
 
 @end

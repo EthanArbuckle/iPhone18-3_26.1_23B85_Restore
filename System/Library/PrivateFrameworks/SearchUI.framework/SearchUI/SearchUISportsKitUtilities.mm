@@ -1,18 +1,18 @@
 @interface SearchUISportsKitUtilities
 + (id)sportsFollowStatusDidChangeNotificaitonName;
-+ (void)checkForSessionWithCanonicalId:(id)a3 completionBlock:(id)a4;
-+ (void)createSessionWithCanonicalId:(id)a3 completionBlock:(id)a4;
-+ (void)destroySessionWithCanonicalId:(id)a3 completionBlock:(id)a4;
-+ (void)liveActivitiesEnabledWithCompletionBlock:(id)a3;
++ (void)checkForSessionWithCanonicalId:(id)id completionBlock:(id)block;
++ (void)createSessionWithCanonicalId:(id)id completionBlock:(id)block;
++ (void)destroySessionWithCanonicalId:(id)id completionBlock:(id)block;
++ (void)liveActivitiesEnabledWithCompletionBlock:(id)block;
 + (void)postUpdateNotification;
 - (_TtC8SearchUI26SearchUISportsKitUtilities)init;
 @end
 
 @implementation SearchUISportsKitUtilities
 
-+ (void)liveActivitiesEnabledWithCompletionBlock:(id)a3
++ (void)liveActivitiesEnabledWithCompletionBlock:(id)block
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(block);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   sub_1DA25F0C4();
@@ -24,13 +24,13 @@
   sub_1DA25F0A4();
 }
 
-+ (void)checkForSessionWithCanonicalId:(id)a3 completionBlock:(id)a4
++ (void)checkForSessionWithCanonicalId:(id)id completionBlock:(id)block
 {
   v5 = sub_1DA25F064();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(block);
   sub_1DA25F244();
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
@@ -46,13 +46,13 @@
   (*(v6 + 8))(v8, v5);
 }
 
-+ (void)createSessionWithCanonicalId:(id)a3 completionBlock:(id)a4
++ (void)createSessionWithCanonicalId:(id)id completionBlock:(id)block
 {
   v5 = sub_1DA25F064();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(block);
   sub_1DA25F244();
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
@@ -70,13 +70,13 @@
   (*(v6 + 8))(v8, v5);
 }
 
-+ (void)destroySessionWithCanonicalId:(id)a3 completionBlock:(id)a4
++ (void)destroySessionWithCanonicalId:(id)id completionBlock:(id)block
 {
   v5 = sub_1DA25F064();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(block);
   sub_1DA25F244();
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
@@ -96,9 +96,9 @@
 
 + (void)postUpdateNotification
 {
-  v2 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   v3 = sub_1DA25F234();
-  [v2 postNotificationName:v3 object:0];
+  [defaultCenter postNotificationName:v3 object:0];
 }
 
 + (id)sportsFollowStatusDidChangeNotificaitonName

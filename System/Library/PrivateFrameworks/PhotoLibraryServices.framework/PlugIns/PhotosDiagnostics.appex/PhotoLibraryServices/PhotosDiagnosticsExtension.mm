@@ -1,37 +1,37 @@
 @interface PhotosDiagnosticsExtension
 - (PhotosDiagnosticsExtension)init;
-- (id)_bundleIDFromParameters:(id)a3;
+- (id)_bundleIDFromParameters:(id)parameters;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (id)latestArchiveWithinTimeCutoff:(double)a3 nameExclude:(id)a4;
-- (void)diagnosticServiceStateDidChange:(char)a3 outputURL:(id)a4 error:(id)a5;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)latestArchiveWithinTimeCutoff:(double)cutoff nameExclude:(id)exclude;
+- (void)diagnosticServiceStateDidChange:(char)change outputURL:(id)l error:(id)error;
 - (void)photosDiagnosticDone;
 @end
 
 @implementation PhotosDiagnosticsExtension
 
-- (void)diagnosticServiceStateDidChange:(char)a3 outputURL:(id)a4 error:(id)a5
+- (void)diagnosticServiceStateDidChange:(char)change outputURL:(id)l error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v6)
+  changeCopy = change;
+  lCopy = l;
+  errorCopy = error;
+  if (!changeCopy)
   {
 LABEL_7:
     [(PhotosDiagnosticsExtension *)self photosDiagnosticDone];
     goto LABEL_8;
   }
 
-  if (v6 == -1)
+  if (changeCopy == -1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v9 localizedFailureReason];
-      v11 = v10;
+      localizedFailureReason = [errorCopy localizedFailureReason];
+      v11 = localizedFailureReason;
       v12 = @"<unknown reason>";
-      if (v10)
+      if (localizedFailureReason)
       {
-        v12 = v10;
+        v12 = localizedFailureReason;
       }
 
       v13 = 138543362;
@@ -45,9 +45,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_bundleIDFromParameters:(id)a3
+- (id)_bundleIDFromParameters:(id)parameters
 {
-  v3 = [a3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
+  v3 = [parameters objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,10 +100,10 @@ LABEL_13:
   return v10;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v5 isEqualToString:@"com.apple.symptomsd-diag"])
   {
     v6 = 1;
@@ -141,7 +141,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "running for symptomsd/AutoBugCapture: skip databases and deleteOnAttach", buf, 2u);
     }
 
-    v10 = [(PhotosDiagnosticsExtension *)self _bundleIDFromParameters:v4];
+    v10 = [(PhotosDiagnosticsExtension *)self _bundleIDFromParameters:parametersCopy];
     v11 = [(PhotosDiagnosticsExtension *)self photosDiagnosticIncludingDatabases:v6 ^ 1 bundleID:v10];
 
     v12 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
@@ -221,9 +221,9 @@ LABEL_13:
   }
 }
 
-- (id)latestArchiveWithinTimeCutoff:(double)a3 nameExclude:(id)a4
+- (id)latestArchiveWithinTimeCutoff:(double)cutoff nameExclude:(id)exclude
 {
-  v5 = a4;
+  excludeCopy = exclude;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -242,27 +242,27 @@ LABEL_13:
   v11[1] = 3221225472;
   v11[2] = sub_100001CB4;
   v11[3] = &unk_1000041C0;
-  v7 = v5;
+  v7 = excludeCopy;
   v12 = v7;
   v13 = &v21;
   v14 = &v15;
   [PLDiagnostics enumerateDiagnosticsURLsIncludingPropertyiesForKeys:v6 handler:v11];
 
-  v8 = [[NSDate alloc] initWithTimeIntervalSinceNow:-a3];
+  v8 = [[NSDate alloc] initWithTimeIntervalSinceNow:-cutoff];
   if ([v22[5] compare:v8] == 1)
   {
-    v9 = [v16[5] path];
+    path = [v16[5] path];
   }
 
   else
   {
-    v9 = 0;
+    path = 0;
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
 
-  return v9;
+  return path;
 }
 
 - (PhotosDiagnosticsExtension)init

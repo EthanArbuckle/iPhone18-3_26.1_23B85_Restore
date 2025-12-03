@@ -1,46 +1,46 @@
 @interface RTIInputSystemServiceSession
-+ (id)sessionWithConnection:(id)a3;
++ (id)sessionWithConnection:(id)connection;
 - (NSXPCConnection)connection;
 - (RTIDataPayload)currentDataPayload;
 - (RTIDocumentRequest)defaultRequest;
-- (RTIInputSystemServiceSession)initWithConnection:(id)a3;
+- (RTIInputSystemServiceSession)initWithConnection:(id)connection;
 - (id)bundleIdentifier;
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3;
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4;
-- (id)valueForEntitlement:(id)a3;
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations;
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations resultHandler:(id)handler;
+- (id)valueForEntitlement:(id)entitlement;
 - (int)pid;
 - (void)_flushOperationsImpl;
-- (void)_flushOperationsImplWithResultHandler:(id)a3;
+- (void)_flushOperationsImplWithResultHandler:(id)handler;
 - (void)_killConnectionWithCallback;
-- (void)_queue_sessionWithID:(id)a3 didAddRTISupplementalLexicon:(id)a4;
-- (void)_queue_sessionWithID:(id)a3 didAddSupplementalLexicon:(id)a4;
-- (void)_updateAppIdsFromConnectionOnInternalQueueWithCompletionHandler:(id)a3;
-- (void)beginOptionsSafeAccess:(id)a3;
-- (void)beginRemoteTextInputSessionWithID:(id)a3 options:(id)a4 documentTraits:(id)a5 initialDocumentState:(id)a6;
+- (void)_queue_sessionWithID:(id)d didAddRTISupplementalLexicon:(id)lexicon;
+- (void)_queue_sessionWithID:(id)d didAddSupplementalLexicon:(id)lexicon;
+- (void)_updateAppIdsFromConnectionOnInternalQueueWithCompletionHandler:(id)handler;
+- (void)beginOptionsSafeAccess:(id)access;
+- (void)beginRemoteTextInputSessionWithID:(id)d options:(id)options documentTraits:(id)traits initialDocumentState:(id)state;
 - (void)bundleIdentifier;
 - (void)dealloc;
-- (void)documentStateSafeAccess:(id)a3;
-- (void)documentTraitsSafeAccess:(id)a3;
-- (void)endRemoteTextInputSessionWithID:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)documentStateSafeAccess:(id)access;
+- (void)documentTraitsSafeAccess:(id)access;
+- (void)endRemoteTextInputSessionWithID:(id)d options:(id)options completion:(id)completion;
 - (void)flushOperations;
-- (void)flushOperationsWithResultHandler:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
-- (void)modifyAndFlushTextOperations:(id)a3;
-- (void)modifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4;
-- (void)performDocumentRequest:(id)a3 completion:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 didAddRTISupplementalLexicon:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 didAddSupplementalLexicon:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 didChangePause:(BOOL)a4 withReason:(id)a5;
-- (void)remoteTextInputSessionWithID:(id)a3 didRemoveRTISupplementalLexiconWithIdentifier:(unint64_t)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 didRemoveSupplementalLexiconWithIdentifier:(unint64_t)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 documentDidChange:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 documentTraitsDidChange:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 performInputOperation:(id)a4;
-- (void)remoteTextInputSessionWithID:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5;
-- (void)remoteTextInputSessionWithID:(id)a3 textSuggestionsChanged:(id)a4;
-- (void)setDefaultRequest:(id)a3;
-- (void)textOperationsSafeAccess:(id)a3;
-- (void)uuidSafeAccess:(id)a3;
+- (void)flushOperationsWithResultHandler:(id)handler;
+- (void)handleTextActionPayload:(id)payload;
+- (void)modifyAndFlushTextOperations:(id)operations;
+- (void)modifyAndFlushTextOperations:(id)operations resultHandler:(id)handler;
+- (void)performDocumentRequest:(id)request completion:(id)completion;
+- (void)remoteTextInputSessionWithID:(id)d didAddRTISupplementalLexicon:(id)lexicon;
+- (void)remoteTextInputSessionWithID:(id)d didAddSupplementalLexicon:(id)lexicon;
+- (void)remoteTextInputSessionWithID:(id)d didChangePause:(BOOL)pause withReason:(id)reason;
+- (void)remoteTextInputSessionWithID:(id)d didRemoveRTISupplementalLexiconWithIdentifier:(unint64_t)identifier;
+- (void)remoteTextInputSessionWithID:(id)d didRemoveSupplementalLexiconWithIdentifier:(unint64_t)identifier;
+- (void)remoteTextInputSessionWithID:(id)d documentDidChange:(id)change;
+- (void)remoteTextInputSessionWithID:(id)d documentTraitsDidChange:(id)change;
+- (void)remoteTextInputSessionWithID:(id)d performInputOperation:(id)operation;
+- (void)remoteTextInputSessionWithID:(id)d performInputOperation:(id)operation withResponse:(id)response;
+- (void)remoteTextInputSessionWithID:(id)d textSuggestionsChanged:(id)changed;
+- (void)setDefaultRequest:(id)request;
+- (void)textOperationsSafeAccess:(id)access;
+- (void)uuidSafeAccess:(id)access;
 @end
 
 @implementation RTIInputSystemServiceSession
@@ -91,17 +91,17 @@ void __59__RTIInputSystemServiceSession__killConnectionWithCallback__block_invok
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)sessionWithConnection:(id)a3
++ (id)sessionWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithConnection:connectionCopy];
 
   return v5;
 }
 
-- (RTIInputSystemServiceSession)initWithConnection:(id)a3
+- (RTIInputSystemServiceSession)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = RTIInputSystemServiceSession;
   v5 = [(RTIInputSystemServiceSession *)&v22 init];
@@ -109,7 +109,7 @@ void __59__RTIInputSystemServiceSession__killConnectionWithCallback__block_invok
   if (v5)
   {
     v5->_payloadVersion = 1;
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v8 = dispatch_queue_create("com.apple.RemoteTextInput.RTIInputSystemServiceSession.Internal", v7);
     internalQueue = v6->_internalQueue;
@@ -121,12 +121,12 @@ void __59__RTIInputSystemServiceSession__killConnectionWithCallback__block_invok
 
     v6->_lifecycleDispatchState = 0;
     v12 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0DA58F8];
-    [v4 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
     v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0DA6A28];
-    [v4 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
-    [v4 setExportedObject:v6];
+    [connectionCopy setExportedObject:v6];
     objc_initWeak(&location, v6);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -134,15 +134,15 @@ void __59__RTIInputSystemServiceSession__killConnectionWithCallback__block_invok
     v19[3] = &unk_1E7514078;
     objc_copyWeak(&v20, &location);
     v14 = MEMORY[0x19A8FDFF0](v19);
-    [v4 setInterruptionHandler:v14];
+    [connectionCopy setInterruptionHandler:v14];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __51__RTIInputSystemServiceSession_initWithConnection___block_invoke_93;
     v17[3] = &unk_1E7514078;
     objc_copyWeak(&v18, &location);
     v15 = MEMORY[0x19A8FDFF0](v17);
-    [v4 setInvalidationHandler:v15];
-    [(RTIInputSystemServiceSession *)v6 didInitializeWithConnection:v4];
+    [connectionCopy setInvalidationHandler:v15];
+    [(RTIInputSystemServiceSession *)v6 didInitializeWithConnection:connectionCopy];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v20);
@@ -229,9 +229,9 @@ void __51__RTIInputSystemServiceSession_initWithConnection___block_invoke_93(uin
   return 0;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v6 = WeakRetained;
   if (!WeakRetained)
@@ -256,7 +256,7 @@ LABEL_11:
 
   v8 = v7;
   *cf.val = 0;
-  v9 = SecTaskCopyValueForEntitlement(v7, v4, &cf);
+  v9 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &cf);
   if (*cf.val)
   {
     v10 = RTILogFacility();
@@ -274,9 +274,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)uuidSafeAccess:(id)a3
+- (void)uuidSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -284,8 +284,8 @@ LABEL_12:
   v7[2] = __47__RTIInputSystemServiceSession_uuidSafeAccess___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -296,9 +296,9 @@ void __47__RTIInputSystemServiceSession_uuidSafeAccess___block_invoke(uint64_t a
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)beginOptionsSafeAccess:(id)a3
+- (void)beginOptionsSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -306,8 +306,8 @@ void __47__RTIInputSystemServiceSession_uuidSafeAccess___block_invoke(uint64_t a
   v7[2] = __55__RTIInputSystemServiceSession_beginOptionsSafeAccess___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -318,9 +318,9 @@ void __55__RTIInputSystemServiceSession_beginOptionsSafeAccess___block_invoke(ui
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)documentTraitsSafeAccess:(id)a3
+- (void)documentTraitsSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -328,8 +328,8 @@ void __55__RTIInputSystemServiceSession_beginOptionsSafeAccess___block_invoke(ui
   v7[2] = __57__RTIInputSystemServiceSession_documentTraitsSafeAccess___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -340,9 +340,9 @@ void __57__RTIInputSystemServiceSession_documentTraitsSafeAccess___block_invoke(
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)documentStateSafeAccess:(id)a3
+- (void)documentStateSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -350,8 +350,8 @@ void __57__RTIInputSystemServiceSession_documentTraitsSafeAccess___block_invoke(
   v7[2] = __56__RTIInputSystemServiceSession_documentStateSafeAccess___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -362,9 +362,9 @@ void __56__RTIInputSystemServiceSession_documentStateSafeAccess___block_invoke(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)textOperationsSafeAccess:(id)a3
+- (void)textOperationsSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -372,8 +372,8 @@ void __56__RTIInputSystemServiceSession_documentStateSafeAccess___block_invoke(u
   v7[2] = __57__RTIInputSystemServiceSession_textOperationsSafeAccess___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -404,9 +404,9 @@ void __57__RTIInputSystemServiceSession_textOperationsSafeAccess___block_invoke(
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)flushOperationsWithResultHandler:(id)a3
+- (void)flushOperationsWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -414,35 +414,35 @@ void __57__RTIInputSystemServiceSession_textOperationsSafeAccess___block_invoke(
   v7[2] = __65__RTIInputSystemServiceSession_flushOperationsWithResultHandler___block_invoke;
   v7[3] = &unk_1E75140F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (void)_flushOperationsImplWithResultHandler:(id)a3
+- (void)_flushOperationsImplWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_internalQueue);
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
-    v6 = [(RTIInputSystemSession *)self textOperations];
+    textOperations = [(RTIInputSystemSession *)self textOperations];
 
-    if (v6)
+    if (textOperations)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __70__RTIInputSystemServiceSession__flushOperationsImplWithResultHandler___block_invoke;
       v13[3] = &unk_1E7514118;
-      v7 = v4;
+      v7 = handlerCopy;
       v14 = v7;
       v8 = [WeakRetained remoteObjectProxyWithErrorHandler:v13];
-      v9 = [(RTIInputSystemSession *)self textOperations];
-      [v8 performTextOperations:v9 resultHandler:v7];
+      textOperations2 = [(RTIInputSystemSession *)self textOperations];
+      [v8 performTextOperations:textOperations2 resultHandler:v7];
 
-      v10 = [(RTIInputSystemSession *)self textOperations];
-      v11 = [(RTIInputSystemSession *)self documentState];
-      [(RTIInputSystemSession *)self _applyLocalTextOperations:v10 toDocumentState:v11];
+      textOperations3 = [(RTIInputSystemSession *)self textOperations];
+      documentState = [(RTIInputSystemSession *)self documentState];
+      [(RTIInputSystemSession *)self _applyLocalTextOperations:textOperations3 toDocumentState:documentState];
 
       [(RTIInputSystemSession *)self setTextOperations:0];
     }
@@ -456,9 +456,9 @@ void __57__RTIInputSystemServiceSession_textOperationsSafeAccess___block_invoke(
       [RTIInputSystemServiceSession _flushOperationsImplWithResultHandler:];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -479,9 +479,9 @@ void __70__RTIInputSystemServiceSession__flushOperationsImplWithResultHandler___
   }
 }
 
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   v12 = 0;
   v13 = &v12;
@@ -495,9 +495,9 @@ void __70__RTIInputSystemServiceSession__flushOperationsImplWithResultHandler___
   block[2] = __79__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOperations___block_invoke;
   block[3] = &unk_1E7514140;
   block[4] = self;
-  v10 = v4;
+  v10 = operationsCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = operationsCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -523,10 +523,10 @@ void __79__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOper
   *(v5 + 40) = v4;
 }
 
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   v17 = 0;
   v18 = &v17;
@@ -540,11 +540,11 @@ void __79__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOper
   v13[2] = __93__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOperations_resultHandler___block_invoke;
   v13[3] = &unk_1E7514168;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = operationsCopy;
+  v15 = handlerCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = operationsCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -570,9 +570,9 @@ void __93__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOper
   *(v5 + 40) = v4;
 }
 
-- (void)modifyAndFlushTextOperations:(id)a3
+- (void)modifyAndFlushTextOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -580,8 +580,8 @@ void __93__RTIInputSystemServiceSession_documentStateAfterModifyAndFlushTextOper
   v7[2] = __61__RTIInputSystemServiceSession_modifyAndFlushTextOperations___block_invoke;
   v7[3] = &unk_1E75140A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationsCopy;
+  v6 = operationsCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -599,10 +599,10 @@ uint64_t __61__RTIInputSystemServiceSession_modifyAndFlushTextOperations___block
   return [v4 _flushOperationsImpl];
 }
 
-- (void)modifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4
+- (void)modifyAndFlushTextOperations:(id)operations resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -610,10 +610,10 @@ uint64_t __61__RTIInputSystemServiceSession_modifyAndFlushTextOperations___block
   block[2] = __75__RTIInputSystemServiceSession_modifyAndFlushTextOperations_resultHandler___block_invoke;
   block[3] = &unk_1E7514190;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = operationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = operationsCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -655,9 +655,9 @@ uint64_t __75__RTIInputSystemServiceSession_modifyAndFlushTextOperations_resultH
   return v4;
 }
 
-- (void)setDefaultRequest:(id)a3
+- (void)setDefaultRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -665,8 +665,8 @@ uint64_t __75__RTIInputSystemServiceSession_modifyAndFlushTextOperations_resultH
   v7[2] = __50__RTIInputSystemServiceSession_setDefaultRequest___block_invoke;
   v7[3] = &unk_1E75141E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -691,21 +691,21 @@ void __50__RTIInputSystemServiceSession_setDefaultRequest___block_invoke(uint64_
   }
 }
 
-- (void)performDocumentRequest:(id)a3 completion:(id)a4
+- (void)performDocumentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_internalQueue);
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__RTIInputSystemServiceSession_performDocumentRequest_completion___block_invoke;
   block[3] = &unk_1E7514208;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = requestCopy;
+  v10 = completionCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -762,11 +762,11 @@ void __66__RTIInputSystemServiceSession_performDocumentRequest_completion___bloc
   }
 }
 
-- (void)_updateAppIdsFromConnectionOnInternalQueueWithCompletionHandler:(id)a3
+- (void)_updateAppIdsFromConnectionOnInternalQueueWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = [(RTIInputSystemServiceSession *)self bundleIdentifier];
+  bundleIdentifier = [(RTIInputSystemServiceSession *)self bundleIdentifier];
   v6 = [(RTIInputSystemServiceSession *)self pid];
   v7 = [(RTIInputSystemServiceSession *)self valueForEntitlement:@"application-identifier"];
   v22 = 0;
@@ -787,29 +787,29 @@ void __66__RTIInputSystemServiceSession_performDocumentRequest_completion___bloc
 
   v9 = v8;
   _Block_object_dispose(&v22, 8);
-  v10 = [v8 applicationProxyForIdentifier:v5];
-  v11 = [v10 localizedName];
+  v10 = [v8 applicationProxyForIdentifier:bundleIdentifier];
+  localizedName = [v10 localizedName];
   v12 = *MEMORY[0x1E695E120];
   v13 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E695E120]];
   v14 = [v10 objectsForInfoDictionaryKeys:v13];
   v15 = [v14 stringForKey:v12];
 
-  v16 = [(RTIInputSystemSession *)self documentTraits];
-  [v16 setAppId:v7];
+  documentTraits = [(RTIInputSystemSession *)self documentTraits];
+  [documentTraits setAppId:v7];
 
-  v17 = [(RTIInputSystemSession *)self documentTraits];
-  [v17 setBundleId:v5];
+  documentTraits2 = [(RTIInputSystemSession *)self documentTraits];
+  [documentTraits2 setBundleId:bundleIdentifier];
 
-  v18 = [(RTIInputSystemSession *)self documentTraits];
-  [v18 setAppName:v15];
+  documentTraits3 = [(RTIInputSystemSession *)self documentTraits];
+  [documentTraits3 setAppName:v15];
 
-  v19 = [(RTIInputSystemSession *)self documentTraits];
-  [v19 setLocalizedAppName:v11];
+  documentTraits4 = [(RTIInputSystemSession *)self documentTraits];
+  [documentTraits4 setLocalizedAppName:localizedName];
 
-  v20 = [(RTIInputSystemSession *)self documentTraits];
-  [v20 setProcessId:v6];
+  documentTraits5 = [(RTIInputSystemSession *)self documentTraits];
+  [documentTraits5 setProcessId:v6];
 
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 }
 
 - (RTIDataPayload)currentDataPayload
@@ -823,7 +823,7 @@ void __66__RTIInputSystemServiceSession_performDocumentRequest_completion___bloc
   v8[3] = &unk_1E75141E0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(internalQueue, v8);
   v6 = v5;
 
@@ -849,20 +849,20 @@ uint64_t __50__RTIInputSystemServiceSession_currentDataPayload__block_invoke(uin
   return [v6 updateData];
 }
 
-- (void)beginRemoteTextInputSessionWithID:(id)a3 options:(id)a4 documentTraits:(id)a5 initialDocumentState:(id)a6
+- (void)beginRemoteTextInputSessionWithID:(id)d options:(id)options documentTraits:(id)traits initialDocumentState:(id)state
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  traitsCopy = traits;
+  stateCopy = state;
   v14 = RTIInputSessionChangeLogFacility();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v31 = "[RTIInputSystemServiceSession beginRemoteTextInputSessionWithID:options:documentTraits:initialDocumentState:]";
     v32 = 2112;
-    v33 = v10;
+    v33 = dCopy;
     _os_log_impl(&dword_19A2A6000, v14, OS_LOG_TYPE_DEFAULT, "%s  Begin input session: %@", buf, 0x16u);
   }
 
@@ -872,7 +872,7 @@ uint64_t __50__RTIInputSystemServiceSession_currentDataPayload__block_invoke(uin
   block[2] = __110__RTIInputSystemServiceSession_beginRemoteTextInputSessionWithID_options_documentTraits_initialDocumentState___block_invoke;
   block[3] = &unk_1E75141E0;
   block[4] = self;
-  v16 = v11;
+  v16 = optionsCopy;
   v29 = v16;
   dispatch_async(externalOperationsQueue, block);
   self->_lifecycleDispatchState = 1;
@@ -882,14 +882,14 @@ uint64_t __50__RTIInputSystemServiceSession_currentDataPayload__block_invoke(uin
   v23[2] = __110__RTIInputSystemServiceSession_beginRemoteTextInputSessionWithID_options_documentTraits_initialDocumentState___block_invoke_3;
   v23[3] = &unk_1E75142A8;
   v23[4] = self;
-  v24 = v10;
+  v24 = dCopy;
   v25 = v16;
-  v26 = v12;
-  v27 = v13;
-  v18 = v13;
-  v19 = v12;
+  v26 = traitsCopy;
+  v27 = stateCopy;
+  v18 = stateCopy;
+  v19 = traitsCopy;
   v20 = v16;
-  v21 = v10;
+  v21 = dCopy;
   dispatch_async(internalQueue, v23);
 
   v22 = *MEMORY[0x1E69E9840];
@@ -983,20 +983,20 @@ void __110__RTIInputSystemServiceSession_beginRemoteTextInputSessionWithID_optio
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 documentDidChange:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d documentDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  changeCopy = change;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__RTIInputSystemServiceSession_remoteTextInputSessionWithID_documentDidChange___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = changeCopy;
+  v9 = changeCopy;
+  v10 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1055,24 +1055,24 @@ void __79__RTIInputSystemServiceSession_remoteTextInputSessionWithID_documentDid
 LABEL_6:
 }
 
-- (void)endRemoteTextInputSessionWithID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)endRemoteTextInputSessionWithID:(id)d options:(id)options completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = RTIInputSessionChangeLogFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v24 = "[RTIInputSystemServiceSession endRemoteTextInputSessionWithID:options:completion:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = dCopy;
     _os_log_impl(&dword_19A2A6000, v11, OS_LOG_TYPE_DEFAULT, "%s  End input session: %@", buf, 0x16u);
   }
 
-  v12 = [(RTIInputSystemSession *)self uuid];
-  v13 = [v12 isEqual:v8];
+  uuid = [(RTIInputSystemSession *)self uuid];
+  v13 = [uuid isEqual:dCopy];
 
   if (v13)
   {
@@ -1085,12 +1085,12 @@ LABEL_6:
   v19[2] = __83__RTIInputSystemServiceSession_endRemoteTextInputSessionWithID_options_completion___block_invoke;
   v19[3] = &unk_1E7514320;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
+  v20 = dCopy;
+  v21 = optionsCopy;
+  v22 = completionCopy;
+  v15 = optionsCopy;
+  v16 = completionCopy;
+  v17 = dCopy;
   dispatch_async(internalQueue, v19);
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1181,20 +1181,20 @@ void __83__RTIInputSystemServiceSession_endRemoteTextInputSessionWithID_options_
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 documentTraitsDidChange:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d documentTraitsDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  changeCopy = change;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__RTIInputSystemServiceSession_remoteTextInputSessionWithID_documentTraitsDidChange___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = changeCopy;
+  v9 = changeCopy;
+  v10 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1257,21 +1257,21 @@ void __85__RTIInputSystemServiceSession_remoteTextInputSessionWithID_documentTra
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 didChangePause:(BOOL)a4 withReason:(id)a5
+- (void)remoteTextInputSessionWithID:(id)d didChangePause:(BOOL)pause withReason:(id)reason
 {
-  v6 = a4;
+  pauseCopy = pause;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  reasonCopy = reason;
   v10 = RTILogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:didChangePause:withReason:]";
     v21 = 2112;
-    v22 = v8;
+    v22 = dCopy;
     v23 = 1024;
-    v24 = v6;
+    v24 = pauseCopy;
     _os_log_impl(&dword_19A2A6000, v10, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ did change pause: %d", buf, 0x1Cu);
   }
 
@@ -1281,11 +1281,11 @@ void __85__RTIInputSystemServiceSession_remoteTextInputSessionWithID_documentTra
   v15[2] = __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didChangePause_withReason___block_invoke;
   v15[3] = &unk_1E7514398;
   v15[4] = self;
-  v16 = v8;
-  v18 = v6;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
+  v16 = dCopy;
+  v18 = pauseCopy;
+  v17 = reasonCopy;
+  v12 = reasonCopy;
+  v13 = dCopy;
   dispatch_async(internalQueue, v15);
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1320,18 +1320,18 @@ void __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didChangePa
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 textSuggestionsChanged:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d textSuggestionsChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  changedCopy = changed;
   v8 = RTILogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:textSuggestionsChanged:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_19A2A6000, v8, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ text suggestions changed", buf, 0x16u);
   }
 
@@ -1341,10 +1341,10 @@ void __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didChangePa
   block[2] = __84__RTIInputSystemServiceSession_remoteTextInputSessionWithID_textSuggestionsChanged___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = dCopy;
+  v15 = changedCopy;
+  v10 = changedCopy;
+  v11 = dCopy;
   dispatch_async(internalQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1377,18 +1377,18 @@ void __84__RTIInputSystemServiceSession_remoteTextInputSessionWithID_textSuggest
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 didAddSupplementalLexicon:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d didAddSupplementalLexicon:(id)lexicon
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lexiconCopy = lexicon;
   v8 = RTILogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:didAddSupplementalLexicon:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_19A2A6000, v8, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ didAddSupplementalLexicon", buf, 0x16u);
   }
 
@@ -1398,10 +1398,10 @@ void __84__RTIInputSystemServiceSession_remoteTextInputSessionWithID_textSuggest
   block[2] = __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddSupplementalLexicon___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = lexiconCopy;
+  v15 = dCopy;
+  v10 = dCopy;
+  v11 = lexiconCopy;
   dispatch_async(internalQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1440,12 +1440,12 @@ uint64_t __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddS
   }
 }
 
-- (void)_queue_sessionWithID:(id)a3 didAddSupplementalLexicon:(id)a4
+- (void)_queue_sessionWithID:(id)d didAddSupplementalLexicon:(id)lexicon
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTIInputSystemSession *)self uuid];
-  v9 = [v8 isEqual:v7];
+  lexiconCopy = lexicon;
+  dCopy = d;
+  uuid = [(RTIInputSystemSession *)self uuid];
+  v9 = [uuid isEqual:dCopy];
 
   if (v9)
   {
@@ -1459,13 +1459,13 @@ uint64_t __87__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddS
       supplementalLexicons = self->_supplementalLexicons;
     }
 
-    [(NSMutableSet *)supplementalLexicons addObject:v6];
+    [(NSMutableSet *)supplementalLexicons addObject:lexiconCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __79__RTIInputSystemServiceSession__queue_sessionWithID_didAddSupplementalLexicon___block_invoke;
     v13[3] = &unk_1E7514230;
     v13[4] = self;
-    v14 = v6;
+    v14 = lexiconCopy;
     [(RTIInputSystemSession *)self enumerateSessionDelegatesUsingBlock:v13];
   }
 }
@@ -1479,18 +1479,18 @@ void __79__RTIInputSystemServiceSession__queue_sessionWithID_didAddSupplementalL
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 didAddRTISupplementalLexicon:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d didAddRTISupplementalLexicon:(id)lexicon
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lexiconCopy = lexicon;
   v8 = RTILogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:didAddRTISupplementalLexicon:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_19A2A6000, v8, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ didAddRTISupplementalLexicon", buf, 0x16u);
   }
 
@@ -1500,10 +1500,10 @@ void __79__RTIInputSystemServiceSession__queue_sessionWithID_didAddSupplementalL
   block[2] = __90__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddRTISupplementalLexicon___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = lexiconCopy;
+  v15 = dCopy;
+  v10 = dCopy;
+  v11 = lexiconCopy;
   dispatch_async(internalQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1542,12 +1542,12 @@ uint64_t __90__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddR
   }
 }
 
-- (void)_queue_sessionWithID:(id)a3 didAddRTISupplementalLexicon:(id)a4
+- (void)_queue_sessionWithID:(id)d didAddRTISupplementalLexicon:(id)lexicon
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTIInputSystemSession *)self uuid];
-  v9 = [v8 isEqual:v7];
+  lexiconCopy = lexicon;
+  dCopy = d;
+  uuid = [(RTIInputSystemSession *)self uuid];
+  v9 = [uuid isEqual:dCopy];
 
   if (v9)
   {
@@ -1561,13 +1561,13 @@ uint64_t __90__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didAddR
       rtiSupplementalLexicons = self->_rtiSupplementalLexicons;
     }
 
-    [(NSMutableSet *)rtiSupplementalLexicons addObject:v6];
+    [(NSMutableSet *)rtiSupplementalLexicons addObject:lexiconCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __82__RTIInputSystemServiceSession__queue_sessionWithID_didAddRTISupplementalLexicon___block_invoke;
     v13[3] = &unk_1E7514230;
     v13[4] = self;
-    v14 = v6;
+    v14 = lexiconCopy;
     [(RTIInputSystemSession *)self enumerateSessionDelegatesUsingBlock:v13];
   }
 }
@@ -1581,17 +1581,17 @@ void __82__RTIInputSystemServiceSession__queue_sessionWithID_didAddRTISupplement
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 didRemoveSupplementalLexiconWithIdentifier:(unint64_t)a4
+- (void)remoteTextInputSessionWithID:(id)d didRemoveSupplementalLexiconWithIdentifier:(unint64_t)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = RTILogFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:didRemoveSupplementalLexiconWithIdentifier:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_19A2A6000, v7, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ didRemoveSupplementalLexiconWithIdentifier", buf, 0x16u);
   }
 
@@ -1601,9 +1601,9 @@ void __82__RTIInputSystemServiceSession__queue_sessionWithID_didAddRTISupplement
   block[2] = __104__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didRemoveSupplementalLexiconWithIdentifier___block_invoke;
   block[3] = &unk_1E7514410;
   block[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = dCopy;
+  identifierCopy = identifier;
+  v9 = dCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1667,17 +1667,17 @@ void __104__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didRemoveS
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 didRemoveRTISupplementalLexiconWithIdentifier:(unint64_t)a4
+- (void)remoteTextInputSessionWithID:(id)d didRemoveRTISupplementalLexiconWithIdentifier:(unint64_t)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = RTILogFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[RTIInputSystemServiceSession remoteTextInputSessionWithID:didRemoveRTISupplementalLexiconWithIdentifier:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_19A2A6000, v7, OS_LOG_TYPE_DEFAULT, "%s  Input session: %@ didRemoveRTISupplementalLexiconWithIdentifier", buf, 0x16u);
   }
 
@@ -1687,9 +1687,9 @@ void __104__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didRemoveS
   block[2] = __107__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didRemoveRTISupplementalLexiconWithIdentifier___block_invoke;
   block[3] = &unk_1E7514410;
   block[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = dCopy;
+  identifierCopy = identifier;
+  v9 = dCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1753,20 +1753,20 @@ void __107__RTIInputSystemServiceSession_remoteTextInputSessionWithID_didRemoveR
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 performInputOperation:(id)a4
+- (void)remoteTextInputSessionWithID:(id)d performInputOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  operationCopy = operation;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__RTIInputSystemServiceSession_remoteTextInputSessionWithID_performInputOperation___block_invoke;
   block[3] = &unk_1E75142D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = operationCopy;
+  v9 = operationCopy;
+  v10 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1797,23 +1797,23 @@ void __83__RTIInputSystemServiceSession_remoteTextInputSessionWithID_performInpu
   }
 }
 
-- (void)remoteTextInputSessionWithID:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5
+- (void)remoteTextInputSessionWithID:(id)d performInputOperation:(id)operation withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  operationCopy = operation;
+  responseCopy = response;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __96__RTIInputSystemServiceSession_remoteTextInputSessionWithID_performInputOperation_withResponse___block_invoke;
   v15[3] = &unk_1E7514320;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = operationCopy;
+  v18 = responseCopy;
+  v12 = operationCopy;
+  v13 = responseCopy;
+  v14 = dCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -1880,26 +1880,26 @@ void __96__RTIInputSystemServiceSession_remoteTextInputSessionWithID_performInpu
   }
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = payloadCopy;
   }
 
   else
   {
-    v6 = [v4 data];
-    v5 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", v6, [v4 version]);
+    data = [payloadCopy data];
+    v5 = +[RTIInputSystemDataPayload payloadWithData:version:](RTIInputSystemDataPayload, "payloadWithData:version:", data, [payloadCopy version]);
   }
 
   payloadVersion = self->_payloadVersion;
-  v8 = [v4 version];
-  if (payloadVersion >= v8)
+  version = [payloadCopy version];
+  if (payloadVersion >= version)
   {
-    v9 = v8;
+    v9 = version;
   }
 
   else
@@ -1913,13 +1913,13 @@ void __96__RTIInputSystemServiceSession_remoteTextInputSessionWithID_performInpu
   {
     if ([v5 version] == 1)
     {
-      v11 = [v5 textOperations];
+      textOperations = [v5 textOperations];
 
-      if (v11)
+      if (textOperations)
       {
-        v12 = [WeakRetained remoteObjectProxy];
-        v13 = [v5 textOperations];
-        [v12 performTextOperations:v13];
+        remoteObjectProxy = [WeakRetained remoteObjectProxy];
+        textOperations2 = [v5 textOperations];
+        [remoteObjectProxy performTextOperations:textOperations2];
 
         objc_initWeak(&location, self);
         internalQueue = self->_internalQueue;

@@ -1,10 +1,10 @@
 @interface _IDSDeviceConnectionActiveMap
 + (id)sharedInstance;
-- (BOOL)hasActiveConnection:(id)a3 forKey:(id)a4;
+- (BOOL)hasActiveConnection:(id)connection forKey:(id)key;
 - (_IDSDeviceConnectionActiveMap)init;
 - (int)getActiveConnectionCount;
-- (void)removeActiveConnection:(id)a3 forKey:(id)a4;
-- (void)setActiveConnection:(id)a3 forKey:(id)a4;
+- (void)removeActiveConnection:(id)connection forKey:(id)key;
+- (void)setActiveConnection:(id)connection forKey:(id)key;
 @end
 
 @implementation _IDSDeviceConnectionActiveMap
@@ -31,7 +31,7 @@
       sub_195B26A7C();
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -53,65 +53,65 @@
     }
 
     self = v5;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setActiveConnection:(id)a3 forKey:(id)a4
+- (void)setActiveConnection:(id)connection forKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_writeLock);
-  v8 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:keyCopy];
   if (v8)
   {
     v9 = +[IDSTransportLog IDSDeviceConnection];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412802;
-      v12 = v6;
+      v12 = keyCopy;
       v13 = 2112;
       v14 = v8;
       v15 = 2112;
-      v16 = v6;
+      v16 = keyCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "Warning. Setting active connection %@ without closing existing %@ for key %@", &v11, 0x20u);
     }
   }
 
-  [(NSMutableDictionary *)self->_activeConnectionMap setObject:v7 forKey:v6];
-  [(NSMutableSet *)self->_openConnections addObject:v7];
+  [(NSMutableDictionary *)self->_activeConnectionMap setObject:connectionCopy forKey:keyCopy];
+  [(NSMutableSet *)self->_openConnections addObject:connectionCopy];
 
   os_unfair_lock_unlock(&self->_writeLock);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasActiveConnection:(id)a3 forKey:(id)a4
+- (BOOL)hasActiveConnection:(id)connection forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_writeLock);
-  v8 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_writeLock);
-  LOBYTE(self) = [v8 isEqualToString:v7];
+  LOBYTE(self) = [v8 isEqualToString:connectionCopy];
 
   return self;
 }
 
-- (void)removeActiveConnection:(id)a3 forKey:(id)a4
+- (void)removeActiveConnection:(id)connection forKey:(id)key
 {
-  v9 = a4;
-  v6 = a3;
+  keyCopy = key;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:v9];
-  v8 = [v7 isEqualToString:v6];
+  v7 = [(NSMutableDictionary *)self->_activeConnectionMap objectForKey:keyCopy];
+  v8 = [v7 isEqualToString:connectionCopy];
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_activeConnectionMap removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_activeConnectionMap removeObjectForKey:keyCopy];
     [(NSMutableSet *)self->_openConnections removeObject:v7];
   }
 

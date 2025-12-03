@@ -1,11 +1,11 @@
 @interface GQHDOMXML
 - (GQHDOMXML)initWithHead;
-- (__CFData)createHtmlWithCss:(__CFString *)a3;
+- (__CFData)createHtmlWithCss:(__CFString *)css;
 - (id)initEmpty;
-- (void)addCharRef:(const char *)a3;
-- (void)addXmlCharContent:(const char *)a3;
+- (void)addCharRef:(const char *)ref;
+- (void)addXmlCharContent:(const char *)content;
 - (void)dealloc;
-- (void)removeStyleSheetLinkNodeAndAddStyle:(__CFString *)a3;
+- (void)removeStyleSheetLinkNodeAndAddStyle:(__CFString *)style;
 @end
 
 @implementation GQHDOMXML
@@ -32,19 +32,19 @@
 
 - (GQHDOMXML)initWithHead
 {
-  v2 = [(GQHDOMXML *)self initEmpty];
-  if (v2)
+  initEmpty = [(GQHDOMXML *)self initEmpty];
+  if (initEmpty)
   {
     v3 = xmlNewNode(0, "head");
     v4 = xmlNewNode(0, "meta");
     xmlSetProp(v4, "http-equiv", "Content-type");
     xmlSetProp(v4, "content", "text/html; charset=UTF-8");
     xmlAddChild(v3, v4);
-    xmlAddChild(v2->mCurrentNode, v3);
-    v2->mCurrentNode = v3;
+    xmlAddChild(initEmpty->mCurrentNode, v3);
+    initEmpty->mCurrentNode = v3;
   }
 
-  return v2;
+  return initEmpty;
 }
 
 - (void)dealloc
@@ -61,25 +61,25 @@
   [(GQHDOMXML *)&v4 dealloc];
 }
 
-- (void)addXmlCharContent:(const char *)a3
+- (void)addXmlCharContent:(const char *)content
 {
   v5 = xmlNewText(0);
   v6 = xmlAddChild(self->mCurrentNode, v5);
 
-  xmlNodeAddContent(v6, a3);
+  xmlNodeAddContent(v6, content);
 }
 
-- (void)addCharRef:(const char *)a3
+- (void)addCharRef:(const char *)ref
 {
-  v4 = xmlNewCharRef(self->mXMLDoc, a3);
+  v4 = xmlNewCharRef(self->mXMLDoc, ref);
   mCurrentNode = self->mCurrentNode;
 
   xmlAddChild(mCurrentNode, v4);
 }
 
-- (__CFData)createHtmlWithCss:(__CFString *)a3
+- (__CFData)createHtmlWithCss:(__CFString *)css
 {
-  if (a3)
+  if (css)
   {
     [(GQHDOMXML *)self removeStyleSheetLinkNodeAndAddStyle:?];
   }
@@ -100,11 +100,11 @@
   return 0;
 }
 
-- (void)removeStyleSheetLinkNodeAndAddStyle:(__CFString *)a3
+- (void)removeStyleSheetLinkNodeAndAddStyle:(__CFString *)style
 {
-  if (a3)
+  if (style)
   {
-    if (CFStringGetLength(a3))
+    if (CFStringGetLength(style))
     {
       last = self->mXMLDoc->last;
       if (last)
@@ -205,10 +205,10 @@
               xmlSetProp(v14, "type", "text/css");
               mCurrentNode = self->mCurrentNode;
               self->mCurrentNode = v14;
-              Length = CFStringGetLength(a3);
+              Length = CFStringGetLength(style);
               MaximumSizeForEncoding = CFStringGetMaximumSizeForEncoding(Length, 0x8000100u);
               v18 = malloc_type_malloc(MaximumSizeForEncoding + 1, 0x100004077774924uLL);
-              CFStringGetCString(a3, v18, MaximumSizeForEncoding + 1, 0x8000100u);
+              CFStringGetCString(style, v18, MaximumSizeForEncoding + 1, 0x8000100u);
               [(GQHDOMXML *)self addXmlCharContent:v18];
               free(v18);
               self->mCurrentNode = mCurrentNode;

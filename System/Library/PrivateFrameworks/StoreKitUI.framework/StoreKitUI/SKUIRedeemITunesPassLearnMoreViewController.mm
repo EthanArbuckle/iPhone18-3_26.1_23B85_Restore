@@ -1,24 +1,24 @@
 @interface SKUIRedeemITunesPassLearnMoreViewController
-- (SKUIRedeemITunesPassLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIRedeemITunesPassLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_existingPass;
-- (void)_didLoadPassbookURLString:(id)a3;
+- (void)_didLoadPassbookURLString:(id)string;
 - (void)_loadPassbookPass;
 - (void)_loadPassbookURL;
-- (void)_passButtonAction:(id)a3;
+- (void)_passButtonAction:(id)action;
 - (void)_showErrorDialog;
 - (void)dealloc;
 - (void)loadView;
-- (void)passbookLoaderDidFinish:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)passbookLoaderDidFinish:(id)finish;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIRedeemITunesPassLearnMoreViewController
 
-- (SKUIRedeemITunesPassLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIRedeemITunesPassLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemITunesPassLearnMoreViewController initWithNibName:bundle:];
@@ -26,7 +26,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUIRedeemITunesPassLearnMoreViewController;
-  v8 = [(SKUIRedeemITunesPassLearnMoreViewController *)&v11 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIRedeemITunesPassLearnMoreViewController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  button = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
+  [button removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(SKUIPassbookLoader *)self->_passbookLoader setDelegate:0];
   v4.receiver = self;
@@ -57,36 +57,36 @@
     self->_learnMoreView = v4;
 
     v6 = self->_learnMoreView;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(SKUIRedeemITunesPassLearnMoreView *)v6 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SKUIRedeemITunesPassLearnMoreView *)v6 setBackgroundColor:whiteColor];
 
-    v8 = [(SKUIRedeemStepViewController *)self configuration];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
     v9 = self->_learnMoreView;
-    v10 = [v8 successImage];
-    [(SKUIRedeemITunesPassLearnMoreView *)v9 setHeaderImage:v10];
+    successImage = [configuration successImage];
+    [(SKUIRedeemITunesPassLearnMoreView *)v9 setHeaderImage:successImage];
 
-    v11 = [v8 ITunesPassConfiguration];
+    iTunesPassConfiguration = [configuration ITunesPassConfiguration];
     v12 = self->_learnMoreView;
-    v13 = [v11 learnMoreExplanation];
-    [(SKUIRedeemITunesPassLearnMoreView *)v12 setExplanationString:v13];
+    learnMoreExplanation = [iTunesPassConfiguration learnMoreExplanation];
+    [(SKUIRedeemITunesPassLearnMoreView *)v12 setExplanationString:learnMoreExplanation];
 
-    v14 = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
+    _existingPass = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
 
     v15 = self->_learnMoreView;
-    if (v14)
+    if (_existingPass)
     {
-      [v11 learnMoreViewPassButtonTitle];
+      [iTunesPassConfiguration learnMoreViewPassButtonTitle];
     }
 
     else
     {
-      [v11 learnMoreAddPassButtonTitle];
+      [iTunesPassConfiguration learnMoreAddPassButtonTitle];
     }
     v16 = ;
     [(SKUIRedeemITunesPassLearnMoreView *)v15 setButtonTitle:v16];
 
-    v17 = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
-    [v17 addTarget:self action:sel__passButtonAction_ forControlEvents:64];
+    button = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
+    [button addTarget:self action:sel__passButtonAction_ forControlEvents:64];
 
     learnMoreView = self->_learnMoreView;
   }
@@ -94,76 +94,76 @@
   [(SKUIRedeemITunesPassLearnMoreViewController *)self setView:learnMoreView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   +[SKUIITunesPassLearnMoreAlertDelegate beginThrottleInterval];
   v5.receiver = self;
   v5.super_class = SKUIRedeemITunesPassLearnMoreViewController;
-  [(SKUIRedeemITunesPassLearnMoreViewController *)&v5 viewDidAppear:v3];
+  [(SKUIRedeemITunesPassLearnMoreViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIRedeemStepViewController *)self configuration];
-  v6 = [v5 ITunesPassConfiguration];
+  appearCopy = appear;
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  iTunesPassConfiguration = [configuration ITunesPassConfiguration];
 
-  v7 = [v6 learnMoreTitle];
-  [(SKUIRedeemITunesPassLearnMoreViewController *)self setTitle:v7];
+  learnMoreTitle = [iTunesPassConfiguration learnMoreTitle];
+  [(SKUIRedeemITunesPassLearnMoreViewController *)self setTitle:learnMoreTitle];
 
   v8 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v8 setAction:sel__doneButtonAction_];
   [v8 setStyle:2];
   [v8 setTarget:self];
-  v9 = [v6 learnMoreDoneButtonTitle];
-  [v8 setTitle:v9];
+  learnMoreDoneButtonTitle = [iTunesPassConfiguration learnMoreDoneButtonTitle];
+  [v8 setTitle:learnMoreDoneButtonTitle];
 
-  v10 = [(SKUIRedeemITunesPassLearnMoreViewController *)self navigationItem];
-  [v10 setRightBarButtonItem:v8];
+  navigationItem = [(SKUIRedeemITunesPassLearnMoreViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
   v11.receiver = self;
   v11.super_class = SKUIRedeemITunesPassLearnMoreViewController;
-  [(SKUIRedeemITunesPassLearnMoreViewController *)&v11 viewWillAppear:v3];
+  [(SKUIRedeemITunesPassLearnMoreViewController *)&v11 viewWillAppear:appearCopy];
 }
 
-- (void)passbookLoaderDidFinish:(id)a3
+- (void)passbookLoaderDidFinish:(id)finish
 {
   [(SKUIPassbookLoader *)self->_passbookLoader setDelegate:0];
   passbookLoader = self->_passbookLoader;
   self->_passbookLoader = 0;
 
-  v5 = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
+  _existingPass = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
 
-  if (v5)
+  if (_existingPass)
   {
-    v6 = [(SKUIRedeemStepViewController *)self configuration];
-    v7 = [v6 ITunesPassConfiguration];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    iTunesPassConfiguration = [configuration ITunesPassConfiguration];
 
     learnMoreView = self->_learnMoreView;
-    v9 = [v7 learnMoreViewPassButtonTitle];
-    [(SKUIRedeemITunesPassLearnMoreView *)learnMoreView setButtonTitle:v9];
+    learnMoreViewPassButtonTitle = [iTunesPassConfiguration learnMoreViewPassButtonTitle];
+    [(SKUIRedeemITunesPassLearnMoreView *)learnMoreView setButtonTitle:learnMoreViewPassButtonTitle];
   }
 
-  v10 = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
-  [v10 setEnabled:1];
+  button = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
+  [button setEnabled:1];
 }
 
-- (void)_passButtonAction:(id)a3
+- (void)_passButtonAction:(id)action
 {
-  v7 = a3;
-  v4 = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
-  v5 = v4;
-  if (v4)
+  actionCopy = action;
+  _existingPass = [(SKUIRedeemITunesPassLearnMoreViewController *)self _existingPass];
+  v5 = _existingPass;
+  if (_existingPass)
   {
-    v6 = [v4 passURL];
-    SKUIMetricsOpenURL(v6);
+    passURL = [_existingPass passURL];
+    SKUIMetricsOpenURL(passURL);
   }
 
   else
   {
     self->_didTapAddPassbookButton = 1;
-    [v7 setEnabled:0];
+    [actionCopy setEnabled:0];
     if (self->_passbookURL)
     {
       [(SKUIRedeemITunesPassLearnMoreViewController *)self _loadPassbookPass];
@@ -176,12 +176,12 @@
   }
 }
 
-- (void)_didLoadPassbookURLString:(id)a3
+- (void)_didLoadPassbookURLString:(id)string
 {
-  v7 = a3;
-  if (v7)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v7];
+    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:stringCopy];
     passbookURL = self->_passbookURL;
     self->_passbookURL = v4;
 
@@ -194,22 +194,22 @@
   else
   {
     [(SKUIRedeemITunesPassLearnMoreViewController *)self _showErrorDialog];
-    v6 = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
-    [v6 setEnabled:1];
+    button = [(SKUIRedeemITunesPassLearnMoreView *)self->_learnMoreView button];
+    [button setEnabled:1];
   }
 }
 
 - (id)_existingPass
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 ITunesPassSerialNumber];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  iTunesPassSerialNumber = [activeAccount ITunesPassSerialNumber];
 
-  if (v4)
+  if (iTunesPassSerialNumber)
   {
     v5 = SKUIPassKitUIFramework();
     v6 = objc_alloc_init(SKUIWeakLinkedClassForString(&cfstr_Pkpasslibrary.isa, v5));
-    v7 = [v6 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:v4];
+    v7 = [v6 passWithPassTypeIdentifier:@"pass.com.apple.itunes.storecredit" serialNumber:iTunesPassSerialNumber];
   }
 
   else
@@ -225,15 +225,15 @@
   if (!self->_passbookLoader && self->_passbookURL)
   {
     v3 = [SKUIPassbookLoader alloc];
-    v4 = [(SKUIRedeemStepViewController *)self clientContext];
-    v5 = [(SKUIPassbookLoader *)v3 initWithClientContext:v4];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v5 = [(SKUIPassbookLoader *)v3 initWithClientContext:clientContext];
     passbookLoader = self->_passbookLoader;
     self->_passbookLoader = v5;
 
     [(SKUIPassbookLoader *)self->_passbookLoader setDelegate:self];
     v7 = self->_passbookLoader;
-    v8 = [(SKUIRedeemStepViewController *)self operationQueue];
-    [(SKUIPassbookLoader *)v7 setOperationQueue:v8];
+    operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+    [(SKUIPassbookLoader *)v7 setOperationQueue:operationQueue];
 
     v9 = self->_passbookLoader;
     passbookURL = self->_passbookURL;
@@ -247,14 +247,14 @@
   if (!self->_passbookURL)
   {
     objc_initWeak(&location, self);
-    v3 = [(SKUIRedeemStepViewController *)self clientContext];
-    v4 = [v3 URLBag];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    uRLBag = [clientContext URLBag];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __63__SKUIRedeemITunesPassLearnMoreViewController__loadPassbookURL__block_invoke;
     v5[3] = &unk_2781FBDE0;
     objc_copyWeak(&v6, &location);
-    [v4 loadValueForKey:@"getAddCreditPassUrl" completionBlock:v5];
+    [uRLBag loadValueForKey:@"getAddCreditPassUrl" completionBlock:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -291,12 +291,12 @@ void __63__SKUIRedeemITunesPassLearnMoreViewController__loadPassbookURL__block_i
 
 - (void)_showErrorDialog
 {
-  v3 = [(SKUIRedeemStepViewController *)self clientContext];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
   v4 = MEMORY[0x277D75110];
-  v10 = v3;
-  if (v3)
+  v10 = clientContext;
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"ITUNES_PASS_LOAD_ERROR_TITLE" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"ITUNES_PASS_LOAD_ERROR_TITLE" inTable:@"Redeem"];
   }
 
   else

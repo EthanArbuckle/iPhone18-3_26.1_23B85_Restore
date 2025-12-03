@@ -1,12 +1,12 @@
 @interface MTWhiteColor
 - (CAColorMatrix)sourceOverColorMatrix;
 - (CGColor)CGColor;
-- (MTWhiteColor)colorWithAlphaComponent:(double)a3;
-- (MTWhiteColor)initWithWhite:(double)a3 alpha:(double)a4;
-- (id)_initWithCGColor:(CGColor *)a3;
-- (id)_initWithDescription:(id)a3;
+- (MTWhiteColor)colorWithAlphaComponent:(double)component;
+- (MTWhiteColor)initWithWhite:(double)white alpha:(double)alpha;
+- (id)_initWithCGColor:(CGColor *)color;
+- (id)_initWithDescription:(id)description;
 - (id)_rgbColor;
-- (id)colorBlendedWithColor:(id)a3;
+- (id)colorBlendedWithColor:(id)color;
 - (id)colorDescription;
 - (id)description;
 @end
@@ -42,45 +42,45 @@
   return MEMORY[0x1EEDD5DB0]();
 }
 
-- (MTWhiteColor)initWithWhite:(double)a3 alpha:(double)a4
+- (MTWhiteColor)initWithWhite:(double)white alpha:(double)alpha
 {
   v9.receiver = self;
   v9.super_class = MTWhiteColor;
   v6 = [(MTWhiteColor *)&v9 init];
   if (v6)
   {
-    if (a3 < 0.0 || a3 > 1.0)
+    if (white < 0.0 || white > 1.0)
     {
       [MTWhiteColor initWithWhite:alpha:];
     }
 
-    if (a4 < 0.0 || a4 > 1.0)
+    if (alpha < 0.0 || alpha > 1.0)
     {
       [MTWhiteColor initWithWhite:alpha:];
     }
 
-    v6->_white = a3;
-    v6->_alpha = a4;
+    v6->_white = white;
+    v6->_alpha = alpha;
   }
 
   return v6;
 }
 
-- (id)_initWithCGColor:(CGColor *)a3
+- (id)_initWithCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     [MTWhiteColor _initWithCGColor:];
     goto LABEL_6;
   }
 
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   v6 = CGColorSpaceGetName(ColorSpace);
-  if (![v6 isEqualToString:*MEMORY[0x1E695F0E0]] || (Components = CGColorGetComponents(a3), CGColorGetNumberOfComponents(a3) != 2))
+  if (![v6 isEqualToString:*MEMORY[0x1E695F0E0]] || (Components = CGColorGetComponents(color), CGColorGetNumberOfComponents(color) != 2))
   {
 
 LABEL_6:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
@@ -88,28 +88,28 @@ LABEL_6:
   v9 = Components[1];
 
   self = [(MTWhiteColor *)self initWithWhite:v8 alpha:v9];
-  v10 = self;
+  selfCopy = self;
 LABEL_7:
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
 
-- (id)_initWithDescription:(id)a3
+- (id)_initWithDescription:(id)description
 {
-  v4 = a3;
-  if (!v4)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
     [MTWhiteColor _initWithDescription:];
   }
 
-  v5 = [v4 objectForKey:@"alpha"];
+  v5 = [descriptionCopy objectForKey:@"alpha"];
   if (!v5)
   {
     [MTWhiteColor _initWithDescription:];
   }
 
-  v6 = [v4 objectForKey:@"white"];
+  v6 = [descriptionCopy objectForKey:@"white"];
   if (!v6)
   {
     [MTWhiteColor _initWithDescription:];
@@ -139,29 +139,29 @@ LABEL_7:
   return v5;
 }
 
-- (MTWhiteColor)colorWithAlphaComponent:(double)a3
+- (MTWhiteColor)colorWithAlphaComponent:(double)component
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithWhite:self->_white alpha:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithWhite:self->_white alpha:component];
 
   return v3;
 }
 
-- (id)colorBlendedWithColor:(id)a3
+- (id)colorBlendedWithColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  if (v4)
+  colorCopy = color;
+  selfCopy = self;
+  if (colorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      alpha = v5->_alpha;
-      v7 = v4[3];
+      alpha = selfCopy->_alpha;
+      v7 = colorCopy[3];
       v8 = 1.0;
       v9 = alpha + v7 * (1.0 - alpha);
       if (v9 != 0.0)
       {
-        v8 = (alpha * v5->_white + v7 * v4[2] * (1.0 - alpha)) / v9;
+        v8 = (alpha * selfCopy->_white + v7 * colorCopy[2] * (1.0 - alpha)) / v9;
       }
 
       v10 = [MTColor colorWithWhite:v8 alpha:?];
@@ -169,16 +169,16 @@ LABEL_7:
 
     else
     {
-      v11 = [(MTWhiteColor *)v5 _rgbColor];
-      v10 = [(MTWhiteColor *)v11 colorBlendedWithColor:v4];
+      _rgbColor = [(MTWhiteColor *)selfCopy _rgbColor];
+      v10 = [(MTWhiteColor *)_rgbColor colorBlendedWithColor:colorCopy];
 
-      v5 = v11;
+      selfCopy = _rgbColor;
     }
 
-    v5 = v10;
+    selfCopy = v10;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)description

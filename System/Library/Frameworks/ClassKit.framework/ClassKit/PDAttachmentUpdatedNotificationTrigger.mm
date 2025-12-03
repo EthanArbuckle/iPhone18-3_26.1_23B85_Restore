@@ -1,20 +1,20 @@
 @interface PDAttachmentUpdatedNotificationTrigger
-+ (void)_logAttachmentUpdate:(id)a3 forID:(id)a4;
-- (PDAttachmentUpdatedNotificationTrigger)initWithDatabase:(id)a3;
-- (id)classWithClassID:(id)a3 database:(id)a4;
-- (void)attachmentDidInsert:(id)a3;
-- (void)attachmentWillChange:(id)a3;
++ (void)_logAttachmentUpdate:(id)update forID:(id)d;
+- (PDAttachmentUpdatedNotificationTrigger)initWithDatabase:(id)database;
+- (id)classWithClassID:(id)d database:(id)database;
+- (void)attachmentDidInsert:(id)insert;
+- (void)attachmentWillChange:(id)change;
 - (void)dealloc;
-- (void)handleAttachmentUpdate:(int64_t)a3 forAttachment:(id)a4 inDB:(id)a5;
+- (void)handleAttachmentUpdate:(int64_t)update forAttachment:(id)attachment inDB:(id)b;
 @end
 
 @implementation PDAttachmentUpdatedNotificationTrigger
 
-- (PDAttachmentUpdatedNotificationTrigger)initWithDatabase:(id)a3
+- (PDAttachmentUpdatedNotificationTrigger)initWithDatabase:(id)database
 {
   v9.receiver = self;
   v9.super_class = PDAttachmentUpdatedNotificationTrigger;
-  v3 = [(PDUserNotificationTrigger *)&v9 initWithDatabase:a3];
+  v3 = [(PDUserNotificationTrigger *)&v9 initWithDatabase:database];
   if (v3)
   {
     v4 = sub_1000B065C([PDRing alloc], 20);
@@ -41,25 +41,25 @@
   [(PDAttachmentUpdatedNotificationTrigger *)&v4 dealloc];
 }
 
-- (void)attachmentDidInsert:(id)a3
+- (void)attachmentDidInsert:(id)insert
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"currentEntity"];
+  insertCopy = insert;
+  userInfo = [insertCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"currentEntity"];
 
-  v7 = [v6 title];
-  v8 = [v4 object];
+  title = [v6 title];
+  object = [insertCopy object];
   v9 = objc_opt_class();
-  v10 = [v6 parentObjectID];
-  v23 = v10;
+  parentObjectID = [v6 parentObjectID];
+  v23 = parentObjectID;
   v11 = [NSArray arrayWithObjects:&v23 count:1];
-  v12 = [v8 select:v9 where:@"objectID = ?" bindings:v11];
+  v12 = [object select:v9 where:@"objectID = ?" bindings:v11];
 
-  v13 = [[PDUserNotificationTrigger alloc] initWithDatabase:v8];
+  v13 = [[PDUserNotificationTrigger alloc] initWithDatabase:object];
   if ([(PDUserNotificationTrigger *)v13 isIncompleteHandout:v12])
   {
-    v14 = [v12 dateOfPublication];
-    [v14 timeIntervalSinceNow];
+    dateOfPublication = [v12 dateOfPublication];
+    [dateOfPublication timeIntervalSinceNow];
     v16 = fabs(v15);
 
     if (v16 <= 300.0)
@@ -69,31 +69,31 @@
       if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
       {
         v19 = v18;
-        v20 = [v12 objectID];
+        objectID = [v12 objectID];
         v21 = 138412290;
-        v22 = v20;
+        v22 = objectID;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "PDAttachmentUpdatedNotificationTrigger.attachmentWillChange. 5 minute timer since handout was last published has not passed Handout: %@", &v21, 0xCu);
       }
     }
 
-    else if ([v7 length])
+    else if ([title length])
     {
-      v17 = [v4 object];
-      [(PDAttachmentUpdatedNotificationTrigger *)self handleAttachmentUpdate:0 forAttachment:v6 inDB:v17];
+      object2 = [insertCopy object];
+      [(PDAttachmentUpdatedNotificationTrigger *)self handleAttachmentUpdate:0 forAttachment:v6 inDB:object2];
     }
   }
 }
 
-- (void)attachmentWillChange:(id)a3
+- (void)attachmentWillChange:(id)change
 {
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"newEntity"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"newEntity"];
 
-  v8 = [v7 objectID];
-  v9 = [v5 object];
+  objectID = [v7 objectID];
+  object = [changeCopy object];
 
-  v10 = [v9 select:objc_opt_class() identity:v8];
+  v10 = [object select:objc_opt_class() identity:objectID];
   v11 = v10;
   if (!v10)
   {
@@ -102,50 +102,50 @@
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v8;
+      v24 = objectID;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "PDAttachmentUpdatedNotificationTrigger.attachmentWillChange. Could not find an existing handout. attachmentID: %@", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  v12 = [v10 title];
-  if (!v12)
+  title = [v10 title];
+  if (!title)
   {
-    v3 = [v7 title];
-    if (!v3)
+    title2 = [v7 title];
+    if (!title2)
     {
       goto LABEL_17;
     }
   }
 
-  v13 = [v11 title];
-  if (!v13)
+  title3 = [v11 title];
+  if (!title3)
   {
 LABEL_11:
-    if (!v12)
+    if (!title)
     {
     }
 
     goto LABEL_16;
   }
 
-  v14 = v13;
-  v15 = [v7 title];
-  if (!v15)
+  v14 = title3;
+  title4 = [v7 title];
+  if (!title4)
   {
 
     goto LABEL_11;
   }
 
-  v16 = v15;
-  v21 = v3;
-  v22 = self;
-  v17 = [v11 title];
-  v18 = [v7 title];
-  v19 = [v17 isEqualToString:v18];
+  v16 = title4;
+  v21 = title2;
+  selfCopy = self;
+  title5 = [v11 title];
+  title6 = [v7 title];
+  v19 = [title5 isEqualToString:title6];
 
-  if (v12)
+  if (title)
   {
   }
 
@@ -153,45 +153,45 @@ LABEL_11:
   {
   }
 
-  self = v22;
+  self = selfCopy;
   if ((v19 & 1) == 0)
   {
 LABEL_16:
-    [(PDAttachmentUpdatedNotificationTrigger *)self handleAttachmentUpdate:1 forAttachment:v11 inDB:v9];
+    [(PDAttachmentUpdatedNotificationTrigger *)self handleAttachmentUpdate:1 forAttachment:v11 inDB:object];
   }
 
 LABEL_17:
 }
 
-+ (void)_logAttachmentUpdate:(id)a3 forID:(id)a4
++ (void)_logAttachmentUpdate:(id)update forID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  dCopy = d;
   CLSInitLog();
   v7 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = updateCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "PDAttachmentUpdatedNotificationTrigger.attachmentWillChange > shouldTriggerNotification_Type%@. Attachment ID: %@.", &v8, 0x16u);
   }
 }
 
-- (void)handleAttachmentUpdate:(int64_t)a3 forAttachment:(id)a4 inDB:(id)a5
+- (void)handleAttachmentUpdate:(int64_t)update forAttachment:(id)attachment inDB:(id)b
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 2)
+  attachmentCopy = attachment;
+  bCopy = b;
+  if (update == 2)
   {
     goto LABEL_23;
   }
 
-  v10 = [v8 objectID];
-  if (a3)
+  objectID = [attachmentCopy objectID];
+  if (update)
   {
-    if (a3 != 1)
+    if (update != 1)
     {
       goto LABEL_7;
     }
@@ -204,25 +204,25 @@ LABEL_17:
     v11 = @"AttachmentList";
   }
 
-  [PDAttachmentUpdatedNotificationTrigger _logAttachmentUpdate:v11 forID:v10];
+  [PDAttachmentUpdatedNotificationTrigger _logAttachmentUpdate:v11 forID:objectID];
 LABEL_7:
-  v12 = [(PDAttachmentUpdatedNotificationTrigger *)self notifiedHandoutIds];
-  v13 = [v8 parentObjectID];
-  v14 = v13;
-  if (!v12)
+  notifiedHandoutIds = [(PDAttachmentUpdatedNotificationTrigger *)self notifiedHandoutIds];
+  parentObjectID = [attachmentCopy parentObjectID];
+  v14 = parentObjectID;
+  if (!notifiedHandoutIds)
   {
 
     goto LABEL_11;
   }
 
-  v15 = [v12[1] containsObject:v13];
+  v15 = [notifiedHandoutIds[1] containsObject:parentObjectID];
 
   if ((v15 & 1) == 0)
   {
 LABEL_11:
-    v17 = [(PDAttachmentUpdatedNotificationTrigger *)self notifiedHandoutIds];
-    v18 = [v8 parentObjectID];
-    sub_1000B072C(v17, v18);
+    notifiedHandoutIds2 = [(PDAttachmentUpdatedNotificationTrigger *)self notifiedHandoutIds];
+    parentObjectID2 = [attachmentCopy parentObjectID];
+    sub_1000B072C(notifiedHandoutIds2, parentObjectID2);
 
     v16 = 0;
     goto LABEL_12;
@@ -237,64 +237,64 @@ LABEL_12:
     *buf = 67109378;
     *v60 = v16 ^ 1;
     *&v60[4] = 2112;
-    *&v60[6] = v10;
+    *&v60[6] = objectID;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "PDAttachmentUpdatedNotificationTrigger.attachmentWillChage. Should trigger %d Attachment ID: %@", buf, 0x12u);
   }
 
   if ((v16 & 1) == 0)
   {
     v20 = objc_opt_class();
-    v21 = [v8 parentObjectID];
-    v62 = v21;
+    parentObjectID3 = [attachmentCopy parentObjectID];
+    v62 = parentObjectID3;
     v22 = [NSArray arrayWithObjects:&v62 count:1];
-    v23 = [v9 select:v20 where:@"objectID = ?" bindings:v22];
+    v23 = [bCopy select:v20 where:@"objectID = ?" bindings:v22];
 
     newValue = [v23 objectID];
     v24 = objc_opt_class();
-    v25 = [v23 objectID];
-    v61 = v25;
+    objectID2 = [v23 objectID];
+    v61 = objectID2;
     v26 = [NSArray arrayWithObjects:&v61 count:1];
-    [v9 select:v24 where:@"parentObjectID = ?" bindings:v26];
+    [bCopy select:v24 where:@"parentObjectID = ?" bindings:v26];
     v28 = v27 = self;
 
-    v29 = [v28 classID];
+    classID = [v28 classID];
     v57 = v27;
-    v30 = [(PDAttachmentUpdatedNotificationTrigger *)v27 classWithClassID:v29 database:v9];
+    v30 = [(PDAttachmentUpdatedNotificationTrigger *)v27 classWithClassID:classID database:bCopy];
 
-    v31 = [v30 displayName];
-    v56 = v31;
-    if ([v31 length])
+    displayName = [v30 displayName];
+    v56 = displayName;
+    if ([displayName length])
     {
       v54 = v30;
-      v55 = v10;
+      v55 = objectID;
       v32 = [NSBundle bundleForClass:objc_opt_class()];
       v33 = [v32 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_TITLE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-      v34 = [NSString stringWithFormat:v33, v31];
+      v34 = [NSString stringWithFormat:v33, displayName];
 
       v35 = [NSBundle bundleForClass:objc_opt_class()];
       v36 = [v35 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-      v37 = [v23 title];
+      title = [v23 title];
       v38 = v34;
-      v39 = [NSString stringWithFormat:v36, v37];
+      v39 = [NSString stringWithFormat:v36, title];
 
       v40 = sub_10012F04C([PDUserNotificationData alloc], 6, v34, v39);
-      v41 = [v28 classID];
-      v43 = v41;
+      classID2 = [v28 classID];
+      v43 = classID2;
       v44 = v28;
       if (v40)
       {
-        objc_setProperty_nonatomic_copy(v40, v42, v41, 32);
+        objc_setProperty_nonatomic_copy(v40, v42, classID2, 32);
 
         v45 = newValue;
         objc_setProperty_nonatomic_copy(v40, v46, newValue, 24);
-        v10 = v55;
+        objectID = v55;
         objc_setProperty_nonatomic_copy(v40, v47, v55, 48);
       }
 
       else
       {
 
-        v10 = v55;
+        objectID = v55;
         v45 = newValue;
       }
 
@@ -314,34 +314,34 @@ LABEL_12:
       if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
       {
         v50 = v49;
-        v51 = [v44 classID];
+        classID3 = [v44 classID];
         *buf = 138412546;
-        *v60 = v51;
+        *v60 = classID3;
         *&v60[8] = 2112;
         *&v60[10] = newValue;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "PDAttachmentUpdatedNotificationTrigger.notificationDataWithDatabase. Could not find class or empty class name. ClassID: %@ HandoutID: %@", buf, 0x16u);
       }
     }
 
-    v52 = [(PDAttachmentUpdatedNotificationTrigger *)v48 notifiedHandoutIds];
-    v53 = [v8 parentObjectID];
-    sub_1000B07B8(v52, v53);
+    notifiedHandoutIds3 = [(PDAttachmentUpdatedNotificationTrigger *)v48 notifiedHandoutIds];
+    parentObjectID4 = [attachmentCopy parentObjectID];
+    sub_1000B07B8(notifiedHandoutIds3, parentObjectID4);
   }
 
 LABEL_23:
 }
 
-- (id)classWithClassID:(id)a3 database:(id)a4
+- (id)classWithClassID:(id)d database:(id)database
 {
-  v4 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [v5 select:objc_opt_class() identity:v6];
+    databaseCopy = database;
+    v6 = dCopy;
+    dCopy = [databaseCopy select:objc_opt_class() identity:v6];
   }
 
-  return v4;
+  return dCopy;
 }
 
 @end

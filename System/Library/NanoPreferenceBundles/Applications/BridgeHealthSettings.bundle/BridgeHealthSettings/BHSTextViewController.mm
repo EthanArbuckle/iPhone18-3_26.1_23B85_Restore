@@ -1,7 +1,7 @@
 @interface BHSTextViewController
 - (void)_createDismissButton;
 - (void)_createTextView;
-- (void)dismissButtonPressed:(id)a3;
+- (void)dismissButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -13,8 +13,8 @@
   v7.super_class = BHSTextViewController;
   [(BHSTextViewController *)&v7 viewDidLoad];
   v3 = +[UIColor whiteColor];
-  v4 = [(BHSTextViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BHSTextViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"FEEDBACK_WHEELCHAIR_MORE_INFO_TITLE" value:&stru_188B0 table:@"Localizable"];
@@ -24,18 +24,18 @@
   [(BHSTextViewController *)self _createDismissButton];
 }
 
-- (void)dismissButtonPressed:(id)a3
+- (void)dismissButtonPressed:(id)pressed
 {
-  v5 = [(BHSTextViewController *)self navigationController];
-  v4 = [(BHSTextViewController *)self onDismiss];
-  [v5 dismissViewControllerAnimated:1 completion:v4];
+  navigationController = [(BHSTextViewController *)self navigationController];
+  onDismiss = [(BHSTextViewController *)self onDismiss];
+  [navigationController dismissViewControllerAnimated:1 completion:onDismiss];
 }
 
 - (void)_createDismissButton
 {
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissButtonPressed:"];
-  v3 = [(BHSTextViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(BHSTextViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
 - (void)_createTextView

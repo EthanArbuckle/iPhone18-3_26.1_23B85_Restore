@@ -1,11 +1,11 @@
 @interface WKVideoFullScreenViewController
-- (WKVideoFullScreenViewController)initWithAVPlayerViewController:(id)a3;
+- (WKVideoFullScreenViewController)initWithAVPlayerViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation WKVideoFullScreenViewController
 
-- (WKVideoFullScreenViewController)initWithAVPlayerViewController:(id)a3
+- (WKVideoFullScreenViewController)initWithAVPlayerViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = WKVideoFullScreenViewController;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_avPlayerViewController.m_weakReference, a3);
+    objc_storeWeak(&v4->_avPlayerViewController.m_weakReference, controller);
     [(WKVideoFullScreenViewController *)v5 setModalPresentationCapturesStatusBarAppearance:1];
     [(WKVideoFullScreenViewController *)v5 setModalPresentationStyle:5];
   }

@@ -1,48 +1,48 @@
 @interface HUControlPanelController
-- (BOOL)shouldShowSectionFooterForItem:(id)a3;
-- (BOOL)shouldShowSectionTitleForItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUControlPanelController)initWithDelegate:(id)a3;
+- (BOOL)shouldShowSectionFooterForItem:(id)item;
+- (BOOL)shouldShowSectionTitleForItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUControlPanelController)initWithDelegate:(id)delegate;
 - (HUControlPanelControllerDelegate)delegate;
-- (id)_configurationForItem:(id)a3;
-- (id)_controlItemForControlView:(id)a3;
-- (id)_controlPanelItemForControlView:(id)a3;
+- (id)_configurationForItem:(id)item;
+- (id)_controlItemForControlView:(id)view;
+- (id)_controlPanelItemForControlView:(id)view;
 - (id)_createConfigurations;
-- (id)_createWriteThrottleForControlItem:(id)a3 controlPanelItem:(id)a4;
-- (id)_valueTransformerForControlItem:(id)a3 controlPanelItem:(id)a4;
-- (id)sectionFooterForItem:(id)a3 forSourceItem:(id)a4;
-- (id)sectionTitleForItem:(id)a3 forSourceItem:(id)a4;
-- (void)_updateStateForControlView:(id)a3 controlPanelItem:(id)a4;
-- (void)_updateWriteStateForControlItem:(id)a3 controlPanelItem:(id)a4;
-- (void)_updateWriteStateForControlView:(id)a3;
-- (void)addItem:(id)a3;
-- (void)controlView:(id)a3 valueDidChange:(id)a4;
-- (void)controlViewDidBeginUserInteraction:(id)a3;
-- (void)controlViewDidEndUserInteraction:(id)a3;
-- (void)removeItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (id)_createWriteThrottleForControlItem:(id)item controlPanelItem:(id)panelItem;
+- (id)_valueTransformerForControlItem:(id)item controlPanelItem:(id)panelItem;
+- (id)sectionFooterForItem:(id)item forSourceItem:(id)sourceItem;
+- (id)sectionTitleForItem:(id)item forSourceItem:(id)sourceItem;
+- (void)_updateStateForControlView:(id)view controlPanelItem:(id)item;
+- (void)_updateWriteStateForControlItem:(id)item controlPanelItem:(id)panelItem;
+- (void)_updateWriteStateForControlView:(id)view;
+- (void)addItem:(id)item;
+- (void)controlView:(id)view valueDidChange:(id)change;
+- (void)controlViewDidBeginUserInteraction:(id)interaction;
+- (void)controlViewDidEndUserInteraction:(id)interaction;
+- (void)removeItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUControlPanelController
 
-- (HUControlPanelController)initWithDelegate:(id)a3
+- (HUControlPanelController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HUControlPanelController;
   v5 = [(HUControlPanelController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [(HUControlPanelController *)v6 _createConfigurations];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    _createConfigurations = [(HUControlPanelController *)v6 _createConfigurations];
     configurations = v6->_configurations;
-    v6->_configurations = v7;
+    v6->_configurations = _createConfigurations;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     interactionStateByControlID = v6->_interactionStateByControlID;
-    v6->_interactionStateByControlID = v9;
+    v6->_interactionStateByControlID = dictionary;
 
     v11 = [MEMORY[0x277CBEB58] set];
     allItems = v6->_allItems;
@@ -52,24 +52,24 @@
   return v6;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self allItems];
-  v6 = [v5 containsObject:v4];
+  itemCopy = item;
+  allItems = [(HUControlPanelController *)self allItems];
+  v6 = [allItems containsObject:itemCopy];
 
   if (v6)
   {
-    NSLog(&cfstr_AlreadyAddedIt.isa, v4);
+    NSLog(&cfstr_AlreadyAddedIt.isa, itemCopy);
   }
 
-  [(NSMutableSet *)self->_allItems addObject:v4];
+  [(NSMutableSet *)self->_allItems addObject:itemCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = [v4 controlItems];
+  obj = [itemCopy controlItems];
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -85,12 +85,12 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v4 identifierForControlItem:v11];
-        v13 = [(HUControlPanelController *)self _createWriteThrottleForControlItem:v11 controlPanelItem:v4];
+        v12 = [itemCopy identifierForControlItem:v11];
+        v13 = [(HUControlPanelController *)self _createWriteThrottleForControlItem:v11 controlPanelItem:itemCopy];
         v14 = objc_alloc_init(HUControlInteractionState);
         [(HUControlInteractionState *)v14 setWriteThrottler:v13];
-        v15 = [(HUControlPanelController *)self interactionStateByControlID];
-        [v15 setObject:v14 forKeyedSubscript:v12];
+        interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+        [interactionStateByControlID setObject:v14 forKeyedSubscript:v12];
       }
 
       v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -100,25 +100,25 @@
   }
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self allItems];
-  v6 = [v5 containsObject:v4];
+  itemCopy = item;
+  allItems = [(HUControlPanelController *)self allItems];
+  v6 = [allItems containsObject:itemCopy];
 
   if ((v6 & 1) == 0)
   {
-    NSLog(&cfstr_ItemNotFound.isa, v4);
+    NSLog(&cfstr_ItemNotFound.isa, itemCopy);
   }
 
-  [(NSMutableSet *)self->_allItems removeObject:v4];
+  [(NSMutableSet *)self->_allItems removeObject:itemCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v4 controlItems];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  controlItems = [itemCopy controlItems];
+  v8 = [controlItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -130,53 +130,53 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(controlItems);
         }
 
-        v12 = [v4 identifierForControlItem:*(*(&v14 + 1) + 8 * v11)];
-        v13 = [(HUControlPanelController *)self interactionStateByControlID];
-        [v13 removeObjectForKey:v12];
+        v12 = [itemCopy identifierForControlItem:*(*(&v14 + 1) + 8 * v11)];
+        interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+        [interactionStateByControlID removeObjectForKey:v12];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [controlItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = [(HUControlPanelController *)self _configurationForItem:a3];
-  v4 = [v3 cellClass];
+  v3 = [(HUControlPanelController *)self _configurationForItem:item];
+  cellClass = [v3 cellClass];
 
-  return v4;
+  return cellClass;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUControlPanelController *)self allItems];
-  v9 = [v8 containsObject:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  allItems = [(HUControlPanelController *)self allItems];
+  v9 = [allItems containsObject:itemCopy];
 
   if ((v9 & 1) == 0)
   {
-    NSLog(&cfstr_AttemptingToSe.isa, v7);
+    NSLog(&cfstr_AttemptingToSe.isa, itemCopy);
   }
 
-  v10 = [(HUControlPanelController *)self _configurationForItem:v7];
-  [v10 setupControlsForCell:v6 item:v7];
+  v10 = [(HUControlPanelController *)self _configurationForItem:itemCopy];
+  [v10 setupControlsForCell:cellCopy item:itemCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v6 allControlViews];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allControlViews = [cellCopy allControlViews];
+  v12 = [allControlViews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -187,40 +187,40 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allControlViews);
         }
 
         v16 = *(*(&v17 + 1) + 8 * i);
         [v16 setDelegate:self];
-        [(HUControlPanelController *)self _updateStateForControlView:v16 controlPanelItem:v7];
+        [(HUControlPanelController *)self _updateStateForControlView:v16 controlPanelItem:itemCopy];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [allControlViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUControlPanelController *)self allItems];
-  v10 = [v9 containsObject:v8];
+  cellCopy = cell;
+  itemCopy = item;
+  allItems = [(HUControlPanelController *)self allItems];
+  v10 = [allItems containsObject:itemCopy];
 
   if ((v10 & 1) == 0)
   {
-    NSLog(&cfstr_AttemptingToUp.isa, v8);
+    NSLog(&cfstr_AttemptingToUp.isa, itemCopy);
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [v7 allControlViews];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allControlViews = [cellCopy allControlViews];
+  v12 = [allControlViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -232,27 +232,27 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allControlViews);
         }
 
-        [(HUControlPanelController *)self _updateStateForControlView:*(*(&v16 + 1) + 8 * v15++) controlPanelItem:v8];
+        [(HUControlPanelController *)self _updateStateForControlView:*(*(&v16 + 1) + 8 * v15++) controlPanelItem:itemCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [allControlViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (BOOL)shouldShowSectionTitleForItem:(id)a3
+- (BOOL)shouldShowSectionTitleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self _configurationForItem:v4];
+  itemCopy = item;
+  v5 = [(HUControlPanelController *)self _configurationForItem:itemCopy];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 shouldShowSectionTitleForItem:v4];
+    v6 = [v5 shouldShowSectionTitleForItem:itemCopy];
   }
 
   else
@@ -263,13 +263,13 @@
   return v6;
 }
 
-- (BOOL)shouldShowSectionFooterForItem:(id)a3
+- (BOOL)shouldShowSectionFooterForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self _configurationForItem:v4];
+  itemCopy = item;
+  v5 = [(HUControlPanelController *)self _configurationForItem:itemCopy];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 shouldShowSectionFooterForItem:v4];
+    v6 = [v5 shouldShowSectionFooterForItem:itemCopy];
   }
 
   else
@@ -280,16 +280,16 @@
   return v6;
 }
 
-- (id)sectionTitleForItem:(id)a3 forSourceItem:(id)a4
+- (id)sectionTitleForItem:(id)item forSourceItem:(id)sourceItem
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(HUControlPanelController *)self shouldShowSectionTitleForItem:v6])
+  itemCopy = item;
+  sourceItemCopy = sourceItem;
+  if ([(HUControlPanelController *)self shouldShowSectionTitleForItem:itemCopy])
   {
-    v8 = [(HUControlPanelController *)self _configurationForItem:v6];
+    v8 = [(HUControlPanelController *)self _configurationForItem:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 sectionTitleForItem:v6 forSourceItem:v7];
+      v9 = [v8 sectionTitleForItem:itemCopy forSourceItem:sourceItemCopy];
     }
 
     else
@@ -306,16 +306,16 @@
   return v9;
 }
 
-- (id)sectionFooterForItem:(id)a3 forSourceItem:(id)a4
+- (id)sectionFooterForItem:(id)item forSourceItem:(id)sourceItem
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(HUControlPanelController *)self shouldShowSectionFooterForItem:v6])
+  itemCopy = item;
+  sourceItemCopy = sourceItem;
+  if ([(HUControlPanelController *)self shouldShowSectionFooterForItem:itemCopy])
   {
-    v8 = [(HUControlPanelController *)self _configurationForItem:v6];
+    v8 = [(HUControlPanelController *)self _configurationForItem:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 sectionFooterForItem:v6 forSourceItem:v7];
+      v9 = [v8 sectionFooterForItem:itemCopy forSourceItem:sourceItemCopy];
     }
 
     else
@@ -332,35 +332,35 @@
   return v9;
 }
 
-- (void)_updateStateForControlView:(id)a3 controlPanelItem:(id)a4
+- (void)_updateStateForControlView:(id)view controlPanelItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v13 = [v6 controlItemForIdentifier:v8];
+  itemCopy = item;
+  viewCopy = view;
+  identifier = [viewCopy identifier];
+  v13 = [itemCopy controlItemForIdentifier:identifier];
 
-  v9 = [v13 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  latestResults = [v13 latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v11 = [(HUControlPanelController *)self _valueTransformerForControlItem:v13 controlPanelItem:v6];
+  v11 = [(HUControlPanelController *)self _valueTransformerForControlItem:v13 controlPanelItem:itemCopy];
 
   v12 = [v11 transformedValueForValue:v10];
-  [v7 setValue:v12];
+  [viewCopy setValue:v12];
 
-  [v7 setDisabled:v10 == 0];
+  [viewCopy setDisabled:v10 == 0];
 }
 
-- (id)_controlPanelItemForControlView:(id)a3
+- (id)_controlPanelItemForControlView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self allItems];
+  viewCopy = view;
+  allItems = [(HUControlPanelController *)self allItems];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __60__HUControlPanelController__controlPanelItemForControlView___block_invoke;
   v12 = &unk_277DC3E60;
-  v6 = v4;
+  v6 = viewCopy;
   v13 = v6;
-  v7 = [v5 na_firstObjectPassingTest:&v9];
+  v7 = [allItems na_firstObjectPassingTest:&v9];
 
   if (!v7)
   {
@@ -380,13 +380,13 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
   return v5 != 0;
 }
 
-- (id)_controlItemForControlView:(id)a3
+- (id)_controlItemForControlView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self _controlPanelItemForControlView:v4];
-  v6 = [v4 identifier];
+  viewCopy = view;
+  v5 = [(HUControlPanelController *)self _controlPanelItemForControlView:viewCopy];
+  identifier = [viewCopy identifier];
 
-  v7 = [v5 controlItemForIdentifier:v6];
+  v7 = [v5 controlItemForIdentifier:identifier];
 
   return v7;
 }
@@ -417,10 +417,10 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
   return v12;
 }
 
-- (id)_configurationForItem:(id)a3
+- (id)_configurationForItem:(id)item
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -444,22 +444,22 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
-        v11 = [v10 rule];
-        v12 = [v11 ruleMatchesItem:v4];
+        rule = [v10 rule];
+        v12 = [rule ruleMatchesItem:itemCopy];
 
         if (v12)
         {
           if (v7)
           {
             v13 = v8;
-            v14 = v4;
+            v14 = itemCopy;
             v15 = MEMORY[0x277CCABB0];
-            v16 = [v7 rule];
-            [v16 priority];
+            rule2 = [v7 rule];
+            [rule2 priority];
             v17 = [v15 numberWithDouble:?];
             v18 = MEMORY[0x277CCABB0];
-            v19 = [v10 rule];
-            [v19 priority];
+            rule3 = [v10 rule];
+            [rule3 priority];
             v20 = [v18 numberWithDouble:?];
             v21 = [v17 compare:v20];
 
@@ -472,12 +472,12 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
                 v7 = v22;
               }
 
-              v4 = v14;
+              itemCopy = v14;
             }
 
             else
             {
-              v4 = v14;
+              itemCopy = v14;
               NSLog(&cfstr_FoundTwoConfig.isa, v14, v7, v10);
             }
 
@@ -509,23 +509,23 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
   return v7;
 }
 
-- (id)_valueTransformerForControlItem:(id)a3 controlPanelItem:(id)a4
+- (id)_valueTransformerForControlItem:(id)item controlPanelItem:(id)panelItem
 {
-  v6 = a3;
-  v7 = [(HUControlPanelController *)self _configurationForItem:a4];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 valueTransformerForControlItem:v6], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  itemCopy = item;
+  v7 = [(HUControlPanelController *)self _configurationForItem:panelItem];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 valueTransformerForControlItem:itemCopy], (identityTransformer = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [MEMORY[0x277D14CF0] identityTransformer];
+    identityTransformer = [MEMORY[0x277D14CF0] identityTransformer];
   }
 
-  return v8;
+  return identityTransformer;
 }
 
-- (id)_createWriteThrottleForControlItem:(id)a3 controlPanelItem:(id)a4
+- (id)_createWriteThrottleForControlItem:(id)item controlPanelItem:(id)panelItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifierForControlItem:v6];
+  itemCopy = item;
+  panelItemCopy = panelItem;
+  v8 = [panelItemCopy identifierForControlItem:itemCopy];
   v9 = [objc_alloc(MEMORY[0x277D2C940]) initWithThrottleInterval:0.25];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
@@ -535,9 +535,9 @@ BOOL __60__HUControlPanelController__controlPanelItemForControlView___block_invo
   objc_copyWeak(&v19, &location);
   v10 = v8;
   v16 = v10;
-  v11 = v6;
+  v11 = itemCopy;
   v17 = v11;
-  v12 = v7;
+  v12 = panelItemCopy;
   v18 = v12;
   v13 = [v9 observeValueChangesWithBlock:v15];
 
@@ -581,32 +581,32 @@ void __80__HUControlPanelController__createWriteThrottleForControlItem_controlPa
   [WeakRetained _updateWriteStateForControlItem:*(a1 + 40) controlPanelItem:*(a1 + 48)];
 }
 
-- (void)_updateWriteStateForControlView:(id)a3
+- (void)_updateWriteStateForControlView:(id)view
 {
-  v4 = a3;
-  v7 = [(HUControlPanelController *)self _controlPanelItemForControlView:v4];
-  v5 = [v4 identifier];
+  viewCopy = view;
+  v7 = [(HUControlPanelController *)self _controlPanelItemForControlView:viewCopy];
+  identifier = [viewCopy identifier];
 
-  v6 = [v7 controlItemForIdentifier:v5];
+  v6 = [v7 controlItemForIdentifier:identifier];
 
   [(HUControlPanelController *)self _updateWriteStateForControlItem:v6 controlPanelItem:v7];
 }
 
-- (void)_updateWriteStateForControlItem:(id)a3 controlPanelItem:(id)a4
+- (void)_updateWriteStateForControlItem:(id)item controlPanelItem:(id)panelItem
 {
-  v16 = a3;
-  v6 = [a4 identifierForControlItem:?];
-  v7 = [(HUControlPanelController *)self interactionStateByControlID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  itemCopy = item;
+  v6 = [panelItem identifierForControlItem:?];
+  interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+  v8 = [interactionStateByControlID objectForKeyedSubscript:v6];
 
-  v9 = [v8 areWritesInProgressOrPossible];
+  areWritesInProgressOrPossible = [v8 areWritesInProgressOrPossible];
   v10 = ([v8 isUserInteractionActive] & 1) != 0 || objc_msgSend(v8, "inFlightWriteCount") != 0;
   [v8 setWritesInProgressOrPossible:v10];
-  if (v9 != [v8 areWritesInProgressOrPossible])
+  if (areWritesInProgressOrPossible != [v8 areWritesInProgressOrPossible])
   {
-    v11 = [v8 areWritesInProgressOrPossible];
-    v12 = [(HUControlPanelController *)self delegate];
-    if (v11)
+    areWritesInProgressOrPossible2 = [v8 areWritesInProgressOrPossible];
+    delegate = [(HUControlPanelController *)self delegate];
+    if (areWritesInProgressOrPossible2)
     {
       v13 = objc_opt_respondsToSelector();
 
@@ -615,8 +615,8 @@ void __80__HUControlPanelController__createWriteThrottleForControlItem_controlPa
         goto LABEL_11;
       }
 
-      v14 = [(HUControlPanelController *)self delegate];
-      [v14 controlPanelController:self willBeginPossibleWritesForControlItem:v16];
+      delegate2 = [(HUControlPanelController *)self delegate];
+      [delegate2 controlPanelController:self willBeginPossibleWritesForControlItem:itemCopy];
     }
 
     else
@@ -628,50 +628,50 @@ void __80__HUControlPanelController__createWriteThrottleForControlItem_controlPa
         goto LABEL_11;
       }
 
-      v14 = [(HUControlPanelController *)self delegate];
-      [v14 controlPanelController:self didEndPossibleWritesForControlItem:v16];
+      delegate2 = [(HUControlPanelController *)self delegate];
+      [delegate2 controlPanelController:self didEndPossibleWritesForControlItem:itemCopy];
     }
   }
 
 LABEL_11:
 }
 
-- (void)controlViewDidBeginUserInteraction:(id)a3
+- (void)controlViewDidBeginUserInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self interactionStateByControlID];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  interactionCopy = interaction;
+  interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+  identifier = [interactionCopy identifier];
+  v7 = [interactionStateByControlID objectForKeyedSubscript:identifier];
 
   [v7 setUserInteractionActive:1];
-  [(HUControlPanelController *)self _updateWriteStateForControlView:v4];
+  [(HUControlPanelController *)self _updateWriteStateForControlView:interactionCopy];
 }
 
-- (void)controlViewDidEndUserInteraction:(id)a3
+- (void)controlViewDidEndUserInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(HUControlPanelController *)self interactionStateByControlID];
-  v6 = [v4 identifier];
-  v8 = [v5 objectForKeyedSubscript:v6];
+  interactionCopy = interaction;
+  interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+  identifier = [interactionCopy identifier];
+  v8 = [interactionStateByControlID objectForKeyedSubscript:identifier];
 
   [v8 setUserInteractionActive:0];
-  v7 = [v8 writeThrottler];
-  [v7 flushValueChanges];
+  writeThrottler = [v8 writeThrottler];
+  [writeThrottler flushValueChanges];
 
-  [(HUControlPanelController *)self _updateWriteStateForControlView:v4];
+  [(HUControlPanelController *)self _updateWriteStateForControlView:interactionCopy];
 }
 
-- (void)controlView:(id)a3 valueDidChange:(id)a4
+- (void)controlView:(id)view valueDidChange:(id)change
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUControlPanelController *)self interactionStateByControlID];
-  v9 = [v7 identifier];
+  changeCopy = change;
+  viewCopy = view;
+  interactionStateByControlID = [(HUControlPanelController *)self interactionStateByControlID];
+  identifier = [viewCopy identifier];
 
-  v11 = [v8 objectForKeyedSubscript:v9];
+  v11 = [interactionStateByControlID objectForKeyedSubscript:identifier];
 
-  v10 = [v11 writeThrottler];
-  [v10 setValue:v6 notifyObservers:1];
+  writeThrottler = [v11 writeThrottler];
+  [writeThrottler setValue:changeCopy notifyObservers:1];
 }
 
 - (HUControlPanelControllerDelegate)delegate

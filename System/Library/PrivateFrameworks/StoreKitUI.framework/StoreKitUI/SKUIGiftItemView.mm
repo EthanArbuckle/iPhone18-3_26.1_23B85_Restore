@@ -1,7 +1,7 @@
 @interface SKUIGiftItemView
 - (CGSize)_imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIGiftItemView)initWithStyle:(int64_t)a3 item:(id)a4 clientContext:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIGiftItemView)initWithStyle:(int64_t)style item:(id)item clientContext:(id)context;
 - (SKUIItemArtworkContext)artworkContext;
 - (SKUIItemOfferButton)itemOfferButton;
 - (UIEdgeInsets)_imageEdgeInsets;
@@ -11,31 +11,31 @@
 - (id)_subtitleColor;
 - (id)_titleColor;
 - (id)_userRatingColor;
-- (void)_enumerateMetadataViewsUsingBlock:(id)a3;
-- (void)_itemOfferConfirmAction:(id)a3;
-- (void)_reloadItemState:(BOOL)a3;
+- (void)_enumerateMetadataViewsUsingBlock:(id)block;
+- (void)_itemOfferConfirmAction:(id)action;
+- (void)_reloadItemState:(BOOL)state;
 - (void)_reloadSubtitles;
 - (void)_reloadUserRatingViews;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setArtistName:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCategoryName:(id)a3;
-- (void)setItemImage:(id)a3;
-- (void)setItemState:(id)a3 animated:(BOOL)a4;
-- (void)setNumberOfUserRatings:(int64_t)a3;
-- (void)setPrice:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserRating:(float)a3;
+- (void)setArtistName:(id)name;
+- (void)setBackgroundColor:(id)color;
+- (void)setCategoryName:(id)name;
+- (void)setItemImage:(id)image;
+- (void)setItemState:(id)state animated:(BOOL)animated;
+- (void)setNumberOfUserRatings:(int64_t)ratings;
+- (void)setPrice:(id)price;
+- (void)setTheme:(id)theme;
+- (void)setTitle:(id)title;
+- (void)setUserRating:(float)rating;
 @end
 
 @implementation SKUIGiftItemView
 
-- (SKUIGiftItemView)initWithStyle:(int64_t)a3 item:(id)a4 clientContext:(id)a5
+- (SKUIGiftItemView)initWithStyle:(int64_t)style item:(id)item clientContext:(id)context
 {
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftItemView initWithStyle:item:clientContext:];
@@ -47,13 +47,13 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_item, a4);
-    v12->_itemStyle = a3;
-    objc_storeStrong(&v12->_clientContext, a5);
+    objc_storeStrong(&v11->_item, item);
+    v12->_itemStyle = style;
+    objc_storeStrong(&v12->_clientContext, context);
     [(SKUIGiftItemView *)v12 _reloadUserRatingViews];
     [(SKUIGiftItemView *)v12 _reloadItemState:0];
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    v12->_leftToRight = [v13 userInterfaceLayoutDirection] == 0;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v12->_leftToRight = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 0;
   }
 
   return v12;
@@ -139,8 +139,8 @@ LABEL_8:
     self->_itemOfferButton = v4;
 
     v6 = self->_itemOfferButton;
-    v7 = [(SKUIGiftItemView *)self backgroundColor];
-    [(SKUIItemOfferButton *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SKUIGiftItemView *)self backgroundColor];
+    [(SKUIItemOfferButton *)v6 setBackgroundColor:backgroundColor];
 
     [(SKUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__itemOfferConfirmAction_ forControlEvents:0x20000];
     [(SKUIGiftItemView *)self addSubview:self->_itemOfferButton];
@@ -150,61 +150,61 @@ LABEL_8:
   return itemOfferButton;
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_artistName != v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (self->_artistName != nameCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = nameCopy;
+    nameCopy = [nameCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((nameCopy & 1) == 0)
     {
       v6 = [v8 copy];
       artistName = self->_artistName;
       self->_artistName = v6;
 
-      v4 = [(SKUIGiftItemView *)self _reloadSubtitles];
+      nameCopy = [(SKUIGiftItemView *)self _reloadSubtitles];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](nameCopy, v5);
 }
 
-- (void)setCategoryName:(id)a3
+- (void)setCategoryName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_categoryName != v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (self->_categoryName != nameCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = nameCopy;
+    nameCopy = [nameCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((nameCopy & 1) == 0)
     {
       v6 = [v8 copy];
       categoryName = self->_categoryName;
       self->_categoryName = v6;
 
-      v4 = [(SKUIGiftItemView *)self _reloadSubtitles];
+      nameCopy = [(SKUIGiftItemView *)self _reloadSubtitles];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](nameCopy, v5);
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_itemImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_itemImageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     itemImageView = self->_itemImageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!itemImageView)
       {
@@ -213,8 +213,8 @@ LABEL_8:
         self->_itemImageView = v7;
 
         v9 = self->_itemImageView;
-        v10 = [(SKUIGiftItemView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIGiftItemView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SKUIGiftItemView *)self addSubview:self->_itemImageView];
         itemImageView = self->_itemImageView;
@@ -231,82 +231,82 @@ LABEL_8:
       self->_itemImageView = 0;
     }
 
-    v5 = [(SKUIGiftItemView *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIGiftItemView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setItemState:(id)a3 animated:(BOOL)a4
+- (void)setItemState:(id)state animated:(BOOL)animated
 {
-  if (self->_itemState != a3)
+  if (self->_itemState != state)
   {
-    v4 = a4;
-    v6 = [a3 copy];
+    animatedCopy = animated;
+    v6 = [state copy];
     itemState = self->_itemState;
     self->_itemState = v6;
 
-    [(SKUIGiftItemView *)self _reloadItemState:v4];
+    [(SKUIGiftItemView *)self _reloadItemState:animatedCopy];
   }
 }
 
-- (void)setNumberOfUserRatings:(int64_t)a3
+- (void)setNumberOfUserRatings:(int64_t)ratings
 {
-  if (self->_numberOfUserRatings != a3)
+  if (self->_numberOfUserRatings != ratings)
   {
-    self->_numberOfUserRatings = a3;
+    self->_numberOfUserRatings = ratings;
     [(SKUIGiftItemView *)self _reloadUserRatingViews];
   }
 }
 
-- (void)setPrice:(id)a3
+- (void)setPrice:(id)price
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_price != v4)
+  priceCopy = price;
+  v5 = priceCopy;
+  if (self->_price != priceCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = priceCopy;
+    priceCopy = [priceCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((priceCopy & 1) == 0)
     {
       v6 = [v8 copy];
       price = self->_price;
       self->_price = v6;
 
-      v4 = [(SKUIGiftItemView *)self _reloadSubtitles];
+      priceCopy = [(SKUIGiftItemView *)self _reloadSubtitles];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](priceCopy, v5);
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    v4 = [a3 copy];
+    v4 = [theme copy];
     theme = self->_theme;
     self->_theme = v4;
 
-    v7 = [(SKUIGiftItemView *)self _subtitleColor];
-    [(UILabel *)self->_subtitleLabel1 setTextColor:v7];
-    [(UILabel *)self->_subtitleLabel2 setTextColor:v7];
-    v6 = [(SKUIGiftItemView *)self _titleColor];
-    [(UILabel *)self->_titleLabel setTextColor:v6];
-    [(UILabel *)self->_userRatingCountLabel setTextColor:v6];
+    _subtitleColor = [(SKUIGiftItemView *)self _subtitleColor];
+    [(UILabel *)self->_subtitleLabel1 setTextColor:_subtitleColor];
+    [(UILabel *)self->_subtitleLabel2 setTextColor:_subtitleColor];
+    _titleColor = [(SKUIGiftItemView *)self _titleColor];
+    [(UILabel *)self->_titleLabel setTextColor:_titleColor];
+    [(UILabel *)self->_userRatingCountLabel setTextColor:_titleColor];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v21 = a3;
-  v4 = [(SKUIGiftItemView *)self title];
-  if (v4 != v21 && ([v21 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIGiftItemView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (!v21)
+    if (!titleCopy)
     {
       [(UILabel *)titleLabel removeFromSuperview];
       v13 = self->_titleLabel;
@@ -324,24 +324,24 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v6 = [(SKUIGiftItemView *)self _newLabel];
+    _newLabel = [(SKUIGiftItemView *)self _newLabel];
     v7 = self->_titleLabel;
-    self->_titleLabel = v6;
+    self->_titleLabel = _newLabel;
 
     v8 = self->_titleLabel;
-    v9 = [(SKUIGiftItemView *)self _titleColor];
-    [(UILabel *)v8 setTextColor:v9];
+    _titleColor = [(SKUIGiftItemView *)self _titleColor];
+    [(UILabel *)v8 setTextColor:_titleColor];
 
     itemStyle = self->_itemStyle;
     if ((itemStyle - 2) < 2)
     {
       v14 = self->_titleLabel;
       v15 = MEMORY[0x277D74300];
-      v16 = [MEMORY[0x277D75418] currentDevice];
-      v17 = [v16 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v18 = 16.0;
-      if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v18 = 24.0;
       }
@@ -381,11 +381,11 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)setUserRating:(float)a3
+- (void)setUserRating:(float)rating
 {
-  if (self->_userRating != a3)
+  if (self->_userRating != rating)
   {
-    self->_userRating = a3;
+    self->_userRating = rating;
     [(SKUIGiftItemView *)self _reloadUserRatingViews];
   }
 }
@@ -395,10 +395,10 @@ LABEL_18:
   [(SKUIGiftItemView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(SKUIGiftItemView *)self leftToRight];
+  leftToRight = [(SKUIGiftItemView *)self leftToRight];
   [(SKUIGiftItemView *)self _paddingTrailing];
   v69 = v4;
-  if (v7)
+  if (leftToRight)
   {
     v9 = v4 - v8;
   }
@@ -423,10 +423,10 @@ LABEL_18:
   v68 = v17;
   v19 = v18;
   v21 = v20;
-  v22 = [(SKUIGiftItemView *)self leftToRight];
+  leftToRight2 = [(SKUIGiftItemView *)self leftToRight];
   [(SKUIGiftItemView *)self _paddingLeading];
   v24 = v23;
-  if (!v22)
+  if (!leftToRight2)
   {
     v25 = v69 - v23;
     [(UIImageView *)self->_itemImageView frame];
@@ -481,9 +481,9 @@ LABEL_18:
   v39 = v38;
   [(SKUIGiftItemView *)self _paddingTrailing];
   v41 = v40;
-  v42 = [(SKUIGiftItemView *)self leftToRight];
+  leftToRight3 = [(SKUIGiftItemView *)self leftToRight];
   v43 = v68;
-  if (v42)
+  if (leftToRight3)
   {
     v43 = v21;
   }
@@ -617,26 +617,26 @@ void __34__SKUIGiftItemView_layoutSubviews__block_invoke_2(uint64_t a1, void *a2
   *(*(*(a1 + 40) + 8) + 40) = CGRectGetMaxY(v17) + a3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   itemImageView = self->_itemImageView;
-  v5 = a3;
-  [(UIImageView *)itemImageView setBackgroundColor:v5];
-  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:v5];
-  [(UIImageView *)self->_starRatingImageView setBackgroundColor:v5];
-  [(UILabel *)self->_subtitleLabel1 setBackgroundColor:v5];
-  [(UILabel *)self->_subtitleLabel2 setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
-  [(UILabel *)self->_userRatingCountLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)itemImageView setBackgroundColor:colorCopy];
+  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_starRatingImageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel1 setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel2 setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_userRatingCountLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIGiftItemView;
-  [(SKUIGiftItemView *)&v6 setBackgroundColor:v5];
+  [(SKUIGiftItemView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SKUIGiftItemView *)self _imageEdgeInsets:a3.width];
+  width = fits.width;
+  [(SKUIGiftItemView *)self _imageEdgeInsets:fits.width];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -682,16 +682,16 @@ double __33__SKUIGiftItemView_sizeThatFits___block_invoke(uint64_t a1, void *a2,
   return result;
 }
 
-- (void)_itemOfferConfirmAction:(id)a3
+- (void)_itemOfferConfirmAction:(id)action
 {
   v5 = +[SKUIItemStateCenter defaultCenter];
   v4 = [v5 performActionForItem:self->_item clientContext:self->_clientContext];
 }
 
-- (void)_enumerateMetadataViewsUsingBlock:(id)a3
+- (void)_enumerateMetadataViewsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v14[0] = self->_titleLabel;
   v14[1] = self->_subtitleLabel1;
   v5 = self->_subtitleLabel2;
@@ -720,7 +720,7 @@ double __33__SKUIGiftItemView_sizeThatFits___block_invoke(uint64_t a1, void *a2,
     v9 = v14[v8];
     if (v9)
     {
-      v4[2](v4, v9, &v11, *(&v12 + v8));
+      blockCopy[2](blockCopy, v9, &v11, *(&v12 + v8));
       v7 = v11;
     }
 
@@ -799,8 +799,8 @@ double __33__SKUIGiftItemView_sizeThatFits___block_invoke(uint64_t a1, void *a2,
 
 - (CGSize)_imageSize
 {
-  v3 = [(SKUIGiftItemView *)self artworkContext];
-  [v3 imageSizeForItem:self->_item];
+  artworkContext = [(SKUIGiftItemView *)self artworkContext];
+  [artworkContext imageSizeForItem:self->_item];
   v5 = v4;
   v7 = v6;
 
@@ -815,8 +815,8 @@ double __33__SKUIGiftItemView_sizeThatFits___block_invoke(uint64_t a1, void *a2,
 {
   v2 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v2 setTextAlignment:4];
-  v3 = [MEMORY[0x277D75348] orangeColor];
-  [v2 setBackgroundColor:v3];
+  orangeColor = [MEMORY[0x277D75348] orangeColor];
+  [v2 setBackgroundColor:orangeColor];
 
   return v2;
 }
@@ -843,19 +843,19 @@ double __33__SKUIGiftItemView_sizeThatFits___block_invoke(uint64_t a1, void *a2,
   return result;
 }
 
-- (void)_reloadItemState:(BOOL)a3
+- (void)_reloadItemState:(BOOL)state
 {
   if (self->_itemStyle == 3)
   {
-    v4 = a3;
+    stateCopy = state;
     if ([(SKUIItemState *)self->_itemState state])
     {
-      v6 = [(SKUIItemState *)self->_itemState state];
-      [(SKUIItemOfferButton *)self->_itemOfferButton setHidden:v6 == 8];
-      if (v6 != 8)
+      state = [(SKUIItemState *)self->_itemState state];
+      [(SKUIItemOfferButton *)self->_itemOfferButton setHidden:state == 8];
+      if (state != 8)
       {
-        v7 = [(SKUIGiftItemView *)self itemOfferButton];
-        [(SKUIItemOfferButton *)self->_itemOfferButton setValuesUsingItemOffer:0 itemState:self->_itemState clientContext:self->_clientContext animated:v4];
+        itemOfferButton = [(SKUIGiftItemView *)self itemOfferButton];
+        [(SKUIItemOfferButton *)self->_itemOfferButton setValuesUsingItemOffer:0 itemState:self->_itemState clientContext:self->_clientContext animated:stateCopy];
         [(SKUIItemOfferButton *)self->_itemOfferButton sizeToFit];
       }
     }
@@ -935,22 +935,22 @@ LABEL_13:
     v9 = [MEMORY[0x277D74300] systemFontOfSize:dbl_215F3F050[itemStyle]];
   }
 
-  v10 = [(UILabel *)self->_subtitleLabel2 text];
-  if (v25 != v10 && ![(NSString *)v4 isEqualToString:v10])
+  text = [(UILabel *)self->_subtitleLabel2 text];
+  if (v25 != text && ![(NSString *)v4 isEqualToString:text])
   {
     subtitleLabel2 = self->_subtitleLabel2;
     if (v25)
     {
       if (!subtitleLabel2)
       {
-        v12 = [(SKUIGiftItemView *)self _newLabel];
+        _newLabel = [(SKUIGiftItemView *)self _newLabel];
         v13 = self->_subtitleLabel2;
-        self->_subtitleLabel2 = v12;
+        self->_subtitleLabel2 = _newLabel;
 
         [(UILabel *)self->_subtitleLabel2 setFont:v9];
         v14 = self->_subtitleLabel2;
-        v15 = [(SKUIGiftItemView *)self _subtitleColor];
-        [(UILabel *)v14 setTextColor:v15];
+        _subtitleColor = [(SKUIGiftItemView *)self _subtitleColor];
+        [(UILabel *)v14 setTextColor:_subtitleColor];
 
         [(SKUIGiftItemView *)self addSubview:self->_subtitleLabel2];
         subtitleLabel2 = self->_subtitleLabel2;
@@ -968,9 +968,9 @@ LABEL_13:
     }
   }
 
-  v17 = [(UILabel *)self->_subtitleLabel1 text];
+  text2 = [(UILabel *)self->_subtitleLabel1 text];
 
-  if (v25 != v17 && ![(NSString *)v25 isEqualToString:v17])
+  if (v25 != text2 && ![(NSString *)v25 isEqualToString:text2])
   {
     subtitleLabel1 = self->_subtitleLabel1;
     v19 = v25;
@@ -978,14 +978,14 @@ LABEL_13:
     {
       if (!subtitleLabel1)
       {
-        v20 = [(SKUIGiftItemView *)self _newLabel];
+        _newLabel2 = [(SKUIGiftItemView *)self _newLabel];
         v21 = self->_subtitleLabel1;
-        self->_subtitleLabel1 = v20;
+        self->_subtitleLabel1 = _newLabel2;
 
         [(UILabel *)self->_subtitleLabel1 setFont:v9];
         v22 = self->_subtitleLabel1;
-        v23 = [(SKUIGiftItemView *)self _subtitleColor];
-        [(UILabel *)v22 setTextColor:v23];
+        _subtitleColor2 = [(SKUIGiftItemView *)self _subtitleColor];
+        [(UILabel *)v22 setTextColor:_subtitleColor2];
 
         [(SKUIGiftItemView *)self addSubview:self->_subtitleLabel1];
         v19 = v25;
@@ -1023,17 +1023,17 @@ LABEL_13:
   {
     if (!self->_userRatingCountLabel)
     {
-      v5 = [(SKUIGiftItemView *)self _newLabel];
+      _newLabel = [(SKUIGiftItemView *)self _newLabel];
       v6 = self->_userRatingCountLabel;
-      self->_userRatingCountLabel = v5;
+      self->_userRatingCountLabel = _newLabel;
 
       v7 = self->_userRatingCountLabel;
       v8 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
       [(UILabel *)v7 setFont:v8];
 
       v9 = self->_userRatingCountLabel;
-      v10 = [(SKUIGiftItemView *)self _userRatingColor];
-      [(UILabel *)v9 setTextColor:v10];
+      _userRatingColor = [(SKUIGiftItemView *)self _userRatingColor];
+      [(UILabel *)v9 setTextColor:_userRatingColor];
 
       [(SKUIGiftItemView *)self addSubview:self->_userRatingCountLabel];
     }
@@ -1056,8 +1056,8 @@ LABEL_13:
       self->_starRatingImageView = v17;
 
       v19 = self->_starRatingImageView;
-      v20 = [(SKUIGiftItemView *)self backgroundColor];
-      [(UIImageView *)v19 setBackgroundColor:v20];
+      backgroundColor = [(SKUIGiftItemView *)self backgroundColor];
+      [(UIImageView *)v19 setBackgroundColor:backgroundColor];
 
       [(UIImageView *)self->_starRatingImageView setContentMode:7];
       [(SKUIGiftItemView *)self addSubview:self->_starRatingImageView];

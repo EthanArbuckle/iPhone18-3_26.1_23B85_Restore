@@ -1,73 +1,73 @@
 @interface MADAutoAssetPersisted
-+ (BOOL)isConsideredMatchWithoutVersion:(id)a3 ofEntryFullEntryIDName:(id)a4 toSelectorPersistedEntryID:(id)a5;
-+ (id)entryFileIDForModule:(id)a3 fromFilename:(id)a4;
-+ (id)persistedComponentSymbol:(id)a3;
-+ (id)persistedEntryStatusName:(int64_t)a3;
-+ (id)persistedOperationSymbol:(id)a3;
-+ (id)persistedStateFilename:(id)a3 forFileID:(id)a4 ofEntryName:(id)a5;
-+ (int64_t)persistedEntryStatusValue:(id)a3;
-- (BOOL)_preExistingPersistedStateValid:(id)a3 fromLocation:(id)a4;
-- (BOOL)_verifyEntryFileExists:(id)a3 fromLocation:(id)a4 expectingExists:(BOOL)a5;
-- (BOOL)_verifyPersistedDirectoryExistsOrCreate:(id)a3;
-- (BOOL)persistedEntryAlreadyExists:(id)a3 fromLocation:(id)a4;
-- (id)_contentsOfModulePersistedPath:(id)a3 fromLocation:(id)a4;
-- (id)_loadPersistedEntry:(id)a3 forEntryName:(id)a4 withEntryStatus:(int64_t)a5;
++ (BOOL)isConsideredMatchWithoutVersion:(id)version ofEntryFullEntryIDName:(id)name toSelectorPersistedEntryID:(id)d;
++ (id)entryFileIDForModule:(id)module fromFilename:(id)filename;
++ (id)persistedComponentSymbol:(id)symbol;
++ (id)persistedEntryStatusName:(int64_t)name;
++ (id)persistedOperationSymbol:(id)symbol;
++ (id)persistedStateFilename:(id)filename forFileID:(id)d ofEntryName:(id)name;
++ (int64_t)persistedEntryStatusValue:(id)value;
+- (BOOL)_preExistingPersistedStateValid:(id)valid fromLocation:(id)location;
+- (BOOL)_verifyEntryFileExists:(id)exists fromLocation:(id)location expectingExists:(BOOL)expectingExists;
+- (BOOL)_verifyPersistedDirectoryExistsOrCreate:(id)create;
+- (BOOL)persistedEntryAlreadyExists:(id)exists fromLocation:(id)location;
+- (id)_contentsOfModulePersistedPath:(id)path fromLocation:(id)location;
+- (id)_loadPersistedEntry:(id)entry forEntryName:(id)name withEntryStatus:(int64_t)status;
 - (id)_summary;
-- (id)_summaryLeader:(id)a3 fromLocation:(id)a4;
-- (id)decodeFromLocation:(id)a3 ofEntryName:(id)a4 fromPersistedEntry:(id)a5 decodingObjectForKey:(id)a6 ofClass:(Class)a7 allowingNilObject:(BOOL)a8;
-- (id)decodeFromLocation:(id)a3 ofEntryName:(id)a4 fromPersistedEntry:(id)a5 decodingObjectForKey:(id)a6 ofClass:(Class)a7 withEncodeClasses:(id)a8 allowingNilObject:(BOOL)a9;
-- (id)initForModule:(id)a3 ofModuleVersion:(id)a4 usingDispatchQueue:(id)a5 loggingByName:(id)a6 withVersionMigrator:(id)a7;
-- (id)persistedEntry:(id)a3 fromLocation:(id)a4;
-- (id)persistedEntryIDs:(id)a3;
-- (id)persistedEntryIDs:(id)a3 assetSelector:(id)a4;
-- (id)persistedEntryIDs:(id)a3 assetType:(id)a4;
-- (int64_t)_validateLoadedEntry:(id)a3 fromLocation:(id)a4 forEntryName:(id)a5 loadedWithEntryStatus:(int64_t)a6;
-- (int64_t)persistedEntryCount:(id)a3;
-- (void)_persistStatusChange:(id)a3 ofEntryName:(id)a4 withEntrySummary:(id)a5 currentStatus:(int64_t)a6 fromLocation:(id)a7;
-- (void)_persistTableOfContents:(id)a3 forEntryName:(id)a4 withEntryStatus:(int64_t)a5;
-- (void)_removeEntriesMissingFromTableOfContents:(id)a3;
-- (void)_removeEntryFile:(id)a3 reason:(id)a4 fromLocation:(id)a5;
-- (void)flushPersistedStateCacheAndSetCachingBehaviour:(BOOL)a3;
-- (void)loadPersistedState:(id)a3;
-- (void)removeAllPersistedEntries:(id)a3;
-- (void)removePersistedEntry:(id)a3 fromLocation:(id)a4;
-- (void)storePersistedEntry:(id)a3 withEntrySummary:(id)a4 fromLocation:(id)a5;
+- (id)_summaryLeader:(id)leader fromLocation:(id)location;
+- (id)decodeFromLocation:(id)location ofEntryName:(id)name fromPersistedEntry:(id)entry decodingObjectForKey:(id)key ofClass:(Class)class allowingNilObject:(BOOL)object;
+- (id)decodeFromLocation:(id)location ofEntryName:(id)name fromPersistedEntry:(id)entry decodingObjectForKey:(id)key ofClass:(Class)class withEncodeClasses:(id)classes allowingNilObject:(BOOL)object;
+- (id)initForModule:(id)module ofModuleVersion:(id)version usingDispatchQueue:(id)queue loggingByName:(id)name withVersionMigrator:(id)migrator;
+- (id)persistedEntry:(id)entry fromLocation:(id)location;
+- (id)persistedEntryIDs:(id)ds;
+- (id)persistedEntryIDs:(id)ds assetSelector:(id)selector;
+- (id)persistedEntryIDs:(id)ds assetType:(id)type;
+- (int64_t)_validateLoadedEntry:(id)entry fromLocation:(id)location forEntryName:(id)name loadedWithEntryStatus:(int64_t)status;
+- (int64_t)persistedEntryCount:(id)count;
+- (void)_persistStatusChange:(id)change ofEntryName:(id)name withEntrySummary:(id)summary currentStatus:(int64_t)status fromLocation:(id)location;
+- (void)_persistTableOfContents:(id)contents forEntryName:(id)name withEntryStatus:(int64_t)status;
+- (void)_removeEntriesMissingFromTableOfContents:(id)contents;
+- (void)_removeEntryFile:(id)file reason:(id)reason fromLocation:(id)location;
+- (void)flushPersistedStateCacheAndSetCachingBehaviour:(BOOL)behaviour;
+- (void)loadPersistedState:(id)state;
+- (void)removeAllPersistedEntries:(id)entries;
+- (void)removePersistedEntry:(id)entry fromLocation:(id)location;
+- (void)storePersistedEntry:(id)entry withEntrySummary:(id)summary fromLocation:(id)location;
 @end
 
 @implementation MADAutoAssetPersisted
 
-- (id)initForModule:(id)a3 ofModuleVersion:(id)a4 usingDispatchQueue:(id)a5 loggingByName:(id)a6 withVersionMigrator:(id)a7
+- (id)initForModule:(id)module ofModuleVersion:(id)version usingDispatchQueue:(id)queue loggingByName:(id)name withVersionMigrator:(id)migrator
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  moduleCopy = module;
+  versionCopy = version;
+  queueCopy = queue;
+  nameCopy = name;
+  migratorCopy = migrator;
   v49.receiver = self;
   v49.super_class = MADAutoAssetPersisted;
   v18 = [(MADAutoAssetPersisted *)&v49 init];
   if (v18)
   {
     v19 = [NSString alloc];
-    if (v16)
+    if (nameCopy)
     {
-      v20 = [v19 initWithFormat:@"AUTO-PERSISTED(%@)[%@]", v13, v16];
+      nameCopy = [v19 initWithFormat:@"AUTO-PERSISTED(%@)[%@]", moduleCopy, nameCopy];
     }
 
     else
     {
-      v20 = [v19 initWithFormat:@"AUTO-PERSISTED(%@)", v13, v48];
+      nameCopy = [v19 initWithFormat:@"AUTO-PERSISTED(%@)", moduleCopy, v48];
     }
 
     logLeader = v18->_logLeader;
-    v18->_logLeader = v20;
+    v18->_logLeader = nameCopy;
 
-    objc_storeStrong(&v18->_moduleName, a3);
-    objc_storeStrong(&v18->_moduleCurrentVersion, a4);
+    objc_storeStrong(&v18->_moduleName, module);
+    objc_storeStrong(&v18->_moduleCurrentVersion, version);
     latestSafeSummary = v18->_latestSafeSummary;
     v18->_latestSafeSummary = @"INIT";
 
-    objc_storeStrong(&v18->_persistedQueue, a5);
+    objc_storeStrong(&v18->_persistedQueue, queue);
     v23 = objc_alloc_init(NSCache);
     knownPersistedFiles = v18->_knownPersistedFiles;
     v18->_knownPersistedFiles = v23;
@@ -85,26 +85,26 @@
     v31 = [MADAutoAssetPersisted persistedStateFilename:v18->_moduleName forFileID:@"Config" ofEntryName:0];
     if (v28)
     {
-      v32 = [v29 initWithDispatchQueue:persistedQueue withPersistencePath:v31 forPolicyVersion:v14 issuingDefaultLevelLogging:0];
+      v32 = [v29 initWithDispatchQueue:persistedQueue withPersistencePath:v31 forPolicyVersion:versionCopy issuingDefaultLevelLogging:0];
       persistedConfig = v18->_persistedConfig;
       v18->_persistedConfig = v32;
 
       v34 = [SUCorePersistedState alloc];
       v35 = v18->_persistedQueue;
       v36 = [MADAutoAssetPersisted persistedStateFilename:v18->_moduleName forFileID:@"TableOfContents" ofEntryName:0];
-      v37 = [v34 initWithDispatchQueue:v35 withPersistencePath:v36 forPolicyVersion:v14 issuingDefaultLevelLogging:0];
+      v37 = [v34 initWithDispatchQueue:v35 withPersistencePath:v36 forPolicyVersion:versionCopy issuingDefaultLevelLogging:0];
     }
 
     else
     {
-      v38 = [v29 initWithDispatchQueue:persistedQueue withPersistencePath:v31 forPolicyVersion:v14];
+      v38 = [v29 initWithDispatchQueue:persistedQueue withPersistencePath:v31 forPolicyVersion:versionCopy];
       v39 = v18->_persistedConfig;
       v18->_persistedConfig = v38;
 
       v40 = [SUCorePersistedState alloc];
       v41 = v18->_persistedQueue;
       v36 = [MADAutoAssetPersisted persistedStateFilename:v18->_moduleName forFileID:@"TableOfContents" ofEntryName:0];
-      v37 = [v40 initWithDispatchQueue:v41 withPersistencePath:v36 forPolicyVersion:v14];
+      v37 = [v40 initWithDispatchQueue:v41 withPersistencePath:v36 forPolicyVersion:versionCopy];
     }
 
     entryTableOfContents = v18->_entryTableOfContents;
@@ -114,7 +114,7 @@
     currentEntryIDs = v18->_currentEntryIDs;
     v18->_currentEntryIDs = v43;
 
-    v45 = objc_retainBlock(v17);
+    v45 = objc_retainBlock(migratorCopy);
     moduleVersionMigrator = v18->_moduleVersionMigrator;
     v18->_moduleVersionMigrator = v45;
   }
@@ -122,55 +122,55 @@
   return v18;
 }
 
-- (void)loadPersistedState:(id)a3
+- (void)loadPersistedState:(id)state
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v61 = v4;
-  if ([(MADAutoAssetPersisted *)self _verifyPersistedDirectoryExistsOrCreate:v4])
+  v61 = stateCopy;
+  if ([(MADAutoAssetPersisted *)self _verifyPersistedDirectoryExistsOrCreate:stateCopy])
   {
-    v6 = [(MADAutoAssetPersisted *)self persistedConfig];
-    [v6 loadPersistedState];
+    persistedConfig = [(MADAutoAssetPersisted *)self persistedConfig];
+    [persistedConfig loadPersistedState];
 
-    v7 = [(MADAutoAssetPersisted *)self persistedConfig];
-    v8 = [v7 stringForKey:@"duplicatedModuleVersion"];
+    persistedConfig2 = [(MADAutoAssetPersisted *)self persistedConfig];
+    v8 = [persistedConfig2 stringForKey:@"duplicatedModuleVersion"];
 
     v59 = v8;
     if (v8)
     {
-      v9 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
-      if (([SUCore stringIsEqual:v8 to:v9]& 1) != 0)
+      moduleCurrentVersion = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+      if (([SUCore stringIsEqual:v8 to:moduleCurrentVersion]& 1) != 0)
       {
-        v10 = [(MADAutoAssetPersisted *)self persistedConfig];
-        v11 = [v10 versionPolicyLayer];
-        v12 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
-        v13 = [SUCore stringIsEqual:v11 to:v12];
+        persistedConfig3 = [(MADAutoAssetPersisted *)self persistedConfig];
+        versionPolicyLayer = [persistedConfig3 versionPolicyLayer];
+        moduleCurrentVersion2 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+        v13 = [SUCore stringIsEqual:versionPolicyLayer to:moduleCurrentVersion2];
 
         if (v13)
         {
           v14 = _MADLog(@"Auto");
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"loadPersistedState" fromLocation:v4];
-            v16 = [(MADAutoAssetPersisted *)self persistedConfig];
-            v17 = [v16 versionPolicyLayer];
-            v18 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+            v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"loadPersistedState" fromLocation:stateCopy];
+            persistedConfig4 = [(MADAutoAssetPersisted *)self persistedConfig];
+            versionPolicyLayer2 = [persistedConfig4 versionPolicyLayer];
+            moduleCurrentVersion3 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
             *buf = 138543874;
             v72 = v15;
             v73 = 2114;
-            v74 = v17;
+            v74 = versionPolicyLayer2;
             v75 = 2114;
-            v76 = v18;
+            v76 = moduleCurrentVersion3;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ | persisted-state version(%{public}@) = current module version(%{public}@), processing persisted-state", buf, 0x20u);
           }
 
-          v19 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-          [v19 loadPersistedState];
+          entryTableOfContents = [(MADAutoAssetPersisted *)self entryTableOfContents];
+          [entryTableOfContents loadPersistedState];
 
-          v20 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-          v21 = [v20 objectForKey:@"currentEntries" ofClass:objc_opt_class()];
+          entryTableOfContents2 = [(MADAutoAssetPersisted *)self entryTableOfContents];
+          v21 = [entryTableOfContents2 objectForKey:@"currentEntries" ofClass:objc_opt_class()];
 
           v22 = objc_alloc_init(NSMutableArray);
           [(MADAutoAssetPersisted *)self setCurrentEntryIDs:0];
@@ -184,7 +184,7 @@
           {
 
             [(MADAutoAssetPersisted *)self setCurrentEntryIDs:v22];
-            [(MADAutoAssetPersisted *)self _removeEntriesMissingFromTableOfContents:v4];
+            [(MADAutoAssetPersisted *)self _removeEntriesMissingFromTableOfContents:stateCopy];
             goto LABEL_39;
           }
 
@@ -280,32 +280,32 @@ LABEL_39:
     v36 = _MADLog(@"Auto");
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [(MADAutoAssetPersisted *)self _summaryLeader:@"loadPersistedState" fromLocation:v4];
-      v38 = [(MADAutoAssetPersisted *)self persistedConfig];
-      v39 = [v38 versionPolicyLayer];
-      v40 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
-      v41 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+      v37 = [(MADAutoAssetPersisted *)self _summaryLeader:@"loadPersistedState" fromLocation:stateCopy];
+      persistedConfig5 = [(MADAutoAssetPersisted *)self persistedConfig];
+      versionPolicyLayer3 = [persistedConfig5 versionPolicyLayer];
+      moduleCurrentVersion4 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+      moduleCurrentVersion5 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
       *buf = 138544386;
       v72 = v37;
       v73 = 2114;
-      v74 = v39;
+      v74 = versionPolicyLayer3;
       v75 = 2114;
-      v76 = v40;
+      v76 = moduleCurrentVersion4;
       v77 = 2114;
       v78 = v59;
       v79 = 2114;
-      v80 = v41;
+      v80 = moduleCurrentVersion5;
       _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ | persisted-state version(%{public}@) != current module version(%{public}@) OR duplicatedModuleVersion(%{public}@) != current module version(%{public}@) | dropped stale persisted-state", buf, 0x34u);
     }
 
-    v42 = [(MADAutoAssetPersisted *)self persistedConfig];
-    [v42 removePersistedState];
+    persistedConfig6 = [(MADAutoAssetPersisted *)self persistedConfig];
+    [persistedConfig6 removePersistedState];
 
-    v43 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-    [v43 loadPersistedState];
+    entryTableOfContents3 = [(MADAutoAssetPersisted *)self entryTableOfContents];
+    [entryTableOfContents3 loadPersistedState];
 
-    v44 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-    v45 = [v44 objectForKey:@"currentEntries" ofClass:objc_opt_class()];
+    entryTableOfContents4 = [(MADAutoAssetPersisted *)self entryTableOfContents];
+    v45 = [entryTableOfContents4 objectForKey:@"currentEntries" ofClass:objc_opt_class()];
 
     v64 = 0u;
     v65 = 0u;
@@ -328,8 +328,8 @@ LABEL_39:
 
           v50 = *(*(&v62 + 1) + 8 * j);
           v51 = objc_autoreleasePoolPush();
-          v52 = [(MADAutoAssetPersisted *)self moduleName];
-          v53 = [MADAutoAssetPersisted persistedStateFilename:v52 forFileID:@"Entry" ofEntryName:v50];
+          moduleName = [(MADAutoAssetPersisted *)self moduleName];
+          v53 = [MADAutoAssetPersisted persistedStateFilename:moduleName forFileID:@"Entry" ofEntryName:v50];
 
           [(MADAutoAssetPersisted *)self _removeEntryFile:v53 reason:@"persisted-version-mismatch" fromLocation:v61];
           objc_autoreleasePoolPop(v51);
@@ -341,18 +341,18 @@ LABEL_39:
       while (v47);
     }
 
-    v54 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-    [v54 removePersistedState];
+    entryTableOfContents5 = [(MADAutoAssetPersisted *)self entryTableOfContents];
+    [entryTableOfContents5 removePersistedState];
 
-    v55 = [(MADAutoAssetPersisted *)self persistedConfig];
-    [v55 loadPersistedState];
+    persistedConfig7 = [(MADAutoAssetPersisted *)self persistedConfig];
+    [persistedConfig7 loadPersistedState];
 
-    v56 = [(MADAutoAssetPersisted *)self persistedConfig];
-    v57 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
-    [v56 persistString:v57 forKey:@"duplicatedModuleVersion"];
+    persistedConfig8 = [(MADAutoAssetPersisted *)self persistedConfig];
+    moduleCurrentVersion6 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+    [persistedConfig8 persistString:moduleCurrentVersion6 forKey:@"duplicatedModuleVersion"];
 
-    v58 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-    [v58 loadPersistedState];
+    entryTableOfContents6 = [(MADAutoAssetPersisted *)self entryTableOfContents];
+    [entryTableOfContents6 loadPersistedState];
 
     [(MADAutoAssetPersisted *)self _removeEntriesMissingFromTableOfContents:v61];
     goto LABEL_38;
@@ -361,23 +361,23 @@ LABEL_39:
 LABEL_40:
 }
 
-- (BOOL)persistedEntryAlreadyExists:(id)a3 fromLocation:(id)a4
+- (BOOL)persistedEntryAlreadyExists:(id)exists fromLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  existsCopy = exists;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v9 = [(MADAutoAssetPersisted *)self moduleName];
-  v10 = [MADAutoAssetPersisted persistedStateFilename:v9 forFileID:@"Entry" ofEntryName:v7];
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  v10 = [MADAutoAssetPersisted persistedStateFilename:moduleName forFileID:@"Entry" ofEntryName:existsCopy];
 
-  v11 = [v10 lastPathComponent];
+  lastPathComponent = [v10 lastPathComponent];
   if ([(MADAutoAssetPersisted *)self cachingEnabled])
   {
-    if (v11)
+    if (lastPathComponent)
     {
-      v12 = [(MADAutoAssetPersisted *)self knownPersistedFiles];
-      v13 = [v12 objectForKey:v11];
+      knownPersistedFiles = [(MADAutoAssetPersisted *)self knownPersistedFiles];
+      v13 = [knownPersistedFiles objectForKey:lastPathComponent];
 
       if (v13)
       {
@@ -386,11 +386,11 @@ LABEL_40:
     }
   }
 
-  v14 = [(MADAutoAssetPersisted *)self _verifyEntryFileExists:v10 fromLocation:v6 expectingExists:0];
-  if ([(MADAutoAssetPersisted *)self cachingEnabled]&& v11 && v14)
+  v14 = [(MADAutoAssetPersisted *)self _verifyEntryFileExists:v10 fromLocation:locationCopy expectingExists:0];
+  if ([(MADAutoAssetPersisted *)self cachingEnabled]&& lastPathComponent && v14)
   {
-    v15 = [(MADAutoAssetPersisted *)self knownPersistedFiles];
-    [v15 setObject:&__kCFBooleanTrue forKey:v11];
+    knownPersistedFiles2 = [(MADAutoAssetPersisted *)self knownPersistedFiles];
+    [knownPersistedFiles2 setObject:&__kCFBooleanTrue forKey:lastPathComponent];
 
 LABEL_8:
     LOBYTE(v14) = 1;
@@ -399,16 +399,16 @@ LABEL_8:
   return v14;
 }
 
-- (id)persistedEntry:(id)a3 fromLocation:(id)a4
+- (id)persistedEntry:(id)entry fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  entryCopy = entry;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  if (v6)
+  if (entryCopy)
   {
-    v9 = [(MADAutoAssetPersisted *)self _loadPersistedEntry:@"persistedEntry" forEntryName:v6 withEntryStatus:3];
+    v9 = [(MADAutoAssetPersisted *)self _loadPersistedEntry:@"persistedEntry" forEntryName:entryCopy withEntryStatus:3];
   }
 
   else
@@ -416,7 +416,7 @@ LABEL_8:
     v10 = _MADLog(@"Auto");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntry" fromLocation:v7];
+      v11 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntry" fromLocation:locationCopy];
       v13 = 138543362;
       v14 = v11;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "%{public}@ | nil entryName provided by caller", &v13, 0xCu);
@@ -428,128 +428,128 @@ LABEL_8:
   return v9;
 }
 
-- (void)storePersistedEntry:(id)a3 withEntrySummary:(id)a4 fromLocation:(id)a5
+- (void)storePersistedEntry:(id)entry withEntrySummary:(id)summary fromLocation:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v11);
+  entryCopy = entry;
+  summaryCopy = summary;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v12 = [(MADAutoAssetPersisted *)self persistedEntry:v8 fromLocation:v10];
+  v12 = [(MADAutoAssetPersisted *)self persistedEntry:entryCopy fromLocation:locationCopy];
   if (!v12)
   {
     v14 = _MADLog(@"Auto");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(MADAutoAssetPersisted *)self _summaryLeader:@"storePersistedEntry" fromLocation:v10];
+      v17 = [(MADAutoAssetPersisted *)self _summaryLeader:@"storePersistedEntry" fromLocation:locationCopy];
       v18 = 138543874;
       v19 = v17;
       v20 = 2114;
-      v21 = v8;
+      v21 = entryCopy;
       v22 = 2114;
-      v23 = v9;
+      v23 = summaryCopy;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "%{public}@ | unable to locate entry | %{public}@[%{public}@]", &v18, 0x20u);
     }
 
     goto LABEL_8;
   }
 
-  [(MADAutoAssetPersisted *)self _persistStatusChange:v12 ofEntryName:v8 withEntrySummary:v9 currentStatus:1 fromLocation:v10];
+  [(MADAutoAssetPersisted *)self _persistStatusChange:v12 ofEntryName:entryCopy withEntrySummary:summaryCopy currentStatus:1 fromLocation:locationCopy];
   if ([(MADAutoAssetPersisted *)self cachingEnabled])
   {
-    v13 = [(MADAutoAssetPersisted *)self moduleName];
-    v14 = [MADAutoAssetPersisted persistedStateFilename:v13 forFileID:@"Entry" ofEntryName:v8];
+    moduleName = [(MADAutoAssetPersisted *)self moduleName];
+    v14 = [MADAutoAssetPersisted persistedStateFilename:moduleName forFileID:@"Entry" ofEntryName:entryCopy];
 
-    v15 = [v14 lastPathComponent];
-    if (v15)
+    lastPathComponent = [v14 lastPathComponent];
+    if (lastPathComponent)
     {
-      v16 = [(MADAutoAssetPersisted *)self knownPersistedStates];
-      [v16 setObject:v12 forKey:v15];
+      knownPersistedStates = [(MADAutoAssetPersisted *)self knownPersistedStates];
+      [knownPersistedStates setObject:v12 forKey:lastPathComponent];
     }
 
 LABEL_8:
   }
 }
 
-- (id)decodeFromLocation:(id)a3 ofEntryName:(id)a4 fromPersistedEntry:(id)a5 decodingObjectForKey:(id)a6 ofClass:(Class)a7 allowingNilObject:(BOOL)a8
+- (id)decodeFromLocation:(id)location ofEntryName:(id)name fromPersistedEntry:(id)entry decodingObjectForKey:(id)key ofClass:(Class)class allowingNilObject:(BOOL)object
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a5;
-  v18 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v18);
+  locationCopy = location;
+  nameCopy = name;
+  keyCopy = key;
+  entryCopy = entry;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v19 = [v17 secureCodedObjectForKey:v16 ofClass:a7];
+  v19 = [entryCopy secureCodedObjectForKey:keyCopy ofClass:class];
 
-  if (!v19 && !a8)
+  if (!v19 && !object)
   {
     v20 = _MADLog(@"Auto");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(MADAutoAssetPersisted *)self _summaryLeader:@"decodeFromLocation" fromLocation:v14];
+      v21 = [(MADAutoAssetPersisted *)self _summaryLeader:@"decodeFromLocation" fromLocation:locationCopy];
       v23 = 138543874;
       v24 = v21;
       v25 = 2114;
-      v26 = v15;
+      v26 = nameCopy;
       v27 = 2114;
-      v28 = v16;
+      v28 = keyCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "%{public}@ | unable to decode entry - dropped | %{public}@[key:%{public}@]", &v23, 0x20u);
     }
 
-    [(MADAutoAssetPersisted *)self removePersistedEntry:v15 fromLocation:v14];
+    [(MADAutoAssetPersisted *)self removePersistedEntry:nameCopy fromLocation:locationCopy];
   }
 
   return v19;
 }
 
-- (id)decodeFromLocation:(id)a3 ofEntryName:(id)a4 fromPersistedEntry:(id)a5 decodingObjectForKey:(id)a6 ofClass:(Class)a7 withEncodeClasses:(id)a8 allowingNilObject:(BOOL)a9
+- (id)decodeFromLocation:(id)location ofEntryName:(id)name fromPersistedEntry:(id)entry decodingObjectForKey:(id)key ofClass:(Class)class withEncodeClasses:(id)classes allowingNilObject:(BOOL)object
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = a5;
-  v20 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v20);
+  locationCopy = location;
+  nameCopy = name;
+  keyCopy = key;
+  classesCopy = classes;
+  entryCopy = entry;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v21 = [v19 secureCodedObjectForKey:v17 ofClass:a7 encodeClasses:v18];
+  v21 = [entryCopy secureCodedObjectForKey:keyCopy ofClass:class encodeClasses:classesCopy];
 
-  if (!v21 && !a9)
+  if (!v21 && !object)
   {
     v22 = _MADLog(@"Auto");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = [(MADAutoAssetPersisted *)self _summaryLeader:@"decodeFromLocation" fromLocation:v15];
+      v23 = [(MADAutoAssetPersisted *)self _summaryLeader:@"decodeFromLocation" fromLocation:locationCopy];
       v25 = 138543874;
       v26 = v23;
       v27 = 2114;
-      v28 = v16;
+      v28 = nameCopy;
       v29 = 2114;
-      v30 = v17;
+      v30 = keyCopy;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "%{public}@ | unable to decode entry (specifying encode classes) - dropped | %{public}@[key:%{public}@]", &v25, 0x20u);
     }
 
-    [(MADAutoAssetPersisted *)self removePersistedEntry:v16 fromLocation:v15];
+    [(MADAutoAssetPersisted *)self removePersistedEntry:nameCopy fromLocation:locationCopy];
   }
 
   return v21;
 }
 
-- (void)removePersistedEntry:(id)a3 fromLocation:(id)a4
+- (void)removePersistedEntry:(id)entry fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  entryCopy = entry;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  if (!v6)
+  if (!entryCopy)
   {
     v17 = _MADLog(@"Auto");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removePersistedEntry" fromLocation:v7];
+      v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removePersistedEntry" fromLocation:locationCopy];
       v28 = 138543362;
       v29 = v18;
       v19 = "%{public}@ | nil entryName provided";
@@ -563,8 +563,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v10 = [v9 count];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v10 = [currentEntryIDs count];
 
   if (!v10)
   {
@@ -572,11 +572,11 @@ LABEL_6:
     v17 = _MADLog(@"Auto");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removePersistedEntry" fromLocation:v7];
+      v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removePersistedEntry" fromLocation:locationCopy];
       v28 = 138543618;
       v29 = v18;
       v30 = 2114;
-      v31 = v6;
+      v31 = entryCopy;
       v19 = "%{public}@ | table-of-contents missing entry | %{public}@";
       v20 = v17;
       v21 = 22;
@@ -592,9 +592,9 @@ LABEL_10:
   v11 = 0;
   while (1)
   {
-    v12 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-    v13 = [v12 objectAtIndexedSubscript:v11];
-    v14 = [SUCore stringIsEqual:v6 to:v13];
+    currentEntryIDs2 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+    v13 = [currentEntryIDs2 objectAtIndexedSubscript:v11];
+    v14 = [SUCore stringIsEqual:entryCopy to:v13];
 
     if (v14)
     {
@@ -602,8 +602,8 @@ LABEL_10:
     }
 
     ++v11;
-    v15 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-    v16 = [v15 count];
+    currentEntryIDs3 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+    v16 = [currentEntryIDs3 count];
 
     if (v11 >= v16)
     {
@@ -611,73 +611,73 @@ LABEL_10:
     }
   }
 
-  v22 = [(MADAutoAssetPersisted *)self moduleName];
-  v23 = [MADAutoAssetPersisted persistedStateFilename:v22 forFileID:@"Entry" ofEntryName:v6];
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  v23 = [MADAutoAssetPersisted persistedStateFilename:moduleName forFileID:@"Entry" ofEntryName:entryCopy];
 
-  v24 = [v23 lastPathComponent];
-  v25 = [(MADAutoAssetPersisted *)self persistedEntry:v6 fromLocation:v7];
-  v26 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  [v26 removeObjectAtIndex:v11];
+  lastPathComponent = [v23 lastPathComponent];
+  v25 = [(MADAutoAssetPersisted *)self persistedEntry:entryCopy fromLocation:locationCopy];
+  currentEntryIDs4 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  [currentEntryIDs4 removeObjectAtIndex:v11];
 
-  [(MADAutoAssetPersisted *)self _persistStatusChange:v25 ofEntryName:v6 withEntrySummary:@"removing entry" currentStatus:4 fromLocation:v7];
-  [(MADAutoAssetPersisted *)self _removeEntryFile:v23 reason:@"requested-by-module" fromLocation:v7];
-  if ([(MADAutoAssetPersisted *)self cachingEnabled]&& v24)
+  [(MADAutoAssetPersisted *)self _persistStatusChange:v25 ofEntryName:entryCopy withEntrySummary:@"removing entry" currentStatus:4 fromLocation:locationCopy];
+  [(MADAutoAssetPersisted *)self _removeEntryFile:v23 reason:@"requested-by-module" fromLocation:locationCopy];
+  if ([(MADAutoAssetPersisted *)self cachingEnabled]&& lastPathComponent)
   {
-    v27 = [(MADAutoAssetPersisted *)self knownPersistedStates];
-    [v27 removeObjectForKey:v24];
+    knownPersistedStates = [(MADAutoAssetPersisted *)self knownPersistedStates];
+    [knownPersistedStates removeObjectForKey:lastPathComponent];
   }
 
-  [(MADAutoAssetPersisted *)self _persistTableOfContents:@"removePersistedEntry" forEntryName:v6 withEntryStatus:4];
+  [(MADAutoAssetPersisted *)self _persistTableOfContents:@"removePersistedEntry" forEntryName:entryCopy withEntryStatus:4];
 
 LABEL_12:
 }
 
-- (void)flushPersistedStateCacheAndSetCachingBehaviour:(BOOL)a3
+- (void)flushPersistedStateCacheAndSetCachingBehaviour:(BOOL)behaviour
 {
-  v3 = a3;
-  v5 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v5);
+  behaviourCopy = behaviour;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v6 = _MADLog(@"Auto");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MADAutoAssetPersisted *)self logLeader];
-    v8 = v7;
+    logLeader = [(MADAutoAssetPersisted *)self logLeader];
+    v8 = logLeader;
     v9 = @"disabling";
-    if (v3)
+    if (behaviourCopy)
     {
       v9 = @"enabling";
     }
 
     v12 = 138543618;
-    v13 = v7;
+    v13 = logLeader;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ {flushPersistedStateCacheAndSetCachingBehaviour} | Flushing persisted state in memory cache and %{public}@ future caching", &v12, 0x16u);
   }
 
-  v10 = [(MADAutoAssetPersisted *)self knownPersistedFiles];
-  [v10 removeAllObjects];
+  knownPersistedFiles = [(MADAutoAssetPersisted *)self knownPersistedFiles];
+  [knownPersistedFiles removeAllObjects];
 
-  v11 = [(MADAutoAssetPersisted *)self knownPersistedStates];
-  [v11 removeAllObjects];
+  knownPersistedStates = [(MADAutoAssetPersisted *)self knownPersistedStates];
+  [knownPersistedStates removeAllObjects];
 
-  [(MADAutoAssetPersisted *)self setCachingEnabled:v3];
+  [(MADAutoAssetPersisted *)self setCachingEnabled:behaviourCopy];
 }
 
-- (void)removeAllPersistedEntries:(id)a3
+- (void)removeAllPersistedEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v5);
+  entriesCopy = entries;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v6 = objc_alloc_init(NSMutableArray);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v8 = [currentEntryIDs countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -689,7 +689,7 @@ LABEL_12:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentEntryIDs);
         }
 
         if (*(*(&v25 + 1) + 8 * v11))
@@ -701,7 +701,7 @@ LABEL_12:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v9 = [currentEntryIDs countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v9);
@@ -729,7 +729,7 @@ LABEL_12:
 
         v17 = *(*(&v21 + 1) + 8 * v16);
         v18 = objc_autoreleasePoolPush();
-        [(MADAutoAssetPersisted *)self removePersistedEntry:v17 fromLocation:v4, v21];
+        [(MADAutoAssetPersisted *)self removePersistedEntry:v17 fromLocation:entriesCopy, v21];
         objc_autoreleasePoolPop(v18);
         v16 = v16 + 1;
       }
@@ -744,25 +744,25 @@ LABEL_12:
   v19 = _MADLog(@"Auto");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removeAllPersistedEntries" fromLocation:v4];
+    v20 = [(MADAutoAssetPersisted *)self _summaryLeader:@"removeAllPersistedEntries" fromLocation:entriesCopy];
     *buf = 138543362;
     v30 = v20;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ | removed all entries from table-of-contents and from filesystem", buf, 0xCu);
   }
 }
 
-- (id)persistedEntryIDs:(id)a3
+- (id)persistedEntryIDs:(id)ds
 {
-  v4 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v4);
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v5 = objc_alloc_init(NSMutableArray);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v7 = [currentEntryIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -773,7 +773,7 @@ LABEL_12:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(currentEntryIDs);
         }
 
         if (*(*(&v12 + 1) + 8 * i))
@@ -782,7 +782,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [currentEntryIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -791,22 +791,22 @@ LABEL_12:
   return v5;
 }
 
-- (id)persistedEntryIDs:(id)a3 assetType:(id)a4
+- (id)persistedEntryIDs:(id)ds assetType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  dsCopy = ds;
+  typeCopy = type;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  if (v7)
+  if (typeCopy)
   {
     v9 = objc_alloc_init(NSMutableArray);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+    v11 = [currentEntryIDs countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -817,7 +817,7 @@ LABEL_12:
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(currentEntryIDs);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
@@ -827,12 +827,12 @@ LABEL_12:
             v18 = _MADLog(@"Auto");
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetType:" fromLocation:v6];
-              v20 = [(MADAutoAssetPersisted *)self _summary];
+              v19 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetType:" fromLocation:dsCopy];
+              _summary = [(MADAutoAssetPersisted *)self _summary];
               *buf = 138543618;
               v29 = v19;
               v30 = 2114;
-              v31 = v20;
+              v31 = _summary;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "%{public}@ | corrupted current-entry-IDs | %{public}@", buf, 0x16u);
             }
 
@@ -840,7 +840,7 @@ LABEL_12:
             goto LABEL_18;
           }
 
-          if ([v15 hasPrefix:v7])
+          if ([v15 hasPrefix:typeCopy])
           {
             [v9 addObject:v15];
           }
@@ -848,7 +848,7 @@ LABEL_12:
           objc_autoreleasePoolPop(v16);
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [currentEntryIDs countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v12)
         {
           continue;
@@ -867,7 +867,7 @@ LABEL_12:
     v9 = _MADLog(@"Auto");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetType:" fromLocation:v6];
+      v21 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetType:" fromLocation:dsCopy];
       *buf = 138543618;
       v29 = v21;
       v30 = 2114;
@@ -882,26 +882,26 @@ LABEL_18:
   return v17;
 }
 
-- (id)persistedEntryIDs:(id)a3 assetSelector:(id)a4
+- (id)persistedEntryIDs:(id)ds assetSelector:(id)selector
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  dsCopy = ds;
+  selectorCopy = selector;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v9 = [v7 assetType];
+  assetType = [selectorCopy assetType];
 
-  if (!v9)
+  if (!assetType)
   {
-    v14 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    persistedEntryID = _MADLog(@"Auto");
+    if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:v6];
-      v16 = [v7 summary];
+      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:dsCopy];
+      summary = [selectorCopy summary];
       *buf = 138543618;
       v45 = v15;
       v46 = 2114;
-      v47 = v16;
+      v47 = summary;
       v17 = "%{public}@ | invalid asset-selector (no asset-type) | assetSelector:%{public}@";
       goto LABEL_8;
     }
@@ -911,21 +911,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v7 assetSpecifier];
-  if (!v10 || (v11 = v10, [v7 assetSpecifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v12, @"MAAutoAsset-all-asset-specifiers"), v12, v11, v13))
+  assetSpecifier = [selectorCopy assetSpecifier];
+  if (!assetSpecifier || (v11 = assetSpecifier, [selectorCopy assetSpecifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v12, @"MAAutoAsset-all-asset-specifiers"), v12, v11, v13))
   {
-    v14 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    persistedEntryID = _MADLog(@"Auto");
+    if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:v6];
-      v16 = [v7 summary];
+      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:dsCopy];
+      summary = [selectorCopy summary];
       *buf = 138543618;
       v45 = v15;
       v46 = 2114;
-      v47 = v16;
+      v47 = summary;
       v17 = "%{public}@ | invalid asset-selector (no asset-specifier) | assetSelector:%{public}@";
 LABEL_8:
-      _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
+      _os_log_impl(&dword_0, persistedEntryID, OS_LOG_TYPE_ERROR, v17, buf, 0x16u);
 
       goto LABEL_9;
     }
@@ -933,37 +933,37 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v7 persistedEntryID];
-  if (!v14)
+  persistedEntryID = [selectorCopy persistedEntryID];
+  if (!persistedEntryID)
   {
     v23 = _MADLog(@"Auto");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:v6];
-      v25 = [v7 summary];
+      v24 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:dsCopy];
+      summary2 = [selectorCopy summary];
       *buf = 138543618;
       v45 = v24;
       v46 = 2114;
-      v47 = v25;
+      v47 = summary2;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "%{public}@ | unable to form persisted-entry-ID | assetSelector:%{public}@", buf, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  v20 = [v7 assetVersion];
+  assetVersion = [selectorCopy assetVersion];
 
-  if (v20)
+  if (assetVersion)
   {
-    v21 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-    v22 = [v21 containsObject:v14];
+    currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+    v22 = [currentEntryIDs containsObject:persistedEntryID];
 
     if (!v22)
     {
       goto LABEL_9;
     }
 
-    v43 = v14;
+    v43 = persistedEntryID;
     v18 = [NSArray arrayWithObjects:&v43 count:1];
   }
 
@@ -996,12 +996,12 @@ LABEL_8:
             v33 = _MADLog(@"Auto");
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
-              v34 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:v6];
-              v35 = [(MADAutoAssetPersisted *)self _summary];
+              v34 = [(MADAutoAssetPersisted *)self _summaryLeader:@"persistedEntryIDs:assetSelector:" fromLocation:dsCopy];
+              _summary = [(MADAutoAssetPersisted *)self _summary];
               *buf = 138543618;
               v45 = v34;
               v46 = 2114;
-              v47 = v35;
+              v47 = _summary;
               _os_log_impl(&dword_0, v33, OS_LOG_TYPE_ERROR, "%{public}@ | corrupted current-entry-IDs | %{public}@", buf, 0x16u);
             }
 
@@ -1011,7 +1011,7 @@ LABEL_8:
             goto LABEL_34;
           }
 
-          if ([MADAutoAssetPersisted isConsideredMatchWithoutVersion:v6 ofEntryFullEntryIDName:v30 toSelectorPersistedEntryID:v14])
+          if ([MADAutoAssetPersisted isConsideredMatchWithoutVersion:dsCopy ofEntryFullEntryIDName:v30 toSelectorPersistedEntryID:persistedEntryID])
           {
             [v36 addObject:v30];
           }
@@ -1039,16 +1039,16 @@ LABEL_10:
   return v18;
 }
 
-+ (BOOL)isConsideredMatchWithoutVersion:(id)a3 ofEntryFullEntryIDName:(id)a4 toSelectorPersistedEntryID:(id)a5
++ (BOOL)isConsideredMatchWithoutVersion:(id)version ofEntryFullEntryIDName:(id)name toSelectorPersistedEntryID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  nameCopy = name;
+  dCopy = d;
   v24 = 0;
   v10 = [NSRegularExpression regularExpressionWithPattern:@"_[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+_[0-9]+$" options:17 error:&v24];
   v11 = v24;
   v12 = v11;
-  if (!v8 || !v9)
+  if (!nameCopy || !dCopy)
   {
     v13 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1057,9 +1057,9 @@ LABEL_10:
     }
 
     v17 = @"N";
-    if (v8)
+    if (nameCopy)
     {
-      v18 = v8;
+      v18 = nameCopy;
     }
 
     else
@@ -1068,11 +1068,11 @@ LABEL_10:
     }
 
     *buf = 138543874;
-    v26 = v7;
+    v26 = versionCopy;
     v27 = 2114;
-    if (v9)
+    if (dCopy)
     {
-      v17 = v9;
+      v17 = dCopy;
     }
 
     v28 = v18;
@@ -1088,25 +1088,25 @@ LABEL_10:
   {
     if (v10)
     {
-      v13 = [v10 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{-[__CFString length](v8, "length"), &stru_4BD3F0}];
-      if (![SUCore stringIsEqual:v13 to:v8])
+      v13 = [v10 stringByReplacingMatchesInString:nameCopy options:0 range:0 withTemplate:{-[__CFString length](nameCopy, "length"), &stru_4BD3F0}];
+      if (![SUCore stringIsEqual:v13 to:nameCopy])
       {
-        v22 = [SUCore stringIsEqual:v13 to:v9];
+        v22 = [SUCore stringIsEqual:v13 to:dCopy];
         goto LABEL_17;
       }
 
-      v14 = _MADLog(@"Auto");
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      checkedDescription = _MADLog(@"Auto");
+      if (!os_log_type_enabled(checkedDescription, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_7;
       }
 
       *buf = 138543618;
-      v26 = v7;
+      v26 = versionCopy;
       v27 = 2114;
-      v28 = v8;
+      v28 = nameCopy;
       v15 = "%{public}@ | MISSING asset-version | entryName:%{public}@";
-      v16 = v14;
+      v16 = checkedDescription;
 LABEL_6:
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, v15, buf, 0x16u);
 LABEL_7:
@@ -1121,7 +1121,7 @@ LABEL_7:
     }
 
     *buf = 138543362;
-    v26 = v7;
+    v26 = versionCopy;
     v19 = "%{public}@ | nil regex (no regexError)";
     v20 = v13;
     v21 = 12;
@@ -1133,11 +1133,11 @@ LABEL_15:
   v13 = _MADLog(@"Auto");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v12 checkedDescription];
+    checkedDescription = [v12 checkedDescription];
     *buf = 138543618;
-    v26 = v7;
+    v26 = versionCopy;
     v27 = 2114;
-    v28 = v14;
+    v28 = checkedDescription;
     v15 = "%{public}@ | invalid regex | regexError:%{public}@";
     v16 = v13;
     goto LABEL_6;
@@ -1150,44 +1150,44 @@ LABEL_17:
   return v22;
 }
 
-- (int64_t)persistedEntryCount:(id)a3
+- (int64_t)persistedEntryCount:(id)count
 {
-  v4 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v4);
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v5 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v6 = [v5 count];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v6 = [currentEntryIDs count];
 
   return v6;
 }
 
-- (void)_persistTableOfContents:(id)a3 forEntryName:(id)a4 withEntryStatus:(int64_t)a5
+- (void)_persistTableOfContents:(id)contents forEntryName:(id)name withEntryStatus:(int64_t)status
 {
-  v6 = [(MADAutoAssetPersisted *)self persistedQueue:a3];
+  v6 = [(MADAutoAssetPersisted *)self persistedQueue:contents];
   dispatch_assert_queue_V2(v6);
 
-  v8 = [(MADAutoAssetPersisted *)self entryTableOfContents];
-  v7 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  [v8 persistObject:v7 forKey:@"currentEntries" shouldPersist:1];
+  entryTableOfContents = [(MADAutoAssetPersisted *)self entryTableOfContents];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  [entryTableOfContents persistObject:currentEntryIDs forKey:@"currentEntries" shouldPersist:1];
 }
 
-- (id)_loadPersistedEntry:(id)a3 forEntryName:(id)a4 withEntryStatus:(int64_t)a5
+- (id)_loadPersistedEntry:(id)entry forEntryName:(id)name withEntryStatus:(int64_t)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v9);
+  entryCopy = entry;
+  nameCopy = name;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v10 = [(MADAutoAssetPersisted *)self moduleName];
-  v11 = [MADAutoAssetPersisted persistedStateFilename:v10 forFileID:@"Entry" ofEntryName:v8];
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  v11 = [MADAutoAssetPersisted persistedStateFilename:moduleName forFileID:@"Entry" ofEntryName:nameCopy];
 
-  v12 = [v11 lastPathComponent];
+  lastPathComponent = [v11 lastPathComponent];
   if ([(MADAutoAssetPersisted *)self cachingEnabled])
   {
-    if (v12)
+    if (lastPathComponent)
     {
-      v13 = [(MADAutoAssetPersisted *)self knownPersistedStates];
-      v14 = [v13 objectForKey:v12];
+      knownPersistedStates = [(MADAutoAssetPersisted *)self knownPersistedStates];
+      v14 = [knownPersistedStates objectForKey:lastPathComponent];
 
       if (v14)
       {
@@ -1196,40 +1196,40 @@ LABEL_17:
     }
   }
 
-  v66 = v12;
+  v66 = lastPathComponent;
   v67 = v11;
   v15 = [SUCorePersistedState alloc];
   v16 = objc_opt_respondsToSelector();
 
   v17 = [SUCorePersistedState alloc];
-  v18 = [(MADAutoAssetPersisted *)self persistedQueue];
-  v19 = [(MADAutoAssetPersisted *)self moduleName];
-  v20 = v8;
-  v21 = v19;
+  persistedQueue2 = [(MADAutoAssetPersisted *)self persistedQueue];
+  moduleName2 = [(MADAutoAssetPersisted *)self moduleName];
+  v20 = nameCopy;
+  v21 = moduleName2;
   v22 = v20;
-  v23 = [MADAutoAssetPersisted persistedStateFilename:v19 forFileID:@"Entry" ofEntryName:?];
-  v24 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+  v23 = [MADAutoAssetPersisted persistedStateFilename:moduleName2 forFileID:@"Entry" ofEntryName:?];
+  moduleCurrentVersion = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
   if (v16)
   {
-    v25 = [v17 initWithDispatchQueue:v18 withPersistencePath:v23 forPolicyVersion:v24 issuingDefaultLevelLogging:0];
+    v25 = [v17 initWithDispatchQueue:persistedQueue2 withPersistencePath:v23 forPolicyVersion:moduleCurrentVersion issuingDefaultLevelLogging:0];
   }
 
   else
   {
-    v25 = [v17 initWithDispatchQueue:v18 withPersistencePath:v23 forPolicyVersion:v24];
+    v25 = [v17 initWithDispatchQueue:persistedQueue2 withPersistencePath:v23 forPolicyVersion:moduleCurrentVersion];
   }
 
   v26 = v25;
 
   if (!v26)
   {
-    v32 = _MADLog(@"Auto");
-    v8 = v22;
-    v12 = v66;
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+    knownPersistedStates2 = _MADLog(@"Auto");
+    nameCopy = v22;
+    lastPathComponent = v66;
+    if (os_log_type_enabled(knownPersistedStates2, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:v7];
-      v34 = [MADAutoAssetPersisted persistedEntryStatusName:a5];
+      v33 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:entryCopy];
+      v34 = [MADAutoAssetPersisted persistedEntryStatusName:status];
       *buf = 138544130;
       v70 = v33;
       v71 = 2114;
@@ -1239,7 +1239,7 @@ LABEL_17:
       v74 = v22;
       v75 = 2114;
       v76 = v34;
-      _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "%{public}@ | unable to create persisted-state for file:%{public}@ | %{public}@[%{public}@]", buf, 0x2Au);
+      _os_log_impl(&dword_0, knownPersistedStates2, OS_LOG_TYPE_ERROR, "%{public}@ | unable to create persisted-state for file:%{public}@ | %{public}@[%{public}@]", buf, 0x2Au);
 
       v14 = 0;
     }
@@ -1253,34 +1253,34 @@ LABEL_17:
     goto LABEL_48;
   }
 
-  v8 = v22;
+  nameCopy = v22;
   if ([v26 loadPersistedState])
   {
     v27 = [v26 stringForKey:@"entryStatus"];
     v28 = [MADAutoAssetPersisted persistedEntryStatusValue:v27];
-    v29 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-    v30 = [v29 containsObject:v22];
+    currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+    v30 = [currentEntryIDs containsObject:v22];
 
     if (!v30)
     {
-      if (a5 != 3)
+      if (status != 3)
       {
-        if (a5 == 2)
+        if (status == 2)
         {
-          v43 = [(MADAutoAssetPersisted *)self _validateLoadedEntry:v26 fromLocation:v7 forEntryName:v22 loadedWithEntryStatus:[MADAutoAssetPersisted persistedEntryStatusValue:v27]];
+          v43 = [(MADAutoAssetPersisted *)self _validateLoadedEntry:v26 fromLocation:entryCopy forEntryName:v22 loadedWithEntryStatus:[MADAutoAssetPersisted persistedEntryStatusValue:v27]];
           v11 = v67;
-          v12 = v66;
+          lastPathComponent = v66;
           if (v43 == 2)
           {
-            v44 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+            currentEntryIDs2 = [(MADAutoAssetPersisted *)self currentEntryIDs];
 
-            if (v44)
+            if (currentEntryIDs2)
             {
-              v45 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-              [v45 addObject:v22];
+              currentEntryIDs3 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+              [currentEntryIDs3 addObject:v22];
 
-              [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:v22 withEntrySummary:@"loading persisted state" currentStatus:2 fromLocation:v7];
-              [(MADAutoAssetPersisted *)self _persistTableOfContents:v7 forEntryName:v22 withEntryStatus:2];
+              [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:v22 withEntrySummary:@"loading persisted state" currentStatus:2 fromLocation:entryCopy];
+              [(MADAutoAssetPersisted *)self _persistTableOfContents:entryCopy forEntryName:v22 withEntryStatus:2];
             }
           }
 
@@ -1290,14 +1290,14 @@ LABEL_17:
             v63 = _MADLog(@"Auto");
             if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
             {
-              v64 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:v7];
+              v64 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:entryCopy];
               v65 = [MADAutoAssetPersisted persistedEntryStatusName:v62];
               *buf = 138544130;
               v70 = v64;
               v71 = 2114;
               v72 = v67;
               v73 = 2114;
-              v74 = v8;
+              v74 = nameCopy;
               v75 = 2114;
               v76 = v65;
               _os_log_impl(&dword_0, v63, OS_LOG_TYPE_ERROR, "%{public}@ | entry not in table-of-contents (when not loading persisted state) for path:%{public}@ | %{public}@[%{public}@]", buf, 0x2Au);
@@ -1312,8 +1312,8 @@ LABEL_17:
         v57 = _MADLog(@"Auto");
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
-          v58 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:v7];
-          v59 = [MADAutoAssetPersisted persistedEntryStatusName:a5];
+          v58 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:entryCopy];
+          v59 = [MADAutoAssetPersisted persistedEntryStatusName:status];
           *buf = 138544130;
           v70 = v58;
           v71 = 2114;
@@ -1328,14 +1328,14 @@ LABEL_17:
         goto LABEL_41;
       }
 
-      v56 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-      [v56 addObject:v22];
+      currentEntryIDs4 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+      [currentEntryIDs4 addObject:v22];
 
-      [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:v22 withEntrySummary:@"table-of-contents place holder | no previously persisted entry" currentStatus:0 fromLocation:v7];
-      [(MADAutoAssetPersisted *)self _persistTableOfContents:v7 forEntryName:v22 withEntryStatus:0];
+      [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:v22 withEntrySummary:@"table-of-contents place holder | no previously persisted entry" currentStatus:0 fromLocation:entryCopy];
+      [(MADAutoAssetPersisted *)self _persistTableOfContents:entryCopy forEntryName:v22 withEntryStatus:0];
 LABEL_42:
       v11 = v67;
-      v12 = v66;
+      lastPathComponent = v66;
 LABEL_43:
 
       v14 = v26;
@@ -1344,7 +1344,7 @@ LABEL_43:
 
     if (v27)
     {
-      v31 = [(MADAutoAssetPersisted *)self _validateLoadedEntry:v26 fromLocation:v7 forEntryName:v22 loadedWithEntryStatus:[MADAutoAssetPersisted persistedEntryStatusValue:v27]];
+      v31 = [(MADAutoAssetPersisted *)self _validateLoadedEntry:v26 fromLocation:entryCopy forEntryName:v22 loadedWithEntryStatus:[MADAutoAssetPersisted persistedEntryStatusValue:v27]];
       if (v31 == v28)
       {
 LABEL_33:
@@ -1370,30 +1370,30 @@ LABEL_41:
     v51 = [MADAutoAssetPersisted persistedEntryStatusName:v28];
     v52 = [MADAutoAssetPersisted persistedEntryStatusName:v31];
     v53 = [v50 initWithFormat:@"changing entry status | %@ >-> %@", v51, v52];
-    [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:v8 withEntrySummary:v53 currentStatus:v31 fromLocation:v7];
+    [(MADAutoAssetPersisted *)self _persistStatusChange:v26 ofEntryName:nameCopy withEntrySummary:v53 currentStatus:v31 fromLocation:entryCopy];
 
     v28 = v31;
     goto LABEL_33;
   }
 
-  if (a5 == 3)
+  if (status == 3)
   {
     v35 = [SUCorePersistedState alloc];
     v36 = objc_opt_respondsToSelector();
 
     v37 = [SUCorePersistedState alloc];
-    v38 = [(MADAutoAssetPersisted *)self persistedQueue];
-    v39 = [(MADAutoAssetPersisted *)self moduleName];
-    v40 = [MADAutoAssetPersisted persistedStateFilename:v39 forFileID:@"Entry" ofEntryName:v22];
-    v41 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+    persistedQueue3 = [(MADAutoAssetPersisted *)self persistedQueue];
+    moduleName3 = [(MADAutoAssetPersisted *)self moduleName];
+    v40 = [MADAutoAssetPersisted persistedStateFilename:moduleName3 forFileID:@"Entry" ofEntryName:v22];
+    moduleCurrentVersion2 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
     if (v36)
     {
-      v42 = [v37 initWithDispatchQueue:v38 withPersistencePath:v40 forPolicyVersion:v41 issuingDefaultLevelLogging:0];
+      v42 = [v37 initWithDispatchQueue:persistedQueue3 withPersistencePath:v40 forPolicyVersion:moduleCurrentVersion2 issuingDefaultLevelLogging:0];
     }
 
     else
     {
-      v42 = [v37 initWithDispatchQueue:v38 withPersistencePath:v40 forPolicyVersion:v41];
+      v42 = [v37 initWithDispatchQueue:persistedQueue3 withPersistencePath:v40 forPolicyVersion:moduleCurrentVersion2];
     }
 
     v14 = v42;
@@ -1401,24 +1401,24 @@ LABEL_41:
     if (v14)
     {
       [v14 loadPersistedState];
-      v49 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-      v8 = v22;
-      [v49 addObject:v22];
+      currentEntryIDs5 = [(MADAutoAssetPersisted *)self currentEntryIDs];
+      nameCopy = v22;
+      [currentEntryIDs5 addObject:v22];
 
-      [(MADAutoAssetPersisted *)self _persistStatusChange:v14 ofEntryName:v22 withEntrySummary:@"table-of-contents place holder | no previously persisted ToC" currentStatus:0 fromLocation:v7];
-      [(MADAutoAssetPersisted *)self _persistTableOfContents:v7 forEntryName:v22 withEntryStatus:0];
+      [(MADAutoAssetPersisted *)self _persistStatusChange:v14 ofEntryName:v22 withEntrySummary:@"table-of-contents place holder | no previously persisted ToC" currentStatus:0 fromLocation:entryCopy];
+      [(MADAutoAssetPersisted *)self _persistTableOfContents:entryCopy forEntryName:v22 withEntryStatus:0];
       v11 = v67;
-      v12 = v66;
+      lastPathComponent = v66;
       goto LABEL_44;
     }
 
     v26 = _MADLog(@"Auto");
-    v8 = v22;
+    nameCopy = v22;
     v11 = v67;
-    v12 = v66;
+    lastPathComponent = v66;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v54 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:v7];
+      v54 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:entryCopy];
       v55 = [MADAutoAssetPersisted persistedEntryStatusName:3];
       *buf = 138544130;
       v70 = v54;
@@ -1436,11 +1436,11 @@ LABEL_41:
   {
     v46 = _MADLog(@"Auto");
     v11 = v67;
-    v12 = v66;
+    lastPathComponent = v66;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      v47 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:v7];
-      v48 = [MADAutoAssetPersisted persistedEntryStatusName:a5];
+      v47 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_loadPersistedEntry" fromLocation:entryCopy];
+      v48 = [MADAutoAssetPersisted persistedEntryStatusName:status];
       *buf = 138544130;
       v70 = v47;
       v71 = 2114;
@@ -1455,11 +1455,11 @@ LABEL_41:
 
   v14 = 0;
 LABEL_44:
-  v60 = [(MADAutoAssetPersisted *)self cachingEnabled];
-  if (v14 && v60 && v12)
+  cachingEnabled = [(MADAutoAssetPersisted *)self cachingEnabled];
+  if (v14 && cachingEnabled && lastPathComponent)
   {
-    v32 = [(MADAutoAssetPersisted *)self knownPersistedStates];
-    [v32 setObject:v14 forKey:v12];
+    knownPersistedStates2 = [(MADAutoAssetPersisted *)self knownPersistedStates];
+    [knownPersistedStates2 setObject:v14 forKey:lastPathComponent];
 LABEL_48:
   }
 
@@ -1468,62 +1468,62 @@ LABEL_49:
   return v14;
 }
 
-- (void)_persistStatusChange:(id)a3 ofEntryName:(id)a4 withEntrySummary:(id)a5 currentStatus:(int64_t)a6 fromLocation:(id)a7
+- (void)_persistStatusChange:(id)change ofEntryName:(id)name withEntrySummary:(id)summary currentStatus:(int64_t)status fromLocation:(id)location
 {
-  v9 = a3;
-  v10 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v10);
+  changeCopy = change;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v11 = [MADAutoAssetPersisted persistedEntryStatusName:a6];
-  [v9 persistString:v11 forKey:@"entryStatus" shouldPersist:1];
+  v11 = [MADAutoAssetPersisted persistedEntryStatusName:status];
+  [changeCopy persistString:v11 forKey:@"entryStatus" shouldPersist:1];
 }
 
-- (int64_t)_validateLoadedEntry:(id)a3 fromLocation:(id)a4 forEntryName:(id)a5 loadedWithEntryStatus:(int64_t)a6
+- (int64_t)_validateLoadedEntry:(id)entry fromLocation:(id)location forEntryName:(id)name loadedWithEntryStatus:(int64_t)status
 {
-  v7 = [(MADAutoAssetPersisted *)self persistedQueue:a3];
+  v7 = [(MADAutoAssetPersisted *)self persistedQueue:entry];
   dispatch_assert_queue_V2(v7);
 
-  if (a6 > 5)
+  if (status > 5)
   {
     return 2;
   }
 
   else
   {
-    return qword_33BC58[a6];
+    return qword_33BC58[status];
   }
 }
 
-- (BOOL)_preExistingPersistedStateValid:(id)a3 fromLocation:(id)a4
+- (BOOL)_preExistingPersistedStateValid:(id)valid fromLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  validCopy = valid;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
-  v9 = [(MADAutoAssetPersisted *)self _loadPersistedEntry:v6 forEntryName:v7 withEntryStatus:2];
+  v9 = [(MADAutoAssetPersisted *)self _loadPersistedEntry:locationCopy forEntryName:validCopy withEntryStatus:2];
 
   return v9 != 0;
 }
 
-- (BOOL)_verifyPersistedDirectoryExistsOrCreate:(id)a3
+- (BOOL)_verifyPersistedDirectoryExistsOrCreate:(id)create
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v5);
+  createCopy = create;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v6 = +[NSFileManager defaultManager];
   v7 = [NSString alloc];
   v8 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/persisted");
-  v9 = [(MADAutoAssetPersisted *)self moduleName];
-  v10 = [v7 initWithFormat:@"%@/%@", v8, v9];
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  v10 = [v7 initWithFormat:@"%@/%@", v8, moduleName];
 
   if ([v6 fileExistsAtPath:v10])
   {
     v11 = _MADLog(@"Auto");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:v4];
+      v12 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:createCopy];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -1545,7 +1545,7 @@ LABEL_8:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:v4];
+      v16 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:createCopy];
       *buf = 138543618;
       v22 = v16;
       v23 = 2114;
@@ -1558,7 +1558,7 @@ LABEL_8:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:v4];
+    v18 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyPersistedDirectoryExistsOrCreate" fromLocation:createCopy];
     *buf = 138543874;
     v22 = v18;
     v23 = 2114;
@@ -1574,26 +1574,26 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)_verifyEntryFileExists:(id)a3 fromLocation:(id)a4 expectingExists:(BOOL)a5
+- (BOOL)_verifyEntryFileExists:(id)exists fromLocation:(id)location expectingExists:(BOOL)expectingExists
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v10);
+  expectingExistsCopy = expectingExists;
+  existsCopy = exists;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v11 = +[NSFileManager defaultManager];
-  v12 = [v11 fileExistsAtPath:v8];
-  if ((v12 & 1) == 0 && v5)
+  v12 = [v11 fileExistsAtPath:existsCopy];
+  if ((v12 & 1) == 0 && expectingExistsCopy)
   {
     v13 = _MADLog(@"Auto");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyEntryFileExists" fromLocation:v9];
+      v14 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_verifyEntryFileExists" fromLocation:locationCopy];
       v16 = 138543618;
       v17 = v14;
       v18 = 2114;
-      v19 = v8;
+      v19 = existsCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | entry file in table-of-contents does not exist at path:%{public}@", &v16, 0x16u);
     }
   }
@@ -1601,27 +1601,27 @@ LABEL_12:
   return v12;
 }
 
-- (id)_contentsOfModulePersistedPath:(id)a3 fromLocation:(id)a4
+- (id)_contentsOfModulePersistedPath:(id)path fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  pathCopy = path;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v9 = +[NSFileManager defaultManager];
   v16 = 0;
-  v10 = [v9 contentsOfDirectoryAtPath:v6 error:&v16];
+  v10 = [v9 contentsOfDirectoryAtPath:pathCopy error:&v16];
   v11 = v16;
   if (v11)
   {
     v12 = _MADLog(@"Auto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_contentsOfModulePersistedPath" fromLocation:v7];
+      v13 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_contentsOfModulePersistedPath" fromLocation:locationCopy];
       *buf = 138543874;
       v18 = v13;
       v19 = 2114;
-      v20 = v6;
+      v20 = pathCopy;
       v21 = 2114;
       v22 = v11;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "%{public}@ | unable to determine directory contents at path:%{public}@, error:%{public}@", buf, 0x20u);
@@ -1637,11 +1637,11 @@ LABEL_5:
     v10 = _MADLog(@"Auto");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_contentsOfModulePersistedPath" fromLocation:v7];
+      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_contentsOfModulePersistedPath" fromLocation:locationCopy];
       *buf = 138543618;
       v18 = v15;
       v19 = 2114;
-      v20 = v6;
+      v20 = pathCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "%{public}@ | empty persisted directory at path:%{public}@", buf, 0x16u);
     }
 
@@ -1653,33 +1653,33 @@ LABEL_7:
   return v10;
 }
 
-- (void)_removeEntryFile:(id)a3 reason:(id)a4 fromLocation:(id)a5
+- (void)_removeEntryFile:(id)file reason:(id)reason fromLocation:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v11);
+  fileCopy = file;
+  reasonCopy = reason;
+  locationCopy = location;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v12 = +[NSFileManager defaultManager];
   v16 = 0;
-  [v12 removeItemAtPath:v8 error:&v16];
+  [v12 removeItemAtPath:fileCopy error:&v16];
   v13 = v16;
   if (v13)
   {
-    v14 = _MADLog(@"Auto");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    lastPathComponent = _MADLog(@"Auto");
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(MADAutoAssetPersisted *)self _summaryLeader:@"_removeEntryFile" fromLocation:v10];
+      knownPersistedFiles = [(MADAutoAssetPersisted *)self _summaryLeader:@"_removeEntryFile" fromLocation:locationCopy];
       *buf = 138544130;
-      v18 = v15;
+      v18 = knownPersistedFiles;
       v19 = 2114;
-      v20 = v9;
+      v20 = reasonCopy;
       v21 = 2114;
-      v22 = v8;
+      v22 = fileCopy;
       v23 = 2114;
       v24 = v13;
-      _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "%{public}@ | failed to remove %{public}@ entry from filesystem path:%{public}@, error:%{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_0, lastPathComponent, OS_LOG_TYPE_ERROR, "%{public}@ | failed to remove %{public}@ entry from filesystem path:%{public}@, error:%{public}@", buf, 0x2Au);
 LABEL_7:
 
       goto LABEL_8;
@@ -1690,11 +1690,11 @@ LABEL_7:
 
   if ([(MADAutoAssetPersisted *)self cachingEnabled])
   {
-    v14 = [v8 lastPathComponent];
-    if (v14)
+    lastPathComponent = [fileCopy lastPathComponent];
+    if (lastPathComponent)
     {
-      v15 = [(MADAutoAssetPersisted *)self knownPersistedFiles];
-      [v15 removeObjectForKey:v14];
+      knownPersistedFiles = [(MADAutoAssetPersisted *)self knownPersistedFiles];
+      [knownPersistedFiles removeObjectForKey:lastPathComponent];
       goto LABEL_7;
     }
 
@@ -1702,29 +1702,29 @@ LABEL_8:
   }
 }
 
-- (void)_removeEntriesMissingFromTableOfContents:(id)a3
+- (void)_removeEntriesMissingFromTableOfContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v5);
+  contentsCopy = contents;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v6 = [NSString alloc];
   v7 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/persisted");
-  v8 = [(MADAutoAssetPersisted *)self moduleName];
-  v9 = [v6 initWithFormat:@"%@/%@", v7, v8];
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  v9 = [v6 initWithFormat:@"%@/%@", v7, moduleName];
 
   v42 = v9;
-  v38 = v4;
-  v10 = [(MADAutoAssetPersisted *)self _contentsOfModulePersistedPath:v9 fromLocation:v4];
+  v38 = contentsCopy;
+  v10 = [(MADAutoAssetPersisted *)self _contentsOfModulePersistedPath:v9 fromLocation:contentsCopy];
   if (v10)
   {
     v11 = [NSString alloc];
-    v12 = [(MADAutoAssetPersisted *)self moduleName];
-    v13 = [v11 initWithFormat:@"%@_%@", v12, @"Config"];
+    moduleName2 = [(MADAutoAssetPersisted *)self moduleName];
+    v13 = [v11 initWithFormat:@"%@_%@", moduleName2, @"Config"];
 
     v14 = [NSString alloc];
-    v15 = [(MADAutoAssetPersisted *)self moduleName];
-    v16 = [v14 initWithFormat:@"%@_%@", v15, @"TableOfContents"];
+    moduleName3 = [(MADAutoAssetPersisted *)self moduleName];
+    v16 = [v14 initWithFormat:@"%@_%@", moduleName3, @"TableOfContents"];
 
     v46 = 0u;
     v47 = 0u;
@@ -1757,24 +1757,24 @@ LABEL_8:
         v24 = objc_autoreleasePoolPush();
         if (([v23 hasPrefix:v13] & 1) == 0 && (objc_msgSend(v23, "hasPrefix:", v16) & 1) == 0)
         {
-          v25 = [(MADAutoAssetPersisted *)self moduleName];
-          v26 = [MADAutoAssetPersisted entryFileIDForModule:v25 fromFilename:v23];
+          moduleName4 = [(MADAutoAssetPersisted *)self moduleName];
+          v26 = [MADAutoAssetPersisted entryFileIDForModule:moduleName4 fromFilename:v23];
 
           v43 = [objc_alloc(p_weak_ivar_lyt[226]) initWithFormat:@"%@/%@", v42, v23];
           if (v26)
           {
-            v27 = self;
-            v28 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-            v29 = [v28 containsObject:v26];
+            selfCopy = self;
+            currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+            v29 = [currentEntryIDs containsObject:v26];
 
             v30 = _MADLog(@"Auto");
             v31 = v30;
             if (v29)
             {
-              self = v27;
+              self = selfCopy;
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = [(MADAutoAssetPersisted *)v27 _summaryLeader:@"_removeEntriesMissingFromTableOfContents" fromLocation:v38];
+                v32 = [(MADAutoAssetPersisted *)selfCopy _summaryLeader:@"_removeEntriesMissingFromTableOfContents" fromLocation:v38];
                 *buf = 138543618;
                 v49 = v32;
                 v50 = 2114;
@@ -1786,10 +1786,10 @@ LABEL_8:
               goto LABEL_17;
             }
 
-            self = v27;
+            self = selfCopy;
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
-              v36 = [(MADAutoAssetPersisted *)v27 _summaryLeader:@"_removeEntriesMissingFromTableOfContents" fromLocation:v38];
+              v36 = [(MADAutoAssetPersisted *)selfCopy _summaryLeader:@"_removeEntriesMissingFromTableOfContents" fromLocation:v38];
               *buf = 138543618;
               v49 = v36;
               v50 = 2114;
@@ -1798,7 +1798,7 @@ LABEL_8:
             }
 
             v35 = v43;
-            [(MADAutoAssetPersisted *)v27 _removeEntryFile:v43 reason:@"stale-on-filesystem" fromLocation:v38];
+            [(MADAutoAssetPersisted *)selfCopy _removeEntryFile:v43 reason:@"stale-on-filesystem" fromLocation:v38];
             p_weak_ivar_lyt = (&MAAIRBMobileAssetOperationMetadata__metaData + 56);
             v16 = v40;
           }
@@ -1844,14 +1844,14 @@ LABEL_24:
 
 - (id)_summary
 {
-  v3 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v4 = [NSString alloc];
-  v5 = [(MADAutoAssetPersisted *)self moduleName];
-  v6 = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
-  v7 = [(MADAutoAssetPersisted *)self persistedConfig];
-  if (v7)
+  moduleName = [(MADAutoAssetPersisted *)self moduleName];
+  moduleCurrentVersion = [(MADAutoAssetPersisted *)self moduleCurrentVersion];
+  persistedConfig = [(MADAutoAssetPersisted *)self persistedConfig];
+  if (persistedConfig)
   {
     v8 = @"Y";
   }
@@ -1861,64 +1861,64 @@ LABEL_24:
     v8 = @"N";
   }
 
-  v9 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v10 = [v4 initWithFormat:@"module:%@|version:%@|config:%@|entries:%ld", v5, v6, v8, objc_msgSend(v9, "count")];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v10 = [v4 initWithFormat:@"module:%@|version:%@|config:%@|entries:%ld", moduleName, moduleCurrentVersion, v8, objc_msgSend(currentEntryIDs, "count")];
   [(MADAutoAssetPersisted *)self setLatestSafeSummary:v10];
 
   return [(MADAutoAssetPersisted *)self latestSafeSummary];
 }
 
-- (id)_summaryLeader:(id)a3 fromLocation:(id)a4
+- (id)_summaryLeader:(id)leader fromLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetPersisted *)self persistedQueue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  leaderCopy = leader;
+  persistedQueue = [(MADAutoAssetPersisted *)self persistedQueue];
+  dispatch_assert_queue_V2(persistedQueue);
 
   v9 = [NSString alloc];
-  v10 = [(MADAutoAssetPersisted *)self logLeader];
-  v11 = [(MADAutoAssetPersisted *)self currentEntryIDs];
-  v12 = [v11 count];
-  v13 = [(MADAutoAssetPersisted *)self _summary];
-  v14 = [v9 initWithFormat:@"{%@(%ld)%@:%@} [%@]", v10, v12, v6, v7, v13];
+  logLeader = [(MADAutoAssetPersisted *)self logLeader];
+  currentEntryIDs = [(MADAutoAssetPersisted *)self currentEntryIDs];
+  v12 = [currentEntryIDs count];
+  _summary = [(MADAutoAssetPersisted *)self _summary];
+  v14 = [v9 initWithFormat:@"{%@(%ld)%@:%@} [%@]", logLeader, v12, locationCopy, leaderCopy, _summary];
 
   return v14;
 }
 
-+ (id)persistedStateFilename:(id)a3 forFileID:(id)a4 ofEntryName:(id)a5
++ (id)persistedStateFilename:(id)filename forFileID:(id)d ofEntryName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  dCopy = d;
+  filenameCopy = filename;
   v10 = [NSString alloc];
   v11 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/persisted");
   v12 = v11;
-  if (v7)
+  if (nameCopy)
   {
-    v13 = [v10 initWithFormat:@"%@/%@/%@_%@_%@.state", v11, v9, v9, v8, v7];
+    nameCopy = [v10 initWithFormat:@"%@/%@/%@_%@_%@.state", v11, filenameCopy, filenameCopy, dCopy, nameCopy];
   }
 
   else
   {
-    v13 = [v10 initWithFormat:@"%@/%@/%@_%@.state", v11, v9, v9, v8, v16];
+    nameCopy = [v10 initWithFormat:@"%@/%@/%@_%@.state", v11, filenameCopy, filenameCopy, dCopy, v16];
   }
 
-  v14 = v13;
+  v14 = nameCopy;
 
   return v14;
 }
 
-+ (id)entryFileIDForModule:(id)a3 fromFilename:(id)a4
++ (id)entryFileIDForModule:(id)module fromFilename:(id)filename
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@_%@", v6, @"Entry"];
+  filenameCopy = filename;
+  moduleCopy = module;
+  v7 = [[NSString alloc] initWithFormat:@"%@_%@", moduleCopy, @"Entry"];
 
   v8 = [v7 length];
   v9 = [@".state" length] + v8 + 1;
-  if ([v5 length] > v9 && objc_msgSend(v5, "hasPrefix:", v7) && objc_msgSend(v5, "hasSuffix:", @".state"))
+  if ([filenameCopy length] > v9 && objc_msgSend(filenameCopy, "hasPrefix:", v7) && objc_msgSend(filenameCopy, "hasSuffix:", @".state"))
   {
-    v10 = [v5 substringWithRange:{objc_msgSend(v7, "length") + 1, objc_msgSend(v5, "length") - v9}];
+    v10 = [filenameCopy substringWithRange:{objc_msgSend(v7, "length") + 1, objc_msgSend(filenameCopy, "length") - v9}];
   }
 
   else
@@ -1929,43 +1929,43 @@ LABEL_24:
   return v10;
 }
 
-+ (id)persistedEntryStatusName:(int64_t)a3
++ (id)persistedEntryStatusName:(int64_t)name
 {
-  if (a3 > 5)
+  if (name > 5)
   {
     return @"UNKNOWN_TYPE";
   }
 
   else
   {
-    return *(&off_4B37C0 + a3);
+    return *(&off_4B37C0 + name);
   }
 }
 
-+ (int64_t)persistedEntryStatusValue:(id)a3
++ (int64_t)persistedEntryStatusValue:(id)value
 {
-  v3 = a3;
-  if (([SUCore stringIsEqual:v3 to:@"CREATED"]& 1) != 0)
+  valueCopy = value;
+  if (([SUCore stringIsEqual:valueCopy to:@"CREATED"]& 1) != 0)
   {
     v4 = 0;
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"STORED"]& 1) != 0)
+  else if (([SUCore stringIsEqual:valueCopy to:@"STORED"]& 1) != 0)
   {
     v4 = 1;
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"LOADED"]& 1) != 0)
+  else if (([SUCore stringIsEqual:valueCopy to:@"LOADED"]& 1) != 0)
   {
     v4 = 2;
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"LOAD_OR_CREATE"]& 1) != 0)
+  else if (([SUCore stringIsEqual:valueCopy to:@"LOAD_OR_CREATE"]& 1) != 0)
   {
     v4 = 3;
   }
 
-  else if ([SUCore stringIsEqual:v3 to:@"DELETED"])
+  else if ([SUCore stringIsEqual:valueCopy to:@"DELETED"])
   {
     v4 = 4;
   }
@@ -1978,45 +1978,45 @@ LABEL_24:
   return v4;
 }
 
-+ (id)persistedOperationSymbol:(id)a3
++ (id)persistedOperationSymbol:(id)symbol
 {
-  v3 = a3;
-  if (([SUCore stringIsEqual:v3 to:@"CONFIG_LOAD"]& 1) != 0)
+  symbolCopy = symbol;
+  if (([SUCore stringIsEqual:symbolCopy to:@"CONFIG_LOAD"]& 1) != 0)
   {
     v4 = @"C_LOD";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"CONFIG_SET"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"CONFIG_SET"]& 1) != 0)
   {
     v4 = @"C_SET";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"ENTRY_LOAD"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"ENTRY_LOAD"]& 1) != 0)
   {
     v4 = @"E_LOD";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"ENTRY_ADD"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"ENTRY_ADD"]& 1) != 0)
   {
     v4 = @"E_ADD";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"ENTRY_REMOVE"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"ENTRY_REMOVE"]& 1) != 0)
   {
     v4 = @"E_RMV";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"ENTRY_MODIFY"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"ENTRY_MODIFY"]& 1) != 0)
   {
     v4 = @"E_MOD";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"ENTRY_INCREASED"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"ENTRY_INCREASED"]& 1) != 0)
   {
     v4 = @"E_INC";
   }
 
-  else if ([SUCore stringIsEqual:v3 to:@"ENTRY_DECREASED"])
+  else if ([SUCore stringIsEqual:symbolCopy to:@"ENTRY_DECREASED"])
   {
     v4 = @"E_DEC";
   }
@@ -2029,90 +2029,90 @@ LABEL_24:
   return v4;
 }
 
-+ (id)persistedComponentSymbol:(id)a3
++ (id)persistedComponentSymbol:(id)symbol
 {
-  v3 = a3;
-  if (([SUCore stringIsEqual:v3 to:@"ACTIVE-JOBS"]& 1) != 0)
+  symbolCopy = symbol;
+  if (([SUCore stringIsEqual:symbolCopy to:@"ACTIVE-JOBS"]& 1) != 0)
   {
     v4 = @"AJOBS";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"KNOWN_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"KNOWN_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"KDESC";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"DOWNLOADED_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"DOWNLOADED_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"DDESC";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"JOB_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"JOB_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"JDESC";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"INVALID_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"INVALID_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"IDESC";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-SCHEDULER"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-SCHEDULER"]& 1) != 0)
   {
     v4 = @"SCHED";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-LOCKER"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-LOCKER"]& 1) != 0)
   {
     v4 = @"LOCKR";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-STAGER"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-STAGER"]& 1) != 0)
   {
     v4 = @"STAGR";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-STAGER-SET-LOOKUP-RESULTS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-STAGER-SET-LOOKUP-RESULTS"]& 1) != 0)
   {
     v4 = @"SSLUP";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-STAGER-TARGET-LOOKUP-RESULTS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-STAGER-TARGET-LOOKUP-RESULTS"]& 1) != 0)
   {
     v4 = @"STLUP";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"AUTO-STAGER-TARGET-AVAILABLE"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"AUTO-STAGER-TARGET-AVAILABLE"]& 1) != 0)
   {
     v4 = @"STGAV";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"SET_CONFIGURATIONS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"SET_CONFIGURATIONS"]& 1) != 0)
   {
     v4 = @"SCONF";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"SET_ATOMIC_INSTANCES"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"SET_ATOMIC_INSTANCES"]& 1) != 0)
   {
     v4 = @"SATOM";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"SET_ACTIVE_JOB_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"SET_ACTIVE_JOB_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"SJOBS";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"SET_DOWNLOADED_DESCRIPTORS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"SET_DOWNLOADED_DESCRIPTORS"]& 1) != 0)
   {
     v4 = @"SDESC";
   }
 
-  else if (([SUCore stringIsEqual:v3 to:@"SET_TARGETS"]& 1) != 0)
+  else if (([SUCore stringIsEqual:symbolCopy to:@"SET_TARGETS"]& 1) != 0)
   {
     v4 = @"STARG";
   }
 
-  else if ([SUCore stringIsEqual:v3 to:@"SET_LOOKUP_RESULTS"])
+  else if ([SUCore stringIsEqual:symbolCopy to:@"SET_LOOKUP_RESULTS"])
   {
     v4 = @"SLKUP";
   }

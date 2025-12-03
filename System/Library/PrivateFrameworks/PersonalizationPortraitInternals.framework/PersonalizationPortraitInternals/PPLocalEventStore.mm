@@ -1,22 +1,22 @@
 @interface PPLocalEventStore
 + (id)defaultStore;
-- (BOOL)iterEventNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)iterEventNameRecordsForClient:(id)client error:(id *)error block:(id)block;
 - (PPLocalEventStore)init;
-- (PPLocalEventStore)initWithTrialWrapper:(id)a3 eventStorage:(id)a4;
-- (double)_scoreForSecondsRelativeToNow:(double)a1;
-- (id)customObjectForKey:(id)a3 eventIdentifier:(id)a4;
-- (id)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5;
-- (id)eventNameRecordsForClient:(id)a3 error:(id *)a4;
-- (id)eventsFromDate:(id)a3 toDate:(id)a4;
-- (id)nlEventsFromDate:(id)a3 toDate:(id)a4;
-- (id)resolveEventNameRecordChanges:(id)a3 client:(id)a4 error:(id *)a5;
-- (id)scoredEventsWithQuery:(id)a3;
-- (uint64_t)_isEventQueryRangeValidWithInterval:(double)a3 andDuration:;
+- (PPLocalEventStore)initWithTrialWrapper:(id)wrapper eventStorage:(id)storage;
+- (double)_scoreForSecondsRelativeToNow:(double)now;
+- (id)customObjectForKey:(id)key eventIdentifier:(id)identifier;
+- (id)eventHighlightsFrom:(id)from to:(id)to options:(int)options;
+- (id)eventNameRecordsForClient:(id)client error:(id *)error;
+- (id)eventsFromDate:(id)date toDate:(id)toDate;
+- (id)nlEventsFromDate:(id)date toDate:(id)toDate;
+- (id)resolveEventNameRecordChanges:(id)changes client:(id)client error:(id *)error;
+- (id)scoredEventsWithQuery:(id)query;
+- (uint64_t)_isEventQueryRangeValidWithInterval:(double)interval andDuration:;
 - (void)_clearAndReloadAllCachesAndData;
 - (void)_preloadEvents;
 - (void)clearCaches;
-- (void)enumerateEventsFromEKObjectIDs:(id)a3 expandingRecurrencesInRange:(id)a4 usingBlock:(id)a5;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)enumerateEventsFromEKObjectIDs:(id)ds expandingRecurrencesInRange:(id)range usingBlock:(id)block;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocalEventStore
@@ -33,44 +33,44 @@
   return v3;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v7 = pp_events_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138739971;
-    v12 = v5;
+    v12 = feedbackCopy;
     _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "Event feedback received: %{sensitive}@", &v11, 0xCu);
   }
 
-  v8 = [v5 feedbackItems];
-  v9 = [v8 count];
+  feedbackItems = [feedbackCopy feedbackItems];
+  v9 = [feedbackItems count];
 
   if (v9)
   {
-    [PPFeedbackStorage logFeedback:v5 domain:3 domainStatus:2 inBackground:0];
+    [PPFeedbackStorage logFeedback:feedbackCopy domain:3 domainStatus:2 inBackground:0];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)scoredEventsWithQuery:(id)a3
+- (id)scoredEventsWithQuery:(id)query
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   v5 = pp_events_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v73 = v4;
+    v73 = queryCopy;
     _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "PPLocalEventStore: scoredEventsWithQuery: %@", buf, 0xCu);
   }
 
@@ -92,15 +92,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
-    v65 = v4;
+    v8 = queryCopy;
+    v65 = queryCopy;
     if (self)
     {
       v66 = objc_opt_new();
-      v9 = [v8 fromDate];
-      v10 = [v8 toDate];
-      v11 = v9;
-      v12 = v10;
+      fromDate = [v8 fromDate];
+      toDate = [v8 toDate];
+      v11 = fromDate;
+      v12 = toDate;
       [v11 timeIntervalSinceReferenceDate];
       v14 = v13;
       [v12 timeIntervalSinceDate:v11];
@@ -140,16 +140,16 @@
             v51 = *(*(&v67 + 1) + 8 * i);
             if ([v51 suggestedEventCategory])
             {
-              v52 = [v8 matchingCategories];
-              if (!v52)
+              matchingCategories = [v8 matchingCategories];
+              if (!matchingCategories)
               {
                 goto LABEL_41;
               }
 
-              v53 = v52;
-              v54 = [v8 matchingCategories];
+              v53 = matchingCategories;
+              matchingCategories2 = [v8 matchingCategories];
               v55 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v51, "suggestedEventCategory")}];
-              v56 = [v54 containsObject:v55];
+              v56 = [matchingCategories2 containsObject:v55];
 
               if (v56)
               {
@@ -172,7 +172,7 @@ LABEL_41:
 LABEL_47:
 LABEL_48:
 
-      v4 = v65;
+      queryCopy = v65;
       goto LABEL_49;
     }
 
@@ -185,17 +185,17 @@ LABEL_48:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v4;
-      v65 = v4;
+      v8 = queryCopy;
+      v65 = queryCopy;
       if (self)
       {
         v23 = objc_opt_new();
-        v24 = [v8 fromDate];
-        v25 = [v24 dateByAddingTimeInterval:-10368000.0];
+        fromDate2 = [v8 fromDate];
+        v25 = [fromDate2 dateByAddingTimeInterval:-10368000.0];
 
         v64 = v8;
-        v26 = [v8 toDate];
-        v27 = [v26 dateByAddingTimeInterval:10368000.0];
+        toDate2 = [v8 toDate];
+        v27 = [toDate2 dateByAddingTimeInterval:10368000.0];
 
         [v25 timeIntervalSinceReferenceDate];
         v29 = v28;
@@ -261,9 +261,9 @@ LABEL_48:
         }
 
         v8 = v64;
-        v45 = [v64 fromDate];
-        v46 = [v64 toDate];
-        v66 = [PPTripAggregator tripEventsWithEvents:v23 from:v45 to:v46];
+        fromDate3 = [v64 fromDate];
+        toDate3 = [v64 toDate];
+        v66 = [PPTripAggregator tripEventsWithEvents:v23 from:fromDate3 to:toDate3];
 
         goto LABEL_47;
       }
@@ -303,14 +303,14 @@ LABEL_49:
   return v66;
 }
 
-- (uint64_t)_isEventQueryRangeValidWithInterval:(double)a3 andDuration:
+- (uint64_t)_isEventQueryRangeValidWithInterval:(double)interval andDuration:
 {
   v10 = *MEMORY[0x277D85DE8];
   if (result)
   {
     if (a2 >= 0.0)
     {
-      if (a3 >= 0.0)
+      if (interval >= 0.0)
       {
         result = 1;
         goto LABEL_9;
@@ -323,7 +323,7 @@ LABEL_49:
       }
 
       v8 = 134217984;
-      v9 = a3;
+      intervalCopy = interval;
       v5 = "PPLocalEventStore: to date appears to be before from date(duration = %f) which is unsupported.";
     }
 
@@ -339,7 +339,7 @@ LABEL_7:
       }
 
       v8 = 134217984;
-      v9 = a2;
+      intervalCopy = a2;
       v5 = "PPLocalEventStore: from date appears to be before the reference date(interval = %f) which is unsupported.";
     }
 
@@ -352,13 +352,13 @@ LABEL_9:
   return result;
 }
 
-- (id)nlEventsFromDate:(id)a3 toDate:(id)a4
+- (id)nlEventsFromDate:(id)date toDate:(id)toDate
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  toDateCopy = toDate;
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
-  [v7 timeIntervalSinceDate:v6];
+  [toDateCopy timeIntervalSinceDate:dateCopy];
   v11 = v10;
   if ([(PPLocalEventStore *)self _isEventQueryRangeValidWithInterval:v9 andDuration:v10])
   {
@@ -400,14 +400,14 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
   *(v4 + 40) = v3;
 }
 
-- (id)eventsFromDate:(id)a3 toDate:(id)a4
+- (id)eventsFromDate:(id)date toDate:(id)toDate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  [v7 timeIntervalSinceReferenceDate];
+  toDateCopy = toDate;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
-  [v6 timeIntervalSinceDate:v7];
+  [toDateCopy timeIntervalSinceDate:dateCopy];
   v11 = v10;
 
   if ([(PPLocalEventStore *)self _isEventQueryRangeValidWithInterval:v9 andDuration:v11])
@@ -456,20 +456,20 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
   return self;
 }
 
-- (id)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5
+- (id)eventHighlightsFrom:(id)from to:(id)to options:(int)options
 {
   v126 = *MEMORY[0x277D85DE8];
-  v67 = a3;
-  v66 = a4;
+  fromCopy = from;
+  toCopy = to;
   v7 = +[PPSettings sharedInstance];
   v8 = [v7 bundleIdentifierIsEnabledForDonation:*MEMORY[0x277D3A5F0]];
 
   if (v8)
   {
-    obj = [(PPLocalEventStore *)self eventsFromDate:v67 toDate:v66];
+    obj = [(PPLocalEventStore *)self eventsFromDate:fromCopy toDate:toCopy];
     v68 = objc_opt_new();
-    v65 = [PPEventRankerDateUtils dateTwoWeeksPriorToDate:v67];
-    v77 = v67;
+    v65 = [PPEventRankerDateUtils dateTwoWeeksPriorToDate:fromCopy];
+    v77 = fromCopy;
     if (self)
     {
       v9 = [MEMORY[0x277CBEAA8] now];
@@ -512,14 +512,14 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
       v85 = __50__PPLocalEventStore_eventMetaDataFromDate_toDate___block_invoke_5;
       v86 = &unk_278975C00;
       v61 = v9;
-      v87 = v61;
+      selfCopy2 = v61;
       v75 = v65;
       v88 = v75;
       v95 = &v102;
       v96 = &v98;
       v73 = v77;
       v89 = v73;
-      v90 = self;
+      selfCopy = self;
       v72 = v15;
       v94 = v72;
       v62 = v10;
@@ -539,9 +539,9 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
         v22 = [v21 day];
         if ([v17 count] < 2 || v22 < 9 || objc_msgSend(v17, "count") / (v22 + 1) < 0.55)
         {
-          v23 = [v107[5] titlesAndParticipants];
-          v24 = [v107[5] eventCount];
-          v25 = +[PPEventMetadata eventMetadataWithTitlesAndParticipants:earliestStartTime:eventCount:eventHasAlarmCount:](PPEventMetadata, "eventMetadataWithTitlesAndParticipants:earliestStartTime:eventCount:eventHasAlarmCount:", v23, v24, [v107[5] eventHasAlarmCount], -1.0);
+          titlesAndParticipants = [v107[5] titlesAndParticipants];
+          eventCount = [v107[5] eventCount];
+          v25 = +[PPEventMetadata eventMetadataWithTitlesAndParticipants:earliestStartTime:eventCount:eventHasAlarmCount:](PPEventMetadata, "eventMetadataWithTitlesAndParticipants:earliestStartTime:eventCount:eventHasAlarmCount:", titlesAndParticipants, eventCount, [v107[5] eventHasAlarmCount], -1.0);
           v26 = v107[5];
           v107[5] = v25;
         }
@@ -554,10 +554,10 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
         v29 = v99[3];
         [v107[5] earliestStartTime];
         v31 = v30;
-        v32 = [v107[5] eventCount];
-        v33 = [v107[5] eventHasAlarmCount];
-        v34 = [v107[5] titlesAndParticipants];
-        v35 = [v34 count];
+        eventCount2 = [v107[5] eventCount];
+        eventHasAlarmCount = [v107[5] eventHasAlarmCount];
+        titlesAndParticipants2 = [v107[5] titlesAndParticipants];
+        v35 = [titlesAndParticipants2 count];
         v36 = v107[5];
         *buf = 138545411;
         *&buf[4] = v75;
@@ -570,9 +570,9 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
         *&v117[10] = 2048;
         *&v117[12] = v31;
         v118 = 2048;
-        v119 = v32;
+        v119 = eventCount2;
         v120 = 2048;
-        v121 = v33;
+        v121 = eventHasAlarmCount;
         v122 = 2048;
         v123 = v35;
         v124 = 2117;
@@ -592,15 +592,15 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
     }
 
     v37 = [PPEventScorer alloc];
-    v38 = [v64 titlesAndParticipants];
+    titlesAndParticipants3 = [v64 titlesAndParticipants];
     [v64 earliestStartTime];
     v40 = v39;
     if (v64)
     {
       if ([v64 eventHasAlarmCount] && objc_msgSend(v64, "eventCount"))
       {
-        v41 = [v64 eventHasAlarmCount];
-        v42 = [v64 eventCount] > v41;
+        eventHasAlarmCount2 = [v64 eventHasAlarmCount];
+        v42 = [v64 eventCount] > eventHasAlarmCount2;
       }
 
       else
@@ -615,7 +615,7 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
     }
 
     v45 = +[PPTrialWrapper sharedInstance];
-    v76 = [(PPEventScorer *)v37 initWithPastEventTitlesAndParticipants:v38 andEarliestStartTime:v42 shouldConsiderAlarms:a5 withOptions:v45 trialWrapper:v40];
+    v76 = [(PPEventScorer *)v37 initWithPastEventTitlesAndParticipants:titlesAndParticipants3 andEarliestStartTime:v42 shouldConsiderAlarms:options withOptions:v45 trialWrapper:v40];
 
     v81 = 0u;
     v82 = 0u;
@@ -650,7 +650,7 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
             *&buf[16] = 0x3032000000;
             v116 = __Block_byref_object_copy__16315;
             *v117 = __Block_byref_object_dispose__16316;
-            *&v117[8] = [(PPEventCache *)self->_eventCache cachedEventHighlightForEvent:v50 rankingOptions:a5 trialWrapper:self->_trialWrapper];
+            *&v117[8] = [(PPEventCache *)self->_eventCache cachedEventHighlightForEvent:v50 rankingOptions:options trialWrapper:self->_trialWrapper];
             v53 = *(*&buf[8] + 40);
             if (!v53)
             {
@@ -660,13 +660,13 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
               v84 = 3221225472;
               v85 = __95__PPLocalEventStore_eventHighlightForEvent_usingScorer_date_rankingOptions_loadedFromEventKit___block_invoke;
               v86 = &unk_278975B20;
-              v87 = self;
+              selfCopy2 = self;
               v56 = v50;
               v91 = buf;
               v92 = &v106;
               v88 = v56;
               v89 = v51;
-              v90 = v52;
+              selfCopy = v52;
               [(PPEventStorage *)storage runBlockWithPurgerDisabled:v83];
 
               objc_autoreleasePoolPop(v54);
@@ -682,7 +682,7 @@ void __45__PPLocalEventStore_nlEventsFromDate_toDate___block_invoke(void *a1)
             v57 = 0;
           }
 
-          if (v57 && ((a5 & 1) != 0 || [v57 isExtraordinary]))
+          if (v57 && ((options & 1) != 0 || [v57 isExtraordinary]))
           {
             [v68 addObject:v57];
           }
@@ -1068,30 +1068,30 @@ void __50__PPLocalEventStore_eventMetaDataFromDate_toDate___block_invoke()
   eventMetaDataFromDate_toDate__invalidationTimer = v4;
 }
 
-- (void)enumerateEventsFromEKObjectIDs:(id)a3 expandingRecurrencesInRange:(id)a4 usingBlock:(id)a5
+- (void)enumerateEventsFromEKObjectIDs:(id)ds expandingRecurrencesInRange:(id)range usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  rangeCopy = range;
+  blockCopy = block;
   storage = self->_storage;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __91__PPLocalEventStore_enumerateEventsFromEKObjectIDs_expandingRecurrencesInRange_usingBlock___block_invoke;
   v15[3] = &unk_278977290;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dsCopy;
+  v17 = rangeCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = rangeCopy;
+  v14 = dsCopy;
   [(PPEventStorage *)storage runBlockWithPurgerDisabled:v15];
 }
 
-- (id)customObjectForKey:(id)a3 eventIdentifier:(id)a4
+- (id)customObjectForKey:(id)key eventIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1104,10 +1104,10 @@ void __50__PPLocalEventStore_eventMetaDataFromDate_toDate___block_invoke()
   v13[2] = __56__PPLocalEventStore_customObjectForKey_eventIdentifier___block_invoke;
   v13[3] = &unk_2789763B0;
   v13[4] = self;
-  v9 = v7;
+  v9 = identifierCopy;
   v14 = v9;
   v16 = &v17;
-  v10 = v6;
+  v10 = keyCopy;
   v15 = v10;
   [(PPEventStorage *)storage runBlockWithPurgerDisabled:v13];
   v11 = v18[5];
@@ -1134,17 +1134,17 @@ void __56__PPLocalEventStore_customObjectForKey_eventIdentifier___block_invoke(v
   }
 }
 
-- (id)resolveEventNameRecordChanges:(id)a3 client:(id)a4 error:(id *)a5
+- (id)resolveEventNameRecordChanges:(id)changes client:(id)client error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v20 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  changesCopy = changes;
+  clientCopy = client;
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = changesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v10)
   {
@@ -1336,10 +1336,10 @@ LABEL_24:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_scoreForSecondsRelativeToNow:(double)a1
+- (double)_scoreForSecondsRelativeToNow:(double)now
 {
-  v1 = a1 / 3600.0;
-  if (a1 / 3600.0 <= -3.0)
+  v1 = now / 3600.0;
+  if (now / 3600.0 <= -3.0)
   {
     return 0.3;
   }
@@ -1418,15 +1418,15 @@ LABEL_24:
   return result;
 }
 
-- (id)eventNameRecordsForClient:(id)a3 error:(id *)a4
+- (id)eventNameRecordsForClient:(id)client error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  clientCopy = client;
   v5 = objc_opt_new();
   v6 = [v5 dateByAddingTimeInterval:-7200.0];
   v40 = v5;
   v7 = [v5 dateByAddingTimeInterval:43200.0];
-  v44 = self;
+  selfCopy = self;
   v8 = [(PPLocalEventStore *)self eventsFromDate:v6 toDate:v7];
 
   v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
@@ -1452,27 +1452,27 @@ LABEL_24:
         v10 = *(*(&v51 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
         v12 = v10;
-        if (v44)
+        if (selfCopy)
         {
           v49 = v11;
           v50 = v9;
           v13 = objc_opt_new();
-          v14 = [v12 startDate];
+          startDate = [v12 startDate];
           v47 = v13;
-          [v14 timeIntervalSinceDate:v13];
+          [startDate timeIntervalSinceDate:v13];
           v16 = [PPLocalEventStore _scoreForSecondsRelativeToNow:v15];
 
           v17 = objc_alloc(MEMORY[0x277CBEB18]);
-          v18 = [v12 attendees];
-          v19 = [v17 initWithCapacity:{objc_msgSend(v18, "count")}];
+          attendees = [v12 attendees];
+          v19 = [v17 initWithCapacity:{objc_msgSend(attendees, "count")}];
 
           v57 = 0u;
           v58 = 0u;
           v55 = 0u;
           v56 = 0u;
           v48 = v12;
-          v20 = [v12 attendees];
-          v21 = [v20 countByEnumeratingWithState:&v55 objects:v60 count:16];
+          attendees2 = [v12 attendees];
+          v21 = [attendees2 countByEnumeratingWithState:&v55 objects:v60 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1483,29 +1483,29 @@ LABEL_24:
               {
                 if (*v56 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(attendees2);
                 }
 
                 v25 = *(*(&v55 + 1) + 8 * i);
                 v26 = objc_autoreleasePoolPush();
-                v27 = [v25 name];
-                if (v27)
+                name = [v25 name];
+                if (name)
                 {
-                  v28 = v27;
-                  v29 = [v25 name];
-                  v30 = [v29 length];
+                  v28 = name;
+                  name2 = [v25 name];
+                  v30 = [name2 length];
 
                   if (v30)
                   {
-                    v31 = [v25 name];
-                    [v19 addObject:v31];
+                    name3 = [v25 name];
+                    [v19 addObject:name3];
                   }
                 }
 
                 objc_autoreleasePoolPop(v26);
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v55 objects:v60 count:16];
+              v22 = [attendees2 countByEnumeratingWithState:&v55 objects:v60 count:16];
             }
 
             while (v22);
@@ -1513,10 +1513,10 @@ LABEL_24:
 
           v32 = MEMORY[0x277D3A3A0];
           v12 = v48;
-          v33 = [v48 eventIdentifier];
-          v34 = [v48 title];
-          v35 = [v48 location];
-          v36 = [v32 eventNameRecordWithScore:v33 eventIdentifier:0 changeType:v34 title:v35 location:v19 participantNames:v16];
+          eventIdentifier = [v48 eventIdentifier];
+          title = [v48 title];
+          location = [v48 location];
+          v36 = [v32 eventNameRecordWithScore:eventIdentifier eventIdentifier:0 changeType:title title:location location:v19 participantNames:v16];
 
           v11 = v49;
           v9 = v50;
@@ -1545,11 +1545,11 @@ LABEL_24:
   return v45;
 }
 
-- (BOOL)iterEventNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterEventNameRecordsForClient:(id)client error:(id *)error block:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(PPLocalEventStore *)self eventNameRecordsForClient:a3 error:a4];
+  blockCopy = block;
+  v9 = [(PPLocalEventStore *)self eventNameRecordsForClient:client error:error];
   v10 = v9;
   if (v9)
   {
@@ -1574,7 +1574,7 @@ LABEL_4:
 
         v16 = *(*(&v20 + 1) + 8 * v15);
         v19 = 0;
-        v8[2](v8, v16, &v19);
+        blockCopy[2](blockCopy, v16, &v19);
         if (v19)
         {
           break;
@@ -1607,22 +1607,22 @@ LABEL_4:
   return v5;
 }
 
-- (PPLocalEventStore)initWithTrialWrapper:(id)a3 eventStorage:(id)a4
+- (PPLocalEventStore)initWithTrialWrapper:(id)wrapper eventStorage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
+  wrapperCopy = wrapper;
+  storageCopy = storage;
   v39.receiver = self;
   v39.super_class = PPLocalEventStore;
   v10 = [(PPLocalEventStore *)&v39 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_storage, a4);
+    objc_storeStrong(&v10->_storage, storage);
     v12 = [[PPEventCache alloc] initWithEventStorage:v11->_storage];
     eventCache = v11->_eventCache;
     v11->_eventCache = v12;
 
-    objc_storeStrong(&v11->_trialWrapper, a3);
+    objc_storeStrong(&v11->_trialWrapper, wrapper);
     v14 = objc_alloc(MEMORY[0x277D425F8]);
     v15 = objc_opt_new();
     v16 = [v14 initWithGuardedData:v15];
@@ -1812,7 +1812,7 @@ void __55__PPLocalEventStore_initWithTrialWrapper_eventStorage___block_invoke_2(
   v6 = objc_opt_new();
   v7 = [v6 dateByAddingTimeInterval:-600.0];
   v8 = [v6 dateByAddingTimeInterval:176400.0];
-  v9 = [a1 eventsFromDate:v7 toDate:v8];
+  v9 = [self eventsFromDate:v7 toDate:v8];
 
   v10 = pp_events_signpost_handle();
   v11 = v10;
@@ -1895,8 +1895,8 @@ void __52__PPLocalEventStore__setupCalendarVisibilityManager__block_invoke(uint6
 
 - (void)_clearAndReloadAllCachesAndData
 {
-  [a1 clearCaches];
-  [(PPLocalEventStore *)a1 _preloadEvents];
+  [self clearCaches];
+  [(PPLocalEventStore *)self _preloadEvents];
   v2 = +[PPEventKitImporter defaultInstance];
   [v2 deleteAndReimportAllData];
 }

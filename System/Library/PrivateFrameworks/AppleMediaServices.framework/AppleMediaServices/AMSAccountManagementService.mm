@@ -1,33 +1,33 @@
 @interface AMSAccountManagementService
 - (BOOL)_supportsDirectAccess;
-- (id)_accountManagementServiceAsyncWithConnection:(id)a3;
-- (id)_accountManagementServiceSyncWithConnection:(id)a3 error:(id *)a4;
-- (id)performCreateLocalAccountWithIdentifier:(id)a3;
-- (id)performCreateLocalAccountWithType:(id)a3;
-- (void)performCreateLocalAccountWithIdentifier:(id)a3 error:(id *)a4;
-- (void)performCreateLocalAccountWithType:(id)a3 error:(id *)a4;
+- (id)_accountManagementServiceAsyncWithConnection:(id)connection;
+- (id)_accountManagementServiceSyncWithConnection:(id)connection error:(id *)error;
+- (id)performCreateLocalAccountWithIdentifier:(id)identifier;
+- (id)performCreateLocalAccountWithType:(id)type;
+- (void)performCreateLocalAccountWithIdentifier:(id)identifier error:(id *)error;
+- (void)performCreateLocalAccountWithType:(id)type error:(id *)error;
 @end
 
 @implementation AMSAccountManagementService
 
-- (id)performCreateLocalAccountWithType:(id)a3
+- (id)performCreateLocalAccountWithType:(id)type
 {
-  v4 = [a3 identifier];
-  v5 = [(AMSAccountManagementService *)self performCreateLocalAccountWithIdentifier:v4];
+  identifier = [type identifier];
+  v5 = [(AMSAccountManagementService *)self performCreateLocalAccountWithIdentifier:identifier];
 
   return v5;
 }
 
-- (void)performCreateLocalAccountWithType:(id)a3 error:(id *)a4
+- (void)performCreateLocalAccountWithType:(id)type error:(id *)error
 {
-  v6 = [a3 identifier];
-  [(AMSAccountManagementService *)self performCreateLocalAccountWithIdentifier:v6 error:a4];
+  identifier = [type identifier];
+  [(AMSAccountManagementService *)self performCreateLocalAccountWithIdentifier:identifier error:error];
 }
 
-- (id)performCreateLocalAccountWithIdentifier:(id)a3
+- (id)performCreateLocalAccountWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = AMSSetLogKeyIfNeeded();
   v7 = +[AMSLogConfig sharedAccountsConfig];
   if (!v7)
@@ -35,8 +35,8 @@
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x1E696AEC0];
@@ -57,8 +57,8 @@
     *buf = 138543618;
     *&buf[4] = v13;
     *&buf[12] = 2114;
-    *&buf[14] = v5;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Local account requested with identifier: %{public}@", buf, 0x16u);
+    *&buf[14] = identifierCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Local account requested with identifier: %{public}@", buf, 0x16u);
     if (v9)
     {
 
@@ -85,7 +85,7 @@
   v27 = buf;
   v18 = v16;
   v24 = v18;
-  v19 = v5;
+  v19 = identifierCopy;
   v25 = v19;
   v20 = v6;
   v26 = v20;
@@ -247,10 +247,10 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
   return [v4 invalidate];
 }
 
-- (void)performCreateLocalAccountWithIdentifier:(id)a3 error:(id *)a4
+- (void)performCreateLocalAccountWithIdentifier:(id)identifier error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  identifierCopy = identifier;
   v29 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedAccountsConfig];
   if (!v6)
@@ -258,8 +258,8 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -280,8 +280,8 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
     *buf = 138543618;
     *&buf[4] = v12;
     *&buf[12] = 2114;
-    *&buf[14] = v31;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Local account requested with identifier: %{public}@", buf, 0x16u);
+    *&buf[14] = identifierCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Local account requested with identifier: %{public}@", buf, 0x16u);
     if (v8)
     {
 
@@ -305,8 +305,8 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
       v22 = AMSLogKey();
@@ -316,13 +316,13 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
       *&buf[14] = v22;
       *&buf[22] = 2114;
       v42 = v18;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Failed to connect to daemon: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Failed to connect to daemon: %{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v23 = v18;
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -340,9 +340,9 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
     v32[3] = &unk_1E73B3628;
     v24 = v29;
     v33 = v24;
-    v34 = self;
+    selfCopy = self;
     v35 = buf;
-    [v17 performCreateLocalAccountWithIdentifier:v31 completion:v32];
+    [v17 performCreateLocalAccountWithIdentifier:identifierCopy completion:v32];
     if (*(*&buf[8] + 40))
     {
       v25 = +[AMSLogConfig sharedAccountsConfig];
@@ -351,8 +351,8 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
         v25 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v25 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         if (v24)
         {
@@ -369,12 +369,12 @@ uint64_t __71__AMSAccountManagementService_performCreateLocalAccountWithIdentifi
         v38 = v27;
         v39 = 2114;
         v40 = v28;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@Local account creation daemon error = %{public}@", v37, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Local account creation daemon error = %{public}@", v37, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
     }
 
@@ -430,26 +430,26 @@ void __77__AMSAccountManagementService_performCreateLocalAccountWithIdentifier_e
   *(v15 + 40) = v14;
 }
 
-- (id)_accountManagementServiceAsyncWithConnection:(id)a3
+- (id)_accountManagementServiceAsyncWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if ([(AMSAccountManagementService *)self _supportsDirectAccess]&& (v5 = NSClassFromString(&cfstr_Amsdaccountman.isa), NSSelectorFromString(&cfstr_Sharedservice.isa), (objc_opt_respondsToSelector() & 1) != 0))
   {
     v6 = [(objc_class *)v5 performSelector:sel_sharedService];
-    v7 = [AMSPromise promiseWithResult:v6];
+    accountManagementServiceProxy = [AMSPromise promiseWithResult:v6];
   }
 
   else
   {
-    v7 = [v4 accountManagementServiceProxy];
+    accountManagementServiceProxy = [connectionCopy accountManagementServiceProxy];
   }
 
-  return v7;
+  return accountManagementServiceProxy;
 }
 
-- (id)_accountManagementServiceSyncWithConnection:(id)a3 error:(id *)a4
+- (id)_accountManagementServiceSyncWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   if ([(AMSAccountManagementService *)self _supportsDirectAccess]&& (v7 = NSClassFromString(&cfstr_Amsdaccountman.isa), NSSelectorFromString(&cfstr_Sharedservice.isa), (objc_opt_respondsToSelector() & 1) != 0))
   {
     v8 = [(objc_class *)v7 performSelector:sel_sharedService];
@@ -457,7 +457,7 @@ void __77__AMSAccountManagementService_performCreateLocalAccountWithIdentifier_e
 
   else
   {
-    v8 = [v6 accountManagementServiceProxySyncWithError:a4];
+    v8 = [connectionCopy accountManagementServiceProxySyncWithError:error];
   }
 
   v9 = v8;

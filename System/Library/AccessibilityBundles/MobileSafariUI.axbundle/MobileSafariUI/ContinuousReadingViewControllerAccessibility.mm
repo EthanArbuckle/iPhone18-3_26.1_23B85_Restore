@@ -17,10 +17,10 @@
 {
   v4.receiver = self;
   v4.super_class = ContinuousReadingViewControllerAccessibility;
-  v2 = [(ContinuousReadingViewControllerAccessibility *)&v4 _outerScrollView];
-  [v2 setFocusGroupIdentifier:0];
+  _outerScrollView = [(ContinuousReadingViewControllerAccessibility *)&v4 _outerScrollView];
+  [_outerScrollView setFocusGroupIdentifier:0];
 
-  return v2;
+  return _outerScrollView;
 }
 
 @end

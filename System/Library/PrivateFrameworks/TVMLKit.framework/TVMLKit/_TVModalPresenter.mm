@@ -2,18 +2,18 @@
 + (id)presenter;
 - (UIViewController)presentedViewController;
 - (id)_hidden;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)_configureModalController:(id)a3 withFromController:(id)a4 andConfiguration:(id)a5;
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)_configureModalController:(id)controller withFromController:(id)fromController andConfiguration:(id)configuration;
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion;
 - (void)_forceOrientationBackToSupportedOrientation;
-- (void)_willRotateNotification:(id)a3;
+- (void)_willRotateNotification:(id)notification;
 - (void)dealloc;
-- (void)hideController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)showController:(id)a3 fromController:(id)a4 withCompletionBlock:(id)a5;
-- (void)showController:(id)a3 fromController:(id)a4 withConfiguration:(id)a5 animated:(BOOL)a6 andCompletionBlock:(id)a7;
+- (void)hideController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)showController:(id)controller fromController:(id)fromController withCompletionBlock:(id)block;
+- (void)showController:(id)controller fromController:(id)fromController withConfiguration:(id)configuration animated:(BOOL)animated andCompletionBlock:(id)block;
 @end
 
 @implementation _TVModalPresenter
@@ -34,10 +34,10 @@
     [(UINavigationController *)v2->_modalRootViewController setTransitioningDelegate:v2];
     [(UINavigationController *)v2->_modalRootViewController setModalPresentationCapturesStatusBarAppearance:1];
     [(UINavigationController *)v2->_modalRootViewController setModalPresentationStyle:5];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = *MEMORY[0x277D772D0];
-    v8 = [*MEMORY[0x277D76620] keyWindow];
-    [v6 addObserver:v2 selector:sel__willRotateNotification_ name:v7 object:v8];
+    keyWindow = [*MEMORY[0x277D76620] keyWindow];
+    [defaultCenter addObserver:v2 selector:sel__willRotateNotification_ name:v7 object:keyWindow];
 
     v9 = objc_alloc_init(_TVPlaybackFadeAnimator);
     playbackAnimator = v2->_playbackAnimator;
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = __30___TVModalPresenter_presenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (presenter_onceToken != -1)
   {
     dispatch_once(&presenter_onceToken, block);
@@ -74,8 +74,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _TVModalPresenter;
@@ -84,50 +84,50 @@
 
 - (UIViewController)presentedViewController
 {
-  v3 = [(_TVModalPresenter *)self modalRootViewController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
+  viewControllers = [modalRootViewController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 1)
   {
-    v6 = 0;
+    topViewController = 0;
   }
 
   else
   {
-    v7 = [(_TVModalPresenter *)self modalRootViewController];
-    v6 = [v7 topViewController];
+    modalRootViewController2 = [(_TVModalPresenter *)self modalRootViewController];
+    topViewController = [modalRootViewController2 topViewController];
   }
 
-  return v6;
+  return topViewController;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = [a3 childViewControllers];
-  v7 = [v6 lastObject];
+  childViewControllers = [controller childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (!v7)
+  if (!lastObject)
   {
     goto LABEL_6;
   }
 
-  v8 = objc_getAssociatedObject(v7, "TVMLPresenterConfiguration");
+  v8 = objc_getAssociatedObject(lastObject, "TVMLPresenterConfiguration");
   if (!v8)
   {
     goto LABEL_6;
   }
 
   v9 = v8;
-  v10 = [v8 configurationType];
+  configurationType = [v8 configurationType];
 
-  if (v10 == 4)
+  if (configurationType == 4)
   {
     v11 = 8;
     goto LABEL_8;
   }
 
-  if (v10 != 2)
+  if (configurationType != 2)
   {
 LABEL_6:
     v12 = 0;
@@ -142,32 +142,32 @@ LABEL_9:
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = [a3 childViewControllers];
-  v5 = [v4 lastObject];
+  childViewControllers = [controller childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (!v5)
+  if (!lastObject)
   {
     goto LABEL_6;
   }
 
-  v6 = objc_getAssociatedObject(v5, "TVMLPresenterConfiguration");
+  v6 = objc_getAssociatedObject(lastObject, "TVMLPresenterConfiguration");
   if (!v6)
   {
     goto LABEL_6;
   }
 
   v7 = v6;
-  v8 = [v6 configurationType];
+  configurationType = [v6 configurationType];
 
-  if (v8 == 4)
+  if (configurationType == 4)
   {
     v9 = 16;
     goto LABEL_8;
   }
 
-  if (v8 != 2)
+  if (configurationType != 2)
   {
 LABEL_6:
     v10 = 0;
@@ -182,56 +182,56 @@ LABEL_9:
   return v10;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v6 = MEMORY[0x277D76198];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[v6 alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v9 setBlurStyle:4005];
 
   return v9;
 }
 
-- (void)showController:(id)a3 fromController:(id)a4 withCompletionBlock:(id)a5
+- (void)showController:(id)controller fromController:(id)fromController withCompletionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  fromControllerCopy = fromController;
+  controllerCopy = controller;
   v11 = objc_alloc_init(TVModalPresenterConfiguration);
-  [(_TVModalPresenter *)self showController:v10 fromController:v9 withConfiguration:v11 andCompletionBlock:v8];
+  [(_TVModalPresenter *)self showController:controllerCopy fromController:fromControllerCopy withConfiguration:v11 andCompletionBlock:blockCopy];
 }
 
-- (void)showController:(id)a3 fromController:(id)a4 withConfiguration:(id)a5 animated:(BOOL)a6 andCompletionBlock:(id)a7
+- (void)showController:(id)controller fromController:(id)fromController withConfiguration:(id)configuration animated:(BOOL)animated andCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v12)
+  controllerCopy = controller;
+  fromControllerCopy = fromController;
+  configurationCopy = configuration;
+  blockCopy = block;
+  if (!controllerCopy)
   {
     v30 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
     {
       [_TVModalPresenter showController:v30 fromController:? withConfiguration:? animated:? andCompletionBlock:?];
-      if (!v15)
+      if (!blockCopy)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!v15)
+    else if (!blockCopy)
     {
       goto LABEL_14;
     }
 
-    v15[2](v15);
+    blockCopy[2](blockCopy);
     goto LABEL_14;
   }
 
-  v16 = [(_TVModalPresenter *)self modalRootViewController];
-  if (![v13 isEqual:v16])
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
+  if (![fromControllerCopy isEqual:modalRootViewController])
   {
     goto LABEL_6;
   }
@@ -242,41 +242,41 @@ LABEL_9:
     [_TVModalPresenter showController:v17 fromController:? withConfiguration:? animated:? andCompletionBlock:?];
   }
 
-  v18 = [v16 presentingViewController];
+  presentingViewController = [modalRootViewController presentingViewController];
 
-  v13 = v18;
-  if (!v18)
+  fromControllerCopy = presentingViewController;
+  if (!presentingViewController)
   {
-    if (v15)
+    if (blockCopy)
     {
-      v15[2](v15);
+      blockCopy[2](blockCopy);
     }
 
-    v13 = 0;
+    fromControllerCopy = 0;
   }
 
   else
   {
 LABEL_6:
-    [(_TVModalPresenter *)self _configureModalController:v16 withFromController:v13 andConfiguration:v14];
-    objc_setAssociatedObject(v12, "TVMLPresenterConfiguration", v14, 1);
+    [(_TVModalPresenter *)self _configureModalController:modalRootViewController withFromController:fromControllerCopy andConfiguration:configurationCopy];
+    objc_setAssociatedObject(controllerCopy, "TVMLPresenterConfiguration", configurationCopy, 1);
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __97___TVModalPresenter_showController_fromController_withConfiguration_animated_andCompletionBlock___block_invoke;
     v45[3] = &unk_279D6FA88;
-    v19 = v12;
+    v19 = controllerCopy;
     v46 = v19;
-    v31 = v16;
-    v20 = v16;
+    v31 = modalRootViewController;
+    v20 = modalRootViewController;
     v47 = v20;
-    v32 = v14;
-    v21 = v14;
+    v32 = configurationCopy;
+    v21 = configurationCopy;
     v48 = v21;
-    v22 = v13;
+    v22 = fromControllerCopy;
     v49 = v22;
-    v23 = v15;
+    v23 = blockCopy;
     v50 = v23;
-    v51 = a6;
+    animatedCopy = animated;
     v24 = MEMORY[0x26D6AFBB0](v45);
     objc_initWeak(&location, self);
     v35[0] = MEMORY[0x277D85DD0];
@@ -286,26 +286,26 @@ LABEL_6:
     objc_copyWeak(&v42, &location);
     v25 = v20;
     v36 = v25;
-    v13 = v22;
-    v37 = v13;
+    fromControllerCopy = v22;
+    v37 = fromControllerCopy;
     v26 = v24;
     v40 = v26;
     v38 = v19;
     v39 = v21;
-    v43 = a6;
+    animatedCopy2 = animated;
     v41 = v23;
     v27 = MEMORY[0x26D6AFBB0](v35);
-    v28 = [v25 transitionCoordinator];
+    transitionCoordinator = [v25 transitionCoordinator];
 
-    if (v28)
+    if (transitionCoordinator)
     {
-      v29 = [v25 transitionCoordinator];
+      transitionCoordinator2 = [v25 transitionCoordinator];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __97___TVModalPresenter_showController_fromController_withConfiguration_animated_andCompletionBlock___block_invoke_6;
       v33[3] = &unk_279D6FAD8;
       v34 = v27;
-      [v29 animateAlongsideTransition:0 completion:v33];
+      [transitionCoordinator2 animateAlongsideTransition:0 completion:v33];
     }
 
     else
@@ -316,25 +316,25 @@ LABEL_6:
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
 
-    v16 = v31;
-    v14 = v32;
+    modalRootViewController = v31;
+    configurationCopy = v32;
   }
 
 LABEL_14:
 }
 
-- (void)hideController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)hideController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_TVModalPresenter *)self modalRootViewController];
-  v11 = [v10 presentedViewController];
+  controllerCopy = controller;
+  completionCopy = completion;
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
+  presentedViewController = [modalRootViewController presentedViewController];
 
-  if (v11)
+  if (presentedViewController)
   {
-    v12 = [v10 presentedViewController];
-    [v12 dismissViewControllerAnimated:0 completion:v9];
+    presentedViewController2 = [modalRootViewController presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:0 completion:completionCopy];
 LABEL_3:
 
     goto LABEL_4;
@@ -344,8 +344,8 @@ LABEL_3:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v13 = [v10 viewControllers];
-  v14 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  viewControllers = [modalRootViewController viewControllers];
+  v14 = [viewControllers countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v14)
   {
     v15 = v14;
@@ -356,18 +356,18 @@ LABEL_7:
     {
       if (*v35 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(viewControllers);
       }
 
       v18 = *(*(&v34 + 1) + 8 * v17);
-      if (v18 == v8)
+      if (v18 == controllerCopy)
       {
         break;
       }
 
       if (v15 == ++v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v15 = [viewControllers countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v15)
         {
           goto LABEL_7;
@@ -379,7 +379,7 @@ LABEL_7:
 
     v19 = v18;
 
-    if (!v8)
+    if (!controllerCopy)
     {
       goto LABEL_17;
     }
@@ -389,24 +389,24 @@ LABEL_7:
     v29[2] = __60___TVModalPresenter_hideController_animated_withCompletion___block_invoke;
     v29[3] = &unk_279D6FB00;
     v29[4] = self;
-    v20 = v10;
+    v20 = modalRootViewController;
     v30 = v20;
     v21 = v19;
     v31 = v21;
-    v33 = a4;
-    v32 = v9;
+    animatedCopy = animated;
+    v32 = completionCopy;
     v22 = MEMORY[0x26D6AFBB0](v29);
-    v23 = [v20 transitionCoordinator];
+    transitionCoordinator = [v20 transitionCoordinator];
 
-    if (v23)
+    if (transitionCoordinator)
     {
-      v24 = [v20 transitionCoordinator];
+      transitionCoordinator2 = [v20 transitionCoordinator];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __60___TVModalPresenter_hideController_animated_withCompletion___block_invoke_2;
       v27[3] = &unk_279D6FAD8;
       v28 = v22;
-      [v24 animateAlongsideTransition:0 completion:v27];
+      [transitionCoordinator2 animateAlongsideTransition:0 completion:v27];
     }
 
     else
@@ -423,13 +423,13 @@ LABEL_17:
     v25 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v25;
-      v26 = [v10 viewControllers];
+      presentedViewController2 = v25;
+      viewControllers2 = [modalRootViewController viewControllers];
       *buf = 138412546;
-      v39 = v8;
+      v39 = controllerCopy;
       v40 = 2112;
-      v41 = v26;
-      _os_log_impl(&dword_26CD9A000, v12, OS_LOG_TYPE_DEFAULT, "_TVModalPresenter: Cannot hide %@. It isn't in the stack: %@", buf, 0x16u);
+      v41 = viewControllers2;
+      _os_log_impl(&dword_26CD9A000, presentedViewController2, OS_LOG_TYPE_DEFAULT, "_TVModalPresenter: Cannot hide %@. It isn't in the stack: %@", buf, 0x16u);
 
       goto LABEL_3;
     }
@@ -438,65 +438,65 @@ LABEL_17:
 LABEL_4:
 }
 
-- (void)_configureModalController:(id)a3 withFromController:(id)a4 andConfiguration:(id)a5
+- (void)_configureModalController:(id)controller withFromController:(id)fromController andConfiguration:(id)configuration
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 setModalPresentationStyle:{objc_msgSend(v10, "presentationStyle")}];
-  v11 = [v8 presentationController];
+  controllerCopy = controller;
+  fromControllerCopy = fromController;
+  configurationCopy = configuration;
+  [controllerCopy setModalPresentationStyle:{objc_msgSend(configurationCopy, "presentationStyle")}];
+  presentationController = [controllerCopy presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 _setShouldDismissWhenTappedOutside:1];
+    [presentationController _setShouldDismissWhenTappedOutside:1];
   }
 
-  [v8 setNavigationBarHidden:objc_msgSend(v10 animated:{"navigationBarHidden"), 0}];
-  if ([v10 configurationType] == 3)
+  [controllerCopy setNavigationBarHidden:objc_msgSend(configurationCopy animated:{"navigationBarHidden"), 0}];
+  if ([configurationCopy configurationType] == 3)
   {
-    v12 = [v9 childViewControllers];
-    v13 = [v12 lastObject];
+    childViewControllers = [fromControllerCopy childViewControllers];
+    lastObject = [childViewControllers lastObject];
 
-    v14 = [v13 navigationItem];
-    v15 = [v10 barButtonID];
+    navigationItem = [lastObject navigationItem];
+    barButtonID = [configurationCopy barButtonID];
 
-    v47 = v14;
-    if (v15)
+    v47 = navigationItem;
+    if (barButtonID)
     {
-      v46 = self;
-      v16 = [MEMORY[0x277CBEB18] array];
-      v17 = [v14 leftBarButtonItems];
-      v18 = [v17 count];
+      selfCopy = self;
+      array = [MEMORY[0x277CBEB18] array];
+      leftBarButtonItems = [navigationItem leftBarButtonItems];
+      v18 = [leftBarButtonItems count];
 
       if (v18)
       {
-        v19 = [v14 leftBarButtonItems];
-        [v16 addObjectsFromArray:v19];
+        leftBarButtonItems2 = [navigationItem leftBarButtonItems];
+        [array addObjectsFromArray:leftBarButtonItems2];
       }
 
-      v45 = v13;
-      v20 = [v14 rightBarButtonItems];
-      v21 = [v20 count];
+      v45 = lastObject;
+      rightBarButtonItems = [navigationItem rightBarButtonItems];
+      v21 = [rightBarButtonItems count];
 
       if (v21)
       {
-        v22 = [v14 rightBarButtonItems];
-        [v16 addObjectsFromArray:v22];
+        rightBarButtonItems2 = [navigationItem rightBarButtonItems];
+        [array addObjectsFromArray:rightBarButtonItems2];
       }
 
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      obj = v16;
+      obj = array;
       v23 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
       if (v23)
       {
         v24 = v23;
-        v42 = v11;
-        v43 = v9;
-        v44 = v8;
+        v42 = presentationController;
+        v43 = fromControllerCopy;
+        v44 = controllerCopy;
         v25 = *v50;
         while (2)
         {
@@ -508,13 +508,13 @@ LABEL_4:
             }
 
             v27 = *(*(&v49 + 1) + 8 * i);
-            v28 = [v27 customView];
-            v29 = [v28 tv_associatedIKViewElement];
-            v30 = [v29 attributes];
-            v31 = [v30 objectForKey:@"barButtonID"];
+            customView = [v27 customView];
+            tv_associatedIKViewElement = [customView tv_associatedIKViewElement];
+            attributes = [tv_associatedIKViewElement attributes];
+            v31 = [attributes objectForKey:@"barButtonID"];
 
-            v32 = [v10 barButtonID];
-            v33 = [v31 isEqualToString:v32];
+            barButtonID2 = [configurationCopy barButtonID];
+            v33 = [v31 isEqualToString:barButtonID2];
 
             if (v33)
             {
@@ -535,9 +535,9 @@ LABEL_4:
 
         v34 = 0;
 LABEL_23:
-        v9 = v43;
-        v8 = v44;
-        v11 = v42;
+        fromControllerCopy = v43;
+        controllerCopy = v44;
+        presentationController = v42;
       }
 
       else
@@ -545,8 +545,8 @@ LABEL_23:
         v34 = 0;
       }
 
-      v13 = v45;
-      self = v46;
+      lastObject = v45;
+      self = selfCopy;
     }
 
     else
@@ -554,37 +554,37 @@ LABEL_23:
       v34 = 0;
     }
 
-    v37 = [v8 popoverPresentationController];
-    v38 = v37;
+    popoverPresentationController = [controllerCopy popoverPresentationController];
+    v38 = popoverPresentationController;
     if (v34)
     {
-      [v37 setBarButtonItem:v34];
+      [popoverPresentationController setBarButtonItem:v34];
     }
 
-    v39 = [v10 sourceView];
+    sourceView = [configurationCopy sourceView];
 
-    if (v39)
+    if (sourceView)
     {
-      v40 = [v10 sourceView];
-      [v38 setSourceView:v40];
+      sourceView2 = [configurationCopy sourceView];
+      [v38 setSourceView:sourceView2];
 
-      [v10 sourceRect];
+      [configurationCopy sourceRect];
       [v38 setSourceRect:?];
     }
 
-    v41 = [MEMORY[0x277D75348] whiteColor];
-    [v38 setBackgroundColor:v41];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v38 setBackgroundColor:whiteColor];
 
     [v38 setDelegate:self];
-    [v10 popoverSize];
-    [v8 setPreferredContentSize:?];
+    [configurationCopy popoverSize];
+    [controllerCopy setPreferredContentSize:?];
   }
 
   else
   {
-    if ([v10 configurationType] == 1)
+    if ([configurationCopy configurationType] == 1)
     {
-      [v10 formSheetSize];
+      [configurationCopy formSheetSize];
     }
 
     else
@@ -593,15 +593,15 @@ LABEL_23:
       v36 = *(MEMORY[0x277CBF3A8] + 8);
     }
 
-    [v8 setPreferredContentSize:{v35, v36}];
+    [controllerCopy setPreferredContentSize:{v35, v36}];
   }
 }
 
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_TVModalPresenter *)self modalRootViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
   self->_dismissing = 1;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
@@ -609,22 +609,22 @@ LABEL_23:
   v15[2] = __49___TVModalPresenter__dismissAnimated_completion___block_invoke;
   v15[3] = &unk_279D6FB28;
   objc_copyWeak(&v18, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v17 = v8;
-  v9 = v7;
+  v9 = modalRootViewController;
   v16 = v9;
   v10 = MEMORY[0x26D6AFBB0](v15);
-  v11 = [v9 presentingViewController];
+  presentingViewController = [v9 presentingViewController];
 
-  if (v11)
+  if (presentingViewController)
   {
-    v12 = [v9 presentingViewController];
+    presentingViewController2 = [v9 presentingViewController];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __49___TVModalPresenter__dismissAnimated_completion___block_invoke_2;
     v13[3] = &unk_279D6E6F8;
     v14 = v10;
-    [v12 dismissViewControllerAnimated:v4 completion:v13];
+    [presentingViewController2 dismissViewControllerAnimated:animatedCopy completion:v13];
   }
 
   else
@@ -636,16 +636,16 @@ LABEL_23:
   objc_destroyWeak(&location);
 }
 
-- (void)_willRotateNotification:(id)a3
+- (void)_willRotateNotification:(id)notification
 {
-  v7 = [(_TVModalPresenter *)self modalRootViewController];
-  v4 = [v7 presentingViewController];
-  if (v4)
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
+  presentingViewController = [modalRootViewController presentingViewController];
+  if (presentingViewController)
   {
-    v5 = v4;
-    v6 = [v7 modalPresentationStyle];
+    v5 = presentingViewController;
+    modalPresentationStyle = [modalRootViewController modalPresentationStyle];
 
-    if (v6 == 7)
+    if (modalPresentationStyle == 7)
     {
       [(_TVModalPresenter *)self hideAllAnimated:0 withCompletion:0];
     }
@@ -654,28 +654,28 @@ LABEL_23:
 
 - (void)_forceOrientationBackToSupportedOrientation
 {
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  if (([v7 statusBarOrientation] - 3) <= 1)
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (([mEMORY[0x277D75128] statusBarOrientation] - 3) <= 1)
   {
-    v2 = [v7 delegate];
-    v3 = [v2 window];
-    v4 = [v3 rootViewController];
-    v5 = [v4 supportedInterfaceOrientations] & 0x18;
+    delegate = [mEMORY[0x277D75128] delegate];
+    window = [delegate window];
+    rootViewController = [window rootViewController];
+    v5 = [rootViewController supportedInterfaceOrientations] & 0x18;
 
     if (!v5)
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      [v6 setOrientation:1];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice setOrientation:1];
     }
   }
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v4 = [(_TVModalPresenter *)self modalRootViewController];
-  [v4 reset];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"TVModalPresenterDismissedNotification" object:0];
+  modalRootViewController = [(_TVModalPresenter *)self modalRootViewController];
+  [modalRootViewController reset];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVModalPresenterDismissedNotification" object:0];
 }
 
 @end

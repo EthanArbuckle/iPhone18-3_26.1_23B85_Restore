@@ -1,11 +1,11 @@
 @interface RequesterLocalNotificationTask
-- (RequesterLocalNotificationTask)initWithRequest:(id)a3;
+- (RequesterLocalNotificationTask)initWithRequest:(id)request;
 - (id)perform;
 @end
 
 @implementation RequesterLocalNotificationTask
 
-- (RequesterLocalNotificationTask)initWithRequest:(id)a3
+- (RequesterLocalNotificationTask)initWithRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = RequesterLocalNotificationTask;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_request, a3);
+    objc_storeStrong(&v4->_request, request);
   }
 
   return v5;

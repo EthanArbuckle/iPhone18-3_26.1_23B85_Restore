@@ -1,5 +1,5 @@
 @interface ComAppleProactiveLuceneCRFTokenizer
-- (BOOL)addToChunksWithInt:(int)a3 withInt:(int)a4;
+- (BOOL)addToChunksWithInt:(int)int withInt:(int)withInt;
 - (BOOL)incrementToken;
 - (void)dealloc;
 - (void)end;
@@ -8,7 +8,7 @@
 
 @implementation ComAppleProactiveLuceneCRFTokenizer
 
-- (BOOL)addToChunksWithInt:(int)a3 withInt:(int)a4
+- (BOOL)addToChunksWithInt:(int)int withInt:(int)withInt
 {
   chunks = self->chunks_;
   if (!chunks)
@@ -16,8 +16,8 @@
     JreThrowNullPointerException();
   }
 
-  v6[0] = a3;
-  v6[1] = a4;
+  v6[0] = int;
+  v6[1] = withInt;
   [(JavaUtilList *)chunks addWithId:[IOSIntArray arrayWithInts:v6 count:2]];
   return 1;
 }
@@ -65,17 +65,17 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  v4 = [(JavaUtilIterator *)chunksIterator hasNext];
-  if (v4)
+  hasNext = [(JavaUtilIterator *)chunksIterator hasNext];
+  if (hasNext)
   {
-    v5 = [(JavaUtilIterator *)self->chunksIterator_ next];
-    if (!v5)
+    next = [(JavaUtilIterator *)self->chunksIterator_ next];
+    if (!next)
     {
       goto LABEL_22;
     }
 
-    v6 = v5;
-    v7 = v5[2];
+    v6 = next;
+    v7 = next[2];
     if (v7 < 1)
     {
       IOSArray_throwOutOfBoundsWithMsg(v7, 0);
@@ -150,7 +150,7 @@ LABEL_17:
     [(OrgApacheLuceneAnalysisTokenattributesCharTermAttribute *)termAtt copyBufferWithCharArray:self->text_ withInt:v8 withInt:v19];
   }
 
-  return v4;
+  return hasNext;
 }
 
 - (void)end

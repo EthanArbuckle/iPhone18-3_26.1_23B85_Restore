@@ -6,38 +6,38 @@
 
 - (id)hd_sqlPredicateForSelect
 {
-  v2 = [a1 leftExpression];
-  v3 = [a1 rightExpression];
-  v4 = [a1 predicateOperatorType];
-  if (v4 >= 6 && v4 != 10)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  predicateOperatorType = [self predicateOperatorType];
+  if (predicateOperatorType >= 6 && predicateOperatorType != 10)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type in comparison expression: %@", a1}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type in comparison expression: %@", self}];
   }
 
-  if ([v2 expressionType] == 3)
+  if ([leftExpression expressionType] == 3)
   {
-    [v2 keyPath];
+    [leftExpression keyPath];
   }
 
   else
   {
-    [v2 description];
+    [leftExpression description];
   }
   v5 = ;
-  if ([v3 expressionType])
+  if ([rightExpression expressionType])
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Expected constant value in right side of comparison expression: %@", a1}];
-    v6 = 0;
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Expected constant value in right side of comparison expression: %@", self}];
+    constantValue = 0;
   }
 
   else
   {
-    v6 = [v3 constantValue];
+    constantValue = [rightExpression constantValue];
   }
 
-  v7 = v6;
+  v7 = constantValue;
   v8 = v5;
-  if (!a1)
+  if (!self)
   {
     v28 = 0;
     v11 = v7;
@@ -57,7 +57,7 @@
     goto LABEL_62;
   }
 
-  v37 = v2;
+  v37 = leftExpression;
   v36 = v7;
   v12 = 0;
   if (![v9 count])
@@ -77,7 +77,7 @@ LABEL_51:
     }
 
     v28 = 0;
-    v2 = v37;
+    leftExpression = v37;
     v7 = v36;
     goto LABEL_68;
   }
@@ -87,14 +87,14 @@ LABEL_51:
   while (1)
   {
     v14 = [v10 objectAtIndexedSubscript:v13];
-    v15 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-    if (v15 > 2u)
+    if (unsignedIntegerValue > 2u)
     {
       break;
     }
 
-    switch(v15)
+    switch(unsignedIntegerValue)
     {
       case 1u:
         objc_opt_class();
@@ -157,13 +157,13 @@ LABEL_46:
     }
   }
 
-  if (v15 > 8u)
+  if (unsignedIntegerValue > 8u)
   {
     goto LABEL_46;
   }
 
-  v16 = 1 << v15;
-  if (((1 << v15) & 0x48) == 0)
+  v16 = 1 << unsignedIntegerValue;
+  if (((1 << unsignedIntegerValue) & 0x48) == 0)
   {
     if ((v16 & 0x90) != 0)
     {
@@ -244,7 +244,7 @@ LABEL_59:
 LABEL_60:
 
 LABEL_61:
-  v2 = v37;
+  leftExpression = v37;
   v7 = v36;
 LABEL_62:
   objc_opt_class();
@@ -271,7 +271,7 @@ LABEL_62:
 LABEL_68:
 
 LABEL_69:
-  [a1 predicateOperatorType];
+  [self predicateOperatorType];
   v33 = [MEMORY[0x277D10B18] predicateWithProperty:v8 value:v28 comparisonType:HDSQLiteComparisonTypeForPredicateOperator()];
 
   return v33;

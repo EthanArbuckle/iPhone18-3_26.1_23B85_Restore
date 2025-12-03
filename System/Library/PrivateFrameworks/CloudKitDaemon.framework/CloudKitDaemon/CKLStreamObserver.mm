@@ -1,13 +1,13 @@
 @interface CKLStreamObserver
-- (CKLStreamObserver)initWithLogTypes:(unint64_t)a3;
-- (id)_processNameForPath:(id)a3;
-- (void)_handleEvent:(id)a3;
-- (void)eventMatched:(id)a3;
+- (CKLStreamObserver)initWithLogTypes:(unint64_t)types;
+- (id)_processNameForPath:(id)path;
+- (void)_handleEvent:(id)event;
+- (void)eventMatched:(id)matched;
 @end
 
 @implementation CKLStreamObserver
 
-- (CKLStreamObserver)initWithLogTypes:(unint64_t)a3
+- (CKLStreamObserver)initWithLogTypes:(unint64_t)types
 {
   v15.receiver = self;
   v15.super_class = CKLStreamObserver;
@@ -25,7 +25,7 @@
 
     v4->_colorOutput = 1;
     v10 = [CKLEventFilter alloc];
-    v12 = objc_msgSend_initWithLogTypes_(v10, v11, a3);
+    v12 = objc_msgSend_initWithLogTypes_(v10, v11, types);
     filter = v4->_filter;
     v4->_filter = v12;
   }
@@ -33,19 +33,19 @@
   return v4;
 }
 
-- (id)_processNameForPath:(id)a3
+- (id)_processNameForPath:(id)path
 {
-  v6 = a3;
-  if (v6)
+  pathCopy = path;
+  if (pathCopy)
   {
     v7 = objc_msgSend_processNamesByPath(self, v4, v5);
-    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v6);
+    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, pathCopy);
 
     if (!v9)
     {
-      v9 = objc_msgSend_lastPathComponent(v6, v10, v11);
+      v9 = objc_msgSend_lastPathComponent(pathCopy, v10, v11);
       v14 = objc_msgSend_processNamesByPath(self, v12, v13);
-      objc_msgSend_setObject_forKeyedSubscript_(v14, v15, v9, v6);
+      objc_msgSend_setObject_forKeyedSubscript_(v14, v15, v9, pathCopy);
     }
   }
 
@@ -57,23 +57,23 @@
   return v9;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v11 = a3;
+  eventCopy = event;
   v6 = objc_msgSend_filter(self, v4, v5);
-  v8 = objc_msgSend_matchesEvent_(v6, v7, v11);
+  v8 = objc_msgSend_matchesEvent_(v6, v7, eventCopy);
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    objc_msgSend_eventMatched_(self, v10, v11);
+    objc_msgSend_eventMatched_(self, v10, eventCopy);
     objc_autoreleasePoolPop(v9);
   }
 }
 
-- (void)eventMatched:(id)a3
+- (void)eventMatched:(id)matched
 {
-  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, matched);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v5, a2, self, @"CKLStreamObserver.m", 106, @"This must be called on a subclass");
 }
 

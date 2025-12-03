@@ -1,50 +1,50 @@
 @interface CKNavigationBarCanvasView
 - (BOOL)_canShowAvatarView;
-- (CGRect)_calculateFrameForButton:(id)a3 shouldOffset:(BOOL)a4;
-- (CGSize)_baseBarItemViewSizeForView:(id)a3 proposedSize:(CGSize)a4 minSize:(double)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKNavigationBarCanvasView)initWithFrame:(CGRect)a3;
+- (CGRect)_calculateFrameForButton:(id)button shouldOffset:(BOOL)offset;
+- (CGSize)_baseBarItemViewSizeForView:(id)view proposedSize:(CGSize)size minSize:(double)minSize;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKNavigationBarCanvasView)initWithFrame:(CGRect)frame;
 - (CKNavigationBarCanvasViewDelegate)delegate;
 - (UIEdgeInsets)safeAreaInsets;
 - (UIEdgeInsets)systemMinimumLayoutMarginsFromDelegate;
-- (double)_calculateYOriginForButtonWithHeight:(double)a3;
+- (double)_calculateYOriginForButtonWithHeight:(double)height;
 - (double)_preferredHeightFromSubviewMetrics;
-- (double)_preferredHeightWithSubviewLayout:(id)a3;
+- (double)_preferredHeightWithSubviewLayout:(id)layout;
 - (double)_updatedPreferredHeight;
-- (id)_subviewLayoutWithBounds:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addLaserEffectToButton:(id)a3;
+- (id)_subviewLayoutWithBounds:(CGRect)bounds;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addLaserEffectToButton:(id)button;
 - (void)_updateJoinButtonStyle;
 - (void)clearAllItemViews;
-- (void)didHoverOverTitleView:(id)a3;
+- (void)didHoverOverTitleView:(id)view;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)layoutTitleViewIfNeeded:(CGRect)a3;
+- (void)layoutTitleViewIfNeeded:(CGRect)needed;
 - (void)removeButtonViewsIfNeeded;
 - (void)removeFromSuperview;
-- (void)setAudioEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIsBusinessChat:(BOOL)a3;
-- (void)setIsInEditingMode:(BOOL)a3;
-- (void)setJoinButtonStyle:(int64_t)a3;
-- (void)setLeftItemView:(id)a3;
-- (void)setMultiwayAudioButtonHidden:(BOOL)a3;
-- (void)setRightItemView:(id)a3;
-- (void)setStatusIndicatorType:(int64_t)a3;
-- (void)setSubtitleView:(id)a3;
-- (void)setTitleView:(id)a3;
-- (void)setTitleViewContextMenu:(id)a3;
-- (void)setVideoEnabled:(BOOL)a3;
+- (void)setAudioEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setIsBusinessChat:(BOOL)chat;
+- (void)setIsInEditingMode:(BOOL)mode;
+- (void)setJoinButtonStyle:(int64_t)style;
+- (void)setLeftItemView:(id)view;
+- (void)setMultiwayAudioButtonHidden:(BOOL)hidden;
+- (void)setRightItemView:(id)view;
+- (void)setStatusIndicatorType:(int64_t)type;
+- (void)setSubtitleView:(id)view;
+- (void)setTitleView:(id)view;
+- (void)setTitleViewContextMenu:(id)menu;
+- (void)setVideoEnabled:(BOOL)enabled;
 @end
 
 @implementation CKNavigationBarCanvasView
 
-- (CKNavigationBarCanvasView)initWithFrame:(CGRect)a3
+- (CKNavigationBarCanvasView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKNavigationBarCanvasView;
-  v3 = [(CKNavigationBarCanvasView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKNavigationBarCanvasView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -60,12 +60,12 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (setFrame__onceToken != -1)
   {
     [CKNavigationBarCanvasView setFrame:];
@@ -114,11 +114,11 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKNavigationBarCanvasView *)self superview];
+      superview = [(CKNavigationBarCanvasView *)self superview];
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = superview;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "CKNavigationBarCanvasView instance\n {%@} is being removed from its superview\n {%@}.", buf, 0x16u);
     }
   }
@@ -139,57 +139,57 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKNavigationBarCanvasView *)self superview];
+      superview = [(CKNavigationBarCanvasView *)self superview];
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = superview;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "CKNavigationBarCanvasView instance\n {%@} did move to superview\n {%@}.", buf, 0x16u);
     }
   }
 }
 
-- (void)setIsInEditingMode:(BOOL)a3
+- (void)setIsInEditingMode:(BOOL)mode
 {
-  self->_isInEditingMode = a3;
-  v4 = [(CKNavigationBarCanvasView *)self titleView];
+  self->_isInEditingMode = mode;
+  titleView = [(CKNavigationBarCanvasView *)self titleView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(CKNavigationBarCanvasView *)self titleView];
-    v6 = [v7 collectionViewLayout];
-    [v6 invalidateLayout];
+    titleView2 = [(CKNavigationBarCanvasView *)self titleView];
+    collectionViewLayout = [titleView2 collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (void)setIsBusinessChat:(BOOL)a3
+- (void)setIsBusinessChat:(BOOL)chat
 {
-  if (self->_isBusinessChat != a3)
+  if (self->_isBusinessChat != chat)
   {
-    self->_isBusinessChat = a3;
+    self->_isBusinessChat = chat;
     [(CKNavigationBarCanvasView *)self setNeedsLayout];
   }
 }
 
-- (void)setMultiwayAudioButtonHidden:(BOOL)a3
+- (void)setMultiwayAudioButtonHidden:(BOOL)hidden
 {
-  if (self->_multiwayAudioButtonHidden != a3)
+  if (self->_multiwayAudioButtonHidden != hidden)
   {
-    self->_multiwayAudioButtonHidden = a3;
+    self->_multiwayAudioButtonHidden = hidden;
     if ([(CKNavigationBarCanvasView *)self multiwayAudioButtonHidden])
     {
-      v5 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+      buttonViewFaceTimeAudio = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
 
-      if (v5)
+      if (buttonViewFaceTimeAudio)
       {
-        v6 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-        v7 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-        [v6 removeObject:v7];
+        buttonsToDisplay = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+        buttonViewFaceTimeAudio2 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+        [buttonsToDisplay removeObject:buttonViewFaceTimeAudio2];
 
-        v8 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-        [v8 removeFromSuperview];
+        buttonViewFaceTimeAudio3 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+        [buttonViewFaceTimeAudio3 removeFromSuperview];
 
         [(CKNavigationBarCanvasView *)self setButtonViewFaceTimeAudio:0];
       }
@@ -201,29 +201,29 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
   }
 }
 
-- (void)setJoinButtonStyle:(int64_t)a3
+- (void)setJoinButtonStyle:(int64_t)style
 {
-  if (self->_joinButtonStyle != a3)
+  if (self->_joinButtonStyle != style)
   {
-    self->_joinButtonStyle = a3;
+    self->_joinButtonStyle = style;
     [(CKNavigationBarCanvasView *)self _updateJoinButtonStyle];
   }
 }
 
-- (void)setAudioEnabled:(BOOL)a3
+- (void)setAudioEnabled:(BOOL)enabled
 {
-  if (self->_audioEnabled != a3)
+  if (self->_audioEnabled != enabled)
   {
-    self->_audioEnabled = a3;
+    self->_audioEnabled = enabled;
     [(CKNavigationButtonView *)self->_buttonViewFaceTimeAudio setEnabled:?];
   }
 }
 
-- (void)setVideoEnabled:(BOOL)a3
+- (void)setVideoEnabled:(BOOL)enabled
 {
-  if (self->_videoEnabled != a3)
+  if (self->_videoEnabled != enabled)
   {
-    self->_videoEnabled = a3;
+    self->_videoEnabled = enabled;
     [(CKNavigationButtonView *)self->_buttonViewFaceTimeVideo setEnabled:?];
   }
 }
@@ -240,15 +240,15 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
         return;
       }
 
-      v7 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-      v8 = v7;
+      buttonViewFaceTimeAudio = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+      v8 = buttonViewFaceTimeAudio;
       v9 = 4;
     }
 
     else
     {
-      v7 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-      v8 = v7;
+      buttonViewFaceTimeAudio = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+      v8 = buttonViewFaceTimeAudio;
       v9 = 0;
     }
   }
@@ -257,8 +257,8 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
   {
     if (joinButtonStyle == 3)
     {
-      v10 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-      [v10 setJoinButtonStyle:0];
+      buttonViewFaceTimeAudio2 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+      [buttonViewFaceTimeAudio2 setJoinButtonStyle:0];
 
       if (CKJoinPillTextMetrics() <= 70.0)
       {
@@ -270,11 +270,11 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
         v11 = 2;
       }
 
-      v12 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
-      [v12 setJoinButtonStyle:v11];
+      buttonViewFaceTimeVideo = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
+      [buttonViewFaceTimeVideo setJoinButtonStyle:v11];
 
-      v13 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
-      [v13 setWantsVibrancy:1];
+      buttonViewFaceTimeVideo2 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
+      [buttonViewFaceTimeVideo2 setWantsVibrancy:1];
       goto LABEL_17;
     }
 
@@ -285,27 +285,27 @@ void __38__CKNavigationBarCanvasView_setFrame___block_invoke()
         return;
       }
 
-      v4 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-      [v4 setJoinButtonStyle:0];
+      buttonViewFaceTimeAudio3 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+      [buttonViewFaceTimeAudio3 setJoinButtonStyle:0];
 
-      v5 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
-      v13 = v5;
+      buttonViewFaceTimeVideo3 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
+      buttonViewFaceTimeVideo2 = buttonViewFaceTimeVideo3;
       v6 = 3;
       goto LABEL_16;
     }
 
-    v7 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
-    v8 = v7;
+    buttonViewFaceTimeAudio = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeAudio];
+    v8 = buttonViewFaceTimeAudio;
     v9 = 5;
   }
 
-  [v7 setJoinButtonStyle:v9];
+  [buttonViewFaceTimeAudio setJoinButtonStyle:v9];
 
-  v5 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
-  v13 = v5;
+  buttonViewFaceTimeVideo3 = [(CKNavigationBarCanvasView *)self buttonViewFaceTimeVideo];
+  buttonViewFaceTimeVideo2 = buttonViewFaceTimeVideo3;
   v6 = 0;
 LABEL_16:
-  [v5 setJoinButtonStyle:v6];
+  [buttonViewFaceTimeVideo3 setJoinButtonStyle:v6];
 LABEL_17:
 }
 
@@ -320,16 +320,16 @@ LABEL_17:
   [(CKNavigationBarCanvasView *)self setButtonViewInfo:0];
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_titleView != v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->_titleView != viewCopy)
   {
-    v11 = v5;
-    [(UIView *)v5 setAutoresizingMask:0];
+    v11 = viewCopy;
+    [(UIView *)viewCopy setAutoresizingMask:0];
     [(UIView *)self->_titleView removeFromSuperview];
-    objc_storeStrong(&self->_titleView, a3);
+    objc_storeStrong(&self->_titleView, view);
     v6 = v11;
     titleView = self->_titleView;
     if (titleView)
@@ -340,9 +340,9 @@ LABEL_17:
       v6 = v11;
       if (v8)
       {
-        v9 = [(CKNavigationBarCanvasView *)self titleView];
-        v10 = [v9 backgroundColor];
-        [(CKNavigationBarCanvasView *)self setTitleDefaultBackgroundColor:v10];
+        titleView = [(CKNavigationBarCanvasView *)self titleView];
+        backgroundColor = [titleView backgroundColor];
+        [(CKNavigationBarCanvasView *)self setTitleDefaultBackgroundColor:backgroundColor];
 
         v6 = v11;
       }
@@ -350,15 +350,15 @@ LABEL_17:
   }
 }
 
-- (void)setSubtitleView:(id)a3
+- (void)setSubtitleView:(id)view
 {
-  v5 = a3;
-  if (self->_subtitleView != v5)
+  viewCopy = view;
+  if (self->_subtitleView != viewCopy)
   {
-    v7 = v5;
-    [(UIView *)v5 setAutoresizingMask:0];
+    v7 = viewCopy;
+    [(UIView *)viewCopy setAutoresizingMask:0];
     [(UIView *)self->_subtitleView removeFromSuperview];
-    objc_storeStrong(&self->_subtitleView, a3);
+    objc_storeStrong(&self->_subtitleView, view);
     subtitleView = self->_subtitleView;
     if (subtitleView)
     {
@@ -367,57 +367,57 @@ LABEL_17:
     }
 
     [(CKNavigationBarCanvasView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setTitleViewContextMenu:(id)a3
+- (void)setTitleViewContextMenu:(id)menu
 {
-  v16 = a3;
-  objc_storeStrong(&self->_titleViewContextMenu, a3);
-  v5 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+  menuCopy = menu;
+  objc_storeStrong(&self->_titleViewContextMenu, menu);
+  invisibleContextMenuButton = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
 
-  if (!v5)
+  if (!invisibleContextMenuButton)
   {
     v6 = [MEMORY[0x1E69DC738] buttonWithType:0];
     [(CKNavigationBarCanvasView *)self setInvisibleContextMenuButton:v6];
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    invisibleContextMenuButton2 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+    [invisibleContextMenuButton2 setBackgroundColor:clearColor];
   }
 
-  v9 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
-  [v9 setMenu:v16];
+  invisibleContextMenuButton3 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+  [invisibleContextMenuButton3 setMenu:menuCopy];
 
-  v10 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
-  [v10 setContextMenuIsPrimary:1];
+  invisibleContextMenuButton4 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+  [invisibleContextMenuButton4 setContextMenuIsPrimary:1];
 
   v11 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
   [(CKNavigationBarCanvasView *)self setSecondaryTitleInteraction:v11];
 
-  v12 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
-  v13 = [(CKNavigationBarCanvasView *)self secondaryTitleInteraction];
-  [v12 addInteraction:v13];
+  invisibleContextMenuButton5 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+  secondaryTitleInteraction = [(CKNavigationBarCanvasView *)self secondaryTitleInteraction];
+  [invisibleContextMenuButton5 addInteraction:secondaryTitleInteraction];
 
   v14 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:self action:sel_didHoverOverTitleView_];
-  v15 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
-  [v15 addGestureRecognizer:v14];
+  invisibleContextMenuButton6 = [(CKNavigationBarCanvasView *)self invisibleContextMenuButton];
+  [invisibleContextMenuButton6 addGestureRecognizer:v14];
 
   [(CKNavigationBarCanvasView *)self setNeedsLayout];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(CKNavigationBarCanvasView *)self secondaryTitleInteraction];
-  v9 = v8;
-  if (v8 == v7)
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  secondaryTitleInteraction = [(CKNavigationBarCanvasView *)self secondaryTitleInteraction];
+  v9 = secondaryTitleInteraction;
+  if (secondaryTitleInteraction == interactionCopy)
   {
-    v11 = [(CKNavigationBarCanvasView *)self titleView];
-    v12 = [v11 pointInside:0 withEvent:{x, y}];
+    titleView = [(CKNavigationBarCanvasView *)self titleView];
+    v12 = [titleView pointInside:0 withEvent:{x, y}];
 
     v10 = 0;
     if (v12)
@@ -452,12 +452,12 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
   return v2;
 }
 
-- (void)didHoverOverTitleView:(id)a3
+- (void)didHoverOverTitleView:(id)view
 {
-  v4 = [a3 state];
-  if (v4 == 3)
+  state = [view state];
+  if (state == 3)
   {
-    v11 = [(CKNavigationBarCanvasView *)self titleView];
+    titleView = [(CKNavigationBarCanvasView *)self titleView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -466,19 +466,19 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
       return;
     }
 
-    v13 = [(CKNavigationBarCanvasView *)self titleView];
-    v7 = [(CKNavigationBarCanvasView *)self titleDefaultBackgroundColor];
-    [v13 setBackgroundColor:v7];
+    titleView2 = [(CKNavigationBarCanvasView *)self titleView];
+    titleDefaultBackgroundColor = [(CKNavigationBarCanvasView *)self titleDefaultBackgroundColor];
+    [titleView2 setBackgroundColor:titleDefaultBackgroundColor];
   }
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
 
-    v5 = [(CKNavigationBarCanvasView *)self titleView];
+    titleView3 = [(CKNavigationBarCanvasView *)self titleView];
     objc_opt_class();
     v6 = objc_opt_isKindOfClass();
 
@@ -487,50 +487,50 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
       return;
     }
 
-    v13 = [(CKNavigationBarCanvasView *)self titleView];
-    v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 conversationListSelectedCellColor];
-    v10 = [v9 colorWithAlphaComponent:0.5];
-    [v13 setBackgroundColor:v10];
+    titleView2 = [(CKNavigationBarCanvasView *)self titleView];
+    titleDefaultBackgroundColor = +[CKUIBehavior sharedBehaviors];
+    theme = [titleDefaultBackgroundColor theme];
+    conversationListSelectedCellColor = [theme conversationListSelectedCellColor];
+    v10 = [conversationListSelectedCellColor colorWithAlphaComponent:0.5];
+    [titleView2 setBackgroundColor:v10];
   }
 }
 
-- (void)setLeftItemView:(id)a3
+- (void)setLeftItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leftItemView = self->_leftItemView;
-  if (leftItemView != v5)
+  if (leftItemView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)leftItemView removeFromSuperview];
-    objc_storeStrong(&self->_leftItemView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_leftItemView, view);
+    viewCopy = v8;
     if (v8)
     {
       [(UIView *)self->_leftItemView sizeToFit];
       [(CKNavigationBarCanvasView *)self addSubview:self->_leftItemView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v5 = v8;
+      viewCopy = v8;
       if (isKindOfClass)
       {
         [(CKNavigationBarCanvasView *)self _addLaserEffectToButton:self->_leftItemView];
-        v5 = v8;
+        viewCopy = v8;
       }
     }
   }
 }
 
-- (void)setRightItemView:(id)a3
+- (void)setRightItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   rightItemView = self->_rightItemView;
-  v8 = v5;
-  if (rightItemView != v5)
+  v8 = viewCopy;
+  if (rightItemView != viewCopy)
   {
     [(UIView *)rightItemView removeFromSuperview];
-    objc_storeStrong(&self->_rightItemView, a3);
+    objc_storeStrong(&self->_rightItemView, view);
     v7 = self->_rightItemView;
     if (v7)
     {
@@ -545,16 +545,16 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
   }
 }
 
-- (void)setStatusIndicatorType:(int64_t)a3
+- (void)setStatusIndicatorType:(int64_t)type
 {
   if (setStatusIndicatorType__onceToken != -1)
   {
     [CKNavigationBarCanvasView setStatusIndicatorType:];
   }
 
-  if (self->_statusIndicatorType != a3)
+  if (self->_statusIndicatorType != type)
   {
-    self->_statusIndicatorType = a3;
+    self->_statusIndicatorType = type;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__CKNavigationBarCanvasView_setStatusIndicatorType___block_invoke_2;
@@ -565,23 +565,23 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
     {
       v6 = &setStatusIndicatorType__expanseIndicatorImage;
       v7 = &setStatusIndicatorType__videoIndicatorImage;
-      if (a3 != 2)
+      if (type != 2)
       {
         v7 = &setStatusIndicatorType__audioIndicatorImage;
       }
 
-      if (a3 != 3)
+      if (type != 3)
       {
         v6 = v7;
       }
 
       v8 = *v6;
-      v9 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
+      statusIndicatorImageView = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
 
-      if (v9)
+      if (statusIndicatorImageView)
       {
-        v10 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
-        [v10 setImage:v8];
+        statusIndicatorImageView2 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
+        [statusIndicatorImageView2 setImage:v8];
       }
 
       else
@@ -589,18 +589,18 @@ id __83__CKNavigationBarCanvasView_contextMenuInteraction_configurationForMenuAt
         v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
         [(CKNavigationBarCanvasView *)self setStatusIndicatorImageView:v12];
 
-        v10 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
-        [(CKNavigationBarCanvasView *)self addSubview:v10];
+        statusIndicatorImageView2 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
+        [(CKNavigationBarCanvasView *)self addSubview:statusIndicatorImageView2];
       }
 
-      v13 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
-      [v13 setContentMode:1];
+      statusIndicatorImageView3 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
+      [statusIndicatorImageView3 setContentMode:1];
 
       v14 = +[CKUIBehavior sharedBehaviors];
-      v15 = [v14 theme];
-      v16 = [v15 navBarGrayColor];
-      v17 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
-      [v17 setTintColor:v16];
+      theme = [v14 theme];
+      navBarGrayColor = [theme navBarGrayColor];
+      statusIndicatorImageView4 = [(CKNavigationBarCanvasView *)self statusIndicatorImageView];
+      [statusIndicatorImageView4 setTintColor:navBarGrayColor];
 
       [(CKNavigationBarCanvasView *)self setNeedsLayout];
       [(CKNavigationBarCanvasView *)self layoutIfNeeded];
@@ -815,11 +815,11 @@ uint64_t __52__CKNavigationBarCanvasView_setStatusIndicatorType___block_invoke_5
   [(CKNavigationBarCanvasView *)self setTitleView:0];
 }
 
-- (void)_addLaserEffectToButton:(id)a3
+- (void)_addLaserEffectToButton:(id)button
 {
-  v3 = a3;
-  [v3 setPointerInteractionEnabled:1];
-  [v3 setPointerStyleProvider:&__block_literal_global_269_1];
+  buttonCopy = button;
+  [buttonCopy setPointerInteractionEnabled:1];
+  [buttonCopy setPointerStyleProvider:&__block_literal_global_269_1];
 }
 
 id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -871,16 +871,16 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
   return v21;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v10.receiver = self;
   v10.super_class = CKNavigationBarCanvasView;
-  v5 = [(CKNavigationBarCanvasView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CKNavigationBarCanvasView *)&v10 hitTest:event withEvent:test.x, test.y];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [(CKNavigationBarCanvasView *)v5 superview];
+    superview = [(CKNavigationBarCanvasView *)v5 superview];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -893,21 +893,21 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
       if ((isKindOfClass & 1) == 0)
       {
-        v4 = v5;
+        selfCopy = v5;
       }
     }
   }
 
-  v8 = v4;
+  v8 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v9.receiver = self;
   v9.super_class = CKNavigationBarCanvasView;
-  [(CKNavigationBarCanvasView *)&v9 sizeThatFits:a3.width, a3.height];
+  [(CKNavigationBarCanvasView *)&v9 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   [(CKNavigationBarCanvasView *)self _updatedPreferredHeight];
   v7 = v6;
@@ -919,25 +919,25 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
 - (double)_updatedPreferredHeight
 {
-  v3 = [(CKNavigationBarCanvasView *)self delegate];
-  v4 = [v3 shouldConfigureForJunkModal];
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldConfigureForJunkModal = [delegate shouldConfigureForJunkModal];
 
-  if (v4)
+  if (shouldConfigureForJunkModal)
   {
     return 85.0;
   }
 
-  v6 = [(CKNavigationBarCanvasView *)self delegate];
+  delegate2 = [(CKNavigationBarCanvasView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CKNavigationBarCanvasView *)self delegate];
-    [v7 preferredHeightOverride];
+    delegate3 = [(CKNavigationBarCanvasView *)self delegate];
+    [delegate3 preferredHeightOverride];
     v9 = v8;
 
     if (v9 > 0.0)
     {
-      v10 = [(CKNavigationBarCanvasView *)self delegate];
-      [v10 preferredHeightOverride];
+      delegate4 = [(CKNavigationBarCanvasView *)self delegate];
+      [delegate4 preferredHeightOverride];
       v12 = v11;
 
       return v12;
@@ -956,11 +956,11 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
-  v5 = [(CKNavigationBarCanvasView *)self window];
-  if (!v5 || ((v6 = v5, [(CKNavigationBarCanvasView *)self frame], v8 = v7, v10 = v9, v11 = *MEMORY[0x1E695F060], v12 = *(MEMORY[0x1E695F060] + 8), v6, v8 == v11) ? (v13 = v10 == v12) : (v13 = 0), v13))
+  window = [(CKNavigationBarCanvasView *)self window];
+  if (!window || ((v6 = window, [(CKNavigationBarCanvasView *)self frame], v8 = v7, v10 = v9, v11 = *MEMORY[0x1E695F060], v12 = *(MEMORY[0x1E695F060] + 8), v6, v8 == v11) ? (v13 = v10 == v12) : (v13 = 0), v13))
   {
-    v16 = [MEMORY[0x1E69DD2E8] keyWindow];
-    [v16 frame];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    [keyWindow frame];
     v15 = v17;
   }
 
@@ -981,23 +981,23 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
   return v23;
 }
 
-- (double)_preferredHeightWithSubviewLayout:(id)a3
+- (double)_preferredHeightWithSubviewLayout:(id)layout
 {
-  v4 = a3;
-  [v4 titleFrame];
+  layoutCopy = layout;
+  [layoutCopy titleFrame];
   v6 = v5;
-  [v4 subtitleFrame];
+  [layoutCopy subtitleFrame];
   v8 = v7;
-  [v4 leftItemFrame];
+  [layoutCopy leftItemFrame];
   v10 = v9;
-  [v4 rightItemFrame];
+  [layoutCopy rightItemFrame];
   v12 = v11;
 
-  v13 = [(CKNavigationBarCanvasView *)self delegate];
-  v14 = [v13 shouldConfigureForJunkModal];
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldConfigureForJunkModal = [delegate shouldConfigureForJunkModal];
 
   v15 = v10 + 17.0;
-  if (!v14)
+  if (!shouldConfigureForJunkModal)
   {
     v15 = v10;
   }
@@ -1015,11 +1015,11 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
   if ([(CKNavigationBarCanvasView *)self _canShowAvatarView])
   {
-    v18 = [(CKNavigationBarCanvasView *)self delegate];
-    v19 = [v18 shouldUseMinimumSafeAreas];
+    delegate2 = [(CKNavigationBarCanvasView *)self delegate];
+    shouldUseMinimumSafeAreas = [delegate2 shouldUseMinimumSafeAreas];
 
     v20 = +[CKUIBehavior sharedBehaviors];
-    [v20 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:v19];
+    [v20 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:shouldUseMinimumSafeAreas];
     v22 = v16 + v21;
   }
 
@@ -1058,17 +1058,17 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
 - (BOOL)_canShowAvatarView
 {
-  v2 = [(CKNavigationBarCanvasView *)self delegate];
-  v3 = [v2 shouldShowAvatarView];
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldShowAvatarView = [delegate shouldShowAvatarView];
 
-  return v3;
+  return shouldShowAvatarView;
 }
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v3 = [(CKNavigationBarCanvasView *)self superview];
-  v4 = [v3 superview];
-  [v4 safeAreaInsets];
+  superview = [(CKNavigationBarCanvasView *)self superview];
+  v3Superview = [superview superview];
+  [v3Superview safeAreaInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1076,10 +1076,10 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
   if (v8 > 0.0 || v12 > 0.0)
   {
-    v13 = [(CKNavigationBarCanvasView *)self window];
-    v14 = [v13 windowScene];
+    window = [(CKNavigationBarCanvasView *)self window];
+    windowScene = [window windowScene];
 
-    if (v14 && ([v14 interfaceOrientation] - 3) <= 1)
+    if (windowScene && ([windowScene interfaceOrientation] - 3) <= 1)
     {
       v15 = +[CKUIBehavior sharedBehaviors];
       [v15 landscapeKeyboardInsets];
@@ -1111,18 +1111,18 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
 
 - (UIEdgeInsets)systemMinimumLayoutMarginsFromDelegate
 {
-  v3 = [(CKNavigationBarCanvasView *)self delegate];
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CKNavigationBarCanvasView *)self delegate];
-    [v4 systemMinimumLayoutMarginsForView:self];
+    delegate2 = [(CKNavigationBarCanvasView *)self delegate];
+    [delegate2 systemMinimumLayoutMarginsForView:self];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CKNavigationBarCanvasView *)self effectiveUserInterfaceLayoutDirection];
-    if (v13)
+    effectiveUserInterfaceLayoutDirection = [(CKNavigationBarCanvasView *)self effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v14 = v12;
     }
@@ -1132,7 +1132,7 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
       v14 = v8;
     }
 
-    if (!v13)
+    if (!effectiveUserInterfaceLayoutDirection)
     {
       v8 = v12;
     }
@@ -1157,17 +1157,17 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
   return result;
 }
 
-- (void)layoutTitleViewIfNeeded:(CGRect)a3
+- (void)layoutTitleViewIfNeeded:(CGRect)needed
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKNavigationBarCanvasView *)self titleView];
+  height = needed.size.height;
+  width = needed.size.width;
+  y = needed.origin.y;
+  x = needed.origin.x;
+  titleView = [(CKNavigationBarCanvasView *)self titleView];
 
-  if (v8)
+  if (titleView)
   {
-    v9 = [(CKNavigationBarCanvasView *)self titleView];
+    titleView2 = [(CKNavigationBarCanvasView *)self titleView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1191,14 +1191,14 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
     *&v30[7] = width;
     *&v30[8] = height;
     v12 = __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke(v30);
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:CKNavigationBarCollectionViewShouldAdustForEditingModeNotification object:0 userInfo:v12];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:CKNavigationBarCollectionViewShouldAdustForEditingModeNotification object:0 userInfo:v12];
 
-    v14 = [(CKNavigationBarCanvasView *)self titleView];
-    v15 = [MEMORY[0x1E69DC938] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    titleView3 = [(CKNavigationBarCanvasView *)self titleView];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(CKNavigationBarCanvasView *)self ignoreNextWidthChange])
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(CKNavigationBarCanvasView *)self ignoreNextWidthChange])
     {
       v17 = ![(CKNavigationBarCanvasView *)self isInEditingMode];
     }
@@ -1212,8 +1212,8 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
     {
       if (([(CKNavigationBarCanvasView *)self isInEditingMode]& isKindOfClass) == 1 && ![(CKNavigationBarCanvasView *)self isAnimatingAvatars])
       {
-        v19 = [v14 collectionViewLayout];
-        [v19 invalidateLayout];
+        collectionViewLayout = [titleView3 collectionViewLayout];
+        [collectionViewLayout invalidateLayout];
 
         if (CKMainScreenScale_once_80 != -1)
         {
@@ -1230,8 +1230,8 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
         v22 = round(y * v20) / v20;
         v23 = round(width * v20) / v20;
         v24 = round(height * v20) / v20;
-        v25 = [(CKNavigationBarCanvasView *)self titleView];
-        [v25 setFrame:{v21, v22, v23, v24}];
+        titleView4 = [(CKNavigationBarCanvasView *)self titleView];
+        [titleView4 setFrame:{v21, v22, v23, v24}];
 
         if (!v17)
         {
@@ -1270,7 +1270,7 @@ id __53__CKNavigationBarCanvasView__addLaserEffectToButton___block_invoke(uint64
       v28[1] = 3221225472;
       v28[2] = __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke_2;
       v28[3] = &unk_1E72EBA18;
-      v29 = v14;
+      v29 = titleView3;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke_3;
@@ -1381,7 +1381,7 @@ void __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke_4(ui
   v14 = 3221225472;
   v15 = __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke;
   v16 = &unk_1E72EB8D0;
-  v17 = self;
+  selfCopy = self;
   v5 = v3;
   v18 = v5;
   [v4 performWithoutAnimation:&v13];
@@ -1391,7 +1391,7 @@ void __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke_4(ui
     [(UIImageView *)self->_statusIndicatorImageView setFrame:?];
   }
 
-  [(CKNavigationBarCanvasView *)self _preferredHeightWithSubviewLayout:v5, v13, v14, v15, v16, v17];
+  [(CKNavigationBarCanvasView *)self _preferredHeightWithSubviewLayout:v5, v13, v14, v15, v16, selfCopy];
   v7 = v6;
   [(CKNavigationBarCanvasView *)self lastLayoutPreferredHeight];
   v9 = vabdd_f64(v8, v7);
@@ -1399,13 +1399,13 @@ void __53__CKNavigationBarCanvasView_layoutTitleViewIfNeeded___block_invoke_4(ui
   [(CKNavigationBarCanvasView *)self layoutTitleViewIfNeeded:?];
   if (v9 >= 0.00000999999975)
   {
-    v10 = [(CKNavigationBarCanvasView *)self delegate];
+    delegate = [(CKNavigationBarCanvasView *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CKNavigationBarCanvasView *)self delegate];
-      [v12 canvasViewPreferredHeightChanged];
+      delegate2 = [(CKNavigationBarCanvasView *)self delegate];
+      [delegate2 canvasViewPreferredHeightChanged];
     }
   }
 
@@ -1435,22 +1435,22 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   [v20 setFrame:?];
 }
 
-- (id)_subviewLayoutWithBounds:(CGRect)a3
+- (id)_subviewLayoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  rect1_24 = a3.origin.y;
-  x = a3.origin.x;
-  v6 = [(CKNavigationBarCanvasView *)self _shouldReverseLayoutDirection];
-  v7 = [(CKNavigationBarCanvasView *)self _canShowAvatarView];
-  v8 = [(CKNavigationBarCanvasView *)self leftItemView];
-  v9 = [(CKNavigationBarCanvasView *)self rightItemView];
-  [v8 sizeThatFits:{width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  rect1_24 = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(CKNavigationBarCanvasView *)self _shouldReverseLayoutDirection];
+  _canShowAvatarView = [(CKNavigationBarCanvasView *)self _canShowAvatarView];
+  leftItemView = [(CKNavigationBarCanvasView *)self leftItemView];
+  rightItemView = [(CKNavigationBarCanvasView *)self rightItemView];
+  [leftItemView sizeThatFits:{width, height}];
   v11 = v10;
   v13 = v12;
   rect2 = height;
   v214 = width;
-  [v9 sizeThatFits:{width, height}];
+  [rightItemView sizeThatFits:{width, height}];
   rect1_8 = v14;
   v16 = v15;
   v17 = fmax(v13, v15);
@@ -1473,14 +1473,14 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   [(CKNavigationBarCanvasView *)self systemMinimumLayoutMarginsFromDelegate];
   v26 = v25;
   v28 = v27;
-  v29 = [(CKNavigationBarCanvasView *)self leftItemView];
+  leftItemView2 = [(CKNavigationBarCanvasView *)self leftItemView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v200 = v24;
   rect1_16 = v28;
   rect1 = v26;
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     if ((isKindOfClass & 1) == 0)
     {
@@ -1506,29 +1506,29 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
 
   v32 = v20;
   v33 = fmax(v19, 44.0);
-  v34 = [(CKNavigationBarCanvasView *)self delegate];
-  v35 = [v34 shouldConfigureForJunkModal];
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldConfigureForJunkModal = [delegate shouldConfigureForJunkModal];
 
   v36 = 17.0;
-  if ((v35 & 1) == 0)
+  if ((shouldConfigureForJunkModal & 1) == 0)
   {
     [(CKNavigationBarCanvasView *)self _calculateYOriginForButtonWithHeight:v33];
     v36 = v37;
   }
 
-  v38 = [(CKNavigationBarCanvasView *)self rightItemView];
-  [(CKNavigationBarCanvasView *)self _baseBarItemViewSizeForView:v38 proposedSize:rect1_8 minSize:v16, 44.0];
+  rightItemView2 = [(CKNavigationBarCanvasView *)self rightItemView];
+  [(CKNavigationBarCanvasView *)self _baseBarItemViewSizeForView:rightItemView2 proposedSize:rect1_8 minSize:v16, 44.0];
   v40 = v39;
   v42 = v41;
 
-  v43 = [(CKNavigationBarCanvasView *)self rightItemView];
+  rightItemView3 = [(CKNavigationBarCanvasView *)self rightItemView];
   objc_opt_class();
   v44 = objc_opt_isKindOfClass();
 
   if (v44)
   {
-    v45 = [(CKNavigationBarCanvasView *)self rightItemView];
-    v46 = [v45 buttonStyle] == 0;
+    rightItemView4 = [(CKNavigationBarCanvasView *)self rightItemView];
+    v46 = [rightItemView4 buttonStyle] == 0;
   }
 
   else
@@ -1536,7 +1536,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v46 = 1;
   }
 
-  v47 = [(CKNavigationBarCanvasView *)self rightItemView];
+  rightItemView5 = [(CKNavigationBarCanvasView *)self rightItemView];
   objc_opt_class();
   v48 = objc_opt_isKindOfClass();
 
@@ -1550,15 +1550,15 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   v51 = 0.0;
   if ((v44 & v46 | v48))
   {
-    v52 = [(CKNavigationBarCanvasView *)self rightItemView];
-    [v52 frame];
+    rightItemView6 = [(CKNavigationBarCanvasView *)self rightItemView];
+    [rightItemView6 frame];
     v53 = CGRectGetWidth(v230);
-    v54 = [v52 imageView];
-    [v54 frame];
+    imageView = [rightItemView6 imageView];
+    [imageView frame];
     v51 = (v53 - CGRectGetWidth(v231)) * 0.5;
   }
 
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v55 = v22 + rect1 - v51;
   }
@@ -1590,35 +1590,35 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   v225[4] = v56;
   *&v225[5] = v40;
   *&v225[6] = v42;
-  v57 = [(CKNavigationBarCanvasView *)self subtitleView];
-  [v57 sizeThatFits:{v214, rect2}];
+  subtitleView = [(CKNavigationBarCanvasView *)self subtitleView];
+  [subtitleView sizeThatFits:{v214, rect2}];
   rect1_8a = v58;
   rect = v59;
 
-  v60 = [(CKNavigationBarCanvasView *)self subtitleView];
-  [v60 frame];
+  subtitleView2 = [(CKNavigationBarCanvasView *)self subtitleView];
+  [subtitleView2 frame];
   v62 = v61;
   v64 = v63;
 
-  v65 = [(CKNavigationBarCanvasView *)self titleView];
-  [v65 frame];
+  titleView = [(CKNavigationBarCanvasView *)self titleView];
+  [titleView frame];
   v67 = v66;
   v69 = v68;
   v71 = v70;
   v73 = v72;
 
-  if (v7)
+  if (_canShowAvatarView)
   {
-    v74 = [(CKNavigationBarCanvasView *)self delegate];
-    v75 = [v74 shouldUseMinimumSafeAreas];
+    delegate2 = [(CKNavigationBarCanvasView *)self delegate];
+    shouldUseMinimumSafeAreas = [delegate2 shouldUseMinimumSafeAreas];
 
     v76 = +[CKUIBehavior sharedBehaviors];
-    [v76 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:v75];
+    [v76 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:shouldUseMinimumSafeAreas];
     v78 = v77;
 
     v79 = +[CKUIBehavior sharedBehaviors];
-    v80 = [(CKNavigationBarCanvasView *)self delegate];
-    [v79 defaultNavigationBarHeightValueWantsMinimumSafeAreas:{objc_msgSend(v80, "shouldUseMinimumSafeAreas")}];
+    delegate3 = [(CKNavigationBarCanvasView *)self delegate];
+    [v79 defaultNavigationBarHeightValueWantsMinimumSafeAreas:{objc_msgSend(delegate3, "shouldUseMinimumSafeAreas")}];
     v82 = v81;
   }
 
@@ -1644,7 +1644,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   if ([(CKNavigationBarCanvasView *)self keepTitleViewCentered])
   {
     v198 = v78;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v87 = CGRectGetWidth(*(v225[0] + 32));
       v88 = CGRectGetWidth(*(v227[0] + 32));
@@ -1671,7 +1671,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v222[1] = 3221225472;
     v222[2] = __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_invoke;
     v222[3] = &unk_1E72F5A40;
-    v223 = v7;
+    v223 = _canShowAvatarView;
     v102 = v101 + v101;
     *&v222[5] = x;
     *&v222[6] = rect1_24;
@@ -1680,22 +1680,22 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     *&v222[9] = v101 + v101;
     v222[4] = self;
     v103 = __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_invoke(v222);
-    v104 = [(CKNavigationBarCanvasView *)self titleView];
+    titleView2 = [(CKNavigationBarCanvasView *)self titleView];
     objc_opt_class();
     v105 = objc_opt_isKindOfClass();
 
-    v106 = [(CKNavigationBarCanvasView *)self titleView];
+    titleView3 = [(CKNavigationBarCanvasView *)self titleView];
     if (v105)
     {
-      v107 = [v106 collectionViewLayout];
-      [v107 collectionViewContentSize];
+      collectionViewLayout = [titleView3 collectionViewLayout];
+      [collectionViewLayout collectionViewContentSize];
       v109 = v108;
       v111 = v110;
     }
 
     else
     {
-      [v106 intrinsicContentSize];
+      [titleView3 intrinsicContentSize];
       v109 = v134;
       v111 = v135;
     }
@@ -1706,8 +1706,8 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
       v137 = *(MEMORY[0x1E695F060] + 8);
       if (v111 == v137)
       {
-        v138 = [(CKNavigationBarCanvasView *)self titleView];
-        [v138 sizeThatFits:{v136, v137}];
+        titleView4 = [(CKNavigationBarCanvasView *)self titleView];
+        [titleView4 sizeThatFits:{v136, v137}];
         v111 = v139;
       }
     }
@@ -1737,14 +1737,14 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v236.size.height = rect2;
     v236.size.width = v214;
     MidX = CGRectGetMidX(v236);
-    v142 = [(CKNavigationBarCanvasView *)self delegate];
-    v143 = [v142 shouldConfigureForJunkModal];
+    delegate4 = [(CKNavigationBarCanvasView *)self delegate];
+    shouldConfigureForJunkModal2 = [delegate4 shouldConfigureForJunkModal];
 
     v220[0] = MEMORY[0x1E69E9820];
     v220[1] = 3221225472;
     v220[2] = __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_invoke_2;
     v220[3] = &unk_1E72F5A40;
-    v221 = v7;
+    v221 = _canShowAvatarView;
     *&v220[5] = x;
     *&v220[6] = rect1_24;
     *&v220[7] = v214;
@@ -1756,7 +1756,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v96 = ceil(v103 * v140) / v140;
     rect1_16a = ceil(v82 * v140) / v140;
     v128 = MidX + v96 * -0.5;
-    if (v143)
+    if (shouldConfigureForJunkModal2)
     {
       v124 = 8.0;
     }
@@ -1769,22 +1769,22 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     goto LABEL_86;
   }
 
-  v91 = [(CKNavigationBarCanvasView *)self titleView];
+  titleView5 = [(CKNavigationBarCanvasView *)self titleView];
   objc_opt_class();
   v92 = objc_opt_isKindOfClass();
 
-  v93 = [(CKNavigationBarCanvasView *)self titleView];
+  titleView6 = [(CKNavigationBarCanvasView *)self titleView];
   if (v92)
   {
-    v94 = [v93 collectionViewLayout];
-    [v94 collectionViewContentSize];
+    collectionViewLayout2 = [titleView6 collectionViewLayout];
+    [collectionViewLayout2 collectionViewContentSize];
     v96 = v95;
     v98 = v97;
   }
 
   else
   {
-    [v93 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [titleView6 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v96 = v112;
     v98 = v113;
   }
@@ -1800,10 +1800,10 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   }
 
   rect1_16a = v114;
-  v115 = [(CKNavigationBarCanvasView *)self rightItemView];
+  rightItemView7 = [(CKNavigationBarCanvasView *)self rightItemView];
 
   v116 = v225;
-  if (v115 || ([(CKNavigationBarCanvasView *)self leftItemView], v117 = objc_claimAutoreleasedReturnValue(), v117, v116 = v227, v118 = rect1_24, v119 = rect2, v117))
+  if (rightItemView7 || ([(CKNavigationBarCanvasView *)self leftItemView], v117 = objc_claimAutoreleasedReturnValue(), v117, v116 = v227, v118 = rect1_24, v119 = rect2, v117))
   {
     v120 = *v116;
     v118 = *(v120 + 40);
@@ -1825,15 +1825,15 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v121 = *&CKMainScreenScale_sMainScreenScale_80;
   }
 
-  v122 = [(CKNavigationBarCanvasView *)self titleView];
+  titleView7 = [(CKNavigationBarCanvasView *)self titleView];
   objc_opt_class();
   v123 = objc_opt_isKindOfClass();
   v124 = floor((v118 + (v119 - rect1_16a) * 0.5) * v121) / v121;
 
   if (v123)
   {
-    v125 = [(CKNavigationBarCanvasView *)self titleView];
-    [v125 _baselineOffsetFromBottom];
+    titleView8 = [(CKNavigationBarCanvasView *)self titleView];
+    [titleView8 _baselineOffsetFromBottom];
     v124 = v124 + v126 * 0.5;
   }
 
@@ -1868,7 +1868,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
     v130 = *(v227[0] + 40);
     v131 = *(v227[0] + 48);
     v132 = *(v227[0] + 56);
-    if (!v6)
+    if (!_shouldReverseLayoutDirection)
     {
       MaxX = CGRectGetMaxX(*&v129);
       v146 = 14.0;
@@ -1882,7 +1882,7 @@ void __43__CKNavigationBarCanvasView_layoutSubviews__block_invoke(uint64_t a1)
   v130 = *(v225[0] + 40);
   v131 = *(v225[0] + 48);
   v132 = *(v225[0] + 56);
-  if (!v6)
+  if (!_shouldReverseLayoutDirection)
   {
 LABEL_74:
     MinX = CGRectGetMinX(*&v129);
@@ -1908,7 +1908,7 @@ LABEL_76:
   v240.size.height = rect2;
   v240.size.width = v214;
   v147 = CGRectGetWidth(v240);
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v148 = CGRectGetMaxX(*(v225[0] + 32));
     v241.origin.y = rect1_24;
@@ -1959,8 +1959,8 @@ LABEL_86:
   statusIndicatorImageView = self->_statusIndicatorImageView;
   if (statusIndicatorImageView)
   {
-    v157 = [(UIImageView *)statusIndicatorImageView image];
-    [v157 size];
+    image = [(UIImageView *)statusIndicatorImageView image];
+    [image size];
 
     v158 = self->_statusIndicatorType & 0xFFFFFFFFFFFFFFFELL;
     v159 = 17.0;
@@ -2002,7 +2002,7 @@ LABEL_86:
     v171 = v215 + 0.5 - v160 + v161;
     rect1_24a = v160;
     v211 = v171;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v172 = v128;
       v173 = v96;
@@ -2051,7 +2051,7 @@ LABEL_86:
     v96 = v176;
     v166 = rect1_24a;
     v128 = v175;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       goto LABEL_103;
     }
@@ -2065,16 +2065,16 @@ LABEL_86:
     rect2a = *(MEMORY[0x1E695F058] + 16);
     v167 = v96;
     v168 = v128;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
 LABEL_103:
-      v169 = [(CKNavigationBarCanvasView *)self leftItemView];
+      leftItemView3 = [(CKNavigationBarCanvasView *)self leftItemView];
       v86 = v227;
       goto LABEL_104;
     }
   }
 
-  v169 = [(CKNavigationBarCanvasView *)self rightItemView];
+  leftItemView3 = [(CKNavigationBarCanvasView *)self rightItemView];
 LABEL_104:
   v184 = *(*v86 + 32);
   v219 = *(*v86 + 48);
@@ -2084,30 +2084,30 @@ LABEL_104:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v185 = [(CKNavigationBarCanvasView *)self titleView];
+      titleView9 = [(CKNavigationBarCanvasView *)self titleView];
       objc_opt_class();
       v186 = objc_opt_isKindOfClass();
 
       if (v186)
       {
-        v187 = [(CKNavigationBarCanvasView *)self titleView];
-        v188 = [v169 titleLabel];
-        [v169 setNeedsLayout];
-        [v169 layoutIfNeeded];
-        v189 = [v188 text];
-        v190 = [v189 length];
+        titleView10 = [(CKNavigationBarCanvasView *)self titleView];
+        titleLabel = [leftItemView3 titleLabel];
+        [leftItemView3 setNeedsLayout];
+        [leftItemView3 layoutIfNeeded];
+        text = [titleLabel text];
+        v190 = [text length];
 
         if (v190)
         {
-          [v187 _firstLineBaseline];
+          [titleView10 _firstLineBaseline];
           v192 = v191;
-          [v188 _lastLineBaselineFrameOriginY];
+          [titleLabel _lastLineBaselineFrameOriginY];
           v194 = v215 + v192;
         }
 
         else
         {
-          [v169 bounds];
+          [leftItemView3 bounds];
           v194 = rect1_16a * 0.5 + v215;
           v193 = v195 * 0.5;
         }
@@ -2116,7 +2116,7 @@ LABEL_104:
         v216[1] = 3221225472;
         v216[2] = __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_invoke_3;
         v216[3] = &unk_1E72F5A68;
-        v218 = v6;
+        v218 = _shouldReverseLayoutDirection;
         v216[6] = v184;
         *&v216[7] = v194 - v193;
         v217 = v219;
@@ -2213,13 +2213,13 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
   return result;
 }
 
-- (CGSize)_baseBarItemViewSizeForView:(id)a3 proposedSize:(CGSize)a4 minSize:(double)a5
+- (CGSize)_baseBarItemViewSizeForView:(id)view proposedSize:(CGSize)size minSize:(double)minSize
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [v7 buttonType] != 7)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [viewCopy buttonType] != 7)
   {
     width = fmax(width, 44.0);
     height = fmax(height, 44.0);
@@ -2232,15 +2232,15 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
   return result;
 }
 
-- (CGRect)_calculateFrameForButton:(id)a3 shouldOffset:(BOOL)a4
+- (CGRect)_calculateFrameForButton:(id)button shouldOffset:(BOOL)offset
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKNavigationBarCanvasView *)self delegate];
-  v8 = [v7 shouldUseMinimumSafeAreas];
+  offsetCopy = offset;
+  buttonCopy = button;
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldUseMinimumSafeAreas = [delegate shouldUseMinimumSafeAreas];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  [v9 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:v8];
+  [v9 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:shouldUseMinimumSafeAreas];
   v11 = v10 + 2.0;
 
   if ([(CKNavigationBarCanvasView *)self _canShowAvatarView])
@@ -2266,8 +2266,8 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
   v18 = *&CKPixelWidth_sPixel_11;
   v19 = *&CKPixelWidth_sPixel_11;
   v20 = *&CKPixelWidth_sPixel_11;
-  v21 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-  v22 = [v21 count];
+  buttonsToDisplay = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+  v22 = [buttonsToDisplay count];
 
   [(CKNavigationBarCanvasView *)self bounds];
   MidX = CGRectGetMidX(v54);
@@ -2277,8 +2277,8 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
   }
 
   v24 = *&CKMainScreenScale_sMainScreenScale_80;
-  v25 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-  v26 = [v25 containsObject:v6];
+  buttonsToDisplay2 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+  v26 = [buttonsToDisplay2 containsObject:buttonCopy];
 
   if (v26)
   {
@@ -2292,8 +2292,8 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
     v29 = round((MidX + (v20 + 72.0) * v22 * -0.5) * v28) / v28;
     v30 = round(v17 * v28) / v28;
     v31 = v18 + 72.0;
-    v32 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-    v33 = [v32 indexOfObject:v6];
+    buttonsToDisplay3 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+    v33 = [buttonsToDisplay3 indexOfObject:buttonCopy];
 
     v34 = v29 + v33 * v31;
     if (CKMainScreenScale_once_80 != -1)
@@ -2311,13 +2311,13 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
     v37 = round(v30 * v35) / v35;
     v38 = round(v31 * v35) / v35;
     v39 = round(v27 * v35) / v35;
-    if (v4)
+    if (offsetCopy)
     {
-      v40 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-      v41 = [v40 count];
+      buttonsToDisplay4 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+      v41 = [buttonsToDisplay4 count];
 
-      v42 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
-      v43 = [v42 count];
+      buttonsToDisplay5 = [(CKNavigationBarCanvasView *)self buttonsToDisplay];
+      v43 = [buttonsToDisplay5 count];
 
       v44 = 10.0;
       if (v33 >= v41 >> 1)
@@ -2379,21 +2379,21 @@ float64x2_t __54__CKNavigationBarCanvasView__subviewLayoutWithBounds___block_inv
   return result;
 }
 
-- (double)_calculateYOriginForButtonWithHeight:(double)a3
+- (double)_calculateYOriginForButtonWithHeight:(double)height
 {
-  v5 = [(CKNavigationBarCanvasView *)self window];
-  v6 = [v5 windowScene];
-  v7 = [v6 statusBarManager];
-  [v7 statusBarFrame];
+  window = [(CKNavigationBarCanvasView *)self window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v9 = v8;
 
   v10 = v9 > 0.0 && [(CKNavigationBarCanvasView *)self _canShowAvatarView];
-  v11 = a3 * 0.5;
-  v12 = [(CKNavigationBarCanvasView *)self delegate];
-  v13 = [v12 shouldUseMinimumSafeAreas];
+  v11 = height * 0.5;
+  delegate = [(CKNavigationBarCanvasView *)self delegate];
+  shouldUseMinimumSafeAreas = [delegate shouldUseMinimumSafeAreas];
 
   v14 = +[CKUIBehavior sharedBehaviors];
-  [v14 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:v13];
+  [v14 navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:shouldUseMinimumSafeAreas];
   v16 = v15;
 
   if (v10 && ![(CKNavigationBarCanvasView *)self enforceLeftItemViewsAlignmentToCenter])

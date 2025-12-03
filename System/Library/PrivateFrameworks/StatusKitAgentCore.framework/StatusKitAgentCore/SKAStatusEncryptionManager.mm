@@ -1,97 +1,97 @@
 @interface SKAStatusEncryptionManager
 + (id)logger;
-- (SKAStatusEncryptionManager)initWithDatabaseManager:(id)a3 invitationManager:(id)a4;
-- (id)_deserializeBinaryPlistDictionaryData:(id)a3;
-- (id)_encryptPayload:(id)a3 channel:(id)a4;
-- (id)_mostRecentIncomingRatchetForChannel:(id)a3;
-- (id)_serializeDictionaryAsBinaryPlist:(id)a3;
-- (id)decryptStatusPayloadFromStatusEnvelopeData:(id)a3 channel:(id)a4;
-- (id)encodeStatusPayload:(id)a3 statusUniqueIdentifier:(id)a4 dateCreated:(id)a5 currentServerTime:(id)a6 channel:(id)a7;
-- (id)encryptionValidationTokenForChannel:(id)a3;
-- (id)extractEnvelopeFromStatusEnvelopeData:(id)a3;
-- (void)encodeStatusPayloadForProvisioning:(id)a3 statusUniqueIdentifier:(id)a4 dateCreated:(id)a5 currentServerTime:(id)a6 channel:(id)a7;
+- (SKAStatusEncryptionManager)initWithDatabaseManager:(id)manager invitationManager:(id)invitationManager;
+- (id)_deserializeBinaryPlistDictionaryData:(id)data;
+- (id)_encryptPayload:(id)payload channel:(id)channel;
+- (id)_mostRecentIncomingRatchetForChannel:(id)channel;
+- (id)_serializeDictionaryAsBinaryPlist:(id)plist;
+- (id)decryptStatusPayloadFromStatusEnvelopeData:(id)data channel:(id)channel;
+- (id)encodeStatusPayload:(id)payload statusUniqueIdentifier:(id)identifier dateCreated:(id)created currentServerTime:(id)time channel:(id)channel;
+- (id)encryptionValidationTokenForChannel:(id)channel;
+- (id)extractEnvelopeFromStatusEnvelopeData:(id)data;
+- (void)encodeStatusPayloadForProvisioning:(id)provisioning statusUniqueIdentifier:(id)identifier dateCreated:(id)created currentServerTime:(id)time channel:(id)channel;
 @end
 
 @implementation SKAStatusEncryptionManager
 
-- (SKAStatusEncryptionManager)initWithDatabaseManager:(id)a3 invitationManager:(id)a4
+- (SKAStatusEncryptionManager)initWithDatabaseManager:(id)manager invitationManager:(id)invitationManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  invitationManagerCopy = invitationManager;
   v12.receiver = self;
   v12.super_class = SKAStatusEncryptionManager;
   v9 = [(SKAStatusEncryptionManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseManager, a3);
-    objc_storeStrong(&v10->_invitationManager, a4);
+    objc_storeStrong(&v9->_databaseManager, manager);
+    objc_storeStrong(&v10->_invitationManager, invitationManager);
   }
 
   return v10;
 }
 
-- (id)encodeStatusPayload:(id)a3 statusUniqueIdentifier:(id)a4 dateCreated:(id)a5 currentServerTime:(id)a6 channel:(id)a7
+- (id)encodeStatusPayload:(id)payload statusUniqueIdentifier:(id)identifier dateCreated:(id)created currentServerTime:(id)time channel:(id)channel
 {
   v12 = MEMORY[0x277CBEB38];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  channelCopy = channel;
+  timeCopy = time;
+  createdCopy = created;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v18 = objc_alloc_init(v12);
-  [v18 setObject:v16 forKeyedSubscript:@"i"];
+  [v18 setObject:identifierCopy forKeyedSubscript:@"i"];
 
-  [v14 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v20 = v19;
 
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
   [v18 setObject:v21 forKeyedSubscript:@"p"];
 
-  [v15 timeIntervalSince1970];
+  [createdCopy timeIntervalSince1970];
   v23 = v22;
 
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
   [v18 setObject:v24 forKeyedSubscript:@"c"];
 
-  v25 = [v17 payloadData];
+  payloadData = [payloadCopy payloadData];
 
-  v26 = [(SKAStatusEncryptionManager *)self _encryptPayload:v25 channel:v13];
+  v26 = [(SKAStatusEncryptionManager *)self _encryptPayload:payloadData channel:channelCopy];
 
-  v27 = [v26 encryptedMessage];
-  v28 = [v27 base64EncodedStringWithOptions:0];
+  encryptedMessage = [v26 encryptedMessage];
+  v28 = [encryptedMessage base64EncodedStringWithOptions:0];
   [v18 setObject:v28 forKeyedSubscript:@"e"];
-  v29 = [v26 index];
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v29];
+  index = [v26 index];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:index];
   [v18 setObject:v30 forKeyedSubscript:@"r"];
 
-  v31 = [v26 signature];
-  v32 = [v31 base64EncodedStringWithOptions:0];
+  signature = [v26 signature];
+  v32 = [signature base64EncodedStringWithOptions:0];
   [v18 setObject:v32 forKeyedSubscript:@"s"];
   v33 = [(SKAStatusEncryptionManager *)self _serializeDictionaryAsBinaryPlist:v18];
 
   return v33;
 }
 
-- (void)encodeStatusPayloadForProvisioning:(id)a3 statusUniqueIdentifier:(id)a4 dateCreated:(id)a5 currentServerTime:(id)a6 channel:(id)a7
+- (void)encodeStatusPayloadForProvisioning:(id)provisioning statusUniqueIdentifier:(id)identifier dateCreated:(id)created currentServerTime:(id)time channel:(id)channel
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = [v12 statusPayload];
-  v18 = [(SKAStatusEncryptionManager *)self encodeStatusPayload:v17 statusUniqueIdentifier:v16 dateCreated:v15 currentServerTime:v14 channel:v13];
+  provisioningCopy = provisioning;
+  channelCopy = channel;
+  timeCopy = time;
+  createdCopy = created;
+  identifierCopy = identifier;
+  statusPayload = [provisioningCopy statusPayload];
+  v18 = [(SKAStatusEncryptionManager *)self encodeStatusPayload:statusPayload statusUniqueIdentifier:identifierCopy dateCreated:createdCopy currentServerTime:timeCopy channel:channelCopy];
 
   v19 = [MEMORY[0x277CBEA90] __imDataWithRandomBytes:32];
   v20 = objc_alloc_init(SharedChannelProvisionOffGridPacket);
   v42 = v18;
   [(SharedChannelProvisionOffGridPacket *)v20 setPublishPayload:v18];
   v21 = objc_alloc(MEMORY[0x277CBEA90]);
-  v22 = [v13 identifier];
+  identifier = [channelCopy identifier];
 
-  v23 = [v21 initWithBase64EncodedString:v22 options:0];
+  v23 = [v21 initWithBase64EncodedString:identifier options:0];
   [(SharedChannelProvisionOffGridPacket *)v20 setChannelId:v23];
 
   [(SharedChannelProvisionOffGridPacket *)v20 setChannelTopic:@"com.apple.icloud.presence.mode.status"];
@@ -101,8 +101,8 @@
 
   v26 = [MEMORY[0x277CBEB28] dataWithLength:16];
   v41 = v20;
-  v27 = [(SharedChannelProvisionOffGridPacket *)v20 data];
-  [v26 appendData:v27];
+  data = [(SharedChannelProvisionOffGridPacket *)v20 data];
+  [v26 appendData:data];
 
   v28 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v26, "length")}];
   v29 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:16];
@@ -113,9 +113,9 @@
   [v25 bytes];
   [v26 bytes];
   v31 = [v26 length];
-  v32 = [v28 mutableBytes];
-  v39 = [v29 mutableBytes];
-  v38 = v32;
+  mutableBytes = [v28 mutableBytes];
+  mutableBytes2 = [v29 mutableBytes];
+  v38 = mutableBytes;
   v33 = CCCryptorGCMOneshotEncrypt();
   if (v33)
   {
@@ -132,28 +132,28 @@
 
   else
   {
-    [v12 setCommitmentSalt:{v19, v31, v32, v39, 16}];
-    [v12 setDecryptionKey:v30];
+    [provisioningCopy setCommitmentSalt:{v19, v31, mutableBytes, mutableBytes2, 16}];
+    [provisioningCopy setDecryptionKey:v30];
     v35 = v40;
-    [v12 setInitializationVector:v40];
+    [provisioningCopy setInitializationVector:v40];
     [v28 appendData:v29];
-    [v12 setEncryptedStatusPayload:v28];
+    [provisioningCopy setEncryptedStatusPayload:v28];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_encryptPayload:(id)a3 channel:(id)a4
+- (id)_encryptPayload:(id)payload channel:(id)channel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 currentOutgoingRatchet];
-  if (v8)
+  payloadCopy = payload;
+  channelCopy = channel;
+  currentOutgoingRatchet = [channelCopy currentOutgoingRatchet];
+  if (currentOutgoingRatchet)
   {
-    v9 = v8;
+    currentOutgoingRatchet2 = currentOutgoingRatchet;
 LABEL_3:
     v26 = 0;
-    v10 = [v9 sealStatus:v6 authenticating:0 error:&v26];
+    v10 = [currentOutgoingRatchet2 sealStatus:payloadCopy authenticating:0 error:&v26];
     v11 = v26;
     v12 = +[SKAStatusEncryptionManager logger];
     v13 = v12;
@@ -182,9 +182,9 @@ LABEL_3:
   }
 
   invitationManager = self->_invitationManager;
-  v16 = [v7 statusType];
+  statusType = [channelCopy statusType];
   v27 = 0;
-  v17 = [(SKAInvitationManaging *)invitationManager rollEncryptionKeyForPersonalChannelWithStatusTypeIdentifier:v16 error:&v27];
+  v17 = [(SKAInvitationManaging *)invitationManager rollEncryptionKeyForPersonalChannelWithStatusTypeIdentifier:statusType error:&v27];
   v18 = v27;
 
   v19 = +[SKAStatusEncryptionManager logger];
@@ -197,14 +197,14 @@ LABEL_3:
       _os_log_impl(&dword_220099000, v20, OS_LOG_TYPE_DEFAULT, "Encryption key rolled successfully, fetching new key", buf, 2u);
     }
 
-    v21 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+    newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
     databaseManager = self->_databaseManager;
-    v23 = [v7 statusType];
-    v24 = [(SKADatabaseManaging *)databaseManager existingPersonalChannelForStatusTypeIdentifier:v23 databaseContext:v21];
+    statusType2 = [channelCopy statusType];
+    v24 = [(SKADatabaseManaging *)databaseManager existingPersonalChannelForStatusTypeIdentifier:statusType2 databaseContext:newBackgroundContext];
 
-    v9 = [v24 currentOutgoingRatchet];
+    currentOutgoingRatchet2 = [v24 currentOutgoingRatchet];
 
-    if (v9)
+    if (currentOutgoingRatchet2)
     {
       goto LABEL_3;
     }
@@ -224,16 +224,16 @@ LABEL_3:
     [SKAStatusEncryptionManager _encryptPayload:channel:];
   }
 
-  v9 = 0;
+  currentOutgoingRatchet2 = 0;
   v10 = 0;
 LABEL_22:
 
   return v10;
 }
 
-- (id)extractEnvelopeFromStatusEnvelopeData:(id)a3
+- (id)extractEnvelopeFromStatusEnvelopeData:(id)data
 {
-  v3 = [(SKAStatusEncryptionManager *)self _deserializeBinaryPlistDictionaryData:a3];
+  v3 = [(SKAStatusEncryptionManager *)self _deserializeBinaryPlistDictionaryData:data];
   if (v3)
   {
     v4 = [[SKAStatusUnencryptedEnvelope alloc] initWithEnvelopeDictionary:v3];
@@ -247,16 +247,16 @@ LABEL_22:
   return v4;
 }
 
-- (id)decryptStatusPayloadFromStatusEnvelopeData:(id)a3 channel:(id)a4
+- (id)decryptStatusPayloadFromStatusEnvelopeData:(id)data channel:(id)channel
 {
-  v6 = a4;
-  if (!a3)
+  channelCopy = channel;
+  if (!data)
   {
     v15 = 0;
     goto LABEL_26;
   }
 
-  v7 = [(SKAStatusEncryptionManager *)self _deserializeBinaryPlistDictionaryData:a3];
+  v7 = [(SKAStatusEncryptionManager *)self _deserializeBinaryPlistDictionaryData:data];
   v8 = v7;
   if (!v7)
   {
@@ -300,10 +300,10 @@ LABEL_22:
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 integerValue];
-    if (v13 < 0x10000)
+    integerValue = [v11 integerValue];
+    if (integerValue < 0x10000)
     {
-      v15 = [(SKAStatusEncryptionManager *)self _decryptPayload:v9 withRatchetIndex:v13 signatureData:v10 channel:v6];
+      v15 = [(SKAStatusEncryptionManager *)self _decryptPayload:v9 withRatchetIndex:integerValue signatureData:v10 channel:channelCopy];
       v17 = +[SKAStatusEncryptionManager logger];
       v14 = v17;
       if (v15)
@@ -351,21 +351,21 @@ LABEL_26:
   return v15;
 }
 
-- (id)encryptionValidationTokenForChannel:(id)a3
+- (id)encryptionValidationTokenForChannel:(id)channel
 {
-  v3 = [(SKAStatusEncryptionManager *)self _mostRecentIncomingRatchetForChannel:a3];
+  v3 = [(SKAStatusEncryptionManager *)self _mostRecentIncomingRatchetForChannel:channel];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 signingKeyIdentifier];
+    signingKeyIdentifier = [v3 signingKeyIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    signingKeyIdentifier = 0;
   }
 
-  v5 = [v4 ska_hexString];
-  v6 = [v5 length];
+  ska_hexString = [signingKeyIdentifier ska_hexString];
+  v6 = [ska_hexString length];
   if (v6 >= 4)
   {
     v7 = 4;
@@ -376,21 +376,21 @@ LABEL_26:
     v7 = v6;
   }
 
-  v8 = [v5 substringToIndex:v7];
+  v8 = [ska_hexString substringToIndex:v7];
 
   return v8;
 }
 
-- (id)_mostRecentIncomingRatchetForChannel:(id)a3
+- (id)_mostRecentIncomingRatchetForChannel:(id)channel
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isPersonal];
-  v6 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  channelCopy = channel;
+  isPersonal = [channelCopy isPersonal];
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
   databaseManager = self->_databaseManager;
-  if (!v5)
+  if (!isPersonal)
   {
-    v16 = [(SKADatabaseManaging *)databaseManager receivedInvitationsForChannel:v4 databaseContext:v6];
+    v16 = [(SKADatabaseManaging *)databaseManager receivedInvitationsForChannel:channelCopy databaseContext:newBackgroundContext];
     v17 = +[SKAStatusEncryptionManager logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -418,8 +418,8 @@ LABEL_17:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * v21) incomingRatchet];
-        if (v15)
+        incomingRatchet = [*(*(&v26 + 1) + 8 * v21) incomingRatchet];
+        if (incomingRatchet)
         {
           goto LABEL_24;
         }
@@ -442,7 +442,7 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v8 = [(SKADatabaseManaging *)databaseManager generatedEncryptionKeysForPersonalChannel:v4 databaseContext:v6];
+  v8 = [(SKADatabaseManaging *)databaseManager generatedEncryptionKeysForPersonalChannel:channelCopy databaseContext:newBackgroundContext];
   v9 = +[SKAStatusEncryptionManager logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -473,8 +473,8 @@ LABEL_6:
       objc_enumerationMutation(v10);
     }
 
-    v15 = [*(*(&v30 + 1) + 8 * v14) incomingRatchet];
-    if (v15)
+    incomingRatchet = [*(*(&v30 + 1) + 8 * v14) incomingRatchet];
+    if (incomingRatchet)
     {
       break;
     }
@@ -492,7 +492,7 @@ LABEL_6:
   }
 
 LABEL_24:
-  v22 = v15;
+  v22 = incomingRatchet;
 LABEL_25:
 
   if (!v22)
@@ -509,12 +509,12 @@ LABEL_25:
   return v22;
 }
 
-- (id)_serializeDictionaryAsBinaryPlist:(id)a3
+- (id)_serializeDictionaryAsBinaryPlist:(id)plist
 {
-  if (a3)
+  if (plist)
   {
     v7 = 0;
-    v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v7];
+    v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:plist format:200 options:0 error:&v7];
     v4 = v7;
     if (v4)
     {
@@ -534,17 +534,17 @@ LABEL_25:
   return v3;
 }
 
-- (id)_deserializeBinaryPlistDictionaryData:(id)a3
+- (id)_deserializeBinaryPlistDictionaryData:(id)data
 {
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v4 = 0;
     goto LABEL_16;
   }
 
   v17 = 0;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:v3 options:0 format:0 error:&v17];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:&v17];
   v5 = v17;
   if (!v5)
   {
@@ -558,7 +558,7 @@ LABEL_25:
     [SKAStatusEncryptionManager _deserializeBinaryPlistDictionaryData:];
   }
 
-  v8 = [[SharedChannelPublishPayload alloc] initWithData:v3];
+  v8 = [[SharedChannelPublishPayload alloc] initWithData:dataCopy];
   v9 = v8;
   if (!v8 || ([(SharedChannelPublishPayload *)v8 publishPayloadContent], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
@@ -573,9 +573,9 @@ LABEL_25:
   }
 
   v11 = MEMORY[0x277CCAC58];
-  v12 = [(SharedChannelPublishPayload *)v9 publishPayloadContent];
+  publishPayloadContent = [(SharedChannelPublishPayload *)v9 publishPayloadContent];
   v16 = 0;
-  v13 = [v11 propertyListWithData:v12 options:0 format:0 error:&v16];
+  v13 = [v11 propertyListWithData:publishPayloadContent options:0 format:0 error:&v16];
   v6 = v16;
 
   if (v6)

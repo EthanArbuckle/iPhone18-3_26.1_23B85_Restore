@@ -1,17 +1,17 @@
 @interface DOCItemCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityValue;
 @end
 
 @implementation DOCItemCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DOCFullDocumentManagerViewController"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"displayMode" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DOCFullDocumentManagerViewController"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" hasInstanceMethod:@"displayMode" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityValue
@@ -22,12 +22,12 @@
     v4 = [v3 safeIntegerForKey:@"displayMode"];
     if (v4 > 3)
     {
-      v5 = 0;
+      accessibilityValue = 0;
     }
 
     else
     {
-      v5 = off_29F2BB9E0[v4];
+      accessibilityValue = off_29F2BB9E0[v4];
     }
   }
 
@@ -35,18 +35,18 @@
   {
     v7.receiver = self;
     v7.super_class = DOCItemCollectionViewAccessibility;
-    v5 = [(DOCItemCollectionViewAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(DOCItemCollectionViewAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   v5.receiver = self;
   v5.super_class = DOCItemCollectionViewAccessibility;
-  v2 = [(DOCItemCollectionViewAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
-  v3 = [v2 axFilterObjectsUsingBlock:&__block_literal_global_0];
+  _accessibilitySupplementaryFooterViews = [(DOCItemCollectionViewAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
+  v3 = [_accessibilitySupplementaryFooterViews axFilterObjectsUsingBlock:&__block_literal_global_0];
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface _SSSScreenshotPDFView
 - (CGSize)intrinsicContentSize;
 - (SSSScreenshotPDFViewDelegate)delegate;
-- (_SSSScreenshotPDFView)initWithFrame:(CGRect)a3;
-- (id)_paperKitPDFViewOverlayViewController:(id)a3;
+- (_SSSScreenshotPDFView)initWithFrame:(CGRect)frame;
+- (id)_paperKitPDFViewOverlayViewController:(id)controller;
 - (id)currentPDFView;
 - (id)undoManager;
 - (int64_t)currentPDFPage;
-- (void)_paperKitPDFDidChangeInView:(id)a3 changeCounter:(unint64_t)a4;
-- (void)_paperKitPDFView:(id)a3 startEditingOpacityInAccessoryView:(id)a4;
+- (void)_paperKitPDFDidChangeInView:(id)view changeCounter:(unint64_t)counter;
+- (void)_paperKitPDFView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView;
 - (void)deselectAllAnnotations;
 - (void)didMoveToWindow;
 - (void)endedEditing;
@@ -16,25 +16,25 @@
 - (void)enterMarkupMode;
 - (void)exitMarkupMode;
 - (void)layoutSubviews;
-- (void)setCrop:(CGRect)a3;
-- (void)setRulerHostView:(id)a3;
-- (void)setScreenshot:(id)a3;
-- (void)setVellumOpacity:(double)a3;
-- (void)setupOverlayControllerWithPDFDocument:(id)a3;
+- (void)setCrop:(CGRect)crop;
+- (void)setRulerHostView:(id)view;
+- (void)setScreenshot:(id)screenshot;
+- (void)setVellumOpacity:(double)opacity;
+- (void)setupOverlayControllerWithPDFDocument:(id)document;
 - (void)setupPDFData;
 - (void)setupPDFView;
 - (void)setupPaperKitView;
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3;
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary;
 - (void)updateViewState;
 @end
 
 @implementation _SSSScreenshotPDFView
 
-- (_SSSScreenshotPDFView)initWithFrame:(CGRect)a3
+- (_SSSScreenshotPDFView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _SSSScreenshotPDFView;
-  v3 = [(_SSSScreenshotAnnotationView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SSSScreenshotAnnotationView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (_os_feature_enabled_impl())
   {
     [(_SSSScreenshotPDFView *)v3 setupPaperKitView];
@@ -55,8 +55,8 @@
   [(UIActivityIndicatorView *)v3->_activityIndicatorView setColor:v6];
 
   [(_SSSScreenshotPDFView *)v3 addSubview:v3->_activityIndicatorView];
-  v7 = [(_SSSScreenshotAnnotationView *)v3 overlayController];
-  [v7 setViewState:{1, 0}];
+  overlayController = [(_SSSScreenshotAnnotationView *)v3 overlayController];
+  [overlayController setViewState:{1, 0}];
 
   [(_SSSScreenshotAnnotationView *)v3 setScreenshotEditsSnapshotted:1];
   if ((_os_feature_enabled_impl() & 1) == 0)
@@ -64,12 +64,12 @@
     v8 = objc_alloc_init(UIView);
     [(_SSSScreenshotAnnotationView *)v3 setVellumView:v8];
 
-    v9 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
+    vellumView = [(_SSSScreenshotAnnotationView *)v3 vellumView];
     v10 = +[UIColor whiteColor];
-    [v9 setBackgroundColor:v10];
+    [vellumView setBackgroundColor:v10];
 
-    v11 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
-    [v11 setUserInteractionEnabled:0];
+    vellumView2 = [(_SSSScreenshotAnnotationView *)v3 vellumView];
+    [vellumView2 setUserInteractionEnabled:0];
   }
 
   v3->_currentVellumPage = 0x7FFFFFFFFFFFFFFFLL;
@@ -78,9 +78,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(_SSSScreenshotPDFView *)self window];
+  window = [(_SSSScreenshotPDFView *)self window];
 
-  if (v3)
+  if (window)
   {
     if (_os_feature_enabled_impl())
     {
@@ -91,11 +91,11 @@
 
     else
     {
-      v5 = [(PDFView *)self->_pdfView document];
-      v6 = [v5 akController];
-      v7 = [v6 toolPicker];
+      document = [(PDFView *)self->_pdfView document];
+      akController = [document akController];
+      toolPicker = [akController toolPicker];
 
-      [v7 setVisible:1 forFirstResponder:self->_pdfView];
+      [toolPicker setVisible:1 forFirstResponder:self->_pdfView];
     }
   }
 }
@@ -125,14 +125,14 @@
   [(_SSSScreenshotAnnotationView *)&v3 endedEditing];
 }
 
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (_os_feature_enabled_impl())
   {
     paperKitView = self->_paperKitView;
 
-    [(_SSSScreenshotPaperKitPDFView *)paperKitView updatePaletteVisibilityIfNecessary:v3];
+    [(_SSSScreenshotPaperKitPDFView *)paperKitView updatePaletteVisibilityIfNecessary:necessaryCopy];
   }
 }
 
@@ -169,11 +169,11 @@
   [(PDFView *)v6 setBackgroundColor:v7];
 
   [(PDFView *)self->_pdfView setEnableDataDetectors:0];
-  v8 = [(PDFView *)self->_pdfView documentScrollView];
-  [v8 setShowsHorizontalScrollIndicator:0];
+  documentScrollView = [(PDFView *)self->_pdfView documentScrollView];
+  [documentScrollView setShowsHorizontalScrollIndicator:0];
 
-  v9 = [(PDFView *)self->_pdfView documentScrollView];
-  [v9 setShowsVerticalScrollIndicator:0];
+  documentScrollView2 = [(PDFView *)self->_pdfView documentScrollView];
+  [documentScrollView2 setShowsVerticalScrollIndicator:0];
 
   [(_SSSScreenshotPDFView *)self addSubview:self->_pdfView];
   v10 = self->_pdfView;
@@ -181,27 +181,27 @@
   [(PDFView *)v10 setAkAnnotationEditingEnabled:1];
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
   v5.receiver = self;
   v5.super_class = _SSSScreenshotPDFView;
   [(_SSSScreenshotAnnotationView *)&v5 setVellumOpacity:?];
-  [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setVellumOpacity:a3];
+  [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setVellumOpacity:opacity];
 }
 
-- (void)setRulerHostView:(id)a3
+- (void)setRulerHostView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (_os_feature_enabled_impl())
   {
-    [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setRulerHostView:v4];
+    [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setRulerHostView:viewCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _SSSScreenshotPDFView;
-    [(_SSSScreenshotAnnotationView *)&v5 setRulerHostView:v4];
+    [(_SSSScreenshotAnnotationView *)&v5 setRulerHostView:viewCopy];
   }
 }
 
@@ -220,106 +220,106 @@
   [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setFrame:v4, v6, v8, v10];
   if ((_os_feature_enabled_impl() & 1) != 0 || (-[_SSSScreenshotAnnotationView screenshot](self, "screenshot"), v11 = objc_claimAutoreleasedReturnValue(), [v11 pdfData], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
   {
-    v16 = [(_SSSScreenshotAnnotationView *)self overlayController];
-    [v16 setViewState:{1, 0}];
+    overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+    [overlayController setViewState:{1, 0}];
     goto LABEL_9;
   }
 
-  v13 = [(_SSSScreenshotPDFView *)self currentPDFPage];
-  v14 = [(_SSSScreenshotPDFView *)self currentPDFPage];
-  v15 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  v16 = [v15 pageViewForPageAtIndex:v14];
+  currentPDFPage = [(_SSSScreenshotPDFView *)self currentPDFPage];
+  currentPDFPage2 = [(_SSSScreenshotPDFView *)self currentPDFPage];
+  currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+  overlayController = [currentPDFView pageViewForPageAtIndex:currentPDFPage2];
 
-  if (self->_currentVellumPage != v14)
+  if (self->_currentVellumPage != currentPDFPage2)
   {
     goto LABEL_11;
   }
 
-  v17 = [(_SSSScreenshotAnnotationView *)self vellumView];
-  v18 = [v17 superview];
-  if (!v18)
+  vellumView = [(_SSSScreenshotAnnotationView *)self vellumView];
+  superview = [vellumView superview];
+  if (!superview)
   {
 
 LABEL_11:
-    v25 = [(_SSSScreenshotAnnotationView *)self vellumView];
-    [v25 removeFromSuperview];
+    vellumView2 = [(_SSSScreenshotAnnotationView *)self vellumView];
+    [vellumView2 removeFromSuperview];
 
     if (_os_feature_enabled_impl())
     {
-      v26 = [(_SSSScreenshotAnnotationView *)self vellumView];
-      [v16 bounds];
-      [v26 setFrame:?];
+      vellumView3 = [(_SSSScreenshotAnnotationView *)self vellumView];
+      [overlayController bounds];
+      [vellumView3 setFrame:?];
 
-      v27 = [(_SSSScreenshotAnnotationView *)self vellumView];
-      [v16 addSubview:v27];
+      vellumView4 = [(_SSSScreenshotAnnotationView *)self vellumView];
+      [overlayController addSubview:vellumView4];
     }
 
     else
     {
-      v28 = [(PDFView *)self->_pdfView document];
-      v29 = [v28 akController];
-      v27 = [v29 overlayViewAtIndex:v14];
+      document = [(PDFView *)self->_pdfView document];
+      akController = [document akController];
+      vellumView4 = [akController overlayViewAtIndex:currentPDFPage2];
 
-      v30 = [(_SSSScreenshotAnnotationView *)self vellumView];
-      [v27 bounds];
-      [v30 setFrame:?];
+      vellumView5 = [(_SSSScreenshotAnnotationView *)self vellumView];
+      [vellumView4 bounds];
+      [vellumView5 setFrame:?];
 
-      v31 = [(_SSSScreenshotAnnotationView *)self vellumView];
-      [v16 insertSubview:v31 belowSubview:v27];
+      vellumView6 = [(_SSSScreenshotAnnotationView *)self vellumView];
+      [overlayController insertSubview:vellumView6 belowSubview:vellumView4];
     }
 
     self->_currentVellumPage = [(_SSSScreenshotPDFView *)self currentPDFPage];
     goto LABEL_15;
   }
 
-  v19 = v18;
-  v20 = [(_SSSScreenshotAnnotationView *)self vellumView];
-  [v20 superview];
-  v22 = v21 = v13;
+  v19 = superview;
+  vellumView7 = [(_SSSScreenshotAnnotationView *)self vellumView];
+  [vellumView7 superview];
+  v22 = v21 = currentPDFPage;
 
-  v23 = v22 == v16;
-  v13 = v21;
+  v23 = v22 == overlayController;
+  currentPDFPage = v21;
   if (!v23)
   {
     goto LABEL_11;
   }
 
 LABEL_15:
-  v32 = [(_SSSScreenshotAnnotationView *)self vellumView];
+  vellumView8 = [(_SSSScreenshotAnnotationView *)self vellumView];
   [(_SSSScreenshotAnnotationView *)self vellumOpacity];
-  [v32 setAlpha:?];
+  [vellumView8 setAlpha:?];
 
-  v33 = [(_SSSScreenshotAnnotationView *)self vellumView];
-  [v33 setHidden:0];
+  vellumView9 = [(_SSSScreenshotAnnotationView *)self vellumView];
+  [vellumView9 setHidden:0];
 
   if (_os_feature_enabled_impl())
   {
-    v34 = [(_SSSScreenshotPDFView *)self currentPDFPage];
-    v35 = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfView];
-    v36 = [v35 pageViewForPageAtIndex:v34];
+    currentPDFPage3 = [(_SSSScreenshotPDFView *)self currentPDFPage];
+    pdfView = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfView];
+    v36 = [pdfView pageViewForPageAtIndex:currentPDFPage3];
   }
 
   else
   {
-    v35 = [(PDFView *)self->_pdfView document];
-    v37 = [v35 akController];
-    v36 = [v37 overlayViewAtIndex:v14];
+    pdfView = [(PDFView *)self->_pdfView document];
+    akController2 = [pdfView akController];
+    v36 = [akController2 overlayViewAtIndex:currentPDFPage2];
   }
 
-  v38 = [(_SSSScreenshotAnnotationView *)self vellumView];
+  vellumView10 = [(_SSSScreenshotAnnotationView *)self vellumView];
   [v36 bounds];
-  [v38 setFrame:?];
+  [vellumView10 setFrame:?];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v39 = [(_SSSScreenshotPDFView *)self currentPDFView];
-    v40 = [v39 visiblePages];
+    currentPDFView2 = [(_SSSScreenshotPDFView *)self currentPDFView];
+    visiblePages = [currentPDFView2 visiblePages];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v41 = v40;
+    v41 = visiblePages;
     v42 = [v41 countByEnumeratingWithState:&v54 objects:v59 count:16];
     if (v42)
     {
@@ -345,18 +345,18 @@ LABEL_15:
       while (v43);
     }
 
-    v47 = [(_SSSScreenshotAnnotationView *)self overlayController];
-    [v47 setViewState:{1, v13}];
+    overlayController2 = [(_SSSScreenshotAnnotationView *)self overlayController];
+    [overlayController2 setViewState:{1, currentPDFPage}];
   }
 
-  v48 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v49 = [v48 PDFDocument];
-  v50 = [v49 pageCount];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  pDFDocument = [screenshot PDFDocument];
+  pageCount = [pDFDocument pageCount];
 
-  if (v50 >= 2)
+  if (pageCount >= 2)
   {
-    v51 = [(_SSSScreenshotPDFView *)self traitCollection];
-    if ([v51 userInterfaceIdiom])
+    traitCollection = [(_SSSScreenshotPDFView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom])
     {
       v52 = 24.0;
     }
@@ -366,8 +366,8 @@ LABEL_15:
       v52 = 8.0;
     }
 
-    v53 = [(_SSSScreenshotPDFView *)self currentPDFView];
-    [v53 setPageBreakMargins:{v52, v52, v52, v52}];
+    currentPDFView3 = [(_SSSScreenshotPDFView *)self currentPDFView];
+    [currentPDFView3 setPageBreakMargins:{v52, v52, v52, v52}];
   }
 
 LABEL_9:
@@ -381,15 +381,15 @@ LABEL_9:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfView];
+    pdfView = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfView];
   }
 
   else
   {
-    v3 = self->_pdfView;
+    pdfView = self->_pdfView;
   }
 
-  return v3;
+  return pdfView;
 }
 
 - (CGSize)intrinsicContentSize
@@ -403,9 +403,9 @@ LABEL_9:
 
   else
   {
-    v6 = [(_SSSScreenshotPDFView *)self currentPDFView];
-    v7 = [v6 document];
-    v8 = [v7 pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
+    currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+    document = [currentPDFView document];
+    v8 = [document pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
     [v8 boundsForBox:1];
     v10 = v9;
     v12 = v11;
@@ -419,12 +419,12 @@ LABEL_9:
   return result;
 }
 
-- (void)setCrop:(CGRect)a3
+- (void)setCrop:(CGRect)crop
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   if (_os_feature_enabled_impl())
   {
     paperKitView = self->_paperKitView;
@@ -434,18 +434,18 @@ LABEL_9:
 
   else
   {
-    v17 = [(_SSSScreenshotPDFView *)self currentPDFView];
-    v9 = [v17 document];
-    v10 = [v9 pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
+    currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+    document = [currentPDFView document];
+    v10 = [document pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
     [v10 boundsForBox:0];
     v12 = v11;
     v14 = v13;
 
-    v15 = [v17 document];
-    v16 = [v15 pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
+    document2 = [currentPDFView document];
+    v16 = [document2 pageAtIndex:{-[_SSSScreenshotPDFView currentPDFPage](self, "currentPDFPage")}];
     [v16 setBounds:1 forBox:{x * v12, (1.0 - (y + height)) * v14, width * v12, height * v14}];
 
-    [v17 layoutDocumentView];
+    [currentPDFView layoutDocumentView];
   }
 }
 
@@ -459,23 +459,23 @@ LABEL_9:
   }
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
-  v4 = a3;
+  screenshotCopy = screenshot;
   if (_os_feature_enabled_impl())
   {
-    [v4 setDocumentGenerator:self->_paperKitView];
+    [screenshotCopy setDocumentGenerator:self->_paperKitView];
   }
 
-  v5 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v6 = [v5 isEqual:v4];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  v6 = [screenshot isEqual:screenshotCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = _SSSScreenshotPDFView;
-    [(_SSSScreenshotAnnotationView *)&v7 setScreenshot:v4];
-    [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setScreenshot:v4];
+    [(_SSSScreenshotAnnotationView *)&v7 setScreenshot:screenshotCopy];
+    [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setScreenshot:screenshotCopy];
     [(_SSSScreenshotPDFView *)self setDidFailToWritePDFToURL:[(_SSSScreenshotPaperKitPDFView *)self->_paperKitView didFailToWritePDFToURL]];
     [(_SSSScreenshotPDFView *)self setNeedsLayout];
   }
@@ -485,8 +485,8 @@ LABEL_9:
 
 - (id)undoManager
 {
-  v2 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v3 = [v2 undoManagerForEditMode:1];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  v3 = [screenshot undoManagerForEditMode:1];
 
   return v3;
 }
@@ -494,21 +494,21 @@ LABEL_9:
 - (void)setupPDFData
 {
   v3 = _os_feature_enabled_impl();
-  v4 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v5 = v4;
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  v5 = screenshot;
   if (v3)
   {
-    v6 = [v4 pdfData];
+    pdfData = [screenshot pdfData];
 
-    v7 = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfData];
-    v8 = [v7 isEqual:v6];
+    pdfData2 = [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView pdfData];
+    v8 = [pdfData2 isEqual:pdfData];
 
     if ((v8 & 1) == 0)
     {
       [(_SSSScreenshotPaperKitPDFView *)self->_paperKitView setupDocumentViewController];
     }
 
-    v9 = [v6 length];
+    v9 = [pdfData length];
 
     if (!v9)
     {
@@ -530,16 +530,16 @@ LABEL_10:
     return;
   }
 
-  v10 = [v4 PDFDocument];
+  pDFDocument = [screenshot PDFDocument];
 
-  if (v10)
+  if (pDFDocument)
   {
-    v11 = [(PDFView *)self->_pdfView document];
-    v12 = [v11 isEqual:v10];
+    document = [(PDFView *)self->_pdfView document];
+    v12 = [document isEqual:pDFDocument];
 
     if ((v12 & 1) == 0)
     {
-      [(_SSSScreenshotPDFView *)self setupOverlayControllerWithPDFDocument:v10];
+      [(_SSSScreenshotPDFView *)self setupOverlayControllerWithPDFDocument:pDFDocument];
     }
 
     goto LABEL_10;
@@ -552,39 +552,39 @@ LABEL_11:
   [(UIActivityIndicatorView *)activityIndicatorView startAnimating];
 }
 
-- (void)setupOverlayControllerWithPDFDocument:(id)a3
+- (void)setupOverlayControllerWithPDFDocument:(id)document
 {
   pdfView = self->_pdfView;
-  v5 = a3;
-  [(PDFView *)pdfView setDocument:v5];
-  v6 = [(PDFView *)self->_pdfView documentView];
-  [v6 setUserInteractionEnabled:0];
+  documentCopy = document;
+  [(PDFView *)pdfView setDocument:documentCopy];
+  documentView = [(PDFView *)self->_pdfView documentView];
+  [documentView setUserInteractionEnabled:0];
 
-  v7 = [(_SSSScreenshotAnnotationView *)self overlayController];
-  [v5 setPDFAKControllerDelegate:v7];
+  overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+  [documentCopy setPDFAKControllerDelegate:overlayController];
 
-  v9 = [v5 akController];
+  akController = [documentCopy akController];
 
-  v8 = [(_SSSScreenshotAnnotationView *)self overlayController];
-  [v8 setAnnotationKitController:v9];
+  overlayController2 = [(_SSSScreenshotAnnotationView *)self overlayController];
+  [overlayController2 setAnnotationKitController:akController];
 }
 
 - (void)enterCropMode
 {
   [(_SSSScreenshotPDFView *)self setIsInCropMode:1];
   [(_SSSScreenshotPDFView *)self invalidateIntrinsicContentSize];
-  v3 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  v8 = [v3 documentScrollView];
+  currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+  documentScrollView = [currentPDFView documentScrollView];
 
-  [v8 contentOffset];
+  [documentScrollView contentOffset];
   self->_scrollOffset.x = v4;
   self->_scrollOffset.y = v5;
-  [v8 zoomScale];
+  [documentScrollView zoomScale];
   self->_scrollZoomScale = v6;
-  [v8 setZoomScale:1.0];
-  [v8 setContentOffset:{CGPointZero.x, CGPointZero.y}];
-  v7 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  [v7 setDisplayBox:0];
+  [documentScrollView setZoomScale:1.0];
+  [documentScrollView setContentOffset:{CGPointZero.x, CGPointZero.y}];
+  currentPDFView2 = [(_SSSScreenshotPDFView *)self currentPDFView];
+  [currentPDFView2 setDisplayBox:0];
 
   [(_SSSScreenshotPDFView *)self setNeedsLayout];
 }
@@ -593,27 +593,27 @@ LABEL_11:
 {
   [(_SSSScreenshotPDFView *)self setIsInCropMode:0];
   [(_SSSScreenshotPDFView *)self invalidateIntrinsicContentSize];
-  v3 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  [v3 setDisplayBox:1];
+  currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+  [currentPDFView setDisplayBox:1];
 
-  v4 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  v5 = [v4 documentScrollView];
+  currentPDFView2 = [(_SSSScreenshotPDFView *)self currentPDFView];
+  documentScrollView = [currentPDFView2 documentScrollView];
 
   if (self->_scrollZoomScale != 0.0)
   {
-    [v5 setZoomScale:?];
+    [documentScrollView setZoomScale:?];
   }
 
-  [v5 setContentOffset:{self->_scrollOffset.x, self->_scrollOffset.y}];
+  [documentScrollView setContentOffset:{self->_scrollOffset.x, self->_scrollOffset.y}];
   [(_SSSScreenshotPDFView *)self setNeedsLayout];
 }
 
 - (void)exitMarkupMode
 {
-  v3 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  v6 = [v3 documentScrollView];
+  currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+  documentScrollView = [currentPDFView documentScrollView];
 
-  [v6 contentOffset];
+  [documentScrollView contentOffset];
   self->_scrollOffset.x = v4;
   self->_scrollOffset.y = v5;
   [(_SSSScreenshotPDFView *)self invalidateIntrinsicContentSize];
@@ -621,44 +621,44 @@ LABEL_11:
 
 - (int64_t)currentPDFPage
 {
-  v2 = [(_SSSScreenshotPDFView *)self currentPDFView];
-  v3 = [v2 currentPage];
-  v4 = [v2 document];
-  v5 = [v4 indexForPage:v3];
+  currentPDFView = [(_SSSScreenshotPDFView *)self currentPDFView];
+  currentPage = [currentPDFView currentPage];
+  document = [currentPDFView document];
+  v5 = [document indexForPage:currentPage];
 
   return v5;
 }
 
 - (void)updateViewState
 {
-  v3 = [(_SSSScreenshotAnnotationView *)self screenshot];
-  v4 = [v3 pdfData];
+  screenshot = [(_SSSScreenshotAnnotationView *)self screenshot];
+  pdfData = [screenshot pdfData];
 
-  if (v4)
+  if (pdfData)
   {
-    v5 = [(_SSSScreenshotPDFView *)self currentPDFPage];
-    v6 = [(_SSSScreenshotAnnotationView *)self overlayController];
-    [v6 setViewState:{1, v5}];
+    currentPDFPage = [(_SSSScreenshotPDFView *)self currentPDFPage];
+    overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+    [overlayController setViewState:{1, currentPDFPage}];
   }
 }
 
-- (void)_paperKitPDFDidChangeInView:(id)a3 changeCounter:(unint64_t)a4
+- (void)_paperKitPDFDidChangeInView:(id)view changeCounter:(unint64_t)counter
 {
-  v4 = [(_SSSScreenshotAnnotationView *)self screenshot:a3];
+  v4 = [(_SSSScreenshotAnnotationView *)self screenshot:view];
   [v4 undoStateMightHaveChanged];
 }
 
-- (void)_paperKitPDFView:(id)a3 startEditingOpacityInAccessoryView:(id)a4
+- (void)_paperKitPDFView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(_SSSScreenshotPDFView *)self delegate];
-  [v6 pdfView:self startEditingOpacityInAccessoryView:v5];
+  accessoryViewCopy = accessoryView;
+  delegate = [(_SSSScreenshotPDFView *)self delegate];
+  [delegate pdfView:self startEditingOpacityInAccessoryView:accessoryViewCopy];
 }
 
-- (id)_paperKitPDFViewOverlayViewController:(id)a3
+- (id)_paperKitPDFViewOverlayViewController:(id)controller
 {
-  v4 = [(_SSSScreenshotPDFView *)self delegate];
-  v5 = [v4 pdfViewOverlayViewController:self];
+  delegate = [(_SSSScreenshotPDFView *)self delegate];
+  v5 = [delegate pdfViewOverlayViewController:self];
 
   return v5;
 }

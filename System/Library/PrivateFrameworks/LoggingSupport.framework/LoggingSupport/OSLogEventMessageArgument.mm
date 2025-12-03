@@ -1,6 +1,6 @@
 @interface OSLogEventMessageArgument
 - (NSObject)objectRepresentation;
-- (OSLogEventMessageArgument)initWithProxy:(id)a3 index:(unint64_t)a4;
+- (OSLogEventMessageArgument)initWithProxy:(id)proxy index:(unint64_t)index;
 - (double)doubleValue;
 - (double)longDoubleValue;
 - (int64_t)int64Value;
@@ -16,27 +16,27 @@
 - (double)longDoubleValue
 {
   v2 = 0.0;
-  if (![a1 availability])
+  if (![self availability])
   {
-    v3 = a1[2];
+    v3 = self[2];
     if ((*(v3 + 16) & 0x10) != 0)
     {
       scalar = os_log_fmt_read_scalar(v3 + 8, *v3, *(v3 + 82));
-      v5 = [a1 scalarCategory];
-      if (v5 > 2)
+      scalarCategory = [self scalarCategory];
+      if (scalarCategory > 2)
       {
-        if (v5 == 3 || v5 == 4)
+        if (scalarCategory == 3 || scalarCategory == 4)
         {
           return *&scalar;
         }
       }
 
-      else if (v5 == 1)
+      else if (scalarCategory == 1)
       {
         return scalar;
       }
 
-      else if (v5 == 2)
+      else if (scalarCategory == 2)
       {
         return scalar;
       }
@@ -55,21 +55,21 @@
     if ((rawArg->var1.var1 & 0x10) != 0)
     {
       scalar = os_log_fmt_read_scalar(&rawArg->var1, rawArg->var0, WORD1(rawArg[1].var0));
-      v6 = [(OSLogEventMessageArgument *)self scalarCategory];
-      if (v6 > 2)
+      scalarCategory = [(OSLogEventMessageArgument *)self scalarCategory];
+      if (scalarCategory > 2)
       {
-        if (v6 == 3 || v6 == 4)
+        if (scalarCategory == 3 || scalarCategory == 4)
         {
           return *&scalar;
         }
       }
 
-      else if (v6 == 1)
+      else if (scalarCategory == 1)
       {
         return scalar;
       }
 
-      else if (v6 == 2)
+      else if (scalarCategory == 2)
       {
         return scalar;
       }
@@ -87,13 +87,13 @@
     if ((rawArg->var1.var1 & 0x10) != 0)
     {
       v4 = COERCE_DOUBLE(os_log_fmt_read_scalar(&rawArg->var1, rawArg->var0, WORD1(rawArg[1].var0)));
-      v6 = [(OSLogEventMessageArgument *)self scalarCategory];
-      if (v6 - 1 < 2)
+      scalarCategory = [(OSLogEventMessageArgument *)self scalarCategory];
+      if (scalarCategory - 1 < 2)
       {
         return *&v4;
       }
 
-      if (v6 == 4 || v6 == 3)
+      if (scalarCategory == 4 || scalarCategory == 3)
       {
         *&v4 = v4;
         return *&v4;
@@ -113,13 +113,13 @@
     if ((rawArg->var1.var1 & 0x10) != 0)
     {
       v4 = COERCE_DOUBLE(os_log_fmt_read_scalar(&rawArg->var1, rawArg->var0, WORD1(rawArg[1].var0)));
-      v6 = [(OSLogEventMessageArgument *)self scalarCategory];
-      if (v6 - 1 < 2)
+      scalarCategory = [(OSLogEventMessageArgument *)self scalarCategory];
+      if (scalarCategory - 1 < 2)
       {
         return *&v4;
       }
 
-      if (v6 == 4 || v6 == 3)
+      if (scalarCategory == 4 || scalarCategory == 3)
       {
         *&v4 = v4;
         return *&v4;
@@ -147,10 +147,10 @@
   }
 
   scalar = os_log_fmt_read_scalar(&rawArg->var1, rawArg->var0, WORD1(rawArg[1].var0));
-  v7 = [(OSLogEventMessageArgument *)self scalarCategory];
-  if (v7 > 2)
+  scalarCategory = [(OSLogEventMessageArgument *)self scalarCategory];
+  if (scalarCategory > 2)
   {
-    if (v7 != 3 && v7 != 4)
+    if (scalarCategory != 3 && scalarCategory != 4)
     {
       return 0;
     }
@@ -162,9 +162,9 @@
 
   else
   {
-    if (v7 != 1)
+    if (scalarCategory != 1)
     {
-      if (v7 == 2)
+      if (scalarCategory == 2)
       {
         v8 = MEMORY[0x277CCABB0];
 
@@ -279,7 +279,7 @@
   }
 }
 
-- (OSLogEventMessageArgument)initWithProxy:(id)a3 index:(unint64_t)a4
+- (OSLogEventMessageArgument)initWithProxy:(id)proxy index:(unint64_t)index
 {
   v9.receiver = self;
   v9.super_class = OSLogEventMessageArgument;
@@ -287,9 +287,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_decomposedMessage = a3;
-    v6->_rawArg = [a3 _rawPlaceholderForIndex:a4];
-    v7->_sizeofLong = [a3 sizeOfLong];
+    v6->_decomposedMessage = proxy;
+    v6->_rawArg = [proxy _rawPlaceholderForIndex:index];
+    v7->_sizeofLong = [proxy sizeOfLong];
   }
 
   return v7;

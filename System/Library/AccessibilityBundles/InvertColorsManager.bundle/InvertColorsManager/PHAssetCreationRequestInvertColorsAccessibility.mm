@@ -1,22 +1,22 @@
 @interface PHAssetCreationRequestInvertColorsAccessibility
-+ (id)creationRequestForAssetFromScreenshotImage:(id)a3;
++ (id)creationRequestForAssetFromScreenshotImage:(id)image;
 @end
 
 @implementation PHAssetCreationRequestInvertColorsAccessibility
 
-+ (id)creationRequestForAssetFromScreenshotImage:(id)a3
++ (id)creationRequestForAssetFromScreenshotImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v5 = [AXInvertColorsAppHelper invertImage:v4];
+    v5 = [AXInvertColorsAppHelper invertImage:imageCopy];
 
-    v4 = v5;
+    imageCopy = v5;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PHAssetCreationRequestInvertColorsAccessibility;
-  v6 = objc_msgSendSuper2(&v8, "creationRequestForAssetFromScreenshotImage:", v4);
+  v6 = objc_msgSendSuper2(&v8, "creationRequestForAssetFromScreenshotImage:", imageCopy);
 
   return v6;
 }

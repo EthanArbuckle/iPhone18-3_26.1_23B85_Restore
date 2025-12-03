@@ -1,13 +1,13 @@
 @interface IATextInputActionsInputMode
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (IATextInputActionsInputMode)initWithCoder:(id)a3;
-- (IATextInputActionsInputMode)initWithLanguage:(id)a3 region:(id)a4 keyboardVariant:(id)a5 keyboardLayout:(id)a6 keyboardType:(id)a7 inputModeIdentifier:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IATextInputActionsInputMode)initWithCoder:(id)coder;
+- (IATextInputActionsInputMode)initWithLanguage:(id)language region:(id)region keyboardVariant:(id)variant keyboardLayout:(id)layout keyboardType:(id)type inputModeIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
 - (id)inputModeUniqueString;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IATextInputActionsInputMode
@@ -160,32 +160,32 @@
   return v33;
 }
 
-- (IATextInputActionsInputMode)initWithLanguage:(id)a3 region:(id)a4 keyboardVariant:(id)a5 keyboardLayout:(id)a6 keyboardType:(id)a7 inputModeIdentifier:(id)a8
+- (IATextInputActionsInputMode)initWithLanguage:(id)language region:(id)region keyboardVariant:(id)variant keyboardLayout:(id)layout keyboardType:(id)type inputModeIdentifier:(id)identifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  languageCopy = language;
+  regionCopy = region;
+  variantCopy = variant;
+  layoutCopy = layout;
+  typeCopy = type;
+  identifierCopy = identifier;
   v29.receiver = self;
   v29.super_class = IATextInputActionsInputMode;
   v20 = [(IATextInputActionsInputMode *)&v29 init];
   v22 = v20;
   if (v20)
   {
-    objc_msgSend_setLanguage_(v20, v21, v14);
-    objc_msgSend_setRegion_(v22, v23, v15);
-    objc_msgSend_setKeyboardVariant_(v22, v24, v16);
-    objc_msgSend_setKeyboardLayout_(v22, v25, v17);
-    objc_msgSend_setKeyboardType_(v22, v26, v18);
-    objc_msgSend_setInputModeIdentifier_(v22, v27, v19);
+    objc_msgSend_setLanguage_(v20, v21, languageCopy);
+    objc_msgSend_setRegion_(v22, v23, regionCopy);
+    objc_msgSend_setKeyboardVariant_(v22, v24, variantCopy);
+    objc_msgSend_setKeyboardLayout_(v22, v25, layoutCopy);
+    objc_msgSend_setKeyboardType_(v22, v26, typeCopy);
+    objc_msgSend_setInputModeIdentifier_(v22, v27, identifierCopy);
   }
 
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(IATextInputActionsInputMode);
   v7 = objc_msgSend_language(self, v5, v6);
@@ -209,18 +209,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     isEqualToString = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v10 = objc_msgSend_inputModeUniqueString(self, v8, v9);
       v13 = objc_msgSend_inputModeUniqueString(v7, v11, v12);
 
@@ -236,41 +236,41 @@
   return isEqualToString;
 }
 
-- (IATextInputActionsInputMode)initWithCoder:(id)a3
+- (IATextInputActionsInputMode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = IATextInputActionsInputMode;
   v5 = [(IATextInputActionsInputMode *)&v31 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"language");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"language");
     language = v5->_language;
     v5->_language = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"region");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"region");
     region = v5->_region;
     v5->_region = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"keyboardVariant");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"keyboardVariant");
     keyboardVariant = v5->_keyboardVariant;
     v5->_keyboardVariant = v16;
 
     v18 = objc_opt_class();
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"keyboardLayout");
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"keyboardLayout");
     keyboardLayout = v5->_keyboardLayout;
     v5->_keyboardLayout = v20;
 
     v22 = objc_opt_class();
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"keyboardType");
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"keyboardType");
     keyboardType = v5->_keyboardType;
     v5->_keyboardType = v24;
 
     v26 = objc_opt_class();
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v26, @"inputModeIdentifier");
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v26, @"inputModeIdentifier");
     inputModeIdentifier = v5->_inputModeIdentifier;
     v5->_inputModeIdentifier = v28;
   }
@@ -278,47 +278,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v11 = a3;
-  objc_msgSend_encodeObject_forKey_(v11, v5, language, @"language");
-  objc_msgSend_encodeObject_forKey_(v11, v6, self->_region, @"region");
-  objc_msgSend_encodeObject_forKey_(v11, v7, self->_keyboardVariant, @"keyboardVariant");
-  objc_msgSend_encodeObject_forKey_(v11, v8, self->_keyboardLayout, @"keyboardLayout");
-  objc_msgSend_encodeObject_forKey_(v11, v9, self->_keyboardType, @"keyboardType");
-  objc_msgSend_encodeObject_forKey_(v11, v10, self->_inputModeIdentifier, @"inputModeIdentifier");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, language, @"language");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_region, @"region");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_keyboardVariant, @"keyboardVariant");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_keyboardLayout, @"keyboardLayout");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_keyboardType, @"keyboardType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_inputModeIdentifier, @"inputModeIdentifier");
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = IATextInputActionsInputMode;
   v6 = [(IATextInputActionsInputMode *)&v26 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"language");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"language");
     language = v6->_language;
     v6->_language = v7;
 
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"region");
+    v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"region");
     region = v6->_region;
     v6->_region = v10;
 
-    v13 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"keyboardVariant");
+    v13 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v12, @"keyboardVariant");
     keyboardVariant = v6->_keyboardVariant;
     v6->_keyboardVariant = v13;
 
-    v16 = objc_msgSend_objectForKeyedSubscript_(v4, v15, @"keyboardLayout");
+    v16 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v15, @"keyboardLayout");
     keyboardLayout = v6->_keyboardLayout;
     v6->_keyboardLayout = v16;
 
-    v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"keyboardType");
+    v19 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v18, @"keyboardType");
     keyboardType = v6->_keyboardType;
     v6->_keyboardType = v19;
 
-    v22 = objc_msgSend_objectForKeyedSubscript_(v4, v21, @"inputModeIdentifier");
+    v22 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v21, @"inputModeIdentifier");
     inputModeIdentifier = v6->_inputModeIdentifier;
     v6->_inputModeIdentifier = v22;
 

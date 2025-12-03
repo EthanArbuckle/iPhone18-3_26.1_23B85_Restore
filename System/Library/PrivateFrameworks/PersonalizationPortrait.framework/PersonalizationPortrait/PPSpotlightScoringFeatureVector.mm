@@ -1,10 +1,10 @@
 @interface PPSpotlightScoringFeatureVector
-+ (id)decodeFeatureVectorFromData:(id)a3 version:(id)a4;
-- (BOOL)containsQidString:(id)a3;
++ (id)decodeFeatureVectorFromData:(id)data version:(id)version;
+- (BOOL)containsQidString:(id)string;
 - (PPSpotlightScoringFeatureVector)init;
 - (id)encodeAsData;
 - (id)qidStrings;
-- (void)addQidString:(id)a3;
+- (void)addQidString:(id)string;
 @end
 
 @implementation PPSpotlightScoringFeatureVector
@@ -12,8 +12,8 @@
 - (id)qidStrings
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [(NSMutableSet *)self->_features allObjects];
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_4632];
+  allObjects = [(NSMutableSet *)self->_features allObjects];
+  v5 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_4632];
   v6 = [v3 initWithArray:v5];
 
   return v6;
@@ -31,9 +31,9 @@ id __45__PPSpotlightScoringFeatureVector_qidStrings__block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (BOOL)containsQidString:(id)a3
+- (BOOL)containsQidString:(id)string
 {
-  v4 = qidStringToNumeric(a3);
+  v4 = qidStringToNumeric(string);
   features = self->_features;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
   LOBYTE(features) = [(NSMutableSet *)features containsObject:v6];
@@ -41,9 +41,9 @@ id __45__PPSpotlightScoringFeatureVector_qidStrings__block_invoke(uint64_t a1, v
   return features;
 }
 
-- (void)addQidString:(id)a3
+- (void)addQidString:(id)string
 {
-  v4 = qidStringToNumeric(a3);
+  v4 = qidStringToNumeric(string);
   features = self->_features;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
   [(NSMutableSet *)features addObject:v6];
@@ -83,8 +83,8 @@ id __45__PPSpotlightScoringFeatureVector_qidStrings__block_invoke(uint64_t a1, v
           objc_enumerationMutation(v7);
         }
 
-        v17 = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
-        [v6 appendBytes:&v17 length:4];
+        unsignedIntValue = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
+        [v6 appendBytes:&unsignedIntValue length:4];
       }
 
       v9 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -95,10 +95,10 @@ id __45__PPSpotlightScoringFeatureVector_qidStrings__block_invoke(uint64_t a1, v
 
   if (([v6 length] & 3) != 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [v6 length];
     v16 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"PPSpotlightScoringFeatureVector.m" lineNumber:38 description:{@"Invalid NSData size of %tu in %@", v15, v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSpotlightScoringFeatureVector.m" lineNumber:38 description:{@"Invalid NSData size of %tu in %@", v15, v16}];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -121,12 +121,12 @@ id __45__PPSpotlightScoringFeatureVector_qidStrings__block_invoke(uint64_t a1, v
   return v2;
 }
 
-+ (id)decodeFeatureVectorFromData:(id)a3 version:(id)a4
++ (id)decodeFeatureVectorFromData:(id)data version:(id)version
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  dataCopy = data;
+  versionCopy = version;
+  if (![dataCopy length])
   {
     v12 = pp_universal_search_log_handle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -144,14 +144,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [v8 doubleValue];
+  [versionCopy doubleValue];
   if (v9 == 1.0)
   {
     v10 = pp_universal_search_log_handle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v33 = NSStringFromSelector(a2);
-      [v8 doubleValue];
+      [versionCopy doubleValue];
       *buf = 138412546;
       v38 = v33;
       v39 = 2048;
@@ -159,14 +159,14 @@ LABEL_14:
       _os_log_debug_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_DEBUG, "%@: decoding feature vector of deprecated version: %f", buf, 0x16u);
     }
 
-    v11 = [v7 length];
-    if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [v7 length], 1) >= 0x2AAAAAAAAAAAAAABuLL)
+    v11 = [dataCopy length];
+    if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [dataCopy length], 1) >= 0x2AAAAAAAAAAAAAABuLL)
     {
       v12 = pp_default_log_handle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v13 = NSStringFromSelector(a2);
-        v14 = [v7 length];
+        v14 = [dataCopy length];
         *buf = 138412546;
         v38 = v13;
         v39 = 2048;
@@ -188,7 +188,7 @@ LABEL_13:
       do
       {
         *buf = 0;
-        [v7 getBytes:buf range:{v24, 4}];
+        [dataCopy getBytes:buf range:{v24, 4}];
         v26 = v21[1];
         v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*buf];
         [v26 addObject:v27];
@@ -202,7 +202,7 @@ LABEL_13:
 
   else
   {
-    [v8 doubleValue];
+    [versionCopy doubleValue];
     v16 = v15;
     v17 = +[PPSpotlightScoringFeatureVector featureVectorVersion];
     [v17 doubleValue];
@@ -214,7 +214,7 @@ LABEL_13:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = NSStringFromSelector(a2);
-        [v8 doubleValue];
+        [versionCopy doubleValue];
         *buf = 138412546;
         v38 = v13;
         v39 = 2048;
@@ -226,12 +226,12 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v28 = [v7 length];
-    if (([v7 length] & 3) != 0)
+    v28 = [dataCopy length];
+    if (([dataCopy length] & 3) != 0)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v36 = NSStringFromSelector(a2);
-      [v35 handleFailureInMethod:a2 object:a1 file:@"PPSpotlightScoringFeatureVector.m" lineNumber:81 description:{@"%@: Invalid NSData size of %tu", v36, objc_msgSend(v7, "length")}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PPSpotlightScoringFeatureVector.m" lineNumber:81 description:{@"%@: Invalid NSData size of %tu", v36, objc_msgSend(dataCopy, "length")}];
     }
 
     v21 = objc_opt_new();
@@ -242,7 +242,7 @@ LABEL_13:
       do
       {
         *buf = 0;
-        [v7 getBytes:buf range:{v29, 4}];
+        [dataCopy getBytes:buf range:{v29, 4}];
         v31 = v21[1];
         v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*buf];
         [v31 addObject:v32];

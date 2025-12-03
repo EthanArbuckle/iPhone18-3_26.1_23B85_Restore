@@ -1,24 +1,24 @@
 @interface PGSensitiveLocationBlocklistConfiguration
-+ (BOOL)dateInterval:(id)a3 intersectsSensitiveDateIntervals:(id)a4;
-+ (BOOL)isAssetAtSensitiveLocationAndDate:(id)a3;
-+ (BOOL)isSensitiveLocation:(id)a3 duringDateInterval:(id)a4;
++ (BOOL)dateInterval:(id)interval intersectsSensitiveDateIntervals:(id)intervals;
++ (BOOL)isAssetAtSensitiveLocationAndDate:(id)date;
++ (BOOL)isSensitiveLocation:(id)location duringDateInterval:(id)interval;
 + (id)dateFormatter;
-+ (id)obfuscatedBlocklistFromUnobfuscatedBlocklist:(id)a3;
-+ (id)resolveConfigurationDictionary:(id)a3;
++ (id)obfuscatedBlocklistFromUnobfuscatedBlocklist:(id)blocklist;
++ (id)resolveConfigurationDictionary:(id)dictionary;
 + (id)sensitiveLocationBlocklist;
 + (id)sensitiveLocationBlocklistConfigurations;
 + (id)sensitiveLocationBlocklistConfigurationsLocal;
 + (id)sensitiveLocationBlocklistLocal;
-+ (id)unobfuscatedBlocklistFromObfuscatedBlocklist:(id)a3;
-- (PGSensitiveLocationBlocklistConfiguration)initWithConfigurationDictionary:(id)a3;
++ (id)unobfuscatedBlocklistFromObfuscatedBlocklist:(id)blocklist;
+- (PGSensitiveLocationBlocklistConfiguration)initWithConfigurationDictionary:(id)dictionary;
 @end
 
 @implementation PGSensitiveLocationBlocklistConfiguration
 
-- (PGSensitiveLocationBlocklistConfiguration)initWithConfigurationDictionary:(id)a3
+- (PGSensitiveLocationBlocklistConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [PGSensitiveLocationBlocklistConfiguration resolveConfigurationDictionary:a3];
+  v4 = [PGSensitiveLocationBlocklistConfiguration resolveConfigurationDictionary:dictionary];
   v5 = [[PGDictionaryConfigurationSource alloc] initWithDictionary:v4];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -41,15 +41,15 @@
 + (id)sensitiveLocationBlocklistConfigurationsLocal
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 sensitiveLocationBlocklistLocal];
-  if ([v2 count])
+  sensitiveLocationBlocklistLocal = [self sensitiveLocationBlocklistLocal];
+  if ([sensitiveLocationBlocklistLocal count])
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v2;
+    v4 = sensitiveLocationBlocklistLocal;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -101,25 +101,25 @@
   if (v5)
   {
     v6 = +[PGLogging sharedLogging];
-    v7 = [v6 loggingConnection];
+    loggingConnection = [v6 loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v14 = v5;
-      _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error loading local file: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error loading local file: %@", buf, 0xCu);
     }
   }
 
   if (![v4 count])
   {
     v8 = +[PGLogging sharedLogging];
-    v9 = [v8 loggingConnection];
+    loggingConnection2 = [v8 loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error: Empty local file loaded.", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error: Empty local file loaded.", buf, 2u);
     }
   }
 
@@ -128,17 +128,17 @@
   return v4;
 }
 
-+ (id)obfuscatedBlocklistFromUnobfuscatedBlocklist:(id)a3
++ (id)obfuscatedBlocklistFromUnobfuscatedBlocklist:(id)blocklist
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blocklistCopy = blocklist;
   v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v40 = +[PGSensitiveLocationBlocklistConfiguration dateFormatter];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v4 = v3;
+  v4 = blocklistCopy;
   v33 = [v4 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v33)
   {
@@ -256,17 +256,17 @@
   return v32;
 }
 
-+ (id)unobfuscatedBlocklistFromObfuscatedBlocklist:(id)a3
++ (id)unobfuscatedBlocklistFromObfuscatedBlocklist:(id)blocklist
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blocklistCopy = blocklist;
   v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v40 = +[PGSensitiveLocationBlocklistConfiguration dateFormatter];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v4 = v3;
+  v4 = blocklistCopy;
   v33 = [v4 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v33)
   {
@@ -384,31 +384,31 @@
   return v32;
 }
 
-+ (BOOL)isAssetAtSensitiveLocationAndDate:(id)a3
++ (BOOL)isAssetAtSensitiveLocationAndDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 localCreationDate];
+  dateCopy = date;
+  localCreationDate = [dateCopy localCreationDate];
 
-  if (v5)
+  if (localCreationDate)
   {
     v6 = objc_alloc(MEMORY[0x277CCA970]);
-    v7 = [v4 localCreationDate];
-    v8 = [v4 localCreationDate];
-    v9 = [v6 initWithStartDate:v7 endDate:v8];
+    localCreationDate2 = [dateCopy localCreationDate];
+    localCreationDate3 = [dateCopy localCreationDate];
+    loggingConnection = [v6 initWithStartDate:localCreationDate2 endDate:localCreationDate3];
 
-    v10 = [v4 location];
-    v11 = [a1 isSensitiveLocation:v10 duringDateInterval:v9];
+    location = [dateCopy location];
+    v11 = [self isSensitiveLocation:location duringDateInterval:loggingConnection];
   }
 
   else
   {
     v12 = +[PGLogging sharedLogging];
-    v9 = [v12 loggingConnection];
+    loggingConnection = [v12 loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v14 = 0;
-      _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error: Asset passed in with no local creation date.", v14, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSenLoc] Error: Asset passed in with no local creation date.", v14, 2u);
     }
 
     v11 = 0;
@@ -417,16 +417,16 @@
   return v11;
 }
 
-+ (BOOL)dateInterval:(id)a3 intersectsSensitiveDateIntervals:(id)a4
++ (BOOL)dateInterval:(id)interval intersectsSensitiveDateIntervals:(id)intervals
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  intervalsCopy = intervals;
+  v7 = [intervalsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -436,17 +436,17 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(intervalsCopy);
         }
 
-        if ([v5 intersectsDateInterval:{*(*(&v12 + 1) + 8 * i), v12}])
+        if ([intervalCopy intersectsDateInterval:{*(*(&v12 + 1) + 8 * i), v12}])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [intervalsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -462,21 +462,21 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)isSensitiveLocation:(id)a3 duringDateInterval:(id)a4
++ (BOOL)isSensitiveLocation:(id)location duringDateInterval:(id)interval
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  intervalCopy = interval;
+  if (location)
   {
-    [a3 coordinate];
+    [location coordinate];
     v32 = v7;
     v33 = v8;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [a1 sensitiveLocationBlocklistConfigurations];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    sensitiveLocationBlocklistConfigurations = [self sensitiveLocationBlocklistConfigurations];
+    v10 = [sensitiveLocationBlocklistConfigurations countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v10)
     {
       v11 = v10;
@@ -487,7 +487,7 @@ LABEL_11:
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(sensitiveLocationBlocklistConfigurations);
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
@@ -497,13 +497,13 @@ LABEL_11:
           v18 = CLLocationCoordinate2DMake(v16, v17);
           CLLocationCoordinate2DGetDistanceFrom();
           v20 = v19;
-          v21 = [v14 sensitiveDateIntervals];
+          sensitiveDateIntervals = [v14 sensitiveDateIntervals];
           [v14 radius];
-          v23 = v20 <= v22 && v21 == 0;
+          v23 = v20 <= v22 && sensitiveDateIntervals == 0;
           v24 = v23;
           if (!v23 && v20 <= v22)
           {
-            v24 = [a1 dateInterval:v6 intersectsSensitiveDateIntervals:v21];
+            v24 = [self dateInterval:intervalCopy intersectsSensitiveDateIntervals:sensitiveDateIntervals];
           }
 
           if (v24)
@@ -513,7 +513,7 @@ LABEL_11:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v11 = [sensitiveLocationBlocklistConfigurations countByEnumeratingWithState:&v28 objects:v34 count:16];
         if (v11)
         {
           continue;
@@ -542,7 +542,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistConfigurations__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sensitiveLocationBlocklistConfigurations_onceToken != -1)
   {
     dispatch_once(&sensitiveLocationBlocklistConfigurations_onceToken, block);
@@ -611,33 +611,33 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
   if (![v4 count])
   {
     v5 = +[PGLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "[PGSenLoc] Couldn't load the senloc, falling back...", v9, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSenLoc] Couldn't load the senloc, falling back...", v9, 2u);
     }
 
-    v7 = [a1 sensitiveLocationBlocklistLocal];
+    sensitiveLocationBlocklistLocal = [self sensitiveLocationBlocklistLocal];
 
-    v4 = v7;
+    v4 = sensitiveLocationBlocklistLocal;
   }
 
   return v4;
 }
 
-+ (id)resolveConfigurationDictionary:(id)a3
++ (id)resolveConfigurationDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 objectForKeyedSubscript:@"e"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"e"];
   v36 = +[PGSensitiveLocationBlocklistConfiguration dateFormatter];
   if (v5)
   {
     v33 = v4;
-    v34 = v3;
+    v34 = dictionaryCopy;
     v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v37 = 0u;
     v38 = 0u;
@@ -697,11 +697,11 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
     v4 = v33;
     [v33 setObject:v35 forKeyedSubscript:@"sensitiveDateIntervals"];
 
-    v3 = v34;
+    dictionaryCopy = v34;
     v5 = v32;
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"n"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"n"];
   if (v18)
   {
     v19 = [PGObfuscation plaintextNumberFromObfuscatedString:v18];
@@ -712,10 +712,10 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
 
   if (v20)
   {
-    v21 = [v3 objectForKeyedSubscript:@"c"];
-    if (v21)
+    loggingConnection2 = [dictionaryCopy objectForKeyedSubscript:@"c"];
+    if (loggingConnection2)
     {
-      v22 = [PGObfuscation plaintextNumberFromObfuscatedString:v21];
+      v22 = [PGObfuscation plaintextNumberFromObfuscatedString:loggingConnection2];
       [v4 setObject:v22 forKeyedSubscript:@"longitude"];
     }
 
@@ -723,10 +723,10 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
 
     if (v23)
     {
-      v24 = [v3 objectForKeyedSubscript:@"g"];
-      if (v24)
+      loggingConnection = [dictionaryCopy objectForKeyedSubscript:@"g"];
+      if (loggingConnection)
       {
-        v25 = [PGObfuscation plaintextNumberFromObfuscatedString:v24];
+        v25 = [PGObfuscation plaintextNumberFromObfuscatedString:loggingConnection];
         [v4 setObject:v25 forKeyedSubscript:@"radius"];
       }
 
@@ -742,13 +742,13 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
     else
     {
       v29 = +[PGLogging sharedLogging];
-      v24 = [v29 loggingConnection];
+      loggingConnection = [v29 loggingConnection];
 
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v42 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_ERROR, "[PGSensitiveLocationBlocklistConfiguration] Error unobfuscating blocklist, couldn't find or unobfuscate required key longitude in entry. Entry is %@", buf, 0xCu);
+        v42 = dictionaryCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSensitiveLocationBlocklistConfiguration] Error unobfuscating blocklist, couldn't find or unobfuscate required key longitude in entry. Entry is %@", buf, 0xCu);
       }
 
       v27 = 0;
@@ -758,13 +758,13 @@ void __85__PGSensitiveLocationBlocklistConfiguration_sensitiveLocationBlocklistC
   else
   {
     v28 = +[PGLogging sharedLogging];
-    v21 = [v28 loggingConnection];
+    loggingConnection2 = [v28 loggingConnection];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v42 = v3;
-      _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "[PGSensitiveLocationBlocklistConfiguration] Error unobfuscating blocklist, couldn't find or unobfuscate required key latitude in entry. Entry is %@", buf, 0xCu);
+      v42 = dictionaryCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGSensitiveLocationBlocklistConfiguration] Error unobfuscating blocklist, couldn't find or unobfuscate required key latitude in entry. Entry is %@", buf, 0xCu);
     }
 
     v27 = 0;

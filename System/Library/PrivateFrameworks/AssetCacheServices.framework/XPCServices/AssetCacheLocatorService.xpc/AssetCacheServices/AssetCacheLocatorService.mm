@@ -1,55 +1,55 @@
 @interface AssetCacheLocatorService
 - (AssetCacheLocatorService)init;
 - (BOOL)amRunningOnMyQueue;
-- (BOOL)doesConnection:(id)a3 haveEntitlement:(const char *)a4;
-- (BOOL)doesServer:(id)a3 haveCapabilities:(id)a4 tag:(unsigned int)a5;
-- (BOOL)handleEvent:(id)a3 forConnection:(id)a4;
-- (BOOL)handleImportEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5;
-- (BOOL)handleIntrospectEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5;
-- (BOOL)handleLocateEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5;
-- (BOOL)handleRecentlySeenEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5;
-- (BOOL)handleUpdateHealthEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5;
-- (BOOL)isAddress:(id)a3 inCompiledRanges:(id)a4 tag:(unsigned int)a5;
-- (BOOL)transferVolatileStateFromDiskCache:(id)a3 toDiskCache:(id)a4 tag:(unsigned int)a5;
-- (id)NSObjectFromXPCObject:(id)a3 tag:(unsigned int)a4;
-- (id)XPCObjectFromNSObject:(id)a3 tag:(unsigned int)a4;
-- (id)cachedEntryCalled:(id)a3 withKey:(id)a4 forNetworkIdentifiers:(id)a5 validityInterval:(double *)a6 tag:(unsigned int)a7;
-- (id)cachedServers:(id)a3 forAffinityID:(id)a4 tag:(unsigned int)a5;
-- (id)choose:(int)a3 fromArray:(id)a4 sorted:(BOOL)a5 other:(id)a6 tag:(unsigned int)a7;
-- (id)compileRanges:(id)a3 tag:(unsigned int)a4;
-- (id)describeCapableServers:(id)a3 fromAvailableServers:(id)a4 withOtherServers:(id)a5;
-- (id)makeBootTimeWithTag:(unsigned int)a3;
-- (id)makeRangesFromDNSRecordNamed:(id)a3 withType:(int)a4 data:(const char *)a5 length:(unint64_t)a6 more:(BOOL *)a7 error:(id *)a8 tag:(unsigned int)a9;
+- (BOOL)doesConnection:(id)connection haveEntitlement:(const char *)entitlement;
+- (BOOL)doesServer:(id)server haveCapabilities:(id)capabilities tag:(unsigned int)tag;
+- (BOOL)handleEvent:(id)event forConnection:(id)connection;
+- (BOOL)handleImportEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag;
+- (BOOL)handleIntrospectEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag;
+- (BOOL)handleLocateEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag;
+- (BOOL)handleRecentlySeenEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag;
+- (BOOL)handleUpdateHealthEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag;
+- (BOOL)isAddress:(id)address inCompiledRanges:(id)ranges tag:(unsigned int)tag;
+- (BOOL)transferVolatileStateFromDiskCache:(id)cache toDiskCache:(id)diskCache tag:(unsigned int)tag;
+- (id)NSObjectFromXPCObject:(id)object tag:(unsigned int)tag;
+- (id)XPCObjectFromNSObject:(id)object tag:(unsigned int)tag;
+- (id)cachedEntryCalled:(id)called withKey:(id)key forNetworkIdentifiers:(id)identifiers validityInterval:(double *)interval tag:(unsigned int)tag;
+- (id)cachedServers:(id)servers forAffinityID:(id)d tag:(unsigned int)tag;
+- (id)choose:(int)choose fromArray:(id)array sorted:(BOOL)sorted other:(id)other tag:(unsigned int)tag;
+- (id)compileRanges:(id)ranges tag:(unsigned int)tag;
+- (id)describeCapableServers:(id)servers fromAvailableServers:(id)availableServers withOtherServers:(id)otherServers;
+- (id)makeBootTimeWithTag:(unsigned int)tag;
+- (id)makeRangesFromDNSRecordNamed:(id)named withType:(int)type data:(const char *)data length:(unint64_t)length more:(BOOL *)more error:(id *)error tag:(unsigned int)tag;
 - (id)makeSoftwareVersions;
-- (id)objectWithError:(id)a3;
-- (id)redactObject:(id)a3;
-- (id)redactStringsFromObject:(id)a3 usingBlock:(id)a4;
-- (id)safeString:(const char *)a3 length:(unint64_t)a4 forceHex:(BOOL)a5;
-- (id)sanitizeRanges:(id)a3 fromSource:(id)a4 tag:(unsigned int)a5;
-- (id)servers:(id)a3 byAppendingServers:(id)a4;
-- (id)systemGroupContainerPathWithGroupIdentifier:(id)a3;
-- (int)probeCacheWithLabel:(id)a3 capabilities:(id)a4 affinityID:(id)a5 hitServers:(id *)a6 hitServersAreSorted:(BOOL *)a7 hitOtherServers:(id *)a8 hitValidityInterval:(double *)a9 tag:(unsigned int)a10;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)cacheServers:(id)a3 forAffinityID:(id)a4 tag:(unsigned int)a5;
-- (void)handleConnection:(id)a3;
-- (void)importToCachingServerAsURL:(id)a3 sourcePath:(id)a4 sourceFileHandle:(id)a5 sourceOffset:(int64_t)a6 sourceLength:(int64_t)a7 method:(id)a8 headers:(id)a9 importStrategies:(id)a10 entitled:(BOOL)a11 callback:(id)a12 callbackQueue:(id)a13 tag:(unsigned int)a14;
-- (void)importToLocalCachingServerAsURL:(id)a3 sourceFileHandle:(id)a4 sourceOffset:(int64_t)a5 sourceLength:(int64_t)a6 method:(id)a7 headers:(id)a8 callback:(id)a9 callbackQueue:(id)a10 tag:(unsigned int)a11;
-- (void)locateCachingServersWithTimeout:(double)a3 capabilities:(id)a4 affinityID:(id)a5 autoRefresh:(BOOL)a6 quickMiss:(BOOL)a7 forceMiss:(BOOL)a8 callback:(id)a9 callbackQueue:(id)a10 tag:(unsigned int)a11;
-- (void)locateLocalCachingServersWithTimeout:(double)a3 localAddresses:(id)a4 gatewayIdentifiers:(id)a5 configurationProfiles:(id)a6 forceDNSRefresh:(BOOL)a7 callback:(id)a8 callbackQueue:(id)a9 tag:(unsigned int)a10;
+- (id)objectWithError:(id)error;
+- (id)redactObject:(id)object;
+- (id)redactStringsFromObject:(id)object usingBlock:(id)block;
+- (id)safeString:(const char *)string length:(unint64_t)length forceHex:(BOOL)hex;
+- (id)sanitizeRanges:(id)ranges fromSource:(id)source tag:(unsigned int)tag;
+- (id)servers:(id)servers byAppendingServers:(id)appendingServers;
+- (id)systemGroupContainerPathWithGroupIdentifier:(id)identifier;
+- (int)probeCacheWithLabel:(id)label capabilities:(id)capabilities affinityID:(id)d hitServers:(id *)servers hitServersAreSorted:(BOOL *)sorted hitOtherServers:(id *)otherServers hitValidityInterval:(double *)interval tag:(unsigned int)self0;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)cacheServers:(id)servers forAffinityID:(id)d tag:(unsigned int)tag;
+- (void)handleConnection:(id)connection;
+- (void)importToCachingServerAsURL:(id)l sourcePath:(id)path sourceFileHandle:(id)handle sourceOffset:(int64_t)offset sourceLength:(int64_t)length method:(id)method headers:(id)headers importStrategies:(id)self0 entitled:(BOOL)self1 callback:(id)self2 callbackQueue:(id)self3 tag:(unsigned int)self4;
+- (void)importToLocalCachingServerAsURL:(id)l sourceFileHandle:(id)handle sourceOffset:(int64_t)offset sourceLength:(int64_t)length method:(id)method headers:(id)headers callback:(id)callback callbackQueue:(id)self0 tag:(unsigned int)self1;
+- (void)locateCachingServersWithTimeout:(double)timeout capabilities:(id)capabilities affinityID:(id)d autoRefresh:(BOOL)refresh quickMiss:(BOOL)miss forceMiss:(BOOL)forceMiss callback:(id)callback callbackQueue:(id)self0 tag:(unsigned int)self1;
+- (void)locateLocalCachingServersWithTimeout:(double)timeout localAddresses:(id)addresses gatewayIdentifiers:(id)identifiers configurationProfiles:(id)profiles forceDNSRefresh:(BOOL)refresh callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)self0;
 - (void)networkChanged;
-- (void)recentlySeenCachingServerWithAutoRefresh:(BOOL)a3 callback:(id)a4 callbackQueue:(id)a5 tag:(unsigned int)a6;
-- (void)refineServers:(id)a3 intoBest:(id *)a4 andOther:(id *)a5 tag:(unsigned int)a6;
-- (void)relocateCachingServersWithTimeout:(double)a3 capabilities:(id)a4 affinityID:(id)a5 forceRefresh:(BOOL)a6 tag:(unsigned int)a7;
-- (void)resolveDNSRecordNamed:(id)a3 withTimeout:(double)a4 errorIfNotFound:(BOOL)a5 callback:(id)a6 callbackQueue:(id)a7 tag:(unsigned int)a8;
-- (void)resolveDNSRecordsWithTimeout:(double)a3 callback:(id)a4 callbackQueue:(id)a5 tag:(unsigned int)a6;
+- (void)recentlySeenCachingServerWithAutoRefresh:(BOOL)refresh callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag;
+- (void)refineServers:(id)servers intoBest:(id *)best andOther:(id *)other tag:(unsigned int)tag;
+- (void)relocateCachingServersWithTimeout:(double)timeout capabilities:(id)capabilities affinityID:(id)d forceRefresh:(BOOL)refresh tag:(unsigned int)tag;
+- (void)resolveDNSRecordNamed:(id)named withTimeout:(double)timeout errorIfNotFound:(BOOL)found callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag;
+- (void)resolveDNSRecordsWithTimeout:(double)timeout callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag;
 - (void)start;
-- (void)uncacheAllAffinitiesWithTag:(unsigned int)a3;
-- (void)updateDiskCacheRefreshTimerWithTag:(unsigned int)a3;
-- (void)updateHealthOfCachingServerWithHostport:(id)a3 healthy:(BOOL)a4 override:(BOOL)a5 callback:(id)a6 callbackQueue:(id)a7 tag:(unsigned int)a8;
+- (void)uncacheAllAffinitiesWithTag:(unsigned int)tag;
+- (void)updateDiskCacheRefreshTimerWithTag:(unsigned int)tag;
+- (void)updateHealthOfCachingServerWithHostport:(id)hostport healthy:(BOOL)healthy override:(BOOL)override callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag;
 - (void)watchForNetworkChanges;
 @end
 
@@ -58,8 +58,8 @@
 - (BOOL)amRunningOnMyQueue
 {
   specific = dispatch_get_specific(off_10003ACF0);
-  v4 = [(AssetCacheLocatorService *)self queue];
-  LOBYTE(self) = specific == v4;
+  queue = [(AssetCacheLocatorService *)self queue];
+  LOBYTE(self) = specific == queue;
 
   return self;
 }
@@ -68,13 +68,13 @@
 {
   if (([(AssetCacheLocatorService *)self testFlags]& 8) == 0)
   {
-    v3 = [(AssetCacheLocatorService *)self queue];
+    queue = [(AssetCacheLocatorService *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001038;
     block[3] = &unk_100034B58;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -357,9 +357,9 @@ LABEL_40:
       v43 = [NSURL URLWithString:v162];
       [(AssetCacheLocatorService *)v2 setLocateURL:v43];
 
-      v44 = [(AssetCacheLocatorService *)v2 locateURL];
+      locateURL = [(AssetCacheLocatorService *)v2 locateURL];
 
-      if (!v44)
+      if (!locateURL)
       {
         [(AssetCacheLocatorService *)v2 setLocateURL:v161];
       }
@@ -402,8 +402,8 @@ LABEL_40:
 
   LOBYTE(buf) = 0;
   v50 = +[NSFileManager defaultManager];
-  v51 = [(AssetCacheLocatorService *)v2 cacheDirPath];
-  v52 = [v50 fileExistsAtPath:v51 isDirectory:&buf];
+  cacheDirPath = [(AssetCacheLocatorService *)v2 cacheDirPath];
+  v52 = [v50 fileExistsAtPath:cacheDirPath isDirectory:&buf];
 
   if (!v52)
   {
@@ -413,14 +413,14 @@ LABEL_40:
   if ((buf & 1) == 0)
   {
     v53 = +[NSFileManager defaultManager];
-    v54 = [(AssetCacheLocatorService *)v2 cacheDirPath];
-    [v53 removeItemAtPath:v54 error:0];
+    cacheDirPath2 = [(AssetCacheLocatorService *)v2 cacheDirPath];
+    [v53 removeItemAtPath:cacheDirPath2 error:0];
 
 LABEL_60:
     v55 = +[NSFileManager defaultManager];
-    v56 = [(AssetCacheLocatorService *)v2 cacheDirPath];
+    cacheDirPath3 = [(AssetCacheLocatorService *)v2 cacheDirPath];
     v169 = 0;
-    v57 = [v55 createDirectoryAtPath:v56 withIntermediateDirectories:1 attributes:0 error:&v169];
+    v57 = [v55 createDirectoryAtPath:cacheDirPath3 withIntermediateDirectories:1 attributes:0 error:&v169];
     v58 = v169;
 
     if (v57)
@@ -441,8 +441,8 @@ LABEL_67:
   }
 
 LABEL_62:
-  v59 = [(AssetCacheLocatorService *)v2 cacheDirPath];
-  v60 = [NSString stringWithFormat:@"%@/%@", v59, @"diskCache.plist"];
+  cacheDirPath4 = [(AssetCacheLocatorService *)v2 cacheDirPath];
+  v60 = [NSString stringWithFormat:@"%@/%@", cacheDirPath4, @"diskCache.plist"];
   [(AssetCacheLocatorService *)v2 setDiskCachePlistPath:v60];
 
   [(AssetCacheLocatorService *)v2 setLocalhostAddresses:&off_100037670];
@@ -500,8 +500,8 @@ LABEL_62:
   [(AssetCacheLocatorService *)v164 setServerCapabilitiesTemplate:v67];
 
   v68 = [ACLSTypeVerifier alloc];
-  v69 = [(AssetCacheLocatorService *)v164 serverCapabilitiesTemplate];
-  v70 = [(ACLSTypeVerifier *)v68 initWithTemplate:v69];
+  serverCapabilitiesTemplate = [(AssetCacheLocatorService *)v164 serverCapabilitiesTemplate];
+  v70 = [(ACLSTypeVerifier *)v68 initWithTemplate:serverCapabilitiesTemplate];
   [(AssetCacheLocatorService *)v164 setServerCapabilitiesVerifier:v70];
 
   v260[0] = &__kCFBooleanFalse;
@@ -524,8 +524,8 @@ LABEL_62:
   v156 = [NSDictionary dictionaryWithObjects:v254 forKeys:v253 count:2];
   v258[1] = v156;
   v257[2] = @"capabilities";
-  v154 = [(AssetCacheLocatorService *)v164 serverCapabilitiesTemplate];
-  v258[2] = v154;
+  serverCapabilitiesTemplate2 = [(AssetCacheLocatorService *)v164 serverCapabilitiesTemplate];
+  v258[2] = serverCapabilitiesTemplate2;
   v257[3] = @"is-portable";
   v252[0] = &__kCFBooleanFalse;
   v251[0] = @"mandatory";
@@ -568,8 +568,8 @@ LABEL_62:
   [(AssetCacheLocatorService *)v164 setServerDetailsTemplate:v77];
 
   v78 = [ACLSTypeVerifier alloc];
-  v79 = [(AssetCacheLocatorService *)v164 serverDetailsTemplate];
-  v80 = [(ACLSTypeVerifier *)v78 initWithTemplate:v79];
+  serverDetailsTemplate = [(AssetCacheLocatorService *)v164 serverDetailsTemplate];
+  v80 = [(ACLSTypeVerifier *)v78 initWithTemplate:serverDetailsTemplate];
   [(AssetCacheLocatorService *)v164 setServerDetailsVerifier:v80];
 
   v240[0] = &__kCFBooleanTrue;
@@ -682,8 +682,8 @@ LABEL_62:
   v150 = [NSDictionary dictionaryWithObjects:v198 forKeys:v197 count:2];
   v202[1] = v150;
   v201[2] = @"details";
-  v149 = [(AssetCacheLocatorService *)v164 serverDetailsTemplate];
-  v202[2] = v149;
+  serverDetailsTemplate2 = [(AssetCacheLocatorService *)v164 serverDetailsTemplate];
+  v202[2] = serverDetailsTemplate2;
   v201[3] = @"failureCount";
   v196[0] = &__kCFBooleanFalse;
   v195[0] = @"mandatory";
@@ -791,12 +791,12 @@ LABEL_62:
 
   v2 = v164;
   v98 = [ACLSTypeVerifier alloc];
-  v99 = [(AssetCacheLocatorService *)v164 diskCacheTemplate];
-  v100 = [(ACLSTypeVerifier *)v98 initWithTemplate:v99];
+  diskCacheTemplate = [(AssetCacheLocatorService *)v164 diskCacheTemplate];
+  v100 = [(ACLSTypeVerifier *)v98 initWithTemplate:diskCacheTemplate];
   [(AssetCacheLocatorService *)v164 setDiskCacheVerifier:v100];
 
-  v101 = [(AssetCacheLocatorService *)v164 makeSoftwareVersions];
-  [(AssetCacheLocatorService *)v164 setSoftwareVersions:v101];
+  makeSoftwareVersions = [(AssetCacheLocatorService *)v164 makeSoftwareVersions];
+  [(AssetCacheLocatorService *)v164 setSoftwareVersions:makeSoftwareVersions];
 
   v102 = [(AssetCacheLocatorService *)v164 makeBootTimeWithTag:0];
   [(AssetCacheLocatorService *)v164 setBootTime:v102];
@@ -805,23 +805,23 @@ LABEL_62:
   v104 = dispatch_queue_create("AssetCacheLocatorService.queue", v103);
   [(AssetCacheLocatorService *)v164 setQueue:v104];
 
-  v105 = [(AssetCacheLocatorService *)v164 queue];
+  queue = [(AssetCacheLocatorService *)v164 queue];
   v106 = off_10003ACF0;
-  v107 = [(AssetCacheLocatorService *)v164 queue];
-  dispatch_queue_set_specific(v105, v106, v107, 0);
+  queue2 = [(AssetCacheLocatorService *)v164 queue];
+  dispatch_queue_set_specific(queue, v106, queue2, 0);
 
   v108 = dispatch_get_global_queue(0, 0);
   v109 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v108);
   [(AssetCacheLocatorService *)v164 setDiskCacheRefreshTimer:v109];
 
-  v110 = [(AssetCacheLocatorService *)v164 diskCacheRefreshTimer];
+  diskCacheRefreshTimer = [(AssetCacheLocatorService *)v164 diskCacheRefreshTimer];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100008114;
   handler[3] = &unk_100034B58;
   v111 = v164;
   v168 = v111;
-  dispatch_source_set_event_handler(v110, handler);
+  dispatch_source_set_event_handler(diskCacheRefreshTimer, handler);
 
   [(AssetCacheLocatorService *)v111 setDiskCacheRefreshTimerResumed:0];
   v112 = dispatch_semaphore_create(1);
@@ -830,17 +830,17 @@ LABEL_62:
   v113 = objc_alloc_init(NSOperationQueue);
   [(AssetCacheLocatorService *)v111 setLocateOpQueue:v113];
 
-  v114 = [(AssetCacheLocatorService *)v111 locateOpQueue];
-  [v114 setMaxConcurrentOperationCount:1];
+  locateOpQueue = [(AssetCacheLocatorService *)v111 locateOpQueue];
+  [locateOpQueue setMaxConcurrentOperationCount:1];
 
   v115 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v116 = dispatch_queue_create("AssetCacheLocatorService.cacheRefreshQueue", v115);
   [(AssetCacheLocatorService *)v111 setCacheRefreshQueue:v116];
 
-  v117 = [(AssetCacheLocatorService *)v111 cacheRefreshQueue];
+  cacheRefreshQueue = [(AssetCacheLocatorService *)v111 cacheRefreshQueue];
   v118 = off_10003ACF0;
-  v119 = [(AssetCacheLocatorService *)v111 cacheRefreshQueue];
-  dispatch_queue_set_specific(v117, v118, v119, 0);
+  cacheRefreshQueue2 = [(AssetCacheLocatorService *)v111 cacheRefreshQueue];
+  dispatch_queue_set_specific(cacheRefreshQueue, v118, cacheRefreshQueue2, 0);
 
   v120 = +[NSMutableDictionary dictionary];
   [(AssetCacheLocatorService *)v111 setAffinityCache:v120];
@@ -851,36 +851,36 @@ LABEL_62:
   v122 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   [(AssetCacheLocatorService *)v111 setLocateSessionConfig:v122];
 
-  v123 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  [v123 setAllowsCellularAccess:0];
+  locateSessionConfig = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  [locateSessionConfig setAllowsCellularAccess:0];
 
-  v124 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  [v124 setHTTPCookieStorage:0];
+  locateSessionConfig2 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  [locateSessionConfig2 setHTTPCookieStorage:0];
 
-  v125 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  [v125 setURLCredentialStorage:0];
+  locateSessionConfig3 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  [locateSessionConfig3 setURLCredentialStorage:0];
 
-  v126 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  [v126 setURLCache:0];
+  locateSessionConfig4 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  [locateSessionConfig4 setURLCache:0];
 
-  v127 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  v128 = [v127 copy];
+  locateSessionConfig5 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  v128 = [locateSessionConfig5 copy];
   [(AssetCacheLocatorService *)v111 setImportSessionConfig:v128];
 
-  v129 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
-  v130 = [v129 copy];
+  locateSessionConfig6 = [(AssetCacheLocatorService *)v111 locateSessionConfig];
+  v130 = [locateSessionConfig6 copy];
   [(AssetCacheLocatorService *)v111 setQuerySessionConfig:v130];
 
-  v131 = [(AssetCacheLocatorService *)v111 singleLocate];
-  dispatch_semaphore_wait(v131, 0xFFFFFFFFFFFFFFFFLL);
+  singleLocate = [(AssetCacheLocatorService *)v111 singleLocate];
+  dispatch_semaphore_wait(singleLocate, 0xFFFFFFFFFFFFFFFFLL);
 
-  v132 = [(AssetCacheLocatorService *)v111 queue];
+  queue3 = [(AssetCacheLocatorService *)v111 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000082D4;
   block[3] = &unk_100034B58;
   v166 = v111;
-  dispatch_async(v132, block);
+  dispatch_async(queue3, block);
 
 LABEL_63:
   v133 = v2;
@@ -889,11 +889,11 @@ LABEL_68:
   return v133;
 }
 
-- (id)systemGroupContainerPathWithGroupIdentifier:(id)a3
+- (id)systemGroupContainerPathWithGroupIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 1;
-  [v3 UTF8String];
+  [identifierCopy UTF8String];
   v4 = container_system_group_path_for_identifier();
   if (v4)
   {
@@ -907,7 +907,7 @@ LABEL_68:
     v7 = gLogHandle;
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_10001FE90(v7, v3, &v9);
+      sub_10001FE90(v7, identifierCopy, &v9);
     }
 
     v6 = 0;
@@ -916,40 +916,40 @@ LABEL_68:
   return v6;
 }
 
-- (id)objectWithError:(id)a3
+- (id)objectWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = xpc_dictionary_create(0, 0, 0);
-  v5 = [v3 domain];
-  v6 = v5;
-  if (v5)
+  domain = [errorCopy domain];
+  v6 = domain;
+  if (domain)
   {
-    xpc_dictionary_set_string(v4, "errorDomain", [v5 UTF8String]);
+    xpc_dictionary_set_string(v4, "errorDomain", [domain UTF8String]);
   }
 
-  xpc_dictionary_set_int64(v4, "errorCode", [v3 code]);
-  v7 = [v3 localizedDescription];
+  xpc_dictionary_set_int64(v4, "errorCode", [errorCopy code]);
+  localizedDescription = [errorCopy localizedDescription];
 
-  if (v7)
+  if (localizedDescription)
   {
-    xpc_dictionary_set_string(v4, "errorDescription", [v7 UTF8String]);
+    xpc_dictionary_set_string(v4, "errorDescription", [localizedDescription UTF8String]);
   }
 
   return v4;
 }
 
-- (id)NSObjectFromXPCObject:(id)a3 tag:(unsigned int)a4
+- (id)NSObjectFromXPCObject:(id)object tag:(unsigned int)tag
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (!objectCopy)
   {
 LABEL_11:
     v9 = 0;
     goto LABEL_18;
   }
 
-  type = xpc_get_type(v6);
+  type = xpc_get_type(objectCopy);
   if (type == &_xpc_type_BOOL)
   {
     v10 = [NSNumber numberWithBool:xpc_BOOL_get_value(v7)];
@@ -990,7 +990,7 @@ LABEL_17:
     applier[2] = sub_100008908;
     applier[3] = &unk_100034B80;
     applier[4] = self;
-    v9 = v18 = a4;
+    v9 = v18 = tag;
     v17 = v9;
     xpc_array_apply(v7, applier);
     v12 = v17;
@@ -1014,7 +1014,7 @@ LABEL_17:
     v13[2] = sub_100008954;
     v13[3] = &unk_100034BA8;
     v13[4] = self;
-    v9 = v15 = a4;
+    v9 = v15 = tag;
     v14 = v9;
     xpc_dictionary_apply(v7, v13);
     v12 = v14;
@@ -1025,13 +1025,13 @@ LABEL_18:
   return v9;
 }
 
-- (id)XPCObjectFromNSObject:(id)a3 tag:(unsigned int)a4
+- (id)XPCObjectFromNSObject:(id)object tag:(unsigned int)tag
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy)
   {
-    v8 = CFGetTypeID(v6);
+    v8 = CFGetTypeID(objectCopy);
     if (v8 == CFBooleanGetTypeID())
     {
       v9 = xpc_BOOL_create(kCFBooleanTrue == v7);
@@ -1071,7 +1071,7 @@ LABEL_12:
       v17[2] = sub_100008C2C;
       v17[3] = &unk_100034BD0;
       v17[4] = self;
-      v19 = a4;
+      tagCopy = tag;
       v11 = xpc_array_create(0, 0);
       v18 = v11;
       [(__CFBoolean *)v7 enumerateObjectsUsingBlock:v17];
@@ -1089,7 +1089,7 @@ LABEL_15:
       v14[2] = sub_100008C90;
       v14[3] = &unk_100034BF8;
       v14[4] = self;
-      v16 = a4;
+      tagCopy2 = tag;
       v11 = xpc_dictionary_create(0, 0, 0);
       v15 = v11;
       [(__CFBoolean *)v7 enumerateKeysAndObjectsUsingBlock:v14];
@@ -1109,18 +1109,18 @@ LABEL_19:
   return v11;
 }
 
-- (id)servers:(id)a3 byAppendingServers:(id)a4
+- (id)servers:(id)servers byAppendingServers:(id)appendingServers
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  serversCopy = servers;
+  appendingServersCopy = appendingServers;
+  if ([serversCopy count] && objc_msgSend(appendingServersCopy, "count"))
   {
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    v7 = [serversCopy arrayByAddingObjectsFromArray:appendingServersCopy];
   }
 
   else
   {
-    v7 = v5;
+    v7 = serversCopy;
   }
 
   v8 = v7;
@@ -1128,39 +1128,39 @@ LABEL_19:
   return v8;
 }
 
-- (id)choose:(int)a3 fromArray:(id)a4 sorted:(BOOL)a5 other:(id)a6 tag:(unsigned int)a7
+- (id)choose:(int)choose fromArray:(id)array sorted:(BOOL)sorted other:(id)other tag:(unsigned int)tag
 {
-  v8 = a5;
-  v11 = a4;
-  v12 = a6;
-  v50 = self;
-  v13 = [(AssetCacheLocatorService *)self servers:v11 byAppendingServers:v12];
+  sortedCopy = sorted;
+  arrayCopy = array;
+  otherCopy = other;
+  selfCopy = self;
+  v13 = [(AssetCacheLocatorService *)self servers:arrayCopy byAppendingServers:otherCopy];
   v14 = v13;
-  v52 = a3;
-  v53 = v8;
-  if (a3 <= 0)
+  chooseCopy = choose;
+  v53 = sortedCopy;
+  if (choose <= 0)
   {
     v23 = v13;
     goto LABEL_36;
   }
 
-  if (a3 != 1)
+  if (choose != 1)
   {
     sub_10002008C();
   }
 
-  v54 = v12;
-  if (!v8)
+  v54 = otherCopy;
+  if (!sortedCopy)
   {
     v49 = v13;
-    v24 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
-    v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
+    v24 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
+    v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v47 = v11;
-    v26 = v11;
+    v47 = arrayCopy;
+    v26 = arrayCopy;
     v27 = [v26 countByEnumeratingWithState:&v55 objects:v79 count:16];
     if (v27)
     {
@@ -1177,14 +1177,14 @@ LABEL_19:
 
           v31 = *(*(&v55 + 1) + 8 * i);
           v32 = [v31 objectForKeyedSubscript:{@"failureCount", v47}];
-          v33 = [v32 unsignedIntegerValue];
+          unsignedIntegerValue = [v32 unsignedIntegerValue];
 
-          if (v33 <= 2)
+          if (unsignedIntegerValue <= 2)
           {
             v34 = [v31 objectForKeyedSubscript:@"favored"];
-            v35 = [v34 BOOLValue];
+            bOOLValue = [v34 BOOLValue];
 
-            if (v35)
+            if (bOOLValue)
             {
               v36 = v24;
             }
@@ -1209,16 +1209,16 @@ LABEL_19:
       v37 = [v24 objectAtIndex:{arc4random_uniform(objc_msgSend(v24, "count"))}];
       v78 = v37;
       v38 = &v78;
-      v11 = v47;
+      arrayCopy = v47;
       v14 = v49;
-      v12 = v54;
+      otherCopy = v54;
     }
 
     else
     {
-      v11 = v47;
+      arrayCopy = v47;
       v14 = v49;
-      v12 = v54;
+      otherCopy = v54;
       if (![v25 count])
       {
         v23 = 0;
@@ -1258,9 +1258,9 @@ LABEL_35:
 
         v20 = *(*(&v59 + 1) + 8 * j);
         v21 = [v20 objectForKeyedSubscript:@"failureCount"];
-        v22 = [v21 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
-        if (v22 <= 2)
+        if (unsignedIntegerValue2 <= 2)
         {
           v80 = v20;
           v23 = [NSArray arrayWithObjects:&v80 count:1];
@@ -1287,23 +1287,23 @@ LABEL_29:
     v23 = 0;
   }
 
-  v12 = v54;
+  otherCopy = v54;
 LABEL_36:
   v39 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v41 = v39;
     v42 = currentQueueName();
-    v43 = [(AssetCacheLocatorService *)v50 redactObject:v11];
-    v44 = [(AssetCacheLocatorService *)v50 redactObject:v12];
-    [(AssetCacheLocatorService *)v50 redactObject:v23];
-    v46 = v45 = v11;
+    v43 = [(AssetCacheLocatorService *)selfCopy redactObject:arrayCopy];
+    v44 = [(AssetCacheLocatorService *)selfCopy redactObject:otherCopy];
+    [(AssetCacheLocatorService *)selfCopy redactObject:v23];
+    v46 = v45 = arrayCopy;
     *buf = 67110658;
-    v64 = a7;
+    tagCopy = tag;
     v65 = 2080;
     v66 = v42;
     v67 = 1024;
-    v68 = v52;
+    v68 = chooseCopy;
     v69 = 2112;
     v70 = v43;
     v71 = 1024;
@@ -1314,7 +1314,7 @@ LABEL_36:
     v76 = v46;
     _os_log_debug_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, "#%08x [%s] choose:%d fromArray:%@ sorted:%{BOOL}d other:%@ -> %@", buf, 0x3Cu);
 
-    v11 = v45;
+    arrayCopy = v45;
   }
 
   return v23;
@@ -1343,17 +1343,17 @@ LABEL_36:
   mach_service = xpc_connection_create_mach_service("com.apple.AssetCacheLocatorService", v6, 1uLL);
   [(AssetCacheLocatorService *)self setListenerConnection:mach_service];
 
-  v8 = [(AssetCacheLocatorService *)self listenerConnection];
+  listenerConnection = [(AssetCacheLocatorService *)self listenerConnection];
 
-  if (v8)
+  if (listenerConnection)
   {
-    v9 = [(AssetCacheLocatorService *)self listenerConnection];
+    listenerConnection2 = [(AssetCacheLocatorService *)self listenerConnection];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100009508;
     handler[3] = &unk_100034C20;
     handler[4] = self;
-    xpc_connection_set_event_handler(v9, handler);
+    xpc_connection_set_event_handler(listenerConnection2, handler);
 
     v10 = dispatch_get_global_queue(0, 0);
     xpc_set_idle_handler();
@@ -1378,9 +1378,9 @@ LABEL_36:
   }
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -1390,9 +1390,9 @@ LABEL_36:
     v13 = 2080;
     v14 = currentQueueName();
     v15 = 1024;
-    pid = xpc_connection_get_pid(v4);
+    pid = xpc_connection_get_pid(connectionCopy);
     v17 = 1024;
-    euid = xpc_connection_get_euid(v4);
+    euid = xpc_connection_get_euid(connectionCopy);
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "#%08x [%s] XPC connection from pid %d uid %d", buf, 0x1Eu);
   }
 
@@ -1400,42 +1400,42 @@ LABEL_36:
   v8[1] = 3221225472;
   v8[2] = sub_100009814;
   v8[3] = &unk_100034C48;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
   xpc_connection_set_event_handler(v7, v8);
   xpc_connection_resume(v7);
 }
 
-- (BOOL)handleEvent:(id)a3 forConnection:(id)a4
+- (BOOL)handleEvent:(id)event forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  connectionCopy = connection;
   v8 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100020308(v8);
   }
 
-  if (xpc_get_type(v6) != &_xpc_type_dictionary)
+  if (xpc_get_type(eventCopy) != &_xpc_type_dictionary)
   {
     goto LABEL_4;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v6, "tag");
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "tag");
   if (!uint64)
   {
     v16 = gLogHandle;
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_1000203C8(v16, v7);
+      sub_1000203C8(v16, connectionCopy);
     }
 
     goto LABEL_4;
   }
 
-  string = xpc_dictionary_get_string(v6, "command");
-  if (([(AssetCacheLocatorService *)self testFlags]& 0x10) != 0 && ![(AssetCacheLocatorService *)self doesConnection:v7 haveEntitlement:"com.apple.private.AssetCacheServices.test"])
+  string = xpc_dictionary_get_string(eventCopy, "command");
+  if (([(AssetCacheLocatorService *)self testFlags]& 0x10) != 0 && ![(AssetCacheLocatorService *)self doesConnection:connectionCopy haveEntitlement:"com.apple.private.AssetCacheServices.test"])
   {
     v19 = gLogHandle;
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
@@ -1446,9 +1446,9 @@ LABEL_36:
       v32 = 2080;
       v33 = currentQueueName();
       v34 = 1024;
-      pid = xpc_connection_get_pid(v7);
+      pid = xpc_connection_get_pid(connectionCopy);
       v36 = 1024;
-      euid = xpc_connection_get_euid(v7);
+      euid = xpc_connection_get_euid(connectionCopy);
       v38 = 2080;
       v39 = string;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "#%08x [%s] rejecting civilian XPC request from pid %d uid %d: %s", &v30, 0x28u);
@@ -1471,15 +1471,15 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleLocateEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleLocateEvent:eventCopy forConnection:connectionCopy tag:uint64];
         goto LABEL_43;
       }
 
@@ -1494,15 +1494,15 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleRecentlySeenEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleRecentlySeenEvent:eventCopy forConnection:connectionCopy tag:uint64];
         goto LABEL_43;
       }
 
@@ -1517,15 +1517,15 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleUpdateHealthEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleUpdateHealthEvent:eventCopy forConnection:connectionCopy tag:uint64];
         goto LABEL_43;
       }
 
@@ -1540,15 +1540,15 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleImportEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleImportEvent:eventCopy forConnection:connectionCopy tag:uint64];
         goto LABEL_43;
       }
 
@@ -1563,19 +1563,19 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleIntrospectEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleIntrospectEvent:eventCopy forConnection:connectionCopy tag:uint64];
         goto LABEL_43;
       }
 
-      if (!strcmp(string, "setTestFlags") && [(AssetCacheLocatorService *)self doesConnection:v7 haveEntitlement:"com.apple.private.AssetCacheServices.test"]&& os_variant_allows_internal_security_policies())
+      if (!strcmp(string, "setTestFlags") && [(AssetCacheLocatorService *)self doesConnection:connectionCopy haveEntitlement:"com.apple.private.AssetCacheServices.test"]&& os_variant_allows_internal_security_policies())
       {
         v13 = gLogHandle;
         if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
@@ -1586,15 +1586,15 @@ LABEL_36:
           v32 = 2080;
           v33 = currentQueueName();
           v34 = 1024;
-          pid = xpc_connection_get_pid(v7);
+          pid = xpc_connection_get_pid(connectionCopy);
           v36 = 1024;
-          euid = xpc_connection_get_euid(v7);
+          euid = xpc_connection_get_euid(connectionCopy);
           v38 = 2080;
           v39 = string;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "#%08x [%s] XPC request from pid %d uid %d: %s", &v30, 0x28u);
         }
 
-        v15 = [(AssetCacheLocatorService *)self handleSetTestFlagsEvent:v6 forConnection:v7 tag:uint64];
+        v15 = [(AssetCacheLocatorService *)self handleSetTestFlagsEvent:eventCopy forConnection:connectionCopy tag:uint64];
 LABEL_43:
         v9 = v15;
         goto LABEL_5;
@@ -1610,9 +1610,9 @@ LABEL_43:
       v32 = 2080;
       v33 = currentQueueName();
       v34 = 1024;
-      pid = xpc_connection_get_pid(v7);
+      pid = xpc_connection_get_pid(connectionCopy);
       v36 = 1024;
-      euid = xpc_connection_get_euid(v7);
+      euid = xpc_connection_get_euid(connectionCopy);
       v38 = 2080;
       v39 = "command";
       v40 = 2080;
@@ -1629,13 +1629,13 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)handleLocateEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5
+- (BOOL)handleLocateEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag
 {
-  v6 = a3;
-  v38 = a4;
+  eventCopy = event;
+  connectionCopy = connection;
   v36 = +[NSDate date];
-  reply = xpc_dictionary_create_reply(v6);
-  v7 = xpc_dictionary_get_value(v6, "quantity");
+  reply = xpc_dictionary_create_reply(eventCopy);
+  v7 = xpc_dictionary_get_value(eventCopy, "quantity");
   v8 = v7;
   if (v7)
   {
@@ -1647,7 +1647,7 @@ LABEL_5:
     value = 1;
   }
 
-  string = xpc_dictionary_get_string(v6, "x-apple-persistent-identifier");
+  string = xpc_dictionary_get_string(eventCopy, "x-apple-persistent-identifier");
   if (string)
   {
     v11 = [NSString stringWithUTF8String:string];
@@ -1659,7 +1659,7 @@ LABEL_5:
   }
 
   v12 = +[NSMutableDictionary dictionary];
-  v13 = xpc_dictionary_get_value(v6, "capabilities");
+  v13 = xpc_dictionary_get_value(eventCopy, "capabilities");
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -1688,7 +1688,7 @@ LABEL_5:
   }
 
   [v12 setObject:&__kCFBooleanTrue forKey:v15];
-  uint64 = xpc_dictionary_get_uint64(v6, "sizeHint");
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "sizeHint");
   if (uint64)
   {
     v17 = [NSNumber numberWithUnsignedLongLong:uint64];
@@ -1697,7 +1697,7 @@ LABEL_5:
 
   v35 = v12;
   v18 = [v12 copy];
-  v19 = xpc_dictionary_get_value(v6, "autoRefresh");
+  v19 = xpc_dictionary_get_value(eventCopy, "autoRefresh");
   v20 = v19;
   if (v19)
   {
@@ -1709,17 +1709,17 @@ LABEL_5:
     v21 = 1;
   }
 
-  v34 = xpc_dictionary_get_BOOL(v6, "quickMiss");
-  v22 = xpc_dictionary_get_BOOL(v6, "forceMiss");
+  v34 = xpc_dictionary_get_BOOL(eventCopy, "quickMiss");
+  v22 = xpc_dictionary_get_BOOL(eventCopy, "forceMiss");
   v33 = v8;
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_10000A640;
   v53[3] = &unk_100034C98;
   v53[4] = self;
-  v59 = a5;
+  tagCopy = tag;
   v60 = value;
-  v39 = v38;
+  v39 = connectionCopy;
   v54 = v39;
   v37 = v36;
   v55 = v37;
@@ -1749,7 +1749,7 @@ LABEL_5:
   v52 = v22;
   v30 = v26;
   v48 = v30;
-  v49 = a5;
+  tagCopy2 = tag;
   v31 = objc_retainBlock(v44);
   (v31[2])();
 
@@ -1757,13 +1757,13 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)handleRecentlySeenEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5
+- (BOOL)handleRecentlySeenEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag
 {
-  v8 = a4;
-  v9 = a3;
+  connectionCopy = connection;
+  eventCopy = event;
   v10 = +[NSDate date];
-  reply = xpc_dictionary_create_reply(v9);
-  v12 = xpc_dictionary_get_value(v9, "autoRefresh");
+  reply = xpc_dictionary_create_reply(eventCopy);
+  v12 = xpc_dictionary_get_value(eventCopy, "autoRefresh");
 
   if (v12)
   {
@@ -1779,14 +1779,14 @@ LABEL_5:
   v28[1] = 3221225472;
   v28[2] = sub_10000B114;
   v28[3] = &unk_100034CE8;
-  v33 = a5;
-  v29 = v8;
+  tagCopy = tag;
+  v29 = connectionCopy;
   v30 = v10;
   v31 = reply;
-  v32 = self;
+  selfCopy = self;
   v14 = reply;
   v15 = v10;
-  v16 = v8;
+  v16 = connectionCopy;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10000B3E8;
@@ -1794,7 +1794,7 @@ LABEL_5:
   v27 = value;
   v24[4] = self;
   v25 = objc_retainBlock(v28);
-  v26 = a5;
+  tagCopy2 = tag;
   v17 = v25;
   v18 = objc_retainBlock(v24);
   (v18[2])(v18, v19, v20, v21, v22);
@@ -1802,10 +1802,10 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)handleUpdateHealthEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5
+- (BOOL)handleUpdateHealthEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  connectionCopy = connection;
   if (([(AssetCacheLocatorService *)self testFlags]& 0x80) == 0)
   {
     v21[0] = 0;
@@ -1814,7 +1814,7 @@ LABEL_5:
     v21[3] = sub_10000B628;
     v21[4] = sub_10000B638;
     v22 = os_transaction_create();
-    string = xpc_dictionary_get_string(v8, "hostport");
+    string = xpc_dictionary_get_string(eventCopy, "hostport");
     if (string)
     {
       v11 = [NSString stringWithUTF8String:string];
@@ -1825,7 +1825,7 @@ LABEL_5:
       v11 = 0;
     }
 
-    v12 = xpc_dictionary_get_BOOL(v8, "healthy");
+    v12 = xpc_dictionary_get_BOOL(eventCopy, "healthy");
     v13 = dispatch_get_global_queue(0, 0);
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -1835,7 +1835,7 @@ LABEL_5:
     v17 = v11;
     v20 = v12;
     v18 = v21;
-    v19 = a5;
+    tagCopy = tag;
     v14 = v11;
     dispatch_async(v13, v16);
 
@@ -1845,27 +1845,27 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)handleImportEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5
+- (BOOL)handleImportEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  connectionCopy = connection;
   v10 = +[NSDate date];
-  reply = xpc_dictionary_create_reply(v8);
+  reply = xpc_dictionary_create_reply(eventCopy);
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
   v64[2] = sub_10000BC4C;
   v64[3] = &unk_100034CE8;
-  v55 = a5;
-  v69 = a5;
-  v12 = v9;
+  tagCopy = tag;
+  tagCopy2 = tag;
+  v12 = connectionCopy;
   v65 = v12;
   v58 = v10;
   v66 = v58;
   v57 = reply;
   v67 = v57;
-  v68 = self;
+  selfCopy = self;
   v56 = objc_retainBlock(v64);
-  string = xpc_dictionary_get_string(v8, "url");
+  string = xpc_dictionary_get_string(eventCopy, "url");
   if (string)
   {
     v14 = [NSString stringWithUTF8String:string];
@@ -1877,7 +1877,7 @@ LABEL_5:
     v15 = 0;
   }
 
-  v16 = xpc_dictionary_get_string(v8, "method");
+  v16 = xpc_dictionary_get_string(eventCopy, "method");
   if (v16)
   {
     v17 = [NSString stringWithUTF8String:v16];
@@ -1889,7 +1889,7 @@ LABEL_5:
 
   v17 = @"PUT";
 LABEL_9:
-  v18 = xpc_dictionary_get_string(v8, "sourcePath");
+  v18 = xpc_dictionary_get_string(eventCopy, "sourcePath");
   if (v18)
   {
     v19 = [NSString stringWithUTF8String:v18];
@@ -1900,9 +1900,9 @@ LABEL_9:
     v19 = 0;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v8, "sourceOffset");
-  v48 = xpc_dictionary_get_uint64(v8, "sourceLength");
-  v20 = xpc_dictionary_dup_fd(v8, "sourceFd");
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "sourceOffset");
+  v48 = xpc_dictionary_get_uint64(eventCopy, "sourceLength");
+  v20 = xpc_dictionary_dup_fd(eventCopy, "sourceFd");
   v52 = v19;
   if ((v20 & 0x80000000) != 0)
   {
@@ -1914,7 +1914,7 @@ LABEL_9:
     v21 = [[NSFileHandle alloc] initWithFileDescriptor:v20 closeOnDealloc:1];
   }
 
-  v22 = xpc_dictionary_get_value(v8, "headers");
+  v22 = xpc_dictionary_get_value(eventCopy, "headers");
   v23 = v22;
   if (v22 && xpc_get_type(v22) == &_xpc_type_dictionary)
   {
@@ -1935,7 +1935,7 @@ LABEL_9:
 
   v51 = v24;
   v54 = v17;
-  v26 = xpc_dictionary_get_value(v8, "importStrategies");
+  v26 = xpc_dictionary_get_value(eventCopy, "importStrategies");
   v27 = v26;
   v28 = v21;
   v29 = v15;
@@ -1963,19 +1963,19 @@ LABEL_9:
   }
 
   v50 = v23;
-  v34 = self;
+  selfCopy2 = self;
   v53 = v12;
   v35 = [(AssetCacheLocatorService *)self doesConnection:v12 haveEntitlement:"com.apple.private.AssetCache.import"];
   if (v29 && v28)
   {
     v36 = v35;
     v37 = dispatch_get_global_queue(0, 0);
-    LODWORD(v47) = v55;
+    LODWORD(v47) = tagCopy;
     LOBYTE(v46) = v36;
     v38 = v56;
     v39 = v51;
     v40 = v52;
-    v41 = v34;
+    v41 = selfCopy2;
     v42 = v29;
     v43 = v29;
     v44 = v54;
@@ -1984,7 +1984,7 @@ LABEL_9:
 
   else
   {
-    v37 = createTaggedError(NSPOSIXErrorDomain, 22, @"missing or invalid arguments", v55);
+    v37 = createTaggedError(NSPOSIXErrorDomain, 22, @"missing or invalid arguments", tagCopy);
     v38 = v56;
     (v56[2])(v56, 0, v37);
     v42 = v29;
@@ -1996,31 +1996,31 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)handleIntrospectEvent:(id)a3 forConnection:(id)a4 tag:(unsigned int)a5
+- (BOOL)handleIntrospectEvent:(id)event forConnection:(id)connection tag:(unsigned int)tag
 {
-  v8 = a4;
-  v9 = a3;
-  reply = xpc_dictionary_create_reply(v9);
-  v11 = xpc_dictionary_get_BOOL(v9, "forceMiss");
+  connectionCopy = connection;
+  eventCopy = event;
+  reply = xpc_dictionary_create_reply(eventCopy);
+  v11 = xpc_dictionary_get_BOOL(eventCopy, "forceMiss");
 
-  v12 = [(AssetCacheLocatorService *)self queue];
+  queue = [(AssetCacheLocatorService *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000C194;
   v16[3] = &unk_100034E28;
-  v19 = a5;
+  tagCopy = tag;
   v16[4] = self;
-  v17 = v8;
+  v17 = connectionCopy;
   v18 = reply;
   v20 = v11;
   v13 = reply;
-  v14 = v8;
-  dispatch_async(v12, v16);
+  v14 = connectionCopy;
+  dispatch_async(queue, v16);
 
   return 1;
 }
 
-- (BOOL)doesConnection:(id)a3 haveEntitlement:(const char *)a4
+- (BOOL)doesConnection:(id)connection haveEntitlement:(const char *)entitlement
 {
   v4 = xpc_connection_copy_entitlement_value();
   v5 = v4;
@@ -2082,14 +2082,14 @@ LABEL_9:
   v9 = [v8 objectForInfoDictionaryKey:@"CFBundleIdentifier"];
   v10 = [v8 objectForInfoDictionaryKey:@"CFBundleName"];
   v11 = [v8 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-  v12 = [v8 executablePath];
-  v13 = [v12 componentsSeparatedByString:@"/"];
-  v14 = [v13 lastObject];
+  executablePath = [v8 executablePath];
+  v13 = [executablePath componentsSeparatedByString:@"/"];
+  lastObject = [v13 lastObject];
 
-  if (![(__CFString *)v14 length])
+  if (![(__CFString *)lastObject length])
   {
 
-    v14 = @"AssetCacheLocatorService";
+    lastObject = @"AssetCacheLocatorService";
   }
 
   if (v9)
@@ -2116,7 +2116,7 @@ LABEL_9:
               v22[2] = v10;
               v22[3] = v11;
               v21[4] = @"executable";
-              v22[4] = v14;
+              v22[4] = lastObject;
               v15 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:5];
               [v20 addObject:v15];
             }
@@ -2195,11 +2195,11 @@ LABEL_9:
         while ((v16 & 1) != 0);
         if (SCDynamicStoreSetNotificationKeys([(AssetCacheLocatorService *)self store], v6, v14))
         {
-          v19 = [(AssetCacheLocatorService *)self store];
+          store = [(AssetCacheLocatorService *)self store];
           v20 = dispatch_get_global_queue(0, 0);
-          LODWORD(v19) = SCDynamicStoreSetDispatchQueue(v19, v20);
+          LODWORD(store) = SCDynamicStoreSetDispatchQueue(store, v20);
 
-          if (v19)
+          if (store)
           {
             RunLoopSource = SCDynamicStoreCreateRunLoopSource(0, [(AssetCacheLocatorService *)self store], 0);
             if (RunLoopSource)
@@ -2220,15 +2220,15 @@ LABEL_9:
   }
 }
 
-- (id)safeString:(const char *)a3 length:(unint64_t)a4 forceHex:(BOOL)a5
+- (id)safeString:(const char *)string length:(unint64_t)length forceHex:(BOOL)hex
 {
-  v5 = a5;
+  hexCopy = hex;
   for (i = +[NSMutableString string];
   {
-    v10 = *a3++;
+    v10 = *string++;
     v9 = v10;
     v11 = v10 - 127;
-    if (v10 == 37 || v11 < 0xFFFFFFA1 || v5)
+    if (v10 == 37 || v11 < 0xFFFFFFA1 || hexCopy)
     {
       v14 = @"%%%02x";
     }
@@ -2244,43 +2244,43 @@ LABEL_9:
   return i;
 }
 
-- (id)makeRangesFromDNSRecordNamed:(id)a3 withType:(int)a4 data:(const char *)a5 length:(unint64_t)a6 more:(BOOL *)a7 error:(id *)a8 tag:(unsigned int)a9
+- (id)makeRangesFromDNSRecordNamed:(id)named withType:(int)type data:(const char *)data length:(unint64_t)length more:(BOOL *)more error:(id *)error tag:(unsigned int)tag
 {
-  v73 = a3;
-  if ((a4 | 2) != 2)
+  namedCopy = named;
+  if ((type | 2) != 2)
   {
     v37 = gLogHandle;
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v59 = v37;
       v60 = currentQueueName();
-      v61 = [(AssetCacheLocatorService *)self safeString:a5 length:a6 forceHex:1];
+      v61 = [(AssetCacheLocatorService *)self safeString:data length:length forceHex:1];
       *buf = 67110403;
-      *&buf[4] = a9;
+      *&buf[4] = tag;
       *&buf[8] = 2080;
       *&buf[10] = v60;
       *&buf[18] = 2112;
-      *&buf[20] = v73;
+      *&buf[20] = namedCopy;
       *&buf[28] = 1024;
-      *&buf[30] = a4;
+      *&buf[30] = type;
       *&buf[34] = 2048;
-      *&buf[36] = a6;
+      *&buf[36] = length;
       *&buf[44] = 2113;
       v91 = v61;
       _os_log_debug_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEBUG, "#%08x [%s] makeRangesFromDNSRecordNamed:%@ withType:%d data:[%ld]%{private}@", buf, 0x36u);
 
-      if (a6)
+      if (length)
       {
         goto LABEL_52;
       }
     }
 
-    else if (a6)
+    else if (length)
     {
 LABEL_52:
-      v71 = a8;
+      errorCopy2 = error;
       v38 = 0;
-      if (a4 == 1)
+      if (type == 1)
       {
         v39 = "prn=";
       }
@@ -2290,22 +2290,22 @@ LABEL_52:
         v39 = "fsn=";
       }
 
-      v40 = a5;
+      dataCopy = data;
       while (1)
       {
-        v41 = *v40;
-        v42 = a6 - 5;
-        if (a6 >= 5 && v41 == 20)
+        v41 = *dataCopy;
+        v42 = length - 5;
+        if (length >= 5 && v41 == 20)
         {
           *buf = 0;
-          *buf = *(v40 + 1);
+          *buf = *(dataCopy + 1);
           if ([ACLSNetworkUtilities isUsefulInaddr4:buf])
           {
             v43 = [ACLSNetworkUtilities stringFromInaddr4:buf];
             v44 = [ACLSNetworkUtilities stringFromInaddr4:buf];
-            v40 += 5;
+            dataCopy += 5;
 LABEL_64:
-            a6 = v42;
+            length = v42;
             if (v43 && v44)
             {
               if (!v38)
@@ -2331,30 +2331,30 @@ LABEL_64:
 
         else
         {
-          v42 = a6 - 17;
-          if (a6 >= 0x11 && v41 == 22)
+          v42 = length - 17;
+          if (length >= 0x11 && v41 == 22)
           {
             *buf = 0;
             *&buf[8] = 0;
-            *buf = *(v40 + 1);
+            *buf = *(dataCopy + 1);
             if ([ACLSNetworkUtilities isUsefulInaddr6:buf])
             {
               v43 = [ACLSNetworkUtilities stringFromInaddr6:buf];
               v44 = [ACLSNetworkUtilities stringFromInaddr6:buf];
-              v40 += 17;
+              dataCopy += 17;
               goto LABEL_64;
             }
           }
 
           else
           {
-            v42 = a6 - 9;
-            if (a6 >= 9 && v41 == 36)
+            v42 = length - 9;
+            if (length >= 9 && v41 == 36)
             {
               *buf = 0;
               *v84 = 0;
-              *buf = *(v40 + 1);
-              *v84 = *(v40 + 5);
+              *buf = *(dataCopy + 1);
+              *v84 = *(dataCopy + 5);
               if ([ACLSNetworkUtilities isUsefulInaddr4:buf]&& [ACLSNetworkUtilities isUsefulInaddr4:v84])
               {
                 v45 = bswap32(*buf);
@@ -2366,7 +2366,7 @@ LABEL_64:
                 {
                   v43 = [ACLSNetworkUtilities stringFromInaddr4:buf];
                   v44 = [ACLSNetworkUtilities stringFromInaddr4:v84];
-                  v40 += 9;
+                  dataCopy += 9;
                   goto LABEL_64;
                 }
               }
@@ -2374,8 +2374,8 @@ LABEL_64:
 
             else
             {
-              v42 = a6 - 33;
-              if (a6 < 0x21 || v41 != 38)
+              v42 = length - 33;
+              if (length < 0x21 || v41 != 38)
               {
                 v44 = 0;
                 v72 = v38;
@@ -2394,8 +2394,8 @@ LABEL_64:
               *buf = 0;
               *&buf[8] = 0;
               memset(v84, 0, sizeof(v84));
-              *buf = *(v40 + 1);
-              *v84 = *(v40 + 17);
+              *buf = *(dataCopy + 1);
+              *v84 = *(dataCopy + 17);
               if ([ACLSNetworkUtilities isUsefulInaddr6:buf]&& [ACLSNetworkUtilities isUsefulInaddr6:v84])
               {
                 v49 = bswap64(*buf);
@@ -2414,7 +2414,7 @@ LABEL_64:
                 {
                   v43 = [ACLSNetworkUtilities stringFromInaddr6:buf];
                   v44 = [ACLSNetworkUtilities stringFromInaddr6:v84];
-                  v40 += 33;
+                  dataCopy += 33;
                   goto LABEL_64;
                 }
               }
@@ -2427,8 +2427,8 @@ LABEL_64:
 LABEL_93:
         v72 = v38;
 LABEL_94:
-        v53 = [NSString stringWithFormat:@"invalid range in %@ %s at index %ld", v73, v39, v40 - a5];
-        v17 = createTaggedError(NSPOSIXErrorDomain, 22, v53, a9);
+        data = [NSString stringWithFormat:@"invalid range in %@ %s at index %ld", namedCopy, v39, dataCopy - data];
+        v17 = createTaggedError(NSPOSIXErrorDomain, 22, data, tag);
 
         if (v17)
         {
@@ -2441,7 +2441,7 @@ LABEL_110:
         v38 = v72;
 LABEL_96:
 
-        if (!a6)
+        if (!length)
         {
           v72 = v38;
           v36 = 0;
@@ -2457,34 +2457,34 @@ LABEL_96:
     goto LABEL_113;
   }
 
-  v71 = a8;
+  errorCopy2 = error;
   v14 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v56 = v14;
     v57 = currentQueueName();
-    v58 = [(AssetCacheLocatorService *)self safeString:a5 length:a6 forceHex:0];
+    v58 = [(AssetCacheLocatorService *)self safeString:data length:length forceHex:0];
     *buf = 67110403;
-    *&buf[4] = a9;
+    *&buf[4] = tag;
     *&buf[8] = 2080;
     *&buf[10] = v57;
     *&buf[18] = 2112;
-    *&buf[20] = v73;
+    *&buf[20] = namedCopy;
     *&buf[28] = 1024;
-    *&buf[30] = a4;
+    *&buf[30] = type;
     *&buf[34] = 2048;
-    *&buf[36] = a6;
+    *&buf[36] = length;
     *&buf[44] = 2113;
     v91 = v58;
     _os_log_debug_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEBUG, "#%08x [%s] makeRangesFromDNSRecordNamed:%@ withType:%d data:[%ld]%{private}@", buf, 0x36u);
   }
 
-  __stringp = malloc_type_malloc(a6 + 1, 0x619370CEuLL);
+  __stringp = malloc_type_malloc(length + 1, 0x619370CEuLL);
   v69 = __stringp;
-  memcpy(__stringp, a5, a6);
+  memcpy(__stringp, data, length);
   v72 = 0;
-  __stringp[a6] = 0;
-  if (a4)
+  __stringp[length] = 0;
+  if (type)
   {
     v15 = "fss=";
   }
@@ -2530,8 +2530,8 @@ LABEL_33:
       }
 
       v30 = [(AssetCacheLocatorService *)self safeString:v17 length:strlen(v17) forceHex:0];
-      v31 = [NSString stringWithFormat:@"invalid range in %@ %s: %@", v73, v15, v30];
-      v17 = createTaggedError(NSPOSIXErrorDomain, 22, v31, a9);
+      v31 = [NSString stringWithFormat:@"invalid range in %@ %s: %@", namedCopy, v15, v30];
+      v17 = createTaggedError(NSPOSIXErrorDomain, 22, v31, tag);
 
       goto LABEL_36;
     }
@@ -2628,27 +2628,27 @@ LABEL_36:
 LABEL_100:
   free(v69);
 LABEL_101:
-  a8 = v71;
+  error = errorCopy2;
   if (v17)
   {
-    if (v71)
+    if (errorCopy2)
     {
       v54 = v17;
-      *v71 = v17;
+      *errorCopy2 = v17;
     }
 
     v72 = 0;
   }
 
   v55 = v36 ^ 1;
-  if (!a7)
+  if (!more)
   {
     v55 = 1;
   }
 
   if ((v55 & 1) == 0)
   {
-    *a7 = 1;
+    *more = 1;
   }
 
 LABEL_113:
@@ -2658,9 +2658,9 @@ LABEL_113:
     v65 = v62;
     v66 = currentQueueName();
     v67 = [v72 count];
-    if (a8)
+    if (error)
     {
-      v68 = *a8;
+      v68 = *error;
     }
 
     else
@@ -2669,7 +2669,7 @@ LABEL_113:
     }
 
     *buf = 67110403;
-    *&buf[4] = a9;
+    *&buf[4] = tag;
     *&buf[8] = 2080;
     *&buf[10] = v66;
     *&buf[18] = 2048;
@@ -2688,38 +2688,38 @@ LABEL_113:
   return v63;
 }
 
-- (void)resolveDNSRecordNamed:(id)a3 withTimeout:(double)a4 errorIfNotFound:(BOOL)a5 callback:(id)a6 callbackQueue:(id)a7 tag:(unsigned int)a8
+- (void)resolveDNSRecordNamed:(id)named withTimeout:(double)timeout errorIfNotFound:(BOOL)found callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a6;
-  v114 = a7;
+  foundCopy = found;
+  namedCopy = named;
+  callbackCopy = callback;
+  queueCopy = queue;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100020564();
   }
 
-  v112 = a8;
-  v110 = self;
+  tagCopy = tag;
+  selfCopy = self;
   if ((-[AssetCacheLocatorService testFlags](self, "testFlags") & 2) != 0 && (-[AssetCacheLocatorService diskCache](self, "diskCache"), v16 = objc_claimAutoreleasedReturnValue(), [v16 objectForKey:@"simulatedDNSResponses"], v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
   {
-    v107 = v11;
+    v107 = foundCopy;
     v18 = gLogHandle;
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
     {
       v19 = v18;
       *buf.name = 67109890;
-      *&buf.name[4] = a8;
+      *&buf.name[4] = tag;
       *&buf.name[8] = 2080;
       *&buf.name[10] = currentQueueName();
       *&buf.name[18] = 2112;
       *&buf.name[20] = @"simulatedDNSResponses";
       *&buf.name[28] = 2112;
-      *&buf.name[30] = v14;
+      *&buf.name[30] = namedCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "#%08x [%s] using %@ for %@", &buf, 0x26u);
     }
 
-    v20 = [v17 objectForKey:v14];
+    v20 = [v17 objectForKey:namedCopy];
     v21 = [v20 objectForKeyedSubscript:@"resolv"];
     if (!v21)
     {
@@ -2729,36 +2729,36 @@ LABEL_113:
 
       v49 = [v20 objectForKey:@"error"];
       v50 = v17;
-      v51 = [v49 BOOLValue];
+      bOOLValue = [v49 BOOLValue];
 
       v52 = [v20 objectForKey:@"response"];
-      if (v48 < a4)
+      if (v48 < timeout)
       {
-        v53 = v48;
+        timeoutCopy = v48;
       }
 
       else
       {
-        v53 = a4;
+        timeoutCopy = timeout;
       }
 
-      v54 = dispatch_time(0, (v53 * 1000000000.0));
+      v54 = dispatch_time(0, (timeoutCopy * 1000000000.0));
       v55 = dispatch_get_global_queue(0, 0);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000EAFC;
       block[3] = &unk_100034E78;
-      v132 = v48 >= a4;
-      v131 = v112;
-      v133 = v51;
+      v132 = v48 >= timeout;
+      v131 = tagCopy;
+      v133 = bOOLValue;
       v17 = v50;
       v126 = v52;
-      v127 = self;
-      v128 = v14;
-      v27 = v114;
-      v129 = v114;
-      v130 = v15;
-      v56 = v15;
+      selfCopy2 = self;
+      v128 = namedCopy;
+      v27 = queueCopy;
+      v129 = queueCopy;
+      v130 = callbackCopy;
+      v56 = callbackCopy;
       v57 = v52;
       dispatch_after(v54, v55, block);
 
@@ -2777,15 +2777,15 @@ LABEL_113:
 
     v124 = 0;
     bzero(&res, 0x228uLL);
-    v27 = v114;
+    v27 = queueCopy;
     if (v23)
     {
-      v28 = [v23 intValue];
-      v11 = v107;
+      intValue = [v23 intValue];
+      foundCopy = v107;
       goto LABEL_12;
     }
 
-    v11 = v107;
+    foundCopy = v107;
   }
 
   else
@@ -2796,19 +2796,19 @@ LABEL_113:
     v25 = 0;
     v26 = 0;
     v17 = 0;
-    v27 = v114;
+    v27 = queueCopy;
   }
 
-  v28 = res_9_ninit(&res);
+  intValue = res_9_ninit(&res);
   v23 = 0;
 LABEL_12:
   v111 = v23;
   v113 = v26;
-  if (v28)
+  if (intValue)
   {
     v29 = v24;
-    v30 = [NSString stringWithFormat:@"%@: res_ninit() failed", v14];
-    v31 = createTaggedError(NSPOSIXErrorDomain, 12, v30, v112);
+    namedCopy = [NSString stringWithFormat:@"%@: res_ninit() failed", namedCopy];
+    v31 = createTaggedError(NSPOSIXErrorDomain, 12, namedCopy, tagCopy);
 
     v32 = 0;
     v33 = 0;
@@ -2816,27 +2816,27 @@ LABEL_12:
     goto LABEL_101;
   }
 
-  v35 = a4;
-  if (a4 <= 1)
+  timeoutCopy2 = timeout;
+  if (timeout <= 1)
   {
-    v35 = 1;
+    timeoutCopy2 = 1;
   }
 
-  res.retrans = v35;
+  res.retrans = timeoutCopy2;
   res.retry = 1;
   if (v24)
   {
-    v36 = [v24 intValue];
+    intValue2 = [v24 intValue];
   }
 
   else
   {
-    v36 = 0x10000;
+    intValue2 = 0x10000;
   }
 
-  v108 = v11;
+  v108 = foundCopy;
   v106 = v17;
-  if (v36 < 1)
+  if (intValue2 < 1)
   {
     v37 = 0;
   }
@@ -2848,14 +2848,14 @@ LABEL_12:
     v39 = -2;
     do
     {
-      v40 = malloc_type_realloc(v38, v36, 0x624F6C21uLL);
+      v40 = malloc_type_realloc(v38, intValue2, 0x624F6C21uLL);
       if (!v40)
       {
         break;
       }
 
       v38 = v40;
-      bzero(v40, v36);
+      bzero(v40, intValue2);
       if (v25)
       {
         _res_9_h_errno_set(&res, [v25 intValue]);
@@ -2865,7 +2865,7 @@ LABEL_12:
       else if (v26)
       {
         v37 = [v26 length];
-        if (v36 >= v37)
+        if (intValue2 >= v37)
         {
           memcpy(v38, [v26 bytes], v37);
         }
@@ -2873,15 +2873,15 @@ LABEL_12:
 
       else
       {
-        v37 = acls_nsearch_notld(&res, [v14 UTF8String], 1, 16, v38, v36);
+        v37 = acls_nsearch_notld(&res, [namedCopy UTF8String], 1, 16, v38, intValue2);
       }
 
-      if (v37 <= v36)
+      if (v37 <= intValue2)
       {
         goto LABEL_34;
       }
 
-      v36 = (v37 + 1);
+      intValue2 = (v37 + 1);
       if (__CFADD__(v39++, 1))
       {
         goto LABEL_34;
@@ -2901,15 +2901,15 @@ LABEL_34:
     v76 = currentQueueName();
     v77 = *__error();
     *buf.name = 67110658;
-    *&buf.name[4] = v112;
+    *&buf.name[4] = tagCopy;
     *&buf.name[8] = 2080;
     *&buf.name[10] = v76;
     *&buf.name[18] = 2112;
-    *&buf.name[20] = v14;
+    *&buf.name[20] = namedCopy;
     *&buf.name[28] = 1024;
     *&buf.name[30] = v37;
     *&buf.name[34] = 1024;
-    *&buf.name[36] = v36;
+    *&buf.name[36] = intValue2;
     *&buf.name[40] = 1024;
     *&buf.name[42] = v77;
     *&buf.name[46] = 1024;
@@ -2923,8 +2923,8 @@ LABEL_34:
 
 LABEL_82:
     v29 = v24;
-    v78 = [NSString stringWithFormat:@"%@: out of memory for %d byte DNS buffer", v14, v36];
-    v31 = createTaggedError(NSPOSIXErrorDomain, 12, v78, v112);
+    v78 = [NSString stringWithFormat:@"%@: out of memory for %d byte DNS buffer", namedCopy, intValue2];
+    v31 = createTaggedError(NSPOSIXErrorDomain, 12, v78, tagCopy);
 
     v33 = 0;
     v32 = 0;
@@ -2955,8 +2955,8 @@ LABEL_36:
 
       else
       {
-        v74 = [NSString stringWithFormat:@"%@: DNS error %d: %s", v14, res.res_h_errno, hstrerror(res.res_h_errno)];
-        v31 = createTaggedError(NSURLErrorDomain, -1003, v74, v112);
+        v74 = [NSString stringWithFormat:@"%@: DNS error %d: %s", namedCopy, res.res_h_errno, hstrerror(res.res_h_errno)];
+        v31 = createTaggedError(NSURLErrorDomain, -1003, v74, tagCopy);
 
         v33 = 0;
         v32 = 0;
@@ -2979,8 +2979,8 @@ LABEL_36:
     v29 = v24;
     v43 = *__error();
     v44 = __error();
-    v45 = [NSString stringWithFormat:@"%@: cannot parse DNS response: %s", v14, strerror(*v44)];
-    v31 = createTaggedError(NSPOSIXErrorDomain, v43, v45, v112);
+    v45 = [NSString stringWithFormat:@"%@: cannot parse DNS response: %s", namedCopy, strerror(*v44)];
+    v31 = createTaggedError(NSPOSIXErrorDomain, v43, v45, tagCopy);
 
     v33 = 0;
     v32 = 0;
@@ -2990,7 +2990,7 @@ LABEL_98:
     goto LABEL_99;
   }
 
-  v94 = v15;
+  v94 = callbackCopy;
   v59 = v123._counts[1];
   v34 = 0.0;
   v101 = v123._counts[1];
@@ -3016,7 +3016,7 @@ LABEL_84:
   v62 = 0;
   v98 = 0;
   v99 = &v38[v37];
-  v100 = v14;
+  v100 = namedCopy;
   while (1)
   {
     bzero(&buf, 0x418uLL);
@@ -3059,7 +3059,7 @@ LABEL_75:
     v71 = v66;
     v72 = currentQueueName();
     *v134 = 67111170;
-    v135 = v112;
+    v135 = tagCopy;
     v136 = 2080;
     v137 = v72;
     v138 = 2112;
@@ -3083,7 +3083,7 @@ LABEL_75:
   {
     v109 = (v109 + 1);
 LABEL_74:
-    v14 = v100;
+    namedCopy = v100;
     v59 = v101;
     v61 = v103;
     goto LABEL_75;
@@ -3094,9 +3094,9 @@ LABEL_74:
   {
     loga = v69;
     v93 = currentQueueName();
-    v73 = [(AssetCacheLocatorService *)v110 safeString:v65 length:4 forceHex:0];
+    v73 = [(AssetCacheLocatorService *)selfCopy safeString:v65 length:4 forceHex:0];
     *v134 = 67110402;
-    v135 = v112;
+    v135 = tagCopy;
     v136 = 2080;
     v137 = v93;
     v138 = 2112;
@@ -3141,8 +3141,8 @@ LABEL_74:
   v88 = 3;
 LABEL_107:
   v122 = 0;
-  LODWORD(v92) = v112;
-  v33 = [(AssetCacheLocatorService *)v110 makeRangesFromDNSRecordNamed:v100 withType:v88 data:rdata + 5 length:(rdlength - 5) more:&v124 error:&v122 tag:v92];
+  LODWORD(v92) = tagCopy;
+  v33 = [(AssetCacheLocatorService *)selfCopy makeRangesFromDNSRecordNamed:v100 withType:v88 data:rdata + 5 length:(rdlength - 5) more:&v124 error:&v122 tag:v92];
   v31 = v122;
   if (v70)
   {
@@ -3154,7 +3154,7 @@ LABEL_107:
     v89 = 1;
   }
 
-  v14 = v100;
+  namedCopy = v100;
   v90 = v89 == 0;
   v91 = v33;
   if (v90)
@@ -3189,9 +3189,9 @@ LABEL_85:
     v32 = 0;
     if ((v124 & 1) == 0 && !v31)
     {
-      [NSString stringWithFormat:@"unable to parse DNS TXT record %@ (a=%d, n=%d, c=%d, i=%d, e=%d, b=%d, u=%d)", v14, v37, v101, v62, v61, v102, v109, v98];
+      [NSString stringWithFormat:@"unable to parse DNS TXT record %@ (a=%d, n=%d, c=%d, i=%d, e=%d, b=%d, u=%d)", namedCopy, v37, v101, v62, v61, v102, v109, v98];
       v80 = v79 = v61;
-      v31 = createTaggedError(NSPOSIXErrorDomain, 22, v80, v112);
+      v31 = createTaggedError(NSPOSIXErrorDomain, 22, v80, tagCopy);
 
       v32 = 0;
       if (!v62 && !v79 && !v102 && !v109 && v98)
@@ -3202,7 +3202,7 @@ LABEL_85:
           v82 = v81;
           v83 = currentQueueName();
           *buf.name = 67109634;
-          *&buf.name[4] = v112;
+          *&buf.name[4] = tagCopy;
           *&buf.name[8] = 2080;
           *&buf.name[10] = v83;
           *&buf.name[18] = 2112;
@@ -3217,12 +3217,12 @@ LABEL_85:
   }
 
   v17 = v106;
-  v15 = v94;
+  callbackCopy = v94;
 LABEL_99:
   free(v38);
 LABEL_100:
   res_9_ndestroy(&res);
-  v27 = v114;
+  v27 = queueCopy;
 LABEL_101:
   v115[0] = _NSConcreteStackBlock;
   v115[1] = 3221225472;
@@ -3231,10 +3231,10 @@ LABEL_101:
   v116 = v31;
   v117 = v33;
   v118 = v32;
-  v119 = v15;
+  v119 = callbackCopy;
   v120 = v34;
   v121 = v124;
-  v84 = v15;
+  v84 = callbackCopy;
   v85 = v32;
   v20 = v33;
   v86 = v31;
@@ -3244,22 +3244,22 @@ LABEL_101:
 LABEL_102:
 }
 
-- (void)resolveDNSRecordsWithTimeout:(double)a3 callback:(id)a4 callbackQueue:(id)a5 tag:(unsigned int)a6
+- (void)resolveDNSRecordsWithTimeout:(double)timeout callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag
 {
-  v68 = a4;
-  queue = a5;
+  callbackCopy = callback;
+  queue = queue;
   v9 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v65 = v9;
     v66 = currentQueueName();
-    v67 = objc_retainBlock(v68);
+    v67 = objc_retainBlock(callbackCopy);
     *buf = 67110146;
-    v103 = a6;
+    tagCopy6 = tag;
     v104 = 2080;
     v105 = v66;
     v106 = 2048;
-    v107 = a3;
+    timeoutCopy = timeout;
     v108 = 2048;
     v109 = v67;
     v110 = 2080;
@@ -3267,7 +3267,7 @@ LABEL_102:
     _os_log_debug_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEBUG, "#%08x [%s] resolveDNSRecordsWithTimeout:%.3f callback:%p callbackQueue:%s", buf, 0x30u);
   }
 
-  v70 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v70 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v10 = dispatch_group_create();
   v74 = +[NSMutableArray array];
   v73 = +[NSMutableArray array];
@@ -3285,11 +3285,11 @@ LABEL_102:
 
     v14 = +[NSMutableArray array];
     [(AssetCacheLocatorService *)self dnsResolutionTimeout];
-    v15 = a3;
-    if (a3 > v16)
+    timeoutCopy2 = timeout;
+    if (timeout > v16)
     {
       [(AssetCacheLocatorService *)self dnsResolutionTimeout];
-      v15 = v17;
+      timeoutCopy2 = v17;
     }
 
     v18 = -1;
@@ -3310,10 +3310,10 @@ LABEL_102:
       block[4] = self;
       v21 = v19;
       v91 = v21;
-      v96 = v15;
+      v96 = timeoutCopy2;
       v22 = v11;
       v92 = v22;
-      v97 = a6;
+      tagCopy2 = tag;
       v93 = v12;
       v94 = v10;
       v95 = v79;
@@ -3343,21 +3343,21 @@ LABEL_102:
     {
       v49 = currentQueueName();
       *buf = 67109890;
-      v103 = a6;
+      tagCopy6 = tag;
       v104 = 2080;
       v105 = v49;
       v106 = 2048;
-      v107 = v15;
+      timeoutCopy = timeoutCopy2;
       v108 = 2112;
       v109 = v71;
       _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "#%08x [%s] waiting up to %.3f sec for concurrent DNS resolution of %@", buf, 0x26u);
     }
 
-    v27 = dispatch_time(0, (v15 * 1000000000.0));
+    v27 = dispatch_time(0, (timeoutCopy2 * 1000000000.0));
     if (dispatch_group_wait(v10, v27))
     {
       v28 = [NSString stringWithFormat:@"timed out waiting for concurrent DNS resolution of %@", v71];
-      createTaggedError(NSPOSIXErrorDomain, 60, v28, a6);
+      createTaggedError(NSPOSIXErrorDomain, 60, v28, tag);
       *&v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
 LABEL_16:
@@ -3393,11 +3393,11 @@ LABEL_16:
           {
             v46 = currentQueueName();
             *buf = 67109891;
-            v103 = a6;
+            tagCopy6 = tag;
             v104 = 2080;
             v105 = v46;
             v106 = 2112;
-            v107 = v34;
+            timeoutCopy = v34;
             v108 = 2113;
             v109 = v35;
             _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "#%08x [%s] resolveDNSRecords: %@: result=%{private}@", buf, 0x26u);
@@ -3429,9 +3429,9 @@ LABEL_16:
           }
 
           v44 = [v35 objectForKey:@"more"];
-          v45 = [v44 BOOLValue];
+          bOOLValue = [v44 BOOLValue];
 
-          if ((v45 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
 LABEL_34:
 
@@ -3472,18 +3472,18 @@ LABEL_36:
       if ([(__CFString *)v11 intValue]>= 25)
       {
         v28 = [NSString stringWithFormat:@"too many chained DNS records, max %d", 25];
-        createTaggedError(NSPOSIXErrorDomain, 62, v28, a6);
+        createTaggedError(NSPOSIXErrorDomain, 62, v28, tag);
         *&v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         goto LABEL_16;
       }
 
       [v70 timeIntervalSinceNow];
-      a3 = v48;
+      timeout = v48;
       if (v48 <= 0.0)
       {
         v28 = [NSString stringWithFormat:@"_aaplcache%@._tcp", v11];
         v50 = [NSString stringWithFormat:@"timed out before getting to DNS resolution of %@", v28];
-        createTaggedError(NSPOSIXErrorDomain, 60, v50, a6);
+        createTaggedError(NSPOSIXErrorDomain, 60, v50, tag);
         *&v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
         goto LABEL_16;
@@ -3508,11 +3508,11 @@ LABEL_17:
       v59 = [v73 count];
       v60 = *(v99 + 3);
       *buf = 67110659;
-      v103 = a6;
+      tagCopy6 = tag;
       v104 = 2080;
       v105 = v57;
       v106 = 2048;
-      v107 = v58;
+      timeoutCopy = v58;
       v108 = 2113;
       v109 = v74;
       v110 = 2048;
@@ -3533,11 +3533,11 @@ LABEL_51:
   {
     v53 = currentQueueName();
     *buf = 67109634;
-    v103 = a6;
+    tagCopy6 = tag;
     v104 = 2080;
     v105 = v53;
     v106 = 2112;
-    v107 = v77;
+    timeoutCopy = v77;
     v54 = "#%08x [%s] resolveDNSRecords -> %@";
     v55 = v51;
     v56 = 28;
@@ -3551,52 +3551,52 @@ LABEL_51:
   v81 = v77;
   v82 = v74;
   v83 = v73;
-  v84 = v68;
+  v84 = callbackCopy;
   v85 = &v98;
   v61 = v73;
   v62 = v74;
-  v63 = v68;
+  v63 = callbackCopy;
   v64 = *&v77;
   dispatch_async(queue, v80);
 
   _Block_object_dispose(&v98, 8);
 }
 
-- (id)sanitizeRanges:(id)a3 fromSource:(id)a4 tag:(unsigned int)a5
+- (id)sanitizeRanges:(id)ranges fromSource:(id)source tag:(unsigned int)tag
 {
-  v7 = a3;
-  v8 = a4;
+  rangesCopy = ranges;
+  sourceCopy = source;
   v9 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v36 = v9;
     *buf = 67110147;
-    *&buf[4] = a5;
+    *&buf[4] = tag;
     *&buf[8] = 2080;
     *&buf[10] = currentQueueName();
     *&buf[18] = 2048;
-    *&buf[20] = [v7 count];
+    *&buf[20] = [rangesCopy count];
     *&buf[28] = 2113;
-    *&buf[30] = v7;
+    *&buf[30] = rangesCopy;
     *&buf[38] = 2112;
-    *&buf[40] = v8;
+    *&buf[40] = sourceCopy;
     _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "#%08x [%s] sanitizeRanges:[%ld]%{private}@ fromSource:%@", buf, 0x30u);
   }
 
   v10 = +[NSMutableArray array];
-  v11 = [v7 count];
+  v11 = [rangesCopy count];
   if (!v11)
   {
     goto LABEL_45;
   }
 
   v12 = v11;
-  v38 = v8;
-  v37 = a5;
+  v38 = sourceCopy;
+  tagCopy = tag;
   v13 = 0;
   while (1)
   {
-    v14 = [v7 objectAtIndex:v13];
+    v14 = [rangesCopy objectAtIndex:v13];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -3662,20 +3662,20 @@ LABEL_28:
 
     if (v12 == ++v13)
     {
-      v8 = v38;
+      sourceCopy = v38;
       goto LABEL_45;
     }
   }
 
 LABEL_42:
   v32 = gLogHandle;
-  v8 = v38;
+  sourceCopy = v38;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v33 = v32;
     v34 = currentQueueName();
     *buf = 67110146;
-    *&buf[4] = v37;
+    *&buf[4] = tagCopy;
     *&buf[8] = 2080;
     *&buf[10] = v34;
     *&buf[18] = 2048;
@@ -3697,7 +3697,7 @@ LABEL_45:
   return v10;
 }
 
-- (id)makeBootTimeWithTag:(unsigned int)a3
+- (id)makeBootTimeWithTag:(unsigned int)tag
 {
   v3 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3723,18 +3723,18 @@ LABEL_45:
   return v4;
 }
 
-- (BOOL)transferVolatileStateFromDiskCache:(id)a3 toDiskCache:(id)a4 tag:(unsigned int)a5
+- (BOOL)transferVolatileStateFromDiskCache:(id)cache toDiskCache:(id)diskCache tag:(unsigned int)tag
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  diskCacheCopy = diskCache;
   v8 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100020948(v8);
   }
 
-  v51 = [v6 objectForKeyedSubscript:@"cache"];
-  [v7 objectForKeyedSubscript:@"cache"];
+  v51 = [cacheCopy objectForKeyedSubscript:@"cache"];
+  [diskCacheCopy objectForKeyedSubscript:@"cache"];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -3745,8 +3745,8 @@ LABEL_45:
     v57 = 0;
     v50 = *v74;
     v9 = @"localAddressAndPort";
-    v46 = v6;
-    v48 = v7;
+    v46 = cacheCopy;
+    v48 = diskCacheCopy;
     while (1)
     {
       for (i = 0; i != v52; i = i + 1)
@@ -3795,7 +3795,7 @@ LABEL_10:
             v14 = [v12 countByEnumeratingWithState:&v69 objects:v93 count:16];
             if (!v14)
             {
-              v7 = v48;
+              diskCacheCopy = v48;
               goto LABEL_43;
             }
 
@@ -3875,7 +3875,7 @@ LABEL_10:
                     v44 = currentQueueName();
                     v55 = [v33 objectForKeyedSubscript:@"failureCount"];
                     *buf = 67110658;
-                    v78 = a5;
+                    tagCopy = tag;
                     v79 = 2080;
                     v80 = v44;
                     v81 = 2112;
@@ -3925,8 +3925,8 @@ LABEL_38:
             while (v31);
           }
 
-          v6 = v46;
-          v7 = v48;
+          cacheCopy = v46;
+          diskCacheCopy = v48;
           v12 = v49;
 LABEL_43:
           i = v53;
@@ -3935,7 +3935,7 @@ LABEL_44:
           goto LABEL_46;
         }
 
-        v7 = v48;
+        diskCacheCopy = v48;
         i = v53;
 LABEL_46:
       }
@@ -3954,7 +3954,7 @@ LABEL_50:
   return v57 & 1;
 }
 
-- (void)updateDiskCacheRefreshTimerWithTag:(unsigned int)a3
+- (void)updateDiskCacheRefreshTimerWithTag:(unsigned int)tag
 {
   v5 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3969,13 +3969,13 @@ LABEL_50:
 
   if (!-[AssetCacheLocatorService testFlags](self, "testFlags") || (-[AssetCacheLocatorService diskCache](self, "diskCache"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKey:@"nextDiskCacheRefreshDate"], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    v47 = a3;
+    tagCopy = tag;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v8 = [(AssetCacheLocatorService *)self diskCache];
-    v9 = [v8 objectForKey:@"cache"];
+    diskCache = [(AssetCacheLocatorService *)self diskCache];
+    v9 = [diskCache objectForKey:@"cache"];
 
     v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
     if (v10)
@@ -4016,8 +4016,8 @@ LABEL_50:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v16 = [(AssetCacheLocatorService *)self diskCache];
-    v17 = [v16 objectForKey:@"dnsResults"];
+    diskCache2 = [(AssetCacheLocatorService *)self diskCache];
+    v17 = [diskCache2 objectForKey:@"dnsResults"];
 
     v18 = [v17 countByEnumeratingWithState:&v52 objects:v71 count:16];
     if (v18)
@@ -4052,8 +4052,8 @@ LABEL_50:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v24 = [(AssetCacheLocatorService *)self diskCache];
-    v25 = [v24 objectForKey:@"serversRecentlySeen"];
+    diskCache3 = [(AssetCacheLocatorService *)self diskCache];
+    v25 = [diskCache3 objectForKey:@"serversRecentlySeen"];
 
     v26 = [v25 countByEnumeratingWithState:&v48 objects:v70 count:16];
     if (v26)
@@ -4084,7 +4084,7 @@ LABEL_50:
       while (v27);
     }
 
-    a3 = v47;
+    tag = tagCopy;
     if (!v7)
     {
       if (![(AssetCacheLocatorService *)self diskCacheRefreshTimerResumed])
@@ -4099,14 +4099,14 @@ LABEL_50:
         v45 = v44;
         v46 = currentQueueName();
         *buf = 67109378;
-        v61 = v47;
+        tagCopy2 = tagCopy;
         v62 = 2080;
         v63 = v46;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "#%08x [%s] automatic disk cache refreshes suspended", buf, 0x12u);
       }
 
-      v42 = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
-      dispatch_suspend(v42);
+      diskCacheRefreshTimer = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
+      dispatch_suspend(diskCacheRefreshTimer);
       v43 = 0;
       v7 = 0;
       goto LABEL_53;
@@ -4132,7 +4132,7 @@ LABEL_50:
     v37 = [NSDate dateWithTimeIntervalSinceNow:v33];
     v38 = +[NSDate date];
     *buf = 67110146;
-    v61 = a3;
+    tagCopy2 = tag;
     v62 = 2080;
     v63 = v36;
     v64 = 2112;
@@ -4145,7 +4145,7 @@ LABEL_50:
   }
 
   v39 = dispatch_time(0, (v33 * 1000000000.0));
-  v40 = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
+  diskCacheRefreshTimer2 = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
   if ([(AssetCacheLocatorService *)self testFlags])
   {
     v41 = 0;
@@ -4156,12 +4156,12 @@ LABEL_50:
     v41 = 300000000000;
   }
 
-  dispatch_source_set_timer(v40, v39, 0xFFFFFFFFFFFFFFFFLL, v41);
+  dispatch_source_set_timer(diskCacheRefreshTimer2, v39, 0xFFFFFFFFFFFFFFFFLL, v41);
 
   if (![(AssetCacheLocatorService *)self diskCacheRefreshTimerResumed])
   {
-    v42 = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
-    dispatch_resume(v42);
+    diskCacheRefreshTimer = [(AssetCacheLocatorService *)self diskCacheRefreshTimer];
+    dispatch_resume(diskCacheRefreshTimer);
     v43 = 1;
 LABEL_53:
 
@@ -4171,25 +4171,25 @@ LABEL_53:
 LABEL_54:
 }
 
-- (id)cachedEntryCalled:(id)a3 withKey:(id)a4 forNetworkIdentifiers:(id)a5 validityInterval:(double *)a6 tag:(unsigned int)a7
+- (id)cachedEntryCalled:(id)called withKey:(id)key forNetworkIdentifiers:(id)identifiers validityInterval:(double *)interval tag:(unsigned int)tag
 {
-  v11 = a3;
-  v12 = a4;
-  v39 = a5;
+  calledCopy = called;
+  keyCopy = key;
+  identifiersCopy = identifiers;
   v13 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v30 = v13;
     *buf = 67110147;
-    v46 = a7;
+    tagCopy2 = tag;
     v47 = 2080;
     v48 = currentQueueName();
     v49 = 2112;
-    v50 = v11;
+    v50 = calledCopy;
     v51 = 2048;
-    v52 = [v39 count];
+    v52 = [identifiersCopy count];
     v53 = 2113;
-    v54 = *&v39;
+    v54 = *&identifiersCopy;
     _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "#%08x [%s] cached%@ForNetworkIdentifiers:[%ld]%{private}@", buf, 0x30u);
   }
 
@@ -4198,16 +4198,16 @@ LABEL_54:
     sub_100020C94();
   }
 
-  v34 = self;
-  v35 = a6;
-  v37 = v11;
+  selfCopy = self;
+  intervalCopy = interval;
+  v37 = calledCopy;
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v14 = [(AssetCacheLocatorService *)self diskCache];
-  v36 = v12;
-  v15 = [v14 objectForKey:v12];
+  diskCache = [(AssetCacheLocatorService *)self diskCache];
+  v36 = keyCopy;
+  v15 = [diskCache objectForKey:keyCopy];
 
   v16 = [v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v16)
@@ -4230,7 +4230,7 @@ LABEL_54:
         {
           v23 = v22;
           v24 = [v20 objectForKey:@"networkIdentifiers"];
-          v25 = [ACLSNetworkUtilities areDigestedIdentifiers:v24 equalToCleartextIdentifiers:v39 tag:a7];
+          v25 = [ACLSNetworkUtilities areDigestedIdentifiers:v24 equalToCleartextIdentifiers:identifiersCopy tag:tag];
 
           if (v25)
           {
@@ -4240,9 +4240,9 @@ LABEL_54:
             {
               v31 = v28;
               v32 = currentQueueName();
-              v33 = [(AssetCacheLocatorService *)v34 redactObject:v20];
+              v33 = [(AssetCacheLocatorService *)selfCopy redactObject:v20];
               *buf = 67110146;
-              v46 = a7;
+              tagCopy2 = tag;
               v47 = 2080;
               v48 = v32;
               v49 = 2112;
@@ -4254,9 +4254,9 @@ LABEL_54:
               _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "#%08x [%s] cached%@ForNetworkIdentifiers -> %@ validityInterval=%.3f", buf, 0x30u);
             }
 
-            if (v35)
+            if (intervalCopy)
             {
-              *v35 = v23;
+              *intervalCopy = v23;
             }
 
             v26 = [v20 copy];
@@ -4294,60 +4294,60 @@ LABEL_20:
   return v26;
 }
 
-- (void)locateLocalCachingServersWithTimeout:(double)a3 localAddresses:(id)a4 gatewayIdentifiers:(id)a5 configurationProfiles:(id)a6 forceDNSRefresh:(BOOL)a7 callback:(id)a8 callbackQueue:(id)a9 tag:(unsigned int)a10
+- (void)locateLocalCachingServersWithTimeout:(double)timeout localAddresses:(id)addresses gatewayIdentifiers:(id)identifiers configurationProfiles:(id)profiles forceDNSRefresh:(BOOL)refresh callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)self0
 {
-  v50 = a7;
-  v16 = a4;
-  v54 = a5;
-  v51 = a6;
-  v17 = a8;
-  v18 = a9;
+  refreshCopy = refresh;
+  addressesCopy = addresses;
+  identifiersCopy = identifiers;
+  profilesCopy = profiles;
+  callbackCopy = callback;
+  queueCopy = queue;
   v19 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v53 = v19;
     v44 = currentQueueName();
-    v45 = [v54 count];
-    v46 = objc_retainBlock(v17);
+    v45 = [identifiersCopy count];
+    v46 = objc_retainBlock(callbackCopy);
     *buf = 67111427;
-    v76 = a10;
+    tagCopy = tag;
     v77 = 2080;
     v78 = v44;
     v79 = 2048;
-    v80 = a3;
+    timeoutCopy = timeout;
     v81 = 2112;
-    v82 = v16;
+    v82 = addressesCopy;
     v83 = 2048;
     v84 = v45;
     v85 = 2113;
-    v86 = v54;
+    v86 = identifiersCopy;
     v87 = 2113;
-    v88 = v51;
+    v88 = profilesCopy;
     v89 = 1024;
-    v90 = v50;
+    v90 = refreshCopy;
     v91 = 2048;
     v92 = v46;
     v93 = 2080;
-    label = dispatch_queue_get_label(v18);
+    label = dispatch_queue_get_label(queueCopy);
     _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "#%08x [%s] locateLocalCachingServersWithTimeout:%.3f localAddresses:%@ gatewayIdentifiers:[%ld]%{private}@ configurationProfiles:%{private}@ forceDNSRefresh:%{BOOL}d callback:%p callbackQueue:%s", buf, 0x5Eu);
   }
 
-  if (![(AssetCacheLocatorService *)self amRunningInMySingleLocate:a10])
+  if (![(AssetCacheLocatorService *)self amRunningInMySingleLocate:tag])
   {
     sub_1000216EC();
   }
 
-  v20 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v20 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v21 = +[NSMutableArray array];
   v69[0] = _NSConcreteStackBlock;
   v69[1] = 3221225472;
   v69[2] = sub_100015A34;
   v69[3] = &unk_100035070;
-  v74 = a10;
+  tagCopy2 = tag;
   v69[4] = self;
-  v49 = v18;
+  v49 = queueCopy;
   v70 = v49;
-  v48 = v17;
+  v48 = callbackCopy;
   v73 = v48;
   v22 = v20;
   v71 = v22;
@@ -4364,15 +4364,15 @@ LABEL_20:
   v65[2] = sub_100015DC0;
   v65[3] = &unk_100035098;
   v65[4] = self;
-  v68 = a10;
-  v26 = v16;
+  tagCopy3 = tag;
+  v26 = addressesCopy;
   v66 = v26;
   v27 = v25;
   v67 = v27;
   v28 = objc_retainBlock(v65);
-  if (v50)
+  if (refreshCopy)
   {
-    v29 = a10;
+    tagCopy5 = tag;
     v30 = 0;
     v31 = 0;
   }
@@ -4381,8 +4381,8 @@ LABEL_20:
   {
     v63 = 0;
     v64 = 0;
-    v29 = a10;
-    [(AssetCacheLocatorService *)self cachedDNSPublicAddressRanges:&v64 andFavoredServerRanges:&v63 forNetworkIdentifiers:v54 tag:a10];
+    tagCopy5 = tag;
+    [(AssetCacheLocatorService *)self cachedDNSPublicAddressRanges:&v64 andFavoredServerRanges:&v63 forNetworkIdentifiers:identifiersCopy tag:tag];
     v31 = v64;
     v30 = v63;
   }
@@ -4412,10 +4412,10 @@ LABEL_20:
     v55[1] = 3221225472;
     v55[2] = sub_100015ED8;
     v55[3] = &unk_1000350C0;
-    v47 = v29;
-    v62 = v29;
+    v47 = tagCopy5;
+    v62 = tagCopy5;
     v55[4] = self;
-    v56 = v54;
+    v56 = identifiersCopy;
     v57 = v27;
     v58 = v52;
     v60 = v23;
@@ -4428,10 +4428,10 @@ LABEL_20:
     v38 = objc_retainBlock(v55);
     [v22 timeIntervalSinceNow];
     v40 = v39;
-    v41 = [(AssetCacheLocatorService *)self queue];
-    v42 = self;
-    v43 = v41;
-    [(AssetCacheLocatorService *)v42 resolveDNSRecordsWithTimeout:v38 callback:v41 callbackQueue:v47 tag:v40];
+    queue = [(AssetCacheLocatorService *)self queue];
+    selfCopy = self;
+    v43 = queue;
+    [(AssetCacheLocatorService *)selfCopy resolveDNSRecordsWithTimeout:v38 callback:queue callbackQueue:v47 tag:v40];
 
     v26 = v37;
     v27 = v36;
@@ -4440,24 +4440,24 @@ LABEL_20:
   }
 }
 
-- (BOOL)doesServer:(id)a3 haveCapabilities:(id)a4 tag:(unsigned int)a5
+- (BOOL)doesServer:(id)server haveCapabilities:(id)capabilities tag:(unsigned int)tag
 {
-  v8 = a3;
-  v9 = a4;
+  serverCopy = server;
+  capabilitiesCopy = capabilities;
   v10 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v17 = v10;
     v18 = currentQueueName();
-    v19 = [(AssetCacheLocatorService *)self redactObject:v8];
+    v19 = [(AssetCacheLocatorService *)self redactObject:serverCopy];
     *buf = 67109890;
-    *&buf[4] = a5;
+    *&buf[4] = tag;
     *v33 = 2080;
     *&v33[2] = v18;
     *&v33[10] = 2112;
     *&v33[12] = v19;
     v34 = 2112;
-    v35 = v9;
+    v35 = capabilitiesCopy;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "#%08x [%s] doesServer:%@ haveCapabilities:%@", buf, 0x26u);
   }
 
@@ -4465,7 +4465,7 @@ LABEL_20:
   *v33 = buf;
   *&v33[8] = 0x2020000000;
   v33[16] = 1;
-  v11 = [v8 objectForKey:@"details"];
+  v11 = [serverCopy objectForKey:@"details"];
   [v11 objectForKey:@"capabilities"];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -4475,14 +4475,14 @@ LABEL_20:
   v25 = buf;
   v13 = v11;
   v24 = v13;
-  [v9 enumerateKeysAndObjectsUsingBlock:v22];
+  [capabilitiesCopy enumerateKeysAndObjectsUsingBlock:v22];
   v14 = gLogHandle;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v20 = currentQueueName();
     v21 = *(*v33 + 24);
     *v26 = 67109634;
-    v27 = a5;
+    tagCopy = tag;
     v28 = 2080;
     v29 = v20;
     v30 = 1024;
@@ -4496,17 +4496,17 @@ LABEL_20:
   return v15 & 1;
 }
 
-- (void)refineServers:(id)a3 intoBest:(id *)a4 andOther:(id *)a5 tag:(unsigned int)a6
+- (void)refineServers:(id)servers intoBest:(id *)best andOther:(id *)other tag:(unsigned int)tag
 {
-  v8 = a3;
+  serversCopy = servers;
   v9 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v22 = v9;
     v23 = currentQueueName();
-    v24 = [(AssetCacheLocatorService *)self redactObject:v8];
+    v24 = [(AssetCacheLocatorService *)self redactObject:serversCopy];
     *buf = 67109634;
-    v33 = a6;
+    tagCopy2 = tag;
     v34 = 2080;
     v35 = v23;
     v36 = 2112;
@@ -4514,11 +4514,11 @@ LABEL_20:
     _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "#%08x [%s] refineServers:%@", buf, 0x1Cu);
   }
 
-  if ([v8 count])
+  if ([serversCopy count])
   {
-    v10 = [v8 sortedArrayWithOptions:16 usingComparator:&stru_100035128];
-    v11 = [v10 firstObject];
-    v12 = [v11 objectForKey:@"rank"];
+    v10 = [serversCopy sortedArrayWithOptions:16 usingComparator:&stru_100035128];
+    firstObject = [v10 firstObject];
+    v12 = [firstObject objectForKey:@"rank"];
 
     v13 = 1;
     if ([v10 count] >= 2)
@@ -4547,7 +4547,7 @@ LABEL_20:
       v18 = [v10 subarrayWithRange:{v13, objc_msgSend(v10, "count") - v13}];
     }
 
-    if (a4)
+    if (best)
     {
       goto LABEL_10;
     }
@@ -4557,18 +4557,18 @@ LABEL_20:
   {
     v18 = 0;
     v17 = 0;
-    if (a4)
+    if (best)
     {
 LABEL_10:
       v19 = v17;
-      *a4 = v17;
+      *best = v17;
     }
   }
 
-  if (a5)
+  if (other)
   {
     v20 = v18;
-    *a5 = v18;
+    *other = v18;
   }
 
   v21 = gLogHandle;
@@ -4579,7 +4579,7 @@ LABEL_10:
     v27 = [v30 redactObject:v17];
     v28 = [v30 redactObject:v18];
     *buf = 67109890;
-    v33 = a6;
+    tagCopy2 = tag;
     v34 = 2080;
     v35 = v26;
     v36 = 2112;
@@ -4590,26 +4590,26 @@ LABEL_10:
   }
 }
 
-- (id)cachedServers:(id)a3 forAffinityID:(id)a4 tag:(unsigned int)a5
+- (id)cachedServers:(id)servers forAffinityID:(id)d tag:(unsigned int)tag
 {
-  v8 = a3;
-  v9 = a4;
+  serversCopy = servers;
+  dCopy = d;
   if (![(AssetCacheLocatorService *)self amRunningOnMyQueue])
   {
     sub_100021744();
   }
 
-  v33 = a5;
-  v10 = [(AssetCacheLocatorService *)self affinityCache];
-  v34 = v9;
-  v11 = [v10 objectForKeyedSubscript:v9];
+  tagCopy = tag;
+  affinityCache = [(AssetCacheLocatorService *)self affinityCache];
+  v34 = dCopy;
+  v11 = [affinityCache objectForKeyedSubscript:dCopy];
 
-  v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+  v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [serversCopy count]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = v8;
+  v13 = serversCopy;
   v14 = [v13 countByEnumeratingWithState:&v39 objects:v56 count:16];
   if (v14)
   {
@@ -4676,7 +4676,7 @@ LABEL_10:
     v31 = [(AssetCacheLocatorService *)self redactObject:v13];
     v32 = [(AssetCacheLocatorService *)self redactObject:v20];
     *buf = 67110402;
-    v44 = v33;
+    v44 = tagCopy;
     v45 = 2080;
     v46 = v30;
     v47 = 2112;
@@ -4693,21 +4693,21 @@ LABEL_10:
   return v20;
 }
 
-- (void)cacheServers:(id)a3 forAffinityID:(id)a4 tag:(unsigned int)a5
+- (void)cacheServers:(id)servers forAffinityID:(id)d tag:(unsigned int)tag
 {
-  v8 = a3;
-  v9 = a4;
+  serversCopy = servers;
+  dCopy = d;
   if (![(AssetCacheLocatorService *)self amRunningOnMyQueue])
   {
     sub_100021770();
   }
 
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [serversCopy count]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v8;
+  v11 = serversCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v36 count:16];
   if (v12)
   {
@@ -4743,23 +4743,23 @@ LABEL_10:
     v20 = currentQueueName();
     v21 = [(AssetCacheLocatorService *)self redactObject:v11];
     *buf = 67110146;
-    v27 = a5;
+    tagCopy = tag;
     v28 = 2080;
     v29 = v20;
     v30 = 2112;
     v31 = v21;
     v32 = 2112;
-    v33 = v9;
+    v33 = dCopy;
     v34 = 2112;
     v35 = v10;
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "#%08x [%s] cacheServers:%@ forAffinityID:%@ hostports=%@", buf, 0x30u);
   }
 
-  v18 = [(AssetCacheLocatorService *)self affinityCache];
-  [v18 setObject:v10 forKeyedSubscript:v9];
+  affinityCache = [(AssetCacheLocatorService *)self affinityCache];
+  [affinityCache setObject:v10 forKeyedSubscript:dCopy];
 }
 
-- (void)uncacheAllAffinitiesWithTag:(unsigned int)a3
+- (void)uncacheAllAffinitiesWithTag:(unsigned int)tag
 {
   v4 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
@@ -4772,30 +4772,30 @@ LABEL_10:
     sub_100021854();
   }
 
-  v5 = [(AssetCacheLocatorService *)self affinityCache];
-  [v5 removeAllObjects];
+  affinityCache = [(AssetCacheLocatorService *)self affinityCache];
+  [affinityCache removeAllObjects];
 }
 
-- (int)probeCacheWithLabel:(id)a3 capabilities:(id)a4 affinityID:(id)a5 hitServers:(id *)a6 hitServersAreSorted:(BOOL *)a7 hitOtherServers:(id *)a8 hitValidityInterval:(double *)a9 tag:(unsigned int)a10
+- (int)probeCacheWithLabel:(id)label capabilities:(id)capabilities affinityID:(id)d hitServers:(id *)servers hitServersAreSorted:(BOOL *)sorted hitOtherServers:(id *)otherServers hitValidityInterval:(double *)interval tag:(unsigned int)self0
 {
-  v15 = a10;
-  v16 = a3;
-  v80 = a4;
-  v79 = a5;
+  tagCopy4 = tag;
+  labelCopy = label;
+  capabilitiesCopy = capabilities;
+  dCopy = d;
   v17 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v48 = v17;
     *buf = 67110146;
-    v96 = a10;
+    tagCopy3 = tag;
     v97 = 2080;
     v98 = currentQueueName();
     v99 = 2112;
-    v100 = v16;
+    v100 = labelCopy;
     v101 = 2112;
-    v102 = v80;
+    v102 = capabilitiesCopy;
     v103 = 2112;
-    v104 = v79;
+    v104 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEBUG, "#%08x [%s] probeCacheWithLabel:%@ capabilities:%@ affinityID:%@", buf, 0x30u);
   }
 
@@ -4805,20 +4805,20 @@ LABEL_10:
   }
 
   v93 = 0;
-  v18 = [(AssetCacheLocatorService *)self localhostAddresses];
+  localhostAddresses = [(AssetCacheLocatorService *)self localhostAddresses];
   v92 = 0;
-  v19 = [(AssetCacheLocatorService *)self probeCacheForType:@"localhost" withLabel:v16 networkIdentifiers:v18 hitServers:&v92 hitValidityInterval:&v93 tag:a10];
+  v19 = [(AssetCacheLocatorService *)self probeCacheForType:@"localhost" withLabel:labelCopy networkIdentifiers:localhostAddresses hitServers:&v92 hitValidityInterval:&v93 tag:tag];
   v20 = v92;
 
   if (v19)
   {
-    v78 = v16;
+    v78 = labelCopy;
     v90 = 0;
     v91 = 0;
-    [(AssetCacheLocatorService *)self refineServers:v20 intoBest:&v91 andOther:&v90 tag:a10];
+    [(AssetCacheLocatorService *)self refineServers:v20 intoBest:&v91 andOther:&v90 tag:tag];
     v21 = v91;
     v22 = v90;
-    v23 = [(AssetCacheLocatorService *)self serversFromArray:v21 withCapabilities:v80 tag:a10];
+    v23 = [(AssetCacheLocatorService *)self serversFromArray:v21 withCapabilities:capabilitiesCopy tag:tag];
     v24 = v20;
     if ([v23 count] || !-[NSObject count](v20, "count"))
     {
@@ -4829,9 +4829,9 @@ LABEL_10:
         v27 = v26;
         v28 = currentQueueName();
         [(AssetCacheLocatorService *)self describeCapableServers:v23 fromAvailableServers:v20 withOtherServers:v22];
-        v30 = v29 = a6;
+        v30 = v29 = servers;
         *buf = 67109890;
-        v96 = a10;
+        tagCopy3 = tag;
         v97 = 2080;
         v98 = v28;
         v24 = v20;
@@ -4841,50 +4841,50 @@ LABEL_10:
         v102 = v30;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#%08x [%s] %@ hit: %@", buf, 0x26u);
 
-        a6 = v29;
+        servers = v29;
       }
 
-      if (a6)
+      if (servers)
       {
         v31 = v23;
-        *a6 = v23;
+        *servers = v23;
       }
 
-      v32 = v79;
-      v33 = v25;
-      if (a7)
+      v32 = dCopy;
+      localAddresses = v25;
+      if (sorted)
       {
-        *a7 = 0;
+        *sorted = 0;
       }
 
       v34 = v22;
-      if (a8)
+      if (otherServers)
       {
         v35 = v22;
-        *a8 = v22;
+        *otherServers = v22;
       }
 
-      if (a9)
+      if (interval)
       {
-        *a9 = v93;
+        *interval = v93;
       }
 
       v36 = 2;
       goto LABEL_44;
     }
 
-    v16 = v78;
+    labelCopy = v78;
   }
 
-  v33 = [(AssetCacheLocatorService *)self localAddresses];
-  v37 = [(AssetCacheLocatorService *)self gatewayIdentifiers];
-  v34 = v37;
-  if (!v33)
+  localAddresses = [(AssetCacheLocatorService *)self localAddresses];
+  gatewayIdentifiers = [(AssetCacheLocatorService *)self gatewayIdentifiers];
+  v34 = gatewayIdentifiers;
+  if (!localAddresses)
   {
-    v43 = v37;
-    v88 = v37;
+    v43 = gatewayIdentifiers;
+    v88 = gatewayIdentifiers;
     v89 = 0;
-    v44 = [(AssetCacheLocatorService *)self makeLocalAddresses:&v89 andGatewayIdentifiers:&v88 tag:a10];
+    v44 = [(AssetCacheLocatorService *)self makeLocalAddresses:&v89 andGatewayIdentifiers:&v88 tag:tag];
     v45 = v89;
     v46 = v88;
 
@@ -4899,9 +4899,9 @@ LABEL_10:
     [(AssetCacheLocatorService *)self setLocalAddresses:v45];
     [(AssetCacheLocatorService *)self setGatewayIdentifiers:v46];
     v47 = v46;
-    v32 = v79;
-    v33 = v45;
-    v15 = a10;
+    v32 = dCopy;
+    localAddresses = v45;
+    tagCopy4 = tag;
     v34 = v47;
     if (v47)
     {
@@ -4914,33 +4914,33 @@ LABEL_29:
   }
 
   v24 = v20;
-  v32 = v79;
-  if (!v37)
+  v32 = dCopy;
+  if (!gatewayIdentifiers)
   {
     goto LABEL_29;
   }
 
 LABEL_21:
-  v76 = v33;
+  v76 = localAddresses;
 
   v93 = 0;
   v87 = 0;
-  v38 = [(AssetCacheLocatorService *)self probeCacheForType:@"local" withLabel:v16 networkIdentifiers:v34 hitServers:&v87 hitValidityInterval:&v93 tag:v15];
+  v38 = [(AssetCacheLocatorService *)self probeCacheForType:@"local" withLabel:labelCopy networkIdentifiers:v34 hitServers:&v87 hitValidityInterval:&v93 tag:tagCopy4];
   v24 = v87;
   if (v38)
   {
-    v73 = a7;
+    sortedCopy = sorted;
     v85 = 0;
     v86 = 0;
-    [(AssetCacheLocatorService *)self refineServers:v24 intoBest:&v86 andOther:&v85 tag:v15];
+    [(AssetCacheLocatorService *)self refineServers:v24 intoBest:&v86 andOther:&v85 tag:tagCopy4];
     v39 = v86;
     v40 = v85;
     v71 = v39;
-    v41 = [(AssetCacheLocatorService *)self serversFromArray:v39 withCapabilities:v80 tag:v15];
+    v41 = [(AssetCacheLocatorService *)self serversFromArray:v39 withCapabilities:capabilitiesCopy tag:tagCopy4];
     v42 = v41;
-    v78 = v16;
-    v72 = a6;
-    v70 = v15;
+    v78 = labelCopy;
+    serversCopy = servers;
+    v70 = tagCopy4;
     if (!v32)
     {
       goto LABEL_25;
@@ -4969,50 +4969,50 @@ LABEL_33:
         v53 = currentQueueName();
         v54 = [(AssetCacheLocatorService *)self describeCapableServers:v74 fromAvailableServers:v52 withOtherServers:v40];
         *buf = 67109890;
-        v96 = v70;
+        tagCopy3 = v70;
         v97 = 2080;
         v98 = v53;
         v24 = v52;
         v32 = v51;
         v99 = 2112;
-        v100 = v16;
+        v100 = labelCopy;
         v101 = 2112;
         v102 = v54;
         _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "#%08x [%s] %@ hit: %@", buf, 0x26u);
       }
 
-      if (v72)
+      if (serversCopy)
       {
         v55 = v74;
-        *v72 = v74;
+        *serversCopy = v74;
       }
 
-      if (v73)
+      if (sortedCopy)
       {
-        *v73 = v49;
+        *sortedCopy = v49;
       }
 
-      if (a8)
+      if (otherServers)
       {
         v56 = v40;
-        *a8 = v40;
+        *otherServers = v40;
       }
 
-      if (a9)
+      if (interval)
       {
-        *a9 = v93;
+        *interval = v93;
       }
 
-      v33 = v76;
+      localAddresses = v76;
       v23 = v71;
 LABEL_44:
 
-      v16 = v78;
+      labelCopy = v78;
       goto LABEL_45;
     }
 
     log = v24;
-    v58 = [(AssetCacheLocatorService *)self cachedServers:v24 forAffinityID:v32 tag:v15];
+    v58 = [(AssetCacheLocatorService *)self cachedServers:v24 forAffinityID:v32 tag:tagCopy4];
     v59 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v58 count]);
     v81 = 0u;
     v82 = 0u;
@@ -5048,7 +5048,7 @@ LABEL_44:
 
       while (v62);
 
-      v16 = v78;
+      labelCopy = v78;
       v40 = v75;
       if (v63)
       {
@@ -5058,7 +5058,7 @@ LABEL_44:
 LABEL_59:
         v74 = v67;
 
-        v32 = v79;
+        v32 = dCopy;
         v24 = log;
         goto LABEL_33;
       }
@@ -5075,97 +5075,97 @@ LABEL_59:
   }
 
   v36 = 0;
-  v33 = v76;
+  localAddresses = v76;
 LABEL_45:
 
   return v36;
 }
 
-- (void)locateCachingServersWithTimeout:(double)a3 capabilities:(id)a4 affinityID:(id)a5 autoRefresh:(BOOL)a6 quickMiss:(BOOL)a7 forceMiss:(BOOL)a8 callback:(id)a9 callbackQueue:(id)a10 tag:(unsigned int)a11
+- (void)locateCachingServersWithTimeout:(double)timeout capabilities:(id)capabilities affinityID:(id)d autoRefresh:(BOOL)refresh quickMiss:(BOOL)miss forceMiss:(BOOL)forceMiss callback:(id)callback callbackQueue:(id)self0 tag:(unsigned int)self1
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = a6;
-  v18 = a4;
-  v19 = a5;
-  v20 = a9;
-  v21 = a10;
+  forceMissCopy = forceMiss;
+  missCopy = miss;
+  refreshCopy = refresh;
+  capabilitiesCopy = capabilities;
+  dCopy = d;
+  callbackCopy = callback;
+  queueCopy = queue;
   v22 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
   {
     log = v22;
-    v23 = v13;
-    v13 = v14;
+    v23 = missCopy;
+    missCopy = refreshCopy;
     v24 = currentQueueName();
-    v25 = objc_retainBlock(v20);
+    v25 = objc_retainBlock(callbackCopy);
     *buf = 67111426;
-    v43 = a11;
+    tagCopy = tag;
     v44 = 2080;
     v45 = v24;
-    v14 = v13;
-    LOBYTE(v13) = v23;
+    refreshCopy = missCopy;
+    LOBYTE(missCopy) = v23;
     v46 = 2048;
-    v47 = a3;
+    timeoutCopy = timeout;
     v48 = 2112;
-    v49 = v18;
+    v49 = capabilitiesCopy;
     v50 = 2112;
-    v51 = v19;
+    v51 = dCopy;
     v52 = 1024;
-    v53 = v14;
+    v53 = refreshCopy;
     v54 = 1024;
     v55 = v23;
     v56 = 1024;
-    v57 = v12;
+    v57 = forceMissCopy;
     v58 = 2048;
     v59 = v25;
     v60 = 2080;
-    label = dispatch_queue_get_label(v21);
+    label = dispatch_queue_get_label(queueCopy);
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "#%08x [%s] locateCachingServersWithTimeout:%.3f capabilities:%@ affinityID:%@ autoRefresh:%{BOOL}d quickMiss:%{BOOL}d forceMiss:%{BOOL}d callback:%p callbackQueue:%s", buf, 0x56u);
   }
 
-  v26 = [(AssetCacheLocatorService *)self queue];
+  queue = [(AssetCacheLocatorService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100019990;
   block[3] = &unk_1000352B0;
-  v39 = v12;
-  v38 = a11;
+  v39 = forceMissCopy;
+  tagCopy2 = tag;
   block[4] = self;
-  v33 = v18;
-  v34 = v19;
-  v35 = v21;
-  v36 = v20;
-  v40 = v13;
-  v41 = v14;
-  v37 = a3;
-  v27 = v20;
-  v28 = v21;
-  v29 = v19;
-  v30 = v18;
-  dispatch_async(v26, block);
+  v33 = capabilitiesCopy;
+  v34 = dCopy;
+  v35 = queueCopy;
+  v36 = callbackCopy;
+  v40 = missCopy;
+  v41 = refreshCopy;
+  timeoutCopy2 = timeout;
+  v27 = callbackCopy;
+  v28 = queueCopy;
+  v29 = dCopy;
+  v30 = capabilitiesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)relocateCachingServersWithTimeout:(double)a3 capabilities:(id)a4 affinityID:(id)a5 forceRefresh:(BOOL)a6 tag:(unsigned int)a7
+- (void)relocateCachingServersWithTimeout:(double)timeout capabilities:(id)capabilities affinityID:(id)d forceRefresh:(BOOL)refresh tag:(unsigned int)tag
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
+  refreshCopy = refresh;
+  capabilitiesCopy = capabilities;
+  dCopy = d;
   v14 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
     *buf = 67110402;
-    *&buf[4] = a7;
+    *&buf[4] = tag;
     *v25 = 2080;
     *&v25[2] = currentQueueName();
     *&v25[10] = 2048;
-    *&v25[12] = a3;
+    *&v25[12] = timeout;
     v26 = 2112;
-    v27 = v12;
+    v27 = capabilitiesCopy;
     v28 = 2112;
-    v29 = v13;
+    v29 = dCopy;
     v30 = 1024;
-    v31 = v8;
+    v31 = refreshCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "#%08x [%s] relocateCachingServersWithTimeout:%.3f capabilities:%@ affinityID:%@ forceRefresh:%{BOOL}d", buf, 0x36u);
   }
 
@@ -5173,14 +5173,14 @@ LABEL_45:
   *v25 = buf;
   *&v25[8] = 0x2020000000;
   v25[16] = 0;
-  v16 = [(AssetCacheLocatorService *)self cacheRefreshQueue];
+  cacheRefreshQueue = [(AssetCacheLocatorService *)self cacheRefreshQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001A168;
   block[3] = &unk_1000352D8;
   block[4] = self;
   block[5] = buf;
-  dispatch_sync(v16, block);
+  dispatch_sync(cacheRefreshQueue, block);
 
   if (*(*v25 + 24) == 1)
   {
@@ -5189,32 +5189,32 @@ LABEL_45:
     v18[1] = 3221225472;
     v18[2] = sub_10001A1B0;
     v18[3] = &unk_100034E28;
-    v21 = a7;
+    tagCopy = tag;
     v18[4] = self;
-    v19 = v12;
-    v20 = v13;
-    v22 = v8;
+    v19 = capabilitiesCopy;
+    v20 = dCopy;
+    v22 = refreshCopy;
     dispatch_async(v17, v18);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (id)describeCapableServers:(id)a3 fromAvailableServers:(id)a4 withOtherServers:(id)a5
+- (id)describeCapableServers:(id)servers fromAvailableServers:(id)availableServers withOtherServers:(id)otherServers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serversCopy = servers;
+  availableServersCopy = availableServers;
+  otherServersCopy = otherServers;
   v10 = +[NSMutableString string];
-  if ([v8 count])
+  if ([availableServersCopy count])
   {
     v11 = +[NSMutableSet set];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = v7;
-    v12 = v7;
+    v23 = serversCopy;
+    v12 = serversCopy;
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
@@ -5239,8 +5239,8 @@ LABEL_45:
       while (v14);
     }
 
-    v18 = [v8 count];
-    v19 = [v8 count];
+    v18 = [availableServersCopy count];
+    v19 = [availableServersCopy count];
     v20 = @"s";
     if (v19 == 1)
     {
@@ -5255,9 +5255,9 @@ LABEL_45:
     v25 = v10;
     v26 = v11;
     v21 = v11;
-    [v8 enumerateObjectsUsingBlock:v24];
+    [availableServersCopy enumerateObjectsUsingBlock:v24];
 
-    v7 = v23;
+    serversCopy = v23;
   }
 
   else
@@ -5265,21 +5265,21 @@ LABEL_45:
     [v10 appendString:@"no caching servers"];
   }
 
-  if ([v9 count])
+  if ([otherServersCopy count])
   {
-    [v10 appendFormat:@" [plus %d more of other ranks]", objc_msgSend(v9, "count")];
+    [v10 appendFormat:@" [plus %d more of other ranks]", objc_msgSend(otherServersCopy, "count")];
   }
 
   return v10;
 }
 
-- (id)compileRanges:(id)a3 tag:(unsigned int)a4
+- (id)compileRanges:(id)ranges tag:(unsigned int)tag
 {
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = a3;
+  obj = ranges;
   v4 = [obj countByEnumeratingWithState:&v38 objects:v49 count:16];
   if (v4)
   {
@@ -5411,7 +5411,7 @@ LABEL_45:
     v25 = v23;
     v26 = currentQueueName();
     *buf = 67109890;
-    *&buf[4] = a4;
+    *&buf[4] = tag;
     *v43 = 2080;
     *&v43[2] = v26;
     v44 = 2112;
@@ -5424,20 +5424,20 @@ LABEL_45:
   return v6;
 }
 
-- (BOOL)isAddress:(id)a3 inCompiledRanges:(id)a4 tag:(unsigned int)a5
+- (BOOL)isAddress:(id)address inCompiledRanges:(id)ranges tag:(unsigned int)tag
 {
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  rangesCopy = ranges;
   v35 = 0;
   v34[0] = 0;
   v34[1] = 0;
-  if (inet_pton(2, [v7 UTF8String], &v35) == 1)
+  if (inet_pton(2, [addressCopy UTF8String], &v35) == 1)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = v8;
+    v9 = rangesCopy;
     v10 = [v9 countByEnumeratingWithState:&v30 objects:v47 count:16];
     if (v10)
     {
@@ -5481,13 +5481,13 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (inet_pton(30, [v7 UTF8String], v34) == 1)
+  if (inet_pton(30, [addressCopy UTF8String], v34) == 1)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v8;
+    v15 = rangesCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v46 count:16];
     if (v16)
     {
@@ -5536,13 +5536,13 @@ LABEL_27:
     v24 = v22;
     v25 = currentQueueName();
     *buf = 67110146;
-    v37 = a5;
+    tagCopy = tag;
     v38 = 2080;
     v39 = v25;
     v40 = 2112;
-    v41 = v7;
+    v41 = addressCopy;
     v42 = 2112;
-    v43 = v8;
+    v43 = rangesCopy;
     v44 = 1024;
     v45 = v21;
     _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "#%08x [%s] isAddress:%@ inCompiledRanges:%@ -> %{BOOL}d", buf, 0x2Cu);
@@ -5551,70 +5551,70 @@ LABEL_27:
   return v21;
 }
 
-- (void)recentlySeenCachingServerWithAutoRefresh:(BOOL)a3 callback:(id)a4 callbackQueue:(id)a5 tag:(unsigned int)a6
+- (void)recentlySeenCachingServerWithAutoRefresh:(BOOL)refresh callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
+  refreshCopy = refresh;
+  callbackCopy = callback;
+  queueCopy = queue;
   v12 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
     v14 = currentQueueName();
-    v15 = objc_retainBlock(v10);
+    v15 = objc_retainBlock(callbackCopy);
     *buf = 67110146;
-    v25 = a6;
+    tagCopy = tag;
     v26 = 2080;
     v27 = v14;
     v28 = 1024;
-    v29 = v8;
+    v29 = refreshCopy;
     v30 = 2048;
     v31 = v15;
     v32 = 2080;
-    label = dispatch_queue_get_label(v11);
+    label = dispatch_queue_get_label(queueCopy);
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "#%08x [%s] recentlySeenCachingServerWithAutoRefresh:%{BOOL}d callback:%p callbackQueue:%s", buf, 0x2Cu);
   }
 
-  v16 = [(AssetCacheLocatorService *)self queue];
+  queue = [(AssetCacheLocatorService *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001C850;
   v19[3] = &unk_100035440;
-  v22 = a6;
+  tagCopy2 = tag;
   v19[4] = self;
-  v20 = v11;
-  v21 = v10;
-  v23 = v8;
-  v17 = v10;
-  v18 = v11;
-  dispatch_async(v16, v19);
+  v20 = queueCopy;
+  v21 = callbackCopy;
+  v23 = refreshCopy;
+  v17 = callbackCopy;
+  v18 = queueCopy;
+  dispatch_async(queue, v19);
 }
 
-- (void)updateHealthOfCachingServerWithHostport:(id)a3 healthy:(BOOL)a4 override:(BOOL)a5 callback:(id)a6 callbackQueue:(id)a7 tag:(unsigned int)a8
+- (void)updateHealthOfCachingServerWithHostport:(id)hostport healthy:(BOOL)healthy override:(BOOL)override callback:(id)callback callbackQueue:(id)queue tag:(unsigned int)tag
 {
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  overrideCopy = override;
+  healthyCopy = healthy;
+  hostportCopy = hostport;
+  callbackCopy = callback;
+  queueCopy = queue;
   v17 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v23 = v17;
     *buf = 67110146;
-    v33 = a8;
+    tagCopy = tag;
     v34 = 2080;
     v35 = currentQueueName();
     v36 = 2112;
-    v37 = v14;
+    v37 = hostportCopy;
     v38 = 1024;
-    v39 = v12;
+    v39 = healthyCopy;
     v40 = 1024;
-    v41 = v11;
+    v41 = overrideCopy;
     _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "#%08x [%s] updateHealthOfCachingServerWithHostport:%@ healthy:%{BOOL}d override:%{BOOL}d", buf, 0x28u);
   }
 
-  v18 = [v14 rangeOfString:@":" options:4];
+  v18 = [hostportCopy rangeOfString:@":" options:4];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = 0;
@@ -5622,7 +5622,7 @@ LABEL_27:
 
   else
   {
-    v19 = [v14 substringToIndex:v18];
+    v19 = [hostportCopy substringToIndex:v18];
     if ([v19 hasPrefix:@"["] && objc_msgSend(v19, "hasSuffix:", @"]"))
     {
       v20 = [v19 substringWithRange:{1, objc_msgSend(v19, "length") - 2}];
@@ -5637,89 +5637,89 @@ LABEL_27:
     if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
     {
       sub_100021AC4(v22);
-      if (!v15)
+      if (!callbackCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v15)
+    else if (!callbackCopy)
     {
       goto LABEL_13;
     }
 
-    dispatch_async(v16, v15);
+    dispatch_async(queueCopy, callbackCopy);
     goto LABEL_13;
   }
 
-  v21 = [(AssetCacheLocatorService *)self queue];
+  queue = [(AssetCacheLocatorService *)self queue];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10001CD44;
   v24[3] = &unk_100035468;
   v24[4] = self;
   v25 = v19;
-  v29 = a8;
-  v26 = v14;
-  v30 = v12;
-  v31 = v11;
-  v28 = v15;
-  v27 = v16;
-  dispatch_async(v21, v24);
+  tagCopy2 = tag;
+  v26 = hostportCopy;
+  v30 = healthyCopy;
+  v31 = overrideCopy;
+  v28 = callbackCopy;
+  v27 = queueCopy;
+  dispatch_async(queue, v24);
 
 LABEL_13:
 }
 
-- (void)importToLocalCachingServerAsURL:(id)a3 sourceFileHandle:(id)a4 sourceOffset:(int64_t)a5 sourceLength:(int64_t)a6 method:(id)a7 headers:(id)a8 callback:(id)a9 callbackQueue:(id)a10 tag:(unsigned int)a11
+- (void)importToLocalCachingServerAsURL:(id)l sourceFileHandle:(id)handle sourceOffset:(int64_t)offset sourceLength:(int64_t)length method:(id)method headers:(id)headers callback:(id)callback callbackQueue:(id)self0 tag:(unsigned int)self1
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  lCopy = l;
+  handleCopy = handle;
+  methodCopy = method;
+  headersCopy = headers;
+  callbackCopy = callback;
+  queueCopy = queue;
   v21 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     log = v21;
     v34 = currentQueueName();
-    v36 = [v15 absoluteString];
-    v35 = objc_retainBlock(v19);
+    absoluteString = [lCopy absoluteString];
+    v35 = objc_retainBlock(callbackCopy);
     *buf = 67111426;
-    v43 = a11;
+    tagCopy = tag;
     v44 = 2080;
     v45 = v34;
     v46 = 2112;
-    v47 = v36;
+    v47 = absoluteString;
     v48 = 2112;
-    v49 = v16;
+    v49 = handleCopy;
     v50 = 2048;
-    v51 = a5;
+    offsetCopy = offset;
     v52 = 2048;
-    v53 = a6;
+    lengthCopy = length;
     v54 = 2112;
-    v55 = v17;
+    v55 = methodCopy;
     v56 = 2112;
-    v57 = v18;
+    v57 = headersCopy;
     v58 = 2048;
     v59 = v35;
     v60 = 2080;
-    label = dispatch_queue_get_label(v20);
+    label = dispatch_queue_get_label(queueCopy);
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "#%08x [%s] importToLocalCachingServerAsURL:%@ sourceFileHandle:%@ sourceOffset:%llu sourceLength:%llu method:%@ headers:%@ callback:%p callbackQueue:%s", buf, 0x62u);
   }
 
-  v22 = [NSMutableURLRequest requestWithURL:v15 cachePolicy:1 timeoutInterval:60.0];
-  [v22 setHTTPMethod:v17];
+  v22 = [NSMutableURLRequest requestWithURL:lCopy cachePolicy:1 timeoutInterval:60.0];
+  [v22 setHTTPMethod:methodCopy];
   [v22 setHTTPShouldHandleCookies:0];
   [v22 setAllowsCellularAccess:0];
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = [NSString stringWithFormat:@"#%08x", a11];
+  v23 = callbackCopy;
+  v24 = headersCopy;
+  v25 = methodCopy;
+  v26 = handleCopy;
+  v27 = [NSString stringWithFormat:@"#%08x", tag];
   [v22 setValue:v27 forHTTPHeaderField:@"X-Apple-Locator-Tag"];
 
-  v28 = [NSString stringWithFormat:@"%llu", a6];
+  v28 = [NSString stringWithFormat:@"%llu", length];
   [v22 setValue:v28 forHTTPHeaderField:@"Content-Length"];
 
   v40[0] = _NSConcreteStackBlock;
@@ -5729,148 +5729,148 @@ LABEL_13:
   v41 = v22;
   v29 = v22;
   [v24 enumerateKeysAndObjectsUsingBlock:v40];
-  v30 = [[ACLSImportDelegate alloc] initWithFileHandle:v26 fileOffset:a5 length:a6 callback:v23 callbackQueue:v20 tag:a11];
-  v31 = [(AssetCacheLocatorService *)self importSessionConfig];
-  v32 = [ACSURLSession sessionWithConfiguration:v31 canUseCachingServer:0 locateOptions:0 delegate:v30 delegateQueue:0];
+  v30 = [[ACLSImportDelegate alloc] initWithFileHandle:v26 fileOffset:offset length:length callback:v23 callbackQueue:queueCopy tag:tag];
+  importSessionConfig = [(AssetCacheLocatorService *)self importSessionConfig];
+  v32 = [ACSURLSession sessionWithConfiguration:importSessionConfig canUseCachingServer:0 locateOptions:0 delegate:v30 delegateQueue:0];
 
   v33 = [v32 uploadTaskWithStreamedRequest:v29];
   [v33 resume];
 }
 
-- (void)importToCachingServerAsURL:(id)a3 sourcePath:(id)a4 sourceFileHandle:(id)a5 sourceOffset:(int64_t)a6 sourceLength:(int64_t)a7 method:(id)a8 headers:(id)a9 importStrategies:(id)a10 entitled:(BOOL)a11 callback:(id)a12 callbackQueue:(id)a13 tag:(unsigned int)a14
+- (void)importToCachingServerAsURL:(id)l sourcePath:(id)path sourceFileHandle:(id)handle sourceOffset:(int64_t)offset sourceLength:(int64_t)length method:(id)method headers:(id)headers importStrategies:(id)self0 entitled:(BOOL)self1 callback:(id)self2 callbackQueue:(id)self3 tag:(unsigned int)self4
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a8;
-  v22 = a9;
-  v40 = a10;
-  v23 = a12;
-  v24 = a13;
+  lCopy = l;
+  pathCopy = path;
+  handleCopy = handle;
+  methodCopy = method;
+  headersCopy = headers;
+  strategiesCopy = strategies;
+  callbackCopy = callback;
+  queueCopy = queue;
   v25 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_INFO))
   {
     log = v25;
-    v26 = v20;
-    v27 = v21;
-    v28 = v19;
+    v26 = handleCopy;
+    v27 = methodCopy;
+    v28 = pathCopy;
     v29 = currentQueueName();
-    v30 = [v18 absoluteString];
-    v31 = objc_retainBlock(v23);
-    v37 = v23;
-    v32 = v22;
+    absoluteString = [lCopy absoluteString];
+    v31 = objc_retainBlock(callbackCopy);
+    v37 = callbackCopy;
+    v32 = headersCopy;
     v33 = v31;
     *buf = 67112194;
-    v45 = a14;
+    tagCopy = tag;
     v46 = 2080;
     v47 = v29;
-    v19 = v28;
-    v21 = v27;
-    v20 = v26;
+    pathCopy = v28;
+    methodCopy = v27;
+    handleCopy = v26;
     v48 = 2112;
-    v49 = v30;
+    v49 = absoluteString;
     v50 = 2112;
-    v51 = v19;
+    v51 = pathCopy;
     v52 = 2112;
     v53 = v26;
     v54 = 2048;
-    v55 = a6;
+    offsetCopy = offset;
     v56 = 2048;
-    v57 = a7;
+    lengthCopy = length;
     v58 = 2112;
-    v59 = v21;
+    v59 = methodCopy;
     v60 = 2112;
     v61 = v32;
     v62 = 2112;
-    v63 = v40;
+    v63 = strategiesCopy;
     v64 = 1024;
-    v65 = a11;
+    entitledCopy = entitled;
     v66 = 2048;
     v67 = v31;
     v68 = 2080;
-    label = dispatch_queue_get_label(v24);
+    label = dispatch_queue_get_label(queueCopy);
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "#%08x [%s] importToCachingServerAsURL:%@ sourcePath:%@ sourceFileHandle:%@ sourceOffset:%llu sourceLength:%llu method:%@ headers:%@ importStrategies:%@ entitled:%{BOOL}d callback:%p callbackQueue:%s", buf, 0x7Cu);
 
-    v22 = v32;
-    v23 = v37;
+    headersCopy = v32;
+    callbackCopy = v37;
   }
 
-  if (!a7)
+  if (!length)
   {
-    [v20 seekToEndOfFile];
-    a7 = [v20 offsetInFile] - a6;
+    [handleCopy seekToEndOfFile];
+    length = [handleCopy offsetInFile] - offset;
   }
 
-  if (a11)
+  if (entitled)
   {
-    LODWORD(v35) = a14;
-    [(AssetCacheLocatorService *)self importToLocalCachingServerAsURL:v18 sourceFileHandle:v20 sourceOffset:a6 sourceLength:a7 method:v21 headers:v22 callback:v23 callbackQueue:v24 tag:v35];
+    LODWORD(v35) = tag;
+    [(AssetCacheLocatorService *)self importToLocalCachingServerAsURL:lCopy sourceFileHandle:handleCopy sourceOffset:offset sourceLength:length method:methodCopy headers:headersCopy callback:callbackCopy callbackQueue:queueCopy tag:v35];
   }
 
   else
   {
-    createTaggedError(NSPOSIXErrorDomain, 13, @"Not entitled", a14);
+    createTaggedError(NSPOSIXErrorDomain, 13, @"Not entitled", tag);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001D844;
     v42 = block[3] = &unk_100034FF8;
-    v43 = v23;
+    v43 = callbackCopy;
     v34 = v42;
-    dispatch_async(v24, block);
+    dispatch_async(queueCopy, block);
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AssetCacheLocatorService *)self locateTag];
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  locateTag = [(AssetCacheLocatorService *)self locateTag];
   v12 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v22 = v12;
     v23 = currentQueueName();
-    v24 = [(__CFString *)v9 protectionSpace];
+    protectionSpace = [(__CFString *)challengeCopy protectionSpace];
     *buf = 67110146;
-    v47 = v11;
+    v47 = locateTag;
     v48 = 2080;
     v49 = v23;
     v50 = 2112;
-    v51 = v8;
+    v51 = sessionCopy;
     v52 = 2112;
-    v53 = v9;
+    v53 = challengeCopy;
     v54 = 2112;
-    v55 = v24;
+    v55 = protectionSpace;
     _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "#%08x [%s] URLSession:%@ didReceiveChallenge:%@ [protection space %@]", buf, 0x30u);
   }
 
-  v13 = [(AssetCacheLocatorService *)self locateSession];
+  locateSession = [(AssetCacheLocatorService *)self locateSession];
 
-  if (v13 == v8)
+  if (locateSession == sessionCopy)
   {
-    if (![(AssetCacheLocatorService *)self amRunningInMySingleLocate:v11])
+    if (![(AssetCacheLocatorService *)self amRunningInMySingleLocate:locateTag])
     {
       sub_100021B50();
     }
 
-    v14 = [(__CFString *)v9 protectionSpace];
-    v15 = [v14 authenticationMethod];
-    v16 = [v15 isEqualToString:NSURLAuthenticationMethodServerTrust];
+    protectionSpace2 = [(__CFString *)challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace2 authenticationMethod];
+    v16 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
     if (!v16)
     {
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_20;
     }
 
     [(AssetCacheLocatorService *)self setLocateServerValidated:0];
-    v17 = [v14 serverTrust];
+    serverTrust = [protectionSpace2 serverTrust];
     error = 0;
-    if (v17)
+    if (serverTrust)
     {
-      v18 = v17;
-      if (SecTrustEvaluateWithError(v17, &error))
+      v18 = serverTrust;
+      if (SecTrustEvaluateWithError(serverTrust, &error))
       {
         if ([(AssetCacheLocatorService *)self skipEVCheck])
         {
@@ -5907,21 +5907,21 @@ LABEL_10:
             {
               loga = v20;
               v34 = currentQueueName();
-              v35 = [(AssetCacheLocatorService *)self locateURL];
-              v36 = [v35 absoluteString];
-              v37 = [(AssetCacheLocatorService *)self skipEVCheck];
+              locateURL = [(AssetCacheLocatorService *)self locateURL];
+              absoluteString = [locateURL absoluteString];
+              skipEVCheck = [(AssetCacheLocatorService *)self skipEVCheck];
               *buf = 67110146;
               v38 = @"with";
-              v47 = v11;
+              v47 = locateTag;
               v48 = 2080;
-              if (v37)
+              if (skipEVCheck)
               {
                 v38 = @"without";
               }
 
               v49 = v34;
               v50 = 2112;
-              v51 = v36;
+              v51 = absoluteString;
               v52 = 2112;
               v53 = v38;
               v54 = 2112;
@@ -5937,14 +5937,14 @@ LABEL_10:
             else if (v19)
             {
 LABEL_12:
-              (v10)[2](v10, 0, v19);
+              (handlerCopy)[2](handlerCopy, 0, v19);
 
 LABEL_20:
               goto LABEL_21;
             }
 
 LABEL_19:
-            v10[2](v10, 2, 0);
+            handlerCopy[2](handlerCopy, 2, 0);
             goto LABEL_20;
           }
         }
@@ -5954,14 +5954,14 @@ LABEL_19:
         {
           v39 = v28;
           v42 = currentQueueName();
-          v40 = [(AssetCacheLocatorService *)self locateURL];
-          v41 = [v40 absoluteString];
+          locateURL2 = [(AssetCacheLocatorService *)self locateURL];
+          absoluteString2 = [locateURL2 absoluteString];
           *buf = 67110146;
-          v47 = v11;
+          v47 = locateTag;
           v48 = 2080;
           v49 = v42;
           v50 = 2112;
-          v51 = v41;
+          v51 = absoluteString2;
           v52 = 2112;
           v53 = v21;
           v54 = 2112;
@@ -5988,14 +5988,14 @@ LABEL_18:
     {
       v30 = v25;
       v31 = currentQueueName();
-      v32 = [(AssetCacheLocatorService *)self locateURL];
-      v33 = [v32 absoluteString];
+      locateURL3 = [(AssetCacheLocatorService *)self locateURL];
+      absoluteString3 = [locateURL3 absoluteString];
       *buf = 67109890;
-      v47 = v11;
+      v47 = locateTag;
       v48 = 2080;
       v49 = v31;
       v50 = 2112;
-      v51 = v33;
+      v51 = absoluteString3;
       v52 = 2112;
       v53 = v21;
       _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "#%08x [%s] LocateURL %@ untrusted: error=%@", buf, 0x26u);
@@ -6004,108 +6004,108 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v10[2](v10, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
 LABEL_21:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AssetCacheLocatorService *)self locateTag];
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  locateTag = [(AssetCacheLocatorService *)self locateTag];
   v15 = gLogHandle;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v16 = v15;
     v17[0] = 67110146;
-    v17[1] = v14;
+    v17[1] = locateTag;
     v18 = 2080;
     v19 = currentQueueName();
     v20 = 2112;
-    v21 = v10;
+    v21 = sessionCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = taskCopy;
     v24 = 2112;
-    v25 = v12;
+    v25 = challengeCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "#%08x [%s] URLSession:%@ task:%@ didReceiveChallenge:%@", v17, 0x30u);
   }
 
-  v13[2](v13, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AssetCacheLocatorService *)self queue];
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  queue = [(AssetCacheLocatorService *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001E070;
   v15[3] = &unk_1000354E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = sessionCopy;
+  v17 = taskCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = taskCopy;
+  v14 = sessionCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AssetCacheLocatorService *)self queue];
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  queue = [(AssetCacheLocatorService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001E860;
   block[3] = &unk_100035508;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = sessionCopy;
+  v21 = taskCopy;
+  v22 = responseCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = responseCopy;
+  v17 = taskCopy;
+  v18 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AssetCacheLocatorService *)self queue];
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
+  queue = [(AssetCacheLocatorService *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001EA6C;
   v15[3] = &unk_1000354E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = sessionCopy;
+  v17 = taskCopy;
+  v18 = dataCopy;
+  v12 = dataCopy;
+  v13 = taskCopy;
+  v14 = sessionCopy;
+  dispatch_async(queue, v15);
 }
 
-- (id)redactObject:(id)a3
+- (id)redactObject:(id)object
 {
-  v4 = a3;
-  v5 = [(AssetCacheLocatorService *)self redactLogs];
-  if (!v4 || (v5 & 1) == 0)
+  objectCopy = object;
+  redactLogs = [(AssetCacheLocatorService *)self redactLogs];
+  if (!objectCopy || (redactLogs & 1) == 0)
   {
 LABEL_15:
-    v6 = v4;
+    v6 = objectCopy;
     goto LABEL_16;
   }
 
@@ -6118,16 +6118,16 @@ LABEL_15:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+        +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [objectCopy count]);
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
         v16[2] = sub_10001EEE0;
         v13 = v16[3] = &unk_100035590;
         v17 = v13;
-        v18 = self;
+        selfCopy = self;
         v19 = &stru_100035548;
         v20 = &stru_100035568;
-        [v4 enumerateKeysAndObjectsUsingBlock:v16];
+        [objectCopy enumerateKeysAndObjectsUsingBlock:v16];
         v14 = v20;
         v6 = v13;
 
@@ -6138,12 +6138,12 @@ LABEL_15:
     }
   }
 
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objectCopy count]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = objectCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -6173,12 +6173,12 @@ LABEL_16:
   return v6;
 }
 
-- (id)redactStringsFromObject:(id)a3 usingBlock:(id)a4
+- (id)redactStringsFromObject:(id)object usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AssetCacheLocatorService *)self redactLogs];
-  if (!v6 || (v8 & 1) == 0)
+  objectCopy = object;
+  blockCopy = block;
+  redactLogs = [(AssetCacheLocatorService *)self redactLogs];
+  if (!objectCopy || (redactLogs & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -6192,24 +6192,24 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v7[2](v7, v6);
+        v16 = blockCopy[2](blockCopy, objectCopy);
 LABEL_16:
         v9 = v16;
         goto LABEL_17;
       }
 
 LABEL_15:
-      v16 = v6;
+      v16 = objectCopy;
       goto LABEL_16;
     }
   }
 
-  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objectCopy count]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v6;
+  v10 = objectCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -6224,7 +6224,7 @@ LABEL_15:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(AssetCacheLocatorService *)self redactStringsFromObject:*(*(&v18 + 1) + 8 * i) usingBlock:v7, v18];
+        v15 = [(AssetCacheLocatorService *)self redactStringsFromObject:*(*(&v18 + 1) + 8 * i) usingBlock:blockCopy, v18];
         [v9 addObject:v15];
       }
 

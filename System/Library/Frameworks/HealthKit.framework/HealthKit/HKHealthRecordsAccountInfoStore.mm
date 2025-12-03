@@ -1,8 +1,8 @@
 @interface HKHealthRecordsAccountInfoStore
 + (id)taskIdentifier;
 - (HKHealthRecordsAccountInfoStore)init;
-- (HKHealthRecordsAccountInfoStore)initWithHealthStore:(id)a3;
-- (void)determineMedicalRecordsAccountInfoStatusWithCompletion:(id)a3;
+- (HKHealthRecordsAccountInfoStore)initWithHealthStore:(id)store;
+- (void)determineMedicalRecordsAccountInfoStatusWithCompletion:(id)completion;
 @end
 
 @implementation HKHealthRecordsAccountInfoStore
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (HKHealthRecordsAccountInfoStore)initWithHealthStore:(id)a3
+- (HKHealthRecordsAccountInfoStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKHealthRecordsAccountInfoStore;
   v5 = [(HKHealthRecordsAccountInfoStore *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -45,15 +45,15 @@
   return NSStringFromClass(v2);
 }
 
-- (void)determineMedicalRecordsAccountInfoStatusWithCompletion:(id)a3
+- (void)determineMedicalRecordsAccountInfoStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __90__HKHealthRecordsAccountInfoStore_determineMedicalRecordsAccountInfoStatusWithCompletion___block_invoke;
   v9[3] = &unk_1E737FCE0;
-  v10 = v4;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__HKHealthRecordsAccountInfoStore_determineMedicalRecordsAccountInfoStatusWithCompletion___block_invoke_2;

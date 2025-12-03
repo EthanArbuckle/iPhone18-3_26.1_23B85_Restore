@@ -1,24 +1,24 @@
 @interface MTCCTimerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MTCCTimerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"sliderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerModule" hasInstanceMethod:@"timerBackgroundViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"timer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"dateComponentsFormatter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCTimer" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MTCCTimer" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"sliderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerModule" hasInstanceMethod:@"timerBackgroundViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"timer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimerBackgroundViewController" hasInstanceMethod:@"dateComponentsFormatter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCTimer" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MTCCTimer" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

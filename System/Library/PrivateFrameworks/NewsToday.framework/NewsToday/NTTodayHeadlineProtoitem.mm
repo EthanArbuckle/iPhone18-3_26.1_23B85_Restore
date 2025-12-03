@@ -1,9 +1,9 @@
 @interface NTTodayHeadlineProtoitem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTTodayHeadlineProtoitem)init;
-- (NTTodayHeadlineProtoitem)initWithIdentifier:(id)a3 headline:(id)a4 actionURL:(id)a5;
-- (NTTodayHeadlineProtoitem)itemWithContentContext:(id)a3 operationInfo:(id)a4 sectionDescriptor:(id)a5 todayData:(id)a6 assetFileURLsByRemoteURL:(id)a7;
-- (id)assetHandlesWithOperationInfo:(id)a3;
+- (NTTodayHeadlineProtoitem)initWithIdentifier:(id)identifier headline:(id)headline actionURL:(id)l;
+- (NTTodayHeadlineProtoitem)itemWithContentContext:(id)context operationInfo:(id)info sectionDescriptor:(id)descriptor todayData:(id)data assetFileURLsByRemoteURL:(id)l;
+- (id)assetHandlesWithOperationInfo:(id)info;
 - (unint64_t)hash;
 @end
 
@@ -35,21 +35,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayHeadlineProtoitem)initWithIdentifier:(id)a3 headline:(id)a4 actionURL:(id)a5
+- (NTTodayHeadlineProtoitem)initWithIdentifier:(id)identifier headline:(id)headline actionURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  headlineCopy = headline;
+  lCopy = l;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayHeadlineProtoitem initWithIdentifier:headline:actionURL:];
-    if (v9)
+    if (headlineCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (headlineCopy)
   {
     goto LABEL_6;
   }
@@ -65,15 +65,15 @@ LABEL_6:
   v11 = [(NTTodayHeadlineProtoitem *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [headlineCopy copy];
     headline = v11->_headline;
     v11->_headline = v14;
 
-    v16 = [v10 copy];
+    v16 = [lCopy copy];
     actionURL = v11->_actionURL;
     v11->_actionURL = v16;
   }
@@ -81,21 +81,21 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NTTodayHeadlineProtoitem *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqual:v7])
+    identifier = [(NTTodayHeadlineProtoitem *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqual:identifier2])
     {
-      v8 = [(NTTodayHeadlineProtoitem *)self headline];
-      v9 = [v5 headline];
-      v10 = [v8 isEqual:v9];
+      headline = [(NTTodayHeadlineProtoitem *)self headline];
+      headline2 = [v5 headline];
+      v10 = [headline isEqual:headline2];
     }
 
     else
@@ -114,32 +114,32 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(NTTodayHeadlineProtoitem *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(NTTodayHeadlineProtoitem *)self headline];
-  v6 = [v5 hash];
+  identifier = [(NTTodayHeadlineProtoitem *)self identifier];
+  v4 = [identifier hash];
+  headline = [(NTTodayHeadlineProtoitem *)self headline];
+  v6 = [headline hash];
 
   return v6 ^ v4;
 }
 
-- (id)assetHandlesWithOperationInfo:(id)a3
+- (id)assetHandlesWithOperationInfo:(id)info
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayHeadlineProtoitem assetHandlesWithOperationInfo:];
   }
 
-  v5 = [(NTTodayHeadlineProtoitem *)self headline];
+  headline = [(NTTodayHeadlineProtoitem *)self headline];
   v6 = MEMORY[0x277CBEA60];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__NTTodayHeadlineProtoitem_assetHandlesWithOperationInfo___block_invoke;
   v11[3] = &unk_2799826A0;
-  v12 = v4;
-  v13 = v5;
-  v7 = v5;
-  v8 = v4;
+  v12 = infoCopy;
+  v13 = headline;
+  v7 = headline;
+  v8 = infoCopy;
   v9 = [v6 fc_array:v11];
 
   return v9;
@@ -211,24 +211,24 @@ void __58__NTTodayHeadlineProtoitem_assetHandlesWithOperationInfo___block_invoke
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (NTTodayHeadlineProtoitem)itemWithContentContext:(id)a3 operationInfo:(id)a4 sectionDescriptor:(id)a5 todayData:(id)a6 assetFileURLsByRemoteURL:(id)a7
+- (NTTodayHeadlineProtoitem)itemWithContentContext:(id)context operationInfo:(id)info sectionDescriptor:(id)descriptor todayData:(id)data assetFileURLsByRemoteURL:(id)l
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v28 = a6;
-  v15 = a7;
-  v16 = v12;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  infoCopy = info;
+  descriptorCopy = descriptor;
+  dataCopy = data;
+  lCopy = l;
+  v16 = contextCopy;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayHeadlineProtoitem itemWithContentContext:operationInfo:sectionDescriptor:todayData:assetFileURLsByRemoteURL:];
-    if (v13)
+    if (infoCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (infoCopy)
   {
     goto LABEL_6;
   }
@@ -239,16 +239,16 @@ void __58__NTTodayHeadlineProtoitem_assetHandlesWithOperationInfo___block_invoke
   }
 
 LABEL_6:
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayHeadlineProtoitem itemWithContentContext:operationInfo:sectionDescriptor:todayData:assetFileURLsByRemoteURL:];
-    if (v15)
+    if (lCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v15)
+  else if (lCopy)
   {
     goto LABEL_11;
   }
@@ -259,17 +259,17 @@ LABEL_6:
   }
 
 LABEL_11:
-  v17 = [(NTTodayHeadlineProtoitem *)self headline];
-  v27 = NTHeadlineAdElementFromFCHeadline(v17);
-  v18 = NTHeadlineAnalyticsElementFromFCHeadline(v17, [v14 seenArticlesFilterMethod]);
-  v19 = NTHeadlineBackingElementFromFCHeadline(v17);
-  v20 = [(NTTodayHeadlineProtoitem *)self actionURL];
-  v21 = [v13 thumbnailSizePreset];
-  [v13 dynamicThumbnailSizeMinimumSizeInPixels];
-  v22 = [v13 sourceNameImageSizePreset];
-  [v13 assetsDirectoryFileURL];
-  v23 = v26 = v14;
-  v24 = NTHeadlineFromFCHeadline(v17, v20, v16, v21, v22, v27, v18, v19, v28, v23, v15);
+  headline = [(NTTodayHeadlineProtoitem *)self headline];
+  v27 = NTHeadlineAdElementFromFCHeadline(headline);
+  v18 = NTHeadlineAnalyticsElementFromFCHeadline(headline, [descriptorCopy seenArticlesFilterMethod]);
+  v19 = NTHeadlineBackingElementFromFCHeadline(headline);
+  actionURL = [(NTTodayHeadlineProtoitem *)self actionURL];
+  thumbnailSizePreset = [infoCopy thumbnailSizePreset];
+  [infoCopy dynamicThumbnailSizeMinimumSizeInPixels];
+  sourceNameImageSizePreset = [infoCopy sourceNameImageSizePreset];
+  [infoCopy assetsDirectoryFileURL];
+  v23 = v26 = descriptorCopy;
+  v24 = NTHeadlineFromFCHeadline(headline, actionURL, v16, thumbnailSizePreset, sourceNameImageSizePreset, v27, v18, v19, dataCopy, v23, lCopy);
 
   return v24;
 }

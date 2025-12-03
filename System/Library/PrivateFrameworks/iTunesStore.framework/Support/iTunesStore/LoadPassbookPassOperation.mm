@@ -1,22 +1,22 @@
 @interface LoadPassbookPassOperation
-- (LoadPassbookPassOperation)initWithAccountIdentifier:(id)a3;
+- (LoadPassbookPassOperation)initWithAccountIdentifier:(id)identifier;
 - (NSNumber)accountIdentifier;
 - (id)outputBlock;
 - (void)dealloc;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation LoadPassbookPassOperation
 
-- (LoadPassbookPassOperation)initWithAccountIdentifier:(id)a3
+- (LoadPassbookPassOperation)initWithAccountIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = LoadPassbookPassOperation;
   v4 = [(LoadPassbookPassOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountID = [a3 copy];
+    v4->_accountID = [identifier copy];
   }
 
   return v4;
@@ -45,14 +45,14 @@
   return v3;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
   [(LoadPassbookPassOperation *)self lock];
   outputBlock = self->_outputBlock;
-  if (outputBlock != a3)
+  if (outputBlock != block)
   {
 
-    self->_outputBlock = [a3 copy];
+    self->_outputBlock = [block copy];
   }
 
   [(LoadPassbookPassOperation *)self unlock];
@@ -75,15 +75,15 @@
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -122,15 +122,15 @@
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog2 = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog2 | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -177,15 +177,15 @@ LABEL_33:
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
+  shouldLog3 = [v18 shouldLog];
   if ([v18 shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog3 | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_INFO))
@@ -213,10 +213,10 @@ LABEL_33:
   }
 
 LABEL_35:
-  v31 = [(LoadPassbookPassOperation *)self outputBlock];
-  if (v31)
+  outputBlock = [(LoadPassbookPassOperation *)self outputBlock];
+  if (outputBlock)
   {
-    (v31)[2](v31, v17, v35);
+    (outputBlock)[2](outputBlock, v17, v35);
     [(LoadPassbookPassOperation *)self setOutputBlock:0];
   }
 

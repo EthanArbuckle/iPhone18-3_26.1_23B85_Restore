@@ -1,8 +1,8 @@
 @interface ATXClientModelSuggestionRouter
 - (ATXClientModelSuggestionRouter)init;
 - (BOOL)isRoutingConfigurationLoaded;
-- (BOOL)shouldPersistCacheForClientModel:(id)a3;
-- (BOOL)shouldRouteClientToInfoSuggestionEngine:(id)a3;
+- (BOOL)shouldPersistCacheForClientModel:(id)model;
+- (BOOL)shouldRouteClientToInfoSuggestionEngine:(id)engine;
 @end
 
 @implementation ATXClientModelSuggestionRouter
@@ -36,19 +36,19 @@
   return v4;
 }
 
-- (BOOL)shouldRouteClientToInfoSuggestionEngine:(id)a3
+- (BOOL)shouldRouteClientToInfoSuggestionEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v5 = [(NSDictionary *)self->_routingConfig objectForKeyedSubscript:@"InfoClients"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:engineCopy];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [v5 objectForKeyedSubscript:engineCopy];
     v8 = [v7 objectForKeyedSubscript:@"shouldRoute"];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:v4];
+      v9 = [v5 objectForKeyedSubscript:engineCopy];
       v10 = [v9 objectForKeyedSubscript:@"shouldRoute"];
       LOBYTE(v6) = [v10 BOOLValue];
     }
@@ -62,19 +62,19 @@
   return v6;
 }
 
-- (BOOL)shouldPersistCacheForClientModel:(id)a3
+- (BOOL)shouldPersistCacheForClientModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [(NSDictionary *)self->_routingConfig objectForKeyedSubscript:@"InfoClients"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:modelCopy];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [v5 objectForKeyedSubscript:modelCopy];
     v8 = [v7 objectForKeyedSubscript:@"shouldPersistCache"];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:v4];
+      v9 = [v5 objectForKeyedSubscript:modelCopy];
       v10 = [v9 objectForKeyedSubscript:@"shouldPersistCache"];
       LOBYTE(v6) = [v10 BOOLValue];
     }

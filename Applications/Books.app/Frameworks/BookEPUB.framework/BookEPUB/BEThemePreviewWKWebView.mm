@@ -1,16 +1,16 @@
 @interface BEThemePreviewWKWebView
-- (BEThemePreviewWKWebView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (BEThemePreviewWKWebView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (id)_processPluginProxy;
-- (void)be_registerFontFamilyForStyleManager:(id)a3 fontFamily:(id)a4;
+- (void)be_registerFontFamilyForStyleManager:(id)manager fontFamily:(id)family;
 @end
 
 @implementation BEThemePreviewWKWebView
 
-- (BEThemePreviewWKWebView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (BEThemePreviewWKWebView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = BEThemePreviewWKWebView;
-  v4 = [(BEThemePreviewWKWebView *)&v7 initWithFrame:a4 configuration:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(BEThemePreviewWKWebView *)&v7 initWithFrame:configuration configuration:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = +[NSMutableSet set];
@@ -24,13 +24,13 @@
 
 - (id)_processPluginProxy
 {
-  v3 = [(BEThemePreviewWKWebView *)self webProcessPluginProxy];
+  webProcessPluginProxy = [(BEThemePreviewWKWebView *)self webProcessPluginProxy];
 
-  if (!v3)
+  if (!webProcessPluginProxy)
   {
-    v4 = [(BEThemePreviewWKWebView *)self _remoteObjectRegistry];
+    _remoteObjectRegistry = [(BEThemePreviewWKWebView *)self _remoteObjectRegistry];
     v5 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___BEWebProcessControllerProtocol];
-    v6 = [v4 remoteObjectProxyWithInterface:v5];
+    v6 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v5];
     [(BEThemePreviewWKWebView *)self setWebProcessPluginProxy:v6];
 
     if (!v5 || ([(BEThemePreviewWKWebView *)self webProcessPluginProxy], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
@@ -44,37 +44,37 @@
     }
   }
 
-  v9 = [(BEThemePreviewWKWebView *)self webProcessPluginProxy];
+  webProcessPluginProxy2 = [(BEThemePreviewWKWebView *)self webProcessPluginProxy];
 
-  return v9;
+  return webProcessPluginProxy2;
 }
 
-- (void)be_registerFontFamilyForStyleManager:(id)a3 fontFamily:(id)a4
+- (void)be_registerFontFamilyForStyleManager:(id)manager fontFamily:(id)family
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  managerCopy = manager;
+  familyCopy = family;
+  if ([familyCopy length])
   {
-    if (([v6 isFontPreregistered:v7] & 1) == 0)
+    if (([managerCopy isFontPreregistered:familyCopy] & 1) == 0)
     {
-      if ([v6 isFontAvailable:v7])
+      if ([managerCopy isFontAvailable:familyCopy])
       {
-        v8 = [(BEThemePreviewWKWebView *)self registeredFonts];
-        v9 = [v8 containsObject:v7];
+        registeredFonts = [(BEThemePreviewWKWebView *)self registeredFonts];
+        v9 = [registeredFonts containsObject:familyCopy];
 
         if ((v9 & 1) == 0)
         {
-          v10 = [(BEThemePreviewWKWebView *)self _processPluginProxy];
-          if (v10)
+          _processPluginProxy = [(BEThemePreviewWKWebView *)self _processPluginProxy];
+          if (_processPluginProxy)
           {
-            v11 = [(BEThemePreviewWKWebView *)self registeredFonts];
-            [v11 addObject:v7];
+            registeredFonts2 = [(BEThemePreviewWKWebView *)self registeredFonts];
+            [registeredFonts2 addObject:familyCopy];
 
             v12 = _BookEPUBLog();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v24 = v7;
+              v24 = familyCopy;
               _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Attempting ThemePreview #fontReg of #fontFamily '%{public}@'", buf, 0xCu);
             }
 
@@ -83,13 +83,13 @@
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v24 = v7;
+              v24 = familyCopy;
               _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Posting font activate notification for font %@", buf, 0xCu);
             }
 
             v14 = +[NSNotificationCenter defaultCenter];
             v21 = @"FontActivateNotificationFontFamilyKey";
-            v22 = v7;
+            v22 = familyCopy;
             v15 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
             [v14 postNotificationName:@"FontActivateNotification" object:0 userInfo:v15];
 
@@ -98,8 +98,8 @@
             v17[2] = sub_BAD0;
             v17[3] = &unk_3283D0;
             objc_copyWeak(&v19, &location);
-            v18 = v7;
-            [v10 registerFontFamily:v18 completion:v17];
+            v18 = familyCopy;
+            [_processPluginProxy registerFontFamily:v18 completion:v17];
 
             objc_destroyWeak(&v19);
             objc_destroyWeak(&location);
@@ -111,7 +111,7 @@
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543362;
-              v24 = v7;
+              v24 = familyCopy;
               _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Failed to get ThemePreview process plugin/proxy! Unable to #fontReg fontFamily:%{public}@", buf, 0xCu);
             }
           }

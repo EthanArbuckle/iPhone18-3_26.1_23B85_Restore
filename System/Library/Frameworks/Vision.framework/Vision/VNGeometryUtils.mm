@@ -4,7 +4,7 @@
 + (VNCircle)boundingCircleForContour:(VNContour *)contour error:(NSError *)error;
 + (VNCircle)boundingCircleForPoints:(NSArray *)points error:(NSError *)error;
 + (VNCircle)boundingCircleForSIMDPoints:(const simd_float2 *)points pointCount:(NSInteger)pointCount error:(NSError *)error;
-+ (double)boundingBoxForContour:(uint64_t)a1;
++ (double)boundingBoxForContour:(uint64_t)contour;
 @end
 
 @implementation VNGeometryUtils
@@ -13,31 +13,31 @@
 {
   v7 = contour;
   objc_opt_self();
-  v8 = [(VNContour *)v7 createNormalizedPointsCorrectedForAspectRatio];
-  if (v8)
+  createNormalizedPointsCorrectedForAspectRatio = [(VNContour *)v7 createNormalizedPointsCorrectedForAspectRatio];
+  if (createNormalizedPointsCorrectedForAspectRatio)
   {
-    v9 = [(VNContour *)v7 normalizedPoints];
-    v10 = [(VNContour *)v7 pointCount];
+    normalizedPoints = [(VNContour *)v7 normalizedPoints];
+    pointCount = [(VNContour *)v7 pointCount];
     objc_opt_self();
     if (perimeter)
     {
-      if (v9)
+      if (normalizedPoints)
       {
-        if (v10 > 0)
+        if (pointCount > 0)
         {
-          if (v10 == 1)
+          if (pointCount == 1)
           {
             *perimeter = 0.0;
           }
 
           else
           {
-            v14 = *v9;
+            v14 = *normalizedPoints;
             v15 = [[VNPoint alloc] initWithX:v14.f32[0] y:v14.f32[1]];
             v16 = 0.0;
-            for (i = 1; i != v10; ++i)
+            for (i = 1; i != pointCount; ++i)
             {
-              v18 = v9[i];
+              v18 = normalizedPoints[i];
               v19 = [[VNPoint alloc] initWithX:v18.f32[0] y:v18.f32[1]];
               [(VNPoint *)v15 distanceToPoint:v19];
               v16 = v16 + v20;
@@ -45,8 +45,8 @@
               v15 = v19;
             }
 
-            v21 = [[VNPoint alloc] initWithX:COERCE_FLOAT(*v9) y:COERCE_FLOAT(HIDWORD(*v9))];
-            v22 = v9[v10 - 1];
+            v21 = [[VNPoint alloc] initWithX:COERCE_FLOAT(*normalizedPoints) y:COERCE_FLOAT(HIDWORD(*normalizedPoints))];
+            v22 = normalizedPoints[pointCount - 1];
             v23 = [[VNPoint alloc] initWithX:v22.f32[0] y:v22.f32[1]];
             [(VNPoint *)v21 distanceToPoint:v23];
             v25 = v24;
@@ -60,7 +60,7 @@
 
         if (error)
         {
-          v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid points count %ld", v10];
+          v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid points count %ld", pointCount];
           *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v13];
         }
 
@@ -81,7 +81,7 @@ LABEL_13:
       v11 = 0;
       *error = v12;
 LABEL_22:
-      free(v8);
+      free(createNormalizedPointsCorrectedForAspectRatio);
       goto LABEL_23;
     }
 
@@ -111,27 +111,27 @@ LABEL_23:
   v7 = orientedArea;
   v9 = contour;
   objc_opt_self();
-  v10 = [(VNContour *)v9 createNormalizedPointsCorrectedForAspectRatio];
-  if (v10)
+  createNormalizedPointsCorrectedForAspectRatio = [(VNContour *)v9 createNormalizedPointsCorrectedForAspectRatio];
+  if (createNormalizedPointsCorrectedForAspectRatio)
   {
-    v11 = [(VNContour *)v9 pointCount];
+    pointCount = [(VNContour *)v9 pointCount];
     objc_opt_self();
     if (area)
     {
-      if (v11 > 0)
+      if (pointCount > 0)
       {
-        v12 = v10[v11 - 1];
+        v12 = createNormalizedPointsCorrectedForAspectRatio[pointCount - 1];
         v13 = 0.0;
-        v14 = v10;
+        v14 = createNormalizedPointsCorrectedForAspectRatio;
         do
         {
           v15 = *v14++;
           v13 = v13 + ((-*(&v12 + 1) * *&v15) + (*&v12 * *(&v15 + 1)));
           v12 = v15;
-          --v11;
+          --pointCount;
         }
 
-        while (v11);
+        while (pointCount);
         v16 = v13 * 0.5;
         v17 = fabs(v16);
         if (!v7)
@@ -146,7 +146,7 @@ LABEL_23:
 
       if (error)
       {
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid points count %ld", v11];
+        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid points count %ld", pointCount];
         *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v19];
       }
     }
@@ -156,7 +156,7 @@ LABEL_23:
       [VNError errorForInvalidArgumentWithLocalizedDescription:@"null area pointer"];
       *error = v18 = 0;
 LABEL_16:
-      free(v10);
+      free(createNormalizedPointsCorrectedForAspectRatio);
       goto LABEL_17;
     }
 
@@ -260,15 +260,15 @@ LABEL_17:
 + (VNCircle)boundingCircleForContour:(VNContour *)contour error:(NSError *)error
 {
   v5 = contour;
-  v6 = [(VNContour *)v5 createNormalizedPointsCorrectedForAspectRatio];
-  if (v6)
+  createNormalizedPointsCorrectedForAspectRatio = [(VNContour *)v5 createNormalizedPointsCorrectedForAspectRatio];
+  if (createNormalizedPointsCorrectedForAspectRatio)
   {
-    v7 = [(VNContour *)v5 pointCount];
+    pointCount = [(VNContour *)v5 pointCount];
     [(VNContour *)v5 aspectRatio];
     v9 = v8;
     objc_opt_self();
-    v10 = [(VNBoundingCircleAlgorithm *)v9 boundingCircleForSIMDPoints:v6 pointCount:v7 aspectRatioForCentroid:error error:?];
-    free(v6);
+    v10 = [(VNBoundingCircleAlgorithm *)v9 boundingCircleForSIMDPoints:createNormalizedPointsCorrectedForAspectRatio pointCount:pointCount aspectRatioForCentroid:error error:?];
+    free(createNormalizedPointsCorrectedForAspectRatio);
   }
 
   else if (error)
@@ -285,11 +285,11 @@ LABEL_17:
   return v10;
 }
 
-+ (double)boundingBoxForContour:(uint64_t)a1
++ (double)boundingBoxForContour:(uint64_t)contour
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 normalizedPoints];
+  normalizedPoints = [v2 normalizedPoints];
   v4 = 0;
   v5 = 1.0;
   v6 = 0.0;
@@ -297,25 +297,25 @@ LABEL_17:
   v8 = 1.0;
   while (v4 < [v2 pointCount])
   {
-    v9 = *(v3 + 8 * v4);
+    v9 = *(normalizedPoints + 8 * v4);
     if (v8 >= *&v9)
     {
-      LODWORD(v8) = *(v3 + 8 * v4);
+      LODWORD(v8) = *(normalizedPoints + 8 * v4);
     }
 
     if (v5 >= *(&v9 + 1))
     {
-      LODWORD(v5) = HIDWORD(*(v3 + 8 * v4));
+      LODWORD(v5) = HIDWORD(*(normalizedPoints + 8 * v4));
     }
 
     if (v7 < *&v9)
     {
-      LODWORD(v7) = *(v3 + 8 * v4);
+      LODWORD(v7) = *(normalizedPoints + 8 * v4);
     }
 
     if (v6 < *(&v9 + 1))
     {
-      LODWORD(v6) = HIDWORD(*(v3 + 8 * v4));
+      LODWORD(v6) = HIDWORD(*(normalizedPoints + 8 * v4));
     }
 
     ++v4;

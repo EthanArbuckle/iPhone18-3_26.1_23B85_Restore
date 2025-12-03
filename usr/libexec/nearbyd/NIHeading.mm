@@ -1,20 +1,20 @@
 @interface NIHeading
-- (BOOL)isEqual:(id)a3;
-- (NIHeading)initWithCoder:(id)a3;
-- (NIHeading)initWithTimestamp:(id)a3 trueHeading:(double)a4 magneticHeading:(double)a5 headingAccuracy:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIHeading)initWithCoder:(id)coder;
+- (NIHeading)initWithTimestamp:(id)timestamp trueHeading:(double)heading magneticHeading:(double)magneticHeading headingAccuracy:(double)accuracy;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIHeading
 
-- (NIHeading)initWithTimestamp:(id)a3 trueHeading:(double)a4 magneticHeading:(double)a5 headingAccuracy:(double)a6
+- (NIHeading)initWithTimestamp:(id)timestamp trueHeading:(double)heading magneticHeading:(double)magneticHeading headingAccuracy:(double)accuracy
 {
-  v10 = a3;
-  if (!v10)
+  timestampCopy = timestamp;
+  if (!timestampCopy)
   {
     __assert_rtn("[NIHeading initWithTimestamp:trueHeading:magneticHeading:headingAccuracy:]", "NILocation.mm", 235, "timestamp");
   }
@@ -24,21 +24,21 @@
   v11 = [(NIHeading *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [timestampCopy copy];
     timestamp = v11->_timestamp;
     v11->_timestamp = v12;
 
-    v11->_trueHeading = a4;
-    v11->_magneticHeading = a5;
-    v11->_headingAccuracy = a6;
+    v11->_trueHeading = heading;
+    v11->_magneticHeading = magneticHeading;
+    v11->_headingAccuracy = accuracy;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NIHeading allocWithZone:a3];
+  v4 = [NIHeading allocWithZone:zone];
   timestamp = self->_timestamp;
   trueHeading = self->_trueHeading;
   magneticHeading = self->_magneticHeading;
@@ -47,26 +47,26 @@
   return [(NIHeading *)v4 initWithTimestamp:timestamp trueHeading:trueHeading magneticHeading:magneticHeading headingAccuracy:headingAccuracy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v4 encodeDouble:@"trueHeading" forKey:self->_trueHeading];
-  [v4 encodeDouble:@"magneticHeading" forKey:self->_magneticHeading];
-  [v4 encodeDouble:@"headingAccuracy" forKey:self->_headingAccuracy];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeDouble:@"trueHeading" forKey:self->_trueHeading];
+  [coderCopy encodeDouble:@"magneticHeading" forKey:self->_magneticHeading];
+  [coderCopy encodeDouble:@"headingAccuracy" forKey:self->_headingAccuracy];
 }
 
-- (NIHeading)initWithCoder:(id)a3
+- (NIHeading)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v4 decodeDoubleForKey:@"trueHeading"];
+    [coderCopy decodeDoubleForKey:@"trueHeading"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"magneticHeading"];
+    [coderCopy decodeDoubleForKey:@"magneticHeading"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"headingAccuracy"];
+    [coderCopy decodeDoubleForKey:@"headingAccuracy"];
     v11 = [[NIHeading alloc] initWithTimestamp:v5 trueHeading:v7 magneticHeading:v9 headingAccuracy:v10];
   }
 
@@ -78,13 +78,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -97,9 +97,9 @@ LABEL_17:
     timestamp = self->_timestamp;
     if (!timestamp)
     {
-      v8 = [(NIHeading *)v5 timestamp];
+      timestamp = [(NIHeading *)v5 timestamp];
 
-      if (!v8)
+      if (!timestamp)
       {
         v10 = 1;
         goto LABEL_7;
@@ -108,8 +108,8 @@ LABEL_17:
       timestamp = self->_timestamp;
     }
 
-    v9 = [(NIHeading *)v6 timestamp];
-    v10 = [(NSDate *)timestamp isEqual:v9];
+    timestamp2 = [(NIHeading *)v6 timestamp];
+    v10 = [(NSDate *)timestamp isEqual:timestamp2];
 
 LABEL_7:
     trueHeading = self->_trueHeading;
@@ -183,8 +183,8 @@ LABEL_18:
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIHeading *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIHeading *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

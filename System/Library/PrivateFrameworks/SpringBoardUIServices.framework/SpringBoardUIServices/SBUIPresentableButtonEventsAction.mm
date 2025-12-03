@@ -1,7 +1,7 @@
 @interface SBUIPresentableButtonEventsAction
-- (SBUIPresentableButtonEventsAction)initWithButtonEvent:(int64_t)a3 reason:(id)a4 handler:(id)a5;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 debug:(BOOL)a4;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (SBUIPresentableButtonEventsAction)initWithButtonEvent:(int64_t)event reason:(id)reason handler:(id)handler;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix debug:(BOOL)debug;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (int64_t)presentableButtonEvent;
 - (void)handleButtonEvent;
 - (void)invalidate;
@@ -9,21 +9,21 @@
 
 @implementation SBUIPresentableButtonEventsAction
 
-- (SBUIPresentableButtonEventsAction)initWithButtonEvent:(int64_t)a3 reason:(id)a4 handler:(id)a5
+- (SBUIPresentableButtonEventsAction)initWithButtonEvent:(int64_t)event reason:(id)reason handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if (event == 1)
   {
-    if (v9)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBUIPresentableButtonEventsAction initWithButtonEvent:a2 reason:self handler:?];
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -31,14 +31,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [SBUIPresentableButtonEventsAction initWithButtonEvent:a2 reason:self handler:a3];
-  if (!v9)
+  [SBUIPresentableButtonEventsAction initWithButtonEvent:a2 reason:self handler:event];
+  if (!reasonCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -46,7 +46,7 @@ LABEL_3:
 LABEL_9:
   [SBUIPresentableButtonEventsAction initWithButtonEvent:a2 reason:self handler:?];
 LABEL_4:
-  v11 = [v9 copy];
+  v11 = [reasonCopy copy];
   reason = self->_reason;
   self->_reason = v11;
 
@@ -54,12 +54,12 @@ LABEL_4:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A9A79000, v13, OS_LOG_TYPE_DEFAULT, "Acquired button events assertion: %{public}@", buf, 0xCu);
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:event];
   [v14 setObject:v15 forSetting:1];
 
   v16 = MEMORY[0x1E698E5F8];
@@ -67,8 +67,8 @@ LABEL_4:
   v22[1] = 3221225472;
   v22[2] = __72__SBUIPresentableButtonEventsAction_initWithButtonEvent_reason_handler___block_invoke;
   v22[3] = &unk_1E789E448;
-  v23 = v10;
-  v17 = v10;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
   v18 = [v16 responderWithHandler:v22];
   v21.receiver = self;
   v21.super_class = SBUIPresentableButtonEventsAction;
@@ -95,19 +95,19 @@ void __72__SBUIPresentableButtonEventsAction_initWithButtonEvent_reason_handler_
   }
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 debug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix debug:(BOOL)debug
 {
   v10.receiver = self;
   v10.super_class = SBUIPresentableButtonEventsAction;
-  v5 = [(SBUIPresentableButtonEventsAction *)&v10 _descriptionBuilderWithMultilinePrefix:a3 debug:a4];
-  v6 = [(SBUIPresentableButtonEventsAction *)self presentableButtonEvent];
+  v5 = [(SBUIPresentableButtonEventsAction *)&v10 _descriptionBuilderWithMultilinePrefix:prefix debug:debug];
+  presentableButtonEvent = [(SBUIPresentableButtonEventsAction *)self presentableButtonEvent];
   v7 = @"[INVALID]";
-  if (v6 == 1)
+  if (presentableButtonEvent == 1)
   {
     v7 = @"homeButtonPress";
   }
 
-  if (v6)
+  if (presentableButtonEvent)
   {
     v8 = v7;
   }
@@ -125,41 +125,41 @@ void __72__SBUIPresentableButtonEventsAction_initWithButtonEvent_reason_handler_
 
 - (int64_t)presentableButtonEvent
 {
-  v2 = [(SBUIPresentableButtonEventsAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(SBUIPresentableButtonEventsAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)invalidate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(SBUIPresentableButtonEventsAction *)self isValid];
+  isValid = [(SBUIPresentableButtonEventsAction *)self isValid];
   v5.receiver = self;
   v5.super_class = SBUIPresentableButtonEventsAction;
   [(SBUIPresentableButtonEventsAction *)&v5 invalidate];
-  if (v3)
+  if (isValid)
   {
     v4 = SBLogBanners();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9A79000, v4, OS_LOG_TYPE_DEFAULT, "Invalidated button events assertion: %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"success";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"buttonEvent";
   }

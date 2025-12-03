@@ -1,5 +1,5 @@
 @interface ICSETableView
-- (id)_axFirstLastOpaqueHeaderElementFromSection:(int64_t)a3 options:(id)a4 direction:(int64_t)a5;
+- (id)_axFirstLastOpaqueHeaderElementFromSection:(int64_t)section options:(id)options direction:(int64_t)direction;
 - (id)accessibilityIdentifier;
 - (int64_t)style;
 @end
@@ -18,18 +18,18 @@
   return [(ICSETableView *)&v4 style];
 }
 
-- (id)_axFirstLastOpaqueHeaderElementFromSection:(int64_t)a3 options:(id)a4 direction:(int64_t)a5
+- (id)_axFirstLastOpaqueHeaderElementFromSection:(int64_t)section options:(id)options direction:(int64_t)direction
 {
   v17.receiver = self;
   v17.super_class = ICSETableView;
-  v8 = [(ICSETableView *)&v17 _axFirstLastOpaqueHeaderElementFromSection:a3 options:a4 direction:?];
+  v8 = [(ICSETableView *)&v17 _axFirstLastOpaqueHeaderElementFromSection:section options:options direction:?];
   if (v8)
   {
     goto LABEL_13;
   }
 
-  v9 = [(ICSETableView *)self numberOfRowsInSection:a3];
-  if (a5 == 1)
+  v9 = [(ICSETableView *)self numberOfRowsInSection:section];
+  if (direction == 1)
   {
     if (v9 >= 1)
     {
@@ -37,7 +37,7 @@
       v11 = UIAccessibilityTraitHeader;
       do
       {
-        v12 = [NSIndexPath indexPathForRow:v10 inSection:a3];
+        v12 = [NSIndexPath indexPathForRow:v10 inSection:section];
         v8 = [(ICSETableView *)self accessibilityCellForRowAtIndexPath:v12];
 
         if ((v11 & ~[v8 accessibilityTraits]) == 0)
@@ -46,7 +46,7 @@
         }
       }
 
-      while (++v10 < [(ICSETableView *)self numberOfRowsInSection:a3]);
+      while (++v10 < [(ICSETableView *)self numberOfRowsInSection:section]);
     }
 
 LABEL_12:
@@ -63,7 +63,7 @@ LABEL_12:
   v14 = v9 + 1;
   while (1)
   {
-    v15 = [NSIndexPath indexPathForRow:v14 - 2 inSection:a3];
+    v15 = [NSIndexPath indexPathForRow:v14 - 2 inSection:section];
     v8 = [(ICSETableView *)self accessibilityCellForRowAtIndexPath:v15];
 
     if ((v13 & ~[v8 accessibilityTraits]) == 0)

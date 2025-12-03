@@ -1,15 +1,15 @@
 @interface WFGalleryCollection
 + (NSDictionary)properties;
-- (BOOL)isEqual:(id)a3;
-- (WFGalleryCollection)initWithIdentifier:(id)a3 name:(id)a4 collectionDescription:(id)a5 workflows:(id)a6 minVersion:(int64_t)a7 supportedIdioms:(id)a8 modifiedAt:(id)a9 language:(id)a10 base:(id)a11 persistentIdentifier:(id)a12;
+- (BOOL)isEqual:(id)equal;
+- (WFGalleryCollection)initWithIdentifier:(id)identifier name:(id)name collectionDescription:(id)description workflows:(id)workflows minVersion:(int64_t)version supportedIdioms:(id)idioms modifiedAt:(id)at language:(id)self0 base:(id)self1 persistentIdentifier:(id)self2;
 @end
 
 @implementation WFGalleryCollection
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -19,11 +19,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFGalleryCollection *)self identifier];
-      v7 = [(WFGalleryCollection *)v5 identifier];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      identifier = [(WFGalleryCollection *)self identifier];
+      identifier2 = [(WFGalleryCollection *)v5 identifier];
+      v8 = identifier;
+      v9 = identifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -50,10 +50,10 @@ LABEL_79:
         }
       }
 
-      v15 = [(WFGalleryCollection *)self name];
-      v16 = [(WFGalleryCollection *)v5 name];
-      v13 = v15;
-      v17 = v16;
+      name = [(WFGalleryCollection *)self name];
+      name2 = [(WFGalleryCollection *)v5 name];
+      v13 = name;
+      v17 = name2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -80,10 +80,10 @@ LABEL_78:
         }
       }
 
-      v21 = [(WFGalleryCollection *)self collectionDescription];
-      v22 = [(WFGalleryCollection *)v5 collectionDescription];
-      v19 = v21;
-      v23 = v22;
+      collectionDescription = [(WFGalleryCollection *)self collectionDescription];
+      collectionDescription2 = [(WFGalleryCollection *)v5 collectionDescription];
+      v19 = collectionDescription;
+      v23 = collectionDescription2;
       v18 = v23;
       v81 = v19;
       if (v19 == v23)
@@ -108,10 +108,10 @@ LABEL_78:
       }
 
       v80 = v18;
-      v25 = [(WFGalleryCollection *)self workflows];
-      v26 = [(WFGalleryCollection *)v5 workflows];
-      v27 = v25;
-      v28 = v26;
+      workflows = [(WFGalleryCollection *)self workflows];
+      workflows2 = [(WFGalleryCollection *)v5 workflows];
+      v27 = workflows;
+      v28 = workflows2;
       v78 = v28;
       v79 = v27;
       if (v27 == v28)
@@ -155,10 +155,10 @@ LABEL_77:
         }
       }
 
-      v31 = [(WFGalleryCollection *)self modifiedAt];
-      v32 = [(WFGalleryCollection *)v5 modifiedAt];
-      v27 = v31;
-      v33 = v32;
+      modifiedAt = [(WFGalleryCollection *)self modifiedAt];
+      modifiedAt2 = [(WFGalleryCollection *)v5 modifiedAt];
+      v27 = modifiedAt;
+      v33 = modifiedAt2;
       v34 = v33;
       if (v27 != v33)
       {
@@ -180,8 +180,8 @@ LABEL_77:
             }
 
 LABEL_35:
-            v38 = [(WFGalleryCollection *)self minVersion];
-            if (v38 != [(WFGalleryCollection *)v5 minVersion])
+            minVersion = [(WFGalleryCollection *)self minVersion];
+            if (minVersion != [(WFGalleryCollection *)v5 minVersion])
             {
 LABEL_41:
               LOBYTE(v11) = 0;
@@ -190,10 +190,10 @@ LABEL_41:
               goto LABEL_74;
             }
 
-            v39 = [(WFGalleryCollection *)self language];
-            v40 = [(WFGalleryCollection *)v5 language];
-            v41 = v39;
-            v42 = v40;
+            language = [(WFGalleryCollection *)self language];
+            language2 = [(WFGalleryCollection *)v5 language];
+            v41 = language;
+            v42 = language2;
             v74 = v42;
             v75 = v41;
             v77 = v27;
@@ -221,10 +221,10 @@ LABEL_72:
                   }
 
 LABEL_45:
-                  v46 = [(WFGalleryCollection *)self base];
-                  v47 = [(WFGalleryCollection *)v5 base];
-                  v48 = v46;
-                  v49 = v47;
+                  base = [(WFGalleryCollection *)self base];
+                  base2 = [(WFGalleryCollection *)v5 base];
+                  v48 = base;
+                  v49 = base2;
                   v72 = v49;
                   v73 = v48;
                   if (v48 != v49)
@@ -250,10 +250,10 @@ LABEL_70:
                         }
 
 LABEL_51:
-                        v52 = [(WFGalleryCollection *)self persistentIdentifier];
-                        v53 = [(WFGalleryCollection *)v5 persistentIdentifier];
-                        v54 = v52;
-                        v55 = v53;
+                        persistentIdentifier = [(WFGalleryCollection *)self persistentIdentifier];
+                        persistentIdentifier2 = [(WFGalleryCollection *)v5 persistentIdentifier];
+                        v54 = persistentIdentifier;
+                        v55 = persistentIdentifier2;
                         v69 = v55;
                         v71 = v54;
                         if (v54 == v55)
@@ -295,10 +295,10 @@ LABEL_68:
                           }
                         }
 
-                        v58 = [(WFGalleryCollection *)self supportedIdioms];
-                        v59 = [(WFGalleryCollection *)v5 supportedIdioms];
-                        v60 = v58;
-                        v61 = v59;
+                        supportedIdioms = [(WFGalleryCollection *)self supportedIdioms];
+                        supportedIdioms2 = [(WFGalleryCollection *)v5 supportedIdioms];
+                        v60 = supportedIdioms;
+                        v61 = supportedIdioms2;
                         v62 = v60;
                         v68 = v61;
                         if (v60 == v61)
@@ -389,51 +389,51 @@ LABEL_80:
   return v11;
 }
 
-- (WFGalleryCollection)initWithIdentifier:(id)a3 name:(id)a4 collectionDescription:(id)a5 workflows:(id)a6 minVersion:(int64_t)a7 supportedIdioms:(id)a8 modifiedAt:(id)a9 language:(id)a10 base:(id)a11 persistentIdentifier:(id)a12
+- (WFGalleryCollection)initWithIdentifier:(id)identifier name:(id)name collectionDescription:(id)description workflows:(id)workflows minVersion:(int64_t)version supportedIdioms:(id)idioms modifiedAt:(id)at language:(id)self0 base:(id)self1 persistentIdentifier:(id)self2
 {
-  v45 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  workflowsCopy = workflows;
+  idiomsCopy = idioms;
+  atCopy = at;
+  languageCopy = language;
+  baseCopy = base;
+  persistentIdentifierCopy = persistentIdentifier;
   v46.receiver = self;
   v46.super_class = WFGalleryCollection;
   v24 = [(WFGalleryCollection *)&v46 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_identifier, a3);
-    v26 = [v16 copy];
+    objc_storeStrong(&v24->_identifier, identifier);
+    v26 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v26;
 
-    v28 = [v17 copy];
+    v28 = [descriptionCopy copy];
     collectionDescription = v25->_collectionDescription;
     v25->_collectionDescription = v28;
 
-    v30 = [v18 copy];
+    v30 = [workflowsCopy copy];
     workflows = v25->_workflows;
     v25->_workflows = v30;
 
-    v25->_minVersion = a7;
-    v32 = [v19 copy];
+    v25->_minVersion = version;
+    v32 = [idiomsCopy copy];
     supportedIdioms = v25->_supportedIdioms;
     v25->_supportedIdioms = v32;
 
-    v34 = [v20 copy];
+    v34 = [atCopy copy];
     modifiedAt = v25->_modifiedAt;
     v25->_modifiedAt = v34;
 
-    v36 = [v21 copy];
+    v36 = [languageCopy copy];
     language = v25->_language;
     v25->_language = v36;
 
-    objc_storeStrong(&v25->_base, a11);
-    v38 = [v23 copy];
+    objc_storeStrong(&v25->_base, base);
+    v38 = [persistentIdentifierCopy copy];
     persistentIdentifier = v25->_persistentIdentifier;
     v25->_persistentIdentifier = v38;
 

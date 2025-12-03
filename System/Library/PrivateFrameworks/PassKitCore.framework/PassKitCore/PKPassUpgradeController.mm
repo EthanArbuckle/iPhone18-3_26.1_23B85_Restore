@@ -1,27 +1,27 @@
 @interface PKPassUpgradeController
-- (PKPassUpgradeController)initWithWebService:(id)a3;
+- (PKPassUpgradeController)initWithWebService:(id)service;
 - (void)dealloc;
 @end
 
 @implementation PKPassUpgradeController
 
-- (PKPassUpgradeController)initWithWebService:(id)a3
+- (PKPassUpgradeController)initWithWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__PKPassUpgradeController_initWithWebService___block_invoke;
   v10[3] = &unk_1E79E27A0;
-  v11 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = serviceCopy;
   v12 = v5;
-  v9.receiver = v11;
+  v9.receiver = selfCopy;
   v9.super_class = PKPassUpgradeController;
   v6 = [(PKPassUpgradeControllerBase *)&v9 initWithWebService:v5 addPaymentPassToLibrary:v10];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v7 addObserver:v6 selector:sel__handleScriptsExecutedNotification_ name:@"com.apple.stockholm.tsm.script.executed" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleScriptsExecutedNotification_ name:@"com.apple.stockholm.tsm.script.executed" object:0];
   }
 
   return v6;
@@ -68,8 +68,8 @@ void __46__PKPassUpgradeController_initWithWebService___block_invoke_2(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPassUpgradeController;

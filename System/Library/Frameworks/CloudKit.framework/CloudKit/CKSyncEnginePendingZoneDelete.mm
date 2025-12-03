@@ -1,7 +1,7 @@
 @interface CKSyncEnginePendingZoneDelete
 - (CKSyncEnginePendingZoneDelete)initWithZoneID:(CKRecordZoneID *)zoneID;
 - (id)oppositeTypeChange;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEnginePendingZoneDelete
@@ -13,14 +13,14 @@
   return [(CKSyncEnginePendingDatabaseChange *)&v4 initWithZoneID:zoneID type:1];
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
   v9.receiver = self;
   v9.super_class = CKSyncEnginePendingZoneDelete;
-  v4 = a3;
-  [(CKSyncEnginePendingDatabaseChange *)&v9 CKDescribePropertiesUsing:v4];
+  usingCopy = using;
+  [(CKSyncEnginePendingDatabaseChange *)&v9 CKDescribePropertiesUsing:usingCopy];
   v7 = objc_msgSend_zoneID(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"zoneID", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"zoneID", v7, 0);
 }
 
 - (id)oppositeTypeChange

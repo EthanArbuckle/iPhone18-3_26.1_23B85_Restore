@@ -1,13 +1,13 @@
 @interface VNPersonsModelAlgorithmVIPv2
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation VNPersonsModelAlgorithmVIPv2
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isKindOfClass = 1;
   }

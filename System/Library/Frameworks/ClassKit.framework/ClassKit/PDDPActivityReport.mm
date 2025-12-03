@@ -1,35 +1,35 @@
 @interface PDDPActivityReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttachmentType:(id)a3;
+- (int)StringAsAttachmentType:(id)type;
 - (int)attachmentType;
 - (unint64_t)hash;
-- (void)addAdditionalItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdditionalItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPActivityReport
 
-- (void)addAdditionalItems:(id)a3
+- (void)addAdditionalItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   additionalItems = self->_additionalItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!additionalItems)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_additionalItems;
     self->_additionalItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     additionalItems = self->_additionalItems;
   }
 
-  [(NSMutableArray *)additionalItems addObject:v4];
+  [(NSMutableArray *)additionalItems addObject:itemsCopy];
 }
 
 - (int)attachmentType
@@ -45,45 +45,45 @@
   }
 }
 
-- (int)StringAsAttachmentType:(id)a3
+- (int)StringAsAttachmentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"URL_TYPE"])
+  else if ([typeCopy isEqualToString:@"URL_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ASSET_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSET_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APP_TYPE"])
+  else if ([typeCopy isEqualToString:@"APP_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HAND_IN_REQUEST_TYPE"])
+  else if ([typeCopy isEqualToString:@"HAND_IN_REQUEST_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_TYPE"])
+  else if ([typeCopy isEqualToString:@"SURVEY_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ASSESSMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSESSMENT_TYPE"])
   {
     v4 = 7;
   }
@@ -101,8 +101,8 @@
   v7.receiver = self;
   v7.super_class = PDDPActivityReport;
   v3 = [(PDDPActivityReport *)&v7 description];
-  v4 = [(PDDPActivityReport *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPActivityReport *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -144,22 +144,22 @@
   time = self->_time;
   if (time)
   {
-    v11 = [(PDDPAggregatedValue *)time dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"time"];
+    dictionaryRepresentation = [(PDDPAggregatedValue *)time dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"time"];
   }
 
   progress = self->_progress;
   if (progress)
   {
-    v13 = [(PDDPAggregatedValue *)progress dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"progress"];
+    dictionaryRepresentation2 = [(PDDPAggregatedValue *)progress dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"progress"];
   }
 
   primaryItem = self->_primaryItem;
   if (primaryItem)
   {
-    v15 = [(PDDPActivityReportItem *)primaryItem dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"primary_item"];
+    dictionaryRepresentation3 = [(PDDPActivityReportItem *)primaryItem dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"primary_item"];
   }
 
   if ([(NSMutableArray *)self->_additionalItems count])
@@ -184,8 +184,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation4 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation4];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -234,9 +234,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_contextType)
   {
     PBDataWriterWriteStringField();
@@ -331,81 +331,81 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_contextType)
   {
-    [v9 setContextType:?];
+    [toCopy setContextType:?];
   }
 
   if (self->_contextTopic)
   {
-    [v9 setContextTopic:?];
+    [toCopy setContextTopic:?];
   }
 
   if (self->_contextTitle)
   {
-    [v9 setContextTitle:?];
+    [toCopy setContextTitle:?];
   }
 
   if (self->_contextObjectIdPath)
   {
-    [v9 setContextObjectIdPath:?];
+    [toCopy setContextObjectIdPath:?];
   }
 
   if (self->_time)
   {
-    [v9 setTime:?];
+    [toCopy setTime:?];
   }
 
   if (self->_progress)
   {
-    [v9 setProgress:?];
+    [toCopy setProgress:?];
   }
 
   if (self->_primaryItem)
   {
-    [v9 setPrimaryItem:?];
+    [toCopy setPrimaryItem:?];
   }
 
   if ([(PDDPActivityReport *)self additionalItemsCount])
   {
-    [v9 clearAdditionalItems];
-    v4 = [(PDDPActivityReport *)self additionalItemsCount];
-    if (v4)
+    [toCopy clearAdditionalItems];
+    additionalItemsCount = [(PDDPActivityReport *)self additionalItemsCount];
+    if (additionalItemsCount)
     {
-      v5 = v4;
+      v5 = additionalItemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPActivityReport *)self additionalItemsAtIndex:i];
-        [v9 addAdditionalItems:v7];
+        [toCopy addAdditionalItems:v7];
       }
     }
   }
 
   if (self->_contextUniversalLink)
   {
-    [v9 setContextUniversalLink:?];
+    [toCopy setContextUniversalLink:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_contextIdentifierPath)
   {
-    [v9 setContextIdentifierPath:?];
-    v8 = v9;
+    [toCopy setContextIdentifierPath:?];
+    v8 = toCopy;
   }
 
   if (self->_contextStableObjectIdPath)
   {
-    [v9 setContextStableObjectIdPath:?];
-    v8 = v9;
+    [toCopy setContextStableObjectIdPath:?];
+    v8 = toCopy;
   }
 
   if (self->_handoutAuthorizedObjectId)
   {
-    [v9 setHandoutAuthorizedObjectId:?];
-    v8 = v9;
+    [toCopy setHandoutAuthorizedObjectId:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -415,34 +415,34 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_contextType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_contextType copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_contextTopic copyWithZone:a3];
+  v8 = [(NSString *)self->_contextTopic copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSString *)self->_contextTitle copyWithZone:a3];
+  v10 = [(NSString *)self->_contextTitle copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(NSString *)self->_contextObjectIdPath copyWithZone:a3];
+  v12 = [(NSString *)self->_contextObjectIdPath copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(PDDPAggregatedValue *)self->_time copyWithZone:a3];
+  v14 = [(PDDPAggregatedValue *)self->_time copyWithZone:zone];
   v15 = v5[13];
   v5[13] = v14;
 
-  v16 = [(PDDPAggregatedValue *)self->_progress copyWithZone:a3];
+  v16 = [(PDDPAggregatedValue *)self->_progress copyWithZone:zone];
   v17 = v5[12];
   v5[12] = v16;
 
-  v18 = [(PDDPActivityReportItem *)self->_primaryItem copyWithZone:a3];
+  v18 = [(PDDPActivityReportItem *)self->_primaryItem copyWithZone:zone];
   v19 = v5[11];
   v5[11] = v18;
 
@@ -465,7 +465,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v35 + 1) + 8 * i) copyWithZone:{a3, v35}];
+        v25 = [*(*(&v35 + 1) + 8 * i) copyWithZone:{zone, v35}];
         [v5 addAdditionalItems:v25];
       }
 
@@ -475,19 +475,19 @@
     while (v22);
   }
 
-  v26 = [(NSString *)self->_contextUniversalLink copyWithZone:a3];
+  v26 = [(NSString *)self->_contextUniversalLink copyWithZone:zone];
   v27 = v5[9];
   v5[9] = v26;
 
-  v28 = [(NSString *)self->_contextIdentifierPath copyWithZone:a3];
+  v28 = [(NSString *)self->_contextIdentifierPath copyWithZone:zone];
   v29 = v5[3];
   v5[3] = v28;
 
-  v30 = [(NSString *)self->_contextStableObjectIdPath copyWithZone:a3];
+  v30 = [(NSString *)self->_contextStableObjectIdPath copyWithZone:zone];
   v31 = v5[5];
   v5[5] = v30;
 
-  v32 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:a3];
+  v32 = [(NSString *)self->_handoutAuthorizedObjectId copyWithZone:zone];
   v33 = v5[10];
   v5[10] = v32;
 
@@ -500,16 +500,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   contextType = self->_contextType;
-  if (contextType | *(v4 + 8))
+  if (contextType | *(equalCopy + 8))
   {
     if (![(NSString *)contextType isEqual:?])
     {
@@ -518,7 +518,7 @@
   }
 
   contextTopic = self->_contextTopic;
-  if (contextTopic | *(v4 + 7))
+  if (contextTopic | *(equalCopy + 7))
   {
     if (![(NSString *)contextTopic isEqual:?])
     {
@@ -527,7 +527,7 @@
   }
 
   contextTitle = self->_contextTitle;
-  if (contextTitle | *(v4 + 6))
+  if (contextTitle | *(equalCopy + 6))
   {
     if (![(NSString *)contextTitle isEqual:?])
     {
@@ -536,7 +536,7 @@
   }
 
   contextObjectIdPath = self->_contextObjectIdPath;
-  if (contextObjectIdPath | *(v4 + 4))
+  if (contextObjectIdPath | *(equalCopy + 4))
   {
     if (![(NSString *)contextObjectIdPath isEqual:?])
     {
@@ -545,7 +545,7 @@
   }
 
   time = self->_time;
-  if (time | *(v4 + 13))
+  if (time | *(equalCopy + 13))
   {
     if (![(PDDPAggregatedValue *)time isEqual:?])
     {
@@ -554,7 +554,7 @@
   }
 
   progress = self->_progress;
-  if (progress | *(v4 + 12))
+  if (progress | *(equalCopy + 12))
   {
     if (![(PDDPAggregatedValue *)progress isEqual:?])
     {
@@ -563,7 +563,7 @@
   }
 
   primaryItem = self->_primaryItem;
-  if (primaryItem | *(v4 + 11))
+  if (primaryItem | *(equalCopy + 11))
   {
     if (![(PDDPActivityReportItem *)primaryItem isEqual:?])
     {
@@ -572,7 +572,7 @@
   }
 
   additionalItems = self->_additionalItems;
-  if (additionalItems | *(v4 + 1))
+  if (additionalItems | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)additionalItems isEqual:?])
     {
@@ -581,7 +581,7 @@
   }
 
   contextUniversalLink = self->_contextUniversalLink;
-  if (contextUniversalLink | *(v4 + 9))
+  if (contextUniversalLink | *(equalCopy + 9))
   {
     if (![(NSString *)contextUniversalLink isEqual:?])
     {
@@ -590,7 +590,7 @@
   }
 
   contextIdentifierPath = self->_contextIdentifierPath;
-  if (contextIdentifierPath | *(v4 + 3))
+  if (contextIdentifierPath | *(equalCopy + 3))
   {
     if (![(NSString *)contextIdentifierPath isEqual:?])
     {
@@ -599,7 +599,7 @@
   }
 
   contextStableObjectIdPath = self->_contextStableObjectIdPath;
-  if (contextStableObjectIdPath | *(v4 + 5))
+  if (contextStableObjectIdPath | *(equalCopy + 5))
   {
     if (![(NSString *)contextStableObjectIdPath isEqual:?])
     {
@@ -608,7 +608,7 @@
   }
 
   handoutAuthorizedObjectId = self->_handoutAuthorizedObjectId;
-  if (handoutAuthorizedObjectId | *(v4 + 10))
+  if (handoutAuthorizedObjectId | *(equalCopy + 10))
   {
     if (![(NSString *)handoutAuthorizedObjectId isEqual:?])
     {
@@ -616,10 +616,10 @@
     }
   }
 
-  v17 = (*(v4 + 112) & 1) == 0;
+  v17 = (*(equalCopy + 112) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) != 0 && self->_attachmentType == *(v4 + 4))
+    if ((*(equalCopy + 112) & 1) != 0 && self->_attachmentType == *(equalCopy + 4))
     {
       v17 = 1;
       goto LABEL_31;
@@ -661,31 +661,31 @@ LABEL_31:
   return v15 ^ v16 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(PDDPActivityReport *)self setContextType:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPActivityReport *)self setContextTopic:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPActivityReport *)self setContextTitle:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPActivityReport *)self setContextObjectIdPath:?];
   }
 
   time = self->_time;
-  v6 = *(v4 + 13);
+  v6 = *(fromCopy + 13);
   if (time)
   {
     if (v6)
@@ -700,7 +700,7 @@ LABEL_31:
   }
 
   progress = self->_progress;
-  v8 = *(v4 + 12);
+  v8 = *(fromCopy + 12);
   if (progress)
   {
     if (v8)
@@ -715,7 +715,7 @@ LABEL_31:
   }
 
   primaryItem = self->_primaryItem;
-  v10 = *(v4 + 11);
+  v10 = *(fromCopy + 11);
   if (primaryItem)
   {
     if (v10)
@@ -733,7 +733,7 @@ LABEL_31:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
@@ -757,29 +757,29 @@ LABEL_31:
     while (v13);
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPActivityReport *)self setContextUniversalLink:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPActivityReport *)self setContextIdentifierPath:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPActivityReport *)self setContextStableObjectIdPath:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PDDPActivityReport *)self setHandoutAuthorizedObjectId:?];
   }
 
-  if (*(v4 + 112))
+  if (*(fromCopy + 112))
   {
-    self->_attachmentType = *(v4 + 4);
+    self->_attachmentType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

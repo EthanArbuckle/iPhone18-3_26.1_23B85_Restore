@@ -1,74 +1,74 @@
 @interface ATXNotificationResolutionByPercentage
-- (ATXNotificationResolutionByPercentage)initWithBundleID:(id)a3 percentageForOneMinuteDuration:(double)a4 percentageForTwoMinutesDuration:(double)a5 percentageForFiveMinutesDuration:(double)a6 percentageForTenMinutesDuration:(double)a7 percentageForTwentyMinutesDuration:(double)a8 percentageForThirtyMinutesDuration:(double)a9 percentageForSixtyMinutesDuration:(double)a10;
-- (ATXNotificationResolutionByPercentage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXNotificationResolutionByPercentage)initWithBundleID:(id)d percentageForOneMinuteDuration:(double)duration percentageForTwoMinutesDuration:(double)minutesDuration percentageForFiveMinutesDuration:(double)fiveMinutesDuration percentageForTenMinutesDuration:(double)tenMinutesDuration percentageForTwentyMinutesDuration:(double)twentyMinutesDuration percentageForThirtyMinutesDuration:(double)thirtyMinutesDuration percentageForSixtyMinutesDuration:(double)self0;
+- (ATXNotificationResolutionByPercentage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationResolutionByPercentage
 
-- (ATXNotificationResolutionByPercentage)initWithBundleID:(id)a3 percentageForOneMinuteDuration:(double)a4 percentageForTwoMinutesDuration:(double)a5 percentageForFiveMinutesDuration:(double)a6 percentageForTenMinutesDuration:(double)a7 percentageForTwentyMinutesDuration:(double)a8 percentageForThirtyMinutesDuration:(double)a9 percentageForSixtyMinutesDuration:(double)a10
+- (ATXNotificationResolutionByPercentage)initWithBundleID:(id)d percentageForOneMinuteDuration:(double)duration percentageForTwoMinutesDuration:(double)minutesDuration percentageForFiveMinutesDuration:(double)fiveMinutesDuration percentageForTenMinutesDuration:(double)tenMinutesDuration percentageForTwentyMinutesDuration:(double)twentyMinutesDuration percentageForThirtyMinutesDuration:(double)thirtyMinutesDuration percentageForSixtyMinutesDuration:(double)self0
 {
-  v18 = a3;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = ATXNotificationResolutionByPercentage;
   v19 = [(ATXNotificationResolutionByPercentage *)&v23 init];
   if (v19)
   {
-    v20 = [v18 copy];
+    v20 = [dCopy copy];
     bundleID = v19->_bundleID;
     v19->_bundleID = v20;
 
-    v19->_percentageForOneMinuteDuration = a4;
-    v19->_percentageForTwoMinutesDuration = a5;
-    v19->_percentageForFiveMinutesDuration = a6;
-    v19->_percentageForTenMinutesDuration = a7;
-    v19->_percentageForTwentyMinutesDuration = a8;
-    v19->_percentageForThirtyMinutesDuration = a9;
-    v19->_percentageForSixtyMinutesDuration = a10;
+    v19->_percentageForOneMinuteDuration = duration;
+    v19->_percentageForTwoMinutesDuration = minutesDuration;
+    v19->_percentageForFiveMinutesDuration = fiveMinutesDuration;
+    v19->_percentageForTenMinutesDuration = tenMinutesDuration;
+    v19->_percentageForTwentyMinutesDuration = twentyMinutesDuration;
+    v19->_percentageForThirtyMinutesDuration = thirtyMinutesDuration;
+    v19->_percentageForSixtyMinutesDuration = sixtyMinutesDuration;
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleID = self->_bundleID;
-  v5 = a3;
-  [v5 encodeObject:bundleID forKey:@"bundleID"];
-  [v5 encodeDouble:@"percentageForOneMinuteDuration" forKey:self->_percentageForOneMinuteDuration];
-  [v5 encodeDouble:@"percentageForTwoMinutesDuration" forKey:self->_percentageForTwoMinutesDuration];
-  [v5 encodeDouble:@"percentageForFiveMinutesDuration" forKey:self->_percentageForFiveMinutesDuration];
-  [v5 encodeDouble:@"percentageForTenMinutesDuration" forKey:self->_percentageForTenMinutesDuration];
-  [v5 encodeDouble:@"percentageForTwentyMinutesDuration" forKey:self->_percentageForTwentyMinutesDuration];
-  [v5 encodeDouble:@"percentageForThirtyMinutesDuration" forKey:self->_percentageForThirtyMinutesDuration];
-  [v5 encodeDouble:@"percentageForSixtyMinutesDuration" forKey:self->_percentageForSixtyMinutesDuration];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
+  [coderCopy encodeDouble:@"percentageForOneMinuteDuration" forKey:self->_percentageForOneMinuteDuration];
+  [coderCopy encodeDouble:@"percentageForTwoMinutesDuration" forKey:self->_percentageForTwoMinutesDuration];
+  [coderCopy encodeDouble:@"percentageForFiveMinutesDuration" forKey:self->_percentageForFiveMinutesDuration];
+  [coderCopy encodeDouble:@"percentageForTenMinutesDuration" forKey:self->_percentageForTenMinutesDuration];
+  [coderCopy encodeDouble:@"percentageForTwentyMinutesDuration" forKey:self->_percentageForTwentyMinutesDuration];
+  [coderCopy encodeDouble:@"percentageForThirtyMinutesDuration" forKey:self->_percentageForThirtyMinutesDuration];
+  [coderCopy encodeDouble:@"percentageForSixtyMinutesDuration" forKey:self->_percentageForSixtyMinutesDuration];
 }
 
-- (ATXNotificationResolutionByPercentage)initWithCoder:(id)a3
+- (ATXNotificationResolutionByPercentage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ATXNotificationResolutionByPercentage;
   v5 = [(ATXNotificationResolutionByPercentage *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    [v4 decodeDoubleForKey:@"percentageForOneMinuteDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForOneMinuteDuration"];
     v5->_percentageForOneMinuteDuration = v8;
-    [v4 decodeDoubleForKey:@"percentageForTwoMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForTwoMinutesDuration"];
     v5->_percentageForTwoMinutesDuration = v9;
-    [v4 decodeDoubleForKey:@"percentageForFiveMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForFiveMinutesDuration"];
     v5->_percentageForFiveMinutesDuration = v10;
-    [v4 decodeDoubleForKey:@"percentageForTenMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForTenMinutesDuration"];
     v5->_percentageForTenMinutesDuration = v11;
-    [v4 decodeDoubleForKey:@"percentageForTwentyMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForTwentyMinutesDuration"];
     v5->_percentageForTwentyMinutesDuration = v12;
-    [v4 decodeDoubleForKey:@"percentageForThirtyMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForThirtyMinutesDuration"];
     v5->_percentageForThirtyMinutesDuration = v13;
-    [v4 decodeDoubleForKey:@"percentageForSixtyMinutesDuration"];
+    [coderCopy decodeDoubleForKey:@"percentageForSixtyMinutesDuration"];
     v5->_percentageForSixtyMinutesDuration = v14;
   }
 

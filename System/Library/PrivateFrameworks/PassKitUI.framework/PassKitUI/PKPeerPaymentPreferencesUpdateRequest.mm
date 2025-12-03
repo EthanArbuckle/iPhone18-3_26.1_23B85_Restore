@@ -1,14 +1,14 @@
 @interface PKPeerPaymentPreferencesUpdateRequest
-- (PKPeerPaymentPreferencesUpdateRequest)initWithUpdatedPreferences:(id)a3 section:(int64_t)a4;
+- (PKPeerPaymentPreferencesUpdateRequest)initWithUpdatedPreferences:(id)preferences section:(int64_t)section;
 - (id)description;
-- (void)coalesceWithRequest:(id)a3;
+- (void)coalesceWithRequest:(id)request;
 @end
 
 @implementation PKPeerPaymentPreferencesUpdateRequest
 
-- (PKPeerPaymentPreferencesUpdateRequest)initWithUpdatedPreferences:(id)a3 section:(int64_t)a4
+- (PKPeerPaymentPreferencesUpdateRequest)initWithUpdatedPreferences:(id)preferences section:(int64_t)section
 {
-  v7 = a3;
+  preferencesCopy = preferences;
   v14.receiver = self;
   v14.super_class = PKPeerPaymentPreferencesUpdateRequest;
   v8 = [(PKPeerPaymentPreferencesUpdateRequest *)&v14 init];
@@ -19,26 +19,26 @@
     v8->_sections = v9;
 
     v11 = v8->_sections;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     [(NSMutableSet *)v11 addObject:v12];
 
-    objc_storeStrong(&v8->_updatedPreferences, a3);
+    objc_storeStrong(&v8->_updatedPreferences, preferences);
   }
 
   return v8;
 }
 
-- (void)coalesceWithRequest:(id)a3
+- (void)coalesceWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 updatedPreferences];
+  requestCopy = request;
+  updatedPreferences = [requestCopy updatedPreferences];
   updatedPreferences = self->_updatedPreferences;
-  self->_updatedPreferences = v5;
+  self->_updatedPreferences = updatedPreferences;
 
   sections = self->_sections;
-  v8 = [v4 sections];
+  sections = [requestCopy sections];
 
-  [(NSMutableSet *)sections unionSet:v8];
+  [(NSMutableSet *)sections unionSet:sections];
 }
 
 - (id)description

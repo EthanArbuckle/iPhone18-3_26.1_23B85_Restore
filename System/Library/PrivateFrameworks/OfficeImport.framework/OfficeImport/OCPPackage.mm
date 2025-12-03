@@ -1,37 +1,37 @@
 @interface OCPPackage
-- (OCPPackage)initWithRelationshipsXml:(_xmlDoc *)a3 corePropertiesXml:(_xmlDoc *)a4 appPropertiesXml:(_xmlDoc *)a5 contentTypesXml:(_xmlDoc *)a6;
-- (id)contentTypeForPartLocation:(id)a3;
+- (OCPPackage)initWithRelationshipsXml:(_xmlDoc *)xml corePropertiesXml:(_xmlDoc *)propertiesXml appPropertiesXml:(_xmlDoc *)appPropertiesXml contentTypesXml:(_xmlDoc *)typesXml;
+- (id)contentTypeForPartLocation:(id)location;
 - (id)mainDocumentPart;
-- (id)partByRelationshipType:(id)a3;
-- (id)relationshipForIdentifier:(id)a3;
-- (id)relationshipsByType:(id)a3;
-- (void)readContentTypeOverrideFromElement:(_xmlNode *)a3;
-- (void)readContentTypesXml:(_xmlDoc *)a3;
-- (void)readDefaultContentTypeFromElement:(_xmlNode *)a3;
+- (id)partByRelationshipType:(id)type;
+- (id)relationshipForIdentifier:(id)identifier;
+- (id)relationshipsByType:(id)type;
+- (void)readContentTypeOverrideFromElement:(_xmlNode *)element;
+- (void)readContentTypesXml:(_xmlDoc *)xml;
+- (void)readDefaultContentTypeFromElement:(_xmlNode *)element;
 @end
 
 @implementation OCPPackage
 
-- (id)relationshipForIdentifier:(id)a3
+- (id)relationshipForIdentifier:(id)identifier
 {
-  v3 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipForIdentifier:a3];
+  v3 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipForIdentifier:identifier];
 
   return v3;
 }
 
-- (id)relationshipsByType:(id)a3
+- (id)relationshipsByType:(id)type
 {
-  v3 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipsByType:a3];
+  v3 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipsByType:type];
 
   return v3;
 }
 
-- (id)partByRelationshipType:(id)a3
+- (id)partByRelationshipType:(id)type
 {
-  v4 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipsByType:a3];
+  v4 = [(OCPPackageRelationshipCollection *)self->mRelationships relationshipsByType:type];
   v5 = [v4 objectAtIndex:0];
-  v6 = [v5 targetLocation];
-  v7 = [(OCPPackage *)self partForLocation:v6];
+  targetLocation = [v5 targetLocation];
+  v7 = [(OCPPackage *)self partForLocation:targetLocation];
 
   return v7;
 }
@@ -56,16 +56,16 @@
   return v6;
 }
 
-- (OCPPackage)initWithRelationshipsXml:(_xmlDoc *)a3 corePropertiesXml:(_xmlDoc *)a4 appPropertiesXml:(_xmlDoc *)a5 contentTypesXml:(_xmlDoc *)a6
+- (OCPPackage)initWithRelationshipsXml:(_xmlDoc *)xml corePropertiesXml:(_xmlDoc *)propertiesXml appPropertiesXml:(_xmlDoc *)appPropertiesXml contentTypesXml:(_xmlDoc *)typesXml
 {
   v11 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"/"];
-  v12 = [[OCPPackageRelationshipCollection alloc] initWithRelationshipsXml:a3 baseLocation:v11];
+  v12 = [[OCPPackageRelationshipCollection alloc] initWithRelationshipsXml:xml baseLocation:v11];
   mRelationships = self->mRelationships;
   self->mRelationships = v12;
 
-  if (a4)
+  if (propertiesXml)
   {
-    v14 = [[OCPPackageProperties alloc] initWithCoreXml:a4 appXml:a5];
+    v14 = [[OCPPackageProperties alloc] initWithCoreXml:propertiesXml appXml:appPropertiesXml];
     mProperties = self->mProperties;
     self->mProperties = v14;
   }
@@ -78,33 +78,33 @@
   mContentTypeOverrides = self->mContentTypeOverrides;
   self->mContentTypeOverrides = v18;
 
-  [(OCPPackage *)self readContentTypesXml:a6];
+  [(OCPPackage *)self readContentTypesXml:typesXml];
   return self;
 }
 
-- (id)contentTypeForPartLocation:(id)a3
+- (id)contentTypeForPartLocation:(id)location
 {
-  v4 = [a3 path];
-  v5 = [(NSMutableDictionary *)self->mContentTypeOverrides objectForKey:v4];
+  path = [location path];
+  v5 = [(NSMutableDictionary *)self->mContentTypeOverrides objectForKey:path];
   if (!v5)
   {
     mDefaultContentTypes = self->mDefaultContentTypes;
-    v7 = [v4 pathExtension];
-    v5 = [(NSMutableDictionary *)mDefaultContentTypes objectForKey:v7];
+    pathExtension = [path pathExtension];
+    v5 = [(NSMutableDictionary *)mDefaultContentTypes objectForKey:pathExtension];
 
     if (!v5)
     {
       v8 = self->mDefaultContentTypes;
-      v9 = [v4 pathExtension];
-      v10 = [v9 lowercaseString];
-      v5 = [(NSMutableDictionary *)v8 objectForKey:v10];
+      pathExtension2 = [path pathExtension];
+      lowercaseString = [pathExtension2 lowercaseString];
+      v5 = [(NSMutableDictionary *)v8 objectForKey:lowercaseString];
 
       if (!v5)
       {
         v11 = self->mDefaultContentTypes;
-        v12 = [v4 pathExtension];
-        v13 = [v12 uppercaseString];
-        v14 = [(NSMutableDictionary *)v11 objectForKey:v13];
+        pathExtension3 = [path pathExtension];
+        uppercaseString = [pathExtension3 uppercaseString];
+        v14 = [(NSMutableDictionary *)v11 objectForKey:uppercaseString];
 
         if (v14)
         {
@@ -122,15 +122,15 @@
   return v5;
 }
 
-- (void)readContentTypesXml:(_xmlDoc *)a3
+- (void)readContentTypesXml:(_xmlDoc *)xml
 {
-  RootElement = xmlDocGetRootElement(a3);
+  RootElement = xmlDocGetRootElement(xml);
   if (!RootElement)
   {
     [OCPException raise:@"OCPPackageError" format:@"No content types root element"];
   }
 
-  v6 = xmlSearchNsByHref(a3, RootElement, "http://schemas.openxmlformats.org/package/2006/content-types");
+  v6 = xmlSearchNsByHref(xml, RootElement, "http://schemas.openxmlformats.org/package/2006/content-types");
   if (v6)
   {
     if (RootElement)
@@ -174,9 +174,9 @@ LABEL_5:
   [OCPException raise:@"OCPPackageError" format:@"Could not find content types root"];
 }
 
-- (void)readDefaultContentTypeFromElement:(_xmlNode *)a3
+- (void)readDefaultContentTypeFromElement:(_xmlNode *)element
 {
-  properties = a3->properties;
+  properties = element->properties;
   if (!properties)
   {
     v9 = 0;
@@ -228,9 +228,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)readContentTypeOverrideFromElement:(_xmlNode *)a3
+- (void)readContentTypeOverrideFromElement:(_xmlNode *)element
 {
-  properties = a3->properties;
+  properties = element->properties;
   if (!properties)
   {
     v9 = 0;

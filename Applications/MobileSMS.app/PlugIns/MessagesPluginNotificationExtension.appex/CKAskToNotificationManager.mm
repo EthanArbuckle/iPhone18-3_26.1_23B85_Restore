@@ -1,8 +1,8 @@
 @interface CKAskToNotificationManager
 + (CKAskToNotificationManager)sharedManager;
 - (CKAskToNotificationManager)init;
-- (id)notificationActionsFromNotification:(id)a3;
-- (void)handleResponse:(id)a3 completion:(id)a4;
+- (id)notificationActionsFromNotification:(id)notification;
+- (void)handleResponse:(id)response completion:(id)completion;
 @end
 
 @implementation CKAskToNotificationManager
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (id)notificationActionsFromNotification:(id)a3
+- (id)notificationActionsFromNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000028C0(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  v6 = sub_1000028C0(notificationCopy);
 
   if (v6)
   {
@@ -39,13 +39,13 @@
   return v7.super.isa;
 }
 
-- (void)handleResponse:(id)a3 completion:(id)a4
+- (void)handleResponse:(id)response completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000552C(v7, v8, v6);
+  responseCopy = response;
+  selfCopy = self;
+  sub_10000552C(responseCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

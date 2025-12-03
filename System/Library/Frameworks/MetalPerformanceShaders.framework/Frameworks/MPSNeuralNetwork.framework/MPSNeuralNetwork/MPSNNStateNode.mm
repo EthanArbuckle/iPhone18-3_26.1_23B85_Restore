@@ -1,12 +1,12 @@
 @interface MPSNNStateNode
-- (MPSNNStateNode)initWithParent:(id)a3;
+- (MPSNNStateNode)initWithParent:(id)parent;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MPSNNStateNode
 
-- (MPSNNStateNode)initWithParent:(id)a3
+- (MPSNNStateNode)initWithParent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MPSNNStateNode;
@@ -14,9 +14,9 @@
   if (result)
   {
     result->_handle = 0;
-    result->_parent = a3;
+    result->_parent = parent;
     *&result->_synchronize = 0;
-    result->_initializedWithParent = a3 != 0;
+    result->_initializedWithParent = parent != 0;
   }
 
   return result;

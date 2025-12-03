@@ -1,14 +1,14 @@
 @interface ArtworkLoaderURLSession
-- (_TtC12GameStoreKit23ArtworkLoaderURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (_TtC12GameStoreKit23ArtworkLoaderURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 @end
 
 @implementation ArtworkLoaderURLSession
 
-- (_TtC12GameStoreKit23ArtworkLoaderURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (_TtC12GameStoreKit23ArtworkLoaderURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  return [(AMSURLSession *)&v9 initWithConfiguration:a3 delegate:a4 delegateQueue:a5];
+  return [(AMSURLSession *)&v9 initWithConfiguration:configuration delegate:delegate delegateQueue:queue];
 }
 
 @end

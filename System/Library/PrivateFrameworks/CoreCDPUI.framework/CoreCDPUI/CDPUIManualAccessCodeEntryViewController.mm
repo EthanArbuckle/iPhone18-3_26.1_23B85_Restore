@@ -6,12 +6,12 @@
 - (id)_errorLabelView;
 - (id)_labelView;
 - (id)_manualAccessCodeTextView;
-- (id)_wrappingKeySubstringFromAccessKey:(id)a3;
+- (id)_wrappingKeySubstringFromAccessKey:(id)key;
 - (void)_setupView;
-- (void)accessCodeEntryTextFieldDidReturn:(id)a3;
-- (void)accessCodeEntryTextFieldDidUpdate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)accessCodeEntryTextFieldDidReturn:(id)return;
+- (void)accessCodeEntryTextFieldDidUpdate:(id)update;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CDPUIManualAccessCodeEntryViewController
@@ -19,13 +19,13 @@
 - (CDPUIManualAccessCodeEntryViewController)init
 {
   v3 = +[CDPUIAccessCodeEntryTextField accessKeyCharacterCount];
-  v4 = [MEMORY[0x277CFD480] sharedInstance];
-  v5 = [v4 primaryAccountFirstName];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountFirstName = [mEMORY[0x277CFD480] primaryAccountFirstName];
 
   v6 = CDPLocalizedString();
   v7 = MEMORY[0x277CCACA8];
   v8 = CDPLocalizedString();
-  v9 = [v7 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%d %@" error:0, v3, v5];
+  v9 = [v7 stringWithValidatedFormat:v8 validFormatSpecifiers:@"%d %@" error:0, v3, primaryAccountFirstName];
 
   v13.receiver = self;
   v13.super_class = CDPUIManualAccessCodeEntryViewController;
@@ -42,30 +42,30 @@
 - (void)_setupView
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self _contentStackView];
-  v4 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
-  [v4 addSubview:v3];
+  _contentStackView = [(CDPUIManualAccessCodeEntryViewController *)self _contentStackView];
+  contentView = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
+  [contentView addSubview:_contentStackView];
 
   v16 = MEMORY[0x277CCAAD0];
-  v21 = [v3 leadingAnchor];
-  v22 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
-  v20 = [v22 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:10.0];
+  leadingAnchor = [_contentStackView leadingAnchor];
+  contentView2 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v23[0] = v19;
-  v17 = [v3 trailingAnchor];
-  v18 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
-  v15 = [v18 trailingAnchor];
-  v14 = [v17 constraintEqualToAnchor:v15 constant:-10.0];
+  trailingAnchor = [_contentStackView trailingAnchor];
+  contentView3 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v23[1] = v14;
-  v5 = [v3 topAnchor];
-  v6 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:10.0];
+  topAnchor = [_contentStackView topAnchor];
+  contentView4 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v23[2] = v8;
-  v9 = [v3 bottomAnchor];
-  v10 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:-10.0];
+  bottomAnchor = [_contentStackView bottomAnchor];
+  contentView5 = [(CDPUIManualAccessCodeEntryViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v23[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
   [v16 activateConstraints:v13];
@@ -74,241 +74,241 @@
 - (id)_contentStackView
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+  contentStackView = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
 
-  if (!v3)
+  if (!contentStackView)
   {
-    v4 = [(CDPUIManualAccessCodeEntryViewController *)self _accessCodeEntryStackView];
-    v5 = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
+    _accessCodeEntryStackView = [(CDPUIManualAccessCodeEntryViewController *)self _accessCodeEntryStackView];
+    _errorLabelView = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
     v6 = objc_alloc(MEMORY[0x277D75A68]);
-    v15[0] = v4;
-    v15[1] = v5;
+    v15[0] = _accessCodeEntryStackView;
+    v15[1] = _errorLabelView;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v8 = [v6 initWithArrangedSubviews:v7];
     [(CDPUIManualAccessCodeEntryViewController *)self setContentStackView:v8];
 
-    v9 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentStackView2 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v10 setAxis:1];
+    contentStackView3 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView3 setAxis:1];
 
-    v11 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v11 setAlignment:0];
+    contentStackView4 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView4 setAlignment:0];
 
-    v12 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v12 setDistribution:0];
+    contentStackView5 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView5 setDistribution:0];
   }
 
-  v13 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+  contentStackView6 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
 
-  return v13;
+  return contentStackView6;
 }
 
 - (id)_accessCodeEntryStackView
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+  contentStackView = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
 
-  if (!v3)
+  if (!contentStackView)
   {
-    v4 = [(CDPUIManualAccessCodeEntryViewController *)self _labelView];
-    v5 = [(CDPUIManualAccessCodeEntryViewController *)self _manualAccessCodeTextView];
+    _labelView = [(CDPUIManualAccessCodeEntryViewController *)self _labelView];
+    _manualAccessCodeTextView = [(CDPUIManualAccessCodeEntryViewController *)self _manualAccessCodeTextView];
     v6 = objc_alloc(MEMORY[0x277D75A68]);
-    v15[0] = v4;
-    v15[1] = v5;
+    v15[0] = _labelView;
+    v15[1] = _manualAccessCodeTextView;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v8 = [v6 initWithArrangedSubviews:v7];
     [(CDPUIManualAccessCodeEntryViewController *)self setContentStackView:v8];
 
-    v9 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentStackView2 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v10 setAxis:0];
+    contentStackView3 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView3 setAxis:0];
 
-    v11 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v11 setAlignment:2];
+    contentStackView4 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView4 setAlignment:2];
 
-    v12 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
-    [v12 setDistribution:0];
+    contentStackView5 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+    [contentStackView5 setDistribution:0];
   }
 
-  v13 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
+  contentStackView6 = [(CDPUIManualAccessCodeEntryViewController *)self contentStackView];
 
-  return v13;
+  return contentStackView6;
 }
 
 - (id)_manualAccessCodeTextView
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+  entryTextView = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
 
-  if (!v3)
+  if (!entryTextView)
   {
     v4 = [CDPUIAccessCodeEntryTextField alloc];
     v5 = [(CDPUIAccessCodeEntryTextField *)v4 initWithFrame:0 textContainer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(CDPUIManualAccessCodeEntryViewController *)self setEntryTextView:v5];
 
-    v6 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    entryTextView2 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+    [entryTextView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = CDPLocalizedString();
-    v8 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-    [v8 setPlaceholder:v7];
+    entryTextView3 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+    [entryTextView3 setPlaceholder:v7];
 
-    v9 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-    [v9 setAccessCodeInputDelegate:self];
+    entryTextView4 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+    [entryTextView4 setAccessCodeInputDelegate:self];
 
     v10 = [MEMORY[0x277D74300] monospacedSystemFontOfSize:16.0 weight:*MEMORY[0x277D74410]];
-    v11 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-    [v11 setFont:v10];
+    entryTextView5 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+    [entryTextView5 setFont:v10];
 
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-    v14 = [v13 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:96.0];
+    entryTextView6 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+    heightAnchor = [entryTextView6 heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:96.0];
     v19[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     [v12 activateConstraints:v16];
   }
 
-  v17 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+  entryTextView7 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
 
-  return v17;
+  return entryTextView7;
 }
 
 - (id)_labelView
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+  prefixView = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
 
-  if (!v3)
+  if (!prefixView)
   {
     v4 = objc_alloc(MEMORY[0x277D75C40]);
     v5 = [v4 initWithFrame:0 textContainer:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(CDPUIManualAccessCodeEntryViewController *)self setPrefixView:v5];
 
-    v6 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    prefixView2 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v7 setText:@"LC:"];
+    prefixView3 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView3 setText:@"LC:"];
 
-    v8 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v8 setTextAlignment:2];
+    prefixView4 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView4 setTextAlignment:2];
 
-    v9 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v9 setEditable:0];
+    prefixView5 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView5 setEditable:0];
 
     v10 = [MEMORY[0x277D74300] monospacedSystemFontOfSize:16.0 weight:*MEMORY[0x277D74410]];
-    v11 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v11 setFont:v10];
+    prefixView6 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView6 setFont:v10];
 
-    v12 = [MEMORY[0x277D75348] labelColor];
-    v13 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v13 setTextColor:v12];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    prefixView7 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView7 setTextColor:labelColor];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    v15 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    [v15 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    prefixView8 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    [prefixView8 setBackgroundColor:clearColor];
 
     v16 = MEMORY[0x277CCAAD0];
-    v17 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    v18 = [v17 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:96.0];
+    prefixView9 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    heightAnchor = [prefixView9 heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:96.0];
     v26[0] = v19;
-    v20 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    v21 = [v20 widthAnchor];
-    v22 = [v21 constraintEqualToConstant:40.0];
+    prefixView10 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    widthAnchor = [prefixView10 widthAnchor];
+    v22 = [widthAnchor constraintEqualToConstant:40.0];
     v26[1] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
     [v16 activateConstraints:v23];
   }
 
-  v24 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+  prefixView11 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
 
-  return v24;
+  return prefixView11;
 }
 
 - (id)_errorLabelView
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+  errorLabelView = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
 
-  if (!v3)
+  if (!errorLabelView)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(CDPUIManualAccessCodeEntryViewController *)self setErrorLabelView:v5];
 
-    v6 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    errorLabelView2 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+    [errorLabelView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
-    [v7 setTextAlignment:1];
+    errorLabelView3 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+    [errorLabelView3 setTextAlignment:1];
 
     v8 = MEMORY[0x277D74300];
     [MEMORY[0x277D74300] smallSystemFontSize];
     v9 = [v8 systemFontOfSize:? weight:?];
-    v10 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
-    [v10 setFont:v9];
+    errorLabelView4 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+    [errorLabelView4 setFont:v9];
 
-    v11 = [MEMORY[0x277D75348] systemRedColor];
-    v12 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
-    [v12 setTextColor:v11];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    errorLabelView5 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+    [errorLabelView5 setTextColor:systemRedColor];
 
-    v13 = [MEMORY[0x277D75348] clearColor];
-    v14 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
-    [v14 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    errorLabelView6 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+    [errorLabelView6 setBackgroundColor:clearColor];
 
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    v17 = [v16 heightAnchor];
-    v18 = [v17 constraintEqualToConstant:96.0];
+    prefixView = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    heightAnchor = [prefixView heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:96.0];
     v25[0] = v18;
-    v19 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
-    v20 = [v19 widthAnchor];
-    v21 = [v20 constraintEqualToConstant:40.0];
+    prefixView2 = [(CDPUIManualAccessCodeEntryViewController *)self prefixView];
+    widthAnchor = [prefixView2 widthAnchor];
+    v21 = [widthAnchor constraintEqualToConstant:40.0];
     v25[1] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     [v15 activateConstraints:v22];
   }
 
-  v23 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
+  errorLabelView7 = [(CDPUIManualAccessCodeEntryViewController *)self errorLabelView];
 
-  return v23;
+  return errorLabelView7;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CDPUIManualAccessCodeEntryViewController;
-  [(OBBaseWelcomeController *)&v5 viewDidAppear:a3];
-  v4 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-  [v4 becomeFirstResponder];
+  [(OBBaseWelcomeController *)&v5 viewDidAppear:appear];
+  entryTextView = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+  [entryTextView becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CDPUIManualAccessCodeEntryViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
-  v4 = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
-  [v4 resignFirstResponder];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
+  entryTextView = [(CDPUIManualAccessCodeEntryViewController *)self entryTextView];
+  [entryTextView resignFirstResponder];
 }
 
-- (void)accessCodeEntryTextFieldDidUpdate:(id)a3
+- (void)accessCodeEntryTextFieldDidUpdate:(id)update
 {
-  v3 = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
-  [v3 setText:&stru_285826188];
+  _errorLabelView = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
+  [_errorLabelView setText:&stru_285826188];
 }
 
-- (void)accessCodeEntryTextFieldDidReturn:(id)a3
+- (void)accessCodeEntryTextFieldDidReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [(CDPUIManualAccessCodeEntryViewController *)self _wrappingKeySubstringFromAccessKey:v5];
+  returnCopy = return;
+  text = [returnCopy text];
+  v6 = [(CDPUIManualAccessCodeEntryViewController *)self _wrappingKeySubstringFromAccessKey:text];
 
   if ([v6 length] && (-[CDPUIManualAccessCodeEntryViewController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "manualAccessCodeEntry:shouldFinishWithAccessCode:", self, v6), v7, v8))
   {
@@ -322,22 +322,22 @@
 
   else
   {
-    v10 = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
+    _errorLabelView = [(CDPUIManualAccessCodeEntryViewController *)self _errorLabelView];
     v11 = CDPLocalizedString();
-    [v10 setText:v11];
+    [_errorLabelView setText:v11];
 
     v9 = _CDPLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(CDPUIManualAccessCodeEntryViewController *)v4 accessCodeEntryTextFieldDidReturn:v9];
+      [(CDPUIManualAccessCodeEntryViewController *)returnCopy accessCodeEntryTextFieldDidReturn:v9];
     }
   }
 }
 
-- (id)_wrappingKeySubstringFromAccessKey:(id)a3
+- (id)_wrappingKeySubstringFromAccessKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 length];
+  keyCopy = key;
+  v4 = [keyCopy length];
   if (v4 <= +[CDPUIAccessCodeEntryTextField wrappingKeyCharacterCount]+ 1)
   {
     v5 = 0;
@@ -345,7 +345,7 @@
 
   else
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v3, "length") + ~+[CDPUIAccessCodeEntryTextField wrappingKeyCharacterCount](CDPUIAccessCodeEntryTextField, "wrappingKeyCharacterCount")}];
+    v5 = [keyCopy substringFromIndex:{objc_msgSend(keyCopy, "length") + ~+[CDPUIAccessCodeEntryTextField wrappingKeyCharacterCount](CDPUIAccessCodeEntryTextField, "wrappingKeyCharacterCount")}];
   }
 
   return v5;

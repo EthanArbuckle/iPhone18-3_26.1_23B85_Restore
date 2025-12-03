@@ -1,47 +1,47 @@
 @interface _SFPBResultEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBResultEntity)initWithDictionary:(id)a3;
-- (_SFPBResultEntity)initWithFacade:(id)a3;
-- (_SFPBResultEntity)initWithJSON:(id)a3;
+- (_SFPBResultEntity)initWithDictionary:(id)dictionary;
+- (_SFPBResultEntity)initWithFacade:(id)facade;
+- (_SFPBResultEntity)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setMaps_encrypted_muid:(id)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMaps_encrypted_muid:(id)maps_encrypted_muid;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBResultEntity
 
-- (_SFPBResultEntity)initWithFacade:(id)a3
+- (_SFPBResultEntity)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBResultEntity *)self init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(_SFPBResultEntity *)v5 setName:v7];
+      name2 = [facadeCopy name];
+      [(_SFPBResultEntity *)v5 setName:name2];
     }
 
-    v8 = [v4 maps_encrypted_muid];
+    maps_encrypted_muid = [facadeCopy maps_encrypted_muid];
 
-    if (v8)
+    if (maps_encrypted_muid)
     {
-      v9 = [v4 maps_encrypted_muid];
-      [(_SFPBResultEntity *)v5 setMaps_encrypted_muid:v9];
+      maps_encrypted_muid2 = [facadeCopy maps_encrypted_muid];
+      [(_SFPBResultEntity *)v5 setMaps_encrypted_muid:maps_encrypted_muid2];
     }
 
-    v10 = [v4 location_type_info];
+    location_type_info = [facadeCopy location_type_info];
 
-    if (v10)
+    if (location_type_info)
     {
       v11 = [_SFPBLocationTypeInfo alloc];
-      v12 = [v4 location_type_info];
-      v13 = [(_SFPBLocationTypeInfo *)v11 initWithFacade:v12];
+      location_type_info2 = [facadeCopy location_type_info];
+      v13 = [(_SFPBLocationTypeInfo *)v11 initWithFacade:location_type_info2];
       [(_SFPBResultEntity *)v5 setLocation_type_info:v13];
     }
 
@@ -51,15 +51,15 @@
   return v5;
 }
 
-- (_SFPBResultEntity)initWithDictionary:(id)a3
+- (_SFPBResultEntity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBResultEntity;
   v5 = [(_SFPBResultEntity *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(_SFPBResultEntity *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mapsEncryptedMuid"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mapsEncryptedMuid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBResultEntity *)v5 setMaps_encrypted_muid:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"locationTypeInfo"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"locationTypeInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (_SFPBResultEntity)initWithJSON:(id)a3
+- (_SFPBResultEntity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBResultEntity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBResultEntity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBResultEntity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,38 +125,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_location_type_info)
   {
-    v4 = [(_SFPBResultEntity *)self location_type_info];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    location_type_info = [(_SFPBResultEntity *)self location_type_info];
+    dictionaryRepresentation = [location_type_info dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"locationTypeInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"locationTypeInfo"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"locationTypeInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"locationTypeInfo"];
     }
   }
 
   if (self->_maps_encrypted_muid)
   {
-    v7 = [(_SFPBResultEntity *)self maps_encrypted_muid];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"mapsEncryptedMuid"];
+    maps_encrypted_muid = [(_SFPBResultEntity *)self maps_encrypted_muid];
+    v8 = [maps_encrypted_muid copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"mapsEncryptedMuid"];
   }
 
   if (self->_name)
   {
-    v9 = [(_SFPBResultEntity *)self name];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"name"];
+    name = [(_SFPBResultEntity *)self name];
+    v10 = [name copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"name"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -166,28 +166,28 @@
   return v4 ^ [(_SFPBLocationTypeInfo *)self->_location_type_info hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBResultEntity *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBResultEntity *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBResultEntity *)self name];
-  if (v7)
+  name3 = [(_SFPBResultEntity *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(_SFPBResultEntity *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(_SFPBResultEntity *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -199,20 +199,20 @@
   {
   }
 
-  v5 = [(_SFPBResultEntity *)self maps_encrypted_muid];
-  v6 = [v4 maps_encrypted_muid];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBResultEntity *)self maps_encrypted_muid];
+  name2 = [equalCopy maps_encrypted_muid];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBResultEntity *)self maps_encrypted_muid];
-  if (v12)
+  maps_encrypted_muid = [(_SFPBResultEntity *)self maps_encrypted_muid];
+  if (maps_encrypted_muid)
   {
-    v13 = v12;
-    v14 = [(_SFPBResultEntity *)self maps_encrypted_muid];
-    v15 = [v4 maps_encrypted_muid];
-    v16 = [v14 isEqual:v15];
+    v13 = maps_encrypted_muid;
+    maps_encrypted_muid2 = [(_SFPBResultEntity *)self maps_encrypted_muid];
+    maps_encrypted_muid3 = [equalCopy maps_encrypted_muid];
+    v16 = [maps_encrypted_muid2 isEqual:maps_encrypted_muid3];
 
     if (!v16)
     {
@@ -224,12 +224,12 @@
   {
   }
 
-  v5 = [(_SFPBResultEntity *)self location_type_info];
-  v6 = [v4 location_type_info];
-  if ((v5 != 0) != (v6 == 0))
+  name = [(_SFPBResultEntity *)self location_type_info];
+  name2 = [equalCopy location_type_info];
+  if ((name != 0) != (name2 == 0))
   {
-    v17 = [(_SFPBResultEntity *)self location_type_info];
-    if (!v17)
+    location_type_info = [(_SFPBResultEntity *)self location_type_info];
+    if (!location_type_info)
     {
 
 LABEL_20:
@@ -237,10 +237,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBResultEntity *)self location_type_info];
-    v20 = [v4 location_type_info];
-    v21 = [v19 isEqual:v20];
+    v18 = location_type_info;
+    location_type_info2 = [(_SFPBResultEntity *)self location_type_info];
+    location_type_info3 = [equalCopy location_type_info];
+    v21 = [location_type_info2 isEqual:location_type_info3];
 
     if (v21)
     {
@@ -260,40 +260,40 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBResultEntity *)self name];
-  if (v4)
+  toCopy = to;
+  name = [(_SFPBResultEntity *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBResultEntity *)self maps_encrypted_muid];
-  if (v5)
+  maps_encrypted_muid = [(_SFPBResultEntity *)self maps_encrypted_muid];
+  if (maps_encrypted_muid)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBResultEntity *)self location_type_info];
-  if (v6)
+  location_type_info = [(_SFPBResultEntity *)self location_type_info];
+  if (location_type_info)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setMaps_encrypted_muid:(id)a3
+- (void)setMaps_encrypted_muid:(id)maps_encrypted_muid
 {
-  v4 = [a3 copy];
+  v4 = [maps_encrypted_muid copy];
   maps_encrypted_muid = self->_maps_encrypted_muid;
   self->_maps_encrypted_muid = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 

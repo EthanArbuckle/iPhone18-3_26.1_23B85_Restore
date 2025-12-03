@@ -1,21 +1,21 @@
 @interface FigCaptureCalibrationMonitor
-+ (void)initializeSharedInstanceWithCaptureSourceBackings:(id)a3;
-- (id)_runAndCreateDictionaryForCalibrationContext:(unsigned int)a3 deviceType:(unsigned int)a4 devicePosition:(_DWORD *)a5 errors:;
++ (void)initializeSharedInstanceWithCaptureSourceBackings:(id)backings;
+- (id)_runAndCreateDictionaryForCalibrationContext:(unsigned int)context deviceType:(unsigned int)type devicePosition:(_DWORD *)position errors:;
 - (id)apsSphereInteractionCalibrationData;
 - (id)autoFocusCalibrationData;
 - (id)autoFocusPositionSensorCalibrationData;
-- (id)runAutoFocusPositionSensorCalibrationAndGetResultsForDeviceType:(int)a3 devicePosition:(int)a4;
+- (id)runAutoFocusPositionSensorCalibrationAndGetResultsForDeviceType:(int)type devicePosition:(int)position;
 - (id)sphereCalibrationData;
 - (id)sphereEndStopCalibrationData;
 - (uint64_t)_calibrationShouldAbort;
-- (void)_attemptToRunCalibrationForCalibrationContext:(int)a3 deviceType:(int)a4 devicePosition:(char)a5 disableHistoryChecking:(void *)a6 resultsBlock:;
+- (void)_attemptToRunCalibrationForCalibrationContext:(int)context deviceType:(int)type devicePosition:(char)position disableHistoryChecking:(void *)checking resultsBlock:;
 - (void)_notifyOfDeviceMotion;
-- (void)_setupActivityAndTriggers:(int)a3 interval:(int)a4 batteryLevel:(void *)a5 calibrationBlock:(char)a6 isRepeating:;
-- (void)_setupCalibrationForContext:(uint64_t)a1;
+- (void)_setupActivityAndTriggers:(int)triggers interval:(int)interval batteryLevel:(void *)level calibrationBlock:(char)block isRepeating:;
+- (void)_setupCalibrationForContext:(uint64_t)context;
 - (void)_setupDuetTriggersAndScheduling;
-- (void)_setupRepeatingCalibrationScheduling:(void *)a3 withCalibrationBlock:;
-- (void)initWithCaptureSourceBackings:(void *)a1;
-- (xpc_object_t)_createDefaultXPCSchedulingParametersWithInterval:(int)a3 batteryLevel:;
+- (void)_setupRepeatingCalibrationScheduling:(void *)scheduling withCalibrationBlock:;
+- (void)initWithCaptureSourceBackings:(void *)backings;
+- (xpc_object_t)_createDefaultXPCSchedulingParametersWithInterval:(int)interval batteryLevel:;
 @end
 
 @implementation FigCaptureCalibrationMonitor
@@ -23,34 +23,34 @@
 - (id)autoFocusPositionSensorCalibrationData
 {
   os_unfair_lock_lock(&self->_calibrationLock);
-  v3 = [(FigCaptureCalibrationContext *)self->_autoFocusPositionSensorCalibrationContext lastSuccessfulCalibrationData];
+  lastSuccessfulCalibrationData = [(FigCaptureCalibrationContext *)self->_autoFocusPositionSensorCalibrationContext lastSuccessfulCalibrationData];
   os_unfair_lock_unlock(&self->_calibrationLock);
-  return v3;
+  return lastSuccessfulCalibrationData;
 }
 
 - (id)autoFocusCalibrationData
 {
   os_unfair_lock_lock(&self->_calibrationLock);
-  v3 = [(FigCaptureCalibrationContext *)self->_autoFocusCalibrationContext lastSuccessfulCalibrationData];
+  lastSuccessfulCalibrationData = [(FigCaptureCalibrationContext *)self->_autoFocusCalibrationContext lastSuccessfulCalibrationData];
   os_unfair_lock_unlock(&self->_calibrationLock);
-  return v3;
+  return lastSuccessfulCalibrationData;
 }
 
 - (id)apsSphereInteractionCalibrationData
 {
   os_unfair_lock_lock(&self->_calibrationLock);
-  v3 = [(FigCaptureCalibrationContext *)self->_apsSphereInteractionCalibrationContext lastSuccessfulCalibrationData];
+  lastSuccessfulCalibrationData = [(FigCaptureCalibrationContext *)self->_apsSphereInteractionCalibrationContext lastSuccessfulCalibrationData];
   os_unfair_lock_unlock(&self->_calibrationLock);
-  return v3;
+  return lastSuccessfulCalibrationData;
 }
 
-+ (void)initializeSharedInstanceWithCaptureSourceBackings:(id)a3
++ (void)initializeSharedInstanceWithCaptureSourceBackings:(id)backings
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__FigCaptureCalibrationMonitor_initializeSharedInstanceWithCaptureSourceBackings___block_invoke;
   block[3] = &unk_1E798F870;
-  block[4] = a3;
+  block[4] = backings;
   if (initializeSharedInstanceWithCaptureSourceBackings__initSharedFCSCalibration != -1)
   {
     dispatch_once(&initializeSharedInstanceWithCaptureSourceBackings__initSharedFCSCalibration, block);
@@ -64,7 +64,7 @@ void *__82__FigCaptureCalibrationMonitor_initializeSharedInstanceWithCaptureSour
   return result;
 }
 
-- (id)runAutoFocusPositionSensorCalibrationAndGetResultsForDeviceType:(int)a3 devicePosition:(int)a4
+- (id)runAutoFocusPositionSensorCalibrationAndGetResultsForDeviceType:(int)type devicePosition:(int)position
 {
   v7 = dispatch_semaphore_create(0);
   v19 = 0;
@@ -84,8 +84,8 @@ void *__82__FigCaptureCalibrationMonitor_initializeSharedInstanceWithCaptureSour
   block[1] = 3221225472;
   block[2] = __111__FigCaptureCalibrationMonitor_runAutoFocusPositionSensorCalibrationAndGetResultsForDeviceType_devicePosition___block_invoke_2;
   block[3] = &unk_1E7991B98;
-  v16 = a3;
-  v17 = a4;
+  typeCopy = type;
+  positionCopy = position;
   block[4] = self;
   block[5] = v18;
   dispatch_async(calibrationRunQueue, block);
@@ -115,14 +115,14 @@ intptr_t __111__FigCaptureCalibrationMonitor_runAutoFocusPositionSensorCalibrati
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_attemptToRunCalibrationForCalibrationContext:(int)a3 deviceType:(int)a4 devicePosition:(char)a5 disableHistoryChecking:(void *)a6 resultsBlock:
+- (void)_attemptToRunCalibrationForCalibrationContext:(int)context deviceType:(int)type devicePosition:(char)position disableHistoryChecking:(void *)checking resultsBlock:
 {
-  if (a1)
+  if (self)
   {
     FigSimpleMutexLock();
-    os_unfair_lock_lock((a1 + 36));
-    *(a1 + 32) = 0;
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_lock((self + 36));
+    *(self + 32) = 0;
+    os_unfair_lock_unlock((self + 36));
     v22 = 0;
     v23 = &v22;
     v24 = 0x3052000000;
@@ -132,16 +132,16 @@ intptr_t __111__FigCaptureCalibrationMonitor_runAutoFocusPositionSensorCalibrati
     v12 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     v13 = objc_alloc_init(MEMORY[0x1E69634C0]);
     v14 = objc_alloc_init(MEMORY[0x1E696ADC8]);
-    v15 = [a6 copy];
+    v15 = [checking copy];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __140__FigCaptureCalibrationMonitor__attemptToRunCalibrationForCalibrationContext_deviceType_devicePosition_disableHistoryChecking_resultsBlock___block_invoke;
     v21[3] = &unk_1E7991BE8;
-    v21[4] = a1;
+    v21[4] = self;
     [v13 startActivityUpdatesToQueue:v14 withHandler:v21];
 
     [v12 setMaxConcurrentOperationCount:1];
-    *(a1 + 76) = 0;
+    *(self + 76) = 0;
     [v23[5] setDeviceMotionUpdateInterval:1.0];
     v16 = v23[5];
     v17[0] = MEMORY[0x1E69E9820];
@@ -150,11 +150,11 @@ intptr_t __111__FigCaptureCalibrationMonitor_runAutoFocusPositionSensorCalibrati
     v17[3] = &unk_1E7991C10;
     v17[7] = v15;
     v17[8] = &v22;
-    v17[4] = a1;
+    v17[4] = self;
     v17[5] = a2;
-    v18 = a3;
-    v19 = a4;
-    v20 = a5;
+    contextCopy = context;
+    typeCopy = type;
+    positionCopy = position;
     v17[6] = v13;
     [v16 startDeviceMotionUpdatesUsingReferenceFrame:4 toQueue:v12 withHandler:v17];
 
@@ -165,17 +165,17 @@ intptr_t __111__FigCaptureCalibrationMonitor_runAutoFocusPositionSensorCalibrati
 - (id)sphereCalibrationData
 {
   os_unfair_lock_lock(&self->_calibrationLock);
-  v3 = [(FigCaptureCalibrationContext *)self->_sphereCalibrationContext lastSuccessfulCalibrationData];
+  lastSuccessfulCalibrationData = [(FigCaptureCalibrationContext *)self->_sphereCalibrationContext lastSuccessfulCalibrationData];
   os_unfair_lock_unlock(&self->_calibrationLock);
-  return v3;
+  return lastSuccessfulCalibrationData;
 }
 
 - (id)sphereEndStopCalibrationData
 {
   os_unfair_lock_lock(&self->_calibrationLock);
-  v3 = [(FigCaptureCalibrationContext *)self->_sphereEndStopCalibrationContext lastSuccessfulCalibrationData];
+  lastSuccessfulCalibrationData = [(FigCaptureCalibrationContext *)self->_sphereEndStopCalibrationContext lastSuccessfulCalibrationData];
   os_unfair_lock_unlock(&self->_calibrationLock);
-  return v3;
+  return lastSuccessfulCalibrationData;
 }
 
 void __109__FigCaptureCalibrationMonitor__setupActivityAndTriggers_interval_batteryLevel_calibrationBlock_isRepeating___block_invoke(uint64_t a1, xpc_activity_t activity)
@@ -213,9 +213,9 @@ void __109__FigCaptureCalibrationMonitor__setupActivityAndTriggers_interval_batt
   }
 }
 
-- (xpc_object_t)_createDefaultXPCSchedulingParametersWithInterval:(int)a3 batteryLevel:
+- (xpc_object_t)_createDefaultXPCSchedulingParametersWithInterval:(int)interval batteryLevel:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -246,7 +246,7 @@ void __109__FigCaptureCalibrationMonitor__setupActivityAndTriggers_interval_batt
     [FigCaptureCalibrationMonitor _createDefaultXPCSchedulingParametersWithInterval:batteryLevel:];
   }
 
-  xpc_dictionary_set_int64(v6, [*v7 cStringUsingEncoding:4], a3);
+  xpc_dictionary_set_int64(v6, [*v7 cStringUsingEncoding:4], interval);
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -270,24 +270,24 @@ void __109__FigCaptureCalibrationMonitor__setupActivityAndTriggers_interval_batt
   return v5;
 }
 
-- (void)_setupCalibrationForContext:(uint64_t)a1
+- (void)_setupCalibrationForContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     v3[0] = 0;
     v3[1] = v3;
     v3[2] = 0x3052000000;
     v3[3] = __Block_byref_object_copy__16;
     v3[4] = __Block_byref_object_dispose__16;
-    v3[5] = a1;
+    v3[5] = context;
     v2[0] = MEMORY[0x1E69E9820];
     v2[1] = 3221225472;
     v2[2] = __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invoke;
     v2[3] = &unk_1E79907B0;
     v2[5] = a2;
     v2[6] = v3;
-    v2[4] = a1;
-    [(FigCaptureCalibrationMonitor *)a1 _setupRepeatingCalibrationScheduling:a2 withCalibrationBlock:v2];
+    v2[4] = context;
+    [(FigCaptureCalibrationMonitor *)context _setupRepeatingCalibrationScheduling:a2 withCalibrationBlock:v2];
     _Block_object_dispose(v3, 8);
   }
 }
@@ -462,14 +462,14 @@ void __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invo
   dispatch_async(v1, v2);
 }
 
-- (void)initWithCaptureSourceBackings:(void *)a1
+- (void)initWithCaptureSourceBackings:(void *)backings
 {
-  if (!a1)
+  if (!backings)
   {
     return 0;
   }
 
-  v70.receiver = a1;
+  v70.receiver = backings;
   v70.super_class = FigCaptureCalibrationMonitor;
   v2 = objc_msgSendSuper2(&v70, sel_init);
   if (v2)
@@ -491,23 +491,23 @@ void __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invo
             objc_enumerationMutation(obja);
           }
 
-          v16 = [*(8 * i) attributes];
-          v17 = [objc_msgSend(v16 objectForKeyedSubscript:{@"DeviceType", "intValue"}];
+          attributes = [*(8 * i) attributes];
+          v17 = [objc_msgSend(attributes objectForKeyedSubscript:{@"DeviceType", "intValue"}];
           if (v17 <= 0xA && ((1 << v17) & 0x4AC) != 0)
           {
             v26 = v17;
-            if (([objc_msgSend(v16 objectForKeyedSubscript:{@"Focus", "BOOLValue"}] & 1) != 0 || (v17 = objc_msgSend(objc_msgSend(v16, "objectForKeyedSubscript:", v33), "BOOLValue"), v17))
+            if (([objc_msgSend(attributes objectForKeyedSubscript:{@"Focus", "BOOLValue"}] & 1) != 0 || (v17 = objc_msgSend(objc_msgSend(attributes, "objectForKeyedSubscript:", v33), "BOOLValue"), v17))
             {
-              v27 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               [MEMORY[0x1E696AD98] numberWithInt:v26];
               [OUTLINED_FUNCTION_4() setObject:? forKeyedSubscript:?];
-              [v16 objectForKeyedSubscript:@"NonLocalizedName"];
+              [attributes objectForKeyedSubscript:@"NonLocalizedName"];
               [OUTLINED_FUNCTION_4() setObject:? forKeyedSubscript:?];
-              [v16 objectForKeyedSubscript:@"Position"];
+              [attributes objectForKeyedSubscript:@"Position"];
               [OUTLINED_FUNCTION_4() setObject:? forKeyedSubscript:?];
               [MEMORY[0x1E695DF70] array];
               [OUTLINED_FUNCTION_4() setObject:? forKeyedSubscript:?];
-              v17 = [*(v36 + 8) addObject:v27];
+              v17 = [*(v36 + 8) addObject:dictionary];
             }
           }
         }
@@ -534,29 +534,29 @@ void __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invo
 
 - (void)_setupDuetTriggersAndScheduling
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v44[0] = 0;
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v7 = [+[BWFigCaptureDeviceVendor sharedCaptureDeviceVendor](BWFigCaptureDeviceVendor "sharedCaptureDeviceVendor")];
     v37 = [+[BWFigCaptureDeviceVendor sharedCaptureDeviceVendor](BWFigCaptureDeviceVendor "sharedCaptureDeviceVendor")];
     if (v37)
     {
-      v32 = v3;
-      v33 = v4;
-      v34 = v5;
-      v35 = v6;
+      v32 = array;
+      v33 = array2;
+      v34 = array3;
+      v35 = array4;
       v29 = v7;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v30 = v2;
-      obj = *(v2 + 8);
+      v30 = selfCopy;
+      obj = *(selfCopy + 8);
       v8 = [obj countByEnumeratingWithState:&v40 objects:v39 count:16];
       if (v8)
       {
@@ -586,34 +586,34 @@ void __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invo
               LODWORD(v27) = v18;
               FigDebugAssert3();
 
-              v2 = v30;
+              selfCopy = v30;
               v7 = v29;
               goto LABEL_28;
             }
 
             [v15 setObject:objc_msgSend(v16 forKeyedSubscript:{"portType"), @"PortType"}];
-            v19 = [v17 supportedProperties];
+            supportedProperties = [v17 supportedProperties];
             v20 = [v15 objectForKeyedSubscript:@"DeviceName"];
             v21 = [v15 objectForKeyedSubscript:@"SupportedCalibrations"];
-            if ([v19 objectForKeyedSubscript:v10])
+            if ([supportedProperties objectForKeyedSubscript:v10])
             {
               [v21 addObject:v10];
               [v32 addObject:v20];
             }
 
-            if ([v19 objectForKeyedSubscript:v11])
+            if ([supportedProperties objectForKeyedSubscript:v11])
             {
               [v21 addObject:v11];
               [v33 addObject:v20];
             }
 
-            if ([v19 objectForKeyedSubscript:v12])
+            if ([supportedProperties objectForKeyedSubscript:v12])
             {
               [v21 addObject:v12];
               [v34 addObject:v20];
             }
 
-            if ([v19 objectForKeyedSubscript:v13])
+            if ([supportedProperties objectForKeyedSubscript:v13])
             {
               [v21 addObject:v13];
               [v35 addObject:v20];
@@ -630,7 +630,7 @@ void __60__FigCaptureCalibrationMonitor__setupCalibrationForContext___block_invo
         }
       }
 
-      v2 = v30;
+      selfCopy = v30;
       if ([v32 count])
       {
         v22 = [[FigCaptureAutoFocusCalibrationContext alloc] initWithSupportedDeviceNames:v32];
@@ -677,8 +677,8 @@ LABEL_28:
       v38[1] = 3221225472;
       v38[2] = __63__FigCaptureCalibrationMonitor__setupDuetTriggersAndScheduling__block_invoke;
       v38[3] = &unk_1E798F870;
-      v38[4] = v2;
-      [(FigCaptureCalibrationMonitor *)v2 _setupActivityAndTriggers:v26 interval:50 batteryLevel:v38 calibrationBlock:0 isRepeating:?];
+      v38[4] = selfCopy;
+      [(FigCaptureCalibrationMonitor *)selfCopy _setupActivityAndTriggers:v26 interval:50 batteryLevel:v38 calibrationBlock:0 isRepeating:?];
     }
 
     [+[BWFigCaptureDeviceVendor sharedCaptureDeviceVendor](BWFigCaptureDeviceVendor sharedCaptureDeviceVendor];
@@ -687,11 +687,11 @@ LABEL_28:
 
 - (uint64_t)_calibrationShouldAbort
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 36));
-    v2 = *(a1 + 32);
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_lock((self + 36));
+    v2 = *(self + 32);
+    os_unfair_lock_unlock((self + 36));
   }
 
   else
@@ -702,53 +702,53 @@ LABEL_28:
   return v2 & 1;
 }
 
-- (void)_setupActivityAndTriggers:(int)a3 interval:(int)a4 batteryLevel:(void *)a5 calibrationBlock:(char)a6 isRepeating:
+- (void)_setupActivityAndTriggers:(int)triggers interval:(int)interval batteryLevel:(void *)level calibrationBlock:(char)block isRepeating:
 {
-  if (a1)
+  if (self)
   {
-    v11 = [a5 copy];
+    v11 = [level copy];
     v12 = *MEMORY[0x1E69E9C50];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __109__FigCaptureCalibrationMonitor__setupActivityAndTriggers_interval_batteryLevel_calibrationBlock_isRepeating___block_invoke;
     v13[3] = &unk_1E7991BC0;
-    v14 = a3;
-    v15 = a4;
-    v16 = a6;
-    v13[4] = a1;
+    triggersCopy = triggers;
+    intervalCopy = interval;
+    blockCopy = block;
+    v13[4] = self;
     v13[5] = v11;
     xpc_activity_register(a2, v12, v13);
   }
 }
 
-- (void)_setupRepeatingCalibrationScheduling:(void *)a3 withCalibrationBlock:
+- (void)_setupRepeatingCalibrationScheduling:(void *)scheduling withCalibrationBlock:
 {
-  if (a1)
+  if (self)
   {
     v6 = [objc_msgSend(a2 "activityName")];
-    v7 = [a2 interval];
-    v8 = [a2 minimumBatteryLevelToRun];
+    interval = [a2 interval];
+    minimumBatteryLevelToRun = [a2 minimumBatteryLevelToRun];
 
-    [(FigCaptureCalibrationMonitor *)a1 _setupActivityAndTriggers:v6 interval:v7 batteryLevel:v8 calibrationBlock:a3 isRepeating:1];
+    [(FigCaptureCalibrationMonitor *)self _setupActivityAndTriggers:v6 interval:interval batteryLevel:minimumBatteryLevelToRun calibrationBlock:scheduling isRepeating:1];
   }
 }
 
 - (void)_notifyOfDeviceMotion
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 36));
-    *(a1 + 32) = 1;
+    os_unfair_lock_lock((self + 36));
+    *(self + 32) = 1;
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((self + 36));
   }
 }
 
-- (id)_runAndCreateDictionaryForCalibrationContext:(unsigned int)a3 deviceType:(unsigned int)a4 devicePosition:(_DWORD *)a5 errors:
+- (id)_runAndCreateDictionaryForCalibrationContext:(unsigned int)context deviceType:(unsigned int)type devicePosition:(_DWORD *)position errors:
 {
-  v60 = __PAIR64__(a4, a3);
+  v60 = __PAIR64__(type, context);
   v61 = a2;
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -780,12 +780,12 @@ LABEL_28:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = *(a1 + 8);
+  obj = *(self + 8);
   v62 = [obj countByEnumeratingWithState:&v87 objects:v86 count:16];
   if (!v62)
   {
     v45 = 0;
-    if (a5)
+    if (position)
     {
       goto LABEL_56;
     }
@@ -794,7 +794,7 @@ LABEL_28:
   }
 
   v56 = v11;
-  v53 = a5;
+  positionCopy = position;
   v54 = v9;
   HIDWORD(v55) = v8;
   HIDWORD(v57) = 0;
@@ -840,7 +840,7 @@ LABEL_40:
       v62 = [obj countByEnumeratingWithState:&v87 objects:v86 count:16];
       if (!v62)
       {
-        a5 = v53;
+        position = positionCopy;
         v45 = HIDWORD(v57);
         if (HIDWORD(v57))
         {
@@ -851,7 +851,7 @@ LABEL_40:
         v8 = HIDWORD(v55);
         v9 = v54;
         v11 = v56;
-        if (v53)
+        if (positionCopy)
         {
           goto LABEL_56;
         }
@@ -867,7 +867,7 @@ LABEL_40:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v26 = OUTLINED_FUNCTION_1_53(v17, v18, v19, v20, v21, v22, v23, v24, v50, v51, v52, v53, v54, v55, v56, v57, v58, obj, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, 0);
+  v26 = OUTLINED_FUNCTION_1_53(v17, v18, v19, v20, v21, v22, v23, v24, v50, v51, v52, positionCopy, v54, v55, v56, v57, v58, obj, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, 0);
   if (!v26)
   {
     goto LABEL_47;
@@ -885,9 +885,9 @@ LABEL_40:
       }
 
       v30 = *(*(&v82 + 1) + 8 * i);
-      v31 = [v30 portType];
+      portType = [v30 portType];
       v32 = [v15 objectForKeyedSubscript:@"PortType"];
-      if (v31 == v32)
+      if (portType == v32)
       {
         if (!v30)
         {
@@ -910,7 +910,7 @@ LABEL_40:
           v42 = [v30 getProperty:objc_msgSend(v61 error:{"propertyName"), &v65 + 4}];
           if (HIDWORD(v65))
           {
-            a5 = v53;
+            position = positionCopy;
             v9 = v54;
             v7 = 0x1E7988000;
             v8 = HIDWORD(v55);
@@ -934,7 +934,7 @@ LABEL_40:
           if (v44 != [v61 expectedDataSize])
           {
             v48 = 0x80000000;
-            a5 = v53;
+            position = positionCopy;
             v9 = v54;
             v7 = 0x1E7988000uLL;
             v8 = HIDWORD(v55);
@@ -961,7 +961,7 @@ LABEL_53:
       }
     }
 
-    v27 = OUTLINED_FUNCTION_1_53(v32, v33, v34, v35, v36, v37, v38, v39, v50, v51, v52, v53, v54, v55, v56, v57, v58, obj, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82);
+    v27 = OUTLINED_FUNCTION_1_53(v32, v33, v34, v35, v36, v37, v38, v39, v50, v51, v52, positionCopy, v54, v55, v56, v57, v58, obj, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82);
     if (v27)
     {
       continue;
@@ -972,7 +972,7 @@ LABEL_53:
 
 LABEL_47:
   v45 = HIDWORD(v57) | 0x40;
-  a5 = v53;
+  position = positionCopy;
 LABEL_48:
   v7 = 0x1E7988000;
   v8 = HIDWORD(v55);
@@ -982,10 +982,10 @@ LABEL_54:
 
 LABEL_55:
   v11 = 0;
-  if (a5)
+  if (position)
   {
 LABEL_56:
-    *a5 = v45;
+    *position = v45;
   }
 
 LABEL_57:

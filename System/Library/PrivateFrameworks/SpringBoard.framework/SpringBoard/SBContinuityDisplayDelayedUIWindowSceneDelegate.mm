@@ -1,21 +1,21 @@
 @interface SBContinuityDisplayDelayedUIWindowSceneDelegate
 + (id)_individuallyManagedRoles;
-- (BOOL)_shouldManageParticipantWithRole:(id)a3;
+- (BOOL)_shouldManageParticipantWithRole:(id)role;
 - (SBContinuityDisplayDelayedUIWindowSceneDelegate)init;
-- (id)_displayLayoutPublisherForConnectingWindowScene:(id)a3;
+- (id)_displayLayoutPublisherForConnectingWindowScene:(id)scene;
 - (id)_pipelineManager;
-- (id)_sceneManagerForConnectingWindowScene:(id)a3;
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4;
-- (void)_configureNewPresentationBinderForWindowScene:(id)a3 sceneManager:(id)a4;
-- (void)_initializeUIIfNecessaryForReason:(id)a3;
-- (void)_tearDownUIAndInvalidateIfNecessaryForReason:(id)a3;
-- (void)continuitySession:(id)a3 didUpdateHostedInterfaceOrientation:(int64_t)a4;
-- (void)continuitySessionDidUpdateState:(id)a3;
-- (void)didConnectToSession:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setInterfaceOrientation:(int64_t)a3 supportedInterfaceOrientations:(unint64_t)a4;
+- (id)_sceneManagerForConnectingWindowScene:(id)scene;
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context;
+- (void)_configureNewPresentationBinderForWindowScene:(id)scene sceneManager:(id)manager;
+- (void)_initializeUIIfNecessaryForReason:(id)reason;
+- (void)_tearDownUIAndInvalidateIfNecessaryForReason:(id)reason;
+- (void)continuitySession:(id)session didUpdateHostedInterfaceOrientation:(int64_t)orientation;
+- (void)continuitySessionDidUpdateState:(id)state;
+- (void)didConnectToSession:(id)session;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations;
 @end
 
 @implementation SBContinuityDisplayDelayedUIWindowSceneDelegate
@@ -85,8 +85,8 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   {
     v4 = [SBTraitsContinuityDisplayPipelineManager alloc];
     v5 = +[SBContinuitySessionManager sharedInstance];
-    v6 = [v5 userInterfaceStyleProvider];
-    v7 = [(SBTraitsPipelineManager *)v4 initWithUserInterfaceStyleProvider:v6];
+    userInterfaceStyleProvider = [v5 userInterfaceStyleProvider];
+    v7 = [(SBTraitsPipelineManager *)v4 initWithUserInterfaceStyleProvider:userInterfaceStyleProvider];
     v8 = self->_traitsDisplayPipelineManager;
     self->_traitsDisplayPipelineManager = v7;
 
@@ -96,47 +96,47 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   return traitsDisplayPipelineManager;
 }
 
-- (id)_displayLayoutPublisherForConnectingWindowScene:(id)a3
+- (id)_displayLayoutPublisherForConnectingWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if (!self->_continuitySession)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate _displayLayoutPublisherForConnectingWindowScene:];
   }
 
-  v5 = [v4 _sbDisplayConfiguration];
-  if (!v5)
+  _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+  if (!_sbDisplayConfiguration)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate _displayLayoutPublisherForConnectingWindowScene:];
   }
 
-  v6 = [(SBContinuitySession *)self->_continuitySession displayLayoutPublisher];
-  if (!v6)
+  displayLayoutPublisher = [(SBContinuitySession *)self->_continuitySession displayLayoutPublisher];
+  if (!displayLayoutPublisher)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate _displayLayoutPublisherForConnectingWindowScene:];
   }
 
-  [v6 setDisplayConfiguration:v5];
+  [displayLayoutPublisher setDisplayConfiguration:_sbDisplayConfiguration];
 
-  return v6;
+  return displayLayoutPublisher;
 }
 
-- (id)_sceneManagerForConnectingWindowScene:(id)a3
+- (id)_sceneManagerForConnectingWindowScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v4 = +[SBSceneManagerCoordinator sharedInstance];
-  v5 = [v3 _FBSScene];
+  _FBSScene = [sceneCopy _FBSScene];
 
-  v6 = [v5 settings];
-  v7 = [v6 displayIdentity];
-  v8 = [v4 sceneManagerForDisplayIdentity:v7];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  v8 = [v4 sceneManagerForDisplayIdentity:displayIdentity];
 
   return v8;
 }
 
-- (void)_configureNewPresentationBinderForWindowScene:(id)a3 sceneManager:(id)a4
+- (void)_configureNewPresentationBinderForWindowScene:(id)scene sceneManager:(id)manager
 {
-  v10 = a4;
+  managerCopy = manager;
   if (!self->_presentationBinderWindow)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate _configureNewPresentationBinderForWindowScene:sceneManager:];
@@ -148,40 +148,40 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   v8 = [v5 stringWithFormat:@"%@-%p", v7, self];
 
   v9 = [objc_alloc(MEMORY[0x277D75970]) initWithIdentifier:v8 priority:0 rootView:self->_presentationBinderWindow appearanceStyle:0];
-  [v10 updatePresentationBinder:v9];
+  [managerCopy updatePresentationBinder:v9];
 }
 
-- (BOOL)_shouldManageParticipantWithRole:(id)a3
+- (BOOL)_shouldManageParticipantWithRole:(id)role
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _individuallyManagedRoles];
-  v5 = [v4 containsObject:v3];
+  roleCopy = role;
+  _individuallyManagedRoles = [objc_opt_class() _individuallyManagedRoles];
+  v5 = [_individuallyManagedRoles containsObject:roleCopy];
 
   return v5 ^ 1;
 }
 
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
   v74.receiver = self;
   v74.super_class = SBContinuityDisplayDelayedUIWindowSceneDelegate;
-  [(SBAbstractWindowSceneDelegate *)&v74 _configureForConnectingWindowScene:v6 windowSceneContext:v7];
-  v8 = [SBApp windowSceneManager];
-  v9 = [v8 embeddedDisplayWindowScene];
+  [(SBAbstractWindowSceneDelegate *)&v74 _configureForConnectingWindowScene:sceneCopy windowSceneContext:contextCopy];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v10 = [v9 layoutStateProvider];
-  v11 = [v10 layoutState];
+  layoutStateProvider = [embeddedDisplayWindowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  v12 = +[SBMainDisplayLayoutStateManager _initialLayoutStateWithDisplayOrdinal:isDisplayExternal:](SBMainDisplayLayoutStateManager, "_initialLayoutStateWithDisplayOrdinal:isDisplayExternal:", [v11 displayOrdinal], objc_msgSend(v11, "isDisplayExternal"));
+  v12 = +[SBMainDisplayLayoutStateManager _initialLayoutStateWithDisplayOrdinal:isDisplayExternal:](SBMainDisplayLayoutStateManager, "_initialLayoutStateWithDisplayOrdinal:isDisplayExternal:", [layoutState displayOrdinal], objc_msgSend(layoutState, "isDisplayExternal"));
 
-  v13 = [v6 layoutStateProvider];
+  layoutStateProvider2 = [sceneCopy layoutStateProvider];
   v72 = v12;
-  [v13 setLayoutState:v12];
+  [layoutStateProvider2 setLayoutState:v12];
 
   v14 = +[SBHIDEventDispatchController sharedInstance];
-  v15 = [v6 _sbDisplayConfiguration];
-  v16 = [v14 configureDispatchRootsForContinuityDisplay:v15];
+  _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+  v16 = [v14 configureDispatchRootsForContinuityDisplay:_sbDisplayConfiguration];
   eventRoutingAssertion = self->_eventRoutingAssertion;
   self->_eventRoutingAssertion = v16;
 
@@ -190,78 +190,78 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   self->_increasedMemoryLimitsTransaction = v18;
 
   v20 = [SBSystemPointerInteractionManager alloc];
-  v21 = [SBApp multiDisplayUserInteractionCoordinator];
-  v22 = [(SBSystemPointerInteractionManager *)v20 initWithMultiDisplayUserInteractionCoordinator:v21];
+  multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+  v22 = [(SBSystemPointerInteractionManager *)v20 initWithMultiDisplayUserInteractionCoordinator:multiDisplayUserInteractionCoordinator];
 
-  [v7 setSystemPointerInteractionManager:v22];
+  [contextCopy setSystemPointerInteractionManager:v22];
   v23 = [SBContinuityDisplaySystemGestureManager alloc];
-  v24 = [v6 screen];
-  v25 = [v24 displayIdentity];
-  v26 = [(SBContinuityDisplaySystemGestureManager *)v23 initWithDisplayIdentity:v25];
+  screen = [sceneCopy screen];
+  displayIdentity = [screen displayIdentity];
+  v26 = [(SBContinuityDisplaySystemGestureManager *)v23 initWithDisplayIdentity:displayIdentity];
 
   v71 = v22;
   [(SBSystemGestureManager *)v26 setSystemPointerInteractionDelegate:v22];
-  [v7 setSystemGestureManager:v26];
-  v70 = [[SBHomeAffordanceInteractionManager alloc] initWithWindowScene:v6];
-  [v7 setHomeAffordanceInteractionManager:?];
-  v69 = [[SBModalUIFluidDismissGestureManager alloc] initWithWindowScene:v6 systemGestureManager:v26];
-  [v7 setModalUIFluidDismissGestureManager:?];
+  [contextCopy setSystemGestureManager:v26];
+  v70 = [[SBHomeAffordanceInteractionManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setHomeAffordanceInteractionManager:?];
+  v69 = [[SBModalUIFluidDismissGestureManager alloc] initWithWindowScene:sceneCopy systemGestureManager:v26];
+  [contextCopy setModalUIFluidDismissGestureManager:?];
   v68 = [[SBTransientUIInteractionManager alloc] initWithSystemGestureManager:v26];
-  [v7 setTransientUIInteractionManager:?];
-  v67 = [[SBRecordingIndicatorManager alloc] initWithWindowScene:v6];
-  [v7 setRecordingIndicatorManager:?];
-  v73 = v9;
-  v27 = [v9 iconController];
-  [v7 setIconController:v27];
-  v66 = v27;
-  v28 = [[SBHomeScreenController alloc] initWithWindowScene:v6 iconController:v27];
+  [contextCopy setTransientUIInteractionManager:?];
+  v67 = [[SBRecordingIndicatorManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setRecordingIndicatorManager:?];
+  v73 = embeddedDisplayWindowScene;
+  iconController = [embeddedDisplayWindowScene iconController];
+  [contextCopy setIconController:iconController];
+  v66 = iconController;
+  v28 = [[SBHomeScreenController alloc] initWithWindowScene:sceneCopy iconController:iconController];
   homeScreenController = self->_homeScreenController;
   self->_homeScreenController = v28;
 
-  [v7 setHomeScreenController:self->_homeScreenController];
+  [contextCopy setHomeScreenController:self->_homeScreenController];
   [(SBHomeScreenController *)self->_homeScreenController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
   [(SBHomeScreenController *)self->_homeScreenController restoreContentAndUnscatterIconsAnimated:0];
   v30 = self->_homeScreenController;
   v31 = +[SBSetupManager sharedInstance];
   [(SBHomeScreenController *)v30 addFloatingDockControllerObserver:v31];
 
-  v65 = [(SBHomeScreenController *)self->_homeScreenController createFloatingDockControllerForWindowScene:v6];
-  [v7 setFloatingDockController:?];
-  v64 = [(SBHomeScreenController *)self->_homeScreenController createModalLibraryControllerForWindowScene:v6];
-  [v7 setModalLibraryController:?];
-  v32 = [v6 statusBarManager];
-  [v32 updateHomeScreenStatusBarLegibility];
+  v65 = [(SBHomeScreenController *)self->_homeScreenController createFloatingDockControllerForWindowScene:sceneCopy];
+  [contextCopy setFloatingDockController:?];
+  v64 = [(SBHomeScreenController *)self->_homeScreenController createModalLibraryControllerForWindowScene:sceneCopy];
+  [contextCopy setModalLibraryController:?];
+  statusBarManager = [sceneCopy statusBarManager];
+  [statusBarManager updateHomeScreenStatusBarLegibility];
 
-  v33 = [(SBHomeScreenController *)self->_homeScreenController createStatusBarVisibiltyAssertionForWindowScene:v6];
+  v33 = [(SBHomeScreenController *)self->_homeScreenController createStatusBarVisibiltyAssertionForWindowScene:sceneCopy];
   showStatusBarAssertion = self->_showStatusBarAssertion;
   self->_showStatusBarAssertion = v33;
 
   [(SBWindowSceneStatusBarSettingsAssertion *)self->_showStatusBarAssertion acquire];
-  v35 = [[SBExternalDisplayWallpaperController alloc] initWithWindowScene:v6 requiresTraitsParticipant:0];
+  v35 = [[SBExternalDisplayWallpaperController alloc] initWithWindowScene:sceneCopy requiresTraitsParticipant:0];
   wallpaperController = self->_wallpaperController;
   self->_wallpaperController = v35;
 
   v37 = objc_alloc_init(SBContinuityLockStateProvider);
-  [v7 setUILockStateProvider:v37];
+  [contextCopy setUILockStateProvider:v37];
 
   v38 = objc_alloc_init(SBContinuitySecureDisplayStateProvider);
-  [v7 setSecureDisplayStateProvider:v38];
+  [contextCopy setSecureDisplayStateProvider:v38];
 
-  v39 = [SBApp authenticationController];
-  v40 = [v39 authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:1];
-  [v7 setAuthenticationStatusProvider:v40];
+  authenticationController = [SBApp authenticationController];
+  v40 = [authenticationController authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:1];
+  [contextCopy setAuthenticationStatusProvider:v40];
 
   v41 = +[SBWorkspace mainWorkspace];
-  v42 = [v41 transientOverlayPresentationManager];
-  [v42 windowSceneDidConnect:v6];
+  transientOverlayPresentationManager = [v41 transientOverlayPresentationManager];
+  [transientOverlayPresentationManager windowSceneDidConnect:sceneCopy];
 
   if (([MEMORY[0x277D244C8] inUserSessionLoginUI] & 1) == 0)
   {
     v43 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    [v43 windowSceneDidConnect:v6];
+    [v43 windowSceneDidConnect:sceneCopy];
 
-    v44 = [[SBSwitcherController alloc] initWithWindowScene:v6 debugName:@"Continuity"];
-    [v7 setSwitcherController:v44];
+    v44 = [[SBSwitcherController alloc] initWithWindowScene:sceneCopy debugName:@"Continuity"];
+    [contextCopy setSwitcherController:v44];
     v45 = +[SBMainSwitcherControllerCoordinator sharedInstance];
     [v45 beginCoordinatingSwitcherController:v44 options:1];
   }
@@ -270,66 +270,66 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   {
     v46 = [SBControlCenterController alloc];
     v47 = +[SBControlCenterCoordinator sharedInstance];
-    v48 = [(SBControlCenterController *)v46 initWithWindowScene:v6 controlCenterCoordinator:v47];
+    v48 = [(SBControlCenterController *)v46 initWithWindowScene:sceneCopy controlCenterCoordinator:v47];
 
-    [v7 setControlCenterController:v48];
+    [contextCopy setControlCenterController:v48];
   }
 
-  v49 = [v6 pictureInPictureManager];
-  [v49 windowSceneDidConnect:v6];
+  pictureInPictureManager = [sceneCopy pictureInPictureManager];
+  [pictureInPictureManager windowSceneDidConnect:sceneCopy];
 
-  v50 = [SBApp pictureInPictureCoordinator];
-  v51 = [v50 controllerForType:0];
-  [v51 movePIPContentToWindowScene:v6];
+  pictureInPictureCoordinator = [SBApp pictureInPictureCoordinator];
+  v51 = [pictureInPictureCoordinator controllerForType:0];
+  [v51 movePIPContentToWindowScene:sceneCopy];
   v52 = [SBAlertLayoutPresentationVerifier alloc];
-  v53 = [v6 screen];
-  v54 = [(SBAlertLayoutPresentationVerifier *)v52 initWithScreen:v53];
+  screen2 = [sceneCopy screen];
+  v54 = [(SBAlertLayoutPresentationVerifier *)v52 initWithScreen:screen2];
 
   v55 = [SBSharedModalAlertItemPresenter alloc];
-  v56 = [SBApp lockOutController];
+  lockOutController = [SBApp lockOutController];
   v57 = +[SBReachabilityManager sharedInstance];
-  v58 = [(SBSharedModalAlertItemPresenter *)v55 initWithLockOutProvider:v56 systemGestureManager:v26 reachabilityManager:v57 alertLayoutPresentationVerifier:v54 windowScene:v6];
+  v58 = [(SBSharedModalAlertItemPresenter *)v55 initWithLockOutProvider:lockOutController systemGestureManager:v26 reachabilityManager:v57 alertLayoutPresentationVerifier:v54 windowScene:sceneCopy];
 
   v59 = +[SBAlertItemsController sharedInstance];
-  [v59 windowSceneDidConnect:v6 withSharedModalAlertItemPresenter:v58];
+  [v59 windowSceneDidConnect:sceneCopy withSharedModalAlertItemPresenter:v58];
 
-  v60 = [SBApp systemApertureControllerForMainDisplay];
-  [v7 setSystemApertureController:v60];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  [contextCopy setSystemApertureController:systemApertureControllerForMainDisplay];
   v61 = +[SBAppInteractionEventSourceManager sharedInstance];
-  [v61 windowSceneDidConnect:v6];
+  [v61 windowSceneDidConnect:sceneCopy];
 
-  v62 = [SBApp multiDisplayUserInteractionCoordinator];
-  [v62 windowSceneDidConnect:v6];
+  multiDisplayUserInteractionCoordinator2 = [SBApp multiDisplayUserInteractionCoordinator];
+  [multiDisplayUserInteractionCoordinator2 windowSceneDidConnect:sceneCopy];
 
-  v63 = [v6 statusBarManager];
-  [v63 windowSceneDidConnect:v6];
+  statusBarManager2 = [sceneCopy statusBarManager];
+  [statusBarManager2 windowSceneDidConnect:sceneCopy];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = SBLogContinuitySession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     v31 = 134218242;
-    v32 = v8;
+    v32 = sceneCopy;
     v33 = 2114;
-    v34 = v12;
+    v34 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ willConnectToSession", &v31, 0x16u);
   }
 
-  v13 = [(UISceneSession *)v9 role];
-  if (([v13 isEqualToString:*MEMORY[0x277D68048]] & 1) == 0)
+  role = [(UISceneSession *)sessionCopy role];
+  if (([role isEqualToString:*MEMORY[0x277D68048]] & 1) == 0)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate scene:willConnectToSession:options:];
   }
 
   v14 = objc_opt_class();
-  v15 = v8;
+  v15 = sceneCopy;
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -361,8 +361,8 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
 
   [(UIWindow *)self->_presentationBinderWindow setWindowLevel:1.79769313e308];
   v20 = self->_presentationBinderWindow;
-  v21 = [MEMORY[0x277D75348] clearColor];
-  [(UIWindow *)v20 setBackgroundColor:v21];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIWindow *)v20 setBackgroundColor:clearColor];
 
   [(UIWindow *)self->_presentationBinderWindow setHidden:0];
   connectingScene = self->_connectingScene;
@@ -370,12 +370,12 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   v23 = v17;
 
   connectingSceneSession = self->_connectingSceneSession;
-  self->_connectingSceneSession = v9;
-  v25 = v9;
+  self->_connectingSceneSession = sessionCopy;
+  v25 = sessionCopy;
 
   connectingSceneConnectionOptions = self->_connectingSceneConnectionOptions;
-  self->_connectingSceneConnectionOptions = v10;
-  v27 = v10;
+  self->_connectingSceneConnectionOptions = optionsCopy;
+  v27 = optionsCopy;
 
   v28 = +[SBContinuitySessionManager sharedInstance];
   v29 = [v28 registerWindowScene:v23];
@@ -383,18 +383,18 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   self->_continuitySessionManagerRegistration = v29;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = SBLogContinuitySession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 _sceneIdentifier];
+    _sceneIdentifier = [disconnectCopy _sceneIdentifier];
     v12 = 134218242;
-    v13 = v4;
+    v13 = disconnectCopy;
     v14 = 2114;
-    v15 = v6;
+    v15 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ didDisconnect", &v12, 0x16u);
   }
 
@@ -403,7 +403,7 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   self->_continuitySessionManagerRegistration = 0;
 
   v8 = objc_opt_class();
-  v9 = v4;
+  v9 = disconnectCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -428,7 +428,7 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)self _tearDownUIAndInvalidateIfNecessaryForReason:@"scene disconnected"];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = SBLogContinuitySession();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -437,10 +437,10 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   }
 }
 
-- (void)didConnectToSession:(id)a3
+- (void)didConnectToSession:(id)session
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   if (self->_continuitySession)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate didConnectToSession:];
@@ -450,18 +450,18 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     connectingScene = self->_connectingScene;
-    v9 = [(SBWindowScene *)connectingScene _sceneIdentifier];
+    _sceneIdentifier = [(SBWindowScene *)connectingScene _sceneIdentifier];
     *v15 = 134218498;
     *&v15[4] = connectingScene;
     v16 = 2114;
-    v17 = v9;
+    v17 = _sceneIdentifier;
     v18 = 2048;
-    v19 = v6;
+    v19 = sessionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ connected to session <%p>", v15, 0x20u);
   }
 
-  objc_storeStrong(&self->_continuitySession, a3);
-  [v6 addStateObserver:self];
+  objc_storeStrong(&self->_continuitySession, session);
+  [sessionCopy addStateObserver:self];
   [(SBContinuitySession *)self->_continuitySession setOrientationDelegate:self];
   v10 = self->_connectingScene;
   if (!v10)
@@ -470,61 +470,61 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     v10 = *v15;
   }
 
-  v11 = [(SBWindowScene *)v10 _FBSScene];
-  v12 = [v11 continuitySessionParticipantClientComponent];
+  _FBSScene = [(SBWindowScene *)v10 _FBSScene];
+  continuitySessionParticipantClientComponent = [_FBSScene continuitySessionParticipantClientComponent];
 
-  if (!v12)
+  if (!continuitySessionParticipantClientComponent)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate didConnectToSession:];
   }
 
-  [v12 setContinuitySession:v6];
-  v13 = [(SBWindowScene *)self->_connectingScene _FBSScene];
-  v14 = [v13 hostProxyClientComponent];
+  [continuitySessionParticipantClientComponent setContinuitySession:sessionCopy];
+  _FBSScene2 = [(SBWindowScene *)self->_connectingScene _FBSScene];
+  hostProxyClientComponent = [_FBSScene2 hostProxyClientComponent];
 
-  if (!v14)
+  if (!hostProxyClientComponent)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate didConnectToSession:];
   }
 
-  [v6 addScreenRecordingObserver:v14];
-  [v14 continuitySessionDidUpdateScreenRecordingState:v6];
+  [sessionCopy addScreenRecordingObserver:hostProxyClientComponent];
+  [hostProxyClientComponent continuitySessionDidUpdateScreenRecordingState:sessionCopy];
   [(SBContinuitySession *)self->_continuitySession noteMainSceneConnected:self->_connectingScene];
-  [v6 noteSceneHasValidDisplayUUID:self->_connectingScene];
-  [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)self continuitySessionDidUpdateState:v6];
+  [sessionCopy noteSceneHasValidDisplayUUID:self->_connectingScene];
+  [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)self continuitySessionDidUpdateState:sessionCopy];
 }
 
-- (void)continuitySessionDidUpdateState:(id)a3
+- (void)continuitySessionDidUpdateState:(id)state
 {
-  v12 = a3;
+  stateCopy = state;
   connectingScene = self->_connectingScene;
   if (connectingScene)
   {
-    v6 = connectingScene;
+    windowScene = connectingScene;
   }
 
   else
   {
-    v6 = [(SBAbstractWindowSceneDelegate *)self windowScene];
+    windowScene = [(SBAbstractWindowSceneDelegate *)self windowScene];
   }
 
-  v7 = v6;
-  v8 = v12;
-  if (self->_continuitySession != v12)
+  v7 = windowScene;
+  v8 = stateCopy;
+  if (self->_continuitySession != stateCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    v11 = [(SBWindowScene *)v7 _sceneIdentifier];
-    [v10 handleFailureInMethod:a2 object:self file:@"SBContinuityDisplayDelayedUIWindowSceneDelegate.m" lineNumber:427 description:{@"Main scene <%p>:%@ state update for session <%p> is not the one i'm tracking <%p>", v7, v11, v12, self->_continuitySession}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    _sceneIdentifier = [(SBWindowScene *)v7 _sceneIdentifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBContinuityDisplayDelayedUIWindowSceneDelegate.m" lineNumber:427 description:{@"Main scene <%p>:%@ state update for session <%p> is not the one i'm tracking <%p>", v7, _sceneIdentifier, stateCopy, self->_continuitySession}];
 
-    v8 = v12;
+    v8 = stateCopy;
   }
 
-  v9 = [(SBContinuitySession *)v8 state];
-  if (v9 > 6)
+  state = [(SBContinuitySession *)v8 state];
+  if (state > 6)
   {
-    if (v9 > 9)
+    if (state > 9)
     {
-      switch(v9)
+      switch(state)
       {
         case 10:
           if (!self->_initializedUI)
@@ -546,12 +546,12 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       }
     }
 
-    else if (v9 == 7)
+    else if (state == 7)
     {
       [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)self _initializeUIIfNecessaryForReason:@"session state .activating"];
     }
 
-    else if (v9 == 8)
+    else if (state == 8)
     {
       if (!self->_initializedUI)
       {
@@ -565,9 +565,9 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     }
   }
 
-  else if (v9 > 3)
+  else if (state > 3)
   {
-    if (v9 == 4)
+    if (state == 4)
     {
       if (self->_initializedUI)
       {
@@ -575,7 +575,7 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       }
     }
 
-    else if (v9 == 5)
+    else if (state == 5)
     {
       if (self->_initializedUI)
       {
@@ -589,7 +589,7 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     }
   }
 
-  else if (v9 == 1)
+  else if (state == 1)
   {
     if (self->_initializedUI)
     {
@@ -597,7 +597,7 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     }
   }
 
-  else if (v9 == 2)
+  else if (state == 2)
   {
     if (self->_initializedUI)
     {
@@ -605,47 +605,47 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     }
   }
 
-  else if (v9 == 3 && self->_initializedUI)
+  else if (state == 3 && self->_initializedUI)
   {
     [SBContinuityDisplayDelayedUIWindowSceneDelegate continuitySessionDidUpdateState:];
   }
 }
 
-- (void)continuitySession:(id)a3 didUpdateHostedInterfaceOrientation:(int64_t)a4
+- (void)continuitySession:(id)session didUpdateHostedInterfaceOrientation:(int64_t)orientation
 {
   if (BSInterfaceOrientationIsValid())
   {
     traitsDisplayPipelineManager = self->_traitsDisplayPipelineManager;
 
-    [(SBTraitsContinuityDisplayPipelineManager *)traitsDisplayPipelineManager setDeviceOrientation:a4];
+    [(SBTraitsContinuityDisplayPipelineManager *)traitsDisplayPipelineManager setDeviceOrientation:orientation];
   }
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3 supportedInterfaceOrientations:(unint64_t)a4
+- (void)setInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   continuitySession = self->_continuitySession;
 
-  [(SBContinuitySession *)continuitySession setInterfaceOrientation:a3 supportedInterfaceOrientations:a4];
+  [(SBContinuitySession *)continuitySession setInterfaceOrientation:orientation supportedInterfaceOrientations:orientations];
 }
 
-- (void)_initializeUIIfNecessaryForReason:(id)a3
+- (void)_initializeUIIfNecessaryForReason:(id)reason
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_initializedUI)
   {
-    v5 = [(SBAbstractWindowSceneDelegate *)self windowScene];
+    windowScene = [(SBAbstractWindowSceneDelegate *)self windowScene];
     v6 = SBLogContinuitySession();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 _sceneIdentifier];
+      _sceneIdentifier = [windowScene _sceneIdentifier];
       *buf = 134218498;
-      v44 = v5;
+      v44 = windowScene;
       v45 = 2114;
-      v46 = v7;
+      v46 = _sceneIdentifier;
       v47 = 2114;
-      v48 = v4;
+      v48 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ initializing UI if necessary - %{public}@ --> already initialized UI", buf, 0x20u);
     }
   }
@@ -656,24 +656,24 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       connectingScene = self->_connectingScene;
-      v10 = [(SBWindowScene *)connectingScene _sceneIdentifier];
+      _sceneIdentifier2 = [(SBWindowScene *)connectingScene _sceneIdentifier];
       *buf = 134218498;
       v44 = connectingScene;
       v45 = 2114;
-      v46 = v10;
+      v46 = _sceneIdentifier2;
       v47 = 2114;
-      v48 = v4;
+      v48 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ initializing UI if necessary - %{public}@", buf, 0x20u);
     }
 
-    v11 = [(SBContinuitySession *)self->_continuitySession state];
+    state = [(SBContinuitySession *)self->_continuitySession state];
     v12 = SBLogContinuitySession();
-    v5 = v12;
-    if (v11 == 7)
+    windowScene = v12;
+    if (state == 7)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)v5 _initializeUIIfNecessaryForReason:v13, v14, v15, v16, v17, v18, v19];
+        [(SBContinuityDisplayDelayedUIWindowSceneDelegate *)windowScene _initializeUIIfNecessaryForReason:v13, v14, v15, v16, v17, v18, v19];
       }
 
       v20 = SBLogContinuitySession();
@@ -699,25 +699,25 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
 
       self->_initializedUI = 1;
       continuitySession = self->_continuitySession;
-      v35 = [(SBAbstractWindowSceneDelegate *)self windowScene];
-      [(SBContinuitySession *)continuitySession noteUIIsReady:v35];
+      windowScene2 = [(SBAbstractWindowSceneDelegate *)self windowScene];
+      [(SBContinuitySession *)continuitySession noteUIIsReady:windowScene2];
 
       v36 = +[SBLockScreenManager sharedInstance];
       [v36 noteContinuityDisplayWindowSceneConnectionDidChange];
 
-      v5 = [SBApp dynamicLightingController];
-      v37 = [v5 disableEffectsForReason:@"Continuity"];
+      windowScene = [SBApp dynamicLightingController];
+      v37 = [windowScene disableEffectsForReason:@"Continuity"];
       disableDynamicLightingAssertion = self->_disableDynamicLightingAssertion;
       self->_disableDynamicLightingAssertion = v37;
     }
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(SBWindowScene *)self->_connectingScene _sceneIdentifier];
+      _sceneIdentifier3 = [(SBWindowScene *)self->_connectingScene _sceneIdentifier];
       v40 = self->_continuitySession;
       if (v40)
       {
-        v41 = NSStringFromSBContinuitySessionState(v11);
+        v41 = NSStringFromSBContinuitySessionState(state);
       }
 
       else
@@ -726,10 +726,10 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       }
 
       *buf = 138543618;
-      v44 = v39;
+      v44 = _sceneIdentifier3;
       v45 = 2114;
       v46 = v41;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "scene %{public}@ refuses to initialize UI because the session state is %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, windowScene, OS_LOG_TYPE_DEFAULT, "scene %{public}@ refuses to initialize UI because the session state is %{public}@", buf, 0x16u);
       if (v40)
       {
       }
@@ -737,13 +737,13 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   }
 }
 
-- (void)_tearDownUIAndInvalidateIfNecessaryForReason:(id)a3
+- (void)_tearDownUIAndInvalidateIfNecessaryForReason:(id)reason
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAbstractWindowSceneDelegate *)self windowScene];
-  connectingScene = v5;
-  if (!v5)
+  reasonCopy = reason;
+  windowScene = [(SBAbstractWindowSceneDelegate *)self windowScene];
+  connectingScene = windowScene;
+  if (!windowScene)
   {
     connectingScene = self->_connectingScene;
   }
@@ -753,37 +753,37 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
   v8 = SBLogContinuitySession();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBWindowScene *)v7 _sceneIdentifier];
+    _sceneIdentifier = [(SBWindowScene *)v7 _sceneIdentifier];
     *buf = 134218498;
     v43 = v7;
     v44 = 2114;
-    v45 = v9;
+    v45 = _sceneIdentifier;
     v46 = 2114;
-    v47 = v4;
+    v47 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Main scene <%p>:%{public}@ tear down UI and invalidate if necessary - %{public}@", buf, 0x20u);
   }
 
   if ([(SBAbstractWindowSceneDelegate *)self isInvalidated])
   {
-    v10 = SBLogContinuitySession();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    hostProxyClientComponent = SBLogContinuitySession();
+    if (os_log_type_enabled(hostProxyClientComponent, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "--> already invalidated", buf, 2u);
+      _os_log_impl(&dword_21ED4E000, hostProxyClientComponent, OS_LOG_TYPE_DEFAULT, "--> already invalidated", buf, 2u);
     }
   }
 
   else
   {
-    v11 = [(SBWindowScene *)v7 _FBSScene];
-    v10 = [v11 hostProxyClientComponent];
+    _FBSScene = [(SBWindowScene *)v7 _FBSScene];
+    hostProxyClientComponent = [_FBSScene hostProxyClientComponent];
 
-    if (!v10)
+    if (!hostProxyClientComponent)
     {
       [SBContinuityDisplayDelayedUIWindowSceneDelegate _tearDownUIAndInvalidateIfNecessaryForReason:];
     }
 
-    [(SBContinuitySession *)self->_continuitySession removeScreenRecordingObserver:v10];
+    [(SBContinuitySession *)self->_continuitySession removeScreenRecordingObserver:hostProxyClientComponent];
     [(SBContinuitySession *)self->_continuitySession setOrientationDelegate:0];
     [(SBContinuitySession *)self->_continuitySession removeStateObserver:self];
     continuitySession = self->_continuitySession;
@@ -809,19 +809,19 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       self->_increasedMemoryLimitsTransaction = 0;
 
       v18 = +[SBMainWorkspace sharedInstanceIfExists];
-      v19 = [v18 keyboardFocusController];
+      keyboardFocusController = [v18 keyboardFocusController];
       v20 = MEMORY[0x277CCACA8];
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      v23 = [(SBWindowScene *)v7 screen];
-      v24 = [v23 displayIdentity];
-      v25 = [v20 stringWithFormat:@"%@ - %@", v22, v24];
-      v40 = [v19 suppressKeyboardFocusEvaluationForReason:v25];
+      screen = [(SBWindowScene *)v7 screen];
+      displayIdentity = [screen displayIdentity];
+      v25 = [v20 stringWithFormat:@"%@ - %@", v22, displayIdentity];
+      v40 = [keyboardFocusController suppressKeyboardFocusEvaluationForReason:v25];
 
       [(SBWindowScene *)v7 setInvalidating:1];
       v26 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-      v27 = [(SBWindowScene *)v7 switcherController];
-      [v26 endCoordinatingSwitcherController:v27 options:1];
+      switcherController = [(SBWindowScene *)v7 switcherController];
+      [v26 endCoordinatingSwitcherController:switcherController options:1];
 
       v28 = +[SBMainSwitcherControllerCoordinator sharedInstance];
       [v28 windowSceneDidDisconnect:v7];
@@ -830,17 +830,17 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       showStatusBarAssertion = self->_showStatusBarAssertion;
       self->_showStatusBarAssertion = 0;
 
-      v30 = [(SBAbstractWindowSceneDelegate *)self floatingDockController];
-      [v30 invalidate];
+      floatingDockController = [(SBAbstractWindowSceneDelegate *)self floatingDockController];
+      [floatingDockController invalidate];
 
-      v31 = [(SBAbstractWindowSceneDelegate *)self modalLibraryController];
-      [v31 invalidate];
+      modalLibraryController = [(SBAbstractWindowSceneDelegate *)self modalLibraryController];
+      [modalLibraryController invalidate];
 
-      v32 = [(SBAbstractWindowSceneDelegate *)self homeScreenController];
-      [v32 invalidate];
+      homeScreenController = [(SBAbstractWindowSceneDelegate *)self homeScreenController];
+      [homeScreenController invalidate];
 
-      v33 = [(SBWindowScene *)v7 systemGestureManager];
-      [v33 invalidate];
+      systemGestureManager = [(SBWindowScene *)v7 systemGestureManager];
+      [systemGestureManager invalidate];
 
       v34 = +[SBAlertItemsController sharedInstance];
       [v34 windowSceneDidDisconnect:v7];
@@ -848,11 +848,11 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       v35 = +[SBAppInteractionEventSourceManager sharedInstance];
       [v35 windowSceneDidDisconnect:v7];
 
-      v36 = [SBApp multiDisplayUserInteractionCoordinator];
-      [v36 windowSceneDidDisconnect:v7];
+      multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+      [multiDisplayUserInteractionCoordinator windowSceneDidDisconnect:v7];
 
-      v37 = [(SBWindowScene *)v7 controlCenterController];
-      [v37 invalidate];
+      controlCenterController = [(SBWindowScene *)v7 controlCenterController];
+      [controlCenterController invalidate];
 
       v41.receiver = self;
       v41.super_class = SBContinuityDisplayDelayedUIWindowSceneDelegate;
@@ -862,8 +862,8 @@ void __76__SBContinuityDisplayDelayedUIWindowSceneDelegate__individuallyManagedR
       [v38 noteContinuityDisplayWindowSceneConnectionDidChange];
 
       [(BSInvalidatable *)self->_disableDynamicLightingAssertion invalidate];
-      v39 = [(SBAbstractWindowSceneDelegate *)self sceneManager];
-      [v39 invalidate];
+      sceneManager = [(SBAbstractWindowSceneDelegate *)self sceneManager];
+      [sceneManager invalidate];
 
       [(SBWindowScene *)v7 invalidate];
       [(SBAbstractWindowSceneDelegate *)self setInvalidated:1];

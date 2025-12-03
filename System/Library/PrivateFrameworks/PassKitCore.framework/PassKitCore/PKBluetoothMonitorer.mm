@@ -1,21 +1,21 @@
 @interface PKBluetoothMonitorer
-- (PKBluetoothMonitorer)initWithManagerOptions:(id)a3;
+- (PKBluetoothMonitorer)initWithManagerOptions:(id)options;
 - (PKBluetoothMonitorerDelegate)delegate;
 - (int64_t)state;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation PKBluetoothMonitorer
 
-- (PKBluetoothMonitorer)initWithManagerOptions:(id)a3
+- (PKBluetoothMonitorer)initWithManagerOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PKBluetoothMonitorer;
   v5 = [(PKBluetoothMonitorer *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695D258]) initWithDelegate:v5 queue:0 options:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695D258]) initWithDelegate:v5 queue:0 options:optionsCopy];
     bluetoothManager = v5->_bluetoothManager;
     v5->_bluetoothManager = v6;
   }
@@ -34,17 +34,17 @@
   return result;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [a3 state];
-  if ((v4 - 1) >= 5)
+  state = [state state];
+  if ((state - 1) >= 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = state;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

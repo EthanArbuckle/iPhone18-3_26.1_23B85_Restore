@@ -6,13 +6,13 @@
 - (BOOL)hasMessageContentAccess;
 - (BOOL)inboundNetworkingAllowed;
 - (BOOL)isEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)outboundNetworkingAllowed;
 - (MEContentBlocker_Private)synchronousContentBlockerInterface;
 - (MEExtensionHostContext)extensionHostContext;
 - (MEMailComposeToolbarItemInfo)composeWindowToolbarButtonInfo;
 - (MEMessageActionHandler_Private)synchronousMessageActionProviderInterface;
-- (MERemoteExtension)initWithExtension:(id)a3;
+- (MERemoteExtension)initWithExtension:(id)extension;
 - (NSArray)capabilities;
 - (NSString)containingAppDisplayName;
 - (NSString)dataAccessReason;
@@ -24,21 +24,21 @@
 - (NSString)extensionID;
 - (NSURL)containingAppURL;
 - (UIImage)toolbarIcon;
-- (id)_getInterfaceForExtensionCapability:(id)a3 error:(id *)a4;
-- (id)_imageForName:(id)a3;
-- (id)_interfaceForExtensionCapability:(id)a3;
+- (id)_getInterfaceForExtensionCapability:(id)capability error:(id *)error;
+- (id)_imageForName:(id)name;
+- (id)_interfaceForExtensionCapability:(id)capability;
 - (id)_loadRemoteExtesionProxyFuture;
 - (id)_remoteExtensionProxyFuture;
-- (id)_synchronousInterfaceForExtensionCapability:(id)a3;
-- (id)interfaceForExtensionCapability:(id)a3;
+- (id)_synchronousInterfaceForExtensionCapability:(id)capability;
+- (id)interfaceForExtensionCapability:(id)capability;
 - (id)toolbarIconTooltip;
 - (unint64_t)hash;
 - (void)_nts_loadBodyAccess;
 - (void)_nts_loadDataAccessReason;
-- (void)getDecodedMailViewControllerForMessageContext:(id)a3 completionHandler:(id)a4;
-- (void)getMailComposeExtensionViewControllerForSession:(id)a3 hostDelegate:(id)a4 completionHandler:(id)a5;
-- (void)getMailSignatureVerificationExtensionViewControllerForMessageSigners:(id)a3 completionHandler:(id)a4;
-- (void)primaryActionClickedForMessageContext:(id)a3 completionHandler:(id)a4;
+- (void)getDecodedMailViewControllerForMessageContext:(id)context completionHandler:(id)handler;
+- (void)getMailComposeExtensionViewControllerForSession:(id)session hostDelegate:(id)delegate completionHandler:(id)handler;
+- (void)getMailSignatureVerificationExtensionViewControllerForMessageSigners:(id)signers completionHandler:(id)handler;
+- (void)primaryActionClickedForMessageContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation MERemoteExtension
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __24__MERemoteExtension_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -68,33 +68,33 @@ void __24__MERemoteExtension_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-- (MERemoteExtension)initWithExtension:(id)a3
+- (MERemoteExtension)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v21.receiver = self;
   v21.super_class = MERemoteExtension;
   v6 = [(MERemoteExtension *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extension, a3);
-    v8 = [(NSExtension *)v7->_extension _localizedName];
-    if (v8)
+    objc_storeStrong(&v6->_extension, extension);
+    _localizedName = [(NSExtension *)v7->_extension _localizedName];
+    if (_localizedName)
     {
-      v9 = [(NSExtension *)v7->_extension _localizedName];
+      _localizedName2 = [(NSExtension *)v7->_extension _localizedName];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAD78] UUID];
-      v9 = [v10 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      _localizedName2 = [uUID UUIDString];
     }
 
-    v11 = [@"com.apple.email.extension." stringByAppendingString:v9];
-    v12 = [v11 UTF8String];
+    v11 = [@"com.apple.email.extension." stringByAppendingString:_localizedName2];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_USER_INITIATED, 0);
-    v15 = dispatch_queue_create(v12, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     extensionLoadingQueue = v7->_extensionLoadingQueue;
     v7->_extensionLoadingQueue = v15;
 
@@ -149,61 +149,61 @@ void __39__MERemoteExtension_initWithExtension___block_invoke(uint64_t a1)
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(MERemoteExtension *)self extension];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  extension = [(MERemoteExtension *)self extension];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, extension];
 
   return v6;
 }
 
 - (NSString)extensionID
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 identifier];
+  extension = [(MERemoteExtension *)self extension];
+  identifier = [extension identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)displayName
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _localizedName];
+  extension = [(MERemoteExtension *)self extension];
+  _localizedName = [extension _localizedName];
 
-  return v3;
+  return _localizedName;
 }
 
 - (NSString)displayVersion
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 version];
+  extension = [(MERemoteExtension *)self extension];
+  version = [extension version];
 
-  return v3;
+  return version;
 }
 
 - (NSString)containingAppDisplayName
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _plugIn];
-  v4 = [v3 localizedContainingName];
+  extension = [(MERemoteExtension *)self extension];
+  _plugIn = [extension _plugIn];
+  localizedContainingName = [_plugIn localizedContainingName];
 
-  return v4;
+  return localizedContainingName;
 }
 
 - (NSURL)containingAppURL
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _plugIn];
-  v4 = [v3 containingUrl];
+  extension = [(MERemoteExtension *)self extension];
+  _plugIn = [extension _plugIn];
+  containingUrl = [_plugIn containingUrl];
 
-  return v4;
+  return containingUrl;
 }
 
 - (NSString)descriptionText
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _extensionBundle];
+  extension = [(MERemoteExtension *)self extension];
+  _extensionBundle = [extension _extensionBundle];
 
-  v4 = [v3 localizedInfoDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"NSHumanReadableDescription"];
+  localizedInfoDictionary = [_extensionBundle localizedInfoDictionary];
+  v5 = [localizedInfoDictionary objectForKeyedSubscript:@"NSHumanReadableDescription"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 length])
@@ -211,8 +211,8 @@ void __39__MERemoteExtension_initWithExtension___block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  v6 = [v3 infoDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"NSHumanReadableDescription"];
+  infoDictionary = [_extensionBundle infoDictionary];
+  v7 = [infoDictionary objectForKeyedSubscript:@"NSHumanReadableDescription"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 length])
@@ -233,18 +233,18 @@ LABEL_8:
 - (BOOL)isEnabled
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(MERemoteExtension *)self extension];
-  v4 = [v3 optedIn];
+  extension = [(MERemoteExtension *)self extension];
+  optedIn = [extension optedIn];
 
   v5 = +[MEExtensionUserPreferences sharedInstance];
-  v6 = [(MERemoteExtension *)self extensionID];
-  v7 = [v5 isExtensionEnabled:v6];
+  extensionID = [(MERemoteExtension *)self extensionID];
+  v7 = [v5 isExtensionEnabled:extensionID];
 
   v8 = +[MERemoteExtension log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MERemoteExtension *)self extensionID];
-    v10 = v9;
+    extensionID2 = [(MERemoteExtension *)self extensionID];
+    v10 = extensionID2;
     v11 = @"Not Enabled";
     if (v7)
     {
@@ -253,10 +253,10 @@ LABEL_8:
 
     v12 = @"NO";
     v15 = 134218754;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v9;
-    if (v4)
+    v18 = extensionID2;
+    if (optedIn)
     {
       v12 = @"YES";
     }
@@ -269,15 +269,15 @@ LABEL_8:
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v4 & v7;
+  return optedIn & v7;
 }
 
 - (NSArray)capabilities
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 attributes];
+  extension = [(MERemoteExtension *)self extension];
+  attributes = [extension attributes];
 
-  v4 = [v3 objectForKeyedSubscript:@"MEExtensionCapabilities"];
+  v4 = [attributes objectForKeyedSubscript:@"MEExtensionCapabilities"];
   v5 = [v4 ef_filter:&__block_literal_global_7];
 
   return v5;
@@ -354,51 +354,51 @@ void __65__MERemoteExtension_allCapabilitiesRequiringMessageContentAccess__block
 
 - (BOOL)outboundNetworkingAllowed
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _plugIn];
-  v4 = [v3 entitlements];
-  v5 = [v4 objectForKey:@"com.apple.security.network.client"];
+  extension = [(MERemoteExtension *)self extension];
+  _plugIn = [extension _plugIn];
+  entitlements = [_plugIn entitlements];
+  v5 = [entitlements objectForKey:@"com.apple.security.network.client"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)inboundNetworkingAllowed
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 _plugIn];
-  v4 = [v3 entitlements];
-  v5 = [v4 objectForKey:@"com.apple.security.network.server"];
+  extension = [(MERemoteExtension *)self extension];
+  _plugIn = [extension _plugIn];
+  entitlements = [_plugIn entitlements];
+  v5 = [entitlements objectForKey:@"com.apple.security.network.server"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (UIImage)toolbarIcon
 {
-  v3 = [(MERemoteExtension *)self extension];
-  v4 = [v3 attributes];
-  v5 = [v4 objectForKeyedSubscript:@"MEComposeSession"];
+  extension = [(MERemoteExtension *)self extension];
+  attributes = [extension attributes];
+  v5 = [attributes objectForKeyedSubscript:@"MEComposeSession"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 objectForKeyedSubscript:@"MEComposeIcon"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -414,13 +414,13 @@ void __65__MERemoteExtension_allCapabilitiesRequiringMessageContentAccess__block
   return v7;
 }
 
-- (id)_imageForName:(id)a3
+- (id)_imageForName:(id)name
 {
-  v4 = a3;
-  v5 = [(MERemoteExtension *)self extension];
-  v6 = [v5 _extensionBundle];
+  nameCopy = name;
+  extension = [(MERemoteExtension *)self extension];
+  _extensionBundle = [extension _extensionBundle];
 
-  v7 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v6 withConfiguration:0];
+  v7 = [MEMORY[0x277D755B8] imageNamed:nameCopy inBundle:_extensionBundle withConfiguration:0];
   v8 = v7;
   if (v7)
   {
@@ -439,9 +439,9 @@ void __65__MERemoteExtension_allCapabilitiesRequiringMessageContentAccess__block
 
 - (id)toolbarIconTooltip
 {
-  v2 = [(MERemoteExtension *)self extension];
-  v3 = [v2 attributes];
-  v4 = [v3 objectForKeyedSubscript:@"MEComposeSession"];
+  extension = [(MERemoteExtension *)self extension];
+  attributes = [extension attributes];
+  v4 = [attributes objectForKeyedSubscript:@"MEComposeSession"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -460,19 +460,19 @@ void __65__MERemoteExtension_allCapabilitiesRequiringMessageContentAccess__block
 - (MEMailComposeToolbarItemInfo)composeWindowToolbarButtonInfo
 {
   v3 = [MEMailComposeToolbarItemInfo alloc];
-  v4 = [(MERemoteExtension *)self displayName];
-  v5 = [(MERemoteExtension *)self toolbarIcon];
-  v6 = [(MERemoteExtension *)self toolbarIconTooltip];
-  v7 = [(MEMailComposeToolbarItemInfo *)v3 initWithLabel:v4 image:v5 tooltip:v6];
+  displayName = [(MERemoteExtension *)self displayName];
+  toolbarIcon = [(MERemoteExtension *)self toolbarIcon];
+  toolbarIconTooltip = [(MERemoteExtension *)self toolbarIconTooltip];
+  v7 = [(MEMailComposeToolbarItemInfo *)v3 initWithLabel:displayName image:toolbarIcon tooltip:toolbarIconTooltip];
 
   return v7;
 }
 
 - (MEExtensionHostContext)extensionHostContext
 {
-  v3 = [(MERemoteExtension *)self extension];
-  v4 = [(MERemoteExtension *)self contextUUID];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(MERemoteExtension *)self extension];
+  contextUUID = [(MERemoteExtension *)self contextUUID];
+  v5 = [extension _extensionContextForUUID:contextUUID];
 
   return v5;
 }
@@ -480,27 +480,27 @@ void __65__MERemoteExtension_allCapabilitiesRequiringMessageContentAccess__block
 - (id)_remoteExtensionProxyFuture
 {
   v3 = objc_opt_new();
-  v4 = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
+  _loadRemoteExtesionProxyFuture = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke;
   v15[3] = &unk_279859330;
   v5 = v3;
   v16 = v5;
-  [v4 addSuccessBlock:v15];
+  [_loadRemoteExtesionProxyFuture addSuccessBlock:v15];
 
-  v6 = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
+  _loadRemoteExtesionProxyFuture2 = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke_2;
   v13 = &unk_279858F20;
   v7 = v5;
   v14 = v7;
-  [v6 addFailureBlock:&v10];
+  [_loadRemoteExtesionProxyFuture2 addFailureBlock:&v10];
 
-  v8 = [v7 future];
+  future = [v7 future];
 
-  return v8;
+  return future;
 }
 
 void __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke(uint64_t a1, void *a2)
@@ -513,12 +513,12 @@ void __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke(uint64_t 
 - (id)_loadRemoteExtesionProxyFuture
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(MERemoteExtension *)self extension];
+  extension = [(MERemoteExtension *)self extension];
 
-  if (!v4)
+  if (!extension)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:335 description:{@"Expected non-nil extension for %@", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:335 description:{@"Expected non-nil extension for %@", self}];
   }
 
   os_unfair_lock_lock(&self->_remoteExtensionProxyLock);
@@ -526,9 +526,9 @@ void __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke(uint64_t 
   v6 = remoteExtensionProxyPromise;
   if (!remoteExtensionProxyPromise)
   {
-    v7 = [MEMORY[0x277D071A8] promise];
+    promise = [MEMORY[0x277D071A8] promise];
     v8 = self->_remoteExtensionProxyPromise;
-    self->_remoteExtensionProxyPromise = v7;
+    self->_remoteExtensionProxyPromise = promise;
 
     v6 = self->_remoteExtensionProxyPromise;
   }
@@ -541,7 +541,7 @@ void __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke(uint64_t 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "Starting setting up a new request, extension:%@", buf, 0xCu);
     }
 
@@ -559,11 +559,11 @@ void __48__MERemoteExtension__remoteExtensionProxyFuture__block_invoke(uint64_t 
     objc_destroyWeak(buf);
   }
 
-  v12 = [(EFPromise *)v9 future];
+  future = [(EFPromise *)v9 future];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return future;
 }
 
 void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke(uint64_t a1)
@@ -689,36 +689,36 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
   }
 }
 
-- (id)interfaceForExtensionCapability:(id)a3
+- (id)interfaceForExtensionCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(MERemoteExtension *)self capabilities];
-  v6 = [v5 containsObject:v4];
+  capabilityCopy = capability;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v6 = [capabilities containsObject:capabilityCopy];
 
   if (v6)
   {
-    v7 = [(MERemoteExtension *)self _remoteExtensionProxyFuture];
+    _remoteExtensionProxyFuture = [(MERemoteExtension *)self _remoteExtensionProxyFuture];
   }
 
   else
   {
     v8 = MEMORY[0x277D07150];
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MEMailExtensionErrorDomain" code:2 userInfo:0];
-    v7 = [v8 futureWithError:v9];
+    _remoteExtensionProxyFuture = [v8 futureWithError:v9];
   }
 
-  return v7;
+  return _remoteExtensionProxyFuture;
 }
 
-- (void)getMailComposeExtensionViewControllerForSession:(id)a3 hostDelegate:(id)a4 completionHandler:(id)a5
+- (void)getMailComposeExtensionViewControllerForSession:(id)session hostDelegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a5;
-  v6 = [(MERemoteExtension *)self capabilities];
-  v7 = [v6 containsObject:@"MEComposeSessionHandler"];
+  handlerCopy = handler;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v7 = [capabilities containsObject:@"MEComposeSessionHandler"];
 
   if ((v7 & 1) == 0)
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -726,8 +726,8 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
 {
   if (pthread_main_np())
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:435 description:@"Current thread is main"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:435 description:@"Current thread is main"];
   }
 
   return [(MERemoteExtension *)self _synchronousInterfaceForExtensionCapability:@"MEMessageActionHandler"];
@@ -737,59 +737,59 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
 {
   if (pthread_main_np())
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:445 description:@"Current thread is main"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MERemoteExtension.m" lineNumber:445 description:@"Current thread is main"];
   }
 
   return [(MERemoteExtension *)self _synchronousInterfaceForExtensionCapability:@"MEContentBlocker"];
 }
 
-- (void)getMailSignatureVerificationExtensionViewControllerForMessageSigners:(id)a3 completionHandler:(id)a4
+- (void)getMailSignatureVerificationExtensionViewControllerForMessageSigners:(id)signers completionHandler:(id)handler
 {
-  v7 = a4;
-  v5 = [(MERemoteExtension *)self capabilities];
-  v6 = [v5 containsObject:@"MEMessageSecurityHandler"];
+  handlerCopy = handler;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v6 = [capabilities containsObject:@"MEMessageSecurityHandler"];
 
   if ((v6 & 1) == 0)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)getDecodedMailViewControllerForMessageContext:(id)a3 completionHandler:(id)a4
+- (void)getDecodedMailViewControllerForMessageContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v5 = [(MERemoteExtension *)self capabilities];
-  v6 = [v5 containsObject:@"MEMessageSecurityHandler"];
+  handlerCopy = handler;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v6 = [capabilities containsObject:@"MEMessageSecurityHandler"];
 
   if ((v6 & 1) == 0)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)primaryActionClickedForMessageContext:(id)a3 completionHandler:(id)a4
+- (void)primaryActionClickedForMessageContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v5 = [(MERemoteExtension *)self capabilities];
-  v6 = [v5 containsObject:@"MEMessageSecurityHandler"];
+  handlerCopy = handler;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v6 = [capabilities containsObject:@"MEMessageSecurityHandler"];
 
   if ((v6 & 1) == 0)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (id)_interfaceForExtensionCapability:(id)a3
+- (id)_interfaceForExtensionCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(MERemoteExtension *)self capabilities];
-  v6 = [v5 containsObject:v4];
+  capabilityCopy = capability;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v6 = [capabilities containsObject:capabilityCopy];
 
   if (v6)
   {
-    v7 = [(MERemoteExtension *)self _remoteExtensionProxyFuture];
-    v8 = [v7 resultWithTimeout:0 error:5.0];
+    _remoteExtensionProxyFuture = [(MERemoteExtension *)self _remoteExtensionProxyFuture];
+    v8 = [_remoteExtensionProxyFuture resultWithTimeout:0 error:5.0];
   }
 
   else
@@ -800,19 +800,19 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
   return v8;
 }
 
-- (id)_synchronousInterfaceForExtensionCapability:(id)a3
+- (id)_synchronousInterfaceForExtensionCapability:(id)capability
 {
-  v3 = [(MERemoteExtension *)self _getInterfaceForExtensionCapability:a3 error:0];
+  v3 = [(MERemoteExtension *)self _getInterfaceForExtensionCapability:capability error:0];
 
   return v3;
 }
 
-- (id)_getInterfaceForExtensionCapability:(id)a3 error:(id *)a4
+- (id)_getInterfaceForExtensionCapability:(id)capability error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(MERemoteExtension *)self capabilities];
-  v8 = [v7 containsObject:v6];
+  capabilityCopy = capability;
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v8 = [capabilities containsObject:capabilityCopy];
 
   if (!v8)
   {
@@ -820,19 +820,19 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
     goto LABEL_18;
   }
 
-  v9 = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
+  _loadRemoteExtesionProxyFuture = [(MERemoteExtension *)self _loadRemoteExtesionProxyFuture];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v23 = 0;
     v10 = &v23;
-    v11 = [v9 resultIfAvailable:&v23];
+    v11 = [_loadRemoteExtesionProxyFuture resultIfAvailable:&v23];
   }
 
   else
   {
     v22 = 0;
     v10 = &v22;
-    v11 = [v9 resultWithTimeout:&v22 error:10.0];
+    v11 = [_loadRemoteExtesionProxyFuture resultWithTimeout:&v22 error:10.0];
   }
 
   v12 = v11;
@@ -840,14 +840,14 @@ void __51__MERemoteExtension__loadRemoteExtesionProxyFuture__block_invoke_120(ui
   v14 = v13;
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v14;
+      *error = v14;
     }
 
-    v16 = [v14 domain];
-    if ([v16 isEqualToString:*MEMORY[0x277D07100]])
+    domain = [v14 domain];
+    if ([domain isEqualToString:*MEMORY[0x277D07100]])
     {
       v17 = [v14 code] == 1000000;
 
@@ -873,8 +873,8 @@ LABEL_16:
     v18 = +[MERemoteExtension log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v14 ef_publicDescription];
-      [(MERemoteExtension *)v19 _getInterfaceForExtensionCapability:buf error:v18];
+      ef_publicDescription = [v14 ef_publicDescription];
+      [(MERemoteExtension *)ef_publicDescription _getInterfaceForExtensionCapability:buf error:v18];
     }
 
     goto LABEL_16;
@@ -921,10 +921,10 @@ LABEL_18:
 
 - (void)_nts_loadDataAccessReason
 {
-  v3 = [(MERemoteExtension *)self extension];
-  v6 = [v3 attributes];
+  extension = [(MERemoteExtension *)self extension];
+  attributes = [extension attributes];
 
-  v4 = [v6 objectForKeyedSubscript:@"MailDataAccessRequirements"];
+  v4 = [attributes objectForKeyedSubscript:@"MailDataAccessRequirements"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -946,10 +946,10 @@ LABEL_18:
 
 - (void)_nts_loadBodyAccess
 {
-  v3 = [(MERemoteExtension *)self extension];
-  v8 = [v3 attributes];
+  extension = [(MERemoteExtension *)self extension];
+  attributes = [extension attributes];
 
-  v4 = [v8 objectForKeyedSubscript:@"MailDataAccessRequirements"];
+  v4 = [attributes objectForKeyedSubscript:@"MailDataAccessRequirements"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -958,9 +958,9 @@ LABEL_18:
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 integerValue];
+      integerValue = [v4 integerValue];
       v7 = 1;
-      if (v6 >= 1)
+      if (integerValue >= 1)
       {
         v7 = 2;
       }
@@ -978,8 +978,8 @@ LABEL_18:
 - (BOOL)hasMessageContentAccess
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(MERemoteExtension *)self capabilities];
-  v4 = [v2 setWithArray:v3];
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v4 = [v2 setWithArray:capabilities];
 
   v5 = MEMORY[0x277CBEB98];
   v6 = +[MERemoteExtension allCapabilitiesRequiringMessageContentAccess];
@@ -989,10 +989,10 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -1002,10 +1002,10 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MERemoteExtension *)self extensionID];
-      v7 = [(MERemoteExtension *)v5 extensionID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      extensionID = [(MERemoteExtension *)self extensionID];
+      extensionID2 = [(MERemoteExtension *)v5 extensionID];
+      v8 = [extensionID isEqual:extensionID2];
     }
 
     else
@@ -1019,8 +1019,8 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(MERemoteExtension *)self extensionID];
-  v3 = [v2 hash];
+  extensionID = [(MERemoteExtension *)self extensionID];
+  v3 = [extensionID hash];
 
   return v3;
 }
@@ -1028,15 +1028,15 @@ LABEL_18:
 - (NSString)ef_publicDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MERemoteExtension *)self capabilities];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  capabilities = [(MERemoteExtension *)self capabilities];
+  v5 = [capabilities componentsJoinedByString:{@", "}];
   v6 = [v3 stringWithFormat:@"[%@]", v5];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(MERemoteExtension *)self extensionID];
-  v9 = [(MERemoteExtension *)self displayName];
-  v10 = [(MERemoteExtension *)self displayVersion];
-  v11 = [v7 stringWithFormat:@"%@ - %@ - %@ - %@", v8, v9, v10, v6];
+  extensionID = [(MERemoteExtension *)self extensionID];
+  displayName = [(MERemoteExtension *)self displayName];
+  displayVersion = [(MERemoteExtension *)self displayVersion];
+  v11 = [v7 stringWithFormat:@"%@ - %@ - %@ - %@", extensionID, displayName, displayVersion, v6];
 
   return v11;
 }

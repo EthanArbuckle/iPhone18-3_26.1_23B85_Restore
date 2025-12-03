@@ -1,14 +1,14 @@
 @interface KTLogClient
 + (id)requiredBagKeys;
 - (BOOL)configured;
-- (BOOL)shouldUseReversePush:(BOOL)a3;
+- (BOOL)shouldUseReversePush:(BOOL)push;
 - (KTLogClient)init;
-- (KTLogClient)initWithBackgroundSession:(id)a3 transparencyAnalytics:(id)a4 dataStore:(id)a5 settings:(id)a6;
-- (KTLogClient)initWithSettings:(id)a3;
+- (KTLogClient)initWithBackgroundSession:(id)session transparencyAnalytics:(id)analytics dataStore:(id)store settings:(id)settings;
+- (KTLogClient)initWithSettings:(id)settings;
 - (NSURL)consistencyProofURI;
 - (NSURL)publicKeysURI;
 - (id)batchQueryURI;
-- (id)copyConfigurationBag:(id *)a3;
+- (id)copyConfigurationBag:(id *)bag;
 - (id)queryURI;
 - (id)reportToAppleURI;
 - (id)revisionLogProofURI;
@@ -17,17 +17,17 @@
 - (unint64_t)revisionLogMaxProofs;
 - (unint64_t)userReversePushPercentage;
 - (unint64_t)xpcActivityReversePushPercentage;
-- (void)clearState:(id *)a3;
-- (void)configure:(id)a3;
-- (void)configureFromNetwork:(id)a3;
-- (void)fetchBatchQuery:(id)a3 uuid:(id)a4 userInitiated:(BOOL)a5 completionHandler:(id)a6;
-- (void)fetchConfigBag:(id)a3 completionHandler:(id)a4;
-- (void)fetchConsistencyProof:(id)a3 uuid:(id)a4 completionHandler:(id)a5;
-- (void)fetchPublicKeys:(id)a3 completionHandler:(id)a4;
-- (void)fetchQuery:(id)a3 uuid:(id)a4 userInitiated:(BOOL)a5 completionHandler:(id)a6;
-- (void)fetchRevisionLogInclusionProof:(id)a3 uuid:(id)a4 completionHandler:(id)a5;
-- (void)postReport:(id)a3 uuid:(id)a4 application:(id)a5 completionHandler:(id)a6;
-- (void)triggerConfigBagFetch:(double)a3;
+- (void)clearState:(id *)state;
+- (void)configure:(id)configure;
+- (void)configureFromNetwork:(id)network;
+- (void)fetchBatchQuery:(id)query uuid:(id)uuid userInitiated:(BOOL)initiated completionHandler:(id)handler;
+- (void)fetchConfigBag:(id)bag completionHandler:(id)handler;
+- (void)fetchConsistencyProof:(id)proof uuid:(id)uuid completionHandler:(id)handler;
+- (void)fetchPublicKeys:(id)keys completionHandler:(id)handler;
+- (void)fetchQuery:(id)query uuid:(id)uuid userInitiated:(BOOL)initiated completionHandler:(id)handler;
+- (void)fetchRevisionLogInclusionProof:(id)proof uuid:(id)uuid completionHandler:(id)handler;
+- (void)postReport:(id)report uuid:(id)uuid application:(id)application completionHandler:(id)handler;
+- (void)triggerConfigBagFetch:(double)fetch;
 @end
 
 @implementation KTLogClient
@@ -67,9 +67,9 @@
   return v4;
 }
 
-- (KTLogClient)initWithSettings:(id)a3
+- (KTLogClient)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = KTLogClient;
   v5 = [(KTLogClient *)&v14 init];
@@ -77,247 +77,247 @@
   if (v5)
   {
     [(KTLogClient *)v5 setOverrideIDMSFetchTime:604800.0];
-    [(TransparencyLogClient *)v6 setSettings:v4];
-    v7 = [(TransparencyLogClient *)v6 settings];
-    -[KTLogClient setCurrentEnvironment:](v6, "setCurrentEnvironment:", [v7 getEnvironment]);
+    [(TransparencyLogClient *)v6 setSettings:settingsCopy];
+    settings = [(TransparencyLogClient *)v6 settings];
+    -[KTLogClient setCurrentEnvironment:](v6, "setCurrentEnvironment:", [settings getEnvironment]);
 
     v8 = [TransparencyConfigBag alloc];
     v9 = +[KTLogClient requiredBagKeys];
-    v10 = [(TransparencyLogClient *)v6 settings];
+    settings2 = [(TransparencyLogClient *)v6 settings];
     v11 = [TransparencyFileSupport transparencyFilesPath:0];
-    v12 = [(TransparencyConfigBag *)v8 initWithRequiredKeys:v9 settings:v10 directory:v11 configApp:1];
+    v12 = [(TransparencyConfigBag *)v8 initWithRequiredKeys:v9 settings:settings2 directory:v11 configApp:1];
     [(KTLogClient *)v6 setConfigBag:v12];
   }
 
   return v6;
 }
 
-- (KTLogClient)initWithBackgroundSession:(id)a3 transparencyAnalytics:(id)a4 dataStore:(id)a5 settings:(id)a6
+- (KTLogClient)initWithBackgroundSession:(id)session transparencyAnalytics:(id)analytics dataStore:(id)store settings:(id)settings
 {
-  v10 = a6;
+  settingsCopy = settings;
   v19.receiver = self;
   v19.super_class = KTLogClient;
-  v11 = [(TransparencyLogClient *)&v19 initWithBackgroundSession:a3 transparencyAnalytics:a4 dataStore:a5 settings:v10];
+  v11 = [(TransparencyLogClient *)&v19 initWithBackgroundSession:session transparencyAnalytics:analytics dataStore:store settings:settingsCopy];
   v12 = v11;
   if (v11)
   {
     [(KTLogClient *)v11 setOverrideIDMSFetchTime:604800.0];
-    v13 = [(TransparencyLogClient *)v12 settings];
-    -[KTLogClient setCurrentEnvironment:](v12, "setCurrentEnvironment:", [v13 getEnvironment]);
+    settings = [(TransparencyLogClient *)v12 settings];
+    -[KTLogClient setCurrentEnvironment:](v12, "setCurrentEnvironment:", [settings getEnvironment]);
 
     v14 = [TransparencyConfigBag alloc];
     v15 = +[KTLogClient requiredBagKeys];
     v16 = [TransparencyFileSupport transparencyFilesPath:0];
-    v17 = [(TransparencyConfigBag *)v14 initWithRequiredKeys:v15 settings:v10 directory:v16 configApp:1];
+    v17 = [(TransparencyConfigBag *)v14 initWithRequiredKeys:v15 settings:settingsCopy directory:v16 configApp:1];
     [(KTLogClient *)v12 setConfigBag:v17];
   }
 
   return v12;
 }
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [(KTLogClient *)self configBag];
-  v6 = [(TransparencyLogClient *)self settings];
-  [v6 uiBlockingNetworkTimeout];
+  configureCopy = configure;
+  configBag = [(KTLogClient *)self configBag];
+  settings = [(TransparencyLogClient *)self settings];
+  [settings uiBlockingNetworkTimeout];
   v8 = v7;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FA830;
   v10[3] = &unk_10031AA28;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v5 configureWithFetcher:self networkTimeout:v10 completionHandler:v8];
+  v11 = configureCopy;
+  v9 = configureCopy;
+  [configBag configureWithFetcher:self networkTimeout:v10 completionHandler:v8];
 }
 
-- (void)configureFromNetwork:(id)a3
+- (void)configureFromNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(KTLogClient *)self configBag];
-  v6 = [(TransparencyLogClient *)self settings];
-  [v6 uiBlockingNetworkTimeout];
+  networkCopy = network;
+  configBag = [(KTLogClient *)self configBag];
+  settings = [(TransparencyLogClient *)self settings];
+  [settings uiBlockingNetworkTimeout];
   v8 = v7;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FA9B8;
   v10[3] = &unk_10031AA28;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v5 configureFromNetworkWithFetcher:self networkTimeout:v10 completionHandler:v8];
+  v11 = networkCopy;
+  v9 = networkCopy;
+  [configBag configureFromNetworkWithFetcher:self networkTimeout:v10 completionHandler:v8];
 }
 
 - (BOOL)configured
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 configured];
+  configBag = [(KTLogClient *)self configBag];
+  configured = [configBag configured];
 
-  return v3;
+  return configured;
 }
 
-- (void)clearState:(id *)a3
+- (void)clearState:(id *)state
 {
-  v4 = [(KTLogClient *)self configBag];
-  [v4 clearState:a3];
+  configBag = [(KTLogClient *)self configBag];
+  [configBag clearState:state];
 }
 
-- (void)fetchConfigBag:(id)a3 completionHandler:(id)a4
+- (void)fetchConfigBag:(id)bag completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001FAB70;
   v7[3] = &unk_1003294E0;
-  v8 = a4;
-  v6 = v8;
-  [(TransparencyLogClient *)self fetch:a3 allowEmptyData:0 useReversePush:0 completionHandler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(TransparencyLogClient *)self fetch:bag allowEmptyData:0 useReversePush:0 completionHandler:v7];
 }
 
-- (void)triggerConfigBagFetch:(double)a3
+- (void)triggerConfigBagFetch:(double)fetch
 {
-  v4 = [(KTLogClient *)self triggerInterface];
-  [v4 triggerConfigBagFetch:a3];
+  triggerInterface = [(KTLogClient *)self triggerInterface];
+  [triggerInterface triggerConfigBagFetch:fetch];
 }
 
-- (id)copyConfigurationBag:(id *)a3
+- (id)copyConfigurationBag:(id *)bag
 {
-  v4 = [(KTLogClient *)self configBag];
-  v5 = [v4 copyConfigurationBag:a3];
+  configBag = [(KTLogClient *)self configBag];
+  v5 = [configBag copyConfigurationBag:bag];
 
   return v5;
 }
 
 - (unint64_t)userReversePushPercentage
 {
-  v3 = [(KTLogClient *)self configBag];
-  v4 = [v3 overrideReversePushConfig];
+  configBag = [(KTLogClient *)self configBag];
+  overrideReversePushConfig = [configBag overrideReversePushConfig];
 
-  v5 = [(KTLogClient *)self configBag];
-  v6 = v5;
-  if (v4)
+  configBag2 = [(KTLogClient *)self configBag];
+  v6 = configBag2;
+  if (overrideReversePushConfig)
   {
-    v7 = [v5 overrideReversePushPercentage];
+    overrideReversePushPercentage = [configBag2 overrideReversePushPercentage];
   }
 
   else
   {
-    v7 = [v5 percentageForKey:@"reverse-push-user-action-percent"];
+    overrideReversePushPercentage = [configBag2 percentageForKey:@"reverse-push-user-action-percent"];
   }
 
-  v8 = v7;
+  v8 = overrideReversePushPercentage;
 
   return v8;
 }
 
 - (unint64_t)xpcActivityReversePushPercentage
 {
-  v3 = [(KTLogClient *)self configBag];
-  v4 = [v3 overrideReversePushConfig];
+  configBag = [(KTLogClient *)self configBag];
+  overrideReversePushConfig = [configBag overrideReversePushConfig];
 
-  v5 = [(KTLogClient *)self configBag];
-  v6 = v5;
-  if (v4)
+  configBag2 = [(KTLogClient *)self configBag];
+  v6 = configBag2;
+  if (overrideReversePushConfig)
   {
-    v7 = [v5 overrideReversePushPercentage];
+    overrideReversePushPercentage = [configBag2 overrideReversePushPercentage];
   }
 
   else
   {
-    v7 = [v5 percentageForKey:@"reverse-push-nightly-task-percent"];
+    overrideReversePushPercentage = [configBag2 percentageForKey:@"reverse-push-nightly-task-percent"];
   }
 
-  v8 = v7;
+  v8 = overrideReversePushPercentage;
 
   return v8;
 }
 
 - (unint64_t)batchQueryMaxURIs
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 uintegerForKey:@"batch-query-max-uris"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag uintegerForKey:@"batch-query-max-uris"];
 
   return v3;
 }
 
 - (unint64_t)consistencyMaxProofs
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 uintegerForKey:@"batch-consistency-max-proofs"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag uintegerForKey:@"batch-consistency-max-proofs"];
 
   return v3;
 }
 
 - (unint64_t)revisionLogMaxProofs
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 uintegerForKey:@"batch-log-inclusion-max-proofs"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag uintegerForKey:@"batch-log-inclusion-max-proofs"];
 
   return v3;
 }
 
 - (id)queryURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-query"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-query"];
 
   return v3;
 }
 
 - (id)batchQueryURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-batch-query"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-batch-query"];
 
   return v3;
 }
 
 - (NSURL)consistencyProofURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-consistency-proof"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-consistency-proof"];
 
   return v3;
 }
 
 - (NSURL)publicKeysURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-public-keys"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-public-keys"];
 
   return v3;
 }
 
 - (id)revisionLogProofURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-revision-log-inclusion-proof"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-revision-log-inclusion-proof"];
 
   return v3;
 }
 
 - (id)reportToAppleURI
 {
-  v2 = [(KTLogClient *)self configBag];
-  v3 = [v2 urlForKey:@"rest-report-to-apple"];
+  configBag = [(KTLogClient *)self configBag];
+  v3 = [configBag urlForKey:@"rest-report-to-apple"];
 
   return v3;
 }
 
-- (BOOL)shouldUseReversePush:(BOOL)a3
+- (BOOL)shouldUseReversePush:(BOOL)push
 {
-  if (a3)
+  if (push)
   {
-    v3 = [(KTLogClient *)self userReversePushPercentage];
+    userReversePushPercentage = [(KTLogClient *)self userReversePushPercentage];
   }
 
   else
   {
-    v3 = [(KTLogClient *)self xpcActivityReversePushPercentage];
+    userReversePushPercentage = [(KTLogClient *)self xpcActivityReversePushPercentage];
   }
 
-  v4 = v3;
-  if (v3 == 100)
+  v4 = userReversePushPercentage;
+  if (userReversePushPercentage == 100)
   {
     if (qword_10039CBC8 != -1)
     {
@@ -334,7 +334,7 @@
     return 1;
   }
 
-  else if (v3)
+  else if (userReversePushPercentage)
   {
     v8 = arc4random();
     v9 = v4 * 4294967300.0 / 100.0;
@@ -377,105 +377,105 @@
   return v6;
 }
 
-- (void)fetchPublicKeys:(id)a3 completionHandler:(id)a4
+- (void)fetchPublicKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
+  keysCopy = keys;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001FB3B8;
   v9[3] = &unk_1003295D0;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = keysCopy;
+  v7 = keysCopy;
+  v8 = handlerCopy;
   [(KTLogClient *)self configure:v9];
 }
 
-- (void)postReport:(id)a3 uuid:(id)a4 application:(id)a5 completionHandler:(id)a6
+- (void)postReport:(id)report uuid:(id)uuid application:(id)application completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
+  reportCopy = report;
+  uuidCopy = uuid;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001FBB50;
   v16[3] = &unk_100329620;
-  v19 = a5;
-  v20 = a6;
+  applicationCopy = application;
+  handlerCopy = handler;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v12 = v19;
-  v13 = v11;
-  v14 = v10;
-  v15 = v20;
+  v17 = reportCopy;
+  v18 = uuidCopy;
+  v12 = applicationCopy;
+  v13 = uuidCopy;
+  v14 = reportCopy;
+  v15 = handlerCopy;
   [(KTLogClient *)self configure:v16];
 }
 
-- (void)fetchBatchQuery:(id)a3 uuid:(id)a4 userInitiated:(BOOL)a5 completionHandler:(id)a6
+- (void)fetchBatchQuery:(id)query uuid:(id)uuid userInitiated:(BOOL)initiated completionHandler:(id)handler
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001FC74C;
   v13[3] = &unk_100318B18;
-  v14 = a3;
-  v15 = self;
-  v16 = a4;
-  v17 = a6;
-  v18 = a5;
-  v10 = v16;
-  v11 = v14;
-  v12 = v17;
+  queryCopy = query;
+  selfCopy = self;
+  uuidCopy = uuid;
+  handlerCopy = handler;
+  initiatedCopy = initiated;
+  v10 = uuidCopy;
+  v11 = queryCopy;
+  v12 = handlerCopy;
   [(KTLogClient *)self configure:v13];
 }
 
-- (void)fetchQuery:(id)a3 uuid:(id)a4 userInitiated:(BOOL)a5 completionHandler:(id)a6
+- (void)fetchQuery:(id)query uuid:(id)uuid userInitiated:(BOOL)initiated completionHandler:(id)handler
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001FCF8C;
   v13[3] = &unk_100318B18;
-  v14 = a3;
-  v15 = self;
-  v16 = a4;
-  v17 = a6;
-  v18 = a5;
-  v10 = v16;
-  v11 = v14;
-  v12 = v17;
+  queryCopy = query;
+  selfCopy = self;
+  uuidCopy = uuid;
+  handlerCopy = handler;
+  initiatedCopy = initiated;
+  v10 = uuidCopy;
+  v11 = queryCopy;
+  v12 = handlerCopy;
   [(KTLogClient *)self configure:v13];
 }
 
-- (void)fetchConsistencyProof:(id)a3 uuid:(id)a4 completionHandler:(id)a5
+- (void)fetchConsistencyProof:(id)proof uuid:(id)uuid completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FD380;
   v10[3] = &unk_100329748;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v13;
-  v8 = v12;
-  v9 = v14;
-  [(KTLogClient *)v11 configure:v10];
+  selfCopy = self;
+  proofCopy = proof;
+  uuidCopy = uuid;
+  handlerCopy = handler;
+  v7 = uuidCopy;
+  v8 = proofCopy;
+  v9 = handlerCopy;
+  [(KTLogClient *)selfCopy configure:v10];
 }
 
-- (void)fetchRevisionLogInclusionProof:(id)a3 uuid:(id)a4 completionHandler:(id)a5
+- (void)fetchRevisionLogInclusionProof:(id)proof uuid:(id)uuid completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FD710;
   v10[3] = &unk_100329748;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v13;
-  v8 = v12;
-  v9 = v14;
-  [(KTLogClient *)v11 configure:v10];
+  selfCopy = self;
+  proofCopy = proof;
+  uuidCopy = uuid;
+  handlerCopy = handler;
+  v7 = uuidCopy;
+  v8 = proofCopy;
+  v9 = handlerCopy;
+  [(KTLogClient *)selfCopy configure:v10];
 }
 
 @end

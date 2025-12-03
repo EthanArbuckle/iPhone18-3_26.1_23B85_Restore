@@ -1,29 +1,29 @@
 @interface BMRetrievalFilter
-+ (id)filterWithOperand:(int64_t)a3 inclusionOperator:(int64_t)a4 items:(id)a5;
-+ (id)filterWithOperand:(int64_t)a3 inclusionOperator:(int64_t)a4 types:(id)a5;
++ (id)filterWithOperand:(int64_t)operand inclusionOperator:(int64_t)operator items:(id)items;
++ (id)filterWithOperand:(int64_t)operand inclusionOperator:(int64_t)operator types:(id)types;
 - (id)rulePredicate;
 @end
 
 @implementation BMRetrievalFilter
 
-+ (id)filterWithOperand:(int64_t)a3 inclusionOperator:(int64_t)a4 items:(id)a5
++ (id)filterWithOperand:(int64_t)operand inclusionOperator:(int64_t)operator items:(id)items
 {
-  v7 = a5;
+  itemsCopy = items;
   v8 = objc_alloc_init(BMRetrievalFilter);
-  [(BMRetrievalFilter *)v8 setOperand:a3];
-  [(BMRetrievalFilter *)v8 setInclusionOperator:a4];
-  [(BMRetrievalFilter *)v8 setItems:v7];
+  [(BMRetrievalFilter *)v8 setOperand:operand];
+  [(BMRetrievalFilter *)v8 setInclusionOperator:operator];
+  [(BMRetrievalFilter *)v8 setItems:itemsCopy];
 
   return v8;
 }
 
-+ (id)filterWithOperand:(int64_t)a3 inclusionOperator:(int64_t)a4 types:(id)a5
++ (id)filterWithOperand:(int64_t)operand inclusionOperator:(int64_t)operator types:(id)types
 {
-  v7 = a5;
+  typesCopy = types;
   v8 = objc_alloc_init(BMRetrievalFilter);
-  [(BMRetrievalFilter *)v8 setOperand:a3];
-  [(BMRetrievalFilter *)v8 setInclusionOperator:a4];
-  [(BMRetrievalFilter *)v8 setTypes:v7];
+  [(BMRetrievalFilter *)v8 setOperand:operand];
+  [(BMRetrievalFilter *)v8 setInclusionOperator:operator];
+  [(BMRetrievalFilter *)v8 setTypes:typesCopy];
 
   return v8;
 }
@@ -31,29 +31,29 @@
 - (id)rulePredicate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(BMRetrievalFilter *)self types];
+  types = [(BMRetrievalFilter *)self types];
 
-  if (v3)
+  if (types)
   {
-    v4 = [(BMRetrievalFilter *)self types];
+    types2 = [(BMRetrievalFilter *)self types];
     v5 = @"typeIdentifier";
     v6 = &selRef_identifier;
   }
 
   else
   {
-    v4 = [(BMRetrievalFilter *)self items];
+    types2 = [(BMRetrievalFilter *)self items];
     v5 = @"uniformIdentifier";
     v6 = &selRef_uniformIdentifier;
   }
 
   v7 = NSStringFromSelector(*v6);
-  v8 = [v4 valueForKey:v7];
+  v8 = [types2 valueForKey:v7];
 
-  v9 = [(BMRetrievalFilter *)self operand];
-  v10 = [(BMRetrievalFilter *)self inclusionOperator];
+  operand = [(BMRetrievalFilter *)self operand];
+  inclusionOperator = [(BMRetrievalFilter *)self inclusionOperator];
   v11 = v8;
-  if (v9 == 2)
+  if (operand == 2)
   {
     v12 = @"consequent";
   }
@@ -61,9 +61,9 @@
   else
   {
     v12 = @"antecedent";
-    if (v9 != 1)
+    if (operand != 1)
     {
-      if (v9)
+      if (operand)
       {
         v19 = 0;
         goto LABEL_36;
@@ -80,9 +80,9 @@
       v16 = [v15 componentsJoinedByString:@"."];
 
       v17 = MEMORY[0x277CCAC30];
-      if (v10 > 1)
+      if (inclusionOperator > 1)
       {
-        if (v10 == 2)
+        if (inclusionOperator == 2)
         {
           v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
           v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
@@ -91,7 +91,7 @@
           goto LABEL_33;
         }
 
-        if (v10 == 3)
+        if (inclusionOperator == 3)
         {
           v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SUBQUERY(%K, $identifier, $identifier IN %@).@count + SUBQUERY(%K, $identifier, $identifier IN %@).@count == 0", v14, v11, v16, v11];
 LABEL_30:
@@ -104,7 +104,7 @@ LABEL_34:
 
       else
       {
-        if (!v10)
+        if (!inclusionOperator)
         {
           v26 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %K IN %@", v14, v11];
           v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %K IN %@", v16, v11];
@@ -117,7 +117,7 @@ LABEL_34:
           goto LABEL_34;
         }
 
-        if (v10 == 1)
+        if (inclusionOperator == 1)
         {
           v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
           v19 = [v17 predicateWithFormat:@"SUBQUERY(%K, $identifier, $identifier IN %@).@count + SUBQUERY(%K, $identifier, $identifier IN %@).@count == %@", v14, v11, v16, v11, v18];
@@ -138,9 +138,9 @@ LABEL_33:
   v14 = [v20 componentsJoinedByString:@"."];
 
   v21 = MEMORY[0x277CCAC30];
-  if (v10 > 1)
+  if (inclusionOperator > 1)
   {
-    if (v10 == 2)
+    if (inclusionOperator == 2)
     {
       v25 = [v11 count];
       v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
@@ -148,7 +148,7 @@ LABEL_33:
       goto LABEL_28;
     }
 
-    if (v10 != 3)
+    if (inclusionOperator != 3)
     {
       goto LABEL_23;
     }
@@ -158,13 +158,13 @@ LABEL_33:
     goto LABEL_26;
   }
 
-  if (!v10)
+  if (!inclusionOperator)
   {
     [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %K IN %@", v14, v11];
     goto LABEL_25;
   }
 
-  if (v10 == 1)
+  if (inclusionOperator == 1)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
     [v21 predicateWithFormat:@"SUBQUERY(%K, $identifier, $identifier IN %@).@count == %@", v14, v11, v22, v33, v34];

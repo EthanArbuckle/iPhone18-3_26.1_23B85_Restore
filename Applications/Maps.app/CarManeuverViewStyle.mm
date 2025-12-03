@@ -1,9 +1,9 @@
 @interface CarManeuverViewStyle
-+ (CarManeuverViewStyle)styleWithVariant:(unint64_t)a3 destination:(unint64_t)a4 layoutType:(unint64_t)a5;
++ (CarManeuverViewStyle)styleWithVariant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type;
 - ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetrics;
 - ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetrics;
 - (CGSize)arrowReferenceSize;
-- (CarManeuverViewStyle)initWithVariant:(unint64_t)a3 destination:(unint64_t)a4 layoutType:(unint64_t)a5;
+- (CarManeuverViewStyle)initWithVariant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type;
 - (UIColor)arrowMainColor;
 - (UIColor)distanceColor;
 - (UIColor)instructionsColor;
@@ -12,7 +12,7 @@
 - (UIFont)instructionsAlternateFont;
 - (UIFont)instructionsPreferredFont;
 - (double)instructionsAlternateFontLineSpacing;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)instructionsMaxNumberOfLinesWithPreferredFont;
 - (int64_t)instructionsMaxNumberOfTotalLines;
 - (int64_t)labelLineBreakMode;
@@ -128,9 +128,9 @@
 
 - (UIColor)arrowMainColor
 {
-  v2 = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
+  _requiresAdaptiveStyling = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
 
-  return sub_10009E9A4(v2);
+  return sub_10009E9A4(_requiresAdaptiveStyling);
 }
 
 - (UIColor)invalidArrowColor
@@ -151,10 +151,10 @@
 
 - (UIFont)instructionsPreferredFont
 {
-  v3 = [(CarManeuverViewStyle *)self layoutType];
+  layoutType = [(CarManeuverViewStyle *)self layoutType];
   v4 = _os_feature_enabled_impl();
   v5 = v4;
-  if (v3 == 2)
+  if (layoutType == 2)
   {
     if (v4)
     {
@@ -170,11 +170,11 @@ LABEL_7:
 
   else
   {
-    v7 = [(CarManeuverViewStyle *)self isSecondary];
+    isSecondary = [(CarManeuverViewStyle *)self isSecondary];
     if (v5)
     {
       v6 = &UIFontTextStyleCaption1;
-      if (!v7)
+      if (!isSecondary)
       {
         v6 = &UIFontTextStyleCallout;
       }
@@ -183,7 +183,7 @@ LABEL_7:
     }
 
     v10 = 16.0;
-    if (v7)
+    if (isSecondary)
     {
       v10 = 12.0;
     }
@@ -199,10 +199,10 @@ LABEL_13:
 
 - (UIFont)instructionsAlternateFont
 {
-  v3 = [(CarManeuverViewStyle *)self layoutType];
+  layoutType = [(CarManeuverViewStyle *)self layoutType];
   v4 = _os_feature_enabled_impl();
   v5 = v4;
-  if (v3 == 2)
+  if (layoutType == 2)
   {
     if (v4)
     {
@@ -218,11 +218,11 @@ LABEL_7:
 
   else
   {
-    v7 = [(CarManeuverViewStyle *)self isSecondary];
+    isSecondary = [(CarManeuverViewStyle *)self isSecondary];
     if (v5)
     {
       v6 = &UIFontTextStyleCaption1;
-      if (!v7)
+      if (!isSecondary)
       {
         v6 = &UIFontTextStyleSubheadline;
       }
@@ -231,7 +231,7 @@ LABEL_7:
     }
 
     v10 = 15.0;
-    if (v7)
+    if (isSecondary)
     {
       v10 = 12.0;
     }
@@ -247,9 +247,9 @@ LABEL_13:
 
 - (double)instructionsAlternateFontLineSpacing
 {
-  v2 = [(CarManeuverViewStyle *)self isSecondary];
+  isSecondary = [(CarManeuverViewStyle *)self isSecondary];
   result = 16.0;
-  if (v2)
+  if (isSecondary)
   {
     return 12.0;
   }
@@ -305,30 +305,30 @@ LABEL_3:
     }
   }
 
-  v5 = [(CarManeuverViewStyle *)self compressionStage];
-  if (v5 - 1 > 5)
+  compressionStage = [(CarManeuverViewStyle *)self compressionStage];
+  if (compressionStage - 1 > 5)
   {
     return 5;
   }
 
   else
   {
-    return qword_101215DC8[v5 - 1];
+    return qword_101215DC8[compressionStage - 1];
   }
 }
 
 - (UIColor)instructionsColor
 {
-  v3 = [(CarManeuverViewStyle *)self variant];
-  v4 = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
-  if (v3 == 2)
+  variant = [(CarManeuverViewStyle *)self variant];
+  _requiresAdaptiveStyling = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
+  if (variant == 2)
   {
-    sub_10009E9A4(v4);
+    sub_10009E9A4(_requiresAdaptiveStyling);
   }
 
   else
   {
-    sub_10009FA44(v4);
+    sub_10009FA44(_requiresAdaptiveStyling);
   }
   v5 = ;
 
@@ -372,10 +372,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(CarManeuverViewStyle *)self hasShield];
-  v9 = [(CarManeuverViewStyle *)self layoutType];
+  hasShield = [(CarManeuverViewStyle *)self hasShield];
+  layoutType = [(CarManeuverViewStyle *)self layoutType];
   v3 = UIFontWeightHeavy;
-  if (v8)
+  if (hasShield)
   {
     v4 = 17.0;
   }
@@ -385,7 +385,7 @@ LABEL_10:
     v4 = 20.0;
   }
 
-  if (v9 == 1)
+  if (layoutType == 1)
   {
     v4 = 16.0;
   }
@@ -398,12 +398,12 @@ LABEL_12:
 
 - (UIColor)distanceColor
 {
-  v2 = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
+  _requiresAdaptiveStyling = [(CarManeuverViewStyle *)self _requiresAdaptiveStyling];
 
-  return sub_10009E9A4(v2);
+  return sub_10009E9A4(_requiresAdaptiveStyling);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_opt_class() styleWithVariant:-[CarManeuverViewStyle variant](self destination:"variant") layoutType:{-[CarManeuverViewStyle destination](self, "destination"), -[CarManeuverViewStyle layoutType](self, "layoutType")}];
   [v4 setHasLaneGuidance:{-[CarManeuverViewStyle hasLaneGuidance](self, "hasLaneGuidance")}];
@@ -413,25 +413,25 @@ LABEL_12:
   return v4;
 }
 
-- (CarManeuverViewStyle)initWithVariant:(unint64_t)a3 destination:(unint64_t)a4 layoutType:(unint64_t)a5
+- (CarManeuverViewStyle)initWithVariant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = CarManeuverViewStyle;
   result = [(CarManeuverViewStyle *)&v9 init];
   if (result)
   {
-    result->_layoutType = a5;
-    result->_destination = a4;
-    result->_variant = a3;
+    result->_layoutType = type;
+    result->_destination = destination;
+    result->_variant = variant;
     result->_blurMode = 0;
   }
 
   return result;
 }
 
-+ (CarManeuverViewStyle)styleWithVariant:(unint64_t)a3 destination:(unint64_t)a4 layoutType:(unint64_t)a5
++ (CarManeuverViewStyle)styleWithVariant:(unint64_t)variant destination:(unint64_t)destination layoutType:(unint64_t)type
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithVariant:a3 destination:a4 layoutType:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithVariant:variant destination:destination layoutType:type];
 
   return v5;
 }

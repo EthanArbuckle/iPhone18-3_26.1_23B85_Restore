@@ -1,60 +1,60 @@
 @interface EXConditionalFormatting
-+ (void)readConditionalFormattingsFrom:(_xmlNode *)a3 x14:(BOOL)a4 state:(id)a5;
-+ (void)readFrom:(_xmlNode *)a3 x14:(BOOL)a4 state:(id)a5;
++ (void)readConditionalFormattingsFrom:(_xmlNode *)from x14:(BOOL)x14 state:(id)state;
++ (void)readFrom:(_xmlNode *)from x14:(BOOL)x14 state:(id)state;
 @end
 
 @implementation EXConditionalFormatting
 
-+ (void)readConditionalFormattingsFrom:(_xmlNode *)a3 x14:(BOOL)a4 state:(id)a5
++ (void)readConditionalFormattingsFrom:(_xmlNode *)from x14:(BOOL)x14 state:(id)state
 {
-  v5 = a4;
-  v8 = a5;
-  v12 = v8;
-  if (v5)
+  x14Copy = x14;
+  stateCopy = state;
+  v12 = stateCopy;
+  if (x14Copy)
   {
-    v9 = EXXL2010Namespace;
+    eXSpreadsheetMLNamespace = EXXL2010Namespace;
   }
 
   else
   {
-    v9 = [v8 EXSpreadsheetMLNamespace];
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
   }
 
-  v10 = v9;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  v10 = eXSpreadsheetMLNamespace;
+  for (i = OCXFirstChild(from); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE && [v10 containsNode:i])
     {
       if (xmlStrEqual(i->name, "conditionalFormatting"))
       {
-        [a1 readFrom:i x14:v5 state:v12];
+        [self readFrom:i x14:x14Copy state:v12];
       }
     }
   }
 }
 
-+ (void)readFrom:(_xmlNode *)a3 x14:(BOOL)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from x14:(BOOL)x14 state:(id)state
 {
-  v5 = a4;
+  x14Copy = x14;
   v30 = *MEMORY[0x277D85DE8];
-  v23 = a5;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    if (v5)
+    if (x14Copy)
     {
-      v7 = EXXL2010Namespace;
+      eXSpreadsheetMLNamespace = EXXL2010Namespace;
     }
 
     else
     {
-      v7 = [v23 EXSpreadsheetMLNamespace];
+      eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
     }
 
-    v8 = v7;
+    v8 = eXSpreadsheetMLNamespace;
     v9 = objc_alloc_init(EDConditionalFormatting);
-    if (v5)
+    if (x14Copy)
     {
-      v10 = OCXFindChild(a3, EXMainNamespace, "sqref");
+      v10 = OCXFindChild(from, EXMainNamespace, "sqref");
       if (!v10)
       {
         goto LABEL_21;
@@ -66,7 +66,7 @@
     else
     {
       v28 = 0;
-      CXOptionalStringAttribute(a3, CXNoNamespace, "sqref", &v28);
+      CXOptionalStringAttribute(from, CXNoNamespace, "sqref", &v28);
       v11 = v28;
     }
 
@@ -79,7 +79,7 @@
       v24 = 0u;
       v12 = v25 = 0u;
       v13 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
-      v21 = a3;
+      fromCopy = from;
       v14 = 0;
       if (v13)
       {
@@ -113,7 +113,7 @@
         while (v13);
       }
 
-      a3 = v21;
+      from = fromCopy;
       goto LABEL_22;
     }
 
@@ -121,15 +121,15 @@ LABEL_21:
     v22 = 0;
     v14 = 0;
 LABEL_22:
-    for (j = OCXFindChild(a3, v8, "cfRule"); j; j = OCXFindNextChild(j, v8, "cfRule"))
+    for (j = OCXFindChild(from, v8, "cfRule"); j; j = OCXFindNextChild(j, v8, "cfRule"))
     {
-      [EXConditionalFormattingRule readFrom:j x14:v5 edConditionalFormatting:v9 edReference:v14 state:v23];
+      [EXConditionalFormattingRule readFrom:j x14:x14Copy edConditionalFormatting:v9 edReference:v14 state:stateCopy];
     }
 
-    v19 = [v23 currentSheet];
-    v20 = [v19 conditionalFormattings];
+    currentSheet = [stateCopy currentSheet];
+    conditionalFormattings = [currentSheet conditionalFormattings];
 
-    [v20 addObject:v9];
+    [conditionalFormattings addObject:v9];
   }
 }
 

@@ -1,41 +1,41 @@
 @interface _NUImageAsset
-- (_NUImageAsset)initWithIdentifier:(id)a3;
-- (_NUImageAsset)initWithImageURL:(id)a3;
-- (_NUImageAsset)initWithImageURL:(id)a3 identifier:(id)a4;
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4;
+- (_NUImageAsset)initWithIdentifier:(id)identifier;
+- (_NUImageAsset)initWithImageURL:(id)l;
+- (_NUImageAsset)initWithImageURL:(id)l identifier:(id)identifier;
+- (id)_loadMediaWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation _NUImageAsset
 
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4
+- (id)_loadMediaWithOptions:(id)options error:(id *)error
 {
-  v6 = [(_NUImageAsset *)self imageURL];
+  imageURL = [(_NUImageAsset *)self imageURL];
   v69[0] = 0;
   v7 = *MEMORY[0x1E695DAA0];
   v68 = 0;
-  v8 = [v6 getResourceValue:v69 forKey:v7 error:&v68];
+  v8 = [imageURL getResourceValue:v69 forKey:v7 error:&v68];
   v9 = v69[0];
   v10 = v68;
   if ((v8 & 1) == 0)
   {
-    v46 = [NUError errorWithCode:1 reason:@"Failed to get URL resource value" object:v6 underlyingError:v10];
+    v46 = [NUError errorWithCode:1 reason:@"Failed to get URL resource value" object:imageURL underlyingError:v10];
 LABEL_14:
     v45 = 0;
-    *a4 = v46;
+    *error = v46;
     goto LABEL_27;
   }
 
   if ([v9 conformsToType:*MEMORY[0x1E6982FF8]])
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [v6 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [imageURL path];
     v67 = v10;
-    v13 = [v11 destinationOfSymbolicLinkAtPath:v12 error:&v67];
+    v13 = [defaultManager destinationOfSymbolicLinkAtPath:path error:&v67];
     v14 = v67;
 
     if (v13)
     {
-      v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 relativeToURL:v6];
+      v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 relativeToURL:imageURL];
 
       v65 = 0;
       v66 = 0;
@@ -46,23 +46,23 @@ LABEL_14:
       if (v16)
       {
 
-        v6 = v15;
+        imageURL = v15;
         v9 = v17;
         goto LABEL_6;
       }
 
       v47 = [NUError errorWithCode:1 reason:@"Failed to get resolved URL resource value" object:v15 underlyingError:v10];
-      v6 = v15;
+      imageURL = v15;
       v9 = v17;
     }
 
     else
     {
-      v47 = [NUError errorWithCode:1 reason:@"Failed to resolve symlink" object:v6 underlyingError:v14];
+      v47 = [NUError errorWithCode:1 reason:@"Failed to resolve symlink" object:imageURL underlyingError:v14];
       v10 = v14;
     }
 
-    *a4 = v47;
+    *error = v47;
 
     v45 = 0;
     goto LABEL_27;
@@ -76,13 +76,13 @@ LABEL_6:
   }
 
   v18 = [NUImageFileSourceDefinition alloc];
-  v19 = [(_NUImageAsset *)self imageURL];
-  v20 = [v9 identifier];
-  v21 = [(NUFileSourceDefinition *)v18 initWithURL:v19 UTI:v20];
+  imageURL2 = [(_NUImageAsset *)self imageURL];
+  identifier = [v9 identifier];
+  v21 = [(NUFileSourceDefinition *)v18 initWithURL:imageURL2 UTI:identifier];
 
-  v22 = [(_NUAsset *)self identifier];
+  identifier2 = [(_NUAsset *)self identifier];
   v64 = 0;
-  v23 = [(NUSingleSourceDefinition *)v21 sourceContainerNodeWithIdentifier:v22 error:&v64];
+  v23 = [(NUSingleSourceDefinition *)v21 sourceContainerNodeWithIdentifier:identifier2 error:&v64];
   v24 = v64;
 
   sourceContainerNode = self->_sourceContainerNode;
@@ -135,14 +135,14 @@ LABEL_6:
           v56[2] = __45___NUImageAsset__loadMediaWithOptions_error___block_invoke;
           v56[3] = &unk_1E810A070;
           v57 = v26;
-          v58 = self;
+          selfCopy = self;
           v59 = v50;
           v40 = v50;
           v41 = v54;
           [v54 enumerateAuxiliaryImageProperties:v56];
           v42 = [_NUContainerMedia alloc];
-          v43 = [(_NUMedia *)v39 geometry];
-          v44 = [(_NUContainerMedia *)v42 initWithContainerType:1 components:v40 geometry:v43];
+          geometry = [(_NUMedia *)v39 geometry];
+          v44 = [(_NUContainerMedia *)v42 initWithContainerType:1 components:v40 geometry:geometry];
 
           v45 = [[_NUAssetContainerMedia alloc] initWithAsset:self containerMedia:v44];
           v35 = v52;
@@ -151,7 +151,7 @@ LABEL_6:
         else
         {
           [NUError errorWithCode:1 reason:@"Failed to evaluate image geometry node" object:self underlyingError:v29];
-          *a4 = v45 = 0;
+          *error = v45 = 0;
           v41 = v54;
         }
 
@@ -161,7 +161,7 @@ LABEL_6:
       else
       {
         [NUError errorWithCode:1 reason:@"Failed to prepare image source node" object:self underlyingError:v33];
-        *a4 = v45 = 0;
+        *error = v45 = 0;
         v29 = v33;
         v41 = v54;
         v21 = v55;
@@ -171,7 +171,7 @@ LABEL_6:
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to create source node" object:self underlyingError:v29];
-      *a4 = v45 = 0;
+      *error = v45 = 0;
     }
 
     v24 = v29;
@@ -180,7 +180,7 @@ LABEL_6:
   else
   {
     [NUError errorWithCode:1 reason:@"Failed to create source container node" object:self underlyingError:v24];
-    *a4 = v45 = 0;
+    *error = v45 = 0;
   }
 
   v10 = v24;
@@ -189,12 +189,12 @@ LABEL_27:
   return v45;
 }
 
-- (_NUImageAsset)initWithImageURL:(id)a3 identifier:(id)a4
+- (_NUImageAsset)initWithImageURL:(id)l identifier:(id)identifier
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (!lCopy)
   {
     v12 = NUAssertLogger_10839();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -215,8 +215,8 @@ LABEL_27:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v26;
         v47 = 2114;
@@ -227,8 +227,8 @@ LABEL_27:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -237,8 +237,8 @@ LABEL_27:
     _NUAssertFailHandler("[_NUImageAsset initWithImageURL:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 205, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "fileURL != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = identifierCopy;
+  if (!identifierCopy)
   {
     v19 = NUAssertLogger_10839();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -259,8 +259,8 @@ LABEL_27:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -271,8 +271,8 @@ LABEL_27:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -283,26 +283,26 @@ LABEL_27:
 
   v44.receiver = self;
   v44.super_class = _NUImageAsset;
-  v9 = [(_NUAsset *)&v44 initWithIdentifier:v7];
+  v9 = [(_NUAsset *)&v44 initWithIdentifier:identifierCopy];
   imageURL = v9->_imageURL;
-  v9->_imageURL = v6;
+  v9->_imageURL = lCopy;
 
   return v9;
 }
 
-- (_NUImageAsset)initWithImageURL:(id)a3
+- (_NUImageAsset)initWithImageURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [(_NUImageAsset *)self initWithImageURL:v4 identifier:v5];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v6 = [(_NUImageAsset *)self initWithImageURL:lCopy identifier:absoluteString];
 
   return v6;
 }
 
-- (_NUImageAsset)initWithIdentifier:(id)a3
+- (_NUImageAsset)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -346,8 +346,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -363,8 +363,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

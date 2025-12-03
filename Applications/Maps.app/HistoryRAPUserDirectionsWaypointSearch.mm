@@ -1,121 +1,121 @@
 @interface HistoryRAPUserDirectionsWaypointSearch
-+ (void)loadAllRequestsFromStorage:(id)a3 completion:(id)a4;
-- (HistoryRAPUserDirectionsWaypointSearch)initWithHistoryItem:(id)a3 recording:(id)a4 waypointIndex:(unint64_t)a5;
++ (void)loadAllRequestsFromStorage:(id)storage completion:(id)completion;
+- (HistoryRAPUserDirectionsWaypointSearch)initWithHistoryItem:(id)item recording:(id)recording waypointIndex:(unint64_t)index;
 - (NSString)locationDisplayString;
 - (NSString)searchText;
 - (SearchResult)searchResult;
 - (id)correctedSearchTemplate;
-- (id)geoMapItemForSearchResultAtIndex:(unint64_t)a3;
+- (id)geoMapItemForSearchResultAtIndex:(unint64_t)index;
 - (unint64_t)searchResultsCount;
-- (void)applyToCorrectedSearch:(id)a3;
+- (void)applyToCorrectedSearch:(id)search;
 @end
 
 @implementation HistoryRAPUserDirectionsWaypointSearch
 
-- (id)geoMapItemForSearchResultAtIndex:(unint64_t)a3
+- (id)geoMapItemForSearchResultAtIndex:(unint64_t)index
 {
-  v4 = [(HistoryRAPUserDirectionsWaypointSearch *)self correctedSearchTemplate];
-  v5 = [v4 placeResponse];
-  v6 = [v5 resultsWithResultType:1];
+  correctedSearchTemplate = [(HistoryRAPUserDirectionsWaypointSearch *)self correctedSearchTemplate];
+  placeResponse = [correctedSearchTemplate placeResponse];
+  v6 = [placeResponse resultsWithResultType:1];
 
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [v7 geoMapItem];
+  v7 = [v6 objectAtIndexedSubscript:index];
+  geoMapItem = [v7 geoMapItem];
 
-  return v8;
+  return geoMapItem;
 }
 
-- (void)applyToCorrectedSearch:(id)a3
+- (void)applyToCorrectedSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(HistoryRAPUserDirectionsWaypointSearch *)self correctedSearchTemplate];
-  [v5 copyTo:v4];
+  searchCopy = search;
+  correctedSearchTemplate = [(HistoryRAPUserDirectionsWaypointSearch *)self correctedSearchTemplate];
+  [correctedSearchTemplate copyTo:searchCopy];
 }
 
 - (unint64_t)searchResultsCount
 {
-  v2 = [(HistoryRAPUserDirectionsWaypointSearch *)self searchResult];
-  v3 = v2 != 0;
+  searchResult = [(HistoryRAPUserDirectionsWaypointSearch *)self searchResult];
+  v3 = searchResult != 0;
 
   return v3;
 }
 
 - (NSString)locationDisplayString
 {
-  v2 = [(HistoryRAPUserDirectionsWaypointSearch *)self searchResult];
-  v3 = [v2 locationTitle];
+  searchResult = [(HistoryRAPUserDirectionsWaypointSearch *)self searchResult];
+  locationTitle = [searchResult locationTitle];
 
-  return v3;
+  return locationTitle;
 }
 
 - (NSString)searchText
 {
-  v3 = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
-  if (v3 == 1)
+  waypointIndex = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
+  if (waypointIndex == 1)
   {
-    v4 = [(RAPDirectionsRecording *)self->_recording endWaypoint];
+    endWaypoint = [(RAPDirectionsRecording *)self->_recording endWaypoint];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!waypointIndex)
   {
-    v4 = [(RAPDirectionsRecording *)self->_recording startWaypoint];
+    endWaypoint = [(RAPDirectionsRecording *)self->_recording startWaypoint];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 searchString];
+    v5 = endWaypoint;
+    searchString = [endWaypoint searchString];
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  searchString = 0;
 LABEL_7:
 
-  return v6;
+  return searchString;
 }
 
 - (id)correctedSearchTemplate
 {
-  v3 = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
-  if (v3 == 1)
+  waypointIndex = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
+  if (waypointIndex == 1)
   {
-    v4 = [(RAPDirectionsRecording *)self->_recording endWaypointCorrectedSearchTemplate];
+    endWaypointCorrectedSearchTemplate = [(RAPDirectionsRecording *)self->_recording endWaypointCorrectedSearchTemplate];
   }
 
-  else if (v3)
+  else if (waypointIndex)
   {
-    v4 = 0;
+    endWaypointCorrectedSearchTemplate = 0;
   }
 
   else
   {
-    v4 = [(RAPDirectionsRecording *)self->_recording startWaypointCorrectedSearchTemplate];
+    endWaypointCorrectedSearchTemplate = [(RAPDirectionsRecording *)self->_recording startWaypointCorrectedSearchTemplate];
   }
 
-  return v4;
+  return endWaypointCorrectedSearchTemplate;
 }
 
 - (SearchResult)searchResult
 {
-  v3 = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
-  if (v3 == 1)
+  waypointIndex = [(HistoryRAPUserDirectionsWaypointSearch *)self waypointIndex];
+  if (waypointIndex == 1)
   {
-    v4 = [(HistoryRAPUserDirectionsWaypointSearch *)self historyItem];
-    v5 = [v4 historyEntry];
+    historyItem = [(HistoryRAPUserDirectionsWaypointSearch *)self historyItem];
+    historyEntry = [historyItem historyEntry];
     v6 = &v11;
     v8 = &v11;
     v7 = 0;
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!waypointIndex)
   {
     v12 = 0;
-    v4 = [(HistoryRAPUserDirectionsWaypointSearch *)self historyItem];
-    v5 = [v4 historyEntry];
+    historyItem = [(HistoryRAPUserDirectionsWaypointSearch *)self historyItem];
+    historyEntry = [historyItem historyEntry];
     v6 = &v12;
     v7 = &v12;
     v8 = 0;
 LABEL_5:
-    [SearchResult newStartWaypointSearchResult:v7 endWaypointSearchResult:v8 forRouteHistoryEntry:v5];
+    [SearchResult newStartWaypointSearchResult:v7 endWaypointSearchResult:v8 forRouteHistoryEntry:historyEntry];
     v9 = *v6;
 
     goto LABEL_7;
@@ -127,44 +127,44 @@ LABEL_7:
   return v9;
 }
 
-- (HistoryRAPUserDirectionsWaypointSearch)initWithHistoryItem:(id)a3 recording:(id)a4 waypointIndex:(unint64_t)a5
+- (HistoryRAPUserDirectionsWaypointSearch)initWithHistoryItem:(id)item recording:(id)recording waypointIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  recordingCopy = recording;
   v17.receiver = self;
   v17.super_class = HistoryRAPUserDirectionsWaypointSearch;
   v11 = [(HistoryRAPUserDirectionsWaypointSearch *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_historyItem, a3);
-    v12->_waypointIndex = a5;
-    objc_storeStrong(&v12->_recording, a4);
-    v13 = [v10 auxiliaryControls];
-    v14 = [v13 copy];
+    objc_storeStrong(&v11->_historyItem, item);
+    v12->_waypointIndex = index;
+    objc_storeStrong(&v12->_recording, recording);
+    auxiliaryControls = [recordingCopy auxiliaryControls];
+    v14 = [auxiliaryControls copy];
     auxiliaryControls = v12->_auxiliaryControls;
     v12->_auxiliaryControls = v14;
 
-    if ([v10 hasOriginatingAuxiliaryControlIndex])
+    if ([recordingCopy hasOriginatingAuxiliaryControlIndex])
     {
       v12->_hasOriginatingAuxiliaryControlIndex = 1;
-      v12->_originatingAuxiliaryControlIndex = [v10 originatingAuxiliaryControlIndex];
+      v12->_originatingAuxiliaryControlIndex = [recordingCopy originatingAuxiliaryControlIndex];
     }
   }
 
   return v12;
 }
 
-+ (void)loadAllRequestsFromStorage:(id)a3 completion:(id)a4
++ (void)loadAllRequestsFromStorage:(id)storage completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[RAPStorageHistoryContainer directionsRecordingStorage];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100CC5790;
   v7[3] = &unk_1016505C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 loadAllRecordingsWithConcurrentBlock:v7];
 }
 

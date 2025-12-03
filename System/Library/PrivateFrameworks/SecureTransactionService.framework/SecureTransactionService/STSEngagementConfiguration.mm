@@ -1,23 +1,23 @@
 @interface STSEngagementConfiguration
-+ (id)configurationWithDeviceEngagementType:(unint64_t)a3 dataRetrievalType:(unint64_t)a4 engagementData:(id)a5;
-- (STSEngagementConfiguration)initWithDeviceEngagementType:(unint64_t)a3 dataRetrievalType:(unint64_t)a4 engagementData:(id)a5;
++ (id)configurationWithDeviceEngagementType:(unint64_t)type dataRetrievalType:(unint64_t)retrievalType engagementData:(id)data;
+- (STSEngagementConfiguration)initWithDeviceEngagementType:(unint64_t)type dataRetrievalType:(unint64_t)retrievalType engagementData:(id)data;
 @end
 
 @implementation STSEngagementConfiguration
 
-+ (id)configurationWithDeviceEngagementType:(unint64_t)a3 dataRetrievalType:(unint64_t)a4 engagementData:(id)a5
++ (id)configurationWithDeviceEngagementType:(unint64_t)type dataRetrievalType:(unint64_t)retrievalType engagementData:(id)data
 {
-  v7 = a5;
-  v8 = [[STSEngagementConfiguration alloc] initWithDeviceEngagementType:a3 dataRetrievalType:a4 engagementData:v7];
+  dataCopy = data;
+  v8 = [[STSEngagementConfiguration alloc] initWithDeviceEngagementType:type dataRetrievalType:retrievalType engagementData:dataCopy];
 
   return v8;
 }
 
-- (STSEngagementConfiguration)initWithDeviceEngagementType:(unint64_t)a3 dataRetrievalType:(unint64_t)a4 engagementData:(id)a5
+- (STSEngagementConfiguration)initWithDeviceEngagementType:(unint64_t)type dataRetrievalType:(unint64_t)retrievalType engagementData:(id)data
 {
-  v9 = a5;
-  v10 = v9;
-  if (a3 != 1 || v9)
+  dataCopy = data;
+  v10 = dataCopy;
+  if (type != 1 || dataCopy)
   {
     v15.receiver = self;
     v15.super_class = STSEngagementConfiguration;
@@ -25,21 +25,21 @@
     v13 = v12;
     if (v12)
     {
-      v12->_deviceEngagementType = a3;
-      v12->_dataRetrievalType = a4;
-      objc_storeStrong(&v12->_engagementData, a5);
+      v12->_deviceEngagementType = type;
+      v12->_dataRetrievalType = retrievalType;
+      objc_storeStrong(&v12->_engagementData, data);
     }
 
     self = v13;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

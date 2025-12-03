@@ -1,10 +1,10 @@
 @interface NSURLPromisePair
-+ (id)pairWithLogicalURL:(id)a3 physicalURL:(id)a4;
-+ (id)pairWithURL:(id)a3;
++ (id)pairWithLogicalURL:(id)l physicalURL:(id)rL;
++ (id)pairWithURL:(id)l;
 - (NSURL)URL;
-- (NSURLPromisePair)initWithCoder:(id)a3;
+- (NSURLPromisePair)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSURLPromisePair
@@ -29,40 +29,40 @@
   return v2;
 }
 
-+ (id)pairWithURL:(id)a3
++ (id)pairWithURL:(id)l
 {
-  v3 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
     v5 = _CFURLPromiseCopyPhysicalURL();
-    v3 = [a1 pairWithLogicalURL:v3 physicalURL:v5];
+    lCopy = [self pairWithLogicalURL:lCopy physicalURL:v5];
     if (v5)
     {
       CFRelease(v5);
     }
   }
 
-  return v3;
+  return lCopy;
 }
 
-+ (id)pairWithLogicalURL:(id)a3 physicalURL:(id)a4
++ (id)pairWithLogicalURL:(id)l physicalURL:(id)rL
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if (v6)
   {
-    v6[1] = [a3 copy];
-    v6[2] = [a4 copy];
+    v6[1] = [l copy];
+    v6[2] = [rL copy];
   }
 
   return v6;
 }
 
-- (NSURLPromisePair)initWithCoder:(id)a3
+- (NSURLPromisePair)initWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -70,22 +70,22 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"_NSURLPromisePair should only ever be decoded by XPC" userInfo:0]);
   }
 
-  self->_logicalURL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSLogicalURL"];
-  self->_physicalURL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPhysicalURL"];
+  self->_logicalURL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSLogicalURL"];
+  self->_physicalURL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPhysicalURL"];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:self->_logicalURL forKey:@"NSLogicalURL"];
+  [coder encodeObject:self->_logicalURL forKey:@"NSLogicalURL"];
   physicalURL = self->_physicalURL;
 
-  [a3 encodeObject:physicalURL forKey:@"NSPhysicalURL"];
+  [coder encodeObject:physicalURL forKey:@"NSPhysicalURL"];
 }
 
 @end

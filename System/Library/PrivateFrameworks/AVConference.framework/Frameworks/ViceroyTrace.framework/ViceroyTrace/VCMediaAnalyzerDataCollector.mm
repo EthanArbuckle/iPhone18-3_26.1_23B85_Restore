@@ -1,13 +1,13 @@
 @interface VCMediaAnalyzerDataCollector
-- (VCMediaAnalyzerDataCollector)initWithDispatchQueue:(id)a3;
-- (void)addAggregatedMediaAnalyzerMetricsToReport:(id)a3;
+- (VCMediaAnalyzerDataCollector)initWithDispatchQueue:(id)queue;
+- (void)addAggregatedMediaAnalyzerMetricsToReport:(id)report;
 - (void)dealloc;
-- (void)processMediaAnalyzerMetrics:(id)a3;
+- (void)processMediaAnalyzerMetrics:(id)metrics;
 @end
 
 @implementation VCMediaAnalyzerDataCollector
 
-- (VCMediaAnalyzerDataCollector)initWithDispatchQueue:(id)a3
+- (VCMediaAnalyzerDataCollector)initWithDispatchQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = VCMediaAnalyzerDataCollector;
@@ -20,14 +20,14 @@ LABEL_7:
     return 0;
   }
 
-  if (!a3)
+  if (!queue)
   {
     [VCMediaAnalyzerDataCollector initWithDispatchQueue:];
     goto LABEL_7;
   }
 
-  dispatch_retain(a3);
-  v4->_stateQueue = a3;
+  dispatch_retain(queue);
+  v4->_stateQueue = queue;
   v4->_mediaAnalyzerLastEnabledTime = NAN;
   v4->_mediaAnalyzerMeanProcessingTimesHistogram = [[VCReportingHistogram alloc] initWithType:53 bucketValues:0];
   return v4;
@@ -46,12 +46,12 @@ LABEL_7:
   [(VCMediaAnalyzerDataCollector *)&v4 dealloc];
 }
 
-- (void)processMediaAnalyzerMetrics:(id)a3
+- (void)processMediaAnalyzerMetrics:(id)metrics
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if ([a3 objectForKeyedSubscript:@"MAMPT"])
+  if ([metrics objectForKeyedSubscript:@"MAMPT"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"MAMPT", "doubleValue"}];
+    [objc_msgSend(metrics objectForKeyedSubscript:{@"MAMPT", "doubleValue"}];
     LODWORD(v6) = vcvtad_u64_f64(v5);
     mediaAnalyzerMeanProcessingTimesHistogram = self->_mediaAnalyzerMeanProcessingTimesHistogram;
 
@@ -59,14 +59,14 @@ LABEL_7:
   }
 }
 
-- (void)addAggregatedMediaAnalyzerMetricsToReport:(id)a3
+- (void)addAggregatedMediaAnalyzerMetricsToReport:(id)report
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isMediaAnalyzerEnabled), @"VCMAE"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaAnalyzerEnabledDuration), @"VCMAED"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_isMediaAnalyzerEnabled), @"VCMAE"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaAnalyzerEnabledDuration), @"VCMAED"}];
   v5 = [(VCHistogram *)self->_mediaAnalyzerMeanProcessingTimesHistogram description];
 
-  [a3 setObject:v5 forKeyedSubscript:@"VCMAMPT"];
+  [report setObject:v5 forKeyedSubscript:@"VCMAMPT"];
 }
 
 - (void)initWithDispatchQueue:.cold.1()

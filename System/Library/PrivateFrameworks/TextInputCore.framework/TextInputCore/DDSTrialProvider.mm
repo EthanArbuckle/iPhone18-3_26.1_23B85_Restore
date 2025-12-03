@@ -1,55 +1,55 @@
 @interface DDSTrialProvider
-- (id)contentItemsFromAssets:(id)a3 matchingFilter:(id)a4;
-- (void)fetchTrialAssetForQuery:(id)a3 callback:(id)a4;
-- (void)registerDelegate:(id)a3;
-- (void)setUpTrialForQuery:(id)a3;
-- (void)unregisterDelegate:(id)a3;
+- (id)contentItemsFromAssets:(id)assets matchingFilter:(id)filter;
+- (void)fetchTrialAssetForQuery:(id)query callback:(id)callback;
+- (void)registerDelegate:(id)delegate;
+- (void)setUpTrialForQuery:(id)query;
+- (void)unregisterDelegate:(id)delegate;
 @end
 
 @implementation DDSTrialProvider
 
-- (id)contentItemsFromAssets:(id)a3 matchingFilter:(id)a4
+- (id)contentItemsFromAssets:(id)assets matchingFilter:(id)filter
 {
   v5 = MEMORY[0x277D04010];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  v9 = [v8 contentItemsFromAssets:v7 matchingFilter:v6];
+  filterCopy = filter;
+  assetsCopy = assets;
+  sharedInstance = [v5 sharedInstance];
+  v9 = [sharedInstance contentItemsFromAssets:assetsCopy matchingFilter:filterCopy];
 
   return v9;
 }
 
-- (void)fetchTrialAssetForQuery:(id)a3 callback:(id)a4
+- (void)fetchTrialAssetForQuery:(id)query callback:(id)callback
 {
   v5 = MEMORY[0x277D04010];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  [v8 fetchTrialAssetForQuery:v7 callback:v6];
+  callbackCopy = callback;
+  queryCopy = query;
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance fetchTrialAssetForQuery:queryCopy callback:callbackCopy];
 }
 
-- (void)setUpTrialForQuery:(id)a3
+- (void)setUpTrialForQuery:(id)query
 {
   v3 = MEMORY[0x277D04010];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 setUpTrialForQuery:v4];
+  queryCopy = query;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance setUpTrialForQuery:queryCopy];
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
   v3 = MEMORY[0x277D04010];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 unregisterDelegate:v4];
+  delegateCopy = delegate;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance unregisterDelegate:delegateCopy];
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
   v3 = MEMORY[0x277D04010];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 registerDelegate:v4];
+  delegateCopy = delegate;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance registerDelegate:delegateCopy];
 }
 
 @end

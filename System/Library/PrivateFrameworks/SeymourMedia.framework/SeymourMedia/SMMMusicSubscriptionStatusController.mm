@@ -1,20 +1,20 @@
 @interface SMMMusicSubscriptionStatusController
-+ (void)requestSubscriptionCapabilitiesWithCompletion:(id)a3;
++ (void)requestSubscriptionCapabilitiesWithCompletion:(id)completion;
 @end
 
 @implementation SMMMusicSubscriptionStatusController
 
-+ (void)requestSubscriptionCapabilitiesWithCompletion:(id)a3
++ (void)requestSubscriptionCapabilitiesWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D7FB78] sharedStatusController];
+  completionCopy = completion;
+  mEMORY[0x277D7FB78] = [MEMORY[0x277D7FB78] sharedStatusController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__SMMMusicSubscriptionStatusController_requestSubscriptionCapabilitiesWithCompletion___block_invoke;
   v6[3] = &unk_277DA2B28;
-  v7 = v3;
-  v5 = v3;
-  [v4 getSubscriptionStatusWithCompletionHandler:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x277D7FB78] getSubscriptionStatusWithCompletionHandler:v6];
 }
 
 uint64_t __86__SMMMusicSubscriptionStatusController_requestSubscriptionCapabilitiesWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)

@@ -1,51 +1,51 @@
 @interface VUIImageView
 - (CGSize)intrinsicContentSize;
 - (CGSize)localImageViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIImageView)initWithFrame:(CGRect)frame;
 - (_VUICornerRadii)shadowRadii;
-- (id)_imageProxyWithSize:(CGSize)a3 sizeComputationOnly:(BOOL)a4;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)_imageProxyWithSize:(CGSize)size sizeComputationOnly:(BOOL)only;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (void)_loadImage;
 - (void)_reloadImageForLayoutDirectionChange;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setFocusedColor:(id)a3;
-- (void)_setImage:(id)a3 shouldUpdateImageView:(BOOL)a4;
-- (void)_setTintColor:(id)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setFocusedColor:(id)color;
+- (void)_setImage:(id)image shouldUpdateImageView:(BOOL)view;
+- (void)_setTintColor:(id)color;
 - (void)_updateBorderColor;
 - (void)_updateCornerRadius;
-- (void)_updateFlatImageWithImage:(id)a3 shouldUpdateImageView:(BOOL)a4;
+- (void)_updateFlatImageWithImage:(id)image shouldUpdateImageView:(BOOL)view;
 - (void)_updateImageView;
 - (void)_updateTintColor;
 - (void)computeCornerRadii;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageContainsCornerRadius:(BOOL)a3;
-- (void)setImageProxy:(id)a3 clearingExisting:(BOOL)a4 completion:(id)a5;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setSymbolImage:(id)a3 withSymbolTransition:(id)a4;
-- (void)setVuiContentMode:(unint64_t)a3;
-- (void)vui_setHighlighted:(BOOL)a3;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)vui_willMoveToWindow:(id)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageContainsCornerRadius:(BOOL)radius;
+- (void)setImageProxy:(id)proxy clearingExisting:(BOOL)existing completion:(id)completion;
+- (void)setPlaceholderColor:(id)color;
+- (void)setPlaceholderImage:(id)image;
+- (void)setSymbolImage:(id)image withSymbolTransition:(id)transition;
+- (void)setVuiContentMode:(unint64_t)mode;
+- (void)vui_setHighlighted:(BOOL)highlighted;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
+- (void)vui_willMoveToWindow:(id)window;
 @end
 
 @implementation VUIImageView
 
-- (VUIImageView)initWithFrame:(CGRect)a3
+- (VUIImageView)initWithFrame:(CGRect)frame
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = VUIImageView;
-  v3 = [(VUIImageView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIImageView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -102,22 +102,22 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setVuiContentMode:(unint64_t)a3
+- (void)setVuiContentMode:(unint64_t)mode
 {
-  if (self->_imageContentMode != a3)
+  if (self->_imageContentMode != mode)
   {
-    self->_imageContentMode = a3;
-    [(UIImageView *)self->_imageView setContentMode:VUIUIViewContentModeFromVUIContentMode(a3)];
+    self->_imageContentMode = mode;
+    [(UIImageView *)self->_imageView setContentMode:VUIUIViewContentModeFromVUIContentMode(mode)];
 
     [(VUIImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = VUIImageView;
-  [(VUIImageView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VUIImageView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   imageView = self->_imageView;
   [(VUIImageView *)self bounds];
   [(UIImageView *)imageView setFrame:?];
@@ -131,35 +131,35 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
   [(VUIImageView *)self vui_layoutSubviews:0 computationOnly:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIImageView *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIImageView *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(VUIImageView *)self setImageProxy:0];
-  [(VUIImageView *)self _setImage:v4];
+  [(VUIImageView *)self _setImage:imageCopy];
 }
 
-- (void)setImageProxy:(id)a3 clearingExisting:(BOOL)a4 completion:(id)a5
+- (void)setImageProxy:(id)proxy clearingExisting:(BOOL)existing completion:(id)completion
 {
-  v6 = a4;
-  v24 = a3;
-  v9 = a5;
-  if (self->_imageProxy != v24 || self->_completion != v9)
+  existingCopy = existing;
+  proxyCopy = proxy;
+  completionCopy = completion;
+  if (self->_imageProxy != proxyCopy || self->_completion != completionCopy)
   {
-    v10 = [(VUIImageView *)self window];
-    if (v10)
+    window = [(VUIImageView *)self window];
+    if (window)
     {
-      v11 = v10;
-      v12 = [(UIView *)self vuiIsRTL];
+      v11 = window;
+      vuiIsRTL = [(UIView *)self vuiIsRTL];
 
-      v13 = v12;
+      v13 = vuiIsRTL;
     }
 
     else
@@ -167,33 +167,33 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
       v13 = 0;
     }
 
-    [(VUIImageProxy *)v24 setImageDirection:v13];
-    v14 = [(VUIImageProxy *)v24 isEqual:self->_imageProxy];
-    v15 = [(VUIImageView *)self isImageLoaded];
+    [(VUIImageProxy *)proxyCopy setImageDirection:v13];
+    v14 = [(VUIImageProxy *)proxyCopy isEqual:self->_imageProxy];
+    isImageLoaded = [(VUIImageView *)self isImageLoaded];
     if (v14)
     {
-      if (!v15)
+      if (!isImageLoaded)
       {
-        v16 = [(VUIImageView *)self completion];
+        completion = [(VUIImageView *)self completion];
 
-        if (v16)
+        if (completion)
         {
-          v17 = [(VUIImageView *)self completion];
-          v18 = [(VUIImageView *)self image];
-          (v17)[2](v17, v18, 0, 0);
+          completion2 = [(VUIImageView *)self completion];
+          image = [(VUIImageView *)self image];
+          (completion2)[2](completion2, image, 0, 0);
         }
       }
 
-      [(VUIImageView *)self setCompletion:v9];
+      [(VUIImageView *)self setCompletion:completionCopy];
       if ([(VUIImageView *)self isImageLoaded])
       {
-        v19 = [(VUIImageView *)self completion];
+        completion3 = [(VUIImageView *)self completion];
 
-        if (v19)
+        if (completion3)
         {
-          v20 = [(VUIImageView *)self completion];
-          v21 = [(VUIImageView *)self image];
-          (v20)[2](v20, v21, 0, 1);
+          completion4 = [(VUIImageView *)self completion];
+          image2 = [(VUIImageView *)self image];
+          (completion4)[2](completion4, image2, 0, 1);
 
           [(VUIImageView *)self setCompletion:0];
         }
@@ -202,71 +202,71 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
 
     else
     {
-      if (!v15)
+      if (!isImageLoaded)
       {
         [(VUIImageProxy *)self->_imageProxy cancel];
       }
 
       [(VUIImageView *)self setImageLoaded:0];
-      if (![(VUIImageProxy *)self->_imageProxy isOfSameOriginAs:v24]&& v6)
+      if (![(VUIImageProxy *)self->_imageProxy isOfSameOriginAs:proxyCopy]&& existingCopy)
       {
         [(VUIImageView *)self _setImage:0];
       }
 
-      [(VUIImageView *)self setCompletion:v9];
-      objc_storeStrong(&self->_imageProxy, a3);
-      v22 = [(VUIImageView *)self window];
+      [(VUIImageView *)self setCompletion:completionCopy];
+      objc_storeStrong(&self->_imageProxy, proxy);
+      window2 = [(VUIImageView *)self window];
 
-      if (v22)
+      if (window2)
       {
         [(VUIImageView *)self _loadImage];
       }
     }
   }
 
-  v23 = [(VUIImageProxy *)v24 object];
-  if (v23)
+  object = [(VUIImageProxy *)proxyCopy object];
+  if (object)
   {
-    objc_storeStrong(&self->_latestImageURL, v23);
+    objc_storeStrong(&self->_latestImageURL, object);
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_placeholderImage, image);
     [(VUIImageView *)self _updateImageView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v5 = a3;
-  if (self->_placeholderColor != v5)
+  colorCopy = color;
+  if (self->_placeholderColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_placeholderColor, color);
     [(VUIImageView *)self _updateImageView];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  if (self->_borderColor != v5)
+  colorCopy = color;
+  if (self->_borderColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_borderColor, a3);
-    v6 = [(UIImageView *)self->_imageView layer];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_borderColor, color);
+    layer = [(UIImageView *)self->_imageView layer];
     v7 = v8;
-    [v6 setBorderColor:{-[UIColor CGColor](v8, "CGColor")}];
+    [layer setBorderColor:{-[UIColor CGColor](v8, "CGColor")}];
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
@@ -274,65 +274,65 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
 {
   if (self->_borderColor)
   {
-    v3 = [(UIImageView *)self->_imageView layer];
-    [v3 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
   }
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  if (self->_borderWidth != a3)
+  if (self->_borderWidth != width)
   {
-    self->_borderWidth = a3;
-    v4 = [(UIImageView *)self->_imageView layer];
-    [v4 setBorderWidth:a3];
+    self->_borderWidth = width;
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setBorderWidth:width];
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(UIImageView *)self->_imageView _setContinuousCornerRadius:?];
-  v5 = [(UIImageView *)self->_imageView layer];
-  [v5 setMasksToBounds:a3 > 0.0];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setMasksToBounds:radius > 0.0];
 
-  self->_continuousCorners = a3 > 0.0;
+  self->_continuousCorners = radius > 0.0;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(VUIImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setImageContainsCornerRadius:(BOOL)a3
+- (void)setImageContainsCornerRadius:(BOOL)radius
 {
-  if (self->_imageContainsCornerRadius != a3)
+  if (self->_imageContainsCornerRadius != radius)
   {
-    self->_imageContainsCornerRadius = a3;
+    self->_imageContainsCornerRadius = radius;
     [(VUIImageView *)self _updateCornerRadius];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = VUIImageView;
   [(VUIImageView *)&v5 setHighlighted:?];
-  [(VUIImageView *)self vui_setHighlighted:v3];
+  [(VUIImageView *)self vui_setHighlighted:highlightedCopy];
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(UIImageView *)self->_imageView setHighlighted:?];
   highlightFilter = self->_highlightFilter;
   if (self->__focusedColor)
   {
-    v6 = !v3;
+    v6 = !highlightedCopy;
   }
 
   else
@@ -347,9 +347,9 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
       return;
     }
 
-    v7 = [(UIImageView *)self->_imageView layer];
-    v8 = [v7 filters];
-    v21 = [v8 mutableCopy];
+    layer = [(UIImageView *)self->_imageView layer];
+    filters = [layer filters];
+    v21 = [filters mutableCopy];
 
     [v21 removeObjectIdenticalTo:self->_highlightFilter];
     goto LABEL_16;
@@ -364,15 +364,15 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
     [(CAFilter *)self->_highlightFilter setValue:[(UIColor *)self->__focusedColor CGColor] forKey:@"inputColor"];
   }
 
-  v11 = [(UIImageView *)self->_imageView layer];
-  v12 = [v11 filters];
-  v13 = [v12 containsObject:self->_highlightFilter];
+  layer2 = [(UIImageView *)self->_imageView layer];
+  filters2 = [layer2 filters];
+  v13 = [filters2 containsObject:self->_highlightFilter];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(UIImageView *)self->_imageView layer];
-    v15 = [v14 filters];
-    v16 = [v15 mutableCopy];
+    layer3 = [(UIImageView *)self->_imageView layer];
+    filters3 = [layer3 filters];
+    v16 = [filters3 mutableCopy];
     v17 = v16;
     if (v16)
     {
@@ -388,38 +388,38 @@ void __30__VUIImageView_initWithFrame___block_invoke(uint64_t a1)
 
     [v21 addObject:self->_highlightFilter];
 LABEL_16:
-    v19 = [(UIImageView *)self->_imageView layer];
+    layer4 = [(UIImageView *)self->_imageView layer];
     v20 = [v21 copy];
-    [v19 setFilters:v20];
+    [layer4 setFilters:v20];
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = subviews.height;
+  width = subviews.width;
   v8 = MEMORY[0x277CBF3A8];
   [(VUIImageView *)self localImageViewSize];
   v10 = v9;
   v12 = v11;
   if ([(VUIImageView *)self isResourceImage]|| [(VUIImageView *)self isSymbolImage])
   {
-    v13 = [(VUIImageView *)self overrideLocalImageViewSizingMode];
+    overrideLocalImageViewSizingMode = [(VUIImageView *)self overrideLocalImageViewSizingMode];
 
-    if (v13)
+    if (overrideLocalImageViewSizingMode)
     {
-      v14 = [(VUIImageView *)self overrideLocalImageViewSizingMode];
+      overrideLocalImageViewSizingMode2 = [(VUIImageView *)self overrideLocalImageViewSizingMode];
     }
 
     else
     {
-      v14 = @"FitToViewBounds";
+      overrideLocalImageViewSizingMode2 = @"FitToViewBounds";
       if ([(VUIImageView *)self isResourceImage])
       {
         if (v12 > 0.0 && v10 > 0.0)
         {
-          v14 = @"FitToProvidedSize";
+          overrideLocalImageViewSizingMode2 = @"FitToProvidedSize";
         }
       }
     }
@@ -427,32 +427,32 @@ LABEL_16:
 
   else
   {
-    v14 = @"FitToViewBounds";
+    overrideLocalImageViewSizingMode2 = @"FitToViewBounds";
   }
 
   v16 = *v8;
   v17 = v8[1];
-  if (![(__CFString *)v14 isEqual:@"FitToProvidedSize"])
+  if (![(__CFString *)overrideLocalImageViewSizingMode2 isEqual:@"FitToProvidedSize"])
   {
     v22 = v17;
     v20 = v16;
-    if (![(__CFString *)v14 isEqual:@"FitToViewBounds"])
+    if (![(__CFString *)overrideLocalImageViewSizingMode2 isEqual:@"FitToViewBounds"])
     {
       goto LABEL_48;
     }
 
     if (width == v16 && height == v17)
     {
-      v31 = self->_imageProxy;
+      height = self->_imageProxy;
     }
 
     else
     {
-      v31 = [(VUIImageView *)self _imageProxyWithSize:v4 sizeComputationOnly:width, height];
+      height = [(VUIImageView *)self _imageProxyWithSize:onlyCopy sizeComputationOnly:width, height];
     }
 
-    v28 = v31;
-    [(VUIImageProxy *)v31 expectedSize];
+    vuiTraitCollection2 = height;
+    [(VUIImageProxy *)height expectedSize];
     v34 = v32 == v16 && v33 == v17;
     if (v34 && (([(UIImageView *)self->_imageView sizeThatFits:width, height], v32 == v16) ? (v35 = v33 == v17) : (v35 = 0), v35))
     {
@@ -470,8 +470,8 @@ LABEL_16:
     goto LABEL_47;
   }
 
-  v18 = [(VUIImageView *)self image];
-  [v18 size];
+  image = [(VUIImageView *)self image];
+  [image size];
   v20 = v19;
   v22 = v21;
 
@@ -484,18 +484,18 @@ LABEL_16:
 
   if ([(VUIImageView *)self adjustsLocalImageForContentSizeCategory])
   {
-    v26 = [(UIView *)self vuiTraitCollection];
-    [VUICoreUtilities scaleContentSizeValue:v26 forTraitCollection:v20];
+    vuiTraitCollection = [(UIView *)self vuiTraitCollection];
+    [VUICoreUtilities scaleContentSizeValue:vuiTraitCollection forTraitCollection:v20];
     v20 = v27;
 
-    v28 = [(UIView *)self vuiTraitCollection];
-    [VUICoreUtilities scaleContentSizeValue:v28 forTraitCollection:v22];
+    vuiTraitCollection2 = [(UIView *)self vuiTraitCollection];
+    [VUICoreUtilities scaleContentSizeValue:vuiTraitCollection2 forTraitCollection:v22];
     v22 = v29;
 LABEL_47:
   }
 
 LABEL_48:
-  if (!v4)
+  if (!onlyCopy)
   {
     [(VUIImageView *)self bounds];
     v39 = v38;
@@ -511,16 +511,16 @@ LABEL_48:
       {
         if (self->_shadowPathUpdater)
         {
-          v47 = [(VUIImageView *)self shadowPathUpdater];
-          v47[2]();
+          shadowPathUpdater = [(VUIImageView *)self shadowPathUpdater];
+          shadowPathUpdater[2]();
         }
 
         else
         {
           [(VUIImageView *)self bounds];
           v50 = [VUICoreUtilities shadowPathWithCornerRadii:self->_shadowRadii.topLeft andScaledSize:self->_shadowRadii.topRight, self->_shadowRadii.bottomLeft, self->_shadowRadii.bottomRight, v48, v49];
-          v47 = [(VUIImageView *)self layer];
-          [v47 setShadowPath:v50];
+          shadowPathUpdater = [(VUIImageView *)self layer];
+          [shadowPathUpdater setShadowPath:v50];
         }
       }
     }
@@ -537,31 +537,31 @@ LABEL_48:
   return result;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_animatesShadowChanges || ([v7 isEqualToString:@"shadowPath"] & 1) == 0)
+  layerCopy = layer;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (!self->_animatesShadowChanges || ([keyCopy isEqualToString:@"shadowPath"] & 1) == 0)
   {
     v17.receiver = self;
     v17.super_class = VUIImageView;
-    [(VUIImageView *)&v17 actionForLayer:v6 forKey:v8];
+    [(VUIImageView *)&v17 actionForLayer:layerCopy forKey:v8];
     v13 = LABEL_8:;
     goto LABEL_9;
   }
 
-  v9 = [v6 shadowPath];
-  if (!v9)
+  shadowPath = [layerCopy shadowPath];
+  if (!shadowPath)
   {
     v16.receiver = self;
     v16.super_class = VUIImageView;
-    [(VUIImageView *)&v16 actionForLayer:v6 forKey:v8];
+    [(VUIImageView *)&v16 actionForLayer:layerCopy forKey:v8];
     goto LABEL_8;
   }
 
-  v10 = v9;
-  v11 = [v6 animationForKey:@"bounds.size"];
+  v10 = shadowPath;
+  v11 = [layerCopy animationForKey:@"bounds.size"];
   if (v11 && (objc_opt_class(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v12 = [v11 copy];
@@ -576,7 +576,7 @@ LABEL_48:
   {
     v15.receiver = self;
     v15.super_class = VUIImageView;
-    v13 = [(VUIImageView *)&v15 actionForLayer:v6 forKey:v8];
+    v13 = [(VUIImageView *)&v15 actionForLayer:layerCopy forKey:v8];
   }
 
 LABEL_9:
@@ -584,47 +584,47 @@ LABEL_9:
   return v13;
 }
 
-- (void)vui_willMoveToWindow:(id)a3
+- (void)vui_willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = VUIImageView;
   [(UIView *)&v6 vui_willMoveToWindow:?];
-  v5 = [(VUIImageView *)self isImageLoaded];
-  if (a3)
+  isImageLoaded = [(VUIImageView *)self isImageLoaded];
+  if (window)
   {
-    if (!v5)
+    if (!isImageLoaded)
     {
       [(VUIImageView *)self _loadImage];
     }
   }
 
-  else if (!v5)
+  else if (!isImageLoaded)
   {
     [(VUIImageProxy *)self->_imageProxy cancel];
   }
 }
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
-  self->_selected = a3;
+  selectedCopy = selected;
+  self->_selected = selected;
   [(VUIImageView *)self _updateImageView];
   if ([(VUIImageView *)self _enableEdgeAntialiasingOnSelected])
   {
-    v7 = [(UIImageView *)self->_imageView layer];
-    [v7 setAllowsEdgeAntialiasing:v5];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setAllowsEdgeAntialiasing:selectedCopy];
 
-    v8 = [(UIImageView *)self->_imageView layer];
-    [v8 setEdgeAntialiasingMask:3];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    [layer2 setEdgeAntialiasingMask:3];
   }
 }
 
-- (id)_imageProxyWithSize:(CGSize)a3 sizeComputationOnly:(BOOL)a4
+- (id)_imageProxyWithSize:(CGSize)size sizeComputationOnly:(BOOL)only
 {
   dynamicProxyProvider = self->_dynamicProxyProvider;
   if (dynamicProxyProvider)
   {
-    v6 = dynamicProxyProvider[2](dynamicProxyProvider, a4, a3, *&a3.height);
+    v6 = dynamicProxyProvider[2](dynamicProxyProvider, only, size, *&size.height);
   }
 
   else
@@ -637,15 +637,15 @@ LABEL_9:
 
 - (void)_reloadImageForLayoutDirectionChange
 {
-  v3 = [(VUIImageView *)self window];
+  window = [(VUIImageView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(UIView *)self vuiIsRTL];
-    v5 = [(VUIImageView *)self imageProxy];
-    v6 = [v5 imageDirection];
+    vuiIsRTL = [(UIView *)self vuiIsRTL];
+    imageProxy = [(VUIImageView *)self imageProxy];
+    imageDirection = [imageProxy imageDirection];
 
-    if (v6 != v4)
+    if (imageDirection != vuiIsRTL)
     {
 
       [(VUIImageView *)self _loadImage];
@@ -692,17 +692,17 @@ LABEL_9:
 
   else
   {
-    v11 = [(VUIImageView *)self completion];
+    completion = [(VUIImageView *)self completion];
 
-    if (!v11)
+    if (!completion)
     {
       goto LABEL_7;
     }
 
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      v12 = [(VUIImageView *)self completion];
-      v12[2](v12, 0, 0, 1);
+      completion2 = [(VUIImageView *)self completion];
+      completion2[2](completion2, 0, 0, 1);
 
       [(VUIImageView *)self setCompletion:0];
       [(VUIImageView *)self setImageLoaded:0];
@@ -852,9 +852,9 @@ void __26__VUIImageView__loadImage__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  objc_storeStrong(&self->__tintColor, a3);
+  objc_storeStrong(&self->__tintColor, color);
 
   [(VUIImageView *)self _updateTintColor];
 }
@@ -869,52 +869,52 @@ void __26__VUIImageView__loadImage__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setFocusedColor:(id)a3
+- (void)_setFocusedColor:(id)color
 {
-  v5 = a3;
-  if (self->__focusedColor != v5)
+  colorCopy = color;
+  if (self->__focusedColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__focusedColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->__focusedColor, color);
     [(VUIImageView *)self _updateImageView];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)_updateFlatImageWithImage:(id)a3 shouldUpdateImageView:(BOOL)a4
+- (void)_updateFlatImageWithImage:(id)image shouldUpdateImageView:(BOOL)view
 {
-  v4 = a4;
-  v6 = a3;
+  viewCopy = view;
+  imageCopy = image;
   rendersImageAsTemplates = self->_rendersImageAsTemplates;
-  v9 = v6;
-  v8 = v6;
+  v9 = imageCopy;
+  vuiTemplateImage = imageCopy;
   if (rendersImageAsTemplates)
   {
-    v8 = [v6 vuiTemplateImage];
+    vuiTemplateImage = [imageCopy vuiTemplateImage];
   }
 
-  objc_storeStrong(&self->_flatImage, v8);
+  objc_storeStrong(&self->_flatImage, vuiTemplateImage);
   if (rendersImageAsTemplates)
   {
   }
 
-  if (v4)
+  if (viewCopy)
   {
     [(VUIImageView *)self _updateImageView];
   }
 }
 
-- (void)_setImage:(id)a3 shouldUpdateImageView:(BOOL)a4
+- (void)_setImage:(id)image shouldUpdateImageView:(BOOL)view
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_image != v7)
+  viewCopy = view;
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_image, a3);
+    v8 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(VUIImageView *)self setVuiContentMode:self->_imageContentMode];
-    [(VUIImageView *)self _updateFlatImageWithImage:v8 shouldUpdateImageView:v4];
-    v7 = v8;
+    [(VUIImageView *)self _updateFlatImageWithImage:v8 shouldUpdateImageView:viewCopy];
+    imageCopy = v8;
   }
 }
 
@@ -953,12 +953,12 @@ void __26__VUIImageView__loadImage__block_invoke_2(uint64_t a1)
   if (placeholderImage)
   {
     v4 = placeholderImage;
-    v6 = [(UIColor *)v4 imageAsset];
-    if (v6 && [(UIColor *)v4 imageOrientation]== 4)
+    imageAsset = [(UIColor *)v4 imageAsset];
+    if (imageAsset && [(UIColor *)v4 imageOrientation]== 4)
     {
-      v7 = [(UIView *)self vuiIsRTL];
+      vuiIsRTL = [(UIView *)self vuiIsRTL];
 
-      if (!v7)
+      if (!vuiIsRTL)
       {
 LABEL_22:
         [(UIImageView *)self->_imageView setImage:v4];
@@ -980,9 +980,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v6 = [(UIColor *)v4 imageAsset];
+      imageAsset = [(UIColor *)v4 imageAsset];
       v8 = [MEMORY[0x277D75C80] traitCollectionWithLayoutDirection:1];
-      v9 = [v6 imageWithTraitCollection:v8];
+      v9 = [imageAsset imageWithTraitCollection:v8];
 
       v4 = v9;
     }
@@ -1005,14 +1005,14 @@ LABEL_13:
       v4 = v5;
     }
 
-    v6 = [(UIImageView *)self->_imageView layer];
-    [v6 setCornerRadius:v4];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setCornerRadius:v4];
 
-    v7 = [(UIImageView *)self->_imageView vuiContentMode];
-    v8 = [(UIImageView *)self->_imageView layer];
-    v11 = v8;
-    v10 = v4 > 0.0 || v7 != 1;
-    [v8 setMasksToBounds:v10];
+    vuiContentMode = [(UIImageView *)self->_imageView vuiContentMode];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    v11 = layer2;
+    v10 = v4 > 0.0 || vuiContentMode != 1;
+    [layer2 setMasksToBounds:v10];
   }
 }
 
@@ -1038,22 +1038,22 @@ LABEL_13:
   return result;
 }
 
-- (void)setSymbolImage:(id)a3 withSymbolTransition:(id)a4
+- (void)setSymbolImage:(id)image withSymbolTransition:(id)transition
 {
-  v8 = a3;
-  v6 = a4;
+  imageCopy = image;
+  transitionCopy = transition;
   [(VUIImageView *)self setImageProxy:0];
-  v7 = [v6 symbolTransition];
+  symbolTransition = [transitionCopy symbolTransition];
 
-  if (v7)
+  if (symbolTransition)
   {
-    [(UIImageView *)self->_imageView setSymbolImage:v8 withContentTransition:v7];
-    [(VUIImageView *)self _setImage:v8 shouldUpdateImageView:0];
+    [(UIImageView *)self->_imageView setSymbolImage:imageCopy withContentTransition:symbolTransition];
+    [(VUIImageView *)self _setImage:imageCopy shouldUpdateImageView:0];
   }
 
   else
   {
-    [(VUIImageView *)self _setImage:v8];
+    [(VUIImageView *)self _setImage:imageCopy];
   }
 }
 

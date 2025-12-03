@@ -1,40 +1,40 @@
 @interface DADeviceAppAccessInfo
-- (DADeviceAppAccessInfo)initWithBundleIdentifier:(id)a3 deviceIdentifier:(id)a4 accessoryOptions:(unint64_t)a5 state:(int64_t)a6;
-- (DADeviceAppAccessInfo)initWithCoder:(id)a3;
-- (DADeviceAppAccessInfo)initWithPersistentDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (DADeviceAppAccessInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (DADeviceAppAccessInfo)initWithBundleIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier accessoryOptions:(unint64_t)options state:(int64_t)state;
+- (DADeviceAppAccessInfo)initWithCoder:(id)coder;
+- (DADeviceAppAccessInfo)initWithPersistentDictionaryRepresentation:(id)representation error:(id *)error;
+- (DADeviceAppAccessInfo)initWithXPCObject:(id)object error:(id *)error;
 - (NSString)associationIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 - (id)persistentDictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DADeviceAppAccessInfo
 
-- (DADeviceAppAccessInfo)initWithBundleIdentifier:(id)a3 deviceIdentifier:(id)a4 accessoryOptions:(unint64_t)a5 state:(int64_t)a6
+- (DADeviceAppAccessInfo)initWithBundleIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier accessoryOptions:(unint64_t)options state:(int64_t)state
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
   v16.receiver = self;
   v16.super_class = DADeviceAppAccessInfo;
   v12 = [(DADeviceAppAccessInfo *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleIdentifier, a3);
-    objc_storeStrong(&v13->_deviceIdentifier, a4);
-    v13->_state = a6;
+    objc_storeStrong(&v12->_bundleIdentifier, identifier);
+    objc_storeStrong(&v13->_deviceIdentifier, deviceIdentifier);
+    v13->_state = state;
     v14 = v13;
   }
 
   return v13;
 }
 
-- (DADeviceAppAccessInfo)initWithPersistentDictionaryRepresentation:(id)a3 error:(id *)a4
+- (DADeviceAppAccessInfo)initWithPersistentDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   v21.receiver = self;
   v21.super_class = DADeviceAppAccessInfo;
   v7 = [(DADeviceAppAccessInfo *)&v21 init];
@@ -72,7 +72,7 @@
 
   else
   {
-    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:a4 error:?];
+    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:error error:?];
   }
 
   return v7;
@@ -126,30 +126,30 @@
   return v13;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  xpc_dictionary_set_uint64(v4, "dvAo", self->_accessoryOptions);
+  objectCopy = object;
+  xpc_dictionary_set_uint64(objectCopy, "dvAo", self->_accessoryOptions);
   approveTime = self->_approveTime;
   if (approveTime != 0.0)
   {
-    xpc_dictionary_set_double(v4, "apT", approveTime);
+    xpc_dictionary_set_double(objectCopy, "apT", approveTime);
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  v7 = v4;
-  v8 = [(NSString *)bundleIdentifier UTF8String];
-  if (v8)
+  v7 = objectCopy;
+  uTF8String = [(NSString *)bundleIdentifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v7, "bndI", v8);
+    xpc_dictionary_set_string(v7, "bndI", uTF8String);
   }
 
   deviceIdentifier = self->_deviceIdentifier;
   xdict = v7;
-  v10 = [(NSString *)deviceIdentifier UTF8String];
-  if (v10)
+  uTF8String2 = [(NSString *)deviceIdentifier UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(xdict, "id", v10);
+    xpc_dictionary_set_string(xdict, "id", uTF8String2);
   }
 
   endTime = self->_endTime;
@@ -168,68 +168,68 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v11 = v4;
+  coderCopy = coder;
+  v11 = coderCopy;
   if (self->_approveTime != 0.0)
   {
-    [v4 encodeDouble:@"apT" forKey:?];
-    v4 = v11;
+    [coderCopy encodeDouble:@"apT" forKey:?];
+    coderCopy = v11;
   }
 
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
     [v11 encodeObject:bundleIdentifier forKey:@"bndI"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
   {
     [v11 encodeObject:deviceIdentifier forKey:@"id"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_endTime != 0.0)
   {
     [v11 encodeDouble:@"epT" forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   appDiscoveryConfiguration = self->_appDiscoveryConfiguration;
   if (appDiscoveryConfiguration)
   {
     [v11 encodeObject:appDiscoveryConfiguration forKey:@"dsCf"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   state = self->_state;
   if (state)
   {
     [v11 encodeInteger:state forKey:@"dvSt"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   accessoryOptions = self->_accessoryOptions;
   if (accessoryOptions)
   {
     [v11 encodeInteger:accessoryOptions forKey:@"dvFl"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   wifiAwarePairingID = self->_wifiAwarePairingID;
   if (wifiAwarePairingID)
   {
     [v11 encodeInt64:wifiAwarePairingID forKey:@"wFPi"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
-- (DADeviceAppAccessInfo)initWithCoder:(id)a3
+- (DADeviceAppAccessInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = DADeviceAppAccessInfo;
   v5 = [(DADeviceAppAccessInfo *)&v17 init];
@@ -237,7 +237,7 @@
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"apT"])
     {
       [v6 decodeDoubleForKey:@"apT"];
@@ -282,15 +282,15 @@
 
   else
   {
-    [DADeviceAppAccessInfo initWithCoder:v4];
+    [DADeviceAppAccessInfo initWithCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 48) = self->_accessoryOptions;
   v5 = [(DADiscoveryConfiguration *)self->_appDiscoveryConfiguration copy];
   v6 = *(v4 + 8);
@@ -310,9 +310,9 @@
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -402,29 +402,29 @@
 
 - (NSString)associationIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DADeviceAppAccessInfo *)v2 appDiscoveryConfiguration];
-  v4 = [v3 associationIdentifier];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appDiscoveryConfiguration = [(DADeviceAppAccessInfo *)selfCopy appDiscoveryConfiguration];
+  associationIdentifier = [appDiscoveryConfiguration associationIdentifier];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return associationIdentifier;
 }
 
-- (DADeviceAppAccessInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADeviceAppAccessInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v20.receiver = self;
   v20.super_class = DADeviceAppAccessInfo;
   v7 = [(DADeviceAppAccessInfo *)&v20 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v13 = objc_opt_class();
       DAErrorF(350001, "%@ super init failed", v14, v15, v16, v17, v18, v19, v13);
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_16;
     }
 

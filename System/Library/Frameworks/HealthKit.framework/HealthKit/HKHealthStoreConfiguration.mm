@@ -1,97 +1,97 @@
 @interface HKHealthStoreConfiguration
-- (BOOL)isEqual:(id)a3;
-- (HKHealthStoreConfiguration)initWithCoder:(id)a3;
-- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)a3 sourceVersion:(id)a4 debugIdentifier:(id)a5 profileIdentifier:(id)a6 applicationSDKVersionToken:(unint64_t)a7;
-- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)a3 sourceVersion:(id)a4 debugIdentifier:(id)a5 profileIdentifier:(id)a6 applicationSDKVersionToken:(unint64_t)a7 daemonLaunchDarwinNotificationName:(id)a8 writeAuthorizationUsageDescriptionOverride:(id)a9 readAuthorizationUsageDescriptionOverride:(id)a10 clinicalReadAuthorizationUsageDescriptionOverride:(id)a11 researchStudyUsageDescriptionOverride:(id)a12;
+- (BOOL)isEqual:(id)equal;
+- (HKHealthStoreConfiguration)initWithCoder:(id)coder;
+- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)identifier sourceVersion:(id)version debugIdentifier:(id)debugIdentifier profileIdentifier:(id)profileIdentifier applicationSDKVersionToken:(unint64_t)token;
+- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)identifier sourceVersion:(id)version debugIdentifier:(id)debugIdentifier profileIdentifier:(id)profileIdentifier applicationSDKVersionToken:(unint64_t)token daemonLaunchDarwinNotificationName:(id)name writeAuthorizationUsageDescriptionOverride:(id)override readAuthorizationUsageDescriptionOverride:(id)self0 clinicalReadAuthorizationUsageDescriptionOverride:(id)self1 researchStudyUsageDescriptionOverride:(id)self2;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHealthStoreConfiguration
 
-- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)a3 sourceVersion:(id)a4 debugIdentifier:(id)a5 profileIdentifier:(id)a6 applicationSDKVersionToken:(unint64_t)a7
+- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)identifier sourceVersion:(id)version debugIdentifier:(id)debugIdentifier profileIdentifier:(id)profileIdentifier applicationSDKVersionToken:(unint64_t)token
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  debugIdentifierCopy = debugIdentifier;
+  profileIdentifierCopy = profileIdentifier;
   v26.receiver = self;
   v26.super_class = HKHealthStoreConfiguration;
   v16 = [(HKHealthStoreConfiguration *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     sourceBundleIdentifier = v16->_sourceBundleIdentifier;
     v16->_sourceBundleIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [versionCopy copy];
     sourceVersion = v16->_sourceVersion;
     v16->_sourceVersion = v19;
 
-    v21 = [v14 copy];
+    v21 = [debugIdentifierCopy copy];
     debugIdentifier = v16->_debugIdentifier;
     v16->_debugIdentifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [profileIdentifierCopy copy];
     profileIdentifier = v16->_profileIdentifier;
     v16->_profileIdentifier = v23;
 
-    v16->_applicationSDKVersionToken = a7;
+    v16->_applicationSDKVersionToken = token;
   }
 
   return v16;
 }
 
-- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)a3 sourceVersion:(id)a4 debugIdentifier:(id)a5 profileIdentifier:(id)a6 applicationSDKVersionToken:(unint64_t)a7 daemonLaunchDarwinNotificationName:(id)a8 writeAuthorizationUsageDescriptionOverride:(id)a9 readAuthorizationUsageDescriptionOverride:(id)a10 clinicalReadAuthorizationUsageDescriptionOverride:(id)a11 researchStudyUsageDescriptionOverride:(id)a12
+- (HKHealthStoreConfiguration)initWithSourceBundleIdentifier:(id)identifier sourceVersion:(id)version debugIdentifier:(id)debugIdentifier profileIdentifier:(id)profileIdentifier applicationSDKVersionToken:(unint64_t)token daemonLaunchDarwinNotificationName:(id)name writeAuthorizationUsageDescriptionOverride:(id)override readAuthorizationUsageDescriptionOverride:(id)self0 clinicalReadAuthorizationUsageDescriptionOverride:(id)self1 researchStudyUsageDescriptionOverride:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  identifierCopy = identifier;
+  versionCopy = version;
+  debugIdentifierCopy = debugIdentifier;
+  profileIdentifierCopy = profileIdentifier;
+  nameCopy = name;
+  overrideCopy = override;
+  descriptionOverrideCopy = descriptionOverride;
+  usageDescriptionOverrideCopy = usageDescriptionOverride;
+  studyUsageDescriptionOverrideCopy = studyUsageDescriptionOverride;
   v47.receiver = self;
   v47.super_class = HKHealthStoreConfiguration;
   v26 = [(HKHealthStoreConfiguration *)&v47 init];
   if (v26)
   {
-    v27 = [v17 copy];
+    v27 = [identifierCopy copy];
     sourceBundleIdentifier = v26->_sourceBundleIdentifier;
     v26->_sourceBundleIdentifier = v27;
 
-    v29 = [v18 copy];
+    v29 = [versionCopy copy];
     sourceVersion = v26->_sourceVersion;
     v26->_sourceVersion = v29;
 
-    v31 = [v19 copy];
+    v31 = [debugIdentifierCopy copy];
     debugIdentifier = v26->_debugIdentifier;
     v26->_debugIdentifier = v31;
 
-    v33 = [v20 copy];
+    v33 = [profileIdentifierCopy copy];
     profileIdentifier = v26->_profileIdentifier;
     v26->_profileIdentifier = v33;
 
-    v26->_applicationSDKVersionToken = a7;
-    v35 = [v21 copy];
+    v26->_applicationSDKVersionToken = token;
+    v35 = [nameCopy copy];
     daemonLaunchDarwinNotificationName = v26->_daemonLaunchDarwinNotificationName;
     v26->_daemonLaunchDarwinNotificationName = v35;
 
-    v37 = [v22 copy];
+    v37 = [overrideCopy copy];
     writeAuthorizationUsageDescriptionOverride = v26->_writeAuthorizationUsageDescriptionOverride;
     v26->_writeAuthorizationUsageDescriptionOverride = v37;
 
-    v39 = [v23 copy];
+    v39 = [descriptionOverrideCopy copy];
     readAuthorizationUsageDescriptionOverride = v26->_readAuthorizationUsageDescriptionOverride;
     v26->_readAuthorizationUsageDescriptionOverride = v39;
 
-    v41 = [v24 copy];
+    v41 = [usageDescriptionOverrideCopy copy];
     clinicalReadAuthorizationUsageDescriptionOverride = v26->_clinicalReadAuthorizationUsageDescriptionOverride;
     v26->_clinicalReadAuthorizationUsageDescriptionOverride = v41;
 
-    v43 = [v25 copy];
+    v43 = [studyUsageDescriptionOverrideCopy copy];
     researchStudyUsageDescriptionOverride = v26->_researchStudyUsageDescriptionOverride;
     v26->_researchStudyUsageDescriptionOverride = v43;
   }
@@ -99,48 +99,48 @@
   return v26;
 }
 
-- (HKHealthStoreConfiguration)initWithCoder:(id)a3
+- (HKHealthStoreConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = HKHealthStoreConfiguration;
   v5 = [(HKHealthStoreConfiguration *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sbid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sbid"];
     sourceBundleIdentifier = v5->_sourceBundleIdentifier;
     v5->_sourceBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sver"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sver"];
     sourceVersion = v5->_sourceVersion;
     v5->_sourceVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dbid"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dbid"];
     debugIdentifier = v5->_debugIdentifier;
     v5->_debugIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
     profileIdentifier = v5->_profileIdentifier;
     v5->_profileIdentifier = v12;
 
-    v5->_applicationSDKVersionToken = HKBitPatternCastSignedToUnsignedInt64([v4 decodeInt64ForKey:@"sdkv"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dlnn"];
+    v5->_applicationSDKVersionToken = HKBitPatternCastSignedToUnsignedInt64([coderCopy decodeInt64ForKey:@"sdkv"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dlnn"];
     daemonLaunchDarwinNotificationName = v5->_daemonLaunchDarwinNotificationName;
     v5->_daemonLaunchDarwinNotificationName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wado"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wado"];
     writeAuthorizationUsageDescriptionOverride = v5->_writeAuthorizationUsageDescriptionOverride;
     v5->_writeAuthorizationUsageDescriptionOverride = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rado"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rado"];
     readAuthorizationUsageDescriptionOverride = v5->_readAuthorizationUsageDescriptionOverride;
     v5->_readAuthorizationUsageDescriptionOverride = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cado"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cado"];
     clinicalReadAuthorizationUsageDescriptionOverride = v5->_clinicalReadAuthorizationUsageDescriptionOverride;
     v5->_clinicalReadAuthorizationUsageDescriptionOverride = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsdo"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsdo"];
     researchStudyUsageDescriptionOverride = v5->_researchStudyUsageDescriptionOverride;
     v5->_researchStudyUsageDescriptionOverride = v22;
   }
@@ -148,26 +148,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sourceBundleIdentifier forKey:@"sbid"];
-  [v5 encodeObject:self->_sourceVersion forKey:@"sver"];
-  [v5 encodeObject:self->_debugIdentifier forKey:@"dbid"];
-  [v5 encodeObject:self->_profileIdentifier forKey:@"pid"];
-  [v5 encodeInt64:HKBitPatternCastUnsignedToSignedInt64(self->_applicationSDKVersionToken) forKey:@"sdkv"];
-  [v5 encodeObject:self->_daemonLaunchDarwinNotificationName forKey:@"dlnn"];
-  [v5 encodeObject:self->_writeAuthorizationUsageDescriptionOverride forKey:@"wado"];
-  [v5 encodeObject:self->_readAuthorizationUsageDescriptionOverride forKey:@"rado"];
-  [v5 encodeObject:self->_clinicalReadAuthorizationUsageDescriptionOverride forKey:@"cado"];
-  [v5 encodeObject:self->_researchStudyUsageDescriptionOverride forKey:@"rsdo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceBundleIdentifier forKey:@"sbid"];
+  [coderCopy encodeObject:self->_sourceVersion forKey:@"sver"];
+  [coderCopy encodeObject:self->_debugIdentifier forKey:@"dbid"];
+  [coderCopy encodeObject:self->_profileIdentifier forKey:@"pid"];
+  [coderCopy encodeInt64:HKBitPatternCastUnsignedToSignedInt64(self->_applicationSDKVersionToken) forKey:@"sdkv"];
+  [coderCopy encodeObject:self->_daemonLaunchDarwinNotificationName forKey:@"dlnn"];
+  [coderCopy encodeObject:self->_writeAuthorizationUsageDescriptionOverride forKey:@"wado"];
+  [coderCopy encodeObject:self->_readAuthorizationUsageDescriptionOverride forKey:@"rado"];
+  [coderCopy encodeObject:self->_clinicalReadAuthorizationUsageDescriptionOverride forKey:@"cado"];
+  [coderCopy encodeObject:self->_researchStudyUsageDescriptionOverride forKey:@"rsdo"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_32;
   }
@@ -179,68 +179,68 @@
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v6 = v4->_sourceBundleIdentifier;
+  v6 = equalCopy->_sourceBundleIdentifier;
   if (sourceBundleIdentifier != v6 && (!v6 || ![(NSString *)sourceBundleIdentifier isEqualToString:?]))
   {
     goto LABEL_31;
   }
 
   sourceVersion = self->_sourceVersion;
-  v8 = v4->_sourceVersion;
+  v8 = equalCopy->_sourceVersion;
   if (sourceVersion != v8 && (!v8 || ![(NSString *)sourceVersion isEqualToString:?]))
   {
     goto LABEL_31;
   }
 
   debugIdentifier = self->_debugIdentifier;
-  v10 = v4->_debugIdentifier;
+  v10 = equalCopy->_debugIdentifier;
   if (debugIdentifier != v10 && (!v10 || ![(NSString *)debugIdentifier isEqualToString:?]))
   {
     goto LABEL_31;
   }
 
   profileIdentifier = self->_profileIdentifier;
-  v12 = v4->_profileIdentifier;
+  v12 = equalCopy->_profileIdentifier;
   if (profileIdentifier != v12 && (!v12 || ![(HKProfileIdentifier *)profileIdentifier isEqual:?]))
   {
     goto LABEL_31;
   }
 
-  if (self->_applicationSDKVersionToken != v4->_applicationSDKVersionToken)
+  if (self->_applicationSDKVersionToken != equalCopy->_applicationSDKVersionToken)
   {
     goto LABEL_31;
   }
 
   daemonLaunchDarwinNotificationName = self->_daemonLaunchDarwinNotificationName;
-  v14 = v4->_daemonLaunchDarwinNotificationName;
+  v14 = equalCopy->_daemonLaunchDarwinNotificationName;
   if (daemonLaunchDarwinNotificationName != v14 && (!v14 || ![(NSString *)daemonLaunchDarwinNotificationName isEqual:?]))
   {
     goto LABEL_31;
   }
 
   writeAuthorizationUsageDescriptionOverride = self->_writeAuthorizationUsageDescriptionOverride;
-  v16 = v4->_writeAuthorizationUsageDescriptionOverride;
+  v16 = equalCopy->_writeAuthorizationUsageDescriptionOverride;
   if (writeAuthorizationUsageDescriptionOverride != v16 && (!v16 || ![(NSString *)writeAuthorizationUsageDescriptionOverride isEqual:?]))
   {
     goto LABEL_31;
   }
 
   readAuthorizationUsageDescriptionOverride = self->_readAuthorizationUsageDescriptionOverride;
-  v18 = v4->_readAuthorizationUsageDescriptionOverride;
+  v18 = equalCopy->_readAuthorizationUsageDescriptionOverride;
   if (readAuthorizationUsageDescriptionOverride != v18 && (!v18 || ![(NSString *)readAuthorizationUsageDescriptionOverride isEqual:?]))
   {
     goto LABEL_31;
   }
 
   clinicalReadAuthorizationUsageDescriptionOverride = self->_clinicalReadAuthorizationUsageDescriptionOverride;
-  v20 = v4->_clinicalReadAuthorizationUsageDescriptionOverride;
+  v20 = equalCopy->_clinicalReadAuthorizationUsageDescriptionOverride;
   if (clinicalReadAuthorizationUsageDescriptionOverride != v20 && (!v20 || ![(NSString *)clinicalReadAuthorizationUsageDescriptionOverride isEqual:?]))
   {
     goto LABEL_31;
   }
 
   researchStudyUsageDescriptionOverride = self->_researchStudyUsageDescriptionOverride;
-  v22 = v4->_researchStudyUsageDescriptionOverride;
+  v22 = equalCopy->_researchStudyUsageDescriptionOverride;
   if (researchStudyUsageDescriptionOverride == v22)
   {
 LABEL_32:

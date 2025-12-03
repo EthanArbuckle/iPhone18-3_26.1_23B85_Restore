@@ -1,38 +1,38 @@
 @interface WKVideoView
-- (WKVideoView)initWithFrame:(CGRect)a3 playerView:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (WKVideoView)initWithFrame:(CGRect)frame playerView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation WKVideoView
 
-- (WKVideoView)initWithFrame:(CGRect)a3 playerView:(id)a4
+- (WKVideoView)initWithFrame:(CGRect)frame playerView:(id)view
 {
   v9.receiver = self;
   v9.super_class = WKVideoView;
-  v5 = [(WKVideoView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WKVideoView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    if (a4)
+    if (view)
     {
-      v6 = a4;
+      viewCopy = view;
     }
 
     m_ptr = v5->_playerView.m_ptr;
-    v5->_playerView.m_ptr = a4;
+    v5->_playerView.m_ptr = view;
     if (m_ptr)
     {
     }
 
-    [(WKVideoView *)v5 addSubview:a4];
+    [(WKVideoView *)v5 addSubview:view];
   }
 
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(WKVideoView *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(WKVideoView *)self pointInside:event withEvent:test.x, test.y])
   {
     return self;
   }
@@ -50,8 +50,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(WKVideoView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [(WKVideoView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -63,7 +63,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -73,7 +73,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

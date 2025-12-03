@@ -1,8 +1,8 @@
 @interface _UIBlurEffectAverageImpl
 + (id)sharedInstance;
-- (BOOL)isEqual:(id)a3;
-- (_UIBlurEffectAverageImpl)initWithScale:(double)a3;
-- (void)appendDescriptionTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIBlurEffectAverageImpl)initWithScale:(double)scale;
+- (void)appendDescriptionTo:(id)to;
 @end
 
 @implementation _UIBlurEffectAverageImpl
@@ -22,25 +22,25 @@
   return v2;
 }
 
-- (_UIBlurEffectAverageImpl)initWithScale:(double)a3
+- (_UIBlurEffectAverageImpl)initWithScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = _UIBlurEffectAverageImpl;
   result = [(_UIBlurEffectAverageImpl *)&v5 init];
   if (result)
   {
-    result->_scale = fmax(fmin(a3, 1.0), 0.0);
+    result->_scale = fmax(fmin(scale, 1.0), 0.0);
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4[1] == self->_scale;
+    v5 = equalCopy[1] == self->_scale;
   }
 
   else
@@ -51,13 +51,13 @@
   return v5;
 }
 
-- (void)appendDescriptionTo:(id)a3
+- (void)appendDescriptionTo:(id)to
 {
-  v4 = a3;
-  [v4 appendString:@" infiniteBlurRadius"];
+  toCopy = to;
+  [toCopy appendString:@" infiniteBlurRadius"];
   if (self->_scale > 0.0)
   {
-    [v4 appendFormat:@" scale=%f", *&self->_scale];
+    [toCopy appendFormat:@" scale=%f", *&self->_scale];
   }
 }
 

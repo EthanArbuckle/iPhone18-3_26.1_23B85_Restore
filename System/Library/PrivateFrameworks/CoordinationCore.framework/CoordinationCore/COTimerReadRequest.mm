@@ -1,32 +1,32 @@
 @interface COTimerReadRequest
 + (id)acceptableResponses;
-- (COTimerReadRequest)initWithAccessory:(id)a3;
-- (COTimerReadRequest)initWithAccessoryUniqueIdentifier:(id)a3 requiresFilter:(BOOL)a4;
-- (COTimerReadRequest)initWithCoder:(id)a3;
+- (COTimerReadRequest)initWithAccessory:(id)accessory;
+- (COTimerReadRequest)initWithAccessoryUniqueIdentifier:(id)identifier requiresFilter:(BOOL)filter;
+- (COTimerReadRequest)initWithCoder:(id)coder;
 - (id)initForMerge;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COTimerReadRequest
 
-- (COTimerReadRequest)initWithAccessoryUniqueIdentifier:(id)a3 requiresFilter:(BOOL)a4
+- (COTimerReadRequest)initWithAccessoryUniqueIdentifier:(id)identifier requiresFilter:(BOOL)filter
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(COMeshCommand *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessoryUniqueIdentifier, a3);
-    v9->_requiresFilter = a4;
+    objc_storeStrong(&v8->_accessoryUniqueIdentifier, identifier);
+    v9->_requiresFilter = filter;
   }
 
   return v9;
 }
 
-- (COTimerReadRequest)initWithAccessory:(id)a3
+- (COTimerReadRequest)initWithAccessory:(id)accessory
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(COTimerReadRequest *)self initWithAccessoryUniqueIdentifier:v4];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v5 = [(COTimerReadRequest *)self initWithAccessoryUniqueIdentifier:uniqueIdentifier];
 
   return v5;
 }
@@ -43,26 +43,26 @@
   return result;
 }
 
-- (COTimerReadRequest)initWithCoder:(id)a3
+- (COTimerReadRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = COTimerReadRequest;
-  v5 = [(COMeshCommand *)&v11 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"accessory"])
+    if ([coderCopy containsValueForKey:@"accessory"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
       accessoryUniqueIdentifier = v5->_accessoryUniqueIdentifier;
       v5->_accessoryUniqueIdentifier = v6;
     }
 
-    v5->_requiresFilter = [v4 containsValueForKey:@"filtered"];
-    v5->_isForMerge = [v4 containsValueForKey:@"merge"];
-    if ([v4 containsValueForKey:@"etag"])
+    v5->_requiresFilter = [coderCopy containsValueForKey:@"filtered"];
+    v5->_isForMerge = [coderCopy containsValueForKey:@"merge"];
+    if ([coderCopy containsValueForKey:@"etag"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
       eTag = v5->_eTag;
       v5->_eTag = v8;
     }
@@ -71,34 +71,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = COTimerReadRequest;
-  [(COMeshCommand *)&v8 encodeWithCoder:v4];
-  v5 = [(COTimerReadRequest *)self accessoryUniqueIdentifier];
-  if (v5)
+  [(COMeshCommand *)&v8 encodeWithCoder:coderCopy];
+  accessoryUniqueIdentifier = [(COTimerReadRequest *)self accessoryUniqueIdentifier];
+  if (accessoryUniqueIdentifier)
   {
-    [v4 encodeObject:v5 forKey:@"accessory"];
+    [coderCopy encodeObject:accessoryUniqueIdentifier forKey:@"accessory"];
   }
 
   if ([(COTimerReadRequest *)self requiresFilter])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
   }
 
   if ([(COTimerReadRequest *)self isForMerge])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"merge"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"merge"];
   }
 
-  v6 = [(COTimerReadRequest *)self eTag];
+  eTag = [(COTimerReadRequest *)self eTag];
 
-  if (v6)
+  if (eTag)
   {
-    v7 = [(COTimerReadRequest *)self eTag];
-    [v4 encodeObject:v7 forKey:@"etag"];
+    eTag2 = [(COTimerReadRequest *)self eTag];
+    [coderCopy encodeObject:eTag2 forKey:@"etag"];
   }
 }
 

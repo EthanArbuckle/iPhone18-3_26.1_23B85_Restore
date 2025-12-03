@@ -1,15 +1,15 @@
 @interface HKMobilityWalkingSteadinessAnalyticsManager
-- (BOOL)_collectDiagnosticFieldsForOnboardingMetric:(id)a3 dataSource:(id)a4 error:(id *)a5;
-- (BOOL)_collectSensitiveFieldsForNotificationInteractionMetric:(id)a3 dataSource:(id)a4 error:(id *)a5;
-- (BOOL)_collectSensitiveFieldsForNotificationMetric:(id)a3 dataSource:(id)a4 error:(id *)a5;
-- (BOOL)_collectSensitiveFieldsForOnboardingMetric:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (BOOL)_collectDiagnosticFieldsForOnboardingMetric:(id)metric dataSource:(id)source error:(id *)error;
+- (BOOL)_collectSensitiveFieldsForNotificationInteractionMetric:(id)metric dataSource:(id)source error:(id *)error;
+- (BOOL)_collectSensitiveFieldsForNotificationMetric:(id)metric dataSource:(id)source error:(id *)error;
+- (BOOL)_collectSensitiveFieldsForOnboardingMetric:(id)metric dataSource:(id)source error:(id *)error;
 - (HKMobilityWalkingSteadinessAnalyticsManager)init;
-- (id)_queue_submitNotificationEventWithDataSource:(id)a3;
-- (id)_queue_submitNotificationInteractionEventWithDataSource:(id)a3;
-- (id)_queue_submitOnboardingEventWithDataSource:(id)a3;
-- (void)submitNotificationEventWithDataSource:(id)a3 resultHandler:(id)a4;
-- (void)submitNotificationInteractionEventWithDataSource:(id)a3 resultHandler:(id)a4;
-- (void)submitOnboardingEventWithDataSource:(id)a3 resultHandler:(id)a4;
+- (id)_queue_submitNotificationEventWithDataSource:(id)source;
+- (id)_queue_submitNotificationInteractionEventWithDataSource:(id)source;
+- (id)_queue_submitOnboardingEventWithDataSource:(id)source;
+- (void)submitNotificationEventWithDataSource:(id)source resultHandler:(id)handler;
+- (void)submitNotificationInteractionEventWithDataSource:(id)source resultHandler:(id)handler;
+- (void)submitOnboardingEventWithDataSource:(id)source resultHandler:(id)handler;
 @end
 
 @implementation HKMobilityWalkingSteadinessAnalyticsManager
@@ -29,20 +29,20 @@
   return v2;
 }
 
-- (void)submitNotificationEventWithDataSource:(id)a3 resultHandler:(id)a4
+- (void)submitNotificationEventWithDataSource:(id)source resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__HKMobilityWalkingSteadinessAnalyticsManager_submitNotificationEventWithDataSource_resultHandler___block_invoke;
   block[3] = &unk_2796D8728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sourceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sourceCopy;
   dispatch_async(queue, block);
 }
 
@@ -59,20 +59,20 @@ uint64_t __99__HKMobilityWalkingSteadinessAnalyticsManager_submitNotificationEve
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)submitNotificationInteractionEventWithDataSource:(id)a3 resultHandler:(id)a4
+- (void)submitNotificationInteractionEventWithDataSource:(id)source resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __110__HKMobilityWalkingSteadinessAnalyticsManager_submitNotificationInteractionEventWithDataSource_resultHandler___block_invoke;
   block[3] = &unk_2796D8728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sourceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sourceCopy;
   dispatch_async(queue, block);
 }
 
@@ -89,20 +89,20 @@ uint64_t __110__HKMobilityWalkingSteadinessAnalyticsManager_submitNotificationIn
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)submitOnboardingEventWithDataSource:(id)a3 resultHandler:(id)a4
+- (void)submitOnboardingEventWithDataSource:(id)source resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEventWithDataSource_resultHandler___block_invoke;
   block[3] = &unk_2796D8728;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sourceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sourceCopy;
   dispatch_async(queue, block);
 }
 
@@ -119,28 +119,28 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_queue_submitNotificationEventWithDataSource:(id)a3
+- (id)_queue_submitNotificationEventWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
+  _isImproveHealthAndActivityAllowed = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
   v6 = +[HKMobilityWalkingSteadinessAnalyticsNotificationEventMetric requiresImproveHealthAndActivityAllowed];
-  if (v5 || !v6)
+  if (_isImproveHealthAndActivityAllowed || !v6)
   {
-    v8 = [[HKMobilityWalkingSteadinessAnalyticsNotificationEventMetric alloc] initWithImproveHealthAndActivityAllowed:v5];
+    v8 = [[HKMobilityWalkingSteadinessAnalyticsNotificationEventMetric alloc] initWithImproveHealthAndActivityAllowed:_isImproveHealthAndActivityAllowed];
     v18 = 0;
-    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForNotificationMetric:v8 dataSource:v4 error:&v18];
+    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForNotificationMetric:v8 dataSource:sourceCopy error:&v18];
     v10 = v18;
     v11 = v10;
     if (v9)
     {
       v17 = v10;
-      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForNotificationMetric:v8 dataSource:v4 error:&v17];
+      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForNotificationMetric:v8 dataSource:sourceCopy error:&v17];
       v13 = v17;
 
       if (v12)
       {
-        v14 = [(HKMobilityWalkingSteadinessAnalyticsNotificationEventMetric *)v8 eventName];
+        eventName = [(HKMobilityWalkingSteadinessAnalyticsNotificationEventMetric *)v8 eventName];
         v16 = v8;
         AnalyticsSendEventLazy();
 
@@ -169,28 +169,28 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
   return v7;
 }
 
-- (id)_queue_submitNotificationInteractionEventWithDataSource:(id)a3
+- (id)_queue_submitNotificationInteractionEventWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
+  _isImproveHealthAndActivityAllowed = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
   v6 = +[HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventMetric requiresImproveHealthAndActivityAllowed];
-  if (v5 || !v6)
+  if (_isImproveHealthAndActivityAllowed || !v6)
   {
-    v8 = [[HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventMetric alloc] initWithImproveHealthAndActivityAllowed:v5];
+    v8 = [[HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventMetric alloc] initWithImproveHealthAndActivityAllowed:_isImproveHealthAndActivityAllowed];
     v18 = 0;
-    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForNotificationInteractionMetric:v8 dataSource:v4 error:&v18];
+    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForNotificationInteractionMetric:v8 dataSource:sourceCopy error:&v18];
     v10 = v18;
     v11 = v10;
     if (v9)
     {
       v17 = v10;
-      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForNotificationInteractionMetric:v8 dataSource:v4 error:&v17];
+      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForNotificationInteractionMetric:v8 dataSource:sourceCopy error:&v17];
       v13 = v17;
 
       if (v12)
       {
-        v14 = [(HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventMetric *)v8 eventName];
+        eventName = [(HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventMetric *)v8 eventName];
         v16 = v8;
         AnalyticsSendEventLazy();
 
@@ -219,28 +219,28 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
   return v7;
 }
 
-- (id)_queue_submitOnboardingEventWithDataSource:(id)a3
+- (id)_queue_submitOnboardingEventWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
+  _isImproveHealthAndActivityAllowed = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _isImproveHealthAndActivityAllowed];
   v6 = +[HKMobilityWalkingSteadinessAnalyticsOnboardingEventMetric requiresImproveHealthAndActivityAllowed];
-  if (v5 || !v6)
+  if (_isImproveHealthAndActivityAllowed || !v6)
   {
-    v8 = [[HKMobilityWalkingSteadinessAnalyticsOnboardingEventMetric alloc] initWithImproveHealthAndActivityAllowed:v5];
+    v8 = [[HKMobilityWalkingSteadinessAnalyticsOnboardingEventMetric alloc] initWithImproveHealthAndActivityAllowed:_isImproveHealthAndActivityAllowed];
     v18 = 0;
-    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForOnboardingMetric:v8 dataSource:v4 error:&v18];
+    v9 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectDiagnosticFieldsForOnboardingMetric:v8 dataSource:sourceCopy error:&v18];
     v10 = v18;
     v11 = v10;
     if (v9)
     {
       v17 = v10;
-      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForOnboardingMetric:v8 dataSource:v4 error:&v17];
+      v12 = [(HKMobilityWalkingSteadinessAnalyticsManager *)self _collectSensitiveFieldsForOnboardingMetric:v8 dataSource:sourceCopy error:&v17];
       v13 = v17;
 
       if (v12)
       {
-        v14 = [(HKMobilityWalkingSteadinessAnalyticsOnboardingEventMetric *)v8 eventName];
+        eventName = [(HKMobilityWalkingSteadinessAnalyticsOnboardingEventMetric *)v8 eventName];
         v16 = v8;
         AnalyticsSendEventLazy();
 
@@ -269,17 +269,17 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
   return v7;
 }
 
-- (BOOL)_collectSensitiveFieldsForNotificationMetric:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (BOOL)_collectSensitiveFieldsForNotificationMetric:(id)metric dataSource:(id)source error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isImproveHealthAndActivityAllowed])
+  metricCopy = metric;
+  sourceCopy = source;
+  if ([metricCopy isImproveHealthAndActivityAllowed])
   {
     v35 = 0;
-    v9 = [v8 notificationClassificationWithError:&v35];
+    v9 = [sourceCopy notificationClassificationWithError:&v35];
     v10 = v35;
-    [v7 setNotificationClassification:v9];
+    [metricCopy setNotificationClassification:v9];
 
     v11 = v10;
     if (v11)
@@ -288,9 +288,9 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
     }
 
     v34 = 0;
-    v12 = [v8 notificationTypeWithError:&v34];
+    v12 = [sourceCopy notificationTypeWithError:&v34];
     v13 = v34;
-    [v7 setNotificationType:v12];
+    [metricCopy setNotificationType:v12];
 
     v11 = v13;
     if (v11)
@@ -299,9 +299,9 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
     }
 
     v33 = 0;
-    v14 = [v8 ageWithError:&v33];
+    v14 = [sourceCopy ageWithError:&v33];
     v15 = v33;
-    [v7 setAge:v14];
+    [metricCopy setAge:v14];
 
     v11 = v15;
     if (v11)
@@ -310,9 +310,9 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
     }
 
     v32 = 0;
-    v16 = [v8 biologicalSexWithError:&v32];
+    v16 = [sourceCopy biologicalSexWithError:&v32];
     v17 = v32;
-    [v7 setBiologicalSex:v16];
+    [metricCopy setBiologicalSex:v16];
 
     v11 = v17;
     if (v11)
@@ -321,19 +321,19 @@ uint64_t __97__HKMobilityWalkingSteadinessAnalyticsManager_submitOnboardingEvent
     }
 
     v31 = 0;
-    v18 = [v8 daysSinceLastNotificationWithError:&v31];
+    v18 = [sourceCopy daysSinceLastNotificationWithError:&v31];
     v19 = v31;
-    [v7 setDaysSinceLastNotification:v18];
+    [metricCopy setDaysSinceLastNotification:v18];
 
     v11 = v19;
-    if (v11 || (v30 = 0, [v8 areHealthNotificationsAuthorizedWithError:&v30], v20 = objc_claimAutoreleasedReturnValue(), v21 = v30, objc_msgSend(v7, "setAreHealthNotificationsAuthorized:", v20), v20, (v11 = v21) != 0))
+    if (v11 || (v30 = 0, [sourceCopy areHealthNotificationsAuthorizedWithError:&v30], v20 = objc_claimAutoreleasedReturnValue(), v21 = v30, objc_msgSend(metricCopy, "setAreHealthNotificationsAuthorized:", v20), v20, (v11 = v21) != 0))
     {
 LABEL_8:
-      v22 = v11;
-      if (a5)
+      isShowingPregnancyContent = v11;
+      if (error)
       {
         v23 = v11;
-        *a5 = v22;
+        *error = isShowingPregnancyContent;
       }
 
       else
@@ -346,8 +346,8 @@ LABEL_8:
 
     else
     {
-      v22 = [v8 isShowingPregnancyContent];
-      [v7 setIsShowingPregnancyContent:v22];
+      isShowingPregnancyContent = [sourceCopy isShowingPregnancyContent];
+      [metricCopy setIsShowingPregnancyContent:isShowingPregnancyContent];
       v27 = 1;
     }
   }
@@ -372,17 +372,17 @@ LABEL_8:
   return v27;
 }
 
-- (BOOL)_collectSensitiveFieldsForNotificationInteractionMetric:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (BOOL)_collectSensitiveFieldsForNotificationInteractionMetric:(id)metric dataSource:(id)source error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isImproveHealthAndActivityAllowed])
+  metricCopy = metric;
+  sourceCopy = source;
+  if ([metricCopy isImproveHealthAndActivityAllowed])
   {
     v32 = 0;
-    v9 = [v8 notificationClassificationWithError:&v32];
+    v9 = [sourceCopy notificationClassificationWithError:&v32];
     v10 = v32;
-    [v7 setNotificationClassification:v9];
+    [metricCopy setNotificationClassification:v9];
 
     v11 = v10;
     if (v11)
@@ -391,9 +391,9 @@ LABEL_8:
     }
 
     v31 = 0;
-    v12 = [v8 notificationTypeWithError:&v31];
+    v12 = [sourceCopy notificationTypeWithError:&v31];
     v13 = v31;
-    [v7 setNotificationType:v12];
+    [metricCopy setNotificationType:v12];
 
     v11 = v13;
     if (v11)
@@ -402,9 +402,9 @@ LABEL_8:
     }
 
     v30 = 0;
-    v14 = [v8 ageWithError:&v30];
+    v14 = [sourceCopy ageWithError:&v30];
     v15 = v30;
-    [v7 setAge:v14];
+    [metricCopy setAge:v14];
 
     v11 = v15;
     if (v11)
@@ -413,19 +413,19 @@ LABEL_8:
     }
 
     v29 = 0;
-    v16 = [v8 biologicalSexWithError:&v29];
+    v16 = [sourceCopy biologicalSexWithError:&v29];
     v17 = v29;
-    [v7 setBiologicalSex:v16];
+    [metricCopy setBiologicalSex:v16];
 
     v11 = v17;
-    if (v11 || (v28 = 0, [v8 notificationInteractionTypeWithError:&v28], v18 = objc_claimAutoreleasedReturnValue(), v19 = v28, objc_msgSend(v7, "setNotificationInteractionType:", v18), v18, (v11 = v19) != 0))
+    if (v11 || (v28 = 0, [sourceCopy notificationInteractionTypeWithError:&v28], v18 = objc_claimAutoreleasedReturnValue(), v19 = v28, objc_msgSend(metricCopy, "setNotificationInteractionType:", v18), v18, (v11 = v19) != 0))
     {
 LABEL_7:
-      v20 = v11;
-      if (a5)
+      isShowingPregnancyContent = v11;
+      if (error)
       {
         v21 = v11;
-        *a5 = v20;
+        *error = isShowingPregnancyContent;
       }
 
       else
@@ -438,8 +438,8 @@ LABEL_7:
 
     else
     {
-      v20 = [v8 isShowingPregnancyContent];
-      [v7 setIsShowingPregnancyContent:v20];
+      isShowingPregnancyContent = [sourceCopy isShowingPregnancyContent];
+      [metricCopy setIsShowingPregnancyContent:isShowingPregnancyContent];
       v25 = 1;
     }
   }
@@ -464,14 +464,14 @@ LABEL_7:
   return v25;
 }
 
-- (BOOL)_collectDiagnosticFieldsForOnboardingMetric:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (BOOL)_collectDiagnosticFieldsForOnboardingMetric:(id)metric dataSource:(id)source error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  metricCopy = metric;
+  sourceCopy = source;
   v41 = 0;
-  v9 = [v8 stepWithError:&v41];
+  v9 = [sourceCopy stepWithError:&v41];
   v10 = v41;
-  [v7 setStep:v9];
+  [metricCopy setStep:v9];
 
   v11 = v10;
   if (v11)
@@ -480,9 +480,9 @@ LABEL_7:
   }
 
   v40 = 0;
-  v12 = [v8 featureVersionWithError:&v40];
+  v12 = [sourceCopy featureVersionWithError:&v40];
   v13 = v40;
-  [v7 setFeatureVersion:v12];
+  [metricCopy setFeatureVersion:v12];
 
   v11 = v13;
   if (v11)
@@ -491,9 +491,9 @@ LABEL_7:
   }
 
   v39 = 0;
-  v14 = [v8 provenanceWithError:&v39];
+  v14 = [sourceCopy provenanceWithError:&v39];
   v15 = v39;
-  [v7 setProvenance:v14];
+  [metricCopy setProvenance:v14];
 
   v11 = v15;
   if (v11)
@@ -502,9 +502,9 @@ LABEL_7:
   }
 
   v38 = 0;
-  v16 = [v8 activeWatchProductTypeWithError:&v38];
+  v16 = [sourceCopy activeWatchProductTypeWithError:&v38];
   v17 = v38;
-  [v7 setActiveWatchProductType:v16];
+  [metricCopy setActiveWatchProductType:v16];
 
   v11 = v17;
   if (v11)
@@ -513,9 +513,9 @@ LABEL_7:
   }
 
   v37 = 0;
-  v18 = [v8 hasDefaultHeightWithError:&v37];
+  v18 = [sourceCopy hasDefaultHeightWithError:&v37];
   v19 = v37;
-  [v7 setHasDefaultHeight:v18];
+  [metricCopy setHasDefaultHeight:v18];
 
   v11 = v19;
   if (v11)
@@ -524,9 +524,9 @@ LABEL_7:
   }
 
   v36 = 0;
-  v20 = [v8 hasDefaultWeightWithError:&v36];
+  v20 = [sourceCopy hasDefaultWeightWithError:&v36];
   v21 = v36;
-  [v7 setHasDefaultWeight:v20];
+  [metricCopy setHasDefaultWeight:v20];
 
   v11 = v21;
   if (v11)
@@ -535,16 +535,16 @@ LABEL_7:
   }
 
   v35 = 0;
-  v22 = [v8 acceptDefaultHeightWithError:&v35];
+  v22 = [sourceCopy acceptDefaultHeightWithError:&v35];
   v23 = v35;
-  [v7 setAcceptDefaultHeight:v22];
+  [metricCopy setAcceptDefaultHeight:v22];
 
   v11 = v23;
-  if (v11 || (v34 = 0, [v8 acceptDefaultWeightWithError:&v34], v24 = objc_claimAutoreleasedReturnValue(), v25 = v34, objc_msgSend(v7, "setAcceptDefaultWeight:", v24), v24, (v11 = v25) != 0))
+  if (v11 || (v34 = 0, [sourceCopy acceptDefaultWeightWithError:&v34], v24 = objc_claimAutoreleasedReturnValue(), v25 = v34, objc_msgSend(metricCopy, "setAcceptDefaultWeight:", v24), v24, (v11 = v25) != 0))
   {
 LABEL_9:
     v26 = v11;
-    if (!a5)
+    if (!error)
     {
       _HKLogDroppedError();
       v28 = 0;
@@ -558,9 +558,9 @@ LABEL_9:
   else
   {
     v33 = 0;
-    v30 = [v8 acceptDefaultNotificationsWithError:&v33];
+    v30 = [sourceCopy acceptDefaultNotificationsWithError:&v33];
     v31 = v33;
-    [v7 setAcceptDefaultNotifications:v30];
+    [metricCopy setAcceptDefaultNotifications:v30];
 
     v26 = v31;
     v28 = v26 == 0;
@@ -569,7 +569,7 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    if (!a5)
+    if (!error)
     {
       _HKLogDroppedError();
       goto LABEL_13;
@@ -578,29 +578,29 @@ LABEL_9:
     v32 = v26;
   }
 
-  *a5 = v26;
+  *error = v26;
 LABEL_13:
 
   return v28;
 }
 
-- (BOOL)_collectSensitiveFieldsForOnboardingMetric:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (BOOL)_collectSensitiveFieldsForOnboardingMetric:(id)metric dataSource:(id)source error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isImproveHealthAndActivityAllowed])
+  metricCopy = metric;
+  sourceCopy = source;
+  if ([metricCopy isImproveHealthAndActivityAllowed])
   {
     v24 = 0;
-    v9 = [v8 ageWithError:&v24];
+    v9 = [sourceCopy ageWithError:&v24];
     v10 = v24;
-    [v7 setAge:v9];
+    [metricCopy setAge:v9];
 
     v11 = v10;
     if (v11)
     {
       v12 = v11;
-      if (!a5)
+      if (!error)
       {
         _HKLogDroppedError();
         v14 = 0;
@@ -614,9 +614,9 @@ LABEL_13:
     else
     {
       v23 = 0;
-      v18 = [v8 biologicalSexWithError:&v23];
+      v18 = [sourceCopy biologicalSexWithError:&v23];
       v19 = v23;
-      [v7 setBiologicalSex:v18];
+      [metricCopy setBiologicalSex:v18];
 
       v12 = v19;
       v14 = v12 == 0;
@@ -627,7 +627,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (!a5)
+      if (!error)
       {
         _HKLogDroppedError();
         goto LABEL_14;
@@ -636,7 +636,7 @@ LABEL_14:
       v20 = v12;
     }
 
-    *a5 = v12;
+    *error = v12;
     goto LABEL_14;
   }
 

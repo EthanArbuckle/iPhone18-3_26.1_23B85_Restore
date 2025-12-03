@@ -1,6 +1,6 @@
 @interface SummarySharingDataTypeSelectionViewController
-- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCollectionViewLayout:(id)a3;
+- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCollectionViewLayout:(id)layout;
 - (void)done;
 - (void)viewDidLoad;
 @end
@@ -17,7 +17,7 @@
   sub_1BA1E2A90();
 }
 
-- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -29,11 +29,11 @@
 
 - (void)done
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA1E2C78();
 }
 
-- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI45SummarySharingDataTypeSelectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

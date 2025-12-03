@@ -9,21 +9,21 @@
 - (NSDictionary)properties;
 - (NSMutableDictionary)_contexts;
 - (NSString)myStatusMessage;
-- (id)_stampForContext:(id)a3;
-- (id)serviceWithName:(id)a3;
-- (id)valueOfPersistentProperty:(id)a3;
-- (id)valueOfProperty:(id)a3;
+- (id)_stampForContext:(id)context;
+- (id)serviceWithName:(id)name;
+- (id)valueOfPersistentProperty:(id)property;
+- (id)valueOfProperty:(id)property;
 - (unint64_t)myStatus;
 - (unint64_t)vcCapabilities;
 - (unsigned)myIdleTime;
 - (void)_noteDisconnected;
 - (void)_resetPostedSetupCompleted;
-- (void)_setHidingDisconnect:(BOOL)a3;
-- (void)_setStamp:(id)a3 forContext:(id)a4;
-- (void)addHandler:(id)a3;
+- (void)_setHidingDisconnect:(BOOL)disconnect;
+- (void)_setStamp:(id)stamp forContext:(id)context;
+- (void)addHandler:(id)handler;
 - (void)holdChatMessages;
 - (void)releaseHeldChatMessages;
-- (void)removeHandler:(id)a3;
+- (void)removeHandler:(id)handler;
 @end
 
 @implementation IMDaemonListener
@@ -34,9 +34,9 @@
   objc_exception_throw(v2);
 }
 
-- (id)valueOfProperty:(id)a3
+- (id)valueOfProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
@@ -47,23 +47,23 @@
   objc_exception_throw(v2);
 }
 
-- (id)valueOfPersistentProperty:(id)a3
+- (id)valueOfPersistentProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
 
-- (void)addHandler:(id)a3
+- (void)addHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
 
-- (void)removeHandler:(id)a3
+- (void)removeHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
@@ -140,24 +140,24 @@
   objc_exception_throw(v2);
 }
 
-- (id)serviceWithName:(id)a3
+- (id)serviceWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
 
-- (void)_setStamp:(id)a3 forContext:(id)a4
+- (void)_setStamp:(id)stamp forContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  stampCopy = stamp;
+  contextCopy = context;
   v8 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v7, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v8);
 }
 
-- (id)_stampForContext:(id)a3
+- (id)_stampForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
@@ -180,7 +180,7 @@
   objc_exception_throw(v2);
 }
 
-- (void)_setHidingDisconnect:(BOOL)a3
+- (void)_setHidingDisconnect:(BOOL)disconnect
 {
   v3 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], a2, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v3);

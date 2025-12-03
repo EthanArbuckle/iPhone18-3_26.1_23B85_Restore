@@ -1,5 +1,5 @@
 @interface _AFClockAlarmSnapshotMutation
-- (_AFClockAlarmSnapshotMutation)initWithBase:(id)a3;
+- (_AFClockAlarmSnapshotMutation)initWithBase:(id)base;
 - (id)getAlarmsByID;
 - (id)getDate;
 - (id)getNotifiedFiringAlarmIDs;
@@ -25,57 +25,57 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(AFClockAlarmSnapshot *)self->_base date];
+    date = [(AFClockAlarmSnapshot *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
 - (id)getAlarmsByID
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_alarmsByID;
+    alarmsByID = self->_alarmsByID;
   }
 
   else
   {
-    v2 = [(AFClockAlarmSnapshot *)self->_base alarmsByID];
+    alarmsByID = [(AFClockAlarmSnapshot *)self->_base alarmsByID];
   }
 
-  return v2;
+  return alarmsByID;
 }
 
 - (id)getNotifiedFiringAlarmIDs
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_notifiedFiringAlarmIDs;
+    notifiedFiringAlarmIDs = self->_notifiedFiringAlarmIDs;
   }
 
   else
   {
-    v2 = [(AFClockAlarmSnapshot *)self->_base notifiedFiringAlarmIDs];
+    notifiedFiringAlarmIDs = [(AFClockAlarmSnapshot *)self->_base notifiedFiringAlarmIDs];
   }
 
-  return v2;
+  return notifiedFiringAlarmIDs;
 }
 
-- (_AFClockAlarmSnapshotMutation)initWithBase:(id)a3
+- (_AFClockAlarmSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClockAlarmSnapshotMutation;
   v6 = [(_AFClockAlarmSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

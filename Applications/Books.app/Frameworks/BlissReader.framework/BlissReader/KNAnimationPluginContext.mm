@@ -22,15 +22,15 @@
 
 - (BOOL)isBuild
 {
-  v2 = [(KNAnimationPluginContext *)self rendererType];
-  if ((v2 - 1) < 2)
+  rendererType = [(KNAnimationPluginContext *)self rendererType];
+  if ((rendererType - 1) < 2)
   {
     return 1;
   }
 
-  if (v2)
+  if (rendererType)
   {
-    if (v2 == 10)
+    if (rendererType == 10)
     {
       return 1;
     }
@@ -46,13 +46,13 @@
 
 - (BOOL)isMagicMove
 {
-  v2 = [(KNAnimationPluginContext *)self rendererType];
-  if ((v2 - 7) < 2)
+  rendererType = [(KNAnimationPluginContext *)self rendererType];
+  if ((rendererType - 7) < 2)
   {
     return 1;
   }
 
-  if (!v2)
+  if (!rendererType)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -62,16 +62,16 @@
 
 - (BOOL)isFrameRenderer
 {
-  v2 = [(KNAnimationPluginContext *)self rendererType];
+  rendererType = [(KNAnimationPluginContext *)self rendererType];
   result = 0;
-  if (v2 <= 0xA)
+  if (rendererType <= 0xA)
   {
-    if (((1 << v2) & 0x754) != 0)
+    if (((1 << rendererType) & 0x754) != 0)
     {
       return 1;
     }
 
-    else if (!v2)
+    else if (!rendererType)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       return 0;
@@ -83,13 +83,13 @@
 
 - (BOOL)isMetalRenderer
 {
-  v2 = [(KNAnimationPluginContext *)self rendererType];
-  if ((v2 - 9) < 2)
+  rendererType = [(KNAnimationPluginContext *)self rendererType];
+  if ((rendererType - 9) < 2)
   {
     return 1;
   }
 
-  if (!v2)
+  if (!rendererType)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -118,17 +118,17 @@
 
   if ([(KNAnimationPluginContext *)self isMagicMove])
   {
-    v5 = [(KNAnimationPluginContext *)self magicMoveMatches];
+    magicMoveMatches = [(KNAnimationPluginContext *)self magicMoveMatches];
     v6 = @"magicMoveMatches:%ld";
   }
 
   else
   {
-    v5 = [(KNAnimationPluginContext *)self textures];
+    magicMoveMatches = [(KNAnimationPluginContext *)self textures];
     v6 = @"textures:%ld";
   }
 
-  [v3 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", v6, -[NSArray count](v5, "count"))}];
+  [v3 addObject:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", v6, -[NSArray count](magicMoveMatches, "count"))}];
   if ([(KNAnimationPluginContext *)self isFrameRenderer])
   {
     [(KNAnimationPluginContext *)self percent];

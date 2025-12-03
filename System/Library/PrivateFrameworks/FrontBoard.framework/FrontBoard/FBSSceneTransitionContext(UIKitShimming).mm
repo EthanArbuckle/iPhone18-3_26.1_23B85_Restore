@@ -12,22 +12,22 @@
     return 0;
   }
 
-  return [a1 isUISubclass];
+  return [self isUISubclass];
 }
 
 - (id)_uiApplicationSceneTransitionContextShim
 {
-  if ([a1 _uikitShimming_isUISubclass])
+  if ([self _uikitShimming_isUISubclass])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

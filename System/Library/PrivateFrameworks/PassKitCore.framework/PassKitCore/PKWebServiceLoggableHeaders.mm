@@ -1,28 +1,28 @@
 @interface PKWebServiceLoggableHeaders
-- (PKWebServiceLoggableHeaders)initWithHeaders:(id)a3;
-- (id)_descriptionIncludingPrivateFields:(BOOL)a3;
+- (PKWebServiceLoggableHeaders)initWithHeaders:(id)headers;
+- (id)_descriptionIncludingPrivateFields:(BOOL)fields;
 @end
 
 @implementation PKWebServiceLoggableHeaders
 
-- (PKWebServiceLoggableHeaders)initWithHeaders:(id)a3
+- (PKWebServiceLoggableHeaders)initWithHeaders:(id)headers
 {
-  v5 = a3;
+  headersCopy = headers;
   v9.receiver = self;
   v9.super_class = PKWebServiceLoggableHeaders;
   v6 = [(PKWebServiceLoggableHeaders *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_headers, a3);
+    objc_storeStrong(&v6->_headers, headers);
   }
 
   return v7;
 }
 
-- (id)_descriptionIncludingPrivateFields:(BOOL)a3
+- (id)_descriptionIncludingPrivateFields:(BOOL)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   v26 = *MEMORY[0x1E69E9840];
   v20 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v21 = 0u;
@@ -59,7 +59,7 @@
 
       else
       {
-        if (!v3)
+        if (!fieldsCopy)
         {
           continue;
         }
@@ -75,7 +75,7 @@
   while (v7);
 LABEL_17:
 
-  if (!v3)
+  if (!fieldsCopy)
   {
     [v20 appendFormat:@"\t%lu <private> fields\n", -[NSDictionary count](self->_headers, "count") - (v8 != 0)];
   }

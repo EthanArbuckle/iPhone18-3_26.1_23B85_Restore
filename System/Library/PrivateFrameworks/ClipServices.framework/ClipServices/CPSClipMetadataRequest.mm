@@ -1,33 +1,33 @@
 @interface CPSClipMetadataRequest
 - (BOOL)isLikelyAvailable;
-- (CPSClipMetadataRequest)initWithURL:(id)a3 fallbackClipBundleID:(id)a4;
-- (CPSClipMetadataRequest)initWithURLHash:(id)a3;
+- (CPSClipMetadataRequest)initWithURL:(id)l fallbackClipBundleID:(id)d;
+- (CPSClipMetadataRequest)initWithURLHash:(id)hash;
 - (id)getClipMetadataSynchronously;
 - (id)getDownloadedIconURLSynchronously;
-- (void)_setUpSessionProxyAndPromisesWithURL:(id)a3 fallbackClipBundleID:(id)a4;
+- (void)_setUpSessionProxyAndPromisesWithURL:(id)l fallbackClipBundleID:(id)d;
 - (void)dealloc;
 - (void)getClipMetadataSynchronously;
 - (void)getDownloadedIconURLSynchronously;
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4;
-- (void)proxy:(id)a3 didRetrieveApplicationIcon:(id)a4;
-- (void)proxyDidRetrieveBusinessIcon:(id)a3;
-- (void)proxyDidUpdateMetadata:(id)a3;
-- (void)proxyRemoteServiceDidCrash:(id)a3;
-- (void)requestDownloadedIconWithMetadata:(id)a3 completion:(id)a4;
-- (void)requestMetadataWithCompletion:(id)a3;
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error;
+- (void)proxy:(id)proxy didRetrieveApplicationIcon:(id)icon;
+- (void)proxyDidRetrieveBusinessIcon:(id)icon;
+- (void)proxyDidUpdateMetadata:(id)metadata;
+- (void)proxyRemoteServiceDidCrash:(id)crash;
+- (void)requestDownloadedIconWithMetadata:(id)metadata completion:(id)completion;
+- (void)requestMetadataWithCompletion:(id)completion;
 @end
 
 @implementation CPSClipMetadataRequest
 
-- (CPSClipMetadataRequest)initWithURLHash:(id)a3
+- (CPSClipMetadataRequest)initWithURLHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v10.receiver = self;
   v10.super_class = CPSClipMetadataRequest;
   v5 = [(CPSClipMetadataRequest *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [hashCopy copy];
     fullHash = v5->_fullHash;
     v5->_fullHash = v6;
 
@@ -37,28 +37,28 @@
   return v5;
 }
 
-- (CPSClipMetadataRequest)initWithURL:(id)a3 fallbackClipBundleID:(id)a4
+- (CPSClipMetadataRequest)initWithURL:(id)l fallbackClipBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CPSClipMetadataRequest;
   v8 = [(CPSClipMetadataRequest *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(CPSClipMetadataRequest *)v8 _setUpSessionProxyAndPromisesWithURL:v6 fallbackClipBundleID:v7];
+    [(CPSClipMetadataRequest *)v8 _setUpSessionProxyAndPromisesWithURL:lCopy fallbackClipBundleID:dCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)_setUpSessionProxyAndPromisesWithURL:(id)a3 fallbackClipBundleID:(id)a4
+- (void)_setUpSessionProxyAndPromisesWithURL:(id)l fallbackClipBundleID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dCopy = d;
   v8 = +[CPSPromise promise];
   availabilityPromise = self->_availabilityPromise;
   self->_availabilityPromise = v8;
@@ -71,12 +71,12 @@
   metadataPromise = self->_metadataPromise;
   self->_metadataPromise = v12;
 
-  v14 = [v6 cps_sanitizedURL];
-  v15 = [[CPSSessionProxy alloc] initWithURL:v14];
+  cps_sanitizedURL = [lCopy cps_sanitizedURL];
+  v15 = [[CPSSessionProxy alloc] initWithURL:cps_sanitizedURL];
   sessionProxy = self->_sessionProxy;
   self->_sessionProxy = v15;
 
-  v17 = [CPSSessionConfiguration standardConfigurationWithURL:v14 fallbackBundleID:v7];
+  v17 = [CPSSessionConfiguration standardConfigurationWithURL:cps_sanitizedURL fallbackBundleID:dCopy];
 
   [(CPSSessionProxy *)self->_sessionProxy setConfiguration:v17];
   [(CPSSessionProxy *)self->_sessionProxy setDelegate:self];
@@ -90,11 +90,11 @@
     v23 = 138544131;
     v24 = v20;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = v21;
     v29 = 2117;
-    v30 = v6;
+    v30 = lCopy;
     _os_log_impl(&dword_2436ED000, v19, OS_LOG_TYPE_INFO, "%{public}@ (%p): session proxy (%p) set up for URL %{sensitive}@", &v23, 0x2Au);
   }
 
@@ -109,9 +109,9 @@
   }
 
   v3 = [(CPSSessionProxy *)self->_sessionProxy url];
-  v4 = [v3 cps_fallbackBundleIdentifier];
+  cps_fallbackBundleIdentifier = [v3 cps_fallbackBundleIdentifier];
 
-  if (v4)
+  if (cps_fallbackBundleIdentifier)
   {
     return 1;
   }
@@ -135,10 +135,10 @@
   [(CPSPromise *)availabilityPromise addCompletionBlock:&v11];
   v10 = dispatch_time(0, 1000000000);
   dispatch_group_wait(v9, v10);
-  v5 = [v18[5] BOOLValue];
+  bOOLValue = [v18[5] BOOLValue];
 
   _Block_object_dispose(&v17, 8);
-  return v5;
+  return bOOLValue;
 }
 
 void __43__CPSClipMetadataRequest_isLikelyAvailable__block_invoke(uint64_t a1, void *a2)
@@ -197,7 +197,7 @@ LABEL_8:
     *buf = 138544131;
     v28 = v8;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 2048;
     v32 = v9;
     v33 = 2117;
@@ -270,7 +270,7 @@ LABEL_8:
     *buf = 138544131;
     v28 = v8;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 2048;
     v32 = v9;
     v33 = 2117;
@@ -306,7 +306,7 @@ void __59__CPSClipMetadataRequest_getDownloadedIconURLSynchronously__block_invok
     *buf = 138543874;
     v10 = v5;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = sessionProxy;
     _os_log_impl(&dword_2436ED000, v4, OS_LOG_TYPE_INFO, "%{public}@ (%p): Disconnecting session proxy (%p)", buf, 0x20u);
@@ -319,16 +319,16 @@ void __59__CPSClipMetadataRequest_getDownloadedIconURLSynchronously__block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestMetadataWithCompletion:(id)a3
+- (void)requestMetadataWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __56__CPSClipMetadataRequest_requestMetadataWithCompletion___block_invoke;
   v18[3] = &unk_278DCEF30;
   v18[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v19 = v5;
   v6 = MEMORY[0x245D3D5F0](v18);
   v7 = v6;
@@ -348,7 +348,7 @@ void __59__CPSClipMetadataRequest_getDownloadedIconURLSynchronously__block_invok
       *buf = 138543875;
       v21 = v10;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2117;
       v25 = fullHash;
       _os_log_impl(&dword_2436ED000, v9, OS_LOG_TYPE_INFO, "%{public}@ (%p): requesting url for %{sensitive}@", buf, 0x20u);
@@ -498,23 +498,23 @@ void __56__CPSClipMetadataRequest_requestMetadataWithCompletion___block_invoke_1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDownloadedIconWithMetadata:(id)a3 completion:(id)a4
+- (void)requestDownloadedIconWithMetadata:(id)metadata completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   if (!self->_sessionProxy)
   {
-    v8 = [v6 clipURL];
+    clipURL = [metadataCopy clipURL];
 
-    if (!v8)
+    if (!clipURL)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_7;
     }
 
-    v9 = [v6 clipURL];
-    [(CPSClipMetadataRequest *)self _setUpSessionProxyAndPromisesWithURL:v9 fallbackClipBundleID:0];
+    clipURL2 = [metadataCopy clipURL];
+    [(CPSClipMetadataRequest *)self _setUpSessionProxyAndPromisesWithURL:clipURL2 fallbackClipBundleID:0];
   }
 
   v10 = CPS_LOG_CHANNEL_PREFIXClipServices();
@@ -533,14 +533,14 @@ void __56__CPSClipMetadataRequest_requestMetadataWithCompletion___block_invoke_1
   *&buf[16] = 0x3032000000;
   v18 = __Block_byref_object_copy__7;
   v19 = __Block_byref_object_dispose__7;
-  v20 = self;
-  iconPromise = v20->_iconPromise;
+  selfCopy = self;
+  iconPromise = selfCopy->_iconPromise;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__CPSClipMetadataRequest_requestDownloadedIconWithMetadata_completion___block_invoke;
   v14[3] = &unk_278DCEF80;
   v16 = buf;
-  v15 = v7;
+  v15 = completionCopy;
   [(CPSPromise *)iconPromise addCompletionBlock:v14];
 
   _Block_object_dispose(buf, 8);
@@ -586,82 +586,82 @@ void __71__CPSClipMetadataRequest_requestDownloadedIconWithMetadata_completion__
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxy:(id)a3 didRetrieveApplicationIcon:(id)a4
+- (void)proxy:(id)proxy didRetrieveApplicationIcon:(id)icon
 {
-  v9 = a3;
-  v5 = [v9 metadata];
-  v6 = [v5 isPoweredByThirdParty];
+  proxyCopy = proxy;
+  metadata = [proxyCopy metadata];
+  isPoweredByThirdParty = [metadata isPoweredByThirdParty];
 
-  if ((v6 & 1) == 0)
+  if ((isPoweredByThirdParty & 1) == 0)
   {
     iconPromise = self->_iconPromise;
-    v8 = [v9 applicationIconFileURL];
-    [(CPSPromise *)iconPromise finishWithResult:v8];
+    applicationIconFileURL = [proxyCopy applicationIconFileURL];
+    [(CPSPromise *)iconPromise finishWithResult:applicationIconFileURL];
   }
 }
 
-- (void)proxyDidUpdateMetadata:(id)a3
+- (void)proxyDidUpdateMetadata:(id)metadata
 {
-  v16 = a3;
-  v4 = [v16 metadata];
-  v5 = [v4 hasAppMetadata];
+  metadataCopy = metadata;
+  metadata = [metadataCopy metadata];
+  hasAppMetadata = [metadata hasAppMetadata];
 
-  if (v5)
+  if (hasAppMetadata)
   {
     v6 = +[CPSAnalyticsLogger sharedLogger];
-    v7 = [v16 metadata];
-    v8 = [v7 clipBundleID];
-    v9 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-    v10 = [v9 launchReason];
-    [v6 recordClientMetadataRequestWithBundleID:v8 launchReason:v10];
+    metadata2 = [metadataCopy metadata];
+    clipBundleID = [metadata2 clipBundleID];
+    configuration = [(CPSSessionProxy *)self->_sessionProxy configuration];
+    launchReason = [configuration launchReason];
+    [v6 recordClientMetadataRequestWithBundleID:clipBundleID launchReason:launchReason];
 
     metadataPromise = self->_metadataPromise;
-    v12 = [v16 metadata];
-    [(CPSPromise *)metadataPromise finishWithResult:v12];
+    metadata3 = [metadataCopy metadata];
+    [(CPSPromise *)metadataPromise finishWithResult:metadata3];
   }
 
   else
   {
-    v13 = [v16 metadata];
-    v12 = [v13 invocationPolicy];
+    metadata4 = [metadataCopy metadata];
+    metadata3 = [metadata4 invocationPolicy];
 
-    if (v12 && ([v12 isEligible] & 1) == 0 && (objc_msgSend(v12, "isRecoverable") & 1) == 0)
+    if (metadata3 && ([metadata3 isEligible] & 1) == 0 && (objc_msgSend(metadata3, "isRecoverable") & 1) == 0)
     {
       v14 = self->_metadataPromise;
-      v15 = [v16 metadata];
-      [(CPSPromise *)v14 finishWithResult:v15];
+      metadata5 = [metadataCopy metadata];
+      [(CPSPromise *)v14 finishWithResult:metadata5];
 
       [(CPSPromise *)self->_iconPromise finish];
     }
   }
 }
 
-- (void)proxyDidRetrieveBusinessIcon:(id)a3
+- (void)proxyDidRetrieveBusinessIcon:(id)icon
 {
   iconPromise = self->_iconPromise;
-  v4 = [a3 businessIconURL];
-  [(CPSPromise *)iconPromise finishWithResult:v4];
+  businessIconURL = [icon businessIconURL];
+  [(CPSPromise *)iconPromise finishWithResult:businessIconURL];
 }
 
-- (void)proxyRemoteServiceDidCrash:(id)a3
+- (void)proxyRemoteServiceDidCrash:(id)crash
 {
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CPSErrorDomain" code:3 userInfo:0];
   [(CPSPromise *)self->_metadataPromise finishWithError:v4];
   [(CPSPromise *)self->_iconPromise finishWithError:v4];
 }
 
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error
 {
   metadataPromise = self->_metadataPromise;
-  v6 = a4;
-  [(CPSPromise *)metadataPromise finishWithError:v6];
-  [(CPSPromise *)self->_iconPromise finishWithError:v6];
+  errorCopy = error;
+  [(CPSPromise *)metadataPromise finishWithError:errorCopy];
+  [(CPSPromise *)self->_iconPromise finishWithError:errorCopy];
 }
 
 - (void)getClipMetadataSynchronously
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_5(&dword_2436ED000, v2, v3, "%{public}@ (%p): synchronous metadata fetching only works with URL based request, please use initWithURL:", v4, v5, v6, v7, v9);
@@ -672,7 +672,7 @@ void __71__CPSClipMetadataRequest_requestDownloadedIconWithMetadata_completion__
 - (void)getDownloadedIconURLSynchronously
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_5(&dword_2436ED000, v2, v3, "%{public}@ (%p): synchronous metadata fetching only works with URL based request, please use initWithURL:", v4, v5, v6, v7, v9);

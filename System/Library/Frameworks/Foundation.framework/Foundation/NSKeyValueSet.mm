@@ -1,7 +1,7 @@
 @interface NSKeyValueSet
 + (id)_proxyShare;
 - ($6C36EBF4C34944E14D6052B25C3B65B5)_proxyLocator;
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
 - (void)_proxyNonGCFinalize;
 - (void)dealloc;
 @end
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -28,9 +28,9 @@
   v6 = [(NSKeyValueSet *)&v8 init];
   if (v6)
   {
-    v6->_container = a3;
-    v6->_key = [a4 key];
-    v6->_methods = [a4 methods];
+    v6->_container = container;
+    v6->_key = [getter key];
+    v6->_methods = [getter methods];
   }
 
   return v6;

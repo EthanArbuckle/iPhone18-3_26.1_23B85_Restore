@@ -1,19 +1,19 @@
 @interface BWRefinedCinematographyNode
-- (BWRefinedCinematographyNode)initWithAudioEnabled:(BOOL)a3;
-- (void)_attachRefinedFramesToSbuf:(uint64_t)a1;
+- (BWRefinedCinematographyNode)initWithAudioEnabled:(BOOL)enabled;
+- (void)_attachRefinedFramesToSbuf:(uint64_t)sbuf;
 - (void)_flush;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWRefinedCinematographyNode
 
-- (BWRefinedCinematographyNode)initWithAudioEnabled:(BOOL)a3
+- (BWRefinedCinematographyNode)initWithAudioEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13.receiver = self;
   v13.super_class = BWRefinedCinematographyNode;
   v4 = [(BWNode *)&v13 init];
@@ -36,7 +36,7 @@
     [(BWNodeOutput *)v9 setName:@"PassThru"];
     [(BWNodeOutput *)v5->_videoOutput setPassthroughMode:1];
     [(BWNode *)v5 addOutput:v5->_videoOutput];
-    if (v3)
+    if (enabledCopy)
     {
       v10 = [[BWNodeInput alloc] initWithMediaType:1936684398 node:v5];
       v5->_audioInput = v10;
@@ -52,7 +52,7 @@
   return v5;
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v4 = atomic_fetch_add_explicit(&self->_numEODMessagesReceived, 1u, memory_order_relaxed) + 1;
   if ([(NSArray *)[(BWNode *)self inputs] count]== v4)
@@ -62,8 +62,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(BWNode *)self outputs];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    outputs = [(BWNode *)self outputs];
+    v6 = [(NSArray *)outputs countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v6)
     {
       v7 = v6;
@@ -75,14 +75,14 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v11 + 1) + 8 * v9++) markEndOfLiveOutput];
         }
 
         while (v7 != v9);
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v7 = [(NSArray *)outputs countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v7);
@@ -99,9 +99,9 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  if (self->_videoInput == a4)
+  if (self->_videoInput == input)
   {
     v4 = &OBJC_IVAR___BWRefinedCinematographyNode__videoOutput;
   }
@@ -111,12 +111,12 @@
     v4 = &OBJC_IVAR___BWRefinedCinematographyNode__audioOutput;
   }
 
-  [*(&self->super.super.isa + *v4) setFormat:a3];
+  [*(&self->super.super.isa + *v4) setFormat:format];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (self->_videoInput == a5)
+  if (self->_videoInput == input)
   {
     v5 = &OBJC_IVAR___BWRefinedCinematographyNode__videoOutput;
   }
@@ -129,7 +129,7 @@
   [*(&self->super.super.isa + *v5) makeConfiguredFormatLive];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v7 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -137,11 +137,11 @@
     kdebug_trace();
   }
 
-  if (self->_videoInput == a4)
+  if (self->_videoInput == input)
   {
-    if (BWSampleBufferIsMarkerBuffer(a3))
+    if (BWSampleBufferIsMarkerBuffer(buffer))
     {
-      v9 = CMGetAttachment(a3, @"FileWriterAction", 0);
+      v9 = CMGetAttachment(buffer, @"FileWriterAction", 0);
       if (v9)
       {
         v10 = v9;
@@ -164,7 +164,7 @@
 
     else
     {
-      v12 = CMGetAttachment(a3, @"CinematicVideoCinematographyMetadata", 0);
+      v12 = CMGetAttachment(buffer, @"CinematicVideoCinematographyMetadata", 0);
       if (v12)
       {
         v13 = [v12 objectForKeyedSubscript:0x1F21A9950];
@@ -173,7 +173,7 @@
         -[PTCinematographyRefinement addFrames:](refinementSession, "addFrames:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1]);
       }
 
-      [(BWRefinedCinematographyNode *)self _attachRefinedFramesToSbuf:a3];
+      [(BWRefinedCinematographyNode *)self _attachRefinedFramesToSbuf:buffer];
     }
 
     if (*v7 == 1)
@@ -188,39 +188,39 @@
   {
     if ((self->_firstAudioPTS.flags & 1) == 0)
     {
-      CMSampleBufferGetPresentationTimeStamp(&v15, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v15, buffer);
       self->_firstAudioPTS = v15;
     }
 
-    CMSampleBufferGetPresentationTimeStamp(&v15, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v15, buffer);
     self->_lastAudioPTS = v15;
     v8 = &OBJC_IVAR___BWRefinedCinematographyNode__audioOutput;
   }
 
-  [*(&self->super.super.isa + *v8) emitSampleBuffer:a3];
+  [*(&self->super.super.isa + *v8) emitSampleBuffer:buffer];
 }
 
 - (void)_flush
 {
-  if (a1)
+  if (self)
   {
     v10 = 0;
-    if (*(a1 + 136) == 1)
+    if (*(self + 136) == 1)
     {
-      [*(a1 + 128) stopRecording];
-      *(a1 + 136) = 0;
+      [*(self + 128) stopRecording];
+      *(self + 136) = 0;
       memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
-      __dst.presentationTimeStamp = *(a1 + 168);
-      lhs = *(a1 + 144);
-      rhs = *(a1 + 168);
+      __dst.presentationTimeStamp = *(self + 168);
+      lhs = *(self + 144);
+      rhs = *(self + 168);
       CMTimeSubtract(&__dst.duration, &lhs, &rhs);
       v2 = CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, 0, 0, 1, &__dst, 0, 0, &v10);
       v3 = v10;
       if (!v2)
       {
         CMSetAttachment(v10, @"RefinedCinematographyStreamEndMarker", MEMORY[0x1E695E118], 1u);
-        [(BWRefinedCinematographyNode *)a1 _attachRefinedFramesToSbuf:v10];
-        [*(a1 + 16) emitSampleBuffer:v10];
+        [(BWRefinedCinematographyNode *)self _attachRefinedFramesToSbuf:v10];
+        [*(self + 16) emitSampleBuffer:v10];
         v3 = v10;
       }
     }
@@ -232,11 +232,11 @@
 
     v4 = MEMORY[0x1E6960C70];
     v5 = *MEMORY[0x1E6960C70];
-    *(a1 + 168) = *MEMORY[0x1E6960C70];
+    *(self + 168) = *MEMORY[0x1E6960C70];
     v6 = *(v4 + 16);
-    *(a1 + 184) = v6;
-    *(a1 + 144) = v5;
-    *(a1 + 160) = v6;
+    *(self + 184) = v6;
+    *(self + 144) = v5;
+    *(self + 160) = v6;
     if (v3)
     {
       CFRelease(v3);
@@ -244,20 +244,20 @@
   }
 }
 
-- (void)_attachRefinedFramesToSbuf:(uint64_t)a1
+- (void)_attachRefinedFramesToSbuf:(uint64_t)sbuf
 {
-  if (a1)
+  if (sbuf)
   {
-    v3 = [*(a1 + 128) refinedFrames];
-    if ([v3 count])
+    refinedFrames = [*(sbuf + 128) refinedFrames];
+    if ([refinedFrames count])
     {
       target = a2;
-      value = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+      value = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(refinedFrames, "count")}];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v4 = [v3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v4 = [refinedFrames countByEnumeratingWithState:&v25 objects:v24 count:16];
       if (!v4)
       {
         goto LABEL_20;
@@ -266,7 +266,7 @@
       v5 = v4;
       v19 = *v26;
       allocator = *MEMORY[0x1E695E480];
-      obj = v3;
+      obj = refinedFrames;
       while (1)
       {
         for (i = 0; i != v5; ++i)

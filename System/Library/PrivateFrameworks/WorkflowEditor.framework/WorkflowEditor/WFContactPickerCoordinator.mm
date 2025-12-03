@@ -1,16 +1,16 @@
 @interface WFContactPickerCoordinator
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
 - (UIViewController)presentingViewController;
-- (id)contactWithMatchingPropertyAndMultivalueIndex:(id)a3;
+- (id)contactWithMatchingPropertyAndMultivalueIndex:(id)index;
 - (id)supportedContactProperties;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 - (void)dismissPersonViewController;
-- (void)finishWithContact:(id)a3;
-- (void)presentContactPickerWithCompletionHandler:(id)a3;
-- (void)presentHandlePickerForContact:(id)a3 completionHandler:(id)a4;
-- (void)presentViewController:(id)a3 completionHandler:(id)a4;
+- (void)finishWithContact:(id)contact;
+- (void)presentContactPickerWithCompletionHandler:(id)handler;
+- (void)presentHandlePickerForContact:(id)contact completionHandler:(id)handler;
+- (void)presentViewController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation WFContactPickerCoordinator
@@ -22,18 +22,18 @@
   return WeakRetained;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 wf_isWidgetConfigurationExtensionBundle];
+  collectionCopy = collection;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  wf_isWidgetConfigurationExtensionBundle = [mainBundle wf_isWidgetConfigurationExtensionBundle];
 
-  if (v6)
+  if (wf_isWidgetConfigurationExtensionBundle)
   {
     v7 = 2;
   }
 
-  else if ([v4 horizontalSizeClass] == 1)
+  else if ([collectionCopy horizontalSizeClass] == 1)
   {
     v7 = 2;
   }
@@ -46,32 +46,32 @@
   return v7;
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   v5 = WFContactFromCNContactProperty();
   [(WFContactPickerCoordinator *)self finishWithContact:v5];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = [MEMORY[0x277CFC278] contactWithCNContact:a4];
+  v6 = [MEMORY[0x277CFC278] contactWithCNContact:contact];
   v5 = [(WFContactPickerCoordinator *)self contactWithMatchingPropertyAndMultivalueIndex:v6];
   [(WFContactPickerCoordinator *)self finishWithContact:v5];
 }
 
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  propertyCopy = property;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__WFContactPickerCoordinator_contactViewController_shouldPerformDefaultActionForContactProperty___block_invoke;
   block[3] = &unk_279EDC130;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v8 = v6;
-  v9 = v7;
+  v12 = propertyCopy;
+  selfCopy = self;
+  v14 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = propertyCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   return 0;
@@ -87,11 +87,11 @@ void __97__WFContactPickerCoordinator_contactViewController_shouldPerformDefault
 
 - (id)supportedContactProperties
 {
-  v2 = [(WFContactPickerCoordinator *)self supportedPersonProperties];
-  v3 = [v2 if_compactMap:&__block_literal_global_1399];
-  v4 = [v3 allObjects];
+  supportedPersonProperties = [(WFContactPickerCoordinator *)self supportedPersonProperties];
+  v3 = [supportedPersonProperties if_compactMap:&__block_literal_global_1399];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 uint64_t __56__WFContactPickerCoordinator_supportedContactProperties__block_invoke(uint64_t a1, void *a2)
@@ -101,16 +101,16 @@ uint64_t __56__WFContactPickerCoordinator_supportedContactProperties__block_invo
   return CNContactPropertyKeyFromWFContactPropertyID();
 }
 
-- (id)contactWithMatchingPropertyAndMultivalueIndex:(id)a3
+- (id)contactWithMatchingPropertyAndMultivalueIndex:(id)index
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexCopy = index;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WFContactPickerCoordinator *)self supportedPersonProperties];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  supportedPersonProperties = [(WFContactPickerCoordinator *)self supportedPersonProperties];
+  v6 = [supportedPersonProperties countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -121,20 +121,20 @@ uint64_t __56__WFContactPickerCoordinator_supportedContactProperties__block_invo
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedPersonProperties);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) intValue];
-        if ([v4 hasValueForPropertyID:v10])
+        intValue = [*(*(&v13 + 1) + 8 * i) intValue];
+        if ([indexCopy hasValueForPropertyID:intValue])
         {
-          v11 = [v4 contactWithPropertyID:v10 multivalueIndex:0];
+          v11 = [indexCopy contactWithPropertyID:intValue multivalueIndex:0];
 
-          v4 = v11;
+          indexCopy = v11;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [supportedPersonProperties countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -146,18 +146,18 @@ uint64_t __56__WFContactPickerCoordinator_supportedContactProperties__block_invo
 
 LABEL_11:
 
-  return v4;
+  return indexCopy;
 }
 
-- (void)finishWithContact:(id)a3
+- (void)finishWithContact:(id)contact
 {
-  v6 = a3;
-  v4 = [(WFContactPickerCoordinator *)self completionHandler];
+  contactCopy = contact;
+  completionHandler = [(WFContactPickerCoordinator *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFContactPickerCoordinator *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFContactPickerCoordinator *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, contactCopy);
 
     [(WFContactPickerCoordinator *)self setCompletionHandler:0];
   }
@@ -165,88 +165,88 @@ LABEL_11:
 
 - (void)dismissPersonViewController
 {
-  v3 = [(WFContactPickerCoordinator *)self presentingViewController];
-  v2 = [v3 presentedViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(WFContactPickerCoordinator *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentViewController:(id)a3 completionHandler:(id)a4
+- (void)presentViewController:(id)controller completionHandler:(id)handler
 {
-  v13 = a3;
-  v6 = [a4 copy];
+  controllerCopy = controller;
+  v6 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
 
-  v8 = [(WFContactPickerCoordinator *)self presentationSource];
-  if (v8)
+  presentationSource = [(WFContactPickerCoordinator *)self presentationSource];
+  if (presentationSource)
   {
-    [v13 setModalPresentationStyle:7];
-    v9 = [v13 popoverPresentationController];
-    [v9 setDelegate:self];
-    [v9 setPermittedArrowDirections:{objc_msgSend(v8, "permittedArrowDirections")}];
-    [v9 setCanOverlapSourceViewRect:{objc_msgSend(v8, "canOverlapSourceViewRect")}];
-    v10 = [v8 barButtonItem];
-    [v9 setBarButtonItem:v10];
+    [controllerCopy setModalPresentationStyle:7];
+    popoverPresentationController = [controllerCopy popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
+    [popoverPresentationController setPermittedArrowDirections:{objc_msgSend(presentationSource, "permittedArrowDirections")}];
+    [popoverPresentationController setCanOverlapSourceViewRect:{objc_msgSend(presentationSource, "canOverlapSourceViewRect")}];
+    barButtonItem = [presentationSource barButtonItem];
+    [popoverPresentationController setBarButtonItem:barButtonItem];
 
-    v11 = [v8 sourceView];
-    [v9 setSourceView:v11];
+    sourceView = [presentationSource sourceView];
+    [popoverPresentationController setSourceView:sourceView];
 
-    [v9 wf_forcePresentationInPresenterSceneIfNeeded];
-    [v8 sourceRect];
+    [popoverPresentationController wf_forcePresentationInPresenterSceneIfNeeded];
+    [presentationSource sourceRect];
     if (!CGRectIsNull(v15))
     {
-      [v8 sourceRect];
-      [v9 setSourceRect:?];
+      [presentationSource sourceRect];
+      [popoverPresentationController setSourceRect:?];
     }
   }
 
   else
   {
-    v9 = [v13 presentationController];
-    [v9 setDelegate:self];
+    popoverPresentationController = [controllerCopy presentationController];
+    [popoverPresentationController setDelegate:self];
   }
 
-  v12 = [(WFContactPickerCoordinator *)self presentingViewController];
-  [v12 presentViewController:v13 animated:1 completion:0];
+  presentingViewController = [(WFContactPickerCoordinator *)self presentingViewController];
+  [presentingViewController presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)presentHandlePickerForContact:(id)a3 completionHandler:(id)a4
+- (void)presentHandlePickerForContact:(id)contact completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CBDC48];
-  v7 = a4;
-  v14 = [v6 viewControllerForContact:a3];
+  handlerCopy = handler;
+  v14 = [v6 viewControllerForContact:contact];
   [v14 setDelegate:self];
-  v8 = [(WFContactPickerCoordinator *)self supportedContactProperties];
-  [v14 setDisplayedPropertyKeys:v8];
+  supportedContactProperties = [(WFContactPickerCoordinator *)self supportedContactProperties];
+  [v14 setDisplayedPropertyKeys:supportedContactProperties];
 
   [v14 setAllowsEditing:0];
   [v14 setAllowsActions:0];
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_dismissPersonViewController];
-  v10 = [v14 navigationItem];
-  [v10 setLeftBarButtonItem:v9];
+  navigationItem = [v14 navigationItem];
+  [navigationItem setLeftBarButtonItem:v9];
 
   v11 = WFLocalizedString(@"Choose");
-  v12 = [v14 navigationItem];
-  [v12 setTitle:v11];
+  navigationItem2 = [v14 navigationItem];
+  [navigationItem2 setTitle:v11];
 
   v13 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v14];
-  [(WFContactPickerCoordinator *)self presentViewController:v13 completionHandler:v7];
+  [(WFContactPickerCoordinator *)self presentViewController:v13 completionHandler:handlerCopy];
 }
 
-- (void)presentContactPickerWithCompletionHandler:(id)a3
+- (void)presentContactPickerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(WFContactPickerCoordinator *)self supportedContactProperties];
+  handlerCopy = handler;
+  supportedContactProperties = [(WFContactPickerCoordinator *)self supportedContactProperties];
   v5 = objc_alloc_init(MEMORY[0x277CBDC18]);
   [v5 setDelegate:self];
-  [v5 setDisplayedPropertyKeys:v8];
+  [v5 setDisplayedPropertyKeys:supportedContactProperties];
   v6 = WFPredicateForEnablingPerson();
   [v5 setPredicateForEnablingContact:v6];
 
   v7 = WFPredicateForSelectionOfPerson();
   [v5 setPredicateForSelectionOfContact:v7];
 
-  [(WFContactPickerCoordinator *)self presentViewController:v5 completionHandler:v4];
+  [(WFContactPickerCoordinator *)self presentViewController:v5 completionHandler:handlerCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface CKAttachmentBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKAttachmentBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMediaObject" hasInstanceMethod:@"UTIType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMediaObject" hasInstanceMethod:@"mediaType" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"CKAttachmentBalloonView" hasInstanceMethod:@"attachmentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKAttachmentBalloonView" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMediaObject" hasInstanceMethod:@"UTIType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMediaObject" hasInstanceMethod:@"mediaType" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"CKAttachmentBalloonView" hasInstanceMethod:@"attachmentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKAttachmentBalloonView" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -34,11 +34,11 @@
   v9 = __UIAXStringForVariables();
   objc_opt_class();
   v10 = __UIAccessibilityCastAsSafeCategory();
-  v11 = [v10 _axMessageSender];
-  v12 = [v10 _axReplyDescription];
-  v13 = [v10 _axStickerDescription];
-  v14 = [v10 _axAcknowledgmentDescription];
-  v18 = [v10 _axMessageTime];
+  _axMessageSender = [v10 _axMessageSender];
+  _axReplyDescription = [v10 _axReplyDescription];
+  _axStickerDescription = [v10 _axStickerDescription];
+  _axAcknowledgmentDescription = [v10 _axAcknowledgmentDescription];
+  _axMessageTime = [v10 _axMessageTime];
   v15 = __UIAXStringForVariables();
 
   return v15;

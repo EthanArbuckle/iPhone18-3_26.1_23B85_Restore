@@ -1,6 +1,6 @@
 @interface CalculateUnitOutput
-- (CalculateUnitOutput)initWithLocale:(id)a3;
-- (unint64_t)resolvedUnitFormatForUnitID:(int)a3 string:(id)a4;
+- (CalculateUnitOutput)initWithLocale:(id)locale;
+- (unint64_t)resolvedUnitFormatForUnitID:(int)d string:(id)string;
 - (void)dealloc;
 @end
 
@@ -19,18 +19,18 @@
   [(CalculateUnitOutput *)&v4 dealloc];
 }
 
-- (unint64_t)resolvedUnitFormatForUnitID:(int)a3 string:(id)a4
+- (unint64_t)resolvedUnitFormatForUnitID:(int)d string:(id)string
 {
-  v6 = a4;
-  if (a3 < 0 || self->_count <= a3)
+  stringCopy = string;
+  if (d < 0 || self->_count <= d)
   {
     v15 = 4;
     goto LABEL_18;
   }
 
-  v7 = a3;
-  v8 = [(UnitsInfo *)self->_unitsInfo objectAtIndexedSubscript:a3];
-  v9 = [v6 length];
+  dCopy = d;
+  v8 = [(UnitsInfo *)self->_unitsInfo objectAtIndexedSubscript:d];
+  v9 = [stringCopy length];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__CalculateUnitOutput_resolvedUnitFormatForUnitID_string___block_invoke;
@@ -49,27 +49,27 @@
     goto LABEL_6;
   }
 
-  v13 = [v8 typeInfo];
-  v14 = [v13 isCurrency];
+  typeInfo = [v8 typeInfo];
+  isCurrency = [typeInfo isCurrency];
 
-  if (!v14 || (v15 = 2, (*(v11 + 2))(v11, v8, 2, 0), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 compare:v6 options:1], v16, v17))
+  if (!isCurrency || (v15 = 2, (*(v11 + 2))(v11, v8, 2, 0), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 compare:stringCopy options:1], v16, v17))
   {
 LABEL_6:
     lengths = self->_lengths;
-    var1 = lengths[v7].var1;
+    var1 = lengths[dCopy].var1;
     if (!var1)
     {
       var1 = v12[2](v12, v8, 2);
       lengths = self->_lengths;
-      lengths[v7].var1 = var1;
+      lengths[dCopy].var1 = var1;
     }
 
-    var2 = lengths[v7].var2;
+    var2 = lengths[dCopy].var2;
     if (!var2)
     {
       var2 = v12[2](v12, v8, 3);
       lengths = self->_lengths;
-      lengths[v7].var2 = var2;
+      lengths[dCopy].var2 = var2;
     }
 
     v21 = v9 + 3;
@@ -77,7 +77,7 @@ LABEL_6:
     {
       if (v21 < var1)
       {
-        v26 = v7;
+        v26 = dCopy;
         var0 = lengths[v26].var0;
         if (!var0)
         {
@@ -103,11 +103,11 @@ LABEL_6:
         goto LABEL_16;
       }
 
-      var3 = lengths[v7].var3;
+      var3 = lengths[dCopy].var3;
       if (!var3)
       {
         var3 = v12[2](v12, v8, 4);
-        self->_lengths[v7].var3 = var3;
+        self->_lengths[dCopy].var3 = var3;
       }
 
       if (v21 > var3)
@@ -187,23 +187,23 @@ uint64_t __58__CalculateUnitOutput_resolvedUnitFormatForUnitID_string___block_in
   return v3;
 }
 
-- (CalculateUnitOutput)initWithLocale:(id)a3
+- (CalculateUnitOutput)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = CalculateUnitOutput;
   v6 = [(CalculateUnitOutput *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
     v8 = +[UnitsInfo converterUnits];
     unitsInfo = v7->_unitsInfo;
     v7->_unitsInfo = v8;
 
-    v10 = [(UnitsInfo *)v7->_unitsInfo unitCount];
-    v7->_count = v10;
-    v7->_lengths = malloc_type_calloc(v10, 0x10uLL, 0x1000040451B5BE8uLL);
+    unitCount = [(UnitsInfo *)v7->_unitsInfo unitCount];
+    v7->_count = unitCount;
+    v7->_lengths = malloc_type_calloc(unitCount, 0x10uLL, 0x1000040451B5BE8uLL);
   }
 
   return v7;

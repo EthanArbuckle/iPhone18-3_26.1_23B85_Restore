@@ -1,27 +1,27 @@
 @interface FTRecoverPronsResponse
-- (FTRecoverPronsResponse)initWithFlatbuffData:(id)a3 root:(const RecoverPronsResponse *)a4 verify:(BOOL)a5;
+- (FTRecoverPronsResponse)initWithFlatbuffData:(id)data root:(const RecoverPronsResponse *)root verify:(BOOL)verify;
 - (NSArray)recovery_return_codes;
 - (NSArray)voc_tokens;
 - (NSString)error_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)recovery_return_codes_objectAtIndex:(unint64_t)a3;
-- (id)voc_tokens_objectAtIndex:(unint64_t)a3;
+- (id)recovery_return_codes_objectAtIndex:(unint64_t)index;
+- (id)voc_tokens_objectAtIndex:(unint64_t)index;
 - (int)error_code;
 - (unint64_t)recovery_return_codes_count;
 - (unint64_t)voc_tokens_count;
-- (void)recovery_return_codes_enumerateObjectsUsingBlock:(id)a3;
-- (void)voc_tokens_enumerateObjectsUsingBlock:(id)a3;
+- (void)recovery_return_codes_enumerateObjectsUsingBlock:(id)block;
+- (void)voc_tokens_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTRecoverPronsResponse
 
-- (FTRecoverPronsResponse)initWithFlatbuffData:(id)a3 root:(const RecoverPronsResponse *)a4 verify:(BOOL)a5
+- (FTRecoverPronsResponse)initWithFlatbuffData:(id)data root:(const RecoverPronsResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTRecoverPronsResponse;
   v10 = [(FTRecoverPronsResponse *)&v25 init];
@@ -30,35 +30,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -173,12 +173,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"recovery_return_codes"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__FTRecoverPronsResponse_recovery_return_codes__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTRecoverPronsResponse *)self recovery_return_codes_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"recovery_return_codes"];
@@ -187,13 +187,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)recovery_return_codes_objectAtIndex:(unint64_t)a3
+- (id)recovery_return_codes_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"recovery_return_codes"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -206,7 +206,7 @@ LABEL_3:
     v11 = *v10[12].var0;
     if (v11)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithInt:*root[4 * a3 + 4 + v11 + *root[v11].var0].var0];
+      v7 = [MEMORY[0x277CCABB0] numberWithInt:*root[4 * index + 4 + v11 + *root[v11].var0].var0];
       goto LABEL_3;
     }
   }
@@ -244,14 +244,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)recovery_return_codes_enumerateObjectsUsingBlock:(id)a3
+- (void)recovery_return_codes_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"recovery_return_codes"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -274,7 +274,7 @@ LABEL_8:
           do
           {
             v15 = [MEMORY[0x277CCABB0] numberWithInt:*(v13 + 4 * v12)];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -299,12 +299,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"voc_tokens"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__FTRecoverPronsResponse_voc_tokens__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTRecoverPronsResponse *)self voc_tokens_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"voc_tokens"];
@@ -313,13 +313,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)voc_tokens_objectAtIndex:(unint64_t)a3
+- (id)voc_tokens_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"voc_tokens"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -332,7 +332,7 @@ LABEL_3:
     v11 = *v10[14].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTVocToken alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -371,14 +371,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)voc_tokens_enumerateObjectsUsingBlock:(id)a3
+- (void)voc_tokens_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"voc_tokens"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -401,7 +401,7 @@ LABEL_8:
           do
           {
             v15 = [[FTVocToken alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -422,53 +422,53 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecoverPronsResponse>)addObjectToBuffer:(void *)buffer
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = [(FTRecoverPronsResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTRecoverPronsResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(FTRecoverPronsResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(FTRecoverPronsResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v50 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v50 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v49 = [(FTRecoverPronsResponse *)self error_code];
-  v13 = [(FTRecoverPronsResponse *)self error_str];
-  v14 = v13;
-  if (!v13)
+  error_code = [(FTRecoverPronsResponse *)self error_code];
+  error_str = [(FTRecoverPronsResponse *)self error_str];
+  v14 = error_str;
+  if (!error_str)
   {
-    v13 = &stru_284834138;
+    error_str = &stru_284834138;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v17 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v16 = strlen(uTF8String3);
+  v17 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
   memset(&v61, 0, sizeof(v61));
-  v18 = [(FTRecoverPronsResponse *)self recovery_return_codes];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v61, [v18 count]);
+  recovery_return_codes = [(FTRecoverPronsResponse *)self recovery_return_codes];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v61, [recovery_return_codes count]);
 
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v19 = [(FTRecoverPronsResponse *)self recovery_return_codes];
-  v20 = [v19 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  recovery_return_codes2 = [(FTRecoverPronsResponse *)self recovery_return_codes];
+  v20 = [recovery_return_codes2 countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v20)
   {
     v21 = *v58;
@@ -478,14 +478,14 @@ LABEL_8:
       {
         if (*v58 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(recovery_return_codes2);
         }
 
         LODWORD(v56.__begin_) = [*(*(&v57 + 1) + 8 * i) intValue];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v61.__begin_, &v56);
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      v20 = [recovery_return_codes2 countByEnumeratingWithState:&v57 objects:v63 count:16];
     }
 
     while (v20);
@@ -501,18 +501,18 @@ LABEL_8:
     begin = v61.__begin_;
   }
 
-  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<int>(a3, begin, v61.__end_ - v61.__begin_);
+  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<int>(buffer, begin, v61.__end_ - v61.__begin_);
   memset(&v56, 0, sizeof(v56));
-  v24 = [(FTRecoverPronsResponse *)self voc_tokens];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [v24 count]);
+  voc_tokens = [(FTRecoverPronsResponse *)self voc_tokens];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [voc_tokens count]);
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v25 = [(FTRecoverPronsResponse *)self voc_tokens];
+  voc_tokens2 = [(FTRecoverPronsResponse *)self voc_tokens];
   v48 = v17;
-  v26 = [v25 countByEnumeratingWithState:&v52 objects:v62 count:16];
+  v26 = [voc_tokens2 countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v26)
   {
     v27 = *v53;
@@ -522,10 +522,10 @@ LABEL_8:
       {
         if (*v53 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(voc_tokens2);
         }
 
-        v29 = [*(*(&v52 + 1) + 8 * j) addObjectToBuffer:a3];
+        v29 = [*(*(&v52 + 1) + 8 * j) addObjectToBuffer:buffer];
         end = v56.__end_;
         if (v56.__end_ >= v56.__end_cap_.__value_)
         {
@@ -581,7 +581,7 @@ LABEL_8:
         v56.__end_ = v31;
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v52 objects:v62 count:16];
+      v26 = [voc_tokens2 countByEnumeratingWithState:&v52 objects:v62 count:16];
     }
 
     while (v26);
@@ -597,18 +597,18 @@ LABEL_8:
     v39 = v56.__begin_;
   }
 
-  v40 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v39, v56.__end_ - v56.__begin_);
-  *(a3 + 70) = 1;
-  v41 = *(a3 + 8);
-  v42 = *(a3 + 12);
-  v43 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v50);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v49, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v48);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v47);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v40);
-  v44.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v41 - v42 + v43);
+  v40 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v39, v56.__end_ - v56.__begin_);
+  *(buffer + 70) = 1;
+  v41 = *(buffer + 8);
+  v42 = *(buffer + 12);
+  v43 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v50);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v48);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v47);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, v40);
+  v44.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v41 - v42 + v43);
   if (v56.__begin_)
   {
     v56.__end_ = v56.__begin_;

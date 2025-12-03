@@ -1,56 +1,56 @@
 @interface FigSubtitleCALayer
-+ (id)defaultActionForKey:(id)a3;
++ (id)defaultActionForKey:(id)key;
 - (BOOL)isOverscanSubtitleSupportEnabled;
 - (FigSubtitleCALayer)init;
-- (FigSubtitleCALayer)initWithLayer:(id)a3;
+- (FigSubtitleCALayer)initWithLayer:(id)layer;
 - (NSString)captionRenderingStrategy;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (uint64_t)init;
-- (void)_addBoundsAnimation:(id)a3 forKey:(id)a4;
-- (void)_addPositionAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimations:(id)a3 forKey:(id)a4;
+- (void)_addBoundsAnimation:(id)animation forKey:(id)key;
+- (void)_addPositionAnimation:(id)animation forKey:(id)key;
+- (void)addAnimations:(id)animations forKey:(id)key;
 - (void)clear;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)handleNeedsLayoutNotification;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)removeAnimationsForKey:(id)a3;
-- (void)setCaptionRendererOutputOptions:(id)a3 forKeyPath:(id)a4;
-- (void)setCaptionRenderingStrategy:(id)a3;
-- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)a3;
-- (void)setOverscanSubtitleSupportEnabled:(BOOL)a3;
-- (void)setPlayer:(OpaqueFigPlayer *)a3;
-- (void)setSubtitleGravityNonObscuring:(unsigned __int8)a3;
-- (void)setVideoRelativeToViewport:(CGRect)a3;
-- (void)setVideosize:(CGSize)a3;
-- (void)setViewport:(CGRect)a3;
-- (void)updateNonForcedSubtitleDisplayEnabled:(unsigned __int8)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)removeAnimationsForKey:(id)key;
+- (void)setCaptionRendererOutputOptions:(id)options forKeyPath:(id)path;
+- (void)setCaptionRenderingStrategy:(id)strategy;
+- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)margins;
+- (void)setOverscanSubtitleSupportEnabled:(BOOL)enabled;
+- (void)setPlayer:(OpaqueFigPlayer *)player;
+- (void)setSubtitleGravityNonObscuring:(unsigned __int8)obscuring;
+- (void)setVideoRelativeToViewport:(CGRect)viewport;
+- (void)setVideosize:(CGSize)videosize;
+- (void)setViewport:(CGRect)viewport;
+- (void)updateNonForcedSubtitleDisplayEnabled:(unsigned __int8)enabled;
 @end
 
 @implementation FigSubtitleCALayer
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([@"hidden" isEqualToString:?] & 1) == 0 && !objc_msgSend(@"contents", "isEqualToString:", a3))
+  if (([@"hidden" isEqualToString:?] & 1) == 0 && !objc_msgSend(@"contents", "isEqualToString:", key))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = FigSubtitleCALayer;
-  return [(FigBaseCALayer *)&v6 actionForKey:a3];
+  return [(FigBaseCALayer *)&v6 actionForKey:key];
 }
 
-+ (id)defaultActionForKey:(id)a3
++ (id)defaultActionForKey:(id)key
 {
-  if (([@"hidden" isEqualToString:?] & 1) == 0 && !objc_msgSend(@"contents", "isEqualToString:", a3))
+  if (([@"hidden" isEqualToString:?] & 1) == 0 && !objc_msgSend(@"contents", "isEqualToString:", key))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___FigSubtitleCALayer;
-  return objc_msgSendSuper2(&v6, sel_defaultActionForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultActionForKey_, key);
 }
 
 - (FigSubtitleCALayer)init
@@ -147,7 +147,7 @@ LABEL_8:
   return v2;
 }
 
-- (FigSubtitleCALayer)initWithLayer:(id)a3
+- (FigSubtitleCALayer)initWithLayer:(id)layer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -158,7 +158,7 @@ LABEL_8:
 
   v8.receiver = self;
   v8.super_class = FigSubtitleCALayer;
-  v5 = [(FigSubtitleCALayer *)&v8 initWithLayer:a3];
+  v5 = [(FigSubtitleCALayer *)&v8 initWithLayer:layer];
   if (v5)
   {
     v6 = malloc_type_calloc(1uLL, 0x140uLL, 0x10E00406081BCC0uLL);
@@ -243,7 +243,7 @@ LABEL_8:
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   layerInternal = self->layerInternal;
   if (layerInternal->var12 == 1)
@@ -258,7 +258,7 @@ LABEL_8:
       v7[2] = __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke;
       v7[3] = &unk_1E7483A30;
       v7[4] = self;
-      v7[5] = a3;
+      v7[5] = layer;
       dispatch_sync(var11, v7);
     }
   }
@@ -297,7 +297,7 @@ uint64_t __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke(uint64_t
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   layerInternal = self->layerInternal;
   if (layerInternal->var12 == 1)
@@ -320,12 +320,12 @@ uint64_t __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke(uint64_t
       dispatch_sync(var11, block);
       if (v23[5])
       {
-        CGContextSaveGState(a4);
+        CGContextSaveGState(context);
         v9 = MEMORY[0x1E695EFD0];
         v20 = *(MEMORY[0x1E695EFD0] + 8);
-        if ([a3 contentsAreFlipped])
+        if ([layer contentsAreFlipped])
         {
-          [a3 frame];
+          [layer frame];
           v11 = v10;
           v20 = 0uLL;
           transform.b = 0.0;
@@ -333,7 +333,7 @@ uint64_t __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke(uint64_t
           transform.a = 1.0;
           *&transform.d = xmmword_196E77200;
           transform.ty = v10;
-          CGContextConcatCTM(a4, &transform);
+          CGContextConcatCTM(context, &transform);
           v12 = 0.0;
           v13 = -1.0;
           v14 = 1.0;
@@ -349,7 +349,7 @@ uint64_t __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke(uint64_t
 
         var15 = self->layerInternal->var15;
         v16 = v23[5];
-        *&transform.a = a4;
+        *&transform.a = context;
         transform.b = v14;
         *&transform.c = v20;
         transform.tx = v13;
@@ -362,13 +362,13 @@ uint64_t __45__FigSubtitleCALayer_layoutSublayersOfLayer___block_invoke(uint64_t
           CFRelease(v17);
         }
 
-        CGContextRestoreGState(a4);
+        CGContextRestoreGState(context);
       }
 
       else
       {
-        [a3 bounds];
-        CGContextClearRect(a4, v28);
+        [layer bounds];
+        CGContextClearRect(context, v28);
       }
     }
 
@@ -394,9 +394,9 @@ void *__42__FigSubtitleCALayer_drawLayer_inContext___block_invoke(void *result)
   return result;
 }
 
-- (void)_addBoundsAnimation:(id)a3 forKey:(id)a4
+- (void)_addBoundsAnimation:(id)animation forKey:(id)key
 {
-  if ([a3 isAdditive])
+  if ([animation isAdditive])
   {
     v7 = v14;
     v14[0] = MEMORY[0x1E69E9820];
@@ -415,8 +415,8 @@ void *__42__FigSubtitleCALayer_drawLayer_inContext___block_invoke(void *result)
   v7[2] = v8;
   v7[3] = &unk_1E74869A0;
   v7[4] = self;
-  v9 = _animationByTransformingValues(a3, v7);
-  if ([a3 isAdditive])
+  v9 = _animationByTransformingValues(animation, v7);
+  if ([animation isAdditive])
   {
     v10 = @"bounds.size";
   }
@@ -431,12 +431,12 @@ void *__42__FigSubtitleCALayer_drawLayer_inContext___block_invoke(void *result)
   layerInternal = self->layerInternal;
   if (layerInternal->var12)
   {
-    [(FigSubtitleBackdropCALayer *)self addAnimation:v9 forKey:a4];
+    [(FigSubtitleBackdropCALayer *)self addAnimation:v9 forKey:key];
   }
 
   else
   {
-    FigCaptionRendererSessionAddAnimation(layerInternal->var14, v9, a4);
+    FigCaptionRendererSessionAddAnimation(layerInternal->var14, v9, key);
   }
 }
 
@@ -484,9 +484,9 @@ uint64_t __49__FigSubtitleCALayer__addBoundsAnimation_forKey___block_invoke_2(ui
   return [MEMORY[0x1E696B098] valueWithRect:{0.0, 0.0, v11}];
 }
 
-- (void)_addPositionAnimation:(id)a3 forKey:(id)a4
+- (void)_addPositionAnimation:(id)animation forKey:(id)key
 {
-  if ([a3 isAdditive])
+  if ([animation isAdditive])
   {
     v7 = v12;
     v12[0] = MEMORY[0x1E69E9820];
@@ -505,18 +505,18 @@ uint64_t __49__FigSubtitleCALayer__addBoundsAnimation_forKey___block_invoke_2(ui
   v7[2] = v8;
   v7[3] = &unk_1E74869A0;
   v7[4] = self;
-  v9 = _animationByTransformingValues(a3, v7);
+  v9 = _animationByTransformingValues(animation, v7);
   [v9 setKeyPath:@"position"];
   [v9 setDelegate:0];
   layerInternal = self->layerInternal;
   if (layerInternal->var12)
   {
-    [(FigSubtitleBackdropCALayer *)self addAnimation:v9 forKey:a4];
+    [(FigSubtitleBackdropCALayer *)self addAnimation:v9 forKey:key];
   }
 
   else
   {
-    FigCaptionRendererSessionAddAnimation(layerInternal->var14, v9, a4);
+    FigCaptionRendererSessionAddAnimation(layerInternal->var14, v9, key);
   }
 }
 
@@ -610,9 +610,9 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   return [v2 commit];
 }
 
-- (void)setCaptionRenderingStrategy:(id)a3
+- (void)setCaptionRenderingStrategy:(id)strategy
 {
-  v4 = [a3 copy];
+  v4 = [strategy copy];
   if (v4)
   {
     v5 = v4;
@@ -684,13 +684,13 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   return result;
 }
 
-- (void)setPlayer:(OpaqueFigPlayer *)a3
+- (void)setPlayer:(OpaqueFigPlayer *)player
 {
   layerInternal = self->layerInternal;
   cf = 0;
   if (!layerInternal->var9)
   {
-    if (a3)
+    if (player)
     {
       if (FigCFEqual())
       {
@@ -713,7 +713,7 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
     var12 = layerInternal->var12;
     if (!var12)
     {
-      FigCaptionRendererSessionSetPlayer(layerInternal->var14, a3);
+      FigCaptionRendererSessionSetPlayer(layerInternal->var14, player);
       var12 = layerInternal->var12;
     }
 
@@ -731,10 +731,10 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
         var0 = 0;
       }
 
-      layerInternal->var0 = a3;
-      if (a3)
+      layerInternal->var0 = player;
+      if (player)
       {
-        CFRetain(a3);
+        CFRetain(player);
       }
 
       if (var0)
@@ -765,16 +765,16 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setViewport:(CGRect)a3
+- (void)setViewport:(CGRect)viewport
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
   layerInternal = self->layerInternal;
   if (!layerInternal->var12)
   {
-    [(FigSubtitleBackdropCALayer *)self setBounds:0.0, 0.0, a3.size.width, a3.size.height];
+    [(FigSubtitleBackdropCALayer *)self setBounds:0.0, 0.0, viewport.size.width, viewport.size.height];
     [(FigBaseCALayer *)self setPosition:width * 0.5, height * 0.5];
     layerInternal = self->layerInternal;
   }
@@ -815,19 +815,19 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setVideosize:(CGSize)a3
+- (void)setVideosize:(CGSize)videosize
 {
   layerInternal = self->layerInternal;
-  if (a3.width >= 0.0)
+  if (videosize.width >= 0.0)
   {
-    height = a3.height;
-    if (a3.height >= 0.0)
+    height = videosize.height;
+    if (videosize.height >= 0.0)
     {
-      width = a3.width;
+      width = videosize.width;
       v6 = self->layerInternal;
       if (!layerInternal->var12)
       {
-        FigCaptionRendererSessionSetLayoutContext_VideoSize(layerInternal->var14, a3.width, a3.height);
+        FigCaptionRendererSessionSetLayoutContext_VideoSize(layerInternal->var14, videosize.width, videosize.height);
         v6 = self->layerInternal;
       }
 
@@ -844,19 +844,19 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setSubtitleGravityNonObscuring:(unsigned __int8)a3
+- (void)setSubtitleGravityNonObscuring:(unsigned __int8)obscuring
 {
   layerInternal = self->layerInternal;
   var12 = layerInternal->var12;
   v7 = layerInternal;
   if (!var12)
   {
-    FigCaptionRendererSessionSetLayoutContext_Gravity(layerInternal->var14, a3);
+    FigCaptionRendererSessionSetLayoutContext_Gravity(layerInternal->var14, obscuring);
     v7 = self->layerInternal;
     var12 = v7->var12;
   }
 
-  layerInternal->var4 = a3;
+  layerInternal->var4 = obscuring;
   if (var12 == 1)
   {
 
@@ -864,11 +864,11 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)updateNonForcedSubtitleDisplayEnabled:(unsigned __int8)a3
+- (void)updateNonForcedSubtitleDisplayEnabled:(unsigned __int8)enabled
 {
   layerInternal = self->layerInternal;
   v5[0] = layerInternal;
-  v5[1] = a3;
+  v5[1] = enabled;
   if (layerInternal->var11)
   {
     dispatch_sync_f(layerInternal->var11, v5, updateNonForcedSubtitleDisplayEnabledDo);
@@ -881,17 +881,17 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setVideoRelativeToViewport:(CGRect)a3
+- (void)setVideoRelativeToViewport:(CGRect)viewport
 {
   layerInternal = self->layerInternal;
-  if (a3.size.width >= 0.0)
+  if (viewport.size.width >= 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height >= 0.0)
+    height = viewport.size.height;
+    if (viewport.size.height >= 0.0)
     {
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      width = viewport.size.width;
+      y = viewport.origin.y;
+      x = viewport.origin.x;
       v8 = self->layerInternal;
       if (!layerInternal->var12)
       {
@@ -914,18 +914,18 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)a3
+- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)margins
 {
   layerInternal = self->layerInternal;
-  v9 = *a3;
+  v9 = *margins;
   if (!layerInternal->var12)
   {
     var14 = layerInternal->var14;
-    right = a3->right;
-    v10[0] = a3->left;
+    right = margins->right;
+    v10[0] = margins->left;
     v10[1] = right;
-    bottom = a3->bottom;
-    v10[2] = a3->top;
+    bottom = margins->bottom;
+    v10[2] = margins->top;
     v10[3] = bottom;
     FigCaptionRendererSessionSetLayoutContext_CaptionsAvoidanceMargins(var14, v10);
   }
@@ -938,11 +938,11 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   }
 }
 
-- (void)setCaptionRendererOutputOptions:(id)a3 forKeyPath:(id)a4
+- (void)setCaptionRendererOutputOptions:(id)options forKeyPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    FigCaptionRendererSessionSetOptions(self->layerInternal->var14, a4);
+    FigCaptionRendererSessionSetOptions(self->layerInternal->var14, path);
   }
 }
 
@@ -991,12 +991,12 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   return v4 & 1;
 }
 
-- (void)setOverscanSubtitleSupportEnabled:(BOOL)a3
+- (void)setOverscanSubtitleSupportEnabled:(BOOL)enabled
 {
   layerInternal = self->layerInternal;
   if (!layerInternal->var12)
   {
-    FigCaptionRendererSessionSetLayoutContext_Overscan(layerInternal->var14, a3);
+    FigCaptionRendererSessionSetLayoutContext_Overscan(layerInternal->var14, enabled);
   }
 
   [(FigSubtitleCALayer *)self bounds];
@@ -1012,21 +1012,21 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
     v15[2] = __56__FigSubtitleCALayer_setOverscanSubtitleSupportEnabled___block_invoke;
     v15[3] = &unk_1E7483B70;
     v15[4] = self;
-    v16 = a3;
+    enabledCopy = enabled;
     dispatch_sync(var11, v15);
     [(FigSubtitleBackdropCALayer *)self setBounds:v11, v12, v13, v14];
   }
 }
 
-- (void)addAnimations:(id)a3 forKey:(id)a4
+- (void)addAnimations:(id)animations forKey:(id)key
 {
   if (!self->layerInternal->var12)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[FigSubtitleCALayer _addBoundsAnimation:forKey:](self, "_addBoundsAnimation:forKey:", a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", a4]);
-      -[FigSubtitleCALayer _addPositionAnimation:forKey:](self, "_addPositionAnimation:forKey:", a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", a4]);
+      -[FigSubtitleCALayer _addBoundsAnimation:forKey:](self, "_addBoundsAnimation:forKey:", animations, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", key]);
+      -[FigSubtitleCALayer _addPositionAnimation:forKey:](self, "_addPositionAnimation:forKey:", animations, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", key]);
     }
   }
 
@@ -1035,25 +1035,25 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[FigSubtitleCALayer _addBoundsAnimation:forKey:](self, "_addBoundsAnimation:forKey:", a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", a4]);
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", a4];
+      -[FigSubtitleCALayer _addBoundsAnimation:forKey:](self, "_addBoundsAnimation:forKey:", animations, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", key]);
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", key];
 
-      [(FigSubtitleCALayer *)self _addPositionAnimation:a3 forKey:v7];
+      [(FigSubtitleCALayer *)self _addPositionAnimation:animations forKey:v7];
     }
   }
 }
 
-- (void)removeAnimationsForKey:(id)a3
+- (void)removeAnimationsForKey:(id)key
 {
   var12 = self->layerInternal->var12;
   if (!var12)
   {
     v9.receiver = self;
     v9.super_class = FigSubtitleCALayer;
-    -[FigSubtitleCALayer removeAnimationForKey:](&v9, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", a3]);
+    -[FigSubtitleCALayer removeAnimationForKey:](&v9, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", key]);
     v8.receiver = self;
     v8.super_class = FigSubtitleCALayer;
-    -[FigSubtitleCALayer removeAnimationForKey:](&v8, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", a3]);
+    -[FigSubtitleCALayer removeAnimationForKey:](&v8, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", key]);
     var12 = self->layerInternal->var12;
   }
 
@@ -1061,10 +1061,10 @@ uint64_t __51__FigSubtitleCALayer_handleNeedsLayoutNotification__block_invoke_2(
   {
     v7.receiver = self;
     v7.super_class = FigSubtitleCALayer;
-    -[FigSubtitleCALayer removeAnimationForKey:](&v7, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", a3]);
+    -[FigSubtitleCALayer removeAnimationForKey:](&v7, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Bounds_%@", key]);
     v6.receiver = self;
     v6.super_class = FigSubtitleCALayer;
-    -[FigSubtitleCALayer removeAnimationForKey:](&v6, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", a3]);
+    -[FigSubtitleCALayer removeAnimationForKey:](&v6, sel_removeAnimationForKey_, [MEMORY[0x1E696AEC0] stringWithFormat:@"FigSubtitleCALayer_Position_%@", key]);
   }
 }
 

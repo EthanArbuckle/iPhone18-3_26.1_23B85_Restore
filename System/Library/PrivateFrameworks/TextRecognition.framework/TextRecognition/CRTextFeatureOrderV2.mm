@@ -1,17 +1,17 @@
 @interface CRTextFeatureOrderV2
-- (CRTextFeatureOrderV2)initWithAngleThresholdForRotatedCrops:(double)a3;
+- (CRTextFeatureOrderV2)initWithAngleThresholdForRotatedCrops:(double)crops;
 - (id)createCoarseCTLDConfig;
 - (id)createFineCTLDConfig;
-- (id)orderAndGroupRegions:(id)a3;
-- (id)orderAndGroupRegions:(id)a3 coarseDelegate:(id)a4 fineDelegate:(id)a5;
-- (id)orderAndGroupRegions:(id)a3 coarseDelegate:(id)a4 fineDelegate:(id)a5 coarseOnly:(BOOL)a6;
-- (id)orderAndGroupRegions:(id)a3 tableGroups:(id)a4;
-- (id)rowOrderLinesFromTable:(id)a3 cellGroups:(id)a4 outSortedCellGroups:(id)a5;
+- (id)orderAndGroupRegions:(id)regions;
+- (id)orderAndGroupRegions:(id)regions coarseDelegate:(id)delegate fineDelegate:(id)fineDelegate;
+- (id)orderAndGroupRegions:(id)regions coarseDelegate:(id)delegate fineDelegate:(id)fineDelegate coarseOnly:(BOOL)only;
+- (id)orderAndGroupRegions:(id)regions tableGroups:(id)groups;
+- (id)rowOrderLinesFromTable:(id)table cellGroups:(id)groups outSortedCellGroups:(id)cellGroups;
 @end
 
 @implementation CRTextFeatureOrderV2
 
-- (CRTextFeatureOrderV2)initWithAngleThresholdForRotatedCrops:(double)a3
+- (CRTextFeatureOrderV2)initWithAngleThresholdForRotatedCrops:(double)crops
 {
   v5.receiver = self;
   v5.super_class = CRTextFeatureOrderV2;
@@ -19,27 +19,27 @@
   if (result)
   {
     result->_textFeatureOrderMode = 0;
-    result->_angleThresholdForRotatedCrops = a3;
+    result->_angleThresholdForRotatedCrops = crops;
   }
 
   return result;
 }
 
-- (id)orderAndGroupRegions:(id)a3
+- (id)orderAndGroupRegions:(id)regions
 {
-  v3 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:a3 coarseDelegate:0 fineDelegate:0 coarseOnly:0];
+  v3 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:regions coarseDelegate:0 fineDelegate:0 coarseOnly:0];
 
   return v3;
 }
 
-- (id)orderAndGroupRegions:(id)a3 tableGroups:(id)a4
+- (id)orderAndGroupRegions:(id)regions tableGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  regionsCopy = regions;
+  groupsCopy = groups;
+  if (groupsCopy)
   {
-    v8 = [CRCTLDDelegateTablesCoarse delegateWithTableGroups:v7 textRegions:v6];
-    v9 = [(CRCTLDDelegateTablesCoarse *)CRCTLDDelegateTablesFine delegateWithTableGroups:v7 textRegions:v6];
+    v8 = [CRCTLDDelegateTablesCoarse delegateWithTableGroups:groupsCopy textRegions:regionsCopy];
+    v9 = [(CRCTLDDelegateTablesCoarse *)CRCTLDDelegateTablesFine delegateWithTableGroups:groupsCopy textRegions:regionsCopy];
     v10 = v8;
   }
 
@@ -49,26 +49,26 @@
     v10 = 0;
   }
 
-  v11 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:v6 coarseDelegate:v10 fineDelegate:v9 coarseOnly:0];
+  v11 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:regionsCopy coarseDelegate:v10 fineDelegate:v9 coarseOnly:0];
 
   return v11;
 }
 
-- (id)rowOrderLinesFromTable:(id)a3 cellGroups:(id)a4 outSortedCellGroups:(id)a5
+- (id)rowOrderLinesFromTable:(id)table cellGroups:(id)groups outSortedCellGroups:(id)cellGroups
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  tableCopy = table;
+  cellGroupsCopy = cellGroups;
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v6 subregions];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  subregions = [tableCopy subregions];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(subregions, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v6 cells];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  cells = [tableCopy cells];
+  v12 = [cells countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = *v19;
@@ -78,16 +78,16 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(cells);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        [v7 addObject:v15];
-        v16 = [v15 subregions];
-        [v10 addObjectsFromArray:v16];
+        [cellGroupsCopy addObject:v15];
+        subregions2 = [v15 subregions];
+        [v10 addObjectsFromArray:subregions2];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [cells countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -96,21 +96,21 @@
   return v10;
 }
 
-- (id)orderAndGroupRegions:(id)a3 coarseDelegate:(id)a4 fineDelegate:(id)a5 coarseOnly:(BOOL)a6
+- (id)orderAndGroupRegions:(id)regions coarseDelegate:(id)delegate fineDelegate:(id)fineDelegate coarseOnly:(BOOL)only
 {
-  v6 = a6;
+  onlyCopy = only;
   v54 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
-  v34 = v9;
-  v35 = v10;
-  if ([v9 count])
+  regionsCopy = regions;
+  delegateCopy = delegate;
+  fineDelegateCopy = fineDelegate;
+  v34 = regionsCopy;
+  v35 = delegateCopy;
+  if ([regionsCopy count])
   {
-    v32 = [(CRTextFeatureOrderV2 *)self createCoarseCTLDConfig];
+    createCoarseCTLDConfig = [(CRTextFeatureOrderV2 *)self createCoarseCTLDConfig];
     v40 = objc_alloc_init(CRCTLD);
-    v33 = [(CRCTLD *)v40 groupAndOrderRegions:v9 config:v32 delegate:v10];
-    if (v6)
+    v33 = [(CRCTLD *)v40 groupAndOrderRegions:regionsCopy config:createCoarseCTLDConfig delegate:delegateCopy];
+    if (onlyCopy)
     {
       v11 = v33;
       v12 = v33;
@@ -118,7 +118,7 @@
 
     else
     {
-      v39 = [(CRTextFeatureOrderV2 *)self createFineCTLDConfig];
+      createFineCTLDConfig = [(CRTextFeatureOrderV2 *)self createFineCTLDConfig];
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v50 = 0u;
       v51 = 0u;
@@ -144,24 +144,24 @@
             if (objc_opt_isKindOfClass())
             {
               v16 = v15;
-              v17 = [v16 subregions];
-              v18 = [(CRCTLD *)v40 groupAndOrderRegions:v17 config:v39 delegate:v41];
+              subregions = [v16 subregions];
+              v18 = [(CRCTLD *)v40 groupAndOrderRegions:subregions config:createFineCTLDConfig delegate:fineDelegateCopy];
 
               v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
               v43 = [(CRTextFeatureOrderV2 *)self rowOrderLinesFromTable:v16 cellGroups:v18 outSortedCellGroups:v19];
               v20 = [CRTableGroupRegion alloc];
-              v21 = [v16 boundingQuad];
-              v22 = [v16 layoutDirection];
-              v23 = [v16 rowQuads];
-              v24 = [v16 columnQuads];
-              v25 = [(CRTableGroupRegion *)v20 initWithBoundingQuad:v21 layoutDirection:v22 cells:v19 lineRegions:v43 rowQuads:v23 columnQuads:v24];
+              boundingQuad = [v16 boundingQuad];
+              layoutDirection = [v16 layoutDirection];
+              rowQuads = [v16 rowQuads];
+              columnQuads = [v16 columnQuads];
+              v25 = [(CRTableGroupRegion *)v20 initWithBoundingQuad:boundingQuad layoutDirection:layoutDirection cells:v19 lineRegions:v43 rowQuads:rowQuads columnQuads:columnQuads];
               [v12 addObject:v25];
             }
 
             else
             {
-              v26 = [v15 subregions];
-              v27 = [(CRCTLD *)v40 groupAndOrderRegions:v26 config:v39 delegate:v41];
+              subregions2 = [v15 subregions];
+              v27 = [(CRCTLD *)v40 groupAndOrderRegions:subregions2 config:createFineCTLDConfig delegate:fineDelegateCopy];
 
               v46 = 0u;
               v47 = 0u;
@@ -212,9 +212,9 @@
   return v12;
 }
 
-- (id)orderAndGroupRegions:(id)a3 coarseDelegate:(id)a4 fineDelegate:(id)a5
+- (id)orderAndGroupRegions:(id)regions coarseDelegate:(id)delegate fineDelegate:(id)fineDelegate
 {
-  v5 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:a3 coarseDelegate:a4 fineDelegate:a5 coarseOnly:0];
+  v5 = [(CRTextFeatureOrderV2 *)self orderAndGroupRegions:regions coarseDelegate:delegate fineDelegate:fineDelegate coarseOnly:0];
 
   return v5;
 }
@@ -226,10 +226,10 @@
   *&angleThresholdForRotatedCrops = angleThresholdForRotatedCrops;
   [(CRCTLDConfig *)v3 setAngleThresholdForRotationCorrection:angleThresholdForRotatedCrops];
   [(CRCTLDConfig *)v3 setFlatMergeJumps:0];
-  v5 = [(CRTextFeatureOrderV2 *)self textFeatureOrderMode];
-  if (v5)
+  textFeatureOrderMode = [(CRTextFeatureOrderV2 *)self textFeatureOrderMode];
+  if (textFeatureOrderMode)
   {
-    if (v5 != 1)
+    if (textFeatureOrderMode != 1)
     {
       goto LABEL_6;
     }
@@ -285,10 +285,10 @@ LABEL_6:
   *&angleThresholdForRotatedCrops = angleThresholdForRotatedCrops;
   [(CRCTLDConfig *)v3 setAngleThresholdForRotationCorrection:angleThresholdForRotatedCrops];
   [(CRCTLDConfig *)v3 setFlatMergeJumps:1];
-  v5 = [(CRTextFeatureOrderV2 *)self textFeatureOrderMode];
-  if (v5)
+  textFeatureOrderMode = [(CRTextFeatureOrderV2 *)self textFeatureOrderMode];
+  if (textFeatureOrderMode)
   {
-    if (v5 != 1)
+    if (textFeatureOrderMode != 1)
     {
       goto LABEL_6;
     }

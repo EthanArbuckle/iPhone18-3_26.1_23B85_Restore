@@ -1,9 +1,9 @@
 @interface BWRingBuffer
 - (uint64_t)lastElement;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)appendElement:(void *)result;
 - (void)dealloc;
-- (void)initWithLength:(uint64_t)a3 dataTypeSize:;
+- (void)initWithLength:(uint64_t)length dataTypeSize:;
 @end
 
 @implementation BWRingBuffer
@@ -36,16 +36,16 @@
   [(BWRingBuffer *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
-    outputIndex = a3->var3[0];
+    outputIndex = state->var3[0];
   }
 
   else
   {
-    a3->var2 = self;
+    state->var2 = self;
     if (self)
     {
       outputIndex = self->_outputIndex;
@@ -56,8 +56,8 @@
       outputIndex = 0;
     }
 
-    a3->var3[0] = outputIndex;
-    a3->var0 = 1;
+    state->var3[0] = outputIndex;
+    state->var0 = 1;
   }
 
   v6 = 0;
@@ -66,9 +66,9 @@
     goto LABEL_13;
   }
 
-  while (outputIndex != self->_inputIndex && v6 < a5)
+  while (outputIndex != self->_inputIndex && v6 < count)
   {
-    a4[v6] = self->_ringBuffer + self->_typeSize * outputIndex;
+    objects[v6] = self->_ringBuffer + self->_typeSize * outputIndex;
     LODWORD(outputIndex) = (outputIndex + 1) % self->_length;
     while (1)
     {
@@ -79,38 +79,38 @@
       }
 
 LABEL_13:
-      if (!outputIndex || v6 >= a5)
+      if (!outputIndex || v6 >= count)
       {
         goto LABEL_16;
       }
 
-      a4[v6] = 0;
+      objects[v6] = 0;
     }
   }
 
 LABEL_16:
-  a3->var3[0] = outputIndex;
-  a3->var1 = a4;
+  state->var3[0] = outputIndex;
+  state->var1 = objects;
   return v6;
 }
 
-- (void)initWithLength:(uint64_t)a3 dataTypeSize:
+- (void)initWithLength:(uint64_t)length dataTypeSize:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = BWRingBuffer;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   v6 = v5;
   if (v5)
   {
     *(v5 + 6) = a2 + 1;
-    v5[4] = a3;
+    v5[4] = length;
     v5[2] = 0;
-    v7 = malloc_type_malloc((a2 + 1) * a3, 0x6EC11DEAuLL);
+    v7 = malloc_type_malloc((a2 + 1) * length, 0x6EC11DEAuLL);
     v6[1] = v7;
     if (!v7)
     {

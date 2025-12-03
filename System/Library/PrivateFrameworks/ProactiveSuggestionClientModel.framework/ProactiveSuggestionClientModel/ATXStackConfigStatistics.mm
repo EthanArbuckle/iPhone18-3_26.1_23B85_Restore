@@ -1,15 +1,15 @@
 @interface ATXStackConfigStatistics
-+ (id)stackConfigStatisticsWithWidgetBundleId:(id)a3 widgetKind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6 withBlock:(id)a7;
-- (ATXStackConfigStatistics)initWithBuilder:(id)a3;
++ (id)stackConfigStatisticsWithWidgetBundleId:(id)id widgetKind:(id)kind containerBundleIdentifier:(id)identifier widgetFamily:(int64_t)family withBlock:(id)block;
+- (ATXStackConfigStatistics)initWithBuilder:(id)builder;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation ATXStackConfigStatistics
 
-- (ATXStackConfigStatistics)initWithBuilder:(id)a3
+- (ATXStackConfigStatistics)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v22.receiver = self;
   v22.super_class = ATXStackConfigStatistics;
   v5 = [(ATXStackConfigStatistics *)&v22 init];
@@ -18,39 +18,39 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 widgetBundleId];
-  if (v6)
+  widgetBundleId = [builderCopy widgetBundleId];
+  if (widgetBundleId)
   {
-    v7 = v6;
-    v8 = [v4 widgetKind];
-    if (v8)
+    v7 = widgetBundleId;
+    widgetKind = [builderCopy widgetKind];
+    if (widgetKind)
     {
-      v9 = v8;
-      v10 = [v4 widgetFamily];
+      v9 = widgetKind;
+      widgetFamily = [builderCopy widgetFamily];
 
-      if (v10)
+      if (widgetFamily)
       {
-        v11 = [v4 widgetBundleId];
+        widgetBundleId2 = [builderCopy widgetBundleId];
         widgetBundleId = v5->_widgetBundleId;
-        v5->_widgetBundleId = v11;
+        v5->_widgetBundleId = widgetBundleId2;
 
-        v13 = [v4 widgetKind];
+        widgetKind2 = [builderCopy widgetKind];
         widgetKind = v5->_widgetKind;
-        v5->_widgetKind = v13;
+        v5->_widgetKind = widgetKind2;
 
-        v15 = [v4 containerBundleIdentifier];
+        containerBundleIdentifier = [builderCopy containerBundleIdentifier];
         containerBundleIdentifier = v5->_containerBundleIdentifier;
-        v5->_containerBundleIdentifier = v15;
+        v5->_containerBundleIdentifier = containerBundleIdentifier;
 
-        v5->_widgetFamily = [v4 widgetFamily];
-        v17 = [v4 timestamp];
+        v5->_widgetFamily = [builderCopy widgetFamily];
+        timestamp = [builderCopy timestamp];
         timestamp = v5->_timestamp;
-        v5->_timestamp = v17;
+        v5->_timestamp = timestamp;
 
-        v5->_countOfSmartStacksWithWidget = [v4 countOfSmartStacksWithWidget];
-        v5->_countOfNonSmartStacksWithWidget = [v4 countOfNonSmartStacksWithWidget];
-        v5->_countOfStandaloneWidgets = [v4 countOfStandaloneWidgets];
-        v5->_countOfWidgetsWithUnknownStackKind = [v4 countOfWidgetsWithUnknownStackKind];
+        v5->_countOfSmartStacksWithWidget = [builderCopy countOfSmartStacksWithWidget];
+        v5->_countOfNonSmartStacksWithWidget = [builderCopy countOfNonSmartStacksWithWidget];
+        v5->_countOfStandaloneWidgets = [builderCopy countOfStandaloneWidgets];
+        v5->_countOfWidgetsWithUnknownStackKind = [builderCopy countOfWidgetsWithUnknownStackKind];
 LABEL_6:
         v19 = v5;
         goto LABEL_11;
@@ -65,7 +65,7 @@ LABEL_6:
   v20 = __atxlog_handle_timeline();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    [(ATXStackConfigStatistics *)v4 initWithBuilder:v20];
+    [(ATXStackConfigStatistics *)builderCopy initWithBuilder:v20];
   }
 
   v19 = 0;
@@ -74,18 +74,18 @@ LABEL_11:
   return v19;
 }
 
-+ (id)stackConfigStatisticsWithWidgetBundleId:(id)a3 widgetKind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6 withBlock:(id)a7
++ (id)stackConfigStatisticsWithWidgetBundleId:(id)id widgetKind:(id)kind containerBundleIdentifier:(id)identifier widgetFamily:(int64_t)family withBlock:(id)block
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[ATXStackConfigStatisticsBuilder alloc] initWithWidgetBundleId:v14 widgetKind:v13 containerBundleIdentifier:v12 widgetFamily:a6];
+  blockCopy = block;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  idCopy = id;
+  v15 = [[ATXStackConfigStatisticsBuilder alloc] initWithWidgetBundleId:idCopy widgetKind:kindCopy containerBundleIdentifier:identifierCopy widgetFamily:family];
 
-  v11[2](v11, v15);
-  v16 = [(ATXStackConfigStatisticsBuilder *)v15 build];
+  blockCopy[2](blockCopy, v15);
+  build = [(ATXStackConfigStatisticsBuilder *)v15 build];
 
-  return v16;
+  return build;
 }
 
 - (id)dictionaryRepresentation
@@ -116,9 +116,9 @@ LABEL_11:
 
 - (id)description
 {
-  v2 = [(ATXStackConfigStatistics *)self dictionaryRepresentation];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v2 descriptionWithLocale:v3];
+  dictionaryRepresentation = [(ATXStackConfigStatistics *)self dictionaryRepresentation];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [dictionaryRepresentation descriptionWithLocale:currentLocale];
 
   return v4;
 }

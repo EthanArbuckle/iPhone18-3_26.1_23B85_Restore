@@ -1,5 +1,5 @@
 @interface PSUModeConfigurationService
-- (BOOL)doesModeHaveIntelligentBreakthroughEnabled:(id)a3;
+- (BOOL)doesModeHaveIntelligentBreakthroughEnabled:(id)enabled;
 - (PSUModeConfigurationService)init;
 - (void)_updateModesWithIntelligentBreakthroughEnabled;
 @end
@@ -9,21 +9,21 @@
 - (void)_updateModesWithIntelligentBreakthroughEnabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  modeService = v2->_modeService;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  modeService = selfCopy->_modeService;
   v8 = 0;
   v4 = [(DNDModeConfigurationService *)modeService modeConfigurationsReturningError:&v8];
   v5 = v8;
   if (v4)
   {
-    [(NSMutableSet *)v2->_modesWithIntelligentBreakthroughEnabled removeAllObjects];
-    v2->_didCompleteOneSuccessfulModeConfigurationFetch = 1;
+    [(NSMutableSet *)selfCopy->_modesWithIntelligentBreakthroughEnabled removeAllObjects];
+    selfCopy->_didCompleteOneSuccessfulModeConfigurationFetch = 1;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __77__PSUModeConfigurationService__updateModesWithIntelligentBreakthroughEnabled__block_invoke;
     v7[3] = &unk_278947730;
-    v7[4] = v2;
+    v7[4] = selfCopy;
     [v4 enumerateKeysAndObjectsUsingBlock:v7];
   }
 
@@ -34,7 +34,7 @@
     _os_log_error_impl(&dword_231CAE000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Could not fetch mode configurations: %@", buf, 0xCu);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -54,18 +54,18 @@ void __77__PSUModeConfigurationService__updateModesWithIntelligentBreakthroughEn
   }
 }
 
-- (BOOL)doesModeHaveIntelligentBreakthroughEnabled:(id)a3
+- (BOOL)doesModeHaveIntelligentBreakthroughEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_didCompleteOneSuccessfulModeConfigurationFetch)
+  enabledCopy = enabled;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_didCompleteOneSuccessfulModeConfigurationFetch)
   {
-    [(PSUModeConfigurationService *)v5 _updateModesWithIntelligentBreakthroughEnabled];
+    [(PSUModeConfigurationService *)selfCopy _updateModesWithIntelligentBreakthroughEnabled];
   }
 
-  v6 = [(NSMutableSet *)v5->_modesWithIntelligentBreakthroughEnabled containsObject:v4];
-  objc_sync_exit(v5);
+  v6 = [(NSMutableSet *)selfCopy->_modesWithIntelligentBreakthroughEnabled containsObject:enabledCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

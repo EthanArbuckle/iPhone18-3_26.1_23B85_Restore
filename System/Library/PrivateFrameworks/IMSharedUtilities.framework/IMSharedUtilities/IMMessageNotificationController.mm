@@ -1,18 +1,18 @@
 @interface IMMessageNotificationController
 + (id)sharedInstance;
-- (BOOL)_deviceIsAudioAccessory:(id)a3;
+- (BOOL)_deviceIsAudioAccessory:(id)accessory;
 - (BOOL)_isCurrentDeviceAudioAccessory;
-- (BOOL)audioAccessoryDeviceWithTokenURIExists:(id)a3;
+- (BOOL)audioAccessoryDeviceWithTokenURIExists:(id)exists;
 - (IMMessageNotificationController)init;
-- (id)_copyIDSIdentifierOrDefault:(id)a3;
-- (void)_executeCommandFromMessageRequest:(id)a3;
+- (id)_copyIDSIdentifierOrDefault:(id)default;
+- (void)_executeCommandFromMessageRequest:(id)request;
 - (void)_playTone;
-- (void)_sendNotificationMessageRequest:(id)a3 toTokenURI:(id)a4;
+- (void)_sendNotificationMessageRequest:(id)request toTokenURI:(id)i;
 - (void)dealloc;
-- (void)sendNotificationMessageToTokenURI:(id)a3 withCommmand:(int64_t)a4;
-- (void)sendNotificationMessageToUniqueID:(id)a3 withCommmand:(int64_t)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)sendNotificationMessageToTokenURI:(id)i withCommmand:(int64_t)commmand;
+- (void)sendNotificationMessageToUniqueID:(id)d withCommmand:(int64_t)commmand;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation IMMessageNotificationController
@@ -87,16 +87,16 @@
   return v2 == 7;
 }
 
-- (BOOL)_deviceIsAudioAccessory:(id)a3
+- (BOOL)_deviceIsAudioAccessory:(id)accessory
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 "modelIdentifier")];
+  v4 = [objc_msgSend(accessory "modelIdentifier")];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [a3 uniqueID];
+      uniqueID = [accessory uniqueID];
       v7 = @"NO";
       if (v4)
       {
@@ -104,7 +104,7 @@
       }
 
       v9 = 138412546;
-      v10 = v6;
+      v10 = uniqueID;
       v11 = 2112;
       v12 = v7;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Device with unique id %@ is audio accessory %@", &v9, 0x16u);
@@ -114,15 +114,15 @@
   return v4;
 }
 
-- (BOOL)audioAccessoryDeviceWithTokenURIExists:(id)a3
+- (BOOL)audioAccessoryDeviceWithTokenURIExists:(id)exists
 {
   v25 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [[(IMMessageNotificationController *)self messageNotificationControllerIDSService] devices];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  devices = [[(IMMessageNotificationController *)self messageNotificationControllerIDSService] devices];
+  v6 = [devices countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -132,12 +132,12 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(IMMessageNotificationController *)self _copyIDForDevice:v9];
-        if ([v10 isEqualToString:a3])
+        if ([v10 isEqualToString:exists])
         {
           v11 = [(IMMessageNotificationController *)self _deviceIsAudioAccessory:v9];
 
@@ -153,7 +153,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v6 = [devices countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v6);
@@ -173,7 +173,7 @@ LABEL_13:
       }
 
       *buf = 138412546;
-      v21 = a3;
+      existsCopy = exists;
       v22 = 2112;
       v23 = v14;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Found IDS Audio Accessory device with token URI %@ ? %@", buf, 0x16u);
@@ -183,7 +183,7 @@ LABEL_13:
   return v12;
 }
 
-- (id)_copyIDSIdentifierOrDefault:(id)a3
+- (id)_copyIDSIdentifierOrDefault:(id)default
 {
   v30 = *MEMORY[0x1E69E9840];
   if (![-[IDSService devices](-[IMMessageNotificationController messageNotificationControllerIDSService](self "messageNotificationControllerIDSService")])
@@ -208,8 +208,8 @@ LABEL_13:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [[(IMMessageNotificationController *)self messageNotificationControllerIDSService] devices];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  devices = [[(IMMessageNotificationController *)self messageNotificationControllerIDSService] devices];
+  v6 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (!v6)
   {
     goto LABEL_36;
@@ -225,7 +225,7 @@ LABEL_13:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(devices);
       }
 
       v11 = *(*(&v21 + 1) + 8 * i);
@@ -238,9 +238,9 @@ LABEL_13:
           v16 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v11 uniqueID];
+            uniqueID = [v11 uniqueID];
             *buf = v20;
-            v26 = v17;
+            defaultCopy = uniqueID;
             v27 = 2112;
             v28 = v8;
             _os_log_impl(&dword_1A85E5000, v16, OS_LOG_TYPE_INFO, "Found specified uniqueID %@ formatted to %@", buf, 0x16u);
@@ -260,9 +260,9 @@ LABEL_13:
             v12 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
             {
-              v13 = [v11 uniqueID];
+              uniqueID2 = [v11 uniqueID];
               *buf = v20;
-              v26 = v13;
+              defaultCopy = uniqueID2;
               v27 = 2112;
               v28 = v8;
               _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Found first default audio accessory uniqueID %@ formatted to %@", buf, 0x16u);
@@ -277,7 +277,7 @@ LABEL_13:
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    v6 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v6)
     {
       continue;
@@ -315,7 +315,7 @@ LABEL_29:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v26 = a3;
+      defaultCopy = default;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "From specified audio accessory unique id %@, returning %@", buf, 0x16u);
@@ -382,11 +382,11 @@ LABEL_29:
   }
 }
 
-- (void)_executeCommandFromMessageRequest:(id)a3
+- (void)_executeCommandFromMessageRequest:(id)request
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 objectForKey:{@"c", "integerValue"}];
-  v5 = [(IMMessageNotificationController *)self _isCurrentDeviceAudioAccessory];
+  v4 = [objc_msgSend(request objectForKey:{@"c", "integerValue"}];
+  _isCurrentDeviceAudioAccessory = [(IMMessageNotificationController *)self _isCurrentDeviceAudioAccessory];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -394,7 +394,7 @@ LABEL_29:
     {
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
       v8 = @"NO";
-      if (v5)
+      if (_isCurrentDeviceAudioAccessory)
       {
         v8 = @"YES";
       }
@@ -407,7 +407,7 @@ LABEL_29:
     }
   }
 
-  if (v5)
+  if (_isCurrentDeviceAudioAccessory)
   {
     v9 = IMOSLoggingEnabled();
     if (v4)
@@ -440,7 +440,7 @@ LABEL_29:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -449,20 +449,20 @@ LABEL_29:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v27 = 138413314;
-      *v28 = a3;
+      *v28 = service;
       *&v28[8] = 2112;
-      *&v28[10] = a4;
+      *&v28[10] = account;
       *&v28[18] = 2112;
-      *&v28[20] = a5;
+      *&v28[20] = message;
       *&v28[28] = 2112;
-      *&v28[30] = a6;
+      *&v28[30] = d;
       *&v28[38] = 2112;
-      *&v28[40] = a7;
+      *&v28[40] = context;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "service %@, account %@, incomingMessage %@ fromID %@ context %@", &v27, 0x34u);
     }
   }
 
-  v14 = [IMIDSUtilities verifyFromID:a6 comesFromAccount:a4];
+  v14 = [IMIDSUtilities verifyFromID:d comesFromAccount:account];
   v15 = IMOSLoggingEnabled();
   if (v14)
   {
@@ -471,20 +471,20 @@ LABEL_29:
       v16 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [a4 vettedAliases];
-        v18 = [a4 devices];
+        vettedAliases = [account vettedAliases];
+        devices = [account devices];
         v27 = 67110402;
         *v28 = v14;
         *&v28[4] = 2112;
-        *&v28[6] = a4;
+        *&v28[6] = account;
         *&v28[14] = 2112;
-        *&v28[16] = a6;
+        *&v28[16] = d;
         *&v28[24] = 2112;
-        *&v28[26] = a7;
+        *&v28[26] = context;
         *&v28[34] = 2112;
-        *&v28[36] = v17;
+        *&v28[36] = vettedAliases;
         *&v28[44] = 2112;
-        *&v28[46] = v18;
+        *&v28[46] = devices;
         v19 = "Incoming message is not from ourself. Dropping! (matchStatus: 0x%X account %@ fromID %@ context %@ vettedAliases %@ devices %@)";
         v20 = v16;
         v21 = 58;
@@ -506,9 +506,9 @@ LABEL_19:
       }
     }
 
-    v23 = [(IMMessageNotificationController *)self _isCurrentDeviceAudioAccessory];
+    _isCurrentDeviceAudioAccessory = [(IMMessageNotificationController *)self _isCurrentDeviceAudioAccessory];
     v24 = IMOSLoggingEnabled();
-    if (v23)
+    if (_isCurrentDeviceAudioAccessory)
     {
       if (v24)
       {
@@ -520,7 +520,7 @@ LABEL_19:
         }
       }
 
-      [(IMMessageNotificationController *)self _executeCommandFromMessageRequest:a5];
+      [(IMMessageNotificationController *)self _executeCommandFromMessageRequest:message];
     }
 
     else if (v24)
@@ -538,9 +538,9 @@ LABEL_19:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a6;
+  successCopy = success;
   v21 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -549,16 +549,16 @@ LABEL_19:
     {
       v12 = @"NO";
       v13 = 138413058;
-      v14 = a3;
+      serviceCopy = service;
       v15 = 2112;
-      if (v7)
+      if (successCopy)
       {
         v12 = @"YES";
       }
 
-      v16 = a4;
+      accountCopy = account;
       v17 = 2112;
-      v18 = a5;
+      identifierCopy = identifier;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "message sent with service %@, account %@, and identifier %@ with success %@", &v13, 0x2Au);
@@ -566,22 +566,22 @@ LABEL_19:
   }
 }
 
-- (void)sendNotificationMessageToUniqueID:(id)a3 withCommmand:(int64_t)a4
+- (void)sendNotificationMessageToUniqueID:(id)d withCommmand:(int64_t)commmand
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18 = @"c";
-  v19[0] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v19[0] = [MEMORY[0x1E696AD98] numberWithInteger:commmand];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v8 = [(IMMessageNotificationController *)self _copyIDSIdentifierOrDefault:a3];
+  v8 = [(IMMessageNotificationController *)self _copyIDSIdentifierOrDefault:d];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 138413058;
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:commmand];
       v12 = 2112;
-      v13 = a3;
+      dCopy = d;
       v14 = 2112;
       v15 = v8;
       v16 = 2112;
@@ -593,11 +593,11 @@ LABEL_19:
   [(IMMessageNotificationController *)self _sendNotificationMessageRequest:v7 toTokenURI:v8];
 }
 
-- (void)sendNotificationMessageToTokenURI:(id)a3 withCommmand:(int64_t)a4
+- (void)sendNotificationMessageToTokenURI:(id)i withCommmand:(int64_t)commmand
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15 = @"c";
-  v16[0] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v16[0] = [MEMORY[0x1E696AD98] numberWithInteger:commmand];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   if (IMOSLoggingEnabled())
   {
@@ -605,19 +605,19 @@ LABEL_19:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412802;
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:commmand];
       v11 = 2112;
-      v12 = a3;
+      iCopy = i;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Request to send command %@ to tokenURI %@ so constructed requestDicitonary to send to IDS: %@", &v9, 0x20u);
     }
   }
 
-  [(IMMessageNotificationController *)self _sendNotificationMessageRequest:v7 toTokenURI:a3];
+  [(IMMessageNotificationController *)self _sendNotificationMessageRequest:v7 toTokenURI:i];
 }
 
-- (void)_sendNotificationMessageRequest:(id)a3 toTokenURI:(id)a4
+- (void)_sendNotificationMessageRequest:(id)request toTokenURI:(id)i
 {
   v29[1] = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -626,35 +626,35 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v21 = a3;
+      requestCopy = request;
       v22 = 2112;
-      v23 = a4;
+      requestCopy2 = i;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Trying to send request %@ to tokenURI %@", buf, 0x16u);
     }
   }
 
-  if ([a4 length])
+  if ([i length])
   {
     v18 = 0;
     v19 = 0;
-    v8 = [MEMORY[0x1E695DFD8] setWithObject:a4];
+    v8 = [MEMORY[0x1E695DFD8] setWithObject:i];
     if (IMOSLoggingEnabled())
     {
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v21 = v8;
+        requestCopy = v8;
         v22 = 2112;
-        v23 = a3;
+        requestCopy2 = request;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Sending notification message to local account (toDests %@) (request %@)", buf, 0x16u);
       }
     }
 
-    v10 = [(IMMessageNotificationController *)self messageNotificationControllerIDSService];
+    messageNotificationControllerIDSService = [(IMMessageNotificationController *)self messageNotificationControllerIDSService];
     v28 = *MEMORY[0x1E69A47A0];
     v29[0] = MEMORY[0x1E695E118];
-    v11 = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](v10, "sendMessage:toDestinations:priority:options:identifier:error:", a3, v8, 300, [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1], &v19, &v18);
+    v11 = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](messageNotificationControllerIDSService, "sendMessage:toDestinations:priority:options:identifier:error:", request, v8, 300, [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1], &v19, &v18);
     if (IMOSLoggingEnabled())
     {
       v12 = OSLogHandleForIMFoundationCategory();
@@ -667,11 +667,11 @@ LABEL_19:
         }
 
         *buf = 138413058;
-        v21 = v19;
+        requestCopy = v19;
         v22 = 2112;
-        v23 = v18;
+        requestCopy2 = v18;
         v24 = 2112;
-        v25 = a3;
+        requestCopy3 = request;
         v26 = 2112;
         v27 = v13;
         v14 = "Sent notification message to local account (identifier %@)  (error %@)  (request %@) success: %@";

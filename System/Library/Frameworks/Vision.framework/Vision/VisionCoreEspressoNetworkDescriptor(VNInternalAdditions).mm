@@ -10,11 +10,11 @@
   v6 = a3;
   if ([VNComputeDeviceUtilities isNeuralEngineComputeDevice:v6])
   {
-    v7 = [a1 ANESpecificURL];
-    v8 = v7;
-    if (v7)
+    aNESpecificURL = [self ANESpecificURL];
+    v8 = aNESpecificURL;
+    if (aNESpecificURL)
     {
-      v9 = v7;
+      v9 = aNESpecificURL;
     }
 
     else if (a4)
@@ -25,7 +25,7 @@
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = VisionCoreEspressoNetworkDescriptor_0;
     v8 = objc_msgSendSuper2(&v11, sel_URLForComputeDevice_error_, v6, a4);
   }
@@ -35,7 +35,7 @@
 
 - (id)modelPathForComputeDevice:()VNInternalAdditions error:
 {
-  v5 = [a1 URLForComputeDevice:? error:?];
+  v5 = [self URLForComputeDevice:? error:?];
   v6 = v5;
   if (v5)
   {

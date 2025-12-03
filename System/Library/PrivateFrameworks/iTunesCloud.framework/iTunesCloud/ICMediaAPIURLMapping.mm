@@ -1,18 +1,18 @@
 @interface ICMediaAPIURLMapping
-- (ICMediaAPIURLMapping)initWithResponseDictionary:(id)a3;
+- (ICMediaAPIURLMapping)initWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation ICMediaAPIURLMapping
 
-- (ICMediaAPIURLMapping)initWithResponseDictionary:(id)a3
+- (ICMediaAPIURLMapping)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICMediaAPIURLMapping;
   v5 = [(ICMediaAPIURLMapping *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

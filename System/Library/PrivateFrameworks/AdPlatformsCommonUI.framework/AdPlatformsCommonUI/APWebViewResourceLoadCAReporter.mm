@@ -1,17 +1,17 @@
 @interface APWebViewResourceLoadCAReporter
-+ (BOOL)_isHTTPOrHTTPSURL:(id)a3;
-+ (void)_parseResourceLoadResultForError:(id)a3 response:(id)a4 result:(int64_t *)a5 errorDomain:(id *)a6 errorCode:(int64_t *)a7;
++ (BOOL)_isHTTPOrHTTPSURL:(id)l;
++ (void)_parseResourceLoadResultForError:(id)error response:(id)response result:(int64_t *)result errorDomain:(id *)domain errorCode:(int64_t *)code;
 @end
 
 @implementation APWebViewResourceLoadCAReporter
 
-+ (BOOL)_isHTTPOrHTTPSURL:(id)a3
++ (BOOL)_isHTTPOrHTTPSURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = v3;
-  if (v3)
+  scheme = [l scheme];
+  v4 = scheme;
+  if (scheme)
   {
-    if ([v3 caseInsensitiveCompare:@"http"])
+    if ([scheme caseInsensitiveCompare:@"http"])
     {
       v5 = [v4 caseInsensitiveCompare:@"https"] == 0;
     }
@@ -30,33 +30,33 @@
   return v5;
 }
 
-+ (void)_parseResourceLoadResultForError:(id)a3 response:(id)a4 result:(int64_t *)a5 errorDomain:(id *)a6 errorCode:(int64_t *)a7
++ (void)_parseResourceLoadResultForError:(id)error response:(id)response result:(int64_t *)result errorDomain:(id *)domain errorCode:(int64_t *)code
 {
-  v19 = a3;
-  v11 = a4;
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = -1;
-  if (v19)
+  errorCopy = error;
+  responseCopy = response;
+  *result = 0;
+  *domain = 0;
+  *code = -1;
+  if (errorCopy)
   {
-    v12 = [v19 domain];
+    domain = [errorCopy domain];
 
-    if (v12)
+    if (domain)
     {
-      v13 = [v19 domain];
-      v14 = [v13 length];
+      domain2 = [errorCopy domain];
+      v14 = [domain2 length];
 
       if (v14)
       {
-        v15 = [v19 domain];
-        *a6 = [v15 copy];
+        domain3 = [errorCopy domain];
+        *domain = [domain3 copy];
 
 LABEL_12:
-        *a7 = [v19 code];
+        *code = [errorCopy code];
 LABEL_13:
         v18 = 2;
 LABEL_14:
-        *a5 = v18;
+        *result = v18;
         goto LABEL_15;
       }
 
@@ -68,44 +68,44 @@ LABEL_14:
       v17 = @"AdNilDomainErrors";
     }
 
-    *a6 = v17;
+    *domain = v17;
     goto LABEL_12;
   }
 
-  if (!v11)
+  if (!responseCopy)
   {
-    *a6 = @"AdWebViewErrors";
-    *a7 = 1;
+    *domain = @"AdWebViewErrors";
+    *code = 1;
     goto LABEL_13;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    *a6 = @"AdWebViewErrors";
-    *a7 = 0;
+    *domain = @"AdWebViewErrors";
+    *code = 0;
     goto LABEL_20;
   }
 
-  v16 = [v11 statusCode];
-  if ((v16 - 600) <= 0xFFFFFFFFFFFFFE0BLL)
+  statusCode = [responseCopy statusCode];
+  if ((statusCode - 600) <= 0xFFFFFFFFFFFFFE0BLL)
   {
-    *a6 = @"AdWebViewErrors";
-    *a7 = 2;
+    *domain = @"AdWebViewErrors";
+    *code = 2;
 LABEL_20:
     v18 = 3;
     goto LABEL_14;
   }
 
-  if ((v16 - 200) <= 0x63)
+  if ((statusCode - 200) <= 0x63)
   {
     v18 = 1;
     goto LABEL_14;
   }
 
-  *a5 = 3;
-  *a7 = v16;
-  *a6 = @"AdHTTPErrors";
+  *result = 3;
+  *code = statusCode;
+  *domain = @"AdHTTPErrors";
 LABEL_15:
 }
 

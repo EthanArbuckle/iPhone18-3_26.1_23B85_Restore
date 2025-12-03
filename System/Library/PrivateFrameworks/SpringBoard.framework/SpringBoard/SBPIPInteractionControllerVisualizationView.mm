@@ -5,9 +5,9 @@
 - (SBPIPPositionGeometryContext)mainGeometryContext;
 - (SBPIPPositionInteractionStateContext)interactionContext;
 - (void)layoutSubviews;
-- (void)setExtendedGeometryContext:(SBPIPPositionGeometryContext *)a3;
-- (void)setInteractionContext:(SBPIPPositionInteractionStateContext *)a3;
-- (void)setMainGeometryContext:(SBPIPPositionGeometryContext *)a3;
+- (void)setExtendedGeometryContext:(SBPIPPositionGeometryContext *)context;
+- (void)setInteractionContext:(SBPIPPositionInteractionStateContext *)context;
+- (void)setMainGeometryContext:(SBPIPPositionGeometryContext *)context;
 @end
 
 @implementation SBPIPInteractionControllerVisualizationView
@@ -24,8 +24,8 @@
   v6 = &OBJC_IVAR___SBWiFiManager__currentNetworkIsIOSHotspot;
   if (!containerView)
   {
-    v7 = [(SBPIPInteractionControllerVisualizationView *)self layer];
-    [v7 setAllowsHitTesting:0];
+    layer = [(SBPIPInteractionControllerVisualizationView *)self layer];
+    [layer setAllowsHitTesting:0];
 
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     v9 = self->_containerView;
@@ -38,8 +38,8 @@
     self->_insetsGeometryView = v11;
 
     v13 = self->_insetsGeometryView;
-    v14 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIView *)v13 setBackgroundColor:v14];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIView *)v13 setBackgroundColor:systemOrangeColor];
 
     [(UIView *)self->_insetsGeometryView setUserInteractionEnabled:0];
     [(UIView *)self->_containerView addSubview:self->_insetsGeometryView];
@@ -57,8 +57,8 @@
     self->_mainGeometryView = v19;
 
     v21 = self->_mainGeometryView;
-    v22 = [MEMORY[0x277D75348] systemYellowColor];
-    v23 = [v22 colorWithAlphaComponent:0.2];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    v23 = [systemYellowColor colorWithAlphaComponent:0.2];
     [(UIView *)v21 setBackgroundColor:v23];
 
     v24 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -66,8 +66,8 @@
     self->_extendedGeometryView = v24;
 
     v26 = self->_extendedGeometryView;
-    v27 = [MEMORY[0x277D75348] systemRedColor];
-    v28 = [v27 colorWithAlphaComponent:0.2];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v28 = [systemRedColor colorWithAlphaComponent:0.2];
     [(UIView *)v26 setBackgroundColor:v28];
 
     v4 = &OBJC_IVAR___SBWiFiManager__currentNetworkIsIOSHotspot;
@@ -81,8 +81,8 @@
     self->_fakePIPView = v29;
 
     v31 = self->_fakePIPView;
-    v32 = [MEMORY[0x277D75348] systemMintColor];
-    [(UIView *)v31 setBackgroundColor:v32];
+    systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+    [(UIView *)v31 setBackgroundColor:systemMintColor];
 
     [(UIView *)self->_containerView addSubview:self->_fakePIPView];
     [(SBPIPInteractionControllerVisualizationView *)self addSubview:self->_containerView];
@@ -107,19 +107,19 @@
   v38 = self->_insetsGeometryView;
   UIRectInset();
   [(UIView *)v38 setFrame:?];
-  v39 = [(UIView *)self->_extendedGeometryView layer];
-  v40 = [MEMORY[0x277D75348] yellowColor];
-  [v39 setBorderColor:{objc_msgSend(v40, "CGColor")}];
+  layer2 = [(UIView *)self->_extendedGeometryView layer];
+  yellowColor = [MEMORY[0x277D75348] yellowColor];
+  [layer2 setBorderColor:{objc_msgSend(yellowColor, "CGColor")}];
 
-  v41 = [*(&self->super.super.super.isa + v37) layer];
-  v42 = [MEMORY[0x277D75348] yellowColor];
-  [v41 setBorderColor:{objc_msgSend(v42, "CGColor")}];
+  layer3 = [*(&self->super.super.super.isa + v37) layer];
+  yellowColor2 = [MEMORY[0x277D75348] yellowColor];
+  [layer3 setBorderColor:{objc_msgSend(yellowColor2, "CGColor")}];
 
-  v43 = [*(&self->super.super.super.isa + v37) layer];
-  [v43 setBorderWidth:20.0];
+  layer4 = [*(&self->super.super.super.isa + v37) layer];
+  [layer4 setBorderWidth:20.0];
 
-  v44 = [(UIView *)self->_extendedGeometryView layer];
-  [v44 setBorderWidth:20.0];
+  layer5 = [(UIView *)self->_extendedGeometryView layer];
+  [layer5 setBorderWidth:20.0];
 
   v45 = v6[758];
   [*(&self->super.super.super.isa + v45) setSize:{self->_mainGeometryContext.pipCurrentSize.width, self->_mainGeometryContext.pipCurrentSize.height}];
@@ -150,7 +150,7 @@
   [*(&self->super.super.super.isa + v35) frame];
   [(UIView *)self->_containerView setCenter:v55, v53 - v56 * v48];
   v57 = [MEMORY[0x277CBEB58] setWithArray:self->_regionViews];
-  v58 = [(_UIHyperregionUnion *)self->_regionUnion _regions];
+  _regions = [(_UIHyperregionUnion *)self->_regionUnion _regions];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __61__SBPIPInteractionControllerVisualizationView_layoutSubviews__block_invoke;
@@ -158,11 +158,11 @@
   v71[4] = self;
   v59 = v57;
   v72 = v59;
-  [v58 enumerateObjectsUsingBlock:v71];
+  [_regions enumerateObjectsUsingBlock:v71];
 
   regionViews = self->_regionViews;
-  v61 = [v59 allObjects];
-  [(NSMutableArray *)regionViews removeObjectsInArray:v61];
+  allObjects = [v59 allObjects];
+  [(NSMutableArray *)regionViews removeObjectsInArray:allObjects];
 
   v69 = 0u;
   v70 = 0u;
@@ -313,27 +313,27 @@ void __61__SBPIPInteractionControllerVisualizationView_layoutSubviews__block_inv
   return self;
 }
 
-- (void)setMainGeometryContext:(SBPIPPositionGeometryContext *)a3
+- (void)setMainGeometryContext:(SBPIPPositionGeometryContext *)context
 {
-  self->_mainGeometryContext.pipCurrentSize = a3->pipCurrentSize;
-  origin = a3->containerBounds.origin;
-  pipLastSteadySize = a3->pipLastSteadySize;
-  pipStashedSize = a3->pipStashedSize;
-  self->_mainGeometryContext.pipAnchorPointOffset = a3->pipAnchorPointOffset;
+  self->_mainGeometryContext.pipCurrentSize = context->pipCurrentSize;
+  origin = context->containerBounds.origin;
+  pipLastSteadySize = context->pipLastSteadySize;
+  pipStashedSize = context->pipStashedSize;
+  self->_mainGeometryContext.pipAnchorPointOffset = context->pipAnchorPointOffset;
   self->_mainGeometryContext.containerBounds.origin = origin;
   self->_mainGeometryContext.pipLastSteadySize = pipLastSteadySize;
   self->_mainGeometryContext.pipStashedSize = pipStashedSize;
-  v6 = *&a3->minimumPadding.top;
-  size = a3->containerBounds.size;
-  v7 = *&a3->edgeInsets.top;
-  *&self->_mainGeometryContext.edgeInsets.bottom = *&a3->edgeInsets.bottom;
+  v6 = *&context->minimumPadding.top;
+  size = context->containerBounds.size;
+  v7 = *&context->edgeInsets.top;
+  *&self->_mainGeometryContext.edgeInsets.bottom = *&context->edgeInsets.bottom;
   *&self->_mainGeometryContext.minimumPadding.top = v6;
   self->_mainGeometryContext.containerBounds.size = size;
   *&self->_mainGeometryContext.edgeInsets.top = v7;
-  v9 = *&a3->offscreenCorners;
-  v11 = *&a3->minimumPadding.bottom;
-  v10 = *&a3->stashedMinimumPadding.top;
-  *&self->_mainGeometryContext.stashedMinimumPadding.bottom = *&a3->stashedMinimumPadding.bottom;
+  v9 = *&context->offscreenCorners;
+  v11 = *&context->minimumPadding.bottom;
+  v10 = *&context->stashedMinimumPadding.top;
+  *&self->_mainGeometryContext.stashedMinimumPadding.bottom = *&context->stashedMinimumPadding.bottom;
   *&self->_mainGeometryContext.offscreenCorners = v9;
   *&self->_mainGeometryContext.minimumPadding.bottom = v11;
   *&self->_mainGeometryContext.stashedMinimumPadding.top = v10;
@@ -363,27 +363,27 @@ void __61__SBPIPInteractionControllerVisualizationView_layoutSubviews__block_inv
   return self;
 }
 
-- (void)setExtendedGeometryContext:(SBPIPPositionGeometryContext *)a3
+- (void)setExtendedGeometryContext:(SBPIPPositionGeometryContext *)context
 {
-  self->_extendedGeometryContext.pipCurrentSize = a3->pipCurrentSize;
-  origin = a3->containerBounds.origin;
-  pipLastSteadySize = a3->pipLastSteadySize;
-  pipStashedSize = a3->pipStashedSize;
-  self->_extendedGeometryContext.pipAnchorPointOffset = a3->pipAnchorPointOffset;
+  self->_extendedGeometryContext.pipCurrentSize = context->pipCurrentSize;
+  origin = context->containerBounds.origin;
+  pipLastSteadySize = context->pipLastSteadySize;
+  pipStashedSize = context->pipStashedSize;
+  self->_extendedGeometryContext.pipAnchorPointOffset = context->pipAnchorPointOffset;
   self->_extendedGeometryContext.containerBounds.origin = origin;
   self->_extendedGeometryContext.pipLastSteadySize = pipLastSteadySize;
   self->_extendedGeometryContext.pipStashedSize = pipStashedSize;
-  v6 = *&a3->minimumPadding.top;
-  size = a3->containerBounds.size;
-  v7 = *&a3->edgeInsets.top;
-  *&self->_extendedGeometryContext.edgeInsets.bottom = *&a3->edgeInsets.bottom;
+  v6 = *&context->minimumPadding.top;
+  size = context->containerBounds.size;
+  v7 = *&context->edgeInsets.top;
+  *&self->_extendedGeometryContext.edgeInsets.bottom = *&context->edgeInsets.bottom;
   *&self->_extendedGeometryContext.minimumPadding.top = v6;
   self->_extendedGeometryContext.containerBounds.size = size;
   *&self->_extendedGeometryContext.edgeInsets.top = v7;
-  v9 = *&a3->offscreenCorners;
-  v11 = *&a3->minimumPadding.bottom;
-  v10 = *&a3->stashedMinimumPadding.top;
-  *&self->_extendedGeometryContext.stashedMinimumPadding.bottom = *&a3->stashedMinimumPadding.bottom;
+  v9 = *&context->offscreenCorners;
+  v11 = *&context->minimumPadding.bottom;
+  v10 = *&context->stashedMinimumPadding.top;
+  *&self->_extendedGeometryContext.stashedMinimumPadding.bottom = *&context->stashedMinimumPadding.bottom;
   *&self->_extendedGeometryContext.offscreenCorners = v9;
   *&self->_extendedGeometryContext.minimumPadding.bottom = v11;
   *&self->_extendedGeometryContext.stashedMinimumPadding.top = v10;
@@ -401,13 +401,13 @@ void __61__SBPIPInteractionControllerVisualizationView_layoutSubviews__block_inv
   return self;
 }
 
-- (void)setInteractionContext:(SBPIPPositionInteractionStateContext *)a3
+- (void)setInteractionContext:(SBPIPPositionInteractionStateContext *)context
 {
-  *&self->_interactionContext.isStashed = *&a3->isStashed;
-  v4 = *&a3->initialPosition.y;
-  v3 = *&a3->currentPosition.y;
-  v5 = *&a3->projectedPosition.y;
-  self->_interactionContext.projectedPositionStashProgress = a3->projectedPositionStashProgress;
+  *&self->_interactionContext.isStashed = *&context->isStashed;
+  v4 = *&context->initialPosition.y;
+  v3 = *&context->currentPosition.y;
+  v5 = *&context->projectedPosition.y;
+  self->_interactionContext.projectedPositionStashProgress = context->projectedPositionStashProgress;
   *&self->_interactionContext.initialPosition.y = v4;
   *&self->_interactionContext.currentPosition.y = v3;
   *&self->_interactionContext.projectedPosition.y = v5;

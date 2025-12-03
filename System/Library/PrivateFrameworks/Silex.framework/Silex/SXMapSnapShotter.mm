@@ -1,7 +1,7 @@
 @interface SXMapSnapShotter
 + (id)serialQueue;
 - (SXMapSnapShotter)init;
-- (id)snapShotWithOptions:(id)a3 annotations:(id)a4 completionBlock:(id)a5;
+- (id)snapShotWithOptions:(id)options annotations:(id)annotations completionBlock:(id)block;
 @end
 
 @implementation SXMapSnapShotter
@@ -13,30 +13,30 @@
   v2 = [(SXMapSnapShotter *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     snapshotters = v2->_snapshotters;
-    v2->_snapshotters = v3;
+    v2->_snapshotters = array;
   }
 
   return v2;
 }
 
-- (id)snapShotWithOptions:(id)a3 annotations:(id)a4 completionBlock:(id)a5
+- (id)snapShotWithOptions:(id)options annotations:(id)annotations completionBlock:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
+  optionsCopy = options;
+  annotationsCopy = annotations;
+  blockCopy = block;
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x2020000000;
   v49 = 0;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(annotationsCopy, "count")}];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = v9;
+  v11 = annotationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v12)
   {
@@ -55,8 +55,8 @@
         [v15 coordinate];
         v18 = v17;
         v20 = v19;
-        v21 = [v15 title];
-        v22 = [v16 initWithCoordinate:v21 title:1 representation:{v18, v20}];
+        title = [v15 title];
+        v22 = [v16 initWithCoordinate:title title:1 representation:{v18, v20}];
 
         [v10 addObject:v22];
       }
@@ -67,26 +67,26 @@
     while (v12);
   }
 
-  [v8 _setCustomFeatureAnnotations:v10];
+  [optionsCopy _setCustomFeatureAnnotations:v10];
   objc_initWeak(&location, self);
-  v23 = [objc_alloc(MEMORY[0x1E696F2B8]) initWithOptions:v8];
-  v24 = [objc_opt_class() serialQueue];
+  v23 = [objc_alloc(MEMORY[0x1E696F2B8]) initWithOptions:optionsCopy];
+  serialQueue = [objc_opt_class() serialQueue];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __68__SXMapSnapShotter_snapShotWithOptions_annotations_completionBlock___block_invoke;
   v37[3] = &unk_1E84FF918;
   objc_copyWeak(&v42, &location);
-  v25 = v32;
+  v25 = blockCopy;
   v40 = v25;
   v41 = v48;
-  v26 = v8;
+  v26 = optionsCopy;
   v38 = v26;
   v27 = v23;
   v39 = v27;
-  [v27 startWithQueue:v24 completionHandler:v37];
+  [v27 startWithQueue:serialQueue completionHandler:v37];
 
-  v28 = [(SXMapSnapShotter *)self snapshotters];
-  [v28 addObject:v27];
+  snapshotters = [(SXMapSnapShotter *)self snapshotters];
+  [snapshotters addObject:v27];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;

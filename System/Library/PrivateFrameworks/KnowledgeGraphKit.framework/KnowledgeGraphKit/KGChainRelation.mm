@@ -1,19 +1,19 @@
 @interface KGChainRelation
-- (KGChainRelation)initWithRelations:(id)a3;
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 inGraph:(id)a4;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 inGraph:(id)a4;
+- (KGChainRelation)initWithRelations:(id)relations;
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency inGraph:(id)graph;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers inGraph:(id)graph;
 - (id)inverse;
-- (id)targetNodeIdentifiersFromSourceNodeIdentifiers:(id)a3 inGraph:(id)a4;
+- (id)targetNodeIdentifiersFromSourceNodeIdentifiers:(id)identifiers inGraph:(id)graph;
 @end
 
 @implementation KGChainRelation
 
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 inGraph:(id)a4
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency inGraph:(id)graph
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  adjacencyCopy = adjacency;
+  graphCopy = graph;
+  v8 = adjacencyCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -37,7 +37,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v14) adjacencyByJoiningWithAdjacency:v15 inGraph:{v7, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v14) adjacencyByJoiningWithAdjacency:v15 inGraph:{graphCopy, v18}];
 
         ++v14;
         v15 = v11;
@@ -55,11 +55,11 @@
   return v11;
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 inGraph:(id)a4
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers inGraph:(id)graph
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
   v8 = objc_alloc_init(KGDirectedBinaryAdjacency);
   v19 = 0u;
   v20 = 0u;
@@ -86,12 +86,12 @@
         v16 = *(*(&v19 + 1) + 8 * v14);
         if (v13)
         {
-          [v16 adjacencyWithStartNodeIdentifiers:v6 inGraph:v7];
+          [v16 adjacencyWithStartNodeIdentifiers:identifiersCopy inGraph:graphCopy];
         }
 
         else
         {
-          [v16 adjacencyByJoiningWithAdjacency:v15 inGraph:{v7, v19}];
+          [v16 adjacencyByJoiningWithAdjacency:v15 inGraph:{graphCopy, v19}];
         }
         v8 = ;
 
@@ -121,20 +121,20 @@
     for (i = [(NSArray *)self->_relations count]- 1; ; --i)
     {
       v5 = [(NSArray *)self->_relations objectAtIndex:i];
-      v6 = [v5 inverse];
-      [v3 addObject:v6];
+      inverse = [v5 inverse];
+      [v3 addObject:inverse];
     }
   }
 
   return self;
 }
 
-- (id)targetNodeIdentifiersFromSourceNodeIdentifiers:(id)a3 inGraph:(id)a4
+- (id)targetNodeIdentifiersFromSourceNodeIdentifiers:(id)identifiers inGraph:(id)graph
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
+  v8 = identifiersCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -158,7 +158,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v14) targetNodeIdentifiersFromSourceNodeIdentifiers:v15 inGraph:{v7, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v14) targetNodeIdentifiersFromSourceNodeIdentifiers:v15 inGraph:{graphCopy, v18}];
 
         ++v14;
         v15 = v11;
@@ -176,16 +176,16 @@
   return v11;
 }
 
-- (KGChainRelation)initWithRelations:(id)a3
+- (KGChainRelation)initWithRelations:(id)relations
 {
-  v5 = a3;
+  relationsCopy = relations;
   v9.receiver = self;
   v9.super_class = KGChainRelation;
   v6 = [(KGChainRelation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_relations, a3);
+    objc_storeStrong(&v6->_relations, relations);
   }
 
   return v7;

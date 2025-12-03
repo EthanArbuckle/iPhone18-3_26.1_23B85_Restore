@@ -1,49 +1,49 @@
 @interface ARAccelerometerData
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4;
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp;
 - ($1AB5FA073B851C12C2339EC22442E995)acceleration;
-- (ARAccelerometerData)initWithAccelData:(id)a3;
-- (ARAccelerometerData)initWithCoder:(id)a3;
-- (ARAccelerometerData)initWithDictionary:(id)a3;
-- (ARAccelerometerData)initWithMetadataWrapper:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARAccelerometerData)initWithAccelData:(id)data;
+- (ARAccelerometerData)initWithCoder:(id)coder;
+- (ARAccelerometerData)initWithDictionary:(id)dictionary;
+- (ARAccelerometerData)initWithMetadataWrapper:(id)wrapper;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeToDictionary;
 - (id)encodeToMetadataWrapper;
-- (void)appendToWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendToWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARAccelerometerData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeDouble:@"temperature" forKey:self->_temperature];
-  [v5 encodeDouble:@"accelerationX" forKey:self->_acceleration.x];
-  [v5 encodeDouble:@"accelerationY" forKey:self->_acceleration.y];
-  [v5 encodeDouble:@"accelerationZ" forKey:self->_acceleration.z];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeDouble:@"temperature" forKey:self->_temperature];
+  [coderCopy encodeDouble:@"accelerationX" forKey:self->_acceleration.x];
+  [coderCopy encodeDouble:@"accelerationY" forKey:self->_acceleration.y];
+  [coderCopy encodeDouble:@"accelerationZ" forKey:self->_acceleration.z];
 }
 
-- (ARAccelerometerData)initWithCoder:(id)a3
+- (ARAccelerometerData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ARAccelerometerData;
   v5 = [(ARAccelerometerData *)&v12 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     [(ARAccelerometerData *)v5 setTimestamp:?];
-    [v4 decodeDoubleForKey:@"temperature"];
+    [coderCopy decodeDoubleForKey:@"temperature"];
     [(ARAccelerometerData *)v5 setTemperature:?];
-    [v4 decodeDoubleForKey:@"accelerationX"];
+    [coderCopy decodeDoubleForKey:@"accelerationX"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"accelerationY"];
+    [coderCopy decodeDoubleForKey:@"accelerationY"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"accelerationZ"];
+    [coderCopy decodeDoubleForKey:@"accelerationZ"];
     [(ARAccelerometerData *)v5 setAcceleration:v7, v9, v10];
   }
 
@@ -73,31 +73,31 @@
   return v8;
 }
 
-- (ARAccelerometerData)initWithDictionary:(id)a3
+- (ARAccelerometerData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ARAccelerometerData;
   v5 = [(ARAccelerometerData *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"t"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v6 doubleValue];
     v5->_timestamp = v7;
 
-    v8 = [v4 objectForKeyedSubscript:@"p"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"p"];
     [v8 doubleValue];
     v5->_temperature = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"x"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"x"];
     [v10 doubleValue];
     v5->_acceleration.x = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"y"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"y"];
     [v12 doubleValue];
     v5->_acceleration.y = v13;
 
-    v14 = [v4 objectForKeyedSubscript:@"z"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"z"];
     [v14 doubleValue];
     v5->_acceleration.z = v15;
   }
@@ -113,55 +113,55 @@
   *&temperature = temperature;
   [v3 setTemperature:temperature];
   x = self->_acceleration.x;
-  v6 = [v3 acceleration];
+  acceleration = [v3 acceleration];
   *&v7 = x;
-  [v6 setX:v7];
+  [acceleration setX:v7];
 
   y = self->_acceleration.y;
-  v9 = [v3 acceleration];
+  acceleration2 = [v3 acceleration];
   *&v10 = y;
-  [v9 setY:v10];
+  [acceleration2 setY:v10];
 
   z = self->_acceleration.z;
-  v12 = [v3 acceleration];
+  acceleration3 = [v3 acceleration];
   *&v13 = z;
-  [v12 setZ:v13];
+  [acceleration3 setZ:v13];
 
   v14 = [MEMORY[0x1E698BEB0] encodeAccelerometerData:v3 andAdditionalData:0];
 
   return v14;
 }
 
-- (ARAccelerometerData)initWithMetadataWrapper:(id)a3
+- (ARAccelerometerData)initWithMetadataWrapper:(id)wrapper
 {
-  v4 = [MEMORY[0x1E698BEB0] decodeAccel:a3];
+  v4 = [MEMORY[0x1E698BEB0] decodeAccel:wrapper];
   v5 = [(ARAccelerometerData *)self initWithAccelData:v4];
 
   return v5;
 }
 
-- (ARAccelerometerData)initWithAccelData:(id)a3
+- (ARAccelerometerData)initWithAccelData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = ARAccelerometerData;
   v5 = [(ARAccelerometerData *)&v16 init];
   if (v5)
   {
-    [v4 timestamp];
+    [dataCopy timestamp];
     v5->_timestamp = v6;
-    [v4 temperature];
+    [dataCopy temperature];
     v5->_temperature = v7;
-    v8 = [v4 acceleration];
-    [v8 x];
+    acceleration = [dataCopy acceleration];
+    [acceleration x];
     v5->_acceleration.x = v9;
 
-    v10 = [v4 acceleration];
-    [v10 y];
+    acceleration2 = [dataCopy acceleration];
+    [acceleration2 y];
     v5->_acceleration.y = v11;
 
-    v12 = [v4 acceleration];
-    [v12 z];
+    acceleration3 = [dataCopy acceleration];
+    [acceleration3 z];
     v5->_acceleration.z = v13;
 
     v14 = v5;
@@ -170,37 +170,37 @@
   return v5;
 }
 
-- (void)appendToWriter:(id)a3
+- (void)appendToWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   v15 = objc_opt_new();
   [v15 setTimestamp:self->_timestamp];
   temperature = self->_temperature;
   *&temperature = temperature;
   [v15 setTemperature:temperature];
   x = self->_acceleration.x;
-  v7 = [v15 acceleration];
+  acceleration = [v15 acceleration];
   *&v8 = x;
-  [v7 setX:v8];
+  [acceleration setX:v8];
 
   y = self->_acceleration.y;
-  v10 = [v15 acceleration];
+  acceleration2 = [v15 acceleration];
   *&v11 = y;
-  [v10 setY:v11];
+  [acceleration2 setY:v11];
 
   z = self->_acceleration.z;
-  v13 = [v15 acceleration];
+  acceleration3 = [v15 acceleration];
   *&v14 = z;
-  [v13 setZ:v14];
+  [acceleration3 setZ:v14];
 
-  [v4 processAccelerometerData:v15 andAdditionalData:0];
+  [writerCopy processAccelerometerData:v15 andAdditionalData:0];
 }
 
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  readerCopy = reader;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_autoreleasePoolPush();
   v8 = *(MEMORY[0x1E6960CA8] + 16);
   v21 = *MEMORY[0x1E6960CA8];
@@ -210,7 +210,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v5 grabNextRawAccelData:&v21 location:0];
+  v9 = [readerCopy grabNextRawAccelData:&v21 location:0];
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
   if (v10)
   {
@@ -226,7 +226,7 @@
         }
 
         v14 = [objc_alloc(objc_opt_class()) initWithAccelData:*(*(&v17 + 1) + 8 * i)];
-        [v6 addObject:v14];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
@@ -237,15 +237,15 @@
 
   *&v16.value = v21;
   v16.epoch = v22;
-  *a4 = CMTimeGetSeconds(&v16);
+  *timestamp = CMTimeGetSeconds(&v16);
   objc_autoreleasePoolPop(v7);
 
-  return v6;
+  return array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->_timestamp;
@@ -258,12 +258,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = vabdd_f64(self->_timestamp, v5[1]) < 0.00000011920929 && vabdd_f64(self->_acceleration.x, v5[3]) < 0.00000011920929 && vabdd_f64(self->_acceleration.y, v5[4]) < 0.00000011920929 && vabdd_f64(self->_acceleration.z, v5[5]) < 0.00000011920929 && vabdd_f64(self->_temperature, v5[2]) < 0.00000011920929;
   }
 

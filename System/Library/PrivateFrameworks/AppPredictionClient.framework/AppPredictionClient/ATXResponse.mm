@@ -1,16 +1,16 @@
 @interface ATXResponse
-- (ATXResponse)initWithCoder:(id)a3;
-- (ATXResponse)initWithPredictions:(id)a3 cacheFileData:(id)a4 error:(id)a5;
-- (ATXResponse)initWithPredictions:(id)a3 proactiveSuggestions:(id)a4 uuid:(id)a5 cacheFileData:(id)a6 blendingUICacheUpdateUUID:(id)a7 error:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResponse:(id)a3;
+- (ATXResponse)initWithCoder:(id)coder;
+- (ATXResponse)initWithPredictions:(id)predictions cacheFileData:(id)data error:(id)error;
+- (ATXResponse)initWithPredictions:(id)predictions proactiveSuggestions:(id)suggestions uuid:(id)uuid cacheFileData:(id)data blendingUICacheUpdateUUID:(id)d error:(id)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResponse:(id)response;
 - (NSArray)predictedAppIdentities;
 - (NSArray)predictedApps;
 - (id)json;
 - (id)jsonDescription;
 - (id)jsonRawData;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAtxSearchResults:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAtxSearchResults:(id)results;
 - (void)json;
 @end
 
@@ -24,37 +24,37 @@
   return v3;
 }
 
-- (ATXResponse)initWithPredictions:(id)a3 cacheFileData:(id)a4 error:(id)a5
+- (ATXResponse)initWithPredictions:(id)predictions cacheFileData:(id)data error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  dataCopy = data;
+  predictionsCopy = predictions;
   v11 = objc_opt_new();
-  v12 = [(ATXResponse *)self initWithPredictions:v10 proactiveSuggestions:0 uuid:v11 cacheFileData:v9 blendingUICacheUpdateUUID:0 error:v8];
+  v12 = [(ATXResponse *)self initWithPredictions:predictionsCopy proactiveSuggestions:0 uuid:v11 cacheFileData:dataCopy blendingUICacheUpdateUUID:0 error:errorCopy];
 
   return v12;
 }
 
-- (ATXResponse)initWithPredictions:(id)a3 proactiveSuggestions:(id)a4 uuid:(id)a5 cacheFileData:(id)a6 blendingUICacheUpdateUUID:(id)a7 error:(id)a8
+- (ATXResponse)initWithPredictions:(id)predictions proactiveSuggestions:(id)suggestions uuid:(id)uuid cacheFileData:(id)data blendingUICacheUpdateUUID:(id)d error:(id)error
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  predictionsCopy = predictions;
+  suggestionsCopy = suggestions;
+  uuidCopy = uuid;
+  dataCopy = data;
+  dCopy = d;
+  errorCopy = error;
   v27.receiver = self;
   v27.super_class = ATXResponse;
   v18 = [(ATXResponse *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_uuid, a5);
-    objc_storeStrong(&v19->_predictions, a3);
-    objc_storeStrong(&v19->_proactiveSuggestions, a4);
-    objc_storeStrong(&v19->_cacheFileData, a6);
-    objc_storeStrong(&v19->_blendingModelUICacheUpdateUUID, a7);
-    objc_storeStrong(&v19->_error, a8);
+    objc_storeStrong(&v18->_uuid, uuid);
+    objc_storeStrong(&v19->_predictions, predictions);
+    objc_storeStrong(&v19->_proactiveSuggestions, suggestions);
+    objc_storeStrong(&v19->_cacheFileData, data);
+    objc_storeStrong(&v19->_blendingModelUICacheUpdateUUID, d);
+    objc_storeStrong(&v19->_error, error);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("appClipQueue", v20);
     appClipQueue = v19->_appClipQueue;
@@ -106,21 +106,21 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 
   v20[0] = v5;
   v19[1] = @"predictedApps";
-  v6 = [(ATXResponse *)self predictedApps];
-  v7 = v6;
-  if (!v6)
+  predictedApps = [(ATXResponse *)self predictedApps];
+  null = predictedApps;
+  if (!predictedApps)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[1] = v7;
+  v20[1] = null;
   v19[2] = @"proactiveSuggestions";
-  v8 = [(ATXResponse *)self proactiveSuggestions];
-  v9 = v8;
+  proactiveSuggestions = [(ATXResponse *)self proactiveSuggestions];
+  v9 = proactiveSuggestions;
   v10 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (proactiveSuggestions)
   {
-    v10 = v8;
+    v10 = proactiveSuggestions;
   }
 
   v20[2] = v10;
@@ -152,7 +152,7 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
   v20[5] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:6];
 
-  if (!v6)
+  if (!predictedApps)
   {
   }
 
@@ -162,9 +162,9 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXResponse *)self jsonRawData];
+  jsonRawData = [(ATXResponse *)self jsonRawData];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -182,35 +182,35 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 - (id)jsonDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXResponse *)self json];
-  v5 = [v3 initWithData:v4 encoding:4];
+  json = [(ATXResponse *)self json];
+  v5 = [v3 initWithData:json encoding:4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXResponse *)self isEqualToResponse:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXResponse *)self isEqualToResponse:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = self->_uuid;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == responseCopy[3])
   {
   }
 
@@ -226,7 +226,7 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 
   v8 = self->_predictions;
   v9 = v8;
-  if (v8 == v4[5])
+  if (v8 == responseCopy[5])
   {
   }
 
@@ -242,7 +242,7 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 
   v11 = self->_proactiveSuggestions;
   v12 = v11;
-  if (v11 == v4[6])
+  if (v11 == responseCopy[6])
   {
   }
 
@@ -258,7 +258,7 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 
   v14 = self->_cacheFileData;
   v15 = v14;
-  if (v14 == v4[1])
+  if (v14 == responseCopy[1])
   {
   }
 
@@ -274,7 +274,7 @@ ATXAppIdentity *__37__ATXResponse_predictedAppIdentities__block_invoke(uint64_t 
 
   v17 = self->_blendingModelUICacheUpdateUUID;
   v18 = v17;
-  if (v17 == v4[7])
+  if (v17 == responseCopy[7])
   {
   }
 
@@ -292,7 +292,7 @@ LABEL_19:
 
   v22 = self->_error;
   v23 = v22;
-  if (v22 == v4[4])
+  if (v22 == responseCopy[4])
   {
     v20 = 1;
   }
@@ -306,17 +306,17 @@ LABEL_20:
   return v20;
 }
 
-- (void)enumerateAtxSearchResults:(id)a3
+- (void)enumerateAtxSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   predictions = self->_predictions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__ATXResponse_enumerateAtxSearchResults___block_invoke;
   v7[3] = &unk_1E80C6678;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultsCopy;
+  v6 = resultsCopy;
   [(NSArray *)predictions enumerateObjectsUsingBlock:v7];
 }
 
@@ -422,43 +422,43 @@ LABEL_10:
 LABEL_24:
 }
 
-- (ATXResponse)initWithCoder:(id)a3
+- (ATXResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scoredPredictions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scoredPredictions"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"proactiveSuggestions"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheFileData"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendingModelUICacheUpdateUUID"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"proactiveSuggestions"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheFileData"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendingModelUICacheUpdateUUID"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   v17 = [(ATXResponse *)self initWithPredictions:v9 proactiveSuggestions:v13 uuid:v5 cacheFileData:v14 blendingUICacheUpdateUUID:v15 error:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_predictions forKey:@"scoredPredictions"];
-  [v5 encodeObject:self->_proactiveSuggestions forKey:@"proactiveSuggestions"];
-  [v5 encodeObject:self->_cacheFileData forKey:@"cacheFileData"];
-  [v5 encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingModelUICacheUpdateUUID"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_predictions forKey:@"scoredPredictions"];
+  [coderCopy encodeObject:self->_proactiveSuggestions forKey:@"proactiveSuggestions"];
+  [coderCopy encodeObject:self->_cacheFileData forKey:@"cacheFileData"];
+  [coderCopy encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingModelUICacheUpdateUUID"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
 - (void)json
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Unable to serialize ATXResponse. Error: %@", &v2, 0xCu);
 }
 

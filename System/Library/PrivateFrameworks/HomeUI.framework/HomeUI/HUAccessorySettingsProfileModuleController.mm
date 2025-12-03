@@ -1,25 +1,25 @@
 @interface HUAccessorySettingsProfileModuleController
 - (BOOL)profileViewControllerIsProfileInstalled;
-- (Class)cellClassForItem:(id)a3;
-- (HUAccessorySettingsProfileModuleController)initWithModule:(id)a3;
+- (Class)cellClassForItem:(id)item;
+- (HUAccessorySettingsProfileModuleController)initWithModule:(id)module;
 - (HUAccessorySettingsProfileModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
+- (unint64_t)didSelectItem:(id)item;
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile;
+- (void)setupCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUAccessorySettingsProfileModuleController
 
-- (HUAccessorySettingsProfileModuleController)initWithModule:(id)a3
+- (HUAccessorySettingsProfileModuleController)initWithModule:(id)module
 {
   v4.receiver = self;
   v4.super_class = HUAccessorySettingsProfileModuleController;
-  return [(HUItemModuleController *)&v4 initWithModule:a3];
+  return [(HUItemModuleController *)&v4 initWithModule:module];
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -43,20 +43,20 @@
   return v6;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v5 = [a4 profile];
-  [v6 setProfile:v5];
+  cellCopy = cell;
+  profile = [item profile];
+  [cellCopy setProfile:profile];
 
-  [v6 setAccessoryType:1];
+  [cellCopy setAccessoryType:1];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 profile];
-  if (v5)
+  itemCopy = item;
+  profile = [itemCopy profile];
+  if (profile)
   {
     v12 = 0;
     v13 = &v12;
@@ -76,10 +76,10 @@
 
     v7 = v6;
     _Block_object_dispose(&v12, 8);
-    v8 = [[v6 alloc] initWithStyle:1 profile:v5 profileViewMode:2];
+    v8 = [[v6 alloc] initWithStyle:1 profile:profile profileViewMode:2];
     [v8 setProfileViewControllerDelegate:self];
-    v9 = [(HUAccessorySettingsProfileModuleController *)self delegate];
-    [v9 accessorySettingsProfileModuleController:self needsNavigationToController:v8];
+    delegate = [(HUAccessorySettingsProfileModuleController *)self delegate];
+    [delegate accessorySettingsProfileModuleController:self needsNavigationToController:v8];
   }
 
   return 1;
@@ -87,14 +87,14 @@
 
 - (BOOL)profileViewControllerIsProfileInstalled
 {
-  v2 = [(HUItemModuleController *)self module];
-  v3 = [v2 itemProviders];
-  v4 = [v3 anyObject];
+  module = [(HUItemModuleController *)self module];
+  itemProviders = [module itemProviders];
+  anyObject = [itemProviders anyObject];
 
-  v5 = [v4 items];
-  LOBYTE(v3) = [v5 na_any:&__block_literal_global_152];
+  items = [anyObject items];
+  LOBYTE(itemProviders) = [items na_any:&__block_literal_global_152];
 
-  return v3;
+  return itemProviders;
 }
 
 BOOL __85__HUAccessorySettingsProfileModuleController_profileViewControllerIsProfileInstalled__block_invoke(uint64_t a1, void *a2)
@@ -117,23 +117,23 @@ BOOL __85__HUAccessorySettingsProfileModuleController_profileViewControllerIsPro
   return v5 != 0;
 }
 
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 itemProviders];
-  v7 = [v6 anyObject];
-  v8 = [v7 items];
+  profileCopy = profile;
+  module = [(HUItemModuleController *)self module];
+  itemProviders = [module itemProviders];
+  anyObject = [itemProviders anyObject];
+  items = [anyObject items];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __90__HUAccessorySettingsProfileModuleController_profileViewControllerDidSelectRemoveProfile___block_invoke;
   v17[3] = &unk_277DB85D8;
-  v9 = v4;
+  v9 = profileCopy;
   v18 = v9;
-  v10 = [v8 na_firstObjectPassingTest:v17];
+  v10 = [items na_firstObjectPassingTest:v17];
 
-  v11 = [(HUItemModuleController *)self module];
-  v12 = [v11 promptForRemoveProfileItem:v10];
+  module2 = [(HUItemModuleController *)self module];
+  v12 = [module2 promptForRemoveProfileItem:v10];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__HUAccessorySettingsProfileModuleController_profileViewControllerDidSelectRemoveProfile___block_invoke_2;

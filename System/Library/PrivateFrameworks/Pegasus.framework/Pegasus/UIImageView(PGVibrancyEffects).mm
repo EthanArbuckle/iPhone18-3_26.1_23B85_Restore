@@ -6,12 +6,12 @@
 
 - (id)PG_updateVibrancyEffectForTintColor
 {
-  v2 = [a1 image];
-  v3 = [v2 PG_wantsVibrancyEffect];
+  image = [self image];
+  pG_wantsVibrancyEffect = [image PG_wantsVibrancyEffect];
 
-  if (v3)
+  if (pG_wantsVibrancyEffect)
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &off_1F39806B0;
     return objc_msgSendSuper2(&v5, sel_PG_updateVibrancyEffectForTintColor);
   }
@@ -19,7 +19,7 @@
   else
   {
 
-    return [a1 PG_removeVibrancyEffect];
+    return [self PG_removeVibrancyEffect];
   }
 }
 

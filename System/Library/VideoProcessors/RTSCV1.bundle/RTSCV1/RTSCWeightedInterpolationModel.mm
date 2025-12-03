@@ -1,10 +1,10 @@
 @interface RTSCWeightedInterpolationModel
-- (RTSCWeightedInterpolationModel)initWithPoint:(RTSCWeightedInterpolationModel *)self weights:(SEL)a2;
+- (RTSCWeightedInterpolationModel)initWithPoint:(RTSCWeightedInterpolationModel *)self weights:(SEL)weights;
 @end
 
 @implementation RTSCWeightedInterpolationModel
 
-- (RTSCWeightedInterpolationModel)initWithPoint:(RTSCWeightedInterpolationModel *)self weights:(SEL)a2
+- (RTSCWeightedInterpolationModel)initWithPoint:(RTSCWeightedInterpolationModel *)self weights:(SEL)weights
 {
   v13 = v3;
   v4 = v2;

@@ -1,24 +1,24 @@
 @interface SUCoreStartup
-+ (id)initializeSharedStartup:(int64_t)a3 usingDomain:(id)a4 usingFilesystemDir:(id)a5;
-- (id)_initAtStartup:(int64_t)a3 usingDomain:(id)a4 usingFilesystemDir:(id)a5;
++ (id)initializeSharedStartup:(int64_t)startup usingDomain:(id)domain usingFilesystemDir:(id)dir;
+- (id)_initAtStartup:(int64_t)startup usingDomain:(id)domain usingFilesystemDir:(id)dir;
 @end
 
 @implementation SUCoreStartup
 
-+ (id)initializeSharedStartup:(int64_t)a3 usingDomain:(id)a4 usingFilesystemDir:(id)a5
++ (id)initializeSharedStartup:(int64_t)startup usingDomain:(id)domain usingFilesystemDir:(id)dir
 {
-  v7 = a4;
-  v8 = a5;
+  domainCopy = domain;
+  dirCopy = dir;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__SUCoreStartup_initializeSharedStartup_usingDomain_usingFilesystemDir___block_invoke;
   block[3] = &unk_1E86FD370;
-  v17 = v8;
-  v18 = a3;
-  v16 = v7;
+  v17 = dirCopy;
+  startupCopy = startup;
+  v16 = domainCopy;
   v9 = initializeSharedStartup_usingDomain_usingFilesystemDir__startupOnce;
-  v10 = v8;
-  v11 = v7;
+  v10 = dirCopy;
+  v11 = domainCopy;
   if (v9 != -1)
   {
     dispatch_once(&initializeSharedStartup_usingDomain_usingFilesystemDir__startupOnce, block);
@@ -37,11 +37,11 @@ uint64_t __72__SUCoreStartup_initializeSharedStartup_usingDomain_usingFilesystem
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initAtStartup:(int64_t)a3 usingDomain:(id)a4 usingFilesystemDir:(id)a5
+- (id)_initAtStartup:(int64_t)startup usingDomain:(id)domain usingFilesystemDir:(id)dir
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  startupCopy = startup;
+  domainCopy = domain;
+  dirCopy = dir;
   v17.receiver = self;
   v17.super_class = SUCoreStartup;
   v10 = [(SUCoreStartup *)&v17 init];
@@ -50,31 +50,31 @@ uint64_t __72__SUCoreStartup_initializeSharedStartup_usingDomain_usingFilesystem
     goto LABEL_7;
   }
 
-  if (v6)
+  if (startupCopy)
   {
     v13 = +[SUCore sharedCore];
     v14 = v13;
-    if (v8)
+    if (domainCopy)
     {
-      [v13 useDomain:v8];
+      [v13 useDomain:domainCopy];
     }
 
-    if (v9)
+    if (dirCopy)
     {
-      [v14 useFilesystemBaseDir:v9];
+      [v14 useFilesystemBaseDir:dirCopy];
     }
 
-    if ((v6 & 2) == 0)
+    if ((startupCopy & 2) == 0)
     {
 LABEL_4:
-      if ((v6 & 4) == 0)
+      if ((startupCopy & 4) == 0)
       {
         goto LABEL_5;
       }
 
 LABEL_14:
       v16 = +[SUCoreEventReporter sharedReporter];
-      if ((v6 & 8) == 0)
+      if ((startupCopy & 8) == 0)
       {
         goto LABEL_7;
       }
@@ -83,19 +83,19 @@ LABEL_14:
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((startupCopy & 2) == 0)
   {
     goto LABEL_4;
   }
 
   v15 = +[SUCoreLog sharedLogger];
-  if ((v6 & 4) != 0)
+  if ((startupCopy & 4) != 0)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  if ((v6 & 8) != 0)
+  if ((startupCopy & 8) != 0)
   {
 LABEL_6:
     v11 = +[SUCoreDiag sharedDiag];

@@ -1,18 +1,18 @@
 @interface AR3DSkeletonRegistrationTechnique
-- (BOOL)_estimateCameraPoseFromMatchingImageData:(id)a3 to3DData:(id)a4 worldTrackingPose:(id)a5 pCameraFromBody:(id *)a6 depthData:(id)a7 pScaleOut:(float *)a8;
-- (BOOL)isEqual:(id)a3;
-- (float)_estimateScaleFromDepthData:(__n128)a3 imageData:(__n128)a4 cameraPoseFromBody:(__n128)a5 skeleton:(uint64_t)a6;
-- (float)_estimateScaleFromJasperCloud:(double)a3 cameraPoseFromBody:(double)a4 skeleton:(double)a5;
+- (BOOL)_estimateCameraPoseFromMatchingImageData:(id)data to3DData:(id)dData worldTrackingPose:(id)pose pCameraFromBody:(id *)body depthData:(id)depthData pScaleOut:(float *)out;
+- (BOOL)isEqual:(id)equal;
+- (float)_estimateScaleFromDepthData:(__n128)data imageData:(__n128)imageData cameraPoseFromBody:(__n128)body skeleton:(uint64_t)skeleton;
+- (float)_estimateScaleFromJasperCloud:(double)cloud cameraPoseFromBody:(double)body skeleton:(double)skeleton;
 - (id).cxx_construct;
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5;
-- (void)prepare:(BOOL)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)prepare:(BOOL)prepare;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 - (void)resetState;
 @end
 
 @implementation AR3DSkeletonRegistrationTechnique
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   if (!self->_abpkRegistration)
   {
@@ -38,10 +38,10 @@
   _ZNSt3__115allocate_sharedB8ne200100IN5arkit3btr15ScaleCorrectionENS_9allocatorIS3_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
 }
 
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_11];
+  dataCopy = data;
+  v7 = [dataCopy indexOfObjectPassingTest:&__block_literal_global_11];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -49,13 +49,13 @@
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [dataCopy objectAtIndexedSubscript:v7];
   }
 
   currentWorldTrackingPose = self->_currentWorldTrackingPose;
   self->_currentWorldTrackingPose = v8;
 
-  return v6;
+  return dataCopy;
 }
 
 uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_context___block_invoke(uint64_t a1, void *a2)
@@ -67,10 +67,10 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
   return isKindOfClass & 1;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   v7 = *(MEMORY[0x1E69E9B18] + 16);
   v34 = *MEMORY[0x1E69E9B18];
   v35 = v7;
@@ -78,20 +78,20 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
   v36 = *(MEMORY[0x1E69E9B18] + 32);
   v37 = v8;
   v33 = -1.0;
-  v9 = [v6 imageData];
-  [v9 timestamp];
+  imageData = [contextCopy imageData];
+  [imageData timestamp];
   kdebug_trace();
 
-  v10 = [v6 resultDataOfClass:objc_opt_class()];
-  v11 = [v10 firstObject];
+  v10 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject = [v10 firstObject];
 
-  v12 = [v6 resultDataOfClass:objc_opt_class()];
-  v13 = [v12 firstObject];
+  v12 = [contextCopy resultDataOfClass:objc_opt_class()];
+  firstObject2 = [v12 firstObject];
 
-  v14 = [v11 detectedSkeletons];
-  v15 = [v14 firstObject];
+  detectedSkeletons = [firstObject detectedSkeletons];
+  firstObject3 = [detectedSkeletons firstObject];
   LODWORD(v16) = 981668463;
-  v17 = [v15 createResultScaledByFactor:v16];
+  v17 = [firstObject3 createResultScaledByFactor:v16];
 
   v18 = _ARLogGeneral();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -101,15 +101,15 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     *buf = 138543618;
     v41 = v20;
     v42 = 2048;
-    v43 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Estimating camera pose and scale", buf, 0x16u);
   }
 
-  v21 = [v6 imageData];
-  v22 = [(AR3DSkeletonRegistrationTechnique *)self _estimateCameraPoseFromMatchingImageData:v21 to3DData:v17 worldTrackingPose:self->_currentWorldTrackingPose pCameraFromBody:&v34 depthData:v13 pScaleOut:&v33];
+  imageData2 = [contextCopy imageData];
+  v22 = [(AR3DSkeletonRegistrationTechnique *)self _estimateCameraPoseFromMatchingImageData:imageData2 to3DData:v17 worldTrackingPose:self->_currentWorldTrackingPose pCameraFromBody:&v34 depthData:firstObject2 pScaleOut:&v33];
 
-  v23 = [v6 imageData];
-  [v23 timestamp];
+  imageData3 = [contextCopy imageData];
+  [imageData3 timestamp];
   kdebug_trace();
 
   v24 = _ARLogGeneral();
@@ -120,13 +120,13 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     *buf = 138543618;
     v41 = v26;
     v42 = 2048;
-    v43 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Creating result", buf, 0x16u);
   }
 
   if (v22)
   {
-    self->_last_detection_timestamp = a3;
+    self->_last_detection_timestamp = timestamp;
     self->_is_tracking = 1;
     if (v33 > 0.0)
     {
@@ -134,22 +134,22 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     }
 
     v27 = objc_opt_new();
-    [v27 setTimestamp:a3];
+    [v27 setTimestamp:timestamp];
     *&v28 = self->_estimatedScale;
     [v27 setEstimatedScaleFactor:v28];
     v29 = vmulq_n_f32(v37, self->_estimatedScale);
     v29.i32[3] = 1.0;
     v37 = v29;
     [v27 setVisionTransform:{*&v34, *&v35, *&v36}];
-    v30 = [(ARTechnique *)self delegate];
+    delegate = [(ARTechnique *)self delegate];
     v39 = v27;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-    [v30 technique:self didOutputResultData:v31 timestamp:v6 context:a3];
+    [delegate technique:self didOutputResultData:v31 timestamp:contextCopy context:timestamp];
   }
 
   else
   {
-    if (self->_is_tracking && a3 - self->_last_detection_timestamp > 1.0)
+    if (self->_is_tracking && timestamp - self->_last_detection_timestamp > 1.0)
     {
       [(AR3DSkeletonRegistrationTechnique *)self resetState];
     }
@@ -157,22 +157,22 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     v27 = objc_opt_new();
     LODWORD(v32) = -1.0;
     [v27 setEstimatedScaleFactor:v32];
-    [v27 setTimestamp:a3];
-    v30 = [(ARTechnique *)self delegate];
+    [v27 setTimestamp:timestamp];
+    delegate = [(ARTechnique *)self delegate];
     v38 = v27;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
-    [v30 technique:self didOutputResultData:v31 timestamp:v6 context:a3];
+    [delegate technique:self didOutputResultData:v31 timestamp:contextCopy context:timestamp];
   }
 }
 
-- (BOOL)_estimateCameraPoseFromMatchingImageData:(id)a3 to3DData:(id)a4 worldTrackingPose:(id)a5 pCameraFromBody:(id *)a6 depthData:(id)a7 pScaleOut:(float *)a8
+- (BOOL)_estimateCameraPoseFromMatchingImageData:(id)data to3DData:(id)dData worldTrackingPose:(id)pose pCameraFromBody:(id *)body depthData:(id)depthData pScaleOut:(float *)out
 {
   v113 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (!v13)
+  dataCopy = data;
+  dDataCopy = dData;
+  poseCopy = pose;
+  depthDataCopy = depthData;
+  if (!dataCopy)
   {
     v19 = _ARLogTechnique();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -189,7 +189,7 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     goto LABEL_21;
   }
 
-  if (!v14)
+  if (!dDataCopy)
   {
     v19 = _ARLogTechnique();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -206,7 +206,7 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     goto LABEL_21;
   }
 
-  if (!v15)
+  if (!poseCopy)
   {
     v19 = _ARLogTechnique();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -223,45 +223,45 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
     goto LABEL_21;
   }
 
-  if (self->_is_tracking || ([v15 worldTrackingState], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "vioTrackingState"), v17, !v18))
+  if (self->_is_tracking || ([poseCopy worldTrackingState], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "vioTrackingState"), v17, !v18))
   {
     v108 = 0u;
     v109 = 0u;
     v107 = 0u;
-    [v13 cameraIntrinsics];
+    [dataCopy cameraIntrinsics];
     DWORD2(v107) = v26;
     DWORD2(v108) = v27;
     *&v107 = v28;
     *&v108 = v29;
     DWORD2(v109) = v30;
     *&v109 = v31;
-    v32 = [v14 skeletonDetectionResult2D];
-    v33 = v32;
-    if (v32)
+    skeletonDetectionResult2D = [dDataCopy skeletonDetectionResult2D];
+    v33 = skeletonDetectionResult2D;
+    if (skeletonDetectionResult2D)
     {
-      v34 = [v32 liftingData];
+      liftingData = [skeletonDetectionResult2D liftingData];
 
-      if (v34)
+      if (liftingData)
       {
         if (ARIsANEVersionEqualOrPriorToH12())
         {
           abpkRegistration = self->_abpkRegistration;
-          [v13 imageResolution];
+          [dataCopy imageResolution];
           v36 = v35;
           v38 = v37;
-          v39 = [v33 liftingData];
-          v40 = -[ABPKCameraRegistration estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:](abpkRegistration, "estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:", [v39 rotatedJoints], objc_msgSend(v14, "joints"), objc_msgSend(v14, "jointCount"), *&v107, *&v108, *&v109, v36, v38);
+          liftingData2 = [v33 liftingData];
+          v40 = -[ABPKCameraRegistration estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:](abpkRegistration, "estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:", [liftingData2 rotatedJoints], objc_msgSend(dDataCopy, "joints"), objc_msgSend(dDataCopy, "jointCount"), *&v107, *&v108, *&v109, v36, v38);
         }
 
         else
         {
-          v100 = [v33 jointCount];
-          v49 = [v33 liftingData];
-          v50 = [v49 rotatedJoints];
-          v51 = [v33 liftingData];
-          v52 = [v51 rotatedJoints];
+          jointCount = [v33 jointCount];
+          liftingData3 = [v33 liftingData];
+          rotatedJoints = [liftingData3 rotatedJoints];
+          liftingData4 = [v33 liftingData];
+          rotatedJoints2 = [liftingData4 rotatedJoints];
           memset(buf, 0, 24);
-          _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, v50, v52 + 8 * v100, (v52 + 8 * v100 - v50) >> 3);
+          _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, rotatedJoints, rotatedJoints2 + 8 * jointCount, (rotatedJoints2 + 8 * jointCount - rotatedJoints) >> 3);
 
           v53 = 0;
           __asm { FMOV            V8.2S, #-1.0 }
@@ -277,8 +277,8 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
           }
 
           v59 = self->_abpkRegistration;
-          [v13 imageResolution];
-          v40 = -[ABPKCameraRegistration estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:](v59, "estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:", *buf, [v14 joints], objc_msgSend(v14, "jointCount"), *&v107, *&v108, *&v109, v60, v61);
+          [dataCopy imageResolution];
+          v40 = -[ABPKCameraRegistration estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:](v59, "estimateCameraPoseFromMatchingwithImageIntrinsics:imageResolution:joints2d:jointsLifted3D:jointsLifted3DCount:", *buf, [dDataCopy joints], objc_msgSend(dDataCopy, "jointCount"), *&v107, *&v108, *&v109, v60, v61);
           if (*buf)
           {
             *&buf[8] = *buf;
@@ -289,14 +289,14 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
         if (v40 && [v40 registrationValid])
         {
           [v40 cameraFromBodyPose];
-          *a6 = v62;
-          *(a6 + 1) = v63;
-          *(a6 + 2) = v64;
-          *(a6 + 3) = v65;
+          *body = v62;
+          *(body + 1) = v63;
+          *(body + 2) = v64;
+          *(body + 3) = v65;
           if ([(AR3DSkeletonRegistrationTechnique *)self automaticSkeletonScaleEstimationEnabled])
           {
-            v66 = [v15 worldTrackingState];
-            v67 = [v66 vioTrackingState] == 0;
+            worldTrackingState = [poseCopy worldTrackingState];
+            v67 = [worldTrackingState vioTrackingState] == 0;
 
             if (v67)
             {
@@ -307,14 +307,14 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
               v111 = v73;
               v112 = v74;
               last_btr_poses_idx = self->_last_btr_poses_idx;
-              [v13 timestamp];
-              v77 = [v15 worldTrackingState];
-              v78 = [v77 state];
+              [dataCopy timestamp];
+              worldTrackingState2 = [poseCopy worldTrackingState];
+              state = [worldTrackingState2 state];
 
-              v79 = [v15 worldMappingStatus] != 3 && objc_msgSend(v15, "worldMappingStatus") != 2;
-              if (v78 == 2 || v79)
+              v79 = [poseCopy worldMappingStatus] != 3 && objc_msgSend(poseCopy, "worldMappingStatus") != 2;
+              if (state == 2 || v79)
               {
-                [v15 timestamp];
+                [poseCopy timestamp];
                 p_cam_from_vio = &self->_last_btr_poses.__elems_[0].cam_from_vio;
                 v82 = 2520;
                 while (vabdd_f64(*&p_cam_from_vio[1].m_data[1], v80) >= 0.0085)
@@ -327,7 +327,7 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
                   }
                 }
 
-                [v15 visionCameraTransform];
+                [poseCopy visionCameraTransform];
                 v83 = 0;
                 v102[0] = v84;
                 v102[1] = v85;
@@ -356,23 +356,23 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
                 v91 = v106;
                 *&p_cam_from_vio->m_data[8] = v105;
                 *&p_cam_from_vio->m_data[12] = v91;
-                [v15 timestamp];
+                [poseCopy timestamp];
                 *&p_cam_from_vio[1].m_data[3] = v92;
                 if (ARDeviceSupportsJasper())
                 {
                   v93 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.bodytracking.useAppleDepthForScale"];
-                  v94 = *a6;
-                  v95 = *(a6 + 1);
-                  v96 = *(a6 + 2);
-                  v97 = *(a6 + 3);
+                  v94 = *body;
+                  v95 = *(body + 1);
+                  v96 = *(body + 2);
+                  v97 = *(body + 3);
                   if (v93)
                   {
-                    [(AR3DSkeletonRegistrationTechnique *)self _estimateScaleFromDepthData:v16 imageData:v13 cameraPoseFromBody:v14 skeleton:*&v94, *&v95, *&v96, *&v97];
+                    [(AR3DSkeletonRegistrationTechnique *)self _estimateScaleFromDepthData:depthDataCopy imageData:dataCopy cameraPoseFromBody:dDataCopy skeleton:*&v94, *&v95, *&v96, *&v97];
                   }
 
                   else
                   {
-                    [(AR3DSkeletonRegistrationTechnique *)self _estimateScaleFromJasperCloud:v13 cameraPoseFromBody:v14 skeleton:*&v94, *&v95, *&v96, *&v97];
+                    [(AR3DSkeletonRegistrationTechnique *)self _estimateScaleFromJasperCloud:dataCopy cameraPoseFromBody:dDataCopy skeleton:*&v94, *&v95, *&v96, *&v97];
                   }
                 }
 
@@ -382,7 +382,7 @@ uint64_t __73__AR3DSkeletonRegistrationTechnique_processResultData_timestamp_con
                   arkit::btr::ScaleCorrection::EstimateScale(self->_scaler.__ptr_, &p_cam_from_vio[-7].m_data[7], &v103);
                 }
 
-                *a8 = v98;
+                *out = v98;
               }
             }
 
@@ -465,38 +465,38 @@ LABEL_22:
   return v43;
 }
 
-- (float)_estimateScaleFromDepthData:(__n128)a3 imageData:(__n128)a4 cameraPoseFromBody:(__n128)a5 skeleton:(uint64_t)a6
+- (float)_estimateScaleFromDepthData:(__n128)data imageData:(__n128)imageData cameraPoseFromBody:(__n128)body skeleton:(uint64_t)skeleton
 {
   v12 = a7;
   v13 = a8;
   v14 = a9;
   v15 = 1.0;
-  if ([a1 automaticSkeletonScaleEstimationEnabled])
+  if ([self automaticSkeletonScaleEstimationEnabled])
   {
     v15 = -1.0;
     if (v12)
     {
-      v16 = [v12 depthBuffer];
+      depthBuffer = [v12 depthBuffer];
       if (v14)
       {
-        if (v13 && v16)
+        if (v13 && depthBuffer)
         {
           v17 = objc_alloc(MEMORY[0x1E698A918]);
-          v18 = [v14 joints];
-          v19 = [v14 jointCount];
-          v20 = [v14 skeletonDetectionResult2D];
-          v21 = [v17 initWithJoints:v18 numberOfJoints:v19 referenceDetectionResult:v20];
+          joints = [v14 joints];
+          jointCount = [v14 jointCount];
+          skeletonDetectionResult2D = [v14 skeletonDetectionResult2D];
+          v21 = [v17 initWithJoints:joints numberOfJoints:jointCount referenceDetectionResult:skeletonDetectionResult2D];
 
-          v22 = a1[474];
-          v23 = [v12 depthBuffer];
-          v24 = [v12 confidenceBuffer];
+          v22 = self[474];
+          depthBuffer2 = [v12 depthBuffer];
+          confidenceBuffer = [v12 confidenceBuffer];
           [v13 timestamp];
           v26 = v25;
           [v13 imageResolution];
           v28 = v27;
           v30 = v29;
           [v13 cameraIntrinsics];
-          [v22 estimateScaleFromDepthData:v23 depthConfidenceData:v24 timestamp:v21 imageResolution:v26 imageIntrinsics:v28 cameraFromBodyPose:v30 liftingResult:{v31, v32, v33, *&a2, *&a3, *&a4, *&a5}];
+          [v22 estimateScaleFromDepthData:depthBuffer2 depthConfidenceData:confidenceBuffer timestamp:v21 imageResolution:v26 imageIntrinsics:v28 cameraFromBodyPose:v30 liftingResult:{v31, v32, v33, *&a2, *&data, *&imageData, *&body}];
           v15 = v34;
         }
       }
@@ -506,33 +506,33 @@ LABEL_22:
   return v15;
 }
 
-- (float)_estimateScaleFromJasperCloud:(double)a3 cameraPoseFromBody:(double)a4 skeleton:(double)a5
+- (float)_estimateScaleFromJasperCloud:(double)cloud cameraPoseFromBody:(double)body skeleton:(double)skeleton
 {
   v10 = a7;
   v11 = a8;
   v12 = -1.0;
   if (v10)
   {
-    v13 = [v10 pointCloud];
-    if (v13)
+    pointCloud = [v10 pointCloud];
+    if (pointCloud)
     {
-      v14 = [v10 pointCloud];
-      v15 = [v14 depthPointCloud];
+      pointCloud2 = [v10 pointCloud];
+      depthPointCloud = [pointCloud2 depthPointCloud];
 
       if (v11)
       {
-        if (v15)
+        if (depthPointCloud)
         {
           v16 = objc_alloc(MEMORY[0x1E698A918]);
-          v17 = [v11 joints];
-          v18 = [v11 jointCount];
-          v19 = [v11 skeletonDetectionResult2D];
-          v20 = [v16 initWithJoints:v17 numberOfJoints:v18 referenceDetectionResult:v19];
+          joints = [v11 joints];
+          jointCount = [v11 jointCount];
+          skeletonDetectionResult2D = [v11 skeletonDetectionResult2D];
+          v20 = [v16 initWithJoints:joints numberOfJoints:jointCount referenceDetectionResult:skeletonDetectionResult2D];
 
-          v21 = *(a1 + 3792);
-          v22 = [v10 pointCloud];
-          v23 = [v22 depthPointCloud];
-          [v21 estimateScaleFromJasperCloud:v23 cameraFromBodyPose:v20 liftingResult:{a2, a3, a4, a5}];
+          v21 = *(self + 3792);
+          pointCloud3 = [v10 pointCloud];
+          depthPointCloud2 = [pointCloud3 depthPointCloud];
+          [v21 estimateScaleFromJasperCloud:depthPointCloud2 cameraFromBodyPose:v20 liftingResult:{a2, cloud, body, skeleton}];
           v12 = v24;
         }
       }
@@ -542,16 +542,16 @@ LABEL_22:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = AR3DSkeletonRegistrationTechnique;
-  if ([(ARTechnique *)&v9 isEqual:v4])
+  if ([(ARTechnique *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(AR3DSkeletonRegistrationTechnique *)self automaticSkeletonScaleEstimationEnabled];
-    v7 = v6 ^ [v5 automaticSkeletonScaleEstimationEnabled] ^ 1;
+    v5 = equalCopy;
+    automaticSkeletonScaleEstimationEnabled = [(AR3DSkeletonRegistrationTechnique *)self automaticSkeletonScaleEstimationEnabled];
+    v7 = automaticSkeletonScaleEstimationEnabled ^ [v5 automaticSkeletonScaleEstimationEnabled] ^ 1;
   }
 
   else

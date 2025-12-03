@@ -1,39 +1,39 @@
 @interface SASProximityBackupAction
-+ (id)actionFromDictionary:(id)a3;
++ (id)actionFromDictionary:(id)dictionary;
 - (id)requestPayload;
 @end
 
 @implementation SASProximityBackupAction
 
-+ (id)actionFromDictionary:(id)a3
++ (id)actionFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SASProximityBackupAction);
-  v5 = [v3 objectForKeyedSubscript:@"shouldStartBackup"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"shouldStartBackup"];
   -[SASProximityBackupAction setShouldStartBackup:](v4, "setShouldStartBackup:", [v5 BOOLValue]);
 
-  v6 = [v3 objectForKeyedSubscript:@"finishedBackup"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"finishedBackup"];
   -[SASProximityBackupAction setFinishedBackup:](v4, "setFinishedBackup:", [v6 BOOLValue]);
 
-  v7 = [v3 objectForKeyedSubscript:@"errorDomain"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
 
   if (v7)
   {
     v8 = MEMORY[0x277CCA9B8];
-    v9 = [v3 objectForKeyedSubscript:@"errorDomain"];
-    v10 = [v3 objectForKeyedSubscript:@"errorCode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     v11 = [v8 errorWithDomain:v9 code:objc_msgSend(v10 userInfo:{"integerValue"), 0}];
     [(SASProximityBackupAction *)v4 setError:v11];
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"percentComplete"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"percentComplete"];
   [v12 doubleValue];
   [(SASProximityBackupAction *)v4 setPercentComplete:?];
 
-  v13 = [v3 objectForKeyedSubscript:@"timeRemaining"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"timeRemaining"];
   -[SASProximityBackupAction setTimeRemaining:](v4, "setTimeRemaining:", [v13 unsignedIntegerValue]);
 
-  v14 = [v3 objectForKeyedSubscript:@"completionDate"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"completionDate"];
   [(SASProximityBackupAction *)v4 setCompletionDate:v14];
 
   return v4;
@@ -48,17 +48,17 @@
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SASProximityBackupAction finishedBackup](self, "finishedBackup")}];
   [v3 setObject:v5 forKeyedSubscript:@"finishedBackup"];
 
-  v6 = [(SASProximityBackupAction *)self error];
+  error = [(SASProximityBackupAction *)self error];
 
-  if (v6)
+  if (error)
   {
-    v7 = [(SASProximityBackupAction *)self error];
-    v8 = [v7 domain];
-    [v3 setObject:v8 forKeyedSubscript:@"errorDomain"];
+    error2 = [(SASProximityBackupAction *)self error];
+    domain = [error2 domain];
+    [v3 setObject:domain forKeyedSubscript:@"errorDomain"];
 
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(SASProximityBackupAction *)self error];
-    v11 = [v9 numberWithInteger:{objc_msgSend(v10, "code")}];
+    error3 = [(SASProximityBackupAction *)self error];
+    v11 = [v9 numberWithInteger:{objc_msgSend(error3, "code")}];
     [v3 setObject:v11 forKeyedSubscript:@"errorCode"];
   }
 
@@ -70,8 +70,8 @@
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SASProximityBackupAction timeRemaining](self, "timeRemaining")}];
   [v3 setObject:v14 forKeyedSubscript:@"timeRemaining"];
 
-  v15 = [(SASProximityBackupAction *)self completionDate];
-  [v3 setObject:v15 forKeyedSubscript:@"completionDate"];
+  completionDate = [(SASProximityBackupAction *)self completionDate];
+  [v3 setObject:completionDate forKeyedSubscript:@"completionDate"];
 
   return v3;
 }

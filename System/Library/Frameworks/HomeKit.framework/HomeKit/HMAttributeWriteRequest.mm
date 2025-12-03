@@ -1,7 +1,7 @@
 @interface HMAttributeWriteRequest
-+ (id)writeRequestWithAccessoryProfile:(id)a3 attribute:(id)a4 value:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (HMAttributeWriteRequest)initWithAccessoryProfile:(id)a3 attribute:(id)a4 value:(id)a5;
++ (id)writeRequestWithAccessoryProfile:(id)profile attribute:(id)attribute value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (HMAttributeWriteRequest)initWithAccessoryProfile:(id)profile attribute:(id)attribute value:(id)value;
 - (unint64_t)hash;
 @end
 
@@ -9,19 +9,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAttributeRequest *)self accessoryProfile];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 hash];
-  v6 = [(HMAttributeRequest *)self attribute];
-  v7 = [v6 hash];
+  accessoryProfile = [(HMAttributeRequest *)self accessoryProfile];
+  uniqueIdentifier = [accessoryProfile uniqueIdentifier];
+  v5 = [uniqueIdentifier hash];
+  attribute = [(HMAttributeRequest *)self attribute];
+  v7 = [attribute hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -42,15 +42,15 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAttributeRequest *)self accessoryProfile];
-      v8 = [v7 uniqueIdentifier];
-      v9 = [(HMAttributeRequest *)v6 accessoryProfile];
-      v10 = [v9 uniqueIdentifier];
-      if ([v8 isEqual:v10])
+      accessoryProfile = [(HMAttributeRequest *)self accessoryProfile];
+      uniqueIdentifier = [accessoryProfile uniqueIdentifier];
+      accessoryProfile2 = [(HMAttributeRequest *)v6 accessoryProfile];
+      uniqueIdentifier2 = [accessoryProfile2 uniqueIdentifier];
+      if ([uniqueIdentifier isEqual:uniqueIdentifier2])
       {
-        v11 = [(HMAttributeRequest *)self attribute];
-        v12 = [(HMAttributeRequest *)v6 attribute];
-        v13 = [v11 isEqual:v12];
+        attribute = [(HMAttributeRequest *)self attribute];
+        attribute2 = [(HMAttributeRequest *)v6 attribute];
+        v13 = [attribute isEqual:attribute2];
       }
 
       else
@@ -68,27 +68,27 @@
   return v13;
 }
 
-- (HMAttributeWriteRequest)initWithAccessoryProfile:(id)a3 attribute:(id)a4 value:(id)a5
+- (HMAttributeWriteRequest)initWithAccessoryProfile:(id)profile attribute:(id)attribute value:(id)value
 {
-  v9 = a5;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = HMAttributeWriteRequest;
-  v10 = [(HMAttributeRequest *)&v13 initWithAccessoryProfile:a3 attribute:a4];
+  v10 = [(HMAttributeRequest *)&v13 initWithAccessoryProfile:profile attribute:attribute];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_value, a5);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v11;
 }
 
-+ (id)writeRequestWithAccessoryProfile:(id)a3 attribute:(id)a4 value:(id)a5
++ (id)writeRequestWithAccessoryProfile:(id)profile attribute:(id)attribute value:(id)value
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMAttributeWriteRequest alloc] initWithAccessoryProfile:v9 attribute:v8 value:v7];
+  valueCopy = value;
+  attributeCopy = attribute;
+  profileCopy = profile;
+  v10 = [[HMAttributeWriteRequest alloc] initWithAccessoryProfile:profileCopy attribute:attributeCopy value:valueCopy];
 
   return v10;
 }

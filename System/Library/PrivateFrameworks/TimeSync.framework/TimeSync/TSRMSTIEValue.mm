@@ -1,19 +1,19 @@
 @interface TSRMSTIEValue
-- (TSRMSTIEValue)initWithObservationInterval:(double)a3 andRMSTIE:(double)a4;
+- (TSRMSTIEValue)initWithObservationInterval:(double)interval andRMSTIE:(double)e;
 - (id)description;
 @end
 
 @implementation TSRMSTIEValue
 
-- (TSRMSTIEValue)initWithObservationInterval:(double)a3 andRMSTIE:(double)a4
+- (TSRMSTIEValue)initWithObservationInterval:(double)interval andRMSTIE:(double)e
 {
   v7.receiver = self;
   v7.super_class = TSRMSTIEValue;
   result = [(TSRMSTIEValue *)&v7 init];
   if (result)
   {
-    result->_observationInterval = a3;
-    result->_rmstie = a4;
+    result->_observationInterval = interval;
+    result->_rmstie = e;
   }
 
   return result;

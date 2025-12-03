@@ -1,12 +1,12 @@
 @interface BCSAVParsingSession
 - (BCSAVParsingSession)init;
-- (BOOL)_isLikelyLastScannedObject:(id)a3;
-- (BOOL)_shouldSkipIncomingObject:(id)a3;
-- (double)_temporalStickyFactorForObject:(id)a3;
-- (id)_bestObjectForParsing:(id)a3;
-- (void)_updateSessionWithMetadataObject:(id)a3 completionHandler:(id)a4;
+- (BOOL)_isLikelyLastScannedObject:(id)object;
+- (BOOL)_shouldSkipIncomingObject:(id)object;
+- (double)_temporalStickyFactorForObject:(id)object;
+- (id)_bestObjectForParsing:(id)parsing;
+- (void)_updateSessionWithMetadataObject:(id)object completionHandler:(id)handler;
 - (void)dealloc;
-- (void)updateSessionWithMetadataObjects:(id)a3 completionHandler:(id)a4;
+- (void)updateSessionWithMetadataObjects:(id)objects completionHandler:(id)handler;
 @end
 
 @implementation BCSAVParsingSession
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSAVParsingSession (%p): Deallocated", buf, 0xCu);
   }
 
@@ -54,12 +54,12 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isLikelyLastScannedObject:(id)a3
+- (BOOL)_isLikelyLastScannedObject:(id)object
 {
   lastScannedCodeBasicDescriptor = self->_lastScannedCodeBasicDescriptor;
   if (lastScannedCodeBasicDescriptor)
   {
-    return [a3 _bcs_probablyContainsSameCodeInBasicDescriptor:lastScannedCodeBasicDescriptor];
+    return [object _bcs_probablyContainsSameCodeInBasicDescriptor:lastScannedCodeBasicDescriptor];
   }
 
   else
@@ -68,23 +68,23 @@
   }
 }
 
-- (void)_updateSessionWithMetadataObject:(id)a3 completionHandler:(id)a4
+- (void)_updateSessionWithMetadataObject:(id)object completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(BCSAVParsingSession *)self _isLikelyLastScannedObject:v6])
+  objectCopy = object;
+  handlerCopy = handler;
+  if (![(BCSAVParsingSession *)self _isLikelyLastScannedObject:objectCopy])
   {
-    v8 = [v6 basicDescriptor];
+    basicDescriptor = [objectCopy basicDescriptor];
     lastScannedCodeBasicDescriptor = self->_lastScannedCodeBasicDescriptor;
-    self->_lastScannedCodeBasicDescriptor = v8;
+    self->_lastScannedCodeBasicDescriptor = basicDescriptor;
 
     self->_lastScannedTime = CFAbsoluteTimeGetCurrent();
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __74__BCSAVParsingSession__updateSessionWithMetadataObject_completionHandler___block_invoke;
     v15 = &unk_278CFE988;
-    v17 = v7;
-    v10 = v6;
+    v17 = handlerCopy;
+    v10 = objectCopy;
     v16 = v10;
     v11 = MEMORY[0x245CF4600](&v12);
     [(BCSQRCodeParser *)self->_parser startQRCodeParsingSessionWithMetadataObject:v10 completionHandler:v11, v12, v13, v14, v15];
@@ -95,7 +95,7 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [BCSAVParsingSession _updateSessionWithMetadataObject:? completionHandler:?];
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -103,10 +103,10 @@
     goto LABEL_4;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
 LABEL_4:
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_6:
@@ -142,37 +142,37 @@ void __74__BCSAVParsingSession__updateSessionWithMetadataObject_completionHandle
 LABEL_7:
 }
 
-- (void)updateSessionWithMetadataObjects:(id)a3 completionHandler:(id)a4
+- (void)updateSessionWithMetadataObjects:(id)objects completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(BCSAVParsingSession *)self _bestObjectForParsing:v9];
+  objectsCopy = objects;
+  handlerCopy = handler;
+  v7 = [(BCSAVParsingSession *)self _bestObjectForParsing:objectsCopy];
   if (v7)
   {
-    if ([v9 count] == 1 && -[BCSAVParsingSession _shouldSkipIncomingObject:](self, "_shouldSkipIncomingObject:", v7))
+    if ([objectsCopy count] == 1 && -[BCSAVParsingSession _shouldSkipIncomingObject:](self, "_shouldSkipIncomingObject:", v7))
     {
-      if (v6)
+      if (handlerCopy)
       {
-        (*(v6 + 2))(v6, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
       }
     }
 
     else
     {
-      [(BCSAVParsingSession *)self _updateSessionWithMetadataObject:v7 completionHandler:v6];
+      [(BCSAVParsingSession *)self _updateSessionWithMetadataObject:v7 completionHandler:handlerCopy];
     }
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BCSErrorDomain" code:5 userInfo:0];
-    (*(v6 + 2))(v6, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
-- (double)_temporalStickyFactorForObject:(id)a3
+- (double)_temporalStickyFactorForObject:(id)object
 {
-  if (![(BCSAVParsingSession *)self _isLikelyLastScannedObject:a3])
+  if (![(BCSAVParsingSession *)self _isLikelyLastScannedObject:object])
   {
     return 1.0;
   }
@@ -183,12 +183,12 @@ LABEL_7:
   return fmin(v5 * v5, 1.0);
 }
 
-- (BOOL)_shouldSkipIncomingObject:(id)a3
+- (BOOL)_shouldSkipIncomingObject:(id)object
 {
-  v4 = [a3 type];
+  type = [object type];
   v5 = *MEMORY[0x277CE5A80];
 
-  if (v4 != v5)
+  if (type != v5)
   {
     return 0;
   }
@@ -217,15 +217,15 @@ LABEL_7:
   return v6;
 }
 
-- (id)_bestObjectForParsing:(id)a3
+- (id)_bestObjectForParsing:(id)parsing
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  parsingCopy = parsing;
+  if ([parsingCopy count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [parsingCopy firstObject];
   }
 
-  else if ([v4 count] <= 2)
+  else if ([parsingCopy count] <= 2)
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -242,18 +242,18 @@ LABEL_7:
     v7[4] = self;
     v7[5] = v12;
     v7[6] = &v8;
-    [v4 enumerateObjectsUsingBlock:v7];
-    v5 = [v4 objectAtIndex:v9[3]];
+    [parsingCopy enumerateObjectsUsingBlock:v7];
+    firstObject = [parsingCopy objectAtIndex:v9[3]];
     _Block_object_dispose(&v8, 8);
     _Block_object_dispose(v12, 8);
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 void __45__BCSAVParsingSession__bestObjectForParsing___block_invoke(uint64_t a1, void *a2, uint64_t a3)

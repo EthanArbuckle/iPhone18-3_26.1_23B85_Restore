@@ -31,12 +31,12 @@
 + (id)cloudKitPersistedState;
 + (id)defaults;
 + (id)detectSalientMails;
-+ (id)didKVSMigrationTokenForIdentifier:(id)a3;
++ (id)didKVSMigrationTokenForIdentifier:(id)identifier;
 + (id)disabledEventUpdateCategories;
-+ (id)followUpComputeCustomTimeRangeForLanguage:(id)a3;
++ (id)followUpComputeCustomTimeRangeForLanguage:(id)language;
 + (id)followUpTimeRangeForDebugging;
 + (id)userAccountsPersistedState;
-+ (int)registerBlockOnSuggestionsSettingsChange:(id)a3;
++ (int)registerBlockOnSuggestionsSettingsChange:(id)change;
 + (int64_t)harvestBudgetNumberOfOperations;
 + (int64_t)hashedSessionsLogging;
 + (int64_t)messagesToProcessImmediately;
@@ -45,18 +45,18 @@
 + (void)removeDeprecatedDefaults;
 + (void)resetAllPreferences;
 + (void)resumeNotificationQueue;
-+ (void)setCloudKitPersistedState:(id)a3;
-+ (void)setContactSharingNegativeSamplingRate:(float)a3;
-+ (void)setDidKVSMigrationToken:(id)a3 forIdentifier:(id)a4;
-+ (void)setDisabledEventUpdateCategories:(id)a3;
-+ (void)setHarvestBudgetCPUTimeSeconds:(double)a3;
-+ (void)setHarvestBudgetNumberOfOperations:(int64_t)a3;
-+ (void)setMessagesToProcessImmediately:(int64_t)a3;
-+ (void)setMessagesToProcessImmediatelyForTests:(int64_t)a3;
-+ (void)setSyncHistoryToCloud:(BOOL)a3;
-+ (void)setUserAccountsPersistedState:(id)a3;
++ (void)setCloudKitPersistedState:(id)state;
++ (void)setContactSharingNegativeSamplingRate:(float)rate;
++ (void)setDidKVSMigrationToken:(id)token forIdentifier:(id)identifier;
++ (void)setDisabledEventUpdateCategories:(id)categories;
++ (void)setHarvestBudgetCPUTimeSeconds:(double)seconds;
++ (void)setHarvestBudgetNumberOfOperations:(int64_t)operations;
++ (void)setMessagesToProcessImmediately:(int64_t)immediately;
++ (void)setMessagesToProcessImmediatelyForTests:(int64_t)tests;
++ (void)setSyncHistoryToCloud:(BOOL)cloud;
++ (void)setUserAccountsPersistedState:(id)state;
 + (void)suspendNotificationQueue;
-+ (void)updateIntSettingKey:(id)a3 withValue:(int)a4;
++ (void)updateIntSettingKey:(id)key withValue:(int)value;
 @end
 
 @implementation SGPreferenceStorage
@@ -72,8 +72,8 @@
 
 + (BOOL)allowAnyDomainForMarkup
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsAllowAnyDomainForMarkup"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsAllowAnyDomainForMarkup"];
 
   return v3;
 }
@@ -89,8 +89,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsDetectStructuredEvents"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsDetectStructuredEvents"];
 
     return v6;
   }
@@ -111,9 +111,9 @@
   [v2 _suspendNotificationQueue];
 }
 
-+ (void)setMessagesToProcessImmediatelyForTests:(int64_t)a3
++ (void)setMessagesToProcessImmediatelyForTests:(int64_t)tests
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:tests];
   v4 = messagesToProcessImmediatelyForTests;
   messagesToProcessImmediatelyForTests = v3;
 
@@ -122,92 +122,92 @@
 
 + (BOOL)enableDKIMEnforcement
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"EnableDKIMEnforcement"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"EnableDKIMEnforcement"];
 
   return v3;
 }
 
 + (BOOL)mailIntelligenceSPILogging
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsMailIntelligenceSPILogging"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsMailIntelligenceSPILogging"];
 
   return v3;
 }
 
-+ (id)followUpComputeCustomTimeRangeForLanguage:(id)a3
++ (id)followUpComputeCustomTimeRangeForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [a1 defaults];
-  v6 = [v5 dictionaryForKey:@"SuggestionsFollowUpComputeCustomTimeRange"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  languageCopy = language;
+  defaults = [self defaults];
+  v6 = [defaults dictionaryForKey:@"SuggestionsFollowUpComputeCustomTimeRange"];
+  v7 = [v6 objectForKeyedSubscript:languageCopy];
 
   return v7;
 }
 
 + (id)followUpTimeRangeForDebugging
 {
-  v2 = [a1 defaults];
-  v3 = [v2 dictionaryForKey:@"SuggestionsFollowUpTimeRangeForDebugging"];
+  defaults = [self defaults];
+  v3 = [defaults dictionaryForKey:@"SuggestionsFollowUpTimeRangeForDebugging"];
 
   return v3;
 }
 
 + (int64_t)preExtractionMaxDocumentAgeDays
 {
-  v2 = [a1 defaults];
-  v3 = [v2 integerForKey:@"SuggestionsPreExtractionMaxDocumentAgeDays"];
+  defaults = [self defaults];
+  v3 = [defaults integerForKey:@"SuggestionsPreExtractionMaxDocumentAgeDays"];
 
   return v3;
 }
 
-+ (void)setHarvestBudgetCPUTimeSeconds:(double)a3
++ (void)setHarvestBudgetCPUTimeSeconds:(double)seconds
 {
-  v4 = [a1 defaults];
-  [v4 setDouble:@"SuggestionsHarvestBudgetCPUTimeSeconds" forKey:a3];
+  defaults = [self defaults];
+  [defaults setDouble:@"SuggestionsHarvestBudgetCPUTimeSeconds" forKey:seconds];
 }
 
 + (double)harvestBudgetCPUTimeSeconds
 {
-  v2 = [a1 defaults];
-  [v2 doubleForKey:@"SuggestionsHarvestBudgetCPUTimeSeconds"];
+  defaults = [self defaults];
+  [defaults doubleForKey:@"SuggestionsHarvestBudgetCPUTimeSeconds"];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setHarvestBudgetNumberOfOperations:(int64_t)a3
++ (void)setHarvestBudgetNumberOfOperations:(int64_t)operations
 {
-  v4 = [a1 defaults];
-  [v4 setInteger:a3 forKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
+  defaults = [self defaults];
+  [defaults setInteger:operations forKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
 }
 
 + (int64_t)harvestBudgetNumberOfOperations
 {
-  v2 = [a1 defaults];
-  v3 = [v2 integerForKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
+  defaults = [self defaults];
+  v3 = [defaults integerForKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
 
   return v3;
 }
 
 + (BOOL)showOperatingSystemVersionInSnippets
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"ShowOperatingSystemVersionInSnippets"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"ShowOperatingSystemVersionInSnippets"];
 
   return v3;
 }
 
-+ (void)setDidKVSMigrationToken:(id)a3 forIdentifier:(id)a4
++ (void)setDidKVSMigrationToken:(id)token forIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  objc_sync_enter(v8);
-  v9 = [v8 defaults];
-  v10 = [v9 dictionaryForKey:@"DidKVSMigrationToken"];
+  tokenCopy = token;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaults = [selfCopy defaults];
+  v10 = [defaults dictionaryForKey:@"DidKVSMigrationToken"];
   v11 = v10;
   if (!v10)
   {
@@ -216,33 +216,33 @@
 
   v12 = [v10 mutableCopy];
 
-  [v12 setObject:v6 forKeyedSubscript:v7];
+  [v12 setObject:tokenCopy forKeyedSubscript:identifierCopy];
   v13 = sgLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543874;
-    v17 = v6;
+    v17 = tokenCopy;
     v18 = 2114;
-    v19 = v7;
+    v19 = identifierCopy;
     v20 = 2114;
     v21 = v12;
     _os_log_impl(&dword_1BA729000, v13, OS_LOG_TYPE_DEFAULT, "setDidKVSMigrationToken:%{public}@ forIdentifier:%{public}@, new dict: %{public}@", &v16, 0x20u);
   }
 
-  v14 = [v8 defaults];
-  [v14 setObject:v12 forKey:@"DidKVSMigrationToken"];
+  defaults2 = [selfCopy defaults];
+  [defaults2 setObject:v12 forKey:@"DidKVSMigrationToken"];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)didKVSMigrationTokenForIdentifier:(id)a3
++ (id)didKVSMigrationTokenForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 defaults];
-  v6 = [v5 dictionaryForKey:@"DidKVSMigrationToken"];
+  identifierCopy = identifier;
+  defaults = [self defaults];
+  v6 = [defaults dictionaryForKey:@"DidKVSMigrationToken"];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -260,38 +260,38 @@
 
 + (BOOL)useManateeSaltForHistory
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"UseManateeSaltForHistory"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"UseManateeSaltForHistory"];
 
   return v3;
 }
 
-+ (void)setUserAccountsPersistedState:(id)a3
++ (void)setUserAccountsPersistedState:(id)state
 {
-  v4 = a3;
-  v5 = [a1 defaults];
-  [v5 setValue:v4 forKey:@"UserAccountsPersistedState"];
+  stateCopy = state;
+  defaults = [self defaults];
+  [defaults setValue:stateCopy forKey:@"UserAccountsPersistedState"];
 }
 
 + (id)userAccountsPersistedState
 {
-  v2 = [a1 defaults];
-  v3 = [v2 stringArrayForKey:@"UserAccountsPersistedState"];
+  defaults = [self defaults];
+  v3 = [defaults stringArrayForKey:@"UserAccountsPersistedState"];
 
   return v3;
 }
 
-+ (void)setCloudKitPersistedState:(id)a3
++ (void)setCloudKitPersistedState:(id)state
 {
-  v4 = a3;
-  v5 = [a1 defaults];
-  [v5 setValue:v4 forKey:@"CloudKitPersistedState"];
+  stateCopy = state;
+  defaults = [self defaults];
+  [defaults setValue:stateCopy forKey:@"CloudKitPersistedState"];
 }
 
 + (id)cloudKitPersistedState
 {
-  v2 = [a1 defaults];
-  v3 = [v2 dataForKey:@"CloudKitPersistedState"];
+  defaults = [self defaults];
+  v3 = [defaults dataForKey:@"CloudKitPersistedState"];
 
   return v3;
 }
@@ -315,8 +315,8 @@
 
   else
   {
-    v3 = [a1 defaults];
-    v2 = [v3 objectForKey:@"SuggestionsDetectSalientMails"];
+    defaults = [self defaults];
+    v2 = [defaults objectForKey:@"SuggestionsDetectSalientMails"];
   }
 
   return v2;
@@ -333,8 +333,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsDetectRemindersInMail"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsDetectRemindersInMail"];
 
     return v6;
   }
@@ -351,8 +351,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsDetectStructuredsEventML"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsDetectStructuredsEventML"];
 
     return v6;
   }
@@ -369,8 +369,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsDetectReminders"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsDetectReminders"];
 
     return v6;
   }
@@ -387,8 +387,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsShowMessageEventsML"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsShowMessageEventsML"];
 
     return v6;
   }
@@ -405,8 +405,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsShowNLEvents"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsShowNLEvents"];
 
     return v6;
   }
@@ -423,31 +423,31 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsDetectContacts"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsDetectContacts"];
 
     return v6;
   }
 }
 
-+ (void)setContactSharingNegativeSamplingRate:(float)a3
++ (void)setContactSharingNegativeSamplingRate:(float)rate
 {
-  v5 = [a1 defaults];
-  *&v6 = a3;
-  [v5 setFloat:@"SuggestionsContactSharingNegativeSamplingRate" forKey:v6];
+  defaults = [self defaults];
+  *&v6 = rate;
+  [defaults setFloat:@"SuggestionsContactSharingNegativeSamplingRate" forKey:v6];
 
-  v7 = [a1 defaults];
-  [v7 synchronize];
+  defaults2 = [self defaults];
+  [defaults2 synchronize];
 
-  v8 = [@"com.apple.suggestions.settingsChanged" UTF8String];
+  uTF8String = [@"com.apple.suggestions.settingsChanged" UTF8String];
 
-  notify_post(v8);
+  notify_post(uTF8String);
 }
 
 + (float)contactSharingNegativeSamplingRate
 {
-  v2 = [a1 defaults];
-  [v2 floatForKey:@"SuggestionsContactSharingNegativeSamplingRate"];
+  defaults = [self defaults];
+  [defaults floatForKey:@"SuggestionsContactSharingNegativeSamplingRate"];
   v4 = v3;
 
   return v4;
@@ -455,8 +455,8 @@
 
 + (BOOL)useMLModelForContactSharing
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsUseMLModelForContactSharing"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsUseMLModelForContactSharing"];
 
   return v3;
 }
@@ -472,8 +472,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsUseMLModelForSelfId"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsUseMLModelForSelfId"];
 
     return v6;
   }
@@ -481,31 +481,31 @@
 
 + (BOOL)useMLModelForContacts
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsUseMLModelForContacts"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsUseMLModelForContacts"];
 
   return v3;
 }
 
 + (BOOL)allowAgeBasedPruning
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsAllowAgeBasedPruning"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsAllowAgeBasedPruning"];
 
   return v3;
 }
 
-+ (void)setDisabledEventUpdateCategories:(id)a3
++ (void)setDisabledEventUpdateCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [a1 defaults];
-  [v5 setObject:v4 forKey:@"DisableEventUpdateCategories"];
+  categoriesCopy = categories;
+  defaults = [self defaults];
+  [defaults setObject:categoriesCopy forKey:@"DisableEventUpdateCategories"];
 }
 
 + (id)disabledEventUpdateCategories
 {
-  v2 = [a1 defaults];
-  v3 = [v2 stringArrayForKey:@"DisableEventUpdateCategories"];
+  defaults = [self defaults];
+  v3 = [defaults stringArrayForKey:@"DisableEventUpdateCategories"];
   v4 = v3;
   if (v3)
   {
@@ -524,8 +524,8 @@
 
 + (BOOL)allowUnverifiedSourceForMarkup
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsAllowUnverifiedSourceForMarkup"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsAllowUnverifiedSourceForMarkup"];
 
   return v3;
 }
@@ -545,14 +545,14 @@
   return [v2 BOOLValue];
 }
 
-+ (void)setSyncHistoryToCloud:(BOOL)a3
++ (void)setSyncHistoryToCloud:(BOOL)cloud
 {
-  v3 = a3;
+  cloudCopy = cloud;
   pthread_mutex_lock(&syncHistoryToCloudLock);
-  v5 = [a1 defaults];
-  [v5 setBool:!v3 forKey:@"SuggestionsSuppressSyncHistoryToCloud"];
+  defaults = [self defaults];
+  [defaults setBool:!cloudCopy forKey:@"SuggestionsSuppressSyncHistoryToCloud"];
 
-  syncHistoryToCloud = v3;
+  syncHistoryToCloud = cloudCopy;
 
   pthread_mutex_unlock(&syncHistoryToCloudLock);
 }
@@ -563,8 +563,8 @@
   v3 = syncHistoryToCloud;
   if (syncHistoryToCloud == 255)
   {
-    v4 = [a1 defaults];
-    syncHistoryToCloud = [v4 BOOLForKey:@"SuggestionsSuppressSyncHistoryToCloud"] ^ 1;
+    defaults = [self defaults];
+    syncHistoryToCloud = [defaults BOOLForKey:@"SuggestionsSuppressSyncHistoryToCloud"] ^ 1;
 
     v3 = syncHistoryToCloud;
   }
@@ -574,17 +574,17 @@
   return v5;
 }
 
-+ (void)setMessagesToProcessImmediately:(int64_t)a3
++ (void)setMessagesToProcessImmediately:(int64_t)immediately
 {
-  v5 = [a1 defaults];
-  [v5 setInteger:a3 forKey:@"SuggestionsMessagesToProcessImmediately"];
+  defaults = [self defaults];
+  [defaults setInteger:immediately forKey:@"SuggestionsMessagesToProcessImmediately"];
 
-  v6 = [a1 defaults];
-  [v6 synchronize];
+  defaults2 = [self defaults];
+  [defaults2 synchronize];
 
-  v7 = [@"com.apple.suggestions.settingsChanged" UTF8String];
+  uTF8String = [@"com.apple.suggestions.settingsChanged" UTF8String];
 
-  notify_post(v7);
+  notify_post(uTF8String);
 }
 
 + (int64_t)messagesToProcessImmediately
@@ -598,8 +598,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 integerForKey:@"SuggestionsMessagesToProcessImmediately"];
+    defaults = [self defaults];
+    v6 = [defaults integerForKey:@"SuggestionsMessagesToProcessImmediately"];
 
     return v6;
   }
@@ -628,8 +628,8 @@
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [a1 defaults];
-        [v8 removeObjectForKey:v7];
+        defaults = [self defaults];
+        [defaults removeObjectForKey:v7];
 
         ++v6;
       }
@@ -644,35 +644,35 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)registerBlockOnSuggestionsSettingsChange:(id)a3
++ (int)registerBlockOnSuggestionsSettingsChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = +[SGPreferenceManager defaultManager];
-  v5 = [v4 registerBlock:v3];
+  v5 = [v4 registerBlock:changeCopy];
 
   return v5;
 }
 
 + (BOOL)showSuggestionsCalendar
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsShowSuggestionsCalendar"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsShowSuggestionsCalendar"];
 
   return v3;
 }
 
 + (int64_t)hashedSessionsLogging
 {
-  v2 = [a1 defaults];
-  v3 = [v2 integerForKey:@"SuggestionsHashedSessionsLogging"];
+  defaults = [self defaults];
+  v3 = [defaults integerForKey:@"SuggestionsHashedSessionsLogging"];
 
   return v3;
 }
 
 + (BOOL)onlyShowSignificantNLEvents
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"SuggestionsOnlyShowSignificantNLEvents"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"SuggestionsOnlyShowSignificantNLEvents"];
 
   return v3;
 }
@@ -688,25 +688,25 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsOnlyShowSignificantPseudoContacts"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsOnlyShowSignificantPseudoContacts"];
 
     return v6;
   }
 }
 
-+ (void)updateIntSettingKey:(id)a3 withValue:(int)a4
++ (void)updateIntSettingKey:(id)key withValue:(int)value
 {
-  v6 = a3;
-  v7 = [a1 defaults];
-  [v7 setInteger:a4 forKey:v6];
+  keyCopy = key;
+  defaults = [self defaults];
+  [defaults setInteger:value forKey:keyCopy];
 
-  v8 = [a1 defaults];
-  [v8 synchronize];
+  defaults2 = [self defaults];
+  [defaults2 synchronize];
 
-  v9 = [@"com.apple.suggestions.settingsChanged" UTF8String];
+  uTF8String = [@"com.apple.suggestions.settingsChanged" UTF8String];
 
-  notify_post(v9);
+  notify_post(uTF8String);
 }
 
 + (BOOL)alwaysShowCancelledEvents
@@ -720,8 +720,8 @@
 
   else
   {
-    v5 = [a1 defaults];
-    v6 = [v5 BOOLForKey:@"SuggestionsAlwaysShowCancelledEvents"];
+    defaults = [self defaults];
+    v6 = [defaults BOOLForKey:@"SuggestionsAlwaysShowCancelledEvents"];
 
     return v6;
   }
@@ -746,8 +746,8 @@
   v4 = shouldShowPastEvents;
   if (shouldShowPastEvents == 255)
   {
-    v5 = [a1 defaults];
-    shouldShowPastEvents = [v5 BOOLForKey:@"SuggestionsShowPastEvents"];
+    defaults = [self defaults];
+    shouldShowPastEvents = [defaults BOOLForKey:@"SuggestionsShowPastEvents"];
 
     v4 = shouldShowPastEvents;
   }
@@ -759,115 +759,115 @@
 
 + (int64_t)suggestionsLogLevel
 {
-  v2 = [a1 defaults];
-  v3 = [v2 integerForKey:@"SuggestionsLoggingLevel"];
+  defaults = [self defaults];
+  v3 = [defaults integerForKey:@"SuggestionsLoggingLevel"];
 
   return v3;
 }
 
 + (void)resetAllPreferences
 {
-  v3 = [a1 defaults];
-  [v3 removeObjectForKey:@"SuggestionsAlwaysShowCancelledEvents"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"SuggestionsAlwaysShowCancelledEvents"];
 
-  v4 = [a1 defaults];
-  [v4 removeObjectForKey:@"SuggestionsLoggingLevel"];
+  defaults2 = [self defaults];
+  [defaults2 removeObjectForKey:@"SuggestionsLoggingLevel"];
 
-  v5 = [a1 defaults];
-  [v5 removeObjectForKey:@"SuggestionsMessagesToProcessImmediately"];
+  defaults3 = [self defaults];
+  [defaults3 removeObjectForKey:@"SuggestionsMessagesToProcessImmediately"];
 
-  v6 = [a1 defaults];
-  [v6 removeObjectForKey:@"SuggestionsOnlyShowSignificantPseudoContacts"];
+  defaults4 = [self defaults];
+  [defaults4 removeObjectForKey:@"SuggestionsOnlyShowSignificantPseudoContacts"];
 
-  v7 = [a1 defaults];
-  [v7 removeObjectForKey:@"SuggestionsOnlyShowSignificantNLEvents"];
+  defaults5 = [self defaults];
+  [defaults5 removeObjectForKey:@"SuggestionsOnlyShowSignificantNLEvents"];
 
-  v8 = [a1 defaults];
-  [v8 removeObjectForKey:@"SuggestionsShowPastEvents"];
+  defaults6 = [self defaults];
+  [defaults6 removeObjectForKey:@"SuggestionsShowPastEvents"];
 
-  v9 = [a1 defaults];
-  [v9 removeObjectForKey:@"SuggestionsShowSuggestionsCalendar"];
+  defaults7 = [self defaults];
+  [defaults7 removeObjectForKey:@"SuggestionsShowSuggestionsCalendar"];
 
-  v10 = [a1 defaults];
-  [v10 removeObjectForKey:@"SuggestionsSuppressSyncHistoryToCloud"];
+  defaults8 = [self defaults];
+  [defaults8 removeObjectForKey:@"SuggestionsSuppressSyncHistoryToCloud"];
 
-  v11 = [a1 defaults];
-  [v11 removeObjectForKey:@"SuggestionsAllowGeocode"];
+  defaults9 = [self defaults];
+  [defaults9 removeObjectForKey:@"SuggestionsAllowGeocode"];
 
-  v12 = [a1 defaults];
-  [v12 removeObjectForKey:@"SuggestionsAllowUnverifiedSourceForMarkup"];
+  defaults10 = [self defaults];
+  [defaults10 removeObjectForKey:@"SuggestionsAllowUnverifiedSourceForMarkup"];
 
-  v13 = [a1 defaults];
-  [v13 removeObjectForKey:@"SuggestionsAllowAnyDomainForMarkup"];
+  defaults11 = [self defaults];
+  [defaults11 removeObjectForKey:@"SuggestionsAllowAnyDomainForMarkup"];
 
-  v14 = [a1 defaults];
-  [v14 removeObjectForKey:@"SuggestionsUseMLModelForContacts"];
+  defaults12 = [self defaults];
+  [defaults12 removeObjectForKey:@"SuggestionsUseMLModelForContacts"];
 
-  v15 = [a1 defaults];
-  [v15 removeObjectForKey:@"SuggestionsUseMLModelForSelfId"];
+  defaults13 = [self defaults];
+  [defaults13 removeObjectForKey:@"SuggestionsUseMLModelForSelfId"];
 
-  v16 = [a1 defaults];
-  [v16 removeObjectForKey:@"SuggestionsAllowAgeBasedPruning"];
+  defaults14 = [self defaults];
+  [defaults14 removeObjectForKey:@"SuggestionsAllowAgeBasedPruning"];
 
-  v17 = [a1 defaults];
-  [v17 removeObjectForKey:@"SuggestionsDetectContacts"];
+  defaults15 = [self defaults];
+  [defaults15 removeObjectForKey:@"SuggestionsDetectContacts"];
 
-  v18 = [a1 defaults];
-  [v18 removeObjectForKey:@"SuggestionsShowNLEvents"];
+  defaults16 = [self defaults];
+  [defaults16 removeObjectForKey:@"SuggestionsShowNLEvents"];
 
-  v19 = [a1 defaults];
-  [v19 removeObjectForKey:@"SuggestionsShowMessageEventsML"];
+  defaults17 = [self defaults];
+  [defaults17 removeObjectForKey:@"SuggestionsShowMessageEventsML"];
 
-  v20 = [a1 defaults];
-  [v20 removeObjectForKey:@"SuggestionsDetectStructuredEvents"];
+  defaults18 = [self defaults];
+  [defaults18 removeObjectForKey:@"SuggestionsDetectStructuredEvents"];
 
-  v21 = [a1 defaults];
-  [v21 removeObjectForKey:@"SuggestionsDetectReminders"];
+  defaults19 = [self defaults];
+  [defaults19 removeObjectForKey:@"SuggestionsDetectReminders"];
 
-  v22 = [a1 defaults];
-  [v22 removeObjectForKey:@"SuggestionsDetectStructuredsEventML"];
+  defaults20 = [self defaults];
+  [defaults20 removeObjectForKey:@"SuggestionsDetectStructuredsEventML"];
 
-  v23 = [a1 defaults];
-  [v23 removeObjectForKey:@"SuggestionsDetectRemindersInMail"];
+  defaults21 = [self defaults];
+  [defaults21 removeObjectForKey:@"SuggestionsDetectRemindersInMail"];
 
-  v24 = [a1 defaults];
-  [v24 removeObjectForKey:@"SuggestionsDetectSalientMails"];
+  defaults22 = [self defaults];
+  [defaults22 removeObjectForKey:@"SuggestionsDetectSalientMails"];
 
-  v25 = [a1 defaults];
-  [v25 removeObjectForKey:@"SuggestionsFollowUpTimeRangeForDebugging"];
+  defaults23 = [self defaults];
+  [defaults23 removeObjectForKey:@"SuggestionsFollowUpTimeRangeForDebugging"];
 
-  v26 = [a1 defaults];
-  [v26 removeObjectForKey:@"SuggestionsFollowUpComputeCustomTimeRange"];
+  defaults24 = [self defaults];
+  [defaults24 removeObjectForKey:@"SuggestionsFollowUpComputeCustomTimeRange"];
 
-  v27 = [a1 defaults];
-  [v27 removeObjectForKey:@"SuggestionsMailIntelligenceSPILogging"];
+  defaults25 = [self defaults];
+  [defaults25 removeObjectForKey:@"SuggestionsMailIntelligenceSPILogging"];
 
-  v28 = [a1 defaults];
-  [v28 removeObjectForKey:@"SuggestionsHashedSessionsLogging"];
+  defaults26 = [self defaults];
+  [defaults26 removeObjectForKey:@"SuggestionsHashedSessionsLogging"];
 
-  v29 = [a1 defaults];
-  [v29 removeObjectForKey:@"CloudKitPersistedState"];
+  defaults27 = [self defaults];
+  [defaults27 removeObjectForKey:@"CloudKitPersistedState"];
 
-  v30 = [a1 defaults];
-  [v30 removeObjectForKey:@"UserAccountsPersistedState"];
+  defaults28 = [self defaults];
+  [defaults28 removeObjectForKey:@"UserAccountsPersistedState"];
 
-  v31 = [a1 defaults];
-  [v31 removeObjectForKey:@"SuggestionsUseMLModelForContactSharing"];
+  defaults29 = [self defaults];
+  [defaults29 removeObjectForKey:@"SuggestionsUseMLModelForContactSharing"];
 
-  v32 = [a1 defaults];
-  [v32 removeObjectForKey:@"SuggestionsContactSharingNegativeSamplingRate"];
+  defaults30 = [self defaults];
+  [defaults30 removeObjectForKey:@"SuggestionsContactSharingNegativeSamplingRate"];
 
-  v33 = [a1 defaults];
-  [v33 removeObjectForKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
+  defaults31 = [self defaults];
+  [defaults31 removeObjectForKey:@"SuggestionsHarvestBudgetNumberOfOperations"];
 
-  v34 = [a1 defaults];
-  [v34 removeObjectForKey:@"SuggestionsHarvestBudgetCPUTimeSeconds"];
+  defaults32 = [self defaults];
+  [defaults32 removeObjectForKey:@"SuggestionsHarvestBudgetCPUTimeSeconds"];
 
-  v35 = [a1 defaults];
-  [v35 removeObjectForKey:@"DisableEventUpdateCategories"];
+  defaults33 = [self defaults];
+  [defaults33 removeObjectForKey:@"DisableEventUpdateCategories"];
 
-  v36 = [a1 defaults];
-  [v36 removeObjectForKey:@"SuggestionsPreExtractionMaxDocumentAgeDays"];
+  defaults34 = [self defaults];
+  [defaults34 removeObjectForKey:@"SuggestionsPreExtractionMaxDocumentAgeDays"];
 }
 
 + (BOOL)showEventsFoundInMail

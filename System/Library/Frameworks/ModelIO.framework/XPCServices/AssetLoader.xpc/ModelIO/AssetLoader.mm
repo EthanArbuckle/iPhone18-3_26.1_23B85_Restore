@@ -1,31 +1,31 @@
 @interface AssetLoader
-- (void)loadURL:(id)a3 extensionToken:(id)a4 withReply:(id)a5;
+- (void)loadURL:(id)l extensionToken:(id)token withReply:(id)reply;
 @end
 
 @implementation AssetLoader
 
-- (void)loadURL:(id)a3 extensionToken:(id)a4 withReply:(id)a5
+- (void)loadURL:(id)l extensionToken:(id)token withReply:(id)reply
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (![v7 cStringUsingEncoding:4])
+  lCopy = l;
+  tokenCopy = token;
+  replyCopy = reply;
+  if (![tokenCopy cStringUsingEncoding:4])
   {
-    v8[2](v8, @"Unable to get sandbox.read extension");
+    replyCopy[2](replyCopy, @"Unable to get sandbox.read extension");
   }
 
   if (sandbox_extension_consume() == -1)
   {
-    v8[2](v8, @"Unable to consume sandbox.read extension.");
+    replyCopy[2](replyCopy, @"Unable to consume sandbox.read extension.");
   }
 
   v9 = [MDLAssetLoader alloc];
-  v10 = [v14 pathExtension];
-  v11 = [v10 uppercaseString];
-  v12 = [v9 initWithExtension:v11];
+  pathExtension = [lCopy pathExtension];
+  uppercaseString = [pathExtension uppercaseString];
+  v12 = [v9 initWithExtension:uppercaseString];
 
-  v13 = [v12 loadURL:v14];
-  v8[2](v8, v13);
+  v13 = [v12 loadURL:lCopy];
+  replyCopy[2](replyCopy, v13);
   sandbox_extension_release();
 }
 

@@ -1,43 +1,43 @@
 @interface SMTSpeechDetectionUpdate
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMTSpeechDetectionUpdate)initWithBuilder:(id)a3;
-- (SMTSpeechDetectionUpdate)initWithCoder:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SMTSpeechDetectionUpdate)initWithBuilder:(id)builder;
+- (SMTSpeechDetectionUpdate)initWithCoder:(id)coder;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTSpeechDetectionUpdate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   speechDetected = self->_speechDetected;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:speechDetected];
-  [v6 encodeObject:v7 forKey:@"speechDetected"];
+  [coderCopy encodeObject:v7 forKey:@"speechDetected"];
 
-  [v6 encodeObject:self->_lastTRPCandidateId forKey:@"lastTRPCandidateId"];
+  [coderCopy encodeObject:self->_lastTRPCandidateId forKey:@"lastTRPCandidateId"];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_processedAudioDurationMs];
-  [v6 encodeObject:v8 forKey:@"processedAudioDurationMs"];
+  [coderCopy encodeObject:v8 forKey:@"processedAudioDurationMs"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_trailingSilenceDurationMs];
-  [v6 encodeObject:v9 forKey:@"trailingSilenceDurationMs"];
+  [coderCopy encodeObject:v9 forKey:@"trailingSilenceDurationMs"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_wordCount];
-  [v6 encodeObject:v10 forKey:@"wordCount"];
+  [coderCopy encodeObject:v10 forKey:@"wordCount"];
 }
 
-- (SMTSpeechDetectionUpdate)initWithCoder:(id)a3
+- (SMTSpeechDetectionUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"speechDetected"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastTRPCandidateId"];
-  v7 = [v4 decodeIntegerForKey:@"processedAudioDurationMs"];
-  v8 = [v4 decodeIntegerForKey:@"trailingSilenceDurationMs"];
-  v9 = [v4 decodeIntegerForKey:@"wordCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"speechDetected"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastTRPCandidateId"];
+  v7 = [coderCopy decodeIntegerForKey:@"processedAudioDurationMs"];
+  v8 = [coderCopy decodeIntegerForKey:@"trailingSilenceDurationMs"];
+  v9 = [coderCopy decodeIntegerForKey:@"wordCount"];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -65,10 +65,10 @@ void __42__SMTSpeechDetectionUpdate_initWithCoder___block_invoke(uint64_t a1, vo
   [v4 setWordCount:*(a1 + 56)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -78,13 +78,13 @@ void __42__SMTSpeechDetectionUpdate_initWithCoder___block_invoke(uint64_t a1, vo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       speechDetected = self->_speechDetected;
       if (speechDetected == [(SMTSpeechDetectionUpdate *)v5 speechDetected])
       {
-        v7 = [(SMTSpeechDetectionUpdate *)v5 lastTRPCandidateId];
+        lastTRPCandidateId = [(SMTSpeechDetectionUpdate *)v5 lastTRPCandidateId];
         lastTRPCandidateId = self->_lastTRPCandidateId;
-        if ((lastTRPCandidateId == v7 || [(NSString *)lastTRPCandidateId isEqual:v7]) && (processedAudioDurationMs = self->_processedAudioDurationMs, processedAudioDurationMs == [(SMTSpeechDetectionUpdate *)v5 processedAudioDurationMs]) && (trailingSilenceDurationMs = self->_trailingSilenceDurationMs, trailingSilenceDurationMs == [(SMTSpeechDetectionUpdate *)v5 trailingSilenceDurationMs]))
+        if ((lastTRPCandidateId == lastTRPCandidateId || [(NSString *)lastTRPCandidateId isEqual:lastTRPCandidateId]) && (processedAudioDurationMs = self->_processedAudioDurationMs, processedAudioDurationMs == [(SMTSpeechDetectionUpdate *)v5 processedAudioDurationMs]) && (trailingSilenceDurationMs = self->_trailingSilenceDurationMs, trailingSilenceDurationMs == [(SMTSpeechDetectionUpdate *)v5 trailingSilenceDurationMs]))
         {
           wordCount = self->_wordCount;
           v12 = wordCount == [(SMTSpeechDetectionUpdate *)v5 wordCount];
@@ -126,7 +126,7 @@ void __42__SMTSpeechDetectionUpdate_initWithCoder___block_invoke(uint64_t a1, vo
   return v9 ^ v11;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -137,23 +137,23 @@ void __42__SMTSpeechDetectionUpdate_initWithCoder___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (SMTSpeechDetectionUpdate)initWithBuilder:(id)a3
+- (SMTSpeechDetectionUpdate)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = SMTSpeechDetectionUpdate;
   v5 = [(SMTSpeechDetectionUpdate *)&v11 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SMTSpeechDetectionUpdateMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SMTSpeechDetectionUpdateMutation *)v7 isDirty])
     {
       v6->_speechDetected = [(_SMTSpeechDetectionUpdateMutation *)v7 getSpeechDetected];
-      v8 = [(_SMTSpeechDetectionUpdateMutation *)v7 getLastTRPCandidateId];
+      getLastTRPCandidateId = [(_SMTSpeechDetectionUpdateMutation *)v7 getLastTRPCandidateId];
       lastTRPCandidateId = v6->_lastTRPCandidateId;
-      v6->_lastTRPCandidateId = v8;
+      v6->_lastTRPCandidateId = getLastTRPCandidateId;
 
       v6->_processedAudioDurationMs = [(_SMTSpeechDetectionUpdateMutation *)v7 getProcessedAudioDurationMs];
       v6->_trailingSilenceDurationMs = [(_SMTSpeechDetectionUpdateMutation *)v7 getTrailingSilenceDurationMs];
@@ -164,27 +164,27 @@ void __42__SMTSpeechDetectionUpdate_initWithCoder___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SMTSpeechDetectionUpdateMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SMTSpeechDetectionUpdateMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SMTSpeechDetectionUpdate);
       v6->_speechDetected = [(_SMTSpeechDetectionUpdateMutation *)v5 getSpeechDetected];
-      v7 = [(_SMTSpeechDetectionUpdateMutation *)v5 getLastTRPCandidateId];
-      v8 = [v7 copy];
+      getLastTRPCandidateId = [(_SMTSpeechDetectionUpdateMutation *)v5 getLastTRPCandidateId];
+      v8 = [getLastTRPCandidateId copy];
       lastTRPCandidateId = v6->_lastTRPCandidateId;
       v6->_lastTRPCandidateId = v8;
 

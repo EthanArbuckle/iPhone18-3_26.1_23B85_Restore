@@ -1,5 +1,5 @@
 @interface SiriCoreSQLiteQuery
-- (SiriCoreSQLiteQuery)initWithString:(id)a3 statement:(id)a4 parameters:(id)a5 recordBuilder:(id)a6 options:(unint64_t)a7;
+- (SiriCoreSQLiteQuery)initWithString:(id)string statement:(id)statement parameters:(id)parameters recordBuilder:(id)builder options:(unint64_t)options;
 - (id)description;
 @end
 
@@ -100,28 +100,28 @@ LABEL_8:
   return v13;
 }
 
-- (SiriCoreSQLiteQuery)initWithString:(id)a3 statement:(id)a4 parameters:(id)a5 recordBuilder:(id)a6 options:(unint64_t)a7
+- (SiriCoreSQLiteQuery)initWithString:(id)string statement:(id)statement parameters:(id)parameters recordBuilder:(id)builder options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  stringCopy = string;
+  statementCopy = statement;
+  parametersCopy = parameters;
+  builderCopy = builder;
   v22.receiver = self;
   v22.super_class = SiriCoreSQLiteQuery;
   v16 = [(SiriCoreSQLiteQuery *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [stringCopy copy];
     string = v16->_string;
     v16->_string = v17;
 
-    objc_storeStrong(&v16->_statement, a4);
-    v19 = [v14 copy];
+    objc_storeStrong(&v16->_statement, statement);
+    v19 = [parametersCopy copy];
     parameters = v16->_parameters;
     v16->_parameters = v19;
 
-    objc_storeStrong(&v16->_recordBuilder, a6);
-    v16->_options = a7;
+    objc_storeStrong(&v16->_recordBuilder, builder);
+    v16->_options = options;
   }
 
   return v16;

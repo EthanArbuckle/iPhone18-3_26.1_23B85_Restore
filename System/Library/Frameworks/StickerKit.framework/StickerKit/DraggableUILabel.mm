@@ -1,33 +1,33 @@
 @interface DraggableUILabel
-- (_TtC10StickerKit16DraggableUILabel)initWithFrame:(CGRect)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (_TtC10StickerKit16DraggableUILabel)initWithFrame:(CGRect)frame;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation DraggableUILabel
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_19A5F5028(0, &qword_1EAFCCC08);
   sub_19A63D890();
   v6 = sub_19A7AB494();
-  v7 = a4;
-  v8 = self;
-  sub_19A639B94(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_19A639B94(v6, event);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   ObjectType = swift_getObjectType();
   sub_19A5F5028(0, &qword_1EAFCCC08);
   sub_19A63D890();
   v7 = sub_19A7AB494();
-  v8 = self;
-  v9 = a4;
+  selfCopy = self;
+  eventCopy = event;
   v10 = sub_19A7AB484();
-  v13.receiver = v8;
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
-  [(DraggableUILabel *)&v13 touchesMoved:v10 withEvent:v9];
+  [(DraggableUILabel *)&v13 touchesMoved:v10 withEvent:eventCopy];
 
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -37,12 +37,12 @@
   }
 }
 
-- (_TtC10StickerKit16DraggableUILabel)initWithFrame:(CGRect)a3
+- (_TtC10StickerKit16DraggableUILabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit16DraggableUILabel_swiftUIFont) = 0;

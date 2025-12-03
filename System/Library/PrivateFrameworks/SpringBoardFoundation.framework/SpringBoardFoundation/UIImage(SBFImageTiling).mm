@@ -6,13 +6,13 @@
 
 - (uint64_t)sbf_imageByTilingCenterPixel
 {
-  [a1 size];
-  [a1 scale];
+  [self size];
+  [self scale];
   UIFloorToScale();
   v3 = v2;
   UIFloorToScale();
 
-  return [a1 resizableImageWithCapInsets:{v4, v3, v4, v3}];
+  return [self resizableImageWithCapInsets:{v4, v3, v4, v3}];
 }
 
 @end

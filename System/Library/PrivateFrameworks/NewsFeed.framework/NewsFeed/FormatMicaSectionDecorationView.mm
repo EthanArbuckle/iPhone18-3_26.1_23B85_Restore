@@ -1,16 +1,16 @@
 @interface FormatMicaSectionDecorationView
-- (_TtC8NewsFeed31FormatMicaSectionDecorationView)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC8NewsFeed31FormatMicaSectionDecorationView)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
 - (void)gutterViewBoundsDidChange;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FormatMicaSectionDecorationView
 
-- (_TtC8NewsFeed31FormatMicaSectionDecorationView)initWithCoder:(id)a3
+- (_TtC8NewsFeed31FormatMicaSectionDecorationView)initWithCoder:(id)coder
 {
   v4 = sub_1D725895C();
   v5 = *(v4 - 8);
@@ -33,13 +33,13 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(FormatMicaSectionDecorationView *)&v8 willMoveToSuperview:v5];
+  superviewCopy = superview;
+  [(FormatMicaSectionDecorationView *)&v8 willMoveToSuperview:superviewCopy];
   v6 = sub_1D726341C();
   if (v6)
   {
@@ -72,23 +72,23 @@
   sub_1D726344C();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D688C558(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1D688C558(attributesCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D688CDD4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D688CDD4(change);
 }
 
 - (void)gutterViewBoundsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D72634AC();
 }
 

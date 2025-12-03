@@ -1,5 +1,5 @@
 @interface CNUIAvatarImage
-- (CNUIAvatarImage)initWithImage:(id)a3;
+- (CNUIAvatarImage)initWithImage:(id)image;
 - (id)APNGRepresentation;
 - (id)HEICRepresentation;
 - (id)HEICSRepresentation;
@@ -7,16 +7,16 @@
 
 @implementation CNUIAvatarImage
 
-- (CNUIAvatarImage)initWithImage:(id)a3
+- (CNUIAvatarImage)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = CNUIAvatarImage;
   v6 = [(CNUIAvatarImage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiImage, a3);
+    objc_storeStrong(&v6->_uiImage, image);
   }
 
   return v7;
@@ -24,26 +24,26 @@
 
 - (id)HEICRepresentation
 {
-  v2 = [(CNUIAvatarImage *)self uiImage];
-  v3 = [v2 HEICRepresentation];
+  uiImage = [(CNUIAvatarImage *)self uiImage];
+  hEICRepresentation = [uiImage HEICRepresentation];
 
-  return v3;
+  return hEICRepresentation;
 }
 
 - (id)HEICSRepresentation
 {
-  v2 = [(CNUIAvatarImage *)self uiImage];
-  v3 = [v2 HEICSRepresentation];
+  uiImage = [(CNUIAvatarImage *)self uiImage];
+  hEICSRepresentation = [uiImage HEICSRepresentation];
 
-  return v3;
+  return hEICSRepresentation;
 }
 
 - (id)APNGRepresentation
 {
-  v2 = [(CNUIAvatarImage *)self uiImage];
-  v3 = [v2 APNGRepresentation];
+  uiImage = [(CNUIAvatarImage *)self uiImage];
+  aPNGRepresentation = [uiImage APNGRepresentation];
 
-  return v3;
+  return aPNGRepresentation;
 }
 
 @end

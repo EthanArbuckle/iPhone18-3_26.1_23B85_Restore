@@ -1,15 +1,15 @@
 @interface APDBAdOpportunity
-- (id)insertAdOpportunity:(id)a3 placement:(int64_t)a4;
+- (id)insertAdOpportunity:(id)opportunity placement:(int64_t)placement;
 @end
 
 @implementation APDBAdOpportunity
 
-- (id)insertAdOpportunity:(id)a3 placement:(int64_t)a4
+- (id)insertAdOpportunity:(id)opportunity placement:(int64_t)placement
 {
-  v6 = a3;
-  v7 = [(APDBAdOpportunity *)self manager];
+  opportunityCopy = opportunity;
+  manager = [(APDBAdOpportunity *)self manager];
 
-  if (!v7)
+  if (!manager)
   {
     v8 = APLogForCategory();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!opportunityCopy)
   {
     v8 = APLogForCategory();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [[APDBAdOpportunityRow alloc] initWithIdentifier:v6 placement:a4 table:self];
+  v8 = [[APDBAdOpportunityRow alloc] initWithIdentifier:opportunityCopy placement:placement table:self];
   if (([v8 save]& 1) != 0)
   {
     v8 = v8;

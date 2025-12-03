@@ -1,35 +1,35 @@
 @interface ASTSuiteResultComponent
-- (ASTSuiteResultComponent)initWithDictionary:(id)a3 error:(id *)a4;
-- (ASTSuiteResultComponent)initWithName:(id)a3 assetLocator:(id)a4 status:(id)a5 sections:(id)a6;
+- (ASTSuiteResultComponent)initWithDictionary:(id)dictionary error:(id *)error;
+- (ASTSuiteResultComponent)initWithName:(id)name assetLocator:(id)locator status:(id)status sections:(id)sections;
 @end
 
 @implementation ASTSuiteResultComponent
 
-- (ASTSuiteResultComponent)initWithName:(id)a3 assetLocator:(id)a4 status:(id)a5 sections:(id)a6
+- (ASTSuiteResultComponent)initWithName:(id)name assetLocator:(id)locator status:(id)status sections:(id)sections
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  locatorCopy = locator;
+  statusCopy = status;
+  sectionsCopy = sections;
   v18.receiver = self;
   v18.super_class = ASTSuiteResultComponent;
   v15 = [(ASTSuiteResultComponent *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_assetLocator, a4);
-    objc_storeStrong(&v16->_status, a5);
-    objc_storeStrong(&v16->_sections, a6);
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_assetLocator, locator);
+    objc_storeStrong(&v16->_status, status);
+    objc_storeStrong(&v16->_sections, sections);
   }
 
   return v16;
 }
 
-- (ASTSuiteResultComponent)initWithDictionary:(id)a3 error:(id *)a4
+- (ASTSuiteResultComponent)initWithDictionary:(id)dictionary error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = ASTSuiteResultComponent;
   v7 = [(ASTSuiteResultComponent *)&v37 init];
@@ -38,10 +38,10 @@
     goto LABEL_22;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"name"];
-  v9 = [v6 objectForKeyedSubscript:@"assetLocator"];
-  v10 = [v6 objectForKeyedSubscript:@"sections"];
-  v11 = [v6 objectForKeyedSubscript:@"status"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"assetLocator"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"sections"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -54,14 +54,14 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v14 = [[ASTSuiteResultStatus alloc] initWithDictionary:v11 error:a4];
+          v14 = [[ASTSuiteResultStatus alloc] initWithDictionary:v11 error:error];
           if (!v14)
           {
             goto LABEL_10;
           }
 
           v30 = v14;
-          v32 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
@@ -82,7 +82,7 @@
                   objc_enumerationMutation(obj);
                 }
 
-                v19 = [[ASTSuiteResultSection alloc] initWithDictionary:*(*(&v33 + 1) + 8 * v18) error:a4];
+                v19 = [[ASTSuiteResultSection alloc] initWithDictionary:*(*(&v33 + 1) + 8 * v18) error:error];
                 if (!v19)
                 {
 
@@ -90,7 +90,7 @@
                 }
 
                 v20 = v19;
-                [(NSArray *)v32 addObject:v19];
+                [(NSArray *)array addObject:v19];
 
                 ++v18;
               }
@@ -119,7 +119,7 @@
           v26 = v30;
 
           sections = v7->_sections;
-          v7->_sections = v32;
+          v7->_sections = array;
 
 LABEL_22:
           v13 = v7;
@@ -135,9 +135,9 @@ LABEL_22:
     [ASTSuiteResult initWithDictionary:v7 error:v12];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
   }
 
 LABEL_10:

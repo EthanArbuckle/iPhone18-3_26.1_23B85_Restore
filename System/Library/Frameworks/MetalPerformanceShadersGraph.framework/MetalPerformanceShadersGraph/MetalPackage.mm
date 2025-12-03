@@ -1,26 +1,26 @@
 @interface MetalPackage
-- (MetalPackage)initWithPackageURL:(id)a3 temporaryPackageURL:(id)a4;
+- (MetalPackage)initWithPackageURL:(id)l temporaryPackageURL:(id)rL;
 - (id).cxx_construct;
 - (id)getJsonData;
 @end
 
 @implementation MetalPackage
 
-- (MetalPackage)initWithPackageURL:(id)a3 temporaryPackageURL:(id)a4
+- (MetalPackage)initWithPackageURL:(id)l temporaryPackageURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v22.receiver = self;
   v22.super_class = MetalPackage;
   v9 = [(MetalPackage *)&v22 init];
-  objc_storeStrong(&v9->_packageURL, a3);
-  objc_storeStrong(&v9->_temporaryPackageURL, a4);
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  objc_storeStrong(&v9->_packageURL, l);
+  objc_storeStrong(&v9->_temporaryPackageURL, rL);
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   fileManager = v9->_fileManager;
-  v9->_fileManager = v10;
+  v9->_fileManager = defaultManager;
 
-  v12 = [v8 path];
-  v13 = [v12 stringByAppendingString:@".lock"];
+  path = [rLCopy path];
+  v13 = [path stringByAppendingString:@".lock"];
 
   v14 = [v13 cStringUsingEncoding:4];
   v15 = strlen(v14);

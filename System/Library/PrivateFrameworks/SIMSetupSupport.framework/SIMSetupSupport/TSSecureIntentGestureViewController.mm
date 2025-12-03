@@ -1,26 +1,26 @@
 @interface TSSecureIntentGestureViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSSecureIntentGestureViewController)initWithExternalizedContext:(id)a3 descriptors:(id)a4 isLocalConvertFlow:(BOOL)a5 isSecureIntentRequired:(BOOL)a6 isDtoEvaluationRequired:(BOOL)a7;
+- (TSSecureIntentGestureViewController)initWithExternalizedContext:(id)context descriptors:(id)descriptors isLocalConvertFlow:(BOOL)flow isSecureIntentRequired:(BOOL)required isDtoEvaluationRequired:(BOOL)evaluationRequired;
 - (id)_createPKGlyphView;
 - (void)_doubleClickGesture;
-- (void)_handleUserCancelNotification:(id)a3;
-- (void)_updateAuthenticationStatus:(id)a3 isDTOEvaluationFailed:(BOOL)a4;
+- (void)_handleUserCancelNotification:(id)notification;
+- (void)_updateAuthenticationStatus:(id)status isDTOEvaluationFailed:(BOOL)failed;
 - (void)_updateLayoutConstraint;
 - (void)dealloc;
-- (void)evaluateDtoPolicy:(id)a3;
-- (void)prepare:(id)a3;
+- (void)evaluateDtoPolicy:(id)policy;
+- (void)prepare:(id)prepare;
 - (void)viewDidLoad;
 @end
 
 @implementation TSSecureIntentGestureViewController
 
-- (TSSecureIntentGestureViewController)initWithExternalizedContext:(id)a3 descriptors:(id)a4 isLocalConvertFlow:(BOOL)a5 isSecureIntentRequired:(BOOL)a6 isDtoEvaluationRequired:(BOOL)a7
+- (TSSecureIntentGestureViewController)initWithExternalizedContext:(id)context descriptors:(id)descriptors isLocalConvertFlow:(BOOL)flow isSecureIntentRequired:(BOOL)required isDtoEvaluationRequired:(BOOL)evaluationRequired
 {
-  v7 = a7;
-  v8 = a6;
+  evaluationRequiredCopy = evaluationRequired;
+  requiredCopy = required;
   v31 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
+  contextCopy = context;
+  descriptorsCopy = descriptors;
   v22.receiver = self;
   v22.super_class = TSSecureIntentGestureViewController;
   v15 = [(TSSecureIntentGestureViewController *)&v22 init];
@@ -30,30 +30,30 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v24 = v13;
+      v24 = contextCopy;
       v25 = 1024;
-      v26 = v8;
+      v26 = requiredCopy;
       v27 = 1024;
-      v28 = v7;
+      v28 = evaluationRequiredCopy;
       v29 = 2080;
       v30 = "[TSSecureIntentGestureViewController initWithExternalizedContext:descriptors:isLocalConvertFlow:isSecureIntentRequired:isDtoEvaluationRequired:]";
       _os_log_impl(&dword_262AA8000, v16, OS_LOG_TYPE_DEFAULT, "externalized context = %@ isSecureIntentRequired: %d, isDtoEvaluationRequired:%d @%s", buf, 0x22u);
     }
 
-    objc_storeStrong(&v15->_externalizedContext, a3);
-    objc_storeStrong(&v15->_descriptors, a4);
-    v17 = [TSUtilities formatLocAndConcatenateDescriptors:v14];
+    objc_storeStrong(&v15->_externalizedContext, context);
+    objc_storeStrong(&v15->_descriptors, descriptors);
+    v17 = [TSUtilities formatLocAndConcatenateDescriptors:descriptorsCopy];
     formatedDescriptor = v15->_formatedDescriptor;
     v15->_formatedDescriptor = v17;
 
     v15->_isExternalizedContextSent = 0;
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v15 selector:sel__handleUserCancelNotification_ name:@"ss.user.canceled" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__handleUserCancelNotification_ name:@"ss.user.canceled" object:0];
 
-    v15->_isLocalConvertFlow = a5;
-    v15->_isSecureIntentRequired = v8;
-    v15->_isDtoEvaluationRequired = v7;
-    v15->_isDtoEvaluationSucceeded = !v7;
+    v15->_isLocalConvertFlow = flow;
+    v15->_isSecureIntentRequired = requiredCopy;
+    v15->_isDtoEvaluationRequired = evaluationRequiredCopy;
+    v15->_isDtoEvaluationSucceeded = !evaluationRequiredCopy;
     v15->_isSecureIntentSucceeded = !v15->_isSecureIntentRequired;
   }
 
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TSSecureIntentGestureViewController;
@@ -121,14 +121,14 @@ LABEL_13:
       v20 = [v19 localizedStringForKey:@"READY..." value:&stru_28753DF48 table:@"Localizable"];
       [(TSSecureIntentGestureViewController *)self showActivityIndicatorWithStatus:v20];
 
-      v21 = [(TSSecureIntentGestureViewController *)self _createPKGlyphView];
+      _createPKGlyphView = [(TSSecureIntentGestureViewController *)self _createPKGlyphView];
       glyphView = self->_glyphView;
-      self->_glyphView = v21;
+      self->_glyphView = _createPKGlyphView;
 
       [(PKGlyphView *)self->_glyphView setState:2];
       [(PKGlyphView *)self->_glyphView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v23 = [(TSSecureIntentGestureViewController *)self contentView];
-      [v23 addSubview:self->_glyphView];
+      contentView = [(TSSecureIntentGestureViewController *)self contentView];
+      [contentView addSubview:self->_glyphView];
 
       [(TSSecureIntentGestureViewController *)self _updateLayoutConstraint];
       objc_destroyWeak(&v25);
@@ -182,7 +182,7 @@ void __50__TSSecureIntentGestureViewController_viewDidLoad__block_invoke(uint64_
 - (void)_doubleClickGesture
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]No euicc acl!! @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]No euicc acl!! @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -300,11 +300,11 @@ void __58__TSSecureIntentGestureViewController__doubleClickGesture__block_invoke
   }
 }
 
-- (void)_updateAuthenticationStatus:(id)a3 isDTOEvaluationFailed:(BOOL)a4
+- (void)_updateAuthenticationStatus:(id)status isDTOEvaluationFailed:(BOOL)failed
 {
-  v6 = a3;
+  statusCopy = status;
   objc_initWeak(&location, self);
-  if (v6)
+  if (statusCopy)
   {
     v7 = 10;
   }
@@ -314,24 +314,24 @@ void __58__TSSecureIntentGestureViewController__doubleClickGesture__block_invoke
     v7 = 11;
   }
 
-  if (v6)
+  if (statusCopy)
   {
     [(PKGlyphView *)self->_glyphView bounds];
     v9 = v8;
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v12 = v9 * 0.439999998 / v11;
 
     v13 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:v12];
     v14 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark" withConfiguration:v13];
     [(PKGlyphView *)self->_glyphView setColorMode:3 animated:1];
-    v15 = [(PKGlyphView *)self->_glyphView primaryColor];
-    v16 = [v14 _flatImageWithColor:v15];
+    primaryColor = [(PKGlyphView *)self->_glyphView primaryColor];
+    v16 = [v14 _flatImageWithColor:primaryColor];
 
     glyphView = self->_glyphView;
-    v18 = [v16 CGImage];
+    cGImage = [v16 CGImage];
     [v16 alignmentRectInsets];
-    [(PKGlyphView *)glyphView setCustomImage:v18 withAlignmentEdgeInsets:?];
+    [(PKGlyphView *)glyphView setCustomImage:cGImage withAlignmentEdgeInsets:?];
   }
 
   v19 = self->_glyphView;
@@ -340,9 +340,9 @@ void __58__TSSecureIntentGestureViewController__doubleClickGesture__block_invoke
   v21[2] = __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTOEvaluationFailed___block_invoke;
   v21[3] = &unk_279B45858;
   objc_copyWeak(&v23, &location);
-  v20 = v6;
+  v20 = statusCopy;
   v22 = v20;
-  v24 = a4;
+  failedCopy = failed;
   [(PKGlyphView *)v19 setState:v7 animated:1 completionHandler:v21];
 
   objc_destroyWeak(&v23);
@@ -411,16 +411,16 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
   return v4;
 }
 
-- (void)_handleUserCancelNotification:(id)a3
+- (void)_handleUserCancelNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     v11 = 138412546;
-    v12 = v6;
+    v12 = object;
     v13 = 2080;
     v14 = "[TSSecureIntentGestureViewController _handleUserCancelNotification:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "user canceled with reason : %@ @%s", &v11, 0x16u);
@@ -430,8 +430,8 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
   v8 = self->_isSecureIntentSucceeded && !self->_isDtoEvaluationSucceeded;
   [(TSSecureIntentGestureViewController *)self _maybeSendExternalizedContext:v7 isDTOEvaluationFailed:v8];
 
-  v9 = [(TSSecureIntentGestureViewController *)self delegate];
-  [v9 userDidTapCancel];
+  delegate = [(TSSecureIntentGestureViewController *)self delegate];
+  [delegate userDidTapCancel];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -439,8 +439,8 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
 - (void)_updateLayoutConstraint
 {
   v32[5] = *MEMORY[0x277D85DE8];
-  v3 = [(TSSecureIntentGestureViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(TSSecureIntentGestureViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -456,29 +456,29 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
 
   v9 = v8 * 0.275;
   v23 = MEMORY[0x277CCAAD0];
-  v30 = [(PKGlyphView *)self->_glyphView topAnchor];
-  v31 = [(TSSecureIntentGestureViewController *)self contentView];
-  v29 = [v31 mainContentGuide];
-  v28 = [v29 topAnchor];
-  v27 = [v30 constraintGreaterThanOrEqualToAnchor:v28];
+  topAnchor = [(PKGlyphView *)self->_glyphView topAnchor];
+  contentView2 = [(TSSecureIntentGestureViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v27 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v32[0] = v27;
-  v25 = [(PKGlyphView *)self->_glyphView centerXAnchor];
-  v26 = [(TSSecureIntentGestureViewController *)self contentView];
-  v24 = [v26 mainContentGuide];
-  v22 = [v24 centerXAnchor];
-  v21 = [v25 constraintEqualToAnchor:v22];
+  centerXAnchor = [(PKGlyphView *)self->_glyphView centerXAnchor];
+  contentView3 = [(TSSecureIntentGestureViewController *)self contentView];
+  mainContentGuide2 = [contentView3 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide2 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v32[1] = v21;
-  v10 = [(PKGlyphView *)self->_glyphView centerYAnchor];
-  v11 = [(TSSecureIntentGestureViewController *)self contentView];
-  v12 = [v11 mainContentGuide];
-  v13 = [v12 centerYAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  centerYAnchor = [(PKGlyphView *)self->_glyphView centerYAnchor];
+  contentView4 = [(TSSecureIntentGestureViewController *)self contentView];
+  mainContentGuide3 = [contentView4 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide3 centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[2] = v14;
-  v15 = [(PKGlyphView *)self->_glyphView widthAnchor];
-  v16 = [v15 constraintEqualToConstant:v9];
+  widthAnchor = [(PKGlyphView *)self->_glyphView widthAnchor];
+  v16 = [widthAnchor constraintEqualToConstant:v9];
   v32[3] = v16;
-  v17 = [(PKGlyphView *)self->_glyphView heightAnchor];
-  v18 = [v17 constraintEqualToConstant:v9];
+  heightAnchor = [(PKGlyphView *)self->_glyphView heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:v9];
   v32[4] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:5];
   [v23 activateConstraints:v19];
@@ -486,10 +486,10 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evaluateDtoPolicy:(id)a3
+- (void)evaluateDtoPolicy:(id)policy
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  policyCopy = policy;
   v4 = _TSLogDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -499,14 +499,14 @@ void __89__TSSecureIntentGestureViewController__updateAuthenticationStatus_isDTO
   }
 
   v5 = +[TSCoreTelephonyClientCache sharedInstance];
-  v6 = [v5 getCoreTelephonyClient];
+  getCoreTelephonyClient = [v5 getCoreTelephonyClient];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__TSSecureIntentGestureViewController_evaluateDtoPolicy___block_invoke;
   v9[3] = &unk_279B44DB8;
-  v10 = v3;
-  v7 = v3;
-  [v6 evaluateDtoPolicy:v9];
+  v10 = policyCopy;
+  v7 = policyCopy;
+  [getCoreTelephonyClient evaluateDtoPolicy:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -522,13 +522,13 @@ uint64_t __57__TSSecureIntentGestureViewController_evaluateDtoPolicy___block_inv
   return result;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  v5 = v4;
+  prepareCopy = prepare;
+  v5 = prepareCopy;
   if (self->_isSecureIntentRequired)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(prepareCopy + 2))(prepareCopy, 1);
   }
 
   else if (self->_isDtoEvaluationRequired)

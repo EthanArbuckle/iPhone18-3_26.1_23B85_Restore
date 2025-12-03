@@ -1,33 +1,33 @@
 @interface NTKPoodleFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (BOOL)customComplication:(id)a3 supportsFamilies:(id)a4 forSlot:(id)a5;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (BOOL)customComplication:(id)complication supportsFamilies:(id)families forSlot:(id)slot;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)customComplicationControllerForComplication:(id)a3 variant:(id)a4 slot:(id)a5;
-- (id)customComplicationsForSlot:(id)a3;
-- (int64_t)customComplicationFamilyForComplication:(id)a3 slot:(id)a4;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)customComplicationControllerForComplication:(id)complication variant:(id)variant slot:(id)slot;
+- (id)customComplicationsForSlot:(id)slot;
+- (int64_t)customComplicationFamilyForComplication:(id)complication slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKPoodleFace
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1 || !objc_msgSend(v3, "supportsPDRCapability:", 3588072423))
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1 || !objc_msgSend(deviceCopy, "supportsPDRCapability:", 3588072423))
   {
     LOBYTE(v4) = 1;
   }
 
-  else if ([v3 collectionType] == &dword_4 + 1)
+  else if ([deviceCopy collectionType] == &dword_4 + 1)
   {
     LOBYTE(v4) = 0;
   }
@@ -72,9 +72,9 @@
   return v12;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotTopRight, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotTopRight, device}])
   {
     v4 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKBundleComplicationNoiseBundleIdentifier appBundleIdentifier:NTKBundleComplicationNoiseAppBundleIdentifier complicationDescriptor:0];
   }
@@ -87,23 +87,23 @@
   return v4;
 }
 
-- (id)customComplicationControllerForComplication:(id)a3 variant:(id)a4 slot:(id)a5
+- (id)customComplicationControllerForComplication:(id)complication variant:(id)variant slot:(id)slot
 {
-  v8 = a3;
-  v9 = a4;
-  if (![a5 isEqual:NTKComplicationSlotBottom])
+  complicationCopy = complication;
+  variantCopy = variant;
+  if (![slot isEqual:NTKComplicationSlotBottom])
   {
     goto LABEL_5;
   }
 
-  v10 = [v8 complicationType];
-  if (v10 == (&dword_4 + 1))
+  complicationType = [complicationCopy complicationType];
+  if (complicationType == (&dword_4 + 1))
   {
     v11 = off_444A8;
     goto LABEL_7;
   }
 
-  if (v10 != &dword_4)
+  if (complicationType != &dword_4)
   {
 LABEL_5:
     v12 = 0;
@@ -113,17 +113,17 @@ LABEL_5:
   v11 = off_444A0;
 LABEL_7:
   v13 = objc_alloc(*v11);
-  v14 = [(NTKPoodleFace *)self device];
-  v12 = [v13 initWithComplication:v8 variant:v9 device:v14];
+  device = [(NTKPoodleFace *)self device];
+  v12 = [v13 initWithComplication:complicationCopy variant:variantCopy device:device];
 
 LABEL_8:
 
   return v12;
 }
 
-- (id)customComplicationsForSlot:(id)a3
+- (id)customComplicationsForSlot:(id)slot
 {
-  if ([a3 isEqual:NTKComplicationSlotBottom])
+  if ([slot isEqual:NTKComplicationSlotBottom])
   {
     v3 = objc_opt_new();
     v4 = [NTKComplication allComplicationsOfType:5];
@@ -141,11 +141,11 @@ LABEL_8:
   return v3;
 }
 
-- (int64_t)customComplicationFamilyForComplication:(id)a3 slot:(id)a4
+- (int64_t)customComplicationFamilyForComplication:(id)complication slot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:NTKComplicationSlotBottom])
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotBottom])
   {
     v8 = NTKComplicationFamilyZeusLower;
   }
@@ -154,20 +154,20 @@ LABEL_8:
   {
     v10.receiver = self;
     v10.super_class = NTKPoodleFace;
-    v8 = [(NTKPoodleFace *)&v10 customComplicationFamilyForComplication:v6 slot:v7];
+    v8 = [(NTKPoodleFace *)&v10 customComplicationFamilyForComplication:complicationCopy slot:slotCopy];
   }
 
   return v8;
 }
 
-- (BOOL)customComplication:(id)a3 supportsFamilies:(id)a4 forSlot:(id)a5
+- (BOOL)customComplication:(id)complication supportsFamilies:(id)families forSlot:(id)slot
 {
-  v7 = a3;
-  v8 = a4;
-  if ([a5 isEqual:NTKComplicationSlotBottom] && (objc_msgSend(v7, "complicationType") & 0xFFFFFFFFFFFFFFFELL) == 4)
+  complicationCopy = complication;
+  familiesCopy = families;
+  if ([slot isEqual:NTKComplicationSlotBottom] && (objc_msgSend(complicationCopy, "complicationType") & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v9 = [NSNumber numberWithInteger:NTKComplicationFamilyZeusLower];
-    v10 = [v8 containsObject:v9];
+    v10 = [familiesCopy containsObject:v9];
   }
 
   else
@@ -178,10 +178,10 @@ LABEL_8:
   return v10;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBottom])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottom])
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -190,7 +190,7 @@ LABEL_8:
   {
     v8.receiver = self;
     v8.super_class = NTKPoodleFace;
-    v5 = [(NTKPoodleFace *)&v8 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKPoodleFace *)&v8 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;
@@ -210,7 +210,7 @@ LABEL_8:
   return v2;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotTopRight;
@@ -222,10 +222,10 @@ LABEL_8:
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKPoodleFace *)self device:a3];
-  if (a3 == 10)
+  v5 = [(NTKPoodleFace *)self device:mode];
+  if (mode == 10)
   {
     v6 = [NTKPoodleColorEditOption optionWithPoodleColor:0 forDevice:v5];
   }
@@ -238,37 +238,37 @@ LABEL_8:
   return v6;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKPoodleFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKPoodleFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKPoodleFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKPoodleFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKPoodleFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKPoodleFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKPoodleFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKPoodleFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKPoodleFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKPoodleFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKPoodleFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKPoodleFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = objc_opt_class();
   }
@@ -283,8 +283,8 @@ LABEL_8:
 
 - (id)_faceDescription
 {
-  v2 = [(NTKPoodleFace *)self _faceDescriptionKey];
-  v3 = [NTKPoodleFaceBundle localizedStringForKey:v2 comment:&stru_45510];
+  _faceDescriptionKey = [(NTKPoodleFace *)self _faceDescriptionKey];
+  v3 = [NTKPoodleFaceBundle localizedStringForKey:_faceDescriptionKey comment:&stru_45510];
 
   return v3;
 }

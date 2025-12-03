@@ -1,19 +1,19 @@
 @interface tm099d3b858edfad880b4e38c9b3d8ab11
 - (id)getGridX;
 - (id)getGridY;
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)compute2DGridTemps;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm099d3b858edfad880b4e38c9b3d8ab11
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm099d3b858edfad880b4e38c9b3d8ab11;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v49 = [(tm099d3b858edfad880b4e38c9b3d8ab11 *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tm099d3b858edfad880b4e38c9b3d8ab11 *)self gasGaugeBatteryTemperature];
   v5 = dword_1000AB83C;
   v6 = dword_1000AB8DC;
   v50 = HIDWORD(qword_1000AB82C);
@@ -47,7 +47,7 @@
     v10 = 4294967196;
   }
 
-  if (v3)
+  if (loadCopy)
   {
     [(tm099d3b858edfad880b4e38c9b3d8ab11 *)self resetVTFilterState];
   }
@@ -91,14 +91,14 @@
   *&v20 = v19;
   [v18 calculateControlEffort:v20 trigger:v21];
   sub_10000533C(56, (v5 * 0.299 + 6.19 + v6 * 0.686 + self->_filteredTempRearCameraDieWithDefault * -0.0193));
-  sub_10000533C(54, (v49 * 0.29 + 11.0 + v50 * 0.67));
+  sub_10000533C(54, (gasGaugeBatteryTemperature * 0.29 + 11.0 + v50 * 0.67));
   sub_10000533C(55, v10);
   sub_10000533C(61, (v5 * 0.22 + 284.0 + v6 * 0.2 + v51 * 0.48 + self->_filteredBacklightCurrentLI2 * 1.73));
   sub_10000533C(63, (v5 * 0.07 + 214.5 + v51 * 0.893 + (v52 & ~(v52 >> 31)) * 0.0046));
   sub_10000533C(59, (v5 * -0.68 + -184.0 + v6 * 1.73));
-  sub_10000533C(57, (v49 * 0.52 + 16.0 + v50 * 0.45));
-  sub_10000533C(58, (v49 * 0.37 + 28.0 + v50 * 0.59));
-  sub_10000533C(60, (self->_filteredBacklightCurrentLI2 * 0.655 + 274.0 + v49 * 0.00135 + v51 * 0.949));
+  sub_10000533C(57, (gasGaugeBatteryTemperature * 0.52 + 16.0 + v50 * 0.45));
+  sub_10000533C(58, (gasGaugeBatteryTemperature * 0.37 + 28.0 + v50 * 0.59));
+  sub_10000533C(60, (self->_filteredBacklightCurrentLI2 * 0.655 + 274.0 + gasGaugeBatteryTemperature * 0.00135 + v51 * 0.949));
   v22 = unk_1000AB904;
   v23 = [(CommonProduct *)self findComponent:19];
   v24 = v22 / 100.0;
@@ -179,7 +179,7 @@
 
 - (int)compute2DGridTemps
 {
-  v3 = [(tm099d3b858edfad880b4e38c9b3d8ab11 *)self gasGaugeBatteryTemperature];
+  gasGaugeBatteryTemperature = [(tm099d3b858edfad880b4e38c9b3d8ab11 *)self gasGaugeBatteryTemperature];
   v4 = dword_1000AB8DC;
   v5 = qword_1000AB8E0;
   v6 = SHIDWORD(qword_1000AB834);
@@ -193,23 +193,23 @@
   self->super.baseVT[5] = (self->_filteredBacklightCurrentLI2 * 0.76 + 148.0 + v4 * 0.78 + v5 * 0.22 + v6 * -0.08);
   self->super.baseVT[6] = (self->_filteredBacklightCurrentLI2 * 0.795 + 130.5 + v4 * 0.815 + v5 * 0.185 + v6 * -0.08);
   self->super.baseVT[7] = (self->_filteredBacklightCurrentLI2 * 0.625 + 89.0 + v4 * 0.865 + v5 * 0.135 + v6 * -0.065);
-  self->super.baseVT[8] = (self->_filteredBacklightCurrentLI2 * 0.546 + -11.4 + v3 * 0.256 + self->_filteredTempRearCameraDieWithDefault * 0.136 + v4 * 0.498 + v5 * 0.078);
+  self->super.baseVT[8] = (self->_filteredBacklightCurrentLI2 * 0.546 + -11.4 + gasGaugeBatteryTemperature * 0.256 + self->_filteredTempRearCameraDieWithDefault * 0.136 + v4 * 0.498 + v5 * 0.078);
   self->super.baseVT[9] = (self->_filteredBacklightCurrentLI2 * 0.25 + -45.5 + v4 * 1.17 + v5 * 0.035 + v8 * -0.22);
-  self->super.baseVT[10] = (self->_filteredBacklightCurrentLI2 * 1.53 + 106.0 + v3 * 0.14 + v4 * 0.45 + v5 * 0.3);
-  self->super.baseVT[11] = (self->_filteredBacklightCurrentLI2 * 1.66 + 93.0 + v3 * 0.19 + v4 * 0.47 + v5 * 0.24);
+  self->super.baseVT[10] = (self->_filteredBacklightCurrentLI2 * 1.53 + 106.0 + gasGaugeBatteryTemperature * 0.14 + v4 * 0.45 + v5 * 0.3);
+  self->super.baseVT[11] = (self->_filteredBacklightCurrentLI2 * 1.66 + 93.0 + gasGaugeBatteryTemperature * 0.19 + v4 * 0.47 + v5 * 0.24);
   self->super.baseVT[12] = (self->_filteredBacklightCurrentLI2 * 1.11 + 176.0 + v4 * 0.61 + v5 * 0.3);
   self->super.baseVT[13] = (self->_filteredBacklightCurrentLI2 * 1.45 + 90.0 + v6 * 0.06 + v4 * 0.63 + v5 * 0.23);
-  self->super.baseVT[14] = (self->_filteredBacklightCurrentLI2 * 0.86 + 25.0 + v3 * 0.33 + v6 * 0.08 + v4 * 0.53);
-  self->super.baseVT[15] = (self->_filteredBacklightCurrentLI2 * 1.8 + 132.0 + v3 * 0.18 + v4 * 0.24 + v5 * 0.48);
-  self->super.baseVT[16] = (self->_filteredBacklightCurrentLI2 * 2.04 + 128.0 + v3 * 0.24 + v4 * 0.23 + v5 * 0.42);
-  self->super.baseVT[17] = (self->_filteredBacklightCurrentLI2 * 1.98 + 136.0 + v3 * 0.33 + v4 * 0.22 + v5 * 0.35);
-  self->super.baseVT[18] = (self->_filteredBacklightCurrentLI2 * 1.9 + 134.0 + v3 * 0.41 + v4 * 0.2 + v5 * 0.3);
-  self->super.baseVT[19] = (self->_filteredBacklightCurrentLI2 * 1.11 + 110.0 + v3 * 0.42 + v4 * 0.26 + v5 * 0.23);
+  self->super.baseVT[14] = (self->_filteredBacklightCurrentLI2 * 0.86 + 25.0 + gasGaugeBatteryTemperature * 0.33 + v6 * 0.08 + v4 * 0.53);
+  self->super.baseVT[15] = (self->_filteredBacklightCurrentLI2 * 1.8 + 132.0 + gasGaugeBatteryTemperature * 0.18 + v4 * 0.24 + v5 * 0.48);
+  self->super.baseVT[16] = (self->_filteredBacklightCurrentLI2 * 2.04 + 128.0 + gasGaugeBatteryTemperature * 0.24 + v4 * 0.23 + v5 * 0.42);
+  self->super.baseVT[17] = (self->_filteredBacklightCurrentLI2 * 1.98 + 136.0 + gasGaugeBatteryTemperature * 0.33 + v4 * 0.22 + v5 * 0.35);
+  self->super.baseVT[18] = (self->_filteredBacklightCurrentLI2 * 1.9 + 134.0 + gasGaugeBatteryTemperature * 0.41 + v4 * 0.2 + v5 * 0.3);
+  self->super.baseVT[19] = (self->_filteredBacklightCurrentLI2 * 1.11 + 110.0 + gasGaugeBatteryTemperature * 0.42 + v4 * 0.26 + v5 * 0.23);
   self->super.baseVT[20] = (self->_filteredBacklightCurrentLI2 * 1.42 + 161.0 + v7 * -0.12 + v4 * 0.28 + v5 * 0.77);
-  self->super.baseVT[21] = (self->_filteredBacklightCurrentLI2 * 1.63 + 133.0 + v3 * 0.68 + v6 * -0.09 + v5 * 0.35);
+  self->super.baseVT[21] = (self->_filteredBacklightCurrentLI2 * 1.63 + 133.0 + gasGaugeBatteryTemperature * 0.68 + v6 * -0.09 + v5 * 0.35);
   self->super.baseVT[22] = (self->_filteredBacklightCurrentLI2 * 1.27 + 309.0 + v4 * 0.2 + v5 * 0.7);
-  self->super.baseVT[23] = (self->_filteredBacklightCurrentLI2 * 1.64 + 141.0 + v3 * 0.83 + v6 * -0.11 + v5 * 0.21);
-  self->super.baseVT[24] = (v3 * 0.64 + 6.0 + v6 * -0.28 + v4 * 0.44 + v5 * 0.18);
+  self->super.baseVT[23] = (self->_filteredBacklightCurrentLI2 * 1.64 + 141.0 + gasGaugeBatteryTemperature * 0.83 + v6 * -0.11 + v5 * 0.21);
+  self->super.baseVT[24] = (gasGaugeBatteryTemperature * 0.64 + 6.0 + v6 * -0.28 + v4 * 0.44 + v5 * 0.18);
   v11 = vdupq_lane_s32(v9, 0);
   v12 = 1;
   v13 = v11;

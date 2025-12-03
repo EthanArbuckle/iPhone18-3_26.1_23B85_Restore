@@ -1,31 +1,31 @@
 @interface TPViewStateRoot
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToViewStateRoot:(id)a3;
-- (TPViewStateRoot)initWithContext:(id)a3;
-- (TPViewStateRoot)initWithContext:(id)a3 layoutState:(id)a4 uiState:(id)a5;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setLayoutState:(id)a3;
-- (void)setUiState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToViewStateRoot:(id)root;
+- (TPViewStateRoot)initWithContext:(id)context;
+- (TPViewStateRoot)initWithContext:(id)context layoutState:(id)state uiState:(id)uiState;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setLayoutState:(id)state;
+- (void)setUiState:(id)state;
 @end
 
 @implementation TPViewStateRoot
 
-- (TPViewStateRoot)initWithContext:(id)a3
+- (TPViewStateRoot)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = TPViewStateRoot;
-  v5 = [(TPViewStateRoot *)&v23 initWithContext:v4];
+  v5 = [(TPViewStateRoot *)&v23 initWithContext:contextCopy];
   if (v5)
   {
     v6 = [TPArchivedLayoutState alloc];
-    v12 = objc_msgSend_initWithContext_(v6, v7, v8, v9, v10, v11, v4);
+    v12 = objc_msgSend_initWithContext_(v6, v7, v8, v9, v10, v11, contextCopy);
     archivedLayoutState = v5->_archivedLayoutState;
     v5->_archivedLayoutState = v12;
 
     v14 = [TPArchivedUIState alloc];
-    v20 = objc_msgSend_initWithContext_(v14, v15, v16, v17, v18, v19, v4);
+    v20 = objc_msgSend_initWithContext_(v14, v15, v16, v17, v18, v19, contextCopy);
     archivedUIState = v5->_archivedUIState;
     v5->_archivedUIState = v20;
   }
@@ -33,52 +33,52 @@
   return v5;
 }
 
-- (void)setLayoutState:(id)a3
+- (void)setLayoutState:(id)state
 {
-  v22 = a3;
+  stateCopy = state;
   objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
   v14 = objc_msgSend_context(self, v9, v10, v11, v12, v13);
-  v20 = objc_msgSend_archivedLayoutStateInContext_(v22, v15, v16, v17, v18, v19, v14);
+  v20 = objc_msgSend_archivedLayoutStateInContext_(stateCopy, v15, v16, v17, v18, v19, v14);
   archivedLayoutState = self->_archivedLayoutState;
   self->_archivedLayoutState = v20;
 }
 
-- (void)setUiState:(id)a3
+- (void)setUiState:(id)state
 {
-  v22 = a3;
+  stateCopy = state;
   objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
   v14 = objc_msgSend_context(self, v9, v10, v11, v12, v13);
-  v20 = objc_msgSend_archivedUIStateInContext_(v22, v15, v16, v17, v18, v19, v14);
+  v20 = objc_msgSend_archivedUIStateInContext_(stateCopy, v15, v16, v17, v18, v19, v14);
   archivedUIState = self->_archivedUIState;
   self->_archivedUIState = v20;
 }
 
-- (TPViewStateRoot)initWithContext:(id)a3 layoutState:(id)a4 uiState:(id)a5
+- (TPViewStateRoot)initWithContext:(id)context layoutState:(id)state uiState:(id)uiState
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  stateCopy = state;
+  uiStateCopy = uiState;
   v29.receiver = self;
   v29.super_class = TPViewStateRoot;
-  v11 = [(TPViewStateRoot *)&v29 initWithContext:v8];
+  v11 = [(TPViewStateRoot *)&v29 initWithContext:contextCopy];
   if (v11)
   {
     v12 = [TPArchivedLayoutState alloc];
-    if (v9)
+    if (stateCopy)
     {
-      v18 = objc_msgSend_initWithContext_layoutState_(v12, v13, v14, v15, v16, v17, v8, v9);
+      v18 = objc_msgSend_initWithContext_layoutState_(v12, v13, v14, v15, v16, v17, contextCopy, stateCopy);
     }
 
     else
     {
-      v18 = objc_msgSend_initWithContext_(v12, v13, v14, v15, v16, v17, v8);
+      v18 = objc_msgSend_initWithContext_(v12, v13, v14, v15, v16, v17, contextCopy);
     }
 
     v19 = v18;
     objc_storeStrong(&v11->_archivedLayoutState, v18);
 
     v20 = [TPArchivedUIState alloc];
-    v26 = objc_msgSend_initWithContext_uiState_(v20, v21, v22, v23, v24, v25, v8, v10);
+    v26 = objc_msgSend_initWithContext_uiState_(v20, v21, v22, v23, v24, v25, contextCopy, uiStateCopy);
     archivedUIState = v11->_archivedUIState;
     v11->_archivedUIState = v26;
   }
@@ -86,12 +86,12 @@
   return v11;
 }
 
-- (BOOL)isEqualToViewStateRoot:(id)a3
+- (BOOL)isEqualToViewStateRoot:(id)root
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToArchivedLayoutState_(self->_archivedLayoutState, v5, v6, v7, v8, v9, v4[8]))
+  rootCopy = root;
+  if (objc_msgSend_isEqualToArchivedLayoutState_(self->_archivedLayoutState, v5, v6, v7, v8, v9, rootCopy[8]))
   {
-    isEqualToArchivedUIState = objc_msgSend_isEqualToArchivedUIState_(self->_archivedUIState, v10, v11, v12, v13, v14, v4[9]);
+    isEqualToArchivedUIState = objc_msgSend_isEqualToArchivedUIState_(self->_archivedUIState, v10, v11, v12, v13, v14, rootCopy[9]);
   }
 
   else
@@ -102,10 +102,10 @@
   return isEqualToArchivedUIState;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToViewStateRoot = 1;
   }
@@ -115,7 +115,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToViewStateRoot = objc_msgSend_isEqualToViewStateRoot_(self, v5, v6, v7, v8, v9, v4);
+      isEqualToViewStateRoot = objc_msgSend_isEqualToViewStateRoot_(self, v5, v6, v7, v8, v9, equalCopy);
     }
 
     else
@@ -127,13 +127,13 @@
   return isEqualToViewStateRoot;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v10 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, v9, off_2812F85B8[58]);
+  v10 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, v9, off_2812F85B8[58]);
 
-  if ((*(v10 + 16) & 1) != 0 && objc_msgSend_hasDocumentVersionUUID(v4, v11, v12, v13, v14, v15))
+  if ((*(v10 + 16) & 1) != 0 && objc_msgSend_hasDocumentVersionUUID(unarchiverCopy, v11, v12, v13, v14, v15))
   {
     v16 = *(v10 + 24);
     v33[0] = MEMORY[0x277D85DD0];
@@ -141,7 +141,7 @@
     v33[2] = sub_275FFDEDC;
     v33[3] = &unk_27A6A8BD0;
     v33[4] = self;
-    v17 = v4;
+    v17 = unarchiverCopy;
     v19 = objc_opt_class();
     if (v16)
     {
@@ -162,17 +162,17 @@
     v32[2] = sub_275FFDFD8;
     v32[3] = &unk_27A6A8BF8;
     v32[4] = self;
-    v25 = v4;
+    v25 = unarchiverCopy;
     v26 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v25, v27, v28, v29, v30, v31, v24, v26, 0, v32);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v21 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v21, v4, v5, v6, v7, v8, sub_275FFE27C, off_2812F85B8[58]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, v5, v6, v7, v8, sub_275FFE27C, off_2812F85B8[58]);
 
   archivedLayoutState = self->_archivedLayoutState;
   if (archivedLayoutState)
@@ -191,7 +191,7 @@
       *(v9 + 24) = v16;
     }
 
-    objc_msgSend_setStrongReference_message_(v21, v10, v11, v12, v13, v14, archivedLayoutState, v16);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v10, v11, v12, v13, v14, archivedLayoutState, v16);
   }
 
   archivedUIState = self->_archivedUIState;
@@ -211,7 +211,7 @@
       *(v9 + 32) = v19;
     }
 
-    objc_msgSend_setStrongReference_message_(v21, v10, v11, v12, v13, v14, archivedUIState, v19);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v10, v11, v12, v13, v14, archivedUIState, v19);
   }
 }
 

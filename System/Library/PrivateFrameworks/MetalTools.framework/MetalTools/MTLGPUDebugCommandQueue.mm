@@ -1,19 +1,19 @@
 @interface MTLGPUDebugCommandQueue
-- (MTLGPUDebugCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4;
+- (MTLGPUDebugCommandQueue)initWithCommandQueue:(id)queue device:(id)device;
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 @end
 
 @implementation MTLGPUDebugCommandQueue
 
-- (MTLGPUDebugCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4
+- (MTLGPUDebugCommandQueue)initWithCommandQueue:(id)queue device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MTLGPUDebugCommandQueue;
-  result = [(MTLToolsCommandQueue *)&v6 initWithBaseObject:a3 parent:?];
+  result = [(MTLToolsCommandQueue *)&v6 initWithBaseObject:queue parent:?];
   if (result)
   {
-    result->_deviceOptions = (a4 + 292);
+    result->_deviceOptions = (device + 292);
   }
 
   return result;
@@ -24,8 +24,8 @@
   v3 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (![v3 privateData])
   {
-    v4 = [(MTLToolsObject *)self baseObject];
-    [v4 getPrivateDataAndOffset:&v3[*MEMORY[0x277CD70C0]] privateDataOffset:&v3[*MEMORY[0x277CD70C8]]];
+    baseObject = [(MTLToolsObject *)self baseObject];
+    [baseObject getPrivateDataAndOffset:&v3[*MEMORY[0x277CD70C0]] privateDataOffset:&v3[*MEMORY[0x277CD70C8]]];
   }
 
   v5 = [[MTLGPUDebugCommandBuffer alloc] initWithCommandBuffer:v3 commandQueue:self descriptor:0];
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(MTLToolsDevice *)self->super.super._device unwrapMTLCommandBufferDescriptor:a3 alwaysCopy:1];
+  v6 = [(MTLToolsDevice *)self->super.super._device unwrapMTLCommandBufferDescriptor:descriptor alwaysCopy:1];
   [v6 setRetainedReferences:1];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
@@ -44,11 +44,11 @@
     v8 = v7;
     if (![v7 privateData])
     {
-      v9 = [(MTLToolsObject *)self baseObject];
-      [v9 getPrivateDataAndOffset:&v8[*MEMORY[0x277CD70C0]] privateDataOffset:&v8[*MEMORY[0x277CD70C8]]];
+      baseObject = [(MTLToolsObject *)self baseObject];
+      [baseObject getPrivateDataAndOffset:&v8[*MEMORY[0x277CD70C0]] privateDataOffset:&v8[*MEMORY[0x277CD70C8]]];
     }
 
-    v10 = [[MTLGPUDebugCommandBuffer alloc] initWithCommandBuffer:v8 commandQueue:self descriptor:a3];
+    v10 = [[MTLGPUDebugCommandBuffer alloc] initWithCommandBuffer:v8 commandQueue:self descriptor:descriptor];
     objc_autoreleasePoolPop(v5);
 
     return v10;

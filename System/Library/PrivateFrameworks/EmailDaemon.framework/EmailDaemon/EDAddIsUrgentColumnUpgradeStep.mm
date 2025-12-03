@@ -1,5 +1,5 @@
 @interface EDAddIsUrgentColumnUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 + (id)log;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __37__EDAddIsUrgentColumnUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -30,14 +30,14 @@ void __37__EDAddIsUrgentColumnUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_6 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = sqlite3_exec([v5 sqlDB], "ALTER TABLE messages ADD COLUMN is_urgent INTEGER NOT NULL DEFAULT 0;CREATE INDEX IF NOT EXISTS messages_mailbox_is_urgent_display_date_index ON messages(mailbox, is_urgent, display_date);CREATE INDEX IF NOT EXISTS messages_mailbox_deleted_is_urgent_display_date_index ON messages(mailbox, deleted, is_urgent, display_date) WHERE journaled = 0;ALTER TABLE threads ADD COLUMN is_urgent INTEGER NOT NULL DEFAULT 0;CREATE INDEX IF NOT EXISTS threads_scope_is_urgent_display_date_conversation_index ON threads(scope, is_urgent, display_date, conversation);", 0, 0, 0);
+  connectionCopy = connection;
+  v6 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE messages ADD COLUMN is_urgent INTEGER NOT NULL DEFAULT 0;CREATE INDEX IF NOT EXISTS messages_mailbox_is_urgent_display_date_index ON messages(mailbox, is_urgent, display_date);CREATE INDEX IF NOT EXISTS messages_mailbox_deleted_is_urgent_display_date_index ON messages(mailbox, deleted, is_urgent, display_date) WHERE journaled = 0;ALTER TABLE threads ADD COLUMN is_urgent INTEGER NOT NULL DEFAULT 0;CREATE INDEX IF NOT EXISTS threads_scope_is_urgent_display_date_conversation_index ON threads(scope, is_urgent, display_date, conversation);", 0, 0, 0);
   if (v6)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v6];
+    *error = [MEMORY[0x1E696ABC0] ef_SQLiteErrorWithCode:v6];
     v7 = +[EDAddIsUrgentColumnUpgradeStep log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -75,16 +75,16 @@ void __37__EDAddIsUrgentColumnUpgradeStep_log__block_invoke(uint64_t a1)
     v22 = [v20 initWithExpressions:v21];
     [v12 setWhereClause:v22];
 
-    v23 = [v12 queryString];
+    queryString = [v12 queryString];
     v24 = +[EDAddIsUrgentColumnUpgradeStep log];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138412290;
-      v28 = v23;
+      v28 = queryString;
       _os_log_impl(&dword_1C61EF000, v24, OS_LOG_TYPE_DEFAULT, "Query = %@", &v27, 0xCu);
     }
 
-    v8 = [v5 executeUpdateStatement:v12 error:a4];
+    v8 = [connectionCopy executeUpdateStatement:v12 error:error];
   }
 
   v25 = *MEMORY[0x1E69E9840];

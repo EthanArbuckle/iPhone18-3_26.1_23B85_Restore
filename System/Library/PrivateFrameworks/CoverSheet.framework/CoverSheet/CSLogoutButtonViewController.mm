@@ -2,37 +2,37 @@
 - (CSUserSessionControlling)userSessionController;
 - (CSWallpaperColorProvider)wallpaperColorProvider;
 - (CSWallpaperProviding)wallpaperProvider;
-- (void)_buttonPressed:(id)a3;
+- (void)_buttonPressed:(id)pressed;
 - (void)loadView;
-- (void)setWallpaperColorProvider:(id)a3;
-- (void)setWallpaperViewProvider:(id)a3;
+- (void)setWallpaperColorProvider:(id)provider;
+- (void)setWallpaperViewProvider:(id)provider;
 @end
 
 @implementation CSLogoutButtonViewController
 
-- (void)setWallpaperViewProvider:(id)a3
+- (void)setWallpaperViewProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperProvider);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_wallpaperProvider, obj);
-    v5 = [(CSLogoutButtonViewController *)self viewIfLoaded];
-    [v5 setWallpaperProvider:obj];
+    viewIfLoaded = [(CSLogoutButtonViewController *)self viewIfLoaded];
+    [viewIfLoaded setWallpaperProvider:obj];
   }
 }
 
-- (void)setWallpaperColorProvider:(id)a3
+- (void)setWallpaperColorProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperColorProvider);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_wallpaperColorProvider, obj);
-    v5 = [(CSLogoutButtonViewController *)self viewIfLoaded];
-    [v5 setWallpaperColorProvider:obj];
+    viewIfLoaded = [(CSLogoutButtonViewController *)self viewIfLoaded];
+    [viewIfLoaded setWallpaperColorProvider:obj];
   }
 }
 
@@ -47,8 +47,8 @@
   [(CSVibrantWallpaperButton *)v9 setWallpaperProvider:v5];
 
   [(CSLogoutButtonViewController *)self setView:v9];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"LOGOUT_BUTTON_TITLE" value:&stru_28302FDA0 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"LOGOUT_BUTTON_TITLE" value:&stru_28302FDA0 table:@"SpringBoard"];
   [(SBUIVibrantButton *)v9 setTitle:v7];
 
   v8 = [MEMORY[0x277D755B8] imageNamed:@"SignOut"];
@@ -57,7 +57,7 @@
   [(CSVibrantWallpaperButton *)v9 addTarget:self action:sel__buttonPressed_ forControlEvents:64];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_userSessionController);
   [WeakRetained logout];

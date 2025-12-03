@@ -1,33 +1,33 @@
 @interface _DASAssertionGroup
-- (BOOL)acquireWithError:(id *)a3;
-- (_DASAssertionGroup)initWithActivity:(id)a3 assertions:(id)a4 delegate:(id)a5;
+- (BOOL)acquireWithError:(id *)error;
+- (_DASAssertionGroup)initWithActivity:(id)activity assertions:(id)assertions delegate:(id)delegate;
 - (_DASAssertionGroupDelegate)delegate;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setWarningHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setWarningHandler:(id)handler;
 @end
 
 @implementation _DASAssertionGroup
 
-- (_DASAssertionGroup)initWithActivity:(id)a3 assertions:(id)a4 delegate:(id)a5
+- (_DASAssertionGroup)initWithActivity:(id)activity assertions:(id)assertions delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  activityCopy = activity;
+  assertionsCopy = assertions;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = _DASAssertionGroup;
   v12 = [(_DASAssertionGroup *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activity, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_activity, activity);
+    v14 = [assertionsCopy copy];
     assertions = v13->_assertions;
     v13->_assertions = v14;
 
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v13->_isActive = 0;
     v16 = os_log_create("com.apple.duetactivityscheduler", "AssertionGroup");
     log = v13->_log;
@@ -37,7 +37,7 @@
   return v13;
 }
 
-- (BOOL)acquireWithError:(id *)a3
+- (BOOL)acquireWithError:(id *)error
 {
   self->_isActive = 0;
   log = self->_log;
@@ -78,16 +78,16 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 acquireWithError:{a3, v20, v21}];
+        v13 = [v12 acquireWithError:{error, v20, v21}];
         v14 = self->_log;
         if ((v13 & 1) == 0)
         {
           if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
           {
             activity = self->_activity;
-            if (a3)
+            if (error)
             {
-              v19 = *a3;
+              v19 = *error;
             }
 
             else
@@ -199,10 +199,10 @@
   }
 }
 
-- (void)setWarningHandler:(id)a3
+- (void)setWarningHandler:(id)handler
 {
-  v4 = a3;
-  v5 = objc_retainBlock(v4);
+  handlerCopy = handler;
+  v5 = objc_retainBlock(handlerCopy);
   warningHandler = self->_warningHandler;
   self->_warningHandler = v5;
 
@@ -230,7 +230,7 @@
         v12[1] = 3221225472;
         v12[2] = sub_10004861C;
         v12[3] = &unk_1001B64E0;
-        v13 = v4;
+        v13 = handlerCopy;
         objc_copyWeak(&v14, &location);
         [v11 setWarningHandler:v12];
         objc_destroyWeak(&v14);
@@ -245,10 +245,10 @@
   }
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = objc_retainBlock(v4);
+  handlerCopy = handler;
+  v5 = objc_retainBlock(handlerCopy);
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v5;
 
@@ -276,7 +276,7 @@
         v12[1] = 3221225472;
         v12[2] = sub_100048858;
         v12[3] = &unk_1001B6508;
-        v13 = v4;
+        v13 = handlerCopy;
         objc_copyWeak(&v14, &location);
         v12[4] = self;
         [v10 setInvalidationHandler:v12];

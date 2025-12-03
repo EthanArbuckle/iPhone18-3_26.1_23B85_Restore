@@ -1,30 +1,30 @@
 @interface ICCollaborationNoteActivity
-- (ICCollaborationNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6 eventReporter:(id)a7;
+- (ICCollaborationNoteActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view eventReporter:(id)reporter;
 - (id)activityImage;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICCollaborationNoteActivity
 
-- (ICCollaborationNoteActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6 eventReporter:(id)a7
+- (ICCollaborationNoteActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view eventReporter:(id)reporter
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  noteCopy = note;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  reporterCopy = reporter;
   v21.receiver = self;
   v21.super_class = ICCollaborationNoteActivity;
   v17 = [(ICCollaborationNoteActivity *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_note, a3);
-    objc_storeStrong(&v18->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v18->_presentingSourceView, a6);
-    objc_storeStrong(&v18->_presentingViewController, a4);
-    objc_storeStrong(&v18->_eventReporter, a7);
+    objc_storeStrong(&v17->_note, note);
+    objc_storeStrong(&v18->_presentingBarButtonItem, item);
+    objc_storeStrong(&v18->_presentingSourceView, view);
+    objc_storeStrong(&v18->_presentingViewController, controller);
+    objc_storeStrong(&v18->_eventReporter, reporter);
   }
 
   return v18;
@@ -32,47 +32,47 @@
 
 - (id)activityTitle
 {
-  v2 = [(ICCollaborationNoteActivity *)self note];
-  v3 = [v2 shareViaICloudManageActionTitle];
+  note = [(ICCollaborationNoteActivity *)self note];
+  shareViaICloudManageActionTitle = [note shareViaICloudManageActionTitle];
 
-  return v3;
+  return shareViaICloudManageActionTitle;
 }
 
 - (id)activityImage
 {
-  v2 = [(ICCollaborationNoteActivity *)self note];
-  v3 = [v2 shareViaICloudSystemImageName];
+  note = [(ICCollaborationNoteActivity *)self note];
+  shareViaICloudSystemImageName = [note shareViaICloudSystemImageName];
 
-  v4 = [UIImage systemImageNamed:v3];
+  v4 = [UIImage systemImageNamed:shareViaICloudSystemImageName];
 
   return v4;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICCollaborationNoteActivity *)self note];
-  if ([v5 canBeSharedViaICloud])
+  completionCopy = completion;
+  note = [(ICCollaborationNoteActivity *)self note];
+  if ([note canBeSharedViaICloud])
   {
-    v6 = [(ICCollaborationNoteActivity *)self note];
-    v7 = [v6 isEmpty];
+    note2 = [(ICCollaborationNoteActivity *)self note];
+    isEmpty = [note2 isEmpty];
 
-    if (!v7)
+    if (!isEmpty)
     {
       if ([(ICCollaborationNoteActivity *)self contextPathEnum])
       {
-        v8 = [(ICCollaborationNoteActivity *)self eventReporter];
-        [v8 pushContextPathDataWithContextPathEnum:{-[ICCollaborationNoteActivity contextPathEnum](self, "contextPathEnum")}];
+        eventReporter = [(ICCollaborationNoteActivity *)self eventReporter];
+        [eventReporter pushContextPathDataWithContextPathEnum:{-[ICCollaborationNoteActivity contextPathEnum](self, "contextPathEnum")}];
       }
 
-      v9 = [(ICCollaborationNoteActivity *)self presentingViewController];
+      presentingViewController = [(ICCollaborationNoteActivity *)self presentingViewController];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1001091D8;
       v12[3] = &unk_100645E80;
       v12[4] = self;
-      v13 = v4;
-      [v9 ic_dismissPresentedViewControllerAnimated:1 completion:v12];
+      v13 = completionCopy;
+      [presentingViewController ic_dismissPresentedViewControllerAnimated:1 completion:v12];
 
       goto LABEL_11;
     }
@@ -89,10 +89,10 @@
   }
 
   [(ICCollaborationNoteActivity *)self activityDidFinish:0];
-  if (v4)
+  if (completionCopy)
   {
-    v11 = [(ICCollaborationNoteActivity *)self activityType];
-    (*(v4 + 2))(v4, 0, v11);
+    activityType = [(ICCollaborationNoteActivity *)self activityType];
+    (*(completionCopy + 2))(completionCopy, 0, activityType);
   }
 
 LABEL_11:

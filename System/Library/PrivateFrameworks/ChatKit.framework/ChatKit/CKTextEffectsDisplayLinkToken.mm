@@ -8,9 +8,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  [(CKTextEffectsDisplayLinkToken *)v2 invalidate];
-  v3.receiver = v2;
+  selfCopy = self;
+  [(CKTextEffectsDisplayLinkToken *)selfCopy invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CKTextEffectsDisplayLinkToken();
   [(CKTextEffectsDisplayLinkToken *)&v3 dealloc];
 }
@@ -28,8 +28,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    sub_190A7B444(v5, v4);
+    selfCopy = self;
+    sub_190A7B444(selfCopy, v4);
   }
 }
 

@@ -1,33 +1,33 @@
 @interface PKPeerPaymentDocumentSubmissionController
-- (PKPeerPaymentDocumentSubmissionController)initWithPeerPaymentWebService:(id)a3 identityVerificationResponse:(id)a4 setupDelegate:(id)a5 context:(int64_t)a6;
+- (PKPeerPaymentDocumentSubmissionController)initWithPeerPaymentWebService:(id)service identityVerificationResponse:(id)response setupDelegate:(id)delegate context:(int64_t)context;
 - (void)contactApplePressed;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
 - (void)uploadID;
 @end
 
 @implementation PKPeerPaymentDocumentSubmissionController
 
-- (PKPeerPaymentDocumentSubmissionController)initWithPeerPaymentWebService:(id)a3 identityVerificationResponse:(id)a4 setupDelegate:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentDocumentSubmissionController)initWithPeerPaymentWebService:(id)service identityVerificationResponse:(id)response setupDelegate:(id)delegate context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v12 acceptableDocuments];
+  serviceCopy = service;
+  responseCopy = response;
+  delegateCopy = delegate;
+  acceptableDocuments = [responseCopy acceptableDocuments];
   v15 = PKPassKitBundle();
   v23.receiver = self;
   v23.super_class = PKPeerPaymentDocumentSubmissionController;
-  v16 = [(PKPaymentDocumentSubmissionController *)&v23 initWithSetupDelegate:v13 context:a6 acceptableDocuments:v14 featureIdentifier:1 localizationBundle:v15 preferredLanguage:0];
+  v16 = [(PKPaymentDocumentSubmissionController *)&v23 initWithSetupDelegate:delegateCopy context:context acceptableDocuments:acceptableDocuments featureIdentifier:1 localizationBundle:v15 preferredLanguage:0];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_webService, a3);
-    objc_storeStrong(&v16->_identityVerificationResponse, a4);
-    v17 = [(PKPeerPaymentWebService *)v16->_webService peerPaymentService];
-    v18 = [v17 account];
+    objc_storeStrong(&v16->_webService, service);
+    objc_storeStrong(&v16->_identityVerificationResponse, response);
+    peerPaymentService = [(PKPeerPaymentWebService *)v16->_webService peerPaymentService];
+    account = [peerPaymentService account];
 
     v19 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v20 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:v18 webService:v16->_webService context:a6 delegate:v16 passLibraryDataProvider:v19];
+    v20 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:account webService:v16->_webService context:context delegate:v16 passLibraryDataProvider:v19];
     accountResolutionController = v16->_accountResolutionController;
     v16->_accountResolutionController = v20;
   }
@@ -43,29 +43,29 @@
     if (!self->_preventUpload && self->_webService && (-[PKPeerPaymentIdentityVerificationResponse encryptionCertificates](self->_identityVerificationResponse, "encryptionCertificates"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
     {
       v5 = objc_alloc_init(MEMORY[0x1E69B8F48]);
-      v6 = [(PKPaymentDocumentSubmissionController *)self frontID];
-      v7 = v6;
-      if (v6)
+      frontID = [(PKPaymentDocumentSubmissionController *)self frontID];
+      v7 = frontID;
+      if (frontID)
       {
-        v8 = UIImageJPEGRepresentation(v6, 0.9);
+        v8 = UIImageJPEGRepresentation(frontID, 0.9);
         [v5 setFrontImageData:v8];
       }
 
-      v9 = [(PKPaymentDocumentSubmissionController *)self backID];
-      v10 = v9;
-      if (v9)
+      backID = [(PKPaymentDocumentSubmissionController *)self backID];
+      v10 = backID;
+      if (backID)
       {
-        v11 = UIImageJPEGRepresentation(v9, 0.9);
+        v11 = UIImageJPEGRepresentation(backID, 0.9);
         [v5 setBackImageData:v11];
       }
 
-      v12 = [(PKPeerPaymentIdentityVerificationResponse *)self->_identityVerificationResponse encryptionCertificates];
-      [v5 setCertificates:v12];
+      encryptionCertificates = [(PKPeerPaymentIdentityVerificationResponse *)self->_identityVerificationResponse encryptionCertificates];
+      [v5 setCertificates:encryptionCertificates];
 
-      v13 = [(PKPaymentDocumentSubmissionController *)self selectedDocument];
-      [v5 setDocumentType:{objc_msgSend(v13, "documentType")}];
-      v14 = [v13 countryCode];
-      [v5 setDocumentCountryCode:v14];
+      selectedDocument = [(PKPaymentDocumentSubmissionController *)self selectedDocument];
+      [v5 setDocumentType:{objc_msgSend(selectedDocument, "documentType")}];
+      countryCode = [selectedDocument countryCode];
+      [v5 setDocumentCountryCode:countryCode];
 
       webService = self->_webService;
       v16[0] = MEMORY[0x1E69E9820];
@@ -231,16 +231,16 @@ void __64__PKPeerPaymentDocumentSubmissionController_contactApplePressed__block_
   }
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(PKPaymentDocumentSubmissionController *)self delegate];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  viewControllerCopy = viewController;
+  delegate = [(PKPaymentDocumentSubmissionController *)self delegate];
+  [delegate presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v4 = [(PKPaymentDocumentSubmissionController *)self delegate:a3];
+  v4 = [(PKPaymentDocumentSubmissionController *)self delegate:controller];
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 

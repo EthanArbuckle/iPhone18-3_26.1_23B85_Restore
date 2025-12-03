@@ -1,5 +1,5 @@
 @interface PSSystemPolicyForApp
-+ (BOOL)isServiceRestricted:(id)a3;
++ (BOOL)isServiceRestricted:(id)restricted;
 + (OS_dispatch_queue)_bbObserverQueue;
 - (BOOL)_accountModificationDisabledByRestrictions;
 - (BOOL)_isAppClip;
@@ -9,97 +9,97 @@
 - (BOOL)_supportsJournalingSuggestions;
 - (BOOL)_supportsLiveActivities;
 - (BOOL)_supportsLiveActivitiesFrequentUpdates;
-- (BOOL)getMulticastAllowed:(BOOL *)a3;
+- (BOOL)getMulticastAllowed:(BOOL *)allowed;
 - (BOOL)shouldShowPasteboardSpecifier;
-- (PSSystemPolicyForApp)initWithBundleIdentifier:(id)a3;
+- (PSSystemPolicyForApp)initWithBundleIdentifier:(id)identifier;
 - (PSSystemPolicyForAppDelegate)delegate;
 - (id)_journalingSuggestionsSpecifiers;
 - (id)accessoriesSpecifier;
 - (id)accountsSpecifier;
 - (id)assistantSpecifiers;
-- (id)authLevelStringForStatus:(unint64_t)a3;
+- (id)authLevelStringForStatus:(unint64_t)status;
 - (id)backgroundAppRefreshSpecifier;
 - (id)calendarSpecifiers;
 - (id)contactlessNFCSideButtonSpecifiers;
 - (id)contactlessNFCSpecifiers;
 - (id)contactsServicesSpecifier;
 - (id)dataUsageWorkspaceInfo;
-- (id)defaultAppSpecifierWithAppRecordsMatchingBlock:(id)a3 getter:(SEL)a4 setter:(SEL)a5 title:(id)a6;
-- (id)defaultBrowser:(id)a3;
+- (id)defaultAppSpecifierWithAppRecordsMatchingBlock:(id)block getter:(SEL)getter setter:(SEL)setter title:(id)title;
+- (id)defaultBrowser:(id)browser;
 - (id)defaultBrowserSpecifier;
-- (id)defaultMailApp:(id)a3;
+- (id)defaultMailApp:(id)app;
 - (id)defaultMailAppSpecifier;
-- (id)documentSource:(id)a3;
+- (id)documentSource:(id)source;
 - (id)documentsSpecifier;
 - (id)driverKitSpecifiers;
-- (id)exposureSpecifiersWithTCCServiceLookup:(id)a3;
+- (id)exposureSpecifiersWithTCCServiceLookup:(id)lookup;
 - (id)familyControlsSpecifier;
-- (id)getDoubleClickForNFC:(id)a3;
+- (id)getDoubleClickForNFC:(id)c;
 - (id)getNudityDetectionEnabledValue;
-- (id)isBackgroundRefreshEnabled:(id)a3;
-- (id)isFamilyControlsEnabled:(id)a3;
-- (id)isLiveActivitiesEnabled:(id)a3;
-- (id)isLocalNetworkEnabled:(id)a3;
-- (id)isTapToPayAlwaysPlaySoundEnabled:(id)a3;
-- (id)isTapToPayScreenLockEnabled:(id)a3;
+- (id)isBackgroundRefreshEnabled:(id)enabled;
+- (id)isFamilyControlsEnabled:(id)enabled;
+- (id)isLiveActivitiesEnabled:(id)enabled;
+- (id)isLocalNetworkEnabled:(id)enabled;
+- (id)isTapToPayAlwaysPlaySoundEnabled:(id)enabled;
+- (id)isTapToPayScreenLockEnabled:(id)enabled;
 - (id)liveActivitiesSpecifier;
 - (id)locationServicesSpecifier;
-- (id)locationStatus:(id)a3;
+- (id)locationStatus:(id)status;
 - (id)networkServicesSpecifier;
 - (id)notificationSpecifier;
 - (id)nudityDetectionSpeicier;
-- (id)pasteboardAccessForSpecifier:(id)a3;
+- (id)pasteboardAccessForSpecifier:(id)specifier;
 - (id)pasteboardSpecifier;
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4;
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create;
 - (id)photosServicesSpecifier;
-- (id)preferredLanguage:(id)a3;
+- (id)preferredLanguage:(id)language;
 - (id)preferredLanguageSpecifier;
-- (id)privacyAccessForSpecifier:(id)a3;
-- (id)privacySpecifierForService:(__CFString *)a3 tccServiceLookup:(id)a4 tccServiceOverrides:(id)a5;
-- (id)privacySpecifiersWithTCCServiceLookup:(id)a3 tccServiceOverrides:(id)a4;
+- (id)privacyAccessForSpecifier:(id)specifier;
+- (id)privacySpecifierForService:(__CFString *)service tccServiceLookup:(id)lookup tccServiceOverrides:(id)overrides;
+- (id)privacySpecifiersWithTCCServiceLookup:(id)lookup tccServiceOverrides:(id)overrides;
 - (id)searchSpecifiers;
 - (id)specifiers;
-- (id)specifiersForPolicyOptions:(unint64_t)a3 force:(BOOL)a4;
+- (id)specifiersForPolicyOptions:(unint64_t)options force:(BOOL)force;
 - (id)tapToPayAlwaysPlaySoundSpecifiers;
 - (id)tapToPayScreenLockSpecifiers;
-- (id)trackingSpecifiersWithTCCServiceLookup:(id)a3 tccServiceOverrides:(id)a4;
+- (id)trackingSpecifiersWithTCCServiceLookup:(id)lookup tccServiceOverrides:(id)overrides;
 - (id)walletSpecifier;
-- (id)wirelessDataSpecifierWithAppName:(id)a3;
+- (id)wirelessDataSpecifierWithAppName:(id)name;
 - (int64_t)_getAuthorizationRecordsStatus;
-- (void)_handleAddAccountButtonAction:(id)a3;
+- (void)_handleAddAccountButtonAction:(id)action;
 - (void)headerLinkWasTapped;
-- (void)loadNetworkConfigurationsForceRefresh:(BOOL)a3;
-- (void)monitoredStoreDidChange:(id)a3;
-- (void)observer:(id)a3 updateSectionInfo:(id)a4;
+- (void)loadNetworkConfigurationsForceRefresh:(BOOL)refresh;
+- (void)monitoredStoreDidChange:(id)change;
+- (void)observer:(id)observer updateSectionInfo:(id)info;
 - (void)reloadSpecifiers;
 - (void)saveNetworkConfiguration;
-- (void)setBackgroundRefreshEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setDefaultBrowser:(id)a3 specifier:(id)a4;
-- (void)setDefaultMailApp:(id)a3 specifier:(id)a4;
-- (void)setDoubleClickForNFC:(id)a3 specifier:(id)a4;
-- (void)setFamilyControlsEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setLiveActivitiesEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setLocalNetworkEnabled:(id)a3 specifier:(id)a4;
-- (void)setPasteboardAccess:(id)a3 forSpecifier:(id)a4;
-- (void)setPrivacyAccess:(id)a3 forSpecifier:(id)a4;
-- (void)setTapToPayAlwaysPlaySoundEnabled:(id)a3 specifier:(id)a4;
-- (void)setTapToPayScreenLockEnabled:(id)a3 specifier:(id)a4;
+- (void)setBackgroundRefreshEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setDefaultBrowser:(id)browser specifier:(id)specifier;
+- (void)setDefaultMailApp:(id)app specifier:(id)specifier;
+- (void)setDoubleClickForNFC:(id)c specifier:(id)specifier;
+- (void)setFamilyControlsEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setLiveActivitiesEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setLocalNetworkEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPasteboardAccess:(id)access forSpecifier:(id)specifier;
+- (void)setPrivacyAccess:(id)access forSpecifier:(id)specifier;
+- (void)setTapToPayAlwaysPlaySoundEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTapToPayScreenLockEnabled:(id)enabled specifier:(id)specifier;
 - (void)setupNetworkConfiguration;
-- (void)showController:(id)a3 animate:(BOOL)a4;
+- (void)showController:(id)controller animate:(BOOL)animate;
 @end
 
 @implementation PSSystemPolicyForApp
 
-- (PSSystemPolicyForApp)initWithBundleIdentifier:(id)a3
+- (PSSystemPolicyForApp)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = PSSystemPolicyForApp;
   v5 = [(PSSystemPolicyForApp *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    [(PSSystemPolicyForApp *)v5 setBundleIdentifier:v4];
+    [(PSSystemPolicyForApp *)v5 setBundleIdentifier:identifierCopy];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2050000000;
@@ -119,18 +119,18 @@
     v8 = v7;
     _Block_object_dispose(&v20, 8);
     v9 = [v7 alloc];
-    v10 = [objc_opt_class() _bbObserverQueue];
-    v11 = [v9 initWithQueue:v10];
+    _bbObserverQueue = [objc_opt_class() _bbObserverQueue];
+    v11 = [v9 initWithQueue:_bbObserverQueue];
     bbObserver = v6->__bbObserver;
     v6->__bbObserver = v11;
 
     [(BBObserver *)v6->__bbObserver setObserverFeed:512];
     [(BBObserver *)v6->__bbObserver setDelegate:v6];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v14 = *MEMORY[0x1E69599B0];
     v15 = +[PSAccountEnumerator sharedEnumerator];
-    v16 = [v15 monitoredAccountStore];
-    [v13 addObserver:v6 selector:sel_monitoredStoreDidChange_ name:v14 object:v16];
+    monitoredAccountStore = [v15 monitoredAccountStore];
+    [defaultCenter addObserver:v6 selector:sel_monitoredStoreDidChange_ name:v14 object:monitoredAccountStore];
 
     if (initWithBundleIdentifier__onceToken != -1)
     {
@@ -402,11 +402,11 @@ void __40__PSSystemPolicyForApp__bbObserverQueue__block_invoke()
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
     *buf = 136315394;
     v13 = "[PSSystemPolicyForApp specifiers]";
     v14 = 2114;
-    v15 = v7;
+    v15 = bundleIdentifier;
     _os_signpost_emit_with_name_impl(&dword_18B008000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "PSSystemPolicyForApp.specifiers", "%s: %{public}@", buf, 0x16u);
   }
 
@@ -437,23 +437,23 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
   }
 }
 
-- (id)specifiersForPolicyOptions:(unint64_t)a3 force:(BOOL)a4
+- (id)specifiersForPolicyOptions:(unint64_t)options force:(BOOL)force
 {
   v90 = *MEMORY[0x1E69E9840];
-  self->_policyOptions = a3;
-  self->_forcePolicyOptions = a4;
+  self->_policyOptions = options;
+  self->_forcePolicyOptions = force;
   v5 = objc_alloc(MEMORY[0x1E69635F8]);
-  v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v83 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v83 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (PSIsWebAppPlaceholder(v83))
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(PSSystemPolicyForApp *)self _isAppClip];
+    _isAppClip = [(PSSystemPolicyForApp *)self _isAppClip];
     v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v11 = v10;
-    if (v9)
+    if (_isAppClip)
     {
       v12 = @"ALLOW_APP_CLIP_ACCESS_FORMAT";
     }
@@ -464,13 +464,13 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
     }
 
     v13 = [v10 localizedStringForKey:v12 value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-    v14 = [v83 localizedName];
-    v15 = [v8 stringWithFormat:v13, v14];
+    localizedName = [v83 localizedName];
+    v15 = [v8 stringWithFormat:v13, localizedName];
     v16 = [PSSpecifier groupSpecifierWithName:v15];
 
-    [v7 ps_addPossibleObject:v16];
-    v17 = [(PSSystemPolicyForApp *)self notificationSpecifier];
-    [v7 ps_addPossibleObject:v17];
+    [array ps_addPossibleObject:v16];
+    notificationSpecifier = [(PSSystemPolicyForApp *)self notificationSpecifier];
+    [array ps_addPossibleObject:notificationSpecifier];
   }
 
   else
@@ -536,114 +536,114 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
 
     v29 = MEMORY[0x18CFEF020]();
     v30 = [(PSSystemPolicyForApp *)self privacySpecifiersWithTCCServiceLookup:v19 tccServiceOverrides:v29];
-    [v7 addObjectsFromArray:v30];
+    [array addObjectsFromArray:v30];
 
-    v31 = [(PSSystemPolicyForApp *)self calendarSpecifiers];
-    [v7 ps_addPossibleObject:v31];
+    calendarSpecifiers = [(PSSystemPolicyForApp *)self calendarSpecifiers];
+    [array ps_addPossibleObject:calendarSpecifiers];
 
-    v32 = [(PSSystemPolicyForApp *)self assistantSpecifiers];
-    [v7 ps_addPossibleObject:v32];
+    assistantSpecifiers = [(PSSystemPolicyForApp *)self assistantSpecifiers];
+    [array ps_addPossibleObject:assistantSpecifiers];
 
-    v33 = [(PSSystemPolicyForApp *)self searchSpecifiers];
-    [v7 ps_addPossibleObject:v33];
+    searchSpecifiers = [(PSSystemPolicyForApp *)self searchSpecifiers];
+    [array ps_addPossibleObject:searchSpecifiers];
 
-    v34 = [(PSSystemPolicyForApp *)self notificationSpecifier];
-    [v7 ps_addPossibleObject:v34];
+    notificationSpecifier2 = [(PSSystemPolicyForApp *)self notificationSpecifier];
+    [array ps_addPossibleObject:notificationSpecifier2];
 
-    v35 = [(PSSystemPolicyForApp *)self nudityDetectionSpeicier];
-    [v7 ps_addPossibleObject:v35];
+    nudityDetectionSpeicier = [(PSSystemPolicyForApp *)self nudityDetectionSpeicier];
+    [array ps_addPossibleObject:nudityDetectionSpeicier];
 
-    v36 = [(PSSystemPolicyForApp *)self liveActivitiesSpecifier];
-    [v7 ps_addPossibleObject:v36];
+    liveActivitiesSpecifier = [(PSSystemPolicyForApp *)self liveActivitiesSpecifier];
+    [array ps_addPossibleObject:liveActivitiesSpecifier];
 
     v37 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5568] tccServiceLookup:v19 tccServiceOverrides:v29];
-    [v7 ps_addPossibleObject:v37];
+    [array ps_addPossibleObject:v37];
 
     v38 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55F8] tccServiceLookup:v19 tccServiceOverrides:v29];
-    [v7 ps_addPossibleObject:v38];
+    [array ps_addPossibleObject:v38];
 
-    v82 = [(PSSystemPolicyForApp *)self backgroundAppRefreshSpecifier];
-    [v7 ps_addPossibleObject:v82];
-    v39 = [v83 localizedName];
-    if (!v39)
+    backgroundAppRefreshSpecifier = [(PSSystemPolicyForApp *)self backgroundAppRefreshSpecifier];
+    [array ps_addPossibleObject:backgroundAppRefreshSpecifier];
+    localizedName2 = [v83 localizedName];
+    if (!localizedName2)
     {
       v40 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v41 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      v42 = [v40 localizedStringForKey:v41 value:&stru_1EFE45030 table:@"RemovableApplications"];
+      bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      v42 = [v40 localizedStringForKey:bundleIdentifier2 value:&stru_1EFE45030 table:@"RemovableApplications"];
 
-      v39 = v42;
+      localizedName2 = v42;
     }
 
-    v78 = v39;
+    v78 = localizedName2;
     v43 = [(PSSystemPolicyForApp *)self wirelessDataSpecifierWithAppName:?];
-    [v7 ps_addPossibleObject:v43];
+    [array ps_addPossibleObject:v43];
 
-    v44 = [(PSSystemPolicyForApp *)self documentsSpecifier];
-    [v7 ps_addPossibleObject:v44];
+    documentsSpecifier = [(PSSystemPolicyForApp *)self documentsSpecifier];
+    [array ps_addPossibleObject:documentsSpecifier];
 
     v45 = [(PSSystemPolicyForApp *)self exposureSpecifiersWithTCCServiceLookup:v19];
-    [v7 addObjectsFromArray:v45];
+    [array addObjectsFromArray:v45];
 
-    v46 = [(PSSystemPolicyForApp *)self _journalingSuggestionsSpecifiers];
-    [v7 na_safeAddObjectsFromArray:v46];
+    _journalingSuggestionsSpecifiers = [(PSSystemPolicyForApp *)self _journalingSuggestionsSpecifiers];
+    [array na_safeAddObjectsFromArray:_journalingSuggestionsSpecifiers];
 
-    v47 = [(PSSystemPolicyForApp *)self contactlessNFCSpecifiers];
-    [v7 na_safeAddObjectsFromArray:v47];
+    contactlessNFCSpecifiers = [(PSSystemPolicyForApp *)self contactlessNFCSpecifiers];
+    [array na_safeAddObjectsFromArray:contactlessNFCSpecifiers];
 
-    v48 = [(PSSystemPolicyForApp *)self contactlessNFCSideButtonSpecifiers];
-    [v7 na_safeAddObjectsFromArray:v48];
+    contactlessNFCSideButtonSpecifiers = [(PSSystemPolicyForApp *)self contactlessNFCSideButtonSpecifiers];
+    [array na_safeAddObjectsFromArray:contactlessNFCSideButtonSpecifiers];
 
     if ([v83 isEligibleWebBrowser])
     {
-      v79 = [(PSSystemPolicyForApp *)self defaultBrowserSpecifier];
+      defaultBrowserSpecifier = [(PSSystemPolicyForApp *)self defaultBrowserSpecifier];
     }
 
     else
     {
-      v79 = 0;
+      defaultBrowserSpecifier = 0;
     }
 
     if ([v83 isEligibleMailClient])
     {
-      v49 = [(PSSystemPolicyForApp *)self defaultMailAppSpecifier];
+      defaultMailAppSpecifier = [(PSSystemPolicyForApp *)self defaultMailAppSpecifier];
     }
 
     else
     {
-      v49 = 0;
+      defaultMailAppSpecifier = 0;
     }
 
-    v77 = v49;
-    if (v79 | v49)
+    v77 = defaultMailAppSpecifier;
+    if (defaultBrowserSpecifier | defaultMailAppSpecifier)
     {
       v50 = [PSSpecifier groupSpecifierWithID:@"DEFAULT_APP"];
-      [v7 addObject:v50];
-      [v7 ps_addPossibleObject:v79];
-      [v7 ps_addPossibleObject:v77];
+      [array addObject:v50];
+      [array ps_addPossibleObject:defaultBrowserSpecifier];
+      [array ps_addPossibleObject:v77];
     }
 
     v80 = [(PSSystemPolicyForApp *)self trackingSpecifiersWithTCCServiceLookup:v19 tccServiceOverrides:v29];
     if ([v80 count])
     {
-      [v7 addObjectsFromArray:v80];
+      [array addObjectsFromArray:v80];
     }
 
-    v51 = [(PSSystemPolicyForApp *)self pasteboardSpecifier];
-    if (v51)
+    pasteboardSpecifier = [(PSSystemPolicyForApp *)self pasteboardSpecifier];
+    if (pasteboardSpecifier)
     {
       v52 = [PSSpecifier groupSpecifierWithID:@"PASTEBOARD_GROUP"];
-      [v7 addObject:v52];
+      [array addObject:v52];
 
-      [v7 addObject:v51];
+      [array addObject:pasteboardSpecifier];
     }
 
-    if ([v7 count])
+    if ([array count])
     {
       v53 = MEMORY[0x1E696AEC0];
-      v54 = [(PSSystemPolicyForApp *)self _isAppClip];
+      _isAppClip2 = [(PSSystemPolicyForApp *)self _isAppClip];
       v55 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v56 = v55;
-      if (v54)
+      if (_isAppClip2)
       {
         v57 = @"ALLOW_APP_CLIP_ACCESS_FORMAT";
       }
@@ -657,8 +657,8 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
       v59 = [v53 stringWithFormat:v58, v78];
       v60 = [PSSpecifier groupSpecifierWithName:v59];
 
-      [v7 insertObject:v60 atIndex:0];
-      if (v82 && ([MEMORY[0x1E696AE30] processInfo], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "isLowPowerModeEnabled"), v61, v62))
+      [array insertObject:v60 atIndex:0];
+      if (backgroundAppRefreshSpecifier && ([MEMORY[0x1E696AE30] processInfo], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "isLowPowerModeEnabled"), v61, v62))
       {
         v63 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v64 = [v63 localizedStringForKey:@"ALLOW_APP_REFRESH_LPM" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
@@ -684,53 +684,53 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
     v66 = [v65 localizedStringForKey:@"PREFERRED_LANGUAGE" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
     v67 = [PSSpecifier groupSpecifierWithName:v66];
 
-    v68 = [(PSSystemPolicyForApp *)self preferredLanguageSpecifier];
-    if (v68)
+    preferredLanguageSpecifier = [(PSSystemPolicyForApp *)self preferredLanguageSpecifier];
+    if (preferredLanguageSpecifier)
     {
-      [v7 addObject:v67];
-      v69 = [(PSSystemPolicyForApp *)self preferredLanguageSpecifier];
-      [v7 ps_addPossibleObject:v69];
+      [array addObject:v67];
+      preferredLanguageSpecifier2 = [(PSSystemPolicyForApp *)self preferredLanguageSpecifier];
+      [array ps_addPossibleObject:preferredLanguageSpecifier2];
     }
 
-    v70 = [(PSSystemPolicyForApp *)self accountsSpecifier];
-    if (v70)
+    accountsSpecifier = [(PSSystemPolicyForApp *)self accountsSpecifier];
+    if (accountsSpecifier)
     {
       v71 = [PSSpecifier groupSpecifierWithID:@"ACCOUNTS_GROUP" name:0];
-      [v7 addObject:v71];
+      [array addObject:v71];
 
-      [v7 addObject:v70];
+      [array addObject:accountsSpecifier];
     }
 
-    v72 = [(PSSystemPolicyForApp *)self familyControlsSpecifier];
-    if (v72)
+    familyControlsSpecifier = [(PSSystemPolicyForApp *)self familyControlsSpecifier];
+    if (familyControlsSpecifier)
     {
-      [v7 ps_addPossibleObject:v72];
+      [array ps_addPossibleObject:familyControlsSpecifier];
     }
 
-    v73 = [(PSSystemPolicyForApp *)self tapToPayScreenLockSpecifiers];
-    [v7 addObjectsFromArray:v73];
+    tapToPayScreenLockSpecifiers = [(PSSystemPolicyForApp *)self tapToPayScreenLockSpecifiers];
+    [array addObjectsFromArray:tapToPayScreenLockSpecifiers];
 
-    v74 = [(PSSystemPolicyForApp *)self tapToPayAlwaysPlaySoundSpecifiers];
-    [v7 addObjectsFromArray:v74];
+    tapToPayAlwaysPlaySoundSpecifiers = [(PSSystemPolicyForApp *)self tapToPayAlwaysPlaySoundSpecifiers];
+    [array addObjectsFromArray:tapToPayAlwaysPlaySoundSpecifiers];
 
-    v75 = [(PSSystemPolicyForApp *)self driverKitSpecifiers];
-    [v7 addObjectsFromArray:v75];
+    driverKitSpecifiers = [(PSSystemPolicyForApp *)self driverKitSpecifiers];
+    [array addObjectsFromArray:driverKitSpecifiers];
   }
 
-  return v7;
+  return array;
 }
 
 - (BOOL)_isAppClip
 {
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
   v8 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v8];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v8];
 
-  v6 = [v5 appClipMetadata];
-  LOBYTE(v4) = v6 != 0;
+  appClipMetadata = [v5 appClipMetadata];
+  LOBYTE(bundleIdentifier) = appClipMetadata != 0;
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (id)notificationSpecifier
@@ -743,8 +743,8 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
     }
 
     v4 = +[PSNotificationSettingsController sharedInstance];
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [v4 sectionInfoForIdentifier:v5];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v6 = [v4 sectionInfoForIdentifier:bundleIdentifier];
 
     if (v6)
     {
@@ -759,9 +759,9 @@ void __34__PSSystemPolicyForApp_specifiers__block_invoke(uint64_t a1)
       [v2 setObject:@"com.apple.graphic-icon.notifications" forKeyedSubscript:@"iconUTTypeIdentifier"];
       v10 = objc_opt_new();
       [v10 refreshCellContentsWithSpecifier:v2];
-      v11 = [v10 detailTextLabel];
-      v12 = [v11 text];
-      [v2 setObject:v12 forKeyedSubscript:@"cellSubtitleText"];
+      detailTextLabel = [v10 detailTextLabel];
+      text = [detailTextLabel text];
+      [v2 setObject:text forKeyedSubscript:@"cellSubtitleText"];
     }
 
     else
@@ -801,13 +801,13 @@ uint64_t __45__PSSystemPolicyForApp_notificationSpecifier__block_invoke()
   }
 
   NudityDetectionPreferencesHelperClass = getNudityDetectionPreferencesHelperClass();
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  if ([NudityDetectionPreferencesHelperClass nudityDetectionAvailableForBundleID:v4])
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  if ([NudityDetectionPreferencesHelperClass nudityDetectionAvailableForBundleID:bundleIdentifier])
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 sf_inRetailKioskMode];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    sf_inRetailKioskMode = [currentDevice sf_inRetailKioskMode];
 
-    if (v6)
+    if (sf_inRetailKioskMode)
     {
 LABEL_5:
       v7 = 0;
@@ -817,22 +817,22 @@ LABEL_5:
     v9 = MEMORY[0x1E696AAE8];
     v10 = PSBundlePathForPreferenceBundle(@"CommunicationSafetySettings");
     v12 = v11 = v10;
-    v4 = [v9 bundleWithPath:v12];
+    bundleIdentifier = [v9 bundleWithPath:v12];
 
-    v13 = [getNudityDetectionPreferencesHelperClass() nudityDetectionRowLabel];
-    v14 = [getNudityDetectionPreferencesHelperClass() classForNudityAppDetectionSettings];
-    v7 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v13, self, 0, sel_getNudityDetectionEnabledValue, [v4 classNamed:v14], 2, 0);
+    nudityDetectionRowLabel = [getNudityDetectionPreferencesHelperClass() nudityDetectionRowLabel];
+    classForNudityAppDetectionSettings = [getNudityDetectionPreferencesHelperClass() classForNudityAppDetectionSettings];
+    v7 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", nudityDetectionRowLabel, self, 0, sel_getNudityDetectionEnabledValue, [bundleIdentifier classNamed:classForNudityAppDetectionSettings], 2, 0);
 
-    v15 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    [v7 setProperty:v15 forKey:@"BUNDLE_ID"];
+    bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    [v7 setProperty:bundleIdentifier2 forKey:@"BUNDLE_ID"];
 
     [v7 setIdentifier:@"NUDITY_DETECTION"];
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(getNudityDetectionPreferencesHelperClass(), "nudityDetectionRowEnabled")}];
     [v7 setObject:v16 forKeyedSubscript:@"enabled"];
 
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
-    v17 = [getNudityDetectionPreferencesHelperClass() nudityDetectionRowIconID];
-    [v7 setObject:v17 forKeyedSubscript:@"iconUTTypeIdentifier"];
+    nudityDetectionRowIconID = [getNudityDetectionPreferencesHelperClass() nudityDetectionRowIconID];
+    [v7 setObject:nudityDetectionRowIconID forKeyedSubscript:@"iconUTTypeIdentifier"];
   }
 
   else
@@ -848,8 +848,8 @@ LABEL_6:
 - (id)getNudityDetectionEnabledValue
 {
   NudityDetectionPreferencesHelperClass = getNudityDetectionPreferencesHelperClass();
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [NudityDetectionPreferencesHelperClass nudityDetectionOnOffLabelForBundleID:v4];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [NudityDetectionPreferencesHelperClass nudityDetectionOnOffLabelForBundleID:bundleIdentifier];
 
   return v5;
 }
@@ -869,8 +869,8 @@ LABEL_6:
       v9 = [v8 localizedStringForKey:@"LIVE_ACTIVITIES" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
       v10 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", v9, 0, 0, 0, [v7 classNamed:@"ActivitySettingsDetailController"], 1, 0);
 
-      v11 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      [v10 setProperty:v11 forKey:@"BUNDLE_ID"];
+      bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      [v10 setProperty:bundleIdentifier forKey:@"BUNDLE_ID"];
     }
 
     else
@@ -902,8 +902,8 @@ LABEL_6:
   }
 
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
   v12 = 0;
   v13 = &v12;
@@ -926,15 +926,15 @@ LABEL_6:
   v8 = objc_alloc_init(v6);
   if ([v5 supportsLiveActivities])
   {
-    v9 = [v8 areActivitiesEnabled];
+    areActivitiesEnabled = [v8 areActivitiesEnabled];
   }
 
   else
   {
-    v9 = 0;
+    areActivitiesEnabled = 0;
   }
 
-  return v9;
+  return areActivitiesEnabled;
 }
 
 - (BOOL)_supportsLiveActivitiesFrequentUpdates
@@ -943,39 +943,39 @@ LABEL_6:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69635F8]);
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [v4 initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v6 = [v4 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
-    LOBYTE(v5) = [v6 supportsLiveActivitiesFrequentUpdates];
-    LOBYTE(v3) = v5;
+    LOBYTE(bundleIdentifier) = [v6 supportsLiveActivitiesFrequentUpdates];
+    LOBYTE(v3) = bundleIdentifier;
   }
 
   return v3;
 }
 
-- (void)setLiveActivitiesEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setLiveActivitiesEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v10 = a3;
+  enabledCopy = enabled;
   v5 = objc_alloc_init(getACActivityAuthorizationClass());
-  v6 = [v10 BOOLValue];
-  v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  [v5 setActivitiesEnabled:v6 forBundleId:v7];
+  bOOLValue = [enabledCopy BOOLValue];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  [v5 setActivitiesEnabled:bOOLValue forBundleId:bundleIdentifier];
 
-  v8 = [(PSSystemPolicyForApp *)self delegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  delegate = [(PSSystemPolicyForApp *)self delegate];
+  LOBYTE(bundleIdentifier) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (bundleIdentifier)
   {
-    v9 = [(PSSystemPolicyForApp *)self delegate];
-    [v9 systemPolicyForApp:self didUpdateForSystemPolicyOptions:0x10000000000 withValue:v10];
+    delegate2 = [(PSSystemPolicyForApp *)self delegate];
+    [delegate2 systemPolicyForApp:self didUpdateForSystemPolicyOptions:0x10000000000 withValue:enabledCopy];
   }
 }
 
-- (id)isLiveActivitiesEnabled:(id)a3
+- (id)isLiveActivitiesEnabled:(id)enabled
 {
   v4 = objc_alloc_init(getACActivityAuthorizationClass());
-  v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v6 = [v4 areActivitiesEnabledForBundleId:v5];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v6 = [v4 areActivitiesEnabledForBundleId:bundleIdentifier];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:v6];
 
@@ -985,16 +985,16 @@ LABEL_6:
 - (BOOL)_supportsJournalingSuggestions
 {
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
-  LOBYTE(v4) = [v5 supportsJournalingSuggestions];
-  return v4;
+  LOBYTE(bundleIdentifier) = [v5 supportsJournalingSuggestions];
+  return bundleIdentifier;
 }
 
 - (id)_journalingSuggestionsSpecifiers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ((self->_policyOptions & 0x100000000000) != 0 && [(PSSystemPolicyForApp *)self _supportsJournalingSuggestions]&& MomentsOnboardingAndSettingsLibraryCore_0())
   {
     if (!MomentsOnboardingAndSettingsLibraryCore_0())
@@ -1005,22 +1005,22 @@ LABEL_6:
     }
 
     v4 = [PSSpecifier groupSpecifierWithID:@"JOURNALING_SUGGESTIONS_GROUP", v12];
-    [v3 addObject:v4];
+    [array addObject:v4];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"JOURNALING_SUGGESTIONS" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:NSClassFromString(&cfstr_Mosuggestionsh.isa) cell:2 edit:0];
 
     v8 = MEMORY[0x1E695E118];
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"allowMultilineTitleKey"];
-    v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    [v7 setObject:v9 forKeyedSubscript:@"AppBundleID"];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    [v7 setObject:bundleIdentifier forKeyedSubscript:@"AppBundleID"];
 
     [v7 setObject:v8 forKeyedSubscript:@"useLazyIcons"];
     [v7 setObject:@"com.apple.graphic-icon.journaling-suggestions" forKeyedSubscript:@"iconUTTypeIdentifier"];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)accessoriesSpecifier
@@ -1068,9 +1068,9 @@ void __44__PSSystemPolicyForApp_accessoriesSpecifier__block_invoke(uint64_t a1)
   if (_os_feature_enabled_impl() && (self->_policyOptions & 0x8000000) != 0)
   {
     v4 = +[PSAccountEnumerator sharedEnumerator];
-    v5 = [v4 visibleAccountCount];
+    visibleAccountCount = [v4 visibleAccountCount];
 
-    if (v5 < 1)
+    if (visibleAccountCount < 1)
     {
       v3 = PSApplicationSpecifierForAddAccountButton();
       [v3 setTarget:self];
@@ -1084,8 +1084,8 @@ void __44__PSSystemPolicyForApp_accessoriesSpecifier__block_invoke(uint64_t a1)
       v3 = PSApplicationSpecifierForAccountsSection();
     }
 
-    v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"AppBundleID"];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:@"AppBundleID"];
   }
 
   else
@@ -1096,35 +1096,35 @@ void __44__PSSystemPolicyForApp_accessoriesSpecifier__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_handleAddAccountButtonAction:(id)a3
+- (void)_handleAddAccountButtonAction:(id)action
 {
-  v9 = a3;
-  v4 = [(PSSystemPolicyForApp *)self delegate];
+  actionCopy = action;
+  delegate = [(PSSystemPolicyForApp *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = v9;
+  v6 = actionCopy;
   if (v5)
   {
-    v7 = objc_alloc_init([v9 detailControllerClass]);
+    v7 = objc_alloc_init([actionCopy detailControllerClass]);
     if (v7)
     {
-      v8 = [(PSSystemPolicyForApp *)self delegate];
-      [v8 showController:v7 animate:1];
+      delegate2 = [(PSSystemPolicyForApp *)self delegate];
+      [delegate2 showController:v7 animate:1];
     }
 
-    v6 = v9;
+    v6 = actionCopy;
   }
 }
 
 - (BOOL)_accountModificationDisabledByRestrictions
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
 
   return v3;
 }
 
-- (void)monitoredStoreDidChange:(id)a3
+- (void)monitoredStoreDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1158,8 +1158,8 @@ void __48__PSSystemPolicyForApp_monitoredStoreDidChange___block_invoke(uint64_t 
 
     v6 = self->_calendarPrivacyController;
     v7 = calendarSpecifiers_specifierName;
-    v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v2 = [(PSCalendarPolicyController *)v6 appSpecifierWithName:v7 bundleID:v8];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v2 = [(PSCalendarPolicyController *)v6 appSpecifierWithName:v7 bundleID:bundleIdentifier];
 
     if (v2)
     {
@@ -1221,7 +1221,7 @@ void __42__PSSystemPolicyForApp_calendarSpecifiers__block_invoke()
   v8 = 0;
   v10 = 0u;
   v11 = 0;
-  v9 = self;
+  selfCopy = self;
   v2 = _CTServerConnectionCreate();
   if (v2)
   {
@@ -1244,27 +1244,27 @@ void __42__PSSystemPolicyForApp_calendarSpecifiers__block_invoke()
 
 - (BOOL)_isWirelessDataRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD90]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD90]];
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 sf_isChinaRegionCellularDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
 
-  v6 = (v5 & 1) == 0 && CTCellularDataPlanGetIsEnabled() == 0;
+  v6 = (sf_isChinaRegionCellularDevice & 1) == 0 && CTCellularDataPlanGetIsEnabled() == 0;
   return v3 == 2 || v6;
 }
 
-- (id)wirelessDataSpecifierWithAppName:(id)a3
+- (id)wirelessDataSpecifierWithAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ((self->_policyOptions & 0x8000) == 0 || !MGGetBoolAnswer())
   {
     goto LABEL_5;
   }
 
-  v5 = [(PSSystemPolicyForApp *)self _isWirelessDataRestricted];
+  _isWirelessDataRestricted = [(PSSystemPolicyForApp *)self _isWirelessDataRestricted];
   [0 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enabled"];
-  if (v5)
+  if (_isWirelessDataRestricted)
   {
     [0 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"enabled"];
 LABEL_5:
@@ -1290,18 +1290,18 @@ LABEL_5:
 
   v9 = v8;
   _Block_object_dispose(&v17, 8);
-  v10 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
   v11 = objc_opt_new();
-  v6 = [v8 systemPolicySpecifierForAppName:v4 bundleID:v10 icon:v11 enabled:{-[PSSystemPolicyForApp _isWirelessDataRestricted](self, "_isWirelessDataRestricted") ^ 1}];
+  v6 = [v8 systemPolicySpecifierForAppName:nameCopy bundleID:bundleIdentifier icon:v11 enabled:{-[PSSystemPolicyForApp _isWirelessDataRestricted](self, "_isWirelessDataRestricted") ^ 1}];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 identifier];
-  v14 = [v12 stringWithFormat:@"%@.wireless", v13];
+  identifier = [v6 identifier];
+  v14 = [v12 stringWithFormat:@"%@.wireless", identifier];
   [v6 setIdentifier:v14];
 
   [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
   [v6 setObject:@"com.apple.graphic-icon.cellular-settings" forKeyedSubscript:@"iconUTTypeIdentifier"];
-  v15 = [v6 performGetter];
+  performGetter = [v6 performGetter];
   [v6 removePropertyForKey:@"iconImage"];
 LABEL_6:
 
@@ -1335,37 +1335,37 @@ LABEL_6:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [getFOAuthorizationCenterClass() sharedCenter];
-  v4 = [v3 authorizationRecords];
+  sharedCenter = [getFOAuthorizationCenterClass() sharedCenter];
+  authorizationRecords = [sharedCenter authorizationRecords];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [authorizationRecords countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v16;
-    v8 = 1;
+    status = 1;
     while (2)
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(authorizationRecords);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-        v13 = [v11 isEqualToString:v12];
+        bundleIdentifier = [v10 bundleIdentifier];
+        bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+        v13 = [bundleIdentifier isEqualToString:bundleIdentifier2];
 
         if (v13)
         {
-          v8 = [v10 status];
+          status = [v10 status];
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [authorizationRecords countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -1377,68 +1377,68 @@ LABEL_6:
 
   else
   {
-    v8 = 1;
+    status = 1;
   }
 
 LABEL_12:
 
-  return v8;
+  return status;
 }
 
-- (void)setFamilyControlsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setFamilyControlsEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__0;
   v26[4] = __Block_byref_object_dispose__0;
-  v7 = v6;
+  v7 = enabledCopy;
   v27 = v7;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [getFOAuthorizationCenterClass() sharedCenter];
-  v9 = [v8 authorizationRecords];
+  sharedCenter = [getFOAuthorizationCenterClass() sharedCenter];
+  authorizationRecords = [sharedCenter authorizationRecords];
 
-  v10 = 0;
-  v11 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  recordIdentifier = 0;
+  v11 = [authorizationRecords countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v11)
   {
     v12 = *v23;
     do
     {
       v13 = 0;
-      v14 = v10;
+      v14 = recordIdentifier;
       do
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(authorizationRecords);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v13);
-        v16 = [v15 bundleIdentifier];
-        v17 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-        if ([v16 isEqualToString:v17])
+        bundleIdentifier = [v15 bundleIdentifier];
+        bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+        if ([bundleIdentifier isEqualToString:bundleIdentifier2])
         {
-          v10 = [v15 recordIdentifier];
+          recordIdentifier = [v15 recordIdentifier];
         }
 
         else
         {
-          v10 = 0;
+          recordIdentifier = 0;
         }
 
         ++v13;
-        v14 = v10;
+        v14 = recordIdentifier;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v11 = [authorizationRecords countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v11);
@@ -1446,24 +1446,24 @@ LABEL_12:
 
   if ([(PSSystemPolicyForApp *)self _getAuthorizationRecordsStatus]== 2)
   {
-    v18 = [getFOAuthorizationCenterClass() sharedCenter];
+    sharedCenter2 = [getFOAuthorizationCenterClass() sharedCenter];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_invoke;
     v21[3] = &unk_1E71DC198;
     v21[4] = v26;
-    [v18 resetAuthorizationForRecordIdentifier:v10 completionHandler:v21];
+    [sharedCenter2 resetAuthorizationForRecordIdentifier:recordIdentifier completionHandler:v21];
   }
 
   else
   {
-    v18 = [getFOAuthorizationCenterClass() sharedCenter];
+    sharedCenter2 = [getFOAuthorizationCenterClass() sharedCenter];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_invoke_2;
     v20[3] = &unk_1E71DC198;
     v20[4] = v26;
-    [v18 requestAuthorizationForRecordIdentifier:v10 completionHandler:v20];
+    [sharedCenter2 requestAuthorizationForRecordIdentifier:recordIdentifier completionHandler:v20];
   }
 
   _Block_object_dispose(v26, 8);
@@ -1499,7 +1499,7 @@ void __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_in
   objc_storeStrong((*(*(a1 + 32) + 8) + 40), v2);
 }
 
-- (id)isFamilyControlsEnabled:(id)a3
+- (id)isFamilyControlsEnabled:(id)enabled
 {
   if ([(PSSystemPolicyForApp *)self _getAuthorizationRecordsStatus]== 2)
   {
@@ -1542,15 +1542,15 @@ void __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_in
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 UIBackgroundModes];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  uIBackgroundModes = [v5 UIBackgroundModes];
+  v7 = [uIBackgroundModes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1561,7 +1561,7 @@ void __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_in
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(uIBackgroundModes);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -1572,7 +1572,7 @@ void __62__PSSystemPolicyForApp_setFamilyControlsEnabled_forSpecifier___block_in
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [uIBackgroundModes countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 0;
       if (v8)
       {
@@ -1595,28 +1595,28 @@ LABEL_15:
 
 - (BOOL)_isBackgroundAppRefreshAllowed
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v3)
+  if (isLowPowerModeEnabled)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v6 = [v5 isAutomaticAppUpdatesAllowed];
-    v7 = [v5 isAutomaticAppUpdatesModificationAllowed];
-    v4 = v6 & v7 ^ 1 | [v5 isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADDE0]];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    isAutomaticAppUpdatesAllowed = [mEMORY[0x1E69ADFB8] isAutomaticAppUpdatesAllowed];
+    isAutomaticAppUpdatesModificationAllowed = [mEMORY[0x1E69ADFB8] isAutomaticAppUpdatesModificationAllowed];
+    v4 = isAutomaticAppUpdatesAllowed & isAutomaticAppUpdatesModificationAllowed ^ 1 | [mEMORY[0x1E69ADFB8] isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADDE0]];
   }
 
   return v4 & 1;
 }
 
-- (void)setBackgroundRefreshEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setBackgroundRefreshEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v12 = a3;
+  enabledCopy = enabled;
   v5 = CFPreferencesCopyAppValue(@"KeepAppsUpToDateAppList", @"com.apple.mt");
   v6 = [v5 mutableCopy];
 
@@ -1625,29 +1625,29 @@ LABEL_15:
     v6 = objc_opt_new();
   }
 
-  v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  [v6 setObject:v12 forKey:v7];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  [v6 setObject:enabledCopy forKey:bundleIdentifier];
 
   CFPreferencesSetAppValue(@"KeepAppsUpToDateAppList", v6, @"com.apple.mt");
   CFPreferencesAppSynchronize(@"com.apple.mt");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"kKeepAppsUpToDateEnabledChangedNotification", 0, 0, 1u);
-  v9 = [(PSSystemPolicyForApp *)self delegate];
+  delegate = [(PSSystemPolicyForApp *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PSSystemPolicyForApp *)self delegate];
-    [v11 systemPolicyForApp:self didUpdateForSystemPolicyOptions:2 withValue:v12];
+    delegate2 = [(PSSystemPolicyForApp *)self delegate];
+    [delegate2 systemPolicyForApp:self didUpdateForSystemPolicyOptions:2 withValue:enabledCopy];
   }
 }
 
-- (id)isBackgroundRefreshEnabled:(id)a3
+- (id)isBackgroundRefreshEnabled:(id)enabled
 {
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = [v4 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v5)
+  if (isLowPowerModeEnabled)
   {
     v6 = MEMORY[0x1E695E110];
   }
@@ -1655,8 +1655,8 @@ LABEL_15:
   else
   {
     v7 = CFPreferencesCopyAppValue(@"KeepAppsUpToDateAppList", @"com.apple.mt");
-    v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v9 = [v7 objectForKey:v8];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v9 = [v7 objectForKey:bundleIdentifier];
 
     if (v9)
     {
@@ -1688,8 +1688,8 @@ LABEL_15:
 
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"PHOTOS" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-    v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v2 = [(PSPhotosPolicyController *)photosPrivacyController appSpecifierWithName:v8 bundleID:v9];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v2 = [(PSPhotosPolicyController *)photosPrivacyController appSpecifierWithName:v8 bundleID:bundleIdentifier];
 
     if (v2)
     {
@@ -1712,20 +1712,20 @@ LABEL_15:
   if ((self->_policyOptions & 0x800000000000) != 0)
   {
     v6 = [PSWalletPolicyController alloc];
-    v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v8 = [(PSWalletPolicyController *)v6 initWithBundleIdentifier:v7];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v8 = [(PSWalletPolicyController *)v6 initWithBundleIdentifier:bundleIdentifier];
     walletPrivacyController = self->_walletPrivacyController;
     self->_walletPrivacyController = v8;
 
-    v3 = [(PSWalletPolicyController *)self->_walletPrivacyController specifier];
+    specifier = [(PSWalletPolicyController *)self->_walletPrivacyController specifier];
   }
 
   else
   {
-    v3 = 0;
+    specifier = 0;
   }
 
-  return v3;
+  return specifier;
 }
 
 - (id)contactsServicesSpecifier
@@ -1744,8 +1744,8 @@ LABEL_15:
 
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"CONTACTS" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-    v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v2 = [(PSContactsPolicyController *)contactsPrivacyController appSpecifierWithName:v8 bundleID:v9];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v2 = [(PSContactsPolicyController *)contactsPrivacyController appSpecifierWithName:v8 bundleID:bundleIdentifier];
 
     if (v2)
     {
@@ -1763,15 +1763,15 @@ LABEL_15:
   return v2;
 }
 
-- (BOOL)getMulticastAllowed:(BOOL *)a3
+- (BOOL)getMulticastAllowed:(BOOL *)allowed
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [MEMORY[0x1E6977FB8] copyAggregatePathRules];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  copyAggregatePathRules = [MEMORY[0x1E6977FB8] copyAggregatePathRules];
+  v6 = [copyAggregatePathRules countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1782,21 +1782,21 @@ LABEL_15:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(copyAggregatePathRules);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 matchSigningIdentifier];
-        v12 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-        if ([v11 isEqualToString:v12])
+        matchSigningIdentifier = [v10 matchSigningIdentifier];
+        bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+        if ([matchSigningIdentifier isEqualToString:bundleIdentifier])
         {
-          v13 = [v10 multicastPreferenceSet];
+          multicastPreferenceSet = [v10 multicastPreferenceSet];
 
-          if (v13)
+          if (multicastPreferenceSet)
           {
-            if (a3)
+            if (allowed)
             {
-              *a3 = 1;
+              *allowed = 1;
             }
 
             v14 = [v10 denyMulticast] ^ 1;
@@ -1809,7 +1809,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [copyAggregatePathRules countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1832,7 +1832,7 @@ LABEL_16:
   if (v9 == 1)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
+    mEMORY[0x1E6977F90] = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
     v4 = MEMORY[0x1E69E96A0];
     v5 = MEMORY[0x1E69E96A0];
     v6[0] = MEMORY[0x1E69E9820];
@@ -1840,7 +1840,7 @@ LABEL_16:
     v6[2] = __49__PSSystemPolicyForApp_setupNetworkConfiguration__block_invoke;
     v6[3] = &unk_1E71DC1C0;
     objc_copyWeak(&v7, &location);
-    [v3 setChangedQueue:v4 andHandler:v6];
+    [mEMORY[0x1E6977F90] setChangedQueue:v4 andHandler:v6];
 
     [(PSSystemPolicyForApp *)self loadNetworkConfigurationsForceRefresh:0];
     objc_destroyWeak(&v7);
@@ -1854,11 +1854,11 @@ void __49__PSSystemPolicyForApp_setupNetworkConfiguration__block_invoke(uint64_t
   [WeakRetained loadNetworkConfigurationsForceRefresh:1];
 }
 
-- (void)loadNetworkConfigurationsForceRefresh:(BOOL)a3
+- (void)loadNetworkConfigurationsForceRefresh:(BOOL)refresh
 {
   if (self->_pathControllerConfiguration)
   {
-    v5 = !a3;
+    v5 = !refresh;
   }
 
   else
@@ -1870,13 +1870,13 @@ void __49__PSSystemPolicyForApp_setupNetworkConfiguration__block_invoke(uint64_t
   {
     v8[7] = v3;
     v8[8] = v4;
-    v7 = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
+    mEMORY[0x1E6977F90] = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__PSSystemPolicyForApp_loadNetworkConfigurationsForceRefresh___block_invoke;
     v8[3] = &unk_1E71DBD10;
     v8[4] = self;
-    [v7 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
+    [mEMORY[0x1E6977F90] loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v8];
   }
 }
 
@@ -1941,14 +1941,14 @@ void __62__PSSystemPolicyForApp_loadNetworkConfigurationsForceRefresh___block_in
 - (void)saveNetworkConfiguration
 {
   v2 = self->_pathControllerConfiguration;
-  v3 = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
+  mEMORY[0x1E6977F90] = [MEMORY[0x1E6977F90] sharedManagerForAllUsers];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke;
   v5[3] = &unk_1E71DC1E8;
   v6 = v2;
   v4 = v2;
-  [v3 saveConfiguration:v4 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v5];
+  [mEMORY[0x1E6977F90] saveConfiguration:v4 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v5];
 }
 
 void __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -1964,18 +1964,18 @@ void __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke(uint64_t 
   }
 }
 
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEConfiguration *)self->_pathControllerConfiguration pathController];
+  dCopy = d;
+  pathController = [(NEConfiguration *)self->_pathControllerConfiguration pathController];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 pathRules];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  pathRules = [pathController pathRules];
+  v9 = [pathRules countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1986,12 +1986,12 @@ void __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke(uint64_t 
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(pathRules);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 matchSigningIdentifier];
-        v15 = [v14 isEqualToString:v6];
+        matchSigningIdentifier = [v13 matchSigningIdentifier];
+        v15 = [matchSigningIdentifier isEqualToString:dCopy];
 
         if (v15)
         {
@@ -2000,7 +2000,7 @@ void __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke(uint64_t 
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v10 = [pathRules countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v10)
       {
         continue;
@@ -2010,23 +2010,23 @@ void __48__PSSystemPolicyForApp_saveNetworkConfiguration__block_invoke(uint64_t 
     }
   }
 
-  if (v4)
+  if (createCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x1E6977FC0]) initWithSigningIdentifier:v6];
-    v17 = [v7 pathRules];
+    v16 = [objc_alloc(MEMORY[0x1E6977FC0]) initWithSigningIdentifier:dCopy];
+    pathRules2 = [pathController pathRules];
 
-    if (v17)
+    if (pathRules2)
     {
-      v8 = [v7 pathRules];
-      v18 = [v8 arrayByAddingObject:v16];
-      [v7 setPathRules:v18];
+      pathRules = [pathController pathRules];
+      v18 = [pathRules arrayByAddingObject:v16];
+      [pathController setPathRules:v18];
     }
 
     else
     {
       v24 = v16;
-      v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-      [v7 setPathRules:v8];
+      pathRules = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
+      [pathController setPathRules:pathRules];
     }
 
 LABEL_13:
@@ -2040,31 +2040,31 @@ LABEL_13:
   return v16;
 }
 
-- (void)setLocalNetworkEnabled:(id)a3 specifier:(id)a4
+- (void)setLocalNetworkEnabled:(id)enabled specifier:(id)specifier
 {
-  v10 = a3;
-  v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v6 = [(PSSystemPolicyForApp *)self pathRuleForBundleID:v5 create:1];
+  enabledCopy = enabled;
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v6 = [(PSSystemPolicyForApp *)self pathRuleForBundleID:bundleIdentifier create:1];
 
-  [v6 setDenyMulticast:{objc_msgSend(v10, "BOOLValue") ^ 1}];
+  [v6 setDenyMulticast:{objc_msgSend(enabledCopy, "BOOLValue") ^ 1}];
   [v6 setMulticastPreferenceSet:1];
   [(PSSystemPolicyForApp *)self saveNetworkConfiguration];
-  v7 = [(PSSystemPolicyForApp *)self delegate];
+  delegate = [(PSSystemPolicyForApp *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PSSystemPolicyForApp *)self delegate];
-    [v9 systemPolicyForApp:self didUpdateForSystemPolicyOptions:0x4000000 withValue:v10];
+    delegate2 = [(PSSystemPolicyForApp *)self delegate];
+    [delegate2 systemPolicyForApp:self didUpdateForSystemPolicyOptions:0x4000000 withValue:enabledCopy];
   }
 }
 
-- (id)isLocalNetworkEnabled:(id)a3
+- (id)isLocalNetworkEnabled:(id)enabled
 {
   if (self->_pathControllerConfiguration)
   {
-    v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v5 = [(PSSystemPolicyForApp *)self pathRuleForBundleID:v4 create:0];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v5 = [(PSSystemPolicyForApp *)self pathRuleForBundleID:bundleIdentifier create:0];
 
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:{objc_msgSend(v5, "denyMulticast") ^ 1}];
   }
@@ -2086,8 +2086,8 @@ LABEL_13:
     v4 = [v3 localizedStringForKey:@"LOCAL_NETWORK_PRIVACY" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
     v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:sel_setLocalNetworkEnabled_specifier_ get:sel_isLocalNetworkEnabled_ detail:0 cell:6 edit:0];
 
-    v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    [v5 setProperty:v6 forKey:@"PUINetworkApplicationKey"];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    [v5 setProperty:bundleIdentifier forKey:@"PUINetworkApplicationKey"];
 
     [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
     [v5 setObject:@"com.apple.graphic-icon.local-network" forKeyedSubscript:@"iconUTTypeIdentifier"];
@@ -2106,8 +2106,8 @@ LABEL_13:
   if ((self->_policyOptions & 0x10000) != 0)
   {
     v4 = CLCopyAppsUsingLocation();
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [v4 objectForKey:v5];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v6 = [v4 objectForKey:bundleIdentifier];
 
     if (v6 && [MEMORY[0x1E695FBE8] primaryEntityClassForLocationDictionary:v6] == 1)
     {
@@ -2118,8 +2118,8 @@ LABEL_13:
       v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[PSSystemPolicyForApp _isLocationServicesRestricted](self, "_isLocationServicesRestricted") ^ 1}];
       [v2 setProperty:v9 forKey:@"enabled"];
 
-      v10 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      [v2 setProperty:v10 forKey:@"id"];
+      bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      [v2 setProperty:bundleIdentifier2 forKey:@"id"];
 
       [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
       [v2 setObject:@"com.apple.graphic-icon.location" forKeyedSubscript:@"iconUTTypeIdentifier"];
@@ -2139,12 +2139,12 @@ LABEL_13:
   return v2;
 }
 
-- (id)locationStatus:(id)a3
+- (id)locationStatus:(id)status
 {
   v4 = CLCopyAppsUsingLocation();
   v5 = MEMORY[0x1E695FBE8];
-  v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v7 = [v4 objectForKey:v6];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v7 = [v4 objectForKey:bundleIdentifier];
   v8 = [v5 entityAuthorizationForLocationDictionary:v7];
 
   v9 = [(PSSystemPolicyForApp *)self authLevelStringForStatus:v8];
@@ -2152,23 +2152,23 @@ LABEL_13:
   return v9;
 }
 
-- (id)authLevelStringForStatus:(unint64_t)a3
+- (id)authLevelStringForStatus:(unint64_t)status
 {
-  if (a3)
+  if (status)
   {
     v4 = @"NEVER_AUTHORIZATION";
   }
 
-  else if (a3)
+  else if (status)
   {
-    if ((a3 & 4) != 0)
+    if ((status & 4) != 0)
     {
       v4 = @"ALWAYS_AUTHORIZATION";
     }
 
     else
     {
-      if ((a3 & 2) == 0)
+      if ((status & 2) == 0)
       {
         v3 = 0;
         goto LABEL_11;
@@ -2191,13 +2191,13 @@ LABEL_11:
   return v3;
 }
 
-- (id)privacySpecifiersWithTCCServiceLookup:(id)a3 tccServiceOverrides:(id)a4
+- (id)privacySpecifiersWithTCCServiceLookup:(id)lookup tccServiceOverrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(PSSystemPolicyForApp *)self locationServicesSpecifier];
-  [v8 ps_addPossibleObject:v9];
+  lookupCopy = lookup;
+  overridesCopy = overrides;
+  array = [MEMORY[0x1E695DF70] array];
+  locationServicesSpecifier = [(PSSystemPolicyForApp *)self locationServicesSpecifier];
+  [array ps_addPossibleObject:locationServicesSpecifier];
 
   if (_os_feature_enabled_impl())
   {
@@ -2206,86 +2206,86 @@ LABEL_11:
 
   else
   {
-    [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5500] tccServiceLookup:v6 tccServiceOverrides:v7];
+    [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5500] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
   }
   v10 = ;
-  [v8 ps_addPossibleObject:v10];
+  [array ps_addPossibleObject:v10];
 
-  v11 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55D8] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v11];
+  v11 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55D8] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v11];
 
-  v12 = [(PSSystemPolicyForApp *)self photosServicesSpecifier];
-  [v8 ps_addPossibleObject:v12];
+  photosServicesSpecifier = [(PSSystemPolicyForApp *)self photosServicesSpecifier];
+  [array ps_addPossibleObject:photosServicesSpecifier];
 
-  v13 = [(PSSystemPolicyForApp *)self accessoriesSpecifier];
-  [v8 ps_addPossibleObject:v13];
+  accessoriesSpecifier = [(PSSystemPolicyForApp *)self accessoriesSpecifier];
+  [array ps_addPossibleObject:accessoriesSpecifier];
 
-  v14 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5508] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v14];
+  v14 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5508] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v14];
 
-  v15 = [(PSSystemPolicyForApp *)self networkServicesSpecifier];
-  [v8 ps_addPossibleObject:v15];
+  networkServicesSpecifier = [(PSSystemPolicyForApp *)self networkServicesSpecifier];
+  [array ps_addPossibleObject:networkServicesSpecifier];
 
   v16 = +[PSCapabilityManager sharedManager];
   v17 = [v16 capabilityBoolAnswer:@"9RryeqF6OCWlbaXP2Qsoag"];
 
   if (v17)
   {
-    v18 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55B0] tccServiceLookup:v6 tccServiceOverrides:v7];
-    [v8 ps_addPossibleObject:v18];
+    v18 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55B0] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+    [array ps_addPossibleObject:v18];
   }
 
-  v19 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5588] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v19];
+  v19 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5588] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v19];
 
-  v20 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55F0] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v20];
+  v20 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55F0] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v20];
 
-  v21 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55A8] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v21];
+  v21 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55A8] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v21];
 
-  v22 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5520] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v22];
+  v22 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5520] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v22];
 
-  v23 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5550] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v23];
+  v23 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5550] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v23];
 
-  v24 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5528] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v24];
+  v24 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5528] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v24];
 
-  v25 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55E0] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v25];
+  v25 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D55E0] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v25];
 
-  v26 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5620] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v26];
+  v26 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5620] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v26];
 
-  v27 = [(PSSystemPolicyForApp *)self walletSpecifier];
-  [v8 ps_addPossibleObject:v27];
+  walletSpecifier = [(PSSystemPolicyForApp *)self walletSpecifier];
+  [array ps_addPossibleObject:walletSpecifier];
 
-  v28 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5580] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v28];
+  v28 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5580] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v28];
 
-  v29 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5578] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v29];
+  v29 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5578] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v29];
 
   if (_os_feature_enabled_impl())
   {
-    v30 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5560] tccServiceLookup:v6 tccServiceOverrides:v7];
-    [v8 ps_addPossibleObject:v30];
+    v30 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5560] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+    [array ps_addPossibleObject:v30];
   }
 
-  v31 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5610] tccServiceLookup:v6 tccServiceOverrides:v7];
-  [v8 ps_addPossibleObject:v31];
+  v31 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5610] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v31];
 
-  return v8;
+  return array;
 }
 
-- (id)privacySpecifierForService:(__CFString *)a3 tccServiceLookup:(id)a4 tccServiceOverrides:(id)a5
+- (id)privacySpecifierForService:(__CFString *)service tccServiceLookup:(id)lookup tccServiceOverrides:(id)overrides
 {
-  v8 = a4;
-  v9 = a5;
+  lookupCopy = lookup;
+  overridesCopy = overrides;
   policyOptions = self->_policyOptions;
-  v11 = [_PSServicePolicyOptions objectForKey:a3];
+  v11 = [_PSServicePolicyOptions objectForKey:service];
   v12 = [v11 unsignedIntegerValue] & policyOptions;
 
   if (!v12)
@@ -2294,9 +2294,9 @@ LABEL_11:
     goto LABEL_46;
   }
 
-  v13 = [v9 containsObject:a3];
+  v13 = [overridesCopy containsObject:service];
   objc_opt_class();
-  v14 = [v8 objectForKeyedSubscript:a3];
+  v14 = [lookupCopy objectForKeyedSubscript:service];
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -2345,23 +2345,23 @@ LABEL_13:
     v17 = MEMORY[0x1E695E110];
   }
 
-  v21 = [_PSLocalizedServiceNames objectForKey:a3];
+  v21 = [_PSLocalizedServiceNames objectForKey:service];
   v22 = [PSSpecifier preferenceSpecifierNamed:v21 target:self set:sel_setPrivacyAccess_forSpecifier_ get:sel_privacyAccessForSpecifier_ detail:0 cell:6 edit:0];
 
-  if (CFEqual(a3, *MEMORY[0x1E69D5578]))
+  if (CFEqual(service, *MEMORY[0x1E69D5578]))
   {
     [v22 setProperty:objc_opt_class() forKey:@"cellClass"];
   }
 
-  if ((!CFEqual(a3, *MEMORY[0x1E69D55E0]) || objc_opt_class() && [MEMORY[0x1E69C86E8] isSecureElementTCCServiceEligible]) && (!CFEqual(a3, *MEMORY[0x1E69D5528]) || objc_opt_class() && objc_msgSend(MEMORY[0x1E69C86E8], "isContactlessTCCServiceEligible")))
+  if ((!CFEqual(service, *MEMORY[0x1E69D55E0]) || objc_opt_class() && [MEMORY[0x1E69C86E8] isSecureElementTCCServiceEligible]) && (!CFEqual(service, *MEMORY[0x1E69D5528]) || objc_opt_class() && objc_msgSend(MEMORY[0x1E69C86E8], "isContactlessTCCServiceEligible")))
   {
     v43 = v13;
-    [v22 setProperty:a3 forKey:@"service"];
+    [v22 setProperty:service forKey:@"service"];
     v23 = +[PKIconImageCache settingsIconCache];
-    v24 = [_PSServiceIconNames objectForKey:a3];
+    v24 = [_PSServiceIconNames objectForKey:service];
     v25 = [v23 imageForKey:v24];
 
-    if (v25 || (v41 = MEMORY[0x1E69DCAB8], [_PSServiceIconNames objectForKey:a3], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "imageNamed:inBundle:compatibleWithTraitCollection:", v26, v27, 0), v25 = objc_claimAutoreleasedReturnValue(), v27, v26, v25))
+    if (v25 || (v41 = MEMORY[0x1E69DCAB8], [_PSServiceIconNames objectForKey:service], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "imageNamed:inBundle:compatibleWithTraitCollection:", v26, v27, 0), v25 = objc_claimAutoreleasedReturnValue(), v27, v26, v25))
     {
       [v22 setProperty:v25 forKey:@"iconImage"];
       v28 = 0;
@@ -2372,7 +2372,7 @@ LABEL_13:
       v28 = 1;
     }
 
-    v29 = [_PSServiceIconTypeIDs objectForKeyedSubscript:a3];
+    v29 = [_PSServiceIconTypeIDs objectForKeyedSubscript:service];
     v30 = v29;
     if (v28 && v29)
     {
@@ -2381,7 +2381,7 @@ LABEL_13:
     }
 
     v42 = v30;
-    v31 = [_PSServiceIconApplicationBundleIdentifiers objectForKeyedSubscript:a3];
+    v31 = [_PSServiceIconApplicationBundleIdentifiers objectForKeyedSubscript:service];
     if (v31)
     {
       v32 = v28;
@@ -2398,8 +2398,8 @@ LABEL_13:
       [v22 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
     }
 
-    v33 = [PSSystemPolicyForApp isServiceRestricted:a3];
-    if (CFEqual(a3, *MEMORY[0x1E69D5600]))
+    v33 = [PSSystemPolicyForApp isServiceRestricted:service];
+    if (CFEqual(service, *MEMORY[0x1E69D5600]))
     {
       v45 = 0;
       v46 = &v45;
@@ -2428,7 +2428,7 @@ LABEL_13:
       }
     }
 
-    if (CFEqual(a3, *MEMORY[0x1E69D5618]))
+    if (CFEqual(service, *MEMORY[0x1E69D5618]))
     {
       v37 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v17, "BOOLValue") ^ 1}];
 
@@ -2452,14 +2452,14 @@ LABEL_46:
   return v20;
 }
 
-- (void)setPrivacyAccess:(id)a3 forSpecifier:(id)a4
+- (void)setPrivacyAccess:(id)access forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  accessCopy = access;
+  specifierCopy = specifier;
   objc_initWeak(location, self);
   v8 = objc_alloc(MEMORY[0x1E69635F8]);
-  v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v10 = [v8 initWithBundleIdentifier:v9 allowPlaceholder:1 error:0];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v10 = [v8 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2468,15 +2468,15 @@ LABEL_46:
   objc_copyWeak(&v77, location);
   v11 = v10;
   v75 = v11;
-  v12 = v6;
+  v12 = accessCopy;
   v76 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [v7 propertyForKey:@"value"];
+  v14 = [specifierCopy propertyForKey:@"value"];
   v15 = [v12 isEqual:v14];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [v7 propertyForKey:@"service"];
+    v16 = [specifierCopy propertyForKey:@"service"];
     if (CFStringCompare(v16, *MEMORY[0x1E69D5618], 0) == kCFCompareEqualTo)
     {
       v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "BOOLValue") ^ 1}];
@@ -2503,8 +2503,8 @@ LABEL_46:
       v72 = v13;
       v69 = v12;
       v73 = v16;
-      v70 = v7;
-      v71 = self;
+      v70 = specifierCopy;
+      selfCopy = self;
       v25 = [v22 actionWithTitle:v24 style:0 handler:v68];
 
       [v58 addAction:v25];
@@ -2531,8 +2531,8 @@ LABEL_46:
       v33 = [v30 actionWithTitle:v32 style:0 handler:v66];
 
       [v58 addAction:v33];
-      v34 = [(PSSystemPolicyForApp *)self delegate];
-      [v34 showController:v58 animate:1];
+      delegate = [(PSSystemPolicyForApp *)self delegate];
+      [delegate showController:v58 animate:1];
 
       v35 = v72;
     }
@@ -2541,21 +2541,21 @@ LABEL_46:
     {
       if (([v12 BOOLValue] & 1) != 0 || CFStringCompare(v16, *MEMORY[0x1E69D55E0], 0))
       {
-        (*(v13 + 2))(v13, v12, v16, v7);
+        (*(v13 + 2))(v13, v12, v16, specifierCopy);
         goto LABEL_12;
       }
 
       v36 = MEMORY[0x1E696AEC0];
       v37 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v38 = [v37 localizedStringForKey:@"SECURE_ELEMENT_PROMPT_TITLE" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-      v39 = [v11 localizedName];
-      v58 = [v36 stringWithFormat:v38, v39];
+      localizedName = [v11 localizedName];
+      v58 = [v36 stringWithFormat:v38, localizedName];
 
       v40 = MEMORY[0x1E696AEC0];
       v41 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v42 = [v41 localizedStringForKey:@"SECURE_ELEMENT_PROMPT_DETAIL" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-      v43 = [v11 localizedName];
-      v44 = [v40 stringWithFormat:v42, v43];
+      localizedName2 = [v11 localizedName];
+      v44 = [v40 stringWithFormat:v42, localizedName2];
 
       v56 = v44;
       v45 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v58 message:v44 preferredStyle:1];
@@ -2569,8 +2569,8 @@ LABEL_46:
       v64 = v13;
       v61 = v12;
       v65 = v16;
-      v62 = v7;
-      v63 = self;
+      v62 = specifierCopy;
+      selfCopy2 = self;
       v49 = [v46 actionWithTitle:v48 style:2 handler:v60];
       [v45 addAction:v49];
 
@@ -2585,8 +2585,8 @@ LABEL_46:
       v53 = [v50 actionWithTitle:v52 style:1 handler:v59];
       [v45 addAction:v53];
 
-      v54 = [(PSSystemPolicyForApp *)self delegate];
-      [v54 showController:v45 animate:1];
+      delegate2 = [(PSSystemPolicyForApp *)self delegate];
+      [delegate2 showController:v45 animate:1];
 
       v35 = v56;
     }
@@ -2727,9 +2727,9 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   [v1 reloadSpecifiers];
 }
 
-- (id)privacyAccessForSpecifier:(id)a3
+- (id)privacyAccessForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"value"];
+  v3 = [specifier propertyForKey:@"value"];
   v4 = v3;
   if (v3)
   {
@@ -2785,31 +2785,31 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   v4 = v14;
   v5 = v13;
   v6 = v12;
-  v7 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  if ([v4 containsObject:v7])
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  if ([v4 containsObject:bundleIdentifier])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    if ([v5 containsObject:v9])
+    bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    if ([v5 containsObject:bundleIdentifier2])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      v8 = [v6 containsObject:v10];
+      bundleIdentifier3 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      v8 = [v6 containsObject:bundleIdentifier3];
     }
   }
 
   return v8;
 }
 
-- (id)pasteboardAccessForSpecifier:(id)a3
+- (id)pasteboardAccessForSpecifier:(id)specifier
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69D55C0];
@@ -2820,8 +2820,8 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   v5 = v20;
   v6 = v19;
   v7 = v18;
-  v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v9 = [v5 containsObject:v8];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v9 = [v5 containsObject:bundleIdentifier];
 
   if (v9)
   {
@@ -2830,8 +2830,8 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
 
   else
   {
-    v11 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v12 = [v6 containsObject:v11];
+    bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v12 = [v6 containsObject:bundleIdentifier2];
 
     if (v12)
     {
@@ -2840,8 +2840,8 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
 
     else
     {
-      v13 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      v14 = [v7 containsObject:v13];
+      bundleIdentifier3 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      v14 = [v7 containsObject:bundleIdentifier3];
 
       if (v14)
       {
@@ -2853,11 +2853,11 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
         v15 = _PSLoggingFacility();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+          bundleIdentifier4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
           *buf = 136315394;
           v22 = "[PSSystemPolicyForApp pasteboardAccessForSpecifier:]";
           v23 = 2112;
-          v24 = v16;
+          v24 = bundleIdentifier4;
           _os_log_impl(&dword_18B008000, v15, OS_LOG_TYPE_DEFAULT, "%s: couldn't find auth state for %@", buf, 0x16u);
         }
 
@@ -2869,25 +2869,25 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   return v10;
 }
 
-- (void)setPasteboardAccess:(id)a3 forSpecifier:(id)a4
+- (void)setPasteboardAccess:(id)access forSpecifier:(id)specifier
 {
   v5 = *MEMORY[0x1E69D55C0];
-  v6 = a3;
-  v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v7 = [v6 integerValue];
+  accessCopy = access;
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  integerValue = [accessCopy integerValue];
 
-  PSSetTCCLevelForService(v5, v8, v7);
+  PSSetTCCLevelForService(v5, bundleIdentifier, integerValue);
 }
 
-+ (BOOL)isServiceRestricted:(id)a3
++ (BOOL)isServiceRestricted:(id)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   CFPreferencesAppSynchronize(@"com.apple.springboard");
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:restrictedCopy];
   }
 
   else
@@ -2898,39 +2898,39 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   return v6;
 }
 
-- (id)trackingSpecifiersWithTCCServiceLookup:(id)a3 tccServiceOverrides:(id)a4
+- (id)trackingSpecifiersWithTCCServiceLookup:(id)lookup tccServiceOverrides:(id)overrides
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5618] tccServiceLookup:v8 tccServiceOverrides:v7];
-  [v9 ps_addPossibleObject:v10];
+  overridesCopy = overrides;
+  lookupCopy = lookup;
+  array = [v6 array];
+  v10 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5618] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
+  [array ps_addPossibleObject:v10];
 
-  v11 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5600] tccServiceLookup:v8 tccServiceOverrides:v7];
+  v11 = [(PSSystemPolicyForApp *)self privacySpecifierForService:*MEMORY[0x1E69D5600] tccServiceLookup:lookupCopy tccServiceOverrides:overridesCopy];
 
-  [v9 ps_addPossibleObject:v11];
-  if ([v9 count])
+  [array ps_addPossibleObject:v11];
+  if ([array count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v13 = [PSSpecifier groupSpecifierWithID:@"TRACKING_GROUP"];
-    [v12 addObject:v13];
-    [v12 addObjectsFromArray:v9];
+    [array2 addObject:v13];
+    [array2 addObjectsFromArray:array];
   }
 
   else
   {
-    v12 = 0;
+    array2 = 0;
   }
 
-  return v12;
+  return array2;
 }
 
 - (void)headerLinkWasTapped
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"https://www.apple.com/privacy"];
-  [v3 openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 - (id)documentsSpecifier
@@ -2938,20 +2938,20 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   if ((self->_policyOptions & 0x400000) != 0)
   {
     v4 = objc_alloc(MEMORY[0x1E69635F8]);
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [v4 initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v6 = [v4 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
     v7 = [v6 URL];
     v8 = v7;
     if (v7 && [v7 isFileURL])
     {
       v9 = [MEMORY[0x1E696AAE8] bundleWithURL:v8];
-      v10 = [v9 infoDictionary];
+      infoDictionary = [v9 infoDictionary];
 
-      v11 = [v10 objectForKeyedSubscript:@"UISupportsDocumentBrowser"];
-      v12 = [v11 BOOLValue];
+      v11 = [infoDictionary objectForKeyedSubscript:@"UISupportsDocumentBrowser"];
+      bOOLValue = [v11 BOOLValue];
 
-      if (v12)
+      if (bOOLValue)
       {
         v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v14 = [v13 localizedStringForKey:@"DOCUMENT_STORAGE" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
@@ -2960,8 +2960,8 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
         [v2 setIdentifier:@"DOCUMENT_STORAGE"];
         [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
         [v2 setObject:@"com.apple.DocumentsApp" forKeyedSubscript:@"appIDForLazyIcon"];
-        v15 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-        [v2 setProperty:v15 forKey:PSDocumentBundleIdentifierKey];
+        bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+        [v2 setProperty:bundleIdentifier2 forKey:PSDocumentBundleIdentifierKey];
       }
 
       else
@@ -2984,9 +2984,9 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   return v2;
 }
 
-- (id)documentSource:(id)a3
+- (id)documentSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3012,7 +3012,7 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
 
   v7 = v6;
   _Block_object_dispose(&v22, 8);
-  v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__PSSystemPolicyForApp_documentSource___block_invoke;
@@ -3020,7 +3020,7 @@ void __54__PSSystemPolicyForApp_setPrivacyAccess_forSpecifier___block_invoke_5(u
   v14 = &v15;
   v9 = v5;
   v13 = v9;
-  [v6 defaultSourceForBundleIdentifier:v8 completionBlock:v12];
+  [v6 defaultSourceForBundleIdentifier:bundleIdentifier completionBlock:v12];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v16[5];
@@ -3048,14 +3048,14 @@ intptr_t __39__PSSystemPolicyForApp_documentSource___block_invoke(uint64_t a1, v
   if ((self->_policyOptions & 0x8000000000000) != 0)
   {
     v4 = [PSNFCDefaultAppSpecifier alloc];
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [(PSSystemPolicyForApp *)self delegate];
-    v7 = [(PSNFCDefaultAppSpecifier *)v4 initWithBundleID:v5 delegate:v6 onChange:&__block_literal_global_543];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    delegate = [(PSSystemPolicyForApp *)self delegate];
+    v7 = [(PSNFCDefaultAppSpecifier *)v4 initWithBundleID:bundleIdentifier delegate:delegate onChange:&__block_literal_global_543];
 
-    v8 = [(PSNFCDefaultAppSpecifier *)v7 context];
-    LODWORD(v5) = [v8 shouldShowDefaultNFCAppPicker];
+    context = [(PSNFCDefaultAppSpecifier *)v7 context];
+    LODWORD(bundleIdentifier) = [context shouldShowDefaultNFCAppPicker];
 
-    if (v5)
+    if (bundleIdentifier)
     {
       v9 = [PSSpecifier groupSpecifierWithID:@"NFC_DEFAULT_APP_GROUP"];
       v11[0] = v9;
@@ -3085,25 +3085,25 @@ intptr_t __39__PSSystemPolicyForApp_documentSource___block_invoke(uint64_t a1, v
     goto LABEL_5;
   }
 
-  v3 = [(PSSystemPolicyForApp *)self nfcContext];
+  nfcContext = [(PSSystemPolicyForApp *)self nfcContext];
 
-  if (!v3)
+  if (!nfcContext)
   {
     v4 = MEMORY[0x1E69C86D8];
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __58__PSSystemPolicyForApp_contactlessNFCSideButtonSpecifiers__block_invoke;
     v23[3] = &unk_1E71DBE20;
     v23[4] = self;
-    v6 = [v4 contextWithBundleId:v5 onChange:v23];
+    v6 = [v4 contextWithBundleId:bundleIdentifier onChange:v23];
     [(PSSystemPolicyForApp *)self setNfcContext:v6];
   }
 
-  v7 = [(PSSystemPolicyForApp *)self nfcContext];
-  v8 = [v7 doubleClickToggleVisibilityType];
+  nfcContext2 = [(PSSystemPolicyForApp *)self nfcContext];
+  doubleClickToggleVisibilityType = [nfcContext2 doubleClickToggleVisibilityType];
 
-  if (v8 != 2)
+  if (doubleClickToggleVisibilityType != 2)
   {
     v10 = MGGetSInt32Answer();
     v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -3137,10 +3137,10 @@ intptr_t __39__PSSystemPolicyForApp_documentSource___block_invoke(uint64_t a1, v
     [v18 setObject:v17 forKeyedSubscript:@"footerText"];
     v19 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:sel_setDoubleClickForNFC_specifier_ get:sel_getDoubleClickForNFC_ detail:0 cell:6 edit:0];
     [v19 setIdentifier:@"DOUBLE_CLICK_FOR_NFC"];
-    v20 = [(PSSystemPolicyForApp *)self nfcContext];
-    v21 = [v20 doubleClickToggleVisibilityType];
+    nfcContext3 = [(PSSystemPolicyForApp *)self nfcContext];
+    doubleClickToggleVisibilityType2 = [nfcContext3 doubleClickToggleVisibilityType];
 
-    if (v21 == 1)
+    if (doubleClickToggleVisibilityType2 == 1)
     {
       [v19 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"enabled"];
     }
@@ -3165,27 +3165,27 @@ void __58__PSSystemPolicyForApp_contactlessNFCSideButtonSpecifiers__block_invoke
   [v1 reloadSpecifiers];
 }
 
-- (id)getDoubleClickForNFC:(id)a3
+- (id)getDoubleClickForNFC:(id)c
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(PSSystemPolicyForApp *)self nfcContext];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "isDoubleClickEnabled")}];
+  nfcContext = [(PSSystemPolicyForApp *)self nfcContext];
+  v5 = [v3 numberWithBool:{objc_msgSend(nfcContext, "isDoubleClickEnabled")}];
 
   return v5;
 }
 
-- (void)setDoubleClickForNFC:(id)a3 specifier:(id)a4
+- (void)setDoubleClickForNFC:(id)c specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(PSSystemPolicyForApp *)self nfcContext];
-  v6 = [v5 BOOLValue];
+  cCopy = c;
+  nfcContext = [(PSSystemPolicyForApp *)self nfcContext];
+  bOOLValue = [cCopy BOOLValue];
 
-  [v7 setDoubleClickEnabled:v6];
+  [nfcContext setDoubleClickEnabled:bOOLValue];
 }
 
-- (id)exposureSpecifiersWithTCCServiceLookup:(id)a3
+- (id)exposureSpecifiersWithTCCServiceLookup:(id)lookup
 {
-  v4 = a3;
+  lookupCopy = lookup;
   if ((self->_policyOptions & 0x100000000) == 0)
   {
     v5 = 0;
@@ -3195,29 +3195,29 @@ void __58__PSSystemPolicyForApp_contactlessNFCSideButtonSpecifiers__block_invoke
   if (![(PSSystemPolicyForApp *)self enServiceMatched])
   {
     [(PSSystemPolicyForApp *)self setEnServiceMatched:1];
-    v6 = [(PSSystemPolicyForApp *)self matchingBundleIdentifier];
-    if (v6)
+    matchingBundleIdentifier = [(PSSystemPolicyForApp *)self matchingBundleIdentifier];
+    if (matchingBundleIdentifier)
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D5540]];
+    v7 = [lookupCopy objectForKeyedSubscript:*MEMORY[0x1E69D5540]];
 
     if (v7)
     {
-      v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      [(PSSystemPolicyForApp *)self setMatchingBundleIdentifier:v6];
+      matchingBundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      [(PSSystemPolicyForApp *)self setMatchingBundleIdentifier:matchingBundleIdentifier];
       goto LABEL_7;
     }
   }
 
 LABEL_8:
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(PSSystemPolicyForApp *)self matchingBundleIdentifier];
+  matchingBundleIdentifier2 = [(PSSystemPolicyForApp *)self matchingBundleIdentifier];
 
-  if (v9)
+  if (matchingBundleIdentifier2)
   {
     v10 = PSBundlePathForPreferenceBundle(@"ExposureNotificationSettingsUI");
     v11 = [MEMORY[0x1E696AAE8] bundleWithPath:v10];
@@ -3229,8 +3229,8 @@ LABEL_8:
       v15 = [v14 localizedStringForKey:@"EXPOSURE_NOTIFICATION" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
       v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:0 set:0 get:0 detail:v13 cell:1 edit:0];
 
-      v17 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      [v16 setUserInfo:v17];
+      bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      [v16 setUserInfo:bundleIdentifier];
 
       [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
       [v16 setObject:@"com.apple.graphic-icon.exposure-notifications" forKeyedSubscript:@"iconUTTypeIdentifier"];
@@ -3250,30 +3250,30 @@ LABEL_14:
   if ((self->_policyOptions & 0x2000000) != 0)
   {
     v4 = objc_alloc(MEMORY[0x1E69635F8]);
-    v5 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v6 = [v4 initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v6 = [v4 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
     v7 = [v6 URL];
     v8 = v7;
     if (v7 && [v7 isFileURL])
     {
       v9 = [MEMORY[0x1E696AAE8] bundleWithURL:v8];
-      v10 = [v9 normalizedLocalizations];
-      v11 = [v10 count];
-      v12 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v13 = [v12 count];
+      normalizedLocalizations = [v9 normalizedLocalizations];
+      v11 = [normalizedLocalizations count];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      v13 = [preferredLanguages count];
 
       v14 = MEMORY[0x1E696AAE8];
-      v15 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v35 = v10;
-      v16 = [v14 preferredLocalizationsFromArray:v10 forPreferences:v15];
-      v17 = [v16 firstObject];
+      preferredLanguages2 = [MEMORY[0x1E695DF58] preferredLanguages];
+      v35 = normalizedLocalizations;
+      v16 = [v14 preferredLocalizationsFromArray:normalizedLocalizations forPreferences:preferredLanguages2];
+      firstObject = [v16 firstObject];
 
       v18 = MEMORY[0x1E69AAE08];
-      v19 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-      v20 = [v18 preferredLanguageForBundleID:v19];
+      bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+      v20 = [v18 preferredLanguageForBundleID:bundleIdentifier2];
 
-      v21 = [v20 isEqualToString:v17];
+      v21 = [v20 isEqualToString:firstObject];
       if (v13 > 1)
       {
         v24 = 0;
@@ -3282,9 +3282,9 @@ LABEL_14:
       else
       {
         v22 = [v9 objectForInfoDictionaryKey:@"UIPrefersShowingLanguageSettings"];
-        v23 = [v22 BOOLValue];
+        bOOLValue = [v22 BOOLValue];
 
-        v24 = v23 ^ 1;
+        v24 = bOOLValue ^ 1;
       }
 
       if (v21 & ((v11 < 2) | v24))
@@ -3298,7 +3298,7 @@ LABEL_14:
         v26 = PSBundlePathForPreferenceBundle(@"InternationalSettings");
         v28 = v27 = v26;
         [v25 bundleWithPath:v28];
-        v29 = v34 = v17;
+        v29 = v34 = firstObject;
 
         v30 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v31 = [v30 localizedStringForKey:@"LANGUAGE" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
@@ -3307,10 +3307,10 @@ LABEL_14:
         [v2 setIdentifier:@"PREFERRED_LANGUAGE"];
         [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
         [v2 setObject:@"com.apple.graphic-icon.language" forKeyedSubscript:@"iconUTTypeIdentifier"];
-        v32 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-        [v2 setProperty:v32 forKey:@"bundleID"];
+        bundleIdentifier3 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+        [v2 setProperty:bundleIdentifier3 forKey:@"bundleID"];
 
-        v17 = v34;
+        firstObject = v34;
       }
     }
 
@@ -3328,26 +3328,26 @@ LABEL_14:
   return v2;
 }
 
-- (id)preferredLanguage:(id)a3
+- (id)preferredLanguage:(id)language
 {
   v3 = MEMORY[0x1E69AAE08];
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [v3 preferredLanguageForBundleID:v4];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [v3 preferredLanguageForBundleID:bundleIdentifier];
 
   v6 = MEMORY[0x1E695DF58];
-  v7 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  v8 = [v6 localeWithLocaleIdentifier:v7];
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  v8 = [v6 localeWithLocaleIdentifier:_deviceLanguage];
   v9 = [v8 localizedStringForLanguage:v5 context:3];
 
   return v9;
 }
 
-- (id)defaultAppSpecifierWithAppRecordsMatchingBlock:(id)a3 getter:(SEL)a4 setter:(SEL)a5 title:(id)a6
+- (id)defaultAppSpecifierWithAppRecordsMatchingBlock:(id)block getter:(SEL)getter setter:(SEL)setter title:(id)title
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  if (v10)
+  blockCopy = block;
+  titleCopy = title;
+  if (blockCopy)
   {
     v34 = objc_opt_new();
     v33 = objc_opt_new();
@@ -3357,7 +3357,7 @@ LABEL_14:
     v39[1] = 3221225472;
     v39[2] = __91__PSSystemPolicyForApp_defaultAppSpecifierWithAppRecordsMatchingBlock_getter_setter_title___block_invoke;
     v39[3] = &unk_1E71DC2B0;
-    v40 = v10;
+    v40 = blockCopy;
     v14 = [v13 predicateWithBlock:v39];
     [v12 setPredicate:v14];
 
@@ -3370,10 +3370,10 @@ LABEL_14:
     if (v16)
     {
       v17 = v16;
-      v29 = a5;
-      v30 = a4;
-      v31 = v11;
-      v32 = v10;
+      setterCopy = setter;
+      getterCopy = getter;
+      v31 = titleCopy;
+      v32 = blockCopy;
       v18 = 0;
       v19 = *v36;
       do
@@ -3386,16 +3386,16 @@ LABEL_14:
           }
 
           v21 = *(*(&v35 + 1) + 8 * i);
-          v22 = [v21 bundleIdentifier];
-          v23 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-          v24 = [v22 isEqualToString:v23];
+          bundleIdentifier = [v21 bundleIdentifier];
+          bundleIdentifier2 = [(PSSystemPolicyForApp *)self bundleIdentifier];
+          v24 = [bundleIdentifier isEqualToString:bundleIdentifier2];
 
           v18 |= v24;
-          v25 = [v21 bundleIdentifier];
-          [v33 addObject:v25];
+          bundleIdentifier3 = [v21 bundleIdentifier];
+          [v33 addObject:bundleIdentifier3];
 
-          v26 = [v21 localizedName];
-          [v34 addObject:v26];
+          localizedName = [v21 localizedName];
+          [v34 addObject:localizedName];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -3405,8 +3405,8 @@ LABEL_14:
 
       if (v18)
       {
-        v11 = v31;
-        v27 = [PSSpecifier preferenceSpecifierNamed:v31 target:self set:v29 get:v30 detail:objc_opt_class() cell:2 edit:0];
+        titleCopy = v31;
+        v27 = [PSSpecifier preferenceSpecifierNamed:v31 target:self set:setterCopy get:getterCopy detail:objc_opt_class() cell:2 edit:0];
         [v27 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PSListItemsValuesAreAppIDsKey"];
         [v27 setValues:v33 titles:v34];
       }
@@ -3414,10 +3414,10 @@ LABEL_14:
       else
       {
         v27 = 0;
-        v11 = v31;
+        titleCopy = v31;
       }
 
-      v10 = v32;
+      blockCopy = v32;
     }
 
     else
@@ -3454,7 +3454,7 @@ LABEL_14:
   return v2;
 }
 
-- (id)defaultBrowser:(id)a3
+- (id)defaultBrowser:(id)browser
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E6963630]);
@@ -3466,36 +3466,36 @@ LABEL_14:
   v7 = _PSLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 bundleRecord];
-    v9 = [v8 bundleIdentifier];
+    bundleRecord = [v5 bundleRecord];
+    bundleIdentifier = [bundleRecord bundleIdentifier];
     *buf = 138543362;
-    v15 = v9;
+    v15 = bundleIdentifier;
     _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_DEFAULT, "Default browser app is %{public}@", buf, 0xCu);
   }
 
-  v10 = [v5 bundleRecord];
-  v11 = [v10 bundleIdentifier];
+  bundleRecord2 = [v5 bundleRecord];
+  bundleIdentifier2 = [bundleRecord2 bundleIdentifier];
 
-  return v11;
+  return bundleIdentifier2;
 }
 
-- (void)setDefaultBrowser:(id)a3 specifier:(id)a4
+- (void)setDefaultBrowser:(id)browser specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  specifierCopy = specifier;
   v16 = 0;
-  v8 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v16];
+  v8 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:browserCopy allowPlaceholder:0 error:&v16];
   v9 = v16;
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__PSSystemPolicyForApp_setDefaultBrowser_specifier___block_invoke;
   v12[3] = &unk_1E71DC2F8;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = browserCopy;
   v13 = v11;
-  [v10 setDefaultWebBrowserToApplicationRecord:v8 completionHandler:v12];
+  [defaultWorkspace setDefaultWebBrowserToApplicationRecord:v8 completionHandler:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -3561,7 +3561,7 @@ LABEL_8:
   return v2;
 }
 
-- (id)defaultMailApp:(id)a3
+- (id)defaultMailApp:(id)app
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E6963630]);
@@ -3573,36 +3573,36 @@ LABEL_8:
   v7 = _PSLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 bundleRecord];
-    v9 = [v8 bundleIdentifier];
+    bundleRecord = [v5 bundleRecord];
+    bundleIdentifier = [bundleRecord bundleIdentifier];
     *buf = 138543362;
-    v15 = v9;
+    v15 = bundleIdentifier;
     _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_DEFAULT, "Default mail app is %{public}@", buf, 0xCu);
   }
 
-  v10 = [v5 bundleRecord];
-  v11 = [v10 bundleIdentifier];
+  bundleRecord2 = [v5 bundleRecord];
+  bundleIdentifier2 = [bundleRecord2 bundleIdentifier];
 
-  return v11;
+  return bundleIdentifier2;
 }
 
-- (void)setDefaultMailApp:(id)a3 specifier:(id)a4
+- (void)setDefaultMailApp:(id)app specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  specifierCopy = specifier;
   v16 = 0;
-  v8 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v16];
+  v8 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:appCopy allowPlaceholder:0 error:&v16];
   v9 = v16;
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__PSSystemPolicyForApp_setDefaultMailApp_specifier___block_invoke;
   v12[3] = &unk_1E71DC2F8;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = appCopy;
   v13 = v11;
-  [v10 setDefaultMailClientToApplicationRecord:v8 completionHandler:v12];
+  [defaultWorkspace setDefaultMailClientToApplicationRecord:v8 completionHandler:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -3660,15 +3660,15 @@ LABEL_8:
     v8 = [PSSpecifier groupSpecifierWithName:v7];
 
     PRSettingsProviderClass = getPRSettingsProviderClass();
-    v10 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v11 = [PRSettingsProviderClass shouldDisablePINPrivacyLockForBundleID:v10];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v11 = [PRSettingsProviderClass shouldDisablePINPrivacyLockForBundleID:bundleIdentifier];
 
     if (v11)
     {
-      v12 = [MEMORY[0x1E69ADFB8] sharedConnection];
-      v13 = [v12 managingOrganizationInformation];
+      mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+      managingOrganizationInformation = [mEMORY[0x1E69ADFB8] managingOrganizationInformation];
 
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69ADFD0]];
+      v14 = [managingOrganizationInformation objectForKeyedSubscript:*MEMORY[0x1E69ADFD0]];
       if ([v14 length] && (objc_msgSend(v14, "isEqualToString:", @"unknown") & 1) == 0)
       {
         v24 = PSIsPearlAvailable();
@@ -3714,7 +3714,7 @@ LABEL_8:
     {
       v20 = PSIsPearlAvailable();
       v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v13 = v21;
+      managingOrganizationInformation = v21;
       if (v20)
       {
         v22 = @"TAP_TO_PAY_SCREEN_LOCK_FACEID_FOOTER";
@@ -3750,24 +3750,24 @@ LABEL_8:
   return v19;
 }
 
-- (id)isTapToPayScreenLockEnabled:(id)a3
+- (id)isTapToPayScreenLockEnabled:(id)enabled
 {
   v4 = MEMORY[0x1E696AD98];
   PRSettingsProviderClass = getPRSettingsProviderClass();
-  v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v7 = [v4 numberWithBool:{objc_msgSend(PRSettingsProviderClass, "getPINPrivacyLockForBundleID:", v6)}];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v7 = [v4 numberWithBool:{objc_msgSend(PRSettingsProviderClass, "getPINPrivacyLockForBundleID:", bundleIdentifier)}];
 
   return v7;
 }
 
-- (void)setTapToPayScreenLockEnabled:(id)a3 specifier:(id)a4
+- (void)setTapToPayScreenLockEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   PRSettingsProviderClass = getPRSettingsProviderClass();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  [PRSettingsProviderClass setPINPrivacyLock:v7 forBundleID:v8];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  [PRSettingsProviderClass setPINPrivacyLock:bOOLValue forBundleID:bundleIdentifier];
 }
 
 - (id)tapToPayAlwaysPlaySoundSpecifiers
@@ -3798,31 +3798,31 @@ LABEL_8:
   return v11;
 }
 
-- (id)isTapToPayAlwaysPlaySoundEnabled:(id)a3
+- (id)isTapToPayAlwaysPlaySoundEnabled:(id)enabled
 {
   v4 = MEMORY[0x1E696AD98];
   PRSettingsProviderClass = getPRSettingsProviderClass();
-  v6 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v7 = [v4 numberWithBool:{objc_msgSend(PRSettingsProviderClass, "getAlwaysPlaySoundForBundleID:", v6)}];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v7 = [v4 numberWithBool:{objc_msgSend(PRSettingsProviderClass, "getAlwaysPlaySoundForBundleID:", bundleIdentifier)}];
 
   return v7;
 }
 
-- (void)setTapToPayAlwaysPlaySoundEnabled:(id)a3 specifier:(id)a4
+- (void)setTapToPayAlwaysPlaySoundEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   PRSettingsProviderClass = getPRSettingsProviderClass();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  [PRSettingsProviderClass setAlwaysPlaySound:v7 forBundleID:v8];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  [PRSettingsProviderClass setAlwaysPlaySound:bOOLValue forBundleID:bundleIdentifier];
 }
 
 - (id)driverKitSpecifiers
 {
   v3 = [PSDriverPolicyForApp alloc];
-  v4 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-  v5 = [(PSDriverPolicyForApp *)v3 initWithBundleIdentifier:v4];
+  bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+  v5 = [(PSDriverPolicyForApp *)v3 initWithBundleIdentifier:bundleIdentifier];
   driverPolicy = self->_driverPolicy;
   self->_driverPolicy = v5;
 
@@ -3832,20 +3832,20 @@ LABEL_8:
   return [(PSDriverPolicyForApp *)v7 specifiers];
 }
 
-- (void)observer:(id)a3 updateSectionInfo:(id)a4
+- (void)observer:(id)observer updateSectionInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  infoCopy = info;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v8 = [v7 sectionID];
-    v9 = [(PSSystemPolicyForApp *)self bundleIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    sectionID = [infoCopy sectionID];
+    bundleIdentifier = [(PSSystemPolicyForApp *)self bundleIdentifier];
+    v10 = [sectionID isEqualToString:bundleIdentifier];
 
     if (v10)
     {
-      v11 = [(PSSystemPolicyForApp *)self delegate];
-      [v11 reloadSpecifiers];
+      delegate = [(PSSystemPolicyForApp *)self delegate];
+      [delegate reloadSpecifiers];
     }
   }
 
@@ -3856,24 +3856,24 @@ LABEL_8:
     block[2] = __51__PSSystemPolicyForApp_observer_updateSectionInfo___block_invoke;
     block[3] = &unk_1E71DBCE8;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = observerCopy;
+    v14 = infoCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
 - (void)reloadSpecifiers
 {
-  v2 = [(PSSystemPolicyForApp *)self delegate];
-  [v2 reloadSpecifiers];
+  delegate = [(PSSystemPolicyForApp *)self delegate];
+  [delegate reloadSpecifiers];
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PSSystemPolicyForApp *)self delegate];
-  [v7 showController:v6 animate:v4];
+  animateCopy = animate;
+  controllerCopy = controller;
+  delegate = [(PSSystemPolicyForApp *)self delegate];
+  [delegate showController:controllerCopy animate:animateCopy];
 }
 
 - (PSSystemPolicyForAppDelegate)delegate

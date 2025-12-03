@@ -1,6 +1,6 @@
 @interface _EARNnetUtil
-+ (id)doBackPropWithNnetModelFile:(id)a3 inputFeatureVector:(id)a4 inputTargetVector:(id)a5 inputLearningRate:(float)a6 inputFreezeComponents:(id)a7 inputNumLocalIterations:(int)a8 inputGradNormFactor:(float)a9 inputGradNormType:(id)a10 inputBatchSize:(float)a11 inputObjectiveFunction:(id)a12 outTrainingLoss:(float *)a13 outModelLayersUpdated:(id *)a14;
-+ (id)doBackPropWithNnetModelFile:(id)a3 inputFeatureVector:(id)a4 inputTargetVector:(id)a5 inputLearningRate:(float)a6 inputFreezeComponents:(id)a7 inputNumLocalIterations:(int)a8 inputGradNormFactor:(float)a9 inputGradNormType:(id)a10 inputBatchSize:(float)a11 inputObjectiveFunction:(id)a12 outTrainingLosses:(id *)a13 outModelLayersUpdated:(id *)a14;
++ (id)doBackPropWithNnetModelFile:(id)file inputFeatureVector:(id)vector inputTargetVector:(id)targetVector inputLearningRate:(float)rate inputFreezeComponents:(id)components inputNumLocalIterations:(int)iterations inputGradNormFactor:(float)factor inputGradNormType:(id)self0 inputBatchSize:(float)self1 inputObjectiveFunction:(id)self2 outTrainingLoss:(float *)self3 outModelLayersUpdated:(id *)self4;
++ (id)doBackPropWithNnetModelFile:(id)file inputFeatureVector:(id)vector inputTargetVector:(id)targetVector inputLearningRate:(float)rate inputFreezeComponents:(id)components inputNumLocalIterations:(int)iterations inputGradNormFactor:(float)factor inputGradNormType:(id)self0 inputBatchSize:(float)self1 inputObjectiveFunction:(id)self2 outTrainingLosses:(id *)self3 outModelLayersUpdated:(id *)self4;
 + (void)initialize;
 @end
 
@@ -9,34 +9,34 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-+ (id)doBackPropWithNnetModelFile:(id)a3 inputFeatureVector:(id)a4 inputTargetVector:(id)a5 inputLearningRate:(float)a6 inputFreezeComponents:(id)a7 inputNumLocalIterations:(int)a8 inputGradNormFactor:(float)a9 inputGradNormType:(id)a10 inputBatchSize:(float)a11 inputObjectiveFunction:(id)a12 outTrainingLoss:(float *)a13 outModelLayersUpdated:(id *)a14
++ (id)doBackPropWithNnetModelFile:(id)file inputFeatureVector:(id)vector inputTargetVector:(id)targetVector inputLearningRate:(float)rate inputFreezeComponents:(id)components inputNumLocalIterations:(int)iterations inputGradNormFactor:(float)factor inputGradNormType:(id)self0 inputBatchSize:(float)self1 inputObjectiveFunction:(id)self2 outTrainingLoss:(float *)self3 outModelLayersUpdated:(id *)self4
 {
   v19 = 0;
-  v14 = [_EARNnetUtil doBackPropWithNnetModelFile:"doBackPropWithNnetModelFile:inputFeatureVector:inputTargetVector:inputLearningRate:inputFreezeComponents:inputNumLocalIterations:inputGradNormFactor:inputGradNormType:inputBatchSize:inputObjectiveFunction:outTrainingLosses:outModelLayersUpdated:" inputFeatureVector:a3 inputTargetVector:a4 inputLearningRate:a5 inputFreezeComponents:a7 inputNumLocalIterations:*&a8 inputGradNormFactor:a10 inputGradNormType:a12 inputBatchSize:&v19 inputObjectiveFunction:a14 outTrainingLosses:? outModelLayersUpdated:?];
+  v14 = [_EARNnetUtil doBackPropWithNnetModelFile:"doBackPropWithNnetModelFile:inputFeatureVector:inputTargetVector:inputLearningRate:inputFreezeComponents:inputNumLocalIterations:inputGradNormFactor:inputGradNormType:inputBatchSize:inputObjectiveFunction:outTrainingLosses:outModelLayersUpdated:" inputFeatureVector:file inputTargetVector:vector inputLearningRate:targetVector inputFreezeComponents:components inputNumLocalIterations:*&iterations inputGradNormFactor:type inputGradNormType:function inputBatchSize:&v19 inputObjectiveFunction:updated outTrainingLosses:? outModelLayersUpdated:?];
   v15 = v19;
-  v16 = [v15 lastObject];
-  [v16 floatValue];
-  *a13 = v17;
+  lastObject = [v15 lastObject];
+  [lastObject floatValue];
+  *loss = v17;
 
   return v14;
 }
 
-+ (id)doBackPropWithNnetModelFile:(id)a3 inputFeatureVector:(id)a4 inputTargetVector:(id)a5 inputLearningRate:(float)a6 inputFreezeComponents:(id)a7 inputNumLocalIterations:(int)a8 inputGradNormFactor:(float)a9 inputGradNormType:(id)a10 inputBatchSize:(float)a11 inputObjectiveFunction:(id)a12 outTrainingLosses:(id *)a13 outModelLayersUpdated:(id *)a14
++ (id)doBackPropWithNnetModelFile:(id)file inputFeatureVector:(id)vector inputTargetVector:(id)targetVector inputLearningRate:(float)rate inputFreezeComponents:(id)components inputNumLocalIterations:(int)iterations inputGradNormFactor:(float)factor inputGradNormType:(id)self0 inputBatchSize:(float)self1 inputObjectiveFunction:(id)self2 outTrainingLosses:(id *)self3 outModelLayersUpdated:(id *)self4
 {
   v128 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v21 = a4;
-  v73 = a5;
-  v70 = a7;
-  v71 = a10;
-  v72 = a12;
+  fileCopy = file;
+  vectorCopy = vector;
+  targetVectorCopy = targetVector;
+  componentsCopy = components;
+  typeCopy = type;
+  functionCopy = function;
   v101 = 0;
   v102 = 0;
   v103 = 0;
@@ -53,7 +53,7 @@
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v21;
+  obj = vectorCopy;
   v22 = [obj countByEnumeratingWithState:&v116 objects:v124 count:16];
   if (v22)
   {
@@ -172,7 +172,7 @@
     while (v22);
   }
 
-  v40 = v73;
+  v40 = targetVectorCopy;
   v90 = 0;
   v91 = 0;
   v89 = 0;
@@ -348,12 +348,12 @@
   *&v127[28] = 0;
   v127[30] = 0;
   kaldi::nnet1::GradientNormalizationParams::GradientNormalizationParams(&v120);
-  *v127 = a6;
+  *v127 = rate;
   v127[28] = 1;
-  *&v120 = a9;
-  if (v71)
+  *&v120 = factor;
+  if (typeCopy)
   {
-    [v71 ear_toString];
+    [typeCopy ear_toString];
   }
 
   else
@@ -375,13 +375,13 @@
   *(v88 + 15) = *&v127[15];
   v63 = v120;
   v64 = DWORD2(v120);
-  if (v72)
+  if (functionCopy)
   {
-    [v72 ear_toString];
-    if (v70)
+    [functionCopy ear_toString];
+    if (componentsCopy)
     {
 LABEL_71:
-      [v70 ear_toString];
+      [componentsCopy ear_toString];
       goto LABEL_74;
     }
   }
@@ -389,7 +389,7 @@ LABEL_71:
   else
   {
     memset(v86, 0, sizeof(v86));
-    if (v70)
+    if (componentsCopy)
     {
       goto LABEL_71;
     }
@@ -401,12 +401,12 @@ LABEL_74:
   std::vector<std::vector<float>>::__init_with_size[abi:ne200100]<std::vector<float>*,std::vector<float>*>(v84, v92, v93, 0xAAAAAAAAAAAAAAABLL * ((v93 - v92) >> 3));
   memset(v83, 0, sizeof(v83));
   std::vector<std::vector<std::vector<std::pair<int,float>>>>::__init_with_size[abi:ne200100]<std::vector<std::vector<std::pair<int,float>>>*,std::vector<std::vector<std::pair<int,float>>>*>(v83, v89, v90, 0xAAAAAAAAAAAAAAABLL * ((v90 - v89) >> 3));
-  if (v69)
+  if (fileCopy)
   {
-    [v69 ear_toString];
+    [fileCopy ear_toString];
   }
 
-  kaldi::nnet1::DoBackProp(a11, &v87, v63, v64, v86, v85);
+  kaldi::nnet1::DoBackProp(size, &v87, v63, v64, v86, v85);
 }
 
 @end

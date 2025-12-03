@@ -1,52 +1,52 @@
 @interface NMCUICloudNotificationAccountDataSource
-+ (BOOL)accountHasCredentials:(id)a3;
-+ (BOOL)accountSupportsNotifications:(id)a3 forceEnabled:(BOOL)a4;
-- (BOOL)accountIsPending:(id)a3;
-- (BOOL)accountShowsAlerts:(id)a3;
++ (BOOL)accountHasCredentials:(id)credentials;
++ (BOOL)accountSupportsNotifications:(id)notifications forceEnabled:(BOOL)enabled;
+- (BOOL)accountIsPending:(id)pending;
+- (BOOL)accountShowsAlerts:(id)alerts;
 - (BOOL)cloudNotificationsEnabled;
 - (BOOL)deviceSupportsCloudNotifications;
-- (BOOL)shouldPromptToEnableNotifications:(id)a3;
-- (NMCUICloudNotificationAccountDataSource)initWithAccountDataSource:(id)a3;
+- (BOOL)shouldPromptToEnableNotifications:(id)notifications;
+- (NMCUICloudNotificationAccountDataSource)initWithAccountDataSource:(id)source;
 - (NPSDomainAccessor)domainAccessor;
-- (id)_emailAddressFromJWTToken:(id)a3 error:(id *)a4;
-- (id)_ensureValidBase64String:(id)a3;
-- (id)_getValueForKey:(id)a3;
+- (id)_emailAddressFromJWTToken:(id)token error:(id *)error;
+- (id)_ensureValidBase64String:(id)string;
+- (id)_getValueForKey:(id)key;
 - (id)accountsRequiringCredentials;
-- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)a3 viewController:(id)a4;
+- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)dismiss viewController:(id)controller;
 - (void)_handleDidUnpair;
 - (void)_handlePairedDeviceChanged;
-- (void)_setValue:(id)a3 forKey:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_setValue:(id)value forKey:(id)key;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)handleAccountAuthenication:(id)a3 viewController:(id)a4 stateUpdateHandler:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)saveCredential:(id)a3 emailAddress:(id)a4 forAccount:(id)a5 completion:(id)a6;
-- (void)savePCCCredentialForAccount:(id)a3 identity:(id)a4 viewController:(id)a5 stateUpdateHandler:(id)a6;
+- (void)handleAccountAuthenication:(id)authenication viewController:(id)controller stateUpdateHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)saveCredential:(id)credential emailAddress:(id)address forAccount:(id)account completion:(id)completion;
+- (void)savePCCCredentialForAccount:(id)account identity:(id)identity viewController:(id)controller stateUpdateHandler:(id)handler;
 @end
 
 @implementation NMCUICloudNotificationAccountDataSource
 
-- (NMCUICloudNotificationAccountDataSource)initWithAccountDataSource:(id)a3
+- (NMCUICloudNotificationAccountDataSource)initWithAccountDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = NMCUICloudNotificationAccountDataSource;
   v5 = [(NMCUICloudNotificationAccountDataSource *)&v11 init];
   if (v5)
   {
     nnmk_setupLoggingSubsystems();
-    [(NMCUICloudNotificationAccountDataSource *)v5 setAccountDataSource:v4];
+    [(NMCUICloudNotificationAccountDataSource *)v5 setAccountDataSource:sourceCopy];
     v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:3];
     [(NMCUICloudNotificationAccountDataSource *)v5 setPendingAccountIds:v6];
 
     v7 = objc_alloc_init(MEMORY[0x277D2BA60]);
     [(NMCUICloudNotificationAccountDataSource *)v5 setSyncManager:v7];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__handleDidUnpair name:*MEMORY[0x277D2BC78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleDidUnpair name:*MEMORY[0x277D2BC78] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v5 selector:sel__handlePairedDeviceChanged name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__handlePairedDeviceChanged name:*MEMORY[0x277D2BC48] object:0];
   }
 
   return v5;
@@ -54,11 +54,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D2BC48] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D2BC48] object:0];
 
   v5.receiver = self;
   v5.super_class = NMCUICloudNotificationAccountDataSource;
@@ -70,14 +70,14 @@
   deviceSupportsPCC = self->_deviceSupportsPCC;
   if (!deviceSupportsPCC)
   {
-    v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v5 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-    v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+    v6 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+    firstObject = [v6 firstObject];
 
     v8 = MEMORY[0x277CCABB0];
     v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"62A0825B-34DD-490E-9DB9-D13AE37F601B"];
-    v10 = [v8 numberWithBool:{objc_msgSend(v7, "supportsCapability:", v9)}];
+    v10 = [v8 numberWithBool:{objc_msgSend(firstObject, "supportsCapability:", v9)}];
     v11 = self->_deviceSupportsPCC;
     self->_deviceSupportsPCC = v10;
 
@@ -87,22 +87,22 @@
   return [(NSNumber *)deviceSupportsPCC BOOLValue];
 }
 
-+ (BOOL)accountSupportsNotifications:(id)a3 forceEnabled:(BOOL)a4
++ (BOOL)accountSupportsNotifications:(id)notifications forceEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 accountTypeIdentifier];
-  if ([v6 isEqualToString:*MEMORY[0x277CB8C40]])
+  enabledCopy = enabled;
+  notificationsCopy = notifications;
+  accountTypeIdentifier = [notificationsCopy accountTypeIdentifier];
+  if ([accountTypeIdentifier isEqualToString:*MEMORY[0x277CB8C40]])
   {
-    v7 = [v5 enabled] | v4;
+    v7 = [notificationsCopy enabled] | enabledCopy;
   }
 
   else
   {
-    v8 = [v5 accountTypeIdentifier];
-    if ([v8 isEqualToString:*MEMORY[0x277CB8C50]])
+    accountTypeIdentifier2 = [notificationsCopy accountTypeIdentifier];
+    if ([accountTypeIdentifier2 isEqualToString:*MEMORY[0x277CB8C50]])
     {
-      v7 = [v5 enabled] | v4;
+      v7 = [notificationsCopy enabled] | enabledCopy;
     }
 
     else
@@ -114,48 +114,48 @@
   return v7;
 }
 
-+ (BOOL)accountHasCredentials:(id)a3
++ (BOOL)accountHasCredentials:(id)credentials
 {
-  v3 = a3;
-  v4 = [v3 acAccount];
+  credentialsCopy = credentials;
+  acAccount = [credentialsCopy acAccount];
 
-  if (v4)
+  if (acAccount)
   {
-    v5 = [v3 acAccount];
-    v6 = [v5 accountType];
-    v7 = [v6 identifier];
-    if (![v7 isEqualToString:*MEMORY[0x277CB8C40]])
+    acAccount2 = [credentialsCopy acAccount];
+    accountType = [acAccount2 accountType];
+    identifier = [accountType identifier];
+    if (![identifier isEqualToString:*MEMORY[0x277CB8C40]])
     {
       v12 = 1;
       goto LABEL_9;
     }
 
-    v8 = [v3 acAccount];
+    acAccount3 = [credentialsCopy acAccount];
     v9 = getNNMKEmailAddressTokenKey();
-    v10 = [v8 accountPropertyForKey:v9];
+    v10 = [acAccount3 accountPropertyForKey:v9];
   }
 
   else
   {
-    v11 = [v3 nnmkAccount];
+    nnmkAccount = [credentialsCopy nnmkAccount];
 
-    if (!v11)
+    if (!nnmkAccount)
     {
       v12 = 0;
       goto LABEL_11;
     }
 
-    v5 = [v3 nnmkAccount];
-    v6 = [v5 typeIdentifier];
-    if (![v6 isEqualToString:*MEMORY[0x277CB8C40]])
+    acAccount2 = [credentialsCopy nnmkAccount];
+    accountType = [acAccount2 typeIdentifier];
+    if (![accountType isEqualToString:*MEMORY[0x277CB8C40]])
     {
       v12 = 1;
       goto LABEL_10;
     }
 
-    v7 = [v3 nnmkAccount];
-    v8 = [v7 emailAddressToken];
-    v10 = v8;
+    identifier = [credentialsCopy nnmkAccount];
+    acAccount3 = [identifier emailAddressToken];
+    v10 = acAccount3;
   }
 
   v12 = v10 != 0;
@@ -167,38 +167,38 @@ LABEL_11:
   return v12;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NMCUICloudNotificationAccountDataSource *)self accountDataSource];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  accountDataSource = [(NMCUICloudNotificationAccountDataSource *)self accountDataSource];
+  [accountDataSource addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NMCUICloudNotificationAccountDataSource *)self accountDataSource];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  accountDataSource = [(NMCUICloudNotificationAccountDataSource *)self accountDataSource];
+  [accountDataSource removeObserver:observerCopy];
 }
 
-- (BOOL)accountIsPending:(id)a3
+- (BOOL)accountIsPending:(id)pending
 {
   pendingAccountIds = self->_pendingAccountIds;
-  v4 = [a3 identifier];
-  LOBYTE(pendingAccountIds) = [(NSMutableSet *)pendingAccountIds containsObject:v4];
+  identifier = [pending identifier];
+  LOBYTE(pendingAccountIds) = [(NSMutableSet *)pendingAccountIds containsObject:identifier];
 
   return pendingAccountIds;
 }
 
 - (id)accountsRequiringCredentials
 {
-  v3 = [(NMCUIAccountDataSource *)self->_accountDataSource accounts];
+  accounts = [(NMCUIAccountDataSource *)self->_accountDataSource accounts];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__NMCUICloudNotificationAccountDataSource_accountsRequiringCredentials__block_invoke;
   v6[3] = &unk_2799346C8;
   v6[4] = self;
-  v4 = [v3 ac_filter:v6];
+  v4 = [accounts ac_filter:v6];
 
   return v4;
 }
@@ -216,22 +216,22 @@ uint64_t __71__NMCUICloudNotificationAccountDataSource_accountsRequiringCredenti
 {
   v3 = getNanoMailCloudNotificationsEnabledKey();
   v4 = [(NMCUICloudNotificationAccountDataSource *)self _getValueForKey:v3];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)shouldPromptToEnableNotifications:(id)a3
+- (BOOL)shouldPromptToEnableNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   if ([(NMCUICloudNotificationAccountDataSource *)self deviceSupportsCloudNotifications])
   {
-    v5 = [v4 nnmkAccount];
-    if ([NMCUICloudNotificationAccountDataSource accountSupportsNotifications:v4 forceEnabled:v5 != 0])
+    nnmkAccount = [notificationsCopy nnmkAccount];
+    if ([NMCUICloudNotificationAccountDataSource accountSupportsNotifications:notificationsCopy forceEnabled:nnmkAccount != 0])
     {
       if ([(NMCUICloudNotificationAccountDataSource *)self cloudNotificationsEnabled])
       {
-        v6 = ![NMCUICloudNotificationAccountDataSource accountHasCredentials:v4];
+        v6 = ![NMCUICloudNotificationAccountDataSource accountHasCredentials:notificationsCopy];
       }
 
       else
@@ -254,10 +254,10 @@ uint64_t __71__NMCUICloudNotificationAccountDataSource_accountsRequiringCredenti
   return v6;
 }
 
-- (BOOL)accountShowsAlerts:(id)a3
+- (BOOL)accountShowsAlerts:(id)alerts
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertsCopy = alerts;
   if ([(NMCUICloudNotificationAccountDataSource *)self showsAlerts])
   {
     v26 = 0u;
@@ -306,8 +306,8 @@ uint64_t __71__NMCUICloudNotificationAccountDataSource_accountsRequiringCredenti
           }
 
           v12 = [v8 objectForKeyedSubscript:{*v9, v22}];
-          v13 = [v4 identifier];
-          v14 = [v12 isEqualToString:v13];
+          identifier = [alertsCopy identifier];
+          v14 = [v12 isEqualToString:identifier];
 
           if (v14)
           {
@@ -339,7 +339,7 @@ LABEL_21:
             }
 
             v19 = [v8 objectForKeyedSubscript:*v16];
-            v15 = [v19 BOOLValue];
+            bOOLValue = [v19 BOOLValue];
 
             goto LABEL_19;
           }
@@ -355,34 +355,34 @@ LABEL_21:
       }
     }
 
-    v15 = 1;
+    bOOLValue = 1;
 LABEL_19:
   }
 
   else
   {
-    v15 = 0;
+    bOOLValue = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v15;
+  return bOOLValue;
 }
 
-- (void)saveCredential:(id)a3 emailAddress:(id)a4 forAccount:(id)a5 completion:(id)a6
+- (void)saveCredential:(id)credential emailAddress:(id)address forAccount:(id)account completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 acAccount];
+  credentialCopy = credential;
+  addressCopy = address;
+  accountCopy = account;
+  completionCopy = completion;
+  acAccount = [accountCopy acAccount];
 
-  if (v14)
+  if (acAccount)
   {
-    v15 = [v12 acAccount];
+    acAccount2 = [accountCopy acAccount];
     v16 = getNNMKEmailAddressTokenKey();
-    [v15 setAccountProperty:v10 forKey:v16];
+    [acAccount2 setAccountProperty:credentialCopy forKey:v16];
 
-    v17 = [v12 acAccount];
+    acAccount3 = [accountCopy acAccount];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -404,32 +404,32 @@ LABEL_19:
       _Unwind_Resume(v22);
     }
 
-    [v17 setAccountProperty:v11 forKey:*v18];
+    [acAccount3 setAccountProperty:addressCopy forKey:*v18];
     goto LABEL_8;
   }
 
-  v20 = [v12 nnmkAccount];
+  nnmkAccount = [accountCopy nnmkAccount];
 
-  if (v20)
+  if (nnmkAccount)
   {
-    v21 = [v12 nnmkAccount];
-    [v21 setEmailAddressToken:v10];
+    nnmkAccount2 = [accountCopy nnmkAccount];
+    [nnmkAccount2 setEmailAddressToken:credentialCopy];
 
-    v17 = [v12 nnmkAccount];
-    [v17 setPccEmailAddress:v11];
+    acAccount3 = [accountCopy nnmkAccount];
+    [acAccount3 setPccEmailAddress:addressCopy];
 LABEL_8:
   }
 
-  [(NMCUIAccountDataSource *)self->_accountDataSource saveAccount:v12 completion:v13];
+  [(NMCUIAccountDataSource *)self->_accountDataSource saveAccount:accountCopy completion:completionCopy];
 }
 
-- (void)handleAccountAuthenication:(id)a3 viewController:(id)a4 stateUpdateHandler:(id)a5
+- (void)handleAccountAuthenication:(id)authenication viewController:(id)controller stateUpdateHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accountTypeIdentifier];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CB8C40]];
+  authenicationCopy = authenication;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  accountTypeIdentifier = [authenicationCopy accountTypeIdentifier];
+  v12 = [accountTypeIdentifier isEqualToString:*MEMORY[0x277CB8C40]];
 
   if (v12)
   {
@@ -456,7 +456,7 @@ LABEL_8:
     v23[1] = 3221225472;
     v23[2] = __104__NMCUICloudNotificationAccountDataSource_handleAccountAuthenication_viewController_stateUpdateHandler___block_invoke;
     v23[3] = &unk_2799346F0;
-    v16 = v9;
+    v16 = controllerCopy;
     v24 = v16;
     v17 = [v15 initWithEmailOnlyScope:1 presentationBlock:v23];
     objc_initWeak(location, self);
@@ -464,10 +464,10 @@ LABEL_8:
     v18[1] = 3221225472;
     v18[2] = __104__NMCUICloudNotificationAccountDataSource_handleAccountAuthenication_viewController_stateUpdateHandler___block_invoke_2;
     v18[3] = &unk_279934740;
-    v19 = v8;
+    v19 = authenicationCopy;
     objc_copyWeak(&v22, location);
     v20 = v16;
-    v21 = v10;
+    v21 = handlerCopy;
     [v17 setCompletion:v18];
 
     objc_destroyWeak(&v22);
@@ -556,21 +556,21 @@ void __104__NMCUICloudNotificationAccountDataSource_handleAccountAuthenication_v
   }
 }
 
-- (void)savePCCCredentialForAccount:(id)a3 identity:(id)a4 viewController:(id)a5 stateUpdateHandler:(id)a6
+- (void)savePCCCredentialForAccount:(id)account identity:(id)identity viewController:(id)controller stateUpdateHandler:(id)handler
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v47 = a5;
-  v12 = a6;
-  v13 = [(NMCUICloudNotificationAccountDataSource *)self pendingAccountIds];
-  v14 = [v10 identifier];
-  [v13 addObject:v14];
+  accountCopy = account;
+  identityCopy = identity;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  pendingAccountIds = [(NMCUICloudNotificationAccountDataSource *)self pendingAccountIds];
+  identifier = [accountCopy identifier];
+  [pendingAccountIds addObject:identifier];
 
-  v12[2](v12);
-  v15 = [v11 idToken];
+  handlerCopy[2](handlerCopy);
+  idToken = [identityCopy idToken];
   v55 = 0;
-  v16 = [(NMCUICloudNotificationAccountDataSource *)self _emailAddressFromJWTToken:v15 error:&v55];
+  v16 = [(NMCUICloudNotificationAccountDataSource *)self _emailAddressFromJWTToken:idToken error:&v55];
   v17 = v55;
 
   if (v16)
@@ -579,17 +579,17 @@ void __104__NMCUICloudNotificationAccountDataSource_handleAccountAuthenication_v
     NNMKURLRequestClass = getNNMKURLRequestClass(inited, v19, v20, v21, v22, v23, v24, v25);
     v34 = [getNNMKURLRequestClass(NNMKURLRequestClass v27];
     v56 = @"idToken";
-    v35 = [v11 idToken];
-    v57[0] = v35;
+    idToken2 = [identityCopy idToken];
+    v57[0] = idToken2;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_identity_viewController_stateUpdateHandler___block_invoke;
     v48[3] = &unk_2799347B8;
     objc_copyWeak(&v53, &location);
-    v49 = v47;
-    v50 = v10;
-    v52 = v12;
+    v49 = controllerCopy;
+    v50 = accountCopy;
+    v52 = handlerCopy;
     v51 = v16;
     [NNMKURLRequestClass postRequestWithBaseURLString:v34 path:@"/gmail/authenticateEmail" body:v36 token:0 needsBAA:1 completion:v48];
 
@@ -605,11 +605,11 @@ void __104__NMCUICloudNotificationAccountDataSource_handleAccountAuthenication_v
       [(NMCUICloudNotificationAccountDataSource *)v17 savePCCCredentialForAccount:v37 identity:v38 viewController:v39 stateUpdateHandler:v40, v41, v42, v43];
     }
 
-    v44 = [(NMCUICloudNotificationAccountDataSource *)self pendingAccountIds];
-    v45 = [v10 identifier];
-    [v44 removeObject:v45];
+    pendingAccountIds2 = [(NMCUICloudNotificationAccountDataSource *)self pendingAccountIds];
+    identifier2 = [accountCopy identifier];
+    [pendingAccountIds2 removeObject:identifier2];
 
-    v12[2](v12);
+    handlerCopy[2](handlerCopy);
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -701,11 +701,11 @@ void __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_
   }
 }
 
-- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)a3 viewController:(id)a4
+- (void)_displayFailedToSaveAlertShouldDismiss:(BOOL)dismiss viewController:(id)controller
 {
   v4 = MEMORY[0x277D75110];
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [v5 bundleWithIdentifier:@"com.apple.NanoMailCompanionUI"];
   v8 = [v7 localizedStringForKey:@"FAILED_TO_SAVE" value:&stru_286C65BF0 table:@"NanoMailCompanionUI"];
   v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoMailCompanionUI"];
@@ -718,12 +718,12 @@ void __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_
   v14 = [v11 actionWithTitle:v13 style:1 handler:0];
   [v15 addAction:v14];
 
-  [v6 presentViewController:v15 animated:1 completion:0];
+  [controllerCopy presentViewController:v15 animated:1 completion:0];
 }
 
-- (id)_emailAddressFromJWTToken:(id)a3 error:(id *)a4
+- (id)_emailAddressFromJWTToken:(id)token error:(id *)error
 {
-  v6 = [a3 componentsSeparatedByString:@"."];
+  v6 = [token componentsSeparatedByString:@"."];
   if ([v6 count] == 3)
   {
     v7 = objc_alloc(MEMORY[0x277CBEA90]);
@@ -731,7 +731,7 @@ void __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_
     v9 = [(NMCUICloudNotificationAccountDataSource *)self _ensureValidBase64String:v8];
     v10 = [v7 initWithBase64EncodedString:v9 options:1];
 
-    if (v10 && ([MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:a4], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v10 && ([MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:error], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
       v13 = [v11 objectForKeyedSubscript:@"email"];
@@ -751,17 +751,17 @@ void __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_
   return v13;
 }
 
-- (id)_ensureValidBase64String:(id)a3
+- (id)_ensureValidBase64String:(id)string
 {
-  v3 = a3;
-  if (([v3 length] & 3) != 0)
+  stringCopy = string;
+  if (([stringCopy length] & 3) != 0)
   {
-    v4 = [v3 stringByPaddingToLength:objc_msgSend(v3 withString:"length") - (objc_msgSend(v3 startingAtIndex:{"length") & 3) + 4, @"=", 0}];
+    v4 = [stringCopy stringByPaddingToLength:objc_msgSend(stringCopy withString:"length") - (objc_msgSend(stringCopy startingAtIndex:{"length") & 3) + 4, @"=", 0}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   v5 = v4;
@@ -798,35 +798,35 @@ void __114__NMCUICloudNotificationAccountDataSource_savePCCCredentialForAccount_
   return domainAccessor;
 }
 
-- (id)_getValueForKey:(id)a3
+- (id)_getValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
-  v6 = [v5 synchronize];
+  keyCopy = key;
+  domainAccessor = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
-  v7 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
-  v8 = [v7 objectForKey:v4];
+  domainAccessor2 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
+  v8 = [domainAccessor2 objectForKey:keyCopy];
 
   return v8;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
-  v8 = [v7 objectForKey:v6];
+  valueCopy = value;
+  keyCopy = key;
+  domainAccessor = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
+  v8 = [domainAccessor objectForKey:keyCopy];
 
-  if (([v8 isEqual:v14] & 1) == 0)
+  if (([v8 isEqual:valueCopy] & 1) == 0)
   {
-    v9 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
-    [v9 setObject:v14 forKey:v6];
+    domainAccessor2 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
+    [domainAccessor2 setObject:valueCopy forKey:keyCopy];
 
-    v10 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
-    v11 = [v10 synchronize];
+    domainAccessor3 = [(NMCUICloudNotificationAccountDataSource *)self domainAccessor];
+    synchronize = [domainAccessor3 synchronize];
 
     syncManager = self->_syncManager;
-    v13 = [MEMORY[0x277CBEB98] setWithObject:v6];
+    v13 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
     [(NPSManager *)syncManager synchronizeNanoDomain:@"com.apple.NanoMail" keys:v13];
   }
 }

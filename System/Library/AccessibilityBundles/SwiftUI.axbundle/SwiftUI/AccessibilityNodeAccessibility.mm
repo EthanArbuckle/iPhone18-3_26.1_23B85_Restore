@@ -1,8 +1,8 @@
 @interface AccessibilityNodeAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHitTestShouldFallbackToNearestChild;
 - (BOOL)_accessibilityIsSoftwareKeyboardMimic;
-- (BOOL)_accessibilityPrefersNonAttributedAttributeWithOverrideSelector:(SEL)a3 nonAttributedSelector:(SEL)a4 attributedSelector:(SEL)a5;
+- (BOOL)_accessibilityPrefersNonAttributedAttributeWithOverrideSelector:(SEL)selector nonAttributedSelector:(SEL)attributedSelector attributedSelector:(SEL)a5;
 - (BOOL)_accessibilityShouldExpandMathEquation;
 - (BOOL)_accessibilityShouldIncludeMediaDescriptionsRotor;
 - (BOOL)_accessibilityShouldSpeakMathEquationTrait;
@@ -10,7 +10,7 @@
 - (BOOL)_prefersFocusContainment;
 - (BOOL)accessibilityRespondsToUserInteraction;
 - (BOOL)canBecomeFocused;
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (CGRect)frame;
 - (NSString)description;
 - (NSString)focusGroupIdentifier;
@@ -21,22 +21,22 @@
 - (id)_preferredFocusRegionCoordinateSpace;
 - (id)accessibilityMathEquation;
 - (id)automationElements;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (unsigned)_accessibilityEffectiveMediaAnalysisOptions;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation AccessibilityNodeAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SwiftUI.AccessibilityNode" hasSwiftField:@"children" withSwiftType:"Array<AccessibilityNode>"];
-  [v3 validateClass:@"SwiftUI.AccessibilityNode" hasInstanceMethod:@"_accessibilityNodeRepresentedElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SwiftUI.AccessibilityNode" hasInstanceMethod:@"accessibilityCustomAttribute:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SwiftUI.AccessibilityNode" hasSwiftField:@"children" withSwiftType:"Array<AccessibilityNode>"];
+  [validationsCopy validateClass:@"SwiftUI.AccessibilityNode" hasInstanceMethod:@"_accessibilityNodeRepresentedElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SwiftUI.AccessibilityNode" hasInstanceMethod:@"accessibilityCustomAttribute:" withFullSignature:{"@", "@", 0}];
 }
 
 - (id)automationElements
@@ -49,24 +49,24 @@
   v8 = 3221225472;
   v9 = __52__AccessibilityNodeAccessibility_automationElements__block_invoke;
   v10 = &unk_29F305C28;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   AXPerformSafeBlock();
   v3 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
   if (v3)
   {
-    v4 = 0;
+    automationElements = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v6 automationElements];
+    automationElements = [(AccessibilityNodeAccessibility *)&v6 automationElements];
   }
 
-  return v4;
+  return automationElements;
 }
 
 void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint64_t a1)
@@ -75,7 +75,7 @@ void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint6
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-- (BOOL)_accessibilityPrefersNonAttributedAttributeWithOverrideSelector:(SEL)a3 nonAttributedSelector:(SEL)a4 attributedSelector:(SEL)a5
+- (BOOL)_accessibilityPrefersNonAttributedAttributeWithOverrideSelector:(SEL)selector nonAttributedSelector:(SEL)attributedSelector attributedSelector:(SEL)a5
 {
   if (AXDoesRequestingClientDeserveAutomation())
   {
@@ -84,7 +84,7 @@ void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint6
 
   v10.receiver = self;
   v10.super_class = AccessibilityNodeAccessibility;
-  return [(AccessibilityNodeAccessibility *)&v10 _accessibilityPrefersNonAttributedAttributeWithOverrideSelector:a3 nonAttributedSelector:a4 attributedSelector:a5];
+  return [(AccessibilityNodeAccessibility *)&v10 _accessibilityPrefersNonAttributedAttributeWithOverrideSelector:selector nonAttributedSelector:attributedSelector attributedSelector:a5];
 }
 
 - (NSString)description
@@ -93,8 +93,8 @@ void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint6
   v8.receiver = self;
   v8.super_class = AccessibilityNodeAccessibility;
   v4 = [(AccessibilityNodeAccessibility *)&v8 description];
-  v5 = [(AccessibilityNodeAccessibility *)self accessibilityLabel];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  accessibilityLabel = [(AccessibilityNodeAccessibility *)self accessibilityLabel];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, accessibilityLabel];
 
   return v6;
 }
@@ -113,7 +113,7 @@ void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint6
   v9 = 3221225472;
   v10 = __83__AccessibilityNodeAccessibility__accessibilityHitTestShouldFallbackToNearestChild__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -126,9 +126,9 @@ void __52__AccessibilityNodeAccessibility_automationElements__block_invoke(uint6
     abort();
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     return 1;
   }
@@ -160,14 +160,14 @@ uint64_t __83__AccessibilityNodeAccessibility__accessibilityHitTestShouldFallbac
   v8 = 3221225472;
   v9 = __83__AccessibilityNodeAccessibility__accessibilityShouldIncludeMediaDescriptionsRotor__block_invoke;
   v10 = &unk_29F305C28;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   AXPerformSafeBlock();
   v3 = v14[5];
   _Block_object_dispose(&v13, 8);
 
-  v4 = [v3 BOOLValue];
-  if (v4)
+  bOOLValue = [v3 BOOLValue];
+  if (bOOLValue)
   {
     return 1;
   }
@@ -199,14 +199,14 @@ uint64_t __83__AccessibilityNodeAccessibility__accessibilityShouldIncludeMediaDe
   v8 = 3221225472;
   v9 = __77__AccessibilityNodeAccessibility__accessibilityEffectiveMediaAnalysisOptions__block_invoke;
   v10 = &unk_29F305C28;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   AXPerformSafeBlock();
   v3 = v14[5];
   _Block_object_dispose(&v13, 8);
 
-  v4 = [v3 BOOLValue];
-  if (v4)
+  bOOLValue = [v3 BOOLValue];
+  if (bOOLValue)
   {
     return 0;
   }
@@ -238,14 +238,14 @@ uint64_t __77__AccessibilityNodeAccessibility__accessibilityEffectiveMediaAnalys
   v8 = 3221225472;
   v9 = __83__AccessibilityNodeAccessibility__accessibilityUseElementAtPositionAfterActivation__block_invoke;
   v10 = &unk_29F305C28;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   AXPerformSafeBlock();
   v3 = v14[5];
   _Block_object_dispose(&v13, 8);
 
-  v4 = [v3 BOOLValue];
-  if (v4)
+  bOOLValue = [v3 BOOLValue];
+  if (bOOLValue)
   {
     return 1;
   }
@@ -284,7 +284,7 @@ uint64_t __83__AccessibilityNodeAccessibility__accessibilityUseElementAtPosition
 {
   v16.receiver = self;
   v16.super_class = AccessibilityNodeAccessibility;
-  v3 = [(AccessibilityNodeAccessibility *)&v16 _accessibilityAXAttributedLabel];
+  _accessibilityAXAttributedLabel = [(AccessibilityNodeAccessibility *)&v16 _accessibilityAXAttributedLabel];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -292,23 +292,23 @@ uint64_t __83__AccessibilityNodeAccessibility__accessibilityUseElementAtPosition
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
   v8 = MEMORY[0x29EDCA5F8];
-  v9 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v4 = v11[5];
   _Block_object_dispose(&v10, 8);
 
-  if ([v3 isAXAttributedString] && objc_msgSend(v4, "length"))
+  if ([_accessibilityAXAttributedLabel isAXAttributedString] && objc_msgSend(v4, "length"))
   {
-    v5 = v3;
+    v5 = _accessibilityAXAttributedLabel;
     [v5 addAttribute:v4 forKey:*MEMORY[0x29EDBD880] withRange:{0, objc_msgSend(v5, "length")}];
   }
 
   else
   {
-    v6 = v3;
+    v6 = _accessibilityAXAttributedLabel;
   }
 
-  return v3;
+  return _accessibilityAXAttributedLabel;
 }
 
 uint64_t __65__AccessibilityNodeAccessibility__accessibilityAXAttributedLabel__block_invoke(uint64_t a1)
@@ -333,7 +333,7 @@ uint64_t __65__AccessibilityNodeAccessibility__accessibilityAXAttributedLabel__b
   v9 = 3221225472;
   v10 = __59__AccessibilityNodeAccessibility_accessibilityMathEquation__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -341,17 +341,17 @@ uint64_t __65__AccessibilityNodeAccessibility__accessibilityAXAttributedLabel__b
 
   if (v3)
   {
-    v4 = v3;
+    accessibilityMathEquation = v3;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 accessibilityMathEquation];
+    accessibilityMathEquation = [(AccessibilityNodeAccessibility *)&v7 accessibilityMathEquation];
   }
 
-  v5 = v4;
+  v5 = accessibilityMathEquation;
 
   return v5;
 }
@@ -378,7 +378,7 @@ uint64_t __59__AccessibilityNodeAccessibility_accessibilityMathEquation__block_i
   v9 = 3221225472;
   v10 = __76__AccessibilityNodeAccessibility__accessibilityShouldSpeakMathEquationTrait__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -386,17 +386,17 @@ uint64_t __59__AccessibilityNodeAccessibility_accessibilityMathEquation__block_i
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 _accessibilityShouldSpeakMathEquationTrait];
+    bOOLValue = [(AccessibilityNodeAccessibility *)&v7 _accessibilityShouldSpeakMathEquationTrait];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -423,7 +423,7 @@ uint64_t __76__AccessibilityNodeAccessibility__accessibilityShouldSpeakMathEquat
   v9 = 3221225472;
   v10 = __72__AccessibilityNodeAccessibility__accessibilityShouldExpandMathEquation__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -431,17 +431,17 @@ uint64_t __76__AccessibilityNodeAccessibility__accessibilityShouldSpeakMathEquat
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 _accessibilityShouldExpandMathEquation];
+    bOOLValue = [(AccessibilityNodeAccessibility *)&v7 _accessibilityShouldExpandMathEquation];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -468,7 +468,7 @@ uint64_t __72__AccessibilityNodeAccessibility__accessibilityShouldExpandMathEqua
   v9 = 3221225472;
   v10 = __69__AccessibilityNodeAccessibility__accessibilitySoftwareMimicKeyboard__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -476,17 +476,17 @@ uint64_t __72__AccessibilityNodeAccessibility__accessibilityShouldExpandMathEqua
 
   if (v3 && [v3 BOOLValue])
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 _accessibilitySoftwareMimicKeyboard];
+    selfCopy2 = [(AccessibilityNodeAccessibility *)&v7 _accessibilitySoftwareMimicKeyboard];
   }
 
-  v5 = v4;
+  v5 = selfCopy2;
 
   return v5;
 }
@@ -513,7 +513,7 @@ uint64_t __69__AccessibilityNodeAccessibility__accessibilitySoftwareMimicKeyboar
   v9 = 3221225472;
   v10 = __71__AccessibilityNodeAccessibility__accessibilityIsSoftwareKeyboardMimic__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -521,17 +521,17 @@ uint64_t __69__AccessibilityNodeAccessibility__accessibilitySoftwareMimicKeyboar
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 _accessibilityIsSoftwareKeyboardMimic];
+    bOOLValue = [(AccessibilityNodeAccessibility *)&v7 _accessibilityIsSoftwareKeyboardMimic];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -558,7 +558,7 @@ uint64_t __71__AccessibilityNodeAccessibility__accessibilityIsSoftwareKeyboardMi
   v9 = 3221225472;
   v10 = __69__AccessibilityNodeAccessibility__accessibilitySwipeIslandIdentifier__block_invoke;
   v11 = &unk_29F305C28;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -566,17 +566,17 @@ uint64_t __71__AccessibilityNodeAccessibility__accessibilityIsSoftwareKeyboardMi
 
   if (v3)
   {
-    v4 = v3;
+    _accessibilitySwipeIslandIdentifier = v3;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNodeAccessibility;
-    v4 = [(AccessibilityNodeAccessibility *)&v7 _accessibilitySwipeIslandIdentifier];
+    _accessibilitySwipeIslandIdentifier = [(AccessibilityNodeAccessibility *)&v7 _accessibilitySwipeIslandIdentifier];
   }
 
-  v5 = v4;
+  v5 = _accessibilitySwipeIslandIdentifier;
 
   return v5;
 }
@@ -601,7 +601,7 @@ uint64_t __69__AccessibilityNodeAccessibility__accessibilitySwipeIslandIdentifie
   v8 = 3221225472;
   v9 = __79__AccessibilityNodeAccessibility__accessibilityDelayBeforeUpdatingOnActivation__block_invoke;
   v10 = &unk_29F305C28;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   AXPerformSafeBlock();
   v3 = *(v14 + 24);
@@ -644,18 +644,18 @@ void __79__AccessibilityNodeAccessibility__accessibilityDelayBeforeUpdatingOnAct
 {
   v9.receiver = self;
   v9.super_class = AccessibilityNodeAccessibility;
-  v3 = [(AccessibilityNodeAccessibility *)&v9 focusGroupIdentifier];
-  if (v3 || (-[AccessibilityNodeAccessibility _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  focusGroupIdentifier = [(AccessibilityNodeAccessibility *)&v9 focusGroupIdentifier];
+  if (focusGroupIdentifier || (-[AccessibilityNodeAccessibility _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = v3;
+    _accessibilityDefaultFocusGroupIdentifier = focusGroupIdentifier;
   }
 
   else
   {
-    v6 = [(AccessibilityNodeAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(AccessibilityNodeAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
   }
 
-  v7 = v6;
+  v7 = _accessibilityDefaultFocusGroupIdentifier;
 
   return v7;
 }
@@ -674,17 +674,17 @@ void __79__AccessibilityNodeAccessibility__accessibilityDelayBeforeUpdatingOnAct
   [(AccessibilityNodeAccessibility *)self _updateFocusLayerFrame];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __103__AccessibilityNodeAccessibility_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v8[3] = &unk_29F305C70;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 addCoordinatedAnimations:v8 completion:0];
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
+  [coordinator addCoordinatedAnimations:v8 completion:0];
 }
 
 uint64_t __103__AccessibilityNodeAccessibility_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -717,28 +717,28 @@ LABEL_7:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(AccessibilityNodeAccessibility *)self isAccessibilityElement];
-  if (v3)
+  isAccessibilityElement = [(AccessibilityNodeAccessibility *)self isAccessibilityElement];
+  if (isAccessibilityElement)
   {
 
-    LOBYTE(v3) = [(AccessibilityNodeAccessibility *)self accessibilityRespondsToUserInteraction];
+    LOBYTE(isAccessibilityElement) = [(AccessibilityNodeAccessibility *)self accessibilityRespondsToUserInteraction];
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)_preferredFocusRegionCoordinateSpace
 {
-  v2 = [(AccessibilityNodeAccessibility *)self _accessibilityParentView];
-  v3 = [v2 _screen];
-  v4 = [v3 coordinateSpace];
+  _accessibilityParentView = [(AccessibilityNodeAccessibility *)self _accessibilityParentView];
+  _screen = [_accessibilityParentView _screen];
+  coordinateSpace = [_screen coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  v4 = [(AccessibilityNodeAccessibility *)self accessibilityElements:a3.origin.x];
+  v4 = [(AccessibilityNodeAccessibility *)self accessibilityElements:rect.origin.x];
   if (v4)
   {
     v12[0] = MEMORY[0x29EDCA5F8];
@@ -830,9 +830,9 @@ uint64_t __71__AccessibilityNodeAccessibility_UIFocusConformance__focusItemsInRe
   return [(AccessibilityNodeAccessibility *)self shouldGroupAccessibilityChildren];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (&unk_2A2333300 == a3 || &unk_2A2332FE8 == a3 || &unk_2A2333458 == a3 || &unk_2A2333880 == a3)
+  if (&unk_2A2333300 == protocol || &unk_2A2332FE8 == protocol || &unk_2A2333458 == protocol || &unk_2A2333880 == protocol)
   {
     return 1;
   }
@@ -851,13 +851,13 @@ uint64_t __71__AccessibilityNodeAccessibility_UIFocusConformance__focusItemsInRe
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AccessibilityNodeAccessibility *)self _accessibilityWindow];
-  v12 = [(AccessibilityNodeAccessibility *)self coordinateSpace];
-  v13 = [v11 coordinateSpace];
-  if (v13)
+  _accessibilityWindow = [(AccessibilityNodeAccessibility *)self _accessibilityWindow];
+  coordinateSpace = [(AccessibilityNodeAccessibility *)self coordinateSpace];
+  coordinateSpace2 = [_accessibilityWindow coordinateSpace];
+  if (coordinateSpace2)
   {
-    [v11 convertRect:0 fromWindow:{v4, v6, v8, v10}];
-    [v12 convertRect:v13 fromCoordinateSpace:?];
+    [_accessibilityWindow convertRect:0 fromWindow:{v4, v6, v8, v10}];
+    [coordinateSpace convertRect:coordinateSpace2 fromCoordinateSpace:?];
     v4 = v14;
     v6 = v15;
     v8 = v16;

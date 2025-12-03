@@ -10,12 +10,12 @@
 
 - (id)startNavigationCommand
 {
-  v3 = [(SAClientUserActivity *)self addressDictionary];
+  addressDictionary = [(SAClientUserActivity *)self addressDictionary];
   [(SAClientUserActivity *)self coordinate];
-  v4 = [SALocation locationWithContactDictionary:v3 coordinate:?];
+  v4 = [SALocation locationWithContactDictionary:addressDictionary coordinate:?];
 
-  v5 = [(SAClientUserActivity *)self userInfo];
-  v6 = [v5 valueForKey:@"name"];
+  userInfo = [(SAClientUserActivity *)self userInfo];
+  v6 = [userInfo valueForKey:@"name"];
   [v4 setLabel:v6];
 
   v7 = objc_alloc_init(ASStartNavigation);
@@ -27,30 +27,30 @@
 
 - (id)addressDictionary
 {
-  v2 = [(SAClientUserActivity *)self userInfo];
+  userInfo = [(SAClientUserActivity *)self userInfo];
   v9[0] = CNPostalAddressStreetKey;
   v9[1] = CNPostalAddressPostalCodeKey;
   v9[2] = CNPostalAddressStateKey;
   v9[3] = CNPostalAddressCityKey;
   v9[4] = CNPostalAddressCountryKey;
   v3 = [NSArray arrayWithObjects:v9 count:5];
-  v4 = [v2 dictionaryWithValuesForKeys:v3];
+  v4 = [userInfo dictionaryWithValuesForKeys:v3];
   v5 = [v4 mutableCopy];
 
   v6 = [v5 keysOfEntriesPassingTest:&stru_C608];
-  v7 = [v6 allObjects];
-  [v5 removeObjectsForKeys:v7];
+  allObjects = [v6 allObjects];
+  [v5 removeObjectsForKeys:allObjects];
 
   return v5;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(SAClientUserActivity *)self userInfo];
-  v4 = [v3 objectForKey:@"latitude"];
+  userInfo = [(SAClientUserActivity *)self userInfo];
+  v4 = [userInfo objectForKey:@"latitude"];
 
-  v5 = [(SAClientUserActivity *)self userInfo];
-  v6 = [v5 objectForKey:@"longitude"];
+  userInfo2 = [(SAClientUserActivity *)self userInfo];
+  v6 = [userInfo2 objectForKey:@"longitude"];
 
   if (v4)
   {
@@ -83,8 +83,8 @@
     [(SAClientUserActivity *)self coordinate];
     v5 = v4;
     v7 = v6;
-    v8 = [(SAClientUserActivity *)self addressDictionary];
-    v9 = [v3 initWithCoordinate:v8 addressDictionary:{v5, v7}];
+    addressDictionary = [(SAClientUserActivity *)self addressDictionary];
+    v9 = [v3 initWithCoordinate:addressDictionary addressDictionary:{v5, v7}];
 
     v10 = [[MKMapItem alloc] initWithPlacemark:v9];
   }
@@ -99,17 +99,17 @@
 
 - (BOOL)hasLocationData
 {
-  v2 = [(SAClientUserActivity *)self userInfo];
-  v3 = [v2 allKeys];
+  userInfo = [(SAClientUserActivity *)self userInfo];
+  allKeys = [userInfo allKeys];
 
-  if ([v3 containsObject:@"latitude"] && (objc_msgSend(v3, "containsObject:", @"longitude") & 1) != 0 || objc_msgSend(v3, "containsObject:", CNPostalAddressStreetKey) && (objc_msgSend(v3, "containsObject:", CNPostalAddressCityKey) & 1) != 0 || objc_msgSend(v3, "containsObject:", CNPostalAddressStateKey) && (objc_msgSend(v3, "containsObject:", CNPostalAddressCityKey) & 1) != 0)
+  if ([allKeys containsObject:@"latitude"] && (objc_msgSend(allKeys, "containsObject:", @"longitude") & 1) != 0 || objc_msgSend(allKeys, "containsObject:", CNPostalAddressStreetKey) && (objc_msgSend(allKeys, "containsObject:", CNPostalAddressCityKey) & 1) != 0 || objc_msgSend(allKeys, "containsObject:", CNPostalAddressStateKey) && (objc_msgSend(allKeys, "containsObject:", CNPostalAddressCityKey) & 1) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsObject:CNPostalAddressPostalCodeKey];
+    v4 = [allKeys containsObject:CNPostalAddressPostalCodeKey];
   }
 
   return v4;

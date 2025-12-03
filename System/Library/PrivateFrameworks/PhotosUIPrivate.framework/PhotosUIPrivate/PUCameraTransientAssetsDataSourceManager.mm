@@ -1,25 +1,25 @@
 @interface PUCameraTransientAssetsDataSourceManager
-- (PUCameraTransientAssetsDataSourceManager)initWithTransientDataSource:(id)a3;
-- (void)_updateWithTransientDataSource:(id)a3;
+- (PUCameraTransientAssetsDataSourceManager)initWithTransientDataSource:(id)source;
+- (void)_updateWithTransientDataSource:(id)source;
 @end
 
 @implementation PUCameraTransientAssetsDataSourceManager
 
-- (void)_updateWithTransientDataSource:(id)a3
+- (void)_updateWithTransientDataSource:(id)source
 {
-  v4 = a3;
-  v9 = [(PUCameraTransientAssetsDataSourceManager *)self _containingAssetCollection];
-  v5 = [v4 uuids];
-  v6 = [v4 transientAssetMapping];
-  v7 = [v4 transientBurstMapping];
+  sourceCopy = source;
+  _containingAssetCollection = [(PUCameraTransientAssetsDataSourceManager *)self _containingAssetCollection];
+  uuids = [sourceCopy uuids];
+  transientAssetMapping = [sourceCopy transientAssetMapping];
+  transientBurstMapping = [sourceCopy transientBurstMapping];
 
-  v8 = [[PUCameraTransientAssetsDataSource alloc] initWithUUIDs:v5 mapping:v6 representativeMapping:v7 inAssetCollection:v9];
+  v8 = [[PUCameraTransientAssetsDataSource alloc] initWithUUIDs:uuids mapping:transientAssetMapping representativeMapping:transientBurstMapping inAssetCollection:_containingAssetCollection];
   [(PUAssetsDataSourceManager *)self setAssetsDataSource:v8];
 }
 
-- (PUCameraTransientAssetsDataSourceManager)initWithTransientDataSource:(id)a3
+- (PUCameraTransientAssetsDataSourceManager)initWithTransientDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = PUCameraTransientAssetsDataSourceManager;
   v6 = [(PUCameraTransientAssetsDataSourceManager *)&v11 init];
@@ -29,9 +29,9 @@
     containingAssetCollection = v6->__containingAssetCollection;
     v6->__containingAssetCollection = v7;
 
-    objc_storeStrong(&v6->__transientDataSource, a3);
-    [v5 registerChangeObserver:v6];
-    [(PUCameraTransientAssetsDataSourceManager *)v6 _updateWithTransientDataSource:v5];
+    objc_storeStrong(&v6->__transientDataSource, source);
+    [sourceCopy registerChangeObserver:v6];
+    [(PUCameraTransientAssetsDataSourceManager *)v6 _updateWithTransientDataSource:sourceCopy];
     v9 = v6;
   }
 

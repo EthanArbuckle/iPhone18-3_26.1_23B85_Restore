@@ -1,33 +1,33 @@
 @interface WiFiPdrMonitor
-- (WiFiPdrMonitor)initWithFenceIdentifier:(id)a3 queue:(id)a4 radiusInMeters:(id)a5;
-- (void)_handleFenceCross:(id)a3 error:(id)a4;
-- (void)_handleStatusUpdate:(id)a3 withError:(id)a4;
-- (void)_handleStatusUpdateError:(id)a3;
+- (WiFiPdrMonitor)initWithFenceIdentifier:(id)identifier queue:(id)queue radiusInMeters:(id)meters;
+- (void)_handleFenceCross:(id)cross error:(id)error;
+- (void)_handleStatusUpdate:(id)update withError:(id)error;
+- (void)_handleStatusUpdateError:(id)error;
 - (void)clearFence;
 - (void)endSession;
 - (void)setFence;
-- (void)setFenceCrossCallback:(id)a3 context:(void *)a4;
+- (void)setFenceCrossCallback:(id)callback context:(void *)context;
 - (void)startSession;
 @end
 
 @implementation WiFiPdrMonitor
 
-- (WiFiPdrMonitor)initWithFenceIdentifier:(id)a3 queue:(id)a4 radiusInMeters:(id)a5
+- (WiFiPdrMonitor)initWithFenceIdentifier:(id)identifier queue:(id)queue radiusInMeters:(id)meters
 {
   if (self)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [@"com.apple.wifi.CMPDRFenceManager." stringByAppendingString:v10];
+    metersCopy = meters;
+    queueCopy = queue;
+    identifierCopy = identifier;
+    v11 = [@"com.apple.wifi.CMPDRFenceManager." stringByAppendingString:identifierCopy];
     [(WiFiPdrMonitor *)self setFenceId:v11];
 
-    [(WiFiPdrMonitor *)self setFenceName:v10];
+    [(WiFiPdrMonitor *)self setFenceName:identifierCopy];
     v12 = objc_opt_new();
     [(WiFiPdrMonitor *)self setPdrManager:v12];
 
-    [(WiFiPdrMonitor *)self setQueue:v9];
-    [(WiFiPdrMonitor *)self setRadius:v8];
+    [(WiFiPdrMonitor *)self setQueue:queueCopy];
+    [(WiFiPdrMonitor *)self setRadius:metersCopy];
   }
 
   return self;
@@ -35,8 +35,8 @@
 
 - (void)startSession
 {
-  v3 = [(WiFiPdrMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WiFiPdrMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   if ([(WiFiPdrMonitor *)self isSessionStarted])
@@ -46,13 +46,13 @@
 
   else
   {
-    v4 = [(WiFiPdrMonitor *)self pdrManager];
+    pdrManager = [(WiFiPdrMonitor *)self pdrManager];
     v5 = _NSConcreteStackBlock;
     v6 = 3221225472;
     v7 = sub_10006EA00;
     v8 = &unk_1002606B0;
     objc_copyWeak(&v9, &location);
-    [v4 startSessionWithStatusHandler:&v5];
+    [pdrManager startSessionWithStatusHandler:&v5];
 
     [(WiFiPdrMonitor *)self setIsSessionStarted:1, v5, v6, v7, v8];
     objc_destroyWeak(&v9);
@@ -63,8 +63,8 @@
 
 - (void)endSession
 {
-  v3 = [(WiFiPdrMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WiFiPdrMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(WiFiPdrMonitor *)self isSessionStarted])
   {
@@ -73,8 +73,8 @@
       [(WiFiPdrMonitor *)self clearFence];
     }
 
-    v4 = [(WiFiPdrMonitor *)self pdrManager];
-    [v4 endSession];
+    pdrManager = [(WiFiPdrMonitor *)self pdrManager];
+    [pdrManager endSession];
 
     NSLog(@"wifipdr Ending PDR session");
 
@@ -84,8 +84,8 @@
 
 - (void)setFence
 {
-  v3 = [(WiFiPdrMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WiFiPdrMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   if (![(WiFiPdrMonitor *)self isSessionStarted])
@@ -96,16 +96,16 @@
 
   if ([(WiFiPdrMonitor *)self isFenceActive])
   {
-    v4 = [(WiFiPdrMonitor *)self pdrManager];
-    v5 = [(WiFiPdrMonitor *)self fenceId];
-    [v4 clearFence:v5];
+    pdrManager = [(WiFiPdrMonitor *)self pdrManager];
+    fenceId = [(WiFiPdrMonitor *)self fenceId];
+    [pdrManager clearFence:fenceId];
   }
 
   [(WiFiPdrMonitor *)self setIsFenceActive:1];
-  v6 = [(WiFiPdrMonitor *)self pdrManager];
-  v7 = [(WiFiPdrMonitor *)self fenceId];
-  v8 = [(WiFiPdrMonitor *)self radius];
-  [v8 floatValue];
+  pdrManager2 = [(WiFiPdrMonitor *)self pdrManager];
+  fenceId2 = [(WiFiPdrMonitor *)self fenceId];
+  radius = [(WiFiPdrMonitor *)self radius];
+  [radius floatValue];
   v10 = v9;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -113,7 +113,7 @@
   v12[3] = &unk_1002606D8;
   objc_copyWeak(&v13, &location);
   LODWORD(v11) = v10;
-  [v6 setFence:v7 withRadius:v12 withCompletion:v11];
+  [pdrManager2 setFence:fenceId2 withRadius:v12 withCompletion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -121,14 +121,14 @@
 
 - (void)clearFence
 {
-  v3 = [(WiFiPdrMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WiFiPdrMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(WiFiPdrMonitor *)self isFenceActive])
   {
-    v4 = [(WiFiPdrMonitor *)self pdrManager];
-    v5 = [(WiFiPdrMonitor *)self fenceId];
-    [v4 clearFence:v5];
+    pdrManager = [(WiFiPdrMonitor *)self pdrManager];
+    fenceId = [(WiFiPdrMonitor *)self fenceId];
+    [pdrManager clearFence:fenceId];
 
     [(WiFiPdrMonitor *)self setIsFenceActive:0];
     NSLog(@"wifipdr Clearing PDR fence, with identifier: %@", self->_fenceId);
@@ -140,35 +140,35 @@
   }
 }
 
-- (void)_handleFenceCross:(id)a3 error:(id)a4
+- (void)_handleFenceCross:(id)cross error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  crossCopy = cross;
+  errorCopy = error;
   NSLog(@"wifipdr PDR fence callback ");
-  if (v6)
+  if (errorCopy)
   {
-    v7 = [v6 localizedDescription];
-    NSLog(@"wifipdr PDR fence completion error: %@ and identifier %@", v7, v10);
+    localizedDescription = [errorCopy localizedDescription];
+    NSLog(@"wifipdr PDR fence completion error: %@ and identifier %@", localizedDescription, crossCopy);
   }
 
   else
   {
-    NSLog(@"wifipdr PDR fence completed sucessfully, with identifier: %@", v10);
-    v8 = [(WiFiPdrMonitor *)self onFenceCross];
+    NSLog(@"wifipdr PDR fence completed sucessfully, with identifier: %@", crossCopy);
+    onFenceCross = [(WiFiPdrMonitor *)self onFenceCross];
     v9 = +[NSDate now];
-    (v8)[2](v8, v9, [(WiFiPdrMonitor *)self wifimContext]);
+    (onFenceCross)[2](onFenceCross, v9, [(WiFiPdrMonitor *)self wifimContext]);
 
     [(WiFiPdrMonitor *)self setIsFenceActive:0];
   }
 }
 
-- (void)_handleStatusUpdateError:(id)a3
+- (void)_handleStatusUpdateError:(id)error
 {
-  v4 = [a3 localizedDescription];
-  v5 = [(WiFiPdrMonitor *)self fenceId];
+  localizedDescription = [error localizedDescription];
+  fenceId = [(WiFiPdrMonitor *)self fenceId];
   v6 = [NSNumber numberWithBool:[(WiFiPdrMonitor *)self isSessionStarted]];
   v7 = [NSNumber numberWithBool:[(WiFiPdrMonitor *)self isFenceActive]];
-  NSLog(@"wifipdr PDR fence error, PDR fence cleared with error: %@ and identifier %@, session is started: %@, fence is active: %@", v4, v5, v6, v7);
+  NSLog(@"wifipdr PDR fence error, PDR fence cleared with error: %@ and identifier %@, session is started: %@, fence is active: %@", localizedDescription, fenceId, v6, v7);
 
   if ([(WiFiPdrMonitor *)self isFenceActive])
   {
@@ -183,29 +183,29 @@
   }
 }
 
-- (void)_handleStatusUpdate:(id)a3 withError:(id)a4
+- (void)_handleStatusUpdate:(id)update withError:(id)error
 {
-  v6 = a3;
-  v9 = v6;
-  if (a4)
+  updateCopy = update;
+  v9 = updateCopy;
+  if (error)
   {
-    [(WiFiPdrMonitor *)self _handleStatusUpdateError:a4];
+    [(WiFiPdrMonitor *)self _handleStatusUpdateError:error];
   }
 
   else
   {
-    NSLog(@"wifipdr get PDR status: %@", v6);
+    NSLog(@"wifipdr get PDR status: %@", updateCopy);
     v7 = [NSMutableDictionary dictionaryWithDictionary:v9];
-    v8 = [(WiFiPdrMonitor *)self fenceName];
-    [v7 setObject:&stru_1002680F8 forKeyedSubscript:v8];
+    fenceName = [(WiFiPdrMonitor *)self fenceName];
+    [v7 setObject:&stru_1002680F8 forKeyedSubscript:fenceName];
   }
 }
 
-- (void)setFenceCrossCallback:(id)a3 context:(void *)a4
+- (void)setFenceCrossCallback:(id)callback context:(void *)context
 {
-  [(WiFiPdrMonitor *)self setOnFenceCross:a3];
+  [(WiFiPdrMonitor *)self setOnFenceCross:callback];
 
-  [(WiFiPdrMonitor *)self setWifimContext:a4];
+  [(WiFiPdrMonitor *)self setWifimContext:context];
 }
 
 @end

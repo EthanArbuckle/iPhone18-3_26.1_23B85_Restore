@@ -1,11 +1,11 @@
 @interface BUSandboxExtension
-- (BUSandboxExtension)initWithExtensionToken:(const char *)a3;
+- (BUSandboxExtension)initWithExtensionToken:(const char *)token;
 - (void)dealloc;
 @end
 
 @implementation BUSandboxExtension
 
-- (BUSandboxExtension)initWithExtensionToken:(const char *)a3
+- (BUSandboxExtension)initWithExtensionToken:(const char *)token
 {
   v7.receiver = self;
   v7.super_class = BUSandboxExtension;

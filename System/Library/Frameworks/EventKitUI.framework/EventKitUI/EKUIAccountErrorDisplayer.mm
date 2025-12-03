@@ -1,41 +1,41 @@
 @interface EKUIAccountErrorDisplayer
-+ (BOOL)_reauthorizeForAccount:(id)a3 usingViewController:(id)a4 completion:(id)a5;
-+ (unint64_t)moreSevereErrorOfError:(unint64_t)a3 andError:(unint64_t)a4;
-+ (void)handleContinueSyncingForAccount:(id)a3 calendars:(id)a4 error:(unint64_t)a5;
-+ (void)presentAlertForAccount:(id)a3 error:(unint64_t)a4 usingViewController:(id)a5 completion:(id)a6;
++ (BOOL)_reauthorizeForAccount:(id)account usingViewController:(id)controller completion:(id)completion;
++ (unint64_t)moreSevereErrorOfError:(unint64_t)error andError:(unint64_t)andError;
++ (void)handleContinueSyncingForAccount:(id)account calendars:(id)calendars error:(unint64_t)error;
++ (void)presentAlertForAccount:(id)account error:(unint64_t)error usingViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation EKUIAccountErrorDisplayer
 
-+ (unint64_t)moreSevereErrorOfError:(unint64_t)a3 andError:(unint64_t)a4
++ (unint64_t)moreSevereErrorOfError:(unint64_t)error andError:(unint64_t)andError
 {
   v6 = [EKUIAccountErrorDisplayer severityForError:?];
-  if ([EKUIAccountErrorDisplayer severityForError:a4]<= v6)
+  if ([EKUIAccountErrorDisplayer severityForError:andError]<= v6)
   {
-    return a3;
+    return error;
   }
 
   else
   {
-    return a4;
+    return andError;
   }
 }
 
-+ (void)presentAlertForAccount:(id)a3 error:(unint64_t)a4 usingViewController:(id)a5 completion:(id)a6
++ (void)presentAlertForAccount:(id)account error:(unint64_t)error usingViewController:(id)controller completion:(id)completion
 {
   v80 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  accountCopy = account;
+  controllerCopy = controller;
+  completionCopy = completion;
   v13 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 externalID];
+    externalID = [accountCopy externalID];
     *buf = 138543618;
-    v77 = v15;
+    v77 = externalID;
     v78 = 2048;
-    v79 = a4;
+    errorCopy = error;
     _os_log_impl(&dword_1D3400000, v14, OS_LOG_TYPE_DEFAULT, "Presenting an alert for source with external ID %{public}@ with error %lu", buf, 0x16u);
   }
 
@@ -44,13 +44,13 @@
 
   v17 = 0;
   v18 = 0;
-  v63 = v10;
-  if (a4 > 6)
+  v63 = accountCopy;
+  if (error > 6)
   {
-    if (a4 == 7)
+    if (error == 7)
     {
-      v62 = v11;
-      v31 = [v10 calendarsForEntityType:0];
+      v62 = controllerCopy;
+      v31 = [accountCopy calendarsForEntityType:0];
       v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v71 = 0u;
       v72 = 0u;
@@ -95,7 +95,7 @@
         v41 = EventKitUIBundle();
         v61 = [v41 localizedStringForKey:@"Continue" value:&stru_1F4EF6790 table:0];
 
-        v65 = [v38 firstObject];
+        firstObject = [v38 firstObject];
         v42 = [v38 count] - 1;
         v43 = EventKitUIBundle();
         v44 = v43;
@@ -104,8 +104,8 @@
           v45 = [v43 localizedStringForKey:@"“%@” and %d other calendars cannot connect with a secure connection. Would you like to continue syncing them anyway?" value:&stru_1F4EF6790 table:0];
 
           v46 = MEMORY[0x1E696AEC0];
-          v47 = [v65 title];
-          [v46 localizedStringWithFormat:v45, v47, v42];
+          title = [firstObject title];
+          [v46 localizedStringWithFormat:v45, title, v42];
         }
 
         else
@@ -113,17 +113,17 @@
           v45 = [v43 localizedStringForKey:@"“%@” cannot connect with a secure connection. Would you like to continue syncing it anyway?" value:&stru_1F4EF6790 table:0];
 
           v49 = MEMORY[0x1E696AEC0];
-          v47 = [v65 title];
-          [v49 localizedStringWithFormat:v45, v47, v60];
+          title = [firstObject title];
+          [v49 localizedStringWithFormat:v45, title, v60];
         }
         v25 = ;
-        v11 = v62;
+        controllerCopy = v62;
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewController_completion___block_invoke_55;
         aBlock[3] = &unk_1E8441900;
-        v69 = a1;
+        selfCopy = self;
         v67 = v63;
         v68 = v38;
         v70 = 7;
@@ -144,13 +144,13 @@
         v27 = 0;
         v25 = 0;
         v18 = 0;
-        v11 = v62;
+        controllerCopy = v62;
       }
     }
 
     else
     {
-      if (a4 != 9)
+      if (error != 9)
       {
         goto LABEL_10;
       }
@@ -170,9 +170,9 @@
     }
 
 LABEL_32:
-    v28 = v12;
+    v28 = completionCopy;
 
-    v29 = v11;
+    v29 = controllerCopy;
     if (v18 && v25)
     {
       goto LABEL_35;
@@ -181,9 +181,9 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  if (a4 == 2)
+  if (error == 2)
   {
-    if ([a1 _reauthorizeForAccount:v10 usingViewController:v11 completion:v12])
+    if ([self _reauthorizeForAccount:accountCopy usingViewController:controllerCopy completion:completionCopy])
     {
       goto LABEL_38;
     }
@@ -197,7 +197,7 @@ LABEL_32:
     goto LABEL_13;
   }
 
-  if (a4 == 3)
+  if (error == 3)
   {
     v19 = EventKitUIBundle();
     v18 = [v19 localizedStringForKey:@"No internet connection" value:&stru_1F4EF6790 table:0];
@@ -213,8 +213,8 @@ LABEL_13:
   }
 
 LABEL_10:
-  v28 = v12;
-  v29 = v11;
+  v28 = completionCopy;
+  v29 = controllerCopy;
   v25 = 0;
   v27 = 0;
 LABEL_34:
@@ -239,12 +239,12 @@ LABEL_35:
     [v54 addAction:v58];
   }
 
-  v11 = v29;
+  controllerCopy = v29;
   v59 = v29;
-  v12 = v28;
+  completionCopy = v28;
   [v59 presentViewController:v54 animated:1 completion:v28];
 
-  v10 = v63;
+  accountCopy = v63;
 LABEL_38:
 }
 
@@ -271,16 +271,16 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
   }
 }
 
-+ (void)handleContinueSyncingForAccount:(id)a3 calendars:(id)a4 error:(unint64_t)a5
++ (void)handleContinueSyncingForAccount:(id)account calendars:(id)calendars error:(unint64_t)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  calendarsCopy = calendars;
   v6 = objc_alloc_init(MEMORY[0x1E6959A48]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v5;
+  v7 = calendarsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v8)
   {
@@ -301,10 +301,10 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
         }
 
         v13 = *(*(&v39 + 1) + 8 * v12);
-        v14 = [v13 subcalAccountID];
-        if (v14)
+        subcalAccountID = [v13 subcalAccountID];
+        if (subcalAccountID)
         {
-          v15 = [v6 accountWithIdentifier:v14];
+          v15 = [v6 accountWithIdentifier:subcalAccountID];
           v16 = v15;
           if (v15)
           {
@@ -314,17 +314,17 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
             if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v18 = v17;
-              v19 = [v13 title];
-              v20 = [v13 calendarIdentifier];
+              title = [v13 title];
+              calendarIdentifier = [v13 calendarIdentifier];
               [v13 externalID];
               v21 = v7;
               v23 = v22 = v6;
               *buf = 138544130;
-              v44 = v14;
+              v44 = subcalAccountID;
               v45 = 2112;
-              v46 = v19;
+              v46 = title;
               v47 = 2114;
-              v48 = v20;
+              v48 = calendarIdentifier;
               v49 = 2112;
               v50 = v23;
               _os_log_impl(&dword_1D3400000, v18, OS_LOG_TYPE_DEFAULT, "Allowing insecure connections for account %{public}@ for subscribed calendar (title = %@; calendarIdentifier = %{public}@; externalID = %@)", buf, 0x2Au);
@@ -340,7 +340,7 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
             v36[1] = 3221225472;
             v36[2] = __77__EKUIAccountErrorDisplayer_handleContinueSyncingForAccount_calendars_error___block_invoke;
             v36[3] = &unk_1E84410B0;
-            v37 = v14;
+            v37 = subcalAccountID;
             v38 = v13;
             [v6 saveAccount:v16 withCompletionHandler:v36];
           }
@@ -351,17 +351,17 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
             if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
             {
               v29 = v28;
-              v30 = [v13 title];
-              v31 = [v13 calendarIdentifier];
-              v32 = [v13 externalID];
+              title2 = [v13 title];
+              calendarIdentifier2 = [v13 calendarIdentifier];
+              externalID = [v13 externalID];
               *buf = 138544130;
-              v44 = v14;
+              v44 = subcalAccountID;
               v45 = 2112;
-              v46 = v30;
+              v46 = title2;
               v47 = 2114;
-              v48 = v31;
+              v48 = calendarIdentifier2;
               v49 = 2112;
-              v50 = v32;
+              v50 = externalID;
               _os_log_impl(&dword_1D3400000, v29, OS_LOG_TYPE_ERROR, "Unable to find account for subscribed calendar (accountID = %{public}@; title = %@; calendarIdentifier = %{public}@; externalId = %@)", buf, 0x2Au);
 
               v10 = v35;
@@ -378,15 +378,15 @@ void __89__EKUIAccountErrorDisplayer_presentAlertForAccount_error_usingViewContr
           }
 
           v16 = v24;
-          v25 = [v13 title];
-          v26 = [v13 calendarIdentifier];
-          v27 = [v13 externalID];
+          title3 = [v13 title];
+          calendarIdentifier3 = [v13 calendarIdentifier];
+          externalID2 = [v13 externalID];
           *buf = v33;
-          v44 = v25;
+          v44 = title3;
           v45 = 2114;
-          v46 = v26;
+          v46 = calendarIdentifier3;
           v47 = 2112;
-          v48 = v27;
+          v48 = externalID2;
           _os_log_impl(&dword_1D3400000, v16, OS_LOG_TYPE_ERROR, "Trying to allow insecure syncing for a calendar without a subcal account ID. (title = %@; calendarIdentifier = %{public}@; externalId = %@)", buf, 0x20u);
         }
 
@@ -462,15 +462,15 @@ LABEL_6:
   }
 }
 
-+ (BOOL)_reauthorizeForAccount:(id)a3 usingViewController:(id)a4 completion:(id)a5
++ (BOOL)_reauthorizeForAccount:(id)account usingViewController:(id)controller completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  controllerCopy = controller;
+  completionCopy = completion;
   v11 = objc_alloc_init(MEMORY[0x1E6959A48]);
-  v12 = [v8 externalID];
-  v13 = [v11 accountWithIdentifier:v12];
+  externalID = [accountCopy externalID];
+  v13 = [v11 accountWithIdentifier:externalID];
 
   v14 = kEKUILogHandle;
   if (v13)
@@ -478,9 +478,9 @@ LABEL_6:
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v8 externalID];
+      externalID2 = [accountCopy externalID];
       *buf = 138543362;
-      v26 = v16;
+      v26 = externalID2;
       _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_DEFAULT, "Renewing credentials for sourceAccount with ID: %{public}@", buf, 0xCu);
     }
 
@@ -488,19 +488,19 @@ LABEL_6:
     v20[1] = 3221225472;
     v20[2] = __83__EKUIAccountErrorDisplayer__reauthorizeForAccount_usingViewController_completion___block_invoke;
     v20[3] = &unk_1E8441950;
-    v21 = v8;
-    v24 = a1;
-    v22 = v9;
-    v23 = v10;
+    v21 = accountCopy;
+    selfCopy = self;
+    v22 = controllerCopy;
+    v23 = completionCopy;
     [v11 renewCredentialsForAccount:v13 completion:v20];
   }
 
   else if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
   {
     v17 = v14;
-    v18 = [v8 externalID];
+    externalID3 = [accountCopy externalID];
     *buf = 138543362;
-    v26 = v18;
+    v26 = externalID3;
     _os_log_impl(&dword_1D3400000, v17, OS_LOG_TYPE_ERROR, "Can't renew credentials for sourceAccount because no ACAccount could be found with ID: %{public}@", buf, 0xCu);
   }
 

@@ -1,38 +1,38 @@
 @interface CPLBGSTActivity
-+ (double)estimatedRunningTimeFromPrediction:(id)a3 minimumRuntime:(double)a4 minimumRuntimeWithExtendedTime:(double)a5 minimumRuntimeWithVeryLongExtendedTime:(double)a6;
++ (double)estimatedRunningTimeFromPrediction:(id)prediction minimumRuntime:(double)runtime minimumRuntimeWithExtendedTime:(double)time minimumRuntimeWithVeryLongExtendedTime:(double)extendedTime;
 + (int64_t)_minimumUploadSizeForLargeSession;
 + (int64_t)_minimumUploadSizeForVeryLargeSession;
-- (CPLBGSTActivity)initWithTask:(id)a3 request:(id)a4 rescheduler:(id)a5;
+- (CPLBGSTActivity)initWithTask:(id)task request:(id)request rescheduler:(id)rescheduler;
 - (CPLBGSTRescheduler)rescheduler;
-- (void)activityHasExpiredWithReason:(unint64_t)a3;
+- (void)activityHasExpiredWithReason:(unint64_t)reason;
 @end
 
 @implementation CPLBGSTActivity
 
-- (CPLBGSTActivity)initWithTask:(id)a3 request:(id)a4 rescheduler:(id)a5
+- (CPLBGSTActivity)initWithTask:(id)task request:(id)request rescheduler:(id)rescheduler
 {
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  reschedulerCopy = rescheduler;
   v14.receiver = self;
   v14.super_class = CPLBGSTActivity;
-  v11 = [(CPLBGSTGenericActivity *)&v14 initWithTask:a3];
+  v11 = [(CPLBGSTGenericActivity *)&v14 initWithTask:task];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_request, a4);
-    objc_storeWeak(&v12->_rescheduler, v10);
+    objc_storeStrong(&v11->_request, request);
+    objc_storeWeak(&v12->_rescheduler, reschedulerCopy);
   }
 
   return v12;
 }
 
-- (void)activityHasExpiredWithReason:(unint64_t)a3
+- (void)activityHasExpiredWithReason:(unint64_t)reason
 {
   v6.receiver = self;
   v6.super_class = CPLBGSTActivity;
   [(CPLBGSTGenericActivity *)&v6 activityHasExpiredWithReason:?];
   WeakRetained = objc_loadWeakRetained(&self->_rescheduler);
-  [WeakRetained activityHasExpired:self reason:a3];
+  [WeakRetained activityHasExpired:self reason:reason];
 }
 
 + (int64_t)_minimumUploadSizeForLargeSession
@@ -42,15 +42,15 @@
 
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v4 = 209715200;
+    longLongValue = 209715200;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 + (int64_t)_minimumUploadSizeForVeryLargeSession
@@ -60,55 +60,55 @@
 
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
   }
 
   else
   {
-    v5 = 0x40000000;
+    longLongValue = 0x40000000;
   }
 
-  v6 = [a1 _minimumUploadSizeForLargeSession];
-  if (v6 >= v5)
+  _minimumUploadSizeForLargeSession = [self _minimumUploadSizeForLargeSession];
+  if (_minimumUploadSizeForLargeSession >= longLongValue)
   {
-    v7 = 2 * v6;
+    v7 = 2 * _minimumUploadSizeForLargeSession;
   }
 
   else
   {
-    v7 = v5;
+    v7 = longLongValue;
   }
 
   return v7;
 }
 
-+ (double)estimatedRunningTimeFromPrediction:(id)a3 minimumRuntime:(double)a4 minimumRuntimeWithExtendedTime:(double)a5 minimumRuntimeWithVeryLongExtendedTime:(double)a6
++ (double)estimatedRunningTimeFromPrediction:(id)prediction minimumRuntime:(double)runtime minimumRuntimeWithExtendedTime:(double)time minimumRuntimeWithVeryLongExtendedTime:(double)extendedTime
 {
-  v9 = a3;
-  v10 = [v9 objectForKeyedSubscript:CPLSyncSessionPredictionTypeLargestResourceSize];
+  predictionCopy = prediction;
+  v10 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeLargestResourceSize];
   [v10 doubleValue];
   v12 = v11;
 
-  if (([a1 isVeryLargeUploadSize:v12] & 1) == 0)
+  if (([self isVeryLargeUploadSize:v12] & 1) == 0)
   {
-    if ([a1 isLargeUploadSize:v12])
+    if ([self isLargeUploadSize:v12])
     {
-      a5 = a4;
+      time = runtime;
     }
 
     else
     {
-      a5 = 0.0;
+      time = 0.0;
     }
   }
 
-  v13 = [v9 objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadResourceSize];
+  v13 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadResourceSize];
   [v13 doubleValue];
   v15 = v14;
 
   if (v15 > 0.0)
   {
-    v16 = [v9 objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadSpeed];
+    v16 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadSpeed];
     [v16 doubleValue];
     v18 = v17;
 
@@ -119,7 +119,7 @@
     }
 
     v20 = v15 * 1.29999995 / v19;
-    v21 = [v9 objectForKeyedSubscript:CPLSyncSessionPredictionTypeDerivativesGenerationSpeed];
+    v21 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeDerivativesGenerationSpeed];
     [v21 doubleValue];
     if (v22 == 0.0)
     {
@@ -131,7 +131,7 @@
       v23 = v22;
     }
 
-    v24 = [v9 objectForKeyedSubscript:CPLSyncSessionPredictionTypeLargeDerivativesGenerationSpeed];
+    v24 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeLargeDerivativesGenerationSpeed];
     [v24 doubleValue];
     v26 = v25;
 
@@ -154,13 +154,13 @@
     }
 
     v30 = v20 + v27;
-    if (a5 < v30)
+    if (time < v30)
     {
-      a5 = v30;
+      time = v30;
     }
   }
 
-  return a5;
+  return time;
 }
 
 - (CPLBGSTRescheduler)rescheduler

@@ -1,20 +1,20 @@
 @interface HODataSyncingViewController
 - (double)bottomPadding;
 - (double)insetSize;
-- (id)_bottomPaddingConstraintForLowestView:(id)a3;
-- (id)_createButtonWithString:(id)a3;
+- (id)_bottomPaddingConstraintForLowestView:(id)view;
+- (id)_createButtonWithString:(id)string;
 - (id)_createConstraintForTextView;
-- (id)_createConstraintsForButton:(id)a3 includeBottomConstraint:(BOOL)a4;
+- (id)_createConstraintsForButton:(id)button includeBottomConstraint:(BOOL)constraint;
 - (id)_createResetSectionConstraints;
 - (void)_createAndAddResetLabelsIfNeeded;
-- (void)_enableButtonPressed:(id)a3;
+- (void)_enableButtonPressed:(id)pressed;
 - (void)_enableICloud;
-- (void)_internalCyclePressed:(id)a3;
+- (void)_internalCyclePressed:(id)pressed;
 - (void)_quit;
 - (void)_removeLowerSectionControlsAndLabels;
 - (void)_resetButtonConfirmed;
-- (void)_resetButtonPressed:(id)a3;
-- (void)setDataSyncState:(unint64_t)a3;
+- (void)_resetButtonPressed:(id)pressed;
+- (void)setDataSyncState:(unint64_t)state;
 - (void)startCDPRepair;
 - (void)viewDidLoad;
 @end
@@ -28,34 +28,34 @@
   [(HODataSyncingViewController *)&v12 viewDidLoad];
   [(HODataSyncingViewController *)self setModalInPresentation:1];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(HODataSyncingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(HODataSyncingViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(HODataSyncingTextView);
   [(HODataSyncingViewController *)self setTextView:v5];
 
-  v6 = [(HODataSyncingViewController *)self dataSyncState];
-  v7 = [(HODataSyncingViewController *)self textView];
-  [v7 setDataSyncState:v6];
+  dataSyncState = [(HODataSyncingViewController *)self dataSyncState];
+  textView = [(HODataSyncingViewController *)self textView];
+  [textView setDataSyncState:dataSyncState];
 
-  v8 = [(HODataSyncingViewController *)self view];
-  v9 = [(HODataSyncingViewController *)self textView];
-  [v8 addSubview:v9];
+  view2 = [(HODataSyncingViewController *)self view];
+  textView2 = [(HODataSyncingViewController *)self textView];
+  [view2 addSubview:textView2];
 
-  v10 = [(HODataSyncingViewController *)self _createConstraintForTextView];
-  [(HODataSyncingViewController *)self setTextViewConstraints:v10];
+  _createConstraintForTextView = [(HODataSyncingViewController *)self _createConstraintForTextView];
+  [(HODataSyncingViewController *)self setTextViewConstraints:_createConstraintForTextView];
 
-  v11 = [(HODataSyncingViewController *)self textViewConstraints];
-  [NSLayoutConstraint activateConstraints:v11];
+  textViewConstraints = [(HODataSyncingViewController *)self textViewConstraints];
+  [NSLayoutConstraint activateConstraints:textViewConstraints];
 }
 
 - (double)insetSize
 {
-  v3 = [(HODataSyncingViewController *)self view];
-  [v3 frame];
+  view = [(HODataSyncingViewController *)self view];
+  [view frame];
   v4 = HUViewSizeSubclassForViewSize();
-  v5 = [(HODataSyncingViewController *)self view];
-  [v5 bounds];
+  view2 = [(HODataSyncingViewController *)self view];
+  [view2 bounds];
   [HOUtilities viewMarginInsetForViewSizeSubclass:v4 withViewWidth:CGRectGetWidth(v9)];
   v7 = v6;
 
@@ -64,15 +64,15 @@
 
 - (double)bottomPadding
 {
-  v2 = [(HODataSyncingViewController *)self view];
-  [v2 frame];
+  view = [(HODataSyncingViewController *)self view];
+  [view frame];
   [HOUtilities buttonPaddingToViewBottomForViewSizeSubclass:HUViewSizeSubclassForViewSize()];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDataSyncState:(unint64_t)a3
+- (void)setDataSyncState:(unint64_t)state
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -85,39 +85,39 @@
     v53 = 2112;
     v54 = v7;
     v55 = 2048;
-    v56 = a3;
+    stateCopy = state;
     v57 = 2112;
     v58 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:setDataSyncState] prev state = %lu (%@) | new state = %lu (%@)", buf, 0x2Au);
   }
 
-  if (self->_dataSyncState != a3)
+  if (self->_dataSyncState != state)
   {
-    self->_dataSyncState = a3;
-    v9 = [(HODataSyncingViewController *)self textView];
-    [v9 setDataSyncState:a3];
+    self->_dataSyncState = state;
+    textView = [(HODataSyncingViewController *)self textView];
+    [textView setDataSyncState:state];
 
     [(HODataSyncingViewController *)self _removeLowerSectionControlsAndLabels];
-    if (a3 <= 2)
+    if (state <= 2)
     {
-      switch(a3)
+      switch(state)
       {
         case 0uLL:
 LABEL_20:
           [(HODataSyncingViewController *)self _createAndAddResetLabelsIfNeeded];
-          v33 = [(HODataSyncingViewController *)self resetSectionConstraints];
+          resetSectionConstraints = [(HODataSyncingViewController *)self resetSectionConstraints];
 
-          if (!v33)
+          if (!resetSectionConstraints)
           {
-            v34 = [(HODataSyncingViewController *)self _createResetSectionConstraints];
-            [(HODataSyncingViewController *)self setResetSectionConstraints:v34];
+            _createResetSectionConstraints = [(HODataSyncingViewController *)self _createResetSectionConstraints];
+            [(HODataSyncingViewController *)self setResetSectionConstraints:_createResetSectionConstraints];
           }
 
-          v35 = [(HODataSyncingViewController *)self resetSectionConstraints];
-          [NSLayoutConstraint activateConstraints:v35];
+          resetSectionConstraints2 = [(HODataSyncingViewController *)self resetSectionConstraints];
+          [NSLayoutConstraint activateConstraints:resetSectionConstraints2];
 
-          v36 = [(HODataSyncingViewController *)self resetNukeButton];
-          [v36 setHidden:1];
+          resetNukeButton = [(HODataSyncingViewController *)self resetNukeButton];
+          [resetNukeButton setHidden:1];
 
           v37 = HFLogForCategory();
           if (!os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -134,8 +134,8 @@ LABEL_30:
           goto LABEL_31;
         case 1uLL:
 LABEL_31:
-          v49 = [(HODataSyncingViewController *)self view];
-          [v49 setNeedsLayout];
+          view = [(HODataSyncingViewController *)self view];
+          [view setNeedsLayout];
 
           return;
         case 2uLL:
@@ -144,12 +144,12 @@ LABEL_16:
           v12 = [(HODataSyncingViewController *)self _createButtonWithString:v11];
           [(HODataSyncingViewController *)self setEnableButton:v12];
 
-          v13 = [(HODataSyncingViewController *)self view];
-          v14 = [(HODataSyncingViewController *)self enableButton];
-          [v13 addSubview:v14];
+          view2 = [(HODataSyncingViewController *)self view];
+          enableButton = [(HODataSyncingViewController *)self enableButton];
+          [view2 addSubview:enableButton];
 
-          v15 = [(HODataSyncingViewController *)self enableButton];
-          v16 = [(HODataSyncingViewController *)self _createConstraintsForButton:v15 includeBottomConstraint:+[HFUtilities isAMac]^ 1];
+          enableButton2 = [(HODataSyncingViewController *)self enableButton];
+          v16 = [(HODataSyncingViewController *)self _createConstraintsForButton:enableButton2 includeBottomConstraint:+[HFUtilities isAMac]^ 1];
           [NSLayoutConstraint activateConstraints:v16];
 
           if (+[HFUtilities isAMac])
@@ -157,37 +157,37 @@ LABEL_16:
             v17 = objc_alloc_init(UIButton);
             [(HODataSyncingViewController *)self setCancelButton:v17];
 
-            v18 = [(HODataSyncingViewController *)self cancelButton];
-            [v18 addTarget:self action:"_quit" forControlEvents:64];
+            cancelButton = [(HODataSyncingViewController *)self cancelButton];
+            [cancelButton addTarget:self action:"_quit" forControlEvents:64];
 
-            v19 = [(HODataSyncingViewController *)self cancelButton];
+            cancelButton2 = [(HODataSyncingViewController *)self cancelButton];
             v20 = sub_10003FCAC(@"HODataSyncingButtonQuit");
-            [v19 setTitle:v20 forState:0];
+            [cancelButton2 setTitle:v20 forState:0];
 
-            v21 = [(HODataSyncingViewController *)self cancelButton];
+            cancelButton3 = [(HODataSyncingViewController *)self cancelButton];
             v22 = +[UIColor labelColor];
-            [v21 setTitleColor:v22 forState:0];
+            [cancelButton3 setTitleColor:v22 forState:0];
 
-            v23 = [(HODataSyncingViewController *)self view];
-            v24 = [(HODataSyncingViewController *)self cancelButton];
-            [v23 addSubview:v24];
+            view3 = [(HODataSyncingViewController *)self view];
+            cancelButton4 = [(HODataSyncingViewController *)self cancelButton];
+            [view3 addSubview:cancelButton4];
 
-            v25 = [(HODataSyncingViewController *)self cancelButton];
-            v26 = [(HODataSyncingViewController *)self _createConstraintsForButton:v25 includeBottomConstraint:1];
+            cancelButton5 = [(HODataSyncingViewController *)self cancelButton];
+            v26 = [(HODataSyncingViewController *)self _createConstraintsForButton:cancelButton5 includeBottomConstraint:1];
             [NSLayoutConstraint activateConstraints:v26];
 
-            v27 = [(HODataSyncingViewController *)self cancelButton];
-            v28 = [v27 topAnchor];
-            v29 = [(HODataSyncingViewController *)self enableButton];
-            v30 = [v29 bottomAnchor];
+            cancelButton6 = [(HODataSyncingViewController *)self cancelButton];
+            topAnchor = [cancelButton6 topAnchor];
+            enableButton3 = [(HODataSyncingViewController *)self enableButton];
+            bottomAnchor = [enableButton3 bottomAnchor];
             [(HODataSyncingViewController *)self bottomPadding];
-            v31 = [v28 constraintEqualToAnchor:v30 constant:?];
+            v31 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
             v50 = v31;
             v32 = [NSArray arrayWithObjects:&v50 count:1];
             [NSLayoutConstraint activateConstraints:v32];
           }
 
-          if (a3 == 6)
+          if (state == 6)
           {
             [(HODataSyncingViewController *)self startCDPRepair];
           }
@@ -198,9 +198,9 @@ LABEL_16:
 
     else
     {
-      if (a3 <= 4)
+      if (state <= 4)
       {
-        if (a3 != 3)
+        if (state != 3)
         {
           goto LABEL_20;
         }
@@ -209,33 +209,33 @@ LABEL_16:
         v40 = [(HODataSyncingViewController *)self _createButtonWithString:v39];
         [(HODataSyncingViewController *)self setEnableButton:v40];
 
-        v41 = [(HODataSyncingViewController *)self view];
-        v42 = [(HODataSyncingViewController *)self enableButton];
-        [v41 addSubview:v42];
+        view4 = [(HODataSyncingViewController *)self view];
+        enableButton4 = [(HODataSyncingViewController *)self enableButton];
+        [view4 addSubview:enableButton4];
 
-        v43 = [(HODataSyncingViewController *)self enableButton];
-        v44 = [(HODataSyncingViewController *)self _createConstraintsForButton:v43 includeBottomConstraint:1];
+        enableButton5 = [(HODataSyncingViewController *)self enableButton];
+        v44 = [(HODataSyncingViewController *)self _createConstraintsForButton:enableButton5 includeBottomConstraint:1];
         [NSLayoutConstraint activateConstraints:v44];
 
         goto LABEL_31;
       }
 
-      if (a3 == 5)
+      if (state == 5)
       {
         [(HODataSyncingViewController *)self _createAndAddResetLabelsIfNeeded];
-        v45 = [(HODataSyncingViewController *)self resetSectionConstraints];
+        resetSectionConstraints3 = [(HODataSyncingViewController *)self resetSectionConstraints];
 
-        if (!v45)
+        if (!resetSectionConstraints3)
         {
-          v46 = [(HODataSyncingViewController *)self _createResetSectionConstraints];
-          [(HODataSyncingViewController *)self setResetSectionConstraints:v46];
+          _createResetSectionConstraints2 = [(HODataSyncingViewController *)self _createResetSectionConstraints];
+          [(HODataSyncingViewController *)self setResetSectionConstraints:_createResetSectionConstraints2];
         }
 
-        v47 = [(HODataSyncingViewController *)self resetSectionConstraints];
-        [NSLayoutConstraint activateConstraints:v47];
+        resetSectionConstraints4 = [(HODataSyncingViewController *)self resetSectionConstraints];
+        [NSLayoutConstraint activateConstraints:resetSectionConstraints4];
 
-        v48 = [(HODataSyncingViewController *)self resetNukeButton];
-        [v48 setHidden:0];
+        resetNukeButton2 = [(HODataSyncingViewController *)self resetNukeButton];
+        [resetNukeButton2 setHidden:0];
 
         v37 = HFLogForCategory();
         if (!os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -248,7 +248,7 @@ LABEL_16:
         goto LABEL_29;
       }
 
-      if (a3 == 6)
+      if (state == 6)
       {
         goto LABEL_16;
       }
@@ -260,62 +260,62 @@ LABEL_16:
       sub_1000811C0();
     }
 
-    NSLog(@"[HODataSyncingViewController-setDataSyncState:] unknown state %lu", a3);
+    NSLog(@"[HODataSyncingViewController-setDataSyncState:] unknown state %lu", state);
     goto LABEL_31;
   }
 }
 
 - (void)_removeLowerSectionControlsAndLabels
 {
-  v3 = [(HODataSyncingViewController *)self enableButton];
-  [v3 removeFromSuperview];
+  enableButton = [(HODataSyncingViewController *)self enableButton];
+  [enableButton removeFromSuperview];
 
-  v4 = [(HODataSyncingViewController *)self resetNukeButton];
-  [v4 removeFromSuperview];
+  resetNukeButton = [(HODataSyncingViewController *)self resetNukeButton];
+  [resetNukeButton removeFromSuperview];
 }
 
 - (id)_createConstraintForTextView
 {
-  v3 = [(HODataSyncingViewController *)self textView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textView = [(HODataSyncingViewController *)self textView];
+  [textView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = objc_opt_new();
-  v5 = [(HODataSyncingViewController *)self textView];
-  v6 = [v5 centerXAnchor];
-  v7 = [(HODataSyncingViewController *)self view];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  textView2 = [(HODataSyncingViewController *)self textView];
+  centerXAnchor = [textView2 centerXAnchor];
+  view = [(HODataSyncingViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v4 addObject:v9];
 
-  v10 = [(HODataSyncingViewController *)self textView];
-  v11 = [v10 leadingAnchor];
-  v12 = [(HODataSyncingViewController *)self view];
-  v13 = [v12 leadingAnchor];
+  textView3 = [(HODataSyncingViewController *)self textView];
+  leadingAnchor = [textView3 leadingAnchor];
+  view2 = [(HODataSyncingViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
   [(HODataSyncingViewController *)self insetSize];
-  v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13 constant:?];
+  v14 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
   [v4 addObject:v14];
 
-  v15 = [(HODataSyncingViewController *)self textView];
-  v16 = [v15 trailingAnchor];
-  v17 = [(HODataSyncingViewController *)self view];
-  v18 = [v17 trailingAnchor];
+  textView4 = [(HODataSyncingViewController *)self textView];
+  trailingAnchor = [textView4 trailingAnchor];
+  view3 = [(HODataSyncingViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
   [(HODataSyncingViewController *)self insetSize];
-  v19 = [v16 constraintLessThanOrEqualToAnchor:v18 constant:?];
+  v19 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:?];
   [v4 addObject:v19];
 
-  v20 = [(HODataSyncingViewController *)self textView];
-  v21 = [(HODataSyncingViewController *)self view];
-  v22 = [NSLayoutConstraint constraintWithItem:v20 attribute:3 relatedBy:0 toItem:v21 attribute:10 multiplier:0.4 constant:0.0];
+  textView5 = [(HODataSyncingViewController *)self textView];
+  view4 = [(HODataSyncingViewController *)self view];
+  v22 = [NSLayoutConstraint constraintWithItem:textView5 attribute:3 relatedBy:0 toItem:view4 attribute:10 multiplier:0.4 constant:0.0];
   [v4 addObject:v22];
 
   return v4;
 }
 
-- (id)_createButtonWithString:(id)a3
+- (id)_createButtonWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [[HUColoredButton alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v5 setTitle:v4 forState:0];
+  [v5 setTitle:stringCopy forState:0];
 
   v6 = +[UIColor hf_keyColor];
   [v5 setBackgroundColor:v6];
@@ -325,79 +325,79 @@ LABEL_16:
   return v5;
 }
 
-- (id)_createConstraintsForButton:(id)a3 includeBottomConstraint:(BOOL)a4
+- (id)_createConstraintsForButton:(id)button includeBottomConstraint:(BOOL)constraint
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  constraintCopy = constraint;
+  buttonCopy = button;
+  [buttonCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = objc_opt_new();
-  v8 = [v6 centerXAnchor];
-  v9 = [(HODataSyncingViewController *)self view];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [buttonCopy centerXAnchor];
+  view = [(HODataSyncingViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 addObject:v11];
 
-  v12 = [v6 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:288.0];
+  widthAnchor = [buttonCopy widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:288.0];
   [v7 addObject:v13];
 
-  v14 = [v6 heightAnchor];
+  heightAnchor = [buttonCopy heightAnchor];
   +[HUColoredButton defaultHeight];
-  v15 = [v14 constraintGreaterThanOrEqualToConstant:?];
+  v15 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
   [v7 addObject:v15];
 
-  if (v4)
+  if (constraintCopy)
   {
-    v16 = [(HODataSyncingViewController *)self _bottomPaddingConstraintForLowestView:v6];
+    v16 = [(HODataSyncingViewController *)self _bottomPaddingConstraintForLowestView:buttonCopy];
     [v7 addObject:v16];
   }
 
   return v7;
 }
 
-- (id)_bottomPaddingConstraintForLowestView:(id)a3
+- (id)_bottomPaddingConstraintForLowestView:(id)view
 {
-  v4 = [a3 bottomAnchor];
-  v5 = [(HODataSyncingViewController *)self view];
-  v6 = [v5 safeAreaLayoutGuide];
-  v7 = [v6 bottomAnchor];
+  bottomAnchor = [view bottomAnchor];
+  view = [(HODataSyncingViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
   [(HODataSyncingViewController *)self bottomPadding];
-  v9 = [v4 constraintEqualToAnchor:v7 constant:-v8];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v8];
 
   return v9;
 }
 
 - (id)_createResetSectionConstraints
 {
-  v3 = [(HODataSyncingViewController *)self resetNukeButton];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  resetNukeButton = [(HODataSyncingViewController *)self resetNukeButton];
+  [resetNukeButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = objc_opt_new();
-  v5 = [(HODataSyncingViewController *)self resetNukeButton];
-  v6 = [v5 leadingAnchor];
-  v7 = [(HODataSyncingViewController *)self view];
-  v8 = [v7 leadingAnchor];
+  resetNukeButton2 = [(HODataSyncingViewController *)self resetNukeButton];
+  leadingAnchor = [resetNukeButton2 leadingAnchor];
+  view = [(HODataSyncingViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
   [(HODataSyncingViewController *)self insetSize];
-  v9 = [v6 constraintGreaterThanOrEqualToAnchor:v8 constant:?];
+  v9 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
   [v4 addObject:v9];
 
-  v10 = [(HODataSyncingViewController *)self resetNukeButton];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HODataSyncingViewController *)self view];
-  v13 = [v12 trailingAnchor];
+  resetNukeButton3 = [(HODataSyncingViewController *)self resetNukeButton];
+  trailingAnchor = [resetNukeButton3 trailingAnchor];
+  view2 = [(HODataSyncingViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
   [(HODataSyncingViewController *)self insetSize];
-  v14 = [v11 constraintLessThanOrEqualToAnchor:v13 constant:?];
+  v14 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:?];
   [v4 addObject:v14];
 
-  v15 = [(HODataSyncingViewController *)self resetNukeButton];
-  v16 = [v15 centerXAnchor];
-  v17 = [(HODataSyncingViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  resetNukeButton4 = [(HODataSyncingViewController *)self resetNukeButton];
+  centerXAnchor = [resetNukeButton4 centerXAnchor];
+  view3 = [(HODataSyncingViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v4 addObject:v19];
 
-  v20 = [(HODataSyncingViewController *)self resetNukeButton];
-  v21 = [(HODataSyncingViewController *)self _bottomPaddingConstraintForLowestView:v20];
+  resetNukeButton5 = [(HODataSyncingViewController *)self resetNukeButton];
+  v21 = [(HODataSyncingViewController *)self _bottomPaddingConstraintForLowestView:resetNukeButton5];
   [v4 addObject:v21];
 
   return v4;
@@ -405,59 +405,59 @@ LABEL_16:
 
 - (void)_createAndAddResetLabelsIfNeeded
 {
-  v3 = [(HODataSyncingViewController *)self resetNukeButton];
+  resetNukeButton = [(HODataSyncingViewController *)self resetNukeButton];
 
-  if (!v3)
+  if (!resetNukeButton)
   {
     v4 = [UIButton buttonWithType:1];
     [(HODataSyncingViewController *)self setResetNukeButton:v4];
 
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-    v6 = [(HODataSyncingViewController *)self resetNukeButton];
-    v7 = [v6 titleLabel];
-    [v7 setFont:v5];
+    resetNukeButton2 = [(HODataSyncingViewController *)self resetNukeButton];
+    titleLabel = [resetNukeButton2 titleLabel];
+    [titleLabel setFont:v5];
 
-    v8 = [(HODataSyncingViewController *)self resetNukeButton];
+    resetNukeButton3 = [(HODataSyncingViewController *)self resetNukeButton];
     v9 = sub_10003FCAC(@"HODataSyncingButtonReset");
-    [v8 setTitle:v9 forState:0];
+    [resetNukeButton3 setTitle:v9 forState:0];
 
-    v10 = [(HODataSyncingViewController *)self resetNukeButton];
-    v11 = [v10 titleLabel];
-    [v11 setNumberOfLines:1];
+    resetNukeButton4 = [(HODataSyncingViewController *)self resetNukeButton];
+    titleLabel2 = [resetNukeButton4 titleLabel];
+    [titleLabel2 setNumberOfLines:1];
 
-    v12 = [(HODataSyncingViewController *)self resetNukeButton];
-    v13 = [v12 titleLabel];
-    [v13 setTextAlignment:1];
+    resetNukeButton5 = [(HODataSyncingViewController *)self resetNukeButton];
+    titleLabel3 = [resetNukeButton5 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v14 = [(HODataSyncingViewController *)self resetNukeButton];
-    [v14 addTarget:self action:"_resetButtonPressed:" forControlEvents:64];
+    resetNukeButton6 = [(HODataSyncingViewController *)self resetNukeButton];
+    [resetNukeButton6 addTarget:self action:"_resetButtonPressed:" forControlEvents:64];
 
-    v15 = [(HODataSyncingViewController *)self resetNukeButton];
-    [v15 setAccessibilityIdentifier:@"HODataSyncingViewController.resetNukeButton"];
+    resetNukeButton7 = [(HODataSyncingViewController *)self resetNukeButton];
+    [resetNukeButton7 setAccessibilityIdentifier:@"HODataSyncingViewController.resetNukeButton"];
   }
 
-  v17 = [(HODataSyncingViewController *)self view];
-  v16 = [(HODataSyncingViewController *)self resetNukeButton];
-  [v17 addSubview:v16];
+  view = [(HODataSyncingViewController *)self view];
+  resetNukeButton8 = [(HODataSyncingViewController *)self resetNukeButton];
+  [view addSubview:resetNukeButton8];
 }
 
-- (void)_enableButtonPressed:(id)a3
+- (void)_enableButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HODataSyncingViewController *)self dataSyncState];
+    dataSyncState = [(HODataSyncingViewController *)self dataSyncState];
     [(HODataSyncingViewController *)self dataSyncState];
     v6 = HMHomeManagerDataSyncStateToString();
     v11 = 134218242;
-    v12 = v5;
+    v12 = dataSyncState;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:_enableButtonPressed] User tapped 'enable' button | state = %lu (%@)", &v11, 0x16u);
   }
 
-  v7 = [(HODataSyncingViewController *)self dataSyncState];
-  switch(v7)
+  dataSyncState2 = [(HODataSyncingViewController *)self dataSyncState];
+  switch(dataSyncState2)
   {
     case 2uLL:
       if ((+[HFUtilities isAMac]& 1) != 0)
@@ -486,9 +486,9 @@ LABEL_16:
 - (void)_enableICloud
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 homeManager];
+  homeManager = [v2 homeManager];
 
-  [v3 updateiCloudSwitchState:1 completionHandler:&stru_1000C3FC0];
+  [homeManager updateiCloudSwitchState:1 completionHandler:&stru_1000C3FC0];
 }
 
 - (void)_quit
@@ -503,7 +503,7 @@ LABEL_16:
   [(HODataSyncingViewController *)self dismissViewControllerAnimated:1 completion:&stru_1000C3FE0];
 }
 
-- (void)_resetButtonPressed:(id)a3
+- (void)_resetButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -512,9 +512,9 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:_resetButtonPressed] User tapped 'reset' button", buf, 2u);
   }
 
-  v5 = [(HODataSyncingViewController *)self iCloudURLIsReachable];
+  iCloudURLIsReachable = [(HODataSyncingViewController *)self iCloudURLIsReachable];
   v6 = sub_10003FCAC(@"HODataSyncingAlertTitle");
-  if (v5)
+  if (iCloudURLIsReachable)
   {
     v7 = sub_10003FCAC(@"HODataSyncingResetWithiCloud");
     v8 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
@@ -551,13 +551,13 @@ LABEL_16:
 - (void)_resetButtonConfirmed
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeManager];
+  homeManager = [v3 homeManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004110C;
   v5[3] = &unk_1000C1F28;
   v5[4] = self;
-  [v4 eraseHomeDataWithCompletionHandler:v5];
+  [homeManager eraseHomeDataWithCompletionHandler:v5];
 }
 
 - (void)startCDPRepair
@@ -569,41 +569,41 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:startCDPRepair]", buf, 2u);
   }
 
-  v4 = [(HODataSyncingViewController *)self hf_topmostViewController];
+  hf_topmostViewController = [(HODataSyncingViewController *)self hf_topmostViewController];
   v5 = +[CDPAccount sharedInstance];
-  v6 = [v5 primaryAccountAltDSID];
+  primaryAccountAltDSID = [v5 primaryAccountAltDSID];
 
-  v7 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:v6];
+  v7 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:primaryAccountAltDSID];
   v8 = +[NSBundle mainBundle];
-  v9 = [v8 infoDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"CFBundleDisplayName"];
+  infoDictionary = [v8 infoDictionary];
+  v10 = [infoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"];
   [v7 setFeatureName:v10];
 
   [v7 setDeviceToDeviceEncryptionUpgradeUIStyle:0];
   [v7 setDeviceToDeviceEncryptionUpgradeType:0];
-  [v7 setPresentingViewController:v4];
+  [v7 setPresentingViewController:hf_topmostViewController];
   [v7 setSecurityUpgradeContext:AKSecurityUpgradeContextGeneric];
   v11 = [[CDPUIDeviceToDeviceEncryptionHelper alloc] initWithContext:v7];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100041508;
   v13[3] = &unk_1000C4108;
-  v14 = v6;
-  v15 = self;
-  v12 = v6;
+  v14 = primaryAccountAltDSID;
+  selfCopy = self;
+  v12 = primaryAccountAltDSID;
   [v11 performDeviceToDeviceEncryptionStateRepairWithCompletion:v13];
 }
 
-- (void)_internalCyclePressed:(id)a3
+- (void)_internalCyclePressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HODataSyncingViewController *)self dataSyncState];
+    dataSyncState = [(HODataSyncingViewController *)self dataSyncState];
     [(HODataSyncingViewController *)self dataSyncState];
     v6 = HMHomeManagerDataSyncStateToString();
     v8 = 134218242;
-    v9 = v5;
+    v9 = dataSyncState;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:_internalCyclePressed] dataSyncState = %lu (%@)", &v8, 0x16u);

@@ -1,31 +1,31 @@
 @interface BMStreamCKRecordCRDT
-- (BMStreamCKRecordCRDT)initWithStreamCRDT:(id)a3 locationRow:(id)a4 database:(id)a5 queue:(id)a6 maxDeltaSize:(int64_t)a7 sessionContext:(id)a8;
-- (BOOL)mergeDeltas:(id)a3 error:(id *)a4;
-- (id)mergeableDeltasForMetadata:(id)a3 error:(id *)a4;
+- (BMStreamCKRecordCRDT)initWithStreamCRDT:(id)t locationRow:(id)row database:(id)database queue:(id)queue maxDeltaSize:(int64_t)size sessionContext:(id)context;
+- (BOOL)mergeDeltas:(id)deltas error:(id *)error;
+- (id)mergeableDeltasForMetadata:(id)metadata error:(id *)error;
 - (id)stateVector;
 @end
 
 @implementation BMStreamCKRecordCRDT
 
-- (BMStreamCKRecordCRDT)initWithStreamCRDT:(id)a3 locationRow:(id)a4 database:(id)a5 queue:(id)a6 maxDeltaSize:(int64_t)a7 sessionContext:(id)a8
+- (BMStreamCKRecordCRDT)initWithStreamCRDT:(id)t locationRow:(id)row database:(id)database queue:(id)queue maxDeltaSize:(int64_t)size sessionContext:(id)context
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  tCopy = t;
+  rowCopy = row;
+  databaseCopy = database;
+  queueCopy = queue;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = BMStreamCKRecordCRDT;
   v18 = [(BMStreamCKRecordCRDT *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_streamCRDT, a3);
-    objc_storeStrong(&v19->_locationRow, a4);
-    objc_storeStrong(&v19->_db, a5);
-    objc_storeStrong(&v19->_queue, a6);
-    v19->_maxDeltaSize = a7;
-    objc_storeStrong(&v19->_sessionContext, a8);
+    objc_storeStrong(&v18->_streamCRDT, t);
+    objc_storeStrong(&v19->_locationRow, row);
+    objc_storeStrong(&v19->_db, database);
+    objc_storeStrong(&v19->_queue, queue);
+    v19->_maxDeltaSize = size;
+    objc_storeStrong(&v19->_sessionContext, context);
   }
 
   return v19;
@@ -37,8 +37,8 @@
   if (self->_locationRow)
   {
     db = self->_db;
-    v4 = [(BMStreamCKRecordCRDT *)self locationRow];
-    v5 = [(BMSyncDatabase *)db stateVectorForLocationRow:v4];
+    locationRow = [(BMStreamCKRecordCRDT *)self locationRow];
+    v5 = [(BMSyncDatabase *)db stateVectorForLocationRow:locationRow];
   }
 
   else
@@ -55,9 +55,9 @@
   return v5;
 }
 
-- (BOOL)mergeDeltas:(id)a3 error:(id *)a4
+- (BOOL)mergeDeltas:(id)deltas error:(id *)error
 {
-  v5 = a3;
+  deltasCopy = deltas;
   dispatch_assert_queue_V2(self->_queue);
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
@@ -65,7 +65,7 @@
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v8 = v5;
+  v8 = deltasCopy;
   v51 = [v8 countByEnumeratingWithState:&v55 objects:v63 count:16];
   v9 = 0;
   if (!v51)
@@ -114,20 +114,20 @@
       if (!v17)
       {
         v9 = v16;
-        v18 = __biome_log_for_category();
+        mergeableValueID = __biome_log_for_category();
         v52 = v12;
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+        if (os_log_type_enabled(mergeableValueID, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
           v62 = v9;
-          _os_log_fault_impl(&_mh_execute_header, v18, OS_LOG_TYPE_FAULT, "Failed to initWithMergeableDelta with error %@", buf, 0xCu);
+          _os_log_fault_impl(&_mh_execute_header, mergeableValueID, OS_LOG_TYPE_FAULT, "Failed to initWithMergeableDelta with error %@", buf, 0xCu);
         }
 
         goto LABEL_18;
       }
 
       v53 = 0;
-      v18 = [v15 dataWithError:&v53];
+      mergeableValueID = [v15 dataWithError:&v53];
       v9 = v53;
       if (v9)
       {
@@ -140,16 +140,16 @@
         goto LABEL_31;
       }
 
-      v19 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
+      location = [(BMSyncCRDTLocationRow *)self->_locationRow location];
 
-      if (v19)
+      if (location)
       {
         v52 = v12;
-        v20 = [v15 vectors];
-        v21 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
-        v22 = [(BMStreamCKCRDT *)self->_streamCRDT streamConfiguration];
-        v23 = [v22 storeConfig];
-        v24 = +[BMDistributedSyncManager writeAtomBatchData:atomBatchVectors:forLocation:protectionClass:sessionContext:db:](BMDistributedSyncManager, "writeAtomBatchData:atomBatchVectors:forLocation:protectionClass:sessionContext:db:", v18, v20, v21, [v23 protectionClass], self->_sessionContext, self->_db);
+        vectors = [v15 vectors];
+        location2 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
+        streamConfiguration = [(BMStreamCKCRDT *)self->_streamCRDT streamConfiguration];
+        storeConfig = [streamConfiguration storeConfig];
+        v24 = +[BMDistributedSyncManager writeAtomBatchData:atomBatchVectors:forLocation:protectionClass:sessionContext:db:](BMDistributedSyncManager, "writeAtomBatchData:atomBatchVectors:forLocation:protectionClass:sessionContext:db:", mergeableValueID, vectors, location2, [storeConfig protectionClass], self->_sessionContext, self->_db);
 
         if (v24)
         {
@@ -163,9 +163,9 @@
 LABEL_18:
 
           v25 = [NSString alloc];
-          v18 = [v15 mergeableValueID];
-          v26 = [v18 identifier];
-          v27 = [v25 initWithData:v26 encoding:4];
+          mergeableValueID = [v15 mergeableValueID];
+          identifier = [mergeableValueID identifier];
+          v27 = [v25 initWithData:identifier encoding:4];
           [(BMSyncSessionContext *)self->_sessionContext setOriginatingSiteIdentifier:v27];
 
           v12 = v52;
@@ -186,14 +186,14 @@ LABEL_31:
 
         objc_autoreleasePoolPop(v12);
         v32 = 0;
-        v31 = v8;
+        location3 = v8;
         goto LABEL_32;
       }
 
-      v26 = __biome_log_for_category();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+      identifier = __biome_log_for_category();
+      if (os_log_type_enabled(identifier, OS_LOG_TYPE_FAULT))
       {
-        sub_1000475A4(v59, self, &v60, v26);
+        sub_1000475A4(v59, self, &v60, identifier);
       }
 
       v9 = 0;
@@ -213,23 +213,23 @@ LABEL_25:
 
   sessionContext = self->_sessionContext;
   streamCRDT = self->_streamCRDT;
-  v31 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
-  [(BMStreamCKCRDT *)streamCRDT mergeAtomBatches:v6 atomBatchFilenames:v7 sessionContext:sessionContext forLocation:v31];
+  location3 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
+  [(BMStreamCKCRDT *)streamCRDT mergeAtomBatches:v6 atomBatchFilenames:v7 sessionContext:sessionContext forLocation:location3];
   v32 = 1;
 LABEL_32:
 
   return v32;
 }
 
-- (id)mergeableDeltasForMetadata:(id)a3 error:(id *)a4
+- (id)mergeableDeltasForMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(BMSyncCRDTLocationRow *)self->_locationRow location];
-  v8 = [v7 ckMergeableValueID];
+  location = [(BMSyncCRDTLocationRow *)self->_locationRow location];
+  ckMergeableValueID = [location ckMergeableValueID];
 
   v69 = 0;
-  v9 = [[CKAtomBatch alloc] initWriterWithMergeableValueID:v8 metadata:v6 formatVersion:3 error:&v69];
+  v9 = [[CKAtomBatch alloc] initWriterWithMergeableValueID:ckMergeableValueID metadata:metadataCopy formatVersion:3 error:&v69];
   v10 = v69;
   if (v10)
   {
@@ -257,7 +257,7 @@ LABEL_32:
     }
 
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = ckMergeableValueID;
     *&buf[12] = 2112;
     *&buf[14] = v11;
     v14 = "BMStreamCKRecordCRDT: unable to init a CKAtomBatch with initWriterWithMergeableValueID:%@ error:%@";
@@ -265,11 +265,11 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v12, v13, v14, buf, 0x16u);
 LABEL_12:
 
-    if (a4)
+    if (error)
     {
       v18 = v11;
       v19 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -281,8 +281,8 @@ LABEL_12:
   }
 
   streamCRDT = self->_streamCRDT;
-  v16 = [v6 contentsVector];
-  [(BMStreamCKCRDT *)streamCRDT populateAtomBatch:v9 withAtomsInClockVector:v16 forLocation:self->_locationRow ckFormatVersion:3 valueVersion:1 chunker:0];
+  contentsVector = [metadataCopy contentsVector];
+  [(BMStreamCKCRDT *)streamCRDT populateAtomBatch:v9 withAtomsInClockVector:contentsVector forLocation:self->_locationRow ckFormatVersion:3 valueVersion:1 chunker:0];
 
   v67 = 0;
   [v9 finishWritingWithError:&v67];
@@ -313,7 +313,7 @@ LABEL_12:
     }
 
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = ckMergeableValueID;
     *&buf[12] = 2112;
     *&buf[14] = v11;
     v14 = "BMStreamCKRecordCRDT: unable to complete a CKAtomBatch with finishWritingWithError:%@ error:%@";
@@ -332,11 +332,11 @@ LABEL_12:
       sub_10004761C(v23, v24, v25, v26, v27, v28, v29, v30);
     }
 
-    if (a4)
+    if (error)
     {
       v31 = v22;
       v19 = 0;
-      *a4 = v22;
+      *error = v22;
     }
 
     else
@@ -348,7 +348,7 @@ LABEL_12:
   else
   {
     v54 = v9;
-    v53 = a4;
+    errorCopy = error;
     v32 = objc_opt_new();
     v61 = 0u;
     v62 = 0u;
@@ -374,7 +374,7 @@ LABEL_12:
           v38 = *(*(&v61 + 1) + 8 * i);
           v59 = 0;
           v60 = 0;
-          [v38 size:&v60 error:{&v59, v53}];
+          [v38 size:&v60 error:{&v59, errorCopy}];
           v39 = v59;
           v40 = __biome_log_for_category();
           v41 = v40;
@@ -429,10 +429,10 @@ LABEL_12:
               _os_log_impl(&_mh_execute_header, v49, v50, "BMStreamCKRecordCRDT: unable to init a CKMergeableDelta with initWithAtomBatch:%@ error:%@", buf, 0x16u);
             }
 
-            if (v53)
+            if (errorCopy)
             {
               v51 = v47;
-              *v53 = v47;
+              *errorCopy = v47;
             }
 
             v19 = 0;

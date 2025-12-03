@@ -1,26 +1,26 @@
 @interface SFModelTaskSet
-+ (id)modelInfoVersionWithAssetPath:(id)a3 taskHint:(int64_t)a4;
-+ (id)modelInfoWithAssetPath:(id)a3 taskHint:(int64_t)a4;
++ (id)modelInfoVersionWithAssetPath:(id)path taskHint:(int64_t)hint;
++ (id)modelInfoWithAssetPath:(id)path taskHint:(int64_t)hint;
 + (id)set;
-+ (id)taskSetWithAssetPath:(id)a3;
-- (BOOL)containsTask:(unint64_t)a3;
++ (id)taskSetWithAssetPath:(id)path;
+- (BOOL)containsTask:(unint64_t)task;
 - (SFModelTaskSet)init;
-- (SFModelTaskSet)initWithTasks:(id)a3;
+- (SFModelTaskSet)initWithTasks:(id)tasks;
 @end
 
 @implementation SFModelTaskSet
 
-- (BOOL)containsTask:(unint64_t)a3
+- (BOOL)containsTask:(unint64_t)task
 {
   tasks = self->_tasks;
-  if (a3 > 0xA)
+  if (task > 0xA)
   {
     v4 = @"Invalid Task";
   }
 
   else
   {
-    v4 = off_1E797BD60[a3];
+    v4 = off_1E797BD60[task];
   }
 
   v5 = v4;
@@ -29,17 +29,17 @@
   return v6;
 }
 
-- (SFModelTaskSet)initWithTasks:(id)a3
+- (SFModelTaskSet)initWithTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   v9.receiver = self;
   v9.super_class = SFModelTaskSet;
   v5 = [(SFModelTaskSet *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (tasksCopy)
     {
-      v6 = v4;
+      v6 = tasksCopy;
     }
 
     else
@@ -69,15 +69,15 @@
   return v2;
 }
 
-+ (id)modelInfoVersionWithAssetPath:(id)a3 taskHint:(int64_t)a4
++ (id)modelInfoVersionWithAssetPath:(id)path taskHint:(int64_t)hint
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [SFModelTaskSet modelInfoWithAssetPath:v5 taskHint:a4];
+  pathCopy = path;
+  v6 = [SFModelTaskSet modelInfoWithAssetPath:pathCopy taskHint:hint];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 version];
+    version = [v6 version];
   }
 
   else
@@ -88,24 +88,24 @@
       v12 = 136315394;
       v13 = "+[SFModelTaskSet modelInfoVersionWithAssetPath:taskHint:]";
       v14 = 2112;
-      v15 = v5;
+      v15 = pathCopy;
       _os_log_error_impl(&dword_1AC5BC000, v9, OS_LOG_TYPE_ERROR, "%s Unable evaluate model at path: %@", &v12, 0x16u);
     }
 
-    v8 = 0;
+    version = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return version;
 }
 
-+ (id)modelInfoWithAssetPath:(id)a3 taskHint:(int64_t)a4
++ (id)modelInfoWithAssetPath:(id)path taskHint:(int64_t)hint
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [SFEntitledAssetManager jsonFilenameForAssetType:SFEntitledAssetTypeForTaskHint(a4)];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  pathCopy = path;
+  v6 = [SFEntitledAssetManager jsonFilenameForAssetType:SFEntitledAssetTypeForTaskHint(hint)];
+  v7 = [pathCopy stringByAppendingPathComponent:v6];
 
   if (v7)
   {
@@ -148,16 +148,16 @@
   return v9;
 }
 
-+ (id)taskSetWithAssetPath:(id)a3
++ (id)taskSetWithAssetPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [SFModelTaskSet modelInfoWithAssetPath:v3 taskHint:1001];
+  pathCopy = path;
+  v4 = [SFModelTaskSet modelInfoWithAssetPath:pathCopy taskHint:1001];
   if (v4)
   {
     v5 = [SFModelTaskSet alloc];
-    v6 = [v4 tasks];
-    v7 = [(SFModelTaskSet *)v5 initWithTasks:v6];
+    tasks = [v4 tasks];
+    v7 = [(SFModelTaskSet *)v5 initWithTasks:tasks];
   }
 
   else
@@ -168,7 +168,7 @@
       v11 = 136315394;
       v12 = "+[SFModelTaskSet taskSetWithAssetPath:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = pathCopy;
       _os_log_error_impl(&dword_1AC5BC000, v8, OS_LOG_TYPE_ERROR, "%s Unable evaluate model at path: %@", &v11, 0x16u);
     }
 

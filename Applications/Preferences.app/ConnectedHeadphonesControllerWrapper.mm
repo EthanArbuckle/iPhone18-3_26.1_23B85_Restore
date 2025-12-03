@@ -2,7 +2,7 @@
 - (ConnectedHeadphonesControllerWrapper)init;
 - (id)connectedHeadphoneInfo;
 - (void)dealloc;
-- (void)setDeviceChangeHandler:(id)a3;
+- (void)setDeviceChangeHandler:(id)handler;
 @end
 
 @implementation ConnectedHeadphonesControllerWrapper
@@ -24,8 +24,8 @@
 
 - (void)dealloc
 {
-  v3 = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
-  [v3 setDeviceChangeHandler:0];
+  _headphonesController = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
+  [_headphonesController setDeviceChangeHandler:0];
 
   v4.receiver = self;
   v4.super_class = ConnectedHeadphonesControllerWrapper;
@@ -34,30 +34,30 @@
 
 - (id)connectedHeadphoneInfo
 {
-  v2 = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
-  v3 = [v2 connectedHeadphoneInfo];
+  _headphonesController = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
+  connectedHeadphoneInfo = [_headphonesController connectedHeadphoneInfo];
 
-  return v3;
+  return connectedHeadphoneInfo;
 }
 
-- (void)setDeviceChangeHandler:(id)a3
+- (void)setDeviceChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
-  v6 = v5;
-  if (v4)
+  handlerCopy = handler;
+  _headphonesController = [(ConnectedHeadphonesControllerWrapper *)self _headphonesController];
+  v6 = _headphonesController;
+  if (handlerCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10004CC90;
     v7[3] = &unk_10014C9C8;
-    v8 = v4;
+    v8 = handlerCopy;
     [v6 setDeviceChangeHandler:v7];
   }
 
   else
   {
-    [v5 setDeviceChangeHandler:0];
+    [_headphonesController setDeviceChangeHandler:0];
   }
 }
 

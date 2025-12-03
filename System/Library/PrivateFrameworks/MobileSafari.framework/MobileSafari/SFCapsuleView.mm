@@ -1,12 +1,12 @@
 @interface SFCapsuleView
-- (BOOL)_shouldFadeNonKeyContentForContentView:(id)a3 withPreviousContentView:(id)a4;
+- (BOOL)_shouldFadeNonKeyContentForContentView:(id)view withPreviousContentView:(id)contentView;
 - (CGAffineTransform)contentTransform;
 - (CGRect)_backgroundFrame;
 - (CGRect)_boundsForContent;
 - (CGRect)frameForShadowView;
 - (NSDirectionalEdgeInsets)accessoryViewInsets;
-- (SFCapsuleView)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)insetsForCollapsedContentWithContainerBounds:(CGRect)a3;
+- (SFCapsuleView)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)insetsForCollapsedContentWithContainerBounds:(CGRect)bounds;
 - (UIView)contentView;
 - (UIView)dragPreviewView;
 - (id)visualEffectBackgroundView;
@@ -15,45 +15,45 @@
 - (void)_performHighlightAnimation;
 - (void)_updateAccessoryTheme;
 - (void)_updateContentViewState;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
 - (void)_updateShadowViewTransform;
-- (void)_updateStateWithContentView:(id)a3;
-- (void)allowsHighlight:(BOOL)a3;
+- (void)_updateStateWithContentView:(id)view;
+- (void)allowsHighlight:(BOOL)highlight;
 - (void)applyTheme;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setAccessoryView:(id)a3 coordinator:(id)a4;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundCornerRadius:(double)a3;
-- (void)setBackgroundHeight:(double)a3;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentView:(id)a3;
-- (void)setDirectionalCollapsedContentEdge:(unint64_t)a3;
-- (void)setForceMinimizedTheme:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setMinimizationPercent:(double)a3;
-- (void)setMinimizedTheme:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)setTheme:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)setVisualEffectGroupName:(id)a3;
+- (void)setAccessoryView:(id)view coordinator:(id)coordinator;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundCornerRadius:(double)radius;
+- (void)setBackgroundHeight:(double)height;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentView:(id)view;
+- (void)setDirectionalCollapsedContentEdge:(unint64_t)edge;
+- (void)setForceMinimizedTheme:(BOOL)theme;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setMinimizationPercent:(double)percent;
+- (void)setMinimizedTheme:(id)theme;
+- (void)setSelected:(BOOL)selected;
+- (void)setState:(int64_t)state;
+- (void)setTheme:(id)theme;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)setVisualEffectGroupName:(id)name;
 - (void)updateShadowViewHidden;
-- (void)willChangeToMinimized:(BOOL)a3 coordinator:(id)a4;
-- (void)willReloadWithCoordinator:(id)a3;
+- (void)willChangeToMinimized:(BOOL)minimized coordinator:(id)coordinator;
+- (void)willReloadWithCoordinator:(id)coordinator;
 @end
 
 @implementation SFCapsuleView
 
 - (UIView)contentView
 {
-  v3 = [(UIView *)self->_cachedContentView superview];
+  superview = [(UIView *)self->_cachedContentView superview];
   contentContainer = self->_contentContainer;
 
-  if (v3 == contentContainer)
+  if (superview == contentContainer)
   {
     v5 = self->_cachedContentView;
   }
@@ -68,8 +68,8 @@
 
 - (void)_updateContentViewState
 {
-  v3 = [(SFCapsuleView *)self contentView];
-  [(SFCapsuleView *)self _updateStateWithContentView:v3];
+  contentView = [(SFCapsuleView *)self contentView];
+  [(SFCapsuleView *)self _updateStateWithContentView:contentView];
 }
 
 - (id)visualEffectBackgroundView
@@ -92,17 +92,17 @@
 {
   if (([(SFCapsuleView *)self isHidden]& 1) != 0)
   {
-    v3 = 1;
+    isSolariumEnabled = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   }
 
   shadowView = self->_shadowView;
 
-  [(SFShadowView *)shadowView setHidden:v3];
+  [(SFShadowView *)shadowView setHidden:isSolariumEnabled];
 }
 
 - (void)_updateLayoutDirectionIfNeeded
@@ -129,37 +129,37 @@
 
 - (void)_updateAccessoryTheme
 {
-  v3 = [(_SFBarTheme *)self->_theme toolbarControlsTintColor];
-  [(UIView *)self->_accessoryView setTintColor:v3];
+  toolbarControlsTintColor = [(_SFBarTheme *)self->_theme toolbarControlsTintColor];
+  [(UIView *)self->_accessoryView setTintColor:toolbarControlsTintColor];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_SFBarTheme *)self->_theme backgroundTheme];
-    -[UIView setOverrideUserInterfaceStyle:](self->_accessoryView, "setOverrideUserInterfaceStyle:", [v4 overrideUserInterfaceStyle]);
+    backgroundTheme = [(_SFBarTheme *)self->_theme backgroundTheme];
+    -[UIView setOverrideUserInterfaceStyle:](self->_accessoryView, "setOverrideUserInterfaceStyle:", [backgroundTheme overrideUserInterfaceStyle]);
   }
 }
 
 - (void)applyTheme
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SFCapsuleView *)self _usesMinimizedTheme];
+  _usesMinimizedTheme = [(SFCapsuleView *)self _usesMinimizedTheme];
   v4 = &OBJC_IVAR___SFCapsuleView__theme;
-  if (v3)
+  if (_usesMinimizedTheme)
   {
     v4 = &OBJC_IVAR___SFCapsuleView__minimizedTheme;
   }
 
   v5 = *(&self->super.super.super.isa + *v4);
-  v6 = [(SFCapsuleView *)self visualEffectBackgroundView];
-  v7 = [(SFCapsuleView *)self contentView];
+  visualEffectBackgroundView = [(SFCapsuleView *)self visualEffectBackgroundView];
+  contentView = [(SFCapsuleView *)self contentView];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 isHighlighted];
+    isHighlighted = [contentView isHighlighted];
   }
 
   else
   {
-    v8 = 0;
+    isHighlighted = 0;
   }
 
   backgroundStyle = self->_backgroundStyle;
@@ -170,21 +170,21 @@
       [(UIView *)self safari_setGlassGroupEnabled:!self->_isSelected];
       outerContentContainer = self->_outerContentContainer;
       v24 = self->_state != 1;
-      v25 = [(_SFBarTheme *)self->_theme glassURLFieldTintColor];
-      [(UIView *)outerContentContainer safari_setScrimGlassBackgroundEnabled:v24 withTintColor:v25];
+      glassURLFieldTintColor = [(_SFBarTheme *)self->_theme glassURLFieldTintColor];
+      [(UIView *)outerContentContainer safari_setScrimGlassBackgroundEnabled:v24 withTintColor:glassURLFieldTintColor];
 
       if (self->_state == 1)
       {
-        v26 = 0;
+        glassURLFieldUserInterfaceStyle = 0;
 LABEL_19:
-        [(UIView *)self->_contentContainer setOverrideUserInterfaceStyle:v26];
-        v27 = [MEMORY[0x1E69DC888] clearColor];
-        v28 = [v6 contentView];
-        [v28 setBackgroundColor:v27];
+        [(UIView *)self->_contentContainer setOverrideUserInterfaceStyle:glassURLFieldUserInterfaceStyle];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        contentView2 = [visualEffectBackgroundView contentView];
+        [contentView2 setBackgroundColor:clearColor];
 
         v29 = MEMORY[0x1E695E0F0];
-        [v6 setContentEffects:MEMORY[0x1E695E0F0]];
-        v15 = v6;
+        [visualEffectBackgroundView setContentEffects:MEMORY[0x1E695E0F0]];
+        v15 = visualEffectBackgroundView;
         v14 = v29;
 LABEL_20:
         [v15 setBackgroundEffects:v14];
@@ -202,11 +202,11 @@ LABEL_20:
       [(UIView *)self safari_setGlassGroupEnabled:!self->_isSelected];
       v16 = self->_outerContentContainer;
       v17 = self->_backgroundAlpha > 0.01;
-      v18 = [(_SFBarTheme *)self->_theme glassURLFieldTintColor];
-      [(UIView *)v16 safari_setFlexibleGlassBackgroundEnabled:v17 withTintColor:v18];
+      glassURLFieldTintColor2 = [(_SFBarTheme *)self->_theme glassURLFieldTintColor];
+      [(UIView *)v16 safari_setFlexibleGlassBackgroundEnabled:v17 withTintColor:glassURLFieldTintColor2];
     }
 
-    v26 = [(_SFBarTheme *)self->_theme glassURLFieldUserInterfaceStyle];
+    glassURLFieldUserInterfaceStyle = [(_SFBarTheme *)self->_theme glassURLFieldUserInterfaceStyle];
     goto LABEL_19;
   }
 
@@ -220,52 +220,52 @@ LABEL_20:
     [(UIView *)self safari_setGlassGroupEnabled:0];
     [(UIView *)self->_outerContentContainer safari_setGlassBackgroundEnabled:0];
     [(UIView *)self->_contentContainer setOverrideUserInterfaceStyle:0];
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    v11 = [v6 contentView];
-    [v11 setBackgroundColor:v10];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    contentView3 = [visualEffectBackgroundView contentView];
+    [contentView3 setBackgroundColor:blackColor];
 
-    v12 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:v8 forBarTintStyle:{objc_msgSend(v5, "tintStyle")}];
+    v12 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:isHighlighted forBarTintStyle:{objc_msgSend(v5, "tintStyle")}];
     v33[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-    [v6 setContentEffects:v13];
+    [visualEffectBackgroundView setContentEffects:v13];
 
     v14 = MEMORY[0x1E695E0F0];
-    v15 = v6;
+    v15 = visualEffectBackgroundView;
     goto LABEL_20;
   }
 
   [(UIView *)self safari_setGlassGroupEnabled:0];
   [(UIView *)self->_outerContentContainer safari_setGlassBackgroundEnabled:0];
   [(UIView *)self->_contentContainer setOverrideUserInterfaceStyle:0];
-  [v5 applyBackdropEffectsToView:v6];
-  if (v8 && self->_allowsHighlight)
+  [v5 applyBackdropEffectsToView:visualEffectBackgroundView];
+  if (isHighlighted && self->_allowsHighlight)
   {
-    v19 = [MEMORY[0x1E69DC888] blackColor];
-    v20 = [v6 contentView];
-    [v20 setBackgroundColor:v19];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    contentView4 = [visualEffectBackgroundView contentView];
+    [contentView4 setBackgroundColor:blackColor2];
 
     v21 = [MEMORY[0x1E69DD248] _sf_effectWithStyle:1 forBarTintStyle:{objc_msgSend(v5, "tintStyle")}];
     v32 = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-    [v6 setContentEffects:v22];
+    [visualEffectBackgroundView setContentEffects:v22];
   }
 
 LABEL_21:
   [(SFCapsuleView *)self _updateAccessoryTheme];
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v5 contentTheme];
+    contentTheme = [v5 contentTheme];
 
-    v5 = v30;
+    v5 = contentTheme;
   }
 
-  v31 = [v5 controlsTintColor];
-  [(SFCapsuleView *)self setTintColor:v31];
+  controlsTintColor = [v5 controlsTintColor];
+  [(SFCapsuleView *)self setTintColor:controlsTintColor];
 
   -[SFCapsuleView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [v5 overrideUserInterfaceStyle]);
   if (objc_opt_respondsToSelector())
   {
-    [v7 setTheme:v5];
+    [contentView setTheme:v5];
   }
 }
 
@@ -289,8 +289,8 @@ LABEL_21:
     [(SFCapsuleView *)self applyTheme];
   }
 
-  v11 = [(SFCapsuleView *)self isMinimized];
-  if (![MEMORY[0x1E69C8880] isSolariumEnabled] && v11)
+  isMinimized = [(SFCapsuleView *)self isMinimized];
+  if (![MEMORY[0x1E69C8880] isSolariumEnabled] && isMinimized)
   {
     [(SFCapsuleView *)self safeAreaInsets];
     UIEdgeInsetsMin();
@@ -309,13 +309,13 @@ LABEL_21:
   if (!self->_reloadingWithCoordinator)
   {
     v22 = *(MEMORY[0x1E695EFF8] + 8);
-    v23 = [(SFCapsuleView *)self contentView];
-    [v23 ss_setUntransformedFrame:{v20 * -0.5, v22, v8, v10}];
+    contentView = [(SFCapsuleView *)self contentView];
+    [contentView ss_setUntransformedFrame:{v20 * -0.5, v22, v8, v10}];
   }
 
-  v24 = [(SFShadowView *)self->_shadowView superview];
+  superview = [(SFShadowView *)self->_shadowView superview];
 
-  if (v24 == self)
+  if (superview == self)
   {
     [(SFCapsuleView *)self frameForShadowView];
     [(UIView *)self->_shadowView ss_setUntransformedFrame:?];
@@ -403,9 +403,9 @@ LABEL_21:
 
 - (CGRect)frameForShadowView
 {
-  v3 = [(SFShadowView *)self->_shadowView superview];
+  superview = [(SFShadowView *)self->_shadowView superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     shadowView = self->_shadowView;
     [(SFCapsuleView *)self bounds];
@@ -431,8 +431,8 @@ LABEL_21:
     [(SFCapsuleView *)self center];
     v18 = v17;
     v53 = v19;
-    v20 = [(SFCapsuleView *)self layer];
-    [v20 anchorPoint];
+    layer = [(SFCapsuleView *)self layer];
+    [layer anchorPoint];
     v22 = v21;
     v24 = v23;
 
@@ -457,7 +457,7 @@ LABEL_21:
     v60.size.height = v16;
     v28 = fmin(CGRectGetHeight(v60) * 0.5, 1.0);
     v29 = self->_shadowView;
-    v30 = [(SFCapsuleView *)self superview];
+    superview2 = [(SFCapsuleView *)self superview];
     v61.origin.x = v25;
     v61.origin.y = v26;
     v61.size.width = v56;
@@ -467,8 +467,8 @@ LABEL_21:
     y = v62.origin.y;
     width = v62.size.width;
     height = v62.size.height;
-    v35 = [(SFShadowView *)self->_shadowView superview];
-    [v30 convertRect:v35 toView:{x, y, width, height}];
+    superview3 = [(SFShadowView *)self->_shadowView superview];
+    [superview2 convertRect:superview3 toView:{x, y, width, height}];
     [(SFShadowView *)v29 frameWithContentWithFrame:?];
     v37 = v36;
     v39 = v38;
@@ -489,9 +489,9 @@ LABEL_21:
 
 - (void)_updateShadowViewTransform
 {
-  v3 = [(SFShadowView *)self->_shadowView superview];
+  superview = [(SFShadowView *)self->_shadowView superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     shadowView = self->_shadowView;
     v6 = *(MEMORY[0x1E695EFD0] + 16);
@@ -513,11 +513,11 @@ LABEL_21:
   [(SFShadowView *)shadowView setTransform:&v7];
 }
 
-- (SFCapsuleView)initWithFrame:(CGRect)a3
+- (SFCapsuleView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = SFCapsuleView;
-  v3 = [(SFCapsuleView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFCapsuleView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -561,14 +561,14 @@ LABEL_21:
     [(UIView *)v4->_outerContentContainer addSubview:v4->_contentContainer];
     [(SFCapsuleView *)v4 setBackgroundCornerRadius:20.0];
     [(SFCapsuleView *)v4 updateShadowViewHidden];
-    v18 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4->_keyboardInputModeIsRTL = [v18 safari_currentKeyboardInputIsRTL];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v4->_keyboardInputModeIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
     [(SFCapsuleView *)v4 _updateLayoutDirectionIfNeeded];
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
-    [v19 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
-    [v19 addObserver:v4 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
+    [defaultCenter addObserver:v4 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
+    [defaultCenter addObserver:v4 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     [(SFCapsuleView *)v4 _setSafeAreaCornerAdaptation:3];
     v20 = v4;
   }
@@ -576,14 +576,14 @@ LABEL_21:
   return v4;
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
     if (self->_state != 2)
     {
 
@@ -603,9 +603,9 @@ LABEL_21:
   [(UIView *)self->_accessoryView sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v13 = fmax(v7, v9);
-  if (v12)
+  if (isSolariumEnabled)
   {
     v9 = v13;
   }
@@ -629,7 +629,7 @@ LABEL_21:
     v17 = trailing + v19;
   }
 
-  if (v12)
+  if (isSolariumEnabled)
   {
     v20 = v7;
   }
@@ -644,21 +644,21 @@ LABEL_21:
   [(UIView *)accessoryView setFrame:v17, (v7 - v20) * 0.5, v9];
 }
 
-- (void)setDirectionalCollapsedContentEdge:(unint64_t)a3
+- (void)setDirectionalCollapsedContentEdge:(unint64_t)edge
 {
-  if (self->_directionalCollapsedContentEdge != a3)
+  if (self->_directionalCollapsedContentEdge != edge)
   {
-    self->_directionalCollapsedContentEdge = a3;
+    self->_directionalCollapsedContentEdge = edge;
     [(SFCapsuleView *)self setNeedsLayout];
   }
 }
 
-- (UIEdgeInsets)insetsForCollapsedContentWithContainerBounds:(CGRect)a3
+- (UIEdgeInsets)insetsForCollapsedContentWithContainerBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self _sf_usesLeftToRightLayout];
   directionalCollapsedContentEdge = self->_directionalCollapsedContentEdge;
   if (directionalCollapsedContentEdge == 8 || directionalCollapsedContentEdge == 2)
@@ -711,31 +711,31 @@ LABEL_21:
   return result;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = SFCapsuleView;
-  [(SFCapsuleView *)&v4 setHidden:a3];
+  [(SFCapsuleView *)&v4 setHidden:hidden];
   [(SFCapsuleView *)self updateShadowViewHidden];
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v6.receiver = self;
   v6.super_class = SFCapsuleView;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SFCapsuleView *)&v6 setTransform:v5];
   [(SFCapsuleView *)self _updateShadowViewTransform];
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
+    self->_backgroundAlpha = alpha;
     [(UIView *)self->_background setAlpha:?];
     if (self->_backgroundStyle == 2)
     {
@@ -745,33 +745,33 @@ LABEL_21:
   }
 }
 
-- (void)setBackgroundCornerRadius:(double)a3
+- (void)setBackgroundCornerRadius:(double)radius
 {
-  if (self->_backgroundCornerRadius != a3)
+  if (self->_backgroundCornerRadius != radius)
   {
-    self->_backgroundCornerRadius = a3;
+    self->_backgroundCornerRadius = radius;
     [(SFCapsuleView *)self _updateContentViewState];
   }
 }
 
-- (void)setBackgroundHeight:(double)a3
+- (void)setBackgroundHeight:(double)height
 {
-  if (self->_backgroundHeight != a3)
+  if (self->_backgroundHeight != height)
   {
-    self->_backgroundHeight = a3;
+    self->_backgroundHeight = height;
     [(SFCapsuleView *)self setNeedsLayout];
   }
 }
 
-- (void)setVisualEffectGroupName:(id)a3
+- (void)setVisualEffectGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   visualEffectGroupName = self->_visualEffectGroupName;
   self->_visualEffectGroupName = v5;
 
-  v7 = [(SFCapsuleView *)self visualEffectBackgroundView];
-  [v7 _setGroupName:v4];
+  visualEffectBackgroundView = [(SFCapsuleView *)self visualEffectBackgroundView];
+  [visualEffectBackgroundView _setGroupName:nameCopy];
 }
 
 - (void)_performHighlightAnimation
@@ -793,37 +793,37 @@ LABEL_21:
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
-  v6 = [(SFCapsuleView *)self contentView];
-  if (v6 != v5)
+  contentView = [(SFCapsuleView *)self contentView];
+  if (contentView != viewCopy)
   {
-    objc_storeStrong(&self->_cachedContentView, a3);
+    objc_storeStrong(&self->_cachedContentView, view);
     v7 = _Block_copy(self->_contentViewUpdateHandler);
     if (v7)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 prepareForDeferredRemoval];
+        [contentView prepareForDeferredRemoval];
       }
     }
 
     else
     {
-      [v6 removeFromSuperview];
+      [contentView removeFromSuperview];
     }
 
-    [(SFCapsuleView *)self _updateStateWithContentView:v5];
+    [(SFCapsuleView *)self _updateStateWithContentView:viewCopy];
     if (objc_opt_respondsToSelector())
     {
-      [v5 setTheme:self->_theme];
+      [viewCopy setTheme:self->_theme];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 setLayoutStyle:self->_layoutStyle];
+      [viewCopy setLayoutStyle:self->_layoutStyle];
     }
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0)
@@ -833,7 +833,7 @@ LABEL_21:
       v19[2] = __32__SFCapsuleView_setContentView___block_invoke;
       v19[3] = &unk_1E721BF08;
       objc_copyWeak(&v20, &location);
-      [v5 setHighlightObserver:v19];
+      [viewCopy setHighlightObserver:v19];
       objc_destroyWeak(&v20);
     }
 
@@ -842,10 +842,10 @@ LABEL_21:
     v15[1] = 3221225472;
     v15[2] = __32__SFCapsuleView_setContentView___block_invoke_2;
     v15[3] = &unk_1E721B650;
-    v9 = v5;
+    v9 = viewCopy;
     v16 = v9;
-    v17 = self;
-    v10 = v6;
+    selfCopy = self;
+    v10 = contentView;
     v18 = v10;
     [v8 performWithoutAnimation:v15];
     [(SFCapsuleView *)self setNeedsLayout];
@@ -940,10 +940,10 @@ _BYTE *__32__SFCapsuleView_setContentView___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)setAccessoryView:(id)a3 coordinator:(id)a4
+- (void)setAccessoryView:(id)view coordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v9 = self->_accessoryView;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -951,11 +951,11 @@ _BYTE *__32__SFCapsuleView_setContentView___block_invoke_3(uint64_t a1)
   aBlock[3] = &unk_1E721B650;
   v10 = v9;
   v27 = v10;
-  v11 = v7;
+  v11 = viewCopy;
   v28 = v11;
-  v29 = self;
+  selfCopy = self;
   v12 = _Block_copy(aBlock);
-  objc_storeStrong(&self->_accessoryView, a3);
+  objc_storeStrong(&self->_accessoryView, view);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_2;
@@ -972,13 +972,13 @@ _BYTE *__32__SFCapsuleView_setContentView___block_invoke_3(uint64_t a1)
     v22[2] = __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_3;
     v22[3] = &unk_1E721B5D8;
     v22[4] = self;
-    v23 = v8;
+    v23 = coordinatorCopy;
     v24 = v13;
     [v14 performWithoutAnimation:v22];
   }
 
   [(SFCapsuleView *)self setNeedsLayout];
-  if (v8)
+  if (coordinatorCopy)
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
@@ -986,9 +986,9 @@ _BYTE *__32__SFCapsuleView_setContentView___block_invoke_3(uint64_t a1)
     v18 = &unk_1E721CAE0;
     v21 = v13;
     v19 = v10;
-    v20 = self;
-    [v8 addAnimations:&v15];
-    [v8 addCompletion:{v12, v15, v16, v17, v18}];
+    selfCopy2 = self;
+    [coordinatorCopy addAnimations:&v15];
+    [coordinatorCopy addCompletion:{v12, v15, v16, v17, v18}];
   }
 
   else
@@ -1122,12 +1122,12 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   return self;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   if (![(_SFBarTheme *)self->_theme isEqual:?])
   {
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     if (![(SFCapsuleView *)self _usesMinimizedTheme])
     {
       [(SFCapsuleView *)self applyTheme];
@@ -1135,97 +1135,97 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   }
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
+    self->_backgroundStyle = style;
     [(SFCapsuleView *)self applyTheme];
 
     [(SFCapsuleView *)self updateShadowViewHidden];
   }
 }
 
-- (void)setMinimizedTheme:(id)a3
+- (void)setMinimizedTheme:(id)theme
 {
-  v6 = a3;
+  themeCopy = theme;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v5 = [(SFCapsuleView *)self _usesMinimizedTheme];
-    objc_storeStrong(&self->_minimizedTheme, a3);
-    if ([(SFCapsuleView *)self _usesMinimizedTheme]|| v5)
+    _usesMinimizedTheme = [(SFCapsuleView *)self _usesMinimizedTheme];
+    objc_storeStrong(&self->_minimizedTheme, theme);
+    if ([(SFCapsuleView *)self _usesMinimizedTheme]|| _usesMinimizedTheme)
     {
       [(SFCapsuleView *)self applyTheme];
     }
   }
 }
 
-- (void)setForceMinimizedTheme:(BOOL)a3
+- (void)setForceMinimizedTheme:(BOOL)theme
 {
-  if (self->_forceMinimizedTheme != a3)
+  if (self->_forceMinimizedTheme != theme)
   {
-    self->_forceMinimizedTheme = a3;
+    self->_forceMinimizedTheme = theme;
     [(SFCapsuleView *)self applyTheme];
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_contentTransform.c;
   *&v13.a = *&self->_contentTransform.a;
   *&v13.c = v7;
   *&v13.tx = *&self->_contentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v13))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
-    v10 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v10 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v10;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)self->_contentContainer setTransform:&t1];
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)self->_background setTransform:&t1];
     if (([(SFShadowView *)self->_shadowView isDescendantOfView:self]& 1) == 0)
     {
-      v12 = *&a3->c;
-      *&t1.a = *&a3->a;
+      v12 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v12;
-      *&t1.tx = *&a3->tx;
+      *&t1.tx = *&transform->tx;
       [(SFShadowView *)self->_shadowView setTransform:&t1];
     }
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(SFCapsuleView *)self applyTheme];
-    v6 = [(SFCapsuleView *)self contentView];
+    contentView = [(SFCapsuleView *)self contentView];
     if (objc_opt_respondsToSelector())
     {
-      [v6 setLayoutStyle:a3];
+      [contentView setLayoutStyle:style];
     }
   }
 }
 
-- (void)allowsHighlight:(BOOL)a3
+- (void)allowsHighlight:(BOOL)highlight
 {
-  self->_allowsHighlight = a3;
-  if (a3 && [(NSTimer *)self->_waitToHighlight isValid])
+  self->_allowsHighlight = highlight;
+  if (highlight && [(NSTimer *)self->_waitToHighlight isValid])
   {
     waitToHighlight = self->_waitToHighlight;
 
@@ -1233,11 +1233,11 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_isSelected != a3)
+  if (self->_isSelected != selected)
   {
-    self->_isSelected = a3;
+    self->_isSelected = selected;
     [(SFCapsuleView *)self _updateContentViewState];
     if ((self->_backgroundStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -1248,26 +1248,26 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   }
 }
 
-- (void)setMinimizationPercent:(double)a3
+- (void)setMinimizationPercent:(double)percent
 {
-  if (self->_minimizationPercent != a3)
+  if (self->_minimizationPercent != percent)
   {
-    self->_minimizationPercent = a3;
+    self->_minimizationPercent = percent;
     [(SFCapsuleView *)self _updateContentViewState];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v10 = v4;
     v11 = v3;
-    self->_state = a3;
-    if (a3 == 2)
+    self->_state = state;
+    if (state == 2)
     {
-      v8 = [MEMORY[0x1E69DC668] sharedApplication];
-      if ([v8 safari_prefersRTLLayout])
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      if ([mEMORY[0x1E69DC668] safari_prefersRTLLayout])
       {
         v9 = 4;
       }
@@ -1288,19 +1288,19 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   }
 }
 
-- (BOOL)_shouldFadeNonKeyContentForContentView:(id)a3 withPreviousContentView:(id)a4
+- (BOOL)_shouldFadeNonKeyContentForContentView:(id)view withPreviousContentView:(id)contentView
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  contentViewCopy = contentView;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v7 = [v6 microphoneContentOriginX];
-      if (v7)
+      microphoneContentOriginX = [contentViewCopy microphoneContentOriginX];
+      if (microphoneContentOriginX)
       {
-        v8 = [v5 microphoneContentOriginX];
-        v9 = v8 == 0;
+        microphoneContentOriginX2 = [viewCopy microphoneContentOriginX];
+        v9 = microphoneContentOriginX2 == 0;
       }
 
       else
@@ -1323,18 +1323,18 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   return v9;
 }
 
-- (void)willReloadWithCoordinator:(id)a3
+- (void)willReloadWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   self->_reloadingWithCoordinator = 1;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __43__SFCapsuleView_willReloadWithCoordinator___block_invoke;
   v50[3] = &unk_1E721BD58;
   v50[4] = self;
-  [v4 addAnimations:v50];
-  v5 = [(SFCapsuleView *)self contentView];
-  [v5 ss_untransformedFrame];
+  [coordinatorCopy addAnimations:v50];
+  contentView = [(SFCapsuleView *)self contentView];
+  [contentView ss_untransformedFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1345,10 +1345,10 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   aBlock[3] = &unk_1E721CB28;
   aBlock[4] = self;
   v14 = _Block_copy(aBlock);
-  v15 = v14[2](v14, v5);
+  v15 = v14[2](v14, contentView);
   v17 = v16;
   v19 = v18;
-  v20 = __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_2(v15, v5);
+  v20 = __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_2(v15, contentView);
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
@@ -1361,7 +1361,7 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   v33[3] = &unk_1E721CBB8;
   v40 = v47;
   v33[4] = self;
-  v21 = v5;
+  v21 = contentView;
   v34 = v21;
   v22 = v14;
   v36 = v22;
@@ -1376,7 +1376,7 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   v39 = &__block_literal_global_55;
   v23 = v20;
   v35 = v23;
-  [v4 addAnimations:v33];
+  [coordinatorCopy addAnimations:v33];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_4_61;
@@ -1385,8 +1385,8 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   v24 = v21;
   v32 = &__block_literal_global_55;
   v29 = v24;
-  v30 = self;
-  [v4 addCompletion:v28];
+  selfCopy = self;
+  [coordinatorCopy addCompletion:v28];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_6;
@@ -1394,7 +1394,7 @@ uint64_t __46__SFCapsuleView_setAccessoryView_coordinator___block_invoke_4(uint6
   v26[4] = self;
   v25 = v24;
   v27 = v25;
-  [v4 addAnimations:v26];
+  [coordinatorCopy addAnimations:v26];
 
   _Block_object_dispose(v47, 8);
 }
@@ -1701,23 +1701,23 @@ void __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_7(uint64_t a1)
   [v3 addKeyframeWithRelativeStartTime:v4 relativeDuration:0.33 animations:0.67];
 }
 
-- (void)willChangeToMinimized:(BOOL)a3 coordinator:(id)a4
+- (void)willChangeToMinimized:(BOOL)minimized coordinator:(id)coordinator
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(SFCapsuleView *)self contentView];
+  minimizedCopy = minimized;
+  coordinatorCopy = coordinator;
+  contentView = [(SFCapsuleView *)self contentView];
   if (objc_opt_respondsToSelector())
   {
-    [v6 willChangeToMinimized:v4 coordinator:v7];
+    [contentView willChangeToMinimized:minimizedCopy coordinator:coordinatorCopy];
   }
 }
 
-- (void)_updateStateWithContentView:(id)a3
+- (void)_updateStateWithContentView:(id)view
 {
-  v11 = a3;
-  v4 = [(SFCapsuleView *)self isMinimized];
-  v5 = [(SFCapsuleView *)self visualEffectBackgroundView];
-  [v5 _setCornerRadius:1 continuous:15 maskedCorners:self->_backgroundCornerRadius];
+  viewCopy = view;
+  isMinimized = [(SFCapsuleView *)self isMinimized];
+  visualEffectBackgroundView = [(SFCapsuleView *)self visualEffectBackgroundView];
+  [visualEffectBackgroundView _setCornerRadius:1 continuous:15 maskedCorners:self->_backgroundCornerRadius];
 
   backgroundStyle = self->_backgroundStyle;
   if (backgroundStyle - 2 < 2)
@@ -1735,39 +1735,39 @@ void __43__SFCapsuleView_willReloadWithCoordinator___block_invoke_7(uint64_t a1)
     }
 
     backgroundCornerRadius = 0.0;
-    if (!v4)
+    if (!isMinimized)
     {
       backgroundCornerRadius = self->_backgroundCornerRadius;
     }
 
     p_outerContentContainer = &self->_outerContentContainer;
     [(UIView *)self->_outerContentContainer _setContinuousCornerRadius:backgroundCornerRadius];
-    v10 = v4 ^ 1;
+    v10 = isMinimized ^ 1;
   }
 
   v6 = [(UIView *)*p_outerContentContainer setClipsToBounds:v10];
 LABEL_8:
-  if (v11)
+  if (viewCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v11 setSelected:self->_isSelected];
+      [viewCopy setSelected:self->_isSelected];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setMinimized:v4];
+      [viewCopy setMinimized:isMinimized];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setMinimizationPercent:self->_minimizationPercent];
+      [viewCopy setMinimizationPercent:self->_minimizationPercent];
     }
 
     v6 = objc_opt_respondsToSelector();
     if (v6)
     {
-      v6 = [v11 setUnclippedContainer:self];
+      v6 = [viewCopy setUnclippedContainer:self];
     }
   }
 

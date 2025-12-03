@@ -1,9 +1,9 @@
 @interface SBCornerFingerPanGestureSettings
 + (id)settingsControllerModule;
-- (double)angleDegreesAscendingLUT:(BOOL)a3;
-- (double)distanceMillimetersValues:(BOOL)a3;
-- (double)maximumActiveDistance:(BOOL)a3;
-- (unint64_t)vectorCount:(BOOL)a3;
+- (double)angleDegreesAscendingLUT:(BOOL)t;
+- (double)distanceMillimetersValues:(BOOL)values;
+- (double)maximumActiveDistance:(BOOL)distance;
+- (unint64_t)vectorCount:(BOOL)count;
 - (void)setDefaultValues;
 @end
 
@@ -37,7 +37,7 @@
   return v8;
 }
 
-- (double)angleDegreesAscendingLUT:(BOOL)a3
+- (double)angleDegreesAscendingLUT:(BOOL)t
 {
   tuning = self->_tuning;
   if (tuning > 1)
@@ -70,7 +70,7 @@
   v4 = &LUT_LANDSCAPE_0;
   v5 = &LUT_PORTRAIT_0;
 LABEL_10:
-  if (a3)
+  if (t)
   {
     return v5;
   }
@@ -81,7 +81,7 @@ LABEL_10:
   }
 }
 
-- (double)distanceMillimetersValues:(BOOL)a3
+- (double)distanceMillimetersValues:(BOOL)values
 {
   tuning = self->_tuning;
   if (tuning > 1)
@@ -114,7 +114,7 @@ LABEL_10:
   v4 = &DIST_LANDSCAPE_0;
   v5 = &DIST_PORTRAIT_0;
 LABEL_10:
-  if (a3)
+  if (values)
   {
     return v5;
   }
@@ -125,7 +125,7 @@ LABEL_10:
   }
 }
 
-- (unint64_t)vectorCount:(BOOL)a3
+- (unint64_t)vectorCount:(BOOL)count
 {
   tuning = self->_tuning;
   if (tuning - 2 < 2)
@@ -135,7 +135,7 @@ LABEL_10:
 
   if (tuning == 1)
   {
-    v4 = !a3;
+    v4 = !count;
     v5 = 15;
   }
 
@@ -146,7 +146,7 @@ LABEL_10:
       return 0;
     }
 
-    v4 = !a3;
+    v4 = !count;
     v5 = 14;
   }
 
@@ -161,11 +161,11 @@ LABEL_10:
   }
 }
 
-- (double)maximumActiveDistance:(BOOL)a3
+- (double)maximumActiveDistance:(BOOL)distance
 {
-  v3 = a3;
+  distanceCopy = distance;
   v5 = [(SBCornerFingerPanGestureSettings *)self distanceMillimetersValues:?];
-  if (![(SBCornerFingerPanGestureSettings *)self vectorCount:v3])
+  if (![(SBCornerFingerPanGestureSettings *)self vectorCount:distanceCopy])
   {
     return 0.0;
   }
@@ -177,7 +177,7 @@ LABEL_10:
     v7 = fmax(v7, v5[v6++]);
   }
 
-  while (v6 < [(SBCornerFingerPanGestureSettings *)self vectorCount:v3]);
+  while (v6 < [(SBCornerFingerPanGestureSettings *)self vectorCount:distanceCopy]);
   return v7;
 }
 

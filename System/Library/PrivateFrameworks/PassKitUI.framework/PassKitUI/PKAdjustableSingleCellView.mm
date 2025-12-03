@@ -1,33 +1,33 @@
 @interface PKAdjustableSingleCellView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKAdjustableSingleCellView)init;
-- (PKAdjustableSingleCellView)initWithFrame:(CGRect)a3;
+- (PKAdjustableSingleCellView)initWithFrame:(CGRect)frame;
 - (id)_detailFont;
 - (id)_smallerDetailFont;
-- (void)_actionButtonTapped:(id)a3;
+- (void)_actionButtonTapped:(id)tapped;
 - (void)_applyStyles;
 - (void)_performInit;
 - (void)_setupViews;
-- (void)_updateContent:(BOOL)a3;
-- (void)endUpdates:(BOOL)a3;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (void)_updateContent:(BOOL)content;
+- (void)endUpdates:(BOOL)updates;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAction:(id)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setDetail:(id)a3;
-- (void)setDetailColor:(id)a3;
-- (void)setDetailLineBreakMode:(int64_t)a3;
-- (void)setEnableDisclosure:(BOOL)a3;
-- (void)setPass:(id)a3;
-- (void)setSubDetail:(id)a3;
-- (void)setSubDetailColor:(id)a3;
-- (void)setSubDetailLineBreakMode:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setTitleLineBreakMode:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAction:(id)action;
+- (void)setActionHandler:(id)handler;
+- (void)setDetail:(id)detail;
+- (void)setDetailColor:(id)color;
+- (void)setDetailLineBreakMode:(int64_t)mode;
+- (void)setEnableDisclosure:(BOOL)disclosure;
+- (void)setPass:(id)pass;
+- (void)setSubDetail:(id)detail;
+- (void)setSubDetailColor:(id)color;
+- (void)setSubDetailLineBreakMode:(int64_t)mode;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
+- (void)setTitleLineBreakMode:(int64_t)mode;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKAdjustableSingleCellView
@@ -46,11 +46,11 @@
   return v3;
 }
 
-- (PKAdjustableSingleCellView)initWithFrame:(CGRect)a3
+- (PKAdjustableSingleCellView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKAdjustableSingleCellView;
-  v3 = [(PKAdjustableSingleCellView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAdjustableSingleCellView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -85,7 +85,7 @@
 
 - (void)_setupViews
 {
-  v3 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
   [(UIView *)self pkui_setMaskType:3];
   v4 = objc_alloc(MEMORY[0x1E69DCC10]);
   v5 = *MEMORY[0x1E695F058];
@@ -133,8 +133,8 @@
   self->_disclosureView = v19;
 
   v21 = self->_disclosureView;
-  v22 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v21 setTintColor:v22];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v21 setTintColor:tertiaryLabelColor];
 
   [(UIImageView *)self->_disclosureView setAlpha:0.0];
   [(PKAdjustableSingleCellView *)self addSubview:self->_titleView];
@@ -142,14 +142,14 @@
   [(PKAdjustableSingleCellView *)self addSubview:self->_subDetailView];
   [(PKAdjustableSingleCellView *)self addSubview:self->_actionButton];
   [(PKAdjustableSingleCellView *)self addSubview:self->_disclosureView];
-  [(PKAdjustableSingleCellView *)self setBackgroundColor:v3];
+  [(PKAdjustableSingleCellView *)self setBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
 - (id)_detailFont
 {
   detailView = self->_detailView;
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)detailView setTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)detailView setTextColor:labelColor];
 
   v4 = *MEMORY[0x1E69DB8D8];
   v5 = *MEMORY[0x1E69DDDB8];
@@ -162,8 +162,8 @@
 - (id)_smallerDetailFont
 {
   detailView = self->_detailView;
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)detailView setTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)detailView setTextColor:labelColor];
 
   v4 = *MEMORY[0x1E69DB8D8];
   v5 = *MEMORY[0x1E69DDDC0];
@@ -176,19 +176,19 @@
 - (void)_applyStyles
 {
   [(PKContinuousButton *)self->_actionButton setContentEdgeInsets:10.0, 16.0, 10.0, 16.0];
-  v4 = [(PKContinuousButton *)self->_actionButton titleLabel];
-  [v4 setTextAlignment:1];
+  titleLabel = [(PKContinuousButton *)self->_actionButton titleLabel];
+  [titleLabel setTextAlignment:1];
   v3 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC50], 2, 0);
-  [v4 setFont:v3];
+  [titleLabel setFont:v3];
 
-  [v4 setAdjustsFontSizeToFitWidth:1];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
   [(PKAdjustableSingleCellView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKAdjustableSingleCellView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKAdjustableSingleCellView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -204,16 +204,16 @@
   [(PKAdjustableSingleCellView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v70[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PKAdjustableSingleCellView *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  traitCollection = [(PKAdjustableSingleCellView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v11 = _UISolariumFeatureFlagEnabled();
   v12 = _UISolariumFeatureFlagEnabled();
@@ -268,16 +268,16 @@
   remainder.size.width = v18;
   remainder.size.height = v20;
   titleView = self->_titleView;
-  v23 = [(PKAdjustableSingleCellView *)self _titleFont];
-  [(UILabel *)titleView setFont:v23];
+  _titleFont = [(PKAdjustableSingleCellView *)self _titleFont];
+  [(UILabel *)titleView setFont:_titleFont];
 
   detailView = self->_detailView;
-  v25 = [(PKAdjustableSingleCellView *)self _detailFont];
-  [(UILabel *)detailView setFont:v25];
+  _detailFont = [(PKAdjustableSingleCellView *)self _detailFont];
+  [(UILabel *)detailView setFont:_detailFont];
 
   subDetailView = self->_subDetailView;
-  v27 = [(PKAdjustableSingleCellView *)self _subDetailFont];
-  [(UILabel *)subDetailView setFont:v27];
+  _subDetailFont = [(PKAdjustableSingleCellView *)self _subDetailFont];
+  [(UILabel *)subDetailView setFont:_subDetailFont];
 
   if (IsAccessibilityCategory)
   {
@@ -361,10 +361,10 @@
   if (!IsAccessibilityCategory)
   {
     detail = self->_detail;
-    v43 = [(PKAdjustableSingleCellView *)self _detailFont];
+    _detailFont2 = [(PKAdjustableSingleCellView *)self _detailFont];
     v44 = remainder.size.width;
     v45 = detail;
-    v46 = v43;
+    v46 = _detailFont2;
     v47 = v45;
     v48 = v47;
     if (v47 && (v49 = [(NSString *)v47 length], v48, v49))
@@ -383,8 +383,8 @@
       if (v56 > v54)
       {
         v57 = self->_detailView;
-        v58 = [(PKAdjustableSingleCellView *)self _smallerDetailFont];
-        [(UILabel *)v57 setFont:v58];
+        _smallerDetailFont = [(PKAdjustableSingleCellView *)self _smallerDetailFont];
+        [(UILabel *)v57 setFont:_smallerDetailFont];
 
         if (![(NSString *)self->_title length])
         {
@@ -430,7 +430,7 @@
   return result;
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
   actionHandler = self->_actionHandler;
   if (actionHandler)
@@ -439,31 +439,31 @@
   }
 }
 
-- (void)setEnableDisclosure:(BOOL)a3
+- (void)setEnableDisclosure:(BOOL)disclosure
 {
-  if (self->_enableDisclosure != a3)
+  if (self->_enableDisclosure != disclosure)
   {
-    self->_enableDisclosure = a3;
+    self->_enableDisclosure = disclosure;
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (!v5)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [(PKContinuousButton *)self->_actionButton setAlpha:0.0];
   }
 
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_action, a3);
+    objc_storeStrong(&self->_action, action);
   }
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   if (!aBlock)
   {
     [(PKContinuousButton *)self->_actionButton setAlpha:0.0];
@@ -481,11 +481,11 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (title == v6)
   {
@@ -517,11 +517,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setDetail:(id)a3
+- (void)setDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   detail = self->_detail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (detail == v6)
   {
@@ -553,11 +553,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setSubDetail:(id)a3
+- (void)setSubDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   subDetail = self->_subDetail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (subDetail == v6)
   {
@@ -589,103 +589,103 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
+    objc_storeStrong(&self->_titleColor, color);
   }
 }
 
-- (void)setDetailColor:(id)a3
+- (void)setDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_detailColor, a3);
+    objc_storeStrong(&self->_detailColor, color);
   }
 }
 
-- (void)setSubDetailColor:(id)a3
+- (void)setSubDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_subDetailColor, a3);
+    objc_storeStrong(&self->_subDetailColor, color);
   }
 }
 
-- (void)setTitleLineBreakMode:(int64_t)a3
+- (void)setTitleLineBreakMode:(int64_t)mode
 {
-  if (self->_titleLineBreakMode != a3)
+  if (self->_titleLineBreakMode != mode)
   {
-    self->_titleLineBreakMode = a3;
+    self->_titleLineBreakMode = mode;
   }
 }
 
-- (void)setDetailLineBreakMode:(int64_t)a3
+- (void)setDetailLineBreakMode:(int64_t)mode
 {
-  if (self->_detailLineBreakMode != a3)
+  if (self->_detailLineBreakMode != mode)
   {
-    self->_detailLineBreakMode = a3;
+    self->_detailLineBreakMode = mode;
   }
 }
 
-- (void)setSubDetailLineBreakMode:(int64_t)a3
+- (void)setSubDetailLineBreakMode:(int64_t)mode
 {
-  if (self->_subDetailLineBreakMode != a3)
+  if (self->_subDetailLineBreakMode != mode)
   {
-    self->_subDetailLineBreakMode = a3;
+    self->_subDetailLineBreakMode = mode;
   }
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(PKAdjustableSingleCellView *)self layoutIfNeeded];
   self->_animated = 0;
 }
 
-- (void)endUpdates:(BOOL)a3
+- (void)endUpdates:(BOOL)updates
 {
   v3 = self->_deferUpdateCounter - 1;
   self->_deferUpdateCounter = v3;
   if (!v3)
   {
-    [(PKAdjustableSingleCellView *)self _updateContent:a3];
+    [(PKAdjustableSingleCellView *)self _updateContent:updates];
   }
 }
 
-- (void)_updateContent:(BOOL)a3
+- (void)_updateContent:(BOOL)content
 {
   if (!self->_deferUpdateCounter)
   {
-    v3 = a3;
+    contentCopy = content;
     [(PKAdjustableSingleCellView *)self _applyStyles];
     actionButton = self->_actionButton;
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    [(PKContinuousButton *)actionButton setTintColor:v6];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(PKContinuousButton *)actionButton setTintColor:labelColor];
 
     v7 = self->_actionButton;
-    v8 = [(PKAdjustableSingleCellView *)self backgroundColor];
-    [(PKContinuousButton *)v7 updateTitleColorWithColor:v8];
+    backgroundColor = [(PKAdjustableSingleCellView *)self backgroundColor];
+    [(PKContinuousButton *)v7 updateTitleColorWithColor:backgroundColor];
 
-    v9 = [(PKAdjustableSingleCellView *)self pass];
-    v10 = [v9 activationState];
+    pass = [(PKAdjustableSingleCellView *)self pass];
+    activationState = [pass activationState];
 
     if (self->_action)
     {
-      v11 = v10 == 0;
+      v11 = activationState == 0;
     }
 
     else
@@ -698,8 +698,8 @@ LABEL_10:
       [(PKAdjustableSingleCellView *)self bringSubviewToFront:self->_actionButton];
       [(PKContinuousButton *)self->_actionButton setEnabled:1];
       v14 = self->_actionButton;
-      v15 = [(PKPaymentPassAction *)self->_action title];
-      [(PKContinuousButton *)v14 setTitle:v15 forState:0];
+      title = [(PKPaymentPassAction *)self->_action title];
+      [(PKContinuousButton *)v14 setTitle:title forState:0];
 
       disclosureView = self->_actionButton;
       enableDisclosure = 1;
@@ -707,19 +707,19 @@ LABEL_10:
 
     else
     {
-      __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_actionButton, 0, v3);
+      __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_actionButton, 0, contentCopy);
       disclosureView = self->_disclosureView;
       enableDisclosure = self->_enableDisclosure;
     }
 
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke(disclosureView, enableDisclosure, v3);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke(disclosureView, enableDisclosure, contentCopy);
     titleView = self->_titleView;
     title = self->_title;
     titleColor = self->_titleColor;
-    v19 = titleColor;
+    labelColor2 = titleColor;
     if (!titleColor)
     {
-      v19 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
     }
 
     if (self->_titleLineBreakMode)
@@ -732,7 +732,7 @@ LABEL_10:
       titleLineBreakMode = 4;
     }
 
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(titleView, title, v19, titleLineBreakMode, v3);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(titleView, title, labelColor2, titleLineBreakMode, contentCopy);
     if (!titleColor)
     {
     }
@@ -740,10 +740,10 @@ LABEL_10:
     detailView = self->_detailView;
     detail = self->_detail;
     detailColor = self->_detailColor;
-    v24 = detailColor;
+    labelColor3 = detailColor;
     if (!detailColor)
     {
-      v24 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor3 = [MEMORY[0x1E69DC888] labelColor];
     }
 
     if (self->_detailLineBreakMode)
@@ -756,7 +756,7 @@ LABEL_10:
       detailLineBreakMode = 4;
     }
 
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(detailView, detail, v24, detailLineBreakMode, v3);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(detailView, detail, labelColor3, detailLineBreakMode, contentCopy);
     if (!detailColor)
     {
     }
@@ -764,10 +764,10 @@ LABEL_10:
     subDetailView = self->_subDetailView;
     subDetail = self->_subDetail;
     subDetailColor = self->_subDetailColor;
-    v29 = subDetailColor;
+    secondaryLabelColor = subDetailColor;
     if (!subDetailColor)
     {
-      v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
     if (self->_subDetailLineBreakMode)
@@ -780,13 +780,13 @@ LABEL_10:
       subDetailLineBreakMode = 4;
     }
 
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(subDetailView, subDetail, v29, subDetailLineBreakMode, v3);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(subDetailView, subDetail, secondaryLabelColor, subDetailLineBreakMode, contentCopy);
     if (!subDetailColor)
     {
     }
 
     [(PKAdjustableSingleCellView *)self setNeedsLayout];
-    if (v3)
+    if (contentCopy)
     {
 
       [(PKAdjustableSingleCellView *)self layoutIfNeededAnimated:1];
@@ -863,28 +863,28 @@ void __45__PKAdjustableSingleCellView__updateContent___block_invoke_2(void *a1, 
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = PKAdjustableSingleCellView;
-  [(PKAdjustableSingleCellView *)&v12 traitCollectionDidChange:v4];
-  v5 = [(PKAdjustableSingleCellView *)self traitCollection];
-  v6 = v5;
-  if (v4)
+  [(PKAdjustableSingleCellView *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKAdjustableSingleCellView *)self traitCollection];
+  v6 = traitCollection;
+  if (changeCopy)
   {
-    if (v5)
+    if (traitCollection)
     {
-      v7 = [v4 preferredContentSizeCategory];
-      v8 = [v6 preferredContentSizeCategory];
-      v9 = UIContentSizeCategoryCompareToCategory(v7, v8);
+      preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [v6 preferredContentSizeCategory];
+      v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
       if (v9)
       {
-        v10 = [v4 preferredContentSizeCategory];
+        preferredContentSizeCategory3 = [changeCopy preferredContentSizeCategory];
         v11 = *MEMORY[0x1E69DDC90];
 
-        if (v10 != v11)
+        if (preferredContentSizeCategory3 != v11)
         {
           [(PKAdjustableSingleCellView *)self _updateContent:0];
         }

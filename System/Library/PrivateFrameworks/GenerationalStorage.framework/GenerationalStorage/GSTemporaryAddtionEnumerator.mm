@@ -1,32 +1,32 @@
 @interface GSTemporaryAddtionEnumerator
-- (GSTemporaryAddtionEnumerator)initWithStorage:(id)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 ordering:(int)a7;
+- (GSTemporaryAddtionEnumerator)initWithStorage:(id)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions ordering:(int)ordering;
 - (id)_nextURL;
 - (id)nextObject;
 @end
 
 @implementation GSTemporaryAddtionEnumerator
 
-- (GSTemporaryAddtionEnumerator)initWithStorage:(id)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 ordering:(int)a7
+- (GSTemporaryAddtionEnumerator)initWithStorage:(id)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions ordering:(int)ordering
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  storageCopy = storage;
+  spaceCopy = space;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v37.receiver = self;
   v37.super_class = GSTemporaryAddtionEnumerator;
   v16 = [(GSTemporaryAddtionEnumerator *)&v37 init];
   v17 = v16;
   if (v16)
   {
-    v16->_withOptions = a5;
-    v16->_withoutOption = a6;
-    v18 = [v14 copy];
+    v16->_withOptions = options;
+    v16->_withoutOption = withoutOptions;
+    v18 = [spaceCopy copy];
     nameSpace = v17->_nameSpace;
     v17->_nameSpace = v18;
 
-    objc_storeStrong(&v17->_storage, a3);
+    objc_storeStrong(&v17->_storage, storage);
     v36 = 0;
-    v20 = [v13 _URLForNameSpace:v14 createIfNeeded:0 allowMissing:1 error:&v36];
+    v20 = [storageCopy _URLForNameSpace:spaceCopy createIfNeeded:0 allowMissing:1 error:&v36];
     v21 = v36;
     v22 = v36;
     if (v20)
@@ -39,16 +39,16 @@
       v33[2] = __94__GSTemporaryAddtionEnumerator_initWithStorage_nameSpace_withOptions_withoutOptions_ordering___block_invoke;
       v33[3] = &unk_279697A18;
       objc_copyWeak(&v34, &location);
-      v24 = [v15 enumeratorAtURL:v20 includingPropertiesForKeys:v23 options:1 errorHandler:v33];
+      v24 = [defaultManager enumeratorAtURL:v20 includingPropertiesForKeys:v23 options:1 errorHandler:v33];
 
-      if (a7)
+      if (ordering)
       {
         enumerator = [v24 allObjects];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __94__GSTemporaryAddtionEnumerator_initWithStorage_nameSpace_withOptions_withoutOptions_ordering___block_invoke_2;
         v31[3] = &__block_descriptor_36_e25_q24__0__NSURL_8__NSURL_16l;
-        v32 = a7;
+        orderingCopy = ordering;
         v26 = [enumerator sortedArrayUsingComparator:v31];
         array = v17->_array;
         v17->_array = v26;
@@ -127,7 +127,7 @@ uint64_t __94__GSTemporaryAddtionEnumerator_initWithStorage_nameSpace_withOption
   enumerator = self->_enumerator;
   if (enumerator)
   {
-    v4 = [(NSDirectoryEnumerator *)enumerator nextObject];
+    nextObject = [(NSDirectoryEnumerator *)enumerator nextObject];
   }
 
   else
@@ -135,35 +135,35 @@ uint64_t __94__GSTemporaryAddtionEnumerator_initWithStorage_nameSpace_withOption
     pos = self->_pos;
     if (pos >= [(NSArray *)self->_array count])
     {
-      v4 = 0;
+      nextObject = 0;
     }
 
     else
     {
       array = self->_array;
       ++self->_pos;
-      v4 = [(NSArray *)array objectAtIndex:?];
+      nextObject = [(NSArray *)array objectAtIndex:?];
     }
   }
 
-  return v4;
+  return nextObject;
 }
 
 - (id)nextObject
 {
-  v3 = [(GSTemporaryAddtionEnumerator *)self _nextURL];
-  if (!v3)
+  _nextURL = [(GSTemporaryAddtionEnumerator *)self _nextURL];
+  if (!_nextURL)
   {
 LABEL_11:
     v6 = 0;
     goto LABEL_12;
   }
 
-  v4 = v3;
+  v4 = _nextURL;
   while (1)
   {
-    v5 = [v4 lastPathComponent];
-    if (([v5 hasPrefix:@"."] & 1) == 0)
+    lastPathComponent = [v4 lastPathComponent];
+    if (([lastPathComponent hasPrefix:@"."] & 1) == 0)
     {
       break;
     }
@@ -171,16 +171,16 @@ LABEL_11:
     v6 = 0;
 LABEL_10:
 
-    v8 = [(GSTemporaryAddtionEnumerator *)self _nextURL];
+    _nextURL2 = [(GSTemporaryAddtionEnumerator *)self _nextURL];
 
-    v4 = v8;
-    if (!v8)
+    v4 = _nextURL2;
+    if (!_nextURL2)
     {
       goto LABEL_11;
     }
   }
 
-  v7 = [(GSTemporaryStorage *)self->_storage additionWithName:v5 inNameSpace:self->_nameSpace error:0];
+  v7 = [(GSTemporaryStorage *)self->_storage additionWithName:lastPathComponent inNameSpace:self->_nameSpace error:0];
   v6 = v7;
   if (!v7 || self->_withOptions && (self->_withOptions & ~[v7 options]) != 0 || self->_withoutOption && (self->_withoutOption & objc_msgSend(v6, "options")) != 0)
   {

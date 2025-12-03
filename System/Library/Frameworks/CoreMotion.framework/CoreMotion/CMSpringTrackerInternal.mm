@@ -1,10 +1,10 @@
 @interface CMSpringTrackerInternal
 - (BOOL)_isTracking;
 - (CMSpringTrackerInternal)init;
-- (void)_handleStartStopResponse:(shared_ptr<CLConnectionMessage>)a3 handler:(id)a4;
-- (void)_querySpringDataFromRecord:(id)a3 handler:(id)a4;
-- (void)_startWithHandler:(id)a3;
-- (void)_stopWithHandler:(id)a3;
+- (void)_handleStartStopResponse:(shared_ptr<CLConnectionMessage>)response handler:(id)handler;
+- (void)_querySpringDataFromRecord:(id)record handler:(id)handler;
+- (void)_startWithHandler:(id)handler;
+- (void)_stopWithHandler:(id)handler;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -63,7 +63,7 @@
   return v3;
 }
 
-- (void)_startWithHandler:(id)a3
+- (void)_startWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -71,11 +71,11 @@
   v4[2] = sub_19B657B08;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 
-- (void)_stopWithHandler:(id)a3
+- (void)_stopWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -83,17 +83,17 @@
   v4[2] = sub_19B657D8C;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 
-- (void)_handleStartStopResponse:(shared_ptr<CLConnectionMessage>)a3 handler:(id)a4
+- (void)_handleStartStopResponse:(shared_ptr<CLConnectionMessage>)response handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3.var1)
+  if (response.var1)
   {
-    var0 = a3.var0;
-    v5 = objc_msgSend_copy(a3.var1, a2, a3.var0);
+    var0 = response.var0;
+    v5 = objc_msgSend_copy(response.var1, a2, response.var0);
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
@@ -205,16 +205,16 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_querySpringDataFromRecord:(id)a3 handler:(id)a4
+- (void)_querySpringDataFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B6585A8;
   block[3] = &unk_1E7532C08;
-  block[4] = a3;
+  block[4] = record;
   block[5] = self;
-  block[6] = a4;
+  block[6] = handler;
   dispatch_async(fInternalQueue, block);
 }
 

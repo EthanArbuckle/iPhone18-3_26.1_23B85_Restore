@@ -1,17 +1,17 @@
 @interface PKAddPaymentPassViewController
 + (BOOL)canAddPaymentPass;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
 - (PKAddPaymentPassViewController)initWithRequestConfiguration:(PKAddPaymentPassRequestConfiguration *)configuration delegate:(id)delegate;
 - (id)delegate;
 - (int64_t)modalPresentationStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_handleCanceledPresentationWithPresentingViewController:(id)a3;
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)_handleCanceledPresentationWithPresentingViewController:(id)controller;
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)dealloc;
 - (void)loadRemoteViewController;
 - (void)loadView;
 - (void)setDelegate:(id)delegate;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -19,9 +19,9 @@
 
 + (BOOL)canAddPaymentPass
 {
-  v2 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
   v3 = [objc_alloc(MEMORY[0x1E69B8518]) initWithType:5];
-  v4 = [v2 canAddSecureElementPassWithConfiguration:v3];
+  v4 = [mEMORY[0x1E69B8A58] canAddSecureElementPassWithConfiguration:v3];
 
   return v4;
 }
@@ -36,24 +36,24 @@
   {
     v10 = v9;
     v11 = SecTaskCopyValueForEntitlement(v9, *MEMORY[0x1E69B9E68], 0);
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     CFRelease(v10);
   }
 
   else
   {
-    v12 = 1;
+    bOOLValue = 1;
   }
 
-  v13 = [(PKAddPaymentPassRequestConfiguration *)v7 cardholderName];
-  if (v13 || ([(PKAddPaymentPassRequestConfiguration *)v7 primaryAccountSuffix], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  cardholderName = [(PKAddPaymentPassRequestConfiguration *)v7 cardholderName];
+  if (cardholderName || ([(PKAddPaymentPassRequestConfiguration *)v7 primaryAccountSuffix], (cardholderName = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v24 = [(PKAddPaymentPassRequestConfiguration *)v7 cardDetails];
-    v25 = [v24 count];
+    cardDetails = [(PKAddPaymentPassRequestConfiguration *)v7 cardDetails];
+    v25 = [cardDetails count];
 
     if (!v25)
     {
@@ -61,8 +61,8 @@
     }
   }
 
-  v14 = [(PKAddPaymentPassRequestConfiguration *)v7 encryptionScheme];
-  v15 = (v14 != 0) & v12;
+  encryptionScheme = [(PKAddPaymentPassRequestConfiguration *)v7 encryptionScheme];
+  v15 = (encryptionScheme != 0) & bOOLValue;
 
   if (v15)
   {
@@ -74,10 +74,10 @@
     {
       objc_storeStrong(&v16->_configuration, configuration);
       objc_storeWeak(&v17->_delegate, v8);
-      v18 = [MEMORY[0x1E69B8A58] sharedInstance];
-      v19 = [v18 passbookHasBeenDeleted];
+      mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+      passbookHasBeenDeleted = [mEMORY[0x1E69B8A58] passbookHasBeenDeleted];
 
-      if (v19)
+      if (passbookHasBeenDeleted)
       {
         v20 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -115,15 +115,15 @@
 
 LABEL_15:
 
-  if ((v12 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v26 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v28 = [MEMORY[0x1E696AAE8] mainBundle];
-      v29 = [v28 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       *buf = 138543362;
-      v34 = v29;
+      v34 = bundleIdentifier;
       _os_log_error_impl(&dword_1BD026000, v26, OS_LOG_TYPE_ERROR, "%{public}@ missing entitlement: com.apple.developer.payment-pass-provisioning", buf, 0xCu);
     }
   }
@@ -146,7 +146,7 @@ void __72__PKAddPaymentPassViewController_initWithRequestConfiguration_delegate_
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -156,15 +156,15 @@ void __72__PKAddPaymentPassViewController_initWithRequestConfiguration_delegate_
   [(PKAddPaymentPassViewController *)&v6 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKAddPaymentPassViewController;
-  [(PKAddPaymentPassViewController *)&v5 viewDidAppear:a3];
+  [(PKAddPaymentPassViewController *)&v5 viewDidAppear:appear];
   if (self->_animatedTransitionHandler)
   {
-    v4 = [(PKAddPaymentPassViewController *)self presentingViewController];
-    [(PKAddPaymentPassViewController *)self _handleCanceledPresentationWithPresentingViewController:v4];
+    presentingViewController = [(PKAddPaymentPassViewController *)self presentingViewController];
+    [(PKAddPaymentPassViewController *)self _handleCanceledPresentationWithPresentingViewController:presentingViewController];
   }
 }
 
@@ -241,22 +241,22 @@ void __58__PKAddPaymentPassViewController_loadRemoteViewController__block_invoke
   }
 }
 
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   remoteVC = self->_remoteVC;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(PKRemoteAddPaymentPassViewController *)remoteVC setDelegate:WeakRetained];
 
   objc_storeWeak(&self->_delegate, 0);
   [(PKAddPaymentPassViewController *)self addChildViewController:self->_remoteVC];
-  v11 = [(PKRemoteAddPaymentPassViewController *)self->_remoteVC view];
-  v12 = [(PKAddPaymentPassViewController *)self view];
-  [v12 addSubview:v11];
-  [v12 setNeedsLayout];
-  [v12 layoutIfNeeded];
+  view = [(PKRemoteAddPaymentPassViewController *)self->_remoteVC view];
+  view2 = [(PKAddPaymentPassViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKAddPaymentPassViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PKAddPaymentPassViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -265,17 +265,17 @@ void __58__PKAddPaymentPassViewController_loadRemoteViewController__block_invoke
   v26[1] = 3221225472;
   v26[2] = __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block_invoke;
   v26[3] = &unk_1E8012C28;
-  v14 = v8;
+  v14 = handlerCopy;
   v27 = v14;
   v15 = [(_UIRemoteViewController *)v13 serviceViewControllerProxyWithErrorHandler:v26];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v17 = [v16 fixedCoordinateSpace];
-    [v17 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v19 = v18;
     v21 = v20;
-    [v16 scale];
+    [mainScreen scale];
     [v15 setDisplayPropertiesWithScreenSize:v19 scale:{v21, v22}];
 
     configuration = self->_configuration;
@@ -348,9 +348,9 @@ void __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -367,9 +367,9 @@ void __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block
   v5.receiver = self;
   v5.super_class = PKAddPaymentPassViewController;
   [(PKAddPaymentPassViewController *)&v5 loadView];
-  v3 = [(PKAddPaymentPassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKAddPaymentPassViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -377,17 +377,17 @@ void __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block
   v5.receiver = self;
   v5.super_class = PKAddPaymentPassViewController;
   [(PKAddPaymentPassViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKAddPaymentPassViewController *)self view];
-  v4 = [(PKRemoteAddPaymentPassViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKAddPaymentPassViewController *)self view];
+  view2 = [(PKRemoteAddPaymentPassViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
-- (void)_handleCanceledPresentationWithPresentingViewController:(id)a3
+- (void)_handleCanceledPresentationWithPresentingViewController:(id)controller
 {
   animatedTransitionHandler = self->_animatedTransitionHandler;
   self->_animatedTransitionHandler = 0;
-  v5 = a3;
+  controllerCopy = controller;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -402,7 +402,7 @@ void __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block
   v7 = v6;
   v16 = v7;
   v8 = PKCreateAlertControllerForWalletUninstalled(v15);
-  v9 = [v5 pkui_frontMostViewController];
+  pkui_frontMostViewController = [controllerCopy pkui_frontMostViewController];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -412,7 +412,7 @@ void __65__PKAddPaymentPassViewController__setRemoteVC_completionHandler___block
   v14 = v7;
   v10 = v7;
   v11 = v8;
-  [v9 presentViewController:v11 animated:1 completion:v12];
+  [pkui_frontMostViewController presentViewController:v11 animated:1 completion:v12];
 }
 
 void __90__PKAddPaymentPassViewController__handleCanceledPresentationWithPresentingViewController___block_invoke(uint64_t a1)

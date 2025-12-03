@@ -1,39 +1,39 @@
 @interface SXColumnLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)constrainedViewportSize;
 - (CGSize)viewportSize;
 - (UIEdgeInsets)safeAreaInsets;
-- (_NSRange)convertColumnRange:(_NSRange)a3 minimumColumnLength:(int64_t)a4;
-- (double)initWithConstrainedViewportSize:(double)a3 viewportSize:(double)a4 layoutWidth:(double)a5 documentLayout:(double)a6 numberOfLayoutColumns:(double)a7 leftMargin:(double)a8 rightMargin:(double)a9 numberOfColumns:(uint64_t)a10 columnWidth:(void *)a11 leftScreenMargin:(uint64_t)a12 rightScreenMargin:(uint64_t)a13 contentScaleFactor:(uint64_t)a14 safeAreaInsets:(uint64_t)a15;
-- (double)widthForColumnRange:(_NSRange)a3 ignoreMargin:(unint64_t)a4 ignoreGutter:(unint64_t)a5 ignoreViewportPadding:(unint64_t)a6;
-- (double)xPositionForColumnIndex:(int64_t)a3 ignoreMargin:(unint64_t)a4 ignoreGutter:(unint64_t)a5 ignoreViewportPadding:(unint64_t)a6 ignoreSafeAreaInsets:(BOOL)a7;
-- (id)columnLayoutForComponentBlueprint:(id)a3 unitConverter:(id)a4;
+- (_NSRange)convertColumnRange:(_NSRange)range minimumColumnLength:(int64_t)length;
+- (double)initWithConstrainedViewportSize:(double)size viewportSize:(double)viewportSize layoutWidth:(double)width documentLayout:(double)layout numberOfLayoutColumns:(double)columns leftMargin:(double)margin rightMargin:(double)rightMargin numberOfColumns:(uint64_t)self0 columnWidth:(void *)self1 leftScreenMargin:(uint64_t)self2 rightScreenMargin:(uint64_t)self3 contentScaleFactor:(uint64_t)self4 safeAreaInsets:(uint64_t)self5;
+- (double)widthForColumnRange:(_NSRange)range ignoreMargin:(unint64_t)margin ignoreGutter:(unint64_t)gutter ignoreViewportPadding:(unint64_t)padding;
+- (double)xPositionForColumnIndex:(int64_t)index ignoreMargin:(unint64_t)margin ignoreGutter:(unint64_t)gutter ignoreViewportPadding:(unint64_t)padding ignoreSafeAreaInsets:(BOOL)insets;
+- (id)columnLayoutForComponentBlueprint:(id)blueprint unitConverter:(id)converter;
 - (id)description;
 @end
 
 @implementation SXColumnLayout
 
-- (double)initWithConstrainedViewportSize:(double)a3 viewportSize:(double)a4 layoutWidth:(double)a5 documentLayout:(double)a6 numberOfLayoutColumns:(double)a7 leftMargin:(double)a8 rightMargin:(double)a9 numberOfColumns:(uint64_t)a10 columnWidth:(void *)a11 leftScreenMargin:(uint64_t)a12 rightScreenMargin:(uint64_t)a13 contentScaleFactor:(uint64_t)a14 safeAreaInsets:(uint64_t)a15
+- (double)initWithConstrainedViewportSize:(double)size viewportSize:(double)viewportSize layoutWidth:(double)width documentLayout:(double)layout numberOfLayoutColumns:(double)columns leftMargin:(double)margin rightMargin:(double)rightMargin numberOfColumns:(uint64_t)self0 columnWidth:(void *)self1 leftScreenMargin:(uint64_t)self2 rightScreenMargin:(uint64_t)self3 contentScaleFactor:(uint64_t)self4 safeAreaInsets:(uint64_t)self5
 {
-  v34 = a11;
-  v38.receiver = a1;
+  columnWidthCopy = columnWidth;
+  v38.receiver = self;
   v38.super_class = SXColumnLayout;
   v35 = objc_msgSendSuper2(&v38, sel_init);
   v36 = v35;
   if (v35)
   {
     v35[18] = a2;
-    v35[19] = a3;
-    v35[20] = a4;
-    v35[21] = a5;
-    *(v35 + 2) = [v34 width];
-    objc_storeStrong(v36 + 1, a11);
-    v36[3] = a7;
-    v36[4] = a8;
-    *(v36 + 5) = [v34 gutter];
-    *(v36 + 6) = a13;
-    v36[7] = a9;
-    *(v36 + 17) = a12;
+    v35[19] = size;
+    v35[20] = viewportSize;
+    v35[21] = width;
+    *(v35 + 2) = [columnWidthCopy width];
+    objc_storeStrong(v36 + 1, columnWidth);
+    v36[3] = columns;
+    v36[4] = margin;
+    *(v36 + 5) = [columnWidthCopy gutter];
+    *(v36 + 6) = rightScreenMargin;
+    v36[7] = rightMargin;
+    *(v36 + 17) = screenMargin;
     *(v36 + 14) = a17;
     *(v36 + 15) = a18;
     *(v36 + 16) = a19;
@@ -46,14 +46,14 @@
   return v36;
 }
 
-- (id)columnLayoutForComponentBlueprint:(id)a3 unitConverter:(id)a4
+- (id)columnLayoutForComponentBlueprint:(id)blueprint unitConverter:(id)converter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 componentLayout];
-  v9 = [v8 ignoreDocumentMargin] == 3 || objc_msgSend(v8, "ignoreDocumentMargin") == 1;
-  v10 = [v8 ignoreDocumentMargin] == 3 || objc_msgSend(v8, "ignoreDocumentMargin") == 2;
-  if ([v6 columnRange])
+  blueprintCopy = blueprint;
+  converterCopy = converter;
+  componentLayout = [blueprintCopy componentLayout];
+  v9 = [componentLayout ignoreDocumentMargin] == 3 || objc_msgSend(componentLayout, "ignoreDocumentMargin") == 1;
+  v10 = [componentLayout ignoreDocumentMargin] == 3 || objc_msgSend(componentLayout, "ignoreDocumentMargin") == 2;
+  if ([blueprintCopy columnRange])
   {
     v11 = 0;
   }
@@ -63,11 +63,11 @@
     v11 = self->_leftColumnOffset == 0;
   }
 
-  v12 = [v6 columnRange];
-  [v6 columnRange];
-  v14 = v13 + v12 == self->_numberOfColumns && self->_rightColumnOffset == 0;
-  v15 = [v8 ignoreViewportPadding] != 1 && objc_msgSend(v8, "ignoreViewportPadding") != 3;
-  v16 = [v8 ignoreViewportPadding] != 2 && objc_msgSend(v8, "ignoreViewportPadding") != 3;
+  columnRange = [blueprintCopy columnRange];
+  [blueprintCopy columnRange];
+  v14 = v13 + columnRange == self->_numberOfColumns && self->_rightColumnOffset == 0;
+  v15 = [componentLayout ignoreViewportPadding] != 1 && objc_msgSend(componentLayout, "ignoreViewportPadding") != 3;
+  v16 = [componentLayout ignoreViewportPadding] != 2 && objc_msgSend(componentLayout, "ignoreViewportPadding") != 3;
   v17 = self->_viewportSize.width - self->_constrainedViewportSize.width < 2.22044605e-16 && [(SXDocumentLayout *)self->_documentLayout margin]== 0;
   leftScreenMargin = 0.0;
   leftMargin = 0.0;
@@ -96,62 +96,62 @@
   }
 
   columnWidth = self->_columnWidth;
-  v23 = [v6 componentSizer];
-  [v23 contentInsetsWithUnitConverter:v7];
+  componentSizer = [blueprintCopy componentSizer];
+  [componentSizer contentInsetsWithUnitConverter:converterCopy];
   v25 = v24;
   v27 = v26;
 
   v28 = v25 + v27;
   if (v28 > 0.0)
   {
-    [v6 columnRange];
+    [blueprintCopy columnRange];
     columnWidth = columnWidth - v28 / v29;
   }
 
   v30 = [SXColumnLayout alloc];
-  v31 = [(SXDocumentLayout *)self->_documentLayout width];
+  width = [(SXDocumentLayout *)self->_documentLayout width];
   documentLayout = self->_documentLayout;
-  [v8 columnRange];
+  [componentLayout columnRange];
   v34 = v33;
-  [v6 columnRange];
-  v36 = [(SXColumnLayout *)v30 initWithConstrainedViewportSize:documentLayout viewportSize:v34 layoutWidth:v35 documentLayout:self->_constrainedViewportSize.width numberOfLayoutColumns:self->_constrainedViewportSize.height leftMargin:self->_viewportSize.width rightMargin:self->_viewportSize.height numberOfColumns:v31 columnWidth:leftMargin leftScreenMargin:rightMargin rightScreenMargin:columnWidth contentScaleFactor:*&leftScreenMargin safeAreaInsets:*&rightScreenMargin, *&self->_contentScaleFactor, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
+  [blueprintCopy columnRange];
+  v36 = [(SXColumnLayout *)v30 initWithConstrainedViewportSize:documentLayout viewportSize:v34 layoutWidth:v35 documentLayout:self->_constrainedViewportSize.width numberOfLayoutColumns:self->_constrainedViewportSize.height leftMargin:self->_viewportSize.width rightMargin:self->_viewportSize.height numberOfColumns:width columnWidth:leftMargin leftScreenMargin:rightMargin rightScreenMargin:columnWidth contentScaleFactor:*&leftScreenMargin safeAreaInsets:*&rightScreenMargin, *&self->_contentScaleFactor, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
   leftColumnOffset = self->_leftColumnOffset;
-  v36->_leftColumnOffset = [v6 columnRange] + leftColumnOffset;
+  v36->_leftColumnOffset = [blueprintCopy columnRange] + leftColumnOffset;
   v39 = self->_leftColumnOffset;
   rightColumnOffset = self->_rightColumnOffset;
   numberOfColumns = self->_numberOfColumns;
-  v41 = [(SXColumnLayout *)v36 leftColumnOffset];
-  v36->_rightColumnOffset = v39 + rightColumnOffset + numberOfColumns - (v41 + [(SXColumnLayout *)v36 numberOfColumns]);
+  leftColumnOffset = [(SXColumnLayout *)v36 leftColumnOffset];
+  v36->_rightColumnOffset = v39 + rightColumnOffset + numberOfColumns - (leftColumnOffset + [(SXColumnLayout *)v36 numberOfColumns]);
   [(SXColumnLayout *)v36 setMinimumViewportWidthForLooseLayout:self->_minimumViewportWidthForLooseLayout];
-  if (([v8 ignoreDocumentGutter] == 3 || objc_msgSend(v8, "ignoreDocumentGutter") == 1) && -[SXColumnLayout leftColumnOffset](v36, "leftColumnOffset"))
+  if (([componentLayout ignoreDocumentGutter] == 3 || objc_msgSend(componentLayout, "ignoreDocumentGutter") == 1) && -[SXColumnLayout leftColumnOffset](v36, "leftColumnOffset"))
   {
     [(SXColumnLayout *)v36 setLeftInset:(self->_gutter / 2)];
   }
 
-  if (([v8 ignoreDocumentGutter] == 3 || objc_msgSend(v8, "ignoreDocumentGutter") == 2) && -[SXColumnLayout rightColumnOffset](v36, "rightColumnOffset"))
+  if (([componentLayout ignoreDocumentGutter] == 3 || objc_msgSend(componentLayout, "ignoreDocumentGutter") == 2) && -[SXColumnLayout rightColumnOffset](v36, "rightColumnOffset"))
   {
     [(SXColumnLayout *)v36 setRightInset:(self->_gutter / 2)];
   }
 
-  [v8 minimumHeight];
+  [componentLayout minimumHeight];
   if (v42)
   {
-    v43 = [v8 minimumHeight];
-    [v7 convertValueToPoints:{v43, v44}];
+    minimumHeight = [componentLayout minimumHeight];
+    [converterCopy convertValueToPoints:{minimumHeight, v44}];
     [(SXColumnLayout *)v36 setMinimumHeight:?];
   }
 
   return v36;
 }
 
-- (_NSRange)convertColumnRange:(_NSRange)a3 minimumColumnLength:(int64_t)a4
+- (_NSRange)convertColumnRange:(_NSRange)range minimumColumnLength:(int64_t)length
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (self->_constrainedViewportSize.width <= self->_minimumViewportWidthForLooseLayout)
   {
-    v8 = a3.length;
-    if (a3.length / [(SXDocumentLayout *)self->_documentLayout columns]>= 0.25)
+    v8 = range.length;
+    if (range.length / [(SXDocumentLayout *)self->_documentLayout columns]>= 0.25)
     {
       v28 = 0;
       numberOfColumns = self->_numberOfColumns;
@@ -161,35 +161,35 @@
 
   else
   {
-    v8 = a3.length;
+    v8 = range.length;
   }
 
   v9 = self->_numberOfColumns;
-  if (v9 >= a4)
+  if (v9 >= length)
   {
-    v10 = a4;
+    lengthCopy2 = length;
   }
 
   else
   {
-    v10 = self->_numberOfColumns;
+    lengthCopy2 = self->_numberOfColumns;
   }
 
-  if (v10 >= length)
+  if (lengthCopy2 >= length)
   {
-    v10 = length;
+    lengthCopy2 = length;
   }
 
   layoutColumns = self->_layoutColumns;
-  v12 = v8 / layoutColumns <= 0.45 && v10 == 1;
+  v12 = v8 / layoutColumns <= 0.45 && lengthCopy2 == 1;
   v13 = v9 / layoutColumns;
   v14 = v13 * location;
   v15 = llroundf(v14);
   v16 = v12;
   v17 = v13 * (location + length);
   v18 = llroundf(v17) - v15;
-  v19 = v10 + v15 - v9;
-  if (v10 + v15 < v9)
+  v19 = lengthCopy2 + v15 - v9;
+  if (lengthCopy2 + v15 < v9)
   {
     v19 = 0;
   }
@@ -211,17 +211,17 @@
   }
 
   v22 = v15 - v19;
-  if (v18 < v10)
+  if (v18 < lengthCopy2)
   {
     v15 = v22;
   }
 
   else
   {
-    v10 = v18;
+    lengthCopy2 = v18;
   }
 
-  v23 = (v10 != 1) | v16;
+  v23 = (lengthCopy2 != 1) | v16;
   v24 = 1;
   if (v15)
   {
@@ -247,7 +247,7 @@
 
   if ((v23 & 1) == 0)
   {
-    v10 = v24;
+    lengthCopy2 = v24;
     v15 = v27;
   }
 
@@ -261,20 +261,20 @@
     v28 = v15;
   }
 
-  if (v10 <= 1)
+  if (lengthCopy2 <= 1)
   {
-    v10 = 1;
+    lengthCopy2 = 1;
   }
 
   v29 = v9 - v28;
-  if (v10 >= v29)
+  if (lengthCopy2 >= v29)
   {
     numberOfColumns = v29;
   }
 
   else
   {
-    numberOfColumns = v10;
+    numberOfColumns = lengthCopy2;
   }
 
 LABEL_45:
@@ -283,15 +283,15 @@ LABEL_45:
   return result;
 }
 
-- (double)xPositionForColumnIndex:(int64_t)a3 ignoreMargin:(unint64_t)a4 ignoreGutter:(unint64_t)a5 ignoreViewportPadding:(unint64_t)a6 ignoreSafeAreaInsets:(BOOL)a7
+- (double)xPositionForColumnIndex:(int64_t)index ignoreMargin:(unint64_t)margin ignoreGutter:(unint64_t)gutter ignoreViewportPadding:(unint64_t)padding ignoreSafeAreaInsets:(BOOL)insets
 {
-  v11 = self->_leftInset + self->_columnWidth * a3 + (self->_gutter * a3);
-  if (!a7)
+  v11 = self->_leftInset + self->_columnWidth * index + (self->_gutter * index);
+  if (!insets)
   {
     v11 = v11 + self->_safeAreaInsets.left;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((margin & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v12 = 1;
   }
@@ -306,11 +306,11 @@ LABEL_45:
     v12 = self->_viewportSize.width == self->_constrainedViewportSize.width;
   }
 
-  v13 = a6 & 0xFFFFFFFFFFFFFFFDLL;
-  if (self->_leftColumnOffset + a3)
+  v13 = padding & 0xFFFFFFFFFFFFFFFDLL;
+  if (self->_leftColumnOffset + index)
   {
     v11 = v11 + self->_leftMargin;
-    if ((a5 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((gutter & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       v11 = v11 - (self->_gutter / 2);
     }
@@ -338,22 +338,22 @@ LABEL_45:
   return roundf(v14);
 }
 
-- (double)widthForColumnRange:(_NSRange)a3 ignoreMargin:(unint64_t)a4 ignoreGutter:(unint64_t)a5 ignoreViewportPadding:(unint64_t)a6
+- (double)widthForColumnRange:(_NSRange)range ignoreMargin:(unint64_t)margin ignoreGutter:(unint64_t)gutter ignoreViewportPadding:(unint64_t)padding
 {
   numberOfColumns = self->_numberOfColumns;
-  if (a3.length >= numberOfColumns)
+  if (range.length >= numberOfColumns)
   {
     length = self->_numberOfColumns;
   }
 
   else
   {
-    length = a3.length;
+    length = range.length;
   }
 
   v12 = ((length - 1) * self->_gutter);
   v13 = self->_columnWidth * length;
-  v14 = (self->_leftColumnOffset | a3.location) == 0;
+  v14 = (self->_leftColumnOffset | range.location) == 0;
   if (self->_rightColumnOffset)
   {
     v15 = 0;
@@ -361,27 +361,27 @@ LABEL_45:
 
   else
   {
-    v15 = a3.location + a3.length >= numberOfColumns;
+    v15 = range.location + range.length >= numberOfColumns;
   }
 
   v16 = v15;
-  v17 = (a4 & 0xFFFFFFFFFFFFFFFDLL) != 1 && [(SXDocumentLayout *)self->_documentLayout margin]!= 0;
+  v17 = (margin & 0xFFFFFFFFFFFFFFFDLL) != 1 && [(SXDocumentLayout *)self->_documentLayout margin]!= 0;
   v18 = v13 + v12;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((margin & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v19 = (a6 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-    v20 = (a6 & 0xFFFFFFFFFFFFFFFELL) == 2;
+    v19 = (padding & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    v20 = (padding & 0xFFFFFFFFFFFFFFFELL) == 2;
     v21 = 1;
   }
 
   else
   {
     v21 = [(SXDocumentLayout *)self->_documentLayout margin]== 0;
-    v22 = a6 & 0xFFFFFFFFFFFFFFFDLL;
-    v19 = (a6 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-    v23 = a6 & 0xFFFFFFFFFFFFFFFELL;
-    v20 = (a6 & 0xFFFFFFFFFFFFFFFELL) == 2;
-    if (!a4)
+    v22 = padding & 0xFFFFFFFFFFFFFFFDLL;
+    v19 = (padding & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    v23 = padding & 0xFFFFFFFFFFFFFFFELL;
+    v20 = (padding & 0xFFFFFFFFFFFFFFFELL) == 2;
+    if (!margin)
     {
       v31 = v19;
       if ([(SXDocumentLayout *)self->_documentLayout margin]|| self->_viewportSize.width != self->_constrainedViewportSize.width)
@@ -432,21 +432,21 @@ LABEL_45:
 
   v18 = v18 + rightMargin;
 LABEL_25:
-  if (a5)
+  if (gutter)
   {
-    if (!((a5 != 3 || v14) | v16 & 1))
+    if (!((gutter != 3 || v14) | v16 & 1))
     {
       gutter = self->_gutter;
       goto LABEL_32;
     }
 
-    if ((a5 | 2) == 3 && !v14)
+    if ((gutter | 2) == 3 && !v14)
     {
       leftScreenMargin = (self->_gutter / 2);
       goto LABEL_35;
     }
 
-    if (!(((a5 & 0xFFFFFFFFFFFFFFFELL) != 2) | v16 & 1))
+    if (!(((gutter & 0xFFFFFFFFFFFFFFFELL) != 2) | v16 & 1))
     {
       gutter = (self->_gutter / 2);
 LABEL_32:
@@ -472,18 +472,18 @@ LABEL_36:
   return roundf(v29);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5->_constrainedViewportSize.width == self->_constrainedViewportSize.width ? (v6 = v5->_constrainedViewportSize.height == self->_constrainedViewportSize.height) : (v6 = 0), v6 && (v5->_viewportSize.width == self->_viewportSize.width ? (v7 = v5->_viewportSize.height == self->_viewportSize.height) : (v7 = 0), v7 && v5->_layoutWidth == self->_layoutWidth && v5->_leftMargin == self->_leftMargin && v5->_rightMargin == self->_rightMargin && v5->_gutter == self->_gutter && v5->_numberOfColumns == self->_numberOfColumns && v5->_columnWidth == self->_columnWidth && v5->_minimumHeight == self->_minimumHeight && v5->_leftScreenMargin == self->_leftScreenMargin && v5->_rightScreenMargin == self->_rightScreenMargin)) && v5->_contentScaleFactor == self->_contentScaleFactor;
+    v8 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5->_constrainedViewportSize.width == self->_constrainedViewportSize.width ? (v6 = v5->_constrainedViewportSize.height == self->_constrainedViewportSize.height) : (v6 = 0), v6 && (v5->_viewportSize.width == self->_viewportSize.width ? (v7 = v5->_viewportSize.height == self->_viewportSize.height) : (v7 = 0), v7 && v5->_layoutWidth == self->_layoutWidth && v5->_leftMargin == self->_leftMargin && v5->_rightMargin == self->_rightMargin && v5->_gutter == self->_gutter && v5->_numberOfColumns == self->_numberOfColumns && v5->_columnWidth == self->_columnWidth && v5->_minimumHeight == self->_minimumHeight && v5->_leftScreenMargin == self->_leftScreenMargin && v5->_rightScreenMargin == self->_rightScreenMargin)) && v5->_contentScaleFactor == self->_contentScaleFactor;
   }
 
   return v8;

@@ -1,53 +1,53 @@
 @interface UARPUpdateFirmwareAnalyticsEventFrameworkParams
-- (BOOL)isEqual:(id)a3;
-- (UARPUpdateFirmwareAnalyticsEventFrameworkParams)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UARPUpdateFirmwareAnalyticsEventFrameworkParams)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPUpdateFirmwareAnalyticsEventFrameworkParams
 
-- (UARPUpdateFirmwareAnalyticsEventFrameworkParams)initWithCoder:(id)a3
+- (UARPUpdateFirmwareAnalyticsEventFrameworkParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UARPUpdateFirmwareAnalyticsEventFrameworkParams;
   v5 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingUserInitiated"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingUserInitiated"];
     stagingUserInitiated = v5->_stagingUserInitiated;
     v5->_stagingUserInitiated = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingDuration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingDuration"];
     stagingDuration = v5->_stagingDuration;
     v5->_stagingDuration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingIterations"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingIterations"];
     stagingIterations = v5->_stagingIterations;
     v5->_stagingIterations = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingStatus"];
     stagingStatus = v5->_stagingStatus;
     v5->_stagingStatus = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingVendorError"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingVendorError"];
     stagingVendorError = v5->_stagingVendorError;
     v5->_stagingVendorError = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyUserInitiated"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyUserInitiated"];
     applyUserInitiated = v5->_applyUserInitiated;
     v5->_applyUserInitiated = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyDuration"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyDuration"];
     applyDuration = v5->_applyDuration;
     v5->_applyDuration = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyStatus"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyStatus"];
     applyStatus = v5->_applyStatus;
     v5->_applyStatus = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyVendorError"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyVendorError"];
     applyVendorError = v5->_applyVendorError;
     v5->_applyVendorError = v22;
   }
@@ -55,69 +55,69 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stagingUserInitiated = self->_stagingUserInitiated;
-  v5 = a3;
-  [v5 encodeObject:stagingUserInitiated forKey:@"stagingUserInitiated"];
-  [v5 encodeObject:self->_stagingDuration forKey:@"stagingDuration"];
-  [v5 encodeObject:self->_stagingIterations forKey:@"stagingIterations"];
-  [v5 encodeObject:self->_stagingStatus forKey:@"stagingStatus"];
-  [v5 encodeObject:self->_stagingVendorError forKey:@"stagingVendorError"];
-  [v5 encodeObject:self->_applyUserInitiated forKey:@"applyUserInitiated"];
-  [v5 encodeObject:self->_applyDuration forKey:@"applyDuration"];
-  [v5 encodeObject:self->_applyStatus forKey:@"applyStatus"];
-  [v5 encodeObject:self->_applyVendorError forKey:@"applyVendorError"];
+  coderCopy = coder;
+  [coderCopy encodeObject:stagingUserInitiated forKey:@"stagingUserInitiated"];
+  [coderCopy encodeObject:self->_stagingDuration forKey:@"stagingDuration"];
+  [coderCopy encodeObject:self->_stagingIterations forKey:@"stagingIterations"];
+  [coderCopy encodeObject:self->_stagingStatus forKey:@"stagingStatus"];
+  [coderCopy encodeObject:self->_stagingVendorError forKey:@"stagingVendorError"];
+  [coderCopy encodeObject:self->_applyUserInitiated forKey:@"applyUserInitiated"];
+  [coderCopy encodeObject:self->_applyDuration forKey:@"applyDuration"];
+  [coderCopy encodeObject:self->_applyStatus forKey:@"applyStatus"];
+  [coderCopy encodeObject:self->_applyVendorError forKey:@"applyVendorError"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v22 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       stagingUserInitiated = self->_stagingUserInitiated;
-      v7 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingUserInitiated];
-      if (nullableObjectsEqual(stagingUserInitiated, v7))
+      stagingUserInitiated = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingUserInitiated];
+      if (nullableObjectsEqual(stagingUserInitiated, stagingUserInitiated))
       {
         stagingDuration = self->_stagingDuration;
-        v9 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingDuration];
-        if (nullableObjectsEqual(stagingDuration, v9))
+        stagingDuration = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingDuration];
+        if (nullableObjectsEqual(stagingDuration, stagingDuration))
         {
           stagingIterations = self->_stagingIterations;
-          v11 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingIterations];
-          if (nullableObjectsEqual(stagingIterations, v11))
+          stagingIterations = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingIterations];
+          if (nullableObjectsEqual(stagingIterations, stagingIterations))
           {
             stagingStatus = self->_stagingStatus;
-            v13 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingStatus];
-            if (nullableObjectsEqual(stagingStatus, v13))
+            stagingStatus = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingStatus];
+            if (nullableObjectsEqual(stagingStatus, stagingStatus))
             {
               stagingVendorError = self->_stagingVendorError;
-              v15 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingVendorError];
-              if (nullableObjectsEqual(stagingVendorError, v15))
+              stagingVendorError = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 stagingVendorError];
+              if (nullableObjectsEqual(stagingVendorError, stagingVendorError))
               {
                 applyUserInitiated = self->_applyUserInitiated;
-                v17 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyUserInitiated];
-                if (nullableObjectsEqual(applyUserInitiated, v17))
+                applyUserInitiated = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyUserInitiated];
+                if (nullableObjectsEqual(applyUserInitiated, applyUserInitiated))
                 {
                   applyDuration = self->_applyDuration;
-                  v25 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyDuration];
-                  if (nullableObjectsEqual(applyDuration, v25))
+                  applyDuration = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyDuration];
+                  if (nullableObjectsEqual(applyDuration, applyDuration))
                   {
                     applyStatus = self->_applyStatus;
-                    v24 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyStatus];
-                    if (nullableObjectsEqual(applyStatus, v24))
+                    applyStatus = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyStatus];
+                    if (nullableObjectsEqual(applyStatus, applyStatus))
                     {
                       applyVendorError = self->_applyVendorError;
-                      v21 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyVendorError:v24];
+                      v21 = [(UARPUpdateFirmwareAnalyticsEventFrameworkParams *)v5 applyVendorError:applyStatus];
                       v22 = nullableObjectsEqual(applyVendorError, v21);
                     }
 

@@ -1,26 +1,26 @@
 @interface MessageHandler
-- (BOOL)messageViewController:(id)a3 handleDelegateAction:(id)a4 completionHandler:(id)a5;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5;
+- (BOOL)messageViewController:(id)controller handleDelegateAction:(id)action completionHandler:(id)handler;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic;
 @end
 
 @implementation MessageHandler
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_216DF311C(v8, v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_216DF311C(selfCopy, resultCopy);
 }
 
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic
 {
   v8 = sub_21700E354();
-  if (a5)
+  if (topic)
   {
     v9 = sub_21700E514();
-    a5 = v10;
+    topic = v10;
   }
 
   else
@@ -28,19 +28,19 @@
     v9 = 0;
   }
 
-  v11 = a3;
-  v12 = self;
-  sub_216DF31C4(v12, v8, v9, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_216DF31C4(selfCopy, v8, v9, topic);
 }
 
-- (BOOL)messageViewController:(id)a3 handleDelegateAction:(id)a4 completionHandler:(id)a5
+- (BOOL)messageViewController:(id)controller handleDelegateAction:(id)action completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = sub_216DF3308(v9, v10, v11, v8);
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
+  v12 = sub_216DF3308(controllerCopy, actionCopy, selfCopy, v8);
   _Block_release(v8);
 
   return v12 & 1;

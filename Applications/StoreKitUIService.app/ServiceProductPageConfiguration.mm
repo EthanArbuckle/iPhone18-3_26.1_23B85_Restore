@@ -43,10 +43,10 @@
   productURL = self->_productURL;
   if (productURL)
   {
-    v12 = [(NSURL *)productURL absoluteString];
+    absoluteString = [(NSURL *)productURL absoluteString];
     v13 = kOptionKeyURL;
-    [v10 setObject:v12 forKey:kOptionKeyURL];
-    [v3 setObject:v12 forKey:v13];
+    [v10 setObject:absoluteString forKey:kOptionKeyURL];
+    [v3 setObject:absoluteString forKey:v13];
   }
 
   productPageStyle = self->_productPageStyle;

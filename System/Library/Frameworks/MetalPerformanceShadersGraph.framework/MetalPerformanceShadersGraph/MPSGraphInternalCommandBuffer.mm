@@ -1,27 +1,27 @@
 @interface MPSGraphInternalCommandBuffer
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (MPSCommandBufferDescriptor)mpsCommandBufferDescriptor;
-- (MPSGraphInternalCommandBuffer)initWithMPSCommandBuffer:(id)a3 executableExecutionDescriptor:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (MPSGraphInternalCommandBuffer)initWithMPSCommandBuffer:(id)buffer executableExecutionDescriptor:(id)descriptor;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)commit;
 - (void)commitAndContinue;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MPSGraphInternalCommandBuffer
 
-- (MPSGraphInternalCommandBuffer)initWithMPSCommandBuffer:(id)a3 executableExecutionDescriptor:(id)a4
+- (MPSGraphInternalCommandBuffer)initWithMPSCommandBuffer:(id)buffer executableExecutionDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
   v13.receiver = self;
   v13.super_class = MPSGraphInternalCommandBuffer;
-  v9 = [(MPSCommandBuffer *)&v13 initWithCommandBuffer:v7];
+  v9 = [(MPSCommandBuffer *)&v13 initWithCommandBuffer:bufferCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_original, a3);
-    objc_storeStrong(&v10->_executableExecutionDescriptor, a4);
+    objc_storeStrong(&v9->_original, buffer);
+    objc_storeStrong(&v10->_executableExecutionDescriptor, descriptor);
     v10->_commandBufferIndex = 0;
     v11 = v10;
   }
@@ -29,7 +29,7 @@
   return v10;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -38,27 +38,27 @@
 
   v6.receiver = self;
   v6.super_class = MPSGraphInternalCommandBuffer;
-  return [(MPSCommandBuffer *)&v6 respondsToSelector:a3];
+  return [(MPSCommandBuffer *)&v6 respondsToSelector:selector];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v4 invokeWithTarget:self->_original];
+    [invocationCopy invokeWithTarget:self->_original];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MPSGraphInternalCommandBuffer;
-    [(MPSGraphInternalCommandBuffer *)&v5 forwardInvocation:v4];
+    [(MPSGraphInternalCommandBuffer *)&v5 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = MPSGraphInternalCommandBuffer;
@@ -69,7 +69,7 @@
 
   else
   {
-    v5 = [(MPSCommandBuffer *)self->_original methodSignatureForSelector:a3];
+    v5 = [(MPSCommandBuffer *)self->_original methodSignatureForSelector:selector];
   }
 
   return v5;

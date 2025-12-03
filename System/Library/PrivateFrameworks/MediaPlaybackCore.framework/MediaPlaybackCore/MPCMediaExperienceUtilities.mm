@@ -8,17 +8,17 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = MPUIApplication();
-  v3 = [v2 applicationState];
+  applicationState = [v2 applicationState];
 
-  if (v3 == 2)
+  if (applicationState == 2)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v6 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
     v7 = *MEMORY[0x1E69AE9E0];
     v13 = 0;
-    v8 = [v6 setAttribute:v5 forKey:v7 error:&v13];
+    v8 = [mEMORY[0x1E69AED10] setAttribute:bundleIdentifier forKey:v7 error:&v13];
     v9 = v13;
 
     if (v8)
@@ -37,7 +37,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v5;
+        v15 = bundleIdentifier;
         v16 = 2112;
         v17 = v9;
         _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_ERROR, "Error temporarily blessing %@ for playback initialization. %@", buf, 0x16u);

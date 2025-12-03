@@ -2,10 +2,10 @@
 - (MPSCNNConvolutionTransposeGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNConvolutionTransposeGradient)initWithDevice:(id)device;
 - (MPSCNNConvolutionTransposeGradient)initWithDevice:(id)device weights:(id)weights;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNConvolutionTransposeGradient
@@ -150,11 +150,11 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v21.receiver = self;
   v21.super_class = MPSCNNConvolutionTransposeGradient;
-  v5 = [(MPSCNNGradientKernel *)&v21 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNGradientKernel *)&v21 copyWithZone:zone device:device];
   v5[54] = self->_inputFeatureChannels;
   v5[55] = self->_outputFeatureChannels;
   v5[56] = self->_groups;
@@ -169,16 +169,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v47.receiver = self;
   v47.super_class = MPSCNNConvolutionTransposeGradient;
   [(MPSCNNGradientKernel *)&v47 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_inputFeatureChannels, @"MPSCNNConvolutionTransposeGradientInputFeatureChannels", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_outputFeatureChannels, @"MPSCNNConvolutionTransposeGradientOutputFeatureChannels", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_groups, @"MPSCNNConvolutionTransposeGradientGroups", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_gradientOption, @"MPSCNNConvolutionTransposeGradientOption", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_inputFeatureChannels, @"MPSCNNConvolutionTransposeGradientInputFeatureChannels", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_outputFeatureChannels, @"MPSCNNConvolutionTransposeGradientOutputFeatureChannels", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_groups, @"MPSCNNConvolutionTransposeGradientGroups", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_gradientOption, @"MPSCNNConvolutionTransposeGradientOption", v21, v22, v23, v24);
   convolutionGradient = self->_convolutionGradient;
   v26 = objc_autoreleasePoolPush();
   v27 = objc_opt_class();
@@ -192,8 +192,8 @@
       v37 = strlen(v35);
       if (v37)
       {
-        objc_msgSend_encodeBytes_length_forKey_(a3, v38, v36, v37 + 1, @"MPSCNNConvolutionTransposeGradientConvolutionGradientClass", v39, v40, v41);
-        objc_msgSend_encodeObject_forKey_(a3, v42, convolutionGradient, @"MPSCNNConvolutionTransposeGradientConvolutionGradient", v43, v44, v45, v46);
+        objc_msgSend_encodeBytes_length_forKey_(coder, v38, v36, v37 + 1, @"MPSCNNConvolutionTransposeGradientConvolutionGradientClass", v39, v40, v41);
+        objc_msgSend_encodeObject_forKey_(coder, v42, convolutionGradient, @"MPSCNNConvolutionTransposeGradientConvolutionGradient", v43, v44, v45, v46);
       }
     }
   }
@@ -277,11 +277,11 @@ LABEL_15:
   [(MPSCNNBinaryKernel *)&v3 dealloc];
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset
 {
   v17.receiver = self;
   v17.super_class = MPSCNNConvolutionTransposeGradient;
-  v9 = [(MPSCNNBinaryKernel *)&v17 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 primaryOffset:a6 secondaryOffset:a7 kernelOffset:a8];
+  v9 = [(MPSCNNBinaryKernel *)&v17 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method primaryOffset:offset secondaryOffset:secondaryOffset kernelOffset:kernelOffset];
   objc_msgSend_setFeatureChannels_(v9, v10, self->_outputFeatureChannels, v11, v12, v13, v14, v15);
   return v9;
 }

@@ -1,36 +1,36 @@
 @interface ICSDigestPair
-+ (id)digestPairWithSerializedData:(id)a3;
++ (id)digestPairWithSerializedData:(id)data;
 - (id)serializedData;
 @end
 
 @implementation ICSDigestPair
 
-+ (id)digestPairWithSerializedData:(id)a3
++ (id)digestPairWithSerializedData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if (v4 == 40)
   {
-    v9 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v5 = objc_opt_new();
-    v10 = [MEMORY[0x277CBEA90] dataWithBytes:v9 length:20];
+    v10 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:20];
     v11 = v5[1];
     v5[1] = v10;
 
     v12 = MEMORY[0x277CBEA90];
-    v13 = v9 + 20;
+    v13 = bytes + 20;
     goto LABEL_9;
   }
 
   if (v4 == 21)
   {
-    v8 = [v3 bytes];
-    if (*v8)
+    bytes2 = [dataCopy bytes];
+    if (*bytes2)
     {
       goto LABEL_6;
     }
 
-    v14 = v8;
+    v14 = bytes2;
     v5 = objc_opt_new();
     v12 = MEMORY[0x277CBEA90];
     v13 = (v14 + 1);
@@ -49,7 +49,7 @@ LABEL_6:
   }
 
   v5 = objc_opt_new();
-  v6 = v3;
+  v6 = dataCopy;
   v7 = v5[1];
   v5[1] = v6;
 LABEL_10:

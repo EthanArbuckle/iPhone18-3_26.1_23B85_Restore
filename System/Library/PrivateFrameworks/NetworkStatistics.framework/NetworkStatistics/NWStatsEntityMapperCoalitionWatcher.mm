@@ -1,24 +1,24 @@
 @interface NWStatsEntityMapperCoalitionWatcher
-- (BOOL)noteUUID:(id)a3 forPid:(int)a4;
+- (BOOL)noteUUID:(id)d forPid:(int)pid;
 - (NWStatsEntityMapperCoalitionWatcher)init;
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 - (void)_uuidCoalitionNameMapPrune;
 @end
 
 @implementation NWStatsEntityMapperCoalitionWatcher
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(NSMutableDictionary *)v7->_uuidCoalitionNameMap objectForKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(NSMutableDictionary *)selfCopy->_uuidCoalitionNameMap objectForKeyedSubscript:dCopy];
     if (v8)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [v8 setObject:v9 forKeyedSubscript:@"timestamp"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v8 setObject:date forKeyedSubscript:@"timestamp"];
 
       v10 = MEMORY[0x277CCACA8];
       v11 = [v8 objectForKeyedSubscript:@"coalitionName"];
@@ -30,10 +30,10 @@
       v12 = 0;
     }
 
-    objc_sync_exit(v7);
-    if (a4 && v12)
+    objc_sync_exit(selfCopy);
+    if (derivation && v12)
     {
-      *a4 = 5;
+      *derivation = 5;
     }
   }
 
@@ -66,33 +66,33 @@
   return v2;
 }
 
-- (BOOL)noteUUID:(id)a3 forPid:(int)a4
+- (BOOL)noteUUID:(id)d forPid:(int)pid
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = pid_to_coalitionID(a4);
+    v7 = pid_to_coalitionID(pid);
     v8 = NStatGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412546;
       v19 = v7;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_25BA3A000, v8, OS_LOG_TYPE_DEFAULT, "Note coalition name %@ for uuid %@", &v18, 0x16u);
     }
 
     if (v7)
     {
-      v9 = self;
-      objc_sync_enter(v9);
-      if ([(NSMutableDictionary *)v9->_uuidCoalitionNameMap count]>= 0x65)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if ([(NSMutableDictionary *)selfCopy->_uuidCoalitionNameMap count]>= 0x65)
       {
-        [(NWStatsEntityMapperCoalitionWatcher *)v9 _uuidCoalitionNameMapPrune];
+        [(NWStatsEntityMapperCoalitionWatcher *)selfCopy _uuidCoalitionNameMapPrune];
       }
 
-      v10 = [(NSMutableDictionary *)v9->_uuidCoalitionNameMap objectForKeyedSubscript:v6];
+      v10 = [(NSMutableDictionary *)selfCopy->_uuidCoalitionNameMap objectForKeyedSubscript:dCopy];
 
       if (v10)
       {
@@ -108,10 +108,10 @@
           v13 = [MEMORY[0x277CCACA8] stringWithString:v7];
           [v12 setObject:v13 forKeyedSubscript:@"coalitionName"];
 
-          v14 = [MEMORY[0x277CBEAA8] date];
-          [v12 setObject:v14 forKeyedSubscript:@"timestamp"];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v12 setObject:date forKeyedSubscript:@"timestamp"];
 
-          [(NSMutableDictionary *)v9->_uuidCoalitionNameMap setObject:v12 forKeyedSubscript:v6];
+          [(NSMutableDictionary *)selfCopy->_uuidCoalitionNameMap setObject:v12 forKeyedSubscript:dCopy];
         }
 
         else
@@ -126,7 +126,7 @@
         }
       }
 
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
     }
 
     else

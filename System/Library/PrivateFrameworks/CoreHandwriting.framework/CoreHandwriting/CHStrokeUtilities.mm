@@ -1,69 +1,69 @@
 @interface CHStrokeUtilities
-+ (BOOL)isMatchingStrokeClassification:(int64_t)a3 scriptClassification:(int64_t)a4;
-+ (BOOL)isPointEnumerationSupportedForStroke:(id)a3;
-+ (BOOL)isStroke:(id)a3 intersectingAnyPolygonInSet:(id)a4;
-+ (BOOL)isStroke:(id)a3 intersectingPolygon:(id)a4;
-+ (BOOL)isStrokeClassificationTextOrMath:(int64_t)a3;
-+ (BOOL)isStrokeGroup:(id)a3 inlineWithNextGroup:(id)a4;
-+ (BOOL)linearScratchOutTestForPoints:(const void *)a3 direction:(const CGVector *)a4 origin:(const CGPoint *)a5 threshold:(float)a6 cutIndex:(int64_t *)a7;
-+ (BOOL)linearScratchOutTestForPoints:(const void *)a3 threshold:(float)a4 cutIndex:(int64_t *)a5;
-+ (CGRect)boundingBoxOfPoints:(const void *)a3 rotatedAroundPoint:(CGPoint)a4 byAngle:(double)a5;
-+ (CGRect)boundsForStroke:(id)a3 usingCache:(id)a4;
-+ (CGRect)boundsForStrokes:(id)a3;
-+ (CGRect)unionStrokeBounds:(const void *)a3 aroundXPosition:(double)a4 usingOneSideStrokeCountLimit:(int64_t)a5;
-+ (CGRect)unionStrokeBounds:(const void *)a3 usingStrokeCountLimit:(int64_t)a4 reverseOrder:(BOOL)a5;
-+ (double)arcLengthForStroke:(id)a3;
-+ (double)circumferenceRatioOfCircleFittedToPoints:(const void *)a3 circleCenter:(CGPoint *)a4 circleRadius:(double *)a5;
-+ (double)distanceFromPoint:(CGPoint)a3 toRectangle:(CGRect)a4;
-+ (double)distanceFromPoint:(CGPoint)a3 toSegmentFromPoint:(CGPoint)a4 toPoint:(CGPoint)a5;
-+ (double)distanceFromPoint:(CGPoint)a3 toStroke:(id)a4 withStrokeProvider:(id)a5;
-+ (double)distanceFromPoint:(CGPoint)a3 toStrokes:(id)a4 withStrokeProvider:(id)a5;
-+ (double)distanceFromRectangle:(CGRect)a3 toRectangle:(CGRect)a4;
-+ (double)durationOfStrokesInStrokeGroup:(id)a3 strokeProvider:(id)a4;
-+ (double)horizontalDistanceBetweenRectangle:(CGRect)a3 rectangle:(CGRect)a4;
-+ (double)horizontalOverlapOfIndividualStrokeBounds:(const void *)a3 otherStrokeBounds:(const void *)a4;
-+ (double)lineOrientationForStrokePoints:(const void *)a3 error:(double *)a4;
-+ (double)speedForFinalTimeRange:(double)a3 stroke:(id)a4;
-+ (double)vectorMeanWithoutOutliers:(void *)a3;
-+ (double)verticalDistanceBetweenRectangle:(CGRect)a3 rectangle:(CGRect)a4;
-+ (id)createDrawingForStrokeIdentifiers:(id)a3 strokeProvider:(id)a4 interpolationType:(int64_t)a5 resolution:(int64_t)a6 cancellationBlock:(id)a7;
-+ (id)createDrawingForStrokes:(id)a3 interpolationType:(int64_t)a4 resolution:(int64_t)a5 cancellationBlock:(id)a6;
++ (BOOL)isMatchingStrokeClassification:(int64_t)classification scriptClassification:(int64_t)scriptClassification;
++ (BOOL)isPointEnumerationSupportedForStroke:(id)stroke;
++ (BOOL)isStroke:(id)stroke intersectingAnyPolygonInSet:(id)set;
++ (BOOL)isStroke:(id)stroke intersectingPolygon:(id)polygon;
++ (BOOL)isStrokeClassificationTextOrMath:(int64_t)math;
++ (BOOL)isStrokeGroup:(id)group inlineWithNextGroup:(id)nextGroup;
++ (BOOL)linearScratchOutTestForPoints:(const void *)points direction:(const CGVector *)direction origin:(const CGPoint *)origin threshold:(float)threshold cutIndex:(int64_t *)index;
++ (BOOL)linearScratchOutTestForPoints:(const void *)points threshold:(float)threshold cutIndex:(int64_t *)index;
++ (CGRect)boundingBoxOfPoints:(const void *)points rotatedAroundPoint:(CGPoint)point byAngle:(double)angle;
++ (CGRect)boundsForStroke:(id)stroke usingCache:(id)cache;
++ (CGRect)boundsForStrokes:(id)strokes;
++ (CGRect)unionStrokeBounds:(const void *)bounds aroundXPosition:(double)position usingOneSideStrokeCountLimit:(int64_t)limit;
++ (CGRect)unionStrokeBounds:(const void *)bounds usingStrokeCountLimit:(int64_t)limit reverseOrder:(BOOL)order;
++ (double)arcLengthForStroke:(id)stroke;
++ (double)circumferenceRatioOfCircleFittedToPoints:(const void *)points circleCenter:(CGPoint *)center circleRadius:(double *)radius;
++ (double)distanceFromPoint:(CGPoint)point toRectangle:(CGRect)rectangle;
++ (double)distanceFromPoint:(CGPoint)point toSegmentFromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint;
++ (double)distanceFromPoint:(CGPoint)point toStroke:(id)stroke withStrokeProvider:(id)provider;
++ (double)distanceFromPoint:(CGPoint)point toStrokes:(id)strokes withStrokeProvider:(id)provider;
++ (double)distanceFromRectangle:(CGRect)rectangle toRectangle:(CGRect)toRectangle;
++ (double)durationOfStrokesInStrokeGroup:(id)group strokeProvider:(id)provider;
++ (double)horizontalDistanceBetweenRectangle:(CGRect)rectangle rectangle:(CGRect)a4;
++ (double)horizontalOverlapOfIndividualStrokeBounds:(const void *)bounds otherStrokeBounds:(const void *)strokeBounds;
++ (double)lineOrientationForStrokePoints:(const void *)points error:(double *)error;
++ (double)speedForFinalTimeRange:(double)range stroke:(id)stroke;
++ (double)vectorMeanWithoutOutliers:(void *)outliers;
++ (double)verticalDistanceBetweenRectangle:(CGRect)rectangle rectangle:(CGRect)a4;
++ (id)createDrawingForStrokeIdentifiers:(id)identifiers strokeProvider:(id)provider interpolationType:(int64_t)type resolution:(int64_t)resolution cancellationBlock:(id)block;
++ (id)createDrawingForStrokes:(id)strokes interpolationType:(int64_t)type resolution:(int64_t)resolution cancellationBlock:(id)block;
 + (id)defaultScriptClassificationDictionary;
-+ (id)encodedStrokeIdentifiers:(id)a3 withStrokeProvider:(id)a4;
-+ (id)encodedStrokeIdentifiersFromStrokes:(id)a3 withStrokeProvider:(id)a4 shouldCancel:(id)a5;
-+ (id)polygonForStrokes:(id)a3;
-+ (id)polygonSetForScratchOutStroke:(id)a3;
-+ (id)remainingGroupStrokes:(id)a3 remainingStrokes:(id)a4 strokeProvider:(id)a5;
-+ (id)sortedStrokesForIdentifiers:(id)a3 inStrokeProvider:(id)a4;
-+ (id)strokeForIdentifier:(id)a3 inStrokeProvider:(id)a4;
-+ (id)strokeIdentifiersByStrokeClusterPolygonsFromStrokeBounds:(id)a3 strokes:(id)a4;
-+ (id)strokeIdentifiersForData:(id)a3 withStrokeProvider:(id)a4;
-+ (id)strokesForIdentifiers:(id)a3 inStrokeProvider:(id)a4;
-+ (id)strokesIntersectingPolygons:(id)a3 fromStrokes:(id)a4 intersectedPolygons:(id *)a5;
-+ (int64_t)minRectangleDistanceFromStrokes:(id)a3 toPolygons:(id)a4;
++ (id)encodedStrokeIdentifiers:(id)identifiers withStrokeProvider:(id)provider;
++ (id)encodedStrokeIdentifiersFromStrokes:(id)strokes withStrokeProvider:(id)provider shouldCancel:(id)cancel;
++ (id)polygonForStrokes:(id)strokes;
++ (id)polygonSetForScratchOutStroke:(id)stroke;
++ (id)remainingGroupStrokes:(id)strokes remainingStrokes:(id)remainingStrokes strokeProvider:(id)provider;
++ (id)sortedStrokesForIdentifiers:(id)identifiers inStrokeProvider:(id)provider;
++ (id)strokeForIdentifier:(id)identifier inStrokeProvider:(id)provider;
++ (id)strokeIdentifiersByStrokeClusterPolygonsFromStrokeBounds:(id)bounds strokes:(id)strokes;
++ (id)strokeIdentifiersForData:(id)data withStrokeProvider:(id)provider;
++ (id)strokesForIdentifiers:(id)identifiers inStrokeProvider:(id)provider;
++ (id)strokesIntersectingPolygons:(id)polygons fromStrokes:(id)strokes intersectedPolygons:(id *)intersectedPolygons;
++ (int64_t)minRectangleDistanceFromStrokes:(id)strokes toPolygons:(id)polygons;
 + (vector<CGPoint,)convexHullForPoints:()vector<CGPoint;
-+ (vector<CGPoint,)convexHullForStroke:(id)a2;
-+ (vector<CGPoint,)convexHullForStrokes:(id)a2;
-+ (vector<CGPoint,)convexHullForStrokes:(id)a2 inDrawing:(SEL)a3;
-+ (vector<CGPoint,)enlargedConvexHull:()vector<CGPoint withMargin:(std:(SEL)a3 :(const void *)a4 allocator<CGPoint>> *)result;
-+ (vector<CGPoint,)regularizedPathFromPoints:()vector<CGPoint delta:(std:(SEL)a3 :(const void *)a4 allocator<CGPoint>> *)result gamma:(double)a5 outError:(double)a6;
-+ (vector<CGRect,)horizontallyOverlappedChunks:(id)a2;
-+ (vector<_NSRange,)segmentationRangesForScratchOutPoints:(id)a2;
-+ (vector<float,)projectionForPoints:(id)a2 direction:(SEL)a3 origin:(const void *)a4;
-+ (void)enumeratePointsForStroke:(id)a3 interpolationType:(int64_t)a4 resolution:(int64_t)a5 usingBlock:(id)a6;
-+ (void)getAddedStrokes:(id *)a3 removedStrokeIdentifiers:(id *)a4 inStrokeProvider:(id)a5 lastGroupingResult:(id)a6 shouldCancel:(id)a7;
-+ (void)principalComponentsForPoints:(const void *)a3 outFirstComponent:(CGVector *)a4 outSecondComponent:(CGVector *)a5 outMeanPoint:(CGPoint *)a6;
++ (vector<CGPoint,)convexHullForStroke:(id)stroke;
++ (vector<CGPoint,)convexHullForStrokes:(id)strokes;
++ (vector<CGPoint,)convexHullForStrokes:(id)strokes inDrawing:(SEL)drawing;
++ (vector<CGPoint,)enlargedConvexHull:()vector<CGPoint withMargin:(std:(SEL)margin :(const void *)a4 allocator<CGPoint>> *)result;
++ (vector<CGPoint,)regularizedPathFromPoints:()vector<CGPoint delta:(std:(SEL)delta :(const void *)a4 allocator<CGPoint>> *)result gamma:(double)gamma outError:(double)error;
++ (vector<CGRect,)horizontallyOverlappedChunks:(id)chunks;
++ (vector<_NSRange,)segmentationRangesForScratchOutPoints:(id)points;
++ (vector<float,)projectionForPoints:(id)points direction:(SEL)direction origin:(const void *)origin;
++ (void)enumeratePointsForStroke:(id)stroke interpolationType:(int64_t)type resolution:(int64_t)resolution usingBlock:(id)block;
++ (void)getAddedStrokes:(id *)strokes removedStrokeIdentifiers:(id *)identifiers inStrokeProvider:(id)provider lastGroupingResult:(id)result shouldCancel:(id)cancel;
++ (void)principalComponentsForPoints:(const void *)points outFirstComponent:(CGVector *)component outSecondComponent:(CGVector *)secondComponent outMeanPoint:(CGPoint *)point;
 @end
 
 @implementation CHStrokeUtilities
 
-+ (void)getAddedStrokes:(id *)a3 removedStrokeIdentifiers:(id *)a4 inStrokeProvider:(id)a5 lastGroupingResult:(id)a6 shouldCancel:(id)a7
++ (void)getAddedStrokes:(id *)strokes removedStrokeIdentifiers:(id *)identifiers inStrokeProvider:(id)provider lastGroupingResult:(id)result shouldCancel:(id)cancel
 {
   v152 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v134 = a6;
-  v135 = a7;
-  if (!v9)
+  providerCopy = provider;
+  resultCopy = result;
+  cancelCopy = cancel;
+  if (!providerCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -84,7 +84,7 @@
       {
 LABEL_9:
 
-        v9 = 0;
+        providerCopy = 0;
         goto LABEL_10;
       }
     }
@@ -105,15 +105,15 @@ LABEL_9:
   }
 
 LABEL_10:
-  v132 = v9;
-  v133 = objc_msgSend_orderedStrokes(v9, v10, v11, v12, v13, v14, a4);
+  v132 = providerCopy;
+  v133 = objc_msgSend_orderedStrokes(providerCopy, v10, v11, v12, v13, v14, identifiers);
   v22 = objc_msgSend_array(MEMORY[0x1E695DF70], v17, v18, v19, v20, v21);
   v28 = objc_msgSend_set(MEMORY[0x1E695DFA8], v23, v24, v25, v26, v27);
   v144 = 0u;
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v34 = objc_msgSend_strokeGroups(v134, v29, v30, v31, v32, v33);
+  v34 = objc_msgSend_strokeGroups(resultCopy, v29, v30, v31, v32, v33);
   v42 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v142, v151, 16, v36);
   if (v42)
   {
@@ -146,7 +146,7 @@ LABEL_10:
   if (v58)
   {
     v59 = *v139;
-    if (v135)
+    if (cancelCopy)
     {
       while (2)
       {
@@ -169,7 +169,7 @@ LABEL_10:
             objc_msgSend_addObject_(v22, v67, v61, v68, v69, v70);
           }
 
-          if (__ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend_count(v22, v71, v72, v73, v74, v75), 2) <= 0x28F5C28F5C28F5CuLL && (v135[2]() & 1) != 0)
+          if (__ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend_count(v22, v71, v72, v73, v74, v75), 2) <= 0x28F5C28F5C28F5CuLL && (cancelCopy[2]() & 1) != 0)
           {
 
             v28 = 0;
@@ -241,7 +241,7 @@ LABEL_10:
   v136[1] = 3221225472;
   v136[2] = sub_1836EF0C4;
   v136[3] = &unk_1E6DDCA48;
-  v105 = v135;
+  v105 = cancelCopy;
   v137 = v105;
   v115 = objc_msgSend_indexesOfObjectsPassingTest_(v22, v106, v136, v107, v108, v109);
   if (v105 && ((v105[2])(v105) & 1) != 0)
@@ -283,10 +283,10 @@ LABEL_49:
 
 LABEL_50:
 
-  if (a3)
+  if (strokes)
   {
     v127 = v22;
-    *a3 = v22;
+    *strokes = v22;
   }
 
   if (v130)
@@ -298,28 +298,28 @@ LABEL_50:
 LABEL_55:
 }
 
-+ (id)strokeForIdentifier:(id)a3 inStrokeProvider:(id)a4
++ (id)strokeForIdentifier:(id)identifier inStrokeProvider:(id)provider
 {
-  v5 = a4;
-  v10 = objc_msgSend_strokeIdentifierFromData_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_strokeForIdentifier_(v5, v11, v10, v12, v13, v14);
+  providerCopy = provider;
+  v10 = objc_msgSend_strokeIdentifierFromData_(providerCopy, v6, identifier, v7, v8, v9);
+  v15 = objc_msgSend_strokeForIdentifier_(providerCopy, v11, v10, v12, v13, v14);
 
   return v15;
 }
 
-+ (id)strokesForIdentifiers:(id)a3 inStrokeProvider:(id)a4
++ (id)strokesForIdentifiers:(id)identifiers inStrokeProvider:(id)provider
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   v7 = MEMORY[0x1E695DF70];
-  v13 = objc_msgSend_count(v5, v8, v9, v10, v11, v12);
+  v13 = objc_msgSend_count(identifiersCopy, v8, v9, v10, v11, v12);
   v18 = objc_msgSend_arrayWithCapacity_(v7, v14, v13, v15, v16, v17);
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v19 = v5;
+  v19 = identifiersCopy;
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v46, v54, 16, v21);
   if (v22)
   {
@@ -335,7 +335,7 @@ LABEL_55:
 
         v25 = *(*(&v46 + 1) + 8 * i);
         v26 = objc_opt_class();
-        v34 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(v26, v27, v25, v6, v28, v29, v46);
+        v34 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(v26, v27, v25, providerCopy, v28, v29, v46);
         if (!v34)
         {
           if (qword_1EA84DC48 != -1)
@@ -346,7 +346,7 @@ LABEL_55:
           v38 = qword_1EA84DC60;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            v44 = objc_msgSend_strokeProviderVersion(v6, v39, v40, v41, v42, v43);
+            v44 = objc_msgSend_strokeProviderVersion(providerCopy, v39, v40, v41, v42, v43);
             *buf = 138412546;
             v51 = v25;
             v52 = 2112;
@@ -377,15 +377,15 @@ LABEL_15:
   return v37;
 }
 
-+ (id)sortedStrokesForIdentifiers:(id)a3 inStrokeProvider:(id)a4
++ (id)sortedStrokesForIdentifiers:(id)identifiers inStrokeProvider:(id)provider
 {
-  v5 = a4;
-  v11 = objc_msgSend_allObjects(a3, v6, v7, v8, v9, v10);
+  providerCopy = provider;
+  v11 = objc_msgSend_allObjects(identifiers, v6, v7, v8, v9, v10);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_1836EF5E0;
   v23[3] = &unk_1E6DDCA70;
-  v12 = v5;
+  v12 = providerCopy;
   v24 = v12;
   v17 = objc_msgSend_sortedArrayUsingComparator_(v11, v13, v23, v14, v15, v16);
 
@@ -394,21 +394,21 @@ LABEL_15:
   return v21;
 }
 
-+ (id)strokeIdentifiersForData:(id)a3 withStrokeProvider:(id)a4
++ (id)strokeIdentifiersForData:(id)data withStrokeProvider:(id)provider
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v12 = v6;
+  dataCopy = data;
+  providerCopy = provider;
+  v12 = providerCopy;
   v13 = 0;
-  if (v5 && v6)
+  if (dataCopy && providerCopy)
   {
     v13 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v14 = v5;
+    v14 = dataCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v44, v50, 16, v16);
     if (v21)
     {
@@ -464,19 +464,19 @@ LABEL_19:
   return v13;
 }
 
-+ (id)encodedStrokeIdentifiers:(id)a3 withStrokeProvider:(id)a4
++ (id)encodedStrokeIdentifiers:(id)identifiers withStrokeProvider:(id)provider
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
-  if (v5 && v6)
+  if (identifiersCopy && providerCopy)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = v5;
+    v13 = identifiersCopy;
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v29, v33, 16, v15);
     if (v20)
     {
@@ -490,7 +490,7 @@ LABEL_19:
             objc_enumerationMutation(v13);
           }
 
-          v23 = objc_msgSend_encodedStrokeIdentifier_(v6, v16, *(*(&v29 + 1) + 8 * i), v17, v18, v19, v29);
+          v23 = objc_msgSend_encodedStrokeIdentifier_(providerCopy, v16, *(*(&v29 + 1) + 8 * i), v17, v18, v19, v29);
           objc_msgSend_addObject_(v12, v24, v23, v25, v26, v27);
         }
 
@@ -504,23 +504,23 @@ LABEL_19:
   return v12;
 }
 
-+ (id)encodedStrokeIdentifiersFromStrokes:(id)a3 withStrokeProvider:(id)a4 shouldCancel:(id)a5
++ (id)encodedStrokeIdentifiersFromStrokes:(id)strokes withStrokeProvider:(id)provider shouldCancel:(id)cancel
 {
   v67 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v61 = a5;
+  strokesCopy = strokes;
+  providerCopy = provider;
+  cancelCopy = cancel;
   v14 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13);
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v15 = v7;
+  v15 = strokesCopy;
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v62, v66, 16, v17);
   if (v23)
   {
     v24 = *v63;
-    if (v61)
+    if (cancelCopy)
     {
       while (2)
       {
@@ -532,7 +532,7 @@ LABEL_19:
           }
 
           v26 = *(*(&v62 + 1) + 8 * i);
-          if (__ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend_count(v14, v18, v19, v20, v21, v22), 2) <= 0x28F5C28F5C28F5CuLL && (v61[2]() & 1) != 0)
+          if (__ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend_count(v14, v18, v19, v20, v21, v22), 2) <= 0x28F5C28F5C28F5CuLL && (cancelCopy[2]() & 1) != 0)
           {
 
             v59 = 0;
@@ -540,7 +540,7 @@ LABEL_19:
           }
 
           v32 = objc_msgSend_strokeIdentifier(v26, v27, v28, v29, v30, v31);
-          v37 = objc_msgSend_encodedStrokeIdentifier_(v8, v33, v32, v34, v35, v36);
+          v37 = objc_msgSend_encodedStrokeIdentifier_(providerCopy, v33, v32, v34, v35, v36);
 
           objc_msgSend_addObject_(v14, v38, v37, v39, v40, v41);
         }
@@ -569,7 +569,7 @@ LABEL_19:
           v43 = *(*(&v62 + 1) + 8 * j);
           objc_msgSend_count(v14, v18, v19, v20, v21, v22);
           v49 = objc_msgSend_strokeIdentifier(v43, v44, v45, v46, v47, v48);
-          v54 = objc_msgSend_encodedStrokeIdentifier_(v8, v50, v49, v51, v52, v53);
+          v54 = objc_msgSend_encodedStrokeIdentifier_(providerCopy, v50, v49, v51, v52, v53);
 
           objc_msgSend_addObject_(v14, v55, v54, v56, v57, v58);
         }
@@ -587,13 +587,13 @@ LABEL_18:
   return v59;
 }
 
-+ (double)distanceFromPoint:(CGPoint)a3 toStroke:(id)a4 withStrokeProvider:(id)a5
++ (double)distanceFromPoint:(CGPoint)point toStroke:(id)stroke withStrokeProvider:(id)provider
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v13 = objc_msgSend_strokeIdentifierFromData_(v8, v9, a4, v10, v11, v12);
-  v18 = objc_msgSend_strokeForIdentifier_(v8, v14, v13, v15, v16, v17);
+  y = point.y;
+  x = point.x;
+  providerCopy = provider;
+  v13 = objc_msgSend_strokeIdentifierFromData_(providerCopy, v9, stroke, v10, v11, v12);
+  v18 = objc_msgSend_strokeForIdentifier_(providerCopy, v14, v13, v15, v16, v17);
   objc_msgSend_bounds(v18, v19, v20, v21, v22, v23);
   MidX = CGRectGetMidX(v33);
   objc_msgSend_bounds(v18, v25, v26, v27, v28, v29);
@@ -603,18 +603,18 @@ LABEL_18:
   return v31;
 }
 
-+ (double)distanceFromPoint:(CGPoint)a3 toStrokes:(id)a4 withStrokeProvider:(id)a5
++ (double)distanceFromPoint:(CGPoint)point toStrokes:(id)strokes withStrokeProvider:(id)provider
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  strokesCopy = strokes;
+  providerCopy = provider;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = strokesCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v22, v26, 16, v12);
   if (v16)
   {
@@ -629,7 +629,7 @@ LABEL_18:
           objc_enumerationMutation(v10);
         }
 
-        objc_msgSend_distanceFromPoint_toStroke_withStrokeProvider_(CHStrokeUtilities, v13, *(*(&v22 + 1) + 8 * i), v9, v14, v15, x, y, v22);
+        objc_msgSend_distanceFromPoint_toStroke_withStrokeProvider_(CHStrokeUtilities, v13, *(*(&v22 + 1) + 8 * i), providerCopy, v14, v15, x, y, v22);
         if (v20 < v18)
         {
           v18 = v20;
@@ -650,11 +650,11 @@ LABEL_18:
   return v18;
 }
 
-+ (void)enumeratePointsForStroke:(id)a3 interpolationType:(int64_t)a4 resolution:(int64_t)a5 usingBlock:(id)a6
++ (void)enumeratePointsForStroke:(id)stroke interpolationType:(int64_t)type resolution:(int64_t)resolution usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a6;
-  if (!v9)
+  strokeCopy = stroke;
+  blockCopy = block;
+  if (!strokeCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -671,25 +671,25 @@ LABEL_18:
     goto LABEL_31;
   }
 
-  if (!a4)
+  if (!type)
   {
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      if (a5 < 3)
+      if (resolution < 3)
       {
-        v11 = dbl_1839CE668[a5];
+        v11 = dbl_1839CE668[resolution];
 LABEL_30:
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = sub_1836F0488;
         v26[3] = &unk_1E6DDCA98;
-        v27 = v10;
-        objc_msgSend_enumeratePointsWithDistanceStep_usingBlock_(v9, v22, v26, v23, v24, v25, v11);
+        v27 = blockCopy;
+        objc_msgSend_enumeratePointsWithDistanceStep_usingBlock_(strokeCopy, v22, v26, v23, v24, v25, v11);
         v12 = v27;
         goto LABEL_31;
       }
@@ -734,16 +734,16 @@ LABEL_29:
     }
 
 LABEL_11:
-    if (a5 < 3)
+    if (resolution < 3)
     {
-      v13 = dbl_1839CE650[a5];
+      v13 = dbl_1839CE650[resolution];
 LABEL_21:
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = sub_1836F0478;
       v28[3] = &unk_1E6DDCA98;
-      v29 = v10;
-      objc_msgSend_enumeratePointsWithTimestep_usingBlock_(v9, v16, v28, v17, v18, v19, v13);
+      v29 = blockCopy;
+      objc_msgSend_enumeratePointsWithTimestep_usingBlock_(strokeCopy, v16, v28, v17, v18, v19, v13);
       v12 = v29;
 LABEL_31:
 
@@ -792,9 +792,9 @@ LABEL_20:
 LABEL_32:
 }
 
-+ (BOOL)isPointEnumerationSupportedForStroke:(id)a3
++ (BOOL)isPointEnumerationSupportedForStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -805,33 +805,33 @@ LABEL_32:
   v8[2] = sub_1836F0584;
   v8[3] = &unk_1E6DDCAC0;
   v8[4] = &v9;
-  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v4, v5, v3, 0, 1, v8);
+  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v4, v5, strokeCopy, 0, 1, v8);
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-+ (double)durationOfStrokesInStrokeGroup:(id)a3 strokeProvider:(id)a4
++ (double)durationOfStrokesInStrokeGroup:(id)group strokeProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_firstStrokeIdentifier(v5, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_lastStrokeIdentifier(v5, v13, v14, v15, v16, v17);
+  groupCopy = group;
+  providerCopy = provider;
+  v12 = objc_msgSend_firstStrokeIdentifier(groupCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_lastStrokeIdentifier(groupCopy, v13, v14, v15, v16, v17);
   v23 = v18;
   v24 = 0;
   v25 = 0.0;
   if (v12 && v18)
   {
-    v26 = objc_msgSend_strokeIdentifierFromData_(v6, v19, v12, v20, v21, v22);
-    v31 = objc_msgSend_strokeIdentifierFromData_(v6, v27, v23, v28, v29, v30);
+    v26 = objc_msgSend_strokeIdentifierFromData_(providerCopy, v19, v12, v20, v21, v22);
+    v31 = objc_msgSend_strokeIdentifierFromData_(providerCopy, v27, v23, v28, v29, v30);
     v36 = v31;
     v37 = 0;
     v24 = 0;
     if (v26 && v31)
     {
-      v24 = objc_msgSend_strokeForIdentifier_(v6, v32, v26, v33, v34, v35);
-      v37 = objc_msgSend_strokeForIdentifier_(v6, v38, v36, v39, v40, v41);
+      v24 = objc_msgSend_strokeForIdentifier_(providerCopy, v32, v26, v33, v34, v35);
+      v37 = objc_msgSend_strokeForIdentifier_(providerCopy, v38, v36, v39, v40, v41);
     }
 
     if (v24 && v37)
@@ -851,10 +851,10 @@ LABEL_32:
   return v25;
 }
 
-+ (double)speedForFinalTimeRange:(double)a3 stroke:(id)a4
++ (double)speedForFinalTimeRange:(double)range stroke:(id)stroke
 {
-  v9 = a4;
-  v10 = vcvtpd_s64_f64(a3 * 120.0);
+  strokeCopy = stroke;
+  v10 = vcvtpd_s64_f64(range * 120.0);
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x4812000000;
@@ -895,7 +895,7 @@ LABEL_32:
   v20[5] = v34;
   v20[6] = &v25;
   v20[7] = 0;
-  objc_msgSend_enumeratePointsWithTimestep_usingBlock_(v9, v5, v20, v6, v7, v8, 0.00833333333);
+  objc_msgSend_enumeratePointsWithTimestep_usingBlock_(strokeCopy, v5, v20, v6, v7, v8, 0.00833333333);
   v11 = v22[3];
   v12 = -1.0;
   if (v11 >= 0)
@@ -940,9 +940,9 @@ LABEL_32:
   return v12;
 }
 
-+ (double)arcLengthForStroke:(id)a3
++ (double)arcLengthForStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -966,7 +966,7 @@ LABEL_32:
   v8[4] = v9;
   v8[5] = &v13;
   v8[6] = v11;
-  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v4, v5, v3, 0, 1, v8);
+  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v4, v5, strokeCopy, 0, 1, v8);
   v6 = v14[3];
   _Block_object_dispose(v9, 8);
   _Block_object_dispose(v11, 8);
@@ -975,10 +975,10 @@ LABEL_32:
   return v6;
 }
 
-+ (CGRect)boundsForStrokes:(id)a3
++ (CGRect)boundsForStrokes:(id)strokes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  strokesCopy = strokes;
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
   width = *(MEMORY[0x1E695F050] + 16);
@@ -987,7 +987,7 @@ LABEL_32:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v3;
+  v8 = strokesCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v27, v31, 16, v10);
   if (v16)
   {
@@ -1037,12 +1037,12 @@ LABEL_32:
   return result;
 }
 
-+ (CGRect)boundsForStroke:(id)a3 usingCache:(id)a4
++ (CGRect)boundsForStroke:(id)stroke usingCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_encodedStrokeIdentifier(v5, v7, v8, v9, v10, v11);
-  v17 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12, v14, v15, v16);
+  strokeCopy = stroke;
+  cacheCopy = cache;
+  v12 = objc_msgSend_encodedStrokeIdentifier(strokeCopy, v7, v8, v9, v10, v11);
+  v17 = objc_msgSend_objectForKeyedSubscript_(cacheCopy, v13, v12, v14, v15, v16);
   v23 = v17;
   if (v17)
   {
@@ -1055,13 +1055,13 @@ LABEL_32:
 
   else
   {
-    objc_msgSend_bounds(v5, v18, v19, v20, v21, v22);
+    objc_msgSend_bounds(strokeCopy, v18, v19, v20, v21, v22);
     v25 = v32;
     v27 = v33;
     v29 = v34;
     v31 = v35;
     v23 = objc_msgSend_ch_valueWithCGRect_(MEMORY[0x1E696B098], v36, v37, v38, v39, v40);
-    objc_msgSend_setObject_forKeyedSubscript_(v6, v41, v23, v12, v42, v43);
+    objc_msgSend_setObject_forKeyedSubscript_(cacheCopy, v41, v23, v12, v42, v43);
   }
 
   v44 = v25;
@@ -1075,13 +1075,13 @@ LABEL_32:
   return result;
 }
 
-+ (CGRect)boundingBoxOfPoints:(const void *)a3 rotatedAroundPoint:(CGPoint)a4 byAngle:(double)a5
++ (CGRect)boundingBoxOfPoints:(const void *)points rotatedAroundPoint:(CGPoint)point byAngle:(double)angle
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = __sincosf_stret(v8);
-  v10 = *(a3 + 1) - *a3;
+  y = point.y;
+  x = point.x;
+  angleCopy = angle;
+  v9 = __sincosf_stret(angleCopy);
+  v10 = *(points + 1) - *points;
   if (v10)
   {
     cosval = v9.__cosval;
@@ -1092,7 +1092,7 @@ LABEL_32:
       v13 = 1;
     }
 
-    v14 = (*a3 + 8);
+    v14 = (*points + 8);
     v15 = 1.79769313e308;
     v16 = -1.79769313e308;
     v17 = -1.79769313e308;
@@ -1147,7 +1147,7 @@ LABEL_32:
   return result;
 }
 
-+ (vector<CGRect,)horizontallyOverlappedChunks:(id)a2
++ (vector<CGRect,)horizontallyOverlappedChunks:(id)chunks
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -1238,10 +1238,10 @@ LABEL_10:
   return result;
 }
 
-+ (double)horizontalOverlapOfIndividualStrokeBounds:(const void *)a3 otherStrokeBounds:(const void *)a4
++ (double)horizontalOverlapOfIndividualStrokeBounds:(const void *)bounds otherStrokeBounds:(const void *)strokeBounds
 {
-  objc_msgSend_horizontallyOverlappedChunks_(CHStrokeUtilities, a2, a3, a4, v4, v5);
-  objc_msgSend_horizontallyOverlappedChunks_(CHStrokeUtilities, v7, a4, v8, v9, v10);
+  objc_msgSend_horizontallyOverlappedChunks_(CHStrokeUtilities, a2, bounds, strokeBounds, v4, v5);
+  objc_msgSend_horizontallyOverlappedChunks_(CHStrokeUtilities, v7, strokeBounds, v8, v9, v10);
   v11 = v22;
   v12 = 0.0;
   v13 = __p;
@@ -1290,23 +1290,23 @@ LABEL_10:
   return v12;
 }
 
-+ (CGRect)unionStrokeBounds:(const void *)a3 usingStrokeCountLimit:(int64_t)a4 reverseOrder:(BOOL)a5
++ (CGRect)unionStrokeBounds:(const void *)bounds usingStrokeCountLimit:(int64_t)limit reverseOrder:(BOOL)order
 {
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
   v9 = *(MEMORY[0x1E695F050] + 16);
   v10 = *(MEMORY[0x1E695F050] + 24);
-  v11 = *a3;
-  v12 = *(a3 + 1) - *a3;
-  v13 = v12 >> 5;
-  if (v12 >> 5 >= a4)
+  v11 = *bounds;
+  v12 = *(bounds + 1) - *bounds;
+  limitCopy = v12 >> 5;
+  if (v12 >> 5 >= limit)
   {
-    v13 = a4;
+    limitCopy = limit;
   }
 
-  if (a5)
+  if (order)
   {
-    if (v13)
+    if (limitCopy)
     {
       v14 = 0;
       v15 = 0;
@@ -1314,22 +1314,22 @@ LABEL_10:
       {
         *&v7 = CGRectUnion(*&v7, *(v11 + v12 + v14 - 32));
         ++v15;
-        v11 = *a3;
-        v12 = *(a3 + 1) - *a3;
-        v16 = v12 >> 5;
-        if (v12 >> 5 >= a4)
+        v11 = *bounds;
+        v12 = *(bounds + 1) - *bounds;
+        limitCopy2 = v12 >> 5;
+        if (v12 >> 5 >= limit)
         {
-          v16 = a4;
+          limitCopy2 = limit;
         }
 
         v14 -= 32;
       }
 
-      while (v15 < v16);
+      while (v15 < limitCopy2);
     }
   }
 
-  else if (v13)
+  else if (limitCopy)
   {
     v17 = 0;
     v18 = 0;
@@ -1337,17 +1337,17 @@ LABEL_10:
     {
       *&v7 = CGRectUnion(*&v7, *(v11 + v17));
       ++v18;
-      v11 = *a3;
-      v19 = (*(a3 + 1) - *a3) >> 5;
-      if (v19 >= a4)
+      v11 = *bounds;
+      limitCopy3 = (*(bounds + 1) - *bounds) >> 5;
+      if (limitCopy3 >= limit)
       {
-        v19 = a4;
+        limitCopy3 = limit;
       }
 
       v17 += 32;
     }
 
-    while (v18 < v19);
+    while (v18 < limitCopy3);
   }
 
   result.size.height = v10;
@@ -1357,14 +1357,14 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)unionStrokeBounds:(const void *)a3 aroundXPosition:(double)a4 usingOneSideStrokeCountLimit:(int64_t)a5
++ (CGRect)unionStrokeBounds:(const void *)bounds aroundXPosition:(double)position usingOneSideStrokeCountLimit:(int64_t)limit
 {
   v8 = *MEMORY[0x1E695F050];
   v9 = *(MEMORY[0x1E695F050] + 8);
   v10 = *(MEMORY[0x1E695F050] + 16);
   v11 = *(MEMORY[0x1E695F050] + 24);
-  v12 = *a3;
-  v13 = *(a3 + 1) - *a3;
+  v12 = *bounds;
+  v13 = *(bounds + 1) - *bounds;
   v14 = v13 >> 5;
   if (v13)
   {
@@ -1374,12 +1374,12 @@ LABEL_10:
     v18 = *(MEMORY[0x1E695F050] + 24);
     v19 = 0;
     v20 = 0;
-    while (CGRectGetMidX(*(v12 + v19)) <= a4)
+    while (CGRectGetMidX(*(v12 + v19)) <= position)
     {
       ++v20;
-      v12 = *a3;
+      v12 = *bounds;
       v19 += 32;
-      if (v20 >= (*(a3 + 1) - *a3) >> 5)
+      if (v20 >= (*(bounds + 1) - *bounds) >> 5)
       {
         goto LABEL_7;
       }
@@ -1393,14 +1393,14 @@ LABEL_7:
     v8 = v15;
   }
 
-  v21 = (v14 + ~a5) & ~((v14 + ~a5) >> 63);
+  v21 = (v14 + ~limit) & ~((v14 + ~limit) >> 63);
   v22 = v14 - v21;
   if (v14 > v21)
   {
     v23 = 32 * v21;
     do
     {
-      *&v8 = CGRectUnion(*&v8, *(*a3 + v23));
+      *&v8 = CGRectUnion(*&v8, *(*bounds + v23));
       v23 += 32;
       --v22;
     }
@@ -1408,9 +1408,9 @@ LABEL_7:
     while (v22);
   }
 
-  v24 = v14 + a5;
-  v25 = *a3;
-  v26 = (*(a3 + 1) - *a3) >> 5;
+  v24 = v14 + limit;
+  v25 = *bounds;
+  v26 = (*(bounds + 1) - *bounds) >> 5;
   if (v24 < v26)
   {
     v26 = v24;
@@ -1423,8 +1423,8 @@ LABEL_7:
     {
       *&v8 = CGRectUnion(*&v8, *(v25 + v27));
       ++v14;
-      v25 = *a3;
-      v28 = (*(a3 + 1) - *a3) >> 5;
+      v25 = *bounds;
+      v28 = (*(bounds + 1) - *bounds) >> 5;
       if (v24 < v28)
       {
         v28 = v24;
@@ -1443,31 +1443,31 @@ LABEL_7:
   return result;
 }
 
-+ (id)createDrawingForStrokeIdentifiers:(id)a3 strokeProvider:(id)a4 interpolationType:(int64_t)a5 resolution:(int64_t)a6 cancellationBlock:(id)a7
++ (id)createDrawingForStrokeIdentifiers:(id)identifiers strokeProvider:(id)provider interpolationType:(int64_t)type resolution:(int64_t)resolution cancellationBlock:(id)block
 {
-  v12 = a7;
-  v16 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(a1, v13, a3, a4, v14, v15);
-  v18 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(a1, v17, v16, a5, a6, v12);
+  blockCopy = block;
+  v16 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(self, v13, identifiers, provider, v14, v15);
+  v18 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(self, v17, v16, type, resolution, blockCopy);
 
   return v18;
 }
 
-+ (id)createDrawingForStrokes:(id)a3 interpolationType:(int64_t)a4 resolution:(int64_t)a5 cancellationBlock:(id)a6
++ (id)createDrawingForStrokes:(id)strokes interpolationType:(int64_t)type resolution:(int64_t)resolution cancellationBlock:(id)block
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v38 = a6;
+  strokesCopy = strokes;
+  blockCopy = block;
   v41 = objc_alloc_init(CHDrawing);
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v8;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v47, v51, 16, v10, v8);
+  obj = strokesCopy;
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v47, v51, 16, v10, strokesCopy);
   if (v11)
   {
     v12 = *v48;
-    if (v38)
+    if (blockCopy)
     {
 LABEL_3:
       v13 = 0;
@@ -1479,7 +1479,7 @@ LABEL_3:
         }
 
         v14 = *(*(&v47 + 1) + 8 * v13);
-        if (v38[2]())
+        if (blockCopy[2]())
         {
           break;
         }
@@ -1491,7 +1491,7 @@ LABEL_3:
         v45 = &unk_1E6DDCB58;
         v16 = v41;
         v46 = v16;
-        objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v15, v17, v14, a4, a5, &v42);
+        objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v15, v17, v14, type, resolution, &v42);
         objc_msgSend_endStroke(v16, v18, v19, v20, v21, v22);
 
         if (v11 == ++v13)
@@ -1526,7 +1526,7 @@ LABEL_3:
           v45 = &unk_1E6DDCB58;
           v28 = v41;
           v46 = v28;
-          objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v27, v29, v26, a4, a5, &v42);
+          objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v27, v29, v26, type, resolution, &v42);
           objc_msgSend_endStroke(v28, v30, v31, v32, v33, v34);
         }
 
@@ -1540,18 +1540,18 @@ LABEL_3:
   return v41;
 }
 
-+ (vector<CGPoint,)convexHullForStroke:(id)a2
++ (vector<CGPoint,)convexHullForStroke:(id)stroke
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v5 = a4;
   v15[0] = v5;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v15, 1, v7, v8);
-  objc_msgSend_convexHullForStrokes_(a2, v10, v9, v11, v12, v13);
+  objc_msgSend_convexHullForStrokes_(stroke, v10, v9, v11, v12, v13);
 
   return result;
 }
 
-+ (vector<CGPoint,)convexHullForStrokes:(id)a2
++ (vector<CGPoint,)convexHullForStrokes:(id)strokes
 {
   v40 = *MEMORY[0x1E69E9840];
   v28 = 0;
@@ -1618,7 +1618,7 @@ LABEL_3:
 
   else
   {
-    objc_msgSend_convexHullForPoints_(a2, v16, (v29 + 6), v17, v18, v19);
+    objc_msgSend_convexHullForPoints_(strokes, v16, (v29 + 6), v17, v18, v19);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -1631,7 +1631,7 @@ LABEL_3:
   return result;
 }
 
-+ (vector<CGPoint,)convexHullForStrokes:(id)a2 inDrawing:(SEL)a3
++ (vector<CGPoint,)convexHullForStrokes:(id)strokes inDrawing:(SEL)drawing
 {
   v34 = *MEMORY[0x1E69E9840];
   v8 = a5;
@@ -1673,7 +1673,7 @@ LABEL_3:
 
   else
   {
-    objc_msgSend_convexHullForPoints_(a2, v14, (v24 + 6), v15, v16, v17);
+    objc_msgSend_convexHullForPoints_(strokes, v14, (v24 + 6), v15, v16, v17);
   }
 
   _Block_object_dispose(&v23, 8);
@@ -1829,7 +1829,7 @@ LABEL_3:
   return result;
 }
 
-+ (vector<CGPoint,)enlargedConvexHull:()vector<CGPoint withMargin:(std:(SEL)a3 :(const void *)a4 allocator<CGPoint>> *)result
++ (vector<CGPoint,)enlargedConvexHull:()vector<CGPoint withMargin:(std:(SEL)margin :(const void *)a4 allocator<CGPoint>> *)result
 {
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
@@ -1937,9 +1937,9 @@ LABEL_3:
   return result;
 }
 
-+ (id)polygonForStrokes:(id)a3
++ (id)polygonForStrokes:(id)strokes
 {
-  objc_msgSend_convexHullForStrokes_(a1, a2, a3, v3, v4, v5);
+  objc_msgSend_convexHullForStrokes_(self, a2, strokes, v3, v4, v5);
   v7 = __p;
   v6 = v22;
   v8 = (v22 - __p) >> 4;
@@ -1982,9 +1982,9 @@ LABEL_3:
   return v18;
 }
 
-+ (double)circumferenceRatioOfCircleFittedToPoints:(const void *)a3 circleCenter:(CGPoint *)a4 circleRadius:(double *)a5
++ (double)circumferenceRatioOfCircleFittedToPoints:(const void *)points circleCenter:(CGPoint *)center circleRadius:(double *)radius
 {
-  v5 = *(a3 + 1);
+  v5 = *(points + 1);
   v6 = *(v5 + 16);
   v7 = *(v5 + 8);
   v8 = *(v7 + 16);
@@ -2065,16 +2065,16 @@ LABEL_3:
       v31.f32[1] = v30;
       v32 = vsub_f32(vcvt_f32_f64(v29), v31);
       v33 = sqrtf(vaddv_f32(vmul_f32(v32, v32)));
-      if (a4)
+      if (center)
       {
-        a4->x = v25;
-        a4->y = v28;
+        center->x = v25;
+        center->y = v28;
       }
 
       v34 = v33;
-      if (a5)
+      if (radius)
       {
-        *a5 = v34;
+        *radius = v34;
       }
 
       v35.f32[0] = v17;
@@ -2094,13 +2094,13 @@ LABEL_3:
   return result;
 }
 
-+ (double)vectorMeanWithoutOutliers:(void *)a3
++ (double)vectorMeanWithoutOutliers:(void *)outliers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = *(a3 + 1);
-  if (v4 != *a3)
+  v4 = *(outliers + 1);
+  if (v4 != *outliers)
   {
-    v5 = *a3;
+    v5 = *outliers;
     do
     {
       v5 += 8;
@@ -2110,8 +2110,8 @@ LABEL_3:
   }
 
   std::__sort<std::__less<double,double> &,double *>();
-  v6 = *a3;
-  v7 = (*(a3 + 1) - *a3) >> 3;
+  v6 = *outliers;
+  v7 = (*(outliers + 1) - *outliers) >> 3;
   v8 = v7 / 5;
   v9 = 0.0;
   if (v7 / 5 < v7 - v7 / 5)
@@ -2153,14 +2153,14 @@ LABEL_10:
   return v9 / (v7 - 2 * v8);
 }
 
-+ (double)lineOrientationForStrokePoints:(const void *)a3 error:(double *)a4
++ (double)lineOrientationForStrokePoints:(const void *)points error:(double *)error
 {
-  v5 = *a3;
-  v6 = (*(a3 + 1) - *a3) >> 4;
+  v5 = *points;
+  v6 = (*(points + 1) - *points) >> 4;
   if (v6 < 2)
   {
     result = 0.0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -2235,7 +2235,7 @@ LABEL_10:
     v49 = v16;
     v32 = atan(v48);
     result = -v32;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -2313,25 +2313,25 @@ LABEL_10:
     result = 0.0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_37:
-    *a4 = v8;
+    *error = v8;
   }
 
   return result;
 }
 
-+ (double)distanceFromPoint:(CGPoint)a3 toSegmentFromPoint:(CGPoint)a4 toPoint:(CGPoint)a5
++ (double)distanceFromPoint:(CGPoint)point toSegmentFromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
 {
-  y = a5.y;
-  v6 = a4;
-  v7 = vcvt_f32_f64(vsubq_f64(a5, a4));
+  y = toPoint.y;
+  fromPointCopy = fromPoint;
+  v7 = vcvt_f32_f64(vsubq_f64(toPoint, fromPoint));
   v8 = vaddv_f32(vmul_f32(v7, v7));
   if (v8 != 0.0)
   {
-    v9.f32[0] = a3.x - a4.x;
-    v10 = a3.y - a4.y;
+    v9.f32[0] = point.x - fromPoint.x;
+    v10 = point.y - fromPoint.y;
     v9.f32[1] = v10;
     v11 = vaddv_f32(vmul_f32(v9, v7)) / v8;
     if (v11 > 1.0)
@@ -2344,26 +2344,26 @@ LABEL_37:
       v11 = 0.0;
     }
 
-    v6 = vmlaq_n_f64(v6, vcvtq_f64_f32(v7), v11);
+    fromPointCopy = vmlaq_n_f64(fromPointCopy, vcvtq_f64_f32(v7), v11);
   }
 
-  v12 = a3.y;
-  v13 = vsub_f32(vcvt_f32_f64(a3), vcvt_f32_f64(v6));
+  v12 = point.y;
+  v13 = vsub_f32(vcvt_f32_f64(point), vcvt_f32_f64(fromPointCopy));
   return sqrtf(vaddv_f32(vmul_f32(v13, v13)));
 }
 
-+ (double)distanceFromRectangle:(CGRect)a3 toRectangle:(CGRect)a4
++ (double)distanceFromRectangle:(CGRect)rectangle toRectangle:(CGRect)toRectangle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v91 = a3.size.height;
+  height = toRectangle.size.height;
+  width = toRectangle.size.width;
+  y = toRectangle.origin.y;
+  x = toRectangle.origin.x;
+  v8 = rectangle.size.width;
+  v9 = rectangle.origin.y;
+  v10 = rectangle.origin.x;
+  v91 = rectangle.size.height;
   v11 = 0.0;
-  if (CGRectIntersectsRect(a3, a4))
+  if (CGRectIntersectsRect(rectangle, toRectangle))
   {
     return v11;
   }
@@ -2479,15 +2479,15 @@ LABEL_37:
   return fmin(v68, v75);
 }
 
-+ (double)distanceFromPoint:(CGPoint)a3 toRectangle:(CGRect)a4
++ (double)distanceFromPoint:(CGPoint)point toRectangle:(CGRect)rectangle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v31 = a3.y;
-  v29 = a3.x;
-  MinX = CGRectGetMinX(a4);
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  v31 = point.y;
+  v29 = point.x;
+  MinX = CGRectGetMinX(rectangle);
   v32.origin.x = x;
   v32.origin.y = y;
   v32.size.width = width;
@@ -2591,17 +2591,17 @@ LABEL_9:
   return result;
 }
 
-+ (double)horizontalDistanceBetweenRectangle:(CGRect)a3 rectangle:(CGRect)a4
++ (double)horizontalDistanceBetweenRectangle:(CGRect)rectangle rectangle:(CGRect)a4
 {
   height = a4.size.height;
   width = a4.size.width;
   y = a4.origin.y;
   x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  v8 = rectangle.size.height;
+  v9 = rectangle.size.width;
+  v10 = rectangle.origin.y;
+  v11 = rectangle.origin.x;
+  MinX = CGRectGetMinX(rectangle);
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
@@ -2703,17 +2703,17 @@ LABEL_9:
   return v27 - CGRectGetMaxX(*&v20);
 }
 
-+ (double)verticalDistanceBetweenRectangle:(CGRect)a3 rectangle:(CGRect)a4
++ (double)verticalDistanceBetweenRectangle:(CGRect)rectangle rectangle:(CGRect)a4
 {
   height = a4.size.height;
   width = a4.size.width;
   y = a4.origin.y;
   x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  v8 = rectangle.size.height;
+  v9 = rectangle.size.width;
+  v10 = rectangle.origin.y;
+  v11 = rectangle.origin.x;
+  MinY = CGRectGetMinY(rectangle);
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
@@ -2815,42 +2815,42 @@ LABEL_9:
   return v27 - CGRectGetMaxY(*&v20);
 }
 
-+ (BOOL)isStrokeGroup:(id)a3 inlineWithNextGroup:(id)a4
++ (BOOL)isStrokeGroup:(id)group inlineWithNextGroup:(id)nextGroup
 {
-  v5 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nextGroupCopy = nextGroup;
   v7 = objc_opt_class();
-  objc_msgSend_bounds(v5, v8, v9, v10, v11, v12);
+  objc_msgSend_bounds(groupCopy, v8, v9, v10, v11, v12);
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  objc_msgSend_bounds(v6, v21, v22, v23, v24, v25);
+  objc_msgSend_bounds(nextGroupCopy, v21, v22, v23, v24, v25);
   objc_msgSend_horizontalDistanceBetweenRectangle_rectangle_(v7, v26, v27, v28, v29, v30, v14, v16, v18, v20, v31, v32, v33, v34);
   v36 = v35;
   v37 = objc_opt_class();
-  objc_msgSend_bounds(v5, v38, v39, v40, v41, v42);
+  objc_msgSend_bounds(groupCopy, v38, v39, v40, v41, v42);
   v44 = v43;
   v46 = v45;
   v48 = v47;
   v50 = v49;
-  objc_msgSend_bounds(v6, v51, v52, v53, v54, v55);
+  objc_msgSend_bounds(nextGroupCopy, v51, v52, v53, v54, v55);
   objc_msgSend_verticalDistanceBetweenRectangle_rectangle_(v37, v56, v57, v58, v59, v60, v44, v46, v48, v50, v61, v62, v63, v64);
   v66 = v65 < 0.0 && v36 > 0.0;
   v67 = objc_opt_class();
-  objc_msgSend_bounds(v5, v68, v69, v70, v71, v72);
+  objc_msgSend_bounds(groupCopy, v68, v69, v70, v71, v72);
   v74 = v73;
   v76 = v75;
   v78 = v77;
   v80 = v79;
-  objc_msgSend_bounds(v6, v81, v82, v83, v84, v85);
+  objc_msgSend_bounds(nextGroupCopy, v81, v82, v83, v84, v85);
   objc_msgSend_distanceFromRectangle_toRectangle_(v67, v86, v87, v88, v89, v90, v74, v76, v78, v80, v91, v92, v93, v94);
   if (v66)
   {
     v101 = v100;
-    objc_msgSend_bounds(v5, v95, v96, v97, v98, v99);
+    objc_msgSend_bounds(groupCopy, v95, v96, v97, v98, v99);
     v103 = v102;
-    objc_msgSend_bounds(v6, v104, v105, v106, v107, v108);
+    objc_msgSend_bounds(nextGroupCopy, v104, v105, v106, v107, v108);
     v110 = fmax(v103, v109);
     v111 = v101 < v110 + v110;
   }
@@ -2863,18 +2863,18 @@ LABEL_9:
   return v111;
 }
 
-+ (id)remainingGroupStrokes:(id)a3 remainingStrokes:(id)a4 strokeProvider:(id)a5
++ (id)remainingGroupStrokes:(id)strokes remainingStrokes:(id)remainingStrokes strokeProvider:(id)provider
 {
   v69 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v57 = a5;
-  v58 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13, v7);
+  strokesCopy = strokes;
+  remainingStrokesCopy = remainingStrokes;
+  providerCopy = provider;
+  v58 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13, strokesCopy);
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v7;
+  obj = strokesCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v63, v68, 16, v15);
   if (v21)
   {
@@ -2909,7 +2909,7 @@ LABEL_9:
               }
 
               v41 = *(*(&v59 + 1) + 8 * j);
-              if (objc_msgSend_containsObject_(v8, v34, v41, v35, v36, v37))
+              if (objc_msgSend_containsObject_(remainingStrokesCopy, v34, v41, v35, v36, v37))
               {
                 objc_msgSend_addObject_(v25, v34, v41, v35, v36, v37);
               }
@@ -2923,7 +2923,7 @@ LABEL_9:
 
         if (objc_msgSend_count(v25, v42, v43, v44, v45, v46))
         {
-          v50 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v47, v25, v57, v48, v49);
+          v50 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v47, v25, providerCopy, v48, v49);
           objc_msgSend_addObject_(v58, v51, v50, v52, v53, v54);
         }
       }
@@ -2937,7 +2937,7 @@ LABEL_9:
   return v58;
 }
 
-+ (vector<CGPoint,)regularizedPathFromPoints:()vector<CGPoint delta:(std:(SEL)a3 :(const void *)a4 allocator<CGPoint>> *)result gamma:(double)a5 outError:(double)a6
++ (vector<CGPoint,)regularizedPathFromPoints:()vector<CGPoint delta:(std:(SEL)delta :(const void *)a4 allocator<CGPoint>> *)result gamma:(double)gamma outError:(double)error
 {
   if (a7)
   {
@@ -3081,16 +3081,16 @@ LABEL_20:
         v51 = *v45;
         if (v48 < 0.0)
         {
-          v52 = -a5;
+          gammaCopy = -gamma;
         }
 
         else
         {
-          v52 = a5;
+          gammaCopy = gamma;
         }
 
         v50 = v45[1];
-        v53 = v50 + v52 * pow(v49, a6);
+        v53 = v50 + gammaCopy * pow(v49, error);
         *&v56 = v51;
         *(&v56 + 1) = v53;
         v54 = v45[1];
@@ -3132,41 +3132,41 @@ LABEL_23:
   return result;
 }
 
-+ (BOOL)isStrokeClassificationTextOrMath:(int64_t)a3
++ (BOOL)isStrokeClassificationTextOrMath:(int64_t)math
 {
   v4 = objc_opt_class();
-  if (objc_msgSend_isStrokeClassificationMath_(v4, v5, a3, v6, v7, v8))
+  if (objc_msgSend_isStrokeClassificationMath_(v4, v5, math, v6, v7, v8))
   {
     return 1;
   }
 
   v10 = objc_opt_class();
 
-  return objc_msgSend_isStrokeClassificationText_(v10, v11, a3, v12, v13, v14);
+  return objc_msgSend_isStrokeClassificationText_(v10, v11, math, v12, v13, v14);
 }
 
-+ (BOOL)isMatchingStrokeClassification:(int64_t)a3 scriptClassification:(int64_t)a4
++ (BOOL)isMatchingStrokeClassification:(int64_t)classification scriptClassification:(int64_t)scriptClassification
 {
   result = 0;
-  if (a4 <= 0x10)
+  if (scriptClassification <= 0x10)
   {
-    if (((1 << a4) & 0xEFE) != 0)
+    if (((1 << scriptClassification) & 0xEFE) != 0)
     {
-      v5 = a3 - 1;
+      v5 = classification - 1;
       return v5 < 2;
     }
 
-    if (((1 << a4) & 0x1F000) != 0)
+    if (((1 << scriptClassification) & 0x1F000) != 0)
     {
-      v5 = a3 - 3;
+      v5 = classification - 3;
       return v5 < 2;
     }
 
-    if (a4 == 8)
+    if (scriptClassification == 8)
     {
       v7 = objc_opt_class();
-      v12 = objc_msgSend_isStrokeClassificationTextOrMath_(v7, v8, a3, v9, v10, v11) ^ 1;
-      if (a3)
+      v12 = objc_msgSend_isStrokeClassificationTextOrMath_(v7, v8, classification, v9, v10, v11) ^ 1;
+      if (classification)
       {
         return v12;
       }
@@ -3197,17 +3197,17 @@ LABEL_23:
   return v3;
 }
 
-+ (BOOL)isStroke:(id)a3 intersectingPolygon:(id)a4
++ (BOOL)isStroke:(id)stroke intersectingPolygon:(id)polygon
 {
-  v5 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_polygonDrawing(v6, v7, v8, v9, v10, v11);
+  strokeCopy = stroke;
+  polygonCopy = polygon;
+  v12 = objc_msgSend_polygonDrawing(polygonCopy, v7, v8, v9, v10, v11);
   objc_msgSend_bounds(v12, v13, v14, v15, v16, v17);
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  objc_msgSend_bounds(v5, v26, v27, v28, v29, v30);
+  objc_msgSend_bounds(strokeCopy, v26, v27, v28, v29, v30);
   v47.origin.x = v31;
   v47.origin.y = v32;
   v47.size.width = v33;
@@ -3228,9 +3228,9 @@ LABEL_23:
     v39[1] = 3221225472;
     v39[2] = sub_1836F46F8;
     v39[3] = &unk_1E6DDCBA8;
-    v40 = v6;
+    v40 = polygonCopy;
     v41 = &v42;
-    objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v36, v5, 0, 1, v39);
+    objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v36, strokeCopy, 0, 1, v39);
     v37 = *(v43 + 24);
 
     _Block_object_dispose(&v42, 8);
@@ -3244,18 +3244,18 @@ LABEL_23:
   return v37 & 1;
 }
 
-+ (id)strokesIntersectingPolygons:(id)a3 fromStrokes:(id)a4 intersectedPolygons:(id *)a5
++ (id)strokesIntersectingPolygons:(id)polygons fromStrokes:(id)strokes intersectedPolygons:(id *)intersectedPolygons
 {
   v57 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v40 = a4;
+  polygonsCopy = polygons;
+  strokesCopy = strokes;
   v42 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7, v8, v9, v10);
   v16 = objc_msgSend_set(MEMORY[0x1E695DFA8], v11, v12, v13, v14, v15);
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v40;
+  obj = strokesCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, &v51, v56, 16, v18);
   if (v19)
   {
@@ -3276,7 +3276,7 @@ LABEL_23:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v24 = v46;
+        v24 = polygonsCopy;
         v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v47, v55, 16, v26);
         if (v30)
         {
@@ -3325,25 +3325,25 @@ LABEL_23:
     while (v19);
   }
 
-  if (a5)
+  if (intersectedPolygons)
   {
     v38 = v16;
-    *a5 = v16;
+    *intersectedPolygons = v16;
   }
 
   return v42;
 }
 
-+ (int64_t)minRectangleDistanceFromStrokes:(id)a3 toPolygons:(id)a4
++ (int64_t)minRectangleDistanceFromStrokes:(id)strokes toPolygons:(id)polygons
 {
   v70 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v59 = a4;
+  strokesCopy = strokes;
+  polygonsCopy = polygons;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v5;
+  obj = strokesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v64, v69, 16, v7);
   if (v8)
   {
@@ -3364,7 +3364,7 @@ LABEL_23:
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v12 = v59;
+        v12 = polygonsCopy;
         v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v60, v68, 16, v14);
         if (v20)
         {
@@ -3419,17 +3419,17 @@ LABEL_23:
   return v8;
 }
 
-+ (id)strokeIdentifiersByStrokeClusterPolygonsFromStrokeBounds:(id)a3 strokes:(id)a4
++ (id)strokeIdentifiersByStrokeClusterPolygonsFromStrokeBounds:(id)bounds strokes:(id)strokes
 {
   v212 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v202 = a4;
-  v198 = v5;
+  boundsCopy = bounds;
+  strokesCopy = strokes;
+  v198 = boundsCopy;
   v199 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v6, v7, v8, v9, v10);
-  if (objc_msgSend_count(v5, v11, v12, v13, v14, v15) && objc_msgSend_count(v202, v16, v17, v18, v19, v20))
+  if (objc_msgSend_count(boundsCopy, v11, v12, v13, v14, v15) && objc_msgSend_count(strokesCopy, v16, v17, v18, v19, v20))
   {
-    v26 = objc_msgSend_count(v5, v21, v22, v23, v24, v25);
-    if (v26 != objc_msgSend_count(v202, v27, v28, v29, v30, v31))
+    v26 = objc_msgSend_count(boundsCopy, v21, v22, v23, v24, v25);
+    if (v26 != objc_msgSend_count(strokesCopy, v27, v28, v29, v30, v31))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -3440,15 +3440,15 @@ LABEL_23:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
-        v209 = objc_msgSend_count(v5, v38, v39, v40, v41, v42);
+        v209 = objc_msgSend_count(boundsCopy, v38, v39, v40, v41, v42);
         v210 = 1024;
-        v211 = objc_msgSend_count(v202, v43, v44, v45, v46, v47);
+        v211 = objc_msgSend_count(strokesCopy, v43, v44, v45, v46, v47);
         _os_log_impl(&dword_18366B000, v37, OS_LOG_TYPE_ERROR, "strokeClusterPolygonsError: should have matching strokes and strokeBounds, but have %d strokes and %d strokeBounds", buf, 0xEu);
       }
     }
 
-    v48 = objc_msgSend_count(v5, v32, v33, v34, v35, v36);
-    if (v48 != objc_msgSend_count(v202, v49, v50, v51, v52, v53))
+    v48 = objc_msgSend_count(boundsCopy, v32, v33, v34, v35, v36);
+    if (v48 != objc_msgSend_count(strokesCopy, v49, v50, v51, v52, v53))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -3458,8 +3458,8 @@ LABEL_23:
       v54 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v54, OS_LOG_TYPE_FAULT))
       {
-        v60 = objc_msgSend_count(v5, v55, v56, v57, v58, v59);
-        v66 = objc_msgSend_count(v202, v61, v62, v63, v64, v65);
+        v60 = objc_msgSend_count(boundsCopy, v55, v56, v57, v58, v59);
+        v66 = objc_msgSend_count(strokesCopy, v61, v62, v63, v64, v65);
         *buf = 67109376;
         v209 = v60;
         v210 = 1024;
@@ -3481,7 +3481,7 @@ LABEL_23:
         v206 = 0u;
         v203 = 0u;
         v204 = 0u;
-        v96 = v202;
+        v96 = strokesCopy;
         v103 = objc_msgSend_countByEnumeratingWithState_objects_count_(v96, v97, &v203, v207, 16, v98);
         if (v103)
         {
@@ -3569,16 +3569,16 @@ LABEL_23:
   return v199;
 }
 
-+ (BOOL)isStroke:(id)a3 intersectingAnyPolygonInSet:(id)a4
++ (BOOL)isStroke:(id)stroke intersectingAnyPolygonInSet:(id)set
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  strokeCopy = stroke;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v16, v20, 16, v8);
+  setCopy = set;
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v7, &v16, v20, 16, v8);
   if (v12)
   {
     v13 = *v17;
@@ -3588,17 +3588,17 @@ LABEL_23:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
-        if (objc_msgSend_isStroke_intersectingPolygon_(CHStrokeUtilities, v9, v5, *(*(&v16 + 1) + 8 * i), v10, v11, v16))
+        if (objc_msgSend_isStroke_intersectingPolygon_(CHStrokeUtilities, v9, strokeCopy, *(*(&v16 + 1) + 8 * i), v10, v11, v16))
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v9, &v16, v20, 16, v11);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v9, &v16, v20, 16, v11);
       if (v12)
       {
         continue;
@@ -3613,11 +3613,11 @@ LABEL_11:
   return v12;
 }
 
-+ (void)principalComponentsForPoints:(const void *)a3 outFirstComponent:(CGVector *)a4 outSecondComponent:(CGVector *)a5 outMeanPoint:(CGPoint *)a6
++ (void)principalComponentsForPoints:(const void *)points outFirstComponent:(CGVector *)component outSecondComponent:(CGVector *)secondComponent outMeanPoint:(CGPoint *)point
 {
-  if (a4)
+  if (component)
   {
-    if (a5)
+    if (secondComponent)
     {
       goto LABEL_3;
     }
@@ -3659,10 +3659,10 @@ LABEL_13:
 
 LABEL_14:
 
-  if (a5)
+  if (secondComponent)
   {
 LABEL_3:
-    if (a6)
+    if (point)
     {
       goto LABEL_4;
     }
@@ -3705,12 +3705,12 @@ LABEL_21:
 
 LABEL_22:
 
-  if (a6)
+  if (point)
   {
 LABEL_4:
-    v10 = *a3;
-    v11 = *(a3 + 1);
-    if (*a3 != v11)
+    v10 = *points;
+    v11 = *(points + 1);
+    if (*points != v11)
     {
       goto LABEL_5;
     }
@@ -3753,9 +3753,9 @@ LABEL_29:
 
 LABEL_30:
 
-  v10 = *a3;
-  v11 = *(a3 + 1);
-  if (*a3 != v11)
+  v10 = *points;
+  v11 = *(points + 1);
+  if (*points != v11)
   {
 LABEL_5:
     *buf = 0;
@@ -3770,19 +3770,19 @@ LABEL_5:
   }
 
 LABEL_31:
-  if (a4 && a5 && a6)
+  if (component && secondComponent && point)
   {
-    *a4 = xmmword_1839CE630;
-    *a5 = xmmword_1839CE640;
-    a6->x = 0.0;
-    a6->y = 0.0;
+    *component = xmmword_1839CE630;
+    *secondComponent = xmmword_1839CE640;
+    point->x = 0.0;
+    point->y = 0.0;
   }
 }
 
-+ (vector<float,)projectionForPoints:(id)a2 direction:(SEL)a3 origin:(const void *)a4
++ (vector<float,)projectionForPoints:(id)points direction:(SEL)direction origin:(const void *)origin
 {
-  v7 = *a4;
-  v6 = *(a4 + 1);
+  v7 = *origin;
+  v6 = *(origin + 1);
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   retstr->__begin_ = 0;
@@ -3799,10 +3799,10 @@ LABEL_31:
   operator new();
 }
 
-+ (BOOL)linearScratchOutTestForPoints:(const void *)a3 direction:(const CGVector *)a4 origin:(const CGPoint *)a5 threshold:(float)a6 cutIndex:(int64_t *)a7
++ (BOOL)linearScratchOutTestForPoints:(const void *)points direction:(const CGVector *)direction origin:(const CGPoint *)origin threshold:(float)threshold cutIndex:(int64_t *)index
 {
-  v10 = a3;
-  if (!a7)
+  pointsCopy2 = points;
+  if (!index)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -3823,7 +3823,7 @@ LABEL_31:
       {
 LABEL_9:
 
-        v10 = a3;
+        pointsCopy2 = points;
         goto LABEL_10;
       }
     }
@@ -3847,10 +3847,10 @@ LABEL_10:
   dy = 0.0;
   v32 = 0.0;
   objc_opt_self();
-  v13 = -a4->dx;
-  dy = a4->dy;
+  v13 = -direction->dx;
+  dy = direction->dy;
   v32 = v13;
-  objc_msgSend_projectionForPoints_direction_origin_(CHStrokeUtilities, v14, v10, &dy, a5, v15);
+  objc_msgSend_projectionForPoints_direction_origin_(CHStrokeUtilities, v14, pointsCopy2, &dy, origin, v15);
   sub_1836F62F4(&v27, CHStrokeUtilities, buf);
   memset(v26, 0, sizeof(v26));
   if (v30 != *buf)
@@ -3890,7 +3890,7 @@ LABEL_10:
   __C = 0;
   __D = 0;
   vDSP_nzcros(0, 1, 0, &__C, &__D, 0);
-  *a7 = 0x7FFFFFFFFFFFFFFFLL;
+  *index = 0x7FFFFFFFFFFFFFFFLL;
   if (v21)
   {
     __dst = v21;
@@ -3923,9 +3923,9 @@ LABEL_10:
   return 1;
 }
 
-+ (BOOL)linearScratchOutTestForPoints:(const void *)a3 threshold:(float)a4 cutIndex:(int64_t *)a5
++ (BOOL)linearScratchOutTestForPoints:(const void *)points threshold:(float)threshold cutIndex:(int64_t *)index
 {
-  if (!a5)
+  if (!index)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -3966,10 +3966,10 @@ LABEL_9:
   }
 
 LABEL_10:
-  objc_msgSend_principalComponentsForPoints_outFirstComponent_outSecondComponent_outMeanPoint_(CHStrokeUtilities, a2, a3, buf, v21, v20);
+  objc_msgSend_principalComponentsForPoints_outFirstComponent_outSecondComponent_outMeanPoint_(CHStrokeUtilities, a2, points, buf, v21, v20);
   v19 = 0x7FFFFFFFFFFFFFFFLL;
-  *&v10 = a4;
-  if (objc_msgSend_linearScratchOutTestForPoints_direction_origin_threshold_cutIndex_(CHStrokeUtilities, v11, a3, buf, v20, &v19, v10))
+  *&v10 = threshold;
+  if (objc_msgSend_linearScratchOutTestForPoints_direction_origin_threshold_cutIndex_(CHStrokeUtilities, v11, points, buf, v20, &v19, v10))
   {
     LOBYTE(v14) = 1;
     v15 = v19;
@@ -3978,8 +3978,8 @@ LABEL_10:
   else
   {
     v18 = 0x7FFFFFFFFFFFFFFFLL;
-    *&v13 = a4;
-    v14 = objc_msgSend_linearScratchOutTestForPoints_direction_origin_threshold_cutIndex_(CHStrokeUtilities, v12, a3, v21, v20, &v18, v13);
+    *&v13 = threshold;
+    v14 = objc_msgSend_linearScratchOutTestForPoints_direction_origin_threshold_cutIndex_(CHStrokeUtilities, v12, points, v21, v20, &v18, v13);
     if (v14)
     {
       v16 = &v18;
@@ -3993,11 +3993,11 @@ LABEL_10:
     v15 = *v16;
   }
 
-  *a5 = v15;
+  *index = v15;
   return v14;
 }
 
-+ (vector<_NSRange,)segmentationRangesForScratchOutPoints:(id)a2
++ (vector<_NSRange,)segmentationRangesForScratchOutPoints:(id)points
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -4005,9 +4005,9 @@ LABEL_10:
   operator new();
 }
 
-+ (id)polygonSetForScratchOutStroke:(id)a3
++ (id)polygonSetForScratchOutStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v9 = objc_msgSend_set(MEMORY[0x1E695DFA8], v4, v5, v6, v7, v8);
   v50 = 0;
   v51 = &v50;
@@ -4023,13 +4023,13 @@ LABEL_10:
   v49[2] = sub_1836F8930;
   v49[3] = &unk_1E6DDCAC0;
   v49[4] = &v50;
-  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v10, v3, 0, 0, v49);
+  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v10, strokeCopy, 0, 0, v49);
   objc_msgSend_segmentationRangesForScratchOutPoints_(CHStrokeUtilities, v11, (v51 + 6), v12, v13, v14);
   v19 = v47;
   v20 = v48;
   if (v47 != v48)
   {
-    v41 = v3;
+    v41 = strokeCopy;
     do
     {
       v21 = v19[1];
@@ -4091,7 +4091,7 @@ LABEL_10:
 
     while (v19 != v20);
     v19 = v47;
-    v3 = v41;
+    strokeCopy = v41;
   }
 
   v39 = v9;

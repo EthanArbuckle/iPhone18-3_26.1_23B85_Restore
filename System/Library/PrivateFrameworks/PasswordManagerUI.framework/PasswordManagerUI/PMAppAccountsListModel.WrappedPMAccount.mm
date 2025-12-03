@@ -1,7 +1,7 @@
 @interface PMAppAccountsListModel.WrappedPMAccount
 - (NSString)effectiveTitleForSorting;
 - (_TtCC17PasswordManagerUI22PMAppAccountsListModel16WrappedPMAccount)init;
-- (void)setEffectiveTitleForSorting:(id)a3;
+- (void)setEffectiveTitleForSorting:(id)sorting;
 @end
 
 @implementation PMAppAccountsListModel.WrappedPMAccount
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (void)setEffectiveTitleForSorting:(id)a3
+- (void)setEffectiveTitleForSorting:(id)sorting
 {
   v4 = sub_21CB855C4();
   v5 = (self + OBJC_IVAR____TtCC17PasswordManagerUI22PMAppAccountsListModel16WrappedPMAccount_effectiveTitleForSorting);

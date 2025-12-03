@@ -1,24 +1,24 @@
 @interface _STKSIMToolkitResponseProvider
-- (_STKSIMToolkitResponseProvider)initWithQueue:(id)a3 telephonyClient:(id)a4 context:(id)a5 options:(id)a6 logger:(id)a7;
-- (__CFString)_responseFromResponseType:(int64_t)a3;
-- (void)sendResponse:(int64_t)a3;
-- (void)sendResponse:(int64_t)a3 withBOOLResult:(BOOL)a4;
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4;
-- (void)sendSuccessWithSelectedIndex:(unint64_t)a3;
+- (_STKSIMToolkitResponseProvider)initWithQueue:(id)queue telephonyClient:(id)client context:(id)context options:(id)options logger:(id)logger;
+- (__CFString)_responseFromResponseType:(int64_t)type;
+- (void)sendResponse:(int64_t)response;
+- (void)sendResponse:(int64_t)response withBOOLResult:(BOOL)result;
+- (void)sendResponse:(int64_t)response withStringResult:(id)result;
+- (void)sendSuccessWithSelectedIndex:(unint64_t)index;
 @end
 
 @implementation _STKSIMToolkitResponseProvider
 
-- (_STKSIMToolkitResponseProvider)initWithQueue:(id)a3 telephonyClient:(id)a4 context:(id)a5 options:(id)a6 logger:(id)a7
+- (_STKSIMToolkitResponseProvider)initWithQueue:(id)queue telephonyClient:(id)client context:(id)context options:(id)options logger:(id)logger
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  queueCopy = queue;
+  clientCopy = client;
+  contextCopy = context;
+  optionsCopy = options;
+  loggerCopy = logger;
+  if (queueCopy)
   {
-    if (v14)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
@@ -27,17 +27,17 @@
   else
   {
     [_STKSIMToolkitResponseProvider initWithQueue:telephonyClient:context:options:logger:];
-    if (v14)
+    if (clientCopy)
     {
 LABEL_3:
-      if (v15)
+      if (contextCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [_STKSIMToolkitResponseProvider initWithQueue:telephonyClient:context:options:logger:];
-      if (v16)
+      if (optionsCopy)
       {
         goto LABEL_5;
       }
@@ -47,13 +47,13 @@ LABEL_10:
   }
 
   [_STKSIMToolkitResponseProvider initWithQueue:telephonyClient:context:options:logger:];
-  if (!v15)
+  if (!contextCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v16)
+  if (optionsCopy)
   {
     goto LABEL_5;
   }
@@ -67,27 +67,27 @@ LABEL_5:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_telephonyClient, a4);
-    objc_storeStrong(&v19->_context, a5);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_telephonyClient, client);
+    objc_storeStrong(&v19->_context, context);
+    v20 = [optionsCopy copy];
     options = v19->_options;
     v19->_options = v20;
 
-    objc_storeStrong(&v19->_queue, a3);
-    objc_storeStrong(&v19->_logger, a7);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v19->_logger, logger);
   }
 
   return v19;
 }
 
-- (void)sendResponse:(int64_t)a3
+- (void)sendResponse:(int64_t)response
 {
   if (!self->_hasSentResponse)
   {
     self->_hasSentResponse = 1;
     logger = self->_logger;
     v6 = os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG);
-    if (a3 == 7)
+    if (response == 7)
     {
       if (v6)
       {
@@ -107,7 +107,7 @@ LABEL_5:
     {
       if (v6)
       {
-        [(_STKSIMToolkitResponseProvider *)self sendResponse:a3];
+        [(_STKSIMToolkitResponseProvider *)self sendResponse:response];
       }
 
       queue = self->_queue;
@@ -116,7 +116,7 @@ LABEL_5:
       block[2] = __47___STKSIMToolkitResponseProvider_sendResponse___block_invoke_23;
       block[3] = &unk_279B4C390;
       block[4] = self;
-      block[5] = a3;
+      block[5] = response;
       v8 = block;
     }
 
@@ -124,12 +124,12 @@ LABEL_5:
   }
 }
 
-- (void)sendResponse:(int64_t)a3 withBOOLResult:(BOOL)a4
+- (void)sendResponse:(int64_t)response withBOOLResult:(BOOL)result
 {
   v22 = *MEMORY[0x277D85DE8];
   if (!self->_hasSentResponse)
   {
-    v4 = a4;
+    resultCopy = result;
     self->_hasSentResponse = 1;
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
@@ -145,9 +145,9 @@ LABEL_5:
       }
 
       v11 = logger;
-      v12 = [(_STKSIMToolkitResponseProvider *)self _responseFromResponseType:a3];
+      v12 = [(_STKSIMToolkitResponseProvider *)self _responseFromResponseType:response];
       *buf = 138412802;
-      if (v4)
+      if (resultCopy)
       {
         v13 = @"YES";
       }
@@ -171,18 +171,18 @@ LABEL_5:
     block[2] = __62___STKSIMToolkitResponseProvider_sendResponse_withBOOLResult___block_invoke;
     block[3] = &unk_279B4C820;
     block[4] = self;
-    block[5] = a3;
-    v15 = v4;
+    block[5] = response;
+    v15 = resultCopy;
     dispatch_async(queue, block);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(int64_t)a3 withStringResult:(id)a4
+- (void)sendResponse:(int64_t)response withStringResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  resultCopy = result;
   if (!self->_hasSentResponse)
   {
     self->_hasSentResponse = 1;
@@ -203,9 +203,9 @@ LABEL_5:
       *buf = 138412802;
       v16 = v10;
       v17 = 2112;
-      v18 = [(_STKSIMToolkitResponseProvider *)self _responseFromResponseType:a3];
+      v18 = [(_STKSIMToolkitResponseProvider *)self _responseFromResponseType:response];
       v19 = 2112;
-      v20 = v6;
+      v20 = resultCopy;
       _os_log_debug_impl(&dword_262BB4000, v11, OS_LOG_TYPE_DEBUG, "Really sending response to CT: sendSIMToolkitStringResponse - hasClient: %@, response: %@, result: %@", buf, 0x20u);
     }
 
@@ -215,15 +215,15 @@ LABEL_5:
     block[2] = __64___STKSIMToolkitResponseProvider_sendResponse_withStringResult___block_invoke;
     block[3] = &unk_279B4C3B8;
     block[4] = self;
-    v14 = a3;
-    v13 = v6;
+    responseCopy = response;
+    v13 = resultCopy;
     dispatch_async(queue, block);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendSuccessWithSelectedIndex:(unint64_t)a3
+- (void)sendSuccessWithSelectedIndex:(unint64_t)index
 {
   if (!self->_hasSentResponse)
   {
@@ -231,7 +231,7 @@ LABEL_5:
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
-      [(_STKSIMToolkitResponseProvider *)self sendSuccessWithSelectedIndex:a3];
+      [(_STKSIMToolkitResponseProvider *)self sendSuccessWithSelectedIndex:index];
     }
 
     queue = self->_queue;
@@ -240,28 +240,28 @@ LABEL_5:
     v7[2] = __63___STKSIMToolkitResponseProvider_sendSuccessWithSelectedIndex___block_invoke;
     v7[3] = &unk_279B4C390;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = index;
     dispatch_async(queue, v7);
   }
 }
 
-- (__CFString)_responseFromResponseType:(int64_t)a3
+- (__CFString)_responseFromResponseType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    if ((a3 - 6) < 2)
+    if ((type - 6) < 2)
     {
       v3 = MEMORY[0x277CC3FF0];
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       v3 = MEMORY[0x277CC3FD8];
     }
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         return self;
       }
@@ -270,9 +270,9 @@ LABEL_5:
     }
   }
 
-  else if (a3 > 1)
+  else if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v3 = MEMORY[0x277CC4008];
     }
@@ -283,9 +283,9 @@ LABEL_5:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       return self;
     }

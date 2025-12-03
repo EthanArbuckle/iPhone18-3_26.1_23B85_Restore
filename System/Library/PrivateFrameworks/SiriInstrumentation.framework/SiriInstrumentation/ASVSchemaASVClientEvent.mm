@@ -1,13 +1,13 @@
 @interface ASVSchemaASVClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (ASVSchemaASVClientEvent)initWithDictionary:(id)a3;
-- (ASVSchemaASVClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (ASVSchemaASVClientEvent)initWithDictionary:(id)dictionary;
+- (ASVSchemaASVClientEvent)initWithJSON:(id)n;
 - (ASVSchemaASVOutputVolumeQueried)asvOutputVolumeQueried;
 - (ASVSchemaASVUserIntentDetected)asvUserIntentDetected;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,22 +16,22 @@
 - (unint64_t)hash;
 - (void)deleteAsvOutputVolumeQueried;
 - (void)deleteAsvUserIntentDetected;
-- (void)setAsvOutputVolumeQueried:(id)a3;
-- (void)setAsvUserIntentDetected:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAsvOutputVolumeQueried:(id)queried;
+- (void)setAsvUserIntentDetected:(id)detected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASVSchemaASVClientEvent
 
-- (ASVSchemaASVClientEvent)initWithDictionary:(id)a3
+- (ASVSchemaASVClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ASVSchemaASVClientEvent;
   v5 = [(ASVSchemaASVClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(ASVSchemaASVClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"asvOutputVolumeQueried"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"asvOutputVolumeQueried"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(ASVSchemaASVClientEvent *)v5 setAsvOutputVolumeQueried:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"asvUserIntentDetected"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"asvUserIntentDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (ASVSchemaASVClientEvent)initWithJSON:(id)a3
+- (ASVSchemaASVClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASVSchemaASVClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASVSchemaASVClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASVSchemaASVClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,58 +97,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asvOutputVolumeQueried)
   {
-    v4 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asvOutputVolumeQueried = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+    dictionaryRepresentation = [asvOutputVolumeQueried dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asvOutputVolumeQueried"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asvOutputVolumeQueried"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asvOutputVolumeQueried"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asvOutputVolumeQueried"];
     }
   }
 
   if (self->_asvUserIntentDetected)
   {
-    v7 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    asvUserIntentDetected = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+    dictionaryRepresentation2 = [asvUserIntentDetected dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"asvUserIntentDetected"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"asvUserIntentDetected"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"asvUserIntentDetected"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"asvUserIntentDetected"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ [(ASVSchemaASVUserIntentDetected *)self->_asvUserIntentDetected hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ASVSchemaASVClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v6 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
-  v7 = [v4 asvOutputVolumeQueried];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+  eventMetadata2 = [equalCopy asvOutputVolumeQueried];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
-  if (v13)
+  asvOutputVolumeQueried = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+  if (asvOutputVolumeQueried)
   {
-    v14 = v13;
-    v15 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
-    v16 = [v4 asvOutputVolumeQueried];
-    v17 = [v15 isEqual:v16];
+    v14 = asvOutputVolumeQueried;
+    asvOutputVolumeQueried2 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+    asvOutputVolumeQueried3 = [equalCopy asvOutputVolumeQueried];
+    v17 = [asvOutputVolumeQueried2 isEqual:asvOutputVolumeQueried3];
 
     if (!v17)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v6 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
-  v7 = [v4 asvUserIntentDetected];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+  eventMetadata2 = [equalCopy asvUserIntentDetected];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
-    if (!v18)
+    asvUserIntentDetected = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+    if (!asvUserIntentDetected)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
-    v21 = [v4 asvUserIntentDetected];
-    v22 = [v20 isEqual:v21];
+    v19 = asvUserIntentDetected;
+    asvUserIntentDetected2 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+    asvUserIntentDetected3 = [equalCopy asvUserIntentDetected];
+    v22 = [asvUserIntentDetected2 isEqual:asvUserIntentDetected3];
 
     if (v22)
     {
@@ -258,34 +258,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ASVSchemaASVClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ASVSchemaASVClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+  asvOutputVolumeQueried = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
 
-  if (v6)
+  if (asvOutputVolumeQueried)
   {
-    v7 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+    asvOutputVolumeQueried2 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+  asvUserIntentDetected = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (asvUserIntentDetected)
   {
-    v10 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+    asvUserIntentDetected2 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -314,21 +314,21 @@ LABEL_19:
   return v3;
 }
 
-- (void)setAsvUserIntentDetected:(id)a3
+- (void)setAsvUserIntentDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   asvOutputVolumeQueried = self->_asvOutputVolumeQueried;
   self->_asvOutputVolumeQueried = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!detectedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   asvUserIntentDetected = self->_asvUserIntentDetected;
-  self->_asvUserIntentDetected = v4;
+  self->_asvUserIntentDetected = detectedCopy;
 }
 
 - (void)deleteAsvOutputVolumeQueried
@@ -356,33 +356,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)setAsvOutputVolumeQueried:(id)a3
+- (void)setAsvOutputVolumeQueried:(id)queried
 {
-  v4 = a3;
+  queriedCopy = queried;
   asvUserIntentDetected = self->_asvUserIntentDetected;
   self->_asvUserIntentDetected = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!queriedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   asvOutputVolumeQueried = self->_asvOutputVolumeQueried;
-  self->_asvOutputVolumeQueried = v4;
+  self->_asvOutputVolumeQueried = queriedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ASVSchemaASVClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(ASVSchemaASVClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.asv.ASVClientEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.siri.asv.ASVClientEvent.ASVUserIntentDetected";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.siri.asv.ASVClientEvent.ASVOutputVolumeQueried";
   }
@@ -393,35 +393,35 @@ LABEL_19:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = ASVSchemaASVClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASVSchemaASVClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  asvOutputVolumeQueried = [(ASVSchemaASVClientEvent *)self asvOutputVolumeQueried];
+  v10 = [asvOutputVolumeQueried applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ASVSchemaASVClientEvent *)self deleteAsvOutputVolumeQueried];
   }
 
-  v12 = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  asvUserIntentDetected = [(ASVSchemaASVClientEvent *)self asvUserIntentDetected];
+  v13 = [asvUserIntentDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ASVSchemaASVClientEvent *)self deleteAsvUserIntentDetected];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-  v3 = [v2 asvId];
+  eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  asvId = [eventMetadata asvId];
 
-  if (v3)
+  if (asvId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [asvId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [asvId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 66;
+        LODWORD(value) = 66;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(ASVSchemaASVClientEvent *)self eventMetadata];
-  v3 = [v2 asvId];
+  eventMetadata = [(ASVSchemaASVClientEvent *)self eventMetadata];
+  asvId = [eventMetadata asvId];
 
-  if (!v3)
+  if (!asvId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [asvId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [asvId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = asvId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(ASVSchemaASVClientEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(ASVSchemaASVClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___ASVSchemaASVClientEvent__asvOutputVolumeQueried;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___ASVSchemaASVClientEvent__asvUserIntentDetected;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"asvUserIntentDetected";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"asvOutputVolumeQueried";
   }

@@ -1,22 +1,22 @@
 @interface CRLiOSCanvasDragItem
-- (CRLiOSCanvasDragItem)initWithItemProvider:(id)a3 previewGeneratingBlock:(id)a4;
+- (CRLiOSCanvasDragItem)initWithItemProvider:(id)provider previewGeneratingBlock:(id)block;
 - (id)sourceObject;
 @end
 
 @implementation CRLiOSCanvasDragItem
 
-- (CRLiOSCanvasDragItem)initWithItemProvider:(id)a3 previewGeneratingBlock:(id)a4
+- (CRLiOSCanvasDragItem)initWithItemProvider:(id)provider previewGeneratingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = CRLiOSCanvasDragItem;
   v9 = [(CRLiOSCanvasDragItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemProvider, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_itemProvider, provider);
+    v11 = [blockCopy copy];
     previewGeneratingBlock = v10->_previewGeneratingBlock;
     v10->_previewGeneratingBlock = v11;
   }

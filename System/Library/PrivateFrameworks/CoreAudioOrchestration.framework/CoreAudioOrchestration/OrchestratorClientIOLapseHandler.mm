@@ -1,6 +1,6 @@
 @interface OrchestratorClientIOLapseHandler
 - (OrchestratorClientIOLapseHandler)init;
-- (void)ioHasStartedOnDevice:(BOOL)a3;
+- (void)ioHasStartedOnDevice:(BOOL)device;
 @end
 
 @implementation OrchestratorClientIOLapseHandler
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)ioHasStartedOnDevice:(BOOL)a3
+- (void)ioHasStartedOnDevice:(BOOL)device
 {
   ptr = self->mLapseHandler.__ptr_;
   if (ptr)
   {
-    IOLapseHandler::setIOHasStarted(ptr, a3);
+    IOLapseHandler::setIOHasStarted(ptr, device);
   }
 }
 

@@ -1,12 +1,12 @@
 @interface PFExportGIFRequest
-+ (BOOL)_exportGIFToURL:(id)a3 request:(id)a4 progress:(id)a5 error:(id *)a6;
-+ (CGImage)_createProcessedGIFImage:(opaqueCMSampleBuffer *)a3 options:(id)a4 transform:(CGAffineTransform *)a5 error:(id *)a6;
++ (BOOL)_exportGIFToURL:(id)l request:(id)request progress:(id)progress error:(id *)error;
++ (CGImage)_createProcessedGIFImage:(opaqueCMSampleBuffer *)image options:(id)options transform:(CGAffineTransform *)transform error:(id *)error;
 + (OS_dispatch_queue)_exportQueue;
-+ (id)runExport:(id)a3 toURL:(id)a4 completion:(id)a5;
-+ (opaqueCMSampleBuffer)_copyNextSampleBuffer:(id)a3 reader:(id)a4 time:(id *)a5 didReachEnd:(BOOL *)a6 error:(id *)a7;
-+ (void)runExport:(id)a3 toURL:(id)a4 progress:(id)a5 completion:(id)a6;
-- (PFExportGIFRequest)initWithVideoURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)runExport:(id)export toURL:(id)l completion:(id)completion;
++ (opaqueCMSampleBuffer)_copyNextSampleBuffer:(id)buffer reader:(id)reader time:(id *)time didReachEnd:(BOOL *)end error:(id *)error;
++ (void)runExport:(id)export toURL:(id)l progress:(id)progress completion:(id)completion;
+- (PFExportGIFRequest)initWithVideoURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_ensureValidInputs;
 @end
 
@@ -37,7 +37,7 @@
   self->_maximumFrameSize = maximumFrameSize;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithVideoURL:self->_videoURL];
   *(result + 8) = self->_shouldDither;
@@ -48,15 +48,15 @@
   return result;
 }
 
-- (PFExportGIFRequest)initWithVideoURL:(id)a3
+- (PFExportGIFRequest)initWithVideoURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PFExportGIFRequest;
   v5 = [(PFExportGIFRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     videoURL = v5->_videoURL;
     v5->_videoURL = v6;
 
@@ -68,16 +68,16 @@
   return v5;
 }
 
-+ (BOOL)_exportGIFToURL:(id)a3 request:(id)a4 progress:(id)a5 error:(id *)a6
++ (BOOL)_exportGIFToURL:(id)l request:(id)request progress:(id)progress error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  url = a3;
-  v8 = a4;
-  v58 = a5;
-  v59 = v8;
+  url = l;
+  requestCopy = request;
+  progressCopy = progress;
+  v59 = requestCopy;
   v9 = MEMORY[0x1E6987E28];
-  v10 = [v8 videoURL];
-  v62 = [v9 assetWithURL:v10];
+  videoURL = [requestCopy videoURL];
+  v62 = [v9 assetWithURL:videoURL];
 
   v63 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v62];
   if ([v63 count] >= 2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -86,11 +86,11 @@
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "PFExportGIFRequest encountered multiple video tracks. Only one will be used", &v72, 2u);
   }
 
-  v11 = [v63 firstObject];
-  v12 = v11;
-  if (v11)
+  firstObject = [v63 firstObject];
+  v12 = firstObject;
+  if (firstObject)
   {
-    [v11 timeRange];
+    [firstObject timeRange];
     v89 = *(&v81 + 1);
     v56 = DWORD1(v82);
     v90 = v82;
@@ -140,7 +140,7 @@ LABEL_43:
   *&v72.b = __PAIR64__(v56, v90);
   v72.c = v54;
   Seconds = CMTimeGetSeconds(&v72);
-  [v8 maximumFrameRate];
+  [requestCopy maximumFrameRate];
   v19 = v18;
   v87 = *MEMORY[0x1E696DB70];
   v85 = *MEMORY[0x1E696DB78];
@@ -149,9 +149,9 @@ LABEL_43:
   v88 = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
 
-  v22 = [*MEMORY[0x1E6982DE8] identifier];
+  identifier = [*MEMORY[0x1E6982DE8] identifier];
   v53 = vcvtpd_u64_f64(Seconds * v19);
-  idst = CGImageDestinationCreateWithURL(url, v22, v53, v21);
+  idst = CGImageDestinationCreateWithURL(url, identifier, v53, v21);
 
   if (!idst)
   {
@@ -171,8 +171,8 @@ LABEL_43:
 
   if (([v14 startReading] & 1) == 0)
   {
-    v46 = [v14 error];
-    v26 = _PFExportGIFRequestError(1, v46, @"Failed to start reading video");
+    error = [v14 error];
+    v26 = _PFExportGIFRequestError(1, error, @"Failed to start reading video");
 
 LABEL_56:
     CFRelease(idst);
@@ -191,7 +191,7 @@ LABEL_56:
   *&v72.tx = *MEMORY[0x1E6960CC0];
   v50 = *(MEMORY[0x1E6960CC0] + 16);
   v73 = v50;
-  [v8 maximumFrameRate];
+  [requestCopy maximumFrameRate];
   v71[1] = 3221225472;
   v71[0] = MEMORY[0x1E69E9820];
   v71[2] = __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block_invoke;
@@ -233,7 +233,7 @@ LABEL_49:
     v70 = v50;
     v68 = 0;
     v67 = 0;
-    v29 = [a1 _copyNextSampleBuffer:v61 reader:v14 time:&v69 didReachEnd:&v68 error:&v67];
+    v29 = [self _copyNextSampleBuffer:v61 reader:v14 time:&v69 didReachEnd:&v68 error:&v67];
     v30 = v67;
     v31 = v30;
     if (v29)
@@ -253,7 +253,7 @@ LABEL_49:
       if (v32(v49, v25, &time, 0))
       {
         CGImageRelease(v25);
-        if (v58)
+        if (progressCopy)
         {
           *&time.a = *(*&v72.b + 32);
           time.c = *(*&v72.b + 48);
@@ -262,7 +262,7 @@ LABEL_49:
           *&time.b = __PAIR64__(v56, v90);
           time.c = v54;
           v34 = CMTimeGetSeconds(&time);
-          v58[2](v58, &v66, v33 / v34);
+          progressCopy[2](progressCopy, &v66, v33 / v34);
         }
 
 LABEL_27:
@@ -274,7 +274,7 @@ LABEL_27:
 
         v65 = 0;
         time = v79;
-        v25 = [a1 _createProcessedGIFImage:v29 options:v59 transform:&time error:&v65];
+        v25 = [self _createProcessedGIFImage:v29 options:v59 transform:&time error:&v65];
         v37 = v65;
         v38 = v37;
         v27 = v25 != 0;
@@ -354,10 +354,10 @@ LABEL_54:
   CFRelease(idst);
   v26 = v48;
 LABEL_44:
-  if (a6)
+  if (error)
   {
     v44 = v26;
-    *a6 = v26;
+    *error = v26;
   }
 
   return v43;
@@ -405,31 +405,31 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
   return v4;
 }
 
-+ (CGImage)_createProcessedGIFImage:(opaqueCMSampleBuffer *)a3 options:(id)a4 transform:(CGAffineTransform *)a5 error:(id *)a6
++ (CGImage)_createProcessedGIFImage:(opaqueCMSampleBuffer *)image options:(id)options transform:(CGAffineTransform *)transform error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  optionsCopy = options;
+  ImageBuffer = CMSampleBufferGetImageBuffer(image);
   if (ImageBuffer)
   {
     v11 = ImageBuffer;
     v12 = objc_autoreleasePoolPush();
     v13 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v11];
-    v14 = *&a5->c;
-    v50[0] = *&a5->a;
+    v14 = *&transform->c;
+    v50[0] = *&transform->a;
     v50[1] = v14;
-    v50[2] = *&a5->tx;
+    v50[2] = *&transform->tx;
     v15 = [v13 imageByApplyingTransform:v50];
 
     [v15 extent];
     v17 = v16;
     v19 = v18;
-    v20 = [v15 colorSpace];
-    v21 = v20;
-    if (v20)
+    colorSpace = [v15 colorSpace];
+    v21 = colorSpace;
+    if (colorSpace)
     {
       v48 = *MEMORY[0x1E695F868];
-      v49 = v20;
+      v49 = colorSpace;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     }
 
@@ -438,7 +438,7 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
       v22 = 0;
     }
 
-    v24 = [v9 maximumFrameSize];
+    maximumFrameSize = [optionsCopy maximumFrameSize];
     v25 = v15;
     v26 = v25;
     if (v17 <= v19)
@@ -451,8 +451,8 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
       v27 = v17;
     }
 
-    v28 = v25;
-    if (v24 / v27 < 1.0)
+    outputImage = v25;
+    if (maximumFrameSize / v27 < 1.0)
     {
       v46[0] = @"inputImage";
       v46[1] = @"inputScale";
@@ -462,14 +462,14 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
 
       v31 = [MEMORY[0x1E695F648] filterWithName:@"CILanczosScaleTransform" withInputParameters:v30];
-      v28 = [v31 outputImage];
+      outputImage = [v31 outputImage];
     }
 
-    v32 = v28;
+    v32 = outputImage;
     v33 = v32;
-    if ([v9 shouldDither])
+    if ([optionsCopy shouldDither])
     {
-      [v9 ditherDepth];
+      [optionsCopy ditherDepth];
       v35 = v34;
       v36 = v32;
       v37 = exp2(-v35);
@@ -509,10 +509,10 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
     objc_autoreleasePoolPop(v12);
   }
 
-  else if (a6)
+  else if (error)
   {
     _PFExportGIFRequestError(1, 0, @"Unable to get CVPixelBuffer from sample buffer");
-    *a6 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -523,18 +523,18 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
   return v23;
 }
 
-+ (opaqueCMSampleBuffer)_copyNextSampleBuffer:(id)a3 reader:(id)a4 time:(id *)a5 didReachEnd:(BOOL *)a6 error:(id *)a7
++ (opaqueCMSampleBuffer)_copyNextSampleBuffer:(id)buffer reader:(id)reader time:(id *)time didReachEnd:(BOOL *)end error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  readerCopy = reader;
   v12 = MEMORY[0x1E6960C70];
   value = *MEMORY[0x1E6960C70];
   timescale = *(MEMORY[0x1E6960C70] + 8);
-  v13 = [a3 copyNextSampleBuffer];
-  if (v13)
+  copyNextSampleBuffer = [buffer copyNextSampleBuffer];
+  if (copyNextSampleBuffer)
   {
-    v14 = v13;
-    CMSampleBufferGetOutputPresentationTimeStamp(&v23, v13);
+    v14 = copyNextSampleBuffer;
+    CMSampleBufferGetOutputPresentationTimeStamp(&v23, copyNextSampleBuffer);
     value = v23.value;
     flags = v23.flags;
     timescale = v23.timescale;
@@ -546,8 +546,8 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
       goto LABEL_9;
     }
 
-    v17 = [v11 error];
-    v18 = _PFExportGIFRequestError(1, v17, @"Encountered invalid sample buffer time");
+    error = [readerCopy error];
+    v18 = _PFExportGIFRequestError(1, error, @"Encountered invalid sample buffer time");
 
     CFRelease(v14);
   }
@@ -556,7 +556,7 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
   {
     flags = *(v12 + 12);
     epoch = *(v12 + 16);
-    if ([v11 status] == 2)
+    if ([readerCopy status] == 2)
     {
       v18 = 0;
       v14 = 0;
@@ -564,63 +564,63 @@ uint64_t __61__PFExportGIFRequest__exportGIFToURL_request_progress_error___block
       goto LABEL_9;
     }
 
-    v20 = [v11 error];
-    v18 = _PFExportGIFRequestError(1, v20, @"Failed to read a video sample buffer");
+    error2 = [readerCopy error];
+    v18 = _PFExportGIFRequestError(1, error2, @"Failed to read a video sample buffer");
   }
 
   v19 = 0;
   v14 = 0;
 LABEL_9:
-  if (a5)
+  if (time)
   {
-    a5->var0 = value;
-    a5->var1 = timescale;
-    a5->var2 = flags;
-    a5->var3 = epoch;
+    time->var0 = value;
+    time->var1 = timescale;
+    time->var2 = flags;
+    time->var3 = epoch;
   }
 
-  if (a6)
+  if (end)
   {
-    *a6 = v19;
+    *end = v19;
   }
 
-  if (a7)
+  if (error)
   {
     v21 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
   return v14;
 }
 
-+ (void)runExport:(id)a3 toURL:(id)a4 progress:(id)a5 completion:(id)a6
++ (void)runExport:(id)export toURL:(id)l progress:(id)progress completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 copy];
+  lCopy = l;
+  progressCopy = progress;
+  completionCopy = completion;
+  v13 = [export copy];
   [v13 _ensureValidInputs];
   if ([v13 isSynchronous])
   {
     v23 = 0;
-    v14 = [a1 _exportGIFToURL:v10 request:v13 progress:v11 error:&v23];
+    v14 = [self _exportGIFToURL:lCopy request:v13 progress:progressCopy error:&v23];
     v15 = v23;
-    v12[2](v12, v14, v15);
+    completionCopy[2](completionCopy, v14, v15);
   }
 
   else
   {
-    v16 = [a1 _exportQueue];
+    _exportQueue = [self _exportQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __58__PFExportGIFRequest_runExport_toURL_progress_completion___block_invoke;
     v17[3] = &unk_1E7B646C0;
-    v22 = a1;
-    v18 = v10;
+    selfCopy = self;
+    v18 = lCopy;
     v19 = v13;
-    v20 = v11;
-    v21 = v12;
-    dispatch_async(v16, v17);
+    v20 = progressCopy;
+    v21 = completionCopy;
+    dispatch_async(_exportQueue, v17);
 
     v15 = v18;
   }
@@ -638,12 +638,12 @@ void __58__PFExportGIFRequest_runExport_toURL_progress_completion___block_invoke
   (*(a1[7] + 16))();
 }
 
-+ (id)runExport:(id)a3 toURL:(id)a4 completion:(id)a5
++ (id)runExport:(id)export toURL:(id)l completion:(id)completion
 {
   v8 = MEMORY[0x1E696AE38];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  lCopy = l;
+  exportCopy = export;
   v12 = [v8 discreteProgressWithTotalUnitCount:100];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -652,7 +652,7 @@ void __58__PFExportGIFRequest_runExport_toURL_progress_completion___block_invoke
   v13 = v12;
   v18 = v13;
   v14 = MEMORY[0x1B8C64C40](v17);
-  [a1 runExport:v11 toURL:v10 progress:v14 completion:v9];
+  [self runExport:exportCopy toURL:lCopy progress:v14 completion:completionCopy];
 
   v15 = v13;
   return v13;

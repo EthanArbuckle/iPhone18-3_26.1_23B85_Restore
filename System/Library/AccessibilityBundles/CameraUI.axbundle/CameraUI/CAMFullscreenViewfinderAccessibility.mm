@@ -1,36 +1,36 @@
 @interface CAMFullscreenViewfinderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (double)_axChangeValue:(double)a3 increment:(BOOL)a4 borderHit:(BOOL *)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (double)_axChangeValue:(double)value increment:(BOOL)increment borderHit:(BOOL *)hit;
 - (void)_loadSmartStyleControlsIfNeeded;
-- (void)axUpdateSliderValue:(CGPoint)a3 smartSliderType:(int64_t)a4 increment:(BOOL)a5;
-- (void)setControlDrawerExpanded:(BOOL)a3 forReason:(int64_t)a4 animated:(BOOL)a5;
-- (void)setImageAnalysisButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setVisiblePreviewSuggestionButton:(int64_t)a3 animated:(BOOL)a4;
+- (void)axUpdateSliderValue:(CGPoint)value smartSliderType:(int64_t)type increment:(BOOL)increment;
+- (void)setControlDrawerExpanded:(BOOL)expanded forReason:(int64_t)reason animated:(BOOL)animated;
+- (void)setImageAnalysisButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setVisiblePreviewSuggestionButton:(int64_t)button animated:(BOOL)animated;
 @end
 
 @implementation CAMFullscreenViewfinderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setControlDrawerExpanded:forReason:animated:" withFullSignature:{"v", "B", "q", "B", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"controlDrawer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setImageAnalysisButtonVisible:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"imageAnalysisButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setVisiblePreviewSuggestionButton:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"handleSmartStylePadValueChanged:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentSmartStyle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"_loadSmartStyleControlsIfNeeded" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setControlDrawerExpanded:forReason:animated:" withFullSignature:{"v", "B", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"controlDrawer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setImageAnalysisButtonVisible:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"imageAnalysisButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"setVisiblePreviewSuggestionButton:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"handleSmartStylePadValueChanged:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentSmartStyle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder" hasInstanceMethod:@"_loadSmartStyleControlsIfNeeded" withFullSignature:{"v", 0}];
 }
 
-- (void)setControlDrawerExpanded:(BOOL)a3 forReason:(int64_t)a4 animated:(BOOL)a5
+- (void)setControlDrawerExpanded:(BOOL)expanded forReason:(int64_t)reason animated:(BOOL)animated
 {
-  v5 = a3;
+  expandedCopy = expanded;
   v9.receiver = self;
   v9.super_class = CAMFullscreenViewfinderAccessibility;
-  [(CAMFullscreenViewfinderAccessibility *)&v9 setControlDrawerExpanded:a3 forReason:a4 animated:a5];
-  if (v5)
+  [(CAMFullscreenViewfinderAccessibility *)&v9 setControlDrawerExpanded:expanded forReason:reason animated:animated];
+  if (expandedCopy)
   {
     v7 = *MEMORY[0x29EDC7F10];
     v8 = [(CAMFullscreenViewfinderAccessibility *)self safeValueForKey:@"controlDrawer"];
@@ -38,13 +38,13 @@
   }
 }
 
-- (void)setImageAnalysisButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setImageAnalysisButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a3;
+  visibleCopy = visible;
   v12.receiver = self;
   v12.super_class = CAMFullscreenViewfinderAccessibility;
-  [(CAMFullscreenViewfinderAccessibility *)&v12 setImageAnalysisButtonVisible:a3 animated:a4];
-  if (v4)
+  [(CAMFullscreenViewfinderAccessibility *)&v12 setImageAnalysisButtonVisible:visible animated:animated];
+  if (visibleCopy)
   {
     v6 = [(CAMFullscreenViewfinderAccessibility *)self safeValueForKey:@"imageAnalysisButton"];
     v7 = [v6 safeUnsignedIntegerForKey:@"mode"];
@@ -85,12 +85,12 @@ LABEL_12:
   }
 }
 
-- (void)setVisiblePreviewSuggestionButton:(int64_t)a3 animated:(BOOL)a4
+- (void)setVisiblePreviewSuggestionButton:(int64_t)button animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = CAMFullscreenViewfinderAccessibility;
-  [(CAMFullscreenViewfinderAccessibility *)&v7 setVisiblePreviewSuggestionButton:a3 animated:a4];
-  if (a3 == 1)
+  [(CAMFullscreenViewfinderAccessibility *)&v7 setVisiblePreviewSuggestionButton:button animated:animated];
+  if (button == 1)
   {
     if ([(CAMFullscreenViewfinderAccessibility *)self safeBoolForKey:@"shouldShowControls"])
     {
@@ -108,27 +108,27 @@ LABEL_12:
   [(CAMFullscreenViewfinderAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)axUpdateSliderValue:(CGPoint)a3 smartSliderType:(int64_t)a4 increment:(BOOL)a5
+- (void)axUpdateSliderValue:(CGPoint)value smartSliderType:(int64_t)type increment:(BOOL)increment
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  incrementCopy = increment;
+  y = value.y;
+  x = value.x;
   v10 = [(CAMFullscreenViewfinderAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_12 startWithSelf:1];
-  v11 = [v10 _accessibilityViewController];
+  _accessibilityViewController = [v10 _accessibilityViewController];
 
   v12 = MEMORY[0x29EDB90B8];
   v17 = 0;
-  if (a4)
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      [(CAMFullscreenViewfinderAccessibility *)self _axChangeValue:v5 increment:&v17 borderHit:y];
+      [(CAMFullscreenViewfinderAccessibility *)self _axChangeValue:incrementCopy increment:&v17 borderHit:y];
     }
   }
 
   else
   {
-    [(CAMFullscreenViewfinderAccessibility *)self _axChangeValue:v5 increment:&v17 borderHit:x];
+    [(CAMFullscreenViewfinderAccessibility *)self _axChangeValue:incrementCopy increment:&v17 borderHit:x];
   }
 
   v15[0] = 0;
@@ -136,14 +136,14 @@ LABEL_12:
   v15[2] = 0x3010000000;
   v15[3] = &unk_29BC90C32;
   v16 = *v12;
-  v13 = v11;
+  v13 = _accessibilityViewController;
   AXPerformSafeBlock();
   if (v17 == 1)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA40]);
   }
 
-  if (a4 <= 1)
+  if (type <= 1)
   {
     v14 = AXFormatFloatWithPercentage();
     UIAccessibilitySpeak();
@@ -174,19 +174,19 @@ uint64_t __86__CAMFullscreenViewfinderAccessibility_axUpdateSliderValue_smartSli
   return [v5 handleSmartStylePadValueChanged:{v6, v7}];
 }
 
-- (double)_axChangeValue:(double)a3 increment:(BOOL)a4 borderHit:(BOOL *)a5
+- (double)_axChangeValue:(double)value increment:(BOOL)increment borderHit:(BOOL *)hit
 {
   v5 = -0.1;
-  if (a4)
+  if (increment)
   {
     v5 = 0.1;
   }
 
-  result = v5 + a3;
+  result = v5 + value;
   v7 = 1.0;
   if (result >= 1.0 || (v7 = -1.0, result <= -1.0))
   {
-    *a5 = 1;
+    *hit = 1;
     return v7;
   }
 

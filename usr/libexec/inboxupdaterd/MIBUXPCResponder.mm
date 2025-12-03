@@ -1,22 +1,22 @@
 @interface MIBUXPCResponder
 - (NSXPCConnection)xpcConnection;
-- (id)_verifyBooleanEntitlement:(id)a3;
-- (void)connectToWiFiWithReply:(id)a3;
-- (void)eapConfigurationWithReply:(id)a3;
-- (void)isInBoxUpdateModeWithReply:(id)a3;
-- (void)isInDiagnosticModeWithReply:(id)a3;
-- (void)isLPMSetWithReply:(id)a3;
-- (void)setToLPMWithOptions:(id)a3 reply:(id)a4;
-- (void)shutdownWithReply:(id)a3;
-- (void)stopWiFiMonitorWithReply:(id)a3;
-- (void)terminateInBoxUpdateWithReply:(id)a3;
+- (id)_verifyBooleanEntitlement:(id)entitlement;
+- (void)connectToWiFiWithReply:(id)reply;
+- (void)eapConfigurationWithReply:(id)reply;
+- (void)isInBoxUpdateModeWithReply:(id)reply;
+- (void)isInDiagnosticModeWithReply:(id)reply;
+- (void)isLPMSetWithReply:(id)reply;
+- (void)setToLPMWithOptions:(id)options reply:(id)reply;
+- (void)shutdownWithReply:(id)reply;
+- (void)stopWiFiMonitorWithReply:(id)reply;
+- (void)terminateInBoxUpdateWithReply:(id)reply;
 @end
 
 @implementation MIBUXPCResponder
 
-- (void)isInBoxUpdateModeWithReply:(id)a3
+- (void)isInBoxUpdateModeWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     sub_1000599EC();
@@ -30,12 +30,12 @@
   }
 
   v5 = +[MIBUDeviceController sharedInstance];
-  v3[2](v3, [v5 isInBoxUpdateMode], 0);
+  replyCopy[2](replyCopy, [v5 isInBoxUpdateMode], 0);
 }
 
-- (void)isInDiagnosticModeWithReply:(id)a3
+- (void)isInDiagnosticModeWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     sub_100059A00();
@@ -49,12 +49,12 @@
   }
 
   v5 = +[MIBUDeviceController sharedInstance];
-  v3[2](v3, [v5 isInDiagnosticMode], 0);
+  replyCopy[2](replyCopy, [v5 isInDiagnosticMode], 0);
 }
 
-- (void)eapConfigurationWithReply:(id)a3
+- (void)eapConfigurationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -108,21 +108,21 @@
   }
 
   v8 = +[MIBUTestPreferences sharedInstance];
-  v9 = [v8 factorySUKeyPath];
+  factorySUKeyPath = [v8 factorySUKeyPath];
 
-  if (!v9)
+  if (!factorySUKeyPath)
   {
     goto LABEL_13;
   }
 
   v10 = +[MIBUTestPreferences sharedInstance];
-  v11 = [v10 factorySUKeyIsSEP];
+  factorySUKeyIsSEP = [v10 factorySUKeyIsSEP];
 
-  if (v11)
+  if (factorySUKeyIsSEP)
   {
     v12 = +[MIBUTestPreferences sharedInstance];
-    v13 = [v12 factorySUKeyIsSEP];
-    v14 = [v13 BOOLValue];
+    factorySUKeyIsSEP2 = [v12 factorySUKeyIsSEP];
+    bOOLValue = [factorySUKeyIsSEP2 BOOLValue];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -133,7 +133,7 @@
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v36 = v14;
+      v36 = bOOLValue;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Overriding isSEPKey=%d", buf, 8u);
     }
   }
@@ -141,19 +141,19 @@
   else
   {
 LABEL_13:
-    v14 = 1;
+    bOOLValue = 1;
   }
 
-  v4[2](v4, v30[5], v24[5], v14, v18[5]);
+  replyCopy[2](replyCopy, v30[5], v24[5], bOOLValue, v18[5]);
   _Block_object_dispose(&v17, 8);
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)connectToWiFiWithReply:(id)a3
+- (void)connectToWiFiWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (os_variant_has_internal_content())
   {
     if (qword_1000B84A8[0] != -1)
@@ -172,9 +172,9 @@ LABEL_13:
     v8 = 0;
     [v5 connectAndMonitor:&v8];
     v6 = v8;
-    v3[2](v3, v6);
+    replyCopy[2](replyCopy, v6);
 
-    v3 = v6;
+    replyCopy = v6;
   }
 
   else
@@ -192,13 +192,13 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s is only supported on internal builds", buf, 0xCu);
     }
 
-    v3[2](v3, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)stopWiFiMonitorWithReply:(id)a3
+- (void)stopWiFiMonitorWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (os_variant_has_internal_content())
   {
     if (qword_1000B84A8[0] != -1)
@@ -233,13 +233,13 @@ LABEL_13:
     }
   }
 
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)setToLPMWithOptions:(id)a3 reply:(id)a4
+- (void)setToLPMWithOptions:(id)options reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     sub_100059AB4();
@@ -254,14 +254,14 @@ LABEL_13:
 
   v8 = +[MIBUDeviceController sharedInstance];
   v10 = 0;
-  [v8 setToLPMWithOptions:v5 error:&v10];
+  [v8 setToLPMWithOptions:optionsCopy error:&v10];
   v9 = v10;
-  v6[2](v6, v9);
+  replyCopy[2](replyCopy, v9);
 }
 
-- (void)isLPMSetWithReply:(id)a3
+- (void)isLPMSetWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     sub_100059AC8();
@@ -278,12 +278,12 @@ LABEL_13:
   v8 = 0;
   v6 = [v5 isLPMSet:&v8];
   v7 = v8;
-  v3[2](v3, v6, v7);
+  replyCopy[2](replyCopy, v6, v7);
 }
 
-- (void)shutdownWithReply:(id)a3
+- (void)shutdownWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     sub_100059ADC();
@@ -298,17 +298,17 @@ LABEL_13:
 
   v5 = +[MIBUDeviceController sharedInstance];
   [v5 shutdown];
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (id)_verifyBooleanEntitlement:(id)a3
+- (id)_verifyBooleanEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(MIBUXPCResponder *)self xpcConnection];
-  v6 = v5;
-  if (v5)
+  entitlementCopy = entitlement;
+  xpcConnection = [(MIBUXPCResponder *)self xpcConnection];
+  v6 = xpcConnection;
+  if (xpcConnection)
   {
-    v7 = [v5 valueForEntitlement:v4];
+    v7 = [xpcConnection valueForEntitlement:entitlementCopy];
     if (v7)
     {
       objc_opt_class();
@@ -321,20 +321,20 @@ LABEL_13:
         }
 
         v10 = &v11;
-        sub_100059C10(v4, &v11);
+        sub_100059C10(entitlementCopy, &v11);
       }
 
       else
       {
         v10 = &v12;
-        sub_100059AF0(v4, &v12);
+        sub_100059AF0(entitlementCopy, &v12);
       }
     }
 
     else
     {
       v10 = &v13;
-      sub_100059CFC(v4, &v13);
+      sub_100059CFC(entitlementCopy, &v13);
     }
   }
 
@@ -358,9 +358,9 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)terminateInBoxUpdateWithReply:(id)a3
+- (void)terminateInBoxUpdateWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1000B84A8[0] != -1)
   {
     dispatch_once(qword_1000B84A8, &stru_10009B7C8);
@@ -387,7 +387,7 @@ LABEL_6:
     v8 = v9;
   }
 
-  v4[2](v4, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
 @end

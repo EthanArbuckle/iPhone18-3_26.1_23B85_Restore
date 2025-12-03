@@ -1,50 +1,50 @@
 @interface SGM2ContactConfirmed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsApp:(id)a3;
-- (int)StringAsExtracted:(id)a3;
-- (int)StringAsType:(id)a3;
-- (int)StringAsUiType:(id)a3;
+- (int)StringAsApp:(id)app;
+- (int)StringAsExtracted:(id)extracted;
+- (int)StringAsType:(id)type;
+- (int)StringAsUiType:(id)type;
 - (int)app;
 - (int)extracted;
 - (int)type;
 - (int)uiType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExtracted:(BOOL)a3;
-- (void)setHasExtractionModelVersion:(BOOL)a3;
-- (void)setHasFirstNameAdj:(BOOL)a3;
-- (void)setHasIsUpdate:(BOOL)a3;
-- (void)setHasLastNameAdj:(BOOL)a3;
-- (void)setHasMiddleNameAdj:(BOOL)a3;
-- (void)setHasSelfId:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUiType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExtracted:(BOOL)extracted;
+- (void)setHasExtractionModelVersion:(BOOL)version;
+- (void)setHasFirstNameAdj:(BOOL)adj;
+- (void)setHasIsUpdate:(BOOL)update;
+- (void)setHasLastNameAdj:(BOOL)adj;
+- (void)setHasMiddleNameAdj:(BOOL)adj;
+- (void)setHasSelfId:(BOOL)id;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUiType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2ContactConfirmed
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2ContactConfirmed *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_app = *(v4 + 2);
+    self->_app = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 0x20) == 0)
     {
 LABEL_5:
@@ -62,9 +62,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_firstNameAdj = *(v4 + 40);
+  self->_firstNameAdj = *(fromCopy + 40);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -77,9 +77,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_lastNameAdj = *(v4 + 42);
+  self->_lastNameAdj = *(fromCopy + 42);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -92,9 +92,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_middleNameAdj = *(v4 + 43);
+  self->_middleNameAdj = *(fromCopy + 43);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -107,9 +107,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_isUpdate = *(v4 + 41);
+  self->_isUpdate = *(fromCopy + 41);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -122,9 +122,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_extracted = *(v4 + 3);
+  self->_extracted = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -137,9 +137,9 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_extractionModelVersion = *(v4 + 4);
+  self->_extractionModelVersion = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x200) == 0)
   {
 LABEL_11:
@@ -152,9 +152,9 @@ LABEL_11:
   }
 
 LABEL_24:
-  self->_selfId = *(v4 + 44);
+  self->_selfId = *(fromCopy + 44);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_12:
@@ -167,12 +167,12 @@ LABEL_12:
   }
 
 LABEL_25:
-  self->_type = *(v4 + 8);
+  self->_type = *(fromCopy + 8);
   *&self->_has |= 8u;
-  if ((*(v4 + 24) & 0x10) != 0)
+  if ((*(fromCopy + 24) & 0x10) != 0)
   {
 LABEL_13:
-    self->_uiType = *(v4 + 9);
+    self->_uiType = *(fromCopy + 9);
     *&self->_has |= 0x10u;
   }
 
@@ -319,16 +319,16 @@ LABEL_11:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_69;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -337,10 +337,10 @@ LABEL_11:
   }
 
   has = self->_has;
-  v7 = *(v4 + 24);
+  v7 = *(equalCopy + 24);
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_app != *(v4 + 2))
+    if ((v7 & 1) == 0 || self->_app != *(equalCopy + 2))
     {
       goto LABEL_69;
     }
@@ -358,16 +358,16 @@ LABEL_11:
       goto LABEL_69;
     }
 
-    v8 = *(v4 + 40);
+    v8 = *(equalCopy + 40);
     if (self->_firstNameAdj)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_69;
     }
@@ -385,16 +385,16 @@ LABEL_11:
       goto LABEL_69;
     }
 
-    v9 = *(v4 + 42);
+    v9 = *(equalCopy + 42);
     if (self->_lastNameAdj)
     {
-      if ((*(v4 + 42) & 1) == 0)
+      if ((*(equalCopy + 42) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 42))
+    else if (*(equalCopy + 42))
     {
       goto LABEL_69;
     }
@@ -407,27 +407,27 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 24) & 0x100) == 0)
+    if ((*(equalCopy + 24) & 0x100) == 0)
     {
       goto LABEL_69;
     }
 
-    v10 = *(v4 + 43);
+    v10 = *(equalCopy + 43);
     if (self->_middleNameAdj)
     {
-      if ((*(v4 + 43) & 1) == 0)
+      if ((*(equalCopy + 43) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 43))
+    else if (*(equalCopy + 43))
     {
       goto LABEL_69;
     }
   }
 
-  else if ((*(v4 + 24) & 0x100) != 0)
+  else if ((*(equalCopy + 24) & 0x100) != 0)
   {
     goto LABEL_69;
   }
@@ -439,16 +439,16 @@ LABEL_11:
       goto LABEL_69;
     }
 
-    v11 = *(v4 + 41);
+    v11 = *(equalCopy + 41);
     if (self->_isUpdate)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_69;
     }
@@ -461,7 +461,7 @@ LABEL_11:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_extracted != *(v4 + 3))
+    if ((v7 & 2) == 0 || self->_extracted != *(equalCopy + 3))
     {
       goto LABEL_69;
     }
@@ -474,7 +474,7 @@ LABEL_11:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_extractionModelVersion != *(v4 + 4))
+    if ((v7 & 4) == 0 || self->_extractionModelVersion != *(equalCopy + 4))
     {
       goto LABEL_69;
     }
@@ -487,7 +487,7 @@ LABEL_11:
 
   if ((*&self->_has & 0x200) == 0)
   {
-    if ((*(v4 + 24) & 0x200) == 0)
+    if ((*(equalCopy + 24) & 0x200) == 0)
     {
       goto LABEL_53;
     }
@@ -497,21 +497,21 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  if ((*(v4 + 24) & 0x200) == 0)
+  if ((*(equalCopy + 24) & 0x200) == 0)
   {
     goto LABEL_69;
   }
 
-  v12 = *(v4 + 44);
+  v12 = *(equalCopy + 44);
   if (self->_selfId)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_69;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_69;
   }
@@ -519,7 +519,7 @@ LABEL_69:
 LABEL_53:
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_type != *(v4 + 8))
+    if ((v7 & 8) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_69;
     }
@@ -532,7 +532,7 @@ LABEL_53:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_uiType != *(v4 + 9))
+    if ((v7 & 0x10) == 0 || self->_uiType != *(equalCopy + 9))
     {
       goto LABEL_69;
     }
@@ -550,10 +550,10 @@ LABEL_70:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -697,21 +697,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_app;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_app;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -730,8 +730,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 40) = self->_firstNameAdj;
-  *(v4 + 24) |= 0x20u;
+  *(toCopy + 40) = self->_firstNameAdj;
+  *(toCopy + 24) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -745,8 +745,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(v4 + 42) = self->_lastNameAdj;
-  *(v4 + 24) |= 0x80u;
+  *(toCopy + 42) = self->_lastNameAdj;
+  *(toCopy + 24) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -760,8 +760,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(v4 + 43) = self->_middleNameAdj;
-  *(v4 + 24) |= 0x100u;
+  *(toCopy + 43) = self->_middleNameAdj;
+  *(toCopy + 24) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -775,8 +775,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(v4 + 41) = self->_isUpdate;
-  *(v4 + 24) |= 0x40u;
+  *(toCopy + 41) = self->_isUpdate;
+  *(toCopy + 24) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -790,8 +790,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(v4 + 3) = self->_extracted;
-  *(v4 + 24) |= 2u;
+  *(toCopy + 3) = self->_extracted;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -805,8 +805,8 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 4) = self->_extractionModelVersion;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 4) = self->_extractionModelVersion;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -820,8 +820,8 @@ LABEL_11:
   }
 
 LABEL_24:
-  *(v4 + 44) = self->_selfId;
-  *(v4 + 24) |= 0x200u;
+  *(toCopy + 44) = self->_selfId;
+  *(toCopy + 24) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -835,26 +835,26 @@ LABEL_12:
   }
 
 LABEL_25:
-  *(v4 + 8) = self->_type;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 8) = self->_type;
+  *(toCopy + 24) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_13:
-    *(v4 + 9) = self->_uiType;
-    *(v4 + 24) |= 0x10u;
+    *(toCopy + 9) = self->_uiType;
+    *(toCopy + 24) |= 0x10u;
   }
 
 LABEL_14:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v16;
+    toCopy = v16;
   }
 
   has = self->_has;
@@ -862,7 +862,7 @@ LABEL_14:
   {
     app = self->_app;
     PBDataWriterWriteInt32Field();
-    v4 = v16;
+    toCopy = v16;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -883,7 +883,7 @@ LABEL_5:
 
   firstNameAdj = self->_firstNameAdj;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -899,7 +899,7 @@ LABEL_6:
 LABEL_19:
   lastNameAdj = self->_lastNameAdj;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -915,7 +915,7 @@ LABEL_7:
 LABEL_20:
   middleNameAdj = self->_middleNameAdj;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -931,7 +931,7 @@ LABEL_8:
 LABEL_21:
   isUpdate = self->_isUpdate;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -947,7 +947,7 @@ LABEL_9:
 LABEL_22:
   extracted = self->_extracted;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -963,7 +963,7 @@ LABEL_10:
 LABEL_23:
   extractionModelVersion = self->_extractionModelVersion;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -979,7 +979,7 @@ LABEL_11:
 LABEL_24:
   selfId = self->_selfId;
   PBDataWriterWriteBOOLField();
-  v4 = v16;
+  toCopy = v16;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -995,13 +995,13 @@ LABEL_12:
 LABEL_25:
   type = self->_type;
   PBDataWriterWriteInt32Field();
-  v4 = v16;
+  toCopy = v16;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_13:
     uiType = self->_uiType;
     PBDataWriterWriteInt32Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
 LABEL_14:
@@ -1009,12 +1009,12 @@ LABEL_14:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -1206,31 +1206,31 @@ LABEL_36:
   v8.receiver = self;
   v8.super_class = SGM2ContactConfirmed;
   v4 = [(SGM2ContactConfirmed *)&v8 description];
-  v5 = [(SGM2ContactConfirmed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2ContactConfirmed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsUiType:(id)a3
+- (int)StringAsUiType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DontSuggestButton"])
+  else if ([typeCopy isEqualToString:@"DontSuggestButton"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([typeCopy isEqualToString:@"Other"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Notification"])
+  else if ([typeCopy isEqualToString:@"Notification"])
   {
     v4 = 3;
   }
@@ -1243,9 +1243,9 @@ LABEL_36:
   return v4;
 }
 
-- (void)setHasUiType:(BOOL)a3
+- (void)setHasUiType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -1271,30 +1271,30 @@ LABEL_36:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailTypeEmail"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SGMContactDetailTypeEmail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypePhone"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypePhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeAddress"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeAddress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeOther"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeOther"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeBirthday"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeBirthday"])
   {
     v4 = 4;
   }
@@ -1307,9 +1307,9 @@ LABEL_36:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -1335,9 +1335,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasSelfId:(BOOL)a3
+- (void)setHasSelfId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 512;
   }
@@ -1350,9 +1350,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasExtractionModelVersion:(BOOL)a3
+- (void)setHasExtractionModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -1365,25 +1365,25 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsExtracted:(id)a3
+- (int)StringAsExtracted:(id)extracted
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMBannerExtractionTypeSig"])
+  extractedCopy = extracted;
+  if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeSig"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypePhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypePhrase"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypeSigPhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeSigPhrase"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerExtractionTypeOther"])
+  else if ([extractedCopy isEqualToString:@"SGMBannerExtractionTypeOther"])
   {
     v4 = 3;
   }
@@ -1396,9 +1396,9 @@ LABEL_36:
   return v4;
 }
 
-- (void)setHasExtracted:(BOOL)a3
+- (void)setHasExtracted:(BOOL)extracted
 {
-  if (a3)
+  if (extracted)
   {
     v3 = 2;
   }
@@ -1424,9 +1424,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasIsUpdate:(BOOL)a3
+- (void)setHasIsUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v3 = 64;
   }
@@ -1439,9 +1439,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMiddleNameAdj:(BOOL)a3
+- (void)setHasMiddleNameAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 256;
   }
@@ -1454,9 +1454,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasLastNameAdj:(BOOL)a3
+- (void)setHasLastNameAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 128;
   }
@@ -1469,9 +1469,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasFirstNameAdj:(BOOL)a3
+- (void)setHasFirstNameAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 32;
   }
@@ -1484,20 +1484,20 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsApp:(id)a3
+- (int)StringAsApp:(id)app
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMBannerDisplayAppMail"])
+  appCopy = app;
+  if ([appCopy isEqualToString:@"SGMBannerDisplayAppMail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerDisplayAppMessages"])
+  else if ([appCopy isEqualToString:@"SGMBannerDisplayAppMessages"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerDisplayAppOther"])
+  else if ([appCopy isEqualToString:@"SGMBannerDisplayAppOther"])
   {
     v4 = 2;
   }

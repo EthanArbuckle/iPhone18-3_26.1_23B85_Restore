@@ -1,6 +1,6 @@
 @interface MediaPlayer
 - (_TtC12SeymourMedia11MediaPlayer)init;
-- (id)playbackCoordinator:(id)a3 identifierForPlayerItem:(id)a4;
+- (id)playbackCoordinator:(id)coordinator identifierForPlayerItem:(id)item;
 @end
 
 @implementation MediaPlayer
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (id)playbackCoordinator:(id)a3 identifierForPlayerItem:(id)a4
+- (id)playbackCoordinator:(id)coordinator identifierForPlayerItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   sub_20C59DD5C();
 
   v5 = sub_20C5A036C();

@@ -1,10 +1,10 @@
 @interface PRUISInlinePosterEditingPlaceholderViewController
 - (PRUISInlinePosterEditingPlaceholderViewControllerDelegate)delegate;
-- (void)_dismissRecognizerTapped:(id)a3;
-- (void)_updateBackgroundColorForWindow:(id)a3;
+- (void)_dismissRecognizerTapped:(id)tapped;
+- (void)_updateBackgroundColorForWindow:(id)window;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillMoveToWindow:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillMoveToWindow:(id)window;
 @end
 
 @implementation PRUISInlinePosterEditingPlaceholderViewController
@@ -15,11 +15,11 @@
   v5.super_class = PRUISInlinePosterEditingPlaceholderViewController;
   [(PRUISInlinePosterEditingPlaceholderViewController *)&v5 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__dismissRecognizerTapped_];
-  v4 = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
+  [view addGestureRecognizer:v3];
 }
 
-- (void)_dismissRecognizerTapped:(id)a3
+- (void)_dismissRecognizerTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -28,41 +28,41 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PRUISInlinePosterEditingPlaceholderViewController;
-  [(PRUISInlinePosterEditingPlaceholderViewController *)&v6 viewWillAppear:a3];
-  v4 = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
-  v5 = [v4 window];
-  [(PRUISInlinePosterEditingPlaceholderViewController *)self _updateBackgroundColorForWindow:v5];
+  [(PRUISInlinePosterEditingPlaceholderViewController *)&v6 viewWillAppear:appear];
+  view = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
+  window = [view window];
+  [(PRUISInlinePosterEditingPlaceholderViewController *)self _updateBackgroundColorForWindow:window];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PRUISInlinePosterEditingPlaceholderViewController;
-  v4 = a3;
-  [(PRUISInlinePosterEditingPlaceholderViewController *)&v5 viewWillMoveToWindow:v4];
-  [(PRUISInlinePosterEditingPlaceholderViewController *)self _updateBackgroundColorForWindow:v4, v5.receiver, v5.super_class];
+  windowCopy = window;
+  [(PRUISInlinePosterEditingPlaceholderViewController *)&v5 viewWillMoveToWindow:windowCopy];
+  [(PRUISInlinePosterEditingPlaceholderViewController *)self _updateBackgroundColorForWindow:windowCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_updateBackgroundColorForWindow:(id)a3
+- (void)_updateBackgroundColorForWindow:(id)window
 {
-  v4 = [a3 windowScene];
-  v5 = [v4 screen];
-  v6 = [v5 displayConfiguration];
-  v7 = [v6 isExternal];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  displayConfiguration = [screen displayConfiguration];
+  isExternal = [displayConfiguration isExternal];
 
-  v8 = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
-  if (v7)
+  view = [(PRUISInlinePosterEditingPlaceholderViewController *)self view];
+  if (isExternal)
   {
-    v11 = v8;
-    v9 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v10 = [v9 colorWithAlphaComponent:0.5];
+    v11 = view;
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v10 = [systemGrayColor colorWithAlphaComponent:0.5];
     [v11 setBackgroundColor:v10];
 
-    v8 = v11;
+    view = v11;
   }
 }
 

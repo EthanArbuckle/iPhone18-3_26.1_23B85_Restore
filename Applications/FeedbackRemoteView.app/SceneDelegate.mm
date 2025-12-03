@@ -1,15 +1,15 @@
 @interface SceneDelegate
 - (_TtC18FeedbackRemoteView13SceneDelegate)init;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC18FeedbackRemoteView13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC18FeedbackRemoteView13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC18FeedbackRemoteView13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
 - (_TtC18FeedbackRemoteView13SceneDelegate)init

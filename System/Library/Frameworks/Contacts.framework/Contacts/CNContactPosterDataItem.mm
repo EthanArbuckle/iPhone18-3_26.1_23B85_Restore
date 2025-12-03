@@ -1,15 +1,15 @@
 @interface CNContactPosterDataItem
 + (id)os_log;
-- (void)_updateStrongForImpendingPairedItem:(id)a3;
-- (void)acceptVisitor:(id)a3;
+- (void)_updateStrongForImpendingPairedItem:(id)item;
+- (void)acceptVisitor:(id)visitor;
 @end
 
 @implementation CNContactPosterDataItem
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = self;
+  visitorCopy = visitor;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
@@ -35,48 +35,48 @@ uint64_t __48__CNContactPosterDataItem_LoopAvoidance__os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)_updateStrongForImpendingPairedItem:(id)a3
+- (void)_updateStrongForImpendingPairedItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactPosterDataItem *)self refLoopResistantStrongPairedItem];
-  v6 = [(CNContactPosterDataItem *)v4 refLoopResistantStrongPairedItem];
-  v7 = v6;
-  if (v6 && v5)
+  itemCopy = item;
+  refLoopResistantStrongPairedItem = [(CNContactPosterDataItem *)self refLoopResistantStrongPairedItem];
+  refLoopResistantStrongPairedItem2 = [(CNContactPosterDataItem *)itemCopy refLoopResistantStrongPairedItem];
+  v7 = refLoopResistantStrongPairedItem2;
+  if (refLoopResistantStrongPairedItem2 && refLoopResistantStrongPairedItem)
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       v12 = 136446210;
       ClassName = object_getClassName(self);
-      _os_log_impl(&dword_1954A0000, v8, OS_LOG_TYPE_INFO, "[Poster/Recents] Updating the direction of the strong/refloop avoiding reference for poster/image pair to be held by %{public}s.", &v12, 0xCu);
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_INFO, "[Poster/Recents] Updating the direction of the strong/refloop avoiding reference for poster/image pair to be held by %{public}s.", &v12, 0xCu);
     }
 
-    [(CNContactPosterDataItem *)self setRefLoopResistantStrongPairedItem:v4];
-    v9 = v4;
+    [(CNContactPosterDataItem *)self setRefLoopResistantStrongPairedItem:itemCopy];
+    selfCopy = itemCopy;
     v10 = 0;
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!refLoopResistantStrongPairedItem2)
   {
-    v9 = self;
-    v10 = v4;
+    selfCopy = self;
+    v10 = itemCopy;
 LABEL_12:
-    [(CNContactPosterDataItem *)v9 setRefLoopResistantStrongPairedItem:v10];
+    [(CNContactPosterDataItem *)selfCopy setRefLoopResistantStrongPairedItem:v10];
     goto LABEL_13;
   }
 
-  if (v6 != self)
+  if (refLoopResistantStrongPairedItem2 != self)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_INFO))
     {
       v12 = 136446466;
       ClassName = object_getClassName(self);
       v14 = 2082;
-      v15 = object_getClassName(v4);
-      _os_log_impl(&dword_1954A0000, v11, OS_LOG_TYPE_INFO, "[Poster/Recents] On a %{public}s, setting a paired %{public}s which is already holding a strong reference to something other than us. Not updating strong references on either side, which may cause this object to get zeroed unexpectedly.", &v12, 0x16u);
+      v15 = object_getClassName(itemCopy);
+      _os_log_impl(&dword_1954A0000, os_log2, OS_LOG_TYPE_INFO, "[Poster/Recents] On a %{public}s, setting a paired %{public}s which is already holding a strong reference to something other than us. Not updating strong references on either side, which may cause this object to get zeroed unexpectedly.", &v12, 0x16u);
     }
   }
 

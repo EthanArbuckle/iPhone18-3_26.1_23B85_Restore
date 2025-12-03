@@ -1,19 +1,19 @@
 @interface CAMShallowDepthOfFieldBadge
-- (CAMShallowDepthOfFieldBadge)initWithFrame:(CGRect)a3;
+- (CAMShallowDepthOfFieldBadge)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_updateForShallowDepthOfFieldStatusAnimated:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_updateForShallowDepthOfFieldStatusAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 animated:(BOOL)a4;
+- (void)setShallowDepthOfFieldStatus:(int64_t)status animated:(BOOL)animated;
 @end
 
 @implementation CAMShallowDepthOfFieldBadge
 
-- (CAMShallowDepthOfFieldBadge)initWithFrame:(CGRect)a3
+- (CAMShallowDepthOfFieldBadge)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = CAMShallowDepthOfFieldBadge;
-  v3 = [(CAMShallowDepthOfFieldBadge *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMShallowDepthOfFieldBadge *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,8 +29,8 @@
 
     [(CEKBadgeTextView *)v4->__enabledTextView _setText:v13];
     v16 = v4->__enabledTextView;
-    v17 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CEKBadgeTextView *)v16 _setFillColor:v17];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CEKBadgeTextView *)v16 _setFillColor:systemYellowColor];
 
     v18 = v4->__enabledTextView;
     v19 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.6];
@@ -59,32 +59,32 @@
   return v4;
 }
 
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 animated:(BOOL)a4
+- (void)setShallowDepthOfFieldStatus:(int64_t)status animated:(BOOL)animated
 {
-  if (self->_shallowDepthOfFieldStatus != a3)
+  if (self->_shallowDepthOfFieldStatus != status)
   {
-    self->_shallowDepthOfFieldStatus = a3;
-    [(CAMShallowDepthOfFieldBadge *)self _updateForShallowDepthOfFieldStatusAnimated:a4];
+    self->_shallowDepthOfFieldStatus = status;
+    [(CAMShallowDepthOfFieldBadge *)self _updateForShallowDepthOfFieldStatusAnimated:animated];
   }
 }
 
-- (void)_updateForShallowDepthOfFieldStatusAnimated:(BOOL)a3
+- (void)_updateForShallowDepthOfFieldStatusAnimated:(BOOL)animated
 {
-  v5 = [(CAMShallowDepthOfFieldBadge *)self _enabledTextView];
-  v6 = [(CAMShallowDepthOfFieldBadge *)self _disabledTextView];
-  v7 = [(CAMShallowDepthOfFieldBadge *)self shallowDepthOfFieldStatus];
+  _enabledTextView = [(CAMShallowDepthOfFieldBadge *)self _enabledTextView];
+  _disabledTextView = [(CAMShallowDepthOfFieldBadge *)self _disabledTextView];
+  shallowDepthOfFieldStatus = [(CAMShallowDepthOfFieldBadge *)self shallowDepthOfFieldStatus];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__CAMShallowDepthOfFieldBadge__updateForShallowDepthOfFieldStatusAnimated___block_invoke;
   aBlock[3] = &unk_1E76FBB80;
-  v15 = (v7 < 0xF) & (0x6202u >> v7);
-  v8 = v5;
+  v15 = (shallowDepthOfFieldStatus < 0xF) & (0x6202u >> shallowDepthOfFieldStatus);
+  v8 = _enabledTextView;
   v13 = v8;
-  v9 = v6;
+  v9 = _disabledTextView;
   v14 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (a3)
+  if (animated)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v10 options:0 animations:0.17 completion:0.0];
   }
@@ -117,9 +117,9 @@ uint64_t __75__CAMShallowDepthOfFieldBadge__updateForShallowDepthOfFieldStatusAn
   return [v6 setAlpha:v5];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CEKBadgeTextView *)self->__disabledTextView sizeThatFits:a3.width, a3.height];
+  [(CEKBadgeTextView *)self->__disabledTextView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

@@ -8,7 +8,7 @@
 
 - (id)arrayAtKeyPath:()MPModelStoreGroupingsMusicKitResponseParser
 {
-  v1 = [a1 objectAtKeyPath:?];
+  v1 = [self objectAtKeyPath:?];
   if (_NSIsNSArray())
   {
     v2 = v1;
@@ -24,7 +24,7 @@
 
 - (id)stringAtKeyPath:()MPModelStoreGroupingsMusicKitResponseParser
 {
-  v1 = [a1 objectAtKeyPath:?];
+  v1 = [self objectAtKeyPath:?];
   if (_NSIsNSString())
   {
     v2 = v1;
@@ -43,7 +43,7 @@
   v31 = *MEMORY[0x1E69E9840];
   v19 = a3;
   v4 = [v19 componentsSeparatedByString:@"."];
-  v5 = a1;
+  selfCopy = self;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -66,10 +66,10 @@
         if ([v9 hasPrefix:@"@"])
         {
           v10 = [v9 substringFromIndex:1];
-          v11 = [v5 valueForKeyPath:v10];
+          v11 = [selfCopy valueForKeyPath:v10];
 
 LABEL_23:
-          v5 = v11;
+          selfCopy = v11;
         }
 
         else if ([v9 hasPrefix:@"["] && (objc_msgSend(v9, "hasSuffix:", @"]") & 1) != 0)
@@ -80,10 +80,10 @@ LABEL_23:
           }
 
           v12 = [v9 substringWithRange:{1, objc_msgSend(v9, "length") - 1}];
-          v13 = [v12 integerValue];
+          integerValue = [v12 integerValue];
 
-          [v5 objectAtIndex:v13];
-          v5 = v10 = v5;
+          [selfCopy objectAtIndex:integerValue];
+          selfCopy = v10 = selfCopy;
         }
 
         else
@@ -114,7 +114,7 @@ LABEL_27:
                   objc_enumerationMutation(v10);
                 }
 
-                v11 = [v5 objectForKey:*(*(&v21 + 1) + 8 * j)];
+                v11 = [selfCopy objectForKey:*(*(&v21 + 1) + 8 * j)];
                 if (v11)
                 {
 
@@ -144,8 +144,8 @@ LABEL_27:
     }
   }
 
-  v5 = v5;
-  v17 = v5;
+  selfCopy = selfCopy;
+  v17 = selfCopy;
 LABEL_28:
 
   return v17;

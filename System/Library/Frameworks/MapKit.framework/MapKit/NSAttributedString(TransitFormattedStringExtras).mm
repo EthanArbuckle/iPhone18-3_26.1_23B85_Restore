@@ -37,16 +37,16 @@
     v22 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v17];
     v23 = [v22 mutableCopy];
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v25 = +[MKSystemController sharedInstance];
-    v26 = [v25 userInterfaceIdiom];
+    userInterfaceIdiom = [v25 userInterfaceIdiom];
 
-    if (v26 == 2)
+    if (userInterfaceIdiom == 2)
     {
-      [v24 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E69DB650]];
     }
 
-    v27 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v24];
+    v27 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:dictionary];
     v28 = [v9 mutableCopy];
     [v28 appendAttributedString:v27];
     [v28 appendAttributedString:v23];
@@ -70,8 +70,8 @@
   v16 = a3;
   v17 = [[v12 alloc] initWithString:v16 attributes:v14];
 
-  v18 = [v15 liveStatus];
-  v19 = [a1 _mapkit_attributedLiveTransitStringFromAttributedDepartureString:v17 liveStatus:v18 darkMode:a6 symbolOverrideColor:v13];
+  liveStatus = [v15 liveStatus];
+  v19 = [self _mapkit_attributedLiveTransitStringFromAttributedDepartureString:v17 liveStatus:liveStatus darkMode:a6 symbolOverrideColor:v13];
 
   return v19;
 }
@@ -95,15 +95,15 @@
 
     v13 = [[MKServerFormattedString alloc] initWithComposedString:v7];
     v14 = [(MKServerFormattedString *)v13 multiPartAttributedStringWithAttributes:v8];
-    v15 = [v14 attributedString];
+    attributedString = [v14 attributedString];
   }
 
   else
   {
-    v15 = 0;
+    attributedString = 0;
   }
 
-  return v15;
+  return attributedString;
 }
 
 + (id)_mapkit_attributedTransitStringForServerFormattedString:()TransitFormattedStringExtras defaultAttributes:variableOverrides:options:
@@ -122,15 +122,15 @@
     v15 = [[MKServerFormattedString alloc] initWithGeoServerString:v11 parameters:v14];
     v16 = [(MKServerFormattedString *)v15 multiPartAttributedStringWithAttributes:v10];
 
-    v17 = [v16 attributedString];
+    attributedString = [v16 attributedString];
   }
 
   else
   {
-    v17 = 0;
+    attributedString = 0;
   }
 
-  return v17;
+  return attributedString;
 }
 
 + (id)_mapkit_attributedTransitStringForServerFormattedString:()TransitFormattedStringExtras defaultAttributes:variableOverrides:
@@ -142,7 +142,7 @@
   BYTE2(v14[2]) = MKApplicationLayoutDirectionIsRightToLeft();
   [MKTransitItemReferenceDateUpdater referenceDateAsTimeInterval:1];
   v14[3] = v11;
-  v12 = [a1 _mapkit_attributedTransitStringForServerFormattedString:v10 defaultAttributes:v9 variableOverrides:v8 options:v14];
+  v12 = [self _mapkit_attributedTransitStringForServerFormattedString:v10 defaultAttributes:v9 variableOverrides:v8 options:v14];
 
   return v12;
 }

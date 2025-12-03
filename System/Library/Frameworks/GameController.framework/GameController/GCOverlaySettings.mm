@@ -4,9 +4,9 @@
 - (void)_onqueue_refresh;
 - (void)_refresh;
 - (void)refresh;
-- (void)setController:(id)a3;
-- (void)setGameBundleIdentifier:(id)a3;
-- (void)setSelectedProfile:(id)a3;
+- (void)setController:(id)controller;
+- (void)setGameBundleIdentifier:(id)identifier;
+- (void)setSelectedProfile:(id)profile;
 @end
 
 @implementation GCOverlaySettings
@@ -58,13 +58,13 @@ void __28__GCOverlaySettings_refresh__block_invoke(uint64_t a1)
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [(GCOverlaySettingsStore *)self->_settingsStore getSettingsControllerFor:self->_controller];
-  v4 = [(GCOverlaySettingsStore *)self->_settingsStore defaultGame];
+  defaultGame = [(GCOverlaySettingsStore *)self->_settingsStore defaultGame];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(GCOverlaySettingsStore *)self->_settingsStore games];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  games = [(GCOverlaySettingsStore *)self->_settingsStore games];
+  v6 = [games countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -75,12 +75,12 @@ void __28__GCOverlaySettings_refresh__block_invoke(uint64_t a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(games);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:self->_gameBundleIdentifier];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:self->_gameBundleIdentifier];
 
         if (v12)
         {
@@ -88,14 +88,14 @@ void __28__GCOverlaySettings_refresh__block_invoke(uint64_t a1)
           {
             v13 = v10;
 
-            v4 = v13;
+            defaultGame = v13;
           }
 
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [games countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -109,7 +109,7 @@ LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return defaultGame;
 }
 
 - (void)_refresh
@@ -121,8 +121,8 @@ LABEL_12:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(GCOverlaySettingsStore *)self->_settingsStore profiles];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  profiles = [(GCOverlaySettingsStore *)self->_settingsStore profiles];
+  v5 = [profiles countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,19 +133,19 @@ LABEL_12:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(profiles);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [GCOverlayProfile alloc];
-        v11 = [v9 name];
-        v12 = [v9 uuid];
-        v13 = [(GCOverlayProfile *)v10 initWithName:v11 identifier:v12];
+        name = [v9 name];
+        uuid = [v9 uuid];
+        v13 = [(GCOverlayProfile *)v10 initWithName:name identifier:uuid];
 
         [v3 addObject:v13];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [profiles countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
@@ -155,28 +155,28 @@ LABEL_12:
   v14 = [(GCOverlaySettingsStore *)self->_settingsStore getSettingsControllerFor:self->_controller];
   if (v14)
   {
-    v15 = [(GCOverlaySettings *)self gameForActiveController];
-    v16 = [v15 profileFor:v14 with:self->_settingsStore];
-    v17 = [v16 uuid];
-    v18 = [(GCOverlaySettings *)self selectedProfile];
-    v19 = [v18 identifier];
-    v20 = [v17 isEqual:v19];
+    gameForActiveController = [(GCOverlaySettings *)self gameForActiveController];
+    v16 = [gameForActiveController profileFor:v14 with:self->_settingsStore];
+    uuid2 = [v16 uuid];
+    selectedProfile = [(GCOverlaySettings *)self selectedProfile];
+    identifier = [selectedProfile identifier];
+    v20 = [uuid2 isEqual:identifier];
 
     if ((v20 & 1) == 0)
     {
       v21 = [GCOverlayProfile alloc];
-      v22 = [v16 name];
-      v23 = [v16 uuid];
-      v24 = [(GCOverlayProfile *)v21 initWithName:v22 identifier:v23];
+      name2 = [v16 name];
+      uuid3 = [v16 uuid];
+      v24 = [(GCOverlayProfile *)v21 initWithName:name2 identifier:uuid3];
       [(GCOverlaySettings *)self setSelectedProfile:v24];
     }
   }
 
   else
   {
-    v25 = [(GCOverlaySettings *)self selectedProfile];
+    selectedProfile2 = [(GCOverlaySettings *)self selectedProfile];
 
-    if (v25)
+    if (selectedProfile2)
     {
       [(GCOverlaySettings *)self setSelectedProfile:0];
     }
@@ -185,31 +185,31 @@ LABEL_12:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  objc_storeStrong(&self->_controller, a3);
+  objc_storeStrong(&self->_controller, controller);
 
   [(GCOverlaySettings *)self refresh];
 }
 
-- (void)setGameBundleIdentifier:(id)a3
+- (void)setGameBundleIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_gameBundleIdentifier, a3);
+  objc_storeStrong(&self->_gameBundleIdentifier, identifier);
 
   [(GCOverlaySettings *)self refresh];
 }
 
-- (void)setSelectedProfile:(id)a3
+- (void)setSelectedProfile:(id)profile
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_selectedProfile, a3);
+  profileCopy = profile;
+  objc_storeStrong(&self->_selectedProfile, profile);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(GCOverlaySettingsStore *)self->_settingsStore profiles];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  profiles = [(GCOverlaySettingsStore *)self->_settingsStore profiles];
+  v7 = [profiles countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -220,13 +220,13 @@ LABEL_3:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(profiles);
       }
 
       v11 = *(*(&v19 + 1) + 8 * v10);
-      v12 = [v11 uuid];
-      v13 = [v5 identifier];
-      v14 = [v12 isEqual:v13];
+      uuid = [v11 uuid];
+      identifier = [profileCopy identifier];
+      v14 = [uuid isEqual:identifier];
 
       if (v14)
       {
@@ -235,7 +235,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [profiles countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -253,11 +253,11 @@ LABEL_3:
     }
 
     v16 = [(GCOverlaySettingsStore *)self->_settingsStore getSettingsControllerFor:self->_controller];
-    v17 = [(GCOverlaySettings *)self gameForActiveController];
-    [(GCOverlaySettingsStore *)self->_settingsStore setSelectedProfileTo:v15 controller:v16 game:v17];
+    gameForActiveController = [(GCOverlaySettings *)self gameForActiveController];
+    [(GCOverlaySettingsStore *)self->_settingsStore setSelectedProfileTo:v15 controller:v16 game:gameForActiveController];
     [(GCOverlaySettings *)self refresh];
 
-    v6 = v15;
+    profiles = v15;
   }
 
 LABEL_12:

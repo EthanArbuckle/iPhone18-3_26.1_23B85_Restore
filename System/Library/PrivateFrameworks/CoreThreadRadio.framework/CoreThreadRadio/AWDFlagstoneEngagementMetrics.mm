@@ -1,12 +1,12 @@
 @interface AWDFlagstoneEngagementMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFlagstoneEngagementMetrics
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = AWDFlagstoneEngagementMetrics;
   v3 = [(AWDFlagstoneEngagementMetrics *)&v7 description];
-  v4 = [(AWDFlagstoneEngagementMetrics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDFlagstoneEngagementMetrics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,108 +34,108 @@
   header = self->_header;
   if (header)
   {
-    v6 = [(AWDHeaderInfoS *)header dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"header"];
+    dictionaryRepresentation = [(AWDHeaderInfoS *)header dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   sCntrsEngagement = self->_sCntrsEngagement;
   if (sCntrsEngagement)
   {
-    v8 = [(AWDCountersEngagementS *)sCntrsEngagement dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"s_cntrs_engagement"];
+    dictionaryRepresentation2 = [(AWDCountersEngagementS *)sCntrsEngagement dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"s_cntrs_engagement"];
   }
 
   sCntrsDiscoveryJoin = self->_sCntrsDiscoveryJoin;
   if (sCntrsDiscoveryJoin)
   {
-    v10 = [(AWDCountersDiscoveryJoinS *)sCntrsDiscoveryJoin dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"s_cntrs_discovery_join"];
+    dictionaryRepresentation3 = [(AWDCountersDiscoveryJoinS *)sCntrsDiscoveryJoin dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"s_cntrs_discovery_join"];
   }
 
   sCntrsReachability = self->_sCntrsReachability;
   if (sCntrsReachability)
   {
-    v12 = [(AWDCountersReachabilityS *)sCntrsReachability dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"s_cntrs_reachability"];
+    dictionaryRepresentation4 = [(AWDCountersReachabilityS *)sCntrsReachability dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"s_cntrs_reachability"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sCntrsEngagement)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sCntrsDiscoveryJoin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sCntrsReachability)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_sCntrsEngagement)
   {
     [v5 setSCntrsEngagement:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sCntrsDiscoveryJoin)
   {
     [v5 setSCntrsDiscoveryJoin:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sCntrsReachability)
   {
     [v5 setSCntrsReachability:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -143,43 +143,43 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:a3];
+  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(AWDCountersEngagementS *)self->_sCntrsEngagement copyWithZone:a3];
+  v9 = [(AWDCountersEngagementS *)self->_sCntrsEngagement copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(AWDCountersDiscoveryJoinS *)self->_sCntrsDiscoveryJoin copyWithZone:a3];
+  v11 = [(AWDCountersDiscoveryJoinS *)self->_sCntrsDiscoveryJoin copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
-  v13 = [(AWDCountersReachabilityS *)self->_sCntrsReachability copyWithZone:a3];
+  v13 = [(AWDCountersReachabilityS *)self->_sCntrsReachability copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
 
@@ -187,13 +187,13 @@ LABEL_15:
   }
 
   header = self->_header;
-  if (header | *(v4 + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
+  if (header | *(equalCopy + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
   {
     goto LABEL_15;
   }
 
   sCntrsEngagement = self->_sCntrsEngagement;
-  if (sCntrsEngagement | *(v4 + 4))
+  if (sCntrsEngagement | *(equalCopy + 4))
   {
     if (![(AWDCountersEngagementS *)sCntrsEngagement isEqual:?])
     {
@@ -202,7 +202,7 @@ LABEL_15:
   }
 
   sCntrsDiscoveryJoin = self->_sCntrsDiscoveryJoin;
-  if (sCntrsDiscoveryJoin | *(v4 + 3))
+  if (sCntrsDiscoveryJoin | *(equalCopy + 3))
   {
     if (![(AWDCountersDiscoveryJoinS *)sCntrsDiscoveryJoin isEqual:?])
     {
@@ -211,7 +211,7 @@ LABEL_15:
   }
 
   sCntrsReachability = self->_sCntrsReachability;
-  if (sCntrsReachability | *(v4 + 5))
+  if (sCntrsReachability | *(equalCopy + 5))
   {
     v11 = [(AWDCountersReachabilityS *)sCntrsReachability isEqual:?];
 
@@ -243,13 +243,13 @@ LABEL_15:
   return v6 ^ [(AWDCountersReachabilityS *)self->_sCntrsReachability hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

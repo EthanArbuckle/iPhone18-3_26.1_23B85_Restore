@@ -3,7 +3,7 @@
 - (_SXConvertibleValue)left;
 - (_SXConvertibleValue)right;
 - (_SXConvertibleValue)top;
-- (void)initWithTop:(uint64_t)a3 bottom:(uint64_t)a4;
+- (void)initWithTop:(uint64_t)top bottom:(uint64_t)bottom;
 @end
 
 @implementation SXInsertEdgeSpacing
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (void)initWithTop:(uint64_t)a3 bottom:(uint64_t)a4
+- (void)initWithTop:(uint64_t)top bottom:(uint64_t)bottom
 {
   if (result)
   {
@@ -54,8 +54,8 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
-      result[5] = a4;
+      result[2] = top;
+      result[5] = bottom;
       result[6] = a5;
     }
   }

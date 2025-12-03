@@ -1,37 +1,37 @@
 @interface PKPhysicsGrid
 - (id).cxx_construct;
-- (id)physicsBodyFromSmoothedOutline:(double)a3 size:(CGSize)a4;
+- (id)physicsBodyFromSmoothedOutline:(double)outline size:(CGSize)size;
 - (shared_ptr<PKCGrid>)gridPtr;
-- (unsigned)gridDataAtX:(int)a3 y:(int)a4 z:(int)a5;
-- (void)setGridPtr:(shared_ptr<PKCGrid>)a3;
+- (unsigned)gridDataAtX:(int)x y:(int)y z:(int)z;
+- (void)setGridPtr:(shared_ptr<PKCGrid>)ptr;
 @end
 
 @implementation PKPhysicsGrid
 
-- (unsigned)gridDataAtX:(int)a3 y:(int)a4 z:(int)a5
+- (unsigned)gridDataAtX:(int)x y:(int)y z:(int)z
 {
-  if ((a4 | a3 | a5) < 0)
+  if ((y | x | z) < 0)
   {
     return 0;
   }
 
   ptr = self->grid.__ptr_;
-  if (*ptr <= a3 || *(ptr + 1) <= a4 || *(ptr + 2) <= a5)
+  if (*ptr <= x || *(ptr + 1) <= y || *(ptr + 2) <= z)
   {
     return 0;
   }
 
   else
   {
-    return *(*(ptr + 5) + a3 + *ptr * a4);
+    return *(*(ptr + 5) + x + *ptr * y);
   }
 }
 
-- (id)physicsBodyFromSmoothedOutline:(double)a3 size:(CGSize)a4
+- (id)physicsBodyFromSmoothedOutline:(double)outline size:(CGSize)size
 {
-  v6 = a4;
-  v4 = a3;
-  PKCGrid::physicsBodyFromSmoothedOutline(self->grid.__ptr_, v4, &v6);
+  sizeCopy = size;
+  outlineCopy = outline;
+  PKCGrid::physicsBodyFromSmoothedOutline(self->grid.__ptr_, outlineCopy, &sizeCopy);
 }
 
 - (shared_ptr<PKCGrid>)gridPtr
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (void)setGridPtr:(shared_ptr<PKCGrid>)a3
+- (void)setGridPtr:(shared_ptr<PKCGrid>)ptr
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *ptr.__ptr_;
+  v3 = *(ptr.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

@@ -1,12 +1,12 @@
 @interface SideButtonController
 - (double)_sideButtonDoubleTapInterval;
-- (double)_sideClickSpeedFromSpecifierKey:(id)a3;
+- (double)_sideClickSpeedFromSpecifierKey:(id)key;
 - (id)_vibrationPattern;
 - (id)specifiers;
 - (void)_flashSelectedRow;
-- (void)_updateCheckedStatusForCell:(id)a3;
+- (void)_updateCheckedStatusForCell:(id)cell;
 - (void)_vibrateSelectedRow;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SideButtonController
@@ -36,19 +36,19 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = SideButtonController;
-  [(SideButtonController *)&v29 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(SideButtonController *)&v29 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v28.receiver = self;
   v28.super_class = SideButtonController;
-  v8 = [(SideButtonController *)&v28 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:*MEMORY[0x277D3FFF0]];
+  v8 = [(SideButtonController *)&v28 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:*MEMORY[0x277D3FFF0]];
   [(SideButtonController *)self _sideClickSpeedFromSpecifierKey:v10];
   v12 = v11;
 
@@ -59,8 +59,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v6 visibleCells];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v15 = [visibleCells countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -72,31 +72,31 @@
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(SideButtonController *)self _updateCheckedStatusForCell:*(*(&v24 + 1) + 8 * v18++)];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v16 = [visibleCells countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v16);
   }
 
   [v8 setChecked:1];
-  [(SideButtonController *)self setSelectedIndexPath:v7];
+  [(SideButtonController *)self setSelectedIndexPath:pathCopy];
   AudioServicesStopSystemSound();
-  v19 = [(SideButtonController *)self vibrationTimer];
-  [v19 invalidate];
+  vibrationTimer = [(SideButtonController *)self vibrationTimer];
+  [vibrationTimer invalidate];
 
   v20 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__vibrateSelectedRow selector:0 userInfo:0 repeats:0.649999976];
   [(SideButtonController *)self setVibrationTimer:v20];
 
   [(SideButtonController *)self setFlashCount:0];
-  v21 = [(SideButtonController *)self flashTimer];
-  [v21 invalidate];
+  flashTimer = [(SideButtonController *)self flashTimer];
+  [flashTimer invalidate];
 
   v22 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__flashSelectedRow selector:0 userInfo:0 repeats:0.699999988];
   [(SideButtonController *)self setFlashTimer:v22];
@@ -104,22 +104,22 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCheckedStatusForCell:(id)a3
+- (void)_updateCheckedStatusForCell:(id)cell
 {
-  v9 = a3;
-  v4 = [v9 specifier];
-  v5 = [v4 propertyForKey:*MEMORY[0x277D3FFF0]];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v5 = [specifier propertyForKey:*MEMORY[0x277D3FFF0]];
   [(SideButtonController *)self _sideClickSpeedFromSpecifierKey:v5];
   v7 = v6;
 
   [(SideButtonController *)self _sideButtonDoubleTapInterval];
-  [v9 setChecked:{vabdd_f64(v7, v8) < 0.00999999978}];
+  [cellCopy setChecked:{vabdd_f64(v7, v8) < 0.00999999978}];
 }
 
 - (double)_sideButtonDoubleTapInterval
 {
-  v2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v2 doubleForKey:@"SideButtonDoubleTapInterval"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor doubleForKey:@"SideButtonDoubleTapInterval"];
   v4 = v3;
 
   result = *MEMORY[0x277CE6898];
@@ -131,22 +131,22 @@
   return result;
 }
 
-- (double)_sideClickSpeedFromSpecifierKey:(id)a3
+- (double)_sideClickSpeedFromSpecifierKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"sideClickSpeedSlowest"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"sideClickSpeedSlowest"])
   {
     v4 = MEMORY[0x277CE68A8];
   }
 
-  else if ([v3 isEqualToString:@"sideClickSpeedSlow"])
+  else if ([keyCopy isEqualToString:@"sideClickSpeedSlow"])
   {
     v4 = MEMORY[0x277CE68A0];
   }
 
   else
   {
-    if (([v3 isEqualToString:@"sideClickSpeedDefault"] & 1) == 0)
+    if (([keyCopy isEqualToString:@"sideClickSpeedDefault"] & 1) == 0)
     {
       _AXAssert();
     }
@@ -191,13 +191,13 @@
 
 - (void)_flashSelectedRow
 {
-  v7 = [(SideButtonController *)self table];
-  v3 = [(SideButtonController *)self selectedIndexPath];
-  [v7 selectRowAtIndexPath:v3 animated:0 scrollPosition:0];
-  [v7 deselectRowAtIndexPath:v3 animated:0];
+  table = [(SideButtonController *)self table];
+  selectedIndexPath = [(SideButtonController *)self selectedIndexPath];
+  [table selectRowAtIndexPath:selectedIndexPath animated:0 scrollPosition:0];
+  [table deselectRowAtIndexPath:selectedIndexPath animated:0];
   [(SideButtonController *)self setFlashCount:[(SideButtonController *)self flashCount]+ 1];
-  v4 = [(SideButtonController *)self flashTimer];
-  [v4 invalidate];
+  flashTimer = [(SideButtonController *)self flashTimer];
+  [flashTimer invalidate];
 
   if ([(SideButtonController *)self flashCount]> 1)
   {
@@ -217,8 +217,8 @@
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CBA658];
-  v2 = [(SideButtonController *)self _vibrationPattern];
-  v5[0] = v2;
+  _vibrationPattern = [(SideButtonController *)self _vibrationPattern];
+  v5[0] = _vibrationPattern;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   AudioServicesPlaySystemSoundWithOptions();
 

@@ -1,8 +1,8 @@
 @interface UpsellViewController
-- (_TtC23ShelfKitCollectionViews20UpsellViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23ShelfKitCollectionViews20UpsellViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)closeButtonTapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -18,10 +18,10 @@
   sub_2F4F14();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2F4818(a3);
+  selfCopy = self;
+  sub_2F4818(appear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -35,11 +35,11 @@
 
 - (void)closeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2F5A3C();
 }
 
-- (_TtC23ShelfKitCollectionViews20UpsellViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews20UpsellViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

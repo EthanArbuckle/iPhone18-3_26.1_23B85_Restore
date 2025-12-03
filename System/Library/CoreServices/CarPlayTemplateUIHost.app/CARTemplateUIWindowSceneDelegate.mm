@@ -1,15 +1,15 @@
 @interface CARTemplateUIWindowSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation CARTemplateUIWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a5;
-  v7 = a3;
+  optionsCopy = options;
+  sceneCopy = scene;
   v8 = +[UIApplication sharedApplication];
-  [v8 didConnectScene:v7 options:v6];
+  [v8 didConnectScene:sceneCopy options:optionsCopy];
 }
 
 @end

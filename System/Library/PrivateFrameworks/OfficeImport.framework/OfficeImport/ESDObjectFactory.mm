@@ -1,25 +1,25 @@
 @interface ESDObjectFactory
 + (id)threadLocalFactory;
 - (ESDObjectFactory)init;
-- (EshObject)createObjectWithType:(unsigned __int16)a3;
+- (EshObject)createObjectWithType:(unsigned __int16)type;
 - (void)dealloc;
-- (void)replaceHostEshFactoryWith:(EshObjectFactory *)a3;
+- (void)replaceHostEshFactoryWith:(EshObjectFactory *)with;
 - (void)restoreHostEshFactory;
-- (void)setEshFactory:(EshObjectFactory *)a3;
+- (void)setEshFactory:(EshObjectFactory *)factory;
 @end
 
 @implementation ESDObjectFactory
 
 + (id)threadLocalFactory
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"ESDObjectFactory"];
+  v4 = [threadDictionary objectForKey:@"ESDObjectFactory"];
   if (!v4)
   {
     v4 = objc_alloc_init(ESDObjectFactory);
-    [v3 setObject:v4 forKey:@"ESDObjectFactory"];
+    [threadDictionary setObject:v4 forKey:@"ESDObjectFactory"];
   }
 
   return v4;
@@ -54,14 +54,14 @@
   [(ESDObjectFactory *)&v4 dealloc];
 }
 
-- (EshObject)createObjectWithType:(unsigned __int16)a3
+- (EshObject)createObjectWithType:(unsigned __int16)type
 {
   result = self->eshObjectFactory;
   if (result)
   {
-    if ((a3 + 4096) >= 6u)
+    if ((type + 4096) >= 6u)
     {
-      EshAtom::versionForAtomType(a3);
+      EshAtom::versionForAtomType(type);
       result = self->eshObjectFactory;
     }
 
@@ -73,26 +73,26 @@
   return result;
 }
 
-- (void)replaceHostEshFactoryWith:(EshObjectFactory *)a3
+- (void)replaceHostEshFactoryWith:(EshObjectFactory *)with
 {
   eshObjectFactoryStack = self->eshObjectFactoryStack;
   v6 = [MEMORY[0x277CCAE60] valueWithPointer:self->eshObjectFactory];
   [(NSMutableArray *)eshObjectFactoryStack addObject:v6];
 
-  self->eshObjectFactory = a3;
+  self->eshObjectFactory = with;
 }
 
 - (void)restoreHostEshFactory
 {
-  v3 = [(NSMutableArray *)self->eshObjectFactoryStack lastObject];
-  self->eshObjectFactory = [v3 pointerValue];
+  lastObject = [(NSMutableArray *)self->eshObjectFactoryStack lastObject];
+  self->eshObjectFactory = [lastObject pointerValue];
 
   eshObjectFactoryStack = self->eshObjectFactoryStack;
 
   [(NSMutableArray *)eshObjectFactoryStack removeLastObject];
 }
 
-- (void)setEshFactory:(EshObjectFactory *)a3
+- (void)setEshFactory:(EshObjectFactory *)factory
 {
   eshObjectFactory = self->eshObjectFactory;
   if (eshObjectFactory)
@@ -100,7 +100,7 @@
     (*(eshObjectFactory->var0 + 1))(eshObjectFactory, a2);
   }
 
-  self->eshObjectFactory = a3;
+  self->eshObjectFactory = factory;
 }
 
 @end

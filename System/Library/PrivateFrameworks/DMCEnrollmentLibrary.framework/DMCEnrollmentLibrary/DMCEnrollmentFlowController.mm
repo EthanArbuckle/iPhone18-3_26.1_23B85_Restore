@@ -1,6 +1,6 @@
 @interface DMCEnrollmentFlowController
 + (id)_createEnrollmentNotAllowedDuringSDPError;
-+ (id)_createEnterpriseApplicationExistsErrorWithAppName:(id)a3;
++ (id)_createEnterpriseApplicationExistsErrorWithAppName:(id)name;
 + (id)_createEnterpriseApplicationMissingEntitlementsError;
 + (id)_createFailedToCaptureSnapshotError;
 + (id)_createFailedToDeleteSnapshotError;
@@ -15,22 +15,22 @@
 + (id)_createPasscodeRequiredError;
 + (id)_createUnsupportedFeatureError;
 + (id)_createUpdateFromFactoryVersionRequiredError;
-+ (id)chooseServerFromUAORGOServers:(id)a3 error:(id *)a4;
++ (id)chooseServerFromUAORGOServers:(id)servers error:(id *)error;
 + (id)enrollmentFlowController;
-+ (id)enrollmentFlowControllerWithPresenter:(id)a3 managedConfigurationHelper:(id)a4;
-+ (id)enrollmentFlowControllerWithPresenter:(id)a3 managedConfigurationHelper:(id)a4 rmStoreHelper:(id)a5;
-- (BOOL)_appWithBundleIDExists:(id)a3;
-- (BOOL)_canSkipMDMEnrollmentWithEnrollmentType:(unint64_t)a3;
-- (BOOL)_handleNeedCredentialsError:(id)a3;
-- (BOOL)_handleSoftwareUpdateRequiredError:(id)a3;
++ (id)enrollmentFlowControllerWithPresenter:(id)presenter managedConfigurationHelper:(id)helper;
++ (id)enrollmentFlowControllerWithPresenter:(id)presenter managedConfigurationHelper:(id)helper rmStoreHelper:(id)storeHelper;
+- (BOOL)_appWithBundleIDExists:(id)exists;
+- (BOOL)_canSkipMDMEnrollmentWithEnrollmentType:(unint64_t)type;
+- (BOOL)_handleNeedCredentialsError:(id)error;
+- (BOOL)_handleSoftwareUpdateRequiredError:(id)error;
 - (BOOL)_shouldDoReturnToService;
-- (BOOL)_validEnrollmentMode:(id)a3 enrollmentMethod:(unint64_t)a4;
-- (BOOL)_validateBundleID:(id)a3 personaID:(id)a4 requiredEntitlements:(id)a5 error:(id *)a6;
-- (BOOL)_verifyAccountsInformationWithAltDSID:(id)a3 personaID:(id)a4;
-- (BOOL)_verifyPropertiesFromProfileData:(id)a3 enrollmentMethod:(unint64_t)a4 isRapidReturnToService:(BOOL)a5 isESSO:(BOOL)a6 essoAppITunesStoreID:(id)a7 enrollmentMode:(id)a8 managedAppleID:(id)a9 assignedManagedAppleID:(id)a10 serverCapabilities:(id)a11 error:(id *)a12;
+- (BOOL)_validEnrollmentMode:(id)mode enrollmentMethod:(unint64_t)method;
+- (BOOL)_validateBundleID:(id)d personaID:(id)iD requiredEntitlements:(id)entitlements error:(id *)error;
+- (BOOL)_verifyAccountsInformationWithAltDSID:(id)d personaID:(id)iD;
+- (BOOL)_verifyPropertiesFromProfileData:(id)data enrollmentMethod:(unint64_t)method isRapidReturnToService:(BOOL)service isESSO:(BOOL)o essoAppITunesStoreID:(id)d enrollmentMode:(id)mode managedAppleID:(id)iD assignedManagedAppleID:(id)self0 serverCapabilities:(id)self1 error:(id *)self2;
 - (DMCEnrollmentDirtyState)dirtyState;
 - (DMCEnrollmentFlowController)init;
-- (DMCEnrollmentFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4 rmStoreHelper:(id)a5;
+- (DMCEnrollmentFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper rmStoreHelper:(id)storeHelper;
 - (DMCEnrollmentFlowDelegate)delegate;
 - (DMCEnrollmentFlowMigrationDelegate)migrationDelegate;
 - (DMCObliterationShelter)obliterationShelter;
@@ -56,103 +56,103 @@
 - (id)_ORGO_MACBuddy_secondPartSteps;
 - (id)_ORGO_MAIDEnrollmentSteps;
 - (id)_ORGO_MAIDEnrollmentSteps_orgToken;
-- (id)_appNameWithBundleID:(id)a3;
-- (id)_bundleIDsFromAppIDs:(id)a3;
-- (id)_convertErrorToHumanReadableError:(id)a3;
+- (id)_appNameWithBundleID:(id)d;
+- (id)_bundleIDsFromAppIDs:(id)ds;
+- (id)_convertErrorToHumanReadableError:(id)error;
 - (id)_ephemeralAuthSteps;
 - (id)_errorTranslation;
-- (id)_findServerWithVersion:(id)a3 servers:(id)a4;
-- (id)_guardAgainstConflictingAccountsWithUsername:(id)a3 altDSID:(id)a4;
-- (id)_machineInfoWithEnrollmentType:(unint64_t)a3 enrollmentMethod:(unint64_t)a4 isDoingReturnToService:(BOOL)a5 isRapidReturnToService:(BOOL)a6;
-- (id)_nameForStep:(unint64_t)a3;
+- (id)_findServerWithVersion:(id)version servers:(id)servers;
+- (id)_guardAgainstConflictingAccountsWithUsername:(id)username altDSID:(id)d;
+- (id)_machineInfoWithEnrollmentType:(unint64_t)type enrollmentMethod:(unint64_t)method isDoingReturnToService:(BOOL)service isRapidReturnToService:(BOOL)toService;
+- (id)_nameForStep:(unint64_t)step;
 - (id)_permanentAuthSteps;
 - (id)_postEnrollmentSteps;
 - (id)_readDirtyStateFromDisk;
 - (id)_stepsWithUI;
-- (id)_translatedErrorStringForError:(id)a3;
+- (id)_translatedErrorStringForError:(id)error;
 - (id)_trustedErrors;
 - (void)_addNotification;
-- (void)_analyzeCloudConfig:(id)a3 enrollmentType:(unint64_t)a4 isDoingReturnToService:(BOOL)a5 obliterationShelter:(id)a6;
-- (void)_analyzeESSODetails:(id)a3;
-- (void)_askForMDMUsernameAndCredentialWithError:(id)a3;
-- (void)_askForPasscodeIfNeededWithEnrollmentType:(unint64_t)a3;
-- (void)_askForRestoreChoiceWithMAID:(id)a3 personaID:(id)a4;
-- (void)_askForUserConsentWithProfileData:(id)a3 managedAppleID:(id)a4 cloudConfig:(id)a5 isReturnToService:(BOOL)a6 enrollmentType:(unint64_t)a7;
-- (void)_askForUsernameWithDefaultUsername:(id)a3;
+- (void)_analyzeCloudConfig:(id)config enrollmentType:(unint64_t)type isDoingReturnToService:(BOOL)service obliterationShelter:(id)shelter;
+- (void)_analyzeESSODetails:(id)details;
+- (void)_askForMDMUsernameAndCredentialWithError:(id)error;
+- (void)_askForPasscodeIfNeededWithEnrollmentType:(unint64_t)type;
+- (void)_askForRestoreChoiceWithMAID:(id)d personaID:(id)iD;
+- (void)_askForUserConsentWithProfileData:(id)data managedAppleID:(id)d cloudConfig:(id)config isReturnToService:(BOOL)service enrollmentType:(unint64_t)type;
+- (void)_askForUsernameWithDefaultUsername:(id)username;
 - (void)_awaitApplicationInstallation;
-- (void)_awaitDDMAppConfigurationWithProfileIdentifier:(id)a3;
-- (void)_awaitESSOConfigActivationWithExtensionIdentifiers:(id)a3;
-- (void)_chooseEnrollmentTypeWithAvailableServers:(id)a3 serverInformationSource:(unint64_t)a4;
-- (void)_cleanupDirtyState:(id)a3;
-- (void)_cleanupOrphanedAppsIfNeededIsDoingRRTS:(BOOL)a3;
-- (void)_correlateMAIDWithAltDSID:(id)a3 withRMAccount:(id)a4 isProfileLocked:(BOOL)a5 organizationName:(id)a6 friendlyName:(id)a7 personaID:(id)a8;
-- (void)_createAndSyncBootstrapTokenWithDevicePasscode:(id)a3 devicePasscodeContext:(id)a4;
-- (void)_createEnterprisePersonaWithDevicePasscode:(id)a3 devicePasscodeContext:(id)a4;
-- (void)_createRMAccountIfNeededWithSignInUserIdentifier:(id)a3 assignedMAID:(id)a4 existingRMAccountID:(id)a5 enrollmentType:(unint64_t)a6 enrollmentMethod:(unint64_t)a7 isRenewalFlow:(BOOL)a8;
-- (void)_detectAuthTypeWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 isPostBuddy:(BOOL)a5 machineInfo:(id)a6 anchorCertificateRefs:(id)a7;
-- (void)_displayManagementDetailsOverviewWithProfileData:(id)a3 managedAppleID:(id)a4;
-- (void)_enrollmentTypeAuthorizedBySDP:(unint64_t)a3 completion:(id)a4;
+- (void)_awaitDDMAppConfigurationWithProfileIdentifier:(id)identifier;
+- (void)_awaitESSOConfigActivationWithExtensionIdentifiers:(id)identifiers;
+- (void)_chooseEnrollmentTypeWithAvailableServers:(id)servers serverInformationSource:(unint64_t)source;
+- (void)_cleanupDirtyState:(id)state;
+- (void)_cleanupOrphanedAppsIfNeededIsDoingRRTS:(BOOL)s;
+- (void)_correlateMAIDWithAltDSID:(id)d withRMAccount:(id)account isProfileLocked:(BOOL)locked organizationName:(id)name friendlyName:(id)friendlyName personaID:(id)iD;
+- (void)_createAndSyncBootstrapTokenWithDevicePasscode:(id)passcode devicePasscodeContext:(id)context;
+- (void)_createEnterprisePersonaWithDevicePasscode:(id)passcode devicePasscodeContext:(id)context;
+- (void)_createRMAccountIfNeededWithSignInUserIdentifier:(id)identifier assignedMAID:(id)d existingRMAccountID:(id)iD enrollmentType:(unint64_t)type enrollmentMethod:(unint64_t)method isRenewalFlow:(BOOL)flow;
+- (void)_detectAuthTypeWithServiceURL:(id)l enrollmentType:(unint64_t)type isPostBuddy:(BOOL)buddy machineInfo:(id)info anchorCertificateRefs:(id)refs;
+- (void)_displayManagementDetailsOverviewWithProfileData:(id)data managedAppleID:(id)d;
+- (void)_enrollmentTypeAuthorizedBySDP:(unint64_t)p completion:(id)completion;
 - (void)_ensureDeviceActivation;
-- (void)_ensureWiFiConnectionWithWiFiProfile:(id)a3;
-- (void)_exchangeMAIDForBearerTokenWithRMAccountIdentifier:(id)a3 authParams:(id)a4 anchorCertificateRefs:(id)a5;
+- (void)_ensureWiFiConnectionWithWiFiProfile:(id)profile;
+- (void)_exchangeMAIDForBearerTokenWithRMAccountIdentifier:(id)identifier authParams:(id)params anchorCertificateRefs:(id)refs;
 - (void)_extensionIDsFromDeclarationProfiles;
-- (void)_fetchAppAttributesWithITunesItemID:(id)a3 completionHandler:(id)a4;
-- (void)_fetchBundleIDsWithiTunesItemID:(id)a3 debuggingAppIDs:(id)a4 completionHandler:(id)a5;
-- (void)_fetchCloudConfigWithEnrollmentType:(unint64_t)a3 isReturnToService:(BOOL)a4;
-- (void)_fetchEnrollmentProfileFromServiceURL:(id)a3 authTokens:(id)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 enrollmentMethod:(unint64_t)a7 isReturnToService:(BOOL)a8;
-- (void)_fetchEnrollmentProfileFromServiceURL:(id)a3 username:(id)a4 password:(id)a5 machineInfo:(id)a6 anchorCertificateRefs:(id)a7;
-- (void)_fetchEnrollmentProfileFromWebURL:(id)a3 machineInfo:(id)a4 anchorCertificateRefs:(id)a5 isReturnToService:(BOOL)a6;
-- (void)_fetchServerInformationWithUsername:(id)a3;
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4;
+- (void)_fetchAppAttributesWithITunesItemID:(id)d completionHandler:(id)handler;
+- (void)_fetchBundleIDsWithiTunesItemID:(id)d debuggingAppIDs:(id)ds completionHandler:(id)handler;
+- (void)_fetchCloudConfigWithEnrollmentType:(unint64_t)type isReturnToService:(BOOL)service;
+- (void)_fetchEnrollmentProfileFromServiceURL:(id)l authTokens:(id)tokens machineInfo:(id)info anchorCertificateRefs:(id)refs enrollmentMethod:(unint64_t)method isReturnToService:(BOOL)service;
+- (void)_fetchEnrollmentProfileFromServiceURL:(id)l username:(id)username password:(id)password machineInfo:(id)info anchorCertificateRefs:(id)refs;
+- (void)_fetchEnrollmentProfileFromWebURL:(id)l machineInfo:(id)info anchorCertificateRefs:(id)refs isReturnToService:(BOOL)service;
+- (void)_fetchServerInformationWithUsername:(id)username;
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled;
 - (void)_initiateDEPPushTokenSync;
-- (void)_installESSODeclarations:(id)a3 chosenBundleID:(id)a4 personaID:(id)a5 enrollmentType:(unint64_t)a6;
-- (void)_installEnrollmentProfile:(id)a3 devicePasscode:(id)a4 devicePasscodeContext:(id)a5 passcodeContextExtractable:(BOOL)a6 personaID:(id)a7 rmAccountIdentifier:(id)a8 isESSO:(BOOL)a9 essoAppITunesStoreID:(id)a10 essoConfigurationProfile:(id)a11 wifiProfileIdentifier:(id)a12 enrollmentType:(unint64_t)a13 isReturnToService:(BOOL)a14;
-- (void)_installEnterpriseApplication:(id)a3 debuggingAppIDs:(id)a4 personaID:(id)a5;
-- (void)_linkESSOStore:(id)a3 rmAccountIdentifier:(id)a4 profileIdentifier:(id)a5;
-- (void)_manageApplicationWithAppBundleID:(id)a3 essoDetails:(id)a4 organization:(id)a5 personaID:(id)a6;
-- (void)_preflightEnrollmentWithEnrollmentType:(unint64_t)a3 isRenewalFlow:(BOOL)a4 isPostRestoration:(BOOL)a5 isPostBuddy:(BOOL)a6;
-- (void)_processAuthServicesWithAuthParams:(id)a3 enrollmentMethod:(unint64_t)a4 username:(id)a5;
-- (void)_processPotentialMigrationIfNeededWithEnrollmentType:(unint64_t)a3 cloudConfig:(id)a4;
-- (void)_promoteiCloudWithAltDSID:(id)a3;
-- (void)_promptForSoftwareUpdateWithSoftwareUpdateInfo:(id)a3;
-- (void)_reauthenticationCompleteWithRMIdentifier:(id)a3;
-- (void)_receivedApplicationWillTerminateNotification:(id)a3;
+- (void)_installESSODeclarations:(id)declarations chosenBundleID:(id)d personaID:(id)iD enrollmentType:(unint64_t)type;
+- (void)_installEnrollmentProfile:(id)profile devicePasscode:(id)passcode devicePasscodeContext:(id)context passcodeContextExtractable:(BOOL)extractable personaID:(id)d rmAccountIdentifier:(id)identifier isESSO:(BOOL)o essoAppITunesStoreID:(id)self0 essoConfigurationProfile:(id)self1 wifiProfileIdentifier:(id)self2 enrollmentType:(unint64_t)self3 isReturnToService:(BOOL)self4;
+- (void)_installEnterpriseApplication:(id)application debuggingAppIDs:(id)ds personaID:(id)d;
+- (void)_linkESSOStore:(id)store rmAccountIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier;
+- (void)_manageApplicationWithAppBundleID:(id)d essoDetails:(id)details organization:(id)organization personaID:(id)iD;
+- (void)_preflightEnrollmentWithEnrollmentType:(unint64_t)type isRenewalFlow:(BOOL)flow isPostRestoration:(BOOL)restoration isPostBuddy:(BOOL)buddy;
+- (void)_processAuthServicesWithAuthParams:(id)params enrollmentMethod:(unint64_t)method username:(id)username;
+- (void)_processPotentialMigrationIfNeededWithEnrollmentType:(unint64_t)type cloudConfig:(id)config;
+- (void)_promoteiCloudWithAltDSID:(id)d;
+- (void)_promptForSoftwareUpdateWithSoftwareUpdateInfo:(id)info;
+- (void)_reauthenticationCompleteWithRMIdentifier:(id)identifier;
+- (void)_receivedApplicationWillTerminateNotification:(id)notification;
 - (void)_requestiCloudSignInConfirmation;
 - (void)_resetToInitialSteps;
-- (void)_restoreLanguage:(id)a3 locale:(id)a4;
+- (void)_restoreLanguage:(id)language locale:(id)locale;
 - (void)_restoreSetAsideProfiles;
-- (void)_signInMAIDWithAuthenticationResult:(id)a3 enrollmentType:(unint64_t)a4 personaID:(id)a5 isRenewalFlow:(BOOL)a6;
+- (void)_signInMAIDWithAuthenticationResult:(id)result enrollmentType:(unint64_t)type personaID:(id)d isRenewalFlow:(BOOL)flow;
 - (void)_skipMDMEnrollment;
-- (void)_startEnrollmentFlowWithType:(unint64_t)a3 anchorCertificates:(id)a4 restartIfFail:(BOOL)a5 completionHandler:(id)a6;
-- (void)_storeCloudConfig:(id)a3;
+- (void)_startEnrollmentFlowWithType:(unint64_t)type anchorCertificates:(id)certificates restartIfFail:(BOOL)fail completionHandler:(id)handler;
+- (void)_storeCloudConfig:(id)config;
 - (void)_takeSnapshot;
-- (void)_trackDirtyAppBundleIDs:(id)a3 personaID:(id)a4;
-- (void)_unblockAppInstallsIfNecessaryWithCaller:(id)a3;
-- (void)_unblockAppInstallsWithCaller:(id)a3;
+- (void)_trackDirtyAppBundleIDs:(id)ds personaID:(id)d;
+- (void)_unblockAppInstallsIfNecessaryWithCaller:(id)caller;
+- (void)_unblockAppInstallsWithCaller:(id)caller;
 - (void)_unblockMDMCommands;
-- (void)_unblockMDMCommandsIfNeededHasBlocked:(BOOL)a3;
-- (void)_updateAccountsWithRMIdentifier:(id)a3 managedAppleID:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6 enrollmentURL:(id)a7 personaID:(id)a8;
-- (void)_updateCloudConfigWithRMAccountIdentifier:(id)a3;
-- (void)_updateCredentialForAccount:(id)a3 authTokens:(id)a4;
-- (void)_updateRMAccountWithIdentifier:(id)a3 authTokens:(id)a4 personaID:(id)a5;
-- (void)_updateRMAccountWithIdentifier:(id)a3 authTokens:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6 personaID:(id)a7 enrollmentMethod:(unint64_t)a8;
-- (void)_updateRMAccountWithIdentifier:(id)a3 authenticationResults:(id)a4 enrollmentMethod:(unint64_t)a5;
+- (void)_unblockMDMCommandsIfNeededHasBlocked:(BOOL)blocked;
+- (void)_updateAccountsWithRMIdentifier:(id)identifier managedAppleID:(id)d profileIdentifier:(id)profileIdentifier organizationName:(id)name enrollmentURL:(id)l personaID:(id)iD;
+- (void)_updateCloudConfigWithRMAccountIdentifier:(id)identifier;
+- (void)_updateCredentialForAccount:(id)account authTokens:(id)tokens;
+- (void)_updateRMAccountWithIdentifier:(id)identifier authTokens:(id)tokens personaID:(id)d;
+- (void)_updateRMAccountWithIdentifier:(id)identifier authTokens:(id)tokens profileIdentifier:(id)profileIdentifier organizationName:(id)name personaID:(id)d enrollmentMethod:(unint64_t)method;
+- (void)_updateRMAccountWithIdentifier:(id)identifier authenticationResults:(id)results enrollmentMethod:(unint64_t)method;
 - (void)_waitForDeviceConfiguration;
 - (void)_waitForESSODeclarations;
 - (void)_workerQueue_cleanupCachedValues;
 - (void)_workerQueue_flowCompleted;
-- (void)_workerQueue_performFlowStep:(unint64_t)a3;
+- (void)_workerQueue_performFlowStep:(unint64_t)step;
 - (void)_workerQueue_stopMonitorAndEmptyDiskValues;
-- (void)_writeDirtyStateToDisk:(id)a3;
-- (void)appInstallationStatusUpdatedForType:(id)a3 totalNumber:(unint64_t)a4 finishedNumber:(unint64_t)a5;
+- (void)_writeDirtyStateToDisk:(id)disk;
+- (void)appInstallationStatusUpdatedForType:(id)type totalNumber:(unint64_t)number finishedNumber:(unint64_t)finishedNumber;
 - (void)cleanUpDirtyState;
-- (void)continueMacBuddyORGOEnrollmentFlowWithAuthenticationResults:(id)a3 serviceURL:(id)a4 bearerToken:(id)a5 profileData:(id)a6 completionHandler:(id)a7;
+- (void)continueMacBuddyORGOEnrollmentFlowWithAuthenticationResults:(id)results serviceURL:(id)l bearerToken:(id)token profileData:(id)data completionHandler:(id)handler;
 - (void)dealloc;
-- (void)setEnrollmentMethod:(unint64_t)a3;
-- (void)setEnrollmentType:(unint64_t)a3;
-- (void)startInBuddyEnrollmentFlowRestartIfFail:(BOOL)a3 completionHandler:(id)a4;
-- (void)updateMDMUserEnrollmentWithManagedAppleID:(id)a3 profileIdentifier:(id)a4 organizationName:(id)a5 personaID:(id)a6 completionHandler:(id)a7;
-- (void)updateSharediPadUserChannelWithManagedAppleID:(id)a3 profileIdentifier:(id)a4 organizationName:(id)a5 enrollmentURL:(id)a6 completionHandler:(id)a7;
+- (void)setEnrollmentMethod:(unint64_t)method;
+- (void)setEnrollmentType:(unint64_t)type;
+- (void)startInBuddyEnrollmentFlowRestartIfFail:(BOOL)fail completionHandler:(id)handler;
+- (void)updateMDMUserEnrollmentWithManagedAppleID:(id)d profileIdentifier:(id)identifier organizationName:(id)name personaID:(id)iD completionHandler:(id)handler;
+- (void)updateSharediPadUserChannelWithManagedAppleID:(id)d profileIdentifier:(id)identifier organizationName:(id)name enrollmentURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation DMCEnrollmentFlowController
@@ -164,21 +164,21 @@
   return v2;
 }
 
-+ (id)enrollmentFlowControllerWithPresenter:(id)a3 managedConfigurationHelper:(id)a4
++ (id)enrollmentFlowControllerWithPresenter:(id)presenter managedConfigurationHelper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DMCEnrollmentFlowController alloc] initWithPresenter:v6 managedConfigurationHelper:v5 rmStoreHelper:0];
+  helperCopy = helper;
+  presenterCopy = presenter;
+  v7 = [[DMCEnrollmentFlowController alloc] initWithPresenter:presenterCopy managedConfigurationHelper:helperCopy rmStoreHelper:0];
 
   return v7;
 }
 
-+ (id)enrollmentFlowControllerWithPresenter:(id)a3 managedConfigurationHelper:(id)a4 rmStoreHelper:(id)a5
++ (id)enrollmentFlowControllerWithPresenter:(id)presenter managedConfigurationHelper:(id)helper rmStoreHelper:(id)storeHelper
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[DMCEnrollmentFlowController alloc] initWithPresenter:v9 managedConfigurationHelper:v8 rmStoreHelper:v7];
+  storeHelperCopy = storeHelper;
+  helperCopy = helper;
+  presenterCopy = presenter;
+  v10 = [[DMCEnrollmentFlowController alloc] initWithPresenter:presenterCopy managedConfigurationHelper:helperCopy rmStoreHelper:storeHelperCopy];
 
   return v10;
 }
@@ -196,18 +196,18 @@
   return result;
 }
 
-- (DMCEnrollmentFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4 rmStoreHelper:(id)a5
+- (DMCEnrollmentFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper rmStoreHelper:(id)storeHelper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  presenterCopy = presenter;
+  helperCopy = helper;
+  storeHelperCopy = storeHelper;
   v12 = [(DMCEnrollmentFlowController *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_presenter, a3);
-    objc_storeStrong(&v13->_managedConfigurationHelper, a4);
-    objc_storeStrong(&v13->_rmStoreHelper, a5);
+    objc_storeStrong(&v12->_presenter, presenter);
+    objc_storeStrong(&v13->_managedConfigurationHelper, helper);
+    objc_storeStrong(&v13->_rmStoreHelper, storeHelper);
     [(DMCEnrollmentFlowController *)v13 _addNotification];
   }
 
@@ -265,8 +265,8 @@
   if (!dirtyState)
   {
     v4 = [DMCEnrollmentDirtyState alloc];
-    v5 = [(DMCEnrollmentFlowController *)self _readDirtyStateFromDisk];
-    v6 = [(DMCEnrollmentDirtyState *)v4 initWithDictionary:v5];
+    _readDirtyStateFromDisk = [(DMCEnrollmentFlowController *)self _readDirtyStateFromDisk];
+    v6 = [(DMCEnrollmentDirtyState *)v4 initWithDictionary:_readDirtyStateFromDisk];
     v7 = self->_dirtyState;
     self->_dirtyState = v6;
 
@@ -294,56 +294,56 @@
   return obliterationShelter;
 }
 
-- (void)setEnrollmentType:(unint64_t)a3
+- (void)setEnrollmentType:(unint64_t)type
 {
-  if (self->_enrollmentType != a3)
+  if (self->_enrollmentType != type)
   {
-    self->_enrollmentType = a3;
-    v5 = [(DMCEnrollmentFlowController *)self delegate];
+    self->_enrollmentType = type;
+    delegate = [(DMCEnrollmentFlowController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(DMCEnrollmentFlowController *)self delegate];
-      [v7 enrollmentFlowController:self didUpdateEnrollmentType:a3];
+      delegate2 = [(DMCEnrollmentFlowController *)self delegate];
+      [delegate2 enrollmentFlowController:self didUpdateEnrollmentType:type];
     }
   }
 }
 
-- (void)setEnrollmentMethod:(unint64_t)a3
+- (void)setEnrollmentMethod:(unint64_t)method
 {
-  if (self->_enrollmentMethod != a3)
+  if (self->_enrollmentMethod != method)
   {
-    self->_enrollmentMethod = a3;
-    v5 = [(DMCEnrollmentFlowController *)self delegate];
+    self->_enrollmentMethod = method;
+    delegate = [(DMCEnrollmentFlowController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(DMCEnrollmentFlowController *)self delegate];
-      [v7 enrollmentFlowController:self didUpdateEnrollmentMethod:a3];
+      delegate2 = [(DMCEnrollmentFlowController *)self delegate];
+      [delegate2 enrollmentFlowController:self didUpdateEnrollmentMethod:method];
     }
   }
 }
 
-+ (id)chooseServerFromUAORGOServers:(id)a3 error:(id *)a4
++ (id)chooseServerFromUAORGOServers:(id)servers error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 count];
+  serversCopy = servers;
+  v6 = [serversCopy count];
   v7 = *DMCLogObjects();
   if (v6)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = v7;
-      v9 = [v5 objectAtIndexedSubscript:0];
+      v9 = [serversCopy objectAtIndexedSubscript:0];
       *buf = 138543362;
       v16 = v9;
       _os_log_impl(&dword_247E39000, v8, OS_LOG_TYPE_DEBUG, "Chosen server: %{public}@", buf, 0xCu);
     }
 
-    a4 = [v5 objectAtIndexedSubscript:0];
+    error = [serversCopy objectAtIndexedSubscript:0];
   }
 
   else
@@ -354,36 +354,36 @@
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_ERROR, "Invalid servers list to choose from: no servers listed.", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x277CCA9B8];
       v11 = *MEMORY[0x277D032F0];
       v12 = DMCErrorArray();
-      *a4 = [v10 DMCErrorWithDomain:v11 code:15004 descriptionArray:v12 underlyingError:0 errorType:{*MEMORY[0x277D032F8], 0}];
+      *error = [v10 DMCErrorWithDomain:v11 code:15004 descriptionArray:v12 underlyingError:0 errorType:{*MEMORY[0x277D032F8], 0}];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 - (void)cleanUpDirtyState
 {
-  v3 = [(DMCEnrollmentFlowController *)self dirtyState];
-  [(DMCEnrollmentFlowController *)self _cleanupDirtyState:v3];
+  dirtyState = [(DMCEnrollmentFlowController *)self dirtyState];
+  [(DMCEnrollmentFlowController *)self _cleanupDirtyState:dirtyState];
 }
 
-- (void)startInBuddyEnrollmentFlowRestartIfFail:(BOOL)a3 completionHandler:(id)a4
+- (void)startInBuddyEnrollmentFlowRestartIfFail:(BOOL)fail completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(DMCEnrollmentFlowController *)self _shouldDoReturnToService];
+  failCopy = fail;
+  handlerCopy = handler;
+  _shouldDoReturnToService = [(DMCEnrollmentFlowController *)self _shouldDoReturnToService];
   v8 = *DMCLogObjects();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (_shouldDoReturnToService)
   {
     if (v9)
     {
@@ -400,7 +400,7 @@
     _os_log_impl(&dword_247E39000, v8, OS_LOG_TYPE_DEFAULT, "Starting in Buddy Enrollment...", v11, 2u);
   }
 
-  if (v4)
+  if (failCopy)
   {
     v10 = [(DMCEnrollmentFlowController *)self isDoingReturnToService]^ 1;
   }
@@ -410,52 +410,52 @@
     v10 = 0;
   }
 
-  [(DMCEnrollmentFlowController *)self _startEnrollmentFlowWithType:9 anchorCertificates:0 restartIfFail:v10 completionHandler:v6];
+  [(DMCEnrollmentFlowController *)self _startEnrollmentFlowWithType:9 anchorCertificates:0 restartIfFail:v10 completionHandler:handlerCopy];
 }
 
-- (void)continueMacBuddyORGOEnrollmentFlowWithAuthenticationResults:(id)a3 serviceURL:(id)a4 bearerToken:(id)a5 profileData:(id)a6 completionHandler:(id)a7
+- (void)continueMacBuddyORGOEnrollmentFlowWithAuthenticationResults:(id)results serviceURL:(id)l bearerToken:(id)token profileData:(id)data completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  tokenCopy = token;
+  handlerCopy = handler;
+  dataCopy = data;
+  lCopy = l;
+  resultsCopy = results;
   [(DMCEnrollmentFlowController *)self setEnrollmentType:2];
   [(DMCEnrollmentFlowController *)self setEnrollmentMethod:1];
-  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:v13];
+  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:handlerCopy];
 
   [(DMCEnrollmentFlowController *)self setRestartIfFail:0];
-  [(DMCEnrollmentFlowController *)self setAuthenticationResults:v16];
+  [(DMCEnrollmentFlowController *)self setAuthenticationResults:resultsCopy];
 
-  [(DMCEnrollmentFlowController *)self setServiceURL:v15];
+  [(DMCEnrollmentFlowController *)self setServiceURL:lCopy];
   v25 = *MEMORY[0x277D245C8];
-  v26[0] = v12;
+  v26[0] = tokenCopy;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   [(DMCEnrollmentFlowController *)self setAuthTokens:v17];
 
-  [(DMCEnrollmentFlowController *)self setProfileData:v14];
-  v18 = [(DMCEnrollmentFlowController *)self loggingSupport];
+  [(DMCEnrollmentFlowController *)self setProfileData:dataCopy];
+  loggingSupport = [(DMCEnrollmentFlowController *)self loggingSupport];
 
-  if (!v18)
+  if (!loggingSupport)
   {
     v19 = objc_opt_new();
     [(DMCEnrollmentFlowController *)self setLoggingSupport:v19];
 
-    v20 = [(DMCEnrollmentFlowController *)self loggingSupport];
-    [v20 enableDebugLoggingForEnrollment];
+    loggingSupport2 = [(DMCEnrollmentFlowController *)self loggingSupport];
+    [loggingSupport2 enableDebugLoggingForEnrollment];
   }
 
-  v21 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __144__DMCEnrollmentFlowController_continueMacBuddyORGOEnrollmentFlowWithAuthenticationResults_serviceURL_bearerToken_profileData_completionHandler___block_invoke;
   v24[3] = &unk_278EE3120;
   v24[4] = self;
-  [v21 queueBlock:v24];
+  [workerQueue queueBlock:v24];
 
-  v22 = [(DMCEnrollmentFlowController *)self _ORGO_MACBuddy_secondPartSteps];
-  [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v22];
+  _ORGO_MACBuddy_secondPartSteps = [(DMCEnrollmentFlowController *)self _ORGO_MACBuddy_secondPartSteps];
+  [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ORGO_MACBuddy_secondPartSteps];
 
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
   v23 = *MEMORY[0x277D85DE8];
@@ -473,93 +473,93 @@ void __107__DMCEnrollmentFlowController_reauthBYODEnrollmentFlowRestartIfFail_rm
   [v1 removeAllObjects];
 }
 
-- (void)updateMDMUserEnrollmentWithManagedAppleID:(id)a3 profileIdentifier:(id)a4 organizationName:(id)a5 personaID:(id)a6 completionHandler:(id)a7
+- (void)updateMDMUserEnrollmentWithManagedAppleID:(id)d profileIdentifier:(id)identifier organizationName:(id)name personaID:(id)iD completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  handlerCopy = handler;
+  nameCopy = name;
   v17 = *DMCLogObjects();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543874;
-    v20 = v12;
+    v20 = dCopy;
     v21 = 2114;
-    v22 = v13;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v14;
+    v24 = iDCopy;
     _os_log_impl(&dword_247E39000, v17, OS_LOG_TYPE_DEFAULT, "Update MDM User Enrollment managedAppleID: %{public}@, profileIdentifier: %{public}@, personaID: %{public}@", &v19, 0x20u);
   }
 
   [(DMCEnrollmentFlowController *)self setEnrollmentType:6];
   [(DMCEnrollmentFlowController *)self setEnrollmentMethod:4];
-  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:v15];
+  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:handlerCopy];
 
   [(DMCEnrollmentFlowController *)self setRestartIfFail:0];
-  [(DMCEnrollmentFlowController *)self setManagedAppleID:v12];
-  [(DMCEnrollmentFlowController *)self setProfileIdentifier:v13];
-  [(DMCEnrollmentFlowController *)self setOrganizationName:v16];
+  [(DMCEnrollmentFlowController *)self setManagedAppleID:dCopy];
+  [(DMCEnrollmentFlowController *)self setProfileIdentifier:identifierCopy];
+  [(DMCEnrollmentFlowController *)self setOrganizationName:nameCopy];
 
-  [(DMCEnrollmentFlowController *)self setPersonaID:v14];
+  [(DMCEnrollmentFlowController *)self setPersonaID:iDCopy];
   [(DMCEnrollmentFlowController *)self _resetToInitialSteps];
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSharediPadUserChannelWithManagedAppleID:(id)a3 profileIdentifier:(id)a4 organizationName:(id)a5 enrollmentURL:(id)a6 completionHandler:(id)a7
+- (void)updateSharediPadUserChannelWithManagedAppleID:(id)d profileIdentifier:(id)identifier organizationName:(id)name enrollmentURL:(id)l completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lCopy = l;
+  handlerCopy = handler;
   v17 = *DMCLogObjects();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138544130;
-    v20 = v12;
+    v20 = dCopy;
     v21 = 2114;
-    v22 = v13;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v14;
+    v24 = nameCopy;
     v25 = 2114;
-    v26 = v15;
+    v26 = lCopy;
     _os_log_impl(&dword_247E39000, v17, OS_LOG_TYPE_DEFAULT, "Update Shared iPad User Channel managedAppleID: %{public}@, profileIdentifier: %{public}@, organizationName: %{public}@, enrollmentURL: %{public}@", &v19, 0x2Au);
   }
 
   [(DMCEnrollmentFlowController *)self setEnrollmentType:7];
   [(DMCEnrollmentFlowController *)self setEnrollmentMethod:3];
-  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:v16];
+  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:handlerCopy];
 
   [(DMCEnrollmentFlowController *)self setRestartIfFail:0];
-  [(DMCEnrollmentFlowController *)self setManagedAppleID:v12];
-  [(DMCEnrollmentFlowController *)self setProfileIdentifier:v13];
-  [(DMCEnrollmentFlowController *)self setOrganizationName:v14];
-  [(DMCEnrollmentFlowController *)self setEnrollmentURL:v15];
+  [(DMCEnrollmentFlowController *)self setManagedAppleID:dCopy];
+  [(DMCEnrollmentFlowController *)self setProfileIdentifier:identifierCopy];
+  [(DMCEnrollmentFlowController *)self setOrganizationName:nameCopy];
+  [(DMCEnrollmentFlowController *)self setEnrollmentURL:lCopy];
   [(DMCEnrollmentFlowController *)self _resetToInitialSteps];
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startEnrollmentFlowWithType:(unint64_t)a3 anchorCertificates:(id)a4 restartIfFail:(BOOL)a5 completionHandler:(id)a6
+- (void)_startEnrollmentFlowWithType:(unint64_t)type anchorCertificates:(id)certificates restartIfFail:(BOOL)fail completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  [(DMCEnrollmentFlowController *)self setEnrollmentType:a3];
-  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:v11];
-  if (a3 - 1 >= 6 && a3 - 8 > 1)
+  certificatesCopy = certificates;
+  handlerCopy = handler;
+  [(DMCEnrollmentFlowController *)self setEnrollmentType:type];
+  [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:handlerCopy];
+  if (type - 1 >= 6 && type - 8 > 1)
   {
     v13 = *DMCLogObjects();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = a3;
+      *(location + 4) = type;
       _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_ERROR, "Failed: %lu feature is not supported", location, 0xCu);
     }
 
@@ -575,10 +575,10 @@ void __107__DMCEnrollmentFlowController_reauthBYODEnrollmentFlowRestartIfFail_rm
     v15[2] = __111__DMCEnrollmentFlowController__startEnrollmentFlowWithType_anchorCertificates_restartIfFail_completionHandler___block_invoke;
     v15[3] = &unk_278EE3148;
     objc_copyWeak(v17, location);
-    v17[1] = a3;
-    v18 = a5;
-    v16 = v10;
-    [(DMCEnrollmentFlowController *)self _enrollmentTypeAuthorizedBySDP:a3 completion:v15];
+    v17[1] = type;
+    failCopy = fail;
+    v16 = certificatesCopy;
+    [(DMCEnrollmentFlowController *)self _enrollmentTypeAuthorizedBySDP:type completion:v15];
 
     objc_destroyWeak(v17);
     objc_destroyWeak(location);
@@ -624,7 +624,7 @@ void __111__DMCEnrollmentFlowController__startEnrollmentFlowWithType_anchorCerti
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_workerQueue_performFlowStep:(unint64_t)a3
+- (void)_workerQueue_performFlowStep:(unint64_t)step
 {
   v83 = *MEMORY[0x277D85DE8];
   v5 = [(DMCEnrollmentFlowController *)self _nameForStep:?];
@@ -638,41 +638,41 @@ void __111__DMCEnrollmentFlowController__startEnrollmentFlowWithType_anchorCerti
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277D03550] currentPersonaID];
-    v8 = [MEMORY[0x277D03550] currentPersonaTypeString];
+    currentPersonaID = [MEMORY[0x277D03550] currentPersonaID];
+    currentPersonaTypeString = [MEMORY[0x277D03550] currentPersonaTypeString];
     *buf = 136315906;
     v76 = "[DMCEnrollmentFlowController _workerQueue_performFlowStep:]";
     v77 = 1024;
     v78 = 420;
     v79 = 2114;
-    v80 = v7;
+    v80 = currentPersonaID;
     v81 = 2114;
-    v82 = v8;
+    v82 = currentPersonaTypeString;
     _os_log_impl(&dword_247E39000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s (L: %d): Current persona ID: %{public}@, type: %{public}@", buf, 0x26u);
   }
 
-  v9 = [(DMCEnrollmentFlowController *)self delegate];
+  delegate = [(DMCEnrollmentFlowController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DMCEnrollmentFlowController *)self delegate];
-    [v11 enrollmentFlowController:self performingEnrollmentStepWithName:v5 status:0];
+    delegate2 = [(DMCEnrollmentFlowController *)self delegate];
+    [delegate2 enrollmentFlowController:self performingEnrollmentStepWithName:v5 status:0];
   }
 
-  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:a3];
-  v12 = [(DMCEnrollmentFlowController *)self _stepsWithUI];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v14 = [v12 containsObject:v13];
+  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:step];
+  _stepsWithUI = [(DMCEnrollmentFlowController *)self _stepsWithUI];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:step];
+  v14 = [_stepsWithUI containsObject:v13];
 
   if (v14)
   {
     [(DMCEnrollmentFlowController *)self setHasExecutedUIStep:1];
   }
 
-  v15 = [(DMCEnrollmentFlowController *)self _postEnrollmentSteps];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v17 = [v15 containsObject:v16];
+  _postEnrollmentSteps = [(DMCEnrollmentFlowController *)self _postEnrollmentSteps];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:step];
+  v17 = [_postEnrollmentSteps containsObject:v16];
 
   if (v17)
   {
@@ -686,259 +686,259 @@ void __111__DMCEnrollmentFlowController__startEnrollmentFlowWithType_anchorCerti
     [(DMCEnrollmentFlowController *)self _workerQueue_stopMonitorAndEmptyDiskValues];
   }
 
-  switch(a3)
+  switch(step)
   {
     case 0uLL:
       [(DMCEnrollmentFlowController *)self _preflightEnrollmentWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] isRenewalFlow:[(DMCEnrollmentFlowController *)self isRenewalFlow] isPostRestoration:[(DMCEnrollmentFlowController *)self isPostRestoration] isPostBuddy:[(DMCEnrollmentFlowController *)self isPostBuddy]];
       goto LABEL_82;
     case 1uLL:
-      v19 = [(DMCEnrollmentFlowController *)self username];
-      [(DMCEnrollmentFlowController *)self _askForUsernameWithDefaultUsername:v19];
+      username = [(DMCEnrollmentFlowController *)self username];
+      [(DMCEnrollmentFlowController *)self _askForUsernameWithDefaultUsername:username];
       goto LABEL_81;
     case 2uLL:
-      v19 = [(DMCEnrollmentFlowController *)self username];
-      [(DMCEnrollmentFlowController *)self _fetchServerInformationWithUsername:v19];
+      username = [(DMCEnrollmentFlowController *)self username];
+      [(DMCEnrollmentFlowController *)self _fetchServerInformationWithUsername:username];
       goto LABEL_81;
     case 3uLL:
-      v19 = [(DMCEnrollmentFlowController *)self servers];
-      [(DMCEnrollmentFlowController *)self _chooseEnrollmentTypeWithAvailableServers:v19 serverInformationSource:[(DMCEnrollmentFlowController *)self serverInformationSource]];
+      username = [(DMCEnrollmentFlowController *)self servers];
+      [(DMCEnrollmentFlowController *)self _chooseEnrollmentTypeWithAvailableServers:username serverInformationSource:[(DMCEnrollmentFlowController *)self serverInformationSource]];
       goto LABEL_81;
     case 4uLL:
-      v19 = [(DMCEnrollmentFlowController *)self serviceURL];
-      v46 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v47 = [(DMCEnrollmentFlowController *)self isPostBuddy];
-      v48 = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:0 isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
-      v49 = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
-      [(DMCEnrollmentFlowController *)self _detectAuthTypeWithServiceURL:v19 enrollmentType:v46 isPostBuddy:v47 machineInfo:v48 anchorCertificateRefs:v49];
+      username = [(DMCEnrollmentFlowController *)self serviceURL];
+      enrollmentType = [(DMCEnrollmentFlowController *)self enrollmentType];
+      isPostBuddy = [(DMCEnrollmentFlowController *)self isPostBuddy];
+      essoDetails2 = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:0 isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
+      anchorCertificateRefs = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
+      [(DMCEnrollmentFlowController *)self _detectAuthTypeWithServiceURL:username enrollmentType:enrollmentType isPostBuddy:isPostBuddy machineInfo:essoDetails2 anchorCertificateRefs:anchorCertificateRefs];
 
       goto LABEL_64;
     case 5uLL:
-      v19 = [(DMCEnrollmentFlowController *)self essoDetails];
-      [(DMCEnrollmentFlowController *)self _analyzeESSODetails:v19];
+      username = [(DMCEnrollmentFlowController *)self essoDetails];
+      [(DMCEnrollmentFlowController *)self _analyzeESSODetails:username];
       goto LABEL_81;
     case 6uLL:
-      v19 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v20 = [v19 iTunesStoreID];
-      v21 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v22 = [v21 appIDs];
-      v29 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _installEnterpriseApplication:v20 debuggingAppIDs:v22 personaID:v29];
+      username = [(DMCEnrollmentFlowController *)self essoDetails];
+      iTunesStoreID = [username iTunesStoreID];
+      essoDetails = [(DMCEnrollmentFlowController *)self essoDetails];
+      appIDs = [essoDetails appIDs];
+      personaID = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _installEnterpriseApplication:iTunesStoreID debuggingAppIDs:appIDs personaID:personaID];
       goto LABEL_77;
     case 7uLL:
     case 0x1CuLL:
-      v19 = [(DMCEnrollmentFlowController *)self appBundleID];
-      v20 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v21 = [(DMCEnrollmentFlowController *)self organizationName];
-      v22 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _manageApplicationWithAppBundleID:v19 essoDetails:v20 organization:v21 personaID:v22];
+      username = [(DMCEnrollmentFlowController *)self appBundleID];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self essoDetails];
+      essoDetails = [(DMCEnrollmentFlowController *)self organizationName];
+      appIDs = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _manageApplicationWithAppBundleID:username essoDetails:iTunesStoreID organization:essoDetails personaID:appIDs];
       goto LABEL_78;
     case 8uLL:
-      v19 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v20 = [v19 configurationProfile];
-      v21 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v22 = [v21 declarations];
-      v29 = [(DMCEnrollmentFlowController *)self devicePasscode];
-      v50 = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
-      v51 = [(DMCEnrollmentFlowController *)self devicePasscodeExtractable];
-      v52 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _installESSOConfigurationWithProfileData:v20 declarations:v22 devicePasscode:v29 devicePasscodeContext:v50 passcodeContextExtractable:v51 personaID:v52];
+      username = [(DMCEnrollmentFlowController *)self essoDetails];
+      iTunesStoreID = [username configurationProfile];
+      essoDetails = [(DMCEnrollmentFlowController *)self essoDetails];
+      appIDs = [essoDetails declarations];
+      personaID = [(DMCEnrollmentFlowController *)self devicePasscode];
+      devicePasscodeContext = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
+      devicePasscodeExtractable = [(DMCEnrollmentFlowController *)self devicePasscodeExtractable];
+      personaID2 = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _installESSOConfigurationWithProfileData:iTunesStoreID declarations:appIDs devicePasscode:personaID devicePasscodeContext:devicePasscodeContext passcodeContextExtractable:devicePasscodeExtractable personaID:personaID2];
 
       goto LABEL_77;
     case 9uLL:
-      v19 = [(DMCEnrollmentFlowController *)self extensionIdentifiersFromConfig];
-      [(DMCEnrollmentFlowController *)self _awaitESSOConfigActivationWithExtensionIdentifiers:v19];
+      username = [(DMCEnrollmentFlowController *)self extensionIdentifiersFromConfig];
+      [(DMCEnrollmentFlowController *)self _awaitESSOConfigActivationWithExtensionIdentifiers:username];
       goto LABEL_81;
     case 0xAuLL:
-      v19 = [(DMCEnrollmentFlowController *)self authParams];
-      v45 = [(DMCEnrollmentFlowController *)self enrollmentMethod];
-      v39 = [(DMCEnrollmentFlowController *)self username];
-      [(DMCEnrollmentFlowController *)self _processAuthServicesWithAuthParams:v19 enrollmentMethod:v45 username:v39];
+      username = [(DMCEnrollmentFlowController *)self authParams];
+      enrollmentMethod = [(DMCEnrollmentFlowController *)self enrollmentMethod];
+      username2 = [(DMCEnrollmentFlowController *)self username];
+      [(DMCEnrollmentFlowController *)self _processAuthServicesWithAuthParams:username enrollmentMethod:enrollmentMethod username:username2];
       goto LABEL_48;
     case 0xBuLL:
       [(DMCEnrollmentFlowController *)self _askForPasscodeIfNeededWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType]];
       goto LABEL_82;
     case 0xCuLL:
-      v19 = [(DMCEnrollmentFlowController *)self devicePasscode];
-      v20 = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
-      [(DMCEnrollmentFlowController *)self _createEnterprisePersonaWithDevicePasscode:v19 devicePasscodeContext:v20];
+      username = [(DMCEnrollmentFlowController *)self devicePasscode];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
+      [(DMCEnrollmentFlowController *)self _createEnterprisePersonaWithDevicePasscode:username devicePasscodeContext:iTunesStoreID];
       goto LABEL_80;
     case 0xDuLL:
-      v19 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v38 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v39 = [(DMCEnrollmentFlowController *)self personaID];
+      username = [(DMCEnrollmentFlowController *)self managedAppleID];
+      enrollmentType2 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      username2 = [(DMCEnrollmentFlowController *)self personaID];
       LOBYTE(v69) = [(DMCEnrollmentFlowController *)self isRenewalFlow];
-      v40 = self;
-      v41 = v19;
-      v42 = v38;
-      v43 = v39;
+      selfCopy2 = self;
+      v41 = username;
+      v42 = enrollmentType2;
+      v43 = username2;
       v44 = 0;
       goto LABEL_42;
     case 0xEuLL:
-      v19 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v53 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v39 = [(DMCEnrollmentFlowController *)self personaID];
+      username = [(DMCEnrollmentFlowController *)self managedAppleID];
+      enrollmentType3 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      username2 = [(DMCEnrollmentFlowController *)self personaID];
       LOBYTE(v69) = [(DMCEnrollmentFlowController *)self isRenewalFlow];
-      v40 = self;
-      v41 = v19;
-      v42 = v53;
-      v43 = v39;
+      selfCopy2 = self;
+      v41 = username;
+      v42 = enrollmentType3;
+      v43 = username2;
       v44 = 1;
 LABEL_42:
-      [(DMCEnrollmentFlowController *)v40 _authenticateMAID:v41 authenticationResults:0 enrollmentType:v42 personaID:v43 ephemeral:v44 silent:0 isRenewalFlow:v69];
+      [(DMCEnrollmentFlowController *)selfCopy2 _authenticateMAID:v41 authenticationResults:0 enrollmentType:v42 personaID:v43 ephemeral:v44 silent:0 isRenewalFlow:v69];
       goto LABEL_48;
     case 0xFuLL:
-      v19 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v20 = [(DMCEnrollmentFlowController *)self authenticationResults];
-      v37 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v26 = [(DMCEnrollmentFlowController *)self personaID];
+      username = [(DMCEnrollmentFlowController *)self managedAppleID];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authenticationResults];
+      enrollmentType4 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      personaID3 = [(DMCEnrollmentFlowController *)self personaID];
       LOBYTE(v69) = [(DMCEnrollmentFlowController *)self isRenewalFlow];
-      [(DMCEnrollmentFlowController *)self _authenticateMAID:v19 authenticationResults:v20 enrollmentType:v37 personaID:v26 ephemeral:0 silent:1 isRenewalFlow:v69];
+      [(DMCEnrollmentFlowController *)self _authenticateMAID:username authenticationResults:iTunesStoreID enrollmentType:enrollmentType4 personaID:personaID3 ephemeral:0 silent:1 isRenewalFlow:v69];
       goto LABEL_26;
     case 0x10uLL:
-      v19 = [(DMCEnrollmentFlowController *)self authenticationResults];
-      v54 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v39 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _signInMAIDWithAuthenticationResult:v19 enrollmentType:v54 personaID:v39 isRenewalFlow:[(DMCEnrollmentFlowController *)self isRenewalFlow]];
+      username = [(DMCEnrollmentFlowController *)self authenticationResults];
+      enrollmentType5 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      username2 = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _signInMAIDWithAuthenticationResult:username enrollmentType:enrollmentType5 personaID:username2 isRenewalFlow:[(DMCEnrollmentFlowController *)self isRenewalFlow]];
 LABEL_48:
 
       goto LABEL_81;
     case 0x11uLL:
-      v19 = [(DMCEnrollmentFlowController *)self username];
-      v20 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v21 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      [(DMCEnrollmentFlowController *)self _createRMAccountIfNeededWithSignInUserIdentifier:v19 assignedMAID:v20 existingRMAccountID:v21 enrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isRenewalFlow:[(DMCEnrollmentFlowController *)self isRenewalFlow]];
+      username = [(DMCEnrollmentFlowController *)self username];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self managedAppleID];
+      essoDetails = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      [(DMCEnrollmentFlowController *)self _createRMAccountIfNeededWithSignInUserIdentifier:username assignedMAID:iTunesStoreID existingRMAccountID:essoDetails enrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isRenewalFlow:[(DMCEnrollmentFlowController *)self isRenewalFlow]];
       goto LABEL_79;
     case 0x12uLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self authParams];
-      v21 = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
-      [(DMCEnrollmentFlowController *)self _exchangeMAIDForBearerTokenWithRMAccountIdentifier:v19 authParams:v20 anchorCertificateRefs:v21];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authParams];
+      essoDetails = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
+      [(DMCEnrollmentFlowController *)self _exchangeMAIDForBearerTokenWithRMAccountIdentifier:username authParams:iTunesStoreID anchorCertificateRefs:essoDetails];
       goto LABEL_79;
     case 0x13uLL:
-      v19 = [(DMCEnrollmentFlowController *)self serviceURL];
-      v20 = [(DMCEnrollmentFlowController *)self authTokens];
-      v21 = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
-      v22 = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
-      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromServiceURL:v19 authTokens:v20 machineInfo:v21 anchorCertificateRefs:v22 enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService]];
+      username = [(DMCEnrollmentFlowController *)self serviceURL];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authTokens];
+      essoDetails = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
+      appIDs = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
+      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromServiceURL:username authTokens:iTunesStoreID machineInfo:essoDetails anchorCertificateRefs:appIDs enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService]];
       goto LABEL_78;
     case 0x14uLL:
-      v19 = [(DMCEnrollmentFlowController *)self profileData];
-      v55 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v56 = [(DMCEnrollmentFlowController *)self enrollmentMethod];
-      v48 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v57 = [(DMCEnrollmentFlowController *)self essoAppITunesStoreID];
-      [(DMCEnrollmentFlowController *)self _analyzeProfileData:v19 enrollmentType:v55 enrollmentMethod:v56 isESSO:v48 != 0 essoAppITunesStoreID:v57 isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
+      username = [(DMCEnrollmentFlowController *)self profileData];
+      enrollmentType6 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      enrollmentMethod2 = [(DMCEnrollmentFlowController *)self enrollmentMethod];
+      essoDetails2 = [(DMCEnrollmentFlowController *)self essoDetails];
+      essoAppITunesStoreID = [(DMCEnrollmentFlowController *)self essoAppITunesStoreID];
+      [(DMCEnrollmentFlowController *)self _analyzeProfileData:username enrollmentType:enrollmentType6 enrollmentMethod:enrollmentMethod2 isESSO:essoDetails2 != 0 essoAppITunesStoreID:essoAppITunesStoreID isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
 
       goto LABEL_64;
     case 0x15uLL:
-      v19 = [(DMCEnrollmentFlowController *)self profileData];
-      v20 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v21 = [(DMCEnrollmentFlowController *)self cloudConfig];
-      [(DMCEnrollmentFlowController *)self _askForUserConsentWithProfileData:v19 managedAppleID:v20 cloudConfig:v21 isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] enrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType]];
+      username = [(DMCEnrollmentFlowController *)self profileData];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self managedAppleID];
+      essoDetails = [(DMCEnrollmentFlowController *)self cloudConfig];
+      [(DMCEnrollmentFlowController *)self _askForUserConsentWithProfileData:username managedAppleID:iTunesStoreID cloudConfig:essoDetails isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] enrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType]];
       goto LABEL_79;
     case 0x16uLL:
-      v19 = [(DMCEnrollmentFlowController *)self profileData];
-      v20 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      [(DMCEnrollmentFlowController *)self _displayManagementDetailsOverviewWithProfileData:v19 managedAppleID:v20];
+      username = [(DMCEnrollmentFlowController *)self profileData];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self managedAppleID];
+      [(DMCEnrollmentFlowController *)self _displayManagementDetailsOverviewWithProfileData:username managedAppleID:iTunesStoreID];
       goto LABEL_80;
     case 0x17uLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self authenticationResults];
-      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:v19 authenticationResults:v20 enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod]];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authenticationResults];
+      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:username authenticationResults:iTunesStoreID enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod]];
       goto LABEL_80;
     case 0x18uLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self authTokens];
-      v21 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-      v22 = [(DMCEnrollmentFlowController *)self organizationName];
-      v29 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:v19 authTokens:v20 profileIdentifier:v21 organizationName:v22 personaID:v29 enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod]];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authTokens];
+      essoDetails = [(DMCEnrollmentFlowController *)self profileIdentifier];
+      appIDs = [(DMCEnrollmentFlowController *)self organizationName];
+      personaID = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:username authTokens:iTunesStoreID profileIdentifier:essoDetails organizationName:appIDs personaID:personaID enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod]];
       goto LABEL_77;
     case 0x19uLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self authTokens];
-      v21 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:v19 authTokens:v20 personaID:v21];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self authTokens];
+      essoDetails = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _updateRMAccountWithIdentifier:username authTokens:iTunesStoreID personaID:essoDetails];
       goto LABEL_79;
     case 0x1AuLL:
-      v19 = [(DMCEnrollmentFlowController *)self altDSID];
-      v20 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v25 = [(DMCEnrollmentFlowController *)self isProfileLocked];
-      v26 = [(DMCEnrollmentFlowController *)self organizationName];
-      v27 = [(DMCEnrollmentFlowController *)self friendlyName];
-      v28 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _correlateMAIDWithAltDSID:v19 withRMAccount:v20 isProfileLocked:v25 organizationName:v26 friendlyName:v27 personaID:v28];
+      username = [(DMCEnrollmentFlowController *)self altDSID];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      isProfileLocked = [(DMCEnrollmentFlowController *)self isProfileLocked];
+      personaID3 = [(DMCEnrollmentFlowController *)self organizationName];
+      friendlyName = [(DMCEnrollmentFlowController *)self friendlyName];
+      personaID4 = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _correlateMAIDWithAltDSID:username withRMAccount:iTunesStoreID isProfileLocked:isProfileLocked organizationName:personaID3 friendlyName:friendlyName personaID:personaID4];
 
 LABEL_26:
       goto LABEL_80;
     case 0x1BuLL:
-      v74 = [(DMCEnrollmentFlowController *)self profileData];
-      v73 = [(DMCEnrollmentFlowController *)self devicePasscode];
-      v72 = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
-      v71 = [(DMCEnrollmentFlowController *)self devicePasscodeExtractable];
-      v61 = [(DMCEnrollmentFlowController *)self personaID];
-      v62 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v63 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v64 = [(DMCEnrollmentFlowController *)self essoAppITunesStoreID];
-      v65 = [(DMCEnrollmentFlowController *)self ESSOConfigurationProfileIdentifier];
-      v66 = [(DMCEnrollmentFlowController *)self wifiProfileIdentifier];
-      v67 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      profileData = [(DMCEnrollmentFlowController *)self profileData];
+      devicePasscode = [(DMCEnrollmentFlowController *)self devicePasscode];
+      devicePasscodeContext2 = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
+      devicePasscodeExtractable2 = [(DMCEnrollmentFlowController *)self devicePasscodeExtractable];
+      personaID5 = [(DMCEnrollmentFlowController *)self personaID];
+      rmAccountIdentifier = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      essoDetails3 = [(DMCEnrollmentFlowController *)self essoDetails];
+      essoAppITunesStoreID2 = [(DMCEnrollmentFlowController *)self essoAppITunesStoreID];
+      eSSOConfigurationProfileIdentifier = [(DMCEnrollmentFlowController *)self ESSOConfigurationProfileIdentifier];
+      wifiProfileIdentifier = [(DMCEnrollmentFlowController *)self wifiProfileIdentifier];
+      enrollmentType7 = [(DMCEnrollmentFlowController *)self enrollmentType];
       LOBYTE(v70) = [(DMCEnrollmentFlowController *)self isDoingReturnToService];
-      LOBYTE(v69) = v63 != 0;
-      [(DMCEnrollmentFlowController *)self _installEnrollmentProfile:v74 devicePasscode:v73 devicePasscodeContext:v72 passcodeContextExtractable:v71 personaID:v61 rmAccountIdentifier:v62 isESSO:v69 essoAppITunesStoreID:v64 essoConfigurationProfile:v65 wifiProfileIdentifier:v66 enrollmentType:v67 isReturnToService:v70];
+      LOBYTE(v69) = essoDetails3 != 0;
+      [(DMCEnrollmentFlowController *)self _installEnrollmentProfile:profileData devicePasscode:devicePasscode devicePasscodeContext:devicePasscodeContext2 passcodeContextExtractable:devicePasscodeExtractable2 personaID:personaID5 rmAccountIdentifier:rmAccountIdentifier isESSO:v69 essoAppITunesStoreID:essoAppITunesStoreID2 essoConfigurationProfile:eSSOConfigurationProfileIdentifier wifiProfileIdentifier:wifiProfileIdentifier enrollmentType:enrollmentType7 isReturnToService:v70];
 
       goto LABEL_82;
     case 0x1DuLL:
-      v19 = [(DMCEnrollmentFlowController *)self essoDetails];
-      v20 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v21 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-      [(DMCEnrollmentFlowController *)self _linkESSOStore:v19 rmAccountIdentifier:v20 profileIdentifier:v21];
+      username = [(DMCEnrollmentFlowController *)self essoDetails];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      essoDetails = [(DMCEnrollmentFlowController *)self profileIdentifier];
+      [(DMCEnrollmentFlowController *)self _linkESSOStore:username rmAccountIdentifier:iTunesStoreID profileIdentifier:essoDetails];
       goto LABEL_79;
     case 0x1EuLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v21 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-      v22 = [(DMCEnrollmentFlowController *)self organizationName];
-      v29 = [(DMCEnrollmentFlowController *)self personaID];
-      v30 = self;
-      v31 = v19;
-      v32 = v20;
-      v33 = v21;
-      v34 = v22;
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self managedAppleID];
+      essoDetails = [(DMCEnrollmentFlowController *)self profileIdentifier];
+      appIDs = [(DMCEnrollmentFlowController *)self organizationName];
+      personaID = [(DMCEnrollmentFlowController *)self personaID];
+      selfCopy4 = self;
+      v31 = username;
+      v32 = iTunesStoreID;
+      v33 = essoDetails;
+      v34 = appIDs;
       v35 = 0;
-      v36 = v29;
+      v36 = personaID;
       goto LABEL_58;
     case 0x1FuLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      [(DMCEnrollmentFlowController *)self _reauthenticationCompleteWithRMIdentifier:v19];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      [(DMCEnrollmentFlowController *)self _reauthenticationCompleteWithRMIdentifier:username];
       goto LABEL_81;
     case 0x20uLL:
-      v19 = [(DMCEnrollmentFlowController *)self altDSID];
-      [(DMCEnrollmentFlowController *)self _promoteiCloudWithAltDSID:v19];
+      username = [(DMCEnrollmentFlowController *)self altDSID];
+      [(DMCEnrollmentFlowController *)self _promoteiCloudWithAltDSID:username];
       goto LABEL_81;
     case 0x21uLL:
       [(DMCEnrollmentFlowController *)self _requestiCloudSignInConfirmation];
       goto LABEL_82;
     case 0x22uLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      v20 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v21 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-      v22 = [(DMCEnrollmentFlowController *)self organizationName];
-      v29 = [(DMCEnrollmentFlowController *)self enrollmentURL];
-      v30 = self;
-      v31 = v19;
-      v32 = v20;
-      v33 = v21;
-      v34 = v22;
-      v35 = v29;
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self managedAppleID];
+      essoDetails = [(DMCEnrollmentFlowController *)self profileIdentifier];
+      appIDs = [(DMCEnrollmentFlowController *)self organizationName];
+      personaID = [(DMCEnrollmentFlowController *)self enrollmentURL];
+      selfCopy4 = self;
+      v31 = username;
+      v32 = iTunesStoreID;
+      v33 = essoDetails;
+      v34 = appIDs;
+      v35 = personaID;
       v36 = 0;
 LABEL_58:
-      [(DMCEnrollmentFlowController *)v30 _updateAccountsWithRMIdentifier:v31 managedAppleID:v32 profileIdentifier:v33 organizationName:v34 enrollmentURL:v35 personaID:v36];
+      [(DMCEnrollmentFlowController *)selfCopy4 _updateAccountsWithRMIdentifier:v31 managedAppleID:v32 profileIdentifier:v33 organizationName:v34 enrollmentURL:v35 personaID:v36];
       goto LABEL_77;
     case 0x23uLL:
-      v19 = [(DMCEnrollmentFlowController *)self managedAppleID];
-      v20 = [(DMCEnrollmentFlowController *)self personaID];
-      [(DMCEnrollmentFlowController *)self _askForRestoreChoiceWithMAID:v19 personaID:v20];
+      username = [(DMCEnrollmentFlowController *)self managedAppleID];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self personaID];
+      [(DMCEnrollmentFlowController *)self _askForRestoreChoiceWithMAID:username personaID:iTunesStoreID];
       goto LABEL_80;
     case 0x24uLL:
       [(DMCEnrollmentFlowController *)self _restoreSetAsideProfiles];
@@ -947,52 +947,52 @@ LABEL_58:
       [(DMCEnrollmentFlowController *)self _fetchCloudConfigWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService]];
       goto LABEL_82;
     case 0x26uLL:
-      v19 = [(DMCEnrollmentFlowController *)self cloudConfig];
-      [(DMCEnrollmentFlowController *)self _storeCloudConfig:v19];
+      username = [(DMCEnrollmentFlowController *)self cloudConfig];
+      [(DMCEnrollmentFlowController *)self _storeCloudConfig:username];
       goto LABEL_81;
     case 0x27uLL:
-      v19 = [(DMCEnrollmentFlowController *)self cloudConfig];
-      v58 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v59 = [(DMCEnrollmentFlowController *)self isDoingReturnToService];
-      v48 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-      [(DMCEnrollmentFlowController *)self _analyzeCloudConfig:v19 enrollmentType:v58 isDoingReturnToService:v59 obliterationShelter:v48];
+      username = [(DMCEnrollmentFlowController *)self cloudConfig];
+      enrollmentType8 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      isDoingReturnToService = [(DMCEnrollmentFlowController *)self isDoingReturnToService];
+      essoDetails2 = [(DMCEnrollmentFlowController *)self obliterationShelter];
+      [(DMCEnrollmentFlowController *)self _analyzeCloudConfig:username enrollmentType:enrollmentType8 isDoingReturnToService:isDoingReturnToService obliterationShelter:essoDetails2];
 LABEL_64:
 
       goto LABEL_81;
     case 0x28uLL:
-      v19 = [(DMCEnrollmentFlowController *)self credentialsError];
-      [(DMCEnrollmentFlowController *)self _askForMDMUsernameAndCredentialWithError:v19];
+      username = [(DMCEnrollmentFlowController *)self credentialsError];
+      [(DMCEnrollmentFlowController *)self _askForMDMUsernameAndCredentialWithError:username];
       goto LABEL_81;
     case 0x29uLL:
-      v19 = [(DMCEnrollmentFlowController *)self serviceURL];
-      v20 = [(DMCEnrollmentFlowController *)self username];
-      v21 = [(DMCEnrollmentFlowController *)self password];
-      v22 = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
-      v29 = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
-      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromServiceURL:v19 username:v20 password:v21 machineInfo:v22 anchorCertificateRefs:v29];
+      username = [(DMCEnrollmentFlowController *)self serviceURL];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self username];
+      essoDetails = [(DMCEnrollmentFlowController *)self password];
+      appIDs = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
+      personaID = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
+      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromServiceURL:username username:iTunesStoreID password:essoDetails machineInfo:appIDs anchorCertificateRefs:personaID];
       goto LABEL_77;
     case 0x2AuLL:
       v60 = MEMORY[0x277CBEBC0];
-      v19 = [(DMCEnrollmentFlowController *)self cloudConfig];
-      v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D03048]];
-      v21 = [v60 URLWithString:v20];
-      v22 = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
-      v29 = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
-      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromWebURL:v21 machineInfo:v22 anchorCertificateRefs:v29 isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService]];
+      username = [(DMCEnrollmentFlowController *)self cloudConfig];
+      iTunesStoreID = [username objectForKeyedSubscript:*MEMORY[0x277D03048]];
+      essoDetails = [v60 URLWithString:iTunesStoreID];
+      appIDs = [(DMCEnrollmentFlowController *)self _machineInfoWithEnrollmentType:[(DMCEnrollmentFlowController *)self enrollmentType] enrollmentMethod:[(DMCEnrollmentFlowController *)self enrollmentMethod] isDoingReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService] isRapidReturnToService:[(DMCEnrollmentFlowController *)self cloudConfigIndicatesRapidReturnToService]];
+      personaID = [(DMCEnrollmentFlowController *)self anchorCertificateRefs];
+      [(DMCEnrollmentFlowController *)self _fetchEnrollmentProfileFromWebURL:essoDetails machineInfo:appIDs anchorCertificateRefs:personaID isReturnToService:[(DMCEnrollmentFlowController *)self isDoingReturnToService]];
       goto LABEL_77;
     case 0x2BuLL:
       [(DMCEnrollmentFlowController *)self _waitForDeviceConfiguration];
       goto LABEL_82;
     case 0x2CuLL:
-      v19 = [(DMCEnrollmentFlowController *)self softwareUpdateInfo];
-      [(DMCEnrollmentFlowController *)self _promptForSoftwareUpdateWithSoftwareUpdateInfo:v19];
+      username = [(DMCEnrollmentFlowController *)self softwareUpdateInfo];
+      [(DMCEnrollmentFlowController *)self _promptForSoftwareUpdateWithSoftwareUpdateInfo:username];
       goto LABEL_81;
     case 0x2DuLL:
       if ([(DMCEnrollmentFlowController *)self isDoingReturnToService])
       {
-        v19 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-        v20 = [v19 wifiProfileData];
-        [(DMCEnrollmentFlowController *)self _ensureWiFiConnectionWithWiFiProfile:v20];
+        username = [(DMCEnrollmentFlowController *)self obliterationShelter];
+        iTunesStoreID = [username wifiProfileData];
+        [(DMCEnrollmentFlowController *)self _ensureWiFiConnectionWithWiFiProfile:iTunesStoreID];
 LABEL_80:
 
 LABEL_81:
@@ -1008,12 +1008,12 @@ LABEL_82:
       v68 = *MEMORY[0x277D85DE8];
       return;
     case 0x2EuLL:
-      v19 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-      v20 = [v19 languageStrings];
-      v21 = [v20 firstObject];
-      v22 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-      v29 = [v22 localeString];
-      [(DMCEnrollmentFlowController *)self _restoreLanguage:v21 locale:v29];
+      username = [(DMCEnrollmentFlowController *)self obliterationShelter];
+      iTunesStoreID = [username languageStrings];
+      essoDetails = [iTunesStoreID firstObject];
+      appIDs = [(DMCEnrollmentFlowController *)self obliterationShelter];
+      personaID = [appIDs localeString];
+      [(DMCEnrollmentFlowController *)self _restoreLanguage:essoDetails locale:personaID];
 LABEL_77:
 
 LABEL_78:
@@ -1021,8 +1021,8 @@ LABEL_79:
 
       goto LABEL_80;
     case 0x2FuLL:
-      v19 = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
-      [(DMCEnrollmentFlowController *)self _updateCloudConfigWithRMAccountIdentifier:v19];
+      username = [(DMCEnrollmentFlowController *)self rmAccountIdentifier];
+      [(DMCEnrollmentFlowController *)self _updateCloudConfigWithRMAccountIdentifier:username];
       goto LABEL_81;
     case 0x30uLL:
       [(DMCEnrollmentFlowController *)self _ensureDeviceActivation];
@@ -1031,14 +1031,14 @@ LABEL_79:
       [(DMCEnrollmentFlowController *)self _initiateDEPPushTokenSync];
       goto LABEL_82;
     case 0x32uLL:
-      v23 = [(DMCEnrollmentFlowController *)self enrollmentType];
-      v24 = [(DMCEnrollmentFlowController *)self cloudConfig];
-      [(DMCEnrollmentFlowController *)self _processPotentialMigrationIfNeededWithEnrollmentType:v23 cloudConfig:v24];
+      enrollmentType9 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      cloudConfig = [(DMCEnrollmentFlowController *)self cloudConfig];
+      [(DMCEnrollmentFlowController *)self _processPotentialMigrationIfNeededWithEnrollmentType:enrollmentType9 cloudConfig:cloudConfig];
 
       goto LABEL_82;
     case 0x33uLL:
-      v19 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-      [(DMCEnrollmentFlowController *)self _awaitDDMAppConfigurationWithProfileIdentifier:v19];
+      username = [(DMCEnrollmentFlowController *)self profileIdentifier];
+      [(DMCEnrollmentFlowController *)self _awaitDDMAppConfigurationWithProfileIdentifier:username];
       goto LABEL_81;
     case 0x34uLL:
       [(DMCEnrollmentFlowController *)self _awaitApplicationInstallation];
@@ -1050,9 +1050,9 @@ LABEL_79:
       [(DMCEnrollmentFlowController *)self _takeSnapshot];
       goto LABEL_82;
     case 0x37uLL:
-      v19 = [(DMCEnrollmentFlowController *)self devicePasscode];
-      v20 = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
-      [(DMCEnrollmentFlowController *)self _createAndSyncBootstrapTokenWithDevicePasscode:v19 devicePasscodeContext:v20];
+      username = [(DMCEnrollmentFlowController *)self devicePasscode];
+      iTunesStoreID = [(DMCEnrollmentFlowController *)self devicePasscodeContext];
+      [(DMCEnrollmentFlowController *)self _createAndSyncBootstrapTokenWithDevicePasscode:username devicePasscodeContext:iTunesStoreID];
       goto LABEL_80;
     case 0x38uLL:
       [(DMCEnrollmentFlowController *)self _blockMDMCommands];
@@ -1086,13 +1086,13 @@ LABEL_79:
     _os_log_impl(&dword_247E39000, v3, OS_LOG_TYPE_DEFAULT, "Clean up local stored stuffs", v7, 2u);
   }
 
-  v4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    [v6 stopEnrollmentFlowMonitor];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    [managedConfigurationHelper2 stopEnrollmentFlowMonitor];
   }
 
   [(DMCEnrollmentFlowController *)self _writeDirtyStateToDisk:0];
@@ -1119,41 +1119,41 @@ LABEL_79:
   [(DMCEnrollmentFlowController *)self _workerQueue_cleanupCachedValues];
   if (![(DMCEnrollmentFlowController *)self noCompletionScene])
   {
-    v6 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter = [(DMCEnrollmentFlowController *)self presenter];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(DMCEnrollmentFlowController *)self presenter];
-      [v8 showEnrollmentCompletionScene];
+      presenter2 = [(DMCEnrollmentFlowController *)self presenter];
+      [presenter2 showEnrollmentCompletionScene];
     }
   }
 
-  v9 = [(DMCEnrollmentFlowController *)self enrollmentCompletionHandler];
+  enrollmentCompletionHandler = [(DMCEnrollmentFlowController *)self enrollmentCompletionHandler];
 
-  if (v9)
+  if (enrollmentCompletionHandler)
   {
-    v10 = [(DMCEnrollmentFlowController *)self enrollmentCompletionHandler];
-    v10[2](v10, 1, 0, 0);
+    enrollmentCompletionHandler2 = [(DMCEnrollmentFlowController *)self enrollmentCompletionHandler];
+    enrollmentCompletionHandler2[2](enrollmentCompletionHandler2, 1, 0, 0);
 
     [(DMCEnrollmentFlowController *)self setEnrollmentCompletionHandler:0];
   }
 }
 
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled
 {
-  v7 = a3;
-  v8 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  errorCopy = error;
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__DMCEnrollmentFlowController__flowTerminatedWithError_canceled___block_invoke;
   v10[3] = &unk_278EE3170;
-  v14 = a4;
-  v11 = v7;
-  v12 = self;
+  canceledCopy = canceled;
+  v11 = errorCopy;
+  selfCopy = self;
   v13 = a2;
-  v9 = v7;
-  [v8 queueBlock:v10];
+  v9 = errorCopy;
+  [workerQueue queueBlock:v10];
 }
 
 void __65__DMCEnrollmentFlowController__flowTerminatedWithError_canceled___block_invoke(uint64_t a1)
@@ -1281,10 +1281,10 @@ LABEL_27:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanupDirtyState:(id)a3
+- (void)_cleanupDirtyState:(id)state
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1292,13 +1292,13 @@ LABEL_27:
     _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_INFO, "Cleaning up dirty state...", buf, 2u);
   }
 
-  v57 = self;
+  selfCopy = self;
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v6 = [v4 dirtyPersonaIDs];
-  v7 = [v6 countByEnumeratingWithState:&v75 objects:v87 count:16];
+  dirtyPersonaIDs = [stateCopy dirtyPersonaIDs];
+  v7 = [dirtyPersonaIDs countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1310,7 +1310,7 @@ LABEL_27:
       {
         if (*v76 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dirtyPersonaIDs);
         }
 
         v12 = *(*(&v75 + 1) + 8 * i);
@@ -1327,12 +1327,12 @@ LABEL_27:
         v14 = v74;
         if (!v14)
         {
-          [v4 removeDirtyPersonaID:v12];
+          [stateCopy removeDirtyPersonaID:v12];
           v9 = 1;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v75 objects:v87 count:16];
+      v8 = [dirtyPersonaIDs countByEnumeratingWithState:&v75 objects:v87 count:16];
     }
 
     while (v8);
@@ -1347,8 +1347,8 @@ LABEL_27:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v15 = [v4 dirtyProfileIdentifiers];
-  v16 = [v15 countByEnumeratingWithState:&v70 objects:v86 count:16];
+  dirtyProfileIdentifiers = [stateCopy dirtyProfileIdentifiers];
+  v16 = [dirtyProfileIdentifiers countByEnumeratingWithState:&v70 objects:v86 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1359,7 +1359,7 @@ LABEL_27:
       {
         if (*v71 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(dirtyProfileIdentifiers);
         }
 
         v20 = *(*(&v70 + 1) + 8 * j);
@@ -1371,13 +1371,13 @@ LABEL_27:
           _os_log_impl(&dword_247E39000, v21, OS_LOG_TYPE_DEFAULT, "Uninstalling MDM profile %{public}@...", buf, 0xCu);
         }
 
-        v22 = [(DMCEnrollmentFlowController *)v57 managedConfigurationHelper];
-        [v22 removeProfileWithIdentifier:v20 async:1];
+        managedConfigurationHelper = [(DMCEnrollmentFlowController *)selfCopy managedConfigurationHelper];
+        [managedConfigurationHelper removeProfileWithIdentifier:v20 async:1];
 
-        [v4 removeDirtyProfileIdentifier:v20];
+        [stateCopy removeDirtyProfileIdentifier:v20];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v70 objects:v86 count:16];
+      v17 = [dirtyProfileIdentifiers countByEnumeratingWithState:&v70 objects:v86 count:16];
     }
 
     while (v17);
@@ -1388,8 +1388,8 @@ LABEL_27:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v23 = [v4 dirtyAltDISDs];
-  v24 = [v23 countByEnumeratingWithState:&v66 objects:v85 count:16];
+  dirtyAltDISDs = [stateCopy dirtyAltDISDs];
+  v24 = [dirtyAltDISDs countByEnumeratingWithState:&v66 objects:v85 count:16];
   if (v24)
   {
     v25 = v24;
@@ -1400,7 +1400,7 @@ LABEL_27:
       {
         if (*v67 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(dirtyAltDISDs);
         }
 
         v28 = *(*(&v66 + 1) + 8 * k);
@@ -1412,13 +1412,13 @@ LABEL_27:
           _os_log_impl(&dword_247E39000, v29, OS_LOG_TYPE_DEFAULT, "Cleaning up dirty account with altDSID %{public}@...", buf, 0xCu);
         }
 
-        v30 = [MEMORY[0x277CB8F48] defaultStore];
-        [v30 dmc_removeMAIDRelatedAccountsWithAltDSID:v28 asynchronous:1];
+        defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+        [defaultStore dmc_removeMAIDRelatedAccountsWithAltDSID:v28 asynchronous:1];
 
-        [v4 removeDirtyAltDSID:v28];
+        [stateCopy removeDirtyAltDSID:v28];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v66 objects:v85 count:16];
+      v25 = [dirtyAltDISDs countByEnumeratingWithState:&v66 objects:v85 count:16];
     }
 
     while (v25);
@@ -1429,8 +1429,8 @@ LABEL_27:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v31 = [v4 dirtyRMAccounts];
-  v32 = [v31 countByEnumeratingWithState:&v62 objects:v84 count:16];
+  dirtyRMAccounts = [stateCopy dirtyRMAccounts];
+  v32 = [dirtyRMAccounts countByEnumeratingWithState:&v62 objects:v84 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1441,7 +1441,7 @@ LABEL_27:
       {
         if (*v63 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(dirtyRMAccounts);
         }
 
         v36 = *(*(&v62 + 1) + 8 * m);
@@ -1453,13 +1453,13 @@ LABEL_27:
           _os_log_impl(&dword_247E39000, v37, OS_LOG_TYPE_DEFAULT, "Cleaning up RM account with identifier %{public}@...", buf, 0xCu);
         }
 
-        v38 = [MEMORY[0x277CB8F48] defaultStore];
-        [v38 dmc_removeAccountWithIdentifier:v36 asynchronous:1];
+        defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
+        [defaultStore2 dmc_removeAccountWithIdentifier:v36 asynchronous:1];
 
-        [v4 removeDirtyRMAccount:v36];
+        [stateCopy removeDirtyRMAccount:v36];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v62 objects:v84 count:16];
+      v33 = [dirtyRMAccounts countByEnumeratingWithState:&v62 objects:v84 count:16];
     }
 
     while (v33);
@@ -1470,7 +1470,7 @@ LABEL_27:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = [v4 dirtyBundleIDs];
+  obj = [stateCopy dirtyBundleIDs];
   v39 = [obj countByEnumeratingWithState:&v58 objects:v83 count:16];
   if (v39)
   {
@@ -1492,22 +1492,22 @@ LABEL_27:
         v46 = v45;
         if (v45)
         {
-          v47 = [v45 bundleID];
-          v48 = [v46 personaID];
+          bundleID = [v45 bundleID];
+          personaID = [v46 personaID];
           v49 = *DMCLogObjects();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v55;
-            v80 = v47;
+            v80 = bundleID;
             v81 = 2114;
-            v82 = v48;
+            v82 = personaID;
             _os_log_impl(&dword_247E39000, v49, OS_LOG_TYPE_DEFAULT, "Cleaning up dirty application with bundle ID: %{public}@, persona ID: %{public}@...", buf, 0x16u);
           }
 
-          v50 = [(DMCEnrollmentFlowController *)v57 managedConfigurationHelper];
-          [v50 removeApplicationWithBundleID:v47 personaID:v48 completionHandler:0];
+          managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)selfCopy managedConfigurationHelper];
+          [managedConfigurationHelper2 removeApplicationWithBundleID:bundleID personaID:personaID completionHandler:0];
 
-          [v4 removeDirtyBundleID:v44];
+          [stateCopy removeDirtyBundleID:v44];
           v9 = 1;
         }
       }
@@ -1518,7 +1518,7 @@ LABEL_27:
     while (v41);
   }
 
-  if ([v4 dirtyRMStoreForErSSO])
+  if ([stateCopy dirtyRMStoreForErSSO])
   {
     v51 = *DMCLogObjects();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -1527,19 +1527,19 @@ LABEL_27:
       _os_log_impl(&dword_247E39000, v51, OS_LOG_TYPE_DEFAULT, "Cleaning up dirty ErSSO RMStore", buf, 2u);
     }
 
-    v52 = v57;
-    v53 = [(DMCEnrollmentFlowController *)v57 rmStoreHelper];
-    [v53 removeErSSOStoreWithCompletionHandler:&__block_literal_global_0];
+    v52 = selfCopy;
+    rmStoreHelper = [(DMCEnrollmentFlowController *)selfCopy rmStoreHelper];
+    [rmStoreHelper removeErSSOStoreWithCompletionHandler:&__block_literal_global_0];
 
-    [v4 clearDirtyRMStoreForErSSO];
+    [stateCopy clearDirtyRMStoreForErSSO];
     goto LABEL_62;
   }
 
-  v52 = v57;
+  v52 = selfCopy;
   if (v9)
   {
 LABEL_62:
-    [(DMCEnrollmentFlowController *)v52 _writeDirtyStateToDisk:v4];
+    [(DMCEnrollmentFlowController *)v52 _writeDirtyStateToDisk:stateCopy];
   }
 
   v54 = *MEMORY[0x277D85DE8];
@@ -1589,31 +1589,31 @@ LABEL_62:
   [(DMCEnrollmentFlowController *)self setCredentialsError:0];
 }
 
-- (void)_preflightEnrollmentWithEnrollmentType:(unint64_t)a3 isRenewalFlow:(BOOL)a4 isPostRestoration:(BOOL)a5 isPostBuddy:(BOOL)a6
+- (void)_preflightEnrollmentWithEnrollmentType:(unint64_t)type isRenewalFlow:(BOOL)flow isPostRestoration:(BOOL)restoration isPostBuddy:(BOOL)buddy
 {
-  v7 = a5;
-  v8 = a4;
+  restorationCopy = restoration;
+  flowCopy = flow;
   v55 = *MEMORY[0x277D85DE8];
-  v11 = [(DMCEnrollmentFlowController *)self loggingSupport];
+  loggingSupport = [(DMCEnrollmentFlowController *)self loggingSupport];
 
-  if (!v11)
+  if (!loggingSupport)
   {
     v12 = objc_opt_new();
     [(DMCEnrollmentFlowController *)self setLoggingSupport:v12];
 
-    v13 = [(DMCEnrollmentFlowController *)self loggingSupport];
-    [v13 enableDebugLoggingForEnrollment];
+    loggingSupport2 = [(DMCEnrollmentFlowController *)self loggingSupport];
+    [loggingSupport2 enableDebugLoggingForEnrollment];
   }
 
-  if (!v8)
+  if (!flowCopy)
   {
-    v14 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-      v16 = [v15 isDeviceMDMEnrolled];
+      managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      isDeviceMDMEnrolled = [managedConfigurationHelper2 isDeviceMDMEnrolled];
 
-      if (v16 && (a6 || ![(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:a3]))
+      if (isDeviceMDMEnrolled && (buddy || ![(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:type]))
       {
         v17 = *DMCLogObjects();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1642,15 +1642,15 @@ LABEL_18:
     }
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v25 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-      v27 = [v26 isDeviceSupervised];
+      managedConfigurationHelper4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      isDeviceSupervised = [managedConfigurationHelper4 isDeviceSupervised];
 
-      if (v27)
+      if (isDeviceSupervised)
       {
         v28 = *DMCLogObjects();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1675,33 +1675,33 @@ LABEL_18:
     }
   }
 
-  v32 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   if (objc_opt_respondsToSelector())
   {
-    v33 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    v34 = [v33 isDeviceMDMEnrolled];
+    managedConfigurationHelper6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    isDeviceMDMEnrolled2 = [managedConfigurationHelper6 isDeviceMDMEnrolled];
 
-    if (v34)
+    if (isDeviceMDMEnrolled2)
     {
       goto LABEL_24;
     }
 
-    v32 = [(DMCEnrollmentFlowController *)self dirtyState];
-    [(DMCEnrollmentFlowController *)self _cleanupDirtyState:v32];
+    managedConfigurationHelper5 = [(DMCEnrollmentFlowController *)self dirtyState];
+    [(DMCEnrollmentFlowController *)self _cleanupDirtyState:managedConfigurationHelper5];
   }
 
 LABEL_24:
-  if (v8 && [(DMCEnrollmentFlowController *)self _isORGOEnrollment:a3])
+  if (flowCopy && [(DMCEnrollmentFlowController *)self _isORGOEnrollment:type])
   {
-    v35 = [MEMORY[0x277CB8F48] defaultStore];
-    v36 = [v35 dmc_RemoteManagementAccounts];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    dmc_RemoteManagementAccounts = [defaultStore dmc_RemoteManagementAccounts];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __114__DMCEnrollmentFlowController__preflightEnrollmentWithEnrollmentType_isRenewalFlow_isPostRestoration_isPostBuddy___block_invoke;
     v52[3] = &unk_278EE31B8;
     v52[4] = self;
     v37 = [MEMORY[0x277CCAC30] predicateWithBlock:v52];
-    v38 = [v36 filteredArrayUsingPredicate:v37];
+    v38 = [dmc_RemoteManagementAccounts filteredArrayUsingPredicate:v37];
 
     if ([v38 count] >= 2)
     {
@@ -1714,39 +1714,39 @@ LABEL_24:
       }
     }
 
-    v40 = [v38 firstObject];
-    if (v40)
+    firstObject = [v38 firstObject];
+    if (firstObject)
     {
       v41 = *DMCLogObjects();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v54 = v40;
+        v54 = firstObject;
         _os_log_impl(&dword_247E39000, v41, OS_LOG_TYPE_DEFAULT, "Have existing RM Account: %{public}@!", buf, 0xCu);
       }
 
-      v42 = [v40 identifier];
-      [(DMCEnrollmentFlowController *)self setRmAccountIdentifier:v42];
+      identifier = [firstObject identifier];
+      [(DMCEnrollmentFlowController *)self setRmAccountIdentifier:identifier];
 
-      v43 = [v40 dmc_signInUserIdentifier];
-      [(DMCEnrollmentFlowController *)self setUsername:v43];
+      dmc_signInUserIdentifier = [firstObject dmc_signInUserIdentifier];
+      [(DMCEnrollmentFlowController *)self setUsername:dmc_signInUserIdentifier];
 
-      v44 = [v40 username];
-      [(DMCEnrollmentFlowController *)self setManagedAppleID:v44];
+      username = [firstObject username];
+      [(DMCEnrollmentFlowController *)self setManagedAppleID:username];
 
-      v45 = [v40 dmc_altDSID];
-      [(DMCEnrollmentFlowController *)self setAltDSID:v45];
+      dmc_altDSID = [firstObject dmc_altDSID];
+      [(DMCEnrollmentFlowController *)self setAltDSID:dmc_altDSID];
 
-      -[DMCEnrollmentFlowController setEnrollmentType:](self, "setEnrollmentType:", [v40 dmc_enrollmentType]);
+      -[DMCEnrollmentFlowController setEnrollmentType:](self, "setEnrollmentType:", [firstObject dmc_enrollmentType]);
     }
 
-    else if (v7)
+    else if (restorationCopy)
     {
-      v46 = [MEMORY[0x277CB8F48] defaultStore];
-      v47 = [v46 dmc_primaryiCloudAccount];
+      defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
+      dmc_primaryiCloudAccount = [defaultStore2 dmc_primaryiCloudAccount];
 
       v48 = *DMCLogObjects();
-      if (v47)
+      if (dmc_primaryiCloudAccount)
       {
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
@@ -1754,11 +1754,11 @@ LABEL_24:
           _os_log_impl(&dword_247E39000, v48, OS_LOG_TYPE_DEFAULT, "We don't have RM Account but we have Apple Account! Using the information from the Apple Account.", buf, 2u);
         }
 
-        v49 = [v47 username];
-        [(DMCEnrollmentFlowController *)self setUsername:v49];
+        username2 = [dmc_primaryiCloudAccount username];
+        [(DMCEnrollmentFlowController *)self setUsername:username2];
 
-        v50 = [v47 username];
-        [(DMCEnrollmentFlowController *)self setManagedAppleID:v50];
+        username3 = [dmc_primaryiCloudAccount username];
+        [(DMCEnrollmentFlowController *)self setManagedAppleID:username3];
       }
 
       else if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1790,24 +1790,24 @@ BOOL __114__DMCEnrollmentFlowController__preflightEnrollmentWithEnrollmentType_i
   return v4;
 }
 
-- (void)_askForUsernameWithDefaultUsername:(id)a3
+- (void)_askForUsernameWithDefaultUsername:(id)username
 {
-  v4 = a3;
+  usernameCopy = username;
   if ([MEMORY[0x277D03500] shouldSimulateMDMAccountDrivenEnrollment])
   {
-    v5 = [MEMORY[0x277D03500] simulatedMDMAccountDrivenEnrollmentDefaultUsername];
+    simulatedMDMAccountDrivenEnrollmentDefaultUsername = [MEMORY[0x277D03500] simulatedMDMAccountDrivenEnrollmentDefaultUsername];
 
-    v4 = v5;
+    usernameCopy = simulatedMDMAccountDrivenEnrollmentDefaultUsername;
   }
 
   objc_initWeak(&location, self);
-  v6 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__DMCEnrollmentFlowController__askForUsernameWithDefaultUsername___block_invoke;
   v7[3] = &unk_278EE3208;
   objc_copyWeak(&v8, &location);
-  [v6 requestUsernameWithDefaultUsername:v4 completionHandler:v7];
+  [presenter requestUsernameWithDefaultUsername:usernameCopy completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -1861,17 +1861,17 @@ uint64_t __66__DMCEnrollmentFlowController__askForUsernameWithDefaultUsername___
   return result;
 }
 
-- (void)_fetchServerInformationWithUsername:(id)a3
+- (void)_fetchServerInformationWithUsername:(id)username
 {
-  v4 = a3;
+  usernameCopy = username;
   objc_initWeak(&location, self);
-  v5 = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
+  serviceDiscoveryHelper = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__DMCEnrollmentFlowController__fetchServerInformationWithUsername___block_invoke;
   v6[3] = &unk_278EE3258;
   objc_copyWeak(&v7, &location);
-  [v5 discoverServerForUserIdentifier:v4 anchorCertificateRefs:0 completionHandler:v6];
+  [serviceDiscoveryHelper discoverServerForUserIdentifier:usernameCopy anchorCertificateRefs:0 completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1929,16 +1929,16 @@ uint64_t __67__DMCEnrollmentFlowController__fetchServerInformationWithUsername__
   return result;
 }
 
-- (id)_findServerWithVersion:(id)a3 servers:(id)a4
+- (id)_findServerWithVersion:(id)version servers:(id)servers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  versionCopy = version;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  serversCopy = servers;
+  v7 = [serversCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1949,12 +1949,12 @@ uint64_t __67__DMCEnrollmentFlowController__fetchServerInformationWithUsername__
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(serversCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 responseVersion];
-        v13 = [v12 isEqualToString:v5];
+        responseVersion = [v11 responseVersion];
+        v13 = [responseVersion isEqualToString:versionCopy];
 
         if (v13)
         {
@@ -1964,7 +1964,7 @@ uint64_t __67__DMCEnrollmentFlowController__fetchServerInformationWithUsername__
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v8 = [serversCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v8)
       {
         continue;
@@ -1978,9 +1978,9 @@ uint64_t __67__DMCEnrollmentFlowController__fetchServerInformationWithUsername__
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v6 count];
+    v16 = [serversCopy count];
     *buf = 138543618;
-    v25 = v5;
+    v25 = versionCopy;
     v26 = 2048;
     v27 = v16;
     _os_log_impl(&dword_247E39000, v15, OS_LOG_TYPE_INFO, "No %{public}@ server found. Total servers amount: %ld", buf, 0x16u);
@@ -1994,15 +1994,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)_chooseEnrollmentTypeWithAvailableServers:(id)a3 serverInformationSource:(unint64_t)a4
+- (void)_chooseEnrollmentTypeWithAvailableServers:(id)servers serverInformationSource:(unint64_t)source
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D03608] servers:v6];
-  v8 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035E8] servers:v6];
-  v9 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035F8] servers:v6];
-  v10 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035F0] servers:v6];
-  v11 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D03600] servers:v6];
+  serversCopy = servers;
+  v7 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D03608] servers:serversCopy];
+  v8 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035E8] servers:serversCopy];
+  v9 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035F8] servers:serversCopy];
+  v10 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D035F0] servers:serversCopy];
+  v11 = [(DMCEnrollmentFlowController *)self _findServerWithVersion:*MEMORY[0x277D03600] servers:serversCopy];
   if ([MEMORY[0x277D034F8] isAppleInternal] && objc_msgSend(MEMORY[0x277D034E8], "DSLiveOnModeEnabled"))
   {
     v12 = *DMCLogObjects();
@@ -2012,10 +2012,10 @@ LABEL_13:
       _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_DEFAULT, "We are on Apple internal device with DS live on feature enabled.", &v27, 2u);
     }
 
-    a4 = 3;
+    source = 3;
   }
 
-  else if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  else if ((source & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     goto LABEL_11;
   }
@@ -2032,15 +2032,15 @@ LABEL_21:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v16 responseVersion];
+      responseVersion = [v16 responseVersion];
       v27 = 138543362;
-      v28 = v19;
+      v28 = responseVersion;
       _os_log_impl(&dword_247E39000, v18, OS_LOG_TYPE_DEFAULT, "Picked server with version: %{public}@", &v27, 0xCu);
     }
 
     v20 = MEMORY[0x277CBEBC0];
-    v21 = [v16 responseBaseURL];
-    v22 = [v20 URLWithString:v21];
+    responseBaseURL = [v16 responseBaseURL];
+    v22 = [v20 URLWithString:responseBaseURL];
     [(DMCEnrollmentFlowController *)self setServiceURL:v22];
 
     goto LABEL_27;
@@ -2054,7 +2054,7 @@ LABEL_21:
   }
 
 LABEL_11:
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((source & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     if (v9 | v11)
     {
@@ -2088,16 +2088,16 @@ LABEL_11:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v27 = 138543362;
-    v28 = v6;
+    v28 = serversCopy;
     _os_log_impl(&dword_247E39000, v23, OS_LOG_TYPE_ERROR, "Failed to pick server from: %{public}@", &v27, 0xCu);
   }
 
   [(DMCEnrollmentFlowController *)self setServiceURL:0];
   v16 = 0;
 LABEL_27:
-  v24 = [(DMCEnrollmentFlowController *)self serviceURL];
+  serviceURL = [(DMCEnrollmentFlowController *)self serviceURL];
 
-  if (v24)
+  if (serviceURL)
   {
     [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
   }
@@ -2111,21 +2111,21 @@ LABEL_27:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_detectAuthTypeWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 isPostBuddy:(BOOL)a5 machineInfo:(id)a6 anchorCertificateRefs:(id)a7
+- (void)_detectAuthTypeWithServiceURL:(id)l enrollmentType:(unint64_t)type isPostBuddy:(BOOL)buddy machineInfo:(id)info anchorCertificateRefs:(id)refs
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  lCopy = l;
+  infoCopy = info;
+  refsCopy = refs;
   objc_initWeak(&location, self);
-  v15 = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
+  serviceDiscoveryHelper = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __122__DMCEnrollmentFlowController__detectAuthTypeWithServiceURL_enrollmentType_isPostBuddy_machineInfo_anchorCertificateRefs___block_invoke;
   v16[3] = &unk_278EE32A8;
   objc_copyWeak(v17, &location);
-  v17[1] = a4;
-  v18 = a5;
-  [v15 determineEnrollmentMethodWithServiceURL:v12 enrollmentType:a4 machineInfo:v13 anchorCertificateRefs:v14 completionHandler:v16];
+  v17[1] = type;
+  buddyCopy = buddy;
+  [serviceDiscoveryHelper determineEnrollmentMethodWithServiceURL:lCopy enrollmentType:type machineInfo:infoCopy anchorCertificateRefs:refsCopy completionHandler:v16];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -2491,21 +2491,21 @@ LABEL_90:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processAuthServicesWithAuthParams:(id)a3 enrollmentMethod:(unint64_t)a4 username:(id)a5
+- (void)_processAuthServicesWithAuthParams:(id)params enrollmentMethod:(unint64_t)method username:(id)username
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  paramsCopy = params;
+  usernameCopy = username;
+  if (paramsCopy)
   {
-    if (a4 == 2)
+    if (method == 2)
     {
       v10 = 0x277D24620;
     }
 
     else
     {
-      if (a4 != 5)
+      if (method != 5)
       {
         v17 = +[DMCEnrollmentFlowController _createGeneralError];
         [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:v17 canceled:1];
@@ -2537,17 +2537,17 @@ LABEL_90:
 
     else
     {
-      v15 = [v12 webAuthenticationURLForAuthParams:v8 userIdentifier:v9];
+      v15 = [v12 webAuthenticationURLForAuthParams:paramsCopy userIdentifier:usernameCopy];
       if (v15)
       {
         objc_initWeak(&buf, self);
-        v16 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter = [(DMCEnrollmentFlowController *)self presenter];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __92__DMCEnrollmentFlowController__processAuthServicesWithAuthParams_enrollmentMethod_username___block_invoke;
         v20[3] = &unk_278EE32F8;
         objc_copyWeak(&v21, &buf);
-        [v16 requestWebAuthenticationWithWebAuthURL:v15 authenticator:v12 authParams:v8 completionHandler:v20];
+        [presenter requestWebAuthenticationWithWebAuthURL:v15 authenticator:v12 authParams:paramsCopy completionHandler:v20];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(&buf);
@@ -2651,12 +2651,12 @@ LABEL_11:
   return result;
 }
 
-- (void)_askForPasscodeIfNeededWithEnrollmentType:(unint64_t)a3
+- (void)_askForPasscodeIfNeededWithEnrollmentType:(unint64_t)type
 {
-  v4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-  v5 = [v4 isDevicePasscodeSet];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  isDevicePasscodeSet = [managedConfigurationHelper isDevicePasscodeSet];
 
-  if (v5)
+  if (isDevicePasscodeSet)
   {
     objc_initWeak(&location, self);
     v18[0] = MEMORY[0x277D85DD0];
@@ -2666,41 +2666,41 @@ LABEL_11:
     v18[4] = self;
     objc_copyWeak(&v19, &location);
     v6 = MEMORY[0x24C1BD5A0](v18);
-    v7 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter = [(DMCEnrollmentFlowController *)self presenter];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter2 = [(DMCEnrollmentFlowController *)self presenter];
       v10 = v17;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType___block_invoke_64;
       v17[3] = &unk_278EE3370;
       v17[4] = v6;
-      [v9 requestDevicePasscodeContextNeedsExtractable:0 completionHandler:v17];
+      [presenter2 requestDevicePasscodeContextNeedsExtractable:0 completionHandler:v17];
     }
 
     else
     {
-      v11 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter3 = [(DMCEnrollmentFlowController *)self presenter];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v9 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter2 = [(DMCEnrollmentFlowController *)self presenter];
         v10 = v16;
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType___block_invoke_2_68;
         v16[3] = &unk_278EE3398;
         v16[4] = v6;
-        [v9 requestDevicePasscodeDataWithCompletionHandler:v16];
+        [presenter2 requestDevicePasscodeDataWithCompletionHandler:v16];
       }
 
       else
       {
-        v13 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter4 = [(DMCEnrollmentFlowController *)self presenter];
         v14 = objc_opt_respondsToSelector();
 
         if ((v14 & 1) == 0)
@@ -2712,14 +2712,14 @@ LABEL_12:
           return;
         }
 
-        v9 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter2 = [(DMCEnrollmentFlowController *)self presenter];
         v10 = v15;
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType___block_invoke_3;
         v15[3] = &unk_278EE33C0;
         v15[4] = v6;
-        [v9 requestDevicePasscodeWithCompletionHandler:v15];
+        [presenter2 requestDevicePasscodeWithCompletionHandler:v15];
       }
     }
 
@@ -2821,13 +2821,13 @@ void __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType
   }
 }
 
-- (void)_createEnterprisePersonaWithDevicePasscode:(id)a3 devicePasscodeContext:(id)a4
+- (void)_createEnterprisePersonaWithDevicePasscode:(id)passcode devicePasscodeContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D03550] enterprisePersonaIdentifier];
-  if (!v8)
+  passcodeCopy = passcode;
+  contextCopy = context;
+  enterprisePersonaIdentifier = [MEMORY[0x277D03550] enterprisePersonaIdentifier];
+  if (!enterprisePersonaIdentifier)
   {
     goto LABEL_6;
   }
@@ -2840,7 +2840,7 @@ void __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType
   }
 
   v26 = 0;
-  [MEMORY[0x277D03550] removePersona:v8 error:&v26];
+  [MEMORY[0x277D03550] removePersona:enterprisePersonaIdentifier error:&v26];
   v10 = v26;
   if (v10)
   {
@@ -2853,7 +2853,7 @@ void __73__DMCEnrollmentFlowController__askForPasscodeIfNeededWithEnrollmentType
 LABEL_6:
     v12 = *DMCLogObjects();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (contextCopy)
     {
       if (v13)
       {
@@ -2863,7 +2863,7 @@ LABEL_6:
 
       v25 = 0;
       v14 = &v25;
-      v15 = [MEMORY[0x277D03550] createEnterprisePersonaWithPasscodeData:v7 passcodeDataType:1 error:&v25];
+      v15 = [MEMORY[0x277D03550] createEnterprisePersonaWithPasscodeData:contextCopy passcodeDataType:1 error:&v25];
     }
 
     else
@@ -2876,7 +2876,7 @@ LABEL_6:
 
       v24 = 0;
       v14 = &v24;
-      v15 = [MEMORY[0x277D03550] createEnterprisePersonaWithDevicePasscode:v6 error:&v24];
+      v15 = [MEMORY[0x277D03550] createEnterprisePersonaWithDevicePasscode:passcodeCopy error:&v24];
     }
 
     v16 = v15;
@@ -2892,19 +2892,19 @@ LABEL_6:
       }
 
       [(DMCEnrollmentFlowController *)self setPersonaID:v16];
-      v18 = [(DMCEnrollmentFlowController *)self dirtyState];
-      [v18 addDirtyPersonaID:v16];
+      dirtyState = [(DMCEnrollmentFlowController *)self dirtyState];
+      [dirtyState addDirtyPersonaID:v16];
 
-      v19 = [(DMCEnrollmentFlowController *)self dirtyState];
-      [(DMCEnrollmentFlowController *)self _writeDirtyStateToDisk:v19];
+      dirtyState2 = [(DMCEnrollmentFlowController *)self dirtyState];
+      [(DMCEnrollmentFlowController *)self _writeDirtyStateToDisk:dirtyState2];
 
-      v20 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-        [v22 requestEnrollmentFlowMonitorWithPersonaID:v16];
+        managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+        [managedConfigurationHelper2 requestEnrollmentFlowMonitorWithPersonaID:v16];
       }
 
       [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
@@ -3065,19 +3065,19 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_signInMAIDWithAuthenticationResult:(id)a3 enrollmentType:(unint64_t)a4 personaID:(id)a5 isRenewalFlow:(BOOL)a6
+- (void)_signInMAIDWithAuthenticationResult:(id)result enrollmentType:(unint64_t)type personaID:(id)d isRenewalFlow:(BOOL)flow
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6)
+  resultCopy = result;
+  dCopy = d;
+  if (flow)
   {
     goto LABEL_4;
   }
 
   v12 = DMCAKAuthenticationUsernameKey();
-  v13 = [v10 objectForKeyedSubscript:v12];
+  v13 = [resultCopy objectForKeyedSubscript:v12];
   v14 = DMCAKAuthenticationAlternateDSIDKey();
-  v15 = [v10 objectForKeyedSubscript:v14];
+  v15 = [resultCopy objectForKeyedSubscript:v14];
   v16 = [(DMCEnrollmentFlowController *)self _guardAgainstConflictingAccountsWithUsername:v13 altDSID:v15];
 
   if (!v16)
@@ -3089,13 +3089,13 @@ LABEL_4:
     v23 = __106__DMCEnrollmentFlowController__signInMAIDWithAuthenticationResult_enrollmentType_personaID_isRenewalFlow___block_invoke;
     v24 = &unk_278EE3460;
     objc_copyWeak(&v27, &location);
-    v17 = v10;
+    v17 = resultCopy;
     v25 = v17;
-    v18 = v11;
+    v18 = dCopy;
     v26 = v18;
     v19 = MEMORY[0x24C1BD5A0](&v21);
     v20 = [(DMCEnrollmentFlowController *)self presenter:v21];
-    [v20 requestMAIDSignInWithAuthenticationResults:v17 personaID:v18 makeiTunesAccountActive:a4 - 6 < 0xFFFFFFFFFFFFFFFELL completionHandler:v19];
+    [v20 requestMAIDSignInWithAuthenticationResults:v17 personaID:v18 makeiTunesAccountActive:type - 6 < 0xFFFFFFFFFFFFFFFELL completionHandler:v19];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -3201,14 +3201,14 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_verifyAccountsInformationWithAltDSID:(id)a3 personaID:(id)a4
+- (BOOL)_verifyAccountsInformationWithAltDSID:(id)d personaID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = 1;
-  if (v6)
+  if (iDCopy)
   {
-    v8 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
@@ -3218,10 +3218,10 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = __79__DMCEnrollmentFlowController__verifyAccountsInformationWithAltDSID_personaID___block_invoke;
     v13[3] = &unk_278EE3488;
-    v10 = v8;
+    v10 = defaultStore;
     v14 = v10;
-    v15 = v5;
-    v16 = v6;
+    v15 = dCopy;
+    v16 = iDCopy;
     v17 = &v18;
     v11 = [v9 performBlockUnderPersona:v16 block:v13];
     v7 = *(v19 + 24);
@@ -3286,12 +3286,12 @@ void __79__DMCEnrollmentFlowController__verifyAccountsInformationWithAltDSID_per
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_exchangeMAIDForBearerTokenWithRMAccountIdentifier:(id)a3 authParams:(id)a4 anchorCertificateRefs:(id)a5
+- (void)_exchangeMAIDForBearerTokenWithRMAccountIdentifier:(id)identifier authParams:(id)params anchorCertificateRefs:(id)refs
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  paramsCopy = params;
+  refsCopy = refs;
   if ([MEMORY[0x277D03500] shouldSimulateMDMAccountDrivenEnrollment])
   {
     v11 = *DMCLogObjects();
@@ -3312,13 +3312,13 @@ void __79__DMCEnrollmentFlowController__verifyAccountsInformationWithAltDSID_per
   else
   {
     objc_initWeak(&buf, self);
-    v13 = [MEMORY[0x277D24670] authenticatorWithAnchorCertificateRefs:v10];
+    v13 = [MEMORY[0x277D24670] authenticatorWithAnchorCertificateRefs:refsCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __115__DMCEnrollmentFlowController__exchangeMAIDForBearerTokenWithRMAccountIdentifier_authParams_anchorCertificateRefs___block_invoke;
     v15[3] = &unk_278EE34D8;
     objc_copyWeak(&v16, &buf);
-    [v13 fetchTokenWithAuthParams:v9 accountID:v8 completionHandler:v15];
+    [v13 fetchTokenWithAuthParams:paramsCopy accountID:identifierCopy completionHandler:v15];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&buf);
@@ -3381,13 +3381,13 @@ uint64_t __115__DMCEnrollmentFlowController__exchangeMAIDForBearerTokenWithRMAcc
   }
 }
 
-- (void)_fetchEnrollmentProfileFromServiceURL:(id)a3 authTokens:(id)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 enrollmentMethod:(unint64_t)a7 isReturnToService:(BOOL)a8
+- (void)_fetchEnrollmentProfileFromServiceURL:(id)l authTokens:(id)tokens machineInfo:(id)info anchorCertificateRefs:(id)refs enrollmentMethod:(unint64_t)method isReturnToService:(BOOL)service
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  serviceCopy = service;
+  lCopy = l;
+  tokensCopy = tokens;
+  infoCopy = info;
+  refsCopy = refs;
   objc_initWeak(&location, self);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -3395,7 +3395,7 @@ uint64_t __115__DMCEnrollmentFlowController__exchangeMAIDForBearerTokenWithRMAcc
   v25[3] = &unk_278EE3500;
   objc_copyWeak(&v26, &location);
   v18 = MEMORY[0x24C1BD5A0](v25);
-  if (v8 && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v19 = objc_claimAutoreleasedReturnValue(), [v19 mdmProfileData], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
+  if (serviceCopy && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v19 = objc_claimAutoreleasedReturnValue(), [v19 mdmProfileData], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
   {
     v21 = *DMCLogObjects();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -3404,15 +3404,15 @@ uint64_t __115__DMCEnrollmentFlowController__exchangeMAIDForBearerTokenWithRMAcc
       _os_log_impl(&dword_247E39000, v21, OS_LOG_TYPE_DEFAULT, "Return to Service: Has local MDM profile.", v24, 2u);
     }
 
-    v22 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-    v23 = [v22 mdmProfileData];
-    (v18)[2](v18, v23, 0);
+    obliterationShelter = [(DMCEnrollmentFlowController *)self obliterationShelter];
+    mdmProfileData = [obliterationShelter mdmProfileData];
+    (v18)[2](v18, mdmProfileData, 0);
   }
 
   else
   {
-    v22 = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
-    [v22 fetchEnrollmentProfileWithServiceURL:v14 authTokens:v15 enrollmentMethod:a7 machineInfo:v16 anchorCertificateRefs:v17 completionHandler:v18];
+    obliterationShelter = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
+    [obliterationShelter fetchEnrollmentProfileWithServiceURL:lCopy authTokens:tokensCopy enrollmentMethod:method machineInfo:infoCopy anchorCertificateRefs:refsCopy completionHandler:v18];
   }
 
   objc_destroyWeak(&v26);
@@ -3475,20 +3475,20 @@ uint64_t __149__DMCEnrollmentFlowController__fetchEnrollmentProfileFromServiceUR
   return result;
 }
 
-- (void)_askForUserConsentWithProfileData:(id)a3 managedAppleID:(id)a4 cloudConfig:(id)a5 isReturnToService:(BOOL)a6 enrollmentType:(unint64_t)a7
+- (void)_askForUserConsentWithProfileData:(id)data managedAppleID:(id)d cloudConfig:(id)config isReturnToService:(BOOL)service enrollmentType:(unint64_t)type
 {
-  v8 = a6;
+  serviceCopy = service;
   v57 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  dataCopy = data;
+  dCopy = d;
+  configCopy = config;
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_managedAppleID_cloudConfig_isReturnToService_enrollmentType___block_invoke;
   v49[3] = &unk_278EE3120;
   v49[4] = self;
   v15 = MEMORY[0x24C1BD5A0](v49);
-  if (v8)
+  if (serviceCopy)
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -3502,8 +3502,8 @@ LABEL_4:
     goto LABEL_31;
   }
 
-  v17 = [(DMCEnrollmentFlowController *)self migrationDelegate];
-  v18 = [v17 enrollmentFlowControllerIsDoingMigration:self];
+  migrationDelegate = [(DMCEnrollmentFlowController *)self migrationDelegate];
+  v18 = [migrationDelegate enrollmentFlowControllerIsDoingMigration:self];
 
   if (v18)
   {
@@ -3518,9 +3518,9 @@ LABEL_4:
   }
 
   objc_initWeak(&location, self);
-  if (v14)
+  if (configCopy)
   {
-    if ([(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:a7])
+    if ([(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:type])
     {
       v20 = *DMCLogObjects();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -3539,30 +3539,30 @@ LABEL_4:
       *(&buf + 1) = &buf;
       v55 = 0x2020000000;
       v56 = 0;
-      if (a7 == 9)
+      if (type == 9)
       {
-        v24 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+        managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
         v25 = objc_opt_respondsToSelector();
 
         if (v25)
         {
-          v26 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+          managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
           v47[0] = MEMORY[0x277D85DD0];
           v47[1] = 3221225472;
           v47[2] = __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_managedAppleID_cloudConfig_isReturnToService_enrollmentType___block_invoke_99;
           v47[3] = &unk_278EE35A0;
           v47[4] = self;
           v47[5] = &buf;
-          [v26 awaitStoredProfileInstallationWithCompletionHandler:v47];
+          [managedConfigurationHelper2 awaitStoredProfileInstallationWithCompletionHandler:v47];
         }
       }
 
-      v27 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter = [(DMCEnrollmentFlowController *)self presenter];
       v28 = objc_opt_respondsToSelector();
 
       if (v28)
       {
-        v29 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter2 = [(DMCEnrollmentFlowController *)self presenter];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_managedAppleID_cloudConfig_isReturnToService_enrollmentType___block_invoke_104;
@@ -3570,8 +3570,8 @@ LABEL_4:
         objc_copyWeak(&v46, &location);
         p_buf = &buf;
         v44 = v15;
-        v43 = v14;
-        [v29 requestUserConsentWithCloudConfig:v43 completionHandler:v42];
+        v43 = configCopy;
+        [presenter2 requestUserConsentWithCloudConfig:v43 completionHandler:v42];
 
         objc_destroyWeak(&v46);
       }
@@ -3581,10 +3581,10 @@ LABEL_4:
         v33 = *DMCLogObjects();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v34 = [(DMCEnrollmentFlowController *)self presenter];
+          presenter3 = [(DMCEnrollmentFlowController *)self presenter];
           v35 = NSStringFromSelector(sel_requestUserConsentWithCloudConfig_completionHandler_);
           *v50 = 138543618;
-          v51 = v34;
+          v51 = presenter3;
           v52 = 2114;
           v53 = v35;
           _os_log_impl(&dword_247E39000, v33, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", v50, 0x16u);
@@ -3599,36 +3599,36 @@ LABEL_4:
 
   else
   {
-    v21 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter4 = [(DMCEnrollmentFlowController *)self presenter];
     v22 = objc_opt_respondsToSelector();
 
     if (v22)
     {
-      v23 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter5 = [(DMCEnrollmentFlowController *)self presenter];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_managedAppleID_cloudConfig_isReturnToService_enrollmentType___block_invoke_5;
       v40[3] = &unk_278EE3640;
       objc_copyWeak(&v41, &location);
-      [v23 requestUserConsentWithProfileData:v12 managedAppleID:v13 enrollmentType:a7 completionHandler:v40];
+      [presenter5 requestUserConsentWithProfileData:dataCopy managedAppleID:dCopy enrollmentType:type completionHandler:v40];
 
       objc_destroyWeak(&v41);
     }
 
     else
     {
-      v30 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter6 = [(DMCEnrollmentFlowController *)self presenter];
       v31 = objc_opt_respondsToSelector();
 
       if (v31)
       {
-        v32 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter7 = [(DMCEnrollmentFlowController *)self presenter];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_managedAppleID_cloudConfig_isReturnToService_enrollmentType___block_invoke_115;
         v38[3] = &unk_278EE3640;
         objc_copyWeak(&v39, &location);
-        [v32 requestUserConsentWithProfileData:v12 managedAppleID:v13 completionHandler:v38];
+        [presenter7 requestUserConsentWithProfileData:dataCopy managedAppleID:dCopy completionHandler:v38];
 
         objc_destroyWeak(&v39);
       }
@@ -3951,18 +3951,18 @@ uint64_t __125__DMCEnrollmentFlowController__askForUserConsentWithProfileData_ma
   return result;
 }
 
-- (void)_displayManagementDetailsOverviewWithProfileData:(id)a3 managedAppleID:(id)a4
+- (void)_displayManagementDetailsOverviewWithProfileData:(id)data managedAppleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   objc_initWeak(&location, self);
-  v8 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__DMCEnrollmentFlowController__displayManagementDetailsOverviewWithProfileData_managedAppleID___block_invoke;
   v9[3] = &unk_278EE3640;
   objc_copyWeak(&v10, &location);
-  [v8 displayManagementDetailsOverviewWithProfileData:v6 managedAppleID:v7 completionHandler:v9];
+  [presenter displayManagementDetailsOverviewWithProfileData:dataCopy managedAppleID:dCopy completionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -4016,8 +4016,8 @@ uint64_t __95__DMCEnrollmentFlowController__displayManagementDetailsOverviewWith
 
 - (void)_skipMDMEnrollment
 {
-  v3 = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
-  v4 = [v3 indexOfObject:&unk_2859F90B8];
+  stepQueue = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
+  v4 = [stepQueue indexOfObject:&unk_2859F90B8];
 
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4027,19 +4027,19 @@ uint64_t __95__DMCEnrollmentFlowController__displayManagementDetailsOverviewWith
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 }
 
-- (void)_installEnrollmentProfile:(id)a3 devicePasscode:(id)a4 devicePasscodeContext:(id)a5 passcodeContextExtractable:(BOOL)a6 personaID:(id)a7 rmAccountIdentifier:(id)a8 isESSO:(BOOL)a9 essoAppITunesStoreID:(id)a10 essoConfigurationProfile:(id)a11 wifiProfileIdentifier:(id)a12 enrollmentType:(unint64_t)a13 isReturnToService:(BOOL)a14
+- (void)_installEnrollmentProfile:(id)profile devicePasscode:(id)passcode devicePasscodeContext:(id)context passcodeContextExtractable:(BOOL)extractable personaID:(id)d rmAccountIdentifier:(id)identifier isESSO:(BOOL)o essoAppITunesStoreID:(id)self0 essoConfigurationProfile:(id)self1 wifiProfileIdentifier:(id)self2 enrollmentType:(unint64_t)self3 isReturnToService:(BOOL)self4
 {
-  v36 = a6;
-  v37 = a3;
-  v42 = a4;
-  v39 = a5;
-  v41 = a7;
-  v40 = a8;
-  v38 = a10;
-  v19 = a11;
-  v20 = a12;
+  extractableCopy = extractable;
+  profileCopy = profile;
+  passcodeCopy = passcode;
+  contextCopy = context;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  configurationProfileCopy = configurationProfile;
+  profileIdentifierCopy = profileIdentifier;
   [(DMCEnrollmentFlowController *)self _blockAppInstallsIfNecessary];
-  if (a13 == 9 || a14)
+  if (type == 9 || service)
   {
     [(DMCEnrollmentFlowController *)self _enablePushWake];
   }
@@ -4050,44 +4050,44 @@ uint64_t __95__DMCEnrollmentFlowController__displayManagementDetailsOverviewWith
   v43[2] = __259__DMCEnrollmentFlowController__installEnrollmentProfile_devicePasscode_devicePasscodeContext_passcodeContextExtractable_personaID_rmAccountIdentifier_isESSO_essoAppITunesStoreID_essoConfigurationProfile_wifiProfileIdentifier_enrollmentType_isReturnToService___block_invoke;
   v43[3] = &unk_278EE3690;
   objc_copyWeak(v44, location);
-  v44[1] = a13;
+  v44[1] = type;
   v21 = MEMORY[0x24C1BD5A0](v43);
-  v22 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(DMCEnrollmentFlowController *)self presenter];
-    [v24 showInstallingEnrollmentProfileScene];
+    presenter2 = [(DMCEnrollmentFlowController *)self presenter];
+    [presenter2 showInstallingEnrollmentProfileScene];
   }
 
-  v25 = [(DMCEnrollmentFlowController *)self migrationDelegate];
-  v26 = [v25 enrollmentFlowControllerIsDoingMigration:self];
+  migrationDelegate = [(DMCEnrollmentFlowController *)self migrationDelegate];
+  v26 = [migrationDelegate enrollmentFlowControllerIsDoingMigration:self];
 
-  if (a13 == 4)
+  if (type == 4)
   {
     v27 = MEMORY[0x277D035C8];
     goto LABEL_10;
   }
 
-  if (a13 == 5)
+  if (type == 5)
   {
     v27 = MEMORY[0x277D035C0];
 LABEL_10:
-    v28 = v37;
+    v28 = profileCopy;
 LABEL_11:
     v29 = *v27;
     goto LABEL_12;
   }
 
   v27 = MEMORY[0x277D035D0];
-  if (a14)
+  if (service)
   {
     v27 = MEMORY[0x277D035D8];
   }
 
-  v28 = v37;
-  if ((a14 | v26))
+  v28 = profileCopy;
+  if ((service | v26))
   {
     goto LABEL_11;
   }
@@ -4096,29 +4096,29 @@ LABEL_11:
 LABEL_12:
   v30 = objc_opt_new();
   v31 = v30;
-  if (v19)
+  if (configurationProfileCopy)
   {
-    [v30 addObject:v19];
+    [v30 addObject:configurationProfileCopy];
   }
 
-  if (v20)
+  if (profileIdentifierCopy)
   {
-    [v31 addObject:v20];
+    [v31 addObject:profileIdentifierCopy];
   }
 
-  v32 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v33 = objc_opt_respondsToSelector();
 
-  v34 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   if (v33)
   {
-    LOBYTE(v35) = a9;
-    [v34 installEnrollmentProfile:v28 devicePasscode:v42 devicePasscodeContext:v39 passcodeContextExtractable:v36 personaID:v41 rmAccountIdentifier:v40 isESSO:v35 essoAppITunesStoreID:v38 managedProfileIdentifiers:v31 installationSource:v29 completionHandler:v21];
+    LOBYTE(v35) = o;
+    [managedConfigurationHelper2 installEnrollmentProfile:v28 devicePasscode:passcodeCopy devicePasscodeContext:contextCopy passcodeContextExtractable:extractableCopy personaID:dCopy rmAccountIdentifier:identifierCopy isESSO:v35 essoAppITunesStoreID:iDCopy managedProfileIdentifiers:v31 installationSource:v29 completionHandler:v21];
   }
 
   else
   {
-    [v34 installEnrollmentProfile:v28 devicePasscode:v42 personaID:v41 rmAccountIdentifier:v40 managedProfileIdentifiers:v31 installationSource:v29 completionHandler:v21];
+    [managedConfigurationHelper2 installEnrollmentProfile:v28 devicePasscode:passcodeCopy personaID:dCopy rmAccountIdentifier:identifierCopy managedProfileIdentifiers:v31 installationSource:v29 completionHandler:v21];
   }
 
   objc_destroyWeak(v44);
@@ -4229,30 +4229,30 @@ LABEL_10:
   return result;
 }
 
-- (void)_createRMAccountIfNeededWithSignInUserIdentifier:(id)a3 assignedMAID:(id)a4 existingRMAccountID:(id)a5 enrollmentType:(unint64_t)a6 enrollmentMethod:(unint64_t)a7 isRenewalFlow:(BOOL)a8
+- (void)_createRMAccountIfNeededWithSignInUserIdentifier:(id)identifier assignedMAID:(id)d existingRMAccountID:(id)iD enrollmentType:(unint64_t)type enrollmentMethod:(unint64_t)method isRenewalFlow:(BOOL)flow
 {
-  v8 = a8;
+  flowCopy = flow;
   v30 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (v16 && v8)
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  if (iDCopy && flowCopy)
   {
-    v17 = [MEMORY[0x277CB8F48] defaultStore];
-    v18 = [v17 accountWithIdentifier:v16];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v18 = [defaultStore accountWithIdentifier:iDCopy];
 
-    if ([v18 dmc_enrollmentType] == a6 && objc_msgSend(v18, "dmc_enrollmentMethod") == a7)
+    if ([v18 dmc_enrollmentType] == type && objc_msgSend(v18, "dmc_enrollmentMethod") == method)
     {
-      v19 = [(DMCEnrollmentFlowController *)self dirtyState];
-      [v19 addDirtyRMAccount:v16];
+      dirtyState = [(DMCEnrollmentFlowController *)self dirtyState];
+      [dirtyState addDirtyRMAccount:iDCopy];
 
       [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
       goto LABEL_12;
     }
   }
 
-  v20 = [MEMORY[0x277CB8F48] defaultStore];
-  v21 = [MEMORY[0x277CB8F30] dmc_createManagementAccountWithStore:v20];
+  defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
+  v21 = [MEMORY[0x277CB8F30] dmc_createManagementAccountWithStore:defaultStore2];
   v22 = *DMCLogObjects();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -4261,11 +4261,11 @@ LABEL_10:
     _os_log_impl(&dword_247E39000, v22, OS_LOG_TYPE_INFO, "Will save remote management account: %{public}@", buf, 0xCu);
   }
 
-  [v21 setUsername:v15];
-  [v21 dmc_setSignInUserIdentifier:v14];
-  [v21 dmc_setEnrollmentType:a6];
-  [v21 dmc_setEnrollmentMethod:a7];
-  if (a6 == 7)
+  [v21 setUsername:dCopy];
+  [v21 dmc_setSignInUserIdentifier:identifierCopy];
+  [v21 dmc_setEnrollmentType:type];
+  [v21 dmc_setEnrollmentMethod:method];
+  if (type == 7)
   {
     [v21 dmc_setAccountScheme:*MEMORY[0x277D032E8]];
   }
@@ -4278,7 +4278,7 @@ LABEL_10:
   objc_copyWeak(&v27, buf);
   v23 = v21;
   v26 = v23;
-  [v20 saveAccount:v23 withCompletionHandler:v25];
+  [defaultStore2 saveAccount:v23 withCompletionHandler:v25];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(buf);
@@ -4355,25 +4355,25 @@ uint64_t __159__DMCEnrollmentFlowController__createRMAccountIfNeededWithSignInUs
   return result;
 }
 
-- (void)_updateRMAccountWithIdentifier:(id)a3 authenticationResults:(id)a4 enrollmentMethod:(unint64_t)a5
+- (void)_updateRMAccountWithIdentifier:(id)identifier authenticationResults:(id)results enrollmentMethod:(unint64_t)method
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DMCEnrollmentFlowController *)self managedAppleID];
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  resultsCopy = results;
+  managedAppleID = [(DMCEnrollmentFlowController *)self managedAppleID];
+  v11 = managedAppleID;
+  if (managedAppleID)
   {
-    v12 = v10;
+    v12 = managedAppleID;
   }
 
   else
   {
     v13 = DMCAKAuthenticationUsernameKey();
-    v12 = [v9 objectForKeyedSubscript:v13];
+    v12 = [resultsCopy objectForKeyedSubscript:v13];
   }
 
-  v14 = [MEMORY[0x277CB8F48] defaultStore];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
   v28 = 0;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
@@ -4381,10 +4381,10 @@ uint64_t __159__DMCEnrollmentFlowController__createRMAccountIfNeededWithSignInUs
   v24 = &unk_278EE36E0;
   v15 = v12;
   v25 = v15;
-  v16 = v9;
+  v16 = resultsCopy;
   v26 = v16;
-  v27 = a5;
-  v17 = [v14 dmc_updateAccountWithIdentifier:v8 error:&v28 updateBlock:&v21];
+  methodCopy = method;
+  v17 = [defaultStore dmc_updateAccountWithIdentifier:identifierCopy error:&v28 updateBlock:&v21];
   v18 = v28;
 
   v19 = *DMCLogObjects();
@@ -4393,7 +4393,7 @@ uint64_t __159__DMCEnrollmentFlowController__createRMAccountIfNeededWithSignInUs
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = v8;
+      v30 = identifierCopy;
       _os_log_impl(&dword_247E39000, v19, OS_LOG_TYPE_DEFAULT, "Remote Management Account Saved Successfully: %{public}@", buf, 0xCu);
     }
 
@@ -4450,14 +4450,14 @@ void __101__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authentic
   }
 }
 
-- (void)_updateRMAccountWithIdentifier:(id)a3 authTokens:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6 personaID:(id)a7 enrollmentMethod:(unint64_t)a8
+- (void)_updateRMAccountWithIdentifier:(id)identifier authTokens:(id)tokens profileIdentifier:(id)profileIdentifier organizationName:(id)name personaID:(id)d enrollmentMethod:(unint64_t)method
 {
   v52 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  identifierCopy = identifier;
+  tokensCopy = tokens;
+  profileIdentifierCopy = profileIdentifier;
+  nameCopy = name;
+  dCopy = d;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -4474,19 +4474,19 @@ void __101__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authentic
   v30[2] = __135__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens_profileIdentifier_organizationName_personaID_enrollmentMethod___block_invoke;
   v30[3] = &unk_278EE3730;
   v37 = &v40;
-  v20 = v14;
+  v20 = identifierCopy;
   v31 = v20;
   v38 = &v44;
-  v21 = v17;
+  v21 = nameCopy;
   v32 = v21;
-  v33 = self;
-  v22 = v15;
+  selfCopy = self;
+  v22 = tokensCopy;
   v34 = v22;
-  v23 = v16;
+  v23 = profileIdentifierCopy;
   v35 = v23;
-  v24 = v18;
+  v24 = dCopy;
   v36 = v24;
-  v39 = a8;
+  methodCopy = method;
   v25 = [v19 performBlockUnderPersona:v24 block:v30];
   if (v41[3])
   {
@@ -4562,12 +4562,12 @@ void __135__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authToken
   }
 }
 
-- (void)_updateRMAccountWithIdentifier:(id)a3 authTokens:(id)a4 personaID:(id)a5
+- (void)_updateRMAccountWithIdentifier:(id)identifier authTokens:(id)tokens personaID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  tokensCopy = tokens;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -4584,13 +4584,13 @@ void __135__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authToken
   v19[2] = __83__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens_personaID___block_invoke;
   v19[3] = &unk_278EE3780;
   v23 = &v25;
-  v12 = v8;
+  v12 = identifierCopy;
   v24 = &v29;
   v20 = v12;
-  v21 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = tokensCopy;
   v22 = v13;
-  v14 = [v11 performBlockUnderPersona:v10 block:v19];
+  v14 = [v11 performBlockUnderPersona:dCopy block:v19];
   if (v26[3])
   {
     v15 = *DMCLogObjects();
@@ -4652,26 +4652,26 @@ void __83__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens
   [v4 dmc_setBearerReauthParams:0];
 }
 
-- (void)_correlateMAIDWithAltDSID:(id)a3 withRMAccount:(id)a4 isProfileLocked:(BOOL)a5 organizationName:(id)a6 friendlyName:(id)a7 personaID:(id)a8
+- (void)_correlateMAIDWithAltDSID:(id)d withRMAccount:(id)account isProfileLocked:(BOOL)locked organizationName:(id)name friendlyName:(id)friendlyName personaID:(id)iD
 {
   v82 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [MEMORY[0x277CB8F48] defaultStore];
+  dCopy = d;
+  accountCopy = account;
+  nameCopy = name;
+  friendlyNameCopy = friendlyName;
+  iDCopy = iD;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_isProfileLocked_organizationName_friendlyName_personaID___block_invoke;
   v75[3] = &unk_278EE37A8;
-  v44 = v15;
+  v44 = nameCopy;
   v76 = v44;
-  v42 = v14;
+  v42 = accountCopy;
   v77 = v42;
-  v19 = v16;
+  v19 = friendlyNameCopy;
   v78 = v19;
-  v79 = a5;
+  lockedCopy = locked;
   v20 = MEMORY[0x24C1BD5A0](v75);
   v69 = 0;
   v70 = &v69;
@@ -4689,14 +4689,14 @@ void __83__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens
   v59[2] = __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_isProfileLocked_organizationName_friendlyName_personaID___block_invoke_2;
   v59[3] = &unk_278EE37D0;
   v63 = &v65;
-  v22 = v18;
+  v22 = defaultStore;
   v60 = v22;
-  v23 = v13;
+  v23 = dCopy;
   v61 = v23;
   v64 = &v69;
   v24 = v20;
   v62 = v24;
-  v25 = [v21 performBlockUnderPersona:v17 block:v59];
+  v25 = [v21 performBlockUnderPersona:iDCopy block:v59];
   if (v66[3])
   {
     v26 = *DMCLogObjects();
@@ -4718,7 +4718,7 @@ void __83__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens
     v55 = v29;
     v58 = &v69;
     v56 = v24;
-    v30 = [v27 performBlockUnderPersona:v17 block:{v53, v42, v44}];
+    v30 = [v27 performBlockUnderPersona:iDCopy block:{v53, v42, v44}];
     if (v66[3])
     {
       v31 = *DMCLogObjects();
@@ -4737,8 +4737,8 @@ void __83__DMCEnrollmentFlowController__updateRMAccountWithIdentifier_authTokens
       v48 = v28;
       v49 = v29;
       v51 = &v69;
-      v52 = a5;
-      v33 = [v32 performBlockUnderPersona:v17 block:v47];
+      lockedCopy2 = locked;
+      v33 = [v32 performBlockUnderPersona:iDCopy block:v47];
       if (v66[3])
       {
         v34 = *DMCLogObjects();
@@ -4856,55 +4856,55 @@ void __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_
   *(*(*(a1 + 48) + 8) + 24) = v6;
 }
 
-- (void)_updateAccountsWithRMIdentifier:(id)a3 managedAppleID:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6 enrollmentURL:(id)a7 personaID:(id)a8
+- (void)_updateAccountsWithRMIdentifier:(id)identifier managedAppleID:(id)d profileIdentifier:(id)profileIdentifier organizationName:(id)name enrollmentURL:(id)l personaID:(id)iD
 {
   v93 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v13 = a4;
-  v14 = a5;
-  v53 = a6;
-  v54 = a7;
-  v55 = a8;
-  v15 = [MEMORY[0x277CB8F48] defaultStore];
-  v16 = [v15 dmc_iCloudAccountWithUsername:v13];
+  identifierCopy = identifier;
+  dCopy = d;
+  profileIdentifierCopy = profileIdentifier;
+  nameCopy = name;
+  lCopy = l;
+  iDCopy = iD;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v16 = [defaultStore dmc_iCloudAccountWithUsername:dCopy];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 username];
-    v19 = [v17 dmc_altDSID];
+    username = [v16 username];
+    dmc_altDSID = [v17 dmc_altDSID];
     v87 = 0;
     v88 = &v87;
     v89 = 0x2020000000;
     v90 = 1;
-    v20 = v14;
+    v20 = profileIdentifierCopy;
     *v81 = 0;
     v82 = v81;
     v83 = 0x3032000000;
     v84 = __Block_byref_object_copy_;
     v85 = __Block_byref_object_dispose_;
     v86 = 0;
-    v50 = v13;
+    v50 = dCopy;
     v21 = MEMORY[0x277D03550];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __137__DMCEnrollmentFlowController__updateAccountsWithRMIdentifier_managedAppleID_profileIdentifier_organizationName_enrollmentURL_personaID___block_invoke;
     v70[3] = &unk_278EE3868;
     v79 = &v87;
-    v48 = v15;
-    v22 = v15;
+    v48 = defaultStore;
+    v22 = defaultStore;
     v71 = v22;
-    v23 = v52;
+    v23 = identifierCopy;
     v72 = v23;
     v80 = v81;
-    v24 = v18;
+    v24 = username;
     v73 = v24;
-    v74 = v53;
-    v25 = v19;
+    v74 = nameCopy;
+    v25 = dmc_altDSID;
     v75 = v25;
-    v26 = v55;
+    v26 = iDCopy;
     v76 = v26;
-    v77 = v14;
-    v78 = v54;
+    v77 = profileIdentifierCopy;
+    v78 = lCopy;
     v27 = [v21 performBlockUnderPersona:v26 block:v70];
     if (v88[3])
     {
@@ -4936,7 +4936,7 @@ void __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_
       v33 = v29;
       v65 = v33;
       v34 = v30;
-      v14 = v20;
+      profileIdentifierCopy = v20;
       v35 = [v34 performBlockUnderPersona:v26 block:v62];
       if (v88[3])
       {
@@ -4958,7 +4958,7 @@ void __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_
         v61 = v81;
         v59 = v33;
         v38 = [v37 performBlockUnderPersona:v26 block:v56];
-        v14 = v20;
+        profileIdentifierCopy = v20;
         if (v88[3])
         {
           v39 = *DMCLogObjects();
@@ -5000,7 +5000,7 @@ void __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_
         [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:*(v82 + 5) canceled:0, v48];
       }
 
-      v13 = v50;
+      dCopy = v50;
     }
 
     else
@@ -5017,7 +5017,7 @@ void __127__DMCEnrollmentFlowController__correlateMAIDWithAltDSID_withRMAccount_
       [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:*(v82 + 5) canceled:0, v48];
     }
 
-    v15 = v49;
+    defaultStore = v49;
     _Block_object_dispose(v81, 8);
 
     _Block_object_dispose(&v87, 8);
@@ -5104,11 +5104,11 @@ void __137__DMCEnrollmentFlowController__updateAccountsWithRMIdentifier_managedA
   *(*(a1[7] + 8) + 24) = v7;
 }
 
-- (void)_reauthenticationCompleteWithRMIdentifier:(id)a3
+- (void)_reauthenticationCompleteWithRMIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  identifierCopy = identifier;
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v6 = objc_opt_respondsToSelector();
 
   v7 = *DMCLogObjects();
@@ -5117,25 +5117,25 @@ void __137__DMCEnrollmentFlowController__updateAccountsWithRMIdentifier_managedA
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_DEBUG, "Reauthentication complete for: %{public}@.", &v12, 0xCu);
     }
 
-    v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    [v8 reauthenticationComplete];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    [managedConfigurationHelper2 reauthenticationComplete];
     goto LABEL_7;
   }
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = v7;
-    v9 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = v7;
+    managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v10 = NSStringFromSelector(sel_reauthenticationComplete);
     v12 = 138543618;
-    v13 = v9;
+    v13 = managedConfigurationHelper3;
     v14 = 2114;
     v15 = v10;
-    _os_log_impl(&dword_247E39000, v8, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", &v12, 0x16u);
+    _os_log_impl(&dword_247E39000, managedConfigurationHelper2, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", &v12, 0x16u);
 
 LABEL_7:
   }
@@ -5148,13 +5148,13 @@ LABEL_7:
 - (void)_requestiCloudSignInConfirmation
 {
   objc_initWeak(&location, self);
-  v3 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__DMCEnrollmentFlowController__requestiCloudSignInConfirmation__block_invoke;
   v4[3] = &unk_278EE3640;
   objc_copyWeak(&v5, &location);
-  [v3 requestiCloudSignInConfirmationWithCompletionHandler:v4];
+  [presenter requestiCloudSignInConfirmationWithCompletionHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -5206,21 +5206,21 @@ uint64_t __63__DMCEnrollmentFlowController__requestiCloudSignInConfirmation__blo
   return result;
 }
 
-- (void)_promoteiCloudWithAltDSID:(id)a3
+- (void)_promoteiCloudWithAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CB8F48] defaultStore];
-  v6 = [v5 dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:v4];
+  dCopy = d;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v6 = [defaultStore dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:dCopy];
 
   objc_initWeak(&location, self);
-  v7 = [(DMCEnrollmentFlowController *)self presenter];
-  v8 = [v6 dmc_accountQuotaString];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
+  dmc_accountQuotaString = [v6 dmc_accountQuotaString];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__DMCEnrollmentFlowController__promoteiCloudWithAltDSID___block_invoke;
   v9[3] = &unk_278EE38B8;
   objc_copyWeak(&v10, &location);
-  [v7 showiCloudPromotionPageWithiCloudQuotaString:v8 completionHandler:v9];
+  [presenter showiCloudPromotionPageWithiCloudQuotaString:dmc_accountQuotaString completionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -5261,24 +5261,24 @@ uint64_t __57__DMCEnrollmentFlowController__promoteiCloudWithAltDSID___block_inv
   return result;
 }
 
-- (void)_askForRestoreChoiceWithMAID:(id)a3 personaID:(id)a4
+- (void)_askForRestoreChoiceWithMAID:(id)d personaID:(id)iD
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCEnrollmentFlowController *)self presenter];
+  dCopy = d;
+  iDCopy = iD;
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     objc_initWeak(location, self);
-    v10 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter2 = [(DMCEnrollmentFlowController *)self presenter];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__DMCEnrollmentFlowController__askForRestoreChoiceWithMAID_personaID___block_invoke;
     v16[3] = &unk_278EE3640;
     objc_copyWeak(&v17, location);
-    [v10 suggestRestoreForAccountWithUsername:v6 personaID:v7 completionHandler:v16];
+    [presenter2 suggestRestoreForAccountWithUsername:dCopy personaID:iDCopy completionHandler:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(location);
@@ -5290,10 +5290,10 @@ uint64_t __57__DMCEnrollmentFlowController__promoteiCloudWithAltDSID___block_inv
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter3 = [(DMCEnrollmentFlowController *)self presenter];
       v14 = NSStringFromSelector(sel_suggestRestoreForAccountWithUsername_personaID_completionHandler_);
       *location = 138543618;
-      *&location[4] = v13;
+      *&location[4] = presenter3;
       v19 = 2114;
       v20 = v14;
       _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", location, 0x16u);
@@ -5340,22 +5340,22 @@ uint64_t __70__DMCEnrollmentFlowController__askForRestoreChoiceWithMAID_personaI
   return result;
 }
 
-- (void)_analyzeESSODetails:(id)a3
+- (void)_analyzeESSODetails:(id)details
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 declarations];
+  detailsCopy = details;
+  declarations = [detailsCopy declarations];
 
-  if (v5)
+  if (declarations)
   {
-    v6 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+    rmStoreHelper = [(DMCEnrollmentFlowController *)self rmStoreHelper];
 
-    if (v6)
+    if (rmStoreHelper)
     {
-      v7 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
-      v8 = [v4 declarations];
+      rmStoreHelper2 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+      declarations2 = [detailsCopy declarations];
       v36 = 0;
-      v9 = [v7 appDetailsFromDeclarations:v8 error:&v36];
+      v9 = [rmStoreHelper2 appDetailsFromDeclarations:declarations2 error:&v36];
       v10 = v36;
 
       if (v9)
@@ -5379,8 +5379,8 @@ uint64_t __70__DMCEnrollmentFlowController__askForRestoreChoiceWithMAID_personaI
           v16 = [v11 setWithArray:v15];
 
           v17 = MEMORY[0x277CBEB98];
-          v18 = [v4 appIDs];
-          v19 = [(DMCEnrollmentFlowController *)self _bundleIDsFromAppIDs:v18];
+          appIDs = [detailsCopy appIDs];
+          v19 = [(DMCEnrollmentFlowController *)self _bundleIDsFromAppIDs:appIDs];
           v20 = v19;
           if (v19)
           {
@@ -5408,9 +5408,9 @@ LABEL_31:
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
             v32 = v31;
-            v33 = [v4 appIDs];
+            appIDs2 = [detailsCopy appIDs];
             *buf = 138543618;
-            v38 = v33;
+            v38 = appIDs2;
             v39 = 2114;
             v40 = v16;
             _os_log_impl(&dword_247E39000, v32, OS_LOG_TYPE_ERROR, "ErSSO declaration AppIDs do not match: %{public}@ and %{public}@", buf, 0x16u);
@@ -5425,8 +5425,8 @@ LABEL_31:
           v16 = [v9 objectForKeyedSubscript:@"AppStoreID"];
           if (v16)
           {
-            v26 = [v4 iTunesStoreID];
-            v27 = [v26 isEqualToNumber:v16];
+            iTunesStoreID = [detailsCopy iTunesStoreID];
+            v27 = [iTunesStoreID isEqualToNumber:v16];
 
             if (v27)
             {
@@ -5438,9 +5438,9 @@ LABEL_31:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
             v29 = v28;
-            v30 = [v4 iTunesStoreID];
+            iTunesStoreID2 = [detailsCopy iTunesStoreID];
             *buf = 138543618;
-            v38 = v30;
+            v38 = iTunesStoreID2;
             v39 = 2114;
             v40 = v16;
             _os_log_impl(&dword_247E39000, v29, OS_LOG_TYPE_ERROR, "ErSSO declaration AppStoreIDs do not match: %{public}@ and %{public}@", buf, 0x16u);
@@ -5489,20 +5489,20 @@ LABEL_32:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_installEnterpriseApplication:(id)a3 debuggingAppIDs:(id)a4 personaID:(id)a5
+- (void)_installEnterpriseApplication:(id)application debuggingAppIDs:(id)ds personaID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  dCopy = d;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggingAppIDs_personaID___block_invoke;
   v12[3] = &unk_278EE39D0;
   v12[4] = self;
-  v13 = v9;
-  v14 = v8;
-  v10 = v8;
-  v11 = v9;
-  [(DMCEnrollmentFlowController *)self _fetchBundleIDsWithiTunesItemID:v10 debuggingAppIDs:a4 completionHandler:v12];
+  v13 = dCopy;
+  v14 = applicationCopy;
+  v10 = applicationCopy;
+  v11 = dCopy;
+  [(DMCEnrollmentFlowController *)self _fetchBundleIDsWithiTunesItemID:v10 debuggingAppIDs:ds completionHandler:v12];
 }
 
 void __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggingAppIDs_personaID___block_invoke(uint64_t a1, void *a2)
@@ -5870,24 +5870,24 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
   return result;
 }
 
-- (BOOL)_validateBundleID:(id)a3 personaID:(id)a4 requiredEntitlements:(id)a5 error:(id *)a6
+- (BOOL)_validateBundleID:(id)d personaID:(id)iD requiredEntitlements:(id)entitlements error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v31 = v9;
-  v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v9 allowPlaceholder:0 error:a6];
+  dCopy = d;
+  iDCopy = iD;
+  entitlementsCopy = entitlements;
+  v31 = dCopy;
+  v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:error];
   v13 = v12;
-  v32 = a6;
-  if (*a6)
+  errorCopy = error;
+  if (*error)
   {
     v14 = *DMCLogObjects();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a6;
+      v15 = *error;
       *buf = 138543618;
-      v40 = v9;
+      v40 = dCopy;
       v41 = 2114;
       v42 = v15;
       _os_log_impl(&dword_247E39000, v14, OS_LOG_TYPE_ERROR, "Failed to load record for app: %{public}@ with error: %{public}@", buf, 0x16u);
@@ -5898,16 +5898,16 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
 
   else
   {
-    v17 = [v12 managedPersonas];
-    if ([v17 containsObject:v10])
+    managedPersonas = [v12 managedPersonas];
+    if ([managedPersonas containsObject:iDCopy])
     {
-      v29 = v11;
-      v30 = v10;
+      v29 = entitlementsCopy;
+      v30 = iDCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      obj = v11;
+      obj = entitlementsCopy;
       v18 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v18)
       {
@@ -5924,11 +5924,11 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
             }
 
             v22 = *(*(&v34 + 1) + 8 * i);
-            v23 = [v13 entitlements];
-            v24 = [v23 objectForKey:v22 ofClass:objc_opt_class()];
-            v25 = [v24 BOOLValue];
+            entitlements = [v13 entitlements];
+            v24 = [entitlements objectForKey:v22 ofClass:objc_opt_class()];
+            bOOLValue = [v24 BOOLValue];
 
-            if ((v25 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v26 = *DMCLogObjects();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -5941,7 +5941,7 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
               }
 
               +[DMCEnrollmentFlowController _createEnterpriseApplicationMissingEntitlementsError];
-              *v32 = v16 = 0;
+              *errorCopy = v16 = 0;
             }
           }
 
@@ -5956,8 +5956,8 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
         v16 = 1;
       }
 
-      v11 = v29;
-      v10 = v30;
+      entitlementsCopy = v29;
+      iDCopy = v30;
     }
 
     else
@@ -5970,16 +5970,16 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
   return v16 & 1;
 }
 
-- (void)_trackDirtyAppBundleIDs:(id)a3 personaID:(id)a4
+- (void)_trackDirtyAppBundleIDs:(id)ds personaID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5991,26 +5991,26 @@ uint64_t __87__DMCEnrollmentFlowController__installEnterpriseApplication_debuggi
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
-        v12 = [objc_alloc(MEMORY[0x277D034A8]) initWithBundleID:*(*(&v17 + 1) + 8 * v11) personaID:v7];
-        v13 = [(DMCEnrollmentFlowController *)self dirtyState];
-        v14 = [v12 identifier];
-        [v13 addDirtyBundleID:v14];
+        v12 = [objc_alloc(MEMORY[0x277D034A8]) initWithBundleID:*(*(&v17 + 1) + 8 * v11) personaID:dCopy];
+        dirtyState = [(DMCEnrollmentFlowController *)self dirtyState];
+        identifier = [v12 identifier];
+        [dirtyState addDirtyBundleID:identifier];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [dsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [(DMCEnrollmentFlowController *)self dirtyState];
-  [(DMCEnrollmentFlowController *)self _writeDirtyStateToDisk:v15];
+  dirtyState2 = [(DMCEnrollmentFlowController *)self dirtyState];
+  [(DMCEnrollmentFlowController *)self _writeDirtyStateToDisk:dirtyState2];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -6070,22 +6070,22 @@ uint64_t __138__DMCEnrollmentFlowController__installESSOConfigurationProfile_dev
   return result;
 }
 
-- (void)_installESSODeclarations:(id)a3 chosenBundleID:(id)a4 personaID:(id)a5 enrollmentType:(unint64_t)a6
+- (void)_installESSODeclarations:(id)declarations chosenBundleID:(id)d personaID:(id)iD enrollmentType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+  declarationsCopy = declarations;
+  dCopy = d;
+  iDCopy = iD;
+  rmStoreHelper = [(DMCEnrollmentFlowController *)self rmStoreHelper];
 
-  if (v13)
+  if (rmStoreHelper)
   {
-    v14 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+    rmStoreHelper2 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __96__DMCEnrollmentFlowController__installESSODeclarations_chosenBundleID_personaID_enrollmentType___block_invoke;
     v18[3] = &unk_278EE3550;
     v18[4] = self;
-    [v14 createErSSOStoreWithDeclarations:v10 chosenBundleID:v11 personaID:v12 isUserEnrollment:a6 == 4 completionHandler:v18];
+    [rmStoreHelper2 createErSSOStoreWithDeclarations:declarationsCopy chosenBundleID:dCopy personaID:iDCopy isUserEnrollment:type == 4 completionHandler:v18];
   }
 
   else
@@ -6155,17 +6155,17 @@ uint64_t __96__DMCEnrollmentFlowController__installESSODeclarations_chosenBundle
 
 - (void)_waitForESSODeclarations
 {
-  v3 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+  rmStoreHelper = [(DMCEnrollmentFlowController *)self rmStoreHelper];
 
-  if (v3)
+  if (rmStoreHelper)
   {
-    v4 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+    rmStoreHelper2 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __55__DMCEnrollmentFlowController__waitForESSODeclarations__block_invoke;
     v7[3] = &unk_278EE3550;
     v7[4] = self;
-    [v4 waitForActiveAndValidDeclarationsInErSSOStoreWithTimeout:v7 completionHandler:60.0];
+    [rmStoreHelper2 waitForActiveAndValidDeclarationsInErSSOStoreWithTimeout:v7 completionHandler:60.0];
   }
 
   else
@@ -6177,8 +6177,8 @@ uint64_t __96__DMCEnrollmentFlowController__installESSODeclarations_chosenBundle
       _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_ERROR, "Invalid ErSSO RMStore helper", v6, 2u);
     }
 
-    v4 = +[DMCEnrollmentFlowController _createGeneralError];
-    [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:v4 canceled:0];
+    rmStoreHelper2 = +[DMCEnrollmentFlowController _createGeneralError];
+    [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:rmStoreHelper2 canceled:0];
   }
 }
 
@@ -6228,17 +6228,17 @@ uint64_t __55__DMCEnrollmentFlowController__waitForESSODeclarations__block_invok
 
 - (void)_extensionIDsFromDeclarationProfiles
 {
-  v3 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+  rmStoreHelper = [(DMCEnrollmentFlowController *)self rmStoreHelper];
 
-  if (v3)
+  if (rmStoreHelper)
   {
-    v4 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+    rmStoreHelper2 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__DMCEnrollmentFlowController__extensionIDsFromDeclarationProfiles__block_invoke;
     v7[3] = &unk_278EE3A20;
     v7[4] = self;
-    [v4 extensibleSSOProfileIdentifiersWithCompletionHandler:v7];
+    [rmStoreHelper2 extensibleSSOProfileIdentifiersWithCompletionHandler:v7];
   }
 
   else
@@ -6250,8 +6250,8 @@ uint64_t __55__DMCEnrollmentFlowController__waitForESSODeclarations__block_invok
       _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_ERROR, "Invalid ErSSO RMStore helper", v6, 2u);
     }
 
-    v4 = +[DMCEnrollmentFlowController _createGeneralError];
-    [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:v4 canceled:0];
+    rmStoreHelper2 = +[DMCEnrollmentFlowController _createGeneralError];
+    [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:rmStoreHelper2 canceled:0];
   }
 }
 
@@ -6314,16 +6314,16 @@ uint64_t __67__DMCEnrollmentFlowController__extensionIDsFromDeclarationProfiles_
   return result;
 }
 
-- (void)_awaitESSOConfigActivationWithExtensionIdentifiers:(id)a3
+- (void)_awaitESSOConfigActivationWithExtensionIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  identifiersCopy = identifiers;
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__DMCEnrollmentFlowController__awaitESSOConfigActivationWithExtensionIdentifiers___block_invoke;
   v6[3] = &unk_278EE3550;
   v6[4] = self;
-  [v5 _awaitESSOConfigActivationWithExtensionIdentifiers:v4 completionHandler:v6];
+  [managedConfigurationHelper _awaitESSOConfigActivationWithExtensionIdentifiers:identifiersCopy completionHandler:v6];
 }
 
 void __82__DMCEnrollmentFlowController__awaitESSOConfigActivationWithExtensionIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -6356,30 +6356,30 @@ uint64_t __82__DMCEnrollmentFlowController__awaitESSOConfigActivationWithExtensi
   }
 }
 
-- (void)_manageApplicationWithAppBundleID:(id)a3 essoDetails:(id)a4 organization:(id)a5 personaID:(id)a6
+- (void)_manageApplicationWithAppBundleID:(id)d essoDetails:(id)details organization:(id)organization personaID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(DMCEnrollmentFlowController *)self profileIdentifier];
-  if (v14 && (v15 = v14, [v11 declarations], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+  dCopy = d;
+  detailsCopy = details;
+  organizationCopy = organization;
+  iDCopy = iD;
+  profileIdentifier = [(DMCEnrollmentFlowController *)self profileIdentifier];
+  if (profileIdentifier && (v15 = profileIdentifier, [detailsCopy declarations], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
   {
     [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
   }
 
   else
   {
-    v17 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    v18 = [v11 iTunesStoreID];
-    v19 = [v11 associatedDomains];
-    v20 = [v11 associatedDomainsEnableDirectDownloads];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    iTunesStoreID = [detailsCopy iTunesStoreID];
+    associatedDomains = [detailsCopy associatedDomains];
+    associatedDomainsEnableDirectDownloads = [detailsCopy associatedDomainsEnableDirectDownloads];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __100__DMCEnrollmentFlowController__manageApplicationWithAppBundleID_essoDetails_organization_personaID___block_invoke;
     v21[3] = &unk_278EE3550;
     v21[4] = self;
-    [v17 manageApplicationWithBundleID:v10 iTunesItemID:v18 organization:v12 personaID:v13 associatedDomains:v19 associatedDomainsEnableDirectDownloads:v20 configuration:0 completionHandler:v21];
+    [managedConfigurationHelper manageApplicationWithBundleID:dCopy iTunesItemID:iTunesStoreID organization:organizationCopy personaID:iDCopy associatedDomains:associatedDomains associatedDomainsEnableDirectDownloads:associatedDomainsEnableDirectDownloads configuration:0 completionHandler:v21];
   }
 }
 
@@ -6397,25 +6397,25 @@ uint64_t __100__DMCEnrollmentFlowController__manageApplicationWithAppBundleID_es
   }
 }
 
-- (void)_linkESSOStore:(id)a3 rmAccountIdentifier:(id)a4 profileIdentifier:(id)a5
+- (void)_linkESSOStore:(id)store rmAccountIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 declarations];
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  declarations = [store declarations];
 
-  if (v10)
+  if (declarations)
   {
-    v11 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+    rmStoreHelper = [(DMCEnrollmentFlowController *)self rmStoreHelper];
 
-    if (v11)
+    if (rmStoreHelper)
     {
-      v12 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
+      rmStoreHelper2 = [(DMCEnrollmentFlowController *)self rmStoreHelper];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __84__DMCEnrollmentFlowController__linkESSOStore_rmAccountIdentifier_profileIdentifier___block_invoke;
       v15[3] = &unk_278EE3550;
       v15[4] = self;
-      [v12 linkErSSOStoreToMDMWithProfileIdentifier:v9 accountIdentifier:v8 completionHandler:v15];
+      [rmStoreHelper2 linkErSSOStoreToMDMWithProfileIdentifier:profileIdentifierCopy accountIdentifier:identifierCopy completionHandler:v15];
     }
 
     else
@@ -6427,8 +6427,8 @@ uint64_t __100__DMCEnrollmentFlowController__manageApplicationWithAppBundleID_es
         _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_ERROR, "Invalid ErSSO RMStore helper", v14, 2u);
       }
 
-      v12 = +[DMCEnrollmentFlowController _createGeneralError];
-      [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:v12 canceled:0];
+      rmStoreHelper2 = +[DMCEnrollmentFlowController _createGeneralError];
+      [(DMCEnrollmentFlowController *)self _flowTerminatedWithError:rmStoreHelper2 canceled:0];
     }
   }
 
@@ -6485,18 +6485,18 @@ uint64_t __84__DMCEnrollmentFlowController__linkESSOStore_rmAccountIdentifier_pr
 - (void)_restoreSetAsideProfiles
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke;
     v11[3] = &unk_278EE3550;
     v11[4] = self;
-    [v5 restoreSetAsideCloudConfigAndProfilesWithCompletionHandler:v11];
+    [managedConfigurationHelper2 restoreSetAsideCloudConfigAndProfilesWithCompletionHandler:v11];
   }
 
   else
@@ -6505,10 +6505,10 @@ uint64_t __84__DMCEnrollmentFlowController__linkESSOStore_rmAccountIdentifier_pr
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v9 = NSStringFromSelector(sel_restoreSetAsideCloudConfigAndProfilesWithCompletionHandler_);
       *buf = 138543618;
-      v13 = v8;
+      v13 = managedConfigurationHelper3;
       v14 = 2114;
       v15 = v9;
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -6540,17 +6540,17 @@ void __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchCloudConfigWithEnrollmentType:(unint64_t)a3 isReturnToService:(BOOL)a4
+- (void)_fetchCloudConfigWithEnrollmentType:(unint64_t)type isReturnToService:(BOOL)service
 {
-  v4 = a4;
+  serviceCopy = service;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __85__DMCEnrollmentFlowController__fetchCloudConfigWithEnrollmentType_isReturnToService___block_invoke;
   v24[3] = &unk_278EE3A48;
   v24[4] = self;
-  v25 = a4;
-  v6 = MEMORY[0x24C1BD5A0](v24, a2, a3);
-  if (v4 && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v7 = objc_claimAutoreleasedReturnValue(), [v7 cloudConfigurationDetails], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  serviceCopy2 = service;
+  v6 = MEMORY[0x24C1BD5A0](v24, a2, type);
+  if (serviceCopy && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v7 = objc_claimAutoreleasedReturnValue(), [v7 cloudConfigurationDetails], mEMORY[0x277D24640] = objc_claimAutoreleasedReturnValue(), v7, mEMORY[0x277D24640]))
   {
     v9 = *DMCLogObjects();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6559,15 +6559,15 @@ void __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke(ui
       _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_DEFAULT, "Device has local Cloud Config profile from Return to Service, restoring...", buf, 2u);
     }
 
-    (v6)[2](v6, v8, 0);
+    (v6)[2](v6, mEMORY[0x277D24640], 0);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D24640] sharedConfiguration];
-    [v8 refreshDetailsFromDisk];
-    v10 = [v8 details];
-    if (v10)
+    mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+    [mEMORY[0x277D24640] refreshDetailsFromDisk];
+    details = [mEMORY[0x277D24640] details];
+    if (details)
     {
       v11 = *DMCLogObjects();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -6576,15 +6576,15 @@ void __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke(ui
         _os_log_impl(&dword_247E39000, v11, OS_LOG_TYPE_DEFAULT, "Cloud Configuration is available locally, returning...", buf, 2u);
       }
 
-      (v6)[2](v6, v10, 0);
+      (v6)[2](v6, details, 0);
     }
 
     else
     {
-      v12 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-      v13 = [v12 activationRecordIndicatesCloudConfigurationIsAvailable];
+      managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      activationRecordIndicatesCloudConfigurationIsAvailable = [managedConfigurationHelper activationRecordIndicatesCloudConfigurationIsAvailable];
 
-      if (v13)
+      if (activationRecordIndicatesCloudConfigurationIsAvailable)
       {
         v14 = *DMCLogObjects();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -6593,13 +6593,13 @@ void __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke(ui
           _os_log_impl(&dword_247E39000, v14, OS_LOG_TYPE_DEFAULT, "Activation record indicates cloud configuration is available, will fetch...", buf, 2u);
         }
 
-        v15 = [(DMCEnrollmentFlowController *)self presenter];
+        presenter = [(DMCEnrollmentFlowController *)self presenter];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [(DMCEnrollmentFlowController *)self presenter];
-          [v17 showFetchingCloudConfigurationScene];
+          presenter2 = [(DMCEnrollmentFlowController *)self presenter];
+          [presenter2 showFetchingCloudConfigurationScene];
         }
 
         if ([MEMORY[0x277D03500] shouldSimulateDEPCommunication])
@@ -6616,8 +6616,8 @@ void __55__DMCEnrollmentFlowController__restoreSetAsideProfiles__block_invoke(ui
 
         else
         {
-          v20 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-          [v20 fetchCloudConfigWithCompletionHandler:v6];
+          managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+          [managedConfigurationHelper2 fetchCloudConfigWithCompletionHandler:v6];
         }
       }
 
@@ -6674,25 +6674,25 @@ void __85__DMCEnrollmentFlowController__fetchCloudConfigWithEnrollmentType_isRet
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)_analyzeCloudConfig:(id)a3 enrollmentType:(unint64_t)a4 isDoingReturnToService:(BOOL)a5 obliterationShelter:(id)a6
+- (void)_analyzeCloudConfig:(id)config enrollmentType:(unint64_t)type isDoingReturnToService:(BOOL)service obliterationShelter:(id)shelter
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (!v7)
+  serviceCopy = service;
+  configCopy = config;
+  shelterCopy = shelter;
+  v12 = shelterCopy;
+  if (!serviceCopy)
   {
 LABEL_7:
     v16 = 0;
     goto LABEL_9;
   }
 
-  if (([v11 isSupervised] & 1) == 0)
+  if (([shelterCopy isSupervised] & 1) == 0)
   {
-    v13 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03090]];
-    v14 = [v13 BOOLValue];
+    v13 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03090]];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       v15 = *DMCLogObjects();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -6709,22 +6709,22 @@ LABEL_7:
 
   v16 = 1;
 LABEL_9:
-  v17 = [(DMCEnrollmentFlowController *)self migrationDelegate];
-  v18 = [v17 enrollmentFlowControllerIsDoingMigration:self];
+  migrationDelegate = [(DMCEnrollmentFlowController *)self migrationDelegate];
+  v18 = [migrationDelegate enrollmentFlowControllerIsDoingMigration:self];
 
-  v19 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03088]];
-  v20 = [v19 BOOLValue];
+  v19 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03088]];
+  bOOLValue2 = [v19 BOOLValue];
 
-  [(DMCEnrollmentFlowController *)self setCloudConfigIndicatesRapidReturnToService:v20];
-  if ((v18 & 1) == 0 && !v20)
+  [(DMCEnrollmentFlowController *)self setCloudConfigIndicatesRapidReturnToService:bOOLValue2];
+  if ((v18 & 1) == 0 && !bOOLValue2)
   {
     goto LABEL_18;
   }
 
-  v21 = [(DMCEnrollmentFlowController *)self loggingSupport];
-  [v21 enableDebugLoggingForAppPreservation];
+  loggingSupport = [(DMCEnrollmentFlowController *)self loggingSupport];
+  [loggingSupport enableDebugLoggingForAppPreservation];
 
-  if (!v20)
+  if (!bOOLValue2)
   {
     goto LABEL_18;
   }
@@ -6739,7 +6739,7 @@ LABEL_9:
     }
 
 LABEL_18:
-    v24 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03060]];
+    v24 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03060]];
     v23 = v24;
     if (v24)
     {
@@ -6769,11 +6769,11 @@ LABEL_18:
           [(DMCEnrollmentFlowController *)self setAnchorCertificateRefs:v34];
           [(DMCEnrollmentFlowController *)self setServiceURL:v26];
           [(DMCEnrollmentFlowController *)self setEnrollmentType:1];
-          v35 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03120]];
+          v35 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03120]];
           [(DMCEnrollmentFlowController *)self setIsRenewalFlow:v35 != 0];
 
-          v36 = [(DMCEnrollmentFlowController *)self _ORGO_commonSteps];
-          [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v36];
+          _ORGO_commonSteps = [(DMCEnrollmentFlowController *)self _ORGO_commonSteps];
+          [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ORGO_commonSteps];
 
           [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
         }
@@ -6789,14 +6789,14 @@ LABEL_18:
     }
 
     v57 = v12;
-    v56 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03010]];
+    v56 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03010]];
     v55 = certificatesFromDERCertificateDataArray();
     [(DMCEnrollmentFlowController *)self setAnchorCertificateRefs:?];
     v27 = MEMORY[0x277CBEBC0];
-    v28 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03048]];
+    v28 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03048]];
     v29 = [v27 URLWithString:v28];
 
-    if ([(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:a4])
+    if ([(DMCEnrollmentFlowController *)self _canSkipMDMEnrollmentWithEnrollmentType:type])
     {
       v30 = *DMCLogObjects();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -6812,9 +6812,9 @@ LABEL_18:
     {
       if (v16)
       {
-        v37 = [v57 mdmProfileData];
+        mdmProfileData = [v57 mdmProfileData];
 
-        if (!v37)
+        if (!mdmProfileData)
         {
           v53 = *DMCLogObjects();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -6840,12 +6840,12 @@ LABEL_18:
 
       [(DMCEnrollmentFlowController *)self setServiceURL:v29];
       [(DMCEnrollmentFlowController *)self setEnrollmentMethod:6];
-      v39 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_webURL_steps];
-      [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v39];
+      _ADE_deviceEnrollment_webURL_steps = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_webURL_steps];
+      [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_deviceEnrollment_webURL_steps];
 
 LABEL_34:
       v40 = 1;
-      if (!v20)
+      if (!bOOLValue2)
       {
         goto LABEL_36;
       }
@@ -6854,7 +6854,7 @@ LABEL_34:
     }
 
     v46 = MEMORY[0x277CBEBC0];
-    v47 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03040]];
+    v47 = [configCopy objectForKeyedSubscript:*MEMORY[0x277D03040]];
     v48 = [v46 URLWithString:v47];
 
     [(DMCEnrollmentFlowController *)self setServiceURL:v48];
@@ -6885,13 +6885,13 @@ LABEL_55:
         v40 = 0;
 LABEL_57:
 
-        if (!v20)
+        if (!bOOLValue2)
         {
 LABEL_36:
           if (v40)
           {
-            v44 = [(DMCEnrollmentFlowController *)self _ADE_postEnrollmentSteps];
-            [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v44];
+            _ADE_postEnrollmentSteps = [(DMCEnrollmentFlowController *)self _ADE_postEnrollmentSteps];
+            [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_postEnrollmentSteps];
 
             if (!v18)
             {
@@ -6903,10 +6903,10 @@ LABEL_36:
           {
 LABEL_39:
             v26 = v56;
-            if (v20)
+            if (bOOLValue2)
             {
-              v43 = [(DMCEnrollmentFlowController *)self _ADE_RRTS_snapshotSteps];
-              [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v43];
+              _ADE_RRTS_snapshotSteps = [(DMCEnrollmentFlowController *)self _ADE_RRTS_snapshotSteps];
+              [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_RRTS_snapshotSteps];
             }
 
             [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
@@ -6918,15 +6918,15 @@ LABEL_47:
             goto LABEL_48;
           }
 
-          v42 = [(DMCEnrollmentFlowController *)self _ADE_migration_cleanupSteps];
-          [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v42];
+          _ADE_migration_cleanupSteps = [(DMCEnrollmentFlowController *)self _ADE_migration_cleanupSteps];
+          [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_migration_cleanupSteps];
 
           goto LABEL_39;
         }
 
 LABEL_35:
-        v41 = [(DMCEnrollmentFlowController *)self _ADE_bootstrapTokenSteps];
-        [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v41];
+        _ADE_bootstrapTokenSteps = [(DMCEnrollmentFlowController *)self _ADE_bootstrapTokenSteps];
+        [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_bootstrapTokenSteps];
 
         goto LABEL_36;
       }
@@ -6939,8 +6939,8 @@ LABEL_35:
       }
     }
 
-    v52 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_steps];
-    [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v52];
+    _ADE_deviceEnrollment_legacy_steps = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_steps];
+    [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_ADE_deviceEnrollment_legacy_steps];
 
     v40 = 1;
     goto LABEL_57;
@@ -6957,19 +6957,19 @@ LABEL_35:
 LABEL_48:
 }
 
-- (void)_storeCloudConfig:(id)a3
+- (void)_storeCloudConfig:(id)config
 {
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__DMCEnrollmentFlowController__storeCloudConfig___block_invoke;
     v7[3] = &unk_278EE3A98;
     v7[4] = self;
-    v8 = v4;
-    [v5 storeCloudConfig:v8 completionHandler:v7];
+    v8 = configCopy;
+    [managedConfigurationHelper storeCloudConfig:v8 completionHandler:v7];
   }
 
   else
@@ -7046,7 +7046,7 @@ uint64_t __49__DMCEnrollmentFlowController__storeCloudConfig___block_invoke_2(ui
 - (void)_waitForDeviceConfiguration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -7055,10 +7055,10 @@ uint64_t __49__DMCEnrollmentFlowController__storeCloudConfig___block_invoke_2(ui
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v13 = NSStringFromSelector(sel_isDeviceConfigured);
       *buf = 138543618;
-      v26 = v12;
+      v26 = managedConfigurationHelper2;
       v27 = 2114;
       v28 = v13;
       _os_log_impl(&dword_247E39000, v11, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -7067,7 +7067,7 @@ uint64_t __49__DMCEnrollmentFlowController__storeCloudConfig___block_invoke_2(ui
     goto LABEL_9;
   }
 
-  v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -7076,10 +7076,10 @@ uint64_t __49__DMCEnrollmentFlowController__storeCloudConfig___block_invoke_2(ui
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = v14;
-      v16 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v17 = NSStringFromSelector(sel_awaitDeviceConfiguredWithCompletionHandler_);
       *buf = 138543618;
-      v26 = v16;
+      v26 = managedConfigurationHelper4;
       v27 = 2114;
       v28 = v17;
       _os_log_impl(&dword_247E39000, v15, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -7092,28 +7092,28 @@ LABEL_16:
     return;
   }
 
-  v7 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-  v8 = [v7 isDeviceConfigured];
+  managedConfigurationHelper5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  isDeviceConfigured = [managedConfigurationHelper5 isDeviceConfigured];
 
-  if (!v8)
+  if (!isDeviceConfigured)
   {
-    v18 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter = [(DMCEnrollmentFlowController *)self presenter];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(DMCEnrollmentFlowController *)self presenter];
-      [v20 showAwaitingDeviceConfigurationScene];
+      presenter2 = [(DMCEnrollmentFlowController *)self presenter];
+      [presenter2 showAwaitingDeviceConfigurationScene];
     }
 
     objc_initWeak(buf, self);
-    v21 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __58__DMCEnrollmentFlowController__waitForDeviceConfiguration__block_invoke;
     v23[3] = &unk_278EE38B8;
     objc_copyWeak(&v24, buf);
-    [v21 awaitDeviceConfiguredWithCompletionHandler:v23];
+    [managedConfigurationHelper6 awaitDeviceConfiguredWithCompletionHandler:v23];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -7160,14 +7160,14 @@ uint64_t __58__DMCEnrollmentFlowController__waitForDeviceConfiguration__block_in
   return result;
 }
 
-- (void)_askForMDMUsernameAndCredentialWithError:(id)a3
+- (void)_askForMDMUsernameAndCredentialWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D035B8]];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D035B8]];
   }
 
   else
@@ -7185,15 +7185,15 @@ uint64_t __58__DMCEnrollmentFlowController__waitForDeviceConfiguration__block_in
   v9 = [(DMCEnrollmentFlowController *)self presenter:v12];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   if (v10)
   {
-    [v11 requestMDMUsernameAndPasswordWithErrorMessage:v7 completionHandler:v8];
+    [presenter requestMDMUsernameAndPasswordWithErrorMessage:v7 completionHandler:v8];
   }
 
   else
   {
-    [v11 requestMDMUsernameAndPasswordWithCompletionHandler:v8];
+    [presenter requestMDMUsernameAndPasswordWithCompletionHandler:v8];
   }
 
   objc_destroyWeak(&v16);
@@ -7251,21 +7251,21 @@ uint64_t __72__DMCEnrollmentFlowController__askForMDMUsernameAndCredentialWithEr
   return result;
 }
 
-- (void)_fetchEnrollmentProfileFromServiceURL:(id)a3 username:(id)a4 password:(id)a5 machineInfo:(id)a6 anchorCertificateRefs:(id)a7
+- (void)_fetchEnrollmentProfileFromServiceURL:(id)l username:(id)username password:(id)password machineInfo:(id)info anchorCertificateRefs:(id)refs
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  usernameCopy = username;
+  passwordCopy = password;
+  infoCopy = info;
+  refsCopy = refs;
   objc_initWeak(&location, self);
-  v17 = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
+  serviceDiscoveryHelper = [(DMCEnrollmentFlowController *)self serviceDiscoveryHelper];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __121__DMCEnrollmentFlowController__fetchEnrollmentProfileFromServiceURL_username_password_machineInfo_anchorCertificateRefs___block_invoke;
   v18[3] = &unk_278EE3500;
   objc_copyWeak(&v19, &location);
-  [v17 fetchEnrollmentProfileWithServiceURL:v12 username:v13 password:v14 authTokens:0 enrollmentMethod:3 machineInfo:v15 anchorCertificateRefs:v16 completionHandler:v18];
+  [serviceDiscoveryHelper fetchEnrollmentProfileWithServiceURL:lCopy username:usernameCopy password:passwordCopy authTokens:0 enrollmentMethod:3 machineInfo:infoCopy anchorCertificateRefs:refsCopy completionHandler:v18];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -7327,43 +7327,43 @@ uint64_t __121__DMCEnrollmentFlowController__fetchEnrollmentProfileFromServiceUR
   return result;
 }
 
-- (BOOL)_handleNeedCredentialsError:(id)a3
+- (BOOL)_handleNeedCredentialsError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (([v5 isEqualToString:*MEMORY[0x277D033B8]] & 1) == 0)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:*MEMORY[0x277D033B8]] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != 23003)
+  if (code != 23003)
   {
 LABEL_6:
     v14 = 0;
     goto LABEL_9;
   }
 
-  v7 = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
-  v8 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps];
-  v9 = [v8 firstObject];
-  v10 = [v7 indexOfObject:v9];
+  stepQueue = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
+  _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps];
+  firstObject = [_ADE_deviceEnrollment_legacy_additionalNativeAuth_steps firstObject];
+  v10 = [stepQueue indexOfObject:firstObject];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(DMCEnrollmentFlowController *)self setCredentialsError:v4];
-    v11 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps];
-    v12 = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
-    v13 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{-[DMCEnrollmentFlowControllerBase nextStepIndex](self, "nextStepIndex"), objc_msgSend(v11, "count")}];
-    [v12 insertObjects:v11 atIndexes:v13];
+    [(DMCEnrollmentFlowController *)self setCredentialsError:errorCopy];
+    _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps2 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_legacy_additionalNativeAuth_steps];
+    stepQueue2 = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
+    v13 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{-[DMCEnrollmentFlowControllerBase nextStepIndex](self, "nextStepIndex"), objc_msgSend(_ADE_deviceEnrollment_legacy_additionalNativeAuth_steps2, "count")}];
+    [stepQueue2 insertObjects:_ADE_deviceEnrollment_legacy_additionalNativeAuth_steps2 atIndexes:v13];
   }
 
   else
   {
-    v15 = [(DMCEnrollmentFlowController *)self presenter];
-    [v15 showEnrollmentFailure:v4];
+    presenter = [(DMCEnrollmentFlowController *)self presenter];
+    [presenter showEnrollmentFailure:errorCopy];
 
     [(DMCEnrollmentFlowControllerBase *)self setNextStepIndex:v10];
   }
@@ -7375,12 +7375,12 @@ LABEL_9:
   return v14;
 }
 
-- (void)_fetchEnrollmentProfileFromWebURL:(id)a3 machineInfo:(id)a4 anchorCertificateRefs:(id)a5 isReturnToService:(BOOL)a6
+- (void)_fetchEnrollmentProfileFromWebURL:(id)l machineInfo:(id)info anchorCertificateRefs:(id)refs isReturnToService:(BOOL)service
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  serviceCopy = service;
+  lCopy = l;
+  infoCopy = info;
+  refsCopy = refs;
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -7388,7 +7388,7 @@ LABEL_9:
   v20[3] = &unk_278EE3AE8;
   objc_copyWeak(&v21, &location);
   v13 = MEMORY[0x24C1BD5A0](v20);
-  if (v6 && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v14 = objc_claimAutoreleasedReturnValue(), [v14 mdmProfileData], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  if (serviceCopy && (-[DMCEnrollmentFlowController obliterationShelter](self, "obliterationShelter"), v14 = objc_claimAutoreleasedReturnValue(), [v14 mdmProfileData], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -7397,15 +7397,15 @@ LABEL_9:
       _os_log_impl(&dword_247E39000, v16, OS_LOG_TYPE_DEFAULT, "Return to Service: Has local MDM profile.", v19, 2u);
     }
 
-    v17 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-    v18 = [v17 mdmProfileData];
-    (v13)[2](v13, v18, 0, 0);
+    obliterationShelter = [(DMCEnrollmentFlowController *)self obliterationShelter];
+    mdmProfileData = [obliterationShelter mdmProfileData];
+    (v13)[2](v13, mdmProfileData, 0, 0);
   }
 
   else
   {
-    v17 = [(DMCEnrollmentFlowController *)self presenter];
-    [v17 fetchEnrollmentProfileWithWebAuthURL:v10 machineInfo:v11 anchorCertificateRefs:v12 completionHandler:v13];
+    obliterationShelter = [(DMCEnrollmentFlowController *)self presenter];
+    [obliterationShelter fetchEnrollmentProfileWithWebAuthURL:lCopy machineInfo:infoCopy anchorCertificateRefs:refsCopy completionHandler:v13];
   }
 
   objc_destroyWeak(&v21);
@@ -7467,29 +7467,29 @@ uint64_t __117__DMCEnrollmentFlowController__fetchEnrollmentProfileFromWebURL_ma
   return result;
 }
 
-- (BOOL)_handleSoftwareUpdateRequiredError:(id)a3
+- (BOOL)_handleSoftwareUpdateRequiredError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D033B8]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277D033B8]];
   if (v6)
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 != 23006)
+    if (code != 23006)
     {
       LOBYTE(v6) = 0;
       goto LABEL_6;
     }
 
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D035B0]];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D035B0]];
     [(DMCEnrollmentFlowController *)self setSoftwareUpdateInfo:v9];
 
-    v5 = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_softwareUpdate_steps];
-    v10 = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
-    v11 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{-[DMCEnrollmentFlowControllerBase nextStepIndex](self, "nextStepIndex"), objc_msgSend(v5, "count")}];
-    [v10 insertObjects:v5 atIndexes:v11];
+    domain = [(DMCEnrollmentFlowController *)self _ADE_deviceEnrollment_softwareUpdate_steps];
+    stepQueue = [(DMCEnrollmentFlowControllerBase *)self stepQueue];
+    v11 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{-[DMCEnrollmentFlowControllerBase nextStepIndex](self, "nextStepIndex"), objc_msgSend(domain, "count")}];
+    [stepQueue insertObjects:domain atIndexes:v11];
 
     [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
   }
@@ -7498,9 +7498,9 @@ LABEL_6:
   return v6;
 }
 
-- (void)_ensureWiFiConnectionWithWiFiProfile:(id)a3
+- (void)_ensureWiFiConnectionWithWiFiProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -7509,9 +7509,9 @@ LABEL_6:
   v13[4] = self;
   objc_copyWeak(&v14, &location);
   v5 = MEMORY[0x24C1BD5A0](v13);
-  if (v4)
+  if (profileCopy)
   {
-    v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __68__DMCEnrollmentFlowController__ensureWiFiConnectionWithWiFiProfile___block_invoke_172;
@@ -7519,7 +7519,7 @@ LABEL_6:
     objc_copyWeak(&v12, &location);
     v11 = v5;
     LOBYTE(v8) = 0;
-    [v6 installEnrollmentProfile:v4 devicePasscode:0 devicePasscodeContext:0 passcodeContextExtractable:0 personaID:0 rmAccountIdentifier:0 isESSO:v8 essoAppITunesStoreID:0 managedProfileIdentifiers:0 installationSource:0 completionHandler:v10];
+    [managedConfigurationHelper installEnrollmentProfile:profileCopy devicePasscode:0 devicePasscodeContext:0 passcodeContextExtractable:0 personaID:0 rmAccountIdentifier:0 isESSO:v8 essoAppITunesStoreID:0 managedProfileIdentifiers:0 installationSource:0 completionHandler:v10];
 
     objc_destroyWeak(&v12);
   }
@@ -7712,12 +7712,12 @@ LABEL_7:
   return result;
 }
 
-- (void)_restoreLanguage:(id)a3 locale:(id)a4
+- (void)_restoreLanguage:(id)language locale:(id)locale
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCEnrollmentFlowController *)self presenter];
+  languageCopy = language;
+  localeCopy = locale;
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v9 = objc_opt_respondsToSelector();
 
   if ((v9 & 1) == 0)
@@ -7726,10 +7726,10 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter2 = [(DMCEnrollmentFlowController *)self presenter];
       v14 = NSStringFromSelector(sel_updateLanguage_locale_completionHandler_);
       *location = 138543618;
-      *&location[4] = v13;
+      *&location[4] = presenter2;
       v20 = 2114;
       v21 = v14;
       _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", location, 0x16u);
@@ -7738,7 +7738,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (![v6 length] || !objc_msgSend(v7, "length"))
+  if (![languageCopy length] || !objc_msgSend(localeCopy, "length"))
   {
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -7753,13 +7753,13 @@ LABEL_10:
   }
 
   objc_initWeak(location, self);
-  v10 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter3 = [(DMCEnrollmentFlowController *)self presenter];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__DMCEnrollmentFlowController__restoreLanguage_locale___block_invoke;
   v17[3] = &unk_278EE3B10;
   objc_copyWeak(&v18, location);
-  [v10 updateLanguage:v6 locale:v7 completionHandler:v17];
+  [presenter3 updateLanguage:languageCopy locale:localeCopy completionHandler:v17];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(location);
@@ -7820,19 +7820,19 @@ uint64_t __55__DMCEnrollmentFlowController__restoreLanguage_locale___block_invok
 - (void)_ensureDeviceActivation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     objc_initWeak(location, self);
-    v5 = [(DMCEnrollmentFlowController *)self presenter];
+    presenter2 = [(DMCEnrollmentFlowController *)self presenter];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__DMCEnrollmentFlowController__ensureDeviceActivation__block_invoke;
     v11[3] = &unk_278EE3B10;
     objc_copyWeak(&v12, location);
-    [v5 ensureActivationWithCompletionHandler:v11];
+    [presenter2 ensureActivationWithCompletionHandler:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(location);
@@ -7844,10 +7844,10 @@ uint64_t __55__DMCEnrollmentFlowController__restoreLanguage_locale___block_invok
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [(DMCEnrollmentFlowController *)self presenter];
+      presenter3 = [(DMCEnrollmentFlowController *)self presenter];
       v9 = NSStringFromSelector(sel_ensureActivationWithCompletionHandler_);
       *location = 138543618;
-      *&location[4] = v8;
+      *&location[4] = presenter3;
       v14 = 2114;
       v15 = v9;
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", location, 0x16u);
@@ -7907,17 +7907,17 @@ uint64_t __54__DMCEnrollmentFlowController__ensureDeviceActivation__block_invoke
   return result;
 }
 
-- (void)_promptForSoftwareUpdateWithSoftwareUpdateInfo:(id)a3
+- (void)_promptForSoftwareUpdateWithSoftwareUpdateInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
-  v5 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__DMCEnrollmentFlowController__promptForSoftwareUpdateWithSoftwareUpdateInfo___block_invoke;
   v6[3] = &unk_278EE3B10;
   objc_copyWeak(&v7, &location);
-  [v5 requestSoftwareUpdateWithInfoDictionary:v4 completionHandler:v6];
+  [presenter requestSoftwareUpdateWithInfoDictionary:infoCopy completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -7979,17 +7979,17 @@ uint64_t __78__DMCEnrollmentFlowController__promptForSoftwareUpdateWithSoftwareU
   return result;
 }
 
-- (void)_updateCloudConfigWithRMAccountIdentifier:(id)a3
+- (void)_updateCloudConfigWithRMAccountIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  identifierCopy = identifier;
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    [v7 updateCloudConfigurationWithRMAccountIdentifier:v4];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    [managedConfigurationHelper2 updateCloudConfigurationWithRMAccountIdentifier:identifierCopy];
   }
 
   else
@@ -7998,10 +7998,10 @@ uint64_t __78__DMCEnrollmentFlowController__promptForSoftwareUpdateWithSoftwareU
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v11 = NSStringFromSelector(sel_updateCloudConfigurationWithRMAccountIdentifier_);
       v13 = 138543618;
-      v14 = v10;
+      v14 = managedConfigurationHelper3;
       v15 = 2114;
       v16 = v11;
       _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", &v13, 0x16u);
@@ -8016,18 +8016,18 @@ uint64_t __78__DMCEnrollmentFlowController__promptForSoftwareUpdateWithSoftwareU
 - (void)_initiateDEPPushTokenSync
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__DMCEnrollmentFlowController__initiateDEPPushTokenSync__block_invoke;
     v11[3] = &unk_278EE3550;
     v11[4] = self;
-    [v5 initiateDEPPushTokenSyncWithCompletionHandler:v11];
+    [managedConfigurationHelper2 initiateDEPPushTokenSyncWithCompletionHandler:v11];
   }
 
   else
@@ -8036,10 +8036,10 @@ uint64_t __78__DMCEnrollmentFlowController__promptForSoftwareUpdateWithSoftwareU
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v9 = NSStringFromSelector(sel_initiateDEPPushTokenSyncWithCompletionHandler_);
       *buf = 138543618;
-      v13 = v8;
+      v13 = managedConfigurationHelper3;
       v14 = 2114;
       v15 = v9;
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -8086,17 +8086,17 @@ uint64_t __56__DMCEnrollmentFlowController__initiateDEPPushTokenSync__block_invo
   return result;
 }
 
-- (void)_processPotentialMigrationIfNeededWithEnrollmentType:(unint64_t)a3 cloudConfig:(id)a4
+- (void)_processPotentialMigrationIfNeededWithEnrollmentType:(unint64_t)type cloudConfig:(id)config
 {
-  v6 = a4;
-  if (a3 == 9 && (-[DMCEnrollmentFlowController migrationDelegate](self, "migrationDelegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 enrollmentFlowControllerIsDoingMigration:self], v7, !v8) && +[DMCMigrationHelper isMigrationSupportedWithExistingCloudConfig:outReason:](DMCMigrationHelper, "isMigrationSupportedWithExistingCloudConfig:outReason:", v6, 0))
+  configCopy = config;
+  if (type == 9 && (-[DMCEnrollmentFlowController migrationDelegate](self, "migrationDelegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 enrollmentFlowControllerIsDoingMigration:self], v7, !v8) && +[DMCMigrationHelper isMigrationSupportedWithExistingCloudConfig:outReason:](DMCMigrationHelper, "isMigrationSupportedWithExistingCloudConfig:outReason:", configCopy, 0))
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __96__DMCEnrollmentFlowController__processPotentialMigrationIfNeededWithEnrollmentType_cloudConfig___block_invoke;
     v9[3] = &unk_278EE3BD8;
     v9[4] = self;
-    [DMCMigrationHelper makeEndMigrationRequestIfNeededWithCloudConfig:v6 success:1 completionHandler:v9];
+    [DMCMigrationHelper makeEndMigrationRequestIfNeededWithCloudConfig:configCopy success:1 completionHandler:v9];
   }
 
   else
@@ -8215,26 +8215,26 @@ void __96__DMCEnrollmentFlowController__processPotentialMigrationIfNeededWithEnr
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_awaitDDMAppConfigurationWithProfileIdentifier:(id)a3
+- (void)_awaitDDMAppConfigurationWithProfileIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    installedMDMProfileIdentifier = identifierCopy;
 LABEL_4:
-    v7 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __78__DMCEnrollmentFlowController__awaitDDMAppConfigurationWithProfileIdentifier___block_invoke;
       v16[3] = &unk_278EE3550;
       v16[4] = self;
-      [v9 waitForDDMAppsToBeRegisteredForMDMProfile:v5 completionHandler:v16];
+      [managedConfigurationHelper2 waitForDDMAppsToBeRegisteredForMDMProfile:installedMDMProfileIdentifier completionHandler:v16];
     }
 
     else
@@ -8243,10 +8243,10 @@ LABEL_4:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = v10;
-        v12 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+        managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
         v13 = NSStringFromSelector(sel_waitForDDMAppsToBeRegisteredForMDMProfile_completionHandler_);
         *buf = 138543618;
-        v18 = v12;
+        v18 = managedConfigurationHelper3;
         v19 = 2114;
         v20 = v13;
         _os_log_impl(&dword_247E39000, v11, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -8258,10 +8258,10 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-  v5 = [v6 installedMDMProfileIdentifier];
+  managedConfigurationHelper4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  installedMDMProfileIdentifier = [managedConfigurationHelper4 installedMDMProfileIdentifier];
 
-  if (v5)
+  if (installedMDMProfileIdentifier)
   {
     goto LABEL_4;
   }
@@ -8316,18 +8316,18 @@ uint64_t __78__DMCEnrollmentFlowController__awaitDDMAppConfigurationWithProfileI
 - (void)_awaitApplicationInstallation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __60__DMCEnrollmentFlowController__awaitApplicationInstallation__block_invoke;
     v11[3] = &unk_278EE3550;
     v11[4] = self;
-    [v5 awaitPendingApplicationInstallationWithObserver:self completionHandler:v11];
+    [managedConfigurationHelper2 awaitPendingApplicationInstallationWithObserver:self completionHandler:v11];
   }
 
   else
@@ -8336,10 +8336,10 @@ uint64_t __78__DMCEnrollmentFlowController__awaitDDMAppConfigurationWithProfileI
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v9 = NSStringFromSelector(sel_awaitPendingApplicationInstallationWithObserver_completionHandler_);
       *buf = 138543618;
-      v13 = v8;
+      v13 = managedConfigurationHelper3;
       v14 = 2114;
       v15 = v9;
       _os_log_impl(&dword_247E39000, v7, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -8386,20 +8386,20 @@ uint64_t __60__DMCEnrollmentFlowController__awaitApplicationInstallation__block_
   return result;
 }
 
-- (void)_cleanupOrphanedAppsIfNeededIsDoingRRTS:(BOOL)a3
+- (void)_cleanupOrphanedAppsIfNeededIsDoingRRTS:(BOOL)s
 {
-  v5 = [(DMCEnrollmentFlowController *)self migrationDelegate];
-  v6 = [v5 enrollmentFlowControllerIsDoingMigration:self];
+  migrationDelegate = [(DMCEnrollmentFlowController *)self migrationDelegate];
+  v6 = [migrationDelegate enrollmentFlowControllerIsDoingMigration:self];
 
-  if ((v6 & 1) != 0 || a3)
+  if ((v6 & 1) != 0 || s)
   {
-    v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __71__DMCEnrollmentFlowController__cleanupOrphanedAppsIfNeededIsDoingRRTS___block_invoke;
     v9[3] = &unk_278EE3550;
     v9[4] = self;
-    [v8 cleanupOrphanedAppsWithCompletionHandler:v9];
+    [managedConfigurationHelper cleanupOrphanedAppsWithCompletionHandler:v9];
   }
 
   else
@@ -8459,13 +8459,13 @@ uint64_t __71__DMCEnrollmentFlowController__cleanupOrphanedAppsIfNeededIsDoingRR
 
 - (void)_takeSnapshot
 {
-  v3 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__DMCEnrollmentFlowController__takeSnapshot__block_invoke;
   v4[3] = &unk_278EE3120;
   v4[4] = self;
-  [v3 queueBlock:v4 afterDelay:1.0];
+  [workerQueue queueBlock:v4 afterDelay:1.0];
 }
 
 void __44__DMCEnrollmentFlowController__takeSnapshot__block_invoke(uint64_t a1)
@@ -8510,23 +8510,23 @@ void __44__DMCEnrollmentFlowController__takeSnapshot__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createAndSyncBootstrapTokenWithDevicePasscode:(id)a3 devicePasscodeContext:(id)a4
+- (void)_createAndSyncBootstrapTokenWithDevicePasscode:(id)passcode devicePasscodeContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  passcodeCopy = passcode;
+  contextCopy = context;
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __100__DMCEnrollmentFlowController__createAndSyncBootstrapTokenWithDevicePasscode_devicePasscodeContext___block_invoke;
     v16[3] = &unk_278EE3BB0;
     v16[4] = self;
-    [v10 generateAndSyncBootstrapTokenWithPasscode:v6 passcodeContext:v7 completionHandler:v16];
+    [managedConfigurationHelper2 generateAndSyncBootstrapTokenWithPasscode:passcodeCopy passcodeContext:contextCopy completionHandler:v16];
   }
 
   else
@@ -8535,10 +8535,10 @@ void __44__DMCEnrollmentFlowController__takeSnapshot__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       v14 = NSStringFromSelector(sel_generateAndSyncBootstrapTokenWithPasscode_passcodeContext_completionHandler_);
       *buf = 138543618;
-      v18 = v13;
+      v18 = managedConfigurationHelper3;
       v19 = 2114;
       v20 = v14;
       _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
@@ -8665,9 +8665,9 @@ uint64_t __48__DMCEnrollmentFlowController__blockMDMCommands__block_invoke_2(uin
   return result;
 }
 
-- (void)_unblockMDMCommandsIfNeededHasBlocked:(BOOL)a3
+- (void)_unblockMDMCommandsIfNeededHasBlocked:(BOOL)blocked
 {
-  if (a3)
+  if (blocked)
   {
     [(DMCEnrollmentFlowController *)self _unblockMDMCommands];
   }
@@ -8675,18 +8675,18 @@ uint64_t __48__DMCEnrollmentFlowController__blockMDMCommands__block_invoke_2(uin
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 }
 
-- (void)_enrollmentTypeAuthorizedBySDP:(unint64_t)a3 completion:(id)a4
+- (void)_enrollmentTypeAuthorizedBySDP:(unint64_t)p completion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 > 0xA || ((1 << a3) & 0x78F) != 0)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (p > 0xA || ((1 << p) & 0x78F) != 0)
   {
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    [MEMORY[0x277D03580] isAuthorizedForOperation:1 completion:v5];
+    [MEMORY[0x277D03580] isAuthorizedForOperation:1 completion:completionCopy];
   }
 }
 
@@ -10555,57 +10555,57 @@ uint64_t __61__DMCEnrollmentFlowController_Sequence___postEnrollmentSteps__block
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_nameForStep:(unint64_t)a3
+- (id)_nameForStep:(unint64_t)step
 {
-  if (a3 > 0x3A)
+  if (step > 0x3A)
   {
     return @"PromptForUsername";
   }
 
   else
   {
-    return off_278EE3C18[a3];
+    return off_278EE3C18[step];
   }
 }
 
-- (id)_machineInfoWithEnrollmentType:(unint64_t)a3 enrollmentMethod:(unint64_t)a4 isDoingReturnToService:(BOOL)a5 isRapidReturnToService:(BOOL)a6
+- (id)_machineInfoWithEnrollmentType:(unint64_t)type enrollmentMethod:(unint64_t)method isDoingReturnToService:(BOOL)service isRapidReturnToService:(BOOL)toService
 {
-  v9 = a6 | ~a5;
-  v10 = [(DMCEnrollmentFlowController *)self migrationDelegate];
-  v11 = [v10 enrollmentFlowControllerIsDoingMigration:self];
+  v9 = toService | ~service;
+  migrationDelegate = [(DMCEnrollmentFlowController *)self migrationDelegate];
+  v11 = [migrationDelegate enrollmentFlowControllerIsDoingMigration:self];
 
-  v12 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-  v13 = [v12 getMachineInfoForEnrollmentType:a3 enrollmentMethod:a4 canRequestSoftwareUpdate:v9 & (v11 ^ 1u)];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  v13 = [managedConfigurationHelper getMachineInfoForEnrollmentType:type enrollmentMethod:method canRequestSoftwareUpdate:v9 & (v11 ^ 1u)];
 
   return v13;
 }
 
 - (void)_addNotification
 {
-  v7 = [(DMCEnrollmentFlowController *)self presenter];
+  presenter = [(DMCEnrollmentFlowController *)self presenter];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(DMCEnrollmentFlowController *)self presenter];
-    v4 = [v3 notificationNameForApplicationWillTerminate];
+    presenter2 = [(DMCEnrollmentFlowController *)self presenter];
+    notificationNameForApplicationWillTerminate = [presenter2 notificationNameForApplicationWillTerminate];
 
-    if (!v4)
+    if (!notificationNameForApplicationWillTerminate)
     {
       return;
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__receivedApplicationWillTerminateNotification_ name:v4 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__receivedApplicationWillTerminateNotification_ name:notificationNameForApplicationWillTerminate object:0];
 
-    v6 = v4;
+    v6 = notificationNameForApplicationWillTerminate;
   }
 
   else
   {
-    v6 = v7;
+    v6 = presenter;
   }
 }
 
-- (void)_receivedApplicationWillTerminateNotification:(id)a3
+- (void)_receivedApplicationWillTerminateNotification:(id)notification
 {
   v4 = *DMCLogObjects();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -10617,16 +10617,16 @@ uint64_t __61__DMCEnrollmentFlowController_Sequence___postEnrollmentSteps__block
   [(DMCEnrollmentFlowController *)self terminateEnrollmentFlow];
 }
 
-- (id)_guardAgainstConflictingAccountsWithUsername:(id)a3 altDSID:(id)a4
+- (id)_guardAgainstConflictingAccountsWithUsername:(id)username altDSID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  usernameCopy = username;
+  dCopy = d;
+  if ([usernameCopy length])
   {
-    v7 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v18 = 0;
-    v8 = [v7 dmc_conflictingAccountsExistWithUsername:v5 error:&v18];
+    v8 = [defaultStore dmc_conflictingAccountsExistWithUsername:usernameCopy error:&v18];
     v9 = v18;
 
     if (v9)
@@ -10643,16 +10643,16 @@ uint64_t __61__DMCEnrollmentFlowController_Sequence___postEnrollmentSteps__block
 
   if ((v8 & 1) == 0)
   {
-    if (![v6 length])
+    if (![dCopy length])
     {
 LABEL_13:
       v9 = 0;
       goto LABEL_14;
     }
 
-    v10 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
     v17 = 0;
-    v8 = [v10 dmc_conflictingAccountsExistWithAltDSID:v6 error:&v17];
+    v8 = [defaultStore2 dmc_conflictingAccountsExistWithAltDSID:dCopy error:&v17];
     v9 = v17;
   }
 
@@ -10687,38 +10687,38 @@ LABEL_14:
   return v9;
 }
 
-- (void)_updateCredentialForAccount:(id)a3 authTokens:(id)a4
+- (void)_updateCredentialForAccount:(id)account authTokens:(id)tokens
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 dmc_enrollmentMethod];
-  if ((v6 - 1) >= 2)
+  accountCopy = account;
+  tokensCopy = tokens;
+  dmc_enrollmentMethod = [accountCopy dmc_enrollmentMethod];
+  if ((dmc_enrollmentMethod - 1) >= 2)
   {
-    if (v6 != 5)
+    if (dmc_enrollmentMethod != 5)
     {
       goto LABEL_6;
     }
 
-    v7 = [MEMORY[0x277D24680] serializeTokens:v5];
+    v7 = [MEMORY[0x277D24680] serializeTokens:tokensCopy];
   }
 
   else
   {
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D245C8]];
+    v7 = [tokensCopy objectForKeyedSubscript:*MEMORY[0x277D245C8]];
   }
 
   v8 = v7;
-  [v9 dmc_setBearerToken:v7];
+  [accountCopy dmc_setBearerToken:v7];
 
 LABEL_6:
 }
 
-- (BOOL)_appWithBundleIDExists:(id)a3
+- (BOOL)_appWithBundleIDExists:(id)exists
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  existsCopy = exists;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:existsCopy allowPlaceholder:1 error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -10727,7 +10727,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = v3;
+      v12 = existsCopy;
       v13 = 2114;
       v14 = v5;
       _os_log_impl(&dword_247E39000, v6, OS_LOG_TYPE_DEFAULT, "Failed to load record for app: %{public}@ with error: %{public}@. This could mean that the app doesn't exist on the device.", buf, 0x16u);
@@ -10744,12 +10744,12 @@ LABEL_6:
   return v7;
 }
 
-- (id)_appNameWithBundleID:(id)a3
+- (id)_appNameWithBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v13 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v13];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -10757,23 +10757,23 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v15 = v3;
+      v15 = dCopy;
       v16 = 2114;
       v17 = v5;
       _os_log_impl(&dword_247E39000, v6, OS_LOG_TYPE_ERROR, "Failed to load record for app: %{public}@ with error: %{public}@.", buf, 0x16u);
     }
   }
 
-  v7 = [v4 localizedName];
-  v8 = v7;
-  if (v7)
+  localizedName = [v4 localizedName];
+  v8 = localizedName;
+  if (localizedName)
   {
-    v9 = v7;
+    v9 = localizedName;
   }
 
   else
   {
-    v9 = v3;
+    v9 = dCopy;
   }
 
   v10 = v9;
@@ -10782,11 +10782,11 @@ LABEL_6:
   return v9;
 }
 
-- (void)_fetchAppAttributesWithITunesItemID:(id)a3 completionHandler:(id)a4
+- (void)_fetchAppAttributesWithITunesItemID:(id)d completionHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2050000000;
@@ -10823,9 +10823,9 @@ LABEL_6:
 
   v10 = v9;
   _Block_object_dispose(&v37, 8);
-  v11 = [v7 bagSubProfile];
-  v12 = [v7 bagSubProfileVersion];
-  v13 = [v9 bagForProfile:v11 profileVersion:v12];
+  bagSubProfile = [v7 bagSubProfile];
+  bagSubProfileVersion = [v7 bagSubProfileVersion];
+  v13 = [v9 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v14 = [[v7 alloc] initWithType:0 clientIdentifier:@"com.apple.devicemanagementclient" clientVersion:@"1" bag:v13];
   v37 = 0;
@@ -10888,20 +10888,20 @@ LABEL_12:
   v24 = [v22 arrayWithObjects:&v42 count:2];
 
   [v14 setAdditionalPlatforms:v24];
-  v25 = [v5 stringValue];
-  v41 = v25;
+  stringValue = [dCopy stringValue];
+  v41 = stringValue;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
   [v14 setItemIdentifiers:v26];
 
   [v14 setAdditionalQueryParams:&unk_2859F9EB0];
-  v27 = [v14 perform];
+  perform = [v14 perform];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __96__DMCEnrollmentFlowController_Utilities___fetchAppAttributesWithITunesItemID_completionHandler___block_invoke;
   v30[3] = &unk_278EE3DF8;
-  v31 = v6;
-  v28 = v6;
-  [v27 resultWithCompletion:v30];
+  v31 = handlerCopy;
+  v28 = handlerCopy;
+  [perform resultWithCompletion:v30];
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -10944,15 +10944,15 @@ void __96__DMCEnrollmentFlowController_Utilities___fetchAppAttributesWithITunesI
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validEnrollmentMode:(id)a3 enrollmentMethod:(unint64_t)a4
+- (BOOL)_validEnrollmentMode:(id)mode enrollmentMethod:(unint64_t)method
 {
-  v6 = a3;
-  v7 = [(DMCEnrollmentFlowController *)self enrollmentType];
-  if (v7 <= 3)
+  modeCopy = mode;
+  enrollmentType = [(DMCEnrollmentFlowController *)self enrollmentType];
+  if (enrollmentType <= 3)
   {
-    if ((v7 - 1) < 2)
+    if ((enrollmentType - 1) < 2)
     {
-      if (a4 == 3)
+      if (method == 3)
       {
         v8 = MEMORY[0x277D247D8];
       }
@@ -10965,97 +10965,97 @@ void __96__DMCEnrollmentFlowController_Utilities___fetchAppAttributesWithITunesI
       goto LABEL_12;
     }
 
-    if (v7 == 3)
+    if (enrollmentType == 3)
     {
       v8 = MEMORY[0x277D247E8];
       goto LABEL_12;
     }
 
 LABEL_14:
-    v9 = v6 == 0;
+    v9 = modeCopy == 0;
     goto LABEL_13;
   }
 
-  if (v7 == 4)
+  if (enrollmentType == 4)
   {
     v8 = MEMORY[0x277D247D0];
     goto LABEL_12;
   }
 
-  if (v7 != 5)
+  if (enrollmentType != 5)
   {
     goto LABEL_14;
   }
 
   v8 = MEMORY[0x277D247C8];
 LABEL_12:
-  v9 = [v6 isEqualToString:*v8];
+  v9 = [modeCopy isEqualToString:*v8];
 LABEL_13:
 
   return v9;
 }
 
-- (BOOL)_canSkipMDMEnrollmentWithEnrollmentType:(unint64_t)a3
+- (BOOL)_canSkipMDMEnrollmentWithEnrollmentType:(unint64_t)type
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFF7) != 1)
+  if ((type & 0xFFFFFFFFFFFFFFF7) != 1)
   {
     return 0;
   }
 
-  v4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    if ([v5 isDeviceSupervised])
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    if ([managedConfigurationHelper2 isDeviceSupervised])
     {
-      v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper3 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-        v8 = [v7 isStoredProfileInstalled];
+        managedConfigurationHelper4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+        isStoredProfileInstalled = [managedConfigurationHelper4 isStoredProfileInstalled];
       }
 
       else
       {
-        v8 = 0;
+        isStoredProfileInstalled = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      isStoredProfileInstalled = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isStoredProfileInstalled = 0;
   }
 
-  return v8;
+  return isStoredProfileInstalled;
 }
 
-- (void)_writeDirtyStateToDisk:(id)a3
+- (void)_writeDirtyStateToDisk:(id)disk
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 dictionary];
+  dictionary = [disk dictionary];
   v4 = MDMDirtyEnrollmentStateFilePath();
-  if ([v3 count])
+  if ([dictionary count])
   {
-    [v3 DMCWriteToBinaryFile:v4];
+    [dictionary DMCWriteToBinaryFile:v4];
     DMCSetSkipBackupAttributeToItemAtPath();
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
 
     if (v6)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v14 = 0;
-      [v7 removeItemAtPath:v4 error:&v14];
+      [defaultManager2 removeItemAtPath:v4 error:&v14];
       v8 = v14;
 
       if (v8)
@@ -11068,9 +11068,9 @@ LABEL_13:
           _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_ERROR, "Failed to remove dirty state file! Error: %{public}@", buf, 0xCu);
         }
 
-        v10 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v13 = v8;
-        [v10 removeItemAtPath:v4 error:&v13];
+        [defaultManager3 removeItemAtPath:v4 error:&v13];
         v11 = v13;
       }
     }
@@ -11082,8 +11082,8 @@ LABEL_13:
 - (id)_readDirtyStateFromDisk
 {
   v2 = MDMDirtyEnrollmentStateFilePath();
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   if (v4)
   {
@@ -11098,24 +11098,24 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_verifyPropertiesFromProfileData:(id)a3 enrollmentMethod:(unint64_t)a4 isRapidReturnToService:(BOOL)a5 isESSO:(BOOL)a6 essoAppITunesStoreID:(id)a7 enrollmentMode:(id)a8 managedAppleID:(id)a9 assignedManagedAppleID:(id)a10 serverCapabilities:(id)a11 error:(id *)a12
+- (BOOL)_verifyPropertiesFromProfileData:(id)data enrollmentMethod:(unint64_t)method isRapidReturnToService:(BOOL)service isESSO:(BOOL)o essoAppITunesStoreID:(id)d enrollmentMode:(id)mode managedAppleID:(id)iD assignedManagedAppleID:(id)self0 serverCapabilities:(id)self1 error:(id *)self2
 {
-  v12 = a5;
+  serviceCopy = service;
   v48 = *MEMORY[0x277D85DE8];
-  v15 = a8;
-  v16 = a11;
-  if (![(DMCEnrollmentFlowController *)self _validEnrollmentMode:v15 enrollmentMethod:a4])
+  modeCopy = mode;
+  capabilitiesCopy = capabilities;
+  if (![(DMCEnrollmentFlowController *)self _validEnrollmentMode:modeCopy enrollmentMethod:method])
   {
     v17 = *DMCLogObjects();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = v17;
       *buf = 138543874;
-      v43 = v15;
+      v43 = modeCopy;
       v44 = 2048;
-      v45 = [(DMCEnrollmentFlowController *)self enrollmentType];
+      enrollmentType = [(DMCEnrollmentFlowController *)self enrollmentType];
       v46 = 2048;
-      v47 = a4;
+      methodCopy = method;
       _os_log_impl(&dword_247E39000, v18, OS_LOG_TYPE_ERROR, "Enrollment mode in profile: %{public}@ does not match enrollment type %lu and method %lu", buf, 0x20u);
     }
 
@@ -11128,7 +11128,7 @@ LABEL_13:
         _os_log_impl(&dword_247E39000, v31, OS_LOG_TYPE_ERROR, "Enrollment profile has invalid EnrollmentMode key. Aborting...", buf, 2u);
       }
 
-      if (!a12)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -11144,7 +11144,7 @@ LABEL_13:
     }
   }
 
-  if (a9)
+  if (iD)
   {
     v19 = *DMCLogObjects();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -11153,7 +11153,7 @@ LABEL_13:
       _os_log_impl(&dword_247E39000, v19, OS_LOG_TYPE_ERROR, "Enrollment profile must not have the ManagedAppleID key. Aborting...", buf, 2u);
     }
 
-    if (!a12)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -11168,8 +11168,8 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  v27 = a4 == 5 || a4 == 2;
-  if (v27 && !a10)
+  v27 = method == 5 || method == 2;
+  if (v27 && !appleID)
   {
     v28 = *DMCLogObjects();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -11178,7 +11178,7 @@ LABEL_13:
       _os_log_impl(&dword_247E39000, v28, OS_LOG_TYPE_ERROR, "3rd party enrollment profile doesn't have the AssignedManagedAppleID key. Aborting...", buf, 2u);
     }
 
-    if (!a12)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -11193,7 +11193,7 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  if (!v12 || ([v16 containsObject:*MEMORY[0x277D24788]] & 1) != 0)
+  if (!serviceCopy || ([capabilitiesCopy containsObject:*MEMORY[0x277D24788]] & 1) != 0)
   {
     v36 = 1;
     goto LABEL_28;
@@ -11206,7 +11206,7 @@ LABEL_13:
     _os_log_impl(&dword_247E39000, v39, OS_LOG_TYPE_ERROR, "Doing Rapid Return to Service but server does not support bootstrap token. Aborting...", buf, 2u);
   }
 
-  if (a12)
+  if (error)
   {
     v40 = MEMORY[0x277CCA9B8];
     v41 = *MEMORY[0x277D032F0];
@@ -11221,7 +11221,7 @@ LABEL_24:
     if (v34)
     {
       v35 = v34;
-      *a12 = v34;
+      *error = v34;
     }
   }
 
@@ -11233,36 +11233,36 @@ LABEL_28:
   return v36;
 }
 
-- (id)_convertErrorToHumanReadableError:(id)a3
+- (id)_convertErrorToHumanReadableError:(id)error
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DMCErrorArray();
-  v6 = [(DMCEnrollmentFlowController *)self _trustedErrors];
-  v7 = [v4 domain];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  _trustedErrors = [(DMCEnrollmentFlowController *)self _trustedErrors];
+  domain = [errorCopy domain];
+  v8 = [_trustedErrors objectForKeyedSubscript:domain];
   if (v8)
   {
     v9 = v8;
-    v10 = [v4 domain];
-    v11 = [v6 objectForKeyedSubscript:v10];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
+    domain2 = [errorCopy domain];
+    v11 = [_trustedErrors objectForKeyedSubscript:domain2];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     if ([v11 containsObject:v12])
     {
 
 LABEL_6:
-      v15 = [v4 localizedDescription];
-      v26[0] = v15;
-      v16 = [MEMORY[0x277CBEB68] null];
-      v26[1] = v16;
+      localizedDescription = [errorCopy localizedDescription];
+      v26[0] = localizedDescription;
+      null = [MEMORY[0x277CBEB68] null];
+      v26[1] = null;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
 
       goto LABEL_10;
     }
 
-    [v4 domain];
+    [errorCopy domain];
     v13 = v25 = v5;
-    v14 = [v6 objectForKeyedSubscript:v13];
+    v14 = [_trustedErrors objectForKeyedSubscript:v13];
     v24 = [v14 containsObject:&unk_2859F9658];
 
     v5 = v25;
@@ -11276,7 +11276,7 @@ LABEL_6:
   {
   }
 
-  v18 = [(DMCEnrollmentFlowController *)self _translatedErrorStringForError:v4];
+  v18 = [(DMCEnrollmentFlowController *)self _translatedErrorStringForError:errorCopy];
   if (v18)
   {
     v23 = 0;
@@ -11287,7 +11287,7 @@ LABEL_6:
 
   v17 = v5;
 LABEL_10:
-  v20 = [MEMORY[0x277CCA9B8] DMCErrorWithDomain:*MEMORY[0x277D032F0] code:15022 descriptionArray:v17 underlyingError:v4 errorType:{*MEMORY[0x277D032F8], v23}];
+  v20 = [MEMORY[0x277CCA9B8] DMCErrorWithDomain:*MEMORY[0x277D032F0] code:15022 descriptionArray:v17 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], v23}];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -11381,16 +11381,16 @@ void __59__DMCEnrollmentFlowController_Utilities___errorTranslation__block_invok
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_translatedErrorStringForError:(id)a3
+- (id)_translatedErrorStringForError:(id)error
 {
-  v4 = a3;
-  v5 = [(DMCEnrollmentFlowController *)self _errorTranslation];
-  v6 = [v4 domain];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  errorCopy = error;
+  _errorTranslation = [(DMCEnrollmentFlowController *)self _errorTranslation];
+  domain = [errorCopy domain];
+  v7 = [_errorTranslation objectForKeyedSubscript:domain];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     v9 = [v7 objectForKeyedSubscript:v8];
   }
 
@@ -11472,12 +11472,12 @@ void __59__DMCEnrollmentFlowController_Utilities___errorTranslation__block_invok
   return v5;
 }
 
-+ (id)_createEnterpriseApplicationExistsErrorWithAppName:(id)a3
++ (id)_createEnterpriseApplicationExistsErrorWithAppName:(id)name
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D032F0];
   v5 = DMCErrorArray();
-  v6 = [v3 DMCErrorWithDomain:v4 code:15030 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], a3, 0}];
+  v6 = [v3 DMCErrorWithDomain:v4 code:15030 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], name, 0}];
 
   return v6;
 }
@@ -11577,39 +11577,39 @@ void __59__DMCEnrollmentFlowController_Utilities___blockAppInstalls__block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unblockAppInstallsIfNecessaryWithCaller:(id)a3
+- (void)_unblockAppInstallsIfNecessaryWithCaller:(id)caller
 {
-  v4 = a3;
+  callerCopy = caller;
   if ([(DMCEnrollmentFlowController *)self enrollmentType]== 4 || [(DMCEnrollmentFlowController *)self enrollmentType]== 5)
   {
-    [(DMCEnrollmentFlowController *)self _unblockAppInstallsWithCaller:v4];
+    [(DMCEnrollmentFlowController *)self _unblockAppInstallsWithCaller:callerCopy];
   }
 }
 
-- (void)_unblockAppInstallsWithCaller:(id)a3
+- (void)_unblockAppInstallsWithCaller:(id)caller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callerCopy = caller;
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v4;
+    v14 = callerCopy;
     _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_DEFAULT, "block app installs, unblocking begin (%{public}@)", buf, 0xCu);
   }
 
-  v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __72__DMCEnrollmentFlowController_Utilities___unblockAppInstallsWithCaller___block_invoke;
     v11[3] = &unk_278EE3550;
-    v12 = v4;
-    [v8 unblockAppInstallsWithCompletion:v11];
+    v12 = callerCopy;
+    [managedConfigurationHelper2 unblockAppInstallsWithCompletion:v11];
   }
 
   else
@@ -11645,15 +11645,15 @@ void __72__DMCEnrollmentFlowController_Utilities___unblockAppInstallsWithCaller_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchBundleIDsWithiTunesItemID:(id)a3 debuggingAppIDs:(id)a4 completionHandler:(id)a5
+- (void)_fetchBundleIDsWithiTunesItemID:(id)d debuggingAppIDs:(id)ds completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dsCopy = ds;
+  handlerCopy = handler;
   if ([MEMORY[0x277D034E8] ESSOTestModeEnabled])
   {
-    v11 = [(DMCEnrollmentFlowController *)self _bundleIDsFromAppIDs:v9];
-    v10[2](v10, v11, 0);
+    v11 = [(DMCEnrollmentFlowController *)self _bundleIDsFromAppIDs:dsCopy];
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
@@ -11662,9 +11662,9 @@ void __72__DMCEnrollmentFlowController_Utilities___unblockAppInstallsWithCaller_
     v12[1] = 3221225472;
     v12[2] = __108__DMCEnrollmentFlowController_Utilities___fetchBundleIDsWithiTunesItemID_debuggingAppIDs_completionHandler___block_invoke;
     v12[3] = &unk_278EE3E20;
-    v14 = v10;
+    v14 = handlerCopy;
     v12[4] = self;
-    v13 = v8;
+    v13 = dCopy;
     [(DMCEnrollmentFlowController *)self _fetchAppAttributesWithITunesItemID:v13 completionHandler:v12];
   }
 }
@@ -11729,18 +11729,18 @@ void __108__DMCEnrollmentFlowController_Utilities___fetchBundleIDsWithiTunesItem
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bundleIDsFromAppIDs:(id)a3
+- (id)_bundleIDsFromAppIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dsCopy = ds;
+  if (dsCopy)
   {
     v4 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = dsCopy;
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
@@ -11783,29 +11783,29 @@ void __108__DMCEnrollmentFlowController_Utilities___fetchBundleIDsWithiTunesItem
   return v14;
 }
 
-- (void)appInstallationStatusUpdatedForType:(id)a3 totalNumber:(unint64_t)a4 finishedNumber:(unint64_t)a5
+- (void)appInstallationStatusUpdatedForType:(id)type totalNumber:(unint64_t)number finishedNumber:(unint64_t)finishedNumber
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  typeCopy = type;
   v9 = *DMCLogObjects();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v8;
+    v15 = typeCopy;
     v16 = 2048;
-    v17 = a5;
+    finishedNumberCopy = finishedNumber;
     v18 = 2048;
-    v19 = a4;
+    numberCopy = number;
     _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_DEBUG, "DMCEnrollmentFlowContrller: App type: %@, %lu of %lu completed", &v14, 0x20u);
   }
 
-  v10 = [(DMCEnrollmentFlowController *)self delegate];
+  delegate = [(DMCEnrollmentFlowController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(DMCEnrollmentFlowController *)self delegate];
-    [v12 enrollmentFlowController:self appInstallationStatusUpdatedForType:v8 totalNumber:a4 finishedNumber:a5];
+    delegate2 = [(DMCEnrollmentFlowController *)self delegate];
+    [delegate2 enrollmentFlowController:self appInstallationStatusUpdatedForType:typeCopy totalNumber:number finishedNumber:finishedNumber];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -11813,10 +11813,10 @@ void __108__DMCEnrollmentFlowController_Utilities___fetchBundleIDsWithiTunesItem
 
 - (BOOL)_shouldDoReturnToService
 {
-  v2 = [(DMCEnrollmentFlowController *)self obliterationShelter];
-  v3 = [v2 hasConfigFile];
+  obliterationShelter = [(DMCEnrollmentFlowController *)self obliterationShelter];
+  hasConfigFile = [obliterationShelter hasConfigFile];
 
-  return v3;
+  return hasConfigFile;
 }
 
 - (void)_unblockMDMCommands
@@ -11828,13 +11828,13 @@ void __108__DMCEnrollmentFlowController_Utilities___fetchBundleIDsWithiTunesItem
     _os_log_impl(&dword_247E39000, v3, OS_LOG_TYPE_DEFAULT, "Unblocking MDM commands...", buf, 2u);
   }
 
-  v4 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
-    [v6 unblockMDMCommandsWithCompletionHandler:&__block_literal_global_190];
+    managedConfigurationHelper2 = [(DMCEnrollmentFlowController *)self managedConfigurationHelper];
+    [managedConfigurationHelper2 unblockMDMCommandsWithCompletionHandler:&__block_literal_global_190];
   }
 
   else

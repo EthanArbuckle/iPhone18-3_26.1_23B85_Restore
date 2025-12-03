@@ -1,6 +1,6 @@
 @interface RPFileTransferItem
 - (RPFileTransferItem)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation RPFileTransferItem
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   itemURL = self->_itemURL;
   [(NSDictionary *)self->_metadata count];

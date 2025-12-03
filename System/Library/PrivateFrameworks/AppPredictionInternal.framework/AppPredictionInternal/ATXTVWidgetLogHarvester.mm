@@ -1,7 +1,7 @@
 @interface ATXTVWidgetLogHarvester
-+ (id)_stringForWidgetSuggestionEventType:(int64_t)a3;
++ (id)_stringForWidgetSuggestionEventType:(int64_t)type;
 - (ATXTVWidgetLogHarvester)init;
-- (id)shouldSuggestTVWidgetWithDefaults:(id)a3;
+- (id)shouldSuggestTVWidgetWithDefaults:(id)defaults;
 - (void)generateTVWidgetMetrics;
 @end
 
@@ -99,12 +99,12 @@ LABEL_7:
   }
 }
 
-- (id)shouldSuggestTVWidgetWithDefaults:(id)a3
+- (id)shouldSuggestTVWidgetWithDefaults:(id)defaults
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x277CEBB50]];
-  v5 = [v3 objectForKey:*MEMORY[0x277CEBB60]];
-  v6 = [v3 objectForKey:*MEMORY[0x277CEBB68]];
+  defaultsCopy = defaults;
+  v4 = [defaultsCopy objectForKey:*MEMORY[0x277CEBB50]];
+  v5 = [defaultsCopy objectForKey:*MEMORY[0x277CEBB60]];
+  v6 = [defaultsCopy objectForKey:*MEMORY[0x277CEBB68]];
   v7 = v6;
   if (v4)
   {
@@ -118,7 +118,7 @@ LABEL_7:
 
   if (v8 || v5 == 0)
   {
-    v10 = [v3 objectForKey:*MEMORY[0x277CEBB58]];
+    v10 = [defaultsCopy objectForKey:*MEMORY[0x277CEBB58]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,16 +146,16 @@ LABEL_7:
   return v18;
 }
 
-+ (id)_stringForWidgetSuggestionEventType:(int64_t)a3
++ (id)_stringForWidgetSuggestionEventType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return &stru_2839A6058;
   }
 
   else
   {
-    return off_27859FC98[a3];
+    return off_27859FC98[type];
   }
 }
 

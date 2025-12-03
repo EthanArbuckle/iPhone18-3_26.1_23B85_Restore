@@ -1,32 +1,32 @@
 @interface PXStoryPassthroughPersistableRecipeProducer
-- (PXStoryPassthroughPersistableRecipeProducer)initWithPersistableRecipe:(id)a3;
-- (id)requestPersistableRecipeWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (PXStoryPassthroughPersistableRecipeProducer)initWithPersistableRecipe:(id)recipe;
+- (id)requestPersistableRecipeWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughPersistableRecipeProducer
 
-- (id)requestPersistableRecipeWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestPersistableRecipeWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [PXStoryPersistableRecipeResult alloc];
-  v7 = [(PXStoryPassthroughPersistableRecipeProducer *)self persistableRecipe];
-  v8 = [(PXStoryPersistableRecipeResult *)v6 initWithPersistableRecipe:v7];
+  persistableRecipe = [(PXStoryPassthroughPersistableRecipeProducer *)self persistableRecipe];
+  v8 = [(PXStoryPersistableRecipeResult *)v6 initWithPersistableRecipe:persistableRecipe];
 
   v9 = [[PXStoryProducerResult alloc] initWithObject:v8];
-  v5[2](v5, v9);
+  handlerCopy[2](handlerCopy, v9);
 
   return 0;
 }
 
-- (PXStoryPassthroughPersistableRecipeProducer)initWithPersistableRecipe:(id)a3
+- (PXStoryPassthroughPersistableRecipeProducer)initWithPersistableRecipe:(id)recipe
 {
-  v4 = a3;
+  recipeCopy = recipe;
   v9.receiver = self;
   v9.super_class = PXStoryPassthroughPersistableRecipeProducer;
   v5 = [(PXStoryPassthroughPersistableRecipeProducer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [recipeCopy copyWithZone:0];
     persistableRecipe = v5->_persistableRecipe;
     v5->_persistableRecipe = v6;
   }

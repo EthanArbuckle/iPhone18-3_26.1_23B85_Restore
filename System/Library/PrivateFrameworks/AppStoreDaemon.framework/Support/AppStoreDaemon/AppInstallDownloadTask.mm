@@ -1,18 +1,18 @@
 @interface AppInstallDownloadTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppInstallDownloadTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v23 = sub_10027E6B8;
   v24 = &unk_10051F8D0;
-  v25 = self;
-  v26 = a3;
-  v4 = v26;
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   v5 = v22;
   if (self)
   {
@@ -35,19 +35,19 @@
       if (BYTE2(self->_coordinator) == 1)
       {
         v15 = sub_10023E51C(*(&self->_installInfo + 2), @"bytes_total");
-        v16 = [*(&self->_installInfo + 2) databaseID];
+        databaseID = [*(&self->_installInfo + 2) databaseID];
         v17 = v15;
         if (v14)
         {
           objc_storeStrong((v14 + 16), v15);
-          *(v14 + 40) = v16;
+          *(v14 + 40) = databaseID;
         }
       }
 
-      v18 = [*(&self->_installInfo + 2) databaseID];
+      databaseID2 = [*(&self->_installInfo + 2) databaseID];
       if (v14)
       {
-        *(v14 + 40) = v18;
+        *(v14 + 40) = databaseID2;
         *(v14 + 48) = v6 + 1;
       }
 

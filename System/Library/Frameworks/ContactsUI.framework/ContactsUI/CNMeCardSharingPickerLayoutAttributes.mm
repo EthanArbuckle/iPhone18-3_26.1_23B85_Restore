@@ -4,7 +4,7 @@
 + (id)layoutAttributesForSettings;
 + (id)settingsHeaderFont;
 - (CGSize)avatarViewSize;
-- (CNMeCardSharingPickerLayoutAttributes)initWithTopToAvatarPadding:(double)a3 headerFont:(id)a4 avatarViewSize:(CGSize)a5 avatarViewToNamePadding:(double)a6 backgroundColor:(id)a7;
+- (CNMeCardSharingPickerLayoutAttributes)initWithTopToAvatarPadding:(double)padding headerFont:(id)font avatarViewSize:(CGSize)size avatarViewToNamePadding:(double)namePadding backgroundColor:(id)color;
 @end
 
 @implementation CNMeCardSharingPickerLayoutAttributes
@@ -18,24 +18,24 @@
   return result;
 }
 
-- (CNMeCardSharingPickerLayoutAttributes)initWithTopToAvatarPadding:(double)a3 headerFont:(id)a4 avatarViewSize:(CGSize)a5 avatarViewToNamePadding:(double)a6 backgroundColor:(id)a7
+- (CNMeCardSharingPickerLayoutAttributes)initWithTopToAvatarPadding:(double)padding headerFont:(id)font avatarViewSize:(CGSize)size avatarViewToNamePadding:(double)namePadding backgroundColor:(id)color
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a4;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  fontCopy = font;
+  colorCopy = color;
   v20.receiver = self;
   v20.super_class = CNMeCardSharingPickerLayoutAttributes;
   v16 = [(CNMeCardSharingPickerLayoutAttributes *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    v16->_topToAvatarPadding = a3;
-    objc_storeStrong(&v16->_headerFont, a4);
+    v16->_topToAvatarPadding = padding;
+    objc_storeStrong(&v16->_headerFont, font);
     v17->_avatarViewSize.width = width;
     v17->_avatarViewSize.height = height;
-    v17->_avatarViewToNamePadding = a6;
-    objc_storeStrong(&v17->_backgroundColor, a7);
+    v17->_avatarViewToNamePadding = namePadding;
+    objc_storeStrong(&v17->_backgroundColor, color);
     v18 = v17;
   }
 
@@ -44,17 +44,17 @@
 
 + (id)layoutAttributesForSettings
 {
-  v3 = [a1 settingsHeaderFont];
-  v4 = [[a1 alloc] initWithTopToAvatarPadding:v3 headerFont:0 avatarViewSize:10.0 avatarViewToNamePadding:80.0 backgroundColor:{80.0, 5.0}];
+  settingsHeaderFont = [self settingsHeaderFont];
+  v4 = [[self alloc] initWithTopToAvatarPadding:settingsHeaderFont headerFont:0 avatarViewSize:10.0 avatarViewToNamePadding:80.0 backgroundColor:{80.0, 5.0}];
 
   return v4;
 }
 
 + (id)layoutAttributesForBuddy
 {
-  v3 = [a1 buddyHeaderFont];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [[a1 alloc] initWithTopToAvatarPadding:v3 headerFont:v4 avatarViewSize:20.0 avatarViewToNamePadding:100.0 backgroundColor:{100.0, 20.0}];
+  buddyHeaderFont = [self buddyHeaderFont];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v5 = [[self alloc] initWithTopToAvatarPadding:buddyHeaderFont headerFont:systemBackgroundColor avatarViewSize:20.0 avatarViewToNamePadding:100.0 backgroundColor:{100.0, 20.0}];
 
   return v5;
 }
@@ -62,8 +62,8 @@
 + (id)settingsHeaderFont
 {
   v2 = *MEMORY[0x1E69DDDB0];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   if (v5 <= 320.0)
@@ -82,8 +82,8 @@
 + (id)buddyHeaderFont
 {
   v2 = *MEMORY[0x1E69DDD58];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   if (v5 <= 320.0)

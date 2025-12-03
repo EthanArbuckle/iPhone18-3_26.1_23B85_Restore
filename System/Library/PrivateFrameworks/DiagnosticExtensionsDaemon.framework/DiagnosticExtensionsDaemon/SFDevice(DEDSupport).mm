@@ -8,30 +8,30 @@
 
 - (BOOL)isWithinDEDRange
 {
-  v1 = [a1 bleDevice];
-  v2 = [v1 rssiEstimate];
+  bleDevice = [self bleDevice];
+  rssiEstimate = [bleDevice rssiEstimate];
 
-  return v2 > 0xFFFFFFBF;
+  return rssiEstimate > 0xFFFFFFBF;
 }
 
 - (uint64_t)isValidDEDPingDevice
 {
-  if ([a1 deviceActionType] != 17 || !objc_msgSend(a1, "needsSetup"))
+  if ([self deviceActionType] != 17 || !objc_msgSend(self, "needsSetup"))
   {
     return 0;
   }
 
-  return [a1 isWithinDEDRange];
+  return [self isWithinDEDRange];
 }
 
 - (uint64_t)isValidDEDPongDevice
 {
-  if ([a1 deviceActionType] != 18 || !objc_msgSend(a1, "needsSetup"))
+  if ([self deviceActionType] != 18 || !objc_msgSend(self, "needsSetup"))
   {
     return 0;
   }
 
-  return [a1 isWithinDEDRange];
+  return [self isWithinDEDRange];
 }
 
 @end

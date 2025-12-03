@@ -12,41 +12,41 @@
 - (id)__queryLastHourRecoveriesStatus;
 - (id)__queryNetworkStatus;
 - (id)__queryPowerStatus;
-- (id)__queryWiFiStatusIncludingScanCache:(BOOL)a3;
+- (id)__queryWiFiStatusIncludingScanCache:(BOOL)cache;
 - (id)__wifi;
 - (id)awdlStatus;
 - (id)bluetoothStatus;
-- (id)cachedStatusWithUUID:(id)a3;
+- (id)cachedStatusWithUUID:(id)d;
 - (id)eventHistory;
 - (id)networkStatus;
 - (id)powerStatus;
 - (id)status;
 - (id)wifiStatus;
 - (int64_t)__airDropDiscoverableMode;
-- (void)__addEvent:(id)a3;
+- (void)__addEvent:(id)event;
 - (void)__forceUpdateTrigger;
 - (void)__setupCallbacks;
 - (void)__updateStatus;
 - (void)__updateStatusCoalesce;
-- (void)addEvent:(id)a3;
-- (void)associateToNetwork:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)clearCachedStatusWithUUID:(id)a3;
+- (void)addEvent:(id)event;
+- (void)associateToNetwork:(id)network configuration:(id)configuration reply:(id)reply;
+- (void)clearCachedStatusWithUUID:(id)d;
 - (void)dealloc;
-- (void)queryStatusAndReply:(id)a3;
-- (void)scanForNetworksWithConfiguration:(id)a3 handler:(id)a4;
-- (void)setLowBatteryCallback:(id)a3;
-- (void)setUpdatedAWDLStatusCallback:(id)a3;
-- (void)setUpdatedBluetoothCallback:(id)a3;
-- (void)setUpdatedBluetoothStatusCallback:(id)a3;
-- (void)setUpdatedFaultsCallback:(id)a3;
-- (void)setUpdatedLinkTestsCallback:(id)a3;
-- (void)setUpdatedNetworkStatusCallback:(id)a3;
-- (void)setUpdatedPowerManagementCallback:(id)a3;
-- (void)setUpdatedPowerSourceCallback:(id)a3;
-- (void)setUpdatedPowerStatusCallback:(id)a3;
-- (void)setUpdatedRecoveriesCallback:(id)a3;
-- (void)setUpdatedWiFiCallback:(id)a3;
-- (void)setUpdatedWiFiStatusCallback:(id)a3;
+- (void)queryStatusAndReply:(id)reply;
+- (void)scanForNetworksWithConfiguration:(id)configuration handler:(id)handler;
+- (void)setLowBatteryCallback:(id)callback;
+- (void)setUpdatedAWDLStatusCallback:(id)callback;
+- (void)setUpdatedBluetoothCallback:(id)callback;
+- (void)setUpdatedBluetoothStatusCallback:(id)callback;
+- (void)setUpdatedFaultsCallback:(id)callback;
+- (void)setUpdatedLinkTestsCallback:(id)callback;
+- (void)setUpdatedNetworkStatusCallback:(id)callback;
+- (void)setUpdatedPowerManagementCallback:(id)callback;
+- (void)setUpdatedPowerSourceCallback:(id)callback;
+- (void)setUpdatedPowerStatusCallback:(id)callback;
+- (void)setUpdatedRecoveriesCallback:(id)callback;
+- (void)setUpdatedWiFiCallback:(id)callback;
+- (void)setUpdatedWiFiStatusCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
@@ -221,12 +221,12 @@ LABEL_12:
   [(W5StatusManager *)&v6 dealloc];
 }
 
-- (void)setUpdatedWiFiStatusCallback:(id)a3
+- (void)setUpdatedWiFiStatusCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedWiFiStatusCallback = [a3 copy];
+    self->_updatedWiFiStatusCallback = [callback copy];
   }
 
   else
@@ -237,17 +237,17 @@ LABEL_12:
     v6[2] = sub_10004ECC8;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedAWDLStatusCallback:(id)a3
+- (void)setUpdatedAWDLStatusCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedAWDLStatusCallback = [a3 copy];
+    self->_updatedAWDLStatusCallback = [callback copy];
   }
 
   else
@@ -258,17 +258,17 @@ LABEL_12:
     v6[2] = sub_10004EDC4;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedNetworkStatusCallback:(id)a3
+- (void)setUpdatedNetworkStatusCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedNetworkStatusCallback = [a3 copy];
+    self->_updatedNetworkStatusCallback = [callback copy];
   }
 
   else
@@ -279,17 +279,17 @@ LABEL_12:
     v6[2] = sub_10004EEC0;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedBluetoothStatusCallback:(id)a3
+- (void)setUpdatedBluetoothStatusCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedBluetoothStatusCallback = [a3 copy];
+    self->_updatedBluetoothStatusCallback = [callback copy];
   }
 
   else
@@ -300,17 +300,17 @@ LABEL_12:
     v6[2] = sub_10004EFBC;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedPowerStatusCallback:(id)a3
+- (void)setUpdatedPowerStatusCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedPowerStatusCallback = [a3 copy];
+    self->_updatedPowerStatusCallback = [callback copy];
   }
 
   else
@@ -321,17 +321,17 @@ LABEL_12:
     v6[2] = sub_10004F0B8;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedWiFiCallback:(id)a3
+- (void)setUpdatedWiFiCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedWiFiCallback = [a3 copy];
+    self->_updatedWiFiCallback = [callback copy];
   }
 
   else
@@ -342,17 +342,17 @@ LABEL_12:
     v6[2] = sub_10004F1B4;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedPowerManagementCallback:(id)a3
+- (void)setUpdatedPowerManagementCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedPowerManagementCallback = [a3 copy];
+    self->_updatedPowerManagementCallback = [callback copy];
   }
 
   else
@@ -363,17 +363,17 @@ LABEL_12:
     v6[2] = sub_10004F2B0;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedPowerSourceCallback:(id)a3
+- (void)setUpdatedPowerSourceCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedPowerSourceCallback = [a3 copy];
+    self->_updatedPowerSourceCallback = [callback copy];
   }
 
   else
@@ -384,17 +384,17 @@ LABEL_12:
     v6[2] = sub_10004F3AC;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setLowBatteryCallback:(id)a3
+- (void)setLowBatteryCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_lowBatteryCallback = [a3 copy];
+    self->_lowBatteryCallback = [callback copy];
   }
 
   else
@@ -405,17 +405,17 @@ LABEL_12:
     v6[2] = sub_10004F4A8;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedBluetoothCallback:(id)a3
+- (void)setUpdatedBluetoothCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedBluetoothCallback = [a3 copy];
+    self->_updatedBluetoothCallback = [callback copy];
   }
 
   else
@@ -426,17 +426,17 @@ LABEL_12:
     v6[2] = sub_10004F5A4;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedFaultsCallback:(id)a3
+- (void)setUpdatedFaultsCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedFaultsCallback = [a3 copy];
+    self->_updatedFaultsCallback = [callback copy];
   }
 
   else
@@ -447,17 +447,17 @@ LABEL_12:
     v6[2] = sub_10004F6A0;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedLinkTestsCallback:(id)a3
+- (void)setUpdatedLinkTestsCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedLinkTestsCallback = [a3 copy];
+    self->_updatedLinkTestsCallback = [callback copy];
   }
 
   else
@@ -468,17 +468,17 @@ LABEL_12:
     v6[2] = sub_10004F79C;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setUpdatedRecoveriesCallback:(id)a3
+- (void)setUpdatedRecoveriesCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedRecoveriesCallback = [a3 copy];
+    self->_updatedRecoveriesCallback = [callback copy];
   }
 
   else
@@ -489,12 +489,12 @@ LABEL_12:
     v6[2] = sub_10004F898;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)queryStatusAndReply:(id)a3
+- (void)queryStatusAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -502,7 +502,7 @@ LABEL_12:
   v4[2] = sub_10004F964;
   v4[3] = &unk_1000E2018;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
@@ -632,7 +632,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)cachedStatusWithUUID:(id)a3
+- (id)cachedStatusWithUUID:(id)d
 {
   v7 = 0;
   v8 = &v7;
@@ -645,7 +645,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_100050268;
   block[3] = &unk_1000E2B08;
-  block[4] = a3;
+  block[4] = d;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(queue, block);
@@ -654,14 +654,14 @@ LABEL_12:
   return v4;
 }
 
-- (void)clearCachedStatusWithUUID:(id)a3
+- (void)clearCachedStatusWithUUID:(id)d
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005036C;
   v4[3] = &unk_1000E1C98;
-  v4[4] = a3;
+  v4[4] = d;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
@@ -778,14 +778,14 @@ LABEL_12:
 
 - (BOOL)__isSnifferSupported
 {
-  v2 = [(W5StatusManager *)self __wifi];
-  if (v2)
+  __wifi = [(W5StatusManager *)self __wifi];
+  if (__wifi)
   {
 
-    LOBYTE(v2) = [v2 isSnifferSupported];
+    LOBYTE(__wifi) = [__wifi isSnifferSupported];
   }
 
-  return v2;
+  return __wifi;
 }
 
 - (id)__queryPowerStatus
@@ -802,14 +802,14 @@ LABEL_12:
 - (id)__queryAWDLStatus
 {
   v3 = objc_alloc_init(W5AWDLStatus);
-  v4 = [(W5StatusManager *)self __wifi];
-  v5 = [(CWFInterface *)self->_corewifi AWDL];
-  [v3 setMacAddress:{objc_msgSend(v5, "MACAddress")}];
-  [v3 setHardwareMACAddress:{objc_msgSend(v5, "hardwareMACAddress")}];
-  [v3 setInterfaceName:{objc_msgSend(v5, "interfaceName")}];
-  [v3 setPower:{objc_msgSend(v5, "powerOn")}];
-  [v3 setIpv6Addresses:{objc_msgSend(v5, "IPv6Addresses")}];
-  [v3 setIsAWDLRealTimeMode:{objc_msgSend(v4, "isAWDLRealTimeMode")}];
+  __wifi = [(W5StatusManager *)self __wifi];
+  aWDL = [(CWFInterface *)self->_corewifi AWDL];
+  [v3 setMacAddress:{objc_msgSend(aWDL, "MACAddress")}];
+  [v3 setHardwareMACAddress:{objc_msgSend(aWDL, "hardwareMACAddress")}];
+  [v3 setInterfaceName:{objc_msgSend(aWDL, "interfaceName")}];
+  [v3 setPower:{objc_msgSend(aWDL, "powerOn")}];
+  [v3 setIpv6Addresses:{objc_msgSend(aWDL, "IPv6Addresses")}];
+  [v3 setIsAWDLRealTimeMode:{objc_msgSend(__wifi, "isAWDLRealTimeMode")}];
   [v3 setAwdlSyncEnabled:{-[CWFInterface AWDLSyncEnabled](self->_corewifi, "AWDLSyncEnabled")}];
   [v3 setAwdlSyncState:{-[CWFInterface AWDLSyncState](self->_corewifi, "AWDLSyncState")}];
   [v3 setAwdlSyncChannelSequence:{-[CWFInterface AWDLSyncChannelSequence](self->_corewifi, "AWDLSyncChannelSequence")}];
@@ -827,13 +827,13 @@ LABEL_12:
 - (id)__queryBluetoothStatus
 {
   v3 = objc_alloc_init(W5BluetoothStatus);
-  v4 = [(W5StatusManager *)self __bluetooth];
-  [v3 setAddress:{objc_msgSend(v4, "address")}];
-  [v3 setPowerOn:{objc_msgSend(v4, "powerOn")}];
-  [v3 setIsDiscoverable:{objc_msgSend(v4, "isDiscoverable")}];
-  [v3 setIsConnectable:{objc_msgSend(v4, "isConnectable")}];
-  [v3 setIsScanning:{objc_msgSend(v4, "isScanning")}];
-  [v3 setDevices:{objc_msgSend(v4, "devices")}];
+  __bluetooth = [(W5StatusManager *)self __bluetooth];
+  [v3 setAddress:{objc_msgSend(__bluetooth, "address")}];
+  [v3 setPowerOn:{objc_msgSend(__bluetooth, "powerOn")}];
+  [v3 setIsDiscoverable:{objc_msgSend(__bluetooth, "isDiscoverable")}];
+  [v3 setIsConnectable:{objc_msgSend(__bluetooth, "isConnectable")}];
+  [v3 setIsScanning:{objc_msgSend(__bluetooth, "isScanning")}];
+  [v3 setDevices:{objc_msgSend(__bluetooth, "devices")}];
   return v3;
 }
 
@@ -894,11 +894,11 @@ LABEL_12:
   return v3;
 }
 
-- (id)__queryWiFiStatusIncludingScanCache:(BOOL)a3
+- (id)__queryWiFiStatusIncludingScanCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v5 = objc_alloc_init(W5WiFiStatus);
-  v6 = [(W5StatusManager *)self __wifi];
+  __wifi = [(W5StatusManager *)self __wifi];
   [v5 setMacAddress:{-[CWFInterface MACAddress](self->_corewifi, "MACAddress")}];
   [v5 setHardwareMACAddress:{-[CWFInterface hardwareMACAddress](self->_corewifi, "hardwareMACAddress")}];
   [v5 setCapabilities:{-[CWFInterface capabilities](self->_corewifi, "capabilities")}];
@@ -911,36 +911,36 @@ LABEL_12:
   [v5 setEapolSupplicantState:{-[CWFInterface EAP8021XSupplicantState](self->_corewifi, "EAP8021XSupplicantState")}];
   [v5 setSsidString:{-[CWFInterface networkName](self->_corewifi, "networkName")}];
   [v5 setBssid:{-[CWFInterface BSSID](self->_corewifi, "BSSID")}];
-  [v5 setSecurity:{objc_msgSend(v6, "security")}];
+  [v5 setSecurity:{objc_msgSend(__wifi, "security")}];
   [(CWFInterface *)self->_corewifi txRate];
   [v5 setTxRate:?];
   [v5 setRssi:{-[CWFInterface RSSI](self->_corewifi, "RSSI")}];
   [v5 setCca:{-[CWFInterface CCA](self->_corewifi, "CCA")}];
   [v5 setNoise:{-[CWFInterface noise](self->_corewifi, "noise")}];
   [v5 setPhyMode:{-[CWFInterface PHYMode](self->_corewifi, "PHYMode")}];
-  [v5 setChannel:{objc_msgSend(v6, "channel")}];
-  [v5 setLinkQualityUpdates:{objc_msgSend(v6, "linkQualityUpdates")}];
-  [v5 setSupportedChannels:{objc_msgSend(v6, "supportedChannels")}];
+  [v5 setChannel:{objc_msgSend(__wifi, "channel")}];
+  [v5 setLinkQualityUpdates:{objc_msgSend(__wifi, "linkQualityUpdates")}];
+  [v5 setSupportedChannels:{objc_msgSend(__wifi, "supportedChannels")}];
   [v5 setCountryCode:{-[CWFInterface countryCode](self->_corewifi, "countryCode")}];
   [v5 setMcsIndex:{-[CWFInterface MCSIndex](self->_corewifi, "MCSIndex")}];
   [v5 setGuardInterval:{-[CWFInterface guardInterval](self->_corewifi, "guardInterval")}];
   [v5 setNumberOfSpacialStreams:{-[CWFInterface numberOfSpatialStreams](self->_corewifi, "numberOfSpatialStreams")}];
   [v5 setNetworkServiceID:{-[CWFInterface networkServiceID](self->_corewifi, "networkServiceID")}];
-  [v5 setIpv4ConfigMethod:{objc_msgSend(v6, "ipv4ConfigMethod")}];
-  [v5 setIpv6ConfigMethod:{objc_msgSend(v6, "ipv6ConfigMethod")}];
+  [v5 setIpv4ConfigMethod:{objc_msgSend(__wifi, "ipv4ConfigMethod")}];
+  [v5 setIpv6ConfigMethod:{objc_msgSend(__wifi, "ipv6ConfigMethod")}];
   [v5 setIpv4Addresses:{-[CWFInterface IPv4Addresses](self->_corewifi, "IPv4Addresses")}];
   [v5 setIpv4RouterAddress:{-[CWFInterface IPv4RouterAddress](self->_corewifi, "IPv4RouterAddress")}];
   [v5 setIpv6Addresses:{-[CWFInterface IPv6Addresses](self->_corewifi, "IPv6Addresses")}];
   [v5 setIpv6RouterAddress:{-[CWFInterface IPv6RouterAddress](self->_corewifi, "IPv6RouterAddress")}];
   [v5 setDnsAddresses:{-[CWFInterface DNSServerAddresses](self->_corewifi, "DNSServerAddresses")}];
-  [v5 setLastJoinedScanResult:{objc_msgSend(v6, "currentNetwork")}];
-  [v5 setLastJoinedPreferredNetwork:{objc_msgSend(v6, "currentPreferredNetwork")}];
-  [v5 setSmartCCADesenseSupported:{objc_msgSend(v6, "smartCCADesenseSupported")}];
-  [v5 setSmartCCADesenseUSBPresence:{objc_msgSend(v6, "smartCCADesenseUSBPresence")}];
+  [v5 setLastJoinedScanResult:{objc_msgSend(__wifi, "currentNetwork")}];
+  [v5 setLastJoinedPreferredNetwork:{objc_msgSend(__wifi, "currentPreferredNetwork")}];
+  [v5 setSmartCCADesenseSupported:{objc_msgSend(__wifi, "smartCCADesenseSupported")}];
+  [v5 setSmartCCADesenseUSBPresence:{objc_msgSend(__wifi, "smartCCADesenseUSBPresence")}];
   [v5 setIsSnifferSupported:{-[W5StatusManager __isSnifferSupported](self, "__isSnifferSupported")}];
-  if (v3)
+  if (cacheCopy)
   {
-    [v5 setCachedScanResults:{objc_msgSend(v6, "scanCache:", 1)}];
+    [v5 setCachedScanResults:{objc_msgSend(__wifi, "scanCache:", 1)}];
   }
 
   return v5;
@@ -993,8 +993,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v5 setTimestamp:?];
       v48 = @"WiFiStatus";
-      v49 = [v3 wifi];
-      [v5 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v49, &v48, 1)}];
+      wifi = [v3 wifi];
+      [v5 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &wifi, &v48, 1)}];
       (*(self->_updatedWiFiStatusCallback + 2))(self->_updatedWiFiStatusCallback, v5);
     }
 
@@ -1019,8 +1019,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v7 setTimestamp:?];
       v46 = @"AWDLStatus";
-      v47 = [v3 awdl];
-      [v7 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v47, &v46, 1)}];
+      awdl = [v3 awdl];
+      [v7 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &awdl, &v46, 1)}];
       (*(self->_updatedAWDLStatusCallback + 2))(self->_updatedAWDLStatusCallback, v7);
     }
 
@@ -1045,8 +1045,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v9 setTimestamp:?];
       v44 = @"NetworkStatus";
-      v45 = [v3 network];
-      [v9 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v45, &v44, 1)}];
+      network = [v3 network];
+      [v9 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &network, &v44, 1)}];
       (*(self->_updatedNetworkStatusCallback + 2))(self->_updatedNetworkStatusCallback, v9);
     }
 
@@ -1071,8 +1071,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v11 setTimestamp:?];
       v42 = @"BluetoothStatus";
-      v43 = [v3 bluetooth];
-      [v11 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v43, &v42, 1)}];
+      bluetooth = [v3 bluetooth];
+      [v11 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &bluetooth, &v42, 1)}];
       (*(self->_updatedBluetoothStatusCallback + 2))(self->_updatedBluetoothStatusCallback, v11);
     }
 
@@ -1097,8 +1097,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v13 setTimestamp:?];
       v40 = @"PowerStatus";
-      v41 = [v3 power];
-      [v13 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v41, &v40, 1)}];
+      power = [v3 power];
+      [v13 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &power, &v40, 1)}];
       (*(self->_updatedPowerStatusCallback + 2))(self->_updatedPowerStatusCallback, v13);
     }
 
@@ -1123,8 +1123,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v15 setTimestamp:?];
       v38 = @"LastHourFaultsStatus";
-      v39 = [v3 lastHrFaults];
-      [v15 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v39, &v38, 1)}];
+      lastHrFaults = [v3 lastHrFaults];
+      [v15 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &lastHrFaults, &v38, 1)}];
       (*(self->_updatedFaultsCallback + 2))(self->_updatedFaultsCallback, v15);
     }
 
@@ -1149,8 +1149,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v17 setTimestamp:?];
       v36 = @"LastHourLinkTestsStatus";
-      v37 = [v3 lastHrLinkTests];
-      [v17 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v37, &v36, 1)}];
+      lastHrLinkTests = [v3 lastHrLinkTests];
+      [v17 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &lastHrLinkTests, &v36, 1)}];
       (*(self->_updatedLinkTestsCallback + 2))(self->_updatedLinkTestsCallback, v17);
     }
 
@@ -1173,8 +1173,8 @@ LABEL_12:
       +[NSDate timeIntervalSinceReferenceDate];
       [v19 setTimestamp:?];
       v34 = @"LastHourRecoveriesStatus";
-      v35 = [v3 lastHrRecoveries];
-      [v19 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v35, &v34, 1)}];
+      lastHrRecoveries = [v3 lastHrRecoveries];
+      [v19 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &lastHrRecoveries, &v34, 1)}];
       (*(self->_updatedRecoveriesCallback + 2))(self->_updatedRecoveriesCallback, v19);
     }
 
@@ -1182,31 +1182,31 @@ LABEL_12:
   }
 }
 
-- (void)scanForNetworksWithConfiguration:(id)a3 handler:(id)a4
+- (void)scanForNetworksWithConfiguration:(id)configuration handler:(id)handler
 {
   v6 = objc_alloc_init(CWFScanParameters);
   [v6 setChannels:0];
   [v6 setAcceptableCacheAge:300000];
-  v7 = [(W5StatusManager *)self __wifi];
+  __wifi = [(W5StatusManager *)self __wifi];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000521A8;
   block[3] = &unk_1000E1CC0;
   block[4] = v6;
-  block[5] = v7;
-  block[6] = a4;
+  block[5] = __wifi;
+  block[6] = handler;
   dispatch_async(queue, block);
 }
 
-- (void)associateToNetwork:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)associateToNetwork:(id)network configuration:(id)configuration reply:(id)reply
 {
   v9 = objc_alloc_init(CWFChannel);
-  [v9 setChannel:{objc_msgSend(objc_msgSend(a3, "channel"), "channel")}];
-  [v9 setFlags:{objc_msgSend(objc_msgSend(a3, "channel"), "flags")}];
+  [v9 setChannel:{objc_msgSend(objc_msgSend(network, "channel"), "channel")}];
+  [v9 setFlags:{objc_msgSend(objc_msgSend(network, "channel"), "flags")}];
   v10 = objc_alloc_init(CWFScanParameters);
   [v10 setChannels:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", v9)}];
-  [v10 setSSID:{objc_msgSend(a3, "ssidString")}];
+  [v10 setSSID:{objc_msgSend(network, "ssidString")}];
   [v10 setAcceptableCacheAge:0];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1215,15 +1215,15 @@ LABEL_12:
   block[3] = &unk_1000E2220;
   block[4] = v10;
   block[5] = self;
-  block[6] = a3;
-  block[7] = a4;
-  block[8] = a5;
+  block[6] = network;
+  block[7] = configuration;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)__addEvent:(id)a3
+- (void)__addEvent:(id)event
 {
-  [(NSMutableArray *)self->_eventHistory addObject:a3];
+  [(NSMutableArray *)self->_eventHistory addObject:event];
   if ([(NSMutableArray *)self->_eventHistory count]>= 0x65)
   {
     eventHistory = self->_eventHistory;
@@ -1232,7 +1232,7 @@ LABEL_12:
   }
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -1240,7 +1240,7 @@ LABEL_12:
   v4[2] = sub_100052A7C;
   v4[3] = &unk_1000E1C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(queue, v4);
 }
 

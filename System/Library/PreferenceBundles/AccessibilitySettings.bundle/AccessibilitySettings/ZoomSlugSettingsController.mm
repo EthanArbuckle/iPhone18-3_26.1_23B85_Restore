@@ -1,15 +1,15 @@
 @interface ZoomSlugSettingsController
 - (id)specifiers;
-- (id)zoomControllerColorSummary:(id)a3;
-- (id)zoomIdleSlugOpacitySummary:(id)a3;
-- (id)zoomShouldShowSlug:(id)a3;
-- (id)zoomSlugDoubleTapActionSummary:(id)a3;
-- (id)zoomSlugSingleTapActionSummary:(id)a3;
-- (id)zoomSlugTripleTapActionSummary:(id)a3;
-- (id)zoomTapAndSlideToAdjustZoomLevel:(id)a3;
-- (int64_t)zoomConrtollerColor:(id)a3;
-- (void)setZoomShouldShowSlug:(id)a3 specifier:(id)a4;
-- (void)setZoomTapAndSlideToAdjustZoomLevel:(id)a3 specifier:(id)a4;
+- (id)zoomControllerColorSummary:(id)summary;
+- (id)zoomIdleSlugOpacitySummary:(id)summary;
+- (id)zoomShouldShowSlug:(id)slug;
+- (id)zoomSlugDoubleTapActionSummary:(id)summary;
+- (id)zoomSlugSingleTapActionSummary:(id)summary;
+- (id)zoomSlugTripleTapActionSummary:(id)summary;
+- (id)zoomTapAndSlideToAdjustZoomLevel:(id)level;
+- (int64_t)zoomConrtollerColor:(id)color;
+- (void)setZoomShouldShowSlug:(id)slug specifier:(id)specifier;
+- (void)setZoomTapAndSlideToAdjustZoomLevel:(id)level specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -144,7 +144,7 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)zoomShouldShowSlug:(id)a3
+- (id)zoomShouldShowSlug:(id)slug
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomShouldShowSlug]);
@@ -152,14 +152,14 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (void)setZoomShouldShowSlug:(id)a3 specifier:(id)a4
+- (void)setZoomShouldShowSlug:(id)slug specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [slug BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomShouldShowSlug:v4];
+  [v5 setZoomShouldShowSlug:bOOLValue];
 }
 
-- (id)zoomTapAndSlideToAdjustZoomLevel:(id)a3
+- (id)zoomTapAndSlideToAdjustZoomLevel:(id)level
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 zoomSlugTapAndSlideToAdjustZoomLevelEnabled]);
@@ -167,22 +167,22 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (void)setZoomTapAndSlideToAdjustZoomLevel:(id)a3 specifier:(id)a4
+- (void)setZoomTapAndSlideToAdjustZoomLevel:(id)level specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [level BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setZoomSlugTapAndSlideToAdjustZoomLevelEnabled:v4];
+  [v5 setZoomSlugTapAndSlideToAdjustZoomLevelEnabled:bOOLValue];
 }
 
-- (int64_t)zoomConrtollerColor:(id)a3
+- (int64_t)zoomConrtollerColor:(id)color
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomControllerColor];
+  zoomControllerColor = [v3 zoomControllerColor];
 
-  return v4;
+  return zoomControllerColor;
 }
 
-- (id)zoomControllerColorSummary:(id)a3
+- (id)zoomControllerColorSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForColor([v3 zoomControllerColor]);
@@ -190,7 +190,7 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (id)zoomIdleSlugOpacitySummary:(id)a3
+- (id)zoomIdleSlugOpacitySummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 zoomIdleSlugOpacity];
@@ -199,7 +199,7 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (id)zoomSlugSingleTapActionSummary:(id)a3
+- (id)zoomSlugSingleTapActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSlugAction([v3 zoomSlugSingleTapAction]);
@@ -207,7 +207,7 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (id)zoomSlugDoubleTapActionSummary:(id)a3
+- (id)zoomSlugDoubleTapActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSlugAction([v3 zoomSlugDoubleTapAction]);
@@ -215,7 +215,7 @@ void __41__ZoomSlugSettingsController_viewDidLoad__block_invoke_6(uint64_t a1)
   return v4;
 }
 
-- (id)zoomSlugTripleTapActionSummary:(id)a3
+- (id)zoomSlugTripleTapActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSlugAction([v3 zoomSlugTripleTapAction]);

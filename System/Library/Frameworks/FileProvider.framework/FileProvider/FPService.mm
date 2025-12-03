@@ -1,6 +1,6 @@
 @interface FPService
-- (FPService)initWithEndpoint:(id)a3 interface:(id)a4 lifetimeExtender:(id)a5 providerDomainID:(id)a6;
-- (FPService)initWithProxy:(id)a3 interface:(id)a4 lifetimeExtender:(id)a5 providerDomainID:(id)a6;
+- (FPService)initWithEndpoint:(id)endpoint interface:(id)interface lifetimeExtender:(id)extender providerDomainID:(id)d;
+- (FPService)initWithProxy:(id)proxy interface:(id)interface lifetimeExtender:(id)extender providerDomainID:(id)d;
 - (id)remoteObjectProxy;
 - (id)synchronousRemoteObjectProxy;
 - (void)dealloc;
@@ -44,10 +44,10 @@
     connection = self->_proxy;
   }
 
-  v6 = [(NSXPCInterface *)self->_interface protocol];
-  v7 = [(NSXPCInterface *)self->_interface protocol];
-  v8 = NSStringFromProtocol(v7);
-  v9 = [(FPXPCAutomaticErrorProxy *)v4 initWithConnection:connection protocol:v6 orError:0 name:v8 requestPid:getpid() requestWillBegin:v3];
+  protocol = [(NSXPCInterface *)self->_interface protocol];
+  protocol2 = [(NSXPCInterface *)self->_interface protocol];
+  v8 = NSStringFromProtocol(protocol2);
+  v9 = [(FPXPCAutomaticErrorProxy *)v4 initWithConnection:connection protocol:protocol orError:0 name:v8 requestPid:getpid() requestWillBegin:v3];
 
   return v9;
 }
@@ -64,48 +64,48 @@ id __30__FPService_remoteObjectProxy__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (FPService)initWithProxy:(id)a3 interface:(id)a4 lifetimeExtender:(id)a5 providerDomainID:(id)a6
+- (FPService)initWithProxy:(id)proxy interface:(id)interface lifetimeExtender:(id)extender providerDomainID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  proxyCopy = proxy;
+  interfaceCopy = interface;
+  extenderCopy = extender;
   v16.receiver = self;
   v16.super_class = FPService;
   v13 = [(FPService *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_extender, a5);
-    objc_storeStrong(&v14->_proxy, a3);
-    objc_storeStrong(&v14->_interface, a4);
+    objc_storeStrong(&v13->_extender, extender);
+    objc_storeStrong(&v14->_proxy, proxy);
+    objc_storeStrong(&v14->_interface, interface);
   }
 
   return v14;
 }
 
-- (FPService)initWithEndpoint:(id)a3 interface:(id)a4 lifetimeExtender:(id)a5 providerDomainID:(id)a6
+- (FPService)initWithEndpoint:(id)endpoint interface:(id)interface lifetimeExtender:(id)extender providerDomainID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  endpointCopy = endpoint;
+  interfaceCopy = interface;
+  extenderCopy = extender;
+  dCopy = d;
   v27.receiver = self;
   v27.super_class = FPService;
   v14 = [(FPService *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_extender, a5);
-    v16 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v10];
+    objc_storeStrong(&v14->_extender, extender);
+    v16 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     connection = v15->_connection;
     v15->_connection = v16;
 
-    [(NSXPCConnection *)v15->_connection setRemoteObjectInterface:v11];
+    [(NSXPCConnection *)v15->_connection setRemoteObjectInterface:interfaceCopy];
     v18 = v15->_connection;
-    v19 = [[FPXPCSanitizer alloc] initWithProviderDomainIdentifier:v13];
+    v19 = [[FPXPCSanitizer alloc] initWithProviderDomainIdentifier:dCopy];
     [(NSXPCConnection *)v18 fp_annotateWithXPCSanitizer:v19];
 
-    objc_storeStrong(&v15->_interface, a4);
+    objc_storeStrong(&v15->_interface, interface);
     objc_initWeak(&location, v15);
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
@@ -129,10 +129,10 @@ void __74__FPService_initWithEndpoint_interface_lifetimeExtender_providerDomainI
 
 - (id)synchronousRemoteObjectProxy
 {
-  v2 = [(FPService *)self remoteObjectProxy];
-  v3 = [v2 synchronousRemoteObjectProxy];
+  remoteObjectProxy = [(FPService *)self remoteObjectProxy];
+  synchronousRemoteObjectProxy = [remoteObjectProxy synchronousRemoteObjectProxy];
 
-  return v3;
+  return synchronousRemoteObjectProxy;
 }
 
 @end

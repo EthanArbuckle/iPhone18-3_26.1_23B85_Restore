@@ -2,124 +2,124 @@
 - (BCCloudAssetManager)assetManager;
 - (BCCloudCollectionsManager)cloudCollectionsManager;
 - (BDSCloudSyncDiagnosticService)cloudSyncDiagnosticService;
-- (BDSService)initWithClientConnectionService:(id)a3;
+- (BDSService)initWithClientConnectionService:(id)service;
 - (_TtC14bookdatastored25CloudSecureManagerService)secureManager;
 - (id)_newWidgetMOC;
 - (id)_stateForLog;
 - (id)makeOSStateHandler;
-- (id)updateReadingNowWithCompletion:(id)a3;
-- (id)updateWantToReadWithCompletion:(id)a3;
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3;
-- (void)_BCCloudReadingNowDetailManagerChanged:(id)a3;
+- (id)updateReadingNowWithCompletion:(id)completion;
+- (id)updateWantToReadWithCompletion:(id)completion;
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed;
+- (void)_BCCloudReadingNowDetailManagerChanged:(id)changed;
 - (void)_setupWidget;
-- (void)_setupWidgetDataUpdater:(id)a3;
+- (void)_setupWidgetDataUpdater:(id)updater;
 - (void)_updateEnableSync;
-- (void)addStoreItem:(id)a3 completion:(id)a4;
-- (void)addStoreItems:(id)a3 completion:(id)a4;
-- (void)assetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)assetDetailsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)audiobookStoreEnabledWithCompletion:(id)a3;
-- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)a3;
-- (void)clearSyncMetadata:(id)a3;
-- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)a3;
-- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)a3;
-- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)a3;
-- (void)collectionDetailForCollectionID:(id)a3 completion:(id)a4;
-- (void)collectionDetailsForCollectionIDs:(id)a3 completion:(id)a4;
-- (void)collectionMemberForCollectionMemberID:(id)a3 completion:(id)a4;
-- (void)currentAssetDetailCloudSyncVersions:(id)a3;
-- (void)currentCloudSyncVersions:(id)a3;
-- (void)currentCollectionDetailCloudSyncVersions:(id)a3;
-- (void)currentCollectionMemberCloudSyncVersions:(id)a3;
-- (void)currentReadingNowDetailCloudSyncVersions:(id)a3;
+- (void)addStoreItem:(id)item completion:(id)completion;
+- (void)addStoreItems:(id)items completion:(id)completion;
+- (void)assetDetailForAssetID:(id)d completion:(id)completion;
+- (void)assetDetailsForAssetIDs:(id)ds completion:(id)completion;
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)audiobookStoreEnabledWithCompletion:(id)completion;
+- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)completion;
+- (void)clearSyncMetadata:(id)metadata;
+- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)handler;
+- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)handler;
+- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)handler;
+- (void)collectionDetailForCollectionID:(id)d completion:(id)completion;
+- (void)collectionDetailsForCollectionIDs:(id)ds completion:(id)completion;
+- (void)collectionMemberForCollectionMemberID:(id)d completion:(id)completion;
+- (void)currentAssetDetailCloudSyncVersions:(id)versions;
+- (void)currentCloudSyncVersions:(id)versions;
+- (void)currentCollectionDetailCloudSyncVersions:(id)versions;
+- (void)currentCollectionMemberCloudSyncVersions:(id)versions;
+- (void)currentReadingNowDetailCloudSyncVersions:(id)versions;
 - (void)dealloc;
-- (void)deleteAssetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)deleteCollectionDetailForCollectionID:(id)a3 completion:(id)a4;
-- (void)deleteCollectionDetailForCollectionIDs:(id)a3 completion:(id)a4;
-- (void)deleteCollectionMemberForCollectionMemberID:(id)a3 completion:(id)a4;
-- (void)deleteCollectionMemberForCollectionMemberIDs:(id)a3 completion:(id)a4;
-- (void)deleteEngagementDataForKey:(id)a3 completion:(id)a4;
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)deleteReadingNowDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)deleteStoreItemWithStoreID:(id)a3 completion:(id)a4;
-- (void)deleteStoreItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)engagementDataForKey:(id)a3 completion:(id)a4;
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3;
-- (void)fetchAssetDetailsForUnsyncedTastes:(id)a3;
-- (void)fetchCollectionMembersInCollectionID:(id)a3 completion:(id)a4;
-- (void)fetchFinishedAssetCountByYearWithCompletion:(id)a3;
-- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)a3 completion:(id)a4;
-- (void)fetchMaxSortOrderInCollectionID:(id)a3 completion:(id)a4;
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3;
-- (void)forceFetchRemoteChanges:(id)a3;
-- (void)getAssetDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4;
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getBookWidgetInfoWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getCollectionDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getCollectionMemberChangesSince:(id)a3 completion:(id)a4;
-- (void)getEngagementDataChangesSince:(id)a3 completion:(id)a4;
-- (void)getReadingNowDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getStoreItemChangesSince:(id)a3 completion:(id)a4;
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4;
-- (void)hasSaltChangedWithCompletion:(id)a3;
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3;
-- (void)monitorServiceNotificationsWithChangeToken:(id)a3 completion:(id)a4;
-- (void)needsReadingNowAssetTypePopulation:(id)a3;
-- (void)priceTrackingCtlAddTrackedItems:(id)a3 completion:(id)a4;
-- (void)priceTrackingCtlGetStateWithCompletion:(id)a3;
-- (void)priceTrackingCtlOverrideReferencePrices:(id)a3 completion:(id)a4;
-- (void)priceTrackingCtlRefreshTrackedPricesIgnoringSchedule:(BOOL)a3 completion:(id)a4;
-- (void)priceTrackingSetConfiguration:(id)a3 completion:(id)a4;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)a3 withCompletion:(id)a4;
-- (void)readingGoalsChangeDailyGoalTo:(double)a3 withCompletion:(id)a4;
-- (void)readingGoalsClearDataWithCompletion:(id)a3;
-- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)a3;
-- (void)readingGoalsStateInfoWithCompletion:(id)a3;
-- (void)readingHistoryBackupWithName:(id)a3 completion:(id)a4;
-- (void)readingHistoryClearDataWithCompletion:(id)a3;
-- (void)readingHistoryClearDate:(id)a3 withCompletion:(id)a4;
-- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)a3;
-- (void)readingHistoryClearTodayWithCompletion:(id)a3;
-- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5;
-- (void)readingHistoryIncrementWithDate:(id)a3 by:(int64_t)a4 withCompletion:(id)a5;
-- (void)readingHistoryListBackupWithCompletion:(id)a3;
-- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 withCompletion:(id)a6;
-- (void)readingHistoryRestoreWithName:(id)a3 completion:(id)a4;
-- (void)readingHistoryServiceStatusInfoWithCompletion:(id)a3;
-- (void)readingNowDetailsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3;
-- (void)resolvedAssetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4;
-- (void)setAssetDetail:(id)a3 completion:(id)a4;
-- (void)setAssetDetails:(id)a3 completion:(id)a4;
-- (void)setAssetReview:(id)a3 completion:(id)a4;
-- (void)setAssetReviews:(id)a3 completion:(id)a4;
-- (void)setBookWidgetInfo:(id)a3 completion:(id)a4;
-- (void)setCollectionDetail:(id)a3 completion:(id)a4;
-- (void)setCollectionDetails:(id)a3 completion:(id)a4;
-- (void)setCollectionMember:(id)a3 completion:(id)a4;
-- (void)setCollectionMembers:(id)a3 completion:(id)a4;
-- (void)setEngagementData:(id)a3 completion:(id)a4;
-- (void)setEngagementDatas:(id)a3 completion:(id)a4;
-- (void)setReadingNowDetails:(id)a3 completion:(id)a4;
-- (void)setUserData:(id)a3 completion:(id)a4;
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setUserDatum:(id)a3 completion:(id)a4;
-- (void)signalFetchChangesTransaction:(id)a3;
-- (void)storeItemForStoreID:(id)a3 completion:(id)a4;
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4;
-- (void)userDataValueForKey:(id)a3 completion:(id)a4;
-- (void)userDatumForKey:(id)a3 completion:(id)a4;
+- (void)deleteAssetDetailForAssetID:(id)d completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)deleteCollectionDetailForCollectionID:(id)d completion:(id)completion;
+- (void)deleteCollectionDetailForCollectionIDs:(id)ds completion:(id)completion;
+- (void)deleteCollectionMemberForCollectionMemberID:(id)d completion:(id)completion;
+- (void)deleteCollectionMemberForCollectionMemberIDs:(id)ds completion:(id)completion;
+- (void)deleteEngagementDataForKey:(id)key completion:(id)completion;
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)deleteReadingNowDetailForAssetID:(id)d completion:(id)completion;
+- (void)deleteStoreItemWithStoreID:(id)d completion:(id)completion;
+- (void)deleteStoreItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)engagementDataForKey:(id)key completion:(id)completion;
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion;
+- (void)fetchAssetDetailsForUnsyncedTastes:(id)tastes;
+- (void)fetchCollectionMembersInCollectionID:(id)d completion:(id)completion;
+- (void)fetchFinishedAssetCountByYearWithCompletion:(id)completion;
+- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)year completion:(id)completion;
+- (void)fetchMaxSortOrderInCollectionID:(id)d completion:(id)completion;
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion;
+- (void)forceFetchRemoteChanges:(id)changes;
+- (void)getAssetDetailChangesSince:(id)since completion:(id)completion;
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion;
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getBookWidgetInfoWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getCollectionDetailChangesSince:(id)since completion:(id)completion;
+- (void)getCollectionMemberChangesSince:(id)since completion:(id)completion;
+- (void)getEngagementDataChangesSince:(id)since completion:(id)completion;
+- (void)getReadingNowDetailChangesSince:(id)since completion:(id)completion;
+- (void)getStoreItemChangesSince:(id)since completion:(id)completion;
+- (void)getUserDataChangesSince:(id)since completion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler;
+- (void)monitorServiceNotificationsWithChangeToken:(id)token completion:(id)completion;
+- (void)needsReadingNowAssetTypePopulation:(id)population;
+- (void)priceTrackingCtlAddTrackedItems:(id)items completion:(id)completion;
+- (void)priceTrackingCtlGetStateWithCompletion:(id)completion;
+- (void)priceTrackingCtlOverrideReferencePrices:(id)prices completion:(id)completion;
+- (void)priceTrackingCtlRefreshTrackedPricesIgnoringSchedule:(BOOL)schedule completion:(id)completion;
+- (void)priceTrackingSetConfiguration:(id)configuration completion:(id)completion;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
+- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)to withCompletion:(id)completion;
+- (void)readingGoalsChangeDailyGoalTo:(double)to withCompletion:(id)completion;
+- (void)readingGoalsClearDataWithCompletion:(id)completion;
+- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)completion;
+- (void)readingGoalsStateInfoWithCompletion:(id)completion;
+- (void)readingHistoryBackupWithName:(id)name completion:(id)completion;
+- (void)readingHistoryClearDataWithCompletion:(id)completion;
+- (void)readingHistoryClearDate:(id)date withCompletion:(id)completion;
+- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)completion;
+- (void)readingHistoryClearTodayWithCompletion:(id)completion;
+- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion;
+- (void)readingHistoryIncrementWithDate:(id)date by:(int64_t)by withCompletion:(id)completion;
+- (void)readingHistoryListBackupWithCompletion:(id)completion;
+- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time withCompletion:(id)completion;
+- (void)readingHistoryRestoreWithName:(id)name completion:(id)completion;
+- (void)readingHistoryServiceStatusInfoWithCompletion:(id)completion;
+- (void)readingNowDetailsForAssetIDs:(id)ds completion:(id)completion;
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion;
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion;
+- (void)resolvedAssetDetailForAssetID:(id)d completion:(id)completion;
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion;
+- (void)setAssetDetail:(id)detail completion:(id)completion;
+- (void)setAssetDetails:(id)details completion:(id)completion;
+- (void)setAssetReview:(id)review completion:(id)completion;
+- (void)setAssetReviews:(id)reviews completion:(id)completion;
+- (void)setBookWidgetInfo:(id)info completion:(id)completion;
+- (void)setCollectionDetail:(id)detail completion:(id)completion;
+- (void)setCollectionDetails:(id)details completion:(id)completion;
+- (void)setCollectionMember:(id)member completion:(id)completion;
+- (void)setCollectionMembers:(id)members completion:(id)completion;
+- (void)setEngagementData:(id)data completion:(id)completion;
+- (void)setEngagementDatas:(id)datas completion:(id)completion;
+- (void)setReadingNowDetails:(id)details completion:(id)completion;
+- (void)setUserData:(id)data completion:(id)completion;
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion;
+- (void)setUserDatum:(id)datum completion:(id)completion;
+- (void)signalFetchChangesTransaction:(id)transaction;
+- (void)storeItemForStoreID:(id)d completion:(id)completion;
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion;
+- (void)userDataValueForKey:(id)key completion:(id)completion;
+- (void)userDatumForKey:(id)key completion:(id)completion;
 @end
 
 @implementation BDSService
@@ -131,16 +131,16 @@
   return WeakRetained;
 }
 
-- (BDSService)initWithClientConnectionService:(id)a3
+- (BDSService)initWithClientConnectionService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v45.receiver = self;
   v45.super_class = BDSService;
   v6 = [(BDSService *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientConnectionService, a3);
+    objc_storeStrong(&v6->_clientConnectionService, service);
     v7->_authenticatorsLock._os_unfair_lock_opaque = 0;
     v8 = +[BUAccountsProvider sharedProvider];
     [v8 observeTCCAccessChangeNotificationIfNeeded];
@@ -158,8 +158,8 @@
 
     v14 = [BDSNBController alloc];
     WeakRetained = objc_loadWeakRetained(&v7->_assetManager);
-    v16 = [WeakRetained assetDataSource];
-    v17 = [(BDSNBController *)v14 initWithCloudDataSource:v16];
+    assetDataSource = [WeakRetained assetDataSource];
+    v17 = [(BDSNBController *)v14 initWithCloudDataSource:assetDataSource];
     nanoBooksController = v7->_nanoBooksController;
     v7->_nanoBooksController = v17;
 
@@ -167,9 +167,9 @@
     jaliscoDAAPService = v7->_jaliscoDAAPService;
     v7->_jaliscoDAAPService = v19;
 
-    v21 = [(BDSService *)v7 jaliscoDAAPService];
+    jaliscoDAAPService = [(BDSService *)v7 jaliscoDAAPService];
 
-    if (!v21)
+    if (!jaliscoDAAPService)
     {
       v22 = sub_1000023E8();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -182,8 +182,8 @@
     v23 = objc_alloc_init(BDSOSTransactionProvider);
     if (!v7->_widgetDataUpdater)
     {
-      v24 = [(BDSService *)v7 _newWidgetMOC];
-      [(BDSService *)v7 _setupWidgetDataUpdater:v24];
+      _newWidgetMOC = [(BDSService *)v7 _newWidgetMOC];
+      [(BDSService *)v7 _setupWidgetDataUpdater:_newWidgetMOC];
     }
 
     v25 = [[BDSBookWidgetReadingHistoryManager alloc] initWithBookWidgetDataUpdater:v7->_widgetDataUpdater transactionProvider:v23];
@@ -225,9 +225,9 @@
     v41 = +[NSDistributedNotificationCenter defaultCenter];
     [v41 addObserver:v7 selector:"_BCCloudCollectionMemberManagerChanged:" name:@"BCCloudCollectionMemberManagerChanged" object:0];
 
-    v42 = [(BDSService *)v7 makeOSStateHandler];
+    makeOSStateHandler = [(BDSService *)v7 makeOSStateHandler];
     syncServiceStateHandler = v7->_syncServiceStateHandler;
-    v7->_syncServiceStateHandler = v42;
+    v7->_syncServiceStateHandler = makeOSStateHandler;
   }
 
   return v7;
@@ -249,7 +249,7 @@
   [(BDSService *)&v6 dealloc];
 }
 
-- (void)_BCCloudReadingNowDetailManagerChanged:(id)a3
+- (void)_BCCloudReadingNowDetailManagerChanged:(id)changed
 {
   v3 = sub_10000DC90();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -258,15 +258,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BCCloudReadingNowManagerChanged notification received", v7, 2u);
   }
 
-  v4 = [sub_100077BF0() sharedManager];
-  if ([v4 isReadingNowEnabled])
+  sharedManager = [sub_100077BF0() sharedManager];
+  if ([sharedManager isReadingNowEnabled])
   {
     v5 = +[BDSNBPinningManager sharedManager];
     v6 = [v5 updateReadingNowWithCompletion:&stru_100240C68];
   }
 }
 
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed
 {
   v3 = sub_10000DC90();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -275,15 +275,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BCCloudCollectionMemberManagerChanged notification received", v7, 2u);
   }
 
-  v4 = [sub_100077BF0() sharedManager];
-  if ([v4 isWantToReadEnabled])
+  sharedManager = [sub_100077BF0() sharedManager];
+  if ([sharedManager isWantToReadEnabled])
   {
     v5 = +[BDSNBPinningManager sharedManager];
     v6 = [v5 updateWantToReadWithCompletion:&stru_100240C88];
   }
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
   v4 = sub_10000DC90();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -374,12 +374,12 @@
 
   if (v14)
   {
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
     if (v6)
     {
 LABEL_20:
       v16 = [BUAccountsProvider sharedProvider:*v27];
-      v17 = [v16 isPrimaryAccountManagedAppleID] | v15;
+      v17 = [v16 isPrimaryAccountManagedAppleID] | bOOLValue;
 
       goto LABEL_23;
     }
@@ -387,7 +387,7 @@ LABEL_20:
 
   else
   {
-    v15 = 1;
+    bOOLValue = 1;
     if (v6)
     {
       goto LABEL_20;
@@ -430,11 +430,11 @@ LABEL_23:
   }
 
   v22 = +[BDSSyncUserDefaults isICloudDriveSyncOptedIn];
-  v23 = [(BDSService *)self ubiquityManager];
-  [v23 setEnableUbiquityObserving:v22 & v4];
+  ubiquityManager = [(BDSService *)self ubiquityManager];
+  [ubiquityManager setEnableUbiquityObserving:v22 & v4];
 
-  v24 = [(BDSService *)self readingHistoryService];
-  [v24 setEnableCloudSync:v6];
+  readingHistoryService = [(BDSService *)self readingHistoryService];
+  [readingHistoryService setEnableCloudSync:v6];
 
   v25 = +[BCCloudKitController sharedInstance];
   [v25 setEnableCloudSync:v6 serviceMode:1];
@@ -443,476 +443,476 @@ LABEL_23:
   [v26 setEnableCloudSync:v6 serviceMode:1];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self assetManager];
-  [v5 dissociateCloudDataFromSyncWithCompletion:v4];
+  completionCopy = completion;
+  assetManager = [(BDSService *)self assetManager];
+  [assetManager dissociateCloudDataFromSyncWithCompletion:completionCopy];
 
-  v6 = [(BDSService *)self cloudCollectionsManager];
-  [v6 dissociateCloudDataFromSyncWithCompletion:v4];
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  [cloudCollectionsManager dissociateCloudDataFromSyncWithCompletion:completionCopy];
 }
 
-- (void)signalFetchChangesTransaction:(id)a3
+- (void)signalFetchChangesTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v4 = +[BCCloudKitController sharedInstance];
-  [v4 attachOrSignalFetchChangesTransaction:v3 reason:@"XPC call"];
+  [v4 attachOrSignalFetchChangesTransaction:transactionCopy reason:@"XPC call"];
 
   v5 = +[BCCloudKitController secureSharedInstance];
-  [v5 attachOrSignalFetchChangesTransaction:v3 reason:@"XPC call"];
+  [v5 attachOrSignalFetchChangesTransaction:transactionCopy reason:@"XPC call"];
 }
 
-- (void)assetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)assetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 assetDetailForAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager assetDetailForAssetID:dCopy completion:completionCopy];
 }
 
-- (void)assetDetailsForAssetIDs:(id)a3 completion:(id)a4
+- (void)assetDetailsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 assetDetailsForAssetIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager assetDetailsForAssetIDs:dsCopy completion:completionCopy];
 }
 
-- (void)resolvedAssetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)resolvedAssetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 resolvedAssetDetailForAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager resolvedAssetDetailForAssetID:dCopy completion:completionCopy];
 }
 
-- (void)currentAssetDetailCloudSyncVersions:(id)a3
+- (void)currentAssetDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v6 = [(BDSService *)self assetManager];
-  v5 = [v6 assetDetailManager];
-  [v5 currentAssetDetailCloudSyncVersions:v4];
+  versionsCopy = versions;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager currentAssetDetailCloudSyncVersions:versionsCopy];
 }
 
-- (void)deleteAssetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)deleteAssetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 deleteAssetDetailForAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager deleteAssetDetailForAssetID:dCopy completion:completionCopy];
 }
 
-- (void)getAssetDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getAssetDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 getAssetDetailChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager getAssetDetailChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)setAssetDetail:(id)a3 completion:(id)a4
+- (void)setAssetDetail:(id)detail completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 setAssetDetail:v7 completion:v6];
+  completionCopy = completion;
+  detailCopy = detail;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager setAssetDetail:detailCopy completion:completionCopy];
 }
 
-- (void)setAssetDetails:(id)a3 completion:(id)a4
+- (void)setAssetDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetDetailManager];
-  [v8 setAssetDetails:v7 completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager setAssetDetails:detailsCopy completion:completionCopy];
 }
 
-- (void)fetchAssetDetailsForUnsyncedTastes:(id)a3
+- (void)fetchAssetDetailsForUnsyncedTastes:(id)tastes
 {
-  v4 = a3;
-  v6 = [(BDSService *)self assetManager];
-  v5 = [v6 assetDetailManager];
-  [v5 fetchAssetDetailsForUnsyncedTastes:v4];
+  tastesCopy = tastes;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager fetchAssetDetailsForUnsyncedTastes:tastesCopy];
 }
 
-- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)a3 completion:(id)a4
+- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)year completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(BDSService *)self assetManager];
-  v7 = [v8 assetDetailManager];
-  [v7 fetchFinishedDatesByAssetIDForYear:a3 completion:v6];
+  completionCopy = completion;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager fetchFinishedDatesByAssetIDForYear:year completion:completionCopy];
 }
 
-- (void)fetchFinishedAssetCountByYearWithCompletion:(id)a3
+- (void)fetchFinishedAssetCountByYearWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(BDSService *)self assetManager];
-  v5 = [v6 assetDetailManager];
-  [v5 fetchFinishedAssetCountByYearWithCompletion:v4];
+  completionCopy = completion;
+  assetManager = [(BDSService *)self assetManager];
+  assetDetailManager = [assetManager assetDetailManager];
+  [assetDetailManager fetchFinishedAssetCountByYearWithCompletion:completionCopy];
 }
 
-- (void)readingNowDetailsForAssetIDs:(id)a3 completion:(id)a4
+- (void)readingNowDetailsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 readingNowDetailManager];
-  [v8 readingNowDetailsForAssetIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager readingNowDetailsForAssetIDs:dsCopy completion:completionCopy];
 }
 
-- (void)currentReadingNowDetailCloudSyncVersions:(id)a3
+- (void)currentReadingNowDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v6 = [(BDSService *)self assetManager];
-  v5 = [v6 readingNowDetailManager];
-  [v5 currentReadingNowDetailCloudSyncVersions:v4];
+  versionsCopy = versions;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager currentReadingNowDetailCloudSyncVersions:versionsCopy];
 }
 
-- (void)deleteReadingNowDetailForAssetID:(id)a3 completion:(id)a4
+- (void)deleteReadingNowDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 readingNowDetailManager];
-  [v8 deleteReadingNowDetailForAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager deleteReadingNowDetailForAssetID:dCopy completion:completionCopy];
 }
 
-- (void)getReadingNowDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getReadingNowDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 readingNowDetailManager];
-  [v8 getReadingNowDetailChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager getReadingNowDetailChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)setReadingNowDetails:(id)a3 completion:(id)a4
+- (void)setReadingNowDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 readingNowDetailManager];
-  [v8 setReadingNowDetails:v7 completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager setReadingNowDetails:detailsCopy completion:completionCopy];
 }
 
-- (void)needsReadingNowAssetTypePopulation:(id)a3
+- (void)needsReadingNowAssetTypePopulation:(id)population
 {
-  v4 = a3;
-  v6 = [(BDSService *)self assetManager];
-  v5 = [v6 readingNowDetailManager];
-  [v5 needsReadingNowAssetTypePopulation:v4];
+  populationCopy = population;
+  assetManager = [(BDSService *)self assetManager];
+  readingNowDetailManager = [assetManager readingNowDetailManager];
+  [readingNowDetailManager needsReadingNowAssetTypePopulation:populationCopy];
 }
 
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 assetReviewForAssetReviewID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager assetReviewForAssetReviewID:dCopy completion:completionCopy];
 }
 
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 assetReviewsForAssetReviewIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager assetReviewsForAssetReviewIDs:dsCopy completion:completionCopy];
 }
 
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 deleteAssetReviewForAssetReviewID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager deleteAssetReviewForAssetReviewID:dCopy completion:completionCopy];
 }
 
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 deleteAssetReviewForAssetReviewIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager deleteAssetReviewForAssetReviewIDs:dsCopy completion:completionCopy];
 }
 
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 getAssetReviewChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager getAssetReviewChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)setAssetReview:(id)a3 completion:(id)a4
+- (void)setAssetReview:(id)review completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 setAssetReview:v7 completion:v6];
+  completionCopy = completion;
+  reviewCopy = review;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager setAssetReview:reviewCopy completion:completionCopy];
 }
 
-- (void)setAssetReviews:(id)a3 completion:(id)a4
+- (void)setAssetReviews:(id)reviews completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 assetReviewManager];
-  [v8 setAssetReviews:v7 completion:v6];
+  completionCopy = completion;
+  reviewsCopy = reviews;
+  assetManager = [(BDSService *)self assetManager];
+  assetReviewManager = [assetManager assetReviewManager];
+  [assetReviewManager setAssetReviews:reviewsCopy completion:completionCopy];
 }
 
-- (void)addStoreItem:(id)a3 completion:(id)a4
+- (void)addStoreItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 addStoreItem:v7 completion:v6];
+  completionCopy = completion;
+  itemCopy = item;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager addStoreItem:itemCopy completion:completionCopy];
 }
 
-- (void)addStoreItems:(id)a3 completion:(id)a4
+- (void)addStoreItems:(id)items completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 addStoreItems:v7 completion:v6];
+  completionCopy = completion;
+  itemsCopy = items;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager addStoreItems:itemsCopy completion:completionCopy];
 }
 
-- (void)deleteStoreItemWithStoreID:(id)a3 completion:(id)a4
+- (void)deleteStoreItemWithStoreID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 deleteStoreItemWithStoreID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager deleteStoreItemWithStoreID:dCopy completion:completionCopy];
 }
 
-- (void)deleteStoreItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteStoreItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 deleteStoreItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager deleteStoreItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)getStoreItemChangesSince:(id)a3 completion:(id)a4
+- (void)getStoreItemChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 getStoreItemChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager getStoreItemChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)storeItemForStoreID:(id)a3 completion:(id)a4
+- (void)storeItemForStoreID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self assetManager];
-  v8 = [v9 storeAssetManager];
-  [v8 storeItemForStoreID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  assetManager = [(BDSService *)self assetManager];
+  storeAssetManager = [assetManager storeAssetManager];
+  [storeAssetManager storeItemForStoreID:dCopy completion:completionCopy];
 }
 
-- (void)collectionDetailForCollectionID:(id)a3 completion:(id)a4
+- (void)collectionDetailForCollectionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 collectionDetailForCollectionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager collectionDetailForCollectionID:dCopy completion:completionCopy];
 }
 
-- (void)collectionDetailsForCollectionIDs:(id)a3 completion:(id)a4
+- (void)collectionDetailsForCollectionIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 collectionDetailsForCollectionIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager collectionDetailsForCollectionIDs:dsCopy completion:completionCopy];
 }
 
-- (void)currentCollectionDetailCloudSyncVersions:(id)a3
+- (void)currentCollectionDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v6 = [(BDSService *)self cloudCollectionsManager];
-  v5 = [v6 collectionDetailManager];
-  [v5 currentCollectionDetailCloudSyncVersions:v4];
+  versionsCopy = versions;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager currentCollectionDetailCloudSyncVersions:versionsCopy];
 }
 
-- (void)deleteCollectionDetailForCollectionID:(id)a3 completion:(id)a4
+- (void)deleteCollectionDetailForCollectionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 deleteCollectionDetailForCollectionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager deleteCollectionDetailForCollectionID:dCopy completion:completionCopy];
 }
 
-- (void)deleteCollectionDetailForCollectionIDs:(id)a3 completion:(id)a4
+- (void)deleteCollectionDetailForCollectionIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 deleteCollectionDetailForCollectionIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager deleteCollectionDetailForCollectionIDs:dsCopy completion:completionCopy];
 }
 
-- (void)getCollectionDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getCollectionDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self cloudCollectionsManager];
-  v9 = [v8 collectionDetailManager];
+  completionCopy = completion;
+  sinceCopy = since;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100035C34;
   v11[3] = &unk_100240CD0;
-  v12 = v6;
-  v10 = v6;
-  [v9 getCollectionDetailChangesSince:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [collectionDetailManager getCollectionDetailChangesSince:sinceCopy completion:v11];
 }
 
-- (void)setCollectionDetail:(id)a3 completion:(id)a4
+- (void)setCollectionDetail:(id)detail completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 setCollectionDetail:v7 completion:v6];
+  completionCopy = completion;
+  detailCopy = detail;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager setCollectionDetail:detailCopy completion:completionCopy];
 }
 
-- (void)setCollectionDetails:(id)a3 completion:(id)a4
+- (void)setCollectionDetails:(id)details completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionDetailManager];
-  [v8 setCollectionDetails:v7 completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionDetailManager = [cloudCollectionsManager collectionDetailManager];
+  [collectionDetailManager setCollectionDetails:detailsCopy completion:completionCopy];
 }
 
-- (void)collectionMemberForCollectionMemberID:(id)a3 completion:(id)a4
+- (void)collectionMemberForCollectionMemberID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 collectionMemberForCollectionMemberID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager collectionMemberForCollectionMemberID:dCopy completion:completionCopy];
 }
 
-- (void)currentCollectionMemberCloudSyncVersions:(id)a3
+- (void)currentCollectionMemberCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v6 = [(BDSService *)self cloudCollectionsManager];
-  v5 = [v6 collectionMemberManager];
-  [v5 currentCollectionMemberCloudSyncVersions:v4];
+  versionsCopy = versions;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager currentCollectionMemberCloudSyncVersions:versionsCopy];
 }
 
-- (void)deleteCollectionMemberForCollectionMemberID:(id)a3 completion:(id)a4
+- (void)deleteCollectionMemberForCollectionMemberID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 deleteCollectionMemberForCollectionMemberID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager deleteCollectionMemberForCollectionMemberID:dCopy completion:completionCopy];
 }
 
-- (void)deleteCollectionMemberForCollectionMemberIDs:(id)a3 completion:(id)a4
+- (void)deleteCollectionMemberForCollectionMemberIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 deleteCollectionMemberForCollectionMemberIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager deleteCollectionMemberForCollectionMemberIDs:dsCopy completion:completionCopy];
 }
 
-- (void)fetchCollectionMembersInCollectionID:(id)a3 completion:(id)a4
+- (void)fetchCollectionMembersInCollectionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 fetchCollectionMembersInCollectionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager fetchCollectionMembersInCollectionID:dCopy completion:completionCopy];
 }
 
-- (void)getCollectionMemberChangesSince:(id)a3 completion:(id)a4
+- (void)getCollectionMemberChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 getCollectionMemberChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager getCollectionMemberChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)setCollectionMember:(id)a3 completion:(id)a4
+- (void)setCollectionMember:(id)member completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 setCollectionMember:v7 completion:v6];
+  completionCopy = completion;
+  memberCopy = member;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager setCollectionMember:memberCopy completion:completionCopy];
 }
 
-- (void)setCollectionMembers:(id)a3 completion:(id)a4
+- (void)setCollectionMembers:(id)members completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 setCollectionMembers:v7 completion:v6];
+  completionCopy = completion;
+  membersCopy = members;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager setCollectionMembers:membersCopy completion:completionCopy];
 }
 
-- (void)fetchMaxSortOrderInCollectionID:(id)a3 completion:(id)a4
+- (void)fetchMaxSortOrderInCollectionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self cloudCollectionsManager];
-  v8 = [v9 collectionMemberManager];
-  [v8 fetchMaxSortOrderInCollectionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+  collectionMemberManager = [cloudCollectionsManager collectionMemberManager];
+  [collectionMemberManager fetchMaxSortOrderInCollectionID:dCopy completion:completionCopy];
 }
 
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BDSNBPinningManager sharedManager];
-  [v4 fetchMostRecentAudiobookWithCompletion:v3];
+  [v4 fetchMostRecentAudiobookWithCompletion:completionCopy];
 }
 
-- (id)updateWantToReadWithCompletion:(id)a3
+- (id)updateWantToReadWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BDSNBPinningManager sharedManager];
-  v5 = [v4 updateWantToReadWithCompletion:v3];
+  v5 = [v4 updateWantToReadWithCompletion:completionCopy];
 
   return v5;
 }
 
-- (id)updateReadingNowWithCompletion:(id)a3
+- (id)updateReadingNowWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BDSNBPinningManager sharedManager];
-  v5 = [v4 updateReadingNowWithCompletion:v3];
+  v5 = [v4 updateReadingNowWithCompletion:completionCopy];
 
   return v5;
 }
 
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = [[BDSOSTransaction alloc] initWithTransactionName:"updateBitrateForItemWithAdamID"];
   v8 = +[BDSNBPinningManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
@@ -921,146 +921,146 @@ LABEL_23:
   v11[3] = &unk_10023F6F8;
   v12 = v7;
   v9 = v7;
-  [v8 updateBitrateForItemWithAdamID:v6 completion:v11];
+  [v8 updateBitrateForItemWithAdamID:dCopy completion:v11];
 
-  v10 = objc_retainBlock(v5);
+  v10 = objc_retainBlock(completionCopy);
   if (v10)
   {
     v10[2](v10, 0);
   }
 }
 
-- (void)audiobookStoreEnabledWithCompletion:(id)a3
+- (void)audiobookStoreEnabledWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BDSNBPinningManager sharedManager];
-  [v4 audiobookStoreEnabledWithCompletion:v3];
+  [v4 audiobookStoreEnabledWithCompletion:completionCopy];
 }
 
-- (void)currentCloudSyncVersions:(id)a3
+- (void)currentCloudSyncVersions:(id)versions
 {
-  v4 = a3;
-  v6 = [(BDSService *)self secureManager];
-  v5 = [v6 userDataManager];
-  [v5 currentCloudSyncVersions:v4];
+  versionsCopy = versions;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager currentCloudSyncVersions:versionsCopy];
 }
 
-- (void)setUserDatum:(id)a3 completion:(id)a4
+- (void)setUserDatum:(id)datum completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 setUserDatum:v7 completion:v6];
+  completionCopy = completion;
+  datumCopy = datum;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager setUserDatum:datumCopy completion:completionCopy];
 }
 
-- (void)setUserData:(id)a3 completion:(id)a4
+- (void)setUserData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 setUserData:v7 completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager setUserData:dataCopy completion:completionCopy];
 }
 
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 deleteUserDatumForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager deleteUserDatumForKey:keyCopy completion:completionCopy];
 }
 
-- (void)userDatumForKey:(id)a3 completion:(id)a4
+- (void)userDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 userDatumForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager userDatumForKey:keyCopy completion:completionCopy];
 }
 
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4
+- (void)getUserDataChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 getUserDataChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager getUserDataChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 resolvedUserDataValueForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager resolvedUserDataValueForKey:keyCopy completion:completionCopy];
 }
 
-- (void)userDataValueForKey:(id)a3 completion:(id)a4
+- (void)userDataValueForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 userDataManager];
-  [v8 userDataValueForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager userDataValueForKey:keyCopy completion:completionCopy];
 }
 
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(BDSService *)self secureManager];
-  v11 = [v12 userDataManager];
-  [v11 setUserDataValue:v10 forKey:v9 completion:v8];
+  completionCopy = completion;
+  keyCopy = key;
+  valueCopy = value;
+  secureManager = [(BDSService *)self secureManager];
+  userDataManager = [secureManager userDataManager];
+  [userDataManager setUserDataValue:valueCopy forKey:keyCopy completion:completionCopy];
 }
 
-- (void)deleteEngagementDataForKey:(id)a3 completion:(id)a4
+- (void)deleteEngagementDataForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 engagementManager];
-  [v8 deleteEngagementDataForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  engagementManager = [secureManager engagementManager];
+  [engagementManager deleteEngagementDataForKey:keyCopy completion:completionCopy];
 }
 
-- (void)engagementDataForKey:(id)a3 completion:(id)a4
+- (void)engagementDataForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 engagementManager];
-  [v8 engagementDataForKey:v7 completion:v6];
+  completionCopy = completion;
+  keyCopy = key;
+  secureManager = [(BDSService *)self secureManager];
+  engagementManager = [secureManager engagementManager];
+  [engagementManager engagementDataForKey:keyCopy completion:completionCopy];
 }
 
-- (void)getEngagementDataChangesSince:(id)a3 completion:(id)a4
+- (void)getEngagementDataChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 engagementManager];
-  [v8 getEngagementDataChangesSince:v7 completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  secureManager = [(BDSService *)self secureManager];
+  engagementManager = [secureManager engagementManager];
+  [engagementManager getEngagementDataChangesSince:sinceCopy completion:completionCopy];
 }
 
-- (void)setEngagementDatas:(id)a3 completion:(id)a4
+- (void)setEngagementDatas:(id)datas completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 engagementManager];
-  [v8 setEngagementDatas:v7 completion:v6];
+  completionCopy = completion;
+  datasCopy = datas;
+  secureManager = [(BDSService *)self secureManager];
+  engagementManager = [secureManager engagementManager];
+  [engagementManager setEngagementDatas:datasCopy completion:completionCopy];
 }
 
-- (void)setEngagementData:(id)a3 completion:(id)a4
+- (void)setEngagementData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BDSService *)self secureManager];
-  v8 = [v9 engagementManager];
-  [v8 setEngagementData:v7 completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  secureManager = [(BDSService *)self secureManager];
+  engagementManager = [secureManager engagementManager];
+  [engagementManager setEngagementData:dataCopy completion:completionCopy];
 }
 
 - (BDSCloudSyncDiagnosticService)cloudSyncDiagnosticService
@@ -1069,11 +1069,11 @@ LABEL_23:
   if (!cloudSyncDiagnosticService)
   {
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(BDSService *)self assetManager];
-    [v4 addObject:v5];
+    assetManager = [(BDSService *)self assetManager];
+    [v4 addObject:assetManager];
 
-    v6 = [(BDSService *)self cloudCollectionsManager];
-    [v4 addObject:v6];
+    cloudCollectionsManager = [(BDSService *)self cloudCollectionsManager];
+    [v4 addObject:cloudCollectionsManager];
 
     v7 = [BDSCloudSyncDiagnosticService alloc];
     v8 = +[BCCloudKitController sharedInstance];
@@ -1087,18 +1087,18 @@ LABEL_23:
   return cloudSyncDiagnosticService;
 }
 
-- (void)clearSyncMetadata:(id)a3
+- (void)clearSyncMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(BDSService *)self cloudSyncDiagnosticService];
-  v7 = [v5 clearSyncMetadata];
+  metadataCopy = metadata;
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
+  clearSyncMetadata = [cloudSyncDiagnosticService clearSyncMetadata];
 
-  v6 = objc_retainBlock(v4);
-  if (v7)
+  v6 = objc_retainBlock(metadataCopy);
+  if (clearSyncMetadata)
   {
     if (v6)
     {
-      v6[2](v6, v7);
+      v6[2](v6, clearSyncMetadata);
     }
   }
 
@@ -1108,50 +1108,50 @@ LABEL_23:
   }
 }
 
-- (void)forceFetchRemoteChanges:(id)a3
+- (void)forceFetchRemoteChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(BDSService *)self cloudSyncDiagnosticService];
+  changesCopy = changes;
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000371E8;
   v7[3] = &unk_100240CF8;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchRemoteChangesWithCompletionHandler:v7];
+  v8 = changesCopy;
+  v6 = changesCopy;
+  [cloudSyncDiagnosticService fetchRemoteChangesWithCompletionHandler:v7];
 }
 
-- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSService *)self cloudSyncDiagnosticService];
-  [v5 detachWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
+  [cloudSyncDiagnosticService detachWithCompletionHandler:handlerCopy];
 }
 
-- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSService *)self cloudSyncDiagnosticService];
-  [v5 findLocalIdDupesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
+  [cloudSyncDiagnosticService findLocalIdDupesWithCompletionHandler:handlerCopy];
 }
 
-- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSService *)self cloudSyncDiagnosticService];
-  [v5 diagnosticInfoWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
+  [cloudSyncDiagnosticService diagnosticInfoWithCompletionHandler:handlerCopy];
 }
 
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BDSService *)self jaliscoDAAPService];
+  dsCopy = ds;
+  completionCopy = completion;
+  jaliscoDAAPService = [(BDSService *)self jaliscoDAAPService];
 
-  if (v8)
+  if (jaliscoDAAPService)
   {
-    v9 = [(BDSService *)self jaliscoDAAPService];
-    [v9 hideItemsWithStoreIDs:v6 completion:v7];
+    jaliscoDAAPService2 = [(BDSService *)self jaliscoDAAPService];
+    [jaliscoDAAPService2 hideItemsWithStoreIDs:dsCopy completion:completionCopy];
   }
 
   else
@@ -1162,23 +1162,23 @@ LABEL_23:
       sub_1001BFF6C();
     }
 
-    v9 = objc_retainBlock(v7);
-    if (v9)
+    jaliscoDAAPService2 = objc_retainBlock(completionCopy);
+    if (jaliscoDAAPService2)
     {
-      v9[2](v9, 0);
+      jaliscoDAAPService2[2](jaliscoDAAPService2, 0);
     }
   }
 }
 
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self jaliscoDAAPService];
+  completionCopy = completion;
+  jaliscoDAAPService = [(BDSService *)self jaliscoDAAPService];
 
-  if (v5)
+  if (jaliscoDAAPService)
   {
-    v10 = [(BDSService *)self jaliscoDAAPService];
-    [v10 fetchAllHiddenItemStoreIDsWithCompletion:v4];
+    jaliscoDAAPService2 = [(BDSService *)self jaliscoDAAPService];
+    [jaliscoDAAPService2 fetchAllHiddenItemStoreIDsWithCompletion:completionCopy];
   }
 
   else
@@ -1189,7 +1189,7 @@ LABEL_23:
       sub_1001BFFA0();
     }
 
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     if (v7)
     {
       v11 = NSLocalizedDescriptionKey;
@@ -1201,16 +1201,16 @@ LABEL_23:
   }
 }
 
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BDSService *)self jaliscoDAAPService];
+  dsCopy = ds;
+  completionCopy = completion;
+  jaliscoDAAPService = [(BDSService *)self jaliscoDAAPService];
 
-  if (v8)
+  if (jaliscoDAAPService)
   {
-    v9 = [(BDSService *)self jaliscoDAAPService];
-    [v9 resetPurchasedTokenForStoreIDs:v6 completion:v7];
+    jaliscoDAAPService2 = [(BDSService *)self jaliscoDAAPService];
+    [jaliscoDAAPService2 resetPurchasedTokenForStoreIDs:dsCopy completion:completionCopy];
   }
 
   else
@@ -1221,31 +1221,31 @@ LABEL_23:
       sub_1001BFFD4();
     }
 
-    v9 = objc_retainBlock(v7);
-    if (v9)
+    jaliscoDAAPService2 = objc_retainBlock(completionCopy);
+    if (jaliscoDAAPService2)
     {
-      v9[2](v9, 0);
+      jaliscoDAAPService2[2](jaliscoDAAPService2, 0);
     }
   }
 }
 
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self jaliscoDAAPService];
-  [v8 deleteItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  jaliscoDAAPService = [(BDSService *)self jaliscoDAAPService];
+  [jaliscoDAAPService deleteItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self jaliscoDAAPService];
+  completionCopy = completion;
+  jaliscoDAAPService = [(BDSService *)self jaliscoDAAPService];
 
-  if (v5)
+  if (jaliscoDAAPService)
   {
-    v10 = [(BDSService *)self jaliscoDAAPService];
-    [v10 resetStaleJaliscoDatabaseWithCompletion:v4];
+    jaliscoDAAPService2 = [(BDSService *)self jaliscoDAAPService];
+    [jaliscoDAAPService2 resetStaleJaliscoDatabaseWithCompletion:completionCopy];
   }
 
   else
@@ -1256,7 +1256,7 @@ LABEL_23:
       sub_1001C0008();
     }
 
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     if (v7)
     {
       v11 = NSLocalizedDescriptionKey;
@@ -1268,39 +1268,39 @@ LABEL_23:
   }
 }
 
-- (void)monitorServiceNotificationsWithChangeToken:(id)a3 completion:(id)a4
+- (void)monitorServiceNotificationsWithChangeToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v8 = +[NSXPCConnection currentConnection];
-  v9 = [(BDSService *)self clientConnectionService];
+  clientConnectionService = [(BDSService *)self clientConnectionService];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100038248;
   v11[3] = &unk_100240CF8;
-  v12 = v6;
-  v10 = v6;
-  [v9 monitorServiceNotificationsWithConnection:v8 changeToken:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [clientConnectionService monitorServiceNotificationsWithConnection:v8 changeToken:tokenCopy completion:v11];
 }
 
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BDSService *)self widgetDataUpdater];
-  v8 = [v7 currentWidgetDatas];
+  completionCopy = completion;
+  widgetDataUpdater = [(BDSService *)self widgetDataUpdater];
+  currentWidgetDatas = [widgetDataUpdater currentWidgetDatas];
 
-  v9 = [v8 count];
-  if (v9 >= a3)
+  v9 = [currentWidgetDatas count];
+  if (v9 >= limit)
   {
-    v10 = a3;
+    limitCopy = limit;
   }
 
   else
   {
-    v10 = v9;
+    limitCopy = v9;
   }
 
-  v11 = [v8 subarrayWithRange:{0, v10}];
+  v11 = [currentWidgetDatas subarrayWithRange:{0, limitCopy}];
   v12 = sub_1000023E8();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1309,221 +1309,221 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Returning widget data: %@", &v14, 0xCu);
   }
 
-  v13 = objc_retainBlock(v6);
+  v13 = objc_retainBlock(completionCopy);
   if (v13)
   {
     v13[2](v13, v11, 0);
   }
 }
 
-- (void)getBookWidgetInfoWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getBookWidgetInfoWithLimit:(int64_t)limit completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BDSService *)self widgetInfoManager];
+  completionCopy = completion;
+  widgetInfoManager = [(BDSService *)self widgetInfoManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000384A4;
   v9[3] = &unk_100240D20;
-  v10 = v6;
-  v8 = v6;
-  [v7 getInfosWithLimit:a3 completionHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [widgetInfoManager getInfosWithLimit:limit completionHandler:v9];
 }
 
-- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)a3 withCompletion:(id)a4
+- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)to withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BDSService *)self readingGoalsService];
-  [v7 changeBooksFinishedGoalTo:a3 completionHandler:v6];
+  completionCopy = completion;
+  readingGoalsService = [(BDSService *)self readingGoalsService];
+  [readingGoalsService changeBooksFinishedGoalTo:to completionHandler:completionCopy];
 }
 
-- (void)readingGoalsChangeDailyGoalTo:(double)a3 withCompletion:(id)a4
+- (void)readingGoalsChangeDailyGoalTo:(double)to withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BDSService *)self readingGoalsService];
-  [v7 changeDailyGoalTo:v6 completionHandler:a3];
+  completionCopy = completion;
+  readingGoalsService = [(BDSService *)self readingGoalsService];
+  [readingGoalsService changeDailyGoalTo:completionCopy completionHandler:to];
 }
 
-- (void)readingGoalsClearDataWithCompletion:(id)a3
+- (void)readingGoalsClearDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingGoalsService];
-  [v5 clearDataWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingGoalsService = [(BDSService *)self readingGoalsService];
+  [readingGoalsService clearDataWithCompletionHandler:completionCopy];
 }
 
-- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)a3
+- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingGoalsService];
-  [v5 clearLocalCachedDataWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingGoalsService = [(BDSService *)self readingGoalsService];
+  [readingGoalsService clearLocalCachedDataWithCompletionHandler:completionCopy];
 }
 
-- (void)readingGoalsStateInfoWithCompletion:(id)a3
+- (void)readingGoalsStateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingGoalsService];
-  [v5 stateInfoWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingGoalsService = [(BDSService *)self readingGoalsService];
+  [readingGoalsService stateInfoWithCompletionHandler:completionCopy];
 }
 
-- (void)readingHistoryClearDataWithCompletion:(id)a3
+- (void)readingHistoryClearDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryCommandLineService];
-  [v5 clearDataWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService clearDataWithCompletionHandler:completionCopy];
 }
 
-- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)a3
+- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryService];
-  [v5 clearDefaultsCachedDataWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingHistoryService = [(BDSService *)self readingHistoryService];
+  [readingHistoryService clearDefaultsCachedDataWithCompletionHandler:completionCopy];
 }
 
-- (void)readingHistoryClearDate:(id)a3 withCompletion:(id)a4
+- (void)readingHistoryClearDate:(id)date withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self readingHistoryCommandLineService];
-  [v8 clearDate:v7 completionHandler:v6];
+  completionCopy = completion;
+  dateCopy = date;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService clearDate:dateCopy completionHandler:completionCopy];
 }
 
-- (void)readingHistoryClearTodayWithCompletion:(id)a3
+- (void)readingHistoryClearTodayWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryCommandLineService];
-  [v5 clearTodayWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService clearTodayWithCompletionHandler:completionCopy];
 }
 
-- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 withCompletion:(id)a6
+- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time withCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(BDSService *)self readingHistoryCommandLineService];
-  [v14 readingHistoryStateInfoWithRangeStart:v13 rangeEnd:v12 currentTime:v11 completionHandler:v10];
+  completionCopy = completion;
+  timeCopy = time;
+  endCopy = end;
+  startCopy = start;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService readingHistoryStateInfoWithRangeStart:startCopy rangeEnd:endCopy currentTime:timeCopy completionHandler:completionCopy];
 }
 
-- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5
+- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BDSService *)self readingHistoryService];
-  [v11 handleSyncFileChangeWithSyncVersionInfo:v10 updateInfo:v9 completionHandler:v8];
+  completionCopy = completion;
+  updateInfoCopy = updateInfo;
+  infoCopy = info;
+  readingHistoryService = [(BDSService *)self readingHistoryService];
+  [readingHistoryService handleSyncFileChangeWithSyncVersionInfo:infoCopy updateInfo:updateInfoCopy completionHandler:completionCopy];
 }
 
-- (void)readingHistoryIncrementWithDate:(id)a3 by:(int64_t)a4 withCompletion:(id)a5
+- (void)readingHistoryIncrementWithDate:(id)date by:(int64_t)by withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BDSService *)self readingHistoryCommandLineService];
-  [v10 incrementWithDate:v9 by:a4 completionHandler:v8];
+  completionCopy = completion;
+  dateCopy = date;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService incrementWithDate:dateCopy by:by completionHandler:completionCopy];
 }
 
-- (void)readingHistoryServiceStatusInfoWithCompletion:(id)a3
+- (void)readingHistoryServiceStatusInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryCommandLineService];
-  v7 = [v5 serviceStatusInfo];
+  completionCopy = completion;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  serviceStatusInfo = [readingHistoryCommandLineService serviceStatusInfo];
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(completionCopy);
   if (v6)
   {
-    v6[2](v6, v7, 0);
+    v6[2](v6, serviceStatusInfo, 0);
   }
 }
 
-- (void)priceTrackingSetConfiguration:(id)a3 completion:(id)a4
+- (void)priceTrackingSetConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(BDSService *)self priceTracker];
+  priceTracker = [(BDSService *)self priceTracker];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100038C9C;
   v10[3] = &unk_100240308;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [v8 setConfiguration:v6 completion:v10];
+  [priceTracker setConfiguration:configurationCopy completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)priceTrackingCtlRefreshTrackedPricesIgnoringSchedule:(BOOL)a3 completion:(id)a4
+- (void)priceTrackingCtlRefreshTrackedPricesIgnoringSchedule:(BOOL)schedule completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(BDSService *)self priceTracker];
+  completionCopy = completion;
+  priceTracker = [(BDSService *)self priceTracker];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100038DF8;
   v8[3] = &unk_1002402E0;
-  v9 = v5;
-  v7 = v5;
-  [v6 bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [priceTracker bdsdctl_updateTrackedPricesIgnoringScheduleForAllItemsWithCompletionHandler:v8];
 }
 
-- (void)priceTrackingCtlGetStateWithCompletion:(id)a3
+- (void)priceTrackingCtlGetStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self priceTracker];
-  [v5 bdsctl_getStateWithCompletion:v4];
+  completionCopy = completion;
+  priceTracker = [(BDSService *)self priceTracker];
+  [priceTracker bdsctl_getStateWithCompletion:completionCopy];
 }
 
-- (void)priceTrackingCtlAddTrackedItems:(id)a3 completion:(id)a4
+- (void)priceTrackingCtlAddTrackedItems:(id)items completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  sub_1001BFCB8(self, v7, v6);
+  completionCopy = completion;
+  v7 = [items mutableCopy];
+  sub_1001BFCB8(self, v7, completionCopy);
 }
 
-- (void)priceTrackingCtlOverrideReferencePrices:(id)a3 completion:(id)a4
+- (void)priceTrackingCtlOverrideReferencePrices:(id)prices completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self priceTracker];
+  completionCopy = completion;
+  pricesCopy = prices;
+  priceTracker = [(BDSService *)self priceTracker];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10003936C;
   v10[3] = &unk_1002402E0;
-  v11 = v6;
-  v9 = v6;
-  [v8 bdsctl_updateReferencePrices:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [priceTracker bdsctl_updateReferencePrices:pricesCopy completion:v10];
 }
 
-- (void)readingHistoryBackupWithName:(id)a3 completion:(id)a4
+- (void)readingHistoryBackupWithName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self readingHistoryCommandLineService];
-  [v8 backupWithName:v7 completionHandler:v6];
+  completionCopy = completion;
+  nameCopy = name;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService backupWithName:nameCopy completionHandler:completionCopy];
 }
 
-- (void)readingHistoryListBackupWithCompletion:(id)a3
+- (void)readingHistoryListBackupWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryCommandLineService];
-  [v5 listBackupWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService listBackupWithCompletionHandler:completionCopy];
 }
 
-- (void)readingHistoryRestoreWithName:(id)a3 completion:(id)a4
+- (void)readingHistoryRestoreWithName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self readingHistoryCommandLineService];
-  [v8 restoreWithName:v7 completionHandler:v6];
+  completionCopy = completion;
+  nameCopy = name;
+  readingHistoryCommandLineService = [(BDSService *)self readingHistoryCommandLineService];
+  [readingHistoryCommandLineService restoreWithName:nameCopy completionHandler:completionCopy];
 }
 
-- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)a3
+- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryService];
-  [v5 bookWidgetReadingHistoryStateInfoWithCompletionHandler:v4];
+  completionCopy = completion;
+  readingHistoryService = [(BDSService *)self readingHistoryService];
+  [readingHistoryService bookWidgetReadingHistoryStateInfoWithCompletionHandler:completionCopy];
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
   v3 = sub_100002660();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1539,15 +1539,15 @@ LABEL_23:
   [v3 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   [v3 setAutomaticallyMergesChangesFromParent:1];
   WeakRetained = objc_loadWeakRetained(&self->_assetManager);
-  v5 = [WeakRetained assetDataSource];
-  v6 = [v5 managedObjectContext];
+  assetDataSource = [WeakRetained assetDataSource];
+  managedObjectContext = [assetDataSource managedObjectContext];
 
-  if (v6)
+  if (managedObjectContext)
   {
     v7 = objc_loadWeakRetained(&self->_assetManager);
-    v8 = [v7 assetDataSource];
-    v9 = [v8 managedObjectContext];
-    [v3 setParentContext:v9];
+    assetDataSource2 = [v7 assetDataSource];
+    managedObjectContext2 = [assetDataSource2 managedObjectContext];
+    [v3 setParentContext:managedObjectContext2];
 
     v10 = v3;
   }
@@ -1566,9 +1566,9 @@ LABEL_23:
   return v10;
 }
 
-- (void)_setupWidgetDataUpdater:(id)a3
+- (void)_setupWidgetDataUpdater:(id)updater
 {
-  v8 = a3;
+  updaterCopy = updater;
   if (!self->_widgetCenterManager)
   {
     v4 = +[BDSWidgetCenterManager sharedInstance];
@@ -1576,7 +1576,7 @@ LABEL_23:
     self->_widgetCenterManager = v4;
   }
 
-  v6 = [[BDSBookWidgetDataUpdater alloc] initWithWidgetCenterManager:self->_widgetCenterManager managedObjectContext:v8];
+  v6 = [[BDSBookWidgetDataUpdater alloc] initWithWidgetCenterManager:self->_widgetCenterManager managedObjectContext:updaterCopy];
   widgetDataUpdater = self->_widgetDataUpdater;
   self->_widgetDataUpdater = v6;
 
@@ -1592,20 +1592,20 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting up Books widget...", &v21, 2u);
   }
 
-  v4 = [(BDSService *)self _newWidgetMOC];
-  if (v4)
+  _newWidgetMOC = [(BDSService *)self _newWidgetMOC];
+  if (_newWidgetMOC)
   {
-    [(BDSService *)self _setupWidgetDataUpdater:v4];
+    [(BDSService *)self _setupWidgetDataUpdater:_newWidgetMOC];
     v5 = objc_alloc_init(BDSUbiquityManager);
     ubiquityManager = self->_ubiquityManager;
     self->_ubiquityManager = v5;
 
     v7 = [BDSBookWidgetInfoManager alloc];
     WeakRetained = objc_loadWeakRetained(&self->_assetManager);
-    v9 = [WeakRetained assetDetailManager];
+    assetDetailManager = [WeakRetained assetDetailManager];
     v10 = objc_loadWeakRetained(&self->_assetManager);
-    v11 = [v10 readingNowDetailManager];
-    v12 = [(BDSBookWidgetInfoManager *)v7 initWithMOC:v4 assetDetailManager:v9 readingNowDetailManager:v11 ubiquityManager:self->_ubiquityManager];
+    readingNowDetailManager = [v10 readingNowDetailManager];
+    v12 = [(BDSBookWidgetInfoManager *)v7 initWithMOC:_newWidgetMOC assetDetailManager:assetDetailManager readingNowDetailManager:readingNowDetailManager ubiquityManager:self->_ubiquityManager];
     widgetInfoManager = self->_widgetInfoManager;
     self->_widgetInfoManager = v12;
 
@@ -1613,40 +1613,40 @@ LABEL_23:
     v15 = BUProtocolCast();
     objc_opt_class();
     v16 = objc_loadWeakRetained(&self->_assetManager);
-    v17 = [v16 readingNowDetailManager];
+    readingNowDetailManager2 = [v16 readingNowDetailManager];
     v18 = BUDynamicCast();
     [v18 setDataMonitor:v15];
 
     v19 = sub_10000DE28();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(BDSService *)self widgetInfoManager];
+      widgetInfoManager = [(BDSService *)self widgetInfoManager];
       v21 = 138412290;
-      v22 = v20;
+      v22 = widgetInfoManager;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Creating widgetInfomanager:  %@", &v21, 0xCu);
     }
   }
 }
 
-- (void)setBookWidgetInfo:(id)a3 completion:(id)a4
+- (void)setBookWidgetInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSService *)self widgetInfoManager];
-  [v8 setBookWidgetInfo:v7 completion:v6];
+  completionCopy = completion;
+  infoCopy = info;
+  widgetInfoManager = [(BDSService *)self widgetInfoManager];
+  [widgetInfoManager setBookWidgetInfo:infoCopy completion:completionCopy];
 }
 
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSService *)self readingHistoryService];
+  handlerCopy = handler;
+  readingHistoryService = [(BDSService *)self readingHistoryService];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100039B00;
   v7[3] = &unk_100240D90;
-  v8 = v4;
-  v6 = v4;
-  [v5 mergeMovedReadingHistoryDataWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [readingHistoryService mergeMovedReadingHistoryDataWithCompletionHandler:v7];
 }
 
 - (id)makeOSStateHandler
@@ -1664,9 +1664,9 @@ LABEL_23:
 - (id)_stateForLog
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(BDSService *)self cloudSyncDiagnosticService];
-  v5 = [v4 stateForLog];
-  [v3 setObject:v5 forKeyedSubscript:@"cloudSyncDiagnostic"];
+  cloudSyncDiagnosticService = [(BDSService *)self cloudSyncDiagnosticService];
+  stateForLog = [cloudSyncDiagnosticService stateForLog];
+  [v3 setObject:stateForLog forKeyedSubscript:@"cloudSyncDiagnostic"];
 
   return v3;
 }

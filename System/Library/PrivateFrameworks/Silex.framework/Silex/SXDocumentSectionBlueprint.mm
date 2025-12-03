@@ -1,15 +1,15 @@
 @interface SXDocumentSectionBlueprint
-+ (SXDocumentSectionBlueprint)blueprintWithItems:(id)a3;
++ (SXDocumentSectionBlueprint)blueprintWithItems:(id)items;
 @end
 
 @implementation SXDocumentSectionBlueprint
 
-+ (SXDocumentSectionBlueprint)blueprintWithItems:(id)a3
++ (SXDocumentSectionBlueprint)blueprintWithItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = itemsCopy;
 
   return v4;
 }

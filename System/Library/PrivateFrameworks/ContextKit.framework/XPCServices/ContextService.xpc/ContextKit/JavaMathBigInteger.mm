@@ -1,33 +1,33 @@
 @interface JavaMathBigInteger
 + (void)initialize;
-- (BOOL)equalsArraysWithIntArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)equalsArraysWithIntArray:(id)array;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOne;
-- (BOOL)isProbablePrimeWithInt:(int)a3;
-- (BOOL)testBitWithInt:(int)a3;
-- (JavaMathBigInteger)initWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5;
+- (BOOL)isProbablePrimeWithInt:(int)int;
+- (BOOL)testBitWithInt:(int)int;
+- (JavaMathBigInteger)initWithInt:(int)int withInt:(int)withInt withIntArray:(id)array;
 - (id)abs;
-- (id)clearBitWithInt:(int)a3;
+- (id)clearBitWithInt:(int)int;
 - (id)copy__;
-- (id)divideAndRemainderWithJavaMathBigInteger:(id)a3;
-- (id)divideWithJavaMathBigInteger:(id)a3;
-- (id)flipBitWithInt:(int)a3;
-- (id)gcdWithJavaMathBigInteger:(id)a3;
-- (id)maxWithJavaMathBigInteger:(id)a3;
-- (id)minWithJavaMathBigInteger:(id)a3;
-- (id)modInverseWithJavaMathBigInteger:(id)a3;
-- (id)modPowWithJavaMathBigInteger:(id)a3 withJavaMathBigInteger:(id)a4;
-- (id)modWithJavaMathBigInteger:(id)a3;
-- (id)multiplyWithJavaMathBigInteger:(id)a3;
+- (id)divideAndRemainderWithJavaMathBigInteger:(id)integer;
+- (id)divideWithJavaMathBigInteger:(id)integer;
+- (id)flipBitWithInt:(int)int;
+- (id)gcdWithJavaMathBigInteger:(id)integer;
+- (id)maxWithJavaMathBigInteger:(id)integer;
+- (id)minWithJavaMathBigInteger:(id)integer;
+- (id)modInverseWithJavaMathBigInteger:(id)integer;
+- (id)modPowWithJavaMathBigInteger:(id)integer withJavaMathBigInteger:(id)bigInteger;
+- (id)modWithJavaMathBigInteger:(id)integer;
+- (id)multiplyWithJavaMathBigInteger:(id)integer;
 - (id)negate;
 - (id)nextProbablePrime;
-- (id)remainderWithJavaMathBigInteger:(id)a3;
-- (id)setBitWithInt:(int)a3;
+- (id)remainderWithJavaMathBigInteger:(id)integer;
+- (id)setBitWithInt:(int)int;
 - (id)shiftLeftOneBit;
-- (id)shiftLeftWithInt:(int)a3;
-- (id)shiftRightWithInt:(int)a3;
+- (id)shiftLeftWithInt:(int)int;
+- (id)shiftRightWithInt:(int)int;
 - (id)toByteArray;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int)getFirstNonzeroDigit;
 - (int)getLowestSetBit;
 - (int)intValue;
@@ -35,19 +35,19 @@
 - (uint64_t)cutOffLeadingZeroes;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaMathBigInteger
 
-- (JavaMathBigInteger)initWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5
+- (JavaMathBigInteger)initWithInt:(int)int withInt:(int)withInt withIntArray:(id)array
 {
   self->firstNonzeroDigit_ = -2;
   self->hashCode_ = 0;
-  self->sign_ = a3;
-  self->numberLength_ = a4;
-  JreStrongAssign(&self->digits_, a5);
+  self->sign_ = int;
+  self->numberLength_ = withInt;
+  JreStrongAssign(&self->digits_, array);
   return self;
 }
 
@@ -55,11 +55,11 @@
 {
   if (self->sign_)
   {
-    v3 = [(JavaMathBigInteger *)self bitLength];
-    v4 = [(JavaMathBigInteger *)self getFirstNonzeroDigit];
-    v5 = v3 >> 3;
+    bitLength = [(JavaMathBigInteger *)self bitLength];
+    getFirstNonzeroDigit = [(JavaMathBigInteger *)self getFirstNonzeroDigit];
+    v5 = bitLength >> 3;
     v6 = v5 + 1;
-    v7 = [IOSByteArray arrayWithLength:(v3 >> 3) + 1];
+    v7 = [IOSByteArray arrayWithLength:(bitLength >> 3) + 1];
     v8 = v7;
     if (v5 + 1 - 4 * self->numberLength_ == 1)
     {
@@ -98,14 +98,14 @@
 
       v21 = v5;
       v22 = digits->super.size_;
-      if ((v4 & 0x80000000) != 0 || v4 >= v22)
+      if ((getFirstNonzeroDigit & 0x80000000) != 0 || getFirstNonzeroDigit >= v22)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v22, v4);
+        IOSArray_throwOutOfBoundsWithMsg(v22, getFirstNonzeroDigit);
       }
 
-      v23 = -*(&digits->super.size_ + v4 + 1);
-      v24 = v4 + 1;
-      if (v4 + 1 == self->numberLength_)
+      v23 = -*(&digits->super.size_ + getFirstNonzeroDigit + 1);
+      v24 = getFirstNonzeroDigit + 1;
+      if (getFirstNonzeroDigit + 1 == self->numberLength_)
       {
         v25 = v10;
       }
@@ -125,7 +125,7 @@
         v26 = v25;
       }
 
-      v27 = v21 - 4 * v4;
+      v27 = v21 - 4 * getFirstNonzeroDigit;
       do
       {
         v28 = v8->super.size_;
@@ -183,7 +183,7 @@
 
     else
     {
-      LODWORD(v12) = v6 - 4 * v4;
+      LODWORD(v12) = v6 - 4 * getFirstNonzeroDigit;
       if (v12 > v11)
       {
         v13 = 4;
@@ -196,12 +196,12 @@
           }
 
           v15 = v14->super.size_;
-          if ((v4 & 0x80000000) != 0 || v4 >= v15)
+          if ((getFirstNonzeroDigit & 0x80000000) != 0 || getFirstNonzeroDigit >= v15)
           {
-            IOSArray_throwOutOfBoundsWithMsg(v15, v4);
+            IOSArray_throwOutOfBoundsWithMsg(v15, getFirstNonzeroDigit);
           }
 
-          v16 = (v4 + 1);
+          v16 = (getFirstNonzeroDigit + 1);
           if (v16 == self->numberLength_)
           {
             v13 = v10;
@@ -209,7 +209,7 @@
 
           if (v13 >= 1)
           {
-            v17 = *(&v14->super.size_ + v4 + 1);
+            v17 = *(&v14->super.size_ + getFirstNonzeroDigit + 1);
             v18 = v13;
             do
             {
@@ -228,7 +228,7 @@
             while (v18);
           }
 
-          v4 = v16;
+          getFirstNonzeroDigit = v16;
           if (v12 <= v11)
           {
             return v8;
@@ -275,36 +275,36 @@ LABEL_56:
   return self;
 }
 
-- (id)shiftRightWithInt:(int)a3
+- (id)shiftRightWithInt:(int)int
 {
-  if (a3 && *(self + 5))
+  if (int && *(self + 5))
   {
-    if (a3 < 1)
+    if (int < 1)
     {
-      return JavaMathBitLevel_shiftLeftWithJavaMathBigInteger_withInt_(self, -a3);
+      return JavaMathBitLevel_shiftLeftWithJavaMathBigInteger_withInt_(self, -int);
     }
 
     else
     {
-      return JavaMathBitLevel_shiftRightWithJavaMathBigInteger_withInt_(self, a3);
+      return JavaMathBitLevel_shiftRightWithJavaMathBigInteger_withInt_(self, int);
     }
   }
 
   return self;
 }
 
-- (id)shiftLeftWithInt:(int)a3
+- (id)shiftLeftWithInt:(int)int
 {
-  if (a3 && *(self + 5))
+  if (int && *(self + 5))
   {
-    if (a3 < 1)
+    if (int < 1)
     {
-      return JavaMathBitLevel_shiftRightWithJavaMathBigInteger_withInt_(self, -a3);
+      return JavaMathBitLevel_shiftRightWithJavaMathBigInteger_withInt_(self, -int);
     }
 
     else
     {
-      return JavaMathBitLevel_shiftLeftWithJavaMathBigInteger_withInt_(self, a3);
+      return JavaMathBitLevel_shiftLeftWithJavaMathBigInteger_withInt_(self, int);
     }
   }
 
@@ -321,19 +321,19 @@ LABEL_56:
   return self;
 }
 
-- (BOOL)testBitWithInt:(int)a3
+- (BOOL)testBitWithInt:(int)int
 {
-  if (a3)
+  if (int)
   {
-    v4 = a3;
-    if (a3 < 0)
+    intCopy = int;
+    if (int < 0)
     {
       v13 = new_JavaLangArithmeticException_initWithNSString_(@"Negative bit address");
       objc_exception_throw(v13);
     }
 
-    v5 = a3 >> 5;
-    if ((a3 >> 5) >= self->numberLength_)
+    v5 = int >> 5;
+    if ((int >> 5) >= self->numberLength_)
     {
       return self->sign_ >> 31;
     }
@@ -344,13 +344,13 @@ LABEL_56:
       size = digits->super.size_;
       if (v5 >= size)
       {
-        IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 5);
+        IOSArray_throwOutOfBoundsWithMsg(size, int >> 5);
       }
 
       v8 = *(&digits->super.size_ + v5 + 1);
       if ((self->sign_ & 0x80000000) == 0 || ((v9 = [(JavaMathBigInteger *)self getFirstNonzeroDigit], LOBYTE(v10) = 0, v9 != v5) ? (v8 = ~v8) : (v8 = -v8), v5 >= v9))
       {
-        LOBYTE(v10) = (v8 & (1 << v4)) != 0;
+        LOBYTE(v10) = (v8 & (1 << intCopy)) != 0;
       }
 
       return v10;
@@ -376,35 +376,35 @@ LABEL_17:
   return v10;
 }
 
-- (id)setBitWithInt:(int)a3
+- (id)setBitWithInt:(int)int
 {
   if ([(JavaMathBigInteger *)self testBitWithInt:?])
   {
     return self;
   }
 
-  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, a3);
+  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, int);
 }
 
-- (id)clearBitWithInt:(int)a3
+- (id)clearBitWithInt:(int)int
 {
   if (![(JavaMathBigInteger *)self testBitWithInt:?])
   {
     return self;
   }
 
-  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, a3);
+  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, int);
 }
 
-- (id)flipBitWithInt:(int)a3
+- (id)flipBitWithInt:(int)int
 {
-  if (a3 < 0)
+  if (int < 0)
   {
     v5 = new_JavaLangArithmeticException_initWithNSString_(@"Negative bit address");
     objc_exception_throw(v5);
   }
 
-  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, a3);
+  return JavaMathBitLevel_flipBitWithJavaMathBigInteger_withInt_(self, int);
 }
 
 - (int)getLowestSetBit
@@ -414,15 +414,15 @@ LABEL_17:
     return -1;
   }
 
-  v3 = [(JavaMathBigInteger *)self getFirstNonzeroDigit];
+  getFirstNonzeroDigit = [(JavaMathBigInteger *)self getFirstNonzeroDigit];
   digits = self->digits_;
   if (!digits)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = v3;
-  v6 = 32 * v3;
+  v5 = getFirstNonzeroDigit;
+  v6 = 32 * getFirstNonzeroDigit;
   size = digits->super.size_;
   if ((v5 & 0x80000000) != 0 || v5 >= size)
   {
@@ -481,10 +481,10 @@ LABEL_8:
   return v5 * self->sign_;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -495,7 +495,7 @@ LABEL_8:
   }
 
   sign = self->sign_;
-  v6 = *(a3 + 5);
+  v6 = *(id + 5);
   if (sign > v6)
   {
     return 1;
@@ -507,7 +507,7 @@ LABEL_8:
   }
 
   numberLength = self->numberLength_;
-  v8 = *(a3 + 4);
+  v8 = *(id + 4);
   if (numberLength <= v8)
   {
     if (numberLength < v8)
@@ -517,14 +517,14 @@ LABEL_8:
 
     else
     {
-      sign *= JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(a3 + 1), numberLength);
+      sign *= JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(id + 1), numberLength);
     }
   }
 
   return sign;
 }
 
-- (id)minWithJavaMathBigInteger:(id)a3
+- (id)minWithJavaMathBigInteger:(id)integer
 {
   if ([(JavaMathBigInteger *)self compareToWithId:?]== -1)
   {
@@ -533,11 +533,11 @@ LABEL_8:
 
   else
   {
-    return a3;
+    return integer;
   }
 }
 
-- (id)maxWithJavaMathBigInteger:(id)a3
+- (id)maxWithJavaMathBigInteger:(id)integer
 {
   if ([(JavaMathBigInteger *)self compareToWithId:?]== 1)
   {
@@ -546,7 +546,7 @@ LABEL_8:
 
   else
   {
-    return a3;
+    return integer;
   }
 }
 
@@ -583,9 +583,9 @@ LABEL_6:
   return hashCode;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -597,7 +597,7 @@ LABEL_6:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -607,17 +607,17 @@ LABEL_6:
     JreThrowClassCastException();
   }
 
-  if (self->sign_ != *(a3 + 5) || self->numberLength_ != *(a3 + 4))
+  if (self->sign_ != *(equal + 5) || self->numberLength_ != *(equal + 4))
   {
     return 0;
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(equal + 1);
 
   return [(JavaMathBigInteger *)self equalsArraysWithIntArray:v5];
 }
 
-- (BOOL)equalsArraysWithIntArray:(id)a3
+- (BOOL)equalsArraysWithIntArray:(id)array
 {
   numberLength = self->numberLength_;
   do
@@ -640,34 +640,34 @@ LABEL_6:
       IOSArray_throwOutOfBoundsWithMsg(size, numberLength);
     }
 
-    if (!a3)
+    if (!array)
     {
 LABEL_12:
       JreThrowNullPointerException();
     }
 
     v8 = *(&digits->super.size_ + (numberLength & 0x7FFFFFFF) + 1);
-    v9 = *(a3 + 2);
+    v9 = *(array + 2);
     if (v9 <= numberLength)
     {
       IOSArray_throwOutOfBoundsWithMsg(v9, numberLength);
     }
   }
 
-  while (v8 == *(a3 + (numberLength & 0x7FFFFFFF) + 3));
+  while (v8 == *(array + (numberLength & 0x7FFFFFFF) + 3));
   return (v5 - 1) >> 31;
 }
 
-- (id)gcdWithJavaMathBigInteger:(id)a3
+- (id)gcdWithJavaMathBigInteger:(id)integer
 {
   v4 = [(JavaMathBigInteger *)self abs];
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_24;
   }
 
   v5 = v4;
-  v6 = [a3 abs];
+  v6 = [integer abs];
   if (!v5)
   {
     goto LABEL_24;
@@ -756,45 +756,45 @@ LABEL_19:
   return JavaMathDivision_gcdBinaryWithJavaMathBigInteger_withJavaMathBigInteger_(v16, v17);
 }
 
-- (id)multiplyWithJavaMathBigInteger:(id)a3
+- (id)multiplyWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     JreThrowNullPointerException();
   }
 
-  if (!*(a3 + 5) || !self->sign_)
+  if (!*(integer + 5) || !self->sign_)
   {
     return JavaMathBigInteger_ZERO_;
   }
 
-  return JavaMathMultiplication_multiplyWithJavaMathBigInteger_withJavaMathBigInteger_(self, a3);
+  return JavaMathMultiplication_multiplyWithJavaMathBigInteger_withJavaMathBigInteger_(self, integer);
 }
 
-- (id)divideAndRemainderWithJavaMathBigInteger:(id)a3
+- (id)divideAndRemainderWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
 LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v3 = *(a3 + 5);
+  v3 = *(integer + 5);
   if (!v3)
   {
     v22 = new_JavaLangArithmeticException_initWithNSString_(@"BigInteger divide by zero");
     objc_exception_throw(v22);
   }
 
-  v5 = *(a3 + 4);
-  v6 = *(a3 + 1);
+  v5 = *(integer + 4);
+  v6 = *(integer + 1);
   if (v5 != 1)
   {
     digits = self->digits_;
     numberLength = self->numberLength_;
     if (numberLength == v5)
     {
-      if ((JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(a3 + 1), *(a3 + 4)) & 0x80000000) == 0)
+      if ((JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(integer + 1), *(integer + 4)) & 0x80000000) == 0)
       {
 LABEL_11:
         sign = self->sign_;
@@ -847,7 +847,7 @@ LABEL_11:
   }
 
   v8 = v6[3];
-  v9 = *(a3 + 5);
+  v9 = *(integer + 5);
 
   return JavaMathDivision_divideAndRemainderByIntegerWithJavaMathBigInteger_withInt_withInt_(self, v8, v9);
 }
@@ -856,20 +856,20 @@ LABEL_11:
 {
   do
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     v3 = (v2 - 1);
     if (v2 < 1)
     {
       break;
     }
 
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     if (!v4)
     {
       goto LABEL_13;
     }
 
-    *(a1 + 16) = v3;
+    *(self + 16) = v3;
     v5 = *(v4 + 8);
     if (v2 > v5)
     {
@@ -878,15 +878,15 @@ LABEL_11:
   }
 
   while (!*(v4 + 12 + 4 * v3));
-  v6 = *(a1 + 8);
+  v6 = *(self + 8);
   if (!v6)
   {
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v7 = *(a1 + 16);
-  *(a1 + 16) = v7 + 1;
+  v7 = *(self + 16);
+  *(self + 16) = v7 + 1;
   result = *(v6 + 8);
   if (v7 < 0 || v7 >= result)
   {
@@ -895,29 +895,29 @@ LABEL_13:
 
   if (!*(v6 + 12 + 4 * v7))
   {
-    *(a1 + 20) = 0;
+    *(self + 20) = 0;
   }
 
   return result;
 }
 
-- (id)divideWithJavaMathBigInteger:(id)a3
+- (id)divideWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_36;
   }
 
-  v4 = *(a3 + 5);
+  v4 = *(integer + 5);
   if (!v4)
   {
     v25 = new_JavaLangArithmeticException_initWithNSString_(@"BigInteger divide by zero");
     objc_exception_throw(v25);
   }
 
-  if ([a3 isOne])
+  if ([integer isOne])
   {
-    if (*(a3 + 5) <= 0)
+    if (*(integer + 5) <= 0)
     {
 
       return [(JavaMathBigInteger *)self negate];
@@ -928,12 +928,12 @@ LABEL_13:
 
   sign = self->sign_;
   numberLength = self->numberLength_;
-  v9 = *(a3 + 4);
+  v9 = *(integer + 4);
   if (v9 + numberLength != 2)
   {
     if (numberLength == v9)
     {
-      v16 = JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(a3 + 1), self->numberLength_);
+      v16 = JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(integer + 1), self->numberLength_);
       if (v16 != -1)
       {
         if (!v16)
@@ -968,7 +968,7 @@ LABEL_25:
       }
 
       digits = self->digits_;
-      v23 = *(a3 + 1);
+      v23 = *(integer + 1);
       if (v9 != 1)
       {
         JavaMathDivision_divideWithIntArray_withInt_withIntArray_withInt_withIntArray_withInt_(v19, v18, digits, numberLength, v23, v9);
@@ -1010,7 +1010,7 @@ LABEL_36:
   }
 
   v12 = *(&v10->super.size_ + 1);
-  v13 = *(a3 + 1);
+  v13 = *(integer + 1);
   v14 = *(v13 + 8);
   if (v14 <= 0)
   {
@@ -1030,27 +1030,27 @@ LABEL_36:
   return JavaMathBigInteger_valueOfWithLong_(v15);
 }
 
-- (id)remainderWithJavaMathBigInteger:(id)a3
+- (id)remainderWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_15;
   }
 
-  if (!*(a3 + 5))
+  if (!*(integer + 5))
   {
     v14 = new_JavaLangArithmeticException_initWithNSString_(@"BigInteger divide by zero");
     objc_exception_throw(v14);
   }
 
-  v4 = self;
+  selfCopy = self;
   numberLength = self->numberLength_;
-  v6 = *(a3 + 4);
+  v6 = *(integer + 4);
   if (numberLength == v6)
   {
-    if (JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(a3 + 1), numberLength) == -1)
+    if (JavaMathElementary_compareArraysWithIntArray_withIntArray_withInt_(self->digits_, *(integer + 1), numberLength) == -1)
     {
-      return v4;
+      return selfCopy;
     }
 
     goto LABEL_7;
@@ -1062,14 +1062,14 @@ LABEL_7:
     v7 = [IOSIntArray arrayWithLength:v6];
     if (v6 != 1)
     {
-      v9 = JavaMathDivision_divideWithIntArray_withInt_withIntArray_withInt_withIntArray_withInt_(0, numberLength - v6 + 1, v4->digits_, numberLength, *(a3 + 1), v6);
+      v9 = JavaMathDivision_divideWithIntArray_withInt_withIntArray_withInt_withIntArray_withInt_(0, numberLength - v6 + 1, selfCopy->digits_, numberLength, *(integer + 1), v6);
 LABEL_13:
-      v4 = new_JavaMathBigInteger_initWithInt_withInt_withIntArray_(v4->sign_, v6, v9);
-      [JavaMathBigInteger cutOffLeadingZeroes]_0(v4);
-      return v4;
+      selfCopy = new_JavaMathBigInteger_initWithInt_withInt_withIntArray_(selfCopy->sign_, v6, v9);
+      [JavaMathBigInteger cutOffLeadingZeroes]_0(selfCopy);
+      return selfCopy;
     }
 
-    v8 = *(a3 + 1);
+    v8 = *(integer + 1);
     if (v8)
     {
       v9 = v7;
@@ -1079,7 +1079,7 @@ LABEL_13:
         IOSArray_throwOutOfBoundsWithMsg(v10, 0);
       }
 
-      v11 = JavaMathDivision_remainderArrayByIntWithIntArray_withInt_withInt_(v4->digits_, numberLength, *(v8 + 12));
+      v11 = JavaMathDivision_remainderArrayByIntWithIntArray_withInt_withInt_(selfCopy->digits_, numberLength, *(v8 + 12));
       v12 = v9[2];
       if (v12 <= 0)
       {
@@ -1094,23 +1094,23 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)modInverseWithJavaMathBigInteger:(id)a3
+- (id)modInverseWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_15;
   }
 
-  if (*(a3 + 5) <= 0)
+  if (*(integer + 5) <= 0)
   {
     v9 = @"BigInteger: modulus not positive";
     goto LABEL_18;
   }
 
-  if (!-[JavaMathBigInteger testBitWithInt:](self, "testBitWithInt:", 0) && ([a3 testBitWithInt:0] & 1) == 0)
+  if (!-[JavaMathBigInteger testBitWithInt:](self, "testBitWithInt:", 0) && ([integer testBitWithInt:0] & 1) == 0)
   {
 LABEL_17:
     v9 = @"BigInteger not invertible.";
@@ -1119,13 +1119,13 @@ LABEL_18:
     objc_exception_throw(v10);
   }
 
-  if ([a3 isOne])
+  if ([integer isOne])
   {
     return JavaMathBigInteger_ZERO_;
   }
 
   v6 = [(JavaMathBigInteger *)self abs];
-  if (!v6 || (v7 = JavaMathDivision_modInverseMontgomeryWithJavaMathBigInteger_withJavaMathBigInteger_([v6 modWithJavaMathBigInteger:a3], a3)) == 0)
+  if (!v6 || (v7 = JavaMathDivision_modInverseMontgomeryWithJavaMathBigInteger_withJavaMathBigInteger_([v6 modWithJavaMathBigInteger:integer], integer)) == 0)
   {
 LABEL_15:
     JreThrowNullPointerException();
@@ -1142,29 +1142,29 @@ LABEL_15:
     return v5;
   }
 
-  return [a3 subtractWithJavaMathBigInteger:v7];
+  return [integer subtractWithJavaMathBigInteger:v7];
 }
 
-- (id)modPowWithJavaMathBigInteger:(id)a3 withJavaMathBigInteger:(id)a4
+- (id)modPowWithJavaMathBigInteger:(id)integer withJavaMathBigInteger:(id)bigInteger
 {
-  if (!a4)
+  if (!bigInteger)
   {
     goto LABEL_31;
   }
 
-  if (*(a4 + 5) <= 0)
+  if (*(bigInteger + 5) <= 0)
   {
     v16 = new_JavaLangArithmeticException_initWithNSString_(@"BigInteger: modulus not positive");
     objc_exception_throw(v16);
   }
 
-  v7 = [a4 isOne];
-  if (!a3)
+  isOne = [bigInteger isOne];
+  if (!integer)
   {
     goto LABEL_31;
   }
 
-  v8 = *(a3 + 5);
+  v8 = *(integer + 5);
   if (v8 > 0 && self->sign_ == 0)
   {
     v10 = 1;
@@ -1172,7 +1172,7 @@ LABEL_15:
 
   else
   {
-    v10 = v7;
+    v10 = isOne;
   }
 
   if (v10 == 1)
@@ -1193,18 +1193,18 @@ LABEL_15:
 
   if (v8 < 0)
   {
-    self = [(JavaMathBigInteger *)self modInverseWithJavaMathBigInteger:a4];
-    a3 = [a3 negate];
+    self = [(JavaMathBigInteger *)self modInverseWithJavaMathBigInteger:bigInteger];
+    integer = [integer negate];
   }
 
-  if ([a4 testBitWithInt:0])
+  if ([bigInteger testBitWithInt:0])
   {
     if (!self)
     {
       goto LABEL_31;
     }
 
-    v12 = JavaMathDivision_oddModPowWithJavaMathBigInteger_withJavaMathBigInteger_withJavaMathBigInteger_([(JavaMathBigInteger *)self abs], a3, a4);
+    v12 = JavaMathDivision_oddModPowWithJavaMathBigInteger_withJavaMathBigInteger_withJavaMathBigInteger_([(JavaMathBigInteger *)self abs], integer, bigInteger);
   }
 
   else
@@ -1214,7 +1214,7 @@ LABEL_15:
       goto LABEL_31;
     }
 
-    v12 = JavaMathDivision_evenModPowWithJavaMathBigInteger_withJavaMathBigInteger_withJavaMathBigInteger_([(JavaMathBigInteger *)self abs], a3, a4);
+    v12 = JavaMathDivision_evenModPowWithJavaMathBigInteger_withJavaMathBigInteger_withJavaMathBigInteger_([(JavaMathBigInteger *)self abs], integer, bigInteger);
   }
 
   v11 = v12;
@@ -1223,17 +1223,17 @@ LABEL_15:
     return v11;
   }
 
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_31;
   }
 
-  if (![a3 testBitWithInt:0])
+  if (![integer testBitWithInt:0])
   {
     return v11;
   }
 
-  v14 = [a4 subtractWithJavaMathBigInteger:JavaMathBigInteger_ONE_];
+  v14 = [bigInteger subtractWithJavaMathBigInteger:JavaMathBigInteger_ONE_];
   if (!v14 || (v13 = [v14 multiplyWithJavaMathBigInteger:v11]) == 0)
   {
 LABEL_31:
@@ -1242,23 +1242,23 @@ LABEL_31:
 
 LABEL_27:
 
-  return [v13 modWithJavaMathBigInteger:a4];
+  return [v13 modWithJavaMathBigInteger:bigInteger];
 }
 
-- (id)modWithJavaMathBigInteger:(id)a3
+- (id)modWithJavaMathBigInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     goto LABEL_8;
   }
 
-  if (*(a3 + 5) <= 0)
+  if (*(integer + 5) <= 0)
   {
     v5 = new_JavaLangArithmeticException_initWithNSString_(@"BigInteger: modulus not positive");
     objc_exception_throw(v5);
   }
 
-  result = [(JavaMathBigInteger *)self remainderWithJavaMathBigInteger:a3];
+  result = [(JavaMathBigInteger *)self remainderWithJavaMathBigInteger:integer];
   if (!result)
   {
 LABEL_8:
@@ -1268,17 +1268,17 @@ LABEL_8:
   if ((*(result + 5) & 0x80000000) != 0)
   {
 
-    return [result addWithJavaMathBigInteger:a3];
+    return [result addWithJavaMathBigInteger:integer];
   }
 
   return result;
 }
 
-- (BOOL)isProbablePrimeWithInt:(int)a3
+- (BOOL)isProbablePrimeWithInt:(int)int
 {
   v4 = [(JavaMathBigInteger *)self abs];
 
-  return JavaMathPrimality_isProbablePrimeWithJavaMathBigInteger_withInt_(v4, a3);
+  return JavaMathPrimality_isProbablePrimeWithJavaMathBigInteger_withInt_(v4, int);
 }
 
 - (id)nextProbablePrime
@@ -1373,30 +1373,30 @@ LABEL_14:
   return v4;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   self->sign_ = self->signum_;
   sub_100198948(self, self->magnitude_);
 
   [JavaMathBigInteger cutOffLeadingZeroes]_0(self);
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   self->signum_ = [(JavaMathBigInteger *)self signum];
   v5 = [(JavaMathBigInteger *)self abs];
-  if (!v5 || (JreStrongAssign(&self->magnitude_, [v5 toByteArray]), !a3))
+  if (!v5 || (JreStrongAssign(&self->magnitude_, [v5 toByteArray]), !stream))
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
 - (void)dealloc
@@ -1408,7 +1408,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaMathBigInteger alloc];
     JavaMathBigInteger_initWithInt_withInt_(v2, 0, 0);

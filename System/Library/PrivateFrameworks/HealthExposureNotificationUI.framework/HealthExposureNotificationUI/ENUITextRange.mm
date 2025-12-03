@@ -1,14 +1,14 @@
 @interface ENUITextRange
-+ (id)rangeWithRange:(_NSRange)a3;
++ (id)rangeWithRange:(_NSRange)range;
 - (_NSRange)range;
 @end
 
 @implementation ENUITextRange
 
-+ (id)rangeWithRange:(_NSRange)a3
++ (id)rangeWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_alloc_init(ENUITextRange);
   [(ENUITextRange *)v5 setRange:location, length];
 

@@ -1,25 +1,25 @@
 @interface IDSKTAnalyticsLogger
 + (id)logger;
-- (void)logMetric:(id)a3;
+- (void)logMetric:(id)metric;
 @end
 
 @implementation IDSKTAnalyticsLogger
 
 + (id)logger
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)logMetric:(id)a3
+- (void)logMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v6 = +[TransparencyAnalytics logger];
-  v4 = [v3 name];
-  v5 = [v3 dictionaryRepresentation];
+  name = [metricCopy name];
+  dictionaryRepresentation = [metricCopy dictionaryRepresentation];
 
-  [v6 logSoftFailureForEventNamed:v4 withAttributes:v5];
+  [v6 logSoftFailureForEventNamed:name withAttributes:dictionaryRepresentation];
 }
 
 @end

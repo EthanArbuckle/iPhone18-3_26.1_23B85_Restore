@@ -1,31 +1,31 @@
 @interface FBAActionMenuController
 - (_TtC18Feedback_Assistant23FBAActionMenuController)init;
 - (id)buildMenu;
-- (void)addAction:(id)a3;
-- (void)addActionWithTitle:(id)a3 image:(id)a4 actionHandler:(id)a5;
-- (void)attachToBarButtonItem:(id)a3;
+- (void)addAction:(id)action;
+- (void)addActionWithTitle:(id)title image:(id)image actionHandler:(id)handler;
+- (void)attachToBarButtonItem:(id)item;
 @end
 
 @implementation FBAActionMenuController
 
-- (void)addActionWithTitle:(id)a3 image:(id)a4 actionHandler:(id)a5
+- (void)addActionWithTitle:(id)title image:(id)image actionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a4;
-  v13 = self;
-  sub_100069598(v8, v10, a4, sub_10006C004, v11);
+  imageCopy = image;
+  selfCopy = self;
+  sub_100069598(v8, v10, image, sub_10006C004, v11);
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
   v5 = OBJC_IVAR____TtC18Feedback_Assistant23FBAActionMenuController_actions;
   swift_beginAccess();
-  v6 = a3;
-  v7 = self;
+  actionCopy = action;
+  selfCopy = self;
   specialized Array._makeUniqueAndReserveCapacityIfNotUnique()();
   if (*((*(&self->super.isa + v5) & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*(&self->super.isa + v5) & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {
@@ -39,18 +39,18 @@
 
 - (id)buildMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100069874();
 
   return v3;
 }
 
-- (void)attachToBarButtonItem:(id)a3
+- (void)attachToBarButtonItem:(id)item
 {
-  v4 = a3;
-  v6 = self;
+  itemCopy = item;
+  selfCopy = self;
   v5 = sub_100069874();
-  [v4 setMenu:v5];
+  [itemCopy setMenu:v5];
 }
 
 - (_TtC18Feedback_Assistant23FBAActionMenuController)init

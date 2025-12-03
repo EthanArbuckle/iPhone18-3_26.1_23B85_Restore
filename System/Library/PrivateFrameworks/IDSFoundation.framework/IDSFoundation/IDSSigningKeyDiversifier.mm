@@ -1,22 +1,22 @@
 @interface IDSSigningKeyDiversifier
-- (BOOL)isEqual:(id)a3;
-- (IDSSigningKeyDiversifier)initWithCoder:(id)a3;
-- (IDSSigningKeyDiversifier)initWithDiversifier:(id)a3 trackingPreventionSecret:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSSigningKeyDiversifier)initWithCoder:(id)coder;
+- (IDSSigningKeyDiversifier)initWithDiversifier:(id)diversifier trackingPreventionSecret:(id)secret;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSSigningKeyDiversifier
 
-- (IDSSigningKeyDiversifier)initWithDiversifier:(id)a3 trackingPreventionSecret:(id)a4
+- (IDSSigningKeyDiversifier)initWithDiversifier:(id)diversifier trackingPreventionSecret:(id)secret
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  diversifierCopy = diversifier;
+  secretCopy = secret;
+  v9 = secretCopy;
+  selfCopy = 0;
+  if (diversifierCopy && secretCopy)
   {
     v14.receiver = self;
     v14.super_class = IDSSigningKeyDiversifier;
@@ -24,51 +24,51 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_diversifier, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_diversifier, diversifier);
+      objc_storeStrong(p_isa + 2, secret);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSSigningKeyDiversifier)initWithCoder:(id)a3
+- (IDSSigningKeyDiversifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dS"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tPS"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dS"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tPS"];
 
   v7 = [(IDSSigningKeyDiversifier *)self initWithDiversifier:v5 trackingPreventionSecret:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSSigningKeyDiversifier *)self diversifier];
-  [v4 encodeObject:v5 forKey:@"dS"];
+  coderCopy = coder;
+  diversifier = [(IDSSigningKeyDiversifier *)self diversifier];
+  [coderCopy encodeObject:diversifier forKey:@"dS"];
 
-  v6 = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
-  [v4 encodeObject:v6 forKey:@"tPS"];
+  trackingPreventionSecret = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
+  [coderCopy encodeObject:trackingPreventionSecret forKey:@"tPS"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(IDSSigningKeyDiversifier *)v3 diversifier];
-  v5 = [(IDSSigningKeyDiversifier *)v3 trackingPreventionSecret];
-  v6 = [(IDSSigningKeyDiversifier *)v3 initWithDiversifier:v4 trackingPreventionSecret:v5];
+  selfCopy = self;
+  diversifier = [(IDSSigningKeyDiversifier *)selfCopy diversifier];
+  trackingPreventionSecret = [(IDSSigningKeyDiversifier *)selfCopy trackingPreventionSecret];
+  v6 = [(IDSSigningKeyDiversifier *)selfCopy initWithDiversifier:diversifier trackingPreventionSecret:trackingPreventionSecret];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -78,14 +78,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IDSSigningKeyDiversifier *)v5 diversifier];
-      v7 = [(IDSSigningKeyDiversifier *)self diversifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      diversifier = [(IDSSigningKeyDiversifier *)v5 diversifier];
+      diversifier2 = [(IDSSigningKeyDiversifier *)self diversifier];
+      if ([diversifier isEqual:diversifier2])
       {
-        v8 = [(IDSSigningKeyDiversifier *)v5 trackingPreventionSecret];
-        v9 = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
-        v10 = [v8 isEqual:v9];
+        trackingPreventionSecret = [(IDSSigningKeyDiversifier *)v5 trackingPreventionSecret];
+        trackingPreventionSecret2 = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
+        v10 = [trackingPreventionSecret isEqual:trackingPreventionSecret2];
       }
 
       else
@@ -105,10 +105,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSSigningKeyDiversifier *)self diversifier];
-  v4 = [v3 hash];
-  v5 = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
-  v6 = [v5 hash];
+  diversifier = [(IDSSigningKeyDiversifier *)self diversifier];
+  v4 = [diversifier hash];
+  trackingPreventionSecret = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
+  v6 = [trackingPreventionSecret hash];
 
   return v6 ^ v4;
 }
@@ -117,9 +117,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
-  v6 = [(IDSSigningKeyDiversifier *)self diversifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p tPS: %@, div: %@>", v4, self, v5, v6];
+  trackingPreventionSecret = [(IDSSigningKeyDiversifier *)self trackingPreventionSecret];
+  diversifier = [(IDSSigningKeyDiversifier *)self diversifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p tPS: %@, div: %@>", v4, self, trackingPreventionSecret, diversifier];
 
   return v7;
 }

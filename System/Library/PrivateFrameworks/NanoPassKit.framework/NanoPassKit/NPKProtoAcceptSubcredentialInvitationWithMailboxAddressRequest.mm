@@ -1,11 +1,11 @@
 @interface NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest;
   v4 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)&v8 description];
-  v5 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   mailboxAddress = self->_mailboxAddress;
   if (mailboxAddress)
   {
-    [v3 setObject:mailboxAddress forKey:@"mailboxAddress"];
+    [dictionary setObject:mailboxAddress forKey:@"mailboxAddress"];
   }
 
   activationCode = self->_activationCode;
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_mailboxAddress)
   {
     [NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_activationCode)
   {
@@ -57,37 +57,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setMailboxAddress:self->_mailboxAddress];
+  toCopy = to;
+  [toCopy setMailboxAddress:self->_mailboxAddress];
   if (self->_activationCode)
   {
-    [v4 setActivationCode:?];
+    [toCopy setActivationCode:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mailboxAddress copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mailboxAddress copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_activationCode copyWithZone:a3];
+  v8 = [(NSString *)self->_activationCode copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((mailboxAddress = self->_mailboxAddress, !(mailboxAddress | v4[2])) || -[NSString isEqual:](mailboxAddress, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((mailboxAddress = self->_mailboxAddress, !(mailboxAddress | equalCopy[2])) || -[NSString isEqual:](mailboxAddress, "isEqual:")))
   {
     activationCode = self->_activationCode;
-    if (activationCode | v4[1])
+    if (activationCode | equalCopy[1])
     {
       v7 = [(NSString *)activationCode isEqual:?];
     }
@@ -106,20 +106,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)self setMailboxAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)self setActivationCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

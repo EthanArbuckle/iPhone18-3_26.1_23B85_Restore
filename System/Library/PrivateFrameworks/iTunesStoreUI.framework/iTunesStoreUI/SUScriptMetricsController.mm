@@ -1,13 +1,13 @@
 @interface SUScriptMetricsController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUScriptMetricsController)init;
 - (id)scriptAttributeKeys;
-- (void)_configureWithBagDictionary:(id)a3;
+- (void)_configureWithBagDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)flushUnreportedEventsWithCompletionFunction:(id)a3;
-- (void)recordEventWithTopic:(id)a3 properties:(id)a4 completionFunction:(id)a5;
+- (void)flushUnreportedEventsWithCompletionFunction:(id)function;
+- (void)recordEventWithTopic:(id)topic properties:(id)properties completionFunction:(id)function;
 @end
 
 @implementation SUScriptMetricsController
@@ -20,9 +20,9 @@
   if (v2)
   {
     v2->_metricsController = objc_alloc_init(MEMORY[0x1E69D4958]);
-    v3 = [MEMORY[0x1E69E4800] sharedBagLoadingController];
-    -[SUScriptMetricsController _configureWithBagDictionary:](v2, "_configureWithBagDictionary:", [v3 bagDictionary]);
-    [v3 addBagObserver:v2];
+    mEMORY[0x1E69E4800] = [MEMORY[0x1E69E4800] sharedBagLoadingController];
+    -[SUScriptMetricsController _configureWithBagDictionary:](v2, "_configureWithBagDictionary:", [mEMORY[0x1E69E4800] bagDictionary]);
+    [mEMORY[0x1E69E4800] addBagObserver:v2];
   }
 
   return v2;
@@ -37,7 +37,7 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)flushUnreportedEventsWithCompletionFunction:(id)a3
+- (void)flushUnreportedEventsWithCompletionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -50,9 +50,9 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v5 = 0;
-    if (a3 && (isKindOfClass & 1) == 0)
+    if (function && (isKindOfClass & 1) == 0)
     {
-      v5 = [[SUScriptFunction alloc] initWithScriptObject:a3];
+      v5 = [[SUScriptFunction alloc] initWithScriptObject:function];
     }
   }
 
@@ -86,22 +86,22 @@ void __73__SUScriptMetricsController_flushUnreportedEventsWithCompletionFunction
   [*(a1 + 32) setThisObject:0];
 }
 
-- (void)recordEventWithTopic:(id)a3 properties:(id)a4 completionFunction:(id)a5
+- (void)recordEventWithTopic:(id)topic properties:(id)properties completionFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a5 = 0;
+    function = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SUScriptObject *)self copyJavaScriptContext];
-    if (v9)
+    copyJavaScriptContext = [(SUScriptObject *)self copyJavaScriptContext];
+    if (copyJavaScriptContext)
     {
-      v10 = v9;
-      v11 = [a4 copyArrayOrDictionaryWithContext:v9];
+      v10 = copyJavaScriptContext;
+      v11 = [properties copyArrayOrDictionaryWithContext:copyJavaScriptContext];
       JSGlobalContextRelease(v10);
       goto LABEL_9;
     }
@@ -120,21 +120,21 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a5)
+    if (function)
     {
-      a5 = [[SUScriptFunction alloc] initWithScriptObject:a5];
+      function = [[SUScriptFunction alloc] initWithScriptObject:function];
     }
 
-    [a5 setThisObject:self];
+    [function setThisObject:self];
     v12 = objc_alloc_init(MEMORY[0x1E69D4960]);
-    [v12 setTopic:a3];
+    [v12 setTopic:topic];
     [v12 addPropertiesWithDictionary:v11];
     metricsController = self->_metricsController;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __80__SUScriptMetricsController_recordEventWithTopic_properties_completionFunction___block_invoke;
     v15[3] = &unk_1E8166FA0;
-    v15[4] = a5;
+    v15[4] = function;
     [(SSMetricsController *)metricsController insertEvent:v12 withCompletionHandler:v15];
   }
 
@@ -166,9 +166,9 @@ void __80__SUScriptMetricsController_recordEventWithTopic_properties_completionF
   [*(a1 + 32) setThisObject:0];
 }
 
-- (void)_configureWithBagDictionary:(id)a3
+- (void)_configureWithBagDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:*MEMORY[0x1E69D4D30]];
+  v4 = [dictionary objectForKey:*MEMORY[0x1E69D4D30]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count])
   {
@@ -179,27 +179,27 @@ void __80__SUScriptMetricsController_recordEventWithTopic_properties_completionF
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_59 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMetricsController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_45, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_45, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMetricsController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -209,14 +209,14 @@ void __80__SUScriptMetricsController_recordEventWithTopic_properties_completionF
 {
   v4.receiver = self;
   v4.super_class = SUScriptMetricsController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_59 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_59 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_45 = sel_flushUnreportedEventsWithCompletionFunction_;
     *algn_1EBF3B5F8 = @"flushUnreportedEvents";

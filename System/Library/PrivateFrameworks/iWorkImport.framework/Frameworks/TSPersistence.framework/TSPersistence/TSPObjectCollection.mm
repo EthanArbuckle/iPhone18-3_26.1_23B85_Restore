@@ -1,22 +1,22 @@
 @interface TSPObjectCollection
-- (TSPObjectCollection)initWithContext:(id)a3 objects:(id)a4;
+- (TSPObjectCollection)initWithContext:(id)context objects:(id)objects;
 - (id)tsp_publicLoggingDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPObjectCollection
 
-- (TSPObjectCollection)initWithContext:(id)a3 objects:(id)a4
+- (TSPObjectCollection)initWithContext:(id)context objects:(id)objects
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = a4;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v37, v41, 16);
+  objectsCopy = objects;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(objectsCopy, v8, &v37, v41, 16);
   if (v9)
   {
     v10 = *v38;
@@ -26,7 +26,7 @@ LABEL_3:
     {
       if (*v38 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(objectsCopy);
       }
 
       v12 = *(*(&v37 + 1) + 8 * v11);
@@ -37,7 +37,7 @@ LABEL_3:
       }
 
       v15 = objc_msgSend_context(v12, v13, v14);
-      v16 = v15 == v6;
+      v16 = v15 == contextCopy;
 
       if (!v16)
       {
@@ -50,7 +50,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v17, &v37, v41, 16);
+        v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(objectsCopy, v17, &v37, v41, 16);
         if (v9)
         {
           goto LABEL_3;
@@ -67,7 +67,7 @@ LABEL_3:
 LABEL_15:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -75,45 +75,45 @@ LABEL_10:
 
   v36.receiver = self;
   v36.super_class = TSPObjectCollection;
-  v20 = [(TSPObject *)&v36 initWithContext:v6];
+  v20 = [(TSPObject *)&v36 initWithContext:contextCopy];
   if (v20)
   {
-    v21 = objc_msgSend_copy(v7, v18, v19);
+    v21 = objc_msgSend_copy(objectsCopy, v18, v19);
     objects = v20->_objects;
     v20->_objects = v21;
   }
 
   self = v20;
-  v23 = self;
+  selfCopy = self;
 LABEL_16:
 
   v34 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812FC248[58]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812FC248[58]);
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2769D5450;
   v10[3] = &unk_27A6E3B40;
   v10[4] = self;
-  v7 = v4;
+  v7 = unarchiverCopy;
   v8 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v7, v9, v6 + 16, v8, 0, v10);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2769D574C, off_2812FC248[58]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2769D574C, off_2812FC248[58]);
 
-  objc_msgSend_setStrongReferenceArray_message_(v7, v6, self->_objects, v5 + 16);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v6, self->_objects, v5 + 16);
 }
 
 - (id)tsp_publicLoggingDescription
@@ -122,8 +122,8 @@ LABEL_16:
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v24.receiver = self;
   v24.super_class = TSPObjectCollection;
-  v4 = [(TSPObject *)&v24 tsp_publicLoggingDescription];
-  objc_msgSend_appendFormat_(v3, v5, @"[collection: %@, objects: [", v4);
+  tsp_publicLoggingDescription = [(TSPObject *)&v24 tsp_publicLoggingDescription];
+  objc_msgSend_appendFormat_(v3, v5, @"[collection: %@, objects: [", tsp_publicLoggingDescription);
 
   v22 = 0u;
   v23 = 0u;

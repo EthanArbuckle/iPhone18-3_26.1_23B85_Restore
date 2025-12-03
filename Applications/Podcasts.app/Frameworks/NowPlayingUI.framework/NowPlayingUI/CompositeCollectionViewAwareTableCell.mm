@@ -1,59 +1,59 @@
 @interface CompositeCollectionViewAwareTableCell
 - (UIColor)backgroundColor;
-- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithFrame:(CGRect)frame;
 - (id)_collectionView;
-- (void)_setCollectionView:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)setBackgroundColor:(id)a3;
+- (void)_setCollectionView:(id)view;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation CompositeCollectionViewAwareTableCell
 
 - (id)_collectionView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_CBB24();
 
   return v3;
 }
 
-- (void)_setCollectionView:(id)a3
+- (void)_setCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for CompositeCollectionViewAwareTableCell();
-  [(CompositeCollectionViewAwareTableCell *)&v4 _setCollectionView:a3];
+  [(CompositeCollectionViewAwareTableCell *)&v4 _setCollectionView:view];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_CC268(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_CC268(attributesCopy);
 }
 
 - (UIColor)backgroundColor
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for CompositeCollectionViewAwareTableCell();
-  v2 = [(CompositeCollectionViewAwareTableCell *)&v4 backgroundColor];
+  backgroundColor = [(CompositeCollectionViewAwareTableCell *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for CompositeCollectionViewAwareTableCell();
   v4 = v9.receiver;
-  v5 = a3;
-  [(CompositeCollectionViewAwareTableCell *)&v9 setBackgroundColor:v5];
-  v6 = [v4 tableViewCell];
-  if (v6)
+  colorCopy = color;
+  [(CompositeCollectionViewAwareTableCell *)&v9 setBackgroundColor:colorCopy];
+  tableViewCell = [v4 tableViewCell];
+  if (tableViewCell)
   {
-    v7 = v6;
-    v8 = [v4 backgroundColor];
-    [v7 setBackgroundColor:v8];
+    v7 = tableViewCell;
+    backgroundColor = [v4 backgroundColor];
+    [v7 setBackgroundColor:backgroundColor];
   }
 
   else
@@ -62,12 +62,12 @@
   }
 }
 
-- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell_lastAppliedIndexPath;
   v9 = sub_140C2C();
   (*(*(v9 - 8) + 56))(self + v8, 1, 1, v9);
@@ -76,15 +76,15 @@
   return [(CompositeCollectionViewAwareTableCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC12NowPlayingUI37CompositeCollectionViewAwareTableCell_lastAppliedIndexPath;
   v6 = sub_140C2C();
   (*(*(v6 - 8) + 56))(self + v5, 1, 1, v6);
   v10.receiver = self;
   v10.super_class = type metadata accessor for CompositeCollectionViewAwareTableCell();
-  v7 = a3;
-  v8 = [(CompositeCollectionViewAwareTableCell *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(CompositeCollectionViewAwareTableCell *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

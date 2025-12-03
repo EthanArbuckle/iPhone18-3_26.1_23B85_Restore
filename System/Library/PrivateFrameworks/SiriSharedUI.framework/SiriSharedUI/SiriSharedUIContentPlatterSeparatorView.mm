@@ -1,20 +1,20 @@
 @interface SiriSharedUIContentPlatterSeparatorView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUIContentPlatterSeparatorView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUIContentPlatterSeparatorView)initWithFrame:(CGRect)frame;
 - (double)_scale;
 - (void)_setupBackgroundView;
 - (void)_setupBackgroundViewSmall;
 - (void)layoutSubviews;
-- (void)setSeparatorType:(int64_t)a3;
+- (void)setSeparatorType:(int64_t)type;
 @end
 
 @implementation SiriSharedUIContentPlatterSeparatorView
 
-- (SiriSharedUIContentPlatterSeparatorView)initWithFrame:(CGRect)a3
+- (SiriSharedUIContentPlatterSeparatorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SiriSharedUIContentPlatterSeparatorView;
-  v3 = [(SiriSharedUIContentPlatterSeparatorView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriSharedUIContentPlatterSeparatorView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,9 +33,9 @@
   v8 = [MEMORY[0x277D75210] effectWithStyle:8];
   v3 = [MEMORY[0x277D75D00] effectForBlurEffect:v8 style:7];
   v4 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v3];
-  v5 = [(UIView *)v4 contentView];
+  contentView = [(UIView *)v4 contentView];
   v6 = SiriSharedUIPlatterKeyLineColor();
-  [v5 setBackgroundColor:v6];
+  [contentView setBackgroundColor:v6];
 
   backgroundView = self->_backgroundView;
   self->_backgroundView = v4;
@@ -52,9 +52,9 @@
   [(UIView *)v5 setHidden:1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   separatorType = self->_separatorType;
   v5 = 0.0;
   if (separatorType > 1)
@@ -88,7 +88,7 @@ LABEL_9:
 
   if (separatorType == 1)
   {
-    [(SiriSharedUIContentPlatterSeparatorView *)self _scale:a3.width];
+    [(SiriSharedUIContentPlatterSeparatorView *)self _scale:fits.width];
     v5 = 1.0 / v6;
   }
 
@@ -101,23 +101,23 @@ LABEL_12:
 
 - (double)_scale
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSeparatorType:(int64_t)a3
+- (void)setSeparatorType:(int64_t)type
 {
-  if (self->_separatorType != a3)
+  if (self->_separatorType != type)
   {
     v13 = v4;
     v14 = v3;
-    self->_separatorType = a3;
+    self->_separatorType = type;
     backgroundView = self->_backgroundView;
-    v9 = a3 == 1;
-    v10 = a3 == 1;
+    v9 = type == 1;
+    v10 = type == 1;
     v11 = !v9;
     [(UIView *)backgroundView setHidden:v10, v13, v14, v5];
     backgroundViewSmall = self->_backgroundViewSmall;

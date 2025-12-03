@@ -1,20 +1,20 @@
 @interface SBPIPContentViewLayoutSettings
 + (id)pipDefaults;
-- (CGSize)_contentViewSizeForAspectRatio:(CGSize)a3 currentSize:(double)a4;
-- (CGSize)_maximumContentViewSizeForAspectRatio:(CGSize)a3 maximumReferenceSize:(double)a4;
-- (CGSize)_minimumContentViewSizeForAspectRatio:(CGSize)a3 minimumReferenceSize:(double)a4;
-- (CGSize)currentContentViewSizeForAspectRatio:(CGSize)a3;
-- (CGSize)defaultContentViewSizeForAspectRatio:(CGSize)a3;
-- (CGSize)maximumPossibleContentViewSizeForAspectRatio:(CGSize)a3;
-- (CGSize)maximumPreferredContentViewSizeForAspectRatio:(CGSize)a3;
-- (CGSize)minimumPossibleContentViewSizeForAspectRatio:(CGSize)a3;
-- (CGSize)minimumPreferredContentViewSizeForAspectRatio:(CGSize)a3;
+- (CGSize)_contentViewSizeForAspectRatio:(CGSize)ratio currentSize:(double)size;
+- (CGSize)_maximumContentViewSizeForAspectRatio:(CGSize)ratio maximumReferenceSize:(double)size;
+- (CGSize)_minimumContentViewSizeForAspectRatio:(CGSize)ratio minimumReferenceSize:(double)size;
+- (CGSize)currentContentViewSizeForAspectRatio:(CGSize)ratio;
+- (CGSize)defaultContentViewSizeForAspectRatio:(CGSize)ratio;
+- (CGSize)maximumPossibleContentViewSizeForAspectRatio:(CGSize)ratio;
+- (CGSize)maximumPreferredContentViewSizeForAspectRatio:(CGSize)ratio;
+- (CGSize)minimumPossibleContentViewSizeForAspectRatio:(CGSize)ratio;
+- (CGSize)minimumPreferredContentViewSizeForAspectRatio:(CGSize)ratio;
 - (CGSize)minimumStashedTabSize;
-- (SBPIPContentViewLayoutSettings)initWithPlatformMetrics:(id)a3 contentSize:(CGSize)a4;
+- (SBPIPContentViewLayoutSettings)initWithPlatformMetrics:(id)metrics contentSize:(CGSize)size;
 - (unint64_t)currentContentViewPosition;
-- (void)setContentViewPosition:(unint64_t)a3;
-- (void)setContentViewSize:(CGSize)a3;
-- (void)updatePlatformMetrics:(id)a3;
+- (void)setContentViewPosition:(unint64_t)position;
+- (void)setContentViewSize:(CGSize)size;
+- (void)updatePlatformMetrics:(id)metrics;
 @end
 
 @implementation SBPIPContentViewLayoutSettings
@@ -38,66 +38,66 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   pipDefaults_sPIPDefaults = v0;
 }
 
-- (SBPIPContentViewLayoutSettings)initWithPlatformMetrics:(id)a3 contentSize:(CGSize)a4
+- (SBPIPContentViewLayoutSettings)initWithPlatformMetrics:(id)metrics contentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  metricsCopy = metrics;
   v16.receiver = self;
   v16.super_class = SBPIPContentViewLayoutSettings;
   v9 = [(SBPIPContentViewLayoutSettings *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_platformMetrics, a3);
+    objc_storeStrong(&v9->_platformMetrics, metrics);
     v11 = +[SBPIPContentViewLayoutSettings pipDefaults];
     pipDefaults = v10->_pipDefaults;
     v10->_pipDefaults = v11;
 
-    v13 = [[SBPIPContentViewLayoutContext alloc] initWithPlatformMetrics:v8 contentSize:v10->_pipDefaults defaults:width, height];
+    height = [[SBPIPContentViewLayoutContext alloc] initWithPlatformMetrics:metricsCopy contentSize:v10->_pipDefaults defaults:width, height];
     context = v10->_context;
-    v10->_context = v13;
+    v10->_context = height;
   }
 
   return v10;
 }
 
-- (void)updatePlatformMetrics:(id)a3
+- (void)updatePlatformMetrics:(id)metrics
 {
-  objc_storeStrong(&self->_platformMetrics, a3);
-  v5 = a3;
-  [(SBPIPContentViewLayoutContext *)self->_context updatePlatformMetrics:v5];
+  objc_storeStrong(&self->_platformMetrics, metrics);
+  metricsCopy = metrics;
+  [(SBPIPContentViewLayoutContext *)self->_context updatePlatformMetrics:metricsCopy];
 }
 
-- (void)setContentViewSize:(CGSize)a3
+- (void)setContentViewSize:(CGSize)size
 {
-  height = a3.height;
-  if (a3.width >= a3.height)
+  height = size.height;
+  if (size.width >= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
-  if (a3.width == 0.0)
+  if (size.width == 0.0)
   {
     v6 = 1.0;
   }
 
   else
   {
-    v6 = a3.width;
+    v6 = size.width;
   }
 
   [(SBPIPContentViewLayoutContext *)self->_context currentSize];
   if (v7 != width)
   {
     v8 = height / v6;
-    v9 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
-    v40 = [v9 sizePreferencesForAspectRatio:v8];
+    sizePolicy = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
+    v40 = [sizePolicy sizePreferencesForAspectRatio:v8];
 
     [v40 longSideDefaultSize];
     v39 = v10;
@@ -199,15 +199,15 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   }
 }
 
-- (CGSize)defaultContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)defaultContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   v6 = +[SBPIPSettingsDomain rootSettings];
-  v7 = [v6 interactionSettings];
-  v8 = [v7 alwaysStartAtSmallestSize];
+  interactionSettings = [v6 interactionSettings];
+  alwaysStartAtSmallestSize = [interactionSettings alwaysStartAtSmallestSize];
 
-  if (v8)
+  if (alwaysStartAtSmallestSize)
   {
 
     [(SBPIPContentViewLayoutSettings *)self minimumPossibleContentViewSizeForAspectRatio:width, height];
@@ -215,9 +215,9 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
 
   else
   {
-    v11 = [(SBPIPDefaults *)self->_pipDefaults initiallyUsesMinimumPreferredContentSize];
+    initiallyUsesMinimumPreferredContentSize = [(SBPIPDefaults *)self->_pipDefaults initiallyUsesMinimumPreferredContentSize];
     context = self->_context;
-    if (v11)
+    if (initiallyUsesMinimumPreferredContentSize)
     {
       [(SBPIPContentViewLayoutContext *)context minimumSizePreference];
     }
@@ -235,17 +235,17 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)_contentViewSizeForAspectRatio:(CGSize)a3 currentSize:(double)a4
+- (CGSize)_contentViewSizeForAspectRatio:(CGSize)ratio currentSize:(double)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(SBPIPContentViewLayoutSettings *)self minimumPossibleContentViewSizeForAspectRatio:?];
   v9 = v8;
   v11 = v10;
   [(SBPIPContentViewLayoutSettings *)self maximumPossibleContentViewSizeForAspectRatio:width, height];
   if (width == 0.0 || height == 0.0)
   {
-    v22 = a4;
+    sizeCopy = size;
   }
 
   else
@@ -280,35 +280,35 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
 
     if (v21)
     {
-      v22 = v15;
+      sizeCopy = v15;
     }
 
     else
     {
-      v22 = v18;
+      sizeCopy = v18;
     }
 
     if (v21)
     {
-      a4 = v14;
+      size = v14;
     }
 
     else
     {
-      a4 = v20;
+      size = v20;
     }
   }
 
-  v23 = a4;
-  result.height = v22;
-  result.width = v23;
+  sizeCopy2 = size;
+  result.height = sizeCopy;
+  result.width = sizeCopy2;
   return result;
 }
 
-- (CGSize)currentContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)currentContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(SBPIPContentViewLayoutContext *)self->_context currentSize];
 
   [(SBPIPContentViewLayoutSettings *)self _contentViewSizeForAspectRatio:width currentSize:height, v6];
@@ -317,19 +317,19 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)minimumPossibleContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)minimumPossibleContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
-  v7 = v6;
+  height = ratio.height;
+  width = ratio.width;
+  sizePolicy = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
+  v7 = sizePolicy;
   v8 = 1.0;
   if (width != 0.0)
   {
     v8 = width;
   }
 
-  v9 = [v6 sizePreferencesForAspectRatio:height / v8];
+  v9 = [sizePolicy sizePreferencesForAspectRatio:height / v8];
 
   [v9 longSideMinimumSize];
   [(SBPIPContentViewLayoutSettings *)self _minimumContentViewSizeForAspectRatio:width minimumReferenceSize:height, v10];
@@ -343,19 +343,19 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)maximumPossibleContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)maximumPossibleContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
-  v7 = v6;
+  height = ratio.height;
+  width = ratio.width;
+  sizePolicy = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
+  v7 = sizePolicy;
   v8 = 1.0;
   if (width != 0.0)
   {
     v8 = width;
   }
 
-  v9 = [v6 sizePreferencesForAspectRatio:height / v8];
+  v9 = [sizePolicy sizePreferencesForAspectRatio:height / v8];
 
   [v9 longSideMaximumSize];
   [(SBPIPContentViewLayoutSettings *)self _maximumContentViewSizeForAspectRatio:width maximumReferenceSize:height, v10];
@@ -369,10 +369,10 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)minimumPreferredContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)minimumPreferredContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(SBPIPContentViewLayoutContext *)self->_context minimumSizePreference];
 
   [(SBPIPContentViewLayoutSettings *)self _minimumContentViewSizeForAspectRatio:width minimumReferenceSize:height, v6];
@@ -381,10 +381,10 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)maximumPreferredContentViewSizeForAspectRatio:(CGSize)a3
+- (CGSize)maximumPreferredContentViewSizeForAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(SBPIPContentViewLayoutContext *)self->_context maximumSizePreference];
 
   [(SBPIPContentViewLayoutSettings *)self _maximumContentViewSizeForAspectRatio:width maximumReferenceSize:height, v6];
@@ -393,69 +393,69 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (CGSize)_minimumContentViewSizeForAspectRatio:(CGSize)a3 minimumReferenceSize:(double)a4
+- (CGSize)_minimumContentViewSizeForAspectRatio:(CGSize)ratio minimumReferenceSize:(double)size
 {
-  v4 = a4;
-  if (a3.width == 0.0 || (height = a3.height, a3.height == 0.0))
+  sizeCopy = size;
+  if (ratio.width == 0.0 || (height = ratio.height, ratio.height == 0.0))
   {
-    v10 = a4;
+    sizeCopy2 = size;
   }
 
   else
   {
-    width = a3.width;
+    width = ratio.width;
     UIRoundToScale();
-    v4 = v8;
+    sizeCopy = v8;
     UIRoundToScale();
-    v10 = v9;
-    v11 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
-    v12 = [v11 sizePreferencesForAspectRatio:height / width];
+    sizeCopy2 = v9;
+    sizePolicy = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics sizePolicy];
+    width = [sizePolicy sizePreferencesForAspectRatio:height / width];
 
-    [v12 shortSideMinimumSize];
+    [width shortSideMinimumSize];
     v14 = v13;
-    if (v4 >= v10)
+    if (sizeCopy >= sizeCopy2)
     {
-      if (v10 < v13)
+      if (sizeCopy2 < v13)
       {
         UIRoundToScale();
-        v4 = v16;
-        v10 = v14;
+        sizeCopy = v16;
+        sizeCopy2 = v14;
       }
     }
 
-    else if (v4 < v13)
+    else if (sizeCopy < v13)
     {
       UIRoundToScale();
-      v10 = v15;
-      v4 = v14;
+      sizeCopy2 = v15;
+      sizeCopy = v14;
     }
   }
 
-  v17 = v4;
-  v18 = v10;
+  v17 = sizeCopy;
+  v18 = sizeCopy2;
   result.height = v18;
   result.width = v17;
   return result;
 }
 
-- (CGSize)_maximumContentViewSizeForAspectRatio:(CGSize)a3 maximumReferenceSize:(double)a4
+- (CGSize)_maximumContentViewSizeForAspectRatio:(CGSize)ratio maximumReferenceSize:(double)size
 {
-  v4 = a4;
-  if (a3.width == 0.0 || a3.height == 0.0)
+  sizeCopy = size;
+  if (ratio.width == 0.0 || ratio.height == 0.0)
   {
-    v7 = a4;
+    sizeCopy2 = size;
   }
 
   else
   {
     UIRoundToScale();
-    v4 = v5;
+    sizeCopy = v5;
     UIRoundToScale();
-    v7 = v6;
+    sizeCopy2 = v6;
   }
 
-  v8 = v4;
-  result.height = v7;
+  v8 = sizeCopy;
+  result.height = sizeCopy2;
   result.width = v8;
   return result;
 }
@@ -468,18 +468,18 @@ void __45__SBPIPContentViewLayoutSettings_pipDefaults__block_invoke()
   return result;
 }
 
-- (void)setContentViewPosition:(unint64_t)a3
+- (void)setContentViewPosition:(unint64_t)position
 {
   pipDefaults = self->_pipDefaults;
-  v5 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics contentTypeIdentifier];
-  [(SBPIPDefaults *)pipDefaults setLastKnownCornerPosition:a3 contentType:v5];
+  contentTypeIdentifier = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics contentTypeIdentifier];
+  [(SBPIPDefaults *)pipDefaults setLastKnownCornerPosition:position contentType:contentTypeIdentifier];
 }
 
 - (unint64_t)currentContentViewPosition
 {
   pipDefaults = self->_pipDefaults;
-  v4 = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics contentTypeIdentifier];
-  v5 = [(SBPIPDefaults *)pipDefaults lastKnownCornerPositionForContentType:v4];
+  contentTypeIdentifier = [(SBPIPContentViewLayoutMetrics *)self->_platformMetrics contentTypeIdentifier];
+  v5 = [(SBPIPDefaults *)pipDefaults lastKnownCornerPositionForContentType:contentTypeIdentifier];
 
   if (![(SBPIPContentViewLayoutMetrics *)self->_platformMetrics prefersDefaultPosition])
   {

@@ -1,12 +1,12 @@
 @interface NRBabelLinkFake
-- (NRBabelLinkFake)initWithName:(id)a3;
+- (NRBabelLinkFake)initWithName:(id)name;
 @end
 
 @implementation NRBabelLinkFake
 
-- (NRBabelLinkFake)initWithName:(id)a3
+- (NRBabelLinkFake)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = NRBabelLinkFake;
   v5 = [(NRBabelLinkFake *)&v17 init];
@@ -32,8 +32,8 @@
 
   v6 = v5;
   name = v5->_name;
-  v5->_name = v4;
-  v8 = v4;
+  v5->_name = nameCopy;
+  v8 = nameCopy;
 
   v9 = objc_alloc_init(NSMutableArray);
   fakeInterfaces = v6->_fakeInterfaces;

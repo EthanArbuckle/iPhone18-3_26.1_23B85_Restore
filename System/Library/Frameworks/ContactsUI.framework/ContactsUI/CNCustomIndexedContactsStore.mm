@@ -1,30 +1,30 @@
 @interface CNCustomIndexedContactsStore
 + (id)log;
-- (CNCustomIndexedContactsStore)initWithContactIdentifiers:(id)a3;
-- (id)contactAt:(int64_t)a3 section:(int64_t)a4;
-- (id)fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:(id)a3;
-- (id)getNameFromContactAccordingToUserPrefferedSortOrder:(id)a3;
+- (CNCustomIndexedContactsStore)initWithContactIdentifiers:(id)identifiers;
+- (id)contactAt:(int64_t)at section:(int64_t)section;
+- (id)fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:(id)identifiers;
+- (id)getNameFromContactAccordingToUserPrefferedSortOrder:(id)order;
 - (id)sectionIndexTitles;
-- (id)titleForSection:(int64_t)a3;
-- (int64_t)numberOFItemsInSection:(int64_t)a3;
+- (id)titleForSection:(int64_t)section;
+- (int64_t)numberOFItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)createIndexedContacts:(id)a3;
-- (void)filterContactsForString:(id)a3;
-- (void)setFilterString:(id)a3;
-- (void)updateStoreWithContactIdentifiers:(id)a3;
+- (void)createIndexedContacts:(id)contacts;
+- (void)filterContactsForString:(id)string;
+- (void)setFilterString:(id)string;
+- (void)updateStoreWithContactIdentifiers:(id)identifiers;
 @end
 
 @implementation CNCustomIndexedContactsStore
 
-- (void)filterContactsForString:(id)a3
+- (void)filterContactsForString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 localizedLowercaseString];
-  v6 = [v5 componentsSeparatedByString:@" "];
+  stringCopy = string;
+  localizedLowercaseString = [stringCopy localizedLowercaseString];
+  v6 = [localizedLowercaseString componentsSeparatedByString:@" "];
   v7 = [v6 _cn_filter:&__block_literal_global_127_52719];
 
-  LOBYTE(v5) = (*(*MEMORY[0x1E6996568] + 16))();
-  if ((v5 & 1) != 0 || ![v7 count])
+  LOBYTE(localizedLowercaseString) = (*(*MEMORY[0x1E6996568] + 16))();
+  if ((localizedLowercaseString & 1) != 0 || ![v7 count])
   {
     objc_storeStrong(&self->_filteredSortedContacts, self->_sortedContacts);
     objc_storeStrong(&self->_filteredIndexTitles, self->_indexTitles);
@@ -80,19 +80,19 @@ uint64_t __56__CNCustomIndexedContactsStore_filterContactsForString___block_invo
   return v6;
 }
 
-- (void)setFilterString:(id)a3
+- (void)setFilterString:(id)string
 {
-  v7 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_filterString isEqualToString:?])
   {
-    if ([v7 length])
+    if ([stringCopy length])
     {
       self->_isFilterActive = 1;
-      v4 = [v7 copy];
+      v4 = [stringCopy copy];
       filterString = self->_filterString;
       self->_filterString = v4;
 
-      [(CNCustomIndexedContactsStore *)self filterContactsForString:v7];
+      [(CNCustomIndexedContactsStore *)self filterContactsForString:stringCopy];
     }
 
     else
@@ -104,18 +104,18 @@ uint64_t __56__CNCustomIndexedContactsStore_filterContactsForString___block_invo
   }
 }
 
-- (void)createIndexedContacts:(id)a3
+- (void)createIndexedContacts:(id)contacts
 {
-  v15 = a3;
+  contactsCopy = contacts;
   v4 = self->_indexedContactsAndItsSegments;
-  if ([v15 count])
+  if ([contactsCopy count])
   {
     v5 = 0;
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = [v15 objectAtIndexedSubscript:v7];
+      v8 = [contactsCopy objectAtIndexedSubscript:v7];
       v9 = [(CNCustomIndexedContactsStore *)self getNameFromContactAccordingToUserPrefferedSortOrder:v8];
       v10 = [v9 substringToIndex:1];
       v11 = v10;
@@ -151,9 +151,9 @@ LABEL_6:
       v5 = v11;
 LABEL_10:
 
-      if (++v7 >= [v15 count])
+      if (++v7 >= [contactsCopy count])
       {
-        v14 = -[CNSegment initWithStart:end:]([CNSegment alloc], "initWithStart:end:", v6, [v15 count] - 1);
+        v14 = -[CNSegment initWithStart:end:]([CNSegment alloc], "initWithStart:end:", v6, [contactsCopy count] - 1);
         [(NSMutableDictionary *)v4 setObject:v14 forKeyedSubscript:v5];
 
         break;
@@ -166,78 +166,78 @@ LABEL_10:
 {
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    indexTitles = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(CNCustomIndexedContactsStore *)self indexTitles];
+    indexTitles = [(CNCustomIndexedContactsStore *)self indexTitles];
   }
 
-  return v3;
+  return indexTitles;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
-    v5 = [(CNCustomIndexedContactsStore *)self filteredIndexTitles];
+    filteredIndexTitles = [(CNCustomIndexedContactsStore *)self filteredIndexTitles];
   }
 
   else
   {
-    v5 = self->_indexTitles;
+    filteredIndexTitles = self->_indexTitles;
   }
 
-  v6 = v5;
+  v6 = filteredIndexTitles;
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
     v7 = @"MATCHES";
   }
 
-  else if ([(NSArray *)v6 count]<= a3)
+  else if ([(NSArray *)v6 count]<= section)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)v6 objectAtIndexedSubscript:a3];
+    v7 = [(NSArray *)v6 objectAtIndexedSubscript:section];
   }
 
   return v7;
 }
 
-- (id)contactAt:(int64_t)a3 section:(int64_t)a4
+- (id)contactAt:(int64_t)at section:(int64_t)section
 {
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
-    v7 = [(CNCustomIndexedContactsStore *)self filteredIndexTitles];
+    filteredIndexTitles = [(CNCustomIndexedContactsStore *)self filteredIndexTitles];
   }
 
   else
   {
-    v7 = self->_indexTitles;
+    filteredIndexTitles = self->_indexTitles;
   }
 
-  v8 = v7;
-  v9 = [(NSArray *)v7 objectAtIndexedSubscript:a4];
+  v8 = filteredIndexTitles;
+  v9 = [(NSArray *)filteredIndexTitles objectAtIndexedSubscript:section];
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
-    v10 = [(CNCustomIndexedContactsStore *)self filteredSortedContacts];
-    v11 = [v10 objectAtIndexedSubscript:a3];
+    filteredSortedContacts = [(CNCustomIndexedContactsStore *)self filteredSortedContacts];
+    v11 = [filteredSortedContacts objectAtIndexedSubscript:at];
   }
 
   else
   {
-    v12 = [(CNCustomIndexedContactsStore *)self indexedContactsAndItsSegments];
-    v10 = [v12 objectForKeyedSubscript:v9];
+    indexedContactsAndItsSegments = [(CNCustomIndexedContactsStore *)self indexedContactsAndItsSegments];
+    filteredSortedContacts = [indexedContactsAndItsSegments objectForKeyedSubscript:v9];
 
-    if ([v10 isValid])
+    if ([filteredSortedContacts isValid])
     {
-      v13 = [v10 indexOffsetFrom:a3];
-      v14 = [(CNCustomIndexedContactsStore *)self sortedContacts];
-      v11 = [v14 objectAtIndexedSubscript:v13];
+      v13 = [filteredSortedContacts indexOffsetFrom:at];
+      sortedContacts = [(CNCustomIndexedContactsStore *)self sortedContacts];
+      v11 = [sortedContacts objectAtIndexedSubscript:v13];
     }
 
     else
@@ -249,27 +249,27 @@ LABEL_10:
   return v11;
 }
 
-- (int64_t)numberOFItemsInSection:(int64_t)a3
+- (int64_t)numberOFItemsInSection:(int64_t)section
 {
   if ([(CNCustomIndexedContactsStore *)self isFilterActive])
   {
-    v5 = [(CNCustomIndexedContactsStore *)self filteredSortedContacts];
-    v6 = [(NSArray *)v5 count];
+    filteredSortedContacts = [(CNCustomIndexedContactsStore *)self filteredSortedContacts];
+    v6 = [(NSArray *)filteredSortedContacts count];
   }
 
   else
   {
-    v5 = self->_indexTitles;
-    if ([(NSArray *)v5 count]<= a3)
+    filteredSortedContacts = self->_indexTitles;
+    if ([(NSArray *)filteredSortedContacts count]<= section)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [(NSArray *)v5 objectAtIndex:a3];
-      v8 = [(CNCustomIndexedContactsStore *)self indexedContactsAndItsSegments];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      v7 = [(NSArray *)filteredSortedContacts objectAtIndex:section];
+      indexedContactsAndItsSegments = [(CNCustomIndexedContactsStore *)self indexedContactsAndItsSegments];
+      v9 = [indexedContactsAndItsSegments objectForKeyedSubscript:v7];
 
       if (v9 && [v9 isValid])
       {
@@ -293,43 +293,43 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(CNCustomIndexedContactsStore *)self indexTitles];
-  v5 = [v4 count];
+  indexTitles = [(CNCustomIndexedContactsStore *)self indexTitles];
+  v5 = [indexTitles count];
 
   return v5;
 }
 
-- (id)getNameFromContactAccordingToUserPrefferedSortOrder:(id)a3
+- (id)getNameFromContactAccordingToUserPrefferedSortOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   if ([(CNCustomIndexedContactsStore *)self preferredSortOrder]== 2)
   {
-    v5 = [v4 firstName];
-    if (v5)
+    firstName = [orderCopy firstName];
+    if (firstName)
     {
-      v6 = v5;
-      v7 = [v4 firstName];
-      v8 = [v7 length];
+      v6 = firstName;
+      firstName2 = [orderCopy firstName];
+      v8 = [firstName2 length];
 
       if (v8)
       {
-        v9 = [v4 firstName];
-        v10 = [v4 lastName];
-        if (v10)
+        firstName3 = [orderCopy firstName];
+        lastName = [orderCopy lastName];
+        if (lastName)
         {
-          v11 = v10;
-          v12 = [v4 lastName];
-          v13 = [v12 length];
+          v11 = lastName;
+          lastName2 = [orderCopy lastName];
+          v13 = [lastName2 length];
 
           if (v13)
           {
             v14 = MEMORY[0x1E696AEC0];
-            v15 = [v4 lastName];
+            lastName3 = [orderCopy lastName];
 LABEL_12:
-            v24 = v15;
-            v25 = [v14 stringWithFormat:@"%@%@", v9, v15];
+            v24 = lastName3;
+            v25 = [v14 stringWithFormat:@"%@%@", firstName3, lastName3];
 
-            v9 = v25;
+            firstName3 = v25;
             goto LABEL_16;
           }
         }
@@ -338,49 +338,49 @@ LABEL_12:
       }
     }
 
-    v26 = [v4 lastName];
+    lastName4 = [orderCopy lastName];
 LABEL_15:
-    v9 = v26;
+    firstName3 = lastName4;
     goto LABEL_16;
   }
 
-  v16 = [v4 lastName];
-  if (!v16 || (v17 = v16, [v4 lastName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v18, v17, !v19))
+  lastName5 = [orderCopy lastName];
+  if (!lastName5 || (v17 = lastName5, [orderCopy lastName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v18, v17, !v19))
   {
-    v26 = [v4 firstName];
+    lastName4 = [orderCopy firstName];
     goto LABEL_15;
   }
 
-  v9 = [v4 lastName];
-  v20 = [v4 firstName];
-  if (v20)
+  firstName3 = [orderCopy lastName];
+  firstName4 = [orderCopy firstName];
+  if (firstName4)
   {
-    v21 = v20;
-    v22 = [v4 firstName];
-    v23 = [v22 length];
+    v21 = firstName4;
+    firstName5 = [orderCopy firstName];
+    v23 = [firstName5 length];
 
     if (v23)
     {
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v4 firstName];
+      lastName3 = [orderCopy firstName];
       goto LABEL_12;
     }
   }
 
 LABEL_16:
 
-  return v9;
+  return firstName3;
 }
 
-- (id)fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:(id)a3
+- (id)fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:(id)identifiers
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[CNContactViewController descriptorForRequiredKeys];
   v20[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
 
-  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v4];
+  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:identifiersCopy];
 
   contactStore = self->_contactStore;
   v17 = 0;
@@ -492,9 +492,9 @@ uint64_t __91__CNCustomIndexedContactsStore_fetchAndSortContactsByUserPreferredS
   return v17;
 }
 
-- (void)updateStoreWithContactIdentifiers:(id)a3
+- (void)updateStoreWithContactIdentifiers:(id)identifiers
 {
-  v4 = [(CNCustomIndexedContactsStore *)self fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:a3];
+  v4 = [(CNCustomIndexedContactsStore *)self fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:identifiers];
   [(CNCustomIndexedContactsStore *)self setSortedContacts:v4];
 
   sortedContacts = self->_sortedContacts;
@@ -502,31 +502,31 @@ uint64_t __91__CNCustomIndexedContactsStore_fetchAndSortContactsByUserPreferredS
   [(CNCustomIndexedContactsStore *)self createIndexedContacts:sortedContacts];
 }
 
-- (CNCustomIndexedContactsStore)initWithContactIdentifiers:(id)a3
+- (CNCustomIndexedContactsStore)initWithContactIdentifiers:(id)identifiers
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v31.receiver = self;
   v31.super_class = CNCustomIndexedContactsStore;
   v5 = [(CNCustomIndexedContactsStore *)&v31 init];
   if (v5)
   {
     v26 = +[CNUIContactsEnvironment currentEnvironment];
-    v6 = [v26 contactStore];
+    contactStore = [v26 contactStore];
     contactStore = v5->_contactStore;
-    v5->_contactStore = v6;
+    v5->_contactStore = contactStore;
 
-    v8 = [MEMORY[0x1E695CE40] sharedDefaults];
-    v9 = [v8 sortOrder];
+    mEMORY[0x1E695CE40] = [MEMORY[0x1E695CE40] sharedDefaults];
+    sortOrder = [mEMORY[0x1E695CE40] sortOrder];
 
     v10 = 2;
-    if (v9 == 3)
+    if (sortOrder == 3)
     {
       v10 = 3;
     }
 
     v5->_preferredSortOrder = v10;
-    v11 = [(CNCustomIndexedContactsStore *)v5 fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:v4];
+    v11 = [(CNCustomIndexedContactsStore *)v5 fetchAndSortContactsByUserPreferredSortOrderForIdentifiers:identifiersCopy];
     sortedContacts = v5->_sortedContacts;
     v5->_sortedContacts = v11;
 

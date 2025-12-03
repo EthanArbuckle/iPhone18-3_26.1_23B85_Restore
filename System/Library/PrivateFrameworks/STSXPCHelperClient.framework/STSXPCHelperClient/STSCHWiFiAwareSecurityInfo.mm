@@ -1,29 +1,29 @@
 @interface STSCHWiFiAwareSecurityInfo
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)a3 dhInfo:(id)a4 passphrase:(id)a5;
-- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)a3;
-- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)a3 pmkID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)suites dhInfo:(id)info passphrase:(id)passphrase;
+- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)coder;
+- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)k pmkID:(id)d;
 - (id)asData;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareSecurityInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cipherSuite = self->_cipherSuite;
-  v10 = a3;
-  objc_msgSend_encodeObject_forKey_(v10, v5, cipherSuite, @"cipherSuite");
-  objc_msgSend_encodeObject_forKey_(v10, v6, self->_dhInfo, @"dhInfo");
-  objc_msgSend_encodeObject_forKey_(v10, v7, self->_passphrase, @"passphrase");
-  objc_msgSend_encodeObject_forKey_(v10, v8, self->_datapathPmk, @"datapathPmk");
-  objc_msgSend_encodeObject_forKey_(v10, v9, self->_datapathPmkID, @"datapathPmkID");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, cipherSuite, @"cipherSuite");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_dhInfo, @"dhInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_passphrase, @"passphrase");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_datapathPmk, @"datapathPmk");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_datapathPmkID, @"datapathPmkID");
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)a3
+- (STSCHWiFiAwareSecurityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = STSCHWiFiAwareSecurityInfo;
   v5 = [(STSCHWiFiAwareSecurityInfo *)&v35 init];
@@ -33,7 +33,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v10 = objc_msgSend_setWithObjects_(v6, v9, v7, v8, 0);
-    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v11, v10, @"cipherSuite");
+    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v11, v10, @"cipherSuite");
     cipherSuite = v5->_cipherSuite;
     v5->_cipherSuite = v12;
 
@@ -41,22 +41,22 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v18 = objc_msgSend_setWithObjects_(v14, v17, v15, v16, 0);
-    v20 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v19, v18, @"dhInfo");
+    v20 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v19, v18, @"dhInfo");
     dhInfo = v5->_dhInfo;
     v5->_dhInfo = v20;
 
     v22 = objc_opt_class();
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"passphrase");
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"passphrase");
     passphrase = v5->_passphrase;
     v5->_passphrase = v24;
 
     v26 = objc_opt_class();
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v26, @"datapathPmk");
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v26, @"datapathPmk");
     datapathPmk = v5->_datapathPmk;
     v5->_datapathPmk = v28;
 
     v30 = objc_opt_class();
-    v32 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"datapathPmkID");
+    v32 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"datapathPmkID");
     datapathPmkID = v5->_datapathPmkID;
     v5->_datapathPmkID = v32;
   }
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToData = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     cipherSuite = self->_cipherSuite;
@@ -167,37 +167,37 @@ LABEL_15:
   return v15;
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)a3 dhInfo:(id)a4 passphrase:(id)a5
+- (STSCHWiFiAwareSecurityInfo)initWithCipherSuites:(id)suites dhInfo:(id)info passphrase:(id)passphrase
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suitesCopy = suites;
+  infoCopy = info;
+  passphraseCopy = passphrase;
   v21.receiver = self;
   v21.super_class = STSCHWiFiAwareSecurityInfo;
   v11 = [(STSCHWiFiAwareSecurityInfo *)&v21 init];
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277CBEA60]);
-    v14 = objc_msgSend_initWithArray_(v12, v13, v8);
+    v14 = objc_msgSend_initWithArray_(v12, v13, suitesCopy);
     cipherSuite = v11->_cipherSuite;
     v11->_cipherSuite = v14;
 
     v16 = objc_alloc(MEMORY[0x277CBEA60]);
-    v18 = objc_msgSend_initWithArray_(v16, v17, v9);
+    v18 = objc_msgSend_initWithArray_(v16, v17, infoCopy);
     dhInfo = v11->_dhInfo;
     v11->_dhInfo = v18;
 
-    objc_storeStrong(&v11->_passphrase, a5);
+    objc_storeStrong(&v11->_passphrase, passphrase);
   }
 
   return v11;
 }
 
-- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)a3 pmkID:(id)a4
+- (STSCHWiFiAwareSecurityInfo)initWithPMK:(id)k pmkID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (objc_msgSend_length(v8, v9, v10) == 16)
+  kCopy = k;
+  dCopy = d;
+  if (objc_msgSend_length(dCopy, v9, v10) == 16)
   {
     v15.receiver = self;
     v15.super_class = STSCHWiFiAwareSecurityInfo;
@@ -205,20 +205,20 @@ LABEL_15:
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_datapathPmk, a3);
-      objc_storeStrong(p_isa + 5, a4);
+      objc_storeStrong(&v11->_datapathPmk, k);
+      objc_storeStrong(p_isa + 5, d);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)asData

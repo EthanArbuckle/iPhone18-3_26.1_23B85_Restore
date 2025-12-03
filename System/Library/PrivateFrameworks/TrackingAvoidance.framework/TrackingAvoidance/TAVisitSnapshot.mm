@@ -1,37 +1,37 @@
 @interface TAVisitSnapshot
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setDepartureVisit:(id)a3;
-- (TAVisitSnapshot)initWithCoder:(id)a3;
-- (TAVisitSnapshot)initWithTACLVisit:(id)a3 uniqueUTBufferCap:(unint64_t)a4 displayEventBufferSizeCap:(unint64_t)a5 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)a6;
-- (double)getDisplayOnTimeUntilEndDate:(id)a3;
-- (double)getDurationOfVisitEntryConsideredWithDisplayOnBudget:(double)a3;
-- (double)getDurationOfVisitExitConsideredWithDisplayOnBudget:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setDepartureVisit:(id)visit;
+- (TAVisitSnapshot)initWithCoder:(id)coder;
+- (TAVisitSnapshot)initWithTACLVisit:(id)visit uniqueUTBufferCap:(unint64_t)cap displayEventBufferSizeCap:(unint64_t)sizeCap maxNSigmaBetweenLastLocationAndVisit:(unint64_t)andVisit;
+- (double)getDisplayOnTimeUntilEndDate:(id)date;
+- (double)getDurationOfVisitEntryConsideredWithDisplayOnBudget:(double)budget;
+- (double)getDurationOfVisitExitConsideredWithDisplayOnBudget:(double)budget;
 - (id)getArrivalDelay;
 - (id)getDepartureDelay;
-- (id)getEntryAdvertisementsWithDisplayOnBudget:(double)a3;
+- (id)getEntryAdvertisementsWithDisplayOnBudget:(double)budget;
 - (id)getEntryIntervalEvaluatedUntil;
-- (id)getExitAdvertisementsWithDisplayOnBudget:(double)a3;
+- (id)getExitAdvertisementsWithDisplayOnBudget:(double)budget;
 - (id)getLocationRepresentingSnapshot;
 - (id)mostRecentAdvertisementDate;
-- (unint64_t)evaluateSnapshotQualityWithMinDwellDuration:(double)a3 minDisplayOnDuration:(double)a4;
-- (void)addScanState:(id)a3;
-- (void)addSystemState:(id)a3;
-- (void)addUTAdvertisement:(id)a3;
-- (void)calculateExitIntervalWithDisplayOnBudget:(double)a3;
+- (unint64_t)evaluateSnapshotQualityWithMinDwellDuration:(double)duration minDisplayOnDuration:(double)onDuration;
+- (void)addScanState:(id)state;
+- (void)addSystemState:(id)state;
+- (void)addUTAdvertisement:(id)advertisement;
+- (void)calculateExitIntervalWithDisplayOnBudget:(double)budget;
 - (void)closeSnapshotCleanup;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)pruneDisplayEvents;
-- (void)setRepresentativeVisit:(id)a3;
-- (void)updateEntryIntervalWithDisplayOnBudget:(double)a3 evaluateToEnd:(BOOL)a4;
-- (void)updateLatestLocation:(id)a3;
-- (void)updateLoiType:(id)a3;
+- (void)setRepresentativeVisit:(id)visit;
+- (void)updateEntryIntervalWithDisplayOnBudget:(double)budget evaluateToEnd:(BOOL)end;
+- (void)updateLatestLocation:(id)location;
+- (void)updateLoiType:(id)type;
 @end
 
 @implementation TAVisitSnapshot
 
-- (TAVisitSnapshot)initWithTACLVisit:(id)a3 uniqueUTBufferCap:(unint64_t)a4 displayEventBufferSizeCap:(unint64_t)a5 maxNSigmaBetweenLastLocationAndVisit:(unint64_t)a6
+- (TAVisitSnapshot)initWithTACLVisit:(id)visit uniqueUTBufferCap:(unint64_t)cap displayEventBufferSizeCap:(unint64_t)sizeCap maxNSigmaBetweenLastLocationAndVisit:(unint64_t)andVisit
 {
-  v10 = a3;
+  visitCopy = visit;
   v37.receiver = self;
   v37.super_class = TAVisitSnapshot;
   v11 = [(TAVisitSnapshot *)&v37 init];
@@ -39,7 +39,7 @@
   if (v11)
   {
     v11->_isClosed = 0;
-    v13 = [v10 copy];
+    v13 = [visitCopy copy];
     representativeVisit = v12->_representativeVisit;
     v12->_representativeVisit = v13;
 
@@ -59,23 +59,23 @@
     displayEvents = v12->_displayEvents;
     v12->_displayEvents = v21;
 
-    v12->_uniqueUTBufferSizeCap = a4;
-    v12->_displayEventBufferSizeCap = a5;
+    v12->_uniqueUTBufferSizeCap = cap;
+    v12->_displayEventBufferSizeCap = sizeCap;
     v23 = [TALocationLite alloc];
-    v24 = [v10 getDate];
-    [v10 coordinate];
+    getDate = [visitCopy getDate];
+    [visitCopy coordinate];
     v26 = v25;
-    [v10 coordinate];
+    [visitCopy coordinate];
     v28 = v27;
-    [v10 horizontalAccuracy];
-    v30 = [(TALocationLite *)v23 initWithTimestamp:v24 latitude:v26 longitude:v28 horizontalAccuracy:v29];
+    [visitCopy horizontalAccuracy];
+    v30 = [(TALocationLite *)v23 initWithTimestamp:getDate latitude:v26 longitude:v28 horizontalAccuracy:v29];
     latestLocation = v12->_latestLocation;
     v12->_latestLocation = v30;
 
     v12->_loiType = 0;
-    v32 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastLoiTypeUpdateTime = v12->_lastLoiTypeUpdateTime;
-    v12->_lastLoiTypeUpdateTime = v32;
+    v12->_lastLoiTypeUpdateTime = distantPast;
 
     distanceToClosestLoi = v12->_distanceToClosestLoi;
     v12->_distanceToClosestLoi = 0;
@@ -84,15 +84,15 @@
     entryDurationOfConsiderationClosed = v12->_entryDurationOfConsiderationClosed;
     v12->_entryDurationOfConsiderationClosed = 0;
 
-    v12->_maxNSigmaBetweenLastLocationAndVisit = a6;
+    v12->_maxNSigmaBetweenLastLocationAndVisit = andVisit;
   }
 
   return v12;
 }
 
-- (void)setRepresentativeVisit:(id)a3
+- (void)setRepresentativeVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   if ([(TAVisitSnapshot *)self isClosed])
   {
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
@@ -105,26 +105,26 @@
   {
     representativeVisit = self->_representativeVisit;
     p_representativeVisit = &self->_representativeVisit;
-    v7 = [(TACLVisit *)representativeVisit arrivalDate];
-    v8 = [v4 departureDate];
-    v9 = [v7 laterDate:v8];
+    arrivalDate = [(TACLVisit *)representativeVisit arrivalDate];
+    departureDate = [visitCopy departureDate];
+    v9 = [arrivalDate laterDate:departureDate];
 
     v10 = [TACLVisit alloc];
-    [v4 coordinate];
+    [visitCopy coordinate];
     v12 = v11;
     v14 = v13;
-    [v4 horizontalAccuracy];
+    [visitCopy horizontalAccuracy];
     v16 = v15;
-    v17 = [(TACLVisit *)*p_representativeVisit arrivalDate];
-    v18 = [v4 detectionDate];
-    v19 = -[TACLVisit initWithCoordinate:horizontalAccuracy:arrivalDate:departureDate:detectionDate:confidence:](v10, "initWithCoordinate:horizontalAccuracy:arrivalDate:departureDate:detectionDate:confidence:", v17, v9, v18, [v4 confidence], v12, v14, v16);
+    arrivalDate2 = [(TACLVisit *)*p_representativeVisit arrivalDate];
+    detectionDate = [visitCopy detectionDate];
+    v19 = -[TACLVisit initWithCoordinate:horizontalAccuracy:arrivalDate:departureDate:detectionDate:confidence:](v10, "initWithCoordinate:horizontalAccuracy:arrivalDate:departureDate:detectionDate:confidence:", arrivalDate2, v9, detectionDate, [visitCopy confidence], v12, v14, v16);
     v20 = *p_representativeVisit;
     *p_representativeVisit = v19;
 
     v21 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
     {
-      [(TAVisitSnapshot *)v21 setRepresentativeVisit:v4, p_representativeVisit];
+      [(TAVisitSnapshot *)v21 setRepresentativeVisit:visitCopy, p_representativeVisit];
     }
   }
 }
@@ -141,34 +141,34 @@
   return displayOnCalculator;
 }
 
-- (void)addScanState:(id)a3
+- (void)addScanState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 1)
+  stateCopy = state;
+  if ([stateCopy state] == 1)
   {
     v5 = MEMORY[0x277CCA970];
-    v6 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-    v7 = [(TACLVisit *)self->_representativeVisit departureDate];
-    v8 = [v5 createIntervalSafelyWithStartDate:v6 endDate:v7];
+    arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+    departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+    v8 = [v5 createIntervalSafelyWithStartDate:arrivalDate endDate:departureDate];
 
-    v9 = [v4 getDate];
-    LOBYTE(v7) = [v8 containsDate:v9];
+    getDate = [stateCopy getDate];
+    LOBYTE(departureDate) = [v8 containsDate:getDate];
 
-    if (v7)
+    if (departureDate)
     {
       displayOnCalculator = self->_displayOnCalculator;
-      v11 = [v4 getDate];
-      v12 = v11;
+      getDate2 = [stateCopy getDate];
+      v12 = getDate2;
       if (!displayOnCalculator)
       {
         entryDurationOfConsiderationClosed = self->_entryDurationOfConsiderationClosed;
-        self->_entryDurationOfConsiderationClosed = v11;
+        self->_entryDurationOfConsiderationClosed = getDate2;
 
         goto LABEL_9;
       }
 
-      [(TADisplayOnCalculator *)displayOnCalculator completeDisplayOnWithEndDate:v11];
+      [(TADisplayOnCalculator *)displayOnCalculator completeDisplayOnWithEndDate:getDate2];
     }
 
     else
@@ -182,9 +182,9 @@ LABEL_9:
       }
 
       v14 = v13;
-      v12 = [v4 description];
+      v12 = [stateCopy description];
       v17 = 136380931;
-      v18 = [v12 UTF8String];
+      uTF8String = [v12 UTF8String];
       v19 = 2114;
       v20 = v8;
       _os_log_impl(&dword_26F2E2000, v14, OS_LOG_TYPE_DEFAULT, "#TAVisitSnapshot Scan completed: %{private}s not in valid time range %{public}@", &v17, 0x16u);
@@ -198,55 +198,55 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addUTAdvertisement:(id)a3
+- (void)addUTAdvertisement:(id)advertisement
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  advertisementCopy = advertisement;
   v5 = MEMORY[0x277CCA970];
-  v6 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-  v7 = [(TACLVisit *)self->_representativeVisit departureDate];
-  v8 = [v5 createIntervalSafelyWithStartDate:v6 endDate:v7];
+  arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+  departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+  v8 = [v5 createIntervalSafelyWithStartDate:arrivalDate endDate:departureDate];
 
-  v9 = [v4 getDate];
-  LOBYTE(v7) = [v8 containsDate:v9];
+  getDate = [advertisementCopy getDate];
+  LOBYTE(departureDate) = [v8 containsDate:getDate];
 
-  if (v7)
+  if (departureDate)
   {
     if (self->_latestLocationInsideVisit)
     {
-      v10 = [v4 address];
-      if ([(NSMutableOrderedSet *)self->_lruUtAdvertisementCache containsObject:v10])
+      address = [advertisementCopy address];
+      if ([(NSMutableOrderedSet *)self->_lruUtAdvertisementCache containsObject:address])
       {
-        [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache removeObject:v10];
+        [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache removeObject:address];
       }
 
       while ([(NSMutableOrderedSet *)self->_lruUtAdvertisementCache count]>= self->_uniqueUTBufferSizeCap && [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache count])
       {
-        v11 = [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache firstObject];
-        [(NSMutableDictionary *)self->_latestUtAdvertisements removeObjectForKey:v11];
-        [(NSMutableDictionary *)self->_earliestUtAdvertisements removeObjectForKey:v11];
-        [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache removeObject:v11];
+        firstObject = [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache firstObject];
+        [(NSMutableDictionary *)self->_latestUtAdvertisements removeObjectForKey:firstObject];
+        [(NSMutableDictionary *)self->_earliestUtAdvertisements removeObjectForKey:firstObject];
+        [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache removeObject:firstObject];
       }
 
-      [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache addObject:v10];
-      v12 = [(NSMutableDictionary *)self->_latestUtAdvertisements objectForKey:v10];
+      [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache addObject:address];
+      v12 = [(NSMutableDictionary *)self->_latestUtAdvertisements objectForKey:address];
 
       latestUtAdvertisements = self->_latestUtAdvertisements;
       if (v12)
       {
-        v14 = [(NSMutableDictionary *)latestUtAdvertisements objectForKey:v10];
+        v14 = [(NSMutableDictionary *)latestUtAdvertisements objectForKey:address];
         if ([v14 isPosh])
         {
-          v15 = [v4 isPosh];
+          isPosh = [advertisementCopy isPosh];
 
-          if ((v15 & 1) == 0)
+          if ((isPosh & 1) == 0)
           {
 LABEL_20:
-            v22 = [(NSMutableDictionary *)self->_earliestUtAdvertisements objectForKey:v10];
+            v22 = [(NSMutableDictionary *)self->_earliestUtAdvertisements objectForKey:address];
 
             if (!v22)
             {
-              [(NSMutableDictionary *)self->_earliestUtAdvertisements setObject:v4 forKey:v10];
+              [(NSMutableDictionary *)self->_earliestUtAdvertisements setObject:advertisementCopy forKey:address];
             }
 
             goto LABEL_22;
@@ -260,7 +260,7 @@ LABEL_20:
         latestUtAdvertisements = self->_latestUtAdvertisements;
       }
 
-      [(NSMutableDictionary *)latestUtAdvertisements setObject:v4 forKey:v10];
+      [(NSMutableDictionary *)latestUtAdvertisements setObject:advertisementCopy forKey:address];
       goto LABEL_20;
     }
 
@@ -268,9 +268,9 @@ LABEL_20:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v21;
-      v10 = [v4 description];
+      address = [advertisementCopy description];
       v24 = 136380675;
-      v25 = [v10 UTF8String];
+      uTF8String = [address UTF8String];
       v18 = "#TAVisitSnapshot Advertisement %{private}s not added to snapshot due to latest location not inside visit";
       v19 = v17;
       v20 = 12;
@@ -284,9 +284,9 @@ LABEL_20:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v10 = [v4 description];
+      address = [advertisementCopy description];
       v24 = 136380931;
-      v25 = [v10 UTF8String];
+      uTF8String = [address UTF8String];
       v26 = 2114;
       v27 = v8;
       v18 = "#TAVisitSnapshot Advertisement %{private}s not in valid time range %{public}@";
@@ -302,11 +302,11 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSystemState:(id)a3
+- (void)addSystemState:(id)state
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 systemStateType] == 2)
+  stateCopy = state;
+  if ([stateCopy systemStateType] == 2)
   {
     v5 = MEMORY[0x277CCA970];
     if ([(NSMutableArray *)self->_displayEvents count])
@@ -319,20 +319,20 @@ LABEL_22:
       [MEMORY[0x277CBEAA8] distantPast];
     }
     v6 = ;
-    v7 = [(TACLVisit *)self->_representativeVisit departureDate];
-    v8 = [v5 createIntervalSafelyWithStartDate:v6 endDate:v7];
+    departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+    v8 = [v5 createIntervalSafelyWithStartDate:v6 endDate:departureDate];
 
-    v9 = [v4 getDate];
-    LOBYTE(v7) = [v8 containsDate:v9];
+    getDate = [stateCopy getDate];
+    LOBYTE(departureDate) = [v8 containsDate:getDate];
 
-    if ((v7 & 1) == 0)
+    if ((departureDate & 1) == 0)
     {
       v19 = TAStatusLog;
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
         v23 = 67240450;
-        v24 = [v4 isOn];
+        isOn = [stateCopy isOn];
         v25 = 2114;
         v26 = v8;
         _os_log_impl(&dword_26F2E2000, v20, OS_LOG_TYPE_DEFAULT, "#TAVisitSnapshot System display state isOn: %{public}d not in valid time range %{public}@", &v23, 0x12u);
@@ -341,13 +341,13 @@ LABEL_22:
       goto LABEL_16;
     }
 
-    v10 = [(NSMutableArray *)self->_displayEvents lastObject];
-    v11 = v10;
-    if (v10)
+    lastObject = [(NSMutableArray *)self->_displayEvents lastObject];
+    v11 = lastObject;
+    if (lastObject)
     {
-      v12 = [v10 getDate];
-      v13 = [v4 getDate];
-      v14 = [v12 compare:v13];
+      getDate2 = [lastObject getDate];
+      getDate3 = [stateCopy getDate];
+      v14 = [getDate2 compare:getDate3];
 
       if (v14 == 1)
       {
@@ -355,20 +355,20 @@ LABEL_22:
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [v4 isOn];
-          v18 = [v11 getDate];
+          isOn2 = [stateCopy isOn];
+          getDate4 = [v11 getDate];
           v23 = 67240450;
-          v24 = v17;
+          isOn = isOn2;
           v25 = 2114;
-          v26 = v18;
+          v26 = getDate4;
           _os_log_impl(&dword_26F2E2000, v16, OS_LOG_TYPE_DEFAULT, "#TAVisitSnapshot System display state isOn: %{public}d received out of order, after %{public}@", &v23, 0x12u);
         }
 
         goto LABEL_15;
       }
 
-      v21 = [v11 isOn];
-      if (v21 == [v4 isOn])
+      isOn3 = [v11 isOn];
+      if (isOn3 == [stateCopy isOn])
       {
 LABEL_15:
 
@@ -377,7 +377,7 @@ LABEL_16:
       }
     }
 
-    [(NSMutableArray *)self->_displayEvents addObject:v4];
+    [(NSMutableArray *)self->_displayEvents addObject:stateCopy];
     if ([(NSMutableArray *)self->_displayEvents count]> self->_displayEventBufferSizeCap)
     {
       [(TAVisitSnapshot *)self pruneDisplayEvents];
@@ -391,15 +391,15 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setDepartureVisit:(id)a3
+- (BOOL)setDepartureVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   if ([(TAVisitSnapshot *)self isClosed])
   {
     v5 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
     {
-      [(TAVisitSnapshot *)v4 setDepartureVisit:v5];
+      [(TAVisitSnapshot *)visitCopy setDepartureVisit:v5];
     }
 
 LABEL_11:
@@ -407,29 +407,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v4 hasDepartureDate])
+  if (![visitCopy hasDepartureDate])
   {
     v7 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
     {
-      [(TAVisitSnapshot *)v4 setDepartureVisit:v7];
+      [(TAVisitSnapshot *)visitCopy setDepartureVisit:v7];
     }
 
     goto LABEL_11;
   }
 
-  if (![v4 isTemporalOrderSensical])
+  if (![visitCopy isTemporalOrderSensical])
   {
     v8 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
     {
-      [(TAVisitSnapshot *)v8 setDepartureVisit:v4];
+      [(TAVisitSnapshot *)v8 setDepartureVisit:visitCopy];
     }
 
     goto LABEL_11;
   }
 
-  [(TAVisitSnapshot *)self setRepresentativeVisit:v4];
+  [(TAVisitSnapshot *)self setRepresentativeVisit:visitCopy];
   [(TAVisitSnapshot *)self closeSnapshotCleanup];
   v6 = 1;
   self->_isClosed = 1;
@@ -441,12 +441,12 @@ LABEL_12:
 - (void)closeSnapshotCleanup
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_earliestUtAdvertisements allKeys];
+  allKeys = [(NSMutableDictionary *)self->_earliestUtAdvertisements allKeys];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -457,14 +457,14 @@ LABEL_12:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_earliestUtAdvertisements objectForKeyedSubscript:v8];
-        v10 = [v9 getDate];
-        v11 = [(TACLVisit *)self->_representativeVisit departureDate];
-        v12 = [v10 compare:v11];
+        getDate = [v9 getDate];
+        departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+        v12 = [getDate compare:departureDate];
 
         if (v12 == 1)
         {
@@ -474,7 +474,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -487,9 +487,9 @@ LABEL_12:
     while (1)
     {
       v15 = [(NSMutableArray *)self->_displayEvents objectAtIndexedSubscript:v14 - 2];
-      v16 = [v15 getDate];
-      v17 = [(TACLVisit *)self->_representativeVisit departureDate];
-      v18 = [v16 compare:v17];
+      getDate2 = [v15 getDate];
+      departureDate2 = [(TACLVisit *)self->_representativeVisit departureDate];
+      v18 = [getDate2 compare:departureDate2];
 
       if (v18 != 1)
       {
@@ -510,23 +510,23 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calculateExitIntervalWithDisplayOnBudget:(double)a3
+- (void)calculateExitIntervalWithDisplayOnBudget:(double)budget
 {
   if ([(TAVisitSnapshot *)self isClosed])
   {
     if (!self->_exitIntervalBeginning)
     {
-      v5 = [(TACLVisit *)self->_representativeVisit arrivalDate];
+      arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
       exitIntervalBeginning = self->_exitIntervalBeginning;
-      self->_exitIntervalBeginning = v5;
+      self->_exitIntervalBeginning = arrivalDate;
 
       if ([(NSMutableArray *)self->_displayEvents count])
       {
-        v7 = [(TACLVisit *)self->_representativeVisit departureDate];
+        departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
         v8 = [(NSMutableArray *)self->_displayEvents count];
-        if (a3 <= 0.0 || v8 < 1)
+        if (budget <= 0.0 || v8 < 1)
         {
-          v16 = v7;
+          v16 = departureDate;
         }
 
         else
@@ -537,39 +537,39 @@ LABEL_16:
             v10 = [(NSMutableArray *)self->_displayEvents objectAtIndexedSubscript:v9 - 1];
             if ([v10 isOn])
             {
-              v11 = [v10 getDate];
-              [v7 timeIntervalSinceDate:v11];
+              getDate = [v10 getDate];
+              [departureDate timeIntervalSinceDate:getDate];
               v13 = v12;
 
               if (v13 > 0.0)
               {
-                if (v13 > a3)
+                if (v13 > budget)
                 {
-                  v14 = [v7 dateByAddingTimeInterval:-a3];
+                  v14 = [departureDate dateByAddingTimeInterval:-budget];
                   v15 = self->_exitIntervalBeginning;
                   self->_exitIntervalBeginning = v14;
                 }
 
-                a3 = a3 - v13;
+                budget = budget - v13;
               }
             }
 
-            v18 = [v10 getDate];
+            getDate2 = [v10 getDate];
 
-            if (a3 <= 0.0)
+            if (budget <= 0.0)
             {
               break;
             }
 
-            v16 = v18;
-            v7 = v18;
+            v16 = getDate2;
+            departureDate = getDate2;
             if (v9-- <= 1)
             {
               goto LABEL_20;
             }
           }
 
-          v16 = v18;
+          v16 = getDate2;
         }
 
 LABEL_20:
@@ -585,29 +585,29 @@ LABEL_20:
   }
 }
 
-- (double)getDisplayOnTimeUntilEndDate:(id)a3
+- (double)getDisplayOnTimeUntilEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [TADisplayOnCalculator alloc];
-  v6 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-  v7 = [(TADisplayOnCalculator *)v5 initWithStartTime:v6];
+  arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+  v7 = [(TADisplayOnCalculator *)v5 initWithStartTime:arrivalDate];
 
   displayEvents = self->_displayEvents;
-  v9 = [(NSMutableDictionary *)self->_latestUtAdvertisements allValues];
-  [(TADisplayOnCalculator *)v7 calculateDisplayOnWithEvents:displayEvents advertisements:v9 endDate:v4];
+  allValues = [(NSMutableDictionary *)self->_latestUtAdvertisements allValues];
+  [(TADisplayOnCalculator *)v7 calculateDisplayOnWithEvents:displayEvents advertisements:allValues endDate:dateCopy];
   v11 = v10;
 
   return v11;
 }
 
-- (void)updateEntryIntervalWithDisplayOnBudget:(double)a3 evaluateToEnd:(BOOL)a4
+- (void)updateEntryIntervalWithDisplayOnBudget:(double)budget evaluateToEnd:(BOOL)end
 {
-  v4 = a4;
+  endCopy = end;
   if (!self->_displayOnCalculator)
   {
     v7 = [TADisplayOnCalculator alloc];
-    v8 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-    v9 = [(TADisplayOnCalculator *)v7 initWithStartTime:v8 budget:a3];
+    arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+    v9 = [(TADisplayOnCalculator *)v7 initWithStartTime:arrivalDate budget:budget];
     displayOnCalculator = self->_displayOnCalculator;
     self->_displayOnCalculator = v9;
   }
@@ -615,14 +615,14 @@ LABEL_20:
   entryDurationOfConsiderationClosed = self->_entryDurationOfConsiderationClosed;
   if (entryDurationOfConsiderationClosed)
   {
-    v12 = entryDurationOfConsiderationClosed;
+    departureDate = entryDurationOfConsiderationClosed;
 LABEL_5:
-    v13 = v12;
+    mostRecentAdvertisementDate = departureDate;
 LABEL_6:
     v14 = self->_displayOnCalculator;
     displayEvents = self->_displayEvents;
-    v16 = [(NSMutableDictionary *)self->_latestUtAdvertisements allValues];
-    [(TADisplayOnCalculator *)v14 calculateDisplayOnWithEvents:displayEvents advertisements:v16 endDate:v13];
+    allValues = [(NSMutableDictionary *)self->_latestUtAdvertisements allValues];
+    [(TADisplayOnCalculator *)v14 calculateDisplayOnWithEvents:displayEvents advertisements:allValues endDate:mostRecentAdvertisementDate];
 
     if (self->_entryDurationOfConsiderationClosed)
     {
@@ -632,11 +632,11 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!endCopy)
   {
-    v13 = [(TAVisitSnapshot *)self mostRecentAdvertisementDate];
-    v17 = [(TADisplayOnCalculator *)self->_displayOnCalculator evaluatedUntil];
-    v18 = [v13 compare:v17];
+    mostRecentAdvertisementDate = [(TAVisitSnapshot *)self mostRecentAdvertisementDate];
+    evaluatedUntil = [(TADisplayOnCalculator *)self->_displayOnCalculator evaluatedUntil];
+    v18 = [mostRecentAdvertisementDate compare:evaluatedUntil];
 
     if (v18 != 1)
     {
@@ -648,7 +648,7 @@ LABEL_6:
 
   if ([(TAVisitSnapshot *)self isClosed])
   {
-    v12 = [(TACLVisit *)self->_representativeVisit departureDate];
+    departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
     goto LABEL_5;
   }
 
@@ -657,16 +657,16 @@ LABEL_6:
     [TAVisitSnapshot updateEntryIntervalWithDisplayOnBudget:evaluateToEnd:];
   }
 
-  v13 = 0;
+  mostRecentAdvertisementDate = 0;
 LABEL_8:
 }
 
-- (id)getEntryAdvertisementsWithDisplayOnBudget:(double)a3
+- (id)getEntryAdvertisementsWithDisplayOnBudget:(double)budget
 {
-  [(TAVisitSnapshot *)self updateEntryIntervalWithDisplayOnBudget:0 evaluateToEnd:a3];
-  v4 = [(TADisplayOnCalculator *)self->_displayOnCalculator evaluatedUntil];
+  [(TAVisitSnapshot *)self updateEntryIntervalWithDisplayOnBudget:0 evaluateToEnd:budget];
+  evaluatedUntil = [(TADisplayOnCalculator *)self->_displayOnCalculator evaluatedUntil];
 
-  if (v4)
+  if (evaluatedUntil)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     earliestUtAdvertisements = self->_earliestUtAdvertisements;
@@ -679,15 +679,15 @@ LABEL_8:
     v12 = v7;
     [(NSMutableDictionary *)earliestUtAdvertisements enumerateKeysAndObjectsUsingBlock:v11];
     v8 = v12;
-    v9 = v7;
+    dictionary = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  return v9;
+  return dictionary;
 }
 
 void __61__TAVisitSnapshot_getEntryAdvertisementsWithDisplayOnBudget___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -704,9 +704,9 @@ void __61__TAVisitSnapshot_getEntryAdvertisementsWithDisplayOnBudget___block_inv
   }
 }
 
-- (id)getExitAdvertisementsWithDisplayOnBudget:(double)a3
+- (id)getExitAdvertisementsWithDisplayOnBudget:(double)budget
 {
-  if (self->_exitIntervalBeginning || ([(TAVisitSnapshot *)self calculateExitIntervalWithDisplayOnBudget:a3], self->_exitIntervalBeginning))
+  if (self->_exitIntervalBeginning || ([(TAVisitSnapshot *)self calculateExitIntervalWithDisplayOnBudget:budget], self->_exitIntervalBeginning))
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     latestUtAdvertisements = self->_latestUtAdvertisements;
@@ -744,15 +744,15 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
   }
 }
 
-- (double)getDurationOfVisitExitConsideredWithDisplayOnBudget:(double)a3
+- (double)getDurationOfVisitExitConsideredWithDisplayOnBudget:(double)budget
 {
   if ([(TAVisitSnapshot *)self isClosed])
   {
-    [(TAVisitSnapshot *)self calculateExitIntervalWithDisplayOnBudget:a3];
+    [(TAVisitSnapshot *)self calculateExitIntervalWithDisplayOnBudget:budget];
     if (self->_exitIntervalBeginning)
     {
-      v5 = [(TACLVisit *)self->_representativeVisit departureDate];
-      [v5 timeIntervalSinceDate:self->_exitIntervalBeginning];
+      departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+      [departureDate timeIntervalSinceDate:self->_exitIntervalBeginning];
       v7 = v6;
 
       return v7;
@@ -772,17 +772,17 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
   return 0.0;
 }
 
-- (double)getDurationOfVisitEntryConsideredWithDisplayOnBudget:(double)a3
+- (double)getDurationOfVisitEntryConsideredWithDisplayOnBudget:(double)budget
 {
   if ([(TAVisitSnapshot *)self isClosed])
   {
-    [(TAVisitSnapshot *)self updateEntryIntervalWithDisplayOnBudget:1 evaluateToEnd:a3];
+    [(TAVisitSnapshot *)self updateEntryIntervalWithDisplayOnBudget:1 evaluateToEnd:budget];
     displayOnCalculator = self->_displayOnCalculator;
     if (displayOnCalculator)
     {
-      v6 = [(TADisplayOnCalculator *)displayOnCalculator evaluatedUntil];
-      v7 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-      [v6 timeIntervalSinceDate:v7];
+      evaluatedUntil = [(TADisplayOnCalculator *)displayOnCalculator evaluatedUntil];
+      arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+      [evaluatedUntil timeIntervalSinceDate:arrivalDate];
       v9 = v8;
 
       return v9;
@@ -799,11 +799,11 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
 
 - (id)mostRecentAdvertisementDate
 {
-  v3 = [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache lastObject];
-  v4 = [(NSMutableDictionary *)self->_latestUtAdvertisements objectForKeyedSubscript:v3];
-  v5 = [v4 getDate];
+  lastObject = [(NSMutableOrderedSet *)self->_lruUtAdvertisementCache lastObject];
+  v4 = [(NSMutableDictionary *)self->_latestUtAdvertisements objectForKeyedSubscript:lastObject];
+  getDate = [v4 getDate];
 
-  return v5;
+  return getDate;
 }
 
 - (void)pruneDisplayEvents
@@ -821,22 +821,22 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
   }
 }
 
-- (void)updateLatestLocation:(id)a3
+- (void)updateLatestLocation:(id)location
 {
-  v4 = [a3 copy];
+  v4 = [location copy];
   latestLocation = self->_latestLocation;
   self->_latestLocation = v4;
 
   if (self->_latestLocation)
   {
     v6 = [TALocationLite alloc];
-    v7 = [(TACLVisit *)self->_representativeVisit getDate];
+    getDate = [(TACLVisit *)self->_representativeVisit getDate];
     [(TACLVisit *)self->_representativeVisit coordinate];
     v9 = v8;
     [(TACLVisit *)self->_representativeVisit coordinate];
     v11 = v10;
     [(TACLVisit *)self->_representativeVisit horizontalAccuracy];
-    v13 = [(TALocationLite *)v6 initWithTimestamp:v7 latitude:v9 longitude:v11 horizontalAccuracy:v12];
+    v13 = [(TALocationLite *)v6 initWithTimestamp:getDate latitude:v9 longitude:v11 horizontalAccuracy:v12];
 
     self->_latestLocationInsideVisit = ![(TALocationLite *)self->_latestLocation distanceToLocation:v13 satisfyNSigma:self->_maxNSigmaBetweenLastLocationAndVisit satisfyMinDistance:0.0];
   }
@@ -853,27 +853,27 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
   }
 }
 
-- (void)updateLoiType:(id)a3
+- (void)updateLoiType:(id)type
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = [TALocationLite alloc];
-  v6 = [(TACLVisit *)self->_representativeVisit getDate];
+  getDate = [(TACLVisit *)self->_representativeVisit getDate];
   [(TACLVisit *)self->_representativeVisit coordinate];
   v8 = v7;
   [(TACLVisit *)self->_representativeVisit coordinate];
   v10 = v9;
   [(TACLVisit *)self->_representativeVisit horizontalAccuracy];
-  v12 = [(TALocationLite *)v5 initWithTimestamp:v6 latitude:v8 longitude:v10 horizontalAccuracy:v11];
+  v12 = [(TALocationLite *)v5 initWithTimestamp:getDate latitude:v8 longitude:v10 horizontalAccuracy:v11];
 
   v13 = [TALocationLite alloc];
-  v14 = [v4 getDate];
-  [v4 latitude];
+  getDate2 = [typeCopy getDate];
+  [typeCopy latitude];
   v16 = v15;
-  [v4 longitude];
+  [typeCopy longitude];
   v18 = v17;
-  [v4 horizontalAccuracy];
-  v20 = [(TALocationLite *)v13 initWithTimestamp:v14 latitude:v16 longitude:v18 horizontalAccuracy:v19];
+  [typeCopy horizontalAccuracy];
+  v20 = [(TALocationLite *)v13 initWithTimestamp:getDate2 latitude:v16 longitude:v18 horizontalAccuracy:v19];
 
   [(TALocationLite *)v12 distanceFromLocation:v20];
   v22 = v21;
@@ -881,12 +881,12 @@ void __60__TAVisitSnapshot_getExitAdvertisementsWithDisplayOnBudget___block_invo
   {
     p_lastLoiTypeUpdateTime = &self->_lastLoiTypeUpdateTime;
     lastLoiTypeUpdateTime = self->_lastLoiTypeUpdateTime;
-    v25 = [v4 date];
-    if ([(NSDate *)lastLoiTypeUpdateTime compare:v25]!= NSOrderedAscending)
+    date = [typeCopy date];
+    if ([(NSDate *)lastLoiTypeUpdateTime compare:date]!= NSOrderedAscending)
     {
       v26 = *p_lastLoiTypeUpdateTime;
-      v27 = [v4 date];
-      if ([v26 compare:v27])
+      date2 = [typeCopy date];
+      if ([v26 compare:date2])
       {
 
         goto LABEL_5;
@@ -904,7 +904,7 @@ LABEL_5:
           v28 = TAStatusLog;
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
           {
-            [(TAVisitSnapshot *)v28 updateLoiType:v4, p_lastLoiTypeUpdateTime];
+            [(TAVisitSnapshot *)v28 updateLoiType:typeCopy, p_lastLoiTypeUpdateTime];
           }
 
           goto LABEL_17;
@@ -919,16 +919,16 @@ LABEL_14:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v35 = v34;
-      v36 = TALocationOfInterestTypeToString([v4 type]);
+      v36 = TALocationOfInterestTypeToString([typeCopy type]);
       v42 = 138477827;
       v43 = *&v36;
       _os_log_impl(&dword_26F2E2000, v35, OS_LOG_TYPE_DEFAULT, "#TAVisitSnapshot update visit snapshot with LOI type %{private}@", &v42, 0xCu);
     }
 
-    self->_loiType = [v4 type];
-    v37 = [v4 date];
+    self->_loiType = [typeCopy type];
+    date3 = [typeCopy date];
     v38 = self->_lastLoiTypeUpdateTime;
-    self->_lastLoiTypeUpdateTime = v37;
+    self->_lastLoiTypeUpdateTime = date3;
 
     v39 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:v22];
     v40 = self->_distanceToClosestLoi;
@@ -944,7 +944,7 @@ LABEL_14:
     v42 = 134284033;
     v43 = v22;
     v44 = 2049;
-    v45 = [v4 type];
+    type = [typeCopy type];
     v46 = 2049;
     v47 = v22 - 250.0;
     _os_log_debug_impl(&dword_26F2E2000, v30, OS_LOG_TYPE_DEBUG, "#TAVisitSnapshot the visit snapshot located %{private}f meters away from %{private}lu LOI type with %{private}f residual", &v42, 0x20u);
@@ -963,30 +963,30 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  v4 = [(TACLVisit *)representativeVisit detectionDate];
-  if (!v4)
+  detectionDate = [(TACLVisit *)representativeVisit detectionDate];
+  if (!detectionDate)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(TACLVisit *)self->_representativeVisit arrivalDate];
+  v5 = detectionDate;
+  arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
 
-  if (!v6)
+  if (!arrivalDate)
   {
     goto LABEL_5;
   }
 
-  v7 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-  v8 = [(TACLVisit *)self->_representativeVisit detectionDate];
-  v9 = [v7 compare:v8];
+  arrivalDate2 = [(TACLVisit *)self->_representativeVisit arrivalDate];
+  detectionDate2 = [(TACLVisit *)self->_representativeVisit detectionDate];
+  v9 = [arrivalDate2 compare:detectionDate2];
 
   if (v9 != 1)
   {
     v12 = MEMORY[0x277CCA970];
-    v13 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-    v14 = [(TACLVisit *)self->_representativeVisit detectionDate];
-    v10 = [v12 createIntervalSafelyWithStartDate:v13 endDate:v14];
+    arrivalDate3 = [(TACLVisit *)self->_representativeVisit arrivalDate];
+    detectionDate3 = [(TACLVisit *)self->_representativeVisit detectionDate];
+    v10 = [v12 createIntervalSafelyWithStartDate:arrivalDate3 endDate:detectionDate3];
   }
 
   else
@@ -1006,30 +1006,30 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4 = [(TACLVisit *)representativeVisit detectionDate];
-  if (!v4)
+  detectionDate = [(TACLVisit *)representativeVisit detectionDate];
+  if (!detectionDate)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(TACLVisit *)self->_representativeVisit departureDate];
+  v5 = detectionDate;
+  departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
 
-  if (!v6)
+  if (!departureDate)
   {
     goto LABEL_5;
   }
 
-  v7 = [(TACLVisit *)self->_representativeVisit departureDate];
-  v8 = [(TACLVisit *)self->_representativeVisit detectionDate];
-  v9 = [v7 compare:v8];
+  departureDate2 = [(TACLVisit *)self->_representativeVisit departureDate];
+  detectionDate2 = [(TACLVisit *)self->_representativeVisit detectionDate];
+  v9 = [departureDate2 compare:detectionDate2];
 
   if (v9 != 1)
   {
     v12 = MEMORY[0x277CCA970];
-    v13 = [(TACLVisit *)self->_representativeVisit departureDate];
-    v14 = [(TACLVisit *)self->_representativeVisit detectionDate];
-    v10 = [v12 createIntervalSafelyWithStartDate:v13 endDate:v14];
+    departureDate3 = [(TACLVisit *)self->_representativeVisit departureDate];
+    detectionDate3 = [(TACLVisit *)self->_representativeVisit detectionDate];
+    v10 = [v12 createIntervalSafelyWithStartDate:departureDate3 endDate:detectionDate3];
   }
 
   else
@@ -1041,22 +1041,22 @@ LABEL_5:
   return v10;
 }
 
-- (unint64_t)evaluateSnapshotQualityWithMinDwellDuration:(double)a3 minDisplayOnDuration:(double)a4
+- (unint64_t)evaluateSnapshotQualityWithMinDwellDuration:(double)duration minDisplayOnDuration:(double)onDuration
 {
   if ([(TAVisitSnapshot *)self isClosed])
   {
-    v7 = [(TACLVisit *)self->_representativeVisit departureDate];
-    v8 = [(TACLVisit *)self->_representativeVisit arrivalDate];
-    [v7 timeIntervalSinceDate:v8];
+    departureDate = [(TACLVisit *)self->_representativeVisit departureDate];
+    arrivalDate = [(TACLVisit *)self->_representativeVisit arrivalDate];
+    [departureDate timeIntervalSinceDate:arrivalDate];
     v10 = v9;
 
-    if (v10 >= a3)
+    if (v10 >= duration)
     {
-      v12 = [(TACLVisit *)self->_representativeVisit departureDate];
-      [(TAVisitSnapshot *)self getDisplayOnTimeUntilEndDate:v12];
+      departureDate2 = [(TACLVisit *)self->_representativeVisit departureDate];
+      [(TAVisitSnapshot *)self getDisplayOnTimeUntilEndDate:departureDate2];
       v14 = v13;
 
-      if (v14 >= a4)
+      if (v14 >= onDuration)
       {
         return 1;
       }
@@ -1087,9 +1087,9 @@ LABEL_5:
 - (id)getLocationRepresentingSnapshot
 {
   v3 = [TALocationLite alloc];
-  v4 = [(TACLVisit *)self->_representativeVisit hasDepartureDate];
+  hasDepartureDate = [(TACLVisit *)self->_representativeVisit hasDepartureDate];
   representativeVisit = self->_representativeVisit;
-  if (v4)
+  if (hasDepartureDate)
   {
     [(TACLVisit *)representativeVisit departureDate];
   }
@@ -1109,10 +1109,10 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1122,9 +1122,9 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(TAVisitSnapshot *)self isClosed];
-      if (v8 != [(TAVisitSnapshot *)v7 isClosed])
+      v7 = equalCopy;
+      isClosed = [(TAVisitSnapshot *)self isClosed];
+      if (isClosed != [(TAVisitSnapshot *)v7 isClosed])
       {
         v9 = 0;
 LABEL_78:
@@ -1132,60 +1132,60 @@ LABEL_78:
         goto LABEL_79;
       }
 
-      v10 = [(TAVisitSnapshot *)self representativeVisit];
-      v11 = [(TAVisitSnapshot *)v7 representativeVisit];
-      if (v10 != v11)
+      representativeVisit = [(TAVisitSnapshot *)self representativeVisit];
+      representativeVisit2 = [(TAVisitSnapshot *)v7 representativeVisit];
+      if (representativeVisit != representativeVisit2)
       {
-        v4 = [(TAVisitSnapshot *)self representativeVisit];
-        v3 = [(TAVisitSnapshot *)v7 representativeVisit];
-        if (![v4 isEqual:v3])
+        representativeVisit3 = [(TAVisitSnapshot *)self representativeVisit];
+        representativeVisit4 = [(TAVisitSnapshot *)v7 representativeVisit];
+        if (![representativeVisit3 isEqual:representativeVisit4])
         {
           v9 = 0;
           goto LABEL_76;
         }
       }
 
-      v12 = [(TAVisitSnapshot *)self latestLocation];
-      v13 = [(TAVisitSnapshot *)v7 latestLocation];
-      if (v12 != v13)
+      latestLocation = [(TAVisitSnapshot *)self latestLocation];
+      latestLocation2 = [(TAVisitSnapshot *)v7 latestLocation];
+      if (latestLocation != latestLocation2)
       {
-        v14 = [(TAVisitSnapshot *)self latestLocation];
-        v96 = [(TAVisitSnapshot *)v7 latestLocation];
-        if (![v14 isEqual:?])
+        latestLocation3 = [(TAVisitSnapshot *)self latestLocation];
+        latestLocation4 = [(TAVisitSnapshot *)v7 latestLocation];
+        if (![latestLocation3 isEqual:?])
         {
           v9 = 0;
           goto LABEL_74;
         }
 
-        v95 = v14;
+        v95 = latestLocation3;
       }
 
-      v15 = [(TAVisitSnapshot *)self loiType];
-      if (v15 == [(TAVisitSnapshot *)v7 loiType])
+      loiType = [(TAVisitSnapshot *)self loiType];
+      if (loiType == [(TAVisitSnapshot *)v7 loiType])
       {
-        v16 = [(TAVisitSnapshot *)self latestUtAdvertisements];
+        latestUtAdvertisements = [(TAVisitSnapshot *)self latestUtAdvertisements];
         [(TAVisitSnapshot *)v7 latestUtAdvertisements];
-        v93 = v3;
-        v94 = v16;
-        v92 = v91 = v13;
-        v90 = v12;
-        if (v16 != v92)
+        v93 = representativeVisit4;
+        v94 = latestUtAdvertisements;
+        v92 = v91 = latestLocation2;
+        v90 = latestLocation;
+        if (latestUtAdvertisements != v92)
         {
-          v17 = [(TAVisitSnapshot *)self latestUtAdvertisements];
-          v86 = [(TAVisitSnapshot *)v7 latestUtAdvertisements];
-          v87 = v17;
-          if (![v17 isEqual:?])
+          latestUtAdvertisements2 = [(TAVisitSnapshot *)self latestUtAdvertisements];
+          latestUtAdvertisements3 = [(TAVisitSnapshot *)v7 latestUtAdvertisements];
+          v87 = latestUtAdvertisements2;
+          if (![latestUtAdvertisements2 isEqual:?])
           {
             v9 = 0;
-            v18 = v16;
+            v18 = latestUtAdvertisements;
             v19 = v92;
-            v14 = v95;
+            latestLocation3 = v95;
 LABEL_72:
 
 LABEL_73:
-            v12 = v90;
-            v13 = v91;
-            v3 = v93;
+            latestLocation = v90;
+            latestLocation2 = v91;
+            representativeVisit4 = v93;
             if (v90 == v91)
             {
               goto LABEL_75;
@@ -1195,32 +1195,32 @@ LABEL_73:
           }
         }
 
-        v20 = [(TAVisitSnapshot *)self earliestUtAdvertisements];
-        v88 = [(TAVisitSnapshot *)v7 earliestUtAdvertisements];
-        v89 = v20;
-        if (v20 != v88)
+        earliestUtAdvertisements = [(TAVisitSnapshot *)self earliestUtAdvertisements];
+        earliestUtAdvertisements2 = [(TAVisitSnapshot *)v7 earliestUtAdvertisements];
+        v89 = earliestUtAdvertisements;
+        if (earliestUtAdvertisements != earliestUtAdvertisements2)
         {
-          v21 = [(TAVisitSnapshot *)self earliestUtAdvertisements];
-          v84 = [(TAVisitSnapshot *)v7 earliestUtAdvertisements];
-          v85 = v21;
-          if (![v21 isEqual:?])
+          earliestUtAdvertisements3 = [(TAVisitSnapshot *)self earliestUtAdvertisements];
+          earliestUtAdvertisements4 = [(TAVisitSnapshot *)v7 earliestUtAdvertisements];
+          v85 = earliestUtAdvertisements3;
+          if (![earliestUtAdvertisements3 isEqual:?])
           {
             v9 = 0;
-            v22 = v88;
+            v22 = earliestUtAdvertisements2;
             v23 = v89;
-            v14 = v95;
+            latestLocation3 = v95;
             goto LABEL_70;
           }
         }
 
-        v24 = [(TAVisitSnapshot *)self latestLocationInsideVisit];
-        if (v24 != [(TAVisitSnapshot *)v7 latestLocationInsideVisit])
+        latestLocationInsideVisit = [(TAVisitSnapshot *)self latestLocationInsideVisit];
+        if (latestLocationInsideVisit != [(TAVisitSnapshot *)v7 latestLocationInsideVisit])
         {
           v9 = 0;
-          v22 = v88;
+          v22 = earliestUtAdvertisements2;
           v23 = v89;
-          v14 = v95;
-          if (v89 == v88)
+          latestLocation3 = v95;
+          if (v89 == earliestUtAdvertisements2)
           {
 LABEL_71:
 
@@ -1239,27 +1239,27 @@ LABEL_70:
           goto LABEL_71;
         }
 
-        v25 = [(TAVisitSnapshot *)self lruUtAdvertisementCache];
-        v82 = [(TAVisitSnapshot *)v7 lruUtAdvertisementCache];
-        v83 = v25;
-        if (v25 != v82)
+        lruUtAdvertisementCache = [(TAVisitSnapshot *)self lruUtAdvertisementCache];
+        lruUtAdvertisementCache2 = [(TAVisitSnapshot *)v7 lruUtAdvertisementCache];
+        v83 = lruUtAdvertisementCache;
+        if (lruUtAdvertisementCache != lruUtAdvertisementCache2)
         {
-          v26 = [(TAVisitSnapshot *)self lruUtAdvertisementCache];
-          v80 = [(TAVisitSnapshot *)v7 lruUtAdvertisementCache];
-          v81 = v26;
-          if (![v26 isEqual:?])
+          lruUtAdvertisementCache3 = [(TAVisitSnapshot *)self lruUtAdvertisementCache];
+          lruUtAdvertisementCache4 = [(TAVisitSnapshot *)v7 lruUtAdvertisementCache];
+          v81 = lruUtAdvertisementCache3;
+          if (![lruUtAdvertisementCache3 isEqual:?])
           {
             v9 = 0;
             v27 = v89;
-            v29 = v82;
+            v29 = lruUtAdvertisementCache2;
             v28 = v83;
 LABEL_68:
 
 LABEL_69:
-            v22 = v88;
-            v14 = v95;
+            v22 = earliestUtAdvertisements2;
+            latestLocation3 = v95;
             v23 = v27;
-            if (v27 == v88)
+            if (v27 == earliestUtAdvertisements2)
             {
               goto LABEL_71;
             }
@@ -1268,51 +1268,51 @@ LABEL_69:
           }
         }
 
-        v30 = [(TAVisitSnapshot *)self uniqueUTBufferSizeCap];
-        if (v30 != [(TAVisitSnapshot *)v7 uniqueUTBufferSizeCap]|| (v31 = [(TAVisitSnapshot *)self displayEventBufferSizeCap], v31 != [(TAVisitSnapshot *)v7 displayEventBufferSizeCap]))
+        uniqueUTBufferSizeCap = [(TAVisitSnapshot *)self uniqueUTBufferSizeCap];
+        if (uniqueUTBufferSizeCap != [(TAVisitSnapshot *)v7 uniqueUTBufferSizeCap]|| (v31 = [(TAVisitSnapshot *)self displayEventBufferSizeCap], v31 != [(TAVisitSnapshot *)v7 displayEventBufferSizeCap]))
         {
           v9 = 0;
           goto LABEL_67;
         }
 
-        v32 = [(TAVisitSnapshot *)self displayEvents];
-        v78 = [(TAVisitSnapshot *)v7 displayEvents];
-        v79 = v32;
-        if (v32 != v78)
+        displayEvents = [(TAVisitSnapshot *)self displayEvents];
+        displayEvents2 = [(TAVisitSnapshot *)v7 displayEvents];
+        v79 = displayEvents;
+        if (displayEvents != displayEvents2)
         {
-          v33 = [(TAVisitSnapshot *)self displayEvents];
-          v34 = [(TAVisitSnapshot *)v7 displayEvents];
-          v75 = v33;
-          v35 = v33;
-          v36 = v34;
-          if (![v35 isEqual:v34])
+          displayEvents3 = [(TAVisitSnapshot *)self displayEvents];
+          displayEvents4 = [(TAVisitSnapshot *)v7 displayEvents];
+          v75 = displayEvents3;
+          v35 = displayEvents3;
+          v36 = displayEvents4;
+          if (![v35 isEqual:displayEvents4])
           {
             v9 = 0;
-            v40 = v78;
+            v40 = displayEvents2;
             goto LABEL_64;
           }
 
           v73 = v36;
         }
 
-        v37 = [(TAVisitSnapshot *)self exitIntervalBeginning];
-        v76 = [(TAVisitSnapshot *)v7 exitIntervalBeginning];
-        v77 = v37;
-        if (v37 != v76)
+        exitIntervalBeginning = [(TAVisitSnapshot *)self exitIntervalBeginning];
+        exitIntervalBeginning2 = [(TAVisitSnapshot *)v7 exitIntervalBeginning];
+        v77 = exitIntervalBeginning;
+        if (exitIntervalBeginning != exitIntervalBeginning2)
         {
-          v38 = [(TAVisitSnapshot *)self exitIntervalBeginning];
-          v70 = [(TAVisitSnapshot *)v7 exitIntervalBeginning];
-          v71 = v38;
-          if (![v38 isEqual:?])
+          exitIntervalBeginning3 = [(TAVisitSnapshot *)self exitIntervalBeginning];
+          exitIntervalBeginning4 = [(TAVisitSnapshot *)v7 exitIntervalBeginning];
+          v71 = exitIntervalBeginning3;
+          if (![exitIntervalBeginning3 isEqual:?])
           {
             v9 = 0;
-            v39 = v76;
+            v39 = exitIntervalBeginning2;
 LABEL_62:
 
 LABEL_63:
-            v40 = v78;
+            v40 = displayEvents2;
             v36 = v73;
-            if (v79 == v78)
+            if (v79 == displayEvents2)
             {
 
               goto LABEL_66;
@@ -1323,10 +1323,10 @@ LABEL_64:
 
 LABEL_66:
 LABEL_67:
-            v29 = v82;
+            v29 = lruUtAdvertisementCache2;
             v28 = v83;
             v27 = v89;
-            if (v83 == v82)
+            if (v83 == lruUtAdvertisementCache2)
             {
               goto LABEL_69;
             }
@@ -1335,23 +1335,23 @@ LABEL_67:
           }
         }
 
-        v41 = [(TAVisitSnapshot *)self displayOnCalculator];
-        v72 = [(TAVisitSnapshot *)v7 displayOnCalculator];
-        v74 = v41;
-        if (v41 != v72)
+        displayOnCalculator = [(TAVisitSnapshot *)self displayOnCalculator];
+        displayOnCalculator2 = [(TAVisitSnapshot *)v7 displayOnCalculator];
+        v74 = displayOnCalculator;
+        if (displayOnCalculator != displayOnCalculator2)
         {
-          v42 = [(TAVisitSnapshot *)self displayOnCalculator];
-          v66 = [(TAVisitSnapshot *)v7 displayOnCalculator];
-          v67 = v42;
-          if (![v42 isEqual:?])
+          displayOnCalculator3 = [(TAVisitSnapshot *)self displayOnCalculator];
+          displayOnCalculator4 = [(TAVisitSnapshot *)v7 displayOnCalculator];
+          v67 = displayOnCalculator3;
+          if (![displayOnCalculator3 isEqual:?])
           {
             v9 = 0;
-            v43 = v72;
+            v43 = displayOnCalculator2;
 LABEL_60:
 
 LABEL_61:
-            v39 = v76;
-            if (v77 == v76)
+            v39 = exitIntervalBeginning2;
+            if (v77 == exitIntervalBeginning2)
             {
               goto LABEL_63;
             }
@@ -1360,23 +1360,23 @@ LABEL_61:
           }
         }
 
-        v44 = [(TAVisitSnapshot *)self distanceToClosestLoi];
-        v68 = [(TAVisitSnapshot *)v7 distanceToClosestLoi];
-        v69 = v44;
-        if (v44 != v68)
+        distanceToClosestLoi = [(TAVisitSnapshot *)self distanceToClosestLoi];
+        distanceToClosestLoi2 = [(TAVisitSnapshot *)v7 distanceToClosestLoi];
+        v69 = distanceToClosestLoi;
+        if (distanceToClosestLoi != distanceToClosestLoi2)
         {
-          v45 = [(TAVisitSnapshot *)self distanceToClosestLoi];
-          v62 = [(TAVisitSnapshot *)v7 distanceToClosestLoi];
-          v63 = v45;
-          if (![v45 isEqual:?])
+          distanceToClosestLoi3 = [(TAVisitSnapshot *)self distanceToClosestLoi];
+          distanceToClosestLoi4 = [(TAVisitSnapshot *)v7 distanceToClosestLoi];
+          v63 = distanceToClosestLoi3;
+          if (![distanceToClosestLoi3 isEqual:?])
           {
             v9 = 0;
-            v46 = v68;
+            v46 = distanceToClosestLoi2;
 LABEL_58:
 
 LABEL_59:
-            v43 = v72;
-            if (v74 == v72)
+            v43 = displayOnCalculator2;
+            if (v74 == displayOnCalculator2)
             {
               goto LABEL_61;
             }
@@ -1385,17 +1385,17 @@ LABEL_59:
           }
         }
 
-        v47 = [(TAVisitSnapshot *)self entryDurationOfConsiderationClosed];
-        v64 = [(TAVisitSnapshot *)v7 entryDurationOfConsiderationClosed];
-        v65 = v47;
-        if (v47 != v64)
+        entryDurationOfConsiderationClosed = [(TAVisitSnapshot *)self entryDurationOfConsiderationClosed];
+        entryDurationOfConsiderationClosed2 = [(TAVisitSnapshot *)v7 entryDurationOfConsiderationClosed];
+        v65 = entryDurationOfConsiderationClosed;
+        if (entryDurationOfConsiderationClosed != entryDurationOfConsiderationClosed2)
         {
-          v48 = [(TAVisitSnapshot *)self entryDurationOfConsiderationClosed];
-          v49 = [(TAVisitSnapshot *)v7 entryDurationOfConsiderationClosed];
-          v61 = v48;
-          v50 = v48;
-          v51 = v49;
-          if (![v50 isEqual:v49])
+          entryDurationOfConsiderationClosed3 = [(TAVisitSnapshot *)self entryDurationOfConsiderationClosed];
+          entryDurationOfConsiderationClosed4 = [(TAVisitSnapshot *)v7 entryDurationOfConsiderationClosed];
+          v61 = entryDurationOfConsiderationClosed3;
+          v50 = entryDurationOfConsiderationClosed3;
+          v51 = entryDurationOfConsiderationClosed4;
+          if (![v50 isEqual:entryDurationOfConsiderationClosed4])
           {
             v9 = 0;
             goto LABEL_55;
@@ -1404,13 +1404,13 @@ LABEL_59:
           v60 = v51;
         }
 
-        v52 = [(TAVisitSnapshot *)self maxNSigmaBetweenLastLocationAndVisit];
-        if (v52 == [(TAVisitSnapshot *)v7 maxNSigmaBetweenLastLocationAndVisit])
+        maxNSigmaBetweenLastLocationAndVisit = [(TAVisitSnapshot *)self maxNSigmaBetweenLastLocationAndVisit];
+        if (maxNSigmaBetweenLastLocationAndVisit == [(TAVisitSnapshot *)v7 maxNSigmaBetweenLastLocationAndVisit])
         {
-          v53 = [(TAVisitSnapshot *)self lastLoiTypeUpdateTime];
-          v58 = [(TAVisitSnapshot *)v7 lastLoiTypeUpdateTime];
-          v59 = v53;
-          if (v53 == v58)
+          lastLoiTypeUpdateTime = [(TAVisitSnapshot *)self lastLoiTypeUpdateTime];
+          lastLoiTypeUpdateTime2 = [(TAVisitSnapshot *)v7 lastLoiTypeUpdateTime];
+          v59 = lastLoiTypeUpdateTime;
+          if (lastLoiTypeUpdateTime == lastLoiTypeUpdateTime2)
           {
 
             v9 = 1;
@@ -1418,9 +1418,9 @@ LABEL_59:
 
           else
           {
-            v57 = [(TAVisitSnapshot *)self lastLoiTypeUpdateTime];
-            v54 = [(TAVisitSnapshot *)v7 lastLoiTypeUpdateTime];
-            v9 = [v57 isEqual:v54];
+            lastLoiTypeUpdateTime3 = [(TAVisitSnapshot *)self lastLoiTypeUpdateTime];
+            lastLoiTypeUpdateTime4 = [(TAVisitSnapshot *)v7 lastLoiTypeUpdateTime];
+            v9 = [lastLoiTypeUpdateTime3 isEqual:lastLoiTypeUpdateTime4];
           }
         }
 
@@ -1430,12 +1430,12 @@ LABEL_59:
         }
 
         v51 = v60;
-        if (v65 == v64)
+        if (v65 == entryDurationOfConsiderationClosed2)
         {
 
 LABEL_57:
-          v46 = v68;
-          if (v69 == v68)
+          v46 = distanceToClosestLoi2;
+          if (v69 == distanceToClosestLoi2)
           {
             goto LABEL_59;
           }
@@ -1449,12 +1449,12 @@ LABEL_55:
       }
 
       v9 = 0;
-      v14 = v95;
-      if (v12 == v13)
+      latestLocation3 = v95;
+      if (latestLocation == latestLocation2)
       {
 LABEL_75:
 
-        if (v10 == v11)
+        if (representativeVisit == representativeVisit2)
         {
 LABEL_77:
 
@@ -1479,29 +1479,29 @@ LABEL_79:
   return v9;
 }
 
-- (TAVisitSnapshot)initWithCoder:(id)a3
+- (TAVisitSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = TAVisitSnapshot;
   v5 = [(TAVisitSnapshot *)&v43 init];
   if (v5)
   {
-    v5->_isClosed = [v4 decodeBoolForKey:@"Closed"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RepVisit"];
+    v5->_isClosed = [coderCopy decodeBoolForKey:@"Closed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RepVisit"];
     representativeVisit = v5->_representativeVisit;
     v5->_representativeVisit = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LatestLoc"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LatestLoc"];
     latestLocation = v5->_latestLocation;
     v5->_latestLocation = v8;
 
-    v5->_loiType = [v4 decodeIntegerForKey:@"LOI"];
+    v5->_loiType = [coderCopy decodeIntegerForKey:@"LOI"];
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"LatestAdv"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"LatestAdv"];
     latestUtAdvertisements = v5->_latestUtAdvertisements;
     v5->_latestUtAdvertisements = v14;
 
@@ -1509,45 +1509,45 @@ LABEL_79:
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v16 setWithObjects:{v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"EarliestAdv"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"EarliestAdv"];
     earliestUtAdvertisements = v5->_earliestUtAdvertisements;
     v5->_earliestUtAdvertisements = v20;
 
-    v5->_latestLocationInsideVisit = [v4 decodeBoolForKey:@"LatestLocInside"];
+    v5->_latestLocationInsideVisit = [coderCopy decodeBoolForKey:@"LatestLocInside"];
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"LRUAdv"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"LRUAdv"];
     lruUtAdvertisementCache = v5->_lruUtAdvertisementCache;
     v5->_lruUtAdvertisementCache = v25;
 
-    v5->_uniqueUTBufferSizeCap = [v4 decodeIntegerForKey:@"numUnique"];
-    v5->_displayEventBufferSizeCap = [v4 decodeIntegerForKey:@"numDisplay"];
+    v5->_uniqueUTBufferSizeCap = [coderCopy decodeIntegerForKey:@"numUnique"];
+    v5->_displayEventBufferSizeCap = [coderCopy decodeIntegerForKey:@"numDisplay"];
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"displayEvents"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"displayEvents"];
     displayEvents = v5->_displayEvents;
     v5->_displayEvents = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exitBegin"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exitBegin"];
     exitIntervalBeginning = v5->_exitIntervalBeginning;
     v5->_exitIntervalBeginning = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayOnCalc"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayOnCalc"];
     displayOnCalculator = v5->_displayOnCalculator;
     v5->_displayOnCalculator = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distanceToLOI"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distanceToLOI"];
     distanceToClosestLoi = v5->_distanceToClosestLoi;
     v5->_distanceToClosestLoi = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryDuration"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryDuration"];
     entryDurationOfConsiderationClosed = v5->_entryDurationOfConsiderationClosed;
     v5->_entryDurationOfConsiderationClosed = v38;
 
-    v5->_maxNSigmaBetweenLastLocationAndVisit = [v4 decodeIntegerForKey:@"maxNSigma"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LoiUpdateTime"];
+    v5->_maxNSigmaBetweenLastLocationAndVisit = [coderCopy decodeIntegerForKey:@"maxNSigma"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LoiUpdateTime"];
     lastLoiTypeUpdateTime = v5->_lastLoiTypeUpdateTime;
     v5->_lastLoiTypeUpdateTime = v40;
   }
@@ -1555,27 +1555,27 @@ LABEL_79:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isClosed = self->_isClosed;
-  v5 = a3;
-  [v5 encodeBool:isClosed forKey:@"Closed"];
-  [v5 encodeObject:self->_representativeVisit forKey:@"RepVisit"];
-  [v5 encodeObject:self->_latestLocation forKey:@"LatestLoc"];
-  [v5 encodeInteger:self->_loiType forKey:@"LOI"];
-  [v5 encodeObject:self->_latestUtAdvertisements forKey:@"LatestAdv"];
-  [v5 encodeObject:self->_earliestUtAdvertisements forKey:@"EarliestAdv"];
-  [v5 encodeBool:self->_latestLocationInsideVisit forKey:@"LatestLocInside"];
-  [v5 encodeObject:self->_lruUtAdvertisementCache forKey:@"LRUAdv"];
-  [v5 encodeInteger:self->_uniqueUTBufferSizeCap forKey:@"numUnique"];
-  [v5 encodeInteger:self->_displayEventBufferSizeCap forKey:@"numDisplay"];
-  [v5 encodeObject:self->_displayEvents forKey:@"displayEvents"];
-  [v5 encodeObject:self->_exitIntervalBeginning forKey:@"exitBegin"];
-  [v5 encodeObject:self->_displayOnCalculator forKey:@"displayOnCalc"];
-  [v5 encodeObject:self->_distanceToClosestLoi forKey:@"distanceToLOI"];
-  [v5 encodeObject:self->_entryDurationOfConsiderationClosed forKey:@"entryDuration"];
-  [v5 encodeInteger:self->_maxNSigmaBetweenLastLocationAndVisit forKey:@"maxNSigma"];
-  [v5 encodeObject:self->_lastLoiTypeUpdateTime forKey:@"LoiUpdateTime"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isClosed forKey:@"Closed"];
+  [coderCopy encodeObject:self->_representativeVisit forKey:@"RepVisit"];
+  [coderCopy encodeObject:self->_latestLocation forKey:@"LatestLoc"];
+  [coderCopy encodeInteger:self->_loiType forKey:@"LOI"];
+  [coderCopy encodeObject:self->_latestUtAdvertisements forKey:@"LatestAdv"];
+  [coderCopy encodeObject:self->_earliestUtAdvertisements forKey:@"EarliestAdv"];
+  [coderCopy encodeBool:self->_latestLocationInsideVisit forKey:@"LatestLocInside"];
+  [coderCopy encodeObject:self->_lruUtAdvertisementCache forKey:@"LRUAdv"];
+  [coderCopy encodeInteger:self->_uniqueUTBufferSizeCap forKey:@"numUnique"];
+  [coderCopy encodeInteger:self->_displayEventBufferSizeCap forKey:@"numDisplay"];
+  [coderCopy encodeObject:self->_displayEvents forKey:@"displayEvents"];
+  [coderCopy encodeObject:self->_exitIntervalBeginning forKey:@"exitBegin"];
+  [coderCopy encodeObject:self->_displayOnCalculator forKey:@"displayOnCalc"];
+  [coderCopy encodeObject:self->_distanceToClosestLoi forKey:@"distanceToLOI"];
+  [coderCopy encodeObject:self->_entryDurationOfConsiderationClosed forKey:@"entryDuration"];
+  [coderCopy encodeInteger:self->_maxNSigmaBetweenLastLocationAndVisit forKey:@"maxNSigma"];
+  [coderCopy encodeObject:self->_lastLoiTypeUpdateTime forKey:@"LoiUpdateTime"];
 }
 
 - (void)setRepresentativeVisit:(id *)a3 .cold.1(void *a1, void *a2, id *a3)

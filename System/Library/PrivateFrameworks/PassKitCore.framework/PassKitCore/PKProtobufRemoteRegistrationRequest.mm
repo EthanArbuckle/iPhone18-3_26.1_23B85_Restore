@@ -1,20 +1,20 @@
 @interface PKProtobufRemoteRegistrationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRegisterPeerPayment:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRegisterPeerPayment:(BOOL)payment;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufRemoteRegistrationRequest
 
-- (void)setHasRegisterPeerPayment:(BOOL)a3
+- (void)setHasRegisterPeerPayment:(BOOL)payment
 {
-  if (a3)
+  if (payment)
   {
     v3 = 2;
   }
@@ -33,23 +33,23 @@
   v8.receiver = self;
   v8.super_class = PKProtobufRemoteRegistrationRequest;
   v4 = [(PKProtobufRemoteRegistrationRequest *)&v8 description];
-  v5 = [(PKProtobufRemoteRegistrationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufRemoteRegistrationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   has = self->_has;
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_registerBroker];
-    [v3 setObject:v6 forKey:@"registerBroker"];
+    [dictionary setObject:v6 forKey:@"registerBroker"];
 
     has = self->_has;
   }
@@ -57,15 +57,15 @@
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_registerPeerPayment];
-    [v3 setObject:v7 forKey:@"registerPeerPayment"];
+    [dictionary setObject:v7 forKey:@"registerPeerPayment"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   has = self->_has;
   if (has)
@@ -80,28 +80,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[2] = self->_version;
+  toCopy = to;
+  toCopy[2] = self->_version;
   has = self->_has;
   if (has)
   {
-    *(v4 + 12) = self->_registerBroker;
-    *(v4 + 16) |= 1u;
+    *(toCopy + 12) = self->_registerBroker;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 13) = self->_registerPeerPayment;
-    *(v4 + 16) |= 2u;
+    *(toCopy + 13) = self->_registerPeerPayment;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_version;
   has = self->_has;
   if (has)
@@ -120,17 +120,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_version != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_version != *(equalCopy + 2))
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -140,39 +140,39 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((*(v4 + 16) & 1) == 0)
+  if ((*(equalCopy + 16) & 1) == 0)
   {
     goto LABEL_11;
   }
 
   if (self->_registerBroker)
   {
-    if ((*(v4 + 12) & 1) == 0)
+    if ((*(equalCopy + 12) & 1) == 0)
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 12))
+  else if (*(equalCopy + 12))
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) != 0)
+    if ((*(equalCopy + 16) & 2) != 0)
     {
       if (self->_registerPeerPayment)
       {
-        if (*(v4 + 13))
+        if (*(equalCopy + 13))
         {
           goto LABEL_19;
         }
       }
 
-      else if (!*(v4 + 13))
+      else if (!*(equalCopy + 13))
       {
 LABEL_19:
         v5 = 1;
@@ -214,21 +214,21 @@ LABEL_3:
   return v2 ^ v3 ^ (2654435761 * self->_version);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = *(v4 + 2);
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  self->_version = *(fromCopy + 2);
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_registerBroker = *(v4 + 12);
+    self->_registerBroker = *(fromCopy + 12);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_registerPeerPayment = *(v4 + 13);
+    self->_registerPeerPayment = *(fromCopy + 13);
     *&self->_has |= 2u;
   }
 }

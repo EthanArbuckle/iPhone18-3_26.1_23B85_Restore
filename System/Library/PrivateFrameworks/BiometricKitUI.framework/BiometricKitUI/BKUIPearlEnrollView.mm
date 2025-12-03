@@ -2,7 +2,7 @@
 - (BKUIPearlEnrollViewDelegate)delegate;
 - (BKUIPearlEnrollViewStateTransitionDelegate)transitionDelegate;
 - (BOOL)_animateCircleMaskWithPositioningGuide;
-- (BOOL)expectsRunningVideoCaptureSession:(id)a3;
+- (BOOL)expectsRunningVideoCaptureSession:(id)session;
 - (BOOL)needsMaskedNeedsPositionStyleEnrollment;
 - (CATransform3D)_needsPositioningPreviewTransform;
 - (CATransform3D)_scanningAndPartialCapturePreviewTransform;
@@ -11,53 +11,53 @@
 - (CGSize)tutorialMovieSize;
 - (double)_nonOccludingCircleMaskRadius;
 - (double)_previewZoomLevel;
-- (double)_progressiveBlurAmountForPitch:(double)a3;
+- (double)_progressiveBlurAmountForPitch:(double)pitch;
 - (double)portalRadius;
 - (double)tutorialRingRadius;
-- (id)_enrollMaskPathWithRadius:(double)a3;
-- (id)_maskPathWithRadius:(double)a3 inFrame:(CGRect)a4;
+- (id)_enrollMaskPathWithRadius:(double)radius;
+- (id)_maskPathWithRadius:(double)radius inFrame:(CGRect)frame;
 - (void)_animateToEntryAnimation;
-- (void)_animateToFinishedWithCompletion:(id)a3;
-- (void)_animateToFirstScanCompleteWithCompletion:(id)a3;
-- (void)_animateToFirstScanWithCompletion:(id)a3;
-- (void)_animateToNeedsCenterBinWithCompletion:(id)a3;
-- (void)_animateToNeedsPositioningFromState:(int)a3 withCompletion:(id)a4;
-- (void)_animateToPartialCaptureWithCompletion:(id)a3;
-- (void)_animateToScanCompleteWithCompletion:(id)a3;
-- (void)_animateToScanningStateWithCompletion:(id)a3;
-- (void)_animateToTutorialWithCompletion:(id)a3;
+- (void)_animateToFinishedWithCompletion:(id)completion;
+- (void)_animateToFirstScanCompleteWithCompletion:(id)completion;
+- (void)_animateToFirstScanWithCompletion:(id)completion;
+- (void)_animateToNeedsCenterBinWithCompletion:(id)completion;
+- (void)_animateToNeedsPositioningFromState:(int)state withCompletion:(id)completion;
+- (void)_animateToPartialCaptureWithCompletion:(id)completion;
+- (void)_animateToScanCompleteWithCompletion:(id)completion;
+- (void)_animateToScanningStateWithCompletion:(id)completion;
+- (void)_animateToTutorialWithCompletion:(id)completion;
 - (void)_cleanupUIState;
 - (void)_endAndCleanupEnrollSessionIfNeeded;
 - (void)_nudgeIfNecessary;
-- (void)_recordDataFrameWithFaceState:(id)a3;
-- (void)_runTutorialLoopWithDuration:(double)a3 delay:(double)a4 loopDelay:(double)a5;
-- (void)_setRaiseLowerGuidanceLabelState:(unint64_t)a3;
-- (void)_setState:(int)a3 completion:(id)a4;
+- (void)_recordDataFrameWithFaceState:(id)state;
+- (void)_runTutorialLoopWithDuration:(double)duration delay:(double)delay loopDelay:(double)loopDelay;
+- (void)_setRaiseLowerGuidanceLabelState:(unint64_t)state;
+- (void)_setState:(int)state completion:(id)completion;
 - (void)_startNudgeTimer;
 - (void)_stopNudgeTimer;
-- (void)_updateCorrectionEstimates:(double)a3 yaw:(double)a4;
+- (void)_updateCorrectionEstimates:(double)estimates yaw:(double)yaw;
 - (void)_updateDebugOverlay;
-- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)a3;
-- (void)_updateToNeedsPositionWithoutAnimationWithCompletion:(id)a3;
+- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)pitch;
+- (void)_updateToNeedsPositionWithoutAnimationWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)didDisappear;
 - (void)layoutSubviews;
 - (void)preEnrollActivate;
-- (void)setActive:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCameraBlurAmount:(double)a3 useShade:(BOOL)a4 duration:(double)a5 completion:(id)a6;
-- (void)setCameraBlurred:(BOOL)a3;
-- (void)setCrosshairsHidden:(BOOL)a3;
-- (void)setDebugOverlayVisible:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setBackgroundColor:(id)color;
+- (void)setCameraBlurAmount:(double)amount useShade:(BOOL)shade duration:(double)duration completion:(id)completion;
+- (void)setCameraBlurred:(BOOL)blurred;
+- (void)setCrosshairsHidden:(BOOL)hidden;
+- (void)setDebugOverlayVisible:(BOOL)visible;
 - (void)setFailed;
-- (void)setMovieViewHidden:(BOOL)a3;
-- (void)setPillsHidden:(BOOL)a3;
-- (void)setPitch:(double)a3 yaw:(double)a4;
-- (void)setupAnimationViewWithSuperView:(id)a3;
+- (void)setMovieViewHidden:(BOOL)hidden;
+- (void)setPillsHidden:(BOOL)hidden;
+- (void)setPitch:(double)pitch yaw:(double)yaw;
+- (void)setupAnimationViewWithSuperView:(id)view;
 - (void)startCapture;
 - (void)updatePortalLayoutGuide;
-- (void)updateWithFaceState:(id)a3;
-- (void)updateWithProgress:(id)a3;
+- (void)updateWithFaceState:(id)state;
+- (void)updateWithProgress:(id)progress;
 @end
 
 @implementation BKUIPearlEnrollView
@@ -91,10 +91,10 @@ void __112__BKUIPearlEnrollView_initWithFrame_videoCaptureSession_inSheet_positi
   }
 }
 
-- (void)setupAnimationViewWithSuperView:(id)a3
+- (void)setupAnimationViewWithSuperView:(id)view
 {
   v54[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = _BKUILoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,9 +104,9 @@ void __112__BKUIPearlEnrollView_initWithFrame_videoCaptureSession_inSheet_positi
 
   if ([(BKUIPearlEnrollView *)self squareNeedsPositionLayout])
   {
-    v6 = [(BKUIPearlEnrollView *)self animationView];
+    animationView = [(BKUIPearlEnrollView *)self animationView];
 
-    if (!v6)
+    if (!animationView)
     {
       v7 = [BKUIMicaAnimationView alloc];
       v8 = [(OBAnimationView *)v7 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -121,98 +121,98 @@ void __112__BKUIPearlEnrollView_initWithFrame_videoCaptureSession_inSheet_positi
     v54[2] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:3];
 
-    v13 = [(BKUIPearlEnrollView *)self animationView];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    animationView2 = [(BKUIPearlEnrollView *)self animationView];
+    [animationView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(BKUIPearlEnrollView *)self animationView];
-    [v14 setAlpha:0.0];
+    animationView3 = [(BKUIPearlEnrollView *)self animationView];
+    [animationView3 setAlpha:0.0];
 
-    v15 = [(BKUIPearlEnrollView *)self animationController];
+    animationController = [(BKUIPearlEnrollView *)self animationController];
 
-    if (!v15)
+    if (!animationController)
     {
       v16 = objc_alloc(MEMORY[0x277D37600]);
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v18 = [v17 URLForResource:@"faceid-completion" withExtension:@"ca"];
-      v19 = [(BKUIPearlEnrollView *)self animationView];
+      animationView4 = [(BKUIPearlEnrollView *)self animationView];
       v20 = [v12 objectAtIndexedSubscript:0];
-      v21 = [v16 initWithUrlToPackage:v18 animationView:v19 animatedStates:v12 startAtFirstState:v20];
+      v21 = [v16 initWithUrlToPackage:v18 animationView:animationView4 animatedStates:v12 startAtFirstState:v20];
       [(BKUIPearlEnrollView *)self setAnimationController:v21];
     }
 
-    v22 = [(BKUIPearlEnrollView *)self animationView];
-    v23 = [v22 packageLayer];
+    animationView5 = [(BKUIPearlEnrollView *)self animationView];
+    packageLayer = [animationView5 packageLayer];
 
-    v24 = [(BKUIPearlEnrollView *)self animationView];
-    [v24 setScale:1.0];
+    animationView6 = [(BKUIPearlEnrollView *)self animationView];
+    [animationView6 setScale:1.0];
 
     CGAffineTransformMakeScale(&v52, 1.0, 1.0);
-    v25 = [(BKUIPearlEnrollView *)self animationView];
+    animationView7 = [(BKUIPearlEnrollView *)self animationView];
     buf = v52;
-    [v25 setTransform:&buf];
+    [animationView7 setTransform:&buf];
 
-    v26 = [(BKUIPearlEnrollView *)self animationView];
-    [v4 addSubview:v26];
+    animationView8 = [(BKUIPearlEnrollView *)self animationView];
+    [viewCopy addSubview:animationView8];
 
-    v27 = [(BKUIPearlEnrollView *)self animationView];
-    v28 = [v27 centerYAnchor];
-    v29 = [v4 centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    animationView9 = [(BKUIPearlEnrollView *)self animationView];
+    centerYAnchor = [animationView9 centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(BKUIPearlEnrollView *)self setSuccessAnimationViewCenterYConstraint:v30];
 
     v46 = MEMORY[0x277CCAAD0];
-    v50 = [(BKUIPearlEnrollView *)self animationView];
-    [v50 widthAnchor];
-    v49 = v48 = v23;
-    v31 = v23;
-    [v23 bounds];
+    animationView10 = [(BKUIPearlEnrollView *)self animationView];
+    [animationView10 widthAnchor];
+    v49 = v48 = packageLayer;
+    v31 = packageLayer;
+    [packageLayer bounds];
     v47 = [v49 constraintEqualToConstant:v32];
     v53[0] = v47;
-    v33 = [(BKUIPearlEnrollView *)self animationView];
-    v34 = [v33 heightAnchor];
+    animationView11 = [(BKUIPearlEnrollView *)self animationView];
+    heightAnchor = [animationView11 heightAnchor];
     [v31 bounds];
-    v36 = [v34 constraintEqualToConstant:v35];
+    v36 = [heightAnchor constraintEqualToConstant:v35];
     v53[1] = v36;
-    v37 = [(BKUIPearlEnrollView *)self animationView];
-    v38 = [v37 centerXAnchor];
-    [v4 centerXAnchor];
+    animationView12 = [(BKUIPearlEnrollView *)self animationView];
+    centerXAnchor = [animationView12 centerXAnchor];
+    [viewCopy centerXAnchor];
     v45 = v12;
-    v40 = v39 = v4;
-    v41 = [v38 constraintEqualToAnchor:v40];
+    v40 = v39 = viewCopy;
+    v41 = [centerXAnchor constraintEqualToAnchor:v40];
     v53[2] = v41;
-    v42 = [(BKUIPearlEnrollView *)self successAnimationViewCenterYConstraint];
-    v53[3] = v42;
+    successAnimationViewCenterYConstraint = [(BKUIPearlEnrollView *)self successAnimationViewCenterYConstraint];
+    v53[3] = successAnimationViewCenterYConstraint;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:4];
     [v46 activateConstraints:v43];
 
-    v4 = v39;
+    viewCopy = v39;
   }
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKUIPearlEnrollView *)self backgroundColor];
+  colorCopy = color;
+  backgroundColor = [(BKUIPearlEnrollView *)self backgroundColor];
 
-  if (v5 != v4)
+  if (backgroundColor != colorCopy)
   {
-    [(UIView *)self->_circleMaskView setBackgroundColor:v4];
-    -[CAShapeLayer setBackgroundColor:](self->_circleMaskLayer, "setBackgroundColor:", [v4 CGColor]);
-    [(UIView *)self->_roundedRectMaskView setBackgroundColor:v4];
-    -[CAShapeLayer setBackgroundColor:](self->_roundedRectMaskLayer, "setBackgroundColor:", [v4 CGColor]);
+    [(UIView *)self->_circleMaskView setBackgroundColor:colorCopy];
+    -[CAShapeLayer setBackgroundColor:](self->_circleMaskLayer, "setBackgroundColor:", [colorCopy CGColor]);
+    [(UIView *)self->_roundedRectMaskView setBackgroundColor:colorCopy];
+    -[CAShapeLayer setBackgroundColor:](self->_roundedRectMaskLayer, "setBackgroundColor:", [colorCopy CGColor]);
   }
 
   v6.receiver = self;
   v6.super_class = BKUIPearlEnrollView;
-  [(BKUIPearlEnrollView *)&v6 setBackgroundColor:v4];
+  [(BKUIPearlEnrollView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setDebugOverlayVisible:(BOOL)a3
+- (void)setDebugOverlayVisible:(BOOL)visible
 {
-  self->_debugOverlayVisible = a3;
-  [(UILabel *)self->_debugLabel setHidden:!a3];
+  self->_debugOverlayVisible = visible;
+  [(UILabel *)self->_debugLabel setHidden:!visible];
 
   [(BKUIPearlEnrollView *)self setNeedsLayout];
 }
@@ -234,14 +234,14 @@ void __112__BKUIPearlEnrollView_initWithFrame_videoCaptureSession_inSheet_positi
   [(BKUIPearlEnrollView *)&v3 dealloc];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (!a3)
+  if (!active)
   {
     [(BKUIPearlEnrollView *)self _endAndCleanupEnrollSessionIfNeeded];
   }
 
-  self->_active = a3;
+  self->_active = active;
 }
 
 - (void)_endAndCleanupEnrollSessionIfNeeded
@@ -249,8 +249,8 @@ void __112__BKUIPearlEnrollView_initWithFrame_videoCaptureSession_inSheet_positi
   if ([(BKUIPearlEnrollView *)self active])
   {
     [(BKUIPearlPositioningGuideView *)self->_positioningGuide setHidden:1];
-    v3 = [(BKUIPearlEnrollView *)self previewLayer];
-    [v3 setHidden:1];
+    previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
+    [previewLayer setHidden:1];
 
     [(BKUIPearlEnrollView *)self _stopNudgeTimer];
   }
@@ -283,15 +283,15 @@ void __60__BKUIPearlEnrollView__animateToState_fromState_completion___block_invo
   }
 }
 
-- (void)_setState:(int)a3 completion:(id)a4
+- (void)_setState:(int)state completion:(id)completion
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   state = self->_state;
-  if (a3 < 2 || state > 1)
+  if (state < 2 || state > 1)
   {
-    self->_state = a3;
-    if (!a3)
+    self->_state = state;
+    if (!state)
     {
       goto LABEL_17;
     }
@@ -301,18 +301,18 @@ void __60__BKUIPearlEnrollView__animateToState_fromState_completion___block_invo
   {
     [(BKUIPearlEnrollView *)self startCapture];
     state = self->_state;
-    self->_state = a3;
+    self->_state = state;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   stateStart = self->_stateStart;
-  self->_stateStart = v8;
+  self->_stateStart = date;
 
   [(BKUIPearlEnrollView *)self setNeedsLayout];
   [(BKUIPearlEnrollView *)self updatePortalLayoutGuide];
-  v10 = [(BKUIPearlEnrollView *)self squareNeedsPositionLayout];
+  squareNeedsPositionLayout = [(BKUIPearlEnrollView *)self squareNeedsPositionLayout];
   v11 = self->_state;
-  if (v10 && v11 == 10)
+  if (squareNeedsPositionLayout && v11 == 10)
   {
     if (state == 9 || state == 6)
     {
@@ -327,22 +327,22 @@ void __60__BKUIPearlEnrollView__animateToState_fromState_completion___block_invo
       v17 = objc_alloc(MEMORY[0x277D37600]);
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 URLForResource:@"faceid-completion-skip-mask" withExtension:@"ca"];
-      v20 = [(BKUIPearlEnrollView *)self animationView];
+      animationView = [(BKUIPearlEnrollView *)self animationView];
       v21 = [v16 objectAtIndexedSubscript:0];
-      v22 = [v17 initWithUrlToPackage:v19 animationView:v20 animatedStates:v16 startAtFirstState:v21];
+      v22 = [v17 initWithUrlToPackage:v19 animationView:animationView animatedStates:v16 startAtFirstState:v21];
       [(BKUIPearlEnrollView *)self setAnimationController:v22];
 
       [(BKUIPearlEnrollView *)self setAlpha:0.0];
-      v23 = [(BKUIPearlEnrollView *)self animationView];
-      [v23 setAlpha:0.0];
+      animationView2 = [(BKUIPearlEnrollView *)self animationView];
+      [animationView2 setAlpha:0.0];
 
       CGAffineTransformMakeScale(&v34, 1.0, 1.0);
-      v24 = [(BKUIPearlEnrollView *)self animationView];
+      animationView3 = [(BKUIPearlEnrollView *)self animationView];
       v33 = v34;
-      [v24 setTransform:&v33];
+      [animationView3 setTransform:&v33];
 
-      v25 = [(BKUIPearlEnrollView *)self successAnimationViewCenterYConstraint];
-      [v25 setConstant:4.0];
+      successAnimationViewCenterYConstraint = [(BKUIPearlEnrollView *)self successAnimationViewCenterYConstraint];
+      [successAnimationViewCenterYConstraint setConstant:4.0];
 
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
@@ -354,8 +354,8 @@ void __60__BKUIPearlEnrollView__animateToState_fromState_completion___block_invo
 
     else
     {
-      v26 = [(BKUIPearlEnrollView *)self animationView];
-      [v26 setAlpha:0.0];
+      animationView4 = [(BKUIPearlEnrollView *)self animationView];
+      [animationView4 setAlpha:0.0];
 
       v27 = MEMORY[0x277D75D18];
       v28 = [MEMORY[0x277D75D48] behaviorWithDampingRatio:1.0 response:0.5];
@@ -392,7 +392,7 @@ void __60__BKUIPearlEnrollView__animateToState_fromState_completion___block_invo
   }
 
 LABEL_17:
-  [(BKUIPearlEnrollView *)self _animateToState:self->_state fromState:state completion:v6];
+  [(BKUIPearlEnrollView *)self _animateToState:self->_state fromState:state completion:completionCopy];
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -481,16 +481,16 @@ uint64_t __43__BKUIPearlEnrollView_setState_completion___block_invoke(uint64_t a
       debugStatusInformation = self->_debugStatusInformation;
     }
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\nenroll framerate: %0.2f\n%@\n%@", debugFrameInformation, *&v6, debugTemplateInformation, debugStatusInformation];
-    [(UILabel *)debugLabel setText:v11];
+    debugStatusInformation = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\nenroll framerate: %0.2f\n%@\n%@", debugFrameInformation, *&v6, debugTemplateInformation, debugStatusInformation];
+    [(UILabel *)debugLabel setText:debugStatusInformation];
   }
 }
 
-- (void)_recordDataFrameWithFaceState:(id)a3
+- (void)_recordDataFrameWithFaceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   state = self->_state;
-  v13 = v4;
+  v13 = stateCopy;
   if ((state | 2) != 7)
   {
 LABEL_5:
@@ -506,7 +506,7 @@ LABEL_5:
   if (v6 >= -1.0)
   {
     state = self->_state;
-    v4 = v13;
+    stateCopy = v13;
     goto LABEL_5;
   }
 
@@ -514,31 +514,31 @@ LABEL_5:
   self->_debugStatusInformation = 0;
 
 LABEL_6:
-  v8 = [v13 pitch];
-  [v8 doubleValue];
+  pitch = [v13 pitch];
+  [pitch doubleValue];
   v10 = v9;
   v11 = [v13 yaw];
   [v11 doubleValue];
   [(BKUIPearlEnrollView *)self setPitch:v10 yaw:v12];
 
-  v4 = v13;
+  stateCopy = v13;
 LABEL_7:
 }
 
-- (void)_updateCorrectionEstimates:(double)a3 yaw:(double)a4
+- (void)_updateCorrectionEstimates:(double)estimates yaw:(double)yaw
 {
-  if (a3 <= 5.0)
+  if (estimates <= 5.0)
   {
-    self->_pitchMax = fmax(self->_pitchMax, a3);
+    self->_pitchMax = fmax(self->_pitchMax, estimates);
   }
 
-  if (a3 >= -45.0)
+  if (estimates >= -45.0)
   {
-    self->_pitchMin = fmin(self->_pitchMin, a3);
+    self->_pitchMin = fmin(self->_pitchMin, estimates);
   }
 
   correctionSamplesCount = self->_correctionSamplesCount;
-  if (a3 < -0.1)
+  if (estimates < -0.1)
   {
     v5 = correctionSamplesCount >= 5;
     v6 = correctionSamplesCount == 5;
@@ -554,7 +554,7 @@ LABEL_7:
   {
     v9 = correctionSamplesCount + 1;
     self->_correctionSamplesCount = v9;
-    v10 = self->_pitchCorrectionSamples + a3;
+    v10 = self->_pitchCorrectionSamples + estimates;
     self->_pitchCorrectionSamples = v10;
     v11 = v10 / v9;
 LABEL_13:
@@ -574,7 +574,7 @@ LABEL_13:
   }
 }
 
-- (void)setPitch:(double)a3 yaw:(double)a4
+- (void)setPitch:(double)pitch yaw:(double)yaw
 {
   v45 = *MEMORY[0x277D85DE8];
   v7 = MGGetSInt32Answer() - 22;
@@ -590,8 +590,8 @@ LABEL_13:
   }
 
   pitchCorrection = self->_pitchCorrection;
-  v10 = a3 - pitchCorrection;
-  self->_currentCorrectedPitch = a3 - pitchCorrection;
+  v10 = pitch - pitchCorrection;
+  self->_currentCorrectedPitch = pitch - pitchCorrection;
   state = self->_state;
   if (state != 4)
   {
@@ -599,15 +599,15 @@ LABEL_13:
     {
       if (!self->_nudging)
       {
-        v13 = [(BKUIPearlEnrollView *)self crossHairs];
+        crossHairs = [(BKUIPearlEnrollView *)self crossHairs];
         v14 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
-        [v13 setTintColor:v14];
+        [crossHairs setTintColor:v14];
 
-        v15 = [(BKUIPearlEnrollView *)self crossHairs];
-        [v15 setPitch:v10 yaw:a4];
+        crossHairs2 = [(BKUIPearlEnrollView *)self crossHairs];
+        [crossHairs2 setPitch:v10 yaw:yaw];
 
-        v16 = [(BKUIPearlEnrollView *)self crossHairs];
-        [v16 alpha];
+        crossHairs3 = [(BKUIPearlEnrollView *)self crossHairs];
+        [crossHairs3 alpha];
         v18 = v17;
 
         if (v18 == 0.0)
@@ -621,8 +621,8 @@ LABEL_13:
         }
       }
 
-      v19 = sqrt(a4 * a4 + v10 * v10);
-      v20 = atan2(-v10, -a4);
+      v19 = sqrt(yaw * yaw + v10 * v10);
+      v20 = atan2(-v10, -yaw);
       v21 = 6.28318531;
       if (v20 >= 0.0)
       {
@@ -639,13 +639,13 @@ LABEL_13:
           *buf = 134219520;
           v32 = v10;
           v33 = 2048;
-          v34 = a3;
+          pitchCopy = pitch;
           v35 = 2048;
           v36 = v24;
           v37 = 2048;
-          v38 = a4;
+          yawCopy = yaw;
           v39 = 2048;
-          v40 = a4;
+          yawCopy2 = yaw;
           v41 = 2048;
           v42 = v19;
           v43 = 2048;
@@ -666,14 +666,14 @@ LABEL_13:
 
       if (self->_debugOverlayVisible)
       {
-        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"p: %0.2f, y: %0.2f, angle: %0.2f\n pC: %0.2f", *&a3, *&a4, *&v22, *&self->_pitchCorrection];
+        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"p: %0.2f, y: %0.2f, angle: %0.2f\n pC: %0.2f", *&pitch, *&yaw, *&v22, *&self->_pitchCorrection];
         debugFrameInformation = self->_debugFrameInformation;
         self->_debugFrameInformation = v26;
 
         [(BKUIPearlEnrollView *)self _updateDebugOverlay];
       }
 
-      [(BKUIPearlEnrollView *)self _updateCorrectionEstimates:a3 yaw:a4];
+      [(BKUIPearlEnrollView *)self _updateCorrectionEstimates:pitch yaw:yaw];
     }
 
     goto LABEL_27;
@@ -686,7 +686,7 @@ LABEL_27:
     return;
   }
 
-  [(BKUIPearlEnrollView *)self _updateRaiseLowerGuidanceLabelIfNeededForPitch:a3 - pitchCorrection];
+  [(BKUIPearlEnrollView *)self _updateRaiseLowerGuidanceLabelIfNeededForPitch:pitch - pitchCorrection];
   [(BKUIPearlEnrollView *)self _progressiveBlurAmountForPitch:v10];
   v29 = *MEMORY[0x277D85DE8];
 
@@ -699,34 +699,34 @@ void __36__BKUIPearlEnrollView_setPitch_yaw___block_invoke(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)updateWithFaceState:(id)a3
+- (void)updateWithFaceState:(id)state
 {
-  v4 = a3;
-  if ([v4 faceDetected] && (objc_msgSend(v4, "partiallyOutOfView") & 1) == 0)
+  stateCopy = state;
+  if ([stateCopy faceDetected] && (objc_msgSend(stateCopy, "partiallyOutOfView") & 1) == 0)
   {
-    [(BKUIPearlEnrollView *)self _recordDataFrameWithFaceState:v4];
+    [(BKUIPearlEnrollView *)self _recordDataFrameWithFaceState:stateCopy];
   }
 }
 
-- (void)updateWithProgress:(id)a3
+- (void)updateWithProgress:(id)progress
 {
-  v16 = a3;
+  progressCopy = progress;
   if (!self->_startTime)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = self->_startTime;
-    self->_startTime = v4;
+    self->_startTime = date;
   }
 
   v6 = [MEMORY[0x277CCAB68] stringWithString:@"Templates:\n"];
-  v7 = [v16 enrolledPoses];
-  if ([v7 count])
+  enrolledPoses = [progressCopy enrolledPoses];
+  if ([enrolledPoses count])
   {
     v8 = 0;
     v9 = 0;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:v8];
+      v10 = [enrolledPoses objectAtIndexedSubscript:v8];
       if ([v10 count])
       {
         v11 = 0;
@@ -747,7 +747,7 @@ void __36__BKUIPearlEnrollView_setPitch_yaw___block_invoke(uint64_t a1)
       v8 = ++v9;
     }
 
-    while ([v7 count] > v9);
+    while ([enrolledPoses count] > v9);
   }
 
   debugTemplateInformation = self->_debugTemplateInformation;
@@ -783,19 +783,19 @@ void __36__BKUIPearlEnrollView_setPitch_yaw___block_invoke(uint64_t a1)
 
   self->_nudgesPaused = 0;
   self->_nudgesNudged = 0;
-  v9 = [(BKUIPearlEnrollView *)self pillContainer];
-  [v9 resetPillsAnimated:0];
+  pillContainer = [(BKUIPearlEnrollView *)self pillContainer];
+  [pillContainer resetPillsAnimated:0];
 
   [(BKUIPearlEnrollView *)self _stopNudgeTimer];
 }
 
-- (double)_progressiveBlurAmountForPitch:(double)a3
+- (double)_progressiveBlurAmountForPitch:(double)pitch
 {
   v3 = 0.0;
-  if (a3 < -30.0 || a3 > -10.0)
+  if (pitch < -30.0 || pitch > -10.0)
   {
-    v5 = vabdd_f64(-30.0, a3);
-    v6 = vabdd_f64(-10.0, a3);
+    v5 = vabdd_f64(-30.0, pitch);
+    v6 = vabdd_f64(-10.0, pitch);
     if (v5 < v6)
     {
       v6 = v5;
@@ -813,15 +813,15 @@ void __36__BKUIPearlEnrollView_setPitch_yaw___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)a3
+- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)pitch
 {
   if (self->_state == 4)
   {
     v9[7] = v3;
     v9[8] = v4;
-    if (a3 >= -30.0)
+    if (pitch >= -30.0)
     {
-      if (a3 <= -10.0)
+      if (pitch <= -10.0)
       {
         return;
       }
@@ -858,15 +858,15 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
   return [*(a1 + 32) _setRaiseLowerGuidanceLabelState:v2];
 }
 
-- (void)_setRaiseLowerGuidanceLabelState:(unint64_t)a3
+- (void)_setRaiseLowerGuidanceLabelState:(unint64_t)state
 {
   v4 = @"GENTLY_LOWER";
-  if (a3 != 2)
+  if (state != 2)
   {
     v4 = 0;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = @"GENTLY_RAISE";
   }
@@ -879,10 +879,10 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v6 localizedStringForKey:v5 value:&stru_2853BB280 table:@"Pearl"];
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:v5 value:&stru_2853BB280 table:@"Pearl-j3xx"];
@@ -890,8 +890,8 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
     v23 = v10;
   }
 
-  v11 = [(UILabel *)self->_repositionPhoneLabel text];
-  v12 = [v23 isEqualToString:v11];
+  text = [(UILabel *)self->_repositionPhoneLabel text];
+  v12 = [v23 isEqualToString:text];
 
   if ((v12 & 1) == 0)
   {
@@ -922,16 +922,16 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
   MEMORY[0x2821F9730]();
 }
 
-- (void)setCameraBlurAmount:(double)a3 useShade:(BOOL)a4 duration:(double)a5 completion:(id)a6
+- (void)setCameraBlurAmount:(double)amount useShade:(BOOL)shade duration:(double)duration completion:(id)completion
 {
-  v7 = a4;
+  shadeCopy = shade;
   v34[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v12 = 0.0;
-  if (v7)
+  if (shadeCopy)
   {
-    v12 = a3 * 0.5 / 15.0 + 0.2;
+    v12 = amount * 0.5 / 15.0 + 0.2;
   }
 
   if (v12 <= 1.0)
@@ -946,9 +946,9 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
 
   if (UIAccessibilityIsReduceMotionEnabled())
   {
-    v13 = a3 / 15.0;
-    a5 = a5 * 0.5;
-    a3 = 0.0;
+    v13 = amount / 15.0;
+    duration = duration * 0.5;
+    amount = 0.0;
   }
 
   dispatch_group_enter(v11);
@@ -965,12 +965,12 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
   v31[3] = &unk_278D099C0;
   v15 = v11;
   v32 = v15;
-  [(UIView *)v14 bkui_animateWithDuration:v33 animations:v31 completion:a5];
+  [(UIView *)v14 bkui_animateWithDuration:v33 animations:v31 completion:duration];
   dispatch_group_enter(v15);
-  if (a3 <= 0.0)
+  if (amount <= 0.0)
   {
     v20 = +[BKUIPearlEnrollAnimationManager sharedManager];
-    v21 = [(BKUIPearlEnrollView *)self previewLayer];
+    previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
     v25 = *MEMORY[0x277CDA7C8];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -979,22 +979,22 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
     v27[4] = self;
     v24 = &v28;
     v28 = v15;
-    [v20 runBasicAnimationOnLayer:v21 withDuration:@"filters.gaussianBlur.inputRadius" keyPath:0 fromValue:&unk_2853CCBB0 toValue:0 removedOnCompletion:v25 timingFunction:a5 completion:v27];
+    [v20 runBasicAnimationOnLayer:previewLayer withDuration:@"filters.gaussianBlur.inputRadius" keyPath:0 fromValue:&unk_2853CCBB0 toValue:0 removedOnCompletion:v25 timingFunction:duration completion:v27];
   }
 
   else
   {
     self->_blurInProgress = 1;
-    v16 = [(BKUIPearlEnrollView *)self previewLayer];
+    previewLayer2 = [(BKUIPearlEnrollView *)self previewLayer];
     v17 = +[BKUIPearlEnrollAnimationManager sharedManager];
     v18 = [v17 gaussianBlurWithRadius:0.0];
     v34[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-    [v16 setFilters:v19];
+    [previewLayer2 setFilters:v19];
 
     v20 = +[BKUIPearlEnrollAnimationManager sharedManager];
-    v21 = [(BKUIPearlEnrollView *)self previewLayer];
-    v22 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
+    v22 = [MEMORY[0x277CCABB0] numberWithDouble:amount];
     v23 = *MEMORY[0x277CDA7C8];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -1003,12 +1003,12 @@ uint64_t __70__BKUIPearlEnrollView__updateRaiseLowerGuidanceLabelIfNeededForPitc
     v29[4] = self;
     v24 = &v30;
     v30 = v15;
-    [v20 runBasicAnimationOnLayer:v21 withDuration:@"filters.gaussianBlur.inputRadius" keyPath:0 fromValue:v22 toValue:0 removedOnCompletion:v23 timingFunction:a5 completion:v29];
+    [v20 runBasicAnimationOnLayer:previewLayer withDuration:@"filters.gaussianBlur.inputRadius" keyPath:0 fromValue:v22 toValue:0 removedOnCompletion:v23 timingFunction:duration completion:v29];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    dispatch_group_notify(v15, MEMORY[0x277D85CD0], v10);
+    dispatch_group_notify(v15, MEMORY[0x277D85CD0], completionCopy);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1031,10 +1031,10 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   dispatch_group_leave(v5);
 }
 
-- (void)setCameraBlurred:(BOOL)a3
+- (void)setCameraBlurred:(BOOL)blurred
 {
   v3 = 0.0;
-  if (a3)
+  if (blurred)
   {
     v3 = 15.0;
   }
@@ -1099,45 +1099,45 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   v22 = *(MEMORY[0x277CBF3A0] + 8);
   [(BKUIPearlEnrollView *)self portalRadius];
   v24 = v23 * 2.125;
-  v25 = [(BKUIPearlEnrollView *)self crossHairs];
-  [v25 setBounds:{v21, v22, v24, v24}];
+  crossHairs = [(BKUIPearlEnrollView *)self crossHairs];
+  [crossHairs setBounds:{v21, v22, v24, v24}];
 
-  v26 = [(BKUIPearlEnrollView *)self crossHairs];
+  crossHairs2 = [(BKUIPearlEnrollView *)self crossHairs];
   [(BKUIPearlEnrollView *)self portalCenter];
-  [v26 setCenter:?];
+  [crossHairs2 setCenter:?];
 
-  v27 = [(BKUIPearlEnrollView *)self layer];
-  [v27 bounds];
+  layer = [(BKUIPearlEnrollView *)self layer];
+  [layer bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
 
   [(UIView *)self->_cameraShadeView setFrame:v29, v31, v33, v35];
-  v36 = [MEMORY[0x277D75418] currentDevice];
-  v37 = [v36 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v38 = 1.77777778;
-  if (v37 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v38 = 1.0;
   }
 
   v39 = v33 * v38;
-  v40 = [(BKUIPearlEnrollView *)self layer];
-  [v40 bounds];
+  layer2 = [(BKUIPearlEnrollView *)self layer];
+  [layer2 bounds];
   v42 = (v41 - v39) * 0.5;
 
-  v43 = [(BKUIPearlEnrollView *)self previewLayer];
-  [v43 setFrame:{v29, v42, v33, v39}];
+  previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
+  [previewLayer setFrame:{v29, v42, v33, v39}];
 
-  v44 = [MEMORY[0x277D75418] currentDevice];
-  v45 = [v44 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if (v45 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
-    v46 = [(BKUIPearlEnrollView *)self traitCollection];
-    v47 = [v46 horizontalSizeClass] == 0;
+    traitCollection = [(BKUIPearlEnrollView *)self traitCollection];
+    v47 = [traitCollection horizontalSizeClass] == 0;
   }
 
   else
@@ -1148,9 +1148,9 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   if (!self->_tutorialMovieView && !v47)
   {
     v48 = +[BKUIDevice sharedInstance];
-    v49 = [v48 isN84];
+    isN84 = [v48 isN84];
 
-    if (v49)
+    if (isN84)
     {
       v50 = @"Enrollment_Tutorial_Loop-n84";
     }
@@ -1160,10 +1160,10 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
       v50 = @"Enrollment_Tutorial_Loop-D22";
     }
 
-    v51 = [MEMORY[0x277D75418] currentDevice];
-    v52 = [v51 userInterfaceIdiom];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    if (v52 == 1)
+    if (userInterfaceIdiom3 == 1)
     {
       v53 = @"Enrollment_Tutorial_Loop-j3xx";
     }
@@ -1173,10 +1173,10 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
       v53 = v50;
     }
 
-    v54 = [MEMORY[0x277D75418] currentDevice];
-    v55 = [v54 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    if (v55 == 1)
+    if (userInterfaceIdiom4 == 1)
     {
       v56 = [BKUIVideoAssetHelpers iPadVideoURLForAssetName:v53];
     }
@@ -1189,8 +1189,8 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
 
     v58 = [MEMORY[0x277CE6650] assetWithURL:v56];
     [v58 loadValuesAsynchronouslyForKeys:&unk_2853CC8B0 completionHandler:0];
-    v59 = [MEMORY[0x277CB83F8] sharedInstance];
-    [v59 setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
 
     v60 = [MEMORY[0x277CE65B0] playerItemWithAsset:v58];
     v61 = [objc_alloc(MEMORY[0x277CE6598]) initWithPlayerItem:v60];
@@ -1238,11 +1238,11 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
     v8 = v71;
     [(BKUIPearlMovieLoopView *)self->_tutorialMovieView setFrame:v78, v81, *&v88, v70];
     [(BKUIPearlMovieLoopView *)self->_tutorialMovieView _setCornerRadius:v75];
-    v82 = [(BKUIPearlMovieLoopView *)self->_tutorialMovieView layer];
-    [v82 setMasksToBounds:1];
+    layer3 = [(BKUIPearlMovieLoopView *)self->_tutorialMovieView layer];
+    [layer3 setMasksToBounds:1];
 
-    v83 = [MEMORY[0x277D75418] currentDevice];
-    [v83 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice5 userInterfaceIdiom];
   }
 
   [(BKUIPearlPositioningGuideView *)self->_positioningGuide setFrame:v4, v6, v8, v10];
@@ -1251,21 +1251,21 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   [(BKUIPearlEnrollView *)self center];
   v85 = v84;
   v87 = v86;
-  v89 = [(BKUIPearlEnrollView *)self superview];
-  [(BKUIPearlEnrollView *)self convertPoint:v89 fromView:v85, v87];
+  superview = [(BKUIPearlEnrollView *)self superview];
+  [(BKUIPearlEnrollView *)self convertPoint:superview fromView:v85, v87];
   [(UILabel *)self->_repositionPhoneLabel setCenter:?];
 }
 
 - (void)updatePortalLayoutGuide
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v3 = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
+  portalLayoutGuideConstraints = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
 
-  if (v3)
+  if (portalLayoutGuideConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
-    [v4 deactivateConstraints:v5];
+    portalLayoutGuideConstraints2 = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
+    [v4 deactivateConstraints:portalLayoutGuideConstraints2];
 
     [(BKUIPearlEnrollView *)self setPortalLayoutGuideConstraints:0];
   }
@@ -1275,47 +1275,47 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   [(BKUIPearlEnrollView *)self portalOffset];
   v9 = v8;
   v11 = v10;
-  v29 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
-  v28 = [v29 widthAnchor];
-  v27 = [v28 constraintEqualToConstant:v7];
+  portalLayoutGuide = [(BKUIPearlEnrollView *)self portalLayoutGuide];
+  widthAnchor = [portalLayoutGuide widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:v7];
   v30[0] = v27;
-  v26 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
-  v25 = [v26 heightAnchor];
-  v24 = [v25 constraintEqualToConstant:v7];
+  portalLayoutGuide2 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
+  heightAnchor = [portalLayoutGuide2 heightAnchor];
+  v24 = [heightAnchor constraintEqualToConstant:v7];
   v30[1] = v24;
-  v12 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
-  v13 = [v12 centerXAnchor];
-  v14 = [(BKUIPearlEnrollView *)self centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:v9];
+  portalLayoutGuide3 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
+  centerXAnchor = [portalLayoutGuide3 centerXAnchor];
+  centerXAnchor2 = [(BKUIPearlEnrollView *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v9];
   v30[2] = v15;
-  v16 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
-  v17 = [v16 centerYAnchor];
-  v18 = [(BKUIPearlEnrollView *)self centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:v11];
+  portalLayoutGuide4 = [(BKUIPearlEnrollView *)self portalLayoutGuide];
+  centerYAnchor = [portalLayoutGuide4 centerYAnchor];
+  centerYAnchor2 = [(BKUIPearlEnrollView *)self centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v11];
   v30[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   [(BKUIPearlEnrollView *)self setPortalLayoutGuideConstraints:v20];
 
   v21 = MEMORY[0x277CCAAD0];
-  v22 = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
-  [v21 activateConstraints:v22];
+  portalLayoutGuideConstraints3 = [(BKUIPearlEnrollView *)self portalLayoutGuideConstraints];
+  [v21 activateConstraints:portalLayoutGuideConstraints3];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)expectsRunningVideoCaptureSession:(id)a3
+- (BOOL)expectsRunningVideoCaptureSession:(id)session
 {
-  v4 = [(BKUIPearlEnrollView *)self active];
-  if (v4)
+  active = [(BKUIPearlEnrollView *)self active];
+  if (active)
   {
-    v4 = [(BKUIPearlEnrollView *)self state];
-    if (v4)
+    active = [(BKUIPearlEnrollView *)self state];
+    if (active)
     {
-      LOBYTE(v4) = [(BKUIPearlEnrollView *)self state]< 0xA;
+      LOBYTE(active) = [(BKUIPearlEnrollView *)self state]< 0xA;
     }
   }
 
-  return v4;
+  return active;
 }
 
 - (void)startCapture
@@ -1327,15 +1327,15 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
     v3 = _BKUILoggingFacility();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(BKUIPearlVideoCaptureSession *)self->_videoCaptureSession previewLayer];
+      previewLayer = [(BKUIPearlVideoCaptureSession *)self->_videoCaptureSession previewLayer];
       v8 = 138412290;
-      v9 = v4;
+      v9 = previewLayer;
       _os_log_impl(&dword_241B0A000, v3, OS_LOG_TYPE_DEFAULT, "insertSublayer:_videoCaptureSession.previewLayer = %@", &v8, 0xCu);
     }
 
-    v5 = [(BKUIPearlEnrollView *)self layer];
-    v6 = [(BKUIPearlVideoCaptureSession *)self->_videoCaptureSession previewLayer];
-    [v5 insertSublayer:v6 atIndex:0];
+    layer = [(BKUIPearlEnrollView *)self layer];
+    previewLayer2 = [(BKUIPearlVideoCaptureSession *)self->_videoCaptureSession previewLayer];
+    [layer insertSublayer:previewLayer2 atIndex:0];
 
     self->_didStartCapture = 1;
   }
@@ -1343,9 +1343,9 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_maskPathWithRadius:(double)a3 inFrame:(CGRect)a4
+- (id)_maskPathWithRadius:(double)radius inFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x277D75208] bezierPathWithRect:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v5 = [MEMORY[0x277D75208] bezierPathWithRect:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   v6 = MEMORY[0x277D75208];
   [(BKUIPearlEnrollView *)self portalCenter];
   v7 = [v6 bezierPathWithArcCenter:0 radius:? startAngle:? endAngle:? clockwise:?];
@@ -1354,14 +1354,14 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   return v5;
 }
 
-- (id)_enrollMaskPathWithRadius:(double)a3
+- (id)_enrollMaskPathWithRadius:(double)radius
 {
   [(BKUIPearlEnrollView *)self bounds];
 
-  return [(BKUIPearlEnrollView *)self _maskPathWithRadius:a3 inFrame:v5, v6, v7, v8];
+  return [(BKUIPearlEnrollView *)self _maskPathWithRadius:radius inFrame:v5, v6, v7, v8];
 }
 
-- (void)_runTutorialLoopWithDuration:(double)a3 delay:(double)a4 loopDelay:(double)a5
+- (void)_runTutorialLoopWithDuration:(double)duration delay:(double)delay loopDelay:(double)loopDelay
 {
   v9 = dispatch_get_global_queue(21, 0);
   v10[0] = MEMORY[0x277D85DD0];
@@ -1369,9 +1369,9 @@ void __72__BKUIPearlEnrollView_setCameraBlurAmount_useShade_duration_completion_
   v10[2] = __68__BKUIPearlEnrollView__runTutorialLoopWithDuration_delay_loopDelay___block_invoke;
   v10[3] = &unk_278D0A778;
   v10[4] = self;
-  *&v10[5] = a4;
-  *&v10[6] = a3;
-  *&v10[7] = a5;
+  *&v10[5] = delay;
+  *&v10[6] = duration;
+  *&v10[7] = loopDelay;
   dispatch_async(v9, v10);
 }
 
@@ -1470,16 +1470,16 @@ uint64_t __68__BKUIPearlEnrollView__runTutorialLoopWithDuration_delay_loopDelay_
 
   else
   {
-    v3 = [(BKUIPearlPillContainerView *)self->_pillContainer unfilledDirections];
-    if ([v3 count])
+    unfilledDirections = [(BKUIPearlPillContainerView *)self->_pillContainer unfilledDirections];
+    if ([unfilledDirections count])
     {
-      v4 = [v3 firstObject];
-      v5 = [v4 integerValue];
+      firstObject = [unfilledDirections firstObject];
+      integerValue = [firstObject integerValue];
 
       self->_nudging = 1;
-      v6 = [(BKUIPearlEnrollView *)self crossHairs];
+      crossHairs = [(BKUIPearlEnrollView *)self crossHairs];
       v7 = [MEMORY[0x277D75348] colorWithWhite:0.5 alpha:1.0];
-      [v6 setTintColor:v7];
+      [crossHairs setTintColor:v7];
 
       [(BKUIPearlEnrollView *)self setCameraBlurred:1];
       v8 = dispatch_time(0, 300000000);
@@ -1488,7 +1488,7 @@ uint64_t __68__BKUIPearlEnrollView__runTutorialLoopWithDuration_delay_loopDelay_
       v9[2] = __40__BKUIPearlEnrollView__nudgeIfNecessary__block_invoke;
       v9[3] = &unk_278D09F88;
       v9[4] = self;
-      v9[5] = v5;
+      v9[5] = integerValue;
       dispatch_after(v8, MEMORY[0x277D85CD0], v9);
     }
   }
@@ -1599,8 +1599,8 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
 
 - (BOOL)_animateCircleMaskWithPositioningGuide
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] != 1;
 
   return v3;
 }
@@ -1623,8 +1623,8 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
       _os_log_impl(&dword_241B0A000, v8, OS_LOG_TYPE_DEFAULT, "_animateToEntryAnimation: PreviewLayer's opacity will be updated to 0", v11, 2u);
     }
 
-    v9 = [(BKUIPearlEnrollView *)self previewLayer];
-    [v9 setOpacity:0.0];
+    previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
+    [previewLayer setOpacity:0.0];
 
     [(BKUIPearlPillContainerView *)self->_pillContainer setAlpha:1.0];
   }
@@ -1639,9 +1639,9 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_animateToTutorialWithCompletion:(id)a3
+- (void)_animateToTutorialWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   entryAnimationAlreadyRan = self->_entryAnimationAlreadyRan;
   [(BKUIPearlEnrollView *)self _animateToEntryAnimation];
   v5 = 0.0;
@@ -1651,25 +1651,25 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
   }
 
   [(BKUIPearlEnrollView *)self _runTutorialLoopWithDuration:4.5 delay:v5 loopDelay:1.5];
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
-- (void)_animateToNeedsPositioningFromState:(int)a3 withCompletion:(id)a4
+- (void)_animateToNeedsPositioningFromState:(int)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3 == 2;
-  v8 = a3 - 4;
+  completionCopy = completion;
+  v7 = state == 2;
+  v8 = state - 4;
   [(BKUIPearlPositioningGuideView *)self->_positioningGuide setHidden:0];
   [(BKUIPearlEnrollView *)self setCameraBlurred:0];
   [(BKUIPearlEnrollView *)self _nonOccludingCircleMaskRadius];
   v9 = [(BKUIPearlEnrollView *)self _enrollMaskPathWithRadius:?];
   v10 = v9;
-  if ((a3 - 4) < 6)
+  if ((state - 4) < 6)
   {
     if (UIAccessibilityIsReduceMotionEnabled())
     {
@@ -1690,7 +1690,7 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
       v35[3] = &unk_278D0A7A0;
       v35[4] = self;
       v36 = v10;
-      v37 = v6;
+      v37 = completionCopy;
       [(UIView *)v11 bkui_animateWithDuration:v38 animations:v35 completion:0.3];
 
       v12 = v36;
@@ -1698,27 +1698,27 @@ void __39__BKUIPearlEnrollView__startNudgeTimer__block_invoke(uint64_t a1)
 
     else
     {
-      v13 = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
+      _animateCircleMaskWithPositioningGuide = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompletion___block_invoke_6;
       aBlock[3] = &unk_278D0A7F0;
-      v34 = v13;
+      v34 = _animateCircleMaskWithPositioningGuide;
       aBlock[4] = self;
       v32 = v10;
-      v33 = v6;
+      v33 = completionCopy;
       v14 = _Block_copy(aBlock);
       objc_initWeak(location, self);
       if (v8 > 4)
       {
         WeakRetained = objc_loadWeakRetained(location);
-        v17 = [WeakRetained pillContainer];
+        pillContainer = [WeakRetained pillContainer];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompletion___block_invoke_14;
         v27[3] = &unk_278D09E20;
         v28 = v14;
-        [v17 setAllPillState:4 animated:1 completion:v27];
+        [pillContainer setAllPillState:4 animated:1 completion:v27];
       }
 
       else
@@ -1742,7 +1742,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a3)
+  if (state)
   {
     -[CAShapeLayer setPath:](self->_circleMaskLayer, "setPath:", [v9 CGPath]);
     [(UIView *)self->_circleMaskView setAlpha:1.0];
@@ -1763,11 +1763,11 @@ LABEL_20:
       [(UIView *)self->_roundedRectMaskView setAlpha:1.0];
     }
 
-    if (a3 == 2)
+    if (state == 2)
     {
-      v20 = [(BKUIPearlEnrollView *)self previewLayer];
+      previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
       [(BKUIPearlEnrollView *)self _needsPositioningPreviewTransform];
-      [v20 setTransform:location];
+      [previewLayer setTransform:location];
 
       [(BKUIPearlPositioningGuideView *)self->_positioningGuide resetValuesToStart];
     }
@@ -1784,13 +1784,13 @@ LABEL_20:
     v22[3] = &unk_278D0A138;
     v22[4] = self;
     v24 = v7;
-    v23 = v6;
+    v23 = completionCopy;
     [(UIView *)v21 bkui_animateWithDuration:v25 animations:v22 completion:0.3];
     v12 = v23;
     goto LABEL_20;
   }
 
-  [(BKUIPearlEnrollView *)self _updateToNeedsPositionWithoutAnimationWithCompletion:v6];
+  [(BKUIPearlEnrollView *)self _updateToNeedsPositionWithoutAnimationWithCompletion:completionCopy];
 LABEL_21:
 }
 
@@ -2081,9 +2081,9 @@ uint64_t __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompl
   return result;
 }
 
-- (void)_updateToNeedsPositionWithoutAnimationWithCompletion:(id)a3
+- (void)_updateToNeedsPositionWithoutAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKUIPearlPositioningGuideView *)self->_positioningGuide setHidden:0];
   [(BKUIPearlEnrollView *)self setCameraBlurred:0];
   [(BKUIPearlEnrollView *)self _nonOccludingCircleMaskRadius];
@@ -2107,9 +2107,9 @@ uint64_t __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompl
     [(UIView *)self->_roundedRectMaskView setAlpha:1.0];
   }
 
-  v8 = [(BKUIPearlEnrollView *)self previewLayer];
+  previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
   [(BKUIPearlEnrollView *)self _needsPositioningPreviewTransform];
-  [v8 setTransform:buf];
+  [previewLayer setTransform:buf];
 
   [(BKUIPearlPositioningGuideView *)self->_positioningGuide resetValuesToStart];
   [(UILabel *)self->_repositionPhoneLabel setAlpha:0.0];
@@ -2123,9 +2123,9 @@ uint64_t __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompl
     _os_log_impl(&dword_241B0A000, v9, OS_LOG_TYPE_DEFAULT, "_updateToNeedsPositionWithoutAnimationWithCompletion: PreviewLayer's opacity will be updated to 1", buf, 2u);
   }
 
-  v10 = [(BKUIPearlEnrollView *)self previewLayer];
+  previewLayer2 = [(BKUIPearlEnrollView *)self previewLayer];
   LODWORD(v11) = 1.0;
-  [v10 setOpacity:v11];
+  [previewLayer2 setOpacity:v11];
 
   v12 = self->_positioningGuide;
   v14[0] = MEMORY[0x277D85DD0];
@@ -2133,8 +2133,8 @@ uint64_t __74__BKUIPearlEnrollView__animateToNeedsPositioningFromState_withCompl
   v14[2] = __76__BKUIPearlEnrollView__updateToNeedsPositionWithoutAnimationWithCompletion___block_invoke;
   v14[3] = &unk_278D0A000;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(BKUIPearlPositioningGuideView *)v12 animateToOpenValuesOverDuration:2 curve:v14 completion:0.0];
 }
 
@@ -2156,16 +2156,16 @@ uint64_t __76__BKUIPearlEnrollView__updateToNeedsPositionWithoutAnimationWithCom
   return result;
 }
 
-- (void)_animateToNeedsCenterBinWithCompletion:(id)a3
+- (void)_animateToNeedsCenterBinWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_progressiveBlur = 0;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__BKUIPearlEnrollView__animateToNeedsCenterBinWithCompletion___block_invoke;
   aBlock[3] = &unk_278D09E98;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v21 = v5;
   v6 = _Block_copy(aBlock);
   if (UIAccessibilityIsReduceMotionEnabled())
@@ -2193,10 +2193,10 @@ uint64_t __76__BKUIPearlEnrollView__updateToNeedsPositionWithoutAnimationWithCom
     v17 = v7;
     v10 = _Block_copy(v15);
     v11 = _Block_copy(v10);
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v14 = _Block_copy(v9);
 
@@ -2312,9 +2312,9 @@ uint64_t __62__BKUIPearlEnrollView__animateToNeedsCenterBinWithCompletion___bloc
   return (*(*(a1 + v2) + 16))();
 }
 
-- (void)_animateToScanningStateWithCompletion:(id)a3
+- (void)_animateToScanningStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKUIPearlEnrollView *)self setCameraBlurred:0];
   pillContainer = self->_pillContainer;
   if (UIAccessibilityIsReduceMotionEnabled())
@@ -2340,18 +2340,18 @@ uint64_t __62__BKUIPearlEnrollView__animateToNeedsCenterBinWithCompletion___bloc
   v33[3] = &unk_278D09978;
   v33[4] = self;
   [(UIView *)MEMORY[0x277D75D18] bkui_animateWithDuration:v33 delay:0 options:0.3 animations:0.0 completion:?];
-  v13 = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
+  _animateCircleMaskWithPositioningGuide = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
   [(BKUIPearlEnrollView *)self portalRadius];
   v14 = [(BKUIPearlEnrollView *)self _enrollMaskPathWithRadius:?];
-  v15 = [v14 CGPath];
+  cGPath = [v14 CGPath];
 
   if (UIAccessibilityIsReduceMotionEnabled())
   {
     [(BKUIPearlPositioningGuideView *)self->_positioningGuide setAlpha:0.0];
-    if (!CGPathEqualToPath([(CAShapeLayer *)self->_circleMaskLayer path], v15))
+    if (!CGPathEqualToPath([(CAShapeLayer *)self->_circleMaskLayer path], cGPath))
     {
       [(UIView *)self->_circleMaskView setAlpha:0.0];
-      [(CAShapeLayer *)self->_circleMaskLayer setPath:v15];
+      [(CAShapeLayer *)self->_circleMaskLayer setPath:cGPath];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_invoke_2;
@@ -2361,19 +2361,19 @@ uint64_t __62__BKUIPearlEnrollView__animateToNeedsCenterBinWithCompletion___bloc
     }
   }
 
-  else if (v13)
+  else if (_animateCircleMaskWithPositioningGuide)
   {
     v16 = +[BKUIPearlEnrollAnimationManager sharedManager];
     circleMaskLayer = self->_circleMaskLayer;
-    v18 = [(CAShapeLayer *)circleMaskLayer path];
+    path = [(CAShapeLayer *)circleMaskLayer path];
     v19 = *MEMORY[0x277CDA7C0];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_invoke_3;
     v31[3] = &unk_278D09F88;
     v31[4] = self;
-    v31[5] = v15;
-    [v16 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:v18 fromValue:v15 toValue:1 removedOnCompletion:v19 timingFunction:0.5 completion:v31];
+    v31[5] = cGPath;
+    [v16 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:path fromValue:cGPath toValue:1 removedOnCompletion:v19 timingFunction:0.5 completion:v31];
   }
 
   positioningGuide = self->_positioningGuide;
@@ -2384,10 +2384,10 @@ uint64_t __62__BKUIPearlEnrollView__animateToNeedsCenterBinWithCompletion___bloc
   v28[1] = 3221225472;
   v28[2] = __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_invoke_4;
   v28[3] = &unk_278D0A138;
-  v30 = v13;
+  v30 = _animateCircleMaskWithPositioningGuide;
   v28[4] = self;
-  v29 = v4;
-  v25 = v4;
+  v29 = completionCopy;
+  v25 = completionCopy;
   [(BKUIPearlPositioningGuideView *)positioningGuide animateToFinishedValuesOverDuration:v28 center:0.5 completion:v22, v24];
   v26 = dispatch_time(0, 300000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -2505,63 +2505,63 @@ void __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_inv
   [v2 setTransform:v4];
 }
 
-- (void)_animateToFirstScanWithCompletion:(id)a3
+- (void)_animateToFirstScanWithCompletion:(id)completion
 {
   pillContainer = self->_pillContainer;
-  v5 = a3;
+  completionCopy = completion;
   [(BKUIPearlPillContainerView *)pillContainer setAlpha:0.0];
-  [(BKUIPearlEnrollView *)self _animateToScanningStateWithCompletion:v5];
+  [(BKUIPearlEnrollView *)self _animateToScanningStateWithCompletion:completionCopy];
 }
 
-- (void)_animateToFirstScanCompleteWithCompletion:(id)a3
+- (void)_animateToFirstScanCompleteWithCompletion:(id)completion
 {
   pillContainer = self->_pillContainer;
-  v10 = a3;
+  completionCopy = completion;
   [(BKUIPearlPillContainerView *)pillContainer setAllPillState:5 animated:1 completion:0];
   [(BKUIPearlEnrollView *)self setCameraBlurred:1];
   v5 = self->_pillContainer;
   [(BKUIPearlEnrollView *)self completedRingRadius];
   v7 = v6;
   [(BKUIPearlEnrollView *)self portalCenter];
-  [(BKUIPearlPillContainerView *)v5 setRadius:1 center:v10 animated:v7 completion:v8, v9];
+  [(BKUIPearlPillContainerView *)v5 setRadius:1 center:completionCopy animated:v7 completion:v8, v9];
 }
 
-- (void)_animateToScanCompleteWithCompletion:(id)a3
+- (void)_animateToScanCompleteWithCompletion:(id)completion
 {
   pillContainer = self->_pillContainer;
-  v10 = a3;
+  completionCopy = completion;
   [(BKUIPearlPillContainerView *)pillContainer setAllPillState:5 animated:1 completion:0];
   [(BKUIPearlEnrollView *)self setCameraBlurred:1];
   v5 = self->_pillContainer;
   [(BKUIPearlEnrollView *)self completedRingRadius];
   v7 = v6;
   [(BKUIPearlEnrollView *)self portalCenter];
-  [(BKUIPearlPillContainerView *)v5 setRadius:1 center:v10 animated:v7 completion:v8, v9];
+  [(BKUIPearlPillContainerView *)v5 setRadius:1 center:completionCopy animated:v7 completion:v8, v9];
 }
 
-- (void)_animateToFinishedWithCompletion:(id)a3
+- (void)_animateToFinishedWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   if (![(BKUIPearlEnrollView *)self squareNeedsPositionLayout])
   {
     [(BKUIPearlEnrollView *)self bounds];
     v8 = [(BKUIPearlEnrollView *)self _maskPathWithRadius:0.001 inFrame:v4, v5, v6, v7];
-    v9 = [v8 CGPath];
+    cGPath = [v8 CGPath];
 
     v10 = +[BKUIPearlEnrollAnimationManager sharedManager];
     circleMaskLayer = self->_circleMaskLayer;
     [(BKUIPearlEnrollView *)self portalRadius];
     v12 = [(BKUIPearlEnrollView *)self _enrollMaskPathWithRadius:?];
-    v13 = [v12 CGPath];
-    [v10 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:v13 fromValue:v9 toValue:0 removedOnCompletion:*MEMORY[0x277CDA7C0] timingFunction:0.3 completion:v14];
+    cGPath2 = [v12 CGPath];
+    [v10 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:cGPath2 fromValue:cGPath toValue:0 removedOnCompletion:*MEMORY[0x277CDA7C0] timingFunction:0.3 completion:completionCopy];
 
-    [(CAShapeLayer *)self->_circleMaskLayer setPath:v9];
+    [(CAShapeLayer *)self->_circleMaskLayer setPath:cGPath];
   }
 }
 
-- (void)_animateToPartialCaptureWithCompletion:(id)a3
+- (void)_animateToPartialCaptureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKUIPearlEnrollView *)self setCameraBlurred:1];
   [(BKUIPearlPillContainerView *)self->_pillContainer setAllPillState:5 animated:1 completion:0];
   pillContainer = self->_pillContainer;
@@ -2575,18 +2575,18 @@ void __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_inv
   v30[3] = &unk_278D09978;
   v30[4] = self;
   [MEMORY[0x277D75D18] animateWithDuration:516 delay:v30 options:0 animations:0.3 completion:0.0];
-  v10 = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
+  _animateCircleMaskWithPositioningGuide = [(BKUIPearlEnrollView *)self _animateCircleMaskWithPositioningGuide];
   [(BKUIPearlEnrollView *)self portalRadius];
   v11 = [(BKUIPearlEnrollView *)self _enrollMaskPathWithRadius:?];
-  v12 = [v11 CGPath];
+  cGPath = [v11 CGPath];
 
   if (UIAccessibilityIsReduceMotionEnabled())
   {
     [(BKUIPearlPositioningGuideView *)self->_positioningGuide setAlpha:0.0];
-    if (!CGPathEqualToPath([(CAShapeLayer *)self->_circleMaskLayer path], v12))
+    if (!CGPathEqualToPath([(CAShapeLayer *)self->_circleMaskLayer path], cGPath))
     {
       [(UIView *)self->_circleMaskView setAlpha:0.0];
-      [(CAShapeLayer *)self->_circleMaskLayer setPath:v12];
+      [(CAShapeLayer *)self->_circleMaskLayer setPath:cGPath];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __62__BKUIPearlEnrollView__animateToPartialCaptureWithCompletion___block_invoke_2;
@@ -2596,19 +2596,19 @@ void __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_inv
     }
   }
 
-  else if (v10)
+  else if (_animateCircleMaskWithPositioningGuide)
   {
     v13 = +[BKUIPearlEnrollAnimationManager sharedManager];
     circleMaskLayer = self->_circleMaskLayer;
-    v15 = [(CAShapeLayer *)circleMaskLayer path];
+    path = [(CAShapeLayer *)circleMaskLayer path];
     v16 = *MEMORY[0x277CDA7C0];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __62__BKUIPearlEnrollView__animateToPartialCaptureWithCompletion___block_invoke_3;
     v28[3] = &unk_278D09F88;
     v28[4] = self;
-    v28[5] = v12;
-    [v13 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:v15 fromValue:v12 toValue:1 removedOnCompletion:v16 timingFunction:0.5 completion:v28];
+    v28[5] = cGPath;
+    [v13 runBasicAnimationOnLayer:circleMaskLayer withDuration:@"path" keyPath:path fromValue:cGPath toValue:1 removedOnCompletion:v16 timingFunction:0.5 completion:v28];
   }
 
   positioningGuide = self->_positioningGuide;
@@ -2619,10 +2619,10 @@ void __61__BKUIPearlEnrollView__animateToScanningStateWithCompletion___block_inv
   v25[1] = 3221225472;
   v25[2] = __62__BKUIPearlEnrollView__animateToPartialCaptureWithCompletion___block_invoke_4;
   v25[3] = &unk_278D0A138;
-  v27 = v10;
+  v27 = _animateCircleMaskWithPositioningGuide;
   v25[4] = self;
-  v26 = v4;
-  v22 = v4;
+  v26 = completionCopy;
+  v22 = completionCopy;
   [(BKUIPearlPositioningGuideView *)positioningGuide animateToFinishedValuesOverDuration:v25 center:0.5 completion:v19, v21];
   v23 = dispatch_time(0, 300000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -2736,16 +2736,16 @@ void __62__BKUIPearlEnrollView__animateToPartialCaptureWithCompletion___block_in
 
 - (CGSize)tutorialMovieSize
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] != 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] != 1)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(BKUIPearlEnrollView *)self inSheet];
+  inSheet = [(BKUIPearlEnrollView *)self inSheet];
 
-  if (v4)
+  if (inSheet)
   {
 LABEL_5:
     v5 = 133.333333;
@@ -2762,12 +2762,12 @@ LABEL_6:
 
 - (double)portalRadius
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v4 = [(BKUIPearlEnrollView *)self inSheet];
+    inSheet = [(BKUIPearlEnrollView *)self inSheet];
 
-    if (!v4)
+    if (!inSheet)
     {
       positioningGuide = self->_positioningGuide;
 
@@ -2783,8 +2783,8 @@ LABEL_6:
   v7 = +[BKUIDevice sharedInstance];
   if ([v7 isZoomEnabled])
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom] == 0;
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    v9 = [currentDevice2 userInterfaceIdiom] == 0;
 
     v10 = dbl_241B72EF0[v9];
   }
@@ -2798,9 +2798,9 @@ LABEL_6:
   if ([(BKUIPearlEnrollView *)self squareNeedsPositionLayout])
   {
     v11 = +[BKUIDevice sharedInstance];
-    v12 = [v11 isZoomEnabled];
+    isZoomEnabled = [v11 isZoomEnabled];
 
-    if (v12)
+    if (isZoomEnabled)
     {
       v13 = +[BKUIDevice sharedInstance];
       if ([v13 mainScreenClass] == 31)
@@ -2812,10 +2812,10 @@ LABEL_6:
       else
       {
         v16 = +[BKUIDevice sharedInstance];
-        v17 = [v16 mainScreenClass];
+        mainScreenClass = [v16 mainScreenClass];
         [(BKUIPearlEnrollView *)self bounds];
         v19 = -45.0;
-        if (v17 == 39)
+        if (mainScreenClass == 39)
         {
           v19 = -60.0;
         }
@@ -2838,10 +2838,10 @@ LABEL_6:
 {
   [(BKUIPearlEnrollView *)self bounds];
   v4 = v3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return v4;
   }
@@ -2852,12 +2852,12 @@ LABEL_6:
 
 - (double)tutorialRingRadius
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v4 = [(BKUIPearlEnrollView *)self inSheet];
+    inSheet = [(BKUIPearlEnrollView *)self inSheet];
 
-    if (!v4)
+    if (!inSheet)
     {
       return 172.5;
     }
@@ -2899,16 +2899,16 @@ LABEL_6:
 
 - (double)_previewZoomLevel
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 0.8;
   }
 
-  v5 = [(BKUIPearlEnrollView *)self previewLayer];
-  [v5 bounds];
+  previewLayer = [(BKUIPearlEnrollView *)self previewLayer];
+  [previewLayer bounds];
   v7 = v6;
 
   [(BKUIPearlEnrollView *)self portalRadius];
@@ -2945,10 +2945,10 @@ LABEL_6:
   v9 = v5[3];
   *&retstr->m21 = v5[2];
   *&retstr->m23 = v9;
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(BKUIPearlEnrollView *)self portalOffset];
     v14 = v13;
@@ -2968,10 +2968,10 @@ LABEL_6:
   return result;
 }
 
-- (void)setMovieViewHidden:(BOOL)a3
+- (void)setMovieViewHidden:(BOOL)hidden
 {
   tutorialMovieView = self->_tutorialMovieView;
-  if (a3)
+  if (hidden)
   {
     [(BKUIPearlMovieLoopView *)tutorialMovieView hideAVPlayerReplaceWithSnapshot];
   }
@@ -2984,38 +2984,38 @@ LABEL_6:
 
 - (BOOL)needsMaskedNeedsPositionStyleEnrollment
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1 || -[BKUIPearlEnrollView squareNeedsPositionLayout](self, "squareNeedsPositionLayout");
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1 || -[BKUIPearlEnrollView squareNeedsPositionLayout](self, "squareNeedsPositionLayout");
 
   return v4;
 }
 
-- (void)setPillsHidden:(BOOL)a3
+- (void)setPillsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(BKUIPearlEnrollView *)self pillContainer];
-  v6 = v4;
+  hiddenCopy = hidden;
+  pillContainer = [(BKUIPearlEnrollView *)self pillContainer];
+  v6 = pillContainer;
   v5 = 1.0;
-  if (v3)
+  if (hiddenCopy)
   {
     v5 = 0.0;
   }
 
-  [v4 setAlpha:v5];
+  [pillContainer setAlpha:v5];
 }
 
-- (void)setCrosshairsHidden:(BOOL)a3
+- (void)setCrosshairsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(BKUIPearlEnrollView *)self crossHairs];
-  v6 = v4;
+  hiddenCopy = hidden;
+  crossHairs = [(BKUIPearlEnrollView *)self crossHairs];
+  v6 = crossHairs;
   v5 = 1.0;
-  if (v3)
+  if (hiddenCopy)
   {
     v5 = 0.0;
   }
 
-  [v4 setAlpha:v5];
+  [crossHairs setAlpha:v5];
 }
 
 - (BKUIPearlEnrollViewDelegate)delegate

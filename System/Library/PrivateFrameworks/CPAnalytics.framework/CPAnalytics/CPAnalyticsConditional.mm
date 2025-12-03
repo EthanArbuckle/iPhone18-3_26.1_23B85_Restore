@@ -1,13 +1,13 @@
 @interface CPAnalyticsConditional
-- (CPAnalyticsConditional)initWithConfig:(id)a3;
-- (id)_validateAndParseConfig:(id)a3 forKey:(id)a4;
+- (CPAnalyticsConditional)initWithConfig:(id)config;
+- (id)_validateAndParseConfig:(id)config forKey:(id)key;
 @end
 
 @implementation CPAnalyticsConditional
 
-- (id)_validateAndParseConfig:(id)a3 forKey:(id)a4
+- (id)_validateAndParseConfig:(id)config forKey:(id)key
 {
-  v4 = [a3 objectForKey:a4];
+  v4 = [config objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 length])
   {
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (CPAnalyticsConditional)initWithConfig:(id)a3
+- (CPAnalyticsConditional)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = CPAnalyticsConditional;
   v5 = [(CPAnalyticsConditional *)&v14 init];
@@ -41,8 +41,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [(CPAnalyticsConditional *)v5 _validateAndParseConfig:v4 forKey:@"property"];
-  v7 = [(CPAnalyticsConditional *)v5 _validateAndParseConfig:v4 forKey:@"predicate"];
+  v6 = [(CPAnalyticsConditional *)v5 _validateAndParseConfig:configCopy forKey:@"property"];
+  v7 = [(CPAnalyticsConditional *)v5 _validateAndParseConfig:configCopy forKey:@"predicate"];
   v8 = v7;
   if (v6)
   {

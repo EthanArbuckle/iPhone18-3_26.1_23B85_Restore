@@ -1,7 +1,7 @@
 @interface SceneDelegate
 - (UIWindow)window;
 - (_TtC19Text_Message_Filter13SceneDelegate)init;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
@@ -13,13 +13,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR____TtC19Text_Message_Filter13SceneDelegate_window;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = window;
+  windowCopy = window;
 }
 
 - (_TtC19Text_Message_Filter13SceneDelegate)init

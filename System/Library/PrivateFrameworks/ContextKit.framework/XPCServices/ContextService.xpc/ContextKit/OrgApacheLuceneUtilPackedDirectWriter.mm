@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilPackedDirectWriter
 + (void)initialize;
 - (uint64_t)flush;
-- (void)addWithLong:(int64_t)a3;
+- (void)addWithLong:(int64_t)long;
 - (void)dealloc;
 - (void)finish;
 @end
 
 @implementation OrgApacheLuceneUtilPackedDirectWriter
 
-- (void)addWithLong:(int64_t)a3
+- (void)addWithLong:(int64_t)long
 {
   if (self->count_ >= self->numValues_)
   {
@@ -30,7 +30,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, off);
   }
 
-  nextValues->buffer_[off] = a3;
+  nextValues->buffer_[off] = long;
   if (off + 1 == self->nextValues_->super.size_)
   {
     [OrgApacheLuceneUtilPackedDirectWriter flush]_0(self);
@@ -41,27 +41,27 @@
 
 - (uint64_t)flush
 {
-  v2 = *(a1 + 64);
+  v2 = *(self + 64);
   if (!v2)
   {
     goto LABEL_7;
   }
 
-  [v2 encodeWithLongArray:*(a1 + 56) withInt:0 withByteArray:*(a1 + 48) withInt:0 withInt:*(a1 + 72)];
+  [v2 encodeWithLongArray:*(self + 56) withInt:0 withByteArray:*(self + 48) withInt:0 withInt:*(self + 72)];
   if ((atomic_load_explicit(OrgApacheLuceneUtilPackedPackedInts_FormatEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100003648();
   }
 
-  if (!OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_ || (v3 = [OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_ byteCountWithInt:2 withInt:*(a1 + 44) withInt:*(a1 + 8)], (v4 = *(a1 + 24)) == 0))
+  if (!OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_ || (v3 = [OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_ byteCountWithInt:2 withInt:*(self + 44) withInt:*(self + 8)], (v4 = *(self + 24)) == 0))
   {
 LABEL_7:
     JreThrowNullPointerException();
   }
 
-  [v4 writeBytesWithByteArray:*(a1 + 48) withInt:v3];
-  result = JavaUtilArrays_fillWithLongArray_withLong_(*(a1 + 56), 0);
-  *(a1 + 44) = 0;
+  [v4 writeBytesWithByteArray:*(self + 48) withInt:v3];
+  result = JavaUtilArrays_fillWithLongArray_withLong_(*(self + 56), 0);
+  *(self + 44) = 0;
   return result;
 }
 
@@ -103,7 +103,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = 0x4000000038;
     v2[0] = xmmword_100314040;

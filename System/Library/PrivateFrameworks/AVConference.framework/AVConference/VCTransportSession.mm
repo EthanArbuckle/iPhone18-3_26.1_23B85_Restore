@@ -1,20 +1,20 @@
 @interface VCTransportSession
-+ (int)vtpPacketTypeForStreamType:(unsigned int)a3;
-+ (unsigned)trafficClassForStreamType:(unsigned int)a3;
-- (VCTransportSession)initWithNotificationQueue:(id)a3 reportingAgent:(opaqueRTCReporting *)a4 notificationHandler:(void *)a5 eventHandler:(void *)a6 handlerQueue:(id)a7 context:(void *)a8;
-- (int)createTransportStream:(OpaqueVCTransportStream *)a3 withType:(unsigned int)a4 options:(id)a5;
-- (int)deregisterNotificationForTransportStream:(OpaqueVCTransportStream *)a3;
-- (int)flushBasebandQueueWithPayloads:(id)a3 flushCount:(unsigned int *)a4;
-- (int)updateBasebandForConnection:(id)a3;
-- (void)addNetworkAssertionWithInterfaceType:(int)a3;
-- (void)callEventHandlerWithEvent:(unsigned int)a3 info:(id)a4;
++ (int)vtpPacketTypeForStreamType:(unsigned int)type;
++ (unsigned)trafficClassForStreamType:(unsigned int)type;
+- (VCTransportSession)initWithNotificationQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent notificationHandler:(void *)handler eventHandler:(void *)eventHandler handlerQueue:(id)handlerQueue context:(void *)context;
+- (int)createTransportStream:(OpaqueVCTransportStream *)stream withType:(unsigned int)type options:(id)options;
+- (int)deregisterNotificationForTransportStream:(OpaqueVCTransportStream *)stream;
+- (int)flushBasebandQueueWithPayloads:(id)payloads flushCount:(unsigned int *)count;
+- (int)updateBasebandForConnection:(id)connection;
+- (void)addNetworkAssertionWithInterfaceType:(int)type;
+- (void)callEventHandlerWithEvent:(unsigned int)event info:(id)info;
 - (void)cleanupBaseband;
 - (void)dealloc;
 - (void)destroyNWMonitor;
-- (void)handleTransportStreamDeactivated:(OpaqueVCTransportStream *)a3;
+- (void)handleTransportStreamDeactivated:(OpaqueVCTransportStream *)deactivated;
 - (void)removeNetworkAssertion;
-- (void)setCallActive:(BOOL)a3;
-- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)a3 remoteFrameworkVersion:(id)a4;
+- (void)setCallActive:(BOOL)active;
+- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion;
 - (void)setupNWMonitor;
 - (void)setupNWMonitorNotificationHandler;
 - (void)setupNWMonitorPacketEventHandler;
@@ -23,7 +23,7 @@
 
 @implementation VCTransportSession
 
-- (VCTransportSession)initWithNotificationQueue:(id)a3 reportingAgent:(opaqueRTCReporting *)a4 notificationHandler:(void *)a5 eventHandler:(void *)a6 handlerQueue:(id)a7 context:(void *)a8
+- (VCTransportSession)initWithNotificationQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent notificationHandler:(void *)handler eventHandler:(void *)eventHandler handlerQueue:(id)handlerQueue context:(void *)context
 {
   v20 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -33,9 +33,9 @@
   {
     +[VCVTPWrapper startVTP];
     v14->_isCallActive = 1;
-    if (a4)
+    if (agent)
     {
-      v15 = CFRetain(a4);
+      v15 = CFRetain(agent);
     }
 
     else
@@ -57,27 +57,27 @@
 
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(58);
     v14->_stateQueue = dispatch_queue_create_with_target_V2("com.apple.VideoConference.VCTransportSession.stateQueue", 0, CustomRootQueue);
-    if (a3)
+    if (queue)
     {
-      dispatch_retain(a3);
+      dispatch_retain(queue);
     }
 
     else
     {
-      a3 = dispatch_queue_create_with_target_V2("com.apple.VideoConference.VCTransportSession.notificationQueue", 0, CustomRootQueue);
+      queue = dispatch_queue_create_with_target_V2("com.apple.VideoConference.VCTransportSession.notificationQueue", 0, CustomRootQueue);
     }
 
-    v14->_notificationQueue = a3;
+    v14->_notificationQueue = queue;
     v14->_streams = objc_alloc_init(MEMORY[0x1E695DF70]);
     pthread_mutex_init(&v14->_stateLock, 0);
     v14->_nwMonitorLock._os_unfair_lock_opaque = 0;
-    v14->_notificationHandler = a5;
-    v14->_packetEventHandler = a6;
-    v14->_handlerContext = a8;
-    if (a7)
+    v14->_notificationHandler = handler;
+    v14->_packetEventHandler = eventHandler;
+    v14->_handlerContext = context;
+    if (handlerQueue)
     {
-      v14->_handlerQueue = a7;
-      dispatch_retain(a7);
+      v14->_handlerQueue = handlerQueue;
+      dispatch_retain(handlerQueue);
     }
   }
 
@@ -203,7 +203,7 @@ uint64_t __26__VCTransportSession_stop__block_invoke_72(uint64_t a1)
   return result;
 }
 
-- (void)callEventHandlerWithEvent:(unsigned int)a3 info:(id)a4
+- (void)callEventHandlerWithEvent:(unsigned int)event info:(id)info
 {
   v7 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -211,9 +211,9 @@ uint64_t __26__VCTransportSession_stop__block_invoke_72(uint64_t a1)
   v5[1] = 3221225472;
   v5[2] = __53__VCTransportSession_callEventHandlerWithEvent_info___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v6 = a3;
+  eventCopy = event;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = info;
   dispatch_async(notificationQueue, v5);
 }
 
@@ -247,17 +247,17 @@ void __53__VCTransportSession_callEventHandlerWithEvent_info___block_invoke(uint
   }
 }
 
-- (void)handleTransportStreamDeactivated:(OpaqueVCTransportStream *)a3
+- (void)handleTransportStreamDeactivated:(OpaqueVCTransportStream *)deactivated
 {
   CMNotificationCenterGetDefaultLocalCenter();
   CMNotificationCenterRemoveListener();
   pthread_mutex_lock(&self->_stateLock);
-  [(NSMutableArray *)self->_streams removeObject:a3];
+  [(NSMutableArray *)self->_streams removeObject:deactivated];
 
   pthread_mutex_unlock(&self->_stateLock);
 }
 
-- (int)deregisterNotificationForTransportStream:(OpaqueVCTransportStream *)a3
+- (int)deregisterNotificationForTransportStream:(OpaqueVCTransportStream *)stream
 {
   v16 = *MEMORY[0x1E69E9840];
   CMNotificationCenterGetDefaultLocalCenter();
@@ -270,7 +270,7 @@ void __53__VCTransportSession_callEventHandlerWithEvent_info___block_invoke(uint
   }
 
   v6 = 3492950510;
-  CMBaseObject = VCPacketFilterGetCMBaseObject(a3, v5);
+  CMBaseObject = VCPacketFilterGetCMBaseObject(stream, v5);
   v8 = *(CMBaseObjectGetVTable() + 8);
   if (*v8 >= 2uLL)
   {
@@ -311,7 +311,7 @@ void __53__VCTransportSession_callEventHandlerWithEvent_info___block_invoke(uint
   return v6;
 }
 
-- (void)setCallActive:(BOOL)a3
+- (void)setCallActive:(BOOL)active
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -319,7 +319,7 @@ void __53__VCTransportSession_callEventHandlerWithEvent_info___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __36__VCTransportSession_setCallActive___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  activeCopy = active;
   block[4] = self;
   dispatch_async(stateQueue, block);
 }
@@ -352,13 +352,13 @@ void __36__VCTransportSession_setCallActive___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)a3 remoteFrameworkVersion:(id)a4
+- (void)setConnectionSelectionVersionWithLocalFrameworkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion
 {
   v21 = *MEMORY[0x1E69E9840];
 
-  self->_localFrameworkVersion = [a3 copy];
-  self->_remoteFrameworkVersion = [a4 copy];
-  [(VCConnectionManager *)self->_connectionManager setConnectionSelectionVersionWithLocalFrameworkVersion:a3 remoteFrameworkVersion:a4];
+  self->_localFrameworkVersion = [version copy];
+  self->_remoteFrameworkVersion = [frameworkVersion copy];
+  [(VCConnectionManager *)self->_connectionManager setConnectionSelectionVersionWithLocalFrameworkVersion:version remoteFrameworkVersion:frameworkVersion];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -382,10 +382,10 @@ void __36__VCTransportSession_setCallActive___block_invoke(uint64_t a1)
   }
 }
 
-- (int)updateBasebandForConnection:(id)a3
+- (int)updateBasebandForConnection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = VCConnection_ConnectionID(a3);
+  v5 = VCConnection_ConnectionID(connection);
   registeredConnection = self->_registeredConnection;
   if (registeredConnection && VCConnection_ConnectionID(registeredConnection) == v5)
   {
@@ -403,7 +403,7 @@ void __36__VCTransportSession_setCallActive___block_invoke(uint64_t a1)
         v17 = 1024;
         v18 = 296;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         v21 = 1024;
         v22 = v5;
         v23 = 1024;
@@ -421,7 +421,7 @@ void __36__VCTransportSession_setCallActive___block_invoke(uint64_t a1)
     v12[2] = __50__VCTransportSession_updateBasebandForConnection___block_invoke;
     v12[3] = &unk_1E85F37F0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = connection;
     dispatch_async(stateQueue, v12);
   }
 
@@ -532,7 +532,7 @@ void __50__VCTransportSession_updateBasebandForConnection___block_invoke(uint64_
         v11 = 1024;
         v12 = 319;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         v15 = 1024;
         v16 = v5;
         v17 = 1024;
@@ -546,7 +546,7 @@ void __50__VCTransportSession_updateBasebandForConnection___block_invoke(uint64_
   }
 }
 
-- (int)flushBasebandQueueWithPayloads:(id)a3 flushCount:(unsigned int *)a4
+- (int)flushBasebandQueueWithPayloads:(id)payloads flushCount:(unsigned int *)count
 {
   v18 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -563,13 +563,13 @@ void __50__VCTransportSession_updateBasebandForConnection___block_invoke(uint64_
   block[2] = __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_invoke;
   block[3] = &unk_1E85F8150;
   block[4] = self;
-  block[5] = a3;
+  block[5] = payloads;
   block[6] = &v15;
   block[7] = &v11;
   dispatch_sync(stateQueue, block);
-  if (a4)
+  if (count)
   {
-    *a4 = *(v12 + 6);
+    *count = *(v12 + 6);
   }
 
   if ((*(v16[0] + 24) & 0x80000000) != 0 && VRTraceGetErrorLogLevelForModule() >= 3)
@@ -625,12 +625,12 @@ void __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_
   }
 }
 
-+ (unsigned)trafficClassForStreamType:(unsigned int)a3
++ (unsigned)trafficClassForStreamType:(unsigned int)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 < 6)
+  if (type - 1 < 6)
   {
-    return dword_1DBD49E70[a3 - 1];
+    return dword_1DBD49E70[type - 1];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -650,19 +650,19 @@ void __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_
     v11 = 1024;
     v12 = 438;
     v13 = 1024;
-    v14 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Invalid stream type %d", &v7, 0x22u);
   }
 
   return 0;
 }
 
-+ (int)vtpPacketTypeForStreamType:(unsigned int)a3
++ (int)vtpPacketTypeForStreamType:(unsigned int)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 < 6)
+  if (type - 1 < 6)
   {
-    return dword_1DBD49E88[a3 - 1];
+    return dword_1DBD49E88[type - 1];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -682,7 +682,7 @@ void __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_
     v11 = 1024;
     v12 = 458;
     v13 = 1024;
-    v14 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Invalid stream type %d", &v7, 0x22u);
   }
 
@@ -732,12 +732,12 @@ void __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_
   os_unfair_lock_unlock(&self->_nwMonitorLock);
 }
 
-- (int)createTransportStream:(OpaqueVCTransportStream *)a3 withType:(unsigned int)a4 options:(id)a5
+- (int)createTransportStream:(OpaqueVCTransportStream *)stream withType:(unsigned int)type options:(id)options
 {
   v33 = *MEMORY[0x1E69E9840];
   v24 = -1;
   cf = 0;
-  if (!a3)
+  if (!stream)
   {
     v14 = -2144665599;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -759,7 +759,7 @@ void __64__VCTransportSession_flushBasebandQueueWithPayloads_flushCount___block_
     goto LABEL_17;
   }
 
-  v6 = *&a4;
+  v6 = *&type;
   v9 = [(VCTransportSession *)self createVFD:&v24 forStreamType:?];
   if (v9 < 0)
   {
@@ -773,9 +773,9 @@ LABEL_17:
   if (v10)
   {
     v11 = v10;
-    if (a5)
+    if (options)
     {
-      v12 = [a5 mutableCopy];
+      v12 = [options mutableCopy];
     }
 
     else
@@ -829,7 +829,7 @@ LABEL_17:
         pthread_mutex_lock(&self->_stateLock);
         [(NSMutableArray *)self->_streams addObject:cf];
         pthread_mutex_unlock(&self->_stateLock);
-        *a3 = cf;
+        *stream = cf;
         cf = 0;
       }
     }
@@ -852,7 +852,7 @@ LABEL_10:
   return v14;
 }
 
-- (void)addNetworkAssertionWithInterfaceType:(int)a3
+- (void)addNetworkAssertionWithInterfaceType:(int)type
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
@@ -876,7 +876,7 @@ LABEL_10:
   else
   {
     v5 = VCFeatureFlagManager_SkipNonInfraWiFiAssertion();
-    if (a3 == 3 && v5)
+    if (type == 3 && v5)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {

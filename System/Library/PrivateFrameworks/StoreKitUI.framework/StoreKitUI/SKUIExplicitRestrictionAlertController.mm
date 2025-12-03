@@ -1,14 +1,14 @@
 @interface SKUIExplicitRestrictionAlertController
-- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)a3;
-- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)a3 presentingViewController:(id)a4;
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)a3 completionBlock:(id)a4;
+- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)context;
+- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)context presentingViewController:(id)controller;
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)type completionBlock:(id)block;
 @end
 
 @implementation SKUIExplicitRestrictionAlertController
 
-- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)a3
+- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIExplicitRestrictionAlertController initWithClientContext:];
@@ -20,16 +20,16 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
 }
 
-- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)a3 presentingViewController:(id)a4
+- (SKUIExplicitRestrictionAlertController)initWithClientContext:(id)context presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIExplicitRestrictionAlertController initWithClientContext:presentingViewController:];
@@ -41,26 +41,26 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a3);
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v10;
 }
 
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)a3 completionBlock:(id)a4
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)type completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277D69C38];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __104__SKUIExplicitRestrictionAlertController_presentExplicitRestrictionAlertIfNeededOfType_completionBlock___block_invoke;
   v9[3] = &unk_2781FD8E8;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  typeCopy = type;
   v9[4] = self;
-  v8 = v6;
-  [v7 shouldDisplayExplicitRestrictionAlertOfType:a3 completionBlock:v9];
+  v8 = blockCopy;
+  [v7 shouldDisplayExplicitRestrictionAlertOfType:type completionBlock:v9];
 }
 
 void __104__SKUIExplicitRestrictionAlertController_presentExplicitRestrictionAlertIfNeededOfType_completionBlock___block_invoke(void *a1, int a2, void *a3)

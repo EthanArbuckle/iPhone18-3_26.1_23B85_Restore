@@ -1,28 +1,28 @@
 @interface TSWPTextWrapper
-+ (double)p_skipHintForRect:(CGRect)a3 wrapSegments:(id)a4 type:(int)a5;
-+ (double)unobstructedSpanForWrapSegments:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5;
-+ (id)horizontalIntersectionsOfRectList:(id)a3 withRectList:(id)a4 minWidth:(double)a5;
-+ (id)modifyLineSegments:(id)a3 lineRect:(CGRect)a4 textAdornments:(id)a5 skipHint:(double *)a6;
-+ (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrapSegments:(id)a5 type:(int)a6 skipHint:(double *)a7;
++ (double)p_skipHintForRect:(CGRect)rect wrapSegments:(id)segments type:(int)type;
++ (double)unobstructedSpanForWrapSegments:(id)segments startingSpan:(CGRect)span columnBounds:(CGRect)bounds;
++ (id)horizontalIntersectionsOfRectList:(id)list withRectList:(id)rectList minWidth:(double)width;
++ (id)modifyLineSegments:(id)segments lineRect:(CGRect)rect textAdornments:(id)adornments skipHint:(double *)hint;
++ (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrapSegments:(id)segments type:(int)type skipHint:(double *)hint;
 @end
 
 @implementation TSWPTextWrapper
 
-+ (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrapSegments:(id)a5 type:(int)a6 skipHint:(double *)a7
++ (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrapSegments:(id)segments type:(int)type skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v19 = v16;
-  if (a7)
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  rectsCopy = rects;
+  segmentsCopy = segments;
+  v19 = segmentsCopy;
+  if (hint)
   {
-    *a7 = 1.0;
+    *hint = 1.0;
   }
 
-  objc_msgSend_bounds(v16, v17, v18);
+  objc_msgSend_bounds(segmentsCopy, v17, v18);
   v73.origin.x = v20;
   v73.origin.y = v21;
   v73.size.width = v22;
@@ -185,20 +185,20 @@ LABEL_32:
     v55 = __p;
     if (__p != v65)
     {
-      v56 = a6 != 1;
-      v57 = a6 != 1;
+      v56 = type != 1;
+      v57 = type != 1;
       do
       {
         if (!v56 && !v57 && MinX < v55->n128_f64[0])
         {
           if (MaxX - MinX >= v55->n128_f64[0] - MinX)
           {
-            objc_msgSend_addRect_(v15, v53, v54, MinX, MinY, v55->n128_f64[0] - MinX, v61);
+            objc_msgSend_addRect_(rectsCopy, v53, v54, MinX, MinY, v55->n128_f64[0] - MinX, v61);
           }
 
           else
           {
-            objc_msgSend_addRect_(v15, v53, v54, MinX, MinY, MaxX - MinX, v61);
+            objc_msgSend_addRect_(rectsCopy, v53, v54, MinX, MinY, MaxX - MinX, v61);
           }
         }
 
@@ -220,18 +220,18 @@ LABEL_32:
       while (v55 != v65);
     }
 
-    if (a6 == 1 && MinX < MaxX)
+    if (type == 1 && MinX < MaxX)
     {
-      objc_msgSend_addRect_(v15, v53, v54, MinX, MinY, MaxX - MinX, v61);
+      objc_msgSend_addRect_(rectsCopy, v53, v54, MinX, MinY, MaxX - MinX, v61);
     }
 
-    if (a7)
+    if (hint)
     {
-      v58 = objc_msgSend_count(v15, v53, v54);
-      if (a6 == 1 && !v58)
+      v58 = objc_msgSend_count(rectsCopy, v53, v54);
+      if (type == 1 && !v58)
       {
-        objc_msgSend_p_skipHintForRect_wrapSegments_type_(a1, v59, v19, 1, x, y, width, height);
-        *a7 = v60;
+        objc_msgSend_p_skipHintForRect_wrapSegments_type_(self, v59, v19, 1, x, y, width, height);
+        *hint = v60;
       }
     }
 
@@ -242,23 +242,23 @@ LABEL_32:
     }
   }
 
-  else if (a6 == 1)
+  else if (type == 1)
   {
-    objc_msgSend_addRect_(v15, v24, v25, x, y, width, height);
+    objc_msgSend_addRect_(rectsCopy, v24, v25, x, y, width, height);
   }
 }
 
-+ (double)unobstructedSpanForWrapSegments:(id)a3 startingSpan:(CGRect)a4 columnBounds:(CGRect)a5
++ (double)unobstructedSpanForWrapSegments:(id)segments startingSpan:(CGRect)span columnBounds:(CGRect)bounds
 {
-  width = a5.size.width;
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v6 = a4.size.height;
-  v7 = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
-  v10 = a3;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v6 = span.size.height;
+  v7 = span.size.width;
+  v8 = span.origin.y;
+  v9 = span.origin.x;
+  segmentsCopy = segments;
   v60.origin.x = v9;
   v60.origin.y = v8;
   v60.size.width = v7;
@@ -278,8 +278,8 @@ LABEL_32:
   v58 = 0;
   v59 = 0;
   sub_276DD2F84(&v57, 0x40uLL);
-  v15 = objc_msgSend_segmentCount(v10, v13, v14);
-  v18 = objc_msgSend_segments(v10, v16, v17);
+  v15 = objc_msgSend_segmentCount(segmentsCopy, v13, v14);
+  v18 = objc_msgSend_segments(segmentsCopy, v16, v17);
   if (v15)
   {
     v20 = 0;
@@ -487,22 +487,22 @@ LABEL_48:
   return MinY;
 }
 
-+ (id)horizontalIntersectionsOfRectList:(id)a3 withRectList:(id)a4 minWidth:(double)a5
++ (id)horizontalIntersectionsOfRectList:(id)list withRectList:(id)rectList minWidth:(double)width
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  rectListCopy = rectList;
   v10 = objc_opt_new();
   v11 = 0;
   v12 = 0;
   v41 = 0.000000999999997;
-  while (v12 < objc_msgSend_count(v6, v8, v9, *&v41) && v11 < objc_msgSend_count(v7, v13, v14))
+  while (v12 < objc_msgSend_count(listCopy, v8, v9, *&v41) && v11 < objc_msgSend_count(rectListCopy, v13, v14))
   {
-    objc_msgSend_rectAtIndex_(v6, v15, v12);
+    objc_msgSend_rectAtIndex_(listCopy, v15, v12);
     rect = v16;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    objc_msgSend_rectAtIndex_(v7, v23, v11);
+    objc_msgSend_rectAtIndex_(rectListCopy, v23, v11);
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -548,7 +548,7 @@ LABEL_48:
     y = v51.origin.y;
     width = v51.size.width;
     height = v51.size.height;
-    if (CGRectGetWidth(v51) >= a5)
+    if (CGRectGetWidth(v51) >= width)
     {
       objc_msgSend_addRect_(v10, v37, v38, x, y, width, height);
     }
@@ -574,22 +574,22 @@ LABEL_11:
   return v10;
 }
 
-+ (id)modifyLineSegments:(id)a3 lineRect:(CGRect)a4 textAdornments:(id)a5 skipHint:(double *)a6
++ (id)modifyLineSegments:(id)segments lineRect:(CGRect)rect textAdornments:(id)adornments skipHint:(double *)hint
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  *a6 = 1.0;
-  v14 = v12;
+  segmentsCopy = segments;
+  adornmentsCopy = adornments;
+  *hint = 1.0;
+  v14 = segmentsCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v13;
+  v15 = adornmentsCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v28, v32, 16);
   v19 = v14;
   if (v18)
@@ -612,7 +612,7 @@ LABEL_11:
         v24 = objc_msgSend_splitLine_skipHint_(v23, v17, &v27, x, y, width, height);
         v19 = objc_msgSend_horizontalIntersectionsOfRectList_withRectList_minWidth_(TSWPTextWrapper, v25, v22, v24, 0.01);
 
-        *a6 = fmax(v27, *a6);
+        *hint = fmax(v27, *hint);
         ++v21;
         v22 = v19;
       }
@@ -627,14 +627,14 @@ LABEL_11:
   return v19;
 }
 
-+ (double)p_skipHintForRect:(CGRect)a3 wrapSegments:(id)a4 type:(int)a5
++ (double)p_skipHintForRect:(CGRect)rect wrapSegments:(id)segments type:(int)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (objc_msgSend_segmentCount(v9, v10, v11) < 1)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  segmentsCopy = segments;
+  if (objc_msgSend_segmentCount(segmentsCopy, v10, v11) < 1)
   {
     v21 = 1.0;
   }
@@ -656,8 +656,8 @@ LABEL_11:
     v44.size.width = width;
     v44.size.height = height;
     MinY = CGRectGetMinY(v44);
-    v17 = objc_msgSend_segmentCount(v9, v15, v16);
-    v20 = objc_msgSend_segments(v9, v18, v19);
+    v17 = objc_msgSend_segmentCount(segmentsCopy, v15, v16);
+    v20 = objc_msgSend_segments(segmentsCopy, v18, v19);
     v21 = 1.0;
     if (v17)
     {

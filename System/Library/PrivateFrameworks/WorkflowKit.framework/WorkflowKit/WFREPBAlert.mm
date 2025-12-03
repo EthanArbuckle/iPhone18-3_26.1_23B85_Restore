@@ -1,29 +1,29 @@
 @interface WFREPBAlert
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPreferredStyle:(id)a3;
+- (int)StringAsPreferredStyle:(id)style;
 - (int)preferredStyle;
 - (unint64_t)hash;
-- (void)addButtons:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addButtons:(id)buttons;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBAlert
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(WFREPBAlert *)self setTitle:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFREPBAlert *)self setMessage:?];
   }
@@ -32,7 +32,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -56,9 +56,9 @@
     while (v7);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_preferredStyle = *(v4 + 6);
+    self->_preferredStyle = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -83,16 +83,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   title = self->_title;
-  if (title | *(v4 + 4))
+  if (title | *(equalCopy + 4))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -101,7 +101,7 @@
   }
 
   message = self->_message;
-  if (message | *(v4 + 2))
+  if (message | *(equalCopy + 2))
   {
     if (![(NSString *)message isEqual:?])
     {
@@ -110,7 +110,7 @@
   }
 
   buttons = self->_buttons;
-  if (buttons | *(v4 + 1))
+  if (buttons | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)buttons isEqual:?])
     {
@@ -118,10 +118,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_preferredStyle == *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_preferredStyle == *(equalCopy + 6))
     {
       v8 = 1;
       goto LABEL_13;
@@ -136,15 +136,15 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_message copyWithZone:a3];
+  v8 = [(NSString *)self->_message copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -168,7 +168,7 @@ LABEL_13:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addButtons:v15];
 
         ++v14;
@@ -191,45 +191,45 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_title)
   {
-    [v8 setTitle:?];
+    [toCopy setTitle:?];
   }
 
   if (self->_message)
   {
-    [v8 setMessage:?];
+    [toCopy setMessage:?];
   }
 
   if ([(WFREPBAlert *)self buttonsCount])
   {
-    [v8 clearButtons];
-    v4 = [(WFREPBAlert *)self buttonsCount];
-    if (v4)
+    [toCopy clearButtons];
+    buttonsCount = [(WFREPBAlert *)self buttonsCount];
+    if (buttonsCount)
     {
-      v5 = v4;
+      v5 = buttonsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBAlert *)self buttonsAtIndex:i];
-        [v8 addButtons:v7];
+        [toCopy addButtons:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 6) = self->_preferredStyle;
-    *(v8 + 40) |= 1u;
+    *(toCopy + 6) = self->_preferredStyle;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
@@ -284,12 +284,12 @@ LABEL_13:
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   message = self->_message;
@@ -320,8 +320,8 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -365,19 +365,19 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = WFREPBAlert;
   v4 = [(WFREPBAlert *)&v8 description];
-  v5 = [(WFREPBAlert *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBAlert *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsPreferredStyle:(id)a3
+- (int)StringAsPreferredStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = 1;
-  if (([v3 isEqualToString:@"Alert"] & 1) == 0)
+  if (([styleCopy isEqualToString:@"Alert"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Sheet"])
+    if ([styleCopy isEqualToString:@"Sheet"])
     {
       v4 = 2;
     }
@@ -404,22 +404,22 @@ LABEL_13:
   }
 }
 
-- (void)addButtons:(id)a3
+- (void)addButtons:(id)buttons
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   buttons = self->_buttons;
-  v8 = v4;
+  v8 = buttonsCopy;
   if (!buttons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_buttons;
     self->_buttons = v6;
 
-    v4 = v8;
+    buttonsCopy = v8;
     buttons = self->_buttons;
   }
 
-  [(NSMutableArray *)buttons addObject:v4];
+  [(NSMutableArray *)buttons addObject:buttonsCopy];
 }
 
 @end

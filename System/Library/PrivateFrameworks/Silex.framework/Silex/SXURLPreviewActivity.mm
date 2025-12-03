@@ -1,43 +1,43 @@
 @interface SXURLPreviewActivity
-- (SXURLPreviewActivity)initWithURLPreviewing:(id)a3 URL:(id)a4;
-- (id)previewViewControllerForAction:(id)a3;
-- (void)commitViewController:(id)a3 action:(id)a4;
+- (SXURLPreviewActivity)initWithURLPreviewing:(id)previewing URL:(id)l;
+- (id)previewViewControllerForAction:(id)action;
+- (void)commitViewController:(id)controller action:(id)action;
 @end
 
 @implementation SXURLPreviewActivity
 
-- (SXURLPreviewActivity)initWithURLPreviewing:(id)a3 URL:(id)a4
+- (SXURLPreviewActivity)initWithURLPreviewing:(id)previewing URL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  previewingCopy = previewing;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = SXURLPreviewActivity;
   v9 = [(SXURLPreviewActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_URLPreviewing, a3);
-    objc_storeStrong(&v10->_URL, a4);
+    objc_storeStrong(&v9->_URLPreviewing, previewing);
+    objc_storeStrong(&v10->_URL, l);
   }
 
   return v10;
 }
 
-- (id)previewViewControllerForAction:(id)a3
+- (id)previewViewControllerForAction:(id)action
 {
-  v4 = [(SXURLPreviewActivity *)self URLPreviewing];
+  uRLPreviewing = [(SXURLPreviewActivity *)self URLPreviewing];
   v5 = [(SXURLPreviewActivity *)self URL];
-  v6 = [v4 viewControllerForURL:v5];
+  v6 = [uRLPreviewing viewControllerForURL:v5];
 
   return v6;
 }
 
-- (void)commitViewController:(id)a3 action:(id)a4
+- (void)commitViewController:(id)controller action:(id)action
 {
-  v5 = a3;
-  v7 = [(SXURLPreviewActivity *)self URLPreviewing];
+  controllerCopy = controller;
+  uRLPreviewing = [(SXURLPreviewActivity *)self URLPreviewing];
   v6 = [(SXURLPreviewActivity *)self URL];
-  [v7 commitViewController:v5 URL:v6];
+  [uRLPreviewing commitViewController:controllerCopy URL:v6];
 }
 
 @end

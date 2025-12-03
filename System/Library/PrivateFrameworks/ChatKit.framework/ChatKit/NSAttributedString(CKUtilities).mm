@@ -16,7 +16,7 @@
 - (uint64_t)containsAttribute:()CKUtilities
 {
   v4 = a3;
-  v5 = [a1 attribute:v4 existsInRange:{0, objc_msgSend(a1, "length")}];
+  v5 = [self attribute:v4 existsInRange:{0, objc_msgSend(self, "length")}];
 
   return v5;
 }
@@ -33,10 +33,10 @@
   v34 = 0x2020000000;
   v35 = 0;
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 maximumEmojiCountForMultipleBigEmojiFont];
-  v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v10 = [a1 string];
-  v11 = [v10 length];
+  maximumEmojiCountForMultipleBigEmojiFont = [v7 maximumEmojiCountForMultipleBigEmojiFont];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  string = [self string];
+  v11 = [string length];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -49,8 +49,8 @@
   v16[1] = 3221225472;
   v16[2] = __94__NSAttributedString_CKUtilities____ck_bigEmojiStyleWithSingleBigEmojiSupported_mediaObjects___block_invoke;
   v16[3] = &unk_1E72EEF20;
-  v16[4] = a1;
-  v12 = v9;
+  v16[4] = self;
+  v12 = whitespaceAndNewlineCharacterSet;
   v17 = v12;
   v19 = &v28;
   v13 = v6;
@@ -58,8 +58,8 @@
   v20 = &v24;
   v21 = &v36;
   v22 = &v32;
-  v23 = v8;
-  [v10 enumerateSubstringsInRange:0 options:v11 usingBlock:{2, v16}];
+  v23 = maximumEmojiCountForMultipleBigEmojiFont;
+  [string enumerateSubstringsInRange:0 options:v11 usingBlock:{2, v16}];
   if (v33[3])
   {
     v14 = 0;
@@ -88,7 +88,7 @@
 
   else
   {
-    v14 = 2 * (v37[3] - 1 < v8);
+    v14 = 2 * (v37[3] - 1 < maximumEmojiCountForMultipleBigEmojiFont);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -127,9 +127,9 @@
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 transfer];
-          v13 = [v12 adaptiveImageGlyphContentIdentifier];
-          if ([v13 length] && objc_msgSend(v13, "isEqualToString:", v6))
+          transfer = [v11 transfer];
+          adaptiveImageGlyphContentIdentifier = [transfer adaptiveImageGlyphContentIdentifier];
+          if ([adaptiveImageGlyphContentIdentifier length] && objc_msgSend(adaptiveImageGlyphContentIdentifier, "isEqualToString:", v6))
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -160,29 +160,29 @@ LABEL_18:
       v5 = v18;
     }
 
-    v16 = [v8 transfer];
-    v15 = [v16 guid];
+    transfer2 = [v8 transfer];
+    guid = [transfer2 guid];
   }
 
   else
   {
-    v15 = 0;
+    guid = 0;
   }
 
-  return v15;
+  return guid;
 }
 
 - (BOOL)_fileTransferGUIDIsForGenmojiOrAnimojiSticker:()CKUtilities
 {
   v3 = MEMORY[0x1E69A5B80];
   v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 transferForGUID:v4];
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance transferForGUID:v4];
 
   if (v6)
   {
-    v7 = [v6 stickerUserInfo];
-    v8 = [v7 objectForKey:*MEMORY[0x1E69A7CB0]];
+    stickerUserInfo = [v6 stickerUserInfo];
+    v8 = [stickerUserInfo objectForKey:*MEMORY[0x1E69A7CB0]];
 
     v9 = ([v8 isEqualToString:*MEMORY[0x1E69A69D8]] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69A6980]) & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69A69E8]);
   }
@@ -197,14 +197,14 @@ LABEL_18:
 
 - (uint64_t)__ck_isOnlyAdaptiveImageGlyphs
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 1;
   }
 
   v3 = v2;
-  result = [a1 __ck_hasAdaptiveImageGlyphAtIndex:0];
+  result = [self __ck_hasAdaptiveImageGlyphAtIndex:0];
   if (result)
   {
     v5 = 1;
@@ -216,7 +216,7 @@ LABEL_18:
         break;
       }
 
-      v7 = [a1 __ck_hasAdaptiveImageGlyphAtIndex:v5];
+      v7 = [self __ck_hasAdaptiveImageGlyphAtIndex:v5];
       v5 = v6 + 1;
     }
 
@@ -229,7 +229,7 @@ LABEL_18:
 
 - (BOOL)__ck_hasAdaptiveImageGlyphAtIndex:()CKUtilities
 {
-  v5 = [a1 attribute:*MEMORY[0x1E69DB5F8] atIndex:a3 effectiveRange:0];
+  v5 = [self attribute:*MEMORY[0x1E69DB5F8] atIndex:a3 effectiveRange:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -238,7 +238,7 @@ LABEL_18:
 
   else
   {
-    v7 = [a1 attribute:*MEMORY[0x1E69DB5F0] atIndex:a3 effectiveRange:0];
+    v7 = [self attribute:*MEMORY[0x1E69DB5F0] atIndex:a3 effectiveRange:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,7 +247,7 @@ LABEL_18:
 
     else
     {
-      v8 = [a1 attribute:*MEMORY[0x1E69A5F50] atIndex:a3 effectiveRange:0];
+      v8 = [self attribute:*MEMORY[0x1E69A5F50] atIndex:a3 effectiveRange:0];
       v6 = v8 != 0;
     }
   }
@@ -257,7 +257,7 @@ LABEL_18:
 
 - (id)__ck_adaptiveImageGlyphAtIndex:()CKUtilities
 {
-  v3 = [a1 attribute:*MEMORY[0x1E69DB5F0] atIndex:a3 effectiveRange:0];
+  v3 = [self attribute:*MEMORY[0x1E69DB5F0] atIndex:a3 effectiveRange:0];
   objc_opt_class();
   v4 = 0;
   if (objc_opt_isKindOfClass())
@@ -270,7 +270,7 @@ LABEL_18:
 
 - (id)__ck_fileTransferGUIDAtIndex:()CKUtilities
 {
-  v3 = [a1 attribute:*MEMORY[0x1E69A5F68] atIndex:a3 effectiveRange:0];
+  v3 = [self attribute:*MEMORY[0x1E69A5F68] atIndex:a3 effectiveRange:0];
   objc_opt_class();
   v4 = 0;
   if (objc_opt_isKindOfClass())
@@ -284,7 +284,7 @@ LABEL_18:
 - (id)__ck_attributedStringByRemovingAllAttributesExcept:()CKUtilities
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 __ck_removeAllAttributesExcept:v4];
 
   v6 = [v5 copy];
@@ -295,16 +295,16 @@ LABEL_18:
 - (id)__ck_attributedStringByTrimmingCharactersInSet:()CKUtilities
 {
   v4 = a3;
-  v5 = [a1 string];
-  for (i = 0; i < [v5 length]; ++i)
+  string = [self string];
+  for (i = 0; i < [string length]; ++i)
   {
-    if (![v4 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", i)}])
+    if (![v4 characterIsMember:{objc_msgSend(string, "characterAtIndex:", i)}])
     {
       break;
     }
   }
 
-  v7 = [v5 length];
+  v7 = [string length];
   v8 = v7 - i;
   v9 = v7 - 1;
   do
@@ -316,7 +316,7 @@ LABEL_18:
       break;
     }
 
-    v12 = [v4 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v9)}];
+    v12 = [v4 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v9)}];
     v8 = v10 - 1;
     v9 = v11 - 1;
   }
@@ -324,7 +324,7 @@ LABEL_18:
   while ((v12 & 1) != 0);
   if (i <= v11)
   {
-    v13 = [a1 attributedSubstringFromRange:{i, v10}];
+    v13 = [self attributedSubstringFromRange:{i, v10}];
   }
 
   else

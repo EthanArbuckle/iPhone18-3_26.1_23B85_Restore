@@ -1,39 +1,39 @@
 @interface CNFRegFirstRunController
-- (BOOL)dismissWithState:(unint64_t)a3;
+- (BOOL)dismissWithState:(unint64_t)state;
 - (BOOL)pushCompletionControllerIfPossible;
-- (CNFRegFirstRunController)initWithParentController:(id)a3 account:(id)a4;
-- (CNFRegFirstRunController)initWithRegController:(id)a3;
-- (CNFRegFirstRunController)initWithRegController:(id)a3 account:(id)a4;
+- (CNFRegFirstRunController)initWithParentController:(id)controller account:(id)account;
+- (CNFRegFirstRunController)initWithRegController:(id)controller;
+- (CNFRegFirstRunController)initWithRegController:(id)controller account:(id)account;
 - (id)_leftButtonItem;
 - (id)_rightButtonItem;
 - (id)_validationModeCancelButton;
 - (id)titleString;
 - (id)validationString;
 - (int64_t)currentAppearanceStyle;
-- (void)_executeDismissBlock:(id)a3;
+- (void)_executeDismissBlock:(id)block;
 - (void)_refreshCurrentState;
 - (void)_setupEventHandlers;
-- (void)_startActivityIndicatorWithTitle:(id)a3 animated:(BOOL)a4 allowCancel:(BOOL)a5;
+- (void)_startActivityIndicatorWithTitle:(id)title animated:(BOOL)animated allowCancel:(BOOL)cancel;
 - (void)_startListeningForReturnKey;
-- (void)_startTimeoutWithDuration:(double)a3;
-- (void)_stopActivityIndicatorWithTitle:(id)a3 animated:(BOOL)a4;
+- (void)_startTimeoutWithDuration:(double)duration;
+- (void)_stopActivityIndicatorWithTitle:(id)title animated:(BOOL)animated;
 - (void)_stopListeningForReturnKey;
 - (void)_stopTimeout;
-- (void)_timeoutFired:(id)a3;
+- (void)_timeoutFired:(id)fired;
 - (void)_updateControllerState;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)systemApplicationDidEnterBackground;
 - (void)systemApplicationWillEnterForeground;
 @end
 
 @implementation CNFRegFirstRunController
 
-- (CNFRegFirstRunController)initWithRegController:(id)a3
+- (CNFRegFirstRunController)initWithRegController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = CNFRegFirstRunController;
-  v3 = [(CNFRegListController *)&v6 initWithRegController:a3];
+  v3 = [(CNFRegListController *)&v6 initWithRegController:controller];
   v4 = v3;
   if (v3)
   {
@@ -43,29 +43,29 @@
   return v4;
 }
 
-- (CNFRegFirstRunController)initWithRegController:(id)a3 account:(id)a4
+- (CNFRegFirstRunController)initWithRegController:(id)controller account:(id)account
 {
-  v6 = a4;
-  v7 = [(CNFRegFirstRunController *)self initWithRegController:a3];
+  accountCopy = account;
+  v7 = [(CNFRegFirstRunController *)self initWithRegController:controller];
   v8 = v7;
   if (v7)
   {
-    [(CNFRegFirstRunController *)v7 setAccount:v6];
+    [(CNFRegFirstRunController *)v7 setAccount:accountCopy];
   }
 
   return v8;
 }
 
-- (CNFRegFirstRunController)initWithParentController:(id)a3 account:(id)a4
+- (CNFRegFirstRunController)initWithParentController:(id)controller account:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = CNFRegFirstRunController;
-  v7 = [(CNFRegListController *)&v10 initWithParentController:a3];
+  v7 = [(CNFRegListController *)&v10 initWithParentController:controller];
   v8 = v7;
   if (v7)
   {
-    [(CNFRegFirstRunController *)v7 setAccount:v6];
+    [(CNFRegFirstRunController *)v7 setAccount:accountCopy];
   }
 
   return v8;
@@ -75,16 +75,16 @@
 {
   self->_delegate = 0;
   [(CNFRegFirstRunController *)self _stopTimeout];
-  v3 = [(UIBarButtonItem *)self->_customRightButton target];
+  target = [(UIBarButtonItem *)self->_customRightButton target];
 
-  if (v3 == self)
+  if (target == self)
   {
     [(UIBarButtonItem *)self->_customRightButton setTarget:0];
   }
 
-  v4 = [(UIBarButtonItem *)self->_customLeftButton target];
+  target2 = [(UIBarButtonItem *)self->_customLeftButton target];
 
-  if (v4 == self)
+  if (target2 == self)
   {
     [(UIBarButtonItem *)self->_customLeftButton setTarget:0];
   }
@@ -94,15 +94,15 @@
   [(CNFRegListController *)&v5 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = CNFRegFirstRunController;
-  [(CNFRegListController *)&v8 setSpecifier:v4];
+  [(CNFRegListController *)&v8 setSpecifier:specifierCopy];
   if (![(CNFRegFirstRunController *)self completionControllerClass])
   {
-    v5 = [v4 propertyForKey:@"cnf-completionclass"];
+    v5 = [specifierCopy propertyForKey:@"cnf-completionclass"];
     v6 = v5;
     if (v5)
     {
@@ -117,29 +117,29 @@
 
 - (void)_startListeningForReturnKey
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleReturnKeyTapped_ name:*MEMORY[0x277D76C20] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleReturnKeyTapped_ name:*MEMORY[0x277D76C20] object:0];
 }
 
 - (void)_stopListeningForReturnKey
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C20] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C20] object:0];
 }
 
 - (id)titleString
 {
-  v2 = [(CNFRegListController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegListController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 > 2)
+  if (serviceType > 2)
   {
     v7 = &stru_2856D3978;
   }
 
   else
   {
-    v4 = off_278DE89A0[v3];
+    v4 = off_278DE89A0[serviceType];
     v5 = CommunicationsSetupUIBundle();
     v6 = CNFRegStringTableName();
     v7 = [v5 localizedStringForKey:v4 value:&stru_2856D3978 table:v6];
@@ -163,9 +163,9 @@
   if (customRightButton)
   {
     v4 = customRightButton;
-    v5 = [(UIBarButtonItem *)v4 target];
+    target = [(UIBarButtonItem *)v4 target];
 
-    if (!v5)
+    if (!target)
     {
       [(UIBarButtonItem *)v4 setTarget:self];
     }
@@ -194,9 +194,9 @@
   if (customLeftButton)
   {
     v4 = customLeftButton;
-    v5 = [(UIBarButtonItem *)v4 target];
+    target = [(UIBarButtonItem *)v4 target];
 
-    if (!v5)
+    if (!target)
     {
       [(UIBarButtonItem *)v4 setTarget:self];
     }
@@ -210,12 +210,12 @@
   return customLeftButton;
 }
 
-- (void)_startTimeoutWithDuration:(double)a3
+- (void)_startTimeoutWithDuration:(double)duration
 {
   if (!self->_timeoutTimer)
   {
     [(CNFRegFirstRunController *)self setTimedOut:0];
-    v5 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__timeoutFired_ selector:0 userInfo:0 repeats:a3];
+    v5 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__timeoutFired_ selector:0 userInfo:0 repeats:duration];
     timeoutTimer = self->_timeoutTimer;
     self->_timeoutTimer = v5;
 
@@ -234,7 +234,7 @@
   }
 }
 
-- (void)_timeoutFired:(id)a3
+- (void)_timeoutFired:(id)fired
 {
   [(CNFRegFirstRunController *)self _stopTimeout];
   [(CNFRegFirstRunController *)self setTimedOut:1];
@@ -249,10 +249,10 @@
   return v2;
 }
 
-- (void)_startActivityIndicatorWithTitle:(id)a3 animated:(BOOL)a4 allowCancel:(BOOL)a5
+- (void)_startActivityIndicatorWithTitle:(id)title animated:(BOOL)animated allowCancel:(BOOL)cancel
 {
-  v8 = a3;
-  v9 = v8;
+  titleCopy = title;
+  v9 = titleCopy;
   if (!self->_showingActivityIndicator)
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -260,9 +260,9 @@
     block[2] = __82__CNFRegFirstRunController__startActivityIndicatorWithTitle_animated_allowCancel___block_invoke;
     block[3] = &unk_278DE8958;
     block[4] = self;
-    v11 = v8;
-    v12 = a5;
-    v13 = a4;
+    v11 = titleCopy;
+    cancelCopy = cancel;
+    animatedCopy = animated;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -302,17 +302,17 @@ void __82__CNFRegFirstRunController__startActivityIndicatorWithTitle_animated_al
   [*(a1 + 32) _setFieldsEnabled:0 animated:*(a1 + 49)];
 }
 
-- (void)_stopActivityIndicatorWithTitle:(id)a3 animated:(BOOL)a4
+- (void)_stopActivityIndicatorWithTitle:(id)title animated:(BOOL)animated
 {
-  v6 = a3;
+  titleCopy = title;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CNFRegFirstRunController__stopActivityIndicatorWithTitle_animated___block_invoke;
   block[3] = &unk_278DE8980;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = titleCopy;
+  animatedCopy = animated;
+  v7 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -360,10 +360,10 @@ void __69__CNFRegFirstRunController__stopActivityIndicatorWithTitle_animated___b
 
 - (void)_updateControllerState
 {
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [v3 isServiceSupported];
+  regController = [(CNFRegListController *)self regController];
+  isServiceSupported = [regController isServiceSupported];
 
-  if (v4)
+  if (isServiceSupported)
   {
 
     [(CNFRegFirstRunController *)self _updateUI];
@@ -390,9 +390,9 @@ void __69__CNFRegFirstRunController__stopActivityIndicatorWithTitle_animated___b
     IMLogString();
   }
 
-  v4 = [(CNFRegListController *)self regController];
-  v5 = [(CNFRegFirstRunController *)self account];
-  v6 = [v4 accountStateForAccount:v5];
+  regController = [(CNFRegListController *)self regController];
+  account = [(CNFRegFirstRunController *)self account];
+  v6 = [regController accountStateForAccount:account];
 
   if ((v6 & 0x40000000) == 0)
   {
@@ -436,23 +436,23 @@ LABEL_7:
     IMLogString();
   }
 
-  v5 = [(CNFRegFirstRunController *)self completionControllerClass];
-  v6 = v5;
-  if (v5)
+  completionControllerClass = [(CNFRegFirstRunController *)self completionControllerClass];
+  v6 = completionControllerClass;
+  if (completionControllerClass)
   {
-    v7 = [v5 alloc];
-    v8 = [(CNFRegListController *)self regController];
-    v9 = [v7 initWithRegController:v8];
+    v7 = [completionControllerClass alloc];
+    regController = [(CNFRegListController *)self regController];
+    v9 = [v7 initWithRegController:regController];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 conformsToProtocol:&unk_2857030B8])
     {
       [v9 setParentController:self];
-      v10 = [(CNFRegFirstRunController *)self rootController];
-      [v9 setRootController:v10];
+      rootController = [(CNFRegFirstRunController *)self rootController];
+      [v9 setRootController:rootController];
 
-      v11 = [(CNFRegFirstRunController *)self specifier];
-      [v9 setSpecifier:v11];
+      specifier = [(CNFRegFirstRunController *)self specifier];
+      [v9 setSpecifier:specifier];
 
       if (objc_opt_respondsToSelector())
       {
@@ -461,8 +461,8 @@ LABEL_7:
 
       v12 = *MEMORY[0x277D3FD10];
       WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.super.isa + v12));
-      v14 = [WeakRetained viewControllers];
-      v15 = [v14 mutableCopy];
+      viewControllers = [WeakRetained viewControllers];
+      v15 = [viewControllers mutableCopy];
 
       v16 = objc_alloc_init(MEMORY[0x277CCAB58]);
       if ([v15 count])
@@ -523,30 +523,30 @@ LABEL_26:
   return v20;
 }
 
-- (BOOL)dismissWithState:(unint64_t)a3
+- (BOOL)dismissWithState:(unint64_t)state
 {
-  v5 = [(CNFRegFirstRunController *)self delegate];
-  if (v5)
+  delegate = [(CNFRegFirstRunController *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(CNFRegFirstRunController *)self delegate];
+    v6 = delegate;
+    delegate2 = [(CNFRegFirstRunController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(CNFRegFirstRunController *)self delegate];
-      [v9 firstRunController:self finishedWithState:a3];
+      delegate3 = [(CNFRegFirstRunController *)self delegate];
+      [delegate3 firstRunController:self finishedWithState:state];
 
-      LOBYTE(v5) = 1;
+      LOBYTE(delegate) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(delegate) = 0;
     }
   }
 
-  return v5;
+  return delegate;
 }
 
 - (void)_setupEventHandlers
@@ -554,19 +554,19 @@ LABEL_26:
   v6.receiver = self;
   v6.super_class = CNFRegFirstRunController;
   [(CNFRegListController *)&v6 _setupEventHandlers];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__CNFRegFirstRunController__setupEventHandlers__block_invoke;
   v5[3] = &unk_278DE7E08;
   v5[4] = self;
-  [v3 setResetBlock:v5];
+  [regController setResetBlock:v5];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__CNFRegFirstRunController__setupEventHandlers__block_invoke_2;
   v4[3] = &unk_278DE7E08;
   v4[4] = self;
-  [v3 setServiceDidBecomeUnsupportedBlock:v4];
+  [regController setServiceDidBecomeUnsupportedBlock:v4];
 }
 
 void __47__CNFRegFirstRunController__setupEventHandlers__block_invoke_2(uint64_t a1)
@@ -589,28 +589,28 @@ void __47__CNFRegFirstRunController__setupEventHandlers__block_invoke_2(uint64_t
   return [(CNFRegListController *)&v3 currentAppearanceStyle];
 }
 
-- (void)_executeDismissBlock:(id)a3
+- (void)_executeDismissBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v9 = v4;
-    v5 = [(CNFRegFirstRunController *)self navigationController];
+    v9 = blockCopy;
+    navigationController = [(CNFRegFirstRunController *)self navigationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(CNFRegFirstRunController *)self navigationController];
-      if (v7)
+      navigationController2 = [(CNFRegFirstRunController *)self navigationController];
+      if (navigationController2)
       {
-        v8 = v7;
-        [v7 setSkipReloadOnNextViewWillAppear:1];
+        v8 = navigationController2;
+        [navigationController2 setSkipReloadOnNextViewWillAppear:1];
       }
     }
 
     v9[2]();
-    v4 = v9;
+    blockCopy = v9;
   }
 }
 

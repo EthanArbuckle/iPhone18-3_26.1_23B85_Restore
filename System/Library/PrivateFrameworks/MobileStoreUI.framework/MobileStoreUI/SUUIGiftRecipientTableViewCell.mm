@@ -1,39 +1,39 @@
 @interface SUUIGiftRecipientTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)recipientAddresses;
 - (NSString)label;
-- (SUUIGiftRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SUUIGiftRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_contactStore;
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4;
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address;
 - (void)_resetSearchController;
 - (void)_sendDidChangeRecipients;
 - (void)_sendDidUpdateSearchController;
 - (void)_sendDismissContactPicker;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3;
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder;
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)presentPeoplePickerPopover:(id)a3 animated:(BOOL)a4;
-- (void)presentSearchResultsPopover:(id)a3 animated:(BOOL)a4;
-- (void)recipientViewDidResignFirstResponder:(id)a3;
-- (void)searchController:(id)a3 didSelectRecipient:(id)a4;
-- (void)setAttributedPlaceholder:(id)a3;
+- (void)presentPeoplePickerPopover:(id)popover animated:(BOOL)animated;
+- (void)presentSearchResultsPopover:(id)popover animated:(BOOL)animated;
+- (void)recipientViewDidResignFirstResponder:(id)responder;
+- (void)searchController:(id)controller didSelectRecipient:(id)recipient;
+- (void)setAttributedPlaceholder:(id)placeholder;
 @end
 
 @implementation SUUIGiftRecipientTableViewCell
 
-- (SUUIGiftRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUUIGiftRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v43 = *MEMORY[0x277D85DE8];
   v41.receiver = self;
   v41.super_class = SUUIGiftRecipientTableViewCell;
-  v4 = [(SUUIGiftRecipientTableViewCell *)&v41 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUUIGiftRecipientTableViewCell *)&v41 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = SUUIContactsAutocompleteUIFramework();
@@ -41,34 +41,34 @@
     recipientView = v4->_recipientView;
     v4->_recipientView = v6;
 
-    v8 = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
+    labelView = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
     v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v8 setFont:v9];
+    [labelView setFont:v9];
 
-    v10 = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
-    v11 = [MEMORY[0x277D75348] labelColor];
-    [v10 setTextColor:v11];
+    labelView2 = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [labelView2 setTextColor:labelColor];
 
-    v12 = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [v12 setBackgroundColor:v13];
+    labelView3 = [(CNComposeRecipientTextView *)v4->_recipientView labelView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [labelView3 setBackgroundColor:clearColor];
 
     v14 = v4->_recipientView;
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [(CNComposeRecipientTextView *)v14 setBackgroundColor:v15];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(CNComposeRecipientTextView *)v14 setBackgroundColor:clearColor2];
 
     [(CNComposeRecipientTextView *)v4->_recipientView setDelegate:v4];
     v16 = v4->_recipientView;
-    v17 = [(CNComposeRecipientTextView *)v16 labelView];
-    v18 = [v17 font];
-    [(CNComposeRecipientTextView *)v16 setBaseFont:v18];
+    labelView4 = [(CNComposeRecipientTextView *)v16 labelView];
+    font = [labelView4 font];
+    [(CNComposeRecipientTextView *)v16 setBaseFont:font];
 
     v19 = *MEMORY[0x277D76840];
     [(CNComposeRecipientTextView *)v4->_recipientView setMaximumContentSizeCategory:*MEMORY[0x277D76840]];
     [(CNComposeRecipientTextView *)v4->_recipientView setMinimumContentSizeCategory:v19];
-    v20 = [(CNComposeRecipientTextView *)v4->_recipientView textView];
-    v21 = [v20 textContainer];
-    [v21 setLineFragmentPadding:0.0];
+    textView = [(CNComposeRecipientTextView *)v4->_recipientView textView];
+    textContainer = [textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(CNComposeRecipientTextView *)v4->_recipientView subviews];
     v37 = 0u;
@@ -111,22 +111,22 @@
 LABEL_12:
 
     [(CNComposeRecipientTextView *)v4->_recipientView sizeToFit];
-    v29 = [(SUUIGiftRecipientTableViewCell *)v4 contentView];
-    [v29 addSubview:v4->_recipientView];
+    contentView = [(SUUIGiftRecipientTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_recipientView];
 
     v30 = objc_alloc_init(MEMORY[0x277D75D18]);
     topBorderView = v4->_topBorderView;
     v4->_topBorderView = v30;
 
     v32 = v4->_topBorderView;
-    v33 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v32 setBackgroundColor:v33];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v32 setBackgroundColor:separatorColor];
 
-    v34 = [(SUUIGiftRecipientTableViewCell *)v4 contentView];
-    [v34 addSubview:v4->_topBorderView];
+    contentView2 = [(SUUIGiftRecipientTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_topBorderView];
 
-    v35 = [MEMORY[0x277D75128] sharedApplication];
-    v4->_leftToRight = [v35 userInterfaceLayoutDirection] == 0;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v4->_leftToRight = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 0;
 
     [(SUUIGiftRecipientTableViewCell *)v4 setDidLayoutSubviews:0];
   }
@@ -146,44 +146,44 @@ LABEL_12:
 
 - (NSString)label
 {
-  v2 = [(CNComposeRecipientTextView *)self->_recipientView labelView];
-  v3 = [v2 text];
+  labelView = [(CNComposeRecipientTextView *)self->_recipientView labelView];
+  text = [labelView text];
 
-  return v3;
+  return text;
 }
 
-- (void)presentPeoplePickerPopover:(id)a3 animated:(BOOL)a4
+- (void)presentPeoplePickerPopover:(id)popover animated:(BOOL)animated
 {
-  v5 = a3;
+  popoverCopy = popover;
   [(SUUIGiftRecipientTableViewCell *)self frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SUUIGiftRecipientTableViewCell *)self superview];
-  [v5 presentPopoverFromRect:v14 inView:15 permittedArrowDirections:1 animated:{v7, v9, v11, v13}];
+  superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+  [popoverCopy presentPopoverFromRect:superview inView:15 permittedArrowDirections:1 animated:{v7, v9, v11, v13}];
 }
 
-- (void)presentSearchResultsPopover:(id)a3 animated:(BOOL)a4
+- (void)presentSearchResultsPopover:(id)popover animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   recipientView = self->_recipientView;
-  v6 = a3;
-  v7 = [(CNComposeRecipientTextView *)recipientView textView];
-  [v7 bounds];
-  [v6 presentPopoverFromRect:v7 inView:1 permittedArrowDirections:v4 animated:?];
+  popoverCopy = popover;
+  textView = [(CNComposeRecipientTextView *)recipientView textView];
+  [textView bounds];
+  [popoverCopy presentPopoverFromRect:textView inView:1 permittedArrowDirections:animatedCopy animated:?];
 }
 
 - (NSArray)recipientAddresses
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CNComposeRecipientTextView *)self->_recipientView recipients];
+  array = [MEMORY[0x277CBEB18] array];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientView recipients];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [recipients countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -194,33 +194,33 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recipients);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) address];
-        if ([v9 length])
+        address = [*(*(&v11 + 1) + 8 * i) address];
+        if ([address length])
         {
-          [v3 addObject:v9];
+          [array addObject:address];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [recipients countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setAttributedPlaceholder:(id)a3
+- (void)setAttributedPlaceholder:(id)placeholder
 {
-  v15 = a3;
-  v4 = [(SUUIGiftRecipientTableViewCell *)self attributedPlaceholder];
-  if (v4 != v15 && ([v15 isEqual:v4] & 1) == 0)
+  placeholderCopy = placeholder;
+  attributedPlaceholder = [(SUUIGiftRecipientTableViewCell *)self attributedPlaceholder];
+  if (attributedPlaceholder != placeholderCopy && ([placeholderCopy isEqual:attributedPlaceholder] & 1) == 0)
   {
     placeholderLabel = self->_placeholderLabel;
-    if (v15)
+    if (placeholderCopy)
     {
       if (!placeholderLabel)
       {
@@ -229,25 +229,25 @@ LABEL_12:
         self->_placeholderLabel = v6;
 
         v8 = self->_placeholderLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_placeholderLabel;
-        v11 = [(CNComposeRecipientTextView *)self->_recipientView textView];
-        if ([v11 isFirstResponder])
+        textView = [(CNComposeRecipientTextView *)self->_recipientView textView];
+        if ([textView isFirstResponder])
         {
-          v12 = 1;
+          hasContent = 1;
         }
 
         else
         {
-          v12 = [(CNComposeRecipientTextView *)self->_recipientView hasContent];
+          hasContent = [(CNComposeRecipientTextView *)self->_recipientView hasContent];
         }
 
-        [(UILabel *)v10 setHidden:v12];
+        [(UILabel *)v10 setHidden:hasContent];
 
-        v14 = [(SUUIGiftRecipientTableViewCell *)self contentView];
-        [v14 insertSubview:self->_placeholderLabel belowSubview:self->_recipientView];
+        contentView = [(SUUIGiftRecipientTableViewCell *)self contentView];
+        [contentView insertSubview:self->_placeholderLabel belowSubview:self->_recipientView];
 
         placeholderLabel = self->_placeholderLabel;
       }
@@ -272,8 +272,8 @@ LABEL_12:
   v38.receiver = self;
   v38.super_class = SUUIGiftRecipientTableViewCell;
   [(SUUIGiftRecipientTableViewCell *)&v38 layoutSubviews];
-  v3 = [(SUUIGiftRecipientTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIGiftRecipientTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -288,14 +288,14 @@ LABEL_12:
   [(CNComposeRecipientTextView *)self->_recipientView layoutIfNeeded];
   if (self->_placeholderLabel)
   {
-    v12 = [(CNComposeRecipientTextView *)self->_recipientView labelView];
-    [v12 frame];
+    labelView = [(CNComposeRecipientTextView *)self->_recipientView labelView];
+    [labelView frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v12 superview];
-    [(SUUIGiftRecipientTableViewCell *)self convertRect:v21 fromView:v14, v16, v18, v20];
+    superview = [labelView superview];
+    [(SUUIGiftRecipientTableViewCell *)self convertRect:superview fromView:v14, v16, v18, v20];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -324,17 +324,17 @@ LABEL_12:
   }
 
   topBorderView = self->_topBorderView;
-  v36 = [MEMORY[0x277D759A0] mainScreen];
-  [v36 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [(UIView *)topBorderView setFrame:0.0, 0.0, v9, 1.0 / v37];
 
   [(SUUIGiftRecipientTableViewCell *)self setDidLayoutSubviews:1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(CNComposeRecipientTextView *)self->_recipientView frame:a3.width];
+  width = fits.width;
+  [(CNComposeRecipientTextView *)self->_recipientView frame:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -342,30 +342,30 @@ LABEL_12:
   return result;
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v5 = a4;
+  propertyCopy = property;
   v6 = SUUIContactsAutocompleteUIFramework();
   v7 = objc_alloc(SUUIWeakLinkedClassForString(&cfstr_Cncomposerecip_0.isa, v6));
-  v8 = [v5 contact];
-  v9 = [v5 value];
+  contact = [propertyCopy contact];
+  value = [propertyCopy value];
 
-  v10 = [v7 initWithContact:v8 address:v9 kind:0];
+  v10 = [v7 initWithContact:contact address:value kind:0];
   [(CNComposeRecipientTextView *)self->_recipientView addRecipient:v10];
   [(SUUIGiftRecipientTableViewCell *)self _sendDismissContactPicker];
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  v11 = a3;
-  [v11 frame];
-  v6 = v11;
+  height = size.height;
+  viewCopy = view;
+  [viewCopy frame];
+  v6 = viewCopy;
   if (height != v7)
   {
-    [v11 setFrame:?];
-    v8 = [(SUUIGiftRecipientTableViewCell *)self superview];
-    if (v8)
+    [viewCopy setFrame:?];
+    superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+    if (superview)
     {
       do
       {
@@ -375,58 +375,58 @@ LABEL_12:
           break;
         }
 
-        v9 = [v8 superview];
+        v8Superview = [superview superview];
 
-        v8 = v9;
+        superview = v8Superview;
       }
 
-      while (v9);
+      while (v8Superview);
     }
 
-    v10 = [v8 delegate];
+    delegate = [superview delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v10 tableView:v8 giftRecipientCellDidChangeSize:self];
+      [delegate tableView:superview giftRecipientCellDidChangeSize:self];
     }
 
-    v6 = v11;
+    v6 = viewCopy;
   }
 }
 
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address
 {
-  v4 = a4;
+  addressCopy = address;
   v5 = SUUIContactsAutocompleteUIFramework();
   v6 = [objc_alloc(SUUIWeakLinkedClassForString(&cfstr_Cncomposerecip_0.isa v5))];
 
   return v6;
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
-  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [a3 hasContent]);
+  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [view hasContent]);
 
   [(SUUIGiftRecipientTableViewCell *)self setNeedsLayout];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
-  v7 = a3;
-  v6 = a4;
-  [v7 clearText];
-  if ([v6 length])
+  viewCopy = view;
+  addressCopy = address;
+  [viewCopy clearText];
+  if ([addressCopy length])
   {
-    [v7 addAddress:v6];
+    [viewCopy addAddress:addressCopy];
   }
 
   [(SUUIGiftRecipientTableViewCell *)self _resetSearchController];
   [(SUUIGiftRecipientTableViewCell *)self _sendDidChangeRecipients];
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  changeCopy = change;
   if (!self->_searchController)
   {
     v7 = objc_alloc_init(SUUIGiftContactSearchController);
@@ -436,33 +436,33 @@ LABEL_12:
     [(SUUIGiftContactSearchController *)self->_searchController setDelegate:self];
   }
 
-  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [v9 hasContent]);
-  [(SUUIGiftContactSearchController *)self->_searchController searchForText:v6];
+  -[UILabel setHidden:](self->_placeholderLabel, "setHidden:", [viewCopy hasContent]);
+  [(SUUIGiftContactSearchController *)self->_searchController searchForText:changeCopy];
 }
 
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder
 {
-  v3 = [(SUUIGiftRecipientTableViewCell *)self _contactStore];
-  if (v3)
+  _contactStore = [(SUUIGiftRecipientTableViewCell *)self _contactStore];
+  if (_contactStore)
   {
-    v4 = v3;
-    [v3 requestAccessForEntityType:0 completionHandler:&__block_literal_global_14];
-    v3 = v4;
+    v4 = _contactStore;
+    [_contactStore requestAccessForEntityType:0 completionHandler:&__block_literal_global_14];
+    _contactStore = v4;
   }
 }
 
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient
 {
   [(SUUIGiftRecipientTableViewCell *)self _sendDismissContactPicker];
 
   [(SUUIGiftRecipientTableViewCell *)self _sendDidChangeRecipients];
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIGiftRecipientTableViewCell *)self superview];
-  if (v4)
+  superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+  if (superview)
   {
     do
     {
@@ -472,15 +472,15 @@ LABEL_12:
         break;
       }
 
-      v5 = [v4 superview];
+      v4Superview = [superview superview];
 
-      v4 = v5;
+      superview = v4Superview;
     }
 
-    while (v5);
+    while (v4Superview);
   }
 
-  v6 = [v4 delegate];
+  delegate = [superview delegate];
   if (objc_opt_respondsToSelector())
   {
     contactPickerController = self->_contactPickerController;
@@ -504,20 +504,20 @@ LABEL_12:
       contactPickerController = self->_contactPickerController;
     }
 
-    [v6 tableView:v4 giftRecipientCell:self presentContactPicker:{contactPickerController, v17[0]}];
+    [delegate tableView:superview giftRecipientCell:self presentContactPicker:{contactPickerController, v17[0]}];
   }
 }
 
-- (void)recipientViewDidResignFirstResponder:(id)a3
+- (void)recipientViewDidResignFirstResponder:(id)responder
 {
   [(UILabel *)self->_placeholderLabel setHidden:[(CNComposeRecipientTextView *)self->_recipientView hasContent]];
 
   [(SUUIGiftRecipientTableViewCell *)self _resetSearchController];
 }
 
-- (void)searchController:(id)a3 didSelectRecipient:(id)a4
+- (void)searchController:(id)controller didSelectRecipient:(id)recipient
 {
-  [(CNComposeRecipientTextView *)self->_recipientView addRecipient:a4];
+  [(CNComposeRecipientTextView *)self->_recipientView addRecipient:recipient];
   [(CNComposeRecipientTextView *)self->_recipientView clearText];
   [(SUUIGiftRecipientTableViewCell *)self _resetSearchController];
 
@@ -553,106 +553,106 @@ LABEL_12:
 
 - (void)_sendDidChangeRecipients
 {
-  v3 = [(SUUIGiftRecipientTableViewCell *)self superview];
-  if (v3)
+  superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+  if (superview)
   {
     while (1)
     {
-      v6 = v3;
+      v6 = superview;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v4 = [v6 superview];
+      superview2 = [v6 superview];
 
-      v3 = v4;
-      if (!v4)
+      superview = superview2;
+      if (!superview2)
       {
         goto LABEL_6;
       }
     }
 
-    v3 = v6;
+    superview = v6;
   }
 
 LABEL_6:
-  v7 = v3;
-  v5 = [v3 delegate];
+  v7 = superview;
+  delegate = [superview delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 tableView:v7 giftRecipientCellDidChangeRecipients:self];
+    [delegate tableView:v7 giftRecipientCellDidChangeRecipients:self];
   }
 }
 
 - (void)_sendDidUpdateSearchController
 {
-  v3 = [(SUUIGiftRecipientTableViewCell *)self superview];
-  if (v3)
+  superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+  if (superview)
   {
     while (1)
     {
-      v6 = v3;
+      v6 = superview;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v4 = [v6 superview];
+      superview2 = [v6 superview];
 
-      v3 = v4;
-      if (!v4)
+      superview = superview2;
+      if (!superview2)
       {
         goto LABEL_6;
       }
     }
 
-    v3 = v6;
+    superview = v6;
   }
 
 LABEL_6:
-  v7 = v3;
-  v5 = [v3 delegate];
+  v7 = superview;
+  delegate = [superview delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 tableView:v7 giftRecipientCell:self didUpdateSearchController:self->_searchController];
+    [delegate tableView:v7 giftRecipientCell:self didUpdateSearchController:self->_searchController];
   }
 }
 
 - (void)_sendDismissContactPicker
 {
-  v3 = [(SUUIGiftRecipientTableViewCell *)self superview];
-  if (v3)
+  superview = [(SUUIGiftRecipientTableViewCell *)self superview];
+  if (superview)
   {
     while (1)
     {
-      v6 = v3;
+      v6 = superview;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v4 = [v6 superview];
+      superview2 = [v6 superview];
 
-      v3 = v4;
-      if (!v4)
+      superview = superview2;
+      if (!superview2)
       {
         goto LABEL_6;
       }
     }
 
-    v3 = v6;
+    superview = v6;
   }
 
 LABEL_6:
-  v7 = v3;
-  v5 = [v3 delegate];
+  v7 = superview;
+  delegate = [superview delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 tableView:v7 giftRecipientCell:self dismissContactPicker:self->_contactPickerController];
+    [delegate tableView:v7 giftRecipientCell:self dismissContactPicker:self->_contactPickerController];
   }
 }
 

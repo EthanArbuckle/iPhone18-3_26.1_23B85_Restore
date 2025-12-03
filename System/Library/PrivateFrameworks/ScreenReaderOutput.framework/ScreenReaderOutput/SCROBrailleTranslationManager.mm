@@ -5,11 +5,11 @@
 - (BOOL)primaryTableSupportsRoundTripping;
 - (NSString)defaultLanguage;
 - (SCROBrailleTranslationManager)init;
-- (id)printBrailleForText:(id)a3 language:(id)a4 mode:(unint64_t)a5 textPositionsRange:(_NSRange)a6 locations:(id *)a7 textFormattingRanges:(id)a8;
+- (id)printBrailleForText:(id)text language:(id)language mode:(unint64_t)mode textPositionsRange:(_NSRange)range locations:(id *)locations textFormattingRanges:(id)ranges;
 - (id)serviceIdentifier;
-- (id)textForPrintBraille:(id)a3 language:(id)a4 mode:(unint64_t)a5 locations:(id *)a6;
-- (void)loadTranslatorWithServiceIdentifier:(id)a3 forUnitTesting:(BOOL)a4 input:(BOOL)a5;
-- (void)setDefaultLanguage:(id)a3;
+- (id)textForPrintBraille:(id)braille language:(id)language mode:(unint64_t)mode locations:(id *)locations;
+- (void)loadTranslatorWithServiceIdentifier:(id)identifier forUnitTesting:(BOOL)testing input:(BOOL)input;
+- (void)setDefaultLanguage:(id)language;
 @end
 
 @implementation SCROBrailleTranslationManager
@@ -100,20 +100,20 @@ void __75__SCROBrailleTranslationManager_loadTranslatorWithServiceIdentifier_inp
   loadTranslatorWithServiceIdentifier_input__isXcTest = [v0 isEqualToString:@"xctest"];
 }
 
-- (void)loadTranslatorWithServiceIdentifier:(id)a3 forUnitTesting:(BOOL)a4 input:(BOOL)a5
+- (void)loadTranslatorWithServiceIdentifier:(id)identifier forUnitTesting:(BOOL)testing input:(BOOL)input
 {
-  v8 = a3;
-  v9 = [(SCROBrailleTranslationManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(SCROBrailleTranslationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__SCROBrailleTranslationManager_loadTranslatorWithServiceIdentifier_forUnitTesting_input___block_invoke;
   block[3] = &unk_279B74688;
   block[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
-  dispatch_async(v9, block);
+  v12 = identifierCopy;
+  testingCopy = testing;
+  inputCopy = input;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __90__SCROBrailleTranslationManager_loadTranslatorWithServiceIdentifier_forUnitTesting_input___block_invoke(uint64_t a1)
@@ -157,14 +157,14 @@ void __90__SCROBrailleTranslationManager_loadTranslatorWithServiceIdentifier_for
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(SCROBrailleTranslationManager *)self queue];
+  queue = [(SCROBrailleTranslationManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SCROBrailleTranslationManager_defaultLanguage__block_invoke;
   v6[3] = &unk_279B74010;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -172,18 +172,18 @@ void __90__SCROBrailleTranslationManager_loadTranslatorWithServiceIdentifier_for
   return v4;
 }
 
-- (void)setDefaultLanguage:(id)a3
+- (void)setDefaultLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(SCROBrailleTranslationManager *)self queue];
+  languageCopy = language;
+  queue = [(SCROBrailleTranslationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SCROBrailleTranslationManager_setDefaultLanguage___block_invoke;
   v7[3] = &unk_279B74088;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = languageCopy;
+  v6 = languageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__SCROBrailleTranslationManager_setDefaultLanguage___block_invoke(uint64_t a1)
@@ -212,19 +212,19 @@ void __52__SCROBrailleTranslationManager_setDefaultLanguage___block_invoke(uint6
 
 - (id)serviceIdentifier
 {
-  v2 = [(SCROBrailleTranslationManager *)self translationService];
-  v3 = [v2 serviceIdentifier];
+  translationService = [(SCROBrailleTranslationManager *)self translationService];
+  serviceIdentifier = [translationService serviceIdentifier];
 
-  return v3;
+  return serviceIdentifier;
 }
 
-- (id)printBrailleForText:(id)a3 language:(id)a4 mode:(unint64_t)a5 textPositionsRange:(_NSRange)a6 locations:(id *)a7 textFormattingRanges:(id)a8
+- (id)printBrailleForText:(id)text language:(id)language mode:(unint64_t)mode textPositionsRange:(_NSRange)range locations:(id *)locations textFormattingRanges:(id)ranges
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a3;
-  v13 = a4;
-  v14 = a8;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  languageCopy = language;
+  rangesCopy = ranges;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -239,26 +239,26 @@ void __52__SCROBrailleTranslationManager_setDefaultLanguage___block_invoke(uint6
   v43 = 0;
   v15 = dispatch_group_create();
   dispatch_group_enter(v15);
-  v16 = [(SCROBrailleTranslationManager *)self queue];
+  queue = [(SCROBrailleTranslationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__SCROBrailleTranslationManager_printBrailleForText_language_mode_textPositionsRange_locations_textFormattingRanges___block_invoke;
   block[3] = &unk_279B746D8;
-  v17 = v13;
+  v17 = languageCopy;
   v28 = v17;
-  v29 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = rangesCopy;
   v30 = v18;
-  v35 = a5;
+  modeCopy = mode;
   v36 = location;
   v37 = length;
-  v19 = v12;
+  v19 = textCopy;
   v31 = v19;
   v33 = &v44;
   v34 = &v38;
   v20 = v15;
   v32 = v20;
-  dispatch_async(v16, block);
+  dispatch_async(queue, block);
 
   v21 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v20, v21))
@@ -270,9 +270,9 @@ void __52__SCROBrailleTranslationManager_setDefaultLanguage___block_invoke(uint6
     }
   }
 
-  if (a7)
+  if (locations)
   {
-    *a7 = v39[5];
+    *locations = v39[5];
   }
 
   v23 = v45[5];
@@ -370,10 +370,10 @@ void __117__SCROBrailleTranslationManager_printBrailleForText_language_mode_text
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)textForPrintBraille:(id)a3 language:(id)a4 mode:(unint64_t)a5 locations:(id *)a6
+- (id)textForPrintBraille:(id)braille language:(id)language mode:(unint64_t)mode locations:(id *)locations
 {
-  v10 = a3;
-  v11 = a4;
+  brailleCopy = braille;
+  languageCopy = language;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -388,23 +388,23 @@ void __117__SCROBrailleTranslationManager_printBrailleForText_language_mode_text
   v35 = 0;
   v12 = dispatch_group_create();
   dispatch_group_enter(v12);
-  v13 = [(SCROBrailleTranslationManager *)self queue];
+  queue = [(SCROBrailleTranslationManager *)self queue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__SCROBrailleTranslationManager_textForPrintBraille_language_mode_locations___block_invoke;
   v21[3] = &unk_279B74700;
-  v14 = v11;
+  v14 = languageCopy;
   v22 = v14;
-  v23 = self;
-  v28 = a6;
-  v15 = v10;
+  selfCopy = self;
+  locationsCopy = locations;
+  v15 = brailleCopy;
   v24 = v15;
   v26 = &v36;
   v27 = &v30;
-  v29 = a5;
+  modeCopy = mode;
   v16 = v12;
   v25 = v16;
-  dispatch_async(v13, v21);
+  dispatch_async(queue, v21);
 
   v17 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v16, v17))
@@ -416,9 +416,9 @@ void __117__SCROBrailleTranslationManager_printBrailleForText_language_mode_text
     }
   }
 
-  if (a6)
+  if (locations)
   {
-    *a6 = v31[5];
+    *locations = v31[5];
   }
 
   v19 = v37[5];

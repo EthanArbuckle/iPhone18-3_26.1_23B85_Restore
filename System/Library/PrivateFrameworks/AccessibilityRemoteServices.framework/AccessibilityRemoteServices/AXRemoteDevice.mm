@@ -1,29 +1,29 @@
 @interface AXRemoteDevice
-- (AXRemoteDevice)initWithDevice:(id)a3;
+- (AXRemoteDevice)initWithDevice:(id)device;
 - (AXRemoteDeviceConnectionDelegate)connectionDelegate;
 - (NSString)displayName;
 - (NSString)identifier;
 - (id)_deviceName;
-- (id)customizedRemoteActionForHandGestureEventUsage:(int64_t)a3;
-- (id)remoteActionsForPreferredContextType:(int64_t)a3;
-- (void)_setRemoteAction:(id)a3 forHandGestureEventUsage:(int64_t)a4;
-- (void)connectIfNecessary:(id)a3;
+- (id)customizedRemoteActionForHandGestureEventUsage:(int64_t)usage;
+- (id)remoteActionsForPreferredContextType:(int64_t)type;
+- (void)_setRemoteAction:(id)action forHandGestureEventUsage:(int64_t)usage;
+- (void)connectIfNecessary:(id)necessary;
 - (void)disconnect;
-- (void)sendPayload:(id)a3 withEventID:(id)a4 withTimeout:(double)a5 completion:(id)a6;
+- (void)sendPayload:(id)payload withEventID:(id)d withTimeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation AXRemoteDevice
 
-- (AXRemoteDevice)initWithDevice:(id)a3
+- (AXRemoteDevice)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = AXRemoteDevice;
   v5 = [(AXRemoteDevice *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(AXRemoteDevice *)v5 setDevice:v4];
+    [(AXRemoteDevice *)v5 setDevice:deviceCopy];
     v7 = objc_opt_new();
     [(AXRemoteDevice *)v6 setDeviceGestureCustomizations:v7];
   }
@@ -33,12 +33,12 @@
 
 - (NSString)displayName
 {
-  v2 = [(AXRemoteDevice *)self device];
-  v3 = [v2 name];
-  v4 = v3;
-  if (v3)
+  device = [(AXRemoteDevice *)self device];
+  name = [device name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else
@@ -53,21 +53,21 @@
 
 - (NSString)identifier
 {
-  v2 = [(AXRemoteDevice *)self device];
-  v3 = [v2 effectiveIdentifier];
+  device = [(AXRemoteDevice *)self device];
+  effectiveIdentifier = [device effectiveIdentifier];
 
-  return v3;
+  return effectiveIdentifier;
 }
 
-- (id)remoteActionsForPreferredContextType:(int64_t)a3
+- (id)remoteActionsForPreferredContextType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXRemoteDevice *)self deviceRemoteActions];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  deviceRemoteActions = [(AXRemoteDevice *)self deviceRemoteActions];
+  v5 = [deviceRemoteActions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -79,26 +79,26 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(deviceRemoteActions);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 preferredContextType] == a3)
+        if ([v10 preferredContextType] == type)
         {
-          v12 = [v10 remoteActions];
+          remoteActions = [v10 remoteActions];
 
           goto LABEL_15;
         }
 
         if (![v10 preferredContextType])
         {
-          v11 = [v10 remoteActions];
+          remoteActions2 = [v10 remoteActions];
 
-          v8 = v11;
+          v8 = remoteActions2;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [deviceRemoteActions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -114,28 +114,28 @@
   }
 
   v8 = v8;
-  v12 = v8;
+  remoteActions = v8;
 LABEL_15:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return remoteActions;
 }
 
-- (id)customizedRemoteActionForHandGestureEventUsage:(int64_t)a3
+- (id)customizedRemoteActionForHandGestureEventUsage:(int64_t)usage
 {
-  if ((a3 - 2) > 2)
+  if ((usage - 2) > 2)
   {
     v3 = @"clench";
   }
 
   else
   {
-    v3 = off_2786659D8[a3 - 2];
+    v3 = off_2786659D8[usage - 2];
   }
 
-  v4 = [(AXRemoteDevice *)self deviceGestureCustomizations];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  deviceGestureCustomizations = [(AXRemoteDevice *)self deviceGestureCustomizations];
+  v5 = [deviceGestureCustomizations objectForKeyedSubscript:v3];
 
   v6 = @"None";
   if (v5)
@@ -148,32 +148,32 @@ LABEL_15:
   return v7;
 }
 
-- (void)_setRemoteAction:(id)a3 forHandGestureEventUsage:(int64_t)a4
+- (void)_setRemoteAction:(id)action forHandGestureEventUsage:(int64_t)usage
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ((a4 - 2) > 2)
+  actionCopy = action;
+  if ((usage - 2) > 2)
   {
     v7 = @"clench";
   }
 
   else
   {
-    v7 = off_2786659D8[a4 - 2];
+    v7 = off_2786659D8[usage - 2];
   }
 
-  v8 = [(AXRemoteDevice *)self deviceGestureCustomizations];
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v9 isEqualToString:v6];
+  deviceGestureCustomizations = [(AXRemoteDevice *)self deviceGestureCustomizations];
+  v9 = [deviceGestureCustomizations objectForKeyedSubscript:v7];
+  v10 = [v9 isEqualToString:actionCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(AXRemoteDevice *)self deviceGestureCustomizations];
-    [v11 setObject:v6 forKeyedSubscript:v7];
+    deviceGestureCustomizations2 = [(AXRemoteDevice *)self deviceGestureCustomizations];
+    [deviceGestureCustomizations2 setObject:actionCopy forKeyedSubscript:v7];
 
     v15 = @"HandGestureCustomizedActions";
-    v12 = [(AXRemoteDevice *)self deviceGestureCustomizations];
-    v16[0] = v12;
+    deviceGestureCustomizations3 = [(AXRemoteDevice *)self deviceGestureCustomizations];
+    v16[0] = deviceGestureCustomizations3;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     [(AXRemoteDevice *)self sendPayload:v13 withEventID:@"com.apple.AXRemoteServices.DefaultEventID"];
   }
@@ -181,20 +181,20 @@ LABEL_15:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectIfNecessary:(id)a3
+- (void)connectIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(AXRemoteDevice *)self connected])
   {
-    v4[2](v4, 1);
+    necessaryCopy[2](necessaryCopy, 1);
   }
 
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277D44160]);
     [v5 setServiceType:@"com.apple.accessibility.axremoted.rapportWake"];
-    v6 = [(AXRemoteDevice *)self device];
-    [v5 setDestinationDevice:v6];
+    device = [(AXRemoteDevice *)self device];
+    [v5 setDestinationDevice:device];
 
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
@@ -214,7 +214,7 @@ LABEL_15:
     v8[2] = __37__AXRemoteDevice_connectIfNecessary___block_invoke_3;
     v8[3] = &unk_278665920;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = necessaryCopy;
     v8[4] = self;
     v7 = v5;
     v9 = v7;
@@ -456,18 +456,18 @@ void __37__AXRemoteDevice_connectIfNecessary___block_invoke_6(uint64_t a1, void 
   v11[0] = MEMORY[0x277CBEC28];
   v10[0] = @"isConnecting";
   v10[1] = @"connectingDeviceName";
-  v3 = [(AXRemoteDevice *)self _deviceName];
-  v11[1] = v3;
+  _deviceName = [(AXRemoteDevice *)self _deviceName];
+  v11[1] = _deviceName;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   objc_initWeak(&location, self);
-  v5 = [(AXRemoteDevice *)self deviceLinkClient];
+  deviceLinkClient = [(AXRemoteDevice *)self deviceLinkClient];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__AXRemoteDevice_disconnect__block_invoke;
   v7[3] = &unk_278665948;
   objc_copyWeak(&v8, &location);
-  [v5 sendRequestID:@"com.apple.AXRemoteServices.ConnectionSetup" request:v4 options:0 responseHandler:v7];
+  [deviceLinkClient sendRequestID:@"com.apple.AXRemoteServices.ConnectionSetup" request:v4 options:0 responseHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -491,21 +491,21 @@ void __28__AXRemoteDevice_disconnect__block_invoke(uint64_t a1)
   [v6 setContextType:0];
 }
 
-- (void)sendPayload:(id)a3 withEventID:(id)a4 withTimeout:(double)a5 completion:(id)a6
+- (void)sendPayload:(id)payload withEventID:(id)d withTimeout:(double)timeout completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  payloadCopy = payload;
+  dCopy = d;
+  completionCopy = completion;
   v13 = ax_remote_connection_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v24 = v10;
+    v24 = payloadCopy;
     v25 = 2112;
-    v26 = v11;
+    v26 = dCopy;
     v27 = 2048;
-    v28 = a5;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_22952F000, v13, OS_LOG_TYPE_INFO, "sending payload: %@, eventID: %@, timeout %.2fs", buf, 0x20u);
   }
 
@@ -514,13 +514,13 @@ void __28__AXRemoteDevice_disconnect__block_invoke(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __65__AXRemoteDevice_sendPayload_withEventID_withTimeout_completion___block_invoke;
   v18[3] = &unk_2786659B8;
-  v14 = v12;
+  v14 = completionCopy;
   v21 = v14;
-  v22[1] = *&a5;
+  v22[1] = *&timeout;
   objc_copyWeak(v22, buf);
-  v15 = v11;
+  v15 = dCopy;
   v19 = v15;
-  v16 = v10;
+  v16 = payloadCopy;
   v20 = v16;
   [(AXRemoteDevice *)self connectIfNecessary:v18];
 

@@ -1,11 +1,11 @@
 @interface HMDLogEventReachabilityEventsAnalyzer
 + (id)managedEventCounterRequestGroups;
-- (HMDLogEventReachabilityEventsAnalyzer)initWithEventCountersManager:(id)a3;
-- (void)_handleCameraRecordingReachabilityLogEvent:(id)a3;
-- (void)_handleReachabiltiyAddRemoveEvent:(id)a3;
-- (void)_handleRemoteDeviceReachabilityChangedLogEvent:(id)a3;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (HMDLogEventReachabilityEventsAnalyzer)initWithEventCountersManager:(id)manager;
+- (void)_handleCameraRecordingReachabilityLogEvent:(id)event;
+- (void)_handleReachabiltiyAddRemoveEvent:(id)event;
+- (void)_handleRemoteDeviceReachabilityChangedLogEvent:(id)event;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)resetAggregationAnalysisContext;
 @end
 
@@ -13,62 +13,62 @@
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-  [v2 resetEventCountersForRequestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
+  eventCountersManager = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+  [eventCountersManager resetEventCountersForRequestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-  v10 = [v8 counterGroupForName:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
+  dateCopy = date;
+  eventCopy = event;
+  eventCountersManager = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+  v10 = [eventCountersManager counterGroupForName:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
 
-  [v7 setCameraRecordingReachabilityChangedCount:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerCameraRecordingReachabilityChangedCounter", v6)}];
-  [v7 setCameraRecordingReachabilityOfflineDuration:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerCameraRecordingOfflineDurationCounter", v6)}];
-  [v7 setHomeHubReachabilityChangedCount:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerHomeHubReachabilityChangedCounter", v6)}];
-  v9 = [v10 fetchEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerReachabilityChangedCounter" forDate:v6];
+  [eventCopy setCameraRecordingReachabilityChangedCount:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerCameraRecordingReachabilityChangedCounter", dateCopy)}];
+  [eventCopy setCameraRecordingReachabilityOfflineDuration:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerCameraRecordingOfflineDurationCounter", dateCopy)}];
+  [eventCopy setHomeHubReachabilityChangedCount:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventReachabilityEventsAnalyzerHomeHubReachabilityChangedCounter", dateCopy)}];
+  v9 = [v10 fetchEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerReachabilityChangedCounter" forDate:dateCopy];
 
-  [v7 setIpAccessoryReachabilityChangedCount:v9];
+  [eventCopy setIpAccessoryReachabilityChangedCount:v9];
 }
 
-- (void)_handleCameraRecordingReachabilityLogEvent:(id)a3
+- (void)_handleCameraRecordingReachabilityLogEvent:(id)event
 {
-  v8 = a3;
-  if ([v8 didCreateEventModel])
+  eventCopy = event;
+  if ([eventCopy didCreateEventModel])
   {
-    v4 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-    [v4 incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerCameraRecordingReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
+    eventCountersManager = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+    [eventCountersManager incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerCameraRecordingReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
 
-    [v8 offlineDuration];
+    [eventCopy offlineDuration];
     if (v5 > 0.0)
     {
-      v6 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-      [v8 offlineDuration];
-      [v6 incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerCameraRecordingOfflineDurationCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup" withValue:v7];
+      eventCountersManager2 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+      [eventCopy offlineDuration];
+      [eventCountersManager2 incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerCameraRecordingOfflineDurationCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup" withValue:v7];
     }
   }
 }
 
-- (void)_handleRemoteDeviceReachabilityChangedLogEvent:(id)a3
+- (void)_handleRemoteDeviceReachabilityChangedLogEvent:(id)event
 {
-  v3 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-  [v3 incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerHomeHubReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
+  eventCountersManager = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+  [eventCountersManager incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerHomeHubReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
 }
 
-- (void)_handleReachabiltiyAddRemoveEvent:(id)a3
+- (void)_handleReachabiltiyAddRemoveEvent:(id)event
 {
-  v3 = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
-  [v3 incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
+  eventCountersManager = [(HMDLogEventReachabilityEventsAnalyzer *)self eventCountersManager];
+  [eventCountersManager incrementEventCounterForEventName:@"HMDLogEventReachabilityEventsAnalyzerReachabilityChangedCounter" requestGroup:@"HMDLogEventReachabilityEventsAnalyzerRequestGroup"];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v12 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v12;
+    v4 = eventCopy;
   }
 
   else
@@ -84,7 +84,7 @@
 
   else
   {
-    v6 = v12;
+    v6 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,16 +127,16 @@
   }
 }
 
-- (HMDLogEventReachabilityEventsAnalyzer)initWithEventCountersManager:(id)a3
+- (HMDLogEventReachabilityEventsAnalyzer)initWithEventCountersManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HMDLogEventReachabilityEventsAnalyzer;
   v6 = [(HMDLogEventReachabilityEventsAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventCountersManager, a3);
+    objc_storeStrong(&v6->_eventCountersManager, manager);
   }
 
   return v7;

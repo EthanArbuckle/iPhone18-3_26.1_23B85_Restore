@@ -14,15 +14,15 @@
 
 - (uint64_t)_doAfterNextStablePresentationUpdate:()WKPrivateIOS
 {
-  *a1 = &unk_1F10FD508;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FD508;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_detectDataWithTypes:()WKPrivateIOS completionHandler:
 {
-  v3 = *(a1 + 16);
+  v3 = *(self + 16);
   if (v3)
   {
     v4 = *(v3 + 8);
@@ -38,7 +38,7 @@
     }
   }
 
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (result)
   {
     v8 = *(result + 16);
@@ -51,41 +51,41 @@
 
 - (uint64_t)_snapshotRectAfterScreenUpdates:()WKPrivateIOS rectInViewCoordinates:intoImageOfWidth:completionHandler:
 {
-  *a1 = &unk_1F10FD580;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FD580;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_isNavigatingToAppBoundDomain:()WKPrivateIOS
 {
-  *a1 = &unk_1F10FD5A8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FD5A8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_isForcedIntoAppBoundMode:()WKPrivateIOS
 {
-  *a1 = &unk_1F10FD5D0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FD5D0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_addLayerForFindOverlay
 {
-  *a1 = &unk_1F10FD5F8;
-  objc_destroyWeak(a1 + 1);
+  *self = &unk_1F10FD5F8;
+  objc_destroyWeak(self + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_addLayerForFindOverlay
 {
   v4 = *a2;
   v2 = *(a2 + 16);
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   if (WeakRetained)
   {
     if (v2)
@@ -104,15 +104,15 @@
 
 - (uint64_t)_removeLayerForFindOverlay
 {
-  *a1 = &unk_1F10FD620;
-  objc_destroyWeak(a1 + 1);
+  *self = &unk_1F10FD620;
+  objc_destroyWeak(self + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_removeLayerForFindOverlay
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   if (WeakRetained)
   {
     v2 = WeakRetained;

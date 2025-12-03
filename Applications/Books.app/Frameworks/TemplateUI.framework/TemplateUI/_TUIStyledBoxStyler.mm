@@ -1,38 +1,38 @@
 @interface _TUIStyledBoxStyler
-- (BOOL)isEqualToStyle:(id)a3;
+- (BOOL)isEqualToStyle:(id)style;
 - (CAFilter)compositingFilter;
-- (_TUIStyledBoxStyler)initWithLayout:(id)a3 contentsScale:(double)a4;
-- (void)applyStylingToLayer:(id)a3;
-- (void)applyStylingToView:(id)a3;
-- (void)removeStylingFromLayer:(id)a3;
-- (void)removeStylingFromView:(id)a3;
+- (_TUIStyledBoxStyler)initWithLayout:(id)layout contentsScale:(double)scale;
+- (void)applyStylingToLayer:(id)layer;
+- (void)applyStylingToView:(id)view;
+- (void)removeStylingFromLayer:(id)layer;
+- (void)removeStylingFromView:(id)view;
 @end
 
 @implementation _TUIStyledBoxStyler
 
-- (_TUIStyledBoxStyler)initWithLayout:(id)a3 contentsScale:(double)a4
+- (_TUIStyledBoxStyler)initWithLayout:(id)layout contentsScale:(double)scale
 {
-  v6 = a3;
+  layoutCopy = layout;
   v34.receiver = self;
   v34.super_class = _TUIStyledBoxStyler;
   v7 = [(_TUIStyledBoxStyler *)&v34 init];
   if (v7)
   {
-    v8 = [v6 box];
-    [v6 computedBounds];
+    v8 = [layoutCopy box];
+    [layoutCopy computedBounds];
     v7->_bounds.origin.x = v9;
     v7->_bounds.origin.y = v10;
     v7->_bounds.size.width = v11;
     v7->_bounds.size.height = v12;
-    v13 = [v8 backgroundColor];
+    backgroundColor = [v8 backgroundColor];
     backgroundColor = v7->_backgroundColor;
-    v7->_backgroundColor = v13;
+    v7->_backgroundColor = backgroundColor;
 
     [v8 opacity];
     v7->_opacity = v15;
-    v16 = [v8 opacityTriggers];
+    opacityTriggers = [v8 opacityTriggers];
     opacityTriggers = v7->_opacityTriggers;
-    v7->_opacityTriggers = v16;
+    v7->_opacityTriggers = opacityTriggers;
 
     [v8 cornerRadius];
     v7->_cornerRadius = v18;
@@ -47,9 +47,9 @@
     }
 
     *(v7 + 136) = *(v7 + 136) & 0xFB | v19;
-    v20 = [v8 shadowColor];
+    shadowColor = [v8 shadowColor];
     shadowColor = v7->_shadowColor;
-    v7->_shadowColor = v20;
+    v7->_shadowColor = shadowColor;
 
     [v8 shadowOffset];
     v7->_shadowOffset.width = v22;
@@ -58,10 +58,10 @@
     v7->_shadowRadius = v24;
     [v8 shadowOpacity];
     v7->_shadowOpacity = v25;
-    *(v7 + 136) = *(v7 + 136) & 0xE7 | (8 * (a4 & 3));
-    v26 = [v8 borderColor];
+    *(v7 + 136) = *(v7 + 136) & 0xE7 | (8 * (scale & 3));
+    borderColor = [v8 borderColor];
     borderColor = v7->_borderColor;
-    v7->_borderColor = v26;
+    v7->_borderColor = borderColor;
 
     [v8 borderWidth];
     v7->_borderWidth = v28;
@@ -77,8 +77,8 @@
     }
 
     *(v7 + 136) = *(v7 + 136) & 0xFD | v29;
-    v30 = [v8 blendMode];
-    v31 = [v30 copy];
+    blendMode = [v8 blendMode];
+    v31 = [blendMode copy];
     blendMode = v7->_blendMode;
     v7->_blendMode = v31;
   }
@@ -86,13 +86,13 @@
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = styleCopy;
   }
 
   else
@@ -180,24 +180,24 @@ LABEL_29:
   return v12;
 }
 
-- (void)applyStylingToLayer:(id)a3
+- (void)applyStylingToLayer:(id)layer
 {
-  v27 = a3;
-  [v27 setBackgroundColor:{-[UIColor CGColor](self->_backgroundColor, "CGColor")}];
-  [v27 setCornerRadius:self->_cornerRadius];
+  layerCopy = layer;
+  [layerCopy setBackgroundColor:{-[UIColor CGColor](self->_backgroundColor, "CGColor")}];
+  [layerCopy setCornerRadius:self->_cornerRadius];
   v4 = &kCACornerCurveCircular;
   if ((*(self + 136) & 4) != 0)
   {
     v4 = &kCACornerCurveContinuous;
   }
 
-  [v27 setCornerCurve:*v4];
-  [v27 setShadowColor:{-[UIColor CGColor](self->_shadowColor, "CGColor")}];
-  [v27 setShadowOffset:{self->_shadowOffset.width, self->_shadowOffset.height}];
-  [v27 setShadowRadius:self->_shadowRadius];
+  [layerCopy setCornerCurve:*v4];
+  [layerCopy setShadowColor:{-[UIColor CGColor](self->_shadowColor, "CGColor")}];
+  [layerCopy setShadowOffset:{self->_shadowOffset.width, self->_shadowOffset.height}];
+  [layerCopy setShadowRadius:self->_shadowRadius];
   shadowOpacity = self->_shadowOpacity;
   *&shadowOpacity = shadowOpacity;
-  [v27 setShadowOpacity:shadowOpacity];
+  [layerCopy setShadowOpacity:shadowOpacity];
   if (self->_shadowColor && self->_backgroundColor)
   {
     x = self->_bounds.origin.x;
@@ -252,46 +252,46 @@ LABEL_29:
       CGPathCloseSubpath(v12);
     }
 
-    [v27 setShadowPath:v12];
+    [layerCopy setShadowPath:v12];
     CGPathRelease(v12);
   }
 
-  [v27 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
-  [v27 setBorderWidth:self->_borderWidth];
-  [v27 setMasksToBounds:*(self + 136) & 1];
-  [v27 setAllowsGroupBlending:(*(self + 136) >> 1) & 1];
-  v19 = [(_TUIStyledBoxStyler *)self compositingFilter];
-  [v27 setCompositingFilter:v19];
+  [layerCopy setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
+  [layerCopy setBorderWidth:self->_borderWidth];
+  [layerCopy setMasksToBounds:*(self + 136) & 1];
+  [layerCopy setAllowsGroupBlending:(*(self + 136) >> 1) & 1];
+  compositingFilter = [(_TUIStyledBoxStyler *)self compositingFilter];
+  [layerCopy setCompositingFilter:compositingFilter];
 
-  [v27 setContentsScale:((*(self + 136) >> 3) & 3)];
+  [layerCopy setContentsScale:((*(self + 136) >> 3) & 3)];
   v20 = objc_opt_class();
-  v21 = TUIDynamicCast(v20, v27);
+  v21 = TUIDynamicCast(v20, layerCopy);
   [v21 setOpacityTriggers:self->_opacityTriggers];
   if (!self->_opacityTriggers)
   {
     opacity = self->_opacity;
     *&opacity = opacity;
-    [v27 setOpacity:opacity];
+    [layerCopy setOpacity:opacity];
   }
 }
 
-- (void)applyStylingToView:(id)a3
+- (void)applyStylingToView:(id)view
 {
-  v4 = [a3 layer];
+  layer = [view layer];
   [(_TUIStyledBoxStyler *)self applyStylingToLayer:?];
 }
 
-- (void)removeStylingFromLayer:(id)a3
+- (void)removeStylingFromLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v3 = objc_opt_class();
-  v4 = TUIDynamicCast(v3, v5);
+  v4 = TUIDynamicCast(v3, layerCopy);
   [v4 setOpacityTriggers:0];
 }
 
-- (void)removeStylingFromView:(id)a3
+- (void)removeStylingFromView:(id)view
 {
-  v4 = [a3 layer];
+  layer = [view layer];
   [(_TUIStyledBoxStyler *)self removeStylingFromLayer:?];
 }
 

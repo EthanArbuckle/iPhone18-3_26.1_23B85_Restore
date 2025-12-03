@@ -1,30 +1,30 @@
 @interface WXCitationTable
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXCitationTable
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [v7 WXOOBibliographyNamespace];
-  Child = OCXFindChild(a3, v8, "Source");
+  toCopy = to;
+  stateCopy = state;
+  wXOOBibliographyNamespace = [stateCopy WXOOBibliographyNamespace];
+  Child = OCXFindChild(from, wXOOBibliographyNamespace, "Source");
 
   while (Child)
   {
-    v10 = [v7 WXOOBibliographyNamespace];
-    v11 = CXChildDefaultStringContent(Child, v10, "Tag", 0);
+    wXOOBibliographyNamespace2 = [stateCopy WXOOBibliographyNamespace];
+    v11 = CXChildDefaultStringContent(Child, wXOOBibliographyNamespace2, "Tag", 0);
 
     if (v11)
     {
-      v12 = [[WDCitation alloc] initWithDocument:v14];
-      [WXCitation readFrom:Child to:v12 state:v7];
-      [v14 addCitation:v12 forID:v11];
+      v12 = [[WDCitation alloc] initWithDocument:toCopy];
+      [WXCitation readFrom:Child to:v12 state:stateCopy];
+      [toCopy addCitation:v12 forID:v11];
     }
 
-    v13 = [v7 WXOOBibliographyNamespace];
-    Child = OCXFindNextChild(Child, v13, "Source");
+    wXOOBibliographyNamespace3 = [stateCopy WXOOBibliographyNamespace];
+    Child = OCXFindNextChild(Child, wXOOBibliographyNamespace3, "Source");
   }
 }
 

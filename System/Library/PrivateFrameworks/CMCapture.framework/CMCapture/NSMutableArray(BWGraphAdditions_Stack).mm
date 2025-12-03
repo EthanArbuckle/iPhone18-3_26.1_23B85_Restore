@@ -6,14 +6,14 @@
 
 - (uint64_t)bw_pop
 {
-  if ([a1 bw_empty])
+  if ([self bw_empty])
   {
     return 0;
   }
 
-  v3 = [a1 lastObject];
-  [a1 removeLastObject];
-  return v3;
+  lastObject = [self lastObject];
+  [self removeLastObject];
+  return lastObject;
 }
 
 @end

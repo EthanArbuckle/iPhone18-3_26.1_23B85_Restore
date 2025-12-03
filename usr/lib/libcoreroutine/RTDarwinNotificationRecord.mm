@@ -1,16 +1,16 @@
 @interface RTDarwinNotificationRecord
-- (RTDarwinNotificationRecord)initWithNotificationName:(id)a3 registrationToken:(id)a4 handler:(id)a5;
+- (RTDarwinNotificationRecord)initWithNotificationName:(id)name registrationToken:(id)token handler:(id)handler;
 @end
 
 @implementation RTDarwinNotificationRecord
 
-- (RTDarwinNotificationRecord)initWithNotificationName:(id)a3 registrationToken:(id)a4 handler:(id)a5
+- (RTDarwinNotificationRecord)initWithNotificationName:(id)name registrationToken:(id)token handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  nameCopy = name;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!nameCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!tokenCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -59,11 +59,11 @@ LABEL_14:
   v12 = [(RTDarwinNotificationRecord *)&v23 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [nameCopy copy];
     notificationName = v12->_notificationName;
     v12->_notificationName = v13;
 
-    v15 = [v9 copy];
+    v15 = [tokenCopy copy];
     registrationToken = v12->_registrationToken;
     v12->_registrationToken = v15;
 
@@ -73,10 +73,10 @@ LABEL_14:
   }
 
   self = v12;
-  v19 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

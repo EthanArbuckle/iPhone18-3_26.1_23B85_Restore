@@ -1,11 +1,11 @@
 @interface CAMStillImageCaptureResult
 - ($2825F4736939C4A6D3AD43837233062D)predictedFinalAssetPhotoDimensions;
-- (CAMStillImageCaptureResult)initWithCaptureDeferredPhotoProxy:(id)a3 expectingPairedVideo:(BOOL)a4 adjustmentFilters:(id)a5 filteredPreviewSurface:(__IOSurface *)a6 shouldPersistAdjustmentSidecar:(BOOL)a7 persistenceUUID:(id)a8 coordinationInfo:(id)a9 semanticEnhancement:(int64_t)a10 error:(id)a11;
-- (CAMStillImageCaptureResult)initWithCapturePhoto:(id)a3 expectingPairedVideo:(BOOL)a4 adjustmentFilters:(id)a5 filteredPreviewSurface:(__IOSurface *)a6 shouldPersistAdjustmentSidecar:(BOOL)a7 persistenceUUID:(id)a8 coordinationInfo:(id)a9 semanticEnhancement:(int64_t)a10 error:(id)a11;
-- (CAMStillImageCaptureResult)initWithFullsizeSurface:(__IOSurface *)a3 size:(unint64_t)a4 unfilteredPreviewSurface:(__IOSurface *)a5 filteredPreviewSurface:(__IOSurface *)a6 metadata:(id)a7 expectingPairedVideo:(BOOL)a8 shouldPersistAdjustmentSidecar:(BOOL)a9 adjustmentFilters:(id)a10 persistenceUUID:(id)a11 coordinationInfo:(id)a12 error:(id)a13;
+- (CAMStillImageCaptureResult)initWithCaptureDeferredPhotoProxy:(id)proxy expectingPairedVideo:(BOOL)video adjustmentFilters:(id)filters filteredPreviewSurface:(__IOSurface *)surface shouldPersistAdjustmentSidecar:(BOOL)sidecar persistenceUUID:(id)d coordinationInfo:(id)info semanticEnhancement:(int64_t)self0 error:(id)self1;
+- (CAMStillImageCaptureResult)initWithCapturePhoto:(id)photo expectingPairedVideo:(BOOL)video adjustmentFilters:(id)filters filteredPreviewSurface:(__IOSurface *)surface shouldPersistAdjustmentSidecar:(BOOL)sidecar persistenceUUID:(id)d coordinationInfo:(id)info semanticEnhancement:(int64_t)self0 error:(id)self1;
+- (CAMStillImageCaptureResult)initWithFullsizeSurface:(__IOSurface *)surface size:(unint64_t)size unfilteredPreviewSurface:(__IOSurface *)previewSurface filteredPreviewSurface:(__IOSurface *)filteredPreviewSurface metadata:(id)metadata expectingPairedVideo:(BOOL)video shouldPersistAdjustmentSidecar:(BOOL)sidecar adjustmentFilters:(id)self0 persistenceUUID:(id)self1 coordinationInfo:(id)self2 error:(id)self3;
 - (NSDictionary)compactMetadata;
 - (NSString)imageGroupIdentifier;
-- (id)_captureDateFromMetadata:(id)a3;
+- (id)_captureDateFromMetadata:(id)metadata;
 - (id)description;
 - (void)dealloc;
 @end
@@ -15,8 +15,8 @@
 - (NSDictionary)compactMetadata
 {
   v25[8] = *MEMORY[0x1E69E9840];
-  v2 = [(CAMStillImageCaptureResult *)self metadata];
-  v3 = [v2 mutableCopy];
+  metadata = [(CAMStillImageCaptureResult *)self metadata];
+  v3 = [metadata mutableCopy];
 
   v4 = *MEMORY[0x1E696DE30];
   v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
@@ -103,55 +103,55 @@
   [(CAMStillImageCaptureResult *)&v6 dealloc];
 }
 
-- (CAMStillImageCaptureResult)initWithFullsizeSurface:(__IOSurface *)a3 size:(unint64_t)a4 unfilteredPreviewSurface:(__IOSurface *)a5 filteredPreviewSurface:(__IOSurface *)a6 metadata:(id)a7 expectingPairedVideo:(BOOL)a8 shouldPersistAdjustmentSidecar:(BOOL)a9 adjustmentFilters:(id)a10 persistenceUUID:(id)a11 coordinationInfo:(id)a12 error:(id)a13
+- (CAMStillImageCaptureResult)initWithFullsizeSurface:(__IOSurface *)surface size:(unint64_t)size unfilteredPreviewSurface:(__IOSurface *)previewSurface filteredPreviewSurface:(__IOSurface *)filteredPreviewSurface metadata:(id)metadata expectingPairedVideo:(BOOL)video shouldPersistAdjustmentSidecar:(BOOL)sidecar adjustmentFilters:(id)self0 persistenceUUID:(id)self1 coordinationInfo:(id)self2 error:(id)self3
 {
-  v18 = a7;
-  v19 = a10;
-  v20 = a11;
-  v35 = a12;
-  v34 = a13;
+  metadataCopy = metadata;
+  filtersCopy = filters;
+  dCopy = d;
+  infoCopy = info;
+  errorCopy = error;
   v36.receiver = self;
   v36.super_class = CAMStillImageCaptureResult;
   v21 = [(CAMStillImageCaptureResult *)&v36 init];
   v22 = v21;
   if (v21)
   {
-    if (a3)
+    if (surface)
     {
-      v21->_stillImageFullsizeSurface = a3;
-      v21->_stillImageFullsizeSurfaceSize = a4;
-      CFRetain(a3);
+      v21->_stillImageFullsizeSurface = surface;
+      v21->_stillImageFullsizeSurfaceSize = size;
+      CFRetain(surface);
     }
 
-    if (a5)
+    if (previewSurface)
     {
-      v22->_stillImageUnfilteredPreviewSurface = a5;
-      CFRetain(a5);
+      v22->_stillImageUnfilteredPreviewSurface = previewSurface;
+      CFRetain(previewSurface);
     }
 
-    if (a6)
+    if (filteredPreviewSurface)
     {
-      v22->_stillImageFilteredPreviewSurface = a6;
-      CFRetain(a6);
+      v22->_stillImageFilteredPreviewSurface = filteredPreviewSurface;
+      CFRetain(filteredPreviewSurface);
     }
 
-    v23 = [v18 copy];
+    v23 = [metadataCopy copy];
     metadata = v22->_metadata;
     v22->_metadata = v23;
 
-    objc_storeStrong(&v22->_error, a13);
-    v22->_shouldPersistAdjustmentSidecar = a9;
-    v25 = [v19 copy];
+    objc_storeStrong(&v22->_error, error);
+    v22->_shouldPersistAdjustmentSidecar = sidecar;
+    v25 = [filtersCopy copy];
     adjustmentFilters = v22->_adjustmentFilters;
     v22->_adjustmentFilters = v25;
 
-    v27 = [v20 copy];
+    v27 = [dCopy copy];
     persistenceUUID = v22->_persistenceUUID;
     v22->_persistenceUUID = v27;
 
-    objc_storeStrong(&v22->_coordinationInfo, a12);
+    objc_storeStrong(&v22->_coordinationInfo, info);
     v22->_semanticEnhancement = 0;
-    v22->_expectingPairedVideo = a8;
+    v22->_expectingPairedVideo = video;
     v29 = [(CAMStillImageCaptureResult *)v22 _captureDateFromMetadata:v22->_metadata];
     captureDate = v22->_captureDate;
     v22->_captureDate = v29;
@@ -162,44 +162,44 @@
   return v22;
 }
 
-- (CAMStillImageCaptureResult)initWithCapturePhoto:(id)a3 expectingPairedVideo:(BOOL)a4 adjustmentFilters:(id)a5 filteredPreviewSurface:(__IOSurface *)a6 shouldPersistAdjustmentSidecar:(BOOL)a7 persistenceUUID:(id)a8 coordinationInfo:(id)a9 semanticEnhancement:(int64_t)a10 error:(id)a11
+- (CAMStillImageCaptureResult)initWithCapturePhoto:(id)photo expectingPairedVideo:(BOOL)video adjustmentFilters:(id)filters filteredPreviewSurface:(__IOSurface *)surface shouldPersistAdjustmentSidecar:(BOOL)sidecar persistenceUUID:(id)d coordinationInfo:(id)info semanticEnhancement:(int64_t)self0 error:(id)self1
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  v38 = a11;
+  photoCopy = photo;
+  filtersCopy = filters;
+  dCopy = d;
+  infoCopy = info;
+  errorCopy = error;
   v39.receiver = self;
   v39.super_class = CAMStillImageCaptureResult;
   v21 = [(CAMStillImageCaptureResult *)&v39 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_capturePhoto, a3);
-    v23 = [v17 metadata];
-    v24 = [v23 copy];
+    objc_storeStrong(&v21->_capturePhoto, photo);
+    metadata = [photoCopy metadata];
+    v24 = [metadata copy];
     metadata = v22->_metadata;
     v22->_metadata = v24;
 
-    objc_storeStrong(&v22->_error, a11);
-    v26 = [v18 copy];
+    objc_storeStrong(&v22->_error, error);
+    v26 = [filtersCopy copy];
     adjustmentFilters = v22->_adjustmentFilters;
     v22->_adjustmentFilters = v26;
 
-    v28 = [v19 copy];
+    v28 = [dCopy copy];
     persistenceUUID = v22->_persistenceUUID;
     v22->_persistenceUUID = v28;
 
-    objc_storeStrong(&v22->_coordinationInfo, a9);
-    v22->_shouldPersistAdjustmentSidecar = a7;
-    v22->_expectingPairedVideo = a4;
-    v22->_semanticEnhancement = a10;
+    objc_storeStrong(&v22->_coordinationInfo, info);
+    v22->_shouldPersistAdjustmentSidecar = sidecar;
+    v22->_expectingPairedVideo = video;
+    v22->_semanticEnhancement = enhancement;
     v30 = [(CAMStillImageCaptureResult *)v22 _captureDateFromMetadata:v22->_metadata];
     captureDate = v22->_captureDate;
     v22->_captureDate = v30;
 
-    v32 = [(AVCapturePhoto *)v22->_capturePhoto portraitMetadata];
-    if (v32)
+    portraitMetadata = [(AVCapturePhoto *)v22->_capturePhoto portraitMetadata];
+    if (portraitMetadata)
     {
       v33 = +[CAMCaptureCapabilities capabilities];
       v22->_representsDeferredFilteredProxy = [v33 isDeferredPortraitRenderingSupported];
@@ -210,13 +210,13 @@
       v22->_representsDeferredFilteredProxy = 0;
     }
 
-    if (a6)
+    if (surface)
     {
-      v22->_stillImageFilteredPreviewSurface = a6;
-      CFRetain(a6);
+      v22->_stillImageFilteredPreviewSurface = surface;
+      CFRetain(surface);
     }
 
-    IOSurface = CVPixelBufferGetIOSurface([v17 previewPixelBuffer]);
+    IOSurface = CVPixelBufferGetIOSurface([photoCopy previewPixelBuffer]);
     if (IOSurface)
     {
       v22->_stillImageUnfilteredPreviewSurface = IOSurface;
@@ -229,35 +229,35 @@
   return v22;
 }
 
-- (CAMStillImageCaptureResult)initWithCaptureDeferredPhotoProxy:(id)a3 expectingPairedVideo:(BOOL)a4 adjustmentFilters:(id)a5 filteredPreviewSurface:(__IOSurface *)a6 shouldPersistAdjustmentSidecar:(BOOL)a7 persistenceUUID:(id)a8 coordinationInfo:(id)a9 semanticEnhancement:(int64_t)a10 error:(id)a11
+- (CAMStillImageCaptureResult)initWithCaptureDeferredPhotoProxy:(id)proxy expectingPairedVideo:(BOOL)video adjustmentFilters:(id)filters filteredPreviewSurface:(__IOSurface *)surface shouldPersistAdjustmentSidecar:(BOOL)sidecar persistenceUUID:(id)d coordinationInfo:(id)info semanticEnhancement:(int64_t)self0 error:(id)self1
 {
-  v12 = a7;
-  v15 = a4;
-  v17 = a3;
-  v18 = [(CAMStillImageCaptureResult *)self initWithCapturePhoto:v17 expectingPairedVideo:v15 adjustmentFilters:a5 filteredPreviewSurface:a6 shouldPersistAdjustmentSidecar:v12 persistenceUUID:a8 coordinationInfo:a9 semanticEnhancement:a10 error:a11];
-  v19 = [v17 deferredPhotoIdentifier];
+  sidecarCopy = sidecar;
+  videoCopy = video;
+  proxyCopy = proxy;
+  v18 = [(CAMStillImageCaptureResult *)self initWithCapturePhoto:proxyCopy expectingPairedVideo:videoCopy adjustmentFilters:filters filteredPreviewSurface:surface shouldPersistAdjustmentSidecar:sidecarCopy persistenceUUID:d coordinationInfo:info semanticEnhancement:enhancement error:error];
+  deferredPhotoIdentifier = [proxyCopy deferredPhotoIdentifier];
 
   deferredPhotoIdentifier = v18->_deferredPhotoIdentifier;
-  v18->_deferredPhotoIdentifier = v19;
+  v18->_deferredPhotoIdentifier = deferredPhotoIdentifier;
 
   return v18;
 }
 
-- (id)_captureDateFromMetadata:(id)a3
+- (id)_captureDateFromMetadata:(id)metadata
 {
-  v3 = [CAMCaptureMetadataUtilities preciseCaptureDateFromStillImageMetadata:self->_metadata];
-  if (!v3)
+  date = [CAMCaptureMetadataUtilities preciseCaptureDateFromStillImageMetadata:self->_metadata];
+  if (!date)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  return v3;
+  return date;
 }
 
 - (NSString)imageGroupIdentifier
 {
-  v2 = [(CAMStillImageCaptureResult *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  metadata = [(CAMStillImageCaptureResult *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6990A90]];
 
   return v4;
@@ -267,33 +267,33 @@
 {
   if (self->_deferredPhotoIdentifier || [(CAMStillImageCaptureResult *)self representsDeferredFilteredProxy])
   {
-    v3 = [(AVCapturePhoto *)self->_capturePhoto resolvedSettings];
-    v4 = [v3 photoDimensions];
-    v5 = v4;
-    v6 = HIDWORD(v4);
+    resolvedSettings = [(AVCapturePhoto *)self->_capturePhoto resolvedSettings];
+    photoDimensions = [resolvedSettings photoDimensions];
+    intValue = photoDimensions;
+    intValue2 = HIDWORD(photoDimensions);
   }
 
   else
   {
-    v3 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
-    v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DAA8]];
-    v9 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696DAB0]];
-    v5 = [v8 intValue];
-    v6 = [v9 intValue];
+    resolvedSettings = [(NSDictionary *)self->_metadata objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
+    v8 = [resolvedSettings objectForKeyedSubscript:*MEMORY[0x1E696DAA8]];
+    v9 = [resolvedSettings objectForKeyedSubscript:*MEMORY[0x1E696DAB0]];
+    intValue = [v8 intValue];
+    intValue2 = [v9 intValue];
   }
 
-  return (v5 | (v6 << 32));
+  return (intValue | (intValue2 << 32));
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CAMStillImageCaptureResult *)self error];
-  v6 = [(CAMStillImageCaptureResult *)self captureDate];
-  v7 = [(CAMStillImageCaptureResult *)self captureDate];
-  [v7 timeIntervalSince1970];
-  v9 = [v3 stringWithFormat:@"<%@ error:%@, captureDate:%@ (%.3f)>", v4, v5, v6, v8];
+  error = [(CAMStillImageCaptureResult *)self error];
+  captureDate = [(CAMStillImageCaptureResult *)self captureDate];
+  captureDate2 = [(CAMStillImageCaptureResult *)self captureDate];
+  [captureDate2 timeIntervalSince1970];
+  v9 = [v3 stringWithFormat:@"<%@ error:%@, captureDate:%@ (%.3f)>", v4, error, captureDate, v8];
 
   return v9;
 }

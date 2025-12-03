@@ -1,19 +1,19 @@
 @interface SKPaymentTransaction
-- (BOOL)canMergeWithTransaction:(id)a3;
-- (BOOL)mergeWithServerTransaction:(id)a3;
-- (BOOL)mergeWithTransaction:(id)a3;
+- (BOOL)canMergeWithTransaction:(id)transaction;
+- (BOOL)mergeWithServerTransaction:(id)transaction;
+- (BOOL)mergeWithTransaction:(id)transaction;
 - (NSString)matchingIdentifier;
 - (SKPaymentTransaction)init;
-- (SKPaymentTransaction)initWithPayment:(id)a3;
-- (SKPaymentTransaction)initWithServerTransaction:(id)a3;
-- (void)_setAuthorizationResponse:(id)a3;
-- (void)_setDownloads:(id)a3;
-- (void)_setError:(id)a3;
-- (void)_setOriginalTransaction:(id)a3;
-- (void)_setTemporaryIdentifier:(id)a3;
-- (void)_setTransactionDate:(id)a3;
-- (void)_setTransactionIdentifier:(id)a3;
-- (void)_setTransactionReceipt:(id)a3;
+- (SKPaymentTransaction)initWithPayment:(id)payment;
+- (SKPaymentTransaction)initWithServerTransaction:(id)transaction;
+- (void)_setAuthorizationResponse:(id)response;
+- (void)_setDownloads:(id)downloads;
+- (void)_setError:(id)error;
+- (void)_setOriginalTransaction:(id)transaction;
+- (void)_setTemporaryIdentifier:(id)identifier;
+- (void)_setTransactionDate:(id)date;
+- (void)_setTransactionIdentifier:(id)identifier;
+- (void)_setTransactionReceipt:(id)receipt;
 @end
 
 @implementation SKPaymentTransaction
@@ -33,15 +33,15 @@
   return v2;
 }
 
-- (SKPaymentTransaction)initWithPayment:(id)a3
+- (SKPaymentTransaction)initWithPayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   v5 = [(SKPaymentTransaction *)self init];
   v6 = v5;
   if (v5)
   {
     v7 = v5->_internal;
-    v8 = [v4 copy];
+    v8 = [paymentCopy copy];
     v9 = v7[5];
     v7[5] = v8;
   }
@@ -49,13 +49,13 @@
   return v6;
 }
 
-- (BOOL)canMergeWithTransaction:(id)a3
+- (BOOL)canMergeWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = *(self->_internal + 5);
-  v7 = *(v4[1] + 40);
+  v7 = *(transactionCopy[1] + 40);
   v8 = v7;
   if (isKindOfClass)
   {
@@ -79,7 +79,7 @@
 
   if (v10)
   {
-    v11 = *(v4[1] + 64);
+    v11 = *(transactionCopy[1] + 64);
 
     if (v9)
     {
@@ -114,11 +114,11 @@
   return v3;
 }
 
-- (BOOL)mergeWithTransaction:(id)a3
+- (BOOL)mergeWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_internal;
-  v6 = v4[1];
+  v6 = transactionCopy[1];
   v7 = v6[3];
   if (v5[3] != v7)
   {
@@ -177,16 +177,16 @@
   return v10;
 }
 
-- (void)_setDownloads:(id)a3
+- (void)_setDownloads:(id)downloads
 {
   internal = self->_internal;
   v4 = internal[2];
-  if (v4 != a3)
+  if (v4 != downloads)
   {
     v10 = internal;
-    v7 = a3;
+    downloadsCopy = downloads;
     [v4 makeObjectsPerformSelector:sel__setTransaction_ withObject:0];
-    v8 = [v7 copy];
+    v8 = [downloadsCopy copy];
 
     v9 = internal[2];
     internal[2] = v8;
@@ -195,132 +195,132 @@
   }
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   internal = self->_internal;
   v8 = *(internal + 3);
   v7 = (internal + 24);
-  if (v8 != v5)
+  if (v8 != errorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = errorCopy;
+    objc_storeStrong(v7, error);
+    errorCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v7, v5);
+  MEMORY[0x1EEE66BB8](v7, errorCopy);
 }
 
-- (void)_setOriginalTransaction:(id)a3
+- (void)_setOriginalTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   internal = self->_internal;
   v8 = *(internal + 4);
   v7 = (internal + 32);
-  if (v8 != v5)
+  if (v8 != transactionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = transactionCopy;
+    objc_storeStrong(v7, transaction);
+    transactionCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v7, v5);
+  MEMORY[0x1EEE66BB8](v7, transactionCopy);
 }
 
-- (void)_setTemporaryIdentifier:(id)a3
+- (void)_setTemporaryIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[6] != a3)
+  if (internal[6] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[6];
     internal[6] = v5;
   }
 }
 
-- (void)_setTransactionDate:(id)a3
+- (void)_setTransactionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   internal = self->_internal;
   v8 = *(internal + 7);
   v7 = (internal + 56);
-  if (v8 != v5)
+  if (v8 != dateCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = dateCopy;
+    objc_storeStrong(v7, date);
+    dateCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v7, v5);
+  MEMORY[0x1EEE66BB8](v7, dateCopy);
 }
 
-- (void)_setTransactionIdentifier:(id)a3
+- (void)_setTransactionIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[8] != a3)
+  if (internal[8] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[8];
     internal[8] = v5;
   }
 }
 
-- (void)_setTransactionReceipt:(id)a3
+- (void)_setTransactionReceipt:(id)receipt
 {
   internal = self->_internal;
-  if (internal[9] != a3)
+  if (internal[9] != receipt)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [receipt copy];
     v6 = internal[9];
     internal[9] = v5;
   }
 }
 
-- (void)_setAuthorizationResponse:(id)a3
+- (void)_setAuthorizationResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   internal = self->_internal;
   v8 = *(internal + 11);
   v7 = (internal + 88);
-  if (v8 != v5)
+  if (v8 != responseCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = responseCopy;
+    objc_storeStrong(v7, response);
+    responseCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v7, v5);
+  MEMORY[0x1EEE66BB8](v7, responseCopy);
 }
 
-- (SKPaymentTransaction)initWithServerTransaction:(id)a3
+- (SKPaymentTransaction)initWithServerTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [(SKPaymentTransaction *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SKPaymentTransaction *)v5 mergeWithServerTransaction:v4];
+    [(SKPaymentTransaction *)v5 mergeWithServerTransaction:transactionCopy];
   }
 
   return v6;
 }
 
-- (BOOL)mergeWithServerTransaction:(id)a3
+- (BOOL)mergeWithServerTransaction:(id)transaction
 {
   v95 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_internal;
-  v6 = [v4 objectForKeyedSubscript:0x1F29BDC00];
+  v6 = [transactionCopy objectForKeyedSubscript:0x1F29BDC00];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(v5 + 1, v6);
   }
 
-  v7 = [v4 objectForKeyedSubscript:0x1F29BDC20];
+  v7 = [transactionCopy objectForKeyedSubscript:0x1F29BDC20];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -329,7 +329,7 @@
     v5[10] = 1;
   }
 
-  v8 = [v4 objectForKeyedSubscript:0x1F29BDC80];
+  v8 = [transactionCopy objectForKeyedSubscript:0x1F29BDC80];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -337,7 +337,7 @@
     objc_storeStrong(v5 + 7, v8);
   }
 
-  v9 = [v4 objectForKeyedSubscript:0x1F29BDCA0];
+  v9 = [transactionCopy objectForKeyedSubscript:0x1F29BDCA0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -345,7 +345,7 @@
     objc_storeStrong(v5 + 9, v9);
   }
 
-  v10 = [v4 objectForKeyedSubscript:0x1F29BDCC0];
+  v10 = [transactionCopy objectForKeyedSubscript:0x1F29BDCC0];
 
   if (objc_opt_respondsToSelector())
   {
@@ -353,16 +353,16 @@
   }
 
   v83 = v5;
-  v11 = [v4 objectForKeyedSubscript:SKServerKeyAuthorizationResponse];
+  v11 = [transactionCopy objectForKeyedSubscript:SKServerKeyAuthorizationResponse];
 
   objc_opt_class();
-  v84 = v4;
+  v84 = transactionCopy;
   if (objc_opt_isKindOfClass())
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v94 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@]: Received credential", buf, 0xCu);
     }
 
@@ -413,22 +413,22 @@
     [(SKPaymentTransaction *)self _setAuthorizationResponse:v17];
   }
 
-  v4 = v84;
+  transactionCopy = v84;
 LABEL_27:
-  v18 = [v4 objectForKeyedSubscript:0x1F29BDBA0];
+  v18 = [transactionCopy objectForKeyedSubscript:0x1F29BDBA0];
 
   objc_opt_class();
   v19 = v83;
   if (objc_opt_isKindOfClass())
   {
     v20 = v18;
-    v21 = [v20 domain];
-    if ([v21 isEqualToString:@"com.apple.commerce.client"])
+    domain = [v20 domain];
+    if ([domain isEqualToString:@"com.apple.commerce.client"])
     {
-      v22 = [v20 code];
+      code = [v20 code];
 
-      v23 = v22 == 1000;
-      v4 = v84;
+      v23 = code == 1000;
+      transactionCopy = v84;
       if (v23)
       {
         goto LABEL_36;
@@ -439,17 +439,17 @@ LABEL_27:
     {
     }
 
-    v24 = [v20 domain];
-    if (![v24 isEqualToString:@"ASDErrorDomain"])
+    domain2 = [v20 domain];
+    if (![domain2 isEqualToString:@"ASDErrorDomain"])
     {
 
       goto LABEL_39;
     }
 
-    v25 = [v20 code];
+    code2 = [v20 code];
 
-    v23 = v25 == 1052;
-    v4 = v84;
+    v23 = code2 == 1052;
+    transactionCopy = v84;
     if (!v23)
     {
 LABEL_39:
@@ -476,8 +476,8 @@ LABEL_36:
   }
 
 LABEL_43:
-  v27 = [v4 objectForKeyedSubscript:0x1F29BDC40];
-  v28 = [v4 objectForKeyedSubscript:0x1F29BDC60];
+  v27 = [transactionCopy objectForKeyedSubscript:0x1F29BDC40];
+  v28 = [transactionCopy objectForKeyedSubscript:0x1F29BDC60];
   v29 = v27;
   objc_opt_class();
   v82 = v28;
@@ -502,10 +502,10 @@ LABEL_43:
     v30 = 0;
   }
 
-  v37 = [v4 objectForKeyedSubscript:SKPaymentOptionLegacyOfferName];
-  v38 = [v4 objectForKeyedSubscript:SKPaymentOptionLegacyQuantity];
+  v37 = [transactionCopy objectForKeyedSubscript:SKPaymentOptionLegacyOfferName];
+  v38 = [transactionCopy objectForKeyedSubscript:SKPaymentOptionLegacyQuantity];
   objc_opt_class();
-  v81 = self;
+  selfCopy2 = self;
   if (objc_opt_isKindOfClass())
   {
     v39 = v38;
@@ -516,7 +516,7 @@ LABEL_43:
       v80 = v37;
       [(SKMutablePayment *)v41 setProductIdentifier:v37];
       -[SKMutablePayment setQuantity:](v41, "setQuantity:", [v38 integerValue]);
-      v42 = [v4 objectForKeyedSubscript:SKPaymentOptionLegacyRequestData];
+      v42 = [transactionCopy objectForKeyedSubscript:SKPaymentOptionLegacyRequestData];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -524,24 +524,24 @@ LABEL_43:
         [(SKMutablePayment *)v41 setRequestData:v42];
       }
 
-      v43 = [v83[5] applicationUsername];
-      v44 = [v43 copy];
+      applicationUsername = [v83[5] applicationUsername];
+      v44 = [applicationUsername copy];
       [(SKMutablePayment *)v41 setApplicationUsername:v44];
 
-      v45 = [v83[5] partnerIdentifier];
-      v46 = [v45 copy];
+      partnerIdentifier = [v83[5] partnerIdentifier];
+      v46 = [partnerIdentifier copy];
       [(SKMutablePayment *)v41 setPartnerIdentifier:v46];
 
-      v47 = [v83[5] partnerTransactionIdentifier];
-      v48 = [v47 copy];
+      partnerTransactionIdentifier = [v83[5] partnerTransactionIdentifier];
+      v48 = [partnerTransactionIdentifier copy];
       [(SKMutablePayment *)v41 setPartnerTransactionIdentifier:v48];
 
-      v49 = [v83[5] requestParameters];
-      v50 = [v49 copy];
+      requestParameters = [v83[5] requestParameters];
+      v50 = [requestParameters copy];
       [(SKMutablePayment *)v41 setRequestParameters:v50];
 
-      v51 = [v83[5] paymentDiscount];
-      [(SKMutablePayment *)v41 setPaymentDiscount:v51];
+      paymentDiscount = [v83[5] paymentDiscount];
+      [(SKMutablePayment *)v41 setPaymentDiscount:paymentDiscount];
 
       v52 = [(SKMutablePayment *)v41 copy];
       v53 = v83[5];
@@ -573,15 +573,15 @@ LABEL_43:
   }
 
   objc_storeStrong(v83 + 4, v30);
-  v57 = [v4 objectForKeyedSubscript:0x1F29BDD00];
+  v57 = [transactionCopy objectForKeyedSubscript:0x1F29BDD00];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v58 = v57;
     v86 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v58, "count")}];
-    v59 = [v4 objectForKeyedSubscript:SKServerKeyId];
-    v60 = v4;
+    v59 = [transactionCopy objectForKeyedSubscript:SKServerKeyId];
+    v60 = transactionCopy;
     v61 = v59;
     v62 = [v60 objectForKeyedSubscript:SKPaymentOptionLegacyOfferName];
     v63 = v62;
@@ -637,9 +637,9 @@ LABEL_43:
       v57 = v76;
     }
 
-    [(SKPaymentTransaction *)v81 _setDownloads:v86, v75, v76, v77, v78];
+    [(SKPaymentTransaction *)selfCopy2 _setDownloads:v86, v75, v76, v77, v78];
 
-    v4 = v84;
+    transactionCopy = v84;
   }
 
   return 1;

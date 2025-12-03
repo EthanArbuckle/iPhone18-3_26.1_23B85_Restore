@@ -1,22 +1,22 @@
 @interface VGHRTFCaptureProcessor
-- (VGHRTFCaptureProcessor)initWithConfig:(id)a3 error:(id *)a4;
-- (id)processCaptureData:(id)a3 faceData:(id)a4 error:(id *)a5;
-- (id)processSingleStepCaptureData:(id)a3 faceData:(id)a4 error:(id *)a5;
+- (VGHRTFCaptureProcessor)initWithConfig:(id)config error:(id *)error;
+- (id)processCaptureData:(id)data faceData:(id)faceData error:(id *)error;
+- (id)processSingleStepCaptureData:(id)data faceData:(id)faceData error:(id *)error;
 @end
 
 @implementation VGHRTFCaptureProcessor
 
-- (VGHRTFCaptureProcessor)initWithConfig:(id)a3 error:(id *)a4
+- (VGHRTFCaptureProcessor)initWithConfig:(id)config error:(id *)error
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  configCopy = config;
   v45.receiver = self;
   v45.super_class = VGHRTFCaptureProcessor;
   v8 = [(VGHRTFCaptureProcessor *)&v45 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a3);
+    objc_storeStrong(&v8->_config, config);
     v10 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.visage"];
     if ([v10 BOOLForKey:@"useLocalHRTFModels"])
     {
@@ -27,16 +27,16 @@
         _os_log_impl(&dword_270F06000, v11, OS_LOG_TYPE_INFO, " Using hrtf models from the Visage framework ", buf, 2u);
       }
 
-      v12 = [MEMORY[0x277CCA8D8] vg_bundle];
-      v13 = [v12 resourcePath];
+      vg_bundle = [MEMORY[0x277CCA8D8] vg_bundle];
+      resourcePath = [vg_bundle resourcePath];
       modelsRootPath = v9->_modelsRootPath;
-      v9->_modelsRootPath = v13;
+      v9->_modelsRootPath = resourcePath;
     }
 
     else
     {
-      v16 = [(VGHRTFSessionConfig *)v9->_config modelsRootPath];
-      v17 = v16 == 0;
+      modelsRootPath = [(VGHRTFSessionConfig *)v9->_config modelsRootPath];
+      v17 = modelsRootPath == 0;
 
       if (v17)
       {
@@ -52,8 +52,8 @@
       }
 
       v18 = MEMORY[0x277CCACA8];
-      v12 = [(VGHRTFSessionConfig *)v9->_config modelsRootPath];
-      v48[0] = v12;
+      vg_bundle = [(VGHRTFSessionConfig *)v9->_config modelsRootPath];
+      v48[0] = vg_bundle;
       v48[1] = @"EarDetectionModels";
       modelsRootPath = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
       v19 = [v18 pathWithComponents:modelsRootPath];
@@ -71,8 +71,8 @@
     }
 
     v23 = [VGHRTFFaceCaptureProcessor alloc];
-    v24 = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
-    v25 = [(VGHRTFFaceCaptureProcessor *)v23 initWithDebugDataPath:v24];
+    debugDataRootPath = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
+    v25 = [(VGHRTFFaceCaptureProcessor *)v23 initWithDebugDataPath:debugDataRootPath];
     faceCapture = v9->_faceCapture;
     v9->_faceCapture = v25;
 
@@ -93,8 +93,8 @@
         }
 
         v30 = [VGHRTFEarPCACaptureProcessor alloc];
-        v31 = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
-        v32 = [(VGHRTFEarPCACaptureProcessor *)v30 initWithDebugDataPath:v31 withModelsRootPath:v9->_modelsRootPath];
+        debugDataRootPath2 = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
+        v32 = [(VGHRTFEarPCACaptureProcessor *)v30 initWithDebugDataPath:debugDataRootPath2 withModelsRootPath:v9->_modelsRootPath];
         earPCACapture = v9->_earPCACapture;
         v9->_earPCACapture = v32;
 
@@ -102,7 +102,7 @@
         {
           v34 = @"Failed to initialize VGHRTFEarPCACaptureProcessor";
 LABEL_26:
-          vg::hrtf::setError(a4, v34);
+          vg::hrtf::setError(error, v34);
           v15 = 0;
           goto LABEL_27;
         }
@@ -118,8 +118,8 @@ LABEL_26:
         }
 
         v36 = [VGHRTFEarCaptureProcessor alloc];
-        v37 = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
-        v38 = [(VGHRTFEarCaptureProcessor *)v36 initWithDebugDataPath:v37 withModelsRootPath:v9->_modelsRootPath];
+        debugDataRootPath3 = [(VGHRTFSessionConfig *)v9->_config debugDataRootPath];
+        v38 = [(VGHRTFEarCaptureProcessor *)v36 initWithDebugDataPath:debugDataRootPath3 withModelsRootPath:v9->_modelsRootPath];
         earCapture = v9->_earCapture;
         v9->_earCapture = v38;
 
@@ -131,9 +131,9 @@ LABEL_26:
       }
 
       atomic_store(0, &v9->_faceCaptureFinished);
-      v40 = [[VGHRTFCaptureUpdateData alloc] initEmpty];
+      initEmpty = [[VGHRTFCaptureUpdateData alloc] initEmpty];
       updateData = v9->_updateData;
-      v9->_updateData = v40;
+      v9->_updateData = initEmpty;
 
       [(VGHRTFCaptureUpdateData *)v9->_updateData setFaceCaptureUpdateData:0];
       [(VGHRTFCaptureUpdateData *)v9->_updateData setEarCaptureUpdateData:0];
@@ -147,7 +147,7 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  vg::hrtf::setError(a4, @"Failed to initialize VGHRTFCaptureProcessor.");
+  vg::hrtf::setError(error, @"Failed to initialize VGHRTFCaptureProcessor.");
   v15 = 0;
 LABEL_28:
 
@@ -155,104 +155,104 @@ LABEL_28:
   return v15;
 }
 
-- (id)processCaptureData:(id)a3 faceData:(id)a4 error:(id *)a5
+- (id)processCaptureData:(id)data faceData:(id)faceData error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  faceDataCopy = faceData;
   if (self->_singleStepEnrollment)
   {
-    v10 = [(VGHRTFCaptureProcessor *)self processSingleStepCaptureData:v8 faceData:v9 error:a5];
+    initEmpty = [(VGHRTFCaptureProcessor *)self processSingleStepCaptureData:dataCopy faceData:faceDataCopy error:error];
   }
 
   else
   {
-    v10 = [[VGHRTFCaptureUpdateData alloc] initEmpty];
-    [v10 setCaptureData:v8];
-    [v10 setFaceData:v9];
-    [v10 setFaceCaptureUpdateData:0];
-    [v10 setEarCaptureUpdateData:0];
+    initEmpty = [[VGHRTFCaptureUpdateData alloc] initEmpty];
+    [initEmpty setCaptureData:dataCopy];
+    [initEmpty setFaceData:faceDataCopy];
+    [initEmpty setFaceCaptureUpdateData:0];
+    [initEmpty setEarCaptureUpdateData:0];
     v12 = atomic_load(&self->_faceCaptureFinished);
     if (v12)
     {
-      [v10 setState:1];
-      [v10 setFaceCaptureUpdateData:self->_faceResults];
-      v13 = [(VGHRTFEarCaptureProcessor *)self->_earCapture processCaptureData:v8 faceData:v9];
-      [v10 setEarCaptureUpdateData:v13];
+      [initEmpty setState:1];
+      [initEmpty setFaceCaptureUpdateData:self->_faceResults];
+      v13 = [(VGHRTFEarCaptureProcessor *)self->_earCapture processCaptureData:dataCopy faceData:faceDataCopy];
+      [initEmpty setEarCaptureUpdateData:v13];
 
-      v14 = [v10 earCaptureUpdateData];
-      v15 = [v14 progressType];
+      earCaptureUpdateData = [initEmpty earCaptureUpdateData];
+      progressType = [earCaptureUpdateData progressType];
 
-      if (v15 == 3)
+      if (progressType == 3)
       {
-        [v10 setState:2];
+        [initEmpty setState:2];
       }
     }
 
     else
     {
-      [v10 setState:0];
-      v16 = [(VGHRTFFaceCaptureProcessor *)self->_faceCapture processCaptureData:v8 faceData:v9];
-      [v10 setFaceCaptureUpdateData:v16];
+      [initEmpty setState:0];
+      v16 = [(VGHRTFFaceCaptureProcessor *)self->_faceCapture processCaptureData:dataCopy faceData:faceDataCopy];
+      [initEmpty setFaceCaptureUpdateData:v16];
 
-      v17 = [v10 faceCaptureUpdateData];
-      v18 = [v17 progressType];
+      faceCaptureUpdateData = [initEmpty faceCaptureUpdateData];
+      progressType2 = [faceCaptureUpdateData progressType];
 
-      if (v18 == 4)
+      if (progressType2 == 4)
       {
         faceCapture = self->_faceCapture;
         self->_faceCapture = 0;
 
-        v20 = [v10 faceCaptureUpdateData];
+        faceCaptureUpdateData2 = [initEmpty faceCaptureUpdateData];
         faceResults = self->_faceResults;
-        self->_faceResults = v20;
+        self->_faceResults = faceCaptureUpdateData2;
 
         atomic_store(1u, &self->_faceCaptureFinished);
       }
     }
   }
 
-  return v10;
+  return initEmpty;
 }
 
-- (id)processSingleStepCaptureData:(id)a3 faceData:(id)a4 error:(id *)a5
+- (id)processSingleStepCaptureData:(id)data faceData:(id)faceData error:(id *)error
 {
   v107 = *MEMORY[0x277D85DE8];
-  v86 = a3;
-  v87 = a4;
-  [(VGHRTFCaptureUpdateData *)self->_updateData setCaptureData:v86];
-  [(VGHRTFCaptureUpdateData *)self->_updateData setFaceData:v87];
+  dataCopy = data;
+  faceDataCopy = faceData;
+  [(VGHRTFCaptureUpdateData *)self->_updateData setCaptureData:dataCopy];
+  [(VGHRTFCaptureUpdateData *)self->_updateData setFaceData:faceDataCopy];
   v7 = atomic_load(&self->_faceCaptureFinished);
-  v91 = self;
+  selfCopy = self;
   updateData = self->_updateData;
   if (v7)
   {
     [(VGHRTFCaptureUpdateData *)updateData setState:2];
-    v9 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     [(VGHRTFCaptureUpdateData *)updateData setState:0];
-    v10 = [(VGHRTFFaceCaptureProcessor *)self->_faceCapture processCaptureData:v86 faceData:v87];
+    v10 = [(VGHRTFFaceCaptureProcessor *)self->_faceCapture processCaptureData:dataCopy faceData:faceDataCopy];
     [(VGHRTFCaptureUpdateData *)self->_updateData setFaceCaptureUpdateData:v10];
 
-    v11 = [(VGHRTFCaptureUpdateData *)self->_updateData faceCaptureUpdateData];
-    v12 = [v11 trackedData];
-    v13 = [v12 yawAngle];
-    [v87 setYawAngle:v13];
+    faceCaptureUpdateData = [(VGHRTFCaptureUpdateData *)self->_updateData faceCaptureUpdateData];
+    trackedData = [faceCaptureUpdateData trackedData];
+    yawAngle = [trackedData yawAngle];
+    [faceDataCopy setYawAngle:yawAngle];
 
-    v14 = [(VGHRTFEarPCACaptureProcessor *)v91->_earPCACapture processCaptureData:v86 faceData:v87];
-    [(VGHRTFCaptureUpdateData *)v91->_updateData setEarCaptureUpdateData:v14];
+    v14 = [(VGHRTFEarPCACaptureProcessor *)selfCopy->_earPCACapture processCaptureData:dataCopy faceData:faceDataCopy];
+    [(VGHRTFCaptureUpdateData *)selfCopy->_updateData setEarCaptureUpdateData:v14];
 
     v90 = objc_opt_new();
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v15 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-    v16 = [v15 rightEarStatusList];
-    v17 = [v16 allKeys];
-    v18 = [v17 sortedArrayUsingSelector:?];
+    earCaptureUpdateData = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+    rightEarStatusList = [earCaptureUpdateData rightEarStatusList];
+    allKeys = [rightEarStatusList allKeys];
+    v18 = [allKeys sortedArrayUsingSelector:?];
 
     obj = v18;
     v19 = [v18 countByEnumeratingWithState:&v100 objects:v106 count:16];
@@ -273,19 +273,19 @@ LABEL_28:
           }
 
           v25 = *(*(&v100 + 1) + 8 * v24);
-          v26 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-          v27 = [v26 rightEarStatusList];
-          v28 = [v27 objectForKeyedSubscript:v25];
-          v29 = [v28 BOOLValue];
+          earCaptureUpdateData2 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+          rightEarStatusList2 = [earCaptureUpdateData2 rightEarStatusList];
+          v28 = [rightEarStatusList2 objectForKeyedSubscript:v25];
+          bOOLValue = [v28 BOOLValue];
 
-          v30 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-          v31 = [v30 rightEarStatusList];
-          v32 = [v31 objectForKeyedSubscript:v25];
+          earCaptureUpdateData3 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+          rightEarStatusList3 = [earCaptureUpdateData3 rightEarStatusList];
+          v32 = [rightEarStatusList3 objectForKeyedSubscript:v25];
           v33 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
           [v90 setObject:v32 forKeyedSubscript:v33];
 
           v23 = v23 + 1.0;
-          v20 += v29;
+          v20 += bOOLValue;
           ++v24;
         }
 
@@ -305,11 +305,11 @@ LABEL_28:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v34 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-    v35 = [v34 poseStatusList];
-    v36 = [v35 objectAtIndexedSubscript:0];
-    v37 = [v36 allKeys];
-    obja = [v37 sortedArrayUsingSelector:sel_compare_];
+    faceCaptureUpdateData2 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+    poseStatusList = [faceCaptureUpdateData2 poseStatusList];
+    v36 = [poseStatusList objectAtIndexedSubscript:0];
+    allKeys2 = [v36 allKeys];
+    obja = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
     v38 = [obja countByEnumeratingWithState:&v96 objects:v105 count:16];
     if (v38)
@@ -325,21 +325,21 @@ LABEL_28:
           }
 
           v41 = *(*(&v96 + 1) + 8 * i);
-          v42 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-          v43 = [v42 poseStatusList];
-          v44 = [v43 objectAtIndexedSubscript:0];
+          faceCaptureUpdateData3 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+          poseStatusList2 = [faceCaptureUpdateData3 poseStatusList];
+          v44 = [poseStatusList2 objectAtIndexedSubscript:0];
           v45 = [v44 objectForKeyedSubscript:v41];
-          v46 = [v45 BOOLValue];
+          bOOLValue2 = [v45 BOOLValue];
 
-          v47 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-          v48 = [v47 poseStatusList];
-          v49 = [v48 objectAtIndexedSubscript:0];
+          faceCaptureUpdateData4 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+          poseStatusList3 = [faceCaptureUpdateData4 poseStatusList];
+          v49 = [poseStatusList3 objectAtIndexedSubscript:0];
           v50 = [v49 objectForKeyedSubscript:v41];
           v51 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
           [v90 setObject:v50 forKeyedSubscript:v51];
 
           v23 = v23 + 1.0;
-          v20 += v46;
+          v20 += bOOLValue2;
         }
 
         v38 = [obja countByEnumeratingWithState:&v96 objects:v105 count:16];
@@ -352,10 +352,10 @@ LABEL_28:
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v52 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-    v53 = [v52 leftEarStatusList];
-    v54 = [v53 allKeys];
-    v55 = [v54 sortedArrayUsingSelector:sel_compare_];
+    earCaptureUpdateData4 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+    leftEarStatusList = [earCaptureUpdateData4 leftEarStatusList];
+    allKeys3 = [leftEarStatusList allKeys];
+    v55 = [allKeys3 sortedArrayUsingSelector:sel_compare_];
 
     v56 = [v55 countByEnumeratingWithState:&v92 objects:v104 count:16];
     if (v56)
@@ -371,19 +371,19 @@ LABEL_28:
           }
 
           v59 = *(*(&v92 + 1) + 8 * j);
-          v60 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-          v61 = [v60 leftEarStatusList];
-          v62 = [v61 objectForKeyedSubscript:v59];
-          v63 = [v62 BOOLValue];
+          earCaptureUpdateData5 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+          leftEarStatusList2 = [earCaptureUpdateData5 leftEarStatusList];
+          v62 = [leftEarStatusList2 objectForKeyedSubscript:v59];
+          bOOLValue3 = [v62 BOOLValue];
 
-          v64 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-          v65 = [v64 leftEarStatusList];
-          v66 = [v65 objectForKeyedSubscript:v59];
+          earCaptureUpdateData6 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+          leftEarStatusList3 = [earCaptureUpdateData6 leftEarStatusList];
+          v66 = [leftEarStatusList3 objectForKeyedSubscript:v59];
           v67 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
           [v90 setObject:v66 forKeyedSubscript:v67];
 
           v23 = v23 + 1.0;
-          v20 += v63;
+          v20 += bOOLValue3;
         }
 
         v56 = [v55 countByEnumeratingWithState:&v92 objects:v104 count:16];
@@ -393,44 +393,44 @@ LABEL_28:
     }
 
     v68 = [v90 count];
-    v69 = [[VGHRTFFaceCaptureUpdateData alloc] initEmpty];
+    initEmpty = [[VGHRTFFaceCaptureUpdateData alloc] initEmpty];
     v70 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v90, 0}];
-    [v69 setPoseStatusList:v70];
+    [initEmpty setPoseStatusList:v70];
 
-    v71 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-    [v69 setProgressType:{objc_msgSend(v71, "progressType")}];
+    faceCaptureUpdateData5 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+    [initEmpty setProgressType:{objc_msgSend(faceCaptureUpdateData5, "progressType")}];
 
     *&v72 = v20 / v68;
-    [v69 setProgress:v72];
-    v73 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-    v74 = [v73 trackedData];
-    [v69 setTrackedData:v74];
+    [initEmpty setProgress:v72];
+    faceCaptureUpdateData6 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+    trackedData2 = [faceCaptureUpdateData6 trackedData];
+    [initEmpty setTrackedData:trackedData2];
 
-    v75 = [(VGHRTFCaptureUpdateData *)v91->_updateData faceCaptureUpdateData];
-    v76 = [v75 result];
-    [v69 setResult:v76];
+    faceCaptureUpdateData7 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData faceCaptureUpdateData];
+    result = [faceCaptureUpdateData7 result];
+    [initEmpty setResult:result];
 
-    [(VGHRTFCaptureUpdateData *)v91->_updateData setFaceCaptureUpdateData:v69];
-    v77 = [v69 progressType];
-    v78 = [(VGHRTFCaptureUpdateData *)v91->_updateData earCaptureUpdateData];
-    v79 = [v78 progressType];
+    [(VGHRTFCaptureUpdateData *)selfCopy->_updateData setFaceCaptureUpdateData:initEmpty];
+    progressType = [initEmpty progressType];
+    earCaptureUpdateData7 = [(VGHRTFCaptureUpdateData *)selfCopy->_updateData earCaptureUpdateData];
+    progressType2 = [earCaptureUpdateData7 progressType];
 
-    if (v77 == 4 && v79 == 3)
+    if (progressType == 4 && progressType2 == 3)
     {
-      faceCapture = v91->_faceCapture;
-      v91->_faceCapture = 0;
+      faceCapture = selfCopy->_faceCapture;
+      selfCopy->_faceCapture = 0;
 
-      earPCACapture = v91->_earPCACapture;
-      v91->_earPCACapture = 0;
+      earPCACapture = selfCopy->_earPCACapture;
+      selfCopy->_earPCACapture = 0;
 
-      objc_storeStrong(&v91->_faceResults, v69);
-      atomic_store(1u, &v91->_faceCaptureFinished);
+      objc_storeStrong(&selfCopy->_faceResults, initEmpty);
+      atomic_store(1u, &selfCopy->_faceCaptureFinished);
     }
 
-    v9 = v91;
+    selfCopy2 = selfCopy;
   }
 
-  v82 = v9->_updateData;
+  v82 = selfCopy2->_updateData;
   v83 = v82;
 
   v84 = *MEMORY[0x277D85DE8];

@@ -2,10 +2,10 @@
 - (BOOL)_onQueue_anyPlayerIsPlaying;
 - (BOOL)anyPlayerIsPlaying;
 - (BOOL)canBeNowPlaying;
-- (BOOL)canBeNowPlayingForPlayerClient:(id)a3;
+- (BOOL)canBeNowPlayingForPlayerClient:(id)client;
 - (BOOL)hasNowPlayingData;
 - (MRClient)client;
-- (MRDNowPlayingClient)initWithPlayerPath:(id)a3;
+- (MRDNowPlayingClient)initWithPlayerPath:(id)path;
 - (MRDNowPlayingClientDelegate)delegate;
 - (MRDNowPlayingPlayerClient)activePlayerClient;
 - (MRPlayerPath)activePlayerPath;
@@ -13,63 +13,63 @@
 - (NSArray)playerClients;
 - (NSDate)canBeNowPlayingTimestamp;
 - (id)_onQueue_activePlayerClient;
-- (id)_onQueue_addPlayer:(id)a3;
-- (id)_onQueue_existingPlayerClientForPlayer:(id)a3;
-- (id)_onQueue_playerClientForPlayer:(id)a3;
+- (id)_onQueue_addPlayer:(id)player;
+- (id)_onQueue_existingPlayerClientForPlayer:(id)player;
+- (id)_onQueue_playerClientForPlayer:(id)player;
 - (id)debugDescription;
 - (id)description;
-- (id)existingPlayerClientForPlayer:(id)a3;
-- (id)existingPlayerClientForPlayerPath:(id)a3;
-- (id)notificationPlayerPathFromPlayer:(id)a3;
-- (id)playerClientForPlayer:(id)a3;
+- (id)existingPlayerClientForPlayer:(id)player;
+- (id)existingPlayerClientForPlayerPath:(id)path;
+- (id)notificationPlayerPathFromPlayer:(id)player;
+- (id)playerClientForPlayer:(id)player;
 - (void)_onQueue_initializeDisplayName;
 - (void)_onQueue_popState;
 - (void)_onQueue_pushState;
-- (void)_onQueue_removePlayerClientForPlayer:(id)a3;
-- (void)_onQueue_setActivePlayerClient:(id)a3;
+- (void)_onQueue_removePlayerClientForPlayer:(id)player;
+- (void)_onQueue_setActivePlayerClient:(id)client;
 - (void)dealloc;
-- (void)handleCanBeNowPlayingPlayerDidChange:(id)a3;
+- (void)handleCanBeNowPlayingPlayerDidChange:(id)change;
 - (void)initializeBundleIdentifier;
 - (void)initializeDisplayName;
-- (void)removePlayerClientForPlayer:(id)a3;
-- (void)setActivePlayerClient:(id)a3;
-- (void)setClient:(id)a3;
-- (void)updateClient:(id)a3;
+- (void)removePlayerClientForPlayer:(id)player;
+- (void)setActivePlayerClient:(id)client;
+- (void)setClient:(id)client;
+- (void)updateClient:(id)client;
 @end
 
 @implementation MRDNowPlayingClient
 
 - (void)initializeBundleIdentifier
 {
-  v3 = [(MRPlayerPath *)self->_playerPath client];
-  v4 = [v3 processIdentifier];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  processIdentifier = [client processIdentifier];
 
-  v5 = [(MRPlayerPath *)self->_playerPath origin];
-  v6 = [v5 isLocallyHosted];
+  origin = [(MRPlayerPath *)self->_playerPath origin];
+  isLocallyHosted = [origin isLocallyHosted];
 
-  if (v6)
+  if (isLocallyHosted)
   {
-    v7 = sub_10000B294(v4);
-    v8 = [(MRPlayerPath *)self->_playerPath client];
-    [v8 setBundleIdentifier:v7];
+    v7 = sub_10000B294(processIdentifier);
+    client2 = [(MRPlayerPath *)self->_playerPath client];
+    [client2 setBundleIdentifier:v7];
 
-    v9 = sub_10000AEF0(v4);
-    v10 = [(MRPlayerPath *)self->_playerPath client];
-    [v10 setProcessUserIdentifier:v9];
+    v9 = sub_10000AEF0(processIdentifier);
+    client3 = [(MRPlayerPath *)self->_playerPath client];
+    [client3 setProcessUserIdentifier:v9];
   }
 
-  v11 = [(MRPlayerPath *)self->_playerPath client];
-  v12 = [v11 parentApplicationBundleIdentifier];
-  v13 = v12;
-  if (v12)
+  client4 = [(MRPlayerPath *)self->_playerPath client];
+  parentApplicationBundleIdentifier = [client4 parentApplicationBundleIdentifier];
+  v13 = parentApplicationBundleIdentifier;
+  if (parentApplicationBundleIdentifier)
   {
-    v14 = v12;
+    bundleIdentifier = parentApplicationBundleIdentifier;
   }
 
   else
   {
-    v15 = [(MRPlayerPath *)self->_playerPath client];
-    v14 = [v15 bundleIdentifier];
+    client5 = [(MRPlayerPath *)self->_playerPath client];
+    bundleIdentifier = [client5 bundleIdentifier];
   }
 
   v16 = _MRLogForCategory();
@@ -81,12 +81,12 @@
     v21 = 2114;
     v22 = @"effectiveBundleIdentifier";
     v23 = 2112;
-    v24 = v14;
+    v24 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v19, 0x20u);
   }
 
-  v18 = [(MRPlayerPath *)self->_playerPath origin];
-  [v18 isLocallyHosted];
+  origin2 = [(MRPlayerPath *)self->_playerPath origin];
+  [origin2 isLocallyHosted];
 }
 
 - (MRPlayerPath)playerPath
@@ -107,25 +107,25 @@
 
 - (void)_onQueue_initializeDisplayName
 {
-  v3 = [(MRPlayerPath *)self->_playerPath client];
-  v4 = [v3 displayName];
-  if (v4)
+  client = [(MRPlayerPath *)self->_playerPath client];
+  displayName = [client displayName];
+  if (displayName)
   {
   }
 
   else
   {
-    v5 = [(MRPlayerPath *)self->_playerPath origin];
-    v6 = [v5 isLocallyHosted];
+    origin = [(MRPlayerPath *)self->_playerPath origin];
+    isLocallyHosted = [origin isLocallyHosted];
 
-    if (v6)
+    if (isLocallyHosted)
     {
-      v7 = [v3 parentApplicationBundleIdentifier];
-      v8 = v7;
-      if (!v7 || (sub_10000B698(v7), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+      parentApplicationBundleIdentifier = [client parentApplicationBundleIdentifier];
+      v8 = parentApplicationBundleIdentifier;
+      if (!parentApplicationBundleIdentifier || (sub_10000B698(parentApplicationBundleIdentifier), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v10 = [v3 bundleIdentifier];
-        v9 = sub_10000B698(v10);
+        bundleIdentifier = [client bundleIdentifier];
+        v9 = sub_10000B698(bundleIdentifier);
       }
 
       v11 = _MRLogForCategory();
@@ -141,7 +141,7 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v13, 0x20u);
       }
 
-      [v3 setDisplayName:v9];
+      [client setDisplayName:v9];
     }
   }
 }
@@ -160,39 +160,39 @@
 - (void)_onQueue_popState
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(MRDNowPlayingClient *)self _onQueue_activePlayerClient];
-  if (self->_pushStateActivePlayerClient != v3)
+  _onQueue_activePlayerClient = [(MRDNowPlayingClient *)self _onQueue_activePlayerClient];
+  if (self->_pushStateActivePlayerClient != _onQueue_activePlayerClient)
   {
     v4 = _MRLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MRDNowPlayingPlayerClient *)self->_pushStateActivePlayerClient playerPath];
-      v6 = [v5 player];
-      v7 = [v6 identifier];
-      v8 = [(MRDNowPlayingPlayerClient *)v3 playerPath];
-      v9 = [v8 player];
-      v10 = [v9 identifier];
+      playerPath = [(MRDNowPlayingPlayerClient *)self->_pushStateActivePlayerClient playerPath];
+      player = [playerPath player];
+      identifier = [player identifier];
+      playerPath2 = [(MRDNowPlayingPlayerClient *)_onQueue_activePlayerClient playerPath];
+      player2 = [playerPath2 player];
+      identifier2 = [player2 identifier];
       playerPath = self->_playerPath;
       *buf = 138543874;
-      v72 = v7;
+      v72 = identifier;
       v73 = 2114;
-      v74 = v10;
+      v74 = identifier2;
       v75 = 2114;
       v76 = playerPath;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] ActiveNowPlayingPlayer changed from %{public}@ to %{public}@ for %{public}@", buf, 0x20u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained nowPlayingClient:self activePlayerDidChangeFromPlayerClient:self->_pushStateActivePlayerClient toPlayerClient:v3];
+    [WeakRetained nowPlayingClient:self activePlayerDidChangeFromPlayerClient:self->_pushStateActivePlayerClient toPlayerClient:_onQueue_activePlayerClient];
   }
 
-  v13 = [(MRPlayerPath *)self->_playerPath client];
-  v14 = [v13 displayName];
-  v15 = [(MRClient *)self->_pushStateClient displayName];
-  v64 = v14;
-  v65 = v3;
-  v63 = v15;
-  if (v14 && (v16 = v15, ([v14 isEqualToString:v15] & 1) == 0))
+  client = [(MRPlayerPath *)self->_playerPath client];
+  displayName = [client displayName];
+  displayName2 = [(MRClient *)self->_pushStateClient displayName];
+  v64 = displayName;
+  v65 = _onQueue_activePlayerClient;
+  v63 = displayName2;
+  if (displayName && (v16 = displayName2, ([displayName isEqualToString:displayName2] & 1) == 0))
   {
     v18 = _MRLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -201,7 +201,7 @@
       *buf = 138543874;
       v72 = v16;
       v73 = 2114;
-      v74 = v14;
+      v74 = displayName;
       v75 = 2114;
       v76 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] DisplayName changed from %{public}@ to %{public}@ for %{public}@", buf, 0x20u);
@@ -216,18 +216,18 @@
     v17 = 0;
   }
 
-  v20 = [v13 parentApplicationBundleIdentifier];
-  v21 = [(MRClient *)self->_pushStateClient parentApplicationBundleIdentifier];
-  if (v20 && ([v20 isEqualToString:v21] & 1) == 0)
+  parentApplicationBundleIdentifier = [client parentApplicationBundleIdentifier];
+  parentApplicationBundleIdentifier2 = [(MRClient *)self->_pushStateClient parentApplicationBundleIdentifier];
+  if (parentApplicationBundleIdentifier && ([parentApplicationBundleIdentifier isEqualToString:parentApplicationBundleIdentifier2] & 1) == 0)
   {
     v22 = _MRLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = self->_playerPath;
       *buf = 138543874;
-      v72 = v21;
+      v72 = parentApplicationBundleIdentifier2;
       v73 = 2114;
-      v74 = v20;
+      v74 = parentApplicationBundleIdentifier;
       v75 = 2114;
       v76 = v23;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] ParentAppBundleIdentifier changed from %{public}@ to %{public}@ for %{public}@", buf, 0x20u);
@@ -238,7 +238,7 @@
     v17 = 1;
   }
 
-  v62 = v21;
+  v62 = parentApplicationBundleIdentifier2;
   v24 = MRNowPlayingClientCopyBundleIdentifierExtendedHierarchy();
   v25 = v24;
   if (v24 && [v24 count])
@@ -272,8 +272,8 @@
     v61 = 0;
   }
 
-  v31 = [v13 visibility];
-  if (v31 && [(MRClient *)self->_pushStateClient visibility]!= v31)
+  visibility = [client visibility];
+  if (visibility && [(MRClient *)self->_pushStateClient visibility]!= visibility)
   {
     v32 = NSStringFromMRClientVisibility();
     v33 = NSStringFromMRClientVisibility();
@@ -293,14 +293,14 @@
     v17 = 1;
   }
 
-  v36 = [v13 tintColor];
-  if (v36)
+  tintColor = [client tintColor];
+  if (tintColor)
   {
-    v37 = [(MRClient *)self->_pushStateClient tintColor];
-    if (([v37 isEqual:v36] & 1) == 0)
+    tintColor2 = [(MRClient *)self->_pushStateClient tintColor];
+    if (([tintColor2 isEqual:tintColor] & 1) == 0)
     {
-      v38 = [v37 description];
-      v39 = [v36 description];
+      v38 = [tintColor2 description];
+      v39 = [tintColor description];
       v40 = _MRLogForCategory();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
@@ -318,10 +318,10 @@
     }
   }
 
-  v42 = [v13 appIcon];
-  v43 = [(MRClient *)self->_pushStateClient appIcon];
-  v44 = v43;
-  if (v42 == v43)
+  appIcon = [client appIcon];
+  appIcon2 = [(MRClient *)self->_pushStateClient appIcon];
+  v44 = appIcon2;
+  if (appIcon == appIcon2)
   {
 
 LABEL_41:
@@ -333,7 +333,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v45 = [v42 isEqual:v43];
+  v45 = [appIcon isEqual:appIcon2];
 
   if (v45)
   {
@@ -343,15 +343,15 @@ LABEL_41:
   v46 = _MRLogForCategory();
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
-    v47 = [(MRClient *)self->_pushStateClient appIcon];
-    v48 = [v47 absoluteString];
-    v49 = [v13 appIcon];
-    v50 = [v49 absoluteString];
+    appIcon3 = [(MRClient *)self->_pushStateClient appIcon];
+    absoluteString = [appIcon3 absoluteString];
+    appIcon4 = [client appIcon];
+    absoluteString2 = [appIcon4 absoluteString];
     v51 = self->_playerPath;
     *buf = 138543874;
-    v72 = v48;
+    v72 = absoluteString;
     v73 = 2114;
-    v74 = v50;
+    v74 = absoluteString2;
     v75 = 2114;
     v76 = v51;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] AppIcon changed from %{public}@ to %{public}@ for %{public}@", buf, 0x20u);
@@ -377,7 +377,7 @@ LABEL_42:
           objc_enumerationMutation(v52);
         }
 
-        [*(*(&v66 + 1) + 8 * i) updateClient:v13];
+        [*(*(&v66 + 1) + 8 * i) updateClient:client];
       }
 
       v54 = [(NSMutableArray *)v52 countByEnumeratingWithState:&v66 objects:v70 count:16];
@@ -387,7 +387,7 @@ LABEL_42:
   }
 
   v57 = objc_loadWeakRetained(&self->_delegate);
-  v58 = [v13 copy];
+  v58 = [client copy];
   [v57 nowPlayingClient:self clientStateDidChange:v58];
 
   if (v61)
@@ -406,12 +406,12 @@ LABEL_51:
 - (void)_onQueue_pushState
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(MRPlayerPath *)self->_playerPath client];
-  v4 = [v3 copy];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  v4 = [client copy];
   [(MRDNowPlayingClient *)self setPushStateClient:v4];
 
-  v5 = [(MRDNowPlayingClient *)self _onQueue_activePlayerClient];
-  [(MRDNowPlayingClient *)self setPushStateActivePlayerClient:v5];
+  _onQueue_activePlayerClient = [(MRDNowPlayingClient *)self _onQueue_activePlayerClient];
+  [(MRDNowPlayingClient *)self setPushStateActivePlayerClient:_onQueue_activePlayerClient];
 }
 
 - (id)_onQueue_activePlayerClient
@@ -483,15 +483,15 @@ LABEL_51:
   return v3;
 }
 
-- (MRDNowPlayingClient)initWithPlayerPath:(id)a3
+- (MRDNowPlayingClient)initWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = MRDNowPlayingClient;
   v5 = [(MRDNowPlayingClient *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     v7 = *(v5 + 4);
     *(v5 + 4) = v6;
 
@@ -501,15 +501,15 @@ LABEL_51:
     *(v5 + 1) = v9;
 
     *(v5 + 27) = 257;
-    v11 = [*(v5 + 4) origin];
-    v12 = [*(v5 + 4) client];
-    v13 = [v12 bundleIdentifier];
-    if ([v11 isLocallyHosted] && !objc_msgSend(v12, "processIdentifier"))
+    origin = [*(v5 + 4) origin];
+    client = [*(v5 + 4) client];
+    bundleIdentifier = [client bundleIdentifier];
+    if ([origin isLocallyHosted] && !objc_msgSend(client, "processIdentifier"))
     {
       v14 = dispatch_semaphore_create(0);
       v15 = *(v5 + 1);
       v22 = v5;
-      v23 = v12;
+      v23 = client;
       v16 = v14;
       MRProcessIDForApplication();
       v17 = dispatch_time(0, 5000000000);
@@ -519,7 +519,7 @@ LABEL_51:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v26 = v13;
+          v26 = bundleIdentifier;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] Timeout trying to pid for %{public}@", buf, 0xCu);
         }
       }
@@ -558,9 +558,9 @@ LABEL_51:
 {
   v3 = objc_opt_class();
   v18 = NSStringFromClass(v3);
-  v21 = [(MRDNowPlayingClient *)self playerPath];
+  playerPath = [(MRDNowPlayingClient *)self playerPath];
   v25 = MRCreateIndentedDebugDescriptionFromObject();
-  v20 = [(MRDNowPlayingClient *)self client];
+  client = [(MRDNowPlayingClient *)self client];
   v24 = MRCreateIndentedDebugDescriptionFromObject();
   [(MRDNowPlayingClient *)self perPlayerCanBeNowPlaying];
   v17 = MRCreateIndentedDebugDescriptionFromObject();
@@ -578,8 +578,8 @@ LABEL_51:
   v5 = MRCreateIndentedDebugDescriptionFromObject();
   [(MRDNowPlayingClient *)self supportsBackgroundAudio];
   v6 = MRCreateIndentedDebugDescriptionFromObject();
-  v14 = [(MRDNowPlayingClient *)self activePlayerClient];
-  v7 = [v14 playerPath];
+  activePlayerClient = [(MRDNowPlayingClient *)self activePlayerClient];
+  playerPath2 = [activePlayerClient playerPath];
   v8 = MRCreateIndentedDebugDescriptionFromObject();
   playerClients = self->_playerClients;
   v26[0] = _NSConcreteStackBlock;
@@ -610,57 +610,57 @@ LABEL_51:
   return v3;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = clientCopy;
+  v6 = clientCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)updateClient:(id)a3
+- (void)updateClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = clientCopy;
+  v6 = clientCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)setActivePlayerClient:(id)a3
+- (void)setActivePlayerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = clientCopy;
+  v6 = clientCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_onQueue_setActivePlayerClient:(id)a3
+- (void)_onQueue_setActivePlayerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_serialQueue);
   [(MRDNowPlayingClient *)self _onQueue_pushState];
-  v5 = [(MRDNowPlayingPlayerClient *)self->_nowPlayingPlayerClient playerPath];
+  playerPath = [(MRDNowPlayingPlayerClient *)self->_nowPlayingPlayerClient playerPath];
 
   v6 = _MRLogForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (playerPath)
   {
     if (v7)
     {
       playerPath = self->_playerPath;
-      v9 = [(MRDNowPlayingPlayerClient *)self->_nowPlayingPlayerClient playerPath];
-      v10 = [v4 playerPath];
+      playerPath2 = [(MRDNowPlayingPlayerClient *)self->_nowPlayingPlayerClient playerPath];
+      playerPath3 = [clientCopy playerPath];
       v12 = 138544130;
       v13 = playerPath;
       v14 = 2114;
       v15 = @"activePlayerClient";
       v16 = 2112;
-      v17 = v9;
+      v17 = playerPath2;
       v18 = 2112;
-      v19 = v10;
+      v19 = playerPath3;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", &v12, 0x2Au);
 
 LABEL_6:
@@ -670,18 +670,18 @@ LABEL_6:
   else if (v7)
   {
     v11 = self->_playerPath;
-    v9 = [v4 playerPath];
+    playerPath2 = [clientCopy playerPath];
     v12 = 138543874;
     v13 = v11;
     v14 = 2114;
     v15 = @"activePlayerClient";
     v16 = 2112;
-    v17 = v9;
+    v17 = playerPath2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v12, 0x20u);
     goto LABEL_6;
   }
 
-  [(MRDNowPlayingClient *)self setNowPlayingPlayerClient:v4];
+  [(MRDNowPlayingClient *)self setNowPlayingPlayerClient:clientCopy];
   [(MRDNowPlayingClient *)self _onQueue_popState];
 }
 
@@ -757,25 +757,25 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)canBeNowPlayingForPlayerClient:(id)a3
+- (BOOL)canBeNowPlayingForPlayerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if ([(MRDNowPlayingClient *)self perPlayerCanBeNowPlaying]|| ![(MRDNowPlayingClient *)self canBeNowPlaying])
   {
-    v5 = [v4 canBeNowPlayingPlayer];
+    canBeNowPlayingPlayer = [clientCopy canBeNowPlayingPlayer];
   }
 
   else
   {
-    v5 = 1;
+    canBeNowPlayingPlayer = 1;
   }
 
-  return v5;
+  return canBeNowPlayingPlayer;
 }
 
-- (id)playerClientForPlayer:(id)a3
+- (id)playerClientForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -783,7 +783,7 @@ LABEL_11:
   v13 = sub_100035A5C;
   v14 = 0;
   serialQueue = self->_serialQueue;
-  v8 = v4;
+  v8 = playerCopy;
   msv_dispatch_sync_on_queue();
   v6 = v10[5];
 
@@ -792,13 +792,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)_onQueue_playerClientForPlayer:(id)a3
+- (id)_onQueue_playerClientForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v4 || (+[MRPlayer defaultPlayer], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (playerCopy || (+[MRPlayer defaultPlayer], (playerCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(MRDNowPlayingClient *)self _onQueue_existingPlayerClientForPlayer:v4];
+    v5 = [(MRDNowPlayingClient *)self _onQueue_existingPlayerClientForPlayer:playerCopy];
     if (v5)
     {
       v6 = v5;
@@ -807,9 +807,9 @@ LABEL_11:
     else
     {
       v7 = [MRPlayerPath alloc];
-      v8 = [(MRPlayerPath *)self->_playerPath origin];
-      v9 = [(MRPlayerPath *)self->_playerPath client];
-      v10 = [v7 initWithOrigin:v8 client:v9 player:v4];
+      origin = [(MRPlayerPath *)self->_playerPath origin];
+      client = [(MRPlayerPath *)self->_playerPath client];
+      v10 = [v7 initWithOrigin:origin client:client player:playerCopy];
 
       v6 = [(MRDNowPlayingClient *)self _onQueue_addPlayer:v10];
     }
@@ -823,25 +823,25 @@ LABEL_11:
   return v6;
 }
 
-- (id)_onQueue_addPlayer:(id)a3
+- (id)_onQueue_addPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [(MRPlayerPath *)self->_playerPath client];
-  [v4 setClient:v5];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  [playerCopy setClient:client];
 
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = playerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingClient] Creating playerClient for %{public}@", &v15, 0xCu);
   }
 
-  v7 = [[MRDNowPlayingPlayerClient alloc] initWithPlayerPath:v4];
+  v7 = [[MRDNowPlayingPlayerClient alloc] initWithPlayerPath:playerCopy];
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 nowPlayingServer];
-  [(MRDNowPlayingPlayerClient *)v7 setDelegate:v9];
+  nowPlayingServer = [v8 nowPlayingServer];
+  [(MRDNowPlayingPlayerClient *)v7 setDelegate:nowPlayingServer];
 
   playerClients = self->_playerClients;
   if (!playerClients)
@@ -865,17 +865,17 @@ LABEL_11:
   return v7;
 }
 
-- (id)existingPlayerClientForPlayerPath:(id)a3
+- (id)existingPlayerClientForPlayerPath:(id)path
 {
-  v4 = [a3 player];
-  v5 = [(MRDNowPlayingClient *)self existingPlayerClientForPlayer:v4];
+  player = [path player];
+  v5 = [(MRDNowPlayingClient *)self existingPlayerClientForPlayer:player];
 
   return v5;
 }
 
-- (id)existingPlayerClientForPlayer:(id)a3
+- (id)existingPlayerClientForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -883,7 +883,7 @@ LABEL_11:
   v13 = sub_100035A5C;
   v14 = 0;
   serialQueue = self->_serialQueue;
-  v8 = v4;
+  v8 = playerCopy;
   msv_dispatch_sync_on_queue();
   v6 = v10[5];
 
@@ -892,9 +892,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)_onQueue_existingPlayerClientForPlayer:(id)a3
+- (id)_onQueue_existingPlayerClientForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   dispatch_assert_queue_V2(self->_serialQueue);
   v14 = 0u;
   v15 = 0u;
@@ -915,8 +915,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 player];
-        if ([v10 isEqual:v4])
+        player = [v9 player];
+        if ([player isEqual:playerCopy])
         {
           v6 = v9;
 
@@ -939,21 +939,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)removePlayerClientForPlayer:(id)a3
+- (void)removePlayerClientForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = playerCopy;
+  v6 = playerCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_onQueue_removePlayerClientForPlayer:(id)a3
+- (void)_onQueue_removePlayerClientForPlayer:(id)player
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  playerCopy = player;
   dispatch_assert_queue_V2(serialQueue);
-  v7 = [(MRDNowPlayingClient *)self _onQueue_existingPlayerClientForPlayer:v5];
+  v7 = [(MRDNowPlayingClient *)self _onQueue_existingPlayerClientForPlayer:playerCopy];
 
   if (v7)
   {
@@ -979,34 +979,34 @@ LABEL_11:
   return v3;
 }
 
-- (id)notificationPlayerPathFromPlayer:(id)a3
+- (id)notificationPlayerPathFromPlayer:(id)player
 {
-  v4 = [a3 playerPath];
-  v5 = [(MRPlayerPath *)self->_playerPath client];
-  [v4 setClient:v5];
+  playerPath = [player playerPath];
+  client = [(MRPlayerPath *)self->_playerPath client];
+  [playerPath setClient:client];
 
-  if (!v4)
+  if (!playerPath)
   {
-    v4 = [(MRPlayerPath *)self->_playerPath copy];
+    playerPath = [(MRPlayerPath *)self->_playerPath copy];
   }
 
-  return v4;
+  return playerPath;
 }
 
-- (void)handleCanBeNowPlayingPlayerDidChange:(id)a3
+- (void)handleCanBeNowPlayingPlayerDidChange:(id)change
 {
-  v4 = [a3 userInfo];
+  userInfo = [change userInfo];
   v12 = MRGetPlayerPathFromUserInfo();
 
-  v5 = [v12 origin];
-  v6 = [(MRDNowPlayingClient *)self playerPath];
-  v7 = [v6 origin];
-  if ([v5 isEqual:v7])
+  origin = [v12 origin];
+  playerPath = [(MRDNowPlayingClient *)self playerPath];
+  origin2 = [playerPath origin];
+  if ([origin isEqual:origin2])
   {
-    v8 = [v12 client];
-    v9 = [(MRDNowPlayingClient *)self playerPath];
-    v10 = [v9 client];
-    v11 = [v8 isEqual:v10];
+    client = [v12 client];
+    playerPath2 = [(MRDNowPlayingClient *)self playerPath];
+    client2 = [playerPath2 client];
+    v11 = [client isEqual:client2];
 
     if (v11)
     {

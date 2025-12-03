@@ -1,13 +1,13 @@
 @interface SAOnBehalfOfSingle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation SAOnBehalfOfSingle
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -15,15 +15,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a3;
-    v7 = v5;
+    equalCopy = equal;
+    v7 = equalCopy;
     if (self)
     {
       proximatePid = self->_proximatePid;
-      if (v5)
+      if (equalCopy)
       {
 LABEL_5:
-        v9 = *(v5 + 2);
+        v9 = *(equalCopy + 2);
         goto LABEL_6;
       }
     }
@@ -31,7 +31,7 @@ LABEL_5:
     else
     {
       proximatePid = 0;
-      if (v5)
+      if (equalCopy)
       {
         goto LABEL_5;
       }
@@ -47,10 +47,10 @@ LABEL_6:
     if (self)
     {
       originPid = self->_originPid;
-      if (v5)
+      if (equalCopy)
       {
 LABEL_9:
-        v11 = *(v5 + 3);
+        v11 = *(equalCopy + 3);
         goto LABEL_10;
       }
     }
@@ -58,7 +58,7 @@ LABEL_9:
     else
     {
       originPid = 0;
-      if (v5)
+      if (equalCopy)
       {
         goto LABEL_9;
       }

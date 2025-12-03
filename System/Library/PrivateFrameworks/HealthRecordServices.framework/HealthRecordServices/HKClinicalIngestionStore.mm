@@ -1,20 +1,20 @@
 @interface HKClinicalIngestionStore
 - (HKClinicalIngestionStore)init;
-- (HKClinicalIngestionStore)initWithHealthStore:(id)a3;
+- (HKClinicalIngestionStore)initWithHealthStore:(id)store;
 - (NSString)description;
-- (id)_actionCompletionWithObjectOnClientQueue:(id)a3;
+- (id)_actionCompletionWithObjectOnClientQueue:(id)queue;
 - (void)_establishProxyConnection;
 - (void)_establishProxyConnectionIfNoObserversArePresent;
-- (void)_executeCheapCallOnPluginServerProxy:(id)a3;
-- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)a3;
-- (void)abortIngestionWithCompletion:(id)a3;
-- (void)addIngestionStateListener:(id)a3;
-- (void)clientRemote_updateIngestionState:(int64_t)a3;
-- (void)currentIngestionStateWithCompletion:(id)a3;
-- (void)ingestHealthRecordsWithFHIRDocumentHandle:(id)a3 accountIdentifier:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)ingestHealthRecordsWithOptions:(unint64_t)a3 reason:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6;
-- (void)pingWithCompletion:(id)a3;
-- (void)resetHealthRecordsLastExtractedRowIDWithCompletion:(id)a3;
+- (void)_executeCheapCallOnPluginServerProxy:(id)proxy;
+- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)proxy;
+- (void)abortIngestionWithCompletion:(id)completion;
+- (void)addIngestionStateListener:(id)listener;
+- (void)clientRemote_updateIngestionState:(int64_t)state;
+- (void)currentIngestionStateWithCompletion:(id)completion;
+- (void)ingestHealthRecordsWithFHIRDocumentHandle:(id)handle accountIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
+- (void)ingestHealthRecordsWithOptions:(unint64_t)options reason:(id)reason accountIdentifiers:(id)identifiers completion:(id)completion;
+- (void)pingWithCompletion:(id)completion;
+- (void)resetHealthRecordsLastExtractedRowIDWithCompletion:(id)completion;
 @end
 
 @implementation HKClinicalIngestionStore
@@ -29,12 +29,12 @@
   return 0;
 }
 
-- (HKClinicalIngestionStore)initWithHealthStore:(id)a3
+- (HKClinicalIngestionStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = HKClinicalIngestionStore;
-  v5 = [(HKClinicalStore *)&v18 initWithHealthStore:v4 exportedObject:self];
+  v5 = [(HKClinicalStore *)&v18 initWithHealthStore:storeCopy exportedObject:self];
   v6 = v5;
   if (v5)
   {
@@ -77,9 +77,9 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HKClinicalIngestionStore_pingWithCompletion___block_invoke;
@@ -94,18 +94,18 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   [(HKClinicalIngestionStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)ingestHealthRecordsWithOptions:(unint64_t)a3 reason:(id)a4 accountIdentifiers:(id)a5 completion:(id)a6
+- (void)ingestHealthRecordsWithOptions:(unint64_t)options reason:(id)reason accountIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:a6];
+  reasonCopy = reason;
+  identifiersCopy = identifiers;
+  v12 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:completion];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __96__HKClinicalIngestionStore_ingestHealthRecordsWithOptions_reason_accountIdentifiers_completion___block_invoke;
   v18[3] = &unk_2796DC9D8;
-  v22 = a3;
-  v19 = v10;
-  v20 = v11;
+  optionsCopy = options;
+  v19 = reasonCopy;
+  v20 = identifiersCopy;
   v21 = v12;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -113,23 +113,23 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   v16[3] = &unk_2796DBFF8;
   v17 = v21;
   v13 = v21;
-  v14 = v11;
-  v15 = v10;
+  v14 = identifiersCopy;
+  v15 = reasonCopy;
   [(HKClinicalIngestionStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (void)ingestHealthRecordsWithFHIRDocumentHandle:(id)a3 accountIdentifier:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)ingestHealthRecordsWithFHIRDocumentHandle:(id)handle accountIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:a6];
+  handleCopy = handle;
+  identifierCopy = identifier;
+  v12 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:completion];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __107__HKClinicalIngestionStore_ingestHealthRecordsWithFHIRDocumentHandle_accountIdentifier_options_completion___block_invoke;
   v18[3] = &unk_2796DC9D8;
-  v19 = v10;
-  v20 = v11;
-  v22 = a5;
+  v19 = handleCopy;
+  v20 = identifierCopy;
+  optionsCopy = options;
   v21 = v12;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -137,14 +137,14 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   v16[3] = &unk_2796DBFF8;
   v17 = v21;
   v13 = v21;
-  v14 = v11;
-  v15 = v10;
+  v14 = identifierCopy;
+  v15 = handleCopy;
   [(HKClinicalIngestionStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (void)abortIngestionWithCompletion:(id)a3
+- (void)abortIngestionWithCompletion:(id)completion
 {
-  v4 = [(HKClinicalStore *)self clientQueueErrorHandlerWithCompletion:a3];
+  v4 = [(HKClinicalStore *)self clientQueueErrorHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__HKClinicalIngestionStore_abortIngestionWithCompletion___block_invoke;
@@ -159,9 +159,9 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   [(HKClinicalIngestionStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)resetHealthRecordsLastExtractedRowIDWithCompletion:(id)a3
+- (void)resetHealthRecordsLastExtractedRowIDWithCompletion:(id)completion
 {
-  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HKClinicalIngestionStore_resetHealthRecordsLastExtractedRowIDWithCompletion___block_invoke;
@@ -176,18 +176,18 @@ void __48__HKClinicalIngestionStore_initWithHealthStore___block_invoke(uint64_t 
   [(HKClinicalIngestionStore *)self _fetchHealthRecordsPluginServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)addIngestionStateListener:(id)a3
+- (void)addIngestionStateListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   [(HKClinicalIngestionStore *)self _establishProxyConnectionIfNoObserversArePresent];
-  [(HKObserverSet *)self->_ingestionStateChangeObservers registerObserver:v4];
+  [(HKObserverSet *)self->_ingestionStateChangeObservers registerObserver:listenerCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HKClinicalIngestionStore_addIngestionStateListener___block_invoke;
   v6[3] = &unk_2796DCA28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = listenerCopy;
+  v5 = listenerCopy;
   [(HKClinicalIngestionStore *)self currentIngestionStateWithCompletion:v6];
 }
 
@@ -210,15 +210,15 @@ uint64_t __54__HKClinicalIngestionStore_addIngestionStateListener___block_invoke
   return result;
 }
 
-- (void)currentIngestionStateWithCompletion:(id)a3
+- (void)currentIngestionStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_ivarLock);
   lastKnownIngestionState = self->_lastKnownIngestionState;
   os_unfair_lock_unlock(&self->_ivarLock);
   if (lastKnownIngestionState)
   {
-    v4[2](v4, lastKnownIngestionState);
+    completionCopy[2](completionCopy, lastKnownIngestionState);
   }
 
   else
@@ -227,7 +227,7 @@ uint64_t __54__HKClinicalIngestionStore_addIngestionStateListener___block_invoke
     v8[1] = 3221225472;
     v8[2] = __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_invoke;
     v8[3] = &unk_2796DC9B0;
-    v9 = v4;
+    v9 = completionCopy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_invoke_2;
@@ -250,10 +250,10 @@ void __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)clientRemote_updateIngestionState:(int64_t)a3
+- (void)clientRemote_updateIngestionState:(int64_t)state
 {
   os_unfair_lock_lock(&self->_ivarLock);
-  if (self->_lastKnownIngestionState == a3)
+  if (self->_lastKnownIngestionState == state)
   {
 
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -261,7 +261,7 @@ void __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_
 
   else
   {
-    self->_lastKnownIngestionState = a3;
+    self->_lastKnownIngestionState = state;
     os_unfair_lock_unlock(&self->_ivarLock);
     ingestionStateChangeObservers = self->_ingestionStateChangeObservers;
     v6[0] = MEMORY[0x277D85DD0];
@@ -269,21 +269,21 @@ void __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_
     v6[2] = __62__HKClinicalIngestionStore_clientRemote_updateIngestionState___block_invoke;
     v6[3] = &unk_2796DCA00;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = state;
     [(HKObserverSet *)ingestionStateChangeObservers notifyObservers:v6];
   }
 }
 
-- (id)_actionCompletionWithObjectOnClientQueue:(id)a3
+- (id)_actionCompletionWithObjectOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__HKClinicalIngestionStore__actionCompletionWithObjectOnClientQueue___block_invoke;
   v8[3] = &unk_2796DCA78;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;
@@ -332,15 +332,15 @@ uint64_t __69__HKClinicalIngestionStore__actionCompletionWithObjectOnClientQueue
   }
 }
 
-- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)a3
+- (void)_reestablishProxyConnectionIfObserversArePresentWithPluginServerProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&self->_ivarLock);
   v4 = [(HKObserverSet *)self->_ingestionStateChangeObservers count];
   os_unfair_lock_unlock(&self->_ivarLock);
   if (v4)
   {
-    [(HKClinicalIngestionStore *)self _executeCheapCallOnPluginServerProxy:v5];
+    [(HKClinicalIngestionStore *)self _executeCheapCallOnPluginServerProxy:proxyCopy];
   }
 }
 
@@ -369,16 +369,16 @@ void __53__HKClinicalIngestionStore__establishProxyConnection__block_invoke_2(ui
   }
 }
 
-- (void)_executeCheapCallOnPluginServerProxy:(id)a3
+- (void)_executeCheapCallOnPluginServerProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_DEBUG))
   {
     [HKClinicalIngestionStore _executeCheapCallOnPluginServerProxy:?];
   }
 
-  [v4 remote_pingWithCompletion:&__block_literal_global_5];
+  [proxyCopy remote_pingWithCompletion:&__block_literal_global_5];
 }
 
 void __64__HKClinicalIngestionStore_currentIngestionStateWithCompletion___block_invoke_2_cold_1(uint64_t a1)

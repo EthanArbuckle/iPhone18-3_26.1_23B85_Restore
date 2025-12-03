@@ -1,8 +1,8 @@
 @interface MTRColorControlClusterEnhancedMoveToHueAndSaturationParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRColorControlClusterEnhancedMoveToHueAndSaturationParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams);
-  v5 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self enhancedHue];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setEnhancedHue:v5];
+  enhancedHue = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self enhancedHue];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setEnhancedHue:enhancedHue];
 
-  v6 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self saturation];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setSaturation:v6];
+  saturation = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self saturation];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setSaturation:saturation];
 
-  v7 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self transitionTime];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setTransitionTime:v7];
+  transitionTime = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self transitionTime];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setTransitionTime:transitionTime];
 
-  v8 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsMask];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setOptionsMask:v8];
+  optionsMask = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsMask];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setOptionsMask:optionsMask];
 
-  v9 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsOverride];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setOptionsOverride:v9];
+  optionsOverride = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsOverride];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setOptionsOverride:optionsOverride];
 
-  v10 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self timedInvokeTimeoutMs];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self timedInvokeTimeoutMs];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self serverSideProcessingTimeout];
-  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self serverSideProcessingTimeout];
+  [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,28 +78,28 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v26 = 0;
-  v27 = 0;
+  unsignedShortValue = 0;
+  unsignedCharValue = 0;
   v28 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self enhancedHue];
-  v26 = [v5 unsignedShortValue];
+  enhancedHue = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self enhancedHue];
+  unsignedShortValue = [enhancedHue unsignedShortValue];
 
-  v6 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self saturation];
-  v27 = [v6 unsignedCharValue];
+  saturation = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self saturation];
+  unsignedCharValue = [saturation unsignedCharValue];
 
-  v7 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self transitionTime];
-  LOWORD(v28) = [v7 unsignedShortValue];
+  transitionTime = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self transitionTime];
+  LOWORD(v28) = [transitionTime unsignedShortValue];
 
-  v8 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsMask];
-  BYTE2(v28) = [v8 unsignedCharValue];
+  optionsMask = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsMask];
+  BYTE2(v28) = [optionsMask unsignedCharValue];
 
-  v9 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsOverride];
-  HIBYTE(v28) = [v9 unsignedCharValue];
+  optionsOverride = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self optionsOverride];
+  HIBYTE(v28) = [optionsOverride unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
   if (v23)
@@ -111,7 +111,7 @@
     v22 = 0;
     sub_238EA16C4(&v19, &v23, 0);
     sub_2393C7BF0(v18, &v19, 0xFFFFFFFF);
-    v10 = sub_238F0995C(&v26, v18, 0x100uLL);
+    v10 = sub_238F0995C(&unsignedShortValue, v18, 0x100uLL);
     v12 = v10;
     if (v10 || (v10 = sub_238DD2EFC(v18, &v23), v12 = v10, v10))
     {
@@ -120,8 +120,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -149,19 +149,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRColorControlClusterEnhancedMoveToHueAndSaturationParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -172,7 +172,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x66D500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

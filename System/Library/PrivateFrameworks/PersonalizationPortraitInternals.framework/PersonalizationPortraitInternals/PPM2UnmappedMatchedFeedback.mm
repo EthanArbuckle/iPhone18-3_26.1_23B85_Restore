@@ -1,36 +1,36 @@
 @interface PPM2UnmappedMatchedFeedback
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2UnmappedMatchedFeedback
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(PPM2UnmappedMatchedFeedback *)self setClientId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PPM2UnmappedMatchedFeedback *)self setMappingId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(PPM2UnmappedMatchedFeedback *)self setActiveTreatments:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -41,13 +41,13 @@
   return v4 ^ [(NSString *)self->_activeTreatments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((clientId = self->_clientId, !(clientId | v4[2])) || -[NSString isEqual:](clientId, "isEqual:")) && ((mappingId = self->_mappingId, !(mappingId | v4[3])) || -[NSString isEqual:](mappingId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((clientId = self->_clientId, !(clientId | equalCopy[2])) || -[NSString isEqual:](clientId, "isEqual:")) && ((mappingId = self->_mappingId, !(mappingId | equalCopy[3])) || -[NSString isEqual:](mappingId, "isEqual:")))
   {
     activeTreatments = self->_activeTreatments;
-    if (activeTreatments | v4[1])
+    if (activeTreatments | equalCopy[1])
     {
       v8 = [(NSString *)activeTreatments isEqual:?];
     }
@@ -66,78 +66,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_mappingId copyWithZone:a3];
+  v8 = [(NSString *)self->_mappingId copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v10 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_clientId)
   {
-    [v4 setClientId:?];
-    v4 = v5;
+    [toCopy setClientId:?];
+    toCopy = v5;
   }
 
   if (self->_mappingId)
   {
     [v5 setMappingId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_activeTreatments)
   {
     [v5 setActiveTreatments:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_clientId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mappingId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_activeTreatments)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   mappingId = self->_mappingId;
@@ -161,8 +161,8 @@
   v8.receiver = self;
   v8.super_class = PPM2UnmappedMatchedFeedback;
   v4 = [(PPM2UnmappedMatchedFeedback *)&v8 description];
-  v5 = [(PPM2UnmappedMatchedFeedback *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2UnmappedMatchedFeedback *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

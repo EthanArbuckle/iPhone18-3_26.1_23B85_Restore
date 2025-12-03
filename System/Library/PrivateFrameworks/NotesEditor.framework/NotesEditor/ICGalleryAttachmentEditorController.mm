@@ -1,84 +1,84 @@
 @interface ICGalleryAttachmentEditorController
 + (id)activityTypeOrder;
-- (BOOL)documentCameraController:(id)a3 canAddImages:(unint64_t)a4;
-- (BOOL)openEditorOnViewController:(id)a3 pageIndex:(unint64_t)a4 sourceView:(id)a5;
+- (BOOL)documentCameraController:(id)controller canAddImages:(unint64_t)images;
+- (BOOL)openEditorOnViewController:(id)controller pageIndex:(unint64_t)index sourceView:(id)view;
 - (BOOL)shouldAllowEditing;
 - (BOOL)updateDocumentViewControllerFromModel;
-- (CGSize)extractedDocumentControllerImageSizeForDocument:(id)a3;
-- (ICGalleryAttachmentEditorController)initWithGalleryAttachment:(id)a3 browserMode:(BOOL)a4 delegate:(id)a5;
+- (CGSize)extractedDocumentControllerImageSizeForDocument:(id)document;
+- (ICGalleryAttachmentEditorController)initWithGalleryAttachment:(id)attachment browserMode:(BOOL)mode delegate:(id)delegate;
 - (ICGalleryAttachmentEditorControllerDelegate)delegate;
 - (ICNAEventReporter)eventReporter;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)documentCameraControllerCreateDataCryptorIfNecessary;
-- (id)extractedDocumentControllerImageForDocument:(id)a3;
-- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)a3;
+- (id)extractedDocumentControllerImageForDocument:(id)document;
+- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)document;
 - (id)extractedDocumentControllerTitle;
-- (id)extractedDocumentControllerUncroppedImageForDocument:(id)a3;
+- (id)extractedDocumentControllerUncroppedImageForDocument:(id)document;
 - (id)extractedDocumentControllerUndoManager;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (id)scanDataDelegateWithIdentifier:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)attachmentDidLoad:(id)a3;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (id)scanDataDelegateWithIdentifier:(id)identifier;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)attachmentDidLoad:(id)load;
 - (void)attachmentTitleDidChange;
 - (void)dealloc;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6;
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7;
-- (void)documentCameraControllerDidCancel:(id)a3;
-- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)a3;
-- (void)documentCameraControllerDidRetake:(id)a3 pageCount:(unint64_t)a4;
-- (void)documentCameraPresentingViewController:(id)a3 didFinishWithInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7;
-- (void)eventReporterLostSession:(id)a3;
-- (void)extractedDocumentController:(id)a3 didTapRecrop:(id)a4 index:(int64_t)a5;
-- (void)extractedDocumentController:(id)a3 shareDocument:(id)a4 sender:(id)a5;
-- (void)extractedDocumentController:(id)a3 startMarkupOnDocument:(id)a4 inkStyle:(unint64_t)a5 startPresentBlock:(id)a6 dismissCompletionBlock:(id)a7;
-- (void)extractedDocumentControllerDidApplyFilter:(signed __int16)a3 forDocument:(id)a4;
-- (void)extractedDocumentControllerDidChangeTitle:(id)a3;
-- (void)extractedDocumentControllerDidDeleteDocument:(id)a3;
-- (void)extractedDocumentControllerDidMovePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 forDocument:(id)a5;
-- (void)extractedDocumentControllerDidRotateDocument:(id)a3;
-- (void)extractedDocumentControllerDidSelectCopyFromMenuForDocument:(id)a3;
-- (void)extractedDocumentControllerDidSelectShareFromMenuForDocument:(id)a3 sourceRect:(CGRect)a4 sourceView:(id)a5;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user;
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController;
+- (void)documentCameraControllerDidCancel:(id)cancel;
+- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)controller;
+- (void)documentCameraControllerDidRetake:(id)retake pageCount:(unint64_t)count;
+- (void)documentCameraPresentingViewController:(id)controller didFinishWithInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController;
+- (void)eventReporterLostSession:(id)session;
+- (void)extractedDocumentController:(id)controller didTapRecrop:(id)recrop index:(int64_t)index;
+- (void)extractedDocumentController:(id)controller shareDocument:(id)document sender:(id)sender;
+- (void)extractedDocumentController:(id)controller startMarkupOnDocument:(id)document inkStyle:(unint64_t)style startPresentBlock:(id)block dismissCompletionBlock:(id)completionBlock;
+- (void)extractedDocumentControllerDidApplyFilter:(signed __int16)filter forDocument:(id)document;
+- (void)extractedDocumentControllerDidChangeTitle:(id)title;
+- (void)extractedDocumentControllerDidDeleteDocument:(id)document;
+- (void)extractedDocumentControllerDidMovePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex forDocument:(id)document;
+- (void)extractedDocumentControllerDidRotateDocument:(id)document;
+- (void)extractedDocumentControllerDidSelectCopyFromMenuForDocument:(id)document;
+- (void)extractedDocumentControllerDidSelectShareFromMenuForDocument:(id)document sourceRect:(CGRect)rect sourceView:(id)view;
 - (void)extractedDocumentControllerDidTapAddImage;
-- (void)extractedDocumentControllerDidTapDone:(unint64_t)a3 scanDataDelegate:(id)a4;
-- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)a3;
-- (void)extractedDocumentControllerLoadThumbnailForDocument:(id)a3 size:(CGSize)a4 completionBlock:(id)a5;
-- (void)movePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)previewImageDidUpdate:(id)a3;
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4;
-- (void)updateDocInfoForAttachment:(id)a3;
+- (void)extractedDocumentControllerDidTapDone:(unint64_t)done scanDataDelegate:(id)delegate;
+- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)document;
+- (void)extractedDocumentControllerLoadThumbnailForDocument:(id)document size:(CGSize)size completionBlock:(id)block;
+- (void)movePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)previewImageDidUpdate:(id)update;
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection;
+- (void)updateDocInfoForAttachment:(id)attachment;
 @end
 
 @implementation ICGalleryAttachmentEditorController
 
-- (ICGalleryAttachmentEditorController)initWithGalleryAttachment:(id)a3 browserMode:(BOOL)a4 delegate:(id)a5
+- (ICGalleryAttachmentEditorController)initWithGalleryAttachment:(id)attachment browserMode:(BOOL)mode delegate:(id)delegate
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  modeCopy = mode;
+  attachmentCopy = attachment;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = ICGalleryAttachmentEditorController;
   v10 = [(ICGalleryAttachmentEditorController *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    [(ICGalleryAttachmentEditorController *)v10 setDelegate:v9];
-    [(ICGalleryAttachmentEditorController *)v11 setGalleryAttachment:v8];
-    v12 = [[ICDocCamScannedDocumentEditor alloc] initWithGalleryAttachment:v8];
+    [(ICGalleryAttachmentEditorController *)v10 setDelegate:delegateCopy];
+    [(ICGalleryAttachmentEditorController *)v11 setGalleryAttachment:attachmentCopy];
+    v12 = [[ICDocCamScannedDocumentEditor alloc] initWithGalleryAttachment:attachmentCopy];
     [(ICGalleryAttachmentEditorController *)v11 setEditor:v12];
 
-    [(ICGalleryAttachmentEditorController *)v11 setBrowserMode:v6];
+    [(ICGalleryAttachmentEditorController *)v11 setBrowserMode:modeCopy];
     objc_opt_class();
-    v13 = [v8 attachmentModel];
+    attachmentModel = [attachmentCopy attachmentModel];
     v14 = ICCheckedDynamicCast();
 
-    if ([v8 isPasswordProtected])
+    if ([attachmentCopy isPasswordProtected])
     {
       v15 = objc_alloc(MEMORY[0x277D35E98]);
-      v16 = [v8 identifier];
-      v17 = [v15 initWithObjectIdentifier:v16];
+      identifier = [attachmentCopy identifier];
+      v17 = [v15 initWithObjectIdentifier:identifier];
     }
 
     else
@@ -102,17 +102,17 @@
     v21 = v11;
     v28 = v21;
     [v14 enumerateSubAttachmentsWithBlock:v27];
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v21 selector:sel_applicationWillTerminate_ name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel_applicationWillTerminate_ name:*MEMORY[0x277D76770] object:0];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v21 selector:sel_previewImageDidUpdate_ name:*MEMORY[0x277D35BB8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v21 selector:sel_previewImageDidUpdate_ name:*MEMORY[0x277D35BB8] object:0];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v21 selector:sel_attachmentDidLoad_ name:*MEMORY[0x277D35B88] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v21 selector:sel_attachmentDidLoad_ name:*MEMORY[0x277D35B88] object:0];
 
-    v25 = [(ICGalleryAttachmentEditorController *)v21 galleryAttachment];
-    [v25 ic_addObserver:v21 forKeyPath:@"mergeableData" context:&compoundliteral_4];
+    galleryAttachment = [(ICGalleryAttachmentEditorController *)v21 galleryAttachment];
+    [galleryAttachment ic_addObserver:v21 forKeyPath:@"mergeableData" context:&compoundliteral_4];
   }
 
   return v11;
@@ -149,11 +149,11 @@ void __86__ICGalleryAttachmentEditorController_initWithGalleryAttachment_browser
 - (void)dealloc
 {
   [(ICAttachment *)self->_galleryAttachment ic_removeObserver:self forKeyPath:@"mergeableData" context:&compoundliteral_4];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self->_extractedDocumentController presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICDocCamExtractedDocumentViewController *)self->_extractedDocumentController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(ICDocCamImageCache *)self->_imageCache deleteAllImages];
   v5.receiver = self;
@@ -161,25 +161,25 @@ void __86__ICGalleryAttachmentEditorController_initWithGalleryAttachment_browser
   [(ICGalleryAttachmentEditorController *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if (([(ICGalleryAttachmentEditorController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/iOS/ICGalleryAttachmentEditorController.m"]& 1) != 0)
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if (([(ICGalleryAttachmentEditorController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/iOS/ICGalleryAttachmentEditorController.m"]& 1) != 0)
   {
-    v13 = [(ICGalleryAttachmentEditorController *)self ic_shouldIgnoreObserveValue:v11 ofObject:v12 forKeyPath:v10];
+    v13 = [(ICGalleryAttachmentEditorController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_4 && (v13 & 1) == 0)
+    if (context == &compoundliteral_4 && (v13 & 1) == 0)
     {
-      v14 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-      if ([v14 faultingState])
+      galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+      if ([galleryAttachment faultingState])
       {
       }
 
       else
       {
-        v15 = [v10 isEqualToString:@"mergeableData"];
+        v15 = [pathCopy isEqualToString:@"mergeableData"];
 
         if (v15)
         {
@@ -193,75 +193,75 @@ void __86__ICGalleryAttachmentEditorController_initWithGalleryAttachment_browser
   {
     v16.receiver = self;
     v16.super_class = ICGalleryAttachmentEditorController;
-    [(ICGalleryAttachmentEditorController *)&v16 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(ICGalleryAttachmentEditorController *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = [(ICGalleryAttachmentEditorController *)self imageCache];
-  [v3 deleteAllImages];
+  imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
+  [imageCache deleteAllImages];
 }
 
-- (void)previewImageDidUpdate:(id)a3
+- (void)previewImageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [updateCopy object];
 
   v12 = ICCheckedDynamicCast();
 
   v6 = MEMORY[0x277D35E00];
-  v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
-  v9 = [v6 ic_existingObjectWithID:v12 context:v8];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v9 = [v6 ic_existingObjectWithID:v12 context:managedObjectContext];
 
-  v10 = [v9 parentAttachment];
-  v11 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  parentAttachment = [v9 parentAttachment];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
 
-  if (v10 == v11)
+  if (parentAttachment == galleryAttachment2)
   {
     [(ICGalleryAttachmentEditorController *)self updateDocInfoForAttachment:v9];
   }
 }
 
-- (void)attachmentDidLoad:(id)a3
+- (void)attachmentDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [loadCopy object];
 
   v12 = ICCheckedDynamicCast();
 
   v6 = MEMORY[0x277D35E00];
-  v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
-  v9 = [v6 ic_existingObjectWithID:v12 context:v8];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v9 = [v6 ic_existingObjectWithID:v12 context:managedObjectContext];
 
-  v10 = [v9 parentAttachment];
-  v11 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  parentAttachment = [v9 parentAttachment];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
 
-  if (v10 == v11)
+  if (parentAttachment == galleryAttachment2)
   {
     [(ICGalleryAttachmentEditorController *)self updateDocInfoForAttachment:v9];
   }
 }
 
-- (void)updateDocInfoForAttachment:(id)a3
+- (void)updateDocInfoForAttachment:(id)attachment
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5 && ([v4 markedForDeletion] & 1) == 0)
+  attachmentCopy = attachment;
+  identifier = [attachmentCopy identifier];
+  if (identifier && ([attachmentCopy markedForDeletion] & 1) == 0)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-    v7 = [v6 docInfos];
+    documentInfoCollection = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
 
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v8 = [docInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -272,12 +272,12 @@ LABEL_5:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(docInfos);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [v12 scanDataDelegateIdentifier];
-        v14 = [v13 isEqualToString:v5];
+        scanDataDelegateIdentifier = [v12 scanDataDelegateIdentifier];
+        v14 = [scanDataDelegateIdentifier isEqualToString:identifier];
 
         if (v14)
         {
@@ -286,7 +286,7 @@ LABEL_5:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [docInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -304,13 +304,13 @@ LABEL_5:
       }
 
       [v15 setCroppedAndFilteredImageUUID:0];
-      [v15 setCurrentFilter:{objc_msgSend(v4, "imageFilterType")}];
-      [v15 setCurrentOrientation:{objc_msgSend(v4, "orientation")}];
-      v16 = [v4 croppingQuad];
-      [v15 setImageQuad:v16];
+      [v15 setCurrentFilter:{objc_msgSend(attachmentCopy, "imageFilterType")}];
+      [v15 setCurrentOrientation:{objc_msgSend(attachmentCopy, "orientation")}];
+      croppingQuad = [attachmentCopy croppingQuad];
+      [v15 setImageQuad:croppingQuad];
 
-      v17 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-      [v17 didUpdateDocumentImage:v15];
+      extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+      [extractedDocumentController didUpdateDocumentImage:v15];
     }
 
     else
@@ -323,33 +323,33 @@ LABEL_14:
   }
 }
 
-- (void)movePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)movePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v6 = [(ICGalleryAttachmentEditorController *)self editor];
-  [v6 movePageFromIndex:a3 toIndex:a4];
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  [editor movePageFromIndex:index toIndex:toIndex];
 }
 
 - (BOOL)updateDocumentViewControllerFromModel
 {
   v55 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v4 = [v3 attachmentModel];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  attachmentModel = [galleryAttachment attachmentModel];
   v5 = ICCheckedDynamicCast();
 
   v6 = MEMORY[0x277CBEB38];
-  v7 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-  v8 = [v7 docInfos];
-  v9 = [v6 dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  documentInfoCollection = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v9 = [v6 dictionaryWithCapacity:{objc_msgSend(docInfos, "count")}];
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-  v11 = [v10 docInfos];
+  documentInfoCollection2 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
 
-  v12 = [v11 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  v12 = [docInfos2 countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v12)
   {
     v13 = v12;
@@ -360,27 +360,27 @@ LABEL_14:
       {
         if (*v51 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(docInfos2);
         }
 
         v16 = *(*(&v50 + 1) + 8 * i);
-        v17 = [v16 scanDataDelegateIdentifier];
+        scanDataDelegateIdentifier = [v16 scanDataDelegateIdentifier];
 
-        if (v17)
+        if (scanDataDelegateIdentifier)
         {
-          v18 = [v16 scanDataDelegateIdentifier];
-          [v9 setObject:v16 forKeyedSubscript:v18];
+          scanDataDelegateIdentifier2 = [v16 scanDataDelegateIdentifier];
+          [v9 setObject:v16 forKeyedSubscript:scanDataDelegateIdentifier2];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v13 = [docInfos2 countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v13);
   }
 
-  v19 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-  v20 = [v19 currentDocument];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  currentDocument = [extractedDocumentController currentDocument];
 
   v21 = objc_alloc_init(MEMORY[0x277D05D10]);
   v43 = MEMORY[0x277D85DD0];
@@ -388,61 +388,61 @@ LABEL_14:
   v45 = __76__ICGalleryAttachmentEditorController_updateDocumentViewControllerFromModel__block_invoke;
   v46 = &unk_2781AEAB8;
   v47 = v9;
-  v48 = self;
+  selfCopy = self;
   v22 = v21;
   v49 = v22;
   v23 = v9;
   [v5 enumerateSubAttachmentsWithBlock:&v43];
-  v24 = [v22 docInfos];
-  v25 = [v24 count];
+  docInfos3 = [v22 docInfos];
+  v25 = [docInfos3 count];
 
   if (v25)
   {
-    v26 = [v22 docInfos];
-    v27 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-    v28 = [v27 docInfos];
-    v29 = [v26 isEqualToArray:v28];
+    docInfos4 = [v22 docInfos];
+    documentInfoCollection3 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+    docInfos5 = [documentInfoCollection3 docInfos];
+    v29 = [docInfos4 isEqualToArray:docInfos5];
 
     if ((v29 & 1) == 0)
     {
-      v30 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-      v31 = [v30 docInfos];
-      [v31 removeAllObjects];
+      documentInfoCollection4 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+      docInfos6 = [documentInfoCollection4 docInfos];
+      [docInfos6 removeAllObjects];
 
-      v32 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-      v33 = [v32 docInfos];
-      v34 = [v22 docInfos];
-      [v33 addObjectsFromArray:v34];
+      documentInfoCollection5 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+      docInfos7 = [documentInfoCollection5 docInfos];
+      docInfos8 = [v22 docInfos];
+      [docInfos7 addObjectsFromArray:docInfos8];
 
-      if (v20)
+      if (currentDocument)
       {
-        v35 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-        v36 = [v35 docInfos];
-        if (![v36 count])
+        documentInfoCollection6 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+        docInfos9 = [documentInfoCollection6 docInfos];
+        if (![docInfos9 count])
         {
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        v37 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-        v38 = [v37 docInfos];
-        v42 = [v38 indexOfObject:v20];
+        documentInfoCollection7 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+        docInfos10 = [documentInfoCollection7 docInfos];
+        v42 = [docInfos10 indexOfObject:currentDocument];
 
         if (v42 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v35 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-          v36 = [v35 docInfos];
-          v39 = [v36 firstObject];
+          documentInfoCollection6 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+          docInfos9 = [documentInfoCollection6 docInfos];
+          firstObject = [docInfos9 firstObject];
 
-          v20 = v39;
+          currentDocument = firstObject;
           goto LABEL_16;
         }
       }
 
 LABEL_17:
       v40 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController:v42];
-      [v40 didUpdateDocumentInfoArrayNewCurrentDocument:v20];
+      [v40 didUpdateDocumentInfoArrayNewCurrentDocument:currentDocument];
     }
   }
 
@@ -504,31 +504,31 @@ LABEL_11:
 
   else
   {
-    v4 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v3 = [v4 isReadOnly] ^ 1;
+    galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    v3 = [galleryAttachment isReadOnly] ^ 1;
   }
 
   return v3;
 }
 
-- (BOOL)openEditorOnViewController:(id)a3 pageIndex:(unint64_t)a4 sourceView:(id)a5
+- (BOOL)openEditorOnViewController:(id)controller pageIndex:(unint64_t)index sourceView:(id)view
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICGalleryAttachmentEditorController *)self delegate];
+  controllerCopy = controller;
+  viewCopy = view;
+  delegate = [(ICGalleryAttachmentEditorController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(ICGalleryAttachmentEditorController *)self delegate];
-    [v12 galleryAttachmentEditorControllerWillShow];
+    delegate2 = [(ICGalleryAttachmentEditorController *)self delegate];
+    [delegate2 galleryAttachmentEditorControllerWillShow];
   }
 
-  v13 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-  v14 = [v13 docInfos];
-  v15 = [v14 count];
+  documentInfoCollection = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v15 = [docInfos count];
 
-  if (v15 <= a4)
+  if (v15 <= index)
   {
     v18 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -541,13 +541,13 @@ LABEL_11:
 
   else
   {
-    v16 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-    v17 = [v16 docInfos];
-    v18 = [v17 objectAtIndexedSubscript:a4];
+    documentInfoCollection2 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v18 = [docInfos2 objectAtIndexedSubscript:index];
 
-    v19 = [(ICGalleryAttachmentEditorController *)self editor];
-    v20 = [v18 scanDataDelegateIdentifier];
-    v21 = [v19 subAttachmentWithIdentifier:v20];
+    editor = [(ICGalleryAttachmentEditorController *)self editor];
+    scanDataDelegateIdentifier = [v18 scanDataDelegateIdentifier];
+    v21 = [editor subAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
     v22 = v21 != 0;
     if (v21)
@@ -563,37 +563,37 @@ LABEL_11:
         v23 = 2;
       }
 
-      v24 = v8;
-      v25 = v9;
+      v24 = controllerCopy;
+      v25 = viewCopy;
       v26 = objc_alloc(MEMORY[0x277D05D18]);
-      v27 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
-      v28 = [(ICGalleryAttachmentEditorController *)self imageCache];
+      documentInfoCollection3 = [(ICGalleryAttachmentEditorController *)self documentInfoCollection];
+      imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
       v29 = v26;
-      v9 = v25;
-      v8 = v24;
-      v30 = [v29 initWithDelegate:self documentInfoCollection:v27 imageCache:v28 currentIndex:a4 mode:v23];
+      viewCopy = v25;
+      controllerCopy = v24;
+      v30 = [v29 initWithDelegate:self documentInfoCollection:documentInfoCollection3 imageCache:imageCache currentIndex:index mode:v23];
 
       [v30 setDelegate:self];
       [v30 setTransitioningDelegate:self];
       [v30 setModalPresentationStyle:4];
-      [(ICGalleryAttachmentEditorController *)self setSourceViewForZoomTransition:v9];
+      [(ICGalleryAttachmentEditorController *)self setSourceViewForZoomTransition:viewCopy];
       objc_opt_class();
-      v31 = [v30 topViewController];
+      topViewController = [v30 topViewController];
       v32 = ICCheckedDynamicCast();
       [(ICGalleryAttachmentEditorController *)self setExtractedDocumentController:v32];
 
-      v33 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-      [v33 setTransitioningDelegate:self];
+      extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+      [extractedDocumentController setTransitioningDelegate:self];
 
-      v34 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-      [v34 setModalPresentationStyle:4];
+      extractedDocumentController2 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+      [extractedDocumentController2 setModalPresentationStyle:4];
 
-      v35 = [v24 presentedViewController];
+      presentedViewController = [v24 presentedViewController];
 
-      if (v35)
+      if (presentedViewController)
       {
-        v36 = [v24 presentedViewController];
-        [v36 presentViewController:v30 animated:1 completion:0];
+        presentedViewController2 = [v24 presentedViewController];
+        [presentedViewController2 presentViewController:v30 animated:1 completion:0];
       }
 
       else
@@ -619,23 +619,23 @@ LABEL_11:
 
 - (void)attachmentTitleDidChange
 {
-  v5 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-  v3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v4 = [v3 title];
-  [v5 didUpdateDocumentTitle:v4];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  title = [galleryAttachment title];
+  [extractedDocumentController didUpdateDocumentTitle:title];
 }
 
 - (id)documentCameraControllerCreateDataCryptorIfNecessary
 {
-  v3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v4 = [v3 isPasswordProtected];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  isPasswordProtected = [galleryAttachment isPasswordProtected];
 
-  if (v4)
+  if (isPasswordProtected)
   {
     v5 = objc_alloc(MEMORY[0x277D35E98]);
-    v6 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v7 = [v6 identifier];
-    v8 = [v5 initWithObjectIdentifier:v7];
+    galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    identifier = [galleryAttachment2 identifier];
+    v8 = [v5 initWithObjectIdentifier:identifier];
   }
 
   else
@@ -646,51 +646,51 @@ LABEL_11:
   return v8;
 }
 
-- (void)extractedDocumentController:(id)a3 didTapRecrop:(id)a4 index:(int64_t)a5
+- (void)extractedDocumentController:(id)controller didTapRecrop:(id)recrop index:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICGalleryAttachmentEditorController *)self editor];
-  v11 = [v9 scanDataDelegateIdentifier];
-  v12 = [v10 subAttachmentWithIdentifier:v11];
+  controllerCopy = controller;
+  recropCopy = recrop;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  scanDataDelegateIdentifier = [recropCopy scanDataDelegateIdentifier];
+  v12 = [editor subAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
   if (v12)
   {
-    v13 = [v12 unprocessedDocumentImage];
-    v14 = [v12 croppingQuad];
-    v15 = [v12 orientation];
+    unprocessedDocumentImage = [v12 unprocessedDocumentImage];
+    croppingQuad = [v12 croppingQuad];
+    orientation = [v12 orientation];
     v16 = objc_alloc(MEMORY[0x277D05D30]);
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __86__ICGalleryAttachmentEditorController_extractedDocumentController_didTapRecrop_index___block_invoke;
     v40[3] = &unk_2781AEAE0;
-    v37 = v9;
-    v17 = v9;
+    v37 = recropCopy;
+    v17 = recropCopy;
     v41 = v17;
-    v42 = self;
+    selfCopy = self;
     v43 = v12;
-    v44 = v8;
-    v45 = a5;
-    v36 = a5;
-    v38 = v14;
-    v18 = v14;
+    v44 = controllerCopy;
+    indexCopy = index;
+    indexCopy2 = index;
+    v38 = croppingQuad;
+    v18 = croppingQuad;
     v19 = v44;
-    v20 = [v16 initWithImage:v13 quad:v18 scanDataDelegate:v43 orientation:v15 completionHandler:v40];
+    v20 = [v16 initWithImage:unprocessedDocumentImage quad:v18 scanDataDelegate:v43 orientation:orientation completionHandler:v40];
     [v20 setShowImageAsAspectFit:1];
     [(ICGalleryAttachmentEditorController *)self setUseCustomRecropTransition:1];
-    v21 = [v19 navigationController];
-    [v21 setDelegate:self];
+    navigationController = [v19 navigationController];
+    [navigationController setDelegate:self];
 
-    v22 = [v20 navigationController];
-    [v22 setDelegate:self];
+    navigationController2 = [v20 navigationController];
+    [navigationController2 setDelegate:self];
 
-    v23 = [v17 croppedAndFilteredImageUUID];
+    croppedAndFilteredImageUUID = [v17 croppedAndFilteredImageUUID];
 
-    if (v23)
+    if (croppedAndFilteredImageUUID)
     {
-      v24 = [(ICGalleryAttachmentEditorController *)self imageCache];
-      v25 = [v17 croppedAndFilteredImageUUID];
-      v26 = [v24 getImage:v25];
+      imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
+      croppedAndFilteredImageUUID2 = [v17 croppedAndFilteredImageUUID];
+      v26 = [imageCache getImage:croppedAndFilteredImageUUID2];
     }
 
     else
@@ -698,14 +698,14 @@ LABEL_11:
       v26 = [(ICGalleryAttachmentEditorController *)self extractedDocumentControllerImageForDocument:v17];
     }
 
-    v39 = v8;
-    v29 = [v17 croppedButNotFilteredImageUUID];
+    v39 = controllerCopy;
+    croppedButNotFilteredImageUUID = [v17 croppedButNotFilteredImageUUID];
 
-    if (v29)
+    if (croppedButNotFilteredImageUUID)
     {
-      v30 = [(ICGalleryAttachmentEditorController *)self imageCache];
-      v31 = [v17 croppedButNotFilteredImageUUID];
-      v32 = [v30 getImage:v31];
+      imageCache2 = [(ICGalleryAttachmentEditorController *)self imageCache];
+      croppedButNotFilteredImageUUID2 = [v17 croppedButNotFilteredImageUUID];
+      v32 = [imageCache2 getImage:croppedButNotFilteredImageUUID2];
     }
 
     else
@@ -713,7 +713,7 @@ LABEL_11:
       v32 = [v19 croppedButNotFilteredImageForDocInfo:v17];
     }
 
-    v33 = [MEMORY[0x277CCAA70] indexPathForItem:v36 inSection:0];
+    v33 = [MEMORY[0x277CCAA70] indexPathForItem:indexCopy2 inSection:0];
     [(ICGalleryAttachmentEditorController *)self setIndexPathForRecrop:v33];
 
     [(ICGalleryAttachmentEditorController *)self setFilteredImageForRecrop:v26];
@@ -721,18 +721,18 @@ LABEL_11:
     [(ICGalleryAttachmentEditorController *)self setUnfilteredImageForRecrop:v34];
 
     -[ICGalleryAttachmentEditorController setOrientationForRecrop:](self, "setOrientationForRecrop:", [v17 currentOrientation]);
-    v35 = [v19 navigationController];
-    [v35 pushViewController:v20 animated:1];
+    navigationController3 = [v19 navigationController];
+    [navigationController3 pushViewController:v20 animated:1];
 
-    v8 = v39;
-    v9 = v37;
+    controllerCopy = v39;
+    recropCopy = v37;
   }
 
   else
   {
     v27 = MEMORY[0x277D36198];
-    v28 = [v9 scanDataDelegateIdentifier];
-    [v27 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICGalleryAttachmentEditorController extractedDocumentController:didTapRecrop:index:]" simulateCrash:1 showAlert:0 format:{@"Trying to recrop attachment with identifier, but identifier is not sub-attachment of gallery: %@", v28}];
+    scanDataDelegateIdentifier2 = [recropCopy scanDataDelegateIdentifier];
+    [v27 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICGalleryAttachmentEditorController extractedDocumentController:didTapRecrop:index:]" simulateCrash:1 showAlert:0 format:{@"Trying to recrop attachment with identifier, but identifier is not sub-attachment of gallery: %@", scanDataDelegateIdentifier2}];
   }
 }
 
@@ -795,69 +795,69 @@ void __86__ICGalleryAttachmentEditorController_extractedDocumentController_didTa
   if ([(ICGalleryAttachmentEditorController *)self documentCameraController:0 canAddImages:1])
   {
     v3 = objc_alloc(MEMORY[0x277D05D38]);
-    v4 = [(ICGalleryAttachmentEditorController *)self imageCache];
-    v19 = [v3 initWithImageCache:v4 docCamDelegate:self remoteDocCamDelegate:self];
+    imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
+    extractedDocumentController2 = [v3 initWithImageCache:imageCache docCamDelegate:self remoteDocCamDelegate:self];
 
-    [v19 setModalTransitionStyle:2];
-    v5 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-    v6 = [v5 navigationController];
-    [v6 presentViewController:v19 animated:1 completion:0];
+    [extractedDocumentController2 setModalTransitionStyle:2];
+    extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+    navigationController = [extractedDocumentController navigationController];
+    [navigationController presentViewController:extractedDocumentController2 animated:1 completion:0];
 
-    v7 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    v8 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v9 = [v8 galleryModel];
-    [v7 pushStartDocScanPageCountData:{objc_msgSend(v9, "subAttachmentCount")}];
+    eventReporter = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    galleryModel = [galleryAttachment galleryModel];
+    [eventReporter pushStartDocScanPageCountData:{objc_msgSend(galleryModel, "subAttachmentCount")}];
 
-    v10 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    v11 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v12 = [v11 identifier];
-    [v10 pushDocScanDataWithID:v12 actionType:3 stage:1];
+    eventReporter2 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    identifier = [galleryAttachment2 identifier];
+    [eventReporter2 pushDocScanDataWithID:identifier actionType:3 stage:1];
 
-    v13 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    v14 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v15 = [v14 note];
-    v16 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v17 = [v16 galleryModel];
-    [v13 submitDocScanEventForNote:v15 pageCount:{objc_msgSend(v17, "subAttachmentCount")}];
+    eventReporter3 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    galleryAttachment3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    note = [galleryAttachment3 note];
+    galleryAttachment4 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    galleryModel2 = [galleryAttachment4 galleryModel];
+    [eventReporter3 submitDocScanEventForNote:note pageCount:{objc_msgSend(galleryModel2, "subAttachmentCount")}];
   }
 
   else
   {
     v18 = MEMORY[0x277D05D60];
-    v19 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+    extractedDocumentController2 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
     [v18 warnAboutMaxScansReachedForViewController:? completionHandler:?];
   }
 }
 
-- (void)extractedDocumentControllerDidTapDone:(unint64_t)a3 scanDataDelegate:(id)a4
+- (void)extractedDocumentControllerDidTapDone:(unint64_t)done scanDataDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [(ICGalleryAttachmentEditorController *)self delegate];
-  v8 = [v7 ic_viewControllerManager];
+  delegateCopy = delegate;
+  delegate = [(ICGalleryAttachmentEditorController *)self delegate];
+  ic_viewControllerManager = [delegate ic_viewControllerManager];
 
   objc_opt_class();
   v9 = ICDynamicCast();
 
   objc_opt_class();
-  v10 = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
+  sourceViewForZoomTransition = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
   v11 = ICDynamicCast();
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
-    v13 = [v8 currentAttachmentPresenter];
-    [v13 scrollCollectionViewToIndexPath:v12];
-    v14 = [v13 transitionViewForAttachment:v9 atIndexPath:v12];
+    v12 = [MEMORY[0x277CCAA70] indexPathForItem:done inSection:0];
+    currentAttachmentPresenter = [ic_viewControllerManager currentAttachmentPresenter];
+    [currentAttachmentPresenter scrollCollectionViewToIndexPath:v12];
+    v14 = [currentAttachmentPresenter transitionViewForAttachment:v9 atIndexPath:v12];
     [(ICGalleryAttachmentEditorController *)self setSourceViewForZoomTransition:v14];
   }
 
-  v15 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __94__ICGalleryAttachmentEditorController_extractedDocumentControllerDidTapDone_scanDataDelegate___block_invoke;
   v16[3] = &unk_2781ABCF8;
   v16[4] = self;
-  [v15 dismissViewControllerAnimated:1 completion:v16];
+  [extractedDocumentController dismissViewControllerAnimated:1 completion:v16];
 }
 
 uint64_t __94__ICGalleryAttachmentEditorController_extractedDocumentControllerDidTapDone_scanDataDelegate___block_invoke(uint64_t a1)
@@ -871,87 +871,87 @@ uint64_t __94__ICGalleryAttachmentEditorController_extractedDocumentControllerDi
   return [v3 setSourceViewForZoomTransition:0];
 }
 
-- (void)extractedDocumentControllerDidRotateDocument:(id)a3
+- (void)extractedDocumentControllerDidRotateDocument:(id)document
 {
-  v7 = a3;
-  v4 = [(ICGalleryAttachmentEditorController *)self editor];
-  v5 = [v7 scanDataDelegateIdentifier];
-  v6 = [v4 indexForAttachmentWithIdentifier:v5];
+  documentCopy = document;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  v6 = [editor indexForAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 setOrientation:objc_msgSend(v7 forAttachmentAtIndex:{"currentOrientation"), v6}];
+    [editor setOrientation:objc_msgSend(documentCopy forAttachmentAtIndex:{"currentOrientation"), v6}];
   }
 }
 
-- (void)extractedDocumentControllerDidApplyFilter:(signed __int16)a3 forDocument:(id)a4
+- (void)extractedDocumentControllerDidApplyFilter:(signed __int16)filter forDocument:(id)document
 {
-  v8 = a4;
-  v5 = [(ICGalleryAttachmentEditorController *)self editor];
-  v6 = [v8 scanDataDelegateIdentifier];
-  v7 = [v5 indexForAttachmentWithIdentifier:v6];
+  documentCopy = document;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  v7 = [editor indexForAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 applyFilter:objc_msgSend(v8 forAttachmentAtIndex:{"currentFilter"), v7}];
+    [editor applyFilter:objc_msgSend(documentCopy forAttachmentAtIndex:{"currentFilter"), v7}];
   }
 }
 
-- (void)extractedDocumentControllerDidDeleteDocument:(id)a3
+- (void)extractedDocumentControllerDidDeleteDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentEditorController *)self delegate];
+  documentCopy = document;
+  delegate = [(ICGalleryAttachmentEditorController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v8 = [v7 galleryModel];
-    v9 = [v8 subAttachmentCount];
+    galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    galleryModel = [galleryAttachment galleryModel];
+    subAttachmentCount = [galleryModel subAttachmentCount];
 
-    v10 = [(ICGalleryAttachmentEditorController *)self editor];
-    v11 = [v4 scanDataDelegateIdentifier];
-    v12 = [v10 indexForAttachmentWithIdentifier:v11];
+    editor = [(ICGalleryAttachmentEditorController *)self editor];
+    scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+    v12 = [editor indexForAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       objc_opt_class();
-      v13 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-      v14 = [v13 attachmentModel];
+      galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+      attachmentModel = [galleryAttachment2 attachmentModel];
       v15 = ICCheckedDynamicCast();
 
       if (v12 || [v15 subAttachmentCount] != 1)
       {
-        v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:v12];
-        [v10 deletePagesAtIndexes:v16];
+        extractedDocumentController = [MEMORY[0x277CCAA78] indexSetWithIndex:v12];
+        [editor deletePagesAtIndexes:extractedDocumentController];
       }
 
       else
       {
-        v16 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+        extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __84__ICGalleryAttachmentEditorController_extractedDocumentControllerDidDeleteDocument___block_invoke;
         v26[3] = &unk_2781ABCF8;
         v26[4] = self;
-        [v16 dismissViewControllerAnimated:1 completion:v26];
+        [extractedDocumentController dismissViewControllerAnimated:1 completion:v26];
       }
     }
 
-    v17 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    [v17 pushStartDocScanPageCountData:v9];
+    eventReporter = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    [eventReporter pushStartDocScanPageCountData:subAttachmentCount];
 
-    v18 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    v19 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v20 = [v19 identifier];
-    [v18 pushDocScanDataWithID:v20 actionType:4 stage:2];
+    eventReporter2 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    galleryAttachment3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    identifier = [galleryAttachment3 identifier];
+    [eventReporter2 pushDocScanDataWithID:identifier actionType:4 stage:2];
 
-    v21 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-    v22 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v23 = [v22 note];
-    v24 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v25 = [v24 galleryModel];
-    [v21 submitDocScanEventForNote:v23 pageCount:{objc_msgSend(v25, "subAttachmentCount")}];
+    eventReporter3 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+    galleryAttachment4 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    note = [galleryAttachment4 note];
+    galleryAttachment5 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    galleryModel2 = [galleryAttachment5 galleryModel];
+    [eventReporter3 submitDocScanEventForNote:note pageCount:{objc_msgSend(galleryModel2, "subAttachmentCount")}];
   }
 }
 
@@ -961,61 +961,61 @@ void __84__ICGalleryAttachmentEditorController_extractedDocumentControllerDidDel
   [v1 galleryAttachmentEditorControllerDeleteAttachment];
 }
 
-- (void)extractedDocumentControllerDidMovePageFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 forDocument:(id)a5
+- (void)extractedDocumentControllerDidMovePageFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex forDocument:(id)document
 {
-  v8 = a5;
-  v11 = [(ICGalleryAttachmentEditorController *)self editor];
-  v9 = [v8 scanDataDelegateIdentifier];
+  documentCopy = document;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
 
-  v10 = [v11 indexForAttachmentWithIdentifier:v9];
+  v10 = [editor indexForAttachmentWithIdentifier:scanDataDelegateIdentifier];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v11 movePageFromIndex:a3 toIndex:a4];
+    [editor movePageFromIndex:index toIndex:toIndex];
   }
 }
 
 - (id)extractedDocumentControllerTitle
 {
-  v3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v4 = [v3 title];
-  v5 = [v4 length];
-  v6 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v7 = v6;
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  title = [galleryAttachment title];
+  v5 = [title length];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  v7 = galleryAttachment2;
   if (v5)
   {
-    [v6 title];
+    [galleryAttachment2 title];
   }
 
   else
   {
-    [v6 defaultTitle];
+    [galleryAttachment2 defaultTitle];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)extractedDocumentControllerDidChangeTitle:(id)a3
+- (void)extractedDocumentControllerDidChangeTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentEditorController *)self editor];
-  [v5 updateDocumentTitle:v4 isUserDefined:1];
+  titleCopy = title;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  [editor updateDocumentTitle:titleCopy isUserDefined:1];
 }
 
-- (void)extractedDocumentController:(id)a3 shareDocument:(id)a4 sender:(id)a5
+- (void)extractedDocumentController:(id)controller shareDocument:(id)document sender:(id)sender
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICGalleryAttachmentEditorController *)self editor];
-  v12 = [v9 scanDataDelegateIdentifier];
-  v13 = [v11 indexForAttachmentWithIdentifier:v12];
+  controllerCopy = controller;
+  documentCopy = document;
+  senderCopy = sender;
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  v13 = [editor indexForAttachmentWithIdentifier:scanDataDelegateIdentifier];
 
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_opt_class();
-    v14 = [v9 scanDataDelegate];
+    scanDataDelegate = [documentCopy scanDataDelegate];
     v15 = ICDynamicCast();
 
     if (!v15)
@@ -1026,15 +1026,15 @@ LABEL_22:
     }
 
     v53 = v15;
-    v16 = [v8 scanCollectionDataDelegate];
-    v17 = [v16 activityItems];
-    v18 = [v9 croppedAndFilteredImageUUID];
+    scanCollectionDataDelegate = [controllerCopy scanCollectionDataDelegate];
+    activityItems = [scanCollectionDataDelegate activityItems];
+    croppedAndFilteredImageUUID = [documentCopy croppedAndFilteredImageUUID];
 
-    if (v18)
+    if (croppedAndFilteredImageUUID)
     {
-      v19 = [(ICGalleryAttachmentEditorController *)self imageCache];
-      v20 = [v9 croppedAndFilteredImageUUID];
-      v21 = [v19 getImage:v20];
+      imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
+      croppedAndFilteredImageUUID2 = [documentCopy croppedAndFilteredImageUUID];
+      v21 = [imageCache getImage:croppedAndFilteredImageUUID2];
 
       v22 = v21;
       if (!v21)
@@ -1045,7 +1045,7 @@ LABEL_22:
 
     else
     {
-      v22 = [(ICGalleryAttachmentEditorController *)self extractedDocumentControllerImageForDocument:v9];
+      v22 = [(ICGalleryAttachmentEditorController *)self extractedDocumentControllerImageForDocument:documentCopy];
       if (!v22)
       {
 LABEL_21:
@@ -1055,11 +1055,11 @@ LABEL_21:
       }
     }
 
-    v52 = v16;
+    v52 = scanCollectionDataDelegate;
     v49 = v22;
     if ([(ICGalleryAttachmentEditorController *)self shouldAllowEditing])
     {
-      v50 = [v8 currentImageView];
+      currentImageView = [controllerCopy currentImageView];
       [v22 size];
       v24 = v23;
       v26 = v25;
@@ -1074,17 +1074,17 @@ LABEL_21:
       v54[1] = 3221225472;
       v54[2] = __88__ICGalleryAttachmentEditorController_extractedDocumentController_shareDocument_sender___block_invoke_2;
       v54[3] = &unk_2781AEB28;
-      v55 = v9;
-      v56 = self;
-      v57 = v8;
-      v28 = [(ICMarkupActivity *)v27 initFromView:v50 presentingViewController:v57 frameBlock:v58 completionBlock:v54];
+      v55 = documentCopy;
+      selfCopy = self;
+      v57 = controllerCopy;
+      v28 = [(ICMarkupActivity *)v27 initFromView:currentImageView presentingViewController:v57 frameBlock:v58 completionBlock:v54];
       [v28 setInkStyle:1];
       v61[0] = v28;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
       v30 = [[ICMarkupActivityItem alloc] initWithAttachment:v53];
-      v31 = [v17 arrayByAddingObject:v30];
+      v31 = [activityItems arrayByAddingObject:v30];
 
-      v17 = v31;
+      activityItems = v31;
     }
 
     else
@@ -1094,29 +1094,29 @@ LABEL_21:
 
     if (+[ICDocCamArchiveExporter archiveExportingEnabled])
     {
-      v32 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-      v33 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-      v34 = [ICDocCamArchiveExporter exportAsArchiveActivityWithBarButtonItem:v10 presentingVC:v32 fromGalleryAttachment:v33];
+      extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+      galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+      v34 = [ICDocCamArchiveExporter exportAsArchiveActivityWithBarButtonItem:senderCopy presentingVC:extractedDocumentController fromGalleryAttachment:galleryAttachment];
 
       v35 = [v29 ic_arrayByAddingNonNilObject:v34];
 
       v29 = v35;
     }
 
-    v36 = [[ICAttachmentActivityViewController alloc] initWithActivityItems:v17 applicationActivities:v29];
-    v37 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    v36 = [[ICAttachmentActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:v29];
+    galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
 
-    if (!v37)
+    if (!galleryAttachment2)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.galleryAttachment) != nil)" functionName:"-[ICGalleryAttachmentEditorController extractedDocumentController:shareDocument:sender:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.galleryAttachment"}];
     }
 
-    v51 = v17;
-    v38 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    if (v38)
+    v51 = activityItems;
+    galleryAttachment3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    if (galleryAttachment3)
     {
-      v39 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-      v60 = v39;
+      galleryAttachment4 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+      v60 = galleryAttachment4;
       v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
       [(ICAttachmentActivityViewController *)v36 setAttachments:v40];
     }
@@ -1126,10 +1126,10 @@ LABEL_21:
       [(ICAttachmentActivityViewController *)v36 setAttachments:MEMORY[0x277CBEBF8]];
     }
 
-    v41 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v42 = [v41 note];
-    v43 = [v42 account];
-    -[ICAttachmentActivityViewController setIsContentManaged:](v36, "setIsContentManaged:", [v43 isManaged]);
+    galleryAttachment5 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    note = [galleryAttachment5 note];
+    account = [note account];
+    -[ICAttachmentActivityViewController setIsContentManaged:](v36, "setIsContentManaged:", [account isManaged]);
 
     v44 = *MEMORY[0x277D54730];
     v59[0] = *MEMORY[0x277D360F8];
@@ -1138,8 +1138,8 @@ LABEL_21:
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
     [(ICAttachmentActivityViewController *)v36 setExcludedActivityTypes:v45];
 
-    v46 = [objc_opt_class() activityTypeOrder];
-    [(ICAttachmentActivityViewController *)v36 setActivityTypeOrder:v46];
+    activityTypeOrder = [objc_opt_class() activityTypeOrder];
+    [(ICAttachmentActivityViewController *)v36 setActivityTypeOrder:activityTypeOrder];
 
     if ([MEMORY[0x277D75418] ic_isVision])
     {
@@ -1152,13 +1152,13 @@ LABEL_21:
     }
 
     [(ICAttachmentActivityViewController *)v36 setModalPresentationStyle:v47];
-    [v8 presentViewController:v36 animated:1 completion:0];
-    v48 = [(ICAttachmentActivityViewController *)v36 popoverPresentationController];
-    [v48 setBarButtonItem:v10];
-    [v48 setPermittedArrowDirections:3];
+    [controllerCopy presentViewController:v36 animated:1 completion:0];
+    popoverPresentationController = [(ICAttachmentActivityViewController *)v36 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:senderCopy];
+    [popoverPresentationController setPermittedArrowDirections:3];
 
-    v17 = v51;
-    v16 = v52;
+    activityItems = v51;
+    scanCollectionDataDelegate = v52;
     v22 = v49;
     goto LABEL_21;
   }
@@ -1218,37 +1218,37 @@ void __88__ICGalleryAttachmentEditorController_extractedDocumentController_share
   return v4;
 }
 
-- (void)extractedDocumentControllerDidSelectShareFromMenuForDocument:(id)a3 sourceRect:(CGRect)a4 sourceView:(id)a5
+- (void)extractedDocumentControllerDidSelectShareFromMenuForDocument:(id)document sourceRect:(CGRect)rect sourceView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25[1] = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a3;
+  viewCopy = view;
+  documentCopy = document;
   objc_opt_class();
-  v13 = [v12 scanDataDelegate];
+  scanDataDelegate = [documentCopy scanDataDelegate];
 
   v14 = ICDynamicCast();
 
   v15 = [ICAttachmentActivityViewController alloc];
-  v16 = [v14 activityItems];
-  v17 = [(ICAttachmentActivityViewController *)v15 initWithActivityItems:v16 applicationActivities:0];
+  activityItems = [v14 activityItems];
+  v17 = [(ICAttachmentActivityViewController *)v15 initWithActivityItems:activityItems applicationActivities:0];
 
   if (v14)
   {
-    v18 = v14;
+    galleryAttachment = v14;
 LABEL_4:
-    v25[0] = v18;
+    v25[0] = galleryAttachment;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     [(ICAttachmentActivityViewController *)v17 setAttachments:v19];
 
     goto LABEL_5;
   }
 
-  v18 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  if (v18)
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  if (galleryAttachment)
   {
     goto LABEL_4;
   }
@@ -1256,9 +1256,9 @@ LABEL_4:
   [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((attachment) != nil)" functionName:"-[ICGalleryAttachmentEditorController extractedDocumentControllerDidSelectShareFromMenuForDocument:sourceRect:sourceView:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "attachment"}];
   [(ICAttachmentActivityViewController *)v17 setAttachments:MEMORY[0x277CBEBF8]];
 LABEL_5:
-  v20 = [v18 note];
-  v21 = [v20 account];
-  -[ICAttachmentActivityViewController setIsContentManaged:](v17, "setIsContentManaged:", [v21 isManaged]);
+  note = [galleryAttachment note];
+  account = [note account];
+  -[ICAttachmentActivityViewController setIsContentManaged:](v17, "setIsContentManaged:", [account isManaged]);
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
@@ -1271,29 +1271,29 @@ LABEL_5:
   }
 
   [(ICAttachmentActivityViewController *)v17 setModalPresentationStyle:v22];
-  v23 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-  [v23 presentViewController:v17 animated:1 completion:0];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  [extractedDocumentController presentViewController:v17 animated:1 completion:0];
 
-  v24 = [(ICAttachmentActivityViewController *)v17 popoverPresentationController];
-  [v24 setSourceRect:{x, y, width, height}];
-  [v24 setSourceView:v11];
+  popoverPresentationController = [(ICAttachmentActivityViewController *)v17 popoverPresentationController];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v24 setPermittedArrowDirections:3];
+  [popoverPresentationController setPermittedArrowDirections:3];
 }
 
-- (void)extractedDocumentControllerDidSelectCopyFromMenuForDocument:(id)a3
+- (void)extractedDocumentControllerDidSelectCopyFromMenuForDocument:(id)document
 {
-  v5 = [a3 scanDataDelegate];
-  v3 = [v5 image];
-  v4 = [MEMORY[0x277D75810] generalPasteboard];
-  [v4 setImage:v3];
+  scanDataDelegate = [document scanDataDelegate];
+  image = [scanDataDelegate image];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  [generalPasteboard setImage:image];
 }
 
-- (CGSize)extractedDocumentControllerImageSizeForDocument:(id)a3
+- (CGSize)extractedDocumentControllerImageSizeForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  if (v5 && (v6 = v5, v7 = MEMORY[0x277D35E00], [v4 scanDataDelegateIdentifier], v8 = objc_claimAutoreleasedReturnValue(), -[ICGalleryAttachmentEditorController galleryAttachment](self, "galleryAttachment"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "managedObjectContext"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "attachmentWithIdentifier:context:", v8, v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v6, v11))
+  documentCopy = document;
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  if (galleryAttachment && (v6 = galleryAttachment, v7 = MEMORY[0x277D35E00], [documentCopy scanDataDelegateIdentifier], v8 = objc_claimAutoreleasedReturnValue(), -[ICGalleryAttachmentEditorController galleryAttachment](self, "galleryAttachment"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "managedObjectContext"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "attachmentWithIdentifier:context:", v8, v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v6, v11))
   {
     [v11 sizeWidth];
     v13 = v12;
@@ -1314,48 +1314,48 @@ LABEL_5:
   return result;
 }
 
-- (id)extractedDocumentControllerImageForDocument:(id)a3
+- (id)extractedDocumentControllerImageForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  if (v5)
+  documentCopy = document;
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  if (galleryAttachment)
   {
     v6 = MEMORY[0x277D35E00];
-    v7 = [v4 scanDataDelegateIdentifier];
-    v8 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-    v9 = [v8 managedObjectContext];
-    v10 = [v6 attachmentWithIdentifier:v7 context:v9];
+    scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+    galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+    managedObjectContext = [galleryAttachment2 managedObjectContext];
+    v10 = [v6 attachmentWithIdentifier:scanDataDelegateIdentifier context:managedObjectContext];
 
     if (v10)
     {
-      v5 = [MEMORY[0x277D36798] imageForSubAttachment:v10];
+      galleryAttachment = [MEMORY[0x277D36798] imageForSubAttachment:v10];
     }
 
     else
     {
-      v5 = 0;
+      galleryAttachment = 0;
     }
   }
 
-  return v5;
+  return galleryAttachment;
 }
 
-- (id)extractedDocumentControllerUncroppedImageForDocument:(id)a3
+- (id)extractedDocumentControllerUncroppedImageForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  if (!v5)
+  documentCopy = document;
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  if (!galleryAttachment)
   {
     v11 = 0;
     goto LABEL_7;
   }
 
-  v6 = v5;
+  v6 = galleryAttachment;
   v7 = MEMORY[0x277D35E00];
-  v8 = [v4 scanDataDelegateIdentifier];
-  v9 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v10 = [v9 managedObjectContext];
-  v11 = [v7 attachmentWithIdentifier:v8 context:v10];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment2 managedObjectContext];
+  v11 = [v7 attachmentWithIdentifier:scanDataDelegateIdentifier context:managedObjectContext];
 
   if (!v11)
   {
@@ -1364,18 +1364,18 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v12 = [v11 media];
-  v13 = [v12 isPasswordProtected];
+  media = [v11 media];
+  isPasswordProtected = [media isPasswordProtected];
 
-  v14 = [v11 media];
-  v15 = v14;
-  if (!v13)
+  media2 = [v11 media];
+  v15 = media2;
+  if (!isPasswordProtected)
   {
-    v16 = [v14 mediaURL];
+    mediaURL = [media2 mediaURL];
 
-    if (v16)
+    if (mediaURL)
     {
-      v17 = [MEMORY[0x277D755B8] ic_imageWithContentsOfURL:v16];
+      v17 = [MEMORY[0x277D755B8] ic_imageWithContentsOfURL:mediaURL];
       goto LABEL_10;
     }
 
@@ -1384,14 +1384,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v14 decryptedData];
+  mediaURL = [media2 decryptedData];
 
-  if (!v16)
+  if (!mediaURL)
   {
     goto LABEL_11;
   }
 
-  v17 = [MEMORY[0x277D755B8] imageWithData:v16];
+  v17 = [MEMORY[0x277D755B8] imageWithData:mediaURL];
 LABEL_10:
   v18 = v17;
 LABEL_12:
@@ -1401,81 +1401,81 @@ LABEL_13:
   return v18;
 }
 
-- (void)extractedDocumentControllerLoadThumbnailForDocument:(id)a3 size:(CGSize)a4 completionBlock:(id)a5
+- (void)extractedDocumentControllerLoadThumbnailForDocument:(id)document size:(CGSize)size completionBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  if (v11 && (v12 = v11, v13 = MEMORY[0x277D35E00], [v9 scanDataDelegateIdentifier], v14 = objc_claimAutoreleasedReturnValue(), -[ICGalleryAttachmentEditorController galleryAttachment](self, "galleryAttachment"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "managedObjectContext"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "attachmentWithIdentifier:context:", v14, v16), v17 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v12, v17))
+  height = size.height;
+  width = size.width;
+  documentCopy = document;
+  blockCopy = block;
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  if (galleryAttachment && (v12 = galleryAttachment, v13 = MEMORY[0x277D35E00], [documentCopy scanDataDelegateIdentifier], v14 = objc_claimAutoreleasedReturnValue(), -[ICGalleryAttachmentEditorController galleryAttachment](self, "galleryAttachment"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "managedObjectContext"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "attachmentWithIdentifier:context:", v14, v16), v17 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v12, v17))
   {
-    v18 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-    v19 = [v18 view];
-    v20 = [v19 ic_appearanceInfo];
-    v21 = [(ICGalleryAttachmentEditorController *)self thumbnailCache];
-    v22 = [v17 objectID];
-    v23 = [v22 URIRepresentation];
-    v24 = [v23 absoluteString];
+    extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+    view = [extractedDocumentController view];
+    ic_appearanceInfo = [view ic_appearanceInfo];
+    thumbnailCache = [(ICGalleryAttachmentEditorController *)self thumbnailCache];
+    objectID = [v17 objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __112__ICGalleryAttachmentEditorController_extractedDocumentControllerLoadThumbnailForDocument_size_completionBlock___block_invoke;
     v25[3] = &unk_2781AEB50;
-    v26 = v10;
-    [v17 fetchThumbnailImageWithMinSize:v20 scale:v21 appearanceInfo:v24 cache:0 cacheKey:v25 processingBlock:0 completionBlock:width fallbackBlock:height aboutToLoadHandler:{1.0, 0}];
+    v26 = blockCopy;
+    [v17 fetchThumbnailImageWithMinSize:ic_appearanceInfo scale:thumbnailCache appearanceInfo:absoluteString cache:0 cacheKey:v25 processingBlock:0 completionBlock:width fallbackBlock:height aboutToLoadHandler:{1.0, 0}];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
-- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)a3
+- (id)extractedDocumentControllerMarkupModelDataForDocument:(id)document
 {
   v4 = MEMORY[0x277D35E00];
-  v5 = [a3 scanDataDelegateIdentifier];
-  v6 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v7 = [v6 managedObjectContext];
-  v8 = [v4 attachmentWithIdentifier:v5 context:v7];
+  scanDataDelegateIdentifier = [document scanDataDelegateIdentifier];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v8 = [v4 attachmentWithIdentifier:scanDataDelegateIdentifier context:managedObjectContext];
 
-  v9 = [v8 markupModelData];
+  markupModelData = [v8 markupModelData];
 
-  return v9;
+  return markupModelData;
 }
 
-- (void)extractedDocumentController:(id)a3 startMarkupOnDocument:(id)a4 inkStyle:(unint64_t)a5 startPresentBlock:(id)a6 dismissCompletionBlock:(id)a7
+- (void)extractedDocumentController:(id)controller startMarkupOnDocument:(id)document inkStyle:(unint64_t)style startPresentBlock:(id)block dismissCompletionBlock:(id)completionBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  controllerCopy = controller;
+  documentCopy = document;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v16 = MEMORY[0x277D35E00];
-  v17 = [v13 scanDataDelegateIdentifier];
-  v18 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v19 = [v18 managedObjectContext];
-  v20 = [v16 attachmentWithIdentifier:v17 context:v19];
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v20 = [v16 attachmentWithIdentifier:scanDataDelegateIdentifier context:managedObjectContext];
 
   if (v20)
   {
-    v27 = a5;
-    v21 = [v12 currentImageView];
-    v22 = [v13 croppedAndFilteredImageUUID];
+    styleCopy = style;
+    currentImageView = [controllerCopy currentImageView];
+    croppedAndFilteredImageUUID = [documentCopy croppedAndFilteredImageUUID];
 
-    if (v22)
+    if (croppedAndFilteredImageUUID)
     {
-      v23 = [(ICGalleryAttachmentEditorController *)self imageCache];
-      v24 = [v13 croppedAndFilteredImageUUID];
-      v25 = [v23 getImage:v24];
+      imageCache = [(ICGalleryAttachmentEditorController *)self imageCache];
+      croppedAndFilteredImageUUID2 = [documentCopy croppedAndFilteredImageUUID];
+      v25 = [imageCache getImage:croppedAndFilteredImageUUID2];
     }
 
     else
     {
-      v25 = [(ICGalleryAttachmentEditorController *)self extractedDocumentControllerImageForDocument:v13];
+      v25 = [(ICGalleryAttachmentEditorController *)self extractedDocumentControllerImageForDocument:documentCopy];
     }
 
-    v26 = [(ICGalleryAttachmentEditorController *)self imageCache];
-    objc_initWeak(&location, v26);
+    imageCache2 = [(ICGalleryAttachmentEditorController *)self imageCache];
+    objc_initWeak(&location, imageCache2);
 
     if (v25)
     {
@@ -1489,9 +1489,9 @@ LABEL_13:
       v28[2] = __139__ICGalleryAttachmentEditorController_extractedDocumentController_startMarkupOnDocument_inkStyle_startPresentBlock_dismissCompletionBlock___block_invoke_2;
       v28[3] = &unk_2781AEBA0;
       objc_copyWeak(&v31, &location);
-      v29 = v13;
-      v30 = v12;
-      [ICMarkupPresenter markupAttachment:v20 fromView:v21 presentingViewController:v30 inkStyle:v27 frameBlock:v32 startPresentBlock:v14 completionBlock:v28 dismissCompletionBlock:v15];
+      v29 = documentCopy;
+      v30 = controllerCopy;
+      [ICMarkupPresenter markupAttachment:v20 fromView:currentImageView presentingViewController:v30 inkStyle:styleCopy frameBlock:v32 startPresentBlock:blockCopy completionBlock:v28 dismissCompletionBlock:completionBlockCopy];
 
       objc_destroyWeak(&v31);
     }
@@ -1542,76 +1542,76 @@ void __139__ICGalleryAttachmentEditorController_extractedDocumentController_star
   }
 }
 
-- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)a3
+- (void)extractedDocumentControllerDiscardMarkupModelDataForDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = MEMORY[0x277D35E00];
-  v14 = v4;
-  v6 = [v4 scanDataDelegateIdentifier];
-  v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
-  v9 = [v5 attachmentWithIdentifier:v6 context:v8];
+  v14 = documentCopy;
+  scanDataDelegateIdentifier = [documentCopy scanDataDelegateIdentifier];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
+  v9 = [v5 attachmentWithIdentifier:scanDataDelegateIdentifier context:managedObjectContext];
 
-  v10 = [v9 markupModelData];
-  v11 = [v10 length];
+  markupModelData = [v9 markupModelData];
+  v11 = [markupModelData length];
 
   if (v11)
   {
-    v12 = [(ICGalleryAttachmentEditorController *)self editor];
-    v13 = [v14 scanDataDelegateIdentifier];
-    [v12 setMarkupData:0 forAttachmentWithIdentifier:v13];
+    editor = [(ICGalleryAttachmentEditorController *)self editor];
+    scanDataDelegateIdentifier2 = [v14 scanDataDelegateIdentifier];
+    [editor setMarkupData:0 forAttachmentWithIdentifier:scanDataDelegateIdentifier2];
   }
 }
 
 - (id)extractedDocumentControllerUndoManager
 {
-  v2 = [(ICGalleryAttachmentEditorController *)self editor];
-  v3 = [v2 undoManager];
+  editor = [(ICGalleryAttachmentEditorController *)self editor];
+  undoManager = [editor undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)documentCameraPresentingViewController:(id)a3 didFinishWithInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7
+- (void)documentCameraPresentingViewController:(id)controller didFinishWithInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController
 {
-  v8 = a6;
-  v31 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v8 && !a7)
+  userCopy = user;
+  controllerCopy = controller;
+  collectionCopy = collection;
+  cacheCopy = cache;
+  if (userCopy && !viewController)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"!(warnUser && !closeViewController)" functionName:"-[ICGalleryAttachmentEditorController documentCameraPresentingViewController:didFinishWithInfoCollection:imageCache:warnUser:closeViewController:]" simulateCrash:1 showAlert:0 format:@"Cannot warn user if not closing the view controller"];
   }
 
-  v30 = a7;
-  v14 = [v12 docInfos];
-  v15 = [v14 count];
+  viewControllerCopy = viewController;
+  docInfos = [collectionCopy docInfos];
+  v15 = [docInfos count];
 
   if (!v15)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"docInfoCollection.docInfos.count > 0" functionName:"-[ICGalleryAttachmentEditorController documentCameraPresentingViewController:didFinishWithInfoCollection:imageCache:warnUser:closeViewController:]" simulateCrash:1 showAlert:0 format:@"This should never be called with a count of 0."];
   }
 
-  v16 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-  v17 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v18 = [v17 identifier];
-  [v16 pushDocScanDataWithID:v18 actionType:3 stage:2];
+  eventReporter = [(ICGalleryAttachmentEditorController *)self eventReporter];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  identifier = [galleryAttachment identifier];
+  [eventReporter pushDocScanDataWithID:identifier actionType:3 stage:2];
 
-  v19 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-  v20 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v21 = [v20 note];
-  v22 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v23 = [v22 galleryModel];
-  v24 = [v23 subAttachmentCount];
-  v25 = [v12 docInfos];
-  [v19 submitDocScanEventForNote:v21 pageCount:{objc_msgSend(v25, "count") + v24}];
+  eventReporter2 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  note = [galleryAttachment2 note];
+  galleryAttachment3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  galleryModel = [galleryAttachment3 galleryModel];
+  subAttachmentCount = [galleryModel subAttachmentCount];
+  docInfos2 = [collectionCopy docInfos];
+  [eventReporter2 submitDocScanEventForNote:note pageCount:{objc_msgSend(docInfos2, "count") + subAttachmentCount}];
 
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x3032000000;
   v37[3] = __Block_byref_object_copy__14;
   v37[4] = __Block_byref_object_dispose__14;
-  v26 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-  v38 = [v26 currentDocument];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  currentDocument = [extractedDocumentController currentDocument];
 
   v27 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -1619,12 +1619,12 @@ void __139__ICGalleryAttachmentEditorController_extractedDocumentController_star
   block[2] = __146__ICGalleryAttachmentEditorController_documentCameraPresentingViewController_didFinishWithInfoCollection_imageCache_warnUser_closeViewController___block_invoke;
   block[3] = &unk_2781AEBF0;
   block[4] = self;
-  v33 = v12;
-  v34 = v13;
+  v33 = collectionCopy;
+  v34 = cacheCopy;
   v35 = v37;
-  v36 = v30;
-  v28 = v13;
-  v29 = v12;
+  v36 = viewControllerCopy;
+  v28 = cacheCopy;
+  v29 = collectionCopy;
   dispatch_async(v27, block);
 
   _Block_object_dispose(v37, 8);
@@ -1914,16 +1914,16 @@ void __146__ICGalleryAttachmentEditorController_documentCameraPresentingViewCont
   [v1 becomeFirstResponder];
 }
 
-- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)a3
+- (void)documentCameraControllerDidCancelWithPresentingViewController:(id)controller
 {
-  v4 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-  v5 = [v4 navigationController];
+  extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+  navigationController = [extractedDocumentController navigationController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __101__ICGalleryAttachmentEditorController_documentCameraControllerDidCancelWithPresentingViewController___block_invoke;
   v6[3] = &unk_2781ABCF8;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:1 completion:v6];
+  [navigationController dismissViewControllerAnimated:1 completion:v6];
 }
 
 void __101__ICGalleryAttachmentEditorController_documentCameraControllerDidCancelWithPresentingViewController___block_invoke(uint64_t a1)
@@ -1932,67 +1932,67 @@ void __101__ICGalleryAttachmentEditorController_documentCameraControllerDidCance
   [v1 becomeFirstResponder];
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 presentingViewController];
-  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:v12 didFinishWithInfoCollection:v11 imageCache:v10 warnUser:v6 closeViewController:1];
+  userCopy = user;
+  cacheCopy = cache;
+  collectionCopy = collection;
+  presentingViewController = [controller presentingViewController];
+  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:cacheCopy warnUser:userCopy closeViewController:1];
 }
 
-- (void)documentCameraController:(id)a3 didFinishWithDocInfoCollection:(id)a4 imageCache:(id)a5 warnUser:(BOOL)a6 closeViewController:(BOOL)a7
+- (void)documentCameraController:(id)controller didFinishWithDocInfoCollection:(id)collection imageCache:(id)cache warnUser:(BOOL)user closeViewController:(BOOL)viewController
 {
-  v7 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 presentingViewController];
-  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:v13 didFinishWithInfoCollection:v12 imageCache:v11 warnUser:v7 closeViewController:1];
+  userCopy = user;
+  cacheCopy = cache;
+  collectionCopy = collection;
+  presentingViewController = [controller presentingViewController];
+  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:cacheCopy warnUser:userCopy closeViewController:1];
 }
 
-- (void)documentCameraControllerDidCancel:(id)a3
+- (void)documentCameraControllerDidCancel:(id)cancel
 {
-  v4 = [a3 presentingViewController];
-  [(ICGalleryAttachmentEditorController *)self documentCameraControllerDidCancelWithPresentingViewController:v4];
+  presentingViewController = [cancel presentingViewController];
+  [(ICGalleryAttachmentEditorController *)self documentCameraControllerDidCancelWithPresentingViewController:presentingViewController];
 }
 
-- (void)documentCameraControllerDidRetake:(id)a3 pageCount:(unint64_t)a4
+- (void)documentCameraControllerDidRetake:(id)retake pageCount:(unint64_t)count
 {
-  v6 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-  v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v8 = [v7 identifier];
-  [v6 pushDocScanDataWithID:v8 actionType:2 stage:1];
+  eventReporter = [(ICGalleryAttachmentEditorController *)self eventReporter];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  identifier = [galleryAttachment identifier];
+  [eventReporter pushDocScanDataWithID:identifier actionType:2 stage:1];
 
-  v13 = [(ICGalleryAttachmentEditorController *)self eventReporter];
-  v9 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v10 = [v9 note];
-  v11 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v12 = [v11 galleryModel];
-  [v13 submitDocScanEventForNote:v10 pageCount:{objc_msgSend(v12, "subAttachmentCount") + a4}];
+  eventReporter2 = [(ICGalleryAttachmentEditorController *)self eventReporter];
+  galleryAttachment2 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  note = [galleryAttachment2 note];
+  galleryAttachment3 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  galleryModel = [galleryAttachment3 galleryModel];
+  [eventReporter2 submitDocScanEventForNote:note pageCount:{objc_msgSend(galleryModel, "subAttachmentCount") + count}];
 }
 
-- (BOOL)documentCameraController:(id)a3 canAddImages:(unint64_t)a4
+- (BOOL)documentCameraController:(id)controller canAddImages:(unint64_t)images
 {
-  v6 = a3;
+  controllerCopy = controller;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
-  v8 = [v7 managedObjectContext];
+  galleryAttachment = [(ICGalleryAttachmentEditorController *)self galleryAttachment];
+  managedObjectContext = [galleryAttachment managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__ICGalleryAttachmentEditorController_documentCameraController_canAddImages___block_invoke;
   v10[3] = &unk_2781AEC18;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a4;
-  [v8 performBlockAndWait:v10];
+  v10[6] = images;
+  [managedObjectContext performBlockAndWait:v10];
 
-  LOBYTE(a4) = *(v12 + 24);
+  LOBYTE(images) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return a4;
+  return images;
 }
 
 void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddImages___block_invoke(uint64_t a1)
@@ -2007,30 +2007,30 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   *(*(*(a1 + 40) + 8) + 24) = v4 <= [v5 maxSubAttachmentsPerAttachment];
 }
 
-- (void)remoteDocumentCameraController:(id)a3 didFinishWithInfoCollection:(id)a4
+- (void)remoteDocumentCameraController:(id)controller didFinishWithInfoCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 presentingViewController];
-  v8 = [v7 imageCache];
+  collectionCopy = collection;
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
+  imageCache = [controllerCopy imageCache];
 
-  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:v9 didFinishWithInfoCollection:v6 imageCache:v8 warnUser:1 closeViewController:1];
+  [(ICGalleryAttachmentEditorController *)self documentCameraPresentingViewController:presentingViewController didFinishWithInfoCollection:collectionCopy imageCache:imageCache warnUser:1 closeViewController:1];
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  if ([(ICGalleryAttachmentEditorController *)self useCustomRecropTransition:a3])
+  if ([(ICGalleryAttachmentEditorController *)self useCustomRecropTransition:controller])
   {
     v8 = objc_alloc(MEMORY[0x277D05D40]);
-    v9 = [(ICGalleryAttachmentEditorController *)self filteredImageForRecrop];
-    v10 = [(ICGalleryAttachmentEditorController *)self unfilteredImageForRecrop];
-    v11 = [(ICGalleryAttachmentEditorController *)self orientationForRecrop];
-    v12 = [(ICGalleryAttachmentEditorController *)self indexPathForRecrop];
-    v13 = [v8 initWithImage:v9 unfilteredImage:v10 orientation:v11 indexPath:v12 duration:0 completion:0.65];
+    filteredImageForRecrop = [(ICGalleryAttachmentEditorController *)self filteredImageForRecrop];
+    unfilteredImageForRecrop = [(ICGalleryAttachmentEditorController *)self unfilteredImageForRecrop];
+    orientationForRecrop = [(ICGalleryAttachmentEditorController *)self orientationForRecrop];
+    indexPathForRecrop = [(ICGalleryAttachmentEditorController *)self indexPathForRecrop];
+    v13 = [v8 initWithImage:filteredImageForRecrop unfilteredImage:unfilteredImageForRecrop orientation:orientationForRecrop indexPath:indexPathForRecrop duration:0 completion:0.65];
 
     [(ICGalleryAttachmentEditorController *)self setFilteredImageForRecrop:0];
     [(ICGalleryAttachmentEditorController *)self setUnfilteredImageForRecrop:0];
-    [v13 setPresenting:a4 == 1];
+    [v13 setPresenting:operation == 1];
     if (([v13 presenting] & 1) == 0)
     {
       [(ICGalleryAttachmentEditorController *)self setUseCustomRecropTransition:0];
@@ -2045,29 +2045,29 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   return v13;
 }
 
-- (id)scanDataDelegateWithIdentifier:(id)a3
+- (id)scanDataDelegateWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D35E00];
   v4 = MEMORY[0x277D35F30];
-  v5 = a3;
-  v6 = [v4 sharedContext];
-  v7 = [v6 managedObjectContext];
-  v8 = [v3 attachmentWithIdentifier:v5 context:v7];
+  identifierCopy = identifier;
+  sharedContext = [v4 sharedContext];
+  managedObjectContext = [sharedContext managedObjectContext];
+  v8 = [v3 attachmentWithIdentifier:identifierCopy context:managedObjectContext];
 
   return v8;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = NSClassFromString(&cfstr_Icdoccamextrac.isa);
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[v8 alloc] initWithPresentedViewController:v6 presentingViewController:v7];
+      v8 = [[v8 alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
     }
 
     else
@@ -2079,16 +2079,16 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   return v8;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
   v9 = NSClassFromString(&cfstr_Icdoccamextrac_0.isa);
   if (v9 && (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = [v10 alloc];
-    v12 = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
-    v13 = [v11 initWithPresentedController:v7 presentingController:v8 thumbnailView:v12 duration:1 isPresenting:0.25];
+    sourceViewForZoomTransition = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
+    v13 = [v11 initWithPresentedController:controllerCopy presentingController:presentingControllerCopy thumbnailView:sourceViewForZoomTransition duration:1 isPresenting:0.25];
   }
 
   else
@@ -2099,15 +2099,15 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   return v13;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = NSClassFromString(&cfstr_Icdoccamextrac_0.isa);
   if (v5 && (v6 = v5, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = [v6 alloc];
-    v8 = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
-    v9 = [v7 initWithPresentedController:v4 presentingController:0 thumbnailView:v8 duration:0 isPresenting:0.25];
+    sourceViewForZoomTransition = [(ICGalleryAttachmentEditorController *)self sourceViewForZoomTransition];
+    v9 = [v7 initWithPresentedController:controllerCopy presentingController:0 thumbnailView:sourceViewForZoomTransition duration:0 isPresenting:0.25];
   }
 
   else
@@ -2124,21 +2124,21 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   {
     if ([MEMORY[0x277D35978] isOptedInForAnalytics])
     {
-      v3 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-      v4 = [v3 viewIfLoaded];
+      extractedDocumentController = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+      viewIfLoaded = [extractedDocumentController viewIfLoaded];
 
-      if (v4)
+      if (viewIfLoaded)
       {
         v5 = objc_alloc(MEMORY[0x277D35978]);
         v6 = *MEMORY[0x277D35988];
-        v7 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
-        v8 = [v7 view];
-        v9 = [v5 initWithSubTrackerName:v6 view:v8];
+        extractedDocumentController2 = [(ICGalleryAttachmentEditorController *)self extractedDocumentController];
+        view = [extractedDocumentController2 view];
+        v9 = [v5 initWithSubTrackerName:v6 view:view];
         eventReporter = self->_eventReporter;
         self->_eventReporter = v9;
 
-        v11 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v11 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
       }
     }
   }
@@ -2148,17 +2148,17 @@ void __77__ICGalleryAttachmentEditorController_documentCameraController_canAddIm
   return v12;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
 - (ICGalleryAttachmentEditorControllerDelegate)delegate

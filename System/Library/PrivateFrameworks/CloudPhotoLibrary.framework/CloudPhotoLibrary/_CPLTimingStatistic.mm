@@ -1,6 +1,6 @@
 @interface _CPLTimingStatistic
 - (id)description;
-- (void)updateWithDuration:(double)a3 recordCount:(unint64_t)a4 error:(BOOL)a5 cancelled:(BOOL)a6;
+- (void)updateWithDuration:(double)duration recordCount:(unint64_t)count error:(BOOL)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation _CPLTimingStatistic
@@ -34,24 +34,24 @@
   return v2;
 }
 
-- (void)updateWithDuration:(double)a3 recordCount:(unint64_t)a4 error:(BOOL)a5 cancelled:(BOOL)a6
+- (void)updateWithDuration:(double)duration recordCount:(unint64_t)count error:(BOOL)error cancelled:(BOOL)cancelled
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
     v6 = vdupq_n_s64(1uLL);
-    v6.i64[0] = a4;
+    v6.i64[0] = count;
     *&self->_recordCount = vaddq_s64(*&self->_recordCount, v6);
-    if (a5)
+    if (error)
     {
       ++self->_errorCount;
     }
 
-    if (a6)
+    if (cancelled)
     {
       ++self->_cancelCount;
     }
 
-    self->_duration = self->_duration + a3;
+    self->_duration = self->_duration + duration;
   }
 }
 

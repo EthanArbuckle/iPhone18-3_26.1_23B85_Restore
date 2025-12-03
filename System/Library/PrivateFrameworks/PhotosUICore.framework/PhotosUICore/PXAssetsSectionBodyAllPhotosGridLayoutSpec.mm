@@ -1,18 +1,18 @@
 @interface PXAssetsSectionBodyAllPhotosGridLayoutSpec
-- (PXAssetsSectionBodyAllPhotosGridLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXAssetsSectionBodyAllPhotosGridLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 @end
 
 @implementation PXAssetsSectionBodyAllPhotosGridLayoutSpec
 
-- (PXAssetsSectionBodyAllPhotosGridLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXAssetsSectionBodyAllPhotosGridLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v8.receiver = self;
   v8.super_class = PXAssetsSectionBodyAllPhotosGridLayoutSpec;
-  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v8 initWithExtendedTraitCollection:a3 options:a4];
+  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v8 initWithExtendedTraitCollection:collection options:options];
   if (v4)
   {
-    v5 = [off_1E77219A8 sharedInstance];
-    [v5 interitemSpacing];
+    sharedInstance = [off_1E77219A8 sharedInstance];
+    [sharedInstance interitemSpacing];
     v4->super._interitemSpacing = v6;
   }
 

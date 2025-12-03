@@ -1,10 +1,10 @@
 @interface HUUtilityOnboardingOAuthLoginViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingOAuthLoginViewController)initWithCoder:(id)a3;
-- (HUUtilityOnboardingOAuthLoginViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)setDelegate:(id)a3;
+- (HUUtilityOnboardingOAuthLoginViewController)initWithCoder:(id)coder;
+- (HUUtilityOnboardingOAuthLoginViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -18,16 +18,16 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUUtilityOnboardingOAuthLoginViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (HUUtilityOnboardingOAuthLoginViewController)initWithCoder:(id)a3
+- (HUUtilityOnboardingOAuthLoginViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___HUUtilityOnboardingOAuthLoginViewController_delegate) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___HUUtilityOnboardingOAuthLoginViewController_loginManager) = 0;
@@ -38,14 +38,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF326D0();
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
+  sessionCopy = session;
+  selfCopy = self;
   v6 = sub_20CF344C8();
 
   return v6;
@@ -58,7 +58,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (HUUtilityOnboardingOAuthLoginViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUUtilityOnboardingOAuthLoginViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

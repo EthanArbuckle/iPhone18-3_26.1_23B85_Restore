@@ -1,16 +1,16 @@
 @interface NTKExtraLargeFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryDefaultPigmentOptionsForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryDefaultPigmentOptionsForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
 @end
 
 @implementation NTKExtraLargeFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 212;
@@ -21,18 +21,18 @@
     v4 = 12;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryDefaultPigmentOptionsForDevice:(id)a3
+- (id)galleryDefaultPigmentOptionsForDevice:(id)device
 {
-  v4 = a3;
-  if (NTKShowGossamerUI() && ([v4 supportsPDRCapability:3887189377] & 1) == 0)
+  deviceCopy = device;
+  if (NTKShowGossamerUI() && ([deviceCopy supportsPDRCapability:3887189377] & 1) == 0)
   {
-    v6 = [(objc_class *)[(NTKExtraLargeFaceBundle *)self faceClass] pigmentFaceDomain];
-    v7 = [v6 stringByAppendingString:@"-Gossamer"];
+    pigmentFaceDomain = [(objc_class *)[(NTKExtraLargeFaceBundle *)self faceClass] pigmentFaceDomain];
+    v7 = [pigmentFaceDomain stringByAppendingString:@"-Gossamer"];
 
     v8 = [NSBundle bundleForClass:[(NTKExtraLargeFaceBundle *)self faceClass]];
     v9 = +[NTKPigmentEditOptionStore sharedInstance];
@@ -43,28 +43,28 @@
   {
     v11.receiver = self;
     v11.super_class = NTKExtraLargeFaceBundle;
-    v5 = [(NTKExtraLargeFaceBundle *)&v11 galleryDefaultPigmentOptionsForDevice:v4];
+    v5 = [(NTKExtraLargeFaceBundle *)&v11 galleryDefaultPigmentOptionsForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 supportsPDRCapability:3669496134])
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v31.receiver = self;
     v31.super_class = NTKExtraLargeFaceBundle;
-    v6 = [(NTKExtraLargeFaceBundle *)&v31 galleryFacesForDevice:v4];
+    v6 = [(NTKExtraLargeFaceBundle *)&v31 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v6];
 
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_146C;
     v29[3] = &unk_10428;
-    v30 = v4;
+    v30 = deviceCopy;
     [v5 enumerateObjectsUsingBlock:v29];
     v7 = v5;
   }
@@ -73,8 +73,8 @@
   {
     v28.receiver = self;
     v28.super_class = NTKExtraLargeFaceBundle;
-    v8 = [(NTKExtraLargeFaceBundle *)&v28 galleryFacesForDevice:v4];
-    v9 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:v4];
+    v8 = [(NTKExtraLargeFaceBundle *)&v28 galleryFacesForDevice:deviceCopy];
+    v9 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:1 forDevice:deviceCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -107,20 +107,20 @@
   else
   {
     v14 = objc_opt_class();
-    v15 = [(NTKExtraLargeFaceBundle *)self defaultFaceForDevice:v4];
+    v15 = [(NTKExtraLargeFaceBundle *)self defaultFaceForDevice:deviceCopy];
     if ([v15 deviceSupportsPigmentEditOption])
     {
-      [(NTKExtraLargeFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4];
+      [(NTKExtraLargeFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy];
     }
 
     else
     {
-      [NTKFaceColorEditOption standardColorsWithColorClass:v14 forDevice:v4];
+      [NTKFaceColorEditOption standardColorsWithColorClass:v14 forDevice:deviceCopy];
     }
     v16 = ;
     v17 = [v16 mutableCopy];
 
-    v18 = [v14 optionsRestrictedByDevice:v4];
+    v18 = [v14 optionsRestrictedByDevice:deviceCopy];
     v19 = [v18 mutableCopy];
 
     if ([v19 count])
@@ -135,7 +135,7 @@
 
     do
     {
-      v21 = [(NTKExtraLargeFaceBundle *)self defaultFaceForDevice:v4];
+      v21 = [(NTKExtraLargeFaceBundle *)self defaultFaceForDevice:deviceCopy];
       v22 = v21;
       if (v21 && [v21 _faceGalleryDidUpdateFaceColorForColorEditOptionClass:v14 availableHardwareSpecificColorOptions:v19 availableColorOptions:v17])
       {
@@ -152,10 +152,10 @@
   return v7;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v10[0] = &off_10750;
     v10[1] = &off_107C8;
@@ -168,7 +168,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 supportsPDRCapability:3669496134])
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v8[0] = &off_10750;
     v8[1] = &off_107C8;
@@ -185,10 +185,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v4 = &ntk_seasons_spring2025_peony;
     v5 = &ntk_seasons_fall2025_purpleFog;
@@ -209,7 +209,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 supportsPDRCapability:3874532124])
+  if ([deviceCopy supportsPDRCapability:3874532124])
   {
     v4 = &ntk_seasons_spring2025_sage;
     v5 = &ntk_seasons_spring2025_northernLights;
@@ -221,7 +221,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([v3 supportsPDRCapability:3669496134])
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v4 = &ntk_seasons_fall2024_darkTaupe;
     v5 = &ntk_seasons_fall2024_magenta;

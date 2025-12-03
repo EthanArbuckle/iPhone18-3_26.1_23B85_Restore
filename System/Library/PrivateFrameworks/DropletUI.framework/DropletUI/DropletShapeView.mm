@@ -1,12 +1,12 @@
 @interface DropletShapeView
-- (_TtC9DropletUI16DropletShapeView)initWithCoder:(id)a3;
+- (_TtC9DropletUI16DropletShapeView)initWithCoder:(id)coder;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation DropletShapeView
 
-- (_TtC9DropletUI16DropletShapeView)initWithCoder:(id)a3
+- (_TtC9DropletUI16DropletShapeView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9DropletUI16DropletShapeView_boundaryEdgesPreference;
   *v3 = 0;
@@ -36,9 +36,9 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9DropletUI16DropletShapeView_geometryChangingAssertions);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for DropletShapeView();
     [(DropletShapeView *)&v4 dealloc];
   }
@@ -51,7 +51,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_249ECBDF0();
 }
 

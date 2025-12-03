@@ -2,7 +2,7 @@
 - (BWAmbientLightSensor)init;
 - (float)rearLuxLevel;
 - (int)luxLevel;
-- (void)_updateRearLuxLevel:(os_unfair_lock_s *)a1;
+- (void)_updateRearLuxLevel:(os_unfair_lock_s *)level;
 - (void)dealloc;
 @end
 
@@ -180,18 +180,18 @@ void __28__BWAmbientLightSensor_init__block_invoke_10(uint64_t a1)
   return rearLuxLevel;
 }
 
-- (void)_updateRearLuxLevel:(os_unfair_lock_s *)a1
+- (void)_updateRearLuxLevel:(os_unfair_lock_s *)level
 {
-  if (a1)
+  if (level)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      os_unfair_lock_lock(a1 + 10);
+      os_unfair_lock_lock(level + 10);
       [objc_msgSend(a2 objectForKeyedSubscript:{@"lux", "floatValue"}];
-      a1[7]._os_unfair_lock_opaque = v4;
+      level[7]._os_unfair_lock_opaque = v4;
 
-      os_unfair_lock_unlock(a1 + 10);
+      os_unfair_lock_unlock(level + 10);
     }
   }
 }

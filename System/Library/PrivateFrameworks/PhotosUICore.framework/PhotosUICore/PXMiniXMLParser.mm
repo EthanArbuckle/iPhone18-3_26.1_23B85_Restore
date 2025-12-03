@@ -3,23 +3,23 @@
 - (BOOL)_parseCharacters;
 - (BOOL)_parseEntity;
 - (BOOL)_parseTag;
-- (BOOL)_tryScanningUsingBlock:(id)a3;
-- (PXMiniXMLParser)initWithString:(id)a3;
+- (BOOL)_tryScanningUsingBlock:(id)block;
+- (PXMiniXMLParser)initWithString:(id)string;
 - (void)parse;
 @end
 
 @implementation PXMiniXMLParser
 
-- (BOOL)_tryScanningUsingBlock:(id)a3
+- (BOOL)_tryScanningUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXMiniXMLParser *)self _scanner];
-  v6 = [v5 scanLocation];
-  v7 = v4[2](v4, v5);
+  blockCopy = block;
+  _scanner = [(PXMiniXMLParser *)self _scanner];
+  scanLocation = [_scanner scanLocation];
+  v7 = blockCopy[2](blockCopy, _scanner);
 
   if ((v7 & 1) == 0)
   {
-    [v5 setScanLocation:v6];
+    [_scanner setScanLocation:scanLocation];
   }
 
   return v7;
@@ -191,10 +191,10 @@ uint64_t __35__PXMiniXMLParser__parseCharacters__block_invoke(uint64_t a1, void 
 
 - (BOOL)_isAtEnd
 {
-  v2 = [(PXMiniXMLParser *)self _scanner];
-  v3 = [v2 isAtEnd];
+  _scanner = [(PXMiniXMLParser *)self _scanner];
+  isAtEnd = [_scanner isAtEnd];
 
-  return v3;
+  return isAtEnd;
 }
 
 - (void)parse
@@ -205,9 +205,9 @@ uint64_t __35__PXMiniXMLParser__parseCharacters__block_invoke(uint64_t a1, void 
     {
       if (![(PXMiniXMLParser *)self _parseCharacters]&& ![(PXMiniXMLParser *)self _parseTag]&& ![(PXMiniXMLParser *)self _parseEntity])
       {
-        v3 = [(PXMiniXMLParser *)self parsedErrorBlock];
+        parsedErrorBlock = [(PXMiniXMLParser *)self parsedErrorBlock];
 
-        if (v3)
+        if (parsedErrorBlock)
         {
           break;
         }
@@ -219,8 +219,8 @@ uint64_t __35__PXMiniXMLParser__parseCharacters__block_invoke(uint64_t a1, void 
       }
     }
 
-    v4 = [(PXMiniXMLParser *)self parsedErrorBlock];
-    v4[2](v4, 0);
+    parsedErrorBlock2 = [(PXMiniXMLParser *)self parsedErrorBlock];
+    parsedErrorBlock2[2](parsedErrorBlock2, 0);
   }
 
 LABEL_7:
@@ -231,15 +231,15 @@ LABEL_7:
   [(PXMiniXMLParser *)self setParsedErrorBlock:0];
 }
 
-- (PXMiniXMLParser)initWithString:(id)a3
+- (PXMiniXMLParser)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = PXMiniXMLParser;
   v5 = [(PXMiniXMLParser *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:stringCopy];
     scanner = v5->__scanner;
     v5->__scanner = v6;
 

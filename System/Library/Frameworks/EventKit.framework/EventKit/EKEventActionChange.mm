@@ -1,20 +1,20 @@
 @interface EKEventActionChange
-- (EKEventActionChange)initWithChangeProperties:(id)a3;
+- (EKEventActionChange)initWithChangeProperties:(id)properties;
 @end
 
 @implementation EKEventActionChange
 
-- (EKEventActionChange)initWithChangeProperties:(id)a3
+- (EKEventActionChange)initWithChangeProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = EKEventActionChange;
-  v5 = [(EKObjectChange *)&v11 initWithChangeProperties:v4];
+  v5 = [(EKObjectChange *)&v11 initWithChangeProperties:propertiesCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"event_id"];
-    v7 = [(EKObjectChange *)v5 changedObjectID];
-    v8 = +[EKObjectChangeOwnerIDHelper createOwnerIDWithRowID:objectType:databaseID:](EKObjectChangeOwnerIDHelper, "createOwnerIDWithRowID:objectType:databaseID:", v6, 2, [v7 databaseID]);
+    v6 = [propertiesCopy objectForKeyedSubscript:@"event_id"];
+    changedObjectID = [(EKObjectChange *)v5 changedObjectID];
+    v8 = +[EKObjectChangeOwnerIDHelper createOwnerIDWithRowID:objectType:databaseID:](EKObjectChangeOwnerIDHelper, "createOwnerIDWithRowID:objectType:databaseID:", v6, 2, [changedObjectID databaseID]);
     ownerID = v5->_ownerID;
     v5->_ownerID = v8;
   }

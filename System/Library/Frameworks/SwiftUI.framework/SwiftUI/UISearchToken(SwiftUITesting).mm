@@ -9,30 +9,30 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 text];
+    text = [self text];
   }
 
   else
   {
-    v2 = 0;
+    text = 0;
   }
 
-  return v2;
+  return text;
 }
 
 - (id)swiftui_image
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 image];
+    image = [self image];
   }
 
   else
   {
-    v2 = 0;
+    image = 0;
   }
 
-  return v2;
+  return image;
 }
 
 @end

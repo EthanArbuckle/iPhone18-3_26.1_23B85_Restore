@@ -19,9 +19,9 @@
     v4 = objc_alloc_init(NSMutableDictionary);
     [(SandboxManager *)v2 setSandboxHandles:v4];
 
-    v5 = [(SandboxManager *)v2 sandboxHandles];
+    sandboxHandles = [(SandboxManager *)v2 sandboxHandles];
 
-    if (!v5)
+    if (!sandboxHandles)
     {
       [(SandboxManager *)&v7 init];
     }
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __28__SandboxManager_getManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getManager_once_token != -1)
   {
     dispatch_once(&getManager_once_token, block);
@@ -61,7 +61,7 @@ void __28__SandboxManager_getManager__block_invoke(uint64_t a1)
 
 - (void)init
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -69,7 +69,7 @@ void __28__SandboxManager_getManager__block_invoke(uint64_t a1)
   *a2 = 0u;
   os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0_3();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }

@@ -1,16 +1,16 @@
 @interface VCPImageExposurePreAnalyzer
-- (float)computeNoiseLevel:(char *)a3 width:(int)a4 height:(int)a5 stride:(int64_t)a6 textureness:(char *)a7;
-- (float)computeRegionNoise:(char *)a3 blockTextureness:(char *)a4 average:(char *)a5 width:(int)a6 height:(int)a7 stride:(int64_t)a8;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
+- (float)computeNoiseLevel:(char *)level width:(int)width height:(int)height stride:(int64_t)stride textureness:(char *)textureness;
+- (float)computeRegionNoise:(char *)noise blockTextureness:(char *)textureness average:(char *)average width:(int)width height:(int)height stride:(int64_t)stride;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation VCPImageExposurePreAnalyzer
 
-- (float)computeRegionNoise:(char *)a3 blockTextureness:(char *)a4 average:(char *)a5 width:(int)a6 height:(int)a7 stride:(int64_t)a8
+- (float)computeRegionNoise:(char *)noise blockTextureness:(char *)textureness average:(char *)average width:(int)width height:(int)height stride:(int64_t)stride
 {
-  v8 = a7 * a6;
+  v8 = height * width;
   v9 = 0.0;
-  if (a7 < 1)
+  if (height < 1)
   {
     v17 = 0;
     v10 = 0;
@@ -34,26 +34,26 @@ LABEL_10:
     v13 = 0;
     do
     {
-      if (a6 >= 1)
+      if (width >= 1)
       {
-        for (i = 0; i != a6; ++i)
+        for (i = 0; i != width; ++i)
         {
-          v15 = a3[i];
+          v15 = noise[i];
           v10 += v15;
           v12 += (v15 * v15);
-          if (a4[i])
+          if (textureness[i])
           {
             ++v13;
           }
         }
       }
 
-      a3 += a8;
-      a4 += a6;
+      noise += stride;
+      textureness += width;
       ++v11;
     }
 
-    while (v11 != a7);
+    while (v11 != height);
     v16 = v12;
     v17 = v13 > 0;
     if (v8)
@@ -65,7 +65,7 @@ LABEL_10:
   v19 = 0.0;
 LABEL_13:
   result = v19 - (v9 * v9);
-  *a5 = v8;
+  *average = v8;
   if (v17)
   {
     return -1.0;
@@ -74,19 +74,19 @@ LABEL_13:
   return result;
 }
 
-- (float)computeNoiseLevel:(char *)a3 width:(int)a4 height:(int)a5 stride:(int64_t)a6 textureness:(char *)a7
+- (float)computeNoiseLevel:(char *)level width:(int)width height:(int)height stride:(int64_t)stride textureness:(char *)textureness
 {
   v11 = 0;
-  v12 = (a4 / 20);
-  v13 = (a5 / 20);
-  v14 = v13 * a6;
-  v15 = v13 * a4;
+  v12 = (width / 20);
+  v13 = (height / 20);
+  v14 = v13 * stride;
+  v15 = v13 * width;
   result = -1.0;
   do
   {
     v17 = result;
     v19 = 0;
-    [(VCPImageExposurePreAnalyzer *)self computeRegionNoise:&a3[v14 * (v11 / 0x14u) + (v12 * (v11 % 0x14u))] blockTextureness:&a7[v15 * (v11 / 0x14u) + (v12 * (v11 % 0x14u))] average:&v19 width:v12 height:v13 stride:a6];
+    [(VCPImageExposurePreAnalyzer *)self computeRegionNoise:&level[v14 * (v11 / 0x14u) + (v12 * (v11 % 0x14u))] blockTextureness:&textureness[v15 * (v11 / 0x14u) + (v12 * (v11 % 0x14u))] average:&v19 width:v12 height:v13 stride:stride];
     if (result < 0.0 || v19 > 0x1Du)
     {
       result = v17;
@@ -104,16 +104,16 @@ LABEL_13:
   return result;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v77 = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  cancelCopy = cancel;
   v64 = 0;
-  pixelBuffer = a3;
+  pixelBuffer = buffer;
   unlockFlags = 1;
-  if (a3)
+  if (buffer)
   {
-    v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v10 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
     v64 = v10;
     if (v10)
     {
@@ -134,10 +134,10 @@ LABEL_13:
       }
     }
 
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
     v15 = Height * Width;
     v16 = MEMORY[0x1E69E5398];
     v17 = operator new[](Height * Width, MEMORY[0x1E69E5398]);
@@ -387,7 +387,7 @@ LABEL_80:
         v71 = v61;
         v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
         v73 = v62;
-        *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
+        *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
 
         v10 = 0;
         goto LABEL_46;

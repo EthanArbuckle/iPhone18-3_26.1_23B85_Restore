@@ -1,27 +1,27 @@
 @interface CHContextualTextResults
 - (BOOL)isMathForContextLookup;
 - (CGRect)bounds;
-- (CHContextualTextResults)initWithTextResults:(id)a3;
+- (CHContextualTextResults)initWithTextResults:(id)results;
 - (id)majorityScriptId;
 - (id)rawTranscription;
-- (id)textResultToIndexMappingFromTopTranscriptionWithCharacterRange:(_NSRange)a3 intersectionRanges:(id *)a4;
-- (id)tokenSupportRangesForNonTextStrokes:(id)a3 initialStrokes:(id)a4 strokeProvider:(id)a5;
+- (id)textResultToIndexMappingFromTopTranscriptionWithCharacterRange:(_NSRange)range intersectionRanges:(id *)ranges;
+- (id)tokenSupportRangesForNonTextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider;
 - (id)topTranscription;
-- (void)enumerateGroupsCoveredByStringRange:(_NSRange)a3 block:(id)a4;
+- (void)enumerateGroupsCoveredByStringRange:(_NSRange)range block:(id)block;
 @end
 
 @implementation CHContextualTextResults
 
-- (CHContextualTextResults)initWithTextResults:(id)a3
+- (CHContextualTextResults)initWithTextResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = CHContextualTextResults;
   v6 = [(CHContextualTextResults *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textResults, a3);
+    objc_storeStrong(&v6->_textResults, results);
   }
 
   return v7;
@@ -202,12 +202,12 @@ LABEL_3:
   return v7;
 }
 
-- (void)enumerateGroupsCoveredByStringRange:(_NSRange)a3 block:(id)a4
+- (void)enumerateGroupsCoveredByStringRange:(_NSRange)range block:(id)block
 {
-  range1 = a3.length;
-  location = a3.location;
+  range1 = range.length;
+  location = range.location;
   v157 = *MEMORY[0x1E69E9840];
-  v136 = a4;
+  blockCopy = block;
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
@@ -306,7 +306,7 @@ LABEL_3:
           }
 
           v131 = objc_msgSend_strokeGroup(v81, v126, v127, v128, v129, v130);
-          v136[2](v136, v131, v146, v87);
+          blockCopy[2](blockCopy, v131, v146, v87);
 
           v16 = v133;
           location = v134;
@@ -341,15 +341,15 @@ LABEL_3:
   }
 }
 
-- (id)textResultToIndexMappingFromTopTranscriptionWithCharacterRange:(_NSRange)a3 intersectionRanges:(id *)a4
+- (id)textResultToIndexMappingFromTopTranscriptionWithCharacterRange:(_NSRange)range intersectionRanges:(id *)ranges
 {
-  v98 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], a2, a3.location, a3.length, a4, v4);
+  v98 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], a2, range.location, range.length, ranges, v4);
   v97 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v6, v7, v8, v9, v10);
   if (objc_msgSend_count(self->_textResults, v11, v12, v13, v14, v15))
   {
     v20 = 0;
     v21 = 0;
-    v99 = self;
+    selfCopy = self;
     objc_msgSend_objectAtIndexedSubscript_(self->_textResults, v16, 0, v17, v18, v19);
     while (1)
       v31 = {;
@@ -359,7 +359,7 @@ LABEL_3:
 
       v102.location = v20;
       v102.length = v49;
-      v50 = NSIntersectionRange(a3, v102);
+      v50 = NSIntersectionRange(range, v102);
       v55 = objc_msgSend_topTranscription(v37, v50.length, v51, v52, v53, v54);
       v61 = objc_msgSend_length(v55, v56, v57, v58, v59, v60);
       v67 = objc_msgSend_terminatingSpecialCharacter(v31, v62, v63, v64, v65, v66);
@@ -377,42 +377,42 @@ LABEL_3:
 
       v20 += v61 + v73;
 
-      if (++v21 >= objc_msgSend_count(v99->_textResults, v22, v23, v24, v25, v26))
+      if (++v21 >= objc_msgSend_count(selfCopy->_textResults, v22, v23, v24, v25, v26))
       {
         break;
       }
 
-      objc_msgSend_objectAtIndexedSubscript_(v99->_textResults, v27, v21, v28, v29, v30);
+      objc_msgSend_objectAtIndexedSubscript_(selfCopy->_textResults, v27, v21, v28, v29, v30);
     }
   }
 
   v94 = v97;
-  if (a4)
+  if (ranges)
   {
     v94 = v97;
-    *a4 = v94;
+    *ranges = v94;
   }
 
   return v98;
 }
 
-- (id)tokenSupportRangesForNonTextStrokes:(id)a3 initialStrokes:(id)a4 strokeProvider:(id)a5
+- (id)tokenSupportRangesForNonTextStrokes:(id)strokes initialStrokes:(id)initialStrokes strokeProvider:(id)provider
 {
   v248 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v221 = a4;
-  v226 = a5;
-  v219 = v8;
-  if (objc_msgSend_count(v8, v9, v10, v11, v12, v13))
+  strokesCopy = strokes;
+  initialStrokesCopy = initialStrokes;
+  providerCopy = provider;
+  v219 = strokesCopy;
+  if (objc_msgSend_count(strokesCopy, v9, v10, v11, v12, v13))
   {
     v19 = MEMORY[0x1E695DF70];
-    v20 = objc_msgSend_count(v8, v14, v15, v16, v17, v18);
+    v20 = objc_msgSend_count(strokesCopy, v14, v15, v16, v17, v18);
     v224 = objc_msgSend_arrayWithCapacity_(v19, v21, v20, v22, v23, v24);
     v244 = 0u;
     v245 = 0u;
     v242 = 0u;
     v243 = 0u;
-    obj = v8;
+    obj = strokesCopy;
     v225 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v25, &v242, v247, 16, v26);
     if (v225)
     {
@@ -527,7 +527,7 @@ LABEL_3:
             }
 
             v111 = v110;
-            v115 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(v109, v112, v111, v226, v113, v114);
+            v115 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(v109, v112, v111, providerCopy, v113, v114);
             objc_msgSend_bounds(v115, v116, v117, v118, v119, v120);
             v122 = v121;
             v124 = v123;
@@ -555,14 +555,14 @@ LABEL_3:
             }
             v184 = ;
 
-            v187 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(v168, v185, v221, v184, v226, v186);
+            v187 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(v168, v185, initialStrokesCopy, v184, providerCopy, v186);
             v228[0] = MEMORY[0x1E69E9820];
             v228[1] = 3221225472;
             v229[0] = sub_1838C1600;
             v229[1] = &unk_1E6DDF7D0;
             v188 = v151;
             v230 = v188;
-            v189 = v226;
+            v189 = providerCopy;
             v233 = v122;
             v234 = v124;
             v235 = v126;

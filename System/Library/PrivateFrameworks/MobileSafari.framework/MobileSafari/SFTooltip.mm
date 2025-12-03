@@ -1,8 +1,8 @@
 @interface SFTooltip
 - (NSString)text;
 - (SFTooltip)init;
-- (SFTooltip)initWithText:(id)a3;
-- (void)setText:(id)a3;
+- (SFTooltip)initWithText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation SFTooltip
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4 = sub_18BC20BD8();
   v5 = (self + OBJC_IVAR___SFTooltip_text);
@@ -23,7 +23,7 @@
   v5[1] = v6;
 }
 
-- (SFTooltip)initWithText:(id)a3
+- (SFTooltip)initWithText:(id)text
 {
   v4 = sub_18BC20BD8();
   v5 = (self + OBJC_IVAR___SFTooltip_text);

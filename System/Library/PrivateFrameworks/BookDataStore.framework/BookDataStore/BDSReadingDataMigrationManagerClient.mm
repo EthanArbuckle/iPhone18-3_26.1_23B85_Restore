@@ -1,6 +1,6 @@
 @interface BDSReadingDataMigrationManagerClient
 - (BDSReadingDataMigrationManagerClient)init;
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3;
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler;
 @end
 
 @implementation BDSReadingDataMigrationManagerClient
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingDataMigrationManagerClient *)self serviceProxy];
-  [v5 mergeMovedReadingHistoryDataWithCompletionHandler:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingDataMigrationManagerClient *)self serviceProxy];
+  [serviceProxy mergeMovedReadingHistoryDataWithCompletionHandler:handlerCopy];
 }
 
 @end

@@ -2,7 +2,7 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)contentRect;
 - ($41299696D20B6C925B74A5D5E4D5CC87)frameRect;
 - (NUMutableBufferTileAdapter)init;
-- (NUMutableBufferTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 buffer:(id)a5;
+- (NUMutableBufferTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect buffer:(id)buffer;
 @end
 
 @implementation NUMutableBufferTileAdapter
@@ -55,8 +55,8 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -75,8 +75,8 @@
     v9 = _NUAssertLogger;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -90,20 +90,20 @@
   _NUAssertFailHandler("[NUMutableBufferTileAdapter init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 382, @"Initializer not available: [%@ %@], use designated initializer instead.", v17, v18, v19, v20, v16);
 }
 
-- (NUMutableBufferTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 buffer:(id)a5
+- (NUMutableBufferTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect buffer:(id)buffer
 {
-  v8 = a5;
+  bufferCopy = buffer;
   v14.receiver = self;
   v14.super_class = NUMutableBufferTileAdapter;
   v9 = [(NUMutableBufferTileAdapter *)&v14 init];
-  var0 = a3->var0;
-  *(v9 + 24) = a3->var1;
+  var0 = rect->var0;
+  *(v9 + 24) = rect->var1;
   *(v9 + 8) = var0;
-  var1 = a4->var1;
-  *(v9 + 40) = a4->var0;
+  var1 = contentRect->var1;
+  *(v9 + 40) = contentRect->var0;
   *(v9 + 56) = var1;
   v12 = *(v9 + 9);
-  *(v9 + 9) = v8;
+  *(v9 + 9) = bufferCopy;
 
   return v9;
 }

@@ -1,15 +1,15 @@
 @interface PGGraphMemoryFeaturesEdge
 + (id)filter;
-- (id)initFromMemoryNode:(id)a3 toFeatureNode:(id)a4;
+- (id)initFromMemoryNode:(id)node toFeatureNode:(id)featureNode;
 @end
 
 @implementation PGGraphMemoryFeaturesEdge
 
-- (id)initFromMemoryNode:(id)a3 toFeatureNode:(id)a4
+- (id)initFromMemoryNode:(id)node toFeatureNode:(id)featureNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphMemoryFeaturesEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:featureNode];
 }
 
 + (id)filter

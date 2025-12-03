@@ -1,19 +1,19 @@
 @interface PSUICrossPlatformSIMTransferSpecifier
-+ (id)specifierWithHostController:(id)a3;
++ (id)specifierWithHostController:(id)controller;
 - (PSListController)hostController;
-- (PSUICrossPlatformSIMTransferSpecifier)initWithHostController:(id)a3;
+- (PSUICrossPlatformSIMTransferSpecifier)initWithHostController:(id)controller;
 - (UIViewController)firstViewController;
-- (void)cellPressed:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)showSpinner:(BOOL)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)cellPressed:(id)pressed;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)showSpinner:(BOOL)spinner;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUICrossPlatformSIMTransferSpecifier
 
-+ (id)specifierWithHostController:(id)a3
++ (id)specifierWithHostController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = +[SSFlowHostCache sharedInstance];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -26,7 +26,7 @@
 
   else
   {
-    v8 = [[PSUICrossPlatformSIMTransferSpecifier alloc] initWithHostController:v3];
+    v8 = [[PSUICrossPlatformSIMTransferSpecifier alloc] initWithHostController:controllerCopy];
   }
 
   v9 = v8;
@@ -34,9 +34,9 @@
   return v9;
 }
 
-- (PSUICrossPlatformSIMTransferSpecifier)initWithHostController:(id)a3
+- (PSUICrossPlatformSIMTransferSpecifier)initWithHostController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CROSS_PLATFORM_SIM_TRANSFER_TITLE" value:&stru_287733598 table:@"Cellular"];
 
@@ -49,45 +49,45 @@
     [(PSUICrossPlatformSIMTransferSpecifier *)v7 setIdentifier:@"Transfer SIM via QRCode"];
     [(PSUICrossPlatformSIMTransferSpecifier *)v8 setTarget:v8];
     [(PSUICrossPlatformSIMTransferSpecifier *)v8 setButtonAction:sel_cellPressed_];
-    objc_storeWeak(&v8->_hostController, v4);
+    objc_storeWeak(&v8->_hostController, controllerCopy);
     v8->_isRequestingFirstViewController = 0;
   }
 
   return v8;
 }
 
-- (void)cellPressed:(id)a3
+- (void)cellPressed:(id)pressed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pressedCopy = pressed;
+  getLogger = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v20 = "[PSUICrossPlatformSIMTransferSpecifier cellPressed:]";
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   if (self->_flow && (self->_isRequestingFirstViewController || (WeakRetained = objc_loadWeakRetained(&self->_hostController), [WeakRetained presentedViewController], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, WeakRetained, !v8)))
   {
-    v9 = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2658DE000, v9, OS_LOG_TYPE_ERROR, "duplicate request to launch SimSetupSupport", buf, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "duplicate request to launch SimSetupSupport", buf, 2u);
     }
   }
 
   else
   {
-    [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    [pressedCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     v10 = *MEMORY[0x277D49558];
     v17[0] = *MEMORY[0x277D49548];
     v17[1] = v10;
     v18[0] = &unk_287748FD8;
     v18[1] = MEMORY[0x277CBEC38];
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    v11 = [MEMORY[0x277D49530] flowWithOptions:v9];
+    getLogger2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
+    v11 = [MEMORY[0x277D49530] flowWithOptions:getLogger2];
     flow = self->_flow;
     self->_flow = v11;
 
@@ -158,13 +158,13 @@ void __53__PSUICrossPlatformSIMTransferSpecifier_cellPressed___block_invoke(uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
-  v4 = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "finish x sim transfer flow", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "finish x sim transfer flow", buf, 2u);
   }
 
   objc_initWeak(buf, self);
@@ -193,9 +193,9 @@ void __63__PSUICrossPlatformSIMTransferSpecifier_simSetupFlowCompleted___block_i
   }
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   if (self->_spinner)
   {
     v5 = *MEMORY[0x277D40148];
@@ -209,16 +209,16 @@ void __63__PSUICrossPlatformSIMTransferSpecifier_simSetupFlowCompleted___block_i
 
     v5 = *MEMORY[0x277D40148];
     v8 = [(PSUICrossPlatformSIMTransferSpecifier *)self propertyForKey:*MEMORY[0x277D40148]];
-    v9 = [v8 accessoryView];
+    accessoryView = [v8 accessoryView];
     originAccessoryView = self->_originAccessoryView;
-    self->_originAccessoryView = v9;
+    self->_originAccessoryView = accessoryView;
   }
 
   v11 = [(PSUICrossPlatformSIMTransferSpecifier *)self propertyForKey:v5];
   v12 = v11;
   if (v11)
   {
-    if (v3)
+    if (spinnerCopy)
     {
       [v11 setAccessoryView:self->_spinner];
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
@@ -240,11 +240,11 @@ void __63__PSUICrossPlatformSIMTransferSpecifier_simSetupFlowCompleted___block_i
 
   else
   {
-    v13 = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICrossPlatformSIMTransferSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, "invalid table cell", buf, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "invalid table cell", buf, 2u);
     }
   }
 }
@@ -255,21 +255,21 @@ void __53__PSUICrossPlatformSIMTransferSpecifier_showSpinner___block_invoke(uint
   [WeakRetained reloadSpecifier:*(a1 + 32)];
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([*MEMORY[0x277D40148] isEqualToString:v7])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([*MEMORY[0x277D40148] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v8 textLabel];
-      [v9 setNumberOfLines:0];
+      v8 = propertyCopy;
+      textLabel = [v8 textLabel];
+      [textLabel setNumberOfLines:0];
 
-      v10 = [v8 textLabel];
-      [v10 setLineBreakMode:0];
+      textLabel2 = [v8 textLabel];
+      [textLabel2 setLineBreakMode:0];
 
       if (self->_spinner)
       {
@@ -278,18 +278,18 @@ void __53__PSUICrossPlatformSIMTransferSpecifier_showSpinner___block_invoke(uint
     }
   }
 
-  if ([*MEMORY[0x277D3FF38] isEqualToString:v7])
+  if ([*MEMORY[0x277D3FF38] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[PSUICrossPlatformSIMTransferSpecifier showSpinner:](self, "showSpinner:", [v6 BOOLValue] ^ 1);
+      -[PSUICrossPlatformSIMTransferSpecifier showSpinner:](self, "showSpinner:", [propertyCopy BOOLValue] ^ 1);
     }
   }
 
   v11.receiver = self;
   v11.super_class = PSUICrossPlatformSIMTransferSpecifier;
-  [(PSUICrossPlatformSIMTransferSpecifier *)&v11 setProperty:v6 forKey:v7];
+  [(PSUICrossPlatformSIMTransferSpecifier *)&v11 setProperty:propertyCopy forKey:keyCopy];
 }
 
 - (PSListController)hostController

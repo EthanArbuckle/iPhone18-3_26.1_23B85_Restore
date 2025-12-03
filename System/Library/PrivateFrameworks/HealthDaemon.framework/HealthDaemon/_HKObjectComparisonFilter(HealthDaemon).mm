@@ -9,46 +9,46 @@
 {
   v147 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [a1 keyPath];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CCC6A0]];
+  keyPath = [self keyPath];
+  v7 = [keyPath isEqualToString:*MEMORY[0x277CCC6A0]];
 
   if (v7)
   {
-    if (a1)
+    if (self)
     {
-      v8 = HDAssociationEntityPredicateForAssociatedObjects([a1 operatorType] == 4);
+      _appleWatchSourcePredicate = HDAssociationEntityPredicateForAssociatedObjects([self operatorType] == 4);
 LABEL_4:
-      v9 = v8;
+      falsePredicate2 = _appleWatchSourcePredicate;
       goto LABEL_85;
     }
 
     goto LABEL_115;
   }
 
-  v10 = [a1 keyPath];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CCC6B0]];
+  keyPath2 = [self keyPath];
+  v11 = [keyPath2 isEqualToString:*MEMORY[0x277CCC6B0]];
 
-  v125 = a1;
+  selfCopy = self;
   if (!v11)
   {
-    v33 = [a1 keyPath];
-    v34 = [v33 isEqualToString:*MEMORY[0x277CCC768]];
+    keyPath3 = [self keyPath];
+    v34 = [keyPath3 isEqualToString:*MEMORY[0x277CCC768]];
 
     if (v34)
     {
-      if (!a1)
+      if (!self)
       {
         goto LABEL_115;
       }
 
       v35 = v5;
-      v36 = [a1 operatorType];
-      v37 = [a1 value];
-      v38 = v37;
+      operatorType = [self operatorType];
+      value = [self value];
+      v38 = value;
       v120 = v5;
-      if (v36 != 10)
+      if (operatorType != 10)
       {
-        *v137 = v37;
+        *v137 = value;
         v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v137 count:1];
 
         v38 = v39;
@@ -77,10 +77,10 @@ LABEL_4:
               objc_enumerationMutation(v19);
             }
 
-            v47 = [*(*(&v138 + 1) + 8 * i) bundleIdentifier];
-            v48 = [v40 sourceManager];
+            bundleIdentifier = [*(*(&v138 + 1) + 8 * i) bundleIdentifier];
+            sourceManager = [v40 sourceManager];
             *&v131 = 0;
-            v49 = [v48 allSourcesForBundleIdentifier:v47 error:&v131];
+            v49 = [sourceManager allSourcesForBundleIdentifier:bundleIdentifier error:&v131];
             v50 = v131;
 
             if (!v49)
@@ -90,7 +90,7 @@ LABEL_4:
               if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
               {
                 *v144 = 138412546;
-                *&v144[4] = v47;
+                *&v144[4] = bundleIdentifier;
                 *&v144[12] = 2114;
                 *&v144[14] = v50;
                 _os_log_error_impl(&dword_228986000, v81, OS_LOG_TYPE_ERROR, "Failed to retrieve sources for '%@': %{public}@", v144, 0x16u);
@@ -118,11 +118,11 @@ LABEL_71:
 
       if (v51)
       {
-        [v125 operatorType];
+        [selfCopy operatorType];
         v82 = HDSQLiteComparisonTypeForPredicateOperator();
-        v83 = HDDataEntityPredicateForSourceEntitySet(v82, v51);
+        falsePredicate = HDDataEntityPredicateForSourceEntitySet(v82, v51);
 LABEL_83:
-        v9 = v83;
+        falsePredicate2 = falsePredicate;
         v5 = v120;
 
 LABEL_84:
@@ -132,24 +132,24 @@ LABEL_84:
       goto LABEL_82;
     }
 
-    v54 = [a1 keyPath];
-    v55 = [v54 isEqualToString:*MEMORY[0x277CCC770]];
+    keyPath4 = [self keyPath];
+    v55 = [keyPath4 isEqualToString:*MEMORY[0x277CCC770]];
 
     if (v55)
     {
-      if (!a1)
+      if (!self)
       {
         goto LABEL_115;
       }
 
       v56 = v5;
-      v57 = [a1 operatorType];
-      v58 = [a1 value];
-      v59 = v58;
+      operatorType2 = [self operatorType];
+      value2 = [self value];
+      v59 = value2;
       v120 = v5;
-      if (v57 != 10)
+      if (operatorType2 != 10)
       {
-        v136 = v58;
+        v136 = value2;
         v60 = [MEMORY[0x277CBEA60] arrayWithObjects:&v136 count:1];
 
         v59 = v60;
@@ -179,12 +179,12 @@ LABEL_84:
             }
 
             v64 = *(*&v144[8] + 8 * v63);
-            v65 = [v64 source];
-            v66 = [v65 bundleIdentifier];
+            source = [v64 source];
+            bundleIdentifier2 = [source bundleIdentifier];
 
-            v67 = [v124 sourceManager];
+            sourceManager2 = [v124 sourceManager];
             v135 = 0;
-            v68 = [v67 allSourcesForBundleIdentifier:v66 error:&v135];
+            v68 = [sourceManager2 allSourcesForBundleIdentifier:bundleIdentifier2 error:&v135];
             v69 = v135;
 
             if (!v68)
@@ -194,7 +194,7 @@ LABEL_84:
               if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
               {
                 *v137 = 138412546;
-                *&v137[4] = v66;
+                *&v137[4] = bundleIdentifier2;
                 *&v137[12] = 2114;
                 *&v137[14] = v69;
                 _os_log_error_impl(&dword_228986000, v89, OS_LOG_TYPE_ERROR, "Failed to retrieve sources for '%@': %{public}@", v137, 0x16u);
@@ -206,7 +206,7 @@ LABEL_84:
 
             v126 = v69;
             obja = v63;
-            v130 = v66;
+            v130 = bundleIdentifier2;
             v133 = 0u;
             v134 = 0u;
             v131 = 0u;
@@ -228,8 +228,8 @@ LABEL_84:
 
                   v75 = *(*(&v131 + 1) + 8 * j);
                   v76 = [HDSourceRevision alloc];
-                  v77 = [v64 version];
-                  v78 = [v64 productType];
+                  version = [v64 version];
+                  productType = [v64 productType];
                   if (v64)
                   {
                     [v64 operatingSystemVersion];
@@ -240,7 +240,7 @@ LABEL_84:
                     memset(v137, 0, 24);
                   }
 
-                  v79 = [(HDSourceRevision *)v76 initWithSource:v75 version:v77 productType:v78 operatingSystemVersion:v137];
+                  v79 = [(HDSourceRevision *)v76 initWithSource:v75 version:version productType:productType operatingSystemVersion:v137];
 
                   [v62 addObject:v79];
                 }
@@ -252,7 +252,7 @@ LABEL_84:
             }
 
             v63 = obja + 1;
-            a1 = v125;
+            self = selfCopy;
             v19 = v121;
           }
 
@@ -272,39 +272,39 @@ LABEL_80:
 
       if (v51)
       {
-        [a1 operatorType];
+        [self operatorType];
         v90 = HDSQLiteComparisonTypeForPredicateOperator();
-        [a1 applicationSDKVersionToken];
+        [self applicationSDKVersionToken];
         v91 = dyld_version_token_at_least();
-        v83 = HDDataEntityPredicateForSourceRevisionsSet(v90, v51, v91 ^ 1);
+        falsePredicate = HDDataEntityPredicateForSourceRevisionsSet(v90, v51, v91 ^ 1);
         goto LABEL_83;
       }
 
 LABEL_82:
-      v83 = [MEMORY[0x277D10B70] falsePredicate];
+      falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
       goto LABEL_83;
     }
 
-    v84 = [a1 keyPath];
-    v85 = [v84 isEqualToString:*MEMORY[0x277CCC7A8]];
+    keyPath5 = [self keyPath];
+    v85 = [keyPath5 isEqualToString:*MEMORY[0x277CCC7A8]];
 
     if (v85)
     {
-      if (a1)
+      if (self)
       {
-        v86 = [a1 operatorType];
-        v87 = [a1 value];
-        v88 = v87;
-        if (v86 == 10)
+        operatorType3 = [self operatorType];
+        value3 = [self value];
+        v88 = value3;
+        if (operatorType3 == 10)
         {
-          HDDataEntityPredicateForDataUUIDs(v87);
+          HDDataEntityPredicateForDataUUIDs(value3);
         }
 
         else
         {
           HDDataEntityPredicateForDataUUID();
         }
-        v9 = ;
+        falsePredicate2 = ;
 
         goto LABEL_85;
       }
@@ -312,109 +312,109 @@ LABEL_82:
       goto LABEL_115;
     }
 
-    v94 = [a1 keyPath];
-    if ([v94 isEqualToString:*MEMORY[0x277CCC7D0]])
+    keyPath6 = [self keyPath];
+    if ([keyPath6 isEqualToString:*MEMORY[0x277CCC7D0]])
     {
     }
 
     else
     {
-      v95 = [a1 keyPath];
-      v96 = [v95 isEqualToString:*MEMORY[0x277CCDF48]];
+      keyPath7 = [self keyPath];
+      v96 = [keyPath7 isEqualToString:*MEMORY[0x277CCDF48]];
 
       if (!v96)
       {
-        v100 = [a1 keyPath];
-        v101 = [v100 isEqualToString:*MEMORY[0x277CCC830]];
+        keyPath8 = [self keyPath];
+        v101 = [keyPath8 isEqualToString:*MEMORY[0x277CCC830]];
 
         if (!v101)
         {
-          v102 = [a1 keyPath];
-          v103 = [v102 isEqualToString:*MEMORY[0x277CCDF40]];
+          keyPath9 = [self keyPath];
+          v103 = [keyPath9 isEqualToString:*MEMORY[0x277CCDF40]];
 
           if (v103)
           {
-            v8 = [(_HKObjectComparisonFilter *)a1 _appleWatchSourcePredicate];
+            _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _appleWatchSourcePredicate];
           }
 
           else
           {
-            v104 = [a1 keyPath];
-            v105 = [v104 isEqualToString:*MEMORY[0x277CCDF50]];
+            keyPath10 = [self keyPath];
+            v105 = [keyPath10 isEqualToString:*MEMORY[0x277CCDF50]];
 
             if (v105)
             {
-              v8 = [(_HKObjectComparisonFilter *)a1 _OSBuildPredicate];
+              _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _OSBuildPredicate];
             }
 
             else
             {
-              v106 = [a1 keyPath];
-              v107 = [v106 isEqualToString:*MEMORY[0x277CCDF58]];
+              keyPath11 = [self keyPath];
+              v107 = [keyPath11 isEqualToString:*MEMORY[0x277CCDF58]];
 
               if (v107)
               {
-                v8 = [(_HKObjectComparisonFilter *)a1 _contributorPredicateWithProfile:v5];
+                _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _contributorPredicateWithProfile:v5];
               }
 
               else
               {
-                v108 = [a1 keyPath];
-                v109 = [v108 isEqualToString:*MEMORY[0x277CCDF60]];
+                keyPath12 = [self keyPath];
+                v109 = [keyPath12 isEqualToString:*MEMORY[0x277CCDF60]];
 
                 if (v109)
                 {
-                  v8 = [(_HKObjectComparisonFilter *)a1 _creationDatePredicate];
+                  _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _creationDatePredicate];
                 }
 
                 else
                 {
-                  v110 = [a1 keyPath];
-                  v111 = [v110 isEqualToString:*MEMORY[0x277CCDF78]];
+                  keyPath13 = [self keyPath];
+                  v111 = [keyPath13 isEqualToString:*MEMORY[0x277CCDF78]];
 
                   if (v111)
                   {
-                    v8 = [(_HKObjectComparisonFilter *)a1 _productTypePredicate];
+                    _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _productTypePredicate];
                   }
 
                   else
                   {
-                    v112 = [a1 keyPath];
-                    v113 = [v112 isEqualToString:*MEMORY[0x277CCDF70]];
+                    keyPath14 = [self keyPath];
+                    v113 = [keyPath14 isEqualToString:*MEMORY[0x277CCDF70]];
 
                     if (v113)
                     {
-                      v8 = [(_HKObjectComparisonFilter *)a1 _syncIdentityPredicateWithProfile:v5];
+                      _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _syncIdentityPredicateWithProfile:v5];
                     }
 
                     else
                     {
-                      v114 = [a1 keyPath];
-                      v115 = [v114 hk_hasDevicePropertyKeyPathPrefix];
+                      keyPath15 = [self keyPath];
+                      hk_hasDevicePropertyKeyPathPrefix = [keyPath15 hk_hasDevicePropertyKeyPathPrefix];
 
-                      if (v115)
+                      if (hk_hasDevicePropertyKeyPathPrefix)
                       {
-                        v8 = [(_HKObjectComparisonFilter *)a1 _devicePropertyPredicateWithProfile:v5];
+                        _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)self _devicePropertyPredicateWithProfile:v5];
                       }
 
                       else
                       {
-                        v116 = [a1 keyPath];
-                        v117 = [v116 hk_hasMetadataKeyPathPrefix];
+                        keyPath16 = [self keyPath];
+                        hk_hasMetadataKeyPathPrefix = [keyPath16 hk_hasMetadataKeyPathPrefix];
 
-                        if (v117)
+                        if (hk_hasMetadataKeyPathPrefix)
                         {
-                          [(_HKObjectComparisonFilter *)a1 _metadataPredicateWithProfile:v5];
+                          [(_HKObjectComparisonFilter *)self _metadataPredicateWithProfile:v5];
                         }
 
                         else
                         {
-                          v118 = [MEMORY[0x277CCA890] currentHandler];
-                          [v118 handleFailureInMethod:a2 object:a1 file:@"_HKObjectComparisonFilter+HealthDaemon.m" lineNumber:69 description:@"Unreachable code has been executed"];
+                          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                          [currentHandler handleFailureInMethod:a2 object:self file:@"_HKObjectComparisonFilter+HealthDaemon.m" lineNumber:69 description:@"Unreachable code has been executed"];
 
                           [MEMORY[0x277D10B70] falsePredicate];
                         }
-                        v8 = ;
+                        _appleWatchSourcePredicate = ;
                       }
                     }
                   }
@@ -426,31 +426,31 @@ LABEL_82:
           goto LABEL_4;
         }
 
-        v97 = a1;
+        selfCopy3 = self;
         v98 = v5;
         v99 = 1;
         goto LABEL_92;
       }
     }
 
-    v97 = a1;
+    selfCopy3 = self;
     v98 = v5;
     v99 = 0;
 LABEL_92:
-    v8 = [(_HKObjectComparisonFilter *)v97 _associationPredicateWithProfile:v98 type:v99];
+    _appleWatchSourcePredicate = [(_HKObjectComparisonFilter *)selfCopy3 _associationPredicateWithProfile:v98 type:v99];
     goto LABEL_4;
   }
 
-  if (a1)
+  if (self)
   {
     v12 = v5;
-    v13 = [a1 operatorType];
-    v14 = [a1 value];
-    v15 = v14;
+    operatorType4 = [self operatorType];
+    value4 = [self value];
+    v15 = value4;
     v119 = v5;
-    if (v13 != 10)
+    if (operatorType4 != 10)
     {
-      *v137 = v14;
+      *v137 = value4;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v137 count:1];
 
       v15 = v16;
@@ -481,8 +481,8 @@ LABEL_92:
           }
 
           v24 = *(*&v144[8] + 8 * k);
-          v25 = [v129 deviceManager];
-          v26 = [v25 deviceEntitiesForDevice:v24 error:&v135];
+          deviceManager = [v129 deviceManager];
+          v26 = [deviceManager deviceEntitiesForDevice:v24 error:&v135];
 
           if (!v26)
           {
@@ -538,9 +538,9 @@ LABEL_39:
     v52 = v135;
     if (v26)
     {
-      [v125 operatorType];
+      [selfCopy operatorType];
       v53 = HDSQLiteComparisonTypeForPredicateOperator();
-      v9 = HDDataEntityPredicateForDeviceIdentifierSet(v53, v26);
+      falsePredicate2 = HDDataEntityPredicateForDeviceIdentifierSet(v53, v26);
       v5 = v119;
     }
 
@@ -556,55 +556,55 @@ LABEL_39:
         _os_log_error_impl(&dword_228986000, v80, OS_LOG_TYPE_ERROR, "Failed to find devices: %{public}@", buf, 0xCu);
       }
 
-      v9 = [MEMORY[0x277D10B70] falsePredicate];
+      falsePredicate2 = [MEMORY[0x277D10B70] falsePredicate];
     }
 
     goto LABEL_84;
   }
 
 LABEL_115:
-  v9 = 0;
+  falsePredicate2 = 0;
 LABEL_85:
 
   v92 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return falsePredicate2;
 }
 
 - (id)filterIgnoringPrivateMetadata
 {
-  v2 = [a1 keyPath];
-  v3 = [v2 hk_hasMetadataKeyPathPrefix];
+  keyPath = [self keyPath];
+  hk_hasMetadataKeyPathPrefix = [keyPath hk_hasMetadataKeyPathPrefix];
 
-  if (!v3)
+  if (!hk_hasMetadataKeyPathPrefix)
   {
     goto LABEL_7;
   }
 
-  v4 = [(_HKObjectComparisonFilter *)a1 _metadataKeyFromMetadataKeyPath];
+  _metadataKeyFromMetadataKeyPath = [(_HKObjectComparisonFilter *)self _metadataKeyFromMetadataKeyPath];
   if (!_HKMetadataKeyIsPrivate())
   {
 
 LABEL_7:
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  if ([a1 operatorType] == 5 && (objc_msgSend(a1, "value"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([self operatorType] == 5 && (objc_msgSend(self, "value"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [MEMORY[0x277CCDD38] trueFilter];
+    trueFilter = [MEMORY[0x277CCDD38] trueFilter];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCDD38] falseFilter];
+    trueFilter = [MEMORY[0x277CCDD38] falseFilter];
   }
 
-  v7 = v6;
+  selfCopy = trueFilter;
 
 LABEL_10:
 
-  return v7;
+  return selfCopy;
 }
 
 @end

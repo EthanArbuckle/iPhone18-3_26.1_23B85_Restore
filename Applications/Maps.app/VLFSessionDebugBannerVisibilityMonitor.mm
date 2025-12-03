@@ -1,32 +1,32 @@
 @interface VLFSessionDebugBannerVisibilityMonitor
 + (BOOL)isEnabled;
-- (VLFSessionDebugBannerVisibilityMonitor)initWithObserver:(id)a3;
+- (VLFSessionDebugBannerVisibilityMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateState;
 @end
 
 @implementation VLFSessionDebugBannerVisibilityMonitor
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_5:
     v16.receiver = self;
     v16.super_class = VLFSessionDebugBannerVisibilityMonitor;
-    [(VLFSessionDebugBannerVisibilityMonitor *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFSessionDebugBannerVisibilityMonitor *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_6;
   }
 
-  v15 = [v10 isEqualToString:@"VLFSessionDebugBannerVisibilityMonitorActiveKey"];
+  v15 = [pathCopy isEqualToString:@"VLFSessionDebugBannerVisibilityMonitorActiveKey"];
 
   if (!v15)
   {
@@ -63,14 +63,14 @@ LABEL_6:
   }
 
   v8 = v7;
-  v9 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v10 = @"Hide";
-  if (v9 == 1)
+  if (state == 1)
   {
     v10 = @"EnablePuck";
   }
 
-  if (v9 == 2)
+  if (state == 2)
   {
     v10 = @"EnablePuckAndBanner";
   }
@@ -108,11 +108,11 @@ LABEL_6:
   [(VLFSessionDebugBannerVisibilityMonitor *)&v4 dealloc];
 }
 
-- (VLFSessionDebugBannerVisibilityMonitor)initWithObserver:(id)a3
+- (VLFSessionDebugBannerVisibilityMonitor)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = VLFSessionDebugBannerVisibilityMonitor;
-  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:observer];
   if (v3)
   {
     v4 = +[NSUserDefaults standardUserDefaults];

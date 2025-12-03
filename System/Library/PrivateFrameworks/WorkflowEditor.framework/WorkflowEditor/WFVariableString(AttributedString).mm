@@ -13,8 +13,8 @@
 - (id)attributedStringByAddingTypingAttributes:()AttributedString
 {
   v4 = a3;
-  v5 = [a1 attributedString];
-  v6 = [v5 mutableCopy];
+  attributedString = [self attributedString];
+  v6 = [attributedString mutableCopy];
 
   [v6 addAttributes:v4 range:{0, objc_msgSend(v6, "length")}];
 
@@ -23,8 +23,8 @@
 
 - (id)substringWithRange:()AttributedString
 {
-  v6 = [a1 attributedString];
-  v7 = [v6 attributedSubstringFromRange:{a3, a4}];
+  attributedString = [self attributedString];
+  v7 = [attributedString attributedSubstringFromRange:{a3, a4}];
 
   v8 = [objc_alloc(objc_opt_class()) initWithAttributedString:v7];
 
@@ -34,12 +34,12 @@
 - (id)stringByReplacingCharactersInRange:()AttributedString withVariableString:
 {
   v8 = a5;
-  v9 = [a1 attributedString];
-  v10 = [v9 mutableCopy];
+  attributedString = [self attributedString];
+  v10 = [attributedString mutableCopy];
 
-  v11 = [v8 attributedString];
+  attributedString2 = [v8 attributedString];
 
-  [v10 replaceCharactersInRange:a3 withAttributedString:{a4, v11}];
+  [v10 replaceCharactersInRange:a3 withAttributedString:{a4, attributedString2}];
   v12 = [objc_alloc(objc_opt_class()) initWithAttributedString:v10];
 
   return v12;
@@ -48,8 +48,8 @@
 - (id)stringByReplacingCharactersInRange:()AttributedString withVariable:
 {
   v8 = a5;
-  v9 = [a1 attributedString];
-  v10 = [v9 mutableCopy];
+  attributedString = [self attributedString];
+  v10 = [attributedString mutableCopy];
 
   v11 = [MEMORY[0x277D7CA28] attributedStringWithVariable:v8];
 
@@ -62,7 +62,7 @@
 - (id)attributedString
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = objc_getAssociatedObject(a1, sel_attributedString);
+  v2 = objc_getAssociatedObject(self, sel_attributedString);
   if (!v2)
   {
     v13 = sel_attributedString;
@@ -71,9 +71,9 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v14 = a1;
-    v4 = [a1 stringsAndVariables];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    stringsAndVariables = [self stringsAndVariables];
+    v5 = [stringsAndVariables countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (!v5)
     {
       goto LABEL_14;
@@ -87,7 +87,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsAndVariables);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -112,13 +112,13 @@
         [v3 appendAttributedString:{v10, v13}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [stringsAndVariables countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (!v6)
       {
 LABEL_14:
 
         v2 = [v3 copy];
-        objc_setAssociatedObject(v14, v13, v2, 1);
+        objc_setAssociatedObject(selfCopy, v13, v2, 1);
 
         break;
       }
@@ -134,18 +134,18 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFVariableString+AttributedString.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[attributedString isKindOfClass:[NSAttributedString class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableString+AttributedString.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[attributedString isKindOfClass:[NSAttributedString class]]"}];
   }
 
-  v6 = [v5 string];
+  string = [v5 string];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__WFVariableString_AttributedString__initWithAttributedString___block_invoke;
   v12[3] = &unk_279EDB7C0;
   v7 = v5;
   v13 = v7;
-  v8 = [a1 initWithAttachmentCharacterString:v6 variableGetter:v12];
+  v8 = [self initWithAttachmentCharacterString:string variableGetter:v12];
 
   if (v8)
   {

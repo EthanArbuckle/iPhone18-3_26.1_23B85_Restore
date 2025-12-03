@@ -1,66 +1,66 @@
 @interface ARPCorrelationTask
-- (ARPCorrelationTask)initWithCorrelationsFile:(id)a3 knowledgeStore:(id)a4;
+- (ARPCorrelationTask)initWithCorrelationsFile:(id)file knowledgeStore:(id)store;
 - (id)longFormVideoAppBundleIDs;
-- (id)queryForMicroLocationsFromStartTime:(id)a3 endTime:(id)a4 maxEvents:(unint64_t)a5 overlappingNowPlayingEvents:(id)a6;
+- (id)queryForMicroLocationsFromStartTime:(id)time endTime:(id)endTime maxEvents:(unint64_t)events overlappingNowPlayingEvents:(id)playingEvents;
 - (void)execute;
-- (void)execute:(id)a3 microLocationEvents:(id)a4;
+- (void)execute:(id)execute microLocationEvents:(id)events;
 - (void)longFormVideoAppBundleIDs;
 @end
 
 @implementation ARPCorrelationTask
 
-- (ARPCorrelationTask)initWithCorrelationsFile:(id)a3 knowledgeStore:(id)a4
+- (ARPCorrelationTask)initWithCorrelationsFile:(id)file knowledgeStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ARPCorrelationTask;
   v8 = [(ARPCorrelationTask *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [fileCopy copy];
     file = v8->_file;
     v8->_file = v9;
 
-    objc_storeStrong(&v8->_knowledgeStore, a4);
+    objc_storeStrong(&v8->_knowledgeStore, store);
   }
 
   return v8;
 }
 
-- (id)queryForMicroLocationsFromStartTime:(id)a3 endTime:(id)a4 maxEvents:(unint64_t)a5 overlappingNowPlayingEvents:(id)a6
+- (id)queryForMicroLocationsFromStartTime:(id)time endTime:(id)endTime maxEvents:(unint64_t)events overlappingNowPlayingEvents:(id)playingEvents
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v29 = a4;
-  v10 = a6;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  playingEventsCopy = playingEvents;
   v11 = ARPLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    *&buf[4] = [v10 count];
+    *&buf[4] = [playingEventsCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = events;
     _os_log_impl(&dword_23EB15000, v11, OS_LOG_TYPE_INFO, "queryForMicroLocationsFromStartTime: nowPlayingEvents.count: %lu, maxEvents: %lu", buf, 0x16u);
   }
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = timeCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v29;
+    *&buf[14] = endTimeCopy;
     _os_log_impl(&dword_23EB15000, v11, OS_LOG_TYPE_INFO, "queryForMicroLocationsFromStartTime: startTime: %@, endTime: %@", buf, 0x16u);
   }
 
-  if ([v10 count])
+  if ([playingEventsCopy count])
   {
     v12 = [objc_alloc(getBMDKEventStreamClass()) initWithDKStreamIdentifier:@"/inferred/microLocationVisit" contentProtection:*MEMORY[0x277CCA1A0]];
     v13 = MEMORY[0x277CCABB0];
-    [v9 timeIntervalSinceReferenceDate];
+    [timeCopy timeIntervalSinceReferenceDate];
     v14 = [v13 numberWithDouble:?];
     v15 = MEMORY[0x277CCABB0];
-    [v29 timeIntervalSinceReferenceDate];
+    [endTimeCopy timeIntervalSinceReferenceDate];
     v16 = [v15 numberWithDouble:?];
     v17 = [v12 publisherWithStartTime:v14 endTime:v16 maxEvents:0 lastN:0 reversed:1];
 
@@ -90,7 +90,7 @@
     *&buf[16] = 0x3032000000;
     v46 = __Block_byref_object_copy__0;
     v47 = __Block_byref_object_dispose__0;
-    v48 = [v10 objectAtIndexedSubscript:0];
+    v48 = [playingEventsCopy objectAtIndexedSubscript:0];
     v38 = 0;
     v39 = &v38;
     v40 = 0x2020000000;
@@ -102,11 +102,11 @@
     v36 = v19;
     v33 = buf;
     v34 = v42;
-    v31 = v10;
+    v31 = playingEventsCopy;
     v21 = v20;
     v32 = v21;
     v35 = &v38;
-    v37 = a5;
+    eventsCopy = events;
     v22 = [v17 sinkWithCompletion:&__block_literal_global_81 shouldContinue:v30];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -212,39 +212,39 @@ LABEL_9:
   [(ARPCorrelationTask *)self execute:0 microLocationEvents:0];
 }
 
-- (void)execute:(id)a3 microLocationEvents:(id)a4
+- (void)execute:(id)execute microLocationEvents:(id)events
 {
   v58[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  executeCopy = execute;
+  eventsCopy = events;
   v8 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:0];
   v9 = 0x278C64000uLL;
-  if (v6)
+  if (executeCopy)
   {
-    v10 = v6;
+    v10 = executeCopy;
   }
 
   else
   {
     v14 = MEMORY[0x277CFE260];
-    v15 = [MEMORY[0x277CFE248] playing];
-    v13 = [v14 predicateForObjectsWithMetadataKey:v15 andIntegerValue:1];
+    playing = [MEMORY[0x277CFE248] playing];
+    v13 = [v14 predicateForObjectsWithMetadataKey:playing andIntegerValue:1];
 
-    v16 = [(ARPCorrelationTask *)self longFormVideoAppBundleIDs];
-    [MEMORY[0x277CFE260] predicateForEventsWithStringValueInValues:v16];
-    v17 = v47 = self;
+    longFormVideoAppBundleIDs = [(ARPCorrelationTask *)self longFormVideoAppBundleIDs];
+    [MEMORY[0x277CFE260] predicateForEventsWithStringValueInValues:longFormVideoAppBundleIDs];
+    file = v47 = self;
     +[ARPRoutingSession minimumRoutingEventDuration];
     v11 = [MEMORY[0x277CFE260] predicateForEventsWithMinimumDuration:?];
     v18 = MEMORY[0x277CCA920];
-    v58[0] = v17;
+    v58[0] = file;
     v58[1] = v13;
     v58[2] = v11;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:3];
     v20 = [v18 andPredicateWithSubpredicates:v19];
 
     v21 = MEMORY[0x277CFE1E0];
-    v22 = [MEMORY[0x277CFE298] nowPlayingStream];
-    v57 = v22;
+    nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+    v57 = nowPlayingStream;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
     v46 = v8;
     v56 = v8;
@@ -256,9 +256,9 @@ LABEL_9:
     [v25 setClientName:v27];
 
     [v25 setTracker:&__block_literal_global_95];
-    v28 = [(ARPCorrelationTask *)v47 knowledgeStore];
+    knowledgeStore = [(ARPCorrelationTask *)v47 knowledgeStore];
     v49 = 0;
-    v10 = [v28 executeQuery:v25 error:&v49];
+    v10 = [knowledgeStore executeQuery:v25 error:&v49];
     v29 = v49;
 
     if (v29)
@@ -270,12 +270,12 @@ LABEL_9:
       }
 
       v8 = v46;
-      v6 = 0;
+      executeCopy = 0;
       goto LABEL_28;
     }
 
     v8 = v46;
-    v6 = 0;
+    executeCopy = 0;
     self = v47;
     v9 = 0x278C64000;
   }
@@ -289,9 +289,9 @@ LABEL_9:
     _os_log_impl(&dword_23EB15000, v11, OS_LOG_TYPE_INFO, "[ARPCorrelationTask execute:microLocationEvents:] nowPlayingEvents.count:%lu", buf, 0xCu);
   }
 
-  if (v7)
+  if (eventsCopy)
   {
-    v13 = v7;
+    v13 = eventsCopy;
   }
 
   else if ([v10 count])
@@ -299,13 +299,13 @@ LABEL_9:
     v31 = v8;
     [*(v9 + 784) microLocationCorrelationGracePeriod];
     v33 = v32;
-    v34 = [v10 lastObject];
-    v35 = [v34 startDate];
-    v36 = [v35 dateByAddingTimeInterval:-v33];
+    lastObject = [v10 lastObject];
+    startDate = [lastObject startDate];
+    v36 = [startDate dateByAddingTimeInterval:-v33];
 
-    v37 = [v10 firstObject];
-    v38 = [v37 startDate];
-    v39 = [v38 dateByAddingTimeInterval:v33];
+    firstObject = [v10 firstObject];
+    startDate2 = [firstObject startDate];
+    v39 = [startDate2 dateByAddingTimeInterval:v33];
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -341,23 +341,23 @@ LABEL_9:
 
   if ([v10 count] && objc_msgSend(v13, "count"))
   {
-    v16 = [*(v9 + 784) routingSessionsFromNowPlayingEvents:v10 microLocationEvents:v13 routingSessionTimeout:v41];
+    longFormVideoAppBundleIDs = [*(v9 + 784) routingSessionsFromNowPlayingEvents:v10 microLocationEvents:v13 routingSessionTimeout:v41];
   }
 
   else
   {
-    v16 = MEMORY[0x277CBEBF8];
+    longFormVideoAppBundleIDs = MEMORY[0x277CBEBF8];
   }
 
-  v17 = [(ARPCorrelationTask *)self file];
+  file = [(ARPCorrelationTask *)self file];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [(ARPCorrelationTask *)v16 execute:v17 microLocationEvents:v11];
+    [(ARPCorrelationTask *)longFormVideoAppBundleIDs execute:file microLocationEvents:v11];
   }
 
   v44 = *(v9 + 784);
   v48 = 0;
-  [v44 writeSessions:v16 routingSessionTimeout:v17 file:&v48 error:v41];
+  [v44 writeSessions:longFormVideoAppBundleIDs routingSessionTimeout:file file:&v48 error:v41];
   v29 = v48;
   if (v29)
   {
@@ -375,8 +375,8 @@ LABEL_28:
 - (id)longFormVideoAppBundleIDs
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFE298] nowPlayingStream];
-  v29[0] = v3;
+  nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+  v29[0] = nowPlayingStream;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
 
   v5 = [MEMORY[0x277CFE1E0] eventQueryWithPredicate:0 eventStreams:v4 offset:0 limit:0 sortDescriptors:0];
@@ -387,16 +387,16 @@ LABEL_28:
   [v5 setTracker:&__block_literal_global_97];
   [v5 setGroupByProperties:&unk_2851429D8];
   [v5 setResultType:3];
-  v8 = [(ARPCorrelationTask *)self knowledgeStore];
+  knowledgeStore = [(ARPCorrelationTask *)self knowledgeStore];
   v27 = 0;
-  v9 = [v8 executeQuery:v5 error:&v27];
+  v9 = [knowledgeStore executeQuery:v5 error:&v27];
   v10 = v27;
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
   if (v10)
   {
-    v12 = ARPLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    sharedAVSystemController = ARPLog();
+    if (os_log_type_enabled(sharedAVSystemController, OS_LOG_TYPE_ERROR))
     {
       [ARPCorrelationTask longFormVideoAppBundleIDs];
     }
@@ -405,7 +405,7 @@ LABEL_28:
   else
   {
     v22 = v4;
-    v12 = [getAVSystemControllerClass() sharedAVSystemController];
+    sharedAVSystemController = [getAVSystemControllerClass() sharedAVSystemController];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -426,7 +426,7 @@ LABEL_28:
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          if ([v12 hasRouteSharingPolicyLongFormVideo:v18])
+          if ([sharedAVSystemController hasRouteSharingPolicyLongFormVideo:v18])
           {
             [v11 addObject:v18];
           }
@@ -441,11 +441,11 @@ LABEL_28:
     v4 = v22;
   }
 
-  v19 = [v11 allObjects];
+  allObjects = [v11 allObjects];
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return allObjects;
 }
 
 - (void)execute:microLocationEvents:.cold.1()

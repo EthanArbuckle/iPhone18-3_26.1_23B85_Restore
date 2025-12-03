@@ -1,6 +1,6 @@
 @interface LSSRotationAccumulator
 - (LSSRotationAccumulator)init;
-- (__n64)update:(uint64_t)a1;
+- (__n64)update:(uint64_t)update;
 - (uint64_t)setSampleBias:(uint64_t)result;
 - (uint64_t)setSampleClampMax:(uint64_t)result;
 @end
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (__n64)update:(uint64_t)a1
+- (__n64)update:(uint64_t)update
 {
-  if (a1)
+  if (update)
   {
-    if ((*(a1 + 48) & 1) == 0)
+    if ((*(update + 48) & 1) == 0)
     {
       v4 = a2[1];
-      *(a1 + 16) = *a2;
-      *(a1 + 32) = v4;
-      *(a1 + 48) = 1;
+      *(update + 16) = *a2;
+      *(update + 32) = v4;
+      *(update + 48) = 1;
     }
 
     v5 = a2[1];
-    v7 = *(a1 + 16);
-    v6 = *(a1 + 32);
+    v7 = *(update + 16);
+    v6 = *(update + 32);
     v8 = vmulq_f64(v5, xmmword_255E9CA30);
     v9 = vnegq_f64(*a2);
     v10 = vextq_s8(v8, vnegq_f64(v8), 8uLL);
@@ -59,12 +59,12 @@
     v25 = vextq_s8(v22, vnegq_f64(v22), 8uLL);
     v26 = acos(fmin(fmax(vmulq_f64(v17, vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v22, v6, 1), v25, v6.f64[0]), vmlaq_n_f64(vmulq_laneq_f64(v24, v7, 1), vextq_s8(v23, v24, 8uLL), v7.f64[0]))).f64[0] + vaddvq_f64(vmulq_f64(v16, vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v23, v6, 1), vextq_s8(v24, v23, 8uLL), v6.f64[0]), vmlaq_n_f64(vmulq_laneq_f64(v22, v7, 1), v25, v7.f64[0])))), -1.0), 1.0));
     v27 = a2[1];
-    *(a1 + 16) = *a2;
-    *(a1 + 32) = v27;
+    *(update + 16) = *a2;
+    *(update + 32) = v27;
     *&v26 = v26;
-    *&v26 = fmax((*(a1 + 56) + fabsf(*&v26)), 0.0);
-    v28 = fminf(*&v26, *(a1 + 52));
-    v29 = *(a1 + 8);
+    *&v26 = fmax((*(update + 56) + fabsf(*&v26)), 0.0);
+    v28 = fminf(*&v26, *(update + 52));
+    v29 = *(update + 8);
 
     return [(LSSAccumulator *)v29 addSample:v28];
   }

@@ -1,40 +1,40 @@
 @interface HMIVideoProcessingNode
 - (void)finish;
-- (void)finishWithCompletionHandler:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
 - (void)flush;
 - (void)flushAsync;
-- (void)handleAudioSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)handleVideoSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)handleAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)handleVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation HMIVideoProcessingNode
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v15 = *MEMORY[0x277D85DE8];
-  MediaType = HMICMSampleBufferGetMediaType(a3);
+  MediaType = HMICMSampleBufferGetMediaType(buffer);
   if (MediaType == 1936684398)
   {
 
-    [(HMIVideoProcessingNode *)self handleAudioSampleBuffer:a3];
+    [(HMIVideoProcessingNode *)self handleAudioSampleBuffer:buffer];
   }
 
   else if (MediaType == 1986618469)
   {
 
-    [(HMIVideoProcessingNode *)self handleVideoSampleBuffer:a3];
+    [(HMIVideoProcessingNode *)self handleVideoSampleBuffer:buffer];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = HMICMSampleBufferFormattedDescription(a3, 0);
+      v10 = HMICMSampleBufferFormattedDescription(buffer, 0);
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
@@ -46,7 +46,7 @@
   }
 }
 
-- (void)handleVideoSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -59,7 +59,7 @@
   objc_exception_throw(v8);
 }
 
-- (void)handleAudioSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -85,9 +85,9 @@
   objc_exception_throw(v7);
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

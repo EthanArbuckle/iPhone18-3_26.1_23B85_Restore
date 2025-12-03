@@ -1,5 +1,5 @@
 @interface SPRPrimer
-+ (SPRPrimer)primerWithConfiguration:(id)a3 error:(id *)a4;
++ (SPRPrimer)primerWithConfiguration:(id)configuration error:(id *)error;
 + (SPRPrimer)shared;
 - (NSDictionary)configuration;
 - (NSURL)attestationBackendURL;
@@ -7,12 +7,12 @@
 - (NSURL)configuratorBackendURL;
 - (NSURL)monitoringBackendURL;
 - (NSURL)storageURL;
-- (SPRPrimer)initWithConfiguration:(id)a3 error:(id *)a4;
+- (SPRPrimer)initWithConfiguration:(id)configuration error:(id *)error;
 - (SPRProvider)getProvider;
-- (id)attestationManagerAndReturnError:(id *)a3;
-- (id)monitorManagerAndReturnError:(id *)a3;
-- (id)persistenceFactoryAndReturnError:(id *)a3;
-- (id)secureChannelAndReturnError:(id *)a3;
+- (id)attestationManagerAndReturnError:(id *)error;
+- (id)monitorManagerAndReturnError:(id *)error;
+- (id)persistenceFactoryAndReturnError:(id *)error;
+- (id)secureChannelAndReturnError:(id *)error;
 @end
 
 @implementation SPRPrimer
@@ -131,73 +131,73 @@
   return v9;
 }
 
-- (SPRPrimer)initWithConfiguration:(id)a3 error:(id *)a4
+- (SPRPrimer)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = sub_26A947300;
   v21[4] = sub_26A947310;
-  v22 = objc_msgSend_mutableCopy(v6, v7, v8, v9, v10);
+  v22 = objc_msgSend_mutableCopy(configurationCopy, v7, v8, v9, v10);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_26A947A28;
   v20[3] = &unk_279CA5B70;
   v20[4] = v21;
   v14 = objc_msgSend_initWithConnector_(self, v11, v20, v12, v13);
-  v18 = objc_msgSend_connectAndReturnError_(v14, v15, a4, v16, v17);
+  v18 = objc_msgSend_connectAndReturnError_(v14, v15, error, v16, v17);
 
   _Block_object_dispose(v21, 8);
   return v18;
 }
 
-+ (SPRPrimer)primerWithConfiguration:(id)a3 error:(id *)a4
++ (SPRPrimer)primerWithConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [SPRPrimer alloc];
-  v9 = objc_msgSend_initWithConfiguration_error_(v6, v7, v5, a4, v8);
+  v9 = objc_msgSend_initWithConfiguration_error_(v6, v7, configurationCopy, error, v8);
 
   return v9;
 }
 
-- (id)attestationManagerAndReturnError:(id *)a3
+- (id)attestationManagerAndReturnError:(id *)error
 {
   v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, v3, v4);
 
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (id)monitorManagerAndReturnError:(id *)a3
+- (id)monitorManagerAndReturnError:(id *)error
 {
   v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, v3, v4);
 
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (id)persistenceFactoryAndReturnError:(id *)a3
+- (id)persistenceFactoryAndReturnError:(id *)error
 {
   v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, v3, v4);
 
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (id)secureChannelAndReturnError:(id *)a3
+- (id)secureChannelAndReturnError:(id *)error
 {
   v5 = [SPRSecureChannel alloc];
   v17[0] = MEMORY[0x277D85DD0];
@@ -207,9 +207,9 @@
   v17[4] = self;
   v9 = objc_msgSend_initWithConnector_(v5, v6, v17, v7, v8);
   v13 = v9;
-  if (a3)
+  if (error)
   {
-    v14 = objc_msgSend_connectAndReturnError_(v9, v10, a3, v11, v12);
+    v14 = objc_msgSend_connectAndReturnError_(v9, v10, error, v11, v12);
   }
 
   else

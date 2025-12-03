@@ -1,29 +1,29 @@
 @interface COSSpinnerPageController
 - (COSBuddyController)heldPane;
 - (COSBuddyControllerDelegate)delegate;
-- (COSSpinnerPageController)initWithLabel:(id)a3;
+- (COSSpinnerPageController)initWithLabel:(id)label;
 - (void)_radarButtonTapped;
 - (void)_showRadarUI;
-- (void)back:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)back:(id)back;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSSpinnerPageController
 
-- (COSSpinnerPageController)initWithLabel:(id)a3
+- (COSSpinnerPageController)initWithLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = COSSpinnerPageController;
   v6 = [(COSSpinnerPageController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, label);
   }
 
   return v7;
@@ -41,31 +41,31 @@
   [(UILabel *)self->_label setNumberOfLines:0];
   [(UILabel *)self->_label setTextAlignment:1];
   v5 = self->_label;
-  v6 = [(COSSpinnerPageController *)self message];
-  [(UILabel *)v5 setText:v6];
+  message = [(COSSpinnerPageController *)self message];
+  [(UILabel *)v5 setText:message];
 
   v7 = self->_label;
   v8 = BPSTextColor();
   [(UILabel *)v7 setTextColor:v8];
 
-  v9 = [(COSSpinnerPageController *)self view];
-  [v9 addSubview:self->_label];
+  view = [(COSSpinnerPageController *)self view];
+  [view addSubview:self->_label];
 
   v10 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
   self->_spinner = v10;
 
-  v12 = [(COSSpinnerPageController *)self view];
-  [v12 addSubview:self->_spinner];
+  view2 = [(COSSpinnerPageController *)self view];
+  [view2 addSubview:self->_spinner];
 
   if (PBIsInternalInstall() && [(COSSpinnerPageController *)self _showInternalTTRPrompt])
   {
-    v13 = [(COSSpinnerPageController *)self radarPromptTimer];
+    radarPromptTimer = [(COSSpinnerPageController *)self radarPromptTimer];
 
-    if (v13)
+    if (radarPromptTimer)
     {
-      v14 = [(COSSpinnerPageController *)self radarPromptTimer];
-      [v14 invalidate];
+      radarPromptTimer2 = [(COSSpinnerPageController *)self radarPromptTimer];
+      [radarPromptTimer2 invalidate];
 
       [(COSSpinnerPageController *)self setRadarPromptTimer:0];
     }
@@ -87,26 +87,26 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = COSSpinnerPageController;
-  [(COSSpinnerPageController *)&v9 viewDidDisappear:a3];
+  [(COSSpinnerPageController *)&v9 viewDidDisappear:disappear];
   if (([(COSSpinnerPageController *)self isMovingFromParentViewController]& 1) == 0)
   {
-    v4 = [(COSSpinnerPageController *)self navigationController];
+    navigationController = [(COSSpinnerPageController *)self navigationController];
 
-    if (v4)
+    if (navigationController)
     {
-      v5 = [(COSSpinnerPageController *)self navigationController];
-      v6 = [v5 viewControllers];
-      v7 = [v6 mutableCopy];
+      navigationController2 = [(COSSpinnerPageController *)self navigationController];
+      viewControllers = [navigationController2 viewControllers];
+      v7 = [viewControllers mutableCopy];
 
       if ([v7 containsObject:self])
       {
         [v7 removeObjectIdenticalTo:self];
-        v8 = [(COSSpinnerPageController *)self navigationController];
-        [v8 setViewControllers:v7 animated:0];
+        navigationController3 = [(COSSpinnerPageController *)self navigationController];
+        [navigationController3 setViewControllers:v7 animated:0];
       }
     }
   }
@@ -114,8 +114,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(COSSpinnerPageController *)self view];
-  [v3 bounds];
+  view = [(COSSpinnerPageController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -143,25 +143,25 @@
   [(UIActivityIndicatorView *)spinner setFrame:v25, v22, v17, v19];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
   v5.receiver = self;
   v5.super_class = COSSpinnerPageController;
-  [(COSSpinnerPageController *)&v5 viewWillAppear:v3];
+  [(COSSpinnerPageController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   v5.receiver = self;
   v5.super_class = COSSpinnerPageController;
-  [(COSSpinnerPageController *)&v5 viewWillDisappear:v3];
+  [(COSSpinnerPageController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)back:(id)a3
+- (void)back:(id)back
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -218,24 +218,24 @@
   [v8 addArrangedSubview:v3];
   [v8 addArrangedSubview:v7];
   [(COSSpinnerPageController *)self setRadarPromptView:v8];
-  v9 = [(COSSpinnerPageController *)self view];
-  [v9 addSubview:v8];
+  view = [(COSSpinnerPageController *)self view];
+  [view addSubview:v8];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [v8 bottomAnchor];
-  v22 = [(COSSpinnerPageController *)self view];
-  v20 = [v22 bottomAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:-32.0];
+  bottomAnchor = [v8 bottomAnchor];
+  view2 = [(COSSpinnerPageController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-32.0];
   v25[0] = v19;
-  v10 = [v8 leftAnchor];
-  v11 = [(COSSpinnerPageController *)self view];
-  v12 = [v11 leftAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  leftAnchor = [v8 leftAnchor];
+  view3 = [(COSSpinnerPageController *)self view];
+  leftAnchor2 = [view3 leftAnchor];
+  v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v25[1] = v13;
-  v14 = [v8 rightAnchor];
-  v15 = [(COSSpinnerPageController *)self view];
-  v16 = [v15 rightAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  rightAnchor = [v8 rightAnchor];
+  view4 = [(COSSpinnerPageController *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v17 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v25[2] = v17;
   v18 = [NSArray arrayWithObjects:v25 count:3];
   [NSLayoutConstraint activateConstraints:v18];
@@ -243,34 +243,34 @@
 
 - (void)_radarButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_heldPane);
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = objc_loadWeakRetained(&v2->_heldPane);
-    v6 = [v5 tapToRadarMetadata];
+    v5 = objc_loadWeakRetained(&selfCopy->_heldPane);
+    tapToRadarMetadata = [v5 tapToRadarMetadata];
   }
 
   else
   {
-    v6 = [[BPSTTRMetadata alloc] initWithComponent:0];
+    tapToRadarMetadata = [[BPSTTRMetadata alloc] initWithComponent:0];
   }
 
-  v7 = [(COSSpinnerPageController *)v2 radarPromptWaitStartDate];
-  [v7 timeIntervalSinceNow];
+  radarPromptWaitStartDate = [(COSSpinnerPageController *)selfCopy radarPromptWaitStartDate];
+  [radarPromptWaitStartDate timeIntervalSinceNow];
   v9 = -v8;
 
-  v10 = objc_loadWeakRetained(&v2->_heldPane);
+  v10 = objc_loadWeakRetained(&selfCopy->_heldPane);
   if (v10)
   {
-    v11 = objc_loadWeakRetained(&v2->_heldPane);
+    v11 = objc_loadWeakRetained(&selfCopy->_heldPane);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
 
     v14 = [NSString stringWithFormat:@"Bridge stuck waiting (%.0f sec) for %@ on hold-wait screen", *&v9, v13];
-    [v6 setTitle:v14];
+    [tapToRadarMetadata setTitle:v14];
 
     v15 = pbb_bridge_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -286,7 +286,7 @@
   else
   {
     v16 = [NSString stringWithFormat:@"Bridge stuck waiting (%.0f sec) on hold-wait screen", *&v9];
-    [v6 setTitle:v16];
+    [tapToRadarMetadata setTitle:v16];
 
     v13 = pbb_bridge_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -297,22 +297,22 @@
     }
   }
 
-  v17 = [UIApp setupController];
-  v18 = [v17 internalDashboardController];
-  v19 = [v18 dashboardData];
+  setupController = [UIApp setupController];
+  internalDashboardController = [setupController internalDashboardController];
+  dashboardData = [internalDashboardController dashboardData];
 
   v20 = objc_opt_new();
-  v21 = [v19 pairingEvents];
-  if (v21)
+  pairingEvents = [dashboardData pairingEvents];
+  if (pairingEvents)
   {
-    v32 = v2;
-    v33 = v6;
+    v32 = selfCopy;
+    v33 = tapToRadarMetadata;
     [v20 appendString:@"———— Pairing metadata:\n"];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v22 = v21;
+    v22 = pairingEvents;
     v23 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v23)
     {
@@ -328,9 +328,9 @@
           }
 
           v27 = *(*(&v34 + 1) + 8 * i);
-          v28 = [v27 dashboardKey];
-          v29 = [v27 eventValue];
-          [v20 appendFormat:@"- %@ : %@\n", v28, v29];
+          dashboardKey = [v27 dashboardKey];
+          eventValue = [v27 eventValue];
+          [v20 appendFormat:@"- %@ : %@\n", dashboardKey, eventValue];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -339,15 +339,15 @@
       while (v24);
     }
 
-    v2 = v32;
-    v6 = v33;
+    selfCopy = v32;
+    tapToRadarMetadata = v33;
   }
 
-  v30 = [(UILabel *)v2->_label text];
-  v31 = [NSString stringWithFormat:@"Wait message: %@\n\nPlease describe what steps you’ve taken in setup prior to getting stuck on this pane:\n\n%@\n\nIMPORTANT: Please manually grab and attach a sysdiagnose from the Watch you are pairing!", v30, v20];
-  [v6 setRadarDescription:v31];
+  text = [(UILabel *)selfCopy->_label text];
+  v31 = [NSString stringWithFormat:@"Wait message: %@\n\nPlease describe what steps you’ve taken in setup prior to getting stuck on this pane:\n\n%@\n\nIMPORTANT: Please manually grab and attach a sysdiagnose from the Watch you are pairing!", text, v20];
+  [tapToRadarMetadata setRadarDescription:v31];
 
-  [BPSTapToRadarCoordinator openTapToRadarWithInitialMetadata:v6];
+  [BPSTapToRadarCoordinator openTapToRadarWithInitialMetadata:tapToRadarMetadata];
 }
 
 - (COSBuddyControllerDelegate)delegate

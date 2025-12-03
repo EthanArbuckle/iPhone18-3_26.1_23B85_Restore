@@ -1,36 +1,36 @@
 @interface _INPBSetTimerAttributeIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetTimerAttributeIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetTimerAttributeIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetTimerAttributeIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"updatedTimer"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  updatedTimer = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+  dictionaryRepresentation = [updatedTimer dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"updatedTimer"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
-    v6 = [v4 updatedTimer];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    updatedTimer = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+    updatedTimer2 = [equalCopy updatedTimer];
+    v7 = updatedTimer2;
+    if ((updatedTimer != 0) != (updatedTimer2 == 0))
     {
-      v8 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
-      if (!v8)
+      updatedTimer3 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+      if (!updatedTimer3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
-      v11 = [v4 updatedTimer];
-      v12 = [v10 isEqual:v11];
+      v9 = updatedTimer3;
+      updatedTimer4 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+      updatedTimer5 = [equalCopy updatedTimer];
+      v12 = [updatedTimer4 isEqual:updatedTimer5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetTimerAttributeIntentResponse allocWithZone:](_INPBSetTimerAttributeIntentResponse init];
-  v6 = [(_INPBTimer *)self->_updatedTimer copyWithZone:a3];
+  v6 = [(_INPBTimer *)self->_updatedTimer copyWithZone:zone];
   [(_INPBSetTimerAttributeIntentResponse *)v5 setUpdatedTimer:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetTimerAttributeIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetTimerAttributeIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetTimerAttributeIntentResponse)initWithCoder:(id)a3
+- (_INPBSetTimerAttributeIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetTimerAttributeIntentResponse *)self initWithData:v6];
+    self = [(_INPBSetTimerAttributeIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+  toCopy = to;
+  updatedTimer = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
 
-  if (v4)
+  if (updatedTimer)
   {
-    v5 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
+    updatedTimer2 = [(_INPBSetTimerAttributeIntentResponse *)self updatedTimer];
     PBDataWriterWriteSubmessage();
   }
 }

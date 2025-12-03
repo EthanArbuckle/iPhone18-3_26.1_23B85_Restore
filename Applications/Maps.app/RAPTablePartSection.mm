@@ -5,20 +5,20 @@
 - (RAPTablePartsDataSource)dataSource;
 - (UITableView)tableView;
 - (double)headerHeight;
-- (id)dequeueCellWithNamespacedReuseIdentifier:(id)a3 creationBlock:(id)a4;
+- (id)dequeueCellWithNamespacedReuseIdentifier:(id)identifier creationBlock:(id)block;
 - (id)dequeueDefaultSingleLineTableViewCell;
 - (id)dequeueSubtitleStyleCell;
-- (id)namespacedReuseIdentifierWithSuffix:(id)a3;
+- (id)namespacedReuseIdentifierWithSuffix:(id)suffix;
 - (int64_t)sectionIndex;
 - (void)_registerReuseIdentifiersIfNeeded;
-- (void)_reloadHeaderFooterWithAnimation:(int64_t)a3;
-- (void)holdChangesAffectingTableViewWithinBlock:(id)a3;
-- (void)registerClass:(Class)a3 forNamespacedReuseIdentifier:(id)a4;
-- (void)reloadWithRowAnimation:(int64_t)a3;
-- (void)setFooterTitle:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setHeaderView:(id)a3;
+- (void)_reloadHeaderFooterWithAnimation:(int64_t)animation;
+- (void)holdChangesAffectingTableViewWithinBlock:(id)block;
+- (void)registerClass:(Class)class forNamespacedReuseIdentifier:(id)identifier;
+- (void)reloadWithRowAnimation:(int64_t)animation;
+- (void)setFooterTitle:(id)title;
+- (void)setFooterView:(id)view;
+- (void)setHeaderTitle:(id)title;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation RAPTablePartSection
@@ -37,41 +37,41 @@
   return WeakRetained;
 }
 
-- (void)_reloadHeaderFooterWithAnimation:(int64_t)a3
+- (void)_reloadHeaderFooterWithAnimation:(int64_t)animation
 {
   v5 = qword_10195CF78;
-  v6 = [(RAPTablePartSection *)self tableView];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  tableView = [(RAPTablePartSection *)self tableView];
+  LOBYTE(v5) = [v5 containsObject:tableView];
 
   if ((v5 & 1) == 0)
   {
-    v9 = [(RAPTablePartSection *)self tableView];
-    v7 = [(RAPTablePartSection *)self dataSource];
-    v8 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [v7 indexOfSection:self]);
-    [v9 _reloadSectionHeaderFooters:v8 withRowAnimation:a3];
+    tableView2 = [(RAPTablePartSection *)self tableView];
+    dataSource = [(RAPTablePartSection *)self dataSource];
+    v8 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [dataSource indexOfSection:self]);
+    [tableView2 _reloadSectionHeaderFooters:v8 withRowAnimation:animation];
   }
 }
 
-- (void)reloadWithRowAnimation:(int64_t)a3
+- (void)reloadWithRowAnimation:(int64_t)animation
 {
   v5 = qword_10195CF78;
-  v6 = [(RAPTablePartSection *)self tableView];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  tableView = [(RAPTablePartSection *)self tableView];
+  LOBYTE(v5) = [v5 containsObject:tableView];
 
   if ((v5 & 1) == 0)
   {
-    v9 = [(RAPTablePartSection *)self tableView];
-    v7 = [(RAPTablePartSection *)self dataSource];
-    v8 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [v7 indexOfSection:self]);
-    [v9 reloadSections:v8 withRowAnimation:a3];
+    tableView2 = [(RAPTablePartSection *)self tableView];
+    dataSource = [(RAPTablePartSection *)self dataSource];
+    v8 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [dataSource indexOfSection:self]);
+    [tableView2 reloadSections:v8 withRowAnimation:animation];
   }
 }
 
-- (void)setFooterTitle:(id)a3
+- (void)setFooterTitle:(id)title
 {
-  if (self->_footerTitle != a3)
+  if (self->_footerTitle != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     footerTitle = self->_footerTitle;
     self->_footerTitle = v5;
 
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  if (self->_headerTitle != a3)
+  if (self->_headerTitle != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     headerTitle = self->_headerTitle;
     self->_headerTitle = v5;
 
@@ -91,47 +91,47 @@
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
-  if (self->_footerView != v5)
+  viewCopy = view;
+  if (self->_footerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_footerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_footerView, view);
     [(RAPTablePartSection *)self didChange];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
-  if (self->_headerView != v5)
+  viewCopy = view;
+  if (self->_headerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_headerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_headerView, view);
     [(RAPTablePartSection *)self didChange];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (double)headerHeight
 {
-  v3 = [(RAPTablePartSection *)self headerView];
+  headerView = [(RAPTablePartSection *)self headerView];
 
-  if (!v3)
+  if (!headerView)
   {
     return UITableViewAutomaticDimension;
   }
 
-  v4 = [(RAPTablePartSection *)self headerView];
-  [v4 setNeedsLayout];
+  headerView2 = [(RAPTablePartSection *)self headerView];
+  [headerView2 setNeedsLayout];
 
-  v5 = [(RAPTablePartSection *)self headerView];
-  [v5 layoutIfNeeded];
+  headerView3 = [(RAPTablePartSection *)self headerView];
+  [headerView3 layoutIfNeeded];
 
-  v6 = [(RAPTablePartSection *)self headerView];
-  [v6 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  headerView4 = [(RAPTablePartSection *)self headerView];
+  [headerView4 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v8 = v7;
 
   return v8;
@@ -139,26 +139,26 @@
 
 - (int64_t)sectionIndex
 {
-  v3 = [(RAPTablePartSection *)self dataSource];
-  v4 = [v3 indexOfSection:self];
+  dataSource = [(RAPTablePartSection *)self dataSource];
+  v4 = [dataSource indexOfSection:self];
 
   return v4;
 }
 
-- (void)registerClass:(Class)a3 forNamespacedReuseIdentifier:(id)a4
+- (void)registerClass:(Class)class forNamespacedReuseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = [(RAPTablePartSection *)self tableView];
-  v7 = [(RAPTablePartSection *)self namespacedReuseIdentifierWithSuffix:v6];
+  identifierCopy = identifier;
+  tableView = [(RAPTablePartSection *)self tableView];
+  v7 = [(RAPTablePartSection *)self namespacedReuseIdentifierWithSuffix:identifierCopy];
 
-  [v8 registerClass:a3 forCellReuseIdentifier:v7];
+  [tableView registerClass:class forCellReuseIdentifier:v7];
 }
 
 - (id)dequeueSubtitleStyleCell
 {
-  v2 = [(RAPTablePartSection *)self tableView];
+  tableView = [(RAPTablePartSection *)self tableView];
   v3 = +[RAPTwoLinesMenuTableViewCell reuseIdentifier];
-  v4 = [v2 dequeueReusableCellWithIdentifier:v3];
+  v4 = [tableView dequeueReusableCellWithIdentifier:v3];
 
   if (!v4)
   {
@@ -172,9 +172,9 @@
 
 - (id)dequeueDefaultSingleLineTableViewCell
 {
-  v2 = [(RAPTablePartSection *)self tableView];
+  tableView = [(RAPTablePartSection *)self tableView];
   v3 = +[RAPSingleLineTableViewCell reuseIdentifier];
-  v4 = [v2 dequeueReusableCellWithIdentifier:v3];
+  v4 = [tableView dequeueReusableCellWithIdentifier:v3];
 
   if (!v4)
   {
@@ -184,65 +184,65 @@
   return v4;
 }
 
-- (id)dequeueCellWithNamespacedReuseIdentifier:(id)a3 creationBlock:(id)a4
+- (id)dequeueCellWithNamespacedReuseIdentifier:(id)identifier creationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(RAPTablePartSection *)self namespacedReuseIdentifierWithSuffix:a3];
-  v8 = [(RAPTablePartSection *)self tableView];
-  v9 = [v8 dequeueReusableCellWithIdentifier:v7];
+  blockCopy = block;
+  v7 = [(RAPTablePartSection *)self namespacedReuseIdentifierWithSuffix:identifier];
+  tableView = [(RAPTablePartSection *)self tableView];
+  v9 = [tableView dequeueReusableCellWithIdentifier:v7];
 
-  if (v6 && !v9)
+  if (blockCopy && !v9)
   {
-    v9 = v6[2](v6, v7);
+    v9 = blockCopy[2](blockCopy, v7);
   }
 
   return v9;
 }
 
-- (id)namespacedReuseIdentifierWithSuffix:(id)a3
+- (id)namespacedReuseIdentifierWithSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v5 stringByAppendingFormat:@"__%@", v3];
+  suffixCopy = [v5 stringByAppendingFormat:@"__%@", suffixCopy];
 
-  return v6;
+  return suffixCopy;
 }
 
 - (void)_registerReuseIdentifiersIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   v3 = objc_loadWeakRetained(&self->_partController);
-  v4 = [v3 tableView];
+  tableView = [v3 tableView];
 
-  if (WeakRetained != v4 && v4 != 0)
+  if (WeakRetained != tableView && tableView != 0)
   {
-    objc_storeWeak(&self->_tableView, v4);
+    objc_storeWeak(&self->_tableView, tableView);
     [(RAPTablePartSection *)self registerReuseIdentifiersForCells];
   }
 }
 
-- (void)holdChangesAffectingTableViewWithinBlock:(id)a3
+- (void)holdChangesAffectingTableViewWithinBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(RAPTablePartSection *)self partController];
-  [v5 holdChangesAffectingTableViewWithinBlock:v4];
+  blockCopy = block;
+  partController = [(RAPTablePartSection *)self partController];
+  [partController holdChangesAffectingTableViewWithinBlock:blockCopy];
 }
 
 - (RAPPresentingViewController)presentingViewController
 {
-  v2 = [(RAPTablePartSection *)self partController];
-  v3 = [v2 presentingViewController];
+  partController = [(RAPTablePartSection *)self partController];
+  presentingViewController = [partController presentingViewController];
 
-  return v3;
+  return presentingViewController;
 }
 
 - (RAPTablePartsDataSource)dataSource
 {
-  v2 = [(RAPTablePartSection *)self partController];
-  v3 = [v2 dataSource];
+  partController = [(RAPTablePartSection *)self partController];
+  dataSource = [partController dataSource];
 
-  return v3;
+  return dataSource;
 }
 
 - (RAPTablePartSection)init

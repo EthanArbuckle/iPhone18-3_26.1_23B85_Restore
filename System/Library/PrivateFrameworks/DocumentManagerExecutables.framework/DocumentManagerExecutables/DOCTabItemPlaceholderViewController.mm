@@ -6,10 +6,10 @@
 
 - (id)tabBarItem
 {
-  v2 = [(DOCTabItemPlaceholderViewController *)self actualViewController];
-  v3 = [v2 tabBarItem];
+  actualViewController = [(DOCTabItemPlaceholderViewController *)self actualViewController];
+  tabBarItem = [actualViewController tabBarItem];
 
-  return v3;
+  return tabBarItem;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface _UICollectionViewDragDestinationController
-+ (id)controllerForCollectionView:(void *)a3 delegate:;
-- (BOOL)_hasGapLargeEnoughToRequireDropActionCallForCurrentItemAttributes:(id)a3 proposedNextItemAttributes:(id)a4;
++ (id)controllerForCollectionView:(void *)view delegate:;
+- (BOOL)_hasGapLargeEnoughToRequireDropActionCallForCurrentItemAttributes:(id)attributes proposedNextItemAttributes:(id)itemAttributes;
 - (BOOL)_isLocalInteractiveMove;
 - (BOOL)_isMultiItemSource;
-- (BOOL)_shouldQueryDropActionForIndexPath:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)_shouldQueryDropActionForIndexPath:(id)path;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (BOOL)hasPerformedReordering;
 - (NSString)description;
-- (_UICollectionViewDragDestinationController)initWithCollectionView:(id)a3 delegate:(id)a4;
-- (id)_computeNextItemAttributesStartingFromItemAttributes:(id)a3 withCurrentDragLocation:(CGPoint)a4;
+- (_UICollectionViewDragDestinationController)initWithCollectionView:(id)view delegate:(id)delegate;
+- (id)_computeNextItemAttributesStartingFromItemAttributes:(id)attributes withCurrentDragLocation:(CGPoint)location;
 - (id)_dragDestinationDelegateActual;
 - (id)_dragDestinationDelegateProxy;
 - (id)_dropDelegateActual;
 - (id)_dropDelegateProxy;
-- (id)_effectiveDropProposalForProposal:(id)a3;
-- (id)_queryClientForPreviewParametersForItemAtIndexPath:(id)a3;
+- (id)_effectiveDropProposalForProposal:(id)proposal;
+- (id)_queryClientForPreviewParametersForItemAtIndexPath:(id)path;
 - (id)currentDropProposal;
 - (id)currentDropSession;
 - (id)currentIndexPath;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (id)reorderingState;
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (uint64_t)isActive;
 - (uint64_t)shouldPerformMovementForCurrentProposal;
 - (uint64_t)supportsLocalSessionReordering;
-- (void)_beginOrResumeDropSession:(id)a3;
+- (void)_beginOrResumeDropSession:(id)session;
 - (void)_cancelCurrentInteractiveReorder;
 - (void)_cancelInteractiveReorderingIfNeeded;
 - (void)_commitCurrentDragAndDropSession;
@@ -36,20 +36,20 @@
 - (void)_pauseReorderingDisplayLink;
 - (void)_reorderingDisplayLinkDidTick;
 - (void)_resumeReorderingDisplayLink;
-- (void)_updateDropProposalByQueryingClientIfNeeded:(id)a3 indicatorLayoutAttributes:(id)a4;
+- (void)_updateDropProposalByQueryingClientIfNeeded:(id)needed indicatorLayoutAttributes:(id)attributes;
 - (void)deactivate;
 - (void)dealloc;
-- (void)dragSourceSelectedItemCountDidChangeWithCount:(id *)a1;
+- (void)dragSourceSelectedItemCountDidChangeWithCount:(id *)count;
 - (void)dropInsertionRolledBack;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 - (void)dropProposalState;
 - (void)dropWasCancelled;
-- (void)rebaseForUpdates:(void *)a1;
+- (void)rebaseForUpdates:(void *)updates;
 - (void)resumeDrops;
 - (void)sessionState;
 - (void)suspendDrops;
@@ -71,34 +71,34 @@
 
 - (void)sessionState
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
       v4 = objc_alloc_init(_UIDragDestinationControllerSessionState);
-      v5 = v2[5];
-      v2[5] = v4;
+      v5 = selfCopy[5];
+      selfCopy[5] = v4;
 
-      v3 = v2[5];
+      v3 = selfCopy[5];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)isActive
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-    if (v1)
+    sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+    if (sessionState)
     {
-      v2 = v1[2];
+      v2 = sessionState[2];
       v3 = v2 > 0xA;
       v4 = 0x5FEu >> v2;
       if (v3)
@@ -128,43 +128,43 @@
 
 - (void)deactivate
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 32) invalidate];
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(self + 32) invalidate];
+    v2 = *(self + 32);
+    *(self + 32) = 0;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
     if (WeakRetained)
     {
-      v4 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-      v5 = v4;
-      if (v4)
+      sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+      v5 = sessionState;
+      if (sessionState)
       {
-        v6 = v4[2];
+        v6 = sessionState[2];
         if ((v6 - 1) < 8 || v6 == 10)
         {
 
-          v7 = objc_loadWeakRetained((a1 + 24));
+          v7 = objc_loadWeakRetained((self + 24));
           v8 = v7;
           if (v7)
           {
             [v7 _decrementSessionRefCount];
           }
 
-          v5 = objc_loadWeakRetained((a1 + 8));
+          v5 = objc_loadWeakRetained((self + 8));
           [v5 _resetDropTargetAppearance];
         }
       }
 
-      v9 = objc_loadWeakRetained((a1 + 8));
-      v10 = objc_loadWeakRetained((a1 + 16));
+      v9 = objc_loadWeakRetained((self + 8));
+      v10 = objc_loadWeakRetained((self + 16));
       [v9 removeInteraction:v10];
 
-      objc_storeWeak((a1 + 16), 0);
+      objc_storeWeak((self + 16), 0);
     }
 
-    *(a1 + 64) = 0;
+    *(self + 64) = 0;
   }
 }
 
@@ -176,18 +176,18 @@
   [(_UICollectionViewDragDestinationController *)&v3 dealloc];
 }
 
-- (_UICollectionViewDragDestinationController)initWithCollectionView:(id)a3 delegate:(id)a4
+- (_UICollectionViewDragDestinationController)initWithCollectionView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _UICollectionViewDragDestinationController;
   v8 = [(_UICollectionViewDragDestinationController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_collectionView, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_collectionView, viewCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     [(_UICollectionViewDragDestinationController *)v9 _configureInteraction];
   }
 
@@ -199,26 +199,26 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v7 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  v8 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-  v9 = [v3 stringWithFormat:@"<%@:%p sessionState = %@; reorderingState = %@; dropProposalState = %@>", v5, self, v6, v7, v8];;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  v9 = [v3 stringWithFormat:@"<%@:%p sessionState = %@; reorderingState = %@; dropProposalState = %@>", v5, self, sessionState, reorderingState, dropProposalState];;
 
   return v9;
 }
 
 - (id)reorderingState
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[6];
+    selfCopy = self;
+    v3 = self[6];
     if (!v3)
     {
       v4 = [_UIDragDestinationControllerReorderingState alloc];
-      v5 = [(_UICollectionViewDragDestinationController *)v2 sessionState];
-      WeakRetained = objc_loadWeakRetained(v2 + 1);
-      v7 = v5;
+      sessionState = [(_UICollectionViewDragDestinationController *)selfCopy sessionState];
+      WeakRetained = objc_loadWeakRetained(selfCopy + 1);
+      v7 = sessionState;
       v8 = WeakRetained;
       if (v4)
       {
@@ -228,7 +228,7 @@
         v4 = v9;
         if (v9)
         {
-          objc_storeStrong(&v9->_sessionState, v5);
+          objc_storeStrong(&v9->_sessionState, sessionState);
           objc_storeWeak(&v4->_collectionView, v8);
           v10 = objc_alloc_init(_UIVelocityIntegrator);
           velocityIntegrator = v4->_velocityIntegrator;
@@ -239,58 +239,58 @@
         }
       }
 
-      v12 = v2[6];
-      v2[6] = v4;
+      v12 = selfCopy[6];
+      selfCopy[6] = v4;
 
-      v3 = v2[6];
+      v3 = selfCopy[6];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dropProposalState
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[7];
+    selfCopy = self;
+    v3 = self[7];
     if (!v3)
     {
       v4 = objc_alloc_init(_UIDragDestinationControllerDropProposalState);
-      v5 = v2[7];
-      v2[7] = v4;
+      v5 = selfCopy[7];
+      selfCopy[7] = v4;
 
-      v3 = v2[7];
+      v3 = selfCopy[7];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)controllerForCollectionView:(void *)a3 delegate:
++ (id)controllerForCollectionView:(void *)view delegate:
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = a2;
-  v6 = [objc_alloc(objc_opt_self()) initWithCollectionView:v5 delegate:v4];
+  v6 = [objc_alloc(objc_opt_self()) initWithCollectionView:v5 delegate:viewCopy];
 
   return v6;
 }
 
 - (uint64_t)supportsLocalSessionReordering
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragDestinationController *)a1 reorderingState];
-    if (v1)
+    reorderingState = [(_UICollectionViewDragDestinationController *)self reorderingState];
+    if (reorderingState)
     {
-      v2 = v1[8];
+      v2 = reorderingState[8];
     }
 
     else
@@ -309,13 +309,13 @@
 
 - (id)currentIndexPath
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-    v2 = v1;
-    if (v1)
+    dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v2 = dropProposalState;
+    if (dropProposalState)
     {
-      v3 = *(v1 + 24);
+      v3 = *(dropProposalState + 24);
     }
 
     else
@@ -336,13 +336,13 @@
 
 - (id)currentDropProposal
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-    v2 = v1;
-    if (v1)
+    dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v2 = dropProposalState;
+    if (dropProposalState)
     {
-      v3 = *(v1 + 16);
+      v3 = *(dropProposalState + 16);
     }
 
     else
@@ -363,13 +363,13 @@
 
 - (id)currentDropSession
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-    v2 = v1;
-    if (v1)
+    sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+    v2 = sessionState;
+    if (sessionState)
     {
-      v3 = *(v1 + 16);
+      v3 = *(sessionState + 16);
     }
 
     else
@@ -388,22 +388,22 @@
   return v4;
 }
 
-- (void)dragSourceSelectedItemCountDidChangeWithCount:(id *)a1
+- (void)dragSourceSelectedItemCountDidChangeWithCount:(id *)count
 {
-  if (a1)
+  if (count)
   {
-    v4 = [(_UICollectionViewDragDestinationController *)a1 reorderingState];
-    if (v4)
+    reorderingState = [(_UICollectionViewDragDestinationController *)count reorderingState];
+    if (reorderingState)
     {
-      v5 = v4[8];
+      v5 = reorderingState[8];
 
       if (a2 >= 2 && (v5 & 1) != 0)
       {
-        [a1 _cancelCurrentInteractiveReorder];
-        v6 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-        if (v6 && v6[2] != 6)
+        [count _cancelCurrentInteractiveReorder];
+        sessionState = [(_UICollectionViewDragDestinationController *)count sessionState];
+        if (sessionState && sessionState[2] != 6)
         {
-          v6[2] = 6;
+          sessionState[2] = 6;
         }
       }
     }
@@ -412,25 +412,25 @@
 
 - (void)dropWasCancelled
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-    if (v2)
+    sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+    if (sessionState)
     {
-      v3 = v2[2];
+      v3 = sessionState[2];
       if ((v3 - 1) < 8 || v3 == 10)
       {
 
-        [a1 _cancelInteractiveReorderingIfNeeded];
-        WeakRetained = objc_loadWeakRetained((a1 + 8));
+        [self _cancelInteractiveReorderingIfNeeded];
+        WeakRetained = objc_loadWeakRetained((self + 8));
         [WeakRetained _resetDropTargetAppearance];
 
-        v2 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-        if (v2)
+        sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+        if (sessionState)
         {
-          if (v2[2] != 8)
+          if (sessionState[2] != 8)
           {
-            v2[2] = 8;
+            sessionState[2] = 8;
           }
         }
       }
@@ -440,26 +440,26 @@
 
 - (void)dropInsertionRolledBack
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v3 = [(_UICollectionViewDragDestinationController *)a1 currentIndexPath];
-    v5 = [WeakRetained indexPathBeforeShadowUpdates:v3];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    currentIndexPath = [(_UICollectionViewDragDestinationController *)self currentIndexPath];
+    v5 = [WeakRetained indexPathBeforeShadowUpdates:currentIndexPath];
 
     if (v5)
     {
-      v4 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-      [(_UIHomeAffordanceObservationRecord *)v4 setLegacyViewServiceSessionIdentifier:v5];
+      dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+      [(_UIHomeAffordanceObservationRecord *)dropProposalState setLegacyViewServiceSessionIdentifier:v5];
     }
   }
 }
 
 - (BOOL)hasPerformedReordering
 {
-  v2 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (v2 && *(v2 + 24) >= 1)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (reorderingState && *(reorderingState + 24) >= 1)
   {
-    v3 = *(v2 + 8);
+    v3 = *(reorderingState + 8);
   }
 
   else
@@ -472,77 +472,77 @@
 
 - (void)suspendDrops
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 64);
-  *(a1 + 64) = v2 + 1;
+  v2 = *(self + 64);
+  *(self + 64) = v2 + 1;
   if (v2)
   {
     return;
   }
 
-  v3 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-  if (v3)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState)
   {
-    v4 = v3[2];
+    v4 = sessionState[2];
     v5 = v4 > 0xA;
     v6 = (1 << v4) & 0x47D;
     if (!v5 && v6 != 0)
     {
 
-      v8 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-      v9 = v8;
-      v10 = v8 ? *(v8 + 16) : 0;
+      sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+      v9 = sessionState2;
+      v10 = sessionState2 ? *(sessionState2 + 16) : 0;
       v21 = v10;
 
-      v3 = v21;
+      sessionState = v21;
       if (v21)
       {
-        [a1 _pauseReorderingDisplayLink];
-        WeakRetained = objc_loadWeakRetained((a1 + 24));
+        [self _pauseReorderingDisplayLink];
+        WeakRetained = objc_loadWeakRetained((self + 24));
         v12 = WeakRetained;
         if (WeakRetained)
         {
           [WeakRetained _updatePreferredDraggedCellAppearanceForSessionUpdate];
         }
 
-        v13 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-        if (v13 && v13[2] != 9)
+        sessionState3 = [(_UICollectionViewDragDestinationController *)self sessionState];
+        if (sessionState3 && sessionState3[2] != 9)
         {
-          v13[2] = 9;
+          sessionState3[2] = 9;
         }
 
-        v14 = objc_loadWeakRetained((a1 + 8));
+        v14 = objc_loadWeakRetained((self + 8));
         [v14 _resetDropTargetAppearance];
 
-        v15 = [a1 _dropDelegateActual];
+        _dropDelegateActual = [self _dropDelegateActual];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [a1 _dropDelegateProxy];
-          v18 = objc_loadWeakRetained((a1 + 8));
-          [v17 collectionView:v18 dropSessionDidExit:v21];
+          _dropDelegateProxy = [self _dropDelegateProxy];
+          v18 = objc_loadWeakRetained((self + 8));
+          [_dropDelegateProxy collectionView:v18 dropSessionDidExit:v21];
         }
 
         else
         {
-          v19 = [a1 _dragDestinationDelegateActual];
+          _dragDestinationDelegateActual = [self _dragDestinationDelegateActual];
           v20 = objc_opt_respondsToSelector();
 
           if ((v20 & 1) == 0)
           {
 LABEL_22:
-            v3 = v21;
+            sessionState = v21;
             goto LABEL_23;
           }
 
-          v17 = [a1 _dragDestinationDelegateProxy];
-          v18 = objc_loadWeakRetained((a1 + 8));
-          [v17 _collectionView:v18 dropSessionDidExit:v21];
+          _dropDelegateProxy = [self _dragDestinationDelegateProxy];
+          v18 = objc_loadWeakRetained((self + 8));
+          [_dropDelegateProxy _collectionView:v18 dropSessionDidExit:v21];
         }
 
         goto LABEL_22;
@@ -556,12 +556,12 @@ LABEL_23:
 - (void)resumeDrops
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 64);
+  v2 = *(self + 64);
   if (!v2)
   {
     if (os_variant_has_internal_diagnostics())
@@ -572,13 +572,13 @@ LABEL_23:
         goto LABEL_16;
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       v10 = 136315650;
       v11 = "[_UICollectionViewDragDestinationController resumeDrops]";
       v12 = 2112;
       v13 = WeakRetained;
       v14 = 2112;
-      v15 = a1;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_188A29000, v8, OS_LOG_TYPE_FAULT, "Unbalanced call to %s. Collection view: %@; destination controller: %@", &v10, 0x20u);
     }
 
@@ -591,13 +591,13 @@ LABEL_23:
       }
 
       v8 = v7;
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       v10 = 136315650;
       v11 = "[_UICollectionViewDragDestinationController resumeDrops]";
       v12 = 2112;
       v13 = WeakRetained;
       v14 = 2112;
-      v15 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Unbalanced call to %s. Collection view: %@; destination controller: %@", &v10, 0x20u);
     }
 
@@ -606,46 +606,46 @@ LABEL_16:
   }
 
   v3 = v2 - 1;
-  *(a1 + 64) = v3;
+  *(self + 64) = v3;
   if (!v3)
   {
-    v4 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-    if (v4)
+    sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+    if (sessionState)
     {
-      v5 = v4[2];
+      v5 = sessionState[2];
 
       if (v5 == 9)
       {
-        v6 = [(_UICollectionViewDragDestinationController *)a1 sessionState];
-        if (v6 && v6[2] != 10)
+        sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+        if (sessionState2 && sessionState2[2] != 10)
         {
-          v6[2] = 10;
+          sessionState2[2] = 10;
         }
       }
     }
   }
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+  sessionCopy = session;
+  _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    v9 = [v8 collectionView:self canHandleDropSession:v5];
+    v9 = [_dropDelegateProxy collectionView:self canHandleDropSession:sessionCopy];
   }
 
   else
   {
-    v10 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+    _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -654,13 +654,13 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    v8 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    v9 = [v8 _collectionView:self canHandleDropSesson:v5];
+    v9 = [_dropDelegateProxy _collectionView:self canHandleDropSesson:sessionCopy];
   }
 
   v12 = v9;
@@ -669,14 +669,14 @@ LABEL_11:
   return v12;
 }
 
-- (void)_beginOrResumeDropSession:(id)a3
+- (void)_beginOrResumeDropSession:(id)session
 {
-  v5 = a3;
-  v6 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v7 = v6;
-  if (v6)
+  sessionCopy = session;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v7 = sessionState;
+  if (sessionState)
   {
-    v51 = *(v6 + 8) == 10;
+    v51 = *(sessionState + 8) == 10;
   }
 
   else
@@ -684,17 +684,17 @@ LABEL_11:
     v51 = 0;
   }
 
-  v8 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v8 && (v9 = v8[2], v8, v9))
+  sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState2 && (v9 = sessionState2[2], sessionState2, v9))
   {
-    v10 = [(_UICollectionViewDragDestinationController *)self sessionState];
-    v11 = v10;
-    if (v10)
+    sessionState3 = [(_UICollectionViewDragDestinationController *)self sessionState];
+    v11 = sessionState3;
+    if (sessionState3)
     {
-      v10 = v10[2];
+      sessionState3 = sessionState3[2];
     }
 
-    v12 = [v10 isEqual:v5];
+    v12 = [sessionState3 isEqual:sessionCopy];
 
     if ((v12 & 1) == 0)
     {
@@ -727,17 +727,17 @@ LABEL_11:
     v13 = 1;
   }
 
-  v15 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v16 = v15;
-  if (v15)
+  sessionState4 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v16 = sessionState4;
+  if (sessionState4)
   {
-    objc_storeStrong((v15 + 16), a3);
+    objc_storeStrong((sessionState4 + 16), session);
   }
 
-  v17 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v17 && v17[2] != 1)
+  sessionState5 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState5 && sessionState5[2] != 1)
   {
-    v17[2] = 1;
+    sessionState5[2] = 1;
   }
 
   if (self)
@@ -746,10 +746,10 @@ LABEL_11:
     objc_storeStrong(&self->_dropProposalState, 0);
   }
 
-  v18 = [(_UICollectionViewDragDestinationController *)self _isLocalInteractiveMove];
-  v19 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  _isLocalInteractiveMove = [(_UICollectionViewDragDestinationController *)self _isLocalInteractiveMove];
+  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
   v20 = [UICollectionViewDropProposal alloc];
-  if (v18)
+  if (_isLocalInteractiveMove)
   {
     v21 = 0;
   }
@@ -760,9 +760,9 @@ LABEL_11:
   }
 
   v22 = [(UICollectionViewDropProposal *)v20 initWithDropOperation:v21 intent:0];
-  if (v19)
+  if (dropProposalState)
   {
-    [v19 setProposal:v22];
+    [dropProposalState setProposal:v22];
   }
 
   if (self)
@@ -775,18 +775,18 @@ LABEL_11:
     WeakRetained = 0;
   }
 
-  v24 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+  _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
-    [v26 collectionView:WeakRetained dropSessionDidEnter:v5];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+    [_dropDelegateProxy collectionView:WeakRetained dropSessionDidEnter:sessionCopy];
   }
 
   else
   {
-    v27 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+    _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
     v28 = objc_opt_respondsToSelector();
 
     if ((v28 & 1) == 0)
@@ -794,21 +794,21 @@ LABEL_11:
       goto LABEL_33;
     }
 
-    v26 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
-    [v26 _collectionView:WeakRetained dropSessionDidEnter:v5];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+    [_dropDelegateProxy _collectionView:WeakRetained dropSessionDidEnter:sessionCopy];
   }
 
 LABEL_33:
-  v29 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-  v30 = v29;
-  if (v29)
+  dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  v30 = dropProposalState2;
+  if (dropProposalState2)
   {
-    v29 = v29[2];
+    dropProposalState2 = dropProposalState2[2];
   }
 
-  v31 = [v29 intent];
+  intent = [dropProposalState2 intent];
 
-  [v5 locationInView:WeakRetained];
+  [sessionCopy locationInView:WeakRetained];
   v33 = v32;
   v35 = v34;
   if (self)
@@ -830,22 +830,22 @@ LABEL_33:
   v38 = 0;
 LABEL_38:
   v39 = v38;
-  v40 = [(_UICollectionViewDragSourceController *)v39 dragFromIndexPath];
+  dragFromIndexPath = [(_UICollectionViewDragSourceController *)v39 dragFromIndexPath];
 
   v52 = 0;
-  v41 = [WeakRetained _indexPathForInsertionAtPoint:v31 dropIntent:v40 sourceIndexPath:&v52 indicatorLayoutAttributes:{v33, v35}];
+  v41 = [WeakRetained _indexPathForInsertionAtPoint:intent dropIntent:dragFromIndexPath sourceIndexPath:&v52 indicatorLayoutAttributes:{v33, v35}];
   v42 = v52;
   [(_UICollectionViewDragDestinationController *)self _updateDropProposalByQueryingClientIfNeeded:v41 indicatorLayoutAttributes:v42];
-  if (v18)
+  if (_isLocalInteractiveMove)
   {
-    v43 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-    v44 = v43;
-    if (v43)
+    dropProposalState3 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v44 = dropProposalState3;
+    if (dropProposalState3)
     {
-      v43 = v43[2];
+      dropProposalState3 = dropProposalState3[2];
     }
 
-    v45 = [v43 operation] != 2;
+    v45 = [dropProposalState3 operation] != 2;
   }
 
   else
@@ -853,16 +853,16 @@ LABEL_38:
     v45 = 0;
   }
 
-  v46 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (v46)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (reorderingState)
   {
-    v46[8] = v45;
+    reorderingState[8] = v45;
   }
 
-  v47 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  sessionState6 = [(_UICollectionViewDragDestinationController *)self sessionState];
   if (v45)
   {
-    if (!v47 || v47[2] == 2)
+    if (!sessionState6 || sessionState6[2] == 2)
     {
       goto LABEL_53;
     }
@@ -872,7 +872,7 @@ LABEL_38:
 
   else
   {
-    if (!v47 || v47[2] == 3)
+    if (!sessionState6 || sessionState6[2] == 3)
     {
       goto LABEL_53;
     }
@@ -880,7 +880,7 @@ LABEL_38:
     v48 = 3;
   }
 
-  v47[2] = v48;
+  sessionState6[2] = v48;
 LABEL_53:
 
   if (self)
@@ -899,27 +899,27 @@ LABEL_53:
   [(_UICollectionViewDragDestinationController *)self _resumeReorderingDisplayLink];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v7 = a4;
-  v5 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (!v5 || (v6 = v5[2], v5, v6 != 9))
+  enterCopy = enter;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (!sessionState || (v6 = sessionState[2], sessionState, v6 != 9))
   {
-    [(_UICollectionViewDragDestinationController *)self _beginOrResumeDropSession:v7];
+    [(_UICollectionViewDragDestinationController *)self _beginOrResumeDropSession:enterCopy];
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a4;
-  v7 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v7 && (v8 = v7[2], v7, v8 == 9))
+  updateCopy = update;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState && (v8 = sessionState[2], sessionState, v8 == 9))
   {
-    v9 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-    v10 = v9;
-    if (v9)
+    dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v10 = dropProposalState;
+    if (dropProposalState)
     {
-      v11 = *(v9 + 16);
+      v11 = *(dropProposalState + 16);
     }
 
     else
@@ -931,17 +931,17 @@ LABEL_53:
 
     if (!v12)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      v23 = [(_UIHomeAffordanceObservationRecord *)&self->super.isa observer];
-      v24 = [(_UICollectionViewDragDestinationController *)self sessionState];
-      [v22 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragDestinationController.m" lineNumber:385 description:{@"Couldn't find a drop proposal to return to the drop interaction. Collection view: %@; drop session: %@; destination controller session state: %@", v23, v6, v24}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      observer = [(_UIHomeAffordanceObservationRecord *)&self->super.isa observer];
+      sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragDestinationController.m" lineNumber:385 description:{@"Couldn't find a drop proposal to return to the drop interaction. Collection view: %@; drop session: %@; destination controller session state: %@", observer, updateCopy, sessionState2}];
     }
 
-    v13 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-    v14 = v13;
-    if (v13)
+    dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v14 = dropProposalState2;
+    if (dropProposalState2)
     {
-      v15 = *(v13 + 16);
+      v15 = *(dropProposalState2 + 16);
     }
 
     else
@@ -954,22 +954,22 @@ LABEL_53:
 
   else
   {
-    v17 = [(_UICollectionViewDragDestinationController *)self sessionState];
-    if (v17)
+    sessionState3 = [(_UICollectionViewDragDestinationController *)self sessionState];
+    if (sessionState3)
     {
-      v18 = v17[2];
+      v18 = sessionState3[2];
 
       if (v18 == 10)
       {
-        [(_UICollectionViewDragDestinationController *)self _beginOrResumeDropSession:v6];
+        [(_UICollectionViewDragDestinationController *)self _beginOrResumeDropSession:updateCopy];
       }
     }
 
-    v19 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-    v14 = v19;
-    if (v19)
+    dropProposalState3 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    v14 = dropProposalState3;
+    if (dropProposalState3)
     {
-      v20 = *(v19 + 16);
+      v20 = *(dropProposalState3 + 16);
     }
 
     else
@@ -983,20 +983,20 @@ LABEL_53:
   return v16;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v22 = a4;
-  v5 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v6 = v5;
-  if (v5 && *(v5 + 8) == 9)
+  exitCopy = exit;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  _dropDelegateProxy = sessionState;
+  if (sessionState && *(sessionState + 8) == 9)
   {
     goto LABEL_32;
   }
 
-  v7 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v7)
+  sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState2)
   {
-    v8 = v7[2];
+    v8 = sessionState2[2];
 
     if (v8 == 10)
     {
@@ -1009,10 +1009,10 @@ LABEL_53:
   }
 
   [(_UICollectionViewDragDestinationController *)self _pauseReorderingDisplayLink];
-  v9 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (v9)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (reorderingState)
   {
-    v9[8] = 0;
+    reorderingState[8] = 0;
   }
 
   if (self)
@@ -1030,17 +1030,17 @@ LABEL_53:
     v11 = 0;
   }
 
-  v12 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v12)
+  sessionState3 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState3)
   {
-    v13 = v12[2];
+    v13 = sessionState3[2];
 
     if (v13 == 4)
     {
-      v14 = [(_UICollectionViewDragDestinationController *)self sessionState];
-      if (v14 && v14[2] != 2)
+      sessionState4 = [(_UICollectionViewDragDestinationController *)self sessionState];
+      if (sessionState4 && sessionState4[2] != 2)
       {
-        v14[2] = 2;
+        sessionState4[2] = 2;
       }
 
 LABEL_20:
@@ -1050,17 +1050,17 @@ LABEL_20:
     }
   }
 
-  v15 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v15)
+  sessionState5 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState5)
   {
-    v16 = v15[2];
+    v16 = sessionState5[2];
 
     if (v16 == 5)
     {
-      v14 = [(_UICollectionViewDragDestinationController *)self sessionState];
-      if (v14 && v14[2])
+      sessionState4 = [(_UICollectionViewDragDestinationController *)self sessionState];
+      if (sessionState4 && sessionState4[2])
       {
-        v14[2] = 0;
+        sessionState4[2] = 0;
       }
 
       goto LABEL_20;
@@ -1080,23 +1080,23 @@ LABEL_21:
 
   [v17 _resetDropTargetAppearance];
 
-  v18 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+  _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v6 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    [v6 collectionView:self dropSessionDidExit:v22];
+    [_dropDelegateProxy collectionView:self dropSessionDidExit:exitCopy];
   }
 
   else
   {
-    v20 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+    _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
     v21 = objc_opt_respondsToSelector();
 
     if ((v21 & 1) == 0)
@@ -1104,30 +1104,30 @@ LABEL_21:
       goto LABEL_33;
     }
 
-    v6 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    [v6 _collectionView:self dropSessionDidExit:v22];
+    [_dropDelegateProxy _collectionView:self dropSessionDidExit:exitCopy];
   }
 
 LABEL_32:
 LABEL_33:
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  [(_UICollectionViewDragDestinationController *)self _pauseReorderingDisplayLink:a3];
-  v5 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-  v21 = [(_UIDragDestinationControllerDropProposalState *)v5 effectiveIndexPath];
+  [(_UICollectionViewDragDestinationController *)self _pauseReorderingDisplayLink:interaction];
+  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  effectiveIndexPath = [(_UIDragDestinationControllerDropProposalState *)dropProposalState effectiveIndexPath];
 
-  v6 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-  v7 = v6;
-  if (v6)
+  dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  v7 = dropProposalState2;
+  if (dropProposalState2)
   {
-    v6[8] = [v6 _hasDropActionTarget];
+    dropProposalState2[8] = [dropProposalState2 _hasDropActionTarget];
   }
 
   if (self)
@@ -1145,16 +1145,16 @@ LABEL_33:
     v9 = 0;
   }
 
-  v10 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v11 = v10;
-  if (v10 && *(v10 + 8) == 4)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v11 = sessionState;
+  if (sessionState && *(sessionState + 8) == 4)
   {
     goto LABEL_11;
   }
 
-  v12 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v13 = v12;
-  if (v12 && v12[2] == 2)
+  sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v13 = sessionState2;
+  if (sessionState2 && sessionState2[2] == 2)
   {
 
 LABEL_11:
@@ -1163,10 +1163,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v15)
+  sessionState3 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState3)
   {
-    v16 = v15[2];
+    v16 = sessionState3[2];
 
     if (v16 == 6)
     {
@@ -1178,9 +1178,9 @@ LABEL_12:
   {
   }
 
-  v17 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v18 = v17;
-  if (v17 && v17[2] == 5)
+  sessionState4 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v18 = sessionState4;
+  if (sessionState4 && sessionState4[2] == 5)
   {
 
 LABEL_25:
@@ -1188,10 +1188,10 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  v19 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v19)
+  sessionState5 = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState5)
   {
-    v20 = v19[2];
+    v20 = sessionState5[2];
 
     if (v20 != 3)
     {
@@ -1213,7 +1213,7 @@ LABEL_13:
   }
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
   if (self && (WeakRetained = objc_loadWeakRetained(&self->_delegate)) != 0)
   {
@@ -1229,13 +1229,13 @@ LABEL_13:
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v16 = a4;
-  v5 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v5)
+  endCopy = end;
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState)
   {
-    v6 = v5[2];
+    v6 = sessionState[2];
   }
 
   else
@@ -1243,8 +1243,8 @@ LABEL_13:
     v6 = 0;
   }
 
-  v7 = v16;
-  if (v6 == v16)
+  v7 = endCopy;
+  if (v6 == endCopy)
   {
     [(_UICollectionViewDragDestinationController *)self _cancelCurrentInteractiveReorder];
     if (self)
@@ -1268,51 +1268,51 @@ LABEL_13:
 
     [v10 _resetDropTargetAppearance];
 
-    v11 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+    _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+      _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
       if (self)
       {
         self = objc_loadWeakRetained(&self->_collectionView);
       }
 
-      [v13 collectionView:self dropSessionDidEnd:v16];
+      [_dropDelegateProxy collectionView:self dropSessionDidEnd:endCopy];
     }
 
     else
     {
-      v14 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+      _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
       v15 = objc_opt_respondsToSelector();
 
-      v7 = v16;
+      v7 = endCopy;
       if ((v15 & 1) == 0)
       {
         goto LABEL_17;
       }
 
-      v13 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+      _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
       if (self)
       {
         self = objc_loadWeakRetained(&self->_collectionView);
       }
 
-      [v13 _collectionView:self dropSessionDidEnd:v16];
+      [_dropDelegateProxy _collectionView:self dropSessionDidEnd:endCopy];
     }
 
-    v7 = v16;
+    v7 = endCopy;
   }
 
 LABEL_17:
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  defaultCopy = default;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1323,7 +1323,7 @@ LABEL_17:
     WeakRetained = 0;
   }
 
-  v12 = [WeakRetained _dropCoordinatorItemForDragItem:v9];
+  v12 = [WeakRetained _dropCoordinatorItemForDragItem:itemCopy];
 
   if (!v12)
   {
@@ -1332,8 +1332,8 @@ LABEL_24:
     goto LABEL_32;
   }
 
-  v13 = [v12 kind];
-  if (v13 == 2)
+  kind = [v12 kind];
+  if (kind == 2)
   {
     if (self)
     {
@@ -1349,9 +1349,9 @@ LABEL_24:
 
     if (v32)
     {
-      v33 = [v12 previewParametersProvider];
+      previewParametersProvider = [v12 previewParametersProvider];
 
-      if (v33 && ([v12 previewParametersProvider], v34 = objc_claimAutoreleasedReturnValue(), (v34)[2](v34, v32), v35 = objc_claimAutoreleasedReturnValue(), v34, v35))
+      if (previewParametersProvider && ([v12 previewParametersProvider], v34 = objc_claimAutoreleasedReturnValue(), (v34)[2](v34, v32), v35 = objc_claimAutoreleasedReturnValue(), v34, v35))
       {
         v20 = [(UITargetedPreview *)[UITargetedDragPreview alloc] initWithView:v32 parameters:v35];
       }
@@ -1370,20 +1370,20 @@ LABEL_24:
     goto LABEL_32;
   }
 
-  if (v13 == 1)
+  if (kind == 1)
   {
     v21 = [UIDragPreviewTarget alloc];
-    v22 = [v12 target];
-    v23 = [v22 container];
-    v24 = [v12 target];
-    [v24 center];
+    target = [v12 target];
+    container = [target container];
+    target2 = [v12 target];
+    [target2 center];
     v26 = v25;
     v28 = v27;
-    v29 = [v12 target];
-    v30 = v29;
-    if (v29)
+    target3 = [v12 target];
+    v30 = target3;
+    if (target3)
     {
-      [v29 transform];
+      [target3 transform];
     }
 
     else
@@ -1391,14 +1391,14 @@ LABEL_24:
       memset(v40, 0, sizeof(v40));
     }
 
-    v37 = [(UIPreviewTarget *)v21 initWithContainer:v23 center:v40 transform:v26, v28];
+    v37 = [(UIPreviewTarget *)v21 initWithContainer:container center:v40 transform:v26, v28];
 
-    v20 = [v10 retargetedPreviewWithTarget:v37];
+    v20 = [defaultCopy retargetedPreviewWithTarget:v37];
 
     goto LABEL_32;
   }
 
-  if (v13)
+  if (kind)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1433,19 +1433,19 @@ LABEL_24:
     v14 = 0;
   }
 
-  v15 = [v12 destinationIndexPath];
-  v16 = [v14 _cellForItemAtIndexPath:v15];
+  destinationIndexPath = [v12 destinationIndexPath];
+  v16 = [v14 _cellForItemAtIndexPath:destinationIndexPath];
 
-  v17 = [v12 destinationIndexPath];
-  v18 = [(_UICollectionViewDragDestinationController *)self _queryClientForPreviewParametersForItemAtIndexPath:v17];
+  destinationIndexPath2 = [v12 destinationIndexPath];
+  v18 = [(_UICollectionViewDragDestinationController *)self _queryClientForPreviewParametersForItemAtIndexPath:destinationIndexPath2];
 
   if (v16)
   {
     if (!v18)
     {
       v18 = objc_alloc_init(UIDragPreviewParameters);
-      v19 = [v16 _visiblePathForBackgroundConfiguration];
-      [(UIPreviewParameters *)v18 setVisiblePath:v19];
+      _visiblePathForBackgroundConfiguration = [v16 _visiblePathForBackgroundConfiguration];
+      [(UIPreviewParameters *)v18 setVisiblePath:_visiblePathForBackgroundConfiguration];
     }
 
     [(UIPreviewParameters *)v18 setHidesSourceViewDuringDropAnimation:1];
@@ -1462,10 +1462,10 @@ LABEL_32:
   return v20;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  animatorCopy = animator;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1476,22 +1476,22 @@ LABEL_32:
     WeakRetained = 0;
   }
 
-  [(_UICollectionViewDragAndDropController *)WeakRetained dragDestinationController:v7 willBeginDropAnimationForDragItem:v8 animator:?];
+  [(_UICollectionViewDragAndDropController *)WeakRetained dragDestinationController:itemCopy willBeginDropAnimationForDragItem:animatorCopy animator:?];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95___UICollectionViewDragDestinationController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke;
   v11[3] = &unk_1E71003B0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v8 addCompletion:v11];
+  v12 = itemCopy;
+  v10 = itemCopy;
+  [animatorCopy addCompletion:v11];
 }
 
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+  sessionCopy = session;
+  _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
@@ -1506,7 +1506,7 @@ LABEL_32:
       WeakRetained = 0;
     }
 
-    [v5 locationInView:WeakRetained];
+    [sessionCopy locationInView:WeakRetained];
     v10 = v9;
     v12 = v11;
 
@@ -1522,7 +1522,7 @@ LABEL_32:
 
     v14 = [v13 indexPathForItemAtPoint:{v10, v12}];
 
-    v15 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
     if (self)
     {
       v16 = objc_loadWeakRetained(&self->_collectionView);
@@ -1533,7 +1533,7 @@ LABEL_32:
       v16 = 0;
     }
 
-    v17 = [v15 _collectionView:v16 dataOwnerForDropSession:v5 withDestinationIndexPath:v14];
+    v17 = [_dropDelegateProxy _collectionView:v16 dataOwnerForDropSession:sessionCopy withDestinationIndexPath:v14];
   }
 
   else
@@ -1556,9 +1556,9 @@ LABEL_32:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragDestinationDelegateProxy];
+  _dragDestinationDelegateProxy = [WeakRetained _dragDestinationDelegateProxy];
 
-  return v3;
+  return _dragDestinationDelegateProxy;
 }
 
 - (id)_dragDestinationDelegateActual
@@ -1573,9 +1573,9 @@ LABEL_32:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragDestinationDelegateActual];
+  _dragDestinationDelegateActual = [WeakRetained _dragDestinationDelegateActual];
 
-  return v3;
+  return _dragDestinationDelegateActual;
 }
 
 - (id)_dropDelegateProxy
@@ -1590,9 +1590,9 @@ LABEL_32:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dropDelegateProxy];
+  _dropDelegateProxy = [WeakRetained _dropDelegateProxy];
 
-  return v3;
+  return _dropDelegateProxy;
 }
 
 - (id)_dropDelegateActual
@@ -1607,24 +1607,24 @@ LABEL_32:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dropDelegateActual];
+  _dropDelegateActual = [WeakRetained _dropDelegateActual];
 
-  return v3;
+  return _dropDelegateActual;
 }
 
 - (void)_cancelInteractiveReorderingIfNeeded
 {
-  v3 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (v3)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (reorderingState)
   {
-    v4 = v3[9];
+    v4 = reorderingState[9];
 
     if (v4 == 1)
     {
-      v5 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-      if (v5)
+      reorderingState2 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+      if (reorderingState2)
       {
-        v5[9] = 0;
+        reorderingState2[9] = 0;
       }
 
       if (self)
@@ -1645,17 +1645,17 @@ LABEL_32:
 
 - (void)_endInteractiveReorderingIfNeeded
 {
-  v3 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (v3)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (reorderingState)
   {
-    v4 = v3[9];
+    v4 = reorderingState[9];
 
     if (v4 == 1)
     {
-      v5 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-      if (v5)
+      reorderingState2 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+      if (reorderingState2)
       {
-        v5[9] = 0;
+        reorderingState2[9] = 0;
       }
 
       if (self)
@@ -1674,15 +1674,15 @@ LABEL_32:
   }
 }
 
-- (id)_queryClientForPreviewParametersForItemAtIndexPath:(id)a3
+- (id)_queryClientForPreviewParametersForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+  pathCopy = path;
+  _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+    _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1693,7 +1693,7 @@ LABEL_32:
       WeakRetained = 0;
     }
 
-    v9 = [v7 collectionView:WeakRetained dropPreviewParametersForItemAtIndexPath:v4];
+    v9 = [_dropDelegateProxy collectionView:WeakRetained dropPreviewParametersForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1708,8 +1708,8 @@ LABEL_32:
 {
   if (!self || !self->_reorderDisplayLink)
   {
-    v3 = [objc_opt_self() mainScreen];
-    v4 = [v3 displayLinkWithTarget:self selector:sel__reorderingDisplayLinkDidTick];
+    mainScreen = [objc_opt_self() mainScreen];
+    v4 = [mainScreen displayLinkWithTarget:self selector:sel__reorderingDisplayLinkDidTick];
     v5 = v4;
     if (self)
     {
@@ -1717,8 +1717,8 @@ LABEL_32:
 
       v6 = MEMORY[0x1E695DFD0];
       v7 = self->_reorderDisplayLink;
-      v8 = [v6 mainRunLoop];
-      [(CADisplayLink *)v7 addToRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [v6 mainRunLoop];
+      [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       reorderDisplayLink = self->_reorderDisplayLink;
     }
@@ -1726,16 +1726,16 @@ LABEL_32:
     else
     {
 
-      v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [0 addToRunLoop:v14 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [0 addToRunLoop:mainRunLoop2 forMode:*MEMORY[0x1E695DA28]];
 
       reorderDisplayLink = 0;
     }
 
     v10 = MEMORY[0x1E695DFD0];
     v11 = reorderDisplayLink;
-    v12 = [v10 mainRunLoop];
-    [(CADisplayLink *)v11 addToRunLoop:v12 forMode:@"UITrackingRunLoopMode"];
+    mainRunLoop3 = [v10 mainRunLoop];
+    [(CADisplayLink *)v11 addToRunLoop:mainRunLoop3 forMode:@"UITrackingRunLoopMode"];
 
     if (self)
     {
@@ -1773,17 +1773,17 @@ LABEL_32:
 
 - (BOOL)_isLocalInteractiveMove
 {
-  v3 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (!v3)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (!sessionState)
   {
     v8 = 0;
-    v12 = 0;
+    allowsMoveOperation = 0;
 LABEL_16:
 
-    return v12;
+    return allowsMoveOperation;
   }
 
-  v4 = v3[2];
+  v4 = sessionState[2];
 
   if (v4)
   {
@@ -1797,27 +1797,27 @@ LABEL_16:
 LABEL_6:
         v8 = v7;
 
-        v9 = [(_UICollectionViewDragDestinationController *)self sessionState];
-        v10 = v9;
-        if (v9)
+        sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+        v10 = sessionState2;
+        if (sessionState2)
         {
-          v9 = v9[2];
+          sessionState2 = sessionState2[2];
         }
 
-        v11 = [v9 localDragSession];
+        localDragSession = [sessionState2 localDragSession];
 
-        v12 = 0;
-        if (v8 && v11)
+        allowsMoveOperation = 0;
+        if (v8 && localDragSession)
         {
-          v13 = [(_UICollectionViewDragSourceController *)v8 dragSession];
-          if (v11 == v13)
+          dragSession = [(_UICollectionViewDragSourceController *)v8 dragSession];
+          if (localDragSession == dragSession)
           {
-            v12 = [v11 allowsMoveOperation];
+            allowsMoveOperation = [localDragSession allowsMoveOperation];
           }
 
           else
           {
-            v12 = 0;
+            allowsMoveOperation = 0;
           }
         }
 
@@ -1839,10 +1839,10 @@ LABEL_6:
 
 - (void)_reorderingDisplayLinkDidTick
 {
-  v3 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  v4 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  v5 = v4;
-  if (v4 && *(v4 + 16))
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  v5 = sessionState;
+  if (sessionState && *(sessionState + 16))
   {
     if (self)
     {
@@ -1852,47 +1852,47 @@ LABEL_6:
         [*(v5 + 16) locationInView:WeakRetained];
         v9 = v7;
         v10 = v8;
-        v11 = v3 ? *(v3 + 16) : 0;
+        v11 = reorderingState ? *(reorderingState + 16) : 0;
         [v11 addSample:{v7, v8}];
-        if (v3)
+        if (reorderingState)
         {
-          v12 = *(v3 + 16);
+          v12 = *(reorderingState + 16);
           if (v12)
           {
             if (*(v12 + 48) >= 12)
             {
-              if (fabs(*(v3 + 56)) < 2.22044605e-16)
+              if (fabs(*(reorderingState + 56)) < 2.22044605e-16)
               {
-                *(v3 + 56) = CACurrentMediaTime();
+                *(reorderingState + 56) = CACurrentMediaTime();
               }
 
-              v13 = *(v3 + 32);
+              v13 = *(reorderingState + 32);
               if (!v13)
               {
-                v14 = [v3 _reorderCadenceSettings];
-                v15 = *(v3 + 32);
-                *(v3 + 32) = v14;
+                _reorderCadenceSettings = [reorderingState _reorderCadenceSettings];
+                v15 = *(reorderingState + 32);
+                *(reorderingState + 32) = _reorderCadenceSettings;
 
-                v13 = *(v3 + 32);
+                v13 = *(reorderingState + 32);
               }
 
               v16 = v13;
               [v16 dwellTimeThreshold];
-              if (fabs(*(v3 + 56)) >= 2.22044605e-16 && CACurrentMediaTime() - *(v3 + 56) >= v17)
+              if (fabs(*(reorderingState + 56)) >= 2.22044605e-16 && CACurrentMediaTime() - *(reorderingState + 56) >= v17)
               {
-                [*(v3 + 16) velocity];
+                [*(reorderingState + 16) velocity];
                 v20 = hypot(v18, v19);
                 [v16 velocityMagnitudeThreshold];
                 if (fabs(v21) < 2.22044605e-16 || v20 <= v21)
                 {
-                  v22 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-                  v23 = v22;
-                  if (v22)
+                  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+                  v23 = dropProposalState;
+                  if (dropProposalState)
                   {
-                    v22 = v22[2];
+                    dropProposalState = dropProposalState[2];
                   }
 
-                  v24 = [v22 intent];
+                  intent = [dropProposalState intent];
 
                   v25 = objc_loadWeakRetained(&self->_delegate);
                   v26 = v25;
@@ -1907,10 +1907,10 @@ LABEL_6:
                   }
 
                   v28 = v27;
-                  v29 = [(_UICollectionViewDragSourceController *)v28 dragFromIndexPath];
+                  dragFromIndexPath = [(_UICollectionViewDragSourceController *)v28 dragFromIndexPath];
 
                   v37 = 0;
-                  v30 = [WeakRetained _indexPathForInsertionAtPoint:v24 dropIntent:v29 sourceIndexPath:&v37 indicatorLayoutAttributes:{v9, v10}];
+                  v30 = [WeakRetained _indexPathForInsertionAtPoint:intent dropIntent:dragFromIndexPath sourceIndexPath:&v37 indicatorLayoutAttributes:{v9, v10}];
                   v31 = v37;
                   [(_UICollectionViewDragDestinationController *)self _updateDropProposalByQueryingClientIfNeeded:v30 indicatorLayoutAttributes:v31];
                   v32 = *(v5 + 8);
@@ -1920,7 +1920,7 @@ LABEL_6:
                       if ([(_UICollectionViewDragDestinationController *)self shouldPerformMovementForCurrentProposal])
                       {
                         [WeakRetained updateInteractiveMovementTargetPosition:{v9, v10}];
-                        [(_UIDragDestinationControllerReorderingState *)v3 didReorder];
+                        [(_UIDragDestinationControllerReorderingState *)reorderingState didReorder];
                       }
 
                       break;
@@ -1933,40 +1933,40 @@ LABEL_6:
                         }
 
                         v34 = objc_loadWeakRetained(&self->_delegate);
-                        v35 = [(_UICollectionViewDragAndDropController *)v34 effectiveDragDestinationVisualStyle];
+                        effectiveDragDestinationVisualStyle = [(_UICollectionViewDragAndDropController *)v34 effectiveDragDestinationVisualStyle];
 
-                        if (v35 != 2)
+                        if (effectiveDragDestinationVisualStyle != 2)
                         {
                           [WeakRetained _beginReorderingItemAtIndexPath:v30 isLegacyMovement:0];
                         }
 
-                        v36 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-                        if (v36)
+                        reorderingState2 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+                        if (reorderingState2)
                         {
-                          v36[9] = 1;
+                          reorderingState2[9] = 1;
                         }
                       }
 
                       break;
                     case 2:
-                      if (v29 && [(_UICollectionViewDragDestinationController *)self shouldPerformMovementForCurrentProposal])
+                      if (dragFromIndexPath && [(_UICollectionViewDragDestinationController *)self shouldPerformMovementForCurrentProposal])
                       {
-                        v33 = [WeakRetained _cellForItemAtIndexPath:v29];
+                        v33 = [WeakRetained _cellForItemAtIndexPath:dragFromIndexPath];
 
                         if (v33)
                         {
-                          [WeakRetained _beginReorderingItemAtIndexPath:v29 isLegacyMovement:0];
+                          [WeakRetained _beginReorderingItemAtIndexPath:dragFromIndexPath isLegacyMovement:0];
                           [WeakRetained updateInteractiveMovementTargetPosition:{v9, v10}];
-                          *(v3 + 9) = 1;
+                          *(reorderingState + 9) = 1;
                           if (*(v5 + 8) != 4)
                           {
                             *(v5 + 8) = 4;
                           }
                         }
 
-                        else if (([WeakRetained isScrollAnimating] & 1) == 0 && objc_msgSend(WeakRetained, "_globalIndexPathForItemAtIndexPath:", v29) != 0x7FFFFFFFFFFFFFFFLL)
+                        else if (([WeakRetained isScrollAnimating] & 1) == 0 && objc_msgSend(WeakRetained, "_globalIndexPathForItemAtIndexPath:", dragFromIndexPath) != 0x7FFFFFFFFFFFFFFFLL)
                         {
-                          [WeakRetained _scrollToItemAtPresentationIndexPath:v29 atScrollPosition:0 additionalInsets:1 animated:{0.0, 0.0, 0.0, 0.0}];
+                          [WeakRetained _scrollToItemAtPresentationIndexPath:dragFromIndexPath atScrollPosition:0 additionalInsets:1 animated:{0.0, 0.0, 0.0, 0.0}];
                         }
                       }
 
@@ -1983,7 +1983,7 @@ LABEL_6:
 
                 else
                 {
-                  *(v3 + 56) = 0;
+                  *(reorderingState + 56) = 0;
                 }
               }
             }
@@ -2001,16 +2001,16 @@ LABEL_6:
 
 - (uint64_t)shouldPerformMovementForCurrentProposal
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-  v2 = v1;
-  if (v1)
+  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  v2 = dropProposalState;
+  if (dropProposalState)
   {
-    v3 = *(v1 + 16);
+    v3 = *(dropProposalState + 16);
   }
 
   else
@@ -2020,9 +2020,9 @@ LABEL_6:
 
   v4 = v3;
 
-  v5 = [v4 intent];
+  intent = [v4 intent];
   v6 = [v4 operation] == 2 || objc_msgSend(v4, "operation") == 3;
-  v7 = (v5 == 1) & v6;
+  v7 = (intent == 1) & v6;
 
   return v7;
 }
@@ -2030,19 +2030,19 @@ LABEL_6:
 - (void)_commitCurrentDragAndDropSession
 {
   p_isa = &self->super.isa;
-  v3 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v3 && v3[2] != 7)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState && sessionState[2] != 7)
   {
-    v3[2] = 7;
+    sessionState[2] = 7;
   }
 
   [p_isa _endInteractiveReorderingIfNeeded];
-  v4 = [p_isa _dropDelegateActual];
+  _dropDelegateActual = [p_isa _dropDelegateActual];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v9 = [p_isa _dropDelegateProxy];
+    _dropDelegateProxy = [p_isa _dropDelegateProxy];
     if (p_isa)
     {
       WeakRetained = objc_loadWeakRetained(p_isa + 1);
@@ -2054,12 +2054,12 @@ LABEL_6:
       WeakRetained = 0;
     }
 
-    [v9 collectionView:WeakRetained performDropWithCoordinator:p_isa];
+    [_dropDelegateProxy collectionView:WeakRetained performDropWithCoordinator:p_isa];
   }
 
   else
   {
-    v7 = [p_isa _dragDestinationDelegateActual];
+    _dragDestinationDelegateActual = [p_isa _dragDestinationDelegateActual];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -2067,7 +2067,7 @@ LABEL_6:
       return;
     }
 
-    v9 = [p_isa _dragDestinationDelegateProxy];
+    _dropDelegateProxy = [p_isa _dragDestinationDelegateProxy];
     if (p_isa)
     {
       WeakRetained = objc_loadWeakRetained(p_isa + 1);
@@ -2079,16 +2079,16 @@ LABEL_6:
       WeakRetained = 0;
     }
 
-    [v9 _collectionView:WeakRetained performDropWithCoordinator:p_isa];
+    [_dropDelegateProxy _collectionView:WeakRetained performDropWithCoordinator:p_isa];
   }
 }
 
 - (void)_cancelCurrentInteractiveReorder
 {
-  v3 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v3)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState)
   {
-    v4 = v3[2];
+    v4 = sessionState[2];
 
     if (v4 == 4)
     {
@@ -2111,10 +2111,10 @@ LABEL_6:
     WeakRetained = 0;
   }
 
-  v5 = [(_UICollectionViewDragDestinationController *)self sessionState];
-  if (v5 && v5[2] != 7)
+  sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+  if (sessionState && sessionState[2] != 7)
   {
-    v5[2] = 7;
+    sessionState[2] = 7;
   }
 
   if (self)
@@ -2127,15 +2127,15 @@ LABEL_6:
     v6 = 0;
   }
 
-  v7 = [WeakRetained _dataSourceImplementsReorderingHandlers];
-  if (v7)
+  _dataSourceImplementsReorderingHandlers = [WeakRetained _dataSourceImplementsReorderingHandlers];
+  if (_dataSourceImplementsReorderingHandlers)
   {
-    v8 = 1;
+    _supportsAutomaticCatalystDragAndDropReordering = 1;
   }
 
   else
   {
-    v8 = [WeakRetained _supportsAutomaticCatalystDragAndDropReordering];
+    _supportsAutomaticCatalystDragAndDropReordering = [WeakRetained _supportsAutomaticCatalystDragAndDropReordering];
   }
 
   if (v6)
@@ -2148,33 +2148,33 @@ LABEL_6:
     v9 = 1;
   }
 
-  v10 = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
-  if (!v10)
+  reorderingState = [(_UICollectionViewDragDestinationController *)&self->super.isa reorderingState];
+  if (!reorderingState)
   {
-    v12 = 0;
+    _diffableDataSourceImpl = 0;
     goto LABEL_35;
   }
 
-  v11 = v10[9];
+  v11 = reorderingState[9];
 
-  if ((v8 & v9) != 1 || (v11 & 1) == 0)
+  if ((_supportsAutomaticCatalystDragAndDropReordering & v9) != 1 || (v11 & 1) == 0)
   {
 LABEL_36:
     if (dyld_program_sdk_at_least())
     {
-      v27 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-      v28 = v27;
-      if (v27)
+      dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+      v28 = dropProposalState;
+      if (dropProposalState)
       {
-        v27 = v27[2];
+        dropProposalState = dropProposalState[2];
       }
 
-      v29 = [v27 intent];
+      intent = [dropProposalState intent];
 
-      if (v29 == 2)
+      if (intent == 2)
       {
-        v30 = [(_UICollectionViewDragDestinationController *)self currentIndexPath];
-        v31 = [v6 indexPathBeforeShadowUpdates:v30];
+        currentIndexPath = [(_UICollectionViewDragDestinationController *)self currentIndexPath];
+        v31 = [v6 indexPathBeforeShadowUpdates:currentIndexPath];
         v32 = v31;
         if (v31)
         {
@@ -2183,27 +2183,27 @@ LABEL_36:
 
         else
         {
-          v33 = v30;
+          v33 = currentIndexPath;
         }
 
-        v34 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-        [(_UIHomeAffordanceObservationRecord *)v34 setLegacyViewServiceSessionIdentifier:v33];
+        dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+        [(_UIHomeAffordanceObservationRecord *)dropProposalState2 setLegacyViewServiceSessionIdentifier:v33];
       }
     }
 
     [(_UICollectionViewDragDestinationController *)self _cancelInteractiveReorderingIfNeeded];
-    v35 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+    _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
     v36 = objc_opt_respondsToSelector();
 
     if (v36)
     {
-      v37 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
-      [v37 collectionView:WeakRetained performDropWithCoordinator:v6];
+      _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+      [_dropDelegateProxy collectionView:WeakRetained performDropWithCoordinator:v6];
     }
 
     else
     {
-      v38 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+      _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
       v39 = objc_opt_respondsToSelector();
 
       if ((v39 & 1) == 0)
@@ -2211,31 +2211,31 @@ LABEL_36:
         goto LABEL_49;
       }
 
-      v37 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
-      [v37 _collectionView:WeakRetained performDropWithCoordinator:v6];
+      _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+      [_dropDelegateProxy _collectionView:WeakRetained performDropWithCoordinator:v6];
     }
 
     goto LABEL_49;
   }
 
-  if (v7)
+  if (_dataSourceImplementsReorderingHandlers)
   {
-    v12 = [WeakRetained _diffableDataSourceImpl];
-    if (!v12)
+    _diffableDataSourceImpl = [WeakRetained _diffableDataSourceImpl];
+    if (!_diffableDataSourceImpl)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragDestinationController.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"dataSourceImpl"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragDestinationController.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"dataSourceImpl"}];
     }
   }
 
   else
   {
-    v12 = 0;
+    _diffableDataSourceImpl = 0;
   }
 
   v14 = v6;
-  v15 = [v14 proposal];
-  if ([v15 operation] != 3 || objc_msgSend(v15, "intent") != 1)
+  proposal = [v14 proposal];
+  if ([proposal operation] != 3 || objc_msgSend(proposal, "intent") != 1)
   {
 LABEL_34:
 
@@ -2254,25 +2254,25 @@ LABEL_35:
   }
 
   v17 = v16;
-  v18 = [(_UICollectionViewDragSourceController *)v17 dragFromIndexPath];
+  dragFromIndexPath = [(_UICollectionViewDragSourceController *)v17 dragFromIndexPath];
 
-  v19 = [v14 destinationIndexPath];
-  v20 = v19;
-  v62 = v18;
-  if (!v18 || !v19)
+  destinationIndexPath = [v14 destinationIndexPath];
+  v20 = destinationIndexPath;
+  v62 = dragFromIndexPath;
+  if (!dragFromIndexPath || !destinationIndexPath)
   {
 
     goto LABEL_34;
   }
 
   [(_UICollectionViewDragDestinationController *)self _endInteractiveReorderingIfNeeded];
-  v21 = [(_UICollectionViewDragAndDropController *)v14 effectiveDragDestinationVisualStyle];
-  v22 = v21;
+  effectiveDragDestinationVisualStyle = [(_UICollectionViewDragAndDropController *)v14 effectiveDragDestinationVisualStyle];
+  v22 = effectiveDragDestinationVisualStyle;
   v60 = v6;
   v61 = WeakRetained;
-  v58 = v15;
-  v59 = v12;
-  if (v12)
+  v58 = proposal;
+  v59 = _diffableDataSourceImpl;
+  if (_diffableDataSourceImpl)
   {
     if (v6)
     {
@@ -2285,10 +2285,10 @@ LABEL_35:
     }
 
     v24 = v23;
-    v25 = [(_UICollectionViewDragSourceController *)v24 dragItemsCreatedForReordering];
+    dragItemsCreatedForReordering = [(_UICollectionViewDragSourceController *)v24 dragItemsCreatedForReordering];
     if (v22 == 2)
     {
-      v26 = v25;
+      v26 = dragItemsCreatedForReordering;
     }
 
     else
@@ -2296,12 +2296,12 @@ LABEL_35:
       v26 = 0;
     }
 
-    [v12 _commitReorderingForItemAtIndexPath:v18 toDestinationIndexPath:v20 shouldPerformViewAnimations:v26];
+    [_diffableDataSourceImpl _commitReorderingForItemAtIndexPath:dragFromIndexPath toDestinationIndexPath:v20 shouldPerformViewAnimations:v26];
   }
 
-  else if (v21 == 2)
+  else if (effectiveDragDestinationVisualStyle == 2)
   {
-    v40 = [[UICollectionViewUpdateItem alloc] initWithOldIndexPath:v18 newIndexPath:v20];
+    v40 = [[UICollectionViewUpdateItem alloc] initWithOldIndexPath:dragFromIndexPath newIndexPath:v20];
     v41 = [off_1E70ECC48 snapshotterForDataSourceBackedView:WeakRetained];
     v70[0] = v40;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
@@ -2314,8 +2314,8 @@ LABEL_35:
     v68 = v43;
     v44 = v43;
     [(_UICollectionViewDragAndDropController *)v14 rebaseCellAppearanceStatesForUpdates:v67];
-    [v61 _notifyDataSourceForMoveOfItemFromIndexPath:v18 toIndexPath:v20];
-    [v61 moveItemAtIndexPath:v18 toIndexPath:v20];
+    [v61 _notifyDataSourceForMoveOfItemFromIndexPath:dragFromIndexPath toIndexPath:v20];
+    [v61 moveItemAtIndexPath:dragFromIndexPath toIndexPath:v20];
   }
 
   v65 = 0u;
@@ -2323,8 +2323,8 @@ LABEL_35:
   v63 = 0u;
   v64 = 0u;
   v45 = v14;
-  v46 = [v14 items];
-  v47 = [v46 countByEnumeratingWithState:&v63 objects:v69 count:16];
+  items = [v14 items];
+  v47 = [items countByEnumeratingWithState:&v63 objects:v69 count:16];
   if (v47)
   {
     v48 = v47;
@@ -2335,26 +2335,26 @@ LABEL_35:
       {
         if (*v64 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(items);
         }
 
         v51 = *(*(&v63 + 1) + 8 * i);
-        v52 = [v51 sourceIndexPath];
-        if (v52)
+        sourceIndexPath = [v51 sourceIndexPath];
+        if (sourceIndexPath)
         {
-          v53 = v52;
-          v54 = [v51 sourceIndexPath];
-          v55 = [v54 isEqual:v62];
+          v53 = sourceIndexPath;
+          sourceIndexPath2 = [v51 sourceIndexPath];
+          v55 = [sourceIndexPath2 isEqual:v62];
 
           if (v55)
           {
-            v56 = [v51 dragItem];
-            v57 = [v45 dropItem:v56 toItemAtIndexPath:v20];
+            dragItem = [v51 dragItem];
+            v57 = [v45 dropItem:dragItem toItemAtIndexPath:v20];
           }
         }
       }
 
-      v48 = [v46 countByEnumeratingWithState:&v63 objects:v69 count:16];
+      v48 = [items countByEnumeratingWithState:&v63 objects:v69 count:16];
     }
 
     while (v48);
@@ -2400,29 +2400,29 @@ LABEL_4:
   return v6;
 }
 
-- (void)_updateDropProposalByQueryingClientIfNeeded:(id)a3 indicatorLayoutAttributes:(id)a4
+- (void)_updateDropProposalByQueryingClientIfNeeded:(id)needed indicatorLayoutAttributes:(id)attributes
 {
-  v36 = a3;
-  v6 = a4;
-  if ([(_UICollectionViewDragDestinationController *)self _shouldQueryDropActionForIndexPath:v36])
+  neededCopy = needed;
+  attributesCopy = attributes;
+  if ([(_UICollectionViewDragDestinationController *)self _shouldQueryDropActionForIndexPath:neededCopy])
   {
-    if (v36)
+    if (neededCopy)
     {
-      v7 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-      [(_UIHomeAffordanceObservationRecord *)v7 setLegacyViewServiceSessionIdentifier:v36];
+      dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+      [(_UIHomeAffordanceObservationRecord *)dropProposalState setLegacyViewServiceSessionIdentifier:neededCopy];
     }
 
-    v8 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
+    _dragDestinationDelegateActual = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateActual];
     if (objc_opt_respondsToSelector())
     {
 
 LABEL_7:
-      v11 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+      _dropDelegateActual = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
+        _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dropDelegateProxy];
         if (self)
         {
           WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -2433,11 +2433,11 @@ LABEL_7:
           WeakRetained = 0;
         }
 
-        v15 = [(_UICollectionViewDragDestinationController *)self sessionState];
-        v16 = v15;
-        if (v15)
+        sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+        v16 = sessionState;
+        if (sessionState)
         {
-          v17 = *(v15 + 16);
+          v17 = *(sessionState + 16);
         }
 
         else
@@ -2445,12 +2445,12 @@ LABEL_7:
           v17 = 0;
         }
 
-        v18 = [v13 collectionView:WeakRetained dropSessionDidUpdate:v17 withDestinationIndexPath:v36];
+        v18 = [_dropDelegateProxy collectionView:WeakRetained dropSessionDidUpdate:v17 withDestinationIndexPath:neededCopy];
       }
 
       else
       {
-        v13 = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
+        _dropDelegateProxy = [(_UICollectionViewDragDestinationController *)self _dragDestinationDelegateProxy];
         if (self)
         {
           WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -2461,11 +2461,11 @@ LABEL_7:
           WeakRetained = 0;
         }
 
-        v19 = [(_UICollectionViewDragDestinationController *)self sessionState];
-        v16 = v19;
-        if (v19)
+        sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+        v16 = sessionState2;
+        if (sessionState2)
         {
-          v20 = *(v19 + 16);
+          v20 = *(sessionState2 + 16);
         }
 
         else
@@ -2473,7 +2473,7 @@ LABEL_7:
           v20 = 0;
         }
 
-        v18 = [v13 _collectionView:WeakRetained dropSessionDidUpdate:v20 withDestinationIndexPath:v36];
+        v18 = [_dropDelegateProxy _collectionView:WeakRetained dropSessionDidUpdate:v20 withDestinationIndexPath:neededCopy];
       }
 
       v21 = v18;
@@ -2484,11 +2484,11 @@ LABEL_7:
       }
 
       v22 = [(_UICollectionViewDragDestinationController *)self _effectiveDropProposalForProposal:v21];
-      v23 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-      v24 = v23;
-      if (v23)
+      dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+      v24 = dropProposalState2;
+      if (dropProposalState2)
       {
-        [v23 setProposal:v22];
+        [dropProposalState2 setProposal:v22];
       }
 
 LABEL_33:
@@ -2504,13 +2504,13 @@ LABEL_34:
         v34 = 0;
       }
 
-      v35 = [(_UICollectionViewDragDestinationController *)self currentDropProposal];
-      [v34 _updateDropTargetAppearanceWithTargetIndexPath:v36 intent:objc_msgSend(v35 indicatorLayoutAttributes:{"intent"), v6}];
+      currentDropProposal = [(_UICollectionViewDragDestinationController *)self currentDropProposal];
+      [v34 _updateDropTargetAppearanceWithTargetIndexPath:neededCopy intent:objc_msgSend(currentDropProposal indicatorLayoutAttributes:{"intent"), attributesCopy}];
 
       goto LABEL_37;
     }
 
-    v9 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
+    _dropDelegateActual2 = [(_UICollectionViewDragDestinationController *)self _dropDelegateActual];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
@@ -2534,10 +2534,10 @@ LABEL_34:
         v27 = *(v25 + 7);
 LABEL_26:
         v28 = v27;
-        v29 = [(_UICollectionViewDragSourceController *)v28 dragItemsCreatedForReordering];
+        dragItemsCreatedForReordering = [(_UICollectionViewDragSourceController *)v28 dragItemsCreatedForReordering];
 
         v30 = [UICollectionViewDropProposal alloc];
-        if (v29)
+        if (dragItemsCreatedForReordering)
         {
           v31 = [(UICollectionViewDropProposal *)v30 initWithDropOperation:3 intent:1];
           v21 = [(_UICollectionViewDragDestinationController *)self _effectiveDropProposalForProposal:v31];
@@ -2549,11 +2549,11 @@ LABEL_26:
 LABEL_30:
         v21 = [(UICollectionViewDropProposal *)v30 initWithDropOperation:v32 intent:0];
 LABEL_31:
-        v33 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-        v22 = v33;
-        if (v33)
+        dropProposalState3 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+        v22 = dropProposalState3;
+        if (dropProposalState3)
         {
-          [v33 setProposal:v21];
+          [dropProposalState3 setProposal:v21];
         }
 
         goto LABEL_33;
@@ -2572,31 +2572,31 @@ LABEL_31:
 LABEL_37:
 }
 
-- (id)_effectiveDropProposalForProposal:(id)a3
+- (id)_effectiveDropProposalForProposal:(id)proposal
 {
-  v4 = a3;
-  v5 = [v4 intent];
-  v6 = [v4 operation];
+  proposalCopy = proposal;
+  intent = [proposalCopy intent];
+  operation = [proposalCopy operation];
 
-  if (v6 == 3)
+  if (operation == 3)
   {
-    v7 = [(_UICollectionViewDragDestinationController *)self sessionState];
-    v8 = v7;
-    if (v7)
+    sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+    v8 = sessionState;
+    if (sessionState)
     {
-      v7 = v7[2];
+      sessionState = sessionState[2];
     }
 
-    v9 = [v7 allowsMoveOperation];
+    allowsMoveOperation = [sessionState allowsMoveOperation];
 
-    if (v9)
+    if (allowsMoveOperation)
     {
-      v6 = 3;
+      operation = 3;
     }
 
     else
     {
-      v6 = 0;
+      operation = 0;
     }
   }
 
@@ -2604,10 +2604,10 @@ LABEL_37:
   {
     if ([(_UICollectionViewDragDestinationController *)self _isMultiItemSource])
     {
-      if (v5 == 1)
+      if (intent == 1)
       {
-        v6 = 0;
-        v5 = 0;
+        operation = 0;
+        intent = 0;
       }
     }
 
@@ -2623,32 +2623,32 @@ LABEL_37:
         WeakRetained = 0;
       }
 
-      v11 = [(_UICollectionViewDragAndDropController *)WeakRetained sourceIndexPaths];
-      v12 = [v11 firstObject];
+      sourceIndexPaths = [(_UICollectionViewDragAndDropController *)WeakRetained sourceIndexPaths];
+      firstObject = [sourceIndexPaths firstObject];
 
-      v13 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-      v14 = [(_UIDragDestinationControllerDropProposalState *)v13 effectiveIndexPath];
+      dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+      effectiveIndexPath = [(_UIDragDestinationControllerDropProposalState *)dropProposalState effectiveIndexPath];
 
-      if (v12 && [v12 isEqual:v14])
+      if (firstObject && [firstObject isEqual:effectiveIndexPath])
       {
-        v6 = 0;
-        v5 = 0;
+        operation = 0;
+        intent = 0;
       }
     }
   }
 
-  v15 = [[UICollectionViewDropProposal alloc] initWithDropOperation:v6 intent:v5];
+  v15 = [[UICollectionViewDropProposal alloc] initWithDropOperation:operation intent:intent];
 
   return v15;
 }
 
-- (BOOL)_shouldQueryDropActionForIndexPath:(id)a3
+- (BOOL)_shouldQueryDropActionForIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-  v6 = [(_UIDragDestinationControllerDropProposalState *)v5 effectiveIndexPath];
+  dropProposalState = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+  effectiveIndexPath = [(_UIDragDestinationControllerDropProposalState *)dropProposalState effectiveIndexPath];
 
   v7 = 1;
-  if (!a3 && v6)
+  if (!path && effectiveIndexPath)
   {
     if (self)
     {
@@ -2660,28 +2660,28 @@ LABEL_37:
       WeakRetained = 0;
     }
 
-    v9 = [WeakRetained collectionViewLayout];
-    v10 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
-    v11 = [(_UIDragDestinationControllerDropProposalState *)v10 effectiveIndexPath];
-    v12 = [v9 layoutAttributesForItemAtIndexPath:v11];
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    dropProposalState2 = [(_UICollectionViewDragDestinationController *)self dropProposalState];
+    effectiveIndexPath2 = [(_UIDragDestinationControllerDropProposalState *)dropProposalState2 effectiveIndexPath];
+    v12 = [collectionViewLayout layoutAttributesForItemAtIndexPath:effectiveIndexPath2];
 
     if (v12)
     {
-      v13 = [(_UICollectionViewDragDestinationController *)self sessionState];
-      if (!v13)
+      sessionState = [(_UICollectionViewDragDestinationController *)self sessionState];
+      if (!sessionState)
       {
         v25 = 0;
         v7 = 1;
         goto LABEL_14;
       }
 
-      v14 = v13[2];
+      v14 = sessionState[2];
 
       if (v14)
       {
-        v15 = [(_UICollectionViewDragDestinationController *)self sessionState];
-        v16 = v15;
-        v17 = v15 ? *(v15 + 16) : 0;
+        sessionState2 = [(_UICollectionViewDragDestinationController *)self sessionState];
+        v16 = sessionState2;
+        v17 = sessionState2 ? *(sessionState2 + 16) : 0;
         v18 = v17;
         v19 = self ? objc_loadWeakRetained(&self->_collectionView) : 0;
         [v18 locationInView:v19];
@@ -2708,15 +2708,15 @@ LABEL_16:
   return v7;
 }
 
-- (id)_computeNextItemAttributesStartingFromItemAttributes:(id)a3 withCurrentDragLocation:(CGPoint)a4
+- (id)_computeNextItemAttributesStartingFromItemAttributes:(id)attributes withCurrentDragLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  y = location.y;
+  x = location.x;
+  attributesCopy = attributes;
+  v8 = attributesCopy;
+  if (attributesCopy)
   {
-    [v7 frame];
+    [attributesCopy frame];
     v9 = v38.origin.x;
     v10 = v38.origin.y;
     width = v38.size.width;
@@ -2765,9 +2765,9 @@ LABEL_16:
       WeakRetained = 0;
     }
 
-    v22 = [WeakRetained collectionViewLayout];
+    collectionViewLayout = [WeakRetained collectionViewLayout];
 
-    v23 = [v22 _layoutAttributesForElementsInProjectedRect:v31 withProjectionVector:v30 projectionDistance:{v29, v15, v16, v17, v20}];
+    v23 = [collectionViewLayout _layoutAttributesForElementsInProjectedRect:v31 withProjectionVector:v30 projectionDistance:{v29, v15, v16, v17, v20}];
     v24 = [v23 mutableCopy];
 
     v25 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -2787,36 +2787,36 @@ LABEL_16:
     *&v33[4] = v32;
     *&v33[5] = v10 + height * 0.5;
     [v24 sortUsingComparator:v33];
-    v27 = [v24 firstObject];
+    firstObject = [v24 firstObject];
   }
 
   else
   {
-    v27 = 0;
+    firstObject = 0;
   }
 
-  return v27;
+  return firstObject;
 }
 
-- (BOOL)_hasGapLargeEnoughToRequireDropActionCallForCurrentItemAttributes:(id)a3 proposedNextItemAttributes:(id)a4
+- (BOOL)_hasGapLargeEnoughToRequireDropActionCallForCurrentItemAttributes:(id)attributes proposedNextItemAttributes:(id)itemAttributes
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 frame];
+  itemAttributesCopy = itemAttributes;
+  attributesCopy = attributes;
+  [attributesCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 center];
+  [attributesCopy center];
   v35 = v16;
   v36 = v15;
 
-  [v5 frame];
+  [itemAttributesCopy frame];
   v33 = v18;
   v34 = v17;
   v20 = v19;
   v22 = v21;
-  [v5 center];
+  [itemAttributesCopy center];
   v24 = v23;
   v26 = v25;
 
@@ -2846,19 +2846,19 @@ LABEL_16:
   return v27 > Height * 0.5;
 }
 
-- (void)rebaseForUpdates:(void *)a1
+- (void)rebaseForUpdates:(void *)updates
 {
   v10 = a2;
-  if (a1)
+  if (updates)
   {
-    v3 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-    if (!v3 || (v4 = v3[8], v3, (v4 & 1) == 0))
+    dropProposalState = [(_UICollectionViewDragDestinationController *)updates dropProposalState];
+    if (!dropProposalState || (v4 = dropProposalState[8], dropProposalState, (v4 & 1) == 0))
     {
-      v5 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-      v6 = v5;
-      if (v5)
+      dropProposalState2 = [(_UICollectionViewDragDestinationController *)updates dropProposalState];
+      v6 = dropProposalState2;
+      if (dropProposalState2)
       {
-        v7 = *(v5 + 24);
+        v7 = *(dropProposalState2 + 24);
       }
 
       else
@@ -2868,8 +2868,8 @@ LABEL_16:
 
       v8 = v10[2](v10, v7);
 
-      v9 = [(_UICollectionViewDragDestinationController *)a1 dropProposalState];
-      [(_UIHomeAffordanceObservationRecord *)v9 setLegacyViewServiceSessionIdentifier:v8];
+      dropProposalState3 = [(_UICollectionViewDragDestinationController *)updates dropProposalState];
+      [(_UIHomeAffordanceObservationRecord *)dropProposalState3 setLegacyViewServiceSessionIdentifier:v8];
     }
   }
 }

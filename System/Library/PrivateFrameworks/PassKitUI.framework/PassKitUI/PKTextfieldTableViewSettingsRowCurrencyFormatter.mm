@@ -1,22 +1,22 @@
 @interface PKTextfieldTableViewSettingsRowCurrencyFormatter
-- (BOOL)isEqual:(id)a3;
-- (PKTextfieldTableViewSettingsRowCurrencyFormatter)initWithCurrencyCode:(id)a3;
-- (id)formattedValueFromInput:(id)a3;
-- (id)numberFromInput:(id)a3;
-- (id)submissionValueFromFormattedInput:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKTextfieldTableViewSettingsRowCurrencyFormatter)initWithCurrencyCode:(id)code;
+- (id)formattedValueFromInput:(id)input;
+- (id)numberFromInput:(id)input;
+- (id)submissionValueFromFormattedInput:(id)input;
 @end
 
 @implementation PKTextfieldTableViewSettingsRowCurrencyFormatter
 
-- (PKTextfieldTableViewSettingsRowCurrencyFormatter)initWithCurrencyCode:(id)a3
+- (PKTextfieldTableViewSettingsRowCurrencyFormatter)initWithCurrencyCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v20.receiver = self;
   v20.super_class = PKTextfieldTableViewSettingsRowCurrencyFormatter;
   v5 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)&v20 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v6;
 
@@ -39,9 +39,9 @@
 
     [(NSNumberFormatter *)v5->_amountFormatter setLocale:v8];
     v15 = MEMORY[0x1E695DFD8];
-    v16 = [(NSNumberFormatter *)v5->_currencyFormatter groupingSeparator];
-    v17 = [(NSNumberFormatter *)v5->_currencyFormatter currencySymbol];
-    v18 = [v15 setWithObjects:{v16, v17, @" ", @" ", 0}];
+    groupingSeparator = [(NSNumberFormatter *)v5->_currencyFormatter groupingSeparator];
+    currencySymbol = [(NSNumberFormatter *)v5->_currencyFormatter currencySymbol];
+    v18 = [v15 setWithObjects:{groupingSeparator, currencySymbol, @" ", @" ", 0}];
 
     [(PKTextFieldTableViewSettingsRowFormatter *)v5 setFormatPaddingCharacters:v18];
   }
@@ -49,16 +49,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (PKEqualObjects())
@@ -82,16 +82,16 @@
   return v7;
 }
 
-- (id)formattedValueFromInput:(id)a3
+- (id)formattedValueFromInput:(id)input
 {
-  v4 = a3;
-  if ([v4 length])
+  inputCopy = input;
+  if ([inputCopy length])
   {
-    v5 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self numberFromInput:v4];
+    v5 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self numberFromInput:inputCopy];
     v6 = [(NSNumberFormatter *)self->_currencyFormatter stringFromNumber:v5];
 
-    v4 = v6;
-    v7 = v4;
+    inputCopy = v6;
+    v7 = inputCopy;
   }
 
   else
@@ -102,21 +102,21 @@
   return v7;
 }
 
-- (id)numberFromInput:(id)a3
+- (id)numberFromInput:(id)input
 {
-  v4 = a3;
-  if ([v4 length])
+  inputCopy = input;
+  if ([inputCopy length])
   {
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v6 = [inputCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v7 = [(NSNumberFormatter *)self->_currencyFormatter groupingSeparator];
-    v8 = [v6 stringByReplacingOccurrencesOfString:v7 withString:&stru_1F3BD7330];
+    groupingSeparator = [(NSNumberFormatter *)self->_currencyFormatter groupingSeparator];
+    v8 = [v6 stringByReplacingOccurrencesOfString:groupingSeparator withString:&stru_1F3BD7330];
 
-    v9 = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
-    v4 = [v8 stringByReplacingOccurrencesOfString:v9 withString:&stru_1F3BD7330];
+    currencySymbol = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
+    inputCopy = [v8 stringByReplacingOccurrencesOfString:currencySymbol withString:&stru_1F3BD7330];
 
-    v10 = [(NSNumberFormatter *)self->_amountFormatter numberFromString:v4];
+    v10 = [(NSNumberFormatter *)self->_amountFormatter numberFromString:inputCopy];
   }
 
   else
@@ -127,11 +127,11 @@
   return v10;
 }
 
-- (id)submissionValueFromFormattedInput:(id)a3
+- (id)submissionValueFromFormattedInput:(id)input
 {
   v8.receiver = self;
   v8.super_class = PKTextfieldTableViewSettingsRowCurrencyFormatter;
-  v4 = [(PKTextFieldTableViewSettingsRowFormatter *)&v8 submissionValueFromFormattedInput:a3];
+  v4 = [(PKTextFieldTableViewSettingsRowFormatter *)&v8 submissionValueFromFormattedInput:input];
   v5 = v4;
   if (self->_currencyFormatter)
   {

@@ -1,48 +1,48 @@
 @interface ClarityUISettingsWrapperController
-- (ClarityUISettingsWrapperController)initWithPSSpecifier:(id)a3;
+- (ClarityUISettingsWrapperController)initWithPSSpecifier:(id)specifier;
 - (ClarityUISettingsWrapperControllerDelegate)delegate;
-- (id)_axFooterText:(BOOL)a3;
-- (id)_axHandleCalendarAuthorizationController:(id)a3;
-- (id)_axHandleContactsAuthorizationController:(id)a3;
-- (id)_axHandleLocationAuthorizationController:(id)a3;
-- (id)_axHandlePhotosAuthorizationController:(id)a3;
-- (id)_axPreciseLocationEnabled:(id)a3;
-- (id)_axSelectSpecifierFromSpecifiers:(id)a3;
+- (id)_axFooterText:(BOOL)text;
+- (id)_axHandleCalendarAuthorizationController:(id)controller;
+- (id)_axHandleContactsAuthorizationController:(id)controller;
+- (id)_axHandleLocationAuthorizationController:(id)controller;
+- (id)_axHandlePhotosAuthorizationController:(id)controller;
+- (id)_axPreciseLocationEnabled:(id)enabled;
+- (id)_axSelectSpecifierFromSpecifiers:(id)specifiers;
 - (id)specifiers;
-- (void)_axSetPreciseLocationEnabled:(id)a3 specifier:(id)a4;
+- (void)_axSetPreciseLocationEnabled:(id)enabled specifier:(id)specifier;
 - (void)_axValidateAuthenticationController;
-- (void)_handleUpgradePromptNotification:(id)a3;
-- (void)_updateFooterText:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_handleUpgradePromptNotification:(id)notification;
+- (void)_updateFooterText:(id)text;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClarityUISettingsWrapperController
 
-- (ClarityUISettingsWrapperController)initWithPSSpecifier:(id)a3
+- (ClarityUISettingsWrapperController)initWithPSSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = ClarityUISettingsWrapperController;
   v6 = [(ClarityUISettingsWrapperController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_privacySpecifier, a3);
+    objc_storeStrong(&v6->_privacySpecifier, specifier);
   }
 
   return v7;
 }
 
-- (void)_handleUpgradePromptNotification:(id)a3
+- (void)_handleUpgradePromptNotification:(id)notification
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __71__ClarityUISettingsWrapperController__handleUpgradePromptNotification___block_invoke;
   v4[3] = &unk_255538;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -78,11 +78,11 @@ void __71__ClarityUISettingsWrapperController__handleUpgradePromptNotification__
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ClarityUISettingsWrapperController;
-  [(ClarityUISettingsWrapperController *)&v5 viewWillAppear:a3];
+  [(ClarityUISettingsWrapperController *)&v5 viewWillAppear:appear];
   [(ClarityUISettingsWrapperController *)self reloadSpecifiers];
   v4 = [PSSpecifier groupSpecifierWithID:@"Privacy Choices"];
   [(ClarityUISettingsWrapperController *)self _updateFooterText:v4];
@@ -90,7 +90,7 @@ void __71__ClarityUISettingsWrapperController__handleUpgradePromptNotification__
 
 - (void)_axValidateAuthenticationController
 {
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_0, a2, OS_LOG_TYPE_ERROR, "Received a privacy specifier to create settings for with no identifier. Specifier: %@", &v3, 0xCu);
@@ -155,14 +155,14 @@ void __73__ClarityUISettingsWrapperController__axValidateAuthenticationControlle
     {
       v6 = [(PSSpecifier *)self->_privacySpecifier propertyForKey:@"ClarityIDKey"];
       v7 = [NSNumber numberWithInteger:[(PSSpecifier *)self->_privacySpecifier cellType]];
-      v8 = [(PSSpecifier *)self->_privacySpecifier detailControllerClass];
+      detailControllerClass = [(PSSpecifier *)self->_privacySpecifier detailControllerClass];
       *buf = 138412802;
       v31 = v6;
       v32 = 2112;
       v33 = v7;
       v34 = 2112;
-      v35 = v8;
-      v9 = v8;
+      v35 = detailControllerClass;
+      v9 = detailControllerClass;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Loading specifiers based off of privacy ID %@: \n\t cell type: %@ \n\t detail class: %@", buf, 0x20u);
     }
 
@@ -248,11 +248,11 @@ LABEL_19:
         v25 = [(ClarityUISettingsWrapperController *)self _axSelectSpecifierFromSpecifiers:v10];
         if (v25)
         {
-          v26 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
-          [v26 setProperty:v25 forKey:PSRadioGroupCheckedSpecifierKey];
+          clarityGroupSpecifier = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
+          [clarityGroupSpecifier setProperty:v25 forKey:PSRadioGroupCheckedSpecifierKey];
 
-          v27 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
-          [(ClarityUISettingsWrapperController *)self _updateFooterText:v27];
+          clarityGroupSpecifier2 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
+          [(ClarityUISettingsWrapperController *)self _updateFooterText:clarityGroupSpecifier2];
         }
 
         goto LABEL_22;
@@ -278,17 +278,17 @@ LABEL_24:
   return v4;
 }
 
-- (id)_axFooterText:(BOOL)a3
+- (id)_axFooterText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v5 = [(PSSpecifier *)self->_privacySpecifier propertyForKey:@"ClarityTCCAppNameKey"];
-  v6 = [(PSSpecifier *)self->_privacySpecifier name];
-  v7 = [(PSSpecifier *)self->_privacySpecifier identifier];
-  v8 = [v7 isEqualToString:@"Allow Tracking"];
+  name = [(PSSpecifier *)self->_privacySpecifier name];
+  identifier = [(PSSpecifier *)self->_privacySpecifier identifier];
+  v8 = [identifier isEqualToString:@"Allow Tracking"];
 
   if (v8)
   {
-    if (v3)
+    if (textCopy)
     {
       v9 = @"PRIVACY_FOOTER_TRACKING_ALLOW";
     }
@@ -299,7 +299,7 @@ LABEL_24:
     }
   }
 
-  else if (v3)
+  else if (textCopy)
   {
     v9 = @"PRIVACY_FOOTER_TEXT_ALLOW";
   }
@@ -315,17 +315,17 @@ LABEL_24:
   return v11;
 }
 
-- (id)_axHandlePhotosAuthorizationController:(id)a3
+- (id)_axHandlePhotosAuthorizationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
-  if (v3)
+  if (controllerCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v3;
+    obj = controllerCopy;
     v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (!v5)
     {
@@ -333,7 +333,7 @@ LABEL_24:
     }
 
     v6 = v5;
-    v19 = v3;
+    v19 = controllerCopy;
     v7 = *v23;
     v8 = PSIDKey;
     while (1)
@@ -346,18 +346,18 @@ LABEL_24:
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 cellType];
+        cellType = [v10 cellType];
         v12 = [v10 propertyForKey:v8];
         v13 = v12;
-        if (v11)
+        if (cellType)
         {
           v14 = [v12 isEqualToString:@"PHOTOS_PICKER_INFO_CELL"];
 
           v15 = @"PhotosSpecifierID";
           if (v14)
           {
-            v16 = [(ClarityUISettingsWrapperController *)self delegate];
-            [v16 updateContinueButtonForSpecifier:v10];
+            delegate = [(ClarityUISettingsWrapperController *)self delegate];
+            [delegate updateContinueButtonForSpecifier:v10];
 
             v15 = @"PhotosSpecifierID";
           }
@@ -381,7 +381,7 @@ LABEL_24:
       v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (!v6)
       {
-        v3 = v19;
+        controllerCopy = v19;
         goto LABEL_17;
       }
     }
@@ -398,56 +398,56 @@ LABEL_17:
   return v4;
 }
 
-- (void)_updateFooterText:(id)a3
+- (void)_updateFooterText:(id)text
 {
   privacySpecifier = self->_privacySpecifier;
-  v5 = a3;
+  textCopy = text;
   v13 = NSStringFromClass([(PSSpecifier *)privacySpecifier detailControllerClass]);
   if ([v13 isEqualToString:@"PUILocationServicesAuthorizationLevelController"])
   {
     v6 = [NSBundle bundleWithIdentifier:@"com.apple.preferences-framework"];
     v7 = [v6 localizedStringForKey:@"NEVER_AUTHORIZATION" value:0 table:@"LocationServicesPrivacy"];
-    v8 = [(PSSpecifier *)self->_privacySpecifier performGetter];
-    v9 = [v8 isEqualToString:v7] ^ 1;
+    performGetter = [(PSSpecifier *)self->_privacySpecifier performGetter];
+    bOOLValue = [performGetter isEqualToString:v7] ^ 1;
 
     goto LABEL_8;
   }
 
   if ([v13 isEqualToString:@"__PSCalendarPolicyAuthorizationLevelController"])
   {
-    v10 = [(PSSpecifier *)self->_privacySpecifier performGetter];
-    v6 = v10;
+    performGetter2 = [(PSSpecifier *)self->_privacySpecifier performGetter];
+    v6 = performGetter2;
 LABEL_6:
-    v9 = [v10 intValue] > 0;
+    bOOLValue = [performGetter2 intValue] > 0;
     goto LABEL_8;
   }
 
   v11 = [v13 isEqualToString:@"PSPhotoServicesAuthorizationLevelController"];
-  v10 = [(PSSpecifier *)self->_privacySpecifier performGetter];
-  v6 = v10;
+  performGetter2 = [(PSSpecifier *)self->_privacySpecifier performGetter];
+  v6 = performGetter2;
   if (v11)
   {
     goto LABEL_6;
   }
 
-  v9 = [v10 BOOLValue];
+  bOOLValue = [performGetter2 BOOLValue];
 LABEL_8:
 
-  v12 = [(ClarityUISettingsWrapperController *)self _axFooterText:v9];
-  [v5 setProperty:v12 forKey:PSFooterTextGroupKey];
+  v12 = [(ClarityUISettingsWrapperController *)self _axFooterText:bOOLValue];
+  [textCopy setProperty:v12 forKey:PSFooterTextGroupKey];
 }
 
-- (id)_axHandleLocationAuthorizationController:(id)a3
+- (id)_axHandleLocationAuthorizationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
-  if (v3)
+  if (controllerCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = v3;
+    v5 = controllerCopy;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (!v6)
     {
@@ -455,7 +455,7 @@ LABEL_8:
     }
 
     v7 = v6;
-    v19 = v3;
+    v19 = controllerCopy;
     v8 = 0;
     v9 = *v23;
     v21 = PSIDKey;
@@ -485,8 +485,8 @@ LABEL_8:
 
         if (v8)
         {
-          v12 = [v11 name];
-          v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:"_axSetPreciseLocationEnabled:specifier:" get:"_axPreciseLocationEnabled:" detail:0 cell:6 edit:0];
+          name = [v11 name];
+          v13 = [PSSpecifier preferenceSpecifierNamed:name target:self set:"_axSetPreciseLocationEnabled:specifier:" get:"_axPreciseLocationEnabled:" detail:0 cell:6 edit:0];
 
           [v13 setProperty:@"LocationPreciseSpecifierID" forKey:@"ClarityIDKey"];
           [v4 addObject:v13];
@@ -496,8 +496,8 @@ LABEL_12:
           continue;
         }
 
-        v16 = [v11 identifier];
-        v17 = [v16 isEqualToString:@"LOCATION_SERVICES_AUTH_NOT_DETERMINED"];
+        identifier = [v11 identifier];
+        v17 = [identifier isEqualToString:@"LOCATION_SERVICES_AUTH_NOT_DETERMINED"];
 
         if ((v17 & 1) == 0)
         {
@@ -511,7 +511,7 @@ LABEL_12:
       v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (!v7)
       {
-        v3 = v19;
+        controllerCopy = v19;
         goto LABEL_21;
       }
     }
@@ -528,17 +528,17 @@ LABEL_21:
   return v4;
 }
 
-- (id)_axHandleCalendarAuthorizationController:(id)a3
+- (id)_axHandleCalendarAuthorizationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
-  if (v3)
+  if (controllerCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v3;
+    v5 = controllerCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -580,22 +580,22 @@ LABEL_21:
   return v4;
 }
 
-- (id)_axHandleContactsAuthorizationController:(id)a3
+- (id)_axHandleContactsAuthorizationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
-  if (v3)
+  if (controllerCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = controllerCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
-      v14 = v3;
+      v14 = controllerCopy;
       v8 = *v16;
       do
       {
@@ -609,8 +609,8 @@ LABEL_21:
           v10 = *(*(&v15 + 1) + 8 * i);
           if (![v10 cellType])
           {
-            v11 = [v10 identifier];
-            v12 = [v11 isEqualToString:@"LIST_ITEMS_GROUP_SPECIFIER"];
+            identifier = [v10 identifier];
+            v12 = [identifier isEqualToString:@"LIST_ITEMS_GROUP_SPECIFIER"];
 
             if (v12)
             {
@@ -626,7 +626,7 @@ LABEL_21:
       }
 
       while (v7);
-      v3 = v14;
+      controllerCopy = v14;
     }
   }
 
@@ -642,20 +642,20 @@ LABEL_21:
   return v4;
 }
 
-- (id)_axSelectSpecifierFromSpecifiers:(id)a3
+- (id)_axSelectSpecifierFromSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   cachedSpecifier = self->_cachedSpecifier;
   if (cachedSpecifier)
   {
-    v6 = [(PSSpecifier *)cachedSpecifier identifier];
-    v7 = [v6 intValue];
+    identifier = [(PSSpecifier *)cachedSpecifier identifier];
+    intValue = [identifier intValue];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v4;
+    v8 = specifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -671,10 +671,10 @@ LABEL_21:
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 identifier];
-          v15 = [v14 intValue];
+          identifier2 = [v13 identifier];
+          intValue2 = [identifier2 intValue];
 
-          if (v7 == v15)
+          if (intValue == intValue2)
           {
             v16 = v13;
             goto LABEL_12;
@@ -703,14 +703,14 @@ LABEL_12:
   return v16;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v79.receiver = self;
   v79.super_class = ClarityUISettingsWrapperController;
-  [(ClarityUISettingsWrapperController *)&v79 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(ClarityUISettingsWrapperController *)self specifierAtIndexPath:v7];
+  [(ClarityUISettingsWrapperController *)&v79 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(ClarityUISettingsWrapperController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ClarityIDKey"];
   if (([v9 isEqualToString:@"AllowSpecifierID"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"DoNotAllowSpecifierID"))
   {
@@ -719,16 +719,16 @@ LABEL_12:
     v12 = [NSNumber numberWithBool:v10];
     [(PSSpecifier *)privacySpecifier performSetterWithValue:v12];
 
-    v13 = CLFLogSettings();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    delegate = CLFLogSettings();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       v14 = self->_privacySpecifier;
-      v15 = [(PSSpecifier *)v14 performGetter];
+      performGetter = [(PSSpecifier *)v14 performGetter];
       *buf = 138412546;
       v82 = v14;
       v83 = 2112;
-      v84 = v15;
-      _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
+      v84 = performGetter;
+      _os_log_impl(&dword_0, delegate, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
     }
 
     goto LABEL_5;
@@ -741,19 +741,19 @@ LABEL_12:
 
   if ([v9 isEqualToString:@"LocationSpecifierID"])
   {
-    v69 = v7;
-    v70 = v6;
-    v13 = [v8 propertyForKey:PSIDKey];
-    [(PSSpecifier *)self->_privacySpecifier performSetterWithValue:v13];
+    v69 = pathCopy;
+    v70 = viewCopy;
+    delegate = [v8 propertyForKey:PSIDKey];
+    [(PSSpecifier *)self->_privacySpecifier performSetterWithValue:delegate];
     v18 = CLFLogSettings();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = self->_privacySpecifier;
-      v20 = [(PSSpecifier *)v19 performGetter];
+      performGetter2 = [(PSSpecifier *)v19 performGetter];
       *buf = 138412546;
       v82 = v19;
       v83 = 2112;
-      v84 = v20;
+      v84 = performGetter2;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
     }
 
@@ -764,13 +764,13 @@ LABEL_12:
     v76 = 0u;
     v77 = 0u;
     v71 = v78 = 0u;
-    v21 = [v71 specifiers];
-    v22 = [v21 countByEnumeratingWithState:&v75 objects:v80 count:16];
+    specifiers = [v71 specifiers];
+    v22 = [specifiers countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (v22)
     {
       v23 = v22;
-      v68 = v13;
-      v67 = self;
+      v68 = delegate;
+      selfCopy = self;
       v24 = 0;
       v25 = *v76;
       do
@@ -779,13 +779,13 @@ LABEL_12:
         {
           if (*v76 != v25)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(specifiers);
           }
 
           v27 = *(*(&v75 + 1) + 8 * i);
-          v28 = [v27 identifier];
-          v29 = [v8 identifier];
-          v30 = [v28 isEqualToString:v29];
+          identifier = [v27 identifier];
+          identifier2 = [v8 identifier];
+          v30 = [identifier isEqualToString:identifier2];
 
           if (v30)
           {
@@ -795,12 +795,12 @@ LABEL_12:
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v75 objects:v80 count:16];
+        v23 = [specifiers countByEnumeratingWithState:&v75 objects:v80 count:16];
       }
 
       while (v23);
 
-      v13 = v68;
+      delegate = v68;
       if (v24)
       {
         v32 = CLFLogSettings();
@@ -816,7 +816,7 @@ LABEL_12:
         v33 = [v71 indexPathForSpecifier:v24];
         v34 = CLFLogSettings();
         v9 = v72;
-        self = v67;
+        self = selfCopy;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -828,17 +828,17 @@ LABEL_12:
         v35 = CLFLogSettings();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = v67->_privacySpecifier;
-          v37 = [(PSSpecifier *)v36 performGetter];
+          v36 = selfCopy->_privacySpecifier;
+          performGetter3 = [(PSSpecifier *)v36 performGetter];
           *buf = 138412546;
           v82 = v36;
           v83 = 2112;
-          v84 = v37;
+          v84 = performGetter3;
           _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
         }
 
-        v7 = v69;
-        v6 = v70;
+        pathCopy = v69;
+        viewCopy = v70;
         goto LABEL_5;
       }
     }
@@ -848,13 +848,13 @@ LABEL_12:
     }
 
     v48 = CLFLogSettings();
-    v7 = v69;
+    pathCopy = v69;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       [ClarityUISettingsWrapperController tableView:v8 didSelectRowAtIndexPath:v48];
     }
 
-    v6 = v70;
+    viewCopy = v70;
 LABEL_41:
     v9 = v72;
     goto LABEL_6;
@@ -864,39 +864,39 @@ LABEL_41:
   {
     v72 = v9;
     v38 = [v8 propertyForKey:PSIDKey];
-    v39 = [v38 intValue];
+    intValue = [v38 intValue];
 
     v40 = self->_privacySpecifier;
-    v41 = [NSNumber numberWithInt:v39];
+    v41 = [NSNumber numberWithInt:intValue];
     [(PSSpecifier *)v40 performSetterWithValue:v41];
 
-    if (v39 != 2)
+    if (intValue != 2)
     {
-      v13 = CLFLogSettings();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      delegate = CLFLogSettings();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         v49 = self->_privacySpecifier;
-        v50 = [(PSSpecifier *)v49 performGetter];
+        performGetter4 = [(PSSpecifier *)v49 performGetter];
         *buf = 138412546;
         v82 = v49;
         v83 = 2112;
-        v84 = v50;
-        _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
+        v84 = performGetter4;
+        _os_log_impl(&dword_0, delegate, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
       }
 
       v9 = v72;
       goto LABEL_5;
     }
 
-    v13 = [APApplication applicationWithBundleIdentifier:AX_PhotosBundleName];
-    v42 = [getAPGuardClass() sharedGuard];
+    delegate = [APApplication applicationWithBundleIdentifier:AX_PhotosBundleName];
+    sharedGuard = [getAPGuardClass() sharedGuard];
     v73[0] = _NSConcreteStackBlock;
     v73[1] = 3221225472;
     v73[2] = __72__ClarityUISettingsWrapperController_tableView_didSelectRowAtIndexPath___block_invoke;
     v73[3] = &unk_2562F8;
     v73[4] = self;
     v74 = v8;
-    [v42 authenticateForSubject:v13 completion:v73];
+    [sharedGuard authenticateForSubject:delegate completion:v73];
 
     goto LABEL_41;
   }
@@ -904,12 +904,12 @@ LABEL_41:
   if ([v9 isEqualToString:@"CalendarSpecifierID"])
   {
     v43 = [v8 propertyForKey:PSIDKey];
-    v44 = [v43 intValue];
+    intValue2 = [v43 intValue];
 
-    v45 = [(PSSpecifier *)self->_privacySpecifier performGetter];
-    v46 = [v45 intValue];
+    performGetter5 = [(PSSpecifier *)self->_privacySpecifier performGetter];
+    intValue3 = [performGetter5 intValue];
 
-    if (v44 == 2 && v46 == 2)
+    if (intValue2 == 2 && intValue3 == 2)
     {
       v47 = CLFLogSettings();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -920,8 +920,8 @@ LABEL_41:
 
 LABEL_62:
 
-      v13 = CLFLogSettings();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      delegate = CLFLogSettings();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_66;
       }
@@ -929,10 +929,10 @@ LABEL_62:
       goto LABEL_5;
     }
 
-    if (v44 != 2)
+    if (intValue2 != 2)
     {
       v63 = self->_privacySpecifier;
-      v47 = [NSNumber numberWithInt:v44];
+      v47 = [NSNumber numberWithInt:intValue2];
       [(PSSpecifier *)v63 performSetterWithValue:v47];
       goto LABEL_62;
     }
@@ -942,8 +942,8 @@ LABEL_62:
     v58 = [NSNumber numberWithInt:2];
     [(PSSpecifier *)v57 performSetterWithValue:v58];
 
-    v13 = CLFLogSettings();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    delegate = CLFLogSettings();
+    if (!os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_6;
     }
@@ -952,14 +952,14 @@ LABEL_62:
     v82 = v8;
     v59 = "Calendar Full Access was chosen. Caching specifier until user agrees. Specifier: %@";
 LABEL_60:
-    _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, v59, buf, 0xCu);
+    _os_log_impl(&dword_0, delegate, OS_LOG_TYPE_DEFAULT, v59, buf, 0xCu);
     goto LABEL_6;
   }
 
   if (![v9 isEqualToString:@"ContactsSpecifierID"])
   {
-    v13 = [(ClarityUISettingsWrapperController *)self selectSpecifier:self->_privacySpecifier];
-    [v13 tableView:v6 didSelectRowAtIndexPath:v7];
+    delegate = [(ClarityUISettingsWrapperController *)self selectSpecifier:self->_privacySpecifier];
+    [delegate tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     v60 = CLFLogSettings();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
     {
@@ -969,14 +969,14 @@ LABEL_60:
     goto LABEL_5;
   }
 
-  v51 = [v8 values];
-  v52 = [v51 firstObject];
-  v53 = [v52 intValue];
+  values = [v8 values];
+  firstObject = [values firstObject];
+  intValue4 = [firstObject intValue];
 
-  v54 = [(PSSpecifier *)self->_privacySpecifier performGetter];
-  v55 = [v54 intValue];
+  performGetter6 = [(PSSpecifier *)self->_privacySpecifier performGetter];
+  intValue5 = [performGetter6 intValue];
 
-  if (v53 == 2 && v55 == 2)
+  if (intValue4 == 2 && intValue5 == 2)
   {
     v56 = CLFLogSettings();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -988,15 +988,15 @@ LABEL_60:
 
   else
   {
-    if (v53 == 2)
+    if (intValue4 == 2)
     {
       [(ClarityUISettingsWrapperController *)self setCachedSpecifier:v8];
       v61 = self->_privacySpecifier;
       v62 = [NSNumber numberWithInt:2];
       [(PSSpecifier *)v61 performSetterWithValue:v62];
 
-      v13 = CLFLogSettings();
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      delegate = CLFLogSettings();
+      if (!os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_6;
       }
@@ -1008,33 +1008,33 @@ LABEL_60:
     }
 
     v64 = self->_privacySpecifier;
-    v56 = [NSNumber numberWithInt:v53];
+    v56 = [NSNumber numberWithInt:intValue4];
     [(PSSpecifier *)v64 performSetterWithValue:v56];
   }
 
-  v13 = CLFLogSettings();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  delegate = CLFLogSettings();
+  if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
   {
 LABEL_66:
     v65 = self->_privacySpecifier;
-    v66 = [(PSSpecifier *)v65 performGetter];
+    performGetter7 = [(PSSpecifier *)v65 performGetter];
     *buf = 138412546;
     v82 = v65;
     v83 = 2112;
-    v84 = v66;
-    _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
+    v84 = performGetter7;
+    _os_log_impl(&dword_0, delegate, OS_LOG_TYPE_DEFAULT, "Specifier: %@, updated value: %@", buf, 0x16u);
   }
 
 LABEL_5:
 
-  v16 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
-  [(ClarityUISettingsWrapperController *)self _updateFooterText:v16];
+  clarityGroupSpecifier = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
+  [(ClarityUISettingsWrapperController *)self _updateFooterText:clarityGroupSpecifier];
 
-  v17 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
-  [(ClarityUISettingsWrapperController *)self reloadSpecifier:v17];
+  clarityGroupSpecifier2 = [(ClarityUISettingsWrapperController *)self clarityGroupSpecifier];
+  [(ClarityUISettingsWrapperController *)self reloadSpecifier:clarityGroupSpecifier2];
 
-  v13 = [(ClarityUISettingsWrapperController *)self delegate];
-  [v13 updateContinueButtonForSpecifier:v8];
+  delegate = [(ClarityUISettingsWrapperController *)self delegate];
+  [delegate updateContinueButtonForSpecifier:v8];
 LABEL_6:
 
 LABEL_7:
@@ -1070,17 +1070,17 @@ void __72__ClarityUISettingsWrapperController_tableView_didSelectRowAtIndexPath_
   }
 }
 
-- (void)_axSetPreciseLocationEnabled:(id)a3 specifier:(id)a4
+- (void)_axSetPreciseLocationEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = [(ClarityUISettingsWrapperController *)self selectSpecifier:self->_privacySpecifier];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 specifiers];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  specifiers = [v8 specifiers];
+  v10 = [specifiers countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1092,7 +1092,7 @@ void __72__ClarityUISettingsWrapperController_tableView_didSelectRowAtIndexPath_
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(specifiers);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
@@ -1104,22 +1104,22 @@ void __72__ClarityUISettingsWrapperController_tableView_didSelectRowAtIndexPath_
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v11 = [specifiers countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v11);
 
     if (v12)
     {
-      [v12 performSetterWithValue:v6];
+      [v12 performSetterWithValue:enabledCopy];
       v17 = CLFLogSettings();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v12 performGetter];
+        performGetter = [v12 performGetter];
         *buf = 138412546;
         v24 = v12;
         v25 = 2112;
-        v26 = v18;
+        v26 = performGetter;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Precise Location Specifier: %@, updated value: %@", buf, 0x16u);
       }
 
@@ -1140,7 +1140,7 @@ void __72__ClarityUISettingsWrapperController_tableView_didSelectRowAtIndexPath_
 LABEL_17:
 }
 
-- (id)_axPreciseLocationEnabled:(id)a3
+- (id)_axPreciseLocationEnabled:(id)enabled
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

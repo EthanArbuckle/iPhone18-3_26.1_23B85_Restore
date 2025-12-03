@@ -1,46 +1,46 @@
 @interface _UIFeedbackHapticFilePattern
-+ (id)feedbackPatternFromFile:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_UIFeedbackHapticFilePattern)initWithDictionaryRepresentation:(id)a3;
-- (_UIFeedbackHapticFilePattern)initWithFileURL:(id)a3;
++ (id)feedbackPatternFromFile:(id)file;
+- (BOOL)isEqual:(id)equal;
+- (_UIFeedbackHapticFilePattern)initWithDictionaryRepresentation:(id)representation;
+- (_UIFeedbackHapticFilePattern)initWithFileURL:(id)l;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectivePlayableFeedbackTypes;
 @end
 
 @implementation _UIFeedbackHapticFilePattern
 
-+ (id)feedbackPatternFromFile:(id)a3
++ (id)feedbackPatternFromFile:(id)file
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFileURL:v4];
+  fileCopy = file;
+  v5 = [[self alloc] initWithFileURL:fileCopy];
 
   return v5;
 }
 
-- (_UIFeedbackHapticFilePattern)initWithFileURL:(id)a3
+- (_UIFeedbackHapticFilePattern)initWithFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = _UIFeedbackHapticFilePattern;
   v6 = [(_UIFeedback *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIFeedbackHapticFilePattern;
-  if ([(_UIFeedback *)&v7 isEqual:v4])
+  if ([(_UIFeedback *)&v7 isEqual:equalCopy])
   {
-    v5 = [(NSURL *)self->_fileURL isEqual:v4[17]];
+    v5 = [(NSURL *)self->_fileURL isEqual:equalCopy[17]];
   }
 
   else
@@ -51,16 +51,16 @@
   return v5;
 }
 
-- (_UIFeedbackHapticFilePattern)initWithDictionaryRepresentation:(id)a3
+- (_UIFeedbackHapticFilePattern)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = _UIFeedbackHapticFilePattern;
-  v5 = [(_UIFeedback *)&v12 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v12 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFF8];
-    v7 = [v4 objectForKeyedSubscript:@"fileURL"];
+    v7 = [representationCopy objectForKeyedSubscript:@"fileURL"];
     v8 = [v6 URLWithString:v7 encodingInvalidCharacters:0];
     fileURL = v5->_fileURL;
     v5->_fileURL = v8;
@@ -75,11 +75,11 @@
 {
   v7.receiver = self;
   v7.super_class = _UIFeedbackHapticFilePattern;
-  v3 = [(_UIFeedback *)&v7 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v7 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(NSURL *)self->_fileURL absoluteString];
-  [v4 setObject:v5 forKeyedSubscript:@"fileURL"];
+  absoluteString = [(NSURL *)self->_fileURL absoluteString];
+  [v4 setObject:absoluteString forKeyedSubscript:@"fileURL"];
 
   return v4;
 }

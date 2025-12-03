@@ -1,19 +1,19 @@
 @interface CAMAspectCropUtilities
-+ (CGRect)cropRectForAspectRatio:(int64_t)a3 inImageBounds:(CGRect)a4;
-+ (CGSize)finalExpectedSizeWithCaptureDimensions:(id)a3 orientation:(int)a4 aspectRatio:(int64_t)a5;
-+ (CGSize)finalExpectedSizeWithPhotoMetadata:(id)a3 aspectRatio:(int64_t)a4;
-+ (id)cropFilterForAspectRatio:(int64_t)a3 imageSize:(CGSize)a4;
++ (CGRect)cropRectForAspectRatio:(int64_t)ratio inImageBounds:(CGRect)bounds;
++ (CGSize)finalExpectedSizeWithCaptureDimensions:(id)dimensions orientation:(int)orientation aspectRatio:(int64_t)ratio;
++ (CGSize)finalExpectedSizeWithPhotoMetadata:(id)metadata aspectRatio:(int64_t)ratio;
++ (id)cropFilterForAspectRatio:(int64_t)ratio imageSize:(CGSize)size;
 @end
 
 @implementation CAMAspectCropUtilities
 
-+ (CGRect)cropRectForAspectRatio:(int64_t)a3 inImageBounds:(CGRect)a4
++ (CGRect)cropRectForAspectRatio:(int64_t)ratio inImageBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (!CGRectIsEmpty(a4))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectIsEmpty(bounds))
   {
     v17.origin.x = x;
     v17.origin.y = y;
@@ -27,7 +27,7 @@
       v18.size.height = height;
       if (!CGRectIsInfinite(v18))
       {
-        if (a3)
+        if (ratio)
         {
           UIRoundToScale();
           UIRoundToScale();
@@ -52,13 +52,13 @@
   return result;
 }
 
-+ (id)cropFilterForAspectRatio:(int64_t)a3 imageSize:(CGSize)a4
++ (id)cropFilterForAspectRatio:(int64_t)ratio imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  [a1 cropRectForAspectRatio:a3 inImageBounds:{*MEMORY[0x1E695EFF8], v7, a4.width, a4.height}];
+  [self cropRectForAspectRatio:ratio inImageBounds:{*MEMORY[0x1E695EFF8], v7, size.width, size.height}];
   v10 = *v16.i64;
   v11 = *v12.i64;
   *v16.i64 = round(v8);
@@ -115,10 +115,10 @@
   return v21;
 }
 
-+ (CGSize)finalExpectedSizeWithPhotoMetadata:(id)a3 aspectRatio:(int64_t)a4
++ (CGSize)finalExpectedSizeWithPhotoMetadata:(id)metadata aspectRatio:(int64_t)ratio
 {
-  v6 = CAMSizeForPhotoMetadata(a3);
-  [a1 cropRectForAspectRatio:a4 inImageBounds:{0.0, 0.0, v6, v7}];
+  v6 = CAMSizeForPhotoMetadata(metadata);
+  [self cropRectForAspectRatio:ratio inImageBounds:{0.0, 0.0, v6, v7}];
   v9 = v8;
   v11 = v10;
   result.height = v11;
@@ -126,10 +126,10 @@
   return result;
 }
 
-+ (CGSize)finalExpectedSizeWithCaptureDimensions:(id)a3 orientation:(int)a4 aspectRatio:(int64_t)a5
++ (CGSize)finalExpectedSizeWithCaptureDimensions:(id)dimensions orientation:(int)orientation aspectRatio:(int64_t)ratio
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
+  var0 = dimensions.var0;
+  var1 = dimensions.var1;
   v9 = PLExifOrientationSwapsWidthAndHeight();
   if (v9)
   {
@@ -151,7 +151,7 @@
     v11 = var1;
   }
 
-  [a1 cropRectForAspectRatio:a5 inImageBounds:{0.0, 0.0, v10, v11}];
+  [self cropRectForAspectRatio:ratio inImageBounds:{0.0, 0.0, v10, v11}];
   v13 = v12;
   v15 = v14;
   result.height = v15;

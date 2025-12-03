@@ -1,77 +1,77 @@
 @interface NEProfilePayloadBaseVPN
-- (BOOL)setPostprocessedPayloadContents:(id)a3;
-- (NEProfilePayloadBaseVPN)initWithPayload:(id)a3;
+- (BOOL)setPostprocessedPayloadContents:(id)contents;
+- (NEProfilePayloadBaseVPN)initWithPayload:(id)payload;
 - (id)getPreprocessedPayloadContents;
 - (id)validatePayload;
 @end
 
 @implementation NEProfilePayloadBaseVPN
 
-- (BOOL)setPostprocessedPayloadContents:(id)a3
+- (BOOL)setPostprocessedPayloadContents:(id)contents
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentsCopy = contents;
   v5 = ne_log_large_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *v27 = 138412546;
     *&v27[4] = objc_opt_class();
     *&v27[12] = 2112;
-    *&v27[14] = v4;
+    *&v27[14] = contentsCopy;
     v26 = *&v27[4];
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "%@ setPostprocessedPayloadContents newContents %@", v27, 0x16u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"AuthName"];
+  v6 = [contentsCopy objectForKeyedSubscript:@"AuthName"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"AuthName"];
+    v7 = [contentsCopy objectForKeyedSubscript:@"AuthName"];
     userName = self->_userName;
     self->_userName = v7;
   }
 
-  v9 = [v4 objectForKeyedSubscript:{@"AuthPassword", *v27, *&v27[16], v28}];
+  v9 = [contentsCopy objectForKeyedSubscript:{@"AuthPassword", *v27, *&v27[16], v28}];
 
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"AuthPassword"];
+    v10 = [contentsCopy objectForKeyedSubscript:@"AuthPassword"];
     password = self->_password;
     self->_password = v10;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"HTTPProxyUsername"];
+  v12 = [contentsCopy objectForKeyedSubscript:@"HTTPProxyUsername"];
 
   if (v12)
   {
-    v13 = [v4 objectForKeyedSubscript:@"HTTPProxyUsername"];
+    v13 = [contentsCopy objectForKeyedSubscript:@"HTTPProxyUsername"];
     proxyUserName = self->_proxyUserName;
     self->_proxyUserName = v13;
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"HTTPProxyPassword"];
+  v15 = [contentsCopy objectForKeyedSubscript:@"HTTPProxyPassword"];
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"HTTPProxyPassword"];
+    v16 = [contentsCopy objectForKeyedSubscript:@"HTTPProxyPassword"];
     proxyPassword = self->_proxyPassword;
     self->_proxyPassword = v16;
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"SharedSecret"];
+  v18 = [contentsCopy objectForKeyedSubscript:@"SharedSecret"];
 
   if (v18)
   {
-    v19 = [v4 objectForKeyedSubscript:@"SharedSecret"];
+    v19 = [contentsCopy objectForKeyedSubscript:@"SharedSecret"];
     sharedSecret = self->_sharedSecret;
     self->_sharedSecret = v19;
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"PromptForVPNPIN"];
+  v21 = [contentsCopy objectForKeyedSubscript:@"PromptForVPNPIN"];
 
   if (v21)
   {
-    v22 = [v4 objectForKeyedSubscript:@"PromptForVPNPIN"];
+    v22 = [contentsCopy objectForKeyedSubscript:@"PromptForVPNPIN"];
     pin = self->_pin;
     self->_pin = v22;
   }
@@ -170,9 +170,9 @@
   v3 = ne_log_large_obj();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(NEProfilePayloadBase *)self payloadAtom];
+    payloadAtom = [(NEProfilePayloadBase *)self payloadAtom];
     v7 = 138412290;
-    v8 = v6;
+    v8 = payloadAtom;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "NEProfilePayloadBaseVPN validate: To-Do. dict %@", &v7, 0xCu);
   }
 
@@ -180,36 +180,36 @@
   return 0;
 }
 
-- (NEProfilePayloadBaseVPN)initWithPayload:(id)a3
+- (NEProfilePayloadBaseVPN)initWithPayload:(id)payload
 {
   v113 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = ne_log_large_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v110 = objc_opt_class();
     v111 = 2112;
-    v112 = v4;
+    v112 = payloadCopy;
     v40 = v110;
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "%@ NEProfilePayloadVPNBase initWithPayload: payloadDict %@", buf, 0x16u);
   }
 
   v108.receiver = self;
   v108.super_class = NEProfilePayloadBaseVPN;
-  v6 = [(NEProfilePayloadBase *)&v108 initWithPayload:v4];
+  v6 = [(NEProfilePayloadBase *)&v108 initWithPayload:payloadCopy];
   v7 = ne_log_large_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v41 = [(NEProfilePayloadBase *)v6 payloadAtom];
+    payloadAtom = [(NEProfilePayloadBase *)v6 payloadAtom];
     *buf = 138412546;
     v110 = v6;
     v111 = 2112;
-    v112 = v41;
+    v112 = payloadAtom;
     _os_log_debug_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEBUG, "NEProfilePayloadVPNBase initWithPayload: self %@,  cached atom %@", buf, 0x16u);
   }
 
-  v8 = v4;
+  v8 = payloadCopy;
   if (v6)
   {
     v9 = ne_log_large_obj();
@@ -563,13 +563,13 @@ LABEL_132:
 
         v106 = v55;
         v58 = [v53 objectForKeyedSubscript:@"ExtendedAuthEnabled"];
-        v59 = [v58 BOOLValue];
+        bOOLValue = [v58 BOOLValue];
 
         if (v56)
         {
 
           v55 = v106;
-          if (!v59)
+          if (!bOOLValue)
           {
             goto LABEL_123;
           }
@@ -703,10 +703,10 @@ LABEL_112:
             {
               [v53 objectForKeyedSubscript:@"ExtendedAuthEnabled"];
               v83 = v107 = v55;
-              v84 = [v83 BOOLValue];
+              bOOLValue2 = [v83 BOOLValue];
 
               v55 = v107;
-              if (v84)
+              if (bOOLValue2)
               {
                 v6->_sharedSecretRequired = 0;
               }
@@ -739,7 +739,7 @@ LABEL_122:
         }
 
         v55 = v106;
-        if (v59)
+        if (bOOLValue)
         {
           goto LABEL_85;
         }

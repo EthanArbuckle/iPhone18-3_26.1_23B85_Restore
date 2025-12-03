@@ -14,8 +14,8 @@
 - (BOOL)px_isDomain:()PXError code:
 {
   v6 = a3;
-  v7 = [a1 domain];
-  v8 = (v7 == v6 || [v6 isEqualToString:v7]) && objc_msgSend(a1, "code") == a4;
+  domain = [self domain];
+  v8 = (domain == v6 || [v6 isEqualToString:domain]) && objc_msgSend(self, "code") == a4;
 
   return v8;
 }
@@ -27,7 +27,7 @@
   v13 = a3;
   v14 = [[v11 alloc] initWithFormat:v12 arguments:&a9];
 
-  v15 = [a1 _px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:v13 userInfo:0 localizedDescription:0 debugDescription:v14];
+  v15 = [self _px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:v13 userInfo:0 localizedDescription:0 debugDescription:v14];
 
   return v15;
 }
@@ -38,7 +38,7 @@
   v11 = a3;
   v12 = [[v10 alloc] initWithFormat:v11 arguments:&a9];
 
-  v13 = [a1 _px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:0 userInfo:0 localizedDescription:0 debugDescription:v12];
+  v13 = [self _px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:0 userInfo:0 localizedDescription:0 debugDescription:v12];
 
   return v13;
 }
@@ -50,7 +50,7 @@
   v14 = a3;
   v15 = [[v12 alloc] initWithFormat:v13 arguments:&a9];
 
-  v16 = [a1 _px_errorWithDomain:v14 code:a4 underlyingError:0 userInfo:0 localizedDescription:0 debugDescription:v15];
+  v16 = [self _px_errorWithDomain:v14 code:a4 underlyingError:0 userInfo:0 localizedDescription:0 debugDescription:v15];
 
   return v16;
 }
@@ -63,7 +63,7 @@
   v16 = a3;
   v17 = [[v13 alloc] initWithFormat:v14 arguments:&a9];
 
-  v18 = [a1 _px_errorWithDomain:v16 code:a4 underlyingError:v15 userInfo:0 localizedDescription:0 debugDescription:v17];
+  v18 = [self _px_errorWithDomain:v16 code:a4 underlyingError:v15 userInfo:0 localizedDescription:0 debugDescription:v17];
 
   return v18;
 }
@@ -77,7 +77,7 @@
   v18 = a3;
   v19 = [[v14 alloc] initWithFormat:v15 arguments:&a9];
 
-  v20 = [a1 _px_errorWithDomain:v18 code:a4 underlyingError:v17 userInfo:v16 localizedDescription:0 debugDescription:v19];
+  v20 = [self _px_errorWithDomain:v18 code:a4 underlyingError:v17 userInfo:v16 localizedDescription:0 debugDescription:v19];
 
   return v20;
 }
@@ -90,7 +90,7 @@
   v16 = a3;
   v17 = [[v13 alloc] initWithFormat:v14 arguments:&a9];
 
-  v18 = [a1 _px_errorWithDomain:v16 code:a4 underlyingError:v15 userInfo:0 localizedDescription:v17 debugDescription:0];
+  v18 = [self _px_errorWithDomain:v16 code:a4 underlyingError:v15 userInfo:0 localizedDescription:v17 debugDescription:0];
 
   return v18;
 }
@@ -126,7 +126,7 @@
     [v20 setObject:v22 forKeyedSubscript:*MEMORY[0x1E696A578]];
   }
 
-  v23 = [a1 errorWithDomain:v14 code:a4 userInfo:v20];
+  v23 = [self errorWithDomain:v14 code:a4 userInfo:v20];
 
   return v23;
 }

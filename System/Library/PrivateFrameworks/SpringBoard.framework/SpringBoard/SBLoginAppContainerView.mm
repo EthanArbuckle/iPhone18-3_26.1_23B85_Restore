@@ -1,26 +1,26 @@
 @interface SBLoginAppContainerView
-- (SBLoginAppContainerView)initWithFrame:(CGRect)a3;
+- (SBLoginAppContainerView)initWithFrame:(CGRect)frame;
 - (void)_showOrHidePluginViewAppropriately;
 - (void)layoutSubviews;
-- (void)setBatteryChargingView:(id)a3;
-- (void)setContentHidden:(BOOL)a3 forRequester:(id)a4;
-- (void)setContentView:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setPluginView:(id)a3;
-- (void)setThermalWarningView:(id)a3;
+- (void)setBatteryChargingView:(id)view;
+- (void)setContentHidden:(BOOL)hidden forRequester:(id)requester;
+- (void)setContentView:(id)view;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setPluginView:(id)view;
+- (void)setThermalWarningView:(id)view;
 @end
 
 @implementation SBLoginAppContainerView
 
-- (SBLoginAppContainerView)initWithFrame:(CGRect)a3
+- (SBLoginAppContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBLoginAppContainerView;
-  v3 = [(SBLoginAppContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBLoginAppContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(SBLoginAppContainerView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBLoginAppContainerView *)v3 setBackgroundColor:clearColor];
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     contentHiddenRequesters = v3->_contentHiddenRequesters;
@@ -47,38 +47,38 @@
   [(CSBatteryChargingView *)self->_batteryChargingView setFrame:v4, v6, v8, 150.0];
 }
 
-- (void)setBatteryChargingView:(id)a3
+- (void)setBatteryChargingView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   batteryChargingView = self->_batteryChargingView;
   if (batteryChargingView)
   {
     [(CSBatteryChargingView *)batteryChargingView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_batteryChargingView, a3);
+  objc_storeStrong(&self->_batteryChargingView, view);
   if (self->_batteryChargingView)
   {
     [(SBLoginAppContainerView *)self addSubview:?];
     v6 = self->_batteryChargingView;
-    v7 = [(SBLoginAppContainerView *)self legibilitySettings];
-    [(CSBatteryChargingView *)v6 setLegibilitySettings:v7];
+    legibilitySettings = [(SBLoginAppContainerView *)self legibilitySettings];
+    [(CSBatteryChargingView *)v6 setLegibilitySettings:legibilitySettings];
   }
 
   [(SBLoginAppContainerView *)self setNeedsLayout];
   [(SBLoginAppContainerView *)self setNeedsDisplay];
 }
 
-- (void)setThermalWarningView:(id)a3
+- (void)setThermalWarningView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   thermalWarningView = self->_thermalWarningView;
   if (thermalWarningView)
   {
     [(SBLoginAppContainerOverlayWrapperView *)thermalWarningView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_thermalWarningView, a3);
+  objc_storeStrong(&self->_thermalWarningView, view);
   if (self->_thermalWarningView)
   {
     [(SBLoginAppContainerView *)self addSubview:?];
@@ -89,16 +89,16 @@
   [(SBLoginAppContainerView *)self setNeedsDisplay];
 }
 
-- (void)setPluginView:(id)a3
+- (void)setPluginView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   pluginView = self->_pluginView;
   if (pluginView)
   {
     [(UIView *)pluginView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_pluginView, a3);
+  objc_storeStrong(&self->_pluginView, view);
   if (self->_pluginView)
   {
     [(SBLoginAppContainerView *)self addSubview:?];
@@ -109,16 +109,16 @@
   [(SBLoginAppContainerView *)self setNeedsDisplay];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
   if (contentView)
   {
     [(UIView *)contentView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_contentView, a3);
+  objc_storeStrong(&self->_contentView, view);
   if (self->_contentView)
   {
     [(SBLoginAppContainerView *)self addSubview:?];
@@ -133,26 +133,26 @@
   [(SBLoginAppContainerView *)self setNeedsDisplay];
 }
 
-- (void)setContentHidden:(BOOL)a3 forRequester:(id)a4
+- (void)setContentHidden:(BOOL)hidden forRequester:(id)requester
 {
-  v4 = a3;
-  v8 = a4;
+  hiddenCopy = hidden;
+  requesterCopy = requester;
   v6 = [(NSMutableSet *)self->_contentHiddenRequesters containsObject:?];
-  if (v4)
+  if (hiddenCopy)
   {
     if (v6)
     {
       goto LABEL_8;
     }
 
-    [(NSMutableSet *)self->_contentHiddenRequesters addObject:v8];
+    [(NSMutableSet *)self->_contentHiddenRequesters addObject:requesterCopy];
     v7 = 0.0;
     goto LABEL_7;
   }
 
   if (v6)
   {
-    [(NSMutableSet *)self->_contentHiddenRequesters removeObject:v8];
+    [(NSMutableSet *)self->_contentHiddenRequesters removeObject:requesterCopy];
     if (![(NSMutableSet *)self->_contentHiddenRequesters count])
     {
       v7 = 1.0;
@@ -175,11 +175,11 @@ LABEL_8:
   [(UIView *)self->_pluginView setAlpha:v2];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
-  v5 = a3;
-  [(CSBatteryChargingView *)self->_batteryChargingView setLegibilitySettings:v5];
+  objc_storeStrong(&self->_legibilitySettings, settings);
+  settingsCopy = settings;
+  [(CSBatteryChargingView *)self->_batteryChargingView setLegibilitySettings:settingsCopy];
 }
 
 @end

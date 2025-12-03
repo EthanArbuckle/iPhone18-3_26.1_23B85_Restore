@@ -1,13 +1,13 @@
 @interface MFBasicMessageDataSection
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation MFBasicMessageDataSection
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v6 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E69AD6B8]) initWithData:v6];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x1E69AD6B8]) initWithData:dataCopy];
   dataHolder = self->_dataHolder;
   self->_dataHolder = v4;
 }

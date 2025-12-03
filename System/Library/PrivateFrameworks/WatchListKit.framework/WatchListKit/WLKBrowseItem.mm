@@ -1,22 +1,22 @@
 @interface WLKBrowseItem
-+ (id)browseItemsWithDictionaries:(id)a3 context:(id)a4;
-- (WLKBrowseItem)initWithDictionary:(id)a3 context:(id)a4;
++ (id)browseItemsWithDictionaries:(id)dictionaries context:(id)context;
+- (WLKBrowseItem)initWithDictionary:(id)dictionary context:(id)context;
 - (id)preferredComingSoonInfo;
 @end
 
 @implementation WLKBrowseItem
 
-+ (id)browseItemsWithDictionaries:(id)a3 context:(id)a4
++ (id)browseItemsWithDictionaries:(id)dictionaries context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
   v7 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = dictionariesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -35,7 +35,7 @@
         v13 = *(*(&v21 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
         v15 = [WLKBrowseItem alloc];
-        v16 = [(WLKBrowseItem *)v15 initWithDictionary:v13 context:v6, v21];
+        v16 = [(WLKBrowseItem *)v15 initWithDictionary:v13 context:contextCopy, v21];
         if (v16)
         {
           [v7 addObject:v16];
@@ -68,60 +68,60 @@
   return v17;
 }
 
-- (WLKBrowseItem)initWithDictionary:(id)a3 context:(id)a4
+- (WLKBrowseItem)initWithDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  if (dictionaryCopy)
   {
     v24.receiver = self;
     v24.super_class = WLKBrowseItem;
     v8 = [(WLKBrowseItem *)&v24 init];
     if (v8)
     {
-      v9 = [[WLKBasicContentMetadata alloc] initWithDictionary:v6];
+      v9 = [[WLKBasicContentMetadata alloc] initWithDictionary:dictionaryCopy];
       content = v8->_content;
       v8->_content = v9;
 
-      v11 = [v6 wlk_arrayForKey:@"playables"];
+      v11 = [dictionaryCopy wlk_arrayForKey:@"playables"];
       if (v11)
       {
-        v12 = [WLKPlayable playablesWithDictionaries:v11 context:v7];
+        v12 = [WLKPlayable playablesWithDictionaries:v11 context:contextCopy];
         playables = v8->_playables;
         v8->_playables = v12;
       }
 
-      v14 = [v6 wlk_dictionaryForKey:@"currentEpisode"];
+      v14 = [dictionaryCopy wlk_dictionaryForKey:@"currentEpisode"];
       if (v14)
       {
-        v15 = [[WLKBrowseItem alloc] initWithDictionary:v14 context:v7];
+        v15 = [[WLKBrowseItem alloc] initWithDictionary:v14 context:contextCopy];
         currentEpisode = v8->_currentEpisode;
         v8->_currentEpisode = v15;
       }
 
-      v8->_watchlisted = [v6 wlk_BOOLForKey:@"isWatchlisted" defaultValue:0];
-      v8->_watchlistable = [v6 wlk_BOOLForKey:@"isWatchlistable" defaultValue:0];
-      v17 = [v6 wlk_arrayForKey:@"availableChannels"];
+      v8->_watchlisted = [dictionaryCopy wlk_BOOLForKey:@"isWatchlisted" defaultValue:0];
+      v8->_watchlistable = [dictionaryCopy wlk_BOOLForKey:@"isWatchlistable" defaultValue:0];
+      v17 = [dictionaryCopy wlk_arrayForKey:@"availableChannels"];
       v18 = [WLKComingSoonInfo comingSoonItemsWithDictionaries:v17];
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 firstObject];
+        firstObject = [v18 firstObject];
         contentComingSoonInfo = v8->_contentComingSoonInfo;
-        v8->_contentComingSoonInfo = v20;
+        v8->_contentComingSoonInfo = firstObject;
       }
     }
 
     self = v8;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)preferredComingSoonInfo
@@ -135,20 +135,20 @@
 
   else
   {
-    v5 = [(WLKBrowseItem *)self playables];
-    if (![v5 count])
+    playables = [(WLKBrowseItem *)self playables];
+    if (![playables count])
     {
-      v6 = [(WLKBrowseItem *)self currentEpisode];
-      v7 = [v6 playables];
+      currentEpisode = [(WLKBrowseItem *)self currentEpisode];
+      playables2 = [currentEpisode playables];
 
-      v5 = v7;
+      playables = playables2;
     }
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v5;
+    v8 = playables;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -163,10 +163,10 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) comingSoonInfo];
-          if (v13)
+          comingSoonInfo = [*(*(&v16 + 1) + 8 * i) comingSoonInfo];
+          if (comingSoonInfo)
           {
-            v3 = v13;
+            v3 = comingSoonInfo;
             goto LABEL_15;
           }
         }

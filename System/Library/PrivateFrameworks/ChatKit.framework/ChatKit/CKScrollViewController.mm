@@ -1,12 +1,12 @@
 @interface CKScrollViewController
 + (id)scrollGeometryUpdaterLogHandle;
 - (BOOL)isKeyboardUndocked;
-- (BOOL)manuallyUpdateKeyboardScreenFrameWithFrameIfNeeded:(CGRect)a3 animationDuration:(double)a4 animationCurve:(int64_t)a5;
-- (BOOL)scrollGeometryContentInsetIsUpdatingForReasons:(id)a3 followingHoldForReason:(id)a4 withAnimationProperties:(id)a5;
+- (BOOL)manuallyUpdateKeyboardScreenFrameWithFrameIfNeeded:(CGRect)needed animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (BOOL)scrollGeometryContentInsetIsUpdatingForReasons:(id)reasons followingHoldForReason:(id)reason withAnimationProperties:(id)properties;
 - (CGRect)inputAccessoryViewFrameForFloatingKeyboard;
 - (CGRect)keyboardFrameInViewCoordinates;
 - (CGRect)keyboardScreenFrame;
-- (CGRect)screenFrameForNotification:(id)a3;
+- (CGRect)screenFrameForNotification:(id)notification;
 - (CGSize)contentSizeForPinning;
 - (CKScrollViewController)init;
 - (UIEdgeInsets)_calculateContentInsets;
@@ -21,25 +21,25 @@
 - (double)bottomInsetWithoutAccessoryView;
 - (double)visibleHeightAboveKeyboard;
 - (id)scrollGeometryUpdaterLogHandle;
-- (void)_entryViewWillRotate:(id)a3;
-- (void)_keyboardWillShowOrHide:(id)a3;
-- (void)_updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:(CGRect)a3 previousFrame:(CGRect)a4 duration:(double)a5 animationCurve:(int64_t)a6 isShowEvent:(BOOL)a7;
+- (void)_entryViewWillRotate:(id)rotate;
+- (void)_keyboardWillShowOrHide:(id)hide;
+- (void)_updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:(CGRect)frame previousFrame:(CGRect)previousFrame duration:(double)duration animationCurve:(int64_t)curve isShowEvent:(BOOL)event;
 - (void)inputAccessoryViewFrameUpdatedForFloatingKeyboard;
-- (void)keyboardDidChangeFrame:(id)a3;
-- (void)keyboardDidHide:(id)a3;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)primeWithKeyboardFrame:(CGRect)a3;
-- (void)reasonTrackingUpdater:(id)a3 didBeginHoldingUpdatesWithInitialReason:(id)a4;
-- (void)reasonTrackingUpdater:(id)a3 didEndHoldingUpdatesWithFinalReason:(id)a4;
-- (void)reasonTrackingUpdater:(id)a3 needsUpdateForReasons:(id)a4 followingHoldForReason:(id)a5;
-- (void)scrollGeometryIsUpdatingForReasons:(id)a3 followingHoldForReason:(id)a4;
-- (void)scrollWithDuration:(double)a3 animationCurve:(int64_t)a4 scrollBlock:(id)a5;
-- (void)setKeyboardScreenFrame:(CGRect)a3;
-- (void)setKeyboardVisible:(BOOL)a3;
-- (void)updateScrollGeometryForReason:(id)a3 withDuration:(double)a4 animationCurve:(int64_t)a5;
-- (void)updateScrollGeometryWithInheritedAnimationForReason:(id)a3;
-- (void)updateScrollGeometryWithoutAnimationForReason:(id)a3;
+- (void)keyboardDidChangeFrame:(id)frame;
+- (void)keyboardDidHide:(id)hide;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardWillShow:(id)show;
+- (void)primeWithKeyboardFrame:(CGRect)frame;
+- (void)reasonTrackingUpdater:(id)updater didBeginHoldingUpdatesWithInitialReason:(id)reason;
+- (void)reasonTrackingUpdater:(id)updater didEndHoldingUpdatesWithFinalReason:(id)reason;
+- (void)reasonTrackingUpdater:(id)updater needsUpdateForReasons:(id)reasons followingHoldForReason:(id)reason;
+- (void)scrollGeometryIsUpdatingForReasons:(id)reasons followingHoldForReason:(id)reason;
+- (void)scrollWithDuration:(double)duration animationCurve:(int64_t)curve scrollBlock:(id)block;
+- (void)setKeyboardScreenFrame:(CGRect)frame;
+- (void)setKeyboardVisible:(BOOL)visible;
+- (void)updateScrollGeometryForReason:(id)reason withDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)updateScrollGeometryWithInheritedAnimationForReason:(id)reason;
+- (void)updateScrollGeometryWithoutAnimationForReason:(id)reason;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
@@ -51,23 +51,23 @@
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
   v6 = *(MEMORY[0x1E69DDCE0] + 16);
   v5 = *(MEMORY[0x1E69DDCE0] + 24);
-  v7 = [(CKScrollViewController *)self navigationController];
-  v8 = [v7 navigationBar];
+  navigationController = [(CKScrollViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 shouldInsetForStatusBar];
+  shouldInsetForStatusBar = [v9 shouldInsetForStatusBar];
 
-  if (v10)
+  if (shouldInsetForStatusBar)
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 statusBar];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    statusBar = [mEMORY[0x1E69DC668] statusBar];
 
-    v13 = [MEMORY[0x1E69DC668] sharedApplication];
-    v14 = [v13 isStatusBarHidden];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    isStatusBarHidden = [mEMORY[0x1E69DC668]2 isStatusBarHidden];
 
-    if ((v14 & 1) == 0)
+    if ((isStatusBarHidden & 1) == 0)
     {
-      [v12 currentHeight];
+      [statusBar currentHeight];
       v3 = v15;
     }
   }
@@ -75,9 +75,9 @@
   else
   {
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 useMacToolbar];
+    useMacToolbar = [v16 useMacToolbar];
 
-    if (v17)
+    if (useMacToolbar)
     {
       [(CKScrollViewController *)self macToolbarInsets];
       v3 = v18;
@@ -86,10 +86,10 @@
       v5 = v21;
     }
 
-    else if (([v8 isTranslucent] & 1) != 0 || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "shouldInsetForStatusBarWithSafeArea"), v22, v23))
+    else if (([navigationBar isTranslucent] & 1) != 0 || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "shouldInsetForStatusBarWithSafeArea"), v22, v23))
     {
-      v24 = [(CKScrollViewController *)self view];
-      [v24 safeAreaInsets];
+      view = [(CKScrollViewController *)self view];
+      [view safeAreaInsets];
       v3 = v25;
 
       v5 = 0.0;
@@ -116,8 +116,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKScrollViewController *)self navigationController];
-  v12 = [v11 existingPaletteForEdge:2];
+  navigationController = [(CKScrollViewController *)self navigationController];
+  v12 = [navigationController existingPaletteForEdge:2];
 
   if (v12 && [v12 isAttached])
   {
@@ -138,12 +138,12 @@
 
 - (double)_bottomRotatingFooterHeight
 {
-  v2 = [(CKScrollViewController *)self rotatingFooterView];
-  v3 = [v2 window];
+  rotatingFooterView = [(CKScrollViewController *)self rotatingFooterView];
+  window = [rotatingFooterView window];
 
-  if (v3)
+  if (window)
   {
-    [v2 frame];
+    [rotatingFooterView frame];
     v5 = v4;
   }
 
@@ -180,15 +180,15 @@
     height = v46.size.height;
     if (!CGRectIsEmpty(v46))
     {
-      v8 = [(CKScrollViewController *)self view];
-      [v8 convertRect:0 fromView:{x, y, width, height}];
+      view = [(CKScrollViewController *)self view];
+      [view convertRect:0 fromView:{x, y, width, height}];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v17 = [(CKScrollViewController *)self view];
-      [v17 bounds];
+      view2 = [(CKScrollViewController *)self view];
+      [view2 bounds];
       v52.origin.x = v10;
       v52.origin.y = v12;
       v52.size.width = v14;
@@ -205,8 +205,8 @@
       v49.size.height = v21;
       if (!CGRectIsEmpty(v49))
       {
-        v33 = [(CKScrollViewController *)self view];
-        [v33 bounds];
+        view3 = [(CKScrollViewController *)self view];
+        [view3 bounds];
         MaxY = CGRectGetMaxY(v50);
         v51.origin.x = v18;
         v51.origin.y = v19;
@@ -221,25 +221,25 @@ LABEL_21:
       if (x != *MEMORY[0x1E695EFF8] || y != *(MEMORY[0x1E695EFF8] + 8))
       {
         v23 = CKIsRunningInMessagesViewService();
-        v24 = [(CKScrollViewController *)self view];
-        v25 = v24;
+        view4 = [(CKScrollViewController *)self view];
+        v25 = view4;
         if (v23)
         {
-          v26 = [v24 window];
+          window = [view4 window];
 
-          v27 = [v26 windowScene];
-          v28 = [v27 screen];
-          v29 = [v28 coordinateSpace];
-          v30 = [v27 coordinateSpace];
-          [v29 convertRect:v30 toCoordinateSpace:{x, y, width, height}];
+          windowScene = [window windowScene];
+          screen = [windowScene screen];
+          coordinateSpace = [screen coordinateSpace];
+          coordinateSpace2 = [windowScene coordinateSpace];
+          [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{x, y, width, height}];
           v32 = v31;
 
-          v25 = v26;
+          v25 = window;
         }
 
         else
         {
-          CKKeyboardFrameInViewCoodinates(v24, x, y, width, height);
+          CKKeyboardFrameInViewCoodinates(view4, x, y, width, height);
           v32 = v40;
         }
 
@@ -247,43 +247,43 @@ LABEL_21:
 
         if (v32 == 0.0)
         {
-          v33 = IMLogHandleForCategory();
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          view3 = IMLogHandleForCategory();
+          if (os_log_type_enabled(view3, OS_LOG_TYPE_ERROR))
           {
-            [(CKScrollViewController *)v33 _visibleKeyboardHeight];
+            [(CKScrollViewController *)view3 _visibleKeyboardHeight];
           }
         }
 
         else
         {
-          v33 = [(CKScrollViewController *)self view];
-          [v33 frame];
+          view3 = [(CKScrollViewController *)self view];
+          [view3 frame];
           v3 = v44 - v32;
         }
 
         goto LABEL_21;
       }
 
-      v35 = [(CKScrollViewController *)self firstResponder];
-      v36 = [v35 inputAccessoryViewController];
-      v37 = [v36 view];
-      v38 = v37;
-      if (v37)
+      firstResponder = [(CKScrollViewController *)self firstResponder];
+      inputAccessoryViewController = [firstResponder inputAccessoryViewController];
+      view5 = [inputAccessoryViewController view];
+      v38 = view5;
+      if (view5)
       {
-        v39 = v37;
+        inputAccessoryView = view5;
       }
 
       else
       {
-        v39 = [(CKScrollViewController *)self inputAccessoryView];
+        inputAccessoryView = [(CKScrollViewController *)self inputAccessoryView];
       }
 
-      v41 = v39;
+      v41 = inputAccessoryView;
 
       if (v41)
       {
-        v42 = [(CKScrollViewController *)self inputAccessoryView];
-        [v42 frame];
+        inputAccessoryView2 = [(CKScrollViewController *)self inputAccessoryView];
+        [inputAccessoryView2 frame];
         v3 = v43;
       }
 
@@ -351,8 +351,8 @@ LABEL_21:
   {
     [(CKScrollViewController *)self contentSizeForPinning];
     v26 = v25;
-    v27 = [(CKScrollViewController *)self scrollView];
-    [v27 frame];
+    scrollView = [(CKScrollViewController *)self scrollView];
+    [scrollView frame];
     Height = CGRectGetHeight(v33);
 
     v18 = 0.0;
@@ -390,8 +390,8 @@ LABEL_21:
 
   else
   {
-    v7 = [(CKScrollViewController *)self scrollView];
-    [v7 contentInset];
+    scrollView = [(CKScrollViewController *)self scrollView];
+    [scrollView contentInset];
     top = v8;
     left = v9;
     bottom = v10;
@@ -416,16 +416,16 @@ LABEL_21:
   v2 = [(CKScrollViewController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
-    [v3 addObserver:v2 selector:sel__changedStatusBarFrame_ name:*MEMORY[0x1E69DDAB8] object:0];
-    [v3 addObserver:v2 selector:sel__entryViewWillRotate_ name:*MEMORY[0x1E69DDE58] object:0];
-    v4 = [(CKScrollViewController *)v2 scrollGeometryUpdaterLogHandle];
-    v5 = [objc_alloc(MEMORY[0x1E69A81E0]) initWithLogHandle:v4 delegate:v2];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
+    [defaultCenter addObserver:v2 selector:sel__changedStatusBarFrame_ name:*MEMORY[0x1E69DDAB8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__entryViewWillRotate_ name:*MEMORY[0x1E69DDE58] object:0];
+    scrollGeometryUpdaterLogHandle = [(CKScrollViewController *)v2 scrollGeometryUpdaterLogHandle];
+    v5 = [objc_alloc(MEMORY[0x1E69A81E0]) initWithLogHandle:scrollGeometryUpdaterLogHandle delegate:v2];
     scrollGeometryUpdater = v2->_scrollGeometryUpdater;
     v2->_scrollGeometryUpdater = v5;
   }
@@ -474,21 +474,21 @@ void __56__CKScrollViewController_scrollGeometryUpdaterLogHandle__block_invoke()
 
 - (void)inputAccessoryViewFrameUpdatedForFloatingKeyboard
 {
-  v3 = [(CKScrollViewController *)self view];
-  v4 = [v3 window];
+  view = [(CKScrollViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(CKScrollViewController *)self view];
-    v6 = [v5 window];
-    [v6 bounds];
+    view2 = [(CKScrollViewController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     MaxY = CGRectGetMaxY(v16);
     [(CKScrollViewController *)self inputAccessoryViewFrameForFloatingKeyboard];
     v8 = MaxY - CGRectGetHeight(v17);
 
-    v9 = [(CKScrollViewController *)self view];
-    v10 = [v9 window];
-    [v10 bounds];
+    view3 = [(CKScrollViewController *)self view];
+    window3 = [view3 window];
+    [window3 bounds];
     MaxX = CGRectGetMaxX(v18);
     [(CKScrollViewController *)self inputAccessoryViewFrameForFloatingKeyboard];
     v12 = MaxX - CGRectGetWidth(v19);
@@ -502,24 +502,24 @@ void __56__CKScrollViewController_scrollGeometryUpdaterLogHandle__block_invoke()
   }
 }
 
-- (void)setKeyboardScreenFrame:(CGRect)a3
+- (void)setKeyboardScreenFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(CKScrollViewController *)self isKeyboardFloating])
   {
-    v8 = [(CKScrollViewController *)self view];
-    v9 = [v8 window];
-    [v9 bounds];
+    view = [(CKScrollViewController *)self view];
+    window = [view window];
+    [window bounds];
     MaxY = CGRectGetMaxY(v15);
     [(CKScrollViewController *)self inputAccessoryViewFrameForFloatingKeyboard];
     y = MaxY - CGRectGetHeight(v16);
 
-    v11 = [(CKScrollViewController *)self view];
-    v12 = [v11 window];
-    [v12 bounds];
+    view2 = [(CKScrollViewController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     MaxX = CGRectGetMaxX(v17);
     [(CKScrollViewController *)self inputAccessoryViewFrameForFloatingKeyboard];
     x = MaxX - CGRectGetWidth(v18);
@@ -542,62 +542,62 @@ void __56__CKScrollViewController_scrollGeometryUpdaterLogHandle__block_invoke()
   p_keyboardScreenFrame->size.height = height;
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   [(CKScrollViewController *)self setKeyboardVisible:1];
-  [(CKScrollViewController *)self _keyboardWillShowOrHide:v4];
+  [(CKScrollViewController *)self _keyboardWillShowOrHide:showCopy];
 }
 
-- (void)_keyboardWillShowOrHide:(id)a3
+- (void)_keyboardWillShowOrHide:(id)hide
 {
-  v4 = a3;
-  [(CKScrollViewController *)self screenFrameForNotification:v4];
+  hideCopy = hide;
+  [(CKScrollViewController *)self screenFrameForNotification:hideCopy];
   v39 = v5;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v4 userInfo];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69DDF98]];
+  userInfo = [hideCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDF98]];
   [v13 CGRectValue];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(CKScrollViewController *)self view];
-  v23 = CKKeyboardFrameInViewCoodinates(v22, v15, v17, v19, v21);
+  view = [(CKScrollViewController *)self view];
+  v23 = CKKeyboardFrameInViewCoodinates(view, v15, v17, v19, v21);
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [v4 userInfo];
-  v31 = [v30 objectForKey:*MEMORY[0x1E69DDF40]];
+  userInfo2 = [hideCopy userInfo];
+  v31 = [userInfo2 objectForKey:*MEMORY[0x1E69DDF40]];
   [v31 floatValue];
   v33 = v32;
 
-  v34 = [v4 userInfo];
-  v35 = [v34 objectForKey:*MEMORY[0x1E69DDF38]];
-  v36 = [v35 integerValue];
+  userInfo3 = [hideCopy userInfo];
+  v35 = [userInfo3 objectForKey:*MEMORY[0x1E69DDF38]];
+  integerValue = [v35 integerValue];
 
-  v37 = [v4 name];
+  name = [hideCopy name];
 
-  v38 = [v37 isEqualToString:*MEMORY[0x1E69DE080]];
-  [(CKScrollViewController *)self _updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:v36 previousFrame:v38 duration:v39 animationCurve:v7 isShowEvent:v9, v11, v23, v25, v27, v29, *&v33];
+  v38 = [name isEqualToString:*MEMORY[0x1E69DE080]];
+  [(CKScrollViewController *)self _updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:integerValue previousFrame:v38 duration:v39 animationCurve:v7 isShowEvent:v9, v11, v23, v25, v27, v29, *&v33];
 }
 
-- (void)_updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:(CGRect)a3 previousFrame:(CGRect)a4 duration:(double)a5 animationCurve:(int64_t)a6 isShowEvent:(BOOL)a7
+- (void)_updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:(CGRect)frame previousFrame:(CGRect)previousFrame duration:(double)duration animationCurve:(int64_t)curve isShowEvent:(BOOL)event
 {
-  width = a4.size.width;
-  rect2 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = [(CKScrollViewController *)self view];
-  v15 = CKKeyboardFrameInViewCoodinates(v14, v12, v11, v10, height);
+  width = previousFrame.size.width;
+  rect2 = previousFrame.size.height;
+  y = previousFrame.origin.y;
+  x = previousFrame.origin.x;
+  height = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  view = [(CKScrollViewController *)self view];
+  v15 = CKKeyboardFrameInViewCoodinates(view, v12, v11, v10, height);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -618,21 +618,21 @@ void __56__CKScrollViewController_scrollGeometryUpdaterLogHandle__block_invoke()
   }
 
   [(CKScrollViewController *)self setKeyboardScreenFrame:v12, v11, v10, height];
-  v26 = [(CKScrollViewController *)self shouldIgnoreKeyboardAnimationDuration];
-  v27 = 0.0;
+  shouldIgnoreKeyboardAnimationDuration = [(CKScrollViewController *)self shouldIgnoreKeyboardAnimationDuration];
+  durationCopy = 0.0;
   if (![(CKScrollViewController *)self keyboardInteractionCancelled])
   {
     [(CKScrollViewController *)self _visibleKeyboardHeight];
-    if (v28 > 0.0 && !v26)
+    if (v28 > 0.0 && !shouldIgnoreKeyboardAnimationDuration)
     {
-      v27 = a5;
-      if (a5 > 0.0)
+      durationCopy = duration;
+      if (duration > 0.0)
       {
         v29 = objc_alloc_init(MEMORY[0x1E69DCF88]);
         [v29 settlingDuration];
         v31 = v30;
 
-        v32 = [CKScrollViewAnimationProperties animatedWithDuration:a6 animationCurve:v31];
+        v32 = [CKScrollViewAnimationProperties animatedWithDuration:curve animationCurve:v31];
         [(CKScrollViewController *)self setActiveKeyboardAppearanceAnimationProperties:v32];
         objc_initWeak(&location, self);
         v33 = dispatch_time(0, (v31 * 1000000000.0));
@@ -651,37 +651,37 @@ void __56__CKScrollViewController_scrollGeometryUpdaterLogHandle__block_invoke()
     }
   }
 
-  [(CKScrollViewController *)self updateScrollGeometryForReason:@"KeyboardScreenFrameChanged" withDuration:a6 animationCurve:v27];
+  [(CKScrollViewController *)self updateScrollGeometryForReason:@"KeyboardScreenFrameChanged" withDuration:curve animationCurve:durationCopy];
   v35 = +[CKUIBehavior sharedBehaviors];
-  v36 = [v35 isEntryViewInputAccessory];
+  isEntryViewInputAccessory = [v35 isEntryViewInputAccessory];
 
-  if (v36)
+  if (isEntryViewInputAccessory)
   {
     [(CKScrollViewController *)self accessoryViewHeight];
     v38 = v37;
-    v39 = [(CKScrollViewController *)self firstResponder];
-    v40 = [v39 inputAccessoryViewController];
-    v41 = [v40 view];
-    v42 = v41;
-    if (v41)
+    firstResponder = [(CKScrollViewController *)self firstResponder];
+    inputAccessoryViewController = [firstResponder inputAccessoryViewController];
+    view2 = [inputAccessoryViewController view];
+    v42 = view2;
+    if (view2)
     {
-      v43 = v41;
+      inputAccessoryView = view2;
     }
 
     else
     {
-      v44 = [(CKScrollViewController *)self firstResponder];
-      v43 = [v44 inputAccessoryView];
+      firstResponder2 = [(CKScrollViewController *)self firstResponder];
+      inputAccessoryView = [firstResponder2 inputAccessoryView];
     }
 
-    v45 = [(CKScrollViewController *)self scrollView];
-    [v45 contentInset];
-    v48 = v46 != v38 || v43 == 0;
+    scrollView = [(CKScrollViewController *)self scrollView];
+    [scrollView contentInset];
+    v48 = v46 != v38 || inputAccessoryView == 0;
 
-    a7 = v52 <= y || v48;
+    event = v52 <= y || v48;
   }
 
-  if (![(CKScrollViewController *)self keyboardInteractionCancelled]&& !a7)
+  if (![(CKScrollViewController *)self keyboardInteractionCancelled]&& !event)
   {
     [(CKScrollViewController *)self keyboardWillHideViaGesture];
   }
@@ -700,39 +700,39 @@ void __134__CKScrollViewController__updateKeyboardScreenFrameForShowOrHideWithNe
   }
 }
 
-- (void)scrollWithDuration:(double)a3 animationCurve:(int64_t)a4 scrollBlock:(id)a5
+- (void)scrollWithDuration:(double)duration animationCurve:(int64_t)curve scrollBlock:(id)block
 {
-  v7 = a5;
-  v11 = v7;
-  if (a3 <= 0.0)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (duration <= 0.0)
   {
-    [MEMORY[0x1E69DD250] performWithoutAnimation:v7];
+    [MEMORY[0x1E69DD250] performWithoutAnimation:blockCopy];
     goto LABEL_8;
   }
 
-  if (UIViewAnimationCurveForCKAnimationCurve(103) == a4)
+  if (UIViewAnimationCurveForCKAnimationCurve(103) == curve)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithMass:1.0 stiffness:333.34153 damping:36.51529 initialVelocity:{0.0, 0.0}];
 LABEL_7:
     v9 = v8;
-    v10 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v8 timingParameters:a3];
+    v10 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v8 timingParameters:duration];
     [v10 addAnimations:v11];
     [v10 startAnimation];
 
     goto LABEL_8;
   }
 
-  if ((UIViewAnimationCurveForCKAnimationCurve(7) & a4) != 0)
+  if ((UIViewAnimationCurveForCKAnimationCurve(7) & curve) != 0)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DCF88]);
     goto LABEL_7;
   }
 
-  [MEMORY[0x1E69DD250] animateWithDuration:a4 << 16 delay:v11 options:0 animations:a3 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:curve << 16 delay:v11 options:0 animations:duration completion:0.0];
 LABEL_8:
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
   [(CKScrollViewController *)self setActiveKeyboardAppearanceAnimationProperties:0];
   [(CKScrollViewController *)self updateScrollGeometryWithoutAnimationForReason:@"KeyboardDidShow"];
@@ -740,7 +740,7 @@ LABEL_8:
   [(CKScrollViewController *)self setKeyboardInteractionCancelled:0];
 }
 
-- (void)keyboardDidHide:(id)a3
+- (void)keyboardDidHide:(id)hide
 {
   [(CKScrollViewController *)self setKeyboardVisible:0];
   [(CKScrollViewController *)self updateScrollGeometryWithoutAnimationForReason:@"KeyboardDidHide"];
@@ -748,24 +748,24 @@ LABEL_8:
   [(CKScrollViewController *)self setKeyboardInteractionCancelled:0];
 }
 
-- (void)keyboardDidChangeFrame:(id)a3
+- (void)keyboardDidChangeFrame:(id)frame
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKScrollViewController *)self view];
-  v6 = [v5 window];
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 keyWindow];
+  frameCopy = frame;
+  view = [(CKScrollViewController *)self view];
+  window = [view window];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
 
-  if (v6 == v8)
+  if (window == keyWindow)
   {
-    [(CKScrollViewController *)self screenFrameForNotification:v4];
+    [(CKScrollViewController *)self screenFrameForNotification:frameCopy];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CKScrollViewController *)self view];
-    v18 = CKKeyboardFrameInViewCoodinates(v17, v10, v12, v14, v16);
+    view2 = [(CKScrollViewController *)self view];
+    v18 = CKKeyboardFrameInViewCoodinates(view2, v10, v12, v14, v16);
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -776,13 +776,13 @@ LABEL_8:
     v41.size.height = v24;
     if (CGRectIsEmpty(v41))
     {
-      v25 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+      scrollView2 = IMLogHandleForCategory();
+      if (os_log_type_enabled(scrollView2, OS_LOG_TYPE_INFO))
       {
         LOWORD(v38) = 0;
         v26 = "Ignoring keyboard frame change because frame is empty";
 LABEL_19:
-        _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, v26, &v38, 2u);
+        _os_log_impl(&dword_19020E000, scrollView2, OS_LOG_TYPE_INFO, v26, &v38, 2u);
         goto LABEL_20;
       }
 
@@ -799,8 +799,8 @@ LABEL_19:
     v42.size.width = v22;
     v42.size.height = v24;
     v31 = CGRectEqualToRect(v42, v43);
-    v25 = IMLogHandleForCategory();
-    v32 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
+    scrollView2 = IMLogHandleForCategory();
+    v32 = os_log_type_enabled(scrollView2, OS_LOG_TYPE_INFO);
     if (v31)
     {
       if (v32)
@@ -818,14 +818,14 @@ LABEL_20:
     if (v32)
     {
       LOWORD(v38) = 0;
-      _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "Updating keyboard screen frame", &v38, 2u);
+      _os_log_impl(&dword_19020E000, scrollView2, OS_LOG_TYPE_INFO, "Updating keyboard screen frame", &v38, 2u);
     }
 
     [(CKScrollViewController *)self setKeyboardScreenFrame:v10, v12, v14, v16];
-    v33 = [(CKScrollViewController *)self shouldUpdateScrollPositionForKeyboardScreenFrameChanges];
-    v25 = IMLogHandleForCategory();
-    v34 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
-    if (!v33)
+    shouldUpdateScrollPositionForKeyboardScreenFrameChanges = [(CKScrollViewController *)self shouldUpdateScrollPositionForKeyboardScreenFrameChanges];
+    scrollView2 = IMLogHandleForCategory();
+    v34 = os_log_type_enabled(scrollView2, OS_LOG_TYPE_INFO);
+    if (!shouldUpdateScrollPositionForKeyboardScreenFrameChanges)
     {
       if (v34)
       {
@@ -841,14 +841,14 @@ LABEL_20:
     {
       v38 = 138412290;
       v39 = @"KeyboardDidChangeFrame";
-      _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "Updating scroll geometry for reason: %@", &v38, 0xCu);
+      _os_log_impl(&dword_19020E000, scrollView2, OS_LOG_TYPE_INFO, "Updating scroll geometry for reason: %@", &v38, 0xCu);
     }
 
     [(CKScrollViewController *)self updateScrollGeometryWithoutAnimationForReason:@"KeyboardDidChangeFrame"];
-    v35 = [(CKScrollViewController *)self scrollView];
-    v36 = [v35 __ck_isScrolledToBottom];
+    scrollView = [(CKScrollViewController *)self scrollView];
+    __ck_isScrolledToBottom = [scrollView __ck_isScrolledToBottom];
 
-    if (v36)
+    if (__ck_isScrolledToBottom)
     {
       v37 = IMLogHandleForCategory();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -857,8 +857,8 @@ LABEL_20:
         _os_log_impl(&dword_19020E000, v37, OS_LOG_TYPE_INFO, "Is scrolling to bottom", &v38, 2u);
       }
 
-      v25 = [(CKScrollViewController *)self scrollView];
-      [v25 __ck_scrollToBottom:1];
+      scrollView2 = [(CKScrollViewController *)self scrollView];
+      [scrollView2 __ck_scrollToBottom:1];
       goto LABEL_20;
     }
   }
@@ -866,41 +866,41 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)reasonTrackingUpdater:(id)a3 needsUpdateForReasons:(id)a4 followingHoldForReason:(id)a5
+- (void)reasonTrackingUpdater:(id)updater needsUpdateForReasons:(id)reasons followingHoldForReason:(id)reason
 {
-  if (self->_scrollGeometryUpdater == a3)
+  if (self->_scrollGeometryUpdater == updater)
   {
-    [(CKScrollViewController *)self scrollGeometryIsUpdatingForReasons:a4 followingHoldForReason:a5];
+    [(CKScrollViewController *)self scrollGeometryIsUpdatingForReasons:reasons followingHoldForReason:reason];
   }
 }
 
-- (void)reasonTrackingUpdater:(id)a3 didBeginHoldingUpdatesWithInitialReason:(id)a4
+- (void)reasonTrackingUpdater:(id)updater didBeginHoldingUpdatesWithInitialReason:(id)reason
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_scrollGeometryUpdater == a3)
+  reasonCopy = reason;
+  if (self->_scrollGeometryUpdater == updater)
   {
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = reasonCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Scroll geometry is being held. Initial reason: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)reasonTrackingUpdater:(id)a3 didEndHoldingUpdatesWithFinalReason:(id)a4
+- (void)reasonTrackingUpdater:(id)updater didEndHoldingUpdatesWithFinalReason:(id)reason
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_scrollGeometryUpdater == a3)
+  reasonCopy = reason;
+  if (self->_scrollGeometryUpdater == updater)
   {
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = reasonCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Scroll geometry hold ending. Final reason: %@", &v8, 0xCu);
     }
   }
@@ -914,75 +914,75 @@ LABEL_21:
   [(CKScrollViewController *)self updateScrollGeometryWithoutAnimationForReason:@"SafeAreaInsetsChanged"];
 }
 
-- (void)updateScrollGeometryWithoutAnimationForReason:(id)a3
+- (void)updateScrollGeometryWithoutAnimationForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[CKScrollViewController updateScrollGeometryWithoutAnimationForReason:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "%s, reason: %@", &v8, 0x16u);
   }
 
   v6 = +[CKScrollViewAnimationProperties unanimated];
-  v7 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:v4 animationProperties:v6];
+  v7 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:reasonCopy animationProperties:v6];
   [(IMReasonTrackingUpdater *)self->_scrollGeometryUpdater updateImmediatelyWithReason:v7];
 }
 
-- (void)updateScrollGeometryWithInheritedAnimationForReason:(id)a3
+- (void)updateScrollGeometryWithInheritedAnimationForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[CKScrollViewController updateScrollGeometryWithInheritedAnimationForReason:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "%s, reason: %@", &v8, 0x16u);
   }
 
   v6 = +[CKScrollViewAnimationProperties inheritedAnimation];
-  v7 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:v4 animationProperties:v6];
+  v7 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:reasonCopy animationProperties:v6];
   [(IMReasonTrackingUpdater *)self->_scrollGeometryUpdater updateImmediatelyWithReason:v7];
 }
 
-- (void)updateScrollGeometryForReason:(id)a3 withDuration:(double)a4 animationCurve:(int64_t)a5
+- (void)updateScrollGeometryForReason:(id)reason withDuration:(double)duration animationCurve:(int64_t)curve
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  reasonCopy = reason;
   v9 = IMLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[CKScrollViewController updateScrollGeometryForReason:withDuration:animationCurve:]";
     v14 = 2112;
-    v15 = v8;
+    v15 = reasonCopy;
     _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "%s, reason: %@", &v12, 0x16u);
   }
 
-  v10 = [CKScrollViewAnimationProperties animatedWithDuration:a5 animationCurve:a4];
-  v11 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:v8 animationProperties:v10];
+  v10 = [CKScrollViewAnimationProperties animatedWithDuration:curve animationCurve:duration];
+  v11 = [[CKScrollViewScrollGeometryUpdateReason alloc] initWithReasonType:reasonCopy animationProperties:v10];
   [(IMReasonTrackingUpdater *)self->_scrollGeometryUpdater updateImmediatelyWithReason:v11];
 }
 
-- (void)scrollGeometryIsUpdatingForReasons:(id)a3 followingHoldForReason:(id)a4
+- (void)scrollGeometryIsUpdatingForReasons:(id)reasons followingHoldForReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(CKScrollViewController *)self scrollView];
-  v8 = [v11 __ck_isScrolledToBottom];
+  reasonCopy = reason;
+  reasonsCopy = reasons;
+  scrollView = [(CKScrollViewController *)self scrollView];
+  __ck_isScrolledToBottom = [scrollView __ck_isScrolledToBottom];
   v9 = +[CKScrollViewAnimationProperties unanimated];
-  v10 = [(CKScrollViewController *)self scrollGeometryContentInsetIsUpdatingForReasons:v7 followingHoldForReason:v6 withAnimationProperties:v9];
+  v10 = [(CKScrollViewController *)self scrollGeometryContentInsetIsUpdatingForReasons:reasonsCopy followingHoldForReason:reasonCopy withAnimationProperties:v9];
 
-  if (v8 && v10)
+  if (__ck_isScrolledToBottom && v10)
   {
-    [v11 __ck_scrollToBottom:0];
+    [scrollView __ck_scrollToBottom:0];
   }
 }
 
@@ -993,8 +993,8 @@ LABEL_21:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKScrollViewController *)self view];
-  v12 = CKKeyboardFrameInViewCoodinates(v11, v4, v6, v8, v10);
+  view = [(CKScrollViewController *)self view];
+  v12 = CKKeyboardFrameInViewCoodinates(view, v4, v6, v8, v10);
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1043,8 +1043,8 @@ LABEL_21:
   v6 = v5;
   v7 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
-  v9 = [(CKScrollViewController *)self view];
-  [v9 bounds];
+  view = [(CKScrollViewController *)self view];
+  [view bounds];
   v11 = v10;
   if (v4 != v7 || v6 != v8)
   {
@@ -1057,32 +1057,32 @@ LABEL_21:
 
 - (BOOL)isKeyboardUndocked
 {
-  v2 = [MEMORY[0x1E69DCD68] sharedInstance];
-  v3 = [v2 isUndocked];
+  mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
+  isUndocked = [mEMORY[0x1E69DCD68] isUndocked];
 
-  return v3;
+  return isUndocked;
 }
 
 - (double)accessoryViewHeight
 {
-  v3 = [(CKScrollViewController *)self inputAccessoryViewController];
-  v4 = [v3 view];
-  if (v4)
+  inputAccessoryViewController = [(CKScrollViewController *)self inputAccessoryViewController];
+  view = [inputAccessoryViewController view];
+  if (view)
   {
-    v5 = v4;
+    inputAccessoryView = view;
   }
 
   else
   {
-    v5 = [(CKScrollViewController *)self inputAccessoryView];
+    inputAccessoryView = [(CKScrollViewController *)self inputAccessoryView];
 
-    if (!v5)
+    if (!inputAccessoryView)
     {
       return 0.0;
     }
   }
 
-  [v5 frame];
+  [inputAccessoryView frame];
   v7 = v6;
 
   return v7;
@@ -1090,8 +1090,8 @@ LABEL_21:
 
 - (double)bottomInsetWithoutAccessoryView
 {
-  v3 = [(CKScrollViewController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(CKScrollViewController *)self scrollView];
+  [scrollView contentInset];
   v5 = v4;
   [(CKScrollViewController *)self accessoryViewHeight];
   v7 = v5 - v6;
@@ -1105,12 +1105,12 @@ LABEL_21:
   return result;
 }
 
-- (void)primeWithKeyboardFrame:(CGRect)a3
+- (void)primeWithKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKScrollViewController *)self setKeyboardScreenFrame:?];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -1126,12 +1126,12 @@ LABEL_21:
   [(CKScrollViewController *)self updateScrollGeometryWithoutAnimationForReason:@"PrimeKeyboardFrame"];
 }
 
-- (BOOL)manuallyUpdateKeyboardScreenFrameWithFrameIfNeeded:(CGRect)a3 animationDuration:(double)a4 animationCurve:(int64_t)a5
+- (BOOL)manuallyUpdateKeyboardScreenFrameWithFrameIfNeeded:(CGRect)needed animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = needed.size.height;
+  width = needed.size.width;
+  y = needed.origin.y;
+  x = needed.origin.x;
   v37 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -1184,16 +1184,16 @@ LABEL_21:
     v25 = v24;
     v27 = v26;
     [(CKScrollViewController *)self keyboardScreenFrame];
-    [(CKScrollViewController *)self _updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:a5 previousFrame:y > v28 duration:x animationCurve:y isShowEvent:width, height, v21, v23, v25, v27, *&a4];
+    [(CKScrollViewController *)self _updateKeyboardScreenFrameForShowOrHideWithNewScreenFrame:curve previousFrame:y > v28 duration:x animationCurve:y isShowEvent:width, height, v21, v23, v25, v27, *&duration];
   }
 
   return !v18;
 }
 
-- (CGRect)screenFrameForNotification:(id)a3
+- (CGRect)screenFrameForNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
@@ -1211,21 +1211,21 @@ LABEL_21:
   return result;
 }
 
-- (void)setKeyboardVisible:(BOOL)a3
+- (void)setKeyboardVisible:(BOOL)visible
 {
-  if (self->_keyboardVisible != a3)
+  if (self->_keyboardVisible != visible)
   {
-    self->_keyboardVisible = a3;
+    self->_keyboardVisible = visible;
     [(CKScrollViewController *)self keyboardVisibilityWillChange];
   }
 }
 
-- (BOOL)scrollGeometryContentInsetIsUpdatingForReasons:(id)a3 followingHoldForReason:(id)a4 withAnimationProperties:(id)a5
+- (BOOL)scrollGeometryContentInsetIsUpdatingForReasons:(id)reasons followingHoldForReason:(id)reason withAnimationProperties:(id)properties
 {
-  v6 = a5;
-  v7 = [(CKScrollViewController *)self scrollView];
-  v8 = v7;
-  if (!v7 || (([v7 contentInset], v10 = v9, v12 = v11, v14 = v13, v16 = v15, -[CKScrollViewController _calculateContentInsets](self, "_calculateContentInsets"), v18 == v12) ? (v21 = v17 == v10) : (v21 = 0), v21 ? (v22 = v20 == v16) : (v22 = 0), v22 ? (v23 = v19 == v14) : (v23 = 0), v23))
+  propertiesCopy = properties;
+  scrollView = [(CKScrollViewController *)self scrollView];
+  v8 = scrollView;
+  if (!scrollView || (([scrollView contentInset], v10 = v9, v12 = v11, v14 = v13, v16 = v15, -[CKScrollViewController _calculateContentInsets](self, "_calculateContentInsets"), v18 == v12) ? (v21 = v17 == v10) : (v21 = 0), v21 ? (v22 = v20 == v16) : (v22 = 0), v22 ? (v23 = v19 == v14) : (v23 = 0), v23))
   {
     v28 = 0;
   }
@@ -1236,18 +1236,18 @@ LABEL_21:
     v25 = v18;
     v26 = v19;
     v27 = v20;
-    [(CKScrollViewController *)self contentInsetWillChange:v6 withAnimationProperties:?];
+    [(CKScrollViewController *)self contentInsetWillChange:propertiesCopy withAnimationProperties:?];
     [v8 setContentInset:{v24, v25, v26, v27}];
-    [(CKScrollViewController *)self contentInsetDidChangeWithAnimationProperties:v6];
+    [(CKScrollViewController *)self contentInsetDidChangeWithAnimationProperties:propertiesCopy];
     v28 = 1;
   }
 
   return v28;
 }
 
-- (void)_entryViewWillRotate:(id)a3
+- (void)_entryViewWillRotate:(id)rotate
 {
-  [(CKScrollViewController *)self screenFrameForNotification:a3];
+  [(CKScrollViewController *)self screenFrameForNotification:rotate];
 
   [(CKScrollViewController *)self setKeyboardScreenFrame:?];
 }

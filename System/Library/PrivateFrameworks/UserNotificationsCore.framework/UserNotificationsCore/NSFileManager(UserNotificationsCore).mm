@@ -9,11 +9,11 @@
 {
   v9 = a3;
   v10 = a5;
-  v11 = [v10 path];
-  v12 = [MEMORY[0x1E695DEF0] data];
-  LODWORD(a1) = [a1 createFileAtPath:v11 contents:v12 attributes:MEMORY[0x1E695E0F8]];
+  path = [v10 path];
+  data = [MEMORY[0x1E695DEF0] data];
+  LODWORD(self) = [self createFileAtPath:path contents:data attributes:MEMORY[0x1E695E0F8]];
 
-  if (a1)
+  if (self)
   {
     v19 = 0;
     v13 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v10 error:&v19];
@@ -72,7 +72,7 @@ LABEL_15:
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  if (![a1 fileExistsAtPath:v6])
+  if (![self fileExistsAtPath:v6])
   {
     v21 = 0;
 LABEL_14:
@@ -81,8 +81,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:a4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtPath:v6 error:a4];
 
   if (v8)
   {
@@ -108,9 +108,9 @@ LABEL_14:
           }
 
           v14 = [v6 stringByAppendingPathComponent:*(*(&v28 + 1) + 8 * i)];
-          v15 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
           v27 = 0;
-          v16 = [v15 attributesOfItemAtPath:v14 error:&v27];
+          v16 = [defaultManager2 attributesOfItemAtPath:v14 error:&v27];
           v17 = v27;
 
           v18 = [v16 objectForKey:v12];

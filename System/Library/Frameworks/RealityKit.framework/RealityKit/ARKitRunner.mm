@@ -1,33 +1,33 @@
 @interface ARKitRunner
 - (_TtC10RealityKitP33_98DEB876138878DC696D4005FE1B9B4811ARKitRunner)init;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
 @end
 
 @implementation ARKitRunner
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  specialized ARKitRunner.session(_:didChange:)(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  specialized ARKitRunner.session(_:didChange:)(state);
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
   specialized ARKitRunner.session(_:didUpdate:)();
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  specialized ARKitRunner.session(_:didFailWithError:)(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  specialized ARKitRunner.session(_:didFailWithError:)(errorCopy);
 }
 
 - (_TtC10RealityKitP33_98DEB876138878DC696D4005FE1B9B4811ARKitRunner)init

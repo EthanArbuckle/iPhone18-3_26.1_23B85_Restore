@@ -1,17 +1,17 @@
 @interface WrappedPinEntryView
 - (BOOL)hasText;
-- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithCoder:(id)a3;
-- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithFrame:(CGRect)a3;
+- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithCoder:(id)coder;
+- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithFrame:(CGRect)frame;
 - (int64_t)keyboardType;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)insertText:(id)text;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)setKeyboardType:;
 @end
 
 @implementation WrappedPinEntryView
 
-- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithCoder:(id)a3
+- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC9CoreCDPUI19WrappedPinEntryView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -23,10 +23,10 @@
 
 - (int64_t)keyboardType
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 1;
   }
@@ -39,37 +39,37 @@
 
 - (BOOL)hasText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24521A170();
 
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = sub_24525518C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_24521A1F4(v4, v6);
 }
 
 - (void)deleteBackward
 {
-  v2 = self;
+  selfCopy = self;
   sub_24521A538();
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   sub_24521D178();
   sub_24521D72C(&qword_27EE0DD00, sub_24521D178);
   v6 = sub_24525532C();
-  v7 = a4;
-  v8 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_24521D1C4(v6);
 }
 
-- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithFrame:(CGRect)a3
+- (_TtC9CoreCDPUI19WrappedPinEntryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

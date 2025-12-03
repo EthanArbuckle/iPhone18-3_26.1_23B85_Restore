@@ -1,10 +1,10 @@
 @interface VCShortcutsObliterator
-- (BOOL)deleteAppGroupWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteDataVaultWithError:(id *)a3;
-- (BOOL)deleteKeychainItemsWithError:(id *)a3;
-- (BOOL)terminateProcessWithIdentifier:(id)a3 assertion:(id *)a4 error:(id *)a5;
-- (VCShortcutsObliterator)initWithTriggerRegistrar:(id)a3 syncDataHandlers:(id)a4;
-- (void)obliterate:(id *)a3;
+- (BOOL)deleteAppGroupWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteDataVaultWithError:(id *)error;
+- (BOOL)deleteKeychainItemsWithError:(id *)error;
+- (BOOL)terminateProcessWithIdentifier:(id)identifier assertion:(id *)assertion error:(id *)error;
+- (VCShortcutsObliterator)initWithTriggerRegistrar:(id)registrar syncDataHandlers:(id)handlers;
+- (void)obliterate:(id *)obliterate;
 - (void)resetWatchSync;
 @end
 
@@ -17,8 +17,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(VCShortcutsObliterator *)self syncDataHandlers];
-  v3 = [v2 valueForKeyPath:@"@distinctUnionOfArrays.services"];
+  syncDataHandlers = [(VCShortcutsObliterator *)self syncDataHandlers];
+  v3 = [syncDataHandlers valueForKeyPath:@"@distinctUnionOfArrays.services"];
 
   v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
@@ -68,16 +68,16 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)terminateProcessWithIdentifier:(id)a3 assertion:(id *)a4 error:(id *)a5
+- (BOOL)terminateProcessWithIdentifier:(id)identifier assertion:(id *)assertion error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v10 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:v9];
+  v10 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:identifierCopy];
   v11 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:v10];
   v12 = [objc_alloc(MEMORY[0x277D47010]) initWithExplanation:@"VCShortcutsObliterator is terminating Shortcuts processes upon a data obliteration request"];
   [v12 setMaximumTerminationResistance:40];
@@ -87,24 +87,24 @@
   v14 = [v13 execute:&v25 error:&v24];
   v15 = v25;
   v16 = v24;
-  if (a4)
+  if (assertion)
   {
     v17 = v15;
-    *a4 = v15;
+    *assertion = v15;
   }
 
   if ((v14 & 1) == 0)
   {
-    v18 = [v16 domain];
-    if ([v18 isEqualToString:*MEMORY[0x277D47088]])
+    domain = [v16 domain];
+    if ([domain isEqualToString:*MEMORY[0x277D47088]])
     {
-      v23 = a5;
-      v19 = [v16 code];
+      errorCopy = error;
+      code = [v16 code];
 
-      if (v19 != 3)
+      if (code != 3)
       {
-        a5 = v23;
-        if (!v23)
+        error = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_11;
         }
@@ -112,16 +112,16 @@
         goto LABEL_10;
       }
 
-      v18 = v16;
+      domain = v16;
       v16 = 0;
-      a5 = v23;
+      error = errorCopy;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_10:
       v20 = v16;
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -130,7 +130,7 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)deleteDataVaultWithError:(id *)a3
+- (BOOL)deleteDataVaultWithError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D7A338];
@@ -154,17 +154,17 @@ LABEL_11:
       _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_FAULT, "%s Terminating %{public}@ failed with error: %{public}@", buf, 0x20u);
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
-  v11 = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  wf_shortcutsDirectoryURL = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v13 = [v12 removeItemAtURL:v11 error:&v18];
+  v13 = [defaultManager removeItemAtURL:wf_shortcutsDirectoryURL error:&v18];
   v14 = v18;
 
   if (v6)
@@ -179,29 +179,29 @@ LABEL_11:
     v13 = 1;
   }
 
-  else if (a3 && v14)
+  else if (error && v14)
   {
     v15 = v14;
-    *a3 = v14;
+    *error = v14;
   }
 
   v16 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (BOOL)deleteAppGroupWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAppGroupWithIdentifier:(id)identifier error:(id *)error
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  [v7 UTF8String];
+  [identifierCopy UTF8String];
   container_create_or_lookup_for_current_user();
-  v8 = v7;
+  v8 = identifierCopy;
   v19 = v8;
   v9 = container_delete();
   v10 = v9 == 21 || v9 == 1;
@@ -214,10 +214,10 @@ LABEL_11:
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v14 = [v11 errorWithDomain:@"VCShortcutsObliteratorErrorDomain" code:2 userInfo:v13];
 
-    if (a4)
+    if (error)
     {
       v15 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -247,7 +247,7 @@ void __61__VCShortcutsObliterator_deleteAppGroupWithIdentifier_error___block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteKeychainItemsWithError:(id *)a3
+- (BOOL)deleteKeychainItemsWithError:(id *)error
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CDBEC8];
@@ -262,10 +262,10 @@ void __61__VCShortcutsObliterator_deleteAppGroupWithIdentifier_error___block_inv
   if (v7 != -25300 && v7 != 0)
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v7 userInfo:0];
-    if (a3)
+    if (error)
     {
       v10 = v10;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -285,7 +285,7 @@ void __61__VCShortcutsObliterator_deleteAppGroupWithIdentifier_error___block_inv
   return v12;
 }
 
-- (void)obliterate:(id *)a3
+- (void)obliterate:(id *)obliterate
 {
   v57 = *MEMORY[0x277D85DE8];
   v5 = getWFObliteratorLogObject();
@@ -296,7 +296,7 @@ void __61__VCShortcutsObliterator_deleteAppGroupWithIdentifier_error___block_inv
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Starting obliterator", buf, 0xCu);
   }
 
-  v41 = a3;
+  obliterateCopy = obliterate;
 
   v6 = getWFObliteratorLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -306,8 +306,8 @@ void __61__VCShortcutsObliterator_deleteAppGroupWithIdentifier_error___block_inv
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_INFO, "%s Unregistering triggers...", buf, 0xCu);
   }
 
-  v7 = [(VCShortcutsObliterator *)self triggerRegistrar];
-  [v7 unregisterAllTriggers];
+  triggerRegistrar = [(VCShortcutsObliterator *)self triggerRegistrar];
+  [triggerRegistrar unregisterAllTriggers];
 
   v8 = getWFObliteratorLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -428,8 +428,8 @@ LABEL_12:
     _os_log_impl(&dword_23103C000, v26, OS_LOG_TYPE_INFO, "%s Clearing user defaults...", buf, 0xCu);
   }
 
-  v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v27 removePersistentDomainForName:*MEMORY[0x277D7A348]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removePersistentDomainForName:*MEMORY[0x277D7A348]];
 
   v28 = getWFObliteratorLogObject();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -439,9 +439,9 @@ LABEL_12:
     _os_log_impl(&dword_23103C000, v28, OS_LOG_TYPE_INFO, "%s Clearing Siri Vocab...", buf, 0xCu);
   }
 
-  v29 = [MEMORY[0x277CD42E8] sharedVocabulary];
+  mEMORY[0x277CD42E8] = [MEMORY[0x277CD42E8] sharedVocabulary];
   v30 = objc_opt_new();
-  [v29 setVocabularyStrings:v30 ofType:50000];
+  [mEMORY[0x277CD42E8] setVocabularyStrings:v30 ofType:50000];
 
   v31 = getWFObliteratorLogObject();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -491,23 +491,23 @@ LABEL_12:
     _os_log_impl(&dword_23103C000, v37, OS_LOG_TYPE_INFO, "%s Finished obliterating", buf, 0xCu);
   }
 
-  if (v41)
+  if (obliterateCopy)
   {
     v38 = v12;
-    *v41 = v12;
+    *obliterateCopy = v12;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (VCShortcutsObliterator)initWithTriggerRegistrar:(id)a3 syncDataHandlers:(id)a4
+- (VCShortcutsObliterator)initWithTriggerRegistrar:(id)registrar syncDataHandlers:(id)handlers
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  registrarCopy = registrar;
+  handlersCopy = handlers;
+  if (!handlersCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"syncDataHandlers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCShortcutsObliterator.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"syncDataHandlers"}];
   }
 
   v15.receiver = self;
@@ -516,8 +516,8 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_triggerRegistrar, a3);
-    objc_storeStrong(&v11->_syncDataHandlers, a4);
+    objc_storeStrong(&v10->_triggerRegistrar, registrar);
+    objc_storeStrong(&v11->_syncDataHandlers, handlers);
     v12 = v11;
   }
 

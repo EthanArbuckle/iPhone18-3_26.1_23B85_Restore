@@ -1,17 +1,17 @@
 @interface MusicKit_SoftLinking_MPCPlayerRequest
-- (MusicKit_SoftLinking_MPCPlayerRequest)initWithPath:(id)a3;
-- (MusicKit_SoftLinking_MPCPlayerRequest)initWithUnderlyingPlayerRequest:(id)a3;
-- (id)_errorFromUnderlyingError:(id)a3;
-- (void)performWithCompletion:(id)a3;
-- (void)setForwardCount:(int64_t)a3;
-- (void)setHistoryCount:(int64_t)a3;
+- (MusicKit_SoftLinking_MPCPlayerRequest)initWithPath:(id)path;
+- (MusicKit_SoftLinking_MPCPlayerRequest)initWithUnderlyingPlayerRequest:(id)request;
+- (id)_errorFromUnderlyingError:(id)error;
+- (void)performWithCompletion:(id)completion;
+- (void)setForwardCount:(int64_t)count;
+- (void)setHistoryCount:(int64_t)count;
 @end
 
 @implementation MusicKit_SoftLinking_MPCPlayerRequest
 
-- (MusicKit_SoftLinking_MPCPlayerRequest)initWithPath:(id)a3
+- (MusicKit_SoftLinking_MPCPlayerRequest)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MusicKit_SoftLinking_MPCPlayerRequest;
   v5 = [(MusicKit_SoftLinking_MPCPlayerRequest *)&v19 init];
@@ -40,20 +40,20 @@
     v5->_underlyingPlayerRequest = v8;
 
     v10 = v5->_underlyingPlayerRequest;
-    v11 = [v4 _musicKit_self_playerPath];
-    [(MPCPlayerRequest *)v10 setPlayerPath:v11];
+    _musicKit_self_playerPath = [pathCopy _musicKit_self_playerPath];
+    [(MPCPlayerRequest *)v10 setPlayerPath:_musicKit_self_playerPath];
 
     v12 = v5->_underlyingPlayerRequest;
-    v13 = [MEMORY[0x1E6977678] _playbackItemSupportedProperties];
-    [(MPCPlayerRequest *)v12 setPlayingItemProperties:v13];
+    _playbackItemSupportedProperties = [MEMORY[0x1E6977678] _playbackItemSupportedProperties];
+    [(MPCPlayerRequest *)v12 setPlayingItemProperties:_playbackItemSupportedProperties];
 
     v14 = v5->_underlyingPlayerRequest;
-    v15 = [MEMORY[0x1E6977678] _playbackItemSupportedProperties];
-    [(MPCPlayerRequest *)v14 setQueueItemProperties:v15];
+    _playbackItemSupportedProperties2 = [MEMORY[0x1E6977678] _playbackItemSupportedProperties];
+    [(MPCPlayerRequest *)v14 setQueueItemProperties:_playbackItemSupportedProperties2];
 
     v16 = v5->_underlyingPlayerRequest;
-    v17 = [MEMORY[0x1E6977678] _playbackSectionSupportedProperties];
-    [(MPCPlayerRequest *)v16 setQueueSectionProperties:v17];
+    _playbackSectionSupportedProperties = [MEMORY[0x1E6977678] _playbackSectionSupportedProperties];
+    [(MPCPlayerRequest *)v16 setQueueSectionProperties:_playbackSectionSupportedProperties];
 
     [(MPCPlayerRequest *)v5->_underlyingPlayerRequest setQualityOfService:25];
   }
@@ -61,55 +61,55 @@
   return v5;
 }
 
-- (MusicKit_SoftLinking_MPCPlayerRequest)initWithUnderlyingPlayerRequest:(id)a3
+- (MusicKit_SoftLinking_MPCPlayerRequest)initWithUnderlyingPlayerRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPCPlayerRequest;
   v6 = [(MusicKit_SoftLinking_MPCPlayerRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingPlayerRequest, a3);
+    objc_storeStrong(&v6->_underlyingPlayerRequest, request);
   }
 
   return v7;
 }
 
-- (void)setForwardCount:(int64_t)a3
+- (void)setForwardCount:(int64_t)count
 {
-  v5 = [(MusicKit_SoftLinking_MPCPlayerRequest *)self historyCount];
+  historyCount = [(MusicKit_SoftLinking_MPCPlayerRequest *)self historyCount];
   underlyingPlayerRequest = self->_underlyingPlayerRequest;
 
-  [(MPCPlayerRequest *)underlyingPlayerRequest setTracklistRange:v5, a3];
+  [(MPCPlayerRequest *)underlyingPlayerRequest setTracklistRange:historyCount, count];
 }
 
-- (void)setHistoryCount:(int64_t)a3
+- (void)setHistoryCount:(int64_t)count
 {
-  v5 = [(MusicKit_SoftLinking_MPCPlayerRequest *)self forwardCount];
+  forwardCount = [(MusicKit_SoftLinking_MPCPlayerRequest *)self forwardCount];
   underlyingPlayerRequest = self->_underlyingPlayerRequest;
 
-  [(MPCPlayerRequest *)underlyingPlayerRequest setTracklistRange:a3, v5];
+  [(MPCPlayerRequest *)underlyingPlayerRequest setTracklistRange:count, forwardCount];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   underlyingPlayerRequest = self->_underlyingPlayerRequest;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__MusicKit_SoftLinking_MPCPlayerRequest_performWithCompletion___block_invoke;
   v8[3] = &unk_1E84C3A68;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = [(MPCPlayerRequest *)underlyingPlayerRequest performWithCompletion:v8];
 }
 
-- (id)_errorFromUnderlyingError:(id)a3
+- (id)_errorFromUnderlyingError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -131,20 +131,20 @@
     _Unwind_Resume(v12);
   }
 
-  v7 = [v4 isEqual:*v5];
+  v7 = [domain isEqual:*v5];
 
-  v8 = v3;
+  v8 = errorCopy;
   if (v7)
   {
-    v9 = [v3 code];
-    if ((v9 - 1) > 4)
+    code = [errorCopy code];
+    if ((code - 1) > 4)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = qword_1D5619BD0[v9 - 1];
+      v10 = qword_1D5619BD0[code - 1];
     }
 
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MusicKit_SoftLinking_MPCPlayerEnqueueErrorDomain" code:v10 userInfo:0];

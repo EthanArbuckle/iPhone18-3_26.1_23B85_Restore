@@ -1,7 +1,7 @@
 @interface REHealthStore
 - (id)_createStore;
 - (id)_init;
-- (void)accessHealthStore:(id)a3;
+- (void)accessHealthStore:(id)store;
 @end
 
 @implementation REHealthStore
@@ -10,22 +10,22 @@
 {
   v8.receiver = self;
   v8.super_class = REHealthStore;
-  v2 = [(RESingleton *)&v8 _init];
-  if (v2)
+  _init = [(RESingleton *)&v8 _init];
+  if (_init)
   {
     if (HealthKitLibraryCore_1())
     {
-      v3 = [v2 _createStore];
-      v4 = v2[1];
-      v2[1] = v3;
+      _createStore = [_init _createStore];
+      v4 = _init[1];
+      _init[1] = _createStore;
     }
 
     v5 = dispatch_queue_create("com.apple.RelevanceEngine.REHealthStore", 0);
-    v6 = v2[2];
-    v2[2] = v5;
+    v6 = _init[2];
+    _init[2] = v5;
   }
 
-  return v2;
+  return _init;
 }
 
 - (id)_createStore
@@ -38,22 +38,22 @@
       free(v4);
     }
 
-    v2 = [getHKHealthStoreClass() fiui_sharedHealthStoreForCarousel];
+    fiui_sharedHealthStoreForCarousel = [getHKHealthStoreClass() fiui_sharedHealthStoreForCarousel];
   }
 
   else
   {
-    v2 = objc_alloc_init(getHKHealthStoreClass());
+    fiui_sharedHealthStoreForCarousel = objc_alloc_init(getHKHealthStoreClass());
   }
 
-  return v2;
+  return fiui_sharedHealthStoreForCarousel;
 }
 
-- (void)accessHealthStore:(id)a3
+- (void)accessHealthStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  storeCopy = store;
+  v5 = storeCopy;
+  if (storeCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -61,7 +61,7 @@
     v7[2] = __35__REHealthStore_accessHealthStore___block_invoke;
     v7[3] = &unk_2785FA150;
     v7[4] = self;
-    v8 = v4;
+    v8 = storeCopy;
     dispatch_async(queue, v7);
   }
 }

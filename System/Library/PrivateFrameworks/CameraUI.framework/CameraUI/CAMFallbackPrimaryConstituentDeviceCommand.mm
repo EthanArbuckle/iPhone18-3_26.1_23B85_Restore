@@ -1,60 +1,60 @@
 @interface CAMFallbackPrimaryConstituentDeviceCommand
-- (CAMFallbackPrimaryConstituentDeviceCommand)initWithCoder:(id)a3;
-- (CAMFallbackPrimaryConstituentDeviceCommand)initWithFallbackPrimaryConstituentDeviceSelection:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMFallbackPrimaryConstituentDeviceCommand)initWithCoder:(id)coder;
+- (CAMFallbackPrimaryConstituentDeviceCommand)initWithFallbackPrimaryConstituentDeviceSelection:(int64_t)selection;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMFallbackPrimaryConstituentDeviceCommand
 
-- (CAMFallbackPrimaryConstituentDeviceCommand)initWithFallbackPrimaryConstituentDeviceSelection:(int64_t)a3
+- (CAMFallbackPrimaryConstituentDeviceCommand)initWithFallbackPrimaryConstituentDeviceSelection:(int64_t)selection
 {
   v5.receiver = self;
   v5.super_class = CAMFallbackPrimaryConstituentDeviceCommand;
   result = [(CAMCaptureCommand *)&v5 initWithSubcommands:0];
   if (result)
   {
-    result->__deviceSelection = a3;
+    result->__deviceSelection = selection;
   }
 
   return result;
 }
 
-- (CAMFallbackPrimaryConstituentDeviceCommand)initWithCoder:(id)a3
+- (CAMFallbackPrimaryConstituentDeviceCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMFallbackPrimaryConstituentDeviceCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMFallbackPrimaryConstituentDeviceCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[3] = [(CAMFallbackPrimaryConstituentDeviceCommand *)self _deviceSelection];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CAMFallbackPrimaryConstituentDeviceCommand *)self _deviceSelection];
-  v10 = [v4 currentVideoDevice];
+  contextCopy = context;
+  _deviceSelection = [(CAMFallbackPrimaryConstituentDeviceCommand *)self _deviceSelection];
+  currentVideoDevice = [contextCopy currentVideoDevice];
 
-  if (v5 == 2)
+  if (_deviceSelection == 2)
   {
-    v8 = [v10 supportedFallbackPrimaryConstituentDevices];
-    v6 = [v8 mutableCopy];
+    supportedFallbackPrimaryConstituentDevices = [currentVideoDevice supportedFallbackPrimaryConstituentDevices];
+    v6 = [supportedFallbackPrimaryConstituentDevices mutableCopy];
 
     v9 = [v6 indexOfObjectPassingTest:&__block_literal_global_59];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -63,15 +63,15 @@
     }
   }
 
-  else if (v5 == 1)
+  else if (_deviceSelection == 1)
   {
-    v7 = [v10 supportedFallbackPrimaryConstituentDevices];
-    v6 = [v7 mutableCopy];
+    supportedFallbackPrimaryConstituentDevices2 = [currentVideoDevice supportedFallbackPrimaryConstituentDevices];
+    v6 = [supportedFallbackPrimaryConstituentDevices2 mutableCopy];
   }
 
   else
   {
-    if (v5)
+    if (_deviceSelection)
     {
       goto LABEL_10;
     }
@@ -81,7 +81,7 @@
 
   if (v6)
   {
-    [v10 setFallbackPrimaryConstituentDevices:v6];
+    [currentVideoDevice setFallbackPrimaryConstituentDevices:v6];
   }
 
 LABEL_10:

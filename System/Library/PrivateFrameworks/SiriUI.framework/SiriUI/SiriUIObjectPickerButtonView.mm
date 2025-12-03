@@ -1,17 +1,17 @@
 @interface SiriUIObjectPickerButtonView
 + (double)defaultHeight;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriUIObjectPickerButtonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriUIObjectPickerButtonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriUIObjectPickerButtonView
 
-- (SiriUIObjectPickerButtonView)initWithFrame:(CGRect)a3
+- (SiriUIObjectPickerButtonView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SiriUIObjectPickerButtonView;
-  v3 = [(SiriUIObjectPickerButtonView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIObjectPickerButtonView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
@@ -21,13 +21,13 @@
     v6 = v3->_button;
     [(SiriUIObjectPickerButtonView *)v3 bounds];
     [(UIButton *)v6 setFrame:?];
-    v7 = [(UIButton *)v3->_button titleLabel];
-    v8 = [MEMORY[0x277D74300] siriui_mediumWeightBodySizeFont];
-    [v7 setFont:v8];
+    titleLabel = [(UIButton *)v3->_button titleLabel];
+    siriui_mediumWeightBodySizeFont = [MEMORY[0x277D74300] siriui_mediumWeightBodySizeFont];
+    [titleLabel setFont:siriui_mediumWeightBodySizeFont];
 
     v9 = v3->_button;
-    v10 = [MEMORY[0x277D75348] siriui_textColor];
-    [(UIButton *)v9 setTintColor:v10];
+    siriui_textColor = [MEMORY[0x277D75348] siriui_textColor];
+    [(UIButton *)v9 setTintColor:siriui_textColor];
 
     v11 = v3->_button;
     v12 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
@@ -49,9 +49,9 @@
   [(UIButton *)self->_button setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() defaultHeight];
   v5 = v4;
   v6 = width;
@@ -63,8 +63,8 @@
 + (double)defaultHeight
 {
   v2 = SiriUIIsCompactWidth();
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   result = 50.0;
   if (v2)

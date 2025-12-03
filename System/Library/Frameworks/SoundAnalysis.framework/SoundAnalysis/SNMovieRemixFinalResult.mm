@@ -6,7 +6,7 @@
 
 - (NSArray)dspParameters
 {
-  v2 = self;
+  selfCopy = self;
   SNMovieRemixFinalResult.dspParameters.getter();
 
   type metadata accessor for SNMovieRemixDSPParameter();

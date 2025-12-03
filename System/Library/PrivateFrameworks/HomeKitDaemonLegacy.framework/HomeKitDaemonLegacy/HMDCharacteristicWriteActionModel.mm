@@ -1,7 +1,7 @@
 @interface HMDCharacteristicWriteActionModel
 + (id)properties;
 - (id)dependentUUIDs;
-- (void)loadModelWithActionInformation:(id)a3;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDCharacteristicWriteActionModel
@@ -10,32 +10,32 @@
 {
   v15.receiver = self;
   v15.super_class = HMDCharacteristicWriteActionModel;
-  v3 = [(HMDBackingStoreModelObject *)&v15 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v15 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v5)
+  if (parentUUID)
   {
-    v6 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v4 addObject:v6];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v4 addObject:parentUUID2];
   }
 
-  v7 = [(HMDCharacteristicWriteActionModel *)self accessory];
+  accessory = [(HMDCharacteristicWriteActionModel *)self accessory];
 
-  if (v7)
+  if (accessory)
   {
     v8 = objc_alloc(MEMORY[0x277CCAD78]);
-    v9 = [(HMDCharacteristicWriteActionModel *)self accessory];
-    v10 = [v8 initWithUUIDString:v9];
+    accessory2 = [(HMDCharacteristicWriteActionModel *)self accessory];
+    v10 = [v8 initWithUUIDString:accessory2];
 
     [v4 addObject:v10];
-    v11 = [(HMDCharacteristicWriteActionModel *)self serviceID];
+    serviceID = [(HMDCharacteristicWriteActionModel *)self serviceID];
 
-    if (v11)
+    if (serviceID)
     {
-      v12 = [(HMDCharacteristicWriteActionModel *)self serviceID];
-      v13 = [HMDService generateUUIDWithAccessoryUUID:v10 serviceID:v12];
+      serviceID2 = [(HMDCharacteristicWriteActionModel *)self serviceID];
+      v13 = [HMDService generateUUIDWithAccessoryUUID:v10 serviceID:serviceID2];
 
       [v4 addObject:v13];
     }
@@ -44,24 +44,24 @@
   return v4;
 }
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
   v11.receiver = self;
   v11.super_class = HMDCharacteristicWriteActionModel;
-  v4 = a3;
-  [(HMDActionModel *)&v11 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_stringForKey:{*MEMORY[0x277CCF0B0], v11.receiver, v11.super_class}];
+  informationCopy = information;
+  [(HMDActionModel *)&v11 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_stringForKey:{*MEMORY[0x277CCF0B0], v11.receiver, v11.super_class}];
   [(HMDCharacteristicWriteActionModel *)self setAccessory:v5];
 
-  v6 = [v4 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+  v6 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD25F8]];
   v7 = HAPInstanceIDFromValue();
   [(HMDCharacteristicWriteActionModel *)self setServiceID:v7];
 
-  v8 = [v4 hmf_numberForKey:*MEMORY[0x277CD2140]];
+  v8 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD2140]];
   v9 = HAPInstanceIDFromValue();
   [(HMDCharacteristicWriteActionModel *)self setCharacteristicID:v9];
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
+  v10 = [informationCopy objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
 
   [(HMDCharacteristicWriteActionModel *)self setTargetValue:v10];
 }
@@ -72,7 +72,7 @@
   block[1] = 3221225472;
   block[2] = __47__HMDCharacteristicWriteActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_122091 != -1)
   {
     dispatch_once(&properties_onceToken_122091, block);

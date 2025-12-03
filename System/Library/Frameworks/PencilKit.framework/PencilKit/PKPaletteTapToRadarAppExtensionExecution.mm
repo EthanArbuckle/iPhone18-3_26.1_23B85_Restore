@@ -1,7 +1,7 @@
 @interface PKPaletteTapToRadarAppExtensionExecution
 - (void)_dismiss;
 - (void)_updateUI;
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3;
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds;
 - (void)run;
 @end
 
@@ -13,57 +13,57 @@
   v39.receiver = self;
   v39.super_class = PKPaletteTapToRadarAppExtensionExecution;
   [(PKPaletteTapToRadarCommandExecution *)&v39 run];
-  v3 = [(PKPaletteTapToRadarCommandExecution *)self configuration];
-  v38 = [v3 debugSharpenerLog];
+  configuration = [(PKPaletteTapToRadarCommandExecution *)self configuration];
+  debugSharpenerLog = [configuration debugSharpenerLog];
 
-  v37 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:v38];
+  v37 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:debugSharpenerLog];
   [(PKTextInputDebugRadarViewController *)v37 setDelegate:self];
-  v4 = [(PKPaletteTapToRadarCommandExecution *)self configuration];
-  v5 = [v4 presentationViewController];
+  configuration2 = [(PKPaletteTapToRadarCommandExecution *)self configuration];
+  presentationViewController = [configuration2 presentationViewController];
 
-  v6 = [v5 view];
-  v7 = [v6 window];
+  view = [presentationViewController view];
+  window = [view window];
 
   v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v37];
   contentViewController = self->_contentViewController;
   self->_contentViewController = v8;
 
-  [v5 addChildViewController:self->_contentViewController];
-  v10 = [v5 view];
-  v11 = [(UIViewController *)self->_contentViewController view];
-  [v10 addSubview:v11];
+  [presentationViewController addChildViewController:self->_contentViewController];
+  view2 = [presentationViewController view];
+  view3 = [(UIViewController *)self->_contentViewController view];
+  [view2 addSubview:view3];
 
-  v12 = [(UIViewController *)self->_contentViewController view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(UIViewController *)self->_contentViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(UIViewController *)self->_contentViewController view];
-  v14 = [v13 widthAnchor];
-  v36 = v7;
-  [v7 hostedViewSize];
-  v15 = [v14 constraintEqualToConstant:?];
+  view5 = [(UIViewController *)self->_contentViewController view];
+  widthAnchor = [view5 widthAnchor];
+  v36 = window;
+  [window hostedViewSize];
+  v15 = [widthAnchor constraintEqualToConstant:?];
   contentViewWidthConstraint = self->_contentViewWidthConstraint;
   self->_contentViewWidthConstraint = v15;
 
-  v17 = [(UIViewController *)self->_contentViewController view];
-  v18 = [v17 heightAnchor];
-  [v7 hostedViewSize];
-  v20 = [v18 constraintEqualToConstant:v19];
+  view6 = [(UIViewController *)self->_contentViewController view];
+  heightAnchor = [view6 heightAnchor];
+  [window hostedViewSize];
+  v20 = [heightAnchor constraintEqualToConstant:v19];
   contentViewHeightConstraint = self->_contentViewHeightConstraint;
   self->_contentViewHeightConstraint = v20;
 
   v30 = MEMORY[0x1E696ACD8];
-  v35 = [(UIViewController *)self->_contentViewController view];
-  v33 = [v35 topAnchor];
-  v31 = v5;
-  v34 = [v5 view];
-  v32 = [v34 topAnchor];
-  v22 = [v33 constraintEqualToAnchor:v32];
+  view7 = [(UIViewController *)self->_contentViewController view];
+  topAnchor = [view7 topAnchor];
+  v31 = presentationViewController;
+  view8 = [presentationViewController view];
+  topAnchor2 = [view8 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[0] = v22;
-  v23 = [(UIViewController *)self->_contentViewController view];
-  v24 = [v23 leftAnchor];
-  v25 = [v5 view];
-  v26 = [v25 leftAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  view9 = [(UIViewController *)self->_contentViewController view];
+  leftAnchor = [view9 leftAnchor];
+  view10 = [presentationViewController view];
+  leftAnchor2 = [view10 leftAnchor];
+  v27 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v28 = self->_contentViewWidthConstraint;
   v40[1] = v27;
   v40[2] = v28;
@@ -77,32 +77,32 @@
 - (void)_dismiss
 {
   [(UIViewController *)self->_contentViewController willMoveToParentViewController:0];
-  v3 = [(UIViewController *)self->_contentViewController view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self->_contentViewController view];
+  [view removeFromSuperview];
 
   contentViewController = self->_contentViewController;
 
   [(UIViewController *)contentViewController removeFromParentViewController];
 }
 
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = PKPaletteTapToRadarAppExtensionExecution;
-  [(PKPaletteTapToRadarCommandExecution *)&v4 editingOverlayContainerDidChangeToSceneBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKPaletteTapToRadarCommandExecution *)&v4 editingOverlayContainerDidChangeToSceneBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(PKPaletteTapToRadarAppExtensionExecution *)self _updateUI];
 }
 
 - (void)_updateUI
 {
-  v3 = [(PKPaletteTapToRadarCommandExecution *)self configuration];
-  v4 = [v3 presentationViewController];
-  v5 = [v4 view];
-  v7 = [v5 window];
+  configuration = [(PKPaletteTapToRadarCommandExecution *)self configuration];
+  presentationViewController = [configuration presentationViewController];
+  view = [presentationViewController view];
+  window = [view window];
 
-  [v7 hostedViewSize];
+  [window hostedViewSize];
   [(NSLayoutConstraint *)self->_contentViewWidthConstraint setConstant:?];
-  [v7 hostedViewSize];
+  [window hostedViewSize];
   [(NSLayoutConstraint *)self->_contentViewHeightConstraint setConstant:v6];
 }
 

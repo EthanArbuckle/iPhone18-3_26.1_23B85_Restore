@@ -1,39 +1,39 @@
 @interface BMMLSEDurableFeatureStoreFeatureValueHistogramBucket
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithBucketName:(id)a3 hasEver:(id)a4 counts:(id)a5;
-- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithBucketName:(id)name hasEver:(id)ever counts:(id)counts;
+- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_countsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSEDurableFeatureStoreFeatureValueHistogramBucket
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
-    v7 = [v5 bucketName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bucketName = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
+    bucketName2 = [v5 bucketName];
+    v8 = bucketName2;
+    if (bucketName == bucketName2)
     {
     }
 
     else
     {
-      v9 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
-      v10 = [v5 bucketName];
-      v11 = [v9 isEqual:v10];
+      bucketName3 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
+      bucketName4 = [v5 bucketName];
+      v11 = [bucketName3 isEqual:bucketName4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
 
     if (!-[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket hasHasEver](self, "hasHasEver") && ![v5 hasHasEver] || -[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket hasHasEver](self, "hasHasEver") && objc_msgSend(v5, "hasHasEver") && (v13 = -[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket hasEver](self, "hasEver"), v13 == objc_msgSend(v5, "hasEver")))
     {
-      v14 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
-      v15 = [v5 counts];
-      if (v14 == v15)
+      counts = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
+      counts2 = [v5 counts];
+      if (counts == counts2)
       {
         v12 = 1;
       }
 
       else
       {
-        v16 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
-        v17 = [v5 counts];
-        v12 = [v16 isEqual:v17];
+        counts3 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
+        counts4 = [v5 counts];
+        v12 = [counts3 isEqual:counts4];
       }
 
       goto LABEL_17;
@@ -76,7 +76,7 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
+  bucketName = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
   if ([(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self hasHasEver])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket hasEver](self, "hasEver")}];
@@ -87,33 +87,33 @@ LABEL_18:
     v4 = 0;
   }
 
-  v5 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self _countsJSONArray];
+  _countsJSONArray = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self _countsJSONArray];
   v12[0] = @"bucketName";
-  v6 = v3;
-  if (!v3)
+  null = bucketName;
+  if (!bucketName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"hasEver";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"counts";
-  v8 = v5;
-  if (!v5)
+  null3 = _countsJSONArray;
+  if (!_countsJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (_countsJSONArray)
   {
     if (v4)
     {
@@ -122,7 +122,7 @@ LABEL_18:
 
 LABEL_17:
 
-    if (v3)
+    if (bucketName)
     {
       goto LABEL_13;
     }
@@ -136,7 +136,7 @@ LABEL_17:
   }
 
 LABEL_12:
-  if (v3)
+  if (bucketName)
   {
     goto LABEL_13;
   }
@@ -157,8 +157,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  counts = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
+  v5 = [counts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -169,14 +169,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(counts);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [counts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -187,21 +187,21 @@ LABEL_13:
   return v3;
 }
 
-- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v76[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bucketName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bucketName"];
   v8 = 0x1E695D000uLL;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v9 = 0;
-        v27 = 0;
+        selfCopy2 = 0;
         goto LABEL_45;
       }
 
@@ -214,8 +214,8 @@ LABEL_13:
       v31 = v28;
       v26 = v30;
       v9 = 0;
-      v27 = 0;
-      *a4 = [v31 initWithDomain:v29 code:2 userInfo:v10];
+      selfCopy2 = 0;
+      *error = [v31 initWithDomain:v29 code:2 userInfo:v10];
       goto LABEL_44;
     }
 
@@ -227,22 +227,22 @@ LABEL_13:
     v9 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"hasEver"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"hasEver"];
   v60 = v7;
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v55 = a4;
+    errorCopy2 = error;
     v59 = 0;
 LABEL_7:
-    v11 = [v6 objectForKeyedSubscript:@"counts"];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v13 = [v11 isEqual:v12];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"counts"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v13 = [v11 isEqual:null];
 
     if (v13)
     {
       v56 = v10;
       v57 = v9;
-      v58 = v6;
+      v58 = dictionaryCopy;
 
       v11 = 0;
 LABEL_12:
@@ -260,7 +260,7 @@ LABEL_12:
 
       v16 = v15;
       v17 = *v63;
-      v54 = self;
+      selfCopy = self;
 LABEL_14:
       v18 = 0;
       while (1)
@@ -281,11 +281,11 @@ LABEL_14:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          self = v54;
-          v40 = v55;
+          self = selfCopy;
+          v40 = errorCopy2;
           v10 = v56;
           v9 = v57;
-          if (!v55)
+          if (!errorCopy2)
           {
             goto LABEL_40;
           }
@@ -310,20 +310,20 @@ LABEL_14:
         if (v25)
         {
           v46 = v25;
-          if (v55)
+          if (errorCopy2)
           {
             v47 = v25;
-            *v55 = v46;
+            *errorCopy2 = v46;
           }
 
-          self = v54;
+          self = selfCopy;
           v10 = v56;
           v9 = v57;
 LABEL_39:
 
 LABEL_40:
-          v27 = 0;
-          v6 = v58;
+          selfCopy2 = 0;
+          dictionaryCopy = v58;
           goto LABEL_41;
         }
 
@@ -334,7 +334,7 @@ LABEL_40:
         if (v16 == v18)
         {
           v16 = [v11 countByEnumeratingWithState:&v62 objects:v70 count:16];
-          self = v54;
+          self = selfCopy;
           if (v16)
           {
             goto LABEL_14;
@@ -345,8 +345,8 @@ LABEL_22:
           v9 = v57;
           v26 = v59;
           self = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self initWithBucketName:v57 hasEver:v59 counts:v14];
-          v27 = self;
-          v6 = v58;
+          selfCopy2 = self;
+          dictionaryCopy = v58;
           v10 = v56;
 LABEL_42:
 
@@ -355,11 +355,11 @@ LABEL_42:
         }
       }
 
-      self = v54;
-      v40 = v55;
+      self = selfCopy;
+      v40 = errorCopy2;
       v10 = v56;
       v9 = v57;
-      if (!v55)
+      if (!errorCopy2)
       {
         goto LABEL_40;
       }
@@ -382,11 +382,11 @@ LABEL_35:
     {
       v56 = v10;
       v57 = v9;
-      v58 = v6;
+      v58 = dictionaryCopy;
       goto LABEL_12;
     }
 
-    if (v55)
+    if (errorCopy2)
     {
       v50 = objc_alloc(MEMORY[0x1E696ABC0]);
       v51 = *MEMORY[0x1E698F240];
@@ -394,15 +394,15 @@ LABEL_35:
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"counts"];
       v72 = v14;
       v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-      *v55 = [v50 initWithDomain:v51 code:2 userInfo:v52];
+      *errorCopy2 = [v50 initWithDomain:v51 code:2 userInfo:v52];
 
-      v27 = 0;
+      selfCopy2 = 0;
 LABEL_41:
       v26 = v59;
       goto LABEL_42;
     }
 
-    v27 = 0;
+    selfCopy2 = 0;
     v26 = v59;
 LABEL_43:
 
@@ -412,56 +412,56 @@ LABEL_43:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v55 = a4;
+    errorCopy2 = error;
     v59 = v10;
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     v32 = objc_alloc(MEMORY[0x1E696ABC0]);
     v33 = *MEMORY[0x1E698F240];
     v73 = *MEMORY[0x1E696A578];
-    v34 = a4;
+    errorCopy3 = error;
     v35 = v10;
-    v36 = self;
+    selfCopy3 = self;
     v37 = objc_alloc(MEMORY[0x1E696AEC0]);
     v53 = objc_opt_class();
     v38 = v37;
-    self = v36;
+    self = selfCopy3;
     v10 = v35;
     v11 = [v38 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v53, @"hasEver"];
     v74 = v11;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
     v39 = [v32 initWithDomain:v33 code:2 userInfo:v14];
     v26 = 0;
-    v27 = 0;
-    *v34 = v39;
+    selfCopy2 = 0;
+    *errorCopy3 = v39;
     goto LABEL_42;
   }
 
   v26 = 0;
-  v27 = 0;
+  selfCopy2 = 0;
 LABEL_44:
 
 LABEL_45:
   v48 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bucketName)
   {
     PBDataWriterWriteStringField();
@@ -494,7 +494,7 @@ LABEL_45:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -507,9 +507,9 @@ LABEL_45:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMMLSEDurableFeatureStoreFeatureValueHistogramBucket;
   v5 = [(BMEventBase *)&v34 init];
@@ -519,12 +519,12 @@ LABEL_45:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -535,18 +535,18 @@ LABEL_45:
       while (1)
       {
         LOBYTE(v35[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v35[0] & 0x7F) << v8;
@@ -564,9 +564,9 @@ LABEL_45:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -576,7 +576,7 @@ LABEL_16:
       {
         v35[0] = 0;
         v35[1] = 0;
-        if (!PBReaderPlaceMark() || (v26 = [[BMMLSEDurableFeatureStoreFeatureValueHistogramBucketCount alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v26 = [[BMMLSEDurableFeatureStoreFeatureValueHistogramBucketCount alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_43:
 
@@ -597,18 +597,18 @@ LABEL_43:
         while (1)
         {
           LOBYTE(v35[0]) = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v35[0] & 0x7F) << v19;
@@ -626,7 +626,7 @@ LABEL_43:
           }
         }
 
-        v25 = (v21 != 0) & ~[v4 hasError];
+        v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_37:
         v5->_hasEver = v25;
       }
@@ -643,18 +643,18 @@ LABEL_37:
         goto LABEL_43;
       }
 
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v29 = [v6 copy];
   counts = v5->_counts;
   v5->_counts = v29;
 
-  v31 = [v4 hasError];
-  if (v31)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_40:
     v32 = 0;
@@ -672,30 +672,30 @@ LABEL_41:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
+  bucketName = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self bucketName];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket hasEver](self, "hasEver")}];
-  v6 = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
-  v7 = [v3 initWithFormat:@"BMMLSEDurableFeatureStoreFeatureValueHistogramBucket with bucketName: %@, hasEver: %@, counts: %@", v4, v5, v6];
+  counts = [(BMMLSEDurableFeatureStoreFeatureValueHistogramBucket *)self counts];
+  v7 = [v3 initWithFormat:@"BMMLSEDurableFeatureStoreFeatureValueHistogramBucket with bucketName: %@, hasEver: %@, counts: %@", bucketName, v5, counts];
 
   return v7;
 }
 
-- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithBucketName:(id)a3 hasEver:(id)a4 counts:(id)a5
+- (BMMLSEDurableFeatureStoreFeatureValueHistogramBucket)initWithBucketName:(id)name hasEver:(id)ever counts:(id)counts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  everCopy = ever;
+  countsCopy = counts;
   v14.receiver = self;
   v14.super_class = BMMLSEDurableFeatureStoreFeatureValueHistogramBucket;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_bucketName, a3);
-    if (v10)
+    objc_storeStrong(&v12->_bucketName, name);
+    if (everCopy)
     {
       v12->_hasHasEver = 1;
-      v12->_hasEver = [v10 BOOLValue];
+      v12->_hasEver = [everCopy BOOLValue];
     }
 
     else
@@ -704,7 +704,7 @@ LABEL_41:
       v12->_hasEver = 0;
     }
 
-    objc_storeStrong(&v12->_counts, a5);
+    objc_storeStrong(&v12->_counts, counts);
   }
 
   return v12;
@@ -750,9 +750,9 @@ id __63__BMMLSEDurableFeatureStoreFeatureValueHistogramBucket_columns__block_inv
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -760,8 +760,8 @@ id __63__BMMLSEDurableFeatureStoreFeatureValueHistogramBucket_columns__block_inv
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSEDurableFeatureStoreFeatureValueHistogramBucket alloc] initByReadFrom:v7];
     v4 = v8;

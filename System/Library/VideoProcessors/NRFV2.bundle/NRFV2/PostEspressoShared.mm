@@ -1,15 +1,15 @@
 @interface PostEspressoShared
-+ (id)getSharedInstanceOrRelease:(BOOL)a3;
++ (id)getSharedInstanceOrRelease:(BOOL)release;
 @end
 
 @implementation PostEspressoShared
 
-+ (id)getSharedInstanceOrRelease:(BOOL)a3
++ (id)getSharedInstanceOrRelease:(BOOL)release
 {
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = qword_2A18C2270;
-  if (a3)
+  if (release)
   {
     v6 = 0;
   }

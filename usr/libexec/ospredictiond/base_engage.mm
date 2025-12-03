@@ -1,18 +1,18 @@
 @interface base_engage
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (base_engage)init;
-- (base_engage)initWithConfiguration:(id)a3 error:(id *)a4;
-- (base_engage)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (base_engage)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (base_engage)initWithMLModel:(id)a3;
-- (id)predictionFromClassic_time_between_uses_med_dur_1:(double)a3 classic_time_between_uses_med_dur_2:(double)a4 classic_time_between_uses_med_dur_4:(double)a5 classic_time_between_uses_med_dur_24:(double)a6 classic_time_between_uses_std_dur_1:(double)a7 classic_time_between_uses_std_dur_2:(double)a8 classic_time_between_uses_std_dur_4:(double)a9 classic_time_between_uses_std_dur_24:(double)a10 hour:(double)a11 is_weekend:(double)a12 hour_plus_0:(double)a13 hour_plus_1:(double)a14 hour_plus_2:(double)a15 hour_plus_3:(double)a16 hour_plus_4:(double)a17 hour_plus_5:(double)a18 hours_until_use:(double)a19 meaningful_undercharge_rolling_average:(double)a20 error:(id *)a21;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (base_engage)initWithConfiguration:(id)configuration error:(id *)error;
+- (base_engage)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (base_engage)initWithContentsOfURL:(id)l error:(id *)error;
+- (base_engage)initWithMLModel:(id)model;
+- (id)predictionFromClassic_time_between_uses_med_dur_1:(double)classic_time_between_uses_med_dur_1 classic_time_between_uses_med_dur_2:(double)classic_time_between_uses_med_dur_2 classic_time_between_uses_med_dur_4:(double)classic_time_between_uses_med_dur_4 classic_time_between_uses_med_dur_24:(double)classic_time_between_uses_med_dur_24 classic_time_between_uses_std_dur_1:(double)classic_time_between_uses_std_dur_1 classic_time_between_uses_std_dur_2:(double)classic_time_between_uses_std_dur_2 classic_time_between_uses_std_dur_4:(double)classic_time_between_uses_std_dur_4 classic_time_between_uses_std_dur_24:(double)self0 hour:(double)self1 is_weekend:(double)self2 hour_plus_0:(double)self3 hour_plus_1:(double)self4 hour_plus_2:(double)self5 hour_plus_3:(double)self6 hour_plus_4:(double)self7 hour_plus_5:(double)self8 hours_until_use:(double)self9 meaningful_undercharge_rolling_average:(double)meaningful_undercharge_rolling_average error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation base_engage
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (base_engage)initWithMLModel:(id)a3
+- (base_engage)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = base_engage;
@@ -51,115 +51,115 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (base_engage)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(base_engage *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(base_engage *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (base_engage)initWithConfiguration:(id)a3 error:(id *)a4
+- (base_engage)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(base_engage *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(base_engage *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (base_engage)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (base_engage)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MLModel modelWithContentsOfURL:a3 error:a4];
+  v5 = [MLModel modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(base_engage *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (base_engage)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (base_engage)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MLModel modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MLModel modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(base_engage *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100047BB8;
   v8[3] = &unk_100095698;
-  v9 = a5;
-  v7 = v9;
-  [MLModel loadContentsOfURL:a3 configuration:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [MLModel loadContentsOfURL:l configuration:configuration completionHandler:v8];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v7 = objc_alloc_init(MLPredictionOptions);
-  v8 = [(base_engage *)self predictionFromFeatures:v6 options:v7 error:a4];
+  v8 = [(base_engage *)self predictionFromFeatures:featuresCopy options:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(base_engage *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(base_engage *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [base_engageOutput alloc];
     v13 = [v11 featureValueForName:@"engage"];
-    v14 = [v13 int64Value];
+    int64Value = [v13 int64Value];
     v15 = [v11 featureValueForName:@"classProbability"];
-    v16 = [v15 dictionaryValue];
-    v17 = [(base_engageOutput *)v12 initWithEngage:v14 classProbability:v16];
+    dictionaryValue = [v15 dictionaryValue];
+    v17 = [(base_engageOutput *)v12 initWithEngage:int64Value classProbability:dictionaryValue];
   }
 
   else
@@ -170,50 +170,50 @@
   return v17;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(base_engage *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(base_engage *)self model];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100047EB0;
   v10[3] = &unk_1000956C0;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(base_engage *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(base_engage *)self model];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000480B8;
   v13[3] = &unk_1000956C0;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromClassic_time_between_uses_med_dur_1:(double)a3 classic_time_between_uses_med_dur_2:(double)a4 classic_time_between_uses_med_dur_4:(double)a5 classic_time_between_uses_med_dur_24:(double)a6 classic_time_between_uses_std_dur_1:(double)a7 classic_time_between_uses_std_dur_2:(double)a8 classic_time_between_uses_std_dur_4:(double)a9 classic_time_between_uses_std_dur_24:(double)a10 hour:(double)a11 is_weekend:(double)a12 hour_plus_0:(double)a13 hour_plus_1:(double)a14 hour_plus_2:(double)a15 hour_plus_3:(double)a16 hour_plus_4:(double)a17 hour_plus_5:(double)a18 hours_until_use:(double)a19 meaningful_undercharge_rolling_average:(double)a20 error:(id *)a21
+- (id)predictionFromClassic_time_between_uses_med_dur_1:(double)classic_time_between_uses_med_dur_1 classic_time_between_uses_med_dur_2:(double)classic_time_between_uses_med_dur_2 classic_time_between_uses_med_dur_4:(double)classic_time_between_uses_med_dur_4 classic_time_between_uses_med_dur_24:(double)classic_time_between_uses_med_dur_24 classic_time_between_uses_std_dur_1:(double)classic_time_between_uses_std_dur_1 classic_time_between_uses_std_dur_2:(double)classic_time_between_uses_std_dur_2 classic_time_between_uses_std_dur_4:(double)classic_time_between_uses_std_dur_4 classic_time_between_uses_std_dur_24:(double)self0 hour:(double)self1 is_weekend:(double)self2 hour_plus_0:(double)self3 hour_plus_1:(double)self4 hour_plus_2:(double)self5 hour_plus_3:(double)self6 hour_plus_4:(double)self7 hour_plus_5:(double)self8 hours_until_use:(double)self9 meaningful_undercharge_rolling_average:(double)meaningful_undercharge_rolling_average error:(id *)error
 {
-  v23 = [[base_engageInput alloc] initWithClassic_time_between_uses_med_dur_1:a3 classic_time_between_uses_med_dur_2:a4 classic_time_between_uses_med_dur_4:a5 classic_time_between_uses_med_dur_24:a6 classic_time_between_uses_std_dur_1:a7 classic_time_between_uses_std_dur_2:a8 classic_time_between_uses_std_dur_4:a9 classic_time_between_uses_std_dur_24:a10 hour:*&a11 is_weekend:*&a12 hour_plus_0:*&a13 hour_plus_1:*&a14 hour_plus_2:*&a15 hour_plus_3:*&a16 hour_plus_4:*&a17 hour_plus_5:*&a18 hours_until_use:*&a19 meaningful_undercharge_rolling_average:*&a20];
-  v24 = [(base_engage *)self predictionFromFeatures:v23 error:a21];
+  v23 = [[base_engageInput alloc] initWithClassic_time_between_uses_med_dur_1:classic_time_between_uses_med_dur_1 classic_time_between_uses_med_dur_2:classic_time_between_uses_med_dur_2 classic_time_between_uses_med_dur_4:classic_time_between_uses_med_dur_4 classic_time_between_uses_med_dur_24:classic_time_between_uses_med_dur_24 classic_time_between_uses_std_dur_1:classic_time_between_uses_std_dur_1 classic_time_between_uses_std_dur_2:classic_time_between_uses_std_dur_2 classic_time_between_uses_std_dur_4:classic_time_between_uses_std_dur_4 classic_time_between_uses_std_dur_24:classic_time_between_uses_std_dur_24 hour:*&hour is_weekend:*&is_weekend hour_plus_0:*&hour_plus_0 hour_plus_1:*&hour_plus_1 hour_plus_2:*&hour_plus_2 hour_plus_3:*&hour_plus_3 hour_plus_4:*&hour_plus_4 hour_plus_5:*&hour_plus_5 hours_until_use:*&hours_until_use meaningful_undercharge_rolling_average:*&meaningful_undercharge_rolling_average];
+  v24 = [(base_engage *)self predictionFromFeatures:v23 error:error];
 
   return v24;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:v8];
-  v11 = [(base_engage *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:inputsCopy];
+  model = [(base_engage *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -221,26 +221,26 @@
     if ([v12 count] >= 1)
     {
       v23 = v10;
-      v24 = v9;
-      v25 = v8;
+      v24 = optionsCopy;
+      v25 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:v14];
         v16 = [base_engageOutput alloc];
         v17 = [v15 featureValueForName:@"engage"];
-        v18 = [v17 int64Value];
+        int64Value = [v17 int64Value];
         v19 = [v15 featureValueForName:@"classProbability"];
-        v20 = [v19 dictionaryValue];
-        v21 = [(base_engageOutput *)v16 initWithEngage:v18 classProbability:v20];
+        dictionaryValue = [v19 dictionaryValue];
+        v21 = [(base_engageOutput *)v16 initWithEngage:int64Value classProbability:dictionaryValue];
 
         [v13 addObject:v21];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v24;
-      v8 = v25;
+      optionsCopy = v24;
+      inputsCopy = v25;
       v10 = v23;
     }
   }

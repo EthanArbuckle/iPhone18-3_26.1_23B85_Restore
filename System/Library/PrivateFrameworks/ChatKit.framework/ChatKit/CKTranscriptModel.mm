@@ -1,20 +1,20 @@
 @interface CKTranscriptModel
-- (CKTranscriptModel)initWithConversation:(id)a3 delegate:(id)a4;
+- (CKTranscriptModel)initWithConversation:(id)conversation delegate:(id)delegate;
 - (CKTranscriptModelDelegate)delegate;
 - (NSDiffableDataSourceSnapshot)snapshot;
-- (id)chatItemWithIMChatItem:(id)a3 traitCollection:(id)a4 transcriptBackgroundLuminance:(double)a5;
-- (id)chatItemsWithIMChatItems:(id)a3;
+- (id)chatItemWithIMChatItem:(id)item traitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance;
+- (id)chatItemsWithIMChatItems:(id)items;
 - (void)reload;
-- (void)setChatItems:(id)a3;
+- (void)setChatItems:(id)items;
 @end
 
 @implementation CKTranscriptModel
 
-- (CKTranscriptModel)initWithConversation:(id)a3 delegate:(id)a4
+- (CKTranscriptModel)initWithConversation:(id)conversation delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  conversationCopy = conversation;
+  delegateCopy = delegate;
+  if (conversationCopy)
   {
     v13.receiver = self;
     v13.super_class = CKTranscriptModel;
@@ -22,12 +22,12 @@
     v9 = v8;
     if (v8)
     {
-      [(CKTranscriptModel *)v8 setDelegate:v7];
-      [(CKTranscriptModel *)v9 setConversation:v6];
+      [(CKTranscriptModel *)v8 setDelegate:delegateCopy];
+      [(CKTranscriptModel *)v9 setConversation:conversationCopy];
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,25 +42,25 @@
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSDiffableDataSourceSnapshot)snapshot
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() transcriptSectionIdentifier];
+  transcriptSectionIdentifier = [objc_opt_class() transcriptSectionIdentifier];
   v4 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v9[0] = v3;
+  v9[0] = transcriptSectionIdentifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   [v4 appendSectionsWithIdentifiers:v5];
 
-  v6 = [(CKTranscriptModel *)self chatItems];
-  v7 = [v6 __imArrayByApplyingBlock:&__block_literal_global_108];
+  chatItems = [(CKTranscriptModel *)self chatItems];
+  v7 = [chatItems __imArrayByApplyingBlock:&__block_literal_global_108];
 
-  [v4 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:v3];
+  [v4 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:transcriptSectionIdentifier];
 
   return v4;
 }
@@ -76,31 +76,31 @@ id __29__CKTranscriptModel_snapshot__block_invoke(uint64_t a1, void *a2)
 - (void)reload
 {
   [(CKTranscriptModel *)self setChatItems:0];
-  v3 = [(CKTranscriptModel *)self conversation];
-  v4 = [v3 chat];
-  v6 = [v4 chatItems];
+  conversation = [(CKTranscriptModel *)self conversation];
+  chat = [conversation chat];
+  chatItems = [chat chatItems];
 
-  v5 = [(CKTranscriptModel *)self chatItemsWithIMChatItems:v6];
+  v5 = [(CKTranscriptModel *)self chatItemsWithIMChatItems:chatItems];
   [(CKTranscriptModel *)self setChatItems:v5];
 }
 
-- (id)chatItemsWithIMChatItems:(id)a3
+- (id)chatItemsWithIMChatItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(CKTranscriptModel *)self delegate];
-  v7 = [v6 traitCollectionForModel:self];
+  itemsCopy = items;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  delegate = [(CKTranscriptModel *)self delegate];
+  v7 = [delegate traitCollectionForModel:self];
 
-  v8 = [(CKTranscriptModel *)self delegate];
-  [v8 transcriptBackgroundLuminanceForModel:self];
+  delegate2 = [(CKTranscriptModel *)self delegate];
+  [delegate2 transcriptBackgroundLuminanceForModel:self];
   v10 = v9;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v4;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -131,32 +131,32 @@ id __29__CKTranscriptModel_snapshot__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)chatItemWithIMChatItem:(id)a3 traitCollection:(id)a4 transcriptBackgroundLuminance:(double)a5
+- (id)chatItemWithIMChatItem:(id)item traitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKTranscriptModel *)self delegate];
-  [v10 itemMaxWidthForModel:self];
+  collectionCopy = collection;
+  itemCopy = item;
+  delegate = [(CKTranscriptModel *)self delegate];
+  [delegate itemMaxWidthForModel:self];
   v12 = v11;
 
-  v13 = [(CKTranscriptModel *)self delegate];
-  [v13 balloonMaxWidthForModel:self];
+  delegate2 = [(CKTranscriptModel *)self delegate];
+  [delegate2 balloonMaxWidthForModel:self];
   v15 = v14;
 
-  v16 = [CKChatItem chatItemWithIMChatItem:v9 balloonMaxWidth:v8 fullMaxWidth:0 transcriptTraitCollection:v15 transcriptBackgroundLuminance:v12 overlayLayout:a5];
+  v16 = [CKChatItem chatItemWithIMChatItem:itemCopy balloonMaxWidth:collectionCopy fullMaxWidth:0 transcriptTraitCollection:v15 transcriptBackgroundLuminance:v12 overlayLayout:luminance];
 
   return v16;
 }
 
-- (void)setChatItems:(id)a3
+- (void)setChatItems:(id)items
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_chatItems != v5)
+  itemsCopy = items;
+  if (self->_chatItems != itemsCopy)
   {
-    v19 = self;
-    objc_storeStrong(&self->_chatItems, a3);
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](v5, "count")}];
+    selfCopy = self;
+    objc_storeStrong(&self->_chatItems, items);
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](itemsCopy, "count")}];
     v35[0] = objc_opt_class();
     v35[1] = objc_opt_class();
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
@@ -164,8 +164,8 @@ id __29__CKTranscriptModel_snapshot__block_invoke(uint64_t a1, void *a2)
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v20 = v5;
-    obj = v5;
+    v20 = itemsCopy;
+    obj = itemsCopy;
     v24 = [(NSArray *)obj countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v24)
     {
@@ -200,9 +200,9 @@ id __29__CKTranscriptModel_snapshot__block_invoke(uint64_t a1, void *a2)
                 }
 
                 v14 = *(*(&v25 + 1) + 8 * j);
-                v15 = [v8 IMChatItem];
-                v16 = [v15 guid];
-                v17 = [v14 supplementaryViewKindForGUID:v16];
+                iMChatItem = [v8 IMChatItem];
+                guid = [iMChatItem guid];
+                v17 = [v14 supplementaryViewKindForGUID:guid];
 
                 [v6 setObject:v8 forKey:v17];
               }
@@ -221,9 +221,9 @@ id __29__CKTranscriptModel_snapshot__block_invoke(uint64_t a1, void *a2)
     }
 
     v18 = [v6 copy];
-    [(CKTranscriptModel *)v19 setSupplementaryKindToChatItemMap:v18];
+    [(CKTranscriptModel *)selfCopy setSupplementaryKindToChatItemMap:v18];
 
-    v5 = v20;
+    itemsCopy = v20;
   }
 }
 

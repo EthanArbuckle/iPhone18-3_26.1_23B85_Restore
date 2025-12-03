@@ -22,9 +22,9 @@
     v2->_dispatchQueue = v7;
 
     v9 = sub_1003BBF50();
-    v10 = [v9 isHRNMode];
+    isHRNMode = [v9 isHRNMode];
 
-    if ((v10 & 1) == 0)
+    if ((isHRNMode & 1) == 0)
     {
       v11 = +[BagService appstoredService];
       v12 = v2->_dispatchQueue;

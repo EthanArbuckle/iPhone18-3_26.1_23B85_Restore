@@ -1,27 +1,27 @@
 @interface IXSDefaultAppSelectAlert
-- (IXSDefaultAppSelectAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5;
+- (IXSDefaultAppSelectAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type;
 - (id)defaultButtonLabel;
 - (id)message;
 - (id)title;
-- (void)displayAlertWithCompletion:(id)a3;
-- (void)openSettingsWithBundleID:(id)a3;
+- (void)displayAlertWithCompletion:(id)completion;
+- (void)openSettingsWithBundleID:(id)d;
 @end
 
 @implementation IXSDefaultAppSelectAlert
 
-- (IXSDefaultAppSelectAlert)initWithAppRecord:(id)a3 removability:(unint64_t)a4 defaultAppType:(unint64_t)a5
+- (IXSDefaultAppSelectAlert)initWithAppRecord:(id)record removability:(unint64_t)removability defaultAppType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [v8 bundleIdentifier];
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
   v12.receiver = self;
   v12.super_class = IXSDefaultAppSelectAlert;
-  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:v8 bundleIdentifier:v9 removability:a4 deletionIsRestricted:0];
+  v10 = [(IXSUninstallAlert *)&v12 initWithAppRecord:recordCopy bundleIdentifier:bundleIdentifier removability:removability deletionIsRestricted:0];
 
   if (v10)
   {
     [(IXSUninstallAlert *)v10 setTypeDescription:@"Select Default App"];
     [(IXSUninstallAlert *)v10 setDefaultButtonAppearsDestructive:0];
-    v10->_appType = a5;
+    v10->_appType = type;
   }
 
   return v10;
@@ -29,13 +29,13 @@
 
 - (id)title
 {
-  v3 = [(IXSDefaultAppSelectAlert *)self appType];
+  appType = [(IXSDefaultAppSelectAlert *)self appType];
   v4 = 0;
-  if (v3 > 4)
+  if (appType > 4)
   {
-    if (v3 > 6)
+    if (appType > 6)
     {
-      if (v3 == 7)
+      if (appType == 7)
       {
         v5 = @"DEFAULT_APP_NAVIGATION_SELECT_DELETE_APP_TITLE";
         v6 = @"Select Another Default Navigation App";
@@ -43,7 +43,7 @@
 
       else
       {
-        if (v3 != 8)
+        if (appType != 8)
         {
           goto LABEL_19;
         }
@@ -53,7 +53,7 @@
       }
     }
 
-    else if (v3 == 5)
+    else if (appType == 5)
     {
       v5 = @"DEFAULT_APP_MAIL_SELECT_DELETE_APP_UI_ALERT_TITLE";
       v6 = @"Select Another Default Mail App";
@@ -66,9 +66,9 @@
     }
   }
 
-  else if (v3 > 2)
+  else if (appType > 2)
   {
-    if (v3 == 3)
+    if (appType == 3)
     {
       v5 = @"DEFAULT_APP_MESSAGES_SELECT_DELETE_APP_UI_ALERT_TITLE";
       v6 = @"Select Another Default Messaging App";
@@ -81,7 +81,7 @@
     }
   }
 
-  else if (v3 == 1)
+  else if (appType == 1)
   {
     v5 = @"DEFAULT_APP_SAFARI_SELECT_DELETE_APP_UI_ALERT_TITLE";
     v6 = @"Select Default Browser App";
@@ -89,7 +89,7 @@
 
   else
   {
-    if (v3 != 2)
+    if (appType != 2)
     {
       goto LABEL_19;
     }
@@ -106,13 +106,13 @@ LABEL_19:
 
 - (id)message
 {
-  v3 = [(IXSDefaultAppSelectAlert *)self appType];
+  appType = [(IXSDefaultAppSelectAlert *)self appType];
   v4 = 0;
-  if (v3 > 4)
+  if (appType > 4)
   {
-    if (v3 > 6)
+    if (appType > 6)
     {
-      if (v3 == 7)
+      if (appType == 7)
       {
         v5 = @"DEFAULT_APP_SELECT_NAVIGATION_APP_BODY";
         v6 = @"To delete “%@”, select another navigation app as your default.";
@@ -120,7 +120,7 @@ LABEL_19:
 
       else
       {
-        if (v3 != 8)
+        if (appType != 8)
         {
           goto LABEL_19;
         }
@@ -130,7 +130,7 @@ LABEL_19:
       }
     }
 
-    else if (v3 == 5)
+    else if (appType == 5)
     {
       v5 = @"DEFAULT_APP_SELECT_MAIL_APP_BODY";
       v6 = @"To delete “%@”, select another mail app as your default.";
@@ -143,9 +143,9 @@ LABEL_19:
     }
   }
 
-  else if (v3 > 2)
+  else if (appType > 2)
   {
-    if (v3 == 3)
+    if (appType == 3)
     {
       v5 = @"DEFAULT_APP_SELECT_MESSAGING_APP_BODY";
       v6 = @"To delete “%@”, select another messaging app as your default.";
@@ -158,7 +158,7 @@ LABEL_19:
     }
   }
 
-  else if (v3 == 1)
+  else if (appType == 1)
   {
     v5 = @"DEFAULT_APP_SELECT_BROWSER_APP_BODY";
     v6 = @"Select another browser app as your default, and then you'll be able to delete “%@”.";
@@ -166,7 +166,7 @@ LABEL_19:
 
   else
   {
-    if (v3 != 2)
+    if (appType != 2)
     {
       goto LABEL_19;
     }
@@ -176,9 +176,9 @@ LABEL_19:
   }
 
   v7 = [(IXSUninstallAlert *)self localizedStringForKey:v5 withFormatHint:v6];
-  v8 = [(IXSUninstallAlert *)self appRecord];
-  v9 = [v8 localizedName];
-  v4 = [NSString localizedStringWithFormat:v7, v9];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  localizedName = [appRecord localizedName];
+  v4 = [NSString localizedStringWithFormat:v7, localizedName];
 
 LABEL_19:
 
@@ -193,11 +193,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)openSettingsWithBundleID:(id)a3
+- (void)openSettingsWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  v6 = [dCopy stringByAddingPercentEncodingWithAllowedCharacters:v5];
 
   if ([(IXSDefaultAppSelectAlert *)self appType]- 1 > 7)
   {
@@ -237,26 +237,26 @@ LABEL_19:
   }
 }
 
-- (void)displayAlertWithCompletion:(id)a3
+- (void)displayAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [IXSUninstallAlertConfiguration alloc];
-  v6 = [(IXSDefaultAppSelectAlert *)self title];
-  v7 = [(IXSDefaultAppSelectAlert *)self message];
-  v14 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:v6 message:v7];
+  title = [(IXSDefaultAppSelectAlert *)self title];
+  message = [(IXSDefaultAppSelectAlert *)self message];
+  v14 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:title message:message];
 
   v8 = [IXSUninstallButtonConfiguration alloc];
-  v9 = [(IXSDefaultAppSelectAlert *)self defaultButtonLabel];
-  v10 = [(IXSUninstallButtonConfiguration *)v8 initWithTitle:v9 buttonType:0];
+  defaultButtonLabel = [(IXSDefaultAppSelectAlert *)self defaultButtonLabel];
+  v10 = [(IXSUninstallButtonConfiguration *)v8 initWithTitle:defaultButtonLabel buttonType:0];
 
   [(IXSUninstallAlertConfiguration *)v14 addButtonDefinition:v10 forAction:&stru_1001039D0];
   [(IXSUninstallButtonConfiguration *)v10 setIsPreferredButton:1];
   v11 = [IXSUninstallButtonConfiguration alloc];
-  v12 = [(IXSDefaultAppSelectAlert *)self cancelButtonLabel];
-  v13 = [(IXSUninstallButtonConfiguration *)v11 initWithTitle:v12 buttonType:2];
+  cancelButtonLabel = [(IXSDefaultAppSelectAlert *)self cancelButtonLabel];
+  v13 = [(IXSUninstallButtonConfiguration *)v11 initWithTitle:cancelButtonLabel buttonType:2];
 
   [(IXSUninstallAlertConfiguration *)v14 addButtonDefinition:v13 forAction:&stru_1001039F0];
-  [(IXSUninstallAlert *)self displayAlertWithCompletion:v4 uninstallAlertConfiguration:v14];
+  [(IXSUninstallAlert *)self displayAlertWithCompletion:completionCopy uninstallAlertConfiguration:v14];
 }
 
 @end

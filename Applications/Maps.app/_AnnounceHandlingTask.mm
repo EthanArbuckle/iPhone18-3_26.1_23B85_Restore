@@ -1,5 +1,5 @@
 @interface _AnnounceHandlingTask
-- (_AnnounceHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4;
+- (_AnnounceHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier;
 - (void)performTask;
 @end
 
@@ -10,8 +10,8 @@
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
   if (([(GEOAnnouncement *)self->_announcement displayDestinations]& 2) != 0)
   {
-    v5 = [(GEOAnnouncement *)self->_announcement buttonOneAppURI];
-    v6 = [NSScanner scannerWithString:v5];
+    buttonOneAppURI = [(GEOAnnouncement *)self->_announcement buttonOneAppURI];
+    v6 = [NSScanner scannerWithString:buttonOneAppURI];
 
     if ([v6 scanString:@"flyover:" intoString:0])
     {
@@ -43,25 +43,25 @@ LABEL_10:
   v3 = sub_100005610();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
-    v4 = [(GEOAnnouncement *)self->_announcement displayDestinations];
+    displayDestinations = [(GEOAnnouncement *)self->_announcement displayDestinations];
     LODWORD(v11) = 67109120;
-    HIDWORD(v11) = v4;
+    HIDWORD(v11) = displayDestinations;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "_AnnounceHandlingTask performTask AnnouncementDestination %u not ANNOUNCEMENT_APPLICATION", &v11, 8u);
   }
 
   [(RichMapsActivityCreatingTaskImpl *)self taskFailed];
 }
 
-- (_AnnounceHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4
+- (_AnnounceHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[GEOAnnouncement alloc] initWithData:v6];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v8 = [[GEOAnnouncement alloc] initWithData:dataCopy];
   if (v8)
   {
     v14.receiver = self;
     v14.super_class = _AnnounceHandlingTask;
-    v9 = [(NotificationHandlingTask *)&v14 initWithData:v6 recordIdentifier:v7];
+    v9 = [(NotificationHandlingTask *)&v14 initWithData:dataCopy recordIdentifier:identifierCopy];
     v10 = v9;
     if (v9)
     {
@@ -69,7 +69,7 @@ LABEL_10:
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -81,10 +81,10 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "_AnnounceHandlingTask GEOAnnouncement nil with data", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -9,32 +9,32 @@
 - (AMSProcessInfo)clientInfo;
 - (AMSResponseDecoding)responseDecoder;
 - (AMSURLBagContract)bagContract;
-- (AMSURLRequestEncoder)initWithBag:(id)a3;
-- (AMSURLRequestEncoder)initWithBagContract:(id)a3;
+- (AMSURLRequestEncoder)initWithBag:(id)bag;
+- (AMSURLRequestEncoder)initWithBagContract:(id)contract;
 - (NSArray)groupRequestAccounts;
 - (NSDictionary)additionalMetrics;
 - (NSString)logUUID;
-- (id)_addCookiesToRequest:(id)a3 account:(id)a4;
-- (id)_methodStringFromMethod:(int64_t)a3;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4 error:(id *)a5;
-- (id)requestByEncodingRequestAndReturnSigningErrors:(id)a3 parameters:(id)a4;
-- (id)requestWithMethod:(int64_t)a3 URL:(id)a4 headers:(id)a5 parameters:(id)a6;
-- (id)requestWithMethod:(int64_t)a3 URL:(id)a4 parameters:(id)a5 error:(id *)a6;
-- (id)requestWithMethod:(int64_t)a3 URLString:(id)a4 parameters:(id)a5 error:(id *)a6;
-- (id)requestWithMethod:(int64_t)a3 bagURL:(id)a4 headers:(id)a5 parameters:(id)a6;
-- (id)requestWithMethod:(int64_t)a3 bagURL:(id)a4 parameters:(id)a5 error:(id *)a6;
-- (void)_checkHeaderSizeAndTriggerAutoBugCaptureIfNeeded:(id)a3;
-- (void)_personalizeKeychainOptionsForAccount:(id)a3;
-- (void)_triggerAutoBugCaptureForOversizedHeaders:(id)a3 totalHeaderSize:(unint64_t)a4 threshold:(unint64_t)a5 maxSize:(unint64_t)a6;
-- (void)setAccount:(id)a3;
-- (void)setAdditionalMetrics:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setGroupRequestAccounts:(id)a3;
-- (void)setKeychainOptions:(id)a3;
-- (void)setLogUUID:(id)a3;
-- (void)setResponseDecoder:(id)a3;
+- (id)_addCookiesToRequest:(id)request account:(id)account;
+- (id)_methodStringFromMethod:(int64_t)method;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters error:(id *)error;
+- (id)requestByEncodingRequestAndReturnSigningErrors:(id)errors parameters:(id)parameters;
+- (id)requestWithMethod:(int64_t)method URL:(id)l headers:(id)headers parameters:(id)parameters;
+- (id)requestWithMethod:(int64_t)method URL:(id)l parameters:(id)parameters error:(id *)error;
+- (id)requestWithMethod:(int64_t)method URLString:(id)string parameters:(id)parameters error:(id *)error;
+- (id)requestWithMethod:(int64_t)method bagURL:(id)l headers:(id)headers parameters:(id)parameters;
+- (id)requestWithMethod:(int64_t)method bagURL:(id)l parameters:(id)parameters error:(id *)error;
+- (void)_checkHeaderSizeAndTriggerAutoBugCaptureIfNeeded:(id)needed;
+- (void)_personalizeKeychainOptionsForAccount:(id)account;
+- (void)_triggerAutoBugCaptureForOversizedHeaders:(id)headers totalHeaderSize:(unint64_t)size threshold:(unint64_t)threshold maxSize:(unint64_t)maxSize;
+- (void)setAccount:(id)account;
+- (void)setAdditionalMetrics:(id)metrics;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setGroupRequestAccounts:(id)accounts;
+- (void)setKeychainOptions:(id)options;
+- (void)setLogUUID:(id)d;
+- (void)setResponseDecoder:(id)decoder;
 @end
 
 @implementation AMSURLRequestEncoder
@@ -118,9 +118,9 @@
   return v3;
 }
 
-- (AMSURLRequestEncoder)initWithBag:(id)a3
+- (AMSURLRequestEncoder)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v22.receiver = self;
   v22.super_class = AMSURLRequestEncoder;
   v6 = [(AMSURLRequestEncoder *)&v22 init];
@@ -135,7 +135,7 @@
 
     *&v7->_alwaysIncludeAuthKitHeaders = 0;
     v7->_anisetteType = 0;
-    objc_storeStrong(&v7->_bag, a3);
+    objc_storeStrong(&v7->_bag, bag);
     v11 = +[AMSProcessInfo currentProcess];
     clientInfo = v7->_clientInfo;
     v7->_clientInfo = v11;
@@ -164,92 +164,92 @@
   return v7;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   os_unfair_recursive_lock_lock_with_options();
   account = self->_account;
-  self->_account = v4;
+  self->_account = accountCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setAdditionalMetrics:(id)a3
+- (void)setAdditionalMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   os_unfair_recursive_lock_lock_with_options();
   additionalMetrics = self->_additionalMetrics;
-  self->_additionalMetrics = v4;
+  self->_additionalMetrics = metricsCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   os_unfair_recursive_lock_lock_with_options();
   bag = self->_bag;
-  self->_bag = v4;
+  self->_bag = bagCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_recursive_lock_lock_with_options();
   clientInfo = self->_clientInfo;
-  self->_clientInfo = v4;
+  self->_clientInfo = infoCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setGroupRequestAccounts:(id)a3
+- (void)setGroupRequestAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   os_unfair_recursive_lock_lock_with_options();
   groupRequestAccounts = self->_groupRequestAccounts;
-  self->_groupRequestAccounts = v4;
+  self->_groupRequestAccounts = accountsCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setKeychainOptions:(id)a3
+- (void)setKeychainOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   os_unfair_recursive_lock_lock_with_options();
   keychainOptions = self->_keychainOptions;
-  self->_keychainOptions = v4;
+  self->_keychainOptions = optionsCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setLogUUID:(id)a3
+- (void)setLogUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_recursive_lock_lock_with_options();
   logUUID = self->_logUUID;
-  self->_logUUID = v4;
+  self->_logUUID = dCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setResponseDecoder:(id)a3
+- (void)setResponseDecoder:(id)decoder
 {
-  v4 = a3;
+  decoderCopy = decoder;
   os_unfair_recursive_lock_lock_with_options();
   responseDecoder = self->_responseDecoder;
-  self->_responseDecoder = v4;
+  self->_responseDecoder = decoderCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (id)requestWithMethod:(int64_t)a3 bagURL:(id)a4 headers:(id)a5 parameters:(id)a6
+- (id)requestWithMethod:(int64_t)method bagURL:(id)l headers:(id)headers parameters:(id)parameters
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  lCopy = l;
+  headersCopy = headers;
+  parametersCopy = parameters;
+  if (lCopy)
   {
     v13 = objc_alloc_init(AMSMutablePromise);
     v19[0] = MEMORY[0x1E69E9820];
@@ -258,11 +258,11 @@
     v19[3] = &unk_1E73BD330;
     v14 = v13;
     v20 = v14;
-    v21 = self;
-    v24 = a3;
-    v22 = v11;
-    v23 = v12;
-    [v10 valueWithCompletion:v19];
+    selfCopy = self;
+    methodCopy = method;
+    v22 = headersCopy;
+    v23 = parametersCopy;
+    [lCopy valueWithCompletion:v19];
     v15 = v23;
     v16 = v14;
   }
@@ -292,13 +292,13 @@ void __68__AMSURLRequestEncoder_requestWithMethod_bagURL_headers_parameters___bl
   }
 }
 
-- (id)requestWithMethod:(int64_t)a3 URL:(id)a4 headers:(id)a5 parameters:(id)a6
+- (id)requestWithMethod:(int64_t)method URL:(id)l headers:(id)headers parameters:(id)parameters
 {
   v10 = MEMORY[0x1E695AC18];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 requestWithURL:a4];
-  v14 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:a3];
+  parametersCopy = parameters;
+  headersCopy = headers;
+  v13 = [v10 requestWithURL:l];
+  v14 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:method];
   [v13 setHTTPMethod:v14];
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -307,9 +307,9 @@ void __68__AMSURLRequestEncoder_requestWithMethod_bagURL_headers_parameters___bl
   v18[3] = &unk_1E73B7EE0;
   v19 = v13;
   v15 = v13;
-  [v12 enumerateKeysAndObjectsUsingBlock:v18];
+  [headersCopy enumerateKeysAndObjectsUsingBlock:v18];
 
-  v16 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v15 parameters:v11];
+  v16 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v15 parameters:parametersCopy];
 
   return v16;
 }
@@ -352,16 +352,16 @@ void __44__AMSURLRequestEncoder_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters
 {
-  v4 = [(AMSURLRequestEncoder *)self requestByEncodingRequestAndReturnSigningErrors:a3 parameters:a4];
+  v4 = [(AMSURLRequestEncoder *)self requestByEncodingRequestAndReturnSigningErrors:request parameters:parameters];
   v5 = [v4 thenWithBlock:&__block_literal_global_31_0];
 
   return v5;
@@ -375,18 +375,18 @@ id __60__AMSURLRequestEncoder_requestByEncodingRequest_parameters___block_invoke
   return v3;
 }
 
-- (id)requestByEncodingRequestAndReturnSigningErrors:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequestAndReturnSigningErrors:(id)errors parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  errorsCopy = errors;
+  parametersCopy = parameters;
   v8 = objc_alloc_init(AMSMutablePromise);
-  v9 = [v6 copy];
+  v9 = [errorsCopy copy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_5:
-    v10 = [[AMSURLRequest alloc] initWithRequest:v6];
+    v10 = [[AMSURLRequest alloc] initWithRequest:errorsCopy];
     goto LABEL_6;
   }
 
@@ -398,21 +398,21 @@ LABEL_5:
   }
 
 LABEL_6:
-  v11 = [(AMSURLRequestEncoder *)self internalQueue];
+  internalQueue = [(AMSURLRequestEncoder *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__AMSURLRequestEncoder_requestByEncodingRequestAndReturnSigningErrors_parameters___block_invoke;
   block[3] = &unk_1E73B7138;
   block[4] = self;
   v20 = v10;
-  v21 = v6;
-  v22 = v7;
+  v21 = errorsCopy;
+  v22 = parametersCopy;
   v12 = v8;
   v23 = v12;
-  v13 = v7;
-  v14 = v6;
+  v13 = parametersCopy;
+  v14 = errorsCopy;
   v15 = v10;
-  dispatch_async(v11, block);
+  dispatch_async(internalQueue, block);
 
   v16 = v23;
   v17 = v12;
@@ -1512,27 +1512,27 @@ uint64_t __82__AMSURLRequestEncoder_requestByEncodingRequestAndReturnSigningErro
   return [v1 setEncodeCount:v2];
 }
 
-- (id)_addCookiesToRequest:(id)a3 account:(id)a4
+- (id)_addCookiesToRequest:(id)request account:(id)account
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  accountCopy = account;
   if ([(AMSURLRequestEncoder *)self shouldSetCookieHeader])
   {
-    if (!v8 || ([v8 ams_isLocalAccount] & 1) != 0 || objc_msgSend(v8, "ams_isEphemeralAccount"))
+    if (!accountCopy || ([accountCopy ams_isLocalAccount] & 1) != 0 || objc_msgSend(accountCopy, "ams_isEphemeralAccount"))
     {
-      v9 = [(AMSURLRequestEncoder *)self alwaysIncludeAuthKitHeaders];
+      alwaysIncludeAuthKitHeaders = [(AMSURLRequestEncoder *)self alwaysIncludeAuthKitHeaders];
       v10 = +[AMSLogConfig sharedURLLoadingConfig];
       v11 = v10;
-      if (!v9)
+      if (!alwaysIncludeAuthKitHeaders)
       {
         if (!v10)
         {
           v11 = +[AMSLogConfig sharedConfig];
         }
 
-        v25 = [v11 OSLogObject];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v11 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v26 = AMSLogKey();
           v27 = MEMORY[0x1E696AEC0];
@@ -1549,12 +1549,12 @@ uint64_t __82__AMSURLRequestEncoder_requestByEncodingRequestAndReturnSigningErro
             [v27 stringWithFormat:@"%@: ", v28];
           }
           v30 = ;
-          v37 = AMSHashIfNeeded(v8);
+          v37 = AMSHashIfNeeded(accountCopy);
           *buf = 138543618;
           v45 = v30;
           v46 = 2114;
           v47 = v37;
-          _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Request is unpersonalized, adding cookies. account = %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Request is unpersonalized, adding cookies. account = %{public}@", buf, 0x16u);
           if (v26)
           {
 
@@ -1562,9 +1562,9 @@ uint64_t __82__AMSURLRequestEncoder_requestByEncodingRequestAndReturnSigningErro
           }
         }
 
-        v38 = [(AMSURLRequestEncoder *)self clientInfo];
+        clientInfo = [(AMSURLRequestEncoder *)self clientInfo];
         v39 = [(AMSURLRequestEncoder *)self bag];
-        v31 = [v7 ams_addCookiesAsynchronouslyForAccount:v8 clientInfo:v38 bag:v39 cleanupGlobalCookies:1];
+        v31 = [requestCopy ams_addCookiesAsynchronouslyForAccount:accountCopy clientInfo:clientInfo bag:v39 cleanupGlobalCookies:1];
 
         goto LABEL_46;
       }
@@ -1574,25 +1574,25 @@ uint64_t __82__AMSURLRequestEncoder_requestByEncodingRequestAndReturnSigningErro
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v11 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_43:
 
         if (![(AMSURLRequestEncoder *)self excludeIdentifierHeadersForAccount])
         {
-          [v7 ams_addPrimaryiCloudIdentifierHeader];
+          [requestCopy ams_addPrimaryiCloudIdentifierHeader];
         }
 
-        v38 = [v7 ams_addAuthKitHeaders];
+        clientInfo = [requestCopy ams_addAuthKitHeaders];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke;
         v41[3] = &unk_1E73B6C00;
         v41[4] = self;
-        v42 = v7;
-        v43 = v8;
-        v31 = [v38 continueWithBlock:v41];
+        v42 = requestCopy;
+        v43 = accountCopy;
+        v31 = [clientInfo continueWithBlock:v41];
 
 LABEL_46:
         goto LABEL_47;
@@ -1613,7 +1613,7 @@ LABEL_46:
         [v14 stringWithFormat:@"%@: ", v15];
       }
       v17 = ;
-      v35 = AMSHashIfNeeded(v8);
+      v35 = AMSHashIfNeeded(accountCopy);
       *buf = 138543618;
       v45 = v17;
       v46 = 2114;
@@ -1629,8 +1629,8 @@ LABEL_46:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v11 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_43;
       }
@@ -1650,7 +1650,7 @@ LABEL_46:
         [v32 stringWithFormat:@"%@: ", v33];
       }
       v17 = ;
-      v35 = AMSHashIfNeeded(v8);
+      v35 = AMSHashIfNeeded(accountCopy);
       *buf = 138543618;
       v45 = v17;
       v46 = 2114;
@@ -1658,7 +1658,7 @@ LABEL_46:
       v36 = "%{public}@Request is personalized, adding personalized headers and cookies. account = %{public}@";
     }
 
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, v36, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, v36, buf, 0x16u);
     if (v13)
     {
 
@@ -1674,8 +1674,8 @@ LABEL_46:
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v20 = AMSLogKey();
     v21 = MEMORY[0x1E696AEC0];
@@ -1691,18 +1691,18 @@ LABEL_46:
     {
       [v21 stringWithFormat:@"%@: ", v22];
     }
-    v24 = ;
+    selfCopy = ;
     *buf = 138543362;
-    v45 = v24;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Request cookies are disabled. No cookie header will be added.", buf, 0xCu);
+    v45 = selfCopy;
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Request cookies are disabled. No cookie header will be added.", buf, 0xCu);
     if (v20)
     {
 
-      v24 = self;
+      selfCopy = self;
     }
   }
 
-  [v7 setHTTPShouldHandleCookies:0];
+  [requestCopy setHTTPShouldHandleCookies:0];
   v31 = +[AMSBinaryPromise promiseWithSuccess];
 LABEL_47:
 
@@ -1762,44 +1762,44 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
   return v18;
 }
 
-- (id)_methodStringFromMethod:(int64_t)a3
+- (id)_methodStringFromMethod:(int64_t)method
 {
-  if (a3 > 6)
+  if (method > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73BD408[a3];
+    return off_1E73BD408[method];
   }
 }
 
-- (void)_personalizeKeychainOptionsForAccount:(id)a3
+- (void)_personalizeKeychainOptionsForAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v13 = v4;
-    v5 = [(AMSURLRequestEncoder *)self keychainOptions];
+    v13 = accountCopy;
+    keychainOptions = [(AMSURLRequestEncoder *)self keychainOptions];
 
-    if (!v5 && ([v13 ams_isLocalAccount] & 1) == 0)
+    if (!keychainOptions && ([v13 ams_isLocalAccount] & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      v7 = [v6 processName];
-      v8 = [v7 isEqualToString:@"AppStore"];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v8 = [processName isEqualToString:@"AppStore"];
 
       if (v8)
       {
         v9 = objc_alloc_init(AMSKeychainOptions);
         [(AMSURLRequestEncoder *)self setKeychainOptions:v9];
 
-        v10 = [(AMSURLRequestEncoder *)self keychainOptions];
-        [v10 setPurpose:1];
+        keychainOptions2 = [(AMSURLRequestEncoder *)self keychainOptions];
+        [keychainOptions2 setPurpose:1];
 
         v11 = +[AMSKeychainOptions preferredAttestationStyle];
-        v12 = [(AMSURLRequestEncoder *)self keychainOptions];
-        [v12 setStyle:v11];
+        keychainOptions3 = [(AMSURLRequestEncoder *)self keychainOptions];
+        [keychainOptions3 setStyle:v11];
       }
     }
   }
@@ -1807,16 +1807,16 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_checkHeaderSizeAndTriggerAutoBugCaptureIfNeeded:(id)a3
+- (void)_checkHeaderSizeAndTriggerAutoBugCaptureIfNeeded:(id)needed
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 allHTTPHeaderFields];
+  neededCopy = needed;
+  allHTTPHeaderFields = [neededCopy allHTTPHeaderFields];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v37 count:16];
+  v6 = [allHTTPHeaderFields countByEnumeratingWithState:&v21 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1828,16 +1828,16 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allHTTPHeaderFields);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [allHTTPHeaderFields objectForKeyedSubscript:v11];
         v13 = [v11 length];
         v8 += v13 + [v12 length] + 4;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v37 count:16];
+      v7 = [allHTTPHeaderFields countByEnumeratingWithState:&v21 objects:v37 count:16];
     }
 
     while (v7);
@@ -1849,18 +1849,18 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v16 = objc_opt_class();
-        v20 = [v4 properties];
-        v17 = [v20 logUUID];
-        v18 = [v4 URL];
+        properties = [neededCopy properties];
+        logUUID = [properties logUUID];
+        v18 = [neededCopy URL];
         v19 = AMSLogableURL(v18);
         *buf = 138544642;
         v26 = v16;
         v27 = 2114;
-        v28 = v17;
+        v28 = logUUID;
         v29 = 2048;
         v30 = v8;
         v31 = 2048;
@@ -1869,18 +1869,18 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
         v34 = 0x2000;
         v35 = 2114;
         v36 = v19;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] HTTP headers approaching size limit. Total size: %lu bytes (threshold: %lu bytes, max: %lu bytes). URL: %{public}@", buf, 0x3Eu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] HTTP headers approaching size limit. Total size: %lu bytes (threshold: %lu bytes, max: %lu bytes). URL: %{public}@", buf, 0x3Eu);
       }
 
-      [(AMSURLRequestEncoder *)self _triggerAutoBugCaptureForOversizedHeaders:v4 totalHeaderSize:v8 threshold:7372 maxSize:0x2000];
+      [(AMSURLRequestEncoder *)self _triggerAutoBugCaptureForOversizedHeaders:neededCopy totalHeaderSize:v8 threshold:7372 maxSize:0x2000];
     }
   }
 }
 
-- (void)_triggerAutoBugCaptureForOversizedHeaders:(id)a3 totalHeaderSize:(unint64_t)a4 threshold:(unint64_t)a5 maxSize:(unint64_t)a6
+- (void)_triggerAutoBugCaptureForOversizedHeaders:(id)headers totalHeaderSize:(unint64_t)size threshold:(unint64_t)threshold maxSize:(unint64_t)maxSize
 {
   v75[4] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  headersCopy = headers;
   v74[0] = @"domain";
   v74[1] = @"type";
   v75[0] = @"AppleMediaServices";
@@ -1889,33 +1889,33 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
   v74[2] = @"subType";
   v74[3] = @"process";
   v10 = +[AMSProcessInfo currentProcess];
-  v11 = [v10 bundleIdentifier];
-  v12 = v11;
+  bundleIdentifier = [v10 bundleIdentifier];
+  v12 = bundleIdentifier;
   v13 = @"unknown";
-  if (v11)
+  if (bundleIdentifier)
   {
-    v13 = v11;
+    v13 = bundleIdentifier;
   }
 
   v75[3] = v13;
   v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:4];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [v14 setObject:v15 forKeyedSubscript:@"totalHeaderSize"];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:threshold];
   [v14 setObject:v16 forKeyedSubscript:@"threshold"];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maxSize];
   [v14 setObject:v17 forKeyedSubscript:@"maxSize"];
 
-  v18 = [v9 URL];
-  v19 = [v18 absoluteString];
-  v20 = v19;
-  if (v19)
+  v18 = [headersCopy URL];
+  absoluteString = [v18 absoluteString];
+  v20 = absoluteString;
+  if (absoluteString)
   {
-    v21 = v19;
+    v21 = absoluteString;
   }
 
   else
@@ -1925,12 +1925,12 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
 
   [v14 setObject:v21 forKeyedSubscript:@"requestURL"];
 
-  v22 = [v9 properties];
-  v23 = [v22 logUUID];
-  v24 = v23;
-  if (v23)
+  properties = [headersCopy properties];
+  logUUID = [properties logUUID];
+  v24 = logUUID;
+  if (logUUID)
   {
-    v25 = v23;
+    v25 = logUUID;
   }
 
   else
@@ -1941,18 +1941,18 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
   [v14 setObject:v25 forKeyedSubscript:{@"logUUID", v14}];
 
   v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v56 = v9;
-  v27 = [v9 allHTTPHeaderFields];
+  v56 = headersCopy;
+  allHTTPHeaderFields = [headersCopy allHTTPHeaderFields];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v28 = [v27 countByEnumeratingWithState:&v66 objects:v73 count:16];
+  v28 = [allHTTPHeaderFields countByEnumeratingWithState:&v66 objects:v73 count:16];
   if (v28)
   {
     v29 = v28;
     v30 = *v67;
-    v54 = v27;
+    v54 = allHTTPHeaderFields;
     v55 = v26;
     v53 = *v67;
     do
@@ -1963,11 +1963,11 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
       {
         if (*v67 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(allHTTPHeaderFields);
         }
 
         v32 = *(*(&v66 + 1) + 8 * v31);
-        v33 = [v27 objectForKeyedSubscript:v32];
+        v33 = [allHTTPHeaderFields objectForKeyedSubscript:v32];
         v34 = [v32 length];
         v35 = v34 + [v33 length];
         if ([v32 isEqualToString:@"Cookie"] && objc_msgSend(v33, "length"))
@@ -1976,12 +1976,12 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
           v59 = v32;
           v60 = v33;
           v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v37 = [v56 ams_cookies];
+          ams_cookies = [v56 ams_cookies];
           v62 = 0u;
           v63 = 0u;
           v64 = 0u;
           v65 = 0u;
-          v38 = [v37 countByEnumeratingWithState:&v62 objects:v72 count:16];
+          v38 = [ams_cookies countByEnumeratingWithState:&v62 objects:v72 count:16];
           if (v38)
           {
             v39 = v38;
@@ -1992,18 +1992,18 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
               {
                 if (*v63 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(ams_cookies);
                 }
 
                 v42 = *(*(&v62 + 1) + 8 * i);
-                v43 = [v37 objectForKeyedSubscript:v42];
+                v43 = [ams_cookies objectForKeyedSubscript:v42];
                 v44 = [v42 length];
                 v45 = [v43 length];
                 v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v44 + v45 + 3];
                 [v36 setObject:v46 forKeyedSubscript:v42];
               }
 
-              v39 = [v37 countByEnumeratingWithState:&v62 objects:v72 count:16];
+              v39 = [ams_cookies countByEnumeratingWithState:&v62 objects:v72 count:16];
             }
 
             while (v39);
@@ -2019,7 +2019,7 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
           [v55 setObject:v48 forKeyedSubscript:v59];
 
           v30 = v53;
-          v27 = v54;
+          allHTTPHeaderFields = v54;
           v29 = v57;
           v33 = v60;
         }
@@ -2034,7 +2034,7 @@ id __53__AMSURLRequestEncoder__addCookiesToRequest_account___block_invoke(uint64
       }
 
       while (v31 != v29);
-      v29 = [v27 countByEnumeratingWithState:&v66 objects:v73 count:16];
+      v29 = [allHTTPHeaderFields countByEnumeratingWithState:&v66 objects:v73 count:16];
     }
 
     while (v29);
@@ -2093,12 +2093,12 @@ void __100__AMSURLRequestEncoder__triggerAutoBugCaptureForOversizedHeaders_total
   }
 }
 
-- (AMSURLRequestEncoder)initWithBagContract:(id)a3
+- (AMSURLRequestEncoder)initWithBagContract:(id)contract
 {
-  if (a3)
+  if (contract)
   {
-    v4 = a3;
-    v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+    contractCopy = contract;
+    v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
   }
 
   else
@@ -2120,55 +2120,55 @@ void __100__AMSURLRequestEncoder__triggerAutoBugCaptureForOversizedHeaders_total
   return v5;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4 error:(id *)a5
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters error:(id *)error
 {
-  v8 = a3;
-  v9 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v8 parameters:a4];
-  v10 = [v9 resultWithError:a5];
+  requestCopy = request;
+  v9 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:requestCopy parameters:parameters];
+  v10 = [v9 resultWithError:error];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = requestCopy;
     v12 = [v10 URL];
     [v11 setURL:v12];
 
-    v13 = [v10 HTTPMethod];
-    [v11 setHTTPMethod:v13];
+    hTTPMethod = [v10 HTTPMethod];
+    [v11 setHTTPMethod:hTTPMethod];
 
-    v14 = [v10 HTTPBody];
+    hTTPBody = [v10 HTTPBody];
 
-    if (v14)
+    if (hTTPBody)
     {
-      v15 = [v10 HTTPBody];
-      [v11 setHTTPBody:v15];
+      hTTPBody2 = [v10 HTTPBody];
+      [v11 setHTTPBody:hTTPBody2];
     }
 
-    v16 = [v10 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v10 allHTTPHeaderFields];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __66__AMSURLRequestEncoder_requestByEncodingRequest_parameters_error___block_invoke;
     v19[3] = &unk_1E73B7EE0;
     v20 = v11;
     v17 = v11;
-    [v16 enumerateKeysAndObjectsUsingBlock:v19];
+    [allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:v19];
   }
 
   return v10;
 }
 
-- (id)requestWithMethod:(int64_t)a3 bagURL:(id)a4 parameters:(id)a5 error:(id *)a6
+- (id)requestWithMethod:(int64_t)method bagURL:(id)l parameters:(id)parameters error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [a4 valueWithError:a6];
+  parametersCopy = parameters;
+  v11 = [l valueWithError:error];
   if (v11)
   {
     v12 = [MEMORY[0x1E695AC18] requestWithURL:v11];
-    v13 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:a3];
+    v13 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:method];
     [v12 setHTTPMethod:v13];
 
-    v14 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v12 parameters:v10 error:a6];
+    v14 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v12 parameters:parametersCopy error:error];
   }
 
   else
@@ -2179,13 +2179,13 @@ void __100__AMSURLRequestEncoder__triggerAutoBugCaptureForOversizedHeaders_total
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543362;
       v20 = objc_opt_class();
       v17 = v20;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Request encoding failed. bagURL returns a nil value.", &v19, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Request encoding failed. bagURL returns a nil value.", &v19, 0xCu);
     }
 
     v14 = 0;
@@ -2194,27 +2194,27 @@ void __100__AMSURLRequestEncoder__triggerAutoBugCaptureForOversizedHeaders_total
   return v14;
 }
 
-- (id)requestWithMethod:(int64_t)a3 URL:(id)a4 parameters:(id)a5 error:(id *)a6
+- (id)requestWithMethod:(int64_t)method URL:(id)l parameters:(id)parameters error:(id *)error
 {
   v10 = MEMORY[0x1E695AC18];
-  v11 = a5;
-  v12 = [v10 requestWithURL:a4];
-  v13 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:a3];
+  parametersCopy = parameters;
+  v12 = [v10 requestWithURL:l];
+  v13 = [(AMSURLRequestEncoder *)self _methodStringFromMethod:method];
   [v12 setHTTPMethod:v13];
 
-  v14 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v12 parameters:v11 error:a6];
+  v14 = [(AMSURLRequestEncoder *)self requestByEncodingRequest:v12 parameters:parametersCopy error:error];
 
   return v14;
 }
 
-- (id)requestWithMethod:(int64_t)a3 URLString:(id)a4 parameters:(id)a5 error:(id *)a6
+- (id)requestWithMethod:(int64_t)method URLString:(id)string parameters:(id)parameters error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DFF8] URLWithString:a4];
+  parametersCopy = parameters;
+  v11 = [MEMORY[0x1E695DFF8] URLWithString:string];
   if (v11)
   {
-    v12 = [(AMSURLRequestEncoder *)self requestWithMethod:a3 URL:v11 parameters:v10 error:a6];
+    v12 = [(AMSURLRequestEncoder *)self requestWithMethod:method URL:v11 parameters:parametersCopy error:error];
   }
 
   else
@@ -2225,19 +2225,19 @@ void __100__AMSURLRequestEncoder__triggerAutoBugCaptureForOversizedHeaders_total
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = 138543362;
       v18 = objc_opt_class();
       v15 = v18;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Request encoding failed. requestURL = nil.", &v17, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Request encoding failed. requestURL = nil.", &v17, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       AMSError(312, @"Invalid Request", @"Request URL is nil", 0);
-      *a6 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else

@@ -1,22 +1,22 @@
 @interface LNConstraintContext
-+ (id)synchronousContextForAction:(id)a3;
-+ (void)contextForAction:(id)a3 completion:(id)a4;
++ (id)synchronousContextForAction:(id)action;
++ (void)contextForAction:(id)action completion:(id)completion;
 @end
 
 @implementation LNConstraintContext
 
-+ (id)synchronousContextForAction:(id)a3
++ (id)synchronousContextForAction:(id)action
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 effectiveBundleIdentifiers];
-  v6 = [v5 firstObject];
-  v7 = [v6 bundleIdentifier];
+  actionCopy = action;
+  metadata = [actionCopy metadata];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  firstObject = [effectiveBundleIdentifiers firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
   v17[0] = @"_";
   v15[0] = @"defaults";
-  v8 = [[LNConstraintContextUserDefaults alloc] initWithIdentifier:v7];
+  v8 = [[LNConstraintContextUserDefaults alloc] initWithIdentifier:bundleIdentifier];
   v15[1] = @"fflags";
   v16[0] = v8;
   v9 = objc_opt_new();
@@ -24,7 +24,7 @@
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v17[1] = @"action";
   v18[0] = v10;
-  v11 = [[LNActionKVCAdapter alloc] initWithAction:v3];
+  v11 = [[LNActionKVCAdapter alloc] initWithAction:actionCopy];
 
   v18[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -34,18 +34,18 @@
   return v12;
 }
 
-+ (void)contextForAction:(id)a3 completion:(id)a4
++ (void)contextForAction:(id)action completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v21 = 0;
-  v7 = [v5 metadata];
-  v8 = [v7 effectiveBundleIdentifiers];
-  v9 = [v8 firstObject];
-  v10 = [v9 bundleIdentifier];
+  metadata = [actionCopy metadata];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  firstObject = [effectiveBundleIdentifiers firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
   v11 = objc_alloc_init(LNVisibleAppManager);
   v15[0] = MEMORY[0x1E69E9820];
@@ -53,11 +53,11 @@
   v15[2] = __51__LNConstraintContext_contextForAction_completion___block_invoke;
   v15[3] = &unk_1E74B18E8;
   v19 = v20;
-  v12 = v10;
+  v12 = bundleIdentifier;
   v16 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v18 = v13;
-  v14 = v5;
+  v14 = actionCopy;
   v17 = v14;
   [(LNVisibleAppManager *)v11 getCurrentAppWithCompletionHandler:v15];
 

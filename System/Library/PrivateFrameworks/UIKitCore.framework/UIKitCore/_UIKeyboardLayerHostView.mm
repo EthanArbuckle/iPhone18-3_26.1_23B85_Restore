@@ -1,13 +1,13 @@
 @interface _UIKeyboardLayerHostView
-- (_UIKeyboardLayerHostView)initWithKeyboardLayer:(id)a3 owningScene:(id)a4;
-- (_UIKeyboardLayerHostView)initWithKeyboardProxyLayer:(id)a3 owningScene:(id)a4;
-- (id)_initWithLayer:(id)a3 owningScene:(id)a4 keyboardMatchingPredicate:(id)a5;
-- (void)_setKeyboardScene:(id)a3;
+- (_UIKeyboardLayerHostView)initWithKeyboardLayer:(id)layer owningScene:(id)scene;
+- (_UIKeyboardLayerHostView)initWithKeyboardProxyLayer:(id)layer owningScene:(id)scene;
+- (id)_initWithLayer:(id)layer owningScene:(id)scene keyboardMatchingPredicate:(id)predicate;
+- (void)_setKeyboardScene:(id)scene;
 - (void)_updatePairingState;
 - (void)dealloc;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setCurrentPresentationContext:(id)a3;
-- (void)setInheritsSecurity:(BOOL)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setCurrentPresentationContext:(id)context;
+- (void)setInheritsSecurity:(BOOL)security;
 @end
 
 @implementation _UIKeyboardLayerHostView
@@ -17,16 +17,16 @@
   keyboardScene = self->_keyboardScene;
   if (!keyboardScene || !self->_owningScene)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:153 description:@"Require a keyboard scene."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:153 description:@"Require a keyboard scene."];
 
     keyboardScene = self->_keyboardScene;
   }
 
-  v5 = [(FBScene *)keyboardScene clientSettings];
-  v6 = [v5 preferredSceneHostIdentity];
+  clientSettings = [(FBScene *)keyboardScene clientSettings];
+  preferredSceneHostIdentity = [clientSettings preferredSceneHostIdentity];
   keyboardPreferredHostIdentity = self->_keyboardPreferredHostIdentity;
-  self->_keyboardPreferredHostIdentity = v6;
+  self->_keyboardPreferredHostIdentity = preferredSceneHostIdentity;
 
   v8 = (*(self->_sceneLayerMatchingPredicate + 2))();
   if (self->_isPaired != v8)
@@ -36,11 +36,11 @@
     {
       v9 = objc_alloc(MEMORY[0x1E696AEC0]);
       v10 = _updatePairingState___hostViewRequesterCount++;
-      v11 = [(FBScene *)self->_keyboardScene identifier];
-      v12 = [v9 initWithFormat:@"UIKeyboardSceneLayerHostView-%i:%@", v10, v11];
+      identifier = [(FBScene *)self->_keyboardScene identifier];
+      v12 = [v9 initWithFormat:@"UIKeyboardSceneLayerHostView-%i:%@", v10, identifier];
 
-      v13 = [(FBScene *)self->_keyboardScene uiPresentationManager];
-      v14 = [v13 createPresenterWithIdentifier:v12 priority:{objc_msgSend(v13, "_defaultPresentationPriority") - 1}];
+      uiPresentationManager = [(FBScene *)self->_keyboardScene uiPresentationManager];
+      v14 = [uiPresentationManager createPresenterWithIdentifier:v12 priority:{objc_msgSend(uiPresentationManager, "_defaultPresentationPriority") - 1}];
       presenter = self->_presenter;
       self->_presenter = v14;
 
@@ -52,8 +52,8 @@
       v20[4] = self;
       [(UIScenePresenter *)v16 modifyPresentationContext:v20];
       [(UIScenePresenter *)self->_presenter activate];
-      v17 = [(UIScenePresenter *)self->_presenter presentationView];
-      [(UIView *)self addSubview:v17];
+      presentationView = [(UIScenePresenter *)self->_presenter presentationView];
+      [(UIView *)self addSubview:presentationView];
     }
 
     else
@@ -65,23 +65,23 @@
   }
 }
 
-- (id)_initWithLayer:(id)a3 owningScene:(id)a4 keyboardMatchingPredicate:(id)a5
+- (id)_initWithLayer:(id)layer owningScene:(id)scene keyboardMatchingPredicate:(id)predicate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  layerCopy = layer;
+  sceneCopy = scene;
+  predicateCopy = predicate;
+  if (layerCopy)
   {
-    if (v10)
+    if (sceneCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
-    if (v11)
+    if (predicateCopy)
     {
       goto LABEL_4;
     }
@@ -89,35 +89,35 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"layer"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"layer"}];
 
-  if (!v10)
+  if (!sceneCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v11)
+  if (predicateCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
 
 LABEL_4:
   v25.receiver = self;
   v25.super_class = _UIKeyboardLayerHostView;
-  v12 = [(_UISceneLayerHostView *)&v25 initWithSceneLayer:v9];
+  v12 = [(_UISceneLayerHostView *)&v25 initWithSceneLayer:layerCopy];
   if (v12)
   {
-    v13 = _Block_copy(v11);
+    v13 = _Block_copy(predicateCopy);
     sceneLayerMatchingPredicate = v12->_sceneLayerMatchingPredicate;
     v12->_sceneLayerMatchingPredicate = v13;
 
-    objc_storeStrong(&v12->_owningScene, a4);
+    objc_storeStrong(&v12->_owningScene, scene);
     objc_initWeak(&location, v12);
     v15 = MEMORY[0x1E699F7D8];
     v22[0] = MEMORY[0x1E69E9820];
@@ -141,19 +141,19 @@ LABEL_4:
   return v12;
 }
 
-- (_UIKeyboardLayerHostView)initWithKeyboardProxyLayer:(id)a3 owningScene:(id)a4
+- (_UIKeyboardLayerHostView)initWithKeyboardProxyLayer:(id)layer owningScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  sceneCopy = scene;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67___UIKeyboardLayerHostView_initWithKeyboardProxyLayer_owningScene___block_invoke;
   v11[3] = &unk_1E70FA260;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = layerCopy;
   v12 = v8;
-  v9 = [(_UIKeyboardLayerHostView *)self _initWithLayer:v8 owningScene:v7 keyboardMatchingPredicate:v11];
+  v9 = [(_UIKeyboardLayerHostView *)self _initWithLayer:v8 owningScene:sceneCopy keyboardMatchingPredicate:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -161,19 +161,19 @@ LABEL_4:
   return v9;
 }
 
-- (_UIKeyboardLayerHostView)initWithKeyboardLayer:(id)a3 owningScene:(id)a4
+- (_UIKeyboardLayerHostView)initWithKeyboardLayer:(id)layer owningScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  sceneCopy = scene;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62___UIKeyboardLayerHostView_initWithKeyboardLayer_owningScene___block_invoke;
   v11[3] = &unk_1E70FA260;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = sceneCopy;
   v12 = v8;
-  v9 = [(_UIKeyboardLayerHostView *)self _initWithLayer:v6 owningScene:v8 keyboardMatchingPredicate:v11];
+  v9 = [(_UIKeyboardLayerHostView *)self _initWithLayer:layerCopy owningScene:v8 keyboardMatchingPredicate:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -191,15 +191,15 @@ LABEL_4:
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setCurrentPresentationContext:(id)a3
+- (void)setCurrentPresentationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = _UIKeyboardLayerHostView;
-  [(_UISceneLayerHostView *)&v10 setCurrentPresentationContext:v4];
-  v5 = [(UIScenePresenter *)self->_presenter presentationContext];
-  [v5 _isVisibilityPropagationEnabled];
-  [v4 _isVisibilityPropagationEnabled];
+  [(_UISceneLayerHostView *)&v10 setCurrentPresentationContext:contextCopy];
+  presentationContext = [(UIScenePresenter *)self->_presenter presentationContext];
+  [presentationContext _isVisibilityPropagationEnabled];
+  [contextCopy _isVisibilityPropagationEnabled];
   v6 = BSEqualBools();
 
   if ((v6 & 1) == 0)
@@ -209,12 +209,12 @@ LABEL_4:
     v8[1] = 3221225472;
     v8[2] = __58___UIKeyboardLayerHostView_setCurrentPresentationContext___block_invoke;
     v8[3] = &unk_1E70FA288;
-    v9 = v4;
+    v9 = contextCopy;
     [(UIScenePresenter *)presenter modifyPresentationContext:v8];
   }
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
   v8.receiver = self;
   v8.super_class = _UIKeyboardLayerHostView;
@@ -228,17 +228,17 @@ LABEL_4:
       v6[1] = 3221225472;
       v6[2] = __48___UIKeyboardLayerHostView_setInheritsSecurity___block_invoke;
       v6[3] = &__block_descriptor_33_e43_v16__0__UIMutableScenePresentationContext_8l;
-      v7 = a3;
+      securityCopy = security;
       [(UIScenePresenter *)presenter modifyPresentationContext:v6];
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
   objc_initWeak(&location, self);
   keyboardSceneClientSettingsDiffInspector = self->_keyboardSceneClientSettingsDiffInspector;
   if (!keyboardSceneClientSettingsDiffInspector)
@@ -258,17 +258,17 @@ LABEL_4:
     keyboardSceneClientSettingsDiffInspector = self->_keyboardSceneClientSettingsDiffInspector;
   }
 
-  [(FBSSceneClientSettingsDiffInspector *)keyboardSceneClientSettingsDiffInspector inspectDiff:v8 withContext:0, v13, v14, v15, v16];
+  [(FBSSceneClientSettingsDiffInspector *)keyboardSceneClientSettingsDiffInspector inspectDiff:settingsDiff withContext:0, v13, v14, v15, v16];
   objc_destroyWeak(&location);
 }
 
-- (void)_setKeyboardScene:(id)a3
+- (void)_setKeyboardScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   if (self->_keyboardScene)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:138 description:@"Cannot already have a keyboard scene."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyboardLayerHostView.m" lineNumber:138 description:@"Cannot already have a keyboard scene."];
   }
 
   [(BSInvalidatable *)self->_keyboardSceneAvailabilityObserver invalidate];
@@ -277,8 +277,8 @@ LABEL_4:
 
   [(FBScene *)self->_keyboardScene removeObserver:self];
   keyboardScene = self->_keyboardScene;
-  self->_keyboardScene = v5;
-  v8 = v5;
+  self->_keyboardScene = sceneCopy;
+  v8 = sceneCopy;
 
   [(FBScene *)self->_keyboardScene addObserver:self];
 

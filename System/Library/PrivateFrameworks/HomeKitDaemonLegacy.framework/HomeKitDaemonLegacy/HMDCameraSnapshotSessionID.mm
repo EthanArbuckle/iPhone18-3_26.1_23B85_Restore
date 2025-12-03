@@ -1,56 +1,56 @@
 @interface HMDCameraSnapshotSessionID
-- (HMDCameraSnapshotSessionID)initWithAccessory:(id)a3 message:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HMDCameraSnapshotSessionID)initWithAccessory:(id)accessory message:(id)message;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMDCameraSnapshotSessionID
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDCameraSnapshotSessionID allocWithZone:a3];
-  v5 = [(HMDCameraSessionID *)self sessionID];
-  v6 = [(HMDCameraSessionID *)self hostProcessBundleIdentifier];
-  v7 = [(HMDCameraSessionID *)self isSPIClient];
-  v8 = [(HMDCameraSessionID *)self deviceSectionName];
+  v4 = [HMDCameraSnapshotSessionID allocWithZone:zone];
+  sessionID = [(HMDCameraSessionID *)self sessionID];
+  hostProcessBundleIdentifier = [(HMDCameraSessionID *)self hostProcessBundleIdentifier];
+  isSPIClient = [(HMDCameraSessionID *)self isSPIClient];
+  deviceSectionName = [(HMDCameraSessionID *)self deviceSectionName];
   v9 = [(HMDCameraSessionID *)self description];
-  v10 = [(HMDCameraSnapshotSessionID *)self snapshotReason];
-  v11 = [(HMDCameraSnapshotSessionID *)self isSnapshotRequestForBulletin];
-  v12 = [(HMDCameraSnapshotSessionID *)self snapshotCharacteristicEventUUID];
-  v13 = [(HMDCameraSnapshotSessionID *)self streamingTier];
-  LOBYTE(v16) = v11;
-  v14 = [(HMDCameraSnapshotSessionID *)v4 initWithSessionID:v5 hostProcessBundleIdentifier:v6 isSPIClient:v7 deviceSectionName:v8 description:v9 snapshotReason:v10 snapshotRequestForBulletin:v16 snapshotCharacteristicEventUUID:v12 streamingTier:v13];
+  snapshotReason = [(HMDCameraSnapshotSessionID *)self snapshotReason];
+  isSnapshotRequestForBulletin = [(HMDCameraSnapshotSessionID *)self isSnapshotRequestForBulletin];
+  snapshotCharacteristicEventUUID = [(HMDCameraSnapshotSessionID *)self snapshotCharacteristicEventUUID];
+  streamingTier = [(HMDCameraSnapshotSessionID *)self streamingTier];
+  LOBYTE(v16) = isSnapshotRequestForBulletin;
+  v14 = [(HMDCameraSnapshotSessionID *)v4 initWithSessionID:sessionID hostProcessBundleIdentifier:hostProcessBundleIdentifier isSPIClient:isSPIClient deviceSectionName:deviceSectionName description:v9 snapshotReason:snapshotReason snapshotRequestForBulletin:v16 snapshotCharacteristicEventUUID:snapshotCharacteristicEventUUID streamingTier:streamingTier];
 
   return v14;
 }
 
-- (HMDCameraSnapshotSessionID)initWithAccessory:(id)a3 message:(id)a4
+- (HMDCameraSnapshotSessionID)initWithAccessory:(id)accessory message:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accessoryCopy = accessory;
+  messageCopy = message;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
 LABEL_12:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = messageCopy;
+  if (!messageCopy)
   {
     goto LABEL_12;
   }
 
-  v9 = [v7 stringForKey:@"kCameraSessionID"];
+  v9 = [messageCopy stringForKey:@"kCameraSessionID"];
   if (v9)
   {
-    v33 = self;
+    selfCopy = self;
     v32 = [v8 numberForKey:@"kCameraStreamingTierType"];
     v10 = [v8 stringForKey:@"kCameraProactiveSessionID"];
     v11 = MEMORY[0x277CCAB68];
-    v34 = v6;
-    v12 = [v6 name];
-    v13 = [v11 stringWithFormat:@"%@/%@", v12, v9];
+    v34 = accessoryCopy;
+    name = [accessoryCopy name];
+    v13 = [v11 stringWithFormat:@"%@/%@", name, v9];
 
     if (v10)
     {
@@ -60,25 +60,25 @@ LABEL_12:
     v14 = [[HMDCameraSessionID alloc] initWithSessionID:v9 message:v8 description:v13];
     v31 = v13;
     v15 = [v8 BOOLForKey:*MEMORY[0x277CCF5B8]];
-    v29 = [(HMDCameraSessionID *)v14 sessionID];
-    v16 = [(HMDCameraSessionID *)v14 hostProcessBundleIdentifier];
+    sessionID = [(HMDCameraSessionID *)v14 sessionID];
+    hostProcessBundleIdentifier = [(HMDCameraSessionID *)v14 hostProcessBundleIdentifier];
     v30 = v10;
-    v17 = [(HMDCameraSessionID *)v14 isSPIClient];
-    v18 = [(HMDCameraSessionID *)v14 deviceSectionName];
+    isSPIClient = [(HMDCameraSessionID *)v14 isSPIClient];
+    deviceSectionName = [(HMDCameraSessionID *)v14 deviceSectionName];
     [(HMDCameraSessionID *)v14 description];
     v20 = v19 = v9;
     LOBYTE(v28) = v15;
-    v21 = [(HMDCameraSnapshotSessionID *)v33 initWithSessionID:v29 hostProcessBundleIdentifier:v16 isSPIClient:v17 deviceSectionName:v18 description:v20 snapshotReason:(v10 != 0) | (v15 & 1) snapshotRequestForBulletin:v28 snapshotCharacteristicEventUUID:v10 streamingTier:v32];
+    selfCopy2 = [(HMDCameraSnapshotSessionID *)selfCopy initWithSessionID:sessionID hostProcessBundleIdentifier:hostProcessBundleIdentifier isSPIClient:isSPIClient deviceSectionName:deviceSectionName description:v20 snapshotReason:(v10 != 0) | (v15 & 1) snapshotRequestForBulletin:v28 snapshotCharacteristicEventUUID:v10 streamingTier:v32];
 
     v9 = v19;
-    v22 = v21;
-    v6 = v34;
+    v22 = selfCopy2;
+    accessoryCopy = v34;
   }
 
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {

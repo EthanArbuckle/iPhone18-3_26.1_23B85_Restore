@@ -13,11 +13,11 @@
 - (void)completedInitialProperyExchangePhase;
 - (void)didEstablishHold;
 - (void)endPerformancePhases;
-- (void)enteredCompatibilityState:(id)a3;
+- (void)enteredCompatibilityState:(id)state;
 - (void)evaluateCanReleaseHold;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)tellWatchToDoLanguageAndLocalePrep;
-- (void)watchDidSelectLanguageAndLocale:(unsigned __int16)a3;
+- (void)watchDidSelectLanguageAndLocale:(unsigned __int16)locale;
 @end
 
 @implementation COSInitialPropertyExchangeViewController
@@ -25,25 +25,25 @@
 + (BOOL)controllerNeedsToRun
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 compatibilityState];
+  compatibilityState = [v2 compatibilityState];
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 isActivated];
+  isActivated = [v4 isActivated];
 
-  v6 = [UIApp activeWatch];
-  v7 = sub_10002D234(v6);
+  activeWatch = [UIApp activeWatch];
+  v7 = sub_10002D234(activeWatch);
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 isLanguageAndLocaleFinished];
+  isLanguageAndLocaleFinished = [v8 isLanguageAndLocaleFinished];
 
-  if (v3 < 3)
+  if (compatibilityState < 3)
   {
     return 1;
   }
 
-  if (v5)
+  if (isActivated)
   {
-    if (!(v9 & 1 | ((v7 & 1) == 0)))
+    if (!(isLanguageAndLocaleFinished & 1 | ((v7 & 1) == 0)))
     {
       return 1;
     }
@@ -54,11 +54,11 @@
   objc_opt_class();
   v11 = sub_100057C44();
   result = 1;
-  if (v11 && ((v7 ^ 1 | v9) & 1) != 0)
+  if (v11 && ((v7 ^ 1 | isLanguageAndLocaleFinished) & 1) != 0)
   {
 LABEL_7:
-    v12 = [UIApp bridgeController];
-    [v12 sendComputedTimeZoneToGizmo];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController sendComputedTimeZoneToGizmo];
 
     return 0;
   }
@@ -71,8 +71,8 @@ LABEL_7:
   if (PBLogPerformanceMetrics())
   {
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    v4 = [(COSInitialPropertyExchangeViewController *)self holdActivityIdentifier];
-    [v3 beginMacroActivity:v4 beginTime:CFAbsoluteTimeGetCurrent()];
+    holdActivityIdentifier = [(COSInitialPropertyExchangeViewController *)self holdActivityIdentifier];
+    [v3 beginMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
   }
 
   return 1;
@@ -91,17 +91,17 @@ LABEL_7:
 - (void)evaluateCanReleaseHold
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
-  v5 = [UIApp activeWatch];
-  v6 = sub_10002D234(v5);
+  activeWatch = [UIApp activeWatch];
+  v6 = sub_10002D234(activeWatch);
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 isLanguageAndLocaleFinished];
+  isLanguageAndLocaleFinished = [v7 isLanguageAndLocaleFinished];
 
-  if (v4)
+  if (isActivated)
   {
-    if (!(v8 & 1 | ((v6 & 1) == 0)))
+    if (!(isLanguageAndLocaleFinished & 1 | ((v6 & 1) == 0)))
     {
       return;
     }
@@ -110,7 +110,7 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    if (!sub_100057C44() || ((v6 ^ 1 | v8) & 1) == 0)
+    if (!sub_100057C44() || ((v6 ^ 1 | isLanguageAndLocaleFinished) & 1) == 0)
     {
       return;
     }
@@ -127,17 +127,17 @@ LABEL_7:
   [(COSInitialPropertyExchangeViewController *)self completedHoldTasks];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification;
   [v4 addObserver:self selector:"enteredCompatibilityState:" name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 compatibilityState];
+  compatibilityState = [v6 compatibilityState];
 
-  if (v7 - 3 > 1)
+  if (compatibilityState - 3 > 1)
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -164,21 +164,21 @@ LABEL_7:
   }
 }
 
-- (void)enteredCompatibilityState:(id)a3
+- (void)enteredCompatibilityState:(id)state
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [state userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v6;
+    v9[1] = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "IPE: Entered Compatibility State: %d", v9, 8u);
   }
 
-  if (v6 == 3)
+  if (unsignedIntValue == 3)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 removeObserver:self name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
@@ -190,11 +190,11 @@ LABEL_7:
 
 - (id)localizedWaitScreenDescription
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isTinkerPairing)
   {
     v6 = @"INITIAL_PROPERTY_EXCHANGE_HOLD_DESCRIPTION_TINKER";
     v7 = @"Localizable-tinker";
@@ -213,8 +213,8 @@ LABEL_7:
 
 - (id)holdActivityIdentifier
 {
-  v2 = [UIApp activeWatch];
-  if (sub_10002D234(v2))
+  activeWatch = [UIApp activeWatch];
+  if (sub_10002D234(activeWatch))
   {
     v3 = @"InitialPropertyExchange-LanguageLocale";
   }
@@ -246,18 +246,18 @@ LABEL_7:
 - (void)completedInitialProperyExchangePhase
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
-  v5 = [UIApp setupController];
-  v6 = [v5 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v6 addPairingTimeEventToPairingReportPlist:68 withValue:&__kCFBooleanTrue withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:68 withValue:&__kCFBooleanTrue withError:0];
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     objc_opt_class();
     v8 = [NSNumber numberWithBool:sub_100057C44()];
-    v9 = [NSNumber numberWithBool:v4];
+    v9 = [NSNumber numberWithBool:isActivated];
     *buf = 138412546;
     v26 = v8;
     v27 = 2112;
@@ -265,16 +265,16 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "completedInitialProperyExchangePhase. Activation State: (activationNeedsResponse %@ / activated %@)", buf, 0x16u);
   }
 
-  v10 = [UIApp bridgeController];
-  [v10 sendComputedTimeZoneToGizmo];
+  bridgeController = [UIApp bridgeController];
+  [bridgeController sendComputedTimeZoneToGizmo];
 
   objc_opt_class();
-  if ((sub_100057C44() | v4))
+  if ((sub_100057C44() | isActivated))
   {
     objc_opt_class();
-    if (v4 & 1 | ((sub_100057C44() & 1) == 0))
+    if (isActivated & 1 | ((sub_100057C44() & 1) == 0))
     {
-      if (v4)
+      if (isActivated)
       {
         [(COSInitialPropertyExchangeViewController *)self completedActivationPhase];
       }
@@ -293,16 +293,16 @@ LABEL_7:
   }
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 activeWatch];
+  activeWatch = [v11 activeWatch];
 
-  v13 = [v12 valueForProperty:NRDevicePropertyPairingID];
-  v14 = [v12 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  v13 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
+  v14 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
   v15 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano" pairingID:v13 pairingDataStore:v14];
-  v16 = [v15 synchronize];
+  synchronize = [v15 synchronize];
   v17 = [v15 BOOLForKey:@"invertUI"];
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 bridgeController];
-  [v19 tellGizmoToSetCrownOrientationRight:v17 ^ 1];
+  bridgeController2 = [v18 bridgeController];
+  [bridgeController2 tellGizmoToSetCrownOrientationRight:v17 ^ 1];
 
   v20 = pbb_setupflow_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -313,16 +313,16 @@ LABEL_7:
   }
 
   v21 = +[UIApplication sharedApplication];
-  v22 = [v21 isLanguageAndLocaleFinished];
+  isLanguageAndLocaleFinished = [v21 isLanguageAndLocaleFinished];
 
   v23 = [[NSUUID alloc] initWithUUIDString:@"3A6A41CC-1427-4F81-88F4-82365AA10C82"];
-  if (![v12 supportsCapability:v23] || (v22 & 1) != 0)
+  if (![activeWatch supportsCapability:v23] || (isLanguageAndLocaleFinished & 1) != 0)
   {
   }
 
   else
   {
-    v24 = sub_10002D234(v12);
+    v24 = sub_10002D234(activeWatch);
 
     if (v24)
     {
@@ -402,8 +402,8 @@ LABEL_16:
 
       self->_didBeginActivating = 1;
       v6 = +[UIApplication sharedApplication];
-      v16 = [v6 bridgeController];
-      [v16 tellGizmoToBeginActivation];
+      bridgeController = [v6 bridgeController];
+      [bridgeController tellGizmoToBeginActivation];
     }
   }
 
@@ -421,8 +421,8 @@ LABEL_16:
 
 - (void)_evaluatePendingTasksAfterActivationCompletedOrDeferredForUserResponse
 {
-  v3 = [UIApp activeWatch];
-  v4 = sub_10002D234(v3);
+  activeWatch = [UIApp activeWatch];
+  v4 = sub_10002D234(activeWatch);
 
   if (v4 && (+[UIApplication sharedApplication](UIApplication, "sharedApplication"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isLanguageAndLocaleFinished], v5, !v6))
   {
@@ -480,21 +480,21 @@ LABEL_16:
     v6 = [v4 supportsCapability:v5];
 
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 bridgeController];
+    bridgeController = [v7 bridgeController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100058DD4;
     v9[3] = &unk_1002696A8;
     v9[4] = self;
-    [v8 tellWatchLanguagesAndLocaleSupportingTermOfAddress:v6 withCompletion:v9];
+    [bridgeController tellWatchLanguagesAndLocaleSupportingTermOfAddress:v6 withCompletion:v9];
 
     self->_sentLanguageAndLocaleUpdate = 1;
   }
 }
 
-- (void)watchDidSelectLanguageAndLocale:(unsigned __int16)a3
+- (void)watchDidSelectLanguageAndLocale:(unsigned __int16)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -504,9 +504,9 @@ LABEL_16:
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 isActivated];
+  isActivated = [v6 isActivated];
 
-  if (v7)
+  if (isActivated)
   {
     v8 = pbb_setupflow_log();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -524,7 +524,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (localeCopy == 2)
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -534,11 +534,11 @@ LABEL_6:
     }
 
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 setupController];
+    setupController = [v11 setupController];
 
-    [v12 tellWatchAgainToUpdateNRToNormalStateAfterRelaunchingForLanguageChange];
-    v13 = [v12 activationManager];
-    [v13 clearActivationState];
+    [setupController tellWatchAgainToUpdateNRToNormalStateAfterRelaunchingForLanguageChange];
+    activationManager = [setupController activationManager];
+    [activationManager clearActivationState];
 
     self->_didBeginActivating = 0;
     [(COSInitialPropertyExchangeViewController *)self addActivationObservers];
@@ -567,12 +567,12 @@ LABEL_6:
 {
   if (PBLogPerformanceMetrics())
   {
-    v6 = [(COSInitialPropertyExchangeViewController *)self holdActivityIdentifier];
+    holdActivityIdentifier = [(COSInitialPropertyExchangeViewController *)self holdActivityIdentifier];
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    [v3 endMacroActivity:v6 beginTime:CFAbsoluteTimeGetCurrent()];
+    [v3 endMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     v5 = v4;
 
-    [PBBridgeCAReporter pushTimingForTypeNamed:v6 withValue:v5];
+    [PBBridgeCAReporter pushTimingForTypeNamed:holdActivityIdentifier withValue:v5];
   }
 }
 
@@ -594,13 +594,13 @@ LABEL_6:
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 isActivated];
+  isActivated = [v4 isActivated];
 
-  if (v5)
+  if (isActivated)
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 setupController];
-    [v7 startPostActivationCompatiblePairingBackgroundTasks];
+    setupController = [v6 setupController];
+    [setupController startPostActivationCompatiblePairingBackgroundTasks];
   }
 
   sub_10018788C(self);

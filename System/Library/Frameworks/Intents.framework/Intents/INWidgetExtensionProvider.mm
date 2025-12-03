@@ -1,24 +1,24 @@
 @interface INWidgetExtensionProvider
 + (INWidgetExtensionProvider)sharedProvider;
 - (INWidgetExtensionProvider)init;
-- (id)descriptorForIntent:(id)a3;
+- (id)descriptorForIntent:(id)intent;
 @end
 
 @implementation INWidgetExtensionProvider
 
-- (id)descriptorForIntent:(id)a3
+- (id)descriptorForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(INWidgetExtensionProvider *)self provider];
-  v6 = [v5 extensions];
-  v7 = [v6 allObjects];
+  intentCopy = intent;
+  provider = [(INWidgetExtensionProvider *)self provider];
+  extensions = [provider extensions];
+  allObjects = [extensions allObjects];
 
-  v8 = [v7 if_flatMap:&__block_literal_global_3_111759];
+  v8 = [allObjects if_flatMap:&__block_literal_global_3_111759];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __49__INWidgetExtensionProvider_descriptorForIntent___block_invoke_3;
   v16[3] = &unk_1E7286598;
-  v9 = v4;
+  v9 = intentCopy;
   v17 = v9;
   v10 = [v8 if_firstObjectPassingTest:v16];
   if (v10)
@@ -28,7 +28,7 @@
 
   else
   {
-    v12 = [v7 if_flatMap:&__block_literal_global_11_111760];
+    v12 = [allObjects if_flatMap:&__block_literal_global_11_111760];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __49__INWidgetExtensionProvider_descriptorForIntent___block_invoke_6;
@@ -148,7 +148,7 @@ INWidgetDescriptor *__49__INWidgetExtensionProvider_descriptorForIntent___block_
 
     v4 = v3;
     _Block_object_dispose(&v24, 8);
-    v5 = [v3 visible];
+    visible = [v3 visible];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -167,7 +167,7 @@ INWidgetDescriptor *__49__INWidgetExtensionProvider_descriptorForIntent___block_
 
     v7 = v6;
     _Block_object_dispose(&v24, 8);
-    v8 = [v6 visible];
+    visible2 = [v6 visible];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -186,7 +186,7 @@ INWidgetDescriptor *__49__INWidgetExtensionProvider_descriptorForIntent___block_
 
     v10 = v9;
     _Block_object_dispose(&v24, 8);
-    v11 = [[v9 alloc] initWithWidgetsPredicate:v5 controlsPredicate:v8 includeIntents:0];
+    v11 = [[v9 alloc] initWithWidgetsPredicate:visible controlsPredicate:visible2 includeIntents:0];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;

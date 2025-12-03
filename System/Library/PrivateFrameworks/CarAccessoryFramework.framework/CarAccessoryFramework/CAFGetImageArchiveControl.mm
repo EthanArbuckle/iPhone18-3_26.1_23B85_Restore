@@ -1,25 +1,25 @@
 @interface CAFGetImageArchiveControl
 + (void)load;
-- (void)getImageArchiveWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)getImageArchiveWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFGetImageArchiveControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFGetImageArchiveControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,15 +50,15 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (void)getImageArchiveWithCompletion:(id)a3
+- (void)getImageArchiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__CAFGetImageArchiveControl_getImageArchiveWithCompletion___block_invoke;
   v6[3] = &unk_27890EFF8;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CAFControl *)self requestWithValue:0 response:v6];
 }
 

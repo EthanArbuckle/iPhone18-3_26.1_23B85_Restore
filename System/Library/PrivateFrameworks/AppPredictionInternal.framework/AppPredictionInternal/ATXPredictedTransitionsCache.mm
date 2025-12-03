@@ -1,30 +1,30 @@
 @interface ATXPredictedTransitionsCache
-+ (id)ceilingDateToNextHour:(id)a3;
-+ (id)getNextTransitionInCache:(id)a3 fromDate:(id)a4;
-+ (void)removeEntriesFromCache:(id)a3 beforeDate:(id)a4;
-- (ATXPredictedTransitionsCache)initWithLocationManager:(id)a3;
-- (BOOL)cacheHeadingFromLoiType:(int64_t)a3 toLoiType:(int64_t)a4 forDate:(id)a5;
-- (id)cacheForDestinationLoiType:(int64_t)a3;
-- (id)getNextHomeToWorkTransitionsOnActivity:(id)a3;
-- (id)getNextWorkToHomeTransitionsOnActivity:(id)a3;
++ (id)ceilingDateToNextHour:(id)hour;
++ (id)getNextTransitionInCache:(id)cache fromDate:(id)date;
++ (void)removeEntriesFromCache:(id)cache beforeDate:(id)date;
+- (ATXPredictedTransitionsCache)initWithLocationManager:(id)manager;
+- (BOOL)cacheHeadingFromLoiType:(int64_t)type toLoiType:(int64_t)loiType forDate:(id)date;
+- (id)cacheForDestinationLoiType:(int64_t)type;
+- (id)getNextHomeToWorkTransitionsOnActivity:(id)activity;
+- (id)getNextWorkToHomeTransitionsOnActivity:(id)activity;
 - (void)dump;
-- (void)fetchEntriesStartingDate:(id)a3 onActivity:(id)a4;
-- (void)prewarmOnActivity:(id)a3;
+- (void)fetchEntriesStartingDate:(id)date onActivity:(id)activity;
+- (void)prewarmOnActivity:(id)activity;
 - (void)pruneStaleEntries;
 @end
 
 @implementation ATXPredictedTransitionsCache
 
-- (ATXPredictedTransitionsCache)initWithLocationManager:(id)a3
+- (ATXPredictedTransitionsCache)initWithLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = ATXPredictedTransitionsCache;
   v6 = [(ATXPredictedTransitionsCache *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
     v8 = objc_opt_new();
     homeToWork = v7->_homeToWork;
     v7->_homeToWork = v8;
@@ -37,14 +37,14 @@
   return v7;
 }
 
-- (id)getNextHomeToWorkTransitionsOnActivity:(id)a3
+- (id)getNextHomeToWorkTransitionsOnActivity:(id)activity
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  activityCopy = activity;
   v6 = [v4 now];
-  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v6 onActivity:v5];
+  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v6 onActivity:activityCopy];
 
-  LOBYTE(v6) = [v5 shouldDefer];
+  LOBYTE(v6) = [activityCopy shouldDefer];
   if (v6)
   {
     v7 = 0;
@@ -61,14 +61,14 @@
   return v7;
 }
 
-- (id)getNextWorkToHomeTransitionsOnActivity:(id)a3
+- (id)getNextWorkToHomeTransitionsOnActivity:(id)activity
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  activityCopy = activity;
   v6 = [v4 now];
-  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v6 onActivity:v5];
+  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v6 onActivity:activityCopy];
 
-  LOBYTE(v6) = [v5 shouldDefer];
+  LOBYTE(v6) = [activityCopy shouldDefer];
   if (v6)
   {
     v7 = 0;
@@ -85,52 +85,52 @@
   return v7;
 }
 
-+ (id)ceilingDateToNextHour:(id)a3
++ (id)ceilingDateToNextHour:(id)hour
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:60 fromDate:v4];
+  hourCopy = hour;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:60 fromDate:hourCopy];
 
-  v7 = [v5 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
   v8 = [v7 dateByAddingTimeInterval:3600.0];
 
   return v8;
 }
 
-+ (id)getNextTransitionInCache:(id)a3 fromDate:(id)a4
++ (id)getNextTransitionInCache:(id)cache fromDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() ceilingDateToNextHour:v5];
+  dateCopy = date;
+  cacheCopy = cache;
+  v7 = [objc_opt_class() ceilingDateToNextHour:dateCopy];
 
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [cacheCopy objectForKeyedSubscript:v7];
 
   return v8;
 }
 
-- (void)prewarmOnActivity:(id)a3
+- (void)prewarmOnActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(ATXPredictedTransitionsCache *)self dump];
   v5 = [MEMORY[0x277CBEAA8] now];
-  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v5 onActivity:v4];
+  [(ATXPredictedTransitionsCache *)self fetchEntriesStartingDate:v5 onActivity:activityCopy];
 }
 
-- (void)fetchEntriesStartingDate:(id)a3 onActivity:(id)a4
+- (void)fetchEntriesStartingDate:(id)date onActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  activityCopy = activity;
   [(ATXPredictedTransitionsCache *)self pruneStaleEntries];
   v8 = +[_ATXGlobals sharedInstance];
-  v9 = [v8 transitionLookaheadMinSeconds];
+  transitionLookaheadMinSeconds = [v8 transitionLookaheadMinSeconds];
 
-  v10 = [v6 dateByAddingTimeInterval:v9];
+  v10 = [dateCopy dateByAddingTimeInterval:transitionLookaheadMinSeconds];
   v11 = [objc_opt_class() ceilingDateToNextHour:v10];
   v12 = +[_ATXGlobals sharedInstance];
-  v13 = [v12 transitionLookaheadMaxSeconds];
+  transitionLookaheadMaxSeconds = [v12 transitionLookaheadMaxSeconds];
 
-  v14 = [v6 dateByAddingTimeInterval:v13];
+  v14 = [dateCopy dateByAddingTimeInterval:transitionLookaheadMaxSeconds];
   v15 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -154,7 +154,7 @@ LABEL_18:
     while (1)
     {
       v19 = objc_autoreleasePoolPush();
-      if ([v7 shouldDefer])
+      if ([activityCopy shouldDefer])
       {
         break;
       }
@@ -209,23 +209,23 @@ LABEL_16:
   }
 }
 
-- (BOOL)cacheHeadingFromLoiType:(int64_t)a3 toLoiType:(int64_t)a4 forDate:(id)a5
+- (BOOL)cacheHeadingFromLoiType:(int64_t)type toLoiType:(int64_t)loiType forDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  dateCopy = date;
   v9 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [ATXPredictedTransitionsCache cacheHeadingFromLoiType:toLoiType:forDate:];
   }
 
-  v10 = [MEMORY[0x277D41BF8] stringForLOIType:a3];
-  v11 = [MEMORY[0x277D41BF8] stringForLOIType:a4];
-  v12 = [(ATXPredictedTransitionsCache *)self cacheForDestinationLoiType:a4];
+  v10 = [MEMORY[0x277D41BF8] stringForLOIType:type];
+  v11 = [MEMORY[0x277D41BF8] stringForLOIType:loiType];
+  v12 = [(ATXPredictedTransitionsCache *)self cacheForDestinationLoiType:loiType];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 objectForKeyedSubscript:v8];
+    v14 = [v12 objectForKeyedSubscript:dateCopy];
 
     if (v14)
     {
@@ -239,7 +239,7 @@ LABEL_16:
       goto LABEL_38;
     }
 
-    v17 = [(ATXPredictedLocationsManagerProtocol *)self->_manager getPredictedLocationsOfInterestFromLOIName:v10 startDate:v8];
+    v17 = [(ATXPredictedLocationsManagerProtocol *)self->_manager getPredictedLocationsOfInterestFromLOIName:v10 startDate:dateCopy];
     v15 = v17;
     if (v17)
     {
@@ -263,7 +263,7 @@ LABEL_16:
               objc_enumerationMutation(v18);
             }
 
-            if ([*(*(&v33 + 1) + 8 * i) type] == a4)
+            if ([*(*(&v33 + 1) + 8 * i) type] == loiType)
             {
               v24 = __atxlog_handle_dailyroutines();
               v11 = v32;
@@ -310,7 +310,7 @@ LABEL_25:
         goto LABEL_32;
       }
 
-      v26 = [(ATXPredictedLocationsManagerProtocol *)self->_manager getPredictedExitTimesFromLOIName:v10 startDate:v8];
+      v26 = [(ATXPredictedLocationsManagerProtocol *)self->_manager getPredictedExitTimesFromLOIName:v10 startDate:dateCopy];
       if (v26)
       {
         v27 = v26;
@@ -323,7 +323,7 @@ LABEL_25:
 
 LABEL_32:
 
-        [v13 setObject:v27 forKeyedSubscript:v8];
+        [v13 setObject:v27 forKeyedSubscript:dateCopy];
         v16 = 1;
         v25 = v27;
 LABEL_37:
@@ -359,15 +359,15 @@ LABEL_39:
   return v16;
 }
 
-- (id)cacheForDestinationLoiType:(int64_t)a3
+- (id)cacheForDestinationLoiType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     homeToWork = self->_homeToWork;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     homeToWork = self->_workToHome;
 LABEL_5:
@@ -390,7 +390,7 @@ LABEL_9:
 - (void)dump
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 24);
+  v7 = *(self + 24);
   OUTLINED_FUNCTION_0_2();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];
@@ -409,18 +409,18 @@ LABEL_9:
   [v6 removeEntriesFromCache:workToHome beforeDate:v8];
 }
 
-+ (void)removeEntriesFromCache:(id)a3 beforeDate:(id)a4
++ (void)removeEntriesFromCache:(id)cache beforeDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 allKeys];
+  dateCopy = date;
+  cacheCopy = cache;
+  allKeys = [cacheCopy allKeys];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__ATXPredictedTransitionsCache_removeEntriesFromCache_beforeDate___block_invoke;
   v11[3] = &unk_278597FA8;
-  v12 = v5;
-  v8 = v5;
-  v9 = [v7 _pas_filteredArrayWithTest:v11];
+  v12 = dateCopy;
+  v8 = dateCopy;
+  v9 = [allKeys _pas_filteredArrayWithTest:v11];
 
   v10 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -428,7 +428,7 @@ LABEL_9:
     +[ATXPredictedTransitionsCache removeEntriesFromCache:beforeDate:];
   }
 
-  [v6 removeObjectsForKeys:v9];
+  [cacheCopy removeObjectsForKeys:v9];
 }
 
 BOOL __66__ATXPredictedTransitionsCache_removeEntriesFromCache_beforeDate___block_invoke(uint64_t a1, void *a2)

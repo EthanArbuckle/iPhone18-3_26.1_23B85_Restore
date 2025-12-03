@@ -1,48 +1,48 @@
 @interface CMHealthColdStorageCloudKitManager
-- (BOOL)addPendingRecordChanges:(id)a3 forZoneName:(id)a4;
-- (CMHealthColdStorageCloudKitManager)initWithColdStorageManager:(void *)a3;
+- (BOOL)addPendingRecordChanges:(id)changes forZoneName:(id)name;
+- (CMHealthColdStorageCloudKitManager)initWithColdStorageManager:(void *)manager;
 - (id).cxx_construct;
 - (id)getSyncEngineMetadata;
 - (id)getUserRecordIDName;
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4;
-- (id)zoneIDForZoneName:(id)a3;
-- (void)createZone:(id)a3;
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context;
+- (id)zoneIDForZoneName:(id)name;
+- (void)createZone:(id)zone;
 - (void)dealloc;
 - (void)deleteSyncEngineMetadata;
-- (void)deleteZone:(id)a3;
-- (void)handleAccountChange:(id)a3;
-- (void)handleDidFetchChanges:(id)a3;
-- (void)handleDidFetchRecordZoneChanges:(id)a3;
-- (void)handleDidSendChanges:(id)a3;
-- (void)handleFetchedDatabaseChanges:(id)a3;
-- (void)handleFetchedRecordZoneChanges:(id)a3;
-- (void)handleSentDatabaseChanges:(id)a3;
-- (void)handleSentRecordZoneChanges:(id)a3;
-- (void)handleServerRecordChanged:(id)a3;
-- (void)handleStateUpdate:(id)a3;
-- (void)handleUnknownItem:(id)a3;
-- (void)handleWillFetchChanges:(id)a3;
-- (void)handleWillFetchRecordZoneChanges:(id)a3;
-- (void)handleWillSendChanges:(id)a3;
-- (void)handleZoneDeleted:(id)a3;
-- (void)handleZoneNotFound:(id)a3;
+- (void)deleteZone:(id)zone;
+- (void)handleAccountChange:(id)change;
+- (void)handleDidFetchChanges:(id)changes;
+- (void)handleDidFetchRecordZoneChanges:(id)changes;
+- (void)handleDidSendChanges:(id)changes;
+- (void)handleFetchedDatabaseChanges:(id)changes;
+- (void)handleFetchedRecordZoneChanges:(id)changes;
+- (void)handleSentDatabaseChanges:(id)changes;
+- (void)handleSentRecordZoneChanges:(id)changes;
+- (void)handleServerRecordChanged:(id)changed;
+- (void)handleStateUpdate:(id)update;
+- (void)handleUnknownItem:(id)item;
+- (void)handleWillFetchChanges:(id)changes;
+- (void)handleWillFetchRecordZoneChanges:(id)changes;
+- (void)handleWillSendChanges:(id)changes;
+- (void)handleZoneDeleted:(id)deleted;
+- (void)handleZoneNotFound:(id)found;
 - (void)initializeSyncEngine;
-- (void)persistSyncEngineMetadata:(id)a3;
-- (void)setUserRecordIDName:(id)a3;
-- (void)syncEngine:(id)a3 handleEvent:(id)a4;
-- (void)updateDeviceUnlockedState:(BOOL)a3;
+- (void)persistSyncEngineMetadata:(id)metadata;
+- (void)setUserRecordIDName:(id)name;
+- (void)syncEngine:(id)engine handleEvent:(id)event;
+- (void)updateDeviceUnlockedState:(BOOL)state;
 @end
 
 @implementation CMHealthColdStorageCloudKitManager
 
-- (CMHealthColdStorageCloudKitManager)initWithColdStorageManager:(void *)a3
+- (CMHealthColdStorageCloudKitManager)initWithColdStorageManager:(void *)manager
 {
   v6.receiver = self;
   v6.super_class = CMHealthColdStorageCloudKitManager;
   v4 = [(CMHealthColdStorageCloudKitManager *)&v6 init];
   if (v4)
   {
-    v4->_coldStorageManager = a3;
+    v4->_coldStorageManager = manager;
     sub_1004F40C8();
   }
 
@@ -77,7 +77,7 @@
   [(CMHealthColdStorageCloudKitManager *)&v6 dealloc];
 }
 
-- (BOOL)addPendingRecordChanges:(id)a3 forZoneName:(id)a4
+- (BOOL)addPendingRecordChanges:(id)changes forZoneName:(id)name
 {
   if (qword_1025D4530 != -1)
   {
@@ -88,15 +88,15 @@
   if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v15 = a4;
+    nameCopy = name;
     v16 = 2112;
-    v17 = a3;
+    changesCopy = changes;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "[CloudKit] addPendingRecordChanges - zoneName: %@, recordNames: %@", buf, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018A5384(a4, a3);
+    sub_1018A5384(name, changes);
   }
 
   if (self->_syncEngine)
@@ -111,24 +111,24 @@
   }
 
   LOBYTE(v9) = 0;
-  if (a4)
+  if (name)
   {
-    if (a3)
+    if (changes)
     {
       if (v8)
       {
-        v9 = [a3 count];
+        v9 = [changes count];
         if (v9)
         {
-          v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+          v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [changes count]);
           v13[0] = _NSConcreteStackBlock;
           v13[1] = 3221225472;
           v13[2] = sub_1004F0D5C;
           v13[3] = &unk_10245A580;
           v13[4] = self;
-          v13[5] = a4;
+          v13[5] = name;
           v13[6] = v10;
-          [a3 enumerateObjectsUsingBlock:v13];
+          [changes enumerateObjectsUsingBlock:v13];
           [(CKSyncEngineState *)[(CKSyncEngine *)self->_syncEngine state] addPendingRecordZoneChanges:v10];
           if (qword_1025D4530 != -1)
           {
@@ -156,9 +156,9 @@
   return v9;
 }
 
-- (void)updateDeviceUnlockedState:(BOOL)a3
+- (void)updateDeviceUnlockedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (qword_1025D4530 != -1)
   {
     sub_1018A5370();
@@ -176,7 +176,7 @@
     sub_1018A5594();
   }
 
-  if (!self->_syncEngine && v3 && !self->_deviceUnlocked)
+  if (!self->_syncEngine && stateCopy && !self->_deviceUnlocked)
   {
     coldStorageManager = self->_coldStorageManager;
     if (coldStorageManager)
@@ -205,27 +205,27 @@
     }
   }
 
-  self->_deviceUnlocked = v3;
+  self->_deviceUnlocked = stateCopy;
 }
 
-- (id)zoneIDForZoneName:(id)a3
+- (id)zoneIDForZoneName:(id)name
 {
   if (![(NSMutableDictionary *)self->_zoneIDs objectForKey:?])
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_zoneIDs, "setObject:forKeyedSubscript:", [[CKRecordZoneID alloc] initWithZoneName:a3 ownerName:CKCurrentUserDefaultName], a3);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_zoneIDs, "setObject:forKeyedSubscript:", [[CKRecordZoneID alloc] initWithZoneName:name ownerName:CKCurrentUserDefaultName], name);
   }
 
   zoneIDs = self->_zoneIDs;
 
-  return [(NSMutableDictionary *)zoneIDs objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)zoneIDs objectForKeyedSubscript:name];
 }
 
 - (void)initializeSyncEngine
 {
-  v3 = [(CMHealthColdStorageCloudKitManager *)self getSyncEngineMetadata];
+  getSyncEngineMetadata = [(CMHealthColdStorageCloudKitManager *)self getSyncEngineMetadata];
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v4, XPC_ACTIVITY_REQUIRES_CLASS_B, 1);
-  v5 = [[CKSyncEngineConfiguration alloc] initWithDatabase:-[CKContainer privateCloudDatabase](self->_container stateSerialization:"privateCloudDatabase") delegate:{v3, self}];
+  v5 = [[CKSyncEngineConfiguration alloc] initWithDatabase:-[CKContainer privateCloudDatabase](self->_container stateSerialization:"privateCloudDatabase") delegate:{getSyncEngineMetadata, self}];
   [v5 setApsMachServiceName:@"com.apple.aps.locationd.coldstorage.cloudkit"];
   [v5 setPriority:2];
   [v5 setXpcActivityCriteriaOverrides:v4];
@@ -272,11 +272,11 @@
   return result;
 }
 
-- (void)persistSyncEngineMetadata:(id)a3
+- (void)persistSyncEngineMetadata:(id)metadata
 {
   Current = CFAbsoluteTimeGetCurrent();
   v8 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:metadata requiringSecureCoding:1 error:&v8];
   if (v8)
   {
     if (qword_1025D4530 != -1)
@@ -330,23 +330,23 @@
   sub_10105499C(self->_metadataDb.__ptr_ + 9);
 }
 
-- (void)deleteZone:(id)a3
+- (void)deleteZone:(id)zone
 {
-  if (a3)
+  if (zone)
   {
     if (self->_syncEngine)
     {
-      v4 = [[CKSyncEnginePendingZoneDelete alloc] initWithZoneID:a3];
-      v5 = [(CKSyncEngine *)self->_syncEngine state];
+      v4 = [[CKSyncEnginePendingZoneDelete alloc] initWithZoneID:zone];
+      state = [(CKSyncEngine *)self->_syncEngine state];
       v6 = v4;
-      [(CKSyncEngineState *)v5 addPendingDatabaseChanges:[NSArray arrayWithObjects:&v6 count:1]];
+      [(CKSyncEngineState *)state addPendingDatabaseChanges:[NSArray arrayWithObjects:&v6 count:1]];
     }
   }
 }
 
-- (void)createZone:(id)a3
+- (void)createZone:(id)zone
 {
-  if (a3 && self->_syncEngine)
+  if (zone && self->_syncEngine)
   {
     if (qword_1025D4530 != -1)
     {
@@ -357,7 +357,7 @@
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v11 = a3;
+      zoneCopy = zone;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "[CloudKit] Creating new zone with ZoneID: %@", buf, 0xCu);
     }
 
@@ -366,36 +366,36 @@
       sub_1018A5A38();
     }
 
-    v6 = [[CKRecordZone alloc] initWithZoneID:a3];
+    v6 = [[CKRecordZone alloc] initWithZoneID:zone];
     v7 = [[CKSyncEnginePendingZoneSave alloc] initWithZone:v6];
-    v8 = [(CKSyncEngine *)self->_syncEngine state];
+    state = [(CKSyncEngine *)self->_syncEngine state];
     v9 = v7;
-    [(CKSyncEngineState *)v8 addPendingDatabaseChanges:[NSArray arrayWithObjects:&v9 count:1]];
+    [(CKSyncEngineState *)state addPendingDatabaseChanges:[NSArray arrayWithObjects:&v9 count:1]];
   }
 }
 
-- (void)handleZoneDeleted:(id)a3
+- (void)handleZoneDeleted:(id)deleted
 {
   [(CMHealthColdStorageCloudKitManager *)self createZone:?];
   coldStorageManager = self->_coldStorageManager;
   if (coldStorageManager)
   {
-    v6 = [a3 zoneName];
+    zoneName = [deleted zoneName];
 
-    sub_100EA5624(coldStorageManager, v6);
+    sub_100EA5624(coldStorageManager, zoneName);
   }
 }
 
-- (void)handleServerRecordChanged:(id)a3
+- (void)handleServerRecordChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
     if (self->_syncEngine)
     {
       coldStorageManager = self->_coldStorageManager;
       if (coldStorageManager)
       {
-        if ((sub_100EA5480(coldStorageManager, [a3 recordID], +[CMHealthColdStorageUtils getSystemFieldsFromCKRecord:](CMHealthColdStorageUtils, "getSystemFieldsFromCKRecord:", a3)) & 1) == 0)
+        if ((sub_100EA5480(coldStorageManager, [changed recordID], +[CMHealthColdStorageUtils getSystemFieldsFromCKRecord:](CMHealthColdStorageUtils, "getSystemFieldsFromCKRecord:", changed)) & 1) == 0)
         {
           if (qword_1025D4530 != -1)
           {
@@ -439,12 +439,12 @@
   }
 }
 
-- (void)handleUnknownItem:(id)a3
+- (void)handleUnknownItem:(id)item
 {
-  if (a3 && self->_syncEngine)
+  if (item && self->_syncEngine)
   {
     coldStorageManager = self->_coldStorageManager;
-    if (coldStorageManager && (sub_100EA5480(coldStorageManager, [a3 recordID], 0) & 1) == 0)
+    if (coldStorageManager && (sub_100EA5480(coldStorageManager, [item recordID], 0) & 1) == 0)
     {
       if (qword_1025D4530 != -1)
       {
@@ -465,32 +465,32 @@
     }
 
     v7 = [CKSyncEnginePendingRecordZoneChange alloc];
-    v8 = [a3 recordID];
-    v9 = [v7 initWithRecordID:v8 type:CKSyncEnginePendingRecordZoneChangeTypeSave];
-    v10 = [(CKSyncEngine *)self->_syncEngine state];
+    recordID = [item recordID];
+    v9 = [v7 initWithRecordID:recordID type:CKSyncEnginePendingRecordZoneChangeTypeSave];
+    state = [(CKSyncEngine *)self->_syncEngine state];
     v12 = v9;
-    [(CKSyncEngineState *)v10 addPendingRecordZoneChanges:[NSArray arrayWithObjects:&v12 count:1]];
+    [(CKSyncEngineState *)state addPendingRecordZoneChanges:[NSArray arrayWithObjects:&v12 count:1]];
   }
 }
 
-- (void)handleZoneNotFound:(id)a3
+- (void)handleZoneNotFound:(id)found
 {
-  if (a3)
+  if (found)
   {
     if (self->_syncEngine)
     {
-      -[CMHealthColdStorageCloudKitManager createZone:](self, "createZone:", [objc_msgSend(a3 "recordID")]);
+      -[CMHealthColdStorageCloudKitManager createZone:](self, "createZone:", [objc_msgSend(found "recordID")]);
       v5 = [CKSyncEnginePendingRecordZoneChange alloc];
-      v6 = [a3 recordID];
-      v7 = [v5 initWithRecordID:v6 type:CKSyncEnginePendingRecordZoneChangeTypeSave];
-      v8 = [(CKSyncEngine *)self->_syncEngine state];
+      recordID = [found recordID];
+      v7 = [v5 initWithRecordID:recordID type:CKSyncEnginePendingRecordZoneChangeTypeSave];
+      state = [(CKSyncEngine *)self->_syncEngine state];
       v9 = v7;
-      [(CKSyncEngineState *)v8 addPendingRecordZoneChanges:[NSArray arrayWithObjects:&v9 count:1]];
+      [(CKSyncEngineState *)state addPendingRecordZoneChanges:[NSArray arrayWithObjects:&v9 count:1]];
     }
   }
 }
 
-- (void)setUserRecordIDName:(id)a3
+- (void)setUserRecordIDName:(id)name
 {
   if (qword_1025D4530 != -1)
   {
@@ -501,7 +501,7 @@
   if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138477827;
-    v8 = a3;
+    nameCopy = name;
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "[CloudKit] Setting userRecordIDName to %{private}@", &v7, 0xCu);
   }
 
@@ -511,7 +511,7 @@
   }
 
   v5 = sub_1000206B4();
-  sub_1002DC480(v5, @"kColdStorageCloudKitUserID", [a3 UTF8String]);
+  sub_1002DC480(v5, @"kColdStorageCloudKitUserID", [name UTF8String]);
   v6 = *sub_1000206B4();
   (*(v6 + 944))();
 }
@@ -561,93 +561,93 @@ LABEL_8:
   return v6;
 }
 
-- (void)syncEngine:(id)a3 handleEvent:(id)a4
+- (void)syncEngine:(id)engine handleEvent:(id)event
 {
-  if (a4)
+  if (event)
   {
-    if (self->_syncEngine == a3)
+    if (self->_syncEngine == engine)
     {
-      v9 = [a4 type];
-      if (v9 > 5)
+      type = [event type];
+      if (type > 5)
       {
-        if (v9 > 8)
+        if (type > 8)
         {
-          switch(v9)
+          switch(type)
           {
             case 9:
 
-              [(CMHealthColdStorageCloudKitManager *)self handleDidFetchChanges:a4];
+              [(CMHealthColdStorageCloudKitManager *)self handleDidFetchChanges:event];
               break;
             case 10:
 
-              [(CMHealthColdStorageCloudKitManager *)self handleWillSendChanges:a4];
+              [(CMHealthColdStorageCloudKitManager *)self handleWillSendChanges:event];
               break;
             case 11:
 
-              [(CMHealthColdStorageCloudKitManager *)self handleDidSendChanges:a4];
+              [(CMHealthColdStorageCloudKitManager *)self handleDidSendChanges:event];
               break;
           }
         }
 
-        else if (v9 == 6)
+        else if (type == 6)
         {
 
-          [(CMHealthColdStorageCloudKitManager *)self handleWillFetchChanges:a4];
+          [(CMHealthColdStorageCloudKitManager *)self handleWillFetchChanges:event];
         }
 
-        else if (v9 == 7)
+        else if (type == 7)
         {
 
-          [(CMHealthColdStorageCloudKitManager *)self handleWillFetchRecordZoneChanges:a4];
-        }
-
-        else
-        {
-
-          [(CMHealthColdStorageCloudKitManager *)self handleDidFetchRecordZoneChanges:a4];
-        }
-      }
-
-      else if (v9 > 2)
-      {
-        if (v9 == 3)
-        {
-
-          [(CMHealthColdStorageCloudKitManager *)self handleFetchedRecordZoneChanges:a4];
-        }
-
-        else if (v9 == 4)
-        {
-
-          [(CMHealthColdStorageCloudKitManager *)self handleSentDatabaseChanges:a4];
+          [(CMHealthColdStorageCloudKitManager *)self handleWillFetchRecordZoneChanges:event];
         }
 
         else
         {
 
-          [(CMHealthColdStorageCloudKitManager *)self handleSentRecordZoneChanges:a4];
+          [(CMHealthColdStorageCloudKitManager *)self handleDidFetchRecordZoneChanges:event];
         }
       }
 
-      else if (v9)
+      else if (type > 2)
       {
-        if (v9 == 1)
+        if (type == 3)
         {
 
-          [(CMHealthColdStorageCloudKitManager *)self handleAccountChange:a4];
+          [(CMHealthColdStorageCloudKitManager *)self handleFetchedRecordZoneChanges:event];
         }
 
-        else if (v9 == 2)
+        else if (type == 4)
         {
 
-          [(CMHealthColdStorageCloudKitManager *)self handleFetchedDatabaseChanges:a4];
+          [(CMHealthColdStorageCloudKitManager *)self handleSentDatabaseChanges:event];
+        }
+
+        else
+        {
+
+          [(CMHealthColdStorageCloudKitManager *)self handleSentRecordZoneChanges:event];
+        }
+      }
+
+      else if (type)
+      {
+        if (type == 1)
+        {
+
+          [(CMHealthColdStorageCloudKitManager *)self handleAccountChange:event];
+        }
+
+        else if (type == 2)
+        {
+
+          [(CMHealthColdStorageCloudKitManager *)self handleFetchedDatabaseChanges:event];
         }
       }
 
       else
       {
 
-        [(CMHealthColdStorageCloudKitManager *)self handleStateUpdate:a4];
+        [(CMHealthColdStorageCloudKitManager *)self handleStateUpdate:event];
       }
     }
 
@@ -662,7 +662,7 @@ LABEL_8:
       if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = a3;
+        engineCopy2 = engine;
         _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_ERROR, "[CloudKit] Sync engine (%@) doesn't match internal reference.", &v10, 0xCu);
       }
 
@@ -684,7 +684,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = a3;
+      engineCopy2 = engine;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Sync engine (%@) called back for invalid event", &v10, 0xCu);
     }
 
@@ -695,15 +695,15 @@ LABEL_8:
   }
 }
 
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context
 {
-  if (self->_syncEngine != a3)
+  if (self->_syncEngine != engine)
   {
     return 0;
   }
 
-  v6 = [objc_msgSend(a4 "options")];
-  v7 = [(CKSyncEngineState *)[(CKSyncEngine *)self->_syncEngine state] pendingRecordZoneChanges];
+  v6 = [objc_msgSend(context "options")];
+  pendingRecordZoneChanges = [(CKSyncEngineState *)[(CKSyncEngine *)self->_syncEngine state] pendingRecordZoneChanges];
   if (v6)
   {
     v8 = objc_alloc_init(NSMutableArray);
@@ -711,7 +711,7 @@ LABEL_8:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [(NSArray *)pendingRecordZoneChanges countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -722,7 +722,7 @@ LABEL_8:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pendingRecordZoneChanges);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -732,13 +732,13 @@ LABEL_8:
           }
         }
 
-        v10 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [(NSArray *)pendingRecordZoneChanges countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
     }
 
-    v7 = [NSArray arrayWithArray:v8];
+    pendingRecordZoneChanges = [NSArray arrayWithArray:v8];
   }
 
   v14[0] = _NSConcreteStackBlock;
@@ -746,17 +746,17 @@ LABEL_8:
   v14[2] = sub_1004F2388;
   v14[3] = &unk_10245A5A8;
   v14[4] = self;
-  return [[CKSyncEngineRecordZoneChangeBatch alloc] initWithPendingChanges:v7 recordProvider:v14];
+  return [[CKSyncEngineRecordZoneChangeBatch alloc] initWithPendingChanges:pendingRecordZoneChanges recordProvider:v14];
 }
 
-- (void)handleStateUpdate:(id)a3
+- (void)handleStateUpdate:(id)update
 {
-  v5 = [a3 stateUpdateEvent];
-  if (v5)
+  stateUpdateEvent = [update stateUpdateEvent];
+  if (stateUpdateEvent)
   {
-    v6 = [v5 stateSerialization];
+    stateSerialization = [stateUpdateEvent stateSerialization];
 
-    [(CMHealthColdStorageCloudKitManager *)self persistSyncEngineMetadata:v6];
+    [(CMHealthColdStorageCloudKitManager *)self persistSyncEngineMetadata:stateSerialization];
   }
 
   else
@@ -770,7 +770,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = a3;
+      updateCopy = update;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineStateUpdateEvent (%@)", &v8, 0xCu);
     }
 
@@ -781,14 +781,14 @@ LABEL_8:
   }
 }
 
-- (void)handleAccountChange:(id)a3
+- (void)handleAccountChange:(id)change
 {
-  v5 = [a3 accountChangeEvent];
-  if (v5)
+  accountChangeEvent = [change accountChangeEvent];
+  if (accountChangeEvent)
   {
-    v6 = v5;
-    v7 = [v5 changeType];
-    if (v7 == 2)
+    v6 = accountChangeEvent;
+    changeType = [accountChangeEvent changeType];
+    if (changeType == 2)
     {
       if (qword_1025D4530 != -1)
       {
@@ -818,17 +818,17 @@ LABEL_8:
 
     else
     {
-      if (v7 != 1)
+      if (changeType != 1)
       {
-        if (v7)
+        if (changeType)
         {
           return;
         }
 
-        v8 = [(CMHealthColdStorageCloudKitManager *)self getUserRecordIDName];
-        if (v8)
+        getUserRecordIDName = [(CMHealthColdStorageCloudKitManager *)self getUserRecordIDName];
+        if (getUserRecordIDName)
         {
-          v9 = [v8 isEqualToString:{objc_msgSend(objc_msgSend(v6, "currentUser"), "recordName")}];
+          v9 = [getUserRecordIDName isEqualToString:{objc_msgSend(objc_msgSend(v6, "currentUser"), "recordName")}];
           [(CMHealthColdStorageCloudKitManager *)self deleteSyncEngineMetadata];
           p_coldStorageManager = &self->_coldStorageManager;
           if (self->_coldStorageManager)
@@ -940,7 +940,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = a3;
+      changeCopy = change;
       _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineAccountChangeEvent (%@)", &v18, 0xCu);
     }
 
@@ -951,7 +951,7 @@ LABEL_44:
   }
 }
 
-- (void)handleFetchedDatabaseChanges:(id)a3
+- (void)handleFetchedDatabaseChanges:(id)changes
 {
   if (qword_1025D4530 != -1)
   {
@@ -971,17 +971,17 @@ LABEL_44:
   }
 }
 
-- (void)handleFetchedRecordZoneChanges:(id)a3
+- (void)handleFetchedRecordZoneChanges:(id)changes
 {
-  v5 = [a3 fetchedRecordZoneChangesEvent];
-  if (v5)
+  fetchedRecordZoneChangesEvent = [changes fetchedRecordZoneChangesEvent];
+  if (fetchedRecordZoneChangesEvent)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1004F2AC4;
     v8[3] = &unk_10245A5D0;
     v8[4] = self;
-    [objc_msgSend(v5 "modifications")];
+    [objc_msgSend(fetchedRecordZoneChangesEvent "modifications")];
     if (qword_1025D4530 != -1)
     {
       sub_1018A5488();
@@ -1011,7 +1011,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v10 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineFetchedRecordZoneChangesEvent (%@)", buf, 0xCu);
     }
 
@@ -1022,13 +1022,13 @@ LABEL_44:
   }
 }
 
-- (void)handleSentDatabaseChanges:(id)a3
+- (void)handleSentDatabaseChanges:(id)changes
 {
-  v5 = [a3 sentDatabaseChangesEvent];
-  if (v5)
+  sentDatabaseChangesEvent = [changes sentDatabaseChangesEvent];
+  if (sentDatabaseChangesEvent)
   {
-    v6 = v5;
-    [objc_msgSend(v5 "savedZones")];
+    v6 = sentDatabaseChangesEvent;
+    [objc_msgSend(sentDatabaseChangesEvent "savedZones")];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1004F2D80;
@@ -1055,7 +1055,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v11 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineSentDatabaseChangesEvent (%@)", buf, 0xCu);
     }
 
@@ -1066,18 +1066,18 @@ LABEL_44:
   }
 }
 
-- (void)handleSentRecordZoneChanges:(id)a3
+- (void)handleSentRecordZoneChanges:(id)changes
 {
-  v5 = [a3 sentRecordZoneChangesEvent];
-  if (v5)
+  sentRecordZoneChangesEvent = [changes sentRecordZoneChangesEvent];
+  if (sentRecordZoneChangesEvent)
   {
-    v6 = v5;
+    v6 = sentRecordZoneChangesEvent;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1004F32A8;
     v10[3] = &unk_10245A5D0;
     v10[4] = self;
-    [objc_msgSend(v5 "savedRecords")];
+    [objc_msgSend(sentRecordZoneChangesEvent "savedRecords")];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1004F343C;
@@ -1104,7 +1104,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v12 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineSentRecordZoneChangesEvent (%@)", buf, 0xCu);
     }
 
@@ -1115,7 +1115,7 @@ LABEL_44:
   }
 }
 
-- (void)handleWillFetchChanges:(id)a3
+- (void)handleWillFetchChanges:(id)changes
 {
   if (qword_1025D4530 != -1)
   {
@@ -1135,12 +1135,12 @@ LABEL_44:
   }
 }
 
-- (void)handleWillFetchRecordZoneChanges:(id)a3
+- (void)handleWillFetchRecordZoneChanges:(id)changes
 {
-  v4 = [a3 willFetchRecordZoneChangesEvent];
-  if (v4)
+  willFetchRecordZoneChangesEvent = [changes willFetchRecordZoneChangesEvent];
+  if (willFetchRecordZoneChangesEvent)
   {
-    v5 = v4;
+    v5 = willFetchRecordZoneChangesEvent;
     if (qword_1025D4530 != -1)
     {
       sub_1018A5370();
@@ -1150,7 +1150,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138543362;
-      v9 = [v5 zoneID];
+      changesCopy = [v5 zoneID];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEBUG, "[CloudKit] Sync engine is about to fetch zone changes for zoneID %{public}@", &v8, 0xCu);
     }
 
@@ -1171,7 +1171,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineWillFetchRecordZoneChangesEvent (%@)", &v8, 0xCu);
     }
 
@@ -1182,13 +1182,13 @@ LABEL_44:
   }
 }
 
-- (void)handleDidFetchRecordZoneChanges:(id)a3
+- (void)handleDidFetchRecordZoneChanges:(id)changes
 {
-  v4 = [a3 didFetchRecordZoneChangesEvent];
-  if (v4)
+  didFetchRecordZoneChangesEvent = [changes didFetchRecordZoneChangesEvent];
+  if (didFetchRecordZoneChangesEvent)
   {
-    v5 = v4;
-    if ([v4 error])
+    v5 = didFetchRecordZoneChangesEvent;
+    if ([didFetchRecordZoneChangesEvent error])
     {
       if (qword_1025D4530 != -1)
       {
@@ -1199,9 +1199,9 @@ LABEL_44:
       if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
       {
         v16 = 138543618;
-        v17 = [v5 zoneID];
+        changesCopy = [v5 zoneID];
         v18 = 2114;
-        v19 = [v5 error];
+        error = [v5 error];
         _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_ERROR, "[CloudKit] Error fetching record zone changes for %{public}@. Error: %{public}@", &v16, 0x16u);
       }
 
@@ -1222,7 +1222,7 @@ LABEL_44:
       if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
       {
         v16 = 138543362;
-        v17 = [v5 zoneID];
+        changesCopy = [v5 zoneID];
         _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_DEBUG, "[CloudKit] Sync engine successfully fetched zone changes for zoneID %{public}@", &v16, 0xCu);
       }
 
@@ -1244,7 +1244,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineDidFetchRecordZoneChangesEvent (%@)", &v16, 0xCu);
     }
 
@@ -1255,7 +1255,7 @@ LABEL_44:
   }
 }
 
-- (void)handleDidFetchChanges:(id)a3
+- (void)handleDidFetchChanges:(id)changes
 {
   if (qword_1025D4530 != -1)
   {
@@ -1275,12 +1275,12 @@ LABEL_44:
   }
 }
 
-- (void)handleWillSendChanges:(id)a3
+- (void)handleWillSendChanges:(id)changes
 {
-  v4 = [a3 willSendChangesEvent];
-  if (v4)
+  willSendChangesEvent = [changes willSendChangesEvent];
+  if (willSendChangesEvent)
   {
-    v5 = v4;
+    v5 = willSendChangesEvent;
     if (qword_1025D4530 != -1)
     {
       sub_1018A5370();
@@ -1290,7 +1290,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
     {
       v8 = 67109120;
-      LODWORD(v9) = [objc_msgSend(v5 "context")];
+      LODWORD(changesCopy) = [objc_msgSend(v5 "context")];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEBUG, "[CloudKit] Sync engine will send changes. Reason: %d", &v8, 8u);
     }
 
@@ -1311,7 +1311,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineWillSendChangesEvent (%@)", &v8, 0xCu);
     }
 
@@ -1322,12 +1322,12 @@ LABEL_44:
   }
 }
 
-- (void)handleDidSendChanges:(id)a3
+- (void)handleDidSendChanges:(id)changes
 {
-  v4 = [a3 didSendChangesEvent];
-  if (v4)
+  didSendChangesEvent = [changes didSendChangesEvent];
+  if (didSendChangesEvent)
   {
-    v5 = v4;
+    v5 = didSendChangesEvent;
     if (qword_1025D4530 != -1)
     {
       sub_1018A5370();
@@ -1337,7 +1337,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_DEBUG))
     {
       v8 = 67109120;
-      LODWORD(v9) = [objc_msgSend(v5 "context")];
+      LODWORD(changesCopy) = [objc_msgSend(v5 "context")];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEBUG, "[CloudKit] Sync engine did send changes. Reason: %d", &v8, 8u);
     }
 
@@ -1358,7 +1358,7 @@ LABEL_44:
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = a3;
+      changesCopy = changes;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[CloudKit] Called back for invalid CKSyncEngineDidSendChangesEvent (%@)", &v8, 0xCu);
     }
 

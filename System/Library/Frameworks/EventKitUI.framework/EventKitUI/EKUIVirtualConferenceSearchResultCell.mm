@@ -1,52 +1,52 @@
 @interface EKUIVirtualConferenceSearchResultCell
 + (id)_boldTitleFont;
-- (void)updateWithCustomVirtualConference:(id)a3;
-- (void)updateWithRoomType:(id)a3;
+- (void)updateWithCustomVirtualConference:(id)conference;
+- (void)updateWithRoomType:(id)type;
 @end
 
 @implementation EKUIVirtualConferenceSearchResultCell
 
-- (void)updateWithRoomType:(id)a3
+- (void)updateWithRoomType:(id)type
 {
-  v5 = a3;
-  if (([(EKVirtualConferenceRoomType *)self->_currentRoomType isEqual:v5]& 1) == 0)
+  typeCopy = type;
+  if (([(EKVirtualConferenceRoomType *)self->_currentRoomType isEqual:typeCopy]& 1) == 0)
   {
     currentCustomVirtualConference = self->_currentCustomVirtualConference;
     self->_currentCustomVirtualConference = 0;
 
-    objc_storeStrong(&self->_currentRoomType, a3);
-    v7 = [(EKUILocationSearchResultCell *)self defaultContentConfiguration];
-    [v7 setDirectionalLayoutMargins:{15.0, 0.0, 15.0, 0.0}];
+    objc_storeStrong(&self->_currentRoomType, type);
+    defaultContentConfiguration = [(EKUILocationSearchResultCell *)self defaultContentConfiguration];
+    [defaultContentConfiguration setDirectionalLayoutMargins:{15.0, 0.0, 15.0, 0.0}];
     [MEMORY[0x1E69669E0] conferenceImageSize];
     v9 = v8;
-    v10 = [v7 imageProperties];
-    [v10 setReservedLayoutSize:{v9, v9}];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    [imageProperties setReservedLayoutSize:{v9, v9}];
 
-    v11 = [v7 imageProperties];
-    [v11 setMaximumSize:{v9, v9}];
+    imageProperties2 = [defaultContentConfiguration imageProperties];
+    [imageProperties2 setMaximumSize:{v9, v9}];
 
     if (updateWithRoomType__onceToken != -1)
     {
       [EKUIVirtualConferenceSearchResultCell updateWithRoomType:];
     }
 
-    v12 = [updateWithRoomType__cache objectForKey:v5];
+    v12 = [updateWithRoomType__cache objectForKey:typeCopy];
     if (v12)
     {
-      v13 = [v5 title];
-      [v7 setText:v13];
+      title = [typeCopy title];
+      [defaultContentConfiguration setText:title];
 
-      [v7 setImage:v12];
-      [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:v7];
+      [defaultContentConfiguration setImage:v12];
+      [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:defaultContentConfiguration];
     }
 
     else
     {
-      [v7 setText:@" "];
+      [defaultContentConfiguration setText:@" "];
       v14 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
-      [v7 setImage:v14];
+      [defaultContentConfiguration setImage:v14];
 
-      [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:v7];
+      [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:defaultContentConfiguration];
       v15 = MEMORY[0x1E69933C0];
       currentRoomType = self->_currentRoomType;
       v17[0] = MEMORY[0x1E69E9820];
@@ -54,7 +54,7 @@
       v17[2] = __60__EKUIVirtualConferenceSearchResultCell_updateWithRoomType___block_invoke_2;
       v17[3] = &unk_1E8441728;
       v17[4] = self;
-      v18 = v7;
+      v18 = defaultContentConfiguration;
       [v15 imageForRoomType:currentRoomType completionHandler:v17];
     }
   }
@@ -104,45 +104,45 @@ uint64_t __60__EKUIVirtualConferenceSearchResultCell_updateWithRoomType___block_
   return result;
 }
 
-- (void)updateWithCustomVirtualConference:(id)a3
+- (void)updateWithCustomVirtualConference:(id)conference
 {
-  v5 = a3;
+  conferenceCopy = conference;
   currentRoomType = self->_currentRoomType;
   self->_currentRoomType = 0;
 
-  objc_storeStrong(&self->_currentCustomVirtualConference, a3);
-  v7 = [(EKVirtualConference *)self->_currentCustomVirtualConference joinMethods];
-  v8 = [v7 firstObject];
-  v9 = [v8 URL];
+  objc_storeStrong(&self->_currentCustomVirtualConference, conference);
+  joinMethods = [(EKVirtualConference *)self->_currentCustomVirtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v9 = [firstObject URL];
 
-  v10 = [(EKUILocationSearchResultCell *)self defaultContentConfiguration];
-  [v10 setDirectionalLayoutMargins:{15.0, 0.0, 15.0, 0.0}];
-  v11 = [MEMORY[0x1E69DC888] systemGray2Color];
-  v12 = [v10 imageProperties];
-  [v12 setTintColor:v11];
+  defaultContentConfiguration = [(EKUILocationSearchResultCell *)self defaultContentConfiguration];
+  [defaultContentConfiguration setDirectionalLayoutMargins:{15.0, 0.0, 15.0, 0.0}];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:systemGray2Color];
 
-  v13 = [objc_opt_class() _boldTitleFont];
-  v14 = [v10 textProperties];
-  [v14 setFont:v13];
+  _boldTitleFont = [objc_opt_class() _boldTitleFont];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setFont:_boldTitleFont];
 
-  [v10 setText:@" "];
-  [v10 setSecondaryText:@" "];
-  v15 = [(EKUIVirtualConferenceSearchResultCell *)self contentConfiguration];
+  [defaultContentConfiguration setText:@" "];
+  [defaultContentConfiguration setSecondaryText:@" "];
+  contentConfiguration = [(EKUIVirtualConferenceSearchResultCell *)self contentConfiguration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 secondaryText];
-    v17 = [v9 absoluteString];
-    v18 = v17;
-    if (v16 && v17)
+    secondaryText = [contentConfiguration secondaryText];
+    absoluteString = [v9 absoluteString];
+    v18 = absoluteString;
+    if (secondaryText && absoluteString)
     {
-      if ([v16 rangeOfString:v17] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([secondaryText rangeOfString:absoluteString] != 0x7FFFFFFFFFFFFFFFLL)
       {
 
         goto LABEL_9;
       }
 
-      v19 = [v18 rangeOfString:v16];
+      v19 = [v18 rangeOfString:secondaryText];
 
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -155,7 +155,7 @@ uint64_t __60__EKUIVirtualConferenceSearchResultCell_updateWithRoomType___block_
     }
   }
 
-  [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:v10];
+  [(EKUIVirtualConferenceSearchResultCell *)self setContentConfiguration:defaultContentConfiguration];
 LABEL_9:
   v20 = MEMORY[0x1E69933C0];
   v22[0] = MEMORY[0x1E69E9820];
@@ -163,8 +163,8 @@ LABEL_9:
   v22[2] = __75__EKUIVirtualConferenceSearchResultCell_updateWithCustomVirtualConference___block_invoke;
   v22[3] = &unk_1E843EF00;
   v22[4] = self;
-  v23 = v10;
-  v21 = v10;
+  v23 = defaultContentConfiguration;
+  v21 = defaultContentConfiguration;
   [v20 displayDetailsForURL:v9 completionHandler:v22];
 }
 

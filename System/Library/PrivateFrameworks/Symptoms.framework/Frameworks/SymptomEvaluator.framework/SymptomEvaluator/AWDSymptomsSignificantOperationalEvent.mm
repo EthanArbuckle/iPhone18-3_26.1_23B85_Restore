@@ -1,29 +1,29 @@
 @interface AWDSymptomsSignificantOperationalEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsError:(id)a3;
-- (int)StringAsName:(id)a3;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsError:(id)error;
+- (int)StringAsName:(id)name;
+- (int)StringAsStatus:(id)status;
 - (int)error;
 - (int)name;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasName:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasName:(BOOL)name;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsSignificantOperationalEvent
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setHasName:(BOOL)a3
+- (void)setHasName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 8;
   }
@@ -64,60 +64,60 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsName:(id)a3
+- (int)StringAsName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DatabaseIntegrityCheckFailed"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"DatabaseIntegrityCheckFailed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DestroyPersistentStoreFailed"])
+  else if ([nameCopy isEqualToString:@"DestroyPersistentStoreFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DatabaseFileDeletionFailed"])
+  else if ([nameCopy isEqualToString:@"DatabaseFileDeletionFailed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"InvalidMetadataForPersistentStore"])
+  else if ([nameCopy isEqualToString:@"InvalidMetadataForPersistentStore"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"InsufficientDiskStorageAvailable"])
+  else if ([nameCopy isEqualToString:@"InsufficientDiskStorageAvailable"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"QueryReturnedInconsistentContent"])
+  else if ([nameCopy isEqualToString:@"QueryReturnedInconsistentContent"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NotificationTokenUnavailable"])
+  else if ([nameCopy isEqualToString:@"NotificationTokenUnavailable"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CLIPSRulesSuspectInDatabase"])
+  else if ([nameCopy isEqualToString:@"CLIPSRulesSuspectInDatabase"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CLIPSRulesFailedToLoad"])
+  else if ([nameCopy isEqualToString:@"CLIPSRulesFailedToLoad"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CLIPSRulesFailedDuringRun"])
+  else if ([nameCopy isEqualToString:@"CLIPSRulesFailedDuringRun"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CLIPSRulesLoopDetected"])
+  else if ([nameCopy isEqualToString:@"CLIPSRulesLoopDetected"])
   {
     v4 = 11;
   }
@@ -143,9 +143,9 @@
   }
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -158,40 +158,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsError:(id)a3
+- (int)StringAsError:(id)error
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Uninitialized"])
+  errorCopy = error;
+  if ([errorCopy isEqualToString:@"Uninitialized"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ExpectedFailure"])
+  else if ([errorCopy isEqualToString:@"ExpectedFailure"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UnexpectedFailure"])
+  else if ([errorCopy isEqualToString:@"UnexpectedFailure"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MissingValue"])
+  else if ([errorCopy isEqualToString:@"MissingValue"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"EmptyValue"])
+  else if ([errorCopy isEqualToString:@"EmptyValue"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TimedOut"])
+  else if ([errorCopy isEqualToString:@"TimedOut"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"InsufficientPermission"])
+  else if ([errorCopy isEqualToString:@"InsufficientPermission"])
   {
     v4 = 7;
   }
@@ -217,9 +217,9 @@
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -232,20 +232,20 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Success"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Success"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Fail"])
+  else if ([statusCopy isEqualToString:@"Fail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Undetermined"])
+  else if ([statusCopy isEqualToString:@"Undetermined"])
   {
     v4 = 3;
   }
@@ -264,20 +264,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsSignificantOperationalEvent;
   v4 = [(AWDSymptomsSignificantOperationalEvent *)&v8 description];
-  v5 = [(AWDSymptomsSignificantOperationalEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsSignificantOperationalEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -295,13 +295,13 @@
       v7 = off_27898D538[v6];
     }
 
-    [v3 setObject:v7 forKey:@"name"];
+    [dictionary setObject:v7 forKey:@"name"];
   }
 
   alternateName = self->_alternateName;
   if (alternateName)
   {
-    [v3 setObject:alternateName forKey:@"alternateName"];
+    [dictionary setObject:alternateName forKey:@"alternateName"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -317,20 +317,20 @@
       v10 = off_27898D590[v9];
     }
 
-    [v3 setObject:v10 forKey:@"error"];
+    [dictionary setObject:v10 forKey:@"error"];
   }
 
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   v12 = self->_has;
   if (v12)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_errorCode];
-    [v3 setObject:v13 forKey:@"errorCode"];
+    [dictionary setObject:v13 forKey:@"errorCode"];
 
     v12 = self->_has;
   }
@@ -348,15 +348,15 @@
       v15 = off_27898D5C8[v14];
     }
 
-    [v3 setObject:v15 forKey:@"status"];
+    [dictionary setObject:v15 forKey:@"status"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -402,60 +402,60 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 56) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(v4 + 12) = self->_name;
-    *(v4 + 56) |= 8u;
+    *(toCopy + 12) = self->_name;
+    *(toCopy + 56) |= 8u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_alternateName)
   {
-    [v4 setAlternateName:?];
-    v4 = v7;
+    [toCopy setAlternateName:?];
+    toCopy = v7;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 8) = self->_error;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 8) = self->_error;
+    *(toCopy + 56) |= 4u;
   }
 
   if (self->_errorDomain)
   {
     [v7 setErrorDomain:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[1] = self->_errorCode;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_errorCode;
+    *(toCopy + 56) |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 13) = self->_status;
-    *(v4 + 56) |= 0x10u;
+    *(toCopy + 13) = self->_status;
+    *(toCopy + 56) |= 0x10u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -471,7 +471,7 @@
     *(v5 + 56) |= 8u;
   }
 
-  v8 = [(NSString *)self->_alternateName copyWithZone:a3];
+  v8 = [(NSString *)self->_alternateName copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -481,7 +481,7 @@
     *(v6 + 56) |= 4u;
   }
 
-  v10 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v10 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v11 = *(v6 + 40);
   *(v6 + 40) = v10;
 
@@ -502,44 +502,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   has = self->_has;
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_name != *(v4 + 12))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_name != *(equalCopy + 12))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_32;
   }
 
   alternateName = self->_alternateName;
-  if (alternateName | *(v4 + 3))
+  if (alternateName | *(equalCopy + 3))
   {
     if (![(NSString *)alternateName isEqual:?])
     {
@@ -549,22 +549,22 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_error != *(v4 + 8))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_error != *(equalCopy + 8))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_32;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 5))
+  if (errorDomain | *(equalCopy + 5))
   {
     if ([(NSString *)errorDomain isEqual:?])
     {
@@ -580,21 +580,21 @@ LABEL_32:
 LABEL_23:
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_errorCode != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_errorCode != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_32;
   }
 
-  v10 = (*(v4 + 56) & 0x10) == 0;
+  v10 = (*(equalCopy + 56) & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_status != *(v4 + 13))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_status != *(equalCopy + 13))
     {
       goto LABEL_32;
     }
@@ -667,53 +667,53 @@ LABEL_11:
   return v4 ^ v3 ^ v6 ^ v5 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_name = *(v4 + 12);
+    self->_name = *(fromCopy + 12);
     *&self->_has |= 8u;
   }
 
-  v7 = v4;
-  if (*(v4 + 3))
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(AWDSymptomsSignificantOperationalEvent *)self setAlternateName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
-    self->_error = *(v4 + 8);
+    self->_error = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(AWDSymptomsSignificantOperationalEvent *)self setErrorDomain:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if (v6)
   {
-    self->_errorCode = *(v4 + 1);
+    self->_errorCode = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 56);
+    v6 = *(fromCopy + 56);
   }
 
   if ((v6 & 0x10) != 0)
   {
-    self->_status = *(v4 + 13);
+    self->_status = *(fromCopy + 13);
     *&self->_has |= 0x10u;
   }
 }

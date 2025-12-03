@@ -7,7 +7,7 @@
 
 - (void)listen
 {
-  v2 = self;
+  selfCopy = self;
   AXGuestPassNetworkListener.listen()();
 }
 

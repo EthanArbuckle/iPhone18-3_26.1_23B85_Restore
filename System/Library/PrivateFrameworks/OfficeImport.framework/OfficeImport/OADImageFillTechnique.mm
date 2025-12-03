@@ -1,12 +1,12 @@
 @interface OADImageFillTechnique
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OADImageFillTechnique
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   LOBYTE(v4) = v4 == objc_opt_class();
 

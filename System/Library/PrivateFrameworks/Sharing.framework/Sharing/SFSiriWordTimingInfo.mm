@@ -1,23 +1,23 @@
 @interface SFSiriWordTimingInfo
-+ (id)serializableArrayWithTimingInfoArray:(id)a3;
-+ (id)timingInfoArrayWithSerializableArray:(id)a3;
-- (SFSiriWordTimingInfo)initWithDictionary:(id)a3;
++ (id)serializableArrayWithTimingInfoArray:(id)array;
++ (id)timingInfoArrayWithSerializableArray:(id)array;
+- (SFSiriWordTimingInfo)initWithDictionary:(id)dictionary;
 - (_NSRange)textRange;
 - (id)dictionary;
 @end
 
 @implementation SFSiriWordTimingInfo
 
-+ (id)serializableArrayWithTimingInfoArray:(id)a3
++ (id)serializableArrayWithTimingInfoArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dictionary];
-        [v4 addObject:v10];
+        dictionary = [*(*(&v13 + 1) + 8 * i) dictionary];
+        [v4 addObject:dictionary];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,16 +47,16 @@
   return v4;
 }
 
-+ (id)timingInfoArrayWithSerializableArray:(id)a3
++ (id)timingInfoArrayWithSerializableArray:(id)array
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -92,9 +92,9 @@
   return v4;
 }
 
-- (SFSiriWordTimingInfo)initWithDictionary:(id)a3
+- (SFSiriWordTimingInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SFSiriWordTimingInfo;
   v5 = [(SFSiriWordTimingInfo *)&v9 init];

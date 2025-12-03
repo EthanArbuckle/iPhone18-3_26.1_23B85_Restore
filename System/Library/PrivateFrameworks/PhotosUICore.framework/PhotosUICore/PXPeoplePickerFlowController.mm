@@ -1,6 +1,6 @@
 @interface PXPeoplePickerFlowController
 + (id)new;
-- (BOOL)_hasMergeCandidatesForDataSource:(id)a3 person:(id)a4;
+- (BOOL)_hasMergeCandidatesForDataSource:(id)source person:(id)person;
 - (BOOL)hasNextViewController;
 - (NSArray)viewControllers;
 - (NSMutableArray)bootstrappedSourceUUIDs;
@@ -8,12 +8,12 @@
 - (PXPeopleFlowViewController)nextViewController;
 - (PXPeopleFlowViewController)previousViewController;
 - (PXPeoplePickerFlowController)init;
-- (PXPeoplePickerFlowController)initWithPeople:(id)a3;
-- (PXPeoplePickerFlowController)initWithPeople:(id)a3 backingScaleFactor:(double)a4;
+- (PXPeoplePickerFlowController)initWithPeople:(id)people;
+- (PXPeoplePickerFlowController)initWithPeople:(id)people backingScaleFactor:(double)factor;
 - (id)_dataSource;
-- (void)_computeViewControllersForPeople:(id)a3;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
+- (void)_computeViewControllersForPeople:(id)people;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
 @end
 
 @implementation PXPeoplePickerFlowController
@@ -27,15 +27,15 @@
 
 - (PXPeoplePickerFlowController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PXPeoplePickerFlowController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PXPeoplePickerFlowController init]"}];
 
   abort();
 }
 
-- (BOOL)_hasMergeCandidatesForDataSource:(id)a3 person:(id)a4
+- (BOOL)_hasMergeCandidatesForDataSource:(id)source person:(id)person
 {
-  v4 = [a3 fetchAndCacheMergeCandidatesForPerson:a4];
+  v4 = [source fetchAndCacheMergeCandidatesForPerson:person];
   v5 = [v4 count] != 0;
 
   return v5;
@@ -49,9 +49,9 @@
   return v2;
 }
 
-- (void)_computeViewControllersForPeople:(id)a3
+- (void)_computeViewControllersForPeople:(id)people
 {
-  v4 = a3;
+  peopleCopy = people;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17[0] = 0;
@@ -62,14 +62,14 @@
   v10 = 3221225472;
   v11 = __65__PXPeoplePickerFlowController__computeViewControllersForPeople___block_invoke;
   v12 = &unk_1E774C450;
-  v13 = self;
+  selfCopy = self;
   v7 = v6;
   v14 = v7;
   v8 = v5;
   v15 = v8;
   v16 = v17;
-  [v4 enumerateObjectsUsingBlock:&v9];
-  [(PXPeoplePickerFlowController *)self setViewControllers:v8, v9, v10, v11, v12, v13];
+  [peopleCopy enumerateObjectsUsingBlock:&v9];
+  [(PXPeoplePickerFlowController *)self setViewControllers:v8, v9, v10, v11, v12, selfCopy];
   [(PXPeoplePickerFlowController *)self setContexts:v7];
 
   _Block_object_dispose(v17, 8);
@@ -111,17 +111,17 @@ void __65__PXPeoplePickerFlowController__computeViewControllersForPeople___block
   *a4 = v20;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(PXPeoplePickerFlowController *)self flowDelegate];
-  [v5 cancel:v4];
+  cancelCopy = cancel;
+  flowDelegate = [(PXPeoplePickerFlowController *)self flowDelegate];
+  [flowDelegate cancel:cancelCopy];
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   v27 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  doneCopy = done;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -143,8 +143,8 @@ void __65__PXPeoplePickerFlowController__computeViewControllersForPeople___block
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [v8 sourcePerson];
-        if (v9)
+        sourcePerson = [v8 sourcePerson];
+        if (sourcePerson)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -152,26 +152,26 @@ void __65__PXPeoplePickerFlowController__computeViewControllersForPeople___block
             goto LABEL_8;
           }
 
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v15 = objc_opt_class();
           v14 = NSStringFromClass(v15);
-          v18 = [v9 px_descriptionForAssertionMessage];
-          [v12 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:101 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v14, v18}];
+          px_descriptionForAssertionMessage = [sourcePerson px_descriptionForAssertionMessage];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:101 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v14, px_descriptionForAssertionMessage}];
         }
 
         else
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v13 = objc_opt_class();
           v14 = NSStringFromClass(v13);
-          [v12 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:101 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v14}];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:101 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v14}];
         }
 
 LABEL_8:
-        [PXPeopleBootstrap performBootstrapWithSourcePerson:v9 context:v8 synchronous:0 completion:0];
+        [PXPeopleBootstrap performBootstrapWithSourcePerson:sourcePerson context:v8 synchronous:0 completion:0];
         bootstrappedSourceUUIDs = self->_bootstrappedSourceUUIDs;
-        v11 = [v9 uuid];
-        [(NSMutableArray *)bootstrappedSourceUUIDs addObject:v11];
+        uuid = [sourcePerson uuid];
+        [(NSMutableArray *)bootstrappedSourceUUIDs addObject:uuid];
 
         ++v7;
       }
@@ -184,8 +184,8 @@ LABEL_8:
     while (v16);
   }
 
-  v17 = [(PXPeoplePickerFlowController *)self flowDelegate];
-  [v17 done:v20];
+  flowDelegate = [(PXPeoplePickerFlowController *)self flowDelegate];
+  [flowDelegate done:doneCopy];
 }
 
 - (PXPeopleFlowViewController)previousViewController
@@ -194,8 +194,8 @@ LABEL_8:
   {
     v3 = [(PXPeoplePickerFlowController *)self viewControllerIndex]- 1;
     [(PXPeoplePickerFlowController *)self setViewControllerIndex:v3];
-    v4 = [(PXPeoplePickerFlowController *)self viewControllers];
-    v5 = [v4 objectAtIndex:v3];
+    viewControllers = [(PXPeoplePickerFlowController *)self viewControllers];
+    v5 = [viewControllers objectAtIndex:v3];
   }
 
   else
@@ -210,10 +210,10 @@ LABEL_8:
 {
   if ([(PXPeoplePickerFlowController *)self hasNextViewController])
   {
-    v3 = [(PXPeoplePickerFlowController *)self viewControllerIndex];
-    [(PXPeoplePickerFlowController *)self setViewControllerIndex:v3 + 1];
-    v4 = [(PXPeoplePickerFlowController *)self viewControllers];
-    v5 = [v4 objectAtIndex:v3 + 1];
+    viewControllerIndex = [(PXPeoplePickerFlowController *)self viewControllerIndex];
+    [(PXPeoplePickerFlowController *)self setViewControllerIndex:viewControllerIndex + 1];
+    viewControllers = [(PXPeoplePickerFlowController *)self viewControllers];
+    v5 = [viewControllers objectAtIndex:viewControllerIndex + 1];
   }
 
   else
@@ -226,11 +226,11 @@ LABEL_8:
 
 - (BOOL)hasNextViewController
 {
-  v3 = [(PXPeoplePickerFlowController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(PXPeoplePickerFlowController *)self viewControllers];
+  v4 = [viewControllers count];
 
-  v5 = [(PXPeoplePickerFlowController *)self viewControllerIndex];
-  return v4 > 0 && v5 < v4 - 1;
+  viewControllerIndex = [(PXPeoplePickerFlowController *)self viewControllerIndex];
+  return v4 > 0 && viewControllerIndex < v4 - 1;
 }
 
 - (NSArray)viewControllers
@@ -238,8 +238,8 @@ LABEL_8:
   v3 = self->_viewControllers;
   if (!v3)
   {
-    v4 = [(PXPeoplePickerFlowController *)self people];
-    [(PXPeoplePickerFlowController *)self _computeViewControllersForPeople:v4];
+    people = [(PXPeoplePickerFlowController *)self people];
+    [(PXPeoplePickerFlowController *)self _computeViewControllersForPeople:people];
 
     v3 = self->_viewControllers;
   }
@@ -254,32 +254,32 @@ LABEL_8:
   return v2;
 }
 
-- (PXPeoplePickerFlowController)initWithPeople:(id)a3 backingScaleFactor:(double)a4
+- (PXPeoplePickerFlowController)initWithPeople:(id)people backingScaleFactor:(double)factor
 {
-  v7 = a3;
-  if (a4 <= 0.0)
+  peopleCopy = people;
+  if (factor <= 0.0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"backingScaleFactor > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"backingScaleFactor > 0"}];
   }
 
-  v8 = [(PXPeoplePickerFlowController *)self initWithPeople:v7];
+  v8 = [(PXPeoplePickerFlowController *)self initWithPeople:peopleCopy];
   v9 = v8;
   if (v8)
   {
-    v8->_backingScaleFactor = a4;
+    v8->_backingScaleFactor = factor;
   }
 
   return v9;
 }
 
-- (PXPeoplePickerFlowController)initWithPeople:(id)a3
+- (PXPeoplePickerFlowController)initWithPeople:(id)people
 {
-  v6 = a3;
-  if (![v6 count])
+  peopleCopy = people;
+  if (![peopleCopy count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"people.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"people.count > 0"}];
   }
 
   v13.receiver = self;
@@ -288,7 +288,7 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_people, a3);
+    objc_storeStrong(&v7->_people, people);
     v8->_viewControllerIndex = -1;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     bootstrappedSourceUUIDs = v8->_bootstrappedSourceUUIDs;
@@ -300,8 +300,8 @@ LABEL_8:
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXPeoplePickerFlowController.m" lineNumber:166 description:{@"%s is not available as initializer", "+[PXPeoplePickerFlowController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerFlowController.m" lineNumber:166 description:{@"%s is not available as initializer", "+[PXPeoplePickerFlowController new]"}];
 
   abort();
 }

@@ -1,21 +1,21 @@
 @interface SBSSystemNotesCreateAction
-- (SBSSystemNotesCreateAction)initWithReason:(int64_t)a3 responder:(id)a4;
+- (SBSSystemNotesCreateAction)initWithReason:(int64_t)reason responder:(id)responder;
 - (int64_t)reason;
 - (void)reason;
 @end
 
 @implementation SBSSystemNotesCreateAction
 
-- (SBSSystemNotesCreateAction)initWithReason:(int64_t)a3 responder:(id)a4
+- (SBSSystemNotesCreateAction)initWithReason:(int64_t)reason responder:(id)responder
 {
-  v6 = a4;
-  if (a3 != 1)
+  responderCopy = responder;
+  if (reason != 1)
   {
     [SBSSystemNotesCreateAction initWithReason:responder:];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   [v7 setObject:v8 forSetting:0];
 
   v9 = objc_alloc_init(_SBSSystemNotesCreateActionSettingsDescriptionProvider);
@@ -23,23 +23,23 @@
 
   v12.receiver = self;
   v12.super_class = SBSSystemNotesCreateAction;
-  v10 = [(SBSSystemNotesCreateAction *)&v12 initWithInfo:v7 responder:v6];
+  v10 = [(SBSSystemNotesCreateAction *)&v12 initWithInfo:v7 responder:responderCopy];
 
   return v10;
 }
 
 - (int64_t)reason
 {
-  v2 = [(SBSSystemNotesCreateAction *)self info];
-  v3 = [v2 objectForSetting:0];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(SBSSystemNotesCreateAction *)self info];
+  v3 = [info objectForSetting:0];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  if (v4 >= 3)
+  if (unsignedIntegerValue >= 3)
   {
     [SBSSystemNotesCreateAction reason];
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)initWithReason:responder:.cold.1()
@@ -53,7 +53,7 @@
 - (void)reason
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:@"reasonNum >= SBSSystemNotesCreateReasonInvalid && reasonNum <= SBSSystemNotesCreateReasonCount" object:? file:? lineNumber:? description:?];
 }

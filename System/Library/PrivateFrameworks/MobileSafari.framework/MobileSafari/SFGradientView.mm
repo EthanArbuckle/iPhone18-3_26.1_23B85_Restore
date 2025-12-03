@@ -1,9 +1,9 @@
 @interface SFGradientView
 + (id)standardGaussianGradientView;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (SFGradientView)initWithCoder:(id)a3;
-- (SFGradientView)initWithColors:(id)a3 locations:(id)a4;
-- (SFGradientView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (SFGradientView)initWithCoder:(id)coder;
+- (SFGradientView)initWithColors:(id)colors locations:(id)locations;
+- (SFGradientView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SFGradientView
@@ -50,10 +50,10 @@
   return v11;
 }
 
-- (SFGradientView)initWithColors:(id)a3 locations:(id)a4
+- (SFGradientView)initWithColors:(id)colors locations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v14.receiver = self;
   v14.super_class = SFGradientView;
   v8 = [(SFGradientView *)&v14 init];
@@ -61,11 +61,11 @@
   if (v8)
   {
     [(SFGradientView *)v8 setUserInteractionEnabled:0];
-    v10 = [(SFGradientView *)v9 gradientLayer];
-    v11 = [v6 safari_mapObjectsUsingBlock:&__block_literal_global_18];
-    [v10 setColors:v11];
+    gradientLayer = [(SFGradientView *)v9 gradientLayer];
+    v11 = [colorsCopy safari_mapObjectsUsingBlock:&__block_literal_global_18];
+    [gradientLayer setColors:v11];
 
-    [v10 setLocations:v7];
+    [gradientLayer setLocations:locationsCopy];
     v12 = v9;
   }
 
@@ -79,18 +79,18 @@ uint64_t __43__SFGradientView_initWithColors_locations___block_invoke(int a1, id
   return [v2 CGColor];
 }
 
-- (SFGradientView)initWithCoder:(id)a3
+- (SFGradientView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"SFGradientView is not compatible with Interface Builder." userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (SFGradientView)initWithFrame:(CGRect)a3
+- (SFGradientView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SFGradientView;
-  v3 = [(SFGradientView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFGradientView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -101,10 +101,10 @@ uint64_t __43__SFGradientView_initWithColors_locations___block_invoke(int a1, id
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"startPoint"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"endPoint"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"startPoint"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"endPoint"))
   {
     v5 = 1;
   }
@@ -113,7 +113,7 @@ uint64_t __43__SFGradientView_initWithColors_locations___block_invoke(int a1, id
   {
     v7.receiver = self;
     v7.super_class = SFGradientView;
-    v5 = [(SFGradientView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SFGradientView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

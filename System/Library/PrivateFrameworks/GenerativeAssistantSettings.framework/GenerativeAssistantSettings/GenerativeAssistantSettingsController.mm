@@ -1,7 +1,7 @@
 @interface GenerativeAssistantSettingsController
 + (BOOL)available;
-- (GenerativeAssistantSettingsController)initWithCoder:(id)a3;
-- (GenerativeAssistantSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GenerativeAssistantSettingsController)initWithCoder:(id)coder;
+- (GenerativeAssistantSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -20,9 +20,9 @@
   return (v7 & 1) == 0;
 }
 
-- (GenerativeAssistantSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (GenerativeAssistantSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_2230C3D84();
     v7 = v6;
@@ -33,7 +33,7 @@
     v7 = 0;
   }
 
-  v8 = a4;
+  bundleCopy = bundle;
   sub_2230C3704();
   if (v7)
   {
@@ -47,18 +47,18 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for GenerativeAssistantSettingsController();
-  v10 = [(GenerativeAssistantSettingsController *)&v12 initWithNibName:v9 bundle:v8];
+  v10 = [(GenerativeAssistantSettingsController *)&v12 initWithNibName:v9 bundle:bundleCopy];
 
   return v10;
 }
 
-- (GenerativeAssistantSettingsController)initWithCoder:(id)a3
+- (GenerativeAssistantSettingsController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sub_2230C3704();
   v7.receiver = self;
   v7.super_class = type metadata accessor for GenerativeAssistantSettingsController();
-  v5 = [(GenerativeAssistantSettingsController *)&v7 initWithCoder:v4];
+  v5 = [(GenerativeAssistantSettingsController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -69,7 +69,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   GenerativeAssistantSettingsController.viewDidLoad()();
 }
 

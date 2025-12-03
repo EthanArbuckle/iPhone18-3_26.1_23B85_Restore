@@ -1,23 +1,23 @@
 @interface SAPowerLog
-- (SAPowerLog)initWithClock:(id)a3 isReplay:(BOOL)a4;
-- (void)addClient:(id)a3;
-- (void)addMonitoredDevice:(id)a3;
+- (SAPowerLog)initWithClock:(id)clock isReplay:(BOOL)replay;
+- (void)addClient:(id)client;
+- (void)addMonitoredDevice:(id)device;
 - (void)increaseBTScanCount;
 - (void)increaseGeofenceCount;
 - (void)increaseGpsLocationRequestCount;
-- (void)increaseSeparationAlertsCount:(unint64_t)a3;
+- (void)increaseSeparationAlertsCount:(unint64_t)count;
 - (void)increaseWifiLocationRequestCount;
-- (void)ingestTAEvent:(id)a3;
-- (void)removeClient:(id)a3;
+- (void)ingestTAEvent:(id)event;
+- (void)removeClient:(id)client;
 - (void)resetStatistics;
 - (void)sendPowerLog;
 @end
 
 @implementation SAPowerLog
 
-- (SAPowerLog)initWithClock:(id)a3 isReplay:(BOOL)a4
+- (SAPowerLog)initWithClock:(id)clock isReplay:(BOOL)replay
 {
-  v7 = a3;
+  clockCopy = clock;
   v12.receiver = self;
   v12.super_class = SAPowerLog;
   v8 = [(SAPowerLog *)&v12 init];
@@ -27,8 +27,8 @@
     monitoredDevices = v8->_monitoredDevices;
     v8->_monitoredDevices = v9;
 
-    objc_storeStrong(&v8->_clock, a3);
-    v8->_isReplay = a4;
+    objc_storeStrong(&v8->_clock, clock);
+    v8->_isReplay = replay;
     [(SAPowerLog *)v8 resetStatistics];
   }
 
@@ -37,8 +37,8 @@
 
 - (void)resetStatistics
 {
-  v3 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-  [(SAPowerLog *)self setStartTimestamp:v3];
+  getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+  [(SAPowerLog *)self setStartTimestamp:getCurrentTime];
 
   [(SAPowerLog *)self setVisitCount:0];
   [(SAPowerLog *)self setTotalVisitDuration:0.0];
@@ -47,8 +47,8 @@
   [(SAPowerLog *)self setGpsLocationRequestCount:0];
   [(SAPowerLog *)self setWifiLocationRequestCount:0];
   [(SAPowerLog *)self setSeparationAlertsCount:0];
-  v4 = [(SAPowerLog *)self monitoredDevices];
-  [v4 removeAllObjects];
+  monitoredDevices = [(SAPowerLog *)self monitoredDevices];
+  [monitoredDevices removeAllObjects];
 }
 
 - (void)sendPowerLog
@@ -58,8 +58,8 @@
   {
     v27[0] = @"timestamp";
     v3 = MEMORY[0x277CCABB0];
-    v20 = [(SAPowerLog *)self startTimestamp];
-    [v20 timeIntervalSinceReferenceDate];
+    startTimestamp = [(SAPowerLog *)self startTimestamp];
+    [startTimestamp timeIntervalSinceReferenceDate];
     v19 = [v3 numberWithDouble:?];
     v28[0] = v19;
     v27[1] = @"NumberOfVisits";
@@ -81,8 +81,8 @@
     v28[5] = v7;
     v27[6] = @"DevicesMonitored";
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(SAPowerLog *)self monitoredDevices];
-    v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    monitoredDevices = [(SAPowerLog *)self monitoredDevices];
+    v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(monitoredDevices, "count")}];
     v28[6] = v10;
     v27[7] = @"GPSAttribution";
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAPowerLog gpsLocationRequestCount](self, "gpsLocationRequestCount")}];
@@ -142,60 +142,60 @@
   [(SAPowerLog *)self setWifiLocationRequestCount:v3];
 }
 
-- (void)increaseSeparationAlertsCount:(unint64_t)a3
+- (void)increaseSeparationAlertsCount:(unint64_t)count
 {
-  v4 = [(SAPowerLog *)self separationAlertsCount]+ a3;
+  v4 = [(SAPowerLog *)self separationAlertsCount]+ count;
 
   [(SAPowerLog *)self setSeparationAlertsCount:v4];
 }
 
-- (void)addMonitoredDevice:(id)a3
+- (void)addMonitoredDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(SAPowerLog *)self monitoredDevices];
-  [v5 addObject:v4];
+  deviceCopy = device;
+  monitoredDevices = [(SAPowerLog *)self monitoredDevices];
+  [monitoredDevices addObject:deviceCopy];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAPowerLog *)self clients];
-  [v5 addObject:v4];
+  clientCopy = client;
+  clients = [(SAPowerLog *)self clients];
+  [clients addObject:clientCopy];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAPowerLog *)self clients];
-  [v5 removeObject:v4];
+  clientCopy = client;
+  clients = [(SAPowerLog *)self clients];
+  [clients removeObject:clientCopy];
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v16 = a3;
+  eventCopy = event;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v16;
+  v5 = eventCopy;
   if (isKindOfClass)
   {
-    v6 = v16;
+    v6 = eventCopy;
     if ([v6 hasArrivalDate] && objc_msgSend(v6, "hasDepartureDate"))
     {
       [(SAPowerLog *)self setVisitCount:[(SAPowerLog *)self visitCount]+ 1];
-      v7 = [v6 departureDate];
-      v8 = [v6 arrivalDate];
-      [v7 timeIntervalSinceDate:v8];
+      departureDate = [v6 departureDate];
+      arrivalDate = [v6 arrivalDate];
+      [departureDate timeIntervalSinceDate:arrivalDate];
       v10 = v9;
       [(SAPowerLog *)self totalVisitDuration];
       [(SAPowerLog *)self setTotalVisitDuration:v10 + v11];
     }
 
-    v5 = v16;
+    v5 = eventCopy;
   }
 
-  v12 = [v5 getDate];
-  v13 = [(SAPowerLog *)self startTimestamp];
-  [v12 timeIntervalSinceDate:v13];
+  getDate = [v5 getDate];
+  startTimestamp = [(SAPowerLog *)self startTimestamp];
+  [getDate timeIntervalSinceDate:startTimestamp];
   v15 = v14;
 
   if (v15 >= 14400.0)

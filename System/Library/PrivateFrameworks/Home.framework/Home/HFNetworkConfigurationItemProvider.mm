@@ -1,5 +1,5 @@
 @interface HFNetworkConfigurationItemProvider
-- (id)_profileItemForProfile:(id)a3;
+- (id)_profileItemForProfile:(id)profile;
 - (id)_supportedProfileClasses;
 @end
 
@@ -13,16 +13,16 @@
   return [v2 setWithObject:v3];
 }
 
-- (id)_profileItemForProfile:(id)a3
+- (id)_profileItemForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [HFNetworkConfigurationItem alloc];
-    v6 = [(HFAccessoryProfileItemProvider *)self home];
-    v7 = [v6 hf_characteristicValueManager];
-    v8 = [(HFAccessoryProfileItem *)v5 initWithProfile:v4 valueSource:v7];
+    home = [(HFAccessoryProfileItemProvider *)self home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
+    v8 = [(HFAccessoryProfileItem *)v5 initWithProfile:profileCopy valueSource:hf_characteristicValueManager];
   }
 
   else

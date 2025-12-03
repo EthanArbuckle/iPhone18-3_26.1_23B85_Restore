@@ -1,7 +1,7 @@
 @interface EKAlarm
 + (BOOL)_processIsAllowedToCreateProcedureAlarms;
 + (BOOL)areLocationsAllowed;
-+ (BOOL)areLocationsAllowedWithAuthorizationStatus:(int)a3;
++ (BOOL)areLocationsAllowedWithAuthorizationStatus:(int)status;
 + (BOOL)areLocationsCurrentlyEnabled;
 + (EKAlarm)alarmWithAbsoluteDate:(NSDate *)date;
 + (EKAlarm)alarmWithRelativeOffset:(NSTimeInterval)offset;
@@ -15,11 +15,11 @@
 - (BOOL)isAbsolute;
 - (BOOL)isDefaultAlarm;
 - (BOOL)isSnoozed;
-- (BOOL)isTopographicallyEqualToAlarm:(id)a3;
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4;
+- (BOOL)isTopographicallyEqualToAlarm:(id)alarm;
+- (BOOL)validateWithOwner:(id)owner error:(id *)error;
 - (EKAlarm)init;
-- (EKAlarm)initWithAbsoluteDate:(id)a3;
-- (EKAlarm)initWithRelativeOffset:(double)a3;
+- (EKAlarm)initWithAbsoluteDate:(id)date;
+- (EKAlarm)initWithRelativeOffset:(double)offset;
 - (EKAlarmProximity)proximity;
 - (EKAlarmType)type;
 - (EKObject)owner;
@@ -27,24 +27,24 @@
 - (NSTimeInterval)relativeOffset;
 - (NSURL)url;
 - (id)bookmarkURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)ownerUUID;
-- (int64_t)compare:(id)a3;
-- (void)_setType:(int64_t)a3;
+- (int64_t)compare:(id)compare;
+- (void)_setType:(int64_t)type;
 - (void)rebaseForDetachment;
 - (void)setAbsoluteDate:(NSDate *)absoluteDate;
-- (void)setBookmarkURL:(id)a3;
+- (void)setBookmarkURL:(id)l;
 - (void)setEmailAddress:(NSString *)emailAddress;
-- (void)setOriginalAlarm:(id)a3;
+- (void)setOriginalAlarm:(id)alarm;
 - (void)setProximity:(EKAlarmProximity)proximity;
 - (void)setRelativeOffset:(NSTimeInterval)relativeOffset;
-- (void)setRelativeOffsetRaw:(id)a3;
-- (void)setSnoozedAlarms:(id)a3;
+- (void)setRelativeOffsetRaw:(id)raw;
+- (void)setSnoozedAlarms:(id)alarms;
 - (void)setStructuredLocation:(EKStructuredLocation *)structuredLocation;
-- (void)setType:(int64_t)a3;
+- (void)setType:(int64_t)type;
 - (void)setUrl:(NSURL *)url;
-- (void)setUrlWrapper:(id)a3;
+- (void)setUrlWrapper:(id)wrapper;
 @end
 
 @implementation EKAlarm
@@ -180,14 +180,14 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
 + (EKAlarm)alarmWithAbsoluteDate:(NSDate *)date
 {
   v4 = date;
-  v5 = [[a1 alloc] initWithAbsoluteDate:v4];
+  v5 = [[self alloc] initWithAbsoluteDate:v4];
 
   return v5;
 }
 
 + (EKAlarm)alarmWithRelativeOffset:(NSTimeInterval)offset
 {
-  v3 = [[a1 alloc] initWithRelativeOffset:offset];
+  v3 = [[self alloc] initWithRelativeOffset:offset];
 
   return v3;
 }
@@ -204,8 +204,8 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
     v4 = EKUUIDString();
     [(EKAlarm *)v3 setUUID:v4];
 
-    v5 = [(EKAlarm *)v3 UUID];
-    [(EKAlarm *)v3 setExternalID:v5];
+    uUID = [(EKAlarm *)v3 UUID];
+    [(EKAlarm *)v3 setExternalID:uUID];
 
     [(EKObject *)v3 updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E6992B08]];
   }
@@ -213,10 +213,10 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
   return v3;
 }
 
-- (EKAlarm)initWithAbsoluteDate:(id)a3
+- (EKAlarm)initWithAbsoluteDate:(id)date
 {
-  v5 = a3;
-  if (!v5)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [(EKAlarm *)a2 initWithAbsoluteDate:?];
   }
@@ -225,19 +225,19 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
   v7 = v6;
   if (v6)
   {
-    [(EKAlarm *)v6 setAbsoluteDate:v5];
+    [(EKAlarm *)v6 setAbsoluteDate:dateCopy];
   }
 
   return v7;
 }
 
-- (EKAlarm)initWithRelativeOffset:(double)a3
+- (EKAlarm)initWithRelativeOffset:(double)offset
 {
   v4 = [(EKAlarm *)self init];
   v5 = v4;
   if (v4)
   {
-    [(EKAlarm *)v4 setRelativeOffset:a3];
+    [(EKAlarm *)v4 setRelativeOffset:offset];
   }
 
   return v5;
@@ -245,62 +245,62 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
 
 - (EKObject)owner
 {
-  v3 = [(EKAlarm *)self calendarItemOwner];
-  v4 = v3;
-  if (v3)
+  calendarItemOwner = [(EKAlarm *)self calendarItemOwner];
+  v4 = calendarItemOwner;
+  if (calendarItemOwner)
   {
-    v5 = v3;
+    calendarOwner = calendarItemOwner;
   }
 
   else
   {
-    v5 = [(EKAlarm *)self calendarOwner];
+    calendarOwner = [(EKAlarm *)self calendarOwner];
   }
 
-  v6 = v5;
+  v6 = calendarOwner;
 
   return v6;
 }
 
 - (void)rebaseForDetachment
 {
-  v3 = [(EKAlarm *)self UUID];
+  uUID = [(EKAlarm *)self UUID];
   [(EKObject *)self rebase];
-  [(EKAlarm *)self setExternalID:v3];
-  [(EKAlarm *)self setUUID:v3];
+  [(EKAlarm *)self setExternalID:uUID];
+  [(EKAlarm *)self setUUID:uUID];
   [(EKObject *)self updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E6992B08]];
 }
 
 - (EKAlarmType)type
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992498]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)_setType:(int64_t)a3
+- (void)_setType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992498]];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (a3 == 3 || ([(EKAlarm *)self _setEmailAddress:0], a3 != 2))
+  if (type == 3 || ([(EKAlarm *)self _setEmailAddress:0], type != 2))
   {
     [(EKAlarm *)self _setUrlWrapper:0];
   }
 
-  [(EKAlarm *)self _setType:a3];
+  [(EKAlarm *)self _setType:type];
 }
 
-- (void)setRelativeOffsetRaw:(id)a3
+- (void)setRelativeOffsetRaw:(id)raw
 {
   v4 = *MEMORY[0x1E6992438];
-  v5 = a3;
+  rawCopy = raw;
   [(EKObject *)self setSingleChangedValue:0 forKey:v4];
-  [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E6992480]];
+  [(EKObject *)self setSingleChangedValue:rawCopy forKey:*MEMORY[0x1E6992480]];
 }
 
 - (NSTimeInterval)relativeOffset
@@ -310,13 +310,13 @@ void __36__EKAlarm_knownRelationshipWeakKeys__block_invoke()
     goto LABEL_7;
   }
 
-  v3 = [(EKAlarm *)self calendarItemOwner];
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v3 defaultAlarms], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  calendarItemOwner = [(EKAlarm *)self calendarItemOwner];
+  if (!calendarItemOwner || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([calendarItemOwner defaultAlarms], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
 
 LABEL_7:
-    v3 = [(EKAlarm *)self relativeOffsetRaw];
-    [v3 doubleValue];
+    calendarItemOwner = [(EKAlarm *)self relativeOffsetRaw];
+    [calendarItemOwner doubleValue];
     v7 = v8;
     goto LABEL_8;
   }
@@ -337,10 +337,10 @@ LABEL_8:
 - (void)setAbsoluteDate:(NSDate *)absoluteDate
 {
   v9 = absoluteDate;
-  v4 = [(EKAlarm *)self absoluteDate];
+  absoluteDate = [(EKAlarm *)self absoluteDate];
 
   v5 = v9;
-  if (v4 != v9)
+  if (absoluteDate != v9)
   {
     [(EKObject *)self setSingleChangedValue:0 forKey:*MEMORY[0x1E6992480]];
     if (v9)
@@ -363,8 +363,8 @@ LABEL_8:
 
 - (BOOL)isAbsolute
 {
-  v2 = [(EKAlarm *)self absoluteDate];
-  v3 = v2 != 0;
+  absoluteDate = [(EKAlarm *)self absoluteDate];
+  v3 = absoluteDate != 0;
 
   return v3;
 }
@@ -378,9 +378,9 @@ LABEL_8:
 - (EKAlarmProximity)proximity
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992478]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)setStructuredLocation:(EKStructuredLocation *)structuredLocation
@@ -392,45 +392,45 @@ LABEL_8:
 
 - (id)ownerUUID
 {
-  v2 = [(EKAlarm *)self calendarItemOwner];
-  v3 = [v2 calendarItemIdentifier];
+  calendarItemOwner = [(EKAlarm *)self calendarItemOwner];
+  calendarItemIdentifier = [calendarItemOwner calendarItemIdentifier];
 
-  return v3;
+  return calendarItemIdentifier;
 }
 
 - (BOOL)isDefaultAlarm
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992468]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setOriginalAlarm:(id)a3
+- (void)setOriginalAlarm:(id)alarm
 {
   v4 = *MEMORY[0x1E6992470];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKAlarm frozenClass]];
+  alarmCopy = alarm;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:alarmCopy forKey:v4 frozenClass:+[EKAlarm frozenClass]];
 }
 
 - (NSArray)snoozedAlarms
 {
-  v2 = [(EKAlarm *)self snoozedAlarmsSet];
-  v3 = [v2 allObjects];
+  snoozedAlarmsSet = [(EKAlarm *)self snoozedAlarmsSet];
+  allObjects = [snoozedAlarmsSet allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setSnoozedAlarms:(id)a3
+- (void)setSnoozedAlarms:(id)alarms
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:alarms];
   [(EKAlarm *)self setSnoozedAlarmsSet:v4];
 }
 
 - (BOOL)isSnoozed
 {
-  v2 = [(EKAlarm *)self originalAlarm];
-  v3 = v2 != 0;
+  originalAlarm = [(EKAlarm *)self originalAlarm];
+  v3 = originalAlarm != 0;
 
   return v3;
 }
@@ -464,7 +464,7 @@ LABEL_8:
   return [v3 currentProcessHasTestingEntitlement];
 }
 
-- (void)setUrlWrapper:(id)a3
+- (void)setUrlWrapper:(id)wrapper
 {
   v3 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -473,13 +473,13 @@ LABEL_8:
   }
 }
 
-- (void)setBookmarkURL:(id)a3
+- (void)setBookmarkURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = MEMORY[0x1E696AE98];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithURL:v5 readonly:1];
+    lCopy = l;
+    v6 = [[v4 alloc] initWithURL:lCopy readonly:1];
   }
 
   else
@@ -492,8 +492,8 @@ LABEL_8:
 
 - (id)bookmarkURL
 {
-  v2 = [(EKAlarm *)self urlWrapper];
-  v3 = [v2 url];
+  urlWrapper = [(EKAlarm *)self urlWrapper];
+  v3 = [urlWrapper url];
 
   return v3;
 }
@@ -509,29 +509,29 @@ LABEL_8:
 
 - (NSURL)url
 {
-  v2 = [(EKAlarm *)self urlWrapper];
-  v3 = [v2 url];
+  urlWrapper = [(EKAlarm *)self urlWrapper];
+  v3 = [urlWrapper url];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v12.receiver = self;
     v12.super_class = EKAlarm;
-    return [(EKObject *)&v12 copyWithZone:a3];
+    return [(EKObject *)&v12 copyWithZone:zone];
   }
 
   else
   {
-    v6 = [(EKAlarm *)self isAbsolute];
+    isAbsolute = [(EKAlarm *)self isAbsolute];
     v7 = [EKAlarm alloc];
-    if (v6)
+    if (isAbsolute)
     {
-      v8 = [(EKAlarm *)self absoluteDate];
-      v5 = [(EKAlarm *)v7 initWithAbsoluteDate:v8];
+      absoluteDate = [(EKAlarm *)self absoluteDate];
+      v5 = [(EKAlarm *)v7 initWithAbsoluteDate:absoluteDate];
     }
 
     else
@@ -540,8 +540,8 @@ LABEL_8:
       v5 = [(EKAlarm *)v7 initWithRelativeOffset:?];
     }
 
-    v9 = [(EKAlarm *)self structuredLocation];
-    v10 = [v9 copy];
+    structuredLocation = [(EKAlarm *)self structuredLocation];
+    v10 = [structuredLocation copy];
     [(EKAlarm *)v5 setStructuredLocation:v10];
 
     [(EKAlarm *)v5 setProximity:[(EKAlarm *)self proximity]];
@@ -553,13 +553,13 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [(EKAlarm *)self isAbsolute];
+  isAbsolute = [(EKAlarm *)self isAbsolute];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3)
+  if (isAbsolute)
   {
-    v6 = [(EKAlarm *)self absoluteDate];
-    v7 = [v4 stringWithFormat:@"%@ <%p> {triggerDate = %@}", v5, self, v6];
+    absoluteDate = [(EKAlarm *)self absoluteDate];
+    v7 = [v4 stringWithFormat:@"%@ <%p> {triggerDate = %@}", v5, self, absoluteDate];
   }
 
   else
@@ -571,12 +571,12 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4
+- (BOOL)validateWithOwner:(id)owner error:(id *)error
 {
-  v6 = a3;
+  ownerCopy = owner;
   v19.receiver = self;
   v19.super_class = EKAlarm;
-  if (![(EKObject *)&v19 validateWithOwner:v6 error:a4])
+  if (![(EKObject *)&v19 validateWithOwner:ownerCopy error:error])
   {
     goto LABEL_22;
   }
@@ -584,10 +584,10 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 constraints];
-    v8 = [v7 supportsAlarmProximity];
+    constraints = [ownerCopy constraints];
+    supportsAlarmProximity = [constraints supportsAlarmProximity];
 
-    if (v8)
+    if (supportsAlarmProximity)
     {
       goto LABEL_18;
     }
@@ -596,12 +596,12 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 _hasChangesForKey:*MEMORY[0x1E6992570]])
+      if ([ownerCopy _hasChangesForKey:*MEMORY[0x1E6992570]])
       {
-        v13 = [v6 committedConstraints];
-        v14 = [v13 supportsAlarmProximity];
+        committedConstraints = [ownerCopy committedConstraints];
+        supportsAlarmProximity2 = [committedConstraints supportsAlarmProximity];
 
-        if (v14)
+        if (supportsAlarmProximity2)
         {
           goto LABEL_18;
         }
@@ -610,20 +610,20 @@ LABEL_11:
 
     if ([(EKAlarm *)self proximity]== EKAlarmProximityNone)
     {
-      v15 = [(EKAlarm *)self structuredLocation];
+      structuredLocation = [(EKAlarm *)self structuredLocation];
 
-      if (!v15)
+      if (!structuredLocation)
       {
         goto LABEL_18;
       }
     }
 
-    if (a4)
+    if (error)
     {
       v16 = 21;
 LABEL_21:
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v16];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_23;
     }
 
@@ -633,7 +633,7 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 calendar];
+    calendar = [ownerCopy calendar];
   }
 
   else
@@ -644,14 +644,14 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v9 = v6;
+    calendar = ownerCopy;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = calendar;
+  if (!calendar)
   {
 LABEL_19:
-    if (a4)
+    if (error)
     {
       v16 = 1;
       goto LABEL_21;
@@ -662,10 +662,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v11 = [v9 constraints];
-  v12 = [v11 supportsAlarmProximity];
+  constraints2 = [calendar constraints];
+  supportsAlarmProximity3 = [constraints2 supportsAlarmProximity];
 
-  if ((v12 & 1) == 0)
+  if ((supportsAlarmProximity3 & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -677,26 +677,26 @@ LABEL_23:
   return v17;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if ([(EKObject *)self isEqual:v4])
+  compareCopy = compare;
+  if ([(EKObject *)self isEqual:compareCopy])
   {
     v5 = 0;
     goto LABEL_17;
   }
 
-  v6 = [(EKAlarm *)self absoluteDate];
-  if (v6)
+  absoluteDate = [(EKAlarm *)self absoluteDate];
+  if (absoluteDate)
   {
-    v7 = v6;
-    v8 = [v4 absoluteDate];
+    v7 = absoluteDate;
+    absoluteDate2 = [compareCopy absoluteDate];
 
-    if (v8)
+    if (absoluteDate2)
     {
-      v9 = [(EKAlarm *)self absoluteDate];
-      v10 = [v4 absoluteDate];
-      v5 = [v9 compare:v10];
+      absoluteDate3 = [(EKAlarm *)self absoluteDate];
+      absoluteDate4 = [compareCopy absoluteDate];
+      v5 = [absoluteDate3 compare:absoluteDate4];
 LABEL_10:
 
       goto LABEL_17;
@@ -705,12 +705,12 @@ LABEL_10:
 
   [(EKAlarm *)self relativeOffset];
   v12 = v11;
-  [v4 relativeOffset];
+  [compareCopy relativeOffset];
   if (vabdd_f64(v12, v13) >= 2.22044605e-16)
   {
     [(EKAlarm *)self relativeOffset];
     v20 = v19;
-    [v4 relativeOffset];
+    [compareCopy relativeOffset];
     if (v20 <= v21)
     {
       v5 = 1;
@@ -724,36 +724,36 @@ LABEL_10:
 
   else
   {
-    v14 = [(EKAlarm *)self structuredLocation];
-    if (v14)
+    structuredLocation = [(EKAlarm *)self structuredLocation];
+    if (structuredLocation)
     {
-      v15 = v14;
-      v16 = [v4 structuredLocation];
+      v15 = structuredLocation;
+      structuredLocation2 = [compareCopy structuredLocation];
 
-      if (v16)
+      if (structuredLocation2)
       {
-        v9 = [(EKAlarm *)self structuredLocation];
-        v10 = [v9 title];
-        v17 = [v4 structuredLocation];
-        v18 = [v17 title];
-        v5 = [v10 compare:v18];
+        absoluteDate3 = [(EKAlarm *)self structuredLocation];
+        absoluteDate4 = [absoluteDate3 title];
+        structuredLocation3 = [compareCopy structuredLocation];
+        title = [structuredLocation3 title];
+        v5 = [absoluteDate4 compare:title];
 
         goto LABEL_10;
       }
     }
 
-    v22 = [(EKAlarm *)self structuredLocation];
+    structuredLocation4 = [(EKAlarm *)self structuredLocation];
 
-    if (v22)
+    if (structuredLocation4)
     {
       v5 = -1;
     }
 
     else
     {
-      v23 = [v4 structuredLocation];
+      structuredLocation5 = [compareCopy structuredLocation];
 
-      v5 = v23 != 0;
+      v5 = structuredLocation5 != 0;
     }
   }
 
@@ -762,33 +762,33 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)isTopographicallyEqualToAlarm:(id)a3
+- (BOOL)isTopographicallyEqualToAlarm:(id)alarm
 {
-  v4 = a3;
-  if (v4)
+  alarmCopy = alarm;
+  if (alarmCopy)
   {
-    v5 = [(EKAlarm *)self absoluteDate];
-    v6 = [v4 absoluteDate];
-    v7 = v6;
-    if (v5)
+    absoluteDate = [(EKAlarm *)self absoluteDate];
+    absoluteDate2 = [alarmCopy absoluteDate];
+    v7 = absoluteDate2;
+    if (absoluteDate)
     {
-      v8 = [v5 isEqualToDate:v6];
+      v8 = [absoluteDate isEqualToDate:absoluteDate2];
     }
 
     else
     {
-      v8 = v6 == 0;
+      v8 = absoluteDate2 == 0;
     }
 
     [(EKAlarm *)self relativeOffset];
     v11 = v10;
-    [v4 relativeOffset];
+    [alarmCopy relativeOffset];
     v13 = vabdd_f64(v11, v12);
-    v14 = [(EKAlarm *)self structuredLocation];
-    v15 = [v4 structuredLocation];
-    if (v14 | v15)
+    structuredLocation = [(EKAlarm *)self structuredLocation];
+    structuredLocation2 = [alarmCopy structuredLocation];
+    if (structuredLocation | structuredLocation2)
     {
-      v16 = [v14 isEqual:v15];
+      v16 = [structuredLocation isEqual:structuredLocation2];
     }
 
     else
@@ -819,8 +819,8 @@ LABEL_17:
 {
   v7.receiver = self;
   v7.super_class = EKAlarm;
-  v3 = [(EKObject *)&v7 _reset];
-  if (v3)
+  _reset = [(EKObject *)&v7 _reset];
+  if (_reset)
   {
     v4 = objc_opt_class();
     v6[0] = MEMORY[0x1E69E9820];
@@ -828,10 +828,10 @@ LABEL_17:
     v6[2] = __17__EKAlarm__reset__block_invoke;
     v6[3] = &unk_1E77FE7D0;
     v6[4] = self;
-    LOBYTE(v3) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
+    LOBYTE(_reset) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
   }
 
-  return v3;
+  return _reset;
 }
 
 id __17__EKAlarm__reset__block_invoke(uint64_t a1, void *a2)
@@ -856,15 +856,15 @@ id __17__EKAlarm__reset__block_invoke(uint64_t a1, void *a2)
 
 + (BOOL)areLocationsAllowed
 {
-  v3 = [a1 _currentAuthorizationStatus];
+  _currentAuthorizationStatus = [self _currentAuthorizationStatus];
 
-  return [a1 areLocationsAllowedWithAuthorizationStatus:v3];
+  return [self areLocationsAllowedWithAuthorizationStatus:_currentAuthorizationStatus];
 }
 
-+ (BOOL)areLocationsAllowedWithAuthorizationStatus:(int)a3
++ (BOOL)areLocationsAllowedWithAuthorizationStatus:(int)status
 {
-  result = [a1 areLocationsAvailable];
-  if (a3 == 2)
+  result = [self areLocationsAvailable];
+  if (status == 2)
   {
     return 0;
   }
@@ -874,13 +874,13 @@ id __17__EKAlarm__reset__block_invoke(uint64_t a1, void *a2)
 
 + (BOOL)areLocationsCurrentlyEnabled
 {
-  v3 = [a1 areLocationsAvailable];
-  if (v3)
+  areLocationsAvailable = [self areLocationsAvailable];
+  if (areLocationsAvailable)
   {
-    LOBYTE(v3) = [a1 _currentAuthorizationStatus] != 2;
+    LOBYTE(areLocationsAvailable) = [self _currentAuthorizationStatus] != 2;
   }
 
-  return v3;
+  return areLocationsAvailable;
 }
 
 - (void)initWithAbsoluteDate:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

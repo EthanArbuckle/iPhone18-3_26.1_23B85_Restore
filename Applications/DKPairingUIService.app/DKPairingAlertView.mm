@@ -1,5 +1,5 @@
 @interface DKPairingAlertView
-- (_TtC18DKPairingUIService18DKPairingAlertView)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18DKPairingUIService18DKPairingAlertView)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -12,7 +12,7 @@
   [(DKPairingAlertView *)&v2 viewDidLoad];
 }
 
-- (_TtC18DKPairingUIService18DKPairingAlertView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18DKPairingUIService18DKPairingAlertView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

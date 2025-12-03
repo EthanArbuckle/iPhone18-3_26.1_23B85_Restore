@@ -8,10 +8,10 @@
 {
   if (a3)
   {
-    return [a1 appendString:?];
+    return [self appendString:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

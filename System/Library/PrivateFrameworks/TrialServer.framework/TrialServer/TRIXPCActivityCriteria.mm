@@ -25,21 +25,21 @@
 
 + (id)fetchExperimentsCriteria
 {
-  v2 = [a1 cellularCriteria];
-  xpc_dictionary_set_int64(v2, *MEMORY[0x277D86288], 86400);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86390], 1);
+  cellularCriteria = [self cellularCriteria];
+  xpc_dictionary_set_int64(cellularCriteria, *MEMORY[0x277D86288], 86400);
+  xpc_dictionary_set_BOOL(cellularCriteria, *MEMORY[0x277D86390], 1);
 
-  return v2;
+  return cellularCriteria;
 }
 
 + (id)maintenanceCriteria
 {
-  v2 = [a1 cellularCriteria];
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86398], 0);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86390], 0);
-  xpc_dictionary_set_int64(v2, *MEMORY[0x277D86288], 86400);
+  cellularCriteria = [self cellularCriteria];
+  xpc_dictionary_set_BOOL(cellularCriteria, *MEMORY[0x277D86398], 0);
+  xpc_dictionary_set_BOOL(cellularCriteria, *MEMORY[0x277D86390], 0);
+  xpc_dictionary_set_int64(cellularCriteria, *MEMORY[0x277D86288], 86400);
 
-  return v2;
+  return cellularCriteria;
 }
 
 + (id)clientTriggeredCellularCriteria
@@ -57,10 +57,10 @@
 
 + (id)clientTriggeredWifiCriteria
 {
-  v2 = [a1 clientTriggeredCellularCriteria];
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86390], 1);
+  clientTriggeredCellularCriteria = [self clientTriggeredCellularCriteria];
+  xpc_dictionary_set_BOOL(clientTriggeredCellularCriteria, *MEMORY[0x277D86390], 1);
 
-  return v2;
+  return clientTriggeredCellularCriteria;
 }
 
 @end

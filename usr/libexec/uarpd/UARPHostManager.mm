@@ -1,123 +1,123 @@
 @interface UARPHostManager
 - (BOOL)activateDaemonMode;
 - (BOOL)activateToolMode;
-- (BOOL)addControllerConnection:(id)a3;
-- (BOOL)addTmapMapping:(id)a3;
-- (BOOL)addTransportConnection:(id)a3;
-- (BOOL)appendDataToCachingAsset:(id)a3 data:(id)a4;
-- (BOOL)createTempFolder:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderAnalyticsAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderCachedAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderCrashAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderHeySiriAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderLogsAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderMappedAnalyticsAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderPacketCaptures:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderSysdiagnose:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderSysdiagnoseApproved:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderTMAPDatabase:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolderVoiceAssistAssets:(id)a3 error:(id *)a4;
-- (BOOL)createTempFolders:(id *)a3;
+- (BOOL)addControllerConnection:(id)connection;
+- (BOOL)addTmapMapping:(id)mapping;
+- (BOOL)addTransportConnection:(id)connection;
+- (BOOL)appendDataToCachingAsset:(id)asset data:(id)data;
+- (BOOL)createTempFolder:(id)folder error:(id *)error;
+- (BOOL)createTempFolderAnalyticsAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderCachedAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderCrashAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderHeySiriAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderLogsAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderMappedAnalyticsAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolderPacketCaptures:(id)captures error:(id *)error;
+- (BOOL)createTempFolderSysdiagnose:(id)sysdiagnose error:(id *)error;
+- (BOOL)createTempFolderSysdiagnoseApproved:(id)approved error:(id *)error;
+- (BOOL)createTempFolderTMAPDatabase:(id)database error:(id *)error;
+- (BOOL)createTempFolderVoiceAssistAssets:(id)assets error:(id *)error;
+- (BOOL)createTempFolders:(id *)folders;
 - (BOOL)ensureDatabaseExists;
 - (BOOL)ensureTMAPDatabaseExists;
-- (BOOL)finalizeTransferCachingAsset:(id)a3 hashData:(id)a4 error:(id *)a5;
-- (BOOL)finalizeTransferDynamicAsset:(id)a3 hashData:(id)a4 error:(id *)a5;
-- (BOOL)iOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4;
+- (BOOL)finalizeTransferCachingAsset:(id)asset hashData:(id)data error:(id *)error;
+- (BOOL)finalizeTransferDynamicAsset:(id)asset hashData:(id)data error:(id *)error;
+- (BOOL)iOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version;
 - (BOOL)loadMappingDatabase;
 - (BOOL)loadTMAPDatabase;
-- (BOOL)macOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4;
-- (BOOL)pauseAssetManager:(id)a3;
-- (BOOL)personalizeSuperBinaryAsAppleConnect:(id)a3 hostEndpoint:(id)a4;
-- (BOOL)personalizeSuperBinaryAsAuthListed:(id)a3 hostEndpoint:(id)a4;
-- (BOOL)preflightAvailableGreaterThanStaged:(id)a3 hostEndpoint:(id)a4;
-- (BOOL)preflightOfferRestrictionByDeployment:(id)a3;
-- (BOOL)preflightOfferRestrictionByDeploymentCountry:(id)a3;
-- (BOOL)preflightOfferRestrictionByDeploymentPercentage:(id)a3;
-- (BOOL)preflightOfferRestrictionByFirmwareVersion:(id)a3 hostEndpoint:(id)a4;
-- (BOOL)preflightOfferRestrictionByOS:(id)a3;
-- (BOOL)preflightOfferRestrictions:(id)a3 hostEndpoint:(id)a4;
-- (BOOL)prepareCachingAsset:(id)a3;
-- (BOOL)pruneFolder:(id)a3 timeNow:(id)a4 maxFileAge:(double)a5 error:(id *)a6;
-- (BOOL)resumeAssetManager:(id)a3;
-- (BOOL)tvOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4;
-- (BOOL)updateDatabaseEntry:(id)a3;
-- (BOOL)verifyHash:(id)a3 url:(id)a4 error:(id *)a5;
-- (BOOL)visionOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4;
-- (BOOL)watchOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4;
-- (UARPHostManager)initWithTempFolder:(id)a3 infoProperties:(id)a4 appleProperties:(id)a5;
-- (id)dataRangeFromDynamicAsset:(id)a3 range:(_NSRange)a4;
-- (id)findCachingAssetByUUID:(id)a3;
-- (id)findDownstreamEndpointByHostEndpoint:(id)a3 downstreamID:(unsigned __int16)a4;
-- (id)findDynamicAssetByUUID:(id)a3;
-- (id)findHostEndpointByUUID:(id)a3;
-- (id)findTmapforAppleModel:(id)a3;
-- (id)matchingDatabaseEntry:(id)a3;
-- (id)urlForCachingAsset:(id)a3;
-- (id)urlForDynamicAsset:(id)a3;
-- (void)applyStagedAssets:(id)a3;
-- (void)assetPersonalizationComplete:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5;
-- (void)assetPersonalizationComplete:(id)a3 hostEndpoint:(id)a4;
-- (void)asyncProcessMTIC:(id)a3;
-- (void)checkAssetManager:(id)a3;
+- (BOOL)macOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version;
+- (BOOL)pauseAssetManager:(id)manager;
+- (BOOL)personalizeSuperBinaryAsAppleConnect:(id)connect hostEndpoint:(id)endpoint;
+- (BOOL)personalizeSuperBinaryAsAuthListed:(id)listed hostEndpoint:(id)endpoint;
+- (BOOL)preflightAvailableGreaterThanStaged:(id)staged hostEndpoint:(id)endpoint;
+- (BOOL)preflightOfferRestrictionByDeployment:(id)deployment;
+- (BOOL)preflightOfferRestrictionByDeploymentCountry:(id)country;
+- (BOOL)preflightOfferRestrictionByDeploymentPercentage:(id)percentage;
+- (BOOL)preflightOfferRestrictionByFirmwareVersion:(id)version hostEndpoint:(id)endpoint;
+- (BOOL)preflightOfferRestrictionByOS:(id)s;
+- (BOOL)preflightOfferRestrictions:(id)restrictions hostEndpoint:(id)endpoint;
+- (BOOL)prepareCachingAsset:(id)asset;
+- (BOOL)pruneFolder:(id)folder timeNow:(id)now maxFileAge:(double)age error:(id *)error;
+- (BOOL)resumeAssetManager:(id)manager;
+- (BOOL)tvOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version;
+- (BOOL)updateDatabaseEntry:(id)entry;
+- (BOOL)verifyHash:(id)hash url:(id)url error:(id *)error;
+- (BOOL)visionOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version;
+- (BOOL)watchOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version;
+- (UARPHostManager)initWithTempFolder:(id)folder infoProperties:(id)properties appleProperties:(id)appleProperties;
+- (id)dataRangeFromDynamicAsset:(id)asset range:(_NSRange)range;
+- (id)findCachingAssetByUUID:(id)d;
+- (id)findDownstreamEndpointByHostEndpoint:(id)endpoint downstreamID:(unsigned __int16)d;
+- (id)findDynamicAssetByUUID:(id)d;
+- (id)findHostEndpointByUUID:(id)d;
+- (id)findTmapforAppleModel:(id)model;
+- (id)matchingDatabaseEntry:(id)entry;
+- (id)urlForCachingAsset:(id)asset;
+- (id)urlForDynamicAsset:(id)asset;
+- (void)applyStagedAssets:(id)assets;
+- (void)assetPersonalizationComplete:(id)complete endpointUUID:(id)d tssOptions:(id)options;
+- (void)assetPersonalizationComplete:(id)complete hostEndpoint:(id)endpoint;
+- (void)asyncProcessMTIC:(id)c;
+- (void)checkAssetManager:(id)manager;
 - (void)clearAssetFolders;
 - (void)clearDatabase;
 - (void)clearPacketCaptures;
-- (void)commonProcessMTIC:(id)a3 tmapSnapshot:(id)a4;
-- (void)controllerDisconnection:(id)a3;
+- (void)commonProcessMTIC:(id)c tmapSnapshot:(id)snapshot;
+- (void)controllerDisconnection:(id)disconnection;
 - (void)dealloc;
-- (void)endpointControllerEndpointUnavailable:(id)a3;
-- (void)endpointDisconnection:(id)a3;
+- (void)endpointControllerEndpointUnavailable:(id)unavailable;
+- (void)endpointDisconnection:(id)disconnection;
 - (void)flushDatabase;
 - (void)flushTMAPDatabase;
-- (void)handleAssetAvailabilityEvent:(id)a3;
-- (void)ingestTMAPPayloads:(id)a3;
-- (void)layer3DownstreamEndpointReachable:(id)a3 downstreamID:(unsigned __int16)a4;
-- (void)layer3DownstreamEndpointUnreachable:(id)a3 downstreamID:(unsigned __int16)a4;
-- (void)layer3EndpointAppliedStagedAssets:(id)a3 layer3Flags:(int64_t)a4;
-- (void)layer3EndpointAssetFullyStaged:(id)a3 rxDynamicAsset:(id)a4;
-- (void)layer3EndpointAssetFullyStaged:(id)a3 txFirmwareAsset:(id)a4;
-- (void)layer3EndpointAssetMetaDataComplete:(id)a3 asset:(id)a4;
-- (void)layer3EndpointAssetOffered:(id)a3 asset:(id)a4;
-- (void)layer3EndpointAssetPersonalizationComplete:(id)a3 asset:(id)a4 status:(int64_t)a5;
-- (void)layer3EndpointAssetStagingProgress:(id)a3 asset:(id)a4 bytesTransferred:(unint64_t)a5 assetLength:(unint64_t)a6;
-- (void)layer3EndpointPayloadData:(id)a3 asset:(id)a4 payload:(id)a5 offset:(unint64_t)a6 payloadData:(id)a7;
-- (void)layer3EndpointPayloadDataComplete:(id)a3 asset:(id)a4 payload:(id)a5;
-- (void)layer3EndpointPayloadMetaDataComplete:(id)a3 asset:(id)a4 payload:(id)a5;
-- (void)layer3EndpointPayloadReady:(id)a3 asset:(id)a4 payload:(id)a5;
-- (void)layer3EndpointPersonalizationNeeded:(id)a3 asset:(id)a4;
-- (void)layer3EndpointReachable:(id)a3;
-- (void)layer3EndpointRescindedAssets:(id)a3;
-- (void)layer3EndpointUnreachable:(id)a3;
-- (void)monitorForDevices:(id)a3;
-- (void)notifyControllersPersonalizationStatus:(id)a3 assetUUID:(id)a4 status:(int64_t)a5;
-- (void)offerAssetToMatchingEndpoints:(id)a3 personality:(id)a4 availableFirmwareVersion:(id)a5;
-- (void)personalizeSuperBinary:(id)a3 hostEndpoint:(id)a4;
+- (void)handleAssetAvailabilityEvent:(id)event;
+- (void)ingestTMAPPayloads:(id)payloads;
+- (void)layer3DownstreamEndpointReachable:(id)reachable downstreamID:(unsigned __int16)d;
+- (void)layer3DownstreamEndpointUnreachable:(id)unreachable downstreamID:(unsigned __int16)d;
+- (void)layer3EndpointAppliedStagedAssets:(id)assets layer3Flags:(int64_t)flags;
+- (void)layer3EndpointAssetFullyStaged:(id)staged rxDynamicAsset:(id)asset;
+- (void)layer3EndpointAssetFullyStaged:(id)staged txFirmwareAsset:(id)asset;
+- (void)layer3EndpointAssetMetaDataComplete:(id)complete asset:(id)asset;
+- (void)layer3EndpointAssetOffered:(id)offered asset:(id)asset;
+- (void)layer3EndpointAssetPersonalizationComplete:(id)complete asset:(id)asset status:(int64_t)status;
+- (void)layer3EndpointAssetStagingProgress:(id)progress asset:(id)asset bytesTransferred:(unint64_t)transferred assetLength:(unint64_t)length;
+- (void)layer3EndpointPayloadData:(id)data asset:(id)asset payload:(id)payload offset:(unint64_t)offset payloadData:(id)payloadData;
+- (void)layer3EndpointPayloadDataComplete:(id)complete asset:(id)asset payload:(id)payload;
+- (void)layer3EndpointPayloadMetaDataComplete:(id)complete asset:(id)asset payload:(id)payload;
+- (void)layer3EndpointPayloadReady:(id)ready asset:(id)asset payload:(id)payload;
+- (void)layer3EndpointPersonalizationNeeded:(id)needed asset:(id)asset;
+- (void)layer3EndpointReachable:(id)reachable;
+- (void)layer3EndpointRescindedAssets:(id)assets;
+- (void)layer3EndpointUnreachable:(id)unreachable;
+- (void)monitorForDevices:(id)devices;
+- (void)notifyControllersPersonalizationStatus:(id)status assetUUID:(id)d status:(int64_t)a5;
+- (void)offerAssetToMatchingEndpoints:(id)endpoints personality:(id)personality availableFirmwareVersion:(id)version;
+- (void)personalizeSuperBinary:(id)binary hostEndpoint:(id)endpoint;
 - (void)postNotificationFirmwareUpdate;
 - (void)postNotificationUrgentFirmwareUpdate;
-- (void)processMTIC:(id)a3;
+- (void)processMTIC:(id)c;
 - (void)registerForNotifications;
-- (void)rescindStagedAssets:(id)a3;
+- (void)rescindStagedAssets:(id)assets;
 - (void)showAllAssets;
-- (void)solicitAssetByAssetTag:(id)a3 hostEndpoint:(id)a4 assetURL:(id)a5 assetUUID:(id)a6;
-- (void)stageAndApplyFirmwareAssetInternal:(id)a3 assetUUID:(id)a4 hostEndpoint:(id)a5 tssServerURL:(id)a6 needsStaging:(BOOL)a7 autoApply:(BOOL)a8;
-- (void)updateDatabaseAvailableVersion:(id)a3 personality:(id)a4 assetManager:(id)a5 availableFirmwareVersion:(id)a6;
-- (void)updateDatabaseEntryForPersonality:(id)a3 assetManager:(id)a4 availableFirmwareVersion:(id)a5;
+- (void)solicitAssetByAssetTag:(id)tag hostEndpoint:(id)endpoint assetURL:(id)l assetUUID:(id)d;
+- (void)stageAndApplyFirmwareAssetInternal:(id)internal assetUUID:(id)d hostEndpoint:(id)endpoint tssServerURL:(id)l needsStaging:(BOOL)staging autoApply:(BOOL)apply;
+- (void)updateDatabaseAvailableVersion:(id)version personality:(id)personality assetManager:(id)manager availableFirmwareVersion:(id)firmwareVersion;
+- (void)updateDatabaseEntryForPersonality:(id)personality assetManager:(id)manager availableFirmwareVersion:(id)version;
 @end
 
 @implementation UARPHostManager
 
-- (UARPHostManager)initWithTempFolder:(id)a3 infoProperties:(id)a4 appleProperties:(id)a5
+- (UARPHostManager)initWithTempFolder:(id)folder infoProperties:(id)properties appleProperties:(id)appleProperties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  folderCopy = folder;
+  propertiesCopy = properties;
+  applePropertiesCopy = appleProperties;
   v41.receiver = self;
   v41.super_class = UARPHostManager;
   v11 = [(UARPHostManager *)&v41 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [folderCopy copy];
     tempFolderPath = v11->_tempFolderPath;
     v11->_tempFolderPath = v12;
 
@@ -148,9 +148,9 @@
     defaultInfoProperties = v11->_defaultInfoProperties;
     v11->_defaultInfoProperties = &off_1000BEB38;
 
-    if (v9)
+    if (propertiesCopy)
     {
-      v27 = [v9 copy];
+      v27 = [propertiesCopy copy];
       v28 = v11->_defaultInfoProperties;
       v11->_defaultInfoProperties = v27;
     }
@@ -158,9 +158,9 @@
     defaultAppleProperties = v11->_defaultAppleProperties;
     v11->_defaultAppleProperties = &off_1000BEB50;
 
-    if (v10)
+    if (applePropertiesCopy)
     {
-      v30 = [v10 copy];
+      v30 = [applePropertiesCopy copy];
       v31 = v11->_defaultAppleProperties;
       v11->_defaultAppleProperties = v30;
     }
@@ -206,12 +206,12 @@
   [(UARPHostManager *)&v5 dealloc];
 }
 
-- (BOOL)createTempFolders:(id *)a3
+- (BOOL)createTempFolders:(id *)folders
 {
   v5 = +[NSDate now];
-  if ([(UARPHostManager *)self createTempFolderPacketCaptures:v5 error:a3]&& [(UARPHostManager *)self createTempFolderAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderCachedAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderTMAPDatabase:v5 error:a3]&& [(UARPHostManager *)self createTempFolderSysdiagnose:v5 error:a3]&& [(UARPHostManager *)self createTempFolderSysdiagnoseApproved:v5 error:a3]&& [(UARPHostManager *)self createTempFolderAnalyticsAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderCrashAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderHeySiriAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderLogsAssets:v5 error:a3]&& [(UARPHostManager *)self createTempFolderMappedAnalyticsAssets:v5 error:a3])
+  if ([(UARPHostManager *)self createTempFolderPacketCaptures:v5 error:folders]&& [(UARPHostManager *)self createTempFolderAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderCachedAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderTMAPDatabase:v5 error:folders]&& [(UARPHostManager *)self createTempFolderSysdiagnose:v5 error:folders]&& [(UARPHostManager *)self createTempFolderSysdiagnoseApproved:v5 error:folders]&& [(UARPHostManager *)self createTempFolderAnalyticsAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderCrashAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderHeySiriAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderLogsAssets:v5 error:folders]&& [(UARPHostManager *)self createTempFolderMappedAnalyticsAssets:v5 error:folders])
   {
-    v6 = [(UARPHostManager *)self createTempFolderVoiceAssistAssets:v5 error:a3];
+    v6 = [(UARPHostManager *)self createTempFolderVoiceAssistAssets:v5 error:folders];
   }
 
   else
@@ -222,11 +222,11 @@
   return v6;
 }
 
-- (BOOL)createTempFolder:(id)a3 error:(id *)a4
+- (BOOL)createTempFolder:(id)folder error:(id *)error
 {
-  v6 = a3;
+  folderCopy = folder;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:folderCopy];
   log = self->_log;
   v10 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
   if (!v8)
@@ -234,12 +234,12 @@
     if (v10)
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = folderCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Folder needs to be created %@", buf, 0xCu);
     }
 
     v16 = 0;
-    v11 = [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v16];
+    v11 = [v7 createDirectoryAtPath:folderCopy withIntermediateDirectories:1 attributes:0 error:&v16];
     v12 = v16;
     v13 = self->_log;
     if (v11)
@@ -247,7 +247,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = v6;
+        v18 = folderCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Folder was created %@", buf, 0xCu);
       }
 
@@ -257,13 +257,13 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       sub_10007AEEC();
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_13:
 
@@ -271,14 +271,14 @@ LABEL_13:
     }
 
     v14 = v12;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_13;
   }
 
   if (v10)
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = folderCopy;
     v11 = 1;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Folder exists %@", buf, 0xCu);
   }
@@ -293,48 +293,48 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)pruneFolder:(id)a3 timeNow:(id)a4 maxFileAge:(double)a5 error:(id *)a6
+- (BOOL)pruneFolder:(id)folder timeNow:(id)now maxFileAge:(double)age error:(id *)error
 {
-  v10 = a3;
-  v39 = a4;
+  folderCopy = folder;
+  nowCopy = now;
   context = objc_autoreleasePoolPush();
   v38 = objc_opt_new();
   v11 = +[NSFileManager defaultManager];
-  v12 = [v11 enumeratorAtPath:v10];
+  v12 = [v11 enumeratorAtPath:folderCopy];
 
   v40 = v12;
-  v13 = [v12 nextObject];
-  if (v13)
+  nextObject = [v12 nextObject];
+  if (nextObject)
   {
-    v14 = v13;
+    v14 = nextObject;
     do
     {
-      v50[0] = v10;
+      v50[0] = folderCopy;
       v50[1] = v14;
       v15 = [NSArray arrayWithObjects:v50 count:2];
       v16 = [NSString pathWithComponents:v15];
 
       v17 = [NSURL fileURLWithPath:v16];
       v18 = +[NSFileManager defaultManager];
-      v19 = [v17 path];
-      v20 = [v18 attributesOfItemAtPath:v19 error:a6];
+      path = [v17 path];
+      v20 = [v18 attributesOfItemAtPath:path error:error];
 
       if (v20)
       {
         v21 = [v20 objectForKeyedSubscript:NSFileModificationDate];
-        v22 = [v21 dateByAddingTimeInterval:a5];
-        if ([v39 compare:v22] == 1)
+        v22 = [v21 dateByAddingTimeInterval:age];
+        if ([nowCopy compare:v22] == 1)
         {
           [v38 addObject:v16];
         }
       }
 
-      v23 = [v40 nextObject];
+      nextObject2 = [v40 nextObject];
 
-      v14 = v23;
+      v14 = nextObject2;
     }
 
-    while (v23);
+    while (nextObject2);
   }
 
   if ([v38 count])
@@ -344,13 +344,13 @@ LABEL_14:
       sub_10007AF5C();
     }
 
-    v36 = v10;
+    v36 = folderCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v24 = [v38 reverseObjectEnumerator];
-    v25 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    reverseObjectEnumerator = [v38 reverseObjectEnumerator];
+    v25 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v25)
     {
       v26 = v25;
@@ -362,12 +362,12 @@ LABEL_14:
         {
           if (*v42 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v29 = *(*(&v41 + 1) + 8 * v28);
           v30 = +[NSFileManager defaultManager];
-          v31 = [v30 removeItemAtPath:v29 error:a6];
+          v31 = [v30 removeItemAtPath:v29 error:error];
 
           log = self->_log;
           if (v31)
@@ -382,8 +382,8 @@ LABEL_14:
 
           else if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
           {
-            v33 = *a6;
-            if (!*a6)
+            v33 = *error;
+            if (!*error)
             {
               v33 = @"null";
             }
@@ -399,23 +399,23 @@ LABEL_14:
         }
 
         while (v26 != v28);
-        v34 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
         v26 = v34;
       }
 
       while (v34);
     }
 
-    v10 = v36;
+    folderCopy = v36;
   }
 
   objc_autoreleasePoolPop(context);
   return 1;
 }
 
-- (BOOL)createTempFolderPacketCaptures:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderPacketCaptures:(id)captures error:(id *)error
 {
-  v6 = a3;
+  capturesCopy = captures;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"pcapfiles"];
@@ -423,7 +423,7 @@ LABEL_14:
   packetCaptureFolder = self->_packetCaptureFolder;
   self->_packetCaptureFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_packetCaptureFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_packetCaptureFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -443,7 +443,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_packetCaptureFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_packetCaptureFolder timeNow:capturesCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -466,9 +466,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"assets"];
@@ -476,7 +476,7 @@ LABEL_10:
   assetsFolder = self->_assetsFolder;
   self->_assetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_assetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_assetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -496,7 +496,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_assetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_assetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -519,9 +519,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderCachedAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderCachedAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"cachedassets"];
@@ -529,7 +529,7 @@ LABEL_10:
   cachedAssetsFolder = self->_cachedAssetsFolder;
   self->_cachedAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_cachedAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_cachedAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -549,7 +549,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_cachedAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_cachedAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -572,7 +572,7 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderTMAPDatabase:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderTMAPDatabase:(id)database error:(id *)error
 {
   v6 = objc_opt_new();
   [v6 addObject:self->_tempFolderPath];
@@ -581,7 +581,7 @@ LABEL_10:
   tmapDatabaseFolder = self->_tmapDatabaseFolder;
   self->_tmapDatabaseFolder = v7;
 
-  v9 = [(UARPHostManager *)self createTempFolder:self->_tmapDatabaseFolder error:a4];
+  v9 = [(UARPHostManager *)self createTempFolder:self->_tmapDatabaseFolder error:error];
   if (!v9)
   {
     log = self->_log;
@@ -599,7 +599,7 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)createTempFolderSysdiagnose:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderSysdiagnose:(id)sysdiagnose error:(id *)error
 {
   v6 = objc_opt_new();
   [v6 addObject:self->_tempFolderPath];
@@ -608,7 +608,7 @@ LABEL_10:
   sysdiagnoseFolder = self->_sysdiagnoseFolder;
   self->_sysdiagnoseFolder = v7;
 
-  v9 = [(UARPHostManager *)self createTempFolder:self->_sysdiagnoseFolder error:a4];
+  v9 = [(UARPHostManager *)self createTempFolder:self->_sysdiagnoseFolder error:error];
   if (!v9)
   {
     log = self->_log;
@@ -626,7 +626,7 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)createTempFolderSysdiagnoseApproved:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderSysdiagnoseApproved:(id)approved error:(id *)error
 {
   v6 = objc_opt_new();
   [v6 addObject:self->_tempFolderPath];
@@ -635,7 +635,7 @@ LABEL_10:
   sysdiagnoseApprovedFolder = self->_sysdiagnoseApprovedFolder;
   self->_sysdiagnoseApprovedFolder = v7;
 
-  v9 = [(UARPHostManager *)self createTempFolder:self->_sysdiagnoseApprovedFolder error:a4];
+  v9 = [(UARPHostManager *)self createTempFolder:self->_sysdiagnoseApprovedFolder error:error];
   if (!v9)
   {
     log = self->_log;
@@ -653,9 +653,9 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)createTempFolderAnalyticsAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderAnalyticsAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/analytics"];
@@ -663,7 +663,7 @@ LABEL_10:
   analyticsAssetsFolder = self->_analyticsAssetsFolder;
   self->_analyticsAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_analyticsAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_analyticsAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -683,7 +683,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_analyticsAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_analyticsAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -706,9 +706,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderCrashAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderCrashAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/crash"];
@@ -716,7 +716,7 @@ LABEL_10:
   crashAssetsFolder = self->_crashAssetsFolder;
   self->_crashAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_crashAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_crashAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -736,7 +736,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_crashAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_crashAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -759,9 +759,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderHeySiriAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderHeySiriAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/heysiri"];
@@ -769,7 +769,7 @@ LABEL_10:
   heySiriAssetsFolder = self->_heySiriAssetsFolder;
   self->_heySiriAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_heySiriAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_heySiriAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -789,7 +789,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_heySiriAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_heySiriAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -812,9 +812,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderLogsAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderLogsAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/logs"];
@@ -822,7 +822,7 @@ LABEL_10:
   logsAssetsFolder = self->_logsAssetsFolder;
   self->_logsAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_logsAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_logsAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -842,7 +842,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_logsAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_logsAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -865,9 +865,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderMappedAnalyticsAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderMappedAnalyticsAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/mappedanalytics"];
@@ -875,7 +875,7 @@ LABEL_10:
   mappedAnalyticsAssetsFolder = self->_mappedAnalyticsAssetsFolder;
   self->_mappedAnalyticsAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_mappedAnalyticsAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_mappedAnalyticsAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -895,7 +895,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_mappedAnalyticsAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_mappedAnalyticsAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -918,9 +918,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)createTempFolderVoiceAssistAssets:(id)a3 error:(id *)a4
+- (BOOL)createTempFolderVoiceAssistAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_opt_new();
   [v7 addObject:self->_tempFolderPath];
   [v7 addObject:@"device/assets/voiceassist"];
@@ -928,7 +928,7 @@ LABEL_10:
   voiceAssistAssetsFolder = self->_voiceAssistAssetsFolder;
   self->_voiceAssistAssetsFolder = v8;
 
-  if (![(UARPHostManager *)self createTempFolder:self->_voiceAssistAssetsFolder error:a4])
+  if (![(UARPHostManager *)self createTempFolder:self->_voiceAssistAssetsFolder error:error])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -948,7 +948,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![(UARPHostManager *)self pruneFolder:self->_voiceAssistAssetsFolder timeNow:v6 maxFileAge:a4 error:3600.0])
+  if (![(UARPHostManager *)self pruneFolder:self->_voiceAssistAssetsFolder timeNow:assetsCopy maxFileAge:error error:3600.0])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1021,13 +1021,13 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)addTransportConnection:(id)a3
+- (BOOL)addTransportConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[UARPHostEndpoint alloc] initWithNewConnection:v4 hostManager:self tempFolderPath:self->_tempFolderPath];
-  v6 = [(UARPHostEndpoint *)v5 prepareEndpoint];
+  connectionCopy = connection;
+  v5 = [[UARPHostEndpoint alloc] initWithNewConnection:connectionCopy hostManager:self tempFolderPath:self->_tempFolderPath];
+  prepareEndpoint = [(UARPHostEndpoint *)v5 prepareEndpoint];
   log = self->_log;
-  if (v6)
+  if (prepareEndpoint)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_INFO))
     {
@@ -1057,29 +1057,29 @@ LABEL_10:
     sub_10007B014(log);
   }
 
-  return v6;
+  return prepareEndpoint;
 }
 
-- (void)endpointDisconnection:(id)a3
+- (void)endpointDisconnection:(id)disconnection
 {
-  v4 = a3;
+  disconnectionCopy = disconnection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000087B0;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectionCopy;
+  v6 = disconnectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)addControllerConnection:(id)a3
+- (BOOL)addControllerConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[UARPEndpointControllerInternal alloc] initWithNewConnection:v4 hostManager:self];
-  v6 = [(UARPEndpointControllerInternal *)v5 prepareConnection];
-  if (v6)
+  connectionCopy = connection;
+  v5 = [[UARPEndpointControllerInternal alloc] initWithNewConnection:connectionCopy hostManager:self];
+  prepareConnection = [(UARPEndpointControllerInternal *)v5 prepareConnection];
+  if (prepareConnection)
   {
     [(NSMutableArray *)self->_endpointControllers addObject:v5];
   }
@@ -1093,153 +1093,153 @@ LABEL_10:
     }
   }
 
-  return v6;
+  return prepareConnection;
 }
 
-- (void)controllerDisconnection:(id)a3
+- (void)controllerDisconnection:(id)disconnection
 {
-  v4 = a3;
+  disconnectionCopy = disconnection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008A0C;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectionCopy;
+  v6 = disconnectionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)monitorForDevices:(id)a3
+- (void)monitorForDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008BE0;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)stageAndApplyFirmwareAssetInternal:(id)a3 assetUUID:(id)a4 hostEndpoint:(id)a5 tssServerURL:(id)a6 needsStaging:(BOOL)a7 autoApply:(BOOL)a8
+- (void)stageAndApplyFirmwareAssetInternal:(id)internal assetUUID:(id)d hostEndpoint:(id)endpoint tssServerURL:(id)l needsStaging:(BOOL)staging autoApply:(BOOL)apply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  internalCopy = internal;
+  dCopy = d;
+  endpointCopy = endpoint;
+  lCopy = l;
   queue = self->_queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100008E80;
   v23[3] = &unk_1000B8AD8;
-  v28 = a8;
+  applyCopy = apply;
   v23[4] = self;
-  v24 = v14;
-  v25 = v15;
-  v26 = v16;
-  v29 = a7;
-  v27 = v17;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v24 = internalCopy;
+  v25 = dCopy;
+  v26 = endpointCopy;
+  stagingCopy = staging;
+  v27 = lCopy;
+  v19 = lCopy;
+  v20 = endpointCopy;
+  v21 = dCopy;
+  v22 = internalCopy;
   dispatch_async(queue, v23);
 }
 
-- (void)applyStagedAssets:(id)a3
+- (void)applyStagedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000963C;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetsCopy;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)rescindStagedAssets:(id)a3
+- (void)rescindStagedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000097DC;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetsCopy;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)solicitAssetByAssetTag:(id)a3 hostEndpoint:(id)a4 assetURL:(id)a5 assetUUID:(id)a6
+- (void)solicitAssetByAssetTag:(id)tag hostEndpoint:(id)endpoint assetURL:(id)l assetUUID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tagCopy = tag;
+  endpointCopy = endpoint;
+  lCopy = l;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000099F8;
   block[3] = &unk_1000B8B00;
   block[4] = self;
-  v20 = v10;
-  v21 = v12;
-  v22 = v13;
-  v23 = v11;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
+  v20 = tagCopy;
+  v21 = lCopy;
+  v22 = dCopy;
+  v23 = endpointCopy;
+  v15 = endpointCopy;
+  v16 = dCopy;
+  v17 = lCopy;
+  v18 = tagCopy;
   dispatch_async(queue, block);
 }
 
-- (void)endpointControllerEndpointUnavailable:(id)a3
+- (void)endpointControllerEndpointUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009D28;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = unavailableCopy;
+  v6 = unavailableCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)handleAssetAvailabilityEvent:(id)a3
+- (void)handleAssetAvailabilityEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009EE0;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)offerAssetToMatchingEndpoints:(id)a3 personality:(id)a4 availableFirmwareVersion:(id)a5
+- (void)offerAssetToMatchingEndpoints:(id)endpoints personality:(id)personality availableFirmwareVersion:(id)version
 {
-  v8 = a3;
-  v36 = a4;
-  v35 = a5;
+  endpointsCopy = endpoints;
+  personalityCopy = personality;
+  versionCopy = version;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v46 = "[UARPHostManager offerAssetToMatchingEndpoints:personality:availableFirmwareVersion:]";
     v47 = 2112;
-    v48 = v36;
+    v48 = personalityCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: checking for matching endpoint personalities to %@", buf, 0x16u);
   }
 
@@ -1249,7 +1249,7 @@ LABEL_10:
   v42 = 0u;
   obj = self->_endpoints;
   v10 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v53 count:16];
-  v11 = v36;
+  v11 = personalityCopy;
   if (v10)
   {
     v12 = v10;
@@ -1264,8 +1264,8 @@ LABEL_10:
         }
 
         v15 = *(*(&v41 + 1) + 8 * i);
-        v16 = [v15 personality];
-        v17 = [v16 isPersonalityMatch:v11];
+        personality = [v15 personality];
+        v17 = [personality isPersonalityMatch:v11];
 
         v18 = self->_log;
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
@@ -1274,16 +1274,16 @@ LABEL_10:
           if (v19)
           {
             v20 = v18;
-            v21 = [v15 personality];
+            personality2 = [v15 personality];
             *buf = 136315394;
             v46 = "[UARPHostManager offerAssetToMatchingEndpoints:personality:availableFirmwareVersion:]";
             v47 = 2112;
-            v48 = v21;
+            v48 = personality2;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s: endpoint personality matches; %@", buf, 0x16u);
           }
 
-          v22 = [v15 personality];
-          v23 = [v8 getAssetURLForPersonality:v22];
+          personality3 = [v15 personality];
+          v23 = [endpointsCopy getAssetURLForPersonality:personality3];
 
           if (v23)
           {
@@ -1294,18 +1294,18 @@ LABEL_10:
               if (os_log_type_enabled(self->_log, OS_LOG_TYPE_INFO))
               {
                 v26 = v25;
-                v27 = [v23 path];
+                path = [v23 path];
                 [v15 personality];
-                v29 = v28 = v8;
+                v29 = v28 = endpointsCopy;
                 *buf = 136315650;
                 v46 = "[UARPHostManager offerAssetToMatchingEndpoints:personality:availableFirmwareVersion:]";
                 v47 = 2112;
-                v48 = v27;
+                v48 = path;
                 v49 = 2112;
                 v50 = v29;
                 _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s: Found asset %@ for %@", buf, 0x20u);
 
-                v8 = v28;
+                endpointsCopy = v28;
               }
 
               queue = self->_queue;
@@ -1318,17 +1318,17 @@ LABEL_10:
               v40 = v15;
               dispatch_async(queue, block);
 
-              v11 = v36;
+              v11 = personalityCopy;
             }
 
             else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
             {
               v33 = v25;
-              v34 = [v23 path];
+              path2 = [v23 path];
               *buf = 136315394;
               v46 = "[UARPHostManager offerAssetToMatchingEndpoints:personality:availableFirmwareVersion:]";
               v47 = 2112;
-              v48 = v34;
+              v48 = path2;
               _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%s: url %@ from asset manager client is not reachable", buf, 0x16u);
             }
           }
@@ -1342,11 +1342,11 @@ LABEL_10:
         else if (v19)
         {
           v31 = v18;
-          v32 = [v15 personality];
+          personality4 = [v15 personality];
           *buf = 136315394;
           v46 = "[UARPHostManager offerAssetToMatchingEndpoints:personality:availableFirmwareVersion:]";
           v47 = 2112;
-          v48 = v32;
+          v48 = personality4;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%s: endpoint personality does not match; %@", buf, 0x16u);
         }
       }
@@ -1358,9 +1358,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)pauseAssetManager:(id)a3
+- (BOOL)pauseAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1368,11 +1368,11 @@ LABEL_10:
   v5 = self->_log;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [managerCopy UUIDString];
     *buf = 136315394;
     v20 = "[UARPHostManager pauseAssetManager:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: Pause Asset Manager for %@", buf, 0x16u);
   }
 
@@ -1381,10 +1381,10 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_10000AA14;
   block[3] = &unk_1000B8AB0;
-  v12 = v4;
-  v13 = self;
+  v12 = managerCopy;
+  selfCopy = self;
   v14 = &v15;
-  v8 = v4;
+  v8 = managerCopy;
   dispatch_sync(queue, block);
   v9 = *(v16 + 24);
 
@@ -1392,9 +1392,9 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)resumeAssetManager:(id)a3
+- (BOOL)resumeAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1402,11 +1402,11 @@ LABEL_10:
   v5 = self->_log;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [managerCopy UUIDString];
     *buf = 136315394;
     v20 = "[UARPHostManager resumeAssetManager:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: Resume Asset Manager for %@", buf, 0x16u);
   }
 
@@ -1415,10 +1415,10 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_10000AC6C;
   block[3] = &unk_1000B8AB0;
-  v12 = v4;
-  v13 = self;
+  v12 = managerCopy;
+  selfCopy = self;
   v14 = &v15;
-  v8 = v4;
+  v8 = managerCopy;
   dispatch_sync(queue, block);
   v9 = *(v16 + 24);
 
@@ -1426,18 +1426,18 @@ LABEL_10:
   return v9;
 }
 
-- (void)checkAssetManager:(id)a3
+- (void)checkAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = log;
-    v7 = [v4 UUIDString];
+    uUIDString = [managerCopy UUIDString];
     *buf = 136315394;
     v14 = "[UARPHostManager checkAssetManager:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s: Check Asset Manager for %@", buf, 0x16u);
   }
 
@@ -1446,23 +1446,23 @@ LABEL_10:
   v10[1] = 3221225472;
   v10[2] = sub_10000AE70;
   v10[3] = &unk_1000B8A88;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
+  v11 = managerCopy;
+  selfCopy = self;
+  v9 = managerCopy;
   dispatch_async(queue, v10);
 }
 
-- (BOOL)preflightOfferRestrictions:(id)a3 hostEndpoint:(id)a4
+- (BOOL)preflightOfferRestrictions:(id)restrictions hostEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  restrictionsCopy = restrictions;
+  endpointCopy = endpoint;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     sub_10007B55C(log);
   }
 
-  if ([(UARPHostManager *)self preflightOfferRestrictionByFirmwareVersion:v6 hostEndpoint:v7])
+  if ([(UARPHostManager *)self preflightOfferRestrictionByFirmwareVersion:restrictionsCopy hostEndpoint:endpointCopy])
   {
     v9 = self->_log;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1471,7 +1471,7 @@ LABEL_10:
     }
   }
 
-  else if ([(UARPHostManager *)self preflightOfferRestrictionByOS:v6])
+  else if ([(UARPHostManager *)self preflightOfferRestrictionByOS:restrictionsCopy])
   {
     v10 = self->_log;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1482,7 +1482,7 @@ LABEL_10:
 
   else
   {
-    if (![(UARPHostManager *)self preflightOfferRestrictionByDeployment:v6])
+    if (![(UARPHostManager *)self preflightOfferRestrictionByDeployment:restrictionsCopy])
     {
       v12 = 0;
       goto LABEL_13;
@@ -1501,12 +1501,12 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)preflightOfferRestrictionByFirmwareVersion:(id)a3 hostEndpoint:(id)a4
+- (BOOL)preflightOfferRestrictionByFirmwareVersion:(id)version hostEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 activeFirmwareVersion];
-  v9 = [v7 assetVersion];
+  endpointCopy = endpoint;
+  versionCopy = version;
+  activeFirmwareVersion = [endpointCopy activeFirmwareVersion];
+  assetVersion = [versionCopy assetVersion];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1514,9 +1514,9 @@ LABEL_13:
     v15 = 136315650;
     v16 = "[UARPHostManager preflightOfferRestrictionByFirmwareVersion:hostEndpoint:]";
     v17 = 2112;
-    v18 = v9;
+    v18 = assetVersion;
     v19 = 2112;
-    v20 = v6;
+    v20 = endpointCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Available firmware version is %@ for endpoint %@", &v15, 0x20u);
   }
 
@@ -1526,13 +1526,13 @@ LABEL_13:
     v15 = 136315650;
     v16 = "[UARPHostManager preflightOfferRestrictionByFirmwareVersion:hostEndpoint:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = activeFirmwareVersion;
     v19 = 2112;
-    v20 = v6;
+    v20 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s: Active firmware version is %@ for endpoint %@", &v15, 0x20u);
   }
 
-  v12 = [v9 isGreaterThan:v8];
+  v12 = [assetVersion isGreaterThan:activeFirmwareVersion];
   if ((v12 & 1) == 0)
   {
     v13 = self->_log;
@@ -1541,11 +1541,11 @@ LABEL_13:
       v15 = 136315906;
       v16 = "[UARPHostManager preflightOfferRestrictionByFirmwareVersion:hostEndpoint:]";
       v17 = 2112;
-      v18 = v6;
+      v18 = endpointCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = assetVersion;
       v21 = 2112;
-      v22 = v8;
+      v22 = activeFirmwareVersion;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s: endpoint %@Available firmware version %@ is not greater than Active firmware version %@ ", &v15, 0x2Au);
     }
   }
@@ -1553,9 +1553,9 @@ LABEL_13:
   return v12 ^ 1;
 }
 
-- (BOOL)preflightOfferRestrictionByOS:(id)a3
+- (BOOL)preflightOfferRestrictionByOS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = MGCopyAnswer();
   log = self->_log;
   if (v5)
@@ -1582,7 +1582,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s: Device Class is %@", &v11, 0x16u);
       }
 
-      if ([v7 isEqualToString:@"AppleTV"] && -[UARPHostManager tvOSPreflightOfferRestriction:osBuildVersion:](self, "tvOSPreflightOfferRestriction:osBuildVersion:", v4, v5) || objc_msgSend(v7, "isEqualToString:", @"iPad") && -[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:](self, "iOSPreflightOfferRestriction:osBuildVersion:", v4, v5) || objc_msgSend(v7, "isEqualToString:", @"iPhone") && -[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:](self, "iOSPreflightOfferRestriction:osBuildVersion:", v4, v5) || objc_msgSend(v7, "isEqualToString:", @"Mac") && -[UARPHostManager macOSPreflightOfferRestriction:osBuildVersion:](self, "macOSPreflightOfferRestriction:osBuildVersion:", v4, v5) || objc_msgSend(v7, "isEqualToString:", @"RealityDevice") && -[UARPHostManager visionOSPreflightOfferRestriction:osBuildVersion:](self, "visionOSPreflightOfferRestriction:osBuildVersion:", v4, v5) || objc_msgSend(v7, "isEqualToString:", @"Watch") && -[UARPHostManager watchOSPreflightOfferRestriction:osBuildVersion:](self, "watchOSPreflightOfferRestriction:osBuildVersion:", v4, v5))
+      if ([v7 isEqualToString:@"AppleTV"] && -[UARPHostManager tvOSPreflightOfferRestriction:osBuildVersion:](self, "tvOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5) || objc_msgSend(v7, "isEqualToString:", @"iPad") && -[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:](self, "iOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5) || objc_msgSend(v7, "isEqualToString:", @"iPhone") && -[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:](self, "iOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5) || objc_msgSend(v7, "isEqualToString:", @"Mac") && -[UARPHostManager macOSPreflightOfferRestriction:osBuildVersion:](self, "macOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5) || objc_msgSend(v7, "isEqualToString:", @"RealityDevice") && -[UARPHostManager visionOSPreflightOfferRestriction:osBuildVersion:](self, "visionOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5) || objc_msgSend(v7, "isEqualToString:", @"Watch") && -[UARPHostManager watchOSPreflightOfferRestriction:osBuildVersion:](self, "watchOSPreflightOfferRestriction:osBuildVersion:", sCopy, v5))
       {
         v9 = 1;
 LABEL_26:
@@ -1611,17 +1611,17 @@ LABEL_27:
   return v9;
 }
 
-- (BOOL)iOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4
+- (BOOL)iOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsTLV:objc_opt_class()];
+  versionCopy = version;
+  restrictionCopy = restriction;
+  v8 = [restrictionCopy containsTLV:objc_opt_class()];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [v9 osVersion];
-    v11 = [v10 compare:v6];
+    osVersion = [v9 osVersion];
+    v11 = [osVersion compare:versionCopy];
 
     log = self->_log;
     v13 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -1631,13 +1631,13 @@ LABEL_27:
       if (v13)
       {
         v15 = log;
-        v16 = [v9 osVersion];
+        osVersion2 = [v9 osVersion];
         v20 = 136315650;
         v21 = "[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:]";
         v22 = 2112;
-        v23 = v16;
+        v23 = osVersion2;
         v24 = 2112;
-        v25 = v6;
+        v25 = versionCopy;
         v17 = "%s: Minimum build is %@, which is greater than or equal to OS Build of %@";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v17, &v20, 0x20u);
@@ -1647,13 +1647,13 @@ LABEL_10:
     else if (v13)
     {
       v15 = log;
-      v16 = [v9 osVersion];
+      osVersion2 = [v9 osVersion];
       v20 = 136315650;
       v21 = "[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = osVersion2;
       v24 = 2112;
-      v25 = v6;
+      v25 = versionCopy;
       v17 = "%s: Minimum build is %@, asset qualifies for OS Build of %@";
       goto LABEL_10;
     }
@@ -1667,7 +1667,7 @@ LABEL_10:
     v20 = 136315394;
     v21 = "[UARPHostManager iOSPreflightOfferRestriction:osBuildVersion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: No minimum build for OS Build of %@", &v20, 0x16u);
   }
 
@@ -1677,17 +1677,17 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)macOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4
+- (BOOL)macOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsTLV:objc_opt_class()];
+  versionCopy = version;
+  restrictionCopy = restriction;
+  v8 = [restrictionCopy containsTLV:objc_opt_class()];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [v9 osVersion];
-    v11 = [v10 compare:v6];
+    osVersion = [v9 osVersion];
+    v11 = [osVersion compare:versionCopy];
 
     log = self->_log;
     v13 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -1697,13 +1697,13 @@ LABEL_12:
       if (v13)
       {
         v15 = log;
-        v16 = [v9 osVersion];
+        osVersion2 = [v9 osVersion];
         v20 = 136315650;
         v21 = "[UARPHostManager macOSPreflightOfferRestriction:osBuildVersion:]";
         v22 = 2112;
-        v23 = v16;
+        v23 = osVersion2;
         v24 = 2112;
-        v25 = v6;
+        v25 = versionCopy;
         v17 = "%s: Minimum build is %@, which is greater than or equal to OS Build of %@";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v17, &v20, 0x20u);
@@ -1713,13 +1713,13 @@ LABEL_10:
     else if (v13)
     {
       v15 = log;
-      v16 = [v9 osVersion];
+      osVersion2 = [v9 osVersion];
       v20 = 136315650;
       v21 = "[UARPHostManager macOSPreflightOfferRestriction:osBuildVersion:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = osVersion2;
       v24 = 2112;
-      v25 = v6;
+      v25 = versionCopy;
       v17 = "%s: Minimum build is %@, asset qualifies for OS Build of %@";
       goto LABEL_10;
     }
@@ -1733,7 +1733,7 @@ LABEL_10:
     v20 = 136315394;
     v21 = "[UARPHostManager macOSPreflightOfferRestriction:osBuildVersion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: No minimum build for OS Build of %@", &v20, 0x16u);
   }
 
@@ -1743,17 +1743,17 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)tvOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4
+- (BOOL)tvOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsTLV:objc_opt_class()];
+  versionCopy = version;
+  restrictionCopy = restriction;
+  v8 = [restrictionCopy containsTLV:objc_opt_class()];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [v9 osVersion];
-    v11 = [v10 compare:v6];
+    osVersion = [v9 osVersion];
+    v11 = [osVersion compare:versionCopy];
 
     log = self->_log;
     v13 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -1763,13 +1763,13 @@ LABEL_12:
       if (v13)
       {
         v15 = log;
-        v16 = [v9 osVersion];
+        osVersion2 = [v9 osVersion];
         v20 = 136315650;
         v21 = "[UARPHostManager tvOSPreflightOfferRestriction:osBuildVersion:]";
         v22 = 2112;
-        v23 = v16;
+        v23 = osVersion2;
         v24 = 2112;
-        v25 = v6;
+        v25 = versionCopy;
         v17 = "%s: Minimum build is %@, which is greater than or equal to OS Build of %@";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v17, &v20, 0x20u);
@@ -1779,13 +1779,13 @@ LABEL_10:
     else if (v13)
     {
       v15 = log;
-      v16 = [v9 osVersion];
+      osVersion2 = [v9 osVersion];
       v20 = 136315650;
       v21 = "[UARPHostManager tvOSPreflightOfferRestriction:osBuildVersion:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = osVersion2;
       v24 = 2112;
-      v25 = v6;
+      v25 = versionCopy;
       v17 = "%s: Minimum build is %@, asset qualifies for OS Build of %@";
       goto LABEL_10;
     }
@@ -1799,7 +1799,7 @@ LABEL_10:
     v20 = 136315394;
     v21 = "[UARPHostManager tvOSPreflightOfferRestriction:osBuildVersion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: No minimum build for OS Build of %@", &v20, 0x16u);
   }
 
@@ -1809,17 +1809,17 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)visionOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4
+- (BOOL)visionOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsTLV:objc_opt_class()];
+  versionCopy = version;
+  restrictionCopy = restriction;
+  v8 = [restrictionCopy containsTLV:objc_opt_class()];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [v9 osVersion];
-    v11 = [v10 compare:v6];
+    osVersion = [v9 osVersion];
+    v11 = [osVersion compare:versionCopy];
 
     log = self->_log;
     v13 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -1829,13 +1829,13 @@ LABEL_12:
       if (v13)
       {
         v15 = log;
-        v16 = [v9 osVersion];
+        osVersion2 = [v9 osVersion];
         v20 = 136315650;
         v21 = "[UARPHostManager visionOSPreflightOfferRestriction:osBuildVersion:]";
         v22 = 2112;
-        v23 = v16;
+        v23 = osVersion2;
         v24 = 2112;
-        v25 = v6;
+        v25 = versionCopy;
         v17 = "%s: Minimum build is %@, which is greater than or equal to OS Build of %@";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v17, &v20, 0x20u);
@@ -1845,13 +1845,13 @@ LABEL_10:
     else if (v13)
     {
       v15 = log;
-      v16 = [v9 osVersion];
+      osVersion2 = [v9 osVersion];
       v20 = 136315650;
       v21 = "[UARPHostManager visionOSPreflightOfferRestriction:osBuildVersion:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = osVersion2;
       v24 = 2112;
-      v25 = v6;
+      v25 = versionCopy;
       v17 = "%s: Minimum build is %@, asset qualifies for OS Build of %@";
       goto LABEL_10;
     }
@@ -1865,7 +1865,7 @@ LABEL_10:
     v20 = 136315394;
     v21 = "[UARPHostManager visionOSPreflightOfferRestriction:osBuildVersion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: No minimum build for OS Build of %@", &v20, 0x16u);
   }
 
@@ -1875,17 +1875,17 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)watchOSPreflightOfferRestriction:(id)a3 osBuildVersion:(id)a4
+- (BOOL)watchOSPreflightOfferRestriction:(id)restriction osBuildVersion:(id)version
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 containsTLV:objc_opt_class()];
+  versionCopy = version;
+  restrictionCopy = restriction;
+  v8 = [restrictionCopy containsTLV:objc_opt_class()];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [v9 osVersion];
-    v11 = [v10 compare:v6];
+    osVersion = [v9 osVersion];
+    v11 = [osVersion compare:versionCopy];
 
     log = self->_log;
     v13 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -1895,13 +1895,13 @@ LABEL_12:
       if (v13)
       {
         v15 = log;
-        v16 = [v9 osVersion];
+        osVersion2 = [v9 osVersion];
         v20 = 136315650;
         v21 = "[UARPHostManager watchOSPreflightOfferRestriction:osBuildVersion:]";
         v22 = 2112;
-        v23 = v16;
+        v23 = osVersion2;
         v24 = 2112;
-        v25 = v6;
+        v25 = versionCopy;
         v17 = "%s: Minimum build is %@, which is greater than or equal to OS Build of %@";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v17, &v20, 0x20u);
@@ -1911,13 +1911,13 @@ LABEL_10:
     else if (v13)
     {
       v15 = log;
-      v16 = [v9 osVersion];
+      osVersion2 = [v9 osVersion];
       v20 = 136315650;
       v21 = "[UARPHostManager watchOSPreflightOfferRestriction:osBuildVersion:]";
       v22 = 2112;
-      v23 = v16;
+      v23 = osVersion2;
       v24 = 2112;
-      v25 = v6;
+      v25 = versionCopy;
       v17 = "%s: Minimum build is %@, asset qualifies for OS Build of %@";
       goto LABEL_10;
     }
@@ -1931,7 +1931,7 @@ LABEL_10:
     v20 = 136315394;
     v21 = "[UARPHostManager watchOSPreflightOfferRestriction:osBuildVersion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: No minimum build for OS Build of %@", &v20, 0x16u);
   }
 
@@ -1941,12 +1941,12 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)preflightAvailableGreaterThanStaged:(id)a3 hostEndpoint:(id)a4
+- (BOOL)preflightAvailableGreaterThanStaged:(id)staged hostEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 stagedFirmwareVersion];
-  v9 = [v7 assetVersion];
+  endpointCopy = endpoint;
+  stagedCopy = staged;
+  stagedFirmwareVersion = [endpointCopy stagedFirmwareVersion];
+  assetVersion = [stagedCopy assetVersion];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1954,9 +1954,9 @@ LABEL_12:
     v15 = 136315650;
     v16 = "[UARPHostManager preflightAvailableGreaterThanStaged:hostEndpoint:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = stagedFirmwareVersion;
     v19 = 2112;
-    v20 = v6;
+    v20 = endpointCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Staged firmware version is %@ for endpoint %@", &v15, 0x20u);
   }
 
@@ -1966,13 +1966,13 @@ LABEL_12:
     v15 = 136315650;
     v16 = "[UARPHostManager preflightAvailableGreaterThanStaged:hostEndpoint:]";
     v17 = 2112;
-    v18 = v9;
+    v18 = assetVersion;
     v19 = 2112;
-    v20 = v6;
+    v20 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s: Available firmware version is %@ for endpoint %@", &v15, 0x20u);
   }
 
-  v12 = [v9 isGreaterThan:v8];
+  v12 = [assetVersion isGreaterThan:stagedFirmwareVersion];
   if ((v12 & 1) == 0)
   {
     v13 = self->_log;
@@ -1981,11 +1981,11 @@ LABEL_12:
       v15 = 136315906;
       v16 = "[UARPHostManager preflightAvailableGreaterThanStaged:hostEndpoint:]";
       v17 = 2112;
-      v18 = v6;
+      v18 = endpointCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = assetVersion;
       v21 = 2112;
-      v22 = v8;
+      v22 = stagedFirmwareVersion;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s: endpoint %@Available firmware version %@ is not greater than Staged firmware version %@ ", &v15, 0x2Au);
     }
   }
@@ -1993,48 +1993,48 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)preflightOfferRestrictionByDeployment:(id)a3
+- (BOOL)preflightOfferRestrictionByDeployment:(id)deployment
 {
-  v4 = a3;
-  if ([(UARPHostManager *)self preflightOfferRestrictionByDeploymentPercentage:v4])
+  deploymentCopy = deployment;
+  if ([(UARPHostManager *)self preflightOfferRestrictionByDeploymentPercentage:deploymentCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(UARPHostManager *)self preflightOfferRestrictionByDeploymentCountry:v4];
+    v5 = [(UARPHostManager *)self preflightOfferRestrictionByDeploymentCountry:deploymentCopy];
   }
 
   return v5;
 }
 
-- (BOOL)preflightOfferRestrictionByDeploymentPercentage:(id)a3
+- (BOOL)preflightOfferRestrictionByDeploymentPercentage:(id)percentage
 {
-  v4 = a3;
-  v5 = [v4 percentageRules];
-  if (v5)
+  percentageCopy = percentage;
+  percentageRules = [percentageCopy percentageRules];
+  if (percentageRules)
   {
     v6 = MGCopyAnswer();
     if (v6)
     {
       v7 = [UARPDeploymentRules calculateDeploymentPercent:v6];
-      v52 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
       v8 = +[NSDate now];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      obj = v5;
+      obj = percentageRules;
       v9 = [obj countByEnumeratingWithState:&v53 objects:v65 count:16];
       if (v9)
       {
         v10 = v9;
         v46 = v7;
         v47 = v6;
-        v48 = v5;
+        v48 = percentageRules;
         v11 = *v54;
-        v49 = v4;
+        v49 = percentageCopy;
         v50 = v8;
         while (2)
         {
@@ -2050,39 +2050,39 @@ LABEL_12:
             if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
             {
               v15 = log;
-              v16 = [v4 uuid];
-              v17 = [v16 UUIDString];
+              uuid = [percentageCopy uuid];
+              uUIDString = [uuid UUIDString];
               *buf = 136315650;
               v58 = "[UARPHostManager preflightOfferRestrictionByDeploymentPercentage:]";
               v59 = 2112;
-              v60 = v17;
+              v60 = uUIDString;
               v61 = 2112;
               v62 = v13;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: Asset: %@; Deployment Percentage Rule %@", buf, 0x20u);
             }
 
-            v18 = [v13 untilDate];
-            v19 = [v8 compare:v18];
+            untilDate = [v13 untilDate];
+            v19 = [v8 compare:untilDate];
 
             if (v19 == -1)
             {
-              if ([v13 percentageLimit] < v52)
+              if ([v13 percentageLimit] < unsignedIntegerValue)
               {
                 v38 = objc_opt_new();
                 [v38 setDateFormat:@"yyyy-MM-dd"];
                 v39 = [v38 stringFromDate:v8];
-                v40 = [NSString stringWithFormat:@"<today is %@, my deployment percentage is %lu>", v39, v52];
+                v40 = [NSString stringWithFormat:@"<today is %@, my deployment percentage is %lu>", v39, unsignedIntegerValue];
 
                 v41 = self->_log;
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
                 {
                   v42 = v41;
-                  v43 = [v4 uuid];
-                  v44 = [v43 UUIDString];
+                  uuid2 = [percentageCopy uuid];
+                  uUIDString2 = [uuid2 UUIDString];
                   *buf = 136315906;
                   v58 = "[UARPHostManager preflightOfferRestrictionByDeploymentPercentage:]";
                   v59 = 2112;
-                  v60 = v44;
+                  v60 = uUIDString2;
                   v61 = 2112;
                   v62 = v40;
                   v63 = 2112;
@@ -2098,17 +2098,17 @@ LABEL_12:
               if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
               {
                 v32 = v31;
-                v33 = [v4 uuid];
-                v34 = [v33 UUIDString];
-                v35 = [v13 percentageLimit];
+                uuid3 = [percentageCopy uuid];
+                uUIDString3 = [uuid3 UUIDString];
+                percentageLimit = [v13 percentageLimit];
                 *buf = 136315906;
                 v58 = "[UARPHostManager preflightOfferRestrictionByDeploymentPercentage:]";
                 v59 = 2112;
-                v60 = v34;
+                v60 = uUIDString3;
                 v61 = 2048;
-                v62 = v52;
+                v62 = unsignedIntegerValue;
                 v63 = 2048;
-                v64 = v35;
+                v64 = percentageLimit;
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "%s: Asset: %@; My deployment percent is %lu, which is lower than the deployment rule %lu percent ", buf, 0x2Au);
               }
             }
@@ -2124,10 +2124,10 @@ LABEL_12:
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
                 v24 = v23;
-                v25 = [v4 uuid];
-                [v25 UUIDString];
+                uuid4 = [percentageCopy uuid];
+                [uuid4 UUIDString];
                 v26 = v10;
-                v27 = self;
+                selfCopy = self;
                 v29 = v28 = v11;
                 v30 = [v20 stringFromDate:v8];
                 *buf = 136315906;
@@ -2141,10 +2141,10 @@ LABEL_12:
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s: Asset: %@; Deployment Rule until %@ is in the past; today is %@", buf, 0x2Au);
 
                 v11 = v28;
-                self = v27;
+                self = selfCopy;
                 v10 = v26;
 
-                v4 = v49;
+                percentageCopy = v49;
                 v8 = v50;
               }
             }
@@ -2162,7 +2162,7 @@ LABEL_12:
         v36 = 0;
 LABEL_27:
         v6 = v47;
-        v5 = v48;
+        percentageRules = v48;
         v7 = v46;
       }
 
@@ -2186,7 +2186,7 @@ LABEL_27:
       *buf = 136315394;
       v58 = "[UARPHostManager preflightOfferRestrictionByDeploymentPercentage:]";
       v59 = 2112;
-      v60 = v4;
+      v60 = percentageCopy;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "%s: No deployment percentage rules for asset %@", buf, 0x16u);
     }
 
@@ -2196,23 +2196,23 @@ LABEL_27:
   return v36;
 }
 
-- (BOOL)preflightOfferRestrictionByDeploymentCountry:(id)a3
+- (BOOL)preflightOfferRestrictionByDeploymentCountry:(id)country
 {
-  v32 = a3;
-  v4 = [v32 countryRules];
-  if (v4 && objc_opt_class() && (+[GEOCountryConfiguration sharedConfiguration](GEOCountryConfiguration, "sharedConfiguration"), v5 = objc_claimAutoreleasedReturnValue(), [v5 countryCode], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+  countryCopy = country;
+  countryRules = [countryCopy countryRules];
+  if (countryRules && objc_opt_class() && (+[GEOCountryConfiguration sharedConfiguration](GEOCountryConfiguration, "sharedConfiguration"), v5 = objc_claimAutoreleasedReturnValue(), [v5 countryCode], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v33 = +[NSDate now];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v4;
+    obj = countryRules;
     v7 = [obj countByEnumeratingWithState:&v35 objects:v47 count:16];
     if (v7)
     {
       v8 = v7;
-      v31 = v4;
+      v31 = countryRules;
       v9 = *v36;
       while (2)
       {
@@ -2224,13 +2224,13 @@ LABEL_27:
           }
 
           v11 = *(*(&v35 + 1) + 8 * i);
-          v12 = [v11 countryCode];
-          v13 = [v6 isEqualToString:v12];
+          countryCode = [v11 countryCode];
+          v13 = [v6 isEqualToString:countryCode];
 
           if (v13)
           {
-            v14 = [v11 untilDate];
-            v15 = [v33 compare:v14];
+            untilDate = [v11 untilDate];
+            v15 = [v33 compare:untilDate];
 
             if (v15 == -1)
             {
@@ -2243,12 +2243,12 @@ LABEL_27:
               if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
               {
                 v27 = log;
-                v28 = [v32 uuid];
-                v29 = [v28 UUIDString];
+                uuid = [countryCopy uuid];
+                uUIDString = [uuid UUIDString];
                 *buf = 136315906;
                 v40 = "[UARPHostManager preflightOfferRestrictionByDeploymentCountry:]";
                 v41 = 2112;
-                v42 = v29;
+                v42 = uUIDString;
                 v43 = 2112;
                 v44 = v24;
                 v45 = 2112;
@@ -2267,15 +2267,15 @@ LABEL_27:
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
               v17 = v16;
-              v18 = [v32 uuid];
-              v19 = [v18 UUIDString];
-              v20 = [v11 countryCode];
+              uuid2 = [countryCopy uuid];
+              uUIDString2 = [uuid2 UUIDString];
+              countryCode2 = [v11 countryCode];
               *buf = 136315906;
               v40 = "[UARPHostManager preflightOfferRestrictionByDeploymentCountry:]";
               v41 = 2112;
-              v42 = v19;
+              v42 = uUIDString2;
               v43 = 2112;
-              v44 = v20;
+              v44 = countryCode2;
               v45 = 2112;
               v46 = v6;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s: Asset: %@; Rule country code %@ does not match country code self %@", buf, 0x2Au);
@@ -2294,7 +2294,7 @@ LABEL_27:
 
       v21 = 0;
 LABEL_21:
-      v4 = v31;
+      countryRules = v31;
     }
 
     else
@@ -2311,37 +2311,37 @@ LABEL_21:
   return v21;
 }
 
-- (void)personalizeSuperBinary:(id)a3 hostEndpoint:(id)a4
+- (void)personalizeSuperBinary:(id)binary hostEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  binaryCopy = binary;
+  endpointCopy = endpoint;
   tssQueue = self->_tssQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000CBD4;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = endpointCopy;
+  v13 = binaryCopy;
+  v9 = binaryCopy;
+  v10 = endpointCopy;
   dispatch_async(tssQueue, block);
 }
 
-- (BOOL)personalizeSuperBinaryAsAuthListed:(id)a3 hostEndpoint:(id)a4
+- (BOOL)personalizeSuperBinaryAsAuthListed:(id)listed hostEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  listedCopy = listed;
+  endpointCopy = endpoint;
   v8 = objc_alloc_init(UARPAssetPersonalizer);
-  v9 = [v6 tssServerURL];
+  tssServerURL = [listedCopy tssServerURL];
   v21 = 0;
-  v10 = [(UARPAssetPersonalizer *)v8 prepareAsAuthList:v9 error:&v21];
+  v10 = [(UARPAssetPersonalizer *)v8 prepareAsAuthList:tssServerURL error:&v21];
   v11 = v21;
 
   if (v10)
   {
     v20 = v11;
-    v12 = [(UARPAssetPersonalizer *)v8 personalizeAsset:v6 error:&v20];
+    v12 = [(UARPAssetPersonalizer *)v8 personalizeAsset:listedCopy error:&v20];
     v13 = v20;
 
     if (v12)
@@ -2352,8 +2352,8 @@ LABEL_21:
       block[2] = sub_10000D238;
       block[3] = &unk_1000B8B28;
       block[4] = self;
-      v18 = v6;
-      v19 = v7;
+      v18 = listedCopy;
+      v19 = endpointCopy;
       dispatch_async(queue, block);
 
       v15 = 1;
@@ -2375,20 +2375,20 @@ LABEL_21:
   return v15;
 }
 
-- (BOOL)personalizeSuperBinaryAsAppleConnect:(id)a3 hostEndpoint:(id)a4
+- (BOOL)personalizeSuperBinaryAsAppleConnect:(id)connect hostEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  endpointCopy = endpoint;
   v8 = objc_alloc_init(UARPAssetPersonalizer);
-  v9 = [v6 tssServerURL];
+  tssServerURL = [connectCopy tssServerURL];
   v21 = 0;
-  v10 = [(UARPAssetPersonalizer *)v8 prepareAsAppleConnectSSO:v9 error:&v21];
+  v10 = [(UARPAssetPersonalizer *)v8 prepareAsAppleConnectSSO:tssServerURL error:&v21];
   v11 = v21;
 
   if (v10)
   {
     v20 = v11;
-    v12 = [(UARPAssetPersonalizer *)v8 personalizeAsset:v6 error:&v20];
+    v12 = [(UARPAssetPersonalizer *)v8 personalizeAsset:connectCopy error:&v20];
     v13 = v20;
 
     if (v12)
@@ -2399,8 +2399,8 @@ LABEL_21:
       block[2] = sub_10000D3B8;
       block[3] = &unk_1000B8B28;
       block[4] = self;
-      v18 = v6;
-      v19 = v7;
+      v18 = connectCopy;
+      v19 = endpointCopy;
       dispatch_async(queue, block);
 
       v15 = 1;
@@ -2422,9 +2422,9 @@ LABEL_21:
   return v15;
 }
 
-- (void)layer3EndpointReachable:(id)a3
+- (void)layer3EndpointReachable:(id)reachable
 {
-  v4 = a3;
+  reachableCopy = reachable;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2437,14 +2437,14 @@ LABEL_21:
   v8[2] = sub_10000D490;
   v8[3] = &unk_1000B8A88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = reachableCopy;
+  v7 = reachableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)layer3EndpointUnreachable:(id)a3
+- (void)layer3EndpointUnreachable:(id)unreachable
 {
-  v4 = a3;
+  unreachableCopy = unreachable;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2457,15 +2457,15 @@ LABEL_21:
   v8[2] = sub_10000D8CC;
   v8[3] = &unk_1000B8A88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = unreachableCopy;
+  v7 = unreachableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)layer3EndpointAssetStagingProgress:(id)a3 asset:(id)a4 bytesTransferred:(unint64_t)a5 assetLength:(unint64_t)a6
+- (void)layer3EndpointAssetStagingProgress:(id)progress asset:(id)asset bytesTransferred:(unint64_t)transferred assetLength:(unint64_t)length
 {
-  v10 = a3;
-  v11 = a4;
+  progressCopy = progress;
+  assetCopy = asset;
   if (self->_debugTransfer)
   {
     log = self->_log;
@@ -2481,19 +2481,19 @@ LABEL_21:
   block[2] = sub_10000DAEC;
   block[3] = &unk_1000B8B50;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = a5;
-  v20 = a6;
-  v14 = v11;
-  v15 = v10;
+  v17 = progressCopy;
+  v18 = assetCopy;
+  transferredCopy = transferred;
+  lengthCopy = length;
+  v14 = assetCopy;
+  v15 = progressCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointAssetFullyStaged:(id)a3 txFirmwareAsset:(id)a4
+- (void)layer3EndpointAssetFullyStaged:(id)staged txFirmwareAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  stagedCopy = staged;
+  assetCopy = asset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2506,34 +2506,34 @@ LABEL_21:
   block[2] = sub_10000DE1C;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = stagedCopy;
+  v14 = assetCopy;
+  v10 = assetCopy;
+  v11 = stagedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointAssetFullyStaged:(id)a3 rxDynamicAsset:(id)a4
+- (void)layer3EndpointAssetFullyStaged:(id)staged rxDynamicAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  stagedCopy = staged;
+  assetCopy = asset;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E174;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stagedCopy;
+  v13 = assetCopy;
+  v9 = assetCopy;
+  v10 = stagedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointPersonalizationNeeded:(id)a3 asset:(id)a4
+- (void)layer3EndpointPersonalizationNeeded:(id)needed asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  assetCopy = asset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2546,17 +2546,17 @@ LABEL_21:
   block[2] = sub_10000E918;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = neededCopy;
+  v14 = assetCopy;
+  v10 = assetCopy;
+  v11 = neededCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointAssetPersonalizationComplete:(id)a3 asset:(id)a4 status:(int64_t)a5
+- (void)layer3EndpointAssetPersonalizationComplete:(id)complete asset:(id)asset status:(int64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  completeCopy = complete;
+  assetCopy = asset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2569,18 +2569,18 @@ LABEL_21:
   v14[2] = sub_10000EB7C;
   v14[3] = &unk_1000B8B78;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v8;
+  v15 = completeCopy;
+  v16 = assetCopy;
+  statusCopy = status;
+  v12 = assetCopy;
+  v13 = completeCopy;
   dispatch_async(queue, v14);
 }
 
-- (void)notifyControllersPersonalizationStatus:(id)a3 assetUUID:(id)a4 status:(int64_t)a5
+- (void)notifyControllersPersonalizationStatus:(id)status assetUUID:(id)d status:(int64_t)a5
 {
-  v19 = a3;
-  v8 = a4;
+  statusCopy = status;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -2601,12 +2601,12 @@ LABEL_21:
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) xpcConnection];
-        v14 = [v13 remoteObjectProxy];
-        v15 = [v19 layer3Endpoint];
-        v16 = [v15 uuid];
+        xpcConnection = [*(*(&v20 + 1) + 8 * v12) xpcConnection];
+        remoteObjectProxy = [xpcConnection remoteObjectProxy];
+        layer3Endpoint = [statusCopy layer3Endpoint];
+        uuid = [layer3Endpoint uuid];
         v17 = [NSNumber numberWithUnsignedInteger:a5];
-        [v14 endpointControllerDelegatePersonalizationStatus:v16 assetUUID:v8 status:v17];
+        [remoteObjectProxy endpointControllerDelegatePersonalizationStatus:uuid assetUUID:dCopy status:v17];
 
         v12 = v12 + 1;
       }
@@ -2619,9 +2619,9 @@ LABEL_21:
   }
 }
 
-- (void)layer3DownstreamEndpointReachable:(id)a3 downstreamID:(unsigned __int16)a4
+- (void)layer3DownstreamEndpointReachable:(id)reachable downstreamID:(unsigned __int16)d
 {
-  v6 = a3;
+  reachableCopy = reachable;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2634,15 +2634,15 @@ LABEL_21:
   block[2] = sub_10000F4B0;
   block[3] = &unk_1000B8BA0;
   block[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
+  v11 = reachableCopy;
+  dCopy = d;
+  v9 = reachableCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3DownstreamEndpointUnreachable:(id)a3 downstreamID:(unsigned __int16)a4
+- (void)layer3DownstreamEndpointUnreachable:(id)unreachable downstreamID:(unsigned __int16)d
 {
-  v6 = a3;
+  unreachableCopy = unreachable;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2655,15 +2655,15 @@ LABEL_21:
   block[2] = sub_10000F710;
   block[3] = &unk_1000B8BA0;
   block[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
+  v11 = unreachableCopy;
+  dCopy = d;
+  v9 = unreachableCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointAppliedStagedAssets:(id)a3 layer3Flags:(int64_t)a4
+- (void)layer3EndpointAppliedStagedAssets:(id)assets layer3Flags:(int64_t)flags
 {
-  v6 = a3;
+  assetsCopy = assets;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2676,15 +2676,15 @@ LABEL_21:
   block[2] = sub_10000F9AC;
   block[3] = &unk_1000B8BC8;
   block[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
+  v11 = assetsCopy;
+  flagsCopy = flags;
+  v9 = assetsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointRescindedAssets:(id)a3
+- (void)layer3EndpointRescindedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2697,15 +2697,15 @@ LABEL_21:
   v8[2] = sub_10000FC7C;
   v8[3] = &unk_1000B8A88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = assetsCopy;
+  v7 = assetsCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)layer3EndpointAssetOffered:(id)a3 asset:(id)a4
+- (void)layer3EndpointAssetOffered:(id)offered asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  offeredCopy = offered;
+  assetCopy = asset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2718,17 +2718,17 @@ LABEL_21:
   block[2] = sub_10000FF44;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = offeredCopy;
+  v14 = assetCopy;
+  v10 = assetCopy;
+  v11 = offeredCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointAssetMetaDataComplete:(id)a3 asset:(id)a4
+- (void)layer3EndpointAssetMetaDataComplete:(id)complete asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  assetCopy = asset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2741,18 +2741,18 @@ LABEL_21:
   block[2] = sub_10001026C;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = completeCopy;
+  v14 = assetCopy;
+  v10 = assetCopy;
+  v11 = completeCopy;
   dispatch_async(queue, block);
 }
 
-- (void)layer3EndpointPayloadReady:(id)a3 asset:(id)a4 payload:(id)a5
+- (void)layer3EndpointPayloadReady:(id)ready asset:(id)asset payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  readyCopy = ready;
+  assetCopy = asset;
+  payloadCopy = payload;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2765,20 +2765,20 @@ LABEL_21:
   v16[2] = sub_1000105A0;
   v16[3] = &unk_1000B8BF0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = readyCopy;
+  v18 = assetCopy;
+  v19 = payloadCopy;
+  v13 = payloadCopy;
+  v14 = assetCopy;
+  v15 = readyCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)layer3EndpointPayloadMetaDataComplete:(id)a3 asset:(id)a4 payload:(id)a5
+- (void)layer3EndpointPayloadMetaDataComplete:(id)complete asset:(id)asset payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completeCopy = complete;
+  assetCopy = asset;
+  payloadCopy = payload;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2791,21 +2791,21 @@ LABEL_21:
   v16[2] = sub_100010910;
   v16[3] = &unk_1000B8BF0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v10;
-  v19 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v17 = completeCopy;
+  v18 = payloadCopy;
+  v19 = assetCopy;
+  v13 = assetCopy;
+  v14 = payloadCopy;
+  v15 = completeCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)layer3EndpointPayloadData:(id)a3 asset:(id)a4 payload:(id)a5 offset:(unint64_t)a6 payloadData:(id)a7
+- (void)layer3EndpointPayloadData:(id)data asset:(id)asset payload:(id)payload offset:(unint64_t)offset payloadData:(id)payloadData
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dataCopy = data;
+  assetCopy = asset;
+  payloadCopy = payload;
+  payloadDataCopy = payloadData;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2818,23 +2818,23 @@ LABEL_21:
   v22[2] = sub_100010CA8;
   v22[3] = &unk_1000B8C18;
   v22[4] = self;
-  v23 = v12;
-  v24 = v14;
-  v25 = v15;
-  v26 = v13;
-  v27 = a6;
-  v18 = v13;
-  v19 = v15;
-  v20 = v14;
-  v21 = v12;
+  v23 = dataCopy;
+  v24 = payloadCopy;
+  v25 = payloadDataCopy;
+  v26 = assetCopy;
+  offsetCopy = offset;
+  v18 = assetCopy;
+  v19 = payloadDataCopy;
+  v20 = payloadCopy;
+  v21 = dataCopy;
   dispatch_async(queue, v22);
 }
 
-- (void)layer3EndpointPayloadDataComplete:(id)a3 asset:(id)a4 payload:(id)a5
+- (void)layer3EndpointPayloadDataComplete:(id)complete asset:(id)asset payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completeCopy = complete;
+  assetCopy = asset;
+  payloadCopy = payload;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -2847,27 +2847,27 @@ LABEL_21:
   v16[2] = sub_100011060;
   v16[3] = &unk_1000B8BF0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v10;
-  v19 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v17 = completeCopy;
+  v18 = payloadCopy;
+  v19 = assetCopy;
+  v13 = assetCopy;
+  v14 = payloadCopy;
+  v15 = completeCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)assetPersonalizationComplete:(id)a3 endpointUUID:(id)a4 tssOptions:(id)a5
+- (void)assetPersonalizationComplete:(id)complete endpointUUID:(id)d tssOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v37 = a5;
+  completeCopy = complete;
+  dCopy = d;
+  optionsCopy = options;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_10007CA08(log);
   }
 
-  v11 = [(UARPHostManager *)self findHostEndpointByUUID:v9];
+  v11 = [(UARPHostManager *)self findHostEndpointByUUID:dCopy];
   v12 = self->_log;
   if (v11)
   {
@@ -2876,14 +2876,14 @@ LABEL_21:
       sub_10007CAA4(v12);
     }
 
-    v13 = [v11 findPersonalizingAssetByUUID:v8];
+    v13 = [v11 findPersonalizingAssetByUUID:completeCopy];
     v14 = v13;
     if (v13)
     {
       v32 = v11;
-      v33 = self;
-      v34 = v9;
-      v35 = v8;
+      selfCopy = self;
+      v34 = dCopy;
+      v35 = completeCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
@@ -2904,24 +2904,24 @@ LABEL_21:
             }
 
             v16 = *(*(&v45 + 1) + 8 * i);
-            v17 = [v16 tatsuRequest];
+            tatsuRequest = [v16 tatsuRequest];
 
-            if (v17)
+            if (tatsuRequest)
             {
               v39 = v16;
-              v18 = [v16 manifestLocation];
-              v19 = [v18 componentTag];
+              manifestLocation = [v16 manifestLocation];
+              componentTag = [manifestLocation componentTag];
 
-              if (!v19)
+              if (!componentTag)
               {
-                v19 = [[UARPComponentTag alloc] initWithString:@"ROOT"];
+                componentTag = [[UARPComponentTag alloc] initWithString:@"ROOT"];
               }
 
               v43 = 0u;
               v44 = 0u;
               v41 = 0u;
               v42 = 0u;
-              v20 = v37;
+              v20 = optionsCopy;
               v21 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
               if (v21)
               {
@@ -2937,14 +2937,14 @@ LABEL_21:
                     }
 
                     v25 = *(*(&v41 + 1) + 8 * j);
-                    v26 = [v25 componentTag];
-                    v27 = [(UARPComponentTag *)v19 tagString];
-                    v28 = [v26 isEqualToString:v27];
+                    componentTag2 = [v25 componentTag];
+                    tagString = [(UARPComponentTag *)componentTag tagString];
+                    v28 = [componentTag2 isEqualToString:tagString];
 
                     if (v28)
                     {
-                      v29 = [v25 tssResponse];
-                      [v39 setTatsuResponse:v29];
+                      tssResponse = [v25 tssResponse];
+                      [v39 setTatsuResponse:tssResponse];
 
                       goto LABEL_25;
                     }
@@ -2972,9 +2972,9 @@ LABEL_25:
 
       v11 = v32;
       v14 = v31;
-      [(UARPHostManager *)v33 assetPersonalizationComplete:v31 hostEndpoint:v32];
-      v9 = v34;
-      v8 = v35;
+      [(UARPHostManager *)selfCopy assetPersonalizationComplete:v31 hostEndpoint:v32];
+      dCopy = v34;
+      completeCopy = v35;
     }
 
     else
@@ -2995,16 +2995,16 @@ LABEL_25:
   }
 }
 
-- (void)assetPersonalizationComplete:(id)a3 hostEndpoint:(id)a4
+- (void)assetPersonalizationComplete:(id)complete hostEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = [a4 layer3Endpoint];
-  [v6 personalizeFirmwareAssetComplete:v5];
+  completeCopy = complete;
+  layer3Endpoint = [endpoint layer3Endpoint];
+  [layer3Endpoint personalizeFirmwareAssetComplete:completeCopy];
 }
 
-- (id)findHostEndpointByUUID:(id)a3
+- (id)findHostEndpointByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3024,8 +3024,8 @@ LABEL_25:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = UARPLayer3MatchingUUIDs(v10, v4);
+        uuid = [v9 uuid];
+        v11 = UARPLayer3MatchingUUIDs(uuid, dCopy);
 
         if (v11)
         {
@@ -3049,10 +3049,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)findDownstreamEndpointByHostEndpoint:(id)a3 downstreamID:(unsigned __int16)a4
+- (id)findDownstreamEndpointByHostEndpoint:(id)endpoint downstreamID:(unsigned __int16)d
 {
-  v4 = a4;
-  v6 = a3;
+  dCopy = d;
+  endpointCopy = endpoint;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3073,10 +3073,10 @@ LABEL_11:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 upstreamEndpoint];
-        v14 = [v13 isEqual:v6];
+        upstreamEndpoint = [v12 upstreamEndpoint];
+        v14 = [upstreamEndpoint isEqual:endpointCopy];
 
-        if (v14 && [v12 downstreamID] == v4)
+        if (v14 && [v12 downstreamID] == dCopy)
         {
           v15 = v12;
           goto LABEL_12;
@@ -3099,9 +3099,9 @@ LABEL_12:
   return v15;
 }
 
-- (id)findDynamicAssetByUUID:(id)a3
+- (id)findDynamicAssetByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3121,8 +3121,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = UARPLayer3MatchingUUIDs(v10, v4);
+        uuid = [v9 uuid];
+        v11 = UARPLayer3MatchingUUIDs(uuid, dCopy);
 
         if (v11)
         {
@@ -3146,9 +3146,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)findCachingAssetByUUID:(id)a3
+- (id)findCachingAssetByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3168,8 +3168,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = UARPLayer3MatchingUUIDs(v10, v4);
+        uuid = [v9 uuid];
+        v11 = UARPLayer3MatchingUUIDs(uuid, dCopy);
 
         if (v11)
         {
@@ -3219,12 +3219,12 @@ LABEL_11:
         {
           v9 = *(*(&v40 + 1) + 8 * i);
           v10 = log;
-          v11 = [v9 uuid];
-          v12 = [v11 UUIDString];
+          uuid = [v9 uuid];
+          uUIDString = [uuid UUIDString];
           *buf = 136315394;
           v47 = "[UARPHostManager showAllAssets]";
           v48 = 2112;
-          v49 = v12;
+          v49 = uUIDString;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s: Dynamic Asset - %@", buf, 0x16u);
         }
       }
@@ -3259,12 +3259,12 @@ LABEL_11:
         {
           v19 = *(*(&v36 + 1) + 8 * j);
           v20 = v18;
-          v21 = [v19 uuid];
-          v22 = [v21 UUIDString];
+          uuid2 = [v19 uuid];
+          uUIDString2 = [uuid2 UUIDString];
           *buf = 136315394;
           v47 = "[UARPHostManager showAllAssets]";
           v48 = 2112;
-          v49 = v22;
+          v49 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s: Caching Asset - %@", buf, 0x16u);
         }
       }
@@ -3332,9 +3332,9 @@ LABEL_11:
       {
         v16 = *p_uuidDatabaseURL;
         v17 = log;
-        v18 = [(NSURL *)v16 path];
+        path = [(NSURL *)v16 path];
         *buf = 138412290;
-        v52 = v18;
+        v52 = path;
         v13 = 1;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Assume no entries in UARP Endpoint UUID Database at %@", buf, 0xCu);
       }
@@ -3402,8 +3402,8 @@ LABEL_11:
 
             v30 = *(*(&v44 + 1) + 8 * i);
             v31 = objc_alloc((v26 + 318));
-            v32 = [v30 uuid];
-            v33 = [v31 initWithUUID:v32];
+            uuid = [v30 uuid];
+            v33 = [v31 initWithUUID:uuid];
 
             if (!v33)
             {
@@ -3413,20 +3413,20 @@ LABEL_11:
               goto LABEL_25;
             }
 
-            v34 = [v30 activeFirmwareVersion];
-            [v33 setActiveFirmwareVersion:v34];
+            activeFirmwareVersion = [v30 activeFirmwareVersion];
+            [v33 setActiveFirmwareVersion:activeFirmwareVersion];
 
-            v35 = [v30 appleModelNumber];
-            [v33 setAppleModelNumber:v35];
+            appleModelNumber = [v30 appleModelNumber];
+            [v33 setAppleModelNumber:appleModelNumber];
 
-            v36 = [v30 availableFirmwareVersion];
-            [v33 setAvailableFirmwareVersion:v36];
+            availableFirmwareVersion = [v30 availableFirmwareVersion];
+            [v33 setAvailableFirmwareVersion:availableFirmwareVersion];
 
-            v37 = [v30 hardwareFusing];
-            [v33 setHardwareFusing:v37];
+            hardwareFusing = [v30 hardwareFusing];
+            [v33 setHardwareFusing:hardwareFusing];
 
-            v38 = [v30 serialNumber];
-            [v33 setSerialNumber:v38];
+            serialNumber = [v30 serialNumber];
+            [v33 setSerialNumber:serialNumber];
 
             [v23 addObject:v33];
             v26 = &OBJC_IVAR___UARPEndpointConfiguration__outstandingInfoProperties;
@@ -3494,8 +3494,8 @@ LABEL_26:
   self->_uuidDatabaseURL = v6;
 
   v9 = +[NSFileManager defaultManager];
-  v10 = [v4 path];
-  v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:0];
+  path = [v4 path];
+  v11 = [v9 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
   if ((v11 & 1) == 0)
   {
@@ -3508,13 +3508,13 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  v12 = [*p_uuidDatabaseURL path];
-  v13 = [v9 fileExistsAtPath:v12];
+  path2 = [*p_uuidDatabaseURL path];
+  v13 = [v9 fileExistsAtPath:path2];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [*p_uuidDatabaseURL path];
-    v15 = [v9 createFileAtPath:v14 contents:0 attributes:0];
+    path3 = [*p_uuidDatabaseURL path];
+    v15 = [v9 createFileAtPath:path3 contents:0 attributes:0];
 
     if ((v15 & 1) == 0)
     {
@@ -3536,9 +3536,9 @@ LABEL_8:
   return v16;
 }
 
-- (id)matchingDatabaseEntry:(id)a3
+- (id)matchingDatabaseEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -3551,7 +3551,7 @@ LABEL_8:
   block[2] = sub_10001282C;
   block[3] = &unk_1000B8AB0;
   block[4] = self;
-  v6 = v4;
+  v6 = entryCopy;
   v12 = v6;
   v13 = &v14;
   dispatch_sync(queue, block);
@@ -3565,8 +3565,8 @@ LABEL_8:
     v8 = self->_log;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v6 UUIDString];
-      sub_10007CF6C(v9, v20);
+      uUIDString = [v6 UUIDString];
+      sub_10007CF6C(uUIDString, v20);
     }
 
     v7 = 0;
@@ -3577,11 +3577,11 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)updateDatabaseEntry:(id)a3
+- (BOOL)updateDatabaseEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -3589,7 +3589,7 @@ LABEL_8:
     v8[2] = sub_100012B74;
     v8[3] = &unk_1000B8A88;
     v8[4] = self;
-    v9 = v4;
+    v9 = entryCopy;
     dispatch_sync(queue, v8);
   }
 
@@ -3612,8 +3612,8 @@ LABEL_8:
   [v5 removeItemAtURL:self->_uuidDatabaseURL error:0];
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [(NSURL *)self->_uuidDatabaseURL path];
-  v9 = [v7 createFileAtPath:v8 contents:0 attributes:0];
+  path = [(NSURL *)self->_uuidDatabaseURL path];
+  v9 = [v7 createFileAtPath:path contents:0 attributes:0];
 
   if ((v9 & 1) == 0)
   {
@@ -3645,7 +3645,7 @@ LABEL_8:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v29 = self;
+  selfCopy = self;
   p_uuidDatabase = &self->_uuidDatabase;
   obj = self->_uuidDatabase;
   v3 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -3723,7 +3723,7 @@ LABEL_18:
   v18 = v36;
   if (v17)
   {
-    uuidDatabaseURL = v29->_uuidDatabaseURL;
+    uuidDatabaseURL = selfCopy->_uuidDatabaseURL;
     v35 = 0;
     v20 = [NSFileHandle fileHandleForWritingToURL:uuidDatabaseURL error:&v35];
     v21 = v35;
@@ -3742,41 +3742,41 @@ LABEL_18:
           v32 = 0;
           v26 = [v20 closeAndReturnError:&v32];
           v27 = v32;
-          if ((v26 & 1) == 0 && os_log_type_enabled(v29->_log, OS_LOG_TYPE_ERROR))
+          if ((v26 & 1) == 0 && os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
           {
             sub_10007D228();
           }
         }
 
-        else if (os_log_type_enabled(v29->_log, OS_LOG_TYPE_ERROR))
+        else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
         {
           sub_10007D1B8();
         }
       }
 
-      else if (os_log_type_enabled(v29->_log, OS_LOG_TYPE_ERROR))
+      else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
       {
         sub_10007D148();
       }
     }
 
-    else if (os_log_type_enabled(v29->_log, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10007D298();
     }
   }
 
-  else if (os_log_type_enabled(v29->_log, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR))
   {
     sub_10007D308();
   }
 }
 
-- (void)updateDatabaseEntryForPersonality:(id)a3 assetManager:(id)a4 availableFirmwareVersion:(id)a5
+- (void)updateDatabaseEntryForPersonality:(id)personality assetManager:(id)manager availableFirmwareVersion:(id)version
 {
-  v44 = a3;
-  v43 = a4;
-  v42 = a5;
+  personalityCopy = personality;
+  managerCopy = manager;
+  versionCopy = version;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -3800,7 +3800,7 @@ LABEL_18:
 
         v12 = *(*(&v45 + 1) + 8 * i);
         v13 = [v12 copy];
-        [(UARPHostManager *)self updateDatabaseAvailableVersion:v12 personality:v44 assetManager:v43 availableFirmwareVersion:v42];
+        [(UARPHostManager *)self updateDatabaseAvailableVersion:v12 personality:personalityCopy assetManager:managerCopy availableFirmwareVersion:versionCopy];
         log = self->_log;
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
@@ -3813,12 +3813,12 @@ LABEL_18:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v16 = v15;
-          v17 = [v13 uuid];
-          v18 = [v12 uuid];
+          uuid = [v13 uuid];
+          uuid2 = [v12 uuid];
           *buf = 138412546;
-          v50 = v17;
+          v50 = uuid;
           v51 = 2112;
-          v52 = v18;
+          v52 = uuid2;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "UUID : %@ -> %@", buf, 0x16u);
         }
 
@@ -3826,12 +3826,12 @@ LABEL_18:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v20 = v19;
-          v21 = [v13 appleModelNumber];
-          v22 = [v12 appleModelNumber];
+          appleModelNumber = [v13 appleModelNumber];
+          appleModelNumber2 = [v12 appleModelNumber];
           *buf = 138412546;
-          v50 = v21;
+          v50 = appleModelNumber;
           v51 = 2112;
-          v52 = v22;
+          v52 = appleModelNumber2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Apple Model Number : %@ -> %@", buf, 0x16u);
         }
 
@@ -3839,12 +3839,12 @@ LABEL_18:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           v24 = v23;
-          v25 = [v13 serialNumber];
-          v26 = [v12 serialNumber];
+          serialNumber = [v13 serialNumber];
+          serialNumber2 = [v12 serialNumber];
           *buf = 138412546;
-          v50 = v25;
+          v50 = serialNumber;
           v51 = 2112;
-          v52 = v26;
+          v52 = serialNumber2;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Serial Number : %@ -> %@", buf, 0x16u);
         }
 
@@ -3852,12 +3852,12 @@ LABEL_18:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           v28 = v27;
-          v29 = [v13 hardwareFusing];
-          v30 = [v12 hardwareFusing];
+          hardwareFusing = [v13 hardwareFusing];
+          hardwareFusing2 = [v12 hardwareFusing];
           *buf = 138412546;
-          v50 = v29;
+          v50 = hardwareFusing;
           v51 = 2112;
-          v52 = v30;
+          v52 = hardwareFusing2;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Hardware Fusing: %@ -> %@", buf, 0x16u);
         }
 
@@ -3865,12 +3865,12 @@ LABEL_18:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
           v32 = v31;
-          v33 = [v13 activeFirmwareVersion];
-          v34 = [v12 activeFirmwareVersion];
+          activeFirmwareVersion = [v13 activeFirmwareVersion];
+          activeFirmwareVersion2 = [v12 activeFirmwareVersion];
           *buf = 138412546;
-          v50 = v33;
+          v50 = activeFirmwareVersion;
           v51 = 2112;
-          v52 = v34;
+          v52 = activeFirmwareVersion2;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Active Firmware Version: %@ -> %@", buf, 0x16u);
         }
 
@@ -3878,12 +3878,12 @@ LABEL_18:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v36 = v35;
-          v37 = [v13 availableFirmwareVersion];
-          v38 = [v12 availableFirmwareVersion];
+          availableFirmwareVersion = [v13 availableFirmwareVersion];
+          availableFirmwareVersion2 = [v12 availableFirmwareVersion];
           *buf = 138412546;
-          v50 = v37;
+          v50 = availableFirmwareVersion;
           v51 = 2112;
-          v52 = v38;
+          v52 = availableFirmwareVersion2;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "Available Firmware Version: %@ -> %@", buf, 0x16u);
         }
       }
@@ -3897,47 +3897,47 @@ LABEL_18:
   [(UARPHostManager *)self flushDatabase];
 }
 
-- (void)updateDatabaseAvailableVersion:(id)a3 personality:(id)a4 assetManager:(id)a5 availableFirmwareVersion:(id)a6
+- (void)updateDatabaseAvailableVersion:(id)version personality:(id)personality assetManager:(id)manager availableFirmwareVersion:(id)firmwareVersion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 appleModelNumber];
-  v13 = [v9 assetIdentifier];
+  versionCopy = version;
+  personalityCopy = personality;
+  firmwareVersionCopy = firmwareVersion;
+  appleModelNumber = [versionCopy appleModelNumber];
+  assetIdentifier = [versionCopy assetIdentifier];
 
-  v30 = v11;
-  if (v13)
+  v30 = firmwareVersionCopy;
+  if (assetIdentifier)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v15 = log;
-      v16 = [v9 appleModelNumber];
-      v17 = [v9 assetIdentifier];
+      appleModelNumber2 = [versionCopy appleModelNumber];
+      assetIdentifier2 = [versionCopy assetIdentifier];
       *buf = 136315650;
       v32 = "[UARPHostManager updateDatabaseAvailableVersion:personality:assetManager:availableFirmwareVersion:]";
       v33 = 2112;
-      v34 = v16;
+      v34 = appleModelNumber2;
       v35 = 2112;
-      v36 = v17;
+      v36 = assetIdentifier2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: database entry specifies an AssetIdentifer of %@, which overrides AppleModelNumber of %@", buf, 0x20u);
     }
 
-    v18 = [v9 assetIdentifier];
+    assetIdentifier3 = [versionCopy assetIdentifier];
 
-    v12 = v18;
+    appleModelNumber = assetIdentifier3;
   }
 
-  v19 = [v9 serialNumber];
-  v20 = [v9 hardwareFusing];
-  v21 = [v20 lowercaseString];
-  v22 = [v9 activeFirmwareVersion];
-  v23 = [v22 versionString];
+  serialNumber = [versionCopy serialNumber];
+  hardwareFusing = [versionCopy hardwareFusing];
+  lowercaseString = [hardwareFusing lowercaseString];
+  activeFirmwareVersion = [versionCopy activeFirmwareVersion];
+  versionString = [activeFirmwareVersion versionString];
   v24 = createEndpointPersonality();
 
   if (v24)
   {
-    v25 = [v24 isPersonalityMatch:v10];
+    v25 = [v24 isPersonalityMatch:personalityCopy];
     v26 = self->_log;
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_INFO);
     v28 = v30;
@@ -3950,12 +3950,12 @@ LABEL_18:
         v33 = 2112;
         v34 = v24;
         v35 = 2112;
-        v36 = v10;
+        v36 = personalityCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s: this endpoint personality %@ matches %@", buf, 0x20u);
       }
 
       v29 = [v30 copy];
-      [v9 setAvailableFirmwareVersion:v29];
+      [versionCopy setAvailableFirmwareVersion:v29];
     }
 
     else if (v27)
@@ -3965,7 +3965,7 @@ LABEL_18:
       v33 = 2112;
       v34 = v24;
       v35 = 2112;
-      v36 = v10;
+      v36 = personalityCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s: this endpoint personality %@ does not match %@", buf, 0x20u);
     }
   }
@@ -4027,9 +4027,9 @@ LABEL_18:
       {
         tmapDatabaseURL = self->_tmapDatabaseURL;
         v15 = v13;
-        v16 = [(NSURL *)tmapDatabaseURL path];
+        path = [(NSURL *)tmapDatabaseURL path];
         *buf = 138412290;
-        v28 = v16;
+        v28 = path;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Assume no entries in TMAP Database at %@", buf, 0xCu);
       }
     }
@@ -4062,8 +4062,8 @@ LABEL_18:
   self->_tmapDatabaseURL = v6;
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v4 path];
-  v10 = [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  path = [v4 path];
+  v10 = [v8 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
   if ((v10 & 1) == 0)
   {
@@ -4076,13 +4076,13 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v11 = [(NSURL *)self->_tmapDatabaseURL path];
-  v12 = [v8 fileExistsAtPath:v11];
+  path2 = [(NSURL *)self->_tmapDatabaseURL path];
+  v12 = [v8 fileExistsAtPath:path2];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [(NSURL *)self->_tmapDatabaseURL path];
-    v14 = [v8 createFileAtPath:v13 contents:0 attributes:0];
+    path3 = [(NSURL *)self->_tmapDatabaseURL path];
+    v14 = [v8 createFileAtPath:path3 contents:0 attributes:0];
 
     if ((v14 & 1) == 0)
     {
@@ -4161,16 +4161,16 @@ LABEL_8:
   }
 }
 
-- (void)ingestTMAPPayloads:(id)a3
+- (void)ingestTMAPPayloads:(id)payloads
 {
-  v3 = a3;
+  payloadsCopy = payloads;
   v4 = [[UARPComponentTag alloc] initWithString:@"TMAP"];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v25 = v3;
-  obj = [v3 payloads];
+  v25 = payloadsCopy;
+  obj = [payloadsCopy payloads];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
@@ -4187,20 +4187,20 @@ LABEL_8:
         }
 
         v9 = *(*(&v34 + 1) + 8 * v8);
-        v10 = [v9 payload4cc];
-        v11 = [v10 isEqual:v4];
+        payload4cc = [v9 payload4cc];
+        v11 = [payload4cc isEqual:v4];
 
         if (v11)
         {
-          v12 = [v9 payloadData];
-          if (v12)
+          payloadData = [v9 payloadData];
+          if (payloadData)
           {
             v13 = objc_opt_class();
             v14 = objc_opt_class();
             v15 = objc_opt_class();
             v16 = [NSSet setWithObjects:v13, v14, v15, objc_opt_class(), 0];
             v31 = 0;
-            v17 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v16 fromData:v12 error:&v31];
+            v17 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v16 fromData:payloadData error:&v31];
             v18 = v31;
             if (v17)
             {
@@ -4209,7 +4209,7 @@ LABEL_8:
             }
 
             v30 = 0;
-            v17 = [NSPropertyListSerialization propertyListWithData:v12 options:0 format:0 error:&v30];
+            v17 = [NSPropertyListSerialization propertyListWithData:payloadData options:0 format:0 error:&v30];
             v20 = v30;
             v19 = v20;
             if (v17)
@@ -4279,9 +4279,9 @@ LABEL_13:
   [(UARPHostManager *)self flushTMAPDatabase];
 }
 
-- (BOOL)addTmapMapping:(id)a3
+- (BOOL)addTmapMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -4289,8 +4289,8 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Adding TMAP Mapping", buf, 2u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
-  v7 = [v4 objectForKeyedSubscript:@"AppleModelNumbers"];
+  v6 = [mappingCopy objectForKeyedSubscript:@"AppleModelNumber"];
+  v7 = [mappingCopy objectForKeyedSubscript:@"AppleModelNumbers"];
   if (!(v6 | v7))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -4334,14 +4334,14 @@ LABEL_13:
     {
       [v8 addObject:v6];
       v9 = [NSSet setWithArray:v8];
-      v10 = [v9 allObjects];
-      v11 = [v10 mutableCopy];
+      allObjects = [v9 allObjects];
+      v11 = [allObjects mutableCopy];
 
       v8 = v11;
     }
 
 LABEL_14:
-    v12 = [v4 objectForKeyedSubscript:@"Endian"];
+    v12 = [mappingCopy objectForKeyedSubscript:@"Endian"];
     if (!v12)
     {
       v12 = @"BigEndian";
@@ -4359,7 +4359,7 @@ LABEL_14:
       goto LABEL_44;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"Events"];
+    v13 = [mappingCopy objectForKeyedSubscript:@"Events"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -4442,9 +4442,9 @@ LABEL_45:
   return v16;
 }
 
-- (id)findTmapforAppleModel:(id)a3
+- (id)findTmapforAppleModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -4464,7 +4464,7 @@ LABEL_45:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 isEqualAppleModel:{v4, v11}])
+        if ([v9 isEqualAppleModel:{modelCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -4486,17 +4486,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)processMTIC:(id)a3
+- (void)processMTIC:(id)c
 {
   tmapDatabase = self->_tmapDatabase;
-  v5 = a3;
+  cCopy = c;
   v6 = [NSArray arrayWithArray:tmapDatabase];
-  [(UARPHostManager *)self commonProcessMTIC:v5 tmapSnapshot:v6];
+  [(UARPHostManager *)self commonProcessMTIC:cCopy tmapSnapshot:v6];
 }
 
-- (void)asyncProcessMTIC:(id)a3
+- (void)asyncProcessMTIC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = [NSArray arrayWithArray:self->_tmapDatabase];
   mticQueue = self->_mticQueue;
   block[0] = _NSConcreteStackBlock;
@@ -4504,17 +4504,17 @@ LABEL_11:
   block[2] = sub_100014AE4;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v10 = v4;
+  v10 = cCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = cCopy;
   dispatch_async(mticQueue, block);
 }
 
-- (void)commonProcessMTIC:(id)a3 tmapSnapshot:(id)a4
+- (void)commonProcessMTIC:(id)c tmapSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
+  cCopy = c;
+  snapshotCopy = snapshot;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -4526,13 +4526,13 @@ LABEL_11:
   v9 = objc_alloc_init(UARPAssetMTIC);
   if (v9)
   {
-    v10 = [[UARPSuperBinaryLayer3 alloc] initWithURL:v6 assetUUID:0 tmpFolderPath:self->_tempFolderPath];
+    v10 = [[UARPSuperBinaryLayer3 alloc] initWithURL:cCopy assetUUID:0 tmpFolderPath:self->_tempFolderPath];
     v11 = v10;
     if (v10)
     {
       if ([(UARPSuperBinaryLayer3 *)v10 expandSuperBinaryHeadersAndMetaData])
       {
-        if ([(UARPAssetMTIC *)v9 processAsset:v11 tmapSnapshot:v7])
+        if ([(UARPAssetMTIC *)v9 processAsset:v11 tmapSnapshot:snapshotCopy])
         {
           [(UARPAssetMTIC *)v9 postToCoreAnalytics];
           [(UARPAssetMTIC *)v9 prepareForSysdiagnose:self->_sysdiagnoseFolder];
@@ -4594,11 +4594,11 @@ LABEL_17:
 LABEL_18:
 }
 
-- (BOOL)prepareCachingAsset:(id)a3
+- (BOOL)prepareCachingAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"%@.uarp", v5];
+  assetCopy = asset;
+  uUIDString = [assetCopy UUIDString];
+  v6 = [NSString stringWithFormat:@"%@.uarp", uUIDString];
 
   v7 = objc_opt_new();
   [v7 addObject:self->_cachedAssetsFolder];
@@ -4608,22 +4608,22 @@ LABEL_18:
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v10 = log;
-    v11 = [v4 UUIDString];
-    v12 = [v8 path];
+    uUIDString2 = [assetCopy UUIDString];
+    path = [v8 path];
     *buf = 138412546;
-    v21 = v11;
+    v21 = uUIDString2;
     v22 = 2112;
-    v23 = v12;
+    v23 = path;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Caching Controller Asset <%@> to %@", buf, 0x16u);
   }
 
   v13 = +[NSFileManager defaultManager];
-  v14 = [v8 path];
-  v15 = [v13 createFileAtPath:v14 contents:0 attributes:0];
+  path2 = [v8 path];
+  v15 = [v13 createFileAtPath:path2 contents:0 attributes:0];
 
   if (v15)
   {
-    v16 = [[UARPSuperBinaryLayer3 alloc] initWithURL:v8 assetUUID:v4 tmpFolderPath:0];
+    v16 = [[UARPSuperBinaryLayer3 alloc] initWithURL:v8 assetUUID:assetCopy tmpFolderPath:0];
     v17 = v16 != 0;
     if (v16)
     {
@@ -4653,11 +4653,11 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)appendDataToCachingAsset:(id)a3 data:(id)a4
+- (BOOL)appendDataToCachingAsset:(id)asset data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UARPHostManager *)self findCachingAssetByUUID:v6];
+  assetCopy = asset;
+  dataCopy = data;
+  v8 = [(UARPHostManager *)self findCachingAssetByUUID:assetCopy];
   v9 = v8;
   if (v8)
   {
@@ -4674,7 +4674,7 @@ LABEL_18:
       if (v13)
       {
         v22 = 0;
-        v15 = [v11 writeData:v7 error:&v22];
+        v15 = [v11 writeData:dataCopy error:&v22];
         v16 = v22;
         if (v15)
         {
@@ -4735,11 +4735,11 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)finalizeTransferCachingAsset:(id)a3 hashData:(id)a4 error:(id *)a5
+- (BOOL)finalizeTransferCachingAsset:(id)asset hashData:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(UARPHostManager *)self urlForCachingAsset:v8];
+  assetCopy = asset;
+  dataCopy = data;
+  v10 = [(UARPHostManager *)self urlForCachingAsset:assetCopy];
   if (!v10)
   {
 LABEL_8:
@@ -4747,7 +4747,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [(UARPHostManager *)self verifyHash:v9 url:v10 error:a5];
+  v11 = [(UARPHostManager *)self verifyHash:dataCopy url:v10 error:error];
   v12 = os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR);
   if ((v11 & 1) == 0)
   {
@@ -4770,10 +4770,10 @@ LABEL_9:
   return v13;
 }
 
-- (id)urlForCachingAsset:(id)a3
+- (id)urlForCachingAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(UARPHostManager *)self findCachingAssetByUUID:v4];
+  assetCopy = asset;
+  v5 = [(UARPHostManager *)self findCachingAssetByUUID:assetCopy];
   v6 = v5;
   if (v5)
   {
@@ -4795,13 +4795,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)dataRangeFromDynamicAsset:(id)a3 range:(_NSRange)a4
+- (id)dataRangeFromDynamicAsset:(id)asset range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  assetCopy = asset;
   v21 = 0;
-  v8 = [NSFileHandle fileHandleForReadingFromURL:v7 error:&v21];
+  v8 = [NSFileHandle fileHandleForReadingFromURL:assetCopy error:&v21];
   v9 = v21;
   if (v8)
   {
@@ -4869,36 +4869,36 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)finalizeTransferDynamicAsset:(id)a3 hashData:(id)a4 error:(id *)a5
+- (BOOL)finalizeTransferDynamicAsset:(id)asset hashData:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = [(UARPHostManager *)self verifyHash:a4 url:v8 error:a5];
+  assetCopy = asset;
+  v9 = [(UARPHostManager *)self verifyHash:data url:assetCopy error:error];
   log = self->_log;
   v11 = os_log_type_enabled(log, OS_LOG_TYPE_ERROR);
   if (v9)
   {
     if (v11)
     {
-      sub_10007E278(v8, log);
+      sub_10007E278(assetCopy, log);
     }
   }
 
   else if (v11)
   {
-    sub_10007E1D0(v8, log);
+    sub_10007E1D0(assetCopy, log);
   }
 
   return v9;
 }
 
-- (id)urlForDynamicAsset:(id)a3
+- (id)urlForDynamicAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(UARPHostManager *)self findDynamicAssetByUUID:v4];
+  assetCopy = asset;
+  v5 = [(UARPHostManager *)self findDynamicAssetByUUID:assetCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 superbinaryURL];
+    superbinaryURL = [v5 superbinaryURL];
   }
 
   else
@@ -4910,17 +4910,17 @@ LABEL_9:
     }
 
     [(UARPHostManager *)self showAllAssets];
-    v7 = 0;
+    superbinaryURL = 0;
   }
 
-  return v7;
+  return superbinaryURL;
 }
 
-- (BOOL)verifyHash:(id)a3 url:(id)a4 error:(id *)a5
+- (BOOL)verifyHash:(id)hash url:(id)url error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [NSFileHandle fileHandleForReadingFromURL:v8 error:a5];
+  hashCopy = hash;
+  urlCopy = url;
+  v9 = [NSFileHandle fileHandleForReadingFromURL:urlCopy error:error];
   if (v9)
   {
     memset(&v18, 0, sizeof(v18));
@@ -4928,7 +4928,7 @@ LABEL_9:
     do
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = [v9 readDataUpToLength:4096 error:a5];
+      v11 = [v9 readDataUpToLength:4096 error:error];
       v12 = [v11 length];
       CC_SHA512_Update(&v18, [v11 bytes], objc_msgSend(v11, "length"));
 
@@ -4936,14 +4936,14 @@ LABEL_9:
     }
 
     while (v12 >= 0x1000 && v11);
-    v13 = [v9 closeAndReturnError:a5];
+    v13 = [v9 closeAndReturnError:error];
     v14 = 0;
     v15 = v12 > 0xFFF && v11 == 0;
     if (!v15 && v13)
     {
       CC_SHA512_Final(md, &v18);
       v16 = [NSData dataWithBytes:md length:64];
-      v14 = [v16 isEqualToData:v7];
+      v14 = [v16 isEqualToData:hashCopy];
     }
   }
 

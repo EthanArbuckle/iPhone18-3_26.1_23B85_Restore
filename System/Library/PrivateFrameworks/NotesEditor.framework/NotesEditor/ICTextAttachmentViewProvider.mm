@@ -7,11 +7,11 @@
 - (void)loadView
 {
   objc_opt_class();
-  v3 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  textAttachment = [(NSTextAttachmentViewProvider *)self textAttachment];
   v6 = ICDynamicCast();
 
-  v4 = [(NSTextAttachmentViewProvider *)self layoutManager];
-  v5 = [v6 viewForLayoutManager:v4];
+  layoutManager = [(NSTextAttachmentViewProvider *)self layoutManager];
+  v5 = [v6 viewForLayoutManager:layoutManager];
 
   [(NSTextAttachmentViewProvider *)self setView:v5];
 }

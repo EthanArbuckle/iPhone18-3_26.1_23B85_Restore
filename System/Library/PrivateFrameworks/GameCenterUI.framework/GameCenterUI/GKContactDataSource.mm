@@ -1,9 +1,9 @@
 @interface GKContactDataSource
 - (GKContactDataSource)init;
-- (id)fetchContactWithID:(id)a3;
-- (id)fullContactWithIdentifier:(id)a3;
+- (id)fetchContactWithID:(id)d;
+- (id)fullContactWithIdentifier:(id)identifier;
 - (id)keysToFetch;
-- (void)loadContactsWithHandler:(id)a3;
+- (void)loadContactsWithHandler:(id)handler;
 @end
 
 @implementation GKContactDataSource
@@ -58,15 +58,15 @@
   return v13;
 }
 
-- (void)loadContactsWithHandler:(id)a3
+- (void)loadContactsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKContactDataSource *)self keysToFetch];
-  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v5];
+  handlerCopy = handler;
+  keysToFetch = [(GKContactDataSource *)self keysToFetch];
+  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:keysToFetch];
   [v6 setSortOrder:1];
-  v7 = [(CNContactStore *)self->_store _crossPlatformUnifiedMeContactWithKeysToFetch:v5 error:0];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [(CNContactStore *)self->_store _crossPlatformUnifiedMeContactWithKeysToFetch:keysToFetch error:0];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   store = self->_store;
   v22 = 0;
   v15 = MEMORY[0x277D85DD0];
@@ -75,17 +75,17 @@
   v18 = &unk_27966AF78;
   v11 = v7;
   v19 = v11;
-  v12 = v8;
+  v12 = array;
   v20 = v12;
-  v13 = v9;
+  v13 = dictionary;
   v21 = v13;
   [(CNContactStore *)store enumerateContactsWithFetchRequest:v6 error:&v22 usingBlock:&v15];
   v14 = v22;
   [(GKContactDataSource *)self setContacts:v12, v15, v16, v17, v18];
   [(GKContactDataSource *)self setContactLookup:v13];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v12, v14);
+    handlerCopy[2](handlerCopy, v12, v14);
   }
 }
 
@@ -156,26 +156,26 @@ LABEL_16:
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)fetchContactWithID:(id)a3
+- (id)fetchContactWithID:(id)d
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKContactDataSource *)self keysToFetch];
-  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v5];
+  dCopy = d;
+  keysToFetch = [(GKContactDataSource *)self keysToFetch];
+  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:keysToFetch];
   v7 = MEMORY[0x277CBDA58];
-  v21[0] = v4;
+  v21[0] = dCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v9 = [v7 predicateForContactsWithIdentifiers:v8];
   [v6 setPredicate:v9];
 
-  v10 = [(GKContactDataSource *)self store];
+  store = [(GKContactDataSource *)self store];
   v20 = 0;
-  v11 = [v10 enumeratorForContactFetchRequest:v6 error:&v20];
+  v11 = [store enumeratorForContactFetchRequest:v6 error:&v20];
   v12 = v20;
 
-  v13 = [v11 value];
+  value = [v11 value];
 
-  if (!v13 || v12)
+  if (!value || v12)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -188,24 +188,24 @@ LABEL_16:
       [GKContactDataSource fetchContactWithID:v18];
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v14 = [v11 value];
-    v15 = [v14 allObjects];
-    v16 = [v15 firstObject];
+    value2 = [v11 value];
+    allObjects = [value2 allObjects];
+    firstObject = [allObjects firstObject];
   }
 
-  return v16;
+  return firstObject;
 }
 
-- (id)fullContactWithIdentifier:(id)a3
+- (id)fullContactWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GKContactDataSource *)self contactLookup];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  contactLookup = [(GKContactDataSource *)self contactLookup];
+  v6 = [contactLookup objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }

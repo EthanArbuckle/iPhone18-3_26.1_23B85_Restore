@@ -1,26 +1,26 @@
 @interface PLTVOutWindow
-- (BOOL)_setupTargetScreen:(id)a3;
-- (BOOL)setVideoView:(id)a3;
+- (BOOL)_setupTargetScreen:(id)screen;
+- (BOOL)setVideoView:(id)view;
 - (PLTVOutWindow)init;
 - (void)dealloc;
 @end
 
 @implementation PLTVOutWindow
 
-- (BOOL)setVideoView:(id)a3
+- (BOOL)setVideoView:(id)view
 {
   v5 = [(PLTVOutWindow *)self _setupTargetScreen:[(PLTVOutWindow *)self screen]];
   if (v5)
   {
     videoView = self->_videoView;
-    if (videoView != a3)
+    if (videoView != view)
     {
       if ([(UIView *)videoView isDescendantOfView:self])
       {
         [(UIView *)self->_videoView removeFromSuperview];
       }
 
-      videoView = a3;
+      videoView = view;
       self->_videoView = videoView;
     }
 
@@ -36,12 +36,12 @@
   return v5;
 }
 
-- (BOOL)_setupTargetScreen:(id)a3
+- (BOOL)_setupTargetScreen:(id)screen
 {
   v22 = *MEMORY[0x277D85DE8];
-  [a3 setOverscanCompensation:2];
-  v4 = [a3 preferredMode];
-  if (v4)
+  [screen setOverscanCompensation:2];
+  preferredMode = [screen preferredMode];
+  if (preferredMode)
   {
     goto LABEL_2;
   }
@@ -50,15 +50,15 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 availableModes];
-  v5 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  availableModes = [screen availableModes];
+  v5 = [availableModes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v5)
   {
     return v5;
   }
 
   v7 = v5;
-  v4 = 0;
+  preferredMode = 0;
   v8 = *v18;
   v9 = 0.0;
   while (2)
@@ -67,14 +67,14 @@
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(availableModes);
       }
 
       v11 = *(*(&v17 + 1) + 8 * i);
       [v11 size];
       if (fabs(v12 + -1280.0) < 0.00000011920929 && fabs(v13 + -720.0) < 0.00000011920929)
       {
-        v4 = v11;
+        preferredMode = v11;
         goto LABEL_22;
       }
 
@@ -82,11 +82,11 @@
       if (v14 > 921600.0 && (v9 >= 921600.0 ? (v15 = v14 < v9) : (v15 = 1), v15) || v14 > v9)
       {
         v9 = v14;
-        v4 = v11;
+        preferredMode = v11;
       }
     }
 
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v7 = [availableModes countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       continue;
@@ -96,10 +96,10 @@
   }
 
 LABEL_22:
-  if (v4)
+  if (preferredMode)
   {
 LABEL_2:
-    [a3 setCurrentMode:v4];
+    [screen setCurrentMode:preferredMode];
     LOBYTE(v5) = 1;
   }
 

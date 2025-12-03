@@ -6,9 +6,9 @@
 
 - (uint64_t)doc_resetSwipedRows
 {
-  [a1 setEditing:1];
+  [self setEditing:1];
 
-  return [a1 setEditing:0];
+  return [self setEditing:0];
 }
 
 @end

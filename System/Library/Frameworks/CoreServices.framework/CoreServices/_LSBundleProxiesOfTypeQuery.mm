@@ -1,22 +1,22 @@
 @interface _LSBundleProxiesOfTypeQuery
-+ (id)queryWithType:(unint64_t)a3;
-- (BOOL)bundleUnitMeetsRequirements:(unsigned int)a3 bundleData:(const LSBundleData *)a4 context:(LSContext *)a5;
-- (BOOL)isEqual:(id)a3;
-- (_LSBundleProxiesOfTypeQuery)initWithCoder:(id)a3;
++ (id)queryWithType:(unint64_t)type;
+- (BOOL)bundleUnitMeetsRequirements:(unsigned int)requirements bundleData:(const LSBundleData *)data context:(LSContext *)context;
+- (BOOL)isEqual:(id)equal;
+- (_LSBundleProxiesOfTypeQuery)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSBundleProxiesOfTypeQuery
 
-+ (id)queryWithType:(unint64_t)a3
++ (id)queryWithType:(unint64_t)type
 {
-  v6 = [[a1 alloc] _init];
-  v7 = v6;
-  if (a3 != 6)
+  _init = [[self alloc] _init];
+  v7 = _init;
+  if (type != 6)
   {
-    if (!v6)
+    if (!_init)
     {
       goto LABEL_4;
     }
@@ -24,13 +24,13 @@
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:a1 file:@"LSBundleQuery.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"type != LSBundleTypePlugInKitPlugin"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"LSBundleQuery.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"type != LSBundleTypePlugInKitPlugin"}];
 
   if (v7)
   {
 LABEL_3:
-    v7[2] = a3;
+    v7[2] = type;
   }
 
 LABEL_4:
@@ -38,13 +38,13 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)bundleUnitMeetsRequirements:(unsigned int)a3 bundleData:(const LSBundleData *)a4 context:(LSContext *)a5
+- (BOOL)bundleUnitMeetsRequirements:(unsigned int)requirements bundleData:(const LSBundleData *)data context:(LSContext *)context
 {
   v5 = 0;
-  if (a3 && a4 && a5)
+  if (requirements && data && context)
   {
-    exactIdentifier = a4->base.exactIdentifier;
-    [(_LSDatabase *)a5->db store];
+    exactIdentifier = data->base.exactIdentifier;
+    [(_LSDatabase *)context->db store];
     v10 = _CSStringCopyCFString();
     if (!v10)
     {
@@ -53,7 +53,7 @@ LABEL_4:
 
     if ([(_LSBundleProxiesOfTypeQuery *)self type]== 5)
     {
-      v11 = a4->_clas == 13;
+      v11 = data->_clas == 13;
       goto LABEL_7;
     }
 
@@ -62,9 +62,9 @@ LABEL_4:
       goto LABEL_11;
     }
 
-    v13 = [(_LSBundleProxiesOfTypeQuery *)self type];
-    clas = a4->_clas;
-    if (v13 == 7)
+    type = [(_LSBundleProxiesOfTypeQuery *)self type];
+    clas = data->_clas;
+    if (type == 7)
     {
       v11 = clas == 14;
       goto LABEL_7;
@@ -72,13 +72,13 @@ LABEL_4:
 
     if (clas == 2)
     {
-      v15 = [(_LSBundleProxiesOfTypeQuery *)self type];
+      type2 = [(_LSBundleProxiesOfTypeQuery *)self type];
       v5 = 0;
-      if (v15 > 2)
+      if (type2 > 2)
       {
-        if (v15 == 4)
+        if (type2 == 4)
         {
-          if ((*(&a4->_clas + 6) & 4) != 0)
+          if ((*(&data->_clas + 6) & 4) != 0)
           {
             goto LABEL_11;
           }
@@ -94,38 +94,38 @@ LABEL_4:
 
         else
         {
-          if (v15 != 3)
+          if (type2 != 3)
           {
             goto LABEL_12;
           }
 
-          if ((*(&a4->_clas + 6) & 4) == 0)
+          if ((*(&data->_clas + 6) & 4) == 0)
           {
             goto LABEL_11;
           }
         }
       }
 
-      else if (v15)
+      else if (type2)
       {
-        if (v15 != 1)
+        if (type2 != 1)
         {
           goto LABEL_12;
         }
 
-        if ((*(&a4->_clas + 6) & 4) != 0)
+        if ((*(&data->_clas + 6) & 4) != 0)
         {
           goto LABEL_11;
         }
       }
 
-      vendorName = a4->vendorName;
-      v19 = _LSDatabaseGetNSStringFromString(a5->db);
+      vendorName = data->vendorName;
+      v19 = _LSDatabaseGetNSStringFromString(context->db);
       v20 = v19;
       if (!v19 || (v21 = [v19 isEqualToString:@"Hidden"], v20, (v21 & 1) == 0))
       {
-        v22 = a4->vendorName;
-        v23 = _LSDatabaseGetNSStringFromString(a5->db);
+        v22 = data->vendorName;
+        v23 = _LSDatabaseGetNSStringFromString(context->db);
         v24 = v23;
         if (!v23 || (v25 = [v23 isEqualToString:@"SystemAppPlaceholder"], v24, (v25 & 1) == 0))
         {
@@ -135,7 +135,7 @@ LABEL_4:
             goto LABEL_12;
           }
 
-          v11 = (a4->_bundleFlags & 0x200) == 0;
+          v11 = (data->_bundleFlags & 0x200) == 0;
 LABEL_7:
           v5 = v11;
           goto LABEL_12;
@@ -151,10 +151,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v24 = 0;
   v21 = 0;
   v22 = 0;
@@ -170,7 +170,7 @@ LABEL_12:
     v18[3] = &unk_1E6A1ADB0;
     v18[4] = self;
     v20 = v9;
-    v10 = v7;
+    v10 = blockCopy;
     v19 = v10;
     v11 = _LSEnumerateViableBundlesOfClass(v9, 0, v18);
     if (v11)
@@ -195,7 +195,7 @@ LABEL_12:
       v15 = v24;
     }
 
-    (*(v7 + 2))(v7, 0, v15);
+    (*(blockCopy + 2))(blockCopy, 0, v15);
   }
 
   if (v21 && v23 == 1)
@@ -212,19 +212,19 @@ LABEL_12:
   v24 = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = _LSBundleProxiesOfTypeQuery;
-  if ([(_LSQuery *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(_LSQuery *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 type];
-    if (v6 == [(_LSBundleProxiesOfTypeQuery *)self type])
+    v5 = equalCopy;
+    type = [v5 type];
+    if (type == [(_LSBundleProxiesOfTypeQuery *)self type])
     {
-      v7 = [v5 isLegacy];
-      v8 = v7 ^ [(_LSQuery *)self isLegacy]^ 1;
+      isLegacy = [v5 isLegacy];
+      v8 = isLegacy ^ [(_LSQuery *)self isLegacy]^ 1;
     }
 
     else
@@ -243,30 +243,30 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(_LSBundleProxiesOfTypeQuery *)self type];
+  type = [(_LSBundleProxiesOfTypeQuery *)self type];
   v5.receiver = self;
   v5.super_class = _LSBundleProxiesOfTypeQuery;
-  return [(_LSQuery *)&v5 hash]^ (v3 << 16);
+  return [(_LSQuery *)&v5 hash]^ (type << 16);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSBundleProxiesOfTypeQuery;
-  [(_LSQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[_LSBundleProxiesOfTypeQuery type](self forKey:{"type"), @"type"}];
+  [(_LSQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[_LSBundleProxiesOfTypeQuery type](self forKey:{"type"), @"type"}];
 }
 
-- (_LSBundleProxiesOfTypeQuery)initWithCoder:(id)a3
+- (_LSBundleProxiesOfTypeQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _LSBundleProxiesOfTypeQuery;
-  v5 = [(_LSQuery *)&v7 initWithCoder:v4];
+  v5 = [(_LSQuery *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

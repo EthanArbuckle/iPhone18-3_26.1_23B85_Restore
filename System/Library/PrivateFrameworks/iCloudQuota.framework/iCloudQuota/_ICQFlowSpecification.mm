@@ -1,22 +1,22 @@
 @interface _ICQFlowSpecification
-- (_ICQFlowSpecification)initWithPages:(id)a3;
+- (_ICQFlowSpecification)initWithPages:(id)pages;
 @end
 
 @implementation _ICQFlowSpecification
 
-- (_ICQFlowSpecification)initWithPages:(id)a3
+- (_ICQFlowSpecification)initWithPages:(id)pages
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pagesCopy = pages;
   v24.receiver = self;
   v24.super_class = _ICQFlowSpecification;
   v5 = [(_ICQFlowSpecification *)&v24 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [pagesCopy count];
     if (v6)
     {
-      v6 = [v4 objectAtIndexedSubscript:0];
+      v6 = [pagesCopy objectAtIndexedSubscript:0];
     }
 
     startPage = v5->_startPage;
@@ -27,7 +27,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v4;
+    v9 = pagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
@@ -43,8 +43,8 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 pageIdentifier];
-          [v8 setObject:v14 forKey:v15];
+          pageIdentifier = [v14 pageIdentifier];
+          [v8 setObject:v14 forKey:pageIdentifier];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];

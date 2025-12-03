@@ -1,65 +1,65 @@
 @interface VKCDataDetectorElementView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)ignoresHitTest;
-- (BOOL)isPointInQuad:(CGPoint)a3;
+- (BOOL)isPointInQuad:(CGPoint)quad;
 - (BOOL)shouldUseBCSAction;
-- (CGRect)rectForMrcActionInViewController:(id)a3;
+- (CGRect)rectForMrcActionInViewController:(id)controller;
 - (NSArray)subQuadsInBoundsCoordinates;
 - (NSDictionary)dataDetectorContext;
-- (VKCDataDetectorElementView)initWithDataDetectorElement:(id)a3 unfilteredElements:(id)a4;
+- (VKCDataDetectorElementView)initWithDataDetectorElement:(id)element unfilteredElements:(id)elements;
 - (VKCDataDetectorElementViewDelegate)delegate;
 - (VKCMRCDataDetectorElement)mrcElement;
 - (VKQuad)boundingQuadInBoundsCoordinates;
 - (double)lineWithForAverageSubquadHeight;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)accessibilityValue;
-- (id)analyticsEventWithDDType:(int64_t)a3;
+- (id)analyticsEventWithDDType:(int64_t)type;
 - (id)calcPathForUnderline;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)presentingViewControllerForInteraction;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)didTap:(id)a3;
-- (void)highlighter:(id)a3 shouldHighlight:(BOOL)a4;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)didTap:(id)tap;
+- (void)highlighter:(id)highlighter shouldHighlight:(BOOL)highlight;
 - (void)layoutSubviews;
 - (void)manuallyActivateLongPressMenuInteraction;
-- (void)sendAnalyticsEventIfNecessaryForDDType:(int64_t)a3;
-- (void)setAllowLongPressDDActivationOnly:(BOOL)a3;
+- (void)sendAnalyticsEventIfNecessaryForDDType:(int64_t)type;
+- (void)setAllowLongPressDDActivationOnly:(BOOL)only;
 - (void)updateHighlightPath;
 @end
 
 @implementation VKCDataDetectorElementView
 
-- (VKCDataDetectorElementView)initWithDataDetectorElement:(id)a3 unfilteredElements:(id)a4
+- (VKCDataDetectorElementView)initWithDataDetectorElement:(id)element unfilteredElements:(id)elements
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  elementsCopy = elements;
   v21.receiver = self;
   v21.super_class = VKCDataDetectorElementView;
   v9 = [(VKCDataDetectorElementView *)&v21 init];
   if (v9)
   {
-    if (!v7)
+    if (!elementCopy)
     {
       [VKAssert handleFailedAssertWithCondition:"((element) != nil)" functionName:"[VKCDataDetectorElementView initWithDataDetectorElement:unfilteredElements:]" simulateCrash:0 showAlert:0 format:@"Expected non-nil value for '%s'", "element"];
     }
 
-    objc_storeStrong(&v9->_dataDetectorElement, a3);
-    objc_storeStrong(&v9->_allDataDetectorElements, a4);
+    objc_storeStrong(&v9->_dataDetectorElement, element);
+    objc_storeStrong(&v9->_allDataDetectorElements, elements);
     v10 = objc_alloc_init(MEMORY[0x1E69794A0]);
     highlightPathLayer = v9->_highlightPathLayer;
     v9->_highlightPathLayer = v10;
 
     [(CAShapeLayer *)v9->_highlightPathLayer setContentsGravity:*MEMORY[0x1E6979DF0]];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v9->_highlightPathLayer, "setFillColor:", [v12 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v9->_highlightPathLayer, "setFillColor:", [clearColor CGColor]);
 
-    v13 = [(VKCDataDetectorElementView *)v9 layer];
-    [v13 addSublayer:v9->_highlightPathLayer];
+    layer = [(VKCDataDetectorElementView *)v9 layer];
+    [layer addSublayer:v9->_highlightPathLayer];
 
     [(VKCDataDetectorElementView *)v9 setAccessibilityIdentifier:@"com.apple.visionkit.dataDetectorElementView"];
     v14 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:v9];
@@ -76,8 +76,8 @@
     [v18 setDelegate:v9];
     [(VKCDataDetectorElementView *)v9 addGestureRecognizer:v18];
     [(VKCDataDetectorElementView *)v9 setTapGestureRecognizer:v18];
-    v19 = [(VKCDataDetectorElementView *)v9 mrcElement];
-    [v19 setDelegate:v9];
+    mrcElement = [(VKCDataDetectorElementView *)v9 mrcElement];
+    [mrcElement setDelegate:v9];
   }
 
   return v9;
@@ -85,9 +85,9 @@
 
 - (BOOL)shouldUseBCSAction
 {
-  v2 = [(VKCDataDetectorElementView *)self mrcElement];
-  v3 = [v2 barcodeAction];
-  v4 = v3 != 0;
+  mrcElement = [(VKCDataDetectorElementView *)self mrcElement];
+  barcodeAction = [mrcElement barcodeAction];
+  v4 = barcodeAction != 0;
 
   return v4;
 }
@@ -95,8 +95,8 @@
 - (VKCMRCDataDetectorElement)mrcElement
 {
   v3 = objc_opt_class();
-  v4 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v5 = VKDynamicCast(v3, v4);
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  v5 = VKDynamicCast(v3, dataDetectorElement);
 
   return v5;
 }
@@ -113,56 +113,56 @@
 {
   if ((vk_isSeedBuild() & 1) == 0)
   {
-    v3 = [(VKCDataDetectorElementView *)self calcPathForUnderline];
-    [(VKCDataDetectorElementView *)self setHighlightPath:v3];
+    calcPathForUnderline = [(VKCDataDetectorElementView *)self calcPathForUnderline];
+    [(VKCDataDetectorElementView *)self setHighlightPath:calcPathForUnderline];
 
-    v4 = [(VKCDataDetectorElementView *)self highlightPath];
-    v5 = [v4 vk_CGPath];
-    v6 = [(VKCDataDetectorElementView *)self highlightPathLayer];
-    [v6 setPath:v5];
+    highlightPath = [(VKCDataDetectorElementView *)self highlightPath];
+    vk_CGPath = [highlightPath vk_CGPath];
+    highlightPathLayer = [(VKCDataDetectorElementView *)self highlightPathLayer];
+    [highlightPathLayer setPath:vk_CGPath];
 
     [(VKCDataDetectorElementView *)self lineWithForAverageSubquadHeight];
     v8 = v7;
-    v9 = [(VKCDataDetectorElementView *)self highlightPathLayer];
-    [v9 setLineWidth:v8];
+    highlightPathLayer2 = [(VKCDataDetectorElementView *)self highlightPathLayer];
+    [highlightPathLayer2 setLineWidth:v8];
 
-    v13 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v10 = v13;
-    v11 = [v13 CGColor];
-    v12 = [(VKCDataDetectorElementView *)self highlightPathLayer];
-    [v12 setStrokeColor:v11];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v10 = systemGrayColor;
+    cGColor = [systemGrayColor CGColor];
+    highlightPathLayer3 = [(VKCDataDetectorElementView *)self highlightPathLayer];
+    [highlightPathLayer3 setStrokeColor:cGColor];
   }
 }
 
-- (void)setAllowLongPressDDActivationOnly:(BOOL)a3
+- (void)setAllowLongPressDDActivationOnly:(BOOL)only
 {
-  if (self->_allowLongPressDDActivationOnly != a3)
+  if (self->_allowLongPressDDActivationOnly != only)
   {
-    self->_allowLongPressDDActivationOnly = a3;
+    self->_allowLongPressDDActivationOnly = only;
     [(VKCDataDetectorElementView *)self updateHighlightPath];
     allowLongPressDDActivationOnly = self->_allowLongPressDDActivationOnly;
-    v5 = [(VKCDataDetectorElementView *)self pointerInteraction];
-    [v5 setEnabled:!allowLongPressDDActivationOnly];
+    pointerInteraction = [(VKCDataDetectorElementView *)self pointerInteraction];
+    [pointerInteraction setEnabled:!allowLongPressDDActivationOnly];
   }
 }
 
 - (double)lineWithForAverageSubquadHeight
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v4 = [v3 isTextDataDetector];
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  isTextDataDetector = [dataDetectorElement isTextDataDetector];
 
   v5 = 2.0;
-  if (v4)
+  if (isTextDataDetector)
   {
-    v6 = [(VKCDataDetectorElementView *)self subQuadsInBoundsCoordinates];
-    if ([v6 count])
+    subQuadsInBoundsCoordinates = [(VKCDataDetectorElementView *)self subQuadsInBoundsCoordinates];
+    if ([subQuadsInBoundsCoordinates count])
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = v6;
+      v7 = subQuadsInBoundsCoordinates;
       v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
@@ -211,14 +211,14 @@
 
 - (id)calcPathForUnderline
 {
-  v3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v4 = v3;
-  if (!v3)
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  v4 = dataDetectorElement;
+  if (!dataDetectorElement)
   {
     goto LABEL_5;
   }
 
-  if (![v3 isTextDataDetector] || -[VKCDataDetectorElementView allowLongPressDDActivationOnly](self, "allowLongPressDDActivationOnly"))
+  if (![dataDetectorElement isTextDataDetector] || -[VKCDataDetectorElementView allowLongPressDDActivationOnly](self, "allowLongPressDDActivationOnly"))
   {
     [v4 isMRCDataDetector];
 LABEL_5:
@@ -227,14 +227,14 @@ LABEL_5:
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E69DC728]);
-  v8 = [(VKCDataDetectorElementView *)self subQuadsInBoundsCoordinates];
+  subQuadsInBoundsCoordinates = [(VKCDataDetectorElementView *)self subQuadsInBoundsCoordinates];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__VKCDataDetectorElementView_calcPathForUnderline__block_invoke;
   v9[3] = &unk_1E7BE4640;
   v5 = v7;
   v10 = v5;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [subQuadsInBoundsCoordinates enumerateObjectsUsingBlock:v9];
 
 LABEL_6:
 
@@ -262,15 +262,15 @@ uint64_t __50__VKCDataDetectorElementView_calcPathForUnderline__block_invoke(uin
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  [v11 boundingBox];
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  [dataDetectorElement boundingBox];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v21 = [v20 boundingQuads];
+  dataDetectorElement2 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  boundingQuads = [dataDetectorElement2 boundingQuads];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __57__VKCDataDetectorElementView_subQuadsInBoundsCoordinates__block_invoke;
@@ -283,7 +283,7 @@ uint64_t __50__VKCDataDetectorElementView_calcPathForUnderline__block_invoke(uin
   v24[9] = v6;
   v24[10] = v8;
   v24[11] = v10;
-  v22 = [v21 vk_compactMap:v24];
+  v22 = [boundingQuads vk_compactMap:v24];
 
   return v22;
 }
@@ -298,20 +298,20 @@ id __57__VKCDataDetectorElementView_subQuadsInBoundsCoordinates__block_invoke(do
 
 - (VKQuad)boundingQuadInBoundsCoordinates
 {
-  v3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  [v3 boundingBox];
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  [dataDetectorElement boundingBox];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v13 = [v12 quad];
+  dataDetectorElement2 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  quad = [dataDetectorElement2 quad];
 
   [(VKCDataDetectorElementView *)self bounds];
   v15 = v14;
   v17 = v16;
-  v18 = [v13 subquadFromRect:{v5, v7, v9, v11}];
+  v18 = [quad subquadFromRect:{v5, v7, v9, v11}];
   v19 = [v18 quadMultipliedBySize:{v15, v17}];
 
   return v19;
@@ -321,12 +321,12 @@ id __57__VKCDataDetectorElementView_subQuadsInBoundsCoordinates__block_invoke(do
 {
   if (!self->_dataDetectorContext)
   {
-    v3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-    v4 = [v3 scannerResult];
+    dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+    scannerResult = [dataDetectorElement scannerResult];
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [(VKCDataDetectorElementView *)self allDataDetectorElements];
-    v7 = [v6 vk_compactMap:&__block_literal_global_26];
+    allDataDetectorElements = [(VKCDataDetectorElementView *)self allDataDetectorElements];
+    v7 = [allDataDetectorElements vk_compactMap:&__block_literal_global_26];
 
     v28 = 0;
     v29 = &v28;
@@ -345,9 +345,9 @@ id __57__VKCDataDetectorElementView_subQuadsInBoundsCoordinates__block_invoke(do
     if (v8)
     {
       [(NSDictionary *)v5 vk_setNonNilObject:v7 forKey:*v8];
-      v10 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-      v11 = [v10 groupedElementData];
-      [(NSDictionary *)v5 vk_addEntriesFromNonNilDictionary:v11];
+      dataDetectorElement2 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+      groupedElementData = [dataDetectorElement2 groupedElementData];
+      [(NSDictionary *)v5 vk_addEntriesFromNonNilDictionary:groupedElementData];
 
       if (vk_isSeedBuild())
       {
@@ -379,10 +379,10 @@ LABEL_21:
         [(NSDictionary *)v5 vk_setNonNilObject:v12 forKey:*v13];
       }
 
-      v15 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-      v16 = [v15 scannerResult];
-      v17 = [v16 value];
-      v18 = [v17 length];
+      dataDetectorElement3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+      scannerResult2 = [dataDetectorElement3 scannerResult];
+      value = [scannerResult2 value];
+      v18 = [value length];
 
       if (!v18)
       {
@@ -393,7 +393,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v19 = [v4 value];
+      value2 = [scannerResult value];
       v28 = 0;
       v29 = &v28;
       v30 = 0x2020000000;
@@ -410,7 +410,7 @@ LABEL_15:
       _Block_object_dispose(&v28, 8);
       if (v20)
       {
-        [(NSDictionary *)v5 setObject:v19 forKeyedSubscript:*v20];
+        [(NSDictionary *)v5 setObject:value2 forKeyedSubscript:*v20];
 
         goto LABEL_15;
       }
@@ -442,50 +442,50 @@ id __49__VKCDataDetectorElementView_dataDetectorContext__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   v25 = *MEMORY[0x1E69E9840];
-  [a3 locationInView:self];
+  [tap locationInView:self];
   v5 = v4;
   v7 = v6;
   if ([(VKCDataDetectorElementView *)self isPointInQuad:?])
   {
-    v8 = [(VKCDataDetectorElementView *)self delegate];
-    v9 = [v8 dataDetectorElementView:self shouldBeginAtPoint:{v5, v7}];
+    delegate = [(VKCDataDetectorElementView *)self delegate];
+    v9 = [delegate dataDetectorElementView:self shouldBeginAtPoint:{v5, v7}];
 
     if (v9)
     {
       [(VKCDataDetectorElementView *)self setIsPerformingManualContextInvocation:1];
-      v10 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-      v11 = [v10 scannerResult];
+      dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+      scannerResult = [dataDetectorElement scannerResult];
 
-      if (v11 && (vk_isSeedBuild() & 1) == 0)
+      if (scannerResult && (vk_isSeedBuild() & 1) == 0)
       {
         v13 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+          dataDetectorElement2 = [(VKCDataDetectorElementView *)self dataDetectorElement];
           v21 = 138412546;
-          v22 = v14;
+          v22 = dataDetectorElement2;
           v23 = 1024;
-          v24 = [(VKCDataDetectorElementView *)self analysisRequestID];
+          analysisRequestID = [(VKCDataDetectorElementView *)self analysisRequestID];
           _os_log_impl(&dword_1B4335000, v13, OS_LOG_TYPE_DEFAULT, "Performing default action for DD: %@, %d", &v21, 0x12u);
         }
 
-        v15 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-        v16 = [v15 scannerResult];
-        v17 = [v16 coreResult];
+        dataDetectorElement3 = [(VKCDataDetectorElementView *)self dataDetectorElement];
+        scannerResult2 = [dataDetectorElement3 scannerResult];
+        coreResult = [scannerResult2 coreResult];
 
         DDContextMenuActionClass_0 = getDDContextMenuActionClass_0();
-        v19 = [(VKCDataDetectorElementView *)self menuInteraction];
-        v20 = [(VKCDataDetectorElementView *)self dataDetectorContext];
-        [DDContextMenuActionClass_0 performDefaultActionWithResult:v17 inView:self atLocation:v19 withMenuInteraction:v20 context:{v5, v7}];
+        menuInteraction = [(VKCDataDetectorElementView *)self menuInteraction];
+        dataDetectorContext = [(VKCDataDetectorElementView *)self dataDetectorContext];
+        [DDContextMenuActionClass_0 performDefaultActionWithResult:coreResult inView:self atLocation:menuInteraction withMenuInteraction:dataDetectorContext context:{v5, v7}];
       }
 
       else
       {
-        v12 = [(VKCDataDetectorElementView *)self menuInteraction];
-        [v12 _presentMenuAtLocation:{v5, v7}];
+        menuInteraction2 = [(VKCDataDetectorElementView *)self menuInteraction];
+        [menuInteraction2 _presentMenuAtLocation:{v5, v7}];
       }
 
       [(VKCDataDetectorElementView *)self sendAnalyticsEventIfNecessaryForDDType:0];
@@ -496,13 +496,13 @@ id __49__VKCDataDetectorElementView_dataDetectorContext__block_invoke(uint64_t a
 
 - (BOOL)ignoresHitTest
 {
-  v2 = [(VKCDataDetectorElementView *)self pointerInteraction];
-  v3 = [v2 isEnabled];
+  pointerInteraction = [(VKCDataDetectorElementView *)self pointerInteraction];
+  isEnabled = [pointerInteraction isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v5 = [MEMORY[0x1E69DCD98] effectWithPreview:v4];
@@ -513,19 +513,19 @@ id __49__VKCDataDetectorElementView_dataDetectorContext__block_invoke(uint64_t a
 
 - (void)manuallyActivateLongPressMenuInteraction
 {
-  v4 = [(VKCDataDetectorElementView *)self menuInteraction];
-  v3 = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
-  [v3 vertexCentroid];
-  [v4 _presentMenuAtLocation:?];
+  menuInteraction = [(VKCDataDetectorElementView *)self menuInteraction];
+  boundingQuadInBoundsCoordinates = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
+  [boundingQuadInBoundsCoordinates vertexCentroid];
+  [menuInteraction _presentMenuAtLocation:?];
 }
 
-- (void)sendAnalyticsEventIfNecessaryForDDType:(int64_t)a3
+- (void)sendAnalyticsEventIfNecessaryForDDType:(int64_t)type
 {
-  v5 = [(VKCDataDetectorElementView *)self analyticsEventWithDDType:a3];
+  v5 = [(VKCDataDetectorElementView *)self analyticsEventWithDDType:type];
   if (v5)
   {
-    v4 = [(VKCDataDetectorElementView *)self delegate];
-    [v4 dataDetectorElementView:self analyticsEventOccured:v5];
+    delegate = [(VKCDataDetectorElementView *)self delegate];
+    [delegate dataDetectorElementView:self analyticsEventOccured:v5];
   }
 
   else
@@ -534,23 +534,23 @@ id __49__VKCDataDetectorElementView_dataDetectorContext__block_invoke(uint64_t a
   }
 }
 
-- (id)analyticsEventWithDDType:(int64_t)a3
+- (id)analyticsEventWithDDType:(int64_t)type
 {
-  v5 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  if ([v5 isMRCDataDetector])
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  if ([dataDetectorElement isMRCDataDetector])
   {
     v6 = off_1E7BE3030;
 LABEL_5:
     v7 = objc_alloc(*v6);
     v8 = objc_opt_class();
-    v9 = VKCheckedDynamicCast(v8, v5);
-    v10 = [(VKCDataDetectorElementView *)self customAnalyticsIdentifier];
-    v11 = [v7 initWithElement:v9 eventType:a3 customIdentifier:v10];
+    v9 = VKCheckedDynamicCast(v8, dataDetectorElement);
+    customAnalyticsIdentifier = [(VKCDataDetectorElementView *)self customAnalyticsIdentifier];
+    v11 = [v7 initWithElement:v9 eventType:type customIdentifier:customAnalyticsIdentifier];
 
     goto LABEL_7;
   }
 
-  if ([v5 isTextDataDetector])
+  if ([dataDetectorElement isTextDataDetector])
   {
     v6 = off_1E7BE3018;
     goto LABEL_5;
@@ -562,19 +562,19 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VKCDataDetectorElementView *)self tapGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(VKCDataDetectorElementView *)self tapGestureRecognizer];
 
-  if (v8 == v7)
+  if (tapGestureRecognizer == recognizerCopy)
   {
-    v9 = [(VKCDataDetectorElementView *)self allowLongPressDDActivationOnly];
+    allowLongPressDDActivationOnly = [(VKCDataDetectorElementView *)self allowLongPressDDActivationOnly];
 
-    if (!v9)
+    if (!allowLongPressDDActivationOnly)
     {
-      [v6 locationInView:self];
+      [touchCopy locationInView:self];
       v10 = [(VKCDataDetectorElementView *)self isPointInQuad:?];
       goto LABEL_5;
     }
@@ -592,8 +592,8 @@ LABEL_5:
 
 - (id)presentingViewControllerForInteraction
 {
-  v3 = [(VKCDataDetectorElementView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 presentingViewControllerForInteractionWithDataDetectorElementView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(VKCDataDetectorElementView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate presentingViewControllerForInteractionWithDataDetectorElementView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = [MEMORY[0x1E69DD258] _viewControllerForFullScreenPresentationFromView:self];
   }
@@ -601,25 +601,25 @@ LABEL_5:
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(VKCDataDetectorElementView *)self isPointInQuad:a4, a3.x, a3.y])
+  if ([(VKCDataDetectorElementView *)self isPointInQuad:event, test.x, test.y])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)isPointInQuad:(CGPoint)a3
+- (BOOL)isPointInQuad:(CGPoint)quad
 {
-  y = a3.y;
-  x = a3.x;
+  y = quad.y;
+  x = quad.x;
   if (([(VKCDataDetectorElementView *)self isHidden]& 1) != 0)
   {
     return 0;
@@ -631,24 +631,24 @@ LABEL_5:
     return 0;
   }
 
-  v7 = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
-  v8 = [v7 containsPoint:{x, y}];
+  boundingQuadInBoundsCoordinates = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
+  v8 = [boundingQuadInBoundsCoordinates containsPoint:{x, y}];
 
   return v8;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(VKCDataDetectorElementView *)self delegate];
-  v8 = [v7 dataDetectorElementView:self shouldBeginAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  delegate = [(VKCDataDetectorElementView *)self delegate];
+  v8 = [delegate dataDetectorElementView:self shouldBeginAtPoint:{x, y}];
 
   if (v8)
   {
-    v9 = [(VKCDataDetectorElementView *)self isPerformingManualContextInvocation];
+    isPerformingManualContextInvocation = [(VKCDataDetectorElementView *)self isPerformingManualContextInvocation];
     v10 = @"manualInvocation";
-    if (!v9)
+    if (!isPerformingManualContextInvocation)
     {
       v10 = 0;
     }
@@ -656,29 +656,29 @@ LABEL_5:
     v11 = v10;
     if ([(VKCDataDetectorElementView *)self shouldUseBCSAction])
     {
-      v12 = [(VKCDataDetectorElementView *)self mrcElement];
-      v13 = [(VKCDataDetectorElementView *)self presentingViewControllerForInteraction];
-      [v12 setPresentingViewControllerForMrcAction:v13];
+      mrcElement = [(VKCDataDetectorElementView *)self mrcElement];
+      presentingViewControllerForInteraction = [(VKCDataDetectorElementView *)self presentingViewControllerForInteraction];
+      [mrcElement setPresentingViewControllerForMrcAction:presentingViewControllerForInteraction];
 
-      v14 = [v12 mrcMenu];
+      mrcMenu = [mrcElement mrcMenu];
       v15 = MEMORY[0x1E69DC8D8];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __84__VKCDataDetectorElementView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke_2;
       v24[3] = &unk_1E7BE6528;
-      v25 = v14;
-      v16 = v14;
+      v25 = mrcMenu;
+      v16 = mrcMenu;
       v17 = [v15 configurationWithIdentifier:v11 previewProvider:&__block_literal_global_193 actionProvider:v24];
     }
 
     else
     {
       DDContextMenuActionClass_0 = getDDContextMenuActionClass_0();
-      v19 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-      v20 = [v19 scannerResult];
-      v21 = [v20 coreResult];
-      v22 = [(VKCDataDetectorElementView *)self dataDetectorContext];
-      v17 = [DDContextMenuActionClass_0 contextMenuConfigurationWithResult:v21 inView:self context:v22 menuIdentifier:v11];
+      dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+      scannerResult = [dataDetectorElement scannerResult];
+      coreResult = [scannerResult coreResult];
+      dataDetectorContext = [(VKCDataDetectorElementView *)self dataDetectorContext];
+      v17 = [DDContextMenuActionClass_0 contextMenuConfigurationWithResult:coreResult inView:self context:dataDetectorContext menuIdentifier:v11];
     }
   }
 
@@ -690,23 +690,23 @@ LABEL_5:
   return v17;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v5 = [(VKCDataDetectorElementView *)self delegate:a3];
-  v6 = [v5 previewForDataDetectorElementView:self];
+  v5 = [(VKCDataDetectorElementView *)self delegate:interaction];
+  selfCopy = [v5 previewForDataDetectorElementView:self];
 
-  if (!v6)
+  if (!selfCopy)
   {
-    v30 = [(VKCDataDetectorElementView *)self delegate];
-    v31 = [v30 previewImageForDataDetectorElementView:self];
+    delegate = [(VKCDataDetectorElementView *)self delegate];
+    v31 = [delegate previewImageForDataDetectorElementView:self];
 
     if (v31)
     {
       v32 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [v32 setImage:v31];
-      v33 = [(VKCDataDetectorElementView *)self delegate];
-      [v33 previewImageBoundsForDataDetectorElementView:self];
+      delegate2 = [(VKCDataDetectorElementView *)self delegate];
+      [delegate2 previewImageBoundsForDataDetectorElementView:self];
       v35 = v34;
       v37 = v36;
       v39 = v38;
@@ -720,13 +720,13 @@ LABEL_5:
       v10 = v45;
       v12 = v46;
       v14 = v47;
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
       v15 = 0;
-      v6 = 0;
+      selfCopy = 0;
       v12 = *(MEMORY[0x1E695F058] + 16);
       v14 = *(MEMORY[0x1E695F058] + 24);
       v8 = *MEMORY[0x1E695F058];
@@ -744,41 +744,41 @@ LABEL_10:
   }
 
   [(VKCDataDetectorElementView *)self bounds];
-  [(VKCDataDetectorElementView *)self convertRect:v6 toView:?];
+  [(VKCDataDetectorElementView *)self convertRect:selfCopy toView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [VKCDataDetectorElementView resizableSnapshotViewFromRect:v6 afterScreenUpdates:"resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:" withCapInsets:0];
+  v15 = [VKCDataDetectorElementView resizableSnapshotViewFromRect:selfCopy afterScreenUpdates:"resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:" withCapInsets:0];
   if (!v15)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v16 = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
-  v17 = [v16 quadByConvertingFromView:self toView:v6 isNormalized:0];
+  boundingQuadInBoundsCoordinates = [(VKCDataDetectorElementView *)self boundingQuadInBoundsCoordinates];
+  v17 = [boundingQuadInBoundsCoordinates quadByConvertingFromView:self toView:selfCopy isNormalized:0];
 
   v18 = [v17 quadFromSubtractingPoint:{v8, v10}];
 
-  v19 = [v18 path];
+  path = [v18 path];
   v20 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
   [v18 maxHeight];
   v22 = v21 * 0.15;
-  v23 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  if ([v23 isMRCDataDetector])
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  if ([dataDetectorElement isMRCDataDetector])
   {
     v22 = 0.0;
   }
 
   v24 = MEMORY[0x1E69DC728];
-  v49[0] = v19;
+  v49[0] = path;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
   v26 = [v24 vk_groupAndRoundPaths:v25 radius:v22 offset:0.0];
 
   [v20 setVisiblePath:v26];
   v27 = objc_alloc(MEMORY[0x1E69DD068]);
-  v28 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:v6 center:{VKMCenterOfRect(v8, v10, v12, v14)}];
+  v28 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:selfCopy center:{VKMCenterOfRect(v8, v10, v12, v14)}];
   v29 = [v27 initWithView:v15 parameters:v20 target:v28];
 
 LABEL_11:
@@ -786,32 +786,32 @@ LABEL_11:
   return v29;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(VKCDataDetectorElementView *)self delegate:a3];
+  v6 = [(VKCDataDetectorElementView *)self delegate:interaction];
   [v6 willDisplayMenuForDataDetectorElementView:self];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a4;
-  v7 = [(VKCDataDetectorElementView *)self delegate];
-  [v7 willDismissMenuForDataDetectorElementView:self];
+  configurationCopy = configuration;
+  delegate = [(VKCDataDetectorElementView *)self delegate];
+  [delegate willDismissMenuForDataDetectorElementView:self];
 
   v8 = objc_opt_class();
-  v9 = [v6 identifier];
+  identifier = [configurationCopy identifier];
 
-  v10 = VKDynamicCast(v8, v9);
+  v10 = VKDynamicCast(v8, identifier);
   v11 = [v10 isEqual:@"manualInvocation"];
 
   [(VKCDataDetectorElementView *)self sendAnalyticsEventIfNecessaryForDDType:v11 ^ 1u];
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -833,82 +833,82 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 performPreviewActionForMenuWithAnimator:v9];
+    [configurationCopy performPreviewActionForMenuWithAnimator:animatorCopy];
   }
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v4 = a4;
+  configurationCopy = configuration;
   v5 = objc_opt_class();
-  v6 = [v4 identifier];
+  identifier = [configurationCopy identifier];
 
-  v7 = VKDynamicCast(v5, v6);
-  LODWORD(v4) = [v7 isEqualToString:@"manualInvocation"];
+  v7 = VKDynamicCast(v5, identifier);
+  LODWORD(configurationCopy) = [v7 isEqualToString:@"manualInvocation"];
 
-  if (v4)
+  if (configurationCopy)
   {
-    v8 = [MEMORY[0x1E69DD440] defaultStyle];
-    [v8 setPreferredLayout:3];
+    defaultStyle = [MEMORY[0x1E69DD440] defaultStyle];
+    [defaultStyle setPreferredLayout:3];
   }
 
   else
   {
-    v8 = 0;
+    defaultStyle = 0;
   }
 
-  return v8;
+  return defaultStyle;
 }
 
-- (void)highlighter:(id)a3 shouldHighlight:(BOOL)a4
+- (void)highlighter:(id)highlighter shouldHighlight:(BOOL)highlight
 {
-  v4 = a4;
-  v13 = a3;
-  v6 = [(VKCDataDetectorElementView *)self highlightPathLayer];
-  v7 = v6;
-  if (v4)
+  highlightCopy = highlight;
+  highlighterCopy = highlighter;
+  highlightPathLayer = [(VKCDataDetectorElementView *)self highlightPathLayer];
+  v7 = highlightPathLayer;
+  if (highlightCopy)
   {
-    v8 = [v13 elementView];
-    v9 = [v8 boundingQuadInBoundsCoordinates];
-    v10 = [v9 path];
-    [v7 setPath:{objc_msgSend(v10, "vk_CGPath")}];
+    elementView = [highlighterCopy elementView];
+    boundingQuadInBoundsCoordinates = [elementView boundingQuadInBoundsCoordinates];
+    path = [boundingQuadInBoundsCoordinates path];
+    [v7 setPath:{objc_msgSend(path, "vk_CGPath")}];
 
     [(UIView *)self vk_viewPointRatioFromWindow];
     [v7 setLineWidth:v11 + v11];
-    v12 = [MEMORY[0x1E69DC888] yellowColor];
-    [v7 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+    yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+    [v7 setStrokeColor:{objc_msgSend(yellowColor, "CGColor")}];
 
     [v7 setHidden:0];
   }
 
   else
   {
-    [v6 setHidden:1];
+    [highlightPathLayer setHidden:1];
   }
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(VKCDataDetectorElementView *)self dataDetectorElement];
-  v3 = [v2 scannerResult];
-  v4 = [v3 value];
+  dataDetectorElement = [(VKCDataDetectorElementView *)self dataDetectorElement];
+  scannerResult = [dataDetectorElement scannerResult];
+  value = [scannerResult value];
 
-  return v4;
+  return value;
 }
 
-- (CGRect)rectForMrcActionInViewController:(id)a3
+- (CGRect)rectForMrcActionInViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = a3;
+    controllerCopy = controller;
     [(VKCDataDetectorElementView *)self bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v4 view];
+    view = [controllerCopy view];
 
-    [(VKCDataDetectorElementView *)self convertRect:v13 toView:v6, v8, v10, v12];
+    [(VKCDataDetectorElementView *)self convertRect:view toView:v6, v8, v10, v12];
     v15 = v14;
     v17 = v16;
     v19 = v18;

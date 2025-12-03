@@ -1,48 +1,48 @@
 @interface RecentCallQuery
 - (id)callCapabilityPredicate;
 - (id)callRecordTypePredicates;
-- (id)participantsPredicatesWithContactsDataSource:(id)a3 contactIdentifierCache:(id)a4 coreTelephonyDataSource:(id)a5;
-- (id)predicateForRecentCallWithContactsDataSource:(id)a3 contactIdentifierCache:(id)a4 coreTelephonyDataSource:(id)a5;
+- (id)participantsPredicatesWithContactsDataSource:(id)source contactIdentifierCache:(id)cache coreTelephonyDataSource:(id)dataSource;
+- (id)predicateForRecentCallWithContactsDataSource:(id)source contactIdentifierCache:(id)cache coreTelephonyDataSource:(id)dataSource;
 - (id)preferredCallProviderPredicate;
 @end
 
 @implementation RecentCallQuery
 
-- (id)predicateForRecentCallWithContactsDataSource:(id)a3 contactIdentifierCache:(id)a4 coreTelephonyDataSource:(id)a5
+- (id)predicateForRecentCallWithContactsDataSource:(id)source contactIdentifierCache:(id)cache coreTelephonyDataSource:(id)dataSource
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  cacheCopy = cache;
+  dataSourceCopy = dataSource;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [(RecentCallQuery *)self callRecordTypePredicates];
-  [v11 addObjectsFromArray:v12];
+  callRecordTypePredicates = [(RecentCallQuery *)self callRecordTypePredicates];
+  [v11 addObjectsFromArray:callRecordTypePredicates];
 
-  v13 = [(RecentCallQuery *)self preferredCallProviderPredicate];
-  if (v13)
+  preferredCallProviderPredicate = [(RecentCallQuery *)self preferredCallProviderPredicate];
+  if (preferredCallProviderPredicate)
   {
-    [v11 addObject:v13];
+    [v11 addObject:preferredCallProviderPredicate];
   }
 
-  v14 = [(RecentCallQuery *)self callCapabilityPredicate];
-  if (v14)
+  callCapabilityPredicate = [(RecentCallQuery *)self callCapabilityPredicate];
+  if (callCapabilityPredicate)
   {
-    [v11 addObject:v14];
+    [v11 addObject:callCapabilityPredicate];
   }
 
-  v15 = [(RecentCallQuery *)self participantsPredicatesWithContactsDataSource:v8 contactIdentifierCache:v9 coreTelephonyDataSource:v10];
+  v15 = [(RecentCallQuery *)self participantsPredicatesWithContactsDataSource:sourceCopy contactIdentifierCache:cacheCopy coreTelephonyDataSource:dataSourceCopy];
   [v11 addObjectsFromArray:v15];
 
   if ([v11 count] == 1)
   {
-    v16 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 LABEL_9:
-    v17 = v16;
+    v17 = firstObject;
     goto LABEL_11;
   }
 
   if ([v11 count] >= 2)
   {
-    v16 = [NSCompoundPredicate andPredicateWithSubpredicates:v11];
+    firstObject = [NSCompoundPredicate andPredicateWithSubpredicates:v11];
     goto LABEL_9;
   }
 
@@ -100,16 +100,16 @@ LABEL_11:
 
 - (id)preferredCallProviderPredicate
 {
-  v3 = [(RecentCallQuery *)self preferredCallProvider];
-  if (v3)
+  preferredCallProvider = [(RecentCallQuery *)self preferredCallProvider];
+  if (preferredCallProvider)
   {
-    if (v3 == 2)
+    if (preferredCallProvider == 2)
     {
       v4 = +[CallHistoryDataSourcePredicate predicateForFaceTimeCalls];
       goto LABEL_15;
     }
 
-    if (v3 == 1)
+    if (preferredCallProvider == 1)
     {
       v4 = +[CallHistoryDataSourcePredicate predicateForTelephonyCalls];
       goto LABEL_15;
@@ -124,10 +124,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = [(RecentCallQuery *)self includeThirdPartyCalls];
+  includeThirdPartyCalls = [(RecentCallQuery *)self includeThirdPartyCalls];
   v6 = IntentHandlerDefaultLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (includeThirdPartyCalls)
   {
     if (v7)
     {
@@ -155,13 +155,13 @@ LABEL_15:
 
 - (id)callCapabilityPredicate
 {
-  v2 = [(RecentCallQuery *)self callCapability];
-  if (v2 == 1)
+  callCapability = [(RecentCallQuery *)self callCapability];
+  if (callCapability == 1)
   {
     v3 = +[CallHistoryDataSourcePredicate predicateForAudioCalls];
   }
 
-  else if (v2 == 2)
+  else if (callCapability == 2)
   {
     v3 = +[CallHistoryDataSourcePredicate predicateForVideoCalls];
   }
@@ -174,19 +174,19 @@ LABEL_15:
   return v3;
 }
 
-- (id)participantsPredicatesWithContactsDataSource:(id)a3 contactIdentifierCache:(id)a4 coreTelephonyDataSource:(id)a5
+- (id)participantsPredicatesWithContactsDataSource:(id)source contactIdentifierCache:(id)cache coreTelephonyDataSource:(id)dataSource
 {
-  v29 = a3;
-  v8 = a4;
-  v9 = a5;
+  sourceCopy = source;
+  cacheCopy = cache;
+  dataSourceCopy = dataSource;
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = [(RecentCallQuery *)self participants];
-  v12 = [v11 count];
+  participants = [(RecentCallQuery *)self participants];
+  v12 = [participants count];
 
   if (v12)
   {
-    v13 = [(RecentCallQuery *)self participants];
-    v14 = +[CallHistoryDataSourcePredicate predicateForCallsWithNumberOfRemoteParticipants:](CallHistoryDataSourcePredicate, "predicateForCallsWithNumberOfRemoteParticipants:", [v13 count]);
+    participants2 = [(RecentCallQuery *)self participants];
+    v14 = +[CallHistoryDataSourcePredicate predicateForCallsWithNumberOfRemoteParticipants:](CallHistoryDataSourcePredicate, "predicateForCallsWithNumberOfRemoteParticipants:", [participants2 count]);
 
     v27 = v14;
     [v10 addObject:v14];
@@ -209,11 +209,11 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v19 = [*(*(&v31 + 1) + 8 * i) tu_handlesMatchingPersonWithContactsDataSource:v29 identifierToContactCache:v8];
-          v20 = [(RecentCallQuery *)self includeThirdPartyCalls];
+          v19 = [*(*(&v31 + 1) + 8 * i) tu_handlesMatchingPersonWithContactsDataSource:sourceCopy identifierToContactCache:cacheCopy];
+          includeThirdPartyCalls = [(RecentCallQuery *)self includeThirdPartyCalls];
           v21 = IntentHandlerDefaultLog();
           v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-          if (v20)
+          if (includeThirdPartyCalls)
           {
             if (v22)
             {
@@ -221,8 +221,8 @@ LABEL_15:
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "ThirdParty redial is enabled, using redial predicate that includes search for non-normalized handle values.", buf, 2u);
             }
 
-            v23 = [v9 allRelevantISOCountryCodes];
-            v24 = [CallHistoryDataSourcePredicate predicateForCallToCallBackWithAnyOfTheseRemoteParticipantHandles:v19 isoCountryCodes:v23];
+            allRelevantISOCountryCodes = [dataSourceCopy allRelevantISOCountryCodes];
+            v24 = [CallHistoryDataSourcePredicate predicateForCallToCallBackWithAnyOfTheseRemoteParticipantHandles:v19 isoCountryCodes:allRelevantISOCountryCodes];
           }
 
           else
@@ -233,8 +233,8 @@ LABEL_15:
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "ThirdParty redial is not enabled, using normal recent call predicate that includes search for non-normalized handle values.", buf, 2u);
             }
 
-            v23 = [v9 allRelevantISOCountryCodes];
-            v24 = [CallHistoryDataSourcePredicate predicateForCallsWithAnyOfTheseRemoteParticipantHandles:v19 isoCountryCodes:v23];
+            allRelevantISOCountryCodes = [dataSourceCopy allRelevantISOCountryCodes];
+            v24 = [CallHistoryDataSourcePredicate predicateForCallsWithAnyOfTheseRemoteParticipantHandles:v19 isoCountryCodes:allRelevantISOCountryCodes];
           }
 
           v25 = v24;

@@ -1,39 +1,39 @@
 @interface _INPBBillPayeeValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBBillPayeeValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBBillPayeeValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountNumber:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountNumber:(id)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBBillPayeeValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accountNumber)
   {
-    v4 = [(_INPBBillPayeeValue *)self accountNumber];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accountNumber"];
+    accountNumber = [(_INPBBillPayeeValue *)self accountNumber];
+    v5 = [accountNumber copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accountNumber"];
   }
 
-  v6 = [(_INPBBillPayeeValue *)self nickname];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"nickname"];
+  nickname = [(_INPBBillPayeeValue *)self nickname];
+  dictionaryRepresentation = [nickname dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"nickname"];
 
-  v8 = [(_INPBBillPayeeValue *)self organizationName];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"organizationName"];
+  organizationName = [(_INPBBillPayeeValue *)self organizationName];
+  dictionaryRepresentation2 = [organizationName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"organizationName"];
 
-  v10 = [(_INPBBillPayeeValue *)self valueMetadata];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBBillPayeeValue *)self valueMetadata];
+  dictionaryRepresentation3 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -44,28 +44,28 @@
   return v4 ^ v5 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBBillPayeeValue *)self accountNumber];
-  v6 = [v4 accountNumber];
-  if ((v5 != 0) == (v6 == 0))
+  accountNumber = [(_INPBBillPayeeValue *)self accountNumber];
+  accountNumber2 = [equalCopy accountNumber];
+  if ((accountNumber != 0) == (accountNumber2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBBillPayeeValue *)self accountNumber];
-  if (v7)
+  accountNumber3 = [(_INPBBillPayeeValue *)self accountNumber];
+  if (accountNumber3)
   {
-    v8 = v7;
-    v9 = [(_INPBBillPayeeValue *)self accountNumber];
-    v10 = [v4 accountNumber];
-    v11 = [v9 isEqual:v10];
+    v8 = accountNumber3;
+    accountNumber4 = [(_INPBBillPayeeValue *)self accountNumber];
+    accountNumber5 = [equalCopy accountNumber];
+    v11 = [accountNumber4 isEqual:accountNumber5];
 
     if (!v11)
     {
@@ -77,20 +77,20 @@
   {
   }
 
-  v5 = [(_INPBBillPayeeValue *)self nickname];
-  v6 = [v4 nickname];
-  if ((v5 != 0) == (v6 == 0))
+  accountNumber = [(_INPBBillPayeeValue *)self nickname];
+  accountNumber2 = [equalCopy nickname];
+  if ((accountNumber != 0) == (accountNumber2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBBillPayeeValue *)self nickname];
-  if (v12)
+  nickname = [(_INPBBillPayeeValue *)self nickname];
+  if (nickname)
   {
-    v13 = v12;
-    v14 = [(_INPBBillPayeeValue *)self nickname];
-    v15 = [v4 nickname];
-    v16 = [v14 isEqual:v15];
+    v13 = nickname;
+    nickname2 = [(_INPBBillPayeeValue *)self nickname];
+    nickname3 = [equalCopy nickname];
+    v16 = [nickname2 isEqual:nickname3];
 
     if (!v16)
     {
@@ -102,20 +102,20 @@
   {
   }
 
-  v5 = [(_INPBBillPayeeValue *)self organizationName];
-  v6 = [v4 organizationName];
-  if ((v5 != 0) == (v6 == 0))
+  accountNumber = [(_INPBBillPayeeValue *)self organizationName];
+  accountNumber2 = [equalCopy organizationName];
+  if ((accountNumber != 0) == (accountNumber2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBBillPayeeValue *)self organizationName];
-  if (v17)
+  organizationName = [(_INPBBillPayeeValue *)self organizationName];
+  if (organizationName)
   {
-    v18 = v17;
-    v19 = [(_INPBBillPayeeValue *)self organizationName];
-    v20 = [v4 organizationName];
-    v21 = [v19 isEqual:v20];
+    v18 = organizationName;
+    organizationName2 = [(_INPBBillPayeeValue *)self organizationName];
+    organizationName3 = [equalCopy organizationName];
+    v21 = [organizationName2 isEqual:organizationName3];
 
     if (!v21)
     {
@@ -127,12 +127,12 @@
   {
   }
 
-  v5 = [(_INPBBillPayeeValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  accountNumber = [(_INPBBillPayeeValue *)self valueMetadata];
+  accountNumber2 = [equalCopy valueMetadata];
+  if ((accountNumber != 0) != (accountNumber2 == 0))
   {
-    v22 = [(_INPBBillPayeeValue *)self valueMetadata];
-    if (!v22)
+    valueMetadata = [(_INPBBillPayeeValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_25:
@@ -140,10 +140,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBBillPayeeValue *)self valueMetadata];
-    v25 = [v4 valueMetadata];
-    v26 = [v24 isEqual:v25];
+    v23 = valueMetadata;
+    valueMetadata2 = [(_INPBBillPayeeValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v26 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v26)
     {
@@ -163,90 +163,90 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBBillPayeeValue allocWithZone:](_INPBBillPayeeValue init];
-  v6 = [(NSString *)self->_accountNumber copyWithZone:a3];
+  v6 = [(NSString *)self->_accountNumber copyWithZone:zone];
   [(_INPBBillPayeeValue *)v5 setAccountNumber:v6];
 
-  v7 = [(_INPBDataString *)self->_nickname copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_nickname copyWithZone:zone];
   [(_INPBBillPayeeValue *)v5 setNickname:v7];
 
-  v8 = [(_INPBDataString *)self->_organizationName copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_organizationName copyWithZone:zone];
   [(_INPBBillPayeeValue *)v5 setOrganizationName:v8];
 
-  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBBillPayeeValue *)v5 setValueMetadata:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBBillPayeeValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBBillPayeeValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBBillPayeeValue)initWithCoder:(id)a3
+- (_INPBBillPayeeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBBillPayeeValue *)self initWithData:v6];
+    self = [(_INPBBillPayeeValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBBillPayeeValue *)self accountNumber];
+  toCopy = to;
+  accountNumber = [(_INPBBillPayeeValue *)self accountNumber];
 
-  if (v4)
+  if (accountNumber)
   {
     accountNumber = self->_accountNumber;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBBillPayeeValue *)self nickname];
+  nickname = [(_INPBBillPayeeValue *)self nickname];
 
-  if (v6)
+  if (nickname)
   {
-    v7 = [(_INPBBillPayeeValue *)self nickname];
+    nickname2 = [(_INPBBillPayeeValue *)self nickname];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBBillPayeeValue *)self organizationName];
+  organizationName = [(_INPBBillPayeeValue *)self organizationName];
 
-  if (v8)
+  if (organizationName)
   {
-    v9 = [(_INPBBillPayeeValue *)self organizationName];
+    organizationName2 = [(_INPBBillPayeeValue *)self organizationName];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBBillPayeeValue *)self valueMetadata];
+  valueMetadata = [(_INPBBillPayeeValue *)self valueMetadata];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (valueMetadata)
   {
-    v12 = [(_INPBBillPayeeValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBBillPayeeValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setAccountNumber:(id)a3
+- (void)setAccountNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   accountNumber = self->_accountNumber;
   self->_accountNumber = v4;
 

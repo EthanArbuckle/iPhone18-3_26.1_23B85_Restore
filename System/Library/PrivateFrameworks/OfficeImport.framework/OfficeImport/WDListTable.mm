@@ -1,17 +1,17 @@
 @interface WDListTable
-- (WDListTable)initWithDocument:(id)a3;
-- (id)addListWithListId:(int)a3 listDefinitionId:(int)a4;
+- (WDListTable)initWithDocument:(id)document;
+- (id)addListWithListId:(int)id listDefinitionId:(int)definitionId;
 - (id)description;
-- (id)listWithListId:(int)a3;
+- (id)listWithListId:(int)id;
 @end
 
 @implementation WDListTable
 
-- (id)addListWithListId:(int)a3 listDefinitionId:(int)a4
+- (id)addListWithListId:(int)id listDefinitionId:(int)definitionId
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  if (a3 == 0x80000000)
+  v4 = *&definitionId;
+  v5 = *&id;
+  if (id == 0x80000000)
   {
     v5 = [(NSMutableArray *)self->mLists count]+ 1;
   }
@@ -31,9 +31,9 @@
   return v9;
 }
 
-- (id)listWithListId:(int)a3
+- (id)listWithListId:(int)id
 {
-  if (a3)
+  if (id)
   {
     mListMapById = self->mListMapById;
     v5 = [MEMORY[0x277CCABB0] numberWithInt:?];
@@ -58,16 +58,16 @@ LABEL_6:
   return v6;
 }
 
-- (WDListTable)initWithDocument:(id)a3
+- (WDListTable)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v16.receiver = self;
   v16.super_class = WDListTable;
   v5 = [(WDListTable *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mLists = v6->mLists;
     v6->mLists = v7;
@@ -76,11 +76,11 @@ LABEL_6:
     mListMapById = v6->mListMapById;
     v6->mListMapById = v9;
 
-    v11 = [[WDList alloc] initWithDocument:v4 listId:0 listDefinitionId:0xFFFFFFFFLL];
+    v11 = [[WDList alloc] initWithDocument:documentCopy listId:0 listDefinitionId:0xFFFFFFFFLL];
     mNullList = v6->mNullList;
     v6->mNullList = v11;
 
-    v13 = [[WDList alloc] initWithDocument:v4 listId:2147483649 listDefinitionId:4294967294];
+    v13 = [[WDList alloc] initWithDocument:documentCopy listId:2147483649 listDefinitionId:4294967294];
     mDefaultList = v6->mDefaultList;
     v6->mDefaultList = v13;
   }

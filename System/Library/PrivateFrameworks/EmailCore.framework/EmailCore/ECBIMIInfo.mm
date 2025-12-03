@@ -1,72 +1,72 @@
 @interface ECBIMIInfo
-+ (id)bimiInfoForHeaders:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ECBIMIInfo)initWithIndicator:(id)a3 location:(id)a4 evidenceLocation:(id)a5 indicatorHash:(id)a6 hashAlgorithm:(id)a7;
++ (id)bimiInfoForHeaders:(id)headers;
+- (BOOL)isEqual:(id)equal;
+- (ECBIMIInfo)initWithIndicator:(id)indicator location:(id)location evidenceLocation:(id)evidenceLocation indicatorHash:(id)hash hashAlgorithm:(id)algorithm;
 - (uint64_t)_calculateHash;
 @end
 
 @implementation ECBIMIInfo
 
-+ (id)bimiInfoForHeaders:(id)a3
++ (id)bimiInfoForHeaders:(id)headers
 {
-  v3 = [_ECBIMIHeaderParser bimiInfoForHeaders:a3];
+  v3 = [_ECBIMIHeaderParser bimiInfoForHeaders:headers];
 
   return v3;
 }
 
-- (ECBIMIInfo)initWithIndicator:(id)a3 location:(id)a4 evidenceLocation:(id)a5 indicatorHash:(id)a6 hashAlgorithm:(id)a7
+- (ECBIMIInfo)initWithIndicator:(id)indicator location:(id)location evidenceLocation:(id)evidenceLocation indicatorHash:(id)hash hashAlgorithm:(id)algorithm
 {
-  v20 = a3;
-  v19 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  indicatorCopy = indicator;
+  locationCopy = location;
+  evidenceLocationCopy = evidenceLocation;
+  hashCopy = hash;
+  algorithmCopy = algorithm;
   v21.receiver = self;
   v21.super_class = ECBIMIInfo;
   v16 = [(ECBIMIInfo *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_indicator, a3);
-    objc_storeStrong(&v17->_location, a4);
-    objc_storeStrong(&v17->_evidenceLocation, a5);
-    objc_storeStrong(&v17->_indicatorHash, a6);
-    objc_storeStrong(&v17->_hashAlgorithm, a7);
+    objc_storeStrong(&v16->_indicator, indicator);
+    objc_storeStrong(&v17->_location, location);
+    objc_storeStrong(&v17->_evidenceLocation, evidenceLocation);
+    objc_storeStrong(&v17->_indicatorHash, hash);
+    objc_storeStrong(&v17->_hashAlgorithm, algorithm);
     [(ECBIMIInfo *)v17 _calculateHash];
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (([(ECBIMIInfo *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(ECBIMIInfo *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(ECBIMIInfo *)self indicator];
-    v7 = [(ECBIMIInfo *)v5 indicator];
+    v5 = equalCopy;
+    indicator = [(ECBIMIInfo *)self indicator];
+    indicator2 = [(ECBIMIInfo *)v5 indicator];
     if (EFObjectsAreEqual())
     {
-      v8 = [(ECBIMIInfo *)self location];
-      v9 = [(ECBIMIInfo *)v5 location];
+      location = [(ECBIMIInfo *)self location];
+      location2 = [(ECBIMIInfo *)v5 location];
       if (EFObjectsAreEqual())
       {
-        v17 = [(ECBIMIInfo *)self evidenceLocation];
-        v10 = [(ECBIMIInfo *)v5 evidenceLocation];
+        evidenceLocation = [(ECBIMIInfo *)self evidenceLocation];
+        evidenceLocation2 = [(ECBIMIInfo *)v5 evidenceLocation];
         if (EFObjectsAreEqual())
         {
-          v16 = [(ECBIMIInfo *)self indicatorHash];
-          v15 = [(ECBIMIInfo *)v5 indicatorHash];
+          indicatorHash = [(ECBIMIInfo *)self indicatorHash];
+          indicatorHash2 = [(ECBIMIInfo *)v5 indicatorHash];
           if (EFObjectsAreEqual())
           {
-            v14 = [(ECBIMIInfo *)self hashAlgorithm];
-            v11 = [(ECBIMIInfo *)v5 hashAlgorithm];
+            hashAlgorithm = [(ECBIMIInfo *)self hashAlgorithm];
+            hashAlgorithm2 = [(ECBIMIInfo *)v5 hashAlgorithm];
             v12 = EFObjectsAreEqual();
           }
 

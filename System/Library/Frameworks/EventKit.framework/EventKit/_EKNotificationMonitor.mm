@@ -3,31 +3,31 @@
 + (id)blacklistedNotificationQueue;
 + (id)blacklistedRowIDs;
 + (id)requestedDarwinNotifications;
-+ (void)addBlacklistedNotificationObjectID:(id)a3;
++ (void)addBlacklistedNotificationObjectID:(id)d;
 - (NSArray)notificationReferences;
 - (id)_eventStore;
-- (id)_fetchEventNotificationReferencesFromEventStore:(id)a3 earliestExpiringNotification:(id *)a4;
-- (id)_initWithOptions:(int64_t)a3 eventStore:(id)a4 eventStoreGetter:(id)a5;
+- (id)_fetchEventNotificationReferencesFromEventStore:(id)store earliestExpiringNotification:(id *)notification;
+- (id)_initWithOptions:(int64_t)options eventStore:(id)store eventStoreGetter:(id)getter;
 - (id)effectiveCallbackQueue;
 - (unint64_t)notificationCount;
-- (void)_addRemovedOrAddedObjectIDsTo:(id)a3 oldNotifications:(id)a4 newNotifications:(id)a5;
+- (void)_addRemovedOrAddedObjectIDsTo:(id)to oldNotifications:(id)notifications newNotifications:(id)newNotifications;
 - (void)_alertPrefChanged;
 - (void)_databaseChanged;
 - (void)_eventStoreChanged;
-- (void)_eventStoreChangedNotification:(id)a3;
-- (void)_killSyncTimer:(id)a3;
+- (void)_eventStoreChangedNotification:(id)notification;
+- (void)_killSyncTimer:(id)timer;
 - (void)_killTimer;
 - (void)_notificationCountChangedExternally;
 - (void)_resetSyncTimer;
-- (void)_syncDidEnd:(id)a3;
+- (void)_syncDidEnd:(id)end;
 - (void)_syncDidStart;
-- (void)_syncTimerFired:(id)a3;
+- (void)_syncTimerFired:(id)fired;
 - (void)_timerFired;
-- (void)_updateTimerFireDate:(id)a3;
+- (void)_updateTimerFireDate:(id)date;
 - (void)adjust;
-- (void)attemptReloadSynchronously:(BOOL)a3;
+- (void)attemptReloadSynchronously:(BOOL)synchronously;
 - (void)dealloc;
-- (void)handleDarwinNotification:(id)a3;
+- (void)handleDarwinNotification:(id)notification;
 - (void)start;
 - (void)stop;
 - (void)trackChangesInEventStore;
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __35___EKNotificationMonitor_logHandle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (logHandle_onceToken_0 != -1)
   {
     dispatch_once(&logHandle_onceToken_0, block);
@@ -67,29 +67,29 @@
   return v4;
 }
 
-- (id)_initWithOptions:(int64_t)a3 eventStore:(id)a4 eventStoreGetter:(id)a5
+- (id)_initWithOptions:(int64_t)options eventStore:(id)store eventStoreGetter:(id)getter
 {
-  v7 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  storeCopy = store;
+  getterCopy = getter;
   v29.receiver = self;
   v29.super_class = _EKNotificationMonitor;
   v11 = [(_EKNotificationMonitor *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    v11[102] = v7 & 1;
-    v13 = *&vshl_u16((*&vdup_n_s16(v7) & 0xFF00FF00FF00FFLL), 0xFFFCFFFDFFFFFFFELL) & 0xFF01FF01FF01FF01;
+    v11[102] = optionsCopy & 1;
+    v13 = *&vshl_u16((*&vdup_n_s16(optionsCopy) & 0xFF00FF00FF00FFLL), 0xFFFCFFFDFFFFFFFELL) & 0xFF01FF01FF01FF01;
     *(v11 + 93) = vuzp1_s8(v13, v13).u32[0];
-    v11[97] = (v7 & 0x20) != 0;
-    v11[98] = (v7 & 0x40) != 0;
-    v11[100] = (v7 & 0x80) != 0;
-    v11[101] = BYTE1(v7) & 1;
-    v14 = [v10 copy];
+    v11[97] = (optionsCopy & 0x20) != 0;
+    v11[98] = (optionsCopy & 0x40) != 0;
+    v11[100] = (optionsCopy & 0x80) != 0;
+    v11[101] = BYTE1(optionsCopy) & 1;
+    v14 = [getterCopy copy];
     v15 = *(v12 + 1);
     *(v12 + 1) = v14;
 
-    objc_storeStrong(v12 + 18, a4);
+    objc_storeStrong(v12 + 18, store);
     if (!*(v12 + 18) && !*(v12 + 1))
     {
       v16 = objc_alloc_init(EKTimedEventStorePurger);
@@ -115,10 +115,10 @@
 
     objc_opt_class();
     v23 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v24 = [v23 UTF8String];
+    uTF8String = [v23 UTF8String];
 
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v26 = dispatch_queue_create(v24, v25);
+    v26 = dispatch_queue_create(uTF8String, v25);
     v27 = *(v12 + 16);
     *(v12 + 16) = v26;
   }
@@ -183,11 +183,11 @@
 {
   if (!self->_running)
   {
-    v3 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Monitor starting up.", buf, 2u);
+      _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Monitor starting up.", buf, 2u);
     }
 
     self->_initialCheck = 1;
@@ -214,8 +214,8 @@
 
     if (self->_eventStore)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__eventStoreChangedNotification_ name:@"EKEventStoreChangedNotification" object:self->_eventStore];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__eventStoreChangedNotification_ name:@"EKEventStoreChangedNotification" object:self->_eventStore];
     }
 
     if (self->_eventStorePurger)
@@ -239,11 +239,11 @@
   {
     v11 = v2;
     v12 = v3;
-    v5 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_DEFAULT, "Monitor shutting down.", v10, 2u);
+      _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Monitor shutting down.", v10, 2u);
     }
 
     if (self->_registerForDarwinNotifications)
@@ -260,8 +260,8 @@
 
     if (self->_eventStore)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 removeObserver:self name:@"EKEventStoreChangedNotification" object:self->_eventStore];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"EKEventStoreChangedNotification" object:self->_eventStore];
     }
 
     eventStorePurger = self->_eventStorePurger;
@@ -289,14 +289,14 @@
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v3 = [(_EKNotificationMonitor *)self notificationQueue];
+    notificationQueue = [(_EKNotificationMonitor *)self notificationQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __43___EKNotificationMonitor_notificationCount__block_invoke;
     v8[3] = &unk_1E77FD530;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v3, v8);
+    dispatch_sync(notificationQueue, v8);
 
     v4 = v10[3];
     _Block_object_dispose(&v9, 8);
@@ -305,8 +305,8 @@
 
   else
   {
-    v6 = [(_EKNotificationMonitor *)self notificationReferences];
-    v7 = [v6 count];
+    notificationReferences = [(_EKNotificationMonitor *)self notificationReferences];
+    v7 = [notificationReferences count];
 
     return v7;
   }
@@ -320,14 +320,14 @@
   v10 = __Block_byref_object_copy__13;
   v11 = __Block_byref_object_dispose__13;
   v12 = 0;
-  v3 = [(_EKNotificationMonitor *)self notificationQueue];
+  notificationQueue = [(_EKNotificationMonitor *)self notificationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48___EKNotificationMonitor_notificationReferences__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(notificationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -347,18 +347,18 @@
   {
     v6 = v2;
     v7 = v3;
-    v4 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_1A805E000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring expiration timer because the notification monitor is not running.", v5, 2u);
+      _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Ignoring expiration timer because the notification monitor is not running.", v5, 2u);
     }
   }
 }
 
-- (void)attemptReloadSynchronously:(BOOL)a3
+- (void)attemptReloadSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53___EKNotificationMonitor_attemptReloadSynchronously___block_invoke;
@@ -366,7 +366,7 @@
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   queue = self->_queue;
-  if (v3)
+  if (synchronouslyCopy)
   {
     dispatch_sync(queue, v5);
   }
@@ -377,40 +377,40 @@
   }
 }
 
-- (void)_addRemovedOrAddedObjectIDsTo:(id)a3 oldNotifications:(id)a4 newNotifications:(id)a5
+- (void)_addRemovedOrAddedObjectIDsTo:(id)to oldNotifications:(id)notifications newNotifications:(id)newNotifications
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = [v8 mutableCopy];
-  [v12 intersectSet:v7];
-  [v8 minusSet:v12];
-  [v7 minusSet:v12];
-  v10 = [v8 allObjects];
+  newNotificationsCopy = newNotifications;
+  notificationsCopy = notifications;
+  toCopy = to;
+  v12 = [notificationsCopy mutableCopy];
+  [v12 intersectSet:newNotificationsCopy];
+  [notificationsCopy minusSet:v12];
+  [newNotificationsCopy minusSet:v12];
+  allObjects = [notificationsCopy allObjects];
 
-  [v9 addObjectsFromArray:v10];
-  v11 = [v7 allObjects];
+  [toCopy addObjectsFromArray:allObjects];
+  allObjects2 = [newNotificationsCopy allObjects];
 
-  [v9 addObjectsFromArray:v11];
+  [toCopy addObjectsFromArray:allObjects2];
 }
 
-- (void)_updateTimerFireDate:(id)a3
+- (void)_updateTimerFireDate:(id)date
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   [(_EKNotificationMonitor *)self _killTimer];
-  if (v4)
+  if (dateCopy)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v4 CalIsBeforeDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [dateCopy CalIsBeforeDate:date];
     v7 = v6;
     if (v6 && self->_lastExpirationTimerFireDateWasInThePast)
     {
-      v8 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      logHandle = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(_EKNotificationMonitor *)v4 _updateTimerFireDate:v8];
+        [(_EKNotificationMonitor *)dateCopy _updateTimerFireDate:logHandle];
       }
 
       self->_lastExpirationTimerFireDateWasInThePast = v7;
@@ -419,15 +419,15 @@
     else
     {
       self->_lastExpirationTimerFireDateWasInThePast = v6;
-      v9 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138543362;
-        v18 = v4;
-        _os_log_impl(&dword_1A805E000, v9, OS_LOG_TYPE_DEFAULT, "Next expiration fire time will be %{public}@.", &v17, 0xCu);
+        v18 = dateCopy;
+        _os_log_impl(&dword_1A805E000, logHandle2, OS_LOG_TYPE_DEFAULT, "Next expiration fire time will be %{public}@.", &v17, 0xCu);
       }
 
-      v10 = [v4 copy];
+      v10 = [dateCopy copy];
       nextFireTime = self->_nextFireTime;
       self->_nextFireTime = v10;
 
@@ -437,18 +437,18 @@
 
       [(PCPersistentTimer *)self->_timer setMinimumEarlyFireProportion:1.0];
       v14 = self->_timer;
-      v15 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(PCPersistentTimer *)v14 scheduleInRunLoop:v15];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(PCPersistentTimer *)v14 scheduleInRunLoop:mainRunLoop];
     }
   }
 
   else
   {
-    v5 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    date = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v17) = 0;
-      _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_DEFAULT, "No expiring notifications. Not setting expiration timer.", &v17, 2u);
+      _os_log_impl(&dword_1A805E000, date, OS_LOG_TYPE_DEFAULT, "No expiring notifications. Not setting expiration timer.", &v17, 2u);
     }
   }
 
@@ -472,38 +472,38 @@
   return v3;
 }
 
-- (void)handleDarwinNotification:(id)a3
+- (void)handleDarwinNotification:(id)notification
 {
-  v6 = a3;
-  if ([v6 isEqualToString:*MEMORY[0x1E6992E58]])
+  notificationCopy = notification;
+  if ([notificationCopy isEqualToString:*MEMORY[0x1E6992E58]])
   {
     [(_EKNotificationMonitor *)self _syncDidStart];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6992E60]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x1E6992E60]])
   {
     [(_EKNotificationMonitor *)self _syncDidEnd:0];
   }
 
-  else if (([v6 isEqualToString:@"EKNotificationCountChangedExternallyNotification"] & 1) != 0 || self->_excludeUncheckedCalendars && (+[EKCalendarVisibilityManager focusModeConfigurationChangedName](EKCalendarVisibilityManager, "focusModeConfigurationChangedName"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v6, "isEqualToString:", v4), v4, v5))
+  else if (([notificationCopy isEqualToString:@"EKNotificationCountChangedExternallyNotification"] & 1) != 0 || self->_excludeUncheckedCalendars && (+[EKCalendarVisibilityManager focusModeConfigurationChangedName](EKCalendarVisibilityManager, "focusModeConfigurationChangedName"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(notificationCopy, "isEqualToString:", v4), v4, v5))
   {
     [(_EKNotificationMonitor *)self _notificationCountChangedExternally];
   }
 
-  else if (([v6 isEqualToString:*MEMORY[0x1E6992E20]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.eventkit.preference.notification.AlertInviteeDeclines"))
+  else if (([notificationCopy isEqualToString:*MEMORY[0x1E6992E20]] & 1) != 0 || objc_msgSend(notificationCopy, "isEqualToString:", @"com.apple.eventkit.preference.notification.AlertInviteeDeclines"))
   {
     [(_EKNotificationMonitor *)self _alertPrefChanged];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6992E00]])
+  else if ([notificationCopy isEqualToString:*MEMORY[0x1E6992E00]])
   {
     [(_EKNotificationMonitor *)self _databaseChanged];
   }
 }
 
-- (void)_eventStoreChangedNotification:(id)a3
+- (void)_eventStoreChangedNotification:(id)notification
 {
-  if (![EKChangeListener isSyncStatusChangeNotification:a3])
+  if (![EKChangeListener isSyncStatusChangeNotification:notification])
   {
 
     [(_EKNotificationMonitor *)self _eventStoreChanged];
@@ -519,11 +519,11 @@
 
 - (void)_databaseChanged
 {
-  v3 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Database changed.", v4, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Database changed.", v4, 2u);
   }
 
   [(_EKNotificationMonitor *)self trackChangesInEventStore];
@@ -532,11 +532,11 @@
 
 - (void)_notificationCountChangedExternally
 {
-  v3 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Notification count changed externally.", buf, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Notification count changed externally.", buf, 2u);
   }
 
   *buf = 0;
@@ -561,11 +561,11 @@
 
 - (void)_alertPrefChanged
 {
-  v3 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Alert pref changed.", v4, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Alert pref changed.", v4, 2u);
   }
 
   [(_EKNotificationMonitor *)self attemptReload];
@@ -573,11 +573,11 @@
 
 - (void)_timerFired
 {
-  v3 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Expiration timer fired.", v4, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Expiration timer fired.", v4, 2u);
   }
 
   [(_EKNotificationMonitor *)self adjust];
@@ -595,17 +595,17 @@
   return v3;
 }
 
-+ (void)addBlacklistedNotificationObjectID:(id)a3
++ (void)addBlacklistedNotificationObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 blacklistedNotificationQueue];
+  dCopy = d;
+  blacklistedNotificationQueue = [self blacklistedNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61___EKNotificationMonitor_addBlacklistedNotificationObjectID___block_invoke;
   block[3] = &unk_1E77FD418;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(blacklistedNotificationQueue, block);
 }
 
 + (id)blacklistedRowIDs
@@ -616,13 +616,13 @@
   v13 = __Block_byref_object_copy__13;
   v14 = __Block_byref_object_dispose__13;
   v15 = 0;
-  v2 = [a1 blacklistedNotificationQueue];
+  blacklistedNotificationQueue = [self blacklistedNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43___EKNotificationMonitor_blacklistedRowIDs__block_invoke;
   block[3] = &unk_1E77FCFD8;
   block[4] = &v10;
-  dispatch_sync(v2, block);
+  dispatch_sync(blacklistedNotificationQueue, block);
 
   v3 = objc_opt_new();
   v4 = v11[5];
@@ -639,26 +639,26 @@
   return v5;
 }
 
-- (id)_fetchEventNotificationReferencesFromEventStore:(id)a3 earliestExpiringNotification:(id *)a4
+- (id)_fetchEventNotificationReferencesFromEventStore:(id)store earliestExpiringNotification:(id *)notification
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  storeCopy = store;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
-    _os_log_impl(&dword_1A805E000, v7, OS_LOG_TYPE_DEFAULT, "Fetching event notifications from event store: %@.", &buf, 0xCu);
+    *(&buf + 4) = storeCopy;
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Fetching event notifications from event store: %@.", &buf, 0xCu);
   }
 
-  v8 = [v6 eventNotificationsExcludingUncheckedCalendars:self->_excludeUncheckedCalendars filteredByShowsNotificationsFlag:self->_filteredByShowsNotificationsFlag earliestExpiringNotification:a4];
-  v9 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  v8 = [storeCopy eventNotificationsExcludingUncheckedCalendars:self->_excludeUncheckedCalendars filteredByShowsNotificationsFlag:self->_filteredByShowsNotificationsFlag earliestExpiringNotification:notification];
+  logHandle2 = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
-    _os_log_impl(&dword_1A805E000, v9, OS_LOG_TYPE_DEFAULT, "Fetched event notifications from event store: %@.", &buf, 0xCu);
+    _os_log_impl(&dword_1A805E000, logHandle2, OS_LOG_TYPE_DEFAULT, "Fetched event notifications from event store: %@.", &buf, 0xCu);
   }
 
   if (self->_automaticallyFaultNotifications)
@@ -714,15 +714,15 @@
     syncTimer = self->_syncTimer;
     self->_syncTimer = v5;
 
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v7 addTimer:self->_syncTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_syncTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
-- (void)_killSyncTimer:(id)a3
+- (void)_killSyncTimer:(id)timer
 {
   syncTimer = self->_syncTimer;
-  if (!a3 || syncTimer == a3)
+  if (!timer || syncTimer == timer)
   {
     [(NSTimer *)syncTimer invalidate];
     v5 = self->_syncTimer;
@@ -730,26 +730,26 @@
   }
 }
 
-- (void)_syncTimerFired:(id)a3
+- (void)_syncTimerFired:(id)fired
 {
-  v4 = a3;
-  v5 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  firedCopy = fired;
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_DEFAULT, "Sync timer fired.", v6, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Sync timer fired.", v6, 2u);
   }
 
-  [(_EKNotificationMonitor *)self _syncDidEnd:v4];
+  [(_EKNotificationMonitor *)self _syncDidEnd:firedCopy];
 }
 
 - (void)_syncDidStart
 {
-  v3 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEFAULT, "Sync started. Suppressing notification monitor checks while it runs.", buf, 2u);
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Sync started. Suppressing notification monitor checks while it runs.", buf, 2u);
   }
 
   notificationQueue = self->_notificationQueue;
@@ -761,9 +761,9 @@
   dispatch_sync(notificationQueue, block);
 }
 
-- (void)_syncDidEnd:(id)a3
+- (void)_syncDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -774,7 +774,7 @@
   block[2] = __38___EKNotificationMonitor__syncDidEnd___block_invoke;
   block[3] = &unk_1E77FD468;
   block[4] = self;
-  v6 = v4;
+  v6 = endCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(notificationQueue, block);
@@ -794,16 +794,16 @@
     v9[10] = v3;
     if (!self->_isMonitoringOnlyNotificationCount)
     {
-      v5 = [(_EKNotificationMonitor *)self _eventStore];
-      v6 = [v5 connection];
-      v7 = [v6 CADOperationProxySync];
+      _eventStore = [(_EKNotificationMonitor *)self _eventStore];
+      connection = [_eventStore connection];
+      cADOperationProxySync = [connection CADOperationProxySync];
       lastChangedTimestamp = self->_lastChangedTimestamp;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __50___EKNotificationMonitor_trackChangesInEventStore__block_invoke;
       v9[3] = &unk_1E77FE8C8;
       v9[4] = self;
-      [v7 CADDatabaseGetChangedEntityIDsSinceTimestamp:lastChangedTimestamp reply:v9];
+      [cADOperationProxySync CADDatabaseGetChangedEntityIDsSinceTimestamp:lastChangedTimestamp reply:v9];
     }
   }
 }

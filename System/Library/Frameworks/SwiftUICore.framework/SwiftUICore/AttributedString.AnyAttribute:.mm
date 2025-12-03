@@ -20,12 +20,12 @@
 
 - (uint64_t)AttributedString.Keys
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     a2(255);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

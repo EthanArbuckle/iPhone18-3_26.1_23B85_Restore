@@ -1,10 +1,10 @@
 @interface DSP_HAL_Mock_PropertySet
-- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withData:(id)a4 withQualifier:(id)a5 error:(id *)a6;
+- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withData:(id)data withQualifier:(id)qualifier error:(id *)error;
 - (DSP_HAL_Mock_PropertySet)init;
-- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withQualifierData:(id)a4;
+- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withQualifierData:(id)data;
 - (id)getHostedDSPPropertyInfoArray;
 - (unsigned)getVoiceActivityState;
-- (void)configureForFeatureFlag:(int)a3;
+- (void)configureForFeatureFlag:(int)flag;
 - (void)configureForProcessor:(function<void (unsigned)int;
 - (void)dealloc;
 - (void)setPropertyUpdater:(function<unsigned int (const AudioObjectPropertyAddress)&;
@@ -66,17 +66,17 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withQualifierData:(id)a4
+- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withQualifierData:(id)data
 {
-  mElement = a3.mElement;
-  mSelector = a3.mSelector;
-  mScope = a3.mScope;
-  v8 = a4;
+  mElement = address.mElement;
+  mSelector = address.mSelector;
+  mScope = address.mScope;
+  dataCopy = data;
   if (mSelector == 1983997011 && mScope == 1768845428)
   {
     if (!mElement)
     {
-      v9 = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
+      propVoiceActivityState = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
       {
         v12 = atomic_load(v11 + 42);
       }
@@ -109,15 +109,15 @@
 LABEL_16:
     if ([(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam]&& (mSelector == 1684500589 || mSelector == 707406378) && (mScope == 1768845428 || mScope == 707406378) && mElement + 1 <= 1)
     {
-      if (v8)
+      if (dataCopy)
       {
-        if ([v8 length] == 4)
+        if ([dataCopy length] == 4)
         {
           *bytes = 0;
-          [v8 getBytes:bytes length:4];
+          [dataCopy getBytes:bytes length:4];
           if (*bytes == 1651797616)
           {
-            v20 = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
+            propDSPGraphParam = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
             {
               v23 = atomic_load(v22 + 42);
               v24 = v23;
@@ -144,18 +144,18 @@ LABEL_53:
     else if ([(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam]&& (mSelector == 1684498541 || mSelector == 707406378) && (mScope == 1768845428 || mScope == 707406378))
     {
       v19 = 0;
-      if (!v8 || mElement + 1 > 1)
+      if (!dataCopy || mElement + 1 > 1)
       {
         goto LABEL_41;
       }
 
-      if ([v8 length] == 4)
+      if ([dataCopy length] == 4)
       {
         *bytes = 0;
-        [v8 getBytes:bytes length:4];
+        [dataCopy getBytes:bytes length:4];
         if (*bytes == 1651797616)
         {
-          v25 = [(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam];
+          propHasDSPGraphParam = [(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam];
           {
             v28 = atomic_load(v27 + 42);
           }
@@ -182,13 +182,13 @@ LABEL_40:
     goto LABEL_16;
   }
 
-  v13 = [(DSP_HAL_Mock_PropertySet *)self propAvailableOffloadsInput];
-  if (!v13)
+  propAvailableOffloadsInput = [(DSP_HAL_Mock_PropertySet *)self propAvailableOffloadsInput];
+  if (!propAvailableOffloadsInput)
   {
     goto LABEL_40;
   }
 
-  v14 = *v13->var0;
+  v14 = *propAvailableOffloadsInput->var0;
   if (!v15)
   {
     goto LABEL_40;
@@ -215,34 +215,34 @@ LABEL_41:
   return v19;
 }
 
-- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withData:(id)a4 withQualifier:(id)a5 error:(id *)a6
+- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withData:(id)data withQualifier:(id)qualifier error:(id *)error
 {
-  mElement = a3.mElement;
-  v8 = *&a3.mSelector;
-  v10 = a4;
-  v11 = a5;
+  mElement = address.mElement;
+  v8 = *&address.mSelector;
+  dataCopy = data;
+  qualifierCopy = qualifier;
   if (![(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam]|| v8 != 1684500589 && v8 != 707406378 || HIDWORD(v8) != 1768845428 && HIDWORD(v8) != 707406378)
   {
     goto LABEL_14;
   }
 
   v12 = 0;
-  if (!v11 || mElement + 1 > 1)
+  if (!qualifierCopy || mElement + 1 > 1)
   {
     goto LABEL_15;
   }
 
-  if ([v11 length] != 4 || (v19 = 0, objc_msgSend(v11, "getBytes:length:", &v19, 4), !v10) || v19 != 1651797616 || objc_msgSend(v10, "length") != 4)
+  if ([qualifierCopy length] != 4 || (v19 = 0, objc_msgSend(qualifierCopy, "getBytes:length:", &v19, 4), !dataCopy) || v19 != 1651797616 || objc_msgSend(dataCopy, "length") != 4)
   {
 LABEL_14:
     v12 = 0;
     goto LABEL_15;
   }
 
-  v13 = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
-  if (v13)
+  propDSPGraphParam = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
+  if (propDSPGraphParam)
   {
-    v14 = *v13->var0;
+    v14 = *propDSPGraphParam->var0;
   }
 
   else
@@ -251,7 +251,7 @@ LABEL_14:
   }
 
   v18 = 0.0;
-  [v10 getBytes:&v18 length:4];
+  [dataCopy getBytes:&v18 length:4];
   v17 = v18;
   if (v17 != COERCE_FLOAT(atomic_exchange(v15 + 42, LODWORD(v18))))
   {
@@ -282,15 +282,15 @@ LABEL_15:
 
   if ([(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam])
   {
-    v3 = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
-    v4 = *v3->var0;
+    propDSPGraphParam = [(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam];
+    v4 = *propDSPGraphParam->var0;
     std::allocate_shared[abi:ne200100]<DSP_Host_Types::DSPPropertyInfo,std::allocator<DSP_Host_Types::DSPPropertyInfo>,char const(&)[1],0>();
   }
 
   if ([(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam])
   {
-    v5 = [(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam];
-    v6 = *v5->var0;
+    propHasDSPGraphParam = [(DSP_HAL_Mock_PropertySet *)self propHasDSPGraphParam];
+    v6 = *propHasDSPGraphParam->var0;
     std::allocate_shared[abi:ne200100]<DSP_Host_Types::DSPPropertyInfo,std::allocator<DSP_Host_Types::DSPPropertyInfo>,char const(&)[1],0>();
   }
 
@@ -321,20 +321,20 @@ LABEL_15:
   return v8;
 }
 
-- (void)configureForFeatureFlag:(int)a3
+- (void)configureForFeatureFlag:(int)flag
 {
   v6 = *MEMORY[0x1E69E9840];
-  if ((~a3 & 0x101) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propAvailableOffloadsInput])
+  if ((~flag & 0x101) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propAvailableOffloadsInput])
   {
     operator new();
   }
 
-  if ((~a3 & 0x201) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam])
+  if ((~flag & 0x201) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam])
   {
     operator new();
   }
 
-  if ((~a3 & 0x401) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam])
+  if ((~flag & 0x401) == 0 && ![(DSP_HAL_Mock_PropertySet *)self propDSPGraphParam])
   {
     operator new();
   }
@@ -344,30 +344,30 @@ LABEL_15:
 
 - (unsigned)getVoiceActivityState
 {
-  v2 = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
-  if (v2)
+  propVoiceActivityState = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
+  if (propVoiceActivityState)
   {
-    v3 = *v2->var0;
-    if (v2)
+    v3 = *propVoiceActivityState->var0;
+    if (propVoiceActivityState)
     {
-      v4 = atomic_load(&v2[21]);
-      LODWORD(v2) = v4 != 0;
+      v4 = atomic_load(&propVoiceActivityState[21]);
+      LODWORD(propVoiceActivityState) = v4 != 0;
     }
   }
 
-  return v2;
+  return propVoiceActivityState;
 }
 
 - (void)toggleVoiceActivityAndNotify
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
-  if (!v3)
+  propVoiceActivityState = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
+  if (!propVoiceActivityState)
   {
     goto LABEL_11;
   }
 
-  v4 = *v3->var0;
+  v4 = *propVoiceActivityState->var0;
   if (!v5)
   {
     goto LABEL_11;
@@ -428,10 +428,10 @@ LABEL_11:
 
   if (a3->var0.var1)
   {
-    v5 = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
-    if (v5)
+    propVoiceActivityState = [(DSP_HAL_Mock_PropertySet *)self propVoiceActivityState];
+    if (propVoiceActivityState)
     {
-      v6 = *v5->var0;
+      v6 = *propVoiceActivityState->var0;
     }
 
     else

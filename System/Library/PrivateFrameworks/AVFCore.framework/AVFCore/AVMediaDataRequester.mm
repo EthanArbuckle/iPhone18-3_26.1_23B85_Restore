@@ -1,5 +1,5 @@
 @interface AVMediaDataRequester
-- (AVMediaDataRequester)initWithMediaDataConsumer:(id)a3 requestQueue:(id)a4 requestBlock:(id)a5;
+- (AVMediaDataRequester)initWithMediaDataConsumer:(id)consumer requestQueue:(id)queue requestBlock:(id)block;
 - (BOOL)_isInvalidatePending;
 - (void)_requestMediaDataIfReady;
 - (void)_setInvalidatePending;
@@ -10,7 +10,7 @@
 
 @implementation AVMediaDataRequester
 
-- (AVMediaDataRequester)initWithMediaDataConsumer:(id)a3 requestQueue:(id)a4 requestBlock:(id)a5
+- (AVMediaDataRequester)initWithMediaDataConsumer:(id)consumer requestQueue:(id)queue requestBlock:(id)block
 {
   v25.receiver = self;
   v25.super_class = AVMediaDataRequester;
@@ -18,18 +18,18 @@
   v10 = v9;
   if (v9)
   {
-    if (a3)
+    if (consumer)
     {
-      if (a4)
+      if (queue)
       {
-        if (a5)
+        if (block)
         {
           if (objc_opt_respondsToSelector())
           {
-            v10->_mediaDataConsumer = a3;
-            dispatch_retain(a4);
-            v10->_requestQueue = a4;
-            v10->_requestBlock = [a5 copy];
+            v10->_mediaDataConsumer = consumer;
+            dispatch_retain(queue);
+            v10->_requestQueue = queue;
+            v10->_requestBlock = [block copy];
             v10->_invalidateMutex = FigSimpleMutexCreate();
             return v10;
           }

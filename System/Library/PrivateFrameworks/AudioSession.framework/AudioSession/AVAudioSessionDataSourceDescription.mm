@@ -1,13 +1,13 @@
 @interface AVAudioSessionDataSourceDescription
-- (AVAudioSessionDataSourceDescription)initWithRawSourceDescription:(id)a3 andOwningPortID:(id)a4 andSessionID:(unsigned int)a5;
-- (AVAudioSessionDataSourceDescription)initWithSessionID:(unsigned int)a3;
+- (AVAudioSessionDataSourceDescription)initWithRawSourceDescription:(id)description andOwningPortID:(id)d andSessionID:(unsigned int)iD;
+- (AVAudioSessionDataSourceDescription)initWithSessionID:(unsigned int)d;
 - (AVAudioSessionPolarPattern)preferredPolarPattern;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDataSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDataSource:(id)source;
 - (BOOL)setPreferredPolarPattern:(AVAudioSessionPolarPattern)pattern error:(NSError *)outError;
 - (id)description;
 - (unint64_t)hash;
-- (void)configurePolarPatterns:(id)a3;
+- (void)configurePolarPatterns:(id)patterns;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
   [(AVAudioSessionDataSourceDescription *)&v4 dealloc];
 }
 
-- (AVAudioSessionDataSourceDescription)initWithSessionID:(unsigned int)a3
+- (AVAudioSessionDataSourceDescription)initWithSessionID:(unsigned int)d
 {
   v4.receiver = self;
   v4.super_class = AVAudioSessionDataSourceDescription;
@@ -40,72 +40,72 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionDataSourceDescription *)self isEqualToDataSource:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionDataSourceDescription *)self isEqualToDataSource:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDataSource:(id)a3
+- (BOOL)isEqualToDataSource:(id)source
 {
-  v4 = a3;
-  if (self == v4)
+  sourceCopy = source;
+  if (self == sourceCopy)
   {
     goto LABEL_13;
   }
 
-  v5 = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
-  v6 = [(AVAudioSessionDataSourceDescription *)v4 privateGetOwningPortID];
-  v7 = [v5 isEqualToNumber:v6];
+  privateGetOwningPortID = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
+  privateGetOwningPortID2 = [(AVAudioSessionDataSourceDescription *)sourceCopy privateGetOwningPortID];
+  v7 = [privateGetOwningPortID isEqualToNumber:privateGetOwningPortID2];
 
   if ((v7 & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v8 = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
-  v9 = [(AVAudioSessionDataSourceDescription *)v4 dataSourceID];
-  v10 = [v8 isEqualToNumber:v9];
+  dataSourceID = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
+  dataSourceID2 = [(AVAudioSessionDataSourceDescription *)sourceCopy dataSourceID];
+  v10 = [dataSourceID isEqualToNumber:dataSourceID2];
 
   if ((v10 & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v11 = [(AVAudioSessionDataSourceDescription *)self dataSourceName];
-  v12 = [(AVAudioSessionDataSourceDescription *)v4 dataSourceName];
-  v13 = [v11 isEqualToString:v12];
+  dataSourceName = [(AVAudioSessionDataSourceDescription *)self dataSourceName];
+  dataSourceName2 = [(AVAudioSessionDataSourceDescription *)sourceCopy dataSourceName];
+  v13 = [dataSourceName isEqualToString:dataSourceName2];
 
   if ((v13 & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v14 = [(AVAudioSessionDataSourceDescription *)self orientation];
+  orientation = [(AVAudioSessionDataSourceDescription *)self orientation];
 
-  if (v14)
+  if (orientation)
   {
-    v15 = [(AVAudioSessionDataSourceDescription *)v4 orientation];
+    orientation2 = [(AVAudioSessionDataSourceDescription *)sourceCopy orientation];
 
-    if (!v15)
+    if (!orientation2)
     {
       goto LABEL_15;
     }
 
-    v16 = [(AVAudioSessionDataSourceDescription *)self orientation];
-    v17 = [(AVAudioSessionDataSourceDescription *)v4 orientation];
-    v18 = [v16 isEqualToString:v17];
+    orientation3 = [(AVAudioSessionDataSourceDescription *)self orientation];
+    orientation4 = [(AVAudioSessionDataSourceDescription *)sourceCopy orientation];
+    v18 = [orientation3 isEqualToString:orientation4];
 
     if ((v18 & 1) == 0)
     {
@@ -115,25 +115,25 @@
 
   else
   {
-    v19 = [(AVAudioSessionDataSourceDescription *)v4 orientation];
+    orientation5 = [(AVAudioSessionDataSourceDescription *)sourceCopy orientation];
 
-    if (v19)
+    if (orientation5)
     {
       goto LABEL_15;
     }
   }
 
-  v20 = [(AVAudioSessionDataSourceDescription *)self selectedPolarPattern];
+  selectedPolarPattern = [(AVAudioSessionDataSourceDescription *)self selectedPolarPattern];
 
-  if (v20)
+  if (selectedPolarPattern)
   {
-    v21 = [(AVAudioSessionDataSourceDescription *)v4 selectedPolarPattern];
+    selectedPolarPattern2 = [(AVAudioSessionDataSourceDescription *)sourceCopy selectedPolarPattern];
 
-    if (v21)
+    if (selectedPolarPattern2)
     {
-      v22 = [(AVAudioSessionDataSourceDescription *)self selectedPolarPattern];
-      v23 = [(AVAudioSessionDataSourceDescription *)v4 selectedPolarPattern];
-      v24 = [v22 isEqualToString:v23];
+      selectedPolarPattern3 = [(AVAudioSessionDataSourceDescription *)self selectedPolarPattern];
+      selectedPolarPattern4 = [(AVAudioSessionDataSourceDescription *)sourceCopy selectedPolarPattern];
+      v24 = [selectedPolarPattern3 isEqualToString:selectedPolarPattern4];
 
       if (v24)
       {
@@ -146,9 +146,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v26 = [(AVAudioSessionDataSourceDescription *)v4 selectedPolarPattern];
+  selectedPolarPattern5 = [(AVAudioSessionDataSourceDescription *)sourceCopy selectedPolarPattern];
 
-  if (v26)
+  if (selectedPolarPattern5)
   {
     goto LABEL_15;
   }
@@ -162,8 +162,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
-  v3 = [v2 hash];
+  dataSourceID = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
+  v3 = [dataSourceID hash];
 
   return v3;
 }
@@ -212,9 +212,9 @@ LABEL_16:
 
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:HIDWORD(UInt32)];
     v12 = MEMORY[0x1E695DF20];
-    v13 = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
-    v14 = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
-    v15 = [v12 dictionaryWithObjectsAndKeys:{v13, @"SelectedRouteDescription_RouteID", v14, @"SelectedRouteDescription_DataSourceID", v11, @"SelectedRouteDescription_MicrophonePolarPattern", 0}];
+    privateGetOwningPortID = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
+    dataSourceID = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
+    v15 = [v12 dictionaryWithObjectsAndKeys:{privateGetOwningPortID, @"SelectedRouteDescription_RouteID", dataSourceID, @"SelectedRouteDescription_DataSourceID", v11, @"SelectedRouteDescription_MicrophonePolarPattern", 0}];
     v16 = MEMORY[0x1E69B0240];
   }
 
@@ -223,9 +223,9 @@ LABEL_16:
     v17 = GetPolarPatternValueConverter();
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{StringUIntValueConverter::getUInt32(v17, impl[7]) >> 32}];
     v18 = MEMORY[0x1E695DF20];
-    v13 = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
-    v14 = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
-    v15 = [v18 dictionaryWithObjectsAndKeys:{v13, @"SelectedRouteDescription_RouteID", v14, @"SelectedRouteDescription_DataSourceID", v11, @"SelectedRouteDescription_MicrophonePolarPattern", 0}];
+    privateGetOwningPortID = [(AVAudioSessionDataSourceDescription *)self privateGetOwningPortID];
+    dataSourceID = [(AVAudioSessionDataSourceDescription *)self dataSourceID];
+    v15 = [v18 dictionaryWithObjectsAndKeys:{privateGetOwningPortID, @"SelectedRouteDescription_RouteID", dataSourceID, @"SelectedRouteDescription_DataSourceID", v11, @"SelectedRouteDescription_MicrophonePolarPattern", 0}];
     v16 = MEMORY[0x1E69AFED8];
   }
 
@@ -256,11 +256,11 @@ LABEL_15:
   return v21;
 }
 
-- (AVAudioSessionDataSourceDescription)initWithRawSourceDescription:(id)a3 andOwningPortID:(id)a4 andSessionID:(unsigned int)a5
+- (AVAudioSessionDataSourceDescription)initWithRawSourceDescription:(id)description andOwningPortID:(id)d andSessionID:(unsigned int)iD
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  descriptionCopy = description;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = AVAudioSessionDataSourceDescription;
   if ([(AVAudioSessionDataSourceDescription *)&v12 init])
@@ -274,21 +274,21 @@ LABEL_15:
   return v9;
 }
 
-- (void)configurePolarPatterns:(id)a3
+- (void)configurePolarPatterns:(id)patterns
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVAudioSessionDataSourceDescription *)self privateGetImplementation];
+  patternsCopy = patterns;
+  privateGetImplementation = [(AVAudioSessionDataSourceDescription *)self privateGetImplementation];
   v6 = *MEMORY[0x1E69B0588];
-  v7 = [v4 objectForKey:v6];
+  v7 = [patternsCopy objectForKey:v6];
 
   PolarPatternValueConverter = GetPolarPatternValueConverter();
   v9 = StringUIntValueConverter::getNSString(PolarPatternValueConverter, v7);
-  var6 = v5->var6;
-  v5->var6 = v9;
+  var6 = privateGetImplementation->var6;
+  privateGetImplementation->var6 = v9;
 
   v11 = *MEMORY[0x1E69B0570];
-  v12 = [v4 objectForKey:v11];
+  v12 = [patternsCopy objectForKey:v11];
 
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
   v26 = 0u;
@@ -329,10 +329,10 @@ LABEL_15:
   }
 
   v21 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v13];
-  var5 = v5->var5;
-  v5->var5 = v21;
+  var5 = privateGetImplementation->var5;
+  privateGetImplementation->var5 = v21;
 
-  DataSourceDescriptionImpl::ValidateRequiredFields(v5);
+  DataSourceDescriptionImpl::ValidateRequiredFields(privateGetImplementation);
   v23 = *MEMORY[0x1E69E9840];
 }
 

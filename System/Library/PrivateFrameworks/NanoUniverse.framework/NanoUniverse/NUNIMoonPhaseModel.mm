@@ -1,22 +1,22 @@
 @interface NUNIMoonPhaseModel
-- (NUNIMoonPhaseModel)initWithDate:(id)a3 location:(id)a4;
+- (NUNIMoonPhaseModel)initWithDate:(id)date location:(id)location;
 @end
 
 @implementation NUNIMoonPhaseModel
 
-- (NUNIMoonPhaseModel)initWithDate:(id)a3 location:(id)a4
+- (NUNIMoonPhaseModel)initWithDate:(id)date location:(id)location
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  locationCopy = location;
   v44.receiver = self;
   v44.super_class = NUNIMoonPhaseModel;
   v9 = [(NUNIMoonPhaseModel *)&v44 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryDate, a3);
-    objc_storeStrong(&v10->_location, a4);
+    objc_storeStrong(&v9->_entryDate, date);
+    objc_storeStrong(&v10->_location, location);
     location = v10->_location;
     if (!location)
     {
@@ -42,30 +42,30 @@
     [(CLLocation *)location coordinate];
     v13 = v12;
     v15 = v14;
-    eventDate = [objc_alloc(MEMORY[0x277D0EAE0]) initWithLocation:v7 date:4 body:{v12, v14}];
+    eventDate = [objc_alloc(MEMORY[0x277D0EAE0]) initWithLocation:dateCopy date:4 body:{v12, v14}];
     NUNIMoonPhaseAngleFromEphemeris(eventDate);
     v18 = vcvtmd_u64_f64((v17 + 180.0) / 360.0 * 112.0 + 0.5);
     v10->_phaseNumber = v18 - 112 * (((v18 >> 4) * 0x2492492492492493uLL) >> 64);
     v10->_hemisphere = v13 <= 0.0;
-    v19 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v20 = NUNIMoonPhaseDescription(v7, v19, v13, v15);
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    v20 = NUNIMoonPhaseDescription(dateCopy, systemTimeZone, v13, v15);
     v21 = v10->_phaseName;
     v10->_phaseName = v20;
 
-    v22 = [eventDate rise];
-    if ([v22 compare:v7] == -1)
+    rise = [eventDate rise];
+    if ([rise compare:dateCopy] == -1)
     {
       v26 = [eventDate set];
-      v27 = [v26 compare:v7];
+      v27 = [v26 compare:dateCopy];
 
       if (v27 != -1)
       {
         goto LABEL_9;
       }
 
-      v22 = [MEMORY[0x277CBEA80] currentCalendar];
+      rise = [MEMORY[0x277CBEA80] currentCalendar];
       v41 = objc_alloc(MEMORY[0x277D0EAE0]);
-      v42 = [v22 dateByAddingUnit:16 value:1 toDate:v7 options:0];
+      v42 = [rise dateByAddingUnit:16 value:1 toDate:dateCopy options:0];
       v43 = [v41 initWithLocation:v42 date:4 body:{v13, v15}];
 
       eventDate = v43;
@@ -73,12 +73,12 @@
 
 LABEL_9:
     v28 = MEMORY[0x277CBEB18];
-    v29 = [eventDate rise];
+    rise2 = [eventDate rise];
     v30 = [eventDate set];
-    v31 = [v28 arrayWithObjects:{v7, v29, v30, 0}];
+    v31 = [v28 arrayWithObjects:{dateCopy, rise2, v30, 0}];
 
     [v31 sortUsingSelector:sel_compare_];
-    v32 = [v31 indexOfObject:v7] + 1;
+    v32 = [v31 indexOfObject:dateCopy] + 1;
     v33 = NUNILoggingObjectForDomain(0);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
@@ -98,7 +98,7 @@ LABEL_9:
         _os_log_impl(&dword_25B6D4000, v38, OS_LOG_TYPE_DEFAULT, "NTKMoonPhaseUtilities unknown event as we have old rise set times", buf, 2u);
       }
 
-      v7 = 0;
+      dateCopy = 0;
       v10->_event = -1;
     }
 
@@ -106,8 +106,8 @@ LABEL_9:
     {
       v34 = [v31 objectAtIndexedSubscript:v32];
 
-      v35 = [eventDate rise];
-      v36 = [v34 isEqualToDate:v35];
+      rise3 = [eventDate rise];
+      v36 = [v34 isEqualToDate:rise3];
 
       v37 = 2;
       if (v36)
@@ -118,16 +118,16 @@ LABEL_9:
       v10->_event = v37;
       if (v34)
       {
-        v7 = CLKRoundDateDownToNearestMinute();
+        dateCopy = CLKRoundDateDownToNearestMinute();
       }
 
       else
       {
-        v7 = 0;
+        dateCopy = 0;
       }
     }
 
-    objc_storeStrong(&v10->_eventDate, v7);
+    objc_storeStrong(&v10->_eventDate, dateCopy);
 
 LABEL_21:
   }

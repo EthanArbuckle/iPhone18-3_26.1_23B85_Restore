@@ -1,22 +1,22 @@
 @interface CAMDeviceAndModeTestHarness
-- (CAMDeviceAndModeTestHarness)initWithTestName:(id)a3 devicePosition:(int64_t)a4 captureMode:(int64_t)a5 viewFinderViewControl:(id)a6;
+- (CAMDeviceAndModeTestHarness)initWithTestName:(id)name devicePosition:(int64_t)position captureMode:(int64_t)mode viewFinderViewControl:(id)control;
 - (void)startTesting;
 @end
 
 @implementation CAMDeviceAndModeTestHarness
 
-- (CAMDeviceAndModeTestHarness)initWithTestName:(id)a3 devicePosition:(int64_t)a4 captureMode:(int64_t)a5 viewFinderViewControl:(id)a6
+- (CAMDeviceAndModeTestHarness)initWithTestName:(id)name devicePosition:(int64_t)position captureMode:(int64_t)mode viewFinderViewControl:(id)control
 {
-  v11 = a6;
+  controlCopy = control;
   v16.receiver = self;
   v16.super_class = CAMDeviceAndModeTestHarness;
-  v12 = [(CAMModeAndDeviceConfigurationTestHarness *)&v16 initWithTestName:a3];
+  v12 = [(CAMModeAndDeviceConfigurationTestHarness *)&v16 initWithTestName:name];
   v13 = v12;
   if (v12)
   {
-    v12->__desiredPosition = a4;
-    v12->__desiredMode = a5;
-    objc_storeStrong(&v12->__viewController, a6);
+    v12->__desiredPosition = position;
+    v12->__desiredMode = mode;
+    objc_storeStrong(&v12->__viewController, control);
     v14 = v13;
   }
 
@@ -28,9 +28,9 @@
   v12.receiver = self;
   v12.super_class = CAMDeviceAndModeTestHarness;
   [(CAMModeAndDeviceConfigurationTestHarness *)&v12 startTesting];
-  v3 = [(CAMDeviceAndModeTestHarness *)self _viewController];
-  v4 = [v3 currentCaptureMode];
-  v5 = [v3 currentCaptureDevice] - 1;
+  _viewController = [(CAMDeviceAndModeTestHarness *)self _viewController];
+  currentCaptureMode = [_viewController currentCaptureMode];
+  v5 = [_viewController currentCaptureDevice] - 1;
   if (v5 > 0xA)
   {
     v6 = 0;
@@ -41,8 +41,8 @@
     v6 = qword_1A3A689F0[v5];
   }
 
-  v7 = [(CAMDeviceAndModeTestHarness *)self _desiredMode];
-  v8 = [(CAMDeviceAndModeTestHarness *)self _desiredPosition];
+  _desiredMode = [(CAMDeviceAndModeTestHarness *)self _desiredMode];
+  _desiredPosition = [(CAMDeviceAndModeTestHarness *)self _desiredPosition];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__CAMDeviceAndModeTestHarness_startTesting__block_invoke;
@@ -50,15 +50,15 @@
   aBlock[4] = self;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v7 == v4 && v8 == v6)
+  if (_desiredMode == currentCaptureMode && _desiredPosition == v6)
   {
     (*(v9 + 2))(v9);
   }
 
   else
   {
-    [(CAMModeAndDeviceConfigurationTestHarness *)self registerHandler:v9 forChangeToMode:v7 devicePosition:v8];
-    [v3 changeToMode:v7 device:v8 == 1];
+    [(CAMModeAndDeviceConfigurationTestHarness *)self registerHandler:v9 forChangeToMode:_desiredMode devicePosition:_desiredPosition];
+    [_viewController changeToMode:_desiredMode device:_desiredPosition == 1];
   }
 }
 

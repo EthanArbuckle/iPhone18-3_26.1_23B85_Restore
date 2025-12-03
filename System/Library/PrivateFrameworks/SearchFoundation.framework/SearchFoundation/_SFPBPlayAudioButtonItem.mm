@@ -1,55 +1,55 @@
 @interface _SFPBPlayAudioButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPlayAudioButtonItem)initWithDictionary:(id)a3;
-- (_SFPBPlayAudioButtonItem)initWithFacade:(id)a3;
-- (_SFPBPlayAudioButtonItem)initWithJSON:(id)a3;
+- (_SFPBPlayAudioButtonItem)initWithDictionary:(id)dictionary;
+- (_SFPBPlayAudioButtonItem)initWithFacade:(id)facade;
+- (_SFPBPlayAudioButtonItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPlayAudioButtonItem
 
-- (_SFPBPlayAudioButtonItem)initWithFacade:(id)a3
+- (_SFPBPlayAudioButtonItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPlayAudioButtonItem *)self init];
   if (v5)
   {
-    v6 = [v4 mediaMetadata];
+    mediaMetadata = [facadeCopy mediaMetadata];
 
-    if (v6)
+    if (mediaMetadata)
     {
       v7 = [_SFPBMediaMetadata alloc];
-      v8 = [v4 mediaMetadata];
-      v9 = [(_SFPBMediaMetadata *)v7 initWithFacade:v8];
+      mediaMetadata2 = [facadeCopy mediaMetadata];
+      v9 = [(_SFPBMediaMetadata *)v7 initWithFacade:mediaMetadata2];
       [(_SFPBPlayAudioButtonItem *)v5 setMediaMetadata:v9];
     }
 
-    v10 = [v4 toggleButtonConfiguration];
+    toggleButtonConfiguration = [facadeCopy toggleButtonConfiguration];
 
-    if (v10)
+    if (toggleButtonConfiguration)
     {
       v11 = [_SFPBToggleButtonConfiguration alloc];
-      v12 = [v4 toggleButtonConfiguration];
-      v13 = [(_SFPBToggleButtonConfiguration *)v11 initWithFacade:v12];
+      toggleButtonConfiguration2 = [facadeCopy toggleButtonConfiguration];
+      v13 = [(_SFPBToggleButtonConfiguration *)v11 initWithFacade:toggleButtonConfiguration2];
       [(_SFPBPlayAudioButtonItem *)v5 setToggleButtonConfiguration:v13];
     }
 
-    v14 = [v4 audioData];
+    audioData = [facadeCopy audioData];
 
-    if (v14)
+    if (audioData)
     {
       v15 = [_SFPBAudioData alloc];
-      v16 = [v4 audioData];
-      v17 = [(_SFPBAudioData *)v15 initWithFacade:v16];
+      audioData2 = [facadeCopy audioData];
+      v17 = [(_SFPBAudioData *)v15 initWithFacade:audioData2];
       [(_SFPBPlayAudioButtonItem *)v5 setAudioData:v17];
     }
 
-    if ([v4 hasUniqueId])
+    if ([facadeCopy hasUniqueId])
     {
-      -[_SFPBPlayAudioButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[_SFPBPlayAudioButtonItem setUniqueId:](v5, "setUniqueId:", [facadeCopy uniqueId]);
     }
 
     v18 = v5;
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (_SFPBPlayAudioButtonItem)initWithDictionary:(id)a3
+- (_SFPBPlayAudioButtonItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBPlayAudioButtonItem;
   v5 = [(_SFPBPlayAudioButtonItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mediaMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mediaMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBPlayAudioButtonItem *)v5 setMediaMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toggleButtonConfiguration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toggleButtonConfiguration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(_SFPBPlayAudioButtonItem *)v5 setToggleButtonConfiguration:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"audioData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(_SFPBPlayAudioButtonItem *)v5 setAudioData:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"uniqueId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (_SFPBPlayAudioButtonItem)initWithJSON:(id)a3
+- (_SFPBPlayAudioButtonItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPlayAudioButtonItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPlayAudioButtonItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPlayAudioButtonItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,62 +139,62 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioData)
   {
-    v4 = [(_SFPBPlayAudioButtonItem *)self audioData];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioData = [(_SFPBPlayAudioButtonItem *)self audioData];
+    dictionaryRepresentation = [audioData dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioData"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioData"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioData"];
     }
   }
 
   if (self->_mediaMetadata)
   {
-    v7 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    mediaMetadata = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
+    dictionaryRepresentation2 = [mediaMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"mediaMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"mediaMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"mediaMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"mediaMetadata"];
     }
   }
 
   if (self->_toggleButtonConfiguration)
   {
-    v10 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    toggleButtonConfiguration = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
+    dictionaryRepresentation3 = [toggleButtonConfiguration dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"toggleButtonConfiguration"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"toggleButtonConfiguration"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"toggleButtonConfiguration"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"toggleButtonConfiguration"];
     }
   }
 
   if (self->_uniqueId)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBPlayAudioButtonItem uniqueId](self, "uniqueId")}];
-    [v3 setObject:v13 forKeyedSubscript:@"uniqueId"];
+    [dictionary setObject:v13 forKeyedSubscript:@"uniqueId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -204,28 +204,28 @@
   return v4 ^ v3 ^ [(_SFPBAudioData *)self->_audioData hash]^ (2654435761u * self->_uniqueId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
-  v6 = [v4 mediaMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  mediaMetadata = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
+  mediaMetadata2 = [equalCopy mediaMetadata];
+  if ((mediaMetadata != 0) == (mediaMetadata2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
-  if (v7)
+  mediaMetadata3 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
+  if (mediaMetadata3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
-    v10 = [v4 mediaMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = mediaMetadata3;
+    mediaMetadata4 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
+    mediaMetadata5 = [equalCopy mediaMetadata];
+    v11 = [mediaMetadata4 isEqual:mediaMetadata5];
 
     if (!v11)
     {
@@ -237,20 +237,20 @@
   {
   }
 
-  v5 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
-  v6 = [v4 toggleButtonConfiguration];
-  if ((v5 != 0) == (v6 == 0))
+  mediaMetadata = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
+  mediaMetadata2 = [equalCopy toggleButtonConfiguration];
+  if ((mediaMetadata != 0) == (mediaMetadata2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
-  if (v12)
+  toggleButtonConfiguration = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
+  if (toggleButtonConfiguration)
   {
-    v13 = v12;
-    v14 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
-    v15 = [v4 toggleButtonConfiguration];
-    v16 = [v14 isEqual:v15];
+    v13 = toggleButtonConfiguration;
+    toggleButtonConfiguration2 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
+    toggleButtonConfiguration3 = [equalCopy toggleButtonConfiguration];
+    v16 = [toggleButtonConfiguration2 isEqual:toggleButtonConfiguration3];
 
     if (!v16)
     {
@@ -262,24 +262,24 @@
   {
   }
 
-  v5 = [(_SFPBPlayAudioButtonItem *)self audioData];
-  v6 = [v4 audioData];
-  if ((v5 != 0) != (v6 == 0))
+  mediaMetadata = [(_SFPBPlayAudioButtonItem *)self audioData];
+  mediaMetadata2 = [equalCopy audioData];
+  if ((mediaMetadata != 0) != (mediaMetadata2 == 0))
   {
-    v17 = [(_SFPBPlayAudioButtonItem *)self audioData];
-    if (!v17)
+    audioData = [(_SFPBPlayAudioButtonItem *)self audioData];
+    if (!audioData)
     {
 
 LABEL_20:
       uniqueId = self->_uniqueId;
-      v22 = uniqueId == [v4 uniqueId];
+      v22 = uniqueId == [equalCopy uniqueId];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBPlayAudioButtonItem *)self audioData];
-    v20 = [v4 audioData];
-    v21 = [v19 isEqual:v20];
+    v18 = audioData;
+    audioData2 = [(_SFPBPlayAudioButtonItem *)self audioData];
+    audioData3 = [equalCopy audioData];
+    v21 = [audioData2 isEqual:audioData3];
 
     if (v21)
     {
@@ -299,33 +299,33 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
-  if (v4)
+  toCopy = to;
+  mediaMetadata = [(_SFPBPlayAudioButtonItem *)self mediaMetadata];
+  if (mediaMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
-  if (v5)
+  toggleButtonConfiguration = [(_SFPBPlayAudioButtonItem *)self toggleButtonConfiguration];
+  if (toggleButtonConfiguration)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBPlayAudioButtonItem *)self audioData];
-  if (v6)
+  audioData = [(_SFPBPlayAudioButtonItem *)self audioData];
+  if (audioData)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBPlayAudioButtonItem *)self uniqueId];
-  v8 = v9;
-  if (v7)
+  uniqueId = [(_SFPBPlayAudioButtonItem *)self uniqueId];
+  v8 = toCopy;
+  if (uniqueId)
   {
     PBDataWriterWriteUint64Field();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 

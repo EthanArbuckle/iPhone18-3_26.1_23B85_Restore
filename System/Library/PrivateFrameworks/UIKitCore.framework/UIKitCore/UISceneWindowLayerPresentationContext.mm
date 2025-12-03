@@ -1,10 +1,10 @@
 @interface UISceneWindowLayerPresentationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISceneWindowLayerPresentationContext)init;
-- (id)_initWithSceneWindowLayerPresentationContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithSceneWindowLayerPresentationContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -28,19 +28,19 @@
   return v3;
 }
 
-- (id)_initWithSceneWindowLayerPresentationContext:(id)a3
+- (id)_initWithSceneWindowLayerPresentationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = UISceneWindowLayerPresentationContext;
   v5 = [(UISceneWindowLayerPresentationContext *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_ignoreAnimations = *(v4 + 32);
-    v5->_fullyOccluded = *(v4 + 33);
-    v5->_postCommitDuration = *(v4 + 5);
-    v7 = [*(v4 + 3) copy];
+    v5->_ignoreAnimations = *(contextCopy + 32);
+    v5->_fullyOccluded = *(contextCopy + 33);
+    v5->_postCommitDuration = *(contextCopy + 5);
+    v7 = [*(contextCopy + 3) copy];
     flattenMode = v6->_flattenMode;
     v6->_flattenMode = v7;
   }
@@ -50,10 +50,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneWindowLayerPresentationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneWindowLayerPresentationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -67,38 +67,38 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneWindowLayerPresentationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneWindowLayerPresentationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[UISceneWindowLayerPresentationContext ignoreAnimations](self, "ignoreAnimations")}];
-  v5 = [v3 appendBool:{-[UISceneWindowLayerPresentationContext fullyOccluded](self, "fullyOccluded")}];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[UISceneWindowLayerPresentationContext ignoreAnimations](self, "ignoreAnimations")}];
+  v5 = [builder appendBool:{-[UISceneWindowLayerPresentationContext fullyOccluded](self, "fullyOccluded")}];
   [(UISceneWindowLayerPresentationContext *)self postCommitDuration];
-  v6 = [v3 appendDouble:?];
-  v7 = [(UISceneWindowLayerPresentationContext *)self flattenMode];
-  v8 = [v3 appendString:v7];
+  v6 = [builder appendDouble:?];
+  flattenMode = [(UISceneWindowLayerPresentationContext *)self flattenMode];
+  v8 = [builder appendString:flattenMode];
 
-  v9 = [v3 hash];
+  v9 = [builder hash];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   ignoreAnimations = self->_ignoreAnimations;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __49__UISceneWindowLayerPresentationContext_isEqual___block_invoke;
   v28[3] = &unk_1E70F3CB0;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendBool:ignoreAnimations counterpart:v28];
   fullyOccluded = self->_fullyOccluded;
@@ -130,14 +130,14 @@
   return flattenMode;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISceneWindowLayerPresentationContext alloc];
 
   return [(UISceneWindowLayerPresentationContext *)v4 _initWithSceneWindowLayerPresentationContext:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableSceneWindowLayerPresentationContext alloc];
 

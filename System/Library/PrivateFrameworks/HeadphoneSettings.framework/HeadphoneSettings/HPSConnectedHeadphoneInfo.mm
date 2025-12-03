@@ -1,25 +1,25 @@
 @interface HPSConnectedHeadphoneInfo
-- (HPSConnectedHeadphoneInfo)initWithID:(id)a3 name:(id)a4 image:(id)a5 specifier:(id)a6;
+- (HPSConnectedHeadphoneInfo)initWithID:(id)d name:(id)name image:(id)image specifier:(id)specifier;
 @end
 
 @implementation HPSConnectedHeadphoneInfo
 
-- (HPSConnectedHeadphoneInfo)initWithID:(id)a3 name:(id)a4 image:(id)a5 specifier:(id)a6
+- (HPSConnectedHeadphoneInfo)initWithID:(id)d name:(id)name image:(id)image specifier:(id)specifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  nameCopy = name;
+  imageCopy = image;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = HPSConnectedHeadphoneInfo;
   v15 = [(HPSConnectedHeadphoneInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceID, a3);
-    objc_storeStrong(&v16->_deviceName, a4);
-    objc_storeStrong(&v16->_deviceImage, a5);
-    objc_storeStrong(&v16->_deviceSpecifier, a6);
+    objc_storeStrong(&v15->_deviceID, d);
+    objc_storeStrong(&v16->_deviceName, name);
+    objc_storeStrong(&v16->_deviceImage, image);
+    objc_storeStrong(&v16->_deviceSpecifier, specifier);
   }
 
   return v16;

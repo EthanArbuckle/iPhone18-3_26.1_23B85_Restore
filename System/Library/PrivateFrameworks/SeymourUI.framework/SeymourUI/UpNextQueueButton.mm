@@ -1,14 +1,14 @@
 @interface UpNextQueueButton
-- (void)primaryActionTriggered:(id)a3;
+- (void)primaryActionTriggered:(id)triggered;
 @end
 
 @implementation UpNextQueueButton
 
-- (void)primaryActionTriggered:(id)a3
+- (void)primaryActionTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BAB8204(v4);
+  triggeredCopy = triggered;
+  selfCopy = self;
+  sub_20BAB8204(triggeredCopy);
 }
 
 @end

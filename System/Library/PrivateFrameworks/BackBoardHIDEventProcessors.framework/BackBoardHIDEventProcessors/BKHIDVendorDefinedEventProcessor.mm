@@ -1,15 +1,15 @@
 @interface BKHIDVendorDefinedEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDVendorDefinedEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v9 = *event;
   IntegerValue = IOHIDEventGetIntegerValue();
   v11 = IOHIDEventGetIntegerValue();
   if (IntegerValue == 65292)
@@ -45,7 +45,7 @@
   _os_log_debug_impl(&dword_241980000, v12, OS_LOG_TYPE_DEBUG, v13, buf, 0x16u);
 LABEL_5:
 
-  v14 = [v8 destinationsForEvent:v9 fromSender:v7];
+  v14 = [dispatcherCopy destinationsForEvent:v9 fromSender:senderCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -64,7 +64,7 @@ LABEL_5:
           objc_enumerationMutation(v14);
         }
 
-        [v8 postEvent:v9 toDestination:*(*(&v21 + 1) + 8 * i)];
+        [dispatcherCopy postEvent:v9 toDestination:*(*(&v21 + 1) + 8 * i)];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];

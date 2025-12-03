@@ -1,26 +1,26 @@
 @interface BRCFetchiWorkSharingInfoOperation
-- (BRCFetchiWorkSharingInfoOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4;
+- (BRCFetchiWorkSharingInfoOperation)initWithDocumentItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCFetchiWorkSharingInfoOperation
 
-- (BRCFetchiWorkSharingInfoOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4
+- (BRCFetchiWorkSharingInfoOperation)initWithDocumentItem:(id)item sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serverZone];
-  v9 = [v8 metadataSyncContext];
+  itemCopy = item;
+  contextCopy = context;
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v14.receiver = self;
   v14.super_class = BRCFetchiWorkSharingInfoOperation;
-  v10 = [(_BRCOperation *)&v14 initWithName:@"sharing/iWork-publishing-fetch" syncContext:v9 sessionContext:v7];
+  v10 = [(_BRCOperation *)&v14 initWithName:@"sharing/iWork-publishing-fetch" syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v10)
   {
-    v11 = [v6 documentRecordID];
+    documentRecordID = [itemCopy documentRecordID];
     recordID = v10->_recordID;
-    v10->_recordID = v11;
+    v10->_recordID = documentRecordID;
 
     [(_BRCOperation *)v10 setNonDiscretionary:1];
   }

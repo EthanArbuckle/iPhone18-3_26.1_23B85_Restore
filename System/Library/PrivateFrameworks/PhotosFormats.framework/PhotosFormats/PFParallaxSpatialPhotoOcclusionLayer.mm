@@ -1,9 +1,9 @@
 @interface PFParallaxSpatialPhotoOcclusionLayer
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
+- (BOOL)saveToURL:(id)l error:(id *)error;
 - (CGSize)pixelSize;
-- (PFParallaxSpatialPhotoOcclusionLayer)initWithFrame:(CGRect)a3 zPosition:(double)a4 identifier:(id)a5;
+- (PFParallaxSpatialPhotoOcclusionLayer)initWithFrame:(CGRect)frame zPosition:(double)position identifier:(id)identifier;
 - (id)fileExtension;
-- (id)layerByUpdatingFrame:(CGRect)a3;
+- (id)layerByUpdatingFrame:(CGRect)frame;
 @end
 
 @implementation PFParallaxSpatialPhotoOcclusionLayer
@@ -15,11 +15,11 @@
   return [v2 fileExtension];
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [@"Spatial Photo Occlusion Layer" dataUsingEncoding:4];
-  v6 = [v5 writeToURL:v4 atomically:1];
+  v6 = [v5 writeToURL:lCopy atomically:1];
 
   return v6;
 }
@@ -34,26 +34,26 @@
   return result;
 }
 
-- (id)layerByUpdatingFrame:(CGRect)a3
+- (id)layerByUpdatingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [PFParallaxSpatialPhotoOcclusionLayer alloc];
   [(PFParallaxLayer *)self zPosition];
   v10 = v9;
-  v11 = [(PFParallaxLayer *)self identifier];
-  v12 = [(PFParallaxSpatialPhotoOcclusionLayer *)v8 initWithFrame:v11 zPosition:x identifier:y, width, height, v10];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v12 = [(PFParallaxSpatialPhotoOcclusionLayer *)v8 initWithFrame:identifier zPosition:x identifier:y, width, height, v10];
 
   return v12;
 }
 
-- (PFParallaxSpatialPhotoOcclusionLayer)initWithFrame:(CGRect)a3 zPosition:(double)a4 identifier:(id)a5
+- (PFParallaxSpatialPhotoOcclusionLayer)initWithFrame:(CGRect)frame zPosition:(double)position identifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PFParallaxSpatialPhotoOcclusionLayer;
-  return [(PFParallaxLayer *)&v6 initWithFrame:a5 zPosition:a3.origin.x identifier:a3.origin.y, a3.size.width, a3.size.height, a4];
+  return [(PFParallaxLayer *)&v6 initWithFrame:identifier zPosition:frame.origin.x identifier:frame.origin.y, frame.size.width, frame.size.height, position];
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface CRKFetchASMCertificatesOperation
-- (CRKFetchASMCertificatesOperation)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 controlGroupIdentifier:(id)a5 destinationAppleID:(id)a6 sourceAppleID:(id)a7 destinationDeviceIdentifier:(id)a8 sourceRole:(int64_t)a9 destinationRole:(int64_t)a10 requesterCertificate:(id)a11;
+- (CRKFetchASMCertificatesOperation)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator controlGroupIdentifier:(id)identifier destinationAppleID:(id)d sourceAppleID:(id)iD destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)self0 requesterCertificate:(id)self1;
 - (void)cancel;
-- (void)didSendMessage:(id)a3;
+- (void)didSendMessage:(id)message;
 - (void)main;
 - (void)operationWillFinish;
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 requestIdentifier:(id)a5;
+- (void)processMessage:(id)message senderAppleID:(id)d requestIdentifier:(id)identifier;
 @end
 
 @implementation CRKFetchASMCertificatesOperation
 
-- (CRKFetchASMCertificatesOperation)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 controlGroupIdentifier:(id)a5 destinationAppleID:(id)a6 sourceAppleID:(id)a7 destinationDeviceIdentifier:(id)a8 sourceRole:(int64_t)a9 destinationRole:(int64_t)a10 requesterCertificate:(id)a11
+- (CRKFetchASMCertificatesOperation)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator controlGroupIdentifier:(id)identifier destinationAppleID:(id)d sourceAppleID:(id)iD destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)self0 requesterCertificate:(id)self1
 {
-  v35 = a3;
-  v34 = a4;
-  v33 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a11;
+  primitivesCopy = primitives;
+  translatorCopy = translator;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  deviceIdentifierCopy = deviceIdentifier;
+  certificateCopy = certificate;
   v36.receiver = self;
   v36.super_class = CRKFetchASMCertificatesOperation;
   v22 = [(CRKFetchASMCertificatesOperation *)&v36 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_IDSPrimitives, a3);
-    objc_storeStrong(&v23->_addressTranslator, a4);
-    objc_storeStrong(&v23->_controlGroupIdentifier, a5);
-    v24 = [v18 copy];
+    objc_storeStrong(&v22->_IDSPrimitives, primitives);
+    objc_storeStrong(&v23->_addressTranslator, translator);
+    objc_storeStrong(&v23->_controlGroupIdentifier, identifier);
+    v24 = [dCopy copy];
     destinationAppleID = v23->_destinationAppleID;
     v23->_destinationAppleID = v24;
 
-    v26 = [v19 copy];
+    v26 = [iDCopy copy];
     sourceAppleID = v23->_sourceAppleID;
     v23->_sourceAppleID = v26;
 
-    v28 = [v20 copy];
+    v28 = [deviceIdentifierCopy copy];
     destinationDeviceIdentifier = v23->_destinationDeviceIdentifier;
     v23->_destinationDeviceIdentifier = v28;
 
-    v23->_sourceRole = a9;
-    v23->_destinationRole = a10;
-    v30 = [v21 copy];
+    v23->_sourceRole = role;
+    v23->_destinationRole = destinationRole;
+    v30 = [certificateCopy copy];
     requesterCertificate = v23->_requesterCertificate;
     v23->_requesterCertificate = v30;
   }
@@ -51,8 +51,8 @@
 
 - (void)operationWillFinish
 {
-  v2 = [(CRKFetchASMCertificatesOperation *)self messageReceiveSubscription];
-  [v2 cancel];
+  messageReceiveSubscription = [(CRKFetchASMCertificatesOperation *)self messageReceiveSubscription];
+  [messageReceiveSubscription cancel];
 }
 
 - (void)cancel
@@ -91,16 +91,16 @@ void __42__CRKFetchASMCertificatesOperation_cancel__block_invoke(uint64_t a1)
       *buf = 138543618;
       v25 = v6;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Fetching ASM certificate", buf, 0x16u);
     }
 
-    v7 = [(CRKFetchASMCertificatesOperation *)self controlGroupIdentifier];
-    v8 = [(CRKFetchASMCertificatesOperation *)self destinationDeviceIdentifier];
-    v9 = [(CRKFetchASMCertificatesOperation *)self sourceRole];
-    v10 = [(CRKFetchASMCertificatesOperation *)self destinationRole];
-    v11 = [(CRKFetchASMCertificatesOperation *)self requesterCertificate];
-    v12 = [CRKRequestCertificatesIDSMessage messageWithControlGroupIdentifier:v7 destinationDeviceIdentifier:v8 sourceRole:v9 destinationRole:v10 requesterCertificate:v11];
+    controlGroupIdentifier = [(CRKFetchASMCertificatesOperation *)self controlGroupIdentifier];
+    destinationDeviceIdentifier = [(CRKFetchASMCertificatesOperation *)self destinationDeviceIdentifier];
+    sourceRole = [(CRKFetchASMCertificatesOperation *)self sourceRole];
+    destinationRole = [(CRKFetchASMCertificatesOperation *)self destinationRole];
+    requesterCertificate = [(CRKFetchASMCertificatesOperation *)self requesterCertificate];
+    v12 = [CRKRequestCertificatesIDSMessage messageWithControlGroupIdentifier:controlGroupIdentifier destinationDeviceIdentifier:destinationDeviceIdentifier sourceRole:sourceRole destinationRole:destinationRole requesterCertificate:requesterCertificate];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -118,11 +118,11 @@ void __42__CRKFetchASMCertificatesOperation_cancel__block_invoke(uint64_t a1)
       *buf = 138543618;
       v25 = v17;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_243550000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Preparing to receive response before sending request", buf, 0x16u);
     }
 
-    v18 = [(CRKFetchASMCertificatesOperation *)self IDSPrimitives];
+    iDSPrimitives = [(CRKFetchASMCertificatesOperation *)self IDSPrimitives];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __40__CRKFetchASMCertificatesOperation_main__block_invoke_5;
@@ -130,7 +130,7 @@ void __42__CRKFetchASMCertificatesOperation_cancel__block_invoke(uint64_t a1)
     v20[4] = self;
     v21 = v13;
     v19 = v13;
-    [v18 subscribeToMessagesWithHandler:v14 completion:v20];
+    [iDSPrimitives subscribeToMessagesWithHandler:v14 completion:v20];
   }
 
   else
@@ -234,16 +234,16 @@ void __40__CRKFetchASMCertificatesOperation_main__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)didSendMessage:(id)a3
+- (void)didSendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CRKFetchASMCertificatesOperation_didSendMessage___block_invoke;
   v6[3] = &unk_278DC1320;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -270,22 +270,22 @@ uint64_t __51__CRKFetchASMCertificatesOperation_didSendMessage___block_invoke(ui
   return result;
 }
 
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 requestIdentifier:(id)a5
+- (void)processMessage:(id)message senderAppleID:(id)d requestIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  identifierCopy = identifier;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __83__CRKFetchASMCertificatesOperation_processMessage_senderAppleID_requestIdentifier___block_invoke;
   v14[3] = &unk_278DC12D0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = dCopy;
+  v16 = messageCopy;
+  v17 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = messageCopy;
+  v13 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 

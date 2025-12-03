@@ -1,83 +1,83 @@
 @interface THWPEditingController
 - (BOOL)canCopy;
 - (BOOL)canEditTextString;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)p_canAddNote;
-- (BOOL)p_canCopySelection:(id)a3;
+- (BOOL)p_canCopySelection:(id)selection;
 - (BOOL)p_canEditNote;
 - (BOOL)p_canHighlight;
 - (BOOL)p_canModifyAnnotations;
-- (BOOL)p_canSearchSelection:(id)a3;
-- (BOOL)p_canShowDictionaryForSelection:(id)a3;
-- (BOOL)p_canShowGlossaryForSelection:(id)a3;
-- (BOOL)p_canTranslateSelection:(id)a3;
-- (BOOL)p_selection:(id)a3 highlightMatchesStyle:(int)a4;
-- (BOOL)p_selectionContainsSomeUnhighlightedText:(id)a3;
-- (BOOL)p_selectionHasHighlight:(id)a3;
-- (BOOL)p_selectionHasNote:(id)a3;
-- (BOOL)p_selectionIsExactRangeOfHighlight:(id)a3;
-- (BOOL)p_selectionIsStrictSubrangeOfHighlight:(id)a3;
-- (BOOL)willShowMenuForSelection:(id)a3;
-- (THWPEditingController)initWithStorage:(id)a3 interactiveCanvasController:(id)a4;
+- (BOOL)p_canSearchSelection:(id)selection;
+- (BOOL)p_canShowDictionaryForSelection:(id)selection;
+- (BOOL)p_canShowGlossaryForSelection:(id)selection;
+- (BOOL)p_canTranslateSelection:(id)selection;
+- (BOOL)p_selection:(id)p_selection highlightMatchesStyle:(int)style;
+- (BOOL)p_selectionContainsSomeUnhighlightedText:(id)text;
+- (BOOL)p_selectionHasHighlight:(id)highlight;
+- (BOOL)p_selectionHasNote:(id)note;
+- (BOOL)p_selectionIsExactRangeOfHighlight:(id)highlight;
+- (BOOL)p_selectionIsStrictSubrangeOfHighlight:(id)highlight;
+- (BOOL)willShowMenuForSelection:(id)selection;
+- (THWPEditingController)initWithStorage:(id)storage interactiveCanvasController:(id)controller;
 - (id)annotationForCurrentSelection;
-- (id)annotationForUUID:(id)a3;
+- (id)annotationForUUID:(id)d;
 - (id)editingReps;
-- (id)p_activityItemProviderWithAnnotation:(id)a3;
+- (id)p_activityItemProviderWithAnnotation:(id)annotation;
 - (id)p_activityItemProviderWithCurrentSelection;
 - (id)p_annotationController;
-- (id)p_annotationForSelection:(id)a3;
+- (id)p_annotationForSelection:(id)selection;
 - (id)p_annotationFromCurrentSelection;
-- (id)p_annotationUUIDFromSender:(id)a3;
-- (id)p_pageRepForStorage:(id)a3 withSelection:(id)a4;
-- (id)p_repsForStorage:(id)a3 range:(_NSRange)a4;
+- (id)p_annotationUUIDFromSender:(id)sender;
+- (id)p_pageRepForStorage:(id)storage withSelection:(id)selection;
+- (id)p_repsForStorage:(id)storage range:(_NSRange)range;
 - (id)p_selectionOrAnnotation;
-- (id)p_selectionOrAnnotationFromSelection:(id)a3;
-- (id)repForStorage:(id)a3 range:(_NSRange)a4;
+- (id)p_selectionOrAnnotationFromSelection:(id)selection;
+- (id)repForStorage:(id)storage range:(_NSRange)range;
 - (id)stringFromSelection;
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender;
 - (int)currentAnnotationStyle;
 - (int)p_currentNoteStyle;
-- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)a3;
+- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)count;
 - (unsigned)knobTrackingTapCount;
-- (void)addHighlightWithStyle:(int)a3 forSender:(id)a4;
-- (void)copy:(id)a3;
+- (void)addHighlightWithStyle:(int)style forSender:(id)sender;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)didBecomeTextInputEditor;
 - (void)dismissActivePopovers;
-- (void)highlightWithStyle:(int)a3 annotation:(id)a4;
-- (void)p_addHighlightForSelection:(id)a3;
-- (void)p_addNote:(id)a3;
-- (void)p_canvasDidScroll:(id)a3;
-- (void)p_canvasWillScroll:(id)a3;
-- (void)p_highlight:(id)a3;
+- (void)highlightWithStyle:(int)style annotation:(id)annotation;
+- (void)p_addHighlightForSelection:(id)selection;
+- (void)p_addNote:(id)note;
+- (void)p_canvasDidScroll:(id)scroll;
+- (void)p_canvasWillScroll:(id)scroll;
+- (void)p_highlight:(id)p_highlight;
 - (void)p_removeNote;
-- (void)p_removeNotesFromAnnotation:(id)a3;
-- (void)p_showDictionaryForSelection:(id)a3;
-- (void)p_showGlossary:(id)a3;
-- (void)p_showGlossaryForSelection:(id)a3;
-- (void)p_showGlossaryOrDictionary:(int)a3 forAnnotation:(id)a4;
-- (void)p_showGlossaryOrDictionary:(int)a3 forRange:(_NSRange)a4;
-- (void)p_showGlossaryOrDictionary:(int)a3 forSelection:(id)a4;
-- (void)p_showTranslationForSelection:(id)a3;
-- (void)removeNote:(id)a3;
-- (void)removeNoteAndHighlight:(id)a3;
-- (void)searchSelection:(id)a3;
-- (void)selectionChangedWithFlags:(unint64_t)a3 wpFlags:(unint64_t)a4;
-- (void)shareAnnotation:(id)a3;
-- (void)shareSelection:(id)a3;
-- (void)showDictionary:(id)a3;
-- (void)translateSelection:(id)a3;
+- (void)p_removeNotesFromAnnotation:(id)annotation;
+- (void)p_showDictionaryForSelection:(id)selection;
+- (void)p_showGlossary:(id)glossary;
+- (void)p_showGlossaryForSelection:(id)selection;
+- (void)p_showGlossaryOrDictionary:(int)dictionary forAnnotation:(id)annotation;
+- (void)p_showGlossaryOrDictionary:(int)dictionary forRange:(_NSRange)range;
+- (void)p_showGlossaryOrDictionary:(int)dictionary forSelection:(id)selection;
+- (void)p_showTranslationForSelection:(id)selection;
+- (void)removeNote:(id)note;
+- (void)removeNoteAndHighlight:(id)highlight;
+- (void)searchSelection:(id)selection;
+- (void)selectionChangedWithFlags:(unint64_t)flags wpFlags:(unint64_t)wpFlags;
+- (void)shareAnnotation:(id)annotation;
+- (void)shareSelection:(id)selection;
+- (void)showDictionary:(id)dictionary;
+- (void)translateSelection:(id)selection;
 - (void)willResignTextInputEditor;
 @end
 
 @implementation THWPEditingController
 
-- (THWPEditingController)initWithStorage:(id)a3 interactiveCanvasController:(id)a4
+- (THWPEditingController)initWithStorage:(id)storage interactiveCanvasController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = THWPEditingController;
-  v4 = [(THWPEditingController *)&v8 initWithStorage:a3 interactiveCanvasController:?];
+  v4 = [(THWPEditingController *)&v8 initWithStorage:storage interactiveCanvasController:?];
   if (v4)
   {
     objc_opt_class();
@@ -109,24 +109,24 @@
   [(THWPEditingController *)&v2 dealloc];
 }
 
-- (void)p_canvasWillScroll:(id)a3
+- (void)p_canvasWillScroll:(id)scroll
 {
   objc_opt_class();
-  [a3 object];
-  v5 = [TSUDynamicCast() documentRoot];
-  if (v5 == [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")])
+  [scroll object];
+  documentRoot = [TSUDynamicCast() documentRoot];
+  if (documentRoot == [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")])
   {
 
     [(THWPEditingController *)self p_dismissPopovers];
   }
 }
 
-- (void)p_canvasDidScroll:(id)a3
+- (void)p_canvasDidScroll:(id)scroll
 {
   objc_opt_class();
-  [a3 object];
-  v5 = [TSUDynamicCast() documentRoot];
-  if (v5 == [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")])
+  [scroll object];
+  documentRoot = [TSUDynamicCast() documentRoot];
+  if (documentRoot == [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")])
   {
 
     [(THWPEditingController *)self p_dismissPopovers];
@@ -155,19 +155,19 @@
   [(THWPEditingController *)&v4 willResignTextInputEditor];
 }
 
-- (id)repForStorage:(id)a3 range:(_NSRange)a4
+- (id)repForStorage:(id)storage range:(_NSRange)range
 {
-  v4 = [(THWPEditingController *)self p_repsForStorage:a3 range:a4.location, a4.length];
+  v4 = [(THWPEditingController *)self p_repsForStorage:storage range:range.location, range.length];
   objc_opt_class();
   [v4 anyObject];
 
   return TSUDynamicCast();
 }
 
-- (id)p_repsForStorage:(id)a3 range:(_NSRange)a4
+- (id)p_repsForStorage:(id)storage range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = +[NSMutableSet set];
   v9 = [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v16 = 0u;
@@ -210,22 +210,22 @@
 
 - (id)editingReps
 {
-  v3 = [(THWPEditingController *)self storage];
+  storage = [(THWPEditingController *)self storage];
   v5 = [-[THWPEditingController selection](self "selection")];
 
-  return [(THWPEditingController *)self p_repsForStorage:v3 range:v5, v4];
+  return [(THWPEditingController *)self p_repsForStorage:storage range:v5, v4];
 }
 
-- (void)selectionChangedWithFlags:(unint64_t)a3 wpFlags:(unint64_t)a4
+- (void)selectionChangedWithFlags:(unint64_t)flags wpFlags:(unint64_t)wpFlags
 {
   v4.receiver = self;
   v4.super_class = THWPEditingController;
-  [(THWPEditingController *)&v4 selectionChangedWithFlags:a3 wpFlags:a4];
+  [(THWPEditingController *)&v4 selectionChangedWithFlags:flags wpFlags:wpFlags];
 }
 
-- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)a3
+- (unint64_t)textSelectionGranularityForTapCount:(unint64_t)count
 {
-  if (a3 == 3)
+  if (count == 3)
   {
     return 3;
   }
@@ -247,38 +247,38 @@
 
 - (BOOL)p_canModifyAnnotations
 {
-  v2 = [(THWPEditingController *)self p_annotationController];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
 
-  return [v2 canModifyAnnotations];
+  return [p_annotationController canModifyAnnotations];
 }
 
 - (BOOL)p_canHighlight
 {
-  v3 = [(THWPEditingController *)self selection];
-  v4 = [(THWPEditingController *)self p_canModifyAnnotations];
+  selection = [(THWPEditingController *)self selection];
+  p_canModifyAnnotations = [(THWPEditingController *)self p_canModifyAnnotations];
   LOBYTE(v5) = 0;
-  if (v4 && v3)
+  if (p_canModifyAnnotations && selection)
   {
-    v6 = [(THWPEditingController *)self p_annotationForSelection:v3];
+    v6 = [(THWPEditingController *)self p_annotationForSelection:selection];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 annotationStorageRange];
+      annotationStorageRange = [v6 annotationStorageRange];
     }
 
     else
     {
-      v8 = [v3 range];
+      annotationStorageRange = [selection range];
     }
 
-    v10 = v8;
+    v10 = annotationStorageRange;
     v11 = v9;
-    v12 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:v8, v9];
+    v12 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:annotationStorageRange, v9];
     if (!v12)
     {
-      v13 = [(THWPEditingController *)self storage];
-      v14 = [v3 range];
-      v12 = [(THWPEditingController *)self repForStorage:v13 range:v14, v15];
+      storage = [(THWPEditingController *)self storage];
+      range = [selection range];
+      v12 = [(THWPEditingController *)self repForStorage:storage range:range, v15];
     }
 
     v16 = [objc_msgSend(-[THWPEditingController storage](self "storage")];
@@ -294,12 +294,12 @@
 
 - (BOOL)p_canAddNote
 {
-  v3 = [(THWPEditingController *)self selection];
-  v4 = [(THWPEditingController *)self p_canModifyAnnotations];
+  selection = [(THWPEditingController *)self selection];
+  p_canModifyAnnotations = [(THWPEditingController *)self p_canModifyAnnotations];
   LOBYTE(v5) = 0;
-  if (v4 && v3)
+  if (p_canModifyAnnotations && selection)
   {
-    v6 = [(THWPEditingController *)self p_annotationForSelection:v3];
+    v6 = [(THWPEditingController *)self p_annotationForSelection:selection];
     if (v6)
     {
       LOBYTE(v5) = [v6 annotationNote] == 0;
@@ -307,9 +307,9 @@
 
     else
     {
-      v7 = [v3 range];
+      range = [selection range];
       v9 = v8;
-      v10 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:v7, v8];
+      v10 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:range, v8];
       v11 = [objc_msgSend(-[THWPEditingController storage](self "storage")];
       v5 = [objc_msgSend(v10 "highlightController")];
       if (v5)
@@ -325,157 +325,157 @@
 - (BOOL)p_canEditNote
 {
   v3 = [(THWPEditingController *)self p_annotationForSelection:[(THWPEditingController *)self selection]];
-  v4 = [(THWPEditingController *)self p_canModifyAnnotations];
-  if (v4)
+  p_canModifyAnnotations = [(THWPEditingController *)self p_canModifyAnnotations];
+  if (p_canModifyAnnotations)
   {
-    LOBYTE(v4) = [v3 annotationNote] != 0;
+    LOBYTE(p_canModifyAnnotations) = [v3 annotationNote] != 0;
   }
 
-  return v4;
+  return p_canModifyAnnotations;
 }
 
-- (void)p_addHighlightForSelection:(id)a3
+- (void)p_addHighlightForSelection:(id)selection
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([selection isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self storage];
-  v6 = [a3 range];
-  v8 = [(THWPEditingController *)self repForStorage:v5 range:v6, v7];
+  storage = [(THWPEditingController *)self storage];
+  range = [selection range];
+  v8 = [(THWPEditingController *)self repForStorage:storage range:range, v7];
   [objc_msgSend(v8 "highlightController")];
-  v9 = [(THWPEditingController *)self p_annotationController];
-  v10 = [(THWPEditingController *)self storage];
-  v11 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [selection range];
   v13 = v12;
-  v14 = [v8 storageContentNode];
-  v15 = [v9 currentAnnotationStyle];
+  storageContentNode = [v8 storageContentNode];
+  currentAnnotationStyle = [p_annotationController currentAnnotationStyle];
 
-  [v9 addAnnotationForStorage:v10 range:v11 contentNode:v13 style:v14 undoContext:{v15, 0}];
+  [p_annotationController addAnnotationForStorage:storage2 range:range2 contentNode:v13 style:storageContentNode undoContext:{currentAnnotationStyle, 0}];
 }
 
-- (BOOL)p_selectionHasNote:(id)a3
+- (BOOL)p_selectionHasNote:(id)note
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([note isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self p_annotationController];
-  v6 = [(THWPEditingController *)self storage];
-  v7 = [a3 range];
-  v9 = [v5 cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", v6, v7, v8), "storageContentNode")}];
-  v10 = [(THWPEditingController *)self storage];
-  v12 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [note range];
+  v9 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", storage, range, v8), "storageContentNode")}];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [note range];
 
-  return [v9 storage:v10 hasAnnotationWithNoteInRange:{v12, v11}];
+  return [v9 storage:storage2 hasAnnotationWithNoteInRange:{range2, v11}];
 }
 
-- (BOOL)p_selectionHasHighlight:(id)a3
+- (BOOL)p_selectionHasHighlight:(id)highlight
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([highlight isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self p_annotationController];
-  v6 = [(THWPEditingController *)self storage];
-  v7 = [a3 range];
-  v9 = [v5 cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", v6, v7, v8), "storageContentNode")}];
-  v10 = [(THWPEditingController *)self storage];
-  v12 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [highlight range];
+  v9 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", storage, range, v8), "storageContentNode")}];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [highlight range];
 
-  return [v9 storage:v10 hasAnnotationInRange:{v12, v11}];
+  return [v9 storage:storage2 hasAnnotationInRange:{range2, v11}];
 }
 
-- (BOOL)p_selectionIsStrictSubrangeOfHighlight:(id)a3
+- (BOOL)p_selectionIsStrictSubrangeOfHighlight:(id)highlight
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([highlight isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self p_annotationController];
-  v6 = [(THWPEditingController *)self storage];
-  v7 = [a3 range];
-  v9 = [(THWPEditingController *)self repForStorage:v6 range:v7, v8];
-  v10 = [v5 cachedAnnotationsForContentNode:{objc_msgSend(v9, "storageContentNode")}];
-  v11 = [v9 storage];
-  v13 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [highlight range];
+  v9 = [(THWPEditingController *)self repForStorage:storage range:range, v8];
+  v10 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(v9, "storageContentNode")}];
+  storage2 = [v9 storage];
+  range2 = [highlight range];
 
-  return [v10 storage:v11 hasAnnotationStrictlyContainingRange:{v13, v12}];
+  return [v10 storage:storage2 hasAnnotationStrictlyContainingRange:{range2, v12}];
 }
 
-- (BOOL)p_selectionIsExactRangeOfHighlight:(id)a3
+- (BOOL)p_selectionIsExactRangeOfHighlight:(id)highlight
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([highlight isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self p_annotationController];
-  v6 = [(THWPEditingController *)self storage];
-  v7 = [a3 range];
-  v9 = [(THWPEditingController *)self repForStorage:v6 range:v7, v8];
-  v10 = [v5 cachedAnnotationsForContentNode:{objc_msgSend(v9, "storageContentNode")}];
-  v11 = [v9 storage];
-  v13 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [highlight range];
+  v9 = [(THWPEditingController *)self repForStorage:storage range:range, v8];
+  v10 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(v9, "storageContentNode")}];
+  storage2 = [v9 storage];
+  range2 = [highlight range];
 
-  return [v10 storage:v11 hasAnnotationWithExactRange:{v13, v12}];
+  return [v10 storage:storage2 hasAnnotationWithExactRange:{range2, v12}];
 }
 
-- (BOOL)p_selectionContainsSomeUnhighlightedText:(id)a3
+- (BOOL)p_selectionContainsSomeUnhighlightedText:(id)text
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([text isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPEditingController *)self p_annotationController];
-  v6 = [(THWPEditingController *)self storage];
-  v7 = [a3 range];
-  v9 = [v5 cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", v6, v7, v8), "storageContentNode")}];
-  v10 = [(THWPEditingController *)self storage];
-  v12 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [text range];
+  v9 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", storage, range, v8), "storageContentNode")}];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [text range];
 
-  return [v9 storage:v10 containsSomeUnhighlightedTextInRange:{v12, v11}];
+  return [v9 storage:storage2 containsSomeUnhighlightedTextInRange:{range2, v11}];
 }
 
-- (BOOL)p_selection:(id)a3 highlightMatchesStyle:(int)a4
+- (BOOL)p_selection:(id)p_selection highlightMatchesStyle:(int)style
 {
-  v4 = *&a4;
-  if (([a3 isRange] & 1) == 0)
+  v4 = *&style;
+  if (([p_selection isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [(THWPEditingController *)self p_annotationController];
-  v8 = [(THWPEditingController *)self storage];
-  v9 = [a3 range];
-  v11 = [v7 cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", v8, v9, v10), "storageContentNode")}];
-  v12 = [(THWPEditingController *)self storage];
-  v14 = [a3 range];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage = [(THWPEditingController *)self storage];
+  range = [p_selection range];
+  v11 = [p_annotationController cachedAnnotationsForContentNode:{objc_msgSend(-[THWPEditingController repForStorage:range:](self, "repForStorage:range:", storage, range, v10), "storageContentNode")}];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [p_selection range];
 
-  return [v11 storage:v12 hasAnnotationThatMatchesStyle:v4 inRange:{v14, v13}];
+  return [v11 storage:storage2 hasAnnotationThatMatchesStyle:v4 inRange:{range2, v13}];
 }
 
-- (BOOL)willShowMenuForSelection:(id)a3
+- (BOOL)willShowMenuForSelection:(id)selection
 {
-  if (!a3)
+  if (!selection)
   {
     return 0;
   }
 
-  if ([(THWPEditingController *)self p_canCopySelection:?]|| [(THWPEditingController *)self p_canShowDictionaryForSelection:a3]|| [(THWPEditingController *)self p_canSearchSelection:a3])
+  if ([(THWPEditingController *)self p_canCopySelection:?]|| [(THWPEditingController *)self p_canShowDictionaryForSelection:selection]|| [(THWPEditingController *)self p_canSearchSelection:selection])
   {
     return 1;
   }
 
-  return [(THWPEditingController *)self p_canShareSelection:a3];
+  return [(THWPEditingController *)self p_canShareSelection:selection];
 }
 
-- (BOOL)p_canShowGlossaryForSelection:(id)a3
+- (BOOL)p_canShowGlossaryForSelection:(id)selection
 {
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v5 = TSUProtocolCast();
@@ -485,37 +485,37 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [(THWPEditingController *)self storage];
-      v9 = [a3 range];
-      LOBYTE(v6) = [v7 entryForTerm:{objc_msgSend(v8, "substringWithRange:", v9, v10)}] != 0;
+      storage = [(THWPEditingController *)self storage];
+      range = [selection range];
+      LOBYTE(v6) = [v7 entryForTerm:{objc_msgSend(storage, "substringWithRange:", range, v10)}] != 0;
     }
   }
 
   return v6;
 }
 
-- (BOOL)p_canShowDictionaryForSelection:(id)a3
+- (BOOL)p_canShowDictionaryForSelection:(id)selection
 {
-  v5 = [(THWPEditingController *)self storage];
-  v6 = [a3 range];
-  if ([v5 wordCountOfRange:{v6, v7}] > 3)
+  storage = [(THWPEditingController *)self storage];
+  range = [selection range];
+  if ([storage wordCountOfRange:{range, v7}] > 3)
   {
     return 0;
   }
 
-  v8 = [(THWPEditingController *)self storage];
-  v9 = [a3 range];
-  [v8 attachmentIndexRangeForTextRange:{v9, v10}];
+  storage2 = [(THWPEditingController *)self storage];
+  range2 = [selection range];
+  [storage2 attachmentIndexRangeForTextRange:{range2, v10}];
   return v11 == 0;
 }
 
-- (void)p_showGlossaryOrDictionary:(int)a3 forRange:(_NSRange)a4
+- (void)p_showGlossaryOrDictionary:(int)dictionary forRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = *&a3;
-  v8 = [(THWPEditingController *)self storage];
-  v9 = [objc_msgSend(v8 substringWithRange:{location, length), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
+  length = range.length;
+  location = range.location;
+  v6 = *&dictionary;
+  storage = [(THWPEditingController *)self storage];
+  v9 = [objc_msgSend(storage substringWithRange:{location, length), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
   v10 = v9;
   if (v6 == 3)
   {
@@ -539,66 +539,66 @@
     _Block_object_dispose(&v14, 8);
   }
 
-  v11 = [(THWPEditingController *)self repForStorage:v8 range:location, length];
+  v11 = [(THWPEditingController *)self repForStorage:storage range:location, length];
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   [TSUProtocolCast() presentGlossaryPopoverOfType:v6 withTerm:v10 rangeInRep:location rep:{length, v11}];
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
 }
 
-- (void)p_showGlossaryOrDictionary:(int)a3 forSelection:(id)a4
+- (void)p_showGlossaryOrDictionary:(int)dictionary forSelection:(id)selection
 {
-  v4 = *&a3;
-  v7 = [a4 range];
+  v4 = *&dictionary;
+  range = [selection range];
 
-  [(THWPEditingController *)self p_showGlossaryOrDictionary:v4 forRange:v7, v6];
+  [(THWPEditingController *)self p_showGlossaryOrDictionary:v4 forRange:range, v6];
 }
 
-- (void)p_showGlossaryOrDictionary:(int)a3 forAnnotation:(id)a4
+- (void)p_showGlossaryOrDictionary:(int)dictionary forAnnotation:(id)annotation
 {
-  v4 = *&a3;
-  v7 = [a4 annotationStorageRange];
+  v4 = *&dictionary;
+  annotationStorageRange = [annotation annotationStorageRange];
 
-  [(THWPEditingController *)self p_showGlossaryOrDictionary:v4 forRange:v7, v6];
+  [(THWPEditingController *)self p_showGlossaryOrDictionary:v4 forRange:annotationStorageRange, v6];
 }
 
-- (void)p_showDictionaryForSelection:(id)a3
+- (void)p_showDictionaryForSelection:(id)selection
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([selection isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THWPEditingController *)self p_showGlossaryOrDictionary:2 forSelection:a3];
+  [(THWPEditingController *)self p_showGlossaryOrDictionary:2 forSelection:selection];
 }
 
-- (void)p_showGlossaryForSelection:(id)a3
+- (void)p_showGlossaryForSelection:(id)selection
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([selection isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THWPEditingController *)self p_showGlossaryOrDictionary:0 forSelection:a3];
+  [(THWPEditingController *)self p_showGlossaryOrDictionary:0 forSelection:selection];
 }
 
-- (void)p_showTranslationForSelection:(id)a3
+- (void)p_showTranslationForSelection:(id)selection
 {
-  if (([a3 isRange] & 1) == 0)
+  if (([selection isRange] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THWPEditingController *)self p_showGlossaryOrDictionary:3 forSelection:a3];
+  [(THWPEditingController *)self p_showGlossaryOrDictionary:3 forSelection:selection];
 }
 
 - (BOOL)canCopy
 {
-  v3 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  return [(THWPEditingController *)self p_canCopySelection:v3];
+  return [(THWPEditingController *)self p_canCopySelection:selection];
 }
 
-- (BOOL)p_canCopySelection:(id)a3
+- (BOOL)p_canCopySelection:(id)selection
 {
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v5 = TSUProtocolCast();
@@ -607,64 +607,64 @@
     goto LABEL_5;
   }
 
-  v6 = [v5 allowCopy];
-  if (v6)
+  allowCopy = [v5 allowCopy];
+  if (allowCopy)
   {
-    [a3 range];
+    [selection range];
     if (v7)
     {
-      v8 = [(THWPEditingController *)self storage];
-      v9 = [a3 range];
-      LOBYTE(v6) = [objc_msgSend(v8 stringEquivalentFromRange:{v9, v10), "length"}] != 0;
-      return v6;
+      storage = [(THWPEditingController *)self storage];
+      range = [selection range];
+      LOBYTE(allowCopy) = [objc_msgSend(storage stringEquivalentFromRange:{range, v10), "length"}] != 0;
+      return allowCopy;
     }
 
 LABEL_5:
-    LOBYTE(v6) = 0;
+    LOBYTE(allowCopy) = 0;
   }
 
-  return v6;
+  return allowCopy;
 }
 
-- (BOOL)p_canSearchSelection:(id)a3
+- (BOOL)p_canSearchSelection:(id)selection
 {
-  v5 = [a3 isRange];
-  if (v5)
+  isRange = [selection isRange];
+  if (isRange)
   {
-    v6 = [(THWPEditingController *)self storage];
-    v7 = [a3 range];
-    if ([v6 rangeContainsAttachment:{v7, v8}])
+    storage = [(THWPEditingController *)self storage];
+    range = [selection range];
+    if ([storage rangeContainsAttachment:{range, v8}])
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(isRange) = 0;
     }
 
     else
     {
-      v9 = [(THWPEditingController *)self storage];
-      v10 = [a3 range];
-      [v9 paragraphIndexRangeForCharRange:{v10, v11}];
-      LOBYTE(v5) = v12 == 1;
+      storage2 = [(THWPEditingController *)self storage];
+      range2 = [selection range];
+      [storage2 paragraphIndexRangeForCharRange:{range2, v11}];
+      LOBYTE(isRange) = v12 == 1;
     }
   }
 
-  return v5;
+  return isRange;
 }
 
-- (BOOL)p_canTranslateSelection:(id)a3
+- (BOOL)p_canTranslateSelection:(id)selection
 {
-  v5 = [(THWPEditingController *)self canCopy];
-  if (v5)
+  canCopy = [(THWPEditingController *)self canCopy];
+  if (canCopy)
   {
-    v5 = [a3 isRange];
-    if (v5)
+    canCopy = [selection isRange];
+    if (canCopy)
     {
-      v6 = [(THWPEditingController *)self storage];
-      v7 = [a3 range];
-      LOBYTE(v5) = [v6 rangeContainsAttachment:{v7, v8}] ^ 1;
+      storage = [(THWPEditingController *)self storage];
+      range = [selection range];
+      LOBYTE(canCopy) = [storage rangeContainsAttachment:{range, v8}] ^ 1;
     }
   }
 
-  return v5;
+  return canCopy;
 }
 
 - (id)stringFromSelection
@@ -683,44 +683,44 @@ LABEL_5:
   return result;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   if ([-[THWPEditingController selection](self selection])
   {
-    v4 = [(THWPEditingController *)self stringFromSelection];
+    stringFromSelection = [(THWPEditingController *)self stringFromSelection];
     v5 = +[UIPasteboard generalPasteboard];
-    v6 = [UTTypeUTF8PlainText identifier];
+    identifier = [UTTypeUTF8PlainText identifier];
 
-    [(UIPasteboard *)v5 setValue:v4 forPasteboardType:v6];
+    [(UIPasteboard *)v5 setValue:stringFromSelection forPasteboardType:identifier];
   }
 }
 
 - (id)p_annotationFromCurrentSelection
 {
-  v3 = [(THWPEditingController *)self storage];
+  storage = [(THWPEditingController *)self storage];
   v4 = [-[THWPEditingController selection](self "selection")];
-  v6 = [(THWPEditingController *)self repForStorage:v3 range:v4, v5];
+  v6 = [(THWPEditingController *)self repForStorage:storage range:v4, v5];
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
-  v7 = TSUProtocolCast();
-  if (v7)
+  titleOfCurrentNavigationUnit = TSUProtocolCast();
+  if (titleOfCurrentNavigationUnit)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v7 titleOfCurrentNavigationUnit];
+      titleOfCurrentNavigationUnit = [titleOfCurrentNavigationUnit titleOfCurrentNavigationUnit];
     }
 
     else
     {
-      v7 = 0;
+      titleOfCurrentNavigationUnit = 0;
     }
   }
 
-  v8 = [(THWPEditingController *)self p_annotationController];
-  v9 = [(THWPEditingController *)self storage];
-  v10 = [v6 storageContentNode];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  storage2 = [(THWPEditingController *)self storage];
+  storageContentNode = [v6 storageContentNode];
   v12 = [-[THWPEditingController selection](self "selection")];
 
-  return [v8 temporaryAnnotationForStorage:v9 contentNode:v10 withRange:v12 style:v11 chapterTitle:{0, v7}];
+  return [p_annotationController temporaryAnnotationForStorage:storage2 contentNode:storageContentNode withRange:v12 style:v11 chapterTitle:{0, titleOfCurrentNavigationUnit}];
 }
 
 - (id)p_activityItemProviderWithCurrentSelection
@@ -733,17 +733,17 @@ LABEL_5:
   }
 
   v4 = v3;
-  v5 = [(THWPEditingController *)self p_annotationForSelection:[(THWPEditingController *)self selection]];
-  if (!v5)
+  p_annotationFromCurrentSelection = [(THWPEditingController *)self p_annotationForSelection:[(THWPEditingController *)self selection]];
+  if (!p_annotationFromCurrentSelection)
   {
-    v5 = [(THWPEditingController *)self p_annotationFromCurrentSelection];
-    if (!v5)
+    p_annotationFromCurrentSelection = [(THWPEditingController *)self p_annotationFromCurrentSelection];
+    if (!p_annotationFromCurrentSelection)
     {
       return 0;
     }
   }
 
-  v6 = v5;
+  v6 = p_annotationFromCurrentSelection;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -752,11 +752,11 @@ LABEL_5:
   return [v4 activityItemProviderWithCachedAnnotation:v6];
 }
 
-- (id)p_activityItemProviderWithAnnotation:(id)a3
+- (id)p_activityItemProviderWithAnnotation:(id)annotation
 {
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v4 = TSUProtocolCast();
-  if (!a3)
+  if (!annotation)
   {
     return 0;
   }
@@ -767,28 +767,28 @@ LABEL_5:
     return 0;
   }
 
-  return [v5 activityItemProviderWithCachedAnnotation:a3];
+  return [v5 activityItemProviderWithCachedAnnotation:annotation];
 }
 
-- (void)p_highlight:(id)a3
+- (void)p_highlight:(id)p_highlight
 {
-  v5 = [(THWPEditingController *)self p_annotationController];
-  if (!v5)
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (!p_annotationController)
   {
     return;
   }
 
-  v6 = v5;
+  v6 = p_annotationController;
   if (objc_opt_respondsToSelector())
   {
-    if ([a3 tag])
+    if ([p_highlight tag])
     {
 LABEL_4:
       [v6 setCurrentAnnotationStyle:?];
       [(THWPEditingController *)self p_addHighlightForSelection:[(THWPEditingController *)self p_selectionOrAnnotation]];
-      v7 = [(THWPEditingController *)self interactiveCanvasController];
+      interactiveCanvasController = [(THWPEditingController *)self interactiveCanvasController];
 
-      [v7 endEditing];
+      [interactiveCanvasController endEditing];
       return;
     }
   }
@@ -806,46 +806,46 @@ LABEL_4:
   }
 }
 
-- (void)translateSelection:(id)a3
+- (void)translateSelection:(id)selection
 {
-  v4 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  [(THWPEditingController *)self p_showTranslationForSelection:v4];
+  [(THWPEditingController *)self p_showTranslationForSelection:selection];
 }
 
-- (void)p_showGlossary:(id)a3
+- (void)p_showGlossary:(id)glossary
 {
-  v4 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  [(THWPEditingController *)self p_showGlossaryForSelection:v4];
+  [(THWPEditingController *)self p_showGlossaryForSelection:selection];
 }
 
-- (void)showDictionary:(id)a3
+- (void)showDictionary:(id)dictionary
 {
-  v4 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  [(THWPEditingController *)self p_showDictionaryForSelection:v4];
+  [(THWPEditingController *)self p_showDictionaryForSelection:selection];
 }
 
-- (void)p_addNote:(id)a3
+- (void)p_addNote:(id)note
 {
-  v4 = [(THWPEditingController *)self selection];
-  v5 = [(THWPEditingController *)self p_annotationController];
-  if (v4)
+  selection = [(THWPEditingController *)self selection];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (selection)
   {
-    v6 = v5;
-    if (v5)
+    v6 = p_annotationController;
+    if (p_annotationController)
     {
-      v7 = [(THWPEditingController *)self p_annotationForSelection:v4];
+      v7 = [(THWPEditingController *)self p_annotationForSelection:selection];
       if (v7)
       {
         v8 = v7;
-        v9 = [v7 annotationStorageRange];
+        annotationStorageRange = [v7 annotationStorageRange];
         v11 = v10;
-        v12.location = [v4 range];
+        v12.location = [selection range];
         if (v12.length)
         {
-          v27.location = v9;
+          v27.location = annotationStorageRange;
           v27.length = v11;
           v13 = NSUnionRange(v12, v27);
           location = v13.location;
@@ -854,12 +854,12 @@ LABEL_4:
 
         else
         {
-          location = v9;
+          location = annotationStorageRange;
           length = v11;
         }
 
         v23 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:location, length];
-        if (location == v9 && length == v11)
+        if (location == annotationStorageRange && length == v11)
         {
           goto LABEL_12;
         }
@@ -875,12 +875,12 @@ LABEL_4:
 
       else
       {
-        v16 = [(THWPEditingController *)self storage];
-        v17 = [v4 range];
+        storage = [(THWPEditingController *)self storage];
+        range = [selection range];
         v19 = v18;
-        v26.location = v17;
+        v26.location = range;
         v26.length = v19;
-        v20 = THTrimHighlightRange(v16, v26);
+        v20 = THTrimHighlightRange(storage, v26);
         v22 = v21;
         v23 = [(THWPEditingController *)self repForStorage:[(THWPEditingController *)self storage] range:v20, v21];
         v24 = [v6 addAnnotationForStorage:-[THWPEditingController storage](self range:"storage") contentNode:v20 style:v22 undoContext:{objc_msgSend(v23, "storageContentNode"), objc_msgSend(v6, "currentAnnotationStyle"), 0}];
@@ -902,12 +902,12 @@ LABEL_12:
   [(THWPEditingController *)self p_removeNotesFromAnnotation:v3];
 }
 
-- (void)p_removeNotesFromAnnotation:(id)a3
+- (void)p_removeNotesFromAnnotation:(id)annotation
 {
-  v5 = [(THWPEditingController *)self p_annotationController];
-  if (a3 && v5)
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (annotation && p_annotationController)
   {
-    [v5 modifyAnnotation:a3 withNoteText:0 undoContext:0];
+    [p_annotationController modifyAnnotation:annotation withNoteText:0 undoContext:0];
   }
 
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
@@ -915,23 +915,23 @@ LABEL_12:
   if (objc_opt_respondsToSelector())
   {
 
-    [v6 didRemoveNoteForAnnotation:a3];
+    [v6 didRemoveNoteForAnnotation:annotation];
   }
 }
 
-- (id)p_pageRepForStorage:(id)a3 withSelection:(id)a4
+- (id)p_pageRepForStorage:(id)storage withSelection:(id)selection
 {
   v5 = [objc_msgSend(-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
-  v6 = [(THWPEditingController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWPEditingController *)self interactiveCanvasController];
 
-  return [v6 repForLayout:v5];
+  return [interactiveCanvasController repForLayout:v5];
 }
 
-- (void)searchSelection:(id)a3
+- (void)searchSelection:(id)selection
 {
-  v4 = [(THWPEditingController *)self storage];
+  storage = [(THWPEditingController *)self storage];
   v5 = [-[THWPEditingController selection](self "selection")];
-  v7 = [v4 substringWithRange:{v5, v6}];
+  v7 = [storage substringWithRange:{v5, v6}];
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v8 = TSUProtocolCast();
   if (objc_opt_respondsToSelector())
@@ -939,14 +939,14 @@ LABEL_12:
     [v8 presentSearchResultsForString:v7];
   }
 
-  v9 = [(THWPEditingController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWPEditingController *)self interactiveCanvasController];
 
-  [v9 endEditing];
+  [interactiveCanvasController endEditing];
 }
 
-- (void)shareSelection:(id)a3
+- (void)shareSelection:(id)selection
 {
-  v4 = [(THWPEditingController *)self p_activityItemProviderWithCurrentSelection];
+  p_activityItemProviderWithCurrentSelection = [(THWPEditingController *)self p_activityItemProviderWithCurrentSelection];
   [(THWPEditingController *)self targetRectForSelection:[(THWPEditingController *)self selection]];
   v6 = v5;
   v8 = v7;
@@ -955,14 +955,14 @@ LABEL_12:
   [-[THWPEditingController interactiveCanvasController](self "interactiveCanvasController")];
   v13 = TSUProtocolCast();
 
-  [v13 presentSharePopoverWithItemProvider:v4 targetRect:{v6, v8, v10, v12}];
+  [v13 presentSharePopoverWithItemProvider:p_activityItemProviderWithCurrentSelection targetRect:{v6, v8, v10, v12}];
 }
 
-- (void)shareAnnotation:(id)a3
+- (void)shareAnnotation:(id)annotation
 {
   v5 = [(THWPEditingController *)self p_activityItemProviderWithAnnotation:?];
-  v6 = [a3 annotationStorageRange];
-  [objc_msgSend(-[THWPEditingController repForStorage:range:](self repForStorage:-[THWPEditingController storage](self range:{"storage"), v6, v7), "highlightController"), "canvasRectForAnnotation:", a3}];
+  annotationStorageRange = [annotation annotationStorageRange];
+  [objc_msgSend(-[THWPEditingController repForStorage:range:](self repForStorage:-[THWPEditingController storage](self range:{"storage"), annotationStorageRange, v7), "highlightController"), "canvasRectForAnnotation:", annotation}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -973,14 +973,14 @@ LABEL_12:
   [v16 presentSharePopoverWithItemProvider:v5 targetRect:{v9, v11, v13, v15}];
 }
 
-- (id)p_annotationForSelection:(id)a3
+- (id)p_annotationForSelection:(id)selection
 {
-  if (!a3)
+  if (!selection)
   {
     return 0;
   }
 
-  v5 = [a3 range];
+  range = [selection range];
   if (v4 <= 1)
   {
     v6 = 1;
@@ -998,53 +998,53 @@ LABEL_12:
 
 - (id)p_selectionOrAnnotation
 {
-  v3 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  return [(THWPEditingController *)self p_selectionOrAnnotationFromSelection:v3];
+  return [(THWPEditingController *)self p_selectionOrAnnotationFromSelection:selection];
 }
 
-- (id)p_selectionOrAnnotationFromSelection:(id)a3
+- (id)p_selectionOrAnnotationFromSelection:(id)selection
 {
   v4 = [(THWPEditingController *)self p_annotationForSelection:?];
-  if (([a3 isRange] & 1) != 0 || !v4)
+  if (([selection isRange] & 1) != 0 || !v4)
   {
-    return a3;
+    return selection;
   }
 
-  v6 = [v4 annotationStorageRange];
+  annotationStorageRange = [v4 annotationStorageRange];
 
-  return [TSWPSelection selectionWithRange:v6, v5];
+  return [TSWPSelection selectionWithRange:annotationStorageRange, v5];
 }
 
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v7 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
   result = +[NSThread isMainThread];
   if (result)
   {
-    v9 = [(THWPEditingController *)self p_selectionOrAnnotation];
-    v10 = v9;
-    if ("p_highlight:" == a3 && [v9 isRange])
+    p_selectionOrAnnotation = [(THWPEditingController *)self p_selectionOrAnnotation];
+    v10 = p_selectionOrAnnotation;
+    if ("p_highlight:" == action && [p_selectionOrAnnotation isRange])
     {
       if (![(THWPEditingController *)self createdFromAnnotationHUD])
       {
-        v11 = [(THWPEditingController *)self p_canHighlight];
+        p_canHighlight = [(THWPEditingController *)self p_canHighlight];
         goto LABEL_28;
       }
 
       return -1;
     }
 
-    if ("addNote:" == a3 && [v10 isRange])
+    if ("addNote:" == action && [v10 isRange])
     {
       if ([(THWPEditingController *)self createdFromAnnotationHUD])
       {
         return -1;
       }
 
-      v11 = [(THWPEditingController *)self p_canAddNote];
+      p_canHighlight = [(THWPEditingController *)self p_canAddNote];
 LABEL_28:
-      if (v11)
+      if (p_canHighlight)
       {
         return 1;
       }
@@ -1055,57 +1055,57 @@ LABEL_28:
       }
     }
 
-    result = [v7 isRange];
+    result = [selection isRange];
     if (!result)
     {
       return result;
     }
 
-    if ("copy:" == a3)
+    if ("copy:" == action)
     {
-      if (![TSDCanvasEditor physicalKeyboardIsSender:a4])
+      if (![TSDCanvasEditor physicalKeyboardIsSender:sender])
       {
         return -1;
       }
     }
 
-    else if ("menuCopy:" != a3)
+    else if ("menuCopy:" != action)
     {
-      if ("p_showGlossary:" == a3)
+      if ("p_showGlossary:" == action)
       {
-        v11 = [(THWPEditingController *)self p_canShowGlossaryForSelection:v7];
+        p_canHighlight = [(THWPEditingController *)self p_canShowGlossaryForSelection:selection];
       }
 
-      else if ("translateSelection:" == a3)
+      else if ("translateSelection:" == action)
       {
-        v11 = [(THWPEditingController *)self p_canTranslateSelection:v7];
+        p_canHighlight = [(THWPEditingController *)self p_canTranslateSelection:selection];
       }
 
-      else if ("showDictionary:" == a3)
+      else if ("showDictionary:" == action)
       {
-        v11 = [(THWPEditingController *)self p_canShowDictionaryForSelection:v7];
+        p_canHighlight = [(THWPEditingController *)self p_canShowDictionaryForSelection:selection];
       }
 
-      else if ("searchSelection:" == a3)
+      else if ("searchSelection:" == action)
       {
-        v11 = [(THWPEditingController *)self p_canSearchSelection:v7];
+        p_canHighlight = [(THWPEditingController *)self p_canSearchSelection:selection];
       }
 
-      else if ("shareSelection:" == a3)
+      else if ("shareSelection:" == action)
       {
-        v11 = [(THWPEditingController *)self p_canShareSelection:v7];
+        p_canHighlight = [(THWPEditingController *)self p_canShareSelection:selection];
       }
 
       else
       {
-        if ("lookUp:" == a3)
+        if ("lookUp:" == action)
         {
           v13.receiver = self;
           v13.super_class = THWPEditingController;
-          return [(THWPEditingController *)&v13 canPerformEditorAction:a3 withSender:a4];
+          return [(THWPEditingController *)&v13 canPerformEditorAction:action withSender:sender];
         }
 
-        if ("selectAll:" != a3)
+        if ("selectAll:" != action)
         {
           return 0;
         }
@@ -1117,13 +1117,13 @@ LABEL_28:
           return -1;
         }
 
-        v11 = [v12 allowSelectAll];
+        p_canHighlight = [v12 allowSelectAll];
       }
 
       goto LABEL_28;
     }
 
-    v11 = [(THWPEditingController *)self p_canCopySelection:v7];
+    p_canHighlight = [(THWPEditingController *)self p_canCopySelection:selection];
     goto LABEL_28;
   }
 
@@ -1139,22 +1139,22 @@ LABEL_28:
   [TSUProtocolCast() dismissSharePopover];
 }
 
-- (void)addHighlightWithStyle:(int)a3 forSender:(id)a4
+- (void)addHighlightWithStyle:(int)style forSender:(id)sender
 {
-  v5 = *&a3;
-  v7 = [(THWPEditingController *)self annotationForCurrentSelection];
-  v8 = [(THWPEditingController *)self p_annotationUUIDFromSender:a4];
-  if ([v8 length] && (!v7 || (objc_msgSend(objc_msgSend(v7, "annotationUuid"), "isEqualToString:", v8) & 1) == 0))
+  v5 = *&style;
+  annotationForCurrentSelection = [(THWPEditingController *)self annotationForCurrentSelection];
+  v8 = [(THWPEditingController *)self p_annotationUUIDFromSender:sender];
+  if ([v8 length] && (!annotationForCurrentSelection || (objc_msgSend(objc_msgSend(annotationForCurrentSelection, "annotationUuid"), "isEqualToString:", v8) & 1) == 0))
   {
-    v7 = [(THWPEditingController *)self annotationForUUID:v8];
+    annotationForCurrentSelection = [(THWPEditingController *)self annotationForUUID:v8];
   }
 
-  [(THWPEditingController *)self highlightWithStyle:v5 annotation:v7];
+  [(THWPEditingController *)self highlightWithStyle:v5 annotation:annotationForCurrentSelection];
 }
 
-- (void)removeNote:(id)a3
+- (void)removeNote:(id)note
 {
-  v4 = [(THWPEditingController *)self p_annotationUUIDFromSender:a3];
+  v4 = [(THWPEditingController *)self p_annotationUUIDFromSender:note];
   if (v4)
   {
     [(THWPEditingController *)self annotationForUUID:v4];
@@ -1169,24 +1169,24 @@ LABEL_28:
   }
 }
 
-- (void)removeNoteAndHighlight:(id)a3
+- (void)removeNoteAndHighlight:(id)highlight
 {
-  v5 = [(THWPEditingController *)self annotationForCurrentSelection];
-  v6 = [(THWPEditingController *)self p_annotationUUIDFromSender:a3];
-  if ([v6 length] && (!v5 || (objc_msgSend(objc_msgSend(v5, "annotationUuid"), "isEqualToString:", v6) & 1) == 0))
+  annotationForCurrentSelection = [(THWPEditingController *)self annotationForCurrentSelection];
+  v6 = [(THWPEditingController *)self p_annotationUUIDFromSender:highlight];
+  if ([v6 length] && (!annotationForCurrentSelection || (objc_msgSend(objc_msgSend(annotationForCurrentSelection, "annotationUuid"), "isEqualToString:", v6) & 1) == 0))
   {
-    v5 = [(THWPEditingController *)self annotationForUUID:v6];
+    annotationForCurrentSelection = [(THWPEditingController *)self annotationForUUID:v6];
   }
 
-  v7 = [(THWPEditingController *)self p_annotationController];
-  if (v7 && v5)
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (p_annotationController && annotationForCurrentSelection)
   {
 
-    [v7 destroyAnnotation:v5 undoContext:0];
+    [p_annotationController destroyAnnotation:annotationForCurrentSelection undoContext:0];
   }
 }
 
-- (id)p_annotationUUIDFromSender:(id)a3
+- (id)p_annotationUUIDFromSender:(id)sender
 {
   objc_opt_class();
   v3 = TSUDynamicCast();
@@ -1223,14 +1223,14 @@ LABEL_28:
   }
 }
 
-- (id)annotationForUUID:(id)a3
+- (id)annotationForUUID:(id)d
 {
-  result = [a3 length];
+  result = [d length];
   if (result)
   {
-    v6 = [(THWPEditingController *)self p_annotationController];
+    p_annotationController = [(THWPEditingController *)self p_annotationController];
 
-    return [v6 annotationWithUuid:a3];
+    return [p_annotationController annotationWithUuid:d];
   }
 
   return result;
@@ -1238,9 +1238,9 @@ LABEL_28:
 
 - (id)annotationForCurrentSelection
 {
-  v3 = [(THWPEditingController *)self selection];
+  selection = [(THWPEditingController *)self selection];
 
-  return [(THWPEditingController *)self p_annotationForSelection:v3];
+  return [(THWPEditingController *)self p_annotationForSelection:selection];
 }
 
 - (unsigned)knobTrackingTapCount
@@ -1255,10 +1255,10 @@ LABEL_28:
   return [(THWPEditingController *)&v4 knobTrackingTapCount];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  [a3 unscaledLocationForICC:{-[THWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
+  gestureKind = [gesture gestureKind];
+  [gesture unscaledLocationForICC:{-[THWPEditingController interactiveCanvasController](self, "interactiveCanvasController")}];
   v7 = v6;
   v9 = v8;
   objc_opt_class();
@@ -1270,13 +1270,13 @@ LABEL_28:
     return 0;
   }
 
-  if (v5 != TSWPImmediatePress || (v17.receiver = self, v17.super_class = THWPEditingController, ![(THWPEditingController *)&v17 canHandleGesture:a3]))
+  if (gestureKind != TSWPImmediatePress || (v17.receiver = self, v17.super_class = THWPEditingController, ![(THWPEditingController *)&v17 canHandleGesture:gesture]))
   {
-    if (v5 == TSWPTapAndTouch || v5 == TSWPLongPress && ![(THWPEditingController *)self startingInitialSelectionDrag])
+    if (gestureKind == TSWPTapAndTouch || gestureKind == TSWPLongPress && ![(THWPEditingController *)self startingInitialSelectionDrag])
     {
       v15.receiver = self;
       v15.super_class = THWPEditingController;
-      return [(THWPEditingController *)&v15 canHandleGesture:a3];
+      return [(THWPEditingController *)&v15 canHandleGesture:gesture];
     }
 
     return 0;
@@ -1289,8 +1289,8 @@ LABEL_28:
   result = 0;
   if (v11 && v12)
   {
-    v14 = [v12 storage];
-    if (v14 == [(THWPEditingController *)self storage])
+    storage = [v12 storage];
+    if (storage == [(THWPEditingController *)self storage])
     {
       return [-[THWPEditingController selection](self "selection")];
     }
@@ -1301,42 +1301,42 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
   v9.receiver = self;
   v9.super_class = THWPEditingController;
   v5 = [(THWPEditingController *)&v9 handleGesture:?];
-  v6 = [a3 gestureKind];
-  v7 = v6 == TSWPTapAndTouch && [a3 gestureState] == 1;
+  gestureKind = [gesture gestureKind];
+  v7 = gestureKind == TSWPTapAndTouch && [gesture gestureState] == 1;
   [(THWPEditingController *)self setStartingInitialSelectionDrag:v7];
   return v5;
 }
 
-- (void)highlightWithStyle:(int)a3 annotation:(id)a4
+- (void)highlightWithStyle:(int)style annotation:(id)annotation
 {
-  v5 = *&a3;
-  v7 = [(THWPEditingController *)self selection];
-  v8 = [(THWPEditingController *)self p_annotationController];
-  if (a4 | v7)
+  v5 = *&style;
+  selection = [(THWPEditingController *)self selection];
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (annotation | selection)
   {
-    v9 = v8;
-    if (v8)
+    v9 = p_annotationController;
+    if (p_annotationController)
     {
-      [v8 setCurrentAnnotationStyle:v5];
-      v10 = [v7 isRange];
-      if (a4 || !v10)
+      [p_annotationController setCurrentAnnotationStyle:v5];
+      isRange = [selection isRange];
+      if (annotation || !isRange)
       {
-        if ((a4 || (a4 = -[THWPEditingController p_annotationForSelection:](self, "p_annotationForSelection:", v7)) != 0) && [a4 annotationStyle] != v5)
+        if ((annotation || (annotation = -[THWPEditingController p_annotationForSelection:](self, "p_annotationForSelection:", selection)) != 0) && [annotation annotationStyle] != v5)
         {
 
-          [v9 modifyAnnotation:a4 withStyle:v5 undoContext:0];
+          [v9 modifyAnnotation:annotation withStyle:v5 undoContext:0];
         }
       }
 
       else
       {
 
-        [(THWPEditingController *)self p_addHighlightForSelection:v7];
+        [(THWPEditingController *)self p_addHighlightForSelection:selection];
       }
     }
   }
@@ -1344,23 +1344,23 @@ LABEL_28:
 
 - (int)currentAnnotationStyle
 {
-  v3 = [(THWPEditingController *)self p_annotationController];
-  if (!v3)
+  p_annotationController = [(THWPEditingController *)self p_annotationController];
+  if (!p_annotationController)
   {
     return 3;
   }
 
-  v4 = v3;
-  v5 = [(THWPEditingController *)self selection];
-  v6 = [(THWPEditingController *)self p_annotationForSelection:v5];
-  v7 = [v5 range];
+  v4 = p_annotationController;
+  selection = [(THWPEditingController *)self selection];
+  v6 = [(THWPEditingController *)self p_annotationForSelection:selection];
+  range = [selection range];
   v9 = v8;
   v16.location = [v6 annotationStorageRange];
   v16.length = v10;
-  v15.location = v7;
+  v15.location = range;
   v15.length = v9;
   v11 = NSUnionRange(v15, v16);
-  if (v6 && (![v5 isRange] || objc_msgSend(v5, "range") == v11.location && v12 == v11.length))
+  if (v6 && (![selection isRange] || objc_msgSend(selection, "range") == v11.location && v12 == v11.length))
   {
 
     return [v6 annotationStyle];
@@ -1384,11 +1384,11 @@ LABEL_28:
 
   else
   {
-    v5 = [(THWPEditingController *)self p_annotationController];
-    if (v5)
+    p_annotationController = [(THWPEditingController *)self p_annotationController];
+    if (p_annotationController)
     {
 
-      return [v5 currentAnnotationStyle];
+      return [p_annotationController currentAnnotationStyle];
     }
 
     else

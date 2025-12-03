@@ -14,26 +14,26 @@
 
 + (id)primaryTextColorForTheme:()MTColorTheme
 {
-  v3 = [a3 primaryTextColor];
-  v4 = v3;
-  if (v3)
+  primaryTextColor = [a3 primaryTextColor];
+  v4 = primaryTextColor;
+  if (primaryTextColor)
   {
-    v5 = v3;
+    blackColor = primaryTextColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v6 = v5;
+  v6 = blackColor;
 
   return v6;
 }
 
 + (id)secondaryTextColorForTheme:()MTColorTheme
 {
-  v1 = [a1 primaryTextColorForTheme:?];
+  v1 = [self primaryTextColorForTheme:?];
   v2 = [v1 colorWithAlphaComponent:0.55];
 
   return v2;
@@ -41,19 +41,19 @@
 
 + (id)backgroundColorForTheme:()MTColorTheme
 {
-  v3 = [a3 backgroundColor];
-  v4 = v3;
-  if (v3)
+  backgroundColor = [a3 backgroundColor];
+  v4 = backgroundColor;
+  if (backgroundColor)
   {
-    v5 = v3;
+    whiteColor = backgroundColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
   return v6;
 }
@@ -61,10 +61,10 @@
 + (id)selectedBackgroundColorForTheme:()MTColorTheme
 {
   v4 = a3;
-  v5 = [a1 backgroundColorForTheme:v4];
-  v6 = [v4 isBackgroundDark];
+  v5 = [self backgroundColorForTheme:v4];
+  isBackgroundDark = [v4 isBackgroundDark];
 
-  if (v6)
+  if (isBackgroundDark)
   {
     v7 = 0.1;
     v8 = 1.0;
@@ -84,26 +84,26 @@
 
 + (uint64_t)separatorColorForTheme:()MTColorTheme
 {
-  v4 = [a3 isBackgroundDark];
+  isBackgroundDark = [a3 isBackgroundDark];
 
-  return [a1 separatorColorForDarkBackground:v4];
+  return [self separatorColorForDarkBackground:isBackgroundDark];
 }
 
 + (uint64_t)artworkBorderColorForTheme:()MTColorTheme
 {
   v3 = MEMORY[0x277D75348];
-  v4 = [a3 isBackgroundDark];
+  isBackgroundDark = [a3 isBackgroundDark];
 
-  return [v3 artworkBorderColorForDarkBackground:v4];
+  return [v3 artworkBorderColorForDarkBackground:isBackgroundDark];
 }
 
 + (id)moreBackgroundColorForTheme:()MTColorTheme
 {
   v4 = a3;
-  v5 = [a1 backgroundColorForTheme:v4];
-  v6 = [v4 isBackgroundDark];
+  v5 = [self backgroundColorForTheme:v4];
+  isBackgroundDark = [v4 isBackgroundDark];
 
-  if (v6)
+  if (isBackgroundDark)
   {
     v7 = 0.18;
     v8 = 1.0;
@@ -123,38 +123,38 @@
 
 + (id)tintColorForTheme:()MTColorTheme
 {
-  v3 = [a3 secondaryTextColor];
-  v4 = v3;
-  if (v3)
+  secondaryTextColor = [a3 secondaryTextColor];
+  v4 = secondaryTextColor;
+  if (secondaryTextColor)
   {
-    v5 = v3;
+    appTintColor = secondaryTextColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] appTintColor];
+    appTintColor = [MEMORY[0x277D75348] appTintColor];
   }
 
-  v6 = v5;
+  v6 = appTintColor;
 
   return v6;
 }
 
 + (id)barsTintColorForTheme:()MTColorTheme
 {
-  v3 = [a3 secondaryTextColor];
-  v4 = v3;
-  if (v3)
+  secondaryTextColor = [a3 secondaryTextColor];
+  v4 = secondaryTextColor;
+  if (secondaryTextColor)
   {
-    v5 = v3;
+    appTintColor = secondaryTextColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] appTintColor];
+    appTintColor = [MEMORY[0x277D75348] appTintColor];
   }
 
-  v6 = v5;
+  v6 = appTintColor;
 
   return v6;
 }

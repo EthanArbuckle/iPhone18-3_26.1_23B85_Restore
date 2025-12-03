@@ -1,17 +1,17 @@
 @interface HKURLSessionCertVerificationDelegate
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation HKURLSessionCertVerificationDelegate
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 protectionSpace];
-  v10 = [v9 serverTrust];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  if (!v10)
+  if (!serverTrust)
   {
     _HKInitializeLogging();
     v16 = *MEMORY[0x277CCC2C0];
@@ -23,8 +23,8 @@
     goto LABEL_10;
   }
 
-  v11 = [v7 protectionSpace];
-  v12 = HKAcceptAuthenticationChallengeWithTrust([v11 serverTrust]);
+  protectionSpace2 = [challengeCopy protectionSpace];
+  v12 = HKAcceptAuthenticationChallengeWithTrust([protectionSpace2 serverTrust]);
 
   _HKInitializeLogging();
   v13 = *MEMORY[0x277CCC2C0];
@@ -48,7 +48,7 @@ LABEL_10:
 
   v15 = 1;
 LABEL_11:
-  v8[2](v8, v15, 0);
+  handlerCopy[2](handlerCopy, v15, 0);
 }
 
 - (void)URLSession:(uint64_t)a1 didReceiveChallenge:(NSObject *)a2 completionHandler:.cold.1(uint64_t a1, NSObject *a2)

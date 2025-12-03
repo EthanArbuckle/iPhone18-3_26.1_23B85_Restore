@@ -28,14 +28,14 @@
 
 - (NSArray)itemsToPersist
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSMutableArray *)self->_posters _cn_takeLast:8];
-  [v3 addObjectsFromArray:v4];
+  [array addObjectsFromArray:v4];
 
   v5 = [(NSMutableArray *)self->_images _cn_takeLast:8];
-  [v3 addObjectsFromArray:v5];
+  [array addObjectsFromArray:v5];
 
-  return v3;
+  return array;
 }
 
 @end

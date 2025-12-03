@@ -8,8 +8,8 @@
 
 - (void)snapshotCurrentObservers
 {
-  v3 = [(GEOObserverHashTable *)self allObservers];
-  [(GEOObserverHashTable *)self setObserversSnapshot:v3];
+  allObservers = [(GEOObserverHashTable *)self allObservers];
+  [(GEOObserverHashTable *)self setObserversSnapshot:allObservers];
 }
 
 - (void)restoreOriginalObservers
@@ -18,8 +18,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(GEOObserverHashTable *)self observersSnapshot];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observersSnapshot = [(GEOObserverHashTable *)self observersSnapshot];
+  v4 = [observersSnapshot countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -31,7 +31,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersSnapshot);
         }
 
         [(GEOObserverHashTable *)self registerObserver:*(*(&v8 + 1) + 8 * v7)];
@@ -39,7 +39,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [observersSnapshot countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -54,8 +54,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(GEOObserverHashTable *)self observersSnapshot];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observersSnapshot = [(GEOObserverHashTable *)self observersSnapshot];
+  v4 = [observersSnapshot countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -67,7 +67,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersSnapshot);
         }
 
         [(GEOObserverHashTable *)self unregisterObserver:*(*(&v8 + 1) + 8 * v7)];
@@ -75,7 +75,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [observersSnapshot countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

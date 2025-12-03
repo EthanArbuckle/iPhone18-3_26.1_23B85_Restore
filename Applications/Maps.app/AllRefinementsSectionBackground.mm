@@ -1,14 +1,14 @@
 @interface AllRefinementsSectionBackground
-- (AllRefinementsSectionBackground)initWithFrame:(CGRect)a3;
+- (AllRefinementsSectionBackground)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AllRefinementsSectionBackground
 
-- (AllRefinementsSectionBackground)initWithFrame:(CGRect)a3
+- (AllRefinementsSectionBackground)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AllRefinementsSectionBackground;
-  v3 = [(AllRefinementsSectionBackground *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AllRefinementsSectionBackground *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [MUPlatterConfigurator configureView:v3];

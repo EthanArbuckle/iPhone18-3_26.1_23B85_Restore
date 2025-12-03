@@ -1,57 +1,57 @@
 @interface SXWebContentComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXWebContentComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_67];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_67];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_13];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_13];
 
-  v8 = [v3 callback];
+  callback3 = [registryCopy callback];
   v9 = TFCallbackScopeAny();
-  [v8 whenResolvingProtocol:&unk_1F5438B50 scope:v9 callbackBlock:&__block_literal_global_78];
+  [callback3 whenResolvingProtocol:&unk_1F5438B50 scope:v9 callbackBlock:&__block_literal_global_78];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_84];
+  publicContainer = [registryCopy publicContainer];
+  v11 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_84];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_203];
+  publicContainer2 = [registryCopy publicContainer];
+  v13 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_203];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerClass:objc_opt_class() factory:&__block_literal_global_207];
+  publicContainer3 = [registryCopy publicContainer];
+  v15 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_207];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerProtocol:&unk_1F53E6850 factory:&__block_literal_global_210_0];
+  publicContainer4 = [registryCopy publicContainer];
+  v17 = [publicContainer4 registerProtocol:&unk_1F53E6850 factory:&__block_literal_global_210_0];
 
-  v18 = [v3 publicContainer];
-  v19 = [v18 registerProtocol:&unk_1F5415370 factory:&__block_literal_global_249];
+  publicContainer5 = [registryCopy publicContainer];
+  v19 = [publicContainer5 registerProtocol:&unk_1F5415370 factory:&__block_literal_global_249];
 
-  v20 = [v3 publicContainer];
-  v21 = [v20 registerProtocol:&unk_1F5417C40 factory:&__block_literal_global_282];
+  publicContainer6 = [registryCopy publicContainer];
+  v21 = [publicContainer6 registerProtocol:&unk_1F5417C40 factory:&__block_literal_global_282];
 
-  v22 = [v3 privateContainer];
-  v23 = [v22 registerProtocol:&unk_1F5414EB0 factory:&__block_literal_global_286];
+  privateContainer = [registryCopy privateContainer];
+  v23 = [privateContainer registerProtocol:&unk_1F5414EB0 factory:&__block_literal_global_286];
 
-  v24 = [v3 publicContainer];
-  v25 = [v24 registerProtocol:&unk_1F53BA7A8 factory:&__block_literal_global_290];
+  publicContainer7 = [registryCopy publicContainer];
+  v25 = [publicContainer7 registerProtocol:&unk_1F53BA7A8 factory:&__block_literal_global_290];
 
-  v26 = [v3 publicContainer];
-  v27 = [v26 registerProtocol:&unk_1F53B0438 factory:&__block_literal_global_294];
+  publicContainer8 = [registryCopy publicContainer];
+  v27 = [publicContainer8 registerProtocol:&unk_1F53B0438 factory:&__block_literal_global_294];
 
-  v28 = [v3 publicContainer];
-  v29 = [v28 registerClass:objc_opt_class() factory:&__block_literal_global_298];
+  publicContainer9 = [registryCopy publicContainer];
+  v29 = [publicContainer9 registerClass:objc_opt_class() factory:&__block_literal_global_298];
 
-  v31 = [v3 publicContainer];
+  publicContainer10 = [registryCopy publicContainer];
 
-  v30 = [v31 registerClass:objc_opt_class() factory:&__block_literal_global_321];
+  v30 = [publicContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_321];
 }
 
 void __48__SXWebContentComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

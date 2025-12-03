@@ -1,16 +1,16 @@
 @interface HFHumiditySensorServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFHumiditySensorServiceItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CCF850];
-  v7 = a3;
+  optionsCopy = options;
   v8 = [v5 setWithObject:v6];
-  v9 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v8 options:v7];
+  v9 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v8 options:optionsCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;

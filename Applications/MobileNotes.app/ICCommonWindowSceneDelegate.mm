@@ -1,29 +1,29 @@
 @interface ICCommonWindowSceneDelegate
-- (BOOL)_appropriateToSetupSBSceneWithManagedObjectContext:(id)a3;
+- (BOOL)_appropriateToSetupSBSceneWithManagedObjectContext:(id)context;
 - (ICViewControllerManager)viewControllerManager;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)sharedDisconnectWithSessionManager:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)sharedDisconnectWithSessionManager:(id)manager;
 @end
 
 @implementation ICCommonWindowSceneDelegate
 
 - (ICViewControllerManager)viewControllerManager
 {
-  v2 = [(ICCommonWindowSceneDelegate *)self icWindow];
-  v3 = [v2 viewControllerManager];
+  icWindow = [(ICCommonWindowSceneDelegate *)self icWindow];
+  viewControllerManager = [icWindow viewControllerManager];
 
-  return v3;
+  return viewControllerManager;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a5;
-  v8 = a3;
+  optionsCopy = options;
+  sceneCopy = scene;
   v9 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -37,10 +37,10 @@
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  [(ICCommonWindowSceneDelegate *)self ic_setupWithScene:v10 options:v7];
+  [(ICCommonWindowSceneDelegate *)self ic_setupWithScene:v10 options:optionsCopy];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v3 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v3 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -66,20 +66,20 @@
   }
 }
 
-- (BOOL)_appropriateToSetupSBSceneWithManagedObjectContext:(id)a3
+- (BOOL)_appropriateToSetupSBSceneWithManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (!v3)
+  if (!contextCopy)
   {
     v4 = +[ICNoteContext sharedContext];
-    v3 = [v4 managedObjectContext];
+    contextCopy = [v4 managedObjectContext];
   }
 
-  v5 = [ICAccount accountsWithAccountType:1 context:v3];
+  v5 = [ICAccount accountsWithAccountType:1 context:contextCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000E2A9C;
@@ -94,7 +94,7 @@
 
   else
   {
-    v7 = [ICAccount accountsWithAccountType:3 context:v3];
+    v7 = [ICAccount accountsWithAccountType:3 context:contextCopy];
     v8 = [v7 count];
     if (v8)
     {
@@ -111,7 +111,7 @@
   return v6 & 1;
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -124,29 +124,29 @@
   }
 
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [v5 managedObjectContext];
 
-  if ([(ICCommonWindowSceneDelegate *)self _appropriateToSetupSBSceneWithManagedObjectContext:v6])
+  if ([(ICCommonWindowSceneDelegate *)self _appropriateToSetupSBSceneWithManagedObjectContext:managedObjectContext])
   {
-    v7 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+    viewControllerManager = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
 
-    if (!v7)
+    if (!viewControllerManager)
     {
       [ICAssert handleFailedAssertWithCondition:"((self.viewControllerManager) != nil)" functionName:"[ICCommonWindowSceneDelegate sceneWillEnterForeground:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "self.viewControllerManager"];
     }
 
-    v8 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-    [v8 dismissAnyPresentedViewControllerAnimated:0 completion:0];
+    viewControllerManager2 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+    [viewControllerManager2 dismissAnyPresentedViewControllerAnimated:0 completion:0];
   }
 
-  v9 = [(ICCommonWindowSceneDelegate *)self icWindow];
-  [v9 setHidden:0];
+  icWindow = [(ICCommonWindowSceneDelegate *)self icWindow];
+  [icWindow setHidden:0];
 
-  v10 = [(ICCommonWindowSceneDelegate *)self icWindow];
-  [v10 makeKeyWindow];
+  icWindow2 = [(ICCommonWindowSceneDelegate *)self icWindow];
+  [icWindow2 makeKeyWindow];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -159,61 +159,61 @@
   }
 }
 
-- (void)sharedDisconnectWithSessionManager:(id)a3
+- (void)sharedDisconnectWithSessionManager:(id)manager
 {
-  v14 = a3;
-  v4 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-  v5 = [v4 noteEditorViewController];
+  managerCopy = manager;
+  viewControllerManager = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+  noteEditorViewController = [viewControllerManager noteEditorViewController];
 
-  if (!v5)
+  if (!noteEditorViewController)
   {
     [ICAssert handleFailedAssertWithCondition:"((noteEditorVC) != nil)" functionName:"[ICCommonWindowSceneDelegate sharedDisconnectWithSessionManager:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "noteEditorVC"];
   }
 
-  v6 = [v5 note];
-  if (v14 && [v14 isSessionActive])
+  note = [noteEditorViewController note];
+  if (managerCopy && [managerCopy isSessionActive])
   {
-    v7 = [v5 presentedViewController];
+    presentedViewController = [noteEditorViewController presentedViewController];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [v5 presentedViewController];
-      [v9 prepareForDismissal];
+      presentedViewController2 = [noteEditorViewController presentedViewController];
+      [presentedViewController2 prepareForDismissal];
     }
 
-    [v14 endSession];
+    [managerCopy endSession];
   }
 
-  if ([v6 isEmpty])
+  if ([note isEmpty])
   {
-    [ICNote deleteEmptyNote:v6];
-    v10 = [v6 managedObjectContext];
-    [v10 ic_save];
+    [ICNote deleteEmptyNote:note];
+    managedObjectContext = [note managedObjectContext];
+    [managedObjectContext ic_save];
   }
 
   else
   {
-    [v5 saveNote];
+    [noteEditorViewController saveNote];
     v11 = +[ICNoteContext sharedContext];
     [v11 saveImmediately];
 
-    [v5 updateInlineDrawings];
-    [v5 resetTextViewUndoManager];
-    v10 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-    v12 = [v10 currentAttachmentPresenter];
-    [v12 dismissAnimated:0 completion:0];
+    [noteEditorViewController updateInlineDrawings];
+    [noteEditorViewController resetTextViewUndoManager];
+    managedObjectContext = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+    currentAttachmentPresenter = [managedObjectContext currentAttachmentPresenter];
+    [currentAttachmentPresenter dismissAnimated:0 completion:0];
   }
 
-  v13 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-  [v13 dismissAnyPresentedViewControllerAnimated:0 completion:0];
+  viewControllerManager2 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+  [viewControllerManager2 dismissAnyPresentedViewControllerAnimated:0 completion:0];
 
   [(ICCommonWindowSceneDelegate *)self setIcWindow:0];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -229,8 +229,8 @@
   v7[2] = sub_1000E3088;
   v7[3] = &unk_100645BA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   [UIView performWithoutAnimation:v7];
 }
 

@@ -7,7 +7,7 @@
 - (id)bundleIdentifier
 {
   v3 = 0;
-  [a1 auditToken];
+  [self auditToken];
   if (CPCopyBundleIdentifierAndTeamFromAuditToken())
   {
     v1 = v3;

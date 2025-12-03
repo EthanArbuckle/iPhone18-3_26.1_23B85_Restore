@@ -1,14 +1,14 @@
 @interface GKRemoteUIHeaderView
-- (GKRemoteUIHeaderView)initWithAttributes:(id)a3;
-- (void)setSectionIsFirst:(BOOL)a3;
+- (GKRemoteUIHeaderView)initWithAttributes:(id)attributes;
+- (void)setSectionIsFirst:(BOOL)first;
 @end
 
 @implementation GKRemoteUIHeaderView
 
-- (GKRemoteUIHeaderView)initWithAttributes:(id)a3
+- (GKRemoteUIHeaderView)initWithAttributes:(id)attributes
 {
   v39[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v38.receiver = self;
   v38.super_class = GKRemoteUIHeaderView;
   v5 = *MEMORY[0x277CBF3A0];
@@ -18,23 +18,23 @@
   v9 = [(GKRemoteUIHeaderView *)&v38 initWithFrame:*MEMORY[0x277CBF3A0], v6, v7, v8];
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"GKLayoutStyle"];
-    v11 = [v10 intValue];
+    v10 = [attributesCopy objectForKeyedSubscript:@"GKLayoutStyle"];
+    intValue = [v10 intValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"GKApplyTheme"];
-    v13 = [v12 BOOLValue];
+    v12 = [attributesCopy objectForKeyedSubscript:@"GKApplyTheme"];
+    bOOLValue = [v12 BOOLValue];
 
     v14 = @"settingsHeader";
-    if (v13)
+    if (bOOLValue)
     {
       v14 = @"remoteUISectionHeader";
     }
 
     v15 = MEMORY[0x277D0C8B0];
     v16 = v14;
-    v17 = [v15 textStyle];
-    v18 = [v4 objectForKeyedSubscript:@"headerStyle"];
-    v19 = [v17 styleWithName:v18 fallback:v16 layoutMode:v11];
+    textStyle = [v15 textStyle];
+    v18 = [attributesCopy objectForKeyedSubscript:@"headerStyle"];
+    v19 = [textStyle styleWithName:v18 fallback:v16 layoutMode:intValue];
 
     v20 = [v19 lineBreakMode:0];
 
@@ -42,7 +42,7 @@
     textLabel = v9->_textLabel;
     v9->_textLabel = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"header"];
+    v23 = [attributesCopy objectForKeyedSubscript:@"header"];
     [(GKLabel *)v9->_textLabel setText:v23];
 
     [(GKLabel *)v9->_textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -52,7 +52,7 @@
       [(GKLabel *)v9->_textLabel applyTextStyle:v20];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"headerHeight"];
+    v24 = [attributesCopy objectForKeyedSubscript:@"headerHeight"];
     v25 = v24;
     if (v24)
     {
@@ -66,7 +66,7 @@
     }
 
     v9->_height = v27;
-    v28 = [v4 objectForKeyedSubscript:@"headerBottomMargin"];
+    v28 = [attributesCopy objectForKeyedSubscript:@"headerBottomMargin"];
     v29 = v28;
     if (v28)
     {
@@ -96,11 +96,11 @@
   return v9;
 }
 
-- (void)setSectionIsFirst:(BOOL)a3
+- (void)setSectionIsFirst:(BOOL)first
 {
-  if (self->_isFirstSection != a3)
+  if (self->_isFirstSection != first)
   {
-    self->_isFirstSection = a3;
+    self->_isFirstSection = first;
   }
 }
 

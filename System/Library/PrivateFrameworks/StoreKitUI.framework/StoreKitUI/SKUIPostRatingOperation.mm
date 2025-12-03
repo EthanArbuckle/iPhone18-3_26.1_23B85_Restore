@@ -1,36 +1,36 @@
 @interface SKUIPostRatingOperation
 - (NSDictionary)responseDictionary;
-- (SKUIPostRatingOperation)initWithRating:(int64_t)a3 forItemID:(id)a4 reviewConfiguration:(id)a5;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
+- (SKUIPostRatingOperation)initWithRating:(int64_t)rating forItemID:(id)d reviewConfiguration:(id)configuration;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
 - (void)run;
 @end
 
 @implementation SKUIPostRatingOperation
 
-- (SKUIPostRatingOperation)initWithRating:(int64_t)a3 forItemID:(id)a4 reviewConfiguration:(id)a5
+- (SKUIPostRatingOperation)initWithRating:(int64_t)rating forItemID:(id)d reviewConfiguration:(id)configuration
 {
-  v8 = a5;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SKUIPostRatingOperation;
   v9 = [(SKUIPostRatingOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_rating = a3;
+    v9->_rating = rating;
     v11 = [(NSString *)v9->_itemID copy];
     itemID = v10->_itemID;
     v10->_itemID = v11;
 
-    objc_storeStrong(&v10->_reviewConfiguration, a5);
+    objc_storeStrong(&v10->_reviewConfiguration, configuration);
   }
 
   return v10;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -38,17 +38,17 @@
   }
 
   v10 = [MEMORY[0x277CEE3F8] bagForProfile:@"appstored" profileVersion:@"1"];
-  v11 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v12 = [objc_alloc(MEMORY[0x277CEE878]) initWithRequest:v8 accountStore:v11 bag:v10];
-  v13 = [v12 performAuthentication];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  v12 = [objc_alloc(MEMORY[0x277CEE878]) initWithRequest:requestCopy accountStore:ams_sharedAccountStore bag:v10];
+  performAuthentication = [v12 performAuthentication];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__SKUIPostRatingOperation_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke;
   v15[3] = &unk_2781FB9B8;
   v15[4] = self;
-  v16 = v9;
-  v14 = v9;
-  [v13 addFinishBlock:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [performAuthentication addFinishBlock:v15];
 }
 
 void __83__SKUIPostRatingOperation_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -88,40 +88,40 @@ void __83__SKUIPostRatingOperation_AMSURLSession_task_handleAuthenticateRequest_
 - (void)run
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIReviewConfiguration *)self->_reviewConfiguration ratingURLString];
-  v4 = [(SKUIReviewConfiguration *)self->_reviewConfiguration storeExternalVersionID];
-  if (!v3)
+  ratingURLString = [(SKUIReviewConfiguration *)self->_reviewConfiguration ratingURLString];
+  storeExternalVersionID = [(SKUIReviewConfiguration *)self->_reviewConfiguration storeExternalVersionID];
+  if (!ratingURLString)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [SKUIPostRatingOperation run];
     }
 
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://userpub.itunes.apple.com/api/v1/saveUserReview?id=%@", self->_itemID];
+    ratingURLString = [MEMORY[0x277CCACA8] stringWithFormat:@"https://userpub.itunes.apple.com/api/v1/saveUserReview?id=%@", self->_itemID];
   }
 
-  if ([v4 length])
+  if ([storeExternalVersionID length])
   {
-    v5 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-    v6 = [v5 URLByAppendingQueryParameter:@"versionId" value:v4];
+    v5 = [MEMORY[0x277CBEBC0] URLWithString:ratingURLString];
+    v6 = [v5 URLByAppendingQueryParameter:@"versionId" value:storeExternalVersionID];
 
     v7 = [MEMORY[0x277CEE3F8] bagForProfile:@"appstored" profileVersion:@"1"];
     v8 = [objc_alloc(MEMORY[0x277CEE6D8]) initWithBag:v7];
     [v8 setRequestEncoding:3];
-    v9 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v10 = [v9 ams_activeiTunesAccount];
-    if (v10)
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    if (ams_activeiTunesAccount)
     {
       v17 = v7;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v10 username];
+        username = [ams_activeiTunesAccount username];
         *buf = 138543362;
-        v22 = v11;
+        v22 = username;
         _os_log_impl(&dword_215BAE000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[SKUIPostRatingOperation] Successfully retrieved active iTunes account: %{public}@", buf, 0xCu);
       }
 
-      [v8 setAccount:v10];
+      [v8 setAccount:ams_activeiTunesAccount];
       v12 = [MEMORY[0x277CBAB50] requestWithURL:v6 cachePolicy:1 timeoutInterval:20.0];
       [v12 setHTTPMethod:@"POST"];
       v19 = @"rating";

@@ -1,20 +1,20 @@
 @interface HMDCloudShareMessenger
 + (id)logCategory;
-- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)a3 workQueue:(id)a4 home:(id)a5;
-- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)a3 workQueue:(id)a4 home:(id)a5 messageDispatcher:(id)a6;
+- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)d workQueue:(id)queue home:(id)home;
+- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)d workQueue:(id)queue home:(id)home messageDispatcher:(id)dispatcher;
 - (HMDCloudShareMessengerDelegate)delegate;
 - (HMDHome)home;
 - (id)logIdentifier;
-- (void)_requestShareInvitationDataFromUser:(id)a3 retryCount:(unint64_t)a4 activity:(id)a5;
-- (void)_sendShareInvitationData:(id)a3 toDestination:(id)a4 retryCount:(unint64_t)a5 activity:(id)a6 completion:(id)a7;
+- (void)_requestShareInvitationDataFromUser:(id)user retryCount:(unint64_t)count activity:(id)activity;
+- (void)_sendShareInvitationData:(id)data toDestination:(id)destination retryCount:(unint64_t)count activity:(id)activity completion:(id)completion;
 - (void)configure;
-- (void)handleShareInviteMessage:(id)a3;
-- (void)handleShareRequestInviteMessage:(id)a3;
-- (void)handleShareRevokeMessage:(id)a3;
-- (void)notifyOfShareAccessRevocationForUser:(id)a3;
-- (void)requestShareInvitationDataFromUser:(id)a3;
-- (void)sendShareInvitationData:(id)a3 toDevice:(id)a4 completion:(id)a5;
-- (void)sendShareInvitationData:(id)a3 toUser:(id)a4 minimumHomeKitVersion:(id)a5 requiredSupportedFeatures:(id)a6 completion:(id)a7;
+- (void)handleShareInviteMessage:(id)message;
+- (void)handleShareRequestInviteMessage:(id)message;
+- (void)handleShareRevokeMessage:(id)message;
+- (void)notifyOfShareAccessRevocationForUser:(id)user;
+- (void)requestShareInvitationDataFromUser:(id)user;
+- (void)sendShareInvitationData:(id)data toDevice:(id)device completion:(id)completion;
+- (void)sendShareInvitationData:(id)data toUser:(id)user minimumHomeKitVersion:(id)version requiredSupportedFeatures:(id)features completion:(id)completion;
 - (void)unconfigure;
 @end
 
@@ -36,82 +36,82 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCloudShareMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMDCloudShareMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handleShareRevokeMessage:(id)a3
+- (void)handleShareRevokeMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     v13 = 138543618;
     v14 = v9;
     v15 = 2112;
-    v16 = v10;
+    v16 = shortDescription;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Received share revoke message: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDCloudShareMessenger *)v7 delegate];
-  [v11 messengerDidReceiveShareAccessRevocation:v7];
+  delegate = [(HMDCloudShareMessenger *)selfCopy delegate];
+  [delegate messengerDidReceiveShareAccessRevocation:selfCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleShareRequestInviteMessage:(id)a3
+- (void)handleShareRequestInviteMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     v30 = 138543618;
     v31 = v9;
     v32 = 2112;
-    v33 = v10;
+    v33 = shortDescription;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Received share share request invite message: %@", &v30, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDCloudShareMessenger *)v7 home];
-  if (v11)
+  home = [(HMDCloudShareMessenger *)selfCopy home];
+  if (home)
   {
-    v12 = [v4 userForHome:v11];
+    v12 = [messageCopy userForHome:home];
     if (v12)
     {
-      v13 = [v4 remoteSourceDevice];
-      if (v13)
+      remoteSourceDevice = [messageCopy remoteSourceDevice];
+      if (remoteSourceDevice)
       {
-        v14 = v13;
-        v15 = [(HMDCloudShareMessenger *)v7 delegate];
-        [v15 messenger:v7 didReceiveInvitationRequestFromUser:v12 device:v14];
+        v14 = remoteSourceDevice;
+        delegate = [(HMDCloudShareMessenger *)selfCopy delegate];
+        [delegate messenger:selfCopy didReceiveInvitationRequestFromUser:v12 device:v14];
 
-        [v4 respondWithSuccess];
+        [messageCopy respondWithSuccess];
       }
 
       else
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = v7;
+        v25 = selfCopy;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
@@ -123,7 +123,7 @@
 
         objc_autoreleasePoolPop(v24);
         v28 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-        [v4 respondWithError:v28];
+        [messageCopy respondWithError:v28];
 
         v14 = 0;
       }
@@ -132,7 +132,7 @@
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v7;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -144,14 +144,14 @@
 
       objc_autoreleasePoolPop(v20);
       v14 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-      [v4 respondWithError:v14];
+      [messageCopy respondWithError:v14];
     }
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v7;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -163,21 +163,21 @@
 
     objc_autoreleasePoolPop(v16);
     v12 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-    [v4 respondWithError:v12];
+    [messageCopy respondWithError:v12];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleShareInviteMessage:(id)a3
+- (void)handleShareInviteMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -185,45 +185,45 @@
     *buf = 138543618;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Received share invite message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [v4 messagePayload];
-  v11 = [v10 objectForKeyedSubscript:@"invitationData"];
+  messagePayload = [messageCopy messagePayload];
+  v11 = [messagePayload objectForKeyedSubscript:@"invitationData"];
 
   if (v11)
   {
-    v12 = [(HMDCloudShareMessenger *)v7 delegate];
+    delegate = [(HMDCloudShareMessenger *)selfCopy delegate];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __51__HMDCloudShareMessenger_handleShareInviteMessage___block_invoke;
     v20[3] = &unk_27867CBC8;
-    v20[4] = v7;
-    v21 = v4;
-    [v12 messenger:v7 didReceiveInvitationData:v11 completion:v20];
+    v20[4] = selfCopy;
+    v21 = messageCopy;
+    [delegate messenger:selfCopy didReceiveInvitationData:v11 completion:v20];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v4 messagePayload];
+      messagePayload2 = [messageCopy messagePayload];
       *buf = 138543618;
       v23 = v16;
       v24 = 2112;
-      v25 = v17;
+      v25 = messagePayload2;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to find invitation data in share invite message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
     v18 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    [v4 respondWithError:v18];
+    [messageCopy respondWithError:v18];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -275,34 +275,34 @@ void __51__HMDCloudShareMessenger_handleShareInviteMessage___block_invoke(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestShareInvitationDataFromUser:(id)a3 retryCount:(unint64_t)a4 activity:(id)a5
+- (void)_requestShareInvitationDataFromUser:(id)user retryCount:(unint64_t)count activity:(id)activity
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  userCopy = user;
+  activityCopy = activity;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [(HMDRemoteMessage *)v8 accountHandle];
-  if (v11)
+  accountHandle = [(HMDRemoteMessage *)userCopy accountHandle];
+  if (accountHandle)
   {
     v12 = [HMDRemoteAccountMessageDestination alloc];
-    v13 = [(HMDCloudShareMessenger *)self messageTargetUUID];
-    v14 = [(HMDRemoteAccountMessageDestination *)v12 initWithTarget:v13 handle:v11 multicast:0 deviceCapabilities:0];
+    messageTargetUUID = [(HMDCloudShareMessenger *)self messageTargetUUID];
+    v14 = [(HMDRemoteAccountMessageDestination *)v12 initWithTarget:messageTargetUUID handle:accountHandle multicast:0 deviceCapabilities:0];
 
     v15 = [[HMDRemoteMessage alloc] initWithName:@"HMDCloudShareRequestInviteMessage" qualityOfService:17 destination:v14 payload:0 type:0 timeout:1 secure:0.0];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __82__HMDCloudShareMessenger__requestShareInvitationDataFromUser_retryCount_activity___block_invoke;
     v30 = &unk_278672BA8;
-    v31 = self;
-    v32 = v9;
-    v34 = a4;
-    v16 = v8;
+    selfCopy = self;
+    v32 = activityCopy;
+    countCopy = count;
+    v16 = userCopy;
     v33 = v16;
     [(HMDRemoteMessage *)v15 setResponseHandler:&v27];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -317,14 +317,14 @@ void __51__HMDCloudShareMessenger_handleShareInviteMessage___block_invoke(uint64
     }
 
     objc_autoreleasePoolPop(v17);
-    v21 = [(HMDCloudShareMessenger *)v18 messageDispatcher:v27];
+    v21 = [(HMDCloudShareMessenger *)selfCopy2 messageDispatcher:v27];
     [v21 sendMessage:v15];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -332,7 +332,7 @@ void __51__HMDCloudShareMessenger_handleShareInviteMessage___block_invoke(uint64
       *buf = 138543618;
       v36 = v25;
       v37 = 2112;
-      v38 = v8;
+      v38 = userCopy;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Could not request share invitation data from user with no account handle: %@", buf, 0x16u);
     }
 
@@ -465,37 +465,37 @@ void __82__HMDCloudShareMessenger__requestShareInvitationDataFromUser_retryCount
   }
 }
 
-- (void)_sendShareInvitationData:(id)a3 toDestination:(id)a4 retryCount:(unint64_t)a5 activity:(id)a6 completion:(id)a7
+- (void)_sendShareInvitationData:(id)data toDestination:(id)destination retryCount:(unint64_t)count activity:(id)activity completion:(id)completion
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v16);
+  dataCopy = data;
+  destinationCopy = destination;
+  activityCopy = activity;
+  completionCopy = completion;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v48 = @"invitationData";
-  v49[0] = v12;
+  v49[0] = dataCopy;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-  v18 = [[HMDRemoteMessage alloc] initWithName:@"HMDCloudShareInviteMessage" qualityOfService:17 destination:v13 payload:v17 type:0 timeout:1 secure:0.0];
+  v18 = [[HMDRemoteMessage alloc] initWithName:@"HMDCloudShareInviteMessage" qualityOfService:17 destination:destinationCopy payload:v17 type:0 timeout:1 secure:0.0];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCount_activity_completion___block_invoke;
   v36[3] = &unk_278681920;
   v36[4] = self;
-  v19 = v14;
+  v19 = activityCopy;
   v37 = v19;
-  v41 = a5;
-  v20 = v15;
+  countCopy = count;
+  v20 = completionCopy;
   v40 = v20;
-  v21 = v12;
+  v21 = dataCopy;
   v38 = v21;
-  v22 = v13;
+  v22 = destinationCopy;
   v39 = v22;
   [(HMDRemoteMessage *)v18 setResponseHandler:v36];
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -523,8 +523,8 @@ void __82__HMDCloudShareMessenger__requestShareInvitationDataFromUser_retryCount
   }
 
   objc_autoreleasePoolPop(v23);
-  v31 = [(HMDCloudShareMessenger *)v24 messageDispatcher];
-  [v31 sendMessage:v18];
+  messageDispatcher = [(HMDCloudShareMessenger *)selfCopy messageDispatcher];
+  [messageDispatcher sendMessage:v18];
 
   v32 = *MEMORY[0x277D85DE8];
 }
@@ -678,23 +678,23 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
   }
 }
 
-- (void)notifyOfShareAccessRevocationForUser:(id)a3
+- (void)notifyOfShareAccessRevocationForUser:(id)user
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  userCopy = user;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDRemoteMessage *)v4 accountHandle];
-  if (v6)
+  accountHandle = [(HMDRemoteMessage *)userCopy accountHandle];
+  if (accountHandle)
   {
     v7 = [HMDRemoteAccountMessageDestination alloc];
-    v8 = [(HMDCloudShareMessenger *)self messageTargetUUID];
-    v9 = [(HMDRemoteAccountMessageDestination *)v7 initWithTarget:v8 handle:v6 multicast:1];
+    messageTargetUUID = [(HMDCloudShareMessenger *)self messageTargetUUID];
+    v9 = [(HMDRemoteAccountMessageDestination *)v7 initWithTarget:messageTargetUUID handle:accountHandle multicast:1];
 
     v10 = [[HMDRemoteMessage alloc] initWithName:@"HMDCloudShareAccessRevokedMessage" qualityOfService:17 destination:v9 payload:0 type:3 timeout:0 secure:0.0];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -707,14 +707,14 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMDCloudShareMessenger *)v12 messageDispatcher];
-    [v15 sendMessage:v10];
+    messageDispatcher = [(HMDCloudShareMessenger *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v10];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -722,7 +722,7 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
       v21 = 138543618;
       v22 = v19;
       v23 = 2112;
-      v24 = v4;
+      v24 = userCopy;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Could not notify of share access revocation for user with no account handle: %@", &v21, 0x16u);
     }
 
@@ -732,75 +732,75 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestShareInvitationDataFromUser:(id)a3
+- (void)requestShareInvitationDataFromUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  userCopy = user;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Send request share invitation"];
-  [(HMDCloudShareMessenger *)self _requestShareInvitationDataFromUser:v4 retryCount:0 activity:v6];
+  [(HMDCloudShareMessenger *)self _requestShareInvitationDataFromUser:userCopy retryCount:0 activity:v6];
   __HMFActivityScopeLeave();
 }
 
-- (void)sendShareInvitationData:(id)a3 toDevice:(id)a4 completion:(id)a5
+- (void)sendShareInvitationData:(id)data toDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  dataCopy = data;
+  deviceCopy = device;
+  completionCopy = completion;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = [HMDRemoteDeviceMessageDestination alloc];
-  v13 = [(HMDCloudShareMessenger *)self messageTargetUUID];
-  v14 = [(HMDRemoteDeviceMessageDestination *)v12 initWithTarget:v13 device:v9];
+  messageTargetUUID = [(HMDCloudShareMessenger *)self messageTargetUUID];
+  v14 = [(HMDRemoteDeviceMessageDestination *)v12 initWithTarget:messageTargetUUID device:deviceCopy];
 
   v15 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Send share invitation to device"];
-  [(HMDCloudShareMessenger *)self _sendShareInvitationData:v8 toDestination:v14 retryCount:0 activity:v15 completion:v10];
+  [(HMDCloudShareMessenger *)self _sendShareInvitationData:dataCopy toDestination:v14 retryCount:0 activity:v15 completion:completionCopy];
   __HMFActivityScopeLeave();
 }
 
-- (void)sendShareInvitationData:(id)a3 toUser:(id)a4 minimumHomeKitVersion:(id)a5 requiredSupportedFeatures:(id)a6 completion:(id)a7
+- (void)sendShareInvitationData:(id)data toUser:(id)user minimumHomeKitVersion:(id)version requiredSupportedFeatures:(id)features completion:(id)completion
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(HMDCloudShareMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v16);
+  dataCopy = data;
+  userCopy = user;
+  versionCopy = version;
+  featuresCopy = features;
+  completionCopy = completion;
+  workQueue = [(HMDCloudShareMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v39 = @"kRequiredCapabilitiesKey";
   v37[0] = @"kHomedVersionKey";
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v13 versionString];
-  [v18 doubleValue];
+  versionString = [versionCopy versionString];
+  [versionString doubleValue];
   v19 = [v17 numberWithDouble:?];
   v37[1] = @"kHomedSupportedFeaturesKey";
   v38[0] = v19;
-  v20 = [v14 allObjects];
-  v38[1] = v20;
+  allObjects = [featuresCopy allObjects];
+  v38[1] = allObjects;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
   v40[0] = v21;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
 
-  v23 = [v12 accountHandle];
-  if (v23)
+  accountHandle = [userCopy accountHandle];
+  if (accountHandle)
   {
     v24 = [HMDRemoteAccountMessageDestination alloc];
-    v25 = [(HMDCloudShareMessenger *)self messageTargetUUID];
-    v26 = [(HMDRemoteAccountMessageDestination *)v24 initWithTarget:v25 handle:v23 multicast:1 deviceCapabilities:v22];
+    messageTargetUUID = [(HMDCloudShareMessenger *)self messageTargetUUID];
+    v26 = [(HMDRemoteAccountMessageDestination *)v24 initWithTarget:messageTargetUUID handle:accountHandle multicast:1 deviceCapabilities:v22];
 
     *buf = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Send share invitation to user"];
-    [(HMDCloudShareMessenger *)self _sendShareInvitationData:v33 toDestination:v26 retryCount:0 activity:*buf completion:v15];
+    [(HMDCloudShareMessenger *)self _sendShareInvitationData:dataCopy toDestination:v26 retryCount:0 activity:*buf completion:completionCopy];
     __HMFActivityScopeLeave();
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -808,12 +808,12 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
       *buf = 138543618;
       *&buf[4] = v30;
       v35 = 2112;
-      v36 = v12;
+      v36 = userCopy;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Could not send share invitation data to user with no account handle: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v27);
-    v26 = _Block_copy(v15);
+    v26 = _Block_copy(completionCopy);
     if (v26)
     {
       v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
@@ -828,7 +828,7 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -839,9 +839,9 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDCloudShareMessenger *)v4 setConfigured:0];
-  v7 = [(HMDCloudShareMessenger *)v4 messageDispatcher];
-  [v7 deregisterReceiver:v4];
+  [(HMDCloudShareMessenger *)selfCopy setConfigured:0];
+  messageDispatcher = [(HMDCloudShareMessenger *)selfCopy messageDispatcher];
+  [messageDispatcher deregisterReceiver:selfCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -849,22 +849,22 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
 - (void)configure
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudShareMessenger *)self home];
-  if (v3)
+  home = [(HMDCloudShareMessenger *)self home];
+  if (home)
   {
     v4 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-    v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:v3 userPrivilege:5 remoteAccessRequired:0];
+    v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:5 remoteAccessRequired:0];
     v15[0] = v4;
     v15[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-    v7 = [(HMDCloudShareMessenger *)self messageDispatcher];
-    [v7 registerForMessage:@"HMDCloudShareInviteMessage" receiver:self policies:v6 selector:sel_handleShareInviteMessage_];
+    messageDispatcher = [(HMDCloudShareMessenger *)self messageDispatcher];
+    [messageDispatcher registerForMessage:@"HMDCloudShareInviteMessage" receiver:self policies:v6 selector:sel_handleShareInviteMessage_];
 
-    v8 = [(HMDCloudShareMessenger *)self messageDispatcher];
-    [v8 registerForMessage:@"HMDCloudShareRequestInviteMessage" receiver:self policies:v6 selector:sel_handleShareRequestInviteMessage_];
+    messageDispatcher2 = [(HMDCloudShareMessenger *)self messageDispatcher];
+    [messageDispatcher2 registerForMessage:@"HMDCloudShareRequestInviteMessage" receiver:self policies:v6 selector:sel_handleShareRequestInviteMessage_];
 
-    v9 = [(HMDCloudShareMessenger *)self messageDispatcher];
-    [v9 registerForMessage:@"HMDCloudShareAccessRevokedMessage" receiver:self policies:v6 selector:sel_handleShareRevokeMessage_];
+    messageDispatcher3 = [(HMDCloudShareMessenger *)self messageDispatcher];
+    [messageDispatcher3 registerForMessage:@"HMDCloudShareAccessRevokedMessage" receiver:self policies:v6 selector:sel_handleShareRevokeMessage_];
 
     [(HMDCloudShareMessenger *)self setConfigured:1];
   }
@@ -872,7 +872,7 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -888,43 +888,43 @@ void __96__HMDCloudShareMessenger__sendShareInvitationData_toDestination_retryCo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)a3 workQueue:(id)a4 home:(id)a5 messageDispatcher:(id)a6
+- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)d workQueue:(id)queue home:(id)home messageDispatcher:(id)dispatcher
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  dCopy = d;
+  queueCopy = queue;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v12)
+  if (!queueCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!homeCopy)
   {
 LABEL_9:
     v20 = _HMFPreconditionFailure();
     return __85__HMDCloudShareMessenger_initWithMessageTargetUUID_workQueue_home_messageDispatcher___block_invoke(v20);
   }
 
-  v15 = v14;
+  v15 = dispatcherCopy;
   v21.receiver = self;
   v21.super_class = HMDCloudShareMessenger;
   v16 = [(HMDCloudShareMessenger *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_workQueue, a4);
-    objc_storeStrong(&v17->_messageTargetUUID, a3);
-    objc_storeWeak(&v17->_home, v13);
-    objc_storeStrong(&v17->_messageDispatcher, a6);
+    objc_storeStrong(&v16->_workQueue, queue);
+    objc_storeStrong(&v17->_messageTargetUUID, d);
+    objc_storeWeak(&v17->_home, homeCopy);
+    objc_storeStrong(&v17->_messageDispatcher, dispatcher);
     shareInvitationRetryHandler = v17->_shareInvitationRetryHandler;
     v17->_shareInvitationRetryHandler = &__block_literal_global_40595;
   }
@@ -941,13 +941,13 @@ void __85__HMDCloudShareMessenger_initWithMessageTargetUUID_workQueue_home_messa
   dispatch_after(v7, queue, v6);
 }
 
-- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)a3 workQueue:(id)a4 home:(id)a5
+- (HMDCloudShareMessenger)initWithMessageTargetUUID:(id)d workQueue:(id)queue home:(id)home
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  homeCopy = home;
+  queueCopy = queue;
+  dCopy = d;
   v11 = +[HMDMessageDispatcher defaultDispatcher];
-  v12 = [(HMDCloudShareMessenger *)self initWithMessageTargetUUID:v10 workQueue:v9 home:v8 messageDispatcher:v11];
+  v12 = [(HMDCloudShareMessenger *)self initWithMessageTargetUUID:dCopy workQueue:queueCopy home:homeCopy messageDispatcher:v11];
 
   return v12;
 }

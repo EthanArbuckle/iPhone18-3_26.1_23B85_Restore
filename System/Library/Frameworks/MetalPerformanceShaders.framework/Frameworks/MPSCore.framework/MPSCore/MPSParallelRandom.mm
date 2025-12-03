@@ -1,15 +1,15 @@
 @interface MPSParallelRandom
-- (MPSParallelRandom)initWithCoder:(id)a3 device:(id)a4;
-- (MPSParallelRandom)initWithDevice:(id)a3;
-- (MPSParallelRandom)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 generatorType:(int)a5 distributionDescriptor:(id)a6;
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7 stride:(unsigned int)a8;
-- (void)encodeToCommandBuffer:(id)a3 destinationBuffer:(id)a4 destinationOffset:(unint64_t)a5 numEntries:(unint64_t)a6 stride:(unsigned int)a7;
-- (void)encodeWithCoder:(id)a3;
+- (MPSParallelRandom)initWithCoder:(id)coder device:(id)device;
+- (MPSParallelRandom)initWithDevice:(id)device;
+- (MPSParallelRandom)initWithDevice:(id)device destinationDataType:(unsigned int)type generatorType:(int)generatorType distributionDescriptor:(id)descriptor;
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride;
+- (void)encodeToCommandBuffer:(id)buffer destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSParallelRandom
 
-- (MPSParallelRandom)initWithDevice:(id)a3
+- (MPSParallelRandom)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -19,17 +19,17 @@
   return 0;
 }
 
-- (MPSParallelRandom)initWithDevice:(id)a3 destinationDataType:(unsigned int)a4 generatorType:(int)a5 distributionDescriptor:(id)a6
+- (MPSParallelRandom)initWithDevice:(id)device destinationDataType:(unsigned int)type generatorType:(int)generatorType distributionDescriptor:(id)descriptor
 {
   v16.receiver = self;
   v16.super_class = MPSParallelRandom;
-  result = [(MPSKernel *)&v16 initWithDevice:a3];
+  result = [(MPSKernel *)&v16 initWithDevice:device];
   if (result)
   {
-    result->_destinationDataType = a4;
-    result->_generatorType = a5;
+    result->_destinationDataType = type;
+    result->_generatorType = generatorType;
     v14 = result;
-    v15 = objc_msgSend_distributionType(a6, v10, v11, v12, v13);
+    v15 = objc_msgSend_distributionType(descriptor, v10, v11, v12, v13);
     result = v14;
     v14->_distributionType = v15;
   }
@@ -37,28 +37,28 @@
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 computeEncoder:(id)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6 numEntries:(unint64_t)a7 stride:(unsigned int)a8
+- (void)encodeToCommandBuffer:(id)buffer computeEncoder:(id)encoder destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride
 {
   if ((self->super._options & 1) == 0)
   {
-    v14 = a3;
-    if (!a3 && MTLReportFailureTypeEnabled())
+    bufferCopy = buffer;
+    if (!buffer && MTLReportFailureTypeEnabled())
     {
       v22 = objc_opt_class();
       v27 = NSStringFromClass(v22);
       MTLReportFailure();
     }
 
-    if (!a5 && MTLReportFailureTypeEnabled())
+    if (!destinationBuffer && MTLReportFailureTypeEnabled())
     {
       v23 = objc_opt_class();
       v27 = NSStringFromClass(v23);
       MTLReportFailure();
     }
 
-    objc_msgSend_length(a5, a2, a3, a4, a5, v27);
-    v15 = (a7 + a6) * (self->_destinationDataType >> 3);
-    if (v15 > objc_msgSend_length(a5, v16, v17, v18, v19) && MTLReportFailureTypeEnabled())
+    objc_msgSend_length(destinationBuffer, a2, buffer, encoder, destinationBuffer, v27);
+    v15 = (entries + offset) * (self->_destinationDataType >> 3);
+    if (v15 > objc_msgSend_length(destinationBuffer, v16, v17, v18, v19) && MTLReportFailureTypeEnabled())
     {
       v24 = objc_opt_class();
       NSStringFromClass(v24);
@@ -66,7 +66,7 @@
     }
 
     distributionType = self->_distributionType;
-    a3 = v14;
+    buffer = bufferCopy;
     if (distributionType == 1)
     {
       if (self->_destinationDataType == 32)
@@ -82,58 +82,58 @@
       }
 
       distributionType = self->_distributionType;
-      a3 = v14;
+      buffer = bufferCopy;
     }
 
     if (distributionType == 2 && self->_destinationDataType != 268435488)
     {
       v25 = MTLReportFailureTypeEnabled();
-      a3 = v14;
+      buffer = bufferCopy;
       if (v25)
       {
         v26 = objc_opt_class();
         NSStringFromClass(v26);
         MTLReportFailure();
-        a3 = v14;
+        buffer = bufferCopy;
       }
     }
   }
 
 LABEL_12:
-  if (a7)
+  if (entries)
   {
 
-    sub_22E367DD0(self, a4, a3, a5, a6, a7, a8);
+    sub_22E367DD0(self, encoder, buffer, destinationBuffer, offset, entries, stride);
   }
 }
 
-- (void)encodeToCommandBuffer:(id)a3 destinationBuffer:(id)a4 destinationOffset:(unint64_t)a5 numEntries:(unint64_t)a6 stride:(unsigned int)a7
+- (void)encodeToCommandBuffer:(id)buffer destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)offset numEntries:(unint64_t)entries stride:(unsigned int)stride
 {
   if ((self->super._options & 1) == 0)
   {
-    if (!a3 && MTLReportFailureTypeEnabled())
+    if (!buffer && MTLReportFailureTypeEnabled())
     {
       v37 = objc_opt_class();
       v41 = NSStringFromClass(v37);
       MTLReportFailure();
     }
 
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!destinationBuffer && MTLReportFailureTypeEnabled())
     {
       v38 = objc_opt_class();
       v41 = NSStringFromClass(v38);
       MTLReportFailure();
     }
 
-    objc_msgSend_length(a4, a2, a3, a4, a5, v41);
-    v13 = (a6 + a5) * (self->_destinationDataType >> 3);
-    if (v13 > objc_msgSend_length(a4, v14, v15, v16, v17) && MTLReportFailureTypeEnabled())
+    objc_msgSend_length(destinationBuffer, a2, buffer, destinationBuffer, offset, v41);
+    v13 = (entries + offset) * (self->_destinationDataType >> 3);
+    if (v13 > objc_msgSend_length(destinationBuffer, v14, v15, v16, v17) && MTLReportFailureTypeEnabled())
     {
       v39 = objc_opt_class();
-      v43 = a4;
-      v44 = a5;
+      destinationBufferCopy = destinationBuffer;
+      offsetCopy = offset;
       v41 = NSStringFromClass(v39);
-      v42 = a6;
+      entriesCopy = entries;
       MTLReportFailure();
     }
 
@@ -164,29 +164,29 @@ LABEL_12:
   }
 
 LABEL_12:
-  if (a6)
+  if (entries)
   {
     v20 = [MPSComputeEncoder alloc];
-    v26 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v20, v21, a3, 0, v22);
+    v26 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v20, v21, buffer, 0, v22);
     if ((self->super._options & 0x18) != 0)
     {
       label = self->super._label;
       if (label || (v28 = objc_opt_class(), v29 = NSStringFromClass(v28), objc_msgSend_setLabel_(self, v30, v29, v31, v32), (label = v29) != 0))
       {
-        objc_msgSend_setLabel_(v26, v23, label, v24, v25, v41, v42, v43, v44, v26, self);
+        objc_msgSend_setLabel_(v26, v23, label, v24, v25, v41, entriesCopy, destinationBufferCopy, offsetCopy, v26, self);
       }
     }
 
-    sub_22E367DD0(self, v26, a3, a4, a5, a6, a7);
+    sub_22E367DD0(self, v26, buffer, destinationBuffer, offset, entries, stride);
     objc_msgSend_endEncoding(v26, v33, v34, v35, v36);
   }
 }
 
-- (MPSParallelRandom)initWithCoder:(id)a3 device:(id)a4
+- (MPSParallelRandom)initWithCoder:(id)coder device:(id)device
 {
   v18.receiver = self;
   v18.super_class = MPSParallelRandom;
-  v5 = [(MPSKernel *)&v18 initWithCoder:a3 device:a4];
+  v5 = [(MPSKernel *)&v18 initWithCoder:coder device:device];
   v9 = v5;
   if (!v5)
   {
@@ -195,9 +195,9 @@ LABEL_12:
 
   if (*(&v5->super._fileVersion.var0 + 1) << 16 == 0x10000)
   {
-    v5->_destinationDataType = objc_msgSend_decodeInt32ForKey_(a3, v6, @"kMPSParallelRandomDataTypeKey", v7, v8);
-    v9->_distributionType = objc_msgSend_decodeInt32ForKey_(a3, v10, @"kMPSParallelRandomDistributionKey", v11, v12);
-    v9->_generatorType = objc_msgSend_decodeInt32ForKey_(a3, v13, @"kMPSParallelRandomGeneratorKey", v14, v15);
+    v5->_destinationDataType = objc_msgSend_decodeInt32ForKey_(coder, v6, @"kMPSParallelRandomDataTypeKey", v7, v8);
+    v9->_distributionType = objc_msgSend_decodeInt32ForKey_(coder, v10, @"kMPSParallelRandomDistributionKey", v11, v12);
+    v9->_generatorType = objc_msgSend_decodeInt32ForKey_(coder, v13, @"kMPSParallelRandomGeneratorKey", v14, v15);
     return v9;
   }
 
@@ -211,15 +211,15 @@ LABEL_12:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super._fileVersion.var0 + 1) = 1;
   v11.receiver = self;
   v11.super_class = MPSParallelRandom;
   [(MPSKernel *)&v11 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_destinationDataType, @"kMPSParallelRandomDataTypeKey", v6);
-  objc_msgSend_encodeInt32_forKey_(a3, v7, LODWORD(self->_distributionType), @"kMPSParallelRandomDistributionKey", v8);
-  objc_msgSend_encodeInt32_forKey_(a3, v9, self->_generatorType, @"kMPSParallelRandomGeneratorKey", v10);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_destinationDataType, @"kMPSParallelRandomDataTypeKey", v6);
+  objc_msgSend_encodeInt32_forKey_(coder, v7, LODWORD(self->_distributionType), @"kMPSParallelRandomDistributionKey", v8);
+  objc_msgSend_encodeInt32_forKey_(coder, v9, self->_generatorType, @"kMPSParallelRandomGeneratorKey", v10);
 }
 
 @end

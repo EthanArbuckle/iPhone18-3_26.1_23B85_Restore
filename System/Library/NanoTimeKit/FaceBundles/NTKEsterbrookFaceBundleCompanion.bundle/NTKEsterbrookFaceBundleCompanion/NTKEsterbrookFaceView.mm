@@ -1,16 +1,16 @@
 @interface NTKEsterbrookFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKEsterbrookFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKEsterbrookFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPalette:(id)a3;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPalette:(id)palette;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowContentForUnadornedSnapshot;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_loadSnapshotContentViews;
 - (void)_setupSceneCoordinator;
 - (void)_setupTimeView;
@@ -20,41 +20,41 @@
 - (void)_teardownTimeView;
 - (void)_unloadSnapshotContentViews;
 - (void)layoutSubviews;
-- (void)screenDidTurnOffAnimated:(BOOL)a3;
-- (void)screenWillTurnOnAnimated:(BOOL)a3;
-- (void)setDataMode:(int64_t)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)screenDidTurnOffAnimated:(BOOL)animated;
+- (void)screenWillTurnOnAnimated:(BOOL)animated;
+- (void)setDataMode:(int64_t)mode;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKEsterbrookFaceView
 
-- (void)screenWillTurnOnAnimated:(BOOL)a3
+- (void)screenWillTurnOnAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v11.receiver = self;
   v11.super_class = NTKEsterbrookFaceView;
   [(NTKEsterbrookFaceView *)&v11 screenWillTurnOnAnimated:?];
   v8 = objc_msgSend_sceneCoordinator(self, v5, v6, v7);
-  objc_msgSend_screenWillTurnOnAnimated_(v8, v9, v3, v10);
+  objc_msgSend_screenWillTurnOnAnimated_(v8, v9, animatedCopy, v10);
 }
 
-- (void)screenDidTurnOffAnimated:(BOOL)a3
+- (void)screenDidTurnOffAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v11.receiver = self;
   v11.super_class = NTKEsterbrookFaceView;
   [(NTKEsterbrookFaceView *)&v11 screenDidTurnOffAnimated:?];
   v8 = objc_msgSend_sceneCoordinator(self, v5, v6, v7);
-  objc_msgSend_screenDidTurnOffWithAnimated_(v8, v9, v3, v10);
+  objc_msgSend_screenDidTurnOffWithAnimated_(v8, v9, animatedCopy, v10);
 }
 
-- (NTKEsterbrookFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKEsterbrookFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKEsterbrookFaceView;
-  return [(NTKEsterbrookFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  return [(NTKEsterbrookFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
 }
 
 - (void)_loadSnapshotContentViews
@@ -192,33 +192,33 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v11.receiver = self;
   v11.super_class = NTKEsterbrookFaceView;
-  v6 = a3;
-  [(NTKEsterbrookFaceView *)&v11 setOverrideDate:v6 duration:a4];
-  objc_msgSend_setOverrideDate_duration_(self->_handsView, v7, v6, v8, a4, v11.receiver, v11.super_class);
-  objc_msgSend_setOverrideDate_duration_(self->_sceneCoordinator, v9, v6, v10, a4);
+  dateCopy = date;
+  [(NTKEsterbrookFaceView *)&v11 setOverrideDate:dateCopy duration:duration];
+  objc_msgSend_setOverrideDate_duration_(self->_handsView, v7, dateCopy, v8, duration, v11.receiver, v11.super_class);
+  objc_msgSend_setOverrideDate_duration_(self->_sceneCoordinator, v9, dateCopy, v10, duration);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v11.receiver = self;
   v11.super_class = NTKEsterbrookFaceView;
   [(NTKEsterbrookFaceView *)&v11 setTimeOffset:?];
-  objc_msgSend_setTimeOffset_(self->_handsView, v5, v6, v7, a3);
-  objc_msgSend_setTimeOffset_(self->_sceneCoordinator, v8, v9, v10, a3);
+  objc_msgSend_setTimeOffset_(self->_handsView, v5, v6, v7, offset);
+  objc_msgSend_setTimeOffset_(self->_sceneCoordinator, v8, v9, v10, offset);
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v3 = a3;
+  frozenCopy = frozen;
   v9.receiver = self;
   v9.super_class = NTKEsterbrookFaceView;
   [(NTKEsterbrookFaceView *)&v9 setFrozen:?];
-  objc_msgSend_setFrozen_(self->_handsView, v5, v3, v6);
-  objc_msgSend_setFrozen_(self->_sceneCoordinator, v7, v3, v8);
+  objc_msgSend_setFrozen_(self->_handsView, v5, frozenCopy, v6);
+  objc_msgSend_setFrozen_(self->_sceneCoordinator, v7, frozenCopy, v8);
 }
 
 - (void)layoutSubviews
@@ -228,11 +228,11 @@
   [(NTKEsterbrookFaceView *)&v2 layoutSubviews];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v11.receiver = self;
   v11.super_class = NTKEsterbrookFaceView;
-  [(NTKEsterbrookFaceView *)&v11 setDataMode:a3];
+  [(NTKEsterbrookFaceView *)&v11 setDataMode:mode];
   handsView = self->_handsView;
   v8 = objc_msgSend_dataMode(self, v5, v6, v7);
   objc_msgSend_setDataMode_(handsView, v9, v8, v10);
@@ -278,15 +278,15 @@
   objc_msgSend_setHidden_(v6, v11, v10, v12);
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &unk_284E98B18;
-  if (a3 != 10)
+  if (options != 10)
   {
     v4 = 0;
   }
 
-  if (a3 == 11)
+  if (options == 11)
   {
     return &unk_284E98B00;
   }
@@ -297,16 +297,16 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  if (a4 == 11)
+  optionCopy = option;
+  if (mode == 11)
   {
-    v9 = a5;
-    v12 = objc_msgSend_objectForKeyedSubscript_(v9, v10, &unk_284E98AA0, v11);
-    v15 = objc_msgSend_objectForKeyedSubscript_(v9, v13, &unk_284E98A88, v14);
+    optionsCopy = options;
+    v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v10, &unk_284E98AA0, v11);
+    v15 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v13, &unk_284E98A88, v14);
 
-    v16 = v8;
+    optionsCopy2 = optionCopy;
     if (!qword_27E1C9800)
     {
       v20 = objc_opt_new();
@@ -316,7 +316,7 @@
 
     v22 = MEMORY[0x277CCACA8];
     v23 = objc_msgSend_identifier(v15, v17, v18, v19);
-    v26 = objc_msgSend_stringWithFormat_(v22, v24, @"%@-%@", v25, v16, v23);
+    v26 = objc_msgSend_stringWithFormat_(v22, v24, @"%@-%@", v25, optionsCopy2, v23);
 
     v29 = objc_msgSend_objectForKey_(qword_27E1C9800, v27, v26, v28);
     if (!v29)
@@ -328,7 +328,7 @@
       objc_msgSend_frame(self, v37, v38, v39);
       objc_msgSend_setFrame_(v36, v40, v41, v42);
       objc_msgSend__loadSnapshotContentViews(v36, v43, v44, v45);
-      objc_msgSend_setOption_forCustomEditMode_slot_(v36, v46, v16, 11, 0);
+      objc_msgSend_setOption_forCustomEditMode_slot_(v36, v46, optionsCopy2, 11, 0);
       objc_msgSend_setOption_forCustomEditMode_slot_(v36, v47, v15, 10, 0);
       v48 = NTKIdealizedDate();
       objc_msgSend_setOverrideDate_duration_(v36, v49, v48, v50, 0.0);
@@ -355,18 +355,18 @@
   {
     v77.receiver = self;
     v77.super_class = NTKEsterbrookFaceView;
-    v16 = a5;
-    v29 = [(NTKEsterbrookFaceView *)&v77 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v16];
+    optionsCopy2 = options;
+    v29 = [(NTKEsterbrookFaceView *)&v77 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy2];
   }
 
   return v29;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v29 = a3;
-  v11 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
     v16 = objc_msgSend_esterbrookPalette(self, v8, v9, v10);
     objc_msgSend__applyPalette_(self, v27, v16, v28);
@@ -374,12 +374,12 @@
 
   else
   {
-    if (a4 != 11)
+    if (mode != 11)
     {
       goto LABEL_6;
     }
 
-    v12 = objc_msgSend_density(v29, v8, v9, v10);
+    v12 = objc_msgSend_density(optionCopy, v8, v9, v10);
     v16 = objc_msgSend_sceneCoordinator(self, v13, v14, v15);
     v20 = objc_msgSend_sceneView(v16, v17, v18, v19);
     v24 = objc_msgSend_dialView(v20, v21, v22, v23);
@@ -389,12 +389,12 @@
 LABEL_6:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v37 = a4;
-  v12 = a5;
-  v16 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
     v25 = objc_msgSend_interpolatedColorPalette(self, v13, v14, v15);
     objc_msgSend__applyPalette_(self, v35, v25, v36);
@@ -402,39 +402,39 @@ LABEL_6:
 
   else
   {
-    if (a6 != 11)
+    if (mode != 11)
     {
       goto LABEL_6;
     }
 
-    v17 = objc_msgSend_density(v37, v13, v14, v15);
-    v21 = objc_msgSend_density(v12, v18, v19, v20);
+    v17 = objc_msgSend_density(optionCopy, v13, v14, v15);
+    v21 = objc_msgSend_density(toOptionCopy, v18, v19, v20);
     v25 = objc_msgSend_sceneCoordinator(self, v22, v23, v24);
     v29 = objc_msgSend_sceneView(v25, v26, v27, v28);
     v33 = objc_msgSend_dialView(v29, v30, v31, v32);
-    objc_msgSend_applyDensityTransitionWithFraction_from_to_(v33, v34, v17, v21, a3);
+    objc_msgSend_applyDensityTransitionWithFraction_from_to_(v33, v34, v17, v21, fraction);
   }
 
 LABEL_6:
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKEsterbrookFaceView;
-  [(NTKEsterbrookFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  objc_msgSend_setBreathingFraction_(self, v7, v8, v9, a3);
+  [(NTKEsterbrookFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  objc_msgSend_setBreathingFraction_(self, v7, v8, v9, fraction);
   objc_msgSend__applyBreathingAndRubberbanding(self, v10, v11, v12);
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v16.receiver = self;
   v16.super_class = NTKEsterbrookFaceView;
-  [(NTKEsterbrookFaceView *)&v16 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKEsterbrookFaceView *)&v16 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
   NTKAlphaForRubberBandingFraction();
   objc_msgSend_setAlpha_(self, v7, v8, v9);
-  objc_msgSend_setRubberbandingFraction_(self, v10, v11, v12, a3);
+  objc_msgSend_setRubberbandingFraction_(self, v10, v11, v12, fraction);
   objc_msgSend__applyBreathingAndRubberbanding(self, v13, v14, v15);
 }
 
@@ -457,11 +457,11 @@ LABEL_6:
   return v2;
 }
 
-- (void)_applyPalette:(id)a3
+- (void)_applyPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   v10 = objc_msgSend_sceneCoordinator(self, v5, v6, v7);
-  objc_msgSend_setColorPalette_(v10, v8, v4, v9);
+  objc_msgSend_setColorPalette_(v10, v8, paletteCopy, v9);
 }
 
 @end

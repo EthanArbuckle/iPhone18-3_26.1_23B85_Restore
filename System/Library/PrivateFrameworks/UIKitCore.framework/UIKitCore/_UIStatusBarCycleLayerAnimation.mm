@@ -1,30 +1,30 @@
 @interface _UIStatusBarCycleLayerAnimation
-+ (id)cycleAnimationWithLayer:(id)a3 animation:(id)a4 key:(id)a5;
++ (id)cycleAnimationWithLayer:(id)layer animation:(id)animation key:(id)key;
 - (id)description;
 @end
 
 @implementation _UIStatusBarCycleLayerAnimation
 
-+ (id)cycleAnimationWithLayer:(id)a3 animation:(id)a4 key:(id)a5
++ (id)cycleAnimationWithLayer:(id)layer animation:(id)animation key:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  v12 = [MEMORY[0x1E6979308] animation];
-  v16[0] = v9;
+  keyCopy = key;
+  animationCopy = animation;
+  layerCopy = layer;
+  v11 = objc_alloc_init(self);
+  animation = [MEMORY[0x1E6979308] animation];
+  v16[0] = animationCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  [v12 setAnimations:v13];
+  [animation setAnimations:v13];
 
-  [v9 duration];
-  [v12 setDuration:?];
-  [v12 setAutoreverses:{objc_msgSend(v9, "autoreverses")}];
-  [v11 setLayer:v10];
+  [animationCopy duration];
+  [animation setDuration:?];
+  [animation setAutoreverses:{objc_msgSend(animationCopy, "autoreverses")}];
+  [v11 setLayer:layerCopy];
 
-  [v11 setAnimation:v12];
-  [v11 setOriginalAnimation:v9];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%p", v8, v11];
+  [v11 setAnimation:animation];
+  [v11 setOriginalAnimation:animationCopy];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%p", keyCopy, v11];
 
   [v11 setKey:v14];
 

@@ -1,10 +1,10 @@
 @interface EACellBroadcastSwitchExtension
-- (BOOL)readCustomPrefForKey:(id)a3 withDefault:(BOOL)a4;
+- (BOOL)readCustomPrefForKey:(id)key withDefault:(BOOL)default;
 - (EACellBroadcastSwitchExtension)init;
 - (id)getAlertState;
 - (id)getAlwaysDeliverState;
 - (id)getEnhancedDeliveryState;
-- (id)readAlertState:(id)a3;
+- (id)readAlertState:(id)state;
 - (id)specifiers;
 - (void)addAlwaysDeliverOption;
 - (void)addEnhancedDeliveryOption;
@@ -12,9 +12,9 @@
 - (void)removeAlwaysDeliverOption;
 - (void)removeEnhancedDeliveryOption;
 - (void)resetItems;
-- (void)setAlertState:(id)a3;
-- (void)setAlertStateforKey:(id)a3 withValue:(id)a4;
-- (void)setCustomPreferenceForKey:(id)a3 withValue:(id)a4;
+- (void)setAlertState:(id)state;
+- (void)setAlertStateforKey:(id)key withValue:(id)value;
+- (void)setCustomPreferenceForKey:(id)key withValue:(id)value;
 @end
 
 @implementation EACellBroadcastSwitchExtension
@@ -67,31 +67,31 @@
   return v3;
 }
 
-- (void)setCustomPreferenceForKey:(id)a3 withValue:(id)a4
+- (void)setCustomPreferenceForKey:(id)key withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v8 = _CTServerConnectionCreate();
   if (v8)
   {
     v9 = v8;
     Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionarySetValue(Mutable, @"AlertType", self->_alertKey);
-    v11 = [v7 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     v12 = &kCFBooleanTrue;
-    if (!v11)
+    if (!bOOLValue)
     {
       v12 = &kCFBooleanFalse;
     }
 
-    CFDictionarySetValue(Mutable, v6, *v12);
+    CFDictionarySetValue(Mutable, keyCopy, *v12);
     v13 = getLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       alertKey = self->_alertKey;
-      v15 = [v7 BOOLValue];
+      bOOLValue2 = [valueCopy BOOLValue];
       v16 = @"disabled";
-      if (v15)
+      if (bOOLValue2)
       {
         v16 = @"enabled";
       }
@@ -100,7 +100,7 @@
       *buf = 138543874;
       v23 = alertKey;
       v24 = 2114;
-      v25 = v6;
+      v25 = keyCopy;
       v26 = 2114;
       v27 = v17;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Storing custom user pref for %{public}@ - [%{public}@: %{public}@]", buf, 0x20u);
@@ -139,21 +139,21 @@
   }
 }
 
-- (void)setAlertStateforKey:(id)a3 withValue:(id)a4
+- (void)setAlertStateforKey:(id)key withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v8 = _CTServerConnectionCreate();
   if (v8)
   {
     v9 = v8;
-    v10 = [v7 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     v11 = getLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       alertKey = self->_alertKey;
       v13 = @"disabled";
-      if (v10)
+      if (bOOLValue)
       {
         v13 = @"enabled";
       }
@@ -191,9 +191,9 @@
   }
 }
 
-- (id)readAlertState:(id)a3
+- (id)readAlertState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _CTServerConnectionCreate();
   if (v5)
   {
@@ -230,7 +230,7 @@
     v13 = v12;
     if (v12)
     {
-      v16 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
 
     else
@@ -242,18 +242,18 @@
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Malformed EnabledByDefault payload", buf, 2u);
       }
 
-      v16 = 0;
+      bOOLValue = 0;
     }
 
-    v15 = [NSNumber numberWithBool:v16];
+    v15 = [NSNumber numberWithBool:bOOLValue];
   }
 
   return v15;
 }
 
-- (BOOL)readCustomPrefForKey:(id)a3 withDefault:(BOOL)a4
+- (BOOL)readCustomPrefForKey:(id)key withDefault:(BOOL)default
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = _CTServerConnectionCreate();
   if (v7)
   {
@@ -301,7 +301,7 @@
     }
   }
 
-  return a4;
+  return default;
 }
 
 - (id)getEnhancedDeliveryState
@@ -421,16 +421,16 @@
   return v2;
 }
 
-- (void)setAlertState:(id)a3
+- (void)setAlertState:(id)state
 {
   alertKey = self->_alertKey;
-  v5 = a3;
-  [(EACellBroadcastSwitchExtension *)self setAlertStateforKey:alertKey withValue:v5];
-  v6 = [v5 BOOLValue];
+  stateCopy = state;
+  [(EACellBroadcastSwitchExtension *)self setAlertStateforKey:alertKey withValue:stateCopy];
+  bOOLValue = [stateCopy BOOLValue];
 
   v7 = getLogger();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (bOOLValue)
   {
     if (v8)
     {
@@ -457,23 +457,23 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   [(EACellBroadcastSwitchExtension *)self resetItems];
-  v3 = [(EACellBroadcastSwitchExtension *)v2 specifier];
-  v4 = [v3 propertyForKey:@"AlertKey"];
-  alertKey = v2->_alertKey;
-  v2->_alertKey = v4;
+  specifier = [(EACellBroadcastSwitchExtension *)selfCopy specifier];
+  v4 = [specifier propertyForKey:@"AlertKey"];
+  alertKey = selfCopy->_alertKey;
+  selfCopy->_alertKey = v4;
 
-  v6 = [(EACellBroadcastSwitchExtension *)v2 specifier];
-  v7 = [v6 propertyForKey:@"AlertDetail"];
-  alertDict = v2->_alertDict;
-  v2->_alertDict = v7;
+  specifier2 = [(EACellBroadcastSwitchExtension *)selfCopy specifier];
+  v7 = [specifier2 propertyForKey:@"AlertDetail"];
+  alertDict = selfCopy->_alertDict;
+  selfCopy->_alertDict = v7;
 
   v9 = getLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v2->_alertKey;
-    v11 = v2->_alertDict;
+    v10 = selfCopy->_alertKey;
+    v11 = selfCopy->_alertDict;
     *buf = 138412546;
     v38 = v10;
     v39 = 2112;
@@ -481,13 +481,13 @@
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Custom settings for %@ - %@", buf, 0x16u);
   }
 
-  v12 = [(EACellBroadcastSwitchExtension *)v2 readAlertState:v2->_alertKey];
-  [(NSMutableArray *)v2->_specifierArray addObject:v2->_rootGroupSpecifier];
-  [(EACellBroadcastSwitchExtension *)v2 addRootAlertSwitch];
-  v13 = [v12 BOOLValue];
+  v12 = [(EACellBroadcastSwitchExtension *)selfCopy readAlertState:selfCopy->_alertKey];
+  [(NSMutableArray *)selfCopy->_specifierArray addObject:selfCopy->_rootGroupSpecifier];
+  [(EACellBroadcastSwitchExtension *)selfCopy addRootAlertSwitch];
+  bOOLValue = [v12 BOOLValue];
   v14 = getLogger();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (bOOLValue)
   {
     if (v15)
     {
@@ -495,7 +495,7 @@
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Root alert is enabled - Adding other options", buf, 2u);
     }
 
-    v16 = [(NSDictionary *)v2->_alertDict objectForKeyedSubscript:@"CustomPreferences"];
+    v16 = [(NSDictionary *)selfCopy->_alertDict objectForKeyedSubscript:@"CustomPreferences"];
     v14 = v16;
     if (!v16 || [v16 count]>= 3)
     {
@@ -522,7 +522,7 @@
 
     v19 = v18;
     v30 = v12;
-    v31 = v2;
+    v31 = selfCopy;
     v20 = 0;
     v21 = 0;
     v22 = *v33;
@@ -558,7 +558,7 @@
 
     if (v21)
     {
-      v2 = v31;
+      selfCopy = v31;
       [(NSMutableArray *)v31->_specifierArray addObject:v31->_groupSpecifierForEnhancedDelivery];
       [(EACellBroadcastSwitchExtension *)v31 addEnhancedDeliveryOption];
       if ((v20 & 1) == 0)
@@ -569,7 +569,7 @@
 
     else
     {
-      v2 = v31;
+      selfCopy = v31;
       if ((v20 & 1) == 0)
       {
 LABEL_29:
@@ -578,8 +578,8 @@ LABEL_29:
       }
     }
 
-    [(NSMutableArray *)v2->_specifierArray addObject:v2->_alwaysDeliverGroupSpecifier];
-    [(EACellBroadcastSwitchExtension *)v2 addAlwaysDeliverOption];
+    [(NSMutableArray *)selfCopy->_specifierArray addObject:selfCopy->_alwaysDeliverGroupSpecifier];
+    [(EACellBroadcastSwitchExtension *)selfCopy addAlwaysDeliverOption];
     goto LABEL_29;
   }
 
@@ -591,8 +591,8 @@ LABEL_29:
 
 LABEL_30:
 
-  objc_storeStrong(&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers], v2->_specifierArray);
-  specifierArray = v2->_specifierArray;
+  objc_storeStrong(&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers], selfCopy->_specifierArray);
+  specifierArray = selfCopy->_specifierArray;
   v28 = specifierArray;
 
   return specifierArray;

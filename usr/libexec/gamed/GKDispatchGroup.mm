@@ -1,14 +1,14 @@
 @interface GKDispatchGroup
-- (void)performOnQueue:(id)a3 block:(id)a4;
+- (void)performOnQueue:(id)queue block:(id)block;
 @end
 
 @implementation GKDispatchGroup
 
-- (void)performOnQueue:(id)a3 block:(id)a4
+- (void)performOnQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     sub_100292FFC(a2, self);
   }
@@ -17,10 +17,10 @@
   v11[1] = 3221225472;
   v11[2] = sub_10015CBF8;
   v11[3] = &unk_100368000;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   [(GKDispatchGroup *)self perform:v11];
 }
 

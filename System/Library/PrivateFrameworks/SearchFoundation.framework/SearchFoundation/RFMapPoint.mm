@@ -1,12 +1,12 @@
 @interface RFMapPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFMapPoint)initWithCoder:(id)a3;
-- (RFMapPoint)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFMapPoint)initWithCoder:(id)coder;
+- (RFMapPoint)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFMapPoint
@@ -25,17 +25,17 @@
   return veorq_s8(v8, vdupq_laneq_s64(v8, 1)).u64[0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if ([(RFMapPoint *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RFMapPoint *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(RFMapPoint *)self x];
     v7 = v6;
     [(RFMapPoint *)v5 x];
@@ -61,9 +61,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(RFMapPoint *)self x];
   [v4 setX:?];
   [(RFMapPoint *)self y];
@@ -74,31 +74,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFMapPoint alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapPoint *)v2 jsonData];
+  jsonData = [(_SFPBRFMapPoint *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFMapPoint alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapPoint *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFMapPoint *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFMapPoint alloc] initWithFacade:self];
-  v5 = [(_SFPBRFMapPoint *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFMapPoint *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFMapPoint)initWithCoder:(id)a3
+- (RFMapPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFMapPoint alloc] initWithData:v5];
   v7 = [(RFMapPoint *)self initWithProtobuf:v6];
@@ -106,25 +106,25 @@
   return v7;
 }
 
-- (RFMapPoint)initWithProtobuf:(id)a3
+- (RFMapPoint)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = RFMapPoint;
   v5 = [(RFMapPoint *)&v10 init];
   if (v5)
   {
-    [v4 x];
+    [protobufCopy x];
     if (v6 != 0.0)
     {
-      [v4 x];
+      [protobufCopy x];
       [(RFMapPoint *)v5 setX:?];
     }
 
-    [v4 y];
+    [protobufCopy y];
     if (v7 != 0.0)
     {
-      [v4 y];
+      [protobufCopy y];
       [(RFMapPoint *)v5 setY:?];
     }
 

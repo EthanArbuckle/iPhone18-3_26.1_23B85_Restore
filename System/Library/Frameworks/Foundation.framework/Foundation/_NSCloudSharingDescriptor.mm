@@ -1,8 +1,8 @@
 @interface _NSCloudSharingDescriptor
-- (_NSCloudSharingDescriptor)initWithCoder:(id)a3;
+- (_NSCloudSharingDescriptor)initWithCoder:(id)coder;
 - (id)_variantSubstrings;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSCloudSharingDescriptor
@@ -16,31 +16,31 @@
   [(_NSCloudSharingDescriptor *)&v3 dealloc];
 }
 
-- (_NSCloudSharingDescriptor)initWithCoder:(id)a3
+- (_NSCloudSharingDescriptor)initWithCoder:(id)coder
 {
-  self->_operation = [a3 decodeIntegerForKey:@"NSShareOperation"];
-  self->_invitationsSentViaThirdPartyService = [a3 decodeBoolForKey:@"NSShareViaThirdParty"];
-  self->_publicShare = [a3 decodeBoolForKey:@"NSSharePublic"];
-  self->_numberOfInvitations = [a3 decodeIntegerForKey:@"NSShareNumberOfInviations"];
-  self->_sharedContentType = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSShareContentType"];
+  self->_operation = [coder decodeIntegerForKey:@"NSShareOperation"];
+  self->_invitationsSentViaThirdPartyService = [coder decodeBoolForKey:@"NSShareViaThirdParty"];
+  self->_publicShare = [coder decodeBoolForKey:@"NSSharePublic"];
+  self->_numberOfInvitations = [coder decodeIntegerForKey:@"NSShareNumberOfInviations"];
+  self->_sharedContentType = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSShareContentType"];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_operation forKey:@"NSShareOperation"];
-  [a3 encodeBool:self->_invitationsSentViaThirdPartyService forKey:@"NSShareViaThirdParty"];
-  [a3 encodeBool:self->_publicShare forKey:@"NSSharePublic"];
-  [a3 encodeInteger:self->_numberOfInvitations forKey:@"NSShareNumberOfInviations"];
+  [coder encodeInteger:self->_operation forKey:@"NSShareOperation"];
+  [coder encodeBool:self->_invitationsSentViaThirdPartyService forKey:@"NSShareViaThirdParty"];
+  [coder encodeBool:self->_publicShare forKey:@"NSSharePublic"];
+  [coder encodeInteger:self->_numberOfInvitations forKey:@"NSShareNumberOfInviations"];
   sharedContentType = self->_sharedContentType;
 
-  [a3 encodeObject:sharedContentType forKey:@"NSShareContentType"];
+  [coder encodeObject:sharedContentType forKey:@"NSShareContentType"];
 }
 
 - (id)_variantSubstrings
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   v5 = self->_operation - 1;
   if (v5 < 3)
   {
@@ -54,7 +54,7 @@ LABEL_13:
   {
     v7 = @"Public";
 LABEL_9:
-    [v3 addObject:v7];
+    [array addObject:v7];
     goto LABEL_10;
   }
 

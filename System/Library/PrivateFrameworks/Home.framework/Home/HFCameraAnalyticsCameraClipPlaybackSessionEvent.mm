@@ -1,49 +1,49 @@
 @interface HFCameraAnalyticsCameraClipPlaybackSessionEvent
-- (id)sendEventForState:(unint64_t)a3;
+- (id)sendEventForState:(unint64_t)state;
 @end
 
 @implementation HFCameraAnalyticsCameraClipPlaybackSessionEvent
 
-- (id)sendEventForState:(unint64_t)a3
+- (id)sendEventForState:(unint64_t)state
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [(HFCameraAnalyticsEvent *)self cameraClip];
+  cameraClip = [(HFCameraAnalyticsEvent *)self cameraClip];
 
-  if (v5)
+  if (cameraClip)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [(HFCameraAnalyticsEvent *)self startDate];
-    [v6 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    startDate = [(HFCameraAnalyticsEvent *)self startDate];
+    [date timeIntervalSinceDate:startDate];
     v9 = v8;
 
     v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(v9 * 1000.0)];
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(HFCameraAnalyticsEvent *)self cameraClip];
-    v36 = [v10 numberWithBool:{objc_msgSend(v11, "isComplete")}];
+    cameraClip2 = [(HFCameraAnalyticsEvent *)self cameraClip];
+    v36 = [v10 numberWithBool:{objc_msgSend(cameraClip2, "isComplete")}];
 
-    v12 = [MEMORY[0x277CCAC38] processInfo];
-    v35 = [v12 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(HFCameraAnalyticsEvent *)self cameraClip];
-    [v15 duration];
+    cameraClip3 = [(HFCameraAnalyticsEvent *)self cameraClip];
+    [cameraClip3 duration];
     v17 = [v14 numberWithUnsignedInteger:v16];
 
     v18 = MEMORY[0x277CCABB0];
     v19 = MEMORY[0x277CBEAA8];
-    v20 = [(HFCameraAnalyticsEvent *)self cameraClip];
-    v21 = [v20 dateOfOccurrence];
-    v22 = [MEMORY[0x277CBEAA8] date];
-    v23 = [v18 numberWithInteger:{objc_msgSend(v19, "hf_minutesBetweenDates:endDate:", v21, v22)}];
+    cameraClip4 = [(HFCameraAnalyticsEvent *)self cameraClip];
+    dateOfOccurrence = [cameraClip4 dateOfOccurrence];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v23 = [v18 numberWithInteger:{objc_msgSend(v19, "hf_minutesBetweenDates:endDate:", dateOfOccurrence, date2)}];
 
     v24 = MEMORY[0x277CCABB0];
     v25 = v34;
     v26 = MEMORY[0x277CBEAA8];
-    v27 = [(HFCameraAnalyticsEvent *)self cameraClip];
-    v28 = [v27 dateOfOccurrence];
-    v29 = [MEMORY[0x277CBEAA8] date];
-    v30 = [v24 numberWithInteger:{objc_msgSend(v26, "hf_daysBetweenDates:endDate:", v28, v29)}];
+    cameraClip5 = [(HFCameraAnalyticsEvent *)self cameraClip];
+    dateOfOccurrence2 = [cameraClip5 dateOfOccurrence];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    v30 = [v24 numberWithInteger:{objc_msgSend(v26, "hf_daysBetweenDates:endDate:", dateOfOccurrence2, date3)}];
 
     v37[0] = HFCameraAnalyticsErrorState;
     v37[1] = HFCameraAnalyticsIsComplete;
@@ -51,7 +51,7 @@
     v38[1] = v36;
     v37[2] = HFCameraAnalyticsProcessName;
     v37[3] = HFCameraAnalyticsLatency;
-    v38[2] = v35;
+    v38[2] = processName;
     v38[3] = v34;
     v37[4] = HFCameraAnalyticsDuration;
     v37[5] = HFCameraAnalyticsAge;
@@ -69,7 +69,7 @@
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v40 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_20D9BF000, v25, OS_LOG_TYPE_ERROR, "Unable to send event for %@", buf, 0xCu);
     }
 

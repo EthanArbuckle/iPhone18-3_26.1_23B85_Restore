@@ -1,47 +1,47 @@
 @interface HKHRMonitorHypertensionJournalSummary
 - (BOOL)isComplete;
-- (BOOL)isCompleteOnDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKHRMonitorHypertensionJournalSummary)initWithSamples:(id)a3 calendar:(id)a4 journal:(id)a5;
+- (BOOL)isCompleteOnDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (HKHRMonitorHypertensionJournalSummary)initWithSamples:(id)samples calendar:(id)calendar journal:(id)journal;
 - (NSDate)completeDate;
-- (id)completeDateAsOfDate:(id)a3;
+- (id)completeDateAsOfDate:(id)date;
 - (unint64_t)hash;
-- (void)extractDates:(id)a3;
+- (void)extractDates:(id)dates;
 @end
 
 @implementation HKHRMonitorHypertensionJournalSummary
 
-- (HKHRMonitorHypertensionJournalSummary)initWithSamples:(id)a3 calendar:(id)a4 journal:(id)a5
+- (HKHRMonitorHypertensionJournalSummary)initWithSamples:(id)samples calendar:(id)calendar journal:(id)journal
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  samplesCopy = samples;
+  calendarCopy = calendar;
+  journalCopy = journal;
   v15.receiver = self;
   v15.super_class = HKHRMonitorHypertensionJournalSummary;
   v12 = [(HKHRMonitorHypertensionJournalSummary *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_calendar, a4);
-    objc_storeStrong(&v13->_journal, a5);
-    objc_storeStrong(&v13->_samples, a3);
-    [(HKHRMonitorHypertensionJournalSummary *)v13 extractDates:v9];
+    objc_storeStrong(&v12->_calendar, calendar);
+    objc_storeStrong(&v13->_journal, journal);
+    objc_storeStrong(&v13->_samples, samples);
+    [(HKHRMonitorHypertensionJournalSummary *)v13 extractDates:samplesCopy];
   }
 
   return v13;
 }
 
-- (void)extractDates:(id)a3
+- (void)extractDates:(id)dates
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  datesCopy = dates;
   v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = datesCopy;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -57,20 +57,20 @@
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 endDate];
+        endDate = [v10 endDate];
         v12 = MEMORY[0x277CCABB0];
-        v13 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
-        v14 = [v12 numberWithInteger:{objc_msgSend(v11, "hk_dayIndexWithCalendar:", v13)}];
+        calendar = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
+        v14 = [v12 numberWithInteger:{objc_msgSend(endDate, "hk_dayIndexWithCalendar:", calendar)}];
 
         v15 = [v5 objectForKeyedSubscript:v14];
         if (!v15)
         {
           v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          [v19 addObject:v11];
+          [v19 addObject:endDate];
         }
 
-        v16 = [v10 UUID];
-        [v15 addObject:v16];
+        uUID = [v10 UUID];
+        [v15 addObject:uUID];
 
         [v5 setObject:v15 forKeyedSubscript:v14];
       }
@@ -89,31 +89,31 @@
 
 - (BOOL)isComplete
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(self) = [(HKHRMonitorHypertensionJournalSummary *)self isCompleteOnDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(self) = [(HKHRMonitorHypertensionJournalSummary *)self isCompleteOnDate:date];
 
   return self;
 }
 
 - (NSDate)completeDate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(HKHRMonitorHypertensionJournalSummary *)self completeDateAsOfDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(HKHRMonitorHypertensionJournalSummary *)self completeDateAsOfDate:date];
 
   return v4;
 }
 
-- (id)completeDateAsOfDate:(id)a3
+- (id)completeDateAsOfDate:(id)date
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
-  v6 = [(HKHRMonitorHypertensionJournalSummary *)self journal];
-  v7 = [v6 startDate];
-  v8 = [v5 startOfDayForDate:v7];
+  dateCopy = date;
+  calendar = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
+  journal = [(HKHRMonitorHypertensionJournalSummary *)self journal];
+  startDate = [journal startDate];
+  v8 = [calendar startOfDayForDate:startDate];
 
-  v9 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
-  v10 = [v9 dateByAddingUnit:16 value:27 toDate:v8 options:0];
+  calendar2 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
+  v10 = [calendar2 dateByAddingUnit:16 value:27 toDate:v8 options:0];
 
   v33 = 0u;
   v34 = 0u;
@@ -125,11 +125,11 @@
   {
 
 LABEL_15:
-    v24 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
-    v25 = [v24 dateByAddingUnit:16 value:28 toDate:v8 options:0];
+    calendar3 = [(HKHRMonitorHypertensionJournalSummary *)self calendar];
+    v25 = [calendar3 dateByAddingUnit:16 value:28 toDate:v8 options:0];
 
     v14 = 0;
-    if ([v4 hk_isAfterOrEqualToDate:v25])
+    if ([dateCopy hk_isAfterOrEqualToDate:v25])
     {
       v14 = v10;
     }
@@ -140,7 +140,7 @@ LABEL_15:
   v13 = v12;
   obj = v11;
   v28 = v8;
-  v29 = v4;
+  v29 = dateCopy;
   v14 = 0;
   v15 = *v32;
   do
@@ -154,16 +154,16 @@ LABEL_15:
 
       v17 = *(*(&v31 + 1) + 8 * i);
       v18 = [(HKHRMonitorHypertensionJournalSummary *)self calendar:v28];
-      v19 = [v17 startDate];
-      v20 = [v18 isDate:v19 inSameDayAsDate:v10];
+      startDate2 = [v17 startDate];
+      v20 = [v18 isDate:startDate2 inSameDayAsDate:v10];
 
       if (v20)
       {
         if (!v14 || ([v17 startDate], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "hk_isBeforeDate:", v14), v21, v22))
         {
-          v23 = [v17 startDate];
+          startDate3 = [v17 startDate];
 
-          v14 = v23;
+          v14 = startDate3;
         }
       }
     }
@@ -174,7 +174,7 @@ LABEL_15:
   while (v13);
 
   v8 = v28;
-  v4 = v29;
+  dateCopy = v29;
   if (!v14)
   {
     goto LABEL_15;
@@ -187,14 +187,14 @@ LABEL_18:
   return v14;
 }
 
-- (BOOL)isCompleteOnDate:(id)a3
+- (BOOL)isCompleteOnDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKHRMonitorHypertensionJournalSummary *)self completeDateAsOfDate:v4];
+  dateCopy = date;
+  v5 = [(HKHRMonitorHypertensionJournalSummary *)self completeDateAsOfDate:dateCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 hk_isBeforeOrEqualToDate:v4];
+    v7 = [v5 hk_isBeforeOrEqualToDate:dateCopy];
   }
 
   else
@@ -205,12 +205,12 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = HKHRMonitorHypertensionJournalSummary;
-  if ([(HKHRMonitorHypertensionJournalSummary *)&v8 isEqual:v4])
+  if ([(HKHRMonitorHypertensionJournalSummary *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -220,7 +220,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 hash];
+      v6 = [equalCopy hash];
       v5 = v6 == [(HKHRMonitorHypertensionJournalSummary *)self hash];
     }
 

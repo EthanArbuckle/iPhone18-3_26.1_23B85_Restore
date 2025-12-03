@@ -1,10 +1,10 @@
 @interface INCache
 + (id)sharedCache;
 - (id)_init;
-- (id)cacheableObjectForIdentifier:(id)a3;
-- (id)consumeCacheableObjectForIdentifier:(id)a3;
-- (void)addCacheableObject:(id)a3;
-- (void)removeCacheableObject:(id)a3;
+- (id)cacheableObjectForIdentifier:(id)identifier;
+- (id)consumeCacheableObjectForIdentifier:(id)identifier;
+- (void)addCacheableObject:(id)object;
+- (void)removeCacheableObject:(id)object;
 @end
 
 @implementation INCache
@@ -43,14 +43,14 @@ uint64_t __22__INCache_sharedCache__block_invoke()
   return v2;
 }
 
-- (id)consumeCacheableObjectForIdentifier:(id)a3
+- (id)consumeCacheableObjectForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSCache *)self->_underlyingCache objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSCache *)self->_underlyingCache objectForKey:identifierCopy];
   if (v5)
   {
-    [(NSCache *)self->_underlyingCache removeObjectForKey:v4];
+    [(NSCache *)self->_underlyingCache removeObjectForKey:identifierCopy];
   }
 
   else
@@ -61,7 +61,7 @@ uint64_t __22__INCache_sharedCache__block_invoke()
       v9 = 136315394;
       v10 = "[INCache consumeCacheableObjectForIdentifier:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_18E991000, v6, OS_LOG_TYPE_INFO, "%s Unable to find cacheable object with identifier %@ in cache for consuming.", &v9, 0x16u);
     }
   }
@@ -71,11 +71,11 @@ uint64_t __22__INCache_sharedCache__block_invoke()
   return v5;
 }
 
-- (id)cacheableObjectForIdentifier:(id)a3
+- (id)cacheableObjectForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSCache *)self->_underlyingCache objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSCache *)self->_underlyingCache objectForKey:identifierCopy];
   if (!v5)
   {
     v6 = INSiriLogContextIntents;
@@ -84,7 +84,7 @@ uint64_t __22__INCache_sharedCache__block_invoke()
       v9 = 136315394;
       v10 = "[INCache cacheableObjectForIdentifier:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_18E991000, v6, OS_LOG_TYPE_INFO, "%s Unable to find cacheable object with identifier %@ in cache.", &v9, 0x16u);
     }
   }
@@ -94,14 +94,14 @@ uint64_t __22__INCache_sharedCache__block_invoke()
   return v5;
 }
 
-- (void)removeCacheableObject:(id)a3
+- (void)removeCacheableObject:(id)object
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 cacheIdentifier];
-  if (v5)
+  objectCopy = object;
+  cacheIdentifier = [objectCopy cacheIdentifier];
+  if (cacheIdentifier)
   {
-    [(NSCache *)self->_underlyingCache removeObjectForKey:v5];
+    [(NSCache *)self->_underlyingCache removeObjectForKey:cacheIdentifier];
   }
 
   else
@@ -112,7 +112,7 @@ uint64_t __22__INCache_sharedCache__block_invoke()
       v8 = 136315394;
       v9 = "[INCache removeCacheableObject:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = objectCopy;
       _os_log_impl(&dword_18E991000, v6, OS_LOG_TYPE_INFO, "%s Unable to remove %@ from cache because there's no identifier.", &v8, 0x16u);
     }
   }
@@ -120,14 +120,14 @@ uint64_t __22__INCache_sharedCache__block_invoke()
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCacheableObject:(id)a3
+- (void)addCacheableObject:(id)object
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 cacheIdentifier];
-  if (v5)
+  objectCopy = object;
+  cacheIdentifier = [objectCopy cacheIdentifier];
+  if (cacheIdentifier)
   {
-    [(NSCache *)self->_underlyingCache setObject:v4 forKey:v5];
+    [(NSCache *)self->_underlyingCache setObject:objectCopy forKey:cacheIdentifier];
   }
 
   else
@@ -138,7 +138,7 @@ uint64_t __22__INCache_sharedCache__block_invoke()
       v8 = 136315394;
       v9 = "[INCache addCacheableObject:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = objectCopy;
       _os_log_impl(&dword_18E991000, v6, OS_LOG_TYPE_INFO, "%s Unable to add %@ to cache because there's no identifier.", &v8, 0x16u);
     }
   }

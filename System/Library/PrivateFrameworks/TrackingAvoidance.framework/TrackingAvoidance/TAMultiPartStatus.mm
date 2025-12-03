@@ -1,18 +1,18 @@
 @interface TAMultiPartStatus
 - (NSString)description;
-- (TAMultiPartStatus)initWithCoder:(id)a3;
-- (TAMultiPartStatus)initWithUUID:(id)a3 relationStatus:(unsigned __int8)a4 maintenanceStatus:(unsigned __int8)a5 date:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAMultiPartStatus)initWithCoder:(id)coder;
+- (TAMultiPartStatus)initWithUUID:(id)d relationStatus:(unsigned __int8)status maintenanceStatus:(unsigned __int8)maintenanceStatus date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAMultiPartStatus
 
-- (TAMultiPartStatus)initWithUUID:(id)a3 relationStatus:(unsigned __int8)a4 maintenanceStatus:(unsigned __int8)a5 date:(id)a6
+- (TAMultiPartStatus)initWithUUID:(id)d relationStatus:(unsigned __int8)status maintenanceStatus:(unsigned __int8)maintenanceStatus date:(id)date
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = TAMultiPartStatus;
   v12 = [(TAMultiPartStatus *)&v19 init];
@@ -22,15 +22,15 @@
   }
 
   v13 = 0;
-  if (v10 && v11)
+  if (dCopy && dateCopy)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     uuid = v12->_uuid;
     v12->_uuid = v14;
 
-    v12->_relationStatus = a4;
-    v12->_maintenanceStatus = a5;
-    v16 = [v11 copy];
+    v12->_relationStatus = status;
+    v12->_maintenanceStatus = maintenanceStatus;
+    v16 = [dateCopy copy];
     date = v12->_date;
     v12->_date = v16;
 
@@ -41,29 +41,29 @@ LABEL_5:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeInteger:self->_relationStatus forKey:@"relationStatus"];
-  [v5 encodeInteger:self->_maintenanceStatus forKey:@"maintenanceStatus"];
-  [v5 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeInteger:self->_relationStatus forKey:@"relationStatus"];
+  [coderCopy encodeInteger:self->_maintenanceStatus forKey:@"maintenanceStatus"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
-- (TAMultiPartStatus)initWithCoder:(id)a3
+- (TAMultiPartStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v6 = [v4 decodeIntegerForKey:@"relationStatus"];
-  v7 = [v4 decodeIntegerForKey:@"maintenanceStatus"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeIntegerForKey:@"relationStatus"];
+  v7 = [coderCopy decodeIntegerForKey:@"maintenanceStatus"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
   v9 = [(TAMultiPartStatus *)self initWithUUID:v5 relationStatus:v6 maintenanceStatus:v7 date:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TAMultiPartStatus alloc];
   relationStatus = self->_relationStatus;
@@ -76,9 +76,9 @@ LABEL_5:
 
 - (NSString)description
 {
-  v3 = [(TAMultiPartStatus *)self descriptionDictionary];
+  descriptionDictionary = [(TAMultiPartStatus *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -88,15 +88,15 @@ LABEL_5:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
@@ -109,9 +109,9 @@ LABEL_5:
   v4 = NSStringFromClass(v3);
   v15[0] = v4;
   v14[1] = @"uuid";
-  v5 = [(TAMultiPartStatus *)self uuid];
-  v6 = [v5 UUIDString];
-  v15[1] = v6;
+  uuid = [(TAMultiPartStatus *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v15[1] = uUIDString;
   v14[2] = @"relationStatus";
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[TAMultiPartStatus relationStatus](self, "relationStatus")}];
   v15[2] = v7;
@@ -119,9 +119,9 @@ LABEL_5:
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[TAMultiPartStatus maintenanceStatus](self, "maintenanceStatus")}];
   v15[3] = v8;
   v14[4] = @"date";
-  v9 = [(TAMultiPartStatus *)self date];
-  v10 = [v9 getDateString];
-  v15[4] = v10;
+  date = [(TAMultiPartStatus *)self date];
+  getDateString = [date getDateString];
+  v15[4] = getDateString;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:5];
 
   v12 = *MEMORY[0x277D85DE8];

@@ -1,48 +1,48 @@
 @interface PhotosSearchBar.TextView
 - (BOOL)canResignFirstResponder;
-- (_TtCV17PhotosSwiftUICore15PhotosSearchBarP33_C1804BBFE1C0AEF33B5596BB912C85238TextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4;
-- (id)textLayoutManager:(id)a3 textLayoutFragmentForLocation:(id)a4 inTextElement:(id)a5;
+- (_TtCV17PhotosSwiftUICore15PhotosSearchBarP33_C1804BBFE1C0AEF33B5596BB912C85238TextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range;
+- (id)textLayoutManager:(id)manager textLayoutFragmentForLocation:(id)location inTextElement:(id)element;
 @end
 
 @implementation PhotosSearchBar.TextView
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C117FDAC();
 
   return v3 & 1;
 }
 
-- (_TtCV17PhotosSwiftUICore15PhotosSearchBarP33_C1804BBFE1C0AEF33B5596BB912C85238TextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtCV17PhotosSwiftUICore15PhotosSearchBarP33_C1804BBFE1C0AEF33B5596BB912C85238TextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_1C117FE54(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_1C117FE54(container, x, y, width, height);
 }
 
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1C11831B4(v7, location, length);
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  selfCopy = self;
+  v9 = sub_1C11831B4(storageCopy, location, length);
 
   return v9;
 }
 
-- (id)textLayoutManager:(id)a3 textLayoutFragmentForLocation:(id)a4 inTextElement:(id)a5
+- (id)textLayoutManager:(id)manager textLayoutFragmentForLocation:(id)location inTextElement:(id)element
 {
-  v8 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  v11 = sub_1C1183318(v8, a4, v9);
+  elementCopy = element;
+  selfCopy = self;
+  v11 = sub_1C1183318(managerCopy, location, elementCopy);
 
   swift_unknownObjectRelease();
 

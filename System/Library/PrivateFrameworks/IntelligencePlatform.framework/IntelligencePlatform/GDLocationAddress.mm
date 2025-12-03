@@ -1,5 +1,5 @@
 @interface GDLocationAddress
-- (GDLocationAddress)initWithRelationshipIdTriplesIterator:(id)a3;
+- (GDLocationAddress)initWithRelationshipIdTriplesIterator:(id)iterator;
 - (id)description;
 @end
 
@@ -8,12 +8,12 @@
 - (id)description
 {
   v39 = MEMORY[0x1E696AEC0];
-  v37 = [(GDLocationAddress *)self relationshipIdentifier];
-  v3 = [(GDLocationAddress *)self subPremises];
-  v42 = v3;
-  if (v3)
+  relationshipIdentifier = [(GDLocationAddress *)self relationshipIdentifier];
+  subPremises = [(GDLocationAddress *)self subPremises];
+  v42 = subPremises;
+  if (subPremises)
   {
-    v4 = v3;
+    v4 = subPremises;
   }
 
   else
@@ -22,11 +22,11 @@
   }
 
   v36 = v4;
-  v5 = [(GDLocationAddress *)self subThoroughfare];
-  v41 = v5;
-  if (v5)
+  subThoroughfare = [(GDLocationAddress *)self subThoroughfare];
+  v41 = subThoroughfare;
+  if (subThoroughfare)
   {
-    v6 = v5;
+    v6 = subThoroughfare;
   }
 
   else
@@ -35,11 +35,11 @@
   }
 
   v35 = v6;
-  v7 = [(GDLocationAddress *)self thoroughfare];
-  v40 = v7;
-  if (v7)
+  thoroughfare = [(GDLocationAddress *)self thoroughfare];
+  v40 = thoroughfare;
+  if (thoroughfare)
   {
-    v8 = v7;
+    v8 = thoroughfare;
   }
 
   else
@@ -48,11 +48,11 @@
   }
 
   v34 = v8;
-  v9 = [(GDLocationAddress *)self subLocality];
-  v38 = v9;
-  if (v9)
+  subLocality = [(GDLocationAddress *)self subLocality];
+  v38 = subLocality;
+  if (subLocality)
   {
-    v10 = v9;
+    v10 = subLocality;
   }
 
   else
@@ -61,11 +61,11 @@
   }
 
   v33 = v10;
-  v11 = [(GDLocationAddress *)self locality];
-  v12 = v11;
-  if (v11)
+  locality = [(GDLocationAddress *)self locality];
+  v12 = locality;
+  if (locality)
   {
-    v13 = v11;
+    v13 = locality;
   }
 
   else
@@ -74,11 +74,11 @@
   }
 
   v32 = v13;
-  v14 = [(GDLocationAddress *)self subAdministrativeArea];
-  v15 = v14;
-  if (v14)
+  subAdministrativeArea = [(GDLocationAddress *)self subAdministrativeArea];
+  v15 = subAdministrativeArea;
+  if (subAdministrativeArea)
   {
-    v16 = v14;
+    v16 = subAdministrativeArea;
   }
 
   else
@@ -87,11 +87,11 @@
   }
 
   v31 = v16;
-  v17 = [(GDLocationAddress *)self administrativeArea];
-  v18 = v17;
-  if (v17)
+  administrativeArea = [(GDLocationAddress *)self administrativeArea];
+  v18 = administrativeArea;
+  if (administrativeArea)
   {
-    v19 = v17;
+    v19 = administrativeArea;
   }
 
   else
@@ -99,11 +99,11 @@
     v19 = &stru_1F20A2CD8;
   }
 
-  v20 = [(GDLocationAddress *)self postalCode];
-  v21 = v20;
-  if (v20)
+  postalCode = [(GDLocationAddress *)self postalCode];
+  v21 = postalCode;
+  if (postalCode)
   {
-    v22 = v20;
+    v22 = postalCode;
   }
 
   else
@@ -111,11 +111,11 @@
     v22 = &stru_1F20A2CD8;
   }
 
-  v23 = [(GDLocationAddress *)self country];
-  v24 = v23;
-  if (v23)
+  country = [(GDLocationAddress *)self country];
+  v24 = country;
+  if (country)
   {
-    v25 = v23;
+    v25 = country;
   }
 
   else
@@ -123,11 +123,11 @@
     v25 = &stru_1F20A2CD8;
   }
 
-  v26 = [(GDLocationAddress *)self ISOCountryCode];
-  v27 = v26;
-  if (v26)
+  iSOCountryCode = [(GDLocationAddress *)self ISOCountryCode];
+  v27 = iSOCountryCode;
+  if (iSOCountryCode)
   {
-    v28 = v26;
+    v28 = iSOCountryCode;
   }
 
   else
@@ -135,15 +135,15 @@
     v28 = &stru_1F20A2CD8;
   }
 
-  v29 = [v39 stringWithFormat:@"<GDLocationAddress id:%@ sp:%@ st:%@ t:%@ sl:%@ l:%@ sa:%@ a:%@ p:%@ c:%@ i:%@>", v37, v36, v35, v34, v33, v32, v31, v19, v22, v25, v28];
+  v29 = [v39 stringWithFormat:@"<GDLocationAddress id:%@ sp:%@ st:%@ t:%@ sl:%@ l:%@ sa:%@ a:%@ p:%@ c:%@ i:%@>", relationshipIdentifier, v36, v35, v34, v33, v32, v31, v19, v22, v25, v28];
 
   return v29;
 }
 
-- (GDLocationAddress)initWithRelationshipIdTriplesIterator:(id)a3
+- (GDLocationAddress)initWithRelationshipIdTriplesIterator:(id)iterator
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v29.receiver = self;
   v29.super_class = GDLocationAddress;
   v5 = [(GDLocationAddress *)&v29 init];
@@ -156,8 +156,8 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v23 = v4;
-  obj = v4;
+  v23 = iteratorCopy;
+  obj = iteratorCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
@@ -177,32 +177,32 @@
         if (!v5->_relationshipIdentifier)
         {
           v11 = [GDRelationshipIdentifier alloc];
-          v12 = [v10 relationshipId];
-          v13 = [(GDRelationshipIdentifier *)v11 initWithString:v12];
+          relationshipId = [v10 relationshipId];
+          v13 = [(GDRelationshipIdentifier *)v11 initWithString:relationshipId];
           relationshipIdentifier = v5->_relationshipIdentifier;
           v5->_relationshipIdentifier = v13;
         }
 
-        v15 = [v10 relationshipPredicate];
+        relationshipPredicate = [v10 relationshipPredicate];
         p_subPremises = &v5->_subPremises;
-        if ([v15 isEqual:@"PS730"])
+        if ([relationshipPredicate isEqual:@"PS730"])
         {
           goto LABEL_19;
         }
 
         p_subPremises = &v5->_subThoroughfare;
-        if ([v15 isEqual:@"PS570"])
+        if ([relationshipPredicate isEqual:@"PS570"])
         {
           goto LABEL_19;
         }
 
         p_subPremises = &v5->_thoroughfare;
-        if ([v15 isEqual:@"PS316"] & 1) != 0 || (p_subPremises = &v5->_subLocality, (objc_msgSend(v15, "isEqual:", @"PS569")) || (p_subPremises = &v5->_locality, (objc_msgSend(v15, "isEqual:", @"PS453")) || (p_subPremises = &v5->_subAdministrativeArea, (objc_msgSend(v15, "isEqual:", @"PS568")) || (p_subPremises = &v5->_administrativeArea, (objc_msgSend(v15, "isEqual:", @"PS455")) || (p_subPremises = &v5->_postalCode, (objc_msgSend(v15, "isEqual:", @"PS315")) || (p_subPremises = &v5->_country, (objc_msgSend(v15, "isEqual:", @"PS450")) || (p_subPremises = p_ISOCountryCode, objc_msgSend(v15, "isEqual:", @"PS454")))
+        if ([relationshipPredicate isEqual:@"PS316"] & 1) != 0 || (p_subPremises = &v5->_subLocality, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS569")) || (p_subPremises = &v5->_locality, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS453")) || (p_subPremises = &v5->_subAdministrativeArea, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS568")) || (p_subPremises = &v5->_administrativeArea, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS455")) || (p_subPremises = &v5->_postalCode, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS315")) || (p_subPremises = &v5->_country, (objc_msgSend(relationshipPredicate, "isEqual:", @"PS450")) || (p_subPremises = p_ISOCountryCode, objc_msgSend(relationshipPredicate, "isEqual:", @"PS454")))
         {
 LABEL_19:
-          v17 = [v10 object];
+          object = [v10 object];
           v18 = *p_subPremises;
-          *p_subPremises = v17;
+          *p_subPremises = object;
         }
       }
 
@@ -212,7 +212,7 @@ LABEL_19:
     while (v7);
   }
 
-  v4 = v23;
+  iteratorCopy = v23;
   if (!v5->_relationshipIdentifier)
   {
     v19 = 0;

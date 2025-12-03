@@ -1,12 +1,12 @@
 @interface INSleepAlarmAttribute
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INSleepAlarmAttribute)initWithBedtime:(id)a3 override:(id)a4;
-- (INSleepAlarmAttribute)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INSleepAlarmAttribute)initWithBedtime:(id)bedtime override:(id)override;
+- (INSleepAlarmAttribute)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSleepAlarmAttribute
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"bedtime";
   bedtime = self->_bedtime;
-  v4 = bedtime;
+  null = bedtime;
   if (!bedtime)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"override";
-  v11[0] = v4;
+  v11[0] = null;
   override = self->_override;
-  v6 = override;
+  null2 = override;
   if (!override)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (override)
   {
@@ -56,56 +56,56 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INSleepAlarmAttribute;
   v6 = [(INSleepAlarmAttribute *)&v11 description];
-  v7 = [(INSleepAlarmAttribute *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INSleepAlarmAttribute *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_bedtime];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"bedtime"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_bedtime];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"bedtime"];
 
-  v9 = [v6 encodeObject:self->_override];
+  v9 = [encoderCopy encodeObject:self->_override];
 
-  [v7 if_setObjectIfNonNil:v9 forKey:@"override"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"override"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bedtime = self->_bedtime;
-  v5 = a3;
-  [v5 encodeObject:bedtime forKey:@"bedtime"];
-  [v5 encodeObject:self->_override forKey:@"override"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bedtime forKey:@"bedtime"];
+  [coderCopy encodeObject:self->_override forKey:@"override"];
 }
 
-- (INSleepAlarmAttribute)initWithCoder:(id)a3
+- (INSleepAlarmAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bedtime"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"override"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bedtime"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"override"];
 
   v7 = [(INSleepAlarmAttribute *)self initWithBedtime:v5 override:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -115,7 +115,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       bedtime = self->_bedtime;
       v8 = 0;
       if (bedtime == v5->_bedtime || [(NSDateComponents *)bedtime isEqual:?])
@@ -137,20 +137,20 @@ LABEL_7:
   return v8;
 }
 
-- (INSleepAlarmAttribute)initWithBedtime:(id)a3 override:(id)a4
+- (INSleepAlarmAttribute)initWithBedtime:(id)bedtime override:(id)override
 {
-  v6 = a3;
-  v7 = a4;
+  bedtimeCopy = bedtime;
+  overrideCopy = override;
   v14.receiver = self;
   v14.super_class = INSleepAlarmAttribute;
   v8 = [(INSleepAlarmAttribute *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [bedtimeCopy copy];
     bedtime = v8->_bedtime;
     v8->_bedtime = v9;
 
-    v11 = [v7 copy];
+    v11 = [overrideCopy copy];
     override = v8->_override;
     v8->_override = v11;
   }
@@ -158,19 +158,19 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"bedtime"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"bedtime"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"override"];
-    v13 = [[a1 alloc] initWithBedtime:v11 override:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"override"];
+    v13 = [[self alloc] initWithBedtime:v11 override:v12];
   }
 
   else

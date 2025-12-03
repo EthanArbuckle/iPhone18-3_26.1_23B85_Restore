@@ -1,16 +1,16 @@
 @interface VCDatagramChannelIDS
-- (VCDatagramChannelIDS)initWithDestination:(id)a3 token:(unsigned int)a4 dataPath:(int)a5 error:(id *)a6;
-- (VCDatagramChannelIDS)initWithSocketDescriptor:(int)a3 token:(unsigned int)a4 error:(id *)a5;
+- (VCDatagramChannelIDS)initWithDestination:(id)destination token:(unsigned int)token dataPath:(int)path error:(id *)error;
+- (VCDatagramChannelIDS)initWithSocketDescriptor:(int)descriptor token:(unsigned int)token error:(id *)error;
 - (id)VTPConnectionContext;
 - (id)datagramChannelOptions;
-- (id)datagramChannelWithDestination:(id)a3 error:(id *)a4;
+- (id)datagramChannelWithDestination:(id)destination error:(id *)error;
 - (id)sharedIDSService;
-- (int)setupVTPSocketWithFileDescriptor:(int)a3;
+- (int)setupVTPSocketWithFileDescriptor:(int)descriptor;
 - (int)start;
 - (void)dealloc;
 - (void)invalidate;
 - (void)osChannelInfoLog;
-- (void)setEventHandler:(id)a3;
+- (void)setEventHandler:(id)handler;
 @end
 
 @implementation VCDatagramChannelIDS
@@ -32,7 +32,7 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
   return result;
 }
 
-- (VCDatagramChannelIDS)initWithDestination:(id)a3 token:(unsigned int)a4 dataPath:(int)a5 error:(id *)a6
+- (VCDatagramChannelIDS)initWithDestination:(id)destination token:(unsigned int)token dataPath:(int)path error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -41,13 +41,13 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
   v11 = v10;
   if (v10)
   {
-    v10->_dataPath = a5;
-    v12 = [(VCDatagramChannelIDS *)v10 datagramChannelWithDestination:a3 error:a6];
+    v10->_dataPath = path;
+    v12 = [(VCDatagramChannelIDS *)v10 datagramChannelWithDestination:destination error:error];
     v11->_idsChannel = v12;
     if (v12)
     {
-      v11->_destination = [a3 copy];
-      v11->_token = a4;
+      v11->_destination = [destination copy];
+      v11->_token = token;
       v11->_vtpSocket = -1;
     }
 
@@ -78,15 +78,15 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
   v8[1] = *MEMORY[0x1E69A4B48];
   v9[1] = [MEMORY[0x1E696AD98] numberWithInteger:v3];
   v5 = [v4 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
-  v6 = [(VCDatagramChannelIDS *)self VTPConnectionContext];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69A4B38]];
+  vTPConnectionContext = [(VCDatagramChannelIDS *)self VTPConnectionContext];
+  [v5 setObject:vTPConnectionContext forKeyedSubscript:*MEMORY[0x1E69A4B38]];
   return v5;
 }
 
-- (id)datagramChannelWithDestination:(id)a3 error:(id *)a4
+- (id)datagramChannelWithDestination:(id)destination error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 hasPrefix:@"loopback:"])
+  if ([destination hasPrefix:@"loopback:"])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -104,21 +104,21 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
       }
     }
 
-    return [+[VCMockIDSDatagramChannelController sharedInstance](VCMockIDSDatagramChannelController datagramChannelWithDestination:"datagramChannelWithDestination:dataPath:" dataPath:a3, self->_dataPath];
+    return [+[VCMockIDSDatagramChannelController sharedInstance](VCMockIDSDatagramChannelController datagramChannelWithDestination:"datagramChannelWithDestination:dataPath:" dataPath:destination, self->_dataPath];
   }
 
   else
   {
-    v10 = [(VCDatagramChannelIDS *)self sharedIDSService];
-    v11 = [(VCDatagramChannelIDS *)self datagramChannelOptions];
+    sharedIDSService = [(VCDatagramChannelIDS *)self sharedIDSService];
+    datagramChannelOptions = [(VCDatagramChannelIDS *)self datagramChannelOptions];
 
-    return [v10 datagramChannelForSessionDestination:a3 options:v11 error:a4];
+    return [sharedIDSService datagramChannelForSessionDestination:destination options:datagramChannelOptions error:error];
   }
 }
 
-- (VCDatagramChannelIDS)initWithSocketDescriptor:(int)a3 token:(unsigned int)a4 error:(id *)a5
+- (VCDatagramChannelIDS)initWithSocketDescriptor:(int)descriptor token:(unsigned int)token error:(id *)error
 {
-  v7 = *&a3;
+  v7 = *&descriptor;
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VCDatagramChannelIDS;
@@ -130,7 +130,7 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
     v9->_idsChannel = v10;
     if (v10)
     {
-      v9->_token = a4;
+      v9->_token = token;
       v9->_vtpSocket = -1;
     }
 
@@ -160,7 +160,7 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
   [(VCObject *)&v4 dealloc];
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   eventHandler = self->_eventHandler;
   if (eventHandler)
@@ -168,9 +168,9 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
     _Block_release(eventHandler);
   }
 
-  if (a3)
+  if (handler)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(handler);
   }
 
   else
@@ -181,7 +181,7 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
   self->_eventHandler = v6;
   idsChannel = self->_idsChannel;
 
-  [(IDSDatagramChannel *)idsChannel setEventHandler:a3];
+  [(IDSDatagramChannel *)idsChannel setEventHandler:handler];
 }
 
 - (void)osChannelInfoLog
@@ -249,19 +249,19 @@ uint64_t __40__VCDatagramChannelIDS_sharedIDSService__block_invoke()
     return v6;
   }
 
-  v4 = [(IDSDatagramChannel *)self->_idsChannel underlyingFileDescriptor];
+  underlyingFileDescriptor = [(IDSDatagramChannel *)self->_idsChannel underlyingFileDescriptor];
 
-  return [(VCDatagramChannelIDS *)self setupVTPSocketWithFileDescriptor:v4];
+  return [(VCDatagramChannelIDS *)self setupVTPSocketWithFileDescriptor:underlyingFileDescriptor];
 }
 
-- (int)setupVTPSocketWithFileDescriptor:(int)a3
+- (int)setupVTPSocketWithFileDescriptor:(int)descriptor
 {
   if (self->_vtpSocket != -1)
   {
     return 0;
   }
 
-  v4 = VTP_SocketForIDSWithFileDescriptor(a3, self->_token);
+  v4 = VTP_SocketForIDSWithFileDescriptor(descriptor, self->_token);
   self->_vtpSocket = v4;
   if (v4 != -1)
   {

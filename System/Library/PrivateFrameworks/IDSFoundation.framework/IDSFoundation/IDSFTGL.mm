@@ -1,30 +1,30 @@
 @interface IDSFTGL
-- (BOOL)_postProcessAllocbindResponse:(id)a3 candidatePair:(id)a4 candidatePairToken:(id)a5;
-- (BOOL)_postProcessQUICAllocbindResponse:(id)a3 candidatePair:(id)a4;
-- (BOOL)_setupNewQRLinkIfNecessary:(id)a3;
-- (id)linkEngineForSessionInfo:(id)a3;
-- (void)_didCreateSession:(id)a3;
-- (void)_resetRetryCountForCandidatePair:(id)a3;
-- (void)_willUpdateLinksForSession:(id)a3;
-- (void)disconnectWithCompletionHandler:(id)a3 isReinitiating:(BOOL)a4;
+- (BOOL)_postProcessAllocbindResponse:(id)response candidatePair:(id)pair candidatePairToken:(id)token;
+- (BOOL)_postProcessQUICAllocbindResponse:(id)response candidatePair:(id)pair;
+- (BOOL)_setupNewQRLinkIfNecessary:(id)necessary;
+- (id)linkEngineForSessionInfo:(id)info;
+- (void)_didCreateSession:(id)session;
+- (void)_resetRetryCountForCandidatePair:(id)pair;
+- (void)_willUpdateLinksForSession:(id)session;
+- (void)disconnectWithCompletionHandler:(id)handler isReinitiating:(BOOL)reinitiating;
 - (void)invalidate;
-- (void)sendSKEData:(id)a3;
-- (void)setDefaultUnderlyingLink:(char)a3;
-- (void)startWithOptions:(id)a3;
+- (void)sendSKEData:(id)data;
+- (void)setDefaultUnderlyingLink:(char)link;
+- (void)startWithOptions:(id)options;
 @end
 
 @implementation IDSFTGL
 
-- (void)startWithOptions:(id)a3
+- (void)startWithOptions:(id)options
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSFoundationLog FTGL];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     idsSessionID = self->super._idsSessionID;
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = idsSessionID;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Start GL %@ for IDSSessionID: %@ (FaceTime:YES, isMultiway:NO).", buf, 0x16u);
@@ -34,7 +34,7 @@
   self->super._portRange = 10;
   v7.receiver = self;
   v7.super_class = IDSFTGL;
-  [(IDSGlobalLink *)&v7 startWithOptions:v4];
+  [(IDSGlobalLink *)&v7 startWithOptions:optionsCopy];
 
   self->super._shouldProcessBasebandNotification = 1;
   self->super._supportChannelData = 1;
@@ -49,20 +49,20 @@
   self->_linkEnginesByRemotePushToken = 0;
 }
 
-- (void)disconnectWithCompletionHandler:(id)a3 isReinitiating:(BOOL)a4
+- (void)disconnectWithCompletionHandler:(id)handler isReinitiating:(BOOL)reinitiating
 {
   v5.receiver = self;
   v5.super_class = IDSFTGL;
-  [(IDSGlobalLink *)&v5 disconnectWithCompletionHandler:a3 isReinitiating:a4];
+  [(IDSGlobalLink *)&v5 disconnectWithCompletionHandler:handler isReinitiating:reinitiating];
   [(IDSGlobalLink *)self _sendSessionDisconnectedCommand];
   [(IDSGlobalLink *)self _startDisconnectTimer];
 }
 
-- (BOOL)_postProcessAllocbindResponse:(id)a3 candidatePair:(id)a4 candidatePairToken:(id)a5
+- (BOOL)_postProcessAllocbindResponse:(id)response candidatePair:(id)pair candidatePairToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  pairCopy = pair;
+  tokenCopy = token;
   if (!self->super._enableSKE || self->super._skeToRemoteComplete)
   {
 LABEL_13:
@@ -70,7 +70,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!self->super._skeData || ([v9 isAcceptedRelaySession] & 1) == 0 && self->super._isInitiator)
+  if (!self->super._skeData || ([pairCopy isAcceptedRelaySession] & 1) == 0 && self->super._isInitiator)
   {
     if (!self->super._delaySessionConnected)
     {
@@ -124,10 +124,10 @@ LABEL_14:
   return v12;
 }
 
-- (void)sendSKEData:(id)a3
+- (void)sendSKEData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   if (self->super._enableSKE)
   {
     if (self->super._skeData)
@@ -156,7 +156,7 @@ LABEL_14:
 
     else
     {
-      objc_storeStrong(&self->super._skeData, a3);
+      objc_storeStrong(&self->super._skeData, data);
       v10 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -241,19 +241,19 @@ LABEL_14:
   }
 }
 
-- (void)setDefaultUnderlyingLink:(char)a3
+- (void)setDefaultUnderlyingLink:(char)link
 {
-  v3 = a3;
+  linkCopy = link;
   v15 = *MEMORY[0x1E69E9840];
   if (self->super._isInitiator)
   {
-    if (a3 < 0 || self->super._maxLinkID <= a3 || (v5 = self->super._candidatePairs[a3]) == 0)
+    if (link < 0 || self->super._maxLinkID <= link || (v5 = self->super._candidatePairs[link]) == 0)
     {
       v9 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v12 = v3;
+        v12 = linkCopy;
         _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "failed to find candidate pair for linkID:%d.", buf, 8u);
       }
 
@@ -273,8 +273,8 @@ LABEL_14:
     else
     {
       v10 = v5;
-      v6 = [(IDSStunCandidatePair *)v5 candidatePairToken];
-      [(IDSGlobalLink *)self _nominateCandidatePair:v6];
+      candidatePairToken = [(IDSStunCandidatePair *)v5 candidatePairToken];
+      [(IDSGlobalLink *)self _nominateCandidatePair:candidatePairToken];
     }
   }
 
@@ -294,7 +294,7 @@ LABEL_14:
       }
 
       *buf = 67109378;
-      v12 = v3;
+      v12 = linkCopy;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "set default underlying link (linkID:%d) failed (isInitiator:%@).", buf, 0x12u);
@@ -314,11 +314,11 @@ LABEL_14:
   }
 }
 
-- (BOOL)_setupNewQRLinkIfNecessary:(id)a3
+- (BOOL)_setupNewQRLinkIfNecessary:(id)necessary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  necessaryCopy = necessary;
+  if (!necessaryCopy)
   {
     if (self->super._allowOnlyOneQR || !self->super._isInitiator)
     {
@@ -379,9 +379,9 @@ LABEL_14:
 LABEL_2:
   v14.receiver = self;
   v14.super_class = IDSFTGL;
-  v5 = [(IDSGlobalLink *)&v14 _setupNewQRLinkIfNecessary:v4];
+  v5 = [(IDSGlobalLink *)&v14 _setupNewQRLinkIfNecessary:necessaryCopy];
   v6 = v5;
-  if (!v4 && v5)
+  if (!necessaryCopy && v5)
   {
     v13.receiver = self;
     v13.super_class = IDSFTGL;
@@ -394,25 +394,25 @@ LABEL_21:
   return v6;
 }
 
-- (void)_resetRetryCountForCandidatePair:(id)a3
+- (void)_resetRetryCountForCandidatePair:(id)pair
 {
-  v4 = a3;
-  v5 = v4;
+  pairCopy = pair;
+  v5 = pairCopy;
   if (self->super._isInitiator)
   {
-    v15 = v4;
-    v6 = [v4 isRelayStunCandidatePair];
+    v15 = pairCopy;
+    isRelayStunCandidatePair = [pairCopy isRelayStunCandidatePair];
     v5 = v15;
-    if (v6)
+    if (isRelayStunCandidatePair)
     {
       v7 = GLUtilLinkTypeMaskForCandidatePair(v15);
       retryCountPerLinkType = self->super._retryCountPerLinkType;
       v9 = [MEMORY[0x1E696AD98] numberWithInt:v7];
       v10 = [(NSMutableDictionary *)retryCountPerLinkType objectForKey:v9];
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
 
       v5 = v15;
-      if (v11 >= 1)
+      if (intValue >= 1)
       {
         v12 = self->super._retryCountPerLinkType;
         v13 = [MEMORY[0x1E696AD98] numberWithInt:0];
@@ -425,19 +425,19 @@ LABEL_21:
   }
 }
 
-- (BOOL)_postProcessQUICAllocbindResponse:(id)a3 candidatePair:(id)a4
+- (BOOL)_postProcessQUICAllocbindResponse:(id)response candidatePair:(id)pair
 {
-  v5 = a4;
-  v6 = [v5 candidatePairToken];
-  LOBYTE(self) = [(IDSFTGL *)self _postProcessAllocbindResponse:0 candidatePair:v5 candidatePairToken:v6];
+  pairCopy = pair;
+  candidatePairToken = [pairCopy candidatePairToken];
+  LOBYTE(self) = [(IDSFTGL *)self _postProcessAllocbindResponse:0 candidatePair:pairCopy candidatePairToken:candidatePairToken];
 
   return self;
 }
 
-- (id)linkEngineForSessionInfo:(id)a3
+- (id)linkEngineForSessionInfo:(id)info
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   if (!self->_linkEnginesByRemotePushToken)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -445,7 +445,7 @@ LABEL_21:
     self->_linkEnginesByRemotePushToken = Mutable;
   }
 
-  if ([v4 allocateType] != 1)
+  if ([infoCopy allocateType] != 1)
   {
     v10 = +[IDSFoundationLog FTGL];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -457,17 +457,17 @@ LABEL_21:
     goto LABEL_37;
   }
 
-  if (([v4 isInitiator] & 1) == 0)
+  if (([infoCopy isInitiator] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
-    v54[0] = v11;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
+    null = [MEMORY[0x1E695DFB0] null];
+    v54[0] = null;
+    allocatedPushTokens2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
 
     goto LABEL_10;
   }
 
-  v7 = [v4 allocatedPushTokens];
-  v8 = [v7 count];
+  allocatedPushTokens = [infoCopy allocatedPushTokens];
+  v8 = [allocatedPushTokens count];
 
   if (!v8)
   {
@@ -482,13 +482,13 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v9 = [v4 allocatedPushTokens];
+  allocatedPushTokens2 = [infoCopy allocatedPushTokens];
 LABEL_10:
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v10 = v9;
+  v10 = allocatedPushTokens2;
   v12 = [v10 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v12)
   {
@@ -510,9 +510,9 @@ LABEL_10:
           v35 = +[IDSFoundationLog FTGL];
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v4 allocatedPushTokens];
+            allocatedPushTokens3 = [infoCopy allocatedPushTokens];
             *buf = 138412546;
-            v50 = v36;
+            v50 = allocatedPushTokens3;
             v51 = 2112;
             v52 = v26;
             _os_log_impl(&dword_1A7AD9000, v35, OS_LOG_TYPE_DEFAULT, "linkEngineForSessionInfo: found link engine for session for push tokens %@, engine: %@", buf, 0x16u);
@@ -535,10 +535,10 @@ LABEL_10:
   v17 = +[IDSFoundationLog FTGL];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v4 allocatedPushTokens];
+    allocatedPushTokens4 = [infoCopy allocatedPushTokens];
     v19 = self->_linkEnginesByRemotePushToken;
     *buf = 138412546;
-    v50 = v18;
+    v50 = allocatedPushTokens4;
     v51 = 2112;
     v52 = v19;
     _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "linkEngineForSessionInfo: creating new link engine for push tokens %@. Existing link engines: %@", buf, 0x16u);
@@ -546,13 +546,13 @@ LABEL_10:
 
   v39 = [IDSGLLinkEngine alloc];
   v20 = [[IDSWeakGLLinkConnector alloc] initWithGLLinkConnector:self];
-  v38 = [v4 allocateType];
-  v21 = [v4 isInitiator];
+  allocateType = [infoCopy allocateType];
+  isInitiator = [infoCopy isInitiator];
   useLinkSelection = self->super._useLinkSelection;
   recordExpensiveQualityMetrics = self->super._recordExpensiveQualityMetrics;
   linkSelectionStrategy = self->super._linkSelectionStrategy;
   v25 = [IDSServerBag sharedInstanceForBagType:0];
-  v26 = [(IDSGLLinkEngine *)v39 initWithLinkConnector:v20 allocateType:v38 isInitiator:v21 useLinkSelection:useLinkSelection recordExpensiveQualityMetrics:recordExpensiveQualityMetrics linkSelectionStrategy:linkSelectionStrategy serverBag:v25 timeFn:&unk_1F1AAA1A0];
+  v26 = [(IDSGLLinkEngine *)v39 initWithLinkConnector:v20 allocateType:allocateType isInitiator:isInitiator useLinkSelection:useLinkSelection recordExpensiveQualityMetrics:recordExpensiveQualityMetrics linkSelectionStrategy:linkSelectionStrategy serverBag:v25 timeFn:&unk_1F1AAA1A0];
 
   v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Two-Way (FTGL) remotePushTokens=%@", v10];
   [(IDSGLLinkEngine *)v26 setTag:v27];
@@ -606,24 +606,24 @@ LABEL_38:
   return v26;
 }
 
-- (void)_didCreateSession:(id)a3
+- (void)_didCreateSession:(id)session
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  sessionCopy = session;
+  v5 = sessionCopy;
   if (self->super._isInitiator)
   {
-    v6 = [v4 localInterfacePreference];
+    localInterfacePreference = [sessionCopy localInterfacePreference];
   }
 
   else
   {
-    v7 = [v4 sessionInfoDict];
-    v8 = [v7 objectForKey:@"qia"];
-    v6 = [v8 intValue];
+    sessionInfoDict = [sessionCopy sessionInfoDict];
+    v8 = [sessionInfoDict objectForKey:@"qia"];
+    localInterfacePreference = [v8 intValue];
   }
 
-  v9 = [v5 remoteInterfacePreference];
+  remoteInterfacePreference = [v5 remoteInterfacePreference];
   isInitiator = self->super._isInitiator;
   v11 = +[IDSFoundationLog FTGL];
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -635,7 +635,7 @@ LABEL_38:
     }
 
     v19 = 67109120;
-    v20 = v6;
+    v20 = localInterfacePreference;
     v13 = "_didCreateSession: is initiator; preferred interface: %d";
   }
 
@@ -647,50 +647,50 @@ LABEL_38:
     }
 
     v19 = 67109120;
-    v20 = v6;
+    v20 = localInterfacePreference;
     v13 = "_didCreateSession: preferred interface from initiator: %d";
   }
 
   _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, v13, &v19, 8u);
 LABEL_10:
 
-  v14 = [v5 sessionInfo];
-  v15 = [v14 allocateType];
+  sessionInfo = [v5 sessionInfo];
+  allocateType = [sessionInfo allocateType];
 
-  if (v15 == 1)
+  if (allocateType == 1)
   {
-    v16 = [v5 linkEngine];
-    v17 = [v5 qrSessionID];
+    linkEngine = [v5 linkEngine];
+    qrSessionID = [v5 qrSessionID];
     v18 = [(IDSGlobalLink *)self _remoteCandidatesForRelaySession:v5];
-    [v16 addTwoWayAllocation:v17 localAffinity:v6 remoteAffinity:v9 resolvedCandidates:v18];
+    [linkEngine addTwoWayAllocation:qrSessionID localAffinity:localInterfacePreference remoteAffinity:remoteInterfacePreference resolvedCandidates:v18];
   }
 }
 
-- (void)_willUpdateLinksForSession:(id)a3
+- (void)_willUpdateLinksForSession:(id)session
 {
-  v13 = a3;
+  sessionCopy = session;
   if (self->super._isInitiator)
   {
-    v4 = [v13 localInterfacePreference];
+    localInterfacePreference = [sessionCopy localInterfacePreference];
   }
 
   else
   {
-    v5 = [v13 sessionInfoDict];
-    v6 = [v5 objectForKey:@"qia"];
-    v4 = [v6 intValue];
+    sessionInfoDict = [sessionCopy sessionInfoDict];
+    v6 = [sessionInfoDict objectForKey:@"qia"];
+    localInterfacePreference = [v6 intValue];
   }
 
-  v7 = [v13 remoteInterfacePreference];
-  v8 = [v13 sessionInfo];
-  v9 = [v8 allocateType];
+  remoteInterfacePreference = [sessionCopy remoteInterfacePreference];
+  sessionInfo = [sessionCopy sessionInfo];
+  allocateType = [sessionInfo allocateType];
 
-  if (v9 == 1)
+  if (allocateType == 1)
   {
-    v10 = [v13 linkEngine];
-    v11 = [v13 qrSessionID];
-    v12 = [(IDSGlobalLink *)self _remoteCandidatesForRelaySession:v13];
-    [v10 addTwoWayAllocation:v11 localAffinity:v4 remoteAffinity:v7 resolvedCandidates:v12];
+    linkEngine = [sessionCopy linkEngine];
+    qrSessionID = [sessionCopy qrSessionID];
+    v12 = [(IDSGlobalLink *)self _remoteCandidatesForRelaySession:sessionCopy];
+    [linkEngine addTwoWayAllocation:qrSessionID localAffinity:localInterfacePreference remoteAffinity:remoteInterfacePreference resolvedCandidates:v12];
   }
 }
 

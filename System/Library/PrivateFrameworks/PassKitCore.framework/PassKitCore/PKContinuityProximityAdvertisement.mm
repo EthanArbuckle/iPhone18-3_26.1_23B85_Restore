@@ -1,31 +1,31 @@
 @interface PKContinuityProximityAdvertisement
-+ (id)advertisementWithDictionary:(id)a3;
-- (PKContinuityProximityAdvertisement)initWithCoder:(id)a3;
-- (PKContinuityProximityAdvertisement)initWithType:(unint64_t)a3;
++ (id)advertisementWithDictionary:(id)dictionary;
+- (PKContinuityProximityAdvertisement)initWithCoder:(id)coder;
+- (PKContinuityProximityAdvertisement)initWithType:(unint64_t)type;
 - (id)_dictionaryRepresentation;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKContinuityProximityAdvertisement
 
-- (PKContinuityProximityAdvertisement)initWithType:(unint64_t)a3
+- (PKContinuityProximityAdvertisement)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKContinuityProximityAdvertisement;
   result = [(PKContinuityProximityAdvertisement *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-+ (id)advertisementWithDictionary:(id)a3
++ (id)advertisementWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   v5 = v4;
   if (v4 && (v6 = PKContinuityProximityVerifierTypeFromString(v4)) != 0)
   {
@@ -39,7 +39,7 @@
       v7 = off_1E79BF8F0;
     }
 
-    v8 = [objc_alloc(*v7) initWithDictionary:v3];
+    v8 = [objc_alloc(*v7) initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -52,8 +52,8 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(PKContinuityProximityAdvertisement *)self _dictionaryRepresentation];
-  v3 = [v2 copy];
+  _dictionaryRepresentation = [(PKContinuityProximityAdvertisement *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation copy];
 
   return v3;
 }
@@ -84,22 +84,22 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKContinuityProximityAdvertisement *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"dict"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(PKContinuityProximityAdvertisement *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"dict"];
 }
 
-- (PKContinuityProximityAdvertisement)initWithCoder:(id)a3
+- (PKContinuityProximityAdvertisement)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v4 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeObjectOfClasses:v9 forKey:@"dict"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dict"];
 
   if (v10)
   {

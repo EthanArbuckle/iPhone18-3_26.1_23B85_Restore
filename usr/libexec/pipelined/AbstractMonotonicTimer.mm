@@ -1,15 +1,15 @@
 @interface AbstractMonotonicTimer
 - (AbstractMonotonicTimer)init;
-- (AbstractMonotonicTimer)initWithName:(id)a3;
+- (AbstractMonotonicTimer)initWithName:(id)name;
 - (duration<long)delay;
 - (duration<long)interval;
-- (void)abstractFunctionCalled:(SEL)a3;
+- (void)abstractFunctionCalled:(SEL)called;
 - (void)onQueueInvalidate;
 - (void)onQueueTick;
 - (void)pause;
 - (void)resume;
 - (void)setDelay:(duration<long)long;
-- (void)setEventHandler:(id)a3 onQueue:(id)a4;
+- (void)setEventHandler:(id)handler onQueue:(id)queue;
 - (void)setInterval:(duration<long)long;
 @end
 
@@ -22,13 +22,13 @@
   return 0;
 }
 
-- (AbstractMonotonicTimer)initWithName:(id)a3
+- (AbstractMonotonicTimer)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = AbstractMonotonicTimer;
   v5 = [(AbstractMonotonicTimer *)&v10 init];
-  if (v5 && (v6 = dispatch_queue_create([v4 UTF8String], 0), q = v5->_q, v5->_q = v6, q, v5->_q))
+  if (v5 && (v6 = dispatch_queue_create([nameCopy UTF8String], 0), q = v5->_q, v5->_q = v6, q, v5->_q))
   {
     v8 = v5;
   }
@@ -41,9 +41,9 @@
   return v8;
 }
 
-- (void)abstractFunctionCalled:(SEL)a3
+- (void)abstractFunctionCalled:(SEL)called
 {
-  v3 = NSStringFromSelector(a3);
+  v3 = NSStringFromSelector(called);
   [NSException raise:NSInternalInconsistencyException format:@"You must override %@ in a subclass", v3];
 }
 
@@ -86,9 +86,9 @@
   block[1] = 3321888768;
   block[2] = sub_1002FD3EC;
   block[3] = &unk_100448838;
-  v6 = self;
+  selfCopy = self;
   v7 = &v8;
-  v3 = v6;
+  v3 = selfCopy;
   dispatch_sync(q, block);
 
   return v8;
@@ -153,9 +153,9 @@ LABEL_6:
   block[1] = 3321888768;
   block[2] = sub_1002FD6EC;
   block[3] = &unk_100448890;
-  v6 = self;
+  selfCopy = self;
   v7 = &v8;
-  v3 = v6;
+  v3 = selfCopy;
   dispatch_sync(q, block);
 
   return v8;
@@ -212,20 +212,20 @@ LABEL_6:
   dispatch_sync(q, v5);
 }
 
-- (void)setEventHandler:(id)a3 onQueue:(id)a4
+- (void)setEventHandler:(id)handler onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FDA10;
   block[3] = &unk_1004488C8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   dispatch_async(q, block);
 }
 

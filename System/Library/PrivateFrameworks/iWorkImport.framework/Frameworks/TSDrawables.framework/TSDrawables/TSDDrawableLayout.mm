@@ -11,17 +11,17 @@
 - (int)wrapDirection;
 - (int)wrapFitType;
 - (int)wrapType;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)i_invalidateWrap;
-- (void)inRootGeometryChangedBy:(CGAffineTransform *)a3;
+- (void)inRootGeometryChangedBy:(CGAffineTransform *)by;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
 - (void)invalidateInRootGeometry;
 - (void)invalidateParentForWrap;
-- (void)p_addVisibleGeometriesFromInfo:(id)a3 intoArray:(id)a4 withTransform:(CGAffineTransform *)a5;
+- (void)p_addVisibleGeometriesFromInfo:(id)info intoArray:(id)array withTransform:(CGAffineTransform *)transform;
 - (void)parentDidChange;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TSDDrawableLayout
@@ -349,33 +349,33 @@
   self->mCachedExteriorWrapPath = 0;
 }
 
-- (void)inRootGeometryChangedBy:(CGAffineTransform *)a3
+- (void)inRootGeometryChangedBy:(CGAffineTransform *)by
 {
   mCachedWrapSegments = self->mCachedWrapSegments;
-  v6 = *&a3->c;
-  v10 = *&a3->a;
+  v6 = *&by->c;
+  v10 = *&by->a;
   v11 = v6;
-  v12 = *&a3->tx;
+  v12 = *&by->tx;
   objc_msgSend_transformUsingAffineTransform_(mCachedWrapSegments, a2, &v10);
   mCachedExteriorWrapPath = self->mCachedExteriorWrapPath;
-  v8 = *&a3->c;
-  v10 = *&a3->a;
+  v8 = *&by->c;
+  v10 = *&by->a;
   v11 = v8;
-  v12 = *&a3->tx;
+  v12 = *&by->tx;
   objc_msgSend_transformUsingAffineTransform_(mCachedExteriorWrapPath, v9, &v10);
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v6.receiver = self;
   v6.super_class = TSDDrawableLayout;
-  [(TSDLayout *)&v6 dragBy:a3.x, a3.y];
+  [(TSDLayout *)&v6 dragBy:by.x, by.y];
   objc_msgSend_invalidateParentForWrap(self, v4, v5);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   v7 = objc_msgSend_geometry(self, v5, v6);
   v10 = v7;
   if (!v7)
@@ -388,21 +388,21 @@
     goto LABEL_8;
   }
 
-  if ((objc_msgSend_isEqual_(v7, v8, v4) & 1) != 0 || !self->mCachedWrapSegments)
+  if ((objc_msgSend_isEqual_(v7, v8, geometryCopy) & 1) != 0 || !self->mCachedWrapSegments)
   {
     goto LABEL_10;
   }
 
-  if (objc_msgSend_differsInMoreThanTranslationFrom_(v10, v11, v4))
+  if (objc_msgSend_differsInMoreThanTranslationFrom_(v10, v11, geometryCopy))
   {
 LABEL_8:
     objc_msgSend_invalidateExteriorWrap(self, v8, v9);
     goto LABEL_10;
   }
 
-  if (v4)
+  if (geometryCopy)
   {
-    objc_msgSend_transform(v4, v8, v9);
+    objc_msgSend_transform(geometryCopy, v8, v9);
   }
 
   objc_msgSend_transform(v10, v8, v9, *(MEMORY[0x277CBF348] + 8));
@@ -413,17 +413,17 @@ LABEL_8:
 LABEL_10:
   v16.receiver = self;
   v16.super_class = TSDDrawableLayout;
-  [(TSDLayout *)&v16 setGeometry:v4];
+  [(TSDLayout *)&v16 setGeometry:geometryCopy];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v21.receiver = self;
   v21.super_class = TSDDrawableLayout;
   [(TSDLayout *)&v21 processChangedProperty:?];
-  if ((a3 - 545) >= 5)
+  if ((property - 545) >= 5)
   {
-    if (a3 == 521)
+    if (property == 521)
     {
       objc_msgSend_invalidateExteriorWrap(self, v5, v6);
     }
@@ -452,13 +452,13 @@ LABEL_10:
   [(TSDLayout *)&v4 parentDidChange];
 }
 
-- (void)p_addVisibleGeometriesFromInfo:(id)a3 intoArray:(id)a4 withTransform:(CGAffineTransform *)a5
+- (void)p_addVisibleGeometriesFromInfo:(id)info intoArray:(id)array withTransform:(CGAffineTransform *)transform
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  arrayCopy = array;
   v12 = objc_msgSend_layoutController(self, v10, v11);
-  v14 = objc_msgSend_layoutForInfo_childOfLayout_(v12, v13, v8, self);
+  v14 = objc_msgSend_layoutForInfo_childOfLayout_(v12, v13, infoCopy, self);
 
   if (!v14)
   {
@@ -491,12 +491,12 @@ LABEL_10:
         }
 
         v31 = *(*(&v36 + 1) + 8 * v30);
-        v32 = *&a5->c;
-        v35[0] = *&a5->a;
+        v32 = *&transform->c;
+        v35[0] = *&transform->a;
         v35[1] = v32;
-        v35[2] = *&a5->tx;
+        v35[2] = *&transform->tx;
         v33 = objc_msgSend_geometryByTransformingBy_(v31, v27, v35);
-        objc_msgSend_addObject_(v9, v34, v33);
+        objc_msgSend_addObject_(arrayCopy, v34, v33);
 
         ++v30;
       }
@@ -513,8 +513,8 @@ LABEL_10:
 {
   v37.receiver = self;
   v37.super_class = TSDDrawableLayout;
-  v3 = [(TSDAbstractLayout *)&v37 visibleGeometries];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  visibleGeometries = [(TSDAbstractLayout *)&v37 visibleGeometries];
+  v6 = objc_msgSend_mutableCopy(visibleGeometries, v4, v5);
 
   v35 = 0u;
   v36 = 0u;

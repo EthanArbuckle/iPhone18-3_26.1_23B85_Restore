@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationCancelLastAcceptedCandidate
-- (TIWordSearchOperationCancelLastAcceptedCandidate)initWithWordSearch:(id)a3;
+- (TIWordSearchOperationCancelLastAcceptedCandidate)initWithWordSearch:(id)search;
 - (void)perform;
 @end
 
@@ -7,27 +7,27 @@
 
 - (void)perform
 {
-  v2 = [(TIWordSearchOperationCancelLastAcceptedCandidate *)self mecabraWrapper];
-  v3 = [v2 mecabraRef];
+  mecabraWrapper = [(TIWordSearchOperationCancelLastAcceptedCandidate *)self mecabraWrapper];
+  mecabraRef = [mecabraWrapper mecabraRef];
 
-  if (v3)
+  if (mecabraRef)
   {
 
-    MEMORY[0x2821F8CD0](v3);
+    MEMORY[0x2821F8CD0](mecabraRef);
   }
 }
 
-- (TIWordSearchOperationCancelLastAcceptedCandidate)initWithWordSearch:(id)a3
+- (TIWordSearchOperationCancelLastAcceptedCandidate)initWithWordSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v9.receiver = self;
   v9.super_class = TIWordSearchOperationCancelLastAcceptedCandidate;
   v5 = [(TIWordSearchOperationCancelLastAcceptedCandidate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mecabraWrapper];
+    mecabraWrapper = [searchCopy mecabraWrapper];
     mecabraWrapper = v5->_mecabraWrapper;
-    v5->_mecabraWrapper = v6;
+    v5->_mecabraWrapper = mecabraWrapper;
   }
 
   return v5;

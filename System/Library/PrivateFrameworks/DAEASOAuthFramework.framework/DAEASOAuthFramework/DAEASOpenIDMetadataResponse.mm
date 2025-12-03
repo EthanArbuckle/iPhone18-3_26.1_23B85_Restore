@@ -1,22 +1,22 @@
 @interface DAEASOpenIDMetadataResponse
-- (DAEASOpenIDMetadataResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (DAEASOpenIDMetadataResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation DAEASOpenIDMetadataResponse
 
-- (DAEASOpenIDMetadataResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (DAEASOpenIDMetadataResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   v51.receiver = self;
   v51.super_class = DAEASOpenIDMetadataResponse;
   v11 = [(DAEASOpenIDMetadataResponse *)&v51 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_error, a5);
+    objc_storeStrong(&v11->_error, error);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -31,7 +31,7 @@
       goto LABEL_22;
     }
 
-    v13 = v9;
+    v13 = responseCopy;
     v12->_statusCode = [v13 statusCode];
     v14 = DALoggingwithCategory();
     v15 = MEMORY[0x277D03988];
@@ -52,7 +52,7 @@ LABEL_22:
     }
 
     v50 = 0;
-    v18 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v50];
+    v18 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v50];
     v19 = v50;
     if (v19)
     {

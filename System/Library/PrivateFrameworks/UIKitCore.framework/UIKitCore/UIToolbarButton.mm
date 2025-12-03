@@ -5,59 +5,59 @@
 - (BOOL)_isBordered;
 - (BOOL)_showsAccessibilityBackgroundWhenEnabled;
 - (BOOL)_wantsAccessibilityButtonShapes;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_buttonBarHitRect;
-- (CGSize)_defaultTitleShadowOffsetForState:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_defaultTitleShadowOffsetForState:(unint64_t)state;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)_tintColor;
 - (UIEdgeInsets)_additionalSelectionInsets;
 - (UIEdgeInsets)alignmentRectInsets;
-- (UIOffset)_titlePositionAdjustmentForBarMetrics:(int64_t)a3;
-- (double)_backgroundVerticalPositionAdjustmentForBarMetrics:(int64_t)a3;
-- (double)_paddingForLeft:(BOOL)a3;
-- (double)initWithImage:(double)a3 pressedImage:(double)a4 label:(double)a5 labelHeight:(double)a6 withBarStyle:(uint64_t)a7 withStyle:(void *)a8 withInsets:(void *)a9 possibleTitles:(uint64_t)a10 possibleSystemItems:(uint64_t)a11 withToolbarTintColor:(uint64_t)a12 bezel:(uint64_t)a13 imageInsets:(double)a14 glowInsets:(double)a15 landscape:(double)a16;
-- (id)_backgroundImageForState:(unint64_t)a3 barMetrics:(int64_t)a4;
-- (id)_customOrAccessibilityBackgroundImageForState:(unint64_t)a3 style:(int64_t)a4 isMini:(BOOL)a5;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_UIAppearance_setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 barMetrics:(int64_t)a6;
-- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setTintColor:(id)a3;
-- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4;
-- (void)_adjustPushButtonForMiniBar:(BOOL)a3 isChangingBarHeight:(BOOL)a4;
-- (void)_adjustToolbarButtonInfoTintColorHasChanged:(BOOL)a3;
-- (void)_applyBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4;
-- (void)_setAdditionalSelectionInsets:(UIEdgeInsets)a3;
-- (void)_setBarHeight:(float)a3;
-- (void)_setCreatedByBarButtonItem:(BOOL)a3;
-- (void)_setInTopBar:(BOOL)a3;
-- (void)_setInfoExtremityWidth:(float)a3 isMin:(BOOL)a4;
-- (void)_setInfoFlexibleWidth:(BOOL)a3;
-- (void)_setInfoWidth:(float)a3;
-- (void)_setLastHighlightSuccessful:(BOOL)a3;
-- (void)_setPressed:(BOOL)a3;
-- (void)_setTouchHasHighlighted:(BOOL)a3;
-- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)a3;
-- (void)_sizeView:(id)a3 toPossibleTitles:(id)a4 pressedTitle:(id)a5;
-- (void)_updateInfoTextColorsForState:(unint64_t)a3;
-- (void)_updateShadowOffsetWithAttributes:(id)a3 forState:(unint64_t)a4;
+- (UIOffset)_titlePositionAdjustmentForBarMetrics:(int64_t)metrics;
+- (double)_backgroundVerticalPositionAdjustmentForBarMetrics:(int64_t)metrics;
+- (double)_paddingForLeft:(BOOL)left;
+- (double)initWithImage:(double)image pressedImage:(double)pressedImage label:(double)label labelHeight:(double)height withBarStyle:(uint64_t)style withStyle:(void *)withStyle withInsets:(void *)insets possibleTitles:(uint64_t)self0 possibleSystemItems:(uint64_t)self1 withToolbarTintColor:(uint64_t)self2 bezel:(uint64_t)self3 imageInsets:(double)self4 glowInsets:(double)self5 landscape:(double)self6;
+- (id)_backgroundImageForState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (id)_customOrAccessibilityBackgroundImageForState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_UIAppearance_setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style barMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setTintColor:(id)color;
+- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_adjustPushButtonForMiniBar:(BOOL)bar isChangingBarHeight:(BOOL)height;
+- (void)_adjustToolbarButtonInfoTintColorHasChanged:(BOOL)changed;
+- (void)_applyBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors;
+- (void)_setAdditionalSelectionInsets:(UIEdgeInsets)insets;
+- (void)_setBarHeight:(float)height;
+- (void)_setCreatedByBarButtonItem:(BOOL)item;
+- (void)_setInTopBar:(BOOL)bar;
+- (void)_setInfoExtremityWidth:(float)width isMin:(BOOL)min;
+- (void)_setInfoFlexibleWidth:(BOOL)width;
+- (void)_setInfoWidth:(float)width;
+- (void)_setLastHighlightSuccessful:(BOOL)successful;
+- (void)_setPressed:(BOOL)pressed;
+- (void)_setTouchHasHighlighted:(BOOL)highlighted;
+- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)backgrounds;
+- (void)_sizeView:(id)view toPossibleTitles:(id)titles pressedTitle:(id)title;
+- (void)_updateInfoTextColorsForState:(unint64_t)state;
+- (void)_updateShadowOffsetWithAttributes:(id)attributes forState:(unint64_t)state;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setToolbarTintColor:(id)a3;
-- (void)setUseSelectedImage:(BOOL)a3;
+- (void)setBarStyle:(int64_t)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setToolbarTintColor:(id)color;
+- (void)setUseSelectedImage:(BOOL)image;
 @end
 
 @implementation UIToolbarButton
 
-- (void)_setInTopBar:(BOOL)a3
+- (void)_setInTopBar:(BOOL)bar
 {
-  if (self->_isInTopBar != a3)
+  if (self->_isInTopBar != bar)
   {
-    self->_isInTopBar = a3;
+    self->_isInTopBar = bar;
     [(UIToolbarButton *)self layoutSubviews];
   }
 }
@@ -74,12 +74,12 @@
   return result;
 }
 
-- (double)initWithImage:(double)a3 pressedImage:(double)a4 label:(double)a5 labelHeight:(double)a6 withBarStyle:(uint64_t)a7 withStyle:(void *)a8 withInsets:(void *)a9 possibleTitles:(uint64_t)a10 possibleSystemItems:(uint64_t)a11 withToolbarTintColor:(uint64_t)a12 bezel:(uint64_t)a13 imageInsets:(double)a14 glowInsets:(double)a15 landscape:(double)a16
+- (double)initWithImage:(double)image pressedImage:(double)pressedImage label:(double)label labelHeight:(double)height withBarStyle:(uint64_t)style withStyle:(void *)withStyle withInsets:(void *)insets possibleTitles:(uint64_t)self0 possibleSystemItems:(uint64_t)self1 withToolbarTintColor:(uint64_t)self2 bezel:(uint64_t)self3 imageInsets:(double)self4 glowInsets:(double)self5 landscape:(double)self6
 {
   v79 = *MEMORY[0x1E69E9840];
-  if (a8)
+  if (withStyle)
   {
-    [a8 size];
+    [withStyle size];
     v37 = v36;
     v39 = v38;
   }
@@ -92,12 +92,12 @@
 
   v40 = MEMORY[0x1E695F058];
   v41 = MEMORY[0x1E695EFF8];
-  v69 = a4;
-  v70 = a6;
-  v68 = a5;
-  if (a9)
+  pressedImageCopy = pressedImage;
+  heightCopy = height;
+  labelCopy = label;
+  if (insets)
   {
-    [a9 size];
+    [insets size];
     if (v42 > v37)
     {
       v37 = v42;
@@ -117,7 +117,7 @@
     v47 = v41[1];
     if ([a17 count])
     {
-      v67 = a10;
+      titlesCopy = titles;
       v48 = *MEMORY[0x1E695F060];
       v76 = 0u;
       v77 = 0u;
@@ -137,11 +137,11 @@
               objc_enumerationMutation(a17);
             }
 
-            v53 = [*(*(&v74 + 1) + 8 * i) integerValue];
+            integerValue = [*(*(&v74 + 1) + 8 * i) integerValue];
             v72 = 0;
             v73 = 0;
             LOWORD(v66) = a28;
-            [UIBarButtonItem _getSystemItemStyle:0 title:0 image:&v73 selectedImage:&v72 action:0 forBarStyle:a11 landscape:v66 alwaysBordered:v53 usingSystemItem:0 usingItemStyle:?];
+            [UIBarButtonItem _getSystemItemStyle:0 title:0 image:&v73 selectedImage:&v72 action:0 forBarStyle:items landscape:v66 alwaysBordered:integerValue usingSystemItem:0 usingItemStyle:?];
             [v73 size];
             if (v48 < v54)
             {
@@ -171,7 +171,7 @@
         v37 = v48;
       }
 
-      a10 = v67;
+      titles = titlesCopy;
     }
 
     v45 = v47;
@@ -187,7 +187,7 @@
     v58 = v44 + 2.0;
   }
 
-  v71.receiver = a1;
+  v71.receiver = self;
   v71.super_class = UIToolbarButton;
   v59 = objc_msgSendSuper2(&v71, sel_initWithFrame_, v46, v45, v58, v39);
   *(v59 + 77) = a18;
@@ -195,24 +195,24 @@
   *(v59 + 66) = a25;
   *(v59 + 67) = a26;
   *(v59 + 68) = a27;
-  *(v59 + 63) = a11;
+  *(v59 + 63) = items;
   v59[64] = 0.0;
-  if (a8)
+  if (withStyle)
   {
-    *(v59 + 61) = [(UINavigationButton *)[_UIToolbarNavigationButton alloc] initWithImage:a8 width:2 * (a12 == 2) style:1 applyBezel:*(v59 + 63) forBarStyle:0 buttonItemStyle:0.0];
-    v61 = v69;
-    v60 = v70;
-    v63 = a3;
-    v62 = v68;
+    *(v59 + 61) = [(UINavigationButton *)[_UIToolbarNavigationButton alloc] initWithImage:withStyle width:2 * (color == 2) style:1 applyBezel:*(v59 + 63) forBarStyle:0 buttonItemStyle:0.0];
+    v61 = pressedImageCopy;
+    v60 = heightCopy;
+    imageCopy2 = image;
+    v62 = labelCopy;
   }
 
   else
   {
-    v61 = v69;
-    v60 = v70;
-    v63 = a3;
-    v62 = v68;
-    if (a10)
+    v61 = pressedImageCopy;
+    v60 = heightCopy;
+    imageCopy2 = image;
+    v62 = labelCopy;
+    if (titles)
     {
       v59[62] = 0.0;
       v64 = 4.0;
@@ -225,7 +225,7 @@
     }
   }
 
-  v59[73] = v63 + a20;
+  v59[73] = imageCopy2 + a20;
   v59[74] = v61 + a21;
   v59[75] = v62 + a22;
   v59[76] = v60 + a23;
@@ -244,32 +244,32 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if (dyld_program_sdk_at_least())
   {
     info = self->_info;
 
-    return [(UIButton *)info gestureRecognizerShouldBegin:a3];
+    return [(UIButton *)info gestureRecognizerShouldBegin:begin];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIToolbarButton;
-    return [(UIView *)&v7 gestureRecognizerShouldBegin:a3];
+    return [(UIView *)&v7 gestureRecognizerShouldBegin:begin];
   }
 }
 
-- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)a3
+- (void)_setWantsBlendModeForAccessibilityBackgrounds:(BOOL)backgrounds
 {
-  v3 = a3;
+  backgroundsCopy = backgrounds;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     info = self->_info;
 
-    [(UINavigationButton *)info _setWantsBlendModeForAccessibilityBackgrounds:v3];
+    [(UINavigationButton *)info _setWantsBlendModeForAccessibilityBackgrounds:backgroundsCopy];
   }
 }
 
@@ -299,15 +299,15 @@
   return [(UINavigationButton *)info _wantsAccessibilityButtonShapes];
 }
 
-- (void)_setCreatedByBarButtonItem:(BOOL)a3
+- (void)_setCreatedByBarButtonItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     info = self->_info;
 
-    [(UINavigationButton *)info _setCreatedByBarButtonItem:v3];
+    [(UINavigationButton *)info _setCreatedByBarButtonItem:itemCopy];
   }
 }
 
@@ -324,39 +324,39 @@
   return [(UINavigationButton *)info _createdByBarButtonItem];
 }
 
-- (void)_sizeView:(id)a3 toPossibleTitles:(id)a4 pressedTitle:(id)a5
+- (void)_sizeView:(id)view toPossibleTitles:(id)titles pressedTitle:(id)title
 {
   v28 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  [a3 frame];
+  [view frame];
   v10 = v9;
   if (isKindOfClass)
   {
-    v11 = [a3 titleForState:0];
+    text = [view titleForState:0];
   }
 
   else
   {
-    v11 = [a3 text];
+    text = [view text];
   }
 
   v12 = v10;
-  v13 = v11;
-  if (a5 && ([a4 containsObject:a5] & 1) == 0)
+  v13 = text;
+  if (title && ([titles containsObject:title] & 1) == 0)
   {
     if (isKindOfClass)
     {
-      [a3 setTitle:a5 forState:0];
+      [view setTitle:title forState:0];
     }
 
     else
     {
-      [a3 setText:a5];
+      [view setText:title];
     }
 
-    [a3 sizeToFit];
-    [a3 frame];
+    [view sizeToFit];
+    [view frame];
     v15 = v14;
     if (v15 > v12)
     {
@@ -368,7 +368,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = [a4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v16 = [titles countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
     v17 = v16;
@@ -379,22 +379,22 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(titles);
         }
 
         v20 = *(*(&v23 + 1) + 8 * i);
         if (isKindOfClass)
         {
-          [a3 setTitle:v20 forState:0];
+          [view setTitle:v20 forState:0];
         }
 
         else
         {
-          [a3 setText:v20];
+          [view setText:v20];
         }
 
-        [a3 sizeToFit];
-        [a3 frame];
+        [view sizeToFit];
+        [view frame];
         v22 = v21;
         if (v12 < v22)
         {
@@ -402,22 +402,22 @@
         }
       }
 
-      v17 = [a4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v17 = [titles countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v17);
   }
 
-  [a3 frame];
-  [a3 setFrame:?];
+  [view frame];
+  [view setFrame:?];
   if (isKindOfClass)
   {
-    [a3 setTitle:v13 forState:0];
+    [view setTitle:v13 forState:0];
   }
 
   else
   {
-    [a3 setText:v13];
+    [view setText:v13];
   }
 }
 
@@ -434,55 +434,55 @@
   return result;
 }
 
-- (void)_setPressed:(BOOL)a3
+- (void)_setPressed:(BOOL)pressed
 {
-  v3 = a3;
+  pressedCopy = pressed;
   if ([(UIToolbarButton *)self _infoIsButton])
   {
-    self->_onState = v3;
-    [(UINavigationButton *)self->_info setHighlighted:v3];
+    self->_onState = pressedCopy;
+    [(UINavigationButton *)self->_info setHighlighted:pressedCopy];
   }
 
   label = self->_label;
-  if (v3)
+  if (pressedCopy)
   {
-    v6 = +[UIColor whiteColor];
+    _defaultLabelColor = +[UIColor whiteColor];
   }
 
   else
   {
-    v6 = [objc_opt_class() _defaultLabelColor];
+    _defaultLabelColor = [objc_opt_class() _defaultLabelColor];
   }
 
-  [(UILabel *)label setTextColor:v6];
+  [(UILabel *)label setTextColor:_defaultLabelColor];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setUseSelectedImage:(BOOL)a3
+- (void)setUseSelectedImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   if ([(UIToolbarButton *)self _infoIsButton])
   {
     info = self->_info;
 
-    [(UIButton *)info setSelected:v3];
+    [(UIButton *)info setSelected:imageCopy];
   }
 
-  else if (v3)
+  else if (imageCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-    [v7 handleFailureInMethod:a2 object:self file:@"UIToolbarButton.m" lineNumber:313 description:@"Selection not supported on toolbar items not backed by a UIButton subclass."];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIToolbarButton.m" lineNumber:313 description:@"Selection not supported on toolbar items not backed by a UIButton subclass."];
   }
 }
 
-- (void)_setAdditionalSelectionInsets:(UIEdgeInsets)a3
+- (void)_setAdditionalSelectionInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  right = a3.right;
-  top = a3.top;
-  left = a3.left;
+  bottom = insets.bottom;
+  right = insets.right;
+  top = insets.top;
+  left = insets.left;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -500,15 +500,15 @@
   }
 }
 
-- (void)_setInfoWidth:(float)a3
+- (void)_setInfoWidth:(float)width
 {
-  v4 = a3;
-  self->_minimumWidth = a3;
-  self->_maximumWidth = a3;
+  widthCopy = width;
+  self->_minimumWidth = width;
+  self->_maximumWidth = width;
   [(UIView *)self->_info frame];
   [(UIButton *)self->_info setFrame:?];
   [(UIView *)self frame];
-  if (v5 < v4)
+  if (v5 < widthCopy)
   {
     [(UIView *)self frame];
 
@@ -516,20 +516,20 @@
   }
 }
 
-- (void)_setInfoExtremityWidth:(float)a3 isMin:(BOOL)a4
+- (void)_setInfoExtremityWidth:(float)width isMin:(BOOL)min
 {
-  v4 = a4;
-  v6 = a3;
-  if (a4)
+  minCopy = min;
+  widthCopy = width;
+  if (min)
   {
-    self->_minimumWidth = v6;
+    self->_minimumWidth = widthCopy;
     maximumWidth = self->_maximumWidth;
   }
 
   else
   {
-    self->_maximumWidth = v6;
-    maximumWidth = a3;
+    self->_maximumWidth = widthCopy;
+    maximumWidth = width;
   }
 
   if (maximumWidth > 0.0)
@@ -542,14 +542,14 @@
   }
 
   [(UIView *)self->_info frame];
-  if (v9 < v6 != v4)
+  if (v9 < widthCopy != minCopy)
   {
-    v6 = v9;
+    widthCopy = v9;
   }
 
   [(UIButton *)self->_info setFrame:?];
   [(UIView *)self frame];
-  if (v6 != v10)
+  if (widthCopy != v10)
   {
     [(UIView *)self frame];
 
@@ -557,18 +557,18 @@
   }
 }
 
-- (void)_setInfoFlexibleWidth:(BOOL)a3
+- (void)_setInfoFlexibleWidth:(BOOL)width
 {
-  v3 = a3;
-  v5 = [(UIView *)self->_info autoresizingMask];
-  if (v3)
+  widthCopy = width;
+  autoresizingMask = [(UIView *)self->_info autoresizingMask];
+  if (widthCopy)
   {
-    v6 = v5 & 0xFFFFFFFD | 2;
+    v6 = autoresizingMask & 0xFFFFFFFD | 2;
   }
 
   else
   {
-    v6 = v5 & 0xFFFFFFFD;
+    v6 = autoresizingMask & 0xFFFFFFFD;
   }
 
   info = self->_info;
@@ -576,29 +576,29 @@
   [(UIView *)info setAutoresizingMask:v6];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UIControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UIControl *)self isEnabled]!= enabled)
   {
     v10.receiver = self;
     v10.super_class = UIToolbarButton;
-    [(UIControl *)&v10 setEnabled:v3];
+    [(UIControl *)&v10 setEnabled:enabledCopy];
     if ([(UIToolbarButton *)self _infoIsButton])
     {
-      [(UINavigationButton *)self->_info setEnabled:v3];
+      [(UINavigationButton *)self->_info setEnabled:enabledCopy];
       v5 = [self->_appearanceStorage textAttributesForState:0];
       if (v5)
       {
         v6 = v5;
-        v7 = [(UIControl *)self isHighlighted];
+        isHighlighted = [(UIControl *)self isHighlighted];
         v8 = 2;
-        if (v3)
+        if (enabledCopy)
         {
           v8 = 0;
         }
 
-        if (v7)
+        if (isHighlighted)
         {
           v9 = 1;
         }
@@ -608,7 +608,7 @@
           v9 = v8;
         }
 
-        if (v7 || !v3)
+        if (isHighlighted || !enabledCopy)
         {
           v6 = [self->_appearanceStorage textAttributesForState:v9];
         }
@@ -628,13 +628,13 @@
   }
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v10.receiver = self;
   v10.super_class = UIToolbarButton;
-  if ([(UIControl *)&v10 pointMostlyInside:a4 withEvent:?])
+  if ([(UIControl *)&v10 pointMostlyInside:event withEvent:?])
   {
     return 1;
   }
@@ -647,9 +647,9 @@
     return 1;
   }
 
-  v9 = [[(UIView *)self superview] _barPosition];
+  _barPosition = [[(UIView *)self superview] _barPosition];
   result = 0;
-  if (v9 != 1 && v9 != 4)
+  if (_barPosition != 1 && _barPosition != 4)
   {
     v12.origin.x = p_hitRect->origin.x;
     v12.origin.y = self->_hitRect.origin.y;
@@ -673,11 +673,11 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
   v7.receiver = self;
   v7.super_class = UIToolbarButton;
-  v5 = [(UIControl *)&v7 hitTest:a4 forEvent:a3.x, a3.y];
+  v5 = [(UIControl *)&v7 hitTest:event forEvent:test.x, test.y];
   if ([(UIToolbarButton *)self _infoIsButton]&& v5 == self->_info)
   {
     return self;
@@ -686,11 +686,11 @@
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIToolbarButton;
-  v5 = [(UIControl *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIControl *)&v7 hitTest:event withEvent:test.x, test.y];
   if ([(UIToolbarButton *)self _infoIsButton]&& v5 == self->_info)
   {
     return self;
@@ -699,53 +699,53 @@
   return v5;
 }
 
-- (void)_setLastHighlightSuccessful:(BOOL)a3
+- (void)_setLastHighlightSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   v5.receiver = self;
   v5.super_class = UIToolbarButton;
   [(UIControl *)&v5 _setLastHighlightSuccessful:?];
   if ([(UIToolbarButton *)self _infoIsButton])
   {
-    [(UIControl *)self->_info _setLastHighlightSuccessful:v3];
+    [(UIControl *)self->_info _setLastHighlightSuccessful:successfulCopy];
   }
 }
 
-- (void)_setTouchHasHighlighted:(BOOL)a3
+- (void)_setTouchHasHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = UIToolbarButton;
   [(UIControl *)&v5 _setTouchHasHighlighted:?];
   if ([(UIToolbarButton *)self _infoIsButton])
   {
-    [(UIControl *)self->_info _setTouchHasHighlighted:v3];
+    [(UIControl *)self->_info _setTouchHasHighlighted:highlightedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v37.receiver = self;
   v37.super_class = UIToolbarButton;
   [(UIControl *)&v37 setHighlighted:?];
   if ([(UIToolbarButton *)self _infoIsButton])
   {
-    [(UINavigationButton *)self->_info setHighlighted:self->_onState | v3];
+    [(UINavigationButton *)self->_info setHighlighted:self->_onState | highlightedCopy];
     v5 = [self->_appearanceStorage textAttributesForState:0];
     if (v5)
     {
       v6 = v5;
-      if (v3)
+      if (highlightedCopy)
       {
         v6 = [self->_appearanceStorage textAttributesForState:1];
       }
 
-      [(UIToolbarButton *)self _updateShadowOffsetWithAttributes:v6 forState:v3];
+      [(UIToolbarButton *)self _updateShadowOffsetWithAttributes:v6 forState:highlightedCopy];
     }
   }
 
-  else if (v3)
+  else if (highlightedCopy)
   {
     if (!__backgroundGlow)
     {
@@ -756,15 +756,15 @@
 
     if ([(UIView *)self _containerStyle]== 1)
     {
-      v7 = [(UIView *)self window];
+      window = [(UIView *)self window];
     }
 
     else
     {
-      v7 = [(UIView *)self superview];
+      window = [(UIView *)self superview];
     }
 
-    [(UIView *)v7 addSubview:__backgroundGlow];
+    [(UIView *)window addSubview:__backgroundGlow];
     [(UIView *)self frame];
     v9 = v8;
     v11 = v10;
@@ -797,16 +797,16 @@
     [[(UIView *)self superview] bringSubviewToFront:self];
     if ([(UIView *)self _containerStyle]== 1)
     {
-      v34 = [(UIView *)self window];
-      [(UIView *)v34 addSubview:__backgroundGlow];
-      v35 = [(UIView *)self window];
-      [(UIView *)v35 bringSubviewToFront:__backgroundGlow];
+      window2 = [(UIView *)self window];
+      [(UIView *)window2 addSubview:__backgroundGlow];
+      window3 = [(UIView *)self window];
+      [(UIView *)window3 bringSubviewToFront:__backgroundGlow];
     }
 
     else
     {
-      v36 = [(UIView *)self superview];
-      [(UIView *)v36 _addSubview:__backgroundGlow positioned:-2 relativeTo:self];
+      superview = [(UIView *)self superview];
+      [(UIView *)superview _addSubview:__backgroundGlow positioned:-2 relativeTo:self];
     }
   }
 
@@ -821,9 +821,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UINavigationButton *)self->_info sizeThatFits:a3.width, a3.height];
+  [(UINavigationButton *)self->_info sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -858,47 +858,47 @@
   return result;
 }
 
-- (id)_customOrAccessibilityBackgroundImageForState:(unint64_t)a3 style:(int64_t)a4 isMini:(BOOL)a5
+- (id)_customOrAccessibilityBackgroundImageForState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini
 {
-  v5 = a5;
-  v9 = [(UIToolbarButton *)self _wantsAccessibilityButtonShapes];
-  if (a3 || !v9)
+  miniCopy = mini;
+  _wantsAccessibilityButtonShapes = [(UIToolbarButton *)self _wantsAccessibilityButtonShapes];
+  if (state || !_wantsAccessibilityButtonShapes)
   {
     appearanceStorage = self->_appearanceStorage;
 
-    return [appearanceStorage backgroundImageForState:a3 style:a4 isMini:v5];
+    return [appearanceStorage backgroundImageForState:state style:style isMini:miniCopy];
   }
 
   else
   {
 
-    return _UINavigationButtonAccessibilityBackground(0, v5);
+    return _UINavigationButtonAccessibilityBackground(0, miniCopy);
   }
 }
 
-- (void)_adjustPushButtonForMiniBar:(BOOL)a3 isChangingBarHeight:(BOOL)a4
+- (void)_adjustPushButtonForMiniBar:(BOOL)bar isChangingBarHeight:(BOOL)height
 {
-  v5 = a3;
+  barCopy = bar;
   if ([self->_appearanceStorage anyBackgroundImage])
   {
-    v7 = 1;
+    _wantsAccessibilityButtonShapes = 1;
   }
 
   else
   {
-    v7 = [(UIToolbarButton *)self _wantsAccessibilityButtonShapes];
+    _wantsAccessibilityButtonShapes = [(UIToolbarButton *)self _wantsAccessibilityButtonShapes];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || !v7)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || !_wantsAccessibilityButtonShapes)
   {
     return;
   }
 
   info = self->_info;
-  v9 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:0 style:self->_style isMini:v5];
+  v9 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:0 style:self->_style isMini:barCopy];
   v10 = v9;
-  if (v5)
+  if (barCopy)
   {
     if (v9)
     {
@@ -911,12 +911,12 @@
 
   v11 = 0;
 LABEL_12:
-  v12 = [(UIToolbarButton *)self _tintColor];
+  _tintColor = [(UIToolbarButton *)self _tintColor];
   style = self->_style;
   if (style != 7 && v10 != 0)
   {
     [(UIButton *)info setBackgroundImage:v10 forState:0];
-    v16 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:1 style:self->_style isMini:v5];
+    v16 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:1 style:self->_style isMini:barCopy];
     v17 = v16;
     if (v16)
     {
@@ -925,7 +925,7 @@ LABEL_12:
 
     else
     {
-      v18 = !v5;
+      v18 = !barCopy;
     }
 
     if (((v11 | v18) & 1) == 0)
@@ -934,7 +934,7 @@ LABEL_12:
     }
 
     [(UIButton *)info setBackgroundImage:v17 forState:1];
-    v19 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:4 style:self->_style isMini:v5];
+    v19 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:4 style:self->_style isMini:barCopy];
     if (v19)
     {
       v20 = 1;
@@ -942,7 +942,7 @@ LABEL_12:
 
     else
     {
-      v20 = !v5;
+      v20 = !barCopy;
     }
 
     if (((v11 | v20) & 1) == 0)
@@ -951,7 +951,7 @@ LABEL_12:
     }
 
     [(UIButton *)info setBackgroundImage:v19 forState:4];
-    v21 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:2 style:self->_style isMini:v5];
+    v21 = [(UIToolbarButton *)self _customOrAccessibilityBackgroundImageForState:2 style:self->_style isMini:barCopy];
     if (v21)
     {
       v22 = 1;
@@ -959,7 +959,7 @@ LABEL_12:
 
     else
     {
-      v22 = !v5;
+      v22 = !barCopy;
     }
 
     if (((v11 | v22) & 1) == 0)
@@ -968,7 +968,7 @@ LABEL_12:
     }
 
     [(UIButton *)info setBackgroundImage:v21 forState:2];
-    [(UINavigationButton *)info setControlSize:v5];
+    [(UINavigationButton *)info setControlSize:barCopy];
     [(UIView *)info frame];
     v24 = v23;
     v26 = v25;
@@ -1005,7 +1005,7 @@ LABEL_12:
     goto LABEL_55;
   }
 
-  if (style == 7 || v12 == 0)
+  if (style == 7 || _tintColor == 0)
   {
     [(UIButton *)info setBackgroundImage:0 forState:0];
     [(UIButton *)info setBackgroundImage:0 forState:1];
@@ -1027,7 +1027,7 @@ LABEL_12:
 
   [(UIButton *)info setBackgroundImage:0 forState:2];
 LABEL_55:
-  if (!a4)
+  if (!height)
   {
     [(UIButton *)info setTitleColor:0 forState:2];
   }
@@ -1065,10 +1065,10 @@ LABEL_55:
     v10 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIButton *)self->_info imageForState:0]!= 0;
     if ([(UIView *)self window])
     {
-      v11 = [(UIToolbarButton *)self _showsAccessibilityBackgroundWhenEnabled];
-      if (v10 || v11)
+      _showsAccessibilityBackgroundWhenEnabled = [(UIToolbarButton *)self _showsAccessibilityBackgroundWhenEnabled];
+      if (v10 || _showsAccessibilityBackgroundWhenEnabled)
       {
-        v12 = v11;
+        v12 = _showsAccessibilityBackgroundWhenEnabled;
         -[_UIToolbarNavigationButton updateImageIfNeededWithTintColor:](self->_info, "updateImageIfNeededWithTintColor:", [self->_appearanceStorage tintColor]);
         if (v12)
         {
@@ -1104,11 +1104,11 @@ LABEL_55:
       v23 = height;
       if (([[(UIView *)self superview] _hidesShadow]& 1) == 0)
       {
-        v24 = [(UIView *)self superview];
+        superview = [(UIView *)self superview];
         [-[UIView _screen](self "_screen")];
         v26 = 1.0 / v25;
-        v27 = [(UIView *)v24 _barPosition];
-        if (v27 == 4 || v27 == 1)
+        _barPosition = [(UIView *)superview _barPosition];
+        if (_barPosition == 4 || _barPosition == 1)
         {
           y = y - v26;
         }
@@ -1122,8 +1122,8 @@ LABEL_55:
       v23 = height;
     }
 
-    v29 = [(UIToolbarButton *)self _isBordered];
-    if (v29 && v22 != height < v21)
+    _isBordered = [(UIToolbarButton *)self _isBordered];
+    if (_isBordered && v22 != height < v21)
     {
       [(UIToolbarButton *)self _adjustPushButtonForMiniBar:height < v21 isChangingBarHeight:1];
       [(UIView *)self->_info frame];
@@ -1134,7 +1134,7 @@ LABEL_55:
     v65 = v21;
     UIRoundToViewScale(self);
     v33 = v32;
-    if (v29 || !v10)
+    if (_isBordered || !v10)
     {
       v71.origin.x = x;
       v71.origin.y = y;
@@ -1183,18 +1183,18 @@ LABEL_55:
     appearanceStorage = self->_appearanceStorage;
     if (height >= v65)
     {
-      v51 = [appearanceStorage titlePositionOffset];
+      titlePositionOffset = [appearanceStorage titlePositionOffset];
     }
 
     else
     {
-      v51 = [appearanceStorage miniTitlePositionOffset];
+      titlePositionOffset = [appearanceStorage miniTitlePositionOffset];
     }
 
-    v52 = v51;
+    v52 = titlePositionOffset;
     v53 = v33 + left;
     v54 = v35 + top;
-    if (v29)
+    if (_isBordered)
     {
       v55 = height < v65;
       v56 = 3.0;
@@ -1240,7 +1240,7 @@ LABEL_55:
   return [(UIToolbarButton *)self _isBordered];
 }
 
-- (double)_paddingForLeft:(BOOL)a3
+- (double)_paddingForLeft:(BOOL)left
 {
   v5 = 0.0;
   if ([(UIToolbarButton *)self _shouldApplyPadding])
@@ -1248,7 +1248,7 @@ LABEL_55:
     [(UIView *)self layoutIfNeeded];
     [(UIView *)self->_info frame];
     v5 = v7;
-    if (!a3)
+    if (!left)
     {
       v8 = v6;
       [(UIView *)self bounds];
@@ -1259,7 +1259,7 @@ LABEL_55:
   return v5;
 }
 
-- (void)_setBarHeight:(float)a3
+- (void)_setBarHeight:(float)height
 {
   self->_barHeight = 1;
   [(UIView *)self frame];
@@ -1267,28 +1267,28 @@ LABEL_55:
   [(UIView *)self setFrame:?];
 }
 
-- (void)setToolbarTintColor:(id)a3
+- (void)setToolbarTintColor:(id)color
 {
   toolbarTintColor = self->_toolbarTintColor;
-  if (toolbarTintColor != a3)
+  if (toolbarTintColor != color)
   {
 
-    self->_toolbarTintColor = a3;
+    self->_toolbarTintColor = color;
 
     [(UIToolbarButton *)self _adjustToolbarButtonInfo];
   }
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
-  if (self->_barStyle != a3)
+  if (self->_barStyle != style)
   {
-    self->_barStyle = a3;
+    self->_barStyle = style;
     [(UIToolbarButton *)self _adjustToolbarButtonInfo];
   }
 }
 
-- (CGSize)_defaultTitleShadowOffsetForState:(unint64_t)a3
+- (CGSize)_defaultTitleShadowOffsetForState:(unint64_t)state
 {
   v3 = 0.0;
   v4 = -1.0;
@@ -1297,7 +1297,7 @@ LABEL_55:
   return result;
 }
 
-- (void)_updateShadowOffsetWithAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_updateShadowOffsetWithAttributes:(id)attributes forState:(unint64_t)state
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1311,19 +1311,19 @@ LABEL_55:
   {
     if ([(UIControl *)self isEnabled])
     {
-      a4 = 0;
+      state = 0;
     }
 
     else
     {
-      a4 = 2;
+      state = 2;
     }
 
     v9 = info;
     info = 0;
   }
 
-  v10 = [a3 objectForKey:*off_1E70EC9B0];
+  v10 = [attributes objectForKey:*off_1E70EC9B0];
   if (v10)
   {
     [v10 shadowOffset];
@@ -1331,7 +1331,7 @@ LABEL_55:
 
   else
   {
-    [(UIToolbarButton *)self _defaultTitleShadowOffsetForState:a4];
+    [(UIToolbarButton *)self _defaultTitleShadowOffsetForState:state];
   }
 
   v13 = v11;
@@ -1341,7 +1341,7 @@ LABEL_55:
   [(_UIToolbarNavigationButton *)v9 setShadowOffset:v13, v14];
 }
 
-- (void)_updateInfoTextColorsForState:(unint64_t)a3
+- (void)_updateInfoTextColorsForState:(unint64_t)state
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1349,19 +1349,19 @@ LABEL_55:
   if ((isKindOfClass & 1) != 0 || !info)
   {
     v8 = 0;
-    v7 = a3;
+    stateCopy = state;
   }
 
   else
   {
     if ([(UIControl *)self isEnabled])
     {
-      v7 = 0;
+      stateCopy = 0;
     }
 
     else
     {
-      v7 = 2;
+      stateCopy = 2;
     }
 
     v8 = info;
@@ -1371,52 +1371,52 @@ LABEL_55:
   v9 = [self->_appearanceStorage textAttributesForState:0];
   if (v9)
   {
-    if (v7)
+    if (stateCopy)
     {
-      v9 = [self->_appearanceStorage textAttributesForState:v7];
+      v9 = [self->_appearanceStorage textAttributesForState:stateCopy];
     }
 
     v10 = v9;
     v11 = [v9 objectForKey:*off_1E70EC920];
-    [(UIButton *)info setTitleColor:v11 forState:a3];
+    [(UIButton *)info setTitleColor:v11 forState:state];
     [(_UIToolbarNavigationButton *)v8 setTextColor:v11];
     v12 = [objc_msgSend(v10 objectForKey:{*off_1E70EC9B0), "shadowColor"}];
-    [(UIButton *)info setTitleShadowColor:v12 forState:a3];
+    [(UIButton *)info setTitleShadowColor:v12 forState:state];
     [(_UIToolbarNavigationButton *)v8 setShadowColor:v12];
-    v13 = [(UIControl *)self isEnabled];
+    isEnabled = [(UIControl *)self isEnabled];
     v14 = 2;
-    if (v13)
+    if (isEnabled)
     {
       v14 = 0;
     }
 
-    if (v14 == a3)
+    if (v14 == state)
     {
 
-      [(UIToolbarButton *)self _updateShadowOffsetWithAttributes:v10 forState:a3];
+      [(UIToolbarButton *)self _updateShadowOffsetWithAttributes:v10 forState:state];
     }
   }
 }
 
-- (void)_adjustToolbarButtonInfoTintColorHasChanged:(BOOL)a3
+- (void)_adjustToolbarButtonInfoTintColorHasChanged:(BOOL)changed
 {
   [(UIView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
   }
 
   else
   {
-    v4 = 0;
+    superview = 0;
   }
 
-  v5 = [(UIView *)v4 isMinibar];
-  v6 = [(UIToolbarButton *)self _infoIsButton];
-  if (v6)
+  isMinibar = [(UIView *)superview isMinibar];
+  _infoIsButton = [(UIToolbarButton *)self _infoIsButton];
+  if (_infoIsButton)
   {
-    [(UIToolbarButton *)self _adjustPushButtonForMiniBar:v5 isChangingBarHeight:0];
+    [(UIToolbarButton *)self _adjustPushButtonForMiniBar:isMinibar isChangingBarHeight:0];
     info = self->_info;
     toolbarTintColor = [self->_appearanceStorage tintColor];
     if (!toolbarTintColor)
@@ -1442,17 +1442,17 @@ LABEL_55:
   if (v9)
   {
     v10 = v9;
-    v11 = self->_info;
-    if (v6)
+    titleLabel = self->_info;
+    if (_infoIsButton)
     {
-      v11 = [(UIButton *)v11 titleLabel];
+      titleLabel = [(UIButton *)titleLabel titleLabel];
     }
 
     [v10 pointSize];
     if (v12 == 0.0)
     {
       v13 = 17.0;
-      if (v6)
+      if (_infoIsButton)
       {
         v13 = 12.0;
       }
@@ -1460,10 +1460,10 @@ LABEL_55:
       v10 = [v10 fontWithSize:v13];
     }
 
-    [(UIButton *)v11 setFont:v10];
+    [(UIButton *)titleLabel setFont:v10];
   }
 
-  if (v6)
+  if (_infoIsButton)
   {
     [(UIToolbarButton *)self _updateInfoTextColorsForState:0];
     [(UIToolbarButton *)self _updateInfoTextColorsForState:1];
@@ -1493,24 +1493,24 @@ LABEL_55:
   }
 }
 
-- (void)_UIAppearance_setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 barMetrics:(int64_t)a6
+- (void)_UIAppearance_setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style barMetrics:(int64_t)metrics
 {
-  if ((a6 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
-    v9 = a3;
+    imageCopy = image;
     appearanceStorage = self->_appearanceStorage;
-    if (a3)
+    if (image)
     {
       if (!appearanceStorage)
       {
         self->_appearanceStorage = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
       }
 
-      if (([v9 _isResizable] & 1) == 0)
+      if (([imageCopy _isResizable] & 1) == 0)
       {
-        [v9 size];
+        [imageCopy size];
         v13 = floor(v12 * 0.5);
-        v9 = [v9 resizableImageWithCapInsets:{0.0, v13, 0.0, v12 - v13 + -1.0}];
+        imageCopy = [imageCopy resizableImageWithCapInsets:{0.0, v13, 0.0, v12 - v13 + -1.0}];
       }
     }
 
@@ -1521,50 +1521,50 @@ LABEL_55:
         return;
       }
 
-      v9 = 0;
+      imageCopy = 0;
     }
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0 || a4 == 4)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) == 0 || state == 4)
     {
-      v15 = a4;
+      stateCopy = state;
     }
 
     else
     {
-      v15 = 1;
+      stateCopy = 1;
     }
 
-    if ([self->_appearanceStorage backgroundImageForState:v15 style:a5 isMini:a6 == 1] != v9)
+    if ([self->_appearanceStorage backgroundImageForState:stateCopy style:style isMini:metrics == 1] != imageCopy)
     {
-      [self->_appearanceStorage setBackgroundImage:v9 forState:v15 style:a5 isMini:a6 == 1];
-      [(UINavigationButton *)self->_info _setBackgroundImage:v9 forState:a4 style:a5 barMetrics:a6];
+      [self->_appearanceStorage setBackgroundImage:imageCopy forState:stateCopy style:style isMini:metrics == 1];
+      [(UINavigationButton *)self->_info _setBackgroundImage:imageCopy forState:state style:style barMetrics:metrics];
       [(UIToolbarButton *)self _adjustToolbarButtonInfo];
-      v16 = [(UIView *)self superview];
+      superview = [(UIView *)self superview];
 
-      [(UIView *)v16 setNeedsLayout];
+      [(UIView *)superview setNeedsLayout];
     }
   }
 
   else if ((_UIAppearance_setBackgroundImage_forState_style_barMetrics__didWarn_0 & 1) == 0)
   {
     _UIAppearance_setBackgroundImage_forState_style_barMetrics__didWarn_0 = 1;
-    NSLog(&cfstr_SCustomization.isa, a2, a3, a4, a5, "UIBarButtonItem", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+    NSLog(&cfstr_SCustomization.isa, a2, image, state, style, "UIBarButtonItem", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 }
 
-- (id)_backgroundImageForState:(unint64_t)a3 barMetrics:(int64_t)a4
+- (id)_backgroundImageForState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0 && a3 != 4)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) != 0 && state != 4)
     {
-      a3 = 1;
+      state = 1;
     }
 
     style = self->_style;
     appearanceStorage = self->_appearanceStorage;
 
-    return [appearanceStorage backgroundImageForState:a3 style:style isMini:a4 == 1];
+    return [appearanceStorage backgroundImageForState:state style:style isMini:metrics == 1];
   }
 
   else
@@ -1572,17 +1572,17 @@ LABEL_55:
     if ((_backgroundImageForState_barMetrics__didWarn_0 & 1) == 0)
     {
       _backgroundImageForState_barMetrics__didWarn_0 = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3, "UIBarButtonItem", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, state, "UIBarButtonItem", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     return 0;
   }
 }
 
-- (void)_UIAppearance_setTintColor:(id)a3
+- (void)_UIAppearance_setTintColor:(id)color
 {
   appearanceStorage = self->_appearanceStorage;
-  if (a3)
+  if (color)
   {
     if (!appearanceStorage)
     {
@@ -1596,9 +1596,9 @@ LABEL_55:
     return;
   }
 
-  v6 = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage tintColor];
-  [self->_appearanceStorage setTintColor:a3];
-  if (v6 != a3)
+  tintColor = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage tintColor];
+  [self->_appearanceStorage setTintColor:color];
+  if (tintColor != color)
   {
 
     [(UIToolbarButton *)self _adjustToolbarButtonInfoTintColorHasChanged:1];
@@ -1616,12 +1616,12 @@ LABEL_55:
   return result;
 }
 
-- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (a3 != 0.0 || appearanceStorage != 0)
+    if (adjustment != 0.0 || appearanceStorage != 0)
     {
       if (!appearanceStorage)
       {
@@ -1629,10 +1629,10 @@ LABEL_55:
         self->_appearanceStorage = appearanceStorage;
       }
 
-      [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backgroundVerticalAdjustmentForBarMetrics:a4];
-      if (v9 != a3)
+      [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backgroundVerticalAdjustmentForBarMetrics:metrics];
+      if (v9 != adjustment)
       {
-        [self->_appearanceStorage setBackgroundVerticalAdjustment:a4 forBarMetrics:a3];
+        [self->_appearanceStorage setBackgroundVerticalAdjustment:metrics forBarMetrics:adjustment];
 
         [(UIView *)self setNeedsLayout];
       }
@@ -1642,13 +1642,13 @@ LABEL_55:
   else if ((_UIAppearance_setBackgroundVerticalPositionAdjustment_forBarMetrics__didWarn & 1) == 0)
   {
     _UIAppearance_setBackgroundVerticalPositionAdjustment_forBarMetrics__didWarn = 1;
-    NSLog(&cfstr_SCustomization.isa, a2, a3, "UIBarButtonItem", @"toolbar button background vertical position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+    NSLog(&cfstr_SCustomization.isa, a2, adjustment, "UIBarButtonItem", @"toolbar button background vertical position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 }
 
-- (double)_backgroundVerticalPositionAdjustmentForBarMetrics:(int64_t)a3
+- (double)_backgroundVerticalPositionAdjustmentForBarMetrics:(int64_t)metrics
 {
-  if ((a3 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
 
@@ -1669,25 +1669,25 @@ LABEL_55:
   return result;
 }
 
-- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) <= 1)
+  if ((metrics - 101) <= 1)
   {
     if ((_UIAppearance_setTitlePositionAdjustment_forBarMetrics__didWarn_0 & 1) == 0)
     {
       _UIAppearance_setTitlePositionAdjustment_forBarMetrics__didWarn_0 = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3.horizontal, a3.vertical, "UIBarButtonItem", @"title position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, adjustment.horizontal, adjustment.vertical, "UIBarButtonItem", @"title position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     return;
   }
 
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
-    if (a3.horizontal == 0.0 && a3.vertical == 0.0)
+    if (adjustment.horizontal == 0.0 && adjustment.vertical == 0.0)
     {
       return;
     }
@@ -1696,10 +1696,10 @@ LABEL_55:
     self->_appearanceStorage = appearanceStorage;
   }
 
-  if (a4 != 1)
+  if (metrics != 1)
   {
-    v9 = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage titlePositionOffset];
-    if (v9)
+    titlePositionOffset = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage titlePositionOffset];
+    if (titlePositionOffset)
     {
       goto LABEL_10;
     }
@@ -1710,19 +1710,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniTitlePositionOffset];
-  if (!v9)
+  titlePositionOffset = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniTitlePositionOffset];
+  if (!titlePositionOffset)
   {
     goto LABEL_12;
   }
 
 LABEL_10:
-  [(NSValue *)v9 UIOffsetValue];
+  [(NSValue *)titlePositionOffset UIOffsetValue];
 LABEL_13:
   if (horizontal != v10 || vertical != v11)
   {
     v12 = self->_appearanceStorage;
-    if (a4 == 1)
+    if (metrics == 1)
     {
       *v14 = horizontal;
       *&v14[1] = vertical;
@@ -1740,9 +1740,9 @@ LABEL_13:
   }
 }
 
-- (UIOffset)_titlePositionAdjustmentForBarMetrics:(int64_t)a3
+- (UIOffset)_titlePositionAdjustmentForBarMetrics:(int64_t)metrics
 {
-  if ((a3 - 101) <= 1)
+  if ((metrics - 101) <= 1)
   {
     v3 = 0.0;
     if ((_titlePositionAdjustmentForBarMetrics__didWarn_0 & 1) == 0)
@@ -1755,10 +1755,10 @@ LABEL_13:
   }
 
   appearanceStorage = self->_appearanceStorage;
-  if (a3 != 1)
+  if (metrics != 1)
   {
-    v5 = [appearanceStorage titlePositionOffset];
-    if (v5)
+    titlePositionOffset = [appearanceStorage titlePositionOffset];
+    if (titlePositionOffset)
     {
       goto LABEL_6;
     }
@@ -1770,14 +1770,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = [appearanceStorage miniTitlePositionOffset];
-  if (!v5)
+  titlePositionOffset = [appearanceStorage miniTitlePositionOffset];
+  if (!titlePositionOffset)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  [v5 UIOffsetValue];
+  [titlePositionOffset UIOffsetValue];
   v3 = v7;
 LABEL_10:
   v8 = v3;
@@ -1786,44 +1786,44 @@ LABEL_10:
   return result;
 }
 
-- (void)_applyBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4
+- (void)_applyBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors
 {
-  if (a4)
+  if (selectors)
   {
-    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, a4, 1);
+    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, selectors, 1);
   }
 
-  if (a3)
+  if (storage)
   {
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:0 style:self->_style isMini:0], 0, self->_style, 0);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:1 style:self->_style isMini:0], 1, self->_style, 0);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:4 style:self->_style isMini:0], 4, self->_style, 0);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:2 style:self->_style isMini:0], 2, self->_style, 0);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:0 style:self->_style isMini:1], 0, self->_style, 1);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:1 style:self->_style isMini:1], 1, self->_style, 1);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:4 style:self->_style isMini:1], 4, self->_style, 1);
-    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [a3 backgroundImageForState:2 style:self->_style isMini:1], 2, self->_style, 1);
-    -[UIToolbarButton _setTintColor:](self, "_setTintColor:", [a3 tintColor]);
-    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [a3 textAttributesForState:0], 0);
-    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [a3 textAttributesForState:2], 2);
-    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [a3 textAttributesForState:1], 1);
-    v6 = [a3 titlePositionOffset];
-    if (v6)
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:0 style:self->_style isMini:0], 0, self->_style, 0);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:1 style:self->_style isMini:0], 1, self->_style, 0);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:4 style:self->_style isMini:0], 4, self->_style, 0);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:2 style:self->_style isMini:0], 2, self->_style, 0);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:0 style:self->_style isMini:1], 0, self->_style, 1);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:1 style:self->_style isMini:1], 1, self->_style, 1);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:4 style:self->_style isMini:1], 4, self->_style, 1);
+    -[UIToolbarButton _setBackgroundImage:forState:style:barMetrics:](self, "_setBackgroundImage:forState:style:barMetrics:", [storage backgroundImageForState:2 style:self->_style isMini:1], 2, self->_style, 1);
+    -[UIToolbarButton _setTintColor:](self, "_setTintColor:", [storage tintColor]);
+    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [storage textAttributesForState:0], 0);
+    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [storage textAttributesForState:2], 2);
+    -[UIToolbarButton _setTitleTextAttributes:forState:](self, "_setTitleTextAttributes:forState:", [storage textAttributesForState:1], 1);
+    titlePositionOffset = [storage titlePositionOffset];
+    if (titlePositionOffset)
     {
-      [v6 UIOffsetValue];
+      [titlePositionOffset UIOffsetValue];
       [(UIToolbarButton *)self _setTitlePositionAdjustment:0 forBarMetrics:?];
     }
 
-    v7 = [a3 miniTitlePositionOffset];
-    if (v7)
+    miniTitlePositionOffset = [storage miniTitlePositionOffset];
+    if (miniTitlePositionOffset)
     {
-      [v7 UIOffsetValue];
+      [miniTitlePositionOffset UIOffsetValue];
       [(UIToolbarButton *)self _setTitlePositionAdjustment:1 forBarMetrics:?];
     }
 
-    [a3 backgroundVerticalAdjustmentForBarMetrics:0];
+    [storage backgroundVerticalAdjustmentForBarMetrics:0];
     [(UIToolbarButton *)self _setBackgroundVerticalPositionAdjustment:0 forBarMetrics:?];
-    [a3 backgroundVerticalAdjustmentForBarMetrics:1];
+    [storage backgroundVerticalAdjustmentForBarMetrics:1];
 
     [(UIToolbarButton *)self _setBackgroundVerticalPositionAdjustment:1 forBarMetrics:?];
   }

@@ -7,26 +7,26 @@
 - (float)playerRate;
 - (id).cxx_construct;
 - (id)refreshCompletionBlock;
-- (void)_validateDestinationBufferColorSpace:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)callRefreshCompletionBlock:(BOOL)a3;
+- (void)_validateDestinationBufferColorSpace:(id)space;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)callRefreshCompletionBlock:(BOOL)block;
 - (void)cancelAllPendingVideoCompositionRequests;
 - (void)dealloc;
-- (void)didEnterBackground:(id)a3;
-- (void)didRecieveMemoryWarning:(id)a3;
-- (void)renderContextChanged:(id)a3;
-- (void)renderRequestFinished:(HGRef<PVRenderJob>)a3;
-- (void)setCancelsPendingRequests:(BOOL)a3;
-- (void)setColorSpacesFromDestinationBuffer:(id)a3;
-- (void)setPlayerRate:(float)a3;
-- (void)setRefreshCompletionBlock:(id)a3;
-- (void)setSchedulingTime:(id *)a3;
+- (void)didEnterBackground:(id)background;
+- (void)didRecieveMemoryWarning:(id)warning;
+- (void)renderContextChanged:(id)changed;
+- (void)renderRequestFinished:(HGRef<PVRenderJob>)finished;
+- (void)setCancelsPendingRequests:(BOOL)requests;
+- (void)setColorSpacesFromDestinationBuffer:(id)buffer;
+- (void)setPlayerRate:(float)rate;
+- (void)setRefreshCompletionBlock:(id)block;
+- (void)setSchedulingTime:(id *)time;
 - (void)setupEffectScheduler;
-- (void)signalScheduling:(id *)a3 playerRate:(float)a4;
-- (void)startVideoCompositionRequest:(id)a3;
+- (void)signalScheduling:(id *)scheduling playerRate:(float)rate;
+- (void)startVideoCompositionRequest:(id)request;
 - (void)updateDestinationFormatForOutputColorSpace;
-- (void)videoCompositionChanged:(id)a3;
-- (void)willEnterForeground:(id)a3;
+- (void)videoCompositionChanged:(id)changed;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation PVVideoCompositing
@@ -71,14 +71,14 @@ LABEL_10:
     v14[7] = &unk_28732D2B0;
     v14[8] = &unk_28732D2C8;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:9];
-    v7 = [(PVRendererBase *)self compositingContext];
-    v8 = [v7 outputColorSpace];
-    if ([v8 isHDRSpace])
+    compositingContext = [(PVRendererBase *)self compositingContext];
+    outputColorSpace = [compositingContext outputColorSpace];
+    if ([outputColorSpace isHDRSpace])
     {
-      v9 = [(PVVideoCompositing *)self canConformColorOfSourceFrames];
+      canConformColorOfSourceFrames = [(PVVideoCompositing *)self canConformColorOfSourceFrames];
 
       v10 = v13;
-      if (!v9)
+      if (!canConformColorOfSourceFrames)
       {
         goto LABEL_9;
       }
@@ -123,20 +123,20 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v6 = [(PVRendererBase *)self compositingContext];
-    v7 = [v6 outputColorSpace];
-    v8 = [v7 isP3d65GammaColorSpace];
+    compositingContext = [(PVRendererBase *)self compositingContext];
+    outputColorSpace = [compositingContext outputColorSpace];
+    isP3d65GammaColorSpace = [outputColorSpace isP3d65GammaColorSpace];
 
-    if ((v8 & 1) == 0)
+    if ((isP3d65GammaColorSpace & 1) == 0)
     {
-      v9 = [(PVRendererBase *)self compositingContext];
-      v10 = [v9 outputColorSpace];
-      if ([v10 isWideGamutSpace])
+      compositingContext2 = [(PVRendererBase *)self compositingContext];
+      outputColorSpace2 = [compositingContext2 outputColorSpace];
+      if ([outputColorSpace2 isWideGamutSpace])
       {
-        v11 = [(PVRendererBase *)self compositingContext];
-        v12 = [v11 gpuRenderAPI];
+        compositingContext3 = [(PVRendererBase *)self compositingContext];
+        gpuRenderAPI = [compositingContext3 gpuRenderAPI];
 
-        if (v12)
+        if (gpuRenderAPI)
         {
           v5 = &unk_28732D310;
           goto LABEL_10;
@@ -160,11 +160,11 @@ LABEL_11:
 - (BOOL)canConformColorOfSourceFrames
 {
   v3 = +[PVEnvironment PV_ENABLE_AVF_COLOR_CONFORM_INPUTS];
-  v4 = [(PVRendererBase *)self compositingContext];
-  v5 = [v4 workingColorSpace];
-  v6 = [v5 isRec2020LinearColorSpace];
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  workingColorSpace = [compositingContext workingColorSpace];
+  isRec2020LinearColorSpace = [workingColorSpace isRec2020LinearColorSpace];
 
-  return !v3 & v6;
+  return !v3 & isRec2020LinearColorSpace;
 }
 
 - (PVVideoCompositing)init
@@ -196,8 +196,8 @@ LABEL_11:
       v19[1] = v6;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 postNotificationName:@"kPVVideoCompositingTooManyCompositorsWarning" object:v7];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"kPVVideoCompositingTooManyCompositorsWarning" object:v7];
     }
 
     v9 = HGSynchronizable::Unlock(v3);
@@ -251,11 +251,11 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76770] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76770] object:0];
 
   [(PVVideoCompositing *)self cancelAllPendingVideoCompositionRequests];
   v5 = sRefCountLock;
@@ -310,12 +310,12 @@ LABEL_11:
   [(PVRendererBase *)&v11 dealloc];
 }
 
-- (void)renderContextChanged:(id)a3
+- (void)renderContextChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PVRendererBase *)self compositingContext];
+  changedCopy = changed;
+  compositingContext = [(PVRendererBase *)self compositingContext];
   v6 = HGObject::operator new(0x88uLL);
-  PVAVFInstructionGraphContext::PVAVFInstructionGraphContext(v6, v5, v4, self->_thumbnailCompositing);
+  PVAVFInstructionGraphContext::PVAVFInstructionGraphContext(v6, compositingContext, changedCopy, self->_thumbnailCompositing);
 
   effectScheduler = self->_effectScheduler;
   v15 = v6;
@@ -341,49 +341,49 @@ LABEL_11:
   }
 
   videoComposition = self->_videoComposition;
-  v10 = [(AVVideoCompositionRenderContext *)v4 videoComposition];
+  videoComposition = [(AVVideoCompositionRenderContext *)changedCopy videoComposition];
 
-  if (videoComposition != v10)
+  if (videoComposition != videoComposition)
   {
-    v11 = [(AVVideoCompositionRenderContext *)v4 videoComposition];
-    [(PVVideoCompositing *)self videoCompositionChanged:v11];
+    videoComposition2 = [(AVVideoCompositionRenderContext *)changedCopy videoComposition];
+    [(PVVideoCompositing *)self videoCompositionChanged:videoComposition2];
   }
 
-  [(PVVideoCompositing *)self _validateDestinationBufferColorSpace:v4];
+  [(PVVideoCompositing *)self _validateDestinationBufferColorSpace:changedCopy];
   if (v6)
   {
     (*(*v6 + 24))(v6);
   }
 }
 
-- (void)setColorSpacesFromDestinationBuffer:(id)a3
+- (void)setColorSpacesFromDestinationBuffer:(id)buffer
 {
-  v4 = [a3 newPixelBuffer];
-  if (!v4)
+  newPixelBuffer = [buffer newPixelBuffer];
+  if (!newPixelBuffer)
   {
     return;
   }
 
-  v5 = v4;
-  v6 = CVBufferCopyAttachment(v4, *MEMORY[0x277CC4C00], 0);
+  v5 = newPixelBuffer;
+  v6 = CVBufferCopyAttachment(newPixelBuffer, *MEMORY[0x277CC4C00], 0);
   if (v6)
   {
     v7 = v6;
     if (CFEqual(v6, *MEMORY[0x277CC4C30]))
     {
       v8 = +[PVColorSpace p3d65GammaColorSpace];
-      v9 = [(PVRendererBase *)self compositingContext];
-      [v9 setWorkingColorSpace:v8];
+      compositingContext = [(PVRendererBase *)self compositingContext];
+      [compositingContext setWorkingColorSpace:v8];
 
       v10 = +[PVColorSpace p3d65GammaColorSpace];
-      v11 = [(PVRendererBase *)self compositingContext];
-      [v11 setOutputColorSpace:v10];
+      compositingContext2 = [(PVRendererBase *)self compositingContext];
+      [compositingContext2 setOutputColorSpace:v10];
 
-      v12 = [(PVRendererBase *)self compositingContext];
-      [v12 setWorkingColorSpaceConformIntent:0];
+      compositingContext3 = [(PVRendererBase *)self compositingContext];
+      [compositingContext3 setWorkingColorSpaceConformIntent:0];
 
-      v13 = [(PVRendererBase *)self compositingContext];
-      [v13 setBufferFormat:24];
+      compositingContext4 = [(PVRendererBase *)self compositingContext];
+      [compositingContext4 setBufferFormat:24];
     }
 
     else
@@ -396,18 +396,18 @@ LABEL_9:
       }
 
       v14 = +[PVColorSpace rec709GammaColorSpace];
-      v15 = [(PVRendererBase *)self compositingContext];
-      [v15 setWorkingColorSpace:v14];
+      compositingContext5 = [(PVRendererBase *)self compositingContext];
+      [compositingContext5 setWorkingColorSpace:v14];
 
       v16 = +[PVColorSpace rec709GammaColorSpace];
-      v17 = [(PVRendererBase *)self compositingContext];
-      [v17 setOutputColorSpace:v16];
+      compositingContext6 = [(PVRendererBase *)self compositingContext];
+      [compositingContext6 setOutputColorSpace:v16];
 
-      v18 = [(PVRendererBase *)self compositingContext];
-      [v18 setWorkingColorSpaceConformIntent:0];
+      compositingContext7 = [(PVRendererBase *)self compositingContext];
+      [compositingContext7 setWorkingColorSpaceConformIntent:0];
 
-      v13 = [(PVRendererBase *)self compositingContext];
-      [v13 setBufferFormat:24];
+      compositingContext4 = [(PVRendererBase *)self compositingContext];
+      [compositingContext4 setBufferFormat:24];
     }
 
     goto LABEL_9;
@@ -418,25 +418,25 @@ LABEL_10:
   CVPixelBufferRelease(v5);
 }
 
-- (void)_validateDestinationBufferColorSpace:(id)a3
+- (void)_validateDestinationBufferColorSpace:(id)space
 {
-  v11 = a3;
-  v4 = [v11 newPixelBuffer];
-  if (v4)
+  spaceCopy = space;
+  newPixelBuffer = [spaceCopy newPixelBuffer];
+  if (newPixelBuffer)
   {
-    v5 = [PVColorSpace pvColorSpaceForCVPixelBuffer:v4];
-    v6 = [(PVRendererBase *)self compositingContext];
-    v7 = [v6 outputColorSpace];
-    v8 = [v5 isEqual:v7];
+    v5 = [PVColorSpace pvColorSpaceForCVPixelBuffer:newPixelBuffer];
+    compositingContext = [(PVRendererBase *)self compositingContext];
+    outputColorSpace = [compositingContext outputColorSpace];
+    v8 = [v5 isEqual:outputColorSpace];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(PVRendererBase *)self compositingContext];
-      v10 = [v9 outputColorSpace];
-      NSLog(&cfstr_WarningDestina.isa, self, v5, v10);
+      compositingContext2 = [(PVRendererBase *)self compositingContext];
+      outputColorSpace2 = [compositingContext2 outputColorSpace];
+      NSLog(&cfstr_WarningDestina.isa, self, v5, outputColorSpace2);
     }
 
-    CVPixelBufferRelease(v4);
+    CVPixelBufferRelease(newPixelBuffer);
   }
 
   else
@@ -453,11 +453,11 @@ LABEL_10:
   }
 }
 
-- (void)videoCompositionChanged:(id)a3
+- (void)videoCompositionChanged:(id)changed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_videoComposition, a3);
+  changedCopy = changed;
+  objc_storeStrong(&self->_videoComposition, changed);
   p_videoCompositionDuration = &self->_videoCompositionDuration;
   v7 = *(MEMORY[0x277CC08F0] + 16);
   *&self->_videoCompositionDuration.value = *MEMORY[0x277CC08F0];
@@ -511,27 +511,27 @@ LABEL_10:
   [(PVEffectScheduler *)self->_effectScheduler resetSchedule:self->_videoComposition];
 }
 
-- (void)startVideoCompositionRequest:(id)a3
+- (void)startVideoCompositionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   notificationStateLock = self->_notificationStateLock;
   HGSynchronizable::Lock(notificationStateLock);
   hostAppIsShuttingDown = self->_hostAppIsShuttingDown;
   HGSynchronizable::Unlock(notificationStateLock);
   if (hostAppIsShuttingDown)
   {
-    [v4 finishCancelledRequest];
+    [requestCopy finishCancelledRequest];
   }
 
   else
   {
-    v7 = [v4 renderContext];
-    [(PVVideoCompositing *)self _validateDestinationBufferColorSpace:v7];
+    renderContext = [requestCopy renderContext];
+    [(PVVideoCompositing *)self _validateDestinationBufferColorSpace:renderContext];
 
     memset(&v35, 0, sizeof(v35));
-    if (v4)
+    if (requestCopy)
     {
-      [v4 compositionTime];
+      [requestCopy compositionTime];
       timescale = v35.timescale;
     }
 
@@ -550,14 +550,14 @@ LABEL_10:
     CMTimeSubtract(&time2, &lhs, &rhs);
     CMTimeMinimum(&time, &time1, &time2);
     v35 = time;
-    v9 = [(PVTaskTokenPool *)self->_tokenPool getToken];
+    getToken = [(PVTaskTokenPool *)self->_tokenPool getToken];
     v10 = [PVAVFRenderJobDelegate alloc];
     time = v35;
-    v11 = [(PVAVFRenderJobDelegate *)v10 initWithCompositor:self request:v4 compositionTime:&time thumbnailCompositing:self->_thumbnailCompositing];
+    v11 = [(PVAVFRenderJobDelegate *)v10 initWithCompositor:self request:requestCopy compositionTime:&time thumbnailCompositing:self->_thumbnailCompositing];
     [(PVAVFRenderJobDelegate *)v11 setMinimumRequestCompletionTimeMS:self->_minimumRequestCompletionTimeMS];
     [(PVAVFRenderJobDelegate *)v11 setParentCode:[(PVVideoCompositing *)self parentCode]];
-    -[PVAVFRenderJobDelegate setChildCode:](v11, "setChildCode:", [v9 tokenId]);
-    [(PVAVFRenderJobDelegate *)v11 setToken:v9];
+    -[PVAVFRenderJobDelegate setChildCode:](v11, "setChildCode:", [getToken tokenId]);
+    [(PVAVFRenderJobDelegate *)v11 setToken:getToken];
     throttleLock = self->_throttleLock;
     time.value = throttleLock;
     LOBYTE(time.timescale) = 0;
@@ -574,10 +574,10 @@ LABEL_10:
     }
 
     HGSynchronizable::Unlock(throttleLock);
-    v15 = [v4 renderContext];
-    v16 = [v15 highQualityRendering];
+    renderContext2 = [requestCopy renderContext];
+    highQualityRendering = [renderContext2 highQualityRendering];
 
-    if (v16)
+    if (highQualityRendering)
     {
       PVRenderManager::FlushTextureFactories(self->_renderManager.m_Obj);
       if (v14)
@@ -599,10 +599,10 @@ LABEL_10:
 
     if (+[PVEnvironment PV_THROTTLE_AVF_EXPORT_REQUEST_HANDLING_MS])
     {
-      v19 = [v4 renderContext];
-      v20 = [v19 highQualityRendering];
+      renderContext3 = [requestCopy renderContext];
+      highQualityRendering2 = [renderContext3 highQualityRendering];
 
-      if (v20)
+      if (highQualityRendering2)
       {
         if (HGLogger::getLevel("PVSignPost", v21) >= 1)
         {
@@ -619,8 +619,8 @@ LABEL_10:
       }
     }
 
-    v23 = [v4 renderContext];
-    if ([v23 highQualityRendering])
+    renderContext4 = [requestCopy renderContext];
+    if ([renderContext4 highQualityRendering])
     {
       v24 = +[PVDeviceCharacteristics isLowMemDevice];
 
@@ -647,9 +647,9 @@ LABEL_10:
 
     if (HGLogger::getLevel("PVSignPost", v25) >= 1)
     {
-      if (v4)
+      if (requestCopy)
       {
-        [v4 compositionTime];
+        [requestCopy compositionTime];
       }
 
       else
@@ -667,17 +667,17 @@ LABEL_10:
     [(PVRendererBase *)self startJobForDelegate:v11 time:&time playback:[(PVVideoCompositing *)self inPlayback]];
     if (+[PVEnvironment PV_SERIALIZE_EXPORT_REQUESTS])
     {
-      v27 = [v4 renderContext];
-      v28 = [v27 highQualityRendering];
+      renderContext5 = [requestCopy renderContext];
+      highQualityRendering3 = [renderContext5 highQualityRendering];
 
-      if (v28)
+      if (highQualityRendering3)
       {
         PVRenderJob::WaitForFinish(time1.value);
       }
     }
 
-    v29 = [v4 renderContext];
-    v30 = v14 & [v29 highQualityRendering];
+    renderContext6 = [requestCopy renderContext];
+    v30 = v14 & [renderContext6 highQualityRendering];
 
     if (v30 == 1)
     {
@@ -691,13 +691,13 @@ LABEL_10:
   }
 }
 
-- (void)setCancelsPendingRequests:(BOOL)a3
+- (void)setCancelsPendingRequests:(BOOL)requests
 {
-  if (self->_cancelsPendingRequests != a3)
+  if (self->_cancelsPendingRequests != requests)
   {
     cancelPendingLock = self->_cancelPendingLock;
     HGSynchronizable::Lock(cancelPendingLock);
-    self->_cancelsPendingRequests = a3;
+    self->_cancelsPendingRequests = requests;
     HGSynchronizable::Unlock(cancelPendingLock);
   }
 }
@@ -715,20 +715,20 @@ LABEL_10:
   HGSynchronizable::Unlock(cancelPendingLock);
 }
 
-- (void)signalScheduling:(id *)a3 playerRate:(float)a4
+- (void)signalScheduling:(id *)scheduling playerRate:(float)rate
 {
   [(PVVideoCompositing *)self setPlayerRate:?];
-  v7 = *a3;
+  v7 = *scheduling;
   [(PVVideoCompositing *)self setSchedulingTime:&v7];
-  [(PVEffectScheduler *)self->_effectScheduler loadEffects:&v7 playerRate:COERCE_DOUBLE(__PAIR64__(HIDWORD(a3->var0), LODWORD(a4)))];
+  [(PVEffectScheduler *)self->_effectScheduler loadEffects:&v7 playerRate:COERCE_DOUBLE(__PAIR64__(HIDWORD(scheduling->var0), LODWORD(rate)))];
 }
 
-- (void)setPlayerRate:(float)a3
+- (void)setPlayerRate:(float)rate
 {
   playerRateLock = self->_playerRateLock;
   LOBYTE(v12) = 0;
   HGSynchronizable::Lock(playerRateLock);
-  if (a3 == 0.0 && self->_playerRate != 0.0)
+  if (rate == 0.0 && self->_playerRate != 0.0)
   {
     [(PVRendererBase *)self printAndClearStats:playerRateLock];
     self->_windowedDropTotal = 0;
@@ -769,11 +769,11 @@ LABEL_10:
   }
 
 LABEL_10:
-  self->_playerRate = a3;
+  self->_playerRate = rate;
   HGSynchronizable::Unlock(playerRateLock);
   m_Obj = self->_renderManager.m_Obj;
 
-  PVRenderManager::SetMinRenderPriority(m_Obj, a3 != 0.0);
+  PVRenderManager::SetMinRenderPriority(m_Obj, rate != 0.0);
 }
 
 - (float)playerRate
@@ -785,24 +785,24 @@ LABEL_10:
   return playerRate;
 }
 
-- (void)setSchedulingTime:(id *)a3
+- (void)setSchedulingTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_schedulingTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_schedulingTime.value = *&time->var0;
   self->_schedulingTime.epoch = var3;
 }
 
-- (void)setRefreshCompletionBlock:(id)a3
+- (void)setRefreshCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   refreshCompletionCallbackQueue = self->_refreshCompletionCallbackQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __48__PVVideoCompositing_setRefreshCompletionBlock___block_invoke;
   v7[3] = &unk_279AA5CE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(refreshCompletionCallbackQueue, v7);
 }
 
@@ -844,7 +844,7 @@ void __44__PVVideoCompositing_refreshCompletionBlock__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)callRefreshCompletionBlock:(BOOL)a3
+- (void)callRefreshCompletionBlock:(BOOL)block
 {
   refreshCompletionCallbackQueue = self->_refreshCompletionCallbackQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -852,7 +852,7 @@ void __44__PVVideoCompositing_refreshCompletionBlock__block_invoke(uint64_t a1)
   v4[2] = __49__PVVideoCompositing_callRefreshCompletionBlock___block_invoke;
   v4[3] = &unk_279AA56D8;
   v4[4] = self;
-  v5 = a3;
+  blockCopy = block;
   dispatch_async(refreshCompletionCallbackQueue, v4);
 }
 
@@ -867,14 +867,14 @@ uint64_t __49__PVVideoCompositing_callRefreshCompletionBlock___block_invoke(uint
   return result;
 }
 
-- (void)renderRequestFinished:(HGRef<PVRenderJob>)a3
+- (void)renderRequestFinished:(HGRef<PVRenderJob>)finished
 {
-  v5 = PVRenderJob::GetDelegate(*a3.var0);
+  v5 = PVRenderJob::GetDelegate(*finished.var0);
   tokenPool = self->_tokenPool;
-  v7 = [v5 token];
-  [(PVTaskTokenPool *)tokenPool returnToken:v7];
+  token = [v5 token];
+  [(PVTaskTokenPool *)tokenPool returnToken:token];
 
-  v8 = *a3.var0;
+  v8 = *finished.var0;
   v15 = v8;
   if (v8)
   {
@@ -887,14 +887,14 @@ uint64_t __49__PVVideoCompositing_callRefreshCompletionBlock___block_invoke(uint
     (*(*v15 + 24))(v15);
   }
 
-  v9 = PVRenderJob::State(*a3.var0);
+  v9 = PVRenderJob::State(*finished.var0);
   if (HGLogger::getLevel("PVSignPost", v10) >= 1)
   {
-    v11 = [v5 compositionRequest];
-    v12 = v11;
-    if (v11)
+    compositionRequest = [v5 compositionRequest];
+    v12 = compositionRequest;
+    if (compositionRequest)
     {
-      [v11 compositionTime];
+      [compositionRequest compositionTime];
     }
 
     else
@@ -926,15 +926,15 @@ uint64_t __49__PVVideoCompositing_callRefreshCompletionBlock___block_invoke(uint
   HGSynchronizable::Lock(notificationStateLock);
   didEnterBackground = self->_didEnterBackground;
   HGSynchronizable::Unlock(notificationStateLock);
-  v5 = [(PVRendererBase *)self compositingContext];
-  LOBYTE(notificationStateLock) = [v5 powerFriendlyExport] | didEnterBackground;
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  LOBYTE(notificationStateLock) = [compositingContext powerFriendlyExport] | didEnterBackground;
 
   return notificationStateLock & 1;
 }
 
-- (void)didRecieveMemoryWarning:(id)a3
+- (void)didRecieveMemoryWarning:(id)warning
 {
-  v5 = a3;
+  warningCopy = warning;
   PVRenderManager::FreeTexturePools(self->_renderManager.m_Obj);
   throttleLock = self->_throttleLock;
   HGSynchronizable::Lock(throttleLock);
@@ -942,39 +942,39 @@ uint64_t __49__PVVideoCompositing_callRefreshCompletionBlock___block_invoke(uint
   HGSynchronizable::Unlock(throttleLock);
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v5 = a3;
+  terminateCopy = terminate;
   notificationStateLock = self->_notificationStateLock;
   HGSynchronizable::Lock(notificationStateLock);
   self->_hostAppIsShuttingDown = 1;
   HGSynchronizable::Unlock(notificationStateLock);
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   notificationStateLock = self->_notificationStateLock;
-  v8 = v4;
+  v8 = backgroundCopy;
   HGSynchronizable::Lock(notificationStateLock);
   self->_didEnterBackground = 1;
   v6 = +[PVEnvironment PVPageSizeBackgrounded];
-  v7 = [(PVRendererBase *)self compositingContext];
-  [v7 setPageSize:v6];
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  [compositingContext setPageSize:v6];
 
   HGSynchronizable::Unlock(notificationStateLock);
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   notificationStateLock = self->_notificationStateLock;
-  v8 = v4;
+  v8 = foregroundCopy;
   HGSynchronizable::Lock(notificationStateLock);
   self->_didEnterBackground = 0;
   v6 = +[PVEnvironment PVPageSize];
-  v7 = [(PVRendererBase *)self compositingContext];
-  [v7 setPageSize:v6];
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  [compositingContext setPageSize:v6];
 
   HGSynchronizable::Unlock(notificationStateLock);
 }

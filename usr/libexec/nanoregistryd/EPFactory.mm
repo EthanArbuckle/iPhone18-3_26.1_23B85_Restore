@@ -1,38 +1,38 @@
 @interface EPFactory
-+ (BOOL)signalProcessNamed:(id)a3 withSignal:(int)a4;
-+ (id)newService:(id)a3;
-+ (id)sharedFactoryWithQueue:(id)a3;
-+ (void)killProcessNamed:(id)a3;
++ (BOOL)signalProcessNamed:(id)named withSignal:(int)signal;
++ (id)newService:(id)service;
++ (id)sharedFactoryWithQueue:(id)queue;
++ (void)killProcessNamed:(id)named;
 - (id)initBase;
-- (id)newAdvertiserWithDelegate:(id)a3;
-- (id)newCentralManagerWithDelegate:(id)a3;
-- (id)newDiscovererWithDelegate:(id)a3;
-- (id)newKeyGeneratorWithDelegate:(id)a3;
-- (id)newNullResourceWithDelegate:(id)a3;
-- (id)newPeripheralManagerWithDelegate:(id)a3;
+- (id)newAdvertiserWithDelegate:(id)delegate;
+- (id)newCentralManagerWithDelegate:(id)delegate;
+- (id)newDiscovererWithDelegate:(id)delegate;
+- (id)newKeyGeneratorWithDelegate:(id)delegate;
+- (id)newNullResourceWithDelegate:(id)delegate;
+- (id)newPeripheralManagerWithDelegate:(id)delegate;
 - (void)killBluetoothDaemon;
 @end
 
 @implementation EPFactory
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = [a3 queue];
-  v5 = [a1 sharedFactoryWithQueue:v4];
+  queue = [service queue];
+  v5 = [self sharedFactoryWithQueue:queue];
 
   return v5;
 }
 
-+ (id)sharedFactoryWithQueue:(id)a3
++ (id)sharedFactoryWithQueue:(id)queue
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000CC760;
   v9[3] = &unk_1001761C0;
-  v10 = a3;
-  v11 = a1;
+  queueCopy = queue;
+  selfCopy = self;
   v4 = qword_1001B3A78;
-  v5 = v10;
+  v5 = queueCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1001B3A78, v9);
@@ -103,15 +103,15 @@
   }
 }
 
-+ (void)killProcessNamed:(id)a3
++ (void)killProcessNamed:(id)named
 {
-  v3 = a3;
-  [objc_opt_class() signalProcessNamed:v3 withSignal:9];
+  namedCopy = named;
+  [objc_opt_class() signalProcessNamed:namedCopy withSignal:9];
 }
 
-+ (BOOL)signalProcessNamed:(id)a3 withSignal:(int)a4
++ (BOOL)signalProcessNamed:(id)named withSignal:(int)signal
 {
-  v5 = a3;
+  namedCopy = named;
   *v45 = xmmword_100126498;
   v46 = 0;
   size = 0;
@@ -130,7 +130,7 @@
     {
       v17 = *__error();
       *buf = 138412546;
-      v40 = v5;
+      v40 = namedCopy;
       v41 = 1024;
       LODWORD(v42) = v17;
       v18 = "Error calling sysctl, trying to kill process %@ error %d";
@@ -162,7 +162,7 @@ LABEL_25:
       *buf = 134218242;
       v40 = size;
       v41 = 2112;
-      v42 = v5;
+      v42 = namedCopy;
       v18 = "Failed to allocate memory, %zu bytes trying to kill process %@";
       v19 = v16;
       v20 = 22;
@@ -192,7 +192,7 @@ LABEL_25:
         {
           v32 = *__error();
           *buf = 138412546;
-          v40 = v5;
+          v40 = namedCopy;
           v41 = 1024;
           LODWORD(v42) = v32;
           v11 = "Error calling sysctl, trying to kill process %@ error %d";
@@ -225,7 +225,7 @@ LABEL_31:
           *buf = 134218242;
           v40 = size;
           v41 = 2112;
-          v42 = v5;
+          v42 = namedCopy;
           v11 = "Failed to reallocate memory, %zu bytes trying to kill process %@";
           v12 = v10;
           v13 = 22;
@@ -239,7 +239,7 @@ LABEL_31:
     }
   }
 
-  v23 = [v5 UTF8String];
+  uTF8String = [namedCopy UTF8String];
   if (size < 0x288)
   {
 LABEL_20:
@@ -247,7 +247,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v24 = v23;
+  v24 = uTF8String;
   v25 = size / 0x288;
   v26 = v7 + 243;
   while (1)
@@ -284,7 +284,7 @@ LABEL_21:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v5;
+      v40 = namedCopy;
       v18 = "Did not find process named %@";
       v19 = v16;
       v20 = 12;
@@ -294,7 +294,7 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  if (kill(v27, a4) != -1)
+  if (kill(v27, signal) != -1)
   {
     v33 = 1;
     goto LABEL_33;
@@ -315,7 +315,7 @@ LABEL_21:
     *buf = 134218498;
     v40 = v27;
     v41 = 2112;
-    v42 = v5;
+    v42 = namedCopy;
     v43 = 1024;
     v44 = v37;
     v18 = "Failed to kill pid %lu for process named %@, error %d";
@@ -331,63 +331,63 @@ LABEL_33:
   return v33;
 }
 
-- (id)newKeyGeneratorWithDelegate:(id)a3
+- (id)newKeyGeneratorWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPOOBKeyGeneratorManager *)self->_keyGeneratorManager newGeneratorWithDelegate:v4];
+  v6 = [(EPOOBKeyGeneratorManager *)self->_keyGeneratorManager newGeneratorWithDelegate:delegateCopy];
   return v6;
 }
 
-- (id)newDiscovererWithDelegate:(id)a3
+- (id)newDiscovererWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPDiscovererManager *)self->_discovererManager newDiscovererWithDelegate:v4];
+  v6 = [(EPDiscovererManager *)self->_discovererManager newDiscovererWithDelegate:delegateCopy];
   return v6;
 }
 
-- (id)newAdvertiserWithDelegate:(id)a3
+- (id)newAdvertiserWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPAdvertiserManager *)self->_advertiserManager newAdvertiserWithDelegate:v4];
+  v6 = [(EPAdvertiserManager *)self->_advertiserManager newAdvertiserWithDelegate:delegateCopy];
   return v6;
 }
 
-- (id)newCentralManagerWithDelegate:(id)a3
+- (id)newCentralManagerWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPCentralManagerManager *)self->_centralManagerManager newManagerWithDelegate:v4];
+  v6 = [(EPCentralManagerManager *)self->_centralManagerManager newManagerWithDelegate:delegateCopy];
   return v6;
 }
 
-- (id)newPeripheralManagerWithDelegate:(id)a3
+- (id)newPeripheralManagerWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPPeripheralManagerManager *)self->_peripheralManagerManager newManagerWithDelegate:v4];
+  v6 = [(EPPeripheralManagerManager *)self->_peripheralManagerManager newManagerWithDelegate:delegateCopy];
   return v6;
 }
 
-- (id)newNullResourceWithDelegate:(id)a3
+- (id)newNullResourceWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[EPFactory queue];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(EPResourceManager *)self->_nullManager newResourceWithDelegate:v4];
+  v6 = [(EPResourceManager *)self->_nullManager newResourceWithDelegate:delegateCopy];
   return v6;
 }
 

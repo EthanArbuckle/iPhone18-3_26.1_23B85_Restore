@@ -1,17 +1,17 @@
 @interface CryptexRemoteObjectArray
-- (CryptexRemoteObjectArray)initWithArray:(id)a3;
+- (CryptexRemoteObjectArray)initWithArray:(id)array;
 @end
 
 @implementation CryptexRemoteObjectArray
 
-- (CryptexRemoteObjectArray)initWithArray:(id)a3
+- (CryptexRemoteObjectArray)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v8.receiver = self;
   v8.super_class = CryptexRemoteObjectArray;
   v5 = [(CryptexRemoteObjectArray *)&v8 init];
   array = v5->_array;
-  v5->_array = v4;
+  v5->_array = arrayCopy;
 
   return v5;
 }

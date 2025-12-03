@@ -1,6 +1,6 @@
 @interface PGGraphPetIdentityProcessorCache
 - (NSSet)relevantAssetUUIDsForPetFaces;
-- (PGGraphPetIdentityProcessorCache)initWithGraph:(id)a3;
+- (PGGraphPetIdentityProcessorCache)initWithGraph:(id)graph;
 @end
 
 @implementation PGGraphPetIdentityProcessorCache
@@ -13,25 +13,25 @@
     goto LABEL_4;
   }
 
-  v4 = [(PGGraph *)self->_graph meNodeCollection];
-  v5 = [v4 homeNodes];
-  v6 = [v5 preciseAddressNodes];
-  v7 = [v6 momentNodes];
+  meNodeCollection = [(PGGraph *)self->_graph meNodeCollection];
+  homeNodes = [meNodeCollection homeNodes];
+  preciseAddressNodes = [homeNodes preciseAddressNodes];
+  momentNodes = [preciseAddressNodes momentNodes];
 
   v8 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:self->_graph];
-  v9 = [v8 preciseAddressNodes];
-  v10 = [v9 momentNodes];
+  preciseAddressNodes2 = [v8 preciseAddressNodes];
+  momentNodes2 = [preciseAddressNodes2 momentNodes];
 
-  v11 = [v7 collectionByFormingUnionWith:v10];
+  v11 = [momentNodes collectionByFormingUnionWith:momentNodes2];
   if ([v11 count])
   {
     v12 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:@"Pet" inGraph:self->_graph];
-    v13 = [v12 featureNodeCollection];
-    v14 = [PGGraphMomentFeaturesEdgeCollection momentFeaturesEdgesFromMomentNodes:v11 toFeatureNodes:v13];
+    featureNodeCollection = [v12 featureNodeCollection];
+    v14 = [PGGraphMomentFeaturesEdgeCollection momentFeaturesEdgesFromMomentNodes:v11 toFeatureNodes:featureNodeCollection];
 
-    v15 = [v14 allRelevantAssetUUIDs];
+    allRelevantAssetUUIDs = [v14 allRelevantAssetUUIDs];
     v16 = self->_relevantAssetUUIDsForPetFaces;
-    self->_relevantAssetUUIDsForPetFaces = v15;
+    self->_relevantAssetUUIDsForPetFaces = allRelevantAssetUUIDs;
 
     relevantAssetUUIDsForPetFaces = self->_relevantAssetUUIDsForPetFaces;
 LABEL_4:
@@ -46,16 +46,16 @@ LABEL_5:
   return v17;
 }
 
-- (PGGraphPetIdentityProcessorCache)initWithGraph:(id)a3
+- (PGGraphPetIdentityProcessorCache)initWithGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = PGGraphPetIdentityProcessorCache;
   v6 = [(PGGraphPetIdentityProcessorCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graph, a3);
+    objc_storeStrong(&v6->_graph, graph);
   }
 
   return v7;

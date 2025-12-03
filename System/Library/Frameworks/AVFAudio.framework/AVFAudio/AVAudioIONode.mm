@@ -1,25 +1,25 @@
 @interface AVAudioIONode
-- (AVAudioIONode)initWithIOUnit:(void *)a3 isInput:(BOOL)a4;
+- (AVAudioIONode)initWithIOUnit:(void *)unit isInput:(BOOL)input;
 - (AudioUnit)audioUnit;
-- (BOOL)enableManualRenderingMode:(int64_t)a3 isInput:(BOOL)a4;
-- (BOOL)enableRealtimeRenderingModeWithIOUnit:(void *)a3 isInput:(BOOL)a4 forceIOUnitReset:(BOOL)a5;
+- (BOOL)enableManualRenderingMode:(int64_t)mode isInput:(BOOL)input;
+- (BOOL)enableRealtimeRenderingModeWithIOUnit:(void *)unit isInput:(BOOL)input forceIOUnitReset:(BOOL)reset;
 - (BOOL)isInManualRenderingMode;
 - (BOOL)isVoiceProcessingEnabled;
 - (BOOL)setVoiceProcessingEnabled:(BOOL)enabled error:(NSError *)outError;
 - (NSTimeInterval)presentationLatency;
 - (int64_t)manualRenderingMode;
-- (void)didAttachToEngine:(id)a3;
-- (void)didDetachFromEngine:(id)a3 error:(id *)a4;
+- (void)didAttachToEngine:(id)engine;
+- (void)didDetachFromEngine:(id)engine error:(id *)error;
 @end
 
 @implementation AVAudioIONode
 
-- (BOOL)enableRealtimeRenderingModeWithIOUnit:(void *)a3 isInput:(BOOL)a4 forceIOUnitReset:(BOOL)a5
+- (BOOL)enableRealtimeRenderingModeWithIOUnit:(void *)unit isInput:(BOOL)input forceIOUnitReset:(BOOL)reset
 {
-  v5 = a5;
+  resetCopy = reset;
   v27 = *MEMORY[0x1E69E9840];
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v11, self->super._impl);
-  if (!a3)
+  if (!unit)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -47,7 +47,7 @@
     [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "ioUnit != nil"}];
   }
 
-  if ([(AVAudioIONode *)self isInManualRenderingMode]|| v5)
+  if ([(AVAudioIONode *)self isInManualRenderingMode]|| resetCopy)
   {
     if (v12)
     {
@@ -79,7 +79,7 @@
   return result;
 }
 
-- (BOOL)enableManualRenderingMode:(int64_t)a3 isInput:(BOOL)a4
+- (BOOL)enableManualRenderingMode:(int64_t)mode isInput:(BOOL)input
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v9, self->super._impl);
   if ([(AVAudioIONode *)self isVoiceProcessingEnabled])
@@ -99,7 +99,7 @@ LABEL_10:
     return v6;
   }
 
-  if ([(AVAudioIONode *)self isInManualRenderingMode]&& [(AVAudioIONode *)self manualRenderingMode]== a3)
+  if ([(AVAudioIONode *)self isInManualRenderingMode]&& [(AVAudioIONode *)self manualRenderingMode]== mode)
   {
     v6 = 1;
     goto LABEL_10;
@@ -109,7 +109,7 @@ LABEL_10:
   {
     impl = self->super._impl;
     v6 = 1;
-    (*(*impl + 288))(impl, 1, a3);
+    (*(*impl + 288))(impl, 1, mode);
     goto LABEL_10;
   }
 
@@ -155,15 +155,15 @@ LABEL_10:
 
   else
   {
-    v7 = [(AVAudioEngine *)[(AVAudioNode *)self engine] implementation];
-    if ([AVAudioEngineImpl::GetOutputNode(v7) isVoiceProcessingEnabled] == v5)
+    implementation = [(AVAudioEngine *)[(AVAudioNode *)self engine] implementation];
+    if ([AVAudioEngineImpl::GetOutputNode(implementation) isVoiceProcessingEnabled] == v5)
     {
       v9 = 0;
     }
 
     else
     {
-      v8 = v7[1];
+      v8 = implementation[1];
       if (v5)
       {
         v9 = -10863;
@@ -183,36 +183,36 @@ LABEL_10:
 
         else
         {
-          AudioSession = AVAudioEngineImpl::GetAudioSession(v7);
+          AudioSession = AVAudioEngineImpl::GetAudioSession(implementation);
           if (!AudioSession || ([AudioSession isInputAvailable] & 1) != 0)
           {
-            v12 = v7[5];
+            v12 = implementation[5];
             if (v12)
             {
-              AVAudioEngineImpl::GetInputConnectionPointForNode(v7, v12, 0);
-              v13 = v7[5];
-              AVAudioEngineGraph::RemoveIONode(v7[1], v7[5], 0, 0);
-              AVAudioEngineImpl::DetachNode(v7, v7[5], 1, 0);
+              AVAudioEngineImpl::GetInputConnectionPointForNode(implementation, v12, 0);
+              v13 = implementation[5];
+              AVAudioEngineGraph::RemoveIONode(implementation[1], implementation[5], 0, 0);
+              AVAudioEngineImpl::DetachNode(implementation, implementation[5], 1, 0);
             }
 
-            v16 = v7[4];
+            v16 = implementation[4];
             if (v16)
             {
-              AVAudioEngineImpl::GetOutputConnectionPointsForNode(v7, v16, 0);
-              v17 = v7[4];
-              AVAudioEngineGraph::RemoveIONode(v7[1], v7[4], 1, 0);
-              AVAudioEngineImpl::DetachNode(v7, v7[4], 1, 0);
+              AVAudioEngineImpl::GetOutputConnectionPointsForNode(implementation, v16, 0);
+              v17 = implementation[4];
+              AVAudioEngineGraph::RemoveIONode(implementation[1], implementation[4], 1, 0);
+              AVAudioEngineImpl::DetachNode(implementation, implementation[4], 1, 0);
             }
 
-            v18 = v7[7];
-            v7[7] = 0;
+            v18 = implementation[7];
+            implementation[7] = 0;
             if (v18)
             {
               (*(*v18 + 8))(v18);
             }
 
-            v19 = AVAudioEngineImpl::GetAudioSession(v7);
-            AVAudioIOUnit::Create(buf, v7, v5, v19, v20);
+            v19 = AVAudioEngineImpl::GetAudioSession(implementation);
+            AVAudioIOUnit::Create(buf, implementation, v5, v19, v20);
           }
 
           if (AVAudioEngineLogCategory(void)::once != -1)
@@ -223,7 +223,7 @@ LABEL_10:
           v14 = *AVAudioEngineLogCategory(void)::category;
           if (os_log_type_enabled(*AVAudioEngineLogCategory(void)::category, OS_LOG_TYPE_ERROR))
           {
-            v15 = *v7;
+            v15 = *implementation;
             buf[0] = 136315650;
             *&buf[1] = "AVAudioEngine.mm";
             v29 = 1024;
@@ -304,26 +304,26 @@ LABEL_10:
   return v3;
 }
 
-- (void)didDetachFromEngine:(id)a3 error:(id *)a4
+- (void)didDetachFromEngine:(id)engine error:(id *)error
 {
-  v6 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->super._impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v6 + 112));
-  (*(*self->super._impl + 24))(self->super._impl, a3);
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
+  (*(*self->super._impl + 24))(self->super._impl, engine);
   std::recursive_mutex::unlock((impl + 96));
 
-  std::recursive_mutex::unlock((v6 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
-- (void)didAttachToEngine:(id)a3
+- (void)didAttachToEngine:(id)engine
 {
-  v5 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->super._impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v5 + 112));
-  (*(*self->super._impl + 16))(self->super._impl, a3);
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
+  (*(*self->super._impl + 16))(self->super._impl, engine);
   std::recursive_mutex::unlock((impl + 96));
 
-  std::recursive_mutex::unlock((v5 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
 - (AudioUnit)audioUnit
@@ -360,9 +360,9 @@ LABEL_10:
   return v3;
 }
 
-- (AVAudioIONode)initWithIOUnit:(void *)a3 isInput:(BOOL)a4
+- (AVAudioIONode)initWithIOUnit:(void *)unit isInput:(BOOL)input
 {
-  if (a3)
+  if (unit)
   {
     operator new();
   }

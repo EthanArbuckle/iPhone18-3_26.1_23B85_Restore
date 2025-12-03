@@ -1,7 +1,7 @@
 @interface QSSBatchRecoverStreamingResponse
-- (Offset<siri::speech::qss_fb::BatchRecoverStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::BatchRecoverStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (QSSBatchRecoverFinalResponse)contentAsQSSBatchRecoverFinalResponse;
-- (QSSBatchRecoverStreamingResponse)initWithFlatbuffData:(id)a3 root:(const BatchRecoverStreamingResponse *)a4 verify:(BOOL)a5;
+- (QSSBatchRecoverStreamingResponse)initWithFlatbuffData:(id)data root:(const BatchRecoverStreamingResponse *)root verify:(BOOL)verify;
 - (QSSPronGuessResponse)contentAsQSSPronGuessResponse;
 - (id)flatbuffData;
 - (int64_t)content_type;
@@ -38,13 +38,13 @@ flatbuffers::DetachedBuffer *__48__QSSBatchRecoverStreamingResponse_flatbuffData
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::BatchRecoverStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::BatchRecoverStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSBatchRecoverStreamingResponse *)self content_type];
+  content_type = [(QSSBatchRecoverStreamingResponse *)self content_type];
   if ([(QSSBatchRecoverStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(QSSBatchRecoverStreamingResponse *)self contentAsQSSPronGuessResponse];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    contentAsQSSPronGuessResponse = [(QSSBatchRecoverStreamingResponse *)self contentAsQSSPronGuessResponse];
+    LODWORD(v7) = [contentAsQSSPronGuessResponse addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -56,8 +56,8 @@ flatbuffers::DetachedBuffer *__48__QSSBatchRecoverStreamingResponse_flatbuffData
 
   if ([(QSSBatchRecoverStreamingResponse *)self content_type]== 2)
   {
-    v8 = [(QSSBatchRecoverStreamingResponse *)self contentAsQSSBatchRecoverFinalResponse];
-    v9 = [v8 addObjectToBuffer:a3];
+    contentAsQSSBatchRecoverFinalResponse = [(QSSBatchRecoverStreamingResponse *)self contentAsQSSBatchRecoverFinalResponse];
+    v9 = [contentAsQSSBatchRecoverFinalResponse addObjectToBuffer:buffer];
 
     v10 = v9;
   }
@@ -67,23 +67,23 @@ flatbuffers::DetachedBuffer *__48__QSSBatchRecoverStreamingResponse_flatbuffData
     v10 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 5);
-  v12 = *(a3 + 6);
-  v13 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 5);
+  v12 = *(buffer + 6);
+  v13 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSBatchRecoverStreamingResponse *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v7);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v7);
   }
 
   if ([(QSSBatchRecoverStreamingResponse *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v10);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v10);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v13 - v12 + v11);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v13 - v12 + v11);
 }
 
 - (QSSBatchRecoverFinalResponse)contentAsQSSBatchRecoverFinalResponse
@@ -167,10 +167,10 @@ flatbuffers::DetachedBuffer *__48__QSSBatchRecoverStreamingResponse_flatbuffData
   }
 }
 
-- (QSSBatchRecoverStreamingResponse)initWithFlatbuffData:(id)a3 root:(const BatchRecoverStreamingResponse *)a4 verify:(BOOL)a5
+- (QSSBatchRecoverStreamingResponse)initWithFlatbuffData:(id)data root:(const BatchRecoverStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSBatchRecoverStreamingResponse;
   v10 = [(QSSBatchRecoverStreamingResponse *)&v33 init];
@@ -180,32 +180,32 @@ flatbuffers::DetachedBuffer *__48__QSSBatchRecoverStreamingResponse_flatbuffData
     goto LABEL_34;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_35;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_35;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -279,9 +279,9 @@ LABEL_23:
   }
 
 LABEL_33:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_34:
   v26 = v11;

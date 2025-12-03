@@ -1,48 +1,48 @@
 @interface SUUIGiftThemePickerViewController
 - (BOOL)_isIPadLarge;
-- (SUUIGiftThemePickerViewController)initWithGift:(id)a3 configuration:(id)a4;
-- (double)_cardHeight:(id)a3;
+- (SUUIGiftThemePickerViewController)initWithGift:(id)gift configuration:(id)configuration;
+- (double)_cardHeight:(id)height;
 - (double)_cardWidth;
-- (double)_collectionViewWidth:(id)a3;
-- (double)_scrollInsetHorizontal:(id)a3;
+- (double)_collectionViewWidth:(id)width;
+- (double)_scrollInsetHorizontal:(id)horizontal;
 - (id)_collectionView;
 - (id)_flowLayout;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_backgroundTapAction:(id)a3;
-- (void)_layoutCollectionViewWithTraits:(id)a3;
-- (void)_nextAction:(id)a3;
-- (void)_setItemImage:(id)a3 error:(id)a4;
-- (void)_setSelectedThemeIndex:(int64_t)a3 animated:(BOOL)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_backgroundTapAction:(id)action;
+- (void)_layoutCollectionViewWithTraits:(id)traits;
+- (void)_nextAction:(id)action;
+- (void)_setItemImage:(id)image error:(id)error;
+- (void)_setSelectedThemeIndex:(int64_t)index animated:(BOOL)animated;
 - (void)dealloc;
-- (void)giftConfigurationController:(id)a3 didLoadImageForTheme:(id)a4;
+- (void)giftConfigurationController:(id)controller didLoadImageForTheme:(id)theme;
 - (void)loadView;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIGiftThemePickerViewController
 
-- (SUUIGiftThemePickerViewController)initWithGift:(id)a3 configuration:(id)a4
+- (SUUIGiftThemePickerViewController)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SUUIGiftThemePickerViewController;
-  v7 = [(SUUIGiftStepViewController *)&v14 initWithGift:a3 configuration:v6];
+  v7 = [(SUUIGiftStepViewController *)&v14 initWithGift:gift configuration:configurationCopy];
   if (v7)
   {
-    v8 = [v6 themes];
+    themes = [configurationCopy themes];
     themes = v7->_themes;
-    v7->_themes = v8;
+    v7->_themes = themes;
 
-    [v6 addObserver:v7];
-    v10 = [v6 clientContext];
-    v11 = v10;
-    if (v10)
+    [configurationCopy addObserver:v7];
+    clientContext = [configurationCopy clientContext];
+    v11 = clientContext;
+    if (clientContext)
     {
-      [v10 localizedStringForKey:@"GIFTING_THEME_TITLE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_THEME_TITLE" inTable:@"Gifting"];
     }
 
     else
@@ -71,8 +71,8 @@
 - (void)loadView
 {
   v39 = objc_alloc_init(SUUIGiftThemeBackgroundView);
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(SUUIGiftThemeBackgroundView *)v39 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(SUUIGiftThemeBackgroundView *)v39 setBackgroundColor:systemBackgroundColor];
 
   [(SUUIGiftThemeBackgroundView *)v39 setClipsToBounds:1];
   [(SUUIGiftThemePickerViewController *)self setView:v39];
@@ -88,12 +88,12 @@
   }
 
   [(SUUIGiftThemeBackgroundView *)v39 addGestureRecognizer:tapGestureRecognizer];
-  v7 = [(SUUIGiftThemePickerViewController *)self _collectionView];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  _collectionView = [(SUUIGiftThemePickerViewController *)self _collectionView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [_collectionView setBackgroundColor:clearColor];
 
-  [(SUUIGiftThemeBackgroundView *)v39 addSubview:v7];
-  [(SUUIGiftThemeBackgroundView *)v39 setScrollView:v7];
+  [(SUUIGiftThemeBackgroundView *)v39 addSubview:_collectionView];
+  [(SUUIGiftThemeBackgroundView *)v39 setScrollView:_collectionView];
   if (!self->_pageControl)
   {
     v9 = objc_alloc_init(MEMORY[0x277D757E0]);
@@ -102,13 +102,13 @@
 
     [(UIPageControl *)self->_pageControl setAutoresizingMask:13];
     v11 = self->_pageControl;
-    v12 = [(UIPageControl *)v11 tintColor];
-    [(UIPageControl *)v11 setCurrentPageIndicatorTintColor:v12];
+    tintColor = [(UIPageControl *)v11 tintColor];
+    [(UIPageControl *)v11 setCurrentPageIndicatorTintColor:tintColor];
 
     [(UIPageControl *)self->_pageControl setNumberOfPages:[(NSArray *)self->_themes count]];
     v13 = self->_pageControl;
-    v14 = [MEMORY[0x277D75348] systemMidGrayColor];
-    [(UIPageControl *)v13 setPageIndicatorTintColor:v14];
+    systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+    [(UIPageControl *)v13 setPageIndicatorTintColor:systemMidGrayColor];
 
     [(UIPageControl *)self->_pageControl sizeToFit];
   }
@@ -128,24 +128,24 @@
   v41.size.width = v20;
   v41.size.height = v22;
   MaxY = CGRectGetMaxY(v41);
-  v30 = [MEMORY[0x277D75418] currentDevice];
-  v31 = [v30 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v32 = 3.0;
-  if ((v31 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v32 = 25.0;
   }
 
   [(UIPageControl *)self->_pageControl setFrame:v28, MaxY - v32 - v26, v24, v26];
   [(SUUIGiftThemeBackgroundView *)v39 addSubview:self->_pageControl];
-  v33 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v34 = [v33 clientContext];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
 
-  v35 = [(SUUIGiftThemePickerViewController *)self navigationItem];
-  if (v34)
+  navigationItem = [(SUUIGiftThemePickerViewController *)self navigationItem];
+  if (clientContext)
   {
-    [v34 localizedStringForKey:@"GIFTING_BACK_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_BACK_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -153,14 +153,14 @@
     [SUUIClientContext localizedStringForKey:@"GIFTING_BACK_BUTTON" inBundles:0 inTable:@"Gifting"];
   }
   v36 = ;
-  [v35 setBackButtonTitle:v36];
+  [navigationItem setBackButtonTitle:v36];
 
   v37 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v37 setAction:sel__nextAction_];
   [v37 setTarget:self];
-  if (v34)
+  if (clientContext)
   {
-    [v34 localizedStringForKey:@"GIFTING_NEXT_BUTTON" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_NEXT_BUTTON" inTable:@"Gifting"];
   }
 
   else
@@ -170,24 +170,24 @@
   v38 = ;
   [v37 setTitle:v38];
 
-  [v35 setRightBarButtonItem:v37];
+  [navigationItem setRightBarButtonItem:v37];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUUIGiftStepViewController *)self gift];
-  v6 = [v5 item];
+  appearCopy = appear;
+  gift = [(SUUIGiftStepViewController *)self gift];
+  item = [gift item];
 
-  if (v6)
+  if (item)
   {
     v7 = [SUUIGiftItemView alloc];
-    v8 = [(SUUIGiftStepViewController *)self giftConfiguration];
-    v9 = [v8 clientContext];
-    v10 = [(SUUIGiftItemView *)v7 initWithStyle:1 item:v6 clientContext:v9];
+    giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
+    v10 = [(SUUIGiftItemView *)v7 initWithStyle:1 item:item clientContext:clientContext];
 
-    v11 = [(SUUIGiftItemView *)v10 artworkContext];
-    v12 = v11;
+    artworkContext = [(SUUIGiftItemView *)v10 artworkContext];
+    v12 = artworkContext;
     if (self->_itemImage)
     {
       v13 = 1;
@@ -195,7 +195,7 @@
 
     else
     {
-      v13 = v11 == 0;
+      v13 = artworkContext == 0;
     }
 
     if (!v13)
@@ -207,9 +207,9 @@
       v19[3] = &unk_2798F5E28;
       objc_copyWeak(&v20, &location);
       [(SUUIGiftStepViewController *)self loadItemArtworkWithArtworkContext:v12 completionBlock:v19];
-      v14 = [(SUUIGiftStepViewController *)self gift];
-      v15 = [v14 item];
-      v16 = [v12 placeholderImageForItem:v15];
+      gift2 = [(SUUIGiftStepViewController *)self gift];
+      item2 = [gift2 item];
+      v16 = [v12 placeholderImageForItem:item2];
       itemImage = self->_itemImage;
       self->_itemImage = v16;
 
@@ -220,7 +220,7 @@
 
   v18.receiver = self;
   v18.super_class = SUUIGiftThemePickerViewController;
-  [(SUUIGiftThemePickerViewController *)&v18 viewWillAppear:v3];
+  [(SUUIGiftThemePickerViewController *)&v18 viewWillAppear:appearCopy];
 }
 
 void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -233,11 +233,11 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(SUUIGiftThemePickerViewController *)self traitCollection];
-  [(SUUIGiftThemePickerViewController *)self _layoutCollectionViewWithTraits:v3];
+  traitCollection = [(SUUIGiftThemePickerViewController *)self traitCollection];
+  [(SUUIGiftThemePickerViewController *)self _layoutCollectionViewWithTraits:traitCollection];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   self->_animatingScrollView = 1;
   v4[0] = MEMORY[0x277D85DD0];
@@ -245,12 +245,12 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   v4[2] = __95__SUUIGiftThemePickerViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_2798F5A88;
   v4[4] = self;
-  [a4 animateAlongsideTransition:0 completion:v4];
+  [coordinator animateAlongsideTransition:0 completion:v4];
 }
 
-- (void)giftConfigurationController:(id)a3 didLoadImageForTheme:(id)a4
+- (void)giftConfigurationController:(id)controller didLoadImageForTheme:(id)theme
 {
-  v5 = [(NSArray *)self->_themes indexOfObjectIdenticalTo:a4];
+  v5 = [(NSArray *)self->_themes indexOfObjectIdenticalTo:theme];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     collectionView = self->_collectionView;
@@ -261,44 +261,44 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"0" forIndexPath:v6];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"0" forIndexPath:pathCopy];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  v9 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  [v7 setGiftConfiguration:v9];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  [v7 setGiftConfiguration:giftConfiguration];
 
-  v10 = [(SUUIGiftStepViewController *)self gift];
-  [v7 setGift:v10];
+  gift = [(SUUIGiftStepViewController *)self gift];
+  [v7 setGift:gift];
 
   [v7 setItemImage:self->_itemImage];
   themes = self->_themes;
-  v12 = [v6 item];
+  item = [pathCopy item];
 
-  v13 = [(NSArray *)themes objectAtIndex:v12];
+  v13 = [(NSArray *)themes objectAtIndex:item];
   [v7 setTheme:v13];
 
   return v7;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   self->_animatingScrollView = 0;
-  [a3 contentOffset];
+  [decelerating contentOffset];
   v5 = v4;
   [(SUUIGiftThemePickerViewController *)self _cardWidth];
 
   [(SUUIGiftThemePickerViewController *)self _setSelectedThemeIndex:(v5 / v6) animated:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (!self->_animatingScrollView)
   {
-    [a3 contentOffset];
+    [scroll contentOffset];
     v6 = v5;
     [(SUUIGiftThemePickerViewController *)self _cardWidth];
     *&v7 = v7 * 0.5;
@@ -328,10 +328,10 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (void)_backgroundTapAction:(id)a3
+- (void)_backgroundTapAction:(id)action
 {
-  v20 = a3;
-  if ([v20 state] == 3)
+  actionCopy = action;
+  if ([actionCopy state] == 3)
   {
     [(SUUIGiftThemeCollectionView *)self->_collectionView frame];
     v5 = v4;
@@ -339,8 +339,8 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
     v9 = v8;
     v11 = v10;
     selectedThemeIndex = self->_selectedThemeIndex;
-    v13 = [(SUUIGiftThemePickerViewController *)self view];
-    [v20 locationInView:v13];
+    view = [(SUUIGiftThemePickerViewController *)self view];
+    [actionCopy locationInView:view];
     v15 = v14;
 
     if (v15 >= v5)
@@ -373,29 +373,29 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (void)_nextAction:(id)a3
+- (void)_nextAction:(id)action
 {
-  v10 = [(SUUIGiftStepViewController *)self gift];
+  gift = [(SUUIGiftStepViewController *)self gift];
   v4 = [(NSArray *)self->_themes objectAtIndex:self->_selectedThemeIndex];
-  [v10 setTheme:v4];
+  [gift setTheme:v4];
   v5 = [SUUIGiftConfirmViewController alloc];
-  v6 = [(SUUIGiftStepViewController *)self giftConfiguration];
-  v7 = [(SUUIGiftConfirmViewController *)v5 initWithGift:v10 configuration:v6];
+  giftConfiguration = [(SUUIGiftStepViewController *)self giftConfiguration];
+  v7 = [(SUUIGiftConfirmViewController *)v5 initWithGift:gift configuration:giftConfiguration];
 
-  v8 = [(SUUIGiftStepViewController *)self operationQueue];
-  [(SUUIGiftStepViewController *)v7 setOperationQueue:v8];
+  operationQueue = [(SUUIGiftStepViewController *)self operationQueue];
+  [(SUUIGiftStepViewController *)v7 setOperationQueue:operationQueue];
 
-  v9 = [(SUUIGiftThemePickerViewController *)self navigationController];
-  [v9 pushViewController:v7 animated:1];
+  navigationController = [(SUUIGiftThemePickerViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (double)_cardHeight:(id)a3
+- (double)_cardHeight:(id)height
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  heightCopy = height;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if ([(SUUIGiftThemePickerViewController *)self _isIPadLarge])
     {
@@ -408,10 +408,10 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
     }
   }
 
-  else if ([v4 userInterfaceIdiom] || objc_msgSend(v4, "verticalSizeClass") != 1)
+  else if ([heightCopy userInterfaceIdiom] || objc_msgSend(heightCopy, "verticalSizeClass") != 1)
   {
-    v8 = [(SUUIGiftThemePickerViewController *)self view];
-    [v8 bounds];
+    view = [(SUUIGiftThemePickerViewController *)self view];
+    [view bounds];
     v7 = v9 + -63.0;
   }
 
@@ -425,19 +425,19 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
 
 - (double)_cardWidth
 {
-  v2 = [(SUUIGiftThemePickerViewController *)self _isIPadLarge];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  _isIPadLarge = [(SUUIGiftThemePickerViewController *)self _isIPadLarge];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 5.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 25.0;
   }
 
   v6 = (v5 * 2.0) + 397.0;
   v7 = (v5 * 2.0) + 262.0;
-  if (v2)
+  if (_isIPadLarge)
   {
     return v6;
   }
@@ -451,8 +451,8 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   if (!collectionView)
   {
     v4 = [SUUIGiftThemeCollectionView alloc];
-    v5 = [(SUUIGiftThemePickerViewController *)self _flowLayout];
-    v6 = [(SUUIGiftThemeCollectionView *)v4 initWithFrame:v5 collectionViewLayout:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    _flowLayout = [(SUUIGiftThemePickerViewController *)self _flowLayout];
+    v6 = [(SUUIGiftThemeCollectionView *)v4 initWithFrame:_flowLayout collectionViewLayout:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v7 = self->_collectionView;
     self->_collectionView = v6;
 
@@ -469,13 +469,13 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   return collectionView;
 }
 
-- (double)_collectionViewWidth:(id)a3
+- (double)_collectionViewWidth:(id)width
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  widthCopy = width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if ([(SUUIGiftThemePickerViewController *)self _isIPadLarge])
     {
@@ -488,10 +488,10 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
     }
   }
 
-  else if ([v4 userInterfaceIdiom] || objc_msgSend(v4, "verticalSizeClass") != 1)
+  else if ([widthCopy userInterfaceIdiom] || objc_msgSend(widthCopy, "verticalSizeClass") != 1)
   {
-    v8 = [(SUUIGiftThemePickerViewController *)self view];
-    [v8 bounds];
+    view = [(SUUIGiftThemePickerViewController *)self view];
+    [view bounds];
     v7 = v9;
   }
 
@@ -523,16 +523,16 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
 
 - (BOOL)_isIPadLarge
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D75DA0] keyWindow];
-  [v4 bounds];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  [keyWindow bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -554,21 +554,21 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   return CGRectGetHeight(v15) >= 1024.0;
 }
 
-- (void)_layoutCollectionViewWithTraits:(id)a3
+- (void)_layoutCollectionViewWithTraits:(id)traits
 {
-  v4 = a3;
-  [(SUUIGiftThemePickerViewController *)self _scrollInsetHorizontal:v4];
+  traitsCopy = traits;
+  [(SUUIGiftThemePickerViewController *)self _scrollInsetHorizontal:traitsCopy];
   v6 = v5;
-  [(SUUIGiftThemePickerViewController *)self _cardHeight:v4];
+  [(SUUIGiftThemePickerViewController *)self _cardHeight:traitsCopy];
   v8 = v7;
-  v9 = [(SUUIGiftThemePickerViewController *)self _flowLayout];
+  _flowLayout = [(SUUIGiftThemePickerViewController *)self _flowLayout];
   [(SUUIGiftThemePickerViewController *)self _cardWidth];
-  [v9 setItemSize:?];
+  [_flowLayout setItemSize:?];
 
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = 52.0;
   }
@@ -578,37 +578,37 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
     v12 = 22.0;
   }
 
-  [(SUUIGiftThemePickerViewController *)self _collectionViewWidth:v4];
+  [(SUUIGiftThemePickerViewController *)self _collectionViewWidth:traitsCopy];
   v14 = v13;
 
-  v15 = [(SUUIGiftThemePickerViewController *)self _collectionView];
-  [v15 setFrame:{v6, v12, v14 + v6 * -2.0, v8}];
+  _collectionView = [(SUUIGiftThemePickerViewController *)self _collectionView];
+  [_collectionView setFrame:{v6, v12, v14 + v6 * -2.0, v8}];
 
-  v16 = [(SUUIGiftThemePickerViewController *)self _collectionView];
-  [v16 setVisibleBoundsInsets:{0.0, -v6, 0.0, -v6}];
+  _collectionView2 = [(SUUIGiftThemePickerViewController *)self _collectionView];
+  [_collectionView2 setVisibleBoundsInsets:{0.0, -v6, 0.0, -v6}];
 }
 
-- (double)_scrollInsetHorizontal:(id)a3
+- (double)_scrollInsetHorizontal:(id)horizontal
 {
-  [(SUUIGiftThemePickerViewController *)self _collectionViewWidth:a3];
+  [(SUUIGiftThemePickerViewController *)self _collectionViewWidth:horizontal];
   v5 = v4;
   [(SUUIGiftThemePickerViewController *)self _cardWidth];
   return (v5 - v6) * 0.5;
 }
 
-- (void)_setItemImage:(id)a3 error:(id)a4
+- (void)_setItemImage:(id)image error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v7 = [(SUUIGiftThemeCollectionView *)self->_collectionView visibleCells];
-    objc_storeStrong(&self->_itemImage, a3);
+    visibleCells = [(SUUIGiftThemeCollectionView *)self->_collectionView visibleCells];
+    objc_storeStrong(&self->_itemImage, image);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v7;
+    v8 = visibleCells;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -636,13 +636,13 @@ void __52__SUUIGiftThemePickerViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (void)_setSelectedThemeIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)_setSelectedThemeIndex:(int64_t)index animated:(BOOL)animated
 {
-  self->_selectedThemeIndex = a3;
+  self->_selectedThemeIndex = index;
   [(SUUIGiftThemePickerFlowLayout *)self->_flowLayout setCurrentPage:?];
   pageControl = self->_pageControl;
 
-  [(UIPageControl *)pageControl setCurrentPage:a3];
+  [(UIPageControl *)pageControl setCurrentPage:index];
 }
 
 @end

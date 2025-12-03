@@ -1,20 +1,20 @@
 @interface MapsTransitIncidentsContaineeViewController
-- (MapsTransitIncidentsContaineeViewController)initWithTransitIncidents:(id)a3;
-- (void)macFooterViewRightButtonTapped:(id)a3;
+- (MapsTransitIncidentsContaineeViewController)initWithTransitIncidents:(id)incidents;
+- (void)macFooterViewRightButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation MapsTransitIncidentsContaineeViewController
 
-- (void)macFooterViewRightButtonTapped:(id)a3
+- (void)macFooterViewRightButtonTapped:(id)tapped
 {
-  v6 = a3;
-  v4 = [(ContaineeViewController *)self containeeDelegate];
+  tappedCopy = tapped;
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
 
-  if (v4)
+  if (containeeDelegate)
   {
-    v5 = [v6 rightButton];
-    [(ContaineeViewController *)self handleDismissAction:v5];
+    rightButton = [tappedCopy rightButton];
+    [(ContaineeViewController *)self handleDismissAction:rightButton];
   }
 
   else
@@ -30,24 +30,24 @@
   [(ContaineeViewController *)&v74 viewDidLoad];
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    view = [(MapsTransitIncidentsContaineeViewController *)self view];
     v4 = [[ContainerHeaderView alloc] initWithCardButtonType:2];
     containerHeaderView = self->_containerHeaderView;
     self->_containerHeaderView = v4;
 
     [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
-    v6 = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
-    [(ContainerHeaderView *)self->_containerHeaderView setTitle:v6];
+    incidentsTitle = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
+    [(ContainerHeaderView *)self->_containerHeaderView setTitle:incidentsTitle];
 
     [(ContainerHeaderView *)self->_containerHeaderView setButtonHidden:1];
-    [v3 addSubview:self->_containerHeaderView];
-    v7 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view addSubview:self->_containerHeaderView];
+    view2 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v63 = v3;
-    [v3 addSubview:v8];
+    view3 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    v63 = view;
+    [view addSubview:view3];
 
     [(MapsTransitIncidentsContaineeViewController *)self addChildViewController:self->_incidentsViewController];
     v9 = [[MacFooterView alloc] initWithRightButtonType:8];
@@ -60,67 +60,67 @@
     v11 = +[UIColor secondarySystemBackgroundColor];
     [(MacFooterView *)self->_footerView setBackgroundColor:v11];
 
-    [v3 addSubview:self->_footerView];
-    v60 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
-    v55 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v56 = [v55 leadingAnchor];
-    v73 = [v60 constraintEqualToAnchor:v56];
+    [view addSubview:self->_footerView];
+    leadingAnchor = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
+    view4 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v76[0] = v73;
-    v71 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
-    v72 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v70 = [v72 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    trailingAnchor = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
+    view5 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v69 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v76[1] = v69;
-    v67 = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
-    v68 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v66 = [v68 topAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    topAnchor = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
+    view6 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    topAnchor2 = [view6 topAnchor];
+    v65 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v76[2] = v65;
-    v64 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v61 = [v64 leadingAnchor];
-    v62 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v59 = [v62 leadingAnchor];
-    v58 = [v61 constraintEqualToAnchor:v59];
+    view7 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    leadingAnchor3 = [view7 leadingAnchor];
+    view8 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    leadingAnchor4 = [view8 leadingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v76[3] = v58;
-    v57 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v53 = [v57 trailingAnchor];
-    v54 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v52 = [v54 trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    view9 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    trailingAnchor3 = [view9 trailingAnchor];
+    view10 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    trailingAnchor4 = [view10 trailingAnchor];
+    v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v76[4] = v51;
-    v50 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v49 = [v50 topAnchor];
-    v48 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    view11 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    topAnchor3 = [view11 topAnchor];
+    bottomAnchor = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v76[5] = v47;
-    v45 = [(MacFooterView *)self->_footerView topAnchor];
-    v46 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v44 = [v46 bottomAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    topAnchor4 = [(MacFooterView *)self->_footerView topAnchor];
+    view12 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    bottomAnchor2 = [view12 bottomAnchor];
+    v43 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
     v76[6] = v43;
-    v41 = [(MacFooterView *)self->_footerView bottomAnchor];
-    v42 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v40 = [v42 bottomAnchor];
-    v12 = [v41 constraintEqualToAnchor:v40];
+    bottomAnchor3 = [(MacFooterView *)self->_footerView bottomAnchor];
+    view13 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    bottomAnchor4 = [view13 bottomAnchor];
+    v12 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v76[7] = v12;
-    v13 = [(MacFooterView *)self->_footerView leadingAnchor];
-    v14 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v15 = [v14 leadingAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    leadingAnchor5 = [(MacFooterView *)self->_footerView leadingAnchor];
+    view14 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    leadingAnchor6 = [view14 leadingAnchor];
+    v16 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v76[8] = v16;
-    v17 = [(MacFooterView *)self->_footerView trailingAnchor];
-    v18 = [(MapsTransitIncidentsContaineeViewController *)self view];
-    v19 = [v18 trailingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    trailingAnchor5 = [(MacFooterView *)self->_footerView trailingAnchor];
+    view15 = [(MapsTransitIncidentsContaineeViewController *)self view];
+    trailingAnchor6 = [view15 trailingAnchor];
+    v20 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v76[9] = v20;
     v21 = [NSArray arrayWithObjects:v76 count:10];
     [NSLayoutConstraint activateConstraints:v21];
 
-    v22 = v55;
-    v23 = v56;
+    incidentsTitle3 = view4;
+    containerHeaderView = leadingAnchor2;
 
     v24 = v63;
-    v25 = v60;
+    v25 = leadingAnchor;
   }
 
   else
@@ -131,51 +131,51 @@
 
     [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
-    v28 = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
-    [(ContainerHeaderView *)self->_containerHeaderView setTitle:v28];
+    incidentsTitle2 = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
+    [(ContainerHeaderView *)self->_containerHeaderView setTitle:incidentsTitle2];
 
     [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
-    v29 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view16 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    [view16 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v30 = [(ContaineeViewController *)self contentView];
-    v31 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    [v30 addSubview:v31];
+    contentView = [(ContaineeViewController *)self contentView];
+    view17 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    [contentView addSubview:view17];
 
     [(MapsTransitIncidentsContaineeViewController *)self addChildViewController:self->_incidentsViewController];
     v32 = [MUEdgeLayout alloc];
-    v33 = [(MKIncidentsViewController *)self->_incidentsViewController view];
-    v34 = [(ContaineeViewController *)self contentView];
-    v24 = [v32 initWithItem:v33 container:v34];
+    view18 = [(MKIncidentsViewController *)self->_incidentsViewController view];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    v24 = [v32 initWithItem:view18 container:contentView2];
 
-    v35 = [(ContaineeViewController *)self headerView];
-    [v35 addSubview:self->_containerHeaderView];
+    headerView = [(ContaineeViewController *)self headerView];
+    [headerView addSubview:self->_containerHeaderView];
 
     v36 = [MUEdgeLayout alloc];
     v37 = self->_containerHeaderView;
-    v38 = [(ContaineeViewController *)self headerView];
-    v25 = [v36 initWithItem:v37 container:v38];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    v25 = [v36 initWithItem:v37 container:headerView2];
 
     v75[0] = v24;
     v75[1] = v25;
     v39 = [NSArray arrayWithObjects:v75 count:2];
     [NSLayoutConstraint _mapsui_activateLayouts:v39];
 
-    v22 = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
-    v23 = [(MapsTransitIncidentsContaineeViewController *)self containerHeaderView];
-    [v23 setTitle:v22];
+    incidentsTitle3 = [(MKIncidentsViewController *)self->_incidentsViewController incidentsTitle];
+    containerHeaderView = [(MapsTransitIncidentsContaineeViewController *)self containerHeaderView];
+    [containerHeaderView setTitle:incidentsTitle3];
   }
 }
 
-- (MapsTransitIncidentsContaineeViewController)initWithTransitIncidents:(id)a3
+- (MapsTransitIncidentsContaineeViewController)initWithTransitIncidents:(id)incidents
 {
-  v4 = a3;
+  incidentsCopy = incidents;
   v9.receiver = self;
   v9.super_class = MapsTransitIncidentsContaineeViewController;
   v5 = [(MapsTransitIncidentsContaineeViewController *)&v9 init];
   if (v5)
   {
-    v6 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:v4];
+    v6 = [[MapsIncidentsViewController alloc] initWithTransitIncidents:incidentsCopy];
     incidentsViewController = v5->_incidentsViewController;
     v5->_incidentsViewController = v6;
   }

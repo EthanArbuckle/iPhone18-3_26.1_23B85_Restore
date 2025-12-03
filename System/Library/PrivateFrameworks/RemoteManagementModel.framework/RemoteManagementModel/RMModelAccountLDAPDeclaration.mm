@@ -1,12 +1,12 @@
 @interface RMModelAccountLDAPDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 hostName:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 hostName:(id)a5 port:(id)a6 authenticationCredentialsAssetReference:(id)a7 searchSettings:(id)a8;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier hostName:(id)name;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name hostName:(id)hostName port:(id)port authenticationCredentialsAssetReference:(id)reference searchSettings:(id)settings;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountLDAPDeclaration
@@ -52,60 +52,60 @@ void __48__RMModelAccountLDAPDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 hostName:(id)a5 port:(id)a6 authenticationCredentialsAssetReference:(id)a7 searchSettings:(id)a8
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name hostName:(id)hostName port:(id)port authenticationCredentialsAssetReference:(id)reference searchSettings:(id)settings
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  referenceCopy = reference;
+  portCopy = port;
+  hostNameCopy = hostName;
+  nameCopy = name;
   v19 = objc_opt_new();
   [v19 setDeclarationType:@"com.apple.configuration.account.ldap"];
-  if (v13)
+  if (identifierCopy)
   {
-    [v19 setDeclarationIdentifier:v13];
+    [v19 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    [v19 setDeclarationIdentifier:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v19 setDeclarationIdentifier:uUIDString];
   }
 
-  [v19 setPayloadVisibleName:v18];
+  [v19 setPayloadVisibleName:nameCopy];
 
-  [v19 setPayloadHostName:v17];
-  [v19 setPayloadPort:v16];
+  [v19 setPayloadHostName:hostNameCopy];
+  [v19 setPayloadPort:portCopy];
 
-  [v19 setPayloadAuthenticationCredentialsAssetReference:v15];
-  [v19 setPayloadSearchSettings:v14];
+  [v19 setPayloadAuthenticationCredentialsAssetReference:referenceCopy];
+  [v19 setPayloadSearchSettings:settingsCopy];
 
   [v19 updateServerToken];
 
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 hostName:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier hostName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.account.ldap"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadHostName:v6];
+  [v7 setPayloadHostName:nameCopy];
 
   [v7 updateServerToken];
 
@@ -150,12 +150,12 @@ void __48__RMModelAccountLDAPDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelAccountLDAPDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -163,10 +163,10 @@ void __48__RMModelAccountLDAPDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"SearchSettings" forKeyPath:@"payloadSearchSettings" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"SearchSettings" forKeyPath:@"payloadSearchSettings" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -177,39 +177,39 @@ void __48__RMModelAccountLDAPDeclaration_assetReferences__block_invoke()
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAccountLDAPDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:v6 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountLDAPDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountLDAPDeclaration *)self payloadHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"HostName" value:v7 isRequired:1 defaultValue:0];
+  payloadHostName = [(RMModelAccountLDAPDeclaration *)self payloadHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"HostName" value:payloadHostName isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelAccountLDAPDeclaration *)self payloadPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"Port" value:v8 isRequired:0 defaultValue:0];
+  payloadPort = [(RMModelAccountLDAPDeclaration *)self payloadPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"Port" value:payloadPort isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelAccountLDAPDeclaration *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationCredentialsAssetReference" value:v9 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountLDAPDeclaration *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelAccountLDAPDeclaration *)self payloadSearchSettings];
+  payloadSearchSettings = [(RMModelAccountLDAPDeclaration *)self payloadSearchSettings];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__RMModelAccountLDAPDeclaration_serializePayloadWithType___block_invoke;
   v13[3] = &__block_descriptor_34_e72___NSDictionary_16__0__RMModelAccountLDAPDeclaration_SearchSettingsItem_8l;
-  v14 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"SearchSettings" value:v10 itemSerializer:v13 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"SearchSettings" value:payloadSearchSettings itemSerializer:v13 isRequired:0 defaultValue:0];
 
   v11 = [v5 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RMModelAccountLDAPDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

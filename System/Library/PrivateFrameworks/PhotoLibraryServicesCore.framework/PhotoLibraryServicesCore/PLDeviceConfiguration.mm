@@ -1,7 +1,7 @@
 @interface PLDeviceConfiguration
 + (id)defaultDeviceConfiguration;
 - (CGSize)logicalScreenSize;
-- (PLDeviceConfiguration)initWithLogicalScreenSize:(CGSize)a3 screenScale:(double)a4 deviceClass:(void *)a5 supportsASTC:(BOOL)a6;
+- (PLDeviceConfiguration)initWithLogicalScreenSize:(CGSize)size screenScale:(double)scale deviceClass:(void *)class supportsASTC:(BOOL)c;
 - (id)description;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __51__PLDeviceConfiguration_defaultDeviceConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultDeviceConfiguration_onceToken != -1)
   {
     dispatch_once(&defaultDeviceConfiguration_onceToken, block);
@@ -67,26 +67,26 @@ void __51__PLDeviceConfiguration_defaultDeviceConfiguration__block_invoke(uint64
   return v4;
 }
 
-- (PLDeviceConfiguration)initWithLogicalScreenSize:(CGSize)a3 screenScale:(double)a4 deviceClass:(void *)a5 supportsASTC:(BOOL)a6
+- (PLDeviceConfiguration)initWithLogicalScreenSize:(CGSize)size screenScale:(double)scale deviceClass:(void *)class supportsASTC:(BOOL)c
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = PLDeviceConfiguration;
   v11 = [(PLDeviceConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_screenScale = a4;
+    v11->_screenScale = scale;
     v11->_logicalScreenSize.width = width;
     v11->_logicalScreenSize.height = height;
-    v11->_supportsASTC = a6;
-    if (a5)
+    v11->_supportsASTC = c;
+    if (class)
     {
-      v11->_isPad = CFEqual(a5, @"iPad") != 0;
-      v12->_isTV = CFEqual(a5, @"AppleTV") != 0;
-      v12->_isWatch = CFEqual(a5, @"Watch") != 0;
-      v12->_isMac = CFEqual(a5, @"Unicorn") != 0;
+      v11->_isPad = CFEqual(class, @"iPad") != 0;
+      v12->_isTV = CFEqual(class, @"AppleTV") != 0;
+      v12->_isWatch = CFEqual(class, @"Watch") != 0;
+      v12->_isMac = CFEqual(class, @"Unicorn") != 0;
     }
   }
 

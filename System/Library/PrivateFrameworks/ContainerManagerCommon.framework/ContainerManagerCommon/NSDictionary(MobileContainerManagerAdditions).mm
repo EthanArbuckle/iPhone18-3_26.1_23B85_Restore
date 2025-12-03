@@ -14,7 +14,7 @@
   v10 = a3;
   v11 = a5;
   v22[0] = 0;
-  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:a1 format:200 options:0 error:v22];
+  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:self format:200 options:0 error:v22];
   v13 = v22[0];
   if (!v12)
   {
@@ -75,7 +75,7 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = +[MCMFileManager defaultManager];
-  v10 = [a1 MCM_writeToURL:v8 withOptions:a4 fileManager:v9 error:a5];
+  v10 = [self MCM_writeToURL:v8 withOptions:a4 fileManager:v9 error:a5];
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
@@ -152,7 +152,7 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = +[MCMFileManager defaultManager];
-  v12 = [a1 MCM_dictionaryWithContentsOfURL:v10 options:a4 fileManager:v11 fsNode:a5 error:a6];
+  v12 = [self MCM_dictionaryWithContentsOfURL:v10 options:a4 fileManager:v11 fsNode:a5 error:a6];
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -164,7 +164,7 @@ LABEL_12:
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [a1 MCM_dictionaryWithContentsOfURL:a3 options:a4 fsNode:0 error:a5];
+  return [self MCM_dictionaryWithContentsOfURL:a3 options:a4 fsNode:0 error:a5];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface _UIPlatterContainerView
-- (_UIPlatterContainerView)initWithFrame:(CGRect)a3;
+- (_UIPlatterContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateTransforms;
-- (void)applyRotation:(double)a3;
-- (void)applyTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4;
-- (void)installPreviewContainer:(id)a3 overrideSourceView:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSource:(id)a3;
-- (void)setTarget:(id)a3;
-- (void)setUpdatedTarget:(id)a3;
+- (void)applyRotation:(double)rotation;
+- (void)applyTransform:(CGAffineTransform *)transform withSize:(CGSize)size;
+- (void)installPreviewContainer:(id)container overrideSourceView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setSource:(id)source;
+- (void)setTarget:(id)target;
+- (void)setUpdatedTarget:(id)target;
 @end
 
 @implementation _UIPlatterContainerView
 
-- (_UIPlatterContainerView)initWithFrame:(CGRect)a3
+- (_UIPlatterContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = _UIPlatterContainerView;
   v7 = [(UIView *)&v11 initWithFrame:?];
   if (v7)
   {
-    v8 = [[UIView alloc] initWithFrame:x, y, width, height];
+    height = [[UIView alloc] initWithFrame:x, y, width, height];
     platterContentView = v7->_platterContentView;
-    v7->_platterContentView = v8;
+    v7->_platterContentView = height;
 
     [(UIView *)v7->_platterContentView setAutoresizingMask:18];
     [(UIView *)v7 addSubview:v7->_platterContentView];
@@ -35,111 +35,111 @@
   return v7;
 }
 
-- (void)installPreviewContainer:(id)a3 overrideSourceView:(id)a4
+- (void)installPreviewContainer:(id)container overrideSourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  viewCopy = view;
   [(UIView *)self bounds];
-  [v6 setFrame:?];
-  [(UIView *)self addSubview:v6];
-  if (v7)
+  [containerCopy setFrame:?];
+  [(UIView *)self addSubview:containerCopy];
+  if (viewCopy)
   {
-    v8 = v7;
+    v8 = viewCopy;
   }
 
   else
   {
-    v9 = [(_UIPlatterContainerView *)self source];
-    v10 = v9;
-    if (v9)
+    source = [(_UIPlatterContainerView *)self source];
+    v10 = source;
+    if (source)
     {
-      v11 = v9;
+      target = source;
     }
 
     else
     {
-      v11 = [(_UIPlatterContainerView *)self target];
+      target = [(_UIPlatterContainerView *)self target];
     }
 
-    v8 = v11;
+    v8 = target;
   }
 
-  v12 = [(_UIPlatterContainerView *)self platterContentView];
+  platterContentView = [(_UIPlatterContainerView *)self platterContentView];
   [(UIView *)self transform];
-  [v6 _preparePreviewContainerWithPreview:v12 source:v8 initialTransform:&v13];
+  [containerCopy _preparePreviewContainerWithPreview:platterContentView source:v8 initialTransform:&v13];
 }
 
-- (void)applyTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4
+- (void)applyTransform:(CGAffineTransform *)transform withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
-  CGAffineTransformMakeScale(&v10, sqrt(a3->a * a3->a + a3->c * a3->c), sqrt(a3->b * a3->b + a3->d * a3->d));
+  CGAffineTransformMakeScale(&v10, sqrt(transform->a * transform->a + transform->c * transform->c), sqrt(transform->b * transform->b + transform->d * transform->d));
   [(_UIPlatterContainerView *)self setBounds:v8, v9, width * v10.a + height * v10.c, width * v10.b + height * v10.d];
-  [(_UIPlatterContainerView *)self applyRotation:atan2(a3->b, a3->a)];
+  [(_UIPlatterContainerView *)self applyRotation:atan2(transform->b, transform->a)];
 }
 
-- (void)applyRotation:(double)a3
+- (void)applyRotation:(double)rotation
 {
-  CGAffineTransformMakeRotation(&v5, a3);
+  CGAffineTransformMakeRotation(&v5, rotation);
   v4 = v5;
   [(UIView *)self setTransform:&v4];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UIPlatterContainerView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIPlatterContainerView *)self _updateTransforms];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UIPlatterContainerView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UIPlatterContainerView *)self _updateTransforms];
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   source = self->_source;
-  v9 = v5;
-  if (source != v5)
+  v9 = sourceCopy;
+  if (source != sourceCopy)
   {
     [(UIView *)source removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_source, a3);
+  objc_storeStrong(&self->_source, source);
   v7 = v9;
   if (self->_source)
   {
-    v8 = [(_UIPlatterContainerView *)self platterContentView];
-    [v8 addSubview:v9];
+    platterContentView = [(_UIPlatterContainerView *)self platterContentView];
+    [platterContentView addSubview:v9];
 
     [(_UIPlatterContainerView *)self _updateTransforms];
     v7 = v9;
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   target = self->_target;
-  v12 = v5;
-  if (target != v5)
+  v12 = targetCopy;
+  if (target != targetCopy)
   {
     [(UIView *)target removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_target, a3);
+  objc_storeStrong(&self->_target, target);
   if (self->_target)
   {
-    v7 = [(_UIPlatterContainerView *)self platterContentView];
-    [v7 addSubview:v12];
+    platterContentView = [(_UIPlatterContainerView *)self platterContentView];
+    [platterContentView addSubview:v12];
 
     if (!self->_updatedTargetWrapper)
     {
@@ -149,24 +149,24 @@
       updatedTargetWrapper = self->_updatedTargetWrapper;
       self->_updatedTargetWrapper = v9;
 
-      v11 = [(_UIPlatterContainerView *)self platterContentView];
-      [v11 addSubview:self->_updatedTargetWrapper];
+      platterContentView2 = [(_UIPlatterContainerView *)self platterContentView];
+      [platterContentView2 addSubview:self->_updatedTargetWrapper];
     }
 
     [(_UIPlatterContainerView *)self _updateTransforms];
   }
 }
 
-- (void)setUpdatedTarget:(id)a3
+- (void)setUpdatedTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   updatedTarget = self->_updatedTarget;
-  if (updatedTarget != v5)
+  if (updatedTarget != targetCopy)
   {
     [(UIView *)updatedTarget removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_updatedTarget, a3);
+  objc_storeStrong(&self->_updatedTarget, target);
   v7 = self->_updatedTarget;
   if (v7)
   {
@@ -217,8 +217,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIPlatterContainerView *)self source];
-  [v11 bounds];
+  source = [(_UIPlatterContainerView *)self source];
+  [source bounds];
   v13 = v12;
   v62 = v14;
   rect = v12;
@@ -250,17 +250,17 @@
   v72.size.height = v62;
   v25 = CGRectGetHeight(v72);
   CGAffineTransformMakeScale(&v68, v23, Height / v25);
-  v26 = [(_UIPlatterContainerView *)self source];
+  source2 = [(_UIPlatterContainerView *)self source];
   v67 = v68;
-  [v26 setTransform:&v67];
+  [source2 setTransform:&v67];
 
   v63 = v4 + v20 * 0.5;
   rect = v59 + v61 * 0.5;
-  v27 = [(_UIPlatterContainerView *)self source];
-  [v27 setCenter:{v63, rect}];
+  source3 = [(_UIPlatterContainerView *)self source];
+  [source3 setCenter:{v63, rect}];
 
-  v28 = [(_UIPlatterContainerView *)self target];
-  [v28 bounds];
+  target = [(_UIPlatterContainerView *)self target];
+  [target bounds];
   v30 = v29;
   v55 = v31;
   v57 = v29;
@@ -289,12 +289,12 @@
   v76.size.height = v55;
   v40 = CGRectGetHeight(v76);
   CGAffineTransformMakeScale(&v66, v38, v39 / v40);
-  v41 = [(_UIPlatterContainerView *)self target];
+  target2 = [(_UIPlatterContainerView *)self target];
   v67 = v66;
-  [v41 setTransform:&v67];
+  [target2 setTransform:&v67];
 
-  v42 = [(_UIPlatterContainerView *)self target];
-  [v42 setCenter:{v63, rect}];
+  target3 = [(_UIPlatterContainerView *)self target];
+  [target3 setCenter:{v63, rect}];
 
   [(UIView *)self->_updatedTargetWrapper bounds];
   v44 = v43;

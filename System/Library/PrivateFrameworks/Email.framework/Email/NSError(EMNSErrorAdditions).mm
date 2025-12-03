@@ -28,12 +28,12 @@
   else
   {
     v10 = @"itemID";
-    v6 = [MEMORY[0x1E695DFB0] null];
-    v11 = v6;
+    null = [MEMORY[0x1E695DFB0] null];
+    v11 = null;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   }
 
-  v7 = [a1 errorWithDomain:@"EMErrorDomain" code:1024 userInfo:v5];
+  v7 = [self errorWithDomain:@"EMErrorDomain" code:1024 userInfo:v5];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -47,7 +47,7 @@
     +[NSError(EMNSErrorAdditions) em_itemNotFoundErrorWithItemID:];
   }
 
-  return [a1 errorWithDomain:@"EMErrorDomain" code:1026 userInfo:0];
+  return [self errorWithDomain:@"EMErrorDomain" code:1026 userInfo:0];
 }
 
 + (id)em_internalErrorWithReason:()EMNSErrorAdditions
@@ -98,7 +98,7 @@
     [v9 setObject:v14 forKeyedSubscript:v10];
   }
 
-  v15 = [a1 errorWithDomain:@"EMErrorDomain" code:1 userInfo:v9];
+  v15 = [self errorWithDomain:@"EMErrorDomain" code:1 userInfo:v9];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -107,16 +107,16 @@
 
 - (uint64_t)em_isItemNotFoundError
 {
-  v1 = [a1 ef_match];
-  v2 = (v1)[2](v1, @"EMErrorDomain", 1024);
+  ef_match = [self ef_match];
+  v2 = (ef_match)[2](ef_match, @"EMErrorDomain", 1024);
 
   return v2;
 }
 
 - (uint64_t)em_isInternalError
 {
-  v1 = [a1 ef_match];
-  v2 = (v1)[2](v1, @"EMErrorDomain", 1);
+  ef_match = [self ef_match];
+  v2 = (ef_match)[2](ef_match, @"EMErrorDomain", 1);
 
   return v2;
 }

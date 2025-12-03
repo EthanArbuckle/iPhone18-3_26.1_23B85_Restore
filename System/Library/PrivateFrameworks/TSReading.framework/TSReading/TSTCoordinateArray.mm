@@ -1,13 +1,13 @@
 @interface TSTCoordinateArray
-- (BOOL)isEqual:(id)a3;
-- (TSTCoordinateArray)initWithCount:(unsigned int)a3 atOffset:(unsigned int)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSTCoordinateArray)initWithCount:(unsigned int)count atOffset:(unsigned int)offset;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation TSTCoordinateArray
 
-- (TSTCoordinateArray)initWithCount:(unsigned int)a3 atOffset:(unsigned int)a4
+- (TSTCoordinateArray)initWithCount:(unsigned int)count atOffset:(unsigned int)offset
 {
   v9.receiver = self;
   v9.super_class = TSTCoordinateArray;
@@ -15,11 +15,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->mOffset = a4;
-    v6->mCount = a3;
-    v6->mCoordinates = malloc_type_calloc(8uLL, a3 + 1, 0x100004000313F17uLL);
+    v6->mOffset = offset;
+    v6->mCount = count;
+    v6->mCoordinates = malloc_type_calloc(8uLL, count + 1, 0x100004000313F17uLL);
     v7->mAverage = 0.0;
-    v7->mVisibleIndices = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{v7->mOffset, a3}];
+    v7->mVisibleIndices = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{v7->mOffset, count}];
     v7->mLayoutDirectionIsLeftToRight = 1;
     v7->mTableWidth = 0.0;
   }
@@ -40,7 +40,7 @@
   [(TSTCoordinateArray *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

@@ -1,18 +1,18 @@
 @interface MapsSuggestionsFrequentLocationImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsFrequentLocationImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    geoMapItem2 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(geoMapItem2, OS_LOG_TYPE_ERROR))
     {
       *v20 = 136446978;
       *&v20[4] = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsFrequentLocationImprover.m";
@@ -22,30 +22,30 @@
       *&v20[20] = "[MapsSuggestionsFrequentLocationImprover improveEntry:]";
       *&v20[28] = 2082;
       *&v20[30] = "nil == (entry)";
-      _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a suggestion entry", v20, 0x26u);
+      _os_log_impl(&dword_1C5126000, geoMapItem2, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a suggestion entry", v20, 0x26u);
     }
 
     LOBYTE(v13) = 0;
     goto LABEL_27;
   }
 
-  if ([v4 type] == 4)
+  if ([entryCopy type] == 4)
   {
-    v6 = [v5 geoMapItem];
+    geoMapItem = [v5 geoMapItem];
 
-    if (v6)
+    if (geoMapItem)
     {
-      v7 = [v5 geoMapItem];
+      geoMapItem2 = [v5 geoMapItem];
       v8 = [v5 stringForKey:@"MapsSuggestionsCoreRoutineLabel"];
-      v9 = MapsSuggestionsMapItemCityName(v7);
-      if (![v8 length] && -[NSObject _hasMUID](v7, "_hasMUID") && -[NSObject _muid](v7, "_muid"))
+      v9 = MapsSuggestionsMapItemCityName(geoMapItem2);
+      if (![v8 length] && -[NSObject _hasMUID](geoMapItem2, "_hasMUID") && -[NSObject _muid](geoMapItem2, "_muid"))
       {
-        v10 = [v7 name];
+        name = [geoMapItem2 name];
 
-        v8 = v10;
+        v8 = name;
       }
 
-      v11 = MapsSuggestionsMapItemStreetName(v7);
+      v11 = MapsSuggestionsMapItemStreetName(geoMapItem2);
       if ([v8 length] || !objc_msgSend(v11, "length"))
       {
         v12 = 0;

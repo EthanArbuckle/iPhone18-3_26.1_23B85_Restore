@@ -8,9 +8,9 @@
 - (id)accessibilityLabel
 {
   v3 = [(UIStatusBarActivityItemViewAccessibility *)self safeValueForKey:@"_syncActivity"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x29EDC9740](v3);
-  if (v4)
+  if (bOOLValue)
   {
     v5 = accessibilityLocalizedString(@"status.synching.inprogress");
   }
@@ -25,7 +25,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarActivityItemViewAccessibility;

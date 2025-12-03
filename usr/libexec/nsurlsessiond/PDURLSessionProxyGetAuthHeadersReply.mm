@@ -1,25 +1,25 @@
 @interface PDURLSessionProxyGetAuthHeadersReply
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSDictionary)_actualAuthHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_setActualAuthHeaders:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_setActualAuthHeaders:(id)headers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyGetAuthHeadersReply
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = *(v4 + 2);
-  v7 = v4;
+  v6 = *(fromCopy + 2);
+  v7 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -40,17 +40,17 @@
     [(PDURLSessionProxyGetAuthHeadersReply *)self setTask:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDURLSessionProxyGetAuthHeadersReply *)self setHeaderData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_continueLoad = *(v4 + 24);
+    self->_continueLoad = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 }
@@ -72,16 +72,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   task = self->_task;
-  if (task | *(v4 + 2))
+  if (task | *(equalCopy + 2))
   {
     if (![(PDURLSessionProxyTaskMessage *)task isEqual:?])
     {
@@ -90,7 +90,7 @@ LABEL_7:
   }
 
   headerData = self->_headerData;
-  if (headerData | *(v4 + 1))
+  if (headerData | *(equalCopy + 1))
   {
     if (![(NSData *)headerData isEqual:?])
     {
@@ -98,10 +98,10 @@ LABEL_7:
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -110,13 +110,13 @@ LABEL_8:
 
     if (self->_continueLoad)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -129,14 +129,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_headerData copyWithZone:a3];
+  v8 = [(NSData *)self->_headerData copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -149,61 +149,61 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_headerData)
   {
     [v5 setHeaderData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_continueLoad;
-    v4[28] |= 1u;
+    toCopy[24] = self->_continueLoad;
+    toCopy[28] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_headerData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     continueLoad = self->_continueLoad;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -214,18 +214,18 @@ LABEL_9:
       while (1)
       {
         LOBYTE(v27[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v27 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v27 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v27[0] & 0x7F) << v6;
@@ -243,9 +243,9 @@ LABEL_9:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -260,18 +260,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v27[0]) = 0;
-          v21 = [a3 position] + 1;
-          if (v21 >= [a3 position] && (v22 = objc_msgSend(a3, "position") + 1, v22 <= objc_msgSend(a3, "length")))
+          v21 = [from position] + 1;
+          if (v21 >= [from position] && (v22 = objc_msgSend(from, "position") + 1, v22 <= objc_msgSend(from, "length")))
           {
-            v23 = [a3 data];
-            [v23 getBytes:v27 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:v27 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v20 |= (v27[0] & 0x7F) << v18;
@@ -289,7 +289,7 @@ LABEL_15:
           }
         }
 
-        v24 = (v20 != 0) & ~[a3 hasError];
+        v24 = (v20 != 0) & ~[from hasError];
 LABEL_36:
         self->_continueLoad = v24;
       }
@@ -307,7 +307,7 @@ LABEL_36:
         objc_storeStrong(&self->_task, v15);
         v27[0] = 0;
         v27[1] = 0;
-        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, from))
         {
 
           return 0;
@@ -321,13 +321,13 @@ LABEL_36:
         return 0;
       }
 
-      v25 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v25 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -336,8 +336,8 @@ LABEL_36:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   headerData = self->_headerData;
@@ -360,34 +360,34 @@ LABEL_36:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyGetAuthHeadersReply;
   v3 = [(PDURLSessionProxyGetAuthHeadersReply *)&v7 description];
-  v4 = [(PDURLSessionProxyGetAuthHeadersReply *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyGetAuthHeadersReply *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)_setActualAuthHeaders:(id)a3
+- (void)_setActualAuthHeaders:(id)headers
 {
-  v4 = a3;
-  if (v4)
+  headersCopy = headers;
+  if (headersCopy)
   {
-    v6 = v4;
-    v5 = [NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:0];
+    v6 = headersCopy;
+    v5 = [NSPropertyListSerialization dataWithPropertyList:headersCopy format:200 options:0 error:0];
     [(PDURLSessionProxyGetAuthHeadersReply *)self setHeaderData:v5];
 
-    v4 = v6;
+    headersCopy = v6;
   }
 }
 
 - (NSDictionary)_actualAuthHeaders
 {
-  v3 = [(PDURLSessionProxyGetAuthHeadersReply *)self headerData];
+  headerData = [(PDURLSessionProxyGetAuthHeadersReply *)self headerData];
 
-  if (v3)
+  if (headerData)
   {
-    v4 = [(PDURLSessionProxyGetAuthHeadersReply *)self headerData];
+    headerData2 = [(PDURLSessionProxyGetAuthHeadersReply *)self headerData];
     v10 = 0;
-    v5 = [NSPropertyListSerialization propertyListWithData:v4 options:0 format:0 error:&v10];
+    v5 = [NSPropertyListSerialization propertyListWithData:headerData2 options:0 format:0 error:&v10];
     v6 = v10;
 
     if (v6)
@@ -395,11 +395,11 @@ LABEL_36:
       v7 = qword_1000EB1D8;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v6 code];
+        code = [v6 code];
         *buf = 138412546;
         v12 = v6;
         v13 = 2048;
-        v14 = v9;
+        v14 = code;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Error %@ [%ld] deserializing auth headers", buf, 0x16u);
       }
     }

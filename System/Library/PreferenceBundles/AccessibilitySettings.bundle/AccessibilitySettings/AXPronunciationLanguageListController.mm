@@ -1,32 +1,32 @@
 @interface AXPronunciationLanguageListController
 - (AXPronunciationLanguageListControllerDelegate)delegate;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXPronunciationLanguageListController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = AXPronunciationLanguageListController;
-  [(AXPronunciationLanguageListController *)&v9 viewWillAppear:a3];
-  v4 = [(AXPronunciationLanguageListController *)self specifier];
-  v5 = [v4 objectForKeyedSubscript:@"Languages"];
+  [(AXPronunciationLanguageListController *)&v9 viewWillAppear:appear];
+  specifier = [(AXPronunciationLanguageListController *)self specifier];
+  v5 = [specifier objectForKeyedSubscript:@"Languages"];
   if (v5)
   {
-    v6 = [(AXPronunciationLanguageListController *)self specifier];
-    v7 = [v6 propertyForKey:@"Languages"];
+    specifier2 = [(AXPronunciationLanguageListController *)self specifier];
+    v7 = [specifier2 propertyForKey:@"Languages"];
     v8 = [v7 mutableCopy];
     [(AXPronunciationLanguageListController *)self setSelectedLanguages:v8];
   }
 
   else
   {
-    v6 = +[NSMutableSet set];
-    [(AXPronunciationLanguageListController *)self setSelectedLanguages:v6];
+    specifier2 = +[NSMutableSet set];
+    [(AXPronunciationLanguageListController *)self setSelectedLanguages:specifier2];
   }
 }
 
@@ -100,60 +100,60 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = AXPronunciationLanguageListController;
-  [(AXPronunciationLanguageListController *)&v36 tableView:v6 didSelectRowAtIndexPath:v7];
-  v31 = v6;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v30 = v7;
-  v29 = [(AXPronunciationLanguageListController *)self specifierForIndexPath:v7];
+  [(AXPronunciationLanguageListController *)&v36 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v31 = viewCopy;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v30 = pathCopy;
+  v29 = [(AXPronunciationLanguageListController *)self specifierForIndexPath:pathCopy];
   v8 = [v29 objectForKeyedSubscript:@"Language"];
-  v9 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-  v10 = v9;
+  selectedLanguages = [(AXPronunciationLanguageListController *)self selectedLanguages];
+  v10 = selectedLanguages;
   v28 = v8;
   if (v8)
   {
-    v11 = [v9 containsObject:v8];
+    v11 = [selectedLanguages containsObject:v8];
 
-    v12 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-    v10 = v12;
+    selectedLanguages2 = [(AXPronunciationLanguageListController *)self selectedLanguages];
+    v10 = selectedLanguages2;
     if (v11)
     {
-      [v12 removeObject:v8];
+      [selectedLanguages2 removeObject:v8];
     }
 
     else
     {
-      [v12 addObject:v8];
+      [selectedLanguages2 addObject:v8];
     }
   }
 
   else
   {
-    [v9 removeAllObjects];
+    [selectedLanguages removeAllObjects];
   }
 
-  v13 = [(AXPronunciationLanguageListController *)self delegate];
-  v14 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-  [v13 pronunciationLanguageListController:self didSelectLanguages:v14];
+  delegate = [(AXPronunciationLanguageListController *)self delegate];
+  selectedLanguages3 = [(AXPronunciationLanguageListController *)self selectedLanguages];
+  [delegate pronunciationLanguageListController:self didSelectLanguages:selectedLanguages3];
 
   [(AXPronunciationLanguageListController *)self updateVisibleCellsWithCheckedSelection:0];
   v15 = [(AXPronunciationLanguageListController *)self cellForSpecifierID:@"ALL"];
-  v16 = [(AXPronunciationLanguageListController *)self selectedLanguages];
+  selectedLanguages4 = [(AXPronunciationLanguageListController *)self selectedLanguages];
   v27 = v15;
-  [v15 setChecked:{objc_msgSend(v16, "count") == 0}];
+  [v15 setChecked:{objc_msgSend(selectedLanguages4, "count") == 0}];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
   v17 = OBJC_IVAR___PSListController__table;
-  v18 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] indexPathsForVisibleRows];
-  v19 = [v18 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  indexPathsForVisibleRows = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] indexPathsForVisibleRows];
+  v19 = [indexPathsForVisibleRows countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v19)
   {
     v20 = v19;
@@ -164,51 +164,51 @@
       {
         if (*v33 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v23 = [*&self->AXUISettingsBaseListController_opaque[v17] cellForRowAtIndexPath:*(*(&v32 + 1) + 8 * i)];
-        v24 = [v23 specifier];
-        v25 = [v24 propertyForKey:@"Language"];
+        specifier = [v23 specifier];
+        v25 = [specifier propertyForKey:@"Language"];
 
         if (v25)
         {
-          v26 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-          [v23 setChecked:{objc_msgSend(v26, "containsObject:", v25)}];
+          selectedLanguages5 = [(AXPronunciationLanguageListController *)self selectedLanguages];
+          [v23 setChecked:{objc_msgSend(selectedLanguages5, "containsObject:", v25)}];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v20 = [indexPathsForVisibleRows countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v20);
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(AXPronunciationLanguageListController *)self specifierForIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [(AXPronunciationLanguageListController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 objectForKeyedSubscript:PSIDKey];
 
-  v10 = [(AXPronunciationLanguageListController *)self specifierForIndexPath:v7];
+  selectedLanguages = [(AXPronunciationLanguageListController *)self specifierForIndexPath:pathCopy];
 
-  v11 = [v10 objectForKeyedSubscript:@"Language"];
+  v11 = [selectedLanguages objectForKeyedSubscript:@"Language"];
 
   v12 = [v9 isEqualToString:@"ALL"];
   if (v12)
   {
-    v10 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-    if (![v10 count])
+    selectedLanguages = [(AXPronunciationLanguageListController *)self selectedLanguages];
+    if (![selectedLanguages count])
     {
-      [v14 setChecked:1];
+      [cellCopy setChecked:1];
       goto LABEL_6;
     }
   }
 
-  v13 = [(AXPronunciationLanguageListController *)self selectedLanguages];
-  [v14 setChecked:{objc_msgSend(v13, "containsObject:", v11)}];
+  selectedLanguages2 = [(AXPronunciationLanguageListController *)self selectedLanguages];
+  [cellCopy setChecked:{objc_msgSend(selectedLanguages2, "containsObject:", v11)}];
 
   if (v12)
   {

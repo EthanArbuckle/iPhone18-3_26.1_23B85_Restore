@@ -1,68 +1,68 @@
 @interface PXCMMPublishActionPerformer
 - (BOOL)isCancellable;
-- (id)performPublishActionWithSession:(id)a3 shareOrigin:(int64_t)a4 completionHandler:(id)a5;
-- (void)_completePublishActionWithSuccess:(BOOL)a3 error:(id)a4 shareOrigin:(int64_t)a5 completionHandler:(id)a6;
-- (void)cancelActionWithCompletionHandler:(id)a3;
+- (id)performPublishActionWithSession:(id)session shareOrigin:(int64_t)origin completionHandler:(id)handler;
+- (void)_completePublishActionWithSuccess:(BOOL)success error:(id)error shareOrigin:(int64_t)origin completionHandler:(id)handler;
+- (void)cancelActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation PXCMMPublishActionPerformer
 
-- (void)cancelActionWithCompletionHandler:(id)a3
+- (void)cancelActionWithCompletionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   if (![(PXCMMPublishActionPerformer *)self isCancellable])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXCMMActionManager.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"self.isCancellable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMActionManager.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"self.isCancellable"}];
   }
 
-  v5 = [(PXCMMActionPerformer *)self progress];
-  [v5 cancel];
+  progress = [(PXCMMActionPerformer *)self progress];
+  [progress cancel];
 
-  v6 = v8;
-  if (v8)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8);
-    v6 = v8;
+    (*(handlerCopy + 2))(handlerCopy);
+    v6 = handlerCopy;
   }
 }
 
 - (BOOL)isCancellable
 {
-  v2 = [(PXCMMActionPerformer *)self progress];
-  v3 = [v2 isCancellable];
+  progress = [(PXCMMActionPerformer *)self progress];
+  isCancellable = [progress isCancellable];
 
-  return v3;
+  return isCancellable;
 }
 
-- (void)_completePublishActionWithSuccess:(BOOL)a3 error:(id)a4 shareOrigin:(int64_t)a5 completionHandler:(id)a6
+- (void)_completePublishActionWithSuccess:(BOOL)success error:(id)error shareOrigin:(int64_t)origin completionHandler:(id)handler
 {
-  v8 = a3;
+  successCopy = success;
   v23[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = [(PXCMMActionPerformer *)self progress];
-  if (([v12 isCancelled] & 1) == 0)
+  errorCopy = error;
+  handlerCopy = handler;
+  progress = [(PXCMMActionPerformer *)self progress];
+  if (([progress isCancelled] & 1) == 0)
   {
-    [v12 setCompletedUnitCount:{objc_msgSend(v12, "totalUnitCount")}];
+    [progress setCompletedUnitCount:{objc_msgSend(progress, "totalUnitCount")}];
   }
 
-  if (v8)
+  if (successCopy)
   {
-    v13 = [(PXCMMPublishActionPerformer *)self publishedURL];
+    publishedURL = [(PXCMMPublishActionPerformer *)self publishedURL];
 
-    if (v13)
+    if (publishedURL)
     {
-      v14 = [(PXCMMPublishActionPerformer *)self publishedURL];
+      publishedURL2 = [(PXCMMPublishActionPerformer *)self publishedURL];
       [(PXCMMPublishActionPerformer *)self setPublishedURL:0];
-      v11[2](v11, v14, 0);
+      handlerCopy[2](handlerCopy, publishedURL2, 0);
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = v16;
       v18 = 0;
-      if (a5 <= 4)
+      if (origin <= 4)
       {
-        v18 = off_1E773CF08[a5];
+        v18 = off_1E773CF08[origin];
       }
 
       v19 = MEMORY[0x1E6991F28];
@@ -80,31 +80,31 @@
 
     else
     {
-      v14 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1004 debugDescription:@"Publish succeeded with no URL"];
-      (v11)[2](v11, 0, v14);
+      publishedURL2 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1004 debugDescription:@"Publish succeeded with no URL"];
+      (handlerCopy)[2](handlerCopy, 0, publishedURL2);
     }
   }
 
   else
   {
-    (v11)[2](v11, 0, v10);
+    (handlerCopy)[2](handlerCopy, 0, errorCopy);
   }
 }
 
-- (id)performPublishActionWithSession:(id)a3 shareOrigin:(int64_t)a4 completionHandler:(id)a5
+- (id)performPublishActionWithSession:(id)session shareOrigin:(int64_t)origin completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__PXCMMPublishActionPerformer_performPublishActionWithSession_shareOrigin_completionHandler___block_invoke;
   v13[3] = &unk_1E773CEE8;
   objc_copyWeak(v15, &location);
-  v15[1] = a4;
-  v10 = v9;
+  v15[1] = origin;
+  v10 = handlerCopy;
   v14 = v10;
-  v11 = [(PXCMMActionPerformer *)self performActionWithSession:v8 completionHandler:v13];
+  v11 = [(PXCMMActionPerformer *)self performActionWithSession:sessionCopy completionHandler:v13];
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);

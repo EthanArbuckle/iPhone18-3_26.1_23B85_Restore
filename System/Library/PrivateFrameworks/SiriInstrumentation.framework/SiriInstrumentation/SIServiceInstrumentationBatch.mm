@@ -1,28 +1,28 @@
 @interface SIServiceInstrumentationBatch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIServiceInstrumentationBatch)initWithDictionary:(id)a3;
-- (SIServiceInstrumentationBatch)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SIServiceInstrumentationBatch)initWithDictionary:(id)dictionary;
+- (SIServiceInstrumentationBatch)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIServiceInstrumentationBatch
 
-- (SIServiceInstrumentationBatch)initWithDictionary:(id)a3
+- (SIServiceInstrumentationBatch)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = SIServiceInstrumentationBatch;
   v5 = [(SIServiceInstrumentationBatch *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(SIServiceInstrumentationBatch *)v5 setApp_id:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"batchInfo"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"batchInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(SIServiceInstrumentationBatch *)v5 setBatch_info:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"event"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"event"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (SIServiceInstrumentationBatch)initWithJSON:(id)a3
+- (SIServiceInstrumentationBatch)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIServiceInstrumentationBatch *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIServiceInstrumentationBatch *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIServiceInstrumentationBatch *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -123,33 +123,33 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_app_id)
   {
-    v4 = [(SIServiceInstrumentationBatch *)self app_id];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appId"];
+    app_id = [(SIServiceInstrumentationBatch *)self app_id];
+    v5 = [app_id copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appId"];
   }
 
   if (self->_batch_info)
   {
-    v6 = [(SIServiceInstrumentationBatch *)self batch_info];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    batch_info = [(SIServiceInstrumentationBatch *)self batch_info];
+    dictionaryRepresentation = [batch_info dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"batchInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"batchInfo"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"batchInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"batchInfo"];
     }
   }
 
   if ([(NSArray *)self->_events count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -169,16 +169,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -188,12 +188,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"event"];
+    [dictionary setObject:array forKeyedSubscript:@"event"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,28 +203,28 @@
   return v4 ^ [(NSArray *)self->_events hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SIServiceInstrumentationBatch *)self app_id];
-  v6 = [v4 app_id];
-  if ((v5 != 0) == (v6 == 0))
+  app_id = [(SIServiceInstrumentationBatch *)self app_id];
+  app_id2 = [equalCopy app_id];
+  if ((app_id != 0) == (app_id2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SIServiceInstrumentationBatch *)self app_id];
-  if (v7)
+  app_id3 = [(SIServiceInstrumentationBatch *)self app_id];
+  if (app_id3)
   {
-    v8 = v7;
-    v9 = [(SIServiceInstrumentationBatch *)self app_id];
-    v10 = [v4 app_id];
-    v11 = [v9 isEqual:v10];
+    v8 = app_id3;
+    app_id4 = [(SIServiceInstrumentationBatch *)self app_id];
+    app_id5 = [equalCopy app_id];
+    v11 = [app_id4 isEqual:app_id5];
 
     if (!v11)
     {
@@ -236,20 +236,20 @@
   {
   }
 
-  v5 = [(SIServiceInstrumentationBatch *)self batch_info];
-  v6 = [v4 batch_info];
-  if ((v5 != 0) == (v6 == 0))
+  app_id = [(SIServiceInstrumentationBatch *)self batch_info];
+  app_id2 = [equalCopy batch_info];
+  if ((app_id != 0) == (app_id2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SIServiceInstrumentationBatch *)self batch_info];
-  if (v12)
+  batch_info = [(SIServiceInstrumentationBatch *)self batch_info];
+  if (batch_info)
   {
-    v13 = v12;
-    v14 = [(SIServiceInstrumentationBatch *)self batch_info];
-    v15 = [v4 batch_info];
-    v16 = [v14 isEqual:v15];
+    v13 = batch_info;
+    batch_info2 = [(SIServiceInstrumentationBatch *)self batch_info];
+    batch_info3 = [equalCopy batch_info];
+    v16 = [batch_info2 isEqual:batch_info3];
 
     if (!v16)
     {
@@ -261,12 +261,12 @@
   {
   }
 
-  v5 = [(SIServiceInstrumentationBatch *)self events];
-  v6 = [v4 events];
-  if ((v5 != 0) != (v6 == 0))
+  app_id = [(SIServiceInstrumentationBatch *)self events];
+  app_id2 = [equalCopy events];
+  if ((app_id != 0) != (app_id2 == 0))
   {
-    v17 = [(SIServiceInstrumentationBatch *)self events];
-    if (!v17)
+    events = [(SIServiceInstrumentationBatch *)self events];
+    if (!events)
     {
 
 LABEL_20:
@@ -274,10 +274,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(SIServiceInstrumentationBatch *)self events];
-    v20 = [v4 events];
-    v21 = [v19 isEqual:v20];
+    v18 = events;
+    events2 = [(SIServiceInstrumentationBatch *)self events];
+    events3 = [equalCopy events];
+    v21 = [events2 isEqual:events3];
 
     if (v21)
     {
@@ -297,22 +297,22 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SIServiceInstrumentationBatch *)self app_id];
+  toCopy = to;
+  app_id = [(SIServiceInstrumentationBatch *)self app_id];
 
-  if (v5)
+  if (app_id)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SIServiceInstrumentationBatch *)self batch_info];
+  batch_info = [(SIServiceInstrumentationBatch *)self batch_info];
 
-  if (v6)
+  if (batch_info)
   {
-    v7 = [(SIServiceInstrumentationBatch *)self batch_info];
+    batch_info2 = [(SIServiceInstrumentationBatch *)self batch_info];
     PBDataWriterWriteSubmessage();
   }
 
@@ -348,41 +348,41 @@ LABEL_18:
   }
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   events = self->_events;
-  v8 = v4;
+  v8 = eventCopy;
   if (!events)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_events;
-    self->_events = v6;
+    self->_events = array;
 
-    v4 = v8;
+    eventCopy = v8;
     events = self->_events;
   }
 
-  [(NSArray *)events addObject:v4];
+  [(NSArray *)events addObject:eventCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = SIServiceInstrumentationBatch;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(SIServiceInstrumentationBatch *)self batch_info];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  batch_info = [(SIServiceInstrumentationBatch *)self batch_info];
+  v7 = [batch_info applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SIServiceInstrumentationBatch *)self deleteBatch_info];
   }
 
-  v9 = [(SIServiceInstrumentationBatch *)self events];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  events = [(SIServiceInstrumentationBatch *)self events];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:events underConditions:policyCopy];
   [(SIServiceInstrumentationBatch *)self setEvents:v10];
 
   return v5;

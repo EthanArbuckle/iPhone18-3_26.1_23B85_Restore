@@ -1,52 +1,52 @@
 @interface BSMutableKeyedSettings
-- (void)applySettings:(id)a3;
-- (void)setFlag:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)applySettings:(id)settings;
+- (void)setFlag:(int64_t)flag forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation BSMutableKeyedSettings
 
-- (void)setFlag:(int64_t)a3 forKey:(id)a4
+- (void)setFlag:(int64_t)flag forKey:(id)key
 {
-  v8 = a4;
-  v6 = [(BSKeyedSettings *)self _settingForKey:v8 saveKey:a3 != 0x7FFFFFFFFFFFFFFFLL];
-  [(BSSettings *)self _setFlag:a3 forSetting:v6];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  keyCopy = key;
+  0x7FFFFFFFFFFFFFFFLL = [(BSKeyedSettings *)self _settingForKey:keyCopy saveKey:flag != 0x7FFFFFFFFFFFFFFFLL];
+  [(BSSettings *)self _setFlag:flag forSetting:0x7FFFFFFFFFFFFFFFLL];
+  if (flag == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(BSKeyedSettings *)self objectForKey:v8];
+    v7 = [(BSKeyedSettings *)self objectForKey:keyCopy];
 
     if (!v7)
     {
-      [(BSMutableIntegerMap *)self->super._keyMap removeObjectForKey:v6];
-      [(NSMutableSet *)self->super._keys removeObject:v8];
+      [(BSMutableIntegerMap *)self->super._keyMap removeObjectForKey:0x7FFFFFFFFFFFFFFFLL];
+      [(NSMutableSet *)self->super._keys removeObject:keyCopy];
     }
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(BSKeyedSettings *)self _settingForKey:v6 saveKey:v8 != 0];
-  [(BSSettings *)self _setObject:v8 forSetting:v7];
-  if (!v8 && [(BSKeyedSettings *)self flagForKey:v6]== 0x7FFFFFFFFFFFFFFFLL)
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [(BSKeyedSettings *)self _settingForKey:keyCopy saveKey:objectCopy != 0];
+  [(BSSettings *)self _setObject:objectCopy forSetting:v7];
+  if (!objectCopy && [(BSKeyedSettings *)self flagForKey:keyCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
     [(BSMutableIntegerMap *)self->super._keyMap removeObjectForKey:v7];
-    [(NSMutableSet *)self->super._keys removeObject:v6];
+    [(NSMutableSet *)self->super._keys removeObject:keyCopy];
   }
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  v13 = v5;
-  if (v5)
+  settingsCopy = settings;
+  v6 = settingsCopy;
+  v13 = settingsCopy;
+  if (settingsCopy)
   {
-    v7 = [v5 isKeyedSettings];
+    isKeyedSettings = [settingsCopy isKeyedSettings];
     v6 = v13;
-    if ((v7 & 1) == 0)
+    if ((isKeyedSettings & 1) == 0)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"!settings || [settings isKeyedSettings]"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@
         v16 = 2114;
         v17 = v11;
         v18 = 2048;
-        v19 = self;
+        selfCopy = self;
         v20 = 2114;
         v21 = @"BSKeyedSettings.m";
         v22 = 1024;

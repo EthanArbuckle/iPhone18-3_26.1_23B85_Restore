@@ -1,31 +1,31 @@
 @interface SHBagContract
 - (NSDictionary)defaultValues;
-- (SHBagContract)initWithBaseDictionaryKey:(id)a3 bag:(id)a4;
-- (SHBagContract)initWithBaseDictionaryKey:(id)a3 profile:(id)a4 profileVersion:(id)a5;
-- (id)defaultValueForKey:(id)a3;
-- (id)fullyQualifiedKey:(id)a3;
-- (id)numberFromString:(id)a3 forKey:(id)a4;
-- (void)BOOLeanBackedByStringForKey:(id)a3 completionHandler:(id)a4;
-- (void)addBagKey:(id)a3 defaultValue:(id)a4;
-- (void)doubleBackedByStringForKey:(id)a3 completionHandler:(id)a4;
-- (void)integerBackedByStringForKey:(id)a3 completionHandler:(id)a4;
-- (void)loadBaseDictionary:(id)a3;
-- (void)stringForKey:(id)a3 withCompletionHandler:(id)a4;
-- (void)valueForKey:(id)a3 bagValue:(id)a4 completionHandler:(id)a5;
+- (SHBagContract)initWithBaseDictionaryKey:(id)key bag:(id)bag;
+- (SHBagContract)initWithBaseDictionaryKey:(id)key profile:(id)profile profileVersion:(id)version;
+- (id)defaultValueForKey:(id)key;
+- (id)fullyQualifiedKey:(id)key;
+- (id)numberFromString:(id)string forKey:(id)key;
+- (void)BOOLeanBackedByStringForKey:(id)key completionHandler:(id)handler;
+- (void)addBagKey:(id)key defaultValue:(id)value;
+- (void)doubleBackedByStringForKey:(id)key completionHandler:(id)handler;
+- (void)integerBackedByStringForKey:(id)key completionHandler:(id)handler;
+- (void)loadBaseDictionary:(id)dictionary;
+- (void)stringForKey:(id)key withCompletionHandler:(id)handler;
+- (void)valueForKey:(id)key bagValue:(id)value completionHandler:(id)handler;
 @end
 
 @implementation SHBagContract
 
-- (SHBagContract)initWithBaseDictionaryKey:(id)a3 bag:(id)a4
+- (SHBagContract)initWithBaseDictionaryKey:(id)key bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  bagCopy = bag;
   v16.receiver = self;
   v16.super_class = SHBagContract;
   v8 = [(SHBagContract *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     baseDictionaryKey = v8->_baseDictionaryKey;
     v8->_baseDictionaryKey = v9;
 
@@ -38,54 +38,54 @@
     v8->_numberFormatter = v13;
 
     [(NSNumberFormatter *)v8->_numberFormatter setNumberStyle:1];
-    objc_storeStrong(&v8->_bag, a4);
+    objc_storeStrong(&v8->_bag, bag);
   }
 
   return v8;
 }
 
-- (SHBagContract)initWithBaseDictionaryKey:(id)a3 profile:(id)a4 profileVersion:(id)a5
+- (SHBagContract)initWithBaseDictionaryKey:(id)key profile:(id)profile profileVersion:(id)version
 {
   v8 = MEMORY[0x277CEE4D0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  versionCopy = version;
+  profileCopy = profile;
+  keyCopy = key;
   [v8 setSuppressEngagement:1];
-  v12 = [MEMORY[0x277CEE3F8] bagForProfile:v10 profileVersion:v9];
+  v12 = [MEMORY[0x277CEE3F8] bagForProfile:profileCopy profileVersion:versionCopy];
 
-  v13 = [(SHBagContract *)self initWithBaseDictionaryKey:v11 bag:v12];
+  v13 = [(SHBagContract *)self initWithBaseDictionaryKey:keyCopy bag:v12];
   return v13;
 }
 
-- (void)loadBaseDictionary:(id)a3
+- (void)loadBaseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(SHBagContract *)self bag];
-  v6 = [(SHBagContract *)self baseDictionaryKey];
-  v7 = [v5 dictionaryForKey:v6];
+  baseDictionaryKey = [(SHBagContract *)self baseDictionaryKey];
+  v7 = [v5 dictionaryForKey:baseDictionaryKey];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__SHBagContract_loadBaseDictionary___block_invoke;
   v9[3] = &unk_2788FAF88;
-  v10 = v4;
-  v8 = v4;
+  v10 = dictionaryCopy;
+  v8 = dictionaryCopy;
   [v7 valueWithCompletion:v9];
 }
 
-- (id)fullyQualifiedKey:(id)a3
+- (id)fullyQualifiedKey:(id)key
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(SHBagContract *)self baseDictionaryKey];
-  v7 = [v4 stringWithFormat:@"%@/%@", v6, v5];
+  keyCopy = key;
+  baseDictionaryKey = [(SHBagContract *)self baseDictionaryKey];
+  keyCopy = [v4 stringWithFormat:@"%@/%@", baseDictionaryKey, keyCopy];
 
-  return v7;
+  return keyCopy;
 }
 
 - (NSDictionary)defaultValues
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -107,13 +107,13 @@
 
         v8 = *(*(&v18 + 1) + 8 * i);
         v9 = MEMORY[0x277CCACA8];
-        v10 = [(SHBagContract *)self baseDictionaryKey];
-        v11 = [v9 stringWithFormat:@"%@/", v10];
+        baseDictionaryKey = [(SHBagContract *)self baseDictionaryKey];
+        v11 = [v9 stringWithFormat:@"%@/", baseDictionaryKey];
         v12 = [v8 stringByReplacingOccurrencesOfString:v11 withString:&stru_2845D1F60];
 
-        v13 = [(SHBagContract *)self mutableDefaultValues];
-        v14 = [v13 objectForKeyedSubscript:v8];
-        [v3 setObject:v14 forKeyedSubscript:v12];
+        mutableDefaultValues = [(SHBagContract *)self mutableDefaultValues];
+        v14 = [mutableDefaultValues objectForKeyedSubscript:v8];
+        [dictionary setObject:v14 forKeyedSubscript:v12];
       }
 
       v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -124,53 +124,53 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)addBagKey:(id)a3 defaultValue:(id)a4
+- (void)addBagKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v9 = [(SHBagContract *)self fullyQualifiedKey:a3];
-  v7 = [(SHBagContract *)self mutableDefaultValues];
-  [v7 setValue:v6 forKey:v9];
+  valueCopy = value;
+  v9 = [(SHBagContract *)self fullyQualifiedKey:key];
+  mutableDefaultValues = [(SHBagContract *)self mutableDefaultValues];
+  [mutableDefaultValues setValue:valueCopy forKey:v9];
 
   v8 = [(SHBagContract *)self bag];
-  [v8 setDefaultValue:v6 forKey:v9];
+  [v8 setDefaultValue:valueCopy forKey:v9];
 }
 
-- (id)defaultValueForKey:(id)a3
+- (id)defaultValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SHBagContract *)self mutableDefaultValues];
-  v6 = [(SHBagContract *)self fullyQualifiedKey:v4];
+  keyCopy = key;
+  mutableDefaultValues = [(SHBagContract *)self mutableDefaultValues];
+  v6 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [mutableDefaultValues objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (void)integerBackedByStringForKey:(id)a3 completionHandler:(id)a4
+- (void)integerBackedByStringForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v8 = [(SHBagContract *)self bag];
-  v9 = [(SHBagContract *)self fullyQualifiedKey:v6];
+  v9 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
   v10 = [v8 stringForKey:v9];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__SHBagContract_integerBackedByStringForKey_completionHandler___block_invoke;
   v16[3] = &unk_2788FAFB0;
   v16[4] = self;
-  v17 = v6;
-  v11 = v6;
+  v17 = keyCopy;
+  v11 = keyCopy;
   v12 = [v10 transformWithBlock:v16];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__SHBagContract_integerBackedByStringForKey_completionHandler___block_invoke_2;
   v14[3] = &unk_2788FAFD8;
-  v15 = v7;
-  v13 = v7;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(SHBagContract *)self valueForKey:v11 bagValue:v12 completionHandler:v14];
 }
 
@@ -190,28 +190,28 @@ void __63__SHBagContract_integerBackedByStringForKey_completionHandler___block_i
   (*(v4 + 16))(v4, [a2 integerValue], v5);
 }
 
-- (void)doubleBackedByStringForKey:(id)a3 completionHandler:(id)a4
+- (void)doubleBackedByStringForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v8 = [(SHBagContract *)self bag];
-  v9 = [(SHBagContract *)self fullyQualifiedKey:v6];
+  v9 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
   v10 = [v8 stringForKey:v9];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__SHBagContract_doubleBackedByStringForKey_completionHandler___block_invoke;
   v16[3] = &unk_2788FAFB0;
   v16[4] = self;
-  v17 = v6;
-  v11 = v6;
+  v17 = keyCopy;
+  v11 = keyCopy;
   v12 = [v10 transformWithBlock:v16];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__SHBagContract_doubleBackedByStringForKey_completionHandler___block_invoke_2;
   v14[3] = &unk_2788FAFD8;
-  v15 = v7;
-  v13 = v7;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(SHBagContract *)self valueForKey:v11 bagValue:v12 completionHandler:v14];
 }
 
@@ -232,12 +232,12 @@ void __62__SHBagContract_doubleBackedByStringForKey_completionHandler___block_in
   (*(v4 + 16))(v4, v5);
 }
 
-- (void)BOOLeanBackedByStringForKey:(id)a3 completionHandler:(id)a4
+- (void)BOOLeanBackedByStringForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  keyCopy = key;
   v8 = [(SHBagContract *)self bag];
-  v9 = [(SHBagContract *)self fullyQualifiedKey:v7];
+  v9 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
   v10 = [v8 stringForKey:v9];
   v11 = [v10 transformWithBlock:&__block_literal_global];
 
@@ -245,9 +245,9 @@ void __62__SHBagContract_doubleBackedByStringForKey_completionHandler___block_in
   v13[1] = 3221225472;
   v13[2] = __63__SHBagContract_BOOLeanBackedByStringForKey_completionHandler___block_invoke_2;
   v13[3] = &unk_2788FAFD8;
-  v14 = v6;
-  v12 = v6;
-  [(SHBagContract *)self valueForKey:v7 bagValue:v11 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(SHBagContract *)self valueForKey:keyCopy bagValue:v11 completionHandler:v13];
 }
 
 id __63__SHBagContract_BOOLeanBackedByStringForKey_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -266,33 +266,33 @@ void __63__SHBagContract_BOOLeanBackedByStringForKey_completionHandler___block_i
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (void)stringForKey:(id)a3 withCompletionHandler:(id)a4
+- (void)stringForKey:(id)key withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  keyCopy = key;
   v8 = [(SHBagContract *)self bag];
-  v9 = [(SHBagContract *)self fullyQualifiedKey:v7];
+  v9 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
   v10 = [v8 stringForKey:v9];
 
-  [(SHBagContract *)self valueForKey:v7 bagValue:v10 completionHandler:v6];
+  [(SHBagContract *)self valueForKey:keyCopy bagValue:v10 completionHandler:handlerCopy];
 }
 
-- (void)valueForKey:(id)a3 bagValue:(id)a4 completionHandler:(id)a5
+- (void)valueForKey:(id)key bagValue:(id)value completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isLoaded])
+  keyCopy = key;
+  valueCopy = value;
+  handlerCopy = handler;
+  if ([valueCopy isLoaded])
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__SHBagContract_valueForKey_bagValue_completionHandler___block_invoke;
     v17[3] = &unk_2788FB020;
     v17[4] = self;
-    v18 = v8;
-    v19 = v10;
-    [v9 valueWithCompletion:v17];
+    v18 = keyCopy;
+    v19 = handlerCopy;
+    [valueCopy valueWithCompletion:v17];
   }
 
   else
@@ -300,26 +300,26 @@ void __63__SHBagContract_BOOLeanBackedByStringForKey_completionHandler___block_i
     v11 = shcore_log_object();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(SHBagContract *)self fullyQualifiedKey:v8];
+      v12 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
       *buf = 138412290;
       v21 = v12;
       _os_log_impl(&dword_231025000, v11, OS_LOG_TYPE_ERROR, "%@ was not loaded when we tried to access it, attempting to return default...", buf, 0xCu);
     }
 
-    v13 = [(SHBagContract *)self defaultValueForKey:v8];
+    v13 = [(SHBagContract *)self defaultValueForKey:keyCopy];
     if (!v13)
     {
       v14 = shcore_log_object();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(SHBagContract *)self fullyQualifiedKey:v8];
+        v15 = [(SHBagContract *)self fullyQualifiedKey:keyCopy];
         *buf = 138412290;
         v21 = v15;
         _os_log_impl(&dword_231025000, v14, OS_LOG_TYPE_ERROR, "NO DEFAULT SUPPLIED for %@", buf, 0xCu);
       }
     }
 
-    (*(v10 + 2))(v10, v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, v13, 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -389,13 +389,13 @@ void __56__SHBagContract_valueForKey_bagValue_completionHandler___block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)numberFromString:(id)a3 forKey:(id)a4
+- (id)numberFromString:(id)string forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHBagContract *)self numberFormatter];
-  v9 = [v8 numberFromString:v6];
+  stringCopy = string;
+  keyCopy = key;
+  numberFormatter = [(SHBagContract *)self numberFormatter];
+  v9 = [numberFormatter numberFromString:stringCopy];
 
   if (v9)
   {
@@ -403,7 +403,7 @@ void __56__SHBagContract_valueForKey_bagValue_completionHandler___block_invoke(u
     goto LABEL_10;
   }
 
-  v10 = [(SHBagContract *)self defaultValueForKey:v7];
+  v10 = [(SHBagContract *)self defaultValueForKey:keyCopy];
   v11 = shcore_log_object();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
   if (v10)
@@ -411,7 +411,7 @@ void __56__SHBagContract_valueForKey_bagValue_completionHandler___block_invoke(u
     if (v12)
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = stringCopy;
       v13 = "Failed to convert string %@, to number using default";
 LABEL_8:
       _os_log_impl(&dword_231025000, v11, OS_LOG_TYPE_ERROR, v13, &v16, 0xCu);
@@ -421,7 +421,7 @@ LABEL_8:
   else if (v12)
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = stringCopy;
     v13 = "Failed to convert string %@, to number using default, NO DEFAULT SUPPLIED";
     goto LABEL_8;
   }

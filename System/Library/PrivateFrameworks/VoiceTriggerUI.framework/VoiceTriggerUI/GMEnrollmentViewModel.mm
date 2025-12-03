@@ -1,16 +1,16 @@
 @interface GMEnrollmentViewModel
 - (_TtC14VoiceTriggerUI21GMEnrollmentViewModel)init;
-- (_TtC14VoiceTriggerUI21GMEnrollmentViewModel)initWithPrelude:(id)a3 instruction:(id)a4 continuation:(id)a5;
+- (_TtC14VoiceTriggerUI21GMEnrollmentViewModel)initWithPrelude:(id)prelude instruction:(id)instruction continuation:(id)continuation;
 @end
 
 @implementation GMEnrollmentViewModel
 
-- (_TtC14VoiceTriggerUI21GMEnrollmentViewModel)initWithPrelude:(id)a3 instruction:(id)a4 continuation:(id)a5
+- (_TtC14VoiceTriggerUI21GMEnrollmentViewModel)initWithPrelude:(id)prelude instruction:(id)instruction continuation:(id)continuation
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_27292C6B0(v7, v8, v9);
+  preludeCopy = prelude;
+  instructionCopy = instruction;
+  continuationCopy = continuation;
+  v10 = sub_27292C6B0(preludeCopy, instructionCopy, continuationCopy);
 
   return v10;
 }

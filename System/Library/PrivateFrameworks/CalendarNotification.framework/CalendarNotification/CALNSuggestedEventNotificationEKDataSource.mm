@@ -1,34 +1,34 @@
 @interface CALNSuggestedEventNotificationEKDataSource
-- (CALNSuggestedEventNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5;
-- (id)_eventForSourceClientIdentifier:(id)a3 eventStore:(id)a4;
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4;
+- (CALNSuggestedEventNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider;
+- (id)_eventForSourceClientIdentifier:(id)identifier eventStore:(id)store;
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store;
 - (id)fetchSuggestedEventNotificationObjectIDs;
-- (id)fetchSuggestedEventNotificationWithObjectID:(id)a3;
+- (id)fetchSuggestedEventNotificationWithObjectID:(id)d;
 - (id)fetchSuggestedEventNotifications;
-- (id)fetchSuggestedEventNotificationsWithSourceClientIdentifier:(id)a3;
-- (void)_acknowledgeSuggestedEventWithSourceClientIdentifier:(id)a3 accept:(BOOL)a4;
-- (void)_clearSuggestedEventNotificationWithObjectID:(id)a3;
-- (void)clearSuggestedEventNotificationWithSourceClientIdentifier:(id)a3;
-- (void)deleteCanceledSuggestedEventWithSourceClientIdentifier:(id)a3;
+- (id)fetchSuggestedEventNotificationsWithSourceClientIdentifier:(id)identifier;
+- (void)_acknowledgeSuggestedEventWithSourceClientIdentifier:(id)identifier accept:(BOOL)accept;
+- (void)_clearSuggestedEventNotificationWithObjectID:(id)d;
+- (void)clearSuggestedEventNotificationWithSourceClientIdentifier:(id)identifier;
+- (void)deleteCanceledSuggestedEventWithSourceClientIdentifier:(id)identifier;
 - (void)fetchSuggestedEventNotificationObjectIDs;
 @end
 
 @implementation CALNSuggestedEventNotificationEKDataSource
 
-- (CALNSuggestedEventNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5
+- (CALNSuggestedEventNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  notificationProviderCopy = notificationProvider;
+  referenceProviderCopy = referenceProvider;
   v15.receiver = self;
   v15.super_class = CALNSuggestedEventNotificationEKDataSource;
   v12 = [(CALNSuggestedEventNotificationEKDataSource *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_eventStoreProvider, a3);
-    objc_storeStrong(&v13->_inboxNotificationProvider, a4);
-    objc_storeStrong(&v13->_notificationReferenceProvider, a5);
+    objc_storeStrong(&v12->_eventStoreProvider, provider);
+    objc_storeStrong(&v13->_inboxNotificationProvider, notificationProvider);
+    objc_storeStrong(&v13->_notificationReferenceProvider, referenceProvider);
   }
 
   return v13;
@@ -37,13 +37,13 @@
 - (id)fetchSuggestedEventNotifications
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  fetchSuggestedEventNotificationObjectIDs = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(fetchSuggestedEventNotificationObjectIDs, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = fetchSuggestedEventNotificationObjectIDs;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
@@ -89,15 +89,15 @@
 - (id)fetchSuggestedEventNotificationObjectIDs
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [(CALNSuggestedEventNotificationEKDataSource *)self inboxNotificationProvider];
-  v3 = [v2 eventNotificationReferences];
+  inboxNotificationProvider = [(CALNSuggestedEventNotificationEKDataSource *)self inboxNotificationProvider];
+  eventNotificationReferences = [inboxNotificationProvider eventNotificationReferences];
 
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventNotificationReferences, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = eventNotificationReferences;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -116,12 +116,12 @@
         v10 = *(*(&v21 + 1) + 8 * v9);
         if ([v10 type] == 5)
         {
-          v11 = [v10 notification];
-          v12 = v11;
-          if (v11)
+          notification = [v10 notification];
+          v12 = notification;
+          if (notification)
           {
-            v13 = [v11 URL];
-            if (v13 && [v12 needsAlert])
+            objectID = [notification URL];
+            if (objectID && [v12 needsAlert])
             {
               if ([v12 type] == 12 || objc_msgSend(v12, "type") == 14)
               {
@@ -129,9 +129,9 @@
                 goto LABEL_13;
               }
 
-              v15 = [v12 type];
+              type = [v12 type];
 
-              if (v15 != 13)
+              if (type != 13)
               {
 LABEL_17:
 
@@ -139,16 +139,16 @@ LABEL_17:
               }
 
 LABEL_13:
-              v13 = [v12 objectID];
-              v14 = [v13 stringRepresentation];
-              [v4 addObject:v14];
+              objectID = [v12 objectID];
+              stringRepresentation = [objectID stringRepresentation];
+              [v4 addObject:stringRepresentation];
             }
           }
 
           else
           {
-            v13 = +[CALNLogSubsystem calendar];
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            objectID = +[CALNLogSubsystem calendar];
+            if (os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
             {
               [(CALNSuggestedEventNotificationEKDataSource *)&v19 fetchSuggestedEventNotificationObjectIDs];
             }
@@ -174,16 +174,16 @@ LABEL_18:
   return v4;
 }
 
-- (id)fetchSuggestedEventNotificationsWithSourceClientIdentifier:(id)a3
+- (id)fetchSuggestedEventNotificationsWithSourceClientIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v29 = v4;
-  v28 = [v6 predicateForEventsCreatedFromSuggestionWithExtractionGroupIdentifier:v4];
-  v7 = [v6 eventsMatchingPredicate:?];
+  v29 = identifierCopy;
+  v28 = [eventStore predicateForEventsCreatedFromSuggestionWithExtractionGroupIdentifier:identifierCopy];
+  v7 = [eventStore eventsMatchingPredicate:?];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v36 = 0u;
   v37 = 0u;
@@ -204,8 +204,8 @@ LABEL_18:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v36 + 1) + 8 * i) eventIdentifier];
-        [v8 addObject:v14];
+        eventIdentifier = [*(*(&v36 + 1) + 8 * i) eventIdentifier];
+        [v8 addObject:eventIdentifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -214,13 +214,13 @@ LABEL_18:
     while (v11);
   }
 
-  v15 = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
-  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  fetchSuggestedEventNotificationObjectIDs = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
+  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(fetchSuggestedEventNotificationObjectIDs, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v17 = v15;
+  v17 = fetchSuggestedEventNotificationObjectIDs;
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v18)
   {
@@ -271,27 +271,27 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   return v5;
 }
 
-- (id)fetchSuggestedEventNotificationWithObjectID:(id)a3
+- (id)fetchSuggestedEventNotificationWithObjectID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  dCopy = d;
+  eventStoreProvider = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNSuggestedEventNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:5 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNSuggestedEventNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:5 withSourceClientIdentifier:dCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
-    v9 = [v8 notification];
-    if (v9)
+    notification = [v8 notification];
+    if (notification)
     {
-      v10 = [(CALNSuggestedEventNotificationEKDataSource *)self _notificationInfoFromNotification:v9 inEventStore:v6];
+      v10 = [(CALNSuggestedEventNotificationEKDataSource *)self _notificationInfoFromNotification:notification inEventStore:eventStore];
       v11 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543618;
-        v15 = v4;
+        v15 = dCopy;
         v16 = 2112;
         v17 = v10;
         _os_log_impl(&dword_242909000, v11, OS_LOG_TYPE_DEFAULT, "Fetched suggested event notification with objectID = %{public}@, notification info = %@", &v14, 0x16u);
@@ -312,8 +312,8 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
 
   else
   {
-    v9 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    notification = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(notification, OS_LOG_TYPE_ERROR))
     {
       [CALNSuggestedEventNotificationEKDataSource fetchSuggestedEventNotificationWithObjectID:];
     }
@@ -326,17 +326,17 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   return v10;
 }
 
-- (void)deleteCanceledSuggestedEventWithSourceClientIdentifier:(id)a3
+- (void)deleteCanceledSuggestedEventWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNSuggestedEventNotificationEKDataSource *)self _eventForSourceClientIdentifier:v4 eventStore:v6];
+  v7 = [(CALNSuggestedEventNotificationEKDataSource *)self _eventForSourceClientIdentifier:identifierCopy eventStore:eventStore];
   if (v7)
   {
     v11 = 0;
-    v8 = [v6 removeEvent:v7 span:2 error:&v11];
+    v8 = [eventStore removeEvent:v7 span:2 error:&v11];
     v9 = v11;
     if ((v8 & 1) == 0)
     {
@@ -358,24 +358,24 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   }
 }
 
-- (void)clearSuggestedEventNotificationWithSourceClientIdentifier:(id)a3
+- (void)clearSuggestedEventNotificationWithSourceClientIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v4;
+    v18 = identifierCopy;
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Clearing suggested event notification with source client identifier = %{public}@", buf, 0xCu);
   }
 
-  v6 = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
+  fetchSuggestedEventNotificationObjectIDs = [(CALNSuggestedEventNotificationEKDataSource *)self fetchSuggestedEventNotificationObjectIDs];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [fetchSuggestedEventNotificationObjectIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -387,14 +387,14 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fetchSuggestedEventNotificationObjectIDs);
         }
 
         [(CALNSuggestedEventNotificationEKDataSource *)self _clearSuggestedEventNotificationWithObjectID:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [fetchSuggestedEventNotificationObjectIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -403,35 +403,35 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearSuggestedEventNotificationWithObjectID:(id)a3
+- (void)_clearSuggestedEventNotificationWithObjectID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = dCopy;
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Clearing suggested event notification with object ID = %{public}@", buf, 0xCu);
   }
 
-  v6 = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
-  v7 = [v6 eventStore];
+  eventStoreProvider = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v8 = [(CALNSuggestedEventNotificationEKDataSource *)self notificationReferenceProvider];
-  v9 = [CALNNotificationDataSourceUtils notificationReferenceOfType:5 withSourceClientIdentifier:v4 inEventStore:v7 withNotificationReferenceProvider:v8];
+  notificationReferenceProvider = [(CALNSuggestedEventNotificationEKDataSource *)self notificationReferenceProvider];
+  v9 = [CALNNotificationDataSourceUtils notificationReferenceOfType:5 withSourceClientIdentifier:dCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v9)
   {
-    v10 = [v9 notification];
-    v11 = v10;
-    if (v10)
+    notification = [v9 notification];
+    v11 = notification;
+    if (notification)
     {
-      v12 = [v10 resourceChangeFromEventStore:v7];
+      v12 = [notification resourceChangeFromEventStore:eventStore];
       if (v12)
       {
         v19 = 0;
-        v13 = [v7 markResourceChangeAlertedAndSave:v12 error:&v19];
+        v13 = [eventStore markResourceChangeAlertedAndSave:v12 error:&v19];
         v14 = v19;
         v15 = +[CALNLogSubsystem calendar];
         v16 = v15;
@@ -439,9 +439,9 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
         {
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v11 objectID];
+            objectID = [v11 objectID];
             *buf = 138543362;
-            v21 = v17;
+            v21 = objectID;
             _os_log_impl(&dword_242909000, v16, OS_LOG_TYPE_DEFAULT, "Cleared suggested event notification with objectID %{public}@", buf, 0xCu);
           }
         }
@@ -484,34 +484,34 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acknowledgeSuggestedEventWithSourceClientIdentifier:(id)a3 accept:(BOOL)a4
+- (void)_acknowledgeSuggestedEventWithSourceClientIdentifier:(id)identifier accept:(BOOL)accept
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
-  v8 = [v7 eventStore];
+  acceptCopy = accept;
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNSuggestedEventNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v9 = [(CALNSuggestedEventNotificationEKDataSource *)self _eventForSourceClientIdentifier:v6 eventStore:v8];
+  v9 = [(CALNSuggestedEventNotificationEKDataSource *)self _eventForSourceClientIdentifier:identifierCopy eventStore:eventStore];
   v10 = v9;
   if (v9)
   {
-    if (v4)
+    if (acceptCopy)
     {
-      [v8 acceptSuggestedEvent:v9];
+      [eventStore acceptSuggestedEvent:v9];
       v11 = MEMORY[0x277CF7870];
-      v12 = [v10 suggestionInfo];
-      v13 = [v12 uniqueKey];
-      [v11 logEventConfirmedNotificationWithUniqueKey:v13];
+      suggestionInfo = [v10 suggestionInfo];
+      uniqueKey = [suggestionInfo uniqueKey];
+      [v11 logEventConfirmedNotificationWithUniqueKey:uniqueKey];
     }
 
     else
     {
       v15 = MEMORY[0x277CF7870];
-      v16 = [v9 suggestionInfo];
-      v17 = [v16 uniqueKey];
-      [v15 logEventRejectedNotificationWithUniqueKey:v17];
+      suggestionInfo2 = [v9 suggestionInfo];
+      uniqueKey2 = [suggestionInfo2 uniqueKey];
+      [v15 logEventRejectedNotificationWithUniqueKey:uniqueKey2];
 
-      [v8 deleteSuggestedEvent:v10];
+      [eventStore deleteSuggestedEvent:v10];
     }
   }
 
@@ -525,12 +525,12 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
   }
 }
 
-- (id)_eventForSourceClientIdentifier:(id)a3 eventStore:(id)a4
+- (id)_eventForSourceClientIdentifier:(id)identifier eventStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 predicateForEventsCreatedFromSuggestionWithExtractionGroupIdentifier:v5];
-  v8 = [v6 eventsMatchingPredicate:v7];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v7 = [storeCopy predicateForEventsCreatedFromSuggestionWithExtractionGroupIdentifier:identifierCopy];
+  v8 = [storeCopy eventsMatchingPredicate:v7];
 
   v9 = MEMORY[0x277CBEBF8];
   if (v8)
@@ -545,28 +545,28 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
     v11 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [CALNSuggestedEventNotificationEKDataSource _eventForSourceClientIdentifier:v5 eventStore:v10];
+      [CALNSuggestedEventNotificationEKDataSource _eventForSourceClientIdentifier:identifierCopy eventStore:v10];
     }
   }
 
-  v12 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 suggestedEvent];
-  v8 = [v7 origin];
-  v9 = [v8 externalKey];
+  notificationCopy = notification;
+  storeCopy = store;
+  suggestedEvent = [notificationCopy suggestedEvent];
+  origin = [suggestedEvent origin];
+  externalKey = [origin externalKey];
 
-  if (v9)
+  if (externalKey)
   {
-    v10 = [CALNResourceChangedNotificationDataSourceUtils expirationDateForNotification:v5];
-    v11 = [CALNResourceChangedNotificationDataSourceUtils launchURLForNotification:v5 inEventStore:v6];
-    v12 = [[CALNSuggestedEventNotificationInfo alloc] initWithSourceClientIdentifier:v9 launchURL:v11 expirationDate:v10 suggestionNotification:v5];
+    v10 = [CALNResourceChangedNotificationDataSourceUtils expirationDateForNotification:notificationCopy];
+    v11 = [CALNResourceChangedNotificationDataSourceUtils launchURLForNotification:notificationCopy inEventStore:storeCopy];
+    v12 = [[CALNSuggestedEventNotificationInfo alloc] initWithSourceClientIdentifier:externalKey launchURL:v11 expirationDate:v10 suggestionNotification:notificationCopy];
   }
 
   else
@@ -574,7 +574,7 @@ uint64_t __105__CALNSuggestedEventNotificationEKDataSource_fetchSuggestedEventNo
     v13 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CALNSuggestedEventNotificationEKDataSource _notificationInfoFromNotification:v5 inEventStore:?];
+      [CALNSuggestedEventNotificationEKDataSource _notificationInfoFromNotification:notificationCopy inEventStore:?];
     }
 
     v12 = 0;

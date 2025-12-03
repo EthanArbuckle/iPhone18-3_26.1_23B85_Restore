@@ -1,16 +1,16 @@
 @interface HSConnection
-- (HSConnection)initWithBaseURL:(id)a3 connectionType:(int64_t)a4;
+- (HSConnection)initWithBaseURL:(id)l connectionType:(int64_t)type;
 - (id)_onSerialQueue_connectionSession;
-- (id)signedRequestFromURLRequest:(id)a3;
-- (void)_continueFPSetupNegotiationWithData:(id)a3 internalConnectionCompletionHandler:(id)a4;
-- (void)_loadDatabaseWithInternalConnectionCompletionHandler:(id)a3;
-- (void)_onSerialQueue_sendRequest:(id)a3 withInternalResponseHandler:(id)a4;
-- (void)_sendRequest:(id)a3 withInternalResponseHandler:(id)a4;
-- (void)checkForDatabaseUpdatesWithCompletionHandler:(id)a3;
-- (void)connectWithCompletionHandler:(id)a3;
+- (id)signedRequestFromURLRequest:(id)request;
+- (void)_continueFPSetupNegotiationWithData:(id)data internalConnectionCompletionHandler:(id)handler;
+- (void)_loadDatabaseWithInternalConnectionCompletionHandler:(id)handler;
+- (void)_onSerialQueue_sendRequest:(id)request withInternalResponseHandler:(id)handler;
+- (void)_sendRequest:(id)request withInternalResponseHandler:(id)handler;
+- (void)checkForDatabaseUpdatesWithCompletionHandler:(id)handler;
+- (void)connectWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)disconnect;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
 @end
 
 @implementation HSConnection
@@ -20,11 +20,11 @@
   connectionSession = self->_connectionSession;
   if (!connectionSession)
   {
-    v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v4 setAllowsCellularAccess:0];
-    [v4 setHTTPAdditionalHeaders:&unk_28666A9A0];
-    [v4 setHTTPShouldUsePipelining:1];
-    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setAllowsCellularAccess:0];
+    [defaultSessionConfiguration setHTTPAdditionalHeaders:&unk_28666A9A0];
+    [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     v6 = self->_connectionSession;
     self->_connectionSession = v5;
 
@@ -34,45 +34,45 @@
   return connectionSession;
 }
 
-- (void)_onSerialQueue_sendRequest:(id)a3 withInternalResponseHandler:(id)a4
+- (void)_onSerialQueue_sendRequest:(id)request withInternalResponseHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 action];
-  v9 = [(HSConnection *)self homeSharingGroupID];
-  if ([v9 length])
+  requestCopy = request;
+  handlerCopy = handler;
+  action = [requestCopy action];
+  homeSharingGroupID = [(HSConnection *)self homeSharingGroupID];
+  if ([homeSharingGroupID length])
   {
-    v10 = [v8 isEqual:@"server-info"];
+    v10 = [action isEqual:@"server-info"];
 
     if (v10)
     {
       goto LABEL_5;
     }
 
-    v9 = [(HSConnection *)self homeSharingGroupID];
-    [v6 setValue:v9 forArgument:@"hsgid"];
+    homeSharingGroupID = [(HSConnection *)self homeSharingGroupID];
+    [requestCopy setValue:homeSharingGroupID forArgument:@"hsgid"];
   }
 
 LABEL_5:
   if (!self->_connectionType)
   {
-    if (([v8 isEqual:@"logout"] & 1) == 0)
+    if (([action isEqual:@"logout"] & 1) == 0)
     {
-      [v6 setValue:@"1" forArgument:@"daap-no-disconnect"];
+      [requestCopy setValue:@"1" forArgument:@"daap-no-disconnect"];
     }
 
-    [v6 setValue:@"1" forArgument:@"hs-mobile-device-client"];
+    [requestCopy setValue:@"1" forArgument:@"hs-mobile-device-client"];
   }
 
-  v11 = [v6 URLRequestForBaseURL:self->_baseURL sessionID:{-[HSConnection sessionID](self, "sessionID")}];
+  v11 = [requestCopy URLRequestForBaseURL:self->_baseURL sessionID:{-[HSConnection sessionID](self, "sessionID")}];
   v12 = [v11 mutableCopy];
 
-  if (([v8 isEqual:@"login"] & 1) == 0 && (objc_msgSend(v8, "isEqual:", @"logout") & 1) == 0 && (objc_msgSend(v8, "isEqual:", @"fp-setup") & 1) == 0 && (objc_msgSend(v8, "isEqual:", @"server-info") & 1) == 0)
+  if (([action isEqual:@"login"] & 1) == 0 && (objc_msgSend(action, "isEqual:", @"logout") & 1) == 0 && (objc_msgSend(action, "isEqual:", @"fp-setup") & 1) == 0 && (objc_msgSend(action, "isEqual:", @"server-info") & 1) == 0)
   {
-    v13 = [(HSConnection *)self fairPlayInfo];
+    fairPlayInfo = [(HSConnection *)self fairPlayInfo];
     v14 = [v12 URL];
-    v15 = [v13 securityInfoForURL:v14];
+    v15 = [fairPlayInfo securityInfoForURL:v14];
     [v12 setValue:v15 forHTTPHeaderField:@"Client-Daap-Validation"];
   }
 
@@ -81,7 +81,7 @@ LABEL_5:
   {
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    if ([v6 method])
+    if ([requestCopy method])
     {
       v19 = @"POST";
     }
@@ -91,38 +91,38 @@ LABEL_5:
       v19 = @"GET";
     }
 
-    v20 = [v6 action];
+    action2 = [requestCopy action];
     *buf = 138544130;
     v32 = v18;
     v33 = 2048;
-    v34 = v6;
+    v34 = requestCopy;
     v35 = 2114;
     v36 = v19;
     v37 = 2114;
-    v38 = v20;
+    v38 = action2;
     _os_log_impl(&dword_254418000, v16, OS_LOG_TYPE_DEFAULT, "Sending request: <%{public}@: %p method=%{public}@ action=%{public}@>", buf, 0x2Au);
   }
 
   v21 = os_log_create("com.apple.amp.HomeSharing", "Connections_Oversize");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v12 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v12 allHTTPHeaderFields];
     *buf = 138543362;
-    v32 = v22;
+    v32 = allHTTPHeaderFields;
     _os_log_impl(&dword_254418000, v21, OS_LOG_TYPE_DEFAULT, "Request headers: %{public}@", buf, 0xCu);
   }
 
-  v23 = [(HSConnection *)self _onSerialQueue_connectionSession];
+  _onSerialQueue_connectionSession = [(HSConnection *)self _onSerialQueue_connectionSession];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __71__HSConnection__onSerialQueue_sendRequest_withInternalResponseHandler___block_invoke;
   v27[3] = &unk_27977A1F8;
-  v28 = v6;
-  v29 = self;
-  v30 = v7;
-  v24 = v7;
-  v25 = v6;
-  v26 = [v23 msv_dataTaskWithRequest:v12 completionHandler:v27];
+  v28 = requestCopy;
+  selfCopy = self;
+  v30 = handlerCopy;
+  v24 = handlerCopy;
+  v25 = requestCopy;
+  v26 = [_onSerialQueue_connectionSession msv_dataTaskWithRequest:v12 completionHandler:v27];
 
   [v26 resume];
 }
@@ -245,33 +245,33 @@ void __71__HSConnection__onSerialQueue_sendRequest_withInternalResponseHandler__
   }
 }
 
-- (void)_sendRequest:(id)a3 withInternalResponseHandler:(id)a4
+- (void)_sendRequest:(id)request withInternalResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HSConnection__sendRequest_withInternalResponseHandler___block_invoke;
   block[3] = &unk_27977A300;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_loadDatabaseWithInternalConnectionCompletionHandler:(id)a3
+- (void)_loadDatabaseWithInternalConnectionCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__HSConnection__loadDatabaseWithInternalConnectionCompletionHandler___block_invoke;
   v11[3] = &unk_27977A160;
   v11[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x259C0BF70](v11);
   serialQueue = self->_serialQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -523,20 +523,20 @@ void __69__HSConnection__loadDatabaseWithInternalConnectionCompletionHandler___b
   }
 }
 
-- (void)_continueFPSetupNegotiationWithData:(id)a3 internalConnectionCompletionHandler:(id)a4
+- (void)_continueFPSetupNegotiationWithData:(id)data internalConnectionCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
   v8 = +[(HSRequest *)HSFairPlaySetupRequest];
-  [v8 setBodyData:v7];
+  [v8 setBodyData:dataCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__HSConnection__continueFPSetupNegotiationWithData_internalConnectionCompletionHandler___block_invoke;
   v10[3] = &unk_27977A160;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(HSConnection *)self _sendRequest:v8 withInternalResponseHandler:v10];
 }
 
@@ -570,15 +570,15 @@ void __88__HSConnection__continueFPSetupNegotiationWithData_internalConnectionCo
   }
 }
 
-- (void)checkForDatabaseUpdatesWithCompletionHandler:(id)a3
+- (void)checkForDatabaseUpdatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HSConnection_checkForDatabaseUpdatesWithCompletionHandler___block_invoke;
   v11[3] = &unk_27977A138;
-  v12 = v4;
-  v5 = v4;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x259C0BF70](v11);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -697,33 +697,33 @@ LABEL_16:
 LABEL_18:
 }
 
-- (id)signedRequestFromURLRequest:(id)a3
+- (id)signedRequestFromURLRequest:(id)request
 {
-  v4 = [a3 mutableCopy];
-  v5 = [v4 allHTTPHeaderFields];
-  v6 = [v5 mutableCopy];
+  v4 = [request mutableCopy];
+  allHTTPHeaderFields = [v4 allHTTPHeaderFields];
+  v6 = [allHTTPHeaderFields mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
-  v10 = [(HSConnection *)self fairPlayInfo];
+  fairPlayInfo = [(HSConnection *)self fairPlayInfo];
   v11 = [v4 URL];
-  v12 = [v10 securityInfoForURL:v11];
+  v12 = [fairPlayInfo securityInfoForURL:v11];
 
   if (v12)
   {
-    v13 = [(HSConnection *)self fairPlayInfo];
+    fairPlayInfo2 = [(HSConnection *)self fairPlayInfo];
     v14 = [v4 URL];
-    v15 = [v13 securityInfoForURL:v14];
+    v15 = [fairPlayInfo2 securityInfoForURL:v14];
     [v9 setObject:v15 forKeyedSubscript:@"Client-Daap-Validation"];
 
     [v4 setAllHTTPHeaderFields:v9];
@@ -738,18 +738,18 @@ LABEL_18:
   return v16;
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__HSConnection_sendRequest_withResponseHandler___block_invoke;
   v10[3] = &unk_27977A1B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  requestCopy = request;
   v9 = MEMORY[0x259C0BF70](v10);
-  [(HSConnection *)self _sendRequest:v8 withInternalResponseHandler:v9];
+  [(HSConnection *)self _sendRequest:requestCopy withInternalResponseHandler:v9];
 }
 
 void __48__HSConnection_sendRequest_withResponseHandler___block_invoke(uint64_t a1, void *a2)
@@ -828,15 +828,15 @@ uint64_t __26__HSConnection_disconnect__block_invoke_2(uint64_t a1)
   return [v2 setConnectionState:0];
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__HSConnection_connectWithCompletionHandler___block_invoke;
   v11[3] = &unk_27977A138;
-  v12 = v4;
-  v5 = v4;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x259C0BF70](v11);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -963,19 +963,19 @@ void __45__HSConnection_connectWithCompletionHandler___block_invoke_5(uint64_t a
   [(HSConnection *)&v3 dealloc];
 }
 
-- (HSConnection)initWithBaseURL:(id)a3 connectionType:(int64_t)a4
+- (HSConnection)initWithBaseURL:(id)l connectionType:(int64_t)type
 {
-  v6 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = HSConnection;
   v7 = [(HSConnection *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     baseURL = v7->_baseURL;
     v7->_baseURL = v8;
 
-    v7->_connectionType = a4;
+    v7->_connectionType = type;
     v10 = dispatch_queue_create("com.apple.homesharing.HSConnection", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v10;

@@ -1,5 +1,5 @@
 @interface NSPointerArray
-+ (NSPointerArray)allocWithZone:(_NSZone *)a3;
++ (NSPointerArray)allocWithZone:(_NSZone *)zone;
 + (NSPointerArray)pointerArrayWithOptions:(NSPointerFunctionsOptions)options;
 + (NSPointerArray)pointerArrayWithPointerFunctions:(NSPointerFunctions *)functions;
 + (NSPointerArray)strongObjectsPointerArray;
@@ -7,7 +7,7 @@
 + (id)pointerArrayWithStrongObjects;
 + (id)pointerArrayWithWeakObjects;
 - (NSArray)allObjects;
-- (NSPointerArray)initWithCoder:(id)a3;
+- (NSPointerArray)initWithCoder:(id)coder;
 @end
 
 @implementation NSPointerArray
@@ -29,7 +29,7 @@
 - (NSArray)allObjects
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -51,7 +51,7 @@
 
         if (*(*(&v10 + 1) + 8 * v7))
         {
-          [(NSArray *)v3 addObject:?];
+          [(NSArray *)array addObject:?];
         }
 
         ++v7;
@@ -64,7 +64,7 @@
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 + (NSPointerArray)pointerArrayWithOptions:(NSPointerFunctionsOptions)options
@@ -83,20 +83,20 @@
   return v5;
 }
 
-+ (NSPointerArray)allocWithZone:(_NSZone *)a3
++ (NSPointerArray)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_self();
 
   return NSAllocateObject(v3, 0, 0);
 }
 
-- (NSPointerArray)initWithCoder:(id)a3
+- (NSPointerArray)initWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = NSPointerArray;
   [(NSPointerArray *)&v5 dealloc];
-  return [[NSConcretePointerArray alloc] initWithCoder:a3];
+  return [[NSConcretePointerArray alloc] initWithCoder:coder];
 }
 
 + (id)pointerArrayWithStrongObjects

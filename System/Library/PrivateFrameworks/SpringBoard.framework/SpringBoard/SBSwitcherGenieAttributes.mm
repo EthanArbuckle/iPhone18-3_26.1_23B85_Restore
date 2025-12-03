@@ -1,49 +1,49 @@
 @interface SBSwitcherGenieAttributes
-+ (id)genieAttributesForIconPosition:(CGPoint)a3 windowPosition:(CGPoint)a4 initialVelocity:(CGPoint)a5 windowSize:(CGSize)a6 minimizedSize:(CGSize)a7 minimizedScale:(double)a8 containerSize:(CGSize)a9 minimumOutsetSize:(CGSize)a10 genieScale:(double)a11 multiplier:(CGPoint)a12 active:(double)a13 glassHighlight:(SBSwitcherGenieGlassHighlight *)a14 layoutSettings:(id)a15;
-- (CGPoint)counterOffsetForSize:(CGSize)a3;
++ (id)genieAttributesForIconPosition:(CGPoint)position windowPosition:(CGPoint)windowPosition initialVelocity:(CGPoint)velocity windowSize:(CGSize)size minimizedSize:(CGSize)minimizedSize minimizedScale:(double)scale containerSize:(CGSize)containerSize minimumOutsetSize:(CGSize)self0 genieScale:(double)self1 multiplier:(CGPoint)self2 active:(double)self3 glassHighlight:(SBSwitcherGenieGlassHighlight *)self4 layoutSettings:(id)self5;
+- (CGPoint)counterOffsetForSize:(CGSize)size;
 - (CGPoint)genieAmount;
 - (CGPoint)iconPosition;
 - (CGPoint)initialVelocity;
-- (CGPoint)minimizedPositionForSize:(CGSize)a3;
+- (CGPoint)minimizedPositionForSize:(CGSize)size;
 - (CGPoint)minimizedProgress;
 - (CGPoint)multiplier;
 - (CGPoint)windowPosition;
 - (CGSize)containerSize;
 - (CGSize)meshContainerOutset;
-- (CGSize)meshContainerSizeForSize:(CGSize)a3;
+- (CGSize)meshContainerSizeForSize:(CGSize)size;
 - (CGSize)minimizedSize;
 - (CGSize)minimumOutsetSize;
 - (CGSize)windowSize;
 - (SBSwitcherGenieGlassHighlight)glassHighlight;
 - (double)scaleProgress;
-- (void)setGlassHighlight:(SBSwitcherGenieGlassHighlight *)a3;
+- (void)setGlassHighlight:(SBSwitcherGenieGlassHighlight *)highlight;
 @end
 
 @implementation SBSwitcherGenieAttributes
 
-+ (id)genieAttributesForIconPosition:(CGPoint)a3 windowPosition:(CGPoint)a4 initialVelocity:(CGPoint)a5 windowSize:(CGSize)a6 minimizedSize:(CGSize)a7 minimizedScale:(double)a8 containerSize:(CGSize)a9 minimumOutsetSize:(CGSize)a10 genieScale:(double)a11 multiplier:(CGPoint)a12 active:(double)a13 glassHighlight:(SBSwitcherGenieGlassHighlight *)a14 layoutSettings:(id)a15
++ (id)genieAttributesForIconPosition:(CGPoint)position windowPosition:(CGPoint)windowPosition initialVelocity:(CGPoint)velocity windowSize:(CGSize)size minimizedSize:(CGSize)minimizedSize minimizedScale:(double)scale containerSize:(CGSize)containerSize minimumOutsetSize:(CGSize)self0 genieScale:(double)self1 multiplier:(CGPoint)self2 active:(double)self3 glassHighlight:(SBSwitcherGenieGlassHighlight *)self4 layoutSettings:(id)self5
 {
-  height = a7.height;
-  width = a7.width;
-  v28 = a6.height;
-  v27 = a6.width;
-  y = a5.y;
-  x = a5.x;
-  v19 = a4.y;
-  v20 = a4.x;
-  v21 = a3.y;
-  v22 = a3.x;
-  v23 = *&a9.width;
+  height = minimizedSize.height;
+  width = minimizedSize.width;
+  v28 = size.height;
+  v27 = size.width;
+  y = velocity.y;
+  x = velocity.x;
+  v19 = windowPosition.y;
+  v20 = windowPosition.x;
+  v21 = position.y;
+  v22 = position.x;
+  v23 = *&containerSize.width;
   v24 = objc_opt_new();
   [v24 setActive:*&width];
   [v24 setIconPosition:{v22, v21}];
   [v24 setWindowPosition:{v20, v19}];
   [v24 setInitialVelocity:{x, y}];
   [v24 setWindowSize:{v27, v28}];
-  [v24 setMinimizedSize:{a8, a11}];
-  [v24 setMinimizedScale:a12.x];
-  [v24 setContainerSize:{a12.y, a13}];
-  [v24 setMinimumOutsetSize:{*&a14, *&a15}];
+  [v24 setMinimizedSize:{scale, genieScale}];
+  [v24 setMinimizedScale:multiplier.x];
+  [v24 setContainerSize:{multiplier.y, active}];
+  [v24 setMinimumOutsetSize:{*&highlight, *&settings}];
   [v24 setGenieScale:v32];
   [v24 setMultiplier:{v33, v34}];
   v25 = *(*&height + 16);
@@ -66,10 +66,10 @@
   v6 = (self->_iconPosition.y - (v3 - self->_windowSize.height * 0.5) + self->_iconPosition.y - (v3 - self->_windowSize.height * 0.5)) / (v3 + self->_windowSize.height * 0.5 - (v3 - self->_windowSize.height * 0.5)) + -1.0;
   v7 = fmax(v6, -1.0);
   v8 = fmin(v7, 1.0);
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v11 = v7 >= 1.0;
     v12 = (v4 - (x + v23 * 0.15 - width * 0.5) + v4 - (x + v23 * 0.15 - width * 0.5)) / (x + v23 * 0.15 + width * 0.5 - (x + v23 * 0.15 - width * 0.5)) + -1.0;
@@ -194,10 +194,10 @@
   return result;
 }
 
-- (CGSize)meshContainerSizeForSize:(CGSize)a3
+- (CGSize)meshContainerSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBSwitcherGenieAttributes *)self meshContainerOutset];
   v6 = width + v5;
   v8 = height + v7;
@@ -206,10 +206,10 @@
   return result;
 }
 
-- (CGPoint)minimizedPositionForSize:(CGSize)a3
+- (CGPoint)minimizedPositionForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBSwitcherGenieAttributes *)self meshContainerSizeForSize:?];
   v7 = v6;
   v9 = v8;
@@ -221,15 +221,15 @@
   return result;
 }
 
-- (CGPoint)counterOffsetForSize:(CGSize)a3
+- (CGPoint)counterOffsetForSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v4 = 0uLL;
   if (self->_active)
   {
     v33 = height;
-    width = a3.width;
-    [(SBSwitcherGenieAttributes *)self meshContainerSizeForSize:a3.width, height];
+    width = size.width;
+    [(SBSwitcherGenieAttributes *)self meshContainerSizeForSize:size.width, height];
     v32 = v6;
     v31 = v7;
     [(SBSwitcherGenieAttributes *)self minimizedPositionForSize:width, v33];
@@ -273,11 +273,11 @@
   [(SBSwitcherGenieAttributes *)self containerSize];
   if (v4 == v8 && v6 == v7)
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v13.i64[0] = 1;
-    v14.i64[0] = v12 & 0xFFFFFFFFFFFFFFFBLL;
+    v14.i64[0] = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
     v10 = vbslq_s8(vdupq_lane_s64(vceqq_s64(v14, v13).i64[0], 0), xmmword_21F8A8C00, *MEMORY[0x277CBF3A8]);
   }
 
@@ -374,11 +374,11 @@
   return self;
 }
 
-- (void)setGlassHighlight:(SBSwitcherGenieGlassHighlight *)a3
+- (void)setGlassHighlight:(SBSwitcherGenieGlassHighlight *)highlight
 {
-  v3 = *&a3->style;
-  v4 = *&a3->direction.y;
-  self->_glassHighlight.intensity = a3->intensity;
+  v3 = *&highlight->style;
+  v4 = *&highlight->direction.y;
+  self->_glassHighlight.intensity = highlight->intensity;
   *&self->_glassHighlight.direction.y = v4;
   *&self->_glassHighlight.style = v3;
 }

@@ -1,7 +1,7 @@
 @interface NSFileProviderExtension
-+ (id)_relativeComponentsOfURL:(id)a3 fromBaseURL:(id)a4;
-+ (id)_resourceIDOfURL:(id)a3 outError:(id *)a4;
-- (BOOL)_fp_itemsMightBeTheSame:(id)a3 otherItem:(id)a4 url:(id)a5;
++ (id)_relativeComponentsOfURL:(id)l fromBaseURL:(id)rL;
++ (id)_resourceIDOfURL:(id)l outError:(id *)error;
+- (BOOL)_fp_itemsMightBeTheSame:(id)same otherItem:(id)item url:(id)url;
 - (FPXExtensionContext)extensionContext;
 - (NSFileProviderExtension)init;
 - (NSFileProviderItemIdentifier)persistentIdentifierForItemAtURL:(NSURL *)url;
@@ -10,22 +10,22 @@
 - (NSURL)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier;
 - (NSURL)documentStorageURL;
 - (id)description;
-- (id)disconnectWithOptions:(unint64_t)a3 completionHandler:(id)a4;
+- (id)disconnectWithOptions:(unint64_t)options completionHandler:(id)handler;
 - (id)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier error:(NSError *)error;
-- (id)enumeratorForSearchQuery:(id)a3 error:(id *)a4;
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 completionHandler:(id)a5;
-- (id)fetchPublishingURLForItemIdentifier:(id)a3 completionHandler:(id)a4;
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)_withRequest:(id)a3 execute:(id)a4;
-- (void)changeItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 completionHandler:(id)a8;
+- (id)enumeratorForSearchQuery:(id)query error:(id *)error;
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version completionHandler:(id)handler;
+- (id)fetchPublishingURLForItemIdentifier:(id)identifier completionHandler:(id)handler;
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)_withRequest:(id)request execute:(id)execute;
+- (void)changeItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options completionHandler:(id)handler;
 - (void)createDirectoryWithName:(NSString *)directoryName inParentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier completionHandler:(void *)completionHandler;
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7;
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options completionHandler:(id)handler;
 - (void)deleteItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
-- (void)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)evictItemWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)handleEventsForBackgroundURLSession:(id)a3 completionHandler:(id)a4;
+- (void)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options completionHandler:(id)handler;
+- (void)evictItemWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
 - (void)importDocumentAtURL:(NSURL *)fileURL toParentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier completionHandler:(void *)completionHandler;
-- (void)itemChanged:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 completionHandler:(id)a7;
+- (void)itemChanged:(id)changed baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents completionHandler:(id)handler;
 - (void)itemChangedAtURL:(NSURL *)url;
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void *)completionHandler;
 - (void)renameItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier toName:(NSString *)itemName completionHandler:(void *)completionHandler;
@@ -69,14 +69,14 @@
   v10 = __Block_byref_object_copy__22;
   v11 = __Block_byref_object_dispose__22;
   v12 = 0;
-  v3 = [(NSFileProviderExtension *)self memberQueue];
+  memberQueue = [(NSFileProviderExtension *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__NSFileProviderExtension_providerIdentifier__block_invoke;
   v6[3] = &unk_1E793AD20;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -105,27 +105,27 @@ void __45__NSFileProviderExtension_providerIdentifier__block_invoke(uint64_t a1)
 
 - (NSURL)documentStorageURL
 {
-  v2 = [(NSFileProviderExtension *)self domain];
-  v3 = [NSFileProviderManager managerForDomain:v2];
-  v4 = [v3 documentStorageURL];
+  domain = [(NSFileProviderExtension *)self domain];
+  v3 = [NSFileProviderManager managerForDomain:domain];
+  documentStorageURL = [v3 documentStorageURL];
 
-  return v4;
+  return documentStorageURL;
 }
 
 - (NSURL)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier
 {
   v3 = identifier;
   v4 = +[NSFileProviderManager legacyDefaultManager];
-  v5 = [v4 documentStorageURL];
+  documentStorageURL = [v4 documentStorageURL];
 
   if ([(NSString *)v3 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
   {
-    v6 = v5;
+    v6 = documentStorageURL;
   }
 
   else
   {
-    v6 = [v5 URLByAppendingPathComponent:v3];
+    v6 = [documentStorageURL URLByAppendingPathComponent:v3];
   }
 
   v7 = v6;
@@ -133,25 +133,25 @@ void __45__NSFileProviderExtension_providerIdentifier__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)_resourceIDOfURL:(id)a3 outError:(id *)a4
++ (id)_resourceIDOfURL:(id)l outError:(id *)error
 {
   v6 = 0;
-  [a3 getResourceValue:&v6 forKey:*MEMORY[0x1E695DB00] error:a4];
+  [l getResourceValue:&v6 forKey:*MEMORY[0x1E695DB00] error:error];
   v4 = v6;
 
   return v4;
 }
 
-+ (id)_relativeComponentsOfURL:(id)a3 fromBaseURL:(id)a4
++ (id)_relativeComponentsOfURL:(id)l fromBaseURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v24 = v7;
-  v10 = [v7 copy];
-  v25 = v8;
+  lCopy = l;
+  rLCopy = rL;
+  array = [MEMORY[0x1E695DF70] array];
+  v24 = lCopy;
+  v10 = [lCopy copy];
+  v25 = rLCopy;
   v26 = 0;
-  v11 = [NSFileProviderExtension _resourceIDOfURL:v8 outError:&v26];
+  v11 = [NSFileProviderExtension _resourceIDOfURL:rLCopy outError:&v26];
   v12 = v26;
   v13 = v12;
   if (v11)
@@ -170,15 +170,15 @@ void __45__NSFileProviderExtension_providerIdentifier__block_invoke(uint64_t a1)
     goto LABEL_8;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"NSFileProviderExtension.m" lineNumber:192 description:{@"%s cannot resolve the resource ID of the URL (%@). Error: %@", "+[NSFileProviderExtension _relativeComponentsOfURL:fromBaseURL:]", v25, v13}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:192 description:{@"%s cannot resolve the resource ID of the URL (%@). Error: %@", "+[NSFileProviderExtension _relativeComponentsOfURL:fromBaseURL:]", v25, v13}];
   for (i = 0; ; ++i)
   {
 
 LABEL_8:
     v17 = v10;
     v18 = [NSFileProviderExtension _resourceIDOfURL:v10 outError:0];
-    v15 = v18;
+    currentHandler = v18;
     if (v18)
     {
       if ([v18 isEqual:v11])
@@ -187,28 +187,28 @@ LABEL_8:
       }
     }
 
-    v19 = [v10 lastPathComponent];
-    if (!v19)
+    lastPathComponent = [v10 lastPathComponent];
+    if (!lastPathComponent)
     {
       v22 = v24;
       NSLog(&cfstr_TheLastCompone.isa, v24);
-      [v9 removeAllObjects];
+      [array removeAllObjects];
       goto LABEL_19;
     }
 
-    v20 = v19;
-    [v9 insertObject:v19 atIndex:0];
-    v21 = [v10 URLByDeletingLastPathComponent];
-    if ([v21 isEqual:v10])
+    v20 = lastPathComponent;
+    [array insertObject:lastPathComponent atIndex:0];
+    uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
+    if ([uRLByDeletingLastPathComponent isEqual:v10])
     {
       v22 = v24;
 LABEL_17:
-      [v9 removeAllObjects];
+      [array removeAllObjects];
 
       goto LABEL_19;
     }
 
-    v10 = v21;
+    v10 = uRLByDeletingLastPathComponent;
 
     if (i >= 0x64)
     {
@@ -222,23 +222,23 @@ LABEL_17:
   v22 = v24;
 LABEL_19:
 
-  return v9;
+  return array;
 }
 
 - (NSFileProviderItemIdentifier)persistentIdentifierForItemAtURL:(NSURL *)url
 {
   v3 = url;
   v4 = +[NSFileProviderManager legacyDefaultManager];
-  v5 = [v4 documentStorageURL];
+  documentStorageURL = [v4 documentStorageURL];
 
-  if ([v5 fp_relationshipToItemAtURL:v3] == 1)
+  if ([documentStorageURL fp_relationshipToItemAtURL:v3] == 1)
   {
     v6 = @"NSFileProviderRootContainerItemIdentifier";
   }
 
   else
   {
-    v7 = [NSFileProviderExtension _relativeComponentsOfURL:v3 fromBaseURL:v5];
+    v7 = [NSFileProviderExtension _relativeComponentsOfURL:v3 fromBaseURL:documentStorageURL];
     if ([v7 count])
     {
       v6 = [v7 componentsJoinedByString:@"/"];
@@ -246,7 +246,7 @@ LABEL_19:
 
     else
     {
-      NSLog(&cfstr_SIsCalledWithA.isa, "[NSFileProviderExtension persistentIdentifierForItemAtURL:]", v3, v5);
+      NSLog(&cfstr_SIsCalledWithA.isa, "[NSFileProviderExtension persistentIdentifierForItemAtURL:]", v3, documentStorageURL);
       v6 = 0;
     }
   }
@@ -256,107 +256,107 @@ LABEL_19:
 
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void *)completionHandler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:248 description:{@"%@ must implement method %@ and not call super", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:248 description:{@"%@ must implement method %@ and not call super", v6, v7}];
 }
 
 - (void)startProvidingItemAtURL:(NSURL *)url completionHandler:(void *)completionHandler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:254 description:{@"%@ must implement method %@ and not call super", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:254 description:{@"%@ must implement method %@ and not call super", v6, v7}];
 }
 
 - (void)itemChangedAtURL:(NSURL *)url
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v7 handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:260 description:{@"%@ must implement method %@ and not call super", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:260 description:{@"%@ must implement method %@ and not call super", v5, v6}];
 }
 
-- (void)evictItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)evictItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:279 description:{@"%@ must implement method %@ and not call super", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderExtension.m" lineNumber:279 description:{@"%@ must implement method %@ and not call super", v6, v7}];
 }
 
-- (void)itemChanged:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 completionHandler:(id)a7
+- (void)itemChanged:(id)changed baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  changedCopy = changed;
+  versionCopy = version;
+  contentsCopy = contents;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [NSFileProviderExtension itemChanged:baseVersion:changedFields:contents:completionHandler:];
   }
 
-  v16 = [v12 itemIdentifier];
+  itemIdentifier = [changedCopy itemIdentifier];
   v20 = 0;
-  v17 = [(NSFileProviderExtension *)self itemForIdentifier:v16 error:&v20];
+  v17 = [(NSFileProviderExtension *)self itemForIdentifier:itemIdentifier error:&v20];
   v18 = v20;
 
   if (v17)
   {
-    if (hasConflictingVersion(v17, v13, a5))
+    if (hasConflictingVersion(v17, versionCopy, fields))
     {
-      v15[2](v15, v17, 0);
+      handlerCopy[2](handlerCopy, v17, 0);
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_extensionContext);
-      [WeakRetained applyFieldChangesToItem:v12 baseVersion:v13 changedFields:a5 contents:v14 lastKnownVendorItem:v17 extensionInstance:self completionHandler:v15];
+      [WeakRetained applyFieldChangesToItem:changedCopy baseVersion:versionCopy changedFields:fields contents:contentsCopy lastKnownVendorItem:v17 extensionInstance:self completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    (v15)[2](v15, 0, v18);
+    (handlerCopy)[2](handlerCopy, 0, v18);
   }
 }
 
-- (void)changeItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 completionHandler:(id)a8
+- (void)changeItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options completionHandler:(id)handler
 {
-  v13 = a8;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __99__NSFileProviderExtension_changeItem_baseVersion_changedFields_contents_options_completionHandler___block_invoke;
   v15[3] = &unk_1E793BAB8;
-  v16 = v13;
-  v14 = v13;
-  [(NSFileProviderExtension *)self itemChanged:a3 baseVersion:a4 changedFields:a5 contents:a6 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [(NSFileProviderExtension *)self itemChanged:item baseVersion:version changedFields:fields contents:contents completionHandler:v15];
 }
 
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 completionHandler:(id)a5
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSFileProviderExtension *)self URLForItemWithPersistentIdentifier:v8];
+  identifierCopy = identifier;
+  versionCopy = version;
+  handlerCopy = handler;
+  v11 = [(NSFileProviderExtension *)self URLForItemWithPersistentIdentifier:identifierCopy];
   if (!v11)
   {
-    v17 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:v8];
-    (*(v10 + 2))(v10, 0, 0, v17);
+    v17 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:identifierCopy];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v17);
 
     v18 = objc_opt_new();
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!versionCopy)
   {
     goto LABEL_11;
   }
 
   v30[0] = 0;
-  v12 = [(NSFileProviderExtension *)self itemForIdentifier:v8 error:v30];
+  v12 = [(NSFileProviderExtension *)self itemForIdentifier:identifierCopy error:v30];
   v13 = v30[0];
   if (v12)
   {
@@ -367,11 +367,11 @@ LABEL_19:
     }
 
     v29 = v13;
-    v14 = [(NSFileProviderExtension *)self itemForIdentifier:v8 error:&v29];
+    v14 = [(NSFileProviderExtension *)self itemForIdentifier:identifierCopy error:&v29];
     v15 = v29;
 
-    v16 = [v14 itemVersion];
-    if ([v16 isEqual:v9])
+    itemVersion = [v14 itemVersion];
+    if ([itemVersion isEqual:versionCopy])
     {
 
 LABEL_10:
@@ -391,18 +391,18 @@ LABEL_11:
       v22[1] = 3221225472;
       v22[2] = __88__NSFileProviderExtension_fetchContentsForItemWithIdentifier_version_completionHandler___block_invoke_2;
       v22[3] = &unk_1E793D910;
-      v26 = v10;
+      v26 = handlerCopy;
       v22[4] = self;
       v23 = v19;
-      v24 = v8;
-      v25 = v9;
+      v24 = identifierCopy;
+      v25 = versionCopy;
       [(NSFileProviderExtension *)self providePlaceholderAtURL:v23 completionHandler:v22];
 
       goto LABEL_14;
     }
 
-    v20 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:v8];
-    (*(v10 + 2))(v10, 0, 0, v20);
+    v20 = [MEMORY[0x1E696ABC0] fileProviderErrorForNonExistentItemWithIdentifier:identifierCopy];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
 
     v18 = objc_opt_new();
     v13 = v15;
@@ -410,7 +410,7 @@ LABEL_11:
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v13);
     v18 = objc_opt_new();
   }
 
@@ -508,19 +508,19 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NSFileProviderExtension *)self domain];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p for %@>", v4, self, v6];
+  domain = [(NSFileProviderExtension *)self domain];
+  identifier = [domain identifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p for %@>", v4, self, identifier];
 
   return v7;
 }
 
-- (void)_withRequest:(id)a3 execute:(id)a4
+- (void)_withRequest:(id)request execute:(id)execute
 {
-  v9 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_currentRequest, a3);
-  v7[2](v7);
+  requestCopy = request;
+  executeCopy = execute;
+  objc_storeStrong(&self->_currentRequest, request);
+  executeCopy[2](executeCopy);
   currentRequest = self->_currentRequest;
   self->_currentRequest = 0;
 }
@@ -662,9 +662,9 @@ LABEL_12:
   v5[2](v5, 0, v7);
 }
 
-- (id)fetchPublishingURLForItemIdentifier:(id)a3 completionHandler:(id)a4
+- (id)fetchPublishingURLForItemIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -672,16 +672,16 @@ LABEL_12:
   }
 
   v6 = FPNotSupportedError();
-  v4[2](v4, 0, v6);
+  handlerCopy[2](handlerCopy, 0, v6);
 
   v7 = objc_opt_new();
 
   return v7;
 }
 
-- (id)disconnectWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (id)disconnectWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -689,18 +689,18 @@ LABEL_12:
   }
 
   v6 = FPNotSupportedError();
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 
   v7 = objc_opt_new();
 
   return v7;
 }
 
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 completionHandler:(id)a5
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -712,12 +712,12 @@ LABEL_12:
     v19 = 2112;
     v20 = v16;
     v21 = 2112;
-    v22 = v7;
+    v22 = identifierCopy;
     _os_log_debug_impl(&dword_1AAAE1000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ must implement method %@ and not call super (action identifier: %@)", &v17, 0x20u);
   }
 
   v10 = FPNotSupportedError();
-  v8[2](v8, v10);
+  handlerCopy[2](handlerCopy, v10);
 
   v11 = objc_opt_new();
   v12 = *MEMORY[0x1E69E9840];
@@ -725,16 +725,16 @@ LABEL_12:
   return v11;
 }
 
-- (void)handleEventsForBackgroundURLSession:(id)a3 completionHandler:(id)a4
+- (void)handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [NSFileProviderExtension(NSFileProviderActions) setLastUsedDate:forItemIdentifier:completionHandler:];
   }
 
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 }
 
 - (NSProgress)fetchThumbnailsForItemIdentifiers:(NSArray *)itemIdentifiers requestedSize:(CGSize)size perThumbnailCompletionHandler:(void *)perThumbnailCompletionHandler completionHandler:(void *)completionHandler
@@ -762,7 +762,7 @@ LABEL_12:
   return 0;
 }
 
-- (id)enumeratorForSearchQuery:(id)a3 error:(id *)a4
+- (id)enumeratorForSearchQuery:(id)query error:(id *)error
 {
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -770,22 +770,22 @@ LABEL_12:
     [NSFileProviderExtension(NSFileProviderActions) setLastUsedDate:forItemIdentifier:completionHandler:];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)_fp_itemsMightBeTheSame:(id)a3 otherItem:(id)a4 url:(id)a5
+- (BOOL)_fp_itemsMightBeTheSame:(id)same otherItem:(id)item url:(id)url
 {
   v72[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = contentTypeOfItem(v8);
-  v12 = contentTypeOfItem(v9);
+  sameCopy = same;
+  itemCopy = item;
+  urlCopy = url;
+  v11 = contentTypeOfItem(sameCopy);
+  v12 = contentTypeOfItem(itemCopy);
   v13 = v11;
   v14 = v12;
   v15 = isFolderContentType(v13);
@@ -812,12 +812,12 @@ LABEL_28:
   v17 = isFolderContentType(v13);
   if ((fpfs_supports_parent_mtime_iopolicy() & 1) != 0 || !v17)
   {
-    v18 = [v8 contentModificationDate];
-    [v18 timeIntervalSince1970];
+    contentModificationDate = [sameCopy contentModificationDate];
+    [contentModificationDate timeIntervalSince1970];
     v20 = v19;
 
-    v21 = [v9 contentModificationDate];
-    [v21 timeIntervalSince1970];
+    contentModificationDate2 = [itemCopy contentModificationDate];
+    [contentModificationDate2 timeIntervalSince1970];
     v23 = v22;
 
     if (trunc(v20) != trunc(v23))
@@ -838,38 +838,38 @@ LABEL_30:
   if ((v17 & 1) == 0)
   {
     v63 = 0;
-    if (v10)
+    if (urlCopy)
     {
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
-      v25 = [v10 path];
-      [v24 fileExistsAtPath:v25 isDirectory:&v63];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [urlCopy path];
+      [defaultManager fileExistsAtPath:path isDirectory:&v63];
 
       if (v63)
       {
-        v26 = [v9 itemIdentifier];
-        v27 = [(NSFileProviderExtension *)self URLForItemWithPersistentIdentifier:v26];
+        itemIdentifier = [itemCopy itemIdentifier];
+        v27 = [(NSFileProviderExtension *)self URLForItemWithPersistentIdentifier:itemIdentifier];
 
-        v28 = v10;
+        v28 = urlCopy;
         v29 = v27;
         memset(&v70, 0, sizeof(v70));
         memset(&v69, 0, sizeof(v69));
-        v30 = [v28 path];
-        v31 = lstat([v30 fileSystemRepresentation], &v70);
+        path2 = [v28 path];
+        v31 = lstat([path2 fileSystemRepresentation], &v70);
 
         if ((v31 & 0x80000000) == 0)
         {
-          v32 = [v29 path];
-          v33 = lstat([v32 fileSystemRepresentation], &v69);
+          path3 = [v29 path];
+          v33 = lstat([path3 fileSystemRepresentation], &v69);
 
           if ((v33 & 0x80000000) == 0 && (v70.st_mode & 0xF000) == 0x4000 && (v69.st_mode & 0xF000) == 0x4000 && v70.st_mtimespec.tv_sec == v69.st_mtimespec.tv_sec)
           {
             v68 = 0;
-            v34 = [v28 path];
-            if ((fpfs_num_entries([v34 fileSystemRepresentation], 0, &v68 + 1) & 0x80000000) == 0)
+            path4 = [v28 path];
+            if ((fpfs_num_entries([path4 fileSystemRepresentation], 0, &v68 + 1) & 0x80000000) == 0)
             {
               v56 = v28;
-              v35 = [v29 path];
-              v36 = fpfs_num_entries([v35 fileSystemRepresentation], 0, &v68);
+              path5 = [v29 path];
+              v36 = fpfs_num_entries([path5 fileSystemRepresentation], 0, &v68);
 
               if (v36 < 0 || HIDWORD(v68) != v68)
               {
@@ -885,9 +885,9 @@ LABEL_30:
                 v72[3] = v38;
                 v72[4] = *MEMORY[0x1E695DBB8];
                 v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:5];
-                v40 = [MEMORY[0x1E696AC08] defaultManager];
+                defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
                 v60 = v39;
-                v41 = [v40 enumeratorAtURL:v56 includingPropertiesForKeys:v39 options:16 errorHandler:0];
+                v41 = [defaultManager2 enumeratorAtURL:v56 includingPropertiesForKeys:v39 options:16 errorHandler:0];
 
                 v66 = 0u;
                 v67 = 0u;
@@ -908,8 +908,8 @@ LABEL_30:
                       }
 
                       v43 = *(*(&v64 + 1) + 8 * i);
-                      v44 = [v43 relativePath];
-                      v62 = [v29 URLByAppendingPathComponent:v44];
+                      relativePath = [v43 relativePath];
+                      v62 = [v29 URLByAppendingPathComponent:relativePath];
 
                       v61 = [v43 resourceValuesForKeys:v60 error:0];
                       v45 = [v62 resourceValuesForKeys:v60 error:0];
@@ -961,9 +961,9 @@ LABEL_46:
       }
     }
 
-    v52 = [v8 documentSize];
-    v53 = [v9 documentSize];
-    v54 = [v52 isEqual:v53];
+    documentSize = [sameCopy documentSize];
+    documentSize2 = [itemCopy documentSize];
+    v54 = [documentSize isEqual:documentSize2];
 
     if ((v54 & 1) == 0)
     {
@@ -985,12 +985,12 @@ LABEL_31:
   return v49;
 }
 
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = v13;
+  templateCopy = template;
+  contentsCopy = contents;
+  handlerCopy = handler;
+  v16 = templateCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1005,41 +1005,41 @@ LABEL_31:
   aBlock[1] = 3221225472;
   aBlock[2] = __107__NSFileProviderExtension_CreateItem__createItemBasedOnTemplate_fields_contents_options_completionHandler___block_invoke;
   aBlock[3] = &unk_1E793D960;
-  v52 = a6;
+  optionsCopy = options;
   aBlock[4] = self;
   v17 = v16;
   v48 = v17;
-  v18 = v14;
+  v18 = contentsCopy;
   v49 = v18;
-  v19 = v15;
+  v19 = handlerCopy;
   v50 = v17;
   v51 = v19;
   v53 = a2;
-  v54 = a4;
+  fieldsCopy = fields;
   v20 = _Block_copy(aBlock);
   if ([v17 isFolder] && (objc_msgSend(v17, "isPackage") & 1) == 0)
   {
-    v39 = [v17 filename];
-    v40 = [v17 parentItemIdentifier];
-    [(NSFileProviderExtension *)self createDirectoryWithName:v39 inParentItemIdentifier:v40 completionHandler:v20];
+    filename = [v17 filename];
+    parentItemIdentifier = [v17 parentItemIdentifier];
+    [(NSFileProviderExtension *)self createDirectoryWithName:filename inParentItemIdentifier:parentItemIdentifier completionHandler:v20];
 
     goto LABEL_21;
   }
 
-  v21 = [v17 typeIdentifier];
-  v22 = [v21 isEqualToString:*MEMORY[0x1E69638A0]];
+  typeIdentifier = [v17 typeIdentifier];
+  v22 = [typeIdentifier isEqualToString:*MEMORY[0x1E69638A0]];
   if (v18 || (v22 & 1) == 0)
   {
 
     goto LABEL_13;
   }
 
-  v23 = [v17 symlinkTargetPath];
+  symlinkTargetPath = [v17 symlinkTargetPath];
 
-  if (!v23)
+  if (!symlinkTargetPath)
   {
 LABEL_15:
-    if ((a6 & 1) == 0)
+    if ((options & 1) == 0)
     {
       [NSFileProviderExtension(CreateItem) createItemBasedOnTemplate:a2 fields:self contents:? options:? completionHandler:?];
     }
@@ -1048,10 +1048,10 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v24 = [MEMORY[0x1E696AC08] defaultManager];
-  v25 = [MEMORY[0x1E695DFF8] fp_secureTempDirectoryIgnoringPersona];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fp_secureTempDirectoryIgnoringPersona = [MEMORY[0x1E695DFF8] fp_secureTempDirectoryIgnoringPersona];
   v46 = 0;
-  v26 = [v24 createDirectoryAtURL:v25 withIntermediateDirectories:1 attributes:0 error:&v46];
+  v26 = [defaultManager createDirectoryAtURL:fp_secureTempDirectoryIgnoringPersona withIntermediateDirectories:1 attributes:0 error:&v46];
   v27 = v46;
   if ((v26 & 1) == 0)
   {
@@ -1062,16 +1062,16 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v43 = v24;
-  v28 = [MEMORY[0x1E696AFB0] UUID];
-  v29 = [v28 UUIDString];
-  v30 = v25;
-  v31 = v29;
+  v43 = defaultManager;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v30 = fp_secureTempDirectoryIgnoringPersona;
+  v31 = uUIDString;
   v42 = v30;
-  v32 = [v30 URLByAppendingPathComponent:v29];
+  v32 = [v30 URLByAppendingPathComponent:uUIDString];
 
-  v33 = [v17 symlinkTargetPath];
-  LODWORD(v31) = symlink([v33 fileSystemRepresentation], objc_msgSend(v32, "fileSystemRepresentation"));
+  symlinkTargetPath2 = [v17 symlinkTargetPath];
+  LODWORD(v31) = symlink([symlinkTargetPath2 fileSystemRepresentation], objc_msgSend(v32, "fileSystemRepresentation"));
 
   v41 = v31;
   if (v31)
@@ -1097,14 +1097,14 @@ LABEL_13:
     if (v18)
     {
       WeakRetained = objc_loadWeakRetained(&self->_extensionContext);
-      v37 = [v17 parentItemIdentifier];
-      v38 = [v17 filename];
+      parentItemIdentifier2 = [v17 parentItemIdentifier];
+      filename2 = [v17 filename];
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
       v44[2] = __107__NSFileProviderExtension_CreateItem__createItemBasedOnTemplate_fields_contents_options_completionHandler___block_invoke_353;
       v44[3] = &unk_1E793D988;
       v45 = v20;
-      [WeakRetained importDocumentAtURL:v18 intoFolderWithIdentifier:v37 originalName:v38 extensionInstance:self reply:v44];
+      [WeakRetained importDocumentAtURL:v18 intoFolderWithIdentifier:parentItemIdentifier2 originalName:filename2 extensionInstance:self reply:v44];
 
       goto LABEL_21;
     }
@@ -1278,11 +1278,11 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1290,21 +1290,21 @@ LABEL_10:
   v26 = __Block_byref_object_dispose__22;
   v27 = 0;
   obj = 0;
-  v13 = [(NSFileProviderExtension *)self itemForIdentifier:v10 error:&obj];
+  v13 = [(NSFileProviderExtension *)self itemForIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v27, obj);
   if (v13)
   {
-    if (a5 >> 31 || !hasConflictingVersion(v13, v11, 1uLL))
+    if (options >> 31 || !hasConflictingVersion(v13, versionCopy, 1uLL))
     {
-      if ((a5 & 1) != 0 || ([v13 childItemCount], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "longValue"), v15, !v16))
+      if ((options & 1) != 0 || ([v13 childItemCount], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "longValue"), v15, !v16))
       {
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __102__NSFileProviderExtension_DeleteItem__deleteItemWithIdentifier_baseVersion_options_completionHandler___block_invoke;
         v17[3] = &unk_1E793D9B0;
         v17[4] = self;
-        v19 = v12;
-        v18 = v10;
+        v19 = handlerCopy;
+        v18 = identifierCopy;
         v20 = &v22;
         [(NSFileProviderExtension *)self deleteItemWithIdentifier:v18 completionHandler:v17];
 
@@ -1312,19 +1312,19 @@ LABEL_10:
       }
 
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NSFileProviderErrorDomain" code:-1007 userInfo:0];
-      (*(v12 + 2))(v12, v14);
+      (*(handlerCopy + 2))(handlerCopy, v14);
     }
 
     else
     {
       v14 = [MEMORY[0x1E696ABC0] fileProviderErrorForRejectedDeletionOfItem:v13];
-      (*(v12 + 2))(v12, v14);
+      (*(handlerCopy + 2))(handlerCopy, v14);
     }
   }
 
   else
   {
-    (*(v12 + 2))(v12, v23[5]);
+    (*(handlerCopy + 2))(handlerCopy, v23[5]);
   }
 
 LABEL_11:

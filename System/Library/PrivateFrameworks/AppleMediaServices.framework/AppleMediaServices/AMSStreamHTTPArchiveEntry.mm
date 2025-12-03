@@ -1,46 +1,46 @@
 @interface AMSStreamHTTPArchiveEntry
-+ (id)_createEntriesForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-- (AMSStreamHTTPArchiveEntry)initWithCoder:(id)a3;
-- (AMSStreamHTTPArchiveEntry)initWithEntries:(id)a3;
-- (AMSStreamHTTPArchiveEntry)initWithHTTPArchiveTaskInfo:(id)a3;
-- (AMSStreamHTTPArchiveEntry)initWithMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)_createEntriesForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
+- (AMSStreamHTTPArchiveEntry)initWithCoder:(id)coder;
+- (AMSStreamHTTPArchiveEntry)initWithEntries:(id)entries;
+- (AMSStreamHTTPArchiveEntry)initWithHTTPArchiveTaskInfo:(id)info;
+- (AMSStreamHTTPArchiveEntry)initWithMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSStreamHTTPArchiveEntry
 
-- (AMSStreamHTTPArchiveEntry)initWithHTTPArchiveTaskInfo:(id)a3
+- (AMSStreamHTTPArchiveEntry)initWithHTTPArchiveTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 taskMetrics];
-  v6 = [v4 HTTPBody];
-  v7 = [v4 responseData];
+  infoCopy = info;
+  taskMetrics = [infoCopy taskMetrics];
+  hTTPBody = [infoCopy HTTPBody];
+  responseData = [infoCopy responseData];
 
-  v8 = [(AMSStreamHTTPArchiveEntry *)self initWithMetrics:v5 requestData:v6 responseData:v7];
+  v8 = [(AMSStreamHTTPArchiveEntry *)self initWithMetrics:taskMetrics requestData:hTTPBody responseData:responseData];
   return v8;
 }
 
-- (AMSStreamHTTPArchiveEntry)initWithMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
+- (AMSStreamHTTPArchiveEntry)initWithMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
-  v8 = a3;
-  v9 = [AMSStreamHTTPArchiveEntry _createEntriesForTaskMetrics:v8 requestData:a4 responseData:a5];
-  v10 = [v8 transactionMetrics];
+  metricsCopy = metrics;
+  v9 = [AMSStreamHTTPArchiveEntry _createEntriesForTaskMetrics:metricsCopy requestData:data responseData:responseData];
+  transactionMetrics = [metricsCopy transactionMetrics];
 
-  v11 = [v10 firstObject];
-  v12 = [v11 request];
-  v13 = [v12 URL];
-  v14 = [v13 absoluteString];
+  firstObject = [transactionMetrics firstObject];
+  request = [firstObject request];
+  v13 = [request URL];
+  absoluteString = [v13 absoluteString];
   urlString = self->_urlString;
-  self->_urlString = v14;
+  self->_urlString = absoluteString;
 
   v16 = [(AMSStreamHTTPArchiveEntry *)self initWithEntries:v9];
   return v16;
 }
 
-- (AMSStreamHTTPArchiveEntry)initWithEntries:(id)a3
+- (AMSStreamHTTPArchiveEntry)initWithEntries:(id)entries
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v25.receiver = self;
   v25.super_class = AMSStreamHTTPArchiveEntry;
   v5 = [(AMSStreamHTTPArchiveEntry *)&v25 init];
@@ -51,8 +51,8 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v4;
-    v7 = v4;
+    v20 = entriesCopy;
+    v7 = entriesCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v8)
     {
@@ -76,10 +76,10 @@
             if (v14)
             {
               v15 = v14;
-              v16 = [v14 ams_compressedData];
-              if (v16)
+              ams_compressedData = [v14 ams_compressedData];
+              if (ams_compressedData)
               {
-                [v6 addObject:v16];
+                [v6 addObject:ams_compressedData];
               }
             }
           }
@@ -99,35 +99,35 @@
     entries = v5->_entries;
     v5->_entries = v17;
 
-    v4 = v20;
+    entriesCopy = v20;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSStreamHTTPArchiveEntry *)self urlString];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyUrlString"];
+  coderCopy = coder;
+  urlString = [(AMSStreamHTTPArchiveEntry *)self urlString];
+  [coderCopy encodeObject:urlString forKey:@"kCodingKeyUrlString"];
 
-  v6 = [(AMSStreamHTTPArchiveEntry *)self entries];
-  [v4 encodeObject:v6 forKey:@"kCodingKeyEntries"];
+  entries = [(AMSStreamHTTPArchiveEntry *)self entries];
+  [coderCopy encodeObject:entries forKey:@"kCodingKeyEntries"];
 }
 
-- (AMSStreamHTTPArchiveEntry)initWithCoder:(id)a3
+- (AMSStreamHTTPArchiveEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSStreamHTTPArchiveEntry;
   v5 = [(AMSStreamHTTPArchiveEntry *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyUrlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyUrlString"];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyEntries"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyEntries"];
     entries = v5->_entries;
     v5->_entries = v8;
   }
@@ -135,18 +135,18 @@
   return v5;
 }
 
-+ (id)_createEntriesForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
++ (id)_createEntriesForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v33 = a4;
-  v32 = a5;
+  metricsCopy = metrics;
+  dataCopy = data;
+  responseDataCopy = responseData;
   v31 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v7 transactionMetrics];
+  obj = [metricsCopy transactionMetrics];
   v8 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -167,23 +167,23 @@
         v15 = [AMSHTTPArchive ams_generateCommentsStringForMetrics:v12];
         [v14 setObject:v15 forKeyedSubscript:@"comment"];
 
-        v16 = [AMSHTTPArchive ams_generateRequestDictionaryForMetrics:v12 requestData:v33];
+        v16 = [AMSHTTPArchive ams_generateRequestDictionaryForMetrics:v12 requestData:dataCopy];
         [v14 setObject:v16 forKeyedSubscript:@"request"];
 
-        v17 = [AMSHTTPArchive ams_generateResponseDictionaryForMetrics:v12 responseData:v32];
+        v17 = [AMSHTTPArchive ams_generateResponseDictionaryForMetrics:v12 responseData:responseDataCopy];
         [v14 setObject:v17 forKeyedSubscript:@"response"];
 
         v18 = MEMORY[0x1E696AD98];
-        v19 = [v12 responseEndDate];
-        v20 = [v12 requestStartDate];
-        [v19 timeIntervalSinceDate:v20];
+        responseEndDate = [v12 responseEndDate];
+        requestStartDate = [v12 requestStartDate];
+        [responseEndDate timeIntervalSinceDate:requestStartDate];
         v22 = [v18 numberWithDouble:v21 * 1000.0];
         [v14 setObject:v22 forKeyedSubscript:@"time"];
 
-        v23 = [MEMORY[0x1E695DFE8] systemTimeZone];
-        v24 = [AMSHTTPArchive ams_dateFormatterForTimeZone:v23];
-        v25 = [v12 fetchStartDate];
-        v26 = [v24 stringFromDate:v25];
+        systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+        v24 = [AMSHTTPArchive ams_dateFormatterForTimeZone:systemTimeZone];
+        fetchStartDate = [v12 fetchStartDate];
+        v26 = [v24 stringFromDate:fetchStartDate];
         [v14 ams_setNullableObject:v26 forKey:@"startedDateTime"];
 
         v27 = [v14 copy];

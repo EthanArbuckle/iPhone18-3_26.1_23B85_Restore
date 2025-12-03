@@ -1,24 +1,24 @@
 @interface RTVisitSettledStateMetrics
 + (id)binsForDuration;
-+ (id)createVisitSettledStateMetricsForSettledStateTransitionStore:(id)a3 startDate:(id)a4 endDate:(id)a5 isVisit:(BOOL)a6;
-+ (unint64_t)boundedIntegerMetricForCountOfSettledStateTransitions:(unint64_t)a3;
-+ (unint64_t)boundedIntegerMetricForPercentageOfTimeSettled:(unint64_t)a3;
-+ (unint64_t)boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:(double)a3 overDuration:(double)a4;
-+ (unint64_t)bucketForDuration:(double)a3;
-+ (void)submitVisitSettledStateMetricsForStartDate:(id)a3 endDate:(id)a4 isVisit:(BOOL)a5 settledStateTransitionStore:(id)a6;
-- (RTVisitSettledStateMetrics)initWithCountOfSettledStateTransitions:(unint64_t)a3 duration:(double)a4 isVisit:(BOOL)a5 timeSettled:(double)a6;
++ (id)createVisitSettledStateMetricsForSettledStateTransitionStore:(id)store startDate:(id)date endDate:(id)endDate isVisit:(BOOL)visit;
++ (unint64_t)boundedIntegerMetricForCountOfSettledStateTransitions:(unint64_t)transitions;
++ (unint64_t)boundedIntegerMetricForPercentageOfTimeSettled:(unint64_t)settled;
++ (unint64_t)boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:(double)settled overDuration:(double)duration;
++ (unint64_t)bucketForDuration:(double)duration;
++ (void)submitVisitSettledStateMetricsForStartDate:(id)date endDate:(id)endDate isVisit:(BOOL)visit settledStateTransitionStore:(id)store;
+- (RTVisitSettledStateMetrics)initWithCountOfSettledStateTransitions:(unint64_t)transitions duration:(double)duration isVisit:(BOOL)visit timeSettled:(double)settled;
 @end
 
 @implementation RTVisitSettledStateMetrics
 
-+ (id)createVisitSettledStateMetricsForSettledStateTransitionStore:(id)a3 startDate:(id)a4 endDate:(id)a5 isVisit:(BOOL)a6
++ (id)createVisitSettledStateMetricsForSettledStateTransitionStore:(id)store startDate:(id)date endDate:(id)endDate isVisit:(BOOL)visit
 {
-  v6 = a6;
+  visitCopy = visit;
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  storeCopy = store;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (!storeCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@
     }
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
     }
   }
 
-  if (!v12)
+  if (!endDateCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@
   }
 
   v16 = [RTStoredSettledStateTransitionEnumerationOptions alloc];
-  v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v11 endDate:v12];
+  v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:endDateCopy];
   v18 = [(RTStoredSettledStateTransitionEnumerationOptions *)v16 initWithAscending:1 dateInterval:v17 limit:0 batchSize:1];
 
   v37 = 0;
@@ -70,7 +70,7 @@
   *&buf[16] = 0x3032000000;
   v42 = __Block_byref_object_copy__166;
   v43 = __Block_byref_object_dispose__166;
-  v19 = v11;
+  v19 = dateCopy;
   v44 = v19;
   v33 = 0;
   v34 = &v33;
@@ -91,18 +91,18 @@
   v26[6] = &v37;
   v26[7] = &v27;
   v26[8] = a2;
-  [v10 enumerateStoredSettledStateTransitionsWithOptions:v18 enumerationBlock:v26];
+  [storeCopy enumerateStoredSettledStateTransitionsWithOptions:v18 enumerationBlock:v26];
   if ([v28[5] transitionToType] == 2)
   {
-    v20 = [v28[5] date];
-    [v12 timeIntervalSinceDate:v20];
+    date = [v28[5] date];
+    [endDateCopy timeIntervalSinceDate:date];
     v38[3] = v21 + v38[3];
   }
 
   v22 = [RTVisitSettledStateMetrics alloc];
   v23 = v34[3];
-  [v12 timeIntervalSinceDate:v19];
-  v24 = [RTVisitSettledStateMetrics initWithCountOfSettledStateTransitions:v22 duration:"initWithCountOfSettledStateTransitions:duration:isVisit:timeSettled:" isVisit:v23 timeSettled:v6];
+  [endDateCopy timeIntervalSinceDate:v19];
+  v24 = [RTVisitSettledStateMetrics initWithCountOfSettledStateTransitions:v22 duration:"initWithCountOfSettledStateTransitions:duration:isVisit:timeSettled:" isVisit:v23 timeSettled:visitCopy];
   _Block_object_dispose(&v27, 8);
 
   _Block_object_dispose(&v33, 8);
@@ -199,10 +199,10 @@ void __117__RTVisitSettledStateMetrics_createVisitSettledStateMetricsForSettledS
   }
 }
 
-+ (void)submitVisitSettledStateMetricsForStartDate:(id)a3 endDate:(id)a4 isVisit:(BOOL)a5 settledStateTransitionStore:(id)a6
++ (void)submitVisitSettledStateMetricsForStartDate:(id)date endDate:(id)endDate isVisit:(BOOL)visit settledStateTransitionStore:(id)store
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = [RTVisitSettledStateMetrics createVisitSettledStateMetricsForSettledStateTransitionStore:a6 startDate:a3 endDate:a4 isVisit:a5];
+  v6 = [RTVisitSettledStateMetrics createVisitSettledStateMetricsForSettledStateTransitionStore:store startDate:date endDate:endDate isVisit:visit];
   v7 = v6;
   if (v6)
   {
@@ -222,16 +222,16 @@ void __117__RTVisitSettledStateMetrics_createVisitSettledStateMetricsForSettledS
   }
 }
 
-+ (unint64_t)boundedIntegerMetricForCountOfSettledStateTransitions:(unint64_t)a3
++ (unint64_t)boundedIntegerMetricForCountOfSettledStateTransitions:(unint64_t)transitions
 {
-  if (a3 >= 0x12C)
+  if (transitions >= 0x12C)
   {
     return 300;
   }
 
   else
   {
-    return a3;
+    return transitions;
   }
 }
 
@@ -276,20 +276,20 @@ void __117__RTVisitSettledStateMetrics_createVisitSettledStateMetricsForSettledS
   return v2;
 }
 
-+ (unint64_t)bucketForDuration:(double)a3
++ (unint64_t)bucketForDuration:(double)duration
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   v5 = +[RTVisitSettledStateMetrics binsForDuration];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [self binForNumber:v4 bins:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:(double)a3 overDuration:(double)a4
++ (unint64_t)boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:(double)settled overDuration:(double)duration
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -302,7 +302,7 @@ void __117__RTVisitSettledStateMetrics_createVisitSettledStateMetricsForSettledS
     }
   }
 
-  if (a3 < 0.0)
+  if (settled < 0.0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -315,45 +315,45 @@ void __117__RTVisitSettledStateMetrics_createVisitSettledStateMetricsForSettledS
     }
   }
 
-  return [objc_opt_class() boundedIntegerMetricForPercentageOfTimeSettled:vcvtad_u64_f64(a3 / a4 * 100.0)];
+  return [objc_opt_class() boundedIntegerMetricForPercentageOfTimeSettled:vcvtad_u64_f64(settled / duration * 100.0)];
 }
 
-+ (unint64_t)boundedIntegerMetricForPercentageOfTimeSettled:(unint64_t)a3
++ (unint64_t)boundedIntegerMetricForPercentageOfTimeSettled:(unint64_t)settled
 {
-  if (a3 % 5 >= 3)
+  if (settled % 5 >= 3)
   {
-    return 5 * (a3 / 5) + 5;
+    return 5 * (settled / 5) + 5;
   }
 
   else
   {
-    return 5 * (a3 / 5);
+    return 5 * (settled / 5);
   }
 }
 
-- (RTVisitSettledStateMetrics)initWithCountOfSettledStateTransitions:(unint64_t)a3 duration:(double)a4 isVisit:(BOOL)a5 timeSettled:(double)a6
+- (RTVisitSettledStateMetrics)initWithCountOfSettledStateTransitions:(unint64_t)transitions duration:(double)duration isVisit:(BOOL)visit timeSettled:(double)settled
 {
-  v7 = a5;
+  visitCopy = visit;
   v20.receiver = self;
   v20.super_class = RTVisitSettledStateMetrics;
   v10 = [(RTMetric *)&v20 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "boundedIntegerMetricForCountOfSettledStateTransitions:", a3)}];
-    v12 = [(RTMetric *)v10 metrics];
-    [v12 setObject:v11 forKeyedSubscript:@"CountOfSettledStateChanges"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "boundedIntegerMetricForCountOfSettledStateTransitions:", transitions)}];
+    metrics = [(RTMetric *)v10 metrics];
+    [metrics setObject:v11 forKeyedSubscript:@"CountOfSettledStateChanges"];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForDuration:", a4)}];
-    v14 = [(RTMetric *)v10 metrics];
-    [v14 setObject:v13 forKeyedSubscript:@"Duration"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForDuration:", duration)}];
+    metrics2 = [(RTMetric *)v10 metrics];
+    [metrics2 setObject:v13 forKeyedSubscript:@"Duration"];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-    v16 = [(RTMetric *)v10 metrics];
-    [v16 setObject:v15 forKeyedSubscript:@"IsVisit"];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:visitCopy];
+    metrics3 = [(RTMetric *)v10 metrics];
+    [metrics3 setObject:v15 forKeyedSubscript:@"IsVisit"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:overDuration:", a6, a4)}];
-    v18 = [(RTMetric *)v10 metrics];
-    [v18 setObject:v17 forKeyedSubscript:@"PercentageOfTimeSettled"];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "boundedIntegerMetricPercentageOfTimeSettledForTimeSettled:overDuration:", settled, duration)}];
+    metrics4 = [(RTMetric *)v10 metrics];
+    [metrics4 setObject:v17 forKeyedSubscript:@"PercentageOfTimeSettled"];
   }
 
   return v10;

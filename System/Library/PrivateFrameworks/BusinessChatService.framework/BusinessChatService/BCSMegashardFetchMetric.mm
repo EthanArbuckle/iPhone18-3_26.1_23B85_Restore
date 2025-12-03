@@ -1,5 +1,5 @@
 @interface BCSMegashardFetchMetric
-+ (id)metricForMegashardType:(int64_t)a3 postProcessingMetricHandlers:(id)a4;
++ (id)metricForMegashardType:(int64_t)type postProcessingMetricHandlers:(id)handlers;
 - (NSDictionary)coreAnalyticsPayload;
 - (int64_t)type;
 @end
@@ -31,12 +31,12 @@
   return v8;
 }
 
-+ (id)metricForMegashardType:(int64_t)a3 postProcessingMetricHandlers:(id)a4
++ (id)metricForMegashardType:(int64_t)type postProcessingMetricHandlers:(id)handlers
 {
-  v5 = a4;
+  handlersCopy = handlers;
   v6 = [BCSMegashardFetchMetric alloc];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v8 = [(BCSMetric *)&v6->super.super.isa _initWithType:v7 context:v5 postProcessingMetricHandlers:?];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v8 = [(BCSMetric *)&v6->super.super.isa _initWithType:v7 context:handlersCopy postProcessingMetricHandlers:?];
 
   return v8;
 }

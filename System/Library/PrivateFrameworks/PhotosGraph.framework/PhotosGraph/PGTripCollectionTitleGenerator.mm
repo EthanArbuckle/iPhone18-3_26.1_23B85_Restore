@@ -1,55 +1,55 @@
 @interface PGTripCollectionTitleGenerator
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGTripCollectionTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(PGDefaultCollectionTitleGenerator *)self collection];
-  v6 = [v5 isLongTrip];
+  resultCopy = result;
+  collection = [(PGDefaultCollectionTitleGenerator *)self collection];
+  isLongTrip = [collection isLongTrip];
 
-  if (v6)
+  if (isLongTrip)
   {
     v7 = 0;
 LABEL_5:
     v10 = [PGTripMemoryTitleGenerator alloc];
-    v11 = [(PGTitleGenerator *)self momentNodes];
-    v12 = [(PGTitleGenerator *)self titleGenerationContext];
-    v13 = [(PGTripMemoryTitleGenerator *)v10 initWithMomentNodes:v11 type:v7 titleGenerationContext:v12];
+    momentNodes = [(PGTitleGenerator *)self momentNodes];
+    titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+    v13 = [(PGTripMemoryTitleGenerator *)v10 initWithMomentNodes:momentNodes type:v7 titleGenerationContext:titleGenerationContext];
 
-    if (v4)
+    if (resultCopy)
     {
-      v14 = [(PGTitleGenerator *)v13 title];
-      v15 = [(PGTitleGenerator *)v13 subtitle];
-      v4[2](v4, v14, v15);
+      title = [(PGTitleGenerator *)v13 title];
+      subtitle = [(PGTitleGenerator *)v13 subtitle];
+      resultCopy[2](resultCopy, title, subtitle);
     }
 
     goto LABEL_11;
   }
 
-  v8 = [(PGDefaultCollectionTitleGenerator *)self collection];
-  v9 = [v8 isShortTrip];
+  collection2 = [(PGDefaultCollectionTitleGenerator *)self collection];
+  isShortTrip = [collection2 isShortTrip];
 
-  if (v9)
+  if (isShortTrip)
   {
     v7 = 1;
     goto LABEL_5;
   }
 
   v16 = +[PGLogging sharedLogging];
-  v17 = [v16 loggingConnection];
+  loggingConnection = [v16 loggingConnection];
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Collection is not a trip, can't use trip collection title generator", buf, 2u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Collection is not a trip, can't use trip collection title generator", buf, 2u);
   }
 
   v18.receiver = self;
   v18.super_class = PGTripCollectionTitleGenerator;
-  [(PGTitleGenerator *)&v18 _generateTitleAndSubtitleWithResult:v4];
+  [(PGTitleGenerator *)&v18 _generateTitleAndSubtitleWithResult:resultCopy];
 LABEL_11:
 }
 

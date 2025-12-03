@@ -1,7 +1,7 @@
 @interface PXPhotosGridToggleAspectFitActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)barButtonItemWithTarget:(id)a3 action:(SEL)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)barButtonItemWithTarget:(id)target action:(SEL)action;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (id)menuActionImageName;
 - (id)menuElement;
 - (void)performUserInteractionTask;
@@ -11,13 +11,13 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__PXPhotosGridToggleAspectFitActionPerformer_performUserInteractionTask__block_invoke;
   v5[3] = &unk_1E773DCC0;
-  v6 = v3;
-  v4 = v3;
+  v6 = viewModel;
+  v4 = viewModel;
   [v4 performChanges:v5];
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }
@@ -31,36 +31,36 @@ void __72__PXPhotosGridToggleAspectFitActionPerformer_performUserInteractionTask
   [v4 setUserWantsAspectFitContent:v5];
 }
 
-- (id)barButtonItemWithTarget:(id)a3 action:(SEL)a4
+- (id)barButtonItemWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   if (MEMORY[0x1A590D320]())
   {
     v10.receiver = self;
     v10.super_class = PXPhotosGridToggleAspectFitActionPerformer;
-    v7 = [(PXActionPerformer *)&v10 barButtonItemWithTarget:v6 action:a4];
+    v7 = [(PXActionPerformer *)&v10 barButtonItemWithTarget:targetCopy action:action];
   }
 
   else
   {
     v8 = [(PXPhotosGridToggleAspectFitActionPerformer *)self localizedTitleForUseCase:1];
-    v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v8 style:0 target:v6 action:a4];
+    v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v8 style:0 target:targetCopy action:action];
   }
 
   return v7;
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v4 aspectFitContent];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  aspectFitContent = [viewModel aspectFitContent];
 
-  if (a3 - 1 < 2)
+  if (case - 1 < 2)
   {
     v6 = @"PXLibraryAllPhotosToggleFullFramesActionTitle";
     v7 = @"PXLibraryAllPhotosToggleSquaresActionTitle";
 LABEL_5:
-    if (v5)
+    if (aspectFitContent)
     {
       v8 = v7;
     }
@@ -74,7 +74,7 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!case)
   {
     v6 = @"PXLibraryAllPhotosToggleFullFrames";
     v7 = @"PXLibraryAllPhotosToggleSquares";
@@ -89,8 +89,8 @@ LABEL_10:
 
 - (id)menuActionImageName
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  if ([v2 aspectFitContent])
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  if ([viewModel aspectFitContent])
   {
     v3 = @"rectangle.arrowtriangle.2.outward";
   }
@@ -109,40 +109,40 @@ LABEL_10:
 {
   v10.receiver = self;
   v10.super_class = PXPhotosGridToggleAspectFitActionPerformer;
-  v4 = [(PXActionPerformer *)&v10 menuElement];
-  if (v4)
+  menuElement = [(PXActionPerformer *)&v10 menuElement];
+  if (menuElement)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleAspectFitActionPerformer.m" lineNumber:33 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v8, v9}];
+      px_descriptionForAssertionMessage = [menuElement px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleAspectFitActionPerformer.m" lineNumber:33 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v8, px_descriptionForAssertionMessage}];
     }
   }
 
-  [v4 setAttributes:{objc_msgSend(v4, "attributes") | 8}];
+  [menuElement setAttributes:{objc_msgSend(menuElement, "attributes") | 8}];
 
-  return v4;
+  return menuElement;
 }
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  if ([v4 supportsAspectRatioToggle])
+  modelCopy = model;
+  if ([modelCopy supportsAspectRatioToggle])
   {
-    v5 = [v4 currentDataSource];
-    v6 = [v5 containsAnyItems];
+    currentDataSource = [modelCopy currentDataSource];
+    containsAnyItems = [currentDataSource containsAnyItems];
   }
 
   else
   {
-    v6 = 0;
+    containsAnyItems = 0;
   }
 
-  return v6;
+  return containsAnyItems;
 }
 
 @end

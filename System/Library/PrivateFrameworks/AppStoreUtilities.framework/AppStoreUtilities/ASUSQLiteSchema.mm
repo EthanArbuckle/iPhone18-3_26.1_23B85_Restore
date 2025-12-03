@@ -1,46 +1,46 @@
 @interface ASUSQLiteSchema
-- (ASUSQLiteSchema)initWithConnection:(id)a3;
-- (BOOL)column:(id)a3 existsInTable:(id)a4;
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4;
-- (BOOL)tableExists:(id)a3;
+- (ASUSQLiteSchema)initWithConnection:(id)connection;
+- (BOOL)column:(id)column existsInTable:(id)table;
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block;
+- (BOOL)tableExists:(id)exists;
 - (int64_t)currentUserVersion;
 @end
 
 @implementation ASUSQLiteSchema
 
-- (ASUSQLiteSchema)initWithConnection:(id)a3
+- (ASUSQLiteSchema)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ASUSQLiteSchema;
   v6 = [(ASUSQLiteSchema *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (BOOL)column:(id)a3 existsInTable:(id)a4
+- (BOOL)column:(id)column existsInTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  tableCopy = table;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   connection = self->_connection;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info(%@)", v7];;
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info(%@)", tableCopy];;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__ASUSQLiteSchema_column_existsInTable___block_invoke;
   v12[3] = &unk_278C97748;
   v14 = &v15;
-  v10 = v6;
+  v10 = columnCopy;
   v13 = v10;
-  [(ASUSQLiteConnection *)connection executeQuery:v9 withResults:v12];
+  [(ASUSQLiteConnection *)connection executeQuery:tableCopy withResults:v12];
 
   LOBYTE(connection) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -93,18 +93,18 @@ uint64_t __37__ASUSQLiteSchema_currentUserVersion__block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   connection = self->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__ASUSQLiteSchema_migrateToVersion_usingBlock___block_invoke;
   v10[3] = &unk_278C97798;
-  v11 = v6;
-  v12 = a3;
+  v11 = blockCopy;
+  versionCopy = version;
   v10[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   LOBYTE(self) = [(ASUSQLiteConnection *)connection performTransaction:v10 error:0];
 
   return self;
@@ -159,21 +159,21 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
   connection = self->_connection;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master where name = '%@'", v4];
+  existsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master where name = '%@'", existsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__ASUSQLiteSchema_tableExists___block_invoke;
   v8[3] = &unk_278C97770;
   v8[4] = &v9;
-  [(ASUSQLiteConnection *)connection executeQuery:v6 withResults:v8];
+  [(ASUSQLiteConnection *)connection executeQuery:existsCopy withResults:v8];
 
   LOBYTE(connection) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);

@@ -1,17 +1,17 @@
 @interface CKSpotlightQueryUtilities
 + (BOOL)shouldDisplayWalletSearchController;
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 annotatedTextColor:(id)a6;
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 primaryFont:(id)a6 annotatedTextColor:(id)a7 annotatedFont:(id)a8;
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color annotatedTextColor:(id)textColor;
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color primaryFont:(id)font annotatedTextColor:(id)textColor annotatedFont:(id)annotatedFont;
 + (id)defaultSearchControllers;
 + (id)detailsSearchControllers;
-+ (id)matchedRankingQueriesForResult:(id)a3 withRankingQueryCount:(unint64_t)a4 maxRankingQuery:(unint64_t *)a5;
-+ (id)queryStringForSearchString:(id)a3 attributes:(id)a4 matchType:(unint64_t)a5;
-+ (id)queryStringFromSubqueries:(id)a3 combineOperator:(unint64_t)a4;
-+ (id)rankingQueriesForSearchString:(id)a3 attributes:(id)a4;
-+ (id)rankingQueryForField:(id)a3 matchType:(unint64_t)a4 searchString:(id)a5;
-+ (id)stringByEscapingSearchString:(id)a3;
-+ (id)tokenAddressesForFilteringWithContact:(id)a3;
-+ (unint64_t)countOfNonSpaceCharsInSearchString:(id)a3;
++ (id)matchedRankingQueriesForResult:(id)result withRankingQueryCount:(unint64_t)count maxRankingQuery:(unint64_t *)query;
++ (id)queryStringForSearchString:(id)string attributes:(id)attributes matchType:(unint64_t)type;
++ (id)queryStringFromSubqueries:(id)subqueries combineOperator:(unint64_t)operator;
++ (id)rankingQueriesForSearchString:(id)string attributes:(id)attributes;
++ (id)rankingQueryForField:(id)field matchType:(unint64_t)type searchString:(id)string;
++ (id)stringByEscapingSearchString:(id)string;
++ (id)tokenAddressesForFilteringWithContact:(id)contact;
++ (unint64_t)countOfNonSpaceCharsInSearchString:(id)string;
 @end
 
 @implementation CKSpotlightQueryUtilities
@@ -36,10 +36,10 @@
   }
 
   [v4 insertObject:objc_opt_class() atIndex:3];
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isSearchTokensEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchTokensEnabled = [mEMORY[0x1E69A8070] isSearchTokensEnabled];
 
-  if (v6)
+  if (isSearchTokensEnabled)
   {
     [v4 insertObject:objc_opt_class() atIndex:1];
   }
@@ -49,18 +49,18 @@
 
 + (BOOL)shouldDisplayWalletSearchController
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 1;
   }
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 supportsPassbookAttachments];
+  supportsPassbookAttachments = [v4 supportsPassbookAttachments];
 
-  return v5;
+  return supportsPassbookAttachments;
 }
 
 + (id)detailsSearchControllers
@@ -85,23 +85,23 @@
   return v4;
 }
 
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 primaryFont:(id)a6 annotatedTextColor:(id)a7 annotatedFont:(id)a8
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color primaryFont:(id)font annotatedTextColor:(id)textColor annotatedFont:(id)annotatedFont
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v14 length])
+  textCopy = text;
+  resultTextCopy = resultText;
+  colorCopy = color;
+  fontCopy = font;
+  textColorCopy = textColor;
+  annotatedFontCopy = annotatedFont;
+  if ([resultTextCopy length])
   {
-    v29 = v15;
-    v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v14];
+    v29 = colorCopy;
+    v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:resultTextCopy];
     v20 = [v19 length];
-    v27 = v13;
-    if ([v13 length])
+    v27 = textCopy;
+    if ([textCopy length])
     {
-      v21 = [v14 rangeOfString:v13 options:129];
+      v21 = [resultTextCopy rangeOfString:textCopy options:129];
       v23 = v22;
     }
 
@@ -112,17 +112,17 @@
     }
 
     v24 = *MEMORY[0x1E69DB648];
-    [v19 addAttribute:*MEMORY[0x1E69DB648] value:v16 range:{0, v20, v27}];
+    [v19 addAttribute:*MEMORY[0x1E69DB648] value:fontCopy range:{0, v20, v27}];
     v25 = *MEMORY[0x1E69DB650];
     [v19 addAttribute:*MEMORY[0x1E69DB650] value:v29 range:{0, v20}];
     if (v23)
     {
-      [v19 addAttribute:v25 value:v17 range:{v21, v23}];
-      [v19 addAttribute:v24 value:v18 range:{v21, v23}];
+      [v19 addAttribute:v25 value:textColorCopy range:{v21, v23}];
+      [v19 addAttribute:v24 value:annotatedFontCopy range:{v21, v23}];
     }
 
-    v13 = v28;
-    v15 = v29;
+    textCopy = v28;
+    colorCopy = v29;
   }
 
   else
@@ -133,19 +133,19 @@
   return v19;
 }
 
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 annotatedTextColor:(id)a6
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color annotatedTextColor:(id)textColor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 length])
+  textCopy = text;
+  resultTextCopy = resultText;
+  colorCopy = color;
+  textColorCopy = textColor;
+  if ([resultTextCopy length])
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10];
+    v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:resultTextCopy];
     v14 = [v13 length];
-    if ([v9 length])
+    if ([textCopy length])
     {
-      v15 = [v10 rangeOfString:v9 options:129];
+      v15 = [resultTextCopy rangeOfString:textCopy options:129];
       v17 = v16;
     }
 
@@ -156,10 +156,10 @@
     }
 
     v18 = *MEMORY[0x1E69DB650];
-    [v13 addAttribute:*MEMORY[0x1E69DB650] value:v11 range:{0, v14}];
+    [v13 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, v14}];
     if (v17)
     {
-      [v13 addAttribute:v18 value:v12 range:{v15, v17}];
+      [v13 addAttribute:v18 value:textColorCopy range:{v15, v17}];
     }
   }
 
@@ -171,9 +171,9 @@
   return v13;
 }
 
-+ (id)stringByEscapingSearchString:(id)a3
++ (id)stringByEscapingSearchString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   [v3 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"'" withString:@"\\'" options:0 range:{0, objc_msgSend(v3, "length")}];
@@ -182,12 +182,12 @@
   return v3;
 }
 
-+ (unint64_t)countOfNonSpaceCharsInSearchString:(id)a3
++ (unint64_t)countOfNonSpaceCharsInSearchString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+  stringCopy = string;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v5 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v15 = 0u;
   v16 = 0u;
@@ -226,11 +226,11 @@
   return v9;
 }
 
-+ (id)queryStringForSearchString:(id)a3 attributes:(id)a4 matchType:(unint64_t)a5
++ (id)queryStringForSearchString:(id)string attributes:(id)attributes matchType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() stringByEscapingSearchString:v7];
+  stringCopy = string;
+  attributesCopy = attributes;
+  v9 = [objc_opt_class() stringByEscapingSearchString:stringCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -241,11 +241,11 @@
   v13[1] = 3221225472;
   v13[2] = __77__CKSpotlightQueryUtilities_queryStringForSearchString_attributes_matchType___block_invoke;
   v13[3] = &unk_1E72F17D0;
-  v16 = a5;
+  typeCopy = type;
   v10 = v9;
   v14 = v10;
   v15 = &v17;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [attributesCopy enumerateObjectsUsingBlock:v13];
   v11 = [v18[5] componentsJoinedByString:@" || "];
 
   _Block_object_dispose(&v17, 8);
@@ -286,12 +286,12 @@ void __77__CKSpotlightQueryUtilities_queryStringForSearchString_attributes_match
 LABEL_7:
 }
 
-+ (id)rankingQueriesForSearchString:(id)a3 attributes:(id)a4
++ (id)rankingQueriesForSearchString:(id)string attributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() stringByEscapingSearchString:v6];
+  attributesCopy = attributes;
+  stringCopy = string;
+  v7 = [objc_opt_class() stringByEscapingSearchString:stringCopy];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -299,7 +299,7 @@ LABEL_7:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v5;
+  v10 = attributesCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -332,21 +332,21 @@ LABEL_7:
   return v18;
 }
 
-+ (id)rankingQueryForField:(id)a3 matchType:(unint64_t)a4 searchString:(id)a5
++ (id)rankingQueryForField:(id)field matchType:(unint64_t)type searchString:(id)string
 {
-  v7 = a3;
-  v8 = a5;
-  if (!a4)
+  fieldCopy = field;
+  stringCopy = string;
+  if (!type)
   {
     v9 = @"%@=%@*%@";
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v9 = @"%@=*%@*%@";
 LABEL_5:
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:v9, v7, v8, @"cwdt"];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:v9, fieldCopy, stringCopy, @"cwdt"];
     goto LABEL_7;
   }
 
@@ -356,23 +356,23 @@ LABEL_7:
   return v10;
 }
 
-+ (id)matchedRankingQueriesForResult:(id)a3 withRankingQueryCount:(unint64_t)a4 maxRankingQuery:(unint64_t *)a5
++ (id)matchedRankingQueriesForResult:(id)result withRankingQueryCount:(unint64_t)count maxRankingQuery:(unint64_t *)query
 {
-  if (a4)
+  if (count)
   {
-    v7 = [a3 attributeSet];
-    v8 = [v7 queryResultRelevance];
+    attributeSet = [result attributeSet];
+    queryResultRelevance = [attributeSet queryResultRelevance];
 
-    if (v8)
+    if (queryResultRelevance)
     {
       v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v10 = [v8 unsignedIntValue];
+      unsignedIntValue = [queryResultRelevance unsignedIntValue];
       v11 = 0;
       v12 = 0;
       do
       {
         v13 = v11 + 1;
-        if ((v10 >> v11))
+        if ((unsignedIntValue >> v11))
         {
           [v9 addIndex:v13];
           if (v12 <= v13)
@@ -384,10 +384,10 @@ LABEL_7:
         v11 = v13;
       }
 
-      while (a4 != v13);
-      if (a5)
+      while (count != v13);
+      if (query)
       {
-        *a5 = v12;
+        *query = v12;
       }
     }
 
@@ -405,13 +405,13 @@ LABEL_7:
   return v9;
 }
 
-+ (id)queryStringFromSubqueries:(id)a3 combineOperator:(unint64_t)a4
++ (id)queryStringFromSubqueries:(id)subqueries combineOperator:(unint64_t)operator
 {
-  v5 = a3;
-  if ([v5 count])
+  subqueriesCopy = subqueries;
+  if ([subqueriesCopy count])
   {
     v6 = @"&&";
-    if (!a4)
+    if (!operator)
     {
       v6 = @"||";
     }
@@ -422,7 +422,7 @@ LABEL_7:
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__81;
     v18 = __Block_byref_object_dispose__81;
-    v19 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __71__CKSpotlightQueryUtilities_queryStringFromSubqueries_combineOperator___block_invoke;
@@ -430,7 +430,7 @@ LABEL_7:
     v13 = &v14;
     v8 = v7;
     v12 = v8;
-    [v5 enumerateObjectsUsingBlock:v11];
+    [subqueriesCopy enumerateObjectsUsingBlock:v11];
     v9 = v15[5];
 
     _Block_object_dispose(&v14, 8);
@@ -463,19 +463,19 @@ void __71__CKSpotlightQueryUtilities_queryStringFromSubqueries_combineOperator__
   *(v6 + 40) = v5;
 }
 
-+ (id)tokenAddressesForFilteringWithContact:(id)a3
++ (id)tokenAddressesForFilteringWithContact:(id)contact
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [v3 emailAddresses];
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v6 = [emailAddresses countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v6)
     {
       v7 = v6;
@@ -486,14 +486,14 @@ void __71__CKSpotlightQueryUtilities_queryStringFromSubqueries_combineOperator__
         {
           if (*v25 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) value];
-          [v4 addObject:v10];
+          value = [*(*(&v24 + 1) + 8 * i) value];
+          [v4 addObject:value];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v7 = [emailAddresses countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v7);
@@ -503,8 +503,8 @@ void __71__CKSpotlightQueryUtilities_queryStringFromSubqueries_combineOperator__
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [v3 phoneNumbers];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v12 = [phoneNumbers countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -515,17 +515,17 @@ void __71__CKSpotlightQueryUtilities_queryStringFromSubqueries_combineOperator__
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * j) value];
-          v17 = [v16 stringValue];
+          value2 = [*(*(&v20 + 1) + 8 * j) value];
+          stringValue = [value2 stringValue];
           v18 = IMNormalizeFormattedString();
 
           [v4 addObject:v18];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v13 = [phoneNumbers countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v13);

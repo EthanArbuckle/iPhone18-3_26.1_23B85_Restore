@@ -1,70 +1,70 @@
 @interface PXCPLStatusController
 - (PXCPLStatusController)init;
-- (PXCPLStatusController)initWithViewModel:(id)a3;
+- (PXCPLStatusController)initWithViewModel:(id)model;
 - (void)_statusProviderDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setFallbackAction:(id)a3;
-- (void)setFallbackActionTitle:(id)a3;
-- (void)setFallbackAttributedMessage:(id)a3;
-- (void)setFallbackMessage:(id)a3;
-- (void)setFallbackTitle:(id)a3;
-- (void)setStatusProvider:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setFallbackAction:(id)action;
+- (void)setFallbackActionTitle:(id)title;
+- (void)setFallbackAttributedMessage:(id)message;
+- (void)setFallbackMessage:(id)message;
+- (void)setFallbackTitle:(id)title;
+- (void)setStatusProvider:(id)provider;
 @end
 
 @implementation PXCPLStatusController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCPLUIStatusProviderChangeObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCPLUIStatusProviderChangeObserverContext != context)
   {
-    v12 = v9;
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"context == PXCPLUIStatusProviderChangeObserverContext"}];
+    v12 = observableCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"context == PXCPLUIStatusProviderChangeObserverContext"}];
 
-    v9 = v12;
+    observableCopy = v12;
   }
 
-  if ((v6 & 0x25E3) != 0)
+  if ((changeCopy & 0x25E3) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXCPLStatusController *)self _statusProviderDidChange];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
 - (void)_statusProviderDidChange
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCPLUIStatusProvider *)self->_statusProvider status];
-  v27 = v3;
-  if (!v3)
+  status = [(PXCPLUIStatusProvider *)self->_statusProvider status];
+  v27 = status;
+  if (!status)
   {
-    v26 = [0 stateDescription];
+    stateDescription = [0 stateDescription];
 LABEL_10:
     v8 = self->_fallbackTitle;
-    v9 = self->_fallbackMessage;
+    failureDescription = self->_fallbackMessage;
     v15 = self->_fallbackAttributedMessage;
-    v10 = self->_fallbackActionTitle;
+    actionTitle = self->_fallbackActionTitle;
     v14 = _Block_copy(self->_fallbackAction);
-    v11 = 0;
-    v12 = 0;
-    v13 = 0;
+    actionConfirmationAlertTitle = 0;
+    actionConfirmationAlertSubtitle = 0;
+    actionConfirmationAlertButtonTitle = 0;
     goto LABEL_11;
   }
 
-  v4 = v3;
-  v5 = [v3 state];
-  v6 = [v4 stateDescription];
-  v7 = v6;
-  if (!v5)
+  v4 = status;
+  state = [status state];
+  stateDescription2 = [v4 stateDescription];
+  v7 = stateDescription2;
+  if (!state)
   {
-    v26 = v6;
+    stateDescription = stateDescription2;
     goto LABEL_10;
   }
 
-  if (![v6 length])
+  if (![stateDescription2 length])
   {
     v16 = PLUserStatusGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -74,17 +74,17 @@ LABEL_10:
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_ERROR, "No or empty state description provided: %{public}@", buf, 0xCu);
     }
 
-    v26 = v7;
+    stateDescription = v7;
 
     goto LABEL_10;
   }
 
   v8 = v7;
-  v9 = [v4 failureDescription];
-  v10 = [v4 actionTitle];
-  v11 = [v4 actionConfirmationAlertTitle];
-  v12 = [v4 actionConfirmationAlertSubtitle];
-  v13 = [v4 actionConfirmationAlertButtonTitle];
+  failureDescription = [v4 failureDescription];
+  actionTitle = [v4 actionTitle];
+  actionConfirmationAlertTitle = [v4 actionConfirmationAlertTitle];
+  actionConfirmationAlertSubtitle = [v4 actionConfirmationAlertSubtitle];
+  actionConfirmationAlertButtonTitle = [v4 actionConfirmationAlertButtonTitle];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__PXCPLStatusController__statusProviderDidChange__block_invoke;
@@ -93,7 +93,7 @@ LABEL_10:
   v14 = _Block_copy(aBlock);
 
   v15 = 0;
-  v26 = v8;
+  stateDescription = v8;
 LABEL_11:
   viewModel = self->_viewModel;
   v28[0] = MEMORY[0x1E69E9820];
@@ -101,20 +101,20 @@ LABEL_11:
   v28[2] = __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2;
   v28[3] = &unk_1E773D750;
   v29 = v8;
-  v30 = v9;
+  v30 = failureDescription;
   v31 = v15;
-  v32 = v10;
-  v33 = v11;
-  v34 = v12;
-  v35 = v13;
+  v32 = actionTitle;
+  v33 = actionConfirmationAlertTitle;
+  v34 = actionConfirmationAlertSubtitle;
+  v35 = actionConfirmationAlertButtonTitle;
   v36 = v14;
   v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
+  v19 = actionConfirmationAlertButtonTitle;
+  v20 = actionConfirmationAlertSubtitle;
+  v21 = actionConfirmationAlertTitle;
+  v22 = actionTitle;
   v23 = v15;
-  v24 = v9;
+  v24 = failureDescription;
   v25 = v8;
   [(PXStatusViewModel *)viewModel performChanges:v28];
 }
@@ -146,9 +146,9 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
   [v4 setAction:a1[11]];
 }
 
-- (void)setFallbackAction:(id)a3
+- (void)setFallbackAction:(id)action
 {
-  aBlock = a3;
+  aBlock = action;
   v4 = _Block_copy(self->_fallbackAction);
   v5 = _Block_copy(aBlock);
   v6 = v5;
@@ -171,15 +171,15 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
   }
 }
 
-- (void)setFallbackActionTitle:(id)a3
+- (void)setFallbackActionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   fallbackActionTitle = self->_fallbackActionTitle;
-  if (fallbackActionTitle != v4)
+  if (fallbackActionTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)fallbackActionTitle isEqualToString:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)fallbackActionTitle isEqualToString:titleCopy];
+    titleCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -187,20 +187,20 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
       self->_fallbackActionTitle = v7;
 
       [(PXCPLStatusController *)self _statusProviderDidChange];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setFallbackAttributedMessage:(id)a3
+- (void)setFallbackAttributedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   fallbackAttributedMessage = self->_fallbackAttributedMessage;
-  if (fallbackAttributedMessage != v4)
+  if (fallbackAttributedMessage != messageCopy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)fallbackAttributedMessage isEqual:v4];
-    v4 = v9;
+    v9 = messageCopy;
+    v6 = [(NSAttributedString *)fallbackAttributedMessage isEqual:messageCopy];
+    messageCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSAttributedString *)v9 copy];
@@ -208,20 +208,20 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
       self->_fallbackAttributedMessage = v7;
 
       [(PXCPLStatusController *)self _statusProviderDidChange];
-      v4 = v9;
+      messageCopy = v9;
     }
   }
 }
 
-- (void)setFallbackMessage:(id)a3
+- (void)setFallbackMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   fallbackMessage = self->_fallbackMessage;
-  if (fallbackMessage != v4)
+  if (fallbackMessage != messageCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)fallbackMessage isEqualToString:v4];
-    v4 = v9;
+    v9 = messageCopy;
+    v6 = [(NSString *)fallbackMessage isEqualToString:messageCopy];
+    messageCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -229,20 +229,20 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
       self->_fallbackMessage = v7;
 
       [(PXCPLStatusController *)self _statusProviderDidChange];
-      v4 = v9;
+      messageCopy = v9;
     }
   }
 }
 
-- (void)setFallbackTitle:(id)a3
+- (void)setFallbackTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   fallbackTitle = self->_fallbackTitle;
-  if (fallbackTitle != v4)
+  if (fallbackTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)fallbackTitle isEqualToString:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)fallbackTitle isEqualToString:titleCopy];
+    titleCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -250,33 +250,33 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
       self->_fallbackTitle = v7;
 
       [(PXCPLStatusController *)self _statusProviderDidChange];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setStatusProvider:(id)a3
+- (void)setStatusProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   statusProvider = self->_statusProvider;
-  if (statusProvider != v5)
+  if (statusProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(PXCPLUIStatusProvider *)statusProvider unregisterChangeObserver:self context:PXCPLUIStatusProviderChangeObserverContext];
-    objc_storeStrong(&self->_statusProvider, a3);
+    objc_storeStrong(&self->_statusProvider, provider);
     [(PXCPLUIStatusProvider *)self->_statusProvider registerChangeObserver:self context:PXCPLUIStatusProviderChangeObserverContext];
     [(PXCPLStatusController *)self _statusProviderDidChange];
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
-- (PXCPLStatusController)initWithViewModel:(id)a3
+- (PXCPLStatusController)initWithViewModel:(id)model
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   v11.receiver = self;
@@ -285,7 +285,7 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_viewModel, a3);
+    objc_storeStrong(&v7->_viewModel, model);
     [(PXCPLStatusController *)v8 _statusProviderDidChange];
   }
 
@@ -294,8 +294,8 @@ void __49__PXCPLStatusController__statusProviderDidChange__block_invoke_2(void *
 
 - (PXCPLStatusController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXCPLStatusController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusController.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXCPLStatusController init]"}];
 
   abort();
 }

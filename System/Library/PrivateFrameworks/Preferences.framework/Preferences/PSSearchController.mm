@@ -1,36 +1,36 @@
 @interface PSSearchController
-- (BOOL)_setBoolValue:(BOOL)a3 forIvar:(BOOL *)a4;
-- (BOOL)activateWithInitialText:(id)a3 animated:(BOOL)a4;
-- (Class)rootSearchControllerClassForSearchModel:(id)a3;
+- (BOOL)_setBoolValue:(BOOL)value forIvar:(BOOL *)ivar;
+- (BOOL)activateWithInitialText:(id)text animated:(BOOL)animated;
+- (Class)rootSearchControllerClassForSearchModel:(id)model;
 - (PSListController)listController;
-- (PSSearchController)initWithListController:(id)a3;
+- (PSSearchController)initWithListController:(id)controller;
 - (PSSearchControllerDelegate)delegate;
-- (id)rootSpecifiersForSearchModel:(id)a3;
-- (id)searchResultsController:(id)a3 iconForSearchEntry:(id)a4;
+- (id)rootSpecifiersForSearchModel:(id)model;
+- (id)searchResultsController:(id)controller iconForSearchEntry:(id)entry;
 - (void)_buildSearchUIIfNecessary;
-- (void)_reloadSettings:(BOOL)a3;
-- (void)_updateListControllerHeaderView:(BOOL)a3;
-- (void)_updateSearchResultsWithText:(id)a3;
+- (void)_reloadSettings:(BOOL)settings;
+- (void)_updateListControllerHeaderView:(BOOL)view;
+- (void)_updateSearchResultsWithText:(id)text;
 - (void)dealloc;
-- (void)searchModel:(id)a3 updatedWithNewResults:(id)a4 forQuery:(id)a5;
-- (void)searchResultsController:(id)a3 didSelectSearchEntry:(id)a4;
-- (void)setSearchBarVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)searchModel:(id)model updatedWithNewResults:(id)results forQuery:(id)query;
+- (void)searchResultsController:(id)controller didSelectSearchEntry:(id)entry;
+- (void)setSearchBarVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation PSSearchController
 
-- (PSSearchController)initWithListController:(id)a3
+- (PSSearchController)initWithListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = PSSearchController;
   v5 = [(PSSearchController *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_listController, v4);
+    objc_storeWeak(&v5->_listController, controllerCopy);
     v7 = +[PSSearchModel sharedInstance];
     [v7 addDelegate:v6];
 
@@ -38,10 +38,10 @@
     [v8 setDataSource:v6];
 
     v6->_searchEnabled = 1;
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 sf_isInternalInstall];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-    if (v10)
+    if (sf_isInternalInstall)
     {
       v16[0] = 0;
       v16[1] = v16;
@@ -74,10 +74,10 @@
   v3 = +[PSSearchModel sharedInstance];
   [v3 removeDelegate:self];
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     notify_cancel(self->_notifyToken);
   }
@@ -107,31 +107,31 @@
 
     [(UISearchController *)self->_searchController setDelegate:self];
     [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
-    v8 = [(UISearchController *)self->_searchController searchBar];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
     v7 = PS_LocalizedString(@"SEARCH_SETTINGS_PLACEHOLDER");
-    [v8 setPlaceholder:v7];
+    [searchBar setPlaceholder:v7];
 
-    [v8 sizeToFit];
+    [searchBar sizeToFit];
   }
 }
 
-- (BOOL)_setBoolValue:(BOOL)a3 forIvar:(BOOL *)a4
+- (BOOL)_setBoolValue:(BOOL)value forIvar:(BOOL *)ivar
 {
-  result = *a4 != a3;
-  *a4 = a3;
+  result = *ivar != value;
+  *ivar = value;
   return result;
 }
 
-- (void)_reloadSettings:(BOOL)a3
+- (void)_reloadSettings:(BOOL)settings
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 sf_isInternalInstall];
+  settingsCopy = settings;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v6)
+  if (sf_isInternalInstall)
   {
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v7 sf_isInternalInstall])
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 sf_isInternalInstall])
     {
       keyExistsAndHasValidFormat = 0;
       if (CFPreferencesGetAppBooleanValue(@"PSSearchIsEnabled", @"com.apple.Preferences", &keyExistsAndHasValidFormat))
@@ -155,7 +155,7 @@
     if ([(PSSearchController *)self _setBoolValue:v9 forIvar:&self->_searchEnabled])
     {
       [(PSSearchController *)self _updateListControllerHeaderView:0];
-      if (v3 && self->_searchEnabled)
+      if (settingsCopy && self->_searchEnabled)
       {
         [(PSSearchResultsController *)self->_resultsController reloadData];
       }
@@ -163,63 +163,63 @@
   }
 }
 
-- (void)_updateListControllerHeaderView:(BOOL)a3
+- (void)_updateListControllerHeaderView:(BOOL)view
 {
-  if (a3 || (v4 = objc_loadWeakRetained(&self->_listController), v5 = [v4 isViewLoaded], v4, v5))
+  if (view || (v4 = objc_loadWeakRetained(&self->_listController), v5 = [v4 isViewLoaded], v4, v5))
   {
     if (self->_searchEnabled)
     {
-      v11 = [(PSSearchController *)self searchBar];
+      searchBar = [(PSSearchController *)self searchBar];
     }
 
     else
     {
-      v11 = 0;
+      searchBar = 0;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_listController);
-    v7 = [WeakRetained table];
-    v8 = [v7 tableHeaderView];
+    table = [WeakRetained table];
+    tableHeaderView = [table tableHeaderView];
 
-    if (v8 != v11)
+    if (tableHeaderView != searchBar)
     {
       v9 = objc_loadWeakRetained(&self->_listController);
-      v10 = [v9 table];
-      [v10 setTableHeaderView:v11];
+      table2 = [v9 table];
+      [table2 setTableHeaderView:searchBar];
     }
   }
 }
 
-- (void)setSearchBarVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setSearchBarVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v17 = [WeakRetained table];
+  table = [WeakRetained table];
 
   v8 = objc_loadWeakRetained(&self->_listController);
-  v9 = [v8 view];
-  v10 = [v9 safeAreaLayoutGuide];
-  [v10 layoutFrame];
+  view = [v8 view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v12 = v11;
 
-  v13 = [(PSSearchController *)self searchBar];
-  [v13 frame];
+  searchBar = [(PSSearchController *)self searchBar];
+  [searchBar frame];
   v15 = v14;
 
   v16 = -v12;
-  if (!v5)
+  if (!visibleCopy)
   {
     v16 = v15 - v12;
   }
 
-  [v17 setContentOffset:v4 animated:{0.0, v16}];
+  [table setContentOffset:animatedCopy animated:{0.0, v16}];
 }
 
-- (BOOL)activateWithInitialText:(id)a3 animated:(BOOL)a4
+- (BOOL)activateWithInitialText:(id)text animated:(BOOL)animated
 {
-  v5 = a3;
-  if (-[PSSearchController isActive](self, "isActive") || ![v5 length])
+  textCopy = text;
+  if (-[PSSearchController isActive](self, "isActive") || ![textCopy length])
   {
     v6 = 0;
   }
@@ -228,13 +228,13 @@
   {
     v6 = 1;
     [(PSSearchController *)self setActive:1];
-    v7 = [(PSSearchController *)self searchBar];
-    [v7 becomeFirstResponder];
+    searchBar = [(PSSearchController *)self searchBar];
+    [searchBar becomeFirstResponder];
 
-    v8 = [(PSSearchController *)self searchBar];
-    [v8 setText:v5];
+    searchBar2 = [(PSSearchController *)self searchBar];
+    [searchBar2 setText:textCopy];
 
-    [(PSSearchController *)self _updateSearchResultsWithText:v5];
+    [(PSSearchController *)self _updateSearchResultsWithText:textCopy];
   }
 
   return v6;
@@ -261,12 +261,12 @@ void __43__PSSearchController_removeRootSpecifiers___block_invoke(uint64_t a1, v
   [v3 removeRootSpecifier:v2];
 }
 
-- (void)searchResultsController:(id)a3 didSelectSearchEntry:(id)a4
+- (void)searchResultsController:(id)controller didSelectSearchEntry:(id)entry
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 isRootURL];
-  v7 = [v5 url];
+  entryCopy = entry;
+  isRootURL = [entryCopy isRootURL];
+  v7 = [entryCopy url];
 
   if (v7)
   {
@@ -274,7 +274,7 @@ void __43__PSSearchController_removeRootSpecifiers___block_invoke(uint64_t a1, v
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"NO";
-      if (v6)
+      if (isRootURL)
       {
         v9 = @"YES";
       }
@@ -335,18 +335,18 @@ void __73__PSSearchController_searchResultsController_switchActionForSearchEntry
 LABEL_8:
 }
 
-- (id)searchResultsController:(id)a3 iconForSearchEntry:(id)a4
+- (id)searchResultsController:(id)controller iconForSearchEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  entryCopy = entry;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v9 = [v7 identifier];
-  v10 = [WeakRetained specifierForID:v9];
+  identifier = [entryCopy identifier];
+  v10 = [WeakRetained specifierForID:identifier];
 
   iconForSearchEntryHandler = self->_iconForSearchEntryHandler;
   if (iconForSearchEntryHandler)
   {
-    v12 = iconForSearchEntryHandler[2](iconForSearchEntryHandler, v6, v7, v10);
+    v12 = iconForSearchEntryHandler[2](iconForSearchEntryHandler, controllerCopy, entryCopy, v10);
     goto LABEL_14;
   }
 
@@ -355,9 +355,9 @@ LABEL_8:
   {
     v14 = MEMORY[0x1E69DCAB8];
     v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v17 = [v16 traitCollection];
-    v12 = [v14 imageNamed:v13 inBundle:v15 compatibleWithTraitCollection:v17];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    v12 = [v14 imageNamed:v13 inBundle:v15 compatibleWithTraitCollection:traitCollection];
   }
 
   else
@@ -369,9 +369,9 @@ LABEL_8:
     }
 
     v18 = [v10 propertyForKey:@"useLazyIcons"];
-    v19 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
 
-    if (!v19)
+    if (!bOOLValue)
     {
       v12 = 0;
       goto LABEL_13;
@@ -381,16 +381,16 @@ LABEL_8:
     if (v15)
     {
       v20 = MEMORY[0x1E69DCAB8];
-      v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v21 scale];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen2 scale];
       v12 = [v20 _applicationIconImageForBundleIdentifier:v15 format:0 scale:?];
 
       if (v12)
       {
         v22 = [v10 propertyForKey:@"dontUnloadLazyIcon"];
-        v23 = [v22 BOOLValue];
+        bOOLValue2 = [v22 BOOLValue];
 
-        if (v23)
+        if (bOOLValue2)
         {
           [v10 setProperty:v12 forKey:@"iconImage"];
         }
@@ -409,36 +409,36 @@ LABEL_14:
   return v12;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v5 = [a3 searchBar];
-  v4 = [v5 text];
-  [(PSSearchController *)self _updateSearchResultsWithText:v4];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(PSSearchController *)self _updateSearchResultsWithText:text];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   v3 = +[PSSearchModel sharedInstance];
   [v3 preheat];
 }
 
-- (void)_updateSearchResultsWithText:(id)a3
+- (void)_updateSearchResultsWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[PSSearchModel sharedInstance];
-  [v4 searchForQuery:v3];
+  [v4 searchForQuery:textCopy];
 }
 
-- (void)searchModel:(id)a3 updatedWithNewResults:(id)a4 forQuery:(id)a5
+- (void)searchModel:(id)model updatedWithNewResults:(id)results forQuery:(id)query
 {
-  v6 = a4;
+  resultsCopy = results;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__PSSearchController_searchModel_updatedWithNewResults_forQuery___block_invoke;
   v8[3] = &unk_1E71DC570;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  v9 = resultsCopy;
+  selfCopy = self;
+  v7 = resultsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -463,7 +463,7 @@ void __51__PSSearchController_searchModelDidFinishIndexing___block_invoke()
   [v0 setNetworkActivityIndicatorVisible:0];
 }
 
-- (id)rootSpecifiersForSearchModel:(id)a3
+- (id)rootSpecifiersForSearchModel:(id)model
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained rootSpecifiersForSearchController:self];
@@ -471,7 +471,7 @@ void __51__PSSearchController_searchModelDidFinishIndexing___block_invoke()
   return v5;
 }
 
-- (Class)rootSearchControllerClassForSearchModel:(id)a3
+- (Class)rootSearchControllerClassForSearchModel:(id)model
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = objc_opt_class();

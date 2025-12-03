@@ -1,19 +1,19 @@
 @interface ULAssociatedStateMO
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context;
 @end
 
 @implementation ULAssociatedStateMO
 
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[ULAssociatedStateMO alloc] initWithContext:v8];
-  [(ULAssociatedStateMO *)v9 setLoi:v7];
-  [(ULAssociatedStateMO *)v9 setTimestamp:*(a3 + 5)];
-  [(ULAssociatedStateMO *)v9 setIsAssociated:*(a3 + 48)];
+  mOCopy = mO;
+  contextCopy = context;
+  v9 = [[ULAssociatedStateMO alloc] initWithContext:contextCopy];
+  [(ULAssociatedStateMO *)v9 setLoi:mOCopy];
+  [(ULAssociatedStateMO *)v9 setTimestamp:*(o + 5)];
+  [(ULAssociatedStateMO *)v9 setIsAssociated:*(o + 48)];
   v10 = MEMORY[0x277CCACA8];
-  CLMacAddress::str(a3 + 7, __p);
+  CLMacAddress::str(o + 7, __p);
   if (v15 >= 0)
   {
     v11 = __p;
@@ -32,8 +32,8 @@
     operator delete(__p[0]);
   }
 
-  [(ULAssociatedStateMO *)v9 setBand:*(a3 + 16)];
-  [(ULAssociatedStateMO *)v9 setChannel:*(a3 + 17)];
+  [(ULAssociatedStateMO *)v9 setBand:*(o + 16)];
+  [(ULAssociatedStateMO *)v9 setChannel:*(o + 17)];
 
   return v9;
 }

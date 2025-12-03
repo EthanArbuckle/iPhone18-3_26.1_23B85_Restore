@@ -2,9 +2,9 @@
 + (id)sharedManager;
 - (MRExternalDeviceManager)init;
 - (NSArray)allDevices;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)deviceWithIdentifier:(id)identifier;
 - (void)clearDevices;
-- (void)registerDevice:(id)a3;
+- (void)registerDevice:(id)device;
 @end
 
 @implementation MRExternalDeviceManager
@@ -35,9 +35,9 @@ void __40__MRExternalDeviceManager_sharedManager__block_invoke()
   v2 = [(MRExternalDeviceManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     devicesPointerArray = v2->_devicesPointerArray;
-    v2->_devicesPointerArray = v3;
+    v2->_devicesPointerArray = weakObjectsPointerArray;
 
     v5 = objc_opt_class();
     Name = class_getName(v5);
@@ -81,10 +81,10 @@ void __37__MRExternalDeviceManager_allDevices__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [(MRExternalDeviceManager *)self allDevices];
   v15 = 0u;
   v16 = 0u;
@@ -106,14 +106,14 @@ void __37__MRExternalDeviceManager_allDevices__block_invoke(uint64_t a1)
         v9 = *(*(&v15 + 1) + 8 * i);
         if (v9)
         {
-          v10 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v9 != v10)
+          if (v9 != null)
           {
-            v11 = [v9 deviceInfo];
-            v12 = [v11 identifier];
+            deviceInfo = [v9 deviceInfo];
+            identifier = [deviceInfo identifier];
 
-            if ([v4 isEqualToString:v12])
+            if ([identifierCopy isEqualToString:identifier])
             {
               v6 = v9;
 
@@ -140,17 +140,17 @@ LABEL_14:
   return v6;
 }
 
-- (void)registerDevice:(id)a3
+- (void)registerDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MRExternalDeviceManager_registerDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(serialQueue, v7);
 }
 

@@ -1,14 +1,14 @@
 @interface MSDDomainsPlistPatcher
-+ (id)patchDomainsPlist:(id)a3;
++ (id)patchDomainsPlist:(id)plist;
 @end
 
 @implementation MSDDomainsPlistPatcher
 
-+ (id)patchDomainsPlist:(id)a3
++ (id)patchDomainsPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   has_internal_content = os_variant_has_internal_content();
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v3];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:plistCopy];
   v6 = v5;
   if (v5)
   {
@@ -16,7 +16,7 @@
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = [v7 objectForKey:@"CameraRollDomain"];
-      v48 = v3;
+      v48 = plistCopy;
       if (v8)
       {
         objc_opt_class();
@@ -190,8 +190,8 @@ LABEL_16:
                 v20 = [v19 arrayByAddingObjectsFromArray:v18];
                 v21 = [v20 mutableCopy];
 
-                v22 = [MEMORY[0x277CBEB18] array];
-                [v16 setObject:v22 forKey:@"RelativePathsToBackupToDriveAndStandardAccount"];
+                array = [MEMORY[0x277CBEB18] array];
+                [v16 setObject:array forKey:@"RelativePathsToBackupToDriveAndStandardAccount"];
 
                 v19 = v21;
               }
@@ -345,8 +345,8 @@ LABEL_16:
 
           if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v31 = [MEMORY[0x277CBEB18] array];
-            [v30 setObject:v31 forKey:@"RelativePathsToBackupAndRestore"];
+            array2 = [MEMORY[0x277CBEB18] array];
+            [v30 setObject:array2 forKey:@"RelativePathsToBackupAndRestore"];
 
             [v7 setObject:v30 forKey:@"KeychainDomain"];
           }
@@ -551,19 +551,19 @@ LABEL_135:
             [v43 addObject:@"PreinstalledAssetsV2/InstallWithOs/com_apple_MobileAsset_UAF_FM_Visual"];
             [v42 setObject:v43 forKey:@"RelativePathsToBackupAndRestore"];
             [v7 setObject:v42 forKey:@"MobileAssetDomain"];
-            v44 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
 
-            [v44 setObject:@"/var/mobile/XcodeBuiltProducts" forKey:@"RootPath"];
-            v45 = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:@"/var/mobile/XcodeBuiltProducts" forKey:@"RootPath"];
+            array3 = [MEMORY[0x277CBEB18] array];
 
-            [v45 addObject:@"PressDemoScripts.xctestproducts"];
-            [v44 setObject:v45 forKey:@"RelativePathsToBackupAndRestore"];
-            [v7 setObject:v44 forKey:@"DemoPortalScriptsDomain"];
+            [array3 addObject:@"PressDemoScripts.xctestproducts"];
+            [dictionary setObject:array3 forKey:@"RelativePathsToBackupAndRestore"];
+            [v7 setObject:dictionary forKey:@"DemoPortalScriptsDomain"];
             [v6 setObject:v7 forKey:@"SystemDomains"];
             v46 = v6;
 
 LABEL_136:
-            v3 = v48;
+            plistCopy = v48;
             goto LABEL_137;
           }
 
@@ -594,7 +594,7 @@ LABEL_172:
     v7 = defaultLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(MSDDomainsPlistPatcher *)v3 patchDomainsPlist:v7];
+      [(MSDDomainsPlistPatcher *)plistCopy patchDomainsPlist:v7];
     }
   }
 

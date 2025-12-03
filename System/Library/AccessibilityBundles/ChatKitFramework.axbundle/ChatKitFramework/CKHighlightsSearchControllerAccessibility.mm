@@ -1,39 +1,39 @@
 @interface CKHighlightsSearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
 @end
 
 @implementation CKHighlightsSearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKPhotosSearchController" isKindOfClass:@"CKSearchController"];
-  [v3 validateClass:@"CKSearchController" hasInstanceMethod:@"cellForItemInCollectionView:atIndexPath:withIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"CKSearchController"];
-  [v3 validateClass:@"CKSearchController" hasInstanceMethod:@"results" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSpotlightQueryResultUtilities"];
-  [v3 validateClass:@"CKSpotlightQueryResultUtilities" hasClassMethod:@"contactForResult:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKPhotosSearchController" isKindOfClass:@"CKSearchController"];
+  [validationsCopy validateClass:@"CKSearchController" hasInstanceMethod:@"cellForItemInCollectionView:atIndexPath:withIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKSearchController"];
+  [validationsCopy validateClass:@"CKSearchController" hasInstanceMethod:@"results" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSpotlightQueryResultUtilities"];
+  [validationsCopy validateClass:@"CKSpotlightQueryResultUtilities" hasClassMethod:@"contactForResult:" withFullSignature:{"@", "@", 0}];
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = CKHighlightsSearchControllerAccessibility;
-  v11 = [(CKHighlightsSearchControllerAccessibility *)&v26 cellForItemInCollectionView:v8 atIndexPath:v9 withIdentifier:v10];
+  v11 = [(CKHighlightsSearchControllerAccessibility *)&v26 cellForItemInCollectionView:viewCopy atIndexPath:pathCopy withIdentifier:identifierCopy];
   LOBYTE(v20) = 0;
   objc_opt_class();
   v12 = __UIAccessibilityCastAsSafeCategory();
   if (v12)
   {
     v13 = [(CKHighlightsSearchControllerAccessibility *)self safeArrayForKey:@"results"];
-    v14 = [v9 row];
+    v14 = [pathCopy row];
     if (v14 < [v13 count])
     {
-      v15 = [v13 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
+      v15 = [v13 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v20 = 0;
       v21 = &v20;
       v22 = 0x3032000000;

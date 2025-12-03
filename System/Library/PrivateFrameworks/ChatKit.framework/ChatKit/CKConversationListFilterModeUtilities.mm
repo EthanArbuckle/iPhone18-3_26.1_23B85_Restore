@@ -1,6 +1,6 @@
 @interface CKConversationListFilterModeUtilities
-+ (id)filterModeChatPredicate:(unint64_t)a3;
-+ (id)filterModeDisclosureText:(unint64_t)a3;
++ (id)filterModeChatPredicate:(unint64_t)predicate;
++ (id)filterModeDisclosureText:(unint64_t)text;
 + (uint64_t)invalidateEligibleFilterModesCache;
 - (CKConversationListFilterModeUtilities)init;
 @end
@@ -29,9 +29,9 @@
   qword_1EAD44F78 = 0;
 }
 
-+ (id)filterModeDisclosureText:(unint64_t)a3
++ (id)filterModeDisclosureText:(unint64_t)text
 {
-  sub_190B6CC4C(a3);
+  sub_190B6CC4C(text);
   if (v3)
   {
     v4 = sub_190D56ED0();
@@ -45,9 +45,9 @@
   return v4;
 }
 
-+ (id)filterModeChatPredicate:(unint64_t)a3
++ (id)filterModeChatPredicate:(unint64_t)predicate
 {
-  v3 = sub_190B6BF24(a3);
+  v3 = sub_190B6BF24(predicate);
 
   return v3;
 }

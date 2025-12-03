@@ -1,23 +1,23 @@
 @interface VSSubscriptionFetchOptionsValidator
 - (VSSubscriptionPredicateFactory)predicateFactory;
-- (id)standardizedFetchOptionsFromOptions:(id)a3 withSecurityTask:(id)a4;
-- (id)subscriptionFetchOptionsAllowedForSecurityTask:(id)a3;
+- (id)standardizedFetchOptionsFromOptions:(id)options withSecurityTask:(id)task;
+- (id)subscriptionFetchOptionsAllowedForSecurityTask:(id)task;
 @end
 
 @implementation VSSubscriptionFetchOptionsValidator
 
 - (VSSubscriptionPredicateFactory)predicateFactory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_predicateFactory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_predicateFactory;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionPredicateFactory);
-    objc_storeStrong(&v2->_predicateFactory, v3);
+    objc_storeStrong(&selfCopy->_predicateFactory, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (id)subscriptionFetchOptionsAllowedForSecurityTask:(id)a3
+- (id)subscriptionFetchOptionsAllowedForSecurityTask:(id)task
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   *buf = MEMORY[0x277D85DD0];
   v47 = 3221225472;
   v48 = __VSAllSubscriptionFetchOptions_block_invoke;
@@ -46,7 +46,7 @@
   v6 = VSAllSubscriptionFetchOptions___vs_lazy_init_variable;
 
   v7 = [v6 mutableCopy];
-  v8 = v4;
+  v8 = taskCopy;
   v9 = objc_alloc_init(VSSubscriptionFetchOptionDescription);
   [(VSSubscriptionFetchOptionDescription *)v9 setKey:@"VSSubscriptionFetchOptionSubscriberIdentifierHashModifier"];
   [(VSSubscriptionFetchOptionDescription *)v9 setAllowedClass:objc_opt_class()];
@@ -173,8 +173,8 @@ LABEL_21:
   if (v25)
   {
     v26 = v25;
-    v27 = [(VSSubscriptionFetchOptionsValidator *)self predicateFactory];
-    v28 = [v27 allowedSubscriptionSourcesPredicateForRequestKind:0 fromTask:v8];
+    predicateFactory = [(VSSubscriptionFetchOptionsValidator *)self predicateFactory];
+    v28 = [predicateFactory allowedSubscriptionSourcesPredicateForRequestKind:0 fromTask:v8];
 
     [v26 setAllowedValuePredicate:v28];
     [v7 setObject:v26 forKey:@"VSSubscriptionFetchOptionSources"];
@@ -186,8 +186,8 @@ LABEL_21:
   if (v30)
   {
     v31 = v30;
-    v32 = [(VSSubscriptionFetchOptionsValidator *)self predicateFactory];
-    v33 = [v32 allowedSubscriptionSourceKindsPredicateForRequestKind:0 fromTask:v8];
+    predicateFactory2 = [(VSSubscriptionFetchOptionsValidator *)self predicateFactory];
+    v33 = [predicateFactory2 allowedSubscriptionSourceKindsPredicateForRequestKind:0 fromTask:v8];
 
     [v31 setAllowedValuePredicate:v33];
     [v7 setObject:v31 forKey:@"VSSubscriptionFetchOptionSourceKind"];
@@ -196,17 +196,17 @@ LABEL_21:
   return v7;
 }
 
-- (id)standardizedFetchOptionsFromOptions:(id)a3 withSecurityTask:(id)a4
+- (id)standardizedFetchOptionsFromOptions:(id)options withSecurityTask:(id)task
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  optionsCopy = options;
+  taskCopy = task;
+  v8 = taskCopy;
   v9 = 0x277CBE000uLL;
   v10 = MEMORY[0x277CBE660];
-  if (v6)
+  if (optionsCopy)
   {
-    if (v7)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
@@ -223,21 +223,21 @@ LABEL_21:
 
   [MEMORY[0x277CBEAD8] raise:*v10 format:@"The securityTask parameter must not be nil."];
 LABEL_3:
-  v57 = [v6 mutableCopy];
+  v57 = [optionsCopy mutableCopy];
   v53 = v8;
   [(VSSubscriptionFetchOptionsValidator *)self subscriptionFetchOptionsAllowedForSecurityTask:v8];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v52 = v69 = 0u;
-  v11 = [v52 allValues];
-  v58 = [v11 countByEnumeratingWithState:&v66 objects:v71 count:16];
+  allValues = [v52 allValues];
+  v58 = [allValues countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (v58)
   {
     v12 = *v67;
     v13 = *MEMORY[0x277CBE660];
-    v54 = v11;
-    v55 = v6;
+    v54 = allValues;
+    v55 = optionsCopy;
     v56 = *v67;
     do
     {
@@ -245,25 +245,25 @@ LABEL_3:
       {
         if (*v67 != v12)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v66 + 1) + 8 * i);
         v60 = objc_autoreleasePoolPush();
         v16 = [v15 key];
-        v61 = [v6 objectForKey:v16];
+        v61 = [optionsCopy objectForKey:v16];
         if (v61)
         {
           v59 = i;
-          v17 = [v15 allowedClass];
-          v18 = [v15 allowedValuePredicate];
+          allowedClass = [v15 allowedClass];
+          allowedValuePredicate = [v15 allowedValuePredicate];
           if ([v15 isContainer])
           {
             if (objc_opt_respondsToSelector())
             {
               v19 = [v61 count];
-              v20 = [v15 minCount];
-              if (v19 >= v20)
+              minCount = [v15 minCount];
+              if (v19 >= minCount)
               {
                 v64 = 0u;
                 v65 = 0u;
@@ -291,12 +291,12 @@ LABEL_3:
                         v51 = objc_opt_class();
                         v36 = v35;
                         v9 = 0x277CBE000uLL;
-                        [v36 raise:v13 format:{@"Contained value (%@) for option %@ was a %@ instead of some kind of %@", v34, v16, v51, v17}];
+                        [v36 raise:v13 format:{@"Contained value (%@) for option %@ was a %@ instead of some kind of %@", v34, v16, v51, allowedClass}];
                       }
 
-                      if (([v18 evaluateWithObject:v34] & 1) == 0)
+                      if (([allowedValuePredicate evaluateWithObject:v34] & 1) == 0)
                       {
-                        [*(v9 + 2776) raise:v13 format:{@"Contained value (%@) for option %@ not allowed %@", v34, v16, v18}];
+                        [*(v9 + 2776) raise:v13 format:{@"Contained value (%@) for option %@ not allowed %@", v34, v16, allowedValuePredicate}];
                       }
                     }
 
@@ -306,13 +306,13 @@ LABEL_3:
                   while (v31);
                 }
 
-                v11 = v54;
-                v6 = v55;
+                allValues = v54;
+                optionsCopy = v55;
               }
 
               else
               {
-                v21 = v20;
+                v21 = minCount;
                 v22 = MEMORY[0x277CBEAD8];
                 v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
                 v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
@@ -339,12 +339,12 @@ LABEL_3:
               v50 = objc_opt_class();
               v28 = v27;
               v26 = v61;
-              [v28 raise:v13 format:{@"Provided value (%@) for option %@ was a %@ instead of some kind of %@", v61, v16, v50, v17}];
+              [v28 raise:v13 format:{@"Provided value (%@) for option %@ was a %@ instead of some kind of %@", v61, v16, v50, allowedClass}];
             }
 
-            if (([v18 evaluateWithObject:v26] & 1) == 0)
+            if (([allowedValuePredicate evaluateWithObject:v26] & 1) == 0)
             {
-              [*(v9 + 2776) raise:v13 format:{@"Provided value (%@) for option %@ not allowed %@", v26, v16, v18}];
+              [*(v9 + 2776) raise:v13 format:{@"Provided value (%@) for option %@ not allowed %@", v26, v16, allowedValuePredicate}];
             }
           }
 
@@ -353,25 +353,25 @@ LABEL_3:
 
         else
         {
-          v18 = [v15 defaultValue];
-          if (v18)
+          allowedValuePredicate = [v15 defaultValue];
+          if (allowedValuePredicate)
           {
-            [v57 setObject:v18 forKey:v16];
+            [v57 setObject:allowedValuePredicate forKey:v16];
           }
         }
 
         objc_autoreleasePoolPop(v60);
       }
 
-      v58 = [v11 countByEnumeratingWithState:&v66 objects:v71 count:16];
+      v58 = [allValues countByEnumeratingWithState:&v66 objects:v71 count:16];
     }
 
     while (v58);
   }
 
   v37 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v38 = [v52 allValues];
-  v39 = [v38 valueForKeyPath:@"key"];
+  allValues2 = [v52 allValues];
+  v39 = [allValues2 valueForKeyPath:@"key"];
 
   if (v39)
   {
@@ -379,8 +379,8 @@ LABEL_3:
   }
 
   v40 = MEMORY[0x277CBEB98];
-  v41 = [v57 allKeys];
-  v42 = [v40 setWithArray:v41];
+  allKeys = [v57 allKeys];
+  v42 = [v40 setWithArray:allKeys];
 
   v43 = [v42 mutableCopy];
   [v43 minusSet:v37];
@@ -388,8 +388,8 @@ LABEL_3:
   {
     v44 = MEMORY[0x277CBEAD8];
     v45 = *MEMORY[0x277CBE660];
-    v46 = [v43 allObjects];
-    v47 = [v46 componentsJoinedByString:{@", "}];
+    allObjects = [v43 allObjects];
+    v47 = [allObjects componentsJoinedByString:{@", "}];
     [v44 raise:v45 format:{@"Unrecognized options provided: %@", v47}];
   }
 

@@ -1,19 +1,19 @@
 @interface RCTrimmedCompositionWaveformDataSource
-- (RCTrimmedCompositionWaveformDataSource)initWithSourceComposition:(id)a3 destinationWaveformURL:(id)a4 trackIndex:(unint64_t)a5;
+- (RCTrimmedCompositionWaveformDataSource)initWithSourceComposition:(id)composition destinationWaveformURL:(id)l trackIndex:(unint64_t)index;
 @end
 
 @implementation RCTrimmedCompositionWaveformDataSource
 
-- (RCTrimmedCompositionWaveformDataSource)initWithSourceComposition:(id)a3 destinationWaveformURL:(id)a4 trackIndex:(unint64_t)a5
+- (RCTrimmedCompositionWaveformDataSource)initWithSourceComposition:(id)composition destinationWaveformURL:(id)l trackIndex:(unint64_t)index
 {
-  v9 = a4;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = RCTrimmedCompositionWaveformDataSource;
-  v10 = [(RCCompositionWaveformDataSource *)&v13 initWithComposition:a3 trackIndex:a5];
+  v10 = [(RCCompositionWaveformDataSource *)&v13 initWithComposition:composition trackIndex:index];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_destinationWaveformURL, a4);
+    objc_storeStrong(&v10->_destinationWaveformURL, l);
     [(RCCompositionWaveformDataSource *)v11 setSaveGeneratedWaveform:1];
   }
 

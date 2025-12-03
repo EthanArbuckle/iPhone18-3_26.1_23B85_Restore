@@ -1,15 +1,15 @@
 @interface CKBGSystemTask
-- (BOOL)expiredWithRetryAfter:(double)a3 error:(id *)a4;
+- (BOOL)expiredWithRetryAfter:(double)after error:(id *)error;
 - (BOOL)isDataBudgeted;
 - (BOOL)requiresInexpensiveNetworkConnectivity;
 - (BOOL)requiresNetworkConnectivity;
 - (BOOL)requiresSignificantUserInactivity;
-- (CKBGSystemTask)initWithSystemTask:(id)a3;
+- (CKBGSystemTask)initWithSystemTask:(id)task;
 - (double)interval;
 - (int64_t)priority;
 - (void)complete;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CKBGSystemTask
@@ -98,31 +98,31 @@
   return v18;
 }
 
-- (CKBGSystemTask)initWithSystemTask:(id)a3
+- (CKBGSystemTask)initWithSystemTask:(id)task
 {
-  v5 = a3;
-  v8 = objc_msgSend_identifier(v5, v6, v7);
+  taskCopy = task;
+  v8 = objc_msgSend_identifier(taskCopy, v6, v7);
   v13.receiver = self;
   v13.super_class = CKBGSystemTask;
   v9 = [(CKBackgroundTask *)&v13 initWithIdentifier:v8];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_systemTask, a3);
+    objc_storeStrong(&v9->_systemTask, task);
     v10 = NSStringFromSelector(sel_state);
-    objc_msgSend_addObserver_forKeyPath_options_context_(v5, v11, v9, v10, 5, qword_1EA9109A8);
+    objc_msgSend_addObserver_forKeyPath_options_context_(taskCopy, v11, v9, v10, 5, qword_1EA9109A8);
   }
 
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (qword_1EA9109A8 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (qword_1EA9109A8 == context)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -139,7 +139,7 @@
       _os_log_debug_impl(&dword_1883EA000, v20, OS_LOG_TYPE_DEBUG, "[%@] Handling task state update", buf, 0xCu);
     }
 
-    v17 = objc_msgSend_state(v11, v15, v16);
+    v17 = objc_msgSend_state(objectCopy, v15, v16);
     if (v17 > 2)
     {
       if (v17 == 3)
@@ -172,7 +172,7 @@
   {
     v24.receiver = self;
     v24.super_class = CKBGSystemTask;
-    [(CKBGSystemTask *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CKBGSystemTask *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -184,7 +184,7 @@
   objc_msgSend_setTaskCompleted(v5, v3, v4);
 }
 
-- (BOOL)expiredWithRetryAfter:(double)a3 error:(id *)a4
+- (BOOL)expiredWithRetryAfter:(double)after error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = CKBGSystemTask;
@@ -194,7 +194,7 @@
   }
 
   v9 = objc_msgSend_systemTask(self, v7, v8);
-  v11 = objc_msgSend_setTaskExpiredWithRetryAfter_error_(v9, v10, a4, a3);
+  v11 = objc_msgSend_setTaskExpiredWithRetryAfter_error_(v9, v10, error, after);
 
   return v11;
 }

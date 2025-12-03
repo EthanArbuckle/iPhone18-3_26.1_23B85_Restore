@@ -1,12 +1,12 @@
 @interface WFTemperatureUnitProvider
 - (WFTemperatureUnitProvider)init;
-- (int)_providerQueue_changeUnit:(int)a3;
+- (int)_providerQueue_changeUnit:(int)unit;
 - (int)_providerQueue_readUnit;
 - (int)userTemperatureUnit;
 - (void)_postDidChangeUnitDefaultsPreference;
-- (void)fetchTemperatureUnitWithCompletionHandler:(id)a3;
-- (void)replaceUnit:(int)a3;
-- (void)replaceUnit:(int)a3 completionHandler:(id)a4;
+- (void)fetchTemperatureUnitWithCompletionHandler:(id)handler;
+- (void)replaceUnit:(int)unit;
+- (void)replaceUnit:(int)unit completionHandler:(id)handler;
 @end
 
 @implementation WFTemperatureUnitProvider
@@ -25,19 +25,19 @@
   return v2;
 }
 
-- (void)fetchTemperatureUnitWithCompletionHandler:(id)a3
+- (void)fetchTemperatureUnitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(WFTemperatureUnitProvider *)self providerQueue];
+  providerQueue = [(WFTemperatureUnitProvider *)self providerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__WFTemperatureUnitProvider_fetchTemperatureUnitWithCompletionHandler___block_invoke;
   block[3] = &unk_279E6FA40;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(providerQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -57,20 +57,20 @@ void __71__WFTemperatureUnitProvider_fetchTemperatureUnitWithCompletionHandler__
   v10 = 0x2020000000;
   v11 = 2;
   objc_initWeak(&location, self);
-  v3 = [(WFTemperatureUnitProvider *)self providerQueue];
+  providerQueue = [(WFTemperatureUnitProvider *)self providerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__WFTemperatureUnitProvider_userTemperatureUnit__block_invoke;
   block[3] = &unk_279E6FA68;
   block[4] = &v8;
   objc_copyWeak(&v6, &location);
-  dispatch_sync(v3, block);
+  dispatch_sync(providerQueue, block);
 
-  LODWORD(v3) = *(v9 + 6);
+  LODWORD(providerQueue) = *(v9 + 6);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return providerQueue;
 }
 
 void __48__WFTemperatureUnitProvider_userTemperatureUnit__block_invoke(uint64_t a1)
@@ -79,17 +79,17 @@ void __48__WFTemperatureUnitProvider_userTemperatureUnit__block_invoke(uint64_t 
   *(*(*(a1 + 32) + 8) + 24) = [WeakRetained _providerQueue_readUnit];
 }
 
-- (void)replaceUnit:(int)a3
+- (void)replaceUnit:(int)unit
 {
   objc_initWeak(&location, self);
-  v5 = [(WFTemperatureUnitProvider *)self providerQueue];
+  providerQueue = [(WFTemperatureUnitProvider *)self providerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__WFTemperatureUnitProvider_replaceUnit___block_invoke;
   block[3] = &unk_279E6FA90;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_async(v5, block);
+  unitCopy = unit;
+  dispatch_async(providerQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -101,20 +101,20 @@ void __41__WFTemperatureUnitProvider_replaceUnit___block_invoke(uint64_t a1)
   [WeakRetained _providerQueue_changeUnit:*(a1 + 40)];
 }
 
-- (void)replaceUnit:(int)a3 completionHandler:(id)a4
+- (void)replaceUnit:(int)unit completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v7 = [(WFTemperatureUnitProvider *)self providerQueue];
+  providerQueue = [(WFTemperatureUnitProvider *)self providerQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__WFTemperatureUnitProvider_replaceUnit_completionHandler___block_invoke;
   v9[3] = &unk_279E6FAB8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  unitCopy = unit;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(providerQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -132,25 +132,25 @@ uint64_t __59__WFTemperatureUnitProvider_replaceUnit_completionHandler___block_i
 
 - (int)_providerQueue_readUnit
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 wf_temperatureUnit];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  wf_temperatureUnit = [currentLocale wf_temperatureUnit];
 
-  return v3;
+  return wf_temperatureUnit;
 }
 
-- (int)_providerQueue_changeUnit:(int)a3
+- (int)_providerQueue_changeUnit:(int)unit
 {
-  v3 = *&a3;
+  v3 = *&unit;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(WFTemperatureUnitProvider *)self _providerQueue_readUnit];
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v6 setWf_temperatureUnit:v3];
+  _providerQueue_readUnit = [(WFTemperatureUnitProvider *)self _providerQueue_readUnit];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [currentLocale setWf_temperatureUnit:v3];
   CFPreferencesAppSynchronize(*MEMORY[0x277CBF008]);
   [(WFTemperatureUnitProvider *)self _postDidChangeUnitDefaultsPreference];
   v7 = WFLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSLocaleTemperatureUnitFromWFTemperatureUnit(v5);
+    v8 = NSLocaleTemperatureUnitFromWFTemperatureUnit(_providerQueue_readUnit);
     v9 = NSLocaleTemperatureUnitFromWFTemperatureUnit([(WFTemperatureUnitProvider *)self _providerQueue_readUnit]);
     v12 = 138412546;
     v13 = v8;
@@ -159,8 +159,8 @@ uint64_t __59__WFTemperatureUnitProvider_replaceUnit_completionHandler___block_i
     _os_log_impl(&dword_272B94000, v7, OS_LOG_TYPE_DEFAULT, "Temperature unit was changed from %@ to %@", &v12, 0x16u);
   }
 
-  v10 = [(WFTemperatureUnitProvider *)self _providerQueue_readUnit];
-  return v10;
+  _providerQueue_readUnit2 = [(WFTemperatureUnitProvider *)self _providerQueue_readUnit];
+  return _providerQueue_readUnit2;
 }
 
 - (void)_postDidChangeUnitDefaultsPreference

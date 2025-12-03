@@ -1,6 +1,6 @@
 @interface AntBlockPowerLimitGnssImdBandPolicy
 - (AntBlockPowerLimitGnssImdBandPolicy)init;
-- (void)setParameterEnable:(BOOL)a3 CellularAntBitmap:(unsigned int)a4 MitigationType:(unsigned int)a5 CellularTxPowerCap:(int)a6;
+- (void)setParameterEnable:(BOOL)enable CellularAntBitmap:(unsigned int)bitmap MitigationType:(unsigned int)type CellularTxPowerCap:(int)cap;
 @end
 
 @implementation AntBlockPowerLimitGnssImdBandPolicy
@@ -16,12 +16,12 @@
   return result;
 }
 
-- (void)setParameterEnable:(BOOL)a3 CellularAntBitmap:(unsigned int)a4 MitigationType:(unsigned int)a5 CellularTxPowerCap:(int)a6
+- (void)setParameterEnable:(BOOL)enable CellularAntBitmap:(unsigned int)bitmap MitigationType:(unsigned int)type CellularTxPowerCap:(int)cap
 {
-  self->_mEnable = a3;
-  self->_mCellularAntBitmap = a4;
-  self->_mMitigationType = a5;
-  self->_mCellularTxPowerCap = a6;
+  self->_mEnable = enable;
+  self->_mCellularAntBitmap = bitmap;
+  self->_mMitigationType = type;
+  self->_mCellularTxPowerCap = cap;
 }
 
 @end

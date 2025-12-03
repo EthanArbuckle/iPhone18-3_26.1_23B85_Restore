@@ -1,30 +1,30 @@
 @interface GHSBluetoothDevice
-+ (id)ghsDeviceWithProperties:(id)a3;
-- (BOOL)handleLiveHealthObservationsData:(id)a3 observationClassType:(unsigned __int8)a4 observationType:(unsigned int)a5 userID:(unsigned __int8)a6 observationID:(unsigned int)a7 timestamp:(id)a8;
-- (BOOL)handleStoredHealthObservationsData:(id)a3 observationClassType:(unsigned __int8)a4 observationType:(unsigned int)a5 userID:(unsigned __int8)a6 observationID:(unsigned int)a7 timestamp:(id)a8;
++ (id)ghsDeviceWithProperties:(id)properties;
+- (BOOL)handleLiveHealthObservationsData:(id)data observationClassType:(unsigned __int8)type observationType:(unsigned int)observationType userID:(unsigned __int8)d observationID:(unsigned int)iD timestamp:(id)timestamp;
+- (BOOL)handleStoredHealthObservationsData:(id)data observationClassType:(unsigned __int8)type observationType:(unsigned int)observationType userID:(unsigned __int8)d observationID:(unsigned int)iD timestamp:(id)timestamp;
 - (GHSBluetoothDevice)init;
-- (GHSBluetoothDevice)initWithProperties:(id)a3 healthStore:(id)a4;
-- (GHSBluetoothDevice)initWithProperties:(id)a3 healthStore:(id)a4 healthSampleTypes:(id)a5;
+- (GHSBluetoothDevice)initWithProperties:(id)properties healthStore:(id)store;
+- (GHSBluetoothDevice)initWithProperties:(id)properties healthStore:(id)store healthSampleTypes:(id)types;
 @end
 
 @implementation GHSBluetoothDevice
 
-+ (id)ghsDeviceWithProperties:(id)a3
++ (id)ghsDeviceWithProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   if (qword_1000DDBB8 != -1)
   {
     sub_10007B80C();
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"kBTDeviceTypeMDCDevSpecKey"];
-  v5 = [v4 unsignedIntValue];
+  v4 = [propertiesCopy objectForKeyedSubscript:@"kBTDeviceTypeMDCDevSpecKey"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5 > 4110)
+  if (unsignedIntValue > 4110)
   {
-    if (v5 != 4111)
+    if (unsignedIntValue != 4111)
     {
-      if (v5 == 4113)
+      if (unsignedIntValue == 4113)
       {
         v6 = off_1000BC868;
         goto LABEL_13;
@@ -38,9 +38,9 @@
 
   else
   {
-    if (v5 != 4103)
+    if (unsignedIntValue != 4103)
     {
-      if (v5 == 4104)
+      if (unsignedIntValue == 4104)
       {
         v6 = off_1000BC880;
         goto LABEL_13;
@@ -56,12 +56,12 @@ LABEL_10:
 
 LABEL_13:
   v7 = *v6;
-  v8 = [objc_alloc(objc_opt_class()) initWithProperties:v3 healthStore:qword_1000DDBB0];
+  v8 = [objc_alloc(objc_opt_class()) initWithProperties:propertiesCopy healthStore:qword_1000DDBB0];
 
   return v8;
 }
 
-- (BOOL)handleLiveHealthObservationsData:(id)a3 observationClassType:(unsigned __int8)a4 observationType:(unsigned int)a5 userID:(unsigned __int8)a6 observationID:(unsigned int)a7 timestamp:(id)a8
+- (BOOL)handleLiveHealthObservationsData:(id)data observationClassType:(unsigned __int8)type observationType:(unsigned int)observationType userID:(unsigned __int8)d observationID:(unsigned int)iD timestamp:(id)timestamp
 {
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_13:
   return 0;
 }
 
-- (BOOL)handleStoredHealthObservationsData:(id)a3 observationClassType:(unsigned __int8)a4 observationType:(unsigned int)a5 userID:(unsigned __int8)a6 observationID:(unsigned int)a7 timestamp:(id)a8
+- (BOOL)handleStoredHealthObservationsData:(id)data observationClassType:(unsigned __int8)type observationType:(unsigned int)observationType userID:(unsigned __int8)d observationID:(unsigned int)iD timestamp:(id)timestamp
 {
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -91,69 +91,69 @@ LABEL_13:
   return 0;
 }
 
-- (GHSBluetoothDevice)initWithProperties:(id)a3 healthStore:(id)a4
+- (GHSBluetoothDevice)initWithProperties:(id)properties healthStore:(id)store
 {
-  v6 = a3;
-  v21 = a4;
+  propertiesCopy = properties;
+  storeCopy = store;
   v22.receiver = self;
   v22.super_class = GHSBluetoothDevice;
   v7 = [(GHSBluetoothDevice *)&v22 init];
   if (v7)
   {
     v20 = [HKDevice alloc];
-    v19 = [v6 objectForKeyedSubscript:@"kGHSDeviceNameKey"];
-    v18 = [v6 objectForKeyedSubscript:@"ManufacturerName"];
-    v8 = [v6 objectForKeyedSubscript:@"ModelNumber"];
-    v9 = [v6 objectForKeyedSubscript:@"HardwareRevision"];
-    v10 = [v6 objectForKeyedSubscript:@"FirmwareRevision"];
-    v11 = [v6 objectForKeyedSubscript:@"SoftwareRevision"];
-    v12 = [v6 objectForKeyedSubscript:@"UUID"];
-    v13 = [v6 objectForKeyedSubscript:@"UDIForMedicalDevices"];
+    v19 = [propertiesCopy objectForKeyedSubscript:@"kGHSDeviceNameKey"];
+    v18 = [propertiesCopy objectForKeyedSubscript:@"ManufacturerName"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"ModelNumber"];
+    v9 = [propertiesCopy objectForKeyedSubscript:@"HardwareRevision"];
+    v10 = [propertiesCopy objectForKeyedSubscript:@"FirmwareRevision"];
+    v11 = [propertiesCopy objectForKeyedSubscript:@"SoftwareRevision"];
+    v12 = [propertiesCopy objectForKeyedSubscript:@"UUID"];
+    v13 = [propertiesCopy objectForKeyedSubscript:@"UDIForMedicalDevices"];
     v14 = v9;
     v15 = [v20 initWithName:v19 manufacturer:v18 model:v8 hardwareVersion:v9 firmwareVersion:v10 softwareVersion:v11 localIdentifier:v12 UDIDeviceIdentifier:v13];
     [(GHSBluetoothDevice *)v7 setHkDevice:v15];
 
-    [(GHSBluetoothDevice *)v7 setHkStore:v21];
-    v16 = [v6 objectForKeyedSubscript:@"kGHSPDebugLoggingEnabledKey"];
+    [(GHSBluetoothDevice *)v7 setHkStore:storeCopy];
+    v16 = [propertiesCopy objectForKeyedSubscript:@"kGHSPDebugLoggingEnabledKey"];
     [(GHSBluetoothDevice *)v7 setDebugLoggingEnabled:v16];
   }
 
   return v7;
 }
 
-- (GHSBluetoothDevice)initWithProperties:(id)a3 healthStore:(id)a4 healthSampleTypes:(id)a5
+- (GHSBluetoothDevice)initWithProperties:(id)properties healthStore:(id)store healthSampleTypes:(id)types
 {
-  v8 = a3;
-  v25 = a4;
-  v24 = a5;
+  propertiesCopy = properties;
+  storeCopy = store;
+  typesCopy = types;
   v28.receiver = self;
   v28.super_class = GHSBluetoothDevice;
   v9 = [(GHSBluetoothDevice *)&v28 init];
   if (v9)
   {
     v23 = [HKDevice alloc];
-    v22 = [v8 objectForKeyedSubscript:@"kGHSDeviceNameKey"];
-    v21 = [v8 objectForKeyedSubscript:@"ManufacturerName"];
-    v10 = [v8 objectForKeyedSubscript:@"ModelNumber"];
-    v11 = [v8 objectForKeyedSubscript:@"HardwareRevision"];
-    v12 = [v8 objectForKeyedSubscript:@"FirmwareRevision"];
-    v13 = [v8 objectForKeyedSubscript:@"SoftwareRevision"];
-    v14 = [v8 objectForKeyedSubscript:@"UUID"];
-    v15 = [v8 objectForKeyedSubscript:@"UDIForMedicalDevices"];
+    v22 = [propertiesCopy objectForKeyedSubscript:@"kGHSDeviceNameKey"];
+    v21 = [propertiesCopy objectForKeyedSubscript:@"ManufacturerName"];
+    v10 = [propertiesCopy objectForKeyedSubscript:@"ModelNumber"];
+    v11 = [propertiesCopy objectForKeyedSubscript:@"HardwareRevision"];
+    v12 = [propertiesCopy objectForKeyedSubscript:@"FirmwareRevision"];
+    v13 = [propertiesCopy objectForKeyedSubscript:@"SoftwareRevision"];
+    v14 = [propertiesCopy objectForKeyedSubscript:@"UUID"];
+    v15 = [propertiesCopy objectForKeyedSubscript:@"UDIForMedicalDevices"];
     v16 = [v23 initWithName:v22 manufacturer:v21 model:v10 hardwareVersion:v11 firmwareVersion:v12 softwareVersion:v13 localIdentifier:v14 UDIDeviceIdentifier:v15];
     [(GHSBluetoothDevice *)v9 setHkDevice:v16];
 
-    [(GHSBluetoothDevice *)v9 setHkStore:v25];
-    v17 = [(GHSBluetoothDevice *)v9 hkStore];
+    [(GHSBluetoothDevice *)v9 setHkStore:storeCopy];
+    hkStore = [(GHSBluetoothDevice *)v9 hkStore];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000683B0;
     v26[3] = &unk_1000BD528;
     v18 = v9;
     v27 = v18;
-    [v17 requestAuthorizationToShareTypes:v24 readTypes:v24 shouldPrompt:0 completion:v26];
+    [hkStore requestAuthorizationToShareTypes:typesCopy readTypes:typesCopy shouldPrompt:0 completion:v26];
 
-    v19 = [v8 objectForKeyedSubscript:@"kGHSPDebugLoggingEnabledKey"];
+    v19 = [propertiesCopy objectForKeyedSubscript:@"kGHSPDebugLoggingEnabledKey"];
     [(GHSBluetoothDevice *)v18 setDebugLoggingEnabled:v19];
 
     v18->_linkIdleTimeout = 30;

@@ -1,6 +1,6 @@
 @interface TextViewWrapper.TextView
 - (CGSize)intrinsicContentSize;
-- (_TtCV17WeatherAppSupportP33_60F1DCCF57C539BA000BCF575D4E662015TextViewWrapper8TextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtCV17WeatherAppSupportP33_60F1DCCF57C539BA000BCF575D4E662015TextViewWrapper8TextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation TextViewWrapper.TextView
@@ -13,14 +13,14 @@
   return result;
 }
 
-- (_TtCV17WeatherAppSupportP33_60F1DCCF57C539BA000BCF575D4E662015TextViewWrapper8TextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtCV17WeatherAppSupportP33_60F1DCCF57C539BA000BCF575D4E662015TextViewWrapper8TextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_220CF0B74(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_220CF0B74(container, x, y, width, height);
 }
 
 @end

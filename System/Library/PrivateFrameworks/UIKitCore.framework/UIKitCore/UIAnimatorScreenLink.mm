@@ -1,8 +1,8 @@
 @interface UIAnimatorScreenLink
-+ (id)startTimerWithScreen:(id)a3 action:(id)a4;
++ (id)startTimerWithScreen:(id)screen action:(id)action;
 - (void)dealloc;
 - (void)invalidate;
-- (void)onDisplayLink:(id)a3;
+- (void)onDisplayLink:(id)link;
 @end
 
 @implementation UIAnimatorScreenLink
@@ -49,18 +49,18 @@
   [(UIAnimatorScreenLink *)&v3 dealloc];
 }
 
-+ (id)startTimerWithScreen:(id)a3 action:(id)a4
++ (id)startTimerWithScreen:(id)screen action:(id)action
 {
-  v5 = a3;
-  v6 = a4;
+  screenCopy = screen;
+  actionCopy = action;
   v7 = objc_alloc_init(UIAnimatorScreenLink);
-  v8 = _Block_copy(v6);
+  v8 = _Block_copy(actionCopy);
 
   updateAction = v7->_updateAction;
   v7->_updateAction = v8;
 
   v7->_animationCount = 1;
-  if (_UIUpdateCycleEnabled() && [v5 _isEmbeddedScreen])
+  if (_UIUpdateCycleEnabled() && [screenCopy _isEmbeddedScreen])
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -74,9 +74,9 @@
 
   else
   {
-    if (v5)
+    if (screenCopy)
     {
-      v11 = v5;
+      v11 = screenCopy;
     }
 
     else
@@ -92,8 +92,8 @@
   v13 = v7->_displayLink;
   if (v13)
   {
-    v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v13 addToRunLoop:v14 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v13 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   return v7;
@@ -108,10 +108,10 @@ uint64_t __52__UIAnimatorScreenLink_startTimerWithScreen_action___block_invoke(u
   return v2(v1);
 }
 
-- (void)onDisplayLink:(id)a3
+- (void)onDisplayLink:(id)link
 {
   updateAction = self->_updateAction;
-  [a3 timestamp];
+  [link timestamp];
   v4 = updateAction[2];
 
   v4(updateAction);

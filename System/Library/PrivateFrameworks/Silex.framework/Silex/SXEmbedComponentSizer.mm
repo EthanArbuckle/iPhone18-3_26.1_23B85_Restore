@@ -1,29 +1,29 @@
 @interface SXEmbedComponentSizer
-- (SXEmbedComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 embedDataProvider:(id)a8;
-- (_NSRange)overrideColumnLayoutForColumnRange:(_NSRange)a3 inColumnLayout:(id)a4;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (SXEmbedComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options embedDataProvider:(id)dataProvider;
+- (_NSRange)overrideColumnLayoutForColumnRange:(_NSRange)range inColumnLayout:(id)layout;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXEmbedComponentSizer
 
-- (SXEmbedComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 embedDataProvider:(id)a8
+- (SXEmbedComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options embedDataProvider:(id)dataProvider
 {
-  v15 = a8;
+  dataProviderCopy = dataProvider;
   v19.receiver = self;
   v19.super_class = SXEmbedComponentSizer;
-  v16 = [(SXComponentSizer *)&v19 initWithComponent:a3 componentLayout:a4 componentStyle:a5 DOMObjectProvider:a6 layoutOptions:a7];
+  v16 = [(SXComponentSizer *)&v19 initWithComponent:component componentLayout:layout componentStyle:style DOMObjectProvider:provider layoutOptions:options];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_embedDataProvider, a8);
+    objc_storeStrong(&v16->_embedDataProvider, dataProvider);
   }
 
   return v17;
 }
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  [(SXComponentSizer *)self suggestedSize:a4];
+  [(SXComponentSizer *)self suggestedSize:context];
   if (v5 <= 0.0)
   {
     return 100.0;
@@ -33,15 +33,15 @@
   return v6;
 }
 
-- (_NSRange)overrideColumnLayoutForColumnRange:(_NSRange)a3 inColumnLayout:(id)a4
+- (_NSRange)overrideColumnLayoutForColumnRange:(_NSRange)range inColumnLayout:(id)layout
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = [(SXEmbedComponentSizer *)self embedDataProvider];
-  v8 = [(SXComponentSizer *)self component];
-  v9 = [v8 embedType];
-  v10 = [v7 embedForType:v9];
+  length = range.length;
+  location = range.location;
+  layoutCopy = layout;
+  embedDataProvider = [(SXEmbedComponentSizer *)self embedDataProvider];
+  component = [(SXComponentSizer *)self component];
+  embedType = [component embedType];
+  v10 = [embedDataProvider embedForType:embedType];
 
   [v10 minimumWidth];
   if (v11 <= 0.0)
@@ -53,14 +53,14 @@
   {
     v12 = v11;
     v13 = 1;
-    while (v13 <= [v6 numberOfColumns])
+    while (v13 <= [layoutCopy numberOfColumns])
     {
-      v14 = [(SXComponentSizer *)self componentLayout];
-      v15 = [v14 ignoreDocumentMargin];
-      v16 = [(SXComponentSizer *)self componentLayout];
-      v17 = [v16 ignoreDocumentMargin];
-      v18 = [(SXComponentSizer *)self componentLayout];
-      [v6 widthForColumnRange:location ignoreMargin:v13 ignoreGutter:v15 ignoreViewportPadding:{v17, objc_msgSend(v18, "ignoreViewportPadding")}];
+      componentLayout = [(SXComponentSizer *)self componentLayout];
+      ignoreDocumentMargin = [componentLayout ignoreDocumentMargin];
+      componentLayout2 = [(SXComponentSizer *)self componentLayout];
+      ignoreDocumentMargin2 = [componentLayout2 ignoreDocumentMargin];
+      componentLayout3 = [(SXComponentSizer *)self componentLayout];
+      [layoutCopy widthForColumnRange:location ignoreMargin:v13 ignoreGutter:ignoreDocumentMargin ignoreViewportPadding:{ignoreDocumentMargin2, objc_msgSend(componentLayout3, "ignoreViewportPadding")}];
       v20 = v19;
 
       ++v13;
@@ -82,13 +82,13 @@
     v21 = v13;
   }
 
-  v22 = [v6 numberOfColumns];
-  v23 = location - ((v21 - v22) & ~((v21 - v22) >> 63));
+  numberOfColumns = [layoutCopy numberOfColumns];
+  v23 = location - ((v21 - numberOfColumns) & ~((v21 - numberOfColumns) >> 63));
   v24 = v23 & ~(v23 >> 63);
-  v25 = [v6 numberOfColumns];
-  if (v21 >= v25)
+  numberOfColumns2 = [layoutCopy numberOfColumns];
+  if (v21 >= numberOfColumns2)
   {
-    v21 = v25;
+    v21 = numberOfColumns2;
   }
 
   v26 = v24;

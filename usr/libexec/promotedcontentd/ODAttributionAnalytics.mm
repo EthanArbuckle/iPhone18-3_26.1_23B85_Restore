@@ -1,15 +1,15 @@
 @interface ODAttributionAnalytics
 - (_TtC11Attribution22ODAttributionAnalytics)init;
-- (void)recordAttributionODEndWithError:(id)a3;
+- (void)recordAttributionODEndWithError:(id)error;
 @end
 
 @implementation ODAttributionAnalytics
 
-- (void)recordAttributionODEndWithError:(id)a3
+- (void)recordAttributionODEndWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_10027CFC0(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_10027CFC0(error);
 }
 
 - (_TtC11Attribution22ODAttributionAnalytics)init

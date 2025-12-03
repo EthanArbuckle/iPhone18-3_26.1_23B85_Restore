@@ -1,76 +1,76 @@
 @interface PRBTRangingClientExportedObject
-- (PRBTRangingClientExportedObject)initWithRangingClient:(id)a3;
+- (PRBTRangingClientExportedObject)initWithRangingClient:(id)client;
 - (PRBTRangingClientProtocol)rangingClient;
-- (void)didConnectDevice:(id)a3 error:(id)a4;
-- (void)didFailWithError:(id)a3;
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5;
-- (void)didReceiveNewBTRSSI:(id)a3;
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4;
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4;
+- (void)didConnectDevice:(id)device error:(id)error;
+- (void)didFailWithError:(id)error;
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error;
+- (void)didReceiveNewBTRSSI:(id)i;
+- (void)didStartRangingOnDevice:(id)device withError:(id)error;
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error;
 @end
 
 @implementation PRBTRangingClientExportedObject
 
-- (PRBTRangingClientExportedObject)initWithRangingClient:(id)a3
+- (PRBTRangingClientExportedObject)initWithRangingClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = PRBTRangingClientExportedObject;
   v5 = [(PRBTRangingClientExportedObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_rangingClient, v4);
+    objc_storeWeak(&v5->_rangingClient, clientCopy);
   }
 
   return v6;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didFailWithError:v4];
+  [WeakRetained didFailWithError:errorCopy];
 }
 
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  deviceCopy = device;
+  powerCopy = power;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didFetchTxPower:v10 fromDevice:v9 withError:v8];
+  [WeakRetained didFetchTxPower:powerCopy fromDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didConnectDevice:(id)a3 error:(id)a4
+- (void)didConnectDevice:(id)device error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didConnectDevice:v7 error:v6];
+  [WeakRetained didConnectDevice:deviceCopy error:errorCopy];
 }
 
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStartRangingOnDevice:(id)device withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didStartRangingOnDevice:v7 withError:v6];
+  [WeakRetained didStartRangingOnDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didStopOwnerRangingOnDevice:v7 withError:v6];
+  [WeakRetained didStopOwnerRangingOnDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didReceiveNewBTRSSI:(id)a3
+- (void)didReceiveNewBTRSSI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didReceiveNewBTRSSI:v4];
+  [WeakRetained didReceiveNewBTRSSI:iCopy];
 }
 
 - (PRBTRangingClientProtocol)rangingClient

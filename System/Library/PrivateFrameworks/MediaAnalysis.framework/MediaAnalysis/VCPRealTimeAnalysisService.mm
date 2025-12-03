@@ -1,10 +1,10 @@
 @interface VCPRealTimeAnalysisService
 + (id)analysisService;
-+ (id)errorWithStatus:(int)a3 andDescription:(id)a4;
++ (id)errorWithStatus:(int)status andDescription:(id)description;
 - (VCPRealTimeAnalysisService)init;
 - (id)connection;
 - (void)dealloc;
-- (void)requestAnalysis:(unint64_t)a3 ofPixelBuffer:(__CVBuffer *)a4 withProperties:(id)a5 withCompletionHandler:(id)a6;
+- (void)requestAnalysis:(unint64_t)analysis ofPixelBuffer:(__CVBuffer *)buffer withProperties:(id)properties withCompletionHandler:(id)handler;
 @end
 
 @implementation VCPRealTimeAnalysisService
@@ -42,15 +42,15 @@
   [(VCPRealTimeAnalysisService *)&v3 dealloc];
 }
 
-+ (id)errorWithStatus:(int)a3 andDescription:(id)a4
++ (id)errorWithStatus:(int)status andDescription:(id)description
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  descriptionCopy = description;
   v6 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696A578];
-  v11[0] = v5;
+  v11[0] = descriptionCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v8 = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:v7];
+  v8 = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:status userInfo:v7];
 
   return v8;
 }
@@ -124,27 +124,27 @@ void __40__VCPRealTimeAnalysisService_connection__block_invoke_10(uint64_t a1)
   }
 }
 
-- (void)requestAnalysis:(unint64_t)a3 ofPixelBuffer:(__CVBuffer *)a4 withProperties:(id)a5 withCompletionHandler:(id)a6
+- (void)requestAnalysis:(unint64_t)analysis ofPixelBuffer:(__CVBuffer *)buffer withProperties:(id)properties withCompletionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = CVPixelBufferGetIOSurface(a4);
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  v12 = CVPixelBufferGetIOSurface(buffer);
   if (v12)
   {
-    v13 = [(VCPRealTimeAnalysisService *)self connection];
+    connection = [(VCPRealTimeAnalysisService *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __97__VCPRealTimeAnalysisService_requestAnalysis_ofPixelBuffer_withProperties_withCompletionHandler___block_invoke;
     v19[3] = &unk_1E834C9C8;
-    v14 = v11;
+    v14 = handlerCopy;
     v20 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+    v15 = [connection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __97__VCPRealTimeAnalysisService_requestAnalysis_ofPixelBuffer_withProperties_withCompletionHandler___block_invoke_13;
     v17[3] = &unk_1E834C7A0;
     v18 = v14;
-    [v15 requestAnalysis:a3 ofIOSurface:v12 withProperties:v10 withReply:v17];
+    [v15 requestAnalysis:analysis ofIOSurface:v12 withProperties:propertiesCopy withReply:v17];
 
     v16 = v20;
   }
@@ -158,7 +158,7 @@ void __40__VCPRealTimeAnalysisService_connection__block_invoke_10(uint64_t a1)
     }
 
     v16 = [objc_opt_class() errorWithStatus:4294967246 andDescription:@"CVPixelbuffer not IOSurface backed"];
-    (*(v11 + 2))(v11, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 }
 

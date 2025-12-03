@@ -1,66 +1,66 @@
 @interface MonogramPosterEditor
-- (id)leadingMenuElementsForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)trailingMenuElementsForEditor:(id)a3;
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 didUpdateSelectedTimeFontConfiguration:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (id)leadingMenuElementsForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)trailingMenuElementsForEditor:(id)editor;
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor didUpdateSelectedTimeFontConfiguration:(id)configuration;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation MonogramPosterEditor
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100016FEC(v6, a4);
+  selfCopy = self;
+  sub_100016FEC(editorCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100020BF8(a4, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_100020BF8(environment, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateSelectedTimeFontConfiguration:(id)a4
+- (void)editor:(id)editor didUpdateSelectedTimeFontConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000183E8(v6, v7);
+  editorCopy = editor;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1000183E8(editorCopy, configurationCopy);
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100020ED4(v8, a4);
+  lookCopy = look;
+  selfCopy = self;
+  sub_100020ED4(editorCopy, views);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion
 {
   v7 = sub_100003598(&qword_100042038, &qword_100029D38);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = editor;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_100026B60();
@@ -75,19 +75,19 @@
   v15[3] = 0;
   v15[4] = &unk_100029D58;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10001FFA4(0, 0, v10, &unk_100029D68, v15);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_1000217EC();
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   sub_1000219D4();
   sub_10000B82C(0, &qword_100042030, PREditingLook_ptr);
@@ -96,13 +96,13 @@
   return v3.super.isa;
 }
 
-- (id)leadingMenuElementsForEditor:(id)a3
+- (id)leadingMenuElementsForEditor:(id)editor
 {
   sub_100003598(&qword_100040F98, &qword_1000293D0);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_100029900;
-  v6 = a3;
-  v7 = self;
+  editorCopy = editor;
+  selfCopy = self;
   *(v5 + 32) = sub_1000195D0();
 
   sub_10000B82C(0, &qword_100041F60, UIMenuElement_ptr);
@@ -111,11 +111,11 @@
   return v8.super.isa;
 }
 
-- (id)trailingMenuElementsForEditor:(id)a3
+- (id)trailingMenuElementsForEditor:(id)editor
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
+  editorCopy = editor;
+  selfCopy = self;
   LOBYTE(self) = sub_100026320();
   swift_endAccess();
   if (self)

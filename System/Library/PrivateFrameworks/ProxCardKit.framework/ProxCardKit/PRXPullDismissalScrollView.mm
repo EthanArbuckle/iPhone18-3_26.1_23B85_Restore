@@ -1,20 +1,20 @@
 @interface PRXPullDismissalScrollView
-- (PRXPullDismissalScrollView)initWithFrame:(CGRect)a3;
+- (PRXPullDismissalScrollView)initWithFrame:(CGRect)frame;
 - (double)dismissalPercent;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAllowsPullToDismiss:(BOOL)a3;
+- (void)setAllowsPullToDismiss:(BOOL)dismiss;
 - (void)updateConstraints;
 @end
 
 @implementation PRXPullDismissalScrollView
 
-- (PRXPullDismissalScrollView)initWithFrame:(CGRect)a3
+- (PRXPullDismissalScrollView)initWithFrame:(CGRect)frame
 {
   v34[6] = *MEMORY[0x277D85DE8];
   v33.receiver = self;
   v33.super_class = PRXPullDismissalScrollView;
-  v3 = [(PRXPullDismissalScrollView *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRXPullDismissalScrollView *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,34 +32,34 @@
 
     [(UIView *)v4->_dismissableContentContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PRXPullDismissalScrollView *)v4 addSubview:v4->_dismissableContentContainerView];
-    v25 = [(PRXPullDismissalScrollView *)v4 contentLayoutGuide];
-    v7 = [(PRXPullDismissalScrollView *)v4 frameLayoutGuide];
+    contentLayoutGuide = [(PRXPullDismissalScrollView *)v4 contentLayoutGuide];
+    frameLayoutGuide = [(PRXPullDismissalScrollView *)v4 frameLayoutGuide];
     v23 = MEMORY[0x277CCAAD0];
     [(UIView *)v4->_dismissableContentContainerView heightAnchor];
-    v32 = v31 = v7;
-    v30 = [v7 heightAnchor];
-    v29 = [v32 constraintEqualToAnchor:v30 multiplier:1.0];
+    v32 = v31 = frameLayoutGuide;
+    heightAnchor = [frameLayoutGuide heightAnchor];
+    v29 = [v32 constraintEqualToAnchor:heightAnchor multiplier:1.0];
     v34[0] = v29;
-    v28 = [(UIView *)v4->_dismissableContentContainerView widthAnchor];
-    v27 = [v7 widthAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 multiplier:1.0];
+    widthAnchor = [(UIView *)v4->_dismissableContentContainerView widthAnchor];
+    widthAnchor2 = [frameLayoutGuide widthAnchor];
+    v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
     v34[1] = v26;
-    v24 = [(UIView *)v4->_dismissableContentContainerView bottomAnchor];
-    v22 = [v25 bottomAnchor];
-    v21 = [v24 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UIView *)v4->_dismissableContentContainerView bottomAnchor];
+    bottomAnchor2 = [contentLayoutGuide bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[2] = v21;
-    v20 = [(UIView *)v4->_dismissableContentContainerView leadingAnchor];
-    v19 = [v25 leadingAnchor];
-    v8 = [v20 constraintEqualToAnchor:v19];
+    leadingAnchor = [(UIView *)v4->_dismissableContentContainerView leadingAnchor];
+    leadingAnchor2 = [contentLayoutGuide leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[3] = v8;
-    v9 = [(UIView *)v4->_dismissableContentContainerView trailingAnchor];
-    v10 = [v25 trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UIView *)v4->_dismissableContentContainerView trailingAnchor];
+    trailingAnchor2 = [contentLayoutGuide trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[4] = v11;
-    v12 = [(PRXPullDismissalScrollView *)v4 contentLayoutGuide];
-    v13 = [v12 widthAnchor];
-    v14 = [(PRXPullDismissalScrollView *)v4 widthAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    contentLayoutGuide2 = [(PRXPullDismissalScrollView *)v4 contentLayoutGuide];
+    widthAnchor3 = [contentLayoutGuide2 widthAnchor];
+    widthAnchor4 = [(PRXPullDismissalScrollView *)v4 widthAnchor];
+    v15 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v34[5] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
     [v23 activateConstraints:v16];
@@ -85,16 +85,16 @@
   [(PRXPullDismissalScrollView *)&v9 updateConstraints];
   if (!self->_contentHeightConstraint)
   {
-    v3 = [(PRXPullDismissalScrollView *)self contentLayoutGuide];
-    v4 = [v3 heightAnchor];
-    v5 = [(PRXPullDismissalScrollView *)self heightAnchor];
+    contentLayoutGuide = [(PRXPullDismissalScrollView *)self contentLayoutGuide];
+    heightAnchor = [contentLayoutGuide heightAnchor];
+    heightAnchor2 = [(PRXPullDismissalScrollView *)self heightAnchor];
     v6 = 1.0;
     if (self->_allowsPullToDismiss)
     {
       v6 = 2.0;
     }
 
-    v7 = [v4 constraintEqualToAnchor:v5 multiplier:v6];
+    v7 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:v6];
     contentHeightConstraint = self->_contentHeightConstraint;
     self->_contentHeightConstraint = v7;
 
@@ -145,11 +145,11 @@
   }
 }
 
-- (void)setAllowsPullToDismiss:(BOOL)a3
+- (void)setAllowsPullToDismiss:(BOOL)dismiss
 {
-  if (self->_allowsPullToDismiss != a3)
+  if (self->_allowsPullToDismiss != dismiss)
   {
-    self->_allowsPullToDismiss = a3;
+    self->_allowsPullToDismiss = dismiss;
     [(NSLayoutConstraint *)self->_contentHeightConstraint setActive:0];
     contentHeightConstraint = self->_contentHeightConstraint;
     self->_contentHeightConstraint = 0;

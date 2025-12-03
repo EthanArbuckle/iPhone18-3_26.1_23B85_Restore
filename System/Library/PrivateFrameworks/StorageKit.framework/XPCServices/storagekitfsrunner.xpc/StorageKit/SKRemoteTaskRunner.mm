@@ -1,37 +1,37 @@
 @interface SKRemoteTaskRunner
-- (SKRemoteTaskRunner)initWithConnection:(id)a3;
-- (void)formatAPFSWithName:(id)a3 diskIdentifier:(id)a4 caseSensitive:(BOOL)a5 password:(id)a6 withReply:(id)a7;
-- (void)runTask:(id)a3 arguments:(id)a4 withReply:(id)a5;
+- (SKRemoteTaskRunner)initWithConnection:(id)connection;
+- (void)formatAPFSWithName:(id)name diskIdentifier:(id)identifier caseSensitive:(BOOL)sensitive password:(id)password withReply:(id)reply;
+- (void)runTask:(id)task arguments:(id)arguments withReply:(id)reply;
 @end
 
 @implementation SKRemoteTaskRunner
 
-- (SKRemoteTaskRunner)initWithConnection:(id)a3
+- (SKRemoteTaskRunner)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = SKRemoteTaskRunner;
   v6 = [(SKRemoteTaskRunner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)runTask:(id)a3 arguments:(id)a4 withReply:(id)a5
+- (void)runTask:(id)task arguments:(id)arguments withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SKTask alloc] initWithExecutable:v10 arguments:v9];
+  replyCopy = reply;
+  argumentsCopy = arguments;
+  taskCopy = task;
+  v11 = [[SKTask alloc] initWithExecutable:taskCopy arguments:argumentsCopy];
 
   v12 = dispatch_queue_create("com.apple.storagekitfsrunner.queue", &_dispatch_queue_attr_concurrent);
-  v34 = self;
-  v13 = [(SKRemoteTaskRunner *)self connection];
-  v14 = [v13 remoteObjectProxy];
+  selfCopy = self;
+  connection = [(SKRemoteTaskRunner *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
   v15 = [SKTaskRawParser alloc];
   v39[0] = _NSConcreteStackBlock;
@@ -40,7 +40,7 @@
   v39[3] = &unk_1000084F0;
   v16 = v12;
   v40 = v16;
-  v17 = v14;
+  v17 = remoteObjectProxy;
   v41 = v17;
   v18 = [(SKTaskRawParser *)v15 initWithCallback:v39];
   [(SKTask *)v11 setStdoutParser:v18];
@@ -68,20 +68,20 @@
   [(SKTask *)v11 setStderrParser:0];
   [(SKTask *)v11 setStdoutParser:0];
   dispatch_barrier_sync(v20, &stru_100008510);
-  v28 = [(SKTask *)v11 stdoutHandle];
-  v29 = [v28 readDataToEndOfFile];
+  stdoutHandle = [(SKTask *)v11 stdoutHandle];
+  readDataToEndOfFile = [stdoutHandle readDataToEndOfFile];
 
-  if (v29 && [v29 length])
+  if (readDataToEndOfFile && [readDataToEndOfFile length])
   {
-    [v21 sendStdout:v29];
+    [v21 sendStdout:readDataToEndOfFile];
   }
 
-  v30 = [(SKTask *)v11 stderrHandle];
-  v31 = [v30 readDataToEndOfFile];
+  stderrHandle = [(SKTask *)v11 stderrHandle];
+  readDataToEndOfFile2 = [stderrHandle readDataToEndOfFile];
 
-  if (v31 && [v31 length])
+  if (readDataToEndOfFile2 && [readDataToEndOfFile2 length])
   {
-    [v21 sendStderr:v31];
+    [v21 sendStderr:readDataToEndOfFile2];
   }
 
   v32 = SKGetOSLog();
@@ -95,17 +95,17 @@
   }
 
   v33 = [NSNumber numberWithBool:v26 ^ 1];
-  v8[2](v8, v33, v27);
+  replyCopy[2](replyCopy, v33, v27);
 
-  [(NSXPCConnection *)v34->_connection invalidate];
+  [(NSXPCConnection *)selfCopy->_connection invalidate];
 }
 
-- (void)formatAPFSWithName:(id)a3 diskIdentifier:(id)a4 caseSensitive:(BOOL)a5 password:(id)a6 withReply:(id)a7
+- (void)formatAPFSWithName:(id)name diskIdentifier:(id)identifier caseSensitive:(BOOL)sensitive password:(id)password withReply:(id)reply
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a6;
-  if (v9)
+  sensitiveCopy = sensitive;
+  identifierCopy = identifier;
+  passwordCopy = password;
+  if (sensitiveCopy)
   {
     v14 = @"-e";
   }
@@ -115,16 +115,16 @@
     v14 = @"-i";
   }
 
-  v15 = a7;
-  v16 = a3;
-  v17 = [NSString stringWithFormat:@"/dev/%@", v12];
-  v18 = [NSArray arrayWithObjects:v14, @"-v", v16, @"-w", v17, 0];
+  replyCopy = reply;
+  nameCopy = name;
+  identifierCopy = [NSString stringWithFormat:@"/dev/%@", identifierCopy];
+  v18 = [NSArray arrayWithObjects:v14, @"-v", nameCopy, @"-w", identifierCopy, 0];
 
-  if (v13)
+  if (passwordCopy)
   {
     v31[0] = @"-E";
     v31[1] = @"-S";
-    v31[2] = v13;
+    v31[2] = passwordCopy;
     v19 = [NSArray arrayWithObjects:v31 count:3];
     v20 = [v19 arrayByAddingObjectsFromArray:v18];
 
@@ -139,14 +139,14 @@
     v25 = 2112;
     v26 = apfsFormatterPath;
     v27 = 2112;
-    v28 = v12;
+    v28 = identifierCopy;
     v29 = 2112;
     v30 = v18;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: Running %@ on %@, %@", buf, 0x2Au);
   }
 
   v22 = [NSURL fileURLWithPath:apfsFormatterPath];
-  [(SKRemoteTaskRunner *)self runTask:v22 arguments:v18 withReply:v15];
+  [(SKRemoteTaskRunner *)self runTask:v22 arguments:v18 withReply:replyCopy];
 }
 
 @end

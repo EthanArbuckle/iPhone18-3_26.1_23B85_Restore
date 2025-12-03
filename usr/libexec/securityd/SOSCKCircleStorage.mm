@@ -1,20 +1,20 @@
 @interface SOSCKCircleStorage
 - (SOSCKCircleStorage)init;
-- (SOSCKCircleStorage)initWithAccount:(id)a3;
+- (SOSCKCircleStorage)initWithAccount:(id)account;
 @end
 
 @implementation SOSCKCircleStorage
 
-- (SOSCKCircleStorage)initWithAccount:(id)a3
+- (SOSCKCircleStorage)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = SOSCKCircleStorage;
   v5 = [(SOSCircleStorageTransport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SOSCircleStorageTransport *)v5 setAccount:v4];
+    [(SOSCircleStorageTransport *)v5 setAccount:accountCopy];
   }
 
   return v6;

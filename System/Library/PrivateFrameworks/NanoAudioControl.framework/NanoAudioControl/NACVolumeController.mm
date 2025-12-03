@@ -1,41 +1,41 @@
 @interface NACVolumeController
-+ (id)demoVolumeControllerWithAudioCategory:(id)a3;
-+ (id)localVolumeControllerWithAudioCategory:(id)a3;
-+ (id)localVolumeControllerWithRoute:(id)a3;
-+ (id)proxyVolumeControllerWithAudioCategory:(id)a3;
-+ (id)proxyVolumeControllerWithTarget:(id)a3;
++ (id)demoVolumeControllerWithAudioCategory:(id)category;
++ (id)localVolumeControllerWithAudioCategory:(id)category;
++ (id)localVolumeControllerWithRoute:(id)route;
++ (id)proxyVolumeControllerWithAudioCategory:(id)category;
++ (id)proxyVolumeControllerWithTarget:(id)target;
 @end
 
 @implementation NACVolumeController
 
-+ (id)localVolumeControllerWithAudioCategory:(id)a3
++ (id)localVolumeControllerWithAudioCategory:(id)category
 {
-  v3 = a3;
-  v4 = [[NACVolumeControllerLocal alloc] initWithAudioCategory:v3];
+  categoryCopy = category;
+  v4 = [[NACVolumeControllerLocal alloc] initWithAudioCategory:categoryCopy];
 
   return v4;
 }
 
-+ (id)localVolumeControllerWithRoute:(id)a3
++ (id)localVolumeControllerWithRoute:(id)route
 {
-  v3 = a3;
-  v4 = [[NACVolumeControllerLocal alloc] initWithRoute:v3];
+  routeCopy = route;
+  v4 = [[NACVolumeControllerLocal alloc] initWithRoute:routeCopy];
 
   return v4;
 }
 
-+ (id)proxyVolumeControllerWithAudioCategory:(id)a3
++ (id)proxyVolumeControllerWithAudioCategory:(id)category
 {
-  v3 = a3;
-  v4 = NACCategoryStringWithRouteCategory(v3);
-  v5 = [v3 isEqualToString:@"Ringtone"];
+  categoryCopy = category;
+  v4 = NACCategoryStringWithRouteCategory(categoryCopy);
+  v5 = [categoryCopy isEqualToString:@"Ringtone"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v7 = [v6 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
     v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"F917CEA4-4001-46AF-8291-CA74CF9178BE"];
-    v9 = [v7 supportsCapability:v8];
+    v9 = [getActivePairedDevice supportsCapability:v8];
 
     if ((v9 & 1) == 0)
     {
@@ -50,22 +50,22 @@
   return v11;
 }
 
-+ (id)proxyVolumeControllerWithTarget:(id)a3
++ (id)proxyVolumeControllerWithTarget:(id)target
 {
-  v3 = a3;
-  if ([v3 isPairedDevice])
+  targetCopy = target;
+  if ([targetCopy isPairedDevice])
   {
-    v4 = [v3 category];
-    if ([v4 isEqual:@"Ringtone"])
+    category = [targetCopy category];
+    if ([category isEqual:@"Ringtone"])
     {
 
 LABEL_5:
-      v7 = [[NACVolumeControllerProxy alloc] initWithVolumeControlTarget:v3];
+      v7 = [[NACVolumeControllerProxy alloc] initWithVolumeControlTarget:targetCopy];
       goto LABEL_9;
     }
 
-    v5 = [v3 category];
-    v6 = [v5 isEqual:@"RingtonePreview"];
+    category2 = [targetCopy category];
+    v6 = [category2 isEqual:@"RingtonePreview"];
 
     if (v6)
     {
@@ -76,7 +76,7 @@ LABEL_5:
   v8 = NMLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(NACVolumeController *)v3 proxyVolumeControllerWithTarget:v8];
+    [(NACVolumeController *)targetCopy proxyVolumeControllerWithTarget:v8];
   }
 
   v7 = 0;
@@ -85,10 +85,10 @@ LABEL_9:
   return v7;
 }
 
-+ (id)demoVolumeControllerWithAudioCategory:(id)a3
++ (id)demoVolumeControllerWithAudioCategory:(id)category
 {
-  v3 = a3;
-  v4 = [[NACVolumeControllerDemo alloc] initWithAudioCategory:v3];
+  categoryCopy = category;
+  v4 = [[NACVolumeControllerDemo alloc] initWithAudioCategory:categoryCopy];
 
   return v4;
 }

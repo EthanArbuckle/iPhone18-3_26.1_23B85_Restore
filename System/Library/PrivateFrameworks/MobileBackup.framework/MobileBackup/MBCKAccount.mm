@@ -1,37 +1,37 @@
 @interface MBCKAccount
-+ (id)_fetchDeviceRecordSnapshots:(id)a3 includeKeybags:(BOOL)a4 account:(id)a5 manager:(id)a6 tracker:(id)a7 error:(id *)a8;
-+ (id)fetchAccountWithOperationTracker:(id)a3 cache:(id)a4 create:(BOOL)a5 error:(id *)a6;
-- (BOOL)addDevice:(id)a3 error:(id *)a4;
-- (BOOL)backupsDisabledFromAnotherDeviceForUUID:(id)a3;
-- (BOOL)deleteDeviceWithOperationTracker:(id)a3 deviceUUID:(id)a4 error:(id *)a5;
-- (BOOL)fetchDevicesWithOperationTracker:(id)a3 error:(id *)a4;
-- (BOOL)hasDevice:(id)a3;
-- (BOOL)setupDeviceWithOperationTracker:(id)a3 deviceUUID:(id)a4 passcode:(id)a5 hasNewOTAKeyBag:(BOOL *)a6 error:(id *)a7;
-- (MBCKAccount)initWithRecord:(id)a3 cache:(id)a4;
-- (id)mergeRecordsWithOperationTracker:(id)a3 serverRecord:(id)a4 originalRecord:(id)a5;
++ (id)_fetchDeviceRecordSnapshots:(id)snapshots includeKeybags:(BOOL)keybags account:(id)account manager:(id)manager tracker:(id)tracker error:(id *)error;
++ (id)fetchAccountWithOperationTracker:(id)tracker cache:(id)cache create:(BOOL)create error:(id *)error;
+- (BOOL)addDevice:(id)device error:(id *)error;
+- (BOOL)backupsDisabledFromAnotherDeviceForUUID:(id)d;
+- (BOOL)deleteDeviceWithOperationTracker:(id)tracker deviceUUID:(id)d error:(id *)error;
+- (BOOL)fetchDevicesWithOperationTracker:(id)tracker error:(id *)error;
+- (BOOL)hasDevice:(id)device;
+- (BOOL)setupDeviceWithOperationTracker:(id)tracker deviceUUID:(id)d passcode:(id)passcode hasNewOTAKeyBag:(BOOL *)bag error:(id *)error;
+- (MBCKAccount)initWithRecord:(id)record cache:(id)cache;
+- (id)mergeRecordsWithOperationTracker:(id)tracker serverRecord:(id)record originalRecord:(id)originalRecord;
 - (id)recordRepresentation;
-- (void)fetchDevicesWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)prepareForSaveWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)refreshWithRecord:(id)a3;
-- (void)removeDeviceForUUID:(id)a3;
-- (void)saveToCacheWithCompletion:(id)a3;
+- (void)fetchDevicesWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)prepareForSaveWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)refreshWithRecord:(id)record;
+- (void)removeDeviceForUUID:(id)d;
+- (void)saveToCacheWithCompletion:(id)completion;
 @end
 
 @implementation MBCKAccount
 
-+ (id)fetchAccountWithOperationTracker:(id)a3 cache:(id)a4 create:(BOOL)a5 error:(id *)a6
++ (id)fetchAccountWithOperationTracker:(id)tracker cache:(id)cache create:(BOOL)create error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  createCopy = create;
+  trackerCopy = tracker;
+  cacheCopy = cache;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBCKAccount fetchAccountWithOperationTracker:cache:create:error:]", "MBCKAccount.m", 40, "tracker");
   }
 
-  v12 = v11;
-  v13 = [v10 account];
-  if (!v13)
+  v12 = cacheCopy;
+  account = [trackerCopy account];
+  if (!account)
   {
     __assert_rtn("+[MBCKAccount fetchAccountWithOperationTracker:cache:create:error:]", "MBCKAccount.m", 42, "serviceAccount");
   }
@@ -42,16 +42,16 @@
   v57 = sub_1000EB528;
   v58 = sub_1000EB538;
   v59 = 0;
-  [a1 timeoutIntervalForFetch];
+  [self timeoutIntervalForFetch];
   v15 = v14;
-  v16 = [v10 ckOperationPolicy];
-  v17 = v16;
-  if (!v16)
+  ckOperationPolicy = [trackerCopy ckOperationPolicy];
+  v17 = ckOperationPolicy;
+  if (!ckOperationPolicy)
   {
     __assert_rtn("+[MBCKAccount fetchAccountWithOperationTracker:cache:create:error:]", "MBCKAccount.m", 47, "policy");
   }
 
-  [v16 timeoutIntervalForFetch];
+  [ckOperationPolicy timeoutIntervalForFetch];
   if (v15 == v18)
   {
     v19 = v17;
@@ -63,8 +63,8 @@ LABEL_8:
     v51 = sub_1000EB538;
     v52 = 0;
     v22 = [CKRecordID alloc];
-    v23 = [v10 syncZoneID];
-    v24 = [v22 initWithRecordName:@"BackupAccount" zoneID:v23];
+    syncZoneID = [trackerCopy syncZoneID];
+    v24 = [v22 initWithRecordName:@"BackupAccount" zoneID:syncZoneID];
 
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
@@ -74,7 +74,7 @@ LABEL_8:
     v46 = &v47;
     v25 = dispatch_semaphore_create(0);
     v44 = v25;
-    [v10 fetchRecordWithID:v24 completion:v43];
+    [trackerCopy fetchRecordWithID:v24 completion:v43];
     MBSemaphoreWaitForever();
     if (v48[5])
     {
@@ -82,7 +82,7 @@ LABEL_8:
       v27 = [(MBCKAccount *)v26 initWithRecord:v48[5] cache:v12];
     }
 
-    else if (v7 && [MBError isError:v55[5] withCode:204])
+    else if (createCopy && [MBError isError:v55[5] withCode:204])
     {
       v28 = MBGetDefaultLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -93,12 +93,12 @@ LABEL_8:
       }
 
       v29 = +[MBCKManager sharedInstance];
-      [v29 resetCacheWithAccount:v13 error:0];
+      [v29 resetCacheWithAccount:account error:0];
 
       v30 = +[MBCKManager sharedInstance];
       v31 = v55 + 5;
       v42 = v55[5];
-      v32 = [v30 openCacheWithAccount:v13 accessType:1 error:&v42];
+      v32 = [v30 openCacheWithAccount:account accessType:1 error:&v42];
       objc_storeStrong(v31, v42);
 
       if (!v32)
@@ -116,14 +116,14 @@ LABEL_8:
 
         v12 = 0;
         v27 = 0;
-        if (!a6)
+        if (!error)
         {
           goto LABEL_26;
         }
 
 LABEL_25:
         v27 = 0;
-        *a6 = v55[5];
+        *error = v55[5];
 LABEL_26:
 
         _Block_object_dispose(&v47, 8);
@@ -133,7 +133,7 @@ LABEL_26:
       v27 = [[MBCKAccount alloc] initWithRecord:0 cache:v32];
       [(MBCKAccount *)v27 setIsFetched:1];
       v41 = 0;
-      v33 = [(MBCKModel *)v27 saveWithOperationTracker:v10 error:&v41];
+      v33 = [(MBCKModel *)v27 saveWithOperationTracker:trackerCopy error:&v41];
       v34 = v41;
       v40 = v41;
       if ((v33 & 1) == 0)
@@ -159,7 +159,7 @@ LABEL_26:
       v27 = 0;
     }
 
-    if (!a6 || v27)
+    if (!error || v27)
     {
       goto LABEL_26;
     }
@@ -172,19 +172,19 @@ LABEL_26:
   [v19 setTimeoutIntervalForFetch:v15];
   v20 = v55 + 5;
   obj = v55[5];
-  v21 = [MBCKOperationTracker operationTrackerWithParentTracker:v10 policy:v19 error:&obj];
+  v21 = [MBCKOperationTracker operationTrackerWithParentTracker:trackerCopy policy:v19 error:&obj];
   objc_storeStrong(v20, obj);
 
   if (v21)
   {
-    v10 = v21;
+    trackerCopy = v21;
     goto LABEL_8;
   }
 
   v27 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v55[5];
+    *error = v55[5];
   }
 
 LABEL_27:
@@ -194,11 +194,11 @@ LABEL_27:
   return v27;
 }
 
-- (MBCKAccount)initWithRecord:(id)a3 cache:(id)a4
+- (MBCKAccount)initWithRecord:(id)record cache:(id)cache
 {
   v12.receiver = self;
   v12.super_class = MBCKAccount;
-  v5 = [(MBCKModel *)&v12 initWithRecord:a3 cache:a4];
+  v5 = [(MBCKModel *)&v12 initWithRecord:record cache:cache];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -226,7 +226,7 @@ LABEL_27:
       }
     }
 
-    if (a3)
+    if (record)
     {
       [(MBCKAccount *)v5 setIsFetched:1];
     }
@@ -235,17 +235,17 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)hasDevice:(id)a3
+- (BOOL)hasDevice:(id)device
 {
-  v3 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:device];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)removeDeviceForUUID:(id)a3
+- (void)removeDeviceForUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:?];
 
   if (v4)
@@ -253,15 +253,15 @@ LABEL_27:
     [(MBCKModel *)self setIsPersistedToServer:0];
   }
 
-  [(NSMutableDictionary *)self->_devicesByUUID removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_devicesByUUID removeObjectForKey:dCopy];
 }
 
-- (BOOL)addDevice:(id)a3 error:(id *)a4
+- (BOOL)addDevice:(id)device error:(id *)error
 {
   devicesByUUID = self->_devicesByUUID;
-  v6 = a3;
-  v7 = [v6 deviceUUID];
-  v8 = [(NSMutableDictionary *)devicesByUUID objectForKeyedSubscript:v7];
+  deviceCopy = device;
+  deviceUUID = [deviceCopy deviceUUID];
+  v8 = [(NSMutableDictionary *)devicesByUUID objectForKeyedSubscript:deviceUUID];
 
   if (!v8)
   {
@@ -269,23 +269,23 @@ LABEL_27:
   }
 
   v9 = self->_devicesByUUID;
-  v10 = [v6 deviceUUID];
-  [(NSMutableDictionary *)v9 setObject:v6 forKeyedSubscript:v10];
+  deviceUUID2 = [deviceCopy deviceUUID];
+  [(NSMutableDictionary *)v9 setObject:deviceCopy forKeyedSubscript:deviceUUID2];
 
   return 1;
 }
 
-- (BOOL)deleteDeviceWithOperationTracker:(id)a3 deviceUUID:(id)a4 error:(id *)a5
+- (BOOL)deleteDeviceWithOperationTracker:(id)tracker deviceUUID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  trackerCopy = tracker;
+  dCopy = d;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKAccount deleteDeviceWithOperationTracker:deviceUUID:error:]", "MBCKAccount.m", 161, "tracker");
   }
 
-  v10 = v9;
-  v11 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:v9];
+  v10 = dCopy;
+  v11 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:dCopy];
   if (v11)
   {
     v31 = 0;
@@ -296,8 +296,8 @@ LABEL_27:
     v36 = 0;
     v12 = dispatch_semaphore_create(0);
     v13 = [CKModifyRecordsOperation alloc];
-    v14 = [v11 recordID];
-    v37 = v14;
+    recordID = [v11 recordID];
+    v37 = recordID;
     v15 = [NSArray arrayWithObjects:&v37 count:1];
     v16 = [v13 initWithRecordsToSave:0 recordIDsToDelete:v15];
 
@@ -308,18 +308,18 @@ LABEL_27:
     v24 = &unk_1003BE608;
     objc_copyWeak(&v29, &location);
     v28 = &v31;
-    v25 = self;
+    selfCopy = self;
     v26 = v10;
     v17 = v12;
     v27 = v17;
     [v16 setModifyRecordsCompletionBlock:&v21];
-    [v8 addDatabaseOperation:{v16, v21, v22, v23, v24, v25}];
+    [trackerCopy addDatabaseOperation:{v16, v21, v22, v23, v24, selfCopy}];
     MBSemaphoreWaitForever();
     v18 = v32[5];
     v19 = v18 == 0;
-    if (a5 && v18)
+    if (error && v18)
     {
-      *a5 = v18;
+      *error = v18;
     }
 
     objc_destroyWeak(&v29);
@@ -328,10 +328,10 @@ LABEL_27:
     _Block_object_dispose(&v31, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MBError errorWithCode:1 format:@"No such device"];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -342,17 +342,17 @@ LABEL_27:
   return v19;
 }
 
-- (void)fetchDevicesWithOperationTracker:(id)a3 completion:(id)a4
+- (void)fetchDevicesWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKAccount fetchDevicesWithOperationTracker:completion:]", "MBCKAccount.m", 195, "tracker");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKAccount fetchDevicesWithOperationTracker:completion:]", "MBCKAccount.m", 196, "completion");
   }
@@ -364,8 +364,8 @@ LABEL_27:
 
   else
   {
-    v9 = [(MBCKAccount *)self deviceRefs];
-    v10 = [v9 copy];
+    deviceRefs = [(MBCKAccount *)self deviceRefs];
+    v10 = [deviceRefs copy];
 
     if ([v10 count])
     {
@@ -386,7 +386,7 @@ LABEL_27:
       v13[4] = self;
       v14 = v10;
       v15 = v8;
-      [(MBCKModel *)self fetchFromServerWithOperationTracker:v6 childrenOfClass:v12 refs:v14 completion:v13];
+      [(MBCKModel *)self fetchFromServerWithOperationTracker:trackerCopy childrenOfClass:v12 refs:v14 completion:v13];
     }
 
     else
@@ -397,9 +397,9 @@ LABEL_27:
   }
 }
 
-- (BOOL)fetchDevicesWithOperationTracker:(id)a3 error:(id *)a4
+- (BOOL)fetchDevicesWithOperationTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -413,11 +413,11 @@ LABEL_27:
   v12 = &v13;
   v7 = dispatch_semaphore_create(0);
   v11 = v7;
-  [(MBCKAccount *)self fetchDevicesWithOperationTracker:v6 completion:v10];
+  [(MBCKAccount *)self fetchDevicesWithOperationTracker:trackerCopy completion:v10];
   MBSemaphoreWaitForever();
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v8 = v14[5] == 0;
@@ -426,63 +426,63 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)backupsDisabledFromAnotherDeviceForUUID:(id)a3
+- (BOOL)backupsDisabledFromAnotherDeviceForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MBCKAccount *)self deviceForUUID:v4];
+  dCopy = d;
+  v5 = [(MBCKAccount *)self deviceForUUID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 backupsDisabledFromAnotherDevice];
+    backupsDisabledFromAnotherDevice = [v5 backupsDisabledFromAnotherDevice];
   }
 
   else
   {
-    v8 = [(MBCKModel *)self cache];
-    v9 = [v8 fetchMostRecentSnapshotForDevice:v4 error:0];
-    v7 = v9 != 0;
+    cache = [(MBCKModel *)self cache];
+    v9 = [cache fetchMostRecentSnapshotForDevice:dCopy error:0];
+    backupsDisabledFromAnotherDevice = v9 != 0;
   }
 
-  return v7;
+  return backupsDisabledFromAnotherDevice;
 }
 
-- (BOOL)setupDeviceWithOperationTracker:(id)a3 deviceUUID:(id)a4 passcode:(id)a5 hasNewOTAKeyBag:(BOOL *)a6 error:(id *)a7
+- (BOOL)setupDeviceWithOperationTracker:(id)tracker deviceUUID:(id)d passcode:(id)passcode hasNewOTAKeyBag:(BOOL *)bag error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  trackerCopy = tracker;
+  dCopy = d;
+  passcodeCopy = passcode;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKAccount setupDeviceWithOperationTracker:deviceUUID:passcode:hasNewOTAKeyBag:error:]", "MBCKAccount.m", 249, "tracker");
   }
 
-  if (!a6)
+  if (!bag)
   {
     __assert_rtn("[MBCKAccount setupDeviceWithOperationTracker:deviceUUID:passcode:hasNewOTAKeyBag:error:]", "MBCKAccount.m", 250, "hasNewOTAKeyBag");
   }
 
-  v15 = v14;
-  v16 = [v12 account];
-  if (!v16)
+  v15 = passcodeCopy;
+  account = [trackerCopy account];
+  if (!account)
   {
     __assert_rtn("[MBCKAccount setupDeviceWithOperationTracker:deviceUUID:passcode:hasNewOTAKeyBag:error:]", "MBCKAccount.m", 252, "serviceAccount");
   }
 
-  v17 = v16;
-  *a6 = 0;
-  if (![(MBCKAccount *)self hasFetchedDevices]&& ![(MBCKAccount *)self fetchDevicesWithOperationTracker:v12 error:a7])
+  v17 = account;
+  *bag = 0;
+  if (![(MBCKAccount *)self hasFetchedDevices]&& ![(MBCKAccount *)self fetchDevicesWithOperationTracker:trackerCopy error:error])
   {
     v34 = 0;
     goto LABEL_77;
   }
 
   v18 = MBDeviceUUID();
-  if (([v13 isEqualToString:v18] & 1) == 0)
+  if (([dCopy isEqualToString:v18] & 1) == 0)
   {
-    if (a7)
+    if (error)
     {
       [MBError errorWithCode:1 format:@"Refusing to set up backups for non-local device"];
-      *a7 = v34 = 0;
+      *error = v34 = 0;
     }
 
     else
@@ -493,28 +493,28 @@ LABEL_27:
     goto LABEL_76;
   }
 
-  v74 = a6;
-  v81 = a7;
-  v82 = [v17 accountIdentifier];
-  v19 = [(MBCKAccount *)self devicesByUUID];
-  v20 = [v19 objectForKeyedSubscript:v13];
+  bagCopy = bag;
+  errorCopy = error;
+  accountIdentifier = [v17 accountIdentifier];
+  devicesByUUID = [(MBCKAccount *)self devicesByUUID];
+  v20 = [devicesByUUID objectForKeyedSubscript:dCopy];
 
-  v80 = [(MBCKDevice *)v20 assetIDPrefix];
+  assetIDPrefix = [(MBCKDevice *)v20 assetIDPrefix];
 
   v85 = v20;
-  v83 = self;
+  selfCopy = self;
   if (!v20)
   {
     v35 = MBGetDefaultLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v96 = v13;
+      v96 = dCopy;
       v97 = 2114;
-      *v98 = v82;
+      *v98 = accountIdentifier;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "=ck-account= No device record found for %{public}@ (%{public}@) - creating a new keybag and assetID prefix", buf, 0x16u);
-      v65 = v13;
-      v69 = v82;
+      assetIDPrefix3 = dCopy;
+      v69 = accountIdentifier;
       _MBLog();
     }
 
@@ -522,19 +522,19 @@ LABEL_27:
     goto LABEL_36;
   }
 
-  v77 = v12;
+  v77 = trackerCopy;
   v78 = v18;
   v75 = v15;
-  v76 = v13;
+  v76 = dCopy;
   v84 = v17;
-  v21 = [v17 persona];
-  v22 = [v21 volumesToBackUp];
+  persona = [v17 persona];
+  volumesToBackUp = [persona volumesToBackUp];
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v22;
+  obj = volumesToBackUp;
   v23 = [obj countByEnumeratingWithState:&v91 objects:v101 count:16];
   if (!v23)
   {
@@ -556,12 +556,12 @@ LABEL_27:
 
       v28 = *(*(&v91 + 1) + 8 * i);
       v90 = 0;
-      v29 = [MBKeyBag OTAKeybagUUIDStringWithVolume:v28 error:&v90, v65, v69, v72, v73];
+      v29 = [MBKeyBag OTAKeybagUUIDStringWithVolume:v28 error:&v90, assetIDPrefix3, v69, v72, v73];
       v30 = v90;
       if (v29)
       {
-        v31 = [(MBCKDevice *)v20 keybagManager];
-        v32 = [v31 hasKeybagWithUUID:v29];
+        keybagManager = [(MBCKDevice *)v20 keybagManager];
+        v32 = [keybagManager hasKeybagWithUUID:v29];
 
         v25 += v32;
         v33 = MBGetDefaultLog();
@@ -582,7 +582,7 @@ LABEL_27:
         v72 = v28;
         v73 = v84;
         v20 = v85;
-        v65 = v29;
+        assetIDPrefix3 = v29;
         v69 = v32;
       }
 
@@ -599,7 +599,7 @@ LABEL_27:
         v97 = 2112;
         *v98 = v30;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "=ck-account= Failed to fetch keybagUUID string for volume %@: %@", buf, 0x16u);
-        v65 = v28;
+        assetIDPrefix3 = v28;
         v69 = v30;
       }
 
@@ -618,24 +618,24 @@ LABEL_30:
   v38 = MBGetDefaultLog();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
-    v39 = [(MBCKDevice *)v85 assetIDPrefix];
+    assetIDPrefix2 = [(MBCKDevice *)v85 assetIDPrefix];
     *buf = 138412290;
-    v96 = v39;
+    v96 = assetIDPrefix2;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "=ck-account= Fetched assetID prefix of %@ from device", buf, 0xCu);
 
-    v65 = [(MBCKDevice *)v85 assetIDPrefix];
+    assetIDPrefix3 = [(MBCKDevice *)v85 assetIDPrefix];
     _MBLog();
   }
 
-  v13 = v76;
-  v12 = v77;
+  dCopy = v76;
+  trackerCopy = v77;
   v15 = v75;
   v17 = v84;
   v18 = v78;
   if (v25 == v37)
   {
-    self = v83;
-    if (v80)
+    self = selfCopy;
+    if (assetIDPrefix)
     {
       v40 = 0;
       v34 = 1;
@@ -646,11 +646,11 @@ LABEL_30:
 
   else
   {
-    self = v83;
+    self = selfCopy;
   }
 
 LABEL_36:
-  v42 = [(MBCKModel *)self cache:v65];
+  v42 = [(MBCKModel *)self cache:assetIDPrefix3];
   v89 = 0;
   [v42 propertyForKey:@"DeviceID" error:&v89];
   v44 = v43 = self;
@@ -658,8 +658,8 @@ LABEL_36:
 
   if (!v44)
   {
-    v50 = [(MBCKModel *)v43 cache];
-    v51 = [v50 setProperty:v13 forKey:@"DeviceID"];
+    cache = [(MBCKModel *)v43 cache];
+    v51 = [cache setProperty:dCopy forKey:@"DeviceID"];
 LABEL_44:
 
 LABEL_45:
@@ -667,8 +667,8 @@ LABEL_45:
     if (!v85)
     {
       v52 = [MBCKDevice alloc];
-      v53 = [(MBCKModel *)v83 cache];
-      v41 = [(MBCKDevice *)v52 initWithUUID:v13 cache:v53 backupEnabled:1];
+      cache2 = [(MBCKModel *)selfCopy cache];
+      v41 = [(MBCKDevice *)v52 initWithUUID:dCopy cache:cache2 backupEnabled:1];
     }
 
     v54 = [(MBCKDevice *)v41 backupEnabled:v66];
@@ -679,16 +679,16 @@ LABEL_45:
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v96 = v13;
+        v96 = dCopy;
         v97 = 2114;
-        *v98 = v82;
+        *v98 = accountIdentifier;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "=ck-account= Setting up new keybag(s) for %{public}@ (%{public}@)", buf, 0x16u);
-        v67 = v13;
-        v71 = v82;
+        v67 = dCopy;
+        v71 = accountIdentifier;
         _MBLog();
       }
 
-      if (![(MBCKDevice *)v41 setupKeybagWithOperationTracker:v12 passcode:v15 error:v81])
+      if (![(MBCKDevice *)v41 setupKeybagWithOperationTracker:trackerCopy passcode:v15 error:errorCopy])
       {
         v40 = obja;
         if ((v54 & 1) == 0)
@@ -701,14 +701,14 @@ LABEL_65:
         goto LABEL_74;
       }
 
-      *v74 = 1;
+      *bagCopy = 1;
     }
 
-    v56 = v83;
-    v57 = [(MBCKAccount *)v83 hmacKey:v67];
+    v56 = selfCopy;
+    v57 = [(MBCKAccount *)selfCopy hmacKey:v67];
     [(MBCKDevice *)v41 setHmacKey:v57];
 
-    if (!v80)
+    if (!assetIDPrefix)
     {
       v58 = MBDeviceUUID();
       v59 = [v58 substringToIndex:4];
@@ -724,7 +724,7 @@ LABEL_65:
       }
 
       [(MBCKDevice *)v41 setAssetIDPrefix:v59];
-      if (![(MBCKModel *)v41 saveWithOperationTracker:v12 error:v81])
+      if (![(MBCKModel *)v41 saveWithOperationTracker:trackerCopy error:errorCopy])
       {
         v62 = MBGetDefaultLog();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -737,12 +737,12 @@ LABEL_65:
         goto LABEL_69;
       }
 
-      v56 = v83;
+      v56 = selfCopy;
     }
 
-    if ([(MBCKAccount *)v56 addDevice:v41 error:v81, v68])
+    if ([(MBCKAccount *)v56 addDevice:v41 error:errorCopy, v68])
     {
-      if ([(MBCKModel *)v56 saveWithOperationTracker:v12 error:v81])
+      if ([(MBCKModel *)v56 saveWithOperationTracker:trackerCopy error:errorCopy])
       {
         v34 = 1;
         goto LABEL_73;
@@ -765,7 +765,7 @@ LABEL_69:
     goto LABEL_73;
   }
 
-  if ([v44 isEqualToString:v13])
+  if ([v44 isEqualToString:dCopy])
   {
     goto LABEL_45;
   }
@@ -777,22 +777,22 @@ LABEL_69:
     *buf = 138412546;
     v96 = v44;
     v97 = 2112;
-    *v98 = v13;
+    *v98 = dCopy;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_FAULT, "=ck-account= Resetting the cache- cached device:%@, deviceUUID:%@", buf, 0x16u);
     v66 = v44;
-    v70 = v13;
+    v70 = dCopy;
     _MBLog();
   }
 
   v46 = +[MBCKManager sharedInstance];
-  v47 = [v46 resetCacheWithAccount:v17 error:v81];
+  v47 = [v46 resetCacheWithAccount:v17 error:errorCopy];
 
   v48 = +[MBCKManager sharedInstance];
   v88 = 0;
   v49 = [v48 openCacheWithAccount:v17 accessType:1 error:&v88];
-  v50 = v88;
+  cache = v88;
 
-  [(MBCKModel *)v83 setCache:v49];
+  [(MBCKModel *)selfCopy setCache:v49];
   [(MBCKModel *)v85 setCache:v49];
   if (v47)
   {
@@ -803,10 +803,10 @@ LABEL_69:
       goto LABEL_44;
     }
 
-    if (v81)
+    if (errorCopy)
     {
-      v63 = v50;
-      *v81 = v50;
+      v63 = cache;
+      *errorCopy = cache;
     }
   }
 
@@ -824,43 +824,43 @@ LABEL_77:
   return v34;
 }
 
-- (void)prepareForSaveWithOperationTracker:(id)a3 completion:(id)a4
+- (void)prepareForSaveWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKAccount prepareForSaveWithOperationTracker:completion:]", "MBCKAccount.m", 366, "completion");
   }
 
-  v7 = v6;
+  v7 = completionCopy;
   if (self->_hasFetchedDevices)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    [(MBCKAccount *)self fetchDevicesWithOperationTracker:v8 completion:v6];
+    [(MBCKAccount *)self fetchDevicesWithOperationTracker:trackerCopy completion:completionCopy];
   }
 }
 
-- (void)saveToCacheWithCompletion:(id)a3
+- (void)saveToCacheWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MBCKModel *)self cache];
+  completionCopy = completion;
+  cache = [(MBCKModel *)self cache];
   v7 = 0;
-  [v5 saveAccount:self error:&v7];
+  [cache saveAccount:self error:&v7];
   v6 = v7;
 
-  v4[2](v4, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
 - (id)recordRepresentation
 {
   v30.receiver = self;
   v30.super_class = MBCKAccount;
-  v24 = [(MBCKModel *)&v30 recordRepresentation];
+  recordRepresentation = [(MBCKModel *)&v30 recordRepresentation];
   v3 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableDictionary count](self->_devicesByUUID, "count")}];
   v26 = 0u;
   v27 = 0u;
@@ -899,8 +899,8 @@ LABEL_77:
 
         v11 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:v8];
         v12 = [CKReference alloc];
-        v13 = [v11 recordID];
-        v14 = [v12 initWithRecordID:v13 action:0];
+        recordID = [v11 recordID];
+        v14 = [v12 initWithRecordID:recordID action:0];
         [v3 addObject:v14];
       }
 
@@ -910,7 +910,7 @@ LABEL_77:
     while (v5);
   }
 
-  [v24 setObject:v3 forKeyedSubscript:@"devices"];
+  [recordRepresentation setObject:v3 forKeyedSubscript:@"devices"];
   hmacKey = self->_hmacKey;
   if (!hmacKey)
   {
@@ -920,8 +920,8 @@ LABEL_77:
     hmacKey = self->_hmacKey;
   }
 
-  v16 = [v24 encryptedValues];
-  [v16 setObject:hmacKey forKeyedSubscript:@"HMACKey"];
+  encryptedValues = [recordRepresentation encryptedValues];
+  [encryptedValues setObject:hmacKey forKeyedSubscript:@"HMACKey"];
 
   v17 = MBGetDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -930,64 +930,64 @@ LABEL_77:
     *buf = 138543618;
     v32 = v18;
     v33 = 2112;
-    v34 = v24;
+    v34 = recordRepresentation;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "=ck-account= %{public}@ record representation: %@", buf, 0x16u);
     objc_opt_class();
     _MBLog();
   }
 
-  return v24;
+  return recordRepresentation;
 }
 
-- (void)refreshWithRecord:(id)a3
+- (void)refreshWithRecord:(id)record
 {
   self->_hasFetchedDevices = 0;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"devices"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"devices"];
   [(MBCKAccount *)self setDeviceRefs:v5];
 
-  v6 = [v4 encryptedValues];
-  v7 = [v6 objectForKeyedSubscript:@"HMACKey"];
+  encryptedValues = [recordCopy encryptedValues];
+  v7 = [encryptedValues objectForKeyedSubscript:@"HMACKey"];
   [(MBCKAccount *)self setHmacKey:v7];
 
   v8.receiver = self;
   v8.super_class = MBCKAccount;
-  [(MBCKModel *)&v8 refreshWithRecord:v4];
+  [(MBCKModel *)&v8 refreshWithRecord:recordCopy];
 }
 
-- (id)mergeRecordsWithOperationTracker:(id)a3 serverRecord:(id)a4 originalRecord:(id)a5
+- (id)mergeRecordsWithOperationTracker:(id)tracker serverRecord:(id)record originalRecord:(id)originalRecord
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 recordType];
-  v10 = [(MBCKAccount *)self recordType];
-  v11 = [v9 isEqualToString:v10];
+  trackerCopy = tracker;
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  recordType2 = [(MBCKAccount *)self recordType];
+  v11 = [recordType isEqualToString:recordType2];
 
   if (v11)
   {
     v12 = MBDeviceUUID();
-    v13 = [(MBCKAccount *)self devicesByUUID];
+    devicesByUUID = [(MBCKAccount *)self devicesByUUID];
     v32 = v12;
-    v33 = [v13 objectForKeyedSubscript:v12];
+    v33 = [devicesByUUID objectForKeyedSubscript:v12];
 
     v14 = [(NSMutableDictionary *)self->_devicesByUUID mutableCopy];
     v15 = [(NSData *)self->_hmacKey copy];
-    [(MBCKAccount *)self refreshWithRecord:v8];
+    [(MBCKAccount *)self refreshWithRecord:recordCopy];
     [(NSMutableDictionary *)self->_devicesByUUID removeAllObjects];
-    if (![(MBCKAccount *)self fetchDevicesWithOperationTracker:v7 error:0])
+    if (![(MBCKAccount *)self fetchDevicesWithOperationTracker:trackerCopy error:0])
     {
       goto LABEL_10;
     }
 
-    v16 = [(MBCKAccount *)self devicesByUUID];
-    v31 = [v16 count];
+    devicesByUUID2 = [(MBCKAccount *)self devicesByUUID];
+    v31 = [devicesByUUID2 count];
     [(MBCKAccount *)self deviceRefs];
     v17 = v15;
     v18 = v14;
-    v20 = v19 = v7;
+    v20 = v19 = trackerCopy;
     v21 = [v20 count];
 
-    v7 = v19;
+    trackerCopy = v19;
     v14 = v18;
     v15 = v17;
 
@@ -1002,11 +1002,11 @@ LABEL_77:
       {
         [v33 setHmacKey:self->_hmacKey];
         devicesByUUID = self->_devicesByUUID;
-        v23 = [v33 deviceUUID];
-        [(NSMutableDictionary *)devicesByUUID setObject:v33 forKeyedSubscript:v23];
+        deviceUUID = [v33 deviceUUID];
+        [(NSMutableDictionary *)devicesByUUID setObject:v33 forKeyedSubscript:deviceUUID];
       }
 
-      v24 = [(MBCKAccount *)self recordRepresentation];
+      recordRepresentation = [(MBCKAccount *)self recordRepresentation];
     }
 
     else
@@ -1015,56 +1015,56 @@ LABEL_10:
       v25 = MBGetDefaultLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [(MBCKAccount *)self devicesByUUID];
-        v27 = [(MBCKAccount *)self deviceRefs];
+        devicesByUUID3 = [(MBCKAccount *)self devicesByUUID];
+        deviceRefs = [(MBCKAccount *)self deviceRefs];
         *buf = 138412546;
-        v35 = v26;
+        v35 = devicesByUUID3;
         v36 = 2112;
-        v37 = v27;
+        v37 = deviceRefs;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "=ck-account= |devicesByUUID| != |deviceRefs| %@ %@", buf, 0x16u);
 
-        v28 = [(MBCKAccount *)self devicesByUUID];
-        v30 = [(MBCKAccount *)self deviceRefs];
+        devicesByUUID4 = [(MBCKAccount *)self devicesByUUID];
+        deviceRefs2 = [(MBCKAccount *)self deviceRefs];
         _MBLog();
       }
 
       objc_storeStrong(&self->_devicesByUUID, v14);
       objc_storeStrong(&self->_hmacKey, v15);
-      v24 = 0;
+      recordRepresentation = 0;
     }
   }
 
   else
   {
-    v24 = 0;
+    recordRepresentation = 0;
   }
 
-  return v24;
+  return recordRepresentation;
 }
 
-+ (id)_fetchDeviceRecordSnapshots:(id)a3 includeKeybags:(BOOL)a4 account:(id)a5 manager:(id)a6 tracker:(id)a7 error:(id *)a8
++ (id)_fetchDeviceRecordSnapshots:(id)snapshots includeKeybags:(BOOL)keybags account:(id)account manager:(id)manager tracker:(id)tracker error:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
-  v14 = a7;
-  v15 = [a6 openCacheWithAccount:a5 accessType:1 error:a8];
+  keybagsCopy = keybags;
+  snapshotsCopy = snapshots;
+  trackerCopy = tracker;
+  v15 = [manager openCacheWithAccount:account accessType:1 error:error];
   if (!v15)
   {
     v22 = 0;
     goto LABEL_16;
   }
 
-  v16 = [MBCKAccount fetchAccountWithOperationTracker:v14 cache:v15 error:a8];
+  v16 = [MBCKAccount fetchAccountWithOperationTracker:trackerCopy cache:v15 error:error];
   v17 = v16;
-  if (v16 && [v16 fetchDevicesWithOperationTracker:v14 error:a8])
+  if (v16 && [v16 fetchDevicesWithOperationTracker:trackerCopy error:error])
   {
-    v18 = [v17 deviceForUUID:v13];
+    v18 = [v17 deviceForUUID:snapshotsCopy];
     v19 = v18;
     if (v18)
     {
-      if ([v18 fetchSnapshotsWithOperationTracker:v14 error:a8])
+      if ([v18 fetchSnapshotsWithOperationTracker:trackerCopy error:error])
       {
-        if (!v12 || ([v19 keybagManager], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "fetchKeybagsWithOperationTracker:error:", v14, a8), v20, v21))
+        if (!keybagsCopy || ([v19 keybagManager], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "fetchKeybagsWithOperationTracker:error:", trackerCopy, error), v20, v21))
         {
           v22 = v19;
 LABEL_14:
@@ -1074,10 +1074,10 @@ LABEL_14:
       }
     }
 
-    else if (a8)
+    else if (error)
     {
-      [MBError errorWithCode:204 format:@"No device record found for %@", v13];
-      *a8 = v22 = 0;
+      [MBError errorWithCode:204 format:@"No device record found for %@", snapshotsCopy];
+      *error = v22 = 0;
       goto LABEL_14;
     }
 

@@ -1,24 +1,24 @@
 @interface DynamicTypeButton
-- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DynamicTypeButton
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_235634(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_235634(change);
 }
 
-- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews17DynamicTypeButton_fontUseCase;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -32,7 +32,7 @@
   return [(DynamicTypeButton *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews17DynamicTypeButton)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews17DynamicTypeButton_fontUseCase;
   *v4 = 0u;
@@ -44,8 +44,8 @@
   *(v4 + 44) = -256;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DynamicTypeButton();
-  v5 = a3;
-  v6 = [(DynamicTypeButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(DynamicTypeButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

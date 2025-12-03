@@ -2,22 +2,22 @@
 - (BOOL)isVoid;
 - (NSError)failure;
 - (_TtC9securityd7TResult)init;
-- (_TtC9securityd7TResult)initWithFailure:(id)a3;
+- (_TtC9securityd7TResult)initWithFailure:(id)failure;
 - (id)success;
 @end
 
 @implementation TResult
 
-- (_TtC9securityd7TResult)initWithFailure:(id)a3
+- (_TtC9securityd7TResult)initWithFailure:(id)failure
 {
   v4 = type metadata accessor for TResult();
   v5 = objc_allocWithZone(v4);
   v6 = &v5[OBJC_IVAR____TtC9securityd7TResult_result];
-  *v6 = a3;
+  *v6 = failure;
   v6[8] = 1;
   v10.receiver = v5;
   v10.super_class = v4;
-  v7 = a3;
+  failureCopy = failure;
   v8 = [(TResult *)&v10 init];
   swift_getObjectType();
   swift_deallocPartialClassInstance();

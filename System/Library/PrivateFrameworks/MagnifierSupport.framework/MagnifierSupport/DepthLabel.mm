@@ -1,8 +1,8 @@
 @interface DepthLabel
 - (NSAttributedString)attributedText;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)rotateIfPossibleTo:(int64_t)a3;
-- (void)setAttributedText:(id)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)rotateIfPossibleTo:(int64_t)to;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation DepthLabel
@@ -11,31 +11,31 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(DepthLabel *)&v4 attributedText];
+  attributedText = [(DepthLabel *)&v4 attributedText];
 
-  return v2;
+  return attributedText;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   ObjectType = swift_getObjectType();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v6 = a3;
-  v7 = self;
-  v8 = [(DepthLabel *)&v10 attributedText];
-  v9.receiver = v7;
+  textCopy = text;
+  selfCopy = self;
+  attributedText = [(DepthLabel *)&v10 attributedText];
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
-  [(DepthLabel *)&v9 setAttributedText:v6];
-  sub_257E85410(v8);
+  [(DepthLabel *)&v9 setAttributedText:textCopy];
+  sub_257E85410(attributedText);
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   ObjectType = swift_getObjectType();
   v9 = UIEdgeInsetsInsetRect_1(x, y, width, height, *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport10DepthLabel__topInset), 0.0);
   v11 = v10;
@@ -43,14 +43,14 @@
   v15 = v14;
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v16 = self;
+  selfCopy = self;
   [(DepthLabel *)&v17 drawTextInRect:v9, v11, v13, v15];
 }
 
-- (void)rotateIfPossibleTo:(int64_t)a3
+- (void)rotateIfPossibleTo:(int64_t)to
 {
-  v4 = self;
-  sub_257E85D30(a3);
+  selfCopy = self;
+  sub_257E85D30(to);
 }
 
 @end

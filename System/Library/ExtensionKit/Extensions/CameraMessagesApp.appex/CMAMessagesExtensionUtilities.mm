@@ -1,21 +1,21 @@
 @interface CMAMessagesExtensionUtilities
-+ (CGRect)shutterButtonAlignmentRectForReferenceBounds:(CGRect)a3 layoutStyle:(int64_t)a4 screenScale:(double)a5;
++ (CGRect)shutterButtonAlignmentRectForReferenceBounds:(CGRect)bounds layoutStyle:(int64_t)style screenScale:(double)scale;
 @end
 
 @implementation CMAMessagesExtensionUtilities
 
-+ (CGRect)shutterButtonAlignmentRectForReferenceBounds:(CGRect)a3 layoutStyle:(int64_t)a4 screenScale:(double)a5
++ (CGRect)shutterButtonAlignmentRectForReferenceBounds:(CGRect)bounds layoutStyle:(int64_t)style screenScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11 = +[CAMCaptureCapabilities capabilities];
-  v12 = [v11 wantsFullscreenViewfinder];
+  wantsFullscreenViewfinder = [v11 wantsFullscreenViewfinder];
 
-  if (v12)
+  if (wantsFullscreenViewfinder)
   {
-    [CAMDynamicShutterControl shutterButtonSpecForLayoutStyle:a4];
+    [CAMDynamicShutterControl shutterButtonSpecForLayoutStyle:style];
     v13 = [[CAMFullscreenViewfinderLayout alloc] initWithReferenceBounds:0.0 shutterIntrinsicSize:{0.0, fmin(width, height), fmax(width, height), v39, v39}];
     [v13 alignmentRectForShutterControl];
     v15 = v14;
@@ -31,8 +31,8 @@
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [UITraitCollection traitCollectionWithDisplayScale:a5];
-    [CAMBottomBar shutterButtonAlignmentRectInBounds:a4 forLayoutStyle:v30 traitCollection:v23 safeAreaInsets:v25, v27, v29, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+    v30 = [UITraitCollection traitCollectionWithDisplayScale:scale];
+    [CAMBottomBar shutterButtonAlignmentRectInBounds:style forLayoutStyle:v30 traitCollection:v23 safeAreaInsets:v25, v27, v29, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     v15 = v31;
     v17 = v32;
     v19 = v33;

@@ -1,11 +1,11 @@
 @interface PLAssetsdNonBindingDebugClient
-- (BOOL)getPhotosXPCEndpoint:(id *)a3 error:(id *)a4;
-- (id)activePhotoLibraries:(id *)a3;
-- (id)allKnownLibraryPaths:(id *)a3;
-- (id)boundServicesForLibrary:(id)a3 error:(id *)a4;
-- (id)existingPhotoLibraryIdentifierForPhotoLibraryURL:(id)a3 error:(id *)a4;
+- (BOOL)getPhotosXPCEndpoint:(id *)endpoint error:(id *)error;
+- (id)activePhotoLibraries:(id *)libraries;
+- (id)allKnownLibraryPaths:(id *)paths;
+- (id)boundServicesForLibrary:(id)library error:(id *)error;
+- (id)existingPhotoLibraryIdentifierForPhotoLibraryURL:(id)l error:(id *)error;
 - (id)getStatus;
-- (void)libraryServicesStateByBundlePathWithCompletion:(id)a3;
+- (void)libraryServicesStateByBundlePathWithCompletion:(id)completion;
 - (void)testAddressSanitizer;
 - (void)testThreadSanitizer;
 @end
@@ -40,8 +40,8 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26];
   [v11 testThreadSanitizer];
 
   if (v15 == 1)
@@ -106,8 +106,8 @@ void __53__PLAssetsdNonBindingDebugClient_testThreadSanitizer__block_invoke(uint
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24_8932];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24_8932];
   [v11 testAddressSanitizer];
 
   if (v15 == 1)
@@ -144,10 +144,10 @@ void __54__PLAssetsdNonBindingDebugClient_testAddressSanitizer__block_invoke(uin
   }
 }
 
-- (void)libraryServicesStateByBundlePathWithCompletion:(id)a3
+- (void)libraryServicesStateByBundlePathWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
@@ -162,18 +162,18 @@ void __54__PLAssetsdNonBindingDebugClient_testAddressSanitizer__block_invoke(uin
     os_activity_scope_enter(v7, (&v26 + 8));
   }
 
-  if (!v5)
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLAssetsdNonBindingDebugClient.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdNonBindingDebugClient.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __81__PLAssetsdNonBindingDebugClient_libraryServicesStateByBundlePathWithCompletion___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v24 = v5;
+  v24 = completionCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __81__PLAssetsdNonBindingDebugClient_libraryServicesStateByBundlePathWithCompletion___block_invoke_17;
@@ -185,7 +185,7 @@ void __54__PLAssetsdNonBindingDebugClient_testAddressSanitizer__block_invoke(uin
   v22 = a2;
   v10 = v24;
   v17 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v23 handler:v16];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v23 handler:v16];
 
   if (v25 == 1)
   {
@@ -294,8 +294,8 @@ void __81__PLAssetsdNonBindingDebugClient_libraryServicesStateByBundlePathWithCo
   v26 = __Block_byref_object_copy__8959;
   v27 = __Block_byref_object_dispose__8960;
   v28 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_8961];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_8961];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __43__PLAssetsdNonBindingDebugClient_getStatus__block_invoke_7;
@@ -343,7 +343,7 @@ void __43__PLAssetsdNonBindingDebugClient_getStatus__block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)getPhotosXPCEndpoint:(id *)a3 error:(id *)a4
+- (BOOL)getPhotosXPCEndpoint:(id *)endpoint error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v38 = 0u;
@@ -390,13 +390,13 @@ void __43__PLAssetsdNonBindingDebugClient_getStatus__block_invoke(uint64_t a1, v
   v30 = __Block_byref_object_copy__8959;
   v31 = __Block_byref_object_dispose__8960;
   v32 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __61__PLAssetsdNonBindingDebugClient_getPhotosXPCEndpoint_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __61__PLAssetsdNonBindingDebugClient_getPhotosXPCEndpoint_error___block_invoke_5;
@@ -406,13 +406,13 @@ void __43__PLAssetsdNonBindingDebugClient_getStatus__block_invoke(uint64_t a1, v
   v25[6] = &buf;
   [v17 getPhotosXPCEndpointWithReply:v25];
 
-  if (!a4 || (v18 = *(*(&buf + 1) + 40)) == 0)
+  if (!error || (v18 = *(*(&buf + 1) + 40)) == 0)
   {
     v18 = v28[5];
-    a4 = a3;
+    error = endpoint;
   }
 
-  *a4 = v18;
+  *error = v18;
   v19 = *(v34 + 24);
   _Block_object_dispose(&v27, 8);
 
@@ -486,10 +486,10 @@ void __61__PLAssetsdNonBindingDebugClient_getPhotosXPCEndpoint_error___block_inv
   }
 }
 
-- (id)existingPhotoLibraryIdentifierForPhotoLibraryURL:(id)a3 error:(id *)a4
+- (id)existingPhotoLibraryIdentifierForPhotoLibraryURL:(id)l error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v39 = 0u;
   *sel = 0u;
   v38 = 0u;
@@ -530,29 +530,29 @@ void __61__PLAssetsdNonBindingDebugClient_getPhotosXPCEndpoint_error___block_inv
   v35 = __Block_byref_object_copy__8959;
   v36 = __Block_byref_object_dispose__8960;
   v37 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __89__PLAssetsdNonBindingDebugClient_existingPhotoLibraryIdentifierForPhotoLibraryURL_error___block_invoke;
   v31[3] = &unk_1E7932770;
   v31[4] = &v32;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v31];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v31];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __89__PLAssetsdNonBindingDebugClient_existingPhotoLibraryIdentifierForPhotoLibraryURL_error___block_invoke_3;
   v27[3] = &unk_1E7931E60;
   p_buf = &buf;
-  v18 = v7;
+  v18 = lCopy;
   v28 = v18;
   v30 = &v32;
   [v17 getExistingPhotoLibraryIdentifierWithLibraryURL:v18 reply:v27];
 
   v19 = *(*(&buf + 1) + 40);
   v20 = v33[5];
-  if (!v19 && a4)
+  if (!v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = *(*(&buf + 1) + 40);
@@ -623,10 +623,10 @@ void __89__PLAssetsdNonBindingDebugClient_existingPhotoLibraryIdentifierForPhoto
   }
 }
 
-- (id)boundServicesForLibrary:(id)a3 error:(id *)a4
+- (id)boundServicesForLibrary:(id)library error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  libraryCopy = library;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -667,27 +667,27 @@ void __89__PLAssetsdNonBindingDebugClient_existingPhotoLibraryIdentifierForPhoto
   v30 = __Block_byref_object_copy__8959;
   v31 = __Block_byref_object_dispose__8960;
   v32 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __64__PLAssetsdNonBindingDebugClient_boundServicesForLibrary_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__PLAssetsdNonBindingDebugClient_boundServicesForLibrary_error___block_invoke_2;
   v25[3] = &unk_1E7931E38;
   v25[4] = &v27;
   v25[5] = &buf;
-  [v17 getBoundServicesForLibrary:v7 reply:v25];
+  [v17 getBoundServicesForLibrary:libraryCopy reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = *(*(&buf + 1) + 40);
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -731,7 +731,7 @@ void __64__PLAssetsdNonBindingDebugClient_boundServicesForLibrary_error___block_
   *(v9 + 40) = v6;
 }
 
-- (id)allKnownLibraryPaths:(id *)a3
+- (id)allKnownLibraryPaths:(id *)paths
 {
   v39 = *MEMORY[0x1E69E9840];
   v32 = 0u;
@@ -774,13 +774,13 @@ void __64__PLAssetsdNonBindingDebugClient_boundServicesForLibrary_error___block_
   v28 = __Block_byref_object_copy__8959;
   v29 = __Block_byref_object_dispose__8960;
   v30 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __55__PLAssetsdNonBindingDebugClient_allKnownLibraryPaths___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __55__PLAssetsdNonBindingDebugClient_allKnownLibraryPaths___block_invoke_2;
@@ -789,12 +789,12 @@ void __64__PLAssetsdNonBindingDebugClient_boundServicesForLibrary_error___block_
   v23[5] = &buf;
   [v15 getAllKnownLibraryPathsWithReply:v23];
 
-  if (a3)
+  if (paths)
   {
     v16 = *(*(&buf + 1) + 40);
     if (v16)
     {
-      *a3 = v16;
+      *paths = v16;
     }
   }
 
@@ -838,7 +838,7 @@ void __55__PLAssetsdNonBindingDebugClient_allKnownLibraryPaths___block_invoke_2(
   *(v9 + 40) = v6;
 }
 
-- (id)activePhotoLibraries:(id *)a3
+- (id)activePhotoLibraries:(id *)libraries
 {
   v39 = *MEMORY[0x1E69E9840];
   v32 = 0u;
@@ -881,13 +881,13 @@ void __55__PLAssetsdNonBindingDebugClient_allKnownLibraryPaths___block_invoke_2(
   v28 = __Block_byref_object_copy__8959;
   v29 = __Block_byref_object_dispose__8960;
   v30 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __55__PLAssetsdNonBindingDebugClient_activePhotoLibraries___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __55__PLAssetsdNonBindingDebugClient_activePhotoLibraries___block_invoke_2;
@@ -896,12 +896,12 @@ void __55__PLAssetsdNonBindingDebugClient_allKnownLibraryPaths___block_invoke_2(
   v23[5] = &buf;
   [v15 getActivePhotoLibrariesWithReply:v23];
 
-  if (a3)
+  if (libraries)
   {
     v16 = *(*(&buf + 1) + 40);
     if (v16)
     {
-      *a3 = v16;
+      *libraries = v16;
     }
   }
 

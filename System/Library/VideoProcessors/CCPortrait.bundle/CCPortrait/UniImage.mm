@@ -1,38 +1,38 @@
 @interface UniImage
-+ (UniImage)imageWithCIImage:(id)a3;
-+ (UniImage)imageWithMTLTexture:(id)a3;
-+ (UniImage)imageWithObject:(id)a3;
-+ (id)_cleanupParameterDescription:(id)a3;
-+ (id)_objectsForNames:(id)a3 forKernel:(id)a4;
-+ (id)_orderedInputNamesForKernel:(id)a3 inputImageSet:(id)a4 outputImageSet:(id)a5 showNonImageParams:(BOOL)a6;
-+ (id)_stringForObject:(id)a3 objectToStringMap:(id)a4;
-+ (id)_textureDescriptionForDot:(id)a3;
-+ (void)metalRenderImageArray:(id)a3 queue:(id)a4 waitUntilScheduled:(BOOL)a5 waitUntilCompleted:(BOOL)a6;
++ (UniImage)imageWithCIImage:(id)image;
++ (UniImage)imageWithMTLTexture:(id)texture;
++ (UniImage)imageWithObject:(id)object;
++ (id)_cleanupParameterDescription:(id)description;
++ (id)_objectsForNames:(id)names forKernel:(id)kernel;
++ (id)_orderedInputNamesForKernel:(id)kernel inputImageSet:(id)set outputImageSet:(id)imageSet showNonImageParams:(BOOL)params;
++ (id)_stringForObject:(id)object objectToStringMap:(id)map;
++ (id)_textureDescriptionForDot:(id)dot;
++ (void)metalRenderImageArray:(id)array queue:(id)queue waitUntilScheduled:(BOOL)scheduled waitUntilCompleted:(BOOL)completed;
 - (CGRect)extent;
-- (UniImage)initWithCIImage:(id)a3;
-- (UniImage)initWithKernel:(id)a3;
-- (UniImage)initWithMTLTexture:(id)a3;
-- (UniImage)initWithObject:(id)a3;
-- (id)coreImageRender:(id)a3;
-- (id)coreImageRender:(id)a3 subRect:(CGRect)a4 outputTexture:(id)a5;
+- (UniImage)initWithCIImage:(id)image;
+- (UniImage)initWithKernel:(id)kernel;
+- (UniImage)initWithMTLTexture:(id)texture;
+- (UniImage)initWithObject:(id)object;
+- (id)coreImageRender:(id)render;
+- (id)coreImageRender:(id)render subRect:(CGRect)rect outputTexture:(id)texture;
 - (id)debugQuickLookObject;
 - (id)description;
 - (void)metalRender;
-- (void)metalRender:(id)a3 waitUntilScheduled:(BOOL)a4 waitUntilCompleted:(BOOL)a5;
+- (void)metalRender:(id)render waitUntilScheduled:(BOOL)scheduled waitUntilCompleted:(BOOL)completed;
 @end
 
 @implementation UniImage
 
-- (UniImage)initWithKernel:(id)a3
+- (UniImage)initWithKernel:(id)kernel
 {
-  v5 = a3;
+  kernelCopy = kernel;
   v12.receiver = self;
   v12.super_class = UniImage;
   v6 = [(UniImage *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->kernel, a3);
+    objc_storeStrong(&v6->kernel, kernel);
     image = v7->image;
     v7->image = 0;
 
@@ -46,10 +46,10 @@
   return v7;
 }
 
-- (UniImage)initWithCIImage:(id)a3
+- (UniImage)initWithCIImage:(id)image
 {
-  v5 = a3;
-  if (v5)
+  imageCopy = image;
+  if (imageCopy)
   {
     v13.receiver = self;
     v13.super_class = UniImage;
@@ -57,7 +57,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->image, a3);
+      objc_storeStrong(&v6->image, image);
       texture = v7->texture;
       v7->texture = 0;
 
@@ -69,24 +69,24 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (UniImage)imageWithCIImage:(id)a3
++ (UniImage)imageWithCIImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v3 = a3;
+    imageCopy = image;
     v4 = objc_alloc(objc_opt_class());
-    v6 = objc_msgSend_initWithCIImage_(v4, v5, v3);
+    v6 = objc_msgSend_initWithCIImage_(v4, v5, imageCopy);
   }
 
   else
@@ -97,16 +97,16 @@
   return v6;
 }
 
-- (UniImage)initWithMTLTexture:(id)a3
+- (UniImage)initWithMTLTexture:(id)texture
 {
-  v5 = a3;
+  textureCopy = texture;
   v14.receiver = self;
   v14.super_class = UniImage;
   v6 = [(UniImage *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->texture, a3);
+    objc_storeStrong(&v6->texture, texture);
     v9 = objc_msgSend_imageWithMTLTexture_options_(MEMORY[0x29EDB9178], v8, v7->texture, MEMORY[0x29EDB8EA0]);
     image = v7->image;
     v7->image = v9;
@@ -121,25 +121,25 @@
   return v7;
 }
 
-+ (UniImage)imageWithMTLTexture:(id)a3
++ (UniImage)imageWithMTLTexture:(id)texture
 {
-  v3 = a3;
+  textureCopy = texture;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithMTLTexture_(v4, v5, v3);
+  v6 = objc_msgSend_initWithMTLTexture_(v4, v5, textureCopy);
 
   return v6;
 }
 
-- (UniImage)initWithObject:(id)a3
+- (UniImage)initWithObject:(id)object
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (!objectCopy)
   {
     goto LABEL_10;
   }
 
-  if (!objc_msgSend_conformsToProtocol_(v4, v5, &unk_2A1CA0A70))
+  if (!objc_msgSend_conformsToProtocol_(objectCopy, v5, &unk_2A1CA0A70))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -171,11 +171,11 @@ LABEL_11:
   return v11;
 }
 
-+ (UniImage)imageWithObject:(id)a3
++ (UniImage)imageWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = [UniImage alloc];
-  v6 = objc_msgSend_initWithObject_(v4, v5, v3);
+  v6 = objc_msgSend_initWithObject_(v4, v5, objectCopy);
 
   return v6;
 }
@@ -354,17 +354,17 @@ LABEL_13:
   return v16;
 }
 
-+ (void)metalRenderImageArray:(id)a3 queue:(id)a4 waitUntilScheduled:(BOOL)a5 waitUntilCompleted:(BOOL)a6
++ (void)metalRenderImageArray:(id)array queue:(id)queue waitUntilScheduled:(BOOL)scheduled waitUntilCompleted:(BOOL)completed
 {
-  v562 = a6;
-  v567 = a5;
-  v7 = a3;
-  v8 = a4;
+  completedCopy = completed;
+  scheduledCopy = scheduled;
+  arrayCopy = array;
+  queueCopy = queue;
   v569 = objc_msgSend_set(MEMORY[0x29EDB8E20], v9, v10);
   v565 = objc_msgSend_array(MEMORY[0x29EDB8DE8], v11, v12);
   v15 = objc_msgSend_set(MEMORY[0x29EDB8E20], v13, v14);
   v18 = objc_msgSend_weakObjectsPointerArray(MEMORY[0x29EDBA0A0], v16, v17);
-  v21 = objc_msgSend_lastObject(v7, v19, v20);
+  v21 = objc_msgSend_lastObject(arrayCopy, v19, v20);
   v24 = objc_msgSend_kernel(v21, v22, v23);
 
   v563 = v24;
@@ -373,7 +373,7 @@ LABEL_13:
   v582 = 0u;
   v583 = 0u;
   v584 = 0u;
-  v28 = v7;
+  v28 = arrayCopy;
   v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v581, v580, 16);
   if (v30)
   {
@@ -403,9 +403,9 @@ LABEL_13:
     v38 = objc_msgSend_pointerAtIndex_(v35, v37, 0);
     v41 = objc_msgSend_device(v38, v39, v40);
     v44 = v41;
-    if (!v8)
+    if (!queueCopy)
     {
-      v8 = objc_msgSend_newCommandQueue(v41, v42, v43);
+      queueCopy = objc_msgSend_newCommandQueue(v41, v42, v43);
     }
 
     v560 = v44;
@@ -426,7 +426,7 @@ LABEL_13:
       v52 = v51;
       v53 = 0;
       v570 = *v575;
-      v564 = v8;
+      v564 = queueCopy;
       do
       {
         v54 = 0;
@@ -529,11 +529,11 @@ LABEL_13:
                 v501 = _os_activity_create(&dword_295691000, v88, v500, OS_ACTIVITY_FLAG_DEFAULT);
 
                 v502 = v56;
-                v8 = v564;
+                queueCopy = v564;
                 goto LABEL_104;
               }
 
-              v8 = v564;
+              queueCopy = v564;
 LABEL_102:
 
               goto LABEL_103;
@@ -571,7 +571,7 @@ LABEL_102:
 
                 v71 = _os_activity_create(&dword_295691000, v70, v68, OS_ACTIVITY_FLAG_DEFAULT);
 
-                v8 = v564;
+                queueCopy = v564;
                 goto LABEL_100;
               }
             }
@@ -628,7 +628,7 @@ LABEL_104:
             sub_2956CE0EC(v578, v53, &v579, v503);
           }
 
-          v505 = objc_msgSend_run_(v56, v504, v8);
+          v505 = objc_msgSend_run_(v56, v504, queueCopy);
           v507 = objc_msgSend_objectAtIndexedSubscript_(v505, v506, 0);
           if (!v507)
           {
@@ -645,7 +645,7 @@ LABEL_104:
 
             objc_msgSend_writeDebugTextures_filesWritten_(v56, v510, v508, v566);
             objc_msgSend_commit(v508, v511, v512);
-            if (v567)
+            if (scheduledCopy)
             {
               objc_msgSend_waitUntilScheduled(v508, v513, v514);
             }
@@ -685,7 +685,7 @@ LABEL_104:
       while (v52);
     }
 
-    if (v562)
+    if (completedCopy)
     {
       v530 = objc_msgSend_lastObject(v565, v528, v529);
       objc_msgSend_waitUntilCompleted(v530, v531, v532);
@@ -739,34 +739,34 @@ LABEL_104:
   }
 }
 
-- (void)metalRender:(id)a3 waitUntilScheduled:(BOOL)a4 waitUntilCompleted:(BOOL)a5
+- (void)metalRender:(id)render waitUntilScheduled:(BOOL)scheduled waitUntilCompleted:(BOOL)completed
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  completedCopy = completed;
+  scheduledCopy = scheduled;
+  renderCopy = render;
   v9 = objc_opt_class();
-  v13 = self;
-  v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v10, &v13, 1);
-  objc_msgSend_metalRenderImageArray_queue_waitUntilScheduled_waitUntilCompleted_(v9, v12, v11, v8, v6, v5);
+  selfCopy = self;
+  v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v10, &selfCopy, 1);
+  objc_msgSend_metalRenderImageArray_queue_waitUntilScheduled_waitUntilCompleted_(v9, v12, v11, renderCopy, scheduledCopy, completedCopy);
 }
 
 - (void)metalRender
 {
   v3 = objc_opt_class();
-  v7 = self;
-  v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v4, &v7, 1);
+  selfCopy = self;
+  v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v4, &selfCopy, 1);
   objc_msgSend_metalRenderImageArray_queue_waitUntilScheduled_waitUntilCompleted_(v3, v6, v5, 0, 1, 1);
 }
 
-+ (id)_textureDescriptionForDot:(id)a3
++ (id)_textureDescriptionForDot:(id)dot
 {
-  v3 = a3;
-  if (!v3)
+  dotCopy = dot;
+  if (!dotCopy)
   {
     sub_2956CE208();
   }
 
-  v4 = v3;
+  v4 = dotCopy;
   objc_opt_class();
   v7 = v4;
   if (objc_opt_isKindOfClass())
@@ -791,9 +791,9 @@ LABEL_104:
   return v21;
 }
 
-+ (id)_cleanupParameterDescription:(id)a3
++ (id)_cleanupParameterDescription:(id)description
 {
-  v3 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(a3, a2, @"", &stru_2A1C8D648);
+  v3 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(description, a2, @"", &stru_2A1C8D648);
   v5 = objc_msgSend_substringToIndex_(v3, v4, 1);
   isEqualToString = objc_msgSend_isEqualToString_(v5, v6, @"{");
 
@@ -862,18 +862,18 @@ LABEL_104:
   return v24;
 }
 
-+ (id)_objectsForNames:(id)a3 forKernel:(id)a4
++ (id)_objectsForNames:(id)names forKernel:(id)kernel
 {
-  v5 = a3;
-  v6 = a4;
+  namesCopy = names;
+  kernelCopy = kernel;
   v7 = MEMORY[0x29EDB8DE8];
-  v10 = objc_msgSend_count(v5, v8, v9);
+  v10 = objc_msgSend_count(namesCopy, v8, v9);
   v12 = objc_msgSend_arrayWithCapacity_(v7, v11, v10);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = v5;
+  v13 = namesCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v31, v30, 16);
   if (v15)
   {
@@ -889,7 +889,7 @@ LABEL_104:
         }
 
         v21 = *(*(&v31 + 1) + 8 * i);
-        v22 = objc_msgSend_inputs(v6, v16, v17);
+        v22 = objc_msgSend_inputs(kernelCopy, v16, v17);
         v24 = objc_msgSend_objectForKey_(v22, v23, v21);
 
         if (v24)
@@ -910,21 +910,21 @@ LABEL_104:
   return v28;
 }
 
-+ (id)_orderedInputNamesForKernel:(id)a3 inputImageSet:(id)a4 outputImageSet:(id)a5 showNonImageParams:(BOOL)a6
++ (id)_orderedInputNamesForKernel:(id)kernel inputImageSet:(id)set outputImageSet:(id)imageSet showNonImageParams:(BOOL)params
 {
-  v59 = a6;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  paramsCopy = params;
+  kernelCopy = kernel;
+  setCopy = set;
+  imageSetCopy = imageSet;
   v11 = MEMORY[0x29EDB8DE8];
-  v14 = objc_msgSend_inputs(v8, v12, v13);
+  v14 = objc_msgSend_inputs(kernelCopy, v12, v13);
   v17 = objc_msgSend_count(v14, v15, v16);
   v19 = objc_msgSend_arrayWithCapacity_(v11, v18, v17);
 
-  v60 = v9;
-  v61 = v10;
-  v81[0] = v9;
-  v81[1] = v10;
+  v60 = setCopy;
+  v61 = imageSetCopy;
+  v81[0] = setCopy;
+  v81[1] = imageSetCopy;
   objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v20, v81, 2);
   v77 = 0u;
   v78 = 0u;
@@ -950,7 +950,7 @@ LABEL_104:
         v73 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v26 = objc_msgSend_inputs(v8, v22, v23);
+        v26 = objc_msgSend_inputs(kernelCopy, v22, v23);
         v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v72, v71, 16);
         if (v28)
         {
@@ -966,7 +966,7 @@ LABEL_104:
               }
 
               v34 = *(*(&v72 + 1) + 8 * i);
-              v35 = objc_msgSend_inputs(v8, v29, v30);
+              v35 = objc_msgSend_inputs(kernelCopy, v29, v30);
               v37 = objc_msgSend_objectForKeyedSubscript_(v35, v36, v34);
 
               if (v37 && objc_msgSend_containsObject_(v25, v38, v37))
@@ -991,13 +991,13 @@ LABEL_104:
     while (v64);
   }
 
-  if (v59)
+  if (paramsCopy)
   {
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v42 = objc_msgSend_inputs(v8, v40, v41);
+    v42 = objc_msgSend_inputs(kernelCopy, v40, v41);
     v44 = objc_msgSend_countByEnumeratingWithState_objects_count_(v42, v43, &v67, v66, 16);
     if (v44)
     {
@@ -1013,7 +1013,7 @@ LABEL_104:
           }
 
           v50 = *(*(&v67 + 1) + 8 * j);
-          v51 = objc_msgSend_inputs(v8, v45, v46);
+          v51 = objc_msgSend_inputs(kernelCopy, v45, v46);
           v53 = objc_msgSend_objectForKeyedSubscript_(v51, v52, v50);
 
           if (v53 && (objc_msgSend_containsObject_(v60, v54, v50) & 1) == 0 && (objc_msgSend_containsObject_(v61, v55, v50) & 1) == 0)
@@ -1034,22 +1034,22 @@ LABEL_104:
   return v57;
 }
 
-+ (id)_stringForObject:(id)a3 objectToStringMap:(id)a4
++ (id)_stringForObject:(id)object objectToStringMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  objectCopy = object;
+  mapCopy = map;
+  if (!mapCopy)
   {
     sub_2956CE234();
   }
 
-  v8 = v6;
-  v11 = objc_msgSend_objectForKey_(v6, v7, v5);
+  v8 = mapCopy;
+  v11 = objc_msgSend_objectForKey_(mapCopy, v7, objectCopy);
   if (!v11)
   {
     v12 = objc_msgSend_count(v8, v9, v10);
     v11 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v13, @"%ld", v12);
-    objc_msgSend_setObject_forKey_(v8, v14, v11, v5);
+    objc_msgSend_setObject_forKey_(v8, v14, v11, objectCopy);
   }
 
   v15 = v11;
@@ -1057,9 +1057,9 @@ LABEL_104:
   return v15;
 }
 
-- (id)coreImageRender:(id)a3
+- (id)coreImageRender:(id)render
 {
-  v4 = a3;
+  renderCopy = render;
   v7 = objc_msgSend_image(self, v5, v6);
   v10 = objc_msgSend_texture(self, v8, v9);
   v13 = objc_msgSend_kernel(self, v11, v12);
@@ -1071,7 +1071,7 @@ LABEL_104:
   v15 = objc_msgSend__mtlTextureForImage_(UniKernel, v14, v10);
 
   v17 = 0;
-  if (v4 && v15 && v7)
+  if (renderCopy && v15 && v7)
   {
     v18 = objc_msgSend__outputTextureForTexture_force_(UniKernel, v16, v15, 0);
     if (!v18)
@@ -1088,7 +1088,7 @@ LABEL_104:
       objc_msgSend_setColorSpace_(v22, v23, 0);
       objc_msgSend_setClamped_(v24, v25, 0);
       v33 = 0;
-      v27 = objc_msgSend_startTaskToRender_toDestination_error_(v4, v26, v7, v24, &v33);
+      v27 = objc_msgSend_startTaskToRender_toDestination_error_(renderCopy, v26, v7, v24, &v33);
       v28 = v33;
       v32 = v28;
       v17 = objc_msgSend_waitUntilCompletedAndReturnError_(v27, v29, &v32);
@@ -1104,14 +1104,14 @@ LABEL_104:
   return v17;
 }
 
-- (id)coreImageRender:(id)a3 subRect:(CGRect)a4 outputTexture:(id)a5
+- (id)coreImageRender:(id)render subRect:(CGRect)rect outputTexture:(id)texture
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  renderCopy = render;
+  textureCopy = texture;
   v15 = objc_msgSend_image(self, v13, v14);
   v18 = objc_msgSend_imageByCroppingToRect_(v15, v16, v17, x, y, width, height);
 
@@ -1122,9 +1122,9 @@ LABEL_104:
   }
 
   v23 = 0;
-  if (v11 && v12 && v18)
+  if (renderCopy && textureCopy && v18)
   {
-    v24 = objc_msgSend__outputTextureForTexture_force_(UniKernel, v22, v12, 0);
+    v24 = objc_msgSend__outputTextureForTexture_force_(UniKernel, v22, textureCopy, 0);
     if (!v24)
     {
       sub_2956CE2B8();
@@ -1145,7 +1145,7 @@ LABEL_104:
       v40 = objc_msgSend_imageByApplyingTransform_(v18, v39, &v49);
 
       v48 = 0;
-      v42 = objc_msgSend_startTaskToRender_toDestination_error_(v11, v41, v40, v30, &v48);
+      v42 = objc_msgSend_startTaskToRender_toDestination_error_(renderCopy, v41, v40, v30, &v48);
       v43 = v48;
       v47 = v43;
       v23 = objc_msgSend_waitUntilCompletedAndReturnError_(v42, v44, &v47);

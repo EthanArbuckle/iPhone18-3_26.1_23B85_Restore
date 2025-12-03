@@ -1,30 +1,30 @@
 @interface _DASNetworkQualityPolicy
 + (id)policyInstance;
-+ (int64_t)currentNetworkQualityWithContext:(id)a3 interface:(int64_t *)a4;
-- (BOOL)inDiscountedHoursAtDate:(id)a3;
-- (BOOL)inLowCongestionHoursAtDate:(id)a3;
-- (BOOL)isiCloudKeychainActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
-- (BOOL)unconstrainedNetworkAvailableForActivity:(id)a3 withContext:(id)a4 withRationale:(id)a5;
++ (int64_t)currentNetworkQualityWithContext:(id)context interface:(int64_t *)interface;
+- (BOOL)inDiscountedHoursAtDate:(id)date;
+- (BOOL)inLowCongestionHoursAtDate:(id)date;
+- (BOOL)isiCloudKeychainActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
+- (BOOL)unconstrainedNetworkAvailableForActivity:(id)activity withContext:(id)context withRationale:(id)rationale;
 - (NSDictionary)discountedHours;
 - (NSDictionary)lowCongestionHours;
 - (_DASNetworkQualityPolicy)init;
-- (double)predictedScoreForActivity:(id)a3 atDate:(id)a4;
-- (double)scoreWithInexpensiveCellForActivity:(id)a3 networkQuality:(int64_t)a4 interface:(int64_t)a5 radioHot:(BOOL)a6;
+- (double)predictedScoreForActivity:(id)activity atDate:(id)date;
+- (double)scoreWithInexpensiveCellForActivity:(id)activity networkQuality:(int64_t)quality interface:(int64_t)interface radioHot:(BOOL)hot;
 - (id)initializeCoreTelephonyClient;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (int)transferSizeIndex:(unint64_t)a3;
-- (int64_t)companionMinimumQualityForActivity:(id)a3 interface:(int64_t)a4 loiStatus:(int64_t)a5;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (int)transferSizeIndex:(unint64_t)index;
+- (int64_t)companionMinimumQualityForActivity:(id)activity interface:(int64_t)interface loiStatus:(int64_t)status;
 - (void)clearOffPeakDiscountedHours;
-- (void)loadCTInformationWithSDM:(BOOL)a3;
-- (void)parseCTCongestionHoursDictionary:(id)a3 atDate:(id)a4;
-- (void)preferredDataSimChanged:(id)a3;
+- (void)loadCTInformationWithSDM:(BOOL)m;
+- (void)parseCTCongestionHoursDictionary:(id)dictionary atDate:(id)date;
+- (void)preferredDataSimChanged:(id)changed;
 - (void)registerForPredictionChanges;
-- (void)setDiscountedHours:(id)a3;
-- (void)setLowCongestionHours:(id)a3;
-- (void)updatePNWStatus:(BOOL)a3;
-- (void)updateSystemConstraintsWithContext:(id)a3;
+- (void)setDiscountedHours:(id)hours;
+- (void)setLowCongestionHours:(id)hours;
+- (void)updatePNWStatus:(BOOL)status;
+- (void)updateSystemConstraintsWithContext:(id)context;
 @end
 
 @implementation _DASNetworkQualityPolicy
@@ -178,9 +178,9 @@
     cellStatus = v3->_cellStatus;
     v3->_cellStatus = v15;
 
-    v17 = [(_DASNetworkQualityPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASNetworkQualityPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v17;
+    v3->_triggers = initializeTriggers;
 
     [(_DASNetworkQualityPolicy *)v3 clearOffPeakDiscountedHours];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -188,7 +188,7 @@
     telephonyQueue = v3->_telephonyQueue;
     v3->_telephonyQueue = v20;
 
-    v22 = [(_DASNetworkQualityPolicy *)v3 initializeCoreTelephonyClient];
+    initializeCoreTelephonyClient = [(_DASNetworkQualityPolicy *)v3 initializeCoreTelephonyClient];
     v23 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3->_telephonyQueue);
     refreshHoursTimer = v3->_refreshHoursTimer;
     v3->_refreshHoursTimer = v23;
@@ -218,10 +218,10 @@
   [(_DASNetworkQualityPolicy *)self setDiscountedHours:&__NSDictionary0__struct];
 }
 
-- (void)parseCTCongestionHoursDictionary:(id)a3 atDate:(id)a4
+- (void)parseCTCongestionHoursDictionary:(id)dictionary atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   if (!qword_10020B340)
   {
     v8 = +[NSCalendar currentCalendar];
@@ -230,7 +230,7 @@
   }
 
   v10 = +[NSDate distantFuture];
-  v11 = [v6 objectForKeyedSubscript:@"ExpirationDate"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"ExpirationDate"];
   if (v11)
   {
     v12 = objc_alloc_init(NSISO8601DateFormatter);
@@ -238,7 +238,7 @@
     v14 = v13;
     if (v13)
     {
-      v15 = v7;
+      v15 = dateCopy;
       v16 = v13;
 
       v17 = [_DASDaemonLogger logForCategory:@"carrierBundle"];
@@ -250,26 +250,26 @@
       }
 
       v10 = v16;
-      v7 = v15;
+      dateCopy = v15;
     }
   }
 
-  [v10 timeIntervalSinceDate:v7];
+  [v10 timeIntervalSinceDate:dateCopy];
   if (v18 >= 0.0)
   {
     v69 = v10;
-    v70 = self;
+    selfCopy = self;
     v71 = v11;
-    v75 = [qword_10020B340 components:540 fromDate:v7];
-    v72 = v6;
-    v73 = [v6 objectForKeyedSubscript:@"TimeWindows"];
+    v75 = [qword_10020B340 components:540 fromDate:dateCopy];
+    v72 = dictionaryCopy;
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"TimeWindows"];
     v20 = +[NSMutableDictionary dictionary];
     v74 = +[NSMutableDictionary dictionary];
     v80 = objc_alloc_init(NSDateFormatter);
     [v80 setDateFormat:@"HH:mm:SS"];
     v21 = 0;
     v78 = v20;
-    v77 = v7;
+    v77 = dateCopy;
     do
     {
       v76 = v21;
@@ -318,7 +318,7 @@
               {
                 [&off_1001CAD98 objectAtIndexedSubscript:v22];
                 v33 = v20;
-                v34 = v7;
+                v34 = dateCopy;
                 v36 = v35 = v27;
                 *buf = 138412802;
                 v92 = v36;
@@ -329,7 +329,7 @@
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Error reading times for %@ (%@-%@)", buf, 0x20u);
 
                 v27 = v35;
-                v7 = v34;
+                dateCopy = v34;
                 v20 = v33;
                 v22 = v83;
               }
@@ -417,7 +417,7 @@
                 }
 
                 v48 = [v32 dateByAddingTimeInterval:arc4random_uniform(fmax(v47, 0.0))];
-                [v7 timeIntervalSinceDate:v38];
+                [dateCopy timeIntervalSinceDate:v38];
                 v50 = v49;
                 v51 = [NSDateInterval alloc];
                 v52 = v51;
@@ -430,11 +430,11 @@
                 else
                 {
                   [v48 dateByAddingTimeInterval:604800.0];
-                  v54 = v53 = v7;
+                  v54 = v53 = dateCopy;
                   v55 = [v38 dateByAddingTimeInterval:604800.0];
                   v82 = [v52 initWithStartDate:v54 endDate:v55];
 
-                  v7 = v53;
+                  dateCopy = v53;
                 }
 
                 v27 = v86;
@@ -454,7 +454,7 @@
                   [v78 setObject:v57 forKeyedSubscript:v58];
 
                   v20 = v78;
-                  v7 = v77;
+                  dateCopy = v77;
                   v27 = v86;
                 }
 
@@ -473,7 +473,7 @@
                   [v74 setObject:v60 forKeyedSubscript:v61];
 
                   v20 = v78;
-                  v7 = v77;
+                  dateCopy = v77;
                   v27 = v86;
                 }
 
@@ -493,22 +493,22 @@
 
     while (v76 != 6);
     v62 = [v20 copy];
-    [(_DASNetworkQualityPolicy *)v70 setLowCongestionHours:v62];
+    [(_DASNetworkQualityPolicy *)selfCopy setLowCongestionHours:v62];
 
     v63 = [v74 copy];
-    [(_DASNetworkQualityPolicy *)v70 setDiscountedHours:v63];
+    [(_DASNetworkQualityPolicy *)selfCopy setDiscountedHours:v63];
 
-    v64 = [v7 dateByAddingTimeInterval:21600.0];
+    v64 = [dateCopy dateByAddingTimeInterval:21600.0];
     v10 = v69;
     v65 = [v69 earlierDate:v64];
 
-    refreshHoursTimer = v70->_refreshHoursTimer;
-    [v65 timeIntervalSinceDate:v7];
+    refreshHoursTimer = selfCopy->_refreshHoursTimer;
+    [v65 timeIntervalSinceDate:dateCopy];
     v68 = dispatch_walltime(0, (v67 * 1000000000.0 + 1.0e10));
     dispatch_source_set_timer(refreshHoursTimer, v68, 0x13A52453C000uLL, 0x2540BE400uLL);
 
     v11 = v71;
-    v6 = v72;
+    dictionaryCopy = v72;
   }
 
   else
@@ -541,7 +541,7 @@
   return coreTelephonyClient;
 }
 
-- (void)loadCTInformationWithSDM:(BOOL)a3
+- (void)loadCTInformationWithSDM:(BOOL)m
 {
   coreTelephonyClient = self->_coreTelephonyClient;
   v4[0] = _NSConcreteStackBlock;
@@ -549,13 +549,13 @@
   v4[2] = sub_100065720;
   v4[3] = &unk_1001B6BA0;
   v4[4] = self;
-  v5 = a3;
+  mCopy = m;
   [(CoreTelephonyClient *)coreTelephonyClient getPreferredDataSubscriptionContext:v4];
 }
 
-- (void)updatePNWStatus:(BOOL)a3
+- (void)updatePNWStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     objc_initWeak(&location, self);
     coreTelephonyClient = self->_coreTelephonyClient;
@@ -575,9 +575,9 @@
   }
 }
 
-- (BOOL)inLowCongestionHoursAtDate:(id)a3
+- (BOOL)inLowCongestionHoursAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = qword_10020B340;
   if (!qword_10020B340)
   {
@@ -588,7 +588,7 @@
     v5 = qword_10020B340;
   }
 
-  v8 = [v5 component:512 fromDate:v4];
+  v8 = [v5 component:512 fromDate:dateCopy];
   v9 = 0;
   v10 = v8 - 1;
   v11 = 1;
@@ -596,9 +596,9 @@
   {
     v12 = v11;
     v10 = (v9 + v10 + 7) % 7;
-    v13 = [(_DASNetworkQualityPolicy *)self lowCongestionHours];
+    lowCongestionHours = [(_DASNetworkQualityPolicy *)self lowCongestionHours];
     v14 = [NSNumber numberWithInteger:v10 + 1];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    v15 = [lowCongestionHours objectForKeyedSubscript:v14];
 
     v25 = 0u;
     v26 = 0u;
@@ -619,7 +619,7 @@
             objc_enumerationMutation(v16);
           }
 
-          if ([*(*(&v23 + 1) + 8 * i) containsDate:v4])
+          if ([*(*(&v23 + 1) + 8 * i) containsDate:dateCopy])
           {
 
             v21 = 1;
@@ -648,9 +648,9 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)inDiscountedHoursAtDate:(id)a3
+- (BOOL)inDiscountedHoursAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = qword_10020B340;
   if (!qword_10020B340)
   {
@@ -661,7 +661,7 @@ LABEL_15:
     v5 = qword_10020B340;
   }
 
-  v8 = [v5 component:512 fromDate:v4];
+  v8 = [v5 component:512 fromDate:dateCopy];
   v9 = 0;
   v10 = v8 - 1;
   v11 = 1;
@@ -669,9 +669,9 @@ LABEL_15:
   {
     v12 = v11;
     v10 = (v9 + v10 + 7) % 7;
-    v13 = [(_DASNetworkQualityPolicy *)self discountedHours];
+    discountedHours = [(_DASNetworkQualityPolicy *)self discountedHours];
     v14 = [NSNumber numberWithInteger:v10 + 1];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    v15 = [discountedHours objectForKeyedSubscript:v14];
 
     v25 = 0u;
     v26 = 0u;
@@ -692,7 +692,7 @@ LABEL_15:
             objc_enumerationMutation(v16);
           }
 
-          if ([*(*(&v23 + 1) + 8 * i) containsDate:v4])
+          if ([*(*(&v23 + 1) + 8 * i) containsDate:dateCopy])
           {
 
             v21 = 1;
@@ -721,54 +721,54 @@ LABEL_15:
   return v21;
 }
 
-+ (int64_t)currentNetworkQualityWithContext:(id)a3 interface:(int64_t *)a4
++ (int64_t)currentNetworkQualityWithContext:(id)context interface:(int64_t *)interface
 {
-  v5 = a3;
-  v6 = [_CDNetworkContext wiredQuality:v5];
+  contextCopy = context;
+  v6 = [_CDNetworkContext wiredQuality:contextCopy];
   if (v6 < 1)
   {
-    v9 = [_CDNetworkContext wifiQuality:v5];
+    v9 = [_CDNetworkContext wifiQuality:contextCopy];
     if (v9)
     {
       v7 = v9;
-      if (a4)
+      if (interface)
       {
-        v8 = [_CDNetworkContext wifiInterfaceClass:v5];
+        v8 = [_CDNetworkContext wifiInterfaceClass:contextCopy];
         goto LABEL_7;
       }
     }
 
     else
     {
-      if (a4)
+      if (interface)
       {
-        *a4 = [_CDNetworkContext cellInterfaceClass:v5];
+        *interface = [_CDNetworkContext cellInterfaceClass:contextCopy];
       }
 
-      v7 = [_CDNetworkContext cellQuality:v5];
+      v7 = [_CDNetworkContext cellQuality:contextCopy];
     }
   }
 
   else
   {
     v7 = v6;
-    if (a4)
+    if (interface)
     {
-      v8 = [_CDNetworkContext wiredInterfaceClass:v5];
+      v8 = [_CDNetworkContext wiredInterfaceClass:contextCopy];
 LABEL_7:
-      *a4 = v8;
+      *interface = v8;
     }
   }
 
   return v7;
 }
 
-- (void)updateSystemConstraintsWithContext:(id)a3
+- (void)updateSystemConstraintsWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [_CDNetworkContext wiredQuality:v3];
-  v5 = [_CDNetworkContext wifiQuality:v3];
-  v6 = [_CDNetworkContext cellQuality:v3];
+  contextCopy = context;
+  v4 = [_CDNetworkContext wiredQuality:contextCopy];
+  v5 = [_CDNetworkContext wifiQuality:contextCopy];
+  v6 = [_CDNetworkContext cellQuality:contextCopy];
 
   v9 = +[_DASDaemon sharedInstance];
   if (v5 > 20 || v4 >= 21)
@@ -795,21 +795,21 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_CDNetworkContext wiredQuality:v7];
-  v9 = [_CDNetworkContext wifiQuality:v7];
-  v10 = [_CDNetworkContext cellQuality:v7];
-  v11 = [_CDNetworkContext cellInterfaceUp:v7];
+  triggerCopy = trigger;
+  stateCopy = state;
+  v8 = [_CDNetworkContext wiredQuality:stateCopy];
+  v9 = [_CDNetworkContext wifiQuality:stateCopy];
+  v10 = [_CDNetworkContext cellQuality:stateCopy];
+  v11 = [_CDNetworkContext cellInterfaceUp:stateCopy];
   v12 = v9 > 0 || v10 < 1;
   v13 = !v12 && ((byte_10020B358 & 1) != 0 || byte_10020B359 != 1);
   [(_DASNetworkQualityPolicy *)self updatePNWStatus:v13];
   byte_10020B359 = v10 > 0;
   byte_10020B358 = v9 > 0;
-  [(_DASNetworkQualityPolicy *)self updateSystemConstraintsWithContext:v7];
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.wired"])
+  [(_DASNetworkQualityPolicy *)self updateSystemConstraintsWithContext:stateCopy];
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.wired"])
   {
     v14 = v8 < 21;
 LABEL_16:
@@ -817,7 +817,7 @@ LABEL_16:
     goto LABEL_27;
   }
 
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.wifi"])
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.wifi"])
   {
     v15 = +[_DASPLLogger sharedInstance];
     [v15 reportNewStatus:v9 > 20 forTrigger:off_10020ACD8];
@@ -826,7 +826,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v17 = [v6 isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.cell"];
+  v17 = [triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.nwstatus.cell"];
   v18 = (v10 < 21) | v11 ^ 1;
   if (v9 > 20)
   {
@@ -858,25 +858,25 @@ LABEL_27:
   return v16 & 1;
 }
 
-- (int64_t)companionMinimumQualityForActivity:(id)a3 interface:(int64_t)a4 loiStatus:(int64_t)a5
+- (int64_t)companionMinimumQualityForActivity:(id)activity interface:(int64_t)interface loiStatus:(int64_t)status
 {
-  v7 = a3;
-  v8 = [v7 schedulingPriority];
-  if (v8 >= _DASSchedulingPriorityUserInitiated)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUserInitiated)
   {
     v10 = 20;
   }
 
   else
   {
-    v9 = [v7 deferred];
+    deferred = [activityCopy deferred];
     v10 = 20;
-    if (a4 != 3 && (v9 & 1) == 0)
+    if (interface != 3 && (deferred & 1) == 0)
     {
-      if (a4 == 1)
+      if (interface == 1)
       {
-        v11 = [v7 startBefore];
-        [v11 timeIntervalSinceNow];
+        startBefore = [activityCopy startBefore];
+        [startBefore timeIntervalSinceNow];
         if (v12 < 0.0)
         {
 
@@ -885,16 +885,16 @@ LABEL_20:
           goto LABEL_26;
         }
 
-        v18 = [v7 requestsImmediateRuntime];
+        requestsImmediateRuntime = [activityCopy requestsImmediateRuntime];
 
-        if (v18)
+        if (requestsImmediateRuntime)
         {
           goto LABEL_20;
         }
 
-        v19 = [v7 transferSize];
-        v13 = v19;
-        if (a5 == 1 && v19 < _DASActivityTransferSizeLarge)
+        transferSize = [activityCopy transferSize];
+        transferSize2 = transferSize;
+        if (status == 1 && transferSize < _DASActivityTransferSizeLarge)
         {
           goto LABEL_20;
         }
@@ -902,15 +902,15 @@ LABEL_20:
 
       else
       {
-        v13 = [v7 transferSize];
+        transferSize2 = [activityCopy transferSize];
       }
 
-      v14 = [v7 schedulingPriority];
-      if (v14 > _DASSchedulingPriorityMaintenance || ([v7 launchReason], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", _DASLaunchReasonBackgroundRemoteNotification), v15, (v16 & 1) != 0))
+      schedulingPriority2 = [activityCopy schedulingPriority];
+      if (schedulingPriority2 > _DASSchedulingPriorityMaintenance || ([activityCopy launchReason], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", _DASLaunchReasonBackgroundRemoteNotification), v15, (v16 & 1) != 0))
       {
 LABEL_11:
-        v17 = [v7 schedulingPriority];
-        if (v17 > _DASSchedulingPriorityUtility || (a4 != 2 || v13 < _DASActivityTransferSizeLarge) && (a4 != 1 || v13 < _DASActivityTransferSizeVeryLarge))
+        schedulingPriority3 = [activityCopy schedulingPriority];
+        if (schedulingPriority3 > _DASSchedulingPriorityUtility || (interface != 2 || transferSize2 < _DASActivityTransferSizeLarge) && (interface != 1 || transferSize2 < _DASActivityTransferSizeVeryLarge))
         {
           goto LABEL_20;
         }
@@ -920,11 +920,11 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v20 = [v7 noTransferSizeSpecified];
+      noTransferSizeSpecified = [activityCopy noTransferSizeSpecified];
       v10 = 100;
-      if (a4 != 2 && (v20 & 1) == 0)
+      if (interface != 2 && (noTransferSizeSpecified & 1) == 0)
       {
-        if (a4 == 1 && v13 > _DASActivityTransferSizeLarge)
+        if (interface == 1 && transferSize2 > _DASActivityTransferSizeLarge)
         {
           goto LABEL_25;
         }
@@ -939,29 +939,29 @@ LABEL_26:
   return v10;
 }
 
-- (int)transferSizeIndex:(unint64_t)a3
+- (int)transferSizeIndex:(unint64_t)index
 {
-  if (_DASActivityTransferSizeVerySmall >= a3)
+  if (_DASActivityTransferSizeVerySmall >= index)
   {
     return 0;
   }
 
-  if (_DASActivityTransferSizeSmall >= a3)
+  if (_DASActivityTransferSizeSmall >= index)
   {
     return 1;
   }
 
-  if (_DASActivityTransferSizeModerate >= a3)
+  if (_DASActivityTransferSizeModerate >= index)
   {
     return 2;
   }
 
-  if (_DASActivityTransferSizeLarge >= a3)
+  if (_DASActivityTransferSizeLarge >= index)
   {
     return 3;
   }
 
-  if (_DASActivityTransferSizeVeryLarge >= a3)
+  if (_DASActivityTransferSizeVeryLarge >= index)
   {
     return 4;
   }
@@ -969,17 +969,17 @@ LABEL_26:
   return 5;
 }
 
-- (double)scoreWithInexpensiveCellForActivity:(id)a3 networkQuality:(int64_t)a4 interface:(int64_t)a5 radioHot:(BOOL)a6
+- (double)scoreWithInexpensiveCellForActivity:(id)activity networkQuality:(int64_t)quality interface:(int64_t)interface radioHot:(BOOL)hot
 {
   result = 0.0;
-  if (a4 >= 50)
+  if (quality >= 50)
   {
-    v7 = a6;
-    v11 = -[_DASNetworkQualityPolicy transferSizeIndex:](self, "transferSizeIndex:", [a3 transferSize]);
+    hotCopy = hot;
+    v11 = -[_DASNetworkQualityPolicy transferSizeIndex:](self, "transferSizeIndex:", [activity transferSize]);
     v12 = v11;
-    if (a5 == 1)
+    if (interface == 1)
     {
-      v13 = a4 != 100;
+      v13 = quality != 100;
       v14 = &unk_100158AD8 + 16 * v11;
     }
 
@@ -987,12 +987,12 @@ LABEL_26:
     {
       if (+[_DASNetworkEvaluationMonitor inexpensivePathAvailable])
       {
-        v15 = (&unk_100158BF8 + 64 * v12 + 32 * [(_DASNetworkQualityPolicy *)self smartDataModeEnabled]+ 16 * v7 + 8 * (a4 != 100));
+        v15 = (&unk_100158BF8 + 64 * v12 + 32 * [(_DASNetworkQualityPolicy *)self smartDataModeEnabled]+ 16 * hotCopy + 8 * (quality != 100));
         return *v15;
       }
 
-      v13 = a4 != 100;
-      v14 = &unk_100158B38 + 32 * v12 + 16 * v7;
+      v13 = quality != 100;
+      v14 = &unk_100158B38 + 32 * v12 + 16 * hotCopy;
     }
 
     v15 = &v14[8 * v13];
@@ -1002,17 +1002,17 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)isiCloudKeychainActivity:(id)a3
+- (BOOL)isiCloudKeychainActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requiresNetwork])
+  activityCopy = activity;
+  if ([activityCopy requiresNetwork])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [v3 relatedApplications];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    relatedApplications = [activityCopy relatedApplications];
+    v5 = [relatedApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1023,11 +1023,11 @@ LABEL_26:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(relatedApplications);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) lowercaseString];
-          if ([v9 containsString:@"securityd"])
+          lowercaseString = [*(*(&v13 + 1) + 8 * i) lowercaseString];
+          if ([lowercaseString containsString:@"securityd"])
           {
 
 LABEL_15:
@@ -1035,7 +1035,7 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v10 = [v9 containsString:@"trustedpeershelper"];
+          v10 = [lowercaseString containsString:@"trustedpeershelper"];
 
           if (v10)
           {
@@ -1043,7 +1043,7 @@ LABEL_15:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [relatedApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
         v11 = 0;
         if (v6)
         {
@@ -1070,32 +1070,32 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)unconstrainedNetworkAvailableForActivity:(id)a3 withContext:(id)a4 withRationale:(id)a5
+- (BOOL)unconstrainedNetworkAvailableForActivity:(id)activity withContext:(id)context withRationale:(id)rationale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  contextCopy = context;
+  rationaleCopy = rationale;
   v11 = +[_DASNetworkEvaluationMonitor sharedInstance];
-  v12 = [v11 isUnconstrainedPathAvailableForActivity:v8];
+  v12 = [v11 isUnconstrainedPathAvailableForActivity:activityCopy];
 
   if (v12)
   {
     goto LABEL_9;
   }
 
-  if ([v8 requiresUnconstrainedNetworking])
+  if ([activityCopy requiresUnconstrainedNetworking])
   {
     v13 = @"requiresUnconstrainedNetworking == YES";
 LABEL_15:
     v21 = [NSPredicate predicateWithFormat:v13];
-    [v10 addRationaleWithCondition:v21];
+    [rationaleCopy addRationaleWithCondition:v21];
 
 LABEL_16:
     v17 = 0;
     goto LABEL_17;
   }
 
-  if ([(_DASNetworkQualityPolicy *)self isiCloudKeychainActivity:v8])
+  if ([(_DASNetworkQualityPolicy *)self isiCloudKeychainActivity:activityCopy])
   {
     v14 = [_DASDaemonLogger logForCategory:@"lowDataMode"];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1108,20 +1108,20 @@ LABEL_16:
     v15 = @"isiCloudKeychainActivity == YES";
 LABEL_8:
     v16 = [NSPredicate predicateWithFormat:v15];
-    [v10 addRationaleWithCondition:v16];
+    [rationaleCopy addRationaleWithCondition:v16];
 
 LABEL_9:
     v17 = 1;
     goto LABEL_17;
   }
 
-  if ([_DASPhotosPolicy isiCPLActivity:v8])
+  if ([_DASPhotosPolicy isiCPLActivity:activityCopy])
   {
     v18 = +[_DASPhotosPolicy keyPathForPhotosBudgetOverride];
-    v19 = [v9 objectForKeyedSubscript:v18];
-    v20 = [v19 unsignedIntegerValue];
+    v19 = [contextCopy objectForKeyedSubscript:v18];
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-    if ((v20 & 0x10) != 0)
+    if ((unsignedIntegerValue & 0x10) != 0)
     {
       v23 = [_DASDaemonLogger logForCategory:@"lowDataMode"];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1135,15 +1135,15 @@ LABEL_9:
     }
   }
 
-  if (([v8 requestsApplicationLaunch] & 1) != 0 || objc_msgSend(v8, "requestsExtensionLaunch"))
+  if (([activityCopy requestsApplicationLaunch] & 1) != 0 || objc_msgSend(activityCopy, "requestsExtensionLaunch"))
   {
     v13 = @"requestsLaunch == YES";
     goto LABEL_15;
   }
 
-  v24 = [v8 startBefore];
-  v25 = [v8 startAfter];
-  [v24 timeIntervalSinceDate:v25];
+  startBefore = [activityCopy startBefore];
+  startAfter = [activityCopy startAfter];
+  [startBefore timeIntervalSinceDate:startAfter];
   v27 = v26;
 
   if (v27 < 1.0)
@@ -1151,8 +1151,8 @@ LABEL_9:
     v27 = 1.0;
   }
 
-  v28 = [v8 startAfter];
-  [v28 timeIntervalSinceNow];
+  startAfter2 = [activityCopy startAfter];
+  [startAfter2 timeIntervalSinceNow];
   v30 = -v29;
 
   v31 = v30 / v27;
@@ -1162,7 +1162,7 @@ LABEL_9:
   }
 
   v32 = [NSPredicate predicateWithFormat:@"isNearingDeadline == YES"];
-  [v10 addRationaleWithCondition:v32];
+  [rationaleCopy addRationaleWithCondition:v32];
 
   v33 = [_DASDaemonLogger logForCategory:@"lowDataMode"];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -1179,60 +1179,60 @@ LABEL_17:
   return v17;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000676C8;
   block[3] = &unk_1001B56E0;
   block[4] = self;
-  v7 = a4;
-  v67 = v7;
+  stateCopy = state;
+  v67 = stateCopy;
   if (qword_10020B360 != -1)
   {
     dispatch_once(&qword_10020B360, block);
   }
 
   v8 = [[_DASNetworkQualityPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if ([v6 isUpload])
+  if ([activityCopy isUpload])
   {
-    v9 = [v6 uploadSize];
+    uploadSize = [activityCopy uploadSize];
   }
 
   else
   {
-    v9 = [v6 downloadSize];
+    uploadSize = [activityCopy downloadSize];
   }
 
-  [(_DASNetworkQualityPolicyResponseRationale *)v8 setActivityTransferSize:v9];
-  v10 = [(_DASNetworkQualityPolicyResponseRationale *)v8 activityTransferSize];
-  if (!v10)
+  [(_DASNetworkQualityPolicyResponseRationale *)v8 setActivityTransferSize:uploadSize];
+  activityTransferSize = [(_DASNetworkQualityPolicyResponseRationale *)v8 activityTransferSize];
+  if (!activityTransferSize)
   {
-    v10 = [v6 transferSize];
+    activityTransferSize = [activityCopy transferSize];
   }
 
-  [(_DASNetworkQualityPolicyResponseRationale *)v8 setActivityTransferSize:v10];
+  [(_DASNetworkQualityPolicyResponseRationale *)v8 setActivityTransferSize:activityTransferSize];
   v11 = objc_autoreleasePoolPush();
-  v12 = [(_DASNetworkEvaluationMonitor *)self->_networkEvaluator isNetworkPathAvailableForActivity:v6];
+  v12 = [(_DASNetworkEvaluationMonitor *)self->_networkEvaluator isNetworkPathAvailableForActivity:activityCopy];
   objc_autoreleasePoolPop(v11);
   if ((v12 & 1) == 0)
   {
     [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"networkPathAvailability" withRequiredValue:1.0 withCurrentValue:0.0];
-    v26 = [v6 requiresInexpensiveNetworking];
-    v27 = [(_DASPolicyResponseRationale *)v8 responseOptions];
+    requiresInexpensiveNetworking = [activityCopy requiresInexpensiveNetworking];
+    responseOptions = [(_DASPolicyResponseRationale *)v8 responseOptions];
     v28 = 256;
-    if (!v26)
+    if (!requiresInexpensiveNetworking)
     {
       v28 = 1;
     }
 
-    [(_DASPolicyResponseRationale *)v8 setResponseOptions:v27 | v28];
+    [(_DASPolicyResponseRationale *)v8 setResponseOptions:responseOptions | v28];
     goto LABEL_18;
   }
 
-  v13 = [v6 schedulingPriority];
-  if (v13 < _DASSchedulingPriorityUtility && ([v6 deferred] & 1) == 0 && !-[_DASNetworkQualityPolicy unconstrainedNetworkAvailableForActivity:withContext:withRationale:](self, "unconstrainedNetworkAvailableForActivity:withContext:withRationale:", v6, v7, v8))
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority < _DASSchedulingPriorityUtility && ([activityCopy deferred] & 1) == 0 && !-[_DASNetworkQualityPolicy unconstrainedNetworkAvailableForActivity:withContext:withRationale:](self, "unconstrainedNetworkAvailableForActivity:withContext:withRationale:", activityCopy, stateCopy, v8))
   {
     [(_DASPolicyResponseRationale *)v8 setResponseOptions:[(_DASPolicyResponseRationale *)v8 responseOptions]| 2];
     [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"unconstrainedNetworkAvailable" withRequiredValue:1.0 withCurrentValue:0.0];
@@ -1242,17 +1242,17 @@ LABEL_18:
     goto LABEL_30;
   }
 
-  v14 = [v6 userInfo];
-  v15 = [v14 objectForKeyedSubscript:_DASCTSMailFetchKey];
+  userInfo = [activityCopy userInfo];
+  v15 = [userInfo objectForKeyedSubscript:_DASCTSMailFetchKey];
   if ([v15 BOOLValue])
   {
     v16 = +[NSDate date];
-    v17 = [v6 startBefore];
-    [v16 timeIntervalSinceDate:v17];
+    startBefore = [activityCopy startBefore];
+    [v16 timeIntervalSinceDate:startBefore];
     v19 = v18;
-    v20 = [v6 startBefore];
-    v21 = [v6 startAfter];
-    [v20 timeIntervalSinceDate:v21];
+    startBefore2 = [activityCopy startBefore];
+    startAfter = [activityCopy startAfter];
+    [startBefore2 timeIntervalSinceDate:startAfter];
     v23 = v22;
 
     if (v19 > v23)
@@ -1269,17 +1269,17 @@ LABEL_30:
   {
   }
 
-  v29 = [v6 schedulingPriority];
-  if (v29 >= _DASSchedulingPriorityUserInitiated)
+  schedulingPriority2 = [activityCopy schedulingPriority];
+  if (schedulingPriority2 >= _DASSchedulingPriorityUserInitiated)
   {
     goto LABEL_25;
   }
 
-  v30 = [v6 launchReason];
-  if ([v30 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
+  launchReason = [activityCopy launchReason];
+  if ([launchReason isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
   {
-    v31 = [v6 submitDate];
-    [v31 timeIntervalSinceNow];
+    submitDate = [activityCopy submitDate];
+    [submitDate timeIntervalSinceNow];
     v33 = v32;
 
     if (v33 < 0.0)
@@ -1301,30 +1301,30 @@ LABEL_29:
   {
   }
 
-  if ([_CDNetworkContext wiredQuality:v7]>= 1)
+  if ([_CDNetworkContext wiredQuality:stateCopy]>= 1)
   {
     v24 = 86400.0;
     goto LABEL_29;
   }
 
-  v36 = [_CDNetworkContext wifiQuality:v7];
+  v36 = [_CDNetworkContext wifiQuality:stateCopy];
   v37 = +[_CDNetworkContext keyPathForWiFiConnectionStatus];
-  v38 = [v7 objectForKeyedSubscript:v37];
+  v38 = [stateCopy objectForKeyedSubscript:v37];
 
   v39 = +[_CDNetworkContext loiKey];
   v63 = v38;
   v40 = [v38 objectForKeyedSubscript:v39];
-  v41 = [v40 integerValue];
+  integerValue = [v40 integerValue];
 
-  v42 = [(_DASNetworkQualityPolicy *)self minimumQualityForActivity:v6 interface:1 interfaceSubtype:0 loiStatus:v41];
+  v42 = [(_DASNetworkQualityPolicy *)self minimumQualityForActivity:activityCopy interface:1 interfaceSubtype:0 loiStatus:integerValue];
   v43 = +[_CDContextQueries keyPathForPluginStatus];
-  v44 = [v7 objectForKeyedSubscript:v43];
-  v45 = [v44 BOOLValue];
+  v44 = [stateCopy objectForKeyedSubscript:v43];
+  bOOLValue = [v44 BOOLValue];
 
   v65 = 1;
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setWifiLQMObserved:v36];
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setWifiLQMRequired:v42];
-  [(_DASNetworkQualityPolicy *)self scoreForActivity:v6 networkQuality:v36 interface:1 interfaceSubtype:0 pluginStatus:v45 radioHot:0 linkAvailable:&v65 loiStatus:v41];
+  [(_DASNetworkQualityPolicy *)self scoreForActivity:activityCopy networkQuality:v36 interface:1 interfaceSubtype:0 pluginStatus:bOOLValue radioHot:0 linkAvailable:&v65 loiStatus:integerValue];
   v47 = v46;
   [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"wifiQuality" withRequiredValue:v42 withCurrentValue:v36];
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setInterfaceType:@"wifi"];
@@ -1333,13 +1333,13 @@ LABEL_29:
     goto LABEL_36;
   }
 
-  if ([_DASPhotosPolicy isiCPLActivity:v6])
+  if ([_DASPhotosPolicy isiCPLActivity:activityCopy])
   {
     v49 = +[_DASPhotosPolicy keyPathForPhotosBudgetOverride];
-    v50 = [v7 objectForKeyedSubscript:v49];
-    v51 = [v50 unsignedIntegerValue];
+    v50 = [stateCopy objectForKeyedSubscript:v49];
+    unsignedIntegerValue = [v50 unsignedIntegerValue];
 
-    if ((v51 & 2) != 0)
+    if ((unsignedIntegerValue & 2) != 0)
     {
       [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"photosOverrideEnergy" withRequiredValue:1.0 withCurrentValue:1.0];
       v59 = 0x384uLL;
@@ -1350,18 +1350,18 @@ LABEL_52:
     }
   }
 
-  v52 = [_CDNetworkContext cellQuality:v7];
-  v53 = [(_DASNetworkQualityPolicy *)self minimumQualityForActivity:v6 interface:2 interfaceSubtype:0 loiStatus:0];
+  v52 = [_CDNetworkContext cellQuality:stateCopy];
+  v53 = [(_DASNetworkQualityPolicy *)self minimumQualityForActivity:activityCopy interface:2 interfaceSubtype:0 loiStatus:0];
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setCellLQMObserved:v52];
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setCellLQMRequired:v53];
   [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"cellQuality" withRequiredValue:v53 withCurrentValue:v52];
-  v54 = [_CDNetworkContext cellInterfaceUp:v7];
+  v54 = [_CDNetworkContext cellInterfaceUp:stateCopy];
   [(_DASNetworkQualityPolicyResponseRationale *)v8 setInterfaceType:@"cell"];
   v64 = 1;
-  [(_DASNetworkQualityPolicy *)self scoreForActivity:v6 networkQuality:v52 interface:2 interfaceSubtype:0 pluginStatus:v45 radioHot:v54 linkAvailable:&v64 loiStatus:0];
+  [(_DASNetworkQualityPolicy *)self scoreForActivity:activityCopy networkQuality:v52 interface:2 interfaceSubtype:0 pluginStatus:bOOLValue radioHot:v54 linkAvailable:&v64 loiStatus:0];
   if (v55 <= 0.0)
   {
-    if ((v65 & 1) != 0 || v64 == 1 && ([v6 requiresInexpensiveNetworking] & 1) == 0)
+    if ((v65 & 1) != 0 || v64 == 1 && ([activityCopy requiresInexpensiveNetworking] & 1) == 0)
     {
       v61 = 4;
     }
@@ -1378,9 +1378,9 @@ LABEL_52:
   }
 
   v47 = v55;
-  if ([v6 uploadSize])
+  if ([activityCopy uploadSize])
   {
-    v56 = [_CDNetworkContext cellUploadCost:v7];
+    v56 = [_CDNetworkContext cellUploadCost:stateCopy];
     v57 = v56;
     if (v56 == 2)
     {
@@ -1411,56 +1411,56 @@ LABEL_31:
 
 - (NSDictionary)lowCongestionHours
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_lowCongestionHours copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_lowCongestionHours copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLowCongestionHours:(id)a3
+- (void)setLowCongestionHours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   obj = self;
   objc_sync_enter(obj);
   lowCongestionHours = obj->_lowCongestionHours;
-  obj->_lowCongestionHours = v4;
+  obj->_lowCongestionHours = hoursCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSDictionary)discountedHours
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_discountedHours copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_discountedHours copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDiscountedHours:(id)a3
+- (void)setDiscountedHours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   obj = self;
   objc_sync_enter(obj);
   discountedHours = obj->_discountedHours;
-  obj->_discountedHours = v4;
+  obj->_discountedHours = hoursCopy;
 
   objc_sync_exit(obj);
 }
 
-- (double)predictedScoreForActivity:(id)a3 atDate:(id)a4
+- (double)predictedScoreForActivity:(id)activity atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASNetworkQualityPolicy *)self wifiPredictionTimeline];
-  v9 = [v8 valueAtDate:v7];
-  v10 = [v9 integerValue];
+  activityCopy = activity;
+  dateCopy = date;
+  wifiPredictionTimeline = [(_DASNetworkQualityPolicy *)self wifiPredictionTimeline];
+  v9 = [wifiPredictionTimeline valueAtDate:dateCopy];
+  integerValue = [v9 integerValue];
 
   v11 = [(_DASPredictionManager *)self->_predictionManager objectForKeyedSubscript:@"plugin"];
-  v12 = [v11 valueAtDate:v7];
+  v12 = [v11 valueAtDate:dateCopy];
   v13 = v12;
   if (v12)
   {
@@ -1473,13 +1473,13 @@ LABEL_31:
     v15 = 0;
   }
 
-  [(_DASNetworkQualityPolicy *)self scoreForActivity:v6 networkQuality:v10 interface:1 interfaceSubtype:0 pluginStatus:v15 radioHot:0 linkAvailable:0 loiStatus:0];
+  [(_DASNetworkQualityPolicy *)self scoreForActivity:activityCopy networkQuality:integerValue interface:1 interfaceSubtype:0 pluginStatus:v15 radioHot:0 linkAvailable:0 loiStatus:0];
   v17 = v16;
-  if (![v6 requiresInexpensiveNetworking] || (v18 = v17, -[_DASNetworkQualityPolicy inDiscountedHoursAtDate:](self, "inDiscountedHoursAtDate:", v7)))
+  if (![activityCopy requiresInexpensiveNetworking] || (v18 = v17, -[_DASNetworkQualityPolicy inDiscountedHoursAtDate:](self, "inDiscountedHoursAtDate:", dateCopy)))
   {
-    v19 = [(_DASNetworkQualityPolicy *)self cellPredictionTimeline];
-    v20 = [v19 valueAtDate:v7];
-    v21 = [v20 integerValue];
+    cellPredictionTimeline = [(_DASNetworkQualityPolicy *)self cellPredictionTimeline];
+    v20 = [cellPredictionTimeline valueAtDate:dateCopy];
+    integerValue2 = [v20 integerValue];
 
     if (v13)
     {
@@ -1492,9 +1492,9 @@ LABEL_31:
       v23 = 0;
     }
 
-    [(_DASNetworkQualityPolicy *)self scoreForActivity:v6 networkQuality:v21 interface:2 interfaceSubtype:0 pluginStatus:v23 radioHot:0 linkAvailable:0 loiStatus:0];
+    [(_DASNetworkQualityPolicy *)self scoreForActivity:activityCopy networkQuality:integerValue2 interface:2 interfaceSubtype:0 pluginStatus:v23 radioHot:0 linkAvailable:0 loiStatus:0];
     v25 = v24;
-    if (v24 <= 0.0 || (v18 = 1.0, ![(_DASNetworkQualityPolicy *)self inLowCongestionHoursAtDate:v7]))
+    if (v24 <= 0.0 || (v18 = 1.0, ![(_DASNetworkQualityPolicy *)self inLowCongestionHoursAtDate:dateCopy]))
     {
       if (v17 >= v25)
       {
@@ -1511,15 +1511,15 @@ LABEL_31:
   return v18;
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [_DASDaemonLogger logForCategory:@"carrierBundle"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
+    uuid = [changedCopy uuid];
     v7 = 138412290;
-    v8 = v6;
+    v8 = uuid;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Preferred data SIM changed for context: %@", &v7, 0xCu);
   }
 

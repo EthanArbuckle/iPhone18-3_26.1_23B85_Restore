@@ -1,6 +1,6 @@
 @interface MPSGraphSingleGateRNNDescriptor
 + (MPSGraphSingleGateRNNDescriptor)descriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphSingleGateRNNDescriptor
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [MPSGraphSingleGateRNNDescriptor alloc];
   *(result + 10) = self->_reverse;

@@ -1,70 +1,70 @@
 @interface PLManagedObjectJournalEntryPayload
-+ (BOOL)_populateObjectDictionary:(id)a3 withObject:(id)a4 currentKeyPath:(id)a5 usingModelProperties:(id)a6 payloadClass:(Class)a7 info:(id)a8;
-+ (BOOL)shouldPersistForChangedKeys:(id)a3 entityName:(id)a4;
-+ (id)_populateRelationshipKeyPathsForPrefetching:(id)a3 currentKeyPath:(id)a4 usingModelProperties:(id)a5;
++ (BOOL)_populateObjectDictionary:(id)dictionary withObject:(id)object currentKeyPath:(id)path usingModelProperties:(id)properties payloadClass:(Class)class info:(id)info;
++ (BOOL)shouldPersistForChangedKeys:(id)keys entityName:(id)name;
++ (id)_populateRelationshipKeyPathsForPrefetching:(id)prefetching currentKeyPath:(id)path usingModelProperties:(id)properties;
 + (id)additionalEntityNames;
-+ (id)fetchRelationshipPropertyValuesForRelationshipName:(id)a3 fromManagedObject:(id)a4 usingPayloadProperty:(id)a5;
++ (id)fetchRelationshipPropertyValuesForRelationshipName:(id)name fromManagedObject:(id)object usingPayloadProperty:(id)property;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
-+ (id)objectDictionariesByUUIDForPayloadClass:(Class)a3 inManagedObjectContext:(id)a4 fetchPredicate:(id)a5 info:(id)a6 error:(id *)a7;
++ (id)objectDictionariesByUUIDForPayloadClass:(Class)class inManagedObjectContext:(id)context fetchPredicate:(id)predicate info:(id)info error:(id *)error;
 + (id)payloadClassID;
-+ (id)payloadWithData:(id)a3 forPayloadID:(id)a4 version:(unsigned int)a5 andNilProperties:(id)a6 error:(id *)a7;
++ (id)payloadWithData:(id)data forPayloadID:(id)d version:(unsigned int)version andNilProperties:(id)properties error:(id *)error;
 + (id)persistedPropertyNamesForEntityNames;
 + (id)persistedPropertyNamesForEntityNamesFromModelProperties;
 + (id)relationshipKeyPathsForPrefetching;
-+ (id)relationshipKeyPathsForPrefetchingWithModelProperties:(id)a3 outUUIDPropertyName:(id *)a4;
-+ (id)sortedObjectsToAddWithUUIDs:(id)a3 uuidKey:(id)a4 andExistingObjects:(id)a5 fetchBlock:(id)a6;
++ (id)relationshipKeyPathsForPrefetchingWithModelProperties:(id)properties outUUIDPropertyName:(id *)name;
++ (id)sortedObjectsToAddWithUUIDs:(id)ds uuidKey:(id)key andExistingObjects:(id)objects fetchBlock:(id)block;
 + (unsigned)minimumSnapshotPayloadVersion;
 + (unsigned)payloadVersion;
-+ (void)_populateAddtionalEntityNames:(id)a3 fromModelProperties:(id)a4;
-+ (void)_populatePersistedPropertyNamesForAdditionalEntityNames:(id)a3 fromModelProperties:(id)a4;
-+ (void)_populateValidationProperties:(id)a3 fromEntityDescription:(id)a4;
-+ (void)_validateModelProperties:(id)a3 nonPersistedModelProperties:(id)a4 forEntityDescription:(id)a5;
-+ (void)loadModelPropertiesDescription:(id)a3 parentPayloadProperty:(id)a4;
-+ (void)populateValidationPropertiesFromManagedObjectModel:(id)a3;
-+ (void)validatePayloadPropertiesForManagedObjectModel:(id)a3;
-- (BOOL)_applyModelProperties:(id)a3 toPayloadAttributes:(id)a4 andNilAttributes:(id)a5 fromSourceObject:(id)a6 changedKeys:(id)a7 info:(id)a8;
-- (BOOL)_comparePayloadAttributes:(id)a3 toObjectDictionary:(id)a4 currentKeyPath:(id)a5 usingModelProperties:(id)a6 errorDescriptions:(id)a7;
-- (BOOL)_decodePayloadAttributesFromData:(id)a3 error:(id *)a4;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)containsAttributeForKey:(id)a3;
-- (BOOL)payloadVersionIsLessThanVersion:(unsigned int)a3 forKey:(id)a4 inUpdatePayloads:(id)a5;
++ (void)_populateAddtionalEntityNames:(id)names fromModelProperties:(id)properties;
++ (void)_populatePersistedPropertyNamesForAdditionalEntityNames:(id)names fromModelProperties:(id)properties;
++ (void)_populateValidationProperties:(id)properties fromEntityDescription:(id)description;
++ (void)_validateModelProperties:(id)properties nonPersistedModelProperties:(id)modelProperties forEntityDescription:(id)description;
++ (void)loadModelPropertiesDescription:(id)description parentPayloadProperty:(id)property;
++ (void)populateValidationPropertiesFromManagedObjectModel:(id)model;
++ (void)validatePayloadPropertiesForManagedObjectModel:(id)model;
+- (BOOL)_applyModelProperties:(id)properties toPayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes fromSourceObject:(id)object changedKeys:(id)keys info:(id)info;
+- (BOOL)_comparePayloadAttributes:(id)attributes toObjectDictionary:(id)dictionary currentKeyPath:(id)path usingModelProperties:(id)properties errorDescriptions:(id)descriptions;
+- (BOOL)_decodePayloadAttributesFromData:(id)data error:(id *)error;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)containsAttributeForKey:(id)key;
+- (BOOL)payloadVersionIsLessThanVersion:(unsigned int)version forKey:(id)key inUpdatePayloads:(id)payloads;
 - (NSString)debugDescription;
 - (NSString)description;
-- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)a3 changedKeys:(id)a4;
-- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)a3 changedKeys:(id)a4 info:(id)a5;
-- (PLManagedObjectJournalEntryPayload)initWithManagedObject:(id)a3 changedKeys:(id)a4;
-- (PLManagedObjectJournalEntryPayload)initWithPayloadID:(id)a3 payloadVersion:(unsigned int)a4 nilAttributes:(id)a5 sourceObject:(id)a6 changedKeys:(id)a7 modelProperties:(id)a8 info:(id)a9;
-- (id)UUIDDataForString:(id)a3;
-- (id)UUIDStringForData:(id)a3;
-- (id)_attributesForPayloadAttributes:(id)a3 usingModelProperties:(id)a4;
-- (id)_payloadAttributesListForSubRelationshipProperty:(id)a3 withManagedObjects:(id)a4 info:(id)a5;
-- (id)descriptionForEntry:(id)a3;
-- (id)descriptionForEntry:(id)a3 withBuilder:(id)a4;
-- (id)descriptionWithBuilder:(id)a3;
-- (id)encodedDataForUUIDStringArray:(id)a3;
-- (id)encodedDataForUUIDStringOrderedSet:(id)a3;
-- (id)encodedDataForUUIDStringSet:(id)a3;
-- (id)orderedSetForUUIDEncodedData:(id)a3;
+- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)adapter changedKeys:(id)keys;
+- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)adapter changedKeys:(id)keys info:(id)info;
+- (PLManagedObjectJournalEntryPayload)initWithManagedObject:(id)object changedKeys:(id)keys;
+- (PLManagedObjectJournalEntryPayload)initWithPayloadID:(id)d payloadVersion:(unsigned int)version nilAttributes:(id)attributes sourceObject:(id)object changedKeys:(id)keys modelProperties:(id)properties info:(id)info;
+- (id)UUIDDataForString:(id)string;
+- (id)UUIDStringForData:(id)data;
+- (id)_attributesForPayloadAttributes:(id)attributes usingModelProperties:(id)properties;
+- (id)_payloadAttributesListForSubRelationshipProperty:(id)property withManagedObjects:(id)objects info:(id)info;
+- (id)descriptionForEntry:(id)entry;
+- (id)descriptionForEntry:(id)entry withBuilder:(id)builder;
+- (id)descriptionWithBuilder:(id)builder;
+- (id)encodedDataForUUIDStringArray:(id)array;
+- (id)encodedDataForUUIDStringOrderedSet:(id)set;
+- (id)encodedDataForUUIDStringSet:(id)set;
+- (id)orderedSetForUUIDEncodedData:(id)data;
 - (id)payloadAttributes;
-- (id)payloadDataWithError:(id *)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
-- (id)prettyDescriptionForEntry:(id)a3 indent:(int64_t)a4;
-- (id)setForUUIDEncodedData:(id)a3;
-- (void)_applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8;
-- (void)_applyPayloadToManagedObject:(id)a3 forModelProperties:(id)a4 payloadAttributesToUpdate:(id)a5 info:(id)a6;
-- (void)_applySubRelationshipPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8;
-- (void)_resolveRelationshipsInObjectDictionary:(id)a3 atKeyPath:(id)a4 forPayloadProperty:(id)a5;
-- (void)_updateNilAttributes:(id)a3 withModelProperties:(id)a4;
-- (void)addAttributesDescriptionToBuilder:(id)a3;
-- (void)addNilAttributesToBuilder:(id)a3;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8;
-- (void)applyPayloadToManagedObject:(id)a3 payloadAttributesToUpdate:(id)a4;
-- (void)applyPayloadToManagedObject:(id)a3 payloadAttributesToUpdate:(id)a4 info:(id)a5;
-- (void)mergePayload:(id)a3;
-- (void)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 forPayloadProperty:(id)a5 withUUIDStringData:(id)a6;
+- (id)payloadDataWithError:(id *)error;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
+- (id)prettyDescriptionForEntry:(id)entry indent:(int64_t)indent;
+- (id)setForUUIDEncodedData:(id)data;
+- (void)_applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info;
+- (void)_applyPayloadToManagedObject:(id)object forModelProperties:(id)properties payloadAttributesToUpdate:(id)update info:(id)info;
+- (void)_applySubRelationshipPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info;
+- (void)_resolveRelationshipsInObjectDictionary:(id)dictionary atKeyPath:(id)path forPayloadProperty:(id)property;
+- (void)_updateNilAttributes:(id)attributes withModelProperties:(id)properties;
+- (void)addAttributesDescriptionToBuilder:(id)builder;
+- (void)addNilAttributesToBuilder:(id)builder;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info;
+- (void)applyPayloadToManagedObject:(id)object payloadAttributesToUpdate:(id)update;
+- (void)applyPayloadToManagedObject:(id)object payloadAttributesToUpdate:(id)update info:(id)info;
+- (void)mergePayload:(id)payload;
+- (void)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes forPayloadProperty:(id)property withUUIDStringData:(id)data;
 @end
 
 @implementation PLManagedObjectJournalEntryPayload
@@ -72,18 +72,18 @@
 + (id)additionalEntityNames
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [a1 modelProperties];
-  [a1 _populateAddtionalEntityNames:v3 fromModelProperties:v4];
+  modelProperties = [self modelProperties];
+  [self _populateAddtionalEntityNames:v3 fromModelProperties:modelProperties];
 
   return v3;
 }
 
-- (void)addAttributesDescriptionToBuilder:(id)a3
+- (void)addAttributesDescriptionToBuilder:(id)builder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_payloadAttributes allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  builderCopy = builder;
+  allKeys = [(NSMutableDictionary *)self->_payloadAttributes allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v16 = 0u;
   v17 = 0u;
@@ -106,7 +106,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_payloadAttributes objectForKeyedSubscript:v12, v14];
-        [(PLManagedObjectJournalEntryPayload *)self appendAttributeKey:v12 value:v13 toDescriptionBuilder:v4];
+        [(PLManagedObjectJournalEntryPayload *)self appendAttributeKey:v12 value:v13 toDescriptionBuilder:builderCopy];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -116,20 +116,20 @@
   }
 }
 
-- (void)addNilAttributesToBuilder:(id)a3
+- (void)addNilAttributesToBuilder:(id)builder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 style] == 1)
+  builderCopy = builder;
+  if ([builderCopy style] == 1)
   {
-    v5 = [(NSMutableSet *)self->_nilAttributes allObjects];
+    allObjects = [(NSMutableSet *)self->_nilAttributes allObjects];
     v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
     [v6 appendString:@"["];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v5;
+    v7 = allObjects;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -146,9 +146,9 @@
 
           v12 = *(*(&v14 + 1) + 8 * i);
           [v6 appendString:{v12, v14}];
-          v13 = [v7 lastObject];
+          lastObject = [v7 lastObject];
 
-          if (v12 != v13)
+          if (v12 != lastObject)
           {
             [v6 appendString:{@", "}];
           }
@@ -161,108 +161,108 @@
     }
 
     [v6 appendString:@"]"];
-    [v4 appendName:@"nilAttributes" object:v6];
+    [builderCopy appendName:@"nilAttributes" object:v6];
   }
 
   else
   {
-    [v4 appendName:@"nilAttributes" object:self->_nilAttributes];
+    [builderCopy appendName:@"nilAttributes" object:self->_nilAttributes];
   }
 }
 
-- (id)descriptionForEntry:(id)a3 withBuilder:(id)a4
+- (id)descriptionForEntry:(id)entry withBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  v9 = [v7 payloadVersion];
+  builderCopy = builder;
+  entryCopy = entry;
+  payloadVersion = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  payloadVersion2 = [entryCopy payloadVersion];
 
-  if (v8 != v9)
+  if (payloadVersion != payloadVersion2)
   {
-    [v6 appendName:@"version" integerValue:{-[PLManagedObjectJournalEntryPayload payloadVersion](self, "payloadVersion")}];
+    [builderCopy appendName:@"version" integerValue:{-[PLManagedObjectJournalEntryPayload payloadVersion](self, "payloadVersion")}];
   }
 
   if ([(NSMutableSet *)self->_nilAttributes count])
   {
-    [(PLManagedObjectJournalEntryPayload *)self addNilAttributesToBuilder:v6];
+    [(PLManagedObjectJournalEntryPayload *)self addNilAttributesToBuilder:builderCopy];
   }
 
   if ([(NSMutableDictionary *)self->_payloadAttributes count])
   {
-    [(PLManagedObjectJournalEntryPayload *)self addAttributesDescriptionToBuilder:v6];
+    [(PLManagedObjectJournalEntryPayload *)self addAttributesDescriptionToBuilder:builderCopy];
   }
 
-  v10 = [v6 build];
+  build = [builderCopy build];
 
-  return v10;
+  return build;
 }
 
-- (id)descriptionWithBuilder:(id)a3
+- (id)descriptionWithBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  [v4 appendName:@"payloadID" object:v5];
+  builderCopy = builder;
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  [builderCopy appendName:@"payloadID" object:payloadID];
 
-  [v4 appendName:@"version" integerValue:{-[PLManagedObjectJournalEntryPayload payloadVersion](self, "payloadVersion")}];
+  [builderCopy appendName:@"version" integerValue:{-[PLManagedObjectJournalEntryPayload payloadVersion](self, "payloadVersion")}];
   if ([(NSMutableSet *)self->_nilAttributes count])
   {
-    [(PLManagedObjectJournalEntryPayload *)self addNilAttributesToBuilder:v4];
+    [(PLManagedObjectJournalEntryPayload *)self addNilAttributesToBuilder:builderCopy];
   }
 
   if ([(NSMutableDictionary *)self->_payloadAttributes count])
   {
-    v6 = [v4 style];
+    style = [builderCopy style];
     v7 = [PLDescriptionBuilder alloc];
-    v8 = [v4 style];
-    if (v6 == 1)
+    style2 = [builderCopy style];
+    if (style == 1)
     {
-      v9 = [(PLDescriptionBuilder *)v7 initWithObject:self style:v8 indent:0];
+      v9 = [(PLDescriptionBuilder *)v7 initWithObject:self style:style2 indent:0];
       [(PLManagedObjectJournalEntryPayload *)self addAttributesDescriptionToBuilder:v9];
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(PLDescriptionBuilder *)v9 build];
-      v12 = [v10 stringWithFormat:@"[%@]", v11];
-      [v4 appendName:@"attributes" object:v12];
+      build = [(PLDescriptionBuilder *)v9 build];
+      v12 = [v10 stringWithFormat:@"[%@]", build];
+      [builderCopy appendName:@"attributes" object:v12];
     }
 
     else
     {
-      v9 = -[PLDescriptionBuilder initWithObject:style:indent:](v7, "initWithObject:style:indent:", self, v8, [v4 indent] + 1);
+      v9 = -[PLDescriptionBuilder initWithObject:style:indent:](v7, "initWithObject:style:indent:", self, style2, [builderCopy indent] + 1);
       [(PLManagedObjectJournalEntryPayload *)self addAttributesDescriptionToBuilder:v9];
-      if ([v4 style] == 2)
+      if ([builderCopy style] == 2)
       {
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [(PLDescriptionBuilder *)v9 build];
-        v11 = [v13 stringWithFormat:@"\n%@", v14];
+        build2 = [(PLDescriptionBuilder *)v9 build];
+        build = [v13 stringWithFormat:@"\n%@", build2];
       }
 
       else
       {
-        v11 = [(PLDescriptionBuilder *)v9 build];
+        build = [(PLDescriptionBuilder *)v9 build];
       }
 
-      [v4 appendName:@"attributes" object:v11];
+      [builderCopy appendName:@"attributes" object:build];
     }
   }
 
-  v15 = [v4 build];
+  build3 = [builderCopy build];
 
-  return v15;
+  return build3;
 }
 
-- (id)prettyDescriptionForEntry:(id)a3 indent:(int64_t)a4
+- (id)prettyDescriptionForEntry:(id)entry indent:(int64_t)indent
 {
-  v6 = a3;
-  v7 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:a4];
-  v8 = [(PLManagedObjectJournalEntryPayload *)self descriptionForEntry:v6 withBuilder:v7];
+  entryCopy = entry;
+  v7 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:indent];
+  v8 = [(PLManagedObjectJournalEntryPayload *)self descriptionForEntry:entryCopy withBuilder:v7];
 
   return v8;
 }
 
-- (id)descriptionForEntry:(id)a3
+- (id)descriptionForEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [[PLDescriptionBuilder alloc] initWithObject:self style:1 indent:0];
-  v6 = [(PLManagedObjectJournalEntryPayload *)self descriptionForEntry:v4 withBuilder:v5];
+  v6 = [(PLManagedObjectJournalEntryPayload *)self descriptionForEntry:entryCopy withBuilder:v5];
 
   return v6;
 }
@@ -283,22 +283,22 @@
   return v4;
 }
 
-- (id)_attributesForPayloadAttributes:(id)a3 usingModelProperties:(id)a4
+- (id)_attributesForPayloadAttributes:(id)attributes usingModelProperties:(id)properties
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a4;
+  propertiesCopy = properties;
   v9 = objc_alloc_init(v7);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__PLManagedObjectJournalEntryPayload__attributesForPayloadAttributes_usingModelProperties___block_invoke;
   v15[3] = &unk_1E7572EE8;
   v15[4] = self;
-  v16 = v6;
+  v16 = attributesCopy;
   v10 = v9;
   v17 = v10;
-  v11 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  v11 = attributesCopy;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v15];
 
   v12 = v17;
   v13 = v10;
@@ -383,55 +383,55 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)applyPayloadToManagedObject:(id)a3 payloadAttributesToUpdate:(id)a4 info:(id)a5
+- (void)applyPayloadToManagedObject:(id)object payloadAttributesToUpdate:(id)update info:(id)info
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() modelProperties];
-  [(PLManagedObjectJournalEntryPayload *)self _applyPayloadToManagedObject:v10 forModelProperties:v11 payloadAttributesToUpdate:v9 info:v8];
+  infoCopy = info;
+  updateCopy = update;
+  objectCopy = object;
+  modelProperties = [objc_opt_class() modelProperties];
+  [(PLManagedObjectJournalEntryPayload *)self _applyPayloadToManagedObject:objectCopy forModelProperties:modelProperties payloadAttributesToUpdate:updateCopy info:infoCopy];
 }
 
-- (void)applyPayloadToManagedObject:(id)a3 payloadAttributesToUpdate:(id)a4
+- (void)applyPayloadToManagedObject:(id)object payloadAttributesToUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() modelProperties];
-  [(PLManagedObjectJournalEntryPayload *)self _applyPayloadToManagedObject:v7 forModelProperties:v8 payloadAttributesToUpdate:v6 info:0];
+  updateCopy = update;
+  objectCopy = object;
+  modelProperties = [objc_opt_class() modelProperties];
+  [(PLManagedObjectJournalEntryPayload *)self _applyPayloadToManagedObject:objectCopy forModelProperties:modelProperties payloadAttributesToUpdate:updateCopy info:0];
 }
 
-- (void)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 forPayloadProperty:(id)a5 withUUIDStringData:(id)a6
+- (void)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes forPayloadProperty:(id)property withUUIDStringData:(id)data
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [a5 key];
-  if (v10)
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  dataCopy = data;
+  v11 = [property key];
+  if (dataCopy)
   {
-    [v12 setObject:v10 forKeyedSubscript:v11];
+    [attributesCopy setObject:dataCopy forKeyedSubscript:v11];
   }
 
   else
   {
-    [v9 addObject:v11];
+    [nilAttributesCopy addObject:v11];
   }
 }
 
-- (BOOL)payloadVersionIsLessThanVersion:(unsigned int)a3 forKey:(id)a4 inUpdatePayloads:(id)a5
+- (BOOL)payloadVersionIsLessThanVersion:(unsigned int)version forKey:(id)key inUpdatePayloads:(id)payloads
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  keyCopy = key;
+  payloadsCopy = payloads;
+  if (!keyCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLManagedObjectJournalEntryPayload.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectJournalEntryPayload.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v20 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  if (*(v18 + 6) >= a3)
+  payloadVersion = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  if (*(v18 + 6) >= version)
   {
     v11 = 0;
   }
@@ -442,10 +442,10 @@ LABEL_15:
     v14[1] = 3221225472;
     v14[2] = __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_forKey_inUpdatePayloads___block_invoke;
     v14[3] = &unk_1E7564248;
-    v15 = v9;
+    v15 = keyCopy;
     v16 = &v17;
-    [v10 enumerateObjectsWithOptions:2 usingBlock:v14];
-    v11 = *(v18 + 6) < a3;
+    [payloadsCopy enumerateObjectsWithOptions:2 usingBlock:v14];
+    v11 = *(v18 + 6) < version;
   }
 
   _Block_object_dispose(&v17, 8);
@@ -463,50 +463,50 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
   }
 }
 
-- (id)UUIDStringForData:(id)a3
+- (id)UUIDStringForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     memset(v5, 0, 37);
-    uuid_unparse([a3 bytes], v5);
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
+    uuid_unparse([data bytes], v5);
+    dataCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
   }
 
-  return v3;
+  return dataCopy;
 }
 
-- (id)UUIDDataForString:(id)a3
+- (id)UUIDDataForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
     memset(uu, 0, sizeof(uu));
-    uuid_parse([a3 UTF8String], uu);
-    v3 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:uu length:16];
+    uuid_parse([string UTF8String], uu);
+    stringCopy = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:uu length:16];
   }
 
-  return v3;
+  return stringCopy;
 }
 
-- (id)setForUUIDEncodedData:(id)a3
+- (id)setForUUIDEncodedData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if (v4 >= 0x10)
   {
     v6 = v4 >> 4;
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v4 >> 4];
-    v7 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v8 = 0;
     v9 = 1;
     do
     {
       memset(v13, 0, sizeof(v13));
-      uuid_unparse((v7 + 16 * v8), v13);
+      uuid_unparse((bytes + 16 * v8), v13);
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v13];
       [v5 addObject:v10];
 
@@ -524,22 +524,22 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
   return v5;
 }
 
-- (id)orderedSetForUUIDEncodedData:(id)a3
+- (id)orderedSetForUUIDEncodedData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if (v4 >= 0x10)
   {
     v6 = v4 >> 4;
     v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:v4 >> 4];
-    v7 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v8 = 0;
     v9 = 1;
     do
     {
       memset(v13, 0, sizeof(v13));
-      uuid_unparse((v7 + 16 * v8), v13);
+      uuid_unparse((bytes + 16 * v8), v13);
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v13];
       [v5 addObject:v10];
 
@@ -557,19 +557,19 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
   return v5;
 }
 
-- (id)encodedDataForUUIDStringArray:(id)a3
+- (id)encodedDataForUUIDStringArray:(id)array
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = 16 * [v3 count];
+    v4 = 16 * [arrayCopy count];
     v5 = malloc_type_malloc(v4, 0x55FBA4F7uLL);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v3;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -589,9 +589,9 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
           }
 
           v13 = *(*(&v17 + 1) + 8 * v11);
-          v14 = [v13 UTF8String];
+          uTF8String = [v13 UTF8String];
           memset(uu, 0, sizeof(uu));
-          uuid_parse(v14, uu);
+          uuid_parse(uTF8String, uu);
           *v12 = *uu;
           v12 += 16;
           ++v11;
@@ -615,77 +615,77 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
   return v15;
 }
 
-- (id)encodedDataForUUIDStringOrderedSet:(id)a3
+- (id)encodedDataForUUIDStringOrderedSet:(id)set
 {
-  v4 = [a3 array];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:v4];
+  array = [set array];
+  v5 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:array];
 
   return v5;
 }
 
-- (id)encodedDataForUUIDStringSet:(id)a3
+- (id)encodedDataForUUIDStringSet:(id)set
 {
-  v4 = [a3 allObjects];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [set allObjects];
+  v5 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v6 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringArray:v5];
 
   return v6;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v5 = a3;
-  v6 = [a4 key];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  attributesCopy = attributes;
+  v6 = [property key];
+  v7 = [attributesCopy objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  v9 = builderCopy;
+  if (valueCopy)
   {
-    if ([v8 style] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
+    if ([builderCopy style] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v9 appendName:v10 unsignedIntegerValue:{objc_msgSend(v7, "count")}];
+      [v9 appendName:keyCopy unsignedIntegerValue:{objc_msgSend(valueCopy, "count")}];
     }
 
     else
     {
-      [v9 appendName:v10 object:v7];
+      [v9 appendName:keyCopy object:valueCopy];
     }
   }
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  v10 = propertyCopy;
+  if (!valueCopy)
   {
-    if ([v9 isOptional])
+    if ([propertyCopy isOptional])
     {
-      v7 = 0;
+      valueCopy = 0;
     }
 
     else
     {
-      v7 = [v10 defaultValue];
+      valueCopy = [v10 defaultValue];
     }
   }
 
   if ([v10 type] == 500)
   {
-    [v8 doubleValue];
+    [dictionaryValueCopy doubleValue];
     v12 = v11;
-    [v7 doubleValue];
+    [valueCopy doubleValue];
     v14 = vabdd_f64(v12, v13) < 2.22044605e-16;
   }
 
@@ -695,11 +695,11 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
     {
       v15 = objc_alloc_init(MEMORY[0x1E696AC80]);
       [v15 setFormatOptions:3955];
-      v16 = [v15 dateFromString:v8];
+      v16 = [v15 dateFromString:dictionaryValueCopy];
       [v16 timeIntervalSinceReferenceDate];
       v18 = v17;
 
-      [v7 timeIntervalSinceReferenceDate];
+      [valueCopy timeIntervalSinceReferenceDate];
       v14 = vabdd_f64(v18, v19) < 0.001;
     }
 
@@ -707,12 +707,12 @@ void __94__PLManagedObjectJournalEntryPayload_payloadVersionIsLessThanVersion_fo
     {
       if ([v10 type] != 1000 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        v14 = [v8 isEqual:v7];
+        v14 = [dictionaryValueCopy isEqual:valueCopy];
         goto LABEL_15;
       }
 
-      v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8 options:0];
-      v14 = [v15 isEqualToData:v7];
+      v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:dictionaryValueCopy options:0];
+      v14 = [v15 isEqualToData:valueCopy];
     }
   }
 
@@ -721,59 +721,59 @@ LABEL_15:
   return v14;
 }
 
-- (void)_applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8
+- (void)_applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info
 {
-  v24 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (([v24 requiresConversion] & 1) != 0 || (objc_msgSend(v24, "key"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectForKeyedSubscript:", v19), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  if (([propertyCopy requiresConversion] & 1) != 0 || (objc_msgSend(propertyCopy, "key"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", v19), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
   {
-    v23 = [v24 subRelationshipProperties];
+    subRelationshipProperties = [propertyCopy subRelationshipProperties];
 
-    if (v18 && v23)
+    if (infoCopy && subRelationshipProperties)
     {
-      [(PLManagedObjectJournalEntryPayload *)self _applySubRelationshipPayloadProperty:v24 toManagedObject:v14 key:v15 payloadAttributesToUpdate:v16 payloadDictionary:v17 info:v18];
+      [(PLManagedObjectJournalEntryPayload *)self _applySubRelationshipPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy payloadDictionary:dictionaryCopy info:infoCopy];
     }
   }
 
   else
   {
-    v21 = [v24 key];
-    v22 = [v17 objectForKeyedSubscript:v21];
-    [v14 setValue:v22 forKey:v15];
+    v21 = [propertyCopy key];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v21];
+    [objectCopy setValue:v22 forKey:keyCopy];
   }
 }
 
-- (void)_applySubRelationshipPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8
+- (void)_applySubRelationshipPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info
 {
   v73 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v41 = a4;
-  v39 = a5;
-  v44 = a6;
-  v40 = a7;
-  v45 = a8;
-  v14 = [v13 subRelationshipProperties];
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  subRelationshipProperties = [propertyCopy subRelationshipProperties];
 
-  if (v14)
+  if (subRelationshipProperties)
   {
-    if ([v13 isToManySubRelationship])
+    if ([propertyCopy isToManySubRelationship])
     {
-      v15 = [v13 key];
-      v16 = [v40 objectForKeyedSubscript:v15];
+      v15 = [propertyCopy key];
+      v16 = [dictionaryCopy objectForKeyedSubscript:v15];
 
       if ([v16 count])
       {
-        v17 = [v41 managedObjectContext];
-        v38 = [v41 valueForKey:v39];
+        managedObjectContext = [objectCopy managedObjectContext];
+        v38 = [objectCopy valueForKey:keyCopy];
         v70[0] = MEMORY[0x1E69E9820];
         v70[1] = 3221225472;
         v70[2] = __144__PLManagedObjectJournalEntryPayload__applySubRelationshipPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke;
         v70[3] = &unk_1E75641F8;
-        v37 = v41;
+        v37 = objectCopy;
         v71 = v37;
         [v38 enumerateObjectsUsingBlock:v70];
         v18 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -798,21 +798,21 @@ LABEL_15:
 
               v22 = *(*(&v66 + 1) + 8 * v21);
               v23 = MEMORY[0x1E695D5B8];
-              v24 = [v13 subRelationshipEntityName];
-              v25 = [v23 insertNewObjectForEntityForName:v24 inManagedObjectContext:v17];
+              subRelationshipEntityName = [propertyCopy subRelationshipEntityName];
+              v25 = [v23 insertNewObjectForEntityForName:subRelationshipEntityName inManagedObjectContext:managedObjectContext];
 
-              v26 = [v13 subRelationshipProperties];
+              subRelationshipProperties2 = [propertyCopy subRelationshipProperties];
               v61[0] = MEMORY[0x1E69E9820];
               v61[1] = 3221225472;
               v61[2] = __144__PLManagedObjectJournalEntryPayload__applySubRelationshipPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_2;
               v61[3] = &unk_1E756D0F8;
               v61[4] = self;
               v62 = v25;
-              v63 = v44;
+              v63 = updateCopy;
               v64 = v22;
-              v65 = v45;
+              v65 = infoCopy;
               v27 = v25;
-              [v26 enumerateKeysAndObjectsUsingBlock:v61];
+              [subRelationshipProperties2 enumerateKeysAndObjectsUsingBlock:v61];
 
               [v18 addObject:v27];
               ++v21;
@@ -825,7 +825,7 @@ LABEL_15:
           while (v19);
         }
 
-        [v37 setValue:v18 forKey:v39];
+        [v37 setValue:v18 forKey:keyCopy];
       }
 
       else
@@ -839,44 +839,44 @@ LABEL_15:
       v58 = &v57;
       v59 = 0x2020000000;
       v60 = 0;
-      v28 = [v13 subRelationshipProperties];
+      subRelationshipProperties3 = [propertyCopy subRelationshipProperties];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
       v52[2] = __144__PLManagedObjectJournalEntryPayload__applySubRelationshipPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_3;
       v52[3] = &unk_1E756C9D0;
-      v29 = v45;
+      v29 = infoCopy;
       v53 = v29;
-      v54 = self;
-      v30 = v40;
+      selfCopy = self;
+      v30 = dictionaryCopy;
       v55 = v30;
       v56 = &v57;
-      [v28 enumerateKeysAndObjectsUsingBlock:v52];
+      [subRelationshipProperties3 enumerateKeysAndObjectsUsingBlock:v52];
 
       if (*(v58 + 24) == 1)
       {
-        v31 = [v41 valueForKey:v39];
+        v31 = [objectCopy valueForKey:keyCopy];
         if (!v31)
         {
           v32 = MEMORY[0x1E695D5B8];
-          v33 = [v13 subRelationshipEntityName];
-          v34 = [v41 managedObjectContext];
-          v31 = [v32 insertNewObjectForEntityForName:v33 inManagedObjectContext:v34];
+          subRelationshipEntityName2 = [propertyCopy subRelationshipEntityName];
+          managedObjectContext2 = [objectCopy managedObjectContext];
+          v31 = [v32 insertNewObjectForEntityForName:subRelationshipEntityName2 inManagedObjectContext:managedObjectContext2];
 
-          [v41 setValue:v31 forKey:v39];
+          [objectCopy setValue:v31 forKey:keyCopy];
         }
 
-        v35 = [v13 subRelationshipProperties];
+        subRelationshipProperties4 = [propertyCopy subRelationshipProperties];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __144__PLManagedObjectJournalEntryPayload__applySubRelationshipPayloadProperty_toManagedObject_key_payloadAttributesToUpdate_payloadDictionary_info___block_invoke_4;
         v46[3] = &unk_1E756D0F8;
         v47 = v29;
-        v48 = self;
+        selfCopy2 = self;
         v36 = v31;
         v49 = v36;
-        v50 = v44;
+        v50 = updateCopy;
         v51 = v30;
-        [v35 enumerateKeysAndObjectsUsingBlock:v46];
+        [subRelationshipProperties4 enumerateKeysAndObjectsUsingBlock:v46];
       }
 
       _Block_object_dispose(&v57, 8);
@@ -935,38 +935,38 @@ void __144__PLManagedObjectJournalEntryPayload__applySubRelationshipPayloadPrope
 LABEL_6:
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6 payloadDictionary:(id)a7 info:(id)a8
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update payloadDictionary:(id)dictionary info:(id)info
 {
-  v19 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v18 && self->_payloadAttributes == v17)
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  if (!infoCopy && self->_payloadAttributes == dictionaryCopy)
   {
-    [(PLManagedObjectJournalEntryPayload *)self applyPayloadProperty:v19 toManagedObject:v14 key:v15 payloadAttributesToUpdate:v16];
+    [(PLManagedObjectJournalEntryPayload *)self applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
   }
 
   else
   {
-    [(PLManagedObjectJournalEntryPayload *)self _applyPayloadProperty:v19 toManagedObject:v14 key:v15 payloadAttributesToUpdate:v16 payloadDictionary:v17 info:v18];
+    [(PLManagedObjectJournalEntryPayload *)self _applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy payloadDictionary:dictionaryCopy info:infoCopy];
   }
 }
 
 - (id)payloadAttributes
 {
   payloadAttributes = self->_payloadAttributes;
-  v4 = [objc_opt_class() modelProperties];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self _attributesForPayloadAttributes:payloadAttributes usingModelProperties:v4];
+  modelProperties = [objc_opt_class() modelProperties];
+  v5 = [(PLManagedObjectJournalEntryPayload *)self _attributesForPayloadAttributes:payloadAttributes usingModelProperties:modelProperties];
 
   return v5;
 }
 
-- (BOOL)containsAttributeForKey:(id)a3
+- (BOOL)containsAttributeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_payloadAttributes objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_payloadAttributes objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     v6 = 1;
@@ -974,29 +974,29 @@ LABEL_6:
 
   else
   {
-    v6 = [(NSMutableSet *)self->_nilAttributes containsObject:v4];
+    v6 = [(NSMutableSet *)self->_nilAttributes containsObject:keyCopy];
   }
 
   return v6;
 }
 
-- (void)mergePayload:(id)a3
+- (void)mergePayload:(id)payload
 {
-  v6 = a3;
-  [(NSMutableDictionary *)self->_payloadAttributes addEntriesFromDictionary:*(v6 + 1)];
-  if ([*(v6 + 2) count])
+  payloadCopy = payload;
+  [(NSMutableDictionary *)self->_payloadAttributes addEntriesFromDictionary:*(payloadCopy + 1)];
+  if ([*(payloadCopy + 2) count])
   {
     payloadAttributes = self->_payloadAttributes;
-    v5 = [*(v6 + 2) allObjects];
-    [(NSMutableDictionary *)payloadAttributes removeObjectsForKeys:v5];
+    allObjects = [*(payloadCopy + 2) allObjects];
+    [(NSMutableDictionary *)payloadAttributes removeObjectsForKeys:allObjects];
   }
 }
 
-- (id)payloadDataWithError:(id *)a3
+- (id)payloadDataWithError:(id *)error
 {
   if ([(NSMutableDictionary *)self->_payloadAttributes count])
   {
-    [MEMORY[0x1E696AE40] dataWithPropertyList:self->_payloadAttributes format:200 options:0 error:a3];
+    [MEMORY[0x1E696AE40] dataWithPropertyList:self->_payloadAttributes format:200 options:0 error:error];
   }
 
   else
@@ -1008,12 +1008,12 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_decodePayloadAttributesFromData:(id)a3 error:(id *)a4
+- (BOOL)_decodePayloadAttributesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:1 format:0 error:a4];
+    v7 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:1 format:0 error:error];
     v8 = v7 != 0;
     if (v7)
     {
@@ -1030,23 +1030,23 @@ LABEL_6:
   return v8;
 }
 
-- (void)_applyPayloadToManagedObject:(id)a3 forModelProperties:(id)a4 payloadAttributesToUpdate:(id)a5 info:(id)a6
+- (void)_applyPayloadToManagedObject:(id)object forModelProperties:(id)properties payloadAttributesToUpdate:(id)update info:(id)info
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  objectCopy = object;
+  updateCopy = update;
+  infoCopy = info;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __117__PLManagedObjectJournalEntryPayload__applyPayloadToManagedObject_forModelProperties_payloadAttributesToUpdate_info___block_invoke;
   v16[3] = &unk_1E7572828;
-  v17 = v12;
-  v18 = self;
-  v19 = v10;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
-  [a4 enumerateKeysAndObjectsUsingBlock:v16];
+  v17 = infoCopy;
+  selfCopy = self;
+  v19 = objectCopy;
+  v20 = updateCopy;
+  v13 = updateCopy;
+  v14 = objectCopy;
+  v15 = infoCopy;
+  [properties enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 void __117__PLManagedObjectJournalEntryPayload__applyPayloadToManagedObject_forModelProperties_payloadAttributesToUpdate_info___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1113,14 +1113,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)_applyModelProperties:(id)a3 toPayloadAttributes:(id)a4 andNilAttributes:(id)a5 fromSourceObject:(id)a6 changedKeys:(id)a7 info:(id)a8
+- (BOOL)_applyModelProperties:(id)properties toPayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes fromSourceObject:(id)object changedKeys:(id)keys info:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  keysCopy = keys;
+  infoCopy = info;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -1129,23 +1129,23 @@ LABEL_14:
   v26[1] = 3221225472;
   v26[2] = __131__PLManagedObjectJournalEntryPayload__applyModelProperties_toPayloadAttributes_andNilAttributes_fromSourceObject_changedKeys_info___block_invoke;
   v26[3] = &unk_1E75641D0;
-  v20 = v18;
+  v20 = keysCopy;
   v27 = v20;
-  v21 = v17;
+  v21 = objectCopy;
   v28 = v21;
-  v22 = v19;
+  v22 = infoCopy;
   v33 = &v34;
   v29 = v22;
-  v30 = self;
-  v23 = v15;
+  selfCopy = self;
+  v23 = attributesCopy;
   v31 = v23;
-  v24 = v16;
+  v24 = nilAttributesCopy;
   v32 = v24;
-  [v14 enumerateKeysAndObjectsUsingBlock:v26];
-  LOBYTE(v15) = *(v35 + 24);
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v26];
+  LOBYTE(attributesCopy) = *(v35 + 24);
 
   _Block_object_dispose(&v34, 8);
-  return v15;
+  return attributesCopy;
 }
 
 void __131__PLManagedObjectJournalEntryPayload__applyModelProperties_toPayloadAttributes_andNilAttributes_fromSourceObject_changedKeys_info___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -1413,17 +1413,17 @@ uint64_t __131__PLManagedObjectJournalEntryPayload__applyModelProperties_toPaylo
   return v11;
 }
 
-- (void)_updateNilAttributes:(id)a3 withModelProperties:(id)a4
+- (void)_updateNilAttributes:(id)attributes withModelProperties:(id)properties
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__PLManagedObjectJournalEntryPayload__updateNilAttributes_withModelProperties___block_invoke;
   v8[3] = &unk_1E756D1E8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = attributesCopy;
+  v7 = attributesCopy;
+  [properties enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __79__PLManagedObjectJournalEntryPayload__updateNilAttributes_withModelProperties___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1455,18 +1455,18 @@ void __79__PLManagedObjectJournalEntryPayload__updateNilAttributes_withModelProp
 LABEL_7:
 }
 
-- (id)_payloadAttributesListForSubRelationshipProperty:(id)a3 withManagedObjects:(id)a4 info:(id)a5
+- (id)_payloadAttributesListForSubRelationshipProperty:(id)property withManagedObjects:(id)objects info:(id)info
 {
   v33 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
+  propertyCopy = property;
+  objectsCopy = objects;
+  infoCopy = info;
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v8;
+  v10 = objectsCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
@@ -1484,7 +1484,7 @@ LABEL_7:
         v15 = [objc_opt_class() payloadAdapterForManagedObject:*(*(&v28 + 1) + 8 * i)];
         v16 = v15;
         v27 = 0;
-        if (v9 && ([v15 sourceObject], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v9, "validForPersistenceWithPayloadProperty:andValue:stop:", v26, v17, &v27), v17, (v18 & 1) == 0))
+        if (infoCopy && ([v15 sourceObject], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(infoCopy, "validForPersistenceWithPayloadProperty:andValue:stop:", propertyCopy, v17, &v27), v17, (v18 & 1) == 0))
         {
           if (v27)
           {
@@ -1495,9 +1495,9 @@ LABEL_7:
         else if ([v16 isValidForJournalPersistence])
         {
           v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v20 = [v26 subRelationshipProperties];
-          v21 = [v16 sourceObject];
-          v27 = [(PLManagedObjectJournalEntryPayload *)self _applyModelProperties:v20 toPayloadAttributes:v19 andNilAttributes:0 fromSourceObject:v21 changedKeys:0 info:v9];
+          subRelationshipProperties = [propertyCopy subRelationshipProperties];
+          sourceObject = [v16 sourceObject];
+          v27 = [(PLManagedObjectJournalEntryPayload *)self _applyModelProperties:subRelationshipProperties toPayloadAttributes:v19 andNilAttributes:0 fromSourceObject:sourceObject changedKeys:0 info:infoCopy];
 
           if (v27)
           {
@@ -1532,15 +1532,15 @@ LABEL_19:
   return v23;
 }
 
-- (PLManagedObjectJournalEntryPayload)initWithPayloadID:(id)a3 payloadVersion:(unsigned int)a4 nilAttributes:(id)a5 sourceObject:(id)a6 changedKeys:(id)a7 modelProperties:(id)a8 info:(id)a9
+- (PLManagedObjectJournalEntryPayload)initWithPayloadID:(id)d payloadVersion:(unsigned int)version nilAttributes:(id)attributes sourceObject:(id)object changedKeys:(id)keys modelProperties:(id)properties info:(id)info
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (!v16)
+  dCopy = d;
+  attributesCopy = attributes;
+  objectCopy = object;
+  keysCopy = keys;
+  propertiesCopy = properties;
+  infoCopy = info;
+  if (!dCopy)
   {
     goto LABEL_16;
   }
@@ -1557,21 +1557,21 @@ LABEL_19:
   payloadAttributes = self->_payloadAttributes;
   self->_payloadAttributes = v22;
 
-  objc_storeStrong(&self->_payloadID, a3);
-  self->_payloadVersion = a4;
-  if (!v18)
+  objc_storeStrong(&self->_payloadID, d);
+  self->_payloadVersion = version;
+  if (!objectCopy)
   {
-    v25 = [v17 mutableCopy];
+    v25 = [attributesCopy mutableCopy];
     nilAttributes = self->_nilAttributes;
     self->_nilAttributes = v25;
 
 LABEL_16:
     self = self;
-    v32 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
-  if (v19)
+  if (keysCopy)
   {
     v24 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
@@ -1584,21 +1584,21 @@ LABEL_16:
   v27 = self->_nilAttributes;
   self->_nilAttributes = v24;
 
-  v28 = [(PLManagedObjectJournalEntryPayload *)self _applyModelProperties:v20 toPayloadAttributes:self->_payloadAttributes andNilAttributes:self->_nilAttributes fromSourceObject:v18 changedKeys:v19 info:v21];
+  v28 = [(PLManagedObjectJournalEntryPayload *)self _applyModelProperties:propertiesCopy toPayloadAttributes:self->_payloadAttributes andNilAttributes:self->_nilAttributes fromSourceObject:objectCopy changedKeys:keysCopy info:infoCopy];
   v29 = v28;
-  if (v19 && !v28)
+  if (keysCopy && !v28)
   {
     if ([(NSMutableDictionary *)self->_payloadAttributes count]|| [(NSMutableSet *)self->_nilAttributes count])
     {
-      v30 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v30 = 0;
+      selfCopy2 = 0;
     }
 
-    v31 = v30;
+    v31 = selfCopy2;
 
     self = v31;
   }
@@ -1608,77 +1608,77 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v32 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v32;
+  return selfCopy;
 }
 
-- (PLManagedObjectJournalEntryPayload)initWithManagedObject:(id)a3 changedKeys:(id)a4
+- (PLManagedObjectJournalEntryPayload)initWithManagedObject:(id)object changedKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 payloadID];
-  v9 = [objc_opt_class() payloadVersion];
-  v10 = [objc_opt_class() modelProperties];
-  v11 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:v8 payloadVersion:v9 nilAttributes:0 sourceObject:v7 changedKeys:v6 modelProperties:v10 info:0];
+  keysCopy = keys;
+  objectCopy = object;
+  payloadID = [objectCopy payloadID];
+  payloadVersion = [objc_opt_class() payloadVersion];
+  modelProperties = [objc_opt_class() modelProperties];
+  v11 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:payloadID payloadVersion:payloadVersion nilAttributes:0 sourceObject:objectCopy changedKeys:keysCopy modelProperties:modelProperties info:0];
 
   return v11;
 }
 
-- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)a3 changedKeys:(id)a4 info:(id)a5
+- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)adapter changedKeys:(id)keys info:(id)info
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 payloadID];
-  v12 = [objc_opt_class() payloadVersion];
-  v13 = [v10 sourceObject];
+  infoCopy = info;
+  keysCopy = keys;
+  adapterCopy = adapter;
+  payloadID = [adapterCopy payloadID];
+  payloadVersion = [objc_opt_class() payloadVersion];
+  sourceObject = [adapterCopy sourceObject];
 
-  v14 = [objc_opt_class() modelProperties];
-  v15 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:v11 payloadVersion:v12 nilAttributes:0 sourceObject:v13 changedKeys:v9 modelProperties:v14 info:v8];
+  modelProperties = [objc_opt_class() modelProperties];
+  v15 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:payloadID payloadVersion:payloadVersion nilAttributes:0 sourceObject:sourceObject changedKeys:keysCopy modelProperties:modelProperties info:infoCopy];
 
   return v15;
 }
 
-- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)a3 changedKeys:(id)a4
+- (PLManagedObjectJournalEntryPayload)initWithInsertAdapter:(id)adapter changedKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 payloadID];
-  v9 = [objc_opt_class() payloadVersion];
-  v10 = [v7 sourceObject];
+  keysCopy = keys;
+  adapterCopy = adapter;
+  payloadID = [adapterCopy payloadID];
+  payloadVersion = [objc_opt_class() payloadVersion];
+  sourceObject = [adapterCopy sourceObject];
 
-  v11 = [objc_opt_class() modelProperties];
-  v12 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:v8 payloadVersion:v9 nilAttributes:0 sourceObject:v10 changedKeys:v6 modelProperties:v11 info:0];
+  modelProperties = [objc_opt_class() modelProperties];
+  v12 = [(PLManagedObjectJournalEntryPayload *)self initWithPayloadID:payloadID payloadVersion:payloadVersion nilAttributes:0 sourceObject:sourceObject changedKeys:keysCopy modelProperties:modelProperties info:0];
 
   return v12;
 }
 
-+ (id)objectDictionariesByUUIDForPayloadClass:(Class)a3 inManagedObjectContext:(id)a4 fetchPredicate:(id)a5 info:(id)a6 error:(id *)a7
++ (id)objectDictionariesByUUIDForPayloadClass:(Class)class inManagedObjectContext:(id)context fetchPredicate:(id)predicate info:(id)info error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v11 = a6;
+  infoCopy = info;
   v12 = MEMORY[0x1E695DF90];
-  v13 = a5;
-  v14 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v15 = objc_alloc_init(v12);
-  v16 = [(objc_class *)a3 modelProperties];
+  modelProperties = [(objc_class *)class modelProperties];
   v47 = 0;
-  v17 = [PLManagedObjectJournalEntryPayload relationshipKeyPathsForPrefetchingWithModelProperties:v16 outUUIDPropertyName:&v47];
+  v17 = [PLManagedObjectJournalEntryPayload relationshipKeyPathsForPrefetchingWithModelProperties:modelProperties outUUIDPropertyName:&v47];
   v18 = v47;
 
   v19 = objc_alloc(MEMORY[0x1E695D5E0]);
-  v20 = [(objc_class *)a3 entityName];
-  v21 = [v19 initWithEntityName:v20];
+  entityName = [(objc_class *)class entityName];
+  v21 = [v19 initWithEntityName:entityName];
 
   [v21 setReturnsObjectsAsFaults:0];
   [v21 setRelationshipKeyPathsForPrefetching:v17];
   [v21 setShouldRefreshRefetchedObjects:1];
-  [v21 setPredicate:v13];
+  [v21 setPredicate:predicateCopy];
 
   v46 = 0;
-  v22 = [v14 executeFetchRequest:v21 error:&v46];
+  v22 = [contextCopy executeFetchRequest:v21 error:&v46];
 
   v23 = v46;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1691,16 +1691,16 @@ LABEL_17:
     v43[3] = &unk_1E7564298;
     v26 = v24;
     v44 = v26;
-    v45 = a3;
+    classCopy = class;
     [v22 enumerateObjectsUsingBlock:v43];
 
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __127__PLManagedObjectJournalEntryPayload_objectDictionariesByUUIDForPayloadClass_inManagedObjectContext_fetchPredicate_info_error___block_invoke_139;
     v37[3] = &unk_1E75642C0;
-    v41 = a1;
-    v42 = a3;
-    v38 = v11;
+    selfCopy = self;
+    classCopy2 = class;
+    v38 = infoCopy;
     v39 = v18;
     v27 = v15;
     v40 = v27;
@@ -1711,26 +1711,26 @@ LABEL_17:
   else
   {
     v36 = v15;
-    v29 = v11;
+    v29 = infoCopy;
     v30 = PLMigrationGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [(objc_class *)a3 payloadClassID];
-      v32 = v31 = a7;
+      [(objc_class *)class payloadClassID];
+      v32 = v31 = error;
       *buf = 138543618;
       v49 = v32;
       v50 = 2112;
       v51 = v23;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "Fetch failed for payload class %{public}@, error: %@", buf, 0x16u);
 
-      a7 = v31;
+      error = v31;
     }
 
-    if (a7)
+    if (error)
     {
       v33 = v23;
       v28 = 0;
-      *a7 = v23;
+      *error = v23;
     }
 
     else
@@ -1738,7 +1738,7 @@ LABEL_17:
       v28 = 0;
     }
 
-    v11 = v29;
+    infoCopy = v29;
     v15 = v36;
   }
 
@@ -1820,36 +1820,36 @@ LABEL_9:
 LABEL_16:
 }
 
-+ (id)fetchRelationshipPropertyValuesForRelationshipName:(id)a3 fromManagedObject:(id)a4 usingPayloadProperty:(id)a5
++ (id)fetchRelationshipPropertyValuesForRelationshipName:(id)name fromManagedObject:(id)object usingPayloadProperty:(id)property
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 entity];
-  v12 = [v11 relationshipsByName];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  nameCopy = name;
+  objectCopy = object;
+  propertyCopy = property;
+  entity = [objectCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v13 = [relationshipsByName objectForKeyedSubscript:nameCopy];
 
-  v14 = [v13 inverseRelationship];
-  v15 = v14;
-  if (v13 && v14)
+  inverseRelationship = [v13 inverseRelationship];
+  v15 = inverseRelationship;
+  if (v13 && inverseRelationship)
   {
-    v51 = a1;
-    v52 = v11;
-    v53 = v10;
-    v16 = [v10 relatedEntityPropertyNames];
-    v17 = [v16 anyObject];
+    selfCopy = self;
+    v52 = entity;
+    v53 = propertyCopy;
+    relatedEntityPropertyNames = [propertyCopy relatedEntityPropertyNames];
+    anyObject = [relatedEntityPropertyNames anyObject];
 
     v18 = MEMORY[0x1E695D5E0];
-    v19 = [v15 entity];
-    v20 = [v19 name];
-    v21 = [v18 fetchRequestWithEntityName:v20];
+    entity2 = [v15 entity];
+    name = [entity2 name];
+    v21 = [v18 fetchRequestWithEntityName:name];
 
     [v21 setResultType:2];
     LODWORD(v18) = [v15 isToMany];
     v22 = MEMORY[0x1E696AE18];
-    v23 = [v15 name];
-    v24 = v23;
+    name2 = [v15 name];
+    v24 = name2;
     if (v18)
     {
       v25 = @"%K CONTAINS %@";
@@ -1860,27 +1860,27 @@ LABEL_16:
       v25 = @"%K = %@";
     }
 
-    v26 = [v22 predicateWithFormat:v25, v23, v9];
-    [v21 setPredicate:v26];
+    objectCopy = [v22 predicateWithFormat:v25, name2, objectCopy];
+    [v21 setPredicate:objectCopy];
 
     [v21 setAllocationType:1];
-    v65[0] = v17;
+    v65[0] = anyObject;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:1];
     [v21 setPropertiesToFetch:v27];
 
     if ([v13 isOrdered])
     {
       v28 = MEMORY[0x1E696AEB0];
-      v29 = [v15 name];
-      v30 = [v28 sortDescriptorWithKey:v29 ascending:1];
+      name3 = [v15 name];
+      v30 = [v28 sortDescriptorWithKey:name3 ascending:1];
       v64 = v30;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
       [v21 setSortDescriptors:v31];
     }
 
-    v32 = [v9 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v57 = 0;
-    v33 = [v32 executeFetchRequest:v21 error:&v57];
+    v33 = [managedObjectContext executeFetchRequest:v21 error:&v57];
     v34 = v57;
 
     if (v33)
@@ -1890,7 +1890,7 @@ LABEL_16:
       v54[1] = 3221225472;
       v54[2] = __128__PLManagedObjectJournalEntryPayload_fetchRelationshipPropertyValuesForRelationshipName_fromManagedObject_usingPayloadProperty___block_invoke;
       v54[3] = &unk_1E756D820;
-      v55 = v17;
+      v55 = anyObject;
       v36 = v35;
       v56 = v36;
       [v33 enumerateObjectsUsingBlock:v54];
@@ -1898,17 +1898,17 @@ LABEL_16:
       v38 = v33;
       v39 = v15;
       v40 = v13;
-      v41 = v17;
-      v42 = v9;
+      v41 = anyObject;
+      v42 = objectCopy;
       v43 = v34;
-      v44 = v8;
+      v44 = nameCopy;
       v45 = v56;
       v46 = v36;
 
-      v8 = v44;
+      nameCopy = v44;
       v34 = v43;
-      v9 = v42;
-      v17 = v41;
+      objectCopy = v42;
+      anyObject = v41;
       v13 = v40;
       v15 = v39;
       v33 = v38;
@@ -1921,11 +1921,11 @@ LABEL_16:
       v47 = PLMigrationGetLog();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v51 payloadClassID];
+        payloadClassID = [selfCopy payloadClassID];
         *buf = 138412802;
-        v59 = v17;
+        v59 = anyObject;
         v60 = 2112;
-        v61 = v49;
+        v61 = payloadClassID;
         v62 = 2112;
         v63 = v34;
         _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_ERROR, "JournalManager: failed to fetch relationship properties for relationship %@ on %@, error: %@", buf, 0x20u);
@@ -1934,21 +1934,21 @@ LABEL_16:
       v46 = 0;
     }
 
-    v11 = v52;
-    v10 = v53;
+    entity = v52;
+    propertyCopy = v53;
   }
 
   else
   {
-    v17 = PLMigrationGetLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    anyObject = PLMigrationGetLog();
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_ERROR))
     {
-      v48 = [a1 payloadClassID];
+      payloadClassID2 = [self payloadClassID];
       *buf = 138543618;
-      v59 = v8;
+      v59 = nameCopy;
       v60 = 2114;
-      v61 = v48;
-      _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "JournalManager: relationship %{public}@ on %{public}@ does not define an inverse relationship", buf, 0x16u);
+      v61 = payloadClassID2;
+      _os_log_impl(&dword_19BF1F000, anyObject, OS_LOG_TYPE_ERROR, "JournalManager: relationship %{public}@ on %{public}@ does not define an inverse relationship", buf, 0x16u);
     }
 
     v46 = 0;
@@ -1968,27 +1968,27 @@ void __128__PLManagedObjectJournalEntryPayload_fetchRelationshipPropertyValuesFo
   }
 }
 
-+ (id)relationshipKeyPathsForPrefetchingWithModelProperties:(id)a3 outUUIDPropertyName:(id *)a4
++ (id)relationshipKeyPathsForPrefetchingWithModelProperties:(id)properties outUUIDPropertyName:(id *)name
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  propertiesCopy = properties;
   v8 = objc_alloc_init(v6);
-  v9 = [a1 _populateRelationshipKeyPathsForPrefetching:v8 currentKeyPath:&stru_1F0F06D80 usingModelProperties:v7];
+  v9 = [self _populateRelationshipKeyPathsForPrefetching:v8 currentKeyPath:&stru_1F0F06D80 usingModelProperties:propertiesCopy];
 
-  if (a4)
+  if (name)
   {
     v10 = v9;
-    *a4 = v9;
+    *name = v9;
   }
 
   return v8;
 }
 
-+ (id)_populateRelationshipKeyPathsForPrefetching:(id)a3 currentKeyPath:(id)a4 usingModelProperties:(id)a5
++ (id)_populateRelationshipKeyPathsForPrefetching:(id)prefetching currentKeyPath:(id)path usingModelProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefetchingCopy = prefetching;
+  pathCopy = path;
+  propertiesCopy = properties;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1999,13 +1999,13 @@ void __128__PLManagedObjectJournalEntryPayload_fetchRelationshipPropertyValuesFo
   v15[1] = 3221225472;
   v15[2] = __118__PLManagedObjectJournalEntryPayload__populateRelationshipKeyPathsForPrefetching_currentKeyPath_usingModelProperties___block_invoke;
   v15[3] = &unk_1E7564270;
-  v11 = v9;
+  v11 = pathCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = prefetchingCopy;
   v18 = &v20;
-  v19 = a1;
+  selfCopy = self;
   v17 = v12;
-  [v10 enumerateKeysAndObjectsUsingBlock:v15];
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -2064,21 +2064,21 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)sortedObjectsToAddWithUUIDs:(id)a3 uuidKey:(id)a4 andExistingObjects:(id)a5 fetchBlock:(id)a6
++ (id)sortedObjectsToAddWithUUIDs:(id)ds uuidKey:(id)key andExistingObjects:(id)objects fetchBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [a5 valueForKey:v10];
-  if ([v9 count] && (objc_msgSend(v9, "isEqual:", v12) & 1) == 0)
+  dsCopy = ds;
+  keyCopy = key;
+  blockCopy = block;
+  v12 = [objects valueForKey:keyCopy];
+  if ([dsCopy count] && (objc_msgSend(dsCopy, "isEqual:", v12) & 1) == 0)
   {
-    v14 = v11[2](v11);
+    v14 = blockCopy[2](blockCopy);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __104__PLManagedObjectJournalEntryPayload_sortedObjectsToAddWithUUIDs_uuidKey_andExistingObjects_fetchBlock___block_invoke;
     v16[3] = &unk_1E7567600;
-    v17 = v9;
-    v18 = v10;
+    v17 = dsCopy;
+    v18 = keyCopy;
     v13 = [v14 sortedArrayUsingComparator:v16];
   }
 
@@ -2113,17 +2113,17 @@ uint64_t __104__PLManagedObjectJournalEntryPayload_sortedObjectsToAddWithUUIDs_u
   }
 }
 
-+ (void)_populateAddtionalEntityNames:(id)a3 fromModelProperties:(id)a4
++ (void)_populateAddtionalEntityNames:(id)names fromModelProperties:(id)properties
 {
-  v6 = a3;
+  namesCopy = names;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__PLManagedObjectJournalEntryPayload__populateAddtionalEntityNames_fromModelProperties___block_invoke;
   v8[3] = &unk_1E7564220;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = namesCopy;
+  selfCopy = self;
+  v7 = namesCopy;
+  [properties enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __88__PLManagedObjectJournalEntryPayload__populateAddtionalEntityNames_fromModelProperties___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2155,17 +2155,17 @@ void __88__PLManagedObjectJournalEntryPayload__populateAddtionalEntityNames_from
   }
 }
 
-+ (void)_populatePersistedPropertyNamesForAdditionalEntityNames:(id)a3 fromModelProperties:(id)a4
++ (void)_populatePersistedPropertyNamesForAdditionalEntityNames:(id)names fromModelProperties:(id)properties
 {
-  v6 = a3;
+  namesCopy = names;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __114__PLManagedObjectJournalEntryPayload__populatePersistedPropertyNamesForAdditionalEntityNames_fromModelProperties___block_invoke;
   v8[3] = &unk_1E7564220;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = namesCopy;
+  selfCopy = self;
+  v7 = namesCopy;
+  [properties enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __114__PLManagedObjectJournalEntryPayload__populatePersistedPropertyNamesForAdditionalEntityNames_fromModelProperties___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2199,29 +2199,29 @@ void __114__PLManagedObjectJournalEntryPayload__populatePersistedPropertyNamesFo
 + (id)persistedPropertyNamesForEntityNamesFromModelProperties
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [a1 modelProperties];
+  modelProperties = [self modelProperties];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [v4 allKeys];
-  v7 = [v5 setWithArray:v6];
-  v8 = [a1 entityName];
-  [v3 setObject:v7 forKeyedSubscript:v8];
+  allKeys = [modelProperties allKeys];
+  v7 = [v5 setWithArray:allKeys];
+  entityName = [self entityName];
+  [v3 setObject:v7 forKeyedSubscript:entityName];
 
-  [a1 _populatePersistedPropertyNamesForAdditionalEntityNames:v3 fromModelProperties:v4];
+  [self _populatePersistedPropertyNamesForAdditionalEntityNames:v3 fromModelProperties:modelProperties];
 
   return v3;
 }
 
-+ (void)loadModelPropertiesDescription:(id)a3 parentPayloadProperty:(id)a4
++ (void)loadModelPropertiesDescription:(id)description parentPayloadProperty:(id)property
 {
-  v6 = a4;
+  propertyCopy = property;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_parentPayloadProperty___block_invoke;
   v8[3] = &unk_1E7564220;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = propertyCopy;
+  selfCopy = self;
+  v7 = propertyCopy;
+  [description enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_parentPayloadProperty___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2240,34 +2240,34 @@ void __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_par
 
 + (id)nonPersistedModelPropertiesDescription
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)modelPropertiesDescription
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)payloadClassID
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-+ (id)payloadWithData:(id)a3 forPayloadID:(id)a4 version:(unsigned int)a5 andNilProperties:(id)a6 error:(id *)a7
++ (id)payloadWithData:(id)data forPayloadID:(id)d version:(unsigned int)version andNilProperties:(id)properties error:(id *)error
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
-  v15 = [[a1 alloc] initWithPayloadID:v14 payloadVersion:v9 nilAttributes:v13];
+  v9 = *&version;
+  dataCopy = data;
+  propertiesCopy = properties;
+  dCopy = d;
+  v15 = [[self alloc] initWithPayloadID:dCopy payloadVersion:v9 nilAttributes:propertiesCopy];
 
-  if (v12 && ![v15 _decodePayloadAttributesFromData:v12 error:a7])
+  if (dataCopy && ![v15 _decodePayloadAttributesFromData:dataCopy error:error])
   {
     v16 = 0;
   }
@@ -2282,22 +2282,22 @@ void __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_par
 
 + (id)relationshipKeyPathsForPrefetching
 {
-  v3 = [a1 modelProperties];
-  v4 = [a1 relationshipKeyPathsForPrefetchingWithModelProperties:v3 outUUIDPropertyName:0];
+  modelProperties = [self modelProperties];
+  v4 = [self relationshipKeyPathsForPrefetchingWithModelProperties:modelProperties outUUIDPropertyName:0];
 
   return v4;
 }
 
-+ (BOOL)shouldPersistForChangedKeys:(id)a3 entityName:(id)a4
++ (BOOL)shouldPersistForChangedKeys:(id)keys entityName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 persistedPropertyNamesForEntityNames];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  keysCopy = keys;
+  nameCopy = name;
+  persistedPropertyNamesForEntityNames = [self persistedPropertyNamesForEntityNames];
+  v9 = [persistedPropertyNamesForEntityNames objectForKeyedSubscript:nameCopy];
 
   if (v9)
   {
-    v10 = [v6 intersectsSet:v9];
+    v10 = [keysCopy intersectsSet:v9];
   }
 
   else
@@ -2310,74 +2310,74 @@ void __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_par
 
 + (unsigned)minimumSnapshotPayloadVersion
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (unsigned)payloadVersion
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)persistedPropertyNamesForEntityNames
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)modelProperties
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-+ (void)populateValidationPropertiesFromManagedObjectModel:(id)a3
++ (void)populateValidationPropertiesFromManagedObjectModel:(id)model
 {
-  v4 = [a3 entitiesByName];
-  v5 = [a1 entityName];
-  v7 = [v4 objectForKeyedSubscript:v5];
+  entitiesByName = [model entitiesByName];
+  entityName = [self entityName];
+  v7 = [entitiesByName objectForKeyedSubscript:entityName];
 
-  v6 = [objc_opt_class() modelProperties];
-  [a1 _populateValidationProperties:v6 fromEntityDescription:v7];
+  modelProperties = [objc_opt_class() modelProperties];
+  [self _populateValidationProperties:modelProperties fromEntityDescription:v7];
 }
 
-+ (void)validatePayloadPropertiesForManagedObjectModel:(id)a3
++ (void)validatePayloadPropertiesForManagedObjectModel:(id)model
 {
-  v4 = [a3 entitiesByName];
-  v5 = [a1 entityName];
-  v9 = [v4 objectForKeyedSubscript:v5];
+  entitiesByName = [model entitiesByName];
+  entityName = [self entityName];
+  v9 = [entitiesByName objectForKeyedSubscript:entityName];
 
   v6 = objc_opt_class();
-  v7 = [objc_opt_class() modelProperties];
-  v8 = [objc_opt_class() nonPersistedModelPropertiesDescription];
-  [v6 _validateModelProperties:v7 nonPersistedModelProperties:v8 forEntityDescription:v9];
+  modelProperties = [objc_opt_class() modelProperties];
+  nonPersistedModelPropertiesDescription = [objc_opt_class() nonPersistedModelPropertiesDescription];
+  [v6 _validateModelProperties:modelProperties nonPersistedModelProperties:nonPersistedModelPropertiesDescription forEntityDescription:v9];
 }
 
-- (void)_resolveRelationshipsInObjectDictionary:(id)a3 atKeyPath:(id)a4 forPayloadProperty:(id)a5
+- (void)_resolveRelationshipsInObjectDictionary:(id)dictionary atKeyPath:(id)path forPayloadProperty:(id)property
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  propertyCopy = property;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = v9;
-  v12 = [v9 subRelationshipProperties];
+  v11 = propertyCopy;
+  subRelationshipProperties = [propertyCopy subRelationshipProperties];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __148__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___resolveRelationshipsInObjectDictionary_atKeyPath_forPayloadProperty___block_invoke;
   v30[3] = &unk_1E7572EE8;
-  v13 = v8;
+  v13 = pathCopy;
   v31 = v13;
-  v14 = v7;
+  v14 = dictionaryCopy;
   v32 = v14;
   v15 = v10;
   v33 = v15;
-  [v12 enumerateKeysAndObjectsUsingBlock:v30];
+  [subRelationshipProperties enumerateKeysAndObjectsUsingBlock:v30];
 
   if ([v15 count])
   {
@@ -2402,14 +2402,14 @@ void __91__PLManagedObjectJournalEntryPayload_loadModelPropertiesDescription_par
           }
 
           v20 = *(*(&v26 + 1) + 8 * i);
-          v21 = [v11 subRelationshipProperties];
+          subRelationshipProperties2 = [v11 subRelationshipProperties];
           v24[0] = MEMORY[0x1E69E9820];
           v24[1] = 3221225472;
           v24[2] = __148__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___resolveRelationshipsInObjectDictionary_atKeyPath_forPayloadProperty___block_invoke_3;
           v24[3] = &unk_1E756D1E8;
           v24[4] = v20;
           v25 = v15;
-          [v21 enumerateKeysAndObjectsUsingBlock:v24];
+          [subRelationshipProperties2 enumerateKeysAndObjectsUsingBlock:v24];
         }
 
         v17 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -2667,13 +2667,13 @@ void __148__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationIn
 LABEL_19:
 }
 
-- (BOOL)_comparePayloadAttributes:(id)a3 toObjectDictionary:(id)a4 currentKeyPath:(id)a5 usingModelProperties:(id)a6 errorDescriptions:(id)a7
+- (BOOL)_comparePayloadAttributes:(id)attributes toObjectDictionary:(id)dictionary currentKeyPath:(id)path usingModelProperties:(id)properties errorDescriptions:(id)descriptions
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  attributesCopy = attributes;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  propertiesCopy = properties;
+  descriptionsCopy = descriptions;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -2682,21 +2682,21 @@ LABEL_19:
   v22[1] = 3221225472;
   v22[2] = __178__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___comparePayloadAttributes_toObjectDictionary_currentKeyPath_usingModelProperties_errorDescriptions___block_invoke;
   v22[3] = &unk_1E75643B0;
-  v17 = v14;
+  v17 = pathCopy;
   v23 = v17;
-  v24 = self;
-  v18 = v12;
+  selfCopy = self;
+  v18 = attributesCopy;
   v25 = v18;
-  v19 = v13;
+  v19 = dictionaryCopy;
   v26 = v19;
-  v20 = v16;
+  v20 = descriptionsCopy;
   v27 = v20;
   v28 = &v29;
-  [v15 enumerateKeysAndObjectsUsingBlock:v22];
-  LOBYTE(v14) = *(v30 + 24);
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v22];
+  LOBYTE(pathCopy) = *(v30 + 24);
 
   _Block_object_dispose(&v29, 8);
-  return v14;
+  return pathCopy;
 }
 
 void __178__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___comparePayloadAttributes_toObjectDictionary_currentKeyPath_usingModelProperties_errorDescriptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3238,13 +3238,13 @@ uint64_t __178__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidati
   return v7;
 }
 
-+ (BOOL)_populateObjectDictionary:(id)a3 withObject:(id)a4 currentKeyPath:(id)a5 usingModelProperties:(id)a6 payloadClass:(Class)a7 info:(id)a8
++ (BOOL)_populateObjectDictionary:(id)dictionary withObject:(id)object currentKeyPath:(id)path usingModelProperties:(id)properties payloadClass:(Class)class info:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  dictionaryCopy = dictionary;
+  objectCopy = object;
+  pathCopy = path;
+  propertiesCopy = properties;
+  infoCopy = info;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3253,22 +3253,22 @@ uint64_t __178__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidati
   v24[1] = 3221225472;
   v24[2] = __170__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___populateObjectDictionary_withObject_currentKeyPath_usingModelProperties_payloadClass_info___block_invoke;
   v24[3] = &unk_1E7564400;
-  v19 = v15;
+  v19 = objectCopy;
   v25 = v19;
-  v20 = v18;
+  v20 = infoCopy;
   v26 = v20;
   v29 = &v32;
-  v21 = v16;
+  v21 = pathCopy;
   v27 = v21;
-  v30 = a1;
-  v22 = v14;
+  selfCopy = self;
+  v22 = dictionaryCopy;
   v28 = v22;
-  v31 = a7;
-  [v17 enumerateKeysAndObjectsUsingBlock:v24];
-  LOBYTE(a7) = *(v33 + 24);
+  classCopy = class;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v24];
+  LOBYTE(class) = *(v33 + 24);
 
   _Block_object_dispose(&v32, 8);
-  return a7;
+  return class;
 }
 
 void __170__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___populateObjectDictionary_withObject_currentKeyPath_usingModelProperties_payloadClass_info___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -3543,17 +3543,17 @@ LABEL_63:
   }
 }
 
-+ (void)_populateValidationProperties:(id)a3 fromEntityDescription:(id)a4
++ (void)_populateValidationProperties:(id)properties fromEntityDescription:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __131__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___populateValidationProperties_fromEntityDescription___block_invoke;
   v8[3] = &unk_1E7564220;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = descriptionCopy;
+  selfCopy = self;
+  v7 = descriptionCopy;
+  [properties enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __131__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___populateValidationProperties_fromEntityDescription___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3604,24 +3604,24 @@ LABEL_4:
 LABEL_7:
 }
 
-+ (void)_validateModelProperties:(id)a3 nonPersistedModelProperties:(id)a4 forEntityDescription:(id)a5
++ (void)_validateModelProperties:(id)properties nonPersistedModelProperties:(id)modelProperties forEntityDescription:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 attributesByName];
+  propertiesCopy = properties;
+  modelPropertiesCopy = modelProperties;
+  descriptionCopy = description;
+  attributesByName = [descriptionCopy attributesByName];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __153__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___validateModelProperties_nonPersistedModelProperties_forEntityDescription___block_invoke;
   v21[3] = &unk_1E75642E8;
-  v12 = v8;
+  v12 = propertiesCopy;
   v22 = v12;
-  v13 = v9;
+  v13 = modelPropertiesCopy;
   v23 = v13;
-  v24 = a1;
-  [v11 enumerateKeysAndObjectsUsingBlock:v21];
+  selfCopy = self;
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v21];
 
-  v14 = [v10 relationshipsByName];
+  relationshipsByName = [descriptionCopy relationshipsByName];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -3629,10 +3629,10 @@ LABEL_7:
   v17[3] = &unk_1E7564310;
   v18 = v12;
   v19 = v13;
-  v20 = a1;
+  selfCopy2 = self;
   v15 = v13;
   v16 = v12;
-  [v14 enumerateKeysAndObjectsUsingBlock:v17];
+  [relationshipsByName enumerateKeysAndObjectsUsingBlock:v17];
 }
 
 void __153__PLManagedObjectJournalEntryPayload_PLJournalEntryPayloadValidationInternal___validateModelProperties_nonPersistedModelProperties_forEntityDescription___block_invoke(id *a1, void *a2, void *a3)

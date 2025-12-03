@@ -1,12 +1,12 @@
 @interface RTCloudManagedObject
 + (id)notTombstonedPredicate;
 + (id)tombstonedPredicate;
-- (BOOL)verifyDependenciesMeetMinimumExpiration:(id)a3 visitedObjectIDs:(id)a4;
+- (BOOL)verifyDependenciesMeetMinimumExpiration:(id)expiration visitedObjectIDs:(id)ds;
 - (BOOL)verifyDependencyGraphExpirationDates;
 - (NSUUID)identifier;
 - (void)awakeFromInsert;
-- (void)setIdentifier:(id)a3;
-- (void)willChangeValueForKey:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)willChangeValueForKey:(id)key;
 @end
 
 @implementation RTCloudManagedObject
@@ -34,19 +34,19 @@
   return v6;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(RTCloudManagedObject *)self identifier];
-  v5 = [v7 isEqual:v4];
+  identifierCopy = identifier;
+  identifier = [(RTCloudManagedObject *)self identifier];
+  v5 = [identifierCopy isEqual:identifier];
 
   if ((v5 & 1) == 0)
   {
     [(RTCloudManagedObject *)self willChangeValueForKey:@"identifier"];
-    [(RTCloudManagedObject *)self setPrimitiveValue:v7 forKey:@"identifier"];
+    [(RTCloudManagedObject *)self setPrimitiveValue:identifierCopy forKey:@"identifier"];
     [(RTCloudManagedObject *)self didChangeValueForKey:@"identifier"];
-    v6 = [v7 UUIDString];
-    [(RTCloudManagedObject *)self setCkRecordID:v6];
+    uUIDString = [identifierCopy UUIDString];
+    [(RTCloudManagedObject *)self setCkRecordID:uUIDString];
   }
 }
 
@@ -70,10 +70,10 @@
   v11.receiver = self;
   v11.super_class = RTCloudManagedObject;
   [(RTCloudManagedObject *)&v11 awakeFromInsert];
-  v3 = [(RTCloudManagedObject *)self managedObjectContext];
-  v4 = [v3 undoManager];
+  managedObjectContext = [(RTCloudManagedObject *)self managedObjectContext];
+  undoManager = [managedObjectContext undoManager];
 
-  if (v4)
+  if (undoManager)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -89,58 +89,58 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [(RTCloudManagedObject *)self managedObjectContext];
-    v7 = [v6 transactionAuthor];
-    v8 = [v7 hasPrefix:@"NSCloudKitMirroringDelegate"];
+    managedObjectContext2 = [(RTCloudManagedObject *)self managedObjectContext];
+    transactionAuthor = [managedObjectContext2 transactionAuthor];
+    v8 = [transactionAuthor hasPrefix:@"NSCloudKitMirroringDelegate"];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RTCloudManagedObject *)self managedObjectContext];
-      v10 = [v9 currentDevice];
-      [(RTCloudManagedObject *)self setDevice:v10];
+      managedObjectContext3 = [(RTCloudManagedObject *)self managedObjectContext];
+      currentDevice = [managedObjectContext3 currentDevice];
+      [(RTCloudManagedObject *)self setDevice:currentDevice];
     }
   }
 }
 
-- (void)willChangeValueForKey:(id)a3
+- (void)willChangeValueForKey:(id)key
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v44.receiver = self;
   v44.super_class = RTCloudManagedObject;
-  [(RTCloudManagedObject *)&v44 willChangeValueForKey:v4];
+  [(RTCloudManagedObject *)&v44 willChangeValueForKey:keyCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [(RTCloudManagedObject *)self managedObjectContext];
-      v6 = [v5 transactionAuthor];
-      if ([v6 hasPrefix:@"NSCloudKitMirroringDelegate"])
+      managedObjectContext = [(RTCloudManagedObject *)self managedObjectContext];
+      transactionAuthor = [managedObjectContext transactionAuthor];
+      if ([transactionAuthor hasPrefix:@"NSCloudKitMirroringDelegate"])
       {
 
 LABEL_5:
         goto LABEL_27;
       }
 
-      v7 = [(RTCloudManagedObject *)self managedObjectContext];
-      v8 = [v7 transactionAuthor];
-      v9 = [v8 hasPrefix:@"RTPersistenceStoreImporter"];
+      managedObjectContext2 = [(RTCloudManagedObject *)self managedObjectContext];
+      transactionAuthor2 = [managedObjectContext2 transactionAuthor];
+      v9 = [transactionAuthor2 hasPrefix:@"RTPersistenceStoreImporter"];
 
-      if ((v9 & 1) == 0 && ([v4 isEqualToString:@"flags"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"expirationDate") & 1) == 0)
+      if ((v9 & 1) == 0 && ([keyCopy isEqualToString:@"flags"] & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"expirationDate") & 1) == 0)
       {
-        v10 = [(RTCloudManagedObject *)self device];
-        v11 = [v10 identifier];
-        if (v11)
+        device = [(RTCloudManagedObject *)self device];
+        identifier = [device identifier];
+        if (identifier)
         {
-          v12 = v11;
-          v13 = [(RTCloudManagedObject *)self device];
-          v14 = [v13 identifier];
-          v15 = [(RTCloudManagedObject *)self managedObjectContext];
-          v16 = [v15 currentDevice];
-          v17 = [v16 identifier];
-          v18 = [v14 isEqual:v17];
+          v12 = identifier;
+          device2 = [(RTCloudManagedObject *)self device];
+          identifier2 = [device2 identifier];
+          managedObjectContext3 = [(RTCloudManagedObject *)self managedObjectContext];
+          currentDevice = [managedObjectContext3 currentDevice];
+          identifier3 = [currentDevice identifier];
+          v18 = [identifier2 isEqual:identifier3];
 
           if ((v18 & 1) == 0)
           {
@@ -148,35 +148,35 @@ LABEL_5:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v48 = v4;
+              v48 = keyCopy;
               v49 = 2112;
-              v50 = self;
+              selfCopy = self;
               _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Attempting to modify property, %@, on a cloud managed object, %@", buf, 0x16u);
             }
 
             v20 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v21 = [(RTCloudManagedObject *)self device];
-              v22 = [v21 identifier];
-              v23 = [v22 UUIDString];
-              v24 = [(RTCloudManagedObject *)self managedObjectContext];
-              v25 = [v24 currentDevice];
-              v26 = [v25 identifier];
-              v27 = [v26 UUIDString];
+              device3 = [(RTCloudManagedObject *)self device];
+              identifier4 = [device3 identifier];
+              uUIDString = [identifier4 UUIDString];
+              managedObjectContext4 = [(RTCloudManagedObject *)self managedObjectContext];
+              currentDevice2 = [managedObjectContext4 currentDevice];
+              identifier5 = [currentDevice2 identifier];
+              uUIDString2 = [identifier5 UUIDString];
               *buf = 138412546;
-              v48 = v23;
+              v48 = uUIDString;
               v49 = 2112;
-              v50 = v27;
+              selfCopy = uUIDString2;
               _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "object device, %@, current device, %@.", buf, 0x16u);
             }
 
             v43 = MEMORY[0x277CBEAD8];
             v28 = *MEMORY[0x277CBE658];
             v29 = MEMORY[0x277CCACA8];
-            v30 = [(RTCloudManagedObject *)self device];
-            v31 = [v30 identifier];
-            if (v31)
+            device4 = [(RTCloudManagedObject *)self device];
+            identifier6 = [device4 identifier];
+            if (identifier6)
             {
               v32 = @"YES";
             }
@@ -186,10 +186,10 @@ LABEL_5:
               v32 = @"NO";
             }
 
-            v33 = [(RTCloudManagedObject *)self managedObjectContext];
-            v34 = [v33 currentDevice];
-            v35 = [v34 identifier];
-            if (v35)
+            managedObjectContext5 = [(RTCloudManagedObject *)self managedObjectContext];
+            currentDevice3 = [managedObjectContext5 currentDevice];
+            identifier7 = [currentDevice3 identifier];
+            if (identifier7)
             {
               v36 = @"YES";
             }
@@ -214,14 +214,14 @@ LABEL_5:
         {
         }
 
-        v41 = [(RTCloudManagedObject *)self managedObjectContext];
+        managedObjectContext6 = [(RTCloudManagedObject *)self managedObjectContext];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v5 = [(RTCloudManagedObject *)self managedObjectContext];
-          if ([v5 allowTombstones] & 1) == 0 && (-[RTCloudManagedObject flags](self, "flags"))
+          managedObjectContext = [(RTCloudManagedObject *)self managedObjectContext];
+          if ([managedObjectContext allowTombstones] & 1) == 0 && (-[RTCloudManagedObject flags](self, "flags"))
           {
             +[RTException dontOpenDeadInside];
           }
@@ -235,20 +235,20 @@ LABEL_5:
 LABEL_27:
 }
 
-- (BOOL)verifyDependenciesMeetMinimumExpiration:(id)a3 visitedObjectIDs:(id)a4
+- (BOOL)verifyDependenciesMeetMinimumExpiration:(id)expiration visitedObjectIDs:(id)ds
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTCloudManagedObject *)self objectID];
-  v10 = [v8 containsObject:v9];
+  expirationCopy = expiration;
+  dsCopy = ds;
+  objectID = [(RTCloudManagedObject *)self objectID];
+  v10 = [dsCopy containsObject:objectID];
 
   if ((v10 & 1) == 0)
   {
-    v12 = [(RTCloudManagedObject *)self objectID];
-    [v8 addObject:v12];
+    objectID2 = [(RTCloudManagedObject *)self objectID];
+    [dsCopy addObject:objectID2];
 
-    v53 = self;
+    selfCopy = self;
     v13 = [(RTCloudManagedObject *)self valueForKey:@"expirationDate"];
     v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:1209600.0];
     v15 = [v13 compare:v14];
@@ -269,27 +269,27 @@ LABEL_39:
         v44 = NSStringFromSelector(a2);
         v45 = objc_opt_class();
         v46 = NSStringFromClass(v45);
-        v47 = [(RTCloudManagedObject *)self identifier];
+        identifier = [(RTCloudManagedObject *)self identifier];
         *buf = 138413058;
         v68 = v44;
         v69 = 2112;
         v70 = v46;
         v71 = 2112;
-        v72 = v47;
+        v72 = identifier;
         v73 = 2112;
         v74 = v13;
         _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "RTCloudManagedObject, %@, object of class %@ with identifier %@  has an expiration date (%@) which is more than 2 weeks away, skipping expiration date verification", buf, 0x2Au);
       }
 
       LOBYTE(v11) = 1;
-      v17 = v7;
+      v17 = expirationCopy;
 LABEL_38:
 
-      v7 = v17;
+      expirationCopy = v17;
       goto LABEL_39;
     }
 
-    v18 = [v13 compare:v7];
+    v18 = [v13 compare:expirationCopy];
     v11 = v18 != -1;
     if (v18 == -1)
     {
@@ -299,15 +299,15 @@ LABEL_38:
         v48 = NSStringFromSelector(a2);
         v49 = objc_opt_class();
         v50 = NSStringFromClass(v49);
-        v51 = [(RTCloudManagedObject *)v53 identifier];
+        identifier2 = [(RTCloudManagedObject *)selfCopy identifier];
         *buf = 138413314;
         v68 = v48;
         v69 = 2112;
         v70 = v50;
         v71 = 2112;
-        v72 = v51;
+        v72 = identifier2;
         v73 = 2112;
-        v74 = v7;
+        v74 = expirationCopy;
         v75 = 2112;
         v76 = v13;
         _os_log_fault_impl(&dword_2304B3000, v19, OS_LOG_TYPE_FAULT, "RTCloudManagedObject, %@, object of class %@ with identifier %@ fails dependent's keep alive check; minimum expected expiration date, %@, actual expiration date, %@", buf, 0x34u);
@@ -322,15 +322,15 @@ LABEL_16:
         v52 = v13;
         v17 = v13;
 
-        v24 = v53;
-        v25 = [(RTCloudManagedObject *)v53 entity];
-        v26 = [v25 relationshipsByName];
+        v24 = selfCopy;
+        entity = [(RTCloudManagedObject *)selfCopy entity];
+        relationshipsByName = [entity relationshipsByName];
 
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v16 = v26;
+        v16 = relationshipsByName;
         v56 = [v16 countByEnumeratingWithState:&v61 objects:v66 count:16];
         if (v56)
         {
@@ -347,16 +347,16 @@ LABEL_16:
 
               v28 = *(*(&v61 + 1) + 8 * i);
               v29 = [v16 objectForKeyedSubscript:v28];
-              v30 = [v29 userInfo];
-              v31 = [v30 objectForKey:@"lifetimeDependency"];
+              userInfo = [v29 userInfo];
+              v31 = [userInfo objectForKey:@"lifetimeDependency"];
               v32 = [v31 isEqualToString:@"YES"];
 
               if (v32)
               {
-                v33 = [v29 isToMany];
+                isToMany = [v29 isToMany];
                 v34 = [(RTCloudManagedObject *)v24 valueForKey:v28];
                 v35 = v34;
-                if (v33)
+                if (isToMany)
                 {
                   v36 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_144];
                   v37 = [v35 filteredSetUsingPredicate:v36];
@@ -380,7 +380,7 @@ LABEL_16:
                           objc_enumerationMutation(v38);
                         }
 
-                        v11 &= [*(*(&v57 + 1) + 8 * j) verifyDependenciesMeetMinimumExpiration:v17 visitedObjectIDs:v8];
+                        v11 &= [*(*(&v57 + 1) + 8 * j) verifyDependenciesMeetMinimumExpiration:v17 visitedObjectIDs:dsCopy];
                       }
 
                       v40 = [v38 countByEnumeratingWithState:&v57 objects:v65 count:16];
@@ -389,7 +389,7 @@ LABEL_16:
                     while (v40);
                   }
 
-                  v24 = v53;
+                  v24 = selfCopy;
                 }
 
                 else if (v34)
@@ -397,7 +397,7 @@ LABEL_16:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v11 &= [v35 verifyDependenciesMeetMinimumExpiration:v17 visitedObjectIDs:v8];
+                    v11 &= [v35 verifyDependenciesMeetMinimumExpiration:v17 visitedObjectIDs:dsCopy];
                   }
                 }
               }
@@ -421,13 +421,13 @@ LABEL_16:
         v20 = NSStringFromSelector(a2);
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        v23 = [(RTCloudManagedObject *)v53 identifier];
+        identifier3 = [(RTCloudManagedObject *)selfCopy identifier];
         *buf = 138412802;
         v68 = v20;
         v69 = 2112;
         v70 = v22;
         v71 = 2112;
-        v72 = v23;
+        v72 = identifier3;
         _os_log_debug_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEBUG, "RTCloudManagedObject, %@, object of class %@ with identifier %@ passes dependent's keep alive check", buf, 0x20u);
       }
     }
@@ -461,20 +461,20 @@ uint64_t __81__RTCloudManagedObject_verifyDependenciesMeetMinimumExpiration_visi
       v5 = NSStringFromSelector(a2);
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [(RTCloudManagedObject *)self identifier];
+      identifier = [(RTCloudManagedObject *)self identifier];
       v13 = 138412802;
       v14 = v5;
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
-      v18 = v8;
+      v18 = identifier;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "RTCloudManagedObject, %@, verifying expiration dates of dependencies of %@ with identifier %@", &v13, 0x20u);
     }
   }
 
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v10 = [MEMORY[0x277CBEB58] set];
-  v11 = [(RTCloudManagedObject *)self verifyDependenciesMeetMinimumExpiration:v9 visitedObjectIDs:v10];
+  v11 = [(RTCloudManagedObject *)self verifyDependenciesMeetMinimumExpiration:distantPast visitedObjectIDs:v10];
 
   return v11;
 }

@@ -1,44 +1,44 @@
 @interface CMIOExtensionSessionProvider
-+ (CMIOExtensionSessionProvider)sessionProviderWithEndpoint:(id)a3 delegate:(id)a4;
-- (BOOL)registerStream:(id)a3 streamID:(id)a4;
-- (CMIOExtensionSessionProvider)initWithEndpoint:(id)a3 delegate:(id)a4;
++ (CMIOExtensionSessionProvider)sessionProviderWithEndpoint:(id)endpoint delegate:(id)delegate;
+- (BOOL)registerStream:(id)stream streamID:(id)d;
+- (CMIOExtensionSessionProvider)initWithEndpoint:(id)endpoint delegate:(id)delegate;
 - (NSArray)devices;
 - (NSSet)availableProperties;
 - (NSString)bundleID;
 - (NSString)description;
-- (id)cachedPropertyStateForProperty:(id)a3;
-- (id)cachedPropertyStatesForProperties:(id)a3;
-- (id)unregisterStreamID:(id)a3;
+- (id)cachedPropertyStateForProperty:(id)property;
+- (id)cachedPropertyStatesForProperties:(id)properties;
+- (id)unregisterStreamID:(id)d;
 - (void)dealloc;
-- (void)extension:(id)a3 availableDevicesChanged:(id)a4;
-- (void)extension:(id)a3 availableStreamsChangedWithDeviceID:(id)a4 streamIDs:(id)a5;
-- (void)extension:(id)a3 devicePropertiesChangedWithDeviceID:(id)a4 propertyStates:(id)a5;
-- (void)extension:(id)a3 didFailWithError:(id)a4;
-- (void)extension:(id)a3 pluginPropertiesChanged:(id)a4;
-- (void)extension:(id)a3 pullSampleWithStreamID:(id)a4 reply:(id)a5;
-- (void)extension:(id)a3 receivedSampleWithStreamID:(id)a4 sample:(id)a5;
-- (void)extension:(id)a3 streamPropertiesChangedWithStreamID:(id)a4 propertyStates:(id)a5;
-- (void)extension:(id)a3 streamScheduledOutputChangedWithStreamID:(id)a4 scheduledOutput:(id)a5;
-- (void)extensionHasBeenInvalidated:(id)a3;
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4;
+- (void)extension:(id)extension availableDevicesChanged:(id)changed;
+- (void)extension:(id)extension availableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds;
+- (void)extension:(id)extension devicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states;
+- (void)extension:(id)extension didFailWithError:(id)error;
+- (void)extension:(id)extension pluginPropertiesChanged:(id)changed;
+- (void)extension:(id)extension pullSampleWithStreamID:(id)d reply:(id)reply;
+- (void)extension:(id)extension receivedSampleWithStreamID:(id)d sample:(id)sample;
+- (void)extension:(id)extension streamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states;
+- (void)extension:(id)extension streamScheduledOutputChangedWithStreamID:(id)d scheduledOutput:(id)output;
+- (void)extensionHasBeenInvalidated:(id)invalidated;
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply;
 - (void)refreshExtensionConnection;
-- (void)setBundleID:(id)a3;
-- (void)setPropertyValues:(id)a3 reply:(id)a4;
+- (void)setBundleID:(id)d;
+- (void)setPropertyValues:(id)values reply:(id)reply;
 @end
 
 @implementation CMIOExtensionSessionProvider
 
-+ (CMIOExtensionSessionProvider)sessionProviderWithEndpoint:(id)a3 delegate:(id)a4
++ (CMIOExtensionSessionProvider)sessionProviderWithEndpoint:(id)endpoint delegate:(id)delegate
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithEndpoint:a3 delegate:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithEndpoint:endpoint delegate:delegate];
 
   return v4;
 }
 
-- (CMIOExtensionSessionProvider)initWithEndpoint:(id)a3 delegate:(id)a4
+- (CMIOExtensionSessionProvider)initWithEndpoint:(id)endpoint delegate:(id)delegate
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a3 || MEMORY[0x2318F1BC0](a3, a2) != MEMORY[0x277D86478])
+  if (!endpoint || MEMORY[0x2318F1BC0](endpoint, a2) != MEMORY[0x277D86478])
   {
 
     v7 = MEMORY[0x277CBEAD8];
@@ -60,7 +60,7 @@ LABEL_4:
   }
 
   v13->_lock._os_unfair_lock_opaque = 0;
-  v14 = xpc_connection_create_from_endpoint(a3);
+  v14 = xpc_connection_create_from_endpoint(endpoint);
   if (!v14)
   {
 
@@ -73,11 +73,11 @@ LABEL_4:
   v15 = v14;
   v10->_hostContext = [[CMIOExtensionProviderHostContext alloc] initWithConnection:v14 delegate:v10];
   xpc_release(v15);
-  objc_storeWeak(&v10->_delegate, a4);
+  objc_storeWeak(&v10->_delegate, delegate);
   v10->_deviceIDs = objc_opt_new();
   v10->_devicesMap = objc_opt_new();
   v10->_streamsMap = objc_opt_new();
-  v10->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionSessionProvider> provider bundleID %@ endpoint %p", objc_msgSend(a4, "copyProviderBundleID"), a3];
+  v10->_description = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<CMIOExtensionSessionProvider> provider bundleID %@ endpoint %p", objc_msgSend(delegate, "copyProviderBundleID"), endpoint];
   hostContext = v10->_hostContext;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -283,7 +283,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
         v11 = 2080;
         v12 = "[CMIOExtensionSessionProvider dealloc]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
@@ -309,10 +309,10 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
   return v2;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   bundleID = self->_bundleID;
-  self->_bundleID = a3;
+  self->_bundleID = d;
 }
 
 - (void)refreshExtensionConnection
@@ -342,9 +342,9 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
 - (NSArray)devices
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_devicesMap allValues];
+  allValues = [(NSMutableDictionary *)self->_devicesMap allValues];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return allValues;
 }
 
 - (NSSet)availableProperties
@@ -354,15 +354,15 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
   return v2;
 }
 
-- (id)cachedPropertyStateForProperty:(id)a3
+- (id)cachedPropertyStateForProperty:(id)property
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_propertyStates objectForKey:property];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)cachedPropertyStatesForProperties:(id)a3
+- (id)cachedPropertyStatesForProperties:(id)properties
 {
   v30 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -385,20 +385,20 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
         v26 = 2080;
         v27 = "[CMIOExtensionSessionProvider cachedPropertyStatesForProperties:]";
         v28 = 2112;
-        v29 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  if (a3)
+  if (properties)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -409,7 +409,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(properties);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -422,7 +422,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -442,7 +442,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
   return v14;
 }
 
-- (void)propertyStatesForProperties:(id)availableProperties reply:(id)a4
+- (void)propertyStatesForProperties:(id)availableProperties reply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -465,7 +465,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider propertyStatesForProperties:reply:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
@@ -482,7 +482,7 @@ void __58__CMIOExtensionSessionProvider_initWithEndpoint_delegate___block_invoke
   v11[2] = __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___block_invoke;
   v11[3] = &unk_27885C038;
   v11[4] = self;
-  v11[5] = a4;
+  v11[5] = reply;
   [(CMIOExtensionProviderHostContext *)hostContext pluginPropertyStatesForProperties:availableProperties reply:v11];
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -501,7 +501,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
   return v4();
 }
 
-- (void)setPropertyValues:(id)a3 reply:(id)a4
+- (void)setPropertyValues:(id)values reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -524,9 +524,9 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider setPropertyValues:reply:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
-        v21 = a3;
+        valuesCopy = values;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, propertyValues %@", buf, 0x30u);
       }
     }
@@ -537,12 +537,12 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
   v11[1] = 3221225472;
   v11[2] = __56__CMIOExtensionSessionProvider_setPropertyValues_reply___block_invoke;
   v11[3] = &unk_27885C060;
-  v11[4] = a4;
-  [(CMIOExtensionProviderHostContext *)hostContext setPluginPropertyValues:a3 reply:v11];
+  v11[4] = reply;
+  [(CMIOExtensionProviderHostContext *)hostContext setPluginPropertyValues:values reply:v11];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerStream:(id)a3 streamID:(id)a4
+- (BOOL)registerStream:(id)stream streamID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -565,16 +565,16 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v17 = 2080;
         v18 = "[CMIOExtensionSessionProvider registerStream:streamID:]";
         v19 = 2112;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
-        v22 = a3;
+        streamCopy = stream;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, stream %@", &v13, 0x30u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v9 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
   if (v9)
   {
     os_unfair_lock_unlock(&self->_lock);
@@ -587,7 +587,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
 
   else
   {
-    [(NSMutableDictionary *)self->_streamsMap setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_streamsMap setObject:stream forKey:d];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -596,7 +596,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
   return result;
 }
 
-- (id)unregisterStreamID:(id)a3
+- (id)unregisterStreamID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -619,23 +619,23 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v14 = 2080;
         v15 = "[CMIOExtensionSessionProvider unregisterStreamID:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 2112;
-        v19 = a3;
+        dCopy = d;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, stream %@", &v10, 0x30u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a3];
-  [(NSMutableDictionary *)self->_streamsMap removeObjectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
+  [(NSMutableDictionary *)self->_streamsMap removeObjectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)extension:(id)a3 didFailWithError:(id)a4
+- (void)extension:(id)extension didFailWithError:(id)error
 {
   v6 = CMIOLog();
   if (v6 && os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -643,10 +643,10 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
     [CMIOExtensionSessionProvider extension:didFailWithError:];
   }
 
-  [objc_loadWeak(&self->_delegate) provider:self didFailWithError:a4];
+  [objc_loadWeak(&self->_delegate) provider:self didFailWithError:error];
 }
 
-- (void)extensionHasBeenInvalidated:(id)a3
+- (void)extensionHasBeenInvalidated:(id)invalidated
 {
   v15 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -669,7 +669,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v11 = 2080;
         v12 = "[CMIOExtensionSessionProvider extensionHasBeenInvalidated:]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v5, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v7, 0x26u);
       }
     }
@@ -680,7 +680,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 pluginPropertiesChanged:(id)a4
+- (void)extension:(id)extension pluginPropertiesChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -703,18 +703,18 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v14 = 2080;
         v15 = "[CMIOExtensionSessionProvider extension:pluginPropertiesChanged:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v10, 0x26u);
       }
     }
   }
 
-  if ([a4 count])
+  if ([changed count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:a4];
+    [(NSMutableDictionary *)self->_propertyStates addEntriesFromDictionary:changed];
     os_unfair_lock_unlock(&self->_lock);
-    [objc_loadWeak(&self->_delegate) provider:self propertiesChanged:a4];
+    [objc_loadWeak(&self->_delegate) provider:self propertiesChanged:changed];
   }
 
   else
@@ -729,7 +729,7 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 availableDevicesChanged:(id)a4
+- (void)extension:(id)extension availableDevicesChanged:(id)changed
 {
   v50 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -752,18 +752,18 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
         v46 = 2080;
         v47 = "[CMIOExtensionSessionProvider extension:availableDevicesChanged:]";
         v48 = 2112;
-        v49 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v7, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
-  if (a4)
+  if (changed)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:a4];
+    v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:changed];
     v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:self->_deviceIDs];
     deviceIDs = self->_deviceIDs;
-    self->_deviceIDs = a4;
+    self->_deviceIDs = changed;
 
     v11 = [v9 mutableCopy];
     v30 = v8;
@@ -795,10 +795,10 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
           if (v18)
           {
             [v18 unregister];
-            v19 = [v18 delegate];
+            delegate = [v18 delegate];
             v14 = 1;
             [v18 setInvalidated:1];
-            [v19 deviceHasBeenInvalidated:v18];
+            [delegate deviceHasBeenInvalidated:v18];
           }
         }
 
@@ -809,9 +809,9 @@ uint64_t __66__CMIOExtensionSessionProvider_propertyStatesForProperties_reply___
       if (v14)
       {
         os_unfair_lock_lock(&self->_lock);
-        v20 = [(NSMutableDictionary *)self->_devicesMap allValues];
+        allValues = [(NSMutableDictionary *)self->_devicesMap allValues];
         os_unfair_lock_unlock(&self->_lock);
-        [objc_loadWeak(&self->_delegate) provider:self availableDevicesChanged:v20];
+        [objc_loadWeak(&self->_delegate) provider:self availableDevicesChanged:allValues];
       }
     }
 
@@ -904,7 +904,7 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
   }
 }
 
-- (void)extension:(id)a3 devicePropertiesChangedWithDeviceID:(id)a4 propertyStates:(id)a5
+- (void)extension:(id)extension devicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -927,24 +927,24 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider extension:devicePropertiesChangedWithDeviceID:propertyStates:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_devicesMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_devicesMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    [v10 updatePropertyStates:a5];
+    [v10 updatePropertyStates:states];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 availableStreamsChangedWithDeviceID:(id)a4 streamIDs:(id)a5
+- (void)extension:(id)extension availableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -967,24 +967,24 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider extension:availableStreamsChangedWithDeviceID:streamIDs:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_devicesMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_devicesMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    [v10 updateStreamIDs:a5];
+    [v10 updateStreamIDs:ds];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 streamPropertiesChangedWithStreamID:(id)a4 propertyStates:(id)a5
+- (void)extension:(id)extension streamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -1007,24 +1007,24 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider extension:streamPropertiesChangedWithStreamID:propertyStates:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    [v10 updatePropertyStates:a5 streamID:a4];
+    [v10 updatePropertyStates:states streamID:d];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 receivedSampleWithStreamID:(id)a4 sample:(id)a5
+- (void)extension:(id)extension receivedSampleWithStreamID:(id)d sample:(id)sample
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -1047,24 +1047,24 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider extension:receivedSampleWithStreamID:sample:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    [v10 receivedSample:a5 streamID:a4];
+    [v10 receivedSample:sample streamID:d];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 pullSampleWithStreamID:(id)a4 reply:(id)a5
+- (void)extension:(id)extension pullSampleWithStreamID:(id)d reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -1087,21 +1087,21 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v20 = 2080;
         v21 = "[CMIOExtensionSessionProvider extension:pullSampleWithStreamID:reply:]";
         v22 = 2112;
-        v23 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
     *buf = 0;
     v14 = 0;
-    v11 = [v10 copySample:&v14 streamID:a4 error:buf];
-    (*(a5 + 2))(a5, v11, v14, *buf);
+    v11 = [v10 copySample:&v14 streamID:d error:buf];
+    (*(reply + 2))(reply, v11, v14, *buf);
   }
 
   else
@@ -1109,13 +1109,13 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Invalid stream";
-    (*(a5 + 2))(a5, 0, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    (*(reply + 2))(reply, 0, 0, [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extension:(id)a3 streamScheduledOutputChangedWithStreamID:(id)a4 scheduledOutput:(id)a5
+- (void)extension:(id)extension streamScheduledOutputChangedWithStreamID:(id)d scheduledOutput:(id)output
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -1138,18 +1138,18 @@ void __66__CMIOExtensionSessionProvider_extension_availableDevicesChanged___bloc
         v16 = 2080;
         v17 = "[CMIOExtensionSessionProvider extension:streamScheduledOutputChangedWithStreamID:scheduledOutput:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v12, 0x26u);
       }
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v10 = [(NSMutableDictionary *)self->_streamsMap objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    [v10 receivedScheduledOutput:a5 streamID:a4];
+    [v10 receivedScheduledOutput:output streamID:d];
   }
 
   v11 = *MEMORY[0x277D85DE8];

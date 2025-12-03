@@ -1,59 +1,59 @@
 @interface IDSDaemonController
 + (id)sharedInstance;
-- (BOOL)_makeConnectionWithLaunch:(BOOL)a3 completionBlock:(id)a4;
-- (BOOL)_setCapabilities:(unsigned int)a3;
-- (BOOL)_setCommands:(id)a3;
-- (BOOL)_setServices:(id)a3;
-- (BOOL)addListenerID:(id)a3 services:(id)a4 commands:(id)a5;
-- (BOOL)consumeQueryContext:(id)a3;
-- (BOOL)hasListenerForID:(id)a3;
+- (BOOL)_makeConnectionWithLaunch:(BOOL)launch completionBlock:(id)block;
+- (BOOL)_setCapabilities:(unsigned int)capabilities;
+- (BOOL)_setCommands:(id)commands;
+- (BOOL)_setServices:(id)services;
+- (BOOL)addListenerID:(id)d services:(id)services commands:(id)commands;
+- (BOOL)consumeQueryContext:(id)context;
+- (BOOL)hasListenerForID:(id)d;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
 - (BOOL)localObjectExists;
 - (BOOL)remoteObjectExists;
-- (BOOL)setCapabilities:(unsigned int)a3 forListenerID:(id)a4 shouldLog:(BOOL)a5;
-- (BOOL)setCommands:(id)a3 forListenerID:(id)a4;
-- (BOOL)setServices:(id)a3 forListenerID:(id)a4;
+- (BOOL)setCapabilities:(unsigned int)capabilities forListenerID:(id)d shouldLog:(BOOL)log;
+- (BOOL)setCommands:(id)commands forListenerID:(id)d;
+- (BOOL)setServices:(id)services forListenerID:(id)d;
 - (IDSDaemonController)init;
 - (NSString)listenerID;
 - (id)commands;
-- (id)commandsForListenerID:(id)a3;
+- (id)commandsForListenerID:(id)d;
 - (id)delegate;
-- (id)forwarderWithCompletion:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwarderWithCompletion:(id)completion;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)localObject;
 - (id)services;
-- (id)servicesForListenerID:(id)a3;
+- (id)servicesForListenerID:(id)d;
 - (int)curXPCMessagePriority;
 - (unsigned)capabilities;
-- (unsigned)capabilitiesForListenerID:(id)a3;
-- (void)_agentDidLaunchNotification:(id)a3;
-- (void)_connectToDaemonWithLaunch:(BOOL)a3 services:(id)a4 commands:(id)a5 capabilities:(unsigned int)a6;
-- (void)_disconnectFromDaemonWithForce:(BOOL)a3;
-- (void)_handleDaemonException:(id)a3;
+- (unsigned)capabilitiesForListenerID:(id)d;
+- (void)_agentDidLaunchNotification:(id)notification;
+- (void)_connectToDaemonWithLaunch:(BOOL)launch services:(id)services commands:(id)commands capabilities:(unsigned int)capabilities;
+- (void)_disconnectFromDaemonWithForce:(BOOL)force;
+- (void)_handleDaemonException:(id)exception;
 - (void)_listenerSetUpdated;
 - (void)_localObjectCleanup;
 - (void)_noteDisconnected;
 - (void)_noteSetupComplete;
-- (void)_performBlock:(id)a3 wait:(BOOL)a4;
+- (void)_performBlock:(id)block wait:(BOOL)wait;
 - (void)_remoteObjectCleanup;
-- (void)addedDelegateForService:(id)a3 withCompletion:(id)a4;
+- (void)addedDelegateForService:(id)service withCompletion:(id)completion;
 - (void)blockUntilConnected;
 - (void)dealloc;
 - (void)disconnectFromDaemon;
-- (void)forwardMethodWithBoostedPriority:(id)a3;
-- (void)forwardMethodWithReplyIsSync:(BOOL)a3 block:(id)a4;
-- (void)localObjectDiedNotification:(id)a3;
-- (void)remoteObjectDiedNotification:(id)a3;
-- (void)removeListenerID:(id)a3;
-- (void)sendXPCObject:(id)a3 objectContext:(id)a4;
-- (void)setCurXPCMessagePriority:(int)a3;
-- (void)setQueryContext:(id)a3;
+- (void)forwardMethodWithBoostedPriority:(id)priority;
+- (void)forwardMethodWithReplyIsSync:(BOOL)sync block:(id)block;
+- (void)localObjectDiedNotification:(id)notification;
+- (void)remoteObjectDiedNotification:(id)notification;
+- (void)removeListenerID:(id)d;
+- (void)sendXPCObject:(id)object objectContext:(id)context;
+- (void)setCurXPCMessagePriority:(int)priority;
+- (void)setQueryContext:(id)context;
 - (void)systemApplicationDidEnterBackground;
 - (void)systemApplicationDidResume;
 - (void)systemApplicationDidSuspend;
 - (void)systemApplicationWillEnterForeground;
-- (void)unsetQueryContext:(id)a3;
+- (void)unsetQueryContext:(id)context;
 @end
 
 @implementation IDSDaemonController
@@ -72,10 +72,10 @@
 
 - (void)blockUntilConnected
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isNonUIInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if ((v4 & 1) == 0)
+  if ((isNonUIInstall & 1) == 0)
   {
     dispatch_assert_queue_not_V2(self->_ivarQueue);
     v5 = +[IDSLogging DaemonController];
@@ -98,8 +98,8 @@
     [(IDSDaemonController *)self _performBlock:v7 wait:1];
     if (v9[24] == 1)
     {
-      v6 = [(IDSDaemonController *)self connectingQueue];
-      dispatch_sync(v6, &unk_1F09E5BA0);
+      connectingQueue = [(IDSDaemonController *)self connectingQueue];
+      dispatch_sync(connectingQueue, &unk_1F09E5BA0);
     }
 
     _Block_object_dispose(buf, 8);
@@ -108,10 +108,10 @@
 
 - (BOOL)isConnected
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isNonUIInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if (v4)
+  if (isNonUIInstall)
   {
     v5 = 1;
   }
@@ -146,7 +146,7 @@
       sub_195B26A7C();
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -193,9 +193,9 @@
       v22 = IMGetMainBundleIdentifier();
       if (![v22 length])
       {
-        v23 = [MEMORY[0x1E696AEC0] stringGUID];
+        stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
 
-        v22 = v23;
+        v22 = stringGUID;
       }
 
       v24 = [v22 copy];
@@ -207,10 +207,10 @@
     }
 
     self = v6;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)services
@@ -341,10 +341,10 @@
 
 - (void)disconnectFromDaemon
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isNonUIInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if ((v4 & 1) == 0)
+  if ((isNonUIInstall & 1) == 0)
   {
 
     [(IDSDaemonController *)self _disconnectFromDaemonWithForce:0];
@@ -413,12 +413,12 @@
 - (int)curXPCMessagePriority
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B26FC8();
     }
@@ -427,14 +427,14 @@
   return self->_curXPCMessagePriority;
 }
 
-- (void)_performBlock:(id)a3 wait:(BOOL)a4
+- (void)_performBlock:(id)block wait:(BOOL)wait
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  waitCopy = wait;
+  blockCopy = block;
+  if (blockCopy)
   {
-    block = v6;
-    if (v4)
+    block = blockCopy;
+    if (waitCopy)
     {
       if (dispatch_get_specific("IDSDaemonControllerContext"))
       {
@@ -449,7 +449,7 @@
 
     else
     {
-      dispatch_async(self->_ivarQueue, v6);
+      dispatch_async(self->_ivarQueue, blockCopy);
     }
   }
 
@@ -458,11 +458,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69A6160] sharedInstance];
-  [v3 removeListener:self];
+  mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+  [mEMORY[0x1E69A6160] removeListener:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   [(IDSDaemonController *)self _localObjectCleanup];
   [(IDSDaemonController *)self _remoteObjectCleanup];
@@ -479,30 +479,30 @@
   [(IDSDaemonController *)&v7 dealloc];
 }
 
-- (void)_handleDaemonException:(id)a3
+- (void)_handleDaemonException:(id)exception
 {
-  v3 = a3;
+  exceptionCopy = exception;
   v4 = +[IDSLogging DaemonController];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    sub_195B26B10(v3, v4);
+    sub_195B26B10(exceptionCopy, v4);
   }
 }
 
-- (BOOL)_makeConnectionWithLaunch:(BOOL)a3 completionBlock:(id)a4
+- (BOOL)_makeConnectionWithLaunch:(BOOL)launch completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if ([v7 isNonUIInstall])
+  blockCopy = block;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if ([mEMORY[0x1E69A60F0] isNonUIInstall])
   {
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69A6160] sharedInstance];
-    v9 = [v8 systemIsShuttingDown];
+    mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+    systemIsShuttingDown = [mEMORY[0x1E69A6160] systemIsShuttingDown];
 
-    if ((v9 & 1) == 0)
+    if ((systemIsShuttingDown & 1) == 0)
     {
       v16 = 0;
       v17 = &v16;
@@ -512,10 +512,10 @@
       v12[1] = 3221225472;
       v12[2] = sub_195A0FD24;
       v12[3] = &unk_1E743E8A0;
-      v15 = a3;
+      launchCopy = launch;
       v12[4] = self;
       v14 = &v16;
-      v13 = v6;
+      v13 = blockCopy;
       [(IDSDaemonController *)self _performBlock:v12 wait:1];
       v10 = *(v17 + 24);
 
@@ -530,38 +530,38 @@ LABEL_6:
   return v10 & 1;
 }
 
-- (void)_disconnectFromDaemonWithForce:(BOOL)a3
+- (void)_disconnectFromDaemonWithForce:(BOOL)force
 {
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isNonUIInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if ((v6 & 1) == 0)
+  if ((isNonUIInstall & 1) == 0)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_195A10B88;
     v7[3] = &unk_1E743E8C8;
     v7[4] = self;
-    v8 = a3;
+    forceCopy = force;
     [(IDSDaemonController *)self _performBlock:v7 wait:1];
   }
 }
 
-- (void)_connectToDaemonWithLaunch:(BOOL)a3 services:(id)a4 commands:(id)a5 capabilities:(unsigned int)a6
+- (void)_connectToDaemonWithLaunch:(BOOL)launch services:(id)services commands:(id)commands capabilities:(unsigned int)capabilities
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v13 = [v12 isNonUIInstall];
+  servicesCopy = services;
+  commandsCopy = commands;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if ((v13 & 1) == 0)
+  if ((isNonUIInstall & 1) == 0)
   {
-    v14 = [v10 containsObject:@"com.apple.private.alloy.pbbridge"];
-    v15 = [MEMORY[0x1E69A6160] sharedInstance];
-    v16 = [v15 systemIsShuttingDown];
+    v14 = [servicesCopy containsObject:@"com.apple.private.alloy.pbbridge"];
+    mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+    systemIsShuttingDown = [mEMORY[0x1E69A6160] systemIsShuttingDown];
 
-    if (v16)
+    if (systemIsShuttingDown)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -583,12 +583,12 @@ LABEL_6:
 
     if (v14)
     {
-      v18 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v29 = a6;
-        _os_log_impl(&dword_1959FF000, v18, OS_LOG_TYPE_DEFAULT, "connectToDaemonWithLaunch capabilities %d", buf, 8u);
+        capabilitiesCopy = capabilities;
+        _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "connectToDaemonWithLaunch capabilities %d", buf, 8u);
       }
     }
 
@@ -597,11 +597,11 @@ LABEL_6:
     v20[2] = sub_195A11560;
     v20[3] = &unk_1E743E8F0;
     v24 = v14;
-    v23 = a6;
+    capabilitiesCopy2 = capabilities;
     v20[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v25 = a3;
+    v21 = servicesCopy;
+    v22 = commandsCopy;
+    launchCopy = launch;
     [(IDSDaemonController *)self _performBlock:v20 wait:1];
   }
 
@@ -610,11 +610,11 @@ LABEL_12:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_setServices:(id)a3
+- (BOOL)_setServices:(id)services
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  servicesCopy = services;
+  v5 = servicesCopy;
+  if (servicesCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -625,7 +625,7 @@ LABEL_12:
     v8[2] = sub_195A11EFC;
     v8[3] = &unk_1E743E968;
     v8[4] = self;
-    v9 = v4;
+    v9 = servicesCopy;
     v10 = &v11;
     [(IDSDaemonController *)self _performBlock:v8 wait:1];
     v6 = *(v12 + 24);
@@ -641,11 +641,11 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (BOOL)_setCommands:(id)a3
+- (BOOL)_setCommands:(id)commands
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  commandsCopy = commands;
+  v5 = commandsCopy;
+  if (commandsCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -656,7 +656,7 @@ LABEL_12:
     v8[2] = sub_195A1208C;
     v8[3] = &unk_1E743E968;
     v8[4] = self;
-    v9 = v4;
+    v9 = commandsCopy;
     v10 = &v11;
     [(IDSDaemonController *)self _performBlock:v8 wait:1];
     v6 = *(v12 + 24);
@@ -672,7 +672,7 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (BOOL)_setCapabilities:(unsigned int)a3
+- (BOOL)_setCapabilities:(unsigned int)capabilities
 {
   v7 = 0;
   v8 = &v7;
@@ -684,51 +684,51 @@ LABEL_12:
   v5[3] = &unk_1E743E990;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  capabilitiesCopy = capabilities;
   [(IDSDaemonController *)self _performBlock:v5 wait:1];
   v3 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   return v3;
 }
 
-- (void)setCurXPCMessagePriority:(int)a3
+- (void)setCurXPCMessagePriority:(int)priority
 {
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B26F28();
     }
   }
 
-  self->_curXPCMessagePriority = a3;
+  self->_curXPCMessagePriority = priority;
 }
 
-- (void)addedDelegateForService:(id)a3 withCompletion:(id)a4
+- (void)addedDelegateForService:(id)service withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A124C4;
   v10[3] = &unk_1E743E9B8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = serviceCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = serviceCopy;
   [(IDSDaemonController *)self _performBlock:v10 wait:1];
 }
 
-- (BOOL)addListenerID:(id)a3 services:(id)a4 commands:(id)a5
+- (BOOL)addListenerID:(id)d services:(id)services commands:(id)commands
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  servicesCopy = services;
+  commandsCopy = commands;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -737,12 +737,12 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = sub_195A12774;
   v15[3] = &unk_1E743E9E0;
-  v11 = v9;
+  v11 = servicesCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = commandsCopy;
   v17 = v12;
-  v13 = v8;
-  v19 = self;
+  v13 = dCopy;
+  selfCopy = self;
   v20 = &v21;
   v18 = v13;
   [(IDSDaemonController *)self _performBlock:v15 wait:1];
@@ -752,9 +752,9 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)hasListenerForID:(id)a3
+- (BOOL)hasListenerForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -765,7 +765,7 @@ LABEL_12:
   v7[3] = &unk_1E743EA08;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v8 = v5;
   [(IDSDaemonController *)self _performBlock:v7 wait:1];
   LOBYTE(self) = *(v11 + 24);
@@ -774,25 +774,25 @@ LABEL_12:
   return self;
 }
 
-- (void)removeListenerID:(id)a3
+- (void)removeListenerID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_195A12C04;
     v5[3] = &unk_1E743EA30;
     v5[4] = self;
-    v6 = v4;
+    v6 = dCopy;
     [(IDSDaemonController *)self _performBlock:v5];
   }
 }
 
-- (id)servicesForListenerID:(id)a3
+- (id)servicesForListenerID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v10 = 0;
     v11 = &v10;
@@ -806,25 +806,25 @@ LABEL_12:
     v7[3] = &unk_1E743EA08;
     v9 = &v10;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     [(IDSDaemonController *)self _performBlock:v7 wait:1];
-    v5 = v11[5];
+    services = v11[5];
 
     _Block_object_dispose(&v10, 8);
   }
 
   else
   {
-    v5 = [(IDSDaemonController *)self services];
+    services = [(IDSDaemonController *)self services];
   }
 
-  return v5;
+  return services;
 }
 
-- (BOOL)setServices:(id)a3 forListenerID:(id)a4
+- (BOOL)setServices:(id)services forListenerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -833,11 +833,11 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_195A130D4;
   v11[3] = &unk_1E743EA58;
-  v8 = v7;
+  v8 = dCopy;
   v15 = &v16;
   v12 = v8;
-  v13 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = servicesCopy;
   v14 = v9;
   [(IDSDaemonController *)self _performBlock:v11 wait:1];
   LOBYTE(self) = *(v17 + 24);
@@ -846,10 +846,10 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)setCommands:(id)a3 forListenerID:(id)a4
+- (BOOL)setCommands:(id)commands forListenerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  commandsCopy = commands;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -858,11 +858,11 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_195A132F4;
   v11[3] = &unk_1E743EA58;
-  v8 = v7;
+  v8 = dCopy;
   v15 = &v16;
   v12 = v8;
-  v13 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = commandsCopy;
   v14 = v9;
   [(IDSDaemonController *)self _performBlock:v11 wait:1];
   LOBYTE(self) = *(v17 + 24);
@@ -871,10 +871,10 @@ LABEL_12:
   return self;
 }
 
-- (id)commandsForListenerID:(id)a3
+- (id)commandsForListenerID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v10 = 0;
     v11 = &v10;
@@ -888,24 +888,24 @@ LABEL_12:
     v7[3] = &unk_1E743EA08;
     v9 = &v10;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     [(IDSDaemonController *)self _performBlock:v7 wait:1];
-    v5 = v11[5];
+    commands = v11[5];
 
     _Block_object_dispose(&v10, 8);
   }
 
   else
   {
-    v5 = [(IDSDaemonController *)self commands];
+    commands = [(IDSDaemonController *)self commands];
   }
 
-  return v5;
+  return commands;
 }
 
-- (unsigned)capabilitiesForListenerID:(id)a3
+- (unsigned)capabilitiesForListenerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -916,7 +916,7 @@ LABEL_12:
   v7[3] = &unk_1E743EA08;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v8 = v5;
   [(IDSDaemonController *)self _performBlock:v7 wait:1];
   LODWORD(self) = *(v11 + 6);
@@ -925,9 +925,9 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)setCapabilities:(unsigned int)a3 forListenerID:(id)a4 shouldLog:(BOOL)a5
+- (BOOL)setCapabilities:(unsigned int)capabilities forListenerID:(id)d shouldLog:(BOOL)log
 {
-  v8 = a4;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -936,10 +936,10 @@ LABEL_12:
   v12[1] = 3221225472;
   v12[2] = sub_195A13800;
   v12[3] = &unk_1E743EA80;
-  v9 = v8;
-  v17 = a5;
-  v16 = a3;
-  v14 = self;
+  v9 = dCopy;
+  logCopy = log;
+  capabilitiesCopy = capabilities;
+  selfCopy = self;
   v15 = &v18;
   v13 = v9;
   [(IDSDaemonController *)self _performBlock:v12 wait:1];
@@ -970,7 +970,7 @@ LABEL_12:
   return v2;
 }
 
-- (void)_agentDidLaunchNotification:(id)a3
+- (void)_agentDidLaunchNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -980,7 +980,7 @@ LABEL_12:
   [(IDSDaemonController *)self _performBlock:v3 wait:0];
 }
 
-- (void)localObjectDiedNotification:(id)a3
+- (void)localObjectDiedNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -990,7 +990,7 @@ LABEL_12:
   [(IDSDaemonController *)self _performBlock:v3 wait:1];
 }
 
-- (void)remoteObjectDiedNotification:(id)a3
+- (void)remoteObjectDiedNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1000,15 +1000,15 @@ LABEL_12:
   [(IDSDaemonController *)self _performBlock:v3 wait:1];
 }
 
-- (void)sendXPCObject:(id)a3 objectContext:(id)a4
+- (void)sendXPCObject:(id)object objectContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   v8 = xpc_dictionary_create(0, 0, 0);
   IMInsertBoolsToXPCDictionary();
-  xpc_dictionary_set_value(v8, "object", v7);
+  xpc_dictionary_set_value(v8, "object", objectCopy);
 
-  v9 = [v6 copy];
+  v9 = [contextCopy copy];
   IMInsertDictionariesToXPCDictionary();
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -1029,11 +1029,11 @@ LABEL_12:
   [(IDSDaemonController *)self _performBlock:v13 wait:1, v9, 0];
 }
 
-- (void)forwardMethodWithReplyIsSync:(BOOL)a3 block:(id)a4
+- (void)forwardMethodWithReplyIsSync:(BOOL)sync block:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  syncCopy = sync;
+  blockCopy = block;
+  if (syncCopy)
   {
     v7 = @"QueryWithReplySync";
   }
@@ -1044,83 +1044,83 @@ LABEL_12:
   }
 
   [(IDSDaemonController *)self setQueryContext:v7];
-  v6[2](v6, self);
+  blockCopy[2](blockCopy, self);
 
   MEMORY[0x1EEE66B58](self, sel_unsetQueryContext_);
 }
 
-- (void)forwardMethodWithBoostedPriority:(id)a3
+- (void)forwardMethodWithBoostedPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   [(IDSDaemonController *)self setQueryContext:@"QueryWithBoost"];
-  v4[2](v4, self);
+  priorityCopy[2](priorityCopy, self);
 
   MEMORY[0x1EEE66B58](self, sel_unsetQueryContext_);
 }
 
-- (void)setQueryContext:(id)a3
+- (void)setQueryContext:(id)context
 {
-  v7 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  contextCopy = context;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:v7];
-  v6 = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKeyedSubscript:contextCopy];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v7];
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:contextCopy];
   }
 }
 
-- (void)unsetQueryContext:(id)a3
+- (void)unsetQueryContext:(id)context
 {
-  v7 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  contextCopy = context;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:v7];
-  v6 = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKeyedSubscript:contextCopy];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [v4 removeObjectForKey:v7];
+    [threadDictionary removeObjectForKey:contextCopy];
   }
 }
 
-- (BOOL)consumeQueryContext:(id)a3
+- (BOOL)consumeQueryContext:(id)context
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
+  contextCopy = context;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKeyedSubscript:v3];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKeyedSubscript:contextCopy];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [v5 removeObjectForKey:v3];
+    [threadDictionary removeObjectForKey:contextCopy];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)forwarderWithCompletion:(id)a3
+- (id)forwarderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[IDSDaemonControllerForwarder alloc] initWithProtocol:self->_protocol ivarQueue:self->_ivarQueue remoteMessageQueue:self->_remoteMessageQueue completion:v4];
+  completionCopy = completion;
+  v5 = [[IDSDaemonControllerForwarder alloc] initWithProtocol:self->_protocol ivarQueue:self->_ivarQueue remoteMessageQueue:self->_remoteMessageQueue completion:completionCopy];
 
   return v5;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 isQueueCurrent];
+  isQueueCurrent = [v5 isQueueCurrent];
 
-  if (v6)
+  if (isQueueCurrent)
   {
-    v7 = sel_sendMessageWithSendParameters_ == a3;
+    v7 = sel_sendMessageWithSendParameters_ == selector;
   }
 
   else
@@ -1141,8 +1141,8 @@ LABEL_12:
 
 - (void)systemApplicationDidSuspend
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B27310();
   }
@@ -1157,8 +1157,8 @@ LABEL_12:
 
 - (void)systemApplicationDidEnterBackground
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B27344();
   }
@@ -1173,8 +1173,8 @@ LABEL_12:
 
 - (void)systemApplicationWillEnterForeground
 {
-  v2 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B27378();
   }
@@ -1182,8 +1182,8 @@ LABEL_12:
 
 - (void)systemApplicationDidResume
 {
-  v2 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B273AC();
   }

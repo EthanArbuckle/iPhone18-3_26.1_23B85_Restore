@@ -1,5 +1,5 @@
 @interface ADAnalyticsDeliveryBatch
-- (ADAnalyticsDeliveryBatch)initWithDeliveryStream:(unint64_t)a3;
+- (ADAnalyticsDeliveryBatch)initWithDeliveryStream:(unint64_t)stream;
 - (id)analyticsDictionary;
 - (void)markEndTime;
 - (void)markStartTime;
@@ -81,7 +81,7 @@
   _objc_release_x1(v3, startTime);
 }
 
-- (ADAnalyticsDeliveryBatch)initWithDeliveryStream:(unint64_t)a3
+- (ADAnalyticsDeliveryBatch)initWithDeliveryStream:(unint64_t)stream
 {
   v8.receiver = self;
   v8.super_class = ADAnalyticsDeliveryBatch;
@@ -92,7 +92,7 @@
     batchIdentifier = v4->_batchIdentifier;
     v4->_batchIdentifier = v5;
 
-    v4->_deliveryStream = a3;
+    v4->_deliveryStream = stream;
   }
 
   return v4;

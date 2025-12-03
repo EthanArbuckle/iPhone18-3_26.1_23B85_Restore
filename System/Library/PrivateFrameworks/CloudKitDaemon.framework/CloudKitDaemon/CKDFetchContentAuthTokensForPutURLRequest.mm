@@ -1,44 +1,44 @@
 @interface CKDFetchContentAuthTokensForPutURLRequest
-- (CKDFetchContentAuthTokensForPutURLRequest)initWithOperation:(id)a3 assetTokenRequest:(id)a4 headers:(id)a5;
+- (CKDFetchContentAuthTokensForPutURLRequest)initWithOperation:(id)operation assetTokenRequest:(id)request headers:(id)headers;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchContentAuthTokensForPutURLRequest
 
-- (CKDFetchContentAuthTokensForPutURLRequest)initWithOperation:(id)a3 assetTokenRequest:(id)a4 headers:(id)a5
+- (CKDFetchContentAuthTokensForPutURLRequest)initWithOperation:(id)operation assetTokenRequest:(id)request headers:(id)headers
 {
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  headersCopy = headers;
   v14.receiver = self;
   v14.super_class = CKDFetchContentAuthTokensForPutURLRequest;
-  v11 = [(CKDURLRequest *)&v14 initWithOperation:a3];
+  v11 = [(CKDURLRequest *)&v14 initWithOperation:operation];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_assetTokenRequest, a4);
-    objc_storeStrong(&v12->_headers, a5);
+    objc_storeStrong(&v11->_assetTokenRequest, request);
+    objc_storeStrong(&v12->_headers, headers);
   }
 
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDFetchContentAuthTokensForPutURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v3.receiver = self;
   v3.super_class = CKDFetchContentAuthTokensForPutURLRequest;
-  [(CKDURLRequest *)&v3 fillOutRequestProperties:a3];
+  [(CKDURLRequest *)&v3 fillOutRequestProperties:properties];
 }
 
 - (id)requestOperationClasses
@@ -59,7 +59,7 @@
   objc_msgSend_setTransactionStateByRequestIDs_(self, v8, v7);
 
   v212 = objc_opt_new();
-  v213 = self;
+  selfCopy = self;
   v249 = 0u;
   v250 = 0u;
   v251 = 0u;
@@ -305,8 +305,8 @@
           while (v215);
         }
 
-        v167 = objc_msgSend_operationType(v213, v165, v166);
-        v169 = objc_msgSend_operationRequestWithType_(v213, v168, v167);
+        v167 = objc_msgSend_operationType(selfCopy, v165, v166);
+        v169 = objc_msgSend_operationRequestWithType_(selfCopy, v168, v167);
         v170 = objc_opt_new();
         objc_msgSend_setAssetUploadTokenRetrieveRequest_(v169, v171, v170);
         objc_msgSend_setUploads_(v170, v172, v217);
@@ -329,7 +329,7 @@
         }
 
         objc_msgSend_setAuthPutType_(v170, v186, v185);
-        headers = v213->_headers;
+        headers = selfCopy->_headers;
         v234[0] = MEMORY[0x277D85DD0];
         v234[1] = 3221225472;
         v235[0] = sub_2253BE7FC;
@@ -337,7 +337,7 @@
         v236 = v170;
         v191 = v170;
         objc_msgSend_enumerateKeysAndObjectsUsingBlock_(headers, v192, v234);
-        v195 = objc_msgSend_transactionStateByRequestIDs(v213, v193, v194);
+        v195 = objc_msgSend_transactionStateByRequestIDs(selfCopy, v193, v194);
         v198 = objc_msgSend_request(v169, v196, v197);
         v201 = objc_msgSend_operationUUID(v198, v199, v200);
         objc_msgSend_setObject_forKey_(v195, v202, v233, v201);
@@ -361,27 +361,27 @@
   return v212;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v449 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_response(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_response(objectCopy, v5, v6);
   v10 = objc_msgSend_operationUUID(v7, v8, v9);
 
   if (!v10)
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 1000, @"Missing operationUUID on %@", v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 1000, @"Missing operationUUID on %@", objectCopy);
     v73 = LABEL_33:;
     goto LABEL_129;
   }
 
-  if ((objc_msgSend_hasAssetUploadTokenRetrieveResponse(v4, v11, v12) & 1) == 0)
+  if ((objc_msgSend_hasAssetUploadTokenRetrieveResponse(objectCopy, v11, v12) & 1) == 0)
   {
-    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBC120], 1000, @"Missing AssetUploadTokenRetrieveResponse on %@", v4);
+    objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBC120], 1000, @"Missing AssetUploadTokenRetrieveResponse on %@", objectCopy);
     goto LABEL_33;
   }
 
-  v15 = objc_msgSend_assetUploadTokenRetrieveResponse(v4, v13, v14);
+  v15 = objc_msgSend_assetUploadTokenRetrieveResponse(objectCopy, v13, v14);
   v18 = objc_msgSend_transactionStateByRequestIDs(self, v16, v17);
   v20 = objc_msgSend_objectForKey_(v18, v19, v10);
 
@@ -391,7 +391,7 @@
     goto LABEL_128;
   }
 
-  v415 = self;
+  selfCopy = self;
   v25 = objc_msgSend_assetBatch(v20, v21, v22);
   if (!v25)
   {
@@ -407,7 +407,7 @@
   v404 = v25;
   v405 = v15;
   v411 = v20;
-  v402 = v4;
+  v402 = objectCopy;
   if (objc_msgSend_contentResponseHeadersCount(v15, v28, v29))
   {
     v32 = objc_opt_new();
@@ -490,7 +490,7 @@
       objc_msgSend_setAuthPutResponseHeaders_(v404, v62, v32);
     }
 
-    v4 = v402;
+    objectCopy = v402;
     v10 = v407;
     v15 = v405;
     v20 = v411;
@@ -522,7 +522,7 @@
             _os_log_error_impl(&dword_22506F000, v392, OS_LOG_TYPE_ERROR, "Server did not return the required authPutResponse even though an authPutRequest was sent.", buf, 2u);
           }
 
-          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v393, *MEMORY[0x277CBC120], 1000, @"Server did not return the required authPutResponse even though an authPutRequest was sent. AssetUploadTokenRetrieveResponse on %@", v4);
+          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v393, *MEMORY[0x277CBC120], 1000, @"Server did not return the required authPutResponse even though an authPutRequest was sent. AssetUploadTokenRetrieveResponse on %@", objectCopy);
         }
 
         else
@@ -539,7 +539,7 @@
             _os_log_error_impl(&dword_22506F000, v395, OS_LOG_TYPE_ERROR, "Missing authPutRequest.", buf, 2u);
           }
 
-          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v396, *MEMORY[0x277CBC120], 1000, @"Missing authPutRequest. AssetUploadTokenRetrieveResponse on %@", v4);
+          objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v396, *MEMORY[0x277CBC120], 1000, @"Missing authPutRequest. AssetUploadTokenRetrieveResponse on %@", objectCopy);
         }
 
         goto LABEL_126;
@@ -585,7 +585,7 @@
 
     if (!v80)
     {
-      v4 = v402;
+      objectCopy = v402;
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v77, *MEMORY[0x277CBC120], 1000, @"Failed to get headers for authPutResponse AssetUploadTokenRetrieveResponse on %@", v402);
       goto LABEL_126;
     }
@@ -615,7 +615,7 @@
 
       v406 = v84;
       v85 = *(*(&v431 + 1) + 8 * v84);
-      v86 = objc_msgSend_translator(v415, v82, v83);
+      v86 = objc_msgSend_translator(selfCopy, v82, v83);
       v89 = objc_msgSend_asset(v85, v87, v88);
       v92 = objc_msgSend_recordId(v89, v90, v91);
       v430 = 0;
@@ -626,7 +626,7 @@
       if (!v94)
       {
         v394 = v408;
-        v4 = v402;
+        objectCopy = v402;
         v73 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v95, *MEMORY[0x277CBC120], 1000, @"Failed to parse recordID from AssetUploadTokenRetrieveResponseUploadToken on %@ : %@", v402, v408);
         goto LABEL_119;
       }
@@ -636,7 +636,7 @@
 
       if (!v100)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v101, *MEMORY[0x277CBC120], 1000, @"Missing Asset signature from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         v73 = LABEL_117:;
         goto LABEL_118;
@@ -647,7 +647,7 @@
 
       if (!v106)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v107, *MEMORY[0x277CBC120], 1000, @"Missing Asset size from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_117;
       }
@@ -657,7 +657,7 @@
 
       if (!v112)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v113, *MEMORY[0x277CBC120], 1000, @"Missing Asset owner from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_117;
       }
@@ -667,7 +667,7 @@
 
       if (!v118)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v119, *MEMORY[0x277CBC120], 1000, @"Missing Asset requestor from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_117;
       }
@@ -676,7 +676,7 @@
 
       if (!v121)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v122, *MEMORY[0x277CBC120], 1000, @"Missing Asset token from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_117;
       }
@@ -686,7 +686,7 @@
 
       if (!v127)
       {
-        v4 = v402;
+        objectCopy = v402;
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v128, *MEMORY[0x277CBC120], 1000, @"Missing Asset contentBaseURL from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_117;
       }
@@ -698,7 +698,7 @@
 
       if (!v136)
       {
-        v4 = v402;
+        objectCopy = v402;
         v73 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v137, *MEMORY[0x277CBC120], 1000, @"Malformed Asset contentBaseURL from AssetUploadTokenRetrieveResponseUploadToken on %@", v402);
         goto LABEL_134;
       }
@@ -787,7 +787,7 @@ LABEL_70:
             v206 = v205 = v179;
             v417 = objc_msgSend_initWithRecordID_fieldName_mergeableDeltaID_fileSignature_referenceSignature_(v193, v207, v196, v199, 0, v202, v206);
 
-            v210 = objc_msgSend_operation(v415, v208, v209);
+            v210 = objc_msgSend_operation(selfCopy, v208, v209);
             v213 = objc_msgSend_container(v210, v211, v212);
             v216 = objc_msgSend_pcsManager(v213, v214, v215);
             v219 = objc_msgSend_protectionInfo(v205, v217, v218);
@@ -895,7 +895,7 @@ LABEL_70:
 
         else
         {
-          v307 = objc_msgSend_translator(v415, v305, v306);
+          v307 = objc_msgSend_translator(selfCopy, v305, v306);
           v310 = objc_msgSend_asset(v85, v308, v309);
           v313 = objc_msgSend_recordId(v310, v311, v312);
           v315 = objc_msgSend_pContainerScopedRecordIdentifierWithPRecordIdentifier_(v307, v314, v313);
@@ -925,7 +925,7 @@ LABEL_70:
 LABEL_133:
             v25 = v404;
             v15 = v405;
-            v4 = v402;
+            objectCopy = v402;
             v73 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v316, *MEMORY[0x277CBC120], 1000, @"Failed to find asset for assetID %@ on %@", v299, v402);
 
 LABEL_134:
@@ -1033,7 +1033,7 @@ LABEL_119:
 LABEL_102:
 
   v73 = 0;
-  v4 = v402;
+  objectCopy = v402;
 LABEL_127:
 
 LABEL_128:
@@ -1044,15 +1044,15 @@ LABEL_129:
   return v73;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v103 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = objc_msgSend_result(v5, v6, v7);
+  failureCopy = failure;
+  v8 = objc_msgSend_result(failureCopy, v6, v7);
   v11 = objc_msgSend_error(v8, v9, v10);
   if (objc_msgSend_hasClientError(v11, v12, v13))
   {
-    v16 = objc_msgSend_result(v5, v14, v15);
+    v16 = objc_msgSend_result(failureCopy, v14, v15);
     v19 = objc_msgSend_error(v16, v17, v18);
     v22 = objc_msgSend_clientError(v19, v20, v21);
     v25 = objc_msgSend_type(v22, v23, v24);
@@ -1061,7 +1061,7 @@ LABEL_129:
     {
       v28 = MEMORY[0x277CCA9B8];
       v29 = *MEMORY[0x277CBC120];
-      v30 = objc_msgSend_result(v5, v26, v27);
+      v30 = objc_msgSend_result(failureCopy, v26, v27);
       v31 = sub_225395734(self, v30);
       v33 = objc_msgSend_errorWithDomain_code_userInfo_(v28, v32, v29, 2006, v31);
       goto LABEL_8;
@@ -1072,13 +1072,13 @@ LABEL_129:
   {
   }
 
-  v34 = objc_msgSend_result(v5, v26, v27);
+  v34 = objc_msgSend_result(failureCopy, v26, v27);
   v37 = objc_msgSend_error(v34, v35, v36);
   if ((objc_msgSend_hasExtensionError(v37, v38, v39) & 1) == 0)
   {
 
 LABEL_11:
-    v58 = objc_msgSend_response(v5, v52, v53);
+    v58 = objc_msgSend_response(failureCopy, v52, v53);
     v61 = objc_msgSend_operationUUID(v58, v59, v60);
 
     if (v61)
@@ -1090,12 +1090,12 @@ LABEL_11:
       {
         v95 = MEMORY[0x277CBC560];
         v29 = *MEMORY[0x277CBC120];
-        v97 = objc_msgSend_result(v5, v67, v68);
+        v97 = objc_msgSend_result(failureCopy, v67, v68);
         v69 = sub_2253962A4(v97);
-        v96 = objc_msgSend_result(v5, v70, v71);
+        v96 = objc_msgSend_result(failureCopy, v70, v71);
         sub_225395734(self, v96);
         v72 = v98 = v61;
-        v75 = objc_msgSend_result(v5, v73, v74);
+        v75 = objc_msgSend_result(failureCopy, v73, v74);
         objc_msgSend_error(v75, v76, v77);
         v79 = v78 = a2;
         v82 = objc_msgSend_errorDescription(v79, v80, v81);
@@ -1118,7 +1118,7 @@ LABEL_11:
           *buf = 138543618;
           v100 = v61;
           v101 = 2112;
-          v102 = v5;
+          v102 = failureCopy;
           _os_log_error_impl(&dword_22506F000, v86, OS_LOG_TYPE_ERROR, "Can't find assetBatch for %{public}@ on %@", buf, 0x16u);
         }
 
@@ -1138,12 +1138,12 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v100 = v5;
+        v100 = failureCopy;
         _os_log_error_impl(&dword_22506F000, v84, OS_LOG_TYPE_ERROR, "Missing requestID on %@", buf, 0xCu);
       }
 
       v29 = *MEMORY[0x277CBC120];
-      v56 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v85, *MEMORY[0x277CBC120], 1000, @"Missing requestID on %@", v5);
+      v56 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v85, *MEMORY[0x277CBC120], 1000, @"Missing requestID on %@", failureCopy);
     }
 
     if (!v56)
@@ -1154,7 +1154,7 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v42 = objc_msgSend_result(v5, v40, v41);
+  v42 = objc_msgSend_result(failureCopy, v40, v41);
   v45 = objc_msgSend_error(v42, v43, v44);
   v48 = objc_msgSend_extensionError(v45, v46, v47);
   hasTypeCode = objc_msgSend_hasTypeCode(v48, v49, v50);
@@ -1166,7 +1166,7 @@ LABEL_11:
 
   v54 = MEMORY[0x277CBC560];
   v29 = *MEMORY[0x277CBC120];
-  v30 = objc_msgSend_result(v5, v52, v53);
+  v30 = objc_msgSend_result(failureCopy, v52, v53);
   v31 = sub_225395734(self, v30);
   v33 = objc_msgSend_errorWithDomain_code_userInfo_format_(v54, v55, v29, 6000, v31, @"Plugin-Specific Error");
 LABEL_8:

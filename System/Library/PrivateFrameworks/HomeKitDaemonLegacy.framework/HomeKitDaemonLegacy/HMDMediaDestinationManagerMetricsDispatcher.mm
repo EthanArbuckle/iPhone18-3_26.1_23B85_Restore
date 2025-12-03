@@ -1,60 +1,60 @@
 @interface HMDMediaDestinationManagerMetricsDispatcher
 + (id)logCategory;
-- (HMDMediaDestinationManagerMetricsDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4;
+- (HMDMediaDestinationManagerMetricsDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter;
 - (id)logIdentifier;
-- (void)submitFailureEventWithFailureCode:(unint64_t)a3 error:(id)a4;
+- (void)submitFailureEventWithFailureCode:(unint64_t)code error:(id)error;
 @end
 
 @implementation HMDMediaDestinationManagerMetricsDispatcher
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaDestinationManagerMetricsDispatcher *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaDestinationManagerMetricsDispatcher *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)submitFailureEventWithFailureCode:(unint64_t)a3 error:(id)a4
+- (void)submitFailureEventWithFailureCode:(unint64_t)code error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = HMDMediaDestinationManagerFailureCodeAsString(a3);
+    v11 = HMDMediaDestinationManagerFailureCodeAsString(code);
     v15 = 138543874;
     v16 = v10;
     v17 = 2112;
     v18 = v11;
     v19 = 2112;
-    v20 = v6;
+    v20 = errorCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Submitting failure event with failure code: %@ error: %@", &v15, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [[HMDMediaDestinationManagerFailureEvent alloc] initWithFailureCode:a3 error:v6];
-  v13 = [(HMDMediaDestinationManagerMetricsDispatcher *)v8 logEventSubmitter];
-  [v13 submitLogEvent:v12];
+  v12 = [[HMDMediaDestinationManagerFailureEvent alloc] initWithFailureCode:code error:errorCopy];
+  logEventSubmitter = [(HMDMediaDestinationManagerMetricsDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaDestinationManagerMetricsDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4
+- (HMDMediaDestinationManagerMetricsDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  submitterCopy = submitter;
   v12.receiver = self;
   v12.super_class = HMDMediaDestinationManagerMetricsDispatcher;
   v9 = [(HMDMediaDestinationManagerMetricsDispatcher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_logEventSubmitter, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_logEventSubmitter, submitter);
   }
 
   return v10;

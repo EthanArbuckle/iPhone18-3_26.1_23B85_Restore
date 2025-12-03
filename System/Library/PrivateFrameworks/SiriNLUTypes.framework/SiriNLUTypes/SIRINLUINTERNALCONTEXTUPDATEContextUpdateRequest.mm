@@ -1,24 +1,24 @@
 @interface SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPreviousTurns:(id)a3;
-- (void)addQrHypotheses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPreviousTurns:(id)turns;
+- (void)addQrHypotheses:(id)hypotheses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   currentTurn = self->_currentTurn;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (currentTurn)
   {
     if (v6)
@@ -36,7 +36,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -64,7 +64,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v13)
   {
@@ -89,7 +89,7 @@
   }
 
   requestId = self->_requestId;
-  v18 = *(v4 + 5);
+  v18 = *(fromCopy + 5);
   if (requestId)
   {
     if (v18)
@@ -103,13 +103,13 @@
     [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self setRequestId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self setResultCandidateId:?];
   }
 
   nluRequestId = self->_nluRequestId;
-  v20 = *(v4 + 2);
+  v20 = *(fromCopy + 2);
   if (nluRequestId)
   {
     if (v20)
@@ -136,13 +136,13 @@
   return v6 ^ v7 ^ [(SIRINLUEXTERNALUUID *)self->_nluRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((currentTurn = self->_currentTurn, !(currentTurn | v4[1])) || -[SIRINLUEXTERNALTurnInput isEqual:](currentTurn, "isEqual:")) && ((previousTurns = self->_previousTurns, !(previousTurns | v4[3])) || -[NSMutableArray isEqual:](previousTurns, "isEqual:")) && ((qrHypotheses = self->_qrHypotheses, !(qrHypotheses | v4[4])) || -[NSMutableArray isEqual:](qrHypotheses, "isEqual:")) && ((requestId = self->_requestId, !(requestId | v4[5])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")) && ((resultCandidateId = self->_resultCandidateId, !(resultCandidateId | v4[6])) || -[NSString isEqual:](resultCandidateId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((currentTurn = self->_currentTurn, !(currentTurn | equalCopy[1])) || -[SIRINLUEXTERNALTurnInput isEqual:](currentTurn, "isEqual:")) && ((previousTurns = self->_previousTurns, !(previousTurns | equalCopy[3])) || -[NSMutableArray isEqual:](previousTurns, "isEqual:")) && ((qrHypotheses = self->_qrHypotheses, !(qrHypotheses | equalCopy[4])) || -[NSMutableArray isEqual:](qrHypotheses, "isEqual:")) && ((requestId = self->_requestId, !(requestId | equalCopy[5])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")) && ((resultCandidateId = self->_resultCandidateId, !(resultCandidateId | equalCopy[6])) || -[NSString isEqual:](resultCandidateId, "isEqual:")))
   {
     nluRequestId = self->_nluRequestId;
-    if (nluRequestId | v4[2])
+    if (nluRequestId | equalCopy[2])
     {
       v11 = [(SIRINLUEXTERNALUUID *)nluRequestId isEqual:?];
     }
@@ -161,11 +161,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurn copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurn copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -189,7 +189,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v32 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v32 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addPreviousTurns:v13];
 
         ++v12;
@@ -222,7 +222,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v28 + 1) + 8 * v18) copyWithZone:{a3, v28}];
+        v19 = [*(*(&v28 + 1) + 8 * v18) copyWithZone:{zone, v28}];
         [v5 addQrHypotheses:v19];
 
         ++v18;
@@ -235,15 +235,15 @@
     while (v16);
   }
 
-  v20 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v20 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v21 = v5[5];
   v5[5] = v20;
 
-  v22 = [(NSString *)self->_resultCandidateId copyWithZone:a3];
+  v22 = [(NSString *)self->_resultCandidateId copyWithZone:zone];
   v23 = v5[6];
   v5[6] = v22;
 
-  v24 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:a3];
+  v24 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:zone];
   v25 = v5[2];
   v5[2] = v24;
 
@@ -251,67 +251,67 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_currentTurn)
   {
-    [v13 setCurrentTurn:?];
+    [toCopy setCurrentTurn:?];
   }
 
   if ([(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self previousTurnsCount])
   {
-    [v13 clearPreviousTurns];
-    v4 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self previousTurnsCount];
-    if (v4)
+    [toCopy clearPreviousTurns];
+    previousTurnsCount = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self previousTurnsCount];
+    if (previousTurnsCount)
     {
-      v5 = v4;
+      v5 = previousTurnsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self previousTurnsAtIndex:i];
-        [v13 addPreviousTurns:v7];
+        [toCopy addPreviousTurns:v7];
       }
     }
   }
 
   if ([(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self qrHypothesesCount])
   {
-    [v13 clearQrHypotheses];
-    v8 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self qrHypothesesCount];
-    if (v8)
+    [toCopy clearQrHypotheses];
+    qrHypothesesCount = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self qrHypothesesCount];
+    if (qrHypothesesCount)
     {
-      v9 = v8;
+      v9 = qrHypothesesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self qrHypothesesAtIndex:j];
-        [v13 addQrHypotheses:v11];
+        [toCopy addQrHypotheses:v11];
       }
     }
   }
 
   if (self->_requestId)
   {
-    [v13 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if (self->_resultCandidateId)
   {
-    [v13 setResultCandidateId:?];
-    v12 = v13;
+    [toCopy setResultCandidateId:?];
+    v12 = toCopy;
   }
 
   if (self->_nluRequestId)
   {
-    [v13 setNluRequestId:?];
-    v12 = v13;
+    [toCopy setNluRequestId:?];
+    v12 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_currentTurn)
   {
     PBDataWriterWriteSubmessage();
@@ -402,12 +402,12 @@
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   currentTurn = self->_currentTurn;
   if (currentTurn)
   {
-    v5 = [(SIRINLUEXTERNALTurnInput *)currentTurn dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"current_turn"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALTurnInput *)currentTurn dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"current_turn"];
   }
 
   if ([(NSMutableArray *)self->_previousTurns count])
@@ -432,8 +432,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -442,7 +442,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"previous_turns"];
+    [dictionary setObject:v6 forKey:@"previous_turns"];
   }
 
   if ([(NSMutableArray *)self->_qrHypotheses count])
@@ -467,8 +467,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -477,32 +477,32 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"qr_hypotheses"];
+    [dictionary setObject:v13 forKey:@"qr_hypotheses"];
   }
 
   requestId = self->_requestId;
   if (requestId)
   {
-    v21 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"request_id"];
+    dictionaryRepresentation4 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"request_id"];
   }
 
   resultCandidateId = self->_resultCandidateId;
   if (resultCandidateId)
   {
-    [v3 setObject:resultCandidateId forKey:@"result_candidate_id"];
+    [dictionary setObject:resultCandidateId forKey:@"result_candidate_id"];
   }
 
   nluRequestId = self->_nluRequestId;
   if (nluRequestId)
   {
-    v24 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"nlu_request_id"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"nlu_request_id"];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -511,46 +511,46 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest;
   v4 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALCONTEXTUPDATEContextUpdateRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addQrHypotheses:(id)a3
+- (void)addQrHypotheses:(id)hypotheses
 {
-  v4 = a3;
+  hypothesesCopy = hypotheses;
   qrHypotheses = self->_qrHypotheses;
-  v8 = v4;
+  v8 = hypothesesCopy;
   if (!qrHypotheses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_qrHypotheses;
     self->_qrHypotheses = v6;
 
-    v4 = v8;
+    hypothesesCopy = v8;
     qrHypotheses = self->_qrHypotheses;
   }
 
-  [(NSMutableArray *)qrHypotheses addObject:v4];
+  [(NSMutableArray *)qrHypotheses addObject:hypothesesCopy];
 }
 
-- (void)addPreviousTurns:(id)a3
+- (void)addPreviousTurns:(id)turns
 {
-  v4 = a3;
+  turnsCopy = turns;
   previousTurns = self->_previousTurns;
-  v8 = v4;
+  v8 = turnsCopy;
   if (!previousTurns)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_previousTurns;
     self->_previousTurns = v6;
 
-    v4 = v8;
+    turnsCopy = v8;
     previousTurns = self->_previousTurns;
   }
 
-  [(NSMutableArray *)previousTurns addObject:v4];
+  [(NSMutableArray *)previousTurns addObject:turnsCopy];
 }
 
 @end

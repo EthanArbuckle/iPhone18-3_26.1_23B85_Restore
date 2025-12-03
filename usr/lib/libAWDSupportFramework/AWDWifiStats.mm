@@ -1,32 +1,32 @@
 @interface AWDWifiStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAverageCCA:(BOOL)a3;
-- (void)setHasAvgJitterRx:(BOOL)a3;
-- (void)setHasAvgLatencyTx:(BOOL)a3;
-- (void)setHasAvgRetx:(BOOL)a3;
-- (void)setHasAvgRssi:(BOOL)a3;
-- (void)setHasAvgTimeBackoff:(BOOL)a3;
-- (void)setHasDataTransferRateMpbs:(BOOL)a3;
-- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)a3;
-- (void)setHasEffectiveLinkRateMpbs:(BOOL)a3;
-- (void)setHasLinkRateMbps:(BOOL)a3;
-- (void)setHasPhyType:(BOOL)a3;
-- (void)setHasPowerSaveDur:(BOOL)a3;
-- (void)setHasTxbytes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAverageCCA:(BOOL)a;
+- (void)setHasAvgJitterRx:(BOOL)rx;
+- (void)setHasAvgLatencyTx:(BOOL)tx;
+- (void)setHasAvgRetx:(BOOL)retx;
+- (void)setHasAvgRssi:(BOOL)rssi;
+- (void)setHasAvgTimeBackoff:(BOOL)backoff;
+- (void)setHasDataTransferRateMpbs:(BOOL)mpbs;
+- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)mpbs;
+- (void)setHasEffectiveLinkRateMpbs:(BOOL)mpbs;
+- (void)setHasLinkRateMbps:(BOOL)mbps;
+- (void)setHasPhyType:(BOOL)type;
+- (void)setHasPowerSaveDur:(BOOL)dur;
+- (void)setHasTxbytes:(BOOL)txbytes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiStats
 
-- (void)setHasPhyType:(BOOL)a3
+- (void)setHasPhyType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4096;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasTxbytes:(BOOL)a3
+- (void)setHasTxbytes:(BOOL)txbytes
 {
-  if (a3)
+  if (txbytes)
   {
     v3 = 2;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasAvgLatencyTx:(BOOL)a3
+- (void)setHasAvgLatencyTx:(BOOL)tx
 {
-  if (a3)
+  if (tx)
   {
     v3 = 16;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAvgJitterRx:(BOOL)a3
+- (void)setHasAvgJitterRx:(BOOL)rx
 {
-  if (a3)
+  if (rx)
   {
     v3 = 8;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAvgRssi:(BOOL)a3
+- (void)setHasAvgRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 64;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAvgRetx:(BOOL)a3
+- (void)setHasAvgRetx:(BOOL)retx
 {
-  if (a3)
+  if (retx)
   {
     v3 = 32;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAvgTimeBackoff:(BOOL)a3
+- (void)setHasAvgTimeBackoff:(BOOL)backoff
 {
-  if (a3)
+  if (backoff)
   {
     v3 = 128;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPowerSaveDur:(BOOL)a3
+- (void)setHasPowerSaveDur:(BOOL)dur
 {
-  if (a3)
+  if (dur)
   {
     v3 = 0x2000;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasLinkRateMbps:(BOOL)a3
+- (void)setHasLinkRateMbps:(BOOL)mbps
 {
-  if (a3)
+  if (mbps)
   {
     v3 = 2048;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasEffectiveLinkRateMpbs:(BOOL)a3
+- (void)setHasEffectiveLinkRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 1024;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasDataTransferRateMpbs:(BOOL)a3
+- (void)setHasDataTransferRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 256;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)a3
+- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 512;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAverageCCA:(BOOL)a3
+- (void)setHasAverageCCA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 4;
   }
@@ -228,11 +228,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyType), @"phyType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyType), @"phyType"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -251,7 +251,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txbytes), @"txbytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txbytes), @"txbytes"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -265,7 +265,7 @@ LABEL_4:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxbytes), @"rxbytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxbytes), @"rxbytes"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -279,7 +279,7 @@ LABEL_5:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgLatencyTx), @"avg_latency_tx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgLatencyTx), @"avg_latency_tx"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -293,7 +293,7 @@ LABEL_6:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgJitterRx), @"avg_jitter_rx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgJitterRx), @"avg_jitter_rx"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -307,7 +307,7 @@ LABEL_7:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_avgRssi), @"avg_rssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_avgRssi), @"avg_rssi"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -321,7 +321,7 @@ LABEL_8:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRetx), @"avg_retx"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgRetx), @"avg_retx"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -335,7 +335,7 @@ LABEL_9:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgTimeBackoff), @"avg_time_backoff"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgTimeBackoff), @"avg_time_backoff"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -349,7 +349,7 @@ LABEL_10:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerSaveDur), @"power_save_dur"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerSaveDur), @"power_save_dur"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -363,7 +363,7 @@ LABEL_11:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkRateMbps), @"linkRate_Mbps"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkRateMbps), @"linkRate_Mbps"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -377,7 +377,7 @@ LABEL_12:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveLinkRateMpbs), @"effectiveLinkRate_Mpbs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveLinkRateMpbs), @"effectiveLinkRate_Mpbs"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -388,17 +388,17 @@ LABEL_13:
     }
 
 LABEL_29:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveDataTransferRateMpbs), @"effectiveDataTransferRate_Mpbs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveDataTransferRateMpbs), @"effectiveDataTransferRate_Mpbs"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_15;
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataTransferRateMpbs), @"dataTransferRate_Mpbs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataTransferRateMpbs), @"dataTransferRate_Mpbs"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -409,13 +409,13 @@ LABEL_14:
   if ((has & 4) != 0)
   {
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_averageCCA), @"averageCCA"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_averageCCA), @"averageCCA"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x1000) != 0)
@@ -618,13 +618,13 @@ LABEL_29:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    *(a3 + 16) = self->_phyType;
-    *(a3 + 36) |= 0x1000u;
+    *(to + 16) = self->_phyType;
+    *(to + 36) |= 0x1000u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -643,8 +643,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_txbytes;
-  *(a3 + 36) |= 2u;
+  *(to + 2) = self->_txbytes;
+  *(to + 36) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -658,8 +658,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  *(a3 + 1) = self->_rxbytes;
-  *(a3 + 36) |= 1u;
+  *(to + 1) = self->_rxbytes;
+  *(to + 36) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -673,8 +673,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  *(a3 + 8) = self->_avgLatencyTx;
-  *(a3 + 36) |= 0x10u;
+  *(to + 8) = self->_avgLatencyTx;
+  *(to + 36) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -688,8 +688,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  *(a3 + 7) = self->_avgJitterRx;
-  *(a3 + 36) |= 8u;
+  *(to + 7) = self->_avgJitterRx;
+  *(to + 36) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -703,8 +703,8 @@ LABEL_7:
   }
 
 LABEL_21:
-  *(a3 + 10) = self->_avgRssi;
-  *(a3 + 36) |= 0x40u;
+  *(to + 10) = self->_avgRssi;
+  *(to + 36) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -718,8 +718,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  *(a3 + 9) = self->_avgRetx;
-  *(a3 + 36) |= 0x20u;
+  *(to + 9) = self->_avgRetx;
+  *(to + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -733,8 +733,8 @@ LABEL_9:
   }
 
 LABEL_23:
-  *(a3 + 11) = self->_avgTimeBackoff;
-  *(a3 + 36) |= 0x80u;
+  *(to + 11) = self->_avgTimeBackoff;
+  *(to + 36) |= 0x80u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -748,8 +748,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  *(a3 + 17) = self->_powerSaveDur;
-  *(a3 + 36) |= 0x2000u;
+  *(to + 17) = self->_powerSaveDur;
+  *(to + 36) |= 0x2000u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -763,8 +763,8 @@ LABEL_11:
   }
 
 LABEL_25:
-  *(a3 + 15) = self->_linkRateMbps;
-  *(a3 + 36) |= 0x800u;
+  *(to + 15) = self->_linkRateMbps;
+  *(to + 36) |= 0x800u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -778,8 +778,8 @@ LABEL_12:
   }
 
 LABEL_26:
-  *(a3 + 14) = self->_effectiveLinkRateMpbs;
-  *(a3 + 36) |= 0x400u;
+  *(to + 14) = self->_effectiveLinkRateMpbs;
+  *(to + 36) |= 0x400u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -793,8 +793,8 @@ LABEL_13:
   }
 
 LABEL_27:
-  *(a3 + 12) = self->_dataTransferRateMpbs;
-  *(a3 + 36) |= 0x100u;
+  *(to + 12) = self->_dataTransferRateMpbs;
+  *(to + 36) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -805,23 +805,23 @@ LABEL_14:
     }
 
 LABEL_29:
-    *(a3 + 6) = self->_averageCCA;
-    *(a3 + 36) |= 4u;
+    *(to + 6) = self->_averageCCA;
+    *(to + 36) |= 4u;
     return;
   }
 
 LABEL_28:
-  *(a3 + 13) = self->_effectiveDataTransferRateMpbs;
-  *(a3 + 36) |= 0x200u;
+  *(to + 13) = self->_effectiveDataTransferRateMpbs;
+  *(to + 36) |= 0x200u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_29;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
@@ -1023,22 +1023,22 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if ((has & 0x1000) != 0)
     {
-      if ((*(a3 + 36) & 0x1000) == 0 || self->_phyType != *(a3 + 16))
+      if ((*(equal + 36) & 0x1000) == 0 || self->_phyType != *(equal + 16))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x1000) != 0)
+    else if ((*(equal + 36) & 0x1000) != 0)
     {
 LABEL_71:
       LOBYTE(v5) = 0;
@@ -1047,7 +1047,7 @@ LABEL_71:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_txbytes != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_txbytes != *(equal + 2))
       {
         goto LABEL_71;
       }
@@ -1060,7 +1060,7 @@ LABEL_71:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_rxbytes != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_rxbytes != *(equal + 1))
       {
         goto LABEL_71;
       }
@@ -1073,7 +1073,7 @@ LABEL_71:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_avgLatencyTx != *(a3 + 8))
+      if ((v7 & 0x10) == 0 || self->_avgLatencyTx != *(equal + 8))
       {
         goto LABEL_71;
       }
@@ -1086,7 +1086,7 @@ LABEL_71:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_avgJitterRx != *(a3 + 7))
+      if ((v7 & 8) == 0 || self->_avgJitterRx != *(equal + 7))
       {
         goto LABEL_71;
       }
@@ -1099,7 +1099,7 @@ LABEL_71:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_avgRssi != *(a3 + 10))
+      if ((v7 & 0x40) == 0 || self->_avgRssi != *(equal + 10))
       {
         goto LABEL_71;
       }
@@ -1112,7 +1112,7 @@ LABEL_71:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_avgRetx != *(a3 + 9))
+      if ((v7 & 0x20) == 0 || self->_avgRetx != *(equal + 9))
       {
         goto LABEL_71;
       }
@@ -1125,7 +1125,7 @@ LABEL_71:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_avgTimeBackoff != *(a3 + 11))
+      if ((v7 & 0x80) == 0 || self->_avgTimeBackoff != *(equal + 11))
       {
         goto LABEL_71;
       }
@@ -1138,65 +1138,65 @@ LABEL_71:
 
     if ((*&self->_has & 0x2000) != 0)
     {
-      if ((*(a3 + 36) & 0x2000) == 0 || self->_powerSaveDur != *(a3 + 17))
+      if ((*(equal + 36) & 0x2000) == 0 || self->_powerSaveDur != *(equal + 17))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x2000) != 0)
+    else if ((*(equal + 36) & 0x2000) != 0)
     {
       goto LABEL_71;
     }
 
     if ((*&self->_has & 0x800) != 0)
     {
-      if ((*(a3 + 36) & 0x800) == 0 || self->_linkRateMbps != *(a3 + 15))
+      if ((*(equal + 36) & 0x800) == 0 || self->_linkRateMbps != *(equal + 15))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x800) != 0)
+    else if ((*(equal + 36) & 0x800) != 0)
     {
       goto LABEL_71;
     }
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 36) & 0x400) == 0 || self->_effectiveLinkRateMpbs != *(a3 + 14))
+      if ((*(equal + 36) & 0x400) == 0 || self->_effectiveLinkRateMpbs != *(equal + 14))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x400) != 0)
+    else if ((*(equal + 36) & 0x400) != 0)
     {
       goto LABEL_71;
     }
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 36) & 0x100) == 0 || self->_dataTransferRateMpbs != *(a3 + 12))
+      if ((*(equal + 36) & 0x100) == 0 || self->_dataTransferRateMpbs != *(equal + 12))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x100) != 0)
+    else if ((*(equal + 36) & 0x100) != 0)
     {
       goto LABEL_71;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 36) & 0x200) == 0 || self->_effectiveDataTransferRateMpbs != *(a3 + 13))
+      if ((*(equal + 36) & 0x200) == 0 || self->_effectiveDataTransferRateMpbs != *(equal + 13))
       {
         goto LABEL_71;
       }
     }
 
-    else if ((*(a3 + 36) & 0x200) != 0)
+    else if ((*(equal + 36) & 0x200) != 0)
     {
       goto LABEL_71;
     }
@@ -1204,7 +1204,7 @@ LABEL_71:
     LOBYTE(v5) = (v7 & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_averageCCA != *(a3 + 6))
+      if ((v7 & 4) == 0 || self->_averageCCA != *(equal + 6))
       {
         goto LABEL_71;
       }
@@ -1411,14 +1411,14 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x1000) != 0)
   {
-    self->_phyType = *(a3 + 16);
+    self->_phyType = *(from + 16);
     *&self->_has |= 0x1000u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -1436,9 +1436,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_txbytes = *(a3 + 2);
+  self->_txbytes = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -1451,9 +1451,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_rxbytes = *(a3 + 1);
+  self->_rxbytes = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -1466,9 +1466,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_avgLatencyTx = *(a3 + 8);
+  self->_avgLatencyTx = *(from + 8);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -1481,9 +1481,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_avgJitterRx = *(a3 + 7);
+  self->_avgJitterRx = *(from + 7);
   *&self->_has |= 8u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -1496,9 +1496,9 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_avgRssi = *(a3 + 10);
+  self->_avgRssi = *(from + 10);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -1511,9 +1511,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_avgRetx = *(a3 + 9);
+  self->_avgRetx = *(from + 9);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x80) == 0)
   {
 LABEL_9:
@@ -1526,9 +1526,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_avgTimeBackoff = *(a3 + 11);
+  self->_avgTimeBackoff = *(from + 11);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_10:
@@ -1541,9 +1541,9 @@ LABEL_10:
   }
 
 LABEL_24:
-  self->_powerSaveDur = *(a3 + 17);
+  self->_powerSaveDur = *(from + 17);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x800) == 0)
   {
 LABEL_11:
@@ -1556,9 +1556,9 @@ LABEL_11:
   }
 
 LABEL_25:
-  self->_linkRateMbps = *(a3 + 15);
+  self->_linkRateMbps = *(from + 15);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x400) == 0)
   {
 LABEL_12:
@@ -1571,9 +1571,9 @@ LABEL_12:
   }
 
 LABEL_26:
-  self->_effectiveLinkRateMpbs = *(a3 + 14);
+  self->_effectiveLinkRateMpbs = *(from + 14);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x100) == 0)
   {
 LABEL_13:
@@ -1586,9 +1586,9 @@ LABEL_13:
   }
 
 LABEL_27:
-  self->_dataTransferRateMpbs = *(a3 + 12);
+  self->_dataTransferRateMpbs = *(from + 12);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x200) == 0)
   {
 LABEL_14:
@@ -1598,15 +1598,15 @@ LABEL_14:
     }
 
 LABEL_29:
-    self->_averageCCA = *(a3 + 6);
+    self->_averageCCA = *(from + 6);
     *&self->_has |= 4u;
     return;
   }
 
 LABEL_28:
-  self->_effectiveDataTransferRateMpbs = *(a3 + 13);
+  self->_effectiveDataTransferRateMpbs = *(from + 13);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 36) & 4) != 0)
+  if ((*(from + 36) & 4) != 0)
   {
     goto LABEL_29;
   }

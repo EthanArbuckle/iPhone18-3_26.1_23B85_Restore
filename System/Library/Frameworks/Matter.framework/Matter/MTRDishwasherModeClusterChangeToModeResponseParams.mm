@@ -1,9 +1,9 @@
 @interface MTRDishwasherModeClusterChangeToModeResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDishwasherModeClusterChangeToModeResponseParams)init;
-- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDishwasherModeClusterChangeToModeResponseParams);
-  v5 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self status];
-  [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 setStatus:v5];
+  status = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self status];
+  [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self statusText];
-  [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 setStatusText:v6];
+  statusText = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self statusText];
+  [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 setStatusText:statusText];
 
   return v4;
 }
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRDishwasherModeClusterChangeToModeResponseParams;
   v7 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)&v15 init];
@@ -61,7 +61,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:89 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:89 commandID:1 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -83,7 +83,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -94,7 +94,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDishwasherModeClusterChangeToModeResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDishwasherModeClusterChangeToModeResponseParams;
@@ -102,7 +102,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -118,13 +118,13 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRDishwasherModeClusterChangeToModeResponseParams *)self setStatus:v5];
 
-  v7 = *(a3 + 8);
-  v6 = a3 + 8;
+  v7 = *(struct + 8);
+  v6 = struct + 8;
   if (v7 != 1)
   {
     [(MTRDishwasherModeClusterChangeToModeResponseParams *)self setStatusText:0];
@@ -135,9 +135,9 @@ LABEL_6:
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v8 length:v8[1] encoding:4];
   [(MTRDishwasherModeClusterChangeToModeResponseParams *)self setStatusText:v9];
 
-  v10 = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self statusText];
+  statusText = [(MTRDishwasherModeClusterChangeToModeResponseParams *)self statusText];
 
-  if (v10)
+  if (statusText)
   {
 LABEL_5:
     v12 = 0;

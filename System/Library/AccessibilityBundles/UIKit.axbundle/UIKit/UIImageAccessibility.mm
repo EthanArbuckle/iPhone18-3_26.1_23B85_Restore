@@ -1,41 +1,41 @@
 @interface UIImageAccessibility
-+ (id)imageAtPath:(id)a3;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5;
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)imageWithContentsOfFile:(id)a3;
-+ (id)kitImageNamed:(id)a3;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (id)imageAtPath:(id)path;
++ (id)imageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection;
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (id)imageWithContentsOfFile:(id)file;
++ (id)kitImageNamed:(id)named;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGImage)CGImage;
-- (UIImageAccessibility)initWithCoder:(id)a3;
-- (UIImageAccessibility)initWithContentsOfFile:(id)a3;
-- (UIImageAccessibility)initWithContentsOfFile:(id)a3 cache:(BOOL)a4;
+- (UIImageAccessibility)initWithCoder:(id)coder;
+- (UIImageAccessibility)initWithContentsOfFile:(id)file;
+- (UIImageAccessibility)initWithContentsOfFile:(id)file cache:(BOOL)cache;
 - (id)_accessibilityPhotoDescription;
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11;
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14;
-- (id)_flatImageWithColor:(id)a3;
-- (id)_flatImageWithWhite:(double)a3 alpha:(double)a4;
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4;
-- (id)_imageTintedWithColor:(id)a3 renderingMode:(int64_t)a4 withUpdatedCGImage:(BOOL)a5;
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1;
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4;
+- (id)_flatImageWithColor:(id)color;
+- (id)_flatImageWithWhite:(double)white alpha:(double)alpha;
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality;
+- (id)_imageTintedWithColor:(id)color renderingMode:(int64_t)mode withUpdatedCGImage:(BOOL)image;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (id)imageFlippedForRightToLeftLayoutDirection;
-- (id)imageWithAlignmentRectInsets:(UIEdgeInsets)a3;
-- (id)imageWithRenderingMode:(int64_t)a3;
-- (id)resizableImageWithCapInsets:(UIEdgeInsets)a3 resizingMode:(int64_t)a4;
+- (id)imageWithAlignmentRectInsets:(UIEdgeInsets)insets;
+- (id)imageWithRenderingMode:(int64_t)mode;
+- (id)resizableImageWithCapInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIImageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "{UIEdgeInsets=dddd}";
   v5 = "q";
   v6 = @"UIImage";
@@ -57,45 +57,45 @@
   objc_storeStrong(v9, v8);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9.receiver = v11;
+  objc_storeStrong(location, coder);
+  v9.receiver = selfCopy;
   v9.super_class = UIImageAccessibility;
   [(UIImageAccessibility *)&v9 encodeWithCoder:location[0]];
-  v8 = [(UIImageAccessibility *)v11 _accessibilityEncodedHierarchyData];
-  if (v8)
+  _accessibilityEncodedHierarchyData = [(UIImageAccessibility *)selfCopy _accessibilityEncodedHierarchyData];
+  if (_accessibilityEncodedHierarchyData)
   {
-    [location[0] encodeObject:v8 forKey:@"_accessibilityEncodedHierarchyData"];
+    [location[0] encodeObject:_accessibilityEncodedHierarchyData forKey:@"_accessibilityEncodedHierarchyData"];
   }
 
   v4 = location[0];
-  v5 = [(UIImageAccessibility *)v11 accessibilityHint];
+  accessibilityHint = [(UIImageAccessibility *)selfCopy accessibilityHint];
   [v4 encodeObject:? forKey:?];
-  *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
+  *&v3 = MEMORY[0x29EDC9740](accessibilityHint).n128_u64[0];
   v6 = location[0];
-  v7 = [(UIImageAccessibility *)v11 accessibilityValue];
+  accessibilityValue = [(UIImageAccessibility *)selfCopy accessibilityValue];
   [v6 encodeObject:? forKey:?];
-  MEMORY[0x29EDC9740](v7);
-  objc_storeStrong(&v8, 0);
+  MEMORY[0x29EDC9740](accessibilityValue);
+  objc_storeStrong(&_accessibilityEncodedHierarchyData, 0);
   objc_storeStrong(location, 0);
 }
 
-- (UIImageAccessibility)initWithCoder:(id)a3
+- (UIImageAccessibility)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = UIImageAccessibility;
-  v12 = [(UIImageAccessibility *)&v9 initWithCoder:location[0]];
-  v10 = MEMORY[0x29EDC9748](v12);
+  selfCopy = [(UIImageAccessibility *)&v9 initWithCoder:location[0]];
+  v10 = MEMORY[0x29EDC9748](selfCopy);
   v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_accessibilityEncodedHierarchyData"];
   if (v8)
   {
@@ -103,16 +103,16 @@
   }
 
   v5 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityHint"];
-  [(UIImageAccessibility *)v12 setAccessibilityHint:?];
+  [(UIImageAccessibility *)selfCopy setAccessibilityHint:?];
   MEMORY[0x29EDC9740](v5);
   v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityValue"];
-  [(UIImageAccessibility *)v12 setAccessibilityValue:?];
+  [(UIImageAccessibility *)selfCopy setAccessibilityValue:?];
   MEMORY[0x29EDC9740](v6);
   v7 = MEMORY[0x29EDC9748](v10);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -183,35 +183,35 @@
 
 - (CGImage)CGImage
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4.receiver = self;
   v4.super_class = UIImageAccessibility;
-  v5 = [(UIImageAccessibility *)&v4 CGImage];
+  cGImage = [(UIImageAccessibility *)&v4 CGImage];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    location = [(UIImageAccessibility *)v7 accessibilityLabel];
+    location = [(UIImageAccessibility *)selfCopy accessibilityLabel];
     if (location)
     {
-      [(CGImage *)v5 setAccessibilityLabel:location];
+      [(CGImage *)cGImage setAccessibilityLabel:location];
     }
 
     objc_storeStrong(&location, 0);
   }
 
-  return v5;
+  return cGImage;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v10[5] = a1;
+  v10[5] = self;
   v10[4] = a2;
-  v10[3] = a3;
-  v10[2] = *&a4;
-  v10[1] = a5;
-  v9.receiver = a1;
+  v10[3] = image;
+  v10[2] = *&scale;
+  v10[1] = orientation;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___UIImageAccessibility;
-  v10[0] = objc_msgSendSuper2(&v9, sel_imageWithCGImage_scale_orientation_, a3, a5, a4);
+  v10[0] = objc_msgSendSuper2(&v9, sel_imageWithCGImage_scale_orientation_, image, orientation, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
   v7 = [MEMORY[0x29EDBDE10] annotationsForContext:CurrentContext];
   [v10[0] _accessibilitySetContextDrawingAnnotations:v7];
@@ -222,17 +222,17 @@
   return v6;
 }
 
-- (id)resizableImageWithCapInsets:(UIEdgeInsets)a3 resizingMode:(int64_t)a4
+- (id)resizableImageWithCapInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode
 {
-  v11 = a3;
-  v10 = self;
+  insetsCopy = insets;
+  selfCopy = self;
   v9[2] = a2;
-  v9[1] = a4;
+  v9[1] = mode;
   v8.receiver = self;
   v8.super_class = UIImageAccessibility;
-  v9[0] = [(UIImageAccessibility *)&v8 resizableImageWithCapInsets:a4 resizingMode:a3.top, a3.left, a3.bottom, a3.right];
+  v9[0] = [(UIImageAccessibility *)&v8 resizableImageWithCapInsets:mode resizingMode:insets.top, insets.left, insets.bottom, insets.right];
   v6 = MEMORY[0x29EDC9748](v9[0]);
-  v7 = MEMORY[0x29EDC9748](v10);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v5 = MEMORY[0x29EDC9748](v9[0]);
   objc_storeStrong(&v7, 0);
@@ -255,37 +255,37 @@ double __65__UIImageAccessibility_resizableImageWithCapInsets_resizingMode___blo
   return result;
 }
 
-- (UIImageAccessibility)initWithContentsOfFile:(id)a3 cache:(BOOL)a4
+- (UIImageAccessibility)initWithContentsOfFile:(id)file cache:(BOOL)cache
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(location, file);
+  cacheCopy = cache;
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = UIImageAccessibility;
-  v13 = [(UIImageAccessibility *)&v10 initWithContentsOfFile:location[0] cache:a4];
-  objc_storeStrong(&v13, v13);
-  v8 = MEMORY[0x29EDC9748](v13);
+  selfCopy = [(UIImageAccessibility *)&v10 initWithContentsOfFile:location[0] cache:cache];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   v9 = MEMORY[0x29EDC9748](location[0]);
   AXPerformBlockOnMainThread();
-  v7 = MEMORY[0x29EDC9748](v13);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-+ (id)imageAtPath:(id)a3
++ (id)imageAtPath:(id)path
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v10;
+  objc_storeStrong(location, path);
+  v7.receiver = selfCopy;
   v7.super_class = &OBJC_METACLASS___UIImageAccessibility;
   v8 = objc_msgSendSuper2(&v7, sel_imageAtPath_, location[0]);
   v5 = MEMORY[0x29EDC9748](v8);
@@ -309,41 +309,41 @@ double __36__UIImageAccessibility_imageAtPath___block_invoke(uint64_t a1)
   return result;
 }
 
-- (UIImageAccessibility)initWithContentsOfFile:(id)a3
+- (UIImageAccessibility)initWithContentsOfFile:(id)file
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v15;
-  v15 = 0;
+  objc_storeStrong(location, file);
+  v3 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v3;
   v13.super_class = UIImageAccessibility;
-  v15 = [(UIImageAccessibility *)&v13 initWithContentsOfFile:location[0]];
-  objc_storeStrong(&v15, v15);
+  selfCopy = [(UIImageAccessibility *)&v13 initWithContentsOfFile:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
   v6 = MEMORY[0x29EDCA5F8];
   v7 = -1073741824;
   v8 = 0;
   v9 = __47__UIImageAccessibility_initWithContentsOfFile___block_invoke;
   v10 = &unk_29F30C888;
-  v11 = MEMORY[0x29EDC9748](v15);
+  v11 = MEMORY[0x29EDC9748](selfCopy);
   v12 = MEMORY[0x29EDC9748](location[0]);
   AXPerformBlockOnMainThread();
-  v5 = MEMORY[0x29EDC9748](v15);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-+ (id)imageWithContentsOfFile:(id)a3
++ (id)imageWithContentsOfFile:(id)file
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v10;
+  objc_storeStrong(location, file);
+  v7.receiver = selfCopy;
   v7.super_class = &OBJC_METACLASS___UIImageAccessibility;
   v8 = objc_msgSendSuper2(&v7, sel_imageWithContentsOfFile_, location[0]);
   v5 = MEMORY[0x29EDC9748](v8);
@@ -358,17 +358,17 @@ double __36__UIImageAccessibility_imageAtPath___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5
++ (id)imageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, named);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, bundle);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v11.receiver = v16;
+  objc_storeStrong(&v13, collection);
+  v11.receiver = selfCopy;
   v11.super_class = &OBJC_METACLASS___UIImageAccessibility;
   v12 = objc_msgSendSuper2(&v11, sel_imageNamed_inBundle_compatibleWithTraitCollection_, location[0], v14, v13);
   v9 = MEMORY[0x29EDC9748](v12);
@@ -385,13 +385,13 @@ double __36__UIImageAccessibility_imageAtPath___block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)kitImageNamed:(id)a3
++ (id)kitImageNamed:(id)named
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v10;
+  objc_storeStrong(location, named);
+  v7.receiver = selfCopy;
   v7.super_class = &OBJC_METACLASS___UIImageAccessibility;
   v8 = objc_msgSendSuper2(&v7, sel_kitImageNamed_, location[0]);
   v5 = MEMORY[0x29EDC9748](v8);
@@ -406,17 +406,17 @@ double __36__UIImageAccessibility_imageAtPath___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
+  proportionCopy = proportion;
+  qualityCopy = quality;
   v8.receiver = self;
   v8.super_class = UIImageAccessibility;
-  v9 = [(UIImageAccessibility *)&v8 _imageScaledToProportion:a4 interpolationQuality:a3];
+  v9 = [(UIImageAccessibility *)&v8 _imageScaledToProportion:quality interpolationQuality:proportion];
   v6 = MEMORY[0x29EDC9748](v9);
-  v7 = MEMORY[0x29EDC9748](v13);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v5 = MEMORY[0x29EDC9748](v9);
   objc_storeStrong(&v7, 0);
@@ -438,16 +438,16 @@ uint64_t __70__UIImageAccessibility__imageScaledToProportion_interpolationQualit
   return [*(a1 + 32) setAccessibilityLabel:{0, MEMORY[0x29EDC9740](v6).n128_f64[0]}];
 }
 
-- (id)imageWithAlignmentRectInsets:(UIEdgeInsets)a3
+- (id)imageWithAlignmentRectInsets:(UIEdgeInsets)insets
 {
-  v10 = a3;
-  v9 = self;
+  insetsCopy = insets;
+  selfCopy = self;
   v8[1] = a2;
   v7.receiver = self;
   v7.super_class = UIImageAccessibility;
-  v8[0] = [(UIImageAccessibility *)&v7 imageWithAlignmentRectInsets:a3.top, a3.left, a3.bottom, a3.right];
+  v8[0] = [(UIImageAccessibility *)&v7 imageWithAlignmentRectInsets:insets.top, insets.left, insets.bottom, insets.right];
   v5 = MEMORY[0x29EDC9748](v8[0]);
-  v6 = MEMORY[0x29EDC9748](v9);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v4 = MEMORY[0x29EDC9748](v8[0]);
   objc_storeStrong(&v6, 0);
@@ -470,16 +470,16 @@ double __53__UIImageAccessibility_imageWithAlignmentRectInsets___block_invoke(ui
   return result;
 }
 
-- (id)imageWithRenderingMode:(int64_t)a3
+- (id)imageWithRenderingMode:(int64_t)mode
 {
-  v9 = self;
+  selfCopy = self;
   v8[2] = a2;
-  v8[1] = a3;
+  v8[1] = mode;
   v7.receiver = self;
   v7.super_class = UIImageAccessibility;
-  v8[0] = [(UIImageAccessibility *)&v7 imageWithRenderingMode:a3];
+  v8[0] = [(UIImageAccessibility *)&v7 imageWithRenderingMode:mode];
   v5 = MEMORY[0x29EDC9748](v8[0]);
-  v6 = MEMORY[0x29EDC9748](v9);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v4 = MEMORY[0x29EDC9748](v8[0]);
   objc_storeStrong(&v6, 0);
@@ -509,17 +509,17 @@ void __47__UIImageAccessibility_imageWithRenderingMode___block_invoke(id *a1)
   objc_storeStrong(location, 0);
 }
 
-- (id)_flatImageWithWhite:(double)a3 alpha:(double)a4
+- (id)_flatImageWithWhite:(double)white alpha:(double)alpha
 {
-  v10 = self;
+  selfCopy = self;
   v9[3] = a2;
-  v9[2] = *&a3;
-  v9[1] = *&a4;
+  v9[2] = *&white;
+  v9[1] = *&alpha;
   v8.receiver = self;
   v8.super_class = UIImageAccessibility;
-  v9[0] = [(UIImageAccessibility *)&v8 _flatImageWithWhite:a3 alpha:a4];
+  v9[0] = [(UIImageAccessibility *)&v8 _flatImageWithWhite:white alpha:alpha];
   v6 = MEMORY[0x29EDC9748](v9[0]);
-  v7 = MEMORY[0x29EDC9748](v10);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v5 = MEMORY[0x29EDC9748](v9[0]);
   objc_storeStrong(&v7, 0);
@@ -542,17 +542,17 @@ double __50__UIImageAccessibility__flatImageWithWhite_alpha___block_invoke(uint6
   return result;
 }
 
-- (id)_flatImageWithColor:(id)a3
+- (id)_flatImageWithColor:(id)color
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v10;
+  objc_storeStrong(location, color);
+  v7.receiver = selfCopy;
   v7.super_class = UIImageAccessibility;
   v8 = [(UIImageAccessibility *)&v7 _flatImageWithColor:location[0]];
   v5 = MEMORY[0x29EDC9748](v8);
-  v6 = MEMORY[0x29EDC9748](v10);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v4 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v6, 0);
@@ -576,24 +576,24 @@ double __44__UIImageAccessibility__flatImageWithColor___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
+  redCopy = red;
+  greenCopy = green;
+  blueCopy = blue;
+  alphaCopy = alpha;
+  fillRedCopy = fillRed;
   v20 = a8;
   v19 = a9;
   v18 = a10;
-  v17 = a11;
+  shadowCopy = shadow;
   v15.receiver = self;
   v15.super_class = UIImageAccessibility;
-  v16 = [(UIImageAccessibility *)&v15 _bezeledImageWithShadowRed:a11 green:a3 blue:a4 alpha:a5 fillRed:a6 green:a7 blue:a8 alpha:a9 drawShadow:a10];
+  v16 = [(UIImageAccessibility *)&v15 _bezeledImageWithShadowRed:shadow green:red blue:green alpha:blue fillRed:alpha green:fillRed blue:a8 alpha:a9 drawShadow:a10];
   v13 = MEMORY[0x29EDC9748](v16);
-  v14 = MEMORY[0x29EDC9748](v27);
+  v14 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v12 = MEMORY[0x29EDC9748](v16);
   objc_storeStrong(&v14, 0);
@@ -616,25 +616,25 @@ double __104__UIImageAccessibility__bezeledImageWithShadowRed_green_blue_alpha_f
   return result;
 }
 
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4
 {
-  v34 = self;
+  selfCopy = self;
   v33[13] = a2;
-  *&v33[12] = a3;
-  *&v33[11] = a4;
-  *&v33[10] = a5;
-  *&v33[9] = a6;
-  *&v33[8] = a7;
+  *&v33[12] = red;
+  *&v33[11] = green;
+  *&v33[10] = blue;
+  *&v33[9] = alpha;
+  *&v33[8] = shadowRed;
   *&v33[7] = a8;
   *&v33[6] = a9;
   *&v33[5] = a10;
-  *&v33[4] = a11;
+  *&v33[4] = fillRed;
   *&v33[3] = a12;
   *&v33[2] = a13;
   *&v33[1] = a14;
   v32.receiver = self;
   v32.super_class = UIImageAccessibility;
-  v14 = [(UIImageAccessibility *)&v32 _doubleBezeledImageWithExteriorShadowRed:a3 green:a4 blue:a5 alpha:a6 interiorShadowRed:a7 green:a8 blue:a9 alpha:a10 fillRed:*&a11 green:*&a12 blue:*&a13 alpha:*&a14];
+  v14 = [(UIImageAccessibility *)&v32 _doubleBezeledImageWithExteriorShadowRed:red green:green blue:blue alpha:alpha interiorShadowRed:shadowRed green:a8 blue:a9 alpha:a10 fillRed:*&fillRed green:*&a12 blue:*&a13 alpha:*&a14];
   v22 = v33;
   v33[0] = v14;
   v19 = &v25;
@@ -646,7 +646,7 @@ double __104__UIImageAccessibility__bezeledImageWithShadowRed_green_blue_alpha_f
   v15 = MEMORY[0x29EDC9748](v14);
   v21 = (v19 + 4);
   v30 = v15;
-  v16 = MEMORY[0x29EDC9748](v34);
+  v16 = MEMORY[0x29EDC9748](selfCopy);
   location = (v19 + 5);
   v31 = v16;
   AXPerformBlockOnMainThread();
@@ -676,23 +676,23 @@ double __142__UIImageAccessibility__doubleBezeledImageWithExteriorShadowRed_gree
 - (id)accessibilityLabel
 {
   v32 = *MEMORY[0x29EDCA608];
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
   v28[0] = [(UIImageAccessibility *)self accessibilityUserDefinedLabel];
   if ([v28[0] length])
   {
-    v30 = MEMORY[0x29EDC9748](v28[0]);
+    accessibilityLabel = MEMORY[0x29EDC9748](v28[0]);
     v27 = 1;
   }
 
   else
   {
-    v26 = [(UIImageAccessibility *)v29 _accessibilityContextDrawingAnnotations];
-    if ([v26 count])
+    _accessibilityContextDrawingAnnotations = [(UIImageAccessibility *)selfCopy _accessibilityContextDrawingAnnotations];
+    if ([_accessibilityContextDrawingAnnotations count])
     {
-      v25 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       memset(__b, 0, sizeof(__b));
-      obj = MEMORY[0x29EDC9748](v26);
+      obj = MEMORY[0x29EDC9748](_accessibilityContextDrawingAnnotations);
       v17 = [obj countByEnumeratingWithState:__b objects:v31 count:16];
       if (v17)
       {
@@ -708,10 +708,10 @@ double __142__UIImageAccessibility__doubleBezeledImageWithExteriorShadowRed_gree
           }
 
           v24 = *(__b[1] + 8 * v14);
-          v10 = v25;
-          v11 = [v24 label];
+          v10 = array;
+          label = [v24 label];
           [v10 addObject:?];
-          *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
+          *&v2 = MEMORY[0x29EDC9740](label).n128_u64[0];
           ++v14;
           if (v12 + 1 >= v15)
           {
@@ -726,17 +726,17 @@ double __142__UIImageAccessibility__doubleBezeledImageWithExteriorShadowRed_gree
       }
 
       v3 = MEMORY[0x29EDC9740](obj);
-      v30 = MEMORY[0x29ED3D9D0](v25, v3);
+      accessibilityLabel = MEMORY[0x29ED3D9D0](array, v3);
       v27 = 1;
-      objc_storeStrong(&v25, 0);
+      objc_storeStrong(&array, 0);
     }
 
     else
     {
-      v9 = [(UIImageAccessibility *)v29 safeValueForKey:@"_imageAsset"];
+      v9 = [(UIImageAccessibility *)selfCopy safeValueForKey:@"_imageAsset"];
       v22 = [v9 safeStringForKey:@"assetName"];
       v4 = MEMORY[0x29EDC9740](v9);
-      v21 = MEMORY[0x29ED3E010](v29, v4);
+      v21 = MEMORY[0x29ED3E010](selfCopy, v4);
       if ((v21 & 1) == 0)
       {
         goto LABEL_32;
@@ -760,7 +760,7 @@ double __142__UIImageAccessibility__doubleBezeledImageWithExteriorShadowRed_gree
         }
 
         [v19 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD908]];
-        v30 = MEMORY[0x29EDC9748](v19);
+        accessibilityLabel = MEMORY[0x29EDC9748](v19);
         v27 = 1;
         objc_storeStrong(&v19, 0);
       }
@@ -776,7 +776,7 @@ double __142__UIImageAccessibility__doubleBezeledImageWithExteriorShadowRed_gree
 LABEL_32:
         if ([v22 isEqualToString:@"magnifyingglass"] & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"SearchIcon") & 1) != 0 || (objc_msgSend(v22, "containsString:", @"ellipsis.circle") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"plus.circle.fill") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"square.and.arrow.up") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"trash") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"xmark") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"UIButtonBarKeyboardCutGroup") & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"UIButtonBarKeyboardUndoGroup"))
         {
-          v30 = accessibilityUIKitLocalizedString();
+          accessibilityLabel = accessibilityUIKitLocalizedString();
           v27 = 1;
         }
 
@@ -784,14 +784,14 @@ LABEL_32:
         {
           if ([v22 isEqualToString:@"mic_badge_xmark"])
           {
-            v30 = accessibilityUIKitLocalizedString();
+            accessibilityLabel = accessibilityUIKitLocalizedString();
           }
 
           else
           {
-            v18.receiver = v29;
+            v18.receiver = selfCopy;
             v18.super_class = UIImageAccessibility;
-            v30 = [(UIImageAccessibility *)&v18 accessibilityLabel];
+            accessibilityLabel = [(UIImageAccessibility *)&v18 accessibilityLabel];
           }
 
           v27 = 1;
@@ -801,29 +801,29 @@ LABEL_32:
       objc_storeStrong(&v22, 0);
     }
 
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&_accessibilityContextDrawingAnnotations, 0);
   }
 
   objc_storeStrong(v28, 0);
-  v7 = v30;
+  v7 = accessibilityLabel;
 
   return v7;
 }
 
 - (id)accessibilityIdentifier
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v5[0] = [(UIImageAccessibility *)self accessibilityUserDefinedIdentifier];
   if (!v5[0])
   {
-    v5[0] = [(UIImageAccessibility *)v6 accessibilityIdentification];
+    v5[0] = [(UIImageAccessibility *)selfCopy accessibilityIdentification];
     MEMORY[0x29EDC9740](0);
   }
 
   if (!v5[0])
   {
-    v4 = [(UIImageAccessibility *)v6 safeValueForKey:@"_imageAsset"];
+    v4 = [(UIImageAccessibility *)selfCopy safeValueForKey:@"_imageAsset"];
     v5[0] = [v4 safeStringForKey:@"assetName"];
     MEMORY[0x29EDC9740](0);
     MEMORY[0x29EDC9740](v4);
@@ -837,13 +837,13 @@ LABEL_32:
 
 - (id)imageFlippedForRightToLeftLayoutDirection
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6.receiver = self;
   v6.super_class = UIImageAccessibility;
   v7[0] = [(UIImageAccessibility *)&v6 imageFlippedForRightToLeftLayoutDirection];
   v4 = MEMORY[0x29EDC9748](v7[0]);
-  v5 = MEMORY[0x29EDC9748](v8);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v3 = MEMORY[0x29EDC9748](v7[0]);
   objc_storeStrong(&v5, 0);
@@ -866,19 +866,19 @@ double __65__UIImageAccessibility_imageFlippedForRightToLeftLayoutDirection__blo
   return result;
 }
 
-- (id)_imageTintedWithColor:(id)a3 renderingMode:(int64_t)a4 withUpdatedCGImage:(BOOL)a5
+- (id)_imageTintedWithColor:(id)color renderingMode:(int64_t)mode withUpdatedCGImage:(BOOL)image
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  v13 = a5;
-  v11.receiver = v16;
+  objc_storeStrong(location, color);
+  modeCopy = mode;
+  imageCopy = image;
+  v11.receiver = selfCopy;
   v11.super_class = UIImageAccessibility;
-  v12 = [(UIImageAccessibility *)&v11 _imageTintedWithColor:location[0] renderingMode:a4 withUpdatedCGImage:a5];
+  v12 = [(UIImageAccessibility *)&v11 _imageTintedWithColor:location[0] renderingMode:mode withUpdatedCGImage:image];
   v9 = MEMORY[0x29EDC9748](v12);
-  v10 = MEMORY[0x29EDC9748](v16);
+  v10 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThread();
   v8 = MEMORY[0x29EDC9748](v12);
   objc_storeStrong(&v10, 0);
@@ -904,10 +904,10 @@ double __79__UIImageAccessibility__imageTintedWithColor_renderingMode_withUpdate
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(UIImageAccessibility *)self _accessibilityUnregister];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = UIImageAccessibility;
   [(UIImageAccessibility *)&v2 dealloc];
 }

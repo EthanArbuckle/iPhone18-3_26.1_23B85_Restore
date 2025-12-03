@@ -1,22 +1,22 @@
 @interface URLProtocolDelegate
 - (_TtC12GameStoreKit19URLProtocolDelegate)init;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation URLProtocolDelegate
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = a5;
-  v13 = self;
-  v14 = URLProtocolDelegate.presentDialog(for:)(v12);
+  requestCopy = request;
+  selfCopy = self;
+  v14 = URLProtocolDelegate.presentDialog(for:)(requestCopy);
   v15 = swift_allocObject();
-  v15[2] = v12;
+  v15[2] = requestCopy;
   v15[3] = sub_24F27D80C;
   v15[4] = v11;
   v15[5] = ObjectType;
@@ -27,24 +27,24 @@
   v18[2] = sub_24F13C6AC;
   v18[3] = &block_descriptor_45_0;
   v16 = _Block_copy(v18);
-  v17 = v12;
+  v17 = requestCopy;
 
   [v14 addFinishBlock_];
 
   _Block_release(v16);
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = a5;
-  v13 = self;
-  v14 = URLProtocolDelegate.performAuthentication(for:)(v12);
+  requestCopy = request;
+  selfCopy = self;
+  v14 = URLProtocolDelegate.performAuthentication(for:)(requestCopy);
   v15 = swift_allocObject();
-  v15[2] = v12;
+  v15[2] = requestCopy;
   v15[3] = sub_24F27D898;
   v15[4] = v11;
   v15[5] = ObjectType;
@@ -55,7 +55,7 @@
   v18[2] = sub_24F13C6AC;
   v18[3] = &block_descriptor_35_0;
   v16 = _Block_copy(v18);
-  v17 = v12;
+  v17 = requestCopy;
 
   [v14 addFinishBlock_];
 

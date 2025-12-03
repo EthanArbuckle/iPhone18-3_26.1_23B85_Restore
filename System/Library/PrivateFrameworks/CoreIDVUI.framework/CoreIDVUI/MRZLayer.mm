@@ -1,12 +1,12 @@
 @interface MRZLayer
 - (_TtC9CoreIDVUI8MRZLayer)init;
-- (_TtC9CoreIDVUI8MRZLayer)initWithCoder:(id)a3;
-- (_TtC9CoreIDVUI8MRZLayer)initWithLayer:(id)a3;
+- (_TtC9CoreIDVUI8MRZLayer)initWithCoder:(id)coder;
+- (_TtC9CoreIDVUI8MRZLayer)initWithLayer:(id)layer;
 @end
 
 @implementation MRZLayer
 
-- (_TtC9CoreIDVUI8MRZLayer)initWithLayer:(id)a3
+- (_TtC9CoreIDVUI8MRZLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_245911354();
@@ -14,7 +14,7 @@
   return sub_2457E46FC(v4);
 }
 
-- (_TtC9CoreIDVUI8MRZLayer)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI8MRZLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9CoreIDVUI8MRZLayer_mrzLineLayers) = MEMORY[0x277D84F90];
   result = sub_2459115D4();

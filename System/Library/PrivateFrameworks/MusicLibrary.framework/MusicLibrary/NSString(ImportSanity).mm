@@ -6,7 +6,7 @@
 
 - (__CFString)sanitizedString
 {
-  SanitizedString = ML3CreateSanitizedString(a1);
+  SanitizedString = ML3CreateSanitizedString(self);
 
   return SanitizedString;
 }

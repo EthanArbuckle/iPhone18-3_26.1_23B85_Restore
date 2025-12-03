@@ -1,26 +1,26 @@
 @interface ASVRubberBandedSpinDeceleration
-- (ASVRubberBandedSpinDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 startingOffset:(float)a5 decelerationRate:(float)a6 rubberBand:(id)a7;
+- (ASVRubberBandedSpinDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta startingOffset:(float)offset decelerationRate:(float)rate rubberBand:(id)band;
 - (float)decelerationDelta;
 @end
 
 @implementation ASVRubberBandedSpinDeceleration
 
-- (ASVRubberBandedSpinDeceleration)initWithVelocity:(float)a3 minEndDelta:(float)a4 startingOffset:(float)a5 decelerationRate:(float)a6 rubberBand:(id)a7
+- (ASVRubberBandedSpinDeceleration)initWithVelocity:(float)velocity minEndDelta:(float)delta startingOffset:(float)offset decelerationRate:(float)rate rubberBand:(id)band
 {
-  v13 = a7;
+  bandCopy = band;
   v22.receiver = self;
   v22.super_class = ASVRubberBandedSpinDeceleration;
-  *&v14 = a3;
-  *&v15 = a4;
-  *&v16 = a6;
+  *&v14 = velocity;
+  *&v15 = delta;
+  *&v16 = rate;
   v17 = [(ASVDampingDeceleration *)&v22 initWithVelocity:v14 minEndDelta:v15 decelerationRate:v16];
   v18 = v17;
   if (v17)
   {
-    v17->_currentOffset = a5;
-    objc_storeStrong(&v17->_rubberBand, a7);
-    *&v19 = a5;
-    [v13 rubberBandOffsetForOffset:v19];
+    v17->_currentOffset = offset;
+    objc_storeStrong(&v17->_rubberBand, band);
+    *&v19 = offset;
+    [bandCopy rubberBandOffsetForOffset:v19];
     v18->_previousRubberBandedOffset = v20;
   }
 
@@ -44,14 +44,14 @@
   [(ASVRubberBandedSpinDeceleration *)self setCurrentOffset:v7];
   [(ASVRubberBandedSpinDeceleration *)self currentOffset];
   v9 = v8;
-  v10 = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
-  [v10 maxOffset];
+  rubberBand = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
+  [rubberBand maxOffset];
   if (v9 <= v11 || ([(ASVDeceleration *)self velocity], v12 <= 0.0))
   {
     [(ASVRubberBandedSpinDeceleration *)self currentOffset];
     v14 = v13;
-    v15 = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
-    [v15 minOffset];
+    rubberBand2 = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
+    [rubberBand2 minOffset];
     if (v14 >= v16)
     {
     }
@@ -73,9 +73,9 @@
   }
 
 LABEL_7:
-  v19 = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
+  rubberBand3 = [(ASVRubberBandedSpinDeceleration *)self rubberBand];
   [(ASVRubberBandedSpinDeceleration *)self currentOffset];
-  [v19 rubberBandOffsetForOffset:?];
+  [rubberBand3 rubberBandOffsetForOffset:?];
   v21 = v20;
 
 LABEL_10:

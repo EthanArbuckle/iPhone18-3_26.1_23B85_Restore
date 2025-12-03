@@ -1,25 +1,25 @@
 @interface _ECBIMIHeaderParser
-+ (BOOL)_indicatorDataHasValidSVGProfile:(id)a3;
-+ (BOOL)_versionIsValidWithScanner:(id)a3;
-+ (ECBIMIInfo)bimiInfoForHeaders:(uint64_t)a1;
-+ (id)_hashFromIndicatorHashHeader:(id)a3 algorithm:(id *)a4;
-+ (id)_locationFromLocationHeader:(id)a3 evidenceLocation:(id *)a4;
-+ (id)_locationFromScanner:(id)a3 evidenceLocation:(id *)a4;
-+ (id)_scanToNextTagForScanner:(id)a3 allowSemicolonSeparator:(BOOL)a4 value:(id *)a5;
-+ (id)_scanToNextTagForScanner:(id)a3 url:(id *)a4;
++ (BOOL)_indicatorDataHasValidSVGProfile:(id)profile;
++ (BOOL)_versionIsValidWithScanner:(id)scanner;
++ (ECBIMIInfo)bimiInfoForHeaders:(uint64_t)headers;
++ (id)_hashFromIndicatorHashHeader:(id)header algorithm:(id *)algorithm;
++ (id)_locationFromLocationHeader:(id)header evidenceLocation:(id *)location;
++ (id)_locationFromScanner:(id)scanner evidenceLocation:(id *)location;
++ (id)_scanToNextTagForScanner:(id)scanner allowSemicolonSeparator:(BOOL)separator value:(id *)value;
++ (id)_scanToNextTagForScanner:(id)scanner url:(id *)url;
 @end
 
 @implementation _ECBIMIHeaderParser
 
-+ (ECBIMIInfo)bimiInfoForHeaders:(uint64_t)a1
++ (ECBIMIInfo)bimiInfoForHeaders:(uint64_t)headers
 {
   v2 = a2;
   v3 = objc_opt_self();
   v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@""];;
   v5 = [v2 firstHeaderForKey:@"bimi-indicator"];
   v6 = [v5 stringByTrimmingCharactersInSet:v4];
-  v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 ef_stringByRemovingCharactersInSet:v7];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v8 = [v6 ef_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v9 = [v2 firstHeaderForKey:@"bimi-location"];
   v10 = [v9 ef_stringByTrimmingTrailingCharactersInSet:v4];
@@ -102,18 +102,18 @@ LABEL_18:
   return v20;
 }
 
-+ (BOOL)_indicatorDataHasValidSVGProfile:(id)a3
++ (BOOL)_indicatorDataHasValidSVGProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [[_ECSVGProfileExtractor alloc] initWithSVGData:v3];
-  v5 = [(_ECSVGProfileExtractor *)v4 namespace];
-  if ([v5 ef_caseInsensitiveIsEqualToString:@"http://www.w3.org/2000/svg"])
+  profileCopy = profile;
+  v4 = [[_ECSVGProfileExtractor alloc] initWithSVGData:profileCopy];
+  namespace = [(_ECSVGProfileExtractor *)v4 namespace];
+  if ([namespace ef_caseInsensitiveIsEqualToString:@"http://www.w3.org/2000/svg"])
   {
-    v6 = [(_ECSVGProfileExtractor *)v4 version];
-    if ([v6 ef_caseInsensitiveIsEqualToString:@"1.2"])
+    version = [(_ECSVGProfileExtractor *)v4 version];
+    if ([version ef_caseInsensitiveIsEqualToString:@"1.2"])
     {
-      v7 = [(_ECSVGProfileExtractor *)v4 baseProfile];
-      v8 = [v7 ef_caseInsensitiveIsEqualToString:@"tiny-ps"];
+      baseProfile = [(_ECSVGProfileExtractor *)v4 baseProfile];
+      v8 = [baseProfile ef_caseInsensitiveIsEqualToString:@"tiny-ps"];
     }
 
     else
@@ -130,16 +130,16 @@ LABEL_18:
   return v8;
 }
 
-+ (id)_locationFromLocationHeader:(id)a3 evidenceLocation:(id *)a4
++ (id)_locationFromLocationHeader:(id)header evidenceLocation:(id *)location
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v6];
-  if ([a1 _versionIsValidWithScanner:v7])
+  headerCopy = header;
+  v7 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:headerCopy];
+  if ([self _versionIsValidWithScanner:v7])
   {
     v13 = 0;
-    v8 = [a1 _locationFromScanner:v7 evidenceLocation:&v13];
+    v8 = [self _locationFromScanner:v7 evidenceLocation:&v13];
     v9 = v13;
-    if (!a4)
+    if (!location)
     {
       goto LABEL_6;
     }
@@ -149,11 +149,11 @@ LABEL_18:
 
   v9 = 0;
   v8 = 0;
-  if (a4)
+  if (location)
   {
 LABEL_5:
     v10 = v9;
-    *a4 = v9;
+    *location = v9;
   }
 
 LABEL_6:
@@ -162,71 +162,71 @@ LABEL_6:
   return v8;
 }
 
-+ (BOOL)_versionIsValidWithScanner:(id)a3
++ (BOOL)_versionIsValidWithScanner:(id)scanner
 {
-  v3 = a3;
+  scannerCopy = scanner;
   v13 = 0;
-  v4 = [v3 scanUpToString:@"=" intoString:&v13];
+  v4 = [scannerCopy scanUpToString:@"=" intoString:&v13];
   v5 = v13;
-  if (v4 && ([v3 scanString:@"=" intoString:0] & 1) != 0)
+  if (v4 && ([scannerCopy scanString:@"=" intoString:0] & 1) != 0)
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v7 = [v5 ef_stringByTrimmingTrailingCharactersInSet:v6];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v7 = [v5 ef_stringByTrimmingTrailingCharactersInSet:whitespaceCharacterSet];
 
     if ([v7 isEqualToString:@"v"])
     {
       v12 = 0;
-      LODWORD(v8) = [v3 scanUpToString:@";" intoString:&v12];
+      LODWORD(whitespaceCharacterSet2) = [scannerCopy scanUpToString:@";" intoString:&v12];
       v9 = v12;
-      if (v8)
+      if (whitespaceCharacterSet2)
       {
-        if ([v3 scanString:@";" intoString:0])
+        if ([scannerCopy scanString:@";" intoString:0])
         {
-          v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v10 = [v9 ef_stringByTrimmingTrailingCharactersInSet:v8];
+          whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v10 = [v9 ef_stringByTrimmingTrailingCharactersInSet:whitespaceCharacterSet2];
 
-          LOBYTE(v8) = [v10 isEqualToString:@"BIMI1"];
+          LOBYTE(whitespaceCharacterSet2) = [v10 isEqualToString:@"BIMI1"];
           v9 = v10;
         }
 
         else
         {
-          LOBYTE(v8) = 0;
+          LOBYTE(whitespaceCharacterSet2) = 0;
         }
       }
     }
 
     else
     {
-      LOBYTE(v8) = 0;
+      LOBYTE(whitespaceCharacterSet2) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(whitespaceCharacterSet2) = 0;
     v7 = v5;
   }
 
-  return v8;
+  return whitespaceCharacterSet2;
 }
 
-+ (id)_locationFromScanner:(id)a3 evidenceLocation:(id *)a4
++ (id)_locationFromScanner:(id)scanner evidenceLocation:(id *)location
 {
-  v6 = a3;
+  scannerCopy = scanner;
   v26 = 0;
-  v7 = [a1 _scanToNextTagForScanner:v6 url:&v26];
+  v7 = [self _scanToNextTagForScanner:scannerCopy url:&v26];
   v8 = v26;
   v9 = v8;
   if (v7 && v8)
   {
-    if (![v6 isAtEnd])
+    if (![scannerCopy isAtEnd])
     {
       v25 = 0;
-      v13 = [a1 _scanToNextTagForScanner:v6 url:&v25];
+      v13 = [self _scanToNextTagForScanner:scannerCopy url:&v25];
       v14 = v25;
       v15 = v14;
-      if (v13 && v14 && [v6 isAtEnd])
+      if (v13 && v14 && [scannerCopy isAtEnd])
       {
         if ([v7 isEqualToString:@"l"] && (v16 = v9, v17 = v15, (objc_msgSend(v13, "isEqualToString:", @"a") & 1) != 0) || objc_msgSend(v7, "isEqualToString:", @"a") && (v16 = v15, v17 = v9, objc_msgSend(v13, "isEqualToString:", @"l")))
         {
@@ -240,10 +240,10 @@ LABEL_6:
           v17 = 0;
         }
 
-        if (a4)
+        if (location)
         {
           v23 = v17;
-          *a4 = v17;
+          *location = v17;
         }
 
         v12 = v16;
@@ -253,9 +253,9 @@ LABEL_6:
       {
         v17 = 0;
         v12 = 0;
-        if (a4)
+        if (location)
         {
-          *a4 = 0;
+          *location = 0;
         }
       }
 
@@ -277,10 +277,10 @@ LABEL_6:
       if (![v7 isEqualToString:@"a"])
       {
 LABEL_20:
-        if (a4)
+        if (location)
         {
           v22 = v17;
-          *a4 = v17;
+          *location = v17;
         }
 
         v12 = v20;
@@ -297,9 +297,9 @@ LABEL_29:
   }
 
   v12 = 0;
-  if (a4)
+  if (location)
   {
-    *a4 = 0;
+    *location = 0;
   }
 
 LABEL_30:
@@ -307,29 +307,29 @@ LABEL_30:
   return v12;
 }
 
-+ (id)_scanToNextTagForScanner:(id)a3 url:(id *)a4
++ (id)_scanToNextTagForScanner:(id)scanner url:(id *)url
 {
   v8 = 0;
-  v5 = [a1 _scanToNextTagForScanner:a3 allowSemicolonSeparator:1 value:&v8];
+  v5 = [self _scanToNextTagForScanner:scanner allowSemicolonSeparator:1 value:&v8];
   v6 = v8;
-  if (a4)
+  if (url)
   {
-    *a4 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+    *url = [MEMORY[0x277CBEBC0] URLWithString:v6];
   }
 
   return v5;
 }
 
-+ (id)_hashFromIndicatorHashHeader:(id)a3 algorithm:(id *)a4
++ (id)_hashFromIndicatorHashHeader:(id)header algorithm:(id *)algorithm
 {
-  v17 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v17];
+  headerCopy = header;
+  v5 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:headerCopy];
   v6 = 0;
   v7 = 0;
   while (([v5 isAtEnd] & 1) == 0)
   {
     v18 = 0;
-    v8 = [a1 _scanToNextTagForScanner:v5 allowSemicolonSeparator:0 value:&v18];
+    v8 = [self _scanToNextTagForScanner:v5 allowSemicolonSeparator:0 value:&v18];
     v9 = v18;
     if ([v8 isEqualToString:@"h"])
     {
@@ -356,10 +356,10 @@ LABEL_7:
 
   if (v6 && v7)
   {
-    if (a4)
+    if (algorithm)
     {
       v13 = v7;
-      *a4 = v7;
+      *algorithm = v7;
     }
 
     v14 = v6;
@@ -368,51 +368,51 @@ LABEL_7:
   else
   {
     v14 = 0;
-    if (a4)
+    if (algorithm)
     {
-      *a4 = 0;
+      *algorithm = 0;
     }
   }
 
   return v14;
 }
 
-+ (id)_scanToNextTagForScanner:(id)a3 allowSemicolonSeparator:(BOOL)a4 value:(id *)a5
++ (id)_scanToNextTagForScanner:(id)scanner allowSemicolonSeparator:(BOOL)separator value:(id *)value
 {
-  v6 = a4;
-  v7 = a3;
+  separatorCopy = separator;
+  scannerCopy = scanner;
   v23 = 0;
-  v8 = [v7 scanUpToString:@"=" intoString:&v23];
+  v8 = [scannerCopy scanUpToString:@"=" intoString:&v23];
   v9 = v23;
-  if (v8 && ([v7 scanString:@"=" intoString:0] & 1) != 0)
+  if (v8 && ([scannerCopy scanString:@"=" intoString:0] & 1) != 0)
   {
-    v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v11 = [v9 ef_stringByTrimmingTrailingCharactersInSet:v10];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v11 = [v9 ef_stringByTrimmingTrailingCharactersInSet:whitespaceCharacterSet];
 
-    v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v13 = [v12 invertedSet];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    invertedSet = [whitespaceCharacterSet2 invertedSet];
     v22 = 0;
-    v14 = [v7 scanCharactersFromSet:v13 intoString:&v22];
+    v14 = [scannerCopy scanCharactersFromSet:invertedSet intoString:&v22];
     v15 = v22;
 
     if (v14)
     {
-      v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      [v7 scanCharactersFromSet:v16 intoString:0];
+      whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      [scannerCopy scanCharactersFromSet:whitespaceCharacterSet3 intoString:0];
 
-      if (v6)
+      if (separatorCopy)
       {
         v17 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@""];;
-        [v7 scanCharactersFromSet:v17 intoString:0];
+        [scannerCopy scanCharactersFromSet:v17 intoString:0];
         v18 = [v15 ef_stringByTrimmingTrailingCharactersInSet:v17];
 
         v15 = v18;
       }
 
-      if (a5)
+      if (value)
       {
         v19 = v15;
-        *a5 = v15;
+        *value = v15;
       }
 
       v20 = v11;
@@ -421,9 +421,9 @@ LABEL_7:
     else
     {
       v20 = 0;
-      if (a5)
+      if (value)
       {
-        *a5 = 0;
+        *value = 0;
       }
     }
   }
@@ -431,9 +431,9 @@ LABEL_7:
   else
   {
     v20 = 0;
-    if (a5)
+    if (value)
     {
-      *a5 = 0;
+      *value = 0;
     }
 
     v11 = v9;

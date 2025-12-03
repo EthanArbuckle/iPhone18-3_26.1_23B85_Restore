@@ -1,14 +1,14 @@
 @interface NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext
-- (NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext)initWithRequestContext:(id)a3;
+- (NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext)initWithRequestContext:(id)context;
 @end
 
 @implementation NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext
 
-- (NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext)initWithRequestContext:(id)a3
+- (NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext)initWithRequestContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = NPKPaymentProvisioningFlowControllerLocalDeviceManualEntryStepContext;
-  return [(NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext *)&v4 initWithRequestContext:a3];
+  return [(NPKPaymentProvisioningFlowControllerSecondaryManualEntryStepContext *)&v4 initWithRequestContext:context];
 }
 
 @end

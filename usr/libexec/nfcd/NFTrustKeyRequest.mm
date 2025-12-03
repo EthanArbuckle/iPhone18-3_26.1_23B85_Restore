@@ -1,67 +1,67 @@
 @interface NFTrustKeyRequest
-+ (id)keyRequestWithSubjectIdentifier:(id)a3 discretionaryData:(id)a4 localValidations:(id)a5 counterLimit:(id)a6;
-- (NFTrustKeyRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)keyRequestWithSubjectIdentifier:(id)identifier discretionaryData:(id)data localValidations:(id)validations counterLimit:(id)limit;
+- (NFTrustKeyRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustKeyRequest
 
-- (NFTrustKeyRequest)initWithCoder:(id)a3
+- (NFTrustKeyRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NFTrustKeyRequest;
-  v5 = [(NFTrustObject *)&v11 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [NFNSCheckedDecoder coder:v4 decodeArrayOfArrayOfClass:objc_opt_class() forKey:@"localValidations"];
+    v6 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfArrayOfClass:objc_opt_class() forKey:@"localValidations"];
     [(NFTrustKeyRequest *)v5 setValue:v6 forKey:@"localValidations"];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"counterLimit"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"counterLimit"];
     [(NFTrustKeyRequest *)v5 setValue:v7 forKey:@"counterLimit"];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
     [(NFTrustKeyRequest *)v5 setValue:v8 forKey:@"subjectIdentifier"];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discretionaryData"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discretionaryData"];
     [(NFTrustKeyRequest *)v5 setValue:v9 forKey:@"discretionaryData"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NFTrustKeyRequest *)self localValidations];
-  [v4 encodeObject:v5 forKey:@"localValidations"];
+  coderCopy = coder;
+  localValidations = [(NFTrustKeyRequest *)self localValidations];
+  [coderCopy encodeObject:localValidations forKey:@"localValidations"];
 
-  v6 = [(NFTrustKeyRequest *)self counterLimit];
-  [v4 encodeObject:v6 forKey:@"counterLimit"];
+  counterLimit = [(NFTrustKeyRequest *)self counterLimit];
+  [coderCopy encodeObject:counterLimit forKey:@"counterLimit"];
 
-  v7 = [(NFTrustKeyRequest *)self subjectIdentifier];
-  [v4 encodeObject:v7 forKey:@"subjectIdentifier"];
+  subjectIdentifier = [(NFTrustKeyRequest *)self subjectIdentifier];
+  [coderCopy encodeObject:subjectIdentifier forKey:@"subjectIdentifier"];
 
-  v8 = [(NFTrustKeyRequest *)self discretionaryData];
-  [v4 encodeObject:v8 forKey:@"discretionaryData"];
+  discretionaryData = [(NFTrustKeyRequest *)self discretionaryData];
+  [coderCopy encodeObject:discretionaryData forKey:@"discretionaryData"];
 }
 
-+ (id)keyRequestWithSubjectIdentifier:(id)a3 discretionaryData:(id)a4 localValidations:(id)a5 counterLimit:(id)a6
++ (id)keyRequestWithSubjectIdentifier:(id)identifier discretionaryData:(id)data localValidations:(id)validations counterLimit:(id)limit
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  dataCopy = data;
+  validationsCopy = validations;
+  limitCopy = limit;
+  if (!identifierCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v23 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v27 = 45;
       if (isMetaClass)
@@ -79,7 +79,7 @@
       goto LABEL_55;
     }
 
-    v28 = object_getClass(a1);
+    v28 = object_getClass(self);
     if (class_isMetaClass(v28))
     {
       v29 = 43;
@@ -93,7 +93,7 @@
     *buf = 67109890;
     v71 = v29;
     v72 = 2082;
-    v73 = object_getClassName(a1);
+    v73 = object_getClassName(self);
     v74 = 2082;
     v75 = sel_getName(a2);
     v76 = 1024;
@@ -102,18 +102,18 @@
     goto LABEL_54;
   }
 
-  if (v13)
+  if (validationsCopy)
   {
-    if (![v13 count])
+    if (![validationsCopy count])
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v42 = NFLogGetLogger();
       if (v42)
       {
         v43 = v42;
-        v44 = object_getClass(a1);
+        v44 = object_getClass(self);
         v45 = class_isMetaClass(v44);
-        v46 = object_getClassName(a1);
+        v46 = object_getClassName(self);
         v63 = sel_getName(a2);
         v47 = 45;
         if (v45)
@@ -131,7 +131,7 @@
         goto LABEL_55;
       }
 
-      v48 = object_getClass(a1);
+      v48 = object_getClass(self);
       if (class_isMetaClass(v48))
       {
         v49 = 43;
@@ -145,7 +145,7 @@
       *buf = 67109890;
       v71 = v49;
       v72 = 2082;
-      v73 = object_getClassName(a1);
+      v73 = object_getClassName(self);
       v74 = 2082;
       v75 = sel_getName(a2);
       v76 = 1024;
@@ -158,7 +158,7 @@
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v15 = v13;
+    v15 = validationsCopy;
     v16 = [v15 countByEnumeratingWithState:&v65 objects:v69 count:16];
     if (v16)
     {
@@ -180,9 +180,9 @@
             if (v31)
             {
               v32 = v31;
-              v33 = object_getClass(a1);
+              v33 = object_getClass(self);
               v34 = class_isMetaClass(v33);
-              v35 = object_getClassName(a1);
+              v35 = object_getClassName(self);
               v62 = sel_getName(a2);
               v36 = 45;
               if (v34)
@@ -197,7 +197,7 @@
             v37 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
-              v38 = object_getClass(a1);
+              v38 = object_getClass(self);
               if (class_isMetaClass(v38))
               {
                 v39 = 43;
@@ -208,7 +208,7 @@
                 v39 = 45;
               }
 
-              v40 = object_getClassName(a1);
+              v40 = object_getClassName(self);
               v41 = sel_getName(a2);
               *buf = 67109890;
               v71 = v39;
@@ -236,16 +236,16 @@
     }
   }
 
-  if (v14 && ![v14 unsignedIntegerValue])
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v50 = NFLogGetLogger();
     if (v50)
     {
       v51 = v50;
-      v52 = object_getClass(a1);
+      v52 = object_getClass(self);
       v53 = class_isMetaClass(v52);
-      v54 = object_getClassName(a1);
+      v54 = object_getClassName(self);
       v64 = sel_getName(a2);
       v55 = 45;
       if (v53)
@@ -263,7 +263,7 @@
       goto LABEL_55;
     }
 
-    v56 = object_getClass(a1);
+    v56 = object_getClass(self);
     if (class_isMetaClass(v56))
     {
       v57 = 43;
@@ -274,7 +274,7 @@
       v57 = 45;
     }
 
-    v58 = object_getClassName(a1);
+    v58 = object_getClassName(self);
     v59 = sel_getName(a2);
     *buf = 67109890;
     v71 = v57;
@@ -297,10 +297,10 @@ LABEL_55:
   v21 = v20;
   if (v20)
   {
-    [(NFTrustKeyRequest *)v20 setDiscretionaryData:v12];
-    [(NFTrustKeyRequest *)v21 setSubjectIdentifier:v11];
-    [(NFTrustKeyRequest *)v21 setLocalValidations:v13];
-    [(NFTrustKeyRequest *)v21 setCounterLimit:v14];
+    [(NFTrustKeyRequest *)v20 setDiscretionaryData:dataCopy];
+    [(NFTrustKeyRequest *)v21 setSubjectIdentifier:identifierCopy];
+    [(NFTrustKeyRequest *)v21 setLocalValidations:validationsCopy];
+    [(NFTrustKeyRequest *)v21 setCounterLimit:limitCopy];
   }
 
 LABEL_56:

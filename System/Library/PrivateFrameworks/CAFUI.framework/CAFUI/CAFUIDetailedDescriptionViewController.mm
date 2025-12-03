@@ -1,13 +1,13 @@
 @interface CAFUIDetailedDescriptionViewController
-- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithCoder:(id)a3;
-- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)textLayoutManager:(id)a3 textLayoutFragmentForLocation:(id)a4 inTextElement:(id)a5;
-- (void)viewIsAppearing:(BOOL)a3;
+- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithCoder:(id)coder;
+- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)textLayoutManager:(id)manager textLayoutFragmentForLocation:(id)location inTextElement:(id)element;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CAFUIDetailedDescriptionViewController
 
-- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithCoder:(id)a3
+- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC5CAFUI38CAFUIDetailedDescriptionViewController_textView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D75C40]) init];
@@ -17,26 +17,26 @@
   return result;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  CAFUIDetailedDescriptionViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  CAFUIDetailedDescriptionViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (id)textLayoutManager:(id)a3 textLayoutFragmentForLocation:(id)a4 inTextElement:(id)a5
+- (id)textLayoutManager:(id)manager textLayoutFragmentForLocation:(id)location inTextElement:(id)element
 {
-  v8 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  v11 = CAFUIDetailedDescriptionViewController.textLayoutManager(_:textLayoutFragmentFor:in:)(v8, a4, v9);
+  elementCopy = element;
+  selfCopy = self;
+  v11 = CAFUIDetailedDescriptionViewController.textLayoutManager(_:textLayoutFragmentFor:in:)(managerCopy, location, elementCopy);
 
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5CAFUI38CAFUIDetailedDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

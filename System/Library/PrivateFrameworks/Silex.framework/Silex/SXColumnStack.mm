@@ -1,17 +1,17 @@
 @interface SXColumnStack
-- (SXColumnStack)initWithNumberOfColumns:(unint64_t)a3;
-- (id)allComponentsAfterComponent:(id)a3;
-- (id)allComponentsBeforeComponent:(id)a3;
-- (id)componentsAfterComponent:(id)a3;
-- (id)componentsBeforeComponent:(id)a3;
+- (SXColumnStack)initWithNumberOfColumns:(unint64_t)columns;
+- (id)allComponentsAfterComponent:(id)component;
+- (id)allComponentsBeforeComponent:(id)component;
+- (id)componentsAfterComponent:(id)component;
+- (id)componentsBeforeComponent:(id)component;
 - (id)description;
-- (unint64_t)rangeInBounds:(_NSRange)a3;
-- (void)addComponentBlueprint:(id)a3;
+- (unint64_t)rangeInBounds:(_NSRange)bounds;
+- (void)addComponentBlueprint:(id)blueprint;
 @end
 
 @implementation SXColumnStack
 
-- (SXColumnStack)initWithNumberOfColumns:(unint64_t)a3
+- (SXColumnStack)initWithNumberOfColumns:(unint64_t)columns
 {
   v9.receiver = self;
   v9.super_class = SXColumnStack;
@@ -20,8 +20,8 @@
   {
     for (i = [MEMORY[0x1E695DF70] array];
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      [(NSArray *)i addObject:v6];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSArray *)i addObject:array];
     }
 
     columnStack = v4->_columnStack;
@@ -31,20 +31,20 @@
   return v4;
 }
 
-- (void)addComponentBlueprint:(id)a3
+- (void)addComponentBlueprint:(id)blueprint
 {
-  v10 = a3;
-  v4 = [v10 columnRange];
-  if (v4 < v4 + v5)
+  blueprintCopy = blueprint;
+  columnRange = [blueprintCopy columnRange];
+  if (columnRange < columnRange + v5)
   {
-    v6 = v4;
+    v6 = columnRange;
     v7 = v5;
     do
     {
-      v8 = [(SXColumnStack *)self columnStack];
-      v9 = [v8 objectAtIndex:v6];
+      columnStack = [(SXColumnStack *)self columnStack];
+      v9 = [columnStack objectAtIndex:v6];
 
-      [v9 addObject:v10];
+      [v9 addObject:blueprintCopy];
       ++v6;
       --v7;
     }
@@ -53,20 +53,20 @@
   }
 }
 
-- (id)allComponentsBeforeComponent:(id)a3
+- (id)allComponentsBeforeComponent:(id)component
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 columnRange];
+  componentCopy = component;
+  columnRange = [componentCopy columnRange];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DFA0] orderedSet];
-  v9 = v5 + v7;
-  if (v5 < v5 + v7)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v9 = columnRange + v7;
+  if (columnRange < columnRange + v7)
   {
     do
     {
-      v10 = [(SXColumnStack *)self columnStack];
-      v11 = [v10 objectAtIndex:v5];
+      columnStack = [(SXColumnStack *)self columnStack];
+      v11 = [columnStack objectAtIndex:columnRange];
 
       v20 = 0u;
       v21 = 0u;
@@ -87,12 +87,12 @@ LABEL_4:
             objc_enumerationMutation(v12);
           }
 
-          if (*(*(&v18 + 1) + 8 * v16) == v4)
+          if (*(*(&v18 + 1) + 8 * v16) == componentCopy)
           {
             break;
           }
 
-          [v8 addObject:?];
+          [orderedSet addObject:?];
           if (v14 == ++v16)
           {
             v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -106,59 +106,59 @@ LABEL_4:
         }
       }
 
-      ++v5;
+      ++columnRange;
     }
 
-    while (v5 != v9);
+    while (columnRange != v9);
   }
 
-  return v8;
+  return orderedSet;
 }
 
-- (id)componentsBeforeComponent:(id)a3
+- (id)componentsBeforeComponent:(id)component
 {
-  v4 = a3;
-  v5 = [v4 columnRange];
+  componentCopy = component;
+  columnRange = [componentCopy columnRange];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DFA0] orderedSet];
-  if (v5 < v5 + v7)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  if (columnRange < columnRange + v7)
   {
     do
     {
-      v9 = [(SXColumnStack *)self columnStack];
-      v10 = [v9 objectAtIndex:v5];
+      columnStack = [(SXColumnStack *)self columnStack];
+      v10 = [columnStack objectAtIndex:columnRange];
 
-      v11 = [v10 indexOfObjectIdenticalTo:v4];
+      v11 = [v10 indexOfObjectIdenticalTo:componentCopy];
       if (v11)
       {
         v12 = [v10 objectAtIndex:v11 - 1];
-        [v8 addObject:v12];
+        [orderedSet addObject:v12];
       }
 
-      ++v5;
+      ++columnRange;
       --v7;
     }
 
     while (v7);
   }
 
-  return v8;
+  return orderedSet;
 }
 
-- (id)allComponentsAfterComponent:(id)a3
+- (id)allComponentsAfterComponent:(id)component
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 columnRange];
+  componentCopy = component;
+  columnRange = [componentCopy columnRange];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DFA0] orderedSet];
-  v9 = v5 + v7;
-  if (v5 < v5 + v7)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v9 = columnRange + v7;
+  if (columnRange < columnRange + v7)
   {
     do
     {
-      v10 = [(SXColumnStack *)self columnStack];
-      v11 = [v10 objectAtIndex:v5];
+      columnStack = [(SXColumnStack *)self columnStack];
+      v11 = [columnStack objectAtIndex:columnRange];
 
       v22 = 0u;
       v23 = 0u;
@@ -183,13 +183,13 @@ LABEL_4:
             v18 = *(*(&v20 + 1) + 8 * i);
             if (v15)
             {
-              [v8 addObject:v18];
+              [orderedSet addObject:v18];
               v15 = 1;
             }
 
             else
             {
-              v15 = v18 == v4;
+              v15 = v18 == componentCopy;
             }
           }
 
@@ -199,58 +199,58 @@ LABEL_4:
         while (v14);
       }
 
-      ++v5;
+      ++columnRange;
     }
 
-    while (v5 != v9);
+    while (columnRange != v9);
   }
 
-  return v8;
+  return orderedSet;
 }
 
-- (id)componentsAfterComponent:(id)a3
+- (id)componentsAfterComponent:(id)component
 {
-  v4 = a3;
-  v5 = [v4 columnRange];
+  componentCopy = component;
+  columnRange = [componentCopy columnRange];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DFA0] orderedSet];
-  if (v5 < v5 + v7)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  if (columnRange < columnRange + v7)
   {
     do
     {
-      v9 = [(SXColumnStack *)self columnStack];
-      v10 = [v9 objectAtIndex:v5];
+      columnStack = [(SXColumnStack *)self columnStack];
+      v10 = [columnStack objectAtIndex:columnRange];
 
-      v11 = [v10 indexOfObjectIdenticalTo:v4];
+      v11 = [v10 indexOfObjectIdenticalTo:componentCopy];
       if (v11 < [v10 count] - 1)
       {
         v12 = [v10 objectAtIndex:v11 + 1];
-        [v8 addObject:v12];
+        [orderedSet addObject:v12];
       }
 
-      ++v5;
+      ++columnRange;
       --v7;
     }
 
     while (v7);
   }
 
-  return v8;
+  return orderedSet;
 }
 
-- (unint64_t)rangeInBounds:(_NSRange)a3
+- (unint64_t)rangeInBounds:(_NSRange)bounds
 {
-  v3 = a3.location + a3.length;
-  v4 = [(SXColumnStack *)self columnStack];
-  v5 = v3 <= [v4 count];
+  v3 = bounds.location + bounds.length;
+  columnStack = [(SXColumnStack *)self columnStack];
+  v5 = v3 <= [columnStack count];
 
   return v5;
 }
 
 - (id)description
 {
-  v2 = [(SXColumnStack *)self columnStack];
-  v3 = [v2 description];
+  columnStack = [(SXColumnStack *)self columnStack];
+  v3 = [columnStack description];
 
   return v3;
 }

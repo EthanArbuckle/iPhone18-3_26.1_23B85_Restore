@@ -1,17 +1,17 @@
 @interface POXMLHelper
-+ (id)loadXMLDocument:(id)a3;
++ (id)loadXMLDocument:(id)document;
 @end
 
 @implementation POXMLHelper
 
-+ (id)loadXMLDocument:(id)a3
++ (id)loadXMLDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v4 = objc_alloc_init(POXMLContext);
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  bytes = [documentCopy bytes];
+  v6 = [documentCopy length];
 
-  [(POXMLContext *)v4 setXmldoc:xmlParseMemory(v5, v6)];
+  [(POXMLContext *)v4 setXmldoc:xmlParseMemory(bytes, v6)];
   if ([(POXMLContext *)v4 xmldoc])
   {
     v7 = v4;

@@ -1,24 +1,24 @@
 @interface PKAccountWebServiceVirtualCardListResponse
-- (PKAccountWebServiceVirtualCardListResponse)initWithData:(id)a3;
+- (PKAccountWebServiceVirtualCardListResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceVirtualCardListResponse
 
-- (PKAccountWebServiceVirtualCardListResponse)initWithData:(id)a3
+- (PKAccountWebServiceVirtualCardListResponse)initWithData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PKAccountWebServiceVirtualCardListResponse;
-  v3 = [(PKWebServiceResponse *)&v23 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v23 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [MEMORY[0x1E695DF70] array];
+      v6 = jSONObject;
+      array = [MEMORY[0x1E695DF70] array];
       v8 = [v6 PKArrayForKey:@"virtualCards"];
       v19 = 0u;
       v20 = 0u;
@@ -40,7 +40,7 @@
             }
 
             v13 = [[PKVirtualCard alloc] initWithDictionary:*(*(&v19 + 1) + 8 * v12)];
-            [v7 addObject:v13];
+            [array addObject:v13];
 
             ++v12;
           }
@@ -52,7 +52,7 @@
         while (v10);
       }
 
-      v14 = [v7 copy];
+      v14 = [array copy];
       virtualCards = v4->_virtualCards;
       v4->_virtualCards = v14;
     }
@@ -68,11 +68,11 @@ LABEL_14:
       }
 
       v16 = objc_opt_class();
-      v7 = NSStringFromClass(v16);
+      array = NSStringFromClass(v16);
       v17 = objc_opt_class();
       v8 = NSStringFromClass(v17);
       *buf = 138543618;
-      v25 = v7;
+      v25 = array;
       v26 = 2114;
       v27 = v8;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Malformed %{public}@: expected dictionary and received %{public}@", buf, 0x16u);

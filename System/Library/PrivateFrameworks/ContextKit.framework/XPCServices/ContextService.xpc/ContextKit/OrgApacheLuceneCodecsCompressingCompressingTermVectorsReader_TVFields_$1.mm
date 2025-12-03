@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields_$1
 - (BOOL)hasNext;
-- (OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields_$1)initWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields:(id)a3;
+- (OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields_$1)initWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields:(id)fields;
 - (id)next;
 - (void)dealloc;
 @end
@@ -64,9 +64,9 @@ LABEL_11:
   return *(v11 + 1);
 }
 
-- (OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields_$1)initWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields:(id)a3
+- (OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields_$1)initWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields:(id)fields
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, fields);
   self->i_ = 0;
   return self;
 }

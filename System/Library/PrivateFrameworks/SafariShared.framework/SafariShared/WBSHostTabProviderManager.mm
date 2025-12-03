@@ -1,9 +1,9 @@
 @interface WBSHostTabProviderManager
 + (WBSHostTabProviderManager)sharedManager;
 - (WBSHostTabProviderManager)init;
-- (id)providerForContentUUID:(id)a3;
-- (void)registerHostTab:(id)a3;
-- (void)unregisterHostTab:(id)a3;
+- (id)providerForContentUUID:(id)d;
+- (void)registerHostTab:(id)tab;
+- (void)unregisterHostTab:(id)tab;
 @end
 
 @implementation WBSHostTabProviderManager
@@ -34,13 +34,13 @@ void __42__WBSHostTabProviderManager_sharedManager__block_invoke()
   v2 = [(WBSHostTabProviderManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     providerMapTable = v2->_providerMapTable;
-    v2->_providerMapTable = v3;
+    v2->_providerMapTable = strongToWeakObjectsMapTable;
 
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     hostTabMapTable = v2->_hostTabMapTable;
-    v2->_hostTabMapTable = v5;
+    v2->_hostTabMapTable = strongToWeakObjectsMapTable2;
 
     v7 = v2;
   }
@@ -48,17 +48,17 @@ void __42__WBSHostTabProviderManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (id)providerForContentUUID:(id)a3
+- (id)providerForContentUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_providerMapTable objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMapTable *)self->_providerMapTable objectForKey:dCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(WBSHostTabProvider);
-    v6 = [(WBSHostTabProviderManager *)self _hostTabForContentUUID:v4];
+    v6 = [(WBSHostTabProviderManager *)self _hostTabForContentUUID:dCopy];
     [(WBSHostTabProvider *)v5 _setHostTab:v6];
 
-    [(NSMapTable *)self->_providerMapTable setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_providerMapTable setObject:v5 forKey:dCopy];
   }
 
   v7 = v5;
@@ -66,19 +66,19 @@ void __42__WBSHostTabProviderManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (void)registerHostTab:(id)a3
+- (void)registerHostTab:(id)tab
 {
-  v4 = a3;
-  v6 = [v4 contentUUID];
-  [(NSMapTable *)self->_hostTabMapTable setObject:v4 forKey:v6];
-  v5 = [(WBSHostTabProviderManager *)self providerForContentUUID:v6];
-  [v5 _setHostTab:v4];
+  tabCopy = tab;
+  contentUUID = [tabCopy contentUUID];
+  [(NSMapTable *)self->_hostTabMapTable setObject:tabCopy forKey:contentUUID];
+  v5 = [(WBSHostTabProviderManager *)self providerForContentUUID:contentUUID];
+  [v5 _setHostTab:tabCopy];
 }
 
-- (void)unregisterHostTab:(id)a3
+- (void)unregisterHostTab:(id)tab
 {
-  v4 = [a3 contentUUID];
-  [(NSMapTable *)self->_hostTabMapTable removeObjectForKey:v4];
+  contentUUID = [tab contentUUID];
+  [(NSMapTable *)self->_hostTabMapTable removeObjectForKey:contentUUID];
 }
 
 @end

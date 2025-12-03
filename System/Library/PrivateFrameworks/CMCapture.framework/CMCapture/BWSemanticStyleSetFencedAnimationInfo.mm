@@ -1,5 +1,5 @@
 @interface BWSemanticStyleSetFencedAnimationInfo
-+ (id)fencedAnimationInfoWithSemanticStyleSet:(id)a3 fencePortSendRight:(id)a4;
++ (id)fencedAnimationInfoWithSemanticStyleSet:(id)set fencePortSendRight:(id)right;
 - (id)description;
 - (void)dealloc;
 @end
@@ -21,17 +21,17 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"BWSemanticStyleSetFencedAnimationInfo: { %@, %@ }", semanticStyleSet, -[BWFencedAnimationInfo description](&v4, sel_description)];
 }
 
-+ (id)fencedAnimationInfoWithSemanticStyleSet:(id)a3 fencePortSendRight:(id)a4
++ (id)fencedAnimationInfoWithSemanticStyleSet:(id)set fencePortSendRight:(id)right
 {
   v6 = [BWSemanticStyleSetFencedAnimationInfo alloc];
   if (v6)
   {
     v9.receiver = v6;
     v9.super_class = BWSemanticStyleSetFencedAnimationInfo;
-    v7 = objc_msgSendSuper2(&v9, sel_initWithFencePortSendRight_, a4);
+    v7 = objc_msgSendSuper2(&v9, sel_initWithFencePortSendRight_, right);
     if (v7)
     {
-      v7[3] = [a3 copy];
+      v7[3] = [set copy];
     }
   }
 

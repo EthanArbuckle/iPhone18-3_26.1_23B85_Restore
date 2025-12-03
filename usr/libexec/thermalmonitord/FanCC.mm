@@ -1,13 +1,13 @@
 @interface FanCC
-- (FanCC)initWithParams:(__CFDictionary *)a3;
+- (FanCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
-- (int)setFanRPM:(unsigned int)a3;
+- (int)setFanRPM:(unsigned int)m;
 - (void)defaultAction;
 @end
 
 @implementation FanCC
 
-- (FanCC)initWithParams:(__CFDictionary *)a3
+- (FanCC)initWithParams:(__CFDictionary *)params
 {
   v13.receiver = self;
   v13.super_class = FanCC;
@@ -19,12 +19,12 @@
     v4->fanRPM = 0;
     v4->previousFanRPM = 0;
     *&v4->super.allowLIOverride = 100;
-    if ((sub_100002A20(a3, @"minRPM", kCFNumberIntType, &v4->currentFanRPM) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+    if ((sub_100002A20(params, @"minRPM", kCFNumberIntType, &v4->currentFanRPM) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       sub_100054978();
     }
 
-    if ((sub_100002A20(a3, @"maxRPM", kCFNumberIntType, &v5->minRPM) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+    if ((sub_100002A20(params, @"maxRPM", kCFNumberIntType, &v5->minRPM) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       sub_1000549AC();
     }
@@ -125,9 +125,9 @@
   }
 }
 
-- (int)setFanRPM:(unsigned int)a3
+- (int)setFanRPM:(unsigned int)m
 {
-  input = a3;
+  input = m;
   v5 = IOConnectCallScalarMethod(LODWORD(self->scalingFactor), 0, &input, 1u, 0, 0);
   if (v5)
   {
@@ -139,7 +139,7 @@
 
   else
   {
-    self->fanRPM = a3;
+    self->fanRPM = m;
     if (byte_1000AB2F8 == 1)
     {
       v6 = qword_1000AB718;

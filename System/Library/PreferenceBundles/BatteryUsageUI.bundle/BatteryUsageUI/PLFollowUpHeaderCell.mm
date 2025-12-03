@@ -1,39 +1,39 @@
 @interface PLFollowUpHeaderCell
-- (PLFollowUpHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PLFollowUpHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation PLFollowUpHeaderCell
 
-- (PLFollowUpHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLFollowUpHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = PLFollowUpHeaderCell;
-  v5 = [(PLFollowUpHeaderCell *)&v14 initWithStyle:a3 reuseIdentifier:a4, a5];
-  if (v5)
+  specifier = [(PLFollowUpHeaderCell *)&v14 initWithStyle:style reuseIdentifier:identifier, specifier];
+  if (specifier)
   {
     v6 = createFollowUpTitle();
-    followTitle = v5->_followTitle;
-    v5->_followTitle = v6;
+    followTitle = specifier->_followTitle;
+    specifier->_followTitle = v6;
 
     v8 = createFollowUpTitleInformation();
-    followTitleInformation = v5->_followTitleInformation;
-    v5->_followTitleInformation = v8;
+    followTitleInformation = specifier->_followTitleInformation;
+    specifier->_followTitleInformation = v8;
 
     v10 = createFollowUpSubtitle();
-    followSubtitle = v5->_followSubtitle;
-    v5->_followSubtitle = v10;
+    followSubtitle = specifier->_followSubtitle;
+    specifier->_followSubtitle = v10;
 
-    v12 = [(PLFollowUpHeaderCell *)v5 contentView];
-    [v12 addSubview:v5->_followTitle];
-    [v12 addSubview:v5->_followTitleInformation];
-    [v12 addSubview:v5->_followSubtitle];
-    [(PLFollowUpHeaderCell *)v5 layoutSubviews];
+    contentView = [(PLFollowUpHeaderCell *)specifier contentView];
+    [contentView addSubview:specifier->_followTitle];
+    [contentView addSubview:specifier->_followTitleInformation];
+    [contentView addSubview:specifier->_followSubtitle];
+    [(PLFollowUpHeaderCell *)specifier layoutSubviews];
   }
 
-  return v5;
+  return specifier;
 }
 
 - (void)layoutSubviews
@@ -44,35 +44,35 @@
   [(PLFollowUpHeaderCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = PLFollowUpHeaderCell;
-  [(PLFollowUpHeaderCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:FLFollowUpSingleItemKey];
-  v6 = [v5 title];
-  [(UILabel *)self->_followTitle setText:v6];
+  [(PLFollowUpHeaderCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:FLFollowUpSingleItemKey];
+  title = [v5 title];
+  [(UILabel *)self->_followTitle setText:title];
 
-  v7 = [v5 informativeText];
-  [(UILabel *)self->_followSubtitle setText:v7];
+  informativeText = [v5 informativeText];
+  [(UILabel *)self->_followSubtitle setText:informativeText];
 
-  v8 = [v4 objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationStringKey"];
+  v8 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationStringKey"];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationStringKey"];
+    v9 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationStringKey"];
     [(UILabel *)self->_followTitleInformation setText:v9];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationAttributedStringKey"];
+  v10 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationAttributedStringKey"];
 
   if (v10)
   {
-    v9 = [v4 objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationAttributedStringKey"];
+    v9 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIFollowUpHeaderInformationAttributedStringKey"];
     [(UILabel *)self->_followTitleInformation setAttributedText:v9];
     goto LABEL_5;
   }
@@ -88,14 +88,14 @@ LABEL_6:
   v3 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_followTitle]-[_followTitleInformation]-|", 0, 0, v18);
   v17 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_followSubtitle]-|", 0, 0, v18);
   v16 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-11-[_followTitle]-[_followSubtitle]-11-|", 0, 0, v18);
-  v4 = [(UILabel *)self->_followTitleInformation centerYAnchor];
-  v5 = [(UILabel *)self->_followTitle centerYAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  centerYAnchor = [(UILabel *)self->_followTitleInformation centerYAnchor];
+  centerYAnchor2 = [(UILabel *)self->_followTitle centerYAnchor];
+  v6 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-  v7 = [(UILabel *)self->_followTitleInformation trailingAnchor];
-  v8 = [(PLFollowUpHeaderCell *)self layoutMarginsGuide];
-  v9 = [v8 trailingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  trailingAnchor = [(UILabel *)self->_followTitleInformation trailingAnchor];
+  layoutMarginsGuide = [(PLFollowUpHeaderCell *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v11 = [v3 arrayByAddingObjectsFromArray:v17];
   v12 = [v11 arrayByAddingObjectsFromArray:v16];

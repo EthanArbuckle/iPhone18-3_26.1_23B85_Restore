@@ -2,31 +2,31 @@
 - (NSArray)supportedLocales;
 - (NSLocale)effectiveSourceLocale;
 - (NSLocale)effectiveTargetLocale;
-- (_LTPreflightConfiguration)initWithCoder:(id)a3;
-- (_LTPreflightConfiguration)initWithSession:(id)a3 request:(id)a4 supportedLocalePairs:(id)a5;
-- (_LTPreflightConfiguration)initWithSourceStrings:(id)a3 supportedLocalePairs:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_LTPreflightConfiguration)initWithCoder:(id)coder;
+- (_LTPreflightConfiguration)initWithSession:(id)session request:(id)request supportedLocalePairs:(id)pairs;
+- (_LTPreflightConfiguration)initWithSourceStrings:(id)strings supportedLocalePairs:(id)pairs;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)nextStep;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTPreflightConfiguration
 
-- (_LTPreflightConfiguration)initWithSourceStrings:(id)a3 supportedLocalePairs:(id)a4
+- (_LTPreflightConfiguration)initWithSourceStrings:(id)strings supportedLocalePairs:(id)pairs
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  pairsCopy = pairs;
   v15.receiver = self;
   v15.super_class = _LTPreflightConfiguration;
   v8 = [(_LTPreflightConfiguration *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringsCopy copy];
     sourceStrings = v8->_sourceStrings;
     v8->_sourceStrings = v9;
 
-    v11 = [v7 copy];
+    v11 = [pairsCopy copy];
     supportedLocalePairs = v8->_supportedLocalePairs;
     v8->_supportedLocalePairs = v11;
 
@@ -44,15 +44,15 @@
     return 2;
   }
 
-  v3 = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
-  if (!v3)
+  resolvedSourceLocale = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
+  if (!resolvedSourceLocale)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
-  v6 = v5 != 0;
+  v4 = resolvedSourceLocale;
+  resolvedTargetLocale = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
+  v6 = resolvedTargetLocale != 0;
 
   return v6;
 }
@@ -81,11 +81,11 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 sourceLocale];
-        [v3 addObject:v10];
+        sourceLocale = [v9 sourceLocale];
+        [v3 addObject:sourceLocale];
 
-        v11 = [v9 targetLocale];
-        [v3 addObject:v11];
+        targetLocale = [v9 targetLocale];
+        [v3 addObject:targetLocale];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -94,75 +94,75 @@
     while (v6);
   }
 
-  v12 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return allObjects;
 }
 
 - (NSLocale)effectiveSourceLocale
 {
-  v3 = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
-  v4 = v3;
-  if (v3)
+  resolvedSourceLocale = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
+  v4 = resolvedSourceLocale;
+  if (resolvedSourceLocale)
   {
-    v5 = v3;
+    requestedSourceLocale = resolvedSourceLocale;
   }
 
   else
   {
-    v5 = [(_LTPreflightConfiguration *)self requestedSourceLocale];
+    requestedSourceLocale = [(_LTPreflightConfiguration *)self requestedSourceLocale];
   }
 
-  v6 = v5;
+  v6 = requestedSourceLocale;
 
   return v6;
 }
 
 - (NSLocale)effectiveTargetLocale
 {
-  v3 = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
-  v4 = v3;
-  if (v3)
+  resolvedTargetLocale = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
+  v4 = resolvedTargetLocale;
+  if (resolvedTargetLocale)
   {
-    v5 = v3;
+    requestedTargetLocale = resolvedTargetLocale;
   }
 
   else
   {
-    v5 = [(_LTPreflightConfiguration *)self requestedTargetLocale];
+    requestedTargetLocale = [(_LTPreflightConfiguration *)self requestedTargetLocale];
   }
 
-  v6 = v5;
+  v6 = requestedTargetLocale;
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [(_LTPreflightConfiguration *)self lowConfidenceLocales];
-  v28 = [v3 _ltCompactMap:&__block_literal_global_8];
+  lowConfidenceLocales = [(_LTPreflightConfiguration *)self lowConfidenceLocales];
+  v28 = [lowConfidenceLocales _ltCompactMap:&__block_literal_global_8];
 
   v24 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v22 = NSStringFromClass(v4);
-  v27 = [(_LTPreflightConfiguration *)self sourceStrings];
-  v20 = [v27 count];
-  v26 = [(_LTPreflightConfiguration *)self supportedLocales];
-  v19 = [v26 count];
-  v25 = [(_LTPreflightConfiguration *)self requestedSourceLocale];
-  v17 = [v25 _ltLocaleIdentifier];
-  v23 = [(_LTPreflightConfiguration *)self requestedTargetLocale];
-  v16 = [v23 _ltLocaleIdentifier];
-  v21 = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
-  v15 = [v21 _ltLocaleIdentifier];
-  v18 = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
-  v5 = [v18 _ltLocaleIdentifier];
-  v6 = [(_LTPreflightConfiguration *)self lidUnsupportedLocale];
-  v7 = [v6 _ltLocaleIdentifier];
-  v8 = [(_LTPreflightConfiguration *)self systemLocale];
-  v9 = [v8 _ltLocaleIdentifier];
+  sourceStrings = [(_LTPreflightConfiguration *)self sourceStrings];
+  v20 = [sourceStrings count];
+  supportedLocales = [(_LTPreflightConfiguration *)self supportedLocales];
+  v19 = [supportedLocales count];
+  requestedSourceLocale = [(_LTPreflightConfiguration *)self requestedSourceLocale];
+  _ltLocaleIdentifier = [requestedSourceLocale _ltLocaleIdentifier];
+  requestedTargetLocale = [(_LTPreflightConfiguration *)self requestedTargetLocale];
+  _ltLocaleIdentifier2 = [requestedTargetLocale _ltLocaleIdentifier];
+  resolvedSourceLocale = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
+  _ltLocaleIdentifier3 = [resolvedSourceLocale _ltLocaleIdentifier];
+  resolvedTargetLocale = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
+  _ltLocaleIdentifier4 = [resolvedTargetLocale _ltLocaleIdentifier];
+  lidUnsupportedLocale = [(_LTPreflightConfiguration *)self lidUnsupportedLocale];
+  _ltLocaleIdentifier5 = [lidUnsupportedLocale _ltLocaleIdentifier];
+  systemLocale = [(_LTPreflightConfiguration *)self systemLocale];
+  _ltLocaleIdentifier6 = [systemLocale _ltLocaleIdentifier];
   if ([(_LTPreflightConfiguration *)self isForDownloadApprovalOnly])
   {
     v10 = @"YES";
@@ -193,72 +193,72 @@
     v12 = @"NO";
   }
 
-  v13 = [v24 stringWithFormat:@"<%@: %p number of sourceStrings: %zu; number of supportedLocales: %zu; requestedSource: %@; requestedTarget: %@; resolvedSource: %@; resolvedTarget: %@; lidUnsupportedLocale: %@; systemLocale: %@; lowConfidenceLocales: %@; isForDownloadApprovalOnly: %@; isHeadless: %@; deviceSupportsTranslation: %@>", v22, self, v20, v19, v17, v16, v15, v5, v7, v9, v28, v10, v11, v12];;
+  v13 = [v24 stringWithFormat:@"<%@: %p number of sourceStrings: %zu; number of supportedLocales: %zu; requestedSource: %@; requestedTarget: %@; resolvedSource: %@; resolvedTarget: %@; lidUnsupportedLocale: %@; systemLocale: %@; lowConfidenceLocales: %@; isForDownloadApprovalOnly: %@; isHeadless: %@; deviceSupportsTranslation: %@>", v22, self, v20, v19, _ltLocaleIdentifier, _ltLocaleIdentifier2, _ltLocaleIdentifier3, _ltLocaleIdentifier4, _ltLocaleIdentifier5, _ltLocaleIdentifier6, v28, v10, v11, v12];;
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTPreflightConfiguration alloc];
-  v5 = [(_LTPreflightConfiguration *)self sourceStrings];
-  v6 = [(_LTPreflightConfiguration *)self supportedLocalePairs];
-  v7 = [(_LTPreflightConfiguration *)v4 initWithSourceStrings:v5 supportedLocalePairs:v6];
+  sourceStrings = [(_LTPreflightConfiguration *)self sourceStrings];
+  supportedLocalePairs = [(_LTPreflightConfiguration *)self supportedLocalePairs];
+  v7 = [(_LTPreflightConfiguration *)v4 initWithSourceStrings:sourceStrings supportedLocalePairs:supportedLocalePairs];
 
-  v8 = [(_LTPreflightConfiguration *)self systemLocale];
-  [(_LTPreflightConfiguration *)v7 setSystemLocale:v8];
+  systemLocale = [(_LTPreflightConfiguration *)self systemLocale];
+  [(_LTPreflightConfiguration *)v7 setSystemLocale:systemLocale];
 
-  v9 = [(_LTPreflightConfiguration *)self requestedSourceLocale];
-  [(_LTPreflightConfiguration *)v7 setRequestedSourceLocale:v9];
+  requestedSourceLocale = [(_LTPreflightConfiguration *)self requestedSourceLocale];
+  [(_LTPreflightConfiguration *)v7 setRequestedSourceLocale:requestedSourceLocale];
 
-  v10 = [(_LTPreflightConfiguration *)self requestedTargetLocale];
-  [(_LTPreflightConfiguration *)v7 setRequestedTargetLocale:v10];
+  requestedTargetLocale = [(_LTPreflightConfiguration *)self requestedTargetLocale];
+  [(_LTPreflightConfiguration *)v7 setRequestedTargetLocale:requestedTargetLocale];
 
-  v11 = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
-  [(_LTPreflightConfiguration *)v7 setResolvedSourceLocale:v11];
+  resolvedSourceLocale = [(_LTPreflightConfiguration *)self resolvedSourceLocale];
+  [(_LTPreflightConfiguration *)v7 setResolvedSourceLocale:resolvedSourceLocale];
 
-  v12 = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
-  [(_LTPreflightConfiguration *)v7 setResolvedTargetLocale:v12];
+  resolvedTargetLocale = [(_LTPreflightConfiguration *)self resolvedTargetLocale];
+  [(_LTPreflightConfiguration *)v7 setResolvedTargetLocale:resolvedTargetLocale];
 
-  v13 = [(_LTPreflightConfiguration *)self lidUnsupportedLocale];
-  [(_LTPreflightConfiguration *)v7 setLidUnsupportedLocale:v13];
+  lidUnsupportedLocale = [(_LTPreflightConfiguration *)self lidUnsupportedLocale];
+  [(_LTPreflightConfiguration *)v7 setLidUnsupportedLocale:lidUnsupportedLocale];
 
-  v14 = [(_LTPreflightConfiguration *)self lowConfidenceLocales];
-  v15 = [v14 copy];
+  lowConfidenceLocales = [(_LTPreflightConfiguration *)self lowConfidenceLocales];
+  v15 = [lowConfidenceLocales copy];
   [(_LTPreflightConfiguration *)v7 setLowConfidenceLocales:v15];
 
   [(_LTPreflightConfiguration *)v7 setIsForDownloadApprovalOnly:[(_LTPreflightConfiguration *)self isForDownloadApprovalOnly]];
   [(_LTPreflightConfiguration *)v7 setIsHeadless:[(_LTPreflightConfiguration *)self isHeadless]];
   [(_LTPreflightConfiguration *)v7 setDeviceSupportsTranslation:[(_LTPreflightConfiguration *)self deviceSupportsTranslation]];
-  v16 = [(_LTPreflightConfiguration *)self selfLoggingID];
-  [(_LTPreflightConfiguration *)v7 setSelfLoggingID:v16];
+  selfLoggingID = [(_LTPreflightConfiguration *)self selfLoggingID];
+  [(_LTPreflightConfiguration *)v7 setSelfLoggingID:selfLoggingID];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceStrings = self->_sourceStrings;
-  v5 = a3;
-  [v5 encodeObject:sourceStrings forKey:@"sourceStrings"];
-  [v5 encodeObject:self->_supportedLocalePairs forKey:@"supportedLocalePairs"];
-  [v5 encodeObject:self->_systemLocale forKey:@"systemLocale"];
-  [v5 encodeObject:self->_requestedSourceLocale forKey:@"requestedSourceLocale"];
-  [v5 encodeObject:self->_requestedTargetLocale forKey:@"requestedTargetLocale"];
-  [v5 encodeObject:self->_resolvedSourceLocale forKey:@"resolvedSourceLocale"];
-  [v5 encodeObject:self->_resolvedTargetLocale forKey:@"resolvedTargetLocale"];
-  [v5 encodeObject:self->_lidUnsupportedLocale forKey:@"lidUnsupportedLocale"];
-  [v5 encodeObject:self->_lowConfidenceLocales forKey:@"lowConfidenceLocales"];
-  [v5 encodeBool:self->_isForDownloadApprovalOnly forKey:@"isForDownloadApprovalOnly"];
-  [v5 encodeBool:self->_isHeadless forKey:@"isHeadless"];
-  [v5 encodeBool:self->_deviceSupportsTranslation forKey:@"deviceSupportsTranslation"];
-  [v5 encodeObject:self->_selfLoggingID forKey:@"selfLoggingID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceStrings forKey:@"sourceStrings"];
+  [coderCopy encodeObject:self->_supportedLocalePairs forKey:@"supportedLocalePairs"];
+  [coderCopy encodeObject:self->_systemLocale forKey:@"systemLocale"];
+  [coderCopy encodeObject:self->_requestedSourceLocale forKey:@"requestedSourceLocale"];
+  [coderCopy encodeObject:self->_requestedTargetLocale forKey:@"requestedTargetLocale"];
+  [coderCopy encodeObject:self->_resolvedSourceLocale forKey:@"resolvedSourceLocale"];
+  [coderCopy encodeObject:self->_resolvedTargetLocale forKey:@"resolvedTargetLocale"];
+  [coderCopy encodeObject:self->_lidUnsupportedLocale forKey:@"lidUnsupportedLocale"];
+  [coderCopy encodeObject:self->_lowConfidenceLocales forKey:@"lowConfidenceLocales"];
+  [coderCopy encodeBool:self->_isForDownloadApprovalOnly forKey:@"isForDownloadApprovalOnly"];
+  [coderCopy encodeBool:self->_isHeadless forKey:@"isHeadless"];
+  [coderCopy encodeBool:self->_deviceSupportsTranslation forKey:@"deviceSupportsTranslation"];
+  [coderCopy encodeObject:self->_selfLoggingID forKey:@"selfLoggingID"];
 }
 
-- (_LTPreflightConfiguration)initWithCoder:(id)a3
+- (_LTPreflightConfiguration)initWithCoder:(id)coder
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = _LTPreflightConfiguration;
   v5 = [(_LTPreflightConfiguration *)&v38 init];
@@ -270,7 +270,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"sourceStrings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"sourceStrings"];
     sourceStrings = v5->_sourceStrings;
     v5->_sourceStrings = v9;
 
@@ -282,7 +282,7 @@
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
       v13 = [v11 setWithArray:v12];
 
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"supportedLocalePairs"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"supportedLocalePairs"];
       supportedLocalePairs = v5->_supportedLocalePairs;
       v5->_supportedLocalePairs = v14;
 
@@ -294,38 +294,38 @@
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
         v18 = [v16 setWithArray:v17];
 
-        v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemLocale"];
+        v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemLocale"];
         systemLocale = v5->_systemLocale;
         v5->_systemLocale = v19;
 
-        v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedSourceLocale"];
+        v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedSourceLocale"];
         requestedSourceLocale = v5->_requestedSourceLocale;
         v5->_requestedSourceLocale = v21;
 
-        v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedTargetLocale"];
+        v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedTargetLocale"];
         requestedTargetLocale = v5->_requestedTargetLocale;
         v5->_requestedTargetLocale = v23;
 
-        v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolvedSourceLocale"];
+        v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolvedSourceLocale"];
         resolvedSourceLocale = v5->_resolvedSourceLocale;
         v5->_resolvedSourceLocale = v25;
 
-        v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolvedTargetLocale"];
+        v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolvedTargetLocale"];
         resolvedTargetLocale = v5->_resolvedTargetLocale;
         v5->_resolvedTargetLocale = v27;
 
-        v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lidUnsupportedLocale"];
+        v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lidUnsupportedLocale"];
         lidUnsupportedLocale = v5->_lidUnsupportedLocale;
         v5->_lidUnsupportedLocale = v29;
 
-        v31 = [v4 decodeObjectOfClasses:v18 forKey:@"lowConfidenceLocales"];
+        v31 = [coderCopy decodeObjectOfClasses:v18 forKey:@"lowConfidenceLocales"];
         lowConfidenceLocales = v5->_lowConfidenceLocales;
         v5->_lowConfidenceLocales = v31;
 
-        v5->_isForDownloadApprovalOnly = [v4 decodeBoolForKey:@"isForDownloadApprovalOnly"];
-        v5->_isHeadless = [v4 decodeBoolForKey:@"isHeadless"];
-        v5->_deviceSupportsTranslation = [v4 decodeBoolForKey:@"deviceSupportsTranslation"];
-        v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selfLoggingID"];
+        v5->_isForDownloadApprovalOnly = [coderCopy decodeBoolForKey:@"isForDownloadApprovalOnly"];
+        v5->_isHeadless = [coderCopy decodeBoolForKey:@"isHeadless"];
+        v5->_deviceSupportsTranslation = [coderCopy decodeBoolForKey:@"deviceSupportsTranslation"];
+        v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selfLoggingID"];
         selfLoggingID = v5->_selfLoggingID;
         v5->_selfLoggingID = v33;
 
@@ -353,28 +353,28 @@
   return v35;
 }
 
-- (_LTPreflightConfiguration)initWithSession:(id)a3 request:(id)a4 supportedLocalePairs:(id)a5
+- (_LTPreflightConfiguration)initWithSession:(id)session request:(id)request supportedLocalePairs:(id)pairs
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 batch];
-  v12 = [v11 _ltCompactMap:&__block_literal_global_11];
+  pairsCopy = pairs;
+  requestCopy = request;
+  sessionCopy = session;
+  batch = [requestCopy batch];
+  v12 = [batch _ltCompactMap:&__block_literal_global_11];
 
-  v13 = [(_LTPreflightConfiguration *)self initWithSourceStrings:v12 supportedLocalePairs:v8];
+  v13 = [(_LTPreflightConfiguration *)self initWithSourceStrings:v12 supportedLocalePairs:pairsCopy];
   v14 = v13;
-  v15 = [v10 sourceLocale];
-  [(_LTPreflightConfiguration *)v14 setRequestedSourceLocale:v15];
+  sourceLocale = [sessionCopy sourceLocale];
+  [(_LTPreflightConfiguration *)v14 setRequestedSourceLocale:sourceLocale];
 
-  v16 = [v10 targetLocale];
+  targetLocale = [sessionCopy targetLocale];
 
-  [(_LTPreflightConfiguration *)v14 setRequestedTargetLocale:v16];
-  -[_LTPreflightConfiguration setIsForDownloadApprovalOnly:](v14, "setIsForDownloadApprovalOnly:", [v9 isForDownloadRequest]);
-  v17 = [v9 isHeadless];
+  [(_LTPreflightConfiguration *)v14 setRequestedTargetLocale:targetLocale];
+  -[_LTPreflightConfiguration setIsForDownloadApprovalOnly:](v14, "setIsForDownloadApprovalOnly:", [requestCopy isForDownloadRequest]);
+  isHeadless = [requestCopy isHeadless];
 
-  [(_LTPreflightConfiguration *)v14 setIsHeadless:v17];
-  v18 = [MEMORY[0x277CBEAF8] currentLocale];
-  [(_LTPreflightConfiguration *)v14 setSystemLocale:v18];
+  [(_LTPreflightConfiguration *)v14 setIsHeadless:isHeadless];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [(_LTPreflightConfiguration *)v14 setSystemLocale:currentLocale];
 
   return v14;
 }

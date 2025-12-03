@@ -1,69 +1,69 @@
 @interface PKAccountHistoricalBalance
-- (PKAccountHistoricalBalance)initWithBalance:(id)a3 date:(id)a4;
-- (PKAccountHistoricalBalance)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAccountHistoricalBalance)initWithBalance:(id)balance date:(id)date;
+- (PKAccountHistoricalBalance)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountHistoricalBalance
 
-- (PKAccountHistoricalBalance)initWithBalance:(id)a3 date:(id)a4
+- (PKAccountHistoricalBalance)initWithBalance:(id)balance date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  balanceCopy = balance;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = PKAccountHistoricalBalance;
   v9 = [(PKAccountHistoricalBalance *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_balance, a3);
-    objc_storeStrong(&v10->_date, a4);
+    objc_storeStrong(&v9->_balance, balance);
+    objc_storeStrong(&v10->_date, date);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   balance = self->_balance;
-  v5 = a3;
-  [v5 encodeObject:balance forKey:@"balance"];
-  [v5 encodeObject:self->_date forKey:@"date"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:balance forKey:@"balance"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (PKAccountHistoricalBalance)initWithCoder:(id)a3
+- (PKAccountHistoricalBalance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountHistoricalBalance;
   v5 = [(PKAccountHistoricalBalance *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDate *)self->_date copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDate *)self->_date copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSDecimalNumber *)self->_balance copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_balance copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 

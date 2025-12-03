@@ -1,22 +1,22 @@
 @interface PSResourceDesiredState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation PSResourceDesiredState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSResourceDesiredState *)self wantedByConsumers];
-  if (v5 == [v4 wantedByConsumers])
+  equalCopy = equal;
+  wantedByConsumers = [(PSResourceDesiredState *)self wantedByConsumers];
+  if (wantedByConsumers == [equalCopy wantedByConsumers])
   {
-    v7 = [(PSResourceDesiredState *)self desiredStride];
-    v8 = [v4 desiredStride];
-    if (v7 == v8)
+    desiredStride = [(PSResourceDesiredState *)self desiredStride];
+    desiredStride2 = [equalCopy desiredStride];
+    if (desiredStride == desiredStride2)
     {
-      v9 = [(PSResourceDesiredState *)self resourceName];
-      v10 = [v4 resourceName];
-      v6 = v9 == v10;
+      resourceName = [(PSResourceDesiredState *)self resourceName];
+      resourceName2 = [equalCopy resourceName];
+      v6 = resourceName == resourceName2;
     }
 
     else

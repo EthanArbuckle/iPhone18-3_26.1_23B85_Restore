@@ -1,19 +1,19 @@
 @interface UIGestureGraphElement
-- (BOOL)hasProperties:(id)a3;
-- (UIGestureGraphElement)initWithLabel:(id)a3;
+- (BOOL)hasProperties:(id)properties;
+- (UIGestureGraphElement)initWithLabel:(id)label;
 - (id)description;
-- (void)setProperties:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
+- (void)setProperties:(id)properties;
+- (void)setProperty:(id)property forKey:(id)key;
 @end
 
 @implementation UIGestureGraphElement
 
-- (UIGestureGraphElement)initWithLabel:(id)a3
+- (UIGestureGraphElement)initWithLabel:(id)label
 {
-  if (!a3)
+  if (!label)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIGestureGraphElement.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIGestureGraphElement.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"label"}];
   }
 
   v11.receiver = self;
@@ -21,7 +21,7 @@
   v5 = [(UIGestureGraphElement *)&v11 init];
   if (v5)
   {
-    v6 = [a3 copy];
+    v6 = [label copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -29,9 +29,9 @@
   return v5;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v5 = [a3 count];
+  v5 = [properties count];
   if (v5 <= [(NSMutableDictionary *)self->_properties count])
   {
     v9 = 0;
@@ -44,7 +44,7 @@
     v8[3] = &unk_1E70FEC78;
     v8[4] = self;
     v8[5] = &v9;
-    [a3 enumerateKeysAndObjectsUsingBlock:v8];
+    [properties enumerateKeysAndObjectsUsingBlock:v8];
     v6 = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
   }
@@ -69,7 +69,7 @@ void __39__UIGestureGraphElement_hasProperties___block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
   properties = self->_properties;
   if (!properties)
@@ -81,10 +81,10 @@ void __39__UIGestureGraphElement_hasProperties___block_invoke(uint64_t a1, uint6
     properties = self->_properties;
   }
 
-  [(NSMutableDictionary *)properties setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)properties setObject:property forKey:key];
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
   properties = self->_properties;
   if (!properties)
@@ -96,22 +96,22 @@ void __39__UIGestureGraphElement_hasProperties___block_invoke(uint64_t a1, uint6
     properties = self->_properties;
   }
 
-  [(NSMutableDictionary *)properties setDictionary:a3];
+  [(NSMutableDictionary *)properties setDictionary:properties];
 }
 
 - (id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"{"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"{"];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(NSMutableDictionary *)self->_properties keyEnumerator];
-  v5 = [v4 allObjects];
+  keyEnumerator = [(NSMutableDictionary *)self->_properties keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -122,7 +122,7 @@ void __39__UIGestureGraphElement_hasProperties___block_invoke(uint64_t a1, uint6
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -150,25 +150,25 @@ void __39__UIGestureGraphElement_hasProperties___block_invoke(uint64_t a1, uint6
           }
 
           v13 = v12;
-          [v3 appendFormat:@"%@:'%@'; ", v10, v12];
+          [string appendFormat:@"%@:'%@'; ", v10, v12];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
-  if ([v3 length] >= 2)
+  if ([string length] >= 2)
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  [v3 appendString:@"}"];
+  [string appendString:@"}"];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(UIGestureGraphElement *)self label];
-  v16 = [v14 stringWithFormat:@"(%@ %@)", v15, v3];
+  label = [(UIGestureGraphElement *)self label];
+  v16 = [v14 stringWithFormat:@"(%@ %@)", label, string];
 
   return v16;
 }

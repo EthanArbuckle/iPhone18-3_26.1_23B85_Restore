@@ -1,36 +1,36 @@
 @interface PKPaymentRegisterCredentialResponse
-- (PKPaymentRegisterCredentialResponse)initWithData:(id)a3;
+- (PKPaymentRegisterCredentialResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRegisterCredentialResponse
 
-- (PKPaymentRegisterCredentialResponse)initWithData:(id)a3
+- (PKPaymentRegisterCredentialResponse)initWithData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = PKPaymentRegisterCredentialResponse;
-  v3 = [(PKWebServiceResponse *)&v24 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v24 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x1E695DFF8];
-      v7 = [v5 PKStringForKey:@"passURL"];
+      v7 = [jSONObject PKStringForKey:@"passURL"];
       v8 = [v6 URLWithString:v7];
       passURL = v4->_passURL;
       v4->_passURL = v8;
 
       if (v4->_passURL)
       {
-        v10 = [v5 PKStringForKey:@"ktsSignature"];
-        v11 = [v10 pk_decodeHexadecimal];
+        v10 = [jSONObject PKStringForKey:@"ktsSignature"];
+        pk_decodeHexadecimal = [v10 pk_decodeHexadecimal];
         credentialAttestation = v4->_credentialAttestation;
-        v4->_credentialAttestation = v11;
+        v4->_credentialAttestation = pk_decodeHexadecimal;
 
-        v13 = [v5 PKDictionaryForKey:@"vehicleMobilizationData"];
+        v13 = [jSONObject PKDictionaryForKey:@"vehicleMobilizationData"];
         v14 = v13;
         if (v13)
         {
@@ -39,7 +39,7 @@
 
         else
         {
-          v15 = [v5 PKDictionaryForKey:@"keyData"];
+          v15 = [jSONObject PKDictionaryForKey:@"keyData"];
         }
 
         v21 = v15;

@@ -6,19 +6,19 @@
 
 - (id)crs_applicationBundleIdentifier
 {
-  v1 = [a1 identifier];
-  v2 = [v1 componentsSeparatedByString:@":"];
+  identifier = [self identifier];
+  v2 = [identifier componentsSeparatedByString:@":"];
   if ([v2 count] == 3)
   {
-    v3 = [v2 lastObject];
+    lastObject = [v2 lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 @end

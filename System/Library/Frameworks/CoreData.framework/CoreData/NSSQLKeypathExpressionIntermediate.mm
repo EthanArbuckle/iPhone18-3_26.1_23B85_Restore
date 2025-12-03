@@ -1,15 +1,15 @@
 @interface NSSQLKeypathExpressionIntermediate
-- (id)_generateSQLForKeyPathExpression:(id)a3 allowToMany:(BOOL)a4 inContext:(id)a5;
-- (id)generateSQLStringInContext:(id)a3;
-- (uint64_t)_propertyDescriptionsForKeypath:(uint64_t)a3 rootedAtEntity:(uint64_t)a4 allowToMany:(uint64_t)a5 allowToOne:(uint64_t *)a6 lastKeyVisited:(void *)a7 inContext:;
-- (unsigned)_propertyDescriptionForKeypath:(uint64_t)a3 startingAtEntity:(char)a4 allowToMany:(char)a5 allowToOne:(uint64_t *)a6 lastKeyVisited:(void *)a7 inContext:;
+- (id)_generateSQLForKeyPathExpression:(id)expression allowToMany:(BOOL)many inContext:(id)context;
+- (id)generateSQLStringInContext:(id)context;
+- (uint64_t)_propertyDescriptionsForKeypath:(uint64_t)keypath rootedAtEntity:(uint64_t)entity allowToMany:(uint64_t)many allowToOne:(uint64_t *)one lastKeyVisited:(void *)visited inContext:;
+- (unsigned)_propertyDescriptionForKeypath:(uint64_t)keypath startingAtEntity:(char)entity allowToMany:(char)many allowToOne:(uint64_t *)one lastKeyVisited:(void *)visited inContext:;
 @end
 
 @implementation NSSQLKeypathExpressionIntermediate
 
-- (unsigned)_propertyDescriptionForKeypath:(uint64_t)a3 startingAtEntity:(char)a4 allowToMany:(char)a5 allowToOne:(uint64_t *)a6 lastKeyVisited:(void *)a7 inContext:
+- (unsigned)_propertyDescriptionForKeypath:(uint64_t)keypath startingAtEntity:(char)entity allowToMany:(char)many allowToOne:(uint64_t *)one lastKeyVisited:(void *)visited inContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -24,19 +24,19 @@
   v15 = 0;
   v16 = 0;
   v36 = v13 - 1;
-  v37 = a7;
+  visitedCopy = visited;
   v17 = v13;
   while (1)
   {
     v18 = [a2 objectAtIndex:{v15, v36}];
-    *a6 = v18;
+    *one = v18;
     v19 = [@"entity" compare:v18 options:1];
     if (v17 == 1 && !v19)
     {
       break;
     }
 
-    v20 = -[NSEntityDescription _attributeNamed:]([a3 entityDescription], *a6);
+    v20 = -[NSEntityDescription _attributeNamed:]([keypath entityDescription], *one);
     if (v20 && [v20 attributeType] == 2100)
     {
       v21 = [a2 componentsJoinedByString:@"."];
@@ -44,12 +44,12 @@
 
     else
     {
-      v21 = *a6;
+      v21 = *one;
     }
 
-    if (a3)
+    if (keypath)
     {
-      v22 = [*(a3 + 40) objectForKey:v21];
+      v22 = [*(keypath + 40) objectForKey:v21];
     }
 
     else
@@ -62,11 +62,11 @@
       goto LABEL_22;
     }
 
-    v23 = [v37 objectForKeyedSubscript:@"fabricatedSQLEntityForReadOnlyFetch"];
+    v23 = [visitedCopy objectForKeyedSubscript:@"fabricatedSQLEntityForReadOnlyFetch"];
     if (v23)
     {
       v24 = *(v23 + 184);
-      if (a3)
+      if (keypath)
       {
         goto LABEL_16;
       }
@@ -75,10 +75,10 @@
     else
     {
       v24 = 0;
-      if (a3)
+      if (keypath)
       {
 LABEL_16:
-        v25 = *(a3 + 184);
+        v25 = *(keypath + 184);
         goto LABEL_17;
       }
     }
@@ -92,7 +92,7 @@ LABEL_17:
         v23 = *(v23 + 40);
       }
 
-      v22 = [v23 objectForKeyedSubscript:*a6];
+      v22 = [v23 objectForKeyedSubscript:*one];
     }
 
     else
@@ -101,7 +101,7 @@ LABEL_17:
     }
 
 LABEL_22:
-    v26 = [v22 propertyType];
+    propertyType = [v22 propertyType];
     if ([objc_msgSend(v22 "propertyDescription")])
     {
       v28 = MEMORY[0x1E695DF30];
@@ -124,7 +124,7 @@ LABEL_22:
     if (v27 == 9)
     {
 LABEL_26:
-      if ((a4 & 1) == 0)
+      if ((entity & 1) == 0)
       {
         v28 = MEMORY[0x1E695DF30];
         v29 = *MEMORY[0x1E695D940];
@@ -138,7 +138,7 @@ LABEL_26:
         v29 = *MEMORY[0x1E695D940];
         v30 = @"multiple to-many keys not allowed here";
 LABEL_46:
-        [v37 setObject:objc_msgSend(v28 forKey:{"exceptionWithName:reason:userInfo:", v29, v30, 0), @"NSUnderlyingException"}];
+        [visitedCopy setObject:objc_msgSend(v28 forKey:{"exceptionWithName:reason:userInfo:", v29, v30, 0), @"NSUnderlyingException"}];
         return 0;
       }
 
@@ -152,7 +152,7 @@ LABEL_46:
       v16 = 1;
     }
 
-    if (v27 == 7 && (a5 & 1) == 0)
+    if (v27 == 7 && (many & 1) == 0)
     {
       v28 = MEMORY[0x1E695DF30];
       v29 = *MEMORY[0x1E695D940];
@@ -161,9 +161,9 @@ LABEL_46:
     }
 
 LABEL_32:
-    if ((v26 - 7) <= 2)
+    if ((propertyType - 7) <= 2)
     {
-      a3 = [v22 destinationEntity];
+      keypath = [v22 destinationEntity];
       ++v15;
       if (--v17)
       {
@@ -174,24 +174,24 @@ LABEL_32:
     return v22;
   }
 
-  if (a3)
+  if (keypath)
   {
-    v31 = v37;
-    if (*(a3 + 184) == 16001)
+    v31 = visitedCopy;
+    if (*(keypath + 184) == 16001)
     {
-      v22 = [*(a3 + 40) objectForKey:*a6];
+      v22 = [*(keypath + 40) objectForKey:*one];
     }
 
     else
     {
-      v22 = *(a3 + 136);
+      v22 = *(keypath + 136);
     }
   }
 
   else
   {
     v22 = 0;
-    v31 = v37;
+    v31 = visitedCopy;
   }
 
   [v31 setValue:objc_msgSend(a2 forKey:{"subarrayWithRange:", 0, v36), @"entitySpecificationKeypath"}];
@@ -222,13 +222,13 @@ LABEL_32:
   return v22;
 }
 
-- (uint64_t)_propertyDescriptionsForKeypath:(uint64_t)a3 rootedAtEntity:(uint64_t)a4 allowToMany:(uint64_t)a5 allowToOne:(uint64_t *)a6 lastKeyVisited:(void *)a7 inContext:
+- (uint64_t)_propertyDescriptionsForKeypath:(uint64_t)keypath rootedAtEntity:(uint64_t)entity allowToMany:(uint64_t)many allowToOne:(uint64_t *)one lastKeyVisited:(void *)visited inContext:
 {
   v29 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v12 = result;
-    v13 = a3 ? *(a3 + 152) : 0;
+    v13 = keypath ? *(keypath + 152) : 0;
     result = [v13 count];
     if (result)
     {
@@ -253,24 +253,24 @@ LABEL_32:
             }
 
             v18 = *(*(&v24 + 1) + 8 * i);
-            v19 = [(NSSQLKeypathExpressionIntermediate *)v12 _propertyDescriptionForKeypath:a2 startingAtEntity:v18 allowToMany:a4 allowToOne:a5 lastKeyVisited:a6 inContext:a7];
+            v19 = [(NSSQLKeypathExpressionIntermediate *)v12 _propertyDescriptionForKeypath:a2 startingAtEntity:v18 allowToMany:entity allowToOne:many lastKeyVisited:one inContext:visited];
             if (v19)
             {
               [v14 addObject:v19];
             }
 
-            else if ([a7 objectForKey:@"NSUnderlyingException"])
+            else if ([visited objectForKey:@"NSUnderlyingException"])
             {
               goto LABEL_21;
             }
 
-            v20 = [(NSSQLKeypathExpressionIntermediate *)v12 _propertyDescriptionsForKeypath:a2 rootedAtEntity:v18 allowToMany:a4 allowToOne:a5 lastKeyVisited:a6 inContext:a7];
+            v20 = [(NSSQLKeypathExpressionIntermediate *)v12 _propertyDescriptionsForKeypath:a2 rootedAtEntity:v18 allowToMany:entity allowToOne:many lastKeyVisited:one inContext:visited];
             if (v20)
             {
               [v14 addObjectsFromArray:{objc_msgSend(v20, "allObjects")}];
             }
 
-            else if ([a7 objectForKey:@"NSUnderlyingException"])
+            else if ([visited objectForKey:@"NSUnderlyingException"])
             {
 LABEL_21:
               result = 0;
@@ -305,24 +305,24 @@ LABEL_22:
   return result;
 }
 
-- (id)_generateSQLForKeyPathExpression:(id)a3 allowToMany:(BOOL)a4 inContext:(id)a5
+- (id)_generateSQLForKeyPathExpression:(id)expression allowToMany:(BOOL)many inContext:(id)context
 {
-  v6 = a4;
+  manyCopy = many;
   v78[1] = *MEMORY[0x1E69E9840];
   v9 = objc_autoreleasePoolPush();
-  v10 = [a5 objectForKey:@"storeRequest"];
-  v11 = [v10 requestType];
-  if (v11 != 8)
+  v10 = [context objectForKey:@"storeRequest"];
+  requestType = [v10 requestType];
+  if (requestType != 8)
   {
-    if (v11 == 6)
+    if (requestType == 6)
     {
       context = v9;
       goto LABEL_8;
     }
 
-    if (v11 != 1)
+    if (requestType != 1)
     {
-      [a5 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], @"this should be inside a fetch or an update", 0), @"NSUnderlyingException"}];
+      [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], @"this should be inside a fetch or an update", 0), @"NSUnderlyingException"}];
       objc_autoreleasePoolPop(v9);
       v28 = 0;
 LABEL_39:
@@ -332,7 +332,7 @@ LABEL_39:
   }
 
   context = v9;
-  if (!v6)
+  if (!manyCopy)
   {
 LABEL_8:
     v12 = 0;
@@ -355,16 +355,16 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = [(NSSQLIntermediate *)self governingEntityForKeypathExpression:a3];
-  v14 = [(NSSQLIntermediate *)self governingAliasForKeypathExpression:a3];
-  v15 = [objc_msgSend(objc_msgSend(a3 "arguments")];
+  v13 = [(NSSQLIntermediate *)self governingEntityForKeypathExpression:expression];
+  v14 = [(NSSQLIntermediate *)self governingAliasForKeypathExpression:expression];
+  v15 = [objc_msgSend(objc_msgSend(expression "arguments")];
   v16 = [v15 componentsSeparatedByString:@"."];
   v74 = 0;
-  v17 = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionForKeypath:v16 startingAtEntity:v13 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:a5];
-  if ([objc_msgSend(v17 "propertyDescription")] != 7)
+  anyObject = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionForKeypath:v16 startingAtEntity:v13 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:context];
+  if ([objc_msgSend(anyObject "propertyDescription")] != 7)
   {
-    v18 = [v17 propertyDescription];
-    if ((!v18 || ![v18 superCompositeAttribute]) && -[NSSQLIntermediate isUpdateScoped](self, "isUpdateScoped") && objc_msgSend(v16, "count") >= 2)
+    propertyDescription = [anyObject propertyDescription];
+    if ((!propertyDescription || ![propertyDescription superCompositeAttribute]) && -[NSSQLIntermediate isUpdateScoped](self, "isUpdateScoped") && objc_msgSend(v16, "count") >= 2)
     {
       v19 = MEMORY[0x1E695DF30];
       v20 = *MEMORY[0x1E695D940];
@@ -375,7 +375,7 @@ LABEL_35:
       v36 = [v19 exceptionWithName:v20 reason:v21 userInfo:v35];
       v37 = @"NSUnderlyingException";
 LABEL_36:
-      [a5 setObject:v36 forKey:v37];
+      [context setObject:v36 forKey:v37];
 LABEL_37:
       v28 = 0;
 LABEL_38:
@@ -384,36 +384,36 @@ LABEL_38:
     }
   }
 
-  v22 = [(NSSQLIntermediate *)self disambiguatingEntity];
-  if (v17 || (v23 = v22) == 0)
+  disambiguatingEntity = [(NSSQLIntermediate *)self disambiguatingEntity];
+  if (anyObject || (v23 = disambiguatingEntity) == 0)
   {
     v23 = v13;
     goto LABEL_22;
   }
 
-  v24 = [(NSSQLIntermediate *)self disambiguationKeypath];
-  if (![(NSArray *)v24 count])
+  disambiguationKeypath = [(NSSQLIntermediate *)self disambiguationKeypath];
+  if (![(NSArray *)disambiguationKeypath count])
   {
     v74 = 0;
-    v29 = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionForKeypath:v16 startingAtEntity:v23 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:a5];
+    v29 = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionForKeypath:v16 startingAtEntity:v23 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:context];
     if (v29)
     {
-      v17 = v29;
+      anyObject = v29;
       v13 = v23;
       goto LABEL_54;
     }
 
     v74 = 0;
-    v42 = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionsForKeypath:v16 rootedAtEntity:v23 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:a5];
+    v42 = [(NSSQLKeypathExpressionIntermediate *)self _propertyDescriptionsForKeypath:v16 rootedAtEntity:v23 allowToMany:v12 allowToOne:1 lastKeyVisited:&v74 inContext:context];
     if (v42)
     {
       v43 = v42;
       if ([v42 count] == 1)
       {
-        v17 = [v43 anyObject];
+        anyObject = [v43 anyObject];
 LABEL_22:
         v13 = v23;
-        if (v17)
+        if (anyObject)
         {
           goto LABEL_54;
         }
@@ -435,28 +435,28 @@ LABEL_22:
       }
     }
 
-    else if ([a5 valueForKey:@"NSUnderlyingException"])
+    else if ([context valueForKey:@"NSUnderlyingException"])
     {
       goto LABEL_37;
     }
 
 LABEL_23:
     v74 = 0;
-    v26 = -[NSSQLKeypathExpressionIntermediate _propertyDescriptionsForKeypath:rootedAtEntity:allowToMany:allowToOne:lastKeyVisited:inContext:](self, v16, v13, v12, [v16 count] < 2, &v74, a5);
+    v26 = -[NSSQLKeypathExpressionIntermediate _propertyDescriptionsForKeypath:rootedAtEntity:allowToMany:allowToOne:lastKeyVisited:inContext:](self, v16, v13, v12, [v16 count] < 2, &v74, context);
     if (!v26)
     {
       if (v23 && *(v23 + 184) == 16001 && [v15 isEqualToString:@"changedObjectID"])
       {
-        [a5 setValue:&unk_1EF435E00 forKey:@"generatePairs"];
+        [context setValue:&unk_1EF435E00 forKey:@"generatePairs"];
         v40 = [*(v23 + 40) objectForKey:@"ENTITY"];
         v41 = [*(v23 + 40) objectForKey:@"ENTITYPK"];
         v28 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"(%@, %@)", objc_msgSend(v40, "columnName"), objc_msgSend(v41, "columnName")];
         goto LABEL_38;
       }
 
-      v17 = 0;
+      anyObject = 0;
       v28 = 0;
-      if ([a5 valueForKey:@"NSUnderlyingException"])
+      if ([context valueForKey:@"NSUnderlyingException"])
       {
         goto LABEL_38;
       }
@@ -467,13 +467,13 @@ LABEL_23:
     v27 = v26;
     if ([v26 count] == 1)
     {
-      v17 = [v27 anyObject];
+      anyObject = [v27 anyObject];
       goto LABEL_54;
     }
 
     if ([v27 count] < 2)
     {
-      v17 = 0;
+      anyObject = 0;
       goto LABEL_54;
     }
 
@@ -493,7 +493,7 @@ LABEL_113:
     goto LABEL_35;
   }
 
-  if (![v15 hasPrefix:{-[NSArray componentsJoinedByString:](v24, "componentsJoinedByString:", @"."}])
+  if (![v15 hasPrefix:{-[NSArray componentsJoinedByString:](disambiguationKeypath, "componentsJoinedByString:", @"."}])
   {
     v32 = MEMORY[0x1E695DF30];
     v33 = *MEMORY[0x1E695D940];
@@ -505,10 +505,10 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v25 = -[NSSQLKeypathExpressionIntermediate _propertyDescriptionForKeypath:startingAtEntity:allowToMany:allowToOne:lastKeyVisited:inContext:](self, [v16 subarrayWithRange:{-[NSArray count](v24, "count"), objc_msgSend(v16, "count") - -[NSArray count](v24, "count")}], v23, v12 & !-[NSSQLIntermediate disambiguationKeypathHasToMany](self, "disambiguationKeypathHasToMany"), 1, &v74, a5);
+  v25 = -[NSSQLKeypathExpressionIntermediate _propertyDescriptionForKeypath:startingAtEntity:allowToMany:allowToOne:lastKeyVisited:inContext:](self, [v16 subarrayWithRange:{-[NSArray count](disambiguationKeypath, "count"), objc_msgSend(v16, "count") - -[NSArray count](disambiguationKeypath, "count")}], v23, v12 & !-[NSSQLIntermediate disambiguationKeypathHasToMany](self, "disambiguationKeypathHasToMany"), 1, &v74, context);
   if (!v25)
   {
-    if ([a5 objectForKey:@"NSUnderlyingException"])
+    if ([context objectForKey:@"NSUnderlyingException"])
     {
       goto LABEL_37;
     }
@@ -519,27 +519,27 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v17 = v25;
+  anyObject = v25;
   v23 = v13;
 LABEL_54:
-  v50 = [v17 propertyType];
-  v51 = [v23 entityDescription];
-  if (v50 > 0xA)
+  propertyType = [anyObject propertyType];
+  entityDescription = [v23 entityDescription];
+  if (propertyType > 0xA)
   {
     goto LABEL_83;
   }
 
-  if (((1 << v50) & 0x42E) != 0)
+  if (((1 << propertyType) & 0x42E) != 0)
   {
     goto LABEL_63;
   }
 
-  if (((1 << v50) & 0x300) != 0)
+  if (((1 << propertyType) & 0x300) != 0)
   {
-    v52 = [v17 entity];
-    if (v52)
+    entity = [anyObject entity];
+    if (entity)
     {
-      v17 = *(v52 + 128);
+      anyObject = *(entity + 128);
       if (!self)
       {
         goto LABEL_74;
@@ -548,7 +548,7 @@ LABEL_54:
 
     else
     {
-      v17 = 0;
+      anyObject = 0;
       if (!self)
       {
         goto LABEL_74;
@@ -558,27 +558,27 @@ LABEL_54:
     goto LABEL_64;
   }
 
-  if (v50 != 7)
+  if (propertyType != 7)
   {
 LABEL_83:
-    v62 = [v16 firstObject];
-    if (v62 && (v63 = [objc_msgSend(v51 "propertiesByName")]) != 0)
+    firstObject = [v16 firstObject];
+    if (firstObject && (v63 = [objc_msgSend(entityDescription "propertiesByName")]) != 0)
     {
-      v64 = [v63 isTransient];
+      isTransient = [v63 isTransient];
     }
 
     else
     {
-      v64 = 0;
+      isTransient = 0;
     }
 
-    if ([a5 objectForKey:@"NSUnderlyingException"])
+    if ([context objectForKey:@"NSUnderlyingException"])
     {
       goto LABEL_37;
     }
 
-    [a5 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"keypath %@ not found in entity %@", a3, objc_msgSend(v13, "name")), 0), @"NSUnderlyingException"}];
-    if (!v64)
+    [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"keypath %@ not found in entity %@", expression, objc_msgSend(v13, "name")), 0), @"NSUnderlyingException"}];
+    if (!isTransient)
     {
       goto LABEL_37;
     }
@@ -590,7 +590,7 @@ LABEL_83:
 
   if (![(NSSQLIntermediate *)self isTargetColumnsScoped])
   {
-    v17 = [v17 foreignKey];
+    anyObject = [anyObject foreignKey];
   }
 
 LABEL_63:
@@ -602,7 +602,7 @@ LABEL_63:
 LABEL_64:
   if ([(NSSQLIntermediate *)self isUpdateScoped])
   {
-    v53 = [a5 objectForKey:@"outerFetch"];
+    v53 = [context objectForKey:@"outerFetch"];
   }
 
   else
@@ -610,10 +610,10 @@ LABEL_64:
     v53 = [(NSSQLIntermediate *)self fetchIntermediateForKeypathExpression:self->super._expression];
   }
 
-  v54 = [NSSQLJoinIntermediate createJoinIntermediatesForKeypath:v16 startEntity:v13 startAlias:v14 forScope:self inStatementIntermediate:v53 inContext:a5];
+  v54 = [NSSQLJoinIntermediate createJoinIntermediatesForKeypath:v16 startEntity:v13 startAlias:v14 forScope:self inStatementIntermediate:v53 inContext:context];
   if (![(NSSQLIntermediate *)self isUpdateScoped])
   {
-    if ([a5 objectForKey:@"NSUnderlyingException"])
+    if ([context objectForKey:@"NSUnderlyingException"])
     {
 
       goto LABEL_74;
@@ -624,12 +624,12 @@ LABEL_64:
       v58 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" "];
       [v58 appendString:v54[5]];
       [v58 appendString:@"."];
-      v61 = [(NSSQLManyToMany *)v54[2] inverseColumnName];
+      inverseColumnName = [(NSSQLManyToMany *)v54[2] inverseColumnName];
     }
 
     else
     {
-      if (-[NSSQLIntermediate isTargetColumnsScoped](self, "isTargetColumnsScoped") && [v17 propertyType] == 7)
+      if (-[NSSQLIntermediate isTargetColumnsScoped](self, "isTargetColumnsScoped") && [anyObject propertyType] == 7)
       {
         if (v54)
         {
@@ -637,19 +637,19 @@ LABEL_64:
         }
 
         v58 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" "];
-        v65 = [v17 destinationEntity];
-        if (v65)
+        destinationEntity = [anyObject destinationEntity];
+        if (destinationEntity)
         {
-          v66 = *(v65 + 152);
+          v66 = *(destinationEntity + 152);
           if (v66)
           {
             if ([v66 count])
             {
               [v58 appendString:v14];
               [v58 appendString:@"."];
-              if (v17)
+              if (anyObject)
               {
-                v67 = *(v17 + 9);
+                v67 = *(anyObject + 9);
               }
 
               else
@@ -665,13 +665,13 @@ LABEL_64:
 
         [v58 appendString:v14];
         [v58 appendString:@"."];
-        [v58 appendString:{objc_msgSend(objc_msgSend(v17, "foreignKey"), "columnName")}];
-        [a5 setObject:v17 forKey:@"keypathExpressionDestinationRelationship"];
+        [v58 appendString:{objc_msgSend(objc_msgSend(anyObject, "foreignKey"), "columnName")}];
+        [context setObject:anyObject forKey:@"keypathExpressionDestinationRelationship"];
         goto LABEL_117;
       }
 
       v58 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" "];
-      if (![a5 objectForKeyedSubscript:@"fabricatedSQLEntityForReadOnlyFetch"] || (v68 = objc_msgSend(a5, "objectForKeyedSubscript:", @"fabricatedSQLEntityForReadOnlyFetch"), v68 != objc_msgSend(v17, "entity")))
+      if (![context objectForKeyedSubscript:@"fabricatedSQLEntityForReadOnlyFetch"] || (v68 = objc_msgSend(context, "objectForKeyedSubscript:", @"fabricatedSQLEntityForReadOnlyFetch"), v68 != objc_msgSend(anyObject, "entity")))
       {
         if (v54)
         {
@@ -692,24 +692,24 @@ LABEL_117:
         goto LABEL_122;
       }
 
-      v61 = [v17 columnName];
+      inverseColumnName = [anyObject columnName];
     }
 
-    v69 = v61;
+    v69 = inverseColumnName;
     goto LABEL_116;
   }
 
   if (!v54)
   {
     v58 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v59 = [v17 propertyType];
-    if ((v59 - 1) >= 3)
+    propertyType2 = [anyObject propertyType];
+    if ((propertyType2 - 1) >= 3)
     {
-      if (v59 == 7)
+      if (propertyType2 == 7)
       {
-        if (v17)
+        if (anyObject)
         {
-          v70 = *(v17 + 9);
+          v70 = *(anyObject + 9);
         }
 
         else
@@ -720,42 +720,42 @@ LABEL_117:
         goto LABEL_120;
       }
 
-      if (v59 != 5)
+      if (propertyType2 != 5)
       {
 
-        if ([a5 objectForKey:@"NSUnderlyingException"])
+        if ([context objectForKey:@"NSUnderlyingException"])
         {
           goto LABEL_74;
         }
 
         v55 = MEMORY[0x1E695DF30];
         v56 = *MEMORY[0x1E695D940];
-        v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported property %@ in update", v17];
+        v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported property %@ in update", anyObject];
         goto LABEL_71;
       }
     }
 
     if (*(&self->super._allowToMany + 1))
     {
-      v60 = @"Z_PK";
+      columnName = @"Z_PK";
 LABEL_121:
-      [v58 appendString:v60];
+      [v58 appendString:columnName];
       goto LABEL_122;
     }
 
-    v70 = v17;
+    v70 = anyObject;
 LABEL_120:
-    v60 = [v70 columnName];
+    columnName = [v70 columnName];
     goto LABEL_121;
   }
 
-  if (![a5 objectForKey:@"NSUnderlyingException"])
+  if (![context objectForKey:@"NSUnderlyingException"])
   {
     v55 = MEMORY[0x1E695DF30];
     v56 = *MEMORY[0x1E695D940];
-    v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported property %@ in update - no joins allowed here", v17];
+    v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported property %@ in update - no joins allowed here", anyObject];
 LABEL_71:
-    [a5 setObject:objc_msgSend(v55 forKey:{"exceptionWithName:reason:userInfo:", v56, v57, 0), @"NSUnderlyingException"}];
+    [context setObject:objc_msgSend(v55 forKey:{"exceptionWithName:reason:userInfo:", v56, v57, 0), @"NSUnderlyingException"}];
   }
 
 LABEL_74:
@@ -768,10 +768,10 @@ LABEL_122:
   return v58;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     goto LABEL_6;
   }
@@ -789,7 +789,7 @@ LABEL_4:
     v12 = v8;
     v13 = 0;
 LABEL_5:
-    [a3 setObject:objc_msgSend(v11 forKey:{"exceptionWithName:reason:userInfo:", v12, v10, v13), @"NSUnderlyingException"}];
+    [context setObject:objc_msgSend(v11 forKey:{"exceptionWithName:reason:userInfo:", v12, v10, v13), @"NSUnderlyingException"}];
 LABEL_6:
     v14 = *MEMORY[0x1E69E9840];
     return 0;
@@ -797,8 +797,8 @@ LABEL_6:
 
   if ([(NSSQLIntermediate *)self isIndexScoped])
   {
-    v16 = [(NSSQLIntermediate *)self governingEntity];
-    if (!v16 || (v17 = [v16[5] objectForKey:v5]) == 0)
+    governingEntity = [(NSSQLIntermediate *)self governingEntity];
+    if (!governingEntity || (v17 = [governingEntity[5] objectForKey:v5]) == 0)
     {
       v20 = MEMORY[0x1E695DF30];
       v21 = *MEMORY[0x1E695D930];
@@ -858,18 +858,18 @@ LABEL_32:
       }
     }
 
-    v32 = [v18 columnName];
+    columnName = [v18 columnName];
     v33 = *MEMORY[0x1E69E9840];
 
-    return [v32 mutableCopy];
+    return [columnName mutableCopy];
   }
 
   else
   {
     if ([(NSSQLIntermediate *)self isTargetColumnsScoped])
     {
-      v23 = [(NSSQLIntermediate *)self fetchIntermediate];
-      if (v23 && v23[9] && ![(NSSQLIntermediate *)self isFunctionScoped]&& ([(NSSQLFetchIntermediate *)[(NSSQLIntermediate *)self fetchIntermediate] groupByClauseContainsKeypath:?]& 1) == 0)
+      fetchIntermediate = [(NSSQLIntermediate *)self fetchIntermediate];
+      if (fetchIntermediate && fetchIntermediate[9] && ![(NSSQLIntermediate *)self isFunctionScoped]&& ([(NSSQLFetchIntermediate *)[(NSSQLIntermediate *)self fetchIntermediate] groupByClauseContainsKeypath:?]& 1) == 0)
       {
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
@@ -878,10 +878,10 @@ LABEL_32:
       }
 
       v24 = self->super._expression;
-      v25 = [(NSSQLIntermediate *)self isFunctionScoped];
+      isFunctionScoped = [(NSSQLIntermediate *)self isFunctionScoped];
       v26 = *MEMORY[0x1E69E9840];
-      allowToMany = v25;
-      v28 = self;
+      allowToMany = isFunctionScoped;
+      selfCopy2 = self;
       v29 = v24;
     }
 
@@ -890,10 +890,10 @@ LABEL_32:
       v29 = self->super._expression;
       allowToMany = self->super._allowToMany;
       v30 = *MEMORY[0x1E69E9840];
-      v28 = self;
+      selfCopy2 = self;
     }
 
-    return [(NSSQLKeypathExpressionIntermediate *)v28 _generateSQLForKeyPathExpression:v29 allowToMany:allowToMany inContext:a3];
+    return [(NSSQLKeypathExpressionIntermediate *)selfCopy2 _generateSQLForKeyPathExpression:v29 allowToMany:allowToMany inContext:context];
   }
 }
 

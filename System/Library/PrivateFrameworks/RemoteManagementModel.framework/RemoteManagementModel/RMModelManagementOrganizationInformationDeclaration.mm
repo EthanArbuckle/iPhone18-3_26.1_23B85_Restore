@@ -1,11 +1,11 @@
 @interface RMModelManagementOrganizationInformationDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 name:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 name:(id)a4 email:(id)a5 URL:(id)a6 proof:(id)a7;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier name:(id)name;
++ (id)buildWithIdentifier:(id)identifier name:(id)name email:(id)email URL:(id)l proof:(id)proof;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementOrganizationInformationDeclaration
@@ -26,57 +26,57 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 name:(id)a4 email:(id)a5 URL:(id)a6 proof:(id)a7
++ (id)buildWithIdentifier:(id)identifier name:(id)name email:(id)email URL:(id)l proof:(id)proof
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  identifierCopy = identifier;
+  proofCopy = proof;
+  lCopy = l;
+  emailCopy = email;
+  nameCopy = name;
   v16 = objc_opt_new();
   [v16 setDeclarationType:@"com.apple.management.organization-info"];
-  if (v11)
+  if (identifierCopy)
   {
-    [v16 setDeclarationIdentifier:v11];
+    [v16 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
-    [v16 setDeclarationIdentifier:v18];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v16 setDeclarationIdentifier:uUIDString];
   }
 
-  [v16 setPayloadName:v15];
+  [v16 setPayloadName:nameCopy];
 
-  [v16 setPayloadEmail:v14];
-  [v16 setPayloadURL:v13];
+  [v16 setPayloadEmail:emailCopy];
+  [v16 setPayloadURL:lCopy];
 
-  [v16 setPayloadProof:v12];
+  [v16 setPayloadProof:proofCopy];
   [v16 updateServerToken];
 
   return v16;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 name:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.management.organization-info"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadName:v6];
+  [v7 setPayloadName:nameCopy];
 
   [v7 updateServerToken];
 
@@ -135,12 +135,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelManagementOrganizationInformationDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -148,10 +148,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Name" forKeyPath:@"payloadName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Email" forKeyPath:@"payloadEmail" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"URL" forKeyPath:@"payloadURL" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Name" forKeyPath:@"payloadName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Email" forKeyPath:@"payloadEmail" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"URL" forKeyPath:@"payloadURL" isRequired:0 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Proof" forKeyPath:@"payloadProof" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Proof" forKeyPath:@"payloadProof" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -162,36 +162,36 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelManagementOrganizationInformationDeclaration *)self payloadName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Name" value:v6 isRequired:1 defaultValue:0];
+  payloadName = [(RMModelManagementOrganizationInformationDeclaration *)self payloadName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Name" value:payloadName isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelManagementOrganizationInformationDeclaration *)self payloadEmail];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Email" value:v7 isRequired:0 defaultValue:0];
+  payloadEmail = [(RMModelManagementOrganizationInformationDeclaration *)self payloadEmail];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Email" value:payloadEmail isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelManagementOrganizationInformationDeclaration *)self payloadURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"URL" value:v8 isRequired:0 defaultValue:0];
+  payloadURL = [(RMModelManagementOrganizationInformationDeclaration *)self payloadURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"URL" value:payloadURL isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelManagementOrganizationInformationDeclaration *)self payloadProof];
+  payloadProof = [(RMModelManagementOrganizationInformationDeclaration *)self payloadProof];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__RMModelManagementOrganizationInformationDeclaration_serializePayloadWithType___block_invoke;
   v12[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v13 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Proof" value:v9 dictSerializer:v12 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Proof" value:payloadProof dictSerializer:v12 isRequired:0 defaultValue:0];
 
   v10 = [v5 copy];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelManagementOrganizationInformationDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadName copy];
   v6 = v4[6];
   v4[6] = v5;

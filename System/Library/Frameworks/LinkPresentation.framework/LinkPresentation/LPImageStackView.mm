@@ -1,8 +1,8 @@
 @interface LPImageStackView
 + (void)initialize;
-- (CGSize)_layoutImagesForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPImageStackView)initWithHost:(id)a3 images:(id)a4 style:(id)a5;
+- (CGSize)_layoutImagesForSize:(CGSize)size applyingLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPImageStackView)initWithHost:(id)host images:(id)images style:(id)style;
 - (void)layoutComponentView;
 @end
 
@@ -10,31 +10,31 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     stackedImageVerticalOffset = 0xC018000000000000;
   }
 }
 
-- (LPImageStackView)initWithHost:(id)a3 images:(id)a4 style:(id)a5
+- (LPImageStackView)initWithHost:(id)host images:(id)images style:(id)style
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v40 = a4;
-  v41 = a5;
+  hostCopy = host;
+  imagesCopy = images;
+  styleCopy = style;
   v50.receiver = self;
   v50.super_class = LPImageStackView;
-  v39 = v8;
-  v9 = [(LPComponentView *)&v50 initWithHost:v8];
+  v39 = hostCopy;
+  v9 = [(LPComponentView *)&v50 initWithHost:hostCopy];
   v42 = v9;
   v10 = v9;
   if (v9)
   {
-    v11 = [(LPImageStackView *)v9 layer];
-    [v11 setMasksToBounds:0];
+    layer = [(LPImageStackView *)v9 layer];
+    [layer setMasksToBounds:0];
 
-    objc_storeStrong(&v42->_images, a4);
-    objc_storeStrong(&v42->_style, a5);
+    objc_storeStrong(&v42->_images, images);
+    objc_storeStrong(&v42->_style, style);
     if ([(NSArray *)v42->_images count]>= 3)
     {
       v12 = [(NSArray *)v42->_images subarrayWithRange:0, 2];
@@ -49,13 +49,13 @@
     v44 = objc_alloc_init(LPImagePresentationProperties);
     [(LPImagePresentationProperties *)v44 setShouldApplyBackground:1];
     [(LPImagePresentationProperties *)v44 setRequireFixedSize:1];
-    v16 = [(LPImageViewStyle *)v42->_style fixedSize];
-    v17 = [v16 width];
-    [v17 value];
+    fixedSize = [(LPImageViewStyle *)v42->_style fixedSize];
+    width = [fixedSize width];
+    [width value];
     v19 = v18;
 
-    v20 = [(LPImageViewStyle *)v42->_style cornerRadius];
-    [v20 value];
+    cornerRadius = [(LPImageViewStyle *)v42->_style cornerRadius];
+    [cornerRadius value];
     v22 = v21;
 
     v45 = [(LPImageViewStyle *)v42->_style copy];
@@ -64,8 +64,8 @@
     [(LPImageViewStyle *)v45 setCornerRadius:v23];
 
     v24 = [LPPointUnit alloc];
-    v25 = [(LPImageViewStyle *)v45 fixedFallbackImageSize];
-    [v25 value];
+    fixedFallbackImageSize = [(LPImageViewStyle *)v45 fixedFallbackImageSize];
+    [fixedFallbackImageSize value];
     v27 = [(LPPointUnit *)v24 initWithValue:v26 + -8.0];
     [(LPImageViewStyle *)v45 setFixedFallbackImageSize:v27];
 
@@ -90,14 +90,14 @@
 
           v32 = *(*(&v46 + 1) + 8 * i);
           v33 = [LPImageView alloc];
-          v34 = [(LPComponentView *)v10 host];
+          host = [(LPComponentView *)v10 host];
           style = v45;
           if (v30)
           {
             style = v42->_style;
           }
 
-          v36 = [(LPImageView *)v33 initWithHost:v34 image:v32 properties:v44 style:style];
+          v36 = [(LPImageView *)v33 initWithHost:host image:v32 properties:v44 style:style];
 
           [(NSMutableArray *)v10->_imageViews addObject:v36];
           [(UIView *)v10 _lp_insertSubview:v36 belowSubview:0];
@@ -120,25 +120,25 @@
 
 - (void)layoutComponentView
 {
-  v3 = [(NSMutableArray *)self->_imageViews lastObject];
-  [v3 installDarkeningViewIfNeeded];
+  lastObject = [(NSMutableArray *)self->_imageViews lastObject];
+  [lastObject installDarkeningViewIfNeeded];
 
   [(LPImageStackView *)self bounds];
 
   [(LPImageStackView *)self _layoutImagesForSize:1 applyingLayout:v4, v5];
 }
 
-- (CGSize)_layoutImagesForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutImagesForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  if (a4)
+  if (layout)
   {
-    [(LPImageStackView *)self bounds:a3.width];
+    [(LPImageStackView *)self bounds:size.width];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(NSMutableArray *)self->_imageViews firstObject];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    firstObject = [(NSMutableArray *)self->_imageViews firstObject];
+    [firstObject setFrame:{v6, v8, v10, v12}];
 
     v27.origin.x = v6;
     v27.origin.y = v8;
@@ -149,11 +149,11 @@
     width = v28.size.width;
     height = v28.size.height;
     v17 = *&stackedImageVerticalOffset + v28.origin.y;
-    v18 = [(NSMutableArray *)self->_imageViews lastObject];
-    [v18 setFrame:{x, v17, width, height}];
+    lastObject = [(NSMutableArray *)self->_imageViews lastObject];
+    [lastObject setFrame:{x, v17, width, height}];
   }
 
-  v19 = [(LPImageViewStyle *)self->_style fixedSize:a3.width];
+  v19 = [(LPImageViewStyle *)self->_style fixedSize:size.width];
   [v19 asSize];
   v21 = v20;
   v23 = v22;
@@ -165,9 +165,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(LPImageStackView *)self _layoutImagesForSize:0 applyingLayout:a3.width, a3.height];
+  [(LPImageStackView *)self _layoutImagesForSize:0 applyingLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

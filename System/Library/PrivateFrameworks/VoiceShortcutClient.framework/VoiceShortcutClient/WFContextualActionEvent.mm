@@ -1,18 +1,18 @@
 @interface WFContextualActionEvent
-- (WFContextualActionEvent)initWithAction:(id)a3 contentTypes:(id)a4 containerName:(id)a5 surface:(unint64_t)a6;
+- (WFContextualActionEvent)initWithAction:(id)action contentTypes:(id)types containerName:(id)name surface:(unint64_t)surface;
 @end
 
 @implementation WFContextualActionEvent
 
-- (WFContextualActionEvent)initWithAction:(id)a3 contentTypes:(id)a4 containerName:(id)a5 surface:(unint64_t)a6
+- (WFContextualActionEvent)initWithAction:(id)action contentTypes:(id)types containerName:(id)name surface:(unint64_t)surface
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  actionCopy = action;
+  typesCopy = types;
+  nameCopy = name;
+  if (!actionCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFContextualActionEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualActionEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
   v20.receiver = self;
@@ -21,10 +21,10 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_action, a3);
-    objc_storeStrong(&v16->_contentTypes, a4);
-    objc_storeStrong(&v16->_containerName, a5);
-    v16->_surface = a6;
+    objc_storeStrong(&v15->_action, action);
+    objc_storeStrong(&v16->_contentTypes, types);
+    objc_storeStrong(&v16->_containerName, name);
+    v16->_surface = surface;
     v17 = v16;
   }
 

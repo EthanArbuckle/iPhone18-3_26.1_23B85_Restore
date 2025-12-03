@@ -1,25 +1,25 @@
 @interface AVTStickerRecord
-+ (id)matchingIdentifierTest:(id)a3;
-- (AVTStickerRecord)initWithCoder:(id)a3;
-- (AVTStickerRecord)initWithIdentifier:(id)a3 avatarRecordIdentifier:(id)a4 stickerConfigurationIdentifier:(id)a5 frequencySum:(id)a6 serializationVersion:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)matchingIdentifierTest:(id)test;
+- (AVTStickerRecord)initWithCoder:(id)coder;
+- (AVTStickerRecord)initWithIdentifier:(id)identifier avatarRecordIdentifier:(id)recordIdentifier stickerConfigurationIdentifier:(id)configurationIdentifier frequencySum:(id)sum serializationVersion:(id)version;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTStickerRecord
 
-+ (id)matchingIdentifierTest:(id)a3
++ (id)matchingIdentifierTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__AVTStickerRecord_matchingIdentifierTest___block_invoke;
   v7[3] = &unk_278CFAB50;
-  v8 = v3;
-  v4 = v3;
+  v8 = testCopy;
+  v4 = testCopy;
   v5 = MEMORY[0x245CF3540](v7);
 
   return v5;
@@ -33,98 +33,98 @@ uint64_t __43__AVTStickerRecord_matchingIdentifierTest___block_invoke(uint64_t a
   return v4;
 }
 
-- (AVTStickerRecord)initWithIdentifier:(id)a3 avatarRecordIdentifier:(id)a4 stickerConfigurationIdentifier:(id)a5 frequencySum:(id)a6 serializationVersion:(id)a7
+- (AVTStickerRecord)initWithIdentifier:(id)identifier avatarRecordIdentifier:(id)recordIdentifier stickerConfigurationIdentifier:(id)configurationIdentifier frequencySum:(id)sum serializationVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  recordIdentifierCopy = recordIdentifier;
+  configurationIdentifierCopy = configurationIdentifier;
+  sumCopy = sum;
+  versionCopy = version;
   v25.receiver = self;
   v25.super_class = AVTStickerRecord;
   v17 = [(AVTStickerRecord *)&v25 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [recordIdentifierCopy copy];
     avatarRecordIdentifier = v17->_avatarRecordIdentifier;
     v17->_avatarRecordIdentifier = v20;
 
-    v22 = [v14 copy];
+    v22 = [configurationIdentifierCopy copy];
     stickerConfigurationIdentifier = v17->_stickerConfigurationIdentifier;
     v17->_stickerConfigurationIdentifier = v22;
 
-    v17->_frequencySum = v15;
-    v17->_serializationVersion = v16;
+    v17->_frequencySum = sumCopy;
+    v17->_serializationVersion = versionCopy;
   }
 
   return v17;
 }
 
-- (AVTStickerRecord)initWithCoder:(id)a3
+- (AVTStickerRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecordIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stickerConfigurationIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frequencySum"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializationVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecordIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stickerConfigurationIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frequencySum"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializationVersion"];
 
   v10 = [(AVTStickerRecord *)self initWithIdentifier:v5 avatarRecordIdentifier:v6 stickerConfigurationIdentifier:v7 frequencySum:v8 serializationVersion:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AVTStickerRecord *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(AVTStickerRecord *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-  [v4 encodeObject:v6 forKey:@"avatarRecordIdentifier"];
+  avatarRecordIdentifier = [(AVTStickerRecord *)self avatarRecordIdentifier];
+  [coderCopy encodeObject:avatarRecordIdentifier forKey:@"avatarRecordIdentifier"];
 
-  v7 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-  [v4 encodeObject:v7 forKey:@"stickerConfigurationIdentifier"];
+  stickerConfigurationIdentifier = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+  [coderCopy encodeObject:stickerConfigurationIdentifier forKey:@"stickerConfigurationIdentifier"];
 
-  v8 = [(AVTStickerRecord *)self frequencySum];
-  [v4 encodeObject:v8 forKey:@"frequencySum"];
+  frequencySum = [(AVTStickerRecord *)self frequencySum];
+  [coderCopy encodeObject:frequencySum forKey:@"frequencySum"];
 
-  v9 = [(AVTStickerRecord *)self serializationVersion];
-  [v4 encodeObject:v9 forKey:@"serializationVersion"];
+  serializationVersion = [(AVTStickerRecord *)self serializationVersion];
+  [coderCopy encodeObject:serializationVersion forKey:@"serializationVersion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTStickerRecord alloc];
-  v5 = [(AVTStickerRecord *)self identifier];
-  v6 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-  v7 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-  v8 = [(AVTStickerRecord *)self frequencySum];
-  v9 = [(AVTStickerRecord *)self serializationVersion];
-  v10 = [(AVTStickerRecord *)v4 initWithIdentifier:v5 avatarRecordIdentifier:v6 stickerConfigurationIdentifier:v7 frequencySum:v8 serializationVersion:v9];
+  identifier = [(AVTStickerRecord *)self identifier];
+  avatarRecordIdentifier = [(AVTStickerRecord *)self avatarRecordIdentifier];
+  stickerConfigurationIdentifier = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+  frequencySum = [(AVTStickerRecord *)self frequencySum];
+  serializationVersion = [(AVTStickerRecord *)self serializationVersion];
+  v10 = [(AVTStickerRecord *)v4 initWithIdentifier:identifier avatarRecordIdentifier:avatarRecordIdentifier stickerConfigurationIdentifier:stickerConfigurationIdentifier frequencySum:frequencySum serializationVersion:serializationVersion];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTStickerRecord *)self identifier];
-      if (v6 || ([(AVTStickerRecord *)v5 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      identifier = [(AVTStickerRecord *)self identifier];
+      if (identifier || ([(AVTStickerRecord *)equalCopy identifier], (avatarRecordIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(AVTStickerRecord *)self identifier];
-        v8 = [(AVTStickerRecord *)v5 identifier];
-        v9 = [v7 isEqual:v8];
+        identifier2 = [(AVTStickerRecord *)self identifier];
+        identifier3 = [(AVTStickerRecord *)equalCopy identifier];
+        v9 = [identifier2 isEqual:identifier3];
 
-        if (v6)
+        if (identifier)
         {
 
           if (!v9)
@@ -143,21 +143,21 @@ uint64_t __43__AVTStickerRecord_matchingIdentifierTest___block_invoke(uint64_t a
         }
       }
 
-      v11 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-      if (!v11)
+      avatarRecordIdentifier = [(AVTStickerRecord *)self avatarRecordIdentifier];
+      if (!avatarRecordIdentifier)
       {
-        v3 = [(AVTStickerRecord *)v5 avatarRecordIdentifier];
-        if (!v3)
+        avatarRecordIdentifier2 = [(AVTStickerRecord *)equalCopy avatarRecordIdentifier];
+        if (!avatarRecordIdentifier2)
         {
 LABEL_14:
-          v15 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-          if (v15 || ([(AVTStickerRecord *)v5 stickerConfigurationIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          stickerConfigurationIdentifier = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+          if (stickerConfigurationIdentifier || ([(AVTStickerRecord *)equalCopy stickerConfigurationIdentifier], (avatarRecordIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v16 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-            v17 = [(AVTStickerRecord *)v5 stickerConfigurationIdentifier];
-            v10 = [v16 isEqual:v17];
+            stickerConfigurationIdentifier2 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+            stickerConfigurationIdentifier3 = [(AVTStickerRecord *)equalCopy stickerConfigurationIdentifier];
+            v10 = [stickerConfigurationIdentifier2 isEqual:stickerConfigurationIdentifier3];
 
-            if (v15)
+            if (stickerConfigurationIdentifier)
             {
 LABEL_23:
 
@@ -174,11 +174,11 @@ LABEL_23:
         }
       }
 
-      v12 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-      v13 = [(AVTStickerRecord *)v5 avatarRecordIdentifier];
-      v14 = [v12 isEqual:v13];
+      avatarRecordIdentifier3 = [(AVTStickerRecord *)self avatarRecordIdentifier];
+      avatarRecordIdentifier4 = [(AVTStickerRecord *)equalCopy avatarRecordIdentifier];
+      v14 = [avatarRecordIdentifier3 isEqual:avatarRecordIdentifier4];
 
-      if (v11)
+      if (avatarRecordIdentifier)
       {
 
         if (v14)
@@ -210,19 +210,19 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTStickerRecord *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(AVTStickerRecord *)self identifier];
+  identifier = [(AVTStickerRecord *)self identifier];
+  v4 = [identifier hash];
+  identifier2 = [(AVTStickerRecord *)self identifier];
   *(&v7 + 1) = v4;
-  *&v7 = [v5 hash];
+  *&v7 = [identifier2 hash];
   v6 = v7 >> 43;
-  v8 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-  v9 = [v8 hash];
-  v10 = [(AVTStickerRecord *)self avatarRecordIdentifier];
+  avatarRecordIdentifier = [(AVTStickerRecord *)self avatarRecordIdentifier];
+  v9 = [avatarRecordIdentifier hash];
+  avatarRecordIdentifier2 = [(AVTStickerRecord *)self avatarRecordIdentifier];
   *(&v7 + 1) = v9;
-  *&v7 = [v10 hash];
-  v11 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-  v12 = [v11 hash];
+  *&v7 = [avatarRecordIdentifier2 hash];
+  stickerConfigurationIdentifier = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+  v12 = [stickerConfigurationIdentifier hash];
 
   return (v7 >> 32) ^ v6 ^ v12;
 }
@@ -234,13 +234,13 @@ LABEL_20:
   v3 = [(AVTStickerRecord *)&v13 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTStickerRecord *)self identifier];
-  v6 = [(AVTStickerRecord *)self avatarRecordIdentifier];
-  v7 = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
-  v8 = [(AVTStickerRecord *)self frequencySum];
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [(AVTStickerRecord *)self serializationVersion];
-  [v4 appendFormat:@" identifer:%@ ari:%@ sci:%@ frequencySum:%ld version:%ld", v5, v6, v7, v9, objc_msgSend(v10, "integerValue")];
+  identifier = [(AVTStickerRecord *)self identifier];
+  avatarRecordIdentifier = [(AVTStickerRecord *)self avatarRecordIdentifier];
+  stickerConfigurationIdentifier = [(AVTStickerRecord *)self stickerConfigurationIdentifier];
+  frequencySum = [(AVTStickerRecord *)self frequencySum];
+  unsignedIntegerValue = [frequencySum unsignedIntegerValue];
+  serializationVersion = [(AVTStickerRecord *)self serializationVersion];
+  [v4 appendFormat:@" identifer:%@ ari:%@ sci:%@ frequencySum:%ld version:%ld", identifier, avatarRecordIdentifier, stickerConfigurationIdentifier, unsignedIntegerValue, objc_msgSend(serializationVersion, "integerValue")];
 
   v11 = [v4 copy];
 

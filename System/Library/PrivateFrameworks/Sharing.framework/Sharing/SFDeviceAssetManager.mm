@@ -1,39 +1,39 @@
 @interface SFDeviceAssetManager
-- (BOOL)pathInLocalCache:(id)a3;
+- (BOOL)pathInLocalCache:(id)cache;
 - (SFDeviceAssetManager)init;
 - (id)cacheDirectory;
 - (id)hardcodedMappedProducts;
-- (id)localCacheWithFileName:(id)a3;
+- (id)localCacheWithFileName:(id)name;
 - (id)locallyCachedProductMappings;
 - (id)locallyCachedQueryResults;
-- (id)onqueue_assetMappedProductTypeForProductType:(id)a3;
-- (id)onqueue_mappedProductTypeForProductType:(id)a3;
+- (id)onqueue_assetMappedProductTypeForProductType:(id)type;
+- (id)onqueue_mappedProductTypeForProductType:(id)type;
 - (id)onqueue_sharingManagementAsset;
 - (void)activate;
-- (void)addQueryResultToLocalCache:(id)a3 url:(id)a4 isFallback:(BOOL)a5;
+- (void)addQueryResultToLocalCache:(id)cache url:(id)url isFallback:(BOOL)fallback;
 - (void)cacheDirectory;
-- (void)clearQueryResultFromLocalCache:(id)a3;
-- (void)getAssetBundleForDeviceQuery:(id)a3 withRequestConfiguration:(id)a4;
+- (void)clearQueryResultFromLocalCache:(id)cache;
+- (void)getAssetBundleForDeviceQuery:(id)query withRequestConfiguration:(id)configuration;
 - (void)invalidate;
 - (void)logNetworkStatus;
-- (void)mappedProductTypeForProductType:(id)a3 completionHandler:(id)a4;
+- (void)mappedProductTypeForProductType:(id)type completionHandler:(id)handler;
 - (void)onqueue_activate;
-- (void)onqueue_downloadAsset:(id)a3 ucat:(LogCategory *)a4 queryLogString:(id)a5 withCompletionHandler:(id)a6;
-- (void)onqueue_executeNextMAQueryForTask:(id)a3;
-- (void)onqueue_findAssetBundleForAssetQuery:(id)a3 ucat:(LogCategory *)a4 queryType:(id)a5 fallback:(BOOL)a6 retryAttempt:(BOOL)a7 withCompletionHandler:(id)a8;
-- (void)onqueue_getAssetBundleForDeviceQuery:(id)a3 withRequestConfiguration:(id)a4;
-- (void)onqueue_getCachedAssetBundleForTask:(id)a3;
+- (void)onqueue_downloadAsset:(id)asset ucat:(LogCategory *)ucat queryLogString:(id)string withCompletionHandler:(id)handler;
+- (void)onqueue_executeNextMAQueryForTask:(id)task;
+- (void)onqueue_findAssetBundleForAssetQuery:(id)query ucat:(LogCategory *)ucat queryType:(id)type fallback:(BOOL)fallback retryAttempt:(BOOL)attempt withCompletionHandler:(id)handler;
+- (void)onqueue_getAssetBundleForDeviceQuery:(id)query withRequestConfiguration:(id)configuration;
+- (void)onqueue_getCachedAssetBundleForTask:(id)task;
 - (void)onqueue_invalidate;
-- (void)onqueue_manuallyFindFallbackAssetBundleMatchingQuery:(id)a3 withCompletionHandler:(id)a4;
-- (void)onqueue_purgeAssetsMatchingQuery:(id)a3;
-- (void)onqueue_updateMetaDataWithCompletionHandler:(id)a3;
+- (void)onqueue_manuallyFindFallbackAssetBundleMatchingQuery:(id)query withCompletionHandler:(id)handler;
+- (void)onqueue_purgeAssetsMatchingQuery:(id)query;
+- (void)onqueue_updateMetaDataWithCompletionHandler:(id)handler;
 - (void)onqueue_updateSharingManagementAssetIfNecessary;
-- (void)onqueue_validateProductTypeInQuery:(id)a3;
-- (void)onqueue_variantsMatchingQuery:(id)a3 completionHandler:(id)a4;
-- (void)purgeAssetsMatchingQuery:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)storeEntries:(id)a3 inLocalCacheWithFileName:(id)a4;
-- (void)variantsMatchingQuery:(id)a3 completionHandler:(id)a4;
+- (void)onqueue_validateProductTypeInQuery:(id)query;
+- (void)onqueue_variantsMatchingQuery:(id)query completionHandler:(id)handler;
+- (void)purgeAssetsMatchingQuery:(id)query;
+- (void)setDispatchQueue:(id)queue;
+- (void)storeEntries:(id)entries inLocalCacheWithFileName:(id)name;
+- (void)variantsMatchingQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation SFDeviceAssetManager
@@ -57,9 +57,9 @@
   return v2;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -71,7 +71,7 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
@@ -122,16 +122,16 @@
 - (void)logNetworkStatus
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(SFDeviceAssetManager *)self networkStatus];
+  networkStatus = [(SFDeviceAssetManager *)self networkStatus];
 
-  if (v3)
+  if (networkStatus)
   {
     v4 = asset_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(SFDeviceAssetManager *)self networkStatus];
+      networkStatus2 = [(SFDeviceAssetManager *)self networkStatus];
       *buf = 138412290;
-      v19 = v5;
+      v19 = networkStatus2;
       _os_log_impl(&dword_1A9662000, v4, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
@@ -300,10 +300,10 @@ void __40__SFDeviceAssetManager_logNetworkStatus__block_invoke_612(uint64_t a1, 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)onqueue_updateMetaDataWithCompletionHandler:(id)a3
+- (void)onqueue_updateMetaDataWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = asset_metadata_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -323,8 +323,8 @@ void __40__SFDeviceAssetManager_logNetworkStatus__block_invoke_612(uint64_t a1, 
   v10[2] = __68__SFDeviceAssetManager_onqueue_updateMetaDataWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E788D680;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   [(objc_class *)MAAssetClass startCatalogDownload:@"com.apple.MobileAsset.SharingDeviceAssets" options:v6 then:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -376,11 +376,11 @@ uint64_t __68__SFDeviceAssetManager_onqueue_updateMetaDataWithCompletionHandler_
 
 - (void)onqueue_updateSharingManagementAssetIfNecessary
 {
-  v3 = [(SFDeviceAssetManager *)self onqueue_sharingManagementAsset];
-  v4 = [v3 attributes];
+  onqueue_sharingManagementAsset = [(SFDeviceAssetManager *)self onqueue_sharingManagementAsset];
+  attributes = [onqueue_sharingManagementAsset attributes];
   v5 = getASAttributeContentVersion();
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  v6 = [attributes objectForKeyedSubscript:v5];
+  integerValue = [v6 integerValue];
 
   v8 = [objc_alloc(getMAAssetQueryClass()) initWithType:@"com.apple.MobileAsset.SharingDeviceAssets"];
   [v8 returnTypes:0];
@@ -391,7 +391,7 @@ uint64_t __68__SFDeviceAssetManager_onqueue_updateMetaDataWithCompletionHandler_
   v10[3] = &unk_1E788D6F8;
   v10[4] = self;
   v11 = v8;
-  v12 = v7;
+  v12 = integerValue;
   v9 = v8;
   [v9 queryMetaData:v10];
 }
@@ -555,18 +555,18 @@ void __71__SFDeviceAssetManager_onqueue_updateSharingManagementAssetIfNecessary_
   }
 }
 
-- (void)variantsMatchingQuery:(id)a3 completionHandler:(id)a4
+- (void)variantsMatchingQuery:(id)query completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v8 = asset_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[SFDeviceAssetManager variantsMatchingQuery:completionHandler:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = queryCopy;
     _os_log_impl(&dword_1A9662000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -576,10 +576,10 @@ void __71__SFDeviceAssetManager_onqueue_updateSharingManagementAssetIfNecessary_
   block[2] = __64__SFDeviceAssetManager_variantsMatchingQuery_completionHandler___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = queryCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queryCopy;
   dispatch_async(workQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -603,20 +603,20 @@ void __64__SFDeviceAssetManager_variantsMatchingQuery_completionHandler___block_
   }
 }
 
-- (void)onqueue_variantsMatchingQuery:(id)a3 completionHandler:(id)a4
+- (void)onqueue_variantsMatchingQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
-  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:v6];
+  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:queryCopy];
   v8 = [objc_alloc(getMAAssetQueryClass()) initWithType:@"com.apple.MobileAsset.SharingDeviceAssets"];
   [v8 returnTypes:2];
-  v9 = [v6 effectiveProductType];
-  SFDeviceAssetAddKeyValuePair(@"ProductType", v9, v8);
+  effectiveProductType = [queryCopy effectiveProductType];
+  SFDeviceAssetAddKeyValuePair(@"ProductType", effectiveProductType, v8);
 
-  if ([v6 legacyAsset])
+  if ([queryCopy legacyAsset])
   {
-    if ([v6 h264])
+    if ([queryCopy h264])
     {
       v10 = @"YES";
     }
@@ -635,8 +635,8 @@ void __64__SFDeviceAssetManager_variantsMatchingQuery_completionHandler___block_
   v13[3] = &unk_1E788D748;
   v13[4] = self;
   v14 = v8;
-  v15 = v7;
-  v11 = v7;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v8;
   [v12 queryMetaData:v13];
 }
@@ -731,15 +731,15 @@ void __72__SFDeviceAssetManager_onqueue_variantsMatchingQuery_completionHandler_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getAssetBundleForDeviceQuery:(id)a3 withRequestConfiguration:(id)a4
+- (void)getAssetBundleForDeviceQuery:(id)query withRequestConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (*[v6 ucat] <= 50)
+  queryCopy = query;
+  configurationCopy = configuration;
+  if (*[queryCopy ucat] <= 50)
   {
-    if (*[v6 ucat] != -1 || (objc_msgSend(v6, "ucat"), _LogCategory_Initialize()))
+    if (*[queryCopy ucat] != -1 || (objc_msgSend(queryCopy, "ucat"), _LogCategory_Initialize()))
     {
-      [SFDeviceAssetManager getAssetBundleForDeviceQuery:v6 withRequestConfiguration:?];
+      [SFDeviceAssetManager getAssetBundleForDeviceQuery:queryCopy withRequestConfiguration:?];
     }
   }
 
@@ -749,10 +749,10 @@ void __72__SFDeviceAssetManager_onqueue_variantsMatchingQuery_completionHandler_
   block[2] = __78__SFDeviceAssetManager_getAssetBundleForDeviceQuery_withRequestConfiguration___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queryCopy;
+  v13 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = queryCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -774,31 +774,31 @@ void __78__SFDeviceAssetManager_getAssetBundleForDeviceQuery_withRequestConfigur
   }
 }
 
-- (void)onqueue_getCachedAssetBundleForTask:(id)a3
+- (void)onqueue_getCachedAssetBundleForTask:(id)task
 {
-  v20 = a3;
-  v4 = [(SFDeviceAssetManager *)self locallyCachedQueryResults];
-  v5 = [v20 deviceAssetQuery];
-  v6 = [v5 stringIdentifier];
-  v7 = [v4 objectForKey:v6];
+  taskCopy = task;
+  locallyCachedQueryResults = [(SFDeviceAssetManager *)self locallyCachedQueryResults];
+  deviceAssetQuery = [taskCopy deviceAssetQuery];
+  stringIdentifier = [deviceAssetQuery stringIdentifier];
+  v7 = [locallyCachedQueryResults objectForKey:stringIdentifier];
 
   if (v7)
   {
     v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7];
-    v9 = [v20 updateTaskWithAssetURL:v8 error:0 isFallback:1 isImperfectMatch:0 isCached:1];
+    v9 = [taskCopy updateTaskWithAssetURL:v8 error:0 isFallback:1 isImperfectMatch:0 isCached:1];
 
-    [v20 completeIfPossible];
-    v10 = [v20 deviceAssetQuery];
-    v11 = *[v10 ucat];
+    [taskCopy completeIfPossible];
+    deviceAssetQuery2 = [taskCopy deviceAssetQuery];
+    v11 = *[deviceAssetQuery2 ucat];
     if (v9)
     {
       if (v11 <= 50)
       {
-        v12 = [v20 deviceAssetQuery];
-        if (*[v12 ucat] == -1)
+        deviceAssetQuery3 = [taskCopy deviceAssetQuery];
+        if (*[deviceAssetQuery3 ucat] == -1)
         {
-          v16 = [v20 deviceAssetQuery];
-          [v16 ucat];
+          deviceAssetQuery4 = [taskCopy deviceAssetQuery];
+          [deviceAssetQuery4 ucat];
           v17 = _LogCategory_Initialize();
 
           if (!v17)
@@ -817,18 +817,18 @@ void __78__SFDeviceAssetManager_getAssetBundleForDeviceQuery_withRequestConfigur
 
     if (v11 <= 90)
     {
-      v13 = [v20 deviceAssetQuery];
-      if (*[v13 ucat] == -1)
+      deviceAssetQuery5 = [taskCopy deviceAssetQuery];
+      if (*[deviceAssetQuery5 ucat] == -1)
       {
-        v18 = [v20 deviceAssetQuery];
-        [v18 ucat];
+        deviceAssetQuery6 = [taskCopy deviceAssetQuery];
+        [deviceAssetQuery6 ucat];
         v19 = _LogCategory_Initialize();
 
         if (!v19)
         {
 LABEL_19:
-          v10 = [v20 deviceAssetQuery];
-          [(SFDeviceAssetManager *)self clearQueryResultFromLocalCache:v10];
+          deviceAssetQuery2 = [taskCopy deviceAssetQuery];
+          [(SFDeviceAssetManager *)self clearQueryResultFromLocalCache:deviceAssetQuery2];
           goto LABEL_20;
         }
       }
@@ -837,22 +837,22 @@ LABEL_19:
       {
       }
 
-      v10 = [v20 deviceAssetQuery];
-      [v10 ucat];
+      deviceAssetQuery2 = [taskCopy deviceAssetQuery];
+      [deviceAssetQuery2 ucat];
       LogPrintF();
     }
 
     goto LABEL_19;
   }
 
-  v10 = [v20 deviceAssetQuery];
-  if (*[v10 ucat] <= 50)
+  deviceAssetQuery2 = [taskCopy deviceAssetQuery];
+  if (*[deviceAssetQuery2 ucat] <= 50)
   {
-    v12 = [v20 deviceAssetQuery];
-    if (*[v12 ucat] == -1)
+    deviceAssetQuery3 = [taskCopy deviceAssetQuery];
+    if (*[deviceAssetQuery3 ucat] == -1)
     {
-      v14 = [v20 deviceAssetQuery];
-      [v14 ucat];
+      deviceAssetQuery7 = [taskCopy deviceAssetQuery];
+      [deviceAssetQuery7 ucat];
       v15 = _LogCategory_Initialize();
 
       if (!v15)
@@ -866,8 +866,8 @@ LABEL_19:
 LABEL_5:
 
 LABEL_15:
-    v10 = [v20 deviceAssetQuery];
-    [v10 ucat];
+    deviceAssetQuery2 = [taskCopy deviceAssetQuery];
+    [deviceAssetQuery2 ucat];
     LogPrintF();
   }
 
@@ -876,16 +876,16 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)onqueue_getAssetBundleForDeviceQuery:(id)a3 withRequestConfiguration:(id)a4
+- (void)onqueue_getAssetBundleForDeviceQuery:(id)query withRequestConfiguration:(id)configuration
 {
-  v6 = a3;
+  queryCopy = query;
   workQueue = self->_workQueue;
-  v8 = a4;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(workQueue);
-  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:v6];
+  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:queryCopy];
   v9 = [SFDeviceAssetTask alloc];
-  v10 = [(SFDeviceAssetManager *)self dispatchQueue];
-  v11 = [(SFDeviceAssetTask *)v9 initWithDeviceQuery:v6 requestConfiguration:v8 dispatchQueue:v10 useProcessLocalCache:[(SFDeviceAssetManager *)self useProcessLocalCache]];
+  dispatchQueue = [(SFDeviceAssetManager *)self dispatchQueue];
+  v11 = [(SFDeviceAssetTask *)v9 initWithDeviceQuery:queryCopy requestConfiguration:configurationCopy dispatchQueue:dispatchQueue useProcessLocalCache:[(SFDeviceAssetManager *)self useProcessLocalCache]];
 
   if ([(SFDeviceAssetManager *)self useProcessLocalCache])
   {
@@ -904,7 +904,7 @@ LABEL_21:
     v12[2] = __86__SFDeviceAssetManager_onqueue_getAssetBundleForDeviceQuery_withRequestConfiguration___block_invoke;
     v12[3] = &unk_1E788D770;
     v13 = v11;
-    [(SFDeviceAssetManager *)self onqueue_manuallyFindFallbackAssetBundleMatchingQuery:v6 withCompletionHandler:v12];
+    [(SFDeviceAssetManager *)self onqueue_manuallyFindFallbackAssetBundleMatchingQuery:queryCopy withCompletionHandler:v12];
   }
 }
 
@@ -943,14 +943,14 @@ LABEL_7:
   [*(a1 + 32) completeIfPossible];
 }
 
-- (void)purgeAssetsMatchingQuery:(id)a3
+- (void)purgeAssetsMatchingQuery:(id)query
 {
-  v4 = a3;
-  if (*[v4 ucat] <= 50)
+  queryCopy = query;
+  if (*[queryCopy ucat] <= 50)
   {
-    if (*[v4 ucat] != -1 || (objc_msgSend(v4, "ucat"), _LogCategory_Initialize()))
+    if (*[queryCopy ucat] != -1 || (objc_msgSend(queryCopy, "ucat"), _LogCategory_Initialize()))
     {
-      [SFDeviceAssetManager purgeAssetsMatchingQuery:v4];
+      [SFDeviceAssetManager purgeAssetsMatchingQuery:queryCopy];
     }
   }
 
@@ -960,8 +960,8 @@ LABEL_7:
   v7[2] = __49__SFDeviceAssetManager_purgeAssetsMatchingQuery___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -982,16 +982,16 @@ void __49__SFDeviceAssetManager_purgeAssetsMatchingQuery___block_invoke(uint64_t
   }
 }
 
-- (void)onqueue_purgeAssetsMatchingQuery:(id)a3
+- (void)onqueue_purgeAssetsMatchingQuery:(id)query
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   dispatch_assert_queue_V2(self->_workQueue);
-  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:v4];
+  [(SFDeviceAssetManager *)self onqueue_validateProductTypeInQuery:queryCopy];
   v5 = objc_opt_new();
-  v6 = [[SFDeviceQueryParameters alloc] initWithDeviceAssetQuery:v4 installedOnly:1 imperfectMatch:0 fallback:0];
-  v7 = [(SFDeviceQueryParameters *)v6 maQuery];
-  SFDeviceAssetAddKeyValuePairsForStrictMatch(v4, v7);
+  v6 = [[SFDeviceQueryParameters alloc] initWithDeviceAssetQuery:queryCopy installedOnly:1 imperfectMatch:0 fallback:0];
+  maQuery = [(SFDeviceQueryParameters *)v6 maQuery];
+  SFDeviceAssetAddKeyValuePairsForStrictMatch(queryCopy, maQuery);
 
   v18 = v6;
   [v5 addObject:v6];
@@ -1015,16 +1015,16 @@ void __49__SFDeviceAssetManager_purgeAssetsMatchingQuery___block_invoke(uint64_t
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 maQuery];
-        v14 = [v4 ucat];
-        v15 = [v12 queryType];
-        v16 = [v12 fallback];
+        maQuery2 = [v12 maQuery];
+        ucat = [queryCopy ucat];
+        queryType = [v12 queryType];
+        fallback = [v12 fallback];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __57__SFDeviceAssetManager_onqueue_purgeAssetsMatchingQuery___block_invoke;
         v20[3] = &unk_1E788D798;
-        v21 = v4;
-        [(SFDeviceAssetManager *)self onqueue_findAssetBundleForAssetQuery:v13 ucat:v14 queryType:v15 fallback:v16 retryAttempt:0 withCompletionHandler:v20];
+        v21 = queryCopy;
+        [(SFDeviceAssetManager *)self onqueue_findAssetBundleForAssetQuery:maQuery2 ucat:ucat queryType:queryType fallback:fallback retryAttempt:0 withCompletionHandler:v20];
       }
 
       v9 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -1099,14 +1099,14 @@ int *__57__SFDeviceAssetManager_onqueue_purgeAssetsMatchingQuery___block_invoke_
   if (!cacheDirectory)
   {
     v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v5 = [v4 firstObject];
-    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:1];
+    firstObject = [v4 firstObject];
+    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:firstObject isDirectory:1];
     v7 = [v6 URLByAppendingPathComponent:@"com.apple.sharing" isDirectory:1];
 
     v20 = 0;
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9 isDirectory:&v20];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v7 path];
+    v10 = [defaultManager fileExistsAtPath:path isDirectory:&v20];
     v11 = v20;
 
     if (v10)
@@ -1124,12 +1124,12 @@ int *__57__SFDeviceAssetManager_onqueue_purgeAssetsMatchingQuery___block_invoke_
       goto LABEL_11;
     }
 
-    [v8 removeItemAtURL:v7 error:0];
+    [defaultManager removeItemAtURL:v7 error:0];
     v21 = *MEMORY[0x1E696A3A8];
     v22[0] = MEMORY[0x1E695E118];
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v19 = 0;
-    [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v13 error:&v19];
+    [defaultManager createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v13 error:&v19];
     v14 = v19;
 
     if (v14)
@@ -1191,29 +1191,29 @@ LABEL_11:
   return cachedQueryPaths;
 }
 
-- (void)addQueryResultToLocalCache:(id)a3 url:(id)a4 isFallback:(BOOL)a5
+- (void)addQueryResultToLocalCache:(id)cache url:(id)url isFallback:(BOOL)fallback
 {
-  v14 = a3;
-  v8 = [a4 path];
-  if (v8)
+  cacheCopy = cache;
+  path = [url path];
+  if (path)
   {
     cachedQueryPaths = self->_cachedQueryPaths;
-    v10 = [v14 stringIdentifier];
-    v11 = [(NSMutableDictionary *)cachedQueryPaths objectForKeyedSubscript:v10];
+    stringIdentifier = [cacheCopy stringIdentifier];
+    v11 = [(NSMutableDictionary *)cachedQueryPaths objectForKeyedSubscript:stringIdentifier];
 
     if (v11)
     {
-      if (a5 || v11 == v8 || ([v11 isEqual:v8] & 1) != 0)
+      if (fallback || v11 == path || ([v11 isEqual:path] & 1) != 0)
       {
         goto LABEL_14;
       }
 
-      if (*[v14 ucat] > 50 || *objc_msgSend(v14, "ucat") == -1 && (objc_msgSend(v14, "ucat"), !_LogCategory_Initialize()))
+      if (*[cacheCopy ucat] > 50 || *objc_msgSend(cacheCopy, "ucat") == -1 && (objc_msgSend(cacheCopy, "ucat"), !_LogCategory_Initialize()))
       {
 LABEL_13:
         v12 = self->_cachedQueryPaths;
-        v13 = [v14 stringIdentifier];
-        [(NSMutableDictionary *)v12 setObject:v8 forKeyedSubscript:v13];
+        stringIdentifier2 = [cacheCopy stringIdentifier];
+        [(NSMutableDictionary *)v12 setObject:path forKeyedSubscript:stringIdentifier2];
 
         [(SFDeviceAssetManager *)self storeEntries:self->_cachedQueryPaths inLocalCacheWithFileName:@"QueryResults.plist"];
 LABEL_14:
@@ -1224,14 +1224,14 @@ LABEL_14:
 
     else
     {
-      if (*[v14 ucat] > 50)
+      if (*[cacheCopy ucat] > 50)
       {
         goto LABEL_13;
       }
 
-      if (*[v14 ucat] == -1)
+      if (*[cacheCopy ucat] == -1)
       {
-        [v14 ucat];
+        [cacheCopy ucat];
         if (!_LogCategory_Initialize())
         {
           goto LABEL_13;
@@ -1239,20 +1239,20 @@ LABEL_14:
       }
     }
 
-    [SFDeviceAssetManager addQueryResultToLocalCache:v14 url:? isFallback:?];
+    [SFDeviceAssetManager addQueryResultToLocalCache:cacheCopy url:? isFallback:?];
     goto LABEL_13;
   }
 
 LABEL_15:
 }
 
-- (void)clearQueryResultFromLocalCache:(id)a3
+- (void)clearQueryResultFromLocalCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   cachedQueryPaths = self->_cachedQueryPaths;
-  v10 = v4;
-  v6 = [v4 stringIdentifier];
-  v7 = [(NSMutableDictionary *)cachedQueryPaths objectForKeyedSubscript:v6];
+  v10 = cacheCopy;
+  stringIdentifier = [cacheCopy stringIdentifier];
+  v7 = [(NSMutableDictionary *)cachedQueryPaths objectForKeyedSubscript:stringIdentifier];
 
   if (v7)
   {
@@ -1265,42 +1265,42 @@ LABEL_15:
     }
 
     v8 = self->_cachedQueryPaths;
-    v9 = [v10 stringIdentifier];
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
+    stringIdentifier2 = [v10 stringIdentifier];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:stringIdentifier2];
 
     [(SFDeviceAssetManager *)self storeEntries:self->_cachedQueryPaths inLocalCacheWithFileName:@"QueryResults.plist"];
   }
 }
 
-- (BOOL)pathInLocalCache:(id)a3
+- (BOOL)pathInLocalCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(SFDeviceAssetManager *)self locallyCachedQueryResults];
-  v6 = [v5 allValues];
-  v7 = [v6 containsObject:v4];
+  cacheCopy = cache;
+  locallyCachedQueryResults = [(SFDeviceAssetManager *)self locallyCachedQueryResults];
+  allValues = [locallyCachedQueryResults allValues];
+  v7 = [allValues containsObject:cacheCopy];
 
   return v7;
 }
 
-- (void)onqueue_manuallyFindFallbackAssetBundleMatchingQuery:(id)a3 withCompletionHandler:(id)a4
+- (void)onqueue_manuallyFindFallbackAssetBundleMatchingQuery:(id)query withCompletionHandler:(id)handler
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v26 = a4;
-  if (*[v5 ucat] <= 50)
+  queryCopy = query;
+  handlerCopy = handler;
+  if (*[queryCopy ucat] <= 50)
   {
-    if (*[v5 ucat] != -1 || (objc_msgSend(v5, "ucat"), _LogCategory_Initialize()))
+    if (*[queryCopy ucat] != -1 || (objc_msgSend(queryCopy, "ucat"), _LogCategory_Initialize()))
     {
-      [SFDeviceAssetManager onqueue_manuallyFindFallbackAssetBundleMatchingQuery:v5 withCompletionHandler:?];
+      [SFDeviceAssetManager onqueue_manuallyFindFallbackAssetBundleMatchingQuery:queryCopy withCompletionHandler:?];
     }
   }
 
-  v25 = v5;
-  v6 = [v5 effectiveProductType];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@" withString:{", @"_"}];
+  v25 = queryCopy;
+  effectiveProductType = [queryCopy effectiveProductType];
+  v7 = [effectiveProductType stringByReplacingOccurrencesOfString:@" withString:{", @"_"}];
 
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/System/Library/PreinstalledAssetsV2/RequiredByOs/com_apple_MobileAsset_SharingDeviceAssets/" isDirectory:1];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = *MEMORY[0x1E695DC30];
   v11 = *MEMORY[0x1E695DB78];
   v35[0] = *MEMORY[0x1E695DC30];
@@ -1308,7 +1308,7 @@ LABEL_15:
   v35[2] = *MEMORY[0x1E695DBA0];
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
   v24 = v8;
-  v13 = [v9 enumeratorAtURL:v8 includingPropertiesForKeys:v12 options:6 errorHandler:0];
+  v13 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:v12 options:6 errorHandler:0];
 
   v32 = 0u;
   v33 = 0u;
@@ -1348,7 +1348,7 @@ LABEL_15:
             }
           }
 
-          v26[2](v26, v19, 0);
+          handlerCopy[2](handlerCopy, v19, 0);
           v16 = v27;
         }
 
@@ -1366,51 +1366,51 @@ LABEL_15:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onqueue_executeNextMAQueryForTask:(id)a3
+- (void)onqueue_executeNextMAQueryForTask:(id)task
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   dispatch_assert_queue_V2(self->_workQueue);
-  v5 = [v4 deviceAssetQuery];
-  v6 = [v4 deviceQueryParameters];
-  v7 = [v6 firstObject];
+  deviceAssetQuery = [taskCopy deviceAssetQuery];
+  deviceQueryParameters = [taskCopy deviceQueryParameters];
+  firstObject = [deviceQueryParameters firstObject];
 
-  v8 = [v4 deviceQueryParameters];
-  [v8 removeObject:v7];
+  deviceQueryParameters2 = [taskCopy deviceQueryParameters];
+  [deviceQueryParameters2 removeObject:firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v9 = [v7 queryType];
-    v10 = [v7 fallback];
-    v11 = [v7 maQuery];
-    v12 = [v5 ucat];
+    queryType = [firstObject queryType];
+    fallback = [firstObject fallback];
+    maQuery = [firstObject maQuery];
+    ucat = [deviceAssetQuery ucat];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __58__SFDeviceAssetManager_onqueue_executeNextMAQueryForTask___block_invoke;
     v19[3] = &unk_1E788D7C0;
-    v20 = v5;
-    v21 = self;
-    v24 = v10;
-    v22 = v4;
-    v23 = v7;
-    [(SFDeviceAssetManager *)self onqueue_findAssetBundleForAssetQuery:v11 ucat:v12 queryType:v9 fallback:v10 retryAttempt:0 withCompletionHandler:v19];
+    v20 = deviceAssetQuery;
+    selfCopy = self;
+    v24 = fallback;
+    v22 = taskCopy;
+    v23 = firstObject;
+    [(SFDeviceAssetManager *)self onqueue_findAssetBundleForAssetQuery:maQuery ucat:ucat queryType:queryType fallback:fallback retryAttempt:0 withCompletionHandler:v19];
   }
 
   else
   {
-    if (*[v5 ucat] <= 50)
+    if (*[deviceAssetQuery ucat] <= 50)
     {
-      if (*[v5 ucat] != -1 || (objc_msgSend(v5, "ucat"), _LogCategory_Initialize()))
+      if (*[deviceAssetQuery ucat] != -1 || (objc_msgSend(deviceAssetQuery, "ucat"), _LogCategory_Initialize()))
       {
-        [SFDeviceAssetManager onqueue_executeNextMAQueryForTask:v5];
+        [SFDeviceAssetManager onqueue_executeNextMAQueryForTask:deviceAssetQuery];
       }
     }
 
-    if (([v4 queryResultCalled] & 1) == 0)
+    if (([taskCopy queryResultCalled] & 1) == 0)
     {
-      v13 = [v4 fallbackBundle];
+      fallbackBundle = [taskCopy fallbackBundle];
 
-      if (!v13)
+      if (!fallbackBundle)
       {
         v14 = MEMORY[0x1E696ABC0];
         v15 = *MEMORY[0x1E696A798];
@@ -1418,9 +1418,9 @@ LABEL_15:
         v26[0] = @"No assets found";
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
         v17 = [v14 errorWithDomain:v15 code:22 userInfo:v16];
-        [v4 updateTaskWithBundle:0 error:v17 isFallback:0 isImperfectMatch:0 isCached:0];
+        [taskCopy updateTaskWithBundle:0 error:v17 isFallback:0 isImperfectMatch:0 isCached:0];
 
-        [v4 completeWithBundle:0 isFallback:0 isCached:0];
+        [taskCopy completeWithBundle:0 isFallback:0 isCached:0];
       }
     }
   }
@@ -1477,13 +1477,13 @@ void __58__SFDeviceAssetManager_onqueue_executeNextMAQueryForTask___block_invoke
   }
 }
 
-- (void)onqueue_findAssetBundleForAssetQuery:(id)a3 ucat:(LogCategory *)a4 queryType:(id)a5 fallback:(BOOL)a6 retryAttempt:(BOOL)a7 withCompletionHandler:(id)a8
+- (void)onqueue_findAssetBundleForAssetQuery:(id)query ucat:(LogCategory *)ucat queryType:(id)type fallback:(BOOL)fallback retryAttempt:(BOOL)attempt withCompletionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
+  queryCopy = query;
+  typeCopy = type;
+  handlerCopy = handler;
   v30 = 0;
-  var4 = a4->var4;
+  var4 = ucat->var4;
   v18 = LogCategoryCreateEx();
   v19 = v18;
   if (*v18 <= 50 && (*v18 != -1 || _LogCategory_Initialize()))
@@ -1497,15 +1497,15 @@ void __58__SFDeviceAssetManager_onqueue_executeNextMAQueryForTask___block_invoke
   v23[2] = __120__SFDeviceAssetManager_onqueue_findAssetBundleForAssetQuery_ucat_queryType_fallback_retryAttempt_withCompletionHandler___block_invoke;
   v23[3] = &unk_1E788D888;
   v23[4] = self;
-  v24 = v14;
-  v26 = v16;
+  v24 = queryCopy;
+  v26 = handlerCopy;
   v27 = v19;
-  v25 = v15;
-  v28 = a6;
-  v29 = a7;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v25 = typeCopy;
+  fallbackCopy = fallback;
+  attemptCopy = attempt;
+  v20 = handlerCopy;
+  v21 = typeCopy;
+  v22 = queryCopy;
   [v22 queryMetaData:v23];
 }
 
@@ -1964,13 +1964,13 @@ LABEL_9:
   [v3 onqueue_findAssetBundleForAssetQuery:v4 ucat:v5 queryType:v8 fallback:v7 retryAttempt:1 withCompletionHandler:v6];
 }
 
-- (void)onqueue_downloadAsset:(id)a3 ucat:(LogCategory *)a4 queryLogString:(id)a5 withCompletionHandler:(id)a6
+- (void)onqueue_downloadAsset:(id)asset ucat:(LogCategory *)ucat queryLogString:(id)string withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  assetCopy = asset;
+  stringCopy = string;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (a4->var0 <= 50 && (a4->var0 != -1 || _LogCategory_Initialize()))
+  if (ucat->var0 <= 50 && (ucat->var0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
@@ -1983,14 +1983,14 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __88__SFDeviceAssetManager_onqueue_downloadAsset_ucat_queryLogString_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E788D8D8;
-  v20 = v12;
-  v21 = a4;
+  v20 = handlerCopy;
+  ucatCopy = ucat;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
+  v18 = stringCopy;
+  v19 = assetCopy;
+  v14 = assetCopy;
+  v15 = handlerCopy;
+  v16 = stringCopy;
   [v14 startDownload:v13 then:v17];
 }
 
@@ -2077,13 +2077,13 @@ LABEL_11:
   v13();
 }
 
-- (void)onqueue_validateProductTypeInQuery:(id)a3
+- (void)onqueue_validateProductTypeInQuery:(id)query
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  queryCopy = query;
   dispatch_assert_queue_V2(workQueue);
-  v6 = [v5 productType];
-  v8 = [(SFDeviceAssetManager *)self onqueue_mappedProductTypeForProductType:v6];
+  productType = [queryCopy productType];
+  v8 = [(SFDeviceAssetManager *)self onqueue_mappedProductTypeForProductType:productType];
 
   if ([v8 length])
   {
@@ -2095,21 +2095,21 @@ LABEL_11:
     v7 = 0;
   }
 
-  [v5 setMappedProductType:v7];
+  [queryCopy setMappedProductType:v7];
 }
 
-- (void)mappedProductTypeForProductType:(id)a3 completionHandler:(id)a4
+- (void)mappedProductTypeForProductType:(id)type completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v8 = asset_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[SFDeviceAssetManager mappedProductTypeForProductType:completionHandler:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = typeCopy;
     _os_log_impl(&dword_1A9662000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -2119,10 +2119,10 @@ LABEL_11:
   block[2] = __74__SFDeviceAssetManager_mappedProductTypeForProductType_completionHandler___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = typeCopy;
   dispatch_async(workQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2152,13 +2152,13 @@ void __74__SFDeviceAssetManager_mappedProductTypeForProductType_completionHandle
   }
 }
 
-- (id)onqueue_mappedProductTypeForProductType:(id)a3
+- (id)onqueue_mappedProductTypeForProductType:(id)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_workQueue);
-  v5 = [(SFDeviceAssetManager *)self hardcodedMappedProducts];
-  v6 = [v5 objectForKey:v4];
+  hardcodedMappedProducts = [(SFDeviceAssetManager *)self hardcodedMappedProducts];
+  v6 = [hardcodedMappedProducts objectForKey:typeCopy];
 
   if (v6)
   {
@@ -2166,7 +2166,7 @@ void __74__SFDeviceAssetManager_mappedProductTypeForProductType_completionHandle
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v4;
+      v13 = typeCopy;
       v14 = 2112;
       v15 = v6;
       v8 = "Mapped product type using hardcoded mapping %@ => %@";
@@ -2175,13 +2175,13 @@ LABEL_11:
     }
   }
 
-  else if (-[SFDeviceAssetManager useProcessLocalCache](self, "useProcessLocalCache") && (-[SFDeviceAssetManager locallyCachedProductMappings](self, "locallyCachedProductMappings"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v9, v6))
+  else if (-[SFDeviceAssetManager useProcessLocalCache](self, "useProcessLocalCache") && (-[SFDeviceAssetManager locallyCachedProductMappings](self, "locallyCachedProductMappings"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKey:typeCopy], v6 = objc_claimAutoreleasedReturnValue(), v9, v6))
   {
     v7 = asset_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v4;
+      v13 = typeCopy;
       v14 = 2112;
       v15 = v6;
       v8 = "Mapped product type using cached mapping %@ => %@";
@@ -2191,7 +2191,7 @@ LABEL_11:
 
   else
   {
-    v6 = [(SFDeviceAssetManager *)self onqueue_assetMappedProductTypeForProductType:v4];
+    v6 = [(SFDeviceAssetManager *)self onqueue_assetMappedProductTypeForProductType:typeCopy];
     if (!v6)
     {
       goto LABEL_13;
@@ -2201,7 +2201,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v4;
+      v13 = typeCopy;
       v14 = 2112;
       v15 = v6;
       v8 = "Mapped product type using remote mapping %@ => %@";
@@ -2233,21 +2233,21 @@ LABEL_6:
     SFDeviceAssetAddKeyValuePair(@"Management", @"YES", v4);
     if (![v4 queryMetaDataSync])
     {
-      v5 = [v4 results];
+      results = [v4 results];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __54__SFDeviceAssetManager_onqueue_sharingManagementAsset__block_invoke;
       v10[3] = &unk_1E788D900;
       v10[4] = self;
-      [v5 enumerateObjectsUsingBlock:v10];
+      [results enumerateObjectsUsingBlock:v10];
 
-      v6 = [v4 results];
+      results2 = [v4 results];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __54__SFDeviceAssetManager_onqueue_sharingManagementAsset__block_invoke_2;
       v9[3] = &unk_1E788D900;
       v9[4] = self;
-      [v6 enumerateObjectsUsingBlock:v9];
+      [results2 enumerateObjectsUsingBlock:v9];
     }
 
     deviceAssetManagement = self->_deviceAssetManagement;
@@ -2302,23 +2302,23 @@ void __54__SFDeviceAssetManager_onqueue_sharingManagementAsset__block_invoke_3(u
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)onqueue_assetMappedProductTypeForProductType:(id)a3
+- (id)onqueue_assetMappedProductTypeForProductType:(id)type
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_workQueue);
   productTypesMappingTable = self->_productTypesMappingTable;
   if (!productTypesMappingTable)
   {
-    v6 = [(SFDeviceAssetManager *)self onqueue_sharingManagementAsset];
-    v7 = [(SFDeviceAssetManager *)self hardcodedMappedProducts];
-    v8 = [v7 mutableCopy];
+    onqueue_sharingManagementAsset = [(SFDeviceAssetManager *)self onqueue_sharingManagementAsset];
+    hardcodedMappedProducts = [(SFDeviceAssetManager *)self hardcodedMappedProducts];
+    v8 = [hardcodedMappedProducts mutableCopy];
 
-    v9 = [v6 getLocalFileUrl];
-    v10 = [v9 URLByAppendingPathComponent:@"DeviceMapping.plist" isDirectory:0];
+    getLocalFileUrl = [onqueue_sharingManagementAsset getLocalFileUrl];
+    v10 = [getLocalFileUrl URLByAppendingPathComponent:@"DeviceMapping.plist" isDirectory:0];
     if (v10)
     {
-      v20 = v6;
+      v20 = onqueue_sharingManagementAsset;
       v22 = 0;
       v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10 options:0 error:&v22];
       v12 = v22;
@@ -2364,7 +2364,7 @@ void __54__SFDeviceAssetManager_onqueue_sharingManagementAsset__block_invoke_3(u
         v14 = v12;
       }
 
-      v6 = v20;
+      onqueue_sharingManagementAsset = v20;
     }
 
     else
@@ -2387,7 +2387,7 @@ void __54__SFDeviceAssetManager_onqueue_sharingManagementAsset__block_invoke_3(u
     productTypesMappingTable = self->_productTypesMappingTable;
   }
 
-  v17 = [(NSDictionary *)productTypesMappingTable objectForKeyedSubscript:v4];
+  v17 = [(NSDictionary *)productTypesMappingTable objectForKeyedSubscript:typeCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -2502,12 +2502,12 @@ void __47__SFDeviceAssetManager_hardcodedMappedProducts__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localCacheWithFileName:(id)a3
+- (id)localCacheWithFileName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFDeviceAssetManager *)self cacheDirectory];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  nameCopy = name;
+  cacheDirectory = [(SFDeviceAssetManager *)self cacheDirectory];
+  v6 = [cacheDirectory URLByAppendingPathComponent:nameCopy isDirectory:0];
 
   v19 = 0;
   CanAccessURL = SFDeviceAssetProcessCanAccessURL(v6, &v19);
@@ -2534,7 +2534,7 @@ void __47__SFDeviceAssetManager_hardcodedMappedProducts__block_invoke()
           *buf = 67109378;
           v21 = v13;
           v22 = 2112;
-          v23 = v4;
+          v23 = nameCopy;
           _os_log_impl(&dword_1A9662000, v12, OS_LOG_TYPE_DEFAULT, "Loaded %d %@ entries from cache", buf, 0x12u);
         }
 
@@ -2569,26 +2569,26 @@ LABEL_19:
   return v11;
 }
 
-- (void)storeEntries:(id)a3 inLocalCacheWithFileName:(id)a4
+- (void)storeEntries:(id)entries inLocalCacheWithFileName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  nameCopy = name;
   v8 = asset_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v20 = [v6 count];
+    v20 = [entriesCopy count];
     v21 = 2112;
-    v22 = v7;
+    v22 = nameCopy;
     _os_log_impl(&dword_1A9662000, v8, OS_LOG_TYPE_DEFAULT, "Persisting %d entries to %@ cache", buf, 0x12u);
   }
 
-  v9 = [(SFDeviceAssetManager *)self cacheDirectory];
-  v10 = [v9 URLByAppendingPathComponent:v7 isDirectory:0];
+  cacheDirectory = [(SFDeviceAssetManager *)self cacheDirectory];
+  v10 = [cacheDirectory URLByAppendingPathComponent:nameCopy isDirectory:0];
 
   v18 = 0;
-  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:&v18];
+  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:entriesCopy format:200 options:0 error:&v18];
   v12 = v11;
   if (v11)
   {
@@ -2639,7 +2639,7 @@ uint64_t __57__SFDeviceAssetManager_onqueue_purgeAssetsMatchingQuery___block_inv
 {
   OUTLINED_FUNCTION_3_6();
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [v0 path];
+  path = [v0 path];
   OUTLINED_FUNCTION_0_9();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);

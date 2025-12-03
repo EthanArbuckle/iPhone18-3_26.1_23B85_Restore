@@ -1,32 +1,32 @@
 @interface HDHealthService
 + (id)serviceUUID;
 + (int64_t)serviceType;
-- (BOOL)supportsWritingCharacteristic:(id)a3;
+- (BOOL)supportsWritingCharacteristic:(id)characteristic;
 - (HDHealthPeripheral)healthPeripheral;
-- (HDHealthService)initWithServiceManager:(id)a3 peripheral:(id)a4 advertisementData:(id)a5 profile:(id)a6;
+- (HDHealthService)initWithServiceManager:(id)manager peripheral:(id)peripheral advertisementData:(id)data profile:(id)profile;
 - (HDProfile)profile;
 - (id)description;
 - (id)servicesInProfile;
-- (void)characteristicDataReceived:(id)a3;
+- (void)characteristicDataReceived:(id)received;
 - (void)deviceDisconnecting;
 - (void)deviceInformationSetOnPeripheral;
 - (void)mfaSucceededOnPeripheral;
-- (void)performOperation:(id)a3 onPeripheral:(id)a4 withParameters:(id)a5 completion:(id)a6;
-- (void)peripheral:(id)a3 didDiscoverCharacteristics:(id)a4;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)readProperty:(id)a3;
-- (void)setWritableCharacteristic:(id)a3;
-- (void)writeCharacteristic:(id)a3 expectResponse:(BOOL)a4 completion:(id)a5;
+- (void)performOperation:(id)operation onPeripheral:(id)peripheral withParameters:(id)parameters completion:(id)completion;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristics:(id)characteristics;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)readProperty:(id)property;
+- (void)setWritableCharacteristic:(id)characteristic;
+- (void)writeCharacteristic:(id)characteristic expectResponse:(BOOL)response completion:(id)completion;
 @end
 
 @implementation HDHealthService
 
-- (HDHealthService)initWithServiceManager:(id)a3 peripheral:(id)a4 advertisementData:(id)a5 profile:(id)a6
+- (HDHealthService)initWithServiceManager:(id)manager peripheral:(id)peripheral advertisementData:(id)data profile:(id)profile
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  profileCopy = profile;
   v35.receiver = self;
   v35.super_class = HDHealthService;
   v14 = [(HDHealthService *)&v35 init];
@@ -37,7 +37,7 @@
   }
 
   v14->_deliverData = 1;
-  objc_storeWeak(&v14->_serviceManager, v10);
+  objc_storeWeak(&v14->_serviceManager, managerCopy);
   v16 = objc_alloc_init(NSMutableDictionary);
   writableCharacteristics = v15->_writableCharacteristics;
   v15->_writableCharacteristics = v16;
@@ -50,18 +50,18 @@
   pendingWrites = v15->_pendingWrites;
   v15->_pendingWrites = v20;
 
-  v22 = [objc_opt_class() serviceUUID];
-  v23 = [v22 UUIDString];
+  serviceUUID = [objc_opt_class() serviceUUID];
+  uUIDString = [serviceUUID UUIDString];
   serviceId = v15->_serviceId;
-  v15->_serviceId = v23;
+  v15->_serviceId = uUIDString;
 
-  v25 = objc_storeWeak(&v15->_healthPeripheral, v11);
-  v26 = [v11 cbPeripheral];
-  v27 = [v26 identifier];
+  v25 = objc_storeWeak(&v15->_healthPeripheral, peripheralCopy);
+  cbPeripheral = [peripheralCopy cbPeripheral];
+  identifier = [cbPeripheral identifier];
   peripheralUUID = v15->_peripheralUUID;
-  v15->_peripheralUUID = v27;
+  v15->_peripheralUUID = identifier;
 
-  objc_storeWeak(&v15->_profile, v13);
+  objc_storeWeak(&v15->_profile, profileCopy);
   v29 = HKCreateSerialDispatchQueue();
   dataQueue = v15->_dataQueue;
   v15->_dataQueue = v29;
@@ -70,7 +70,7 @@
   pendingCharacteristicBuffer = v15->_pendingCharacteristicBuffer;
   v15->_pendingCharacteristicBuffer = v31;
 
-  if ([(HDHealthService *)v15 processAdvertisementData:v12])
+  if ([(HDHealthService *)v15 processAdvertisementData:dataCopy])
   {
     v33 = v15;
   }
@@ -124,9 +124,9 @@ LABEL_4:
   return v4;
 }
 
-- (void)characteristicDataReceived:(id)a3
+- (void)characteristicDataReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   if ([(HDHealthService *)self deliverData])
   {
     if (self && (v5 = atomic_load(&self->_deviceInformationLoaded), (v5 & 1) != 0))
@@ -137,13 +137,13 @@ LABEL_4:
       v8[2] = sub_1A14C;
       v8[3] = &unk_5C8C8;
       v8[4] = self;
-      v9 = v4;
+      v9 = receivedCopy;
       dispatch_async(dataQueue, v8);
     }
 
     else
     {
-      sub_33784(self, v4);
+      sub_33784(self, receivedCopy);
     }
   }
 
@@ -158,10 +158,10 @@ LABEL_4:
   }
 }
 
-- (void)performOperation:(id)a3 onPeripheral:(id)a4 withParameters:(id)a5 completion:(id)a6
+- (void)performOperation:(id)operation onPeripheral:(id)peripheral withParameters:(id)parameters completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  operationCopy = operation;
+  parametersCopy = parameters;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEBUG))
   {
@@ -169,63 +169,63 @@ LABEL_4:
   }
 }
 
-- (void)setWritableCharacteristic:(id)a3
+- (void)setWritableCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   writeQueue = self->_writeQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1A26C;
   v7[3] = &unk_5C8C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = characteristicCopy;
+  selfCopy = self;
+  v6 = characteristicCopy;
   dispatch_async(writeQueue, v7);
 }
 
-- (BOOL)supportsWritingCharacteristic:(id)a3
+- (BOOL)supportsWritingCharacteristic:(id)characteristic
 {
-  v4 = [objc_opt_class() uuid];
-  v5 = [(NSMutableDictionary *)self->_writableCharacteristics objectForKeyedSubscript:v4];
+  uuid = [objc_opt_class() uuid];
+  v5 = [(NSMutableDictionary *)self->_writableCharacteristics objectForKeyedSubscript:uuid];
   LOBYTE(self) = v5 != 0;
 
   return self;
 }
 
-- (void)writeCharacteristic:(id)a3 expectResponse:(BOOL)a4 completion:(id)a5
+- (void)writeCharacteristic:(id)characteristic expectResponse:(BOOL)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  characteristicCopy = characteristic;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1A454;
   v13[3] = &unk_5D4F8;
-  v14 = v8;
-  v15 = v9;
+  v14 = characteristicCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  responseCopy = response;
+  v11 = characteristicCopy;
+  v12 = completionCopy;
   dispatch_async(writeQueue, v13);
 }
 
-- (void)readProperty:(id)a3
+- (void)readProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   _HKInitializeLogging();
   v4 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEBUG))
   {
-    sub_341F8(v3, v4);
+    sub_341F8(propertyCopy, v4);
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEBUG))
   {
@@ -238,10 +238,10 @@ LABEL_4:
   block[2] = sub_1A6C4;
   block[3] = &unk_5C788;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = characteristicCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = characteristicCopy;
   dispatch_async(writeQueue, block);
 }
 
@@ -249,9 +249,9 @@ LABEL_4:
 {
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
-  v4 = [objc_opt_class() serviceUUID];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
+  serviceUUID = [objc_opt_class() serviceUUID];
+  uUIDString = [serviceUUID UUIDString];
+  v6 = [NSString stringWithFormat:@"%@ %@", v3, uUIDString];
 
   return v6;
 }
@@ -292,15 +292,15 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristics:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverCharacteristics:(id)characteristics
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  characteristicsCopy = characteristics;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [characteristicsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -312,15 +312,15 @@ LABEL_4:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(characteristicsCopy);
         }
 
-        [(HDHealthService *)self peripheral:v6 didDiscoverCharacteristic:*(*(&v12 + 1) + 8 * v11)];
+        [(HDHealthService *)self peripheral:peripheralCopy didDiscoverCharacteristic:*(*(&v12 + 1) + 8 * v11)];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [characteristicsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);

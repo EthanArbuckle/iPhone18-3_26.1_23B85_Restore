@@ -1,13 +1,13 @@
 @interface WOWorkoutPlaylistController
-- (void)setDelegate:(id)a3;
-- (void)shouldStartMusicWithCompletionHandler:(id)a3;
-- (void)startWorkoutPlaylistWithCompletionHandler:(id)a3;
-- (void)stopWorkoutPlaylistWithCompletionHandler:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)shouldStartMusicWithCompletionHandler:(id)handler;
+- (void)startWorkoutPlaylistWithCompletionHandler:(id)handler;
+- (void)stopWorkoutPlaylistWithCompletionHandler:(id)handler;
 @end
 
 @implementation WOWorkoutPlaylistController
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
@@ -19,19 +19,19 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = delegate;
   swift_unknownObjectRetain();
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in WorkoutPlaylistController.setDelegate(_:)partial apply, v10);
 }
 
-- (void)stopWorkoutPlaylistWithCompletionHandler:(id)a3
+- (void)stopWorkoutPlaylistWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -51,13 +51,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_124Tu, v13);
 }
 
-- (void)shouldStartMusicWithCompletionHandler:(id)a3
+- (void)shouldStartMusicWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -77,13 +77,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_109Tu, v13);
 }
 
-- (void)startWorkoutPlaylistWithCompletionHandler:(id)a3
+- (void)startWorkoutPlaylistWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

@@ -1,7 +1,7 @@
 @interface ParmesanBackdropView
 + (Class)layerClass;
-- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ParmesanBackdropView
@@ -13,23 +13,23 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ParmesanBackdropView();
   return [(ParmseanPassthroughView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion20ParmesanBackdropView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ParmesanBackdropView();
-  v4 = a3;
-  v5 = [(ParmseanPassthroughView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ParmseanPassthroughView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

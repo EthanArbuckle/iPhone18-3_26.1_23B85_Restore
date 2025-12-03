@@ -1,55 +1,55 @@
 @interface MFPlaceholderMailDeliveryUI
-- (MFPlaceholderMailDeliveryUI)initWithMessage:(id)a3;
+- (MFPlaceholderMailDeliveryUI)initWithMessage:(id)message;
 - (id)_attachmentsContextID;
-- (id)contentForContentID:(id)a3;
-- (id)contentForPlaceholder:(id)a3;
-- (id)contentForURL:(id)a3;
-- (id)deliverSynchronouslyWithCompletion:(id)a3;
+- (id)contentForContentID:(id)d;
+- (id)contentForPlaceholder:(id)placeholder;
+- (id)contentForURL:(id)l;
+- (id)deliverSynchronouslyWithCompletion:(id)completion;
 @end
 
 @implementation MFPlaceholderMailDeliveryUI
 
-- (MFPlaceholderMailDeliveryUI)initWithMessage:(id)a3
+- (MFPlaceholderMailDeliveryUI)initWithMessage:(id)message
 {
-  v17 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(MEMORY[0x1E69B1658]);
-  [v4 setLibraryMessage:v17];
+  [v4 setLibraryMessage:messageCopy];
   v5 = [[MFPlaceholderMessageRewriter alloc] initWithOriginalMessageContent:v4 resolver:self];
   v6 = [MFComposeTypeFactory headersFromDelegate:v5];
-  v7 = [(MFPlaceholderMessageRewriter *)v5 rewrittenMessageContent];
-  v8 = [v7 multipartContent];
+  rewrittenMessageContent = [(MFPlaceholderMessageRewriter *)v5 rewrittenMessageContent];
+  multipartContent = [rewrittenMessageContent multipartContent];
 
-  if (v8)
+  if (multipartContent)
   {
-    v9 = [v7 multipartContent];
+    multipartContent2 = [rewrittenMessageContent multipartContent];
     v10 = MEMORY[0x1E699B288];
-    v11 = [v9 htmlBody];
-    v12 = [v10 mf_utf8HTMLStringWithString:v11];
-    v13 = [v9 plaintextAlternative];
-    v14 = [v9 mixedContent];
+    htmlBody = [multipartContent2 htmlBody];
+    mixedContent2 = [v10 mf_utf8HTMLStringWithString:htmlBody];
+    plaintextAlternative = [multipartContent2 plaintextAlternative];
+    mixedContent = [multipartContent2 mixedContent];
     v20.receiver = self;
     v20.super_class = MFPlaceholderMailDeliveryUI;
-    v15 = [(MFOutgoingMessageDelivery *)&v20 initWithHeaders:v6 HTML:v12 plainTextAlternative:v13 other:v14];
+    v15 = [(MFOutgoingMessageDelivery *)&v20 initWithHeaders:v6 HTML:mixedContent2 plainTextAlternative:plaintextAlternative other:mixedContent];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v7 richtextContent];
-  if ([v9 textPartsAreHTML])
+  multipartContent2 = [rewrittenMessageContent richtextContent];
+  if ([multipartContent2 textPartsAreHTML])
   {
-    v11 = [v9 plaintextAlternative];
-    v12 = [v9 mixedContent];
+    htmlBody = [multipartContent2 plaintextAlternative];
+    mixedContent2 = [multipartContent2 mixedContent];
     v19.receiver = self;
     v19.super_class = MFPlaceholderMailDeliveryUI;
-    v15 = [(MFOutgoingMessageDelivery *)&v19 initWithHeaders:v6 HTML:0 plainTextAlternative:v11 other:v12];
+    v15 = [(MFOutgoingMessageDelivery *)&v19 initWithHeaders:v6 HTML:0 plainTextAlternative:htmlBody other:mixedContent2];
     goto LABEL_5;
   }
 
-  v11 = [v9 mixedContent];
+  htmlBody = [multipartContent2 mixedContent];
   v18.receiver = self;
   v18.super_class = MFPlaceholderMailDeliveryUI;
-  v15 = [(MFOutgoingMessageDelivery *)&v18 initWithHeaders:v6 mixedContent:v11 textPartsAreHTML:0];
+  v15 = [(MFOutgoingMessageDelivery *)&v18 initWithHeaders:v6 mixedContent:htmlBody textPartsAreHTML:0];
 LABEL_6:
 
   if (v15)
@@ -60,10 +60,10 @@ LABEL_6:
   return v15;
 }
 
-- (id)deliverSynchronouslyWithCompletion:(id)a3
+- (id)deliverSynchronouslyWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = EMLogMailDrop();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -73,15 +73,15 @@ LABEL_6:
 
   v20.receiver = self;
   v20.super_class = MFPlaceholderMailDeliveryUI;
-  v6 = [(MFOutgoingMessageDelivery *)&v20 deliverSynchronouslyWithCompletion:v4];
+  v6 = [(MFOutgoingMessageDelivery *)&v20 deliverSynchronouslyWithCompletion:completionCopy];
   if ([v6 status])
   {
     p_super = EMLogMailDrop();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 status];
+      status = [v6 status];
       *buf = 134217984;
-      v22 = v8;
+      v22 = status;
       _os_log_impl(&dword_1BE819000, p_super, OS_LOG_TYPE_DEFAULT, "Delivery of placeholder Mail Drop message failed with error: %lu", buf, 0xCu);
     }
   }
@@ -99,10 +99,10 @@ LABEL_6:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(MFPlaceholderMessageRewriter *)self->_rewriter rewrittenMessageContent];
-    v11 = [v10 placeholders];
+    rewrittenMessageContent = [(MFPlaceholderMessageRewriter *)self->_rewriter rewrittenMessageContent];
+    placeholders = [rewrittenMessageContent placeholders];
 
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v23 count:16];
+    v12 = [placeholders countByEnumeratingWithState:&v16 objects:v23 count:16];
     if (v12)
     {
       v13 = *v17;
@@ -112,13 +112,13 @@ LABEL_6:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(placeholders);
           }
 
           [MEMORY[0x1E69B15D8] removePlaceholder:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v16 objects:v23 count:16];
+        v12 = [placeholders countByEnumeratingWithState:&v16 objects:v23 count:16];
       }
 
       while (v12);
@@ -136,10 +136,10 @@ LABEL_6:
   contextID = self->_contextID;
   if (!contextID)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_contextID;
-    self->_contextID = v5;
+    self->_contextID = uUIDString;
 
     contextID = self->_contextID;
   }
@@ -147,38 +147,38 @@ LABEL_6:
   return contextID;
 }
 
-- (id)contentForURL:(id)a3
+- (id)contentForURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69B15D0] defaultManager];
-  v5 = [v4 attachmentForURL:v3 error:0];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E69B15D0] defaultManager];
+  v5 = [defaultManager attachmentForURL:lCopy error:0];
 
   return v5;
 }
 
-- (id)contentForContentID:(id)a3
+- (id)contentForContentID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69B15D0] defaultManager];
-  v5 = [v4 attachmentForContentID:v3];
+  dCopy = d;
+  defaultManager = [MEMORY[0x1E69B15D0] defaultManager];
+  v5 = [defaultManager attachmentForContentID:dCopy];
 
   return v5;
 }
 
-- (id)contentForPlaceholder:(id)a3
+- (id)contentForPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B15D0] defaultManager];
-  if (v4)
+  placeholderCopy = placeholder;
+  defaultManager = [MEMORY[0x1E69B15D0] defaultManager];
+  if (placeholderCopy)
   {
-    v6 = [MEMORY[0x1E69B15D8] dataForPlaceholder:v4];
+    v6 = [MEMORY[0x1E69B15D8] dataForPlaceholder:placeholderCopy];
     if (v6)
     {
-      v7 = [v4 mimeType];
-      v8 = [v4 fileName];
-      v9 = [v4 contentID];
-      v10 = [(MFPlaceholderMailDeliveryUI *)self _attachmentsContextID];
-      v11 = [v5 attachmentForData:v6 mimeType:v7 fileName:v8 contentID:v9 context:v10];
+      mimeType = [placeholderCopy mimeType];
+      fileName = [placeholderCopy fileName];
+      contentID = [placeholderCopy contentID];
+      _attachmentsContextID = [(MFPlaceholderMailDeliveryUI *)self _attachmentsContextID];
+      v11 = [defaultManager attachmentForData:v6 mimeType:mimeType fileName:fileName contentID:contentID context:_attachmentsContextID];
     }
 
     else

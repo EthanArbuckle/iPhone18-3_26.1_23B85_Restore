@@ -1,12 +1,12 @@
 @interface SYBatchChunkAck
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYBatchChunkAck
@@ -17,44 +17,44 @@
   v8.receiver = self;
   v8.super_class = SYBatchChunkAck;
   v4 = [(SYBatchChunkAck *)&v8 description];
-  v5 = [(SYBatchChunkAck *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYBatchChunkAck *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   syncID = self->_syncID;
   if (syncID)
   {
-    [v3 setObject:syncID forKey:@"syncID"];
+    [dictionary setObject:syncID forKey:@"syncID"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_chunkIndex];
-  [v3 setObject:v7 forKey:@"chunkIndex"];
+  [dictionary setObject:v7 forKey:@"chunkIndex"];
 
   error = self->_error;
   if (error)
   {
-    v9 = [(SYErrorInfo *)error dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"error"];
+    dictionaryRepresentation2 = [(SYErrorInfo *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYBatchChunkAck writeTo:];
@@ -75,46 +75,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setHeader:self->_header];
-  [v5 setSyncID:self->_syncID];
-  v4 = v5;
-  v5[2] = self->_chunkIndex;
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  [toCopy setSyncID:self->_syncID];
+  v4 = toCopy;
+  toCopy[2] = self->_chunkIndex;
   if (self->_error)
   {
-    [v5 setError:?];
-    v4 = v5;
+    [toCopy setError:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_syncID copyWithZone:a3];
+  v8 = [(NSString *)self->_syncID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
   *(v5 + 8) = self->_chunkIndex;
-  v10 = [(SYErrorInfo *)self->_error copyWithZone:a3];
+  v10 = [(SYErrorInfo *)self->_error copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[3])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((syncID = self->_syncID, !(syncID | v4[4])) || -[NSString isEqual:](syncID, "isEqual:")) && self->_chunkIndex == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[3])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((syncID = self->_syncID, !(syncID | equalCopy[4])) || -[NSString isEqual:](syncID, "isEqual:")) && self->_chunkIndex == *(equalCopy + 2))
   {
     error = self->_error;
-    if (error | v4[2])
+    if (error | equalCopy[2])
     {
       v8 = [(SYErrorInfo *)error isEqual:?];
     }
@@ -141,12 +141,12 @@
   return v4 ^ [(SYErrorInfo *)self->_error hash]^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -167,17 +167,17 @@
     [(SYBatchChunkAck *)self setHeader:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SYBatchChunkAck *)self setSyncID:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  self->_chunkIndex = *(v4 + 2);
+  self->_chunkIndex = *(fromCopy + 2);
   error = self->_error;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (error)
   {
     if (!v8)
@@ -198,10 +198,10 @@ LABEL_7:
     error = [(SYBatchChunkAck *)self setError:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
 
-  MEMORY[0x1EEE66BB8](error, v4);
+  MEMORY[0x1EEE66BB8](error, fromCopy);
 }
 
 @end

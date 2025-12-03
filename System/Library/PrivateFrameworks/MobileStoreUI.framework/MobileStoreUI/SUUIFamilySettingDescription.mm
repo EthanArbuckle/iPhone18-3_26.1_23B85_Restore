@@ -1,17 +1,17 @@
 @interface SUUIFamilySettingDescription
-- (SUUIFamilySettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SUUIFamilySettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (void)_updateViewState;
-- (void)_updateWithViewState:(int64_t)a3;
-- (void)handleSelectionOnCompletion:(id)a3;
+- (void)_updateWithViewState:(int64_t)state;
+- (void)handleSelectionOnCompletion:(id)completion;
 @end
 
 @implementation SUUIFamilySettingDescription
 
-- (SUUIFamilySettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SUUIFamilySettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = SUUIFamilySettingDescription;
-  v4 = [(SUUISettingDescription *)&v7 initWithViewElement:a3 parent:a4];
+  v4 = [(SUUISettingDescription *)&v7 initWithViewElement:element parent:parent];
   v5 = v4;
   if (v4)
   {
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (void)handleSelectionOnCompletion:(id)a3
+- (void)handleSelectionOnCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_viewState + 1;
   if (v5 > 3)
   {
@@ -37,14 +37,14 @@
   }
 
   v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v6, @"state", 0}];
-  v8 = [(SUUISettingDescription *)self viewElement];
+  viewElement = [(SUUISettingDescription *)self viewElement];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__SUUIFamilySettingDescription_handleSelectionOnCompletion___block_invoke;
   v10[3] = &unk_2798F7288;
-  v11 = v4;
-  v9 = v4;
-  [v8 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:v7 completionBlock:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [viewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:v7 completionBlock:v10];
 }
 
 - (void)_updateViewState
@@ -88,14 +88,14 @@ void __48__SUUIFamilySettingDescription__updateViewState__block_invoke_2(uint64_
   [WeakRetained _updateWithViewState:*(a1 + 40)];
 }
 
-- (void)_updateWithViewState:(int64_t)a3
+- (void)_updateWithViewState:(int64_t)state
 {
-  self->_viewState = a3;
-  if ((a3 - 1) >= 3)
+  self->_viewState = state;
+  if ((state - 1) >= 3)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == -1 && ![(SUUISettingDescription *)self _isHidden])
+      if (state == -1 && ![(SUUISettingDescription *)self _isHidden])
       {
 
         [(SUUISettingDescription *)self _hideSetting];

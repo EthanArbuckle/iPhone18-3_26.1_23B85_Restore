@@ -1,16 +1,16 @@
 @interface PLIOReportStats
-- (BOOL)subscribeToGroup:(id)a3 andSubGroup:(id)a4 withChannelIDs:(id)a5 manualChannelOnly:(BOOL)a6;
-- (BOOL)updateStatsWithBlock:(id)a3;
-- (PLIOReportStats)initWithDriverName:(id)a3 withGroup:(id)a4;
-- (double)_convertValue:(int64_t)a3 toUnityScaleFromUnit:(unint64_t)a4;
+- (BOOL)subscribeToGroup:(id)group andSubGroup:(id)subGroup withChannelIDs:(id)ds manualChannelOnly:(BOOL)only;
+- (BOOL)updateStatsWithBlock:(id)block;
+- (PLIOReportStats)initWithDriverName:(id)name withGroup:(id)group;
+- (double)_convertValue:(int64_t)value toUnityScaleFromUnit:(unint64_t)unit;
 - (double)getSampleDuration;
-- (id)_calculateDeltaFromPreviousStats:(id)a3 toCurrentStats:(id)a4;
+- (id)_calculateDeltaFromPreviousStats:(id)stats toCurrentStats:(id)currentStats;
 - (id)_init;
-- (id)_parseIOReportSampleFromStats:(id)a3 convertingUnitToUnityScale:(BOOL)a4;
-- (id)currentValueForSimpleChannel:(id)a3;
-- (id)currentValueForStateChannel:(id)a3 atIndex:(int)a4;
-- (id)deltaValueForSimpleChannel:(id)a3;
-- (id)deltaValueForStateChannel:(id)a3 atIndex:(int)a4;
+- (id)_parseIOReportSampleFromStats:(id)stats convertingUnitToUnityScale:(BOOL)scale;
+- (id)currentValueForSimpleChannel:(id)channel;
+- (id)currentValueForStateChannel:(id)channel atIndex:(int)index;
+- (id)deltaValueForSimpleChannel:(id)channel;
+- (id)deltaValueForStateChannel:(id)channel atIndex:(int)index;
 - (id)getCurrentStats;
 - (id)getDeltaStats;
 - (id)parseIOReportSample;
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (PLIOReportStats)initWithDriverName:(id)a3 withGroup:(id)a4
+- (PLIOReportStats)initWithDriverName:(id)name withGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLIOReportStats *)self _init];
-  v9 = v8;
-  if (v8 && ([v8 setDriverName:v6], objc_msgSend(v9, "subscribeToGroup:andSubGroup:withChannelIDs:", v7, 0, 0)))
+  nameCopy = name;
+  groupCopy = group;
+  _init = [(PLIOReportStats *)self _init];
+  v9 = _init;
+  if (_init && ([_init setDriverName:nameCopy], objc_msgSend(v9, "subscribeToGroup:andSubGroup:withChannelIDs:", groupCopy, 0, 0)))
   {
     v10 = v9;
   }
@@ -68,13 +68,13 @@
   [(PLIOReportStats *)&v3 dealloc];
 }
 
-- (BOOL)subscribeToGroup:(id)a3 andSubGroup:(id)a4 withChannelIDs:(id)a5 manualChannelOnly:(BOOL)a6
+- (BOOL)subscribeToGroup:(id)group andSubGroup:(id)subGroup withChannelIDs:(id)ds manualChannelOnly:(BOOL)only
 {
-  v6 = a6;
+  onlyCopy = only;
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  groupCopy = group;
+  subGroupCopy = subGroup;
+  dsCopy = ds;
   [(PLIOReportStats *)self clearSubscription];
   v13 = objc_autoreleasePoolPush();
   v49[0] = 0;
@@ -83,13 +83,13 @@
   v44 = 3221225472;
   v45 = __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manualChannelOnly___block_invoke;
   v46 = &unk_1E8519C08;
-  v14 = v10;
+  v14 = groupCopy;
   v47 = v14;
-  v15 = v11;
+  v15 = subGroupCopy;
   v48 = v15;
   v16 = IOReportCopyFilteredChannels();
   v17 = v16;
-  if (![v16 count] && !v6)
+  if (![v16 count] && !onlyCopy)
   {
     goto LABEL_5;
   }
@@ -111,20 +111,20 @@
     _os_log_debug_impl(&dword_1D8611000, v21, OS_LOG_TYPE_DEBUG, "Retrieved channels from group(%@) subgroup(%@) = %@\n", buf, 0x20u);
   }
 
-  if (v12 && [v12 count])
+  if (dsCopy && [dsCopy count])
   {
     v36 = v15;
     v37 = v13;
-    v35 = self;
-    v22 = [(PLIOReportStats *)self driverName];
-    v23 = IOServiceMatching([v22 UTF8String]);
+    selfCopy = self;
+    driverName = [(PLIOReportStats *)self driverName];
+    v23 = IOServiceMatching([driverName UTF8String]);
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v38 = v12;
-    v24 = v12;
+    v38 = dsCopy;
+    v24 = dsCopy;
     v25 = [v24 countByEnumeratingWithState:&v39 objects:v50 count:16];
     if (v25)
     {
@@ -164,13 +164,13 @@
 
     CFRelease(v23);
     v13 = v37;
-    v12 = v38;
+    dsCopy = v38;
     v15 = v36;
-    self = v35;
+    self = selfCopy;
   }
 
   [(PLIOReportStats *)self setSubscription:IOReportCreateSubscription()];
-  LOBYTE(v11) = v49[0] == 0;
+  LOBYTE(subGroupCopy) = v49[0] == 0;
   if (v49[0])
   {
     v33 = PLLogCommon();
@@ -205,7 +205,7 @@ LABEL_6:
 
   objc_autoreleasePoolPop(v13);
   v19 = *MEMORY[0x1E69E9840];
-  return v18 & v11;
+  return v18 & subGroupCopy;
 }
 
 uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manualChannelOnly___block_invoke(uint64_t a1)
@@ -245,7 +245,7 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
     if (-[PLIOReportStats subscription](self, "subscription") && ([Samples subscribedChannels], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
     {
       [Samples subscription];
-      v4 = [Samples subscribedChannels];
+      subscribedChannels = [Samples subscribedChannels];
       Samples = IOReportCreateSamples();
     }
 
@@ -260,21 +260,21 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
 
 - (id)getDeltaStats
 {
-  v3 = [(PLIOReportStats *)self getCurrentStats];
-  v4 = [(PLIOReportStats *)self ioReportSample];
-  v5 = [(PLIOReportStats *)self _calculateDeltaFromPreviousStats:v4 toCurrentStats:v3];
+  getCurrentStats = [(PLIOReportStats *)self getCurrentStats];
+  ioReportSample = [(PLIOReportStats *)self ioReportSample];
+  v5 = [(PLIOReportStats *)self _calculateDeltaFromPreviousStats:ioReportSample toCurrentStats:getCurrentStats];
 
   return v5;
 }
 
 - (double)getSampleDuration
 {
-  v3 = [(PLIOReportStats *)self sampleTimePrevious];
-  if (v3)
+  sampleTimePrevious = [(PLIOReportStats *)self sampleTimePrevious];
+  if (sampleTimePrevious)
   {
-    v4 = [(PLIOReportStats *)self sampleTime];
-    v5 = [(PLIOReportStats *)self sampleTimePrevious];
-    [v4 timeIntervalSinceDate:v5];
+    sampleTime = [(PLIOReportStats *)self sampleTime];
+    sampleTimePrevious2 = [(PLIOReportStats *)self sampleTimePrevious];
+    [sampleTime timeIntervalSinceDate:sampleTimePrevious2];
     v7 = v6;
   }
 
@@ -286,41 +286,41 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
   return v7;
 }
 
-- (BOOL)updateStatsWithBlock:(id)a3
+- (BOOL)updateStatsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PLIOReportStats *)self ioReportSample];
-  [(PLIOReportStats *)self setPreviousIOReportSample:v5];
+  blockCopy = block;
+  ioReportSample = [(PLIOReportStats *)self ioReportSample];
+  [(PLIOReportStats *)self setPreviousIOReportSample:ioReportSample];
 
-  v6 = [(PLIOReportStats *)self getCurrentStats];
-  if (v6)
+  getCurrentStats = [(PLIOReportStats *)self getCurrentStats];
+  if (getCurrentStats)
   {
-    v7 = [MEMORY[0x1E695DF00] monotonicDate];
-    v8 = v4[2](v4, self, v6, v7);
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+    v8 = blockCopy[2](blockCopy, self, getCurrentStats, monotonicDate);
 
-    LOBYTE(v6) = v8 != 0;
+    LOBYTE(getCurrentStats) = v8 != 0;
     if (v8)
     {
       [(PLIOReportStats *)self setIoReportSample:v8];
-      v9 = [(PLIOReportStats *)self sampleTime];
-      [(PLIOReportStats *)self setSampleTimePrevious:v9];
+      sampleTime = [(PLIOReportStats *)self sampleTime];
+      [(PLIOReportStats *)self setSampleTimePrevious:sampleTime];
 
-      [(PLIOReportStats *)self setSampleTime:v7];
-      v7 = v8;
+      [(PLIOReportStats *)self setSampleTime:monotonicDate];
+      monotonicDate = v8;
     }
   }
 
-  return v6;
+  return getCurrentStats;
 }
 
 - (id)parseIOReportSample
 {
-  v3 = [(PLIOReportStats *)self ioReportSample];
+  ioReportSample = [(PLIOReportStats *)self ioReportSample];
 
-  if (v3)
+  if (ioReportSample)
   {
-    v4 = [(PLIOReportStats *)self ioReportSample];
-    v5 = [(PLIOReportStats *)self _parseIOReportSampleFromStats:v4 convertingUnitToUnityScale:0];
+    ioReportSample2 = [(PLIOReportStats *)self ioReportSample];
+    v5 = [(PLIOReportStats *)self _parseIOReportSampleFromStats:ioReportSample2 convertingUnitToUnityScale:0];
   }
 
   else
@@ -333,12 +333,12 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
 
 - (id)parseSimpleDeltaSample
 {
-  v3 = [(PLIOReportStats *)self ioReportSample];
+  ioReportSample = [(PLIOReportStats *)self ioReportSample];
 
-  if (v3)
+  if (ioReportSample)
   {
-    v4 = [(PLIOReportStats *)self getDeltaStats];
-    v5 = [(PLIOReportStats *)self _parseIOReportSampleFromStats:v4 convertingUnitToUnityScale:0];
+    getDeltaStats = [(PLIOReportStats *)self getDeltaStats];
+    v5 = [(PLIOReportStats *)self _parseIOReportSampleFromStats:getDeltaStats convertingUnitToUnityScale:0];
   }
 
   else
@@ -349,10 +349,10 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
   return v5;
 }
 
-- (id)_calculateDeltaFromPreviousStats:(id)a3 toCurrentStats:(id)a4
+- (id)_calculateDeltaFromPreviousStats:(id)stats toCurrentStats:(id)currentStats
 {
   SamplesDelta = 0;
-  if (a3 && a4)
+  if (stats && currentStats)
   {
     SamplesDelta = IOReportCreateSamplesDelta();
     v4 = vars8;
@@ -361,15 +361,15 @@ uint64_t __81__PLIOReportStats_subscribeToGroup_andSubGroup_withChannelIDs_manua
   return SamplesDelta;
 }
 
-- (id)_parseIOReportSampleFromStats:(id)a3 convertingUnitToUnityScale:(BOOL)a4
+- (id)_parseIOReportSampleFromStats:(id)stats convertingUnitToUnityScale:(BOOL)scale
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v8 = [v4 dictionary];
+  statsCopy = stats;
+  dictionary = [v4 dictionary];
   IOReportIterate();
 
-  v6 = v8;
-  return v8;
+  v6 = dictionary;
+  return dictionary;
 }
 
 void __76__PLIOReportStats__parseIOReportSampleFromStats_convertingUnitToUnityScale___block_invoke(uint64_t a1)
@@ -477,13 +477,13 @@ void __76__PLIOReportStats__parseIOReportSampleFromStats_convertingUnitToUnitySc
   objc_autoreleasePoolPop(v2);
 }
 
-- (double)_convertValue:(int64_t)a3 toUnityScaleFromUnit:(unint64_t)a4
+- (double)_convertValue:(int64_t)value toUnityScaleFromUnit:(unint64_t)unit
 {
-  v4 = a4 & 0xFFFFFFFFFFFFFFLL;
-  result = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFLL) > 0x81FFFFFFFFLL)
+  v4 = unit & 0xFFFFFFFFFFFFFFLL;
+  result = value;
+  if ((unit & 0xFFFFFFFFFFFFFFLL) > 0x81FFFFFFFFLL)
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFLL) > 0x87FFFFFFFFLL)
+    if ((unit & 0xFFFFFFFFFFFFFFLL) > 0x87FFFFFFFFLL)
     {
       if (v4 == 0x8800000000)
       {
@@ -521,7 +521,7 @@ void __76__PLIOReportStats__parseIOReportSampleFromStats_convertingUnitToUnitySc
 
   else
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFLL) > 0x78FFFFFFFFLL)
+    if ((unit & 0xFFFFFFFFFFFFFFLL) > 0x78FFFFFFFFLL)
     {
       if (v4 == 0x7900000000)
       {
@@ -558,19 +558,19 @@ void __76__PLIOReportStats__parseIOReportSampleFromStats_convertingUnitToUnitySc
   }
 }
 
-- (id)currentValueForSimpleChannel:(id)a3
+- (id)currentValueForSimpleChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__5;
   v14 = __Block_byref_object_dispose__5;
   v15 = 0;
-  if (v4)
+  if (channelCopy)
   {
-    v5 = [(PLIOReportStats *)self getCurrentStats];
-    v9 = v4;
+    getCurrentStats = [(PLIOReportStats *)self getCurrentStats];
+    v9 = channelCopy;
     IOReportIterate();
 
     v6 = v11[5];
@@ -614,19 +614,19 @@ void __48__PLIOReportStats_currentValueForSimpleChannel___block_invoke(uint64_t 
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)deltaValueForSimpleChannel:(id)a3
+- (id)deltaValueForSimpleChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__5;
   v14 = __Block_byref_object_dispose__5;
   v15 = 0;
-  if (v4)
+  if (channelCopy)
   {
-    v5 = [(PLIOReportStats *)self getDeltaStats];
-    v9 = v4;
+    getDeltaStats = [(PLIOReportStats *)self getDeltaStats];
+    v9 = channelCopy;
     IOReportIterate();
 
     v6 = v11[5];
@@ -670,19 +670,19 @@ void __46__PLIOReportStats_deltaValueForSimpleChannel___block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)currentValueForStateChannel:(id)a3 atIndex:(int)a4
+- (id)currentValueForStateChannel:(id)channel atIndex:(int)index
 {
-  v5 = a3;
+  channelCopy = channel;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = 0;
-  if (v5)
+  if (channelCopy)
   {
-    v6 = [(PLIOReportStats *)self getCurrentStats];
-    v10 = v5;
+    getCurrentStats = [(PLIOReportStats *)self getCurrentStats];
+    v10 = channelCopy;
     IOReportIterate();
 
     v7 = v12[5];
@@ -729,19 +729,19 @@ void __55__PLIOReportStats_currentValueForStateChannel_atIndex___block_invoke(ui
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)deltaValueForStateChannel:(id)a3 atIndex:(int)a4
+- (id)deltaValueForStateChannel:(id)channel atIndex:(int)index
 {
-  v5 = a3;
+  channelCopy = channel;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = 0;
-  if (v5)
+  if (channelCopy)
   {
-    v6 = [(PLIOReportStats *)self getDeltaStats];
-    v10 = v5;
+    getDeltaStats = [(PLIOReportStats *)self getDeltaStats];
+    v10 = channelCopy;
     IOReportIterate();
 
     v7 = v12[5];

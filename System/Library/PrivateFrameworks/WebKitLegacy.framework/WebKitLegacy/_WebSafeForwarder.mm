@@ -1,20 +1,20 @@
 @interface _WebSafeForwarder
-- (_WebSafeForwarder)initWithTarget:(id)a3 defaultTarget:(id)a4;
+- (_WebSafeForwarder)initWithTarget:(id)target defaultTarget:(id)defaultTarget;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _WebSafeForwarder
 
-- (_WebSafeForwarder)initWithTarget:(id)a3 defaultTarget:(id)a4
+- (_WebSafeForwarder)initWithTarget:(id)target defaultTarget:(id)defaultTarget
 {
   v9.receiver = self;
   v9.super_class = _WebSafeForwarder;
   result = [(_WebSafeForwarder *)&v9 init];
   if (result)
   {
-    result->_target = a3;
-    result->_defaultTarget = a4;
+    result->_target = target;
+    result->_defaultTarget = defaultTarget;
     v7 = result;
     v8 = [[_WebSafeAsyncForwarder alloc] initWithForwarder:result];
     result = v7;
@@ -35,31 +35,31 @@
   [(_WebSafeForwarder *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (WebThreadIsCurrent())
   {
-    [a3 retainArguments];
+    [invocation retainArguments];
 
     WebThreadCallDelegate();
   }
 
   else
   {
-    [a3 selector];
+    [invocation selector];
     if (objc_opt_respondsToSelector())
     {
-      [a3 invokeWithTarget:self->_target];
+      [invocation invokeWithTarget:self->_target];
     }
 
     else
     {
-      [a3 selector];
+      [invocation selector];
       if (objc_opt_respondsToSelector())
       {
         defaultTarget = self->_defaultTarget;
 
-        [a3 invokeWithTarget:defaultTarget];
+        [invocation invokeWithTarget:defaultTarget];
       }
     }
   }

@@ -1,26 +1,26 @@
 @interface HUMediaSourceItem
 + (id)_musicAppUninstallResolveError;
-+ (id)_musicCatalogPlaybackDisabledResolveErrorFor:(unint64_t)a3;
-+ (id)_storeKitErrorResolveErrorFor:(id)a3;
++ (id)_musicCatalogPlaybackDisabledResolveErrorFor:(unint64_t)for;
++ (id)_storeKitErrorResolveErrorFor:(id)for;
 + (id)appleMusicSource;
 + (id)soundScapesSource;
 - (BOOL)failed;
 - (BOOL)success;
 - (HUMediaPickerDelegate)delegate;
-- (HUMediaSourceItem)initWithBundleIdentifier:(id)a3 forServiceName:(id)a4;
+- (HUMediaSourceItem)initWithBundleIdentifier:(id)identifier forServiceName:(id)name;
 - (NSString)description;
 - (id)_appIconFuture;
 - (id)_setupAppleMusicPicker;
 - (id)_setupSoundScapesPicker;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)_updateAppleMusicSubscriptionStatusForMediaProfiles:(id)a3 forTarget:(unint64_t)a4;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)_updateAppleMusicSubscriptionStatusForMediaProfiles:(id)profiles forTarget:(unint64_t)target;
 - (id)pickerViewController;
-- (id)resolveForMediaProfiles:(id)a3 forTarget:(unint64_t)a4;
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3;
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4;
+- (id)resolveForMediaProfiles:(id)profiles forTarget:(unint64_t)target;
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state;
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive;
 - (void)mediaPickerCancelled;
-- (void)mediaPickerDidCancel:(id)a3;
-- (void)mediaPickerDidSelectPlaybackArchive:(id)a3 withError:(id)a4;
+- (void)mediaPickerDidCancel:(id)cancel;
+- (void)mediaPickerDidSelectPlaybackArchive:(id)archive withError:(id)error;
 @end
 
 @implementation HUMediaSourceItem
@@ -41,33 +41,33 @@
   return v2;
 }
 
-- (HUMediaSourceItem)initWithBundleIdentifier:(id)a3 forServiceName:(id)a4
+- (HUMediaSourceItem)initWithBundleIdentifier:(id)identifier forServiceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = HUMediaSourceItem;
   v9 = [(HUMediaSourceItem *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdentifier, a3);
+    objc_storeStrong(&v9->_bundleIdentifier, identifier);
     v11 = HFLocalizedString();
     name = v10->_name;
     v10->_name = v11;
 
-    v13 = [(HUMediaSourceItem *)v10 _appIconFuture];
+    _appIconFuture = [(HUMediaSourceItem *)v10 _appIconFuture];
     iconFuture = v10->_iconFuture;
-    v10->_iconFuture = v13;
+    v10->_iconFuture = _appIconFuture;
 
     objc_initWeak(&location, v10);
-    v15 = [(HUMediaSourceItem *)v10 iconFuture];
+    iconFuture = [(HUMediaSourceItem *)v10 iconFuture];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __61__HUMediaSourceItem_initWithBundleIdentifier_forServiceName___block_invoke;
     v18[3] = &unk_277DC3C68;
     objc_copyWeak(&v19, &location);
-    v16 = [v15 addCompletionBlock:v18];
+    v16 = [iconFuture addCompletionBlock:v18];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -90,8 +90,8 @@ void __61__HUMediaSourceItem_initWithBundleIdentifier_forServiceName___block_inv
   v6[2] = __35__HUMediaSourceItem__appIconFuture__block_invoke;
   v6[3] = &unk_277DB7580;
   v6[4] = self;
-  v3 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v4 = [v2 futureWithBlock:v6 scheduler:v3];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v4 = [v2 futureWithBlock:v6 scheduler:globalAsyncScheduler];
 
   return v4;
 }
@@ -145,25 +145,25 @@ void __35__HUMediaSourceItem__appIconFuture__block_invoke_2(uint64_t a1, void *a
   [*(a1 + 32) finishWithResult:v3];
 }
 
-- (id)resolveForMediaProfiles:(id)a3 forTarget:(unint64_t)a4
+- (id)resolveForMediaProfiles:(id)profiles forTarget:(unint64_t)target
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_mediaProfileContainers, a3);
-  v8 = [(HUMediaSourceItem *)self bundleIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.Music"];
+  profilesCopy = profiles;
+  objc_storeStrong(&self->_mediaProfileContainers, profiles);
+  bundleIdentifier = [(HUMediaSourceItem *)self bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.Music"];
 
   if (v9)
   {
-    v10 = [(HUMediaSourceItem *)self _updateAppleMusicSubscriptionStatusForMediaProfiles:v7 forTarget:a4];
+    v10 = [(HUMediaSourceItem *)self _updateAppleMusicSubscriptionStatusForMediaProfiles:profilesCopy forTarget:target];
     resolveFuture = self->_resolveFuture;
     self->_resolveFuture = v10;
   }
 
   else
   {
-    v12 = [(HUMediaSourceItem *)self bundleIdentifier];
-    v13 = [v12 isEqualToString:@"com.apple.SoundScapes"];
+    bundleIdentifier2 = [(HUMediaSourceItem *)self bundleIdentifier];
+    v13 = [bundleIdentifier2 isEqualToString:@"com.apple.SoundScapes"];
 
     if (v13)
     {
@@ -172,64 +172,64 @@ void __35__HUMediaSourceItem__appIconFuture__block_invoke_2(uint64_t a1, void *a
       v35[1] = 3221225472;
       v35[2] = __55__HUMediaSourceItem_resolveForMediaProfiles_forTarget___block_invoke;
       v35[3] = &unk_277DBC9F8;
-      v36 = v7;
-      v37 = a4;
-      v15 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-      v16 = [v14 futureWithBlock:v35 scheduler:v15];
+      v36 = profilesCopy;
+      targetCopy = target;
+      globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+      v16 = [v14 futureWithBlock:v35 scheduler:globalAsyncScheduler];
       v17 = self->_resolveFuture;
       self->_resolveFuture = v16;
     }
   }
 
   objc_initWeak(&location, self);
-  v18 = [(HUMediaSourceItem *)self bundleIdentifier];
+  bundleIdentifier3 = [(HUMediaSourceItem *)self bundleIdentifier];
   v19 = self->_resolveFuture;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __55__HUMediaSourceItem_resolveForMediaProfiles_forTarget___block_invoke_2_61;
   v31[3] = &unk_277DC3CB0;
-  v20 = v18;
+  v20 = bundleIdentifier3;
   v32 = v20;
   objc_copyWeak(&v33, &location);
   v21 = [(NAFuture *)v19 addCompletionBlock:v31];
   v22 = objc_opt_new();
-  v23 = [(HUMediaSourceItem *)self resolveFuture];
+  resolveFuture = [(HUMediaSourceItem *)self resolveFuture];
 
-  if (v23)
+  if (resolveFuture)
   {
-    v24 = [(HUMediaSourceItem *)self resolveFuture];
-    [v22 addObject:v24];
+    resolveFuture2 = [(HUMediaSourceItem *)self resolveFuture];
+    [v22 addObject:resolveFuture2];
   }
 
   else
   {
-    v24 = HFLogForCategory();
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    resolveFuture2 = HFLogForCategory();
+    if (os_log_type_enabled(resolveFuture2, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(HUMediaSourceItem *)self bundleIdentifier];
+      bundleIdentifier4 = [(HUMediaSourceItem *)self bundleIdentifier];
       *buf = 138412290;
-      v39 = v25;
-      _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEFAULT, "Media Source %@ is not being resolved", buf, 0xCu);
+      v39 = bundleIdentifier4;
+      _os_log_impl(&dword_20CEB6000, resolveFuture2, OS_LOG_TYPE_DEFAULT, "Media Source %@ is not being resolved", buf, 0xCu);
     }
   }
 
-  v26 = [(HUMediaSourceItem *)self iconFuture];
+  iconFuture = [(HUMediaSourceItem *)self iconFuture];
 
-  if (v26)
+  if (iconFuture)
   {
-    v27 = [(HUMediaSourceItem *)self iconFuture];
-    [v22 addObject:v27];
+    iconFuture2 = [(HUMediaSourceItem *)self iconFuture];
+    [v22 addObject:iconFuture2];
   }
 
   else
   {
-    v27 = HFLogForCategory();
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    iconFuture2 = HFLogForCategory();
+    if (os_log_type_enabled(iconFuture2, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(HUMediaSourceItem *)self bundleIdentifier];
+      bundleIdentifier5 = [(HUMediaSourceItem *)self bundleIdentifier];
       *buf = 138412290;
-      v39 = v28;
-      _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "Icon for media Source %@ is not being fetched", buf, 0xCu);
+      v39 = bundleIdentifier5;
+      _os_log_impl(&dword_20CEB6000, iconFuture2, OS_LOG_TYPE_DEFAULT, "Icon for media Source %@ is not being fetched", buf, 0xCu);
     }
   }
 
@@ -419,9 +419,9 @@ void __55__HUMediaSourceItem_resolveForMediaProfiles_forTarget___block_invoke_2_
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HUMediaSourceItem *)self name];
-  v5 = [(HUMediaSourceItem *)self bundleIdentifier];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  name = [(HUMediaSourceItem *)self name];
+  bundleIdentifier = [(HUMediaSourceItem *)self bundleIdentifier];
+  v6 = [v3 stringWithFormat:@"%@ - %@", name, bundleIdentifier];
 
   return v6;
 }
@@ -433,32 +433,32 @@ void __55__HUMediaSourceItem_resolveForMediaProfiles_forTarget___block_invoke_2_
     goto LABEL_6;
   }
 
-  v3 = [(HUMediaSourceItem *)self bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.Music"];
+  bundleIdentifier = [(HUMediaSourceItem *)self bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.Music"];
 
   if (v4)
   {
-    v5 = [(HUMediaSourceItem *)self _setupAppleMusicPicker];
+    _setupAppleMusicPicker = [(HUMediaSourceItem *)self _setupAppleMusicPicker];
     goto LABEL_7;
   }
 
-  v6 = [(HUMediaSourceItem *)self bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.SoundScapes"];
+  bundleIdentifier2 = [(HUMediaSourceItem *)self bundleIdentifier];
+  v7 = [bundleIdentifier2 isEqualToString:@"com.apple.SoundScapes"];
 
   if (v7)
   {
-    v5 = [(HUMediaSourceItem *)self _setupSoundScapesPicker];
+    _setupAppleMusicPicker = [(HUMediaSourceItem *)self _setupSoundScapesPicker];
   }
 
   else
   {
 LABEL_6:
-    v5 = 0;
+    _setupAppleMusicPicker = 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return _setupAppleMusicPicker;
 }
 
 - (id)_setupAppleMusicPicker
@@ -486,8 +486,8 @@ LABEL_7:
   [v5 setShowsItemsWithProtectedAssets:1];
   [v5 setShowsCatalogContent:1];
   [v5 setShowsLibraryContent:1];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v19 = 0;
@@ -521,9 +521,9 @@ LABEL_7:
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUMediaSourceItem *)self mediaProfileContainers];
-  v5 = [v4 allObjects];
-  v6 = [v5 na_map:&__block_literal_global_73_0];
+  mediaProfileContainers = [(HUMediaSourceItem *)self mediaProfileContainers];
+  allObjects = [mediaProfileContainers allObjects];
+  v6 = [allObjects na_map:&__block_literal_global_73_0];
   v7 = [v3 setWithArray:v6];
 
   v8 = [MEMORY[0x277D65240] pickerForMediaProfiles:v7 forDelegate:self];
@@ -555,13 +555,13 @@ id __44__HUMediaSourceItem__setupSoundScapesPicker__block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
-  v5 = [(HUMediaSourceItem *)self iconFuture];
-  v6 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v7 = [v5 reschedule:v6];
+  iconFuture = [(HUMediaSourceItem *)self iconFuture];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v7 = [iconFuture reschedule:globalAsyncScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__HUMediaSourceItem__subclass_updateWithOptions___block_invoke;
@@ -607,21 +607,21 @@ id __49__HUMediaSourceItem__subclass_updateWithOptions___block_invoke(uint64_t a
   return v13;
 }
 
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state
 {
-  v3 = [(HUMediaSourceItem *)self resolveFuture];
-  v4 = [v3 isFinished] ^ 1;
+  resolveFuture = [(HUMediaSourceItem *)self resolveFuture];
+  v4 = [resolveFuture isFinished] ^ 1;
 
   return v4;
 }
 
 - (BOOL)success
 {
-  v3 = [(HUMediaSourceItem *)self resolveFuture];
-  if ([v3 isFinished])
+  resolveFuture = [(HUMediaSourceItem *)self resolveFuture];
+  if ([resolveFuture isFinished])
   {
-    v4 = [(HUMediaSourceItem *)self resolveError];
-    v5 = [v4 count] == 0;
+    resolveError = [(HUMediaSourceItem *)self resolveError];
+    v5 = [resolveError count] == 0;
   }
 
   else
@@ -634,11 +634,11 @@ id __49__HUMediaSourceItem__subclass_updateWithOptions___block_invoke(uint64_t a
 
 - (BOOL)failed
 {
-  v3 = [(HUMediaSourceItem *)self resolveFuture];
-  if ([v3 isFinished])
+  resolveFuture = [(HUMediaSourceItem *)self resolveFuture];
+  if ([resolveFuture isFinished])
   {
-    v4 = [(HUMediaSourceItem *)self resolveError];
-    v5 = [v4 count] != 0;
+    resolveError = [(HUMediaSourceItem *)self resolveError];
+    v5 = [resolveError count] != 0;
   }
 
   else
@@ -669,16 +669,16 @@ id __49__HUMediaSourceItem__subclass_updateWithOptions___block_invoke(uint64_t a
   return v6;
 }
 
-+ (id)_musicCatalogPlaybackDisabledResolveErrorFor:(unint64_t)a3
++ (id)_musicCatalogPlaybackDisabledResolveErrorFor:(unint64_t)for
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!for)
   {
     v3 = @"HUSceneMediaPickerUnavailableMusicCatalogPlaybackDisabledPromptMessage";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (for == 1)
   {
     v3 = @"HUMusicAlarmMediaPickerUnavailableMusicCatalogPlaybackDisabledPromptMessage";
 LABEL_5:
@@ -704,49 +704,49 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_storeKitErrorResolveErrorFor:(id)a3
++ (id)_storeKitErrorResolveErrorFor:(id)for
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  forCopy = for;
   v4 = [HUMediaAccountUtilities reasonForMediaPickerNotAvailable:2];
   if (v4)
   {
     v5 = v4;
-    v6 = _HULocalizedStringWithDefaultValue(v4, v4, 1);
+    localizedDescription = _HULocalizedStringWithDefaultValue(v4, v4, 1);
   }
 
   else
   {
-    v6 = [v3 localizedDescription];
+    localizedDescription = [forCopy localizedDescription];
   }
 
   v10[0] = @"HUMediaPickerUnavailablePromptTitleKey";
   v7 = _HULocalizedStringWithDefaultValue(@"HUAlertError", @"HUAlertError", 1);
   v10[1] = @"HUMediaPickerUnavailablePromptMessageKey";
   v11[0] = v7;
-  v11[1] = v6;
+  v11[1] = localizedDescription;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   return v8;
 }
 
-- (id)_updateAppleMusicSubscriptionStatusForMediaProfiles:(id)a3 forTarget:(unint64_t)a4
+- (id)_updateAppleMusicSubscriptionStatusForMediaProfiles:(id)profiles forTarget:(unint64_t)target
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  profilesCopy = profiles;
   if (+[HUMediaAccountUtilities isMusicAppInstalled])
   {
-    v6 = [v5 anyObject];
-    v7 = [v6 hf_home];
-    v8 = [HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:v5 inHome:v7];
+    anyObject = [profilesCopy anyObject];
+    hf_home = [anyObject hf_home];
+    v8 = [HUMediaAccountUtilities determineMediaPickerAvailabilityForHomePodProfiles:profilesCopy inHome:hf_home];
 
-    v9 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v10 = [v8 reschedule:v9];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v10 = [v8 reschedule:globalAsyncScheduler];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __83__HUMediaSourceItem__updateAppleMusicSubscriptionStatusForMediaProfiles_forTarget___block_invoke;
     v16[3] = &__block_descriptor_40_e32___NAFuture_16__0__NSDictionary_8l;
-    v16[4] = a4;
+    v16[4] = target;
     v11 = [v10 flatMap:v16];
   }
 
@@ -840,30 +840,30 @@ LABEL_18:
   return v12;
 }
 
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive
 {
-  v5 = a4;
-  v6 = [(HUMediaSourceItem *)self delegate];
-  [v6 mediaPickerDidPickPlaybackArchive:v5];
+  archiveCopy = archive;
+  delegate = [(HUMediaSourceItem *)self delegate];
+  [delegate mediaPickerDidPickPlaybackArchive:archiveCopy];
 }
 
-- (void)mediaPickerDidCancel:(id)a3
+- (void)mediaPickerDidCancel:(id)cancel
 {
-  v3 = [(HUMediaSourceItem *)self delegate];
-  [v3 mediaPickerDidCancel];
+  delegate = [(HUMediaSourceItem *)self delegate];
+  [delegate mediaPickerDidCancel];
 }
 
-- (void)mediaPickerDidSelectPlaybackArchive:(id)a3 withError:(id)a4
+- (void)mediaPickerDidSelectPlaybackArchive:(id)archive withError:(id)error
 {
-  v5 = a3;
-  v6 = [(HUMediaSourceItem *)self delegate];
-  [v6 mediaPickerDidPickPlaybackArchive:v5];
+  archiveCopy = archive;
+  delegate = [(HUMediaSourceItem *)self delegate];
+  [delegate mediaPickerDidPickPlaybackArchive:archiveCopy];
 }
 
 - (void)mediaPickerCancelled
 {
-  v2 = [(HUMediaSourceItem *)self delegate];
-  [v2 mediaPickerDidCancel];
+  delegate = [(HUMediaSourceItem *)self delegate];
+  [delegate mediaPickerDidCancel];
 }
 
 - (HUMediaPickerDelegate)delegate

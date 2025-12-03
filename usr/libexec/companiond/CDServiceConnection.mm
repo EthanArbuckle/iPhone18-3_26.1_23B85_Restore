@@ -1,72 +1,72 @@
 @interface CDServiceConnection
-- (CDServiceConnection)initWithConnection:(id)a3;
+- (CDServiceConnection)initWithConnection:(id)connection;
 - (CDServiceConnectionDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)authenticationSessionDeviceStartedAuthentication:(id)a3;
-- (void)authenticationSessionDeviceTappedNotification:(id)a3;
-- (void)authenticationSessionDidFailWithError:(id)a3;
-- (void)authenticationSessionDidFinishWithResponse:(id)a3;
-- (void)authenticationSessionPresentShieldWithStyle:(int64_t)a3 device:(id)a4;
-- (void)fetchDaemonStatusWithCompletionHandler:(id)a3;
-- (void)performAMSDelegatePurchaseWithRequest:(id)a3 isSandboxPurchase:(BOOL)a4 completionHandler:(id)a5;
-- (void)startAuthenticationSessionWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)authenticationSessionDeviceStartedAuthentication:(id)authentication;
+- (void)authenticationSessionDeviceTappedNotification:(id)notification;
+- (void)authenticationSessionDidFailWithError:(id)error;
+- (void)authenticationSessionDidFinishWithResponse:(id)response;
+- (void)authenticationSessionPresentShieldWithStyle:(int64_t)style device:(id)device;
+- (void)fetchDaemonStatusWithCompletionHandler:(id)handler;
+- (void)performAMSDelegatePurchaseWithRequest:(id)request isSandboxPurchase:(BOOL)purchase completionHandler:(id)handler;
+- (void)startAuthenticationSessionWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation CDServiceConnection
 
-- (CDServiceConnection)initWithConnection:(id)a3
+- (CDServiceConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CDServiceConnection;
   v6 = [(CDServiceConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [BSDescriptionBuilder builderWithObject:self];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001F97C;
   v5 = v8[3] = &unk_10008A030;
   v9 = v5;
-  v10 = self;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+  selfCopy = self;
+  [v5 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CDServiceConnection *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CDServiceConnection *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CDServiceConnection *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CDServiceConnection *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)startAuthenticationSessionWithRequest:(id)a3 completionHandler:(id)a4
+- (void)startAuthenticationSessionWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&_mh_execute_header, "start authentication session", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -76,11 +76,11 @@
   v10 = cps_service_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     *buf = 138412546;
-    v50 = v11;
+    v50 = bundleIdentifier;
     v51 = 2112;
-    v52 = v6;
+    v52 = requestCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received start authentication session request. client=%@, request=%@", buf, 0x16u);
   }
 
@@ -88,7 +88,7 @@
   v42 = 3221225472;
   v43 = sub_10001FFFC;
   v44 = &unk_10008A820;
-  v12 = v7;
+  v12 = handlerCopy;
   v45 = v12;
   v13 = objc_retainBlock(&v41);
   v14 = objc_opt_self();
@@ -107,8 +107,8 @@
     if (v17)
     {
       v18 = cps_signpost_log();
-      v19 = [v6 identifier];
-      sub_100064F98(v19, [v19 hash], v18);
+      identifier = [requestCopy identifier];
+      sub_100064F98(identifier, [identifier hash], v18);
 
       sub_100064A24(self, v9);
     }
@@ -157,7 +157,7 @@
         if (v29 & 1) != 0 || (objc_opt_self(), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_opt_isKindOfClass(), v30, (v31))
         {
 LABEL_17:
-          sub_100064BC4(self, v9, v6, v13);
+          sub_100064BC4(self, v9, requestCopy, v13);
           goto LABEL_25;
         }
 
@@ -192,7 +192,7 @@ LABEL_17:
             else
             {
               v47 = NSDebugDescriptionErrorKey;
-              v38 = [NSString stringWithFormat:@"Invalid authentication request: %@", v6, v41, v42, v43, v44];
+              v38 = [NSString stringWithFormat:@"Invalid authentication request: %@", requestCopy, v41, v42, v43, v44];
               v48 = v38;
               v39 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
               v40 = [NSError errorWithDomain:CPSErrorDomain code:101 userInfo:v39];
@@ -209,9 +209,9 @@ LABEL_25:
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchDaemonStatusWithCompletionHandler:(id)a3
+- (void)fetchDaemonStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   v5 = _os_activity_create(&_mh_execute_header, "fetch daemon status", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -221,9 +221,9 @@ LABEL_25:
   v7 = cps_service_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
     *buf = 138412290;
-    v12 = v8;
+    v12 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received fetch daemon status request. client=%@", buf, 0xCu);
   }
 
@@ -232,30 +232,30 @@ LABEL_25:
     if (_BSIsInternalInstall())
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained serviceConnection:self fetchDaemonStatusWithCompletionHandler:v4];
+      [WeakRetained serviceConnection:self fetchDaemonStatusWithCompletionHandler:handlerCopy];
     }
 
     else
     {
       WeakRetained = [NSError errorWithDomain:CPSErrorDomain code:101 userInfo:0];
-      v4[2](v4, 0, WeakRetained);
+      handlerCopy[2](handlerCopy, 0, WeakRetained);
     }
   }
 
   else
   {
     WeakRetained = [NSError errorWithDomain:CPSErrorDomain code:103 userInfo:0];
-    v4[2](v4, 0, WeakRetained);
+    handlerCopy[2](handlerCopy, 0, WeakRetained);
   }
 
   os_activity_scope_leave(&v10);
 }
 
-- (void)performAMSDelegatePurchaseWithRequest:(id)a3 isSandboxPurchase:(BOOL)a4 completionHandler:(id)a5
+- (void)performAMSDelegatePurchaseWithRequest:(id)request isSandboxPurchase:(BOOL)purchase completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  purchaseCopy = purchase;
+  requestCopy = request;
+  handlerCopy = handler;
   v23.opaque[0] = 0;
   v23.opaque[1] = 0;
   v9 = _os_activity_create(&_mh_execute_header, "perform AMS delegate purchase", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -265,9 +265,9 @@ LABEL_25:
   v11 = cps_service_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 bundleIdentifier];
+    bundleIdentifier = [v10 bundleIdentifier];
     *buf = 138412290;
-    v25 = v12;
+    v25 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received perform AMS delegate purchase. client=%@", buf, 0xCu);
   }
 
@@ -276,21 +276,21 @@ LABEL_25:
     if (_BSIsInternalInstall())
     {
       v13 = &AMSAccountMediaTypeProduction;
-      if (v6)
+      if (purchaseCopy)
       {
         v13 = &AMSAccountMediaTypeAppStoreSandbox;
       }
 
       v14 = [ACAccountStore ams_sharedAccountStoreForMediaType:*v13];
-      v15 = [v14 ams_activeiTunesAccount];
+      ams_activeiTunesAccount = [v14 ams_activeiTunesAccount];
 
       v16 = +[AMSDelegatePurchaseTask bagSubProfile];
       v17 = +[AMSDelegatePurchaseTask bagSubProfileVersion];
       v18 = [AMSBag bagForProfile:v16 profileVersion:v17];
 
-      v19 = [[AMSDelegatePurchaseTask alloc] initWithDelegatePurchaseRequest:v7 bag:v18 account:v15];
-      v20 = [v19 performDelegatePurchase];
-      [v20 addFinishBlock:v8];
+      v19 = [[AMSDelegatePurchaseTask alloc] initWithDelegatePurchaseRequest:requestCopy bag:v18 account:ams_activeiTunesAccount];
+      performDelegatePurchase = [v19 performDelegatePurchase];
+      [performDelegatePurchase addFinishBlock:handlerCopy];
     }
 
     else
@@ -301,8 +301,8 @@ LABEL_25:
         sub_1000650C4();
       }
 
-      v15 = [NSError errorWithDomain:CPSErrorDomain code:101 userInfo:0];
-      v8[2](v8, 0, v15);
+      ams_activeiTunesAccount = [NSError errorWithDomain:CPSErrorDomain code:101 userInfo:0];
+      handlerCopy[2](handlerCopy, 0, ams_activeiTunesAccount);
     }
   }
 
@@ -314,16 +314,16 @@ LABEL_25:
       sub_100065084();
     }
 
-    v15 = [NSError errorWithDomain:CPSErrorDomain code:103 userInfo:0];
-    v8[2](v8, 0, v15);
+    ams_activeiTunesAccount = [NSError errorWithDomain:CPSErrorDomain code:103 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, ams_activeiTunesAccount);
   }
 
   os_activity_scope_leave(&v23);
 }
 
-- (void)authenticationSessionPresentShieldWithStyle:(int64_t)a3 device:(id)a4
+- (void)authenticationSessionPresentShieldWithStyle:(int64_t)style device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v7 = [[CDServiceClient alloc] initWithConnection:self->_connection];
   if ([(CDServiceClient *)v7 shouldReceiveDeviceEvents])
   {
@@ -339,20 +339,20 @@ LABEL_25:
       *buf = 138412546;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Sending present shield event to client. client=%@, device=%@", buf, 0x16u);
     }
 
     v11 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_10008A840];
-    [v11 authenticationSessionPresentShieldWithStyle:a3 device:v6];
+    [v11 authenticationSessionPresentShieldWithStyle:style device:deviceCopy];
 
     os_activity_scope_leave(&v12);
   }
 }
 
-- (void)authenticationSessionDeviceTappedNotification:(id)a3
+- (void)authenticationSessionDeviceTappedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [[CDServiceClient alloc] initWithConnection:self->_connection];
   if ([(CDServiceClient *)v5 shouldReceiveDeviceEvents])
   {
@@ -368,20 +368,20 @@ LABEL_25:
       *buf = 138412546;
       v12 = v8;
       v13 = 2112;
-      v14 = v4;
+      v14 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending device accepted notification event to client. client=%@, device=%@", buf, 0x16u);
     }
 
     v9 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_10008A860];
-    [v9 authenticationSessionDeviceTappedNotification:v4];
+    [v9 authenticationSessionDeviceTappedNotification:notificationCopy];
 
     os_activity_scope_leave(&v10);
   }
 }
 
-- (void)authenticationSessionDeviceStartedAuthentication:(id)a3
+- (void)authenticationSessionDeviceStartedAuthentication:(id)authentication
 {
-  v4 = a3;
+  authenticationCopy = authentication;
   v5 = [[CDServiceClient alloc] initWithConnection:self->_connection];
   if ([(CDServiceClient *)v5 shouldReceiveDeviceEvents])
   {
@@ -397,31 +397,31 @@ LABEL_25:
       *buf = 138412546;
       v12 = v8;
       v13 = 2112;
-      v14 = v4;
+      v14 = authenticationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending device accepted notification event to client. client=%@, device=%@", buf, 0x16u);
     }
 
     v9 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_10008A880];
-    [v9 authenticationSessionDeviceStartedAuthentication:v4];
+    [v9 authenticationSessionDeviceStartedAuthentication:authenticationCopy];
 
     os_activity_scope_leave(&v10);
   }
 }
 
-- (void)authenticationSessionDidFinishWithResponse:(id)a3
+- (void)authenticationSessionDidFinishWithResponse:(id)response
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 authenticationSessionDidFinishWithResponse:v4];
+  responseCopy = response;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy authenticationSessionDidFinishWithResponse:responseCopy];
 }
 
-- (void)authenticationSessionDidFailWithError:(id)a3
+- (void)authenticationSessionDidFailWithError:(id)error
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 authenticationSessionDidFailWithError:v4];
+  errorCopy = error;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy authenticationSessionDidFailWithError:errorCopy];
 }
 
 - (CDServiceConnectionDelegate)delegate

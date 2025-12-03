@@ -1,179 +1,179 @@
 @interface ICCryptoStrategyBase
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)encryptSidecarFileFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)rewrapDataAtURL:(id)a3 withMainKey:(id)a4;
-- (BOOL)rewrapFile:(id)a3 withMainKey:(id)a4 generationManager:(id)a5;
-- (BOOL)rewrapWithMainKey:(id)a3;
-- (BOOL)serialize:(id)a3 toURL:(id)a4;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
+- (BOOL)encryptSidecarFileFromURL:(id)l toURL:(id)rL;
+- (BOOL)rewrapDataAtURL:(id)l withMainKey:(id)key;
+- (BOOL)rewrapFile:(id)file withMainKey:(id)key generationManager:(id)manager;
+- (BOOL)rewrapWithMainKey:(id)key;
+- (BOOL)serialize:(id)serialize toURL:(id)l;
 - (ICCloudSyncingObject)object;
-- (ICCryptoStrategyBase)initWithCloudSyncingObject:(id)a3;
-- (id)decryptedDataFromFileURL:(id)a3;
-- (id)decryptedSidecarDataFromFileURL:(id)a3;
-- (void)performBlockIfAccountExists:(id)a3;
-- (void)performBlockIfAttachmentExists:(id)a3;
-- (void)performBlockIfMediaExists:(id)a3;
-- (void)performBlockIfNoteExists:(id)a3;
-- (void)performBlockIfObjectExists:(id)a3;
-- (void)performBlockIfPreviewImageExists:(id)a3;
+- (ICCryptoStrategyBase)initWithCloudSyncingObject:(id)object;
+- (id)decryptedDataFromFileURL:(id)l;
+- (id)decryptedSidecarDataFromFileURL:(id)l;
+- (void)performBlockIfAccountExists:(id)exists;
+- (void)performBlockIfAttachmentExists:(id)exists;
+- (void)performBlockIfMediaExists:(id)exists;
+- (void)performBlockIfNoteExists:(id)exists;
+- (void)performBlockIfObjectExists:(id)exists;
+- (void)performBlockIfPreviewImageExists:(id)exists;
 @end
 
 @implementation ICCryptoStrategyBase
 
-- (ICCryptoStrategyBase)initWithCloudSyncingObject:(id)a3
+- (ICCryptoStrategyBase)initWithCloudSyncingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = ICCryptoStrategyBase;
   v5 = [(ICCryptoStrategyBase *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
   }
 
   return v6;
 }
 
-- (void)performBlockIfObjectExists:(id)a3
+- (void)performBlockIfObjectExists:(id)exists
 {
-  v9 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
-  v5 = [v4 managedObjectContext];
-  if (v5)
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
+  managedObjectContext = [object managedObjectContext];
+  if (managedObjectContext)
   {
-    v6 = v5;
-    v7 = [v4 identifier];
-    v8 = [v7 length];
+    v6 = managedObjectContext;
+    identifier = [object identifier];
+    v8 = [identifier length];
 
-    if (v9)
+    if (existsCopy)
     {
       if (v8)
       {
-        v9[2](v9, v4);
+        existsCopy[2](existsCopy, object);
       }
     }
   }
 }
 
-- (void)performBlockIfAccountExists:(id)a3
+- (void)performBlockIfAccountExists:(id)exists
 {
-  v10 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v5 managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v8 length];
+    v7 = managedObjectContext;
+    identifier = [v5 identifier];
+    v9 = [identifier length];
 
-    if (v10)
+    if (existsCopy)
     {
       if (v9)
       {
-        v10[2](v10, v5);
+        existsCopy[2](existsCopy, v5);
       }
     }
   }
 }
 
-- (void)performBlockIfNoteExists:(id)a3
+- (void)performBlockIfNoteExists:(id)exists
 {
-  v10 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v5 managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v8 length];
+    v7 = managedObjectContext;
+    identifier = [v5 identifier];
+    v9 = [identifier length];
 
-    if (v10)
+    if (existsCopy)
     {
       if (v9)
       {
-        v10[2](v10, v5);
+        existsCopy[2](existsCopy, v5);
       }
     }
   }
 }
 
-- (void)performBlockIfAttachmentExists:(id)a3
+- (void)performBlockIfAttachmentExists:(id)exists
 {
-  v10 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v5 managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v8 length];
+    v7 = managedObjectContext;
+    identifier = [v5 identifier];
+    v9 = [identifier length];
 
-    if (v10)
+    if (existsCopy)
     {
       if (v9)
       {
-        v10[2](v10, v5);
+        existsCopy[2](existsCopy, v5);
       }
     }
   }
 }
 
-- (void)performBlockIfPreviewImageExists:(id)a3
+- (void)performBlockIfPreviewImageExists:(id)exists
 {
-  v10 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v5 managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v8 length];
+    v7 = managedObjectContext;
+    identifier = [v5 identifier];
+    v9 = [identifier length];
 
-    if (v10)
+    if (existsCopy)
     {
       if (v9)
       {
-        v10[2](v10, v5);
+        existsCopy[2](existsCopy, v5);
       }
     }
   }
 }
 
-- (void)performBlockIfMediaExists:(id)a3
+- (void)performBlockIfMediaExists:(id)exists
 {
-  v10 = a3;
-  v4 = [(ICCryptoStrategyBase *)self object];
+  existsCopy = exists;
+  object = [(ICCryptoStrategyBase *)self object];
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 managedObjectContext];
-  if (v6)
+  managedObjectContext = [v5 managedObjectContext];
+  if (managedObjectContext)
   {
-    v7 = v6;
-    v8 = [v5 identifier];
-    v9 = [v8 length];
+    v7 = managedObjectContext;
+    identifier = [v5 identifier];
+    v9 = [identifier length];
 
-    if (v10)
+    if (existsCopy)
     {
       if (v9)
       {
-        v10[2](v10, v5);
+        existsCopy[2](existsCopy, v5);
       }
     }
   }
 }
 
-- (BOOL)rewrapDataAtURL:(id)a3 withMainKey:(id)a4
+- (BOOL)rewrapDataAtURL:(id)l withMainKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -182,10 +182,10 @@
   v11[1] = 3221225472;
   v11[2] = __52__ICCryptoStrategyBase_rewrapDataAtURL_withMainKey___block_invoke;
   v11[3] = &unk_278195A00;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
-  v13 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = keyCopy;
   v14 = v9;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v11];
@@ -248,11 +248,11 @@ void __52__ICCryptoStrategyBase_rewrapDataAtURL_withMainKey___block_invoke(uint6
   }
 }
 
-- (BOOL)rewrapFile:(id)a3 withMainKey:(id)a4 generationManager:(id)a5
+- (BOOL)rewrapFile:(id)file withMainKey:(id)key generationManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  keyCopy = key;
+  managerCopy = manager;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -261,12 +261,12 @@ void __52__ICCryptoStrategyBase_rewrapDataAtURL_withMainKey___block_invoke(uint6
   v15[1] = 3221225472;
   v15[2] = __65__ICCryptoStrategyBase_rewrapFile_withMainKey_generationManager___block_invoke;
   v15[3] = &unk_2781985A8;
-  v11 = v8;
+  v11 = fileCopy;
   v18 = v11;
   v15[4] = self;
-  v12 = v9;
+  v12 = keyCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = managerCopy;
   v17 = v13;
   v19 = &v20;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v15];
@@ -378,10 +378,10 @@ LABEL_28:
 LABEL_29:
 }
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -398,17 +398,17 @@ LABEL_29:
   v13[3] = &unk_2781985D0;
   v15 = &v16;
   v13[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -503,23 +503,23 @@ LABEL_14:
 LABEL_15:
 }
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(ICCryptoStrategyBase *)self object];
-    v15 = [v14 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     *buf = 138413314;
-    v32 = v15;
+    v32 = shortLoggingDescription;
     v33 = 2112;
-    v34 = v6;
+    v34 = lCopy;
     v35 = 2112;
     v37 = 2080;
-    v36 = v7;
+    v36 = rLCopy;
     v38 = "[ICCryptoStrategyBase encryptFileFromURL:toURL:]";
     v39 = 1024;
     v40 = 343;
@@ -534,21 +534,21 @@ LABEL_15:
   v20 = 3221225472;
   v21 = __49__ICCryptoStrategyBase_encryptFileFromURL_toURL___block_invoke;
   v22 = &unk_2781985F8;
-  v9 = v6;
+  v9 = lCopy;
   v23 = v9;
-  v24 = self;
+  selfCopy = self;
   v26 = &v27;
-  v10 = v7;
+  v10 = rLCopy;
   v25 = v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:&v19];
   v11 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v16 = [(ICCryptoStrategyBase *)self object:v19];
-    v17 = [v16 shortLoggingDescription];
+    shortLoggingDescription2 = [v16 shortLoggingDescription];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:*(v28 + 24)];
     *buf = 138413058;
-    v32 = v17;
+    v32 = shortLoggingDescription2;
     v33 = 2112;
     v35 = 2080;
     v34 = v18;
@@ -610,23 +610,23 @@ LABEL_12:
   }
 }
 
-- (BOOL)encryptSidecarFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptSidecarFileFromURL:(id)l toURL:(id)rL
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(ICCryptoStrategyBase *)self object];
-    v15 = [v14 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     *buf = 138413314;
-    v32 = v15;
+    v32 = shortLoggingDescription;
     v33 = 2112;
-    v34 = v6;
+    v34 = lCopy;
     v35 = 2112;
     v37 = 2080;
-    v36 = v7;
+    v36 = rLCopy;
     v38 = "[ICCryptoStrategyBase encryptSidecarFileFromURL:toURL:]";
     v39 = 1024;
     v40 = 383;
@@ -641,21 +641,21 @@ LABEL_12:
   v20 = 3221225472;
   v21 = __56__ICCryptoStrategyBase_encryptSidecarFileFromURL_toURL___block_invoke;
   v22 = &unk_2781985F8;
-  v9 = v6;
+  v9 = lCopy;
   v23 = v9;
-  v24 = self;
+  selfCopy = self;
   v26 = &v27;
-  v10 = v7;
+  v10 = rLCopy;
   v25 = v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:&v19];
   v11 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v16 = [(ICCryptoStrategyBase *)self object:v19];
-    v17 = [v16 shortLoggingDescription];
+    shortLoggingDescription2 = [v16 shortLoggingDescription];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:*(v28 + 24)];
     *buf = 138413058;
-    v32 = v17;
+    v32 = shortLoggingDescription2;
     v33 = 2112;
     v35 = 2080;
     v34 = v18;
@@ -725,11 +725,11 @@ LABEL_13:
   }
 }
 
-- (BOOL)serialize:(id)a3 toURL:(id)a4
+- (BOOL)serialize:(id)serialize toURL:(id)l
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serializeCopy = serialize;
+  lCopy = l;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -744,10 +744,10 @@ LABEL_13:
   v18 = 3221225472;
   v19 = __40__ICCryptoStrategyBase_serialize_toURL___block_invoke;
   v20 = &unk_2781985F8;
-  v9 = v7;
+  v9 = lCopy;
   v21 = v9;
-  v10 = v6;
-  v23 = self;
+  v10 = serializeCopy;
+  selfCopy = self;
   v24 = &v25;
   v22 = v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:&v17];
@@ -755,10 +755,10 @@ LABEL_13:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v14 = [(ICCryptoStrategyBase *)self object:v17];
-    v15 = [v14 shortLoggingDescription];
+    shortLoggingDescription = [v14 shortLoggingDescription];
     v16 = [MEMORY[0x277CCABB0] numberWithBool:*(v26 + 24)];
     *buf = 138413058;
-    v30 = v15;
+    v30 = shortLoggingDescription;
     v31 = 2112;
     v33 = 2080;
     v32 = v16;
@@ -826,10 +826,10 @@ void __40__ICCryptoStrategyBase_serialize_toURL___block_invoke(uint64_t a1, void
   }
 }
 
-- (id)decryptedDataFromFileURL:(id)a3
+- (id)decryptedDataFromFileURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -846,19 +846,19 @@ void __40__ICCryptoStrategyBase_serialize_toURL___block_invoke(uint64_t a1, void
   v13[1] = 3221225472;
   v13[2] = __49__ICCryptoStrategyBase_decryptedDataFromFileURL___block_invoke;
   v13[3] = &unk_278195A28;
-  v6 = v4;
-  v15 = self;
+  v6 = lCopy;
+  selfCopy = self;
   v16 = &v17;
   v14 = v6;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithInt:v18[5] != 0];
     *buf = 138413058;
-    v24 = v11;
+    v24 = shortLoggingDescription;
     v25 = 2112;
     v27 = 2080;
     v26 = v12;
@@ -909,10 +909,10 @@ LABEL_7:
   }
 }
 
-- (id)decryptedSidecarDataFromFileURL:(id)a3
+- (id)decryptedSidecarDataFromFileURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -929,19 +929,19 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = __56__ICCryptoStrategyBase_decryptedSidecarDataFromFileURL___block_invoke;
   v13[3] = &unk_278195A28;
-  v6 = v4;
-  v15 = self;
+  v6 = lCopy;
+  selfCopy = self;
   v16 = &v17;
   v14 = v6;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithInt:v18[5] != 0];
     *buf = 138413058;
-    v24 = v11;
+    v24 = shortLoggingDescription;
     v25 = 2112;
     v27 = 2080;
     v26 = v12;

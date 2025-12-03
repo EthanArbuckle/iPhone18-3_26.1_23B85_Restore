@@ -1,32 +1,32 @@
 @interface VCCaptionsManager
 + (id)defaultManager;
 - (VCCaptionsManager)init;
-- (id)captionsSourceFromClientContext:(id)a3;
-- (id)deserializeLocale:(id)a3 withError:(id *)a4 serializedLocale:(id)a5;
-- (id)streamTokenEntryForTranslatorIdentifier:(id)a3;
-- (id)streamTokenEntryFromClientContext:(id)a3;
-- (int64_t)addCaptionsSourceForTranslatorIdentifier:(id)a3 streamToken:(int64_t)a4 direction:(int)a5 reportingSamplingUUID:(id)a6;
+- (id)captionsSourceFromClientContext:(id)context;
+- (id)deserializeLocale:(id)locale withError:(id *)error serializedLocale:(id)serializedLocale;
+- (id)streamTokenEntryForTranslatorIdentifier:(id)identifier;
+- (id)streamTokenEntryFromClientContext:(id)context;
+- (int64_t)addCaptionsSourceForTranslatorIdentifier:(id)identifier streamToken:(int64_t)token direction:(int)direction reportingSamplingUUID:(id)d;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)dispatchedRegisterCaptionsSource:(id)a3 streamToken:(int64_t)a4;
-- (void)dispatchedUnregisterCaptionsSourceWithStreamToken:(int64_t)a3;
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5;
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5 isTranslated:(BOOL)a6;
+- (void)dispatchedRegisterCaptionsSource:(id)source streamToken:(int64_t)token;
+- (void)dispatchedUnregisterCaptionsSourceWithStreamToken:(int64_t)token;
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments;
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments isTranslated:(BOOL)translated;
 - (void)registerBlocksForService;
-- (void)registerCaptionsSource:(id)a3 streamToken:(int64_t)a4;
-- (void)streamToken:(int64_t)a3 didChangeSourceLocale:(id)a4;
-- (void)streamToken:(int64_t)a3 didConfigureCaptionsWithError:(id)a4;
-- (void)streamToken:(int64_t)a3 didDetectGibberish:(BOOL)a4;
-- (void)streamToken:(int64_t)a3 didDisableCaptions:(BOOL)a4 error:(id)a5;
-- (void)streamToken:(int64_t)a3 didEnableCaptions:(BOOL)a4 error:(id)a5;
-- (void)streamToken:(int64_t)a3 didProduceLanguageHypothesis:(id)a4;
-- (void)streamToken:(int64_t)a3 didStartCaptioningWithReason:(unsigned __int8)a4;
-- (void)streamToken:(int64_t)a3 didStopCaptioningWithReason:(unsigned __int8)a4;
-- (void)streamToken:(int64_t)a3 didStopLanguageDetectorWithError:(id)a4;
-- (void)streamToken:(int64_t)a3 didUpdateCaptions:(id)a4;
-- (void)unregisterCaptionsSourceWithStreamToken:(int64_t)a3;
-- (void)updateSourceLocale:(id)a3 clientContext:(id)a4;
-- (void)updateTranslationTranscriptionContextArray:(id)a3;
+- (void)registerCaptionsSource:(id)source streamToken:(int64_t)token;
+- (void)streamToken:(int64_t)token didChangeSourceLocale:(id)locale;
+- (void)streamToken:(int64_t)token didConfigureCaptionsWithError:(id)error;
+- (void)streamToken:(int64_t)token didDetectGibberish:(BOOL)gibberish;
+- (void)streamToken:(int64_t)token didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)streamToken:(int64_t)token didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)streamToken:(int64_t)token didProduceLanguageHypothesis:(id)hypothesis;
+- (void)streamToken:(int64_t)token didStartCaptioningWithReason:(unsigned __int8)reason;
+- (void)streamToken:(int64_t)token didStopCaptioningWithReason:(unsigned __int8)reason;
+- (void)streamToken:(int64_t)token didStopLanguageDetectorWithError:(id)error;
+- (void)streamToken:(int64_t)token didUpdateCaptions:(id)captions;
+- (void)unregisterCaptionsSourceWithStreamToken:(int64_t)token;
+- (void)updateSourceLocale:(id)locale clientContext:(id)context;
+- (void)updateTranslationTranscriptionContextArray:(id)array;
 @end
 
 @implementation VCCaptionsManager
@@ -80,10 +80,10 @@ void __35__VCCaptionsManager_defaultManager__block_invoke()
   [(VCCaptionsManager *)&v3 dealloc];
 }
 
-- (void)dispatchedRegisterCaptionsSource:(id)a3 streamToken:(int64_t)a4
+- (void)dispatchedRegisterCaptionsSource:(id)source streamToken:(int64_t)token
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a4]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:token]))
   {
     if (objc_opt_class() == self)
     {
@@ -100,7 +100,7 @@ void __35__VCCaptionsManager_defaultManager__block_invoke()
           v20 = 1024;
           v21 = 230;
           v22 = 1024;
-          LODWORD(v23) = a4;
+          LODWORD(v23) = token;
           v10 = " [%s] %s:%d VCCaptionsManager: Context already exists for stream token: %u";
           v11 = v9;
           v12 = 34;
@@ -137,9 +137,9 @@ LABEL_15:
           v22 = 2112;
           v23 = v7;
           v24 = 2048;
-          v25 = self;
+          selfCopy = self;
           v26 = 1024;
-          v27 = a4;
+          tokenCopy = token;
           v10 = " [%s] %s:%d %@(%p) VCCaptionsManager: Context already exists for stream token: %u";
           v11 = v14;
           v12 = 54;
@@ -151,13 +151,13 @@ LABEL_15:
 
   else
   {
-    v15 = [[VCCaptionsManagerStreamTokenClientList alloc] initWithStreamToken:a4 captionsSource:a3];
+    v15 = [[VCCaptionsManagerStreamTokenClientList alloc] initWithStreamToken:token captionsSource:source];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
-    [a3 registerCaptionsEventDelegate:self];
+    [source registerCaptionsEventDelegate:self];
   }
 }
 
-- (void)registerCaptionsSource:(id)a3 streamToken:(int64_t)a4
+- (void)registerCaptionsSource:(id)source streamToken:(int64_t)token
 {
   v5[7] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -166,14 +166,14 @@ LABEL_15:
   v5[2] = __56__VCCaptionsManager_registerCaptionsSource_streamToken___block_invoke;
   v5[3] = &unk_1E85F50D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = source;
+  v5[6] = token;
   dispatch_async(xpcCommandQueue, v5);
 }
 
-- (void)dispatchedUnregisterCaptionsSourceWithStreamToken:(int64_t)a3
+- (void)dispatchedUnregisterCaptionsSourceWithStreamToken:(int64_t)token
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:token];
   v5 = [(NSMutableDictionary *)self->_streamTokenList objectForKeyedSubscript:v4];
   [objc_msgSend(v5 "captionsSource")];
   [v5 captionsSource];
@@ -187,7 +187,7 @@ LABEL_15:
   [(NSMutableDictionary *)streamTokenList removeObjectForKey:v4];
 }
 
-- (void)unregisterCaptionsSourceWithStreamToken:(int64_t)a3
+- (void)unregisterCaptionsSourceWithStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -196,47 +196,47 @@ LABEL_15:
   block[2] = __61__VCCaptionsManager_unregisterCaptionsSourceWithStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(xpcCommandQueue, block);
 }
 
-- (id)captionsSourceFromClientContext:(id)a3
+- (id)captionsSourceFromClientContext:(id)context
 {
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  if (![VCCaptionsManagerStreamTokenClientList isValidContext:a3])
+  if (![VCCaptionsManagerStreamTokenClientList isValidContext:context])
   {
     return 0;
   }
 
-  v5 = [VCCaptionsManagerStreamTokenClientList streamTokenFromClientContext:a3];
+  v5 = [VCCaptionsManagerStreamTokenClientList streamTokenFromClientContext:context];
   v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:v5]);
 
   return [v6 captionsSource];
 }
 
-- (id)streamTokenEntryFromClientContext:(id)a3
+- (id)streamTokenEntryFromClientContext:(id)context
 {
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  if (![VCCaptionsManagerStreamTokenClientList isValidContext:a3])
+  if (![VCCaptionsManagerStreamTokenClientList isValidContext:context])
   {
     return 0;
   }
 
-  v5 = [VCCaptionsManagerStreamTokenClientList streamTokenFromClientContext:a3];
+  v5 = [VCCaptionsManagerStreamTokenClientList streamTokenFromClientContext:context];
   streamTokenList = self->_streamTokenList;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
 
   return [(NSMutableDictionary *)streamTokenList objectForKeyedSubscript:v7];
 }
 
-- (id)deserializeLocale:(id)a3 withError:(id *)a4 serializedLocale:(id)a5
+- (id)deserializeLocale:(id)locale withError:(id *)error serializedLocale:(id)serializedLocale
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!serializedLocale || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCaptionsManager" code:-5 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCaptionsManager" code:-5 userInfo:0];
     }
 
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -253,9 +253,9 @@ LABEL_15:
 
     v15 = objc_opt_class();
     Name = class_getName(v15);
-    if (a4)
+    if (error)
     {
-      v17 = *a4;
+      v17 = *error;
     }
 
     else
@@ -270,7 +270,7 @@ LABEL_15:
     v24 = 1024;
     v25 = 292;
     v26 = 2112;
-    v27 = a5;
+    serializedLocaleCopy = serializedLocale;
     v28 = 2080;
     v29 = Name;
     v30 = 2112;
@@ -280,15 +280,15 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  result = [AVCCaptionsConfig deserializeLocale:a5];
+  result = [AVCCaptionsConfig deserializeLocale:serializedLocale];
   if (result)
   {
     return result;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCaptionsManager" code:-5 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCaptionsManager" code:-5 userInfo:0];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -299,9 +299,9 @@ LABEL_15:
     {
       v10 = objc_opt_class();
       v11 = class_getName(v10);
-      if (a4)
+      if (error)
       {
-        v12 = *a4;
+        v12 = *error;
       }
 
       else
@@ -316,7 +316,7 @@ LABEL_15:
       v24 = 1024;
       v25 = 300;
       v26 = 2112;
-      v27 = 0;
+      serializedLocaleCopy = 0;
       v28 = 2080;
       v29 = v11;
       v30 = 2112;
@@ -331,24 +331,24 @@ LABEL_20:
   return 0;
 }
 
-- (void)updateSourceLocale:(id)a3 clientContext:(id)a4
+- (void)updateSourceLocale:(id)locale clientContext:(id)context
 {
-  if (a3)
+  if (locale)
   {
-    if (a4)
+    if (context)
     {
-      v7 = [(VCCaptionsManager *)self streamTokenEntryFromClientContext:a4];
+      v7 = [(VCCaptionsManager *)self streamTokenEntryFromClientContext:context];
       if ([v7 sourceLocaleEligibleToBeModified])
       {
-        v8 = [(VCCaptionsManager *)self captionsSourceFromClientContext:a4];
+        v8 = [(VCCaptionsManager *)self captionsSourceFromClientContext:context];
         if (v8)
         {
           v9 = v8;
-          [v7 setSourceLocaleIdentifier:{objc_msgSend(a3, "localeIdentifier")}];
-          [v9 setCaptionsSourceLocale:a3];
+          [v7 setSourceLocaleIdentifier:{objc_msgSend(locale, "localeIdentifier")}];
+          [v9 setCaptionsSourceLocale:locale];
           [v7 setSourceLocaleHasBeenSet:1];
 
-          [(VCCaptionsManager *)self updateTranslationTranscriptionContextArray:a4];
+          [(VCCaptionsManager *)self updateTranslationTranscriptionContextArray:context];
         }
 
         else
@@ -887,7 +887,7 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcCaptionsClientInitializeTranslator"];
 }
 
-- (id)streamTokenEntryForTranslatorIdentifier:(id)a3
+- (id)streamTokenEntryForTranslatorIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -911,7 +911,7 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if ([a3 isEqual:{objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", v10), "translatorIdentifier")}])
+        if ([identifier isEqual:{objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", v10), "translatorIdentifier")}])
         {
           return [(NSMutableDictionary *)self->_streamTokenList objectForKeyedSubscript:v10];
         }
@@ -934,23 +934,23 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
   return result;
 }
 
-- (int64_t)addCaptionsSourceForTranslatorIdentifier:(id)a3 streamToken:(int64_t)a4 direction:(int)a5 reportingSamplingUUID:(id)a6
+- (int64_t)addCaptionsSourceForTranslatorIdentifier:(id)identifier streamToken:(int64_t)token direction:(int)direction reportingSamplingUUID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
   *&v14 = 0xAAAAAAAAAAAAAA01;
   *(&v15 + 1) = 0xAAAAAAAAAAAA0203;
-  BYTE1(v14) = a5 == 1;
+  BYTE1(v14) = direction == 1;
   *(&v14 + 1) = @"calltranslationcaptions";
   *&v15 = 0;
-  *&v16 = a4;
-  *(&v16 + 1) = a3;
-  *&v17 = a6;
-  *(&v17 + 1) = a5 | 0xAAAAAAAA00000000;
+  *&v16 = token;
+  *(&v16 + 1) = identifier;
+  *&v17 = d;
+  *(&v17 + 1) = direction | 0xAAAAAAAA00000000;
   v9 = [[VCAudioMachineLearningCoordinator alloc] initWithConfiguration:&v14 delegate:0];
   if (v9)
   {
     v10 = v9;
-    [(VCCaptionsManager *)self dispatchedRegisterCaptionsSource:v9 streamToken:a4, v14, v15, v16, v17];
+    [(VCCaptionsManager *)self dispatchedRegisterCaptionsSource:v9 streamToken:token, v14, v15, v16, v17];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v11 = VRTraceErrorLogLevelToCSTR();
@@ -966,9 +966,9 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
         v23 = 2048;
         v24 = v10;
         v25 = 2048;
-        v26 = a4;
+        tokenCopy = token;
         v27 = 2048;
-        v28 = a3;
+        identifierCopy = identifier;
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Register captionsSource=%p for streamToken=%ld, translatorIdentifier=%p", buf, 0x3Au);
       }
     }
@@ -983,7 +983,7 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
   }
 }
 
-- (void)updateTranslationTranscriptionContextArray:(id)a3
+- (void)updateTranslationTranscriptionContextArray:(id)array
 {
   v67 = *MEMORY[0x1E69E9840];
   v5 = [(VCCaptionsManager *)self streamTokenEntryFromClientContext:?];
@@ -1005,18 +1005,18 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
           v52 = 1024;
           v53 = 661;
           v54 = 2112;
-          v55 = [v6 clientContextList];
+          clientContextList = [v6 clientContextList];
           v56 = 2048;
-          v57 = [objc_msgSend(v6 "clientContextList")];
+          selfCopy = [objc_msgSend(v6 "clientContextList")];
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d clientContextList=%@ (count=%lu)", buf, 0x30u);
         }
       }
 
       v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       [v9 addObject:{objc_msgSend(v6, "sourceLocaleIdentifier")}];
-      if ([a3 localeIdentifier])
+      if ([array localeIdentifier])
       {
-        [v9 addObject:{objc_msgSend(a3, "localeIdentifier")}];
+        [v9 addObject:{objc_msgSend(array, "localeIdentifier")}];
       }
 
       v65 = 0u;
@@ -1042,10 +1042,10 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
             }
 
             v15 = *(*(&v63 + 1) + 8 * v14);
-            v16 = [(VCCaptionsManager *)v15 localeIdentifier];
-            if (v16)
+            localeIdentifier = [(VCCaptionsManager *)v15 localeIdentifier];
+            if (localeIdentifier)
             {
-              v17 = v16;
+              v17 = localeIdentifier;
               if ([v9 count] <= 2)
               {
                 [v9 addObject:v17];
@@ -1066,9 +1066,9 @@ uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_151(uint
                     v52 = 1024;
                     v53 = 679;
                     v54 = 2112;
-                    v55 = v15;
+                    clientContextList = v15;
                     v56 = 2112;
-                    v57 = v17;
+                    selfCopy = v17;
                     _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, " [%s] %s:%d Not eligible for translation or transcription result context=%@, localeIdentifier=%@", buf, 0x30u);
                   }
                 }
@@ -1100,7 +1100,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 687;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Already in transcription context list context=%@", buf, 0x26u);
                     }
                   }
@@ -1121,7 +1121,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 689;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Add to transcription context list context=%@", buf, 0x26u);
                     }
                   }
@@ -1144,7 +1144,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 693;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v40, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Remove transcription context=%@ from translation context list", buf, 0x26u);
                     }
                   }
@@ -1172,7 +1172,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 699;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v34, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Already in translation context list context=%@", buf, 0x26u);
                     }
                   }
@@ -1193,7 +1193,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 701;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v42, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Add to translation context list context=%@", buf, 0x26u);
                     }
                   }
@@ -1216,7 +1216,7 @@ LABEL_33:
                       v52 = 1024;
                       v53 = 705;
                       v54 = 2112;
-                      v55 = v15;
+                      clientContextList = v15;
                       _os_log_impl(&dword_1DB56E000, v44, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Remove translation context=%@ from transcription context list", buf, 0x26u);
                     }
                   }
@@ -1242,9 +1242,9 @@ LABEL_33:
                   v52 = 1024;
                   v53 = 671;
                   v54 = 2112;
-                  v55 = v6;
+                  clientContextList = v6;
                   v56 = 2112;
-                  v57 = v15;
+                  selfCopy = v15;
                   v25 = v36;
                   v26 = " [%s] %s:%d Config locale not set for streamClientList=%@, context=%@";
                   v27 = 48;
@@ -1274,9 +1274,9 @@ LABEL_33:
                   v52 = 1024;
                   v53 = 671;
                   v54 = 2112;
-                  v55 = v22;
+                  clientContextList = v22;
                   v56 = 2048;
-                  v57 = self;
+                  selfCopy = self;
                   v58 = 2112;
                   v59 = v6;
                   v60 = 2112;
@@ -1315,7 +1315,7 @@ LABEL_34:
   }
 }
 
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5 isTranslated:(BOOL)a6
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments isTranslated:(BOOL)translated
 {
   v9 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -1323,11 +1323,11 @@ LABEL_34:
   v7[1] = 3221225472;
   v7[2] = __81__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments_isTranslated___block_invoke;
   v7[3] = &unk_1E85F5150;
-  v8 = a6;
+  translatedCopy = translated;
   v7[4] = self;
-  v7[5] = a5;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[5] = arguments;
+  v7[6] = token;
+  v7[7] = service;
   dispatch_async(xpcCommandQueue, v7);
 }
 
@@ -1567,7 +1567,7 @@ LABEL_37:
   return result;
 }
 
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments
 {
   block[8] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -1575,10 +1575,10 @@ LABEL_37:
   block[1] = 3221225472;
   block[2] = __68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___block_invoke;
   block[3] = &unk_1E85F5128;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = token;
+  block[7] = service;
   block[4] = self;
-  block[5] = a5;
+  block[5] = arguments;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -1624,13 +1624,13 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
   return result;
 }
 
-- (void)streamToken:(int64_t)a3 didConfigureCaptionsWithError:(id)a4
+- (void)streamToken:(int64_t)token didConfigureCaptionsWithError:(id)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v7 = @"vcCaptionsError";
-    v8[0] = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:0];
+    v8[0] = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:error requiringSecureCoding:1 error:0];
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -1639,15 +1639,15 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
     v6 = MEMORY[0x1E695E0F8];
   }
 
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidConfigureCaptions" arguments:v6];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidConfigureCaptions" arguments:v6];
 }
 
-- (void)streamToken:(int64_t)a3 didEnableCaptions:(BOOL)a4 error:(id)a5
+- (void)streamToken:(int64_t)token didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a4];
-  if (a5)
+  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:captions];
+  if (error)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a5 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:error requiringSecureCoding:1 error:0];
     v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v13, @"vcCaptionsEnabled", v8, @"vcCaptionsError", 0}];
   }
 
@@ -1657,15 +1657,15 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
   }
 
   v10 = v9;
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidEnableCaptions" arguments:v9];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidEnableCaptions" arguments:v9];
 }
 
-- (void)streamToken:(int64_t)a3 didDisableCaptions:(BOOL)a4 error:(id)a5
+- (void)streamToken:(int64_t)token didDisableCaptions:(BOOL)captions error:(id)error
 {
-  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a4];
-  if (a5)
+  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:captions];
+  if (error)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a5 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:error requiringSecureCoding:1 error:0];
     v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v13, @"vcCaptionsDisabled", v8, @"vcCaptionsError", 0}];
   }
 
@@ -1675,27 +1675,27 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
   }
 
   v10 = v9;
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidDisableCaptions" arguments:v9];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidDisableCaptions" arguments:v9];
 }
 
-- (void)streamToken:(int64_t)a3 didStartCaptioningWithReason:(unsigned __int8)a4
+- (void)streamToken:(int64_t)token didStartCaptioningWithReason:(unsigned __int8)reason
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedChar:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedChar:reason];
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcCaptionsStartReason", 0}];
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidCaptionsStart" arguments:v6];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidCaptionsStart" arguments:v6];
 }
 
-- (void)streamToken:(int64_t)a3 didStopCaptioningWithReason:(unsigned __int8)a4
+- (void)streamToken:(int64_t)token didStopCaptioningWithReason:(unsigned __int8)reason
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedChar:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedChar:reason];
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcCaptionsStopReason", 0}];
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidCaptionsEnd" arguments:v6];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidCaptionsEnd" arguments:v6];
 }
 
-- (void)streamToken:(int64_t)a3 didUpdateCaptions:(id)a4
+- (void)streamToken:(int64_t)token didUpdateCaptions:(id)captions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:0];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:captions requiringSecureCoding:1 error:0];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcCaptionsTranscription", 0}];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -1710,28 +1710,28 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
       v15 = 1024;
       v16 = 816;
       v17 = 1024;
-      v18 = a3;
+      tokenCopy = token;
       v19 = 2112;
-      v20 = a4;
+      captionsCopy = captions;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%d, didUpdateCaptions=%@", buf, 0x2Cu);
     }
   }
 
-  -[VCCaptionsManager notifyClientsWithStreamToken:service:arguments:isTranslated:](self, "notifyClientsWithStreamToken:service:arguments:isTranslated:", a3, "vcCaptionsDidUpdateCaptions", v8, [a4 isTranslated]);
+  -[VCCaptionsManager notifyClientsWithStreamToken:service:arguments:isTranslated:](self, "notifyClientsWithStreamToken:service:arguments:isTranslated:", token, "vcCaptionsDidUpdateCaptions", v8, [captions isTranslated]);
 }
 
-- (void)streamToken:(int64_t)a3 didDetectGibberish:(BOOL)a4
+- (void)streamToken:(int64_t)token didDetectGibberish:(BOOL)gibberish
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:gibberish];
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcCaptionsGibberish", 0}];
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidDetectGibberish" arguments:v6];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidDetectGibberish" arguments:v6];
 }
 
-- (void)streamToken:(int64_t)a3 didProduceLanguageHypothesis:(id)a4
+- (void)streamToken:(int64_t)token didProduceLanguageHypothesis:(id)hypothesis
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v9[0] = 0;
-  v6 = [VCCaptionsLanguageDetectorResults archivedTranscription:a4 error:v9];
+  v6 = [VCCaptionsLanguageDetectorResults archivedTranscription:hypothesis error:v9];
   if (v9[0])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1747,22 +1747,22 @@ void *__68__VCCaptionsManager_notifyClientsWithStreamToken_service_arguments___b
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"vcCaptionsTranscription", 0}];
-    [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidProduceLanguageHypothesis" arguments:v8];
+    [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidProduceLanguageHypothesis" arguments:v8];
   }
 }
 
-- (void)streamToken:(int64_t)a3 didStopLanguageDetectorWithError:(id)a4
+- (void)streamToken:(int64_t)token didStopLanguageDetectorWithError:(id)error
 {
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:0];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:error requiringSecureCoding:1 error:0];
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v6, @"vcCaptionsError", 0}];
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidStopLanguageDetectorWithError" arguments:v7];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidStopLanguageDetectorWithError" arguments:v7];
 }
 
-- (void)streamToken:(int64_t)a3 didChangeSourceLocale:(id)a4
+- (void)streamToken:(int64_t)token didChangeSourceLocale:(id)locale
 {
-  v6 = [AVCCaptionsConfig serializeLocale:a4];
+  v6 = [AVCCaptionsConfig serializeLocale:locale];
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v6, @"vcCaptionsSourceLocale", 0}];
-  [(VCCaptionsManager *)self notifyClientsWithStreamToken:a3 service:"vcCaptionsDidChangeSourceLocale" arguments:v7];
+  [(VCCaptionsManager *)self notifyClientsWithStreamToken:token service:"vcCaptionsDidChangeSourceLocale" arguments:v7];
 }
 
 uint64_t __45__VCCaptionsManager_registerBlocksForService__block_invoke_130(uint64_t a1, void *a2, void *a3)

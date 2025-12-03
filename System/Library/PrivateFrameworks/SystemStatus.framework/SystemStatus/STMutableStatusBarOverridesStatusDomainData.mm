@@ -1,30 +1,30 @@
 @interface STMutableStatusBarOverridesStatusDomainData
-- (BOOL)applyDiff:(id)a3;
+- (BOOL)applyDiff:(id)diff;
 - (STMutableListData)suppressedBackgroundActivityIdentifierListData;
-- (STMutableStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifierListData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)_addEditedIdentifier:(uint64_t)a1;
-- (void)setEntry:(id)a3 forKey:(id)a4;
-- (void)stopSuppressingBackgroundActivityWithIdentifier:(id)a3;
-- (void)suppressBackgroundActivityWithIdentifier:(id)a3;
+- (STMutableStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifierListData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)_addEditedIdentifier:(uint64_t)identifier;
+- (void)setEntry:(id)entry forKey:(id)key;
+- (void)stopSuppressingBackgroundActivityWithIdentifier:(id)identifier;
+- (void)suppressBackgroundActivityWithIdentifier:(id)identifier;
 @end
 
 @implementation STMutableStatusBarOverridesStatusDomainData
 
-- (STMutableStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)a3 suppressedBackgroundActivityIdentifierListData:(id)a4
+- (STMutableStatusBarOverridesStatusDomainData)initWithCustomOverrides:(id)overrides suppressedBackgroundActivityIdentifierListData:(id)data
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [(STStatusBarOverridesStatusDomainData *)&self->super.super.isa _initWithCustomOverrides:v6 suppressedBackgroundActivityIdentifierListData:v7];
+  overridesCopy = overrides;
+  v7 = [data mutableCopy];
+  v8 = [(STStatusBarOverridesStatusDomainData *)&self->super.super.isa _initWithCustomOverrides:overridesCopy suppressedBackgroundActivityIdentifierListData:v7];
 
   return v8;
 }
 
-- (void)setEntry:(id)a3 forKey:(id)a4
+- (void)setEntry:(id)entry forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = v6;
+  keyCopy = key;
+  entryCopy = entry;
+  v8 = keyCopy;
   if (self)
   {
     editedKeys = self->_editedKeys;
@@ -40,16 +40,16 @@
     [(NSMutableSet *)editedKeys addObject:v8];
   }
 
-  v12 = [(STStatusBarData *)self->super._customOverrides dataByReplacingEntry:v7 forKey:v8];
+  v12 = [(STStatusBarData *)self->super._customOverrides dataByReplacingEntry:entryCopy forKey:v8];
 
   customOverrides = self->super._customOverrides;
   self->super._customOverrides = v12;
 }
 
-- (void)suppressBackgroundActivityWithIdentifier:(id)a3
+- (void)suppressBackgroundActivityWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  [(STMutableStatusBarOverridesStatusDomainData *)self _addEditedIdentifier:v7];
+  identifierCopy = identifier;
+  [(STMutableStatusBarOverridesStatusDomainData *)self _addEditedIdentifier:identifierCopy];
   suppressedBackgroundActivityIdentifierListData = self->super._suppressedBackgroundActivityIdentifierListData;
   if (!suppressedBackgroundActivityIdentifierListData)
   {
@@ -60,24 +60,24 @@
     suppressedBackgroundActivityIdentifierListData = self->super._suppressedBackgroundActivityIdentifierListData;
   }
 
-  [(STListData *)suppressedBackgroundActivityIdentifierListData addObject:v7];
+  [(STListData *)suppressedBackgroundActivityIdentifierListData addObject:identifierCopy];
 }
 
-- (uint64_t)_addEditedIdentifier:(uint64_t)a1
+- (uint64_t)_addEditedIdentifier:(uint64_t)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
-    v5 = *(a1 + 32);
+    v5 = *(identifier + 32);
     v9 = v4;
     if (!v5)
     {
       v6 = [MEMORY[0x1E695DFA8] set];
-      v7 = *(a1 + 32);
-      *(a1 + 32) = v6;
+      v7 = *(identifier + 32);
+      *(identifier + 32) = v6;
 
-      v5 = *(a1 + 32);
+      v5 = *(identifier + 32);
     }
 
     v3 = [v5 addObject:v9];
@@ -87,10 +87,10 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)stopSuppressingBackgroundActivityWithIdentifier:(id)a3
+- (void)stopSuppressingBackgroundActivityWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  [(STMutableStatusBarOverridesStatusDomainData *)self _addEditedIdentifier:v7];
+  identifierCopy = identifier;
+  [(STMutableStatusBarOverridesStatusDomainData *)self _addEditedIdentifier:identifierCopy];
   suppressedBackgroundActivityIdentifierListData = self->super._suppressedBackgroundActivityIdentifierListData;
   if (!suppressedBackgroundActivityIdentifierListData)
   {
@@ -101,24 +101,24 @@
     suppressedBackgroundActivityIdentifierListData = self->super._suppressedBackgroundActivityIdentifierListData;
   }
 
-  [(STListData *)suppressedBackgroundActivityIdentifierListData removeObject:v7];
+  [(STListData *)suppressedBackgroundActivityIdentifierListData removeObject:identifierCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STStatusBarOverridesStatusDomainData allocWithZone:a3];
+  v4 = [STStatusBarOverridesStatusDomainData allocWithZone:zone];
 
   return [(STStatusBarOverridesStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;
@@ -128,9 +128,9 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusBarOverridesStatusDomainData;
-  v2 = [(STStatusBarOverridesStatusDomainData *)&v4 suppressedBackgroundActivityIdentifierListData];
+  suppressedBackgroundActivityIdentifierListData = [(STStatusBarOverridesStatusDomainData *)&v4 suppressedBackgroundActivityIdentifierListData];
 
-  return v2;
+  return suppressedBackgroundActivityIdentifierListData;
 }
 
 @end

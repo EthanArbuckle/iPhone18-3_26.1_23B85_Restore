@@ -1,5 +1,5 @@
 @interface _UIAsyncInvocation
-+ (_UIAsyncInvocation)invocationWithBlock:(id)a3;
++ (_UIAsyncInvocation)invocationWithBlock:(id)block;
 + (id)emptyInvocation;
 - (id)invoke;
 - (void)dealloc;
@@ -7,9 +7,9 @@
 
 @implementation _UIAsyncInvocation
 
-+ (_UIAsyncInvocation)invocationWithBlock:(id)a3
++ (_UIAsyncInvocation)invocationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(_UIAsyncInvocation);
   v5 = v4;
   if (v4)
@@ -17,7 +17,7 @@
     atomic_store(0, &v4->_invokeCallCount);
     atomic_store(0, &v4->_invocationBlockHasBeenCalled);
     atomic_store(0, &v4->_observer);
-    v6 = [v3 copy];
+    v6 = [blockCopy copy];
     invocationBlock = v5->_invocationBlock;
     v5->_invocationBlock = v6;
 
@@ -69,8 +69,8 @@
     CFRelease(v3);
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"UIAsyncInvocation.m" lineNumber:77 description:{@"Attempting to deallocate _UIAsyncInvocation<%p> while still invoking!  invoke count: %li", self, v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIAsyncInvocation.m" lineNumber:77 description:{@"Attempting to deallocate _UIAsyncInvocation<%p> while still invoking!  invoke count: %li", self, v5}];
     }
   }
 

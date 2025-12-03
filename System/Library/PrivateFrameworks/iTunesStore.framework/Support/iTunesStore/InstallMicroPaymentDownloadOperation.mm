@@ -8,17 +8,17 @@
 {
   v3 = objc_alloc_init(FinishDownloadResponse);
   [(FinishDownloadResponse *)v3 setResult:4];
-  v4 = [(FinishDownloadStepOperation *)self download];
-  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [v4 databaseID]);
-  v5 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [v4 transactionID], objc_msgSend(v4, "databaseID"));
+  download = [(FinishDownloadStepOperation *)self download];
+  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [download databaseID]);
+  v5 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [download transactionID], objc_msgSend(download, "databaseID"));
   [(FinishDownloadResponse *)v3 setDownloadHandle:v5];
-  v6 = [v4 mediaAsset];
-  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [v6 databaseID]);
-  v7 = [v4 clientIdentifier];
-  if (v7)
+  mediaAsset = [download mediaAsset];
+  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [mediaAsset databaseID]);
+  clientIdentifier = [download clientIdentifier];
+  if (clientIdentifier)
   {
-    v8 = [v4 downloadKind];
-    v38 = [(FinishDownloadStepOperation *)self documentsDirectoryPathWithClientIdentifier:v7 downloadKind:v8];
+    downloadKind = [download downloadKind];
+    v38 = [(FinishDownloadStepOperation *)self documentsDirectoryPathWithClientIdentifier:clientIdentifier downloadKind:downloadKind];
   }
 
   else
@@ -27,21 +27,21 @@
   }
 
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
 
-  if (v10)
+  if (uUIDString)
   {
-    v11 = [v6 destinationFileName];
-    v12 = [v11 pathExtension];
+    destinationFileName = [mediaAsset destinationFileName];
+    pathExtension = [destinationFileName pathExtension];
 
-    if (v12)
+    if (pathExtension)
     {
-      v13 = [v10 stringByAppendingPathExtension:v12];
+      v13 = [uUIDString stringByAppendingPathExtension:pathExtension];
     }
 
     else
     {
-      v13 = v10;
+      v13 = uUIDString;
     }
 
     v15 = v13;
@@ -55,13 +55,13 @@
     v37 = v15;
     v41 = 0;
     v42 = 0;
-    v16 = [(FinishDownloadStepOperation *)self unzipAsset:v6 unzippedPath:&v42 error:&v41];
+    v16 = [(FinishDownloadStepOperation *)self unzipAsset:mediaAsset unzippedPath:&v42 error:&v41];
     v17 = v42;
     v18 = v41;
     if (v16)
     {
       v35 = v5;
-      v36 = v7;
+      v36 = clientIdentifier;
       v19 = [v38 stringByAppendingPathComponent:v37];
       v39 = v18;
       v40 = v19;
@@ -79,29 +79,29 @@
           v22 = +[SSLogConfig sharedConfig];
         }
 
-        v23 = [v22 shouldLog];
+        shouldLog = [v22 shouldLog];
         if ([v22 shouldLogToDisk])
         {
-          v23 |= 2u;
+          shouldLog |= 2u;
         }
 
         v32 = v22;
-        v24 = [v22 OSLogObject];
-        if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+        oSLogObject = [v22 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
-          v23 &= 2u;
+          shouldLog &= 2u;
         }
 
         v15 = v37;
-        if (v23)
+        if (shouldLog)
         {
           v25 = objc_opt_class();
           v31 = v25;
-          v26 = [v4 databaseID];
+          databaseID = [download databaseID];
           v43 = 138412802;
           v44 = v25;
           v45 = 2048;
-          v46 = v26;
+          v46 = databaseID;
           v47 = 2112;
           v48 = v33;
           LODWORD(v30) = 32;
@@ -114,13 +114,13 @@
 LABEL_32:
 
             [(FinishDownloadResponse *)v3 setMediaAssetInstallPath:v33];
-            v7 = v36;
+            clientIdentifier = v36;
             goto LABEL_29;
           }
 
-          v24 = [NSString stringWithCString:v27 encoding:4, &v43, v30];
+          oSLogObject = [NSString stringWithCString:v27 encoding:4, &v43, v30];
           free(v27);
-          v29 = v24;
+          v29 = oSLogObject;
           SSFileLog();
         }
 
@@ -146,14 +146,14 @@ LABEL_32:
         goto LABEL_27;
       }
 
-      v36 = v7;
+      v36 = clientIdentifier;
       v21 = objc_alloc_init(NSFileManager);
       [v21 removeItemAtPath:v17 error:0];
     }
 
     v15 = v37;
 
-    v7 = v36;
+    clientIdentifier = v36;
 LABEL_27:
 
     v14 = v18;
@@ -165,7 +165,7 @@ LABEL_27:
 LABEL_28:
   [(FinishDownloadResponse *)v3 setError:v14];
   [(FinishDownloadResponse *)v3 setResult:0];
-  [(FinishDownloadStepOperation *)self rollbackAsset:v6 error:0];
+  [(FinishDownloadStepOperation *)self rollbackAsset:mediaAsset error:0];
 LABEL_29:
   [(FinishDownloadStepOperation *)self finishWithDownloadResponse:v3, v29];
 }

@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (_AXDyldImageMonitor)init;
 - (id)loadedImagePaths;
-- (void)_dyldDidAddImage:(id)a3;
-- (void)addImageMonitorObserver:(id)a3;
-- (void)enumerateLoadedImagePaths:(id)a3;
-- (void)removeImageMonitorObserver:(id)a3;
+- (void)_dyldDidAddImage:(id)image;
+- (void)addImageMonitorObserver:(id)observer;
+- (void)enumerateLoadedImagePaths:(id)paths;
+- (void)removeImageMonitorObserver:(id)observer;
 @end
 
 @implementation _AXDyldImageMonitor
@@ -38,10 +38,10 @@
   return v2;
 }
 
-- (void)_dyldDidAddImage:(id)a3
+- (void)_dyldDidAddImage:(id)image
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -62,7 +62,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) imageMonitor:self didAddImage:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) imageMonitor:self didAddImage:{imageCopy, v11}];
       }
 
       while (v7 != v9);
@@ -75,9 +75,9 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateLoadedImagePaths:(id)a3
+- (void)enumerateLoadedImagePaths:(id)paths
 {
-  v10 = a3;
+  pathsCopy = paths;
   v3 = _dyld_image_count();
   if (v3)
   {
@@ -90,7 +90,7 @@
         v7 = image_name;
         v8 = objc_alloc(MEMORY[0x1E696AEC0]);
         v9 = [v8 initWithCString:v7 encoding:{objc_msgSend(MEMORY[0x1E696AEC0], "defaultCStringEncoding")}];
-        v10[2](v10, v9);
+        pathsCopy[2](pathsCopy, v9);
       }
     }
   }
@@ -110,31 +110,31 @@
   return v4;
 }
 
-- (void)addImageMonitorObserver:(id)a3
+- (void)addImageMonitorObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47___AXDyldImageMonitor_addImageMonitorObserver___block_invoke;
   v7[3] = &unk_1E735B7E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeImageMonitorObserver:(id)a3
+- (void)removeImageMonitorObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50___AXDyldImageMonitor_removeImageMonitorObserver___block_invoke;
   v7[3] = &unk_1E735B7E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 

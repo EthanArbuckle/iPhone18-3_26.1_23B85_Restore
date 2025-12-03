@@ -1,13 +1,13 @@
 @interface NMAPIAnyResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPIAnyResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v29[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29[0] = objc_opt_class();
   v29[1] = objc_opt_class();
   v29[2] = objc_opt_class();
@@ -36,7 +36,7 @@
 
         v10 = objc_alloc_init(*(*(&v20 + 1) + 8 * i));
         v19 = 0;
-        v11 = [v10 resultsWithDictionary:v4 error:&v19];
+        v11 = [v10 resultsWithDictionary:dictionaryCopy error:&v19];
         v12 = v19;
         v13 = NMLogForCategory(9);
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
@@ -78,10 +78,10 @@
     [NMAPIAnyResponseParser resultsWithDictionary:v15 error:?];
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7102 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else

@@ -1,27 +1,27 @@
 @interface DMDEngineCreateConfigurationOrganizationOperation
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineCreateConfigurationOrganizationOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DMDEngineCreateConfigurationOrganizationOperation *)self request];
-  v6 = [v5 organizationType];
+  contextCopy = context;
+  request = [(DMDEngineCreateConfigurationOrganizationOperation *)self request];
+  organizationType = [request organizationType];
   v7 = DMFAllConfigurationOrganizationTypes();
-  v8 = [v7 containsObject:v6];
+  v8 = [v7 containsObject:organizationType];
 
   if (v8)
   {
-    if ([v6 isEqualToString:DMFConfigurationOrganizationTypeInternal])
+    if ([organizationType isEqualToString:DMFConfigurationOrganizationTypeInternal])
     {
       v9 = 0;
       v10 = 1;
       goto LABEL_7;
     }
 
-    v11 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationsOfType:v6];
+    v11 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationsOfType:organizationType];
     v28 = 0;
     v13 = [v11 execute:&v28];
     v9 = v28;
@@ -30,8 +30,8 @@
       v10 = [v13 count] == 0;
 
 LABEL_7:
-      v14 = [v5 organizationIdentifier];
-      v11 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationWithIdentifier:v14];
+      organizationIdentifier = [request organizationIdentifier];
+      v11 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationWithIdentifier:organizationIdentifier];
 
       v27 = v9;
       v15 = [v11 execute:&v27];
@@ -42,44 +42,44 @@ LABEL_7:
         v23 = DMFConfigurationEngineLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          sub_100082BB8(v5, v16);
+          sub_100082BB8(request, v16);
         }
 
         [(DMDEngineCreateConfigurationOrganizationOperation *)self setError:v16];
         goto LABEL_19;
       }
 
-      v17 = [v15 firstObject];
-      if (!v17)
+      firstObject = [v15 firstObject];
+      if (!firstObject)
       {
         if (!v10)
         {
           v25 = DMFConfigurationEngineLog();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            sub_100082B40(v6, v25);
+            sub_100082B40(organizationType, v25);
           }
 
-          v17 = DMFErrorWithCodeAndUserInfo();
-          [(DMDEngineCreateConfigurationOrganizationOperation *)self setError:v17];
+          firstObject = DMFErrorWithCodeAndUserInfo();
+          [(DMDEngineCreateConfigurationOrganizationOperation *)self setError:firstObject];
           goto LABEL_18;
         }
 
-        v17 = [[DMDConfigurationOrganization alloc] initWithContext:v4];
+        firstObject = [[DMDConfigurationOrganization alloc] initWithContext:contextCopy];
       }
 
-      v18 = [v5 organizationDisplayName];
-      [(DMDConfigurationOrganization *)v17 setDisplayName:v18];
+      organizationDisplayName = [request organizationDisplayName];
+      [(DMDConfigurationOrganization *)firstObject setDisplayName:organizationDisplayName];
 
-      v19 = [v5 organizationIdentifier];
-      [(DMDConfigurationOrganization *)v17 setIdentifier:v19];
+      organizationIdentifier2 = [request organizationIdentifier];
+      [(DMDConfigurationOrganization *)firstObject setIdentifier:organizationIdentifier2];
 
-      v20 = [v5 organizationType];
-      [(DMDConfigurationOrganization *)v17 setType:v20];
+      organizationType2 = [request organizationType];
+      [(DMDConfigurationOrganization *)firstObject setType:organizationType2];
 
-      [(DMDConfigurationOrganization *)v17 setActive:1];
+      [(DMDConfigurationOrganization *)firstObject setActive:1];
       v26 = v16;
-      v21 = [v4 save:&v26];
+      v21 = [contextCopy save:&v26];
       v22 = v26;
 
       if (v21)
@@ -103,7 +103,7 @@ LABEL_19:
     v24 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      sub_100082A9C(v6, v9);
+      sub_100082A9C(organizationType, v9);
     }
 
     [(DMDEngineCreateConfigurationOrganizationOperation *)self setError:v9];

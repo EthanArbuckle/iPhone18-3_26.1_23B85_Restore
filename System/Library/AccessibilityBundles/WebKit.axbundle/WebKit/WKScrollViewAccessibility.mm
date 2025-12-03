@@ -1,32 +1,32 @@
 @interface WKScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
 @end
 
 @implementation WKScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WKScrollView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"UIScrollViewAccessibility" hasInstanceMethod:@"_accessibilityStoredVisibleContentInset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIScrollViewAccessibility" hasInstanceMethod:@"_accessibilityStoredShouldUseFallbackForVisibleContentInset" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WKScrollView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"UIScrollViewAccessibility" hasInstanceMethod:@"_accessibilityStoredVisibleContentInset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIScrollViewAccessibility" hasInstanceMethod:@"_accessibilityStoredShouldUseFallbackForVisibleContentInset" withFullSignature:{"@", 0}];
 }
 
 - (UIEdgeInsets)_accessibilityVisibleContentInset
 {
-  v3 = [(WKScrollViewAccessibility *)self _accessibilityStoredVisibleContentInset];
-  v4 = v3;
-  if (v3)
+  _accessibilityStoredVisibleContentInset = [(WKScrollViewAccessibility *)self _accessibilityStoredVisibleContentInset];
+  v4 = _accessibilityStoredVisibleContentInset;
+  if (_accessibilityStoredVisibleContentInset)
   {
-    [v3 UIEdgeInsetsValue];
+    [_accessibilityStoredVisibleContentInset UIEdgeInsetsValue];
   }
 
   else
   {
-    v9 = [(WKScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
+    _accessibilityStoredShouldUseFallbackForVisibleContentInset = [(WKScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
 
-    if (!v9)
+    if (!_accessibilityStoredShouldUseFallbackForVisibleContentInset)
     {
       objc_opt_class();
       v18 = __UIAccessibilityCastAsClass();

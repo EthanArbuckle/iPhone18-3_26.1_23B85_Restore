@@ -1,31 +1,31 @@
 @interface MPSGraphTensor
 - (MPSGraphOperation)operation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)initTensorWithOperation:(id)a3 value:(Value)a4 graph:(id)a5 name:(id)a6;
-- (id)initTensorWithOperation:(id)a3 value:(Value)a4 graph:(id)a5 parentBlock:(id)a6 name:(id)a7;
-- (id)initTensorWithValue:(Value)a3 graph:(id)a4;
+- (id)initTensorWithOperation:(id)operation value:(Value)value graph:(id)graph name:(id)name;
+- (id)initTensorWithOperation:(id)operation value:(Value)value graph:(id)graph parentBlock:(id)block name:(id)name;
+- (id)initTensorWithValue:(Value)value graph:(id)graph;
 @end
 
 @implementation MPSGraphTensor
 
-- (id)initTensorWithValue:(Value)a3 graph:(id)a4
+- (id)initTensorWithValue:(Value)value graph:(id)graph
 {
-  v6 = a4;
+  graphCopy = graph;
   v12.receiver = self;
   v12.super_class = MPSGraphTensor;
   v7 = [(MPSGraphTensor *)&v12 init];
-  v8 = getMPSShapeFromMLIR(a3.impl);
+  v8 = getMPSShapeFromMLIR(value.impl);
   shape = v7->_shape;
   v7->_shape = v8;
 
-  v7->_value = a3;
-  objc_storeWeak(&v7->_graph, v6);
+  v7->_value = value;
+  objc_storeWeak(&v7->_graph, graphCopy);
   name = v7->_name;
   v7->_name = @"UndefinedName";
 
   objc_storeWeak(&v7->_operation, 0);
-  v7->_dataType = getMPSDataType((*(a3.impl + 1) & 0xFFFFFFFFFFFFFFF8));
+  v7->_dataType = getMPSDataType((*(value.impl + 1) & 0xFFFFFFFFFFFFFFF8));
   if (qword_1ECE753D8 != -1)
   {
     dispatch_once(&qword_1ECE753D8, &__block_literal_global_2);
@@ -36,36 +36,36 @@
   return v7;
 }
 
-- (id)initTensorWithOperation:(id)a3 value:(Value)a4 graph:(id)a5 name:(id)a6
+- (id)initTensorWithOperation:(id)operation value:(Value)value graph:(id)graph name:(id)name
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MPSGraphTensor *)self initTensorWithValue:a4.impl graph:a5];
-  objc_storeWeak(v12 + 2, v10);
-  if (v11)
+  operationCopy = operation;
+  nameCopy = name;
+  v12 = [(MPSGraphTensor *)self initTensorWithValue:value.impl graph:graph];
+  objc_storeWeak(v12 + 2, operationCopy);
+  if (nameCopy)
   {
-    objc_storeStrong(v12 + 8, a6);
+    objc_storeStrong(v12 + 8, name);
   }
 
   return v12;
 }
 
-- (id)initTensorWithOperation:(id)a3 value:(Value)a4 graph:(id)a5 parentBlock:(id)a6 name:(id)a7
+- (id)initTensorWithOperation:(id)operation value:(Value)value graph:(id)graph parentBlock:(id)block name:(id)name
 {
-  v12 = a6;
-  v13 = [(MPSGraphTensor *)self initTensorWithOperation:a3 value:a4.impl graph:a5 name:a7];
-  objc_storeWeak(v13 + 4, v12);
+  blockCopy = block;
+  v13 = [(MPSGraphTensor *)self initTensorWithOperation:operation value:value.impl graph:graph name:name];
+  objc_storeWeak(v13 + 4, blockCopy);
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  v4 = selfCopy;
+  if (selfCopy)
   {
-    v5 = v3;
+    v5 = selfCopy;
   }
 
   return v4;

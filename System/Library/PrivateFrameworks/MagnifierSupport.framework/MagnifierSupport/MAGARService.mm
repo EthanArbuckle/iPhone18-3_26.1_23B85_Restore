@@ -1,33 +1,33 @@
 @interface MAGARService
 - (_TtC16MagnifierSupport12MAGARService)init;
-- (void)replayConfigurationDidFinishReplaying:(id)a3;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
+- (void)replayConfigurationDidFinishReplaying:(id)replaying;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
 @end
 
 @implementation MAGARService
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_257D1C38C(v6, v7);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  sub_257D1C38C(sessionCopy, frameCopy);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = self;
-  sub_257D1D31C(v4);
+  interruptedCopy = interrupted;
+  selfCopy = self;
+  sub_257D1D31C(interruptedCopy);
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
-  v4 = a3;
-  v5 = self;
-  sub_257D1D48C(v4);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_257D1D48C(endedCopy);
 }
 
 - (_TtC16MagnifierSupport12MAGARService)init
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (void)replayConfigurationDidFinishReplaying:(id)a3
+- (void)replayConfigurationDidFinishReplaying:(id)replaying
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F8F5D70);
   MEMORY[0x28223BE20](v4 - 8);
@@ -56,7 +56,7 @@
     v8[2] = 0;
     v8[3] = 0;
     v8[4] = self;
-    v9 = self;
+    selfCopy = self;
     sub_257E81524(0, 0, v6, &unk_257EE3C60, v8);
   }
 }

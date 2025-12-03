@@ -1,26 +1,26 @@
 @interface _UIFocusLinearMovementDebugGestureRecognizer
-- (_UIFocusLinearMovementDebugGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 allowsGroupMode:(BOOL)a5;
+- (_UIFocusLinearMovementDebugGestureRecognizer)initWithTarget:(id)target action:(SEL)action allowsGroupMode:(BOOL)mode;
 - (void)_update;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIFocusLinearMovementDebugGestureRecognizer
 
-- (_UIFocusLinearMovementDebugGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 allowsGroupMode:(BOOL)a5
+- (_UIFocusLinearMovementDebugGestureRecognizer)initWithTarget:(id)target action:(SEL)action allowsGroupMode:(BOOL)mode
 {
-  v5 = a5;
+  modeCopy = mode;
   v11.receiver = self;
   v11.super_class = _UIFocusLinearMovementDebugGestureRecognizer;
-  v6 = [(UIGestureRecognizer *)&v11 initWithTarget:a3 action:a4];
+  v6 = [(UIGestureRecognizer *)&v11 initWithTarget:target action:action];
   if (v6)
   {
     v7 = objc_opt_new();
     presses = v6->_presses;
     v6->_presses = v7;
 
-    if (v5)
+    if (modeCopy)
     {
       v9 = [&unk_1EFE2D930 arrayByAddingObjectsFromArray:&unk_1EFE2D948];
     }
@@ -35,7 +35,7 @@
     [(UIGestureRecognizer *)v6 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v6 setDelaysTouchesBegan:0];
     [(UIGestureRecognizer *)v6 setDelaysTouchesEnded:0];
-    v6->_allowsGroupMode = v5;
+    v6->_allowsGroupMode = modeCopy;
   }
 
   return v6;
@@ -43,7 +43,7 @@
 
 - (void)_update
 {
-  v2 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
@@ -55,7 +55,7 @@
   if (v5)
   {
     v6 = v5;
-    v22 = v2;
+    v22 = selfCopy;
     obj = v4;
     v21 = 296;
     v7 = 0;
@@ -73,14 +73,14 @@
 
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = [v10 key];
-        v12 = [v11 modifierFlags];
+        modifierFlags = [v11 modifierFlags];
 
         v13 = [v10 key];
-        v14 = [v13 modifierFlags];
+        modifierFlags2 = [v13 modifierFlags];
 
         v15 = [v10 key];
-        v16 = [v15 charactersIgnoringModifiers];
-        if ([v16 length])
+        charactersIgnoringModifiers = [v15 charactersIgnoringModifiers];
+        if ([charactersIgnoringModifiers length])
         {
           v7 = 1;
         }
@@ -91,8 +91,8 @@
           v7 |= ([v17 modifierFlags] & 0xFFFFFFFFFFF3FFFFLL) != 0;
         }
 
-        LODWORD(v4) = v4 & 1 | ((v12 & 0x80000) != 0);
-        v8 = v8 & 1u | ((v14 & 0x40000) != 0);
+        LODWORD(v4) = v4 & 1 | ((modifierFlags & 0x80000) != 0);
+        v8 = v8 & 1u | ((modifierFlags2 & 0x40000) != 0);
       }
 
       v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -101,7 +101,7 @@
     while (v6);
 
     v3 = v21;
-    v2 = v22;
+    selfCopy = v22;
     if (v4)
     {
       if (v8)
@@ -127,13 +127,13 @@ LABEL_20:
   {
   }
 
-  if ([(UIGestureRecognizer *)v2 state]== UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)selfCopy state]== UIGestureRecognizerStatePossible)
   {
     v20 = 5;
     goto LABEL_24;
   }
 
-  v18 = [*(&v2->super.super.isa + v3) count] == 0;
+  v18 = [*(&selfCopy->super.super.isa + v3) count] == 0;
   v19 = 3;
 LABEL_21:
   if (v18)
@@ -147,18 +147,18 @@ LABEL_21:
   }
 
 LABEL_24:
-  [(UIGestureRecognizer *)v2 setState:v20];
+  [(UIGestureRecognizer *)selfCopy setState:v20];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  beganCopy = began;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -170,14 +170,14 @@ LABEL_24:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(beganCopy);
         }
 
         [(NSMutableSet *)self->_presses addObject:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -186,15 +186,15 @@ LABEL_24:
   [(_UIFocusLinearMovementDebugGestureRecognizer *)self _update];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  endedCopy = ended;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [endedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -206,14 +206,14 @@ LABEL_24:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         [(NSMutableSet *)self->_presses removeObject:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -222,15 +222,15 @@ LABEL_24:
   [(_UIFocusLinearMovementDebugGestureRecognizer *)self _update];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cancelledCopy = cancelled;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [cancelledCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -242,14 +242,14 @@ LABEL_24:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         [(NSMutableSet *)self->_presses removeObject:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [cancelledCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

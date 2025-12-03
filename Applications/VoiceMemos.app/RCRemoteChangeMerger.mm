@@ -1,16 +1,16 @@
 @interface RCRemoteChangeMerger
-- (RCRemoteChangeMerger)initWithStores:(id)a3 viewContext:(id)a4 transactionAuthorToIgnore:(id)a5;
-- (void)_handleRemoteChangeNotification:(id)a3;
-- (void)addContextToMergeChangesInto:(id)a3;
+- (RCRemoteChangeMerger)initWithStores:(id)stores viewContext:(id)context transactionAuthorToIgnore:(id)ignore;
+- (void)_handleRemoteChangeNotification:(id)notification;
+- (void)addContextToMergeChangesInto:(id)into;
 @end
 
 @implementation RCRemoteChangeMerger
 
-- (RCRemoteChangeMerger)initWithStores:(id)a3 viewContext:(id)a4 transactionAuthorToIgnore:(id)a5
+- (RCRemoteChangeMerger)initWithStores:(id)stores viewContext:(id)context transactionAuthorToIgnore:(id)ignore
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storesCopy = stores;
+  contextCopy = context;
+  ignoreCopy = ignore;
   v35.receiver = self;
   v35.super_class = RCRemoteChangeMerger;
   v11 = [(RCRemoteChangeMerger *)&v35 init];
@@ -20,7 +20,7 @@
     storeMergers = v11->storeMergers;
     v11->storeMergers = v12;
 
-    objc_storeStrong(&v11->_viewContext, a4);
+    objc_storeStrong(&v11->_viewContext, context);
     v14 = +[NSHashTable weakObjectsHashTable];
     backgroundContexts = v11->_backgroundContexts;
     v11->_backgroundContexts = v14;
@@ -29,8 +29,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v29 = v8;
-    obj = v8;
+    v29 = storesCopy;
+    obj = storesCopy;
     v16 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v16)
     {
@@ -46,16 +46,16 @@
           }
 
           v20 = *(*(&v31 + 1) + 8 * i);
-          v21 = [v20 persistentStoreCoordinator];
+          persistentStoreCoordinator = [v20 persistentStoreCoordinator];
           v36 = v20;
           v22 = [NSArray arrayWithObjects:&v36 count:1];
-          v23 = [v21 currentPersistentHistoryTokenFromStores:v22];
+          v23 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v22];
 
-          v24 = [[RCStoreChangeMerger alloc] initWithPersistentStore:v20 transactionAuthorToIgnore:v10 startingToken:v23 viewContext:v9];
+          v24 = [[RCStoreChangeMerger alloc] initWithPersistentStore:v20 transactionAuthorToIgnore:ignoreCopy startingToken:v23 viewContext:contextCopy];
           [(RCStoreChangeMerger *)v24 setDelegate:v11];
           v25 = v11->storeMergers;
-          v26 = [v20 identifier];
-          [(NSMutableDictionary *)v25 setObject:v24 forKeyedSubscript:v26];
+          identifier = [v20 identifier];
+          [(NSMutableDictionary *)v25 setObject:v24 forKeyedSubscript:identifier];
         }
 
         v17 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -67,34 +67,34 @@
     v27 = +[NSNotificationCenter defaultCenter];
     [v27 addObserver:v11 selector:"_handleRemoteChangeNotification:" name:NSPersistentStoreRemoteChangeNotification object:0];
 
-    v8 = v29;
+    storesCopy = v29;
   }
 
   return v11;
 }
 
-- (void)addContextToMergeChangesInto:(id)a3
+- (void)addContextToMergeChangesInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   viewContext = self->_viewContext;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006CB04;
   v7[3] = &unk_10028A650;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intoCopy;
+  v6 = intoCopy;
   [(NSManagedObjectContext *)viewContext performBlockAndWait:v7];
 }
 
-- (void)_handleRemoteChangeNotification:(id)a3
+- (void)_handleRemoteChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   storeMergers = self->storeMergers;
-  v6 = [v4 objectForKeyedSubscript:NSStoreUUIDKey];
+  v6 = [userInfo objectForKeyedSubscript:NSStoreUUIDKey];
   v7 = [(NSMutableDictionary *)storeMergers objectForKeyedSubscript:v6];
 
-  v8 = [v4 objectForKeyedSubscript:NSPersistentHistoryTokenKey];
+  v8 = [userInfo objectForKeyedSubscript:NSPersistentHistoryTokenKey];
   v9 = v8;
   if (v7)
   {

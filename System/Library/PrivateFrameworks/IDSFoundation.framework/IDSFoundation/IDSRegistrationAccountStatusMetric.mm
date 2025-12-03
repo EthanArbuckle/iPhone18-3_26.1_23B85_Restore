@@ -1,50 +1,50 @@
 @interface IDSRegistrationAccountStatusMetric
-- (IDSRegistrationAccountStatusMetric)initWithAccountType:(int)a3 serviceIdentifier:(id)a4 doesExist:(BOOL)a5 isEnabled:(BOOL)a6 isUserDisabled:(BOOL)a7 isiCloudSignedIn:(BOOL)a8 doesMatchiCloudAccount:(BOOL)a9 isiTunesSignedIn:(BOOL)a10 registrationError:(int64_t)a11 registrationErrorReason:(int)a12 registrationStatus:(int64_t)a13 accountRegistrationStatus:(int)a14 hasEverRegistered:(BOOL)a15 lastRegistrationFailureError:(int64_t)a16 timeIntervalSinceLastRegistrationFailure:(double)a17 timeIntervalSinceLastRegistrationSuccess:(double)a18 accountSecurityLevel:(int64_t)a19 areAllAliasesSelected:(BOOL)a20 areAllSelectedAliasesRegistered:(BOOL)a21 numberOfSelected:(int64_t)a22 numberOfVetted:(int64_t)a23 numberOfUnselectReasonUnknown:(int64_t)a24 numberOfUnselectReasonAlertDenial:(int64_t)a25 numberOfUnselectReasonClientCall:(int64_t)a26 numberOfUnselectReasonBadAlias:(int64_t)a27 numberOfUnselectReasonUpdateInfo:(int64_t)a28 isProdEnvironment:(BOOL)a29;
+- (IDSRegistrationAccountStatusMetric)initWithAccountType:(int)type serviceIdentifier:(id)identifier doesExist:(BOOL)exist isEnabled:(BOOL)enabled isUserDisabled:(BOOL)disabled isiCloudSignedIn:(BOOL)in doesMatchiCloudAccount:(BOOL)account isiTunesSignedIn:(BOOL)self0 registrationError:(int64_t)self1 registrationErrorReason:(int)self2 registrationStatus:(int64_t)self3 accountRegistrationStatus:(int)self4 hasEverRegistered:(BOOL)self5 lastRegistrationFailureError:(int64_t)self6 timeIntervalSinceLastRegistrationFailure:(double)self7 timeIntervalSinceLastRegistrationSuccess:(double)self8 accountSecurityLevel:(int64_t)self9 areAllAliasesSelected:(BOOL)selected areAllSelectedAliasesRegistered:(BOOL)aliasesRegistered numberOfSelected:(int64_t)ofSelected numberOfVetted:(int64_t)vetted numberOfUnselectReasonUnknown:(int64_t)unknown numberOfUnselectReasonAlertDenial:(int64_t)denial numberOfUnselectReasonClientCall:(int64_t)call numberOfUnselectReasonBadAlias:(int64_t)alias numberOfUnselectReasonUpdateInfo:(int64_t)info isProdEnvironment:(BOOL)environment;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 @end
 
 @implementation IDSRegistrationAccountStatusMetric
 
-- (IDSRegistrationAccountStatusMetric)initWithAccountType:(int)a3 serviceIdentifier:(id)a4 doesExist:(BOOL)a5 isEnabled:(BOOL)a6 isUserDisabled:(BOOL)a7 isiCloudSignedIn:(BOOL)a8 doesMatchiCloudAccount:(BOOL)a9 isiTunesSignedIn:(BOOL)a10 registrationError:(int64_t)a11 registrationErrorReason:(int)a12 registrationStatus:(int64_t)a13 accountRegistrationStatus:(int)a14 hasEverRegistered:(BOOL)a15 lastRegistrationFailureError:(int64_t)a16 timeIntervalSinceLastRegistrationFailure:(double)a17 timeIntervalSinceLastRegistrationSuccess:(double)a18 accountSecurityLevel:(int64_t)a19 areAllAliasesSelected:(BOOL)a20 areAllSelectedAliasesRegistered:(BOOL)a21 numberOfSelected:(int64_t)a22 numberOfVetted:(int64_t)a23 numberOfUnselectReasonUnknown:(int64_t)a24 numberOfUnselectReasonAlertDenial:(int64_t)a25 numberOfUnselectReasonClientCall:(int64_t)a26 numberOfUnselectReasonBadAlias:(int64_t)a27 numberOfUnselectReasonUpdateInfo:(int64_t)a28 isProdEnvironment:(BOOL)a29
+- (IDSRegistrationAccountStatusMetric)initWithAccountType:(int)type serviceIdentifier:(id)identifier doesExist:(BOOL)exist isEnabled:(BOOL)enabled isUserDisabled:(BOOL)disabled isiCloudSignedIn:(BOOL)in doesMatchiCloudAccount:(BOOL)account isiTunesSignedIn:(BOOL)self0 registrationError:(int64_t)self1 registrationErrorReason:(int)self2 registrationStatus:(int64_t)self3 accountRegistrationStatus:(int)self4 hasEverRegistered:(BOOL)self5 lastRegistrationFailureError:(int64_t)self6 timeIntervalSinceLastRegistrationFailure:(double)self7 timeIntervalSinceLastRegistrationSuccess:(double)self8 accountSecurityLevel:(int64_t)self9 areAllAliasesSelected:(BOOL)selected areAllSelectedAliasesRegistered:(BOOL)aliasesRegistered numberOfSelected:(int64_t)ofSelected numberOfVetted:(int64_t)vetted numberOfUnselectReasonUnknown:(int64_t)unknown numberOfUnselectReasonAlertDenial:(int64_t)denial numberOfUnselectReasonClientCall:(int64_t)call numberOfUnselectReasonBadAlias:(int64_t)alias numberOfUnselectReasonUpdateInfo:(int64_t)info isProdEnvironment:(BOOL)environment
 {
-  v37 = a4;
+  identifierCopy = identifier;
   v43.receiver = self;
   v43.super_class = IDSRegistrationAccountStatusMetric;
   v38 = [(IDSRegistrationAccountStatusMetric *)&v43 init];
   v39 = v38;
   if (v38)
   {
-    v38->_accountType = a3;
-    v40 = [v37 copy];
+    v38->_accountType = type;
+    v40 = [identifierCopy copy];
     serviceIdentifier = v39->_serviceIdentifier;
     v39->_serviceIdentifier = v40;
 
-    v39->_doesExist = a5;
-    v39->_isEnabled = a6;
-    v39->_isUserDisabled = a7;
-    v39->_isiCloudSignedIn = a8;
-    v39->_doesMatchiCloudAccount = a9;
-    v39->_isiTunesSignedIn = a10;
-    v39->_registrationError = a11;
-    v39->_registrationStatus = a13;
-    v39->_registrationErrorReason = a12;
-    v39->_accountRegistrationStatus = a14;
-    v39->_hasEverRegistered = a15;
-    v39->_lastRegistrationFailureError = a16;
-    v39->_timeIntervalSinceLastRegistrationFailure = a17;
-    v39->_timeIntervalSinceLastRegistrationSuccess = a18;
-    v39->_areAllAliasesSelected = a20;
-    v39->_areAllSelectedAliasesRegistered = a21;
-    v39->_accountSecurityLevel = a19;
-    v39->_numberOfSelected = a22;
-    v39->_numberOfVetted = a23;
-    v39->_numberOfUnselectReasonUnknown = a24;
-    v39->_numberOfUnselectReasonAlertDenial = a25;
-    v39->_numberOfUnselectReasonClientCall = a26;
-    v39->_numberOfUnselectReasonBadAlias = a27;
-    v39->_numberOfUnselectReasonUpdateInfo = a28;
-    v39->_isProdEnvironment = a29;
+    v39->_doesExist = exist;
+    v39->_isEnabled = enabled;
+    v39->_isUserDisabled = disabled;
+    v39->_isiCloudSignedIn = in;
+    v39->_doesMatchiCloudAccount = account;
+    v39->_isiTunesSignedIn = signedIn;
+    v39->_registrationError = error;
+    v39->_registrationStatus = status;
+    v39->_registrationErrorReason = reason;
+    v39->_accountRegistrationStatus = registrationStatus;
+    v39->_hasEverRegistered = registered;
+    v39->_lastRegistrationFailureError = failureError;
+    v39->_timeIntervalSinceLastRegistrationFailure = failure;
+    v39->_timeIntervalSinceLastRegistrationSuccess = success;
+    v39->_areAllAliasesSelected = selected;
+    v39->_areAllSelectedAliasesRegistered = aliasesRegistered;
+    v39->_accountSecurityLevel = level;
+    v39->_numberOfSelected = ofSelected;
+    v39->_numberOfVetted = vetted;
+    v39->_numberOfUnselectReasonUnknown = unknown;
+    v39->_numberOfUnselectReasonAlertDenial = denial;
+    v39->_numberOfUnselectReasonClientCall = call;
+    v39->_numberOfUnselectReasonBadAlias = alias;
+    v39->_numberOfUnselectReasonUpdateInfo = info;
+    v39->_isProdEnvironment = environment;
   }
 
   return v39;
@@ -53,25 +53,25 @@
 - (NSString)description
 {
   v23 = MEMORY[0x1E696AEC0];
-  v22 = [(IDSRegistrationAccountStatusMetric *)self name];
-  v21 = [(IDSRegistrationAccountStatusMetric *)self accountType];
-  v20 = [(IDSRegistrationAccountStatusMetric *)self serviceIdentifier];
-  v19 = [(IDSRegistrationAccountStatusMetric *)self doesExist];
-  v18 = [(IDSRegistrationAccountStatusMetric *)self isEnabled];
-  v17 = [(IDSRegistrationAccountStatusMetric *)self isUserDisabled];
-  v16 = [(IDSRegistrationAccountStatusMetric *)self isiCloudSignedIn];
-  v15 = [(IDSRegistrationAccountStatusMetric *)self doesMatchiCloudAccount];
-  v14 = [(IDSRegistrationAccountStatusMetric *)self isiTunesSignedIn];
-  v13 = [(IDSRegistrationAccountStatusMetric *)self registrationError];
-  v12 = [(IDSRegistrationAccountStatusMetric *)self registrationErrorReason];
-  v11 = [(IDSRegistrationAccountStatusMetric *)self registrationStatus];
-  v10 = [(IDSRegistrationAccountStatusMetric *)self accountRegistrationStatus];
-  v9 = [(IDSRegistrationAccountStatusMetric *)self hasEverRegistered];
-  v8 = [(IDSRegistrationAccountStatusMetric *)self lastRegistrationFailureError];
+  name = [(IDSRegistrationAccountStatusMetric *)self name];
+  accountType = [(IDSRegistrationAccountStatusMetric *)self accountType];
+  serviceIdentifier = [(IDSRegistrationAccountStatusMetric *)self serviceIdentifier];
+  doesExist = [(IDSRegistrationAccountStatusMetric *)self doesExist];
+  isEnabled = [(IDSRegistrationAccountStatusMetric *)self isEnabled];
+  isUserDisabled = [(IDSRegistrationAccountStatusMetric *)self isUserDisabled];
+  isiCloudSignedIn = [(IDSRegistrationAccountStatusMetric *)self isiCloudSignedIn];
+  doesMatchiCloudAccount = [(IDSRegistrationAccountStatusMetric *)self doesMatchiCloudAccount];
+  isiTunesSignedIn = [(IDSRegistrationAccountStatusMetric *)self isiTunesSignedIn];
+  registrationError = [(IDSRegistrationAccountStatusMetric *)self registrationError];
+  registrationErrorReason = [(IDSRegistrationAccountStatusMetric *)self registrationErrorReason];
+  registrationStatus = [(IDSRegistrationAccountStatusMetric *)self registrationStatus];
+  accountRegistrationStatus = [(IDSRegistrationAccountStatusMetric *)self accountRegistrationStatus];
+  hasEverRegistered = [(IDSRegistrationAccountStatusMetric *)self hasEverRegistered];
+  lastRegistrationFailureError = [(IDSRegistrationAccountStatusMetric *)self lastRegistrationFailureError];
   [(IDSRegistrationAccountStatusMetric *)self timeIntervalSinceLastRegistrationFailure];
   v4 = v3;
   [(IDSRegistrationAccountStatusMetric *)self timeIntervalSinceLastRegistrationSuccess];
-  v6 = [v23 stringWithFormat:@"%@: <type: %d, service: %@, exist: %ld, enabled: %ld, userDisabled: %ld, iCloudSignedIn: %ld, doesMatchiCloud: %ld, iTunesSignedIn: %ld, error: %ld, errorReason: %d, status: %ld, accountStatus: %d, hasEverRegistered: %ld, lastFailError: %ld, timeSinceFail: %f, timeSinceSuccess: %f, securityLevel: %ld, allAliasesSelected: %ld, allSelectedAliasesRegistered: %ld, numVetted: %ld, numUnselectUnknown: %ld, numUnselectAlertDenial: %ld, numUnselectClientCall: %ld, numUnselectBadAlias: %ld, numUnselecUpdateInfo: %ld, isProd: %ld>", v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v12, v11, v10, v9, v8, v4, v5, -[IDSRegistrationAccountStatusMetric accountSecurityLevel](self, "accountSecurityLevel"), -[IDSRegistrationAccountStatusMetric areAllAliasesSelected](self, "areAllAliasesSelected"), -[IDSRegistrationAccountStatusMetric areAllSelectedAliasesRegistered](self, "areAllSelectedAliasesRegistered"), -[IDSRegistrationAccountStatusMetric numberOfVetted](self, "numberOfVetted"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonUnknown](self, "numberOfUnselectReasonUnknown"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonAlertDenial](self, "numberOfUnselectReasonAlertDenial"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonClientCall](self, "numberOfUnselectReasonClientCall"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonBadAlias](self, "numberOfUnselectReasonBadAlias"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonUpdateInfo](self, "numberOfUnselectReasonUpdateInfo"), -[IDSRegistrationAccountStatusMetric isProdEnvironment](self, "isProdEnvironment")];
+  v6 = [v23 stringWithFormat:@"%@: <type: %d, service: %@, exist: %ld, enabled: %ld, userDisabled: %ld, iCloudSignedIn: %ld, doesMatchiCloud: %ld, iTunesSignedIn: %ld, error: %ld, errorReason: %d, status: %ld, accountStatus: %d, hasEverRegistered: %ld, lastFailError: %ld, timeSinceFail: %f, timeSinceSuccess: %f, securityLevel: %ld, allAliasesSelected: %ld, allSelectedAliasesRegistered: %ld, numVetted: %ld, numUnselectUnknown: %ld, numUnselectAlertDenial: %ld, numUnselectClientCall: %ld, numUnselectBadAlias: %ld, numUnselecUpdateInfo: %ld, isProd: %ld>", name, accountType, serviceIdentifier, doesExist, isEnabled, isUserDisabled, isiCloudSignedIn, doesMatchiCloudAccount, isiTunesSignedIn, registrationError, registrationErrorReason, registrationStatus, accountRegistrationStatus, hasEverRegistered, lastRegistrationFailureError, v4, v5, -[IDSRegistrationAccountStatusMetric accountSecurityLevel](self, "accountSecurityLevel"), -[IDSRegistrationAccountStatusMetric areAllAliasesSelected](self, "areAllAliasesSelected"), -[IDSRegistrationAccountStatusMetric areAllSelectedAliasesRegistered](self, "areAllSelectedAliasesRegistered"), -[IDSRegistrationAccountStatusMetric numberOfVetted](self, "numberOfVetted"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonUnknown](self, "numberOfUnselectReasonUnknown"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonAlertDenial](self, "numberOfUnselectReasonAlertDenial"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonClientCall](self, "numberOfUnselectReasonClientCall"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonBadAlias](self, "numberOfUnselectReasonBadAlias"), -[IDSRegistrationAccountStatusMetric numberOfUnselectReasonUpdateInfo](self, "numberOfUnselectReasonUpdateInfo"), -[IDSRegistrationAccountStatusMetric isProdEnvironment](self, "isProdEnvironment")];
 
   return v6;
 }
@@ -85,10 +85,10 @@
     CFDictionarySetValue(v3, @"AccountType", v4);
   }
 
-  v5 = [(IDSRegistrationAccountStatusMetric *)self serviceIdentifier];
-  if (v5)
+  serviceIdentifier = [(IDSRegistrationAccountStatusMetric *)self serviceIdentifier];
+  if (serviceIdentifier)
   {
-    CFDictionarySetValue(v3, @"ServiceIdentifier", v5);
+    CFDictionarySetValue(v3, @"ServiceIdentifier", serviceIdentifier);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSRegistrationAccountStatusMetric doesExist](self, "doesExist")}];

@@ -1,48 +1,48 @@
 @interface NTKDCompanionSyncWrapper
-- (BOOL)_discardIncomingPartialMessagesIfNeededWithErrorMessage:(id)a3;
-- (BOOL)_discardOutgoingPartialMessagesIfNeededWithErrorMessage:(id)a3;
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5;
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
+- (BOOL)_discardIncomingPartialMessagesIfNeededWithErrorMessage:(id)message;
+- (BOOL)_discardOutgoingPartialMessagesIfNeededWithErrorMessage:(id)message;
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
 - (NTKDSyncDelegate)delegate;
-- (id)_nextMessageToSendForSession:(id)a3;
-- (id)_storePartAndReassembleWideLoadIfPossible:(id)a3;
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)initAsPrimary:(BOOL)a3;
+- (id)_nextMessageToSendForSession:(id)session;
+- (id)_storePartAndReassembleWideLoadIfPossible:(id)possible;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)initAsPrimary:(BOOL)primary;
 - (int64_t)_getNextSyncBackoffPeriod;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
 - (void)_queue_deltaSync;
 - (void)_queue_deltaSync_async;
-- (void)_queue_requestSync:(int64_t)a3 withBlock:(id)a4;
+- (void)_queue_requestSync:(int64_t)sync withBlock:(id)block;
 - (void)_queue_resetSync;
-- (void)_reportProgressForMessage:(id)a3 inSession:(id)a4;
+- (void)_reportProgressForMessage:(id)message inSession:(id)session;
 - (void)_resetBackoffPeriod;
 - (void)dealloc;
 - (void)requestDeltaSync;
 - (void)requestResetSync;
 - (void)resume;
-- (void)sendOutOfBandMessage:(id)a3 ofType:(int64_t)a4;
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5;
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5;
-- (void)service:(id)a3 incomingData:(id)a4 completion:(id)a5;
+- (void)sendOutOfBandMessage:(id)message ofType:(int64_t)type;
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD;
+- (void)service:(id)service encounteredError:(id)error context:(id)context;
+- (void)service:(id)service incomingData:(id)data completion:(id)completion;
 - (void)suspend;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation NTKDCompanionSyncWrapper
 
-- (id)initAsPrimary:(BOOL)a3
+- (id)initAsPrimary:(BOOL)primary
 {
-  v3 = a3;
+  primaryCopy = primary;
   v19.receiver = self;
   v19.super_class = NTKDCompanionSyncWrapper;
   v4 = [(NTKDCompanionSyncWrapper *)&v19 init];
   v5 = v4;
   if (v4)
   {
-    v4->_isPrimary = v3;
+    v4->_isPrimary = primaryCopy;
     v6 = dispatch_queue_create("com.apple.pairedsync.faces.NTKSyncBackoffQueue", 0);
     syncSerialQueue = v5->_syncSerialQueue;
     v5->_syncSerialQueue = v6;
@@ -73,7 +73,7 @@
       *buf = 138544130;
       v21 = v5;
       v22 = 1024;
-      v23 = v3;
+      v23 = primaryCopy;
       v24 = 2112;
       v25 = v16;
       v26 = 2112;
@@ -91,7 +91,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "NTKDCompanionSyncWrapper dealloc'ed. %{public}@", buf, 0xCu);
   }
 
@@ -109,10 +109,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Resuming companion sync service.", buf, 2u);
   }
 
-  v4 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v5 = [v4 companionSyncWrapperCanSendData];
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  companionSyncWrapperCanSendData = [delegate companionSyncWrapperCanSendData];
 
-  if (v5)
+  if (companionSyncWrapperCanSendData)
   {
     self->_resumeWhenSyncRestrictionLifted = 0;
     syncService = self->_syncService;
@@ -156,10 +156,10 @@
 
 - (void)requestResetSync
 {
-  v3 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v4 = [v3 companionSyncWrapperCanSendData];
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  companionSyncWrapperCanSendData = [delegate companionSyncWrapperCanSendData];
 
-  if (v4)
+  if (companionSyncWrapperCanSendData)
   {
     self->_resetSyncRequestedDuringSyncRestriction = 0;
     syncSerialQueue = self->_syncSerialQueue;
@@ -195,22 +195,22 @@
   dispatch_sync(syncSerialQueue, block);
 }
 
-- (void)sendOutOfBandMessage:(id)a3 ofType:(int64_t)a4
+- (void)sendOutOfBandMessage:(id)message ofType:(int64_t)type
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v7 encodeInteger:a4 forKey:@"com.apple.nanotimekit.messageType"];
-  [v7 encodeObject:v6 forKey:@"com.apple.nanotimekit.message"];
+  [v7 encodeInteger:type forKey:@"com.apple.nanotimekit.messageType"];
+  [v7 encodeObject:messageCopy forKey:@"com.apple.nanotimekit.message"];
   syncService = self->_syncService;
-  v9 = [v7 encodedData];
+  encodedData = [v7 encodedData];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002C1FC;
   v11[3] = &unk_10005DF40;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
-  [(SYService *)syncService sendData:v9 options:0 completion:v11];
+  v12 = messageCopy;
+  typeCopy = type;
+  v10 = messageCopy;
+  [(SYService *)syncService sendData:encodedData options:0 completion:v11];
 }
 
 - (void)_queue_resetSync
@@ -256,27 +256,27 @@
   [(NTKDCompanionSyncWrapper *)self _queue_requestSync:1 withBlock:v2];
 }
 
-- (void)_queue_requestSync:(int64_t)a3 withBlock:(id)a4
+- (void)_queue_requestSync:(int64_t)sync withBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   if (self->_syncFailureCount < 2)
   {
-    if (!a3)
+    if (!sync)
     {
       self->_resetSyncRequested = 1;
     }
 
-    (*(v6 + 2))(v6);
+    (*(blockCopy + 2))(blockCopy);
   }
 
   else
   {
     if (self->_syncBackoffOngoing)
     {
-      if (a3)
+      if (sync)
       {
-        if (a3 == 1 && self->_resetSyncRequested)
+        if (sync == 1 && self->_resetSyncRequested)
         {
           self->_deltaSyncRequiredAfterBackoff = 1;
           v8 = _NTKLoggingObjectForDomain();
@@ -320,22 +320,22 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (!a3)
+    if (!sync)
     {
       self->_resetSyncRequested = 1;
     }
 
     self->_syncBackoffOngoing = 1;
-    v10 = [(NTKDCompanionSyncWrapper *)self _getNextSyncBackoffPeriod];
+    _getNextSyncBackoffPeriod = [(NTKDCompanionSyncWrapper *)self _getNextSyncBackoffPeriod];
     v11 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = v10;
+      v17 = _getNextSyncBackoffPeriod;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "backing off for %tu seconds before attempting sync", buf, 0xCu);
     }
 
-    v12 = dispatch_time(0, 1000000000 * v10);
+    v12 = dispatch_time(0, 1000000000 * _getNextSyncBackoffPeriod);
     syncSerialQueue = self->_syncSerialQueue;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -353,28 +353,28 @@ LABEL_21:
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"SyncBackoffPeriod"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (!v4)
+  if (!integerValue)
   {
-    v4 = 60;
+    integerValue = 60;
 LABEL_7:
-    v5 = [NSNumber numberWithUnsignedInteger:v4];
+    v5 = [NSNumber numberWithUnsignedInteger:integerValue];
     [v2 setObject:v5 forKey:@"SyncBackoffPeriod"];
 
     goto LABEL_8;
   }
 
-  if (v4 <= 0x707)
+  if (integerValue <= 0x707)
   {
-    if (2 * v4 >= 0x708)
+    if (2 * integerValue >= 0x708)
     {
-      v4 = 1800;
+      integerValue = 1800;
     }
 
     else
     {
-      v4 *= 2;
+      integerValue *= 2;
     }
 
     goto LABEL_7;
@@ -382,7 +382,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_resetBackoffPeriod
@@ -391,12 +391,12 @@ LABEL_8:
   [v2 removeObjectForKey:@"SyncBackoffPeriod"];
 }
 
-- (void)_reportProgressForMessage:(id)a3 inSession:(id)a4
+- (void)_reportProgressForMessage:(id)message inSession:(id)session
 {
-  v6 = a3;
-  if (([a4 isResetSync] & 1) != 0 || (-[NTKDCompanionSyncWrapper delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "companionSyncWrapperDidRequestActivePairedSyncSession"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "syncSessionType"), v8, v7, v9 == 1))
+  messageCopy = message;
+  if (([session isResetSync] & 1) != 0 || (-[NTKDCompanionSyncWrapper delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "companionSyncWrapperDidRequestActivePairedSyncSession"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "syncSessionType"), v8, v7, v9 == 1))
   {
-    [v6 progress];
+    [messageCopy progress];
     v11 = v10;
     v12 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -406,20 +406,20 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "sync progress: %f", &v15, 0xCu);
     }
 
-    v13 = [(NTKDCompanionSyncWrapper *)self delegate];
-    v14 = [v13 companionSyncWrapperDidRequestActivePairedSyncSession];
-    [v14 reportProgress:v11];
+    delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+    companionSyncWrapperDidRequestActivePairedSyncSession = [delegate companionSyncWrapperDidRequestActivePairedSyncSession];
+    [companionSyncWrapperDidRequestActivePairedSyncSession reportProgress:v11];
   }
 }
 
-- (id)_nextMessageToSendForSession:(id)a3
+- (id)_nextMessageToSendForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   outgoingWideLoadQueue = self->_outgoingWideLoadQueue;
   if (outgoingWideLoadQueue)
   {
-    v6 = [(_OutgoingWideLoadQueue *)outgoingWideLoadQueue dequeueNextPart];
-    if (!v6)
+    dequeueNextPart = [(_OutgoingWideLoadQueue *)outgoingWideLoadQueue dequeueNextPart];
+    if (!dequeueNextPart)
     {
       v7 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -437,17 +437,17 @@ LABEL_8:
       self->_outgoingWideLoadQueue = 0;
     }
 
-    if (v6)
+    if (dequeueNextPart)
     {
       goto LABEL_33;
     }
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v6 = [v11 outgoingSyncSessionGetNextMessage];
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  dequeueNextPart = [delegate outgoingSyncSessionGetNextMessage];
 
-  if (!v6)
+  if (!dequeueNextPart)
   {
     goto LABEL_32;
   }
@@ -456,21 +456,21 @@ LABEL_8:
   v29 = v12;
   while (1)
   {
-    v13 = [v4 sessionMetadata];
-    v14 = [v13 objectForKeyedSubscript:@"receiverSyncVersion"];
-    v15 = [v14 unsignedLongValue];
+    sessionMetadata = [sessionCopy sessionMetadata];
+    v14 = [sessionMetadata objectForKeyedSubscript:@"receiverSyncVersion"];
+    unsignedLongValue = [v14 unsignedLongValue];
 
-    v16 = v15 >= 2 ? 102400 : 0;
-    v17 = [v6 payloadSize];
-    if (v15 > 1)
+    v16 = unsignedLongValue >= 2 ? 102400 : 0;
+    payloadSize = [dequeueNextPart payloadSize];
+    if (unsignedLongValue > 1)
     {
-      if (v17 <= 0x19000)
+      if (payloadSize <= 0x19000)
       {
         goto LABEL_32;
       }
     }
 
-    else if (v17 <= 0x465000)
+    else if (payloadSize <= 0x465000)
     {
       goto LABEL_32;
     }
@@ -486,7 +486,7 @@ LABEL_8:
       *buf = v29;
       *&buf[4] = "[NTKDCompanionSyncWrapper _nextMessageToSendForSession:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = dequeueNextPart;
       v24 = p_super;
       v25 = "%s: trying to send wide load message %@ to a peer that cannot handle it; dropping it!";
 LABEL_30:
@@ -497,16 +497,16 @@ LABEL_27:
 
     objc_autoreleasePoolPop(v10);
     v10 = objc_autoreleasePoolPush();
-    v26 = [(NTKDCompanionSyncWrapper *)self delegate];
-    v6 = [v26 outgoingSyncSessionGetNextMessage];
+    delegate2 = [(NTKDCompanionSyncWrapper *)self delegate];
+    dequeueNextPart = [delegate2 outgoingSyncSessionGetNextMessage];
 
-    if (!v6)
+    if (!dequeueNextPart)
     {
       goto LABEL_32;
     }
   }
 
-  v18 = [[_OutgoingWideLoadQueue alloc] initWithWideLoadMessage:v6 maxPartSize:v16];
+  v18 = [[_OutgoingWideLoadQueue alloc] initWithWideLoadMessage:dequeueNextPart maxPartSize:v16];
   v19 = self->_outgoingWideLoadQueue;
   self->_outgoingWideLoadQueue = v18;
 
@@ -519,7 +519,7 @@ LABEL_27:
       *buf = v29;
       *&buf[4] = "[NTKDCompanionSyncWrapper _nextMessageToSendForSession:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = dequeueNextPart;
       v24 = p_super;
       v25 = "%s: cannot create a wide load queue for outgoing message %@; dropping it!";
       goto LABEL_30;
@@ -528,8 +528,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v21 = [(_OutgoingWideLoadQueue *)v20 dequeueNextPart];
-  if (!v21)
+  dequeueNextPart2 = [(_OutgoingWideLoadQueue *)v20 dequeueNextPart];
+  if (!dequeueNextPart2)
   {
     v22 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -537,7 +537,7 @@ LABEL_27:
       *buf = v29;
       *&buf[4] = "[NTKDCompanionSyncWrapper _nextMessageToSendForSession:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = dequeueNextPart;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s: cannot retrieve the first partial message from a wide load queue for outgoing message %@; dropping it!", buf, 0x16u);
     }
 
@@ -546,48 +546,48 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v27 = v21;
+  v27 = dequeueNextPart2;
 
-  v6 = v27;
+  dequeueNextPart = v27;
 LABEL_32:
   objc_autoreleasePoolPop(v10);
 LABEL_33:
 
-  return v6;
+  return dequeueNextPart;
 }
 
-- (id)_storePartAndReassembleWideLoadIfPossible:(id)a3
+- (id)_storePartAndReassembleWideLoadIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 136315394;
     v17 = "[NTKDCompanionSyncWrapper _storePartAndReassembleWideLoadIfPossible:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = possibleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: store partial message %@", &v16, 0x16u);
   }
 
-  v6 = [v4 wideLoadId];
-  p_super = [(NSMutableDictionary *)self->_incomingWideLoadQueues objectForKeyedSubscript:v6];
+  wideLoadId = [possibleCopy wideLoadId];
+  p_super = [(NSMutableDictionary *)self->_incomingWideLoadQueues objectForKeyedSubscript:wideLoadId];
   if (p_super)
   {
 LABEL_8:
     v12 = objc_autoreleasePoolPush();
-    if (([p_super addIncomingPart:v4]& 1) != 0)
+    if (([p_super addIncomingPart:possibleCopy]& 1) != 0)
     {
       if (![p_super isFull])
       {
-        v13 = 0;
+        getWideLoad = 0;
         goto LABEL_19;
       }
 
-      v13 = [p_super getWideLoad];
-      if (v13)
+      getWideLoad = [p_super getWideLoad];
+      if (getWideLoad)
       {
 LABEL_17:
-        [(NSMutableDictionary *)self->_incomingWideLoadQueues setObject:0 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_incomingWideLoadQueues setObject:0 forKeyedSubscript:wideLoadId];
 LABEL_19:
         objc_autoreleasePoolPop(v12);
         goto LABEL_20;
@@ -608,13 +608,13 @@ LABEL_19:
         sub_10003F270();
       }
 
-      v13 = 0;
+      getWideLoad = 0;
     }
 
     goto LABEL_17;
   }
 
-  v8 = [[_IncomingWideLoadQueue alloc] initWithPartialMessageTemplate:v4];
+  v8 = [[_IncomingWideLoadQueue alloc] initWithPartialMessageTemplate:possibleCopy];
   if (v8)
   {
     p_super = &v8->super;
@@ -628,7 +628,7 @@ LABEL_19:
       incomingWideLoadQueues = self->_incomingWideLoadQueues;
     }
 
-    [(NSMutableDictionary *)incomingWideLoadQueues setObject:p_super forKeyedSubscript:v6];
+    [(NSMutableDictionary *)incomingWideLoadQueues setObject:p_super forKeyedSubscript:wideLoadId];
     goto LABEL_8;
   }
 
@@ -638,22 +638,22 @@ LABEL_19:
     sub_10003F384();
   }
 
-  v13 = 0;
+  getWideLoad = 0;
 LABEL_20:
 
-  return v13;
+  return getWideLoad;
 }
 
-- (BOOL)_discardIncomingPartialMessagesIfNeededWithErrorMessage:(id)a3
+- (BOOL)_discardIncomingPartialMessagesIfNeededWithErrorMessage:(id)message
 {
-  v18 = a3;
+  messageCopy = message;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = self;
-  v4 = [(NSMutableDictionary *)self->_incomingWideLoadQueues allValues];
-  v17 = [v4 countByEnumeratingWithState:&v19 objects:v33 count:16];
+  selfCopy = self;
+  allValues = [(NSMutableDictionary *)self->_incomingWideLoadQueues allValues];
+  v17 = [allValues countByEnumeratingWithState:&v19 objects:v33 count:16];
   if (v17)
   {
     v5 = *v20;
@@ -665,27 +665,27 @@ LABEL_20:
       {
         if (*v20 != v5)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v19 + 1) + 8 * v7);
         v9 = _NTKLoggingObjectForDomain();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v8 wideLoadId];
-          v11 = [v8 partsExpected];
-          v12 = v11 - [v8 partsAdded];
-          v13 = [v8 partsExpected];
+          wideLoadId = [v8 wideLoadId];
+          partsExpected = [v8 partsExpected];
+          v12 = partsExpected - [v8 partsAdded];
+          partsExpected2 = [v8 partsExpected];
           *buf = 136316162;
           v24 = "[NTKDCompanionSyncWrapper _discardIncomingPartialMessagesIfNeededWithErrorMessage:]";
           v25 = 2112;
-          v26 = v18;
+          v26 = messageCopy;
           v27 = 2112;
-          v28 = v10;
+          v28 = wideLoadId;
           v29 = 2048;
           v30 = v12;
           v31 = 2048;
-          v32 = v13;
+          v32 = partsExpected2;
           _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: %@; discarding incoming queue for id %@ that still has %lu/%lu messages left", buf, 0x34u);
         }
 
@@ -693,21 +693,21 @@ LABEL_20:
       }
 
       while (v6 != v7);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v33 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v19 objects:v33 count:16];
     }
 
     while (v6);
   }
 
-  incomingWideLoadQueues = v16->_incomingWideLoadQueues;
-  v16->_incomingWideLoadQueues = 0;
+  incomingWideLoadQueues = selfCopy->_incomingWideLoadQueues;
+  selfCopy->_incomingWideLoadQueues = 0;
 
   return v17 != 0;
 }
 
-- (BOOL)_discardOutgoingPartialMessagesIfNeededWithErrorMessage:(id)a3
+- (BOOL)_discardOutgoingPartialMessagesIfNeededWithErrorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   outgoingWideLoadQueue = self->_outgoingWideLoadQueue;
   p_outgoingWideLoadQueue = &self->_outgoingWideLoadQueue;
   v6 = outgoingWideLoadQueue;
@@ -716,7 +716,7 @@ LABEL_20:
     v8 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10003F400(v4, p_outgoingWideLoadQueue);
+      sub_10003F400(messageCopy, p_outgoingWideLoadQueue);
     }
 
     v9 = *p_outgoingWideLoadQueue;
@@ -735,15 +735,15 @@ LABEL_20:
   return v6 != 0;
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a4;
-  v6 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v7 = [v6 companionSyncWrapperCanSendData];
+  sessionCopy = session;
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  companionSyncWrapperCanSendData = [delegate companionSyncWrapperCanSendData];
 
-  if (v7)
+  if (companionSyncWrapperCanSendData)
   {
-    if (![v5 syncSessionType])
+    if (![sessionCopy syncSessionType])
     {
 LABEL_7:
       [(NTKDCompanionSyncWrapper *)self requestResetSync];
@@ -757,9 +757,9 @@ LABEL_7:
     {
       if (v10)
       {
-        v11 = [v5 sessionIdentifier];
+        sessionIdentifier = [sessionCopy sessionIdentifier];
         v13 = 138412290;
-        v14 = v11;
+        v14 = sessionIdentifier;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_resetSyncRequestedDuringSyncRestriction is YES, force to request reset sync. PSYServiceSyncSession sessionID = (%@)", &v13, 0xCu);
       }
 
@@ -768,9 +768,9 @@ LABEL_7:
 
     if (v10)
     {
-      v12 = [v5 sessionIdentifier];
+      sessionIdentifier2 = [sessionCopy sessionIdentifier];
       v13 = 138412290;
-      v14 = v12;
+      v14 = sessionIdentifier2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "requesting delta sync. PSYServiceSyncSession sessionID = (%@)", &v13, 0xCu);
     }
 
@@ -780,14 +780,14 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   if (self->_resumeWhenSyncRestrictionLifted)
   {
-    v4 = [(NTKDCompanionSyncWrapper *)self delegate];
-    v5 = [v4 companionSyncWrapperCanSendData];
+    delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+    companionSyncWrapperCanSendData = [delegate companionSyncWrapperCanSendData];
 
-    if (v5)
+    if (companionSyncWrapperCanSendData)
     {
 
       [(NTKDCompanionSyncWrapper *)self resume];
@@ -795,55 +795,55 @@ LABEL_11:
   }
 }
 
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error
 {
-  v7 = a4;
-  v8 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v9 = [v8 companionSyncWrapperCanSendData];
+  sessionCopy = session;
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  companionSyncWrapperCanSendData = [delegate companionSyncWrapperCanSendData];
 
   v10 = _NTKLoggingObjectForDomain();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (companionSyncWrapperCanSendData)
   {
     if (v11)
     {
-      v12 = [v7 isResetSync];
-      v13 = [v7 isSending];
-      v14 = [v7 identifier];
+      isResetSync = [sessionCopy isResetSync];
+      isSending = [sessionCopy isSending];
+      identifier = [sessionCopy identifier];
       v23 = 134218498;
-      v24 = v12;
+      v24 = isResetSync;
       v25 = 2048;
-      v26 = v13;
+      v26 = isSending;
       v27 = 2114;
-      v28 = v14;
+      v28 = identifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Companion sync starting session. isResetSync: %lu, isSending: %lu, id: %{public}@", &v23, 0x20u);
     }
 
-    [v7 setDelegate:self];
-    [v7 setSerializer:self];
-    [v7 setTargetQueue:self->_syncServiceQueue];
-    v15 = [v7 sessionMetadata];
-    v16 = [NSMutableDictionary dictionaryWithDictionary:v15];
+    [sessionCopy setDelegate:self];
+    [sessionCopy setSerializer:self];
+    [sessionCopy setTargetQueue:self->_syncServiceQueue];
+    sessionMetadata = [sessionCopy sessionMetadata];
+    v16 = [NSMutableDictionary dictionaryWithDictionary:sessionMetadata];
 
-    if ([v7 isSending])
+    if ([sessionCopy isSending])
     {
       [v16 setObject:&off_10005FD18 forKey:@"senderSyncVersion"];
-      [v7 setSessionMetadata:v16];
-      v17 = [(NTKDCompanionSyncWrapper *)self delegate];
-      [v17 outgoingSyncSessionDidStart:{objc_msgSend(v7, "isResetSync")}];
+      [sessionCopy setSessionMetadata:v16];
+      delegate2 = [(NTKDCompanionSyncWrapper *)self delegate];
+      [delegate2 outgoingSyncSessionDidStart:{objc_msgSend(sessionCopy, "isResetSync")}];
 
-      v18 = [[_RateLimiter alloc] initWithRate:307200];
+      delegate3 = [[_RateLimiter alloc] initWithRate:307200];
       rateLimiters = self->_rateLimiters;
-      v20 = [v7 identifier];
-      [(NSMutableDictionary *)rateLimiters setObject:v18 forKeyedSubscript:v20];
+      identifier2 = [sessionCopy identifier];
+      [(NSMutableDictionary *)rateLimiters setObject:delegate3 forKeyedSubscript:identifier2];
     }
 
     else
     {
       [v16 setObject:&off_10005FD18 forKey:@"receiverSyncVersion"];
-      [v7 setSessionMetadata:v16];
-      v18 = [(NTKDCompanionSyncWrapper *)self delegate];
-      -[_RateLimiter incomingSyncSessionDidStart:](v18, "incomingSyncSessionDidStart:", [v7 isResetSync]);
+      [sessionCopy setSessionMetadata:v16];
+      delegate3 = [(NTKDCompanionSyncWrapper *)self delegate];
+      -[_RateLimiter incomingSyncSessionDidStart:](delegate3, "incomingSyncSessionDidStart:", [sessionCopy isResetSync]);
     }
   }
 
@@ -851,24 +851,24 @@ LABEL_11:
   {
     if (v11)
     {
-      v21 = [v7 identifier];
+      identifier3 = [sessionCopy identifier];
       v23 = 138412290;
-      v24 = v21;
+      v24 = identifier3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Companion sync won't start session. It can't send data. SYSession ID = (%@)", &v23, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [[NSError alloc] initWithDomain:@"com.apple.pairedsync.faces" code:302 userInfo:0];
+      *error = [[NSError alloc] initWithDomain:@"com.apple.pairedsync.faces" code:302 userInfo:0];
     }
   }
 
-  return v9;
+  return companionSyncWrapperCanSendData;
 }
 
-- (void)service:(id)a3 encounteredError:(id)a4 context:(id)a5
+- (void)service:(id)service encounteredError:(id)error context:(id)context
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -884,12 +884,12 @@ LABEL_11:
   dispatch_sync(syncSerialQueue, block);
 }
 
-- (void)service:(id)a3 incomingData:(id)a4 completion:(id)a5
+- (void)service:(id)service incomingData:(id)data completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  dataCopy = data;
   v20 = 0;
-  v9 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v8 error:&v20];
+  v9 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:&v20];
 
   v10 = v20;
   v11 = [v9 decodeIntegerForKey:@"com.apple.nanotimekit.messageType"];
@@ -921,18 +921,18 @@ LABEL_11:
 
     if (v11 == 1)
     {
-      v15 = [(NTKDCompanionSyncWrapper *)self delegate];
-      if ([v15 companionSyncWrapperCanSendData])
+      delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+      if ([delegate companionSyncWrapperCanSendData])
       {
         resetSyncRequested = self->_resetSyncRequested;
 
         if (!resetSyncRequested)
         {
-          v17 = [(NTKDCompanionSyncWrapper *)self delegate];
-          [v17 incomingLibraryValidationMessage:v12];
+          delegate2 = [(NTKDCompanionSyncWrapper *)self delegate];
+          [delegate2 incomingLibraryValidationMessage:v12];
 
 LABEL_15:
-          v7[2](v7, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
           goto LABEL_16;
         }
       }
@@ -949,7 +949,7 @@ LABEL_15:
       }
 
       v19 = [[NSError alloc] initWithDomain:@"com.apple.pairedsync.faces" code:303 userInfo:0];
-      (v7)[2](v7, 0, v19);
+      (completionCopy)[2](completionCopy, 0, v19);
     }
   }
 
@@ -960,29 +960,29 @@ LABEL_15:
       sub_10003F554();
     }
 
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_16:
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NTKDCompanionSyncWrapper *)self _nextMessageToSendForSession:v7];
+  sessionCopy = session;
+  changesCopy = changes;
+  v9 = [(NTKDCompanionSyncWrapper *)self _nextMessageToSendForSession:sessionCopy];
   if (v9)
   {
     rateLimiters = self->_rateLimiters;
-    v11 = [v7 identifier];
-    v12 = [(NSMutableDictionary *)rateLimiters objectForKeyedSubscript:v11];
+    identifier = [sessionCopy identifier];
+    v12 = [(NSMutableDictionary *)rateLimiters objectForKeyedSubscript:identifier];
 
     if (v12)
     {
-      v13 = [v9 payloadSize];
-      if (v13)
+      payloadSize = [v9 payloadSize];
+      if (payloadSize)
       {
-        v14 = v13;
+        v14 = payloadSize;
       }
 
       else
@@ -999,11 +999,11 @@ LABEL_16:
       v18 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_10003F5CC(v7);
+        sub_10003F5CC(sessionCopy);
       }
     }
 
-    if ((v8[2](v8, v9) & 1) == 0)
+    if ((changesCopy[2](changesCopy, v9) & 1) == 0)
     {
       v19 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1017,60 +1017,60 @@ LABEL_16:
 
   else
   {
-    if ([v7 isSending])
+    if ([sessionCopy isSending])
     {
-      v15 = [(NTKDCompanionSyncWrapper *)self delegate];
-      v16 = [v15 companionSyncWrapperDidRequestActivePairedSyncSession];
-      [v16 syncDidCompleteSending];
+      delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+      companionSyncWrapperDidRequestActivePairedSyncSession = [delegate companionSyncWrapperDidRequestActivePairedSyncSession];
+      [companionSyncWrapperDidRequestActivePairedSyncSession syncDidCompleteSending];
     }
 
     v17 = 2;
   }
 
-  [(NTKDCompanionSyncWrapper *)self _reportProgressForMessage:v9 inSession:v7];
+  [(NTKDCompanionSyncWrapper *)self _reportProgressForMessage:v9 inSession:sessionCopy];
   v20 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v7 identifier];
+    identifier2 = [sessionCopy identifier];
     v23 = 134218498;
     v24 = v17;
     v25 = 2112;
     v26 = v9;
     v27 = 2112;
-    v28 = v21;
+    v28 = identifier2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "sessionStateResult: %ld, messageToSend: %@, session id: %@", &v23, 0x20u);
   }
 
   return v17;
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  changesCopy = changes;
+  completionCopy = completion;
   v11 = _NTKLoggingObjectForDomain();
-  v33 = v8;
+  v33 = sessionCopy;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 identifier];
+    identifier = [sessionCopy identifier];
     *buf = 138412290;
-    v42 = v12;
+    v42 = identifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Companion Sync session applying changes with session id: %@", buf, 0xCu);
 
-    v8 = v33;
+    sessionCopy = v33;
   }
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v9;
+  obj = changesCopy;
   v13 = [obj countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v13)
   {
     v14 = v13;
-    v32 = v10;
+    v32 = completionCopy;
     v35 = *v38;
     while (2)
     {
@@ -1091,8 +1091,8 @@ LABEL_16:
 
         else
         {
-          v19 = [v8 serializer];
-          v20 = [v19 dataFromChange:v16];
+          serializer = [sessionCopy serializer];
+          v20 = [serializer dataFromChange:v16];
 
           v21 = objc_opt_class();
           v36 = 0;
@@ -1127,8 +1127,8 @@ LABEL_30:
         v20 = v23;
         if (v23)
         {
-          v24 = [(NTKDCompanionSyncWrapper *)self delegate];
-          v25 = [v24 incomingSyncSessionApplyMessage:v20];
+          delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+          v25 = [delegate incomingSyncSessionApplyMessage:v20];
 
           v26 = _NTKLoggingObjectForDomain();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -1140,7 +1140,7 @@ LABEL_30:
             v44 = v27;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "apply sync mesage: %@, success=%@", buf, 0x16u);
 
-            v8 = v33;
+            sessionCopy = v33;
           }
 
           NTKSubmitSyncMessage();
@@ -1149,7 +1149,7 @@ LABEL_30:
             goto LABEL_30;
           }
 
-          [(NTKDCompanionSyncWrapper *)self _reportProgressForMessage:v18 inSession:v8];
+          [(NTKDCompanionSyncWrapper *)self _reportProgressForMessage:v18 inSession:sessionCopy];
         }
 
         else
@@ -1177,7 +1177,7 @@ LABEL_30:
 
     v29 = 1;
 LABEL_31:
-    v10 = v32;
+    completionCopy = v32;
   }
 
   else
@@ -1185,40 +1185,40 @@ LABEL_31:
     v29 = 1;
   }
 
-  v10[2](v10, v29, 0);
+  completionCopy[2](completionCopy, v29, 0);
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 identifier];
+    identifier = [sessionCopy identifier];
     v12 = 138412290;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Reset request received for sync session with id %@", &v12, 0xCu);
   }
 
-  v9 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v10 = [v9 incomingSyncSessionResetDataStoreWithError:a4];
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  v10 = [delegate incomingSyncSessionResetDataStoreWithError:error];
 
   return v10;
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSending])
+  sessionCopy = session;
+  errorCopy = error;
+  if ([sessionCopy isSending])
   {
     if ([(NTKDCompanionSyncWrapper *)self _discardOutgoingPartialMessagesIfNeededWithErrorMessage:@"Session did end"])
     {
       v8 = [NSError errorWithDomain:kNTKSyncErrorDomain code:1 userInfo:0];
       v9 = v8;
-      if (v7)
+      if (errorCopy)
       {
-        v10 = v7;
+        v10 = errorCopy;
       }
 
       else
@@ -1228,7 +1228,7 @@ LABEL_31:
 
       v11 = v10;
 
-      v7 = v11;
+      errorCopy = v11;
     }
 
     else
@@ -1236,10 +1236,10 @@ LABEL_31:
       v9 = 0;
     }
 
-    v14 = v7;
+    v14 = errorCopy;
     rateLimiters = self->_rateLimiters;
-    v7 = [v6 identifier];
-    [(NSMutableDictionary *)rateLimiters setObject:0 forKeyedSubscript:v7];
+    errorCopy = [sessionCopy identifier];
+    [(NSMutableDictionary *)rateLimiters setObject:0 forKeyedSubscript:errorCopy];
   }
 
   else
@@ -1252,9 +1252,9 @@ LABEL_31:
 
     v12 = [NSError errorWithDomain:kNTKSyncErrorDomain code:2 userInfo:0];
     v9 = v12;
-    if (v7)
+    if (errorCopy)
     {
-      v13 = v7;
+      v13 = errorCopy;
     }
 
     else
@@ -1265,32 +1265,32 @@ LABEL_31:
     v14 = v13;
   }
 
-  v7 = v14;
+  errorCopy = v14;
 LABEL_16:
-  v16 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v17 = [v16 companionSyncWrapperDidRequestActivePairedSyncSession];
+  delegate = [(NTKDCompanionSyncWrapper *)self delegate];
+  companionSyncWrapperDidRequestActivePairedSyncSession = [delegate companionSyncWrapperDidRequestActivePairedSyncSession];
 
-  if (v17 && (![v17 syncSessionType] && (objc_msgSend(v6, "isResetSync") & 1) != 0 || objc_msgSend(v17, "syncSessionType") == 1 && (objc_msgSend(v6, "isResetSync") & 1) == 0))
+  if (companionSyncWrapperDidRequestActivePairedSyncSession && (![companionSyncWrapperDidRequestActivePairedSyncSession syncSessionType] && (objc_msgSend(sessionCopy, "isResetSync") & 1) != 0 || objc_msgSend(companionSyncWrapperDidRequestActivePairedSyncSession, "syncSessionType") == 1 && (objc_msgSend(sessionCopy, "isResetSync") & 1) == 0))
   {
     v18 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v17 sessionIdentifier];
+      sessionIdentifier = [companionSyncWrapperDidRequestActivePairedSyncSession sessionIdentifier];
       *buf = 138412290;
-      v35 = v19;
+      v35 = sessionIdentifier;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "paired sync session ended with id: %@", buf, 0xCu);
     }
 
-    if (!v7)
+    if (!errorCopy)
     {
-      [v17 syncDidComplete];
+      [companionSyncWrapperDidRequestActivePairedSyncSession syncDidComplete];
 LABEL_31:
       v20 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 identifier];
+        identifier = [sessionCopy identifier];
         *buf = 138412290;
-        v35 = v22;
+        v35 = identifier;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "sync session ended with id: %@", buf, 0xCu);
       }
 
@@ -1298,10 +1298,10 @@ LABEL_31:
       goto LABEL_34;
     }
 
-    [v17 syncDidFailWithError:v7];
+    [companionSyncWrapperDidRequestActivePairedSyncSession syncDidFailWithError:errorCopy];
   }
 
-  else if (!v7)
+  else if (!errorCopy)
   {
     goto LABEL_31;
   }
@@ -1309,23 +1309,23 @@ LABEL_31:
   v20 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    sub_10003F708(v7, v6);
+    sub_10003F708(errorCopy, sessionCopy);
   }
 
   v21 = 0;
 LABEL_34:
 
-  v23 = [v6 isSending];
-  v24 = [(NTKDCompanionSyncWrapper *)self delegate];
-  v25 = v24;
-  if (v23)
+  isSending = [sessionCopy isSending];
+  delegate2 = [(NTKDCompanionSyncWrapper *)self delegate];
+  v25 = delegate2;
+  if (isSending)
   {
-    [v24 outgoingSyncSessionDidEnd:v21 withError:v7];
+    [delegate2 outgoingSyncSessionDidEnd:v21 withError:errorCopy];
   }
 
   else
   {
-    [v24 incomingSyncSessionDidEnd:v21 withError:v7];
+    [delegate2 incomingSyncSessionDidEnd:v21 withError:errorCopy];
   }
 
   syncSerialQueue = self->_syncSerialQueue;
@@ -1333,10 +1333,10 @@ LABEL_34:
   block[1] = 3221225472;
   block[2] = sub_10002EA1C;
   block[3] = &unk_10005CC38;
-  v27 = v7;
+  v27 = errorCopy;
   v31 = v27;
-  v32 = self;
-  v28 = v6;
+  selfCopy = self;
+  v28 = sessionCopy;
   v33 = v28;
   dispatch_sync(syncSerialQueue, block);
   if ([v28 isSending])
@@ -1350,21 +1350,21 @@ LABEL_34:
   }
 }
 
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v9 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = v7;
+    v13 = dCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = iDCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didSwitchFromPairingID:%@ toPairingID:%@", buf, 0x16u);
   }
 
-  if (v8)
+  if (iDCopy)
   {
     [(NTKDCompanionSyncWrapper *)self _discardIncomingPartialMessagesIfNeededWithErrorMessage:@"Switching to a new pairing ID"];
     [(NTKDCompanionSyncWrapper *)self _discardOutgoingPartialMessagesIfNeededWithErrorMessage:@"Switching to a new pairing ID"];
@@ -1379,11 +1379,11 @@ LABEL_34:
   }
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v4 = a3;
+  dataCopy = data;
   v9 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
   v6 = v9;
   if (!v5)

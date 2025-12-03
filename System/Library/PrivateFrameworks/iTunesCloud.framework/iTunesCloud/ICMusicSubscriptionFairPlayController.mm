@@ -1,19 +1,19 @@
 @interface ICMusicSubscriptionFairPlayController
 + (ICMusicSubscriptionFairPlayController)sharedController;
 - (id)_init;
-- (id)getKeyStatusForAccountUniqueIdentifier:(unint64_t)a3 error:(id *)a4;
-- (void)_handleSubscriptionFairPlayKeyStatusChangedDistributedNotification:(id)a3;
-- (void)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)a3 transactionType:(unsigned int)a4 machineIDData:(id)a5 completionHandler:(id)a6;
-- (void)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)a3 transactionType:(unsigned int)a4 certificateData:(id)a5 assetIDData:(id)a6 completionHandler:(id)a7;
-- (void)getKeyStatusListWithCompletionHandler:(id)a3;
-- (void)importSubscriptionKeyBagData:(id)a3 completionHandler:(id)a4;
-- (void)importSubscriptionKeyBagData:(id)a3 leaseInfoData:(id)a4 completionHandler:(id)a5;
-- (void)stopSubscriptionLeaseWithCompletion:(id)a3;
+- (id)getKeyStatusForAccountUniqueIdentifier:(unint64_t)identifier error:(id *)error;
+- (void)_handleSubscriptionFairPlayKeyStatusChangedDistributedNotification:(id)notification;
+- (void)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)identifier transactionType:(unsigned int)type machineIDData:(id)data completionHandler:(id)handler;
+- (void)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)d transactionType:(unsigned int)type certificateData:(id)data assetIDData:(id)dData completionHandler:(id)handler;
+- (void)getKeyStatusListWithCompletionHandler:(id)handler;
+- (void)importSubscriptionKeyBagData:(id)data completionHandler:(id)handler;
+- (void)importSubscriptionKeyBagData:(id)data leaseInfoData:(id)infoData completionHandler:(id)handler;
+- (void)stopSubscriptionLeaseWithCompletion:(id)completion;
 @end
 
 @implementation ICMusicSubscriptionFairPlayController
 
-- (void)_handleSubscriptionFairPlayKeyStatusChangedDistributedNotification:(id)a3
+- (void)_handleSubscriptionFairPlayKeyStatusChangedDistributedNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -29,17 +29,17 @@ void __108__ICMusicSubscriptionFairPlayController__handleSubscriptionFairPlayKey
   [v2 postNotificationName:@"ICMusicSubscriptionFairPlayKeyStatusDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)stopSubscriptionLeaseWithCompletion:(id)a3
+- (void)stopSubscriptionLeaseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__ICMusicSubscriptionFairPlayController_stopSubscriptionLeaseWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(fairPlaySerialQueue, v7);
 }
 
@@ -108,25 +108,25 @@ LABEL_11:
   }
 }
 
-- (void)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)a3 transactionType:(unsigned int)a4 certificateData:(id)a5 assetIDData:(id)a6 completionHandler:(id)a7
+- (void)generateSubscriptionLeaseRequestWithAccountUniqueID:(unint64_t)d transactionType:(unsigned int)type certificateData:(id)data assetIDData:(id)dData completionHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dataCopy = data;
+  dDataCopy = dData;
+  handlerCopy = handler;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __155__ICMusicSubscriptionFairPlayController_generateSubscriptionLeaseRequestWithAccountUniqueID_transactionType_certificateData_assetIDData_completionHandler___block_invoke;
   v19[3] = &unk_1E7BF9EA0;
-  v23 = v14;
-  v24 = a3;
-  v25 = a4;
-  v20 = v12;
-  v21 = v13;
-  v22 = self;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v23 = handlerCopy;
+  dCopy = d;
+  typeCopy = type;
+  v20 = dataCopy;
+  v21 = dDataCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v17 = dDataCopy;
+  v18 = dataCopy;
   dispatch_async(fairPlaySerialQueue, v19);
 }
 
@@ -228,22 +228,22 @@ void __155__ICMusicSubscriptionFairPlayController_generateSubscriptionLeaseReque
   }
 }
 
-- (void)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)a3 transactionType:(unsigned int)a4 machineIDData:(id)a5 completionHandler:(id)a6
+- (void)generateSubscriptionBagRequestWithAccountUniqueIdentifier:(unint64_t)identifier transactionType:(unsigned int)type machineIDData:(id)data completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  handlerCopy = handler;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __147__ICMusicSubscriptionFairPlayController_generateSubscriptionBagRequestWithAccountUniqueIdentifier_transactionType_machineIDData_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E50;
-  v20 = a4;
-  v18 = v11;
-  v19 = a3;
-  v16 = v10;
-  v17 = self;
-  v13 = v11;
-  v14 = v10;
+  typeCopy = type;
+  v18 = handlerCopy;
+  identifierCopy = identifier;
+  v16 = dataCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v14 = dataCopy;
   dispatch_async(fairPlaySerialQueue, block);
 }
 
@@ -330,23 +330,23 @@ void __147__ICMusicSubscriptionFairPlayController_generateSubscriptionBagRequest
   }
 }
 
-- (void)importSubscriptionKeyBagData:(id)a3 leaseInfoData:(id)a4 completionHandler:(id)a5
+- (void)importSubscriptionKeyBagData:(id)data leaseInfoData:(id)infoData completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  infoDataCopy = infoData;
+  handlerCopy = handler;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __102__ICMusicSubscriptionFairPlayController_importSubscriptionKeyBagData_leaseInfoData_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = infoDataCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dataCopy;
+  v14 = infoDataCopy;
   dispatch_async(fairPlaySerialQueue, v15);
 }
 
@@ -467,20 +467,20 @@ void __102__ICMusicSubscriptionFairPlayController_importSubscriptionKeyBagData_l
   }
 }
 
-- (void)importSubscriptionKeyBagData:(id)a3 completionHandler:(id)a4
+- (void)importSubscriptionKeyBagData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__ICMusicSubscriptionFairPlayController_importSubscriptionKeyBagData_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dataCopy;
   dispatch_async(fairPlaySerialQueue, block);
 }
 
@@ -580,17 +580,17 @@ void __88__ICMusicSubscriptionFairPlayController_importSubscriptionKeyBagData_co
   }
 }
 
-- (void)getKeyStatusListWithCompletionHandler:(id)a3
+- (void)getKeyStatusListWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   fairPlaySerialQueue = self->_fairPlaySerialQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__ICMusicSubscriptionFairPlayController_getKeyStatusListWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v8);
   dispatch_async(fairPlaySerialQueue, v7);
 }
@@ -682,7 +682,7 @@ void __79__ICMusicSubscriptionFairPlayController_getKeyStatusListWithCompletionH
   }
 }
 
-- (id)getKeyStatusForAccountUniqueIdentifier:(unint64_t)a3 error:(id *)a4
+- (id)getKeyStatusForAccountUniqueIdentifier:(unint64_t)identifier error:(id *)error
 {
   v14[0] = 0;
   v14[1] = v14;
@@ -702,7 +702,7 @@ void __79__ICMusicSubscriptionFairPlayController_getKeyStatusListWithCompletionH
   block[2] = __86__ICMusicSubscriptionFairPlayController_getKeyStatusForAccountUniqueIdentifier_error___block_invoke;
   block[3] = &unk_1E7BF9E00;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = v14;
   dispatch_sync(fairPlaySerialQueue, block);
   v5 = v9[5];
@@ -758,12 +758,12 @@ void __86__ICMusicSubscriptionFairPlayController_getKeyStatusForAccountUniqueIde
     fairPlaySerialQueue = v2->_fairPlaySerialQueue;
     v2->_fairPlaySerialQueue = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     subscriptionKeyBagStatusCache = v2->_subscriptionKeyBagStatusCache;
-    v2->_subscriptionKeyBagStatusCache = v7;
+    v2->_subscriptionKeyBagStatusCache = dictionary;
 
-    v9 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v9 addObserver:v2 selector:sel__handleSubscriptionFairPlayKeyStatusChangedDistributedNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionFairPlayKeyStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleSubscriptionFairPlayKeyStatusChangedDistributedNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionFairPlayKeyStatusDidChangeNotification" object:0];
 
     [(ICMusicSubscriptionFairPlayController *)v2 getKeyStatusListWithCompletionHandler:&__block_literal_global_13_39224];
   }

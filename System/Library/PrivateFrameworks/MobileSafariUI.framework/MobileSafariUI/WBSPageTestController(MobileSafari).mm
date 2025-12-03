@@ -15,7 +15,7 @@
   block[2] = __89__WBSPageTestController_MobileSafari__pageTestControllerInitializeApp_completionHandler___block_invoke;
   block[3] = &unk_2781D53E0;
   v11 = v6;
-  v12 = a1;
+  selfCopy = self;
   v13 = v7;
   v8 = v7;
   v9 = v6;
@@ -44,24 +44,24 @@
 {
   v9 = a5;
   v10 = a6;
-  if (a1 <= 0.0 || a2 <= 0.0)
+  if (self <= 0.0 || a2 <= 0.0)
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12 == 6)
+    if (userInterfaceIdiom == 6)
     {
       a2 = 816.0;
-      a1 = 938.0;
+      self = 938.0;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
-      v14 = [v13 userInterfaceIdiom] == 1;
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      v14 = [currentDevice2 userInterfaceIdiom] == 1;
 
       a2 = dbl_215A95C80[v14];
-      a1 = dbl_215A95C90[v14];
+      self = dbl_215A95C90[v14];
     }
   }
 
@@ -69,7 +69,7 @@
   v17[1] = 3221225472;
   v17[2] = __91__WBSPageTestController_MobileSafari__pageTestController_resizeViewport_completionHandler___block_invoke;
   v17[3] = &unk_2781D7E50;
-  v20 = a1;
+  selfCopy = self;
   v21 = a2;
   v18 = v9;
   v19 = v10;

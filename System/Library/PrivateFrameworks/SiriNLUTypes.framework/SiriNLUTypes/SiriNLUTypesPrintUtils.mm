@@ -1,13 +1,13 @@
 @interface SiriNLUTypesPrintUtils
-+ (id)printableSpanMatchResponseWithSpanMatchResponse:(id)a3 withUSOGraph:(BOOL)a4;
++ (id)printableSpanMatchResponseWithSpanMatchResponse:(id)response withUSOGraph:(BOOL)graph;
 @end
 
 @implementation SiriNLUTypesPrintUtils
 
-+ (id)printableSpanMatchResponseWithSpanMatchResponse:(id)a3 withUSOGraph:(BOOL)a4
++ (id)printableSpanMatchResponseWithSpanMatchResponse:(id)response withUSOGraph:(BOOL)graph
 {
-  v5 = a3;
-  static SiriNLUTypesPrintUtils.printableSpanMatchResponse(spanMatchResponse:withUSOGraph:)(v5, a4);
+  responseCopy = response;
+  static SiriNLUTypesPrintUtils.printableSpanMatchResponse(spanMatchResponse:withUSOGraph:)(responseCopy, graph);
 
   v6 = sub_1C8BD518C();
 

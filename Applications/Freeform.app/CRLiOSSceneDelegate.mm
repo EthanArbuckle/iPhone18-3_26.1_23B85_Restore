@@ -1,7 +1,7 @@
 @interface CRLiOSSceneDelegate
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration;
 - (_TtC8Freeform19CRLiOSSceneDelegate)init;
-- (void)qa_importFileFor:(id)a3;
+- (void)qa_importFileFor:(id)for;
 @end
 
 @implementation CRLiOSSceneDelegate
@@ -17,14 +17,14 @@
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_100DA1EC0();
   v4 = v3;
 
   return v4;
 }
 
-- (void)qa_importFileFor:(id)a3
+- (void)qa_importFileFor:(id)for
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
@@ -32,10 +32,10 @@
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   type metadata accessor for MainActor();
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
+  forCopy = for;
+  selfCopy = self;
+  v11 = forCopy;
+  v12 = selfCopy;
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
   v14[2] = v13;

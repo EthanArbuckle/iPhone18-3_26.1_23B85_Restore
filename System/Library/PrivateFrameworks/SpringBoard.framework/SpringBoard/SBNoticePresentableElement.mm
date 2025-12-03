@@ -1,31 +1,31 @@
 @interface SBNoticePresentableElement
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
-- (BOOL)handleElementViewEvent:(int64_t)a3;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
+- (BOOL)handleElementViewEvent:(int64_t)event;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets;
 - (NSString)clientIdentifier;
 - (SAUILayoutHosting)layoutHost;
-- (SBNoticePresentableElement)initWithTemplatePresentable:(id)a3;
+- (SBNoticePresentableElement)initWithTemplatePresentable:(id)presentable;
 - (UIView)leadingView;
 - (UIView)trailingView;
 - (id)_primaryView;
 - (id)_secondaryView;
-- (id)_templateItemViewFromProvider:(id)a3 isPrimary:(BOOL)a4;
+- (id)_templateItemViewFromProvider:(id)provider isPrimary:(BOOL)primary;
 - (id)elementDescription;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_updateVisualStlyingOfView:(id)a3 fromProvider:(id)a4;
-- (void)addElementLayoutSpecifierObserver:(id)a3;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3;
-- (void)removeElementLayoutSpecifierObserver:(id)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_updateVisualStlyingOfView:(id)view fromProvider:(id)provider;
+- (void)addElementLayoutSpecifierObserver:(id)observer;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews;
+- (void)removeElementLayoutSpecifierObserver:(id)observer;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
 @end
 
 @implementation SBNoticePresentableElement
 
-- (SBNoticePresentableElement)initWithTemplatePresentable:(id)a3
+- (SBNoticePresentableElement)initWithTemplatePresentable:(id)presentable
 {
-  v6 = a3;
-  if (!v6)
+  presentableCopy = presentable;
+  if (!presentableCopy)
   {
     [(SBNoticePresentableElement *)a2 initWithTemplatePresentable:?];
   }
@@ -36,7 +36,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_presentable, a3);
+    objc_storeStrong(&v7->_presentable, presentable);
     v8->_preferredLayoutMode = 2;
   }
 
@@ -45,10 +45,10 @@
 
 - (NSString)clientIdentifier
 {
-  v2 = [(BNPresentable *)self->_presentable requesterIdentifier];
+  requesterIdentifier = [(BNPresentable *)self->_presentable requesterIdentifier];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringByAppendingFormat:@".%@", v4];
+  v5 = [requesterIdentifier stringByAppendingFormat:@".%@", v4];
 
   return v5;
 }
@@ -65,12 +65,12 @@
   return v4;
 }
 
-- (BOOL)handleElementViewEvent:(int64_t)a3
+- (BOOL)handleElementViewEvent:(int64_t)event
 {
-  v4 = [(SBNoticePresentableElement *)self templatePresentable];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && a3 <= 2)
+  templatePresentable = [(SBNoticePresentableElement *)self templatePresentable];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && event <= 2)
   {
-    [v4 handleTemplateContentEvent:a3];
+    [templatePresentable handleTemplateContentEvent:event];
   }
 
   return 0;
@@ -78,19 +78,19 @@
 
 - (UIView)leadingView
 {
-  v3 = [(SBNoticePresentableElement *)self templatePresentable];
+  templatePresentable = [(SBNoticePresentableElement *)self templatePresentable];
   if (!self->_leadingView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 leadingTemplateViewProvider];
-    v5 = v4;
-    if (v4)
+    leadingTemplateViewProvider = [templatePresentable leadingTemplateViewProvider];
+    v5 = leadingTemplateViewProvider;
+    if (leadingTemplateViewProvider)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __41__SBNoticePresentableElement_leadingView__block_invoke;
       v11[3] = &unk_2783B1B90;
       v11[4] = self;
-      v6 = SBTemplateItemViewFromProvider(v4, v11);
+      v6 = SBTemplateItemViewFromProvider(leadingTemplateViewProvider, v11);
       leadingView = self->_leadingView;
       self->_leadingView = v6;
 
@@ -118,19 +118,19 @@ id __41__SBNoticePresentableElement_leadingView__block_invoke(uint64_t a1)
 
 - (UIView)trailingView
 {
-  v3 = [(SBNoticePresentableElement *)self templatePresentable];
+  templatePresentable = [(SBNoticePresentableElement *)self templatePresentable];
   if (!self->_trailingView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 trailingTemplateViewProvider];
-    v5 = v4;
-    if (v4)
+    trailingTemplateViewProvider = [templatePresentable trailingTemplateViewProvider];
+    v5 = trailingTemplateViewProvider;
+    if (trailingTemplateViewProvider)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __42__SBNoticePresentableElement_trailingView__block_invoke;
       v11[3] = &unk_2783B1B90;
       v11[4] = self;
-      v6 = SBTemplateItemViewFromProvider(v4, v11);
+      v6 = SBTemplateItemViewFromProvider(trailingTemplateViewProvider, v11);
       trailingView = self->_trailingView;
       self->_trailingView = v6;
 
@@ -156,38 +156,38 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   layoutMode = self->_layoutMode;
-  if (layoutMode != a3)
+  if (layoutMode != mode)
   {
     v7[7] = v4;
     v7[8] = v5;
-    self->_layoutMode = a3;
+    self->_layoutMode = mode;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__SBNoticePresentableElement_setLayoutMode_reason___block_invoke;
     v7[3] = &unk_2783ACD90;
     v7[4] = self;
     v7[5] = layoutMode;
-    v7[6] = a4;
+    v7[6] = reason;
     [(SBNoticePresentableElement *)self _enumerateObserversRespondingToSelector:sel_elementLayoutSpecifier_layoutModeDidChange_reason_ usingBlock:v7];
   }
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)result maximumOutsets:(NSDirectionalEdgeInsets)outsets
 {
   bottom = result.bottom;
   leading = result.leading;
   top = result.top;
-  if (a3 == 3)
+  if (mode == 3)
   {
     v9 = [(SBNoticePresentableElement *)self _primaryView:result.top];
     [v9 sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v11 = v10;
 
-    v12 = [(SBNoticePresentableElement *)self _secondaryView];
-    [v12 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    _secondaryView = [(SBNoticePresentableElement *)self _secondaryView];
+    [_secondaryView sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v14 = v13;
 
     bottom = bottom - (v11 + 8.0);
@@ -213,9 +213,9 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews
 {
-  [a3 bounds];
+  [subviews bounds];
   if (self->_layoutMode == 3)
   {
     v8 = v4;
@@ -248,8 +248,8 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
     [MEMORY[0x277D75D18] performWithoutAnimation:v29];
   }
 
-  v20 = [(SBNoticePresentableElement *)self trailingView];
-  v21 = v20;
+  trailingView = [(SBNoticePresentableElement *)self trailingView];
+  v21 = trailingView;
   if (self->_layoutMode >= 3)
   {
     v22 = 1.0;
@@ -260,10 +260,10 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
     v22 = 0.0;
   }
 
-  [v20 setAlpha:v22];
+  [trailingView setAlpha:v22];
 
-  v23 = [(SBNoticePresentableElement *)self _primaryView];
-  v24 = v23;
+  _primaryView = [(SBNoticePresentableElement *)self _primaryView];
+  v24 = _primaryView;
   if (self->_layoutMode >= 3)
   {
     v25 = 1.0;
@@ -274,10 +274,10 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
     v25 = 0.0;
   }
 
-  [v23 setAlpha:v25];
+  [_primaryView setAlpha:v25];
 
-  v26 = [(SBNoticePresentableElement *)self _secondaryView];
-  v27 = v26;
+  _secondaryView = [(SBNoticePresentableElement *)self _secondaryView];
+  v27 = _secondaryView;
   if (self->_layoutMode >= 3)
   {
     v28 = 1.0;
@@ -288,7 +288,7 @@ id __42__SBNoticePresentableElement_trailingView__block_invoke(uint64_t a1)
     v28 = 0.0;
   }
 
-  [v26 setAlpha:v28];
+  [_secondaryView setAlpha:v28];
 }
 
 uint64_t __71__SBNoticePresentableElement_layoutHostContainerViewDidLayoutSubviews___block_invoke(uint64_t a1)
@@ -321,10 +321,10 @@ uint64_t __71__SBNoticePresentableElement_layoutHostContainerViewDidLayoutSubvie
   return [v11 setFrame:?];
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   if (self->_layoutMode == 3)
   {
     v9 = MEMORY[0x277D75D18];
@@ -332,8 +332,8 @@ uint64_t __71__SBNoticePresentableElement_layoutHostContainerViewDidLayoutSubvie
     v13[1] = 3221225472;
     v13[2] = __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke;
     v13[3] = &unk_2783A92D8;
-    v14 = v7;
-    v15 = self;
+    v14 = viewCopy;
+    selfCopy = self;
     [v9 performWithoutAnimation:v13];
   }
 
@@ -343,7 +343,7 @@ uint64_t __71__SBNoticePresentableElement_layoutHostContainerViewDidLayoutSubvie
   v10[2] = __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke_2;
   v10[3] = &unk_2783B1BB8;
   objc_copyWeak(&v11, &location);
-  [v8 animateAlongsideTransition:0 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
@@ -376,13 +376,13 @@ void __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inCon
   }
 }
 
-- (void)addElementLayoutSpecifierObserver:(id)a3
+- (void)addElementLayoutSpecifierObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
       v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
@@ -393,13 +393,13 @@ void __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inCon
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeElementLayoutSpecifierObserver:(id)a3
+- (void)removeElementLayoutSpecifierObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -409,22 +409,22 @@ void __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inCon
   }
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -436,52 +436,52 @@ void __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inCon
   return v12;
 }
 
-- (id)_templateItemViewFromProvider:(id)a3 isPrimary:(BOOL)a4
+- (id)_templateItemViewFromProvider:(id)provider isPrimary:(BOOL)primary
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  primaryCopy = primary;
+  providerCopy = provider;
+  if (providerCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 templateItemText];
+      templateItemText = [providerCopy templateItemText];
     }
 
     else
     {
-      v7 = 0;
+      templateItemText = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 templateItemAttributedText];
+      templateItemAttributedText = [providerCopy templateItemAttributedText];
     }
 
     else
     {
-      v9 = 0;
+      templateItemAttributedText = 0;
     }
 
-    if (!(v7 | v9))
+    if (!(templateItemText | templateItemAttributedText))
     {
       goto LABEL_18;
     }
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     v8 = v10;
-    if (v7)
+    if (templateItemText)
     {
-      [v10 setText:v7];
+      [v10 setText:templateItemText];
     }
 
     else
     {
-      [v10 setAttributedText:v9];
+      [v10 setAttributedText:templateItemAttributedText];
     }
 
     v11 = objc_opt_class();
     v12 = MEMORY[0x277D769C0];
-    if (!v4)
+    if (!primaryCopy)
     {
       v12 = MEMORY[0x277D76940];
     }
@@ -489,10 +489,10 @@ void __104__SBNoticePresentableElement_contentProviderWillTransitionToSize_inCon
     v13 = [v11 _preferredFont:1 textStyle:*v12 weight:0 additionalTraits:*MEMORY[0x277D74410]];
     [v8 setFont:v13];
 
-    if (!v4)
+    if (!primaryCopy)
     {
-      v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [v8 setColor:v14];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [v8 setColor:secondaryLabelColor];
     }
 
     if (!v8)
@@ -505,7 +505,7 @@ LABEL_18:
         v16[2] = __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___block_invoke;
         v16[3] = &unk_2783B1B90;
         v16[4] = self;
-        v8 = SBTemplateItemViewFromProvider(v6, v16);
+        v8 = SBTemplateItemViewFromProvider(providerCopy, v16);
       }
 
       else
@@ -535,25 +535,25 @@ id __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___bl
   return v1;
 }
 
-- (void)_updateVisualStlyingOfView:(id)a3 fromProvider:(id)a4
+- (void)_updateVisualStlyingOfView:(id)view fromProvider:(id)provider
 {
-  v10 = a3;
-  v5 = a4;
-  if ([v5 visualStyleCategory])
+  viewCopy = view;
+  providerCopy = provider;
+  if ([providerCopy visualStyleCategory])
   {
-    if ([v5 visualStyle] != -1)
+    if ([providerCopy visualStyle] != -1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v10;
-        v7 = [v6 configuration];
-        v8 = [v7 background];
-        v9 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-        [v8 setBackgroundColor:v9];
+        v6 = viewCopy;
+        configuration = [v6 configuration];
+        background = [configuration background];
+        tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+        [background setBackgroundColor:tertiarySystemFillColor];
 
-        [v7 setBackground:v8];
-        [v6 setConfiguration:v7];
+        [configuration setBackground:background];
+        [v6 setConfiguration:configuration];
       }
     }
   }
@@ -561,15 +561,15 @@ id __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___bl
 
 - (id)_primaryView
 {
-  v3 = [(SBNoticePresentableElement *)self templatePresentable];
+  templatePresentable = [(SBNoticePresentableElement *)self templatePresentable];
   if (!self->_primaryView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 primaryTemplateItemProvider];
-    v5 = [(SBNoticePresentableElement *)self _templateItemViewFromProvider:v4 isPrimary:1];
+    primaryTemplateItemProvider = [templatePresentable primaryTemplateItemProvider];
+    v5 = [(SBNoticePresentableElement *)self _templateItemViewFromProvider:primaryTemplateItemProvider isPrimary:1];
     primaryView = self->_primaryView;
     self->_primaryView = v5;
 
-    [(SBNoticePresentableElement *)self _updateVisualStlyingOfView:self->_primaryView fromProvider:v4];
+    [(SBNoticePresentableElement *)self _updateVisualStlyingOfView:self->_primaryView fromProvider:primaryTemplateItemProvider];
   }
 
   v7 = self->_primaryView;
@@ -580,15 +580,15 @@ id __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___bl
 
 - (id)_secondaryView
 {
-  v3 = [(SBNoticePresentableElement *)self templatePresentable];
+  templatePresentable = [(SBNoticePresentableElement *)self templatePresentable];
   if (!self->_secondaryView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 secondaryTemplateItemProvider];
-    v5 = [(SBNoticePresentableElement *)self _templateItemViewFromProvider:v4 isPrimary:0];
+    secondaryTemplateItemProvider = [templatePresentable secondaryTemplateItemProvider];
+    v5 = [(SBNoticePresentableElement *)self _templateItemViewFromProvider:secondaryTemplateItemProvider isPrimary:0];
     secondaryView = self->_secondaryView;
     self->_secondaryView = v5;
 
-    [(SBNoticePresentableElement *)self _updateVisualStlyingOfView:self->_secondaryView fromProvider:v4];
+    [(SBNoticePresentableElement *)self _updateVisualStlyingOfView:self->_secondaryView fromProvider:secondaryTemplateItemProvider];
   }
 
   v7 = self->_secondaryView;
@@ -597,11 +597,11 @@ id __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___bl
   return v7;
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5 && [(NSHashTable *)self->_observers count])
+  blockCopy = block;
+  if (blockCopy && [(NSHashTable *)self->_observers count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -626,7 +626,7 @@ id __70__SBNoticePresentableElement__templateItemViewFromProvider_isPrimary___bl
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;

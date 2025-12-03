@@ -16,7 +16,7 @@
 
 + (id)request
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -25,34 +25,34 @@
 {
   v81 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CRPreflightRequest *)self requestID];
+  requestID = [(CRPreflightRequest *)self requestID];
 
-  if (v4)
+  if (requestID)
   {
-    v5 = [(CRPreflightRequest *)self requestID];
-    [v3 setObject:v5 forKeyedSubscript:@"RequestID"];
+    requestID2 = [(CRPreflightRequest *)self requestID];
+    [v3 setObject:requestID2 forKeyedSubscript:@"RequestID"];
   }
 
-  v6 = [(CRPreflightRequest *)self bikCertificate];
+  bikCertificate = [(CRPreflightRequest *)self bikCertificate];
 
-  if (v6)
+  if (bikCertificate)
   {
-    v7 = [(CRPreflightRequest *)self bikCertificate];
-    [v3 setObject:v7 forKeyedSubscript:@"BIKCertificate"];
+    bikCertificate2 = [(CRPreflightRequest *)self bikCertificate];
+    [v3 setObject:bikCertificate2 forKeyedSubscript:@"BIKCertificate"];
   }
 
-  v8 = [(CRPreflightRequest *)self sessionID];
+  sessionID = [(CRPreflightRequest *)self sessionID];
 
-  if (v8)
+  if (sessionID)
   {
-    v9 = [(CRPreflightRequest *)self sessionID];
-    [v3 setObject:v9 forKeyedSubscript:@"SessionID"];
+    sessionID2 = [(CRPreflightRequest *)self sessionID];
+    [v3 setObject:sessionID2 forKeyedSubscript:@"SessionID"];
   }
 
-  v10 = [(CRPreflightRequest *)self components];
+  components = [(CRPreflightRequest *)self components];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v10)
+  if (components)
   {
     v57 = v3;
     v76 = 0u;
@@ -66,7 +66,7 @@
       v13 = v12;
       v14 = *v75;
       v59 = v11;
-      v60 = self;
+      selfCopy = self;
       v58 = *v75;
       do
       {
@@ -80,29 +80,29 @@
           }
 
           v16 = *(*(&v74 + 1) + 8 * v15);
-          v17 = [v16 type];
-          if (v17)
+          type = [v16 type];
+          if (type)
           {
-            v18 = v17;
-            v19 = [v16 identifier];
+            v18 = type;
+            identifier = [v16 identifier];
 
-            if (v19)
+            if (identifier)
             {
               v63 = v15;
               v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
               v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-              v22 = [v16 type];
-              [v20 setObject:v22 forKeyedSubscript:@"Type"];
+              type2 = [v16 type];
+              [v20 setObject:type2 forKeyedSubscript:@"Type"];
 
-              v23 = [v16 identifier];
-              [v20 setObject:v23 forKeyedSubscript:@"Identifier"];
+              identifier2 = [v16 identifier];
+              [v20 setObject:identifier2 forKeyedSubscript:@"Identifier"];
 
-              v24 = [v16 asid];
+              asid = [v16 asid];
 
-              if (v24)
+              if (asid)
               {
-                v25 = [v16 asid];
-                [v21 setObject:v25 forKeyedSubscript:@"asid"];
+                asid2 = [v16 asid];
+                [v21 setObject:asid2 forKeyedSubscript:@"asid"];
               }
 
               v64 = v21;
@@ -110,8 +110,8 @@
               v73 = 0u;
               v70 = 0u;
               v71 = 0u;
-              v26 = [(CRPreflightRequest *)self componentResponses];
-              v27 = [v26 countByEnumeratingWithState:&v70 objects:v79 count:16];
+              componentResponses = [(CRPreflightRequest *)self componentResponses];
+              v27 = [componentResponses countByEnumeratingWithState:&v70 objects:v79 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -122,7 +122,7 @@
                   {
                     if (*v71 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(componentResponses);
                     }
 
                     v31 = *(*(&v70 + 1) + 8 * i);
@@ -155,7 +155,7 @@
                     }
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v70 objects:v79 count:16];
+                  v28 = [componentResponses countByEnumeratingWithState:&v70 objects:v79 count:16];
                 }
 
                 while (v28);
@@ -165,9 +165,9 @@
               v69 = 0u;
               v66 = 0u;
               v67 = 0u;
-              self = v60;
-              v38 = [(CRPreflightRequest *)v60 activationResponses];
-              v39 = [v38 countByEnumeratingWithState:&v66 objects:v78 count:16];
+              self = selfCopy;
+              activationResponses = [(CRPreflightRequest *)selfCopy activationResponses];
+              v39 = [activationResponses countByEnumeratingWithState:&v66 objects:v78 count:16];
               if (v39)
               {
                 v40 = v39;
@@ -178,7 +178,7 @@
                   {
                     if (*v67 != v41)
                     {
-                      objc_enumerationMutation(v38);
+                      objc_enumerationMutation(activationResponses);
                     }
 
                     v43 = *(*(&v66 + 1) + 8 * j);
@@ -207,7 +207,7 @@
                     }
                   }
 
-                  v40 = [v38 countByEnumeratingWithState:&v66 objects:v78 count:16];
+                  v40 = [activationResponses countByEnumeratingWithState:&v66 objects:v78 count:16];
                 }
 
                 while (v40);
@@ -272,14 +272,14 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CRPreflightRequest *)self requestID];
-  v7 = [(CRPreflightRequest *)self sessionID];
-  v8 = [(CRPreflightRequest *)self bikCertificate];
-  v9 = [(CRPreflightRequest *)self components];
-  v10 = [(CRPreflightRequest *)self componentResponses];
-  v11 = [(CRPreflightRequest *)self activationResponses];
-  v12 = [(CRPreflightRequest *)self signatureChallenge];
-  v13 = [v3 stringWithFormat:@"<%@: RequestID = %@ SessionID = %@ bikCertificate = %@ components = %@ componentResponses = %@ activationResponses = %@, signatureChallenge = %@>", v5, v6, v7, v8, v9, v10, v11, v12];
+  requestID = [(CRPreflightRequest *)self requestID];
+  sessionID = [(CRPreflightRequest *)self sessionID];
+  bikCertificate = [(CRPreflightRequest *)self bikCertificate];
+  components = [(CRPreflightRequest *)self components];
+  componentResponses = [(CRPreflightRequest *)self componentResponses];
+  activationResponses = [(CRPreflightRequest *)self activationResponses];
+  signatureChallenge = [(CRPreflightRequest *)self signatureChallenge];
+  v13 = [v3 stringWithFormat:@"<%@: RequestID = %@ SessionID = %@ bikCertificate = %@ components = %@ componentResponses = %@ activationResponses = %@, signatureChallenge = %@>", v5, requestID, sessionID, bikCertificate, components, componentResponses, activationResponses, signatureChallenge];
 
   return v13;
 }

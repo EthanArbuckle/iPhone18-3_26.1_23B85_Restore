@@ -1,24 +1,24 @@
 @interface SKUIIPadRedeemCameraView
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SKUIIPadRedeemCameraView)initWithClientContext:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SKUIIPadRedeemCameraView)initWithClientContext:(id)context;
 - (SKUIRedeemCameraViewDelegate)delegate;
-- (double)_adjustVerticalSpacingForHeight:(double)a3;
-- (id)_newTextFieldWithClientContext:(id)a3 placeholderColor:(id)a4;
-- (void)_landingButtonAction:(id)a3;
-- (void)_termsButtonAction:(id)a3;
+- (double)_adjustVerticalSpacingForHeight:(double)height;
+- (id)_newTextFieldWithClientContext:(id)context placeholderColor:(id)color;
+- (void)_landingButtonAction:(id)action;
+- (void)_termsButtonAction:(id)action;
 - (void)dealloc;
-- (void)keyboardDidChange:(id)a3;
+- (void)keyboardDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)textFieldTextDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setText:(id)text;
+- (void)textFieldTextDidChange:(id)change;
 @end
 
 @implementation SKUIIPadRedeemCameraView
 
-- (SKUIIPadRedeemCameraView)initWithClientContext:(id)a3
+- (SKUIIPadRedeemCameraView)initWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIPadRedeemCameraView initWithClientContext:];
@@ -34,33 +34,33 @@
     v5->_scrollView = v6;
 
     [(SKUIIPadRedeemCameraView *)v5 addSubview:v5->_scrollView];
-    v8 = [[SKUIRedeemCameraLandingView alloc] initWithClientContext:v4];
+    v8 = [[SKUIRedeemCameraLandingView alloc] initWithClientContext:contextCopy];
     landingView = v5->_landingView;
     v5->_landingView = v8;
 
-    v10 = [(SKUIRedeemCameraLandingView *)v5->_landingView button];
-    [v10 addTarget:v5 action:sel__landingButtonAction_ forControlEvents:64];
+    button = [(SKUIRedeemCameraLandingView *)v5->_landingView button];
+    [button addTarget:v5 action:sel__landingButtonAction_ forControlEvents:64];
 
     [(UIScrollView *)v5->_scrollView addSubview:v5->_landingView];
-    v11 = [(SKUIIPadRedeemCameraView *)v5 tintColor];
-    v12 = [(SKUIIPadRedeemCameraView *)v5 _newTextFieldWithClientContext:v4 placeholderColor:v11];
+    tintColor = [(SKUIIPadRedeemCameraView *)v5 tintColor];
+    v12 = [(SKUIIPadRedeemCameraView *)v5 _newTextFieldWithClientContext:contextCopy placeholderColor:tintColor];
     textField = v5->_textField;
     v5->_textField = v12;
 
     [(SKUIRedeemTextField *)v5->_textField setDelegate:v5];
     [(UIScrollView *)v5->_scrollView addSubview:v5->_textField];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v5 selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C60] object:0];
-    [v14 addObserver:v5 selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C50] object:0];
-    [v14 addObserver:v5 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v5 selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v5 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
     v15 = [[SKUILinkButton alloc] initWithArrowStyle:0];
     termsButton = v5->_termsButton;
     v5->_termsButton = &v15->super;
 
     v17 = v5->_termsButton;
-    if (v4)
+    if (contextCopy)
     {
-      [v4 localizedStringForKey:@"REDEEM_TERMS_LINK" inTable:@"Redeem"];
+      [contextCopy localizedStringForKey:@"REDEEM_TERMS_LINK" inTable:@"Redeem"];
     }
 
     else
@@ -70,17 +70,17 @@
     v18 = ;
     [(UIButton *)v17 setTitle:v18 forState:0];
 
-    v19 = [(UIButton *)v5->_termsButton titleLabel];
+    titleLabel = [(UIButton *)v5->_termsButton titleLabel];
     v20 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-    [v19 setFont:v20];
+    [titleLabel setFont:v20];
 
     v21 = v5->_termsButton;
     v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
     [(UIButton *)v21 setTitleColor:v22 forState:0];
 
     v23 = v5->_termsButton;
-    v24 = [MEMORY[0x277D75348] blackColor];
-    [(UIButton *)v23 setTitleColor:v24 forState:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIButton *)v23 setTitleColor:blackColor forState:1];
 
     [(UIButton *)v5->_termsButton addTarget:v5 action:sel__termsButtonAction_ forControlEvents:64];
     [(UIScrollView *)v5->_scrollView addSubview:v5->_termsButton];
@@ -91,12 +91,12 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770B0] object:0];
   [(SKUIRedeemTextField *)self->_textField setDelegate:0];
 
   v4.receiver = self;
@@ -104,20 +104,20 @@
   [(SKUIIPadRedeemCameraView *)&v4 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   textField = self->_textField;
-  v5 = a3;
-  [(SKUIRedeemTextField *)textField setText:v5];
+  textCopy = text;
+  [(SKUIRedeemTextField *)textField setText:textCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:v5];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:textCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   textField = self->_textField;
-  if (a3)
+  if (enabled)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -129,9 +129,9 @@
   v6 = ;
   [(SKUIRedeemTextField *)textField setTextColor:v6];
 
-  [(SKUIRedeemTextField *)self->_textField setEnabled:v3];
+  [(SKUIRedeemTextField *)self->_textField setEnabled:enabledCopy];
 
-  [(SKUIIPadRedeemCameraView *)self setUserInteractionEnabled:v3];
+  [(SKUIIPadRedeemCameraView *)self setUserInteractionEnabled:enabledCopy];
 }
 
 - (void)layoutSubviews
@@ -141,10 +141,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v13 = 44.0;
   }
@@ -203,16 +203,16 @@
   }
 }
 
-- (void)keyboardDidChange:(id)a3
+- (void)keyboardDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v15 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [change userInfo];
+  v15 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v15)
   {
-    v5 = [(UIScrollView *)self->_scrollView superview];
+    superview = [(UIScrollView *)self->_scrollView superview];
     [v15 CGRectValue];
-    [v5 convertRect:0 fromView:?];
+    [superview convertRect:0 fromView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -233,44 +233,44 @@
   }
 }
 
-- (void)textFieldTextDidChange:(id)a3
+- (void)textFieldTextDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(SKUIRedeemTextField *)self->_textField text];
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:v4];
+  text = [(SKUIRedeemTextField *)self->_textField text];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:text];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 text];
+  text = [returnCopy text];
 
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:v6];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:text];
   return 1;
 }
 
-- (void)_landingButtonAction:(id)a3
+- (void)_landingButtonAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained presentFullScreenCameraViewForSKUIRedeemCameraView:self];
 }
 
-- (void)_termsButtonAction:(id)a3
+- (void)_termsButtonAction:(id)action
 {
-  v3 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SKUIMetricsOpenURL(v3);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SKUIMetricsOpenURL(termsAndConditionsURL);
 }
 
-- (double)_adjustVerticalSpacingForHeight:(double)a3
+- (double)_adjustVerticalSpacingForHeight:(double)height
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v6 = [MEMORY[0x277D75DA0] keyWindow];
-    [v6 bounds];
+    keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+    [keyWindow bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -298,18 +298,18 @@
         v18 = 461.0;
       }
 
-      return a3 + v18;
+      return height + v18;
     }
   }
 
-  return a3;
+  return height;
 }
 
-- (id)_newTextFieldWithClientContext:(id)a3 placeholderColor:(id)a4
+- (id)_newTextFieldWithClientContext:(id)context placeholderColor:(id)color
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  colorCopy = color;
   v7 = [[SKUIRedeemTextField alloc] initWithFrame:0.0, 0.0, 1.0, 44.0];
   [(SKUIRedeemTextField *)v7 setAutocorrectionType:1];
   [(SKUIRedeemTextField *)v7 setAutocapitalizationType:3];
@@ -320,22 +320,22 @@
   v10 = *MEMORY[0x277D740C0];
   v17[0] = v9;
   v17[1] = v10;
-  v11 = v6;
-  if (!v6)
+  v11 = colorCopy;
+  if (!colorCopy)
   {
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.7 alpha:1.0];
   }
 
   v18[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  if (!v6)
+  if (!colorCopy)
   {
   }
 
   v13 = objc_alloc(MEMORY[0x277CCA898]);
-  if (v5)
+  if (contextCopy)
   {
-    [v5 localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
+    [contextCopy localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
   }
 
   else

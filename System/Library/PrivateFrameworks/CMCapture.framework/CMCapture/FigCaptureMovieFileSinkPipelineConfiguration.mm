@@ -1,5 +1,5 @@
 @interface FigCaptureMovieFileSinkPipelineConfiguration
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1;
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration;
 - (uint64_t)audioConnectionConfiguration;
 - (uint64_t)boxedMetadataPostVISEnabled;
 - (uint64_t)captureDeviceHasOverCaptureEnabled;
@@ -30,7 +30,7 @@
 - (uint64_t)setVideoGreenGhostOfflineLightSourceMaskEnabled:(uint64_t)result;
 - (uint64_t)setVideoGreenGhostOfflineMetadataEnabled:(uint64_t)result;
 - (uint64_t)setVideoSTFEnabled:(uint64_t)result;
-- (uint64_t)setVideoSourceCaptureTransform:(uint64_t)a3;
+- (uint64_t)setVideoSourceCaptureTransform:(uint64_t)transform;
 - (uint64_t)setVitalityScoringEnabled:(uint64_t)result;
 - (uint64_t)smartStyleRenderingEnabled;
 - (uint64_t)trueVideoCaptureEnabled;
@@ -38,18 +38,18 @@
 - (uint64_t)videoGreenGhostOfflineMetadataEnabled;
 - (uint64_t)videoSourceCaptureTransform;
 - (void)dealloc;
-- (void)setAudioConnectionConfiguration:(void *)a1;
-- (void)setCameraDebugInfoMetadataConnectionConfiguration:(void *)a1;
-- (void)setClientApplicationID:(void *)a1;
-- (void)setDepthDataConnectionConfiguration:(void *)a1;
-- (void)setDetectedObjectMetadataConnectionConfigurations:(void *)a1;
-- (void)setPortTypesWithGeometricDistortionCorrectionInVISEnabled:(void *)a1;
-- (void)setPrimaryCameraConfiguration:(void *)a1;
-- (void)setPrimaryVideoConnectionConfiguration:(void *)a1;
-- (void)setSceneClassifierConnectionConfiguration:(void *)a1;
-- (void)setStillImageConnectionConfiguration:(void *)a1;
-- (void)setVideoConnectionConfigurations:(void *)a1;
-- (void)setVisConfigurationsByConnectionID:(void *)a1;
+- (void)setAudioConnectionConfiguration:(void *)configuration;
+- (void)setCameraDebugInfoMetadataConnectionConfiguration:(void *)configuration;
+- (void)setClientApplicationID:(void *)d;
+- (void)setDepthDataConnectionConfiguration:(void *)configuration;
+- (void)setDetectedObjectMetadataConnectionConfigurations:(void *)configurations;
+- (void)setPortTypesWithGeometricDistortionCorrectionInVISEnabled:(void *)enabled;
+- (void)setPrimaryCameraConfiguration:(void *)configuration;
+- (void)setPrimaryVideoConnectionConfiguration:(void *)configuration;
+- (void)setSceneClassifierConnectionConfiguration:(void *)configuration;
+- (void)setStillImageConnectionConfiguration:(void *)configuration;
+- (void)setVideoConnectionConfigurations:(void *)configurations;
+- (void)setVisConfigurationsByConnectionID:(void *)d;
 @end
 
 @implementation FigCaptureMovieFileSinkPipelineConfiguration
@@ -76,9 +76,9 @@
 
 - (uint64_t)captureDeviceHasOverCaptureEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 137));
+    return OUTLINED_FUNCTION_5_27(*(self + 137));
   }
 
   else
@@ -89,9 +89,9 @@
 
 - (uint64_t)smartStyleRenderingEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 210));
+    return OUTLINED_FUNCTION_5_27(*(self + 210));
   }
 
   else
@@ -122,9 +122,9 @@
 
 - (uint64_t)boxedMetadataPostVISEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 112));
+    return OUTLINED_FUNCTION_5_27(*(self + 112));
   }
 
   else
@@ -135,9 +135,9 @@
 
 - (uint64_t)trueVideoCaptureEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 151));
+    return OUTLINED_FUNCTION_5_27(*(self + 151));
   }
 
   else
@@ -153,59 +153,59 @@
   [(FigCaptureMovieFileSinkPipelineConfiguration *)&v3 dealloc];
 }
 
-- (void)setPrimaryCameraConfiguration:(void *)a1
+- (void)setPrimaryCameraConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 8);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 8);
   }
 }
 
-- (void)setPrimaryVideoConnectionConfiguration:(void *)a1
+- (void)setPrimaryVideoConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 16);
   }
 }
 
-- (void)setVideoConnectionConfigurations:(void *)a1
+- (void)setVideoConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 24);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 24);
   }
 }
 
-- (void)setAudioConnectionConfiguration:(void *)a1
+- (void)setAudioConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 32);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 32);
   }
 }
 
-- (void)setCameraDebugInfoMetadataConnectionConfiguration:(void *)a1
+- (void)setCameraDebugInfoMetadataConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 40);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 40);
   }
 }
 
-- (void)setDetectedObjectMetadataConnectionConfigurations:(void *)a1
+- (void)setDetectedObjectMetadataConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 48);
   }
 }
 
-- (void)setDepthDataConnectionConfiguration:(void *)a1
+- (void)setDepthDataConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 56);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 56);
   }
 }
 
@@ -219,38 +219,38 @@
   return result;
 }
 
-- (void)setStillImageConnectionConfiguration:(void *)a1
+- (void)setStillImageConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 72);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 72);
   }
 }
 
-- (void)setSceneClassifierConnectionConfiguration:(void *)a1
+- (void)setSceneClassifierConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 80);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 80);
   }
 }
 
-- (uint64_t)setVideoSourceCaptureTransform:(uint64_t)a3
+- (uint64_t)setVideoSourceCaptureTransform:(uint64_t)transform
 {
   if (result)
   {
     *(result + 88) = a2;
-    *(result + 96) = a3;
+    *(result + 96) = transform;
   }
 
   return result;
 }
 
-- (void)setVisConfigurationsByConnectionID:(void *)a1
+- (void)setVisConfigurationsByConnectionID:(void *)d
 {
-  if (a1)
+  if (d)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 104);
+    objc_setProperty_nonatomic_copy(d, newValue, newValue, 104);
   }
 }
 
@@ -285,11 +285,11 @@
   return result;
 }
 
-- (void)setPortTypesWithGeometricDistortionCorrectionInVISEnabled:(void *)a1
+- (void)setPortTypesWithGeometricDistortionCorrectionInVISEnabled:(void *)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 128);
+    objc_setProperty_nonatomic(enabled, newValue, newValue, 128);
   }
 }
 
@@ -423,11 +423,11 @@
   return result;
 }
 
-- (void)setClientApplicationID:(void *)a1
+- (void)setClientApplicationID:(void *)d
 {
-  if (a1)
+  if (d)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 160);
+    objc_setProperty_nonatomic(d, newValue, newValue, 160);
   }
 }
 
@@ -461,13 +461,13 @@
   return result;
 }
 
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     result = *a2;
-    *(a1 + 192) = *(a2 + 12);
-    *(a1 + 180) = result;
+    *(configuration + 192) = *(a2 + 12);
+    *(configuration + 180) = result;
   }
 
   return result;
@@ -505,9 +505,9 @@
 
 - (uint64_t)videoGreenGhostOfflineMetadataEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 212));
+    return OUTLINED_FUNCTION_5_27(*(self + 212));
   }
 
   else

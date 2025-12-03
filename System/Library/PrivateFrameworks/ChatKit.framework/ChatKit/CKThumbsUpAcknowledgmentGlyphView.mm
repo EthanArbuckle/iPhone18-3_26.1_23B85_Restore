@@ -1,66 +1,66 @@
 @interface CKThumbsUpAcknowledgmentGlyphView
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5;
-- (void)setGlyphColor:(id)a3;
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion;
+- (void)setGlyphColor:(id)color;
 @end
 
 @implementation CKThumbsUpAcknowledgmentGlyphView
 
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(CKThumbsUpAcknowledgmentGlyphView *)self animationLayer];
-  [v7 setHidden:1];
+  completionCopy = completion;
+  animationLayer = [(CKThumbsUpAcknowledgmentGlyphView *)self animationLayer];
+  [animationLayer setHidden:1];
 
   [MEMORY[0x1E6979518] begin];
   v8 = MEMORY[0x1E6979518];
   [(CKThumbsUpAcknowledgmentGlyphView *)self animationDuration];
   [v8 setAnimationDuration:?];
-  v9 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
-  v10 = [v9 layer];
-  [v10 position];
+  glyph = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+  layer = [glyph layer];
+  [layer position];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
-  [v15 bounds];
+  glyph2 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+  [glyph2 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
-  [v24 removeFromSuperview];
+  glyph3 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+  [glyph3 removeFromSuperview];
 
-  v25 = [MEMORY[0x1E6979398] layer];
-  [(CKThumbsUpAcknowledgmentGlyphView *)self setAnimationLayer:v25];
+  layer2 = [MEMORY[0x1E6979398] layer];
+  [(CKThumbsUpAcknowledgmentGlyphView *)self setAnimationLayer:layer2];
   v26 = v17;
   v69 = v23;
-  [v25 setBounds:{v17, v19, v21, v23}];
-  [v25 setPosition:{v12, v14}];
-  v27 = [(CKThumbsUpAcknowledgmentGlyphView *)self layer];
-  [v27 addSublayer:v25];
+  [layer2 setBounds:{v17, v19, v21, v23}];
+  [layer2 setPosition:{v12, v14}];
+  layer3 = [(CKThumbsUpAcknowledgmentGlyphView *)self layer];
+  [layer3 addSublayer:layer2];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__CKThumbsUpAcknowledgmentGlyphView_animateWithBeginTime_completionDelay_completion___block_invoke;
   aBlock[3] = &unk_1E72EB8D0;
   aBlock[4] = self;
-  v28 = v25;
+  v28 = layer2;
   v73 = v28;
   v68 = _Block_copy(aBlock);
   [MEMORY[0x1E6979518] setCompletionBlock:?];
-  if (v6)
+  if (completionCopy)
   {
-    v29 = dispatch_time(0, (a4 * 1000000000.0));
+    v29 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85__CKThumbsUpAcknowledgmentGlyphView_animateWithBeginTime_completionDelay_completion___block_invoke_2;
     block[3] = &unk_1E72EBDB8;
-    v71 = v6;
+    v71 = completionCopy;
     dispatch_after(v29, MEMORY[0x1E69E96A0], block);
   }
 
-  v30 = [MEMORY[0x1E6979398] layer];
+  layer4 = [MEMORY[0x1E6979398] layer];
   [v28 bounds];
   x = v74.origin.x;
   y = v74.origin.y;
@@ -72,11 +72,11 @@
   v75.size.width = width;
   v75.size.height = height;
   MidY = CGRectGetMidY(v75);
-  [v30 setBounds:{v26, v19, v21, v69}];
-  [v30 setPosition:{0.0, MidY}];
-  [v28 addSublayer:v30];
+  [layer4 setBounds:{v26, v19, v21, v69}];
+  [layer4 setPosition:{0.0, MidY}];
+  [v28 addSublayer:layer4];
   v36 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.rotation.z"];
-  v66 = v6;
+  v66 = completionCopy;
   LODWORD(v37) = -1073345902;
   v38 = [MEMORY[0x1E696AD98] numberWithFloat:v37];
   [v36 setFromValue:v38];
@@ -91,12 +91,12 @@
   LODWORD(v41) = 1.0;
   [v36 setSpeed:v41];
   [v36 setDuration:1.15];
-  [v36 setBeginTime:a3];
+  [v36 setBeginTime:time];
   v42 = *MEMORY[0x1E69797E0];
   [v36 setFillMode:*MEMORY[0x1E69797E0]];
-  [v30 addAnimation:v36 forKey:@"transform.rotation.z"];
-  v43 = [MEMORY[0x1E6979398] layer];
-  [v30 bounds];
+  [layer4 addAnimation:v36 forKey:@"transform.rotation.z"];
+  layer5 = [MEMORY[0x1E6979398] layer];
+  [layer4 bounds];
   v44 = v76.origin.x;
   v45 = v76.origin.y;
   v46 = v76.size.width;
@@ -107,9 +107,9 @@
   v77.size.width = v46;
   v77.size.height = v47;
   v49 = CGRectGetMidY(v77);
-  [v43 setBounds:{v26, v19, v21, v69}];
-  [v43 setPosition:{MidX, v49}];
-  [v30 addSublayer:v43];
+  [layer5 setBounds:{v26, v19, v21, v69}];
+  [layer5 setPosition:{MidX, v49}];
+  [layer4 addSublayer:layer5];
   v50 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.rotation.z"];
   LODWORD(v51) = -1092655373;
   v52 = [MEMORY[0x1E696AD98] numberWithFloat:v51];
@@ -121,16 +121,16 @@
   LODWORD(v53) = 1.0;
   [v50 setSpeed:v53];
   [v50 setDuration:1.0];
-  [v50 setBeginTime:a3 + 0.150000006];
+  [v50 setBeginTime:time + 0.150000006];
   [v50 setFillMode:v42];
-  [v43 addAnimation:v50 forKey:@"transform.rotation.z"];
-  v54 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
-  v55 = [v54 image];
+  [layer5 addAnimation:v50 forKey:@"transform.rotation.z"];
+  glyph4 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+  image = [glyph4 image];
 
-  v56 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v55];
-  v57 = [v56 layer];
+  v56 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:image];
+  layer6 = [v56 layer];
 
-  [v43 bounds];
+  [layer5 bounds];
   v58 = v78.origin.x;
   v59 = v78.origin.y;
   v60 = v78.size.width;
@@ -146,22 +146,22 @@
   v80.size.width = v21;
   v80.size.height = v69;
   MaxX = CGRectGetMaxX(v80);
-  [v57 setBounds:{v26, v19, v21, v69}];
-  [v57 setPosition:{MaxX, v62}];
-  [v57 setContents:{objc_msgSend(v55, "CGImage")}];
-  [v55 scale];
-  [v57 setContentsScale:?];
-  [v57 setContentsGravity:*MEMORY[0x1E6979DF0]];
-  [(CKThumbsUpAcknowledgmentGlyphView *)self setContentLayer:v57];
-  [v43 addSublayer:v57];
+  [layer6 setBounds:{v26, v19, v21, v69}];
+  [layer6 setPosition:{MaxX, v62}];
+  [layer6 setContents:{objc_msgSend(image, "CGImage")}];
+  [image scale];
+  [layer6 setContentsScale:?];
+  [layer6 setContentsGravity:*MEMORY[0x1E6979DF0]];
+  [(CKThumbsUpAcknowledgmentGlyphView *)self setContentLayer:layer6];
+  [layer5 addSublayer:layer6];
   v64 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
   [v64 setFromValue:&unk_1F04E8580];
   [v64 setMass:1.0];
   [v64 setStiffness:350.0];
   [v64 setDamping:25.0];
-  [v64 setBeginTime:a3 + 0.0500000007];
+  [v64 setBeginTime:time + 0.0500000007];
   [v64 setFillMode:v42];
-  [v57 addAnimation:v64 forKey:@"transform.scale.xy"];
+  [layer6 addAnimation:v64 forKey:@"transform.scale.xy"];
   [MEMORY[0x1E6979518] commit];
 }
 
@@ -178,20 +178,20 @@ uint64_t __85__CKThumbsUpAcknowledgmentGlyphView_animateWithBeginTime_completion
   return [v4 setContentLayer:0];
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = CKThumbsUpAcknowledgmentGlyphView;
-  [(CKSimpleAcknowledgementGlyphView *)&v8 setGlyphColor:a3];
-  v4 = [(CKThumbsUpAcknowledgmentGlyphView *)self contentLayer];
+  [(CKSimpleAcknowledgementGlyphView *)&v8 setGlyphColor:color];
+  contentLayer = [(CKThumbsUpAcknowledgmentGlyphView *)self contentLayer];
 
-  if (v4)
+  if (contentLayer)
   {
-    v5 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
-    v6 = [v5 image];
+    glyph = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+    image = [glyph image];
 
-    v7 = [(CKThumbsUpAcknowledgmentGlyphView *)self contentLayer];
-    [v7 setContents:{objc_msgSend(v6, "CGImage")}];
+    contentLayer2 = [(CKThumbsUpAcknowledgmentGlyphView *)self contentLayer];
+    [contentLayer2 setContents:{objc_msgSend(image, "CGImage")}];
   }
 }
 

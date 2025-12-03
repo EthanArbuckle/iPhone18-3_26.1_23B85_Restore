@@ -1,19 +1,19 @@
 @interface CDMOverridesProtoRequestCommand
-- (CDMOverridesProtoRequestCommand)initWithRequest:(id)a3;
+- (CDMOverridesProtoRequestCommand)initWithRequest:(id)request;
 @end
 
 @implementation CDMOverridesProtoRequestCommand
 
-- (CDMOverridesProtoRequestCommand)initWithRequest:(id)a3
+- (CDMOverridesProtoRequestCommand)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CDMOverridesProtoRequestCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;

@@ -1,11 +1,11 @@
 @interface RoundCloseButton
-- (_TtC7Measure16RoundCloseButton)initWithCoder:(id)a3;
+- (_TtC7Measure16RoundCloseButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation RoundCloseButton
 
-- (_TtC7Measure16RoundCloseButton)initWithCoder:(id)a3
+- (_TtC7Measure16RoundCloseButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Measure16RoundCloseButton_contentView;
   *(&self->super.super.super.super.super.super.isa + v4) = [objc_allocWithZone(UIView) initWithFrame:{0.0, 0.0, 0.0, 0.0}];

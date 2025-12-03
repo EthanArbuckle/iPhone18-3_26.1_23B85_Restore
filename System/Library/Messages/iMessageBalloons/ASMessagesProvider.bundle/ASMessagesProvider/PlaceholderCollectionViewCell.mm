@@ -1,11 +1,11 @@
 @interface PlaceholderCollectionViewCell
-- (_TtC18ASMessagesProvider29PlaceholderCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider29PlaceholderCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PlaceholderCollectionViewCell
 
-- (_TtC18ASMessagesProvider29PlaceholderCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider29PlaceholderCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider29PlaceholderCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -24,7 +24,7 @@
   v2 = v13.receiver;
   [(PlaceholderCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC18ASMessagesProvider29PlaceholderCollectionViewCell_placeholderView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_2630C();
   sub_75D650();
   v6 = v5;

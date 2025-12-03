@@ -1,9 +1,9 @@
 @interface NEFilterVerdict
-- (NEFilterVerdict)initWithCoder:(id)a3;
-- (NEFilterVerdict)initWithDrop:(BOOL)a3 remediate:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEFilterVerdict)initWithCoder:(id)coder;
+- (NEFilterVerdict)initWithDrop:(BOOL)drop remediate:(BOOL)remediate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)filterAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterVerdict
@@ -15,9 +15,9 @@
     return 2;
   }
 
-  v3 = [(NEFilterVerdict *)self drop];
+  drop = [(NEFilterVerdict *)self drop];
   result = 0;
-  if (self && v3)
+  if (self && drop)
   {
     if (self->_remediate)
     {
@@ -33,23 +33,23 @@
   return result;
 }
 
-- (NEFilterVerdict)initWithDrop:(BOOL)a3 remediate:(BOOL)a4
+- (NEFilterVerdict)initWithDrop:(BOOL)drop remediate:(BOOL)remediate
 {
   v7.receiver = self;
   v7.super_class = NEFilterVerdict;
   result = [(NEFilterVerdict *)&v7 init];
   if (result)
   {
-    result->_drop = a3;
-    result->_remediate = a4;
+    result->_drop = drop;
+    result->_remediate = remediate;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDrop:{-[NEFilterVerdict drop](self, "drop")}];
   if (self)
   {
@@ -151,58 +151,58 @@ LABEL_16:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeBool:-[NEFilterVerdict drop](self forKey:{"drop"), @"Drop"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEFilterVerdict drop](self forKey:{"drop"), @"Drop"}];
   if (self)
   {
-    [v8 encodeBool:self->_remediate forKey:@"Remediate"];
-    [v8 encodeBool:self->_urlAppendString forKey:@"URLAppendString"];
-    [v8 encodeObject:objc_getProperty(self forKey:{v4, 16, 1), @"RemediationURLMapKey"}];
-    [v8 encodeObject:objc_getProperty(self forKey:{v5, 24, 1), @"RemediationButtonTextMapKey"}];
+    [coderCopy encodeBool:self->_remediate forKey:@"Remediate"];
+    [coderCopy encodeBool:self->_urlAppendString forKey:@"URLAppendString"];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v4, 16, 1), @"RemediationURLMapKey"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v5, 24, 1), @"RemediationButtonTextMapKey"}];
     Property = objc_getProperty(self, v6, 32, 1);
   }
 
   else
   {
-    [v8 encodeBool:0 forKey:@"Remediate"];
-    [v8 encodeBool:0 forKey:@"URLAppendString"];
-    [v8 encodeObject:0 forKey:@"RemediationURLMapKey"];
-    [v8 encodeObject:0 forKey:@"RemediationButtonTextMapKey"];
+    [coderCopy encodeBool:0 forKey:@"Remediate"];
+    [coderCopy encodeBool:0 forKey:@"URLAppendString"];
+    [coderCopy encodeObject:0 forKey:@"RemediationURLMapKey"];
+    [coderCopy encodeObject:0 forKey:@"RemediationButtonTextMapKey"];
     Property = 0;
   }
 
-  [v8 encodeObject:Property forKey:@"URLAppendStringKey"];
-  [v8 encodeBool:-[NEFilterVerdict needRules](self forKey:{"needRules"), @"NeedRules"}];
-  [v8 encodeBool:-[NEFilterVerdict shouldReport](self forKey:{"shouldReport"), @"ShouldReport"}];
+  [coderCopy encodeObject:Property forKey:@"URLAppendStringKey"];
+  [coderCopy encodeBool:-[NEFilterVerdict needRules](self forKey:{"needRules"), @"NeedRules"}];
+  [coderCopy encodeBool:-[NEFilterVerdict shouldReport](self forKey:{"shouldReport"), @"ShouldReport"}];
 }
 
-- (NEFilterVerdict)initWithCoder:(id)a3
+- (NEFilterVerdict)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NEFilterVerdict;
   v5 = [(NEFilterVerdict *)&v13 init];
   if (v5)
   {
-    v5->_drop = [v4 decodeBoolForKey:@"Drop"];
-    v5->_remediate = [v4 decodeBoolForKey:@"Remediate"];
-    v5->_urlAppendString = [v4 decodeBoolForKey:@"URLAppendString"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemediationURLMapKey"];
+    v5->_drop = [coderCopy decodeBoolForKey:@"Drop"];
+    v5->_remediate = [coderCopy decodeBoolForKey:@"Remediate"];
+    v5->_urlAppendString = [coderCopy decodeBoolForKey:@"URLAppendString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemediationURLMapKey"];
     remediationURLMapKey = v5->_remediationURLMapKey;
     v5->_remediationURLMapKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemediationButtonTextMapKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemediationButtonTextMapKey"];
     remediationButtonTextMapKey = v5->_remediationButtonTextMapKey;
     v5->_remediationButtonTextMapKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URLAppendStringKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URLAppendStringKey"];
     urlAppendStringMapKey = v5->_urlAppendStringMapKey;
     v5->_urlAppendStringMapKey = v10;
 
-    v5->_needRules = [v4 decodeBoolForKey:@"NeedRules"];
-    v5->_shouldReport = [v4 decodeBoolForKey:@"ShouldReport"];
+    v5->_needRules = [coderCopy decodeBoolForKey:@"NeedRules"];
+    v5->_shouldReport = [coderCopy decodeBoolForKey:@"ShouldReport"];
   }
 
   return v5;

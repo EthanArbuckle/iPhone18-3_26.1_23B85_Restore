@@ -1,9 +1,9 @@
 @interface ATXDeviceUsageAccumulator
 - (ATXDeviceUsageAccumulator)init;
-- (id)_getSummaryMetricForDimensions:(id)a3;
-- (void)handleEndOfStream:(id)a3;
-- (void)handleModeDimensionSetChange:(id)a3 changeTime:(id)a4;
-- (void)handleNextOnInterval:(id)a3 dimensionSet:(id)a4;
+- (id)_getSummaryMetricForDimensions:(id)dimensions;
+- (void)handleEndOfStream:(id)stream;
+- (void)handleModeDimensionSetChange:(id)change changeTime:(id)time;
+- (void)handleNextOnInterval:(id)interval dimensionSet:(id)set;
 - (void)logToCoreAnalytics;
 @end
 
@@ -27,52 +27,52 @@
   return v2;
 }
 
-- (void)handleEndOfStream:(id)a3
+- (void)handleEndOfStream:(id)stream
 {
   lastDimensionSet = self->_lastDimensionSet;
   if (lastDimensionSet)
   {
-    v5 = a3;
+    streamCopy = stream;
     v6 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:lastDimensionSet];
-    [v6 handleConfigurationExit:v5];
+    [v6 handleConfigurationExit:streamCopy];
   }
 }
 
-- (void)handleModeDimensionSetChange:(id)a3 changeTime:(id)a4
+- (void)handleModeDimensionSetChange:(id)change changeTime:(id)time
 {
-  v6 = a3;
-  v10 = a4;
+  changeCopy = change;
+  timeCopy = time;
   if (self->_lastDimensionSet)
   {
     v7 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:?];
-    [v7 handleConfigurationExit:v10];
+    [v7 handleConfigurationExit:timeCopy];
   }
 
-  v8 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:v6];
-  [v8 handleConfigurationEntry:v10];
+  v8 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:changeCopy];
+  [v8 handleConfigurationEntry:timeCopy];
   lastDimensionSet = self->_lastDimensionSet;
-  self->_lastDimensionSet = v6;
+  self->_lastDimensionSet = changeCopy;
 }
 
-- (void)handleNextOnInterval:(id)a3 dimensionSet:(id)a4
+- (void)handleNextOnInterval:(id)interval dimensionSet:(id)set
 {
-  v6 = a3;
-  v7 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:a4];
-  [v7 handleOnInterval:v6];
+  intervalCopy = interval;
+  v7 = [(ATXDeviceUsageAccumulator *)self _getSummaryMetricForDimensions:set];
+  [v7 handleOnInterval:intervalCopy];
 }
 
-- (id)_getSummaryMetricForDimensions:(id)a3
+- (id)_getSummaryMetricForDimensions:(id)dimensions
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:v4];
+  dimensionsCopy = dimensions;
+  v5 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:dimensionsCopy];
 
   if (!v5)
   {
-    v6 = [[ATXDeviceUsageSummaryMetrics alloc] initWithDimensions:v4];
-    [(NSMutableDictionary *)self->_summaryMetrics setObject:v6 forKeyedSubscript:v4];
+    v6 = [[ATXDeviceUsageSummaryMetrics alloc] initWithDimensions:dimensionsCopy];
+    [(NSMutableDictionary *)self->_summaryMetrics setObject:v6 forKeyedSubscript:dimensionsCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:dimensionsCopy];
 
   return v7;
 }

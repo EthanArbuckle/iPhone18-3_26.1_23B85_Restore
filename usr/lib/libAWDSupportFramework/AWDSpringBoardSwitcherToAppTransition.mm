@@ -1,15 +1,15 @@
 @interface AWDSpringBoardSwitcherToAppTransition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsGoingToHomeScreen:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsGoingToHomeScreen:(BOOL)screen;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardSwitcherToAppTransition
@@ -22,9 +22,9 @@
   [(AWDSpringBoardSwitcherToAppTransition *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsGoingToHomeScreen:(BOOL)a3
+- (void)setHasIsGoingToHomeScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   switcherName = self->_switcherName;
   if (switcherName)
   {
-    [v3 setObject:switcherName forKey:@"switcherName"];
+    [dictionary setObject:switcherName forKey:@"switcherName"];
   }
 
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_absoluteDistanceInList), @"absoluteDistanceInList"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_absoluteDistanceInList), @"absoluteDistanceInList"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isGoingToHomeScreen), @"isGoingToHomeScreen"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isGoingToHomeScreen), @"isGoingToHomeScreen"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 36) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 36) |= 2u;
   }
 
   if (self->_switcherName)
   {
-    [a3 setSwitcherName:?];
+    [to setSwitcherName:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_absoluteDistanceInList;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_absoluteDistanceInList;
+    *(to + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 32) = self->_isGoingToHomeScreen;
-    *(a3 + 36) |= 4u;
+    *(to + 32) = self->_isGoingToHomeScreen;
+    *(to + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -155,7 +155,7 @@
     *(v5 + 36) |= 2u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_switcherName copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_switcherName copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -173,28 +173,28 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 36) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_17;
     }
 
     switcherName = self->_switcherName;
-    if (switcherName | *(a3 + 3))
+    if (switcherName | *(equal + 3))
     {
       v5 = [(NSString *)switcherName isEqual:?];
       if (!v5)
@@ -207,21 +207,21 @@
 
     if (has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_absoluteDistanceInList != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_absoluteDistanceInList != *(equal + 1))
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
       goto LABEL_17;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0)
+      if ((*(equal + 36) & 4) == 0)
       {
 LABEL_17:
         LOBYTE(v5) = 0;
@@ -230,13 +230,13 @@ LABEL_17:
 
       if (self->_isGoingToHomeScreen)
       {
-        if ((*(a3 + 32) & 1) == 0)
+        if ((*(equal + 32) & 1) == 0)
         {
           goto LABEL_17;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
         goto LABEL_17;
       }
@@ -285,30 +285,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 36) & 2) != 0)
+  if ((*(from + 36) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDSpringBoardSwitcherToAppTransition *)self setSwitcherName:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if (v5)
   {
-    self->_absoluteDistanceInList = *(a3 + 1);
+    self->_absoluteDistanceInList = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_isGoingToHomeScreen = *(a3 + 32);
+    self->_isGoingToHomeScreen = *(from + 32);
     *&self->_has |= 4u;
   }
 }

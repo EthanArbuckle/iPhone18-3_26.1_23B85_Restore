@@ -1,15 +1,15 @@
 @interface SocialButton
 - (BOOL)isHighlighted;
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsAccessibilityElement:(BOOL)element;
 - (void)tintColorDidChange;
 @end
 
@@ -22,18 +22,18 @@
   return [(SocialButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for SocialButton();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SocialButton *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(SocialButton *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SocialButton *)&v8 setHighlighted:v3];
-  sub_4ECC94(v7);
+  [(SocialButton *)&v8 setHighlighted:highlightedCopy];
+  sub_4ECC94(isHighlighted);
 }
 
 - (CGRect)frame
@@ -48,21 +48,21 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_4ECFBC(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_4ED0E8(width, height);
   v7 = v6;
   v9 = v8;
@@ -104,36 +104,36 @@
   [*&v2[OBJC_IVAR____TtC16MusicApplication12SocialButton_backgroundImageView] setFrame:{v4, v6, v8, v10}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if (![(SocialButton *)v8 pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  if (![(SocialButton *)selfCopy pointInside:eventCopy withEvent:x, y])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(SocialButton *)v8 isEnabled];
+  isEnabled = [(SocialButton *)selfCopy isEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
 LABEL_5:
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for SocialButton();
-  [(SocialButton *)&v4 setIsAccessibilityElement:v3];
+  [(SocialButton *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
@@ -152,18 +152,18 @@ LABEL_5:
   return v2;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_AB92A0();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_AB9260();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -172,11 +172,11 @@ LABEL_5:
   [(SocialButton *)&v7 setAccessibilityLabel:v5];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for SocialButton();
-  [(SocialButton *)&v4 setAccessibilityTraits:a3];
+  [(SocialButton *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

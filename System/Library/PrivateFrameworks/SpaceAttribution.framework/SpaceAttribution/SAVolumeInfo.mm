@@ -1,14 +1,14 @@
 @interface SAVolumeInfo
-+ (id)newForPath:(id)a3;
-- (id)getBundleIDForTagHash:(id)a3;
-- (id)getDirCacheElementForDirKey:(id)a3;
-- (id)getPurgeableTaggedCloneSize:(id)a3;
-- (id)getSUPurgeableCloneSize:(id)a3;
-- (void)addDirCacheElement:(id)a3 dirKey:(id)a4;
-- (void)addPurgeableTaggedClone:(id)a3 size:(id)a4;
-- (void)addSUPurgeableClone:(id)a3 size:(id)a4;
++ (id)newForPath:(id)path;
+- (id)getBundleIDForTagHash:(id)hash;
+- (id)getDirCacheElementForDirKey:(id)key;
+- (id)getPurgeableTaggedCloneSize:(id)size;
+- (id)getSUPurgeableCloneSize:(id)size;
+- (void)addDirCacheElement:(id)element dirKey:(id)key;
+- (void)addPurgeableTaggedClone:(id)clone size:(id)size;
+- (void)addSUPurgeableClone:(id)clone size:(id)size;
 - (void)dealloc;
-- (void)insertTagHash:(id)a3 bundleID:(id)a4;
+- (void)insertTagHash:(id)hash bundleID:(id)d;
 @end
 
 @implementation SAVolumeInfo
@@ -31,12 +31,12 @@
   [(SAVolumeInfo *)&v4 dealloc];
 }
 
-+ (id)newForPath:(id)a3
++ (id)newForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_new();
   bzero(&v15, 0x878uLL);
-  v5 = statfs([v3 fileSystemRepresentation], &v15);
+  v5 = statfs([pathCopy fileSystemRepresentation], &v15);
   v6 = SALog();
   v7 = v6;
   if (v5)
@@ -57,8 +57,8 @@
     [v4 setVolStat:{malloc_type_malloc(0x878uLL, 0x100004087E0324AuLL)}];
     if ([v4 volStat])
     {
-      v9 = [v4 volStat];
-      memcpy(v9, &v15, 0x878uLL);
+      volStat = [v4 volStat];
+      memcpy(volStat, &v15, 0x878uLL);
       v10 = objc_opt_new();
       [v4 setDirKeyCache:v10];
 
@@ -88,123 +88,123 @@ LABEL_9:
   return v8;
 }
 
-- (id)getDirCacheElementForDirKey:(id)a3
+- (id)getDirCacheElementForDirKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_dirKeyCache;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_dirKeyCache objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_dirKeyCache objectForKey:keyCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)addDirCacheElement:(id)a3 dirKey:(id)a4
+- (void)addDirCacheElement:(id)element dirKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  elementCopy = element;
+  keyCopy = key;
   v7 = self->_dirKeyCache;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_dirKeyCache objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_dirKeyCache objectForKey:keyCopy];
 
   if (!v8)
   {
-    [(NSMutableDictionary *)self->_dirKeyCache setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_dirKeyCache setObject:elementCopy forKey:keyCopy];
   }
 
   objc_sync_exit(v7);
 }
 
-- (void)insertTagHash:(id)a3 bundleID:(id)a4
+- (void)insertTagHash:(id)hash bundleID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
+  hashCopy = hash;
+  dCopy = d;
   v7 = self->_tagsMap;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_tagsMap objectForKey:v9];
+  v8 = [(NSMutableDictionary *)self->_tagsMap objectForKey:hashCopy];
 
   if (!v8)
   {
-    [(NSMutableDictionary *)self->_tagsMap setObject:v6 forKey:v9];
+    [(NSMutableDictionary *)self->_tagsMap setObject:dCopy forKey:hashCopy];
   }
 
   objc_sync_exit(v7);
 }
 
-- (id)getBundleIDForTagHash:(id)a3
+- (id)getBundleIDForTagHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v5 = self->_tagsMap;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_tagsMap objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_tagsMap objectForKey:hashCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)addPurgeableTaggedClone:(id)a3 size:(id)a4
+- (void)addPurgeableTaggedClone:(id)clone size:(id)size
 {
-  v11 = a3;
-  v6 = a4;
+  cloneCopy = clone;
+  sizeCopy = size;
   v7 = self->_purgeableTaggedCloneSize;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_purgeableTaggedCloneSize objectForKey:v11];
+  v8 = [(NSMutableDictionary *)self->_purgeableTaggedCloneSize objectForKey:cloneCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] + objc_msgSend(v6, "unsignedLongLongValue"));
+    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] + objc_msgSend(sizeCopy, "unsignedLongLongValue"));
   }
 
   else
   {
-    v10 = v6;
+    v10 = sizeCopy;
   }
 
-  [(NSMutableDictionary *)self->_purgeableTaggedCloneSize setObject:v10 forKey:v11];
+  [(NSMutableDictionary *)self->_purgeableTaggedCloneSize setObject:v10 forKey:cloneCopy];
 
   objc_sync_exit(v7);
 }
 
-- (id)getPurgeableTaggedCloneSize:(id)a3
+- (id)getPurgeableTaggedCloneSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = self->_purgeableTaggedCloneSize;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_purgeableTaggedCloneSize objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_purgeableTaggedCloneSize objectForKey:sizeCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)addSUPurgeableClone:(id)a3 size:(id)a4
+- (void)addSUPurgeableClone:(id)clone size:(id)size
 {
-  v11 = a3;
-  v6 = a4;
+  cloneCopy = clone;
+  sizeCopy = size;
   v7 = self->_purgeableSUCloneSize;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)self->_purgeableSUCloneSize objectForKey:v11];
+  v8 = [(NSMutableDictionary *)self->_purgeableSUCloneSize objectForKey:cloneCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] + objc_msgSend(v6, "unsignedLongLongValue"));
+    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] + objc_msgSend(sizeCopy, "unsignedLongLongValue"));
   }
 
   else
   {
-    v10 = v6;
+    v10 = sizeCopy;
   }
 
-  [(NSMutableDictionary *)self->_purgeableSUCloneSize setObject:v10 forKey:v11];
+  [(NSMutableDictionary *)self->_purgeableSUCloneSize setObject:v10 forKey:cloneCopy];
 
   objc_sync_exit(v7);
 }
 
-- (id)getSUPurgeableCloneSize:(id)a3
+- (id)getSUPurgeableCloneSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = self->_purgeableSUCloneSize;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_purgeableSUCloneSize objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_purgeableSUCloneSize objectForKey:sizeCopy];
   objc_sync_exit(v5);
 
   return v6;

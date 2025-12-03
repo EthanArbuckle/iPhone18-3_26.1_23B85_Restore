@@ -1,30 +1,30 @@
 @interface MUPlaceMapItemSizingHelperTileViewModel
 - (MUPlaceMapItemSizingHelperTileViewModel)init;
-- (id)subtitleAttributedStringForFont:(id)a3;
+- (id)subtitleAttributedStringForFont:(id)font;
 @end
 
 @implementation MUPlaceMapItemSizingHelperTileViewModel
 
-- (id)subtitleAttributedStringForFont:(id)a3
+- (id)subtitleAttributedStringForFont:(id)font
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MUPlaceMapItemSizingHelperTileViewModel *)self subtitle];
-  v6 = v4;
-  if ([v5 length])
+  fontCopy = font;
+  subtitle = [(MUPlaceMapItemSizingHelperTileViewModel *)self subtitle];
+  v6 = fontCopy;
+  if ([subtitle length])
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v9 = *MEMORY[0x1E69DB650];
     v16[0] = *MEMORY[0x1E69DB648];
     v16[1] = v9;
     v17[0] = v6;
-    v17[1] = v8;
+    v17[1] = systemGrayColor;
     v10 = MEMORY[0x1E695DF20];
     v11 = v6;
     v12 = [v10 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-    v13 = [v7 initWithString:v5 attributes:v12];
+    v13 = [v7 initWithString:subtitle attributes:v12];
   }
 
   else

@@ -1,11 +1,11 @@
 @interface DASProcessor
 + (void)initialize;
-- (id)_dump:(id)a3;
-- (void)_nameAll:(id)a3;
-- (void)dumpAllWithCompletion:(id)a3;
-- (void)nameAllWithCompletion:(id)a3;
-- (void)nameAndDumpAllWithCompletion:(id)a3;
-- (void)stitchWithInfo:(id)a3 completion:(id)a4;
+- (id)_dump:(id)_dump;
+- (void)_nameAll:(id)all;
+- (void)dumpAllWithCompletion:(id)completion;
+- (void)nameAllWithCompletion:(id)completion;
+- (void)nameAndDumpAllWithCompletion:(id)completion;
+- (void)stitchWithInfo:(id)info completion:(id)completion;
 @end
 
 @implementation DASProcessor
@@ -18,9 +18,9 @@
   }
 }
 
-- (id)_dump:(id)a3
+- (id)_dump:(id)_dump
 {
-  v3 = a3;
+  _dumpCopy = _dump;
   v4 = sub_100005B8C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -30,46 +30,46 @@
 
   v5 = +[NSMutableDictionary dictionary];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v3 parseErrors];
-  v8 = [v7 mutableCopy];
+  parseErrors = [_dumpCopy parseErrors];
+  v8 = [parseErrors mutableCopy];
 
-  v9 = [v3 displays];
-  v10 = [v9 count];
+  displays = [_dumpCopy displays];
+  v10 = [displays count];
 
   if (!v10)
   {
     v11 = sub_100005B8C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v3 raw];
+      v18 = [_dumpCopy raw];
       *buf = 138412290;
       v24 = v18;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "failed to find any displays to dump : info=%@", buf, 0xCu);
     }
   }
 
-  v12 = [v3 displays];
-  v13 = [v12 array];
+  displays2 = [_dumpCopy displays];
+  array = [displays2 array];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10000627C;
   v19[3] = &unk_1000108C0;
-  v14 = v3;
+  v14 = _dumpCopy;
   v20 = v14;
   v21 = v8;
   v15 = v5;
   v22 = v15;
   v16 = v8;
-  [v13 bs_each:v19];
+  [array bs_each:v19];
 
   objc_autoreleasePoolPop(v6);
 
   return v15;
 }
 
-- (void)_nameAll:(id)a3
+- (void)_nameAll:(id)all
 {
-  v3 = a3;
+  allCopy = all;
   v4 = objc_autoreleasePoolPush();
   v5 = sub_100005B8C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -79,14 +79,14 @@
   }
 
   v6 = +[NSMutableSet set];
-  v7 = [v3 contexts];
+  contexts = [allCopy contexts];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100009A94;
   v15[3] = &unk_100010730;
   v16 = v6;
   v8 = v6;
-  [v7 bs_each:v15];
+  [contexts bs_each:v15];
 
   [v8 bs_each:&stru_100010770];
   +[NSMutableSet set];
@@ -102,19 +102,19 @@
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)stitchWithInfo:(id)a3 completion:(id)a4
+- (void)stitchWithInfo:(id)info completion:(id)completion
 {
-  v5 = a3;
-  v47 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v52 = +[NSMutableDictionary dictionary];
   context = objc_autoreleasePoolPush();
   v53 = +[NSMutableDictionary dictionary];
-  v54 = v5;
+  v54 = infoCopy;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = [v5 contexts];
+  obj = [infoCopy contexts];
   v6 = [obj countByEnumeratingWithState:&v75 objects:v84 count:16];
   if (v6)
   {
@@ -160,15 +160,15 @@
     while (v7);
   }
 
-  v18 = [v54 contexts];
-  v19 = [v18 mutableCopy];
+  contexts = [v54 contexts];
+  v19 = [contexts mutableCopy];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v20 = [v54 contexts];
-  v21 = [v20 countByEnumeratingWithState:&v69 objects:v83 count:16];
+  contexts2 = [v54 contexts];
+  v21 = [contexts2 countByEnumeratingWithState:&v69 objects:v83 count:16];
   if (v21)
   {
     v22 = v21;
@@ -179,7 +179,7 @@
       {
         if (*v70 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(contexts2);
         }
 
         v25 = *(*(&v69 + 1) + 8 * j);
@@ -221,7 +221,7 @@
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v69 objects:v83 count:16];
+      v22 = [contexts2 countByEnumeratingWithState:&v69 objects:v83 count:16];
     }
 
     while (v22);
@@ -295,13 +295,13 @@
   }
 
   objc_autoreleasePoolPop(context);
-  v47[2](v47, v52);
+  completionCopy[2](completionCopy, v52);
 }
 
-- (void)dumpAllWithCompletion:(id)a3
+- (void)dumpAllWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v9 = sub_100005B8C();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -338,14 +338,14 @@ LABEL_10:
   v7 = [DASRenderServerInfo infoFromServerWithPort:v5];
   mach_port_deallocate(mach_task_self_, v6);
   v8 = [(DASProcessor *)self _dump:v7];
-  v4[2](v4, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 
 LABEL_8:
 }
 
-- (void)nameAndDumpAllWithCompletion:(id)a3
+- (void)nameAndDumpAllWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_10000B12C();
   if (v5)
   {
@@ -353,10 +353,10 @@ LABEL_8:
     v7 = [DASRenderServerInfo infoFromServerWithPort:v5];
     mach_port_deallocate(mach_task_self_, v6);
     [(DASProcessor *)self _nameAll:v7];
-    if (v4)
+    if (completionCopy)
     {
       v8 = [(DASProcessor *)self _dump:v7];
-      v4[2](v4, v8, 0);
+      completionCopy[2](completionCopy, v8, 0);
     }
 
     else
@@ -379,20 +379,20 @@ LABEL_8:
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "could not find default render server", &v10, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v11 = NSLocalizedFailureReasonErrorKey;
     v12 = @"could not find default render server";
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v8 = [NSError errorWithDomain:NSMachErrorDomain code:5 userInfo:v7];
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
 LABEL_10:
   }
 }
 
-- (void)nameAllWithCompletion:(id)a3
+- (void)nameAllWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_10000B12C();
   if (v5)
   {
@@ -400,9 +400,9 @@ LABEL_10:
     v7 = [DASRenderServerInfo infoFromServerWithPort:v5];
     mach_port_deallocate(mach_task_self_, v6);
     [(DASProcessor *)self _nameAll:v7];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -415,13 +415,13 @@ LABEL_10:
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "could not find default render server", v11, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v12 = NSLocalizedFailureReasonErrorKey;
       v13 = @"could not find default render server";
       v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
       v10 = [NSError errorWithDomain:NSMachErrorDomain code:5 userInfo:v9];
-      (v4)[2](v4, v10);
+      (completionCopy)[2](completionCopy, v10);
     }
   }
 }

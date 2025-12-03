@@ -1,9 +1,9 @@
 @interface TUBusinessServicesMetadataDataProvider
 + (TUBusinessServicesMetadataDataProvider)sharedInstance;
-- (BOOL)isValidBusinessItem:(id)a3;
+- (BOOL)isValidBusinessItem:(id)item;
 - (TUBusinessServicesMetadataDataProvider)init;
-- (TUBusinessServicesMetadataDataProvider)initWithBusinessService:(id)a3;
-- (void)fetchBusinessServiceInformationForHandleValue:(id)a3 completion:(id)a4;
+- (TUBusinessServicesMetadataDataProvider)initWithBusinessService:(id)service;
+- (void)fetchBusinessServiceInformationForHandleValue:(id)value completion:(id)completion;
 @end
 
 @implementation TUBusinessServicesMetadataDataProvider
@@ -19,7 +19,7 @@
     block[1] = 3221225472;
     block[2] = __56__TUBusinessServicesMetadataDataProvider_sharedInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstance_onceToken_2 != -1)
     {
       dispatch_once(&sharedInstance_onceToken_2, block);
@@ -65,16 +65,16 @@ LABEL_5:
   return BCSBusinessQueryServiceClass;
 }
 
-- (TUBusinessServicesMetadataDataProvider)initWithBusinessService:(id)a3
+- (TUBusinessServicesMetadataDataProvider)initWithBusinessService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = TUBusinessServicesMetadataDataProvider;
   v6 = [(TUBusinessServicesMetadataDataProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_businessQueryService, a3);
+    objc_storeStrong(&v6->_businessQueryService, service);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.BusinessServicesDataProvider", v8);
     queue = v7->_queue;
@@ -84,28 +84,28 @@ LABEL_5:
   return v7;
 }
 
-- (void)fetchBusinessServiceInformationForHandleValue:(id)a3 completion:(id)a4
+- (void)fetchBusinessServiceInformationForHandleValue:(id)value completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  completionCopy = completion;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__11;
   v15[4] = __Block_byref_object_dispose__11;
   v16 = 0;
-  v8 = [(TUBusinessServicesMetadataDataProvider *)self queue];
+  queue = [(TUBusinessServicesMetadataDataProvider *)self queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __99__TUBusinessServicesMetadataDataProvider_fetchBusinessServiceInformationForHandleValue_completion___block_invoke;
   v11[3] = &unk_1E7426968;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = valueCopy;
+  v13 = completionCopy;
   v14 = v15;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v9 = completionCopy;
+  v10 = valueCopy;
+  dispatch_async(queue, v11);
 
   _Block_object_dispose(v15, 8);
 }
@@ -242,22 +242,22 @@ void __99__TUBusinessServicesMetadataDataProvider_fetchBusinessServiceInformatio
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isValidBusinessItem:(id)a3
+- (BOOL)isValidBusinessItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 logoURL];
-  if (v4)
+  itemCopy = item;
+  logoURL = [itemCopy logoURL];
+  if (logoURL)
   {
-    v5 = [v3 logoURL];
-    v6 = [v5 isFileURL];
+    logoURL2 = [itemCopy logoURL];
+    isFileURL = [logoURL2 isFileURL];
   }
 
   else
   {
-    v6 = 1;
+    isFileURL = 1;
   }
 
-  return v6;
+  return isFileURL;
 }
 
 @end

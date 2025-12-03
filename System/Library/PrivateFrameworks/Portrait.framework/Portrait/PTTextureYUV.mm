@@ -1,23 +1,23 @@
 @interface PTTextureYUV
-- (PTTextureYUV)initWithLumaTexture:(id)a3 chromaTexture:(id)a4;
+- (PTTextureYUV)initWithLumaTexture:(id)texture chromaTexture:(id)chromaTexture;
 @end
 
 @implementation PTTextureYUV
 
-- (PTTextureYUV)initWithLumaTexture:(id)a3 chromaTexture:(id)a4
+- (PTTextureYUV)initWithLumaTexture:(id)texture chromaTexture:(id)chromaTexture
 {
   v11.receiver = self;
   v11.super_class = PTTextureYUV;
-  v5 = a4;
-  v6 = a3;
+  chromaTextureCopy = chromaTexture;
+  textureCopy = texture;
   v7 = [(PTTextureYUV *)&v11 init];
-  [(PTTextureYUV *)v7 setTexLuma:v6, v11.receiver, v11.super_class];
-  [(PTTextureYUV *)v7 setTexChroma:v5];
+  [(PTTextureYUV *)v7 setTexLuma:textureCopy, v11.receiver, v11.super_class];
+  [(PTTextureYUV *)v7 setTexChroma:chromaTextureCopy];
 
-  v8 = [v6 pixelFormat];
-  v9 = [v6 device];
+  pixelFormat = [textureCopy pixelFormat];
+  device = [textureCopy device];
 
-  v7->_imageblockSize = [PTMetalTextureUtil macroBlockSizeForPixelFormat:v8 device:v9];
+  v7->_imageblockSize = [PTMetalTextureUtil macroBlockSizeForPixelFormat:pixelFormat device:device];
   return v7;
 }
 

@@ -1,76 +1,76 @@
 @interface PKTransactionSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)transactionSourceIdentifiers;
-- (PKTransactionSource)initWithAccount:(id)a3;
-- (PKTransactionSource)initWithAccountUser:(id)a3;
-- (PKTransactionSource)initWithCoder:(id)a3;
-- (PKTransactionSource)initWithPaymentPass:(id)a3;
-- (PKTransactionSource)initWithPeerPaymentAccount:(id)a3;
+- (PKTransactionSource)initWithAccount:(id)account;
+- (PKTransactionSource)initWithAccountUser:(id)user;
+- (PKTransactionSource)initWithCoder:(id)coder;
+- (PKTransactionSource)initWithPaymentPass:(id)pass;
+- (PKTransactionSource)initWithPeerPaymentAccount:(id)account;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionSource
 
-- (PKTransactionSource)initWithPaymentPass:(id)a3
+- (PKTransactionSource)initWithPaymentPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKTransactionSource;
   v6 = [(PKTransactionSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentPass, a3);
+    objc_storeStrong(&v6->_paymentPass, pass);
     v7->_type = 0;
   }
 
   return v7;
 }
 
-- (PKTransactionSource)initWithPeerPaymentAccount:(id)a3
+- (PKTransactionSource)initWithPeerPaymentAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = PKTransactionSource;
   v6 = [(PKTransactionSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerPaymentAccount, a3);
+    objc_storeStrong(&v6->_peerPaymentAccount, account);
     v7->_type = 1;
   }
 
   return v7;
 }
 
-- (PKTransactionSource)initWithAccountUser:(id)a3
+- (PKTransactionSource)initWithAccountUser:(id)user
 {
-  v5 = a3;
+  userCopy = user;
   v9.receiver = self;
   v9.super_class = PKTransactionSource;
   v6 = [(PKTransactionSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountUser, a3);
+    objc_storeStrong(&v6->_accountUser, user);
     v7->_type = 2;
   }
 
   return v7;
 }
 
-- (PKTransactionSource)initWithAccount:(id)a3
+- (PKTransactionSource)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = PKTransactionSource;
   v6 = [(PKTransactionSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v7->_type = 3;
   }
 
@@ -89,10 +89,10 @@
       {
         peerPaymentAccount = self->_peerPaymentAccount;
 LABEL_8:
-        v5 = [peerPaymentAccount transactionSourceIdentifier];
-        if (v5)
+        transactionSourceIdentifier = [peerPaymentAccount transactionSourceIdentifier];
+        if (transactionSourceIdentifier)
         {
-          v2 = [MEMORY[0x1E695DFD8] setWithObject:v5];
+          v2 = [MEMORY[0x1E695DFD8] setWithObject:transactionSourceIdentifier];
         }
 
         else
@@ -106,15 +106,15 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    v6 = [(PKSecureElementPass *)self->_paymentPass deviceTransactionSourceIdentifiers];
+    deviceTransactionSourceIdentifiers = [(PKSecureElementPass *)self->_paymentPass deviceTransactionSourceIdentifiers];
 LABEL_12:
-    v2 = v6;
+    v2 = deviceTransactionSourceIdentifiers;
     goto LABEL_15;
   }
 
   if (type == 2)
   {
-    v6 = [(PKAccountUser *)self->_accountUser transactionSourceIdentifiers];
+    deviceTransactionSourceIdentifiers = [(PKAccountUser *)self->_accountUser transactionSourceIdentifiers];
     goto LABEL_12;
   }
 
@@ -129,40 +129,40 @@ LABEL_15:
   return v2;
 }
 
-- (PKTransactionSource)initWithCoder:(id)a3
+- (PKTransactionSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKTransactionSource;
   v5 = [(PKTransactionSource *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentPass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentPass"];
     paymentPass = v5->_paymentPass;
     v5->_paymentPass = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentAccount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentAccount"];
     peerPaymentAccount = v5->_peerPaymentAccount;
     v5->_peerPaymentAccount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUser"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUser"];
     accountUser = v5->_accountUser;
     v5->_accountUser = v10;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paymentPass = self->_paymentPass;
-  v5 = a3;
-  [v5 encodeObject:paymentPass forKey:@"paymentPass"];
-  [v5 encodeObject:self->_peerPaymentAccount forKey:@"peerPaymentAccount"];
-  [v5 encodeObject:self->_accountUser forKey:@"accountUser"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:paymentPass forKey:@"paymentPass"];
+  [coderCopy encodeObject:self->_peerPaymentAccount forKey:@"peerPaymentAccount"];
+  [coderCopy encodeObject:self->_accountUser forKey:@"accountUser"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
 - (id)description
@@ -186,8 +186,8 @@ LABEL_15:
   {
     if (v7 == 2)
     {
-      v8 = [(PKAccountUser *)self->_accountUser altDSID];
-      [v4 appendFormat:@"accountUser altDSID: '%@'; ", v8];
+      altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+      [v4 appendFormat:@"accountUser altDSID: '%@'; ", altDSID];
     }
 
     else
@@ -197,8 +197,8 @@ LABEL_15:
         goto LABEL_14;
       }
 
-      v8 = [(PKAccount *)self->_account accountIdentifier];
-      [v4 appendFormat:@"account identifier: '%@'; ", v8];
+      altDSID = [(PKAccount *)self->_account accountIdentifier];
+      [v4 appendFormat:@"account identifier: '%@'; ", altDSID];
     }
   }
 
@@ -209,14 +209,14 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    v8 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount identifier];
-    [v4 appendFormat:@"peerPaymentAccount identifier: '%@'; ", v8];
+    altDSID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount identifier];
+    [v4 appendFormat:@"peerPaymentAccount identifier: '%@'; ", altDSID];
   }
 
   else
   {
-    v8 = [(PKObject *)self->_paymentPass uniqueID];
-    [v4 appendFormat:@"paymentPass uniqueID: '%@'; ", v8];
+    altDSID = [(PKObject *)self->_paymentPass uniqueID];
+    [v4 appendFormat:@"paymentPass uniqueID: '%@'; ", altDSID];
   }
 
 LABEL_14:
@@ -225,23 +225,23 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[1])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[1])
   {
-    v5 = [(PKTransactionSource *)self transactionSourceIdentifiers];
-    v6 = [v4 transactionSourceIdentifiers];
-    v7 = v6;
-    if (v5 && v6)
+    transactionSourceIdentifiers = [(PKTransactionSource *)self transactionSourceIdentifiers];
+    transactionSourceIdentifiers2 = [equalCopy transactionSourceIdentifiers];
+    v7 = transactionSourceIdentifiers2;
+    if (transactionSourceIdentifiers && transactionSourceIdentifiers2)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [transactionSourceIdentifiers isEqual:transactionSourceIdentifiers2];
     }
 
     else
     {
-      v8 = v5 == v6;
+      v8 = transactionSourceIdentifiers == transactionSourceIdentifiers2;
     }
   }
 
@@ -255,11 +255,11 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKTransactionSource *)self transactionSourceIdentifiers];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  transactionSourceIdentifiers = [(PKTransactionSource *)self transactionSourceIdentifiers];
+  [array safelyAddObject:transactionSourceIdentifiers];
 
-  v5 = PKCombinedHash(17, v3);
+  v5 = PKCombinedHash(17, array);
   v6 = self->_type - v5 + 32 * v5;
 
   return v6;

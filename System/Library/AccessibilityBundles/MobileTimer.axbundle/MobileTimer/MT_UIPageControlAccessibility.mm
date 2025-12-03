@@ -1,27 +1,27 @@
 @interface MT_UIPageControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axPagingController;
 - (id)accessibilityValue;
-- (void)_axStopWatchAdjustPage:(BOOL)a3;
+- (void)_axStopWatchAdjustPage:(BOOL)page;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation MT_UIPageControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"pagingViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"currentPage" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"pages" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"setCurrentPage:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"pagingViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"currentPage" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"pages" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchPagingViewController" hasInstanceMethod:@"setCurrentPage:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (id)_axPagingController
 {
-  v2 = [(MT_UIPageControlAccessibility *)self superview];
-  v3 = [MEMORY[0x29EDC7DA8] viewControllerForView:v2];
+  superview = [(MT_UIPageControlAccessibility *)self superview];
+  v3 = [MEMORY[0x29EDC7DA8] viewControllerForView:superview];
   v4 = __UIAccessibilitySafeClass();
 
   v5 = [v4 safeValueForKey:@"pagingViewController"];
@@ -30,16 +30,16 @@
   return v6;
 }
 
-- (void)_axStopWatchAdjustPage:(BOOL)a3
+- (void)_axStopWatchAdjustPage:(BOOL)page
 {
-  v3 = [(MT_UIPageControlAccessibility *)self _axPagingController];
-  [v3 safeUnsignedIntegerForKey:@"currentPage"];
-  v4 = [v3 safeValueForKey:@"pages"];
+  _axPagingController = [(MT_UIPageControlAccessibility *)self _axPagingController];
+  [_axPagingController safeUnsignedIntegerForKey:@"currentPage"];
+  v4 = [_axPagingController safeValueForKey:@"pages"];
   v5 = __UIAccessibilitySafeClass();
 
   [v5 count];
-  v7 = v3;
-  v6 = v3;
+  v7 = _axPagingController;
+  v6 = _axPagingController;
   AXPerformSafeBlock();
 }
 
@@ -47,14 +47,14 @@
 {
   v11.receiver = self;
   v11.super_class = MT_UIPageControlAccessibility;
-  v3 = [(MT_UIPageControlAccessibility *)&v11 accessibilityValue];
-  v4 = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"StopWatchPageControl"];
+  accessibilityValue = [(MT_UIPageControlAccessibility *)&v11 accessibilityValue];
+  accessibilityIdentification = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
+  v5 = [accessibilityIdentification isEqualToString:@"StopWatchPageControl"];
 
   if (v5)
   {
-    v6 = [(MT_UIPageControlAccessibility *)self _axPagingController];
-    if ([v6 safeUnsignedIntegerForKey:@"currentPage"])
+    _axPagingController = [(MT_UIPageControlAccessibility *)self _axPagingController];
+    if ([_axPagingController safeUnsignedIntegerForKey:@"currentPage"])
     {
       v7 = @"analog.stopwatch.description";
     }
@@ -67,16 +67,16 @@
     v10 = accessibilityLocalizedString(v7);
     v8 = __UIAXStringForVariables();
 
-    v3 = v8;
+    accessibilityValue = v8;
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (void)accessibilityDecrement
 {
-  v3 = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"StopWatchPageControl"];
+  accessibilityIdentification = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"StopWatchPageControl"];
 
   if (v4)
   {
@@ -90,8 +90,8 @@
 
 - (void)accessibilityIncrement
 {
-  v3 = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"StopWatchPageControl"];
+  accessibilityIdentification = [(MT_UIPageControlAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"StopWatchPageControl"];
 
   if (v4)
   {

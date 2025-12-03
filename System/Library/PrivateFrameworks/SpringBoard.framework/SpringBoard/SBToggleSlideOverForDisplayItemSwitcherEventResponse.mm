@@ -1,24 +1,24 @@
 @interface SBToggleSlideOverForDisplayItemSwitcherEventResponse
-- (SBToggleSlideOverForDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)a3 direction:(int64_t)a4;
+- (SBToggleSlideOverForDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)item direction:(int64_t)direction;
 @end
 
 @implementation SBToggleSlideOverForDisplayItemSwitcherEventResponse
 
-- (SBToggleSlideOverForDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)a3 direction:(int64_t)a4
+- (SBToggleSlideOverForDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)item direction:(int64_t)direction
 {
-  v8 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBToggleSlideOverForDisplayItemSwitcherEventResponse;
   v9 = [(SBChainableModifierEventResponse *)&v11 init];
   if (v9)
   {
-    if (!v8)
+    if (!itemCopy)
     {
       [SBToggleSlideOverForDisplayItemSwitcherEventResponse initWithDisplayItem:a2 direction:v9];
     }
 
-    objc_storeStrong(&v9->_displayItem, a3);
-    v9->_direction = a4;
+    objc_storeStrong(&v9->_displayItem, item);
+    v9->_direction = direction;
   }
 
   return v9;

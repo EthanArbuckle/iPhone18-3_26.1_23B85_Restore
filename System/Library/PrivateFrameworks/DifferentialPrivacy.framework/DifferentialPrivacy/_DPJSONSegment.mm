@@ -1,38 +1,38 @@
 @interface _DPJSONSegment
-- (_DPJSONSegment)initWithKey:(id)a3 serverAlgorithmString:(id)a4 parameterDictionary:(id)a5 records:(id)a6;
-- (id)fixDoubleValuesInDictionary:(id)a3;
+- (_DPJSONSegment)initWithKey:(id)key serverAlgorithmString:(id)string parameterDictionary:(id)dictionary records:(id)records;
+- (id)fixDoubleValuesInDictionary:(id)dictionary;
 - (id)jsonSegmentString;
-- (id)parameterStringFrom:(id)a3;
+- (id)parameterStringFrom:(id)from;
 @end
 
 @implementation _DPJSONSegment
 
-- (_DPJSONSegment)initWithKey:(id)a3 serverAlgorithmString:(id)a4 parameterDictionary:(id)a5 records:(id)a6
+- (_DPJSONSegment)initWithKey:(id)key serverAlgorithmString:(id)string parameterDictionary:(id)dictionary records:(id)records
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  keyCopy = key;
+  stringCopy = string;
+  dictionaryCopy = dictionary;
+  recordsCopy = records;
   v18.receiver = self;
   v18.super_class = _DPJSONSegment;
   v15 = [(_DPJSONSegment *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_key, a3);
-    objc_storeStrong(&v16->_serverAlgorithmString, a4);
-    objc_storeStrong(&v16->_records, a6);
-    objc_storeStrong(&v16->_parameterDictionary, a5);
+    objc_storeStrong(&v15->_key, key);
+    objc_storeStrong(&v16->_serverAlgorithmString, string);
+    objc_storeStrong(&v16->_records, records);
+    objc_storeStrong(&v16->_parameterDictionary, dictionary);
   }
 
   return v16;
 }
 
-- (id)parameterStringFrom:(id)a3
+- (id)parameterStringFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToDictionary:MEMORY[0x277CBEC10]] & 1) == 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy && ([fromCopy isEqualToDictionary:MEMORY[0x277CBEC10]] & 1) == 0)
   {
     v7 = [(_DPJSONSegment *)self fixDoubleValuesInDictionary:v5];
     v8 = objc_autoreleasePoolPush();
@@ -50,16 +50,16 @@
   return v6;
 }
 
-- (id)fixDoubleValuesInDictionary:(id)a3
+- (id)fixDoubleValuesInDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -120,8 +120,8 @@
     {
       v8 = objc_autoreleasePoolPush();
       v9 = [(NSArray *)self->_records objectAtIndexedSubscript:v7];
-      v10 = [v9 jsonString];
-      [v6 appendString:v10];
+      jsonString = [v9 jsonString];
+      [v6 appendString:jsonString];
 
       if (v7 >= [(NSArray *)self->_records count]- 1)
       {

@@ -1,22 +1,22 @@
 @interface ATXDocumentCategory
-+ (id)localizedStringForCategoryID:(unint64_t)a3;
-- (ATXDocumentCategory)initWithCategoryID:(unint64_t)a3 documentURLs:(id)a4;
++ (id)localizedStringForCategoryID:(unint64_t)d;
+- (ATXDocumentCategory)initWithCategoryID:(unint64_t)d documentURLs:(id)ls;
 - (id)description;
 @end
 
 @implementation ATXDocumentCategory
 
-- (ATXDocumentCategory)initWithCategoryID:(unint64_t)a3 documentURLs:(id)a4
+- (ATXDocumentCategory)initWithCategoryID:(unint64_t)d documentURLs:(id)ls
 {
-  v6 = a4;
+  lsCopy = ls;
   v12.receiver = self;
   v12.super_class = ATXDocumentCategory;
   v7 = [(ATXDocumentCategory *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_categoryID = a3;
-    v9 = [v6 copy];
+    v7->_categoryID = d;
+    v9 = [lsCopy copy];
     documentURLs = v8->_documentURLs;
     v8->_documentURLs = v9;
   }
@@ -24,18 +24,18 @@
   return v8;
 }
 
-+ (id)localizedStringForCategoryID:(unint64_t)a3
++ (id)localizedStringForCategoryID:(unint64_t)d
 {
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (a3 == 2)
+  if (d == 2)
   {
     v6 = @"RECENT_DOCUMENTS";
     v7 = @"Recents";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (d == 1)
   {
     v6 = @"DOCUMENT_SUGGESTIONS";
     v7 = @"Suggestions";
@@ -54,8 +54,8 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [objc_opt_class() localizedStringForCategoryID:{-[ATXDocumentCategory categoryID](self, "categoryID")}];
-  v5 = [(ATXDocumentCategory *)self documentURLs];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  documentURLs = [(ATXDocumentCategory *)self documentURLs];
+  v6 = [v3 stringWithFormat:@"%@ - %@", v4, documentURLs];
 
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface UNNotificationIcon
-+ (id)iconAtPath:(id)a3;
-+ (id)iconForApplicationIdentifier:(id)a3;
-+ (id)iconForSystemImageNamed:(id)a3;
-+ (id)iconNamed:(id)a3;
-+ (id)iconWithData:(id)a3;
-+ (id)iconWithDateComponents:(id)a3 calendarIdentifier:(id)a4 format:(int64_t)a5;
-+ (id)iconWithUTI:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)iconAtPath:(id)path;
++ (id)iconForApplicationIdentifier:(id)identifier;
++ (id)iconForSystemImageNamed:(id)named;
++ (id)iconNamed:(id)named;
++ (id)iconWithData:(id)data;
++ (id)iconWithDateComponents:(id)components calendarIdentifier:(id)identifier format:(int64_t)format;
++ (id)iconWithUTI:(id)i;
+- (BOOL)isEqual:(id)equal;
 - (UNNotificationIcon)init;
-- (UNNotificationIcon)initWithCoder:(id)a3;
-- (id)_initWithIconInfo:(id)a3 type:(int64_t)a4 shouldSuppressMask:(BOOL)a5;
+- (UNNotificationIcon)initWithCoder:(id)coder;
+- (id)_initWithIconInfo:(id)info type:(int64_t)type shouldSuppressMask:(BOOL)mask;
 - (id)applicationIdentifier;
 - (id)data;
 - (id)dateComponents;
@@ -19,7 +19,7 @@
 - (id)systemImageName;
 - (id)uti;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationIcon
@@ -42,65 +42,65 @@
   return [v3 stringWithFormat:@"<%@: %p; iconInfo: %@; iconInfoType: %@; shouldSuppressMask: %d>", v4, self, self->_iconInfo, v6, self->_shouldSuppressMask];
 }
 
-+ (id)iconForApplicationIdentifier:(id)a3
++ (id)iconForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:3 shouldSuppressMask:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] _initWithIconInfo:identifierCopy type:3 shouldSuppressMask:0];
 
   return v5;
 }
 
-+ (id)iconForSystemImageNamed:(id)a3
++ (id)iconForSystemImageNamed:(id)named
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:4 shouldSuppressMask:0];
+  namedCopy = named;
+  v5 = [[self alloc] _initWithIconInfo:namedCopy type:4 shouldSuppressMask:0];
 
   return v5;
 }
 
-+ (id)iconWithDateComponents:(id)a3 calendarIdentifier:(id)a4 format:(int64_t)a5
++ (id)iconWithDateComponents:(id)components calendarIdentifier:(id)identifier format:(int64_t)format
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v16[0] = @"NotificationIconDateComponents";
   v16[1] = @"NotificationIconCalendarKey";
-  v17[0] = a3;
-  v17[1] = a4;
+  v17[0] = components;
+  v17[1] = identifier;
   v16[2] = @"NotificationIconDateFormatKey";
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a5];
+  identifierCopy = identifier;
+  componentsCopy = components;
+  v11 = [v8 numberWithInteger:format];
   v17[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-  v13 = [[a1 alloc] _initWithIconInfo:v12 type:7 shouldSuppressMask:0];
+  v13 = [[self alloc] _initWithIconInfo:v12 type:7 shouldSuppressMask:0];
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-+ (id)iconWithUTI:(id)a3
++ (id)iconWithUTI:(id)i
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:6 shouldSuppressMask:0];
+  iCopy = i;
+  v5 = [[self alloc] _initWithIconInfo:iCopy type:6 shouldSuppressMask:0];
 
   return v5;
 }
 
-- (id)_initWithIconInfo:(id)a3 type:(int64_t)a4 shouldSuppressMask:(BOOL)a5
+- (id)_initWithIconInfo:(id)info type:(int64_t)type shouldSuppressMask:(BOOL)mask
 {
-  v8 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = UNNotificationIcon;
   v9 = [(UNNotificationIcon *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [infoCopy copy];
     iconInfo = v9->_iconInfo;
     v9->_iconInfo = v10;
 
-    v9->_iconInfoType = a4;
-    v9->_shouldSuppressMask = a5;
+    v9->_iconInfoType = type;
+    v9->_shouldSuppressMask = mask;
   }
 
   return v9;
@@ -108,8 +108,8 @@
 
 - (UNNotificationIcon)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UNNotificationIcon.m" lineNumber:73 description:@"use appropriate class method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UNNotificationIcon.m" lineNumber:73 description:@"use appropriate class method"];
 
   return 0;
 }
@@ -236,31 +236,31 @@
   return v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && UNEqualObjects(self->_iconInfo, v4[1]) && self->_iconInfoType == v4[2] && self->_shouldSuppressMask == *(v4 + 24);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && UNEqualObjects(self->_iconInfo, equalCopy[1]) && self->_iconInfoType == equalCopy[2] && self->_shouldSuppressMask == *(equalCopy + 24);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:2 forKey:@"codingVersion"];
-  [v4 encodeObject:self->_iconInfo forKey:@"iconInfo"];
-  [v4 encodeInteger:self->_iconInfoType forKey:@"iconInfoType"];
-  [v4 encodeBool:self->_shouldSuppressMask forKey:@"shouldSuppressMask"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:2 forKey:@"codingVersion"];
+  [coderCopy encodeObject:self->_iconInfo forKey:@"iconInfo"];
+  [coderCopy encodeInteger:self->_iconInfoType forKey:@"iconInfoType"];
+  [coderCopy encodeBool:self->_shouldSuppressMask forKey:@"shouldSuppressMask"];
 }
 
-- (UNNotificationIcon)initWithCoder:(id)a3
+- (UNNotificationIcon)initWithCoder:(id)coder
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"codingVersion"] == 2)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"codingVersion"] == 2)
   {
-    v5 = [v4 decodeIntegerForKey:@"iconInfoType"];
+    v5 = [coderCopy decodeIntegerForKey:@"iconInfoType"];
     if (v5 == 7)
     {
       v6 = MEMORY[0x1E695DFD8];
@@ -277,23 +277,23 @@
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:5];
       v11 = [v9 setWithArray:v10];
 
-      v12 = [v4 decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 forKey:@"iconInfo"];
+      v12 = [coderCopy decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 forKey:@"iconInfo"];
     }
 
     else
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconInfo"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconInfo"];
     }
 
-    v18 = [v4 decodeBoolForKey:@"shouldSuppressMask"];
+    v18 = [coderCopy decodeBoolForKey:@"shouldSuppressMask"];
   }
 
   else
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
     if ([v13 length])
     {
       v5 = 3;
@@ -341,26 +341,26 @@
   return v20;
 }
 
-+ (id)iconNamed:(id)a3
++ (id)iconNamed:(id)named
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:1 shouldSuppressMask:0];
+  namedCopy = named;
+  v5 = [[self alloc] _initWithIconInfo:namedCopy type:1 shouldSuppressMask:0];
 
   return v5;
 }
 
-+ (id)iconAtPath:(id)a3
++ (id)iconAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:2 shouldSuppressMask:0];
+  pathCopy = path;
+  v5 = [[self alloc] _initWithIconInfo:pathCopy type:2 shouldSuppressMask:0];
 
   return v5;
 }
 
-+ (id)iconWithData:(id)a3
++ (id)iconWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithIconInfo:v4 type:5 shouldSuppressMask:0];
+  dataCopy = data;
+  v5 = [[self alloc] _initWithIconInfo:dataCopy type:5 shouldSuppressMask:0];
 
   return v5;
 }

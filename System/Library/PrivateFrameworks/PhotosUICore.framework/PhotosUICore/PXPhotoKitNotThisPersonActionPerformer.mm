@@ -1,22 +1,22 @@
 @interface PXPhotoKitNotThisPersonActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)_assetsForActionManager:(id)a3;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)_assetsForActionManager:(id)manager;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitNotThisPersonActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v5 = a4;
-  v6 = [a1 _assetsForActionManager:v5];
+  managerCopy = manager;
+  v6 = [self _assetsForActionManager:managerCopy];
   v7 = [v6 count];
-  v8 = [v5 person];
+  person = [managerCopy person];
 
-  v9 = [v8 px_localizedName];
-  if ([v9 length])
+  px_localizedName = [person px_localizedName];
+  if ([px_localizedName length])
   {
     if (v7 == 1)
     {
@@ -28,7 +28,7 @@
       v10 = @"PXPeopleAssetsNotThisNamedPersonFormat";
     }
 
-    PXLocalizedStringForPersonOrPetAndVisibility(v8, 0, v10);
+    PXLocalizedStringForPersonOrPetAndVisibility(person, 0, v10);
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
@@ -43,40 +43,40 @@
     v11 = @"PXPeopleAssetsNotThisUnnamedPerson";
   }
 
-  v12 = PXLocalizedStringForPersonOrPetAndVisibility(v8, 0, v11);
+  v12 = PXLocalizedStringForPersonOrPetAndVisibility(person, 0, v11);
 
   return v12;
 }
 
-+ (id)_assetsForActionManager:(id)a3
++ (id)_assetsForActionManager:(id)manager
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectReference];
-  if (v4)
+  managerCopy = manager;
+  objectReference = [managerCopy objectReference];
+  if (objectReference)
   {
-    v5 = [v3 objectReference];
+    objectReference2 = [managerCopy objectReference];
 
-    v9[0] = v5;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    v9[0] = objectReference2;
+    allItemsEnumerator = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
-    v5 = [v3 selectionManager];
+    objectReference2 = [managerCopy selectionManager];
 
-    v7 = [v5 selectionSnapshot];
-    v6 = [v7 allItemsEnumerator];
+    selectionSnapshot = [objectReference2 selectionSnapshot];
+    allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
   }
 
-  return v6;
+  return allItemsEnumerator;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  if (a3 && a5)
+  if (asset && person)
   {
-    return [a5 px_fetchCanHaveFacesRejectedWithRigor:{1, a4}];
+    return [person px_fetchCanHaveFacesRejectedWithRigor:{1, collection}];
   }
 
   else
@@ -87,22 +87,22 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  if ([v3 count] == 1)
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  if ([assets count] == 1)
   {
     objc_initWeak(&location, self);
-    v4 = [(PXPhotoKitAssetActionPerformer *)self person];
-    v5 = [v3 firstObject];
+    person = [(PXPhotoKitAssetActionPerformer *)self person];
+    firstObject = [assets firstObject];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __68__PXPhotoKitNotThisPersonActionPerformer_performUserInteractionTask__block_invoke;
     v11 = &unk_1E773A930;
     objc_copyWeak(&v12, &location);
-    v6 = [PXPeopleUtilities alertControllerForUntaggingPerson:v4 asset:v5 completion:&v8];
+    v6 = [PXPeopleUtilities alertControllerForUntaggingPerson:person asset:firstObject completion:&v8];
 
     [v6 setModalPresentationStyle:{7, v8, v9, v10, v11}];
-    v7 = [(PXActionPerformer *)self presentationEnvironment];
-    [v7 presentViewController:v6 animated:1 completionHandler:0];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+    [presentationEnvironment presentViewController:v6 animated:1 completionHandler:0];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -147,23 +147,23 @@ uint64_t __68__PXPhotoKitNotThisPersonActionPerformer_performUserInteractionTask
   else
   {
     [(PXPhotoKitAssetActionPerformer *)self instantlyExcludeAssetsFromDataSource];
-    v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-    v4 = [v3 selectedIndexPaths];
+    selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-    v5 = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
-    v6 = [v5 fetchResultWithAssetsAtIndexPaths:v4];
+    photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
+    v6 = [photosDataSourceSnapshot fetchResultWithAssetsAtIndexPaths:selectedIndexPaths];
 
-    v7 = [(PXPhotoKitAssetActionPerformer *)self person];
-    v8 = [[PXNotThisPersonAction alloc] initWithPerson:v7 assets:v6];
-    v9 = [(PXActionPerformer *)self undoManager];
+    person = [(PXPhotoKitAssetActionPerformer *)self person];
+    v8 = [[PXNotThisPersonAction alloc] initWithPerson:person assets:v6];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __63__PXPhotoKitNotThisPersonActionPerformer_performBackgroundTask__block_invoke;
     v11[3] = &unk_1E774B730;
-    v12 = v7;
-    v13 = self;
-    v10 = v7;
-    [(PXAction *)v8 executeWithUndoManager:v9 completionHandler:v11];
+    v12 = person;
+    selfCopy = self;
+    v10 = person;
+    [(PXAction *)v8 executeWithUndoManager:undoManager completionHandler:v11];
   }
 }
 

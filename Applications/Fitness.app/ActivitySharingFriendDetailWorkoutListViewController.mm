@@ -1,9 +1,9 @@
 @interface ActivitySharingFriendDetailWorkoutListViewController
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithCoder:(id)a3;
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithCoder:(id)coder;
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -11,11 +11,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100647DD0();
 }
 
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithCoder:(id)a3
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController_dataProviderObserver) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   v13[3] = v11;
@@ -51,30 +51,30 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100648664(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100648664(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithStyle:(int64_t)a3
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp52ActivitySharingFriendDetailWorkoutListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

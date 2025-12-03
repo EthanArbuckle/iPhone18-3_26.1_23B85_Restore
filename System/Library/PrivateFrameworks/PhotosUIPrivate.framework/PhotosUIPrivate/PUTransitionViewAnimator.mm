@@ -5,14 +5,14 @@
 - (CGRect)_targetAspectRatioSourceFrame;
 - (CGRect)sourceFrame;
 - (CGRect)targetFrame;
-- (PUTransitionViewAnimator)initWithView:(id)a3 sourceFrame:(CGRect)a4 targetFrame:(CGRect)a5 anchorPoint:(CGPoint)a6 shouldUseTargetAspectRatio:(BOOL)a7 rampUpDuration:(double)a8 direction:(unint64_t)a9;
+- (PUTransitionViewAnimator)initWithView:(id)view sourceFrame:(CGRect)frame targetFrame:(CGRect)targetFrame anchorPoint:(CGPoint)point shouldUseTargetAspectRatio:(BOOL)ratio rampUpDuration:(double)duration direction:(unint64_t)direction;
 - (PUTransitionViewAnimatorDelegate)delegate;
-- (void)_endWithTranslationVelocity:(CGPoint)a3 rotationVelocity:(double)a4 scaleVelocity:(double)a5 shouldBounce:(BOOL)a6 finish:(BOOL)a7 animated:(BOOL)a8;
-- (void)_setAutoUpdating:(BOOL)a3;
+- (void)_endWithTranslationVelocity:(CGPoint)velocity rotationVelocity:(double)rotationVelocity scaleVelocity:(double)scaleVelocity shouldBounce:(BOOL)bounce finish:(BOOL)finish animated:(BOOL)animated;
+- (void)_setAutoUpdating:(BOOL)updating;
 - (void)_update;
 - (void)_updateAutoUpdateDisplayLink;
-- (void)setDelegate:(id)a3;
-- (void)updateWithTranslation:(CGPoint)a3 rotation:(double)a4 scale:(double)a5;
+- (void)setDelegate:(id)delegate;
+- (void)updateWithTranslation:(CGPoint)translation rotation:(double)rotation scale:(double)scale;
 @end
 
 @implementation PUTransitionViewAnimator
@@ -90,29 +90,29 @@
   return WeakRetained;
 }
 
-- (void)_endWithTranslationVelocity:(CGPoint)a3 rotationVelocity:(double)a4 scaleVelocity:(double)a5 shouldBounce:(BOOL)a6 finish:(BOOL)a7 animated:(BOOL)a8
+- (void)_endWithTranslationVelocity:(CGPoint)velocity rotationVelocity:(double)rotationVelocity scaleVelocity:(double)scaleVelocity shouldBounce:(BOOL)bounce finish:(BOOL)finish animated:(BOOL)animated
 {
-  v8 = a8;
-  v9 = a7;
-  x = a3.x;
-  y = a3.y;
+  animatedCopy = animated;
+  finishCopy = finish;
+  x = velocity.x;
+  y = velocity.y;
   if (![(PUTransitionViewAnimator *)self _isEnding])
   {
     [(PUTransitionViewAnimator *)self _setEnding:1];
     [(PUTransitionViewAnimator *)self _setAutoUpdating:0];
-    v13 = [(PUTransitionViewAnimator *)self appliesScaleViaTransform];
+    appliesScaleViaTransform = [(PUTransitionViewAnimator *)self appliesScaleViaTransform];
     v14 = objc_alloc_init(MEMORY[0x1E69DD498]);
     [(PUTransitionViewAnimator *)self progress];
     v15 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:? initialVelocity:? targetValue:? stiffness:? dampingFactor:? epsilon:?];
     [v14 addAnimation:v15];
-    v16 = [(PUTransitionViewAnimator *)self view];
-    [v16 px_screenScale];
+    view = [(PUTransitionViewAnimator *)self view];
+    [view px_screenScale];
     v18 = v17;
 
     [(PUTransitionViewAnimator *)self currentTranslation];
     v81 = v19;
     v82 = v20;
-    if (v9)
+    if (finishCopy)
     {
       [(PUTransitionViewAnimator *)self anchorPoint];
       v22 = v21;
@@ -182,11 +182,11 @@
       v105 = *MEMORY[0x1E695EFF8];
     }
 
-    v43 = [(PUTransitionViewAnimator *)self delegate];
-    v44 = v43;
+    delegate = [(PUTransitionViewAnimator *)self delegate];
+    v44 = delegate;
     if ((*&self->_delegateFlags & 2) != 0)
     {
-      [v43 transitionViewAnimatorWillEnd:self withTargetTranslation:&v105];
+      [delegate transitionViewAnimatorWillEnd:self withTargetTranslation:&v105];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -196,13 +196,13 @@
     aBlock[4] = self;
     v45 = v44;
     v103 = v45;
-    v104 = v9;
+    v104 = finishCopy;
     v46 = _Block_copy(aBlock);
     v47 = v46;
-    if (v8)
+    if (animatedCopy)
     {
       v78 = v46;
-      v80 = v13;
+      v80 = appliesScaleViaTransform;
       v48 = 0.5 / v18;
       v49 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:v81 initialVelocity:x targetValue:*&v105 stiffness:200.0 dampingFactor:1.0 epsilon:0.5 / v18];
       v50 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:v82 initialVelocity:y targetValue:*(&v105 + 1) stiffness:200.0 dampingFactor:1.0 epsilon:0.5 / v18];
@@ -222,13 +222,13 @@
       [(PUTransitionViewAnimator *)self _currentScale];
       v55 = v54;
       v56 = 1.0;
-      if (v9)
+      if (finishCopy)
       {
         [(PUTransitionViewAnimator *)self _targetScale];
         v56 = v57;
       }
 
-      if (a6 && v56 > v55)
+      if (bounce && v56 > v55)
       {
         v52 = 0.67;
       }
@@ -242,7 +242,7 @@
         v59 = v58;
       }
 
-      v60 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:v55 initialVelocity:a5 targetValue:v56 stiffness:200.0 dampingFactor:v52 epsilon:v48 / v59];
+      v60 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:v55 initialVelocity:scaleVelocity targetValue:v56 stiffness:200.0 dampingFactor:v52 epsilon:v48 / v59];
       [v14 addAnimation:v60];
       v61 = objc_alloc_init(PUThresholdCrossingCountValueFilter);
       [(PUThresholdCrossingCountValueFilter *)v61 setThresholdValue:v56];
@@ -263,7 +263,7 @@
       v99 = v105;
       v100 = v56;
       v96 = v61;
-      v97 = self;
+      selfCopy = self;
       v101 = v80;
       v98 = v45;
       v87[0] = MEMORY[0x1E69E9820];
@@ -420,31 +420,31 @@ void __116__PUTransitionViewAnimator__endWithTranslationVelocity_rotationVelocit
 
 - (void)_updateAutoUpdateDisplayLink
 {
-  v3 = [(PUTransitionViewAnimator *)self _isAutoUpdating];
-  v4 = [(PUTransitionViewAnimator *)self _autoUpdateDisplayLink];
-  v5 = !v3;
-  if (v3 && !v4)
+  _isAutoUpdating = [(PUTransitionViewAnimator *)self _isAutoUpdating];
+  _autoUpdateDisplayLink = [(PUTransitionViewAnimator *)self _autoUpdateDisplayLink];
+  v5 = !_isAutoUpdating;
+  if (_isAutoUpdating && !_autoUpdateDisplayLink)
   {
     v7 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__autoUpdate_];
     [(PUTransitionViewAnimator *)self _setAutoUpdateDisplayLink:v7];
     [v7 setPaused:0];
-    v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v7 addToRunLoop:v6 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [v7 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
 LABEL_8:
-    v4 = v7;
+    _autoUpdateDisplayLink = v7;
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!_autoUpdateDisplayLink)
   {
     v5 = 0;
   }
 
   if (v5 == 1)
   {
-    v7 = v4;
-    [v4 setPaused:1];
+    v7 = _autoUpdateDisplayLink;
+    [_autoUpdateDisplayLink setPaused:1];
     [v7 invalidate];
     [(PUTransitionViewAnimator *)self _setAutoUpdateDisplayLink:0];
     goto LABEL_8;
@@ -453,18 +453,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_setAutoUpdating:(BOOL)a3
+- (void)_setAutoUpdating:(BOOL)updating
 {
-  if (*(&self->__isEnding + 3) != a3)
+  if (*(&self->__isEnding + 3) != updating)
   {
-    *(&self->__isEnding + 3) = a3;
+    *(&self->__isEnding + 3) = updating;
     [(PUTransitionViewAnimator *)self _updateAutoUpdateDisplayLink];
   }
 }
 
 - (void)_update
 {
-  v3 = [(PUTransitionViewAnimator *)self appliesScaleViaTransform];
+  appliesScaleViaTransform = [(PUTransitionViewAnimator *)self appliesScaleViaTransform];
   [(PUTransitionViewAnimator *)self _desiredTranslation];
   v5 = v4;
   v7 = v6;
@@ -474,8 +474,8 @@ LABEL_9:
   v11 = v10;
   [(PUTransitionViewAnimator *)self _desiredSizeMixFactor];
   v13 = v12;
-  v14 = [(PUTransitionViewAnimator *)self _rampUpFilter];
-  [v14 outputValue];
+  _rampUpFilter = [(PUTransitionViewAnimator *)self _rampUpFilter];
+  [_rampUpFilter outputValue];
   v46 = *MEMORY[0x1E695EFF8];
   y = *(MEMORY[0x1E695EFF8] + 8);
   v45 = v15;
@@ -497,7 +497,7 @@ LABEL_9:
   v19 = v18;
   [(PUTransitionViewAnimator *)self sourceFrame];
   UIRectGetCenter();
-  if (v3)
+  if (appliesScaleViaTransform)
   {
     v22 = v11;
   }
@@ -514,7 +514,7 @@ LABEL_9:
   [(PUTransitionViewAnimator *)self _targetAspectRatioSourceFrame];
   width = v27 * v13 + (1.0 - v13) * v24;
   height = v29 * v13 + (1.0 - v13) * v26;
-  if (v3)
+  if (appliesScaleViaTransform)
   {
     x = v46;
   }
@@ -536,7 +536,7 @@ LABEL_9:
   [(PUTransitionViewAnimator *)self _targetScale];
   if (v32 == 1.0)
   {
-    v34 = [(PUTransitionViewAnimator *)self direction];
+    direction = [(PUTransitionViewAnimator *)self direction];
     v35 = 0.0;
     if (v11 <= 1.0)
     {
@@ -553,7 +553,7 @@ LABEL_9:
       v35 = 1.0;
     }
 
-    if (v34)
+    if (direction)
     {
       v33 = v35;
     }
@@ -576,18 +576,18 @@ LABEL_9:
   [(PUTransitionViewAnimator *)self _setProgress:?];
   [(PUTransitionViewAnimator *)self _setUnfilteredProgress:v33];
   v40 = v39 != v33 || v45 < 1.0;
-  v41 = [(PUTransitionViewAnimator *)self _shouldFinishFilter];
-  [v41 setInputValue:v33];
-  [v41 outputValue];
+  _shouldFinishFilter = [(PUTransitionViewAnimator *)self _shouldFinishFilter];
+  [_shouldFinishFilter setInputValue:v33];
+  [_shouldFinishFilter outputValue];
   [(PUTransitionViewAnimator *)self _setShouldFinish:v42 >= 0.0];
-  v43 = [(PUTransitionViewAnimator *)self view];
-  [v43 setBounds:{x, y, width, height}];
+  view = [(PUTransitionViewAnimator *)self view];
+  [view setBounds:{x, y, width, height}];
   v48 = v49;
-  [v43 setTransform:&v48];
+  [view setTransform:&v48];
   if (*&self->_delegateFlags)
   {
-    v44 = [(PUTransitionViewAnimator *)self delegate];
-    [v44 transitionViewAnimatorDidUpdate:self];
+    delegate = [(PUTransitionViewAnimator *)self delegate];
+    [delegate transitionViewAnimatorDidUpdate:self];
   }
 
   if (!v40 || [(PUTransitionViewAnimator *)self autoUpdates])
@@ -596,15 +596,15 @@ LABEL_9:
   }
 }
 
-- (void)updateWithTranslation:(CGPoint)a3 rotation:(double)a4 scale:(double)a5
+- (void)updateWithTranslation:(CGPoint)translation rotation:(double)rotation scale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   if (![(PUTransitionViewAnimator *)self _isEnding])
   {
     [(PUTransitionViewAnimator *)self _setDesiredTranslation:x, y];
-    [(PUTransitionViewAnimator *)self _setDesiredRotation:a4];
-    [(PUTransitionViewAnimator *)self _setDesiredScale:a5];
+    [(PUTransitionViewAnimator *)self _setDesiredRotation:rotation];
+    [(PUTransitionViewAnimator *)self _setDesiredScale:scale];
     if (![(PUTransitionViewAnimator *)self _isAutoUpdating])
     {
 
@@ -613,10 +613,10 @@ LABEL_9:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -644,20 +644,20 @@ LABEL_9:
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFB | v7;
 }
 
-- (PUTransitionViewAnimator)initWithView:(id)a3 sourceFrame:(CGRect)a4 targetFrame:(CGRect)a5 anchorPoint:(CGPoint)a6 shouldUseTargetAspectRatio:(BOOL)a7 rampUpDuration:(double)a8 direction:(unint64_t)a9
+- (PUTransitionViewAnimator)initWithView:(id)view sourceFrame:(CGRect)frame targetFrame:(CGRect)targetFrame anchorPoint:(CGPoint)point shouldUseTargetAspectRatio:(BOOL)ratio rampUpDuration:(double)duration direction:(unint64_t)direction
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.size.height;
-  width = a5.size.width;
-  v13 = a5.origin.y;
-  v14 = a5.origin.x;
-  v15 = a4.size.height;
-  v16 = a4.size.width;
-  v55 = a4.origin.y;
-  v17 = a4.origin.x;
+  y = point.y;
+  x = point.x;
+  height = targetFrame.size.height;
+  width = targetFrame.size.width;
+  v13 = targetFrame.origin.y;
+  v14 = targetFrame.origin.x;
+  v15 = frame.size.height;
+  v16 = frame.size.width;
+  v55 = frame.origin.y;
+  v17 = frame.origin.x;
   v60[2] = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  viewCopy = view;
   v58.receiver = self;
   v58.super_class = PUTransitionViewAnimator;
   v20 = [(PUTransitionViewAnimator *)&v58 init];
@@ -668,10 +668,10 @@ LABEL_9:
     v57 = v13;
     [(PUTransitionViewAnimator *)v20 setAutoUpdates:1];
     [(PUTransitionViewAnimator *)v21 setAppliesScaleViaTransform:1];
-    [(PUTransitionViewAnimator *)v21 _setView:v19];
+    [(PUTransitionViewAnimator *)v21 _setView:viewCopy];
     [(PUTransitionViewAnimator *)v21 _setSourceFrame:v17, v55, v16, v15];
     [(PUTransitionViewAnimator *)v21 _setTargetFrame:v14, v13, width, height];
-    [(PUTransitionViewAnimator *)v21 _setAnchorPoint:a8, v61];
+    [(PUTransitionViewAnimator *)v21 _setAnchorPoint:duration, v61];
     [(PUTransitionViewAnimator *)v21 _setShouldUseTargetAspectRatio:*&x];
     [(PUTransitionViewAnimator *)v21 _setRampUpDuration:v62];
     [(PUTransitionViewAnimator *)v21 _setDirection:*&y];

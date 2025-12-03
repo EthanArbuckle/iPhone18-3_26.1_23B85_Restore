@@ -1,11 +1,11 @@
 @interface LIGHTHOUSE_BITACORA_PROTOBMLTIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOBMLTIdentifiers
@@ -41,66 +41,66 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_trialTaskID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_trialDeploymentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   trialTaskID = self->_trialTaskID;
-  v10 = v4;
+  v10 = toCopy;
   if (trialTaskID)
   {
-    objc_msgSend_setTrialTaskID_(v4, v5, trialTaskID, v6, v7);
-    v4 = v10;
+    objc_msgSend_setTrialTaskID_(toCopy, v5, trialTaskID, v6, v7);
+    toCopy = v10;
   }
 
   trialDeploymentID = self->_trialDeploymentID;
   if (trialDeploymentID)
   {
     objc_msgSend_setTrialDeploymentID_(v10, v5, trialDeploymentID, v6, v7);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_copyWithZone_(self->_trialTaskID, v15, a3, v16, v17);
+  v18 = objc_msgSend_copyWithZone_(self->_trialTaskID, v15, zone, v16, v17);
   v19 = v14[2];
   v14[2] = v18;
 
-  v23 = objc_msgSend_copyWithZone_(self->_trialDeploymentID, v20, a3, v21, v22);
+  v23 = objc_msgSend_copyWithZone_(self->_trialDeploymentID, v20, zone, v21, v22);
   v24 = v14[1];
   v14[1] = v23;
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8) && ((trialTaskID = self->_trialTaskID, v13 = v4[2], !(trialTaskID | v13)) || objc_msgSend_isEqual_(trialTaskID, v9, v13, v10, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8) && ((trialTaskID = self->_trialTaskID, v13 = equalCopy[2], !(trialTaskID | v13)) || objc_msgSend_isEqual_(trialTaskID, v9, v13, v10, v11)))
   {
     trialDeploymentID = self->_trialDeploymentID;
-    v15 = v4[1];
+    v15 = equalCopy[1];
     if (trialDeploymentID | v15)
     {
       isEqual = objc_msgSend_isEqual_(trialDeploymentID, v9, v15, v10, v11);
@@ -120,22 +120,22 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4[2];
-  v10 = v4;
+  fromCopy = from;
+  v8 = fromCopy[2];
+  v10 = fromCopy;
   if (v8)
   {
     objc_msgSend_setTrialTaskID_(self, v5, v8, v6, v7);
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v9 = v4[1];
+  v9 = fromCopy[1];
   if (v9)
   {
     objc_msgSend_setTrialDeploymentID_(self, v5, v9, v6, v7);
-    v4 = v10;
+    fromCopy = v10;
   }
 }
 

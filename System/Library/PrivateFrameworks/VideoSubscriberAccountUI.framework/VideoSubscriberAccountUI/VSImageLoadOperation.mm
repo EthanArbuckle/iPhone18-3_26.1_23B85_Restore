@@ -1,9 +1,9 @@
 @interface VSImageLoadOperation
 - (CGSize)preferredImageSize;
 - (VSImageLoadOperation)init;
-- (VSImageLoadOperation)initWithItemProvider:(id)a3 preferredImageSize:(CGSize)a4;
-- (void)_beginFetchingDataFromURL:(id)a3;
-- (void)_finishWithImageData:(id)a3 orError:(id)a4;
+- (VSImageLoadOperation)initWithItemProvider:(id)provider preferredImageSize:(CGSize)size;
+- (void)_beginFetchingDataFromURL:(id)l;
+- (void)_finishWithImageData:(id)data orError:(id)error;
 - (void)cancel;
 - (void)executionDidBegin;
 @end
@@ -20,18 +20,18 @@
   return 0;
 }
 
-- (VSImageLoadOperation)initWithItemProvider:(id)a3 preferredImageSize:(CGSize)a4
+- (VSImageLoadOperation)initWithItemProvider:(id)provider preferredImageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = VSImageLoadOperation;
   v9 = [(VSImageLoadOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemProvider, a3);
+    objc_storeStrong(&v9->_itemProvider, provider);
     v10->_preferredImageSize.width = width;
     v10->_preferredImageSize.height = height;
     v11 = objc_alloc_init(MEMORY[0x277CE2298]);
@@ -42,22 +42,22 @@
   return v10;
 }
 
-- (void)_finishWithImageData:(id)a3 orError:(id)a4
+- (void)_finishWithImageData:(id)data orError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  errorCopy = error;
+  if (dataCopy)
   {
     v8 = VSDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v6;
+      v23 = dataCopy;
       _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Did load image data %@", &v22, 0xCu);
     }
 
-    v9 = v6;
+    v9 = dataCopy;
     v10 = [MEMORY[0x277D755B8] imageWithData:v9];
     if (v10)
     {
@@ -88,17 +88,17 @@
     v14 = VSErrorLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [VSImageLoadOperation _finishWithImageData:v7 orError:v14];
+      [VSImageLoadOperation _finishWithImageData:errorCopy orError:v14];
     }
 
-    if (!v7)
+    if (!errorCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The errorOrNil parameter must not be nil."];
     }
 
     v15 = MEMORY[0x277CE2298];
     v16 = MEMORY[0x277CE2250];
-    v17 = v7;
+    v17 = errorCopy;
     v9 = [v16 failableWithError:v17];
     v10 = [v15 optionalWithObject:v9];
 
@@ -109,16 +109,16 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginFetchingDataFromURL:(id)a3
+- (void)_beginFetchingDataFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = MEMORY[0x277CCAD38];
-  v6 = [(VSImageLoadOperation *)self auditToken];
-  v7 = [v5 vs_defaultSessionConfigurationForSourceAppWithAuditToken:v6];
+  auditToken = [(VSImageLoadOperation *)self auditToken];
+  v7 = [v5 vs_defaultSessionConfigurationForSourceAppWithAuditToken:auditToken];
 
   objc_initWeak(&location, self);
   v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v7];
-  v9 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v4];
+  v9 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy];
   [v9 _setNonAppInitiated:{-[VSImageLoadOperation isNonAppInitiated](self, "isNonAppInitiated")}];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -163,7 +163,7 @@ void __50__VSImageLoadOperation__beginFetchingDataFromURL___block_invoke(uint64_
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "Will load image %@", buf, 0xCu);
   }
 
@@ -211,8 +211,8 @@ void __41__VSImageLoadOperation_executionDidBegin__block_invoke(uint64_t a1, voi
   v4.receiver = self;
   v4.super_class = VSImageLoadOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSImageLoadOperation *)self task];
-  [v3 cancel];
+  task = [(VSImageLoadOperation *)self task];
+  [task cancel];
 
   [(VSAsyncOperation *)self finishExecutionIfPossible];
 }

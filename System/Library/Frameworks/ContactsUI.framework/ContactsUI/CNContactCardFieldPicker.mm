@@ -1,49 +1,49 @@
 @interface CNContactCardFieldPicker
-+ (BOOL)isContactObject:(id)a3 equivalentTo:(id)a4;
-+ (BOOL)isProperty:(id)a3 value:(id)a4 inContact:(id)a5;
++ (BOOL)isContactObject:(id)object equivalentTo:(id)to;
++ (BOOL)isProperty:(id)property value:(id)value inContact:(id)contact;
 + (id)descriptorForRequiredKeys;
 + (id)imageProperties;
-+ (id)privateCardPropertiesForContacts:(id)a3;
++ (id)privateCardPropertiesForContacts:(id)contacts;
 - (BOOL)allFieldsSelected;
 - (BOOL)isAnyHandleSelected;
 - (BOOL)isInActivityController;
-- (BOOL)selectRowForKey:(id)a3 value:(id)a4 atIndex:(id)a5;
-- (CNContactCardFieldPicker)initWithContact:(id)a3;
-- (CNContactCardFieldPicker)initWithContacts:(id)a3 isNameDropSession:(BOOL)a4 fieldSelections:(id)a5;
-- (CNContactCardFieldPicker)initWithNameDrop:(id)a3 fieldSelections:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)selectRowForKey:(id)key value:(id)value atIndex:(id)index;
+- (CNContactCardFieldPicker)initWithContact:(id)contact;
+- (CNContactCardFieldPicker)initWithContacts:(id)contacts isNameDropSession:(BOOL)session fieldSelections:(id)selections;
+- (CNContactCardFieldPicker)initWithNameDrop:(id)drop fieldSelections:(id)selections;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)titleForSelectAllFieldsButton;
 - (void)deselectAllFields;
-- (void)done:(id)a3;
+- (void)done:(id)done;
 - (void)saveFilteredContacts;
 - (void)selectAllFields;
 - (void)selectDefaultFieldKeys;
 - (void)selectDefaultFields;
-- (void)setPhotoFromContact:(id)a3 onFilteredContact:(id)a4;
+- (void)setPhotoFromContact:(id)contact onFilteredContact:(id)filteredContact;
 - (void)setUpDoneButton;
 - (void)setUpTableView;
 - (void)setUpToggleSelectAllFieldsButton;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)toggleSelectionOfFields:(id)a3;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)toggleSelectionOfFields:(id)fields;
 - (void)updateControllerButtons;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNContactCardFieldPicker
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-  v9 = [v8 sections];
-  v10 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+  sections = [fieldPickerDataSource sections];
+  section = [pathCopy section];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
-  v12 = [v11 sectionType];
-  v13 = [v12 isEqualToString:@"contactCardFieldPickerPhotoSection"];
+  v11 = [sections objectAtIndexedSubscript:section];
+  sectionType = [v11 sectionType];
+  v13 = [sectionType isEqualToString:@"contactCardFieldPickerPhotoSection"];
 
   if (v13 && (-[CNContactCardFieldPicker contacts](self, "contacts"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 count], v14, v15 == 1))
   {
@@ -52,7 +52,7 @@
 
   else
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
   }
 
   v17 = v16;
@@ -60,24 +60,24 @@
   return v17;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-    v7 = [v6 firstContactContainingPhoto];
+    fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+    firstContactContainingPhoto = [fieldPickerDataSource firstContactContainingPhoto];
 
-    [v8 prepareCellWithContact:v7];
+    [cellCopy prepareCellWithContact:firstContactContainingPhoto];
   }
 }
 
-- (void)setPhotoFromContact:(id)a3 onFilteredContact:(id)a4
+- (void)setPhotoFromContact:(id)contact onFilteredContact:(id)filteredContact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  filteredContactCopy = filteredContact;
   v7 = +[CNContactCardFieldPicker imageProperties];
   v14 = 0u;
   v15 = 0u;
@@ -98,8 +98,8 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        v13 = [v5 valueForKey:v12];
-        [v6 setValue:v13 forKey:v12];
+        v13 = [contactCopy valueForKey:v12];
+        [filteredContactCopy setValue:v13 forKey:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -111,21 +111,21 @@
 
 - (BOOL)allFieldsSelected
 {
-  v3 = [(CNContactCardFieldPicker *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
-  v5 = [v4 count];
-  v6 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-  LOBYTE(v5) = v5 == [v6 totalItemCount];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v5 = [indexPathsForSelectedRows count];
+  fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+  LOBYTE(v5) = v5 == [fieldPickerDataSource totalItemCount];
 
   return v5;
 }
 
 - (id)titleForSelectAllFieldsButton
 {
-  v2 = [(CNContactCardFieldPicker *)self allFieldsSelected];
+  allFieldsSelected = [(CNContactCardFieldPicker *)self allFieldsSelected];
   v3 = CNContactsUIBundle();
   v4 = v3;
-  if (v2)
+  if (allFieldsSelected)
   {
     v5 = @"DESELECT_ALL_FIELDS_BUTTON_TITLE";
   }
@@ -147,11 +147,11 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(CNContactCardFieldPicker *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  obj = indexPathsForSelectedRows;
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -168,8 +168,8 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-        v13 = [v12 keyForIndexPath:v11];
+        fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+        v13 = [fieldPickerDataSource keyForIndexPath:v11];
 
         v23[0] = v8;
         v23[1] = v9;
@@ -203,17 +203,17 @@ LABEL_11:
 {
   if ([(CNContactCardFieldPicker *)self isNameDropSession])
   {
-    v3 = [(CNContactCardFieldPicker *)self isAnyHandleSelected];
-    v5 = [(CNContactCardFieldPicker *)self navigationItem];
-    v4 = [v5 rightBarButtonItem];
-    [v4 setEnabled:v3];
+    isAnyHandleSelected = [(CNContactCardFieldPicker *)self isAnyHandleSelected];
+    navigationItem = [(CNContactCardFieldPicker *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:isAnyHandleSelected];
   }
 
   else
   {
-    v5 = [(CNContactCardFieldPicker *)self titleForSelectAllFieldsButton];
-    v4 = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
-    [v4 setTitle:v5];
+    navigationItem = [(CNContactCardFieldPicker *)self titleForSelectAllFieldsButton];
+    rightBarButtonItem = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
+    [rightBarButtonItem setTitle:navigationItem];
   }
 }
 
@@ -224,10 +224,10 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CNContactCardFieldPicker *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [indexPathsForSelectedRows countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -239,18 +239,18 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(CNContactCardFieldPicker *)self tableView];
-        [v10 deselectRowAtIndexPath:v9 animated:1];
+        tableView2 = [(CNContactCardFieldPicker *)self tableView];
+        [tableView2 deselectRowAtIndexPath:v9 animated:1];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -261,16 +261,16 @@ LABEL_11:
 
 - (void)selectAllFields
 {
-  v3 = [(CNContactCardFieldPicker *)self tableView];
-  v4 = [v3 numberOfSections];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v4 >= 1)
+  if (numberOfSections >= 1)
   {
     v5 = 0;
     do
     {
-      v6 = [(CNContactCardFieldPicker *)self tableView];
-      v7 = [v6 numberOfRowsInSection:v5];
+      tableView2 = [(CNContactCardFieldPicker *)self tableView];
+      v7 = [tableView2 numberOfRowsInSection:v5];
 
       if (v7 >= 1)
       {
@@ -278,23 +278,23 @@ LABEL_11:
         do
         {
           v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:v5];
-          v10 = [(CNContactCardFieldPicker *)self tableView];
-          [v10 selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
+          tableView3 = [(CNContactCardFieldPicker *)self tableView];
+          [tableView3 selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
 
           ++v8;
-          v11 = [(CNContactCardFieldPicker *)self tableView];
-          v12 = [v11 numberOfRowsInSection:v5];
+          tableView4 = [(CNContactCardFieldPicker *)self tableView];
+          v12 = [tableView4 numberOfRowsInSection:v5];
         }
 
         while (v8 < v12);
       }
 
       ++v5;
-      v13 = [(CNContactCardFieldPicker *)self tableView];
-      v14 = [v13 numberOfSections];
+      tableView5 = [(CNContactCardFieldPicker *)self tableView];
+      numberOfSections2 = [tableView5 numberOfSections];
     }
 
-    while (v5 < v14);
+    while (v5 < numberOfSections2);
   }
 
   [(CNContactCardFieldPicker *)self updateControllerButtons];
@@ -302,22 +302,22 @@ LABEL_11:
 
 - (void)selectDefaultFields
 {
-  v3 = [(CNContactCardFieldPicker *)self defaultFieldSelections];
+  defaultFieldSelections = [(CNContactCardFieldPicker *)self defaultFieldSelections];
 
-  if (v3)
+  if (defaultFieldSelections)
   {
-    v4 = [(CNContactCardFieldPicker *)self tableView];
-    v5 = [v4 numberOfSections];
+    tableView = [(CNContactCardFieldPicker *)self tableView];
+    numberOfSections = [tableView numberOfSections];
 
-    if (v5 >= 1)
+    if (numberOfSections >= 1)
     {
       v6 = 0;
       v24 = *MEMORY[0x1E695C1D0];
       v23 = *MEMORY[0x1E695C318];
       while (1)
       {
-        v7 = [(CNContactCardFieldPicker *)self tableView];
-        v8 = [v7 numberOfRowsInSection:v6];
+        tableView2 = [(CNContactCardFieldPicker *)self tableView];
+        v8 = [tableView2 numberOfRowsInSection:v6];
 
         if (v8 >= 1)
         {
@@ -326,10 +326,10 @@ LABEL_11:
 
 LABEL_12:
         ++v6;
-        v21 = [(CNContactCardFieldPicker *)self tableView];
-        v22 = [v21 numberOfSections];
+        tableView3 = [(CNContactCardFieldPicker *)self tableView];
+        numberOfSections2 = [tableView3 numberOfSections];
 
-        if (v6 >= v22)
+        if (v6 >= numberOfSections2)
         {
           return;
         }
@@ -339,32 +339,32 @@ LABEL_12:
       while (1)
       {
         v10 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:v6];
-        v11 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-        v12 = [v11 groupItemForIndexPath:v10];
+        fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+        v12 = [fieldPickerDataSource groupItemForIndexPath:v10];
 
-        v13 = [v12 property];
-        v14 = [v13 isEqualToString:@"birthdays"];
-        v15 = [v12 labeledValue];
-        v16 = self;
+        property = [v12 property];
+        v14 = [property isEqualToString:@"birthdays"];
+        labeledValue = [v12 labeledValue];
+        selfCopy2 = self;
         if (!v14)
         {
           break;
         }
 
-        v17 = [(CNContactCardFieldPicker *)self selectRowForKey:v24 value:v15 atIndex:v10];
+        v17 = [(CNContactCardFieldPicker *)self selectRowForKey:v24 value:labeledValue atIndex:v10];
 
         if (!v17)
         {
-          v15 = [v12 labeledValue];
-          v16 = self;
+          labeledValue = [v12 labeledValue];
+          selfCopy2 = self;
           v18 = v23;
 LABEL_10:
-          [(CNContactCardFieldPicker *)v16 selectRowForKey:v18 value:v15 atIndex:v10];
+          [(CNContactCardFieldPicker *)selfCopy2 selectRowForKey:v18 value:labeledValue atIndex:v10];
         }
 
         ++v9;
-        v19 = [(CNContactCardFieldPicker *)self tableView];
-        v20 = [v19 numberOfRowsInSection:v6];
+        tableView4 = [(CNContactCardFieldPicker *)self tableView];
+        v20 = [tableView4 numberOfRowsInSection:v6];
 
         if (v9 >= v20)
         {
@@ -372,25 +372,25 @@ LABEL_10:
         }
       }
 
-      v18 = v13;
+      v18 = property;
       goto LABEL_10;
     }
   }
 }
 
-- (BOOL)selectRowForKey:(id)a3 value:(id)a4 atIndex:(id)a5
+- (BOOL)selectRowForKey:(id)key value:(id)value atIndex:(id)index
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  indexCopy = index;
+  valueCopy = value;
+  keyCopy = key;
   v11 = objc_opt_class();
-  v12 = [(CNContactCardFieldPicker *)self defaultFieldSelections];
-  v13 = [v11 isProperty:v10 value:v9 inContact:v12];
+  defaultFieldSelections = [(CNContactCardFieldPicker *)self defaultFieldSelections];
+  v13 = [v11 isProperty:keyCopy value:valueCopy inContact:defaultFieldSelections];
 
   if (v13)
   {
-    v14 = [(CNContactCardFieldPicker *)self tableView];
-    [v14 selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
+    tableView = [(CNContactCardFieldPicker *)self tableView];
+    [tableView selectRowAtIndexPath:indexCopy animated:0 scrollPosition:0];
   }
 
   return v13;
@@ -399,13 +399,13 @@ LABEL_10:
 - (void)selectDefaultFieldKeys
 {
   v27[6] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactCardFieldPicker *)self contacts];
-  v26 = [CNContactCardFieldPicker privateCardPropertiesForContacts:v3];
+  contacts = [(CNContactCardFieldPicker *)self contacts];
+  v26 = [CNContactCardFieldPicker privateCardPropertiesForContacts:contacts];
 
-  v4 = [(CNContactCardFieldPicker *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
     v6 = 0;
     v25 = *MEMORY[0x1E695C278];
@@ -426,10 +426,10 @@ LABEL_10:
 
 LABEL_11:
       ++v6;
-      v20 = [(CNContactCardFieldPicker *)self tableView];
-      v21 = [v20 numberOfSections];
+      tableView2 = [(CNContactCardFieldPicker *)self tableView];
+      numberOfSections2 = [tableView2 numberOfSections];
 
-      if (v6 >= v21)
+      if (v6 >= numberOfSections2)
       {
         goto LABEL_12;
       }
@@ -439,8 +439,8 @@ LABEL_11:
     while (1)
     {
       v12 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:v6];
-      v13 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-      v14 = [v13 keyForIndexPath:v12];
+      fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+      v14 = [fieldPickerDataSource keyForIndexPath:v12];
 
       if ([(CNContactCardFieldPicker *)self isNameDropSession])
       {
@@ -455,8 +455,8 @@ LABEL_11:
 LABEL_10:
 
       ++v11;
-      v18 = [(CNContactCardFieldPicker *)self tableView];
-      v19 = [v18 numberOfRowsInSection:v6];
+      tableView3 = [(CNContactCardFieldPicker *)self tableView];
+      v19 = [tableView3 numberOfRowsInSection:v6];
 
       if (v11 >= v19)
       {
@@ -479,8 +479,8 @@ LABEL_10:
     }
 
 LABEL_9:
-    v17 = [(CNContactCardFieldPicker *)self tableView];
-    [v17 selectRowAtIndexPath:v12 animated:0 scrollPosition:0];
+    tableView4 = [(CNContactCardFieldPicker *)self tableView];
+    [tableView4 selectRowAtIndexPath:v12 animated:0 scrollPosition:0];
 
     goto LABEL_10;
   }
@@ -492,7 +492,7 @@ LABEL_12:
   }
 }
 
-- (void)toggleSelectionOfFields:(id)a3
+- (void)toggleSelectionOfFields:(id)fields
 {
   if ([(CNContactCardFieldPicker *)self allFieldsSelected])
   {
@@ -511,20 +511,20 @@ LABEL_12:
 {
   if (![(CNContactCardFieldPicker *)self isNameDropSession]|| [(CNContactCardFieldPicker *)self isAnyHandleSelected])
   {
-    v3 = [(CNContactCardFieldPicker *)self contacts];
-    v4 = [v3 count];
+    contacts = [(CNContactCardFieldPicker *)self contacts];
+    v4 = [contacts count];
 
-    v5 = [(CNContactCardFieldPicker *)self contacts];
+    contacts2 = [(CNContactCardFieldPicker *)self contacts];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__CNContactCardFieldPicker_saveFilteredContacts__block_invoke;
     v8[3] = &unk_1E74E3140;
     v8[4] = self;
     v8[5] = v4;
-    v6 = [v5 _cn_map:v8];
+    v6 = [contacts2 _cn_map:v8];
 
-    v7 = [(CNContactCardFieldPicker *)self delegate];
-    [v7 contactCardFieldPicker:self didFinishWithContacts:v6];
+    delegate = [(CNContactCardFieldPicker *)self delegate];
+    [delegate contactCardFieldPicker:self didFinishWithContacts:v6];
   }
 }
 
@@ -684,7 +684,7 @@ id __48__CNContactCardFieldPicker_saveFilteredContacts__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   [(CNContactCardFieldPicker *)self dismissViewControllerAnimated:1 completion:0];
 
@@ -693,9 +693,9 @@ id __48__CNContactCardFieldPicker_saveFilteredContacts__block_invoke(uint64_t a1
 
 - (BOOL)isInActivityController
 {
-  v2 = [(CNContactCardFieldPicker *)self navigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 count] > 1;
+  navigationController = [(CNContactCardFieldPicker *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v4 = [viewControllers count] > 1;
 
   return v4;
 }
@@ -704,32 +704,32 @@ id __48__CNContactCardFieldPicker_saveFilteredContacts__block_invoke(uint64_t a1
 {
   if ([(CNContactCardFieldPicker *)self isNameDropSession])
   {
-    v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:3 target:self action:sel_done_];
-    v3 = [(CNContactCardFieldPicker *)self navigationItem];
-    [v3 setRightBarButtonItem:v11];
+    navigationItem4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:3 target:self action:sel_done_];
+    navigationItem = [(CNContactCardFieldPicker *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem4];
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v4 userInterfaceIdiom] != 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v5 = [(CNContactCardFieldPicker *)self isInActivityController];
+  isInActivityController = [(CNContactCardFieldPicker *)self isInActivityController];
 
-  if (!v5)
+  if (!isInActivityController)
   {
 LABEL_7:
-    v7 = [(CNContactCardFieldPicker *)self navigationItem];
-    v8 = [v7 rightBarButtonItem];
+    navigationItem2 = [(CNContactCardFieldPicker *)self navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
 
-    if (!v8)
+    if (!rightBarButtonItem)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_done_];
-      v10 = [(CNContactCardFieldPicker *)self navigationItem];
-      [v10 setRightBarButtonItem:v9];
+      navigationItem3 = [(CNContactCardFieldPicker *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:v9];
     }
 
     v6 = 0;
@@ -738,124 +738,124 @@ LABEL_7:
 
   v6 = 1;
 LABEL_10:
-  v11 = [(CNContactCardFieldPicker *)self navigationItem];
-  v3 = [v11 rightBarButtonItem];
-  [v3 setHidden:v6];
+  navigationItem4 = [(CNContactCardFieldPicker *)self navigationItem];
+  navigationItem = [navigationItem4 rightBarButtonItem];
+  [navigationItem setHidden:v6];
 LABEL_11:
 }
 
 - (void)setUpToggleSelectAllFieldsButton
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
+  toggleSelectAllFieldsButton = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
 
-  if (v3)
+  if (toggleSelectAllFieldsButton)
   {
     [(CNContactCardFieldPicker *)self updateControllerButtons];
   }
 
   else
   {
-    v4 = [(CNContactCardFieldPicker *)self titleForSelectAllFieldsButton];
-    v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v4 style:0 target:self action:sel_toggleSelectionOfFields_];
+    titleForSelectAllFieldsButton = [(CNContactCardFieldPicker *)self titleForSelectAllFieldsButton];
+    v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:titleForSelectAllFieldsButton style:0 target:self action:sel_toggleSelectionOfFields_];
     [(CNContactCardFieldPicker *)self setToggleSelectAllFieldsButton:v5];
   }
 
-  v6 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-  v7 = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
-  v10[1] = v7;
-  v10[2] = v6;
+  flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+  toggleSelectAllFieldsButton2 = [(CNContactCardFieldPicker *)self toggleSelectAllFieldsButton];
+  v10[1] = toggleSelectAllFieldsButton2;
+  v10[2] = flexibleSpaceItem;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
   [(CNContactCardFieldPicker *)self setToolbarItems:v8];
 
-  v9 = [(CNContactCardFieldPicker *)self navigationController];
-  [v9 setToolbarHidden:0];
+  navigationController = [(CNContactCardFieldPicker *)self navigationController];
+  [navigationController setToolbarHidden:0];
 }
 
 - (void)setUpTableView
 {
   v40[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
-  v4 = [(CNContactCardFieldPicker *)self view];
-  [v4 bounds];
+  view = [(CNContactCardFieldPicker *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:2 style:?];
   [(CNContactCardFieldPicker *)self setTableView:v5];
 
-  v6 = [(CNContactCardFieldPicker *)self tableView];
-  [v6 setDelegate:self];
+  tableView = [(CNContactCardFieldPicker *)self tableView];
+  [tableView setDelegate:self];
 
-  v7 = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
-  v8 = [(CNContactCardFieldPicker *)self tableView];
-  [v8 setDataSource:v7];
+  fieldPickerDataSource = [(CNContactCardFieldPicker *)self fieldPickerDataSource];
+  tableView2 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView2 setDataSource:fieldPickerDataSource];
 
-  v9 = [(CNContactCardFieldPicker *)self tableView];
-  [v9 setAllowsMultipleSelection:1];
+  tableView3 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView3 setAllowsMultipleSelection:1];
 
   v10 = +[CNUIColorRepository groupsInsetBackgroundColor];
 
   if (v10)
   {
     v11 = +[CNUIColorRepository groupsInsetBackgroundColor];
-    v12 = [(CNContactCardFieldPicker *)self tableView];
-    [v12 setBackgroundColor:v11];
+    tableView4 = [(CNContactCardFieldPicker *)self tableView];
+    [tableView4 setBackgroundColor:v11];
   }
 
-  v13 = [(CNContactCardFieldPicker *)self tableView];
-  [v13 setSectionFooterHeight:0.0];
+  tableView5 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView5 setSectionFooterHeight:0.0];
 
-  v14 = [(CNContactCardFieldPicker *)self tableView];
-  [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"contactCardFieldPickerCell"];
+  tableView6 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:@"contactCardFieldPickerCell"];
 
-  v15 = [(CNContactCardFieldPicker *)self tableView];
-  [v15 registerClass:objc_opt_class() forCellReuseIdentifier:@"contactCardFieldPickerPhotoCell"];
+  tableView7 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView7 registerClass:objc_opt_class() forCellReuseIdentifier:@"contactCardFieldPickerPhotoCell"];
 
-  v16 = [(CNContactCardFieldPicker *)self view];
-  v17 = [(CNContactCardFieldPicker *)self tableView];
-  [v16 addSubview:v17];
+  view2 = [(CNContactCardFieldPicker *)self view];
+  tableView8 = [(CNContactCardFieldPicker *)self tableView];
+  [view2 addSubview:tableView8];
 
-  v39 = [(CNContactCardFieldPicker *)self tableView];
-  v37 = [v39 leadingAnchor];
-  v38 = [(CNContactCardFieldPicker *)self view];
-  v36 = [v38 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  tableView9 = [(CNContactCardFieldPicker *)self tableView];
+  leadingAnchor = [tableView9 leadingAnchor];
+  view3 = [(CNContactCardFieldPicker *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[0] = v35;
-  v34 = [(CNContactCardFieldPicker *)self tableView];
-  v32 = [v34 trailingAnchor];
-  v33 = [(CNContactCardFieldPicker *)self view];
-  v31 = [v33 trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  tableView10 = [(CNContactCardFieldPicker *)self tableView];
+  trailingAnchor = [tableView10 trailingAnchor];
+  view4 = [(CNContactCardFieldPicker *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[1] = v30;
-  v29 = [(CNContactCardFieldPicker *)self tableView];
-  v18 = [v29 topAnchor];
-  v19 = [(CNContactCardFieldPicker *)self view];
-  v20 = [v19 topAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  tableView11 = [(CNContactCardFieldPicker *)self tableView];
+  topAnchor = [tableView11 topAnchor];
+  view5 = [(CNContactCardFieldPicker *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[2] = v21;
-  v22 = [(CNContactCardFieldPicker *)self tableView];
-  v23 = [v22 bottomAnchor];
-  v24 = [(CNContactCardFieldPicker *)self view];
-  v25 = [v24 bottomAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  tableView12 = [(CNContactCardFieldPicker *)self tableView];
+  bottomAnchor = [tableView12 bottomAnchor];
+  view6 = [(CNContactCardFieldPicker *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[3] = v26;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v28];
-  v27 = [(CNContactCardFieldPicker *)self tableView];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView13 = [(CNContactCardFieldPicker *)self tableView];
+  [tableView13 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CNContactCardFieldPicker;
-  [(CNContactCardFieldPicker *)&v3 viewDidDisappear:a3];
+  [(CNContactCardFieldPicker *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNContactCardFieldPicker;
-  [(CNContactCardFieldPicker *)&v4 viewWillAppear:a3];
+  [(CNContactCardFieldPicker *)&v4 viewWillAppear:appear];
   [(CNContactCardFieldPicker *)self setUpDoneButton];
   if (![(CNContactCardFieldPicker *)self isNameDropSession])
   {
@@ -885,16 +885,16 @@ LABEL_11:
   if (v3)
   {
     v4 = +[CNUIColorRepository groupsInsetBackgroundColor];
-    v5 = [(CNContactCardFieldPicker *)self view];
-    [v5 setBackgroundColor:v4];
+    view = [(CNContactCardFieldPicker *)self view];
+    [view setBackgroundColor:v4];
   }
 
   if ([(CNContactCardFieldPicker *)self isNameDropSession])
   {
     v6 = CNContactsUIBundle();
     v7 = [v6 localizedStringForKey:@"SHARE_BOOP_CONTACT_FIELDS_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-    v8 = [(CNContactCardFieldPicker *)self navigationItem];
-    [v8 setTitle:v7];
+    navigationItem = [(CNContactCardFieldPicker *)self navigationItem];
+    [navigationItem setTitle:v7];
   }
 
   else
@@ -902,82 +902,82 @@ LABEL_11:
     v9 = MEMORY[0x1E696AEC0];
     v6 = CNContactsUIBundle();
     v7 = [v6 localizedStringForKey:@"SHARE_SELECTED_FIELDS_SHEET_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-    v8 = [(CNContactCardFieldPicker *)self contacts];
-    v10 = [v9 localizedStringWithFormat:v7, objc_msgSend(v8, "count")];
-    v11 = [(CNContactCardFieldPicker *)self navigationItem];
-    [v11 setTitle:v10];
+    navigationItem = [(CNContactCardFieldPicker *)self contacts];
+    v10 = [v9 localizedStringWithFormat:v7, objc_msgSend(navigationItem, "count")];
+    navigationItem2 = [(CNContactCardFieldPicker *)self navigationItem];
+    [navigationItem2 setTitle:v10];
   }
 
   [(CNContactCardFieldPicker *)self setUpTableView];
 }
 
-- (CNContactCardFieldPicker)initWithContacts:(id)a3 isNameDropSession:(BOOL)a4 fieldSelections:(id)a5
+- (CNContactCardFieldPicker)initWithContacts:(id)contacts isNameDropSession:(BOOL)session fieldSelections:(id)selections
 {
-  v6 = a4;
+  sessionCopy = session;
   v24[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  contactsCopy = contacts;
+  selectionsCopy = selections;
   v23.receiver = self;
   v23.super_class = CNContactCardFieldPicker;
   v11 = [(CNContactCardFieldPicker *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contacts, a3);
-    v12->_isNameDropSession = v6;
+    objc_storeStrong(&v11->_contacts, contacts);
+    v12->_isNameDropSession = sessionCopy;
     v13 = [CNContactCardFieldPickerDataSource alloc];
     v14 = v13;
-    if (v6)
+    if (sessionCopy)
     {
       v15 = *MEMORY[0x1E695C240];
       v24[0] = *MEMORY[0x1E695C278];
       v24[1] = v15;
       v24[2] = *MEMORY[0x1E695C230];
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
-      v17 = [(CNContactCardFieldPickerDataSource *)v14 initWithContacts:v9 hiddenProperties:v16];
+      v17 = [(CNContactCardFieldPickerDataSource *)v14 initWithContacts:contactsCopy hiddenProperties:v16];
       fieldPickerDataSource = v12->_fieldPickerDataSource;
       v12->_fieldPickerDataSource = v17;
     }
 
     else
     {
-      v19 = [(CNContactCardFieldPickerDataSource *)v13 initWithContacts:v9];
+      v19 = [(CNContactCardFieldPickerDataSource *)v13 initWithContacts:contactsCopy];
       v20 = v12->_fieldPickerDataSource;
       v12->_fieldPickerDataSource = v19;
 
       v12->_shouldSelectDefaultFieldKeys = 1;
     }
 
-    v12->_shouldSelectDefaultIndividualFields = v10 != 0;
-    objc_storeStrong(&v12->_defaultFieldSelections, a5);
+    v12->_shouldSelectDefaultIndividualFields = selectionsCopy != 0;
+    objc_storeStrong(&v12->_defaultFieldSelections, selections);
     v21 = v12;
   }
 
   return v12;
 }
 
-- (CNContactCardFieldPicker)initWithNameDrop:(id)a3 fieldSelections:(id)a4
+- (CNContactCardFieldPicker)initWithNameDrop:(id)drop fieldSelections:(id)selections
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  dropCopy = drop;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  selectionsCopy = selections;
+  dropCopy2 = drop;
+  v9 = [v6 arrayWithObjects:&dropCopy count:1];
 
-  v10 = [(CNContactCardFieldPicker *)self initWithContacts:v9 isNameDropSession:1 fieldSelections:v7, v12, v13];
+  v10 = [(CNContactCardFieldPicker *)self initWithContacts:v9 isNameDropSession:1 fieldSelections:selectionsCopy, dropCopy, v13];
   return v10;
 }
 
-- (CNContactCardFieldPicker)initWithContact:(id)a3
+- (CNContactCardFieldPicker)initWithContact:(id)contact
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  contactCopy2 = contact;
+  v6 = [v4 arrayWithObjects:&contactCopy count:1];
 
-  v7 = [(CNContactCardFieldPicker *)self initWithContacts:v6, v9, v10];
+  v7 = [(CNContactCardFieldPicker *)self initWithContacts:v6, contactCopy, v10];
   return v7;
 }
 
@@ -994,11 +994,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)privateCardPropertiesForContacts:(id)a3
++ (id)privateCardPropertiesForContacts:(id)contacts
 {
   v10[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = *MEMORY[0x1E695C1F0];
   v10[0] = @"birthdays";
   v10[1] = v5;
@@ -1009,19 +1009,19 @@ LABEL_11:
   v10[4] = *MEMORY[0x1E695C328];
   v10[5] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:6];
-  [v4 addObjectsFromArray:v8];
+  [array addObjectsFromArray:v8];
 
-  if ([CNContactCardFieldPickerDataSource canSharePronounsForContacts:v3])
+  if ([CNContactCardFieldPickerDataSource canSharePronounsForContacts:contactsCopy])
   {
-    [v4 addObject:*MEMORY[0x1E695C1C0]];
+    [array addObject:*MEMORY[0x1E695C1C0]];
   }
 
-  if ([CNContactCardFieldPickerDataSource isSharingMeContactForContacts:v3])
+  if ([CNContactCardFieldPickerDataSource isSharingMeContactForContacts:contactsCopy])
   {
-    [v4 addObject:*MEMORY[0x1E695C3A8]];
+    [array addObject:*MEMORY[0x1E695C3A8]];
   }
 
-  return v4;
+  return array;
 }
 
 + (id)imageProperties
@@ -1055,19 +1055,19 @@ void __43__CNContactCardFieldPicker_imageProperties__block_invoke()
   imageProperties_cn_once_object_1 = v4;
 }
 
-+ (BOOL)isProperty:(id)a3 value:(id)a4 inContact:(id)a5
++ (BOOL)isProperty:(id)property value:(id)value inContact:(id)contact
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v9 isKeyAvailable:v7])
+  propertyCopy = property;
+  valueCopy = value;
+  contactCopy = contact;
+  if (![contactCopy isKeyAvailable:propertyCopy])
   {
     v20 = 0;
     goto LABEL_19;
   }
 
-  v10 = [v9 valueForKey:v7];
+  v10 = [contactCopy valueForKey:propertyCopy];
   if (!v10)
   {
     v20 = 0;
@@ -1080,13 +1080,13 @@ LABEL_16:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = objc_opt_class();
-    v22 = [v8 value];
-    v20 = [v21 isContactObject:v22 equivalentTo:v10];
+    value = [valueCopy value];
+    v20 = [v21 isContactObject:value equivalentTo:v10];
 
     goto LABEL_16;
   }
 
-  v24 = v7;
+  v24 = propertyCopy;
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -1108,9 +1108,9 @@ LABEL_16:
 
         v16 = *(*(&v25 + 1) + 8 * i);
         v17 = objc_opt_class();
-        v18 = [v8 value];
-        v19 = [v16 value];
-        LOBYTE(v17) = [v17 isContactObject:v18 equivalentTo:v19];
+        value2 = [valueCopy value];
+        value3 = [v16 value];
+        LOBYTE(v17) = [v17 isContactObject:value2 equivalentTo:value3];
 
         if (v17)
         {
@@ -1132,21 +1132,21 @@ LABEL_16:
 
   v20 = 0;
 LABEL_18:
-  v7 = v24;
+  propertyCopy = v24;
 LABEL_19:
 
   return v20;
 }
 
-+ (BOOL)isContactObject:(id)a3 equivalentTo:(id)a4
++ (BOOL)isContactObject:(id)object equivalentTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = objectCopy;
+    v8 = toCopy;
     v9 = MEMORY[0x1E69966F0];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -1195,7 +1195,7 @@ LABEL_19:
 
   else
   {
-    v22 = [MEMORY[0x1E69966F0] isObject:v5 equalToOther:v6];
+    v22 = [MEMORY[0x1E69966F0] isObject:objectCopy equalToOther:toCopy];
   }
 
   return v22;

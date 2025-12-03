@@ -1,44 +1,44 @@
 @interface _UIGestureStudyClickInteraction
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (CGPoint)originalCentroid;
 - (NSString)description;
 - (NSString)eventName;
 - (UIView)view;
-- (_UIGestureStudyClickInteraction)initWithTarget:(id)a3 action:(SEL)a4 useForce:(BOOL)a5;
+- (_UIGestureStudyClickInteraction)initWithTarget:(id)target action:(SEL)action useForce:(BOOL)force;
 - (double)duration;
 - (double)movement;
 - (id)target;
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIGestureStudyClickInteraction
 
-- (_UIGestureStudyClickInteraction)initWithTarget:(id)a3 action:(SEL)a4 useForce:(BOOL)a5
+- (_UIGestureStudyClickInteraction)initWithTarget:(id)target action:(SEL)action useForce:(BOOL)force
 {
-  v5 = a5;
-  v8 = a3;
+  forceCopy = force;
+  targetCopy = target;
   v17.receiver = self;
   v17.super_class = _UIGestureStudyClickInteraction;
   v9 = [(_UIGestureStudyClickInteraction *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    [(_UIGestureStudyClickInteraction *)v9 setTarget:v8];
-    [(_UIGestureStudyClickInteraction *)v10 setAction:a4];
-    [(_UIGestureStudyClickInteraction *)v10 setUsesForce:v5];
+    [(_UIGestureStudyClickInteraction *)v9 setTarget:targetCopy];
+    [(_UIGestureStudyClickInteraction *)v10 setAction:action];
+    [(_UIGestureStudyClickInteraction *)v10 setUsesForce:forceCopy];
     objc_opt_class();
     v11 = objc_opt_new();
     [(_UIGestureStudyClickInteraction *)v10 setDriver:v11];
 
-    v12 = [(_UIGestureStudyClickInteraction *)v10 driver];
-    [v12 setDelegate:v10];
+    driver = [(_UIGestureStudyClickInteraction *)v10 driver];
+    [driver setDelegate:v10];
 
-    v13 = [(_UIGestureStudyClickInteraction *)v10 driver];
-    v14 = _UIClickPresentationAllowableMovementForDriver(v13, 0);
-    v15 = [(_UIGestureStudyClickInteraction *)v10 driver];
-    [v15 setAllowableMovement:v14];
+    driver2 = [(_UIGestureStudyClickInteraction *)v10 driver];
+    v14 = _UIClickPresentationAllowableMovementForDriver(driver2, 0);
+    driver3 = [(_UIGestureStudyClickInteraction *)v10 driver];
+    [driver3 setAllowableMovement:v14];
 
     [(_UIGestureStudyClickInteraction *)v10 setStartTimestamp:978307200.0];
     [(_UIGestureStudyClickInteraction *)v10 setOriginalCentroid:1.79769313e308, 1.79769313e308];
@@ -58,54 +58,54 @@
   return v6;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v3 = [(_UIGestureStudyClickInteraction *)self driver];
-  [v3 setView:0];
+  driver = [(_UIGestureStudyClickInteraction *)self driver];
+  [driver setView:0];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v6 = [(_UIGestureStudyClickInteraction *)self driver];
-    [v6 setView:WeakRetained];
+    driver = [(_UIGestureStudyClickInteraction *)self driver];
+    [driver setView:WeakRetained];
   }
 }
 
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 > 1)
+  driverCopy = driver;
+  if (event > 1)
   {
-    if (a4 != 2)
+    if (event != 2)
     {
-      if (a4 != 3)
+      if (event != 3)
       {
         goto LABEL_15;
       }
 
-      v10 = v6;
+      v10 = driverCopy;
       [(_UIGestureStudyClickInteraction *)self setStartTimestamp:978307200.0];
       [(_UIGestureStudyClickInteraction *)self setOriginalCentroid:1.79769313e308, 1.79769313e308];
-      v6 = v10;
+      driverCopy = v10;
       v7 = 0;
       goto LABEL_8;
     }
 
-    v10 = v6;
-    v8 = [(_UIGestureStudyClickInteraction *)self target];
-    v9 = [(_UIGestureStudyClickInteraction *)self action];
+    v10 = driverCopy;
+    target = [(_UIGestureStudyClickInteraction *)self target];
+    action = [(_UIGestureStudyClickInteraction *)self action];
     if (dyld_program_sdk_at_least())
     {
-      [v8 v9];
+      [target action];
     }
 
     else
     {
-      [v8 performSelector:v9 withObject:self];
+      [target performSelector:action withObject:self];
     }
 
 LABEL_13:
@@ -113,28 +113,28 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!event)
   {
-    v10 = v6;
+    v10 = driverCopy;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(_UIGestureStudyClickInteraction *)self setStartTimestamp:?];
-    v8 = [(_UIGestureStudyClickInteraction *)self view];
-    [(_UIGestureStudyClickInteraction *)self locationInCoordinateSpace:v8];
+    target = [(_UIGestureStudyClickInteraction *)self view];
+    [(_UIGestureStudyClickInteraction *)self locationInCoordinateSpace:target];
     [(_UIGestureStudyClickInteraction *)self setOriginalCentroid:?];
     goto LABEL_13;
   }
 
-  if (a4 != 1)
+  if (event != 1)
   {
     goto LABEL_15;
   }
 
-  v10 = v6;
+  v10 = driverCopy;
   v7 = 1;
 LABEL_8:
-  [v10 setAllowableMovement:{_UIClickPresentationAllowableMovementForDriver(v6, v7)}];
+  [v10 setAllowableMovement:{_UIClickPresentationAllowableMovementForDriver(driverCopy, v7)}];
 LABEL_14:
-  v6 = v10;
+  driverCopy = v10;
 LABEL_15:
 }
 
@@ -153,11 +153,11 @@ LABEL_15:
   return v2;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIGestureStudyClickInteraction *)self driver];
-  [v5 locationInCoordinateSpace:v4];
+  spaceCopy = space;
+  driver = [(_UIGestureStudyClickInteraction *)self driver];
+  [driver locationInCoordinateSpace:spaceCopy];
   v7 = v6;
   v9 = v8;
 
@@ -192,8 +192,8 @@ LABEL_15:
     return 0.0;
   }
 
-  v6 = [(_UIGestureStudyClickInteraction *)self view];
-  [(_UIGestureStudyClickInteraction *)self locationInCoordinateSpace:v6];
+  view = [(_UIGestureStudyClickInteraction *)self view];
+  [(_UIGestureStudyClickInteraction *)self locationInCoordinateSpace:view];
   v8 = v7;
   v10 = v9;
 

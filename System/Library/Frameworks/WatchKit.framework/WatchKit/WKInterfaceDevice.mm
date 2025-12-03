@@ -1,7 +1,7 @@
 @interface WKInterfaceDevice
 + (id)currentDevice;
-- (BOOL)addCachedImage:(id)a3 name:(id)a4;
-- (BOOL)addCachedImageWithData:(id)a3 name:(id)a4;
+- (BOOL)addCachedImage:(id)image name:(id)name;
+- (BOOL)addCachedImageWithData:(id)data name:(id)name;
 - (CGRect)screenBounds;
 - (NSDictionary)cachedImages;
 - (NSString)localizedModel;
@@ -11,7 +11,7 @@
 - (NSString)systemVersion;
 - (void)name;
 - (void)removeAllCachedImages;
-- (void)removeCachedImageWithName:(id)a3;
+- (void)removeCachedImageWithName:(id)name;
 - (void)systemName;
 - (void)systemVersion;
 @end
@@ -192,9 +192,9 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   deviceSystemVersion = self->_deviceSystemVersion;
   if (!deviceSystemVersion)
   {
-    v4 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v5 = [v4 getDevices];
-    v6 = [v5 firstObject];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getDevices = [sharedInstance getDevices];
+    firstObject = [getDevices firstObject];
 
     v13 = 0;
     v14 = &v13;
@@ -216,7 +216,7 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
     }
 
     v9 = *v7;
-    v10 = [v6 valueForProperty:v9];
+    v10 = [firstObject valueForProperty:v9];
     v11 = self->_deviceSystemVersion;
     self->_deviceSystemVersion = v10;
 
@@ -231,9 +231,9 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   deviceName = self->_deviceName;
   if (!deviceName)
   {
-    v4 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v5 = [v4 getDevices];
-    v6 = [v5 firstObject];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getDevices = [sharedInstance getDevices];
+    firstObject = [getDevices firstObject];
 
     v13 = 0;
     v14 = &v13;
@@ -255,7 +255,7 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
     }
 
     v9 = *v7;
-    v10 = [v6 valueForProperty:v9];
+    v10 = [firstObject valueForProperty:v9];
     v11 = self->_deviceName;
     self->_deviceName = v10;
 
@@ -270,12 +270,12 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   deviceModel = self->_deviceModel;
   if (!deviceModel)
   {
-    v4 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v5 = [v4 getDevices];
-    v6 = [v5 firstObject];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getDevices = [sharedInstance getDevices];
+    firstObject = [getDevices firstObject];
 
     v7 = getNRDevicePropertyLocalizedModel();
-    v8 = [v6 valueForProperty:v7];
+    v8 = [firstObject valueForProperty:v7];
     v9 = self->_deviceModel;
     self->_deviceModel = v8;
 
@@ -290,12 +290,12 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   deviceLocalizedModel = self->_deviceLocalizedModel;
   if (!deviceLocalizedModel)
   {
-    v4 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v5 = [v4 getDevices];
-    v6 = [v5 firstObject];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getDevices = [sharedInstance getDevices];
+    firstObject = [getDevices firstObject];
 
     v7 = getNRDevicePropertyLocalizedModel();
-    v8 = [v6 valueForProperty:v7];
+    v8 = [firstObject valueForProperty:v7];
     v9 = self->_deviceLocalizedModel;
     self->_deviceLocalizedModel = v8;
 
@@ -310,9 +310,9 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   deviceSystemName = self->_deviceSystemName;
   if (!deviceSystemName)
   {
-    v4 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v5 = [v4 getDevices];
-    v6 = [v5 firstObject];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getDevices = [sharedInstance getDevices];
+    firstObject = [getDevices firstObject];
 
     v14 = 0;
     v15 = &v14;
@@ -334,7 +334,7 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
     }
 
     v9 = *v7;
-    v10 = [v6 valueForProperty:v9];
+    v10 = [firstObject valueForProperty:v9];
     v11 = self->_deviceSystemName;
     self->_deviceSystemName = v10;
 
@@ -350,14 +350,14 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   return deviceSystemName;
 }
 
-- (BOOL)addCachedImage:(id)a3 name:(id)a4
+- (BOOL)addCachedImage:(id)image name:(id)name
 {
-  v5 = a4;
-  if (a3)
+  nameCopy = name;
+  if (image)
   {
-    v6 = [SPRemoteInterface SerializablePropertyValue:a3];
+    v6 = [SPRemoteInterface SerializablePropertyValue:image];
     v7 = +[SPCompanionAssetCache sharedInstance];
-    v8 = [v5 copy];
+    v8 = [nameCopy copy];
     v9 = [v7 addImageToPermanentCache:v6 withName:v8];
   }
 
@@ -375,15 +375,15 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   return v9;
 }
 
-- (BOOL)addCachedImageWithData:(id)a3 name:(id)a4
+- (BOOL)addCachedImageWithData:(id)data name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  nameCopy = name;
+  if (dataCopy)
   {
     v7 = +[SPCompanionAssetCache sharedInstance];
-    v8 = [v5 copy];
-    v9 = [v6 copy];
+    v8 = [dataCopy copy];
+    v9 = [nameCopy copy];
     v10 = [v7 addImageToPermanentCache:v8 withName:v9];
   }
 
@@ -401,11 +401,11 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
   return v10;
 }
 
-- (void)removeCachedImageWithName:(id)a3
+- (void)removeCachedImageWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v5 = +[SPCompanionAssetCache sharedInstance];
-  v4 = [v3 copy];
+  v4 = [nameCopy copy];
 
   [v5 removeImageFromPermanentCacheWithName:v4];
 }
@@ -419,9 +419,9 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke()
 - (NSDictionary)cachedImages
 {
   v2 = +[SPCompanionAssetCache sharedInstance];
-  v3 = [v2 cachedImages];
+  cachedImages = [v2 cachedImages];
 
-  return v3;
+  return cachedImages;
 }
 
 - (CGRect)screenBounds
@@ -484,27 +484,27 @@ void __34__WKInterfaceDevice_currentDevice__block_invoke_cold_5()
 
 - (void)systemVersion
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNRDevicePropertySystemVersion(void)"];
-  [v0 handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:44 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:44 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)name
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNRDevicePropertyName(void)"];
-  [v0 handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:45 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:45 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)systemName
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNRDevicePropertySystemName(void)"];
-  [v0 handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:47 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"WKInterfaceDevice.m" lineNumber:47 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

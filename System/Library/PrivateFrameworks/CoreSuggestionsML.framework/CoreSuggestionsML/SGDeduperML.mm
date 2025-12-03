@@ -1,23 +1,23 @@
 @interface SGDeduperML
-+ (id)bucketerWithEqualityTest:(id)a3;
-+ (id)bucketerWithLabeledBuckets:(id)a3;
-+ (id)bucketerWithMapping:(id)a3;
-+ (id)dedupe:(id)a3 bucketer:(id)a4 resolver:(id)a5;
-+ (id)resolveByPairs:(id)a3;
-+ (id)resolveByScoreBreakTiesArbitrarily:(id)a3;
++ (id)bucketerWithEqualityTest:(id)test;
++ (id)bucketerWithLabeledBuckets:(id)buckets;
++ (id)bucketerWithMapping:(id)mapping;
++ (id)dedupe:(id)dedupe bucketer:(id)bucketer resolver:(id)resolver;
++ (id)resolveByPairs:(id)pairs;
++ (id)resolveByScoreBreakTiesArbitrarily:(id)arbitrarily;
 @end
 
 @implementation SGDeduperML
 
-+ (id)resolveByScoreBreakTiesArbitrarily:(id)a3
++ (id)resolveByScoreBreakTiesArbitrarily:(id)arbitrarily
 {
-  v3 = a3;
+  arbitrarilyCopy = arbitrarily;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SGDeduperML_resolveByScoreBreakTiesArbitrarily___block_invoke;
   v7[3] = &unk_278EB82B8;
-  v8 = v3;
-  v4 = v3;
+  v8 = arbitrarilyCopy;
+  v4 = arbitrarilyCopy;
   v5 = MEMORY[0x24C1B0A20](v7);
 
   return v5;
@@ -83,15 +83,15 @@ LABEL_12:
   return v14;
 }
 
-+ (id)resolveByPairs:(id)a3
++ (id)resolveByPairs:(id)pairs
 {
-  v3 = a3;
+  pairsCopy = pairs;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SGDeduperML_resolveByPairs___block_invoke;
   v7[3] = &unk_278EB82B8;
-  v8 = v3;
-  v4 = v3;
+  v8 = pairsCopy;
+  v4 = pairsCopy;
   v5 = MEMORY[0x24C1B0A20](v7);
 
   return v5;
@@ -157,15 +157,15 @@ LABEL_13:
   return v10;
 }
 
-+ (id)bucketerWithEqualityTest:(id)a3
++ (id)bucketerWithEqualityTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SGDeduperML_bucketerWithEqualityTest___block_invoke;
   v7[3] = &unk_278EB8290;
-  v8 = v3;
-  v4 = v3;
+  v8 = testCopy;
+  v4 = testCopy;
   v5 = MEMORY[0x24C1B0A20](v7);
 
   return v5;
@@ -253,15 +253,15 @@ LABEL_16:
   return v19;
 }
 
-+ (id)bucketerWithLabeledBuckets:(id)a3
++ (id)bucketerWithLabeledBuckets:(id)buckets
 {
-  v3 = a3;
+  bucketsCopy = buckets;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SGDeduperML_bucketerWithLabeledBuckets___block_invoke;
   v7[3] = &unk_278EB8268;
-  v8 = v3;
-  v4 = v3;
+  v8 = bucketsCopy;
+  v4 = bucketsCopy;
   v5 = MEMORY[0x24C1B0A20](v7);
 
   return v5;
@@ -314,15 +314,15 @@ id __42__SGDeduperML_bucketerWithLabeledBuckets___block_invoke(uint64_t a1, void
   return v4;
 }
 
-+ (id)bucketerWithMapping:(id)a3
++ (id)bucketerWithMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SGDeduperML_bucketerWithMapping___block_invoke;
   v7[3] = &unk_278EB8240;
-  v8 = v3;
-  v4 = v3;
+  v8 = mappingCopy;
+  v4 = mappingCopy;
   v5 = MEMORY[0x24C1B0A20](v7);
 
   return v5;
@@ -381,12 +381,12 @@ id __35__SGDeduperML_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
   return v15;
 }
 
-+ (id)dedupe:(id)a3 bucketer:(id)a4 resolver:(id)a5
++ (id)dedupe:(id)dedupe bucketer:(id)bucketer resolver:(id)resolver
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
+  dedupeCopy = dedupe;
+  bucketerCopy = bucketer;
+  resolverCopy = resolver;
   Mutable = CFSetCreateMutable(0, 16, 0);
   if (!Mutable)
   {
@@ -399,9 +399,9 @@ id __35__SGDeduperML_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v29 = v8;
-  v30 = v7;
-  v11 = (*(v8 + 2))(v8, v7);
+  v29 = bucketerCopy;
+  v30 = dedupeCopy;
+  v11 = (*(bucketerCopy + 2))(bucketerCopy, dedupeCopy);
   v12 = [v11 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v12)
   {
@@ -428,7 +428,7 @@ id __35__SGDeduperML_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v16 = v31[2](v31, v15);
+          v16 = resolverCopy[2](resolverCopy, v15);
           v17 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v17)
           {

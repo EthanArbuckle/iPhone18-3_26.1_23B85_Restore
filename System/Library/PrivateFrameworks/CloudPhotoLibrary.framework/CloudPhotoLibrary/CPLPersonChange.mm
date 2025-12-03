@@ -1,64 +1,64 @@
 @interface CPLPersonChange
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3;
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3;
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding;
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality;
 + (BOOL)serverSupportsGraphPeopleHome;
 + (BOOL)serverSupportsMergeTargetRef;
-- (BOOL)validateRecordForTracker:(id)a3;
+- (BOOL)validateRecordForTracker:(id)tracker;
 - (NSDictionary)contactMatchingDictionary;
 - (id)mergeTargetPersonScopedIdentifier;
-- (void)setContactMatchingDictionary:(id)a3;
-- (void)setMergeTargetPersonScopedIdentifier:(id)a3;
+- (void)setContactMatchingDictionary:(id)dictionary;
+- (void)setMergeTargetPersonScopedIdentifier:(id)identifier;
 @end
 
 @implementation CPLPersonChange
 
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality
 {
-  v4 = a3;
-  if ([v4 isEqual:@"contactMatchingDictionary"])
+  equalityCopy = equality;
+  if ([equalityCopy isEqual:@"contactMatchingDictionary"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLPersonChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, equalityCopy);
   }
 
   return v5;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding
 {
-  v4 = a3;
-  if ([v4 isEqual:@"contactMatchingDictionary"])
+  codingCopy = coding;
+  if ([codingCopy isEqual:@"contactMatchingDictionary"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLPersonChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, codingCopy);
   }
 
   return v5;
 }
 
-- (void)setMergeTargetPersonScopedIdentifier:(id)a3
+- (void)setMergeTargetPersonScopedIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v5 = [v22 scopeIdentifier];
-  v6 = [(CPLRecordChange *)self scopedIdentifier];
-  v7 = [v6 scopeIdentifier];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  scopeIdentifier2 = [scopedIdentifier scopeIdentifier];
 
-  if (v5 && v7)
+  if (scopeIdentifier && scopeIdentifier2)
   {
-    v8 = [v5 isEqual:v7];
+    v8 = [scopeIdentifier isEqual:scopeIdentifier2];
 
     if ((v8 & 1) == 0)
     {
@@ -69,7 +69,7 @@
   else
   {
 
-    if (v5 | v7)
+    if (scopeIdentifier | scopeIdentifier2)
     {
 LABEL_4:
       if ((_CPLSilentLogging & 1) == 0)
@@ -78,45 +78,45 @@ LABEL_4:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = NSStringFromSelector(a2);
-          v11 = [(CPLRecordChange *)self scopedIdentifier];
-          v12 = [v11 scopeIdentifier];
-          v13 = [v22 scopeIdentifier];
+          scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+          scopeIdentifier3 = [scopedIdentifier2 scopeIdentifier];
+          scopeIdentifier4 = [identifierCopy scopeIdentifier];
           *buf = 138412802;
           v24 = v10;
           v25 = 2112;
-          v26 = v12;
+          v26 = scopeIdentifier3;
           v27 = 2112;
-          v28 = v13;
+          v28 = scopeIdentifier4;
           _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Invalid call to %@ with mismatched scope: %@ vs. %@", buf, 0x20u);
         }
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPersonChange.m"];
       v16 = NSStringFromSelector(a2);
-      v17 = [(CPLRecordChange *)self scopedIdentifier];
-      v18 = [v17 scopeIdentifier];
-      v19 = [v22 scopeIdentifier];
-      [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:64 description:{@"Invalid call to %@ with mismatched scope: %@ vs. %@", v16, v18, v19}];
+      scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+      scopeIdentifier5 = [scopedIdentifier3 scopeIdentifier];
+      scopeIdentifier6 = [identifierCopy scopeIdentifier];
+      [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:64 description:{@"Invalid call to %@ with mismatched scope: %@ vs. %@", v16, scopeIdentifier5, scopeIdentifier6}];
 
       abort();
     }
   }
 
-  v20 = [v22 identifier];
-  [(CPLPersonChange *)self setMergeTargetPersonIdentifier:v20];
+  identifier = [identifierCopy identifier];
+  [(CPLPersonChange *)self setMergeTargetPersonIdentifier:identifier];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
 - (id)mergeTargetPersonScopedIdentifier
 {
-  v3 = [(CPLPersonChange *)self mergeTargetPersonIdentifier];
-  if (v3)
+  mergeTargetPersonIdentifier = [(CPLPersonChange *)self mergeTargetPersonIdentifier];
+  if (mergeTargetPersonIdentifier)
   {
     v4 = [CPLScopedIdentifier alloc];
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:v5 identifier:v3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:scopedIdentifier identifier:mergeTargetPersonIdentifier];
   }
 
   else
@@ -127,13 +127,13 @@ LABEL_4:
   return v6;
 }
 
-- (void)setContactMatchingDictionary:(id)a3
+- (void)setContactMatchingDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
     v9 = 0;
-    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v9];
+    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v9];
     v5 = v9;
     if (!v4 && (_CPLSilentLogging & 1) == 0)
     {
@@ -162,11 +162,11 @@ LABEL_4:
 - (NSDictionary)contactMatchingDictionary
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(CPLPersonChange *)self contactDescriptor];
-  if (v2)
+  contactDescriptor = [(CPLPersonChange *)self contactDescriptor];
+  if (contactDescriptor)
   {
     v8 = 0;
-    v3 = [MEMORY[0x1E696AE40] propertyListWithData:v2 options:0 format:0 error:&v8];
+    v3 = [MEMORY[0x1E696AE40] propertyListWithData:contactDescriptor options:0 format:0 error:&v8];
     v4 = v8;
     if (!v3 && (_CPLSilentLogging & 1) == 0)
     {
@@ -254,21 +254,21 @@ uint64_t __65__CPLPersonChange_DefaultsSupport__serverSupportsGraphPeopleHome__b
   return MEMORY[0x1EEE66BB8](v2, v1);
 }
 
-- (BOOL)validateRecordForTracker:(id)a3
+- (BOOL)validateRecordForTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = CPLPersonChange;
-  if (![(CPLRecordChange *)&v9 validateRecordForTracker:v4])
+  if (![(CPLRecordChange *)&v9 validateRecordForTracker:trackerCopy])
   {
     goto LABEL_7;
   }
 
   if ([(CPLRecordChange *)self hasChangeType:2]&& +[CPLPersonChange serverSupportsGraphPeopleHome]&& ![(CPLPersonChange *)self verifiedType])
   {
-    v6 = [v4 pushChangeTasks];
-    v7 = [(CPLRecordChange *)self scopedIdentifier];
-    [v6 addTask:0 forRecordWithScopedIdentifier:v7];
+    pushChangeTasks = [trackerCopy pushChangeTasks];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    [pushChangeTasks addTask:0 forRecordWithScopedIdentifier:scopedIdentifier];
 
 LABEL_7:
     v5 = 0;

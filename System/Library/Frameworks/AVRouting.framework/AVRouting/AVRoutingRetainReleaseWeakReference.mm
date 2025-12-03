@@ -1,5 +1,5 @@
 @interface AVRoutingRetainReleaseWeakReference
-- (AVRoutingRetainReleaseWeakReference)initWithReferencedObject:(id)a3;
+- (AVRoutingRetainReleaseWeakReference)initWithReferencedObject:(id)object;
 - (id)description;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   [(AVRoutingRetainReleaseWeakReference *)&v3 dealloc];
 }
 
-- (AVRoutingRetainReleaseWeakReference)initWithReferencedObject:(id)a3
+- (AVRoutingRetainReleaseWeakReference)initWithReferencedObject:(id)object
 {
   v8.receiver = self;
   v8.super_class = AVRoutingRetainReleaseWeakReference;
@@ -23,8 +23,8 @@
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v4->_cachedReferencedObjectDescription = [v5 initWithFormat:@"<%@: %p>", NSStringFromClass(v6), a3];
-    objc_storeWeak(&v4->_weakStorage, a3);
+    v4->_cachedReferencedObjectDescription = [v5 initWithFormat:@"<%@: %p>", NSStringFromClass(v6), object];
+    objc_storeWeak(&v4->_weakStorage, object);
   }
 
   return v4;

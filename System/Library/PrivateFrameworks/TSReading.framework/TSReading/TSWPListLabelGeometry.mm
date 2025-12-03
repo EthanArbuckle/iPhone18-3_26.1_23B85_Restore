@@ -1,8 +1,8 @@
 @interface TSWPListLabelGeometry
 + (id)listLabelGeometry;
-- (BOOL)isEqual:(id)a3;
-- (TSWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -10,41 +10,41 @@
 
 + (id)listLabelGeometry
 {
-  v2 = [[a1 alloc] initWithScale:1 scaleWithText:1.0 baselineOffset:0.0];
+  v2 = [[self alloc] initWithScale:1 scaleWithText:1.0 baselineOffset:0.0];
 
   return v2;
 }
 
-- (TSWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5
+- (TSWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset
 {
   v9.receiver = self;
   v9.super_class = TSWPListLabelGeometry;
   result = [(TSWPListLabelGeometry *)&v9 init];
   if (result)
   {
-    result->mScaleWithText = a4;
-    result->mScale = a3;
-    result->mBaselineOffset = a5;
+    result->mScaleWithText = text;
+    result->mScale = scale;
+    result->mBaselineOffset = offset;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = a3 == self;
-  LOBYTE(self) = a3 == self;
-  if (a3)
+  selfCopy = self;
+  v4 = equal == self;
+  LOBYTE(self) = equal == self;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        mScale = v3->mScale;
-        v7 = *(a3 + 1);
-        LOBYTE(self) = (mScale == v7 || vabdd_f64(mScale, v7) < fabs(v7 * 0.000000999999997)) && ((mBaselineOffset = v3->mBaselineOffset, v9 = *(a3 + 2), mBaselineOffset == v9) || vabdd_f64(mBaselineOffset, v9) < fabs(v9 * 0.000000999999997)) && v3->mScaleWithText == *(a3 + 24);
+        mScale = selfCopy->mScale;
+        v7 = *(equal + 1);
+        LOBYTE(self) = (mScale == v7 || vabdd_f64(mScale, v7) < fabs(v7 * 0.000000999999997)) && ((mBaselineOffset = selfCopy->mBaselineOffset, v9 = *(equal + 2), mBaselineOffset == v9) || vabdd_f64(mBaselineOffset, v9) < fabs(v9 * 0.000000999999997)) && selfCopy->mScaleWithText == *(equal + 24);
       }
     }
   }
@@ -52,7 +52,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPListLabelGeometry alloc];
   mScaleWithText = self->mScaleWithText;

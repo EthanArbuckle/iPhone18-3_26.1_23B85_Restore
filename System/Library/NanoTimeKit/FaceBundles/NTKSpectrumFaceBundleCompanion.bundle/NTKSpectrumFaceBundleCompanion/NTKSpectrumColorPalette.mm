@@ -6,9 +6,9 @@
 - (id)_complicationColor;
 - (id)_fromColor;
 - (id)_toColor;
-- (id)hourHandInlayAtAngle:(id)a3;
-- (id)minuteHandInlayAtAngle:(id)a3;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)hourHandInlayAtAngle:(id)angle;
+- (id)minuteHandInlayAtAngle:(id)angle;
+- (id)swatchImageForSize:(CGSize)size;
 - (id)swatchPrimaryColor;
 @end
 
@@ -27,7 +27,7 @@
   if ([(NTKSpectrumColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKSpectrumColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
@@ -38,27 +38,27 @@
       goto LABEL_10;
     }
 
-    v6 = [(NTKSpectrumColorPalette *)self hasPrimaryColorRange];
-    v7 = [(NTKSpectrumColorPalette *)self primaryColor];
-    v3 = v7;
-    if (v6)
+    hasPrimaryColorRange = [(NTKSpectrumColorPalette *)self hasPrimaryColorRange];
+    primaryColor2 = [(NTKSpectrumColorPalette *)self primaryColor];
+    v3 = primaryColor2;
+    if (hasPrimaryColorRange)
     {
       v11 = 0;
       v8 = &v11;
-      sub_1170(v7, &v11, 0);
+      sub_1170(primaryColor2, &v11, 0);
     }
 
     else
     {
       v10 = 0;
       v8 = &v10;
-      sub_1264(v7, &v10, 0);
+      sub_1264(primaryColor2, &v10, 0);
     }
 
-    v4 = *v8;
+    primaryColor = *v8;
   }
 
-  v5 = v4;
+  v5 = primaryColor;
 
 LABEL_10:
 
@@ -69,8 +69,8 @@ LABEL_10:
 {
   if ([(NTKSpectrumColorPalette *)self isCompositePalette])
   {
-    v3 = [(NTKSpectrumColorPalette *)self fromColor];
-    v4 = [(NTKSpectrumColorPalette *)self toColor];
+    fromColor = [(NTKSpectrumColorPalette *)self fromColor];
+    toColor = [(NTKSpectrumColorPalette *)self toColor];
     v5 = NTKInterpolateBetweenColors();
   }
 
@@ -112,7 +112,7 @@ LABEL_10:
   if ([(NTKSpectrumColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKSpectrumColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
@@ -123,42 +123,42 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v6 = [(NTKSpectrumColorPalette *)self hasPrimaryColorRange];
-    v7 = [(NTKSpectrumColorPalette *)self primaryColor];
-    v3 = v7;
-    if (v6)
+    hasPrimaryColorRange = [(NTKSpectrumColorPalette *)self hasPrimaryColorRange];
+    primaryColor2 = [(NTKSpectrumColorPalette *)self primaryColor];
+    v3 = primaryColor2;
+    if (hasPrimaryColorRange)
     {
       v11 = 0;
       v8 = &v11;
-      sub_1170(v7, 0, &v11);
+      sub_1170(primaryColor2, 0, &v11);
     }
 
     else
     {
       v10 = 0;
       v8 = &v10;
-      sub_1264(v7, 0, &v10);
+      sub_1264(primaryColor2, 0, &v10);
     }
 
-    v4 = *v8;
+    primaryColor = *v8;
   }
 
-  v5 = v4;
+  v5 = primaryColor;
 
 LABEL_10:
 
   return v5;
 }
 
-- (id)hourHandInlayAtAngle:(id)a3
+- (id)hourHandInlayAtAngle:(id)angle
 {
-  v4 = a3;
-  v5 = [(NTKSpectrumColorPalette *)self hourHandInlay];
-  if ([(NTKSpectrumColorPalette *)self isNotFoundColor:v5])
+  angleCopy = angle;
+  hourHandInlay = [(NTKSpectrumColorPalette *)self hourHandInlay];
+  if ([(NTKSpectrumColorPalette *)self isNotFoundColor:hourHandInlay])
   {
     if ([(NTKSpectrumColorPalette *)self isRainbowColor])
     {
-      [v4 floatValue];
+      [angleCopy floatValue];
       _NTKSpectrumGetOverlayGradientColor(v6);
     }
 
@@ -168,21 +168,21 @@ LABEL_10:
     }
     v7 = ;
 
-    v5 = v7;
+    hourHandInlay = v7;
   }
 
-  return v5;
+  return hourHandInlay;
 }
 
-- (id)minuteHandInlayAtAngle:(id)a3
+- (id)minuteHandInlayAtAngle:(id)angle
 {
-  v4 = a3;
-  v5 = [(NTKSpectrumColorPalette *)self minuteHandInlay];
-  if ([(NTKSpectrumColorPalette *)self isNotFoundColor:v5])
+  angleCopy = angle;
+  minuteHandInlay = [(NTKSpectrumColorPalette *)self minuteHandInlay];
+  if ([(NTKSpectrumColorPalette *)self isNotFoundColor:minuteHandInlay])
   {
     if ([(NTKSpectrumColorPalette *)self isRainbowColor])
     {
-      [v4 floatValue];
+      [angleCopy floatValue];
       _NTKSpectrumGetOverlayGradientColor(v6);
     }
 
@@ -192,10 +192,10 @@ LABEL_10:
     }
     v7 = ;
 
-    v5 = v7;
+    minuteHandInlay = v7;
   }
 
-  return v5;
+  return minuteHandInlay;
 }
 
 - (NSNumber)overlayOpacity
@@ -213,16 +213,16 @@ LABEL_10:
 
 - (BOOL)is3ComponentsGradient
 {
-  v2 = [(NTKSpectrumColorPalette *)self midColor];
-  v3 = v2 != NTKFaceColorPaletteNotFoundColor;
+  midColor = [(NTKSpectrumColorPalette *)self midColor];
+  v3 = midColor != NTKFaceColorPaletteNotFoundColor;
 
   return v3;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!qword_165E8)
   {
     v6 = objc_opt_new();
@@ -230,34 +230,34 @@ LABEL_10:
     qword_165E8 = v6;
   }
 
-  v8 = [(NTKSpectrumColorPalette *)self configuration];
-  v9 = [v8 uniqueId];
+  configuration = [(NTKSpectrumColorPalette *)self configuration];
+  uniqueId = [configuration uniqueId];
   v18.width = width;
   v18.height = height;
   v10 = NSStringFromCGSize(v18);
-  v11 = [NSString stringWithFormat:@"%@-%@", v9, v10];
+  v11 = [NSString stringWithFormat:@"%@-%@", uniqueId, v10];
 
-  v12 = [qword_165E8 objectForKey:v11];
-  if (!v12)
+  height = [qword_165E8 objectForKey:v11];
+  if (!height)
   {
     if ([(NTKSpectrumColorPalette *)self isRainbowColor])
     {
       v16.receiver = self;
       v16.super_class = NTKSpectrumColorPalette;
-      v12 = [(NTKSpectrumColorPalette *)&v16 swatchImageForSize:width, height];
+      height = [(NTKSpectrumColorPalette *)&v16 swatchImageForSize:width, height];
     }
 
     else
     {
-      v13 = [(NTKSpectrumColorPalette *)self toColor];
-      v14 = [(NTKSpectrumColorPalette *)self fromColor];
-      v12 = NTKSwatchTwoColorGradientImage();
+      toColor = [(NTKSpectrumColorPalette *)self toColor];
+      fromColor = [(NTKSpectrumColorPalette *)self fromColor];
+      height = NTKSwatchTwoColorGradientImage();
 
-      [qword_165E8 setObject:v12 forKey:v11];
+      [qword_165E8 setObject:height forKey:v11];
     }
   }
 
-  return v12;
+  return height;
 }
 
 - (id)swatchPrimaryColor
@@ -266,15 +266,15 @@ LABEL_10:
   {
     v5.receiver = self;
     v5.super_class = NTKSpectrumColorPalette;
-    v3 = [(NTKSpectrumColorPalette *)&v5 swatchPrimaryColor];
+    swatchPrimaryColor = [(NTKSpectrumColorPalette *)&v5 swatchPrimaryColor];
   }
 
   else
   {
-    v3 = 0;
+    swatchPrimaryColor = 0;
   }
 
-  return v3;
+  return swatchPrimaryColor;
 }
 
 @end

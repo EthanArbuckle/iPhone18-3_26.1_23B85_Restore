@@ -1,6 +1,6 @@
 @interface MTSessionServer
 - (BOOL)_isSystemReady;
-- (MTSessionServer)initWithCoordinator:(id)a3;
+- (MTSessionServer)initWithCoordinator:(id)coordinator;
 - (id)_systemNotReadyError;
 - (id)gatherDiagnostics;
 - (void)endAlertingSession;
@@ -19,7 +19,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ ending alerting session", &v5, 0xCu);
   }
 
@@ -27,10 +27,10 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MTSessionServer)initWithCoordinator:(id)a3
+- (MTSessionServer)initWithCoordinator:(id)coordinator
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = MTSessionServer;
   v6 = [(MTSessionServer *)&v18 init];
@@ -57,7 +57,7 @@
     v6->_connectionListenerProvider = v13;
     v15 = v13;
 
-    objc_storeStrong(&v6->_coordinator, a3);
+    objc_storeStrong(&v6->_coordinator, coordinator);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -71,12 +71,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "Starting %{public}@", &v6, 0xCu);
   }
 
-  v4 = [(MTSessionServer *)self connectionListenerProvider];
-  [v4 startListening];
+  connectionListenerProvider = [(MTSessionServer *)self connectionListenerProvider];
+  [connectionListenerProvider startListening];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -88,25 +88,25 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "Stopping %{public}@", &v6, 0xCu);
   }
 
-  v4 = [(MTSessionServer *)self connectionListenerProvider];
-  [v4 stopListening];
+  connectionListenerProvider = [(MTSessionServer *)self connectionListenerProvider];
+  [connectionListenerProvider stopListening];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
 - (void)handleSystemReady
 {
-  v3 = [(MTSessionServer *)self serializer];
+  serializer = [(MTSessionServer *)self serializer];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __36__MTSessionServer_handleSystemReady__block_invoke;
   v4[3] = &unk_1E7B0C9D8;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [serializer performBlock:v4];
 }
 
 void __36__MTSessionServer_handleSystemReady__block_invoke(uint64_t a1)
@@ -148,7 +148,7 @@ void __36__MTSessionServer_handleSystemReady__block_invoke(uint64_t a1)
   v12 = 0x2020000000;
   v13 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(MTSessionServer *)self serializer];
+  serializer = [(MTSessionServer *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__MTSessionServer__isSystemReady__block_invoke;
@@ -157,13 +157,13 @@ void __36__MTSessionServer_handleSystemReady__block_invoke(uint64_t a1)
   v7[4] = self;
   v5 = v3;
   v8 = v5;
-  [v4 performBlock:v7];
+  [serializer performBlock:v7];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(serializer) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v4;
+  return serializer;
 }
 
 - (void)printDiagnostics
@@ -188,10 +188,10 @@ void __36__MTSessionServer_handleSystemReady__block_invoke(uint64_t a1)
   v6 = MTLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MTSessionServer *)self connectionListenerProvider];
-    v8 = [v7 connectedClients];
+    connectionListenerProvider = [(MTSessionServer *)self connectionListenerProvider];
+    connectedClients = [connectionListenerProvider connectedClients];
     v10 = 138543362;
-    v11 = v8;
+    v11 = connectedClients;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "Clients: %{public}@", &v10, 0xCu);
   }
 
@@ -214,9 +214,9 @@ void __36__MTSessionServer_handleSystemReady__block_invoke(uint64_t a1)
 
   v11[1] = @"Session clients";
   v12[0] = v3;
-  v4 = [(MTSessionServer *)self connectionListenerProvider];
-  v5 = [v4 connectedClients];
-  v6 = [v5 valueForKey:@"processName"];
+  connectionListenerProvider = [(MTSessionServer *)self connectionListenerProvider];
+  connectedClients = [connectionListenerProvider connectedClients];
+  v6 = [connectedClients valueForKey:@"processName"];
   v7 = [v6 componentsJoinedByString:{@", "}];
   v12[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];

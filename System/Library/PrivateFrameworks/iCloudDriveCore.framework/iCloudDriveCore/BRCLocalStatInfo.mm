@@ -1,32 +1,32 @@
 @interface BRCLocalStatInfo
-+ (char)modeFromImportObject:(id)a3 isPackageFault:(BOOL)a4;
-+ (id)_finderTagsFromImportObject:(id)a3;
-- (BOOL)checkStateWithItemID:(id)a3 logToFile:(__sFILE *)a4;
-- (BRCLocalStatInfo)initWithImportObject:(id)a3 error:(id *)a4;
-- (BRCLocalStatInfo)initWithLocalStatInfo:(id)a3;
++ (char)modeFromImportObject:(id)object isPackageFault:(BOOL)fault;
++ (id)_finderTagsFromImportObject:(id)object;
+- (BOOL)checkStateWithItemID:(id)d logToFile:(__sFILE *)file;
+- (BRCLocalStatInfo)initWithImportObject:(id)object error:(id *)error;
+- (BRCLocalStatInfo)initWithLocalStatInfo:(id)info;
 - (BRFieldStructureSignature)versionSignature;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3 origName:(id)a4;
-- (id)initAsShareAcceptFaultWithName:(id)a3 mode:(char)a4 isDirectory:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context origName:(id)name;
+- (id)initAsShareAcceptFaultWithName:(id)name mode:(char)mode isDirectory:(BOOL)directory;
 - (id)logicalName;
-- (unint64_t)diffAgainstLocalInfo:(id)a3;
+- (unint64_t)diffAgainstLocalInfo:(id)info;
 - (unsigned)itemScope;
 - (void)_markChildPropagationComplete;
 - (void)_markDead;
-- (void)_markDeadAsSharedTopLevelItemWithDocumentsItemID:(id)a3;
+- (void)_markDeadAsSharedTopLevelItemWithDocumentsItemID:(id)d;
 - (void)_markNeedsPropertiesPropagatedToChildren;
 - (void)_markZombieForCrossZoneMove;
 - (void)_moveItemAsideWithUUIDString;
-- (void)_updateStatAliasMeta:(id)a3;
-- (void)_updateStatMeta:(id)a3;
-- (void)_updateStatMetaFromServer:(id)a3;
+- (void)_updateStatAliasMeta:(id)meta;
+- (void)_updateStatMeta:(id)meta;
+- (void)_updateStatMetaFromServer:(id)server;
 - (void)bumpLocalChangeCount;
 - (void)clearBouncedName;
 - (void)clearCKInfo;
 - (void)itemScope;
-- (void)setFilename:(id)a3 forceBouncedLogicalName:(id)a4 serverName:(id)a5;
-- (void)updateFromImportObject:(id)a3 onlyContentDependentProperties:(BOOL)a4;
-- (void)updateWithFileSystemFlags:(unint64_t)a3 ignoreExecutable:(BOOL)a4;
+- (void)setFilename:(id)filename forceBouncedLogicalName:(id)name serverName:(id)serverName;
+- (void)updateFromImportObject:(id)object onlyContentDependentProperties:(BOOL)properties;
+- (void)updateWithFileSystemFlags:(unint64_t)flags ignoreExecutable:(BOOL)executable;
 @end
 
 @implementation BRCLocalStatInfo
@@ -64,11 +64,11 @@
   return bouncedLogicalName;
 }
 
-- (id)descriptionWithContext:(id)a3 origName:(id)a4
+- (id)descriptionWithContext:(id)context origName:(id)name
 {
   v13.receiver = self;
   v13.super_class = BRCLocalStatInfo;
-  v5 = [(BRCStatInfo *)&v13 descriptionWithContext:a3 origName:a4];
+  v5 = [(BRCStatInfo *)&v13 descriptionWithContext:context origName:name];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -78,8 +78,8 @@
   bouncedLogicalName = self->_bouncedLogicalName;
   if (bouncedLogicalName)
   {
-    v7 = [(NSString *)bouncedLogicalName fp_obfuscatedFilename];
-    [v5 appendFormat:@" bln:%@", v7];
+    fp_obfuscatedFilename = [(NSString *)bouncedLogicalName fp_obfuscatedFilename];
+    [v5 appendFormat:@" bln:%@", fp_obfuscatedFilename];
   }
 
   itemScope = self->_itemScope;
@@ -124,10 +124,10 @@
   return v5;
 }
 
-- (id)initAsShareAcceptFaultWithName:(id)a3 mode:(char)a4 isDirectory:(BOOL)a5
+- (id)initAsShareAcceptFaultWithName:(id)name mode:(char)mode isDirectory:(BOOL)directory
 {
-  v5 = a5;
-  v8 = a3;
+  directoryCopy = directory;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = BRCLocalStatInfo;
   v9 = [(BRCLocalStatInfo *)&v13 init];
@@ -135,7 +135,7 @@
   if (v9)
   {
     v9->super._state = 0;
-    if (v5)
+    if (directoryCopy)
     {
       v11 = 10;
     }
@@ -146,26 +146,26 @@
     }
 
     v9->super._type = v11;
-    v9->super._mode = a4;
-    [(BRCLocalStatInfo *)v9 setFilename:v8];
+    v9->super._mode = mode;
+    [(BRCLocalStatInfo *)v9 setFilename:nameCopy];
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithLocalStatInfo:self];
 }
 
-- (void)setFilename:(id)a3 forceBouncedLogicalName:(id)a4 serverName:(id)a5
+- (void)setFilename:(id)filename forceBouncedLogicalName:(id)name serverName:(id)serverName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v9 br_isSideFaultName] & 1) != 0 || objc_msgSend(v10, "br_isSideFaultName"))
+  filenameCopy = filename;
+  nameCopy = name;
+  serverNameCopy = serverName;
+  if (([filenameCopy br_isSideFaultName] & 1) != 0 || objc_msgSend(nameCopy, "br_isSideFaultName"))
   {
     v12 = brc_bread_crumbs();
     v13 = brc_default_log();
@@ -175,7 +175,7 @@
     }
   }
 
-  else if (-[NSString isEqualToString:](self->_bouncedLogicalName, "isEqualToString:", v9) && ([v11 isEqualToString:self->_bouncedLogicalName] & 1) == 0)
+  else if (-[NSString isEqualToString:](self->_bouncedLogicalName, "isEqualToString:", filenameCopy) && ([serverNameCopy isEqualToString:self->_bouncedLogicalName] & 1) == 0)
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -187,8 +187,8 @@
 
   else
   {
-    objc_storeStrong(&self->_bouncedLogicalName, a4);
-    objc_storeStrong(&self->super._logicalName, a3);
+    objc_storeStrong(&self->_bouncedLogicalName, name);
+    objc_storeStrong(&self->super._logicalName, filename);
   }
 }
 
@@ -200,12 +200,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)diffAgainstLocalInfo:(id)a3
+- (unint64_t)diffAgainstLocalInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(BRCStatInfo *)self diffAgainst:v4];
+  infoCopy = info;
+  v5 = [(BRCStatInfo *)self diffAgainst:infoCopy];
   v6 = v5;
-  if ((v5 & 0x100000000) == 0 && self->super._state != *(v4 + 24))
+  if ((v5 & 0x100000000) == 0 && self->super._state != *(infoCopy + 24))
   {
     v6 = v5 | 0x100000000;
   }
@@ -215,7 +215,7 @@
     goto LABEL_10;
   }
 
-  v7 = v4[19];
+  v7 = infoCopy[19];
   v8 = self->_bouncedLogicalName;
   v9 = v7;
   v10 = v9;
@@ -252,7 +252,7 @@ LABEL_15:
   }
 
 LABEL_11:
-  if (self->_itemScope != *(v4 + 160))
+  if (self->_itemScope != *(infoCopy + 160))
   {
     v6 |= 0x2000000000uLL;
   }
@@ -281,65 +281,65 @@ LABEL_13:
   }
 }
 
-- (void)_markDeadAsSharedTopLevelItemWithDocumentsItemID:(id)a3
+- (void)_markDeadAsSharedTopLevelItemWithDocumentsItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(BRCLocalStatInfo *)self _markDead];
   parentID = self->super._parentID;
-  self->super._parentID = v4;
+  self->super._parentID = dCopy;
 }
 
-- (void)_updateStatMeta:(id)a3
+- (void)_updateStatMeta:(id)meta
 {
-  v4 = a3;
-  self->super._mode = [v4 mode];
-  self->super._birthtime = [v4 birthtime];
-  self->super._hiddenExt = [v4 isHiddenExt];
-  v5 = [v4 xattrSignature];
+  metaCopy = meta;
+  self->super._mode = [metaCopy mode];
+  self->super._birthtime = [metaCopy birthtime];
+  self->super._hiddenExt = [metaCopy isHiddenExt];
+  xattrSignature = [metaCopy xattrSignature];
   xattrSignature = self->super._xattrSignature;
-  self->super._xattrSignature = v5;
+  self->super._xattrSignature = xattrSignature;
 
   lazyXattr = self->super._lazyXattr;
   self->super._lazyXattr = 0;
 
-  v8 = [v4 finderTags];
+  finderTags = [metaCopy finderTags];
   finderTags = self->super._finderTags;
-  self->super._finderTags = v8;
+  self->super._finderTags = finderTags;
 
-  self->super._favoriteRank = [v4 favoriteRank];
-  self->super._lastUsedTime = [v4 lastUsedTime];
-  v10 = [v4 trashPutBackPath];
+  self->super._favoriteRank = [metaCopy favoriteRank];
+  self->super._lastUsedTime = [metaCopy lastUsedTime];
+  trashPutBackPath = [metaCopy trashPutBackPath];
   trashPutBackPath = self->super._trashPutBackPath;
-  self->super._trashPutBackPath = v10;
+  self->super._trashPutBackPath = trashPutBackPath;
 
-  v12 = [v4 trashPutBackParentID];
+  trashPutBackParentID = [metaCopy trashPutBackParentID];
 
   trashPutBackParentID = self->super._trashPutBackParentID;
-  self->super._trashPutBackParentID = v12;
+  self->super._trashPutBackParentID = trashPutBackParentID;
 }
 
-- (BOOL)checkStateWithItemID:(id)a3 logToFile:(__sFILE *)a4
+- (BOOL)checkStateWithItemID:(id)d logToFile:(__sFILE *)file
 {
   v5.receiver = self;
   v5.super_class = BRCLocalStatInfo;
-  return [(BRCStatInfo *)&v5 checkStateWithItemID:a3 logToFile:a4];
+  return [(BRCStatInfo *)&v5 checkStateWithItemID:d logToFile:file];
 }
 
-- (BRCLocalStatInfo)initWithLocalStatInfo:(id)a3
+- (BRCLocalStatInfo)initWithLocalStatInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = BRCLocalStatInfo;
-  v5 = [(BRCStatInfo *)&v8 initWithStatInfo:v4];
+  v5 = [(BRCStatInfo *)&v8 initWithStatInfo:infoCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_processingStamp, *(v4 + 21));
-    objc_storeStrong(&v6->_bouncedLogicalName, *(v4 + 19));
-    v6->_localChangeCount = *(v4 + 16);
-    objc_storeStrong(&v6->_oldVersionIdentifier, *(v4 + 17));
-    v6->_itemScope = *(v4 + 160);
-    objc_storeStrong(&v6->_fpCreationItemIdentifier, *(v4 + 18));
+    objc_storeStrong(&v5->_processingStamp, *(infoCopy + 21));
+    objc_storeStrong(&v6->_bouncedLogicalName, *(infoCopy + 19));
+    v6->_localChangeCount = *(infoCopy + 16);
+    objc_storeStrong(&v6->_oldVersionIdentifier, *(infoCopy + 17));
+    v6->_itemScope = *(infoCopy + 160);
+    objc_storeStrong(&v6->_fpCreationItemIdentifier, *(infoCopy + 18));
   }
 
   return v6;
@@ -352,61 +352,61 @@ LABEL_13:
   return v2;
 }
 
-- (void)_updateStatAliasMeta:(id)a3
+- (void)_updateStatAliasMeta:(id)meta
 {
-  v4 = a3;
-  if (([v4 isBRAlias] & 1) == 0)
+  metaCopy = meta;
+  if (([metaCopy isBRAlias] & 1) == 0)
   {
     [BRCLocalStatInfo(FPFSAdditions) _updateStatAliasMeta:];
   }
 
-  v5 = [v4 st];
-  v6 = [v5 logicalName];
-  logicalName = v6;
-  if (!v6)
+  v5 = [metaCopy st];
+  logicalName = [v5 logicalName];
+  logicalName = logicalName;
+  if (!logicalName)
   {
     logicalName = self->super._logicalName;
   }
 
   objc_storeStrong(&self->super._logicalName, logicalName);
 
-  v8 = [v4 parentItemIDOnFS];
-  parentID = v8;
-  if (!v8)
+  parentItemIDOnFS = [metaCopy parentItemIDOnFS];
+  parentID = parentItemIDOnFS;
+  if (!parentItemIDOnFS)
   {
     parentID = self->super._parentID;
   }
 
   objc_storeStrong(&self->super._parentID, parentID);
 
-  v10 = [v4 st];
-  v11 = [v10 finderTags];
+  v10 = [metaCopy st];
+  finderTags = [v10 finderTags];
   finderTags = self->super._finderTags;
-  self->super._finderTags = v11;
+  self->super._finderTags = finderTags;
 
-  v13 = [v4 st];
+  v13 = [metaCopy st];
   self->super._favoriteRank = [v13 favoriteRank];
 
-  v14 = [v4 st];
+  v14 = [metaCopy st];
   self->super._lastUsedTime = [v14 lastUsedTime];
 }
 
-- (void)updateWithFileSystemFlags:(unint64_t)a3 ignoreExecutable:(BOOL)a4
+- (void)updateWithFileSystemFlags:(unint64_t)flags ignoreExecutable:(BOOL)executable
 {
-  self->super._hiddenExt = (a3 & 0x10) != 0;
-  v4 = (a3 >> 2) & 1;
-  if ((a3 & 1) != 0 && !a4)
+  self->super._hiddenExt = (flags & 0x10) != 0;
+  v4 = (flags >> 2) & 1;
+  if ((flags & 1) != 0 && !executable)
   {
-    LOBYTE(v4) = ((a3 & 4) != 0) | 2;
+    LOBYTE(v4) = ((flags & 4) != 0) | 2;
   }
 
   self->super._mode = v4;
 }
 
-- (BRCLocalStatInfo)initWithImportObject:(id)a3 error:(id *)a4
+- (BRCLocalStatInfo)initWithImportObject:(id)object error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = BRCLocalStatInfo;
   v7 = [(BRCLocalStatInfo *)&v24 init];
@@ -417,16 +417,16 @@ LABEL_13:
   }
 
   v7->super._state = 0;
-  if (![v6 isFault])
+  if (![objectCopy isFault])
   {
-    if ([v6 isSymLink])
+    if ([objectCopy isSymLink])
     {
       v16 = 5;
     }
 
     else
     {
-      if ([v6 isBRAlias])
+      if ([objectCopy isBRAlias])
       {
         v19 = brc_bread_crumbs();
         v20 = brc_default_log();
@@ -452,7 +452,7 @@ LABEL_13:
         *buf = 136315906;
         v26 = "[BRCLocalStatInfo(FPFSAdditions) initWithImportObject:error:]";
         v27 = 2080;
-        if (!a4)
+        if (!error)
         {
           v21 = "(ignored by caller)";
         }
@@ -460,19 +460,19 @@ LABEL_13:
         goto LABEL_32;
       }
 
-      if ([v6 isFinderAlias])
+      if ([objectCopy isFinderAlias])
       {
         v16 = 6;
       }
 
-      else if ([v6 isDocument])
+      else if ([objectCopy isDocument])
       {
         v16 = 1;
       }
 
       else
       {
-        if (([v6 isUnixDir] & 1) == 0)
+        if (([objectCopy isUnixDir] & 1) == 0)
         {
           v22 = brc_bread_crumbs();
           v23 = brc_default_log();
@@ -481,7 +481,7 @@ LABEL_13:
             [BRCLocalStatInfo(FPFSAdditions) initWithImportObject:error:];
           }
 
-          v11 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Unexpected import object %@", v6}];
+          v11 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Unexpected import object %@", objectCopy}];
           if (!v11)
           {
             goto LABEL_8;
@@ -498,7 +498,7 @@ LABEL_13:
           *buf = 136315906;
           v26 = "[BRCLocalStatInfo(FPFSAdditions) initWithImportObject:error:]";
           v27 = 2080;
-          if (!a4)
+          if (!error)
           {
             v21 = "(ignored by caller)";
           }
@@ -511,7 +511,7 @@ LABEL_13:
     }
 
     v8->super._type = v16;
-    [(BRCLocalStatInfo *)v8 updateFromImportObject:v6 onlyContentDependentProperties:0];
+    [(BRCLocalStatInfo *)v8 updateFromImportObject:objectCopy onlyContentDependentProperties:0];
 LABEL_14:
     v15 = v8;
     goto LABEL_15;
@@ -538,7 +538,7 @@ LABEL_14:
     *buf = 136315906;
     v26 = "[BRCLocalStatInfo(FPFSAdditions) initWithImportObject:error:]";
     v27 = 2080;
-    if (!a4)
+    if (!error)
     {
       v21 = "(ignored by caller)";
     }
@@ -555,10 +555,10 @@ LABEL_32:
 LABEL_7:
 
 LABEL_8:
-  if (a4)
+  if (error)
   {
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   v15 = 0;
@@ -568,34 +568,34 @@ LABEL_15:
   return v15;
 }
 
-+ (char)modeFromImportObject:(id)a3 isPackageFault:(BOOL)a4
++ (char)modeFromImportObject:(id)object isPackageFault:(BOOL)fault
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 isWritable];
-  if ([v5 isExecutable] && objc_msgSend(v5, "isFile") && (objc_msgSend(v5, "isFault") & v4) == 0)
+  faultCopy = fault;
+  objectCopy = object;
+  isWritable = [objectCopy isWritable];
+  if ([objectCopy isExecutable] && objc_msgSend(objectCopy, "isFile") && (objc_msgSend(objectCopy, "isFault") & faultCopy) == 0)
   {
-    v6 |= 2u;
+    isWritable |= 2u;
   }
 
-  return v6;
+  return isWritable;
 }
 
-+ (id)_finderTagsFromImportObject:(id)a3
++ (id)_finderTagsFromImportObject:(id)object
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 hasFinderTags])
+  objectCopy = object;
+  if (![objectCopy hasFinderTags])
   {
     v7 = 0;
     v6 = 0;
     goto LABEL_15;
   }
 
-  v4 = [v3 fileURL];
+  fileURL = [objectCopy fileURL];
   v24 = 0;
   v25 = 0;
-  v5 = [v4 br_getTagNames:&v25 error:&v24];
+  v5 = [fileURL br_getTagNames:&v25 error:&v24];
   v6 = v25;
   v7 = v24;
 
@@ -658,44 +658,44 @@ LABEL_15:
 LABEL_19:
 
 LABEL_20:
-  v17 = [(BRFieldFinderTags *)v10 data];
+  data = [(BRFieldFinderTags *)v10 data];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return data;
 }
 
-- (void)_updateStatMetaFromServer:(id)a3
+- (void)_updateStatMetaFromServer:(id)server
 {
-  v4 = a3;
-  v5 = [v4 st];
+  serverCopy = server;
+  v5 = [serverCopy st];
   self->super._mode = [v5 mode];
   self->super._birthtime = [v5 birthtime];
   self->super._hiddenExt = [v5 isHiddenExt];
-  v6 = [v5 xattrSignature];
+  xattrSignature = [v5 xattrSignature];
   xattrSignature = self->super._xattrSignature;
-  self->super._xattrSignature = v6;
+  self->super._xattrSignature = xattrSignature;
 
   lazyXattr = self->super._lazyXattr;
   self->super._lazyXattr = 0;
 
-  v9 = [v5 finderTags];
+  finderTags = [v5 finderTags];
   finderTags = self->super._finderTags;
-  self->super._finderTags = v9;
+  self->super._finderTags = finderTags;
 
   self->super._favoriteRank = [v5 favoriteRank];
   self->super._lastUsedTime = [v5 lastUsedTime];
-  v11 = [v5 trashPutBackPath];
+  trashPutBackPath = [v5 trashPutBackPath];
   trashPutBackPath = self->super._trashPutBackPath;
-  self->super._trashPutBackPath = v11;
+  self->super._trashPutBackPath = trashPutBackPath;
 
-  v13 = [v5 trashPutBackParentID];
+  trashPutBackParentID = [v5 trashPutBackParentID];
   trashPutBackParentID = self->super._trashPutBackParentID;
-  self->super._trashPutBackParentID = v13;
+  self->super._trashPutBackParentID = trashPutBackParentID;
 
-  v15 = [v5 ckInfo];
+  ckInfo = [v5 ckInfo];
   ckInfo = self->super._ckInfo;
-  self->super._ckInfo = v15;
+  self->super._ckInfo = ckInfo;
 
   if (self->super._state == 1 && ![v5 state])
   {
@@ -704,20 +704,20 @@ LABEL_20:
   }
 
   self->super._state = [v5 state];
-  v18 = [v5 logicalName];
+  logicalName = [v5 logicalName];
   logicalName = self->super._logicalName;
-  self->super._logicalName = v18;
+  self->super._logicalName = logicalName;
 
-  v20 = [v4 parentItemIDOnFS];
+  parentItemIDOnFS = [serverCopy parentItemIDOnFS];
 
   parentID = self->super._parentID;
-  self->super._parentID = v20;
+  self->super._parentID = parentItemIDOnFS;
 
   aliasTarget = self->super._aliasTarget;
   if (aliasTarget)
   {
-    v23 = [v5 aliasTarget];
-    v24 = [(NSString *)aliasTarget isEqualToString:v23];
+    aliasTarget = [v5 aliasTarget];
+    v24 = [(NSString *)aliasTarget isEqualToString:aliasTarget];
 
     if (!v24)
     {
@@ -731,18 +731,18 @@ LABEL_20:
   }
 }
 
-- (void)updateFromImportObject:(id)a3 onlyContentDependentProperties:(BOOL)a4
+- (void)updateFromImportObject:(id)object onlyContentDependentProperties:(BOOL)properties
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 isUnixDir] && (objc_msgSend(v6, "isExecutable") & 1) == 0)
+  objectCopy = object;
+  if ([objectCopy isUnixDir] && (objc_msgSend(objectCopy, "isExecutable") & 1) == 0)
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412546;
-      v23 = v6;
+      v23 = objectCopy;
       v24 = 2112;
       v25 = v7;
       _os_log_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Inaccessible folder %@%@", &v22, 0x16u);
@@ -750,23 +750,23 @@ LABEL_20:
   }
 
   self->super._state = 0;
-  v9 = [v6 parentItemGlobalID];
+  parentItemGlobalID = [objectCopy parentItemGlobalID];
 
-  if (v9)
+  if (parentItemGlobalID)
   {
-    v10 = [v6 parentItemGlobalID];
-    v11 = [v10 itemID];
+    parentItemGlobalID2 = [objectCopy parentItemGlobalID];
+    itemID = [parentItemGlobalID2 itemID];
     parentID = self->super._parentID;
-    self->super._parentID = v11;
+    self->super._parentID = itemID;
   }
 
-  if (!a4)
+  if (!properties)
   {
-    self->super._birthtime = [v6 birthTime];
-    v13 = [v6 logicalName];
-    [(BRCLocalStatInfo *)self setFilename:v13];
+    self->super._birthtime = [objectCopy birthTime];
+    logicalName = [objectCopy logicalName];
+    [(BRCLocalStatInfo *)self setFilename:logicalName];
 
-    v14 = [BRCLocalStatInfo _finderTagsFromImportObject:v6];
+    v14 = [BRCLocalStatInfo _finderTagsFromImportObject:objectCopy];
     v15 = v14;
     if (self->super._finderTags)
     {
@@ -789,23 +789,23 @@ LABEL_20:
     }
 
     objc_storeStrong(&self->super._finderTags, v15);
-    self->super._hiddenExt = [v6 isHiddenExtension];
-    if ([v6 isFault])
+    self->super._hiddenExt = [objectCopy isHiddenExtension];
+    if ([objectCopy isFault])
     {
-      v19 = [v6 isPackageRoot];
+      isPackageRoot = [objectCopy isPackageRoot];
     }
 
     else
     {
-      v19 = 0;
+      isPackageRoot = 0;
     }
 
-    self->super._mode = [BRCLocalStatInfo modeFromImportObject:v6 isPackageFault:v19];
+    self->super._mode = [BRCLocalStatInfo modeFromImportObject:objectCopy isPackageFault:isPackageRoot];
   }
 
-  v20 = [(BRFieldCKInfo *)self->super._ckInfo etag];
+  etag = [(BRFieldCKInfo *)self->super._ckInfo etag];
 
-  if (!v20)
+  if (!etag)
   {
     [(BRCStatInfo *)self setCreatorRowID:&unk_2837B0238];
   }
@@ -874,7 +874,7 @@ LABEL_20:
     _os_log_fault_impl(&dword_223E7A000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: _itemScope != BRC_ITEM_SCOPE_UNKNOWN || _state == BRC_ITEM_STATE_TOMBSTONE%@", &v7, 0xCu);
   }
 
-  *a2 = *a1;
+  *a2 = *self;
   v6 = *MEMORY[0x277D85DE8];
 }
 

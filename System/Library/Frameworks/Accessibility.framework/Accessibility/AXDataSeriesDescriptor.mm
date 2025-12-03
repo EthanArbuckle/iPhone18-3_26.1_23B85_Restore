@@ -1,38 +1,38 @@
 @interface AXDataSeriesDescriptor
-- (AXDataSeriesDescriptor)initWithDictionary:(id)a3;
+- (AXDataSeriesDescriptor)initWithDictionary:(id)dictionary;
 - (NSString)description;
 - (NSString)name;
 - (double)meanYValue;
-- (id)_mutableArrayOfNSNullWithCount:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_mutableArrayOfNSNullWithCount:(int64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)_commonInitWithContinuous:(BOOL)a3 dataPoints:(id)a4;
+- (void)_commonInitWithContinuous:(BOOL)continuous dataPoints:(id)points;
 - (void)setName:(NSString *)name;
 @end
 
 @implementation AXDataSeriesDescriptor
 
-- (AXDataSeriesDescriptor)initWithDictionary:(id)a3
+- (AXDataSeriesDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = getkAXMChartSeriesNameKey();
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [dictionaryCopy objectForKeyedSubscript:v5];
 
   v7 = getkAXMChartSeriesContinuousKey();
-  v8 = [v4 objectForKeyedSubscript:v7];
-  v59 = [v8 BOOLValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:v7];
+  bOOLValue = [v8 BOOLValue];
 
   v9 = getkAXMChartSeriesXDataKey();
-  v10 = [v4 objectForKeyedSubscript:v9];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
 
   v11 = getkAXMChartSeriesYDataKey();
-  v12 = [v4 objectForKeyedSubscript:v11];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
 
   v13 = getkAXMChartSeriesZNumericDataKey();
-  v14 = [v4 objectForKeyedSubscript:v13];
+  v14 = [dictionaryCopy objectForKeyedSubscript:v13];
 
   v15 = getkAXMChartSeriesZCategoricalDataKey();
-  v16 = [v4 objectForKeyedSubscript:v15];
+  v16 = [dictionaryCopy objectForKeyedSubscript:v15];
 
   v66 = 0;
   v67 = &v66;
@@ -55,9 +55,9 @@
     _Unwind_Resume(v55);
   }
 
-  v19 = [v4 objectForKeyedSubscript:*v17];
+  v19 = [dictionaryCopy objectForKeyedSubscript:*v17];
   v20 = getkAXMChartSeriesValueDescriptionsKey();
-  v65 = [v4 objectForKeyedSubscript:v20];
+  v65 = [dictionaryCopy objectForKeyedSubscript:v20];
 
   v21 = [v10 count];
   if (v21 != [v12 count] && v12 || (v22 = objc_msgSend(v10, "count"), v22 != objc_msgSend(v14, "count")) && v14 || (v23 = objc_msgSend(v10, "count"), v23 != objc_msgSend(v16, "count")) && v16 || (v24 = objc_msgSend(v10, "count"), v24 != objc_msgSend(v19, "count")) && v19)
@@ -65,18 +65,18 @@
     v25 = AXAudioGraphLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
-      [(AXDataSeriesDescriptor *)v4 initWithDictionary:v25];
+      [(AXDataSeriesDescriptor *)dictionaryCopy initWithDictionary:v25];
     }
 
-    v26 = 0;
+    selfCopy2 = 0;
     goto LABEL_15;
   }
 
   v63 = v19;
   v64 = v16;
-  v57 = self;
+  selfCopy = self;
   v58 = v6;
-  v62 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v10 count])
   {
     v28 = 0;
@@ -147,11 +147,11 @@ LABEL_26:
       }
 
       v46 = [v65 objectAtIndexedSubscript:v28];
-      v47 = [MEMORY[0x1E695DF70] array];
-      v48 = v47;
+      array2 = [MEMORY[0x1E695DF70] array];
+      v48 = array2;
       if (v41)
       {
-        [v47 addObject:v41];
+        [array2 addObject:v41];
       }
 
       if (v45)
@@ -171,7 +171,7 @@ LABEL_26:
 
       v50 = [[AXDataPoint alloc] initWithX:v35 y:v38 additionalValues:v48 label:v49];
       [(AXDataPoint *)v50 setValueDescription:v46];
-      [v62 addObject:v50];
+      [array addObject:v50];
 
       ++v28;
       v10 = v61;
@@ -184,9 +184,9 @@ LABEL_26:
   }
 
   v6 = v58;
-  v25 = v62;
-  v51 = [(AXDataSeriesDescriptor *)v57 initWithAttributedName:v58 isContinuous:v59 dataPoints:v62];
-  v4 = v56;
+  v25 = array;
+  v51 = [(AXDataSeriesDescriptor *)selfCopy initWithAttributedName:v58 isContinuous:bOOLValue dataPoints:array];
+  dictionaryCopy = v56;
   if (v51)
   {
     v52 = getkAXMChartSeriesMeanValueDescriptionKey();
@@ -196,31 +196,31 @@ LABEL_26:
   }
 
   self = v51;
-  v26 = self;
+  selfCopy2 = self;
   v19 = v63;
   v16 = v64;
 LABEL_15:
 
-  return v26;
+  return selfCopy2;
 }
 
-- (void)_commonInitWithContinuous:(BOOL)a3 dataPoints:(id)a4
+- (void)_commonInitWithContinuous:(BOOL)continuous dataPoints:(id)points
 {
-  self->_isContinuous = a3;
-  v5 = [a4 copy];
+  self->_isContinuous = continuous;
+  v5 = [points copy];
   dataPoints = self->_dataPoints;
   self->_dataPoints = v5;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXDataSeriesDescriptor *)self attributedName];
-  v6 = [(AXDataSeriesDescriptor *)self isContinuous];
-  v7 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v8 = [v4 initWithAttributedName:v5 isContinuous:v6 dataPoints:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  attributedName = [(AXDataSeriesDescriptor *)self attributedName];
+  isContinuous = [(AXDataSeriesDescriptor *)self isContinuous];
+  dataPoints = [(AXDataSeriesDescriptor *)self dataPoints];
+  v8 = [v4 initWithAttributedName:attributedName isContinuous:isContinuous dataPoints:dataPoints];
 
   return v8;
 }
@@ -240,10 +240,10 @@ LABEL_15:
 
 - (NSString)name
 {
-  v2 = [(AXDataSeriesDescriptor *)self attributedName];
-  v3 = [v2 string];
+  attributedName = [(AXDataSeriesDescriptor *)self attributedName];
+  string = [attributedName string];
 
-  return v3;
+  return string;
 }
 
 - (double)meanYValue
@@ -253,8 +253,8 @@ LABEL_15:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataPoints = [(AXDataSeriesDescriptor *)self dataPoints];
+  v4 = [dataPoints countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -266,15 +266,15 @@ LABEL_15:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataPoints);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) yValue];
-        [v9 number];
+        yValue = [*(*(&v15 + 1) + 8 * i) yValue];
+        [yValue number];
         v7 = v7 + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [dataPoints countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -285,8 +285,8 @@ LABEL_15:
     v7 = 0.0;
   }
 
-  v11 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v12 = [v11 count];
+  dataPoints2 = [(AXDataSeriesDescriptor *)self dataPoints];
+  v12 = [dataPoints2 count];
 
   v13 = *MEMORY[0x1E69E9840];
   return v7 / v12;
@@ -294,21 +294,21 @@ LABEL_15:
 
 - (id)dictionaryRepresentation
 {
-  v64 = [MEMORY[0x1E695DF70] array];
-  v63 = [MEMORY[0x1E695DF70] array];
-  v3 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v4 = [v3 firstObject];
-  v5 = [v4 xValue];
-  v62 = [v5 category];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  dataPoints = [(AXDataSeriesDescriptor *)self dataPoints];
+  firstObject = [dataPoints firstObject];
+  xValue = [firstObject xValue];
+  category = [xValue category];
 
-  v6 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v7 = [v6 count];
+  dataPoints2 = [(AXDataSeriesDescriptor *)self dataPoints];
+  v7 = [dataPoints2 count];
 
   if (v7)
   {
     v65 = 0;
     v66 = 0;
-    v67 = self;
+    selfCopy = self;
     v68 = 0;
     v8 = 0;
     v9 = 0;
@@ -316,31 +316,31 @@ LABEL_15:
     v11 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
-      v12 = [(AXDataSeriesDescriptor *)self dataPoints];
-      v13 = [v12 objectAtIndexedSubscript:v9];
+      dataPoints3 = [(AXDataSeriesDescriptor *)self dataPoints];
+      v13 = [dataPoints3 objectAtIndexedSubscript:v9];
 
-      v14 = [v13 valueDescription];
-      [v63 addObject:v14];
+      valueDescription = [v13 valueDescription];
+      [array2 addObject:valueDescription];
 
-      if (v62)
+      if (category)
       {
-        v15 = [v13 xValue];
-        [v15 category];
+        xValue2 = [v13 xValue];
+        [xValue2 category];
       }
 
       else
       {
         v16 = MEMORY[0x1E696AD98];
-        v15 = [v13 xValue];
-        [v15 number];
+        xValue2 = [v13 xValue];
+        [xValue2 number];
         [v16 numberWithDouble:?];
       }
       v17 = ;
-      [v64 addObject:v17];
+      [array addObject:v17];
 
-      v18 = [v13 yValue];
+      yValue = [v13 yValue];
 
-      if (v18)
+      if (yValue)
       {
         v19 = v66;
         if (!v66)
@@ -349,15 +349,15 @@ LABEL_15:
         }
 
         v20 = MEMORY[0x1E696AD98];
-        v21 = [v13 yValue];
-        [v21 number];
+        yValue2 = [v13 yValue];
+        [yValue2 number];
         v22 = [v20 numberWithDouble:?];
         v66 = v19;
         [v19 addObject:v22];
       }
 
-      v23 = [v13 additionalValues];
-      v24 = [v23 count];
+      additionalValues = [v13 additionalValues];
+      v24 = [additionalValues count];
 
       if (v24)
       {
@@ -365,31 +365,31 @@ LABEL_15:
       }
 
 LABEL_33:
-      v43 = [v13 label];
-      v44 = [v43 length];
+      label = [v13 label];
+      v44 = [label length];
 
       if (v44)
       {
-        self = v67;
+        self = selfCopy;
         v45 = v65;
         if (!v65)
         {
-          v45 = [(AXDataSeriesDescriptor *)v67 _mutableArrayOfNSNullWithCount:v9];
+          v45 = [(AXDataSeriesDescriptor *)selfCopy _mutableArrayOfNSNullWithCount:v9];
         }
 
-        v46 = [v13 label];
+        label2 = [v13 label];
         v65 = v45;
-        [v45 addObject:v46];
+        [v45 addObject:label2];
       }
 
       else
       {
-        self = v67;
+        self = selfCopy;
       }
 
       ++v9;
-      v47 = [(AXDataSeriesDescriptor *)self dataPoints];
-      v48 = [v47 count];
+      dataPoints4 = [(AXDataSeriesDescriptor *)self dataPoints];
+      v48 = [dataPoints4 count];
 
       if (v9 >= v48)
       {
@@ -400,11 +400,11 @@ LABEL_33:
     v25 = 0;
     while (1)
     {
-      v26 = [v13 additionalValues];
-      v27 = [v26 objectAtIndexedSubscript:v25];
-      v28 = [v27 category];
+      additionalValues2 = [v13 additionalValues];
+      v27 = [additionalValues2 objectAtIndexedSubscript:v25];
+      category2 = [v27 category];
 
-      if (v28)
+      if (category2)
       {
         if (v11 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -418,22 +418,22 @@ LABEL_33:
 
         if (!v8)
         {
-          v8 = [(AXDataSeriesDescriptor *)v67 _mutableArrayOfNSNullWithCount:v9];
+          v8 = [(AXDataSeriesDescriptor *)selfCopy _mutableArrayOfNSNullWithCount:v9];
         }
 
-        v29 = [v13 additionalValues];
-        v30 = [v29 objectAtIndexedSubscript:v25];
-        v31 = [v30 category];
+        additionalValues3 = [v13 additionalValues];
+        v30 = [additionalValues3 objectAtIndexedSubscript:v25];
+        category3 = [v30 category];
 
-        if (v31)
+        if (category3)
         {
-          [v8 addObject:v31];
+          [v8 addObject:category3];
         }
 
         else
         {
-          v37 = [MEMORY[0x1E695DFB0] null];
-          [v8 addObject:v37];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v8 addObject:null];
         }
 
         v11 = v25;
@@ -454,26 +454,26 @@ LABEL_33:
         v32 = v68;
         if (!v68)
         {
-          v32 = [(AXDataSeriesDescriptor *)v67 _mutableArrayOfNSNullWithCount:v9];
+          v32 = [(AXDataSeriesDescriptor *)selfCopy _mutableArrayOfNSNullWithCount:v9];
         }
 
-        v33 = [v13 additionalValues];
-        v34 = [v33 objectAtIndexedSubscript:v25];
+        additionalValues4 = [v13 additionalValues];
+        v34 = [additionalValues4 objectAtIndexedSubscript:v25];
         [v34 number];
         v36 = v35;
 
         v68 = v32;
         if (v36 == 9.22337204e18)
         {
-          v31 = [MEMORY[0x1E695DFB0] null];
-          [v32 addObject:v31];
+          category3 = [MEMORY[0x1E695DFB0] null];
+          [v32 addObject:category3];
         }
 
         else
         {
           v38 = MEMORY[0x1E696AD98];
-          v31 = [v13 additionalValues];
-          v39 = [v31 objectAtIndexedSubscript:v25];
+          category3 = [v13 additionalValues];
+          v39 = [category3 objectAtIndexedSubscript:v25];
           [v39 number];
           v40 = [v38 numberWithDouble:?];
           [v32 addObject:v40];
@@ -484,8 +484,8 @@ LABEL_33:
 
 LABEL_32:
       ++v25;
-      v41 = [v13 additionalValues];
-      v42 = [v41 count];
+      additionalValues5 = [v13 additionalValues];
+      v42 = [additionalValues5 count];
 
       if (v25 >= v42)
       {
@@ -499,66 +499,66 @@ LABEL_32:
   v8 = 0;
   v68 = 0;
 LABEL_41:
-  v49 = [MEMORY[0x1E695DF90] dictionary];
-  v50 = [(AXDataSeriesDescriptor *)self attributedName];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  attributedName = [(AXDataSeriesDescriptor *)self attributedName];
   v51 = getkAXMChartSeriesNameKey();
-  [v49 setObject:v50 forKeyedSubscript:v51];
+  [dictionary setObject:attributedName forKeyedSubscript:v51];
 
   v52 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXDataSeriesDescriptor isContinuous](self, "isContinuous")}];
   v53 = getkAXMChartSeriesContinuousKey();
-  [v49 setObject:v52 forKeyedSubscript:v53];
+  [dictionary setObject:v52 forKeyedSubscript:v53];
 
   v54 = getkAXMChartSeriesXDataKey();
-  [v49 setObject:v64 forKeyedSubscript:v54];
+  [dictionary setObject:array forKeyedSubscript:v54];
 
   v55 = getkAXMChartSeriesYDataKey();
-  [v49 setObject:v66 forKeyedSubscript:v55];
+  [dictionary setObject:v66 forKeyedSubscript:v55];
 
   v56 = getkAXMChartSeriesZNumericDataKey();
-  [v49 setObject:v68 forKeyedSubscript:v56];
+  [dictionary setObject:v68 forKeyedSubscript:v56];
 
   v57 = getkAXMChartSeriesZCategoricalDataKey();
-  [v49 setObject:v8 forKeyedSubscript:v57];
+  [dictionary setObject:v8 forKeyedSubscript:v57];
 
   v58 = getkAXMChartSeriesValueDescriptionsKey();
-  [v49 setObject:v63 forKeyedSubscript:v58];
+  [dictionary setObject:array2 forKeyedSubscript:v58];
 
-  v59 = [(AXDataSeriesDescriptor *)self meanValueDescription];
+  meanValueDescription = [(AXDataSeriesDescriptor *)self meanValueDescription];
   v60 = getkAXMChartSeriesMeanValueDescriptionKey();
-  [v49 setObject:v59 forKeyedSubscript:v60];
+  [dictionary setObject:meanValueDescription forKeyedSubscript:v60];
 
-  return v49;
+  return dictionary;
 }
 
-- (id)_mutableArrayOfNSNullWithCount:(int64_t)a3
+- (id)_mutableArrayOfNSNullWithCount:(int64_t)count
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3 >= 1)
+  array = [MEMORY[0x1E695DF70] array];
+  if (count >= 1)
   {
     do
     {
-      v5 = [MEMORY[0x1E695DFB0] null];
-      [v4 addObject:v5];
+      null = [MEMORY[0x1E695DFB0] null];
+      [array addObject:null];
 
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 
-  return v4;
+  return array;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AXDataSeriesDescriptor *)self name];
+  name = [(AXDataSeriesDescriptor *)self name];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXDataSeriesDescriptor isContinuous](self, "isContinuous")}];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(AXDataSeriesDescriptor *)self dataPoints];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v10 = [v3 stringWithFormat:@"<%@ %p name=%@ continuous=%@ points=%@>", v4, self, v5, v6, v9];
+  dataPoints = [(AXDataSeriesDescriptor *)self dataPoints];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(dataPoints, "count")}];
+  v10 = [v3 stringWithFormat:@"<%@ %p name=%@ continuous=%@ points=%@>", v4, self, name, v6, v9];
 
   return v10;
 }

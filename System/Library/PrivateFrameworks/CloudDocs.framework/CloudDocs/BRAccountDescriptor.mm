@@ -1,17 +1,17 @@
 @interface BRAccountDescriptor
 + (BOOL)mightHaveDataSeparatedAccountDescriptor;
-+ (id)accountDescriptorForAccountID:(id)a3 mustBeLoggedIn:(BOOL)a4;
-+ (id)accountDescriptorForPersonaID:(id)a3 mustBeLoggedIn:(BOOL)a4;
-+ (id)accountDescriptorForURL:(id)a3 mustBeLoggedIn:(BOOL)a4;
++ (id)accountDescriptorForAccountID:(id)d mustBeLoggedIn:(BOOL)in;
++ (id)accountDescriptorForPersonaID:(id)d mustBeLoggedIn:(BOOL)in;
++ (id)accountDescriptorForURL:(id)l mustBeLoggedIn:(BOOL)in;
 + (id)allEligibleAccountDescriptors;
 + (id)allLoggedInAccountDescriptors;
-+ (id)matchDomainWithAccountAndStampDomainIfNeeded:(id)a3 withAccounts:(id)a4 persistDomain:(BOOL *)a5;
++ (id)matchDomainWithAccountAndStampDomainIfNeeded:(id)needed withAccounts:(id)accounts persistDomain:(BOOL *)domain;
 + (void)clearAccountDescriptorCache;
-+ (void)refreshCache:(BOOL)a3;
-- (BRAccountDescriptor)initWithCoder:(id)a3;
-- (BRAccountDescriptor)initWithPersonaIdentifier:(id)a3 accountIdentifier:(id)a4 domainIdentifier:(id)a5 organizationName:(id)a6 dataSeparated:(BOOL)a7 loggedInToCloudDocs:(BOOL)a8;
++ (void)refreshCache:(BOOL)cache;
+- (BRAccountDescriptor)initWithCoder:(id)coder;
+- (BRAccountDescriptor)initWithPersonaIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier domainIdentifier:(id)domainIdentifier organizationName:(id)name dataSeparated:(BOOL)separated loggedInToCloudDocs:(BOOL)docs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BRAccountDescriptor
@@ -19,7 +19,7 @@
 + (id)allEligibleAccountDescriptors
 {
   +[BRAccount startAccountTokenChangeObserverIfNeeded];
-  if (g_cacheValid & 1) != 0 || ([a1 refreshCache:0], (g_cacheValid))
+  if (g_cacheValid & 1) != 0 || ([self refreshCache:0], (g_cacheValid))
   {
     v3 = g_allAccounts;
     objc_sync_enter(v3);
@@ -35,70 +35,70 @@
   return v4;
 }
 
-- (BRAccountDescriptor)initWithPersonaIdentifier:(id)a3 accountIdentifier:(id)a4 domainIdentifier:(id)a5 organizationName:(id)a6 dataSeparated:(BOOL)a7 loggedInToCloudDocs:(BOOL)a8
+- (BRAccountDescriptor)initWithPersonaIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier domainIdentifier:(id)domainIdentifier organizationName:(id)name dataSeparated:(BOOL)separated loggedInToCloudDocs:(BOOL)docs
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  domainIdentifierCopy = domainIdentifier;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = BRAccountDescriptor;
   v18 = [(BRAccountDescriptor *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_personaIdentifier, a3);
-    objc_storeStrong(&v19->_accountIdentifier, a4);
-    objc_storeStrong(&v19->_domainIdentifier, a5);
-    objc_storeStrong(&v19->_organizationName, a6);
-    v19->_isDataSeparated = a7;
-    v19->_isLoggedInToCloudDocs = a8;
+    objc_storeStrong(&v18->_personaIdentifier, identifier);
+    objc_storeStrong(&v19->_accountIdentifier, accountIdentifier);
+    objc_storeStrong(&v19->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v19->_organizationName, name);
+    v19->_isDataSeparated = separated;
+    v19->_isLoggedInToCloudDocs = docs;
   }
 
   return v19;
 }
 
-- (BRAccountDescriptor)initWithCoder:(id)a3
+- (BRAccountDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = BRAccountDescriptor;
   v5 = [(BRAccountDescriptor *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaID"];
     personaIdentifier = v5->_personaIdentifier;
     v5->_personaIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainID"];
     domainIdentifier = v5->_domainIdentifier;
     v5->_domainIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orgName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orgName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v12;
 
-    v5->_isDataSeparated = [v4 decodeBoolForKey:@"dataSeparated"];
-    v5->_isLoggedInToCloudDocs = [v4 decodeBoolForKey:@"loggedInToCloudDocs"];
+    v5->_isDataSeparated = [coderCopy decodeBoolForKey:@"dataSeparated"];
+    v5->_isLoggedInToCloudDocs = [coderCopy decodeBoolForKey:@"loggedInToCloudDocs"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   personaIdentifier = self->_personaIdentifier;
-  v5 = a3;
-  [v5 encodeObject:personaIdentifier forKey:@"personaID"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountID"];
-  [v5 encodeObject:self->_domainIdentifier forKey:@"domainID"];
-  [v5 encodeObject:self->_organizationName forKey:@"orgName"];
-  [v5 encodeBool:self->_isDataSeparated forKey:@"dataSeparated"];
-  [v5 encodeBool:self->_isLoggedInToCloudDocs forKey:@"loggedInToCloudDocs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:personaIdentifier forKey:@"personaID"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountID"];
+  [coderCopy encodeObject:self->_domainIdentifier forKey:@"domainID"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"orgName"];
+  [coderCopy encodeBool:self->_isDataSeparated forKey:@"dataSeparated"];
+  [coderCopy encodeBool:self->_isLoggedInToCloudDocs forKey:@"loggedInToCloudDocs"];
 }
 
 + (void)clearAccountDescriptorCache
@@ -116,8 +116,8 @@
 
 + (id)allLoggedInAccountDescriptors
 {
-  v2 = [a1 allEligibleAccountDescriptors];
-  v3 = [v2 mutableCopy];
+  allEligibleAccountDescriptors = [self allEligibleAccountDescriptors];
+  v3 = [allEligibleAccountDescriptors mutableCopy];
 
   v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_128];
   [v3 removeObjectsAtIndexes:v4];
@@ -125,12 +125,12 @@
   return v3;
 }
 
-+ (void)refreshCache:(BOOL)a3
++ (void)refreshCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if (refreshCache__onceToken == -1)
   {
-    if (a3)
+    if (cache)
     {
 LABEL_3:
       v4 = refreshCache__refreshQueue;
@@ -143,7 +143,7 @@ LABEL_3:
   else
   {
     +[BRAccountDescriptor refreshCache:];
-    if (v3)
+    if (cacheCopy)
     {
       goto LABEL_3;
     }
@@ -466,11 +466,11 @@ LABEL_75:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)accountDescriptorForURL:(id)a3 mustBeLoggedIn:(BOOL)a4
++ (id)accountDescriptorForURL:(id)l mustBeLoggedIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -491,12 +491,12 @@ LABEL_75:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 personaIdentifier];
-        v13 = [v5 _br_isInLocalHomeDirectoryUnderPersona:v12 needsPersonaSwitch:1];
+        personaIdentifier = [v11 personaIdentifier];
+        v13 = [lCopy _br_isInLocalHomeDirectoryUnderPersona:personaIdentifier needsPersonaSwitch:1];
 
         if (v13)
         {
-          if (v4 && ![v11 isLoggedInToCloudDocs])
+          if (inCopy && ![v11 isLoggedInToCloudDocs])
           {
             v11 = 0;
           }
@@ -524,14 +524,14 @@ LABEL_14:
   return v14;
 }
 
-+ (id)accountDescriptorForPersonaID:(id)a3 mustBeLoggedIn:(BOOL)a4
++ (id)accountDescriptorForPersonaID:(id)d mustBeLoggedIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v6 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
-  v7 = [v6 userPersonaUniqueString];
-  v8 = [v5 isEqualToString:v7];
+  userPersonaUniqueString = [v6 userPersonaUniqueString];
+  v8 = [dCopy isEqualToString:userPersonaUniqueString];
 
   v27 = 0u;
   v28 = 0u;
@@ -542,7 +542,7 @@ LABEL_14:
   if (v10)
   {
     v11 = v10;
-    v24 = v4;
+    v24 = inCopy;
     v12 = *v26;
     v13 = v8 ^ 1;
     while (2)
@@ -555,8 +555,8 @@ LABEL_14:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 personaIdentifier];
-        v17 = [v16 isEqualToString:v5];
+        personaIdentifier = [v15 personaIdentifier];
+        v17 = [personaIdentifier isEqualToString:dCopy];
         if ((v17 | v13))
         {
           v18 = v17;
@@ -569,8 +569,8 @@ LABEL_14:
 
         else
         {
-          v19 = [v15 personaIdentifier];
-          v20 = [v19 isEqualToString:@"__defaultPersonaID__"];
+          personaIdentifier2 = [v15 personaIdentifier];
+          v20 = [personaIdentifier2 isEqualToString:@"__defaultPersonaID__"];
 
           if (v20)
           {
@@ -604,11 +604,11 @@ LABEL_17:
   return v21;
 }
 
-+ (id)accountDescriptorForAccountID:(id)a3 mustBeLoggedIn:(BOOL)a4
++ (id)accountDescriptorForAccountID:(id)d mustBeLoggedIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -629,12 +629,12 @@ LABEL_17:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 accountIdentifier];
-        v13 = [v12 isEqualToString:v5];
+        accountIdentifier = [v11 accountIdentifier];
+        v13 = [accountIdentifier isEqualToString:dCopy];
 
         if (v13)
         {
-          if (v4 && ![v11 isLoggedInToCloudDocs])
+          if (inCopy && ![v11 isLoggedInToCloudDocs])
           {
             v11 = 0;
           }
@@ -698,7 +698,7 @@ LABEL_14:
       _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] hasManagedPersona = %d because %d || %d%@", buf, 0x1Eu);
     }
 
-    [a1 refreshCache:1];
+    [self refreshCache:1];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -722,13 +722,13 @@ LABEL_14:
   return [v3 stringWithFormat:@"<%@: %p account:%@ persona:%@ org:%@ %@>", v4, self, self->_accountIdentifier, self->_personaIdentifier, self->_organizationName, v5];
 }
 
-+ (id)matchDomainWithAccountAndStampDomainIfNeeded:(id)a3 withAccounts:(id)a4 persistDomain:(BOOL *)a5
++ (id)matchDomainWithAccountAndStampDomainIfNeeded:(id)needed withAccounts:(id)accounts persistDomain:(BOOL *)domain
 {
   v76 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
-  if ([v7 br_isCiconiaDomain])
+  neededCopy = needed;
+  accountsCopy = accounts;
+  identifier = [neededCopy identifier];
+  if ([neededCopy br_isCiconiaDomain])
   {
     v10 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 712);
     v11 = brc_default_log(1, 0);
@@ -741,9 +741,9 @@ LABEL_14:
     goto LABEL_50;
   }
 
-  v55 = a5;
-  v13 = [v7 userInfo];
-  v14 = [v13 mutableCopy];
+  domainCopy = domain;
+  userInfo = [neededCopy userInfo];
+  v14 = [userInfo mutableCopy];
   v15 = v14;
   if (v14)
   {
@@ -757,7 +757,7 @@ LABEL_14:
 
   v11 = v16;
 
-  v17 = [v11 objectForKeyedSubscript:@"dsid"];
+  br_dsid2 = [v11 objectForKeyedSubscript:@"dsid"];
   v18 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 718);
   v19 = brc_default_log(1, 0);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -769,7 +769,7 @@ LABEL_14:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v8;
+  obj = accountsCopy;
   v20 = [obj countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (!v20)
   {
@@ -778,9 +778,9 @@ LABEL_14:
   }
 
   v22 = v20;
-  v58 = v17;
+  v58 = br_dsid2;
   v56 = v11;
-  v57 = v8;
+  v57 = accountsCopy;
   v23 = *v62;
   *&v21 = 138413058;
   v54 = v21;
@@ -794,8 +794,8 @@ LABEL_12:
     }
 
     v25 = *(*(&v61 + 1) + 8 * v24);
-    v26 = [v25 identifier];
-    if ([v26 isEqualToString:v9])
+    identifier2 = [v25 identifier];
+    if ([identifier2 isEqualToString:identifier])
     {
       v27 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 723);
       v28 = brc_default_log(1, 0);
@@ -805,7 +805,7 @@ LABEL_12:
       }
 
       *buf = 138412546;
-      v66 = v9;
+      v66 = identifier;
       v67 = 2112;
       v68 = v27;
       v29 = v28;
@@ -814,8 +814,8 @@ LABEL_12:
       goto LABEL_30;
     }
 
-    v32 = [v25 br_dsid];
-    v33 = [v58 isEqualToString:v32];
+    br_dsid = [v25 br_dsid];
+    v33 = [v58 isEqualToString:br_dsid];
 
     if (v33)
     {
@@ -831,7 +831,7 @@ LABEL_27:
       if (!v43)
       {
         v35 = 0;
-        v8 = v57;
+        accountsCopy = v57;
         goto LABEL_44;
       }
 
@@ -849,9 +849,9 @@ LABEL_27:
   *buf = v54;
   v66 = v58;
   v67 = 2112;
-  v68 = v26;
+  v68 = identifier2;
   v69 = 2112;
-  v70 = v9;
+  v70 = identifier;
   v71 = 2112;
   v72 = v27;
   v29 = v28;
@@ -868,18 +868,18 @@ LABEL_20:
   }
 
   v35 = v34;
-  v36 = [v34 br_volumeUUID];
-  if (v36)
+  br_volumeUUID = [v34 br_volumeUUID];
+  if (br_volumeUUID)
   {
-    v60 = v26;
-    v37 = [v7 br_volumeUUID];
-    v38 = v37;
-    v39 = v9;
-    if (!v37)
+    v60 = identifier2;
+    br_volumeUUID2 = [neededCopy br_volumeUUID];
+    v38 = br_volumeUUID2;
+    v39 = identifier;
+    if (!br_volumeUUID2)
     {
       v44 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 743);
       v45 = brc_default_log(0, 0);
-      v8 = v57;
+      accountsCopy = v57;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
       {
         +[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:];
@@ -888,7 +888,7 @@ LABEL_20:
       goto LABEL_42;
     }
 
-    if ([v37 isEqual:v36])
+    if ([br_volumeUUID2 isEqual:br_volumeUUID])
     {
       v44 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 740);
       v45 = brc_default_log(1, 0);
@@ -897,9 +897,9 @@ LABEL_20:
         *buf = 138413314;
         v66 = v35;
         v67 = 2112;
-        v68 = v36;
+        v68 = br_volumeUUID;
         v69 = 2112;
-        v70 = v7;
+        v70 = neededCopy;
         v71 = 2112;
         v72 = v38;
         v73 = 2112;
@@ -907,15 +907,15 @@ LABEL_20:
         _os_log_debug_impl(&dword_1AE2A9000, v45, OS_LOG_TYPE_DEBUG, "[DEBUG] Matched account %@ (vid=%@) and domain %@ (vid=%@) volume IDs match%@", buf, 0x34u);
       }
 
-      v8 = v57;
+      accountsCopy = v57;
 LABEL_42:
 
-      v9 = v39;
-      v26 = v60;
+      identifier = v39;
+      identifier2 = v60;
       goto LABEL_43;
     }
 
-    v40 = v7;
+    v40 = neededCopy;
     v41 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 736);
     v42 = brc_default_log(1, 0);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -923,7 +923,7 @@ LABEL_42:
       *buf = 138413314;
       v66 = v35;
       v67 = 2112;
-      v68 = v36;
+      v68 = br_volumeUUID;
       v69 = 2112;
       v70 = v40;
       v71 = 2112;
@@ -933,9 +933,9 @@ LABEL_42:
       _os_log_impl(&dword_1AE2A9000, v42, OS_LOG_TYPE_DEFAULT, "[WARNING] Matched account %@ (vid=%@) and domain %@ (vid=%@) volume IDs DO NOT match%@", buf, 0x34u);
     }
 
-    v7 = v40;
-    v9 = v39;
-    v26 = v60;
+    neededCopy = v40;
+    identifier = v39;
+    identifier2 = v60;
     goto LABEL_27;
   }
 
@@ -946,24 +946,24 @@ LABEL_42:
     +[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:];
   }
 
-  v8 = v57;
+  accountsCopy = v57;
 LABEL_43:
 
 LABEL_44:
   v11 = v56;
-  v17 = v58;
+  br_dsid2 = v58;
 LABEL_45:
 
-  if (v17)
+  if (br_dsid2)
   {
     v46 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 755);
     v47 = brc_default_log(1, 0);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v66 = v7;
+      v66 = neededCopy;
       v67 = 2112;
-      v68 = v17;
+      v68 = br_dsid2;
       v69 = 2112;
       v70 = v46;
       _os_log_debug_impl(&dword_1AE2A9000, v47, OS_LOG_TYPE_DEBUG, "[DEBUG] Domain %@ was already stamped with dsid: %@%@", buf, 0x20u);
@@ -972,25 +972,25 @@ LABEL_45:
 
   else if (v35)
   {
-    v17 = [v35 br_dsid];
+    br_dsid2 = [v35 br_dsid];
     v50 = brc_bread_crumbs("+[BRAccountDescriptor matchDomainWithAccountAndStampDomainIfNeeded:withAccounts:persistDomain:]", 758);
     v51 = brc_default_log(1, 0);
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v66 = v7;
+      v66 = neededCopy;
       v67 = 2112;
-      v68 = v17;
+      v68 = br_dsid2;
       v69 = 2112;
       v70 = v50;
       _os_log_impl(&dword_1AE2A9000, v51, OS_LOG_TYPE_DEFAULT, "[NOTICE] Stamping domain %@ with DSID %@%@", buf, 0x20u);
     }
 
-    [v11 setObject:v17 forKeyedSubscript:@"dsid"];
-    [v7 setUserInfo:v11];
-    if (v55)
+    [v11 setObject:br_dsid2 forKeyedSubscript:@"dsid"];
+    [neededCopy setUserInfo:v11];
+    if (domainCopy)
     {
-      *v55 = 1;
+      *domainCopy = 1;
     }
   }
 
@@ -1001,13 +1001,13 @@ LABEL_45:
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v66 = v9;
+      v66 = identifier;
       v67 = 2112;
       v68 = v52;
       _os_log_impl(&dword_1AE2A9000, v53, OS_LOG_TYPE_DEFAULT, "[WARNING] Didn't find an account with identifier %@. Possible data loss%@", buf, 0x16u);
     }
 
-    v17 = 0;
+    br_dsid2 = 0;
   }
 
   v10 = v35;

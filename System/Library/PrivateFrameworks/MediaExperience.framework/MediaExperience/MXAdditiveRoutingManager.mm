@@ -4,14 +4,14 @@
 - (NSDictionary)detailedRoutesDescription;
 - (id)copyActiveSessionsInfo;
 - (id)copyActiveVoiceOverSessionPlayingToOnDemandVAD;
-- (id)copyAndUpdateSessionInformation:(id)a3;
+- (id)copyAndUpdateSessionInformation:(id)information;
 - (id)copyVADNamesFromSessionAudioBehavior;
 - (int)sendActiveSessionsInfoToVA;
 - (void)dealloc;
-- (void)discardUnavailableVADInfoFromDetailedRouteDescriptionIfNeeded:(id)a3;
-- (void)populateVirtualAudioDeviceInfoFromSessionAudioBehaviors:(id)a3 newVADIDToNameMap:(id)a4;
+- (void)discardUnavailableVADInfoFromDetailedRouteDescriptionIfNeeded:(id)needed;
+- (void)populateVirtualAudioDeviceInfoFromSessionAudioBehaviors:(id)behaviors newVADIDToNameMap:(id)map;
 - (void)refreshDetailedRouteDescriptionCache;
-- (void)setDetailedRoutesDescription:(id)a3;
+- (void)setDetailedRoutesDescription:(id)description;
 @end
 
 @implementation MXAdditiveRoutingManager
@@ -29,12 +29,12 @@
 - (id)copyActiveVoiceOverSessionPlayingToOnDemandVAD
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+  copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -45,7 +45,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(copyMXCoreSessionList);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [copyMXCoreSessionList countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -104,8 +104,8 @@ LABEL_13:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(MXAdditiveRoutingManager *)self vadNameToID];
-    v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    vadNameToID = [(MXAdditiveRoutingManager *)self vadNameToID];
+    v5 = [(NSDictionary *)vadNameToID countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v5)
     {
       v6 = v5;
@@ -116,13 +116,13 @@ LABEL_13:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(vadNameToID);
           }
 
           -[MXAdditiveRoutingManager updateDetailedRouteDescription:](self, "updateDetailedRouteDescription:", [-[NSDictionary objectForKey:](-[MXAdditiveRoutingManager vadNameToID](self "vadNameToID")]);
         }
 
-        v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v6 = [(NSDictionary *)vadNameToID countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v6);
@@ -205,11 +205,11 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
   [(MXAdditiveRoutingManager *)&v3 dealloc];
 }
 
-- (void)setDetailedRoutesDescription:(id)a3
+- (void)setDetailedRoutesDescription:(id)description
 {
   [(NSRecursiveLock *)self->mDetailedRoutesDescriptionLock lock];
 
-  self->mDetailedRoutesDescription = a3;
+  self->mDetailedRoutesDescription = description;
   mDetailedRoutesDescriptionLock = self->mDetailedRoutesDescriptionLock;
 
   [(NSRecursiveLock *)mDetailedRoutesDescriptionLock unlock];
@@ -229,11 +229,11 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
     else
     {
       v12 = 0;
-      v4 = [(MXAdditiveRoutingManager *)self copyActiveSessionsInfo];
-      if (([v4 isEqual:{-[MXAdditiveRoutingManager mostRecentActiveSessions](self, "mostRecentActiveSessions")}] & 1) == 0)
+      copyActiveSessionsInfo = [(MXAdditiveRoutingManager *)self copyActiveSessionsInfo];
+      if (([copyActiveSessionsInfo isEqual:{-[MXAdditiveRoutingManager mostRecentActiveSessions](self, "mostRecentActiveSessions")}] & 1) == 0)
       {
         v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [v5 setObject:v4 forKey:0x1F28974D0];
+        [v5 setObject:copyActiveSessionsInfo forKey:0x1F28974D0];
         v11 = 0;
         if (dword_1EB75DE40)
         {
@@ -250,7 +250,7 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        [(MXAdditiveRoutingManager *)self setMostRecentActiveSessions:v4, v9, v10];
+        [(MXAdditiveRoutingManager *)self setMostRecentActiveSessions:copyActiveSessionsInfo, v9, v10];
       }
 
       result = v12;
@@ -261,10 +261,10 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
   return result;
 }
 
-- (id)copyAndUpdateSessionInformation:(id)a3
+- (id)copyAndUpdateSessionInformation:(id)information
 {
   v121 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (information)
   {
     v80 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v70 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -273,8 +273,8 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
-    obj = a3;
-    v76 = [a3 countByEnumeratingWithState:&v105 objects:v120 count:16];
+    obj = information;
+    v76 = [information countByEnumeratingWithState:&v105 objects:v120 count:16];
     if (v76)
     {
       v74 = *v106;
@@ -396,19 +396,19 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
       while (v76);
     }
 
-    v21 = [(NSDictionary *)[(MXAdditiveRoutingManager *)self vadIDToName:v62] allKeys];
-    v22 = [v80 allKeys];
+    allKeys = [(NSDictionary *)[(MXAdditiveRoutingManager *)self vadIDToName:v62] allKeys];
+    allKeys2 = [v80 allKeys];
     v83 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v21)
+    if (allKeys)
     {
       v23 = [(NSDictionary *)[(MXAdditiveRoutingManager *)self detailedRoutesDescription] mutableCopy];
-      v24 = [v22 differenceFromArray:v21];
+      v24 = [allKeys2 differenceFromArray:allKeys];
       v97 = 0u;
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v81 = [v24 removals];
-      v25 = [v81 countByEnumeratingWithState:&v95 objects:v111 count:16];
+      removals = [v24 removals];
+      v25 = [removals countByEnumeratingWithState:&v95 objects:v111 count:16];
       if (v25)
       {
         v26 = *v96;
@@ -418,7 +418,7 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
           {
             if (*v96 != v26)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(removals);
             }
 
             v28 = *(*(&v95 + 1) + 8 * j);
@@ -440,11 +440,11 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
 
               if (v31)
               {
-                v32 = [v28 object];
+                object = [v28 object];
                 v112 = 136315394;
                 v113 = "[MXAdditiveRoutingManager copyAndUpdateSessionInformation:]";
                 v114 = 2114;
-                v115 = v32;
+                v115 = object;
                 LODWORD(v67) = 22;
                 v64 = &v112;
                 _os_log_send_and_compose_impl();
@@ -457,7 +457,7 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
             [v23 removeObjectForKey:{objc_msgSend(v28, "object")}];
           }
 
-          v25 = [v81 countByEnumeratingWithState:&v95 objects:v111 count:16];
+          v25 = [removals countByEnumeratingWithState:&v95 objects:v111 count:16];
         }
 
         while (v25);
@@ -467,11 +467,11 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
     }
 
     v77 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v69 = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
-    v68 = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyMXCoreSessionSecureList];
+    copyMXCoreSessionList = [+[MXSessionManager sharedInstance](MXSessionManager copyMXCoreSessionList];
+    copyMXCoreSessionSecureList = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyMXCoreSessionSecureList];
     v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v75 addObjectsFromArray:v69];
-    [v75 addObjectsFromArray:v68];
+    [v75 addObjectsFromArray:copyMXCoreSessionList];
+    [v75 addObjectsFromArray:copyMXCoreSessionSecureList];
     v93 = 0u;
     v94 = 0u;
     v91 = 0u;
@@ -528,11 +528,11 @@ MXAdditiveRoutingManager *__42__MXAdditiveRoutingManager_sharedInstance__block_i
 
                   if (v42)
                   {
-                    v43 = [v34 clientName];
+                    clientName = [v34 clientName];
                     v112 = 136315394;
                     v113 = "[MXAdditiveRoutingManager copyAndUpdateSessionInformation:]";
                     v114 = 2114;
-                    v115 = v43;
+                    v115 = clientName;
                     LODWORD(v67) = 22;
                     v64 = &v112;
                     _os_log_send_and_compose_impl();
@@ -595,11 +595,11 @@ LABEL_90:
 
                   if (v50)
                   {
-                    v51 = [v34 clientName];
+                    clientName2 = [v34 clientName];
                     v112 = 136315650;
                     v113 = "[MXAdditiveRoutingManager copyAndUpdateSessionInformation:]";
                     v114 = 2114;
-                    v115 = v51;
+                    v115 = clientName2;
                     v116 = 2114;
                     v117 = v45;
                     LODWORD(v67) = 32;
@@ -768,11 +768,11 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
 - (id)copyActiveSessionsInfo
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [+[MXSessionManager sharedInstance](MXSessionManager copyActiveSessionsInfoForAdditiveRouting];
-  [v2 addObjectsFromArray:v3];
+  copyActiveSessionsInfoForAdditiveRouting = [+[MXSessionManager sharedInstance](MXSessionManager copyActiveSessionsInfoForAdditiveRouting];
+  [v2 addObjectsFromArray:copyActiveSessionsInfoForAdditiveRouting];
 
-  v4 = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyActiveSessionsInfoForAdditiveRouting];
-  [v2 addObjectsFromArray:v4];
+  copyActiveSessionsInfoForAdditiveRouting2 = [+[MXSessionManagerSecure sharedInstance](MXSessionManagerSecure copyActiveSessionsInfoForAdditiveRouting];
+  [v2 addObjectsFromArray:copyActiveSessionsInfoForAdditiveRouting2];
 
   return v2;
 }
@@ -847,15 +847,15 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
   return v3;
 }
 
-- (void)populateVirtualAudioDeviceInfoFromSessionAudioBehaviors:(id)a3 newVADIDToNameMap:(id)a4
+- (void)populateVirtualAudioDeviceInfoFromSessionAudioBehaviors:(id)behaviors newVADIDToNameMap:(id)map
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = [(MXAdditiveRoutingManager *)self copyVADNamesFromSessionAudioBehavior];
+  copyVADNamesFromSessionAudioBehavior = [(MXAdditiveRoutingManager *)self copyVADNamesFromSessionAudioBehavior];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [copyVADNamesFromSessionAudioBehavior countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -866,19 +866,19 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(copyVADNamesFromSessionAudioBehavior);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        if (![a3 objectForKey:v11])
+        if (![behaviors objectForKey:v11])
         {
           v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CMSMUtility_GetVADIDForVADName(v11)];
-          [a3 setObject:v12 forKey:v11];
-          [a4 setObject:v11 forKey:v12];
+          [behaviors setObject:v12 forKey:v11];
+          [map setObject:v11 forKey:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [copyVADNamesFromSessionAudioBehavior countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -891,16 +891,16 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [+[MXAdditiveRoutingManager setVadIDToName:v15], "setVadIDToName:", a4];
-  [+[MXAdditiveRoutingManager sharedInstance](MXAdditiveRoutingManager setVadNameToID:"setVadNameToID:", a3];
+  [+[MXAdditiveRoutingManager setVadIDToName:v15], "setVadIDToName:", map];
+  [+[MXAdditiveRoutingManager sharedInstance](MXAdditiveRoutingManager setVadNameToID:"setVadNameToID:", behaviors];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)discardUnavailableVADInfoFromDetailedRouteDescriptionIfNeeded:(id)a3
+- (void)discardUnavailableVADInfoFromDetailedRouteDescriptionIfNeeded:(id)needed
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [(NSDictionary *)[(MXAdditiveRoutingManager *)self vadIDToName] allKeys];
+  allKeys = [(NSDictionary *)[(MXAdditiveRoutingManager *)self vadIDToName] allKeys];
   if (dword_1EB75DE40)
   {
     v23 = 0;
@@ -910,14 +910,14 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a3)
+  if (needed)
   {
     v17 = -[NSDictionary mutableCopy]([+[MXAdditiveRoutingManager sharedInstance](MXAdditiveRoutingManager detailedRoutesDescription], "mutableCopy");
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    v6 = [needed countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
@@ -928,11 +928,11 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(needed);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          if (![(NSArray *)v4 containsObject:v10, v15, v16])
+          if (![(NSArray *)allKeys containsObject:v10, v15, v16])
           {
             if (dword_1EB75DE40)
             {
@@ -968,7 +968,7 @@ void __60__MXAdditiveRoutingManager_copyAndUpdateSessionInformation___block_invo
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v7 = [needed countByEnumeratingWithState:&v18 objects:v24 count:16];
       }
 
       while (v7);

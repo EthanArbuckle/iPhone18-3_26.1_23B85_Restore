@@ -1,43 +1,43 @@
 @interface MLCConditionalLayer
-+ (id)layerWithTrueBranch:(id)a3 falseBranch:(id)a4;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCConditionalLayer)initWithTrueBranch:(id)a3 falseBranch:(id)a4;
++ (id)layerWithTrueBranch:(id)branch falseBranch:(id)falseBranch;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCConditionalLayer)initWithTrueBranch:(id)branch falseBranch:(id)falseBranch;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
-- (unint64_t)resultSizeForOutputIndex:(unint64_t)a3 dimension:(unint64_t)a4;
+- (id)resultTensorFromSources:(id)sources;
+- (unint64_t)resultSizeForOutputIndex:(unint64_t)index dimension:(unint64_t)dimension;
 @end
 
 @implementation MLCConditionalLayer
 
-+ (id)layerWithTrueBranch:(id)a3 falseBranch:(id)a4
++ (id)layerWithTrueBranch:(id)branch falseBranch:(id)falseBranch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTrueBranch:v7 falseBranch:v6];
+  falseBranchCopy = falseBranch;
+  branchCopy = branch;
+  v8 = [[self alloc] initWithTrueBranch:branchCopy falseBranch:falseBranchCopy];
 
   return v8;
 }
 
-- (MLCConditionalLayer)initWithTrueBranch:(id)a3 falseBranch:(id)a4
+- (MLCConditionalLayer)initWithTrueBranch:(id)branch falseBranch:(id)falseBranch
 {
-  v7 = a3;
-  v8 = a4;
+  branchCopy = branch;
+  falseBranchCopy = falseBranch;
   v12.receiver = self;
   v12.super_class = MLCConditionalLayer;
   v9 = [(MLCLayer *)&v12 initWithLabel:@"Conditonal"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_trueBranch, a3);
-    objc_storeStrong(&v10->_falseBranch, a4);
+    objc_storeStrong(&v9->_trueBranch, branch);
+    objc_storeStrong(&v10->_falseBranch, falseBranch);
   }
 
   return v10;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v6 = [MLCLog framework:a3];
+  v6 = [MLCLog framework:device];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [MLCConditionalLayer compileForDevice:a2 sourceTensors:v6 resultTensor:?];
@@ -46,58 +46,58 @@
   return 0;
 }
 
-- (unint64_t)resultSizeForOutputIndex:(unint64_t)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeForOutputIndex:(unint64_t)index dimension:(unint64_t)dimension
 {
-  v7 = [(MLCConditionalLayer *)self trueBranch];
-  v8 = [v7 graphLayerList];
-  v9 = [(MLCConditionalLayer *)self trueBranch];
-  v10 = [v9 graphLayerList];
-  v11 = [v8 objectAtIndexedSubscript:{objc_msgSend(v10, "count") - 1}];
-  v12 = [v11 resultTensors];
+  trueBranch = [(MLCConditionalLayer *)self trueBranch];
+  graphLayerList = [trueBranch graphLayerList];
+  trueBranch2 = [(MLCConditionalLayer *)self trueBranch];
+  graphLayerList2 = [trueBranch2 graphLayerList];
+  v11 = [graphLayerList objectAtIndexedSubscript:{objc_msgSend(graphLayerList2, "count") - 1}];
+  resultTensors = [v11 resultTensors];
 
-  v13 = [v12 objectAtIndexedSubscript:0];
-  v14 = [v13 descriptor];
-  v15 = [v14 shape];
-  v16 = [v15 objectAtIndexedSubscript:a4];
-  v17 = [v16 unsignedIntegerValue];
+  v13 = [resultTensors objectAtIndexedSubscript:0];
+  descriptor = [v13 descriptor];
+  shape = [descriptor shape];
+  v16 = [shape objectAtIndexedSubscript:dimension];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  v18 = [(MLCConditionalLayer *)self falseBranch];
-  v19 = [v18 graphLayerList];
-  v20 = [(MLCConditionalLayer *)self falseBranch];
-  v21 = [v20 graphLayerList];
-  v22 = [v19 objectAtIndexedSubscript:{objc_msgSend(v21, "count") - 1}];
-  v23 = [v22 resultTensors];
+  falseBranch = [(MLCConditionalLayer *)self falseBranch];
+  graphLayerList3 = [falseBranch graphLayerList];
+  falseBranch2 = [(MLCConditionalLayer *)self falseBranch];
+  graphLayerList4 = [falseBranch2 graphLayerList];
+  v22 = [graphLayerList3 objectAtIndexedSubscript:{objc_msgSend(graphLayerList4, "count") - 1}];
+  resultTensors2 = [v22 resultTensors];
 
-  v24 = [v23 objectAtIndexedSubscript:0];
-  v25 = [v24 descriptor];
-  v26 = [v25 shape];
-  v27 = [v26 objectAtIndexedSubscript:a4];
-  v28 = [v27 unsignedIntegerValue];
+  v24 = [resultTensors2 objectAtIndexedSubscript:0];
+  descriptor2 = [v24 descriptor];
+  shape2 = [descriptor2 shape];
+  v27 = [shape2 objectAtIndexedSubscript:dimension];
+  unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-  if (v17 != v28)
+  if (unsignedIntegerValue != unsignedIntegerValue2)
   {
     v29 = +[MLCLog framework];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      [(MLCConditionalLayer *)a2 resultSizeForOutputIndex:a4 dimension:v29];
+      [(MLCConditionalLayer *)a2 resultSizeForOutputIndex:dimension dimension:v29];
     }
 
-    v17 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v17;
+  return unsignedIntegerValue;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
-    v8 = [v7 descriptor];
-    v9 = [v8 shape];
-    v10 = [v9 count];
+    v7 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor = [v7 descriptor];
+    shape = [descriptor shape];
+    v10 = [shape count];
 
     if (i >= v10)
     {
@@ -122,13 +122,13 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self sourceTensors];
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [(MLCConditionalLayer *)self trueBranch];
-  v9 = [(MLCConditionalLayer *)self falseBranch];
-  v10 = [(MLCLayer *)self conditionalTreeNode];
-  v11 = [(MLCLayer *)self resultTensors];
-  v12 = [v3 stringWithFormat:@"%@: { predicate=%@ : trueBranch=%p : falseBranch=%p : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v7, v8, v9, v10, v11];
+  sourceTensors = [(MLCLayer *)self sourceTensors];
+  v7 = [sourceTensors objectAtIndexedSubscript:0];
+  trueBranch = [(MLCConditionalLayer *)self trueBranch];
+  falseBranch = [(MLCConditionalLayer *)self falseBranch];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v12 = [v3 stringWithFormat:@"%@: { predicate=%@ : trueBranch=%p : falseBranch=%p : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v7, trueBranch, falseBranch, conditionalTreeNode, resultTensors];
 
   return v12;
 }

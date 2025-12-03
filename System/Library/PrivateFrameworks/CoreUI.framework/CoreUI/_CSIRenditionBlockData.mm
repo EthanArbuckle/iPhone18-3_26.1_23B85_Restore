@@ -1,9 +1,9 @@
 @interface _CSIRenditionBlockData
 + (uint64_t)sharedCache;
-- (BOOL)expandCSIBitmapData:(uint64_t)a3 fromSlice:(uint64_t)a4 makeReadOnly:(uint64_t)a5;
+- (BOOL)expandCSIBitmapData:(uint64_t)data fromSlice:(uint64_t)slice makeReadOnly:(uint64_t)only;
 - (_BYTE)setRowBytes:(_BYTE *)result;
-- (_DWORD)initWithBytes:(uint64_t)a3 pixelWidth:(int)a4 pixelHeight:(uint64_t)a5 sourceRowbytes:(uint64_t)a6 pixelFormat:;
-- (_DWORD)initWithPixelWidth:(int)a3 pixelHeight:(uint64_t)a4 sourceRowbytes:(uint64_t)a5 pixelFormat:;
+- (_DWORD)initWithBytes:(uint64_t)bytes pixelWidth:(int)width pixelHeight:(uint64_t)height sourceRowbytes:(uint64_t)rowbytes pixelFormat:;
+- (_DWORD)initWithPixelWidth:(int)width pixelHeight:(uint64_t)height sourceRowbytes:(uint64_t)rowbytes pixelFormat:;
 - (uint64_t)_makeReadOnly;
 - (void)_allocateImageBytes;
 - (void)_freeImageBytes;
@@ -22,17 +22,17 @@
 
 - (void)_freeImageBytes
 {
-  if (a1 && (*(a1 + 200) & 1) != 0)
+  if (self && (*(self + 200) & 1) != 0)
   {
-    if ((*(a1 + 200) & 2) != 0)
+    if ((*(self + 200) & 2) != 0)
     {
-      munmap(*(a1 + 16), (vm_page_size + *(a1 + 32) * *(a1 + 24) - 1) & -vm_page_size);
-      *(a1 + 16) = 0;
+      munmap(*(self + 16), (vm_page_size + *(self + 32) * *(self + 24) - 1) & -vm_page_size);
+      *(self + 16) = 0;
     }
 
     else
     {
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
 
       free(v2);
     }
@@ -54,9 +54,9 @@
 
 - (void)_allocateImageBytes
 {
-  if (a1)
+  if (self)
   {
-    v10 = *(a1 + 32) * *(a1 + 24);
+    v10 = *(self + 32) * *(self + 24);
     v11 = vm_page_size + v10 - 1;
     v12 = -vm_page_size;
     if (qword_1ED4EC008 != -1)
@@ -67,14 +67,14 @@
     v13 = v11 & v12;
     if (_MergedGlobals)
     {
-      *(a1 + 16) = -1;
-      v14 = *(a1 + 200);
+      *(self + 16) = -1;
+      v14 = *(self + 200);
     }
 
     else
     {
       v15 = mmap(0, v13, 3, 4098, 1275068416, 0);
-      *(a1 + 16) = v15;
+      *(self + 16) = v15;
       if (v15 != -1 && madvise(v15, v13, 3) < 0)
       {
         v16 = __error();
@@ -82,13 +82,13 @@
         _CUILog(4, "[_CSIRenditionBlockData _allocateImageBytes] madvise failed error:'%s'", v18, v19, v20, v21, v22, v23, v17);
       }
 
-      v14 = *(a1 + 200) | 2;
+      v14 = *(self + 200) | 2;
     }
 
-    *(a1 + 200) = v14 | 1;
-    *(a1 + 192) = v13;
+    *(self + 200) = v14 | 1;
+    *(self + 192) = v13;
     [+[CUIRuntimeStatistics sharedRuntimeStatistics](CUIRuntimeStatistics "sharedRuntimeStatistics")];
-    if (*(a1 + 16) == -1)
+    if (*(self + 16) == -1)
     {
       if ((_MergedGlobals & 1) == 0)
       {
@@ -97,10 +97,10 @@
         _CUILog(4, "[_CSIRenditionBlockData _allocateImageBytes] mmap failed error:'%s' using malloc now", v26, v27, v28, v29, v30, v31, v25);
       }
 
-      *(a1 + 200) &= ~2u;
-      *(a1 + 16) = malloc_type_malloc(v10, 0x8AF4BAACuLL);
+      *(self + 200) &= ~2u;
+      *(self + 16) = malloc_type_malloc(v10, 0x8AF4BAACuLL);
       __CFSetLastAllocationEventName();
-      if (!*(a1 + 16))
+      if (!*(self + 16))
       {
 
         _CUILog(4, "[_CSIRenditionBlockData _allocateImageBytes] malloc failed error", v32, v33, v34, v35, v36, v37, a9);
@@ -109,22 +109,22 @@
   }
 }
 
-- (BOOL)expandCSIBitmapData:(uint64_t)a3 fromSlice:(uint64_t)a4 makeReadOnly:(uint64_t)a5
+- (BOOL)expandCSIBitmapData:(uint64_t)data fromSlice:(uint64_t)slice makeReadOnly:(uint64_t)only
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9 = *(a1 + 16);
+  v9 = *(self + 16);
   if (!v9)
   {
     return 0;
   }
 
-  v10 = a5;
+  onlyCopy = only;
   v12 = *(a2 + 4);
-  atomic_store(0, (a1 + 40));
+  atomic_store(0, (self + 40));
   v13 = *(a2 + 8);
   if (v13 > 5)
   {
@@ -132,7 +132,7 @@
     {
       if (v13 == 6)
       {
-        if ((decodeRadiosity((a2 + 16), *(a2 + 12), *(a1 + 32), v9) & 0x80000000) == 0)
+        if ((decodeRadiosity((a2 + 16), *(a2 + 12), *(self + 32), v9) & 0x80000000) == 0)
         {
           goto LABEL_70;
         }
@@ -156,7 +156,7 @@ LABEL_64:
       }
 
 LABEL_24:
-      if (CUIExpandATECompressedDataIntoBuffer(a2 + 16, (v12 >> 1) & 1, v9, *(a1 + 8), *(a1 + 32), a6, a7, a8))
+      if (CUIExpandATECompressedDataIntoBuffer(a2 + 16, (v12 >> 1) & 1, v9, *(self + 8), *(self + 32), a6, a7, a8))
       {
         goto LABEL_70;
       }
@@ -168,13 +168,13 @@ LABEL_24:
     {
       if (v13 == 9)
       {
-        if (!CUIUncompressHEVCInfoData(a2 + 16, v9, *(a1 + 32), *(a1 + 8), a5, a6, a7, a8))
+        if (!CUIUncompressHEVCInfoData(a2 + 16, v9, *(self + 32), *(self + 8), only, a6, a7, a8))
         {
           goto LABEL_63;
         }
       }
 
-      else if (!CUIUncompressDeepmapImageData((a2 + 16), *(a2 + 12), ((*(a2 + 4) << 31) >> 31) & *(a2 + 12), v9, a4, a4 >> 32, *(a1 + 32), *(a1 + 8)))
+      else if (!CUIUncompressDeepmapImageData((a2 + 16), *(a2 + 12), ((*(a2 + 4) << 31) >> 31) & *(a2 + 12), v9, slice, slice >> 32, *(self + 32), *(self + 8)))
       {
         goto LABEL_63;
       }
@@ -186,7 +186,7 @@ LABEL_70:
 
     if (v13 == 11)
     {
-      if (!CUIUncompressDeepmap2ImageData((a2 + 16), *(a2 + 12), ((*(a2 + 4) << 31) >> 31) & *(a2 + 12), v9, a4, a4 >> 32, *(a1 + 32), *(a1 + 8)))
+      if (!CUIUncompressDeepmap2ImageData((a2 + 16), *(a2 + 12), ((*(a2 + 4) << 31) >> 31) & *(a2 + 12), v9, slice, slice >> 32, *(self + 32), *(self + 8)))
       {
         v70 = CUIConvertCompressionTypeToString(*(a2 + 8));
         _CUILog(4, "CoreUI: Unable to decompress 2.0 stream for CSI image block data. '%s'", v40, v41, v42, v43, v44, v45, v70);
@@ -204,7 +204,7 @@ LABEL_68:
     }
 
 LABEL_67:
-    _CUILog(4, "CoreUI: unhandled compressiontype for CSI image block data.%d", a3, a4, a5, a6, a7, a8, *(a2 + 8));
+    _CUILog(4, "CoreUI: unhandled compressiontype for CSI image block data.%d", data, slice, only, a6, a7, a8, *(a2 + 8));
     goto LABEL_68;
   }
 
@@ -213,7 +213,7 @@ LABEL_67:
     if (!v13)
     {
       v53 = *(a2 + 12);
-      if (*(a1 + 192) < v53)
+      if (*(self + 192) < v53)
       {
         v72 = CUIConvertCompressionTypeToString(0);
         _CUILog(4, "CoreUI: Unable to copy imagedata for rawbytes block data data. '%s'", v54, v55, v56, v57, v58, v59, v72);
@@ -221,7 +221,7 @@ LABEL_67:
       }
 
       memcpy(v9, (a2 + 16), v53);
-      atomic_store(*(a2 + 12), (a1 + 40));
+      atomic_store(*(a2 + 12), (self + 40));
       goto LABEL_70;
     }
 
@@ -233,7 +233,7 @@ LABEL_67:
         goto LABEL_64;
       }
 
-      pk_decompressData((a2 + 16), v9, a3, SHIDWORD(a3), a4, SHIDWORD(a4), *(a1 + 32), *a2 == 1296844099);
+      pk_decompressData((a2 + 16), v9, data, SHIDWORD(data), slice, SHIDWORD(slice), *(self + 32), *a2 == 1296844099);
       goto LABEL_70;
     }
 
@@ -244,7 +244,7 @@ LABEL_67:
   {
     if (v13 == 5)
     {
-      if (!CUIUncompressJPEGandLZFSEInfoData((a2 + 16), v9, *(a1 + 32), 8, 32, 8194, a7, a8))
+      if (!CUIUncompressJPEGandLZFSEInfoData((a2 + 16), v9, *(self + 32), 8, 32, 8194, a7, a8))
       {
         goto LABEL_63;
       }
@@ -261,7 +261,7 @@ LABEL_67:
   atomic_store(0, &dest.rowBytes);
   v15 = a2 + 16;
   v74 = *(a2 + 4);
-  v73 = a5;
+  onlyCopy2 = only;
   if (v74)
   {
     v17 = *(a2 + 12);
@@ -288,7 +288,7 @@ LABEL_67:
     v16 = 0;
     v17 = 0;
     v18 = 0;
-    v19 = *(a1 + 24);
+    v19 = *(self + 24);
     v20 = *(a2 + 12);
   }
 
@@ -314,11 +314,11 @@ LABEL_67:
     v79[6] = v15;
     v79[7] = v20;
     v79[8] = a2;
-    v82 = a3;
-    v83 = a4;
+    dataCopy = data;
+    sliceCopy = slice;
     v80 = v22;
     v81 = v19;
-    v79[4] = a1;
+    v79[4] = self;
     v79[5] = &dest;
     if (v74)
     {
@@ -363,7 +363,7 @@ LABEL_45:
     }
 
     _CUILog(4, "CoreUI: Can't find the correct chunk '%d'", v26, v27, v28, v29, v30, v31, v34);
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel_expandCSIBitmapData_fromSlice_makeReadOnly_ file:a1 lineNumber:@"CUIThemeRendition.m" description:981, @"CoreUI: Can't find the correct chunk"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel_expandCSIBitmapData_fromSlice_makeReadOnly_ file:self lineNumber:@"CUIThemeRendition.m" description:981, @"CoreUI: Can't find the correct chunk"];
     v15 = v16 + 20;
     if (v18)
     {
@@ -388,7 +388,7 @@ LABEL_47:
     break;
   }
 
-  v10 = v73;
+  onlyCopy = onlyCopy2;
   if ((v74 & 1) != 0 && !atomic_load((dest.height + 24)))
   {
     block[0] = _NSConcreteStackBlock;
@@ -408,13 +408,13 @@ LABEL_47:
 
   _Block_object_dispose(&dest, 8);
 LABEL_71:
-  if (*(a1 + 8) == 1095911234 && *(a1 + 12) == 1)
+  if (*(self + 8) == 1095911234 && *(self + 12) == 1)
   {
-    v60 = *(a1 + 24);
-    dest.data = *(a1 + 16);
+    v60 = *(self + 24);
+    dest.data = *(self + 16);
     dest.height = v60;
-    v61 = *(a1 + 32);
-    dest.width = a4;
+    v61 = *(self + 32);
+    dest.width = slice;
     dest.rowBytes = v61;
     *permuteMap = 50331906;
     if (vImagePermuteChannels_ARGB8888(&dest, &dest, permuteMap, 0) < 0)
@@ -423,9 +423,9 @@ LABEL_71:
     }
   }
 
-  if (v10)
+  if (onlyCopy)
   {
-    [(_CSIRenditionBlockData *)a1 _makeReadOnly];
+    [(_CSIRenditionBlockData *)self _makeReadOnly];
   }
 
   return v14;
@@ -442,48 +442,48 @@ LABEL_71:
   return sharedCache_sharedCache;
 }
 
-- (_DWORD)initWithPixelWidth:(int)a3 pixelHeight:(uint64_t)a4 sourceRowbytes:(uint64_t)a5 pixelFormat:
+- (_DWORD)initWithPixelWidth:(int)width pixelHeight:(uint64_t)height sourceRowbytes:(uint64_t)rowbytes pixelFormat:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = _CSIRenditionBlockData;
   v8 = objc_msgSendSuper2(&v17, sel_init);
   if (v8)
   {
-    __bppFromBlockPixelFormat(a5);
-    v8[3] = a5;
-    v8[6] = a3;
+    __bppFromBlockPixelFormat(rowbytes);
+    v8[3] = rowbytes;
+    v8[6] = width;
     *(v8 + 4) = CGBitmapGetAlignedBytesPerRow();
-    *(v8 + 23) = a4;
+    *(v8 + 23) = height;
     [(_CSIRenditionBlockData *)v8 _allocateImageBytes:v10];
   }
 
   return v8;
 }
 
-- (_DWORD)initWithBytes:(uint64_t)a3 pixelWidth:(int)a4 pixelHeight:(uint64_t)a5 sourceRowbytes:(uint64_t)a6 pixelFormat:
+- (_DWORD)initWithBytes:(uint64_t)bytes pixelWidth:(int)width pixelHeight:(uint64_t)height sourceRowbytes:(uint64_t)rowbytes pixelFormat:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = _CSIRenditionBlockData;
   v10 = objc_msgSendSuper2(&v14, sel_init);
   if (v10)
   {
-    __bppFromBlockPixelFormat(a6);
-    v10[3] = a6;
-    v10[6] = a4;
+    __bppFromBlockPixelFormat(rowbytes);
+    v10[3] = rowbytes;
+    v10[6] = width;
     AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
     *(v10 + 4) = AlignedBytesPerRow;
     v12 = AlignedBytesPerRow * v10[6];
-    *(v10 + 23) = a5;
+    *(v10 + 23) = height;
     *(v10 + 24) = v12;
     *(v10 + 2) = a2;
   }

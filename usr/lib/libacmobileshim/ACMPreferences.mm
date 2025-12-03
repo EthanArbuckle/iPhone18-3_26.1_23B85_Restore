@@ -1,13 +1,13 @@
 @interface ACMPreferences
-- (id)multiplePreferencesValuesForKeys:(id)a3;
-- (id)multiplePreferencesValuesForKeys:(id)a3 withOptions:(int64_t)a4;
-- (id)preferencesValueForKey:(id)a3;
-- (id)preferencesValueForKey:(id)a3 withOptions:(int64_t)a4;
+- (id)multiplePreferencesValuesForKeys:(id)keys;
+- (id)multiplePreferencesValuesForKeys:(id)keys withOptions:(int64_t)options;
+- (id)preferencesValueForKey:(id)key;
+- (id)preferencesValueForKey:(id)key withOptions:(int64_t)options;
 - (void)dealloc;
-- (void)setMultiplePreferencesValues:(id)a3;
-- (void)setMultiplePreferencesValues:(id)a3 withOptions:(int64_t)a4;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4 withOptions:(int64_t)a5;
+- (void)setMultiplePreferencesValues:(id)values;
+- (void)setMultiplePreferencesValues:(id)values withOptions:(int64_t)options;
+- (void)setPreferencesValue:(id)value forKey:(id)key;
+- (void)setPreferencesValue:(id)value forKey:(id)key withOptions:(int64_t)options;
 @end
 
 @implementation ACMPreferences
@@ -20,60 +20,60 @@
   [(ACMPreferences *)&v3 dealloc];
 }
 
-- (id)preferencesValueForKey:(id)a3 withOptions:(int64_t)a4
+- (id)preferencesValueForKey:(id)key withOptions:(int64_t)options
 {
-  v6 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v6 preferencesValueForKey:a3 withOptions:a4];
+  return [(ACMPreferencesStore *)preferencesStore preferencesValueForKey:key withOptions:options];
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4 withOptions:(int64_t)a5
+- (void)setPreferencesValue:(id)value forKey:(id)key withOptions:(int64_t)options
 {
-  v8 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v8 setPreferencesValue:a3 forKey:a4 withOptions:a5];
+  [(ACMPreferencesStore *)preferencesStore setPreferencesValue:value forKey:key withOptions:options];
 }
 
-- (id)multiplePreferencesValuesForKeys:(id)a3 withOptions:(int64_t)a4
+- (id)multiplePreferencesValuesForKeys:(id)keys withOptions:(int64_t)options
 {
-  v6 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v6 multiplePreferencesValuesForKeys:a3 withOptions:a4];
+  return [(ACMPreferencesStore *)preferencesStore multiplePreferencesValuesForKeys:keys withOptions:options];
 }
 
-- (void)setMultiplePreferencesValues:(id)a3 withOptions:(int64_t)a4
+- (void)setMultiplePreferencesValues:(id)values withOptions:(int64_t)options
 {
-  v6 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v6 setMultiplePreferencesValues:a3 withOptions:a4];
+  [(ACMPreferencesStore *)preferencesStore setMultiplePreferencesValues:values withOptions:options];
 }
 
-- (id)preferencesValueForKey:(id)a3
+- (id)preferencesValueForKey:(id)key
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v4 preferencesValueForKey:a3];
+  return [(ACMPreferencesStore *)preferencesStore preferencesValueForKey:key];
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)setPreferencesValue:(id)value forKey:(id)key
 {
-  v6 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v6 setPreferencesValue:a3 forKey:a4];
+  [(ACMPreferencesStore *)preferencesStore setPreferencesValue:value forKey:key];
 }
 
-- (id)multiplePreferencesValuesForKeys:(id)a3
+- (id)multiplePreferencesValuesForKeys:(id)keys
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v4 multiplePreferencesValuesForKeys:a3];
+  return [(ACMPreferencesStore *)preferencesStore multiplePreferencesValuesForKeys:keys];
 }
 
-- (void)setMultiplePreferencesValues:(id)a3
+- (void)setMultiplePreferencesValues:(id)values
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v4 setMultiplePreferencesValues:a3];
+  [(ACMPreferencesStore *)preferencesStore setMultiplePreferencesValues:values];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface ASCWorkspace
 + (ASCWorkspace)sharedWorkspace;
 + (OS_os_log)log;
-+ (void)withSharedWorkspace:(id)a3 perform:(id)a4;
++ (void)withSharedWorkspace:(id)workspace perform:(id)perform;
 - (id)_init;
-- (id)_openURL:(id)a3 frontBoardOptions:(id)a4 sensitive:(BOOL)a5;
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 universalLinkRequired:(BOOL)a5;
-- (id)popPendingResultForOperationName:(id)a3;
-- (void)enqueueOpenApplicationOperation:(id)a3 pendingResult:(id)a4;
-- (void)openApplicationWithBundleIdentifier:(id)a3 configuration:(id)a4 pendingResult:(id)a5;
-- (void)openApplicationWithBundleIdentifier:(id)a3 usingOpenResourceOperationWithPayloadURL:(id)a4 options:(id)a5 pendingResult:(id)a6;
-- (void)openApplicationWithBundleIdentifier:(id)a3 usingUserActivityWithPayloadURL:(id)a4 configuration:(id)a5 pendingResult:(id)a6;
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4;
-- (void)openResourceOperationDidComplete:(id)a3;
+- (id)_openURL:(id)l frontBoardOptions:(id)options sensitive:(BOOL)sensitive;
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l universalLinkRequired:(BOOL)required;
+- (id)popPendingResultForOperationName:(id)name;
+- (void)enqueueOpenApplicationOperation:(id)operation pendingResult:(id)result;
+- (void)openApplicationWithBundleIdentifier:(id)identifier configuration:(id)configuration pendingResult:(id)result;
+- (void)openApplicationWithBundleIdentifier:(id)identifier usingOpenResourceOperationWithPayloadURL:(id)l options:(id)options pendingResult:(id)result;
+- (void)openApplicationWithBundleIdentifier:(id)identifier usingUserActivityWithPayloadURL:(id)l configuration:(id)configuration pendingResult:(id)result;
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error;
+- (void)openResourceOperationDidComplete:(id)complete;
 @end
 
 @implementation ASCWorkspace
@@ -75,40 +75,40 @@ uint64_t __31__ASCWorkspace_sharedWorkspace__block_invoke()
   return v2;
 }
 
-+ (void)withSharedWorkspace:(id)a3 perform:(id)a4
++ (void)withSharedWorkspace:(id)workspace perform:(id)perform
 {
-  v9 = a3;
-  v6 = a4;
+  workspaceCopy = workspace;
+  performCopy = perform;
   v7 = ASCWorkspace_testingWorkspace;
-  objc_storeStrong(&ASCWorkspace_testingWorkspace, a3);
-  v6[2](v6);
+  objc_storeStrong(&ASCWorkspace_testingWorkspace, workspace);
+  performCopy[2](performCopy);
   v8 = ASCWorkspace_testingWorkspace;
   ASCWorkspace_testingWorkspace = v7;
 }
 
-- (id)_openURL:(id)a3 frontBoardOptions:(id)a4 sensitive:(BOOL)a5
+- (id)_openURL:(id)l frontBoardOptions:(id)options sensitive:(BOOL)sensitive
 {
-  v5 = a5;
-  v7 = a4;
+  sensitiveCopy = sensitive;
+  optionsCopy = options;
   v8 = MEMORY[0x277CEE5F0];
-  v9 = a3;
+  lCopy = l;
   v10 = objc_alloc_init(v8);
   v11 = objc_alloc_init(MEMORY[0x277CC1F00]);
   v12 = v11;
-  if (v5)
+  if (sensitiveCopy)
   {
     [v11 setSensitive:1];
   }
 
-  [v12 setFrontBoardOptions:v7];
-  v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [v12 setFrontBoardOptions:optionsCopy];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__ASCWorkspace__openURL_frontBoardOptions_sensitive___block_invoke;
   v16[3] = &unk_2784B17D0;
   v14 = v10;
   v17 = v14;
-  [v13 openURL:v9 configuration:v12 completionHandler:v16];
+  [defaultWorkspace openURL:lCopy configuration:v12 completionHandler:v16];
 
   return v14;
 }
@@ -127,12 +127,12 @@ uint64_t __53__ASCWorkspace__openURL_frontBoardOptions_sensitive___block_invoke(
   }
 }
 
-- (void)enqueueOpenApplicationOperation:(id)a3 pendingResult:(id)a4
+- (void)enqueueOpenApplicationOperation:(id)operation pendingResult:(id)result
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(ASCWorkspace *)self stateLock];
-  [v7 lock];
+  operationCopy = operation;
+  resultCopy = result;
+  stateLock = [(ASCWorkspace *)self stateLock];
+  [stateLock lock];
 
   if (!self->_openApplicationOperationQueue)
   {
@@ -149,44 +149,44 @@ uint64_t __53__ASCWorkspace__openURL_frontBoardOptions_sensitive___block_invoke(
   }
 
   [(NSOperationQueue *)self->_openApplicationOperationQueue setSuspended:1];
-  v12 = [v18 name];
+  name = [operationCopy name];
 
-  if (!v12)
+  if (!name)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
-    [v18 setName:v14];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [operationCopy setName:uUIDString];
   }
 
-  [(NSOperationQueue *)self->_openApplicationOperationQueue addOperation:v18];
-  v15 = [(ASCWorkspace *)self pendingResults];
-  v16 = [v18 name];
-  [v15 setObject:v6 forKey:v16];
+  [(NSOperationQueue *)self->_openApplicationOperationQueue addOperation:operationCopy];
+  pendingResults = [(ASCWorkspace *)self pendingResults];
+  name2 = [operationCopy name];
+  [pendingResults setObject:resultCopy forKey:name2];
 
   [(NSOperationQueue *)self->_openApplicationOperationQueue setSuspended:0];
-  v17 = [(ASCWorkspace *)self stateLock];
-  [v17 unlock];
+  stateLock2 = [(ASCWorkspace *)self stateLock];
+  [stateLock2 unlock];
 }
 
-- (id)popPendingResultForOperationName:(id)a3
+- (id)popPendingResultForOperationName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(ASCWorkspace *)self stateLock];
-    [v5 lock];
+    stateLock = [(ASCWorkspace *)self stateLock];
+    [stateLock lock];
 
-    v6 = [(ASCWorkspace *)self pendingResults];
-    v7 = [v6 objectForKey:v4];
+    pendingResults = [(ASCWorkspace *)self pendingResults];
+    v7 = [pendingResults objectForKey:nameCopy];
 
     if (v7)
     {
-      v8 = [(ASCWorkspace *)self pendingResults];
-      [v8 removeObjectForKey:v4];
+      pendingResults2 = [(ASCWorkspace *)self pendingResults];
+      [pendingResults2 removeObjectForKey:nameCopy];
     }
 
-    v9 = [(ASCWorkspace *)self stateLock];
-    [v9 unlock];
+    stateLock2 = [(ASCWorkspace *)self stateLock];
+    [stateLock2 unlock];
   }
 
   else
@@ -197,25 +197,25 @@ uint64_t __53__ASCWorkspace__openURL_frontBoardOptions_sensitive___block_invoke(
   return v7;
 }
 
-- (id)openApplicationWithBundleIdentifier:(id)a3 payloadURL:(id)a4 universalLinkRequired:(BOOL)a5
+- (id)openApplicationWithBundleIdentifier:(id)identifier payloadURL:(id)l universalLinkRequired:(BOOL)required
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v10 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v11 = [MEMORY[0x277CBEAC0] dictionary];
-  if (v9)
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  if (lCopy)
   {
     v12 = MEMORY[0x277CC1E48];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __118__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_payloadURL_universalLinkRequired___block_invoke;
     v17[3] = &unk_2784B1948;
-    v18 = v8;
-    v19 = v11;
+    v18 = identifierCopy;
+    v19 = dictionary;
     v20 = v10;
-    v21 = self;
-    v22 = v9;
-    v23 = a5;
+    selfCopy = self;
+    v22 = lCopy;
+    requiredCopy = required;
     [v12 getAppLinksWithURL:v22 completionHandler:v17];
 
     v13 = v18;
@@ -231,8 +231,8 @@ uint64_t __53__ASCWorkspace__openURL_frontBoardOptions_sensitive___block_invoke(
     }
 
     v13 = objc_alloc_init(MEMORY[0x277CC1F00]);
-    [v13 setFrontBoardOptions:v11];
-    [(ASCWorkspace *)self openApplicationWithBundleIdentifier:v8 configuration:v13 pendingResult:v10];
+    [v13 setFrontBoardOptions:dictionary];
+    [(ASCWorkspace *)self openApplicationWithBundleIdentifier:identifierCopy configuration:v13 pendingResult:v10];
   }
 
   return v10;
@@ -428,15 +428,15 @@ void __118__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBun
   }
 }
 
-- (void)openApplicationWithBundleIdentifier:(id)a3 usingOpenResourceOperationWithPayloadURL:(id)a4 options:(id)a5 pendingResult:(id)a6
+- (void)openApplicationWithBundleIdentifier:(id)identifier usingOpenResourceOperationWithPayloadURL:(id)l options:(id)options pendingResult:(id)result
 {
   v10 = MEMORY[0x277CC1E80];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 defaultWorkspace];
-  v16 = [v15 operationToOpenResource:v13 usingApplication:v14 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v12 delegate:self];
+  resultCopy = result;
+  optionsCopy = options;
+  lCopy = l;
+  identifierCopy = identifier;
+  defaultWorkspace = [v10 defaultWorkspace];
+  v16 = [defaultWorkspace operationToOpenResource:lCopy usingApplication:identifierCopy uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:optionsCopy delegate:self];
 
   v17 = +[ASCWorkspace log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -445,29 +445,29 @@ void __118__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBun
     _os_log_impl(&dword_222629000, v17, OS_LOG_TYPE_INFO, "Enqueuing open resource URL operation", buf, 2u);
   }
 
-  [(ASCWorkspace *)self enqueueOpenApplicationOperation:v16 pendingResult:v11];
+  [(ASCWorkspace *)self enqueueOpenApplicationOperation:v16 pendingResult:resultCopy];
 }
 
-- (void)openApplicationWithBundleIdentifier:(id)a3 usingUserActivityWithPayloadURL:(id)a4 configuration:(id)a5 pendingResult:(id)a6
+- (void)openApplicationWithBundleIdentifier:(id)identifier usingUserActivityWithPayloadURL:(id)l configuration:(id)configuration pendingResult:(id)result
 {
-  v9 = a6;
+  resultCopy = result;
   v10 = MEMORY[0x277CCAE58];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  configurationCopy = configuration;
+  lCopy = l;
+  identifierCopy = identifier;
   v14 = [v10 alloc];
   v15 = [v14 initWithActivityType:*MEMORY[0x277CCA850]];
-  [v15 setWebpageURL:v12];
+  [v15 setWebpageURL:lCopy];
 
-  v16 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v13 allowPlaceholder:0 error:0];
-  v17 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v16 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __145__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_usingUserActivityWithPayloadURL_configuration_pendingResult___block_invoke;
   v19[3] = &unk_2784B18A0;
-  v20 = v9;
-  v18 = v9;
-  [v17 openUserActivity:v15 usingApplicationRecord:v16 configuration:v11 completionHandler:v19];
+  v20 = resultCopy;
+  v18 = resultCopy;
+  [defaultWorkspace openUserActivity:v15 usingApplicationRecord:v16 configuration:configurationCopy completionHandler:v19];
 }
 
 void __145__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_usingUserActivityWithPayloadURL_configuration_pendingResult___block_invoke(uint64_t a1, int a2, void *a3)
@@ -497,20 +497,20 @@ void __145__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBun
   }
 }
 
-- (void)openApplicationWithBundleIdentifier:(id)a3 configuration:(id)a4 pendingResult:(id)a5
+- (void)openApplicationWithBundleIdentifier:(id)identifier configuration:(id)configuration pendingResult:(id)result
 {
-  v7 = a5;
+  resultCopy = result;
   v8 = MEMORY[0x277CC1E80];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 defaultWorkspace];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  defaultWorkspace = [v8 defaultWorkspace];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __113__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_configuration_pendingResult___block_invoke;
   v13[3] = &unk_2784B18A0;
-  v14 = v7;
-  v12 = v7;
-  [v11 openApplicationWithBundleIdentifier:v10 configuration:v9 completionHandler:v13];
+  v14 = resultCopy;
+  v12 = resultCopy;
+  [defaultWorkspace openApplicationWithBundleIdentifier:identifierCopy configuration:configurationCopy completionHandler:v13];
 }
 
 void __113__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_configuration_pendingResult___block_invoke(uint64_t a1, int a2, void *a3)
@@ -540,9 +540,9 @@ void __113__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBun
   }
 }
 
-- (void)openResourceOperationDidComplete:(id)a3
+- (void)openResourceOperationDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = +[ASCWorkspace log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -550,28 +550,28 @@ void __113__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBun
     _os_log_impl(&dword_222629000, v5, OS_LOG_TYPE_INFO, "Open resource URL operation completed", v8, 2u);
   }
 
-  v6 = [v4 name];
+  name = [completeCopy name];
 
-  v7 = [(ASCWorkspace *)self popPendingResultForOperationName:v6];
+  v7 = [(ASCWorkspace *)self popPendingResultForOperationName:name];
 
   [v7 finishWithSuccess];
 }
 
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  operationCopy = operation;
   v8 = +[ASCWorkspace log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     [ASCWorkspace(ASCAppLaunchTrampolineWorkspace) openResourceOperation:didFailWithError:];
   }
 
-  v9 = [v7 name];
+  name = [operationCopy name];
 
-  v10 = [(ASCWorkspace *)self popPendingResultForOperationName:v9];
+  v10 = [(ASCWorkspace *)self popPendingResultForOperationName:name];
 
-  [v10 finishWithError:v6];
+  [v10 finishWithError:errorCopy];
 }
 
 void __118__ASCWorkspace_ASCAppLaunchTrampolineWorkspace__openApplicationWithBundleIdentifier_payloadURL_universalLinkRequired___block_invoke_cold_1(void *a1, NSObject *a2)

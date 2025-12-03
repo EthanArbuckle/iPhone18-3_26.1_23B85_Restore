@@ -1,5 +1,5 @@
 @interface MPCNetworkRequestMonitoredTag
-- (MPCNetworkRequestMonitoredTag)initWithContextInfo:(id)a3 engineInfoProvider:(id)a4;
+- (MPCNetworkRequestMonitoredTag)initWithContextInfo:(id)info engineInfoProvider:(id)provider;
 - (MPCPlaybackEngineInfoProvider)engineInfoProvider;
 - (NSString)playbackEngineID;
 @end
@@ -15,40 +15,40 @@
 
 - (NSString)playbackEngineID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  playbackEngineID = v2->_playbackEngineID;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  playbackEngineID = selfCopy->_playbackEngineID;
   if (!playbackEngineID)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_engineInfoProvider);
-    v5 = [WeakRetained playbackEngineID];
-    v6 = v2->_playbackEngineID;
-    v2->_playbackEngineID = v5;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_engineInfoProvider);
+    playbackEngineID = [WeakRetained playbackEngineID];
+    v6 = selfCopy->_playbackEngineID;
+    selfCopy->_playbackEngineID = playbackEngineID;
 
-    playbackEngineID = v2->_playbackEngineID;
+    playbackEngineID = selfCopy->_playbackEngineID;
   }
 
   v7 = playbackEngineID;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (MPCNetworkRequestMonitoredTag)initWithContextInfo:(id)a3 engineInfoProvider:(id)a4
+- (MPCNetworkRequestMonitoredTag)initWithContextInfo:(id)info engineInfoProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = MPCNetworkRequestMonitoredTag;
   v9 = [(MPCNetworkRequestMonitoredTag *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextInfo, a3);
-    objc_storeWeak(&v10->_engineInfoProvider, v8);
-    v11 = [v8 playbackEngineID];
+    objc_storeStrong(&v9->_contextInfo, info);
+    objc_storeWeak(&v10->_engineInfoProvider, providerCopy);
+    playbackEngineID = [providerCopy playbackEngineID];
     playbackEngineID = v10->_playbackEngineID;
-    v10->_playbackEngineID = v11;
+    v10->_playbackEngineID = playbackEngineID;
   }
 
   return v10;

@@ -1,13 +1,13 @@
 @interface PXStoryConcreteTransition
 - (NSString)description;
-- (PXStoryConcreteTransition)initWithIdentifier:(id)a3 kind:(char)a4 duration:(id *)a5 event:(int64_t)a6;
-- (PXStoryConcreteTransition)initWithKind:(char)a3 duration:(id *)a4 effect:(id)a5 auxiliaryEffect:(id)a6;
-- (double)clipAlphaForTime:(id *)a3;
+- (PXStoryConcreteTransition)initWithIdentifier:(id)identifier kind:(char)kind duration:(id *)duration event:(int64_t)event;
+- (PXStoryConcreteTransition)initWithKind:(char)kind duration:(id *)duration effect:(id)effect auxiliaryEffect:(id)auxiliaryEffect;
+- (double)clipAlphaForTime:(id *)time;
 - (double)progress;
-- (void)_end:(BOOL)a3;
-- (void)_updateClipAlphaForTime:(id *)a3;
-- (void)configureEffectForTime:(id *)a3;
-- (void)setPrimaryEffectAlpha:(double)a3 auxiliaryEffectAlpha:(double)a4;
+- (void)_end:(BOOL)_end;
+- (void)_updateClipAlphaForTime:(id *)time;
+- (void)configureEffectForTime:(id *)time;
+- (void)setPrimaryEffectAlpha:(double)alpha auxiliaryEffectAlpha:(double)effectAlpha;
 - (void)timeDidChange;
 - (void)wasStopped;
 @end
@@ -17,8 +17,8 @@
 - (NSString)description
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryConcreteTransition *)self clipLayouts];
-  v4 = [v3 count];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  v4 = [clipLayouts count];
 
   if (v4)
   {
@@ -27,8 +27,8 @@
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(PXStoryConcreteTransition *)self clipLayouts];
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    clipLayouts2 = [(PXStoryConcreteTransition *)self clipLayouts];
+    v7 = [clipLayouts2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -39,22 +39,22 @@
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(clipLayouts2);
           }
 
-          v11 = [*(*(&v24 + 1) + 8 * i) clip];
-          [v5 addIndex:{objc_msgSend(v11, "identifier")}];
+          clip = [*(*(&v24 + 1) + 8 * i) clip];
+          [v5 addIndex:{objc_msgSend(clip, "identifier")}];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v8 = [clipLayouts2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v8);
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v5 px_shortDescription];
-    v14 = [v12 stringWithFormat:@" clips=%@", v13];
+    px_shortDescription = [v5 px_shortDescription];
+    v14 = [v12 stringWithFormat:@" clips=%@", px_shortDescription];
   }
 
   else
@@ -65,15 +65,15 @@
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [(PXStoryConcreteTransition *)self kind];
-  if (v18 > 0xA)
+  kind = [(PXStoryConcreteTransition *)self kind];
+  if (kind > 0xA)
   {
     v19 = @"??";
   }
 
   else
   {
-    v19 = off_1E7740168[v18];
+    v19 = off_1E7740168[kind];
   }
 
   v20 = v19;
@@ -84,33 +84,33 @@
   return v21;
 }
 
-- (void)setPrimaryEffectAlpha:(double)a3 auxiliaryEffectAlpha:(double)a4
+- (void)setPrimaryEffectAlpha:(double)alpha auxiliaryEffectAlpha:(double)effectAlpha
 {
-  v6 = [(PXStoryConcreteTransition *)self effectAlphaHandler];
-  if (v6)
+  effectAlphaHandler = [(PXStoryConcreteTransition *)self effectAlphaHandler];
+  if (effectAlphaHandler)
   {
-    v7 = v6;
-    v6[2](a3, a4);
-    v6 = v7;
+    v7 = effectAlphaHandler;
+    effectAlphaHandler[2](alpha, effectAlpha);
+    effectAlphaHandler = v7;
   }
 }
 
-- (void)configureEffectForTime:(id *)a3
+- (void)configureEffectForTime:(id *)time
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:156 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryConcreteTransition configureEffectForTime:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:156 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryConcreteTransition configureEffectForTime:]", v7}];
 
   abort();
 }
 
-- (double)clipAlphaForTime:(id *)a3
+- (double)clipAlphaForTime:(id *)time
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:152 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryConcreteTransition clipAlphaForTime:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:152 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryConcreteTransition clipAlphaForTime:]", v7}];
 
   abort();
 }
@@ -132,9 +132,9 @@
   return result;
 }
 
-- (void)_end:(BOOL)a3
+- (void)_end:(BOOL)_end
 {
-  [(PXStoryConcreteTransition *)self setFinished:a3];
+  [(PXStoryConcreteTransition *)self setFinished:_end];
 
   [(PXStoryAnimation *)self performChanges:&__block_literal_global_15];
 }
@@ -151,8 +151,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PXStoryConcreteTransition *)self clipLayouts];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  v6 = [clipLayouts countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v8 = v6;
@@ -165,7 +165,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clipLayouts);
         }
 
         *&v7 = v10;
@@ -173,34 +173,34 @@
       }
 
       while (v8 != v11);
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [clipLayouts countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(PXStoryConcreteTransition *)self completionHandler];
-  if (v12)
+  completionHandler = [(PXStoryConcreteTransition *)self completionHandler];
+  if (completionHandler)
   {
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
 
-    (v12)[2](v12, [(PXStoryConcreteTransition *)self finished]);
+    (completionHandler)[2](completionHandler, [(PXStoryConcreteTransition *)self finished]);
   }
 }
 
-- (void)_updateClipAlphaForTime:(id *)a3
+- (void)_updateClipAlphaForTime:(id *)time
 {
   v19 = *MEMORY[0x1E69E9840];
-  v17 = *a3;
+  v17 = *time;
   [(PXStoryConcreteTransition *)self clipAlphaForTime:&v17];
   v5 = v4;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PXStoryConcreteTransition *)self clipLayouts];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  v7 = [clipLayouts countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v9 = v7;
@@ -213,7 +213,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clipLayouts);
         }
 
         *&v8 = v11;
@@ -221,7 +221,7 @@
       }
 
       while (v9 != v12);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v9 = [clipLayouts countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v9);
@@ -234,9 +234,9 @@
   v7.super_class = PXStoryConcreteTransition;
   [(PXStoryAnimation *)&v7 timeDidChange];
   [(PXStoryAnimation *)self time];
-  v3 = [(PXStoryConcreteTransition *)self clipLayouts];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
 
-  if (v3)
+  if (clipLayouts)
   {
     memset(&time1, 0, sizeof(time1));
     [(PXStoryConcreteTransition *)self _updateClipAlphaForTime:&time1];
@@ -244,9 +244,9 @@
 
   else
   {
-    v4 = [(PXStoryConcreteTransition *)self effect];
+    effect = [(PXStoryConcreteTransition *)self effect];
 
-    if (v4)
+    if (effect)
     {
       memset(&time1, 0, sizeof(time1));
       [(PXStoryConcreteTransition *)self configureEffectForTime:&time1];
@@ -263,89 +263,89 @@
   }
 }
 
-- (PXStoryConcreteTransition)initWithKind:(char)a3 duration:(id *)a4 effect:(id)a5 auxiliaryEffect:(id)a6
+- (PXStoryConcreteTransition)initWithKind:(char)kind duration:(id *)duration effect:(id)effect auxiliaryEffect:(id)auxiliaryEffect
 {
-  v9 = a3;
-  v11 = a5;
-  v12 = a6;
+  kindCopy = kind;
+  effectCopy = effect;
+  auxiliaryEffectCopy = auxiliaryEffect;
   v13 = MEMORY[0x1E696AEC0];
-  if (v9 > 0xA)
+  if (kindCopy > 0xA)
   {
     v14 = @"??";
   }
 
   else
   {
-    v14 = off_1E7740168[v9];
+    v14 = off_1E7740168[kindCopy];
   }
 
   v15 = v14;
   v16 = objc_opt_class();
   v17 = [v13 stringWithFormat:@"PXStoryConcreteTransition.%@.%@.%@", v15, v16, objc_opt_class()];
 
-  v21 = *&a4->var0;
-  var3 = a4->var3;
-  v18 = [(PXStoryConcreteTransition *)self initWithIdentifier:v17 kind:v9 duration:&v21 event:0];
+  v21 = *&duration->var0;
+  var3 = duration->var3;
+  v18 = [(PXStoryConcreteTransition *)self initWithIdentifier:v17 kind:kindCopy duration:&v21 event:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_effect, a5);
-    objc_storeStrong(&v19->_auxiliaryEffect, a6);
+    objc_storeStrong(&v18->_effect, effect);
+    objc_storeStrong(&v19->_auxiliaryEffect, auxiliaryEffect);
   }
 
   return v19;
 }
 
-- (PXStoryConcreteTransition)initWithIdentifier:(id)a3 kind:(char)a4 duration:(id *)a5 event:(int64_t)a6
+- (PXStoryConcreteTransition)initWithIdentifier:(id)identifier kind:(char)kind duration:(id *)duration event:(int64_t)event
 {
-  v12 = a4;
-  v14 = a3;
-  v15 = v14;
-  if (!v14)
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v15 = identifierCopy;
+  if (!identifierCopy)
   {
     v16 = MEMORY[0x1E696AEC0];
-    if (v12 > 0xA)
+    if (kindCopy > 0xA)
     {
       v17 = @"??";
     }
 
     else
     {
-      v17 = off_1E7740168[v12];
+      v17 = off_1E7740168[kindCopy];
     }
 
     v6 = v17;
     v18 = @"undefined";
-    if (a6 == 1)
+    if (event == 1)
     {
       v18 = @"orderIn";
     }
 
-    if (a6 == 2)
+    if (event == 2)
     {
       v18 = @"orderOut";
     }
 
     v7 = v18;
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v15 = [v16 stringWithFormat:@"PXStoryConcreteTransition.%@.%@.%@", v6, v7, v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [v16 stringWithFormat:@"PXStoryConcreteTransition.%@.%@.%@", v6, v7, uUIDString];
   }
 
   v22.receiver = self;
   v22.super_class = PXStoryConcreteTransition;
   v19 = [(PXStoryAnimation *)&v22 initWithIdentifier:v15];
-  if (!v14)
+  if (!identifierCopy)
   {
   }
 
   if (v19)
   {
-    v19->_kind = v12;
-    v20 = *&a5->var0;
-    v19->_duration.epoch = a5->var3;
+    v19->_kind = kindCopy;
+    v20 = *&duration->var0;
+    v19->_duration.epoch = duration->var3;
     *&v19->_duration.value = v20;
-    v19->_event = a6;
+    v19->_event = event;
   }
 
   return v19;

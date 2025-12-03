@@ -1,18 +1,18 @@
 @interface RPSiriAudioSession
 - (RPSiriAudioSession)init;
-- (RPSiriAudioSession)initWithCoder:(id)a3;
+- (RPSiriAudioSession)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)receivedSiriAudioEvent:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)xpcSiriStopClientRecordingWithDeviceId:(id)a3;
+- (void)receivedSiriAudioEvent:(id)event;
+- (void)setLabel:(id)label;
+- (void)xpcSiriStopClientRecordingWithDeviceId:(id)id;
 @end
 
 @implementation RPSiriAudioSession
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (RPSiriAudioSession)initWithCoder:(id)a3
+- (RPSiriAudioSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RPSiriAudioSession;
   v5 = [(RPSiriAudioSession *)&v10 init];
@@ -44,7 +44,7 @@
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
     v6->_ucat = &gLogCategory_RPSiriAudioSession;
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -68,12 +68,12 @@
   [(RPSiriAudioSession *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionID = self->_sessionID;
   if (sessionID)
   {
-    [a3 encodeObject:sessionID forKey:@"sid"];
+    [coder encodeObject:sessionID forKey:@"sid"];
   }
 }
 
@@ -85,26 +85,26 @@
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__RPSiriAudioSession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -131,12 +131,12 @@ uint64_t __45__RPSiriAudioSession_activateWithCompletion___block_invoke(uint64_t
   return [v2 _activateWithCompletion:v7 reactivate:0];
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
+  reactivateCopy = reactivate;
+  completionCopy = completion;
   var0 = self->_ucat->var0;
-  if (v4)
+  if (reactivateCopy)
   {
     if (var0 <= 30)
     {
@@ -177,16 +177,16 @@ LABEL_11:
   v17[1] = 3221225472;
   v17[2] = __57__RPSiriAudioSession__activateWithCompletion_reactivate___block_invoke;
   v17[3] = &unk_1E7C93500;
-  v19 = v4;
+  v19 = reactivateCopy;
   v17[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v18 = v10;
   v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__RPSiriAudioSession__activateWithCompletion_reactivate___block_invoke_2;
   v14[3] = &unk_1E7C93500;
-  v16 = v4;
+  v16 = reactivateCopy;
   v14[4] = self;
   v15 = v10;
   v12 = v10;
@@ -532,17 +532,17 @@ LABEL_6:
   }
 }
 
-- (void)receivedSiriAudioEvent:(id)a3
+- (void)receivedSiriAudioEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__RPSiriAudioSession_receivedSiriAudioEvent___block_invoke;
   v7[3] = &unk_1E7C92D80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -578,9 +578,9 @@ void __45__RPSiriAudioSession_receivedSiriAudioEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpcSiriStopClientRecordingWithDeviceId:(id)a3
+- (void)xpcSiriStopClientRecordingWithDeviceId:(id)id
 {
-  v7 = a3;
+  idCopy = id;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_9;
@@ -606,7 +606,7 @@ LABEL_6:
   v5 = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(RPSiriAudioSessionDelegate *)v5 siriAudioSessionDidReceiveStopRecordingWithDeviceId:v7];
+    [(RPSiriAudioSessionDelegate *)v5 siriAudioSessionDidReceiveStopRecordingWithDeviceId:idCopy];
   }
 
 LABEL_9:

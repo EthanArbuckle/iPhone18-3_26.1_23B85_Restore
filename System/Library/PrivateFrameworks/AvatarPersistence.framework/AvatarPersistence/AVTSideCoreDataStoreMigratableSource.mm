@@ -1,24 +1,24 @@
 @interface AVTSideCoreDataStoreMigratableSource
-- (AVTSideCoreDataStoreMigratableSource)initWithConfiguration:(id)a3 environment:(id)a4;
-- (BOOL)finalizeMigration:(id *)a3;
+- (AVTSideCoreDataStoreMigratableSource)initWithConfiguration:(id)configuration environment:(id)environment;
+- (BOOL)finalizeMigration:(id *)migration;
 - (BOOL)migrationNeeded;
 - (id)createSourceBackend;
 @end
 
 @implementation AVTSideCoreDataStoreMigratableSource
 
-- (AVTSideCoreDataStoreMigratableSource)initWithConfiguration:(id)a3 environment:(id)a4
+- (AVTSideCoreDataStoreMigratableSource)initWithConfiguration:(id)configuration environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = AVTSideCoreDataStoreMigratableSource;
   v9 = [(AVTSideCoreDataStoreMigratableSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_environment, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_environment, environment);
   }
 
   return v10;
@@ -27,27 +27,27 @@
 - (id)createSourceBackend
 {
   v3 = [AVTCoreDataStoreBackend alloc];
-  v4 = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
-  v5 = [(AVTSideCoreDataStoreMigratableSource *)self environment];
-  v6 = [(AVTCoreDataStoreBackend *)v3 initWithConfiguration:v4 environment:v5];
+  configuration = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
+  environment = [(AVTSideCoreDataStoreMigratableSource *)self environment];
+  v6 = [(AVTCoreDataStoreBackend *)v3 initWithConfiguration:configuration environment:environment];
 
   return v6;
 }
 
-- (BOOL)finalizeMigration:(id *)a3
+- (BOOL)finalizeMigration:(id *)migration
 {
-  v4 = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
-  LOBYTE(a3) = [v4 tearDownAndEraseAllContent:a3];
+  configuration = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
+  LOBYTE(migration) = [configuration tearDownAndEraseAllContent:migration];
 
-  return a3;
+  return migration;
 }
 
 - (BOOL)migrationNeeded
 {
-  v2 = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
-  v3 = [v2 contentExists];
+  configuration = [(AVTSideCoreDataStoreMigratableSource *)self configuration];
+  contentExists = [configuration contentExists];
 
-  return v3;
+  return contentExists;
 }
 
 @end

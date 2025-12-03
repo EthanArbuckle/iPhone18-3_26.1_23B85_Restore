@@ -1,5 +1,5 @@
 @interface AKUserInformation
-+ (BOOL)isFieldUpdateableForAccountWithAltDSID:(id)a3 fieldName:(id)a4;
++ (BOOL)isFieldUpdateableForAccountWithAltDSID:(id)d fieldName:(id)name;
 + (id)_advancedSecurityFields;
 + (id)_ageFields;
 + (id)_coreIdentityFields;
@@ -9,10 +9,10 @@
 + (id)_managedFields;
 + (id)_securityFields;
 + (id)userInformationForUpdates;
-- (AKUserInformation)initWithCoder:(id)a3;
-- (AKUserInformation)initWithResponseBody:(id)a3;
-- (BOOL)hasUpdateableFieldsForAccountWithAltDSID:(id)a3;
-- (BOOL)validateForUpdatesWithContext:(id)a3 error:(id *)a4;
+- (AKUserInformation)initWithCoder:(id)coder;
+- (AKUserInformation)initWithResponseBody:(id)body;
+- (BOOL)hasUpdateableFieldsForAccountWithAltDSID:(id)d;
+- (BOOL)validateForUpdatesWithContext:(id)context error:(id *)error;
 - (NSNumber)silentBurnCDPRepairEnabled;
 - (NSNumber)silentEscrowRecordRepairEnabled;
 - (id)_getAdvancedSecurityFields;
@@ -23,184 +23,184 @@
 - (id)_getGuitarfishFields;
 - (id)_getManagedAccountFields;
 - (id)_getSecurityFields;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)sharedEmailForManagedAppleID;
-- (id)updateableFieldNamesForAccountWithAltDSID:(id)a3;
-- (void)_parseBeneficiaryInfo:(id)a3;
-- (void)_parseCustodianInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSilentBurnCDPRepairEnabled:(id)a3;
-- (void)setSilentEscrowRecordRepairEnabled:(id)a3;
+- (id)updateableFieldNamesForAccountWithAltDSID:(id)d;
+- (void)_parseBeneficiaryInfo:(id)info;
+- (void)_parseCustodianInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSilentBurnCDPRepairEnabled:(id)enabled;
+- (void)setSilentEscrowRecordRepairEnabled:(id)enabled;
 @end
 
 @implementation AKUserInformation
 
-- (AKUserInformation)initWithResponseBody:(id)a3
+- (AKUserInformation)initWithResponseBody:(id)body
 {
   v457 = *MEMORY[0x1E69E9840];
-  v437 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v437;
-  v437 = 0;
+  objc_storeStrong(location, body);
+  v3 = selfCopy;
+  selfCopy = 0;
   v435.receiver = v3;
   v435.super_class = AKUserInformation;
-  v437 = [(AKUserInformation *)&v435 init];
-  objc_storeStrong(&v437, v437);
-  if (v437)
+  selfCopy = [(AKUserInformation *)&v435 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v434 = [location[0] objectForKeyedSubscript:@"ut"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v434 unsignedIntegerValue];
-      v437->_appleIDSecurityLevel = v4;
+      unsignedIntegerValue = [v434 unsignedIntegerValue];
+      selfCopy->_appleIDSecurityLevel = unsignedIntegerValue;
     }
 
     else
     {
-      v437->_appleIDSecurityLevel = 0;
+      selfCopy->_appleIDSecurityLevel = 0;
     }
 
     v433 = [location[0] objectForKeyedSubscript:@"authmode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v433 unsignedIntegerValue];
-      v437->_authMode = v5;
+      unsignedIntegerValue2 = [v433 unsignedIntegerValue];
+      selfCopy->_authMode = unsignedIntegerValue2;
     }
 
     else
     {
-      v437->_authMode = 0;
+      selfCopy->_authMode = 0;
     }
 
     obj = [location[0] objectForKeyedSubscript:@"mdmInfoRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isMdmInfoRequired, obj);
+      objc_storeStrong(&selfCopy->_isMdmInfoRequired, obj);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isMdmInfoRequired, 0);
+      objc_storeStrong(&selfCopy->_isMdmInfoRequired, 0);
     }
 
     v431 = [location[0] objectForKeyedSubscript:@"underAge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isUnderage, v431);
+      objc_storeStrong(&selfCopy->_isUnderage, v431);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isUnderage, 0);
+      objc_storeStrong(&selfCopy->_isUnderage, 0);
     }
 
     v430 = [location[0] objectForKeyedSubscript:@"isSiwaEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isSiwaForChildEnabled, v430);
+      objc_storeStrong(&selfCopy->_isSiwaForChildEnabled, v430);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isSiwaForChildEnabled, 0);
+      objc_storeStrong(&selfCopy->_isSiwaForChildEnabled, 0);
     }
 
     v429 = [location[0] objectForKeyedSubscript:@"userAgeRange"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v429 unsignedIntegerValue];
-      v437->_userAgeRange = v6;
+      unsignedIntegerValue3 = [v429 unsignedIntegerValue];
+      selfCopy->_userAgeRange = unsignedIntegerValue3;
     }
 
     else
     {
-      v437->_userAgeRange = 0;
+      selfCopy->_userAgeRange = 0;
     }
 
     v428 = [location[0] objectForKeyedSubscript:@"activeHMECount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_activeHMECount, v428);
+      objc_storeStrong(&selfCopy->_activeHMECount, v428);
     }
 
     else
     {
-      objc_storeStrong(&v437->_activeHMECount, 0);
+      objc_storeStrong(&selfCopy->_activeHMECount, 0);
     }
 
     v427 = [location[0] objectForKeyedSubscript:@"inActiveHMECount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_inActiveHMECount, v427);
+      objc_storeStrong(&selfCopy->_inActiveHMECount, v427);
     }
 
     else
     {
-      objc_storeStrong(&v437->_inActiveHMECount, 0);
+      objc_storeStrong(&selfCopy->_inActiveHMECount, 0);
     }
 
     v426 = [location[0] objectForKeyedSubscript:@"isSenior"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isSenior, v426);
+      objc_storeStrong(&selfCopy->_isSenior, v426);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isSenior, 0);
+      objc_storeStrong(&selfCopy->_isSenior, 0);
     }
 
     v425 = [location[0] objectForKeyedSubscript:@"ageOfMajority"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_ageOfMajority, v425);
+      objc_storeStrong(&selfCopy->_ageOfMajority, v425);
     }
 
     else
     {
-      objc_storeStrong(&v437->_ageOfMajority, 0);
+      objc_storeStrong(&selfCopy->_ageOfMajority, 0);
     }
 
     v424 = [location[0] objectForKeyedSubscript:@"studentAccount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isLegacyStudent, v424);
+      objc_storeStrong(&selfCopy->_isLegacyStudent, v424);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isLegacyStudent, 0);
+      objc_storeStrong(&selfCopy->_isLegacyStudent, 0);
     }
 
     v423 = [location[0] objectForKeyedSubscript:@"isEligibleForSafetyScreen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isEligibleForSafetyScreen, v423);
+      objc_storeStrong(&selfCopy->_isEligibleForSafetyScreen, v423);
     }
 
     else
     {
-      objc_storeStrong(&v437->_isEligibleForSafetyScreen, 0);
+      objc_storeStrong(&selfCopy->_isEligibleForSafetyScreen, 0);
     }
 
     v7 = [location[0] objectForKeyedSubscript:@"mkid"];
-    masterKeyID = v437->_masterKeyID;
-    v437->_masterKeyID = v7;
+    masterKeyID = selfCopy->_masterKeyID;
+    selfCopy->_masterKeyID = v7;
     MEMORY[0x1E69E5920](masterKeyID);
     v422 = [location[0] objectForKeyedSubscript:@"accountName"];
     if (v422)
@@ -208,7 +208,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_accountName, v422);
+        objc_storeStrong(&selfCopy->_accountName, v422);
       }
 
       else
@@ -253,7 +253,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_primaryEmailAddress, v415);
+        objc_storeStrong(&selfCopy->_primaryEmailAddress, v415);
       }
 
       else
@@ -299,8 +299,8 @@
       if (objc_opt_isKindOfClass())
       {
         v12 = [v408 copy];
-        accountAliases = v437->_accountAliases;
-        v437->_accountAliases = v12;
+        accountAliases = selfCopy->_accountAliases;
+        selfCopy->_accountAliases = v12;
         MEMORY[0x1E69E5920](accountAliases);
       }
 
@@ -344,8 +344,8 @@
     if (v401)
     {
       v14 = [v401 copy];
-      additionalInfo = v437->_additionalInfo;
-      v437->_additionalInfo = v14;
+      additionalInfo = selfCopy->_additionalInfo;
+      selfCopy->_additionalInfo = v14;
       MEMORY[0x1E69E5920](additionalInfo);
     }
 
@@ -368,13 +368,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v397 unsignedIntegerValue];
-      v437->_repairState = v16;
+      unsignedIntegerValue4 = [v397 unsignedIntegerValue];
+      selfCopy->_repairState = unsignedIntegerValue4;
     }
 
     else
     {
-      v437->_repairState = 0;
+      selfCopy->_repairState = 0;
     }
 
     v396 = [location[0] objectForKeyedSubscript:@"firstName"];
@@ -383,7 +383,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_givenName, v396);
+        objc_storeStrong(&selfCopy->_givenName, v396);
       }
 
       else
@@ -428,7 +428,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_familyName, v389);
+        objc_storeStrong(&selfCopy->_familyName, v389);
       }
 
       else
@@ -473,12 +473,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_phoneAsAppleID, v382);
+        objc_storeStrong(&selfCopy->_phoneAsAppleID, v382);
       }
 
       else
       {
-        objc_storeStrong(&v437->_phoneAsAppleID, 0);
+        objc_storeStrong(&selfCopy->_phoneAsAppleID, 0);
         v378 = _AKLogSystem();
         v377 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v378, OS_LOG_TYPE_ERROR))
@@ -519,7 +519,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_appleIDCountryCode, v375);
+        objc_storeStrong(&selfCopy->_appleIDCountryCode, v375);
       }
 
       else
@@ -562,31 +562,31 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_hasUsedAuthorization, v368);
+      objc_storeStrong(&selfCopy->_hasUsedAuthorization, v368);
     }
 
     else
     {
-      objc_storeStrong(&v437->_hasUsedAuthorization, 0);
+      objc_storeStrong(&selfCopy->_hasUsedAuthorization, 0);
     }
 
     v367 = [location[0] objectForKeyedSubscript:@"privateAttestationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_privateAttestationEnabled, v367);
+      objc_storeStrong(&selfCopy->_privateAttestationEnabled, v367);
     }
 
     else
     {
-      objc_storeStrong(&v437->_privateAttestationEnabled, 0);
+      objc_storeStrong(&selfCopy->_privateAttestationEnabled, 0);
     }
 
     v366 = [location[0] objectForKeyedSubscript:@"primaryEmailVetted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_vettedPrimaryEmail, v366);
+      objc_storeStrong(&selfCopy->_vettedPrimaryEmail, v366);
     }
 
     else
@@ -602,7 +602,7 @@
       }
 
       objc_storeStrong(&v365, 0);
-      objc_storeStrong(&v437->_vettedPrimaryEmail, 0);
+      objc_storeStrong(&selfCopy->_vettedPrimaryEmail, 0);
     }
 
     v362 = [location[0] objectForKeyedSubscript:@"reachableEmails"];
@@ -612,8 +612,8 @@
       if (objc_opt_isKindOfClass())
       {
         v22 = [v362 copy];
-        reachableEmails = v437->_reachableEmails;
-        v437->_reachableEmails = v22;
+        reachableEmails = selfCopy->_reachableEmails;
+        selfCopy->_reachableEmails = v22;
         MEMORY[0x1E69E5920](reachableEmails);
       }
 
@@ -657,8 +657,8 @@
     if ([v355 count])
     {
       v24 = [v355 copy];
-      trustedPhoneNumbers = v437->_trustedPhoneNumbers;
-      v437->_trustedPhoneNumbers = v24;
+      trustedPhoneNumbers = selfCopy->_trustedPhoneNumbers;
+      selfCopy->_trustedPhoneNumbers = v24;
       MEMORY[0x1E69E5920](trustedPhoneNumbers);
     }
 
@@ -684,8 +684,8 @@
       if (objc_opt_isKindOfClass())
       {
         v27 = [v351 copy];
-        securityKeys = v437->_securityKeys;
-        v437->_securityKeys = v27;
+        securityKeys = selfCopy->_securityKeys;
+        selfCopy->_securityKeys = v27;
         MEMORY[0x1E69E5920](securityKeys);
       }
 
@@ -729,8 +729,8 @@
     if ([v344 count])
     {
       v29 = [v344 copy];
-      loginHandles = v437->_loginHandles;
-      v437->_loginHandles = v29;
+      loginHandles = selfCopy->_loginHandles;
+      selfCopy->_loginHandles = v29;
       MEMORY[0x1E69E5920](loginHandles);
     }
 
@@ -755,7 +755,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_forwardingEmail, v340);
+        objc_storeStrong(&selfCopy->_forwardingEmail, v340);
       }
 
       else
@@ -798,19 +798,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_previouslyWantedPrivateEmail, v333);
+      objc_storeStrong(&selfCopy->_previouslyWantedPrivateEmail, v333);
     }
 
     else
     {
-      objc_storeStrong(&v437->_previouslyWantedPrivateEmail, 0);
+      objc_storeStrong(&selfCopy->_previouslyWantedPrivateEmail, 0);
     }
 
     v332 = [location[0] objectForKeyedSubscript:@"previouslySelectedEmail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_previouslySelectedEmail, v332);
+      objc_storeStrong(&selfCopy->_previouslySelectedEmail, v332);
     }
 
     else
@@ -839,7 +839,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_authorizedApplicationsListVersion, v328);
+        objc_storeStrong(&selfCopy->_authorizedApplicationsListVersion, v328);
       }
 
       else
@@ -884,7 +884,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_privateEmailListVersion, v321);
+        objc_storeStrong(&selfCopy->_privateEmailListVersion, v321);
       }
 
       else
@@ -927,7 +927,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_canBeCustodian, v314);
+      objc_storeStrong(&selfCopy->_canBeCustodian, v314);
     }
 
     else
@@ -949,7 +949,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_canHaveCustodian, v310);
+      objc_storeStrong(&selfCopy->_canHaveCustodian, v310);
     }
 
     else
@@ -971,7 +971,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_custodianEnabled, v306);
+      objc_storeStrong(&selfCopy->_custodianEnabled, v306);
     }
 
     else
@@ -993,7 +993,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_custodianLastModified, v302);
+      objc_storeStrong(&selfCopy->_custodianLastModified, v302);
     }
 
     else
@@ -1015,7 +1015,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_canBeBeneficiary, v298);
+      objc_storeStrong(&selfCopy->_canBeBeneficiary, v298);
     }
 
     else
@@ -1037,7 +1037,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_canHaveBeneficiary, v294);
+      objc_storeStrong(&selfCopy->_canHaveBeneficiary, v294);
     }
 
     else
@@ -1059,7 +1059,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_beneficiaryLastModified, v290);
+      objc_storeStrong(&selfCopy->_beneficiaryLastModified, v290);
     }
 
     else
@@ -1081,7 +1081,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_hasMDM, v286);
+      objc_storeStrong(&selfCopy->_hasMDM, v286);
     }
 
     else
@@ -1107,12 +1107,12 @@
       {
         if ([v282 isEqual:@"EDU"])
         {
-          objc_storeStrong(&v437->_managedOrganizationType, &unk_1F07B50C0);
+          objc_storeStrong(&selfCopy->_managedOrganizationType, &unk_1F07B50C0);
         }
 
         else if ([v282 isEqual:@"ENT"])
         {
-          objc_storeStrong(&v437->_managedOrganizationType, &unk_1F07B50D8);
+          objc_storeStrong(&selfCopy->_managedOrganizationType, &unk_1F07B50D8);
         }
 
         else
@@ -1126,7 +1126,7 @@
           }
 
           objc_storeStrong(&v278, 0);
-          objc_storeStrong(&v437->_managedOrganizationType, &unk_1F07B50F0);
+          objc_storeStrong(&selfCopy->_managedOrganizationType, &unk_1F07B50F0);
         }
       }
 
@@ -1157,7 +1157,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_managedOrganizationName, v276);
+        objc_storeStrong(&selfCopy->_managedOrganizationName, v276);
       }
 
       else
@@ -1187,7 +1187,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_isNotificationEmailAvailable, v272);
+        objc_storeStrong(&selfCopy->_isNotificationEmailAvailable, v272);
       }
 
       else
@@ -1217,7 +1217,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_notificationEmail, v268);
+        objc_storeStrong(&selfCopy->_notificationEmail, v268);
       }
 
       else
@@ -1245,7 +1245,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v437->_isProximityAuthEligible, v264);
+      objc_storeStrong(&selfCopy->_isProximityAuthEligible, v264);
     }
 
     else
@@ -1261,7 +1261,7 @@
       }
 
       objc_storeStrong(&v263, 0);
-      objc_storeStrong(&v437->_isProximityAuthEligible, 0);
+      objc_storeStrong(&selfCopy->_isProximityAuthEligible, 0);
     }
 
     v260 = _AKLogSystem();
@@ -1275,7 +1275,7 @@
     }
 
     objc_storeStrong(&v260, 0);
-    [(AKUserInformation *)v437 _parseCustodianInfo:location[0]];
+    [(AKUserInformation *)selfCopy _parseCustodianInfo:location[0]];
     v257 = _AKLogSystem();
     v256 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v257, OS_LOG_TYPE_DEBUG))
@@ -1287,54 +1287,54 @@
     }
 
     objc_storeStrong(&v257, 0);
-    [(AKUserInformation *)v437 _parseBeneficiaryInfo:location[0]];
+    [(AKUserInformation *)selfCopy _parseBeneficiaryInfo:location[0]];
     v120 = objc_opt_class();
     v121 = [location[0] objectForKeyedSubscript:@"webAccessEnabled"];
     v39 = _AKSafeCast_25(v120, v121);
-    webAccessEnabled = v437->_webAccessEnabled;
-    v437->_webAccessEnabled = v39;
+    webAccessEnabled = selfCopy->_webAccessEnabled;
+    selfCopy->_webAccessEnabled = v39;
     MEMORY[0x1E69E5920](webAccessEnabled);
     MEMORY[0x1E69E5920](v121);
     v122 = objc_opt_class();
     v123 = [location[0] objectForKeyedSubscript:@"serverExperimentalFeatures"];
     v41 = _AKSafeCast_25(v122, v123);
-    serverExperimentalFeatures = v437->_serverExperimentalFeatures;
-    v437->_serverExperimentalFeatures = v41;
+    serverExperimentalFeatures = selfCopy->_serverExperimentalFeatures;
+    selfCopy->_serverExperimentalFeatures = v41;
     MEMORY[0x1E69E5920](serverExperimentalFeatures);
     MEMORY[0x1E69E5920](v123);
     v124 = objc_opt_class();
     v125 = [location[0] objectForKeyedSubscript:@"passkeyEligible"];
     v43 = _AKSafeCast_25(v124, v125);
-    passkeyEligible = v437->_passkeyEligible;
-    v437->_passkeyEligible = v43;
+    passkeyEligible = selfCopy->_passkeyEligible;
+    selfCopy->_passkeyEligible = v43;
     MEMORY[0x1E69E5920](passkeyEligible);
     MEMORY[0x1E69E5920](v125);
     v126 = objc_opt_class();
     v127 = [location[0] objectForKeyedSubscript:@"passkeyPresent"];
     v45 = _AKSafeCast_25(v126, v127);
-    passkeyPresent = v437->_passkeyPresent;
-    v437->_passkeyPresent = v45;
+    passkeyPresent = selfCopy->_passkeyPresent;
+    selfCopy->_passkeyPresent = v45;
     MEMORY[0x1E69E5920](passkeyPresent);
     MEMORY[0x1E69E5920](v127);
     v128 = objc_opt_class();
     v129 = [location[0] objectForKeyedSubscript:@"groupkitEligibilityInd"];
     v47 = _AKSafeCast_25(v128, v129);
-    groupKitEligibility = v437->_groupKitEligibility;
-    v437->_groupKitEligibility = v47;
+    groupKitEligibility = selfCopy->_groupKitEligibility;
+    selfCopy->_groupKitEligibility = v47;
     MEMORY[0x1E69E5920](groupKitEligibility);
     MEMORY[0x1E69E5920](v129);
     v130 = objc_opt_class();
     v131 = [location[0] objectForKeyedSubscript:@"passcodeAuthEnabled"];
     v49 = _AKSafeCast_25(v130, v131);
-    passcodeAuthEnabled = v437->_passcodeAuthEnabled;
-    v437->_passcodeAuthEnabled = v49;
+    passcodeAuthEnabled = selfCopy->_passcodeAuthEnabled;
+    selfCopy->_passcodeAuthEnabled = v49;
     MEMORY[0x1E69E5920](passcodeAuthEnabled);
     MEMORY[0x1E69E5920](v131);
     v132 = objc_opt_class();
     v133 = [location[0] objectForKeyedSubscript:@"askToBuy"];
     v51 = _AKSafeCast_25(v132, v133);
-    askToBuy = v437->_askToBuy;
-    v437->_askToBuy = v51;
+    askToBuy = selfCopy->_askToBuy;
+    selfCopy->_askToBuy = v51;
     MEMORY[0x1E69E5920](askToBuy);
     MEMORY[0x1E69E5920](v133);
     v134 = [location[0] objectForKeyedSubscript:@"SOSCompatibilityOptInNeeded"];
@@ -1349,7 +1349,7 @@
       v253 = 1;
       v252 = _AKSafeCast_25(v119, v254);
       v251 = 1;
-      objc_storeStrong(&v437->_hasSOSActiveDevice, v252);
+      objc_storeStrong(&selfCopy->_hasSOSActiveDevice, v252);
     }
 
     else
@@ -1359,7 +1359,7 @@
       v249 = 1;
       v248 = _AKSafeCast_25(v118, v250);
       v247 = 1;
-      objc_storeStrong(&v437->_hasSOSActiveDevice, v248);
+      objc_storeStrong(&selfCopy->_hasSOSActiveDevice, v248);
     }
 
     if (v247)
@@ -1386,43 +1386,43 @@
     v106 = objc_opt_class();
     v107 = [location[0] objectForKeyedSubscript:@"SOSNeeded"];
     v53 = _AKSafeCast_25(v106, v107);
-    SOSNeeded = v437->_SOSNeeded;
-    v437->_SOSNeeded = v53;
+    SOSNeeded = selfCopy->_SOSNeeded;
+    selfCopy->_SOSNeeded = v53;
     MEMORY[0x1E69E5920](SOSNeeded);
     MEMORY[0x1E69E5920](v107);
     v108 = objc_opt_class();
     v109 = [location[0] objectForKeyedSubscript:@"deviceListVersion"];
     v55 = _AKSafeCast_25(v108, v109);
-    deviceListVersion = v437->_deviceListVersion;
-    v437->_deviceListVersion = v55;
+    deviceListVersion = selfCopy->_deviceListVersion;
+    selfCopy->_deviceListVersion = v55;
     MEMORY[0x1E69E5920](deviceListVersion);
     MEMORY[0x1E69E5920](v109);
     v110 = objc_opt_class();
     v111 = [location[0] objectForKeyedSubscript:@"yob"];
     v57 = _AKSafeCast_25(v110, v111);
-    birthYear = v437->_birthYear;
-    v437->_birthYear = v57;
+    birthYear = selfCopy->_birthYear;
+    selfCopy->_birthYear = v57;
     MEMORY[0x1E69E5920](birthYear);
     MEMORY[0x1E69E5920](v111);
     v112 = objc_opt_class();
     v113 = [location[0] objectForKeyedSubscript:@"birthMM"];
     v59 = _AKSafeCast_25(v112, v113);
-    birthMonth = v437->_birthMonth;
-    v437->_birthMonth = v59;
+    birthMonth = selfCopy->_birthMonth;
+    selfCopy->_birthMonth = v59;
     MEMORY[0x1E69E5920](birthMonth);
     MEMORY[0x1E69E5920](v113);
     v114 = objc_opt_class();
     v115 = [location[0] objectForKeyedSubscript:@"birthDD"];
     v61 = _AKSafeCast_25(v114, v115);
-    birthDay = v437->_birthDay;
-    v437->_birthDay = v61;
+    birthDay = selfCopy->_birthDay;
+    selfCopy->_birthDay = v61;
     MEMORY[0x1E69E5920](birthDay);
     MEMORY[0x1E69E5920](v115);
     v116 = objc_opt_class();
     v117 = [location[0] objectForKeyedSubscript:@"parentalAgeConsent"];
     v63 = _AKSafeCast_25(v116, v117);
-    canAttestAge = v437->_canAttestAge;
-    v437->_canAttestAge = v63;
+    canAttestAge = selfCopy->_canAttestAge;
+    selfCopy->_canAttestAge = v63;
     MEMORY[0x1E69E5920](canAttestAge);
     MEMORY[0x1E69E5920](v117);
     v246 = [location[0] objectForKeyedSubscript:@"configDataVersion"];
@@ -1431,7 +1431,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v437->_configDataVersion, v246);
+        objc_storeStrong(&selfCopy->_configDataVersion, v246);
       }
 
       else
@@ -1473,36 +1473,36 @@
     v90 = objc_opt_class();
     v91 = [location[0] objectForKeyedSubscript:@"hasRK"];
     v66 = _AKSafeCast_25(v90, v91);
-    hasModernRecoveryKey = v437->_hasModernRecoveryKey;
-    v437->_hasModernRecoveryKey = v66;
+    hasModernRecoveryKey = selfCopy->_hasModernRecoveryKey;
+    selfCopy->_hasModernRecoveryKey = v66;
     MEMORY[0x1E69E5920](hasModernRecoveryKey);
     MEMORY[0x1E69E5920](v91);
     v92 = objc_opt_class();
     v93 = [location[0] objectForKeyedSubscript:@"3PRegulatoryOverride"];
     v68 = _AKSafeCast_25(v92, v93);
-    thirdPartyRegulatoryOverride = v437->_thirdPartyRegulatoryOverride;
-    v437->_thirdPartyRegulatoryOverride = v68;
+    thirdPartyRegulatoryOverride = selfCopy->_thirdPartyRegulatoryOverride;
+    selfCopy->_thirdPartyRegulatoryOverride = v68;
     MEMORY[0x1E69E5920](thirdPartyRegulatoryOverride);
     MEMORY[0x1E69E5920](v93);
     v94 = objc_opt_class();
     v95 = [location[0] objectForKeyedSubscript:@"isCriticalAccountEditAllowed"];
     v70 = _AKSafeCast_25(v94, v95);
-    criticalAccountEditsAllowed = v437->_criticalAccountEditsAllowed;
-    v437->_criticalAccountEditsAllowed = v70;
+    criticalAccountEditsAllowed = selfCopy->_criticalAccountEditsAllowed;
+    selfCopy->_criticalAccountEditsAllowed = v70;
     MEMORY[0x1E69E5920](criticalAccountEditsAllowed);
     MEMORY[0x1E69E5920](v95);
     v96 = objc_opt_class();
     v97 = [location[0] objectForKeyedSubscript:@"adpCh"];
     v72 = _AKSafeCast_25(v96, v97);
-    adpCohort = v437->_adpCohort;
-    v437->_adpCohort = v72;
+    adpCohort = selfCopy->_adpCohort;
+    selfCopy->_adpCohort = v72;
     MEMORY[0x1E69E5920](adpCohort);
     MEMORY[0x1E69E5920](v97);
     v98 = objc_opt_class();
     v99 = [location[0] objectForKeyedSubscript:@"adpBlockMode"];
     v74 = _AKSafeCast_25(v98, v99);
-    adpBlockMode = v437->_adpBlockMode;
-    v437->_adpBlockMode = v74;
+    adpBlockMode = selfCopy->_adpBlockMode;
+    selfCopy->_adpBlockMode = v74;
     MEMORY[0x1E69E5920](adpBlockMode);
     MEMORY[0x1E69E5920](v99);
     v100 = [location[0] objectForKeyedSubscript:@"pbae"];
@@ -1512,8 +1512,8 @@
       v88 = objc_opt_class();
       v89 = [location[0] objectForKeyedSubscript:@"pbae"];
       v76 = _AKSafeCast_25(v88, v89);
-      piggybackingApprovalEligible = v437->_piggybackingApprovalEligible;
-      v437->_piggybackingApprovalEligible = v76;
+      piggybackingApprovalEligible = selfCopy->_piggybackingApprovalEligible;
+      selfCopy->_piggybackingApprovalEligible = v76;
       MEMORY[0x1E69E5920](piggybackingApprovalEligible);
       MEMORY[0x1E69E5920](v89);
     }
@@ -1521,15 +1521,15 @@
     v84 = objc_opt_class();
     v85 = [location[0] objectForKeyedSubscript:@"ageMigrationEligible"];
     v78 = _AKSafeCast_25(v84, v85);
-    isEligibleToMigrateToChild = v437->_isEligibleToMigrateToChild;
-    v437->_isEligibleToMigrateToChild = v78;
+    isEligibleToMigrateToChild = selfCopy->_isEligibleToMigrateToChild;
+    selfCopy->_isEligibleToMigrateToChild = v78;
     MEMORY[0x1E69E5920](isEligibleToMigrateToChild);
     MEMORY[0x1E69E5920](v85);
     v86 = objc_opt_class();
     v87 = [location[0] objectForKeyedSubscript:@"idmsWalrusStatus"];
     v80 = _AKSafeCast_25(v86, v87);
-    idmsWalrusStatus = v437->_idmsWalrusStatus;
-    v437->_idmsWalrusStatus = v80;
+    idmsWalrusStatus = selfCopy->_idmsWalrusStatus;
+    selfCopy->_idmsWalrusStatus = v80;
     MEMORY[0x1E69E5920](idmsWalrusStatus);
     MEMORY[0x1E69E5920](v87);
     objc_storeStrong(&v246, 0);
@@ -1581,58 +1581,58 @@
     objc_storeStrong(&v434, 0);
   }
 
-  v83 = MEMORY[0x1E69E5928](v437);
+  v83 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v437, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x1E69E9840];
   return v83;
 }
 
-- (AKUserInformation)initWithCoder:(id)a3
+- (AKUserInformation)initWithCoder:(id)coder
 {
-  v327 = &v331;
-  v331 = self;
+  v327 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v331;
-  v331 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v329.receiver = v3;
   v329.super_class = AKUserInformation;
   v328 = [(AKUserInformation *)&v329 init];
-  v331 = v328;
-  objc_storeStrong(&v331, v328);
+  selfCopy = v328;
+  objc_storeStrong(&selfCopy, v328);
   if (v328)
   {
     v225 = location[0];
     v312 = 0x1E696A000uLL;
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_givenName"];
-    givenName = v331->_givenName;
-    v331->_givenName = v4;
+    givenName = selfCopy->_givenName;
+    selfCopy->_givenName = v4;
     MEMORY[0x1E69E5920](givenName);
     v226 = location[0];
     v6 = *(v312 + 3776);
     v7 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_familyName"];
-    familyName = v331->_familyName;
-    v331->_familyName = v7;
+    familyName = selfCopy->_familyName;
+    selfCopy->_familyName = v7;
     MEMORY[0x1E69E5920](familyName);
     v227 = location[0];
     v9 = *(v312 + 3776);
     v10 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_forwardingEmail"];
-    forwardingEmail = v331->_forwardingEmail;
-    v331->_forwardingEmail = v10;
+    forwardingEmail = selfCopy->_forwardingEmail;
+    selfCopy->_forwardingEmail = v10;
     MEMORY[0x1E69E5920](forwardingEmail);
     v228 = location[0];
     v12 = *(v312 + 3776);
     v13 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_primaryEmailAddress"];
-    primaryEmailAddress = v331->_primaryEmailAddress;
-    v331->_primaryEmailAddress = v13;
+    primaryEmailAddress = selfCopy->_primaryEmailAddress;
+    selfCopy->_primaryEmailAddress = v13;
     MEMORY[0x1E69E5920](primaryEmailAddress);
     v229 = location[0];
     v15 = *(v312 + 3776);
     v16 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_accountName"];
-    accountName = v331->_accountName;
-    v331->_accountName = v16;
+    accountName = selfCopy->_accountName;
+    selfCopy->_accountName = v16;
     MEMORY[0x1E69E5920](accountName);
     v232 = location[0];
     v295 = 0x1E695D000uLL;
@@ -1642,8 +1642,8 @@
     v18 = *(v312 + 3776);
     v233 = [v231 setWithObjects:{v230, objc_opt_class(), 0}];
     v19 = [v232 decodeObjectOfClasses:? forKey:?];
-    accountAliases = v331->_accountAliases;
-    v331->_accountAliases = v19;
+    accountAliases = selfCopy->_accountAliases;
+    selfCopy->_accountAliases = v19;
     MEMORY[0x1E69E5920](accountAliases);
     MEMORY[0x1E69E5920](v233);
     v236 = location[0];
@@ -1653,116 +1653,116 @@
     v22 = *(v312 + 3776);
     v237 = [v235 setWithObjects:{v234, objc_opt_class(), 0}];
     v23 = [v236 decodeObjectOfClasses:? forKey:?];
-    reachableEmails = v331->_reachableEmails;
-    v331->_reachableEmails = v23;
+    reachableEmails = selfCopy->_reachableEmails;
+    selfCopy->_reachableEmails = v23;
     MEMORY[0x1E69E5920](reachableEmails);
     MEMORY[0x1E69E5920](v237);
     v238 = location[0];
     v25 = *(v312 + 3776);
     v26 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_previouslySelectedEmail"];
-    previouslySelectedEmail = v331->_previouslySelectedEmail;
-    v331->_previouslySelectedEmail = v26;
+    previouslySelectedEmail = selfCopy->_previouslySelectedEmail;
+    selfCopy->_previouslySelectedEmail = v26;
     MEMORY[0x1E69E5920](previouslySelectedEmail);
     v239 = location[0];
     v325 = 0x1E696A000uLL;
     v28 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_ageOfMajority"];
-    ageOfMajority = v331->_ageOfMajority;
-    v331->_ageOfMajority = v28;
+    ageOfMajority = selfCopy->_ageOfMajority;
+    selfCopy->_ageOfMajority = v28;
     MEMORY[0x1E69E5920](ageOfMajority);
     v240 = location[0];
     v30 = *(v312 + 3776);
     v31 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_authorizedApplicationsListVersion"];
-    authorizedApplicationsListVersion = v331->_authorizedApplicationsListVersion;
-    v331->_authorizedApplicationsListVersion = v31;
+    authorizedApplicationsListVersion = selfCopy->_authorizedApplicationsListVersion;
+    selfCopy->_authorizedApplicationsListVersion = v31;
     MEMORY[0x1E69E5920](authorizedApplicationsListVersion);
     v241 = location[0];
     v33 = *(v312 + 3776);
     v34 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_masterKeyID"];
-    masterKeyID = v331->_masterKeyID;
-    v331->_masterKeyID = v34;
+    masterKeyID = selfCopy->_masterKeyID;
+    selfCopy->_masterKeyID = v34;
     MEMORY[0x1E69E5920](masterKeyID);
     v242 = location[0];
     v36 = *(v325 + 3480);
     v37 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_vettedPrimaryEmail"];
-    vettedPrimaryEmail = v331->_vettedPrimaryEmail;
-    v331->_vettedPrimaryEmail = v37;
+    vettedPrimaryEmail = selfCopy->_vettedPrimaryEmail;
+    selfCopy->_vettedPrimaryEmail = v37;
     MEMORY[0x1E69E5920](vettedPrimaryEmail);
     v243 = location[0];
     v39 = *(v325 + 3480);
     v40 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_phoneAsAppleID"];
-    phoneAsAppleID = v331->_phoneAsAppleID;
-    v331->_phoneAsAppleID = v40;
+    phoneAsAppleID = selfCopy->_phoneAsAppleID;
+    selfCopy->_phoneAsAppleID = v40;
     MEMORY[0x1E69E5920](phoneAsAppleID);
     v244 = location[0];
     v42 = *(v325 + 3480);
     v43 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isUnderage"];
-    isUnderage = v331->_isUnderage;
-    v331->_isUnderage = v43;
+    isUnderage = selfCopy->_isUnderage;
+    selfCopy->_isUnderage = v43;
     MEMORY[0x1E69E5920](isUnderage);
     v245 = location[0];
     v45 = *(v325 + 3480);
     v46 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isSiwAEnabled"];
-    isSiwaForChildEnabled = v331->_isSiwaForChildEnabled;
-    v331->_isSiwaForChildEnabled = v46;
+    isSiwaForChildEnabled = selfCopy->_isSiwaForChildEnabled;
+    selfCopy->_isSiwaForChildEnabled = v46;
     MEMORY[0x1E69E5920](isSiwaForChildEnabled);
     v48 = [location[0] decodeIntegerForKey:@"_userAgeRange"];
     v49 = v325;
-    v331->_userAgeRange = v48;
+    selfCopy->_userAgeRange = v48;
     v246 = location[0];
     v50 = *(v49 + 3480);
     v51 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isSenior"];
-    isSenior = v331->_isSenior;
-    v331->_isSenior = v51;
+    isSenior = selfCopy->_isSenior;
+    selfCopy->_isSenior = v51;
     MEMORY[0x1E69E5920](isSenior);
     v247 = location[0];
     v53 = *(v325 + 3480);
     v54 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isLegacyStudent"];
-    isLegacyStudent = v331->_isLegacyStudent;
-    v331->_isLegacyStudent = v54;
+    isLegacyStudent = selfCopy->_isLegacyStudent;
+    selfCopy->_isLegacyStudent = v54;
     MEMORY[0x1E69E5920](isLegacyStudent);
     v248 = location[0];
     v56 = *(v325 + 3480);
     v57 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isEligibleForSafetyScreen"];
-    isEligibleForSafetyScreen = v331->_isEligibleForSafetyScreen;
-    v331->_isEligibleForSafetyScreen = v57;
+    isEligibleForSafetyScreen = selfCopy->_isEligibleForSafetyScreen;
+    selfCopy->_isEligibleForSafetyScreen = v57;
     MEMORY[0x1E69E5920](isEligibleForSafetyScreen);
     v249 = location[0];
     v59 = *(v325 + 3480);
     v60 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hasUsedAuthorization"];
-    hasUsedAuthorization = v331->_hasUsedAuthorization;
-    v331->_hasUsedAuthorization = v60;
+    hasUsedAuthorization = selfCopy->_hasUsedAuthorization;
+    selfCopy->_hasUsedAuthorization = v60;
     MEMORY[0x1E69E5920](hasUsedAuthorization);
     v250 = location[0];
     v62 = *(v325 + 3480);
     v63 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_privateAttestationEnabled"];
-    privateAttestationEnabled = v331->_privateAttestationEnabled;
-    v331->_privateAttestationEnabled = v63;
+    privateAttestationEnabled = selfCopy->_privateAttestationEnabled;
+    selfCopy->_privateAttestationEnabled = v63;
     MEMORY[0x1E69E5920](privateAttestationEnabled);
     v251 = location[0];
     v65 = *(v325 + 3480);
     v66 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_previouslyWantedPrivateEmail"];
-    previouslyWantedPrivateEmail = v331->_previouslyWantedPrivateEmail;
-    v331->_previouslyWantedPrivateEmail = v66;
+    previouslyWantedPrivateEmail = selfCopy->_previouslyWantedPrivateEmail;
+    selfCopy->_previouslyWantedPrivateEmail = v66;
     MEMORY[0x1E69E5920](previouslyWantedPrivateEmail);
     v68 = [location[0] decodeIntegerForKey:@"_appleIDSecurityLevel"];
-    v331->_appleIDSecurityLevel = v68;
+    selfCopy->_appleIDSecurityLevel = v68;
     v69 = [location[0] decodeIntegerForKey:@"_authMode"];
     v70 = v325;
-    v331->_authMode = v69;
+    selfCopy->_authMode = v69;
     v252 = location[0];
     v71 = *(v70 + 3480);
     v72 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isMdmInfoRequired"];
-    isMdmInfoRequired = v331->_isMdmInfoRequired;
-    v331->_isMdmInfoRequired = v72;
+    isMdmInfoRequired = selfCopy->_isMdmInfoRequired;
+    selfCopy->_isMdmInfoRequired = v72;
     MEMORY[0x1E69E5920](isMdmInfoRequired);
     v74 = [location[0] decodeIntegerForKey:@"_repairState"];
     v75 = v312;
-    v331->_repairState = v74;
+    selfCopy->_repairState = v74;
     v253 = location[0];
     v76 = *(v75 + 3776);
     v77 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_selectedEmail"];
-    selectedEmail = v331->_selectedEmail;
-    v331->_selectedEmail = v77;
+    selectedEmail = selfCopy->_selectedEmail;
+    selfCopy->_selectedEmail = v77;
     MEMORY[0x1E69E5920](selectedEmail);
     v259 = location[0];
     v258 = *(v295 + 4056);
@@ -1776,8 +1776,8 @@
     v256 = objc_opt_class();
     v260 = [v258 setWithObjects:{v257, v254, v255, v256, objc_opt_class(), 0}];
     v82 = [v259 decodeObjectOfClasses:? forKey:?];
-    additionalInfo = v331->_additionalInfo;
-    v331->_additionalInfo = v82;
+    additionalInfo = selfCopy->_additionalInfo;
+    selfCopy->_additionalInfo = v82;
     MEMORY[0x1E69E5920](additionalInfo);
     MEMORY[0x1E69E5920](v260);
     v263 = location[0];
@@ -1787,8 +1787,8 @@
     v85 = *(v312 + 3776);
     v264 = [v262 setWithObjects:{v261, objc_opt_class(), 0}];
     v86 = [v263 decodeObjectOfClasses:? forKey:?];
-    trustedPhoneNumbers = v331->_trustedPhoneNumbers;
-    v331->_trustedPhoneNumbers = v86;
+    trustedPhoneNumbers = selfCopy->_trustedPhoneNumbers;
+    selfCopy->_trustedPhoneNumbers = v86;
     MEMORY[0x1E69E5920](trustedPhoneNumbers);
     MEMORY[0x1E69E5920](v264);
     v268 = location[0];
@@ -1800,8 +1800,8 @@
     v90 = *(v312 + 3776);
     v269 = [v267 setWithObjects:{v266, v265, objc_opt_class(), 0}];
     v91 = [v268 decodeObjectOfClasses:? forKey:?];
-    securityKeys = v331->_securityKeys;
-    v331->_securityKeys = v91;
+    securityKeys = selfCopy->_securityKeys;
+    selfCopy->_securityKeys = v91;
     MEMORY[0x1E69E5920](securityKeys);
     MEMORY[0x1E69E5920](v269);
     v272 = location[0];
@@ -1811,105 +1811,105 @@
     v94 = *(v312 + 3776);
     v273 = [v271 setWithObjects:{v270, objc_opt_class(), 0}];
     v95 = [v272 decodeObjectOfClasses:? forKey:?];
-    loginHandles = v331->_loginHandles;
-    v331->_loginHandles = v95;
+    loginHandles = selfCopy->_loginHandles;
+    selfCopy->_loginHandles = v95;
     MEMORY[0x1E69E5920](loginHandles);
     MEMORY[0x1E69E5920](v273);
     v274 = location[0];
     v97 = *(v312 + 3776);
     v98 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_privateEmailListVersion"];
-    privateEmailListVersion = v331->_privateEmailListVersion;
-    v331->_privateEmailListVersion = v98;
+    privateEmailListVersion = selfCopy->_privateEmailListVersion;
+    selfCopy->_privateEmailListVersion = v98;
     MEMORY[0x1E69E5920](privateEmailListVersion);
     v275 = location[0];
     v100 = *(v325 + 3480);
     v101 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_canBeCustodian"];
-    canBeCustodian = v331->_canBeCustodian;
-    v331->_canBeCustodian = v101;
+    canBeCustodian = selfCopy->_canBeCustodian;
+    selfCopy->_canBeCustodian = v101;
     MEMORY[0x1E69E5920](canBeCustodian);
     v276 = location[0];
     v103 = *(v325 + 3480);
     v104 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_canHaveCustodian"];
-    canHaveCustodian = v331->_canHaveCustodian;
-    v331->_canHaveCustodian = v104;
+    canHaveCustodian = selfCopy->_canHaveCustodian;
+    selfCopy->_canHaveCustodian = v104;
     MEMORY[0x1E69E5920](canHaveCustodian);
     v277 = location[0];
     v106 = *(v325 + 3480);
     v107 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_custodianEnabled"];
-    custodianEnabled = v331->_custodianEnabled;
-    v331->_custodianEnabled = v107;
+    custodianEnabled = selfCopy->_custodianEnabled;
+    selfCopy->_custodianEnabled = v107;
     MEMORY[0x1E69E5920](custodianEnabled);
     v278 = location[0];
     v109 = *(v325 + 3480);
     v110 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_custodianLastModified"];
-    custodianLastModified = v331->_custodianLastModified;
-    v331->_custodianLastModified = v110;
+    custodianLastModified = selfCopy->_custodianLastModified;
+    selfCopy->_custodianLastModified = v110;
     MEMORY[0x1E69E5920](custodianLastModified);
     v279 = location[0];
     v112 = *(v325 + 3480);
     v113 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_canBeBeneficiary"];
-    canBeBeneficiary = v331->_canBeBeneficiary;
-    v331->_canBeBeneficiary = v113;
+    canBeBeneficiary = selfCopy->_canBeBeneficiary;
+    selfCopy->_canBeBeneficiary = v113;
     MEMORY[0x1E69E5920](canBeBeneficiary);
     v280 = location[0];
     v115 = *(v325 + 3480);
     v116 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_canHaveBeneficiary"];
-    canHaveBeneficiary = v331->_canHaveBeneficiary;
-    v331->_canHaveBeneficiary = v116;
+    canHaveBeneficiary = selfCopy->_canHaveBeneficiary;
+    selfCopy->_canHaveBeneficiary = v116;
     MEMORY[0x1E69E5920](canHaveBeneficiary);
     v281 = location[0];
     v118 = *(v325 + 3480);
     v119 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryLastModified"];
-    beneficiaryLastModified = v331->_beneficiaryLastModified;
-    v331->_beneficiaryLastModified = v119;
+    beneficiaryLastModified = selfCopy->_beneficiaryLastModified;
+    selfCopy->_beneficiaryLastModified = v119;
     MEMORY[0x1E69E5920](beneficiaryLastModified);
     v282 = location[0];
     v121 = *(v312 + 3776);
     v122 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_appleIDCountryCode"];
-    appleIDCountryCode = v331->_appleIDCountryCode;
-    v331->_appleIDCountryCode = v122;
+    appleIDCountryCode = selfCopy->_appleIDCountryCode;
+    selfCopy->_appleIDCountryCode = v122;
     MEMORY[0x1E69E5920](appleIDCountryCode);
     v283 = location[0];
     v124 = *(v325 + 3480);
     v125 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hasMDM"];
-    hasMDM = v331->_hasMDM;
-    v331->_hasMDM = v125;
+    hasMDM = selfCopy->_hasMDM;
+    selfCopy->_hasMDM = v125;
     MEMORY[0x1E69E5920](hasMDM);
     v284 = location[0];
     v127 = *(v325 + 3480);
     v128 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_managedOrganizationType"];
-    managedOrganizationType = v331->_managedOrganizationType;
-    v331->_managedOrganizationType = v128;
+    managedOrganizationType = selfCopy->_managedOrganizationType;
+    selfCopy->_managedOrganizationType = v128;
     MEMORY[0x1E69E5920](managedOrganizationType);
     v285 = location[0];
     v130 = *(v312 + 3776);
     v131 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_managedOrganizationName"];
-    managedOrganizationName = v331->_managedOrganizationName;
-    v331->_managedOrganizationName = v131;
+    managedOrganizationName = selfCopy->_managedOrganizationName;
+    selfCopy->_managedOrganizationName = v131;
     MEMORY[0x1E69E5920](managedOrganizationName);
     v286 = location[0];
     v133 = *(v325 + 3480);
     v134 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isNotificationEmailAvailable"];
-    isNotificationEmailAvailable = v331->_isNotificationEmailAvailable;
-    v331->_isNotificationEmailAvailable = v134;
+    isNotificationEmailAvailable = selfCopy->_isNotificationEmailAvailable;
+    selfCopy->_isNotificationEmailAvailable = v134;
     MEMORY[0x1E69E5920](isNotificationEmailAvailable);
     v287 = location[0];
     v136 = *(v312 + 3776);
     v137 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_notificationEmail"];
-    notificationEmail = v331->_notificationEmail;
-    v331->_notificationEmail = v137;
+    notificationEmail = selfCopy->_notificationEmail;
+    selfCopy->_notificationEmail = v137;
     MEMORY[0x1E69E5920](notificationEmail);
     v288 = location[0];
     v139 = *(v325 + 3480);
     v140 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_webAccessEnabled"];
-    webAccessEnabled = v331->_webAccessEnabled;
-    v331->_webAccessEnabled = v140;
+    webAccessEnabled = selfCopy->_webAccessEnabled;
+    selfCopy->_webAccessEnabled = v140;
     MEMORY[0x1E69E5920](webAccessEnabled);
     v289 = location[0];
     v142 = *(v325 + 3480);
     v143 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_serverExperimentalFeatures"];
-    serverExperimentalFeatures = v331->_serverExperimentalFeatures;
-    v331->_serverExperimentalFeatures = v143;
+    serverExperimentalFeatures = selfCopy->_serverExperimentalFeatures;
+    selfCopy->_serverExperimentalFeatures = v143;
     MEMORY[0x1E69E5920](serverExperimentalFeatures);
     v293 = location[0];
     v292 = *(v295 + 4056);
@@ -1920,8 +1920,8 @@
     v147 = *(v312 + 3776);
     v294 = [v292 setWithObjects:{v291, v290, objc_opt_class(), 0}];
     v148 = [v293 decodeObjectOfClasses:? forKey:?];
-    custodianInfos = v331->_custodianInfos;
-    v331->_custodianInfos = v148;
+    custodianInfos = selfCopy->_custodianInfos;
+    selfCopy->_custodianInfos = v148;
     MEMORY[0x1E69E5920](custodianInfos);
     MEMORY[0x1E69E5920](v294);
     v301 = location[0];
@@ -1933,439 +1933,439 @@
     v152 = *(v312 + 3776);
     v302 = [v300 setWithObjects:{v299, v298, objc_opt_class(), 0}];
     v153 = [v301 decodeObjectOfClasses:? forKey:?];
-    beneficiaryInfo = v331->_beneficiaryInfo;
-    v331->_beneficiaryInfo = v153;
+    beneficiaryInfo = selfCopy->_beneficiaryInfo;
+    selfCopy->_beneficiaryInfo = v153;
     MEMORY[0x1E69E5920](beneficiaryInfo);
     MEMORY[0x1E69E5920](v302);
     v303 = location[0];
     v155 = *(v325 + 3480);
     v156 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_passkeyEligible"];
-    passkeyEligible = v331->_passkeyEligible;
-    v331->_passkeyEligible = v156;
+    passkeyEligible = selfCopy->_passkeyEligible;
+    selfCopy->_passkeyEligible = v156;
     MEMORY[0x1E69E5920](passkeyEligible);
     v304 = location[0];
     v158 = *(v325 + 3480);
     v159 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_passkeyPresent"];
-    passkeyPresent = v331->_passkeyPresent;
-    v331->_passkeyPresent = v159;
+    passkeyPresent = selfCopy->_passkeyPresent;
+    selfCopy->_passkeyPresent = v159;
     MEMORY[0x1E69E5920](passkeyPresent);
     v305 = location[0];
     v161 = *(v325 + 3480);
     v162 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isProximityAuthEligible"];
-    isProximityAuthEligible = v331->_isProximityAuthEligible;
-    v331->_isProximityAuthEligible = v162;
+    isProximityAuthEligible = selfCopy->_isProximityAuthEligible;
+    selfCopy->_isProximityAuthEligible = v162;
     MEMORY[0x1E69E5920](isProximityAuthEligible);
     v306 = location[0];
     v164 = *(v325 + 3480);
     v165 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_groupKitEligibility"];
-    groupKitEligibility = v331->_groupKitEligibility;
-    v331->_groupKitEligibility = v165;
+    groupKitEligibility = selfCopy->_groupKitEligibility;
+    selfCopy->_groupKitEligibility = v165;
     MEMORY[0x1E69E5920](groupKitEligibility);
     v307 = location[0];
     v167 = *(v325 + 3480);
     v168 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_passcodeAuthEnabled"];
-    passcodeAuthEnabled = v331->_passcodeAuthEnabled;
-    v331->_passcodeAuthEnabled = v168;
+    passcodeAuthEnabled = selfCopy->_passcodeAuthEnabled;
+    selfCopy->_passcodeAuthEnabled = v168;
     MEMORY[0x1E69E5920](passcodeAuthEnabled);
     v308 = location[0];
     v170 = *(v325 + 3480);
     v171 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_askToBuy"];
-    askToBuy = v331->_askToBuy;
-    v331->_askToBuy = v171;
+    askToBuy = selfCopy->_askToBuy;
+    selfCopy->_askToBuy = v171;
     MEMORY[0x1E69E5920](askToBuy);
     v309 = location[0];
     v173 = *(v325 + 3480);
     v174 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hasSOSActiveDevice"];
-    hasSOSActiveDevice = v331->_hasSOSActiveDevice;
-    v331->_hasSOSActiveDevice = v174;
+    hasSOSActiveDevice = selfCopy->_hasSOSActiveDevice;
+    selfCopy->_hasSOSActiveDevice = v174;
     MEMORY[0x1E69E5920](hasSOSActiveDevice);
     v310 = location[0];
     v176 = *(v325 + 3480);
     v177 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_SOSNeeded"];
-    SOSNeeded = v331->_SOSNeeded;
-    v331->_SOSNeeded = v177;
+    SOSNeeded = selfCopy->_SOSNeeded;
+    selfCopy->_SOSNeeded = v177;
     MEMORY[0x1E69E5920](SOSNeeded);
     v311 = location[0];
     v179 = *(v312 + 3776);
     v180 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_deviceListVersion"];
-    deviceListVersion = v331->_deviceListVersion;
-    v331->_deviceListVersion = v180;
+    deviceListVersion = selfCopy->_deviceListVersion;
+    selfCopy->_deviceListVersion = v180;
     MEMORY[0x1E69E5920](deviceListVersion);
     v313 = location[0];
     v182 = *(v312 + 3776);
     v183 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_configDataVersion"];
-    configDataVersion = v331->_configDataVersion;
-    v331->_configDataVersion = v183;
+    configDataVersion = selfCopy->_configDataVersion;
+    selfCopy->_configDataVersion = v183;
     MEMORY[0x1E69E5920](configDataVersion);
     v314 = location[0];
     v185 = *(v325 + 3480);
     v186 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_birthYear"];
-    birthYear = v331->_birthYear;
-    v331->_birthYear = v186;
+    birthYear = selfCopy->_birthYear;
+    selfCopy->_birthYear = v186;
     MEMORY[0x1E69E5920](birthYear);
     v315 = location[0];
     v188 = *(v325 + 3480);
     v189 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_birthDay"];
-    birthDay = v331->_birthDay;
-    v331->_birthDay = v189;
+    birthDay = selfCopy->_birthDay;
+    selfCopy->_birthDay = v189;
     MEMORY[0x1E69E5920](birthDay);
     v316 = location[0];
     v191 = *(v325 + 3480);
     v192 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_birthMonth"];
-    birthMonth = v331->_birthMonth;
-    v331->_birthMonth = v192;
+    birthMonth = selfCopy->_birthMonth;
+    selfCopy->_birthMonth = v192;
     MEMORY[0x1E69E5920](birthMonth);
     v317 = location[0];
     v194 = *(v325 + 3480);
     v195 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_canAttestAge"];
-    canAttestAge = v331->_canAttestAge;
-    v331->_canAttestAge = v195;
+    canAttestAge = selfCopy->_canAttestAge;
+    selfCopy->_canAttestAge = v195;
     MEMORY[0x1E69E5920](canAttestAge);
     v318 = location[0];
     v197 = *(v325 + 3480);
     v198 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_hasModernRecoveryKey"];
-    hasModernRecoveryKey = v331->_hasModernRecoveryKey;
-    v331->_hasModernRecoveryKey = v198;
+    hasModernRecoveryKey = selfCopy->_hasModernRecoveryKey;
+    selfCopy->_hasModernRecoveryKey = v198;
     MEMORY[0x1E69E5920](hasModernRecoveryKey);
     v319 = location[0];
     v200 = *(v325 + 3480);
     v201 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_thirdPartyRegulatoryOverride"];
-    thirdPartyRegulatoryOverride = v331->_thirdPartyRegulatoryOverride;
-    v331->_thirdPartyRegulatoryOverride = v201;
+    thirdPartyRegulatoryOverride = selfCopy->_thirdPartyRegulatoryOverride;
+    selfCopy->_thirdPartyRegulatoryOverride = v201;
     MEMORY[0x1E69E5920](thirdPartyRegulatoryOverride);
     v320 = location[0];
     v203 = *(v325 + 3480);
     v204 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_criticalAccountEditsAllowed"];
-    criticalAccountEditsAllowed = v331->_criticalAccountEditsAllowed;
-    v331->_criticalAccountEditsAllowed = v204;
+    criticalAccountEditsAllowed = selfCopy->_criticalAccountEditsAllowed;
+    selfCopy->_criticalAccountEditsAllowed = v204;
     MEMORY[0x1E69E5920](criticalAccountEditsAllowed);
     v321 = location[0];
     v206 = *(v325 + 3480);
     v207 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_adpCohort"];
-    adpCohort = v331->_adpCohort;
-    v331->_adpCohort = v207;
+    adpCohort = selfCopy->_adpCohort;
+    selfCopy->_adpCohort = v207;
     MEMORY[0x1E69E5920](adpCohort);
     v322 = location[0];
     v209 = *(v325 + 3480);
     v210 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_adpBlockMode"];
-    adpBlockMode = v331->_adpBlockMode;
-    v331->_adpBlockMode = v210;
+    adpBlockMode = selfCopy->_adpBlockMode;
+    selfCopy->_adpBlockMode = v210;
     MEMORY[0x1E69E5920](adpBlockMode);
     v323 = location[0];
     v212 = *(v325 + 3480);
     v213 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_piggybackingApprovalEligible"];
-    piggybackingApprovalEligible = v331->_piggybackingApprovalEligible;
-    v331->_piggybackingApprovalEligible = v213;
+    piggybackingApprovalEligible = selfCopy->_piggybackingApprovalEligible;
+    selfCopy->_piggybackingApprovalEligible = v213;
     MEMORY[0x1E69E5920](piggybackingApprovalEligible);
     v324 = location[0];
     v215 = *(v325 + 3480);
     v216 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_isEligibleToMigrateToChild"];
-    isEligibleToMigrateToChild = v331->_isEligibleToMigrateToChild;
-    v331->_isEligibleToMigrateToChild = v216;
+    isEligibleToMigrateToChild = selfCopy->_isEligibleToMigrateToChild;
+    selfCopy->_isEligibleToMigrateToChild = v216;
     MEMORY[0x1E69E5920](isEligibleToMigrateToChild);
     v326 = location[0];
     v218 = *(v325 + 3480);
     v219 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_idmsWalrusStatus"];
-    idmsWalrusStatus = v331->_idmsWalrusStatus;
-    v331->_idmsWalrusStatus = v219;
+    idmsWalrusStatus = selfCopy->_idmsWalrusStatus;
+    selfCopy->_idmsWalrusStatus = v219;
     MEMORY[0x1E69E5920](idmsWalrusStatus);
   }
 
-  v222 = &v331;
-  v224 = MEMORY[0x1E69E5928](v331);
+  v222 = &selfCopy;
+  v224 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v222, obj);
   return v224;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_givenName forKey:@"_givenName"];
-  [location[0] encodeObject:v4->_familyName forKey:@"_familyName"];
-  [location[0] encodeObject:v4->_forwardingEmail forKey:@"_forwardingEmail"];
-  [location[0] encodeObject:v4->_primaryEmailAddress forKey:@"_primaryEmailAddress"];
-  [location[0] encodeObject:v4->_accountName forKey:@"_accountName"];
-  [location[0] encodeObject:v4->_accountAliases forKey:@"_accountAliases"];
-  [location[0] encodeObject:v4->_reachableEmails forKey:@"_reachableEmails"];
-  [location[0] encodeObject:v4->_previouslySelectedEmail forKey:@"_previouslySelectedEmail"];
-  [location[0] encodeObject:v4->_ageOfMajority forKey:@"_ageOfMajority"];
-  [location[0] encodeObject:v4->_authorizedApplicationsListVersion forKey:@"_authorizedApplicationsListVersion"];
-  [location[0] encodeObject:v4->_masterKeyID forKey:@"_masterKeyID"];
-  [location[0] encodeObject:v4->_vettedPrimaryEmail forKey:@"_vettedPrimaryEmail"];
-  [location[0] encodeObject:v4->_phoneAsAppleID forKey:@"_phoneAsAppleID"];
-  [location[0] encodeObject:v4->_isUnderage forKey:@"_isUnderage"];
-  [location[0] encodeObject:v4->_isSiwaForChildEnabled forKey:@"_isSiwAEnabled"];
-  [location[0] encodeInteger:v4->_userAgeRange forKey:@"_userAgeRange"];
-  [location[0] encodeObject:v4->_isSenior forKey:@"_isSenior"];
-  [location[0] encodeObject:v4->_isLegacyStudent forKey:@"_isLegacyStudent"];
-  [location[0] encodeObject:v4->_isEligibleForSafetyScreen forKey:@"_isEligibleForSafetyScreen"];
-  [location[0] encodeObject:v4->_hasUsedAuthorization forKey:@"_hasUsedAuthorization"];
-  [location[0] encodeObject:v4->_privateAttestationEnabled forKey:@"_privateAttestationEnabled"];
-  [location[0] encodeObject:v4->_previouslyWantedPrivateEmail forKey:@"_previouslyWantedPrivateEmail"];
-  [location[0] encodeInteger:v4->_appleIDSecurityLevel forKey:@"_appleIDSecurityLevel"];
-  [location[0] encodeInteger:v4->_authMode forKey:@"_authMode"];
-  [location[0] encodeObject:v4->_isMdmInfoRequired forKey:@"_isMdmInfoRequired"];
-  [location[0] encodeInteger:v4->_repairState forKey:@"_repairState"];
-  [location[0] encodeObject:v4->_selectedEmail forKey:@"_selectedEmail"];
-  [location[0] encodeObject:v4->_additionalInfo forKey:@"_additionalInfo"];
-  [location[0] encodeObject:v4->_trustedPhoneNumbers forKey:@"_trustedPhoneNumbers"];
-  [location[0] encodeObject:v4->_securityKeys forKey:@"_securityKeys"];
-  [location[0] encodeObject:v4->_loginHandles forKey:@"_loginHandles"];
-  [location[0] encodeObject:v4->_privateEmailListVersion forKey:@"_privateEmailListVersion"];
-  [location[0] encodeObject:v4->_canBeCustodian forKey:@"_canBeCustodian"];
-  [location[0] encodeObject:v4->_canHaveCustodian forKey:@"_canHaveCustodian"];
-  [location[0] encodeObject:v4->_custodianEnabled forKey:@"_custodianEnabled"];
-  [location[0] encodeObject:v4->_custodianLastModified forKey:@"_custodianLastModified"];
-  [location[0] encodeObject:v4->_canBeBeneficiary forKey:@"_canBeBeneficiary"];
-  [location[0] encodeObject:v4->_canHaveBeneficiary forKey:@"_canHaveBeneficiary"];
-  [location[0] encodeObject:v4->_beneficiaryLastModified forKey:@"_beneficiaryLastModified"];
-  [location[0] encodeObject:v4->_appleIDCountryCode forKey:@"_appleIDCountryCode"];
-  [location[0] encodeObject:v4->_hasMDM forKey:@"_hasMDM"];
-  [location[0] encodeObject:v4->_managedOrganizationType forKey:@"_managedOrganizationType"];
-  [location[0] encodeObject:v4->_managedOrganizationName forKey:@"_managedOrganizationName"];
-  [location[0] encodeObject:v4->_isNotificationEmailAvailable forKey:@"_isNotificationEmailAvailable"];
-  [location[0] encodeObject:v4->_notificationEmail forKey:@"_notificationEmail"];
-  [location[0] encodeObject:v4->_webAccessEnabled forKey:@"_webAccessEnabled"];
-  [location[0] encodeObject:v4->_serverExperimentalFeatures forKey:@"_serverExperimentalFeatures"];
-  [location[0] encodeObject:v4->_custodianInfos forKey:@"_custodianInfos"];
-  [location[0] encodeObject:v4->_beneficiaryInfo forKey:@"_beneficiaryInfo"];
-  [location[0] encodeObject:v4->_passkeyEligible forKey:@"_passkeyEligible"];
-  [location[0] encodeObject:v4->_passkeyPresent forKey:@"_passkeyPresent"];
-  [location[0] encodeObject:v4->_isProximityAuthEligible forKey:@"_isProximityAuthEligible"];
-  [location[0] encodeObject:v4->_groupKitEligibility forKey:@"_groupKitEligibility"];
-  [location[0] encodeObject:v4->_passcodeAuthEnabled forKey:@"_passcodeAuthEnabled"];
-  [location[0] encodeObject:v4->_askToBuy forKey:@"_askToBuy"];
-  [location[0] encodeObject:v4->_hasSOSActiveDevice forKey:@"_hasSOSActiveDevice"];
-  [location[0] encodeObject:v4->_SOSNeeded forKey:@"_SOSNeeded"];
-  [location[0] encodeObject:v4->_deviceListVersion forKey:@"_deviceListVersion"];
-  [location[0] encodeObject:v4->_configDataVersion forKey:@"_configDataVersion"];
-  [location[0] encodeObject:v4->_birthYear forKey:@"_birthYear"];
-  [location[0] encodeObject:v4->_birthDay forKey:@"_birthDay"];
-  [location[0] encodeObject:v4->_birthMonth forKey:@"_birthMonth"];
-  [location[0] encodeObject:v4->_canAttestAge forKey:@"_canAttestAge"];
-  [location[0] encodeObject:v4->_hasModernRecoveryKey forKey:@"_hasModernRecoveryKey"];
-  [location[0] encodeObject:v4->_thirdPartyRegulatoryOverride forKey:@"_thirdPartyRegulatoryOverride"];
-  [location[0] encodeObject:v4->_criticalAccountEditsAllowed forKey:@"_criticalAccountEditsAllowed"];
-  [location[0] encodeObject:v4->_adpCohort forKey:@"_adpCohort"];
-  [location[0] encodeObject:v4->_adpBlockMode forKey:@"_adpBlockMode"];
-  [location[0] encodeObject:v4->_piggybackingApprovalEligible forKey:@"_piggybackingApprovalEligible"];
-  [location[0] encodeObject:v4->_isEligibleToMigrateToChild forKey:@"_isEligibleToMigrateToChild"];
-  [location[0] encodeObject:v4->_idmsWalrusStatus forKey:@"_idmsWalrusStatus"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_givenName forKey:@"_givenName"];
+  [location[0] encodeObject:selfCopy->_familyName forKey:@"_familyName"];
+  [location[0] encodeObject:selfCopy->_forwardingEmail forKey:@"_forwardingEmail"];
+  [location[0] encodeObject:selfCopy->_primaryEmailAddress forKey:@"_primaryEmailAddress"];
+  [location[0] encodeObject:selfCopy->_accountName forKey:@"_accountName"];
+  [location[0] encodeObject:selfCopy->_accountAliases forKey:@"_accountAliases"];
+  [location[0] encodeObject:selfCopy->_reachableEmails forKey:@"_reachableEmails"];
+  [location[0] encodeObject:selfCopy->_previouslySelectedEmail forKey:@"_previouslySelectedEmail"];
+  [location[0] encodeObject:selfCopy->_ageOfMajority forKey:@"_ageOfMajority"];
+  [location[0] encodeObject:selfCopy->_authorizedApplicationsListVersion forKey:@"_authorizedApplicationsListVersion"];
+  [location[0] encodeObject:selfCopy->_masterKeyID forKey:@"_masterKeyID"];
+  [location[0] encodeObject:selfCopy->_vettedPrimaryEmail forKey:@"_vettedPrimaryEmail"];
+  [location[0] encodeObject:selfCopy->_phoneAsAppleID forKey:@"_phoneAsAppleID"];
+  [location[0] encodeObject:selfCopy->_isUnderage forKey:@"_isUnderage"];
+  [location[0] encodeObject:selfCopy->_isSiwaForChildEnabled forKey:@"_isSiwAEnabled"];
+  [location[0] encodeInteger:selfCopy->_userAgeRange forKey:@"_userAgeRange"];
+  [location[0] encodeObject:selfCopy->_isSenior forKey:@"_isSenior"];
+  [location[0] encodeObject:selfCopy->_isLegacyStudent forKey:@"_isLegacyStudent"];
+  [location[0] encodeObject:selfCopy->_isEligibleForSafetyScreen forKey:@"_isEligibleForSafetyScreen"];
+  [location[0] encodeObject:selfCopy->_hasUsedAuthorization forKey:@"_hasUsedAuthorization"];
+  [location[0] encodeObject:selfCopy->_privateAttestationEnabled forKey:@"_privateAttestationEnabled"];
+  [location[0] encodeObject:selfCopy->_previouslyWantedPrivateEmail forKey:@"_previouslyWantedPrivateEmail"];
+  [location[0] encodeInteger:selfCopy->_appleIDSecurityLevel forKey:@"_appleIDSecurityLevel"];
+  [location[0] encodeInteger:selfCopy->_authMode forKey:@"_authMode"];
+  [location[0] encodeObject:selfCopy->_isMdmInfoRequired forKey:@"_isMdmInfoRequired"];
+  [location[0] encodeInteger:selfCopy->_repairState forKey:@"_repairState"];
+  [location[0] encodeObject:selfCopy->_selectedEmail forKey:@"_selectedEmail"];
+  [location[0] encodeObject:selfCopy->_additionalInfo forKey:@"_additionalInfo"];
+  [location[0] encodeObject:selfCopy->_trustedPhoneNumbers forKey:@"_trustedPhoneNumbers"];
+  [location[0] encodeObject:selfCopy->_securityKeys forKey:@"_securityKeys"];
+  [location[0] encodeObject:selfCopy->_loginHandles forKey:@"_loginHandles"];
+  [location[0] encodeObject:selfCopy->_privateEmailListVersion forKey:@"_privateEmailListVersion"];
+  [location[0] encodeObject:selfCopy->_canBeCustodian forKey:@"_canBeCustodian"];
+  [location[0] encodeObject:selfCopy->_canHaveCustodian forKey:@"_canHaveCustodian"];
+  [location[0] encodeObject:selfCopy->_custodianEnabled forKey:@"_custodianEnabled"];
+  [location[0] encodeObject:selfCopy->_custodianLastModified forKey:@"_custodianLastModified"];
+  [location[0] encodeObject:selfCopy->_canBeBeneficiary forKey:@"_canBeBeneficiary"];
+  [location[0] encodeObject:selfCopy->_canHaveBeneficiary forKey:@"_canHaveBeneficiary"];
+  [location[0] encodeObject:selfCopy->_beneficiaryLastModified forKey:@"_beneficiaryLastModified"];
+  [location[0] encodeObject:selfCopy->_appleIDCountryCode forKey:@"_appleIDCountryCode"];
+  [location[0] encodeObject:selfCopy->_hasMDM forKey:@"_hasMDM"];
+  [location[0] encodeObject:selfCopy->_managedOrganizationType forKey:@"_managedOrganizationType"];
+  [location[0] encodeObject:selfCopy->_managedOrganizationName forKey:@"_managedOrganizationName"];
+  [location[0] encodeObject:selfCopy->_isNotificationEmailAvailable forKey:@"_isNotificationEmailAvailable"];
+  [location[0] encodeObject:selfCopy->_notificationEmail forKey:@"_notificationEmail"];
+  [location[0] encodeObject:selfCopy->_webAccessEnabled forKey:@"_webAccessEnabled"];
+  [location[0] encodeObject:selfCopy->_serverExperimentalFeatures forKey:@"_serverExperimentalFeatures"];
+  [location[0] encodeObject:selfCopy->_custodianInfos forKey:@"_custodianInfos"];
+  [location[0] encodeObject:selfCopy->_beneficiaryInfo forKey:@"_beneficiaryInfo"];
+  [location[0] encodeObject:selfCopy->_passkeyEligible forKey:@"_passkeyEligible"];
+  [location[0] encodeObject:selfCopy->_passkeyPresent forKey:@"_passkeyPresent"];
+  [location[0] encodeObject:selfCopy->_isProximityAuthEligible forKey:@"_isProximityAuthEligible"];
+  [location[0] encodeObject:selfCopy->_groupKitEligibility forKey:@"_groupKitEligibility"];
+  [location[0] encodeObject:selfCopy->_passcodeAuthEnabled forKey:@"_passcodeAuthEnabled"];
+  [location[0] encodeObject:selfCopy->_askToBuy forKey:@"_askToBuy"];
+  [location[0] encodeObject:selfCopy->_hasSOSActiveDevice forKey:@"_hasSOSActiveDevice"];
+  [location[0] encodeObject:selfCopy->_SOSNeeded forKey:@"_SOSNeeded"];
+  [location[0] encodeObject:selfCopy->_deviceListVersion forKey:@"_deviceListVersion"];
+  [location[0] encodeObject:selfCopy->_configDataVersion forKey:@"_configDataVersion"];
+  [location[0] encodeObject:selfCopy->_birthYear forKey:@"_birthYear"];
+  [location[0] encodeObject:selfCopy->_birthDay forKey:@"_birthDay"];
+  [location[0] encodeObject:selfCopy->_birthMonth forKey:@"_birthMonth"];
+  [location[0] encodeObject:selfCopy->_canAttestAge forKey:@"_canAttestAge"];
+  [location[0] encodeObject:selfCopy->_hasModernRecoveryKey forKey:@"_hasModernRecoveryKey"];
+  [location[0] encodeObject:selfCopy->_thirdPartyRegulatoryOverride forKey:@"_thirdPartyRegulatoryOverride"];
+  [location[0] encodeObject:selfCopy->_criticalAccountEditsAllowed forKey:@"_criticalAccountEditsAllowed"];
+  [location[0] encodeObject:selfCopy->_adpCohort forKey:@"_adpCohort"];
+  [location[0] encodeObject:selfCopy->_adpBlockMode forKey:@"_adpBlockMode"];
+  [location[0] encodeObject:selfCopy->_piggybackingApprovalEligible forKey:@"_piggybackingApprovalEligible"];
+  [location[0] encodeObject:selfCopy->_isEligibleToMigrateToChild forKey:@"_isEligibleToMigrateToChild"];
+  [location[0] encodeObject:selfCopy->_idmsWalrusStatus forKey:@"_idmsWalrusStatus"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v72 = self;
+  selfCopy = self;
   v71[2] = a2;
-  v71[1] = a3;
+  v71[1] = zone;
   v71[0] = objc_alloc_init(AKUserInformation);
-  v4 = [(NSString *)v72->_givenName copy];
+  v4 = [(NSString *)selfCopy->_givenName copy];
   [v71[0] setGivenName:?];
   MEMORY[0x1E69E5920](v4);
-  v5 = [(NSString *)v72->_familyName copy];
+  v5 = [(NSString *)selfCopy->_familyName copy];
   [v71[0] setFamilyName:?];
   MEMORY[0x1E69E5920](v5);
-  v6 = [(NSString *)v72->_forwardingEmail copy];
+  v6 = [(NSString *)selfCopy->_forwardingEmail copy];
   [v71[0] setForwardingEmail:?];
   MEMORY[0x1E69E5920](v6);
-  v7 = [(NSString *)v72->_primaryEmailAddress copy];
+  v7 = [(NSString *)selfCopy->_primaryEmailAddress copy];
   [v71[0] setPrimaryEmailAddress:?];
   MEMORY[0x1E69E5920](v7);
-  v8 = [(NSString *)v72->_accountName copy];
+  v8 = [(NSString *)selfCopy->_accountName copy];
   [v71[0] setAccountName:?];
   MEMORY[0x1E69E5920](v8);
-  v9 = [(NSArray *)v72->_accountAliases copy];
+  v9 = [(NSArray *)selfCopy->_accountAliases copy];
   [v71[0] setAccountAliases:?];
   MEMORY[0x1E69E5920](v9);
-  v10 = [(NSArray *)v72->_reachableEmails copy];
+  v10 = [(NSArray *)selfCopy->_reachableEmails copy];
   [v71[0] setReachableEmails:?];
   MEMORY[0x1E69E5920](v10);
-  v11 = [(NSString *)v72->_authorizedApplicationsListVersion copy];
+  v11 = [(NSString *)selfCopy->_authorizedApplicationsListVersion copy];
   [v71[0] setAuthorizedApplicationsListVersion:?];
   MEMORY[0x1E69E5920](v11);
-  v12 = [(NSString *)v72->_masterKeyID copy];
+  v12 = [(NSString *)selfCopy->_masterKeyID copy];
   [v71[0] setMasterKeyID:?];
   MEMORY[0x1E69E5920](v12);
-  v13 = [(NSNumber *)v72->_vettedPrimaryEmail copy];
+  v13 = [(NSNumber *)selfCopy->_vettedPrimaryEmail copy];
   [v71[0] setVettedPrimaryEmail:?];
   MEMORY[0x1E69E5920](v13);
-  v14 = [(NSNumber *)v72->_phoneAsAppleID copy];
+  v14 = [(NSNumber *)selfCopy->_phoneAsAppleID copy];
   [v71[0] setPhoneAsAppleID:?];
   MEMORY[0x1E69E5920](v14);
-  v15 = [(NSNumber *)v72->_hasUsedAuthorization copy];
+  v15 = [(NSNumber *)selfCopy->_hasUsedAuthorization copy];
   [v71[0] setHasUsedAuthorization:?];
   MEMORY[0x1E69E5920](v15);
-  v16 = [(NSNumber *)v72->_privateAttestationEnabled copy];
+  v16 = [(NSNumber *)selfCopy->_privateAttestationEnabled copy];
   [v71[0] setPrivateAttestationEnabled:?];
   MEMORY[0x1E69E5920](v16);
-  v17 = [(NSNumber *)v72->_isUnderage copy];
+  v17 = [(NSNumber *)selfCopy->_isUnderage copy];
   [v71[0] setIsUnderage:?];
   MEMORY[0x1E69E5920](v17);
-  v18 = [(NSNumber *)v72->_isSiwaForChildEnabled copy];
+  v18 = [(NSNumber *)selfCopy->_isSiwaForChildEnabled copy];
   [v71[0] setIsSiwaForChildEnabled:?];
   MEMORY[0x1E69E5920](v18);
-  [v71[0] setUserAgeRange:v72->_userAgeRange];
-  v19 = [(NSNumber *)v72->_isSenior copy];
+  [v71[0] setUserAgeRange:selfCopy->_userAgeRange];
+  v19 = [(NSNumber *)selfCopy->_isSenior copy];
   [v71[0] setIsSenior:?];
   MEMORY[0x1E69E5920](v19);
-  v20 = [(NSNumber *)v72->_ageOfMajority copy];
+  v20 = [(NSNumber *)selfCopy->_ageOfMajority copy];
   [v71[0] setAgeOfMajority:?];
   MEMORY[0x1E69E5920](v20);
-  v21 = [(NSString *)v72->_previouslySelectedEmail copy];
+  v21 = [(NSString *)selfCopy->_previouslySelectedEmail copy];
   [v71[0] setPreviouslySelectedEmail:?];
   MEMORY[0x1E69E5920](v21);
-  v22 = [(NSNumber *)v72->_previouslyWantedPrivateEmail copy];
+  v22 = [(NSNumber *)selfCopy->_previouslyWantedPrivateEmail copy];
   [v71[0] setPreviouslyWantedPrivateEmail:?];
   MEMORY[0x1E69E5920](v22);
-  v23 = [(NSNumber *)v72->_isLegacyStudent copy];
+  v23 = [(NSNumber *)selfCopy->_isLegacyStudent copy];
   [v71[0] setIsLegacyStudent:?];
   MEMORY[0x1E69E5920](v23);
-  v24 = [(NSNumber *)v72->_isEligibleForSafetyScreen copy];
+  v24 = [(NSNumber *)selfCopy->_isEligibleForSafetyScreen copy];
   [v71[0] setIsEligibleForSafetyScreen:?];
   MEMORY[0x1E69E5920](v24);
-  [v71[0] setAppleIDSecurityLevel:v72->_appleIDSecurityLevel];
-  [v71[0] setAuthMode:v72->_authMode];
-  v25 = [(NSNumber *)v72->_isMdmInfoRequired copy];
+  [v71[0] setAppleIDSecurityLevel:selfCopy->_appleIDSecurityLevel];
+  [v71[0] setAuthMode:selfCopy->_authMode];
+  v25 = [(NSNumber *)selfCopy->_isMdmInfoRequired copy];
   [v71[0] setIsMdmInfoRequired:?];
   MEMORY[0x1E69E5920](v25);
-  [v71[0] setRepairState:v72->_repairState];
-  v26 = [(NSString *)v72->_selectedEmail copy];
+  [v71[0] setRepairState:selfCopy->_repairState];
+  v26 = [(NSString *)selfCopy->_selectedEmail copy];
   [v71[0] setSelectedEmail:?];
   MEMORY[0x1E69E5920](v26);
-  v27 = [(NSDictionary *)v72->_additionalInfo copy];
+  v27 = [(NSDictionary *)selfCopy->_additionalInfo copy];
   [v71[0] setAdditionalInfo:?];
   MEMORY[0x1E69E5920](v27);
-  v28 = [(NSArray *)v72->_trustedPhoneNumbers copy];
+  v28 = [(NSArray *)selfCopy->_trustedPhoneNumbers copy];
   [v71[0] setTrustedPhoneNumbers:?];
   MEMORY[0x1E69E5920](v28);
-  v29 = [(NSArray *)v72->_securityKeys copy];
+  v29 = [(NSArray *)selfCopy->_securityKeys copy];
   [v71[0] setSecurityKeys:?];
   MEMORY[0x1E69E5920](v29);
-  v30 = [(NSArray *)v72->_loginHandles copy];
+  v30 = [(NSArray *)selfCopy->_loginHandles copy];
   [v71[0] setLoginHandles:?];
   MEMORY[0x1E69E5920](v30);
-  v31 = [(NSNumber *)v72->_canBeCustodian copy];
+  v31 = [(NSNumber *)selfCopy->_canBeCustodian copy];
   [v71[0] setCanBeCustodian:?];
   MEMORY[0x1E69E5920](v31);
-  v32 = [(NSNumber *)v72->_canHaveCustodian copy];
+  v32 = [(NSNumber *)selfCopy->_canHaveCustodian copy];
   [v71[0] setCanHaveCustodian:?];
   MEMORY[0x1E69E5920](v32);
-  v33 = [(NSNumber *)v72->_canBeBeneficiary copy];
+  v33 = [(NSNumber *)selfCopy->_canBeBeneficiary copy];
   [v71[0] setCanBeBeneficiary:?];
   MEMORY[0x1E69E5920](v33);
-  v34 = [(NSNumber *)v72->_canHaveBeneficiary copy];
+  v34 = [(NSNumber *)selfCopy->_canHaveBeneficiary copy];
   [v71[0] setCanHaveBeneficiary:?];
   MEMORY[0x1E69E5920](v34);
-  v35 = [(NSString *)v72->_privateEmailListVersion copy];
+  v35 = [(NSString *)selfCopy->_privateEmailListVersion copy];
   [v71[0] setPrivateEmailListVersion:?];
   MEMORY[0x1E69E5920](v35);
-  v36 = [(NSNumber *)v72->_custodianEnabled copy];
+  v36 = [(NSNumber *)selfCopy->_custodianEnabled copy];
   [v71[0] setCustodianEnabled:?];
   MEMORY[0x1E69E5920](v36);
-  v37 = [(NSNumber *)v72->_custodianLastModified copy];
+  v37 = [(NSNumber *)selfCopy->_custodianLastModified copy];
   [v71[0] setCustodianLastModified:?];
   MEMORY[0x1E69E5920](v37);
-  v38 = [(NSNumber *)v72->_beneficiaryLastModified copy];
+  v38 = [(NSNumber *)selfCopy->_beneficiaryLastModified copy];
   [v71[0] setBeneficiaryLastModified:?];
   MEMORY[0x1E69E5920](v38);
-  v39 = [(NSString *)v72->_appleIDCountryCode copy];
+  v39 = [(NSString *)selfCopy->_appleIDCountryCode copy];
   [v71[0] setAppleIDCountryCode:?];
   MEMORY[0x1E69E5920](v39);
-  [v71[0] setHasMDM:v72->_hasMDM];
-  v40 = [(NSNumber *)v72->_managedOrganizationType copy];
+  [v71[0] setHasMDM:selfCopy->_hasMDM];
+  v40 = [(NSNumber *)selfCopy->_managedOrganizationType copy];
   [v71[0] setManagedOrganizationType:?];
   MEMORY[0x1E69E5920](v40);
-  v41 = [(NSString *)v72->_managedOrganizationName copy];
+  v41 = [(NSString *)selfCopy->_managedOrganizationName copy];
   [v71[0] setManagedOrganizationName:?];
   MEMORY[0x1E69E5920](v41);
-  v42 = [(NSNumber *)v72->_isNotificationEmailAvailable copy];
+  v42 = [(NSNumber *)selfCopy->_isNotificationEmailAvailable copy];
   [v71[0] setIsNotificationEmailAvailable:?];
   MEMORY[0x1E69E5920](v42);
-  v43 = [(NSString *)v72->_notificationEmail copy];
+  v43 = [(NSString *)selfCopy->_notificationEmail copy];
   [v71[0] setNotificationEmail:?];
   MEMORY[0x1E69E5920](v43);
-  v44 = [(NSNumber *)v72->_webAccessEnabled copy];
+  v44 = [(NSNumber *)selfCopy->_webAccessEnabled copy];
   [v71[0] setWebAccessEnabled:?];
   MEMORY[0x1E69E5920](v44);
-  v45 = [(NSNumber *)v72->_serverExperimentalFeatures copy];
+  v45 = [(NSNumber *)selfCopy->_serverExperimentalFeatures copy];
   [v71[0] setServerExperimentalFeatures:?];
   MEMORY[0x1E69E5920](v45);
-  v46 = [(NSArray *)v72->_custodianInfos copy];
+  v46 = [(NSArray *)selfCopy->_custodianInfos copy];
   [v71[0] setCustodianInfos:?];
   MEMORY[0x1E69E5920](v46);
-  v47 = [(NSArray *)v72->_beneficiaryInfo copy];
+  v47 = [(NSArray *)selfCopy->_beneficiaryInfo copy];
   [v71[0] setBeneficiaryInfo:?];
   MEMORY[0x1E69E5920](v47);
-  v48 = [(NSNumber *)v72->_passkeyEligible copy];
+  v48 = [(NSNumber *)selfCopy->_passkeyEligible copy];
   [v71[0] setPasskeyEligible:?];
   MEMORY[0x1E69E5920](v48);
-  v49 = [(NSNumber *)v72->_passkeyPresent copy];
+  v49 = [(NSNumber *)selfCopy->_passkeyPresent copy];
   [v71[0] setPasskeyPresent:?];
   MEMORY[0x1E69E5920](v49);
-  v50 = [(NSNumber *)v72->_isProximityAuthEligible copy];
+  v50 = [(NSNumber *)selfCopy->_isProximityAuthEligible copy];
   [v71[0] setIsProximityAuthEligible:?];
   MEMORY[0x1E69E5920](v50);
-  v51 = [(NSNumber *)v72->_groupKitEligibility copy];
+  v51 = [(NSNumber *)selfCopy->_groupKitEligibility copy];
   [v71[0] setGroupKitEligibility:?];
   MEMORY[0x1E69E5920](v51);
-  v52 = [(NSNumber *)v72->_passcodeAuthEnabled copy];
+  v52 = [(NSNumber *)selfCopy->_passcodeAuthEnabled copy];
   [v71[0] setPasscodeAuthEnabled:?];
   MEMORY[0x1E69E5920](v52);
-  v53 = [(NSNumber *)v72->_askToBuy copy];
+  v53 = [(NSNumber *)selfCopy->_askToBuy copy];
   [v71[0] setAskToBuy:?];
   MEMORY[0x1E69E5920](v53);
-  v54 = [(NSNumber *)v72->_hasSOSActiveDevice copy];
+  v54 = [(NSNumber *)selfCopy->_hasSOSActiveDevice copy];
   [v71[0] setHasSOSActiveDevice:?];
   MEMORY[0x1E69E5920](v54);
-  v55 = [(NSNumber *)v72->_SOSNeeded copy];
+  v55 = [(NSNumber *)selfCopy->_SOSNeeded copy];
   [v71[0] setSOSNeeded:?];
   MEMORY[0x1E69E5920](v55);
-  v56 = [(NSString *)v72->_deviceListVersion copy];
+  v56 = [(NSString *)selfCopy->_deviceListVersion copy];
   [v71[0] setDeviceListVersion:?];
   MEMORY[0x1E69E5920](v56);
-  v57 = [(NSString *)v72->_configDataVersion copy];
+  v57 = [(NSString *)selfCopy->_configDataVersion copy];
   [v71[0] setConfigDataVersion:?];
   MEMORY[0x1E69E5920](v57);
-  v58 = [(NSNumber *)v72->_birthYear copy];
+  v58 = [(NSNumber *)selfCopy->_birthYear copy];
   [v71[0] setBirthYear:?];
   MEMORY[0x1E69E5920](v58);
-  v59 = [(NSNumber *)v72->_birthDay copy];
+  v59 = [(NSNumber *)selfCopy->_birthDay copy];
   [v71[0] setBirthDay:?];
   MEMORY[0x1E69E5920](v59);
-  v60 = [(NSNumber *)v72->_birthMonth copy];
+  v60 = [(NSNumber *)selfCopy->_birthMonth copy];
   [v71[0] setBirthMonth:?];
   MEMORY[0x1E69E5920](v60);
-  v61 = [(NSNumber *)v72->_canAttestAge copy];
+  v61 = [(NSNumber *)selfCopy->_canAttestAge copy];
   [v71[0] setCanAttestAge:?];
   MEMORY[0x1E69E5920](v61);
-  v62 = [(NSNumber *)v72->_hasModernRecoveryKey copy];
+  v62 = [(NSNumber *)selfCopy->_hasModernRecoveryKey copy];
   [v71[0] setHasModernRecoveryKey:?];
   MEMORY[0x1E69E5920](v62);
-  v63 = [(NSNumber *)v72->_thirdPartyRegulatoryOverride copy];
+  v63 = [(NSNumber *)selfCopy->_thirdPartyRegulatoryOverride copy];
   [v71[0] setThirdPartyRegulatoryOverride:?];
   MEMORY[0x1E69E5920](v63);
-  v64 = [(NSNumber *)v72->_criticalAccountEditsAllowed copy];
+  v64 = [(NSNumber *)selfCopy->_criticalAccountEditsAllowed copy];
   [v71[0] setCriticalAccountEditsAllowed:?];
   MEMORY[0x1E69E5920](v64);
-  v65 = [(NSNumber *)v72->_adpCohort copy];
+  v65 = [(NSNumber *)selfCopy->_adpCohort copy];
   [v71[0] setAdpCohort:?];
   MEMORY[0x1E69E5920](v65);
-  v66 = [(NSNumber *)v72->_adpBlockMode copy];
+  v66 = [(NSNumber *)selfCopy->_adpBlockMode copy];
   [v71[0] setAdpBlockMode:?];
   MEMORY[0x1E69E5920](v66);
-  v67 = [(NSNumber *)v72->_piggybackingApprovalEligible copy];
+  v67 = [(NSNumber *)selfCopy->_piggybackingApprovalEligible copy];
   [v71[0] setPiggybackingApprovalEligible:?];
   MEMORY[0x1E69E5920](v67);
-  v68 = [(NSNumber *)v72->_isEligibleToMigrateToChild copy];
+  v68 = [(NSNumber *)selfCopy->_isEligibleToMigrateToChild copy];
   [v71[0] setIsEligibleToMigrateToChild:?];
   MEMORY[0x1E69E5920](v68);
-  v69 = [(NSNumber *)v72->_idmsWalrusStatus copy];
+  v69 = [(NSNumber *)selfCopy->_idmsWalrusStatus copy];
   [v71[0] setIdmsWalrusStatus:?];
   MEMORY[0x1E69E5920](v69);
   v70 = MEMORY[0x1E69E5928](v71[0]);
@@ -2373,13 +2373,13 @@
   return v70;
 }
 
-- (void)_parseCustodianInfo:(id)a3
+- (void)_parseCustodianInfo:(id)info
 {
   v31 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v10 = objc_opt_class();
   v11 = [location[0] objectForKeyedSubscript:@"custodianInfos"];
   v27 = _AKSafeCast_25(v10, v11);
@@ -2424,8 +2424,8 @@
     }
 
     v3 = [v26 copy];
-    custodianInfos = v29->_custodianInfos;
-    v29->_custodianInfos = v3;
+    custodianInfos = selfCopy->_custodianInfos;
+    selfCopy->_custodianInfos = v3;
     MEMORY[0x1E69E5920](custodianInfos);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v26, 0);
@@ -2508,13 +2508,13 @@ void __41__AKUserInformation__parseCustodianInfo___block_invoke(id *a1, void *a2
   objc_storeStrong(location, 0);
 }
 
-- (void)_parseBeneficiaryInfo:(id)a3
+- (void)_parseBeneficiaryInfo:(id)info
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v10 = objc_opt_class();
   v11 = [location[0] objectForKeyedSubscript:@"beneficiaryInfo"];
   v26 = _AKSafeCast_25(v10, v11);
@@ -2558,8 +2558,8 @@ void __41__AKUserInformation__parseCustodianInfo___block_invoke(id *a1, void *a2
     }
 
     v3 = [v22 copy];
-    beneficiaryInfo = v28->_beneficiaryInfo;
-    v28->_beneficiaryInfo = v3;
+    beneficiaryInfo = selfCopy->_beneficiaryInfo;
+    selfCopy->_beneficiaryInfo = v3;
     MEMORY[0x1E69E5920](beneficiaryInfo);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v22, 0);
@@ -2578,7 +2578,7 @@ void __41__AKUserInformation__parseCustodianInfo___block_invoke(id *a1, void *a2
     }
 
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v28->_beneficiaryInfo, 0);
+    objc_storeStrong(&selfCopy->_beneficiaryInfo, 0);
   }
 
   objc_storeStrong(&v26, 0);
@@ -2684,13 +2684,13 @@ void __43__AKUserInformation__parseBeneficiaryInfo___block_invoke(id *a1, void *
   return v5;
 }
 
-- (void)setSilentEscrowRecordRepairEnabled:(id)a3
+- (void)setSilentEscrowRecordRepairEnabled:(id)enabled
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSDictionary *)v11->_additionalInfo mutableCopy];
+  objc_storeStrong(location, enabled);
+  v6 = [(NSDictionary *)selfCopy->_additionalInfo mutableCopy];
   v7 = 0;
   if (v6)
   {
@@ -2713,8 +2713,8 @@ void __43__AKUserInformation__parseBeneficiaryInfo___block_invoke(id *a1, void *
   MEMORY[0x1E69E5920](v6);
   [v9 setObject:location[0] forKeyedSubscript:@"silentEscrowRecordRepairEnabled"];
   v4 = [v9 copy];
-  additionalInfo = v11->_additionalInfo;
-  v11->_additionalInfo = v4;
+  additionalInfo = selfCopy->_additionalInfo;
+  selfCopy->_additionalInfo = v4;
   MEMORY[0x1E69E5920](additionalInfo);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -2730,13 +2730,13 @@ void __43__AKUserInformation__parseBeneficiaryInfo___block_invoke(id *a1, void *
   return v5;
 }
 
-- (void)setSilentBurnCDPRepairEnabled:(id)a3
+- (void)setSilentBurnCDPRepairEnabled:(id)enabled
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSDictionary *)v11->_additionalInfo mutableCopy];
+  objc_storeStrong(location, enabled);
+  v6 = [(NSDictionary *)selfCopy->_additionalInfo mutableCopy];
   v7 = 0;
   if (v6)
   {
@@ -2759,8 +2759,8 @@ void __43__AKUserInformation__parseBeneficiaryInfo___block_invoke(id *a1, void *
   MEMORY[0x1E69E5920](v6);
   [v9 setObject:location[0] forKeyedSubscript:@"silenBurnMiniBuddyEnabled"];
   v4 = [v9 copy];
-  additionalInfo = v11->_additionalInfo;
-  v11->_additionalInfo = v4;
+  additionalInfo = selfCopy->_additionalInfo;
+  selfCopy->_additionalInfo = v4;
   MEMORY[0x1E69E5920](additionalInfo);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -2783,7 +2783,7 @@ void __43__AKUserInformation__parseBeneficiaryInfo___block_invoke(id *a1, void *
 
 + (id)userInformationForUpdates
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = objc_alloc_init(AKUserInformation);
   v3 = MEMORY[0x1E69E5928](v4[0]);
@@ -2998,47 +2998,47 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
   return MEMORY[0x1E69E5920](v2);
 }
 
-- (BOOL)validateForUpdatesWithContext:(id)a3 error:(id *)a4
+- (BOOL)validateForUpdatesWithContext:(id)context error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v45 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v43 = 0;
   v41 = 0;
   v27 = 1;
   if (location[0])
   {
-    v44 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v43 = 1;
     v27 = 1;
-    if (v44)
+    if (altDSID)
     {
-      v42 = [location[0] altDSID];
+      altDSID2 = [location[0] altDSID];
       v41 = 1;
-      v27 = [v42 isEqualToString:&stru_1F0781300];
+      v27 = [altDSID2 isEqualToString:&stru_1F0781300];
     }
   }
 
   if (v41)
   {
-    MEMORY[0x1E69E5920](v42);
+    MEMORY[0x1E69E5920](altDSID2);
   }
 
   if (v43)
   {
-    MEMORY[0x1E69E5920](v44);
+    MEMORY[0x1E69E5920](altDSID);
   }
 
   if (v27)
   {
-    if (v45)
+    if (errorCopy)
     {
       v25 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7025];
       v4 = v25;
-      *v45 = v25;
+      *errorCopy = v25;
       v40 = _AKLogSystem();
       v39 = 16;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -3060,12 +3060,12 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
   {
     v36 = 0;
     v22 = +[AKAccountManager sharedInstance];
-    v21 = [location[0] altDSID];
+    altDSID3 = [location[0] altDSID];
     v34 = v36;
     v20 = [AKAccountManager authKitAccountWithAltDSID:v22 error:"authKitAccountWithAltDSID:error:"];
     objc_storeStrong(&v36, v34);
     v35 = v20;
-    MEMORY[0x1E69E5920](v21);
+    MEMORY[0x1E69E5920](altDSID3);
     MEMORY[0x1E69E5920](v22);
     if (v20)
     {
@@ -3075,10 +3075,10 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
       v31 = v17;
       if (v17 == 4 || v31 == 5)
       {
-        v11 = v47;
-        v12 = [location[0] altDSID];
+        v11 = selfCopy;
+        altDSID4 = [location[0] altDSID];
         v13 = [(AKUserInformation *)v11 hasUpdateableFieldsForAccountWithAltDSID:?];
-        MEMORY[0x1E69E5920](v12);
+        MEMORY[0x1E69E5920](altDSID4);
         if (v13)
         {
           v48 = 1;
@@ -3090,18 +3090,18 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
           v28 = _AKLogSystem();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            v10 = [location[0] altDSID];
-            __os_log_helper_16_2_2_8_112_8_64(v49, 1752392040, v10);
+            altDSID5 = [location[0] altDSID];
+            __os_log_helper_16_2_2_8_112_8_64(v49, 1752392040, altDSID5);
             _os_log_error_impl(&dword_193225000, v28, OS_LOG_TYPE_ERROR, "No updateable fields provided for account with altDSID %{mask.hash}@", v49, 0x16u);
-            MEMORY[0x1E69E5920](v10);
+            MEMORY[0x1E69E5920](altDSID5);
           }
 
           objc_storeStrong(&v28, 0);
-          if (v45)
+          if (errorCopy)
           {
             v9 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7056];
             v7 = v9;
-            *v45 = v9;
+            *errorCopy = v9;
           }
 
           v48 = 0;
@@ -3115,18 +3115,18 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
         v29 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v15 = [location[0] altDSID];
-          __os_log_helper_16_2_3_8_112_8_64_8_0(v50, 1752392040, v15, v31);
+          altDSID6 = [location[0] altDSID];
+          __os_log_helper_16_2_3_8_112_8_64_8_0(v50, 1752392040, altDSID6, v31);
           _os_log_error_impl(&dword_193225000, v30, v29, "Account with altDSID %{mask.hash}@ has unsupported security level %lu for user info updates", v50, 0x20u);
-          MEMORY[0x1E69E5920](v15);
+          MEMORY[0x1E69E5920](altDSID6);
         }
 
         objc_storeStrong(&v30, 0);
-        if (v45)
+        if (errorCopy)
         {
           v14 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7070];
           v6 = v14;
-          *v45 = v14;
+          *errorCopy = v14;
         }
 
         v48 = 0;
@@ -3140,18 +3140,18 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
       v32 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        v19 = [location[0] altDSID];
-        __os_log_helper_16_2_3_8_112_8_64_8_64(v51, 1752392040, v19, v36);
+        altDSID7 = [location[0] altDSID];
+        __os_log_helper_16_2_3_8_112_8_64_8_64(v51, 1752392040, altDSID7, v36);
         _os_log_error_impl(&dword_193225000, oslog, v32, "Failed to fetch account for altDSID %{mask.hash}@: %@", v51, 0x20u);
-        MEMORY[0x1E69E5920](v19);
+        MEMORY[0x1E69E5920](altDSID7);
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v45)
+      if (errorCopy)
       {
         v18 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7055 underlyingError:v36];
         v5 = v18;
-        *v45 = v18;
+        *errorCopy = v18;
       }
 
       v48 = 0;
@@ -3167,15 +3167,15 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
   return v48 & 1;
 }
 
-+ (BOOL)isFieldUpdateableForAccountWithAltDSID:(id)a3 fieldName:(id)a4
++ (BOOL)isFieldUpdateableForAccountWithAltDSID:(id)d fieldName:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v39 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, name);
   if (location[0] && v37)
   {
     v35 = 0;
@@ -3193,7 +3193,7 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
       v30 = v11;
       if (v11 == 4 || v30 == 5)
       {
-        v6 = [v39 _coreIdentityFields];
+        _coreIdentityFields = [selfCopy _coreIdentityFields];
         v25 = 0;
         v23 = 0;
         v21 = 0;
@@ -3201,36 +3201,36 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
         v17 = 0;
         v15 = 0;
         v7 = 1;
-        if (([v6 containsObject:v37] & 1) == 0)
+        if (([_coreIdentityFields containsObject:v37] & 1) == 0)
         {
-          v26 = [v39 _emailFields];
+          _emailFields = [selfCopy _emailFields];
           v25 = 1;
           v7 = 1;
-          if (([v26 containsObject:v37] & 1) == 0)
+          if (([_emailFields containsObject:v37] & 1) == 0)
           {
-            v24 = [v39 _featureFlagFields];
+            _featureFlagFields = [selfCopy _featureFlagFields];
             v23 = 1;
             v7 = 1;
-            if (([v24 containsObject:v37] & 1) == 0)
+            if (([_featureFlagFields containsObject:v37] & 1) == 0)
             {
-              v22 = [v39 _ageFields];
+              _ageFields = [selfCopy _ageFields];
               v21 = 1;
               v7 = 1;
-              if (([v22 containsObject:v37] & 1) == 0)
+              if (([_ageFields containsObject:v37] & 1) == 0)
               {
-                v20 = [v39 _securityFields];
+                _securityFields = [selfCopy _securityFields];
                 v19 = 1;
                 v7 = 1;
-                if (([v20 containsObject:v37] & 1) == 0)
+                if (([_securityFields containsObject:v37] & 1) == 0)
                 {
-                  v18 = [v39 _advancedSecurityFields];
+                  _advancedSecurityFields = [selfCopy _advancedSecurityFields];
                   v17 = 1;
                   v7 = 1;
-                  if (([v18 containsObject:v37] & 1) == 0)
+                  if (([_advancedSecurityFields containsObject:v37] & 1) == 0)
                   {
-                    v16 = [v39 _guitarfishFields];
+                    _guitarfishFields = [selfCopy _guitarfishFields];
                     v15 = 1;
-                    v7 = [v16 containsObject:v37];
+                    v7 = [_guitarfishFields containsObject:v37];
                   }
                 }
               }
@@ -3240,35 +3240,35 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
 
         if (v15)
         {
-          MEMORY[0x1E69E5920](v16);
+          MEMORY[0x1E69E5920](_guitarfishFields);
         }
 
         if (v17)
         {
-          MEMORY[0x1E69E5920](v18);
+          MEMORY[0x1E69E5920](_advancedSecurityFields);
         }
 
         if (v19)
         {
-          MEMORY[0x1E69E5920](v20);
+          MEMORY[0x1E69E5920](_securityFields);
         }
 
         if (v21)
         {
-          MEMORY[0x1E69E5920](v22);
+          MEMORY[0x1E69E5920](_ageFields);
         }
 
         if (v23)
         {
-          MEMORY[0x1E69E5920](v24);
+          MEMORY[0x1E69E5920](_featureFlagFields);
         }
 
         if (v25)
         {
-          MEMORY[0x1E69E5920](v26);
+          MEMORY[0x1E69E5920](_emailFields);
         }
 
-        MEMORY[0x1E69E5920](v6);
+        MEMORY[0x1E69E5920](_coreIdentityFields);
         if (v7)
         {
           v40 = 1;
@@ -3279,9 +3279,9 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
         {
           if (v30 == 5)
           {
-            v5 = [v39 _managedFields];
-            v40 = [v5 containsObject:v37] & 1;
-            MEMORY[0x1E69E5920](v5);
+            _managedFields = [selfCopy _managedFields];
+            v40 = [_managedFields containsObject:v37] & 1;
+            MEMORY[0x1E69E5920](_managedFields);
           }
 
           else
@@ -3342,43 +3342,43 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
   return v40 & 1;
 }
 
-- (BOOL)hasUpdateableFieldsForAccountWithAltDSID:(id)a3
+- (BOOL)hasUpdateableFieldsForAccountWithAltDSID:(id)d
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKUserInformation *)v7 updateableFieldNamesForAccountWithAltDSID:location[0]];
+  objc_storeStrong(location, d);
+  v5 = [(AKUserInformation *)selfCopy updateableFieldNamesForAccountWithAltDSID:location[0]];
   v4 = [v5 count] != 0;
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (id)updateableFieldNamesForAccountWithAltDSID:(id)a3
+- (id)updateableFieldNamesForAccountWithAltDSID:(id)d
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = [(AKUserInformation *)v20 _getCoreIdentityFields];
-  v17 = [(AKUserInformation *)v20 _getEmailFields];
-  v16 = [(AKUserInformation *)v20 _getSecurityFields];
-  v15 = [(AKUserInformation *)v20 _getFeatureFlagFields];
-  v14 = [(AKUserInformation *)v20 _getAgeAndDemographicsFields];
-  v13 = [(AKUserInformation *)v20 _getManagedAccountFields];
-  v12 = [(AKUserInformation *)v20 _getAdvancedSecurityFields];
-  v11 = [(AKUserInformation *)v20 _getGuitarfishFields];
-  v10 = [MEMORY[0x1E695DF70] array];
-  [v10 addObjectsFromArray:v18];
-  [v10 addObjectsFromArray:v17];
-  [v10 addObjectsFromArray:v16];
-  [v10 addObjectsFromArray:v15];
-  [v10 addObjectsFromArray:v14];
-  [v10 addObjectsFromArray:v13];
-  [v10 addObjectsFromArray:v12];
-  [v10 addObjectsFromArray:v11];
-  v5 = v10;
+  objc_storeStrong(location, d);
+  _getCoreIdentityFields = [(AKUserInformation *)selfCopy _getCoreIdentityFields];
+  _getEmailFields = [(AKUserInformation *)selfCopy _getEmailFields];
+  _getSecurityFields = [(AKUserInformation *)selfCopy _getSecurityFields];
+  _getFeatureFlagFields = [(AKUserInformation *)selfCopy _getFeatureFlagFields];
+  _getAgeAndDemographicsFields = [(AKUserInformation *)selfCopy _getAgeAndDemographicsFields];
+  _getManagedAccountFields = [(AKUserInformation *)selfCopy _getManagedAccountFields];
+  _getAdvancedSecurityFields = [(AKUserInformation *)selfCopy _getAdvancedSecurityFields];
+  _getGuitarfishFields = [(AKUserInformation *)selfCopy _getGuitarfishFields];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:_getCoreIdentityFields];
+  [array addObjectsFromArray:_getEmailFields];
+  [array addObjectsFromArray:_getSecurityFields];
+  [array addObjectsFromArray:_getFeatureFlagFields];
+  [array addObjectsFromArray:_getAgeAndDemographicsFields];
+  [array addObjectsFromArray:_getManagedAccountFields];
+  [array addObjectsFromArray:_getAdvancedSecurityFields];
+  [array addObjectsFromArray:_getGuitarfishFields];
+  v5 = array;
   v4 = MEMORY[0x1E696AE18];
   v8 = MEMORY[0x1E69E5928](location[0]);
   v6 = [v4 predicateWithBlock:?];
@@ -3387,15 +3387,15 @@ uint64_t __44__AKUserInformation_Updates___managedFields__block_invoke(uint64_t 
   v7 = MEMORY[0x1E69E5928](v9);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&array, 0);
+  objc_storeStrong(&_getGuitarfishFields, 0);
+  objc_storeStrong(&_getAdvancedSecurityFields, 0);
+  objc_storeStrong(&_getManagedAccountFields, 0);
+  objc_storeStrong(&_getAgeAndDemographicsFields, 0);
+  objc_storeStrong(&_getFeatureFlagFields, 0);
+  objc_storeStrong(&_getSecurityFields, 0);
+  objc_storeStrong(&_getEmailFields, 0);
+  objc_storeStrong(&_getCoreIdentityFields, 0);
   objc_storeStrong(location, 0);
 
   return v7;
@@ -3416,40 +3416,40 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getCoreIdentityFields
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [MEMORY[0x1E695DF70] array];
-  v8 = [(AKUserInformation *)v10 givenName];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  givenName = [(AKUserInformation *)selfCopy givenName];
+  MEMORY[0x1E69E5920](givenName);
+  if (givenName)
   {
     [v9[0] addObject:@"firstName"];
   }
 
-  v7 = [(AKUserInformation *)v10 familyName];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  familyName = [(AKUserInformation *)selfCopy familyName];
+  MEMORY[0x1E69E5920](familyName);
+  if (familyName)
   {
     [v9[0] addObject:@"lastName"];
   }
 
-  v6 = [(AKUserInformation *)v10 accountName];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  accountName = [(AKUserInformation *)selfCopy accountName];
+  MEMORY[0x1E69E5920](accountName);
+  if (accountName)
   {
     [v9[0] addObject:@"accountName"];
   }
 
-  v5 = [(AKUserInformation *)v10 primaryEmailAddress];
-  MEMORY[0x1E69E5920](v5);
-  if (v5)
+  primaryEmailAddress = [(AKUserInformation *)selfCopy primaryEmailAddress];
+  MEMORY[0x1E69E5920](primaryEmailAddress);
+  if (primaryEmailAddress)
   {
     [v9[0] addObject:@"primaryEmail"];
   }
 
-  v4 = [(AKUserInformation *)v10 appleIDCountryCode];
-  MEMORY[0x1E69E5920](v4);
-  if (v4)
+  appleIDCountryCode = [(AKUserInformation *)selfCopy appleIDCountryCode];
+  MEMORY[0x1E69E5920](appleIDCountryCode);
+  if (appleIDCountryCode)
   {
     [v9[0] addObject:@"countryCode"];
   }
@@ -3462,60 +3462,60 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getEmailFields
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = [MEMORY[0x1E695DF70] array];
-  v9 = [(AKUserInformation *)v15 forwardingEmail];
-  MEMORY[0x1E69E5920](v9);
-  if (v9)
+  forwardingEmail = [(AKUserInformation *)selfCopy forwardingEmail];
+  MEMORY[0x1E69E5920](forwardingEmail);
+  if (forwardingEmail)
   {
     [v14[0] addObject:@"forwardTo"];
   }
 
-  v8 = [(AKUserInformation *)v15 previouslySelectedEmail];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  previouslySelectedEmail = [(AKUserInformation *)selfCopy previouslySelectedEmail];
+  MEMORY[0x1E69E5920](previouslySelectedEmail);
+  if (previouslySelectedEmail)
   {
     [v14[0] addObject:@"previouslySelectedEmail"];
   }
 
-  v6 = [(AKUserInformation *)v15 accountAliases];
+  accountAliases = [(AKUserInformation *)selfCopy accountAliases];
   v12 = 0;
   v7 = 0;
-  if (v6)
+  if (accountAliases)
   {
-    v13 = [(AKUserInformation *)v15 accountAliases];
+    accountAliases2 = [(AKUserInformation *)selfCopy accountAliases];
     v12 = 1;
-    v7 = [(NSArray *)v13 count]!= 0;
+    v7 = [(NSArray *)accountAliases2 count]!= 0;
   }
 
   if (v12)
   {
-    MEMORY[0x1E69E5920](v13);
+    MEMORY[0x1E69E5920](accountAliases2);
   }
 
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](accountAliases);
   if (v7)
   {
     [v14[0] addObject:@"aliases"];
   }
 
-  v4 = [(AKUserInformation *)v15 reachableEmails];
+  reachableEmails = [(AKUserInformation *)selfCopy reachableEmails];
   v10 = 0;
   v5 = 0;
-  if (v4)
+  if (reachableEmails)
   {
-    v11 = [(AKUserInformation *)v15 reachableEmails];
+    reachableEmails2 = [(AKUserInformation *)selfCopy reachableEmails];
     v10 = 1;
-    v5 = [(NSArray *)v11 count]!= 0;
+    v5 = [(NSArray *)reachableEmails2 count]!= 0;
   }
 
   if (v10)
   {
-    MEMORY[0x1E69E5920](v11);
+    MEMORY[0x1E69E5920](reachableEmails2);
   }
 
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](reachableEmails);
   if (v5)
   {
     [v14[0] addObject:@"reachableEmails"];
@@ -3529,52 +3529,52 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getSecurityFields
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [MEMORY[0x1E695DF70] array];
-  v7 = [(AKUserInformation *)v14 trustedPhoneNumbers];
+  trustedPhoneNumbers = [(AKUserInformation *)selfCopy trustedPhoneNumbers];
   v11 = 0;
   v8 = 0;
-  if (v7)
+  if (trustedPhoneNumbers)
   {
-    v12 = [(AKUserInformation *)v14 trustedPhoneNumbers];
+    trustedPhoneNumbers2 = [(AKUserInformation *)selfCopy trustedPhoneNumbers];
     v11 = 1;
-    v8 = [(NSArray *)v12 count]!= 0;
+    v8 = [(NSArray *)trustedPhoneNumbers2 count]!= 0;
   }
 
   if (v11)
   {
-    MEMORY[0x1E69E5920](v12);
+    MEMORY[0x1E69E5920](trustedPhoneNumbers2);
   }
 
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](trustedPhoneNumbers);
   if (v8)
   {
     [v13[0] addObject:@"hsa2Phones"];
   }
 
-  v5 = [(AKUserInformation *)v14 loginHandles];
+  loginHandles = [(AKUserInformation *)selfCopy loginHandles];
   v9 = 0;
   v6 = 0;
-  if (v5)
+  if (loginHandles)
   {
-    v10 = [(AKUserInformation *)v14 loginHandles];
+    loginHandles2 = [(AKUserInformation *)selfCopy loginHandles];
     v9 = 1;
-    v6 = [(NSArray *)v10 count]!= 0;
+    v6 = [(NSArray *)loginHandles2 count]!= 0;
   }
 
   if (v9)
   {
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](loginHandles2);
   }
 
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](loginHandles);
   if (v6)
   {
     [v13[0] addObject:@"loginHandles"];
   }
 
-  if ([(AKUserInformation *)v14 repairState])
+  if ([(AKUserInformation *)selfCopy repairState])
   {
     [v13[0] addObject:@"rep"];
   }
@@ -3587,47 +3587,47 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getFeatureFlagFields
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [MEMORY[0x1E695DF70] array];
-  v10 = [(AKUserInformation *)v12 vettedPrimaryEmail];
-  MEMORY[0x1E69E5920](v10);
-  if (v10)
+  vettedPrimaryEmail = [(AKUserInformation *)selfCopy vettedPrimaryEmail];
+  MEMORY[0x1E69E5920](vettedPrimaryEmail);
+  if (vettedPrimaryEmail)
   {
     [v11[0] addObject:@"primaryEmailVetted"];
   }
 
-  v9 = [(AKUserInformation *)v12 phoneAsAppleID];
-  MEMORY[0x1E69E5920](v9);
-  if (v9)
+  phoneAsAppleID = [(AKUserInformation *)selfCopy phoneAsAppleID];
+  MEMORY[0x1E69E5920](phoneAsAppleID);
+  if (phoneAsAppleID)
   {
     [v11[0] addObject:@"phoneAsAppleId"];
   }
 
-  v8 = [(AKUserInformation *)v12 hasUsedAuthorization];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  hasUsedAuthorization = [(AKUserInformation *)selfCopy hasUsedAuthorization];
+  MEMORY[0x1E69E5920](hasUsedAuthorization);
+  if (hasUsedAuthorization)
   {
     [v11[0] addObject:@"appleIdSignInEnabled"];
   }
 
-  v7 = [(AKUserInformation *)v12 privateAttestationEnabled];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  privateAttestationEnabled = [(AKUserInformation *)selfCopy privateAttestationEnabled];
+  MEMORY[0x1E69E5920](privateAttestationEnabled);
+  if (privateAttestationEnabled)
   {
     [v11[0] addObject:@"privateAttestationEnabled"];
   }
 
-  v6 = [(AKUserInformation *)v12 previouslyWantedPrivateEmail];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  previouslyWantedPrivateEmail = [(AKUserInformation *)selfCopy previouslyWantedPrivateEmail];
+  MEMORY[0x1E69E5920](previouslyWantedPrivateEmail);
+  if (previouslyWantedPrivateEmail)
   {
     [v11[0] addObject:@"previouslySelectedAsPrivateEmail"];
   }
 
-  v5 = [(AKUserInformation *)v12 webAccessEnabled];
-  MEMORY[0x1E69E5920](v5);
-  if (v5)
+  webAccessEnabled = [(AKUserInformation *)selfCopy webAccessEnabled];
+  MEMORY[0x1E69E5920](webAccessEnabled);
+  if (webAccessEnabled)
   {
     [v11[0] addObject:@"webAccessEnabled"];
   }
@@ -3640,59 +3640,59 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getAgeAndDemographicsFields
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [MEMORY[0x1E695DF70] array];
-  v10 = [(AKUserInformation *)v12 isUnderage];
-  MEMORY[0x1E69E5920](v10);
-  if (v10)
+  isUnderage = [(AKUserInformation *)selfCopy isUnderage];
+  MEMORY[0x1E69E5920](isUnderage);
+  if (isUnderage)
   {
     [v11[0] addObject:@"underAge"];
   }
 
-  if ([(AKUserInformation *)v12 userAgeRange])
+  if ([(AKUserInformation *)selfCopy userAgeRange])
   {
     [v11[0] addObject:@"userAgeRange"];
   }
 
-  v9 = [(AKUserInformation *)v12 isSenior];
-  MEMORY[0x1E69E5920](v9);
-  if (v9)
+  isSenior = [(AKUserInformation *)selfCopy isSenior];
+  MEMORY[0x1E69E5920](isSenior);
+  if (isSenior)
   {
     [v11[0] addObject:@"isSenior"];
   }
 
-  v8 = [(AKUserInformation *)v12 ageOfMajority];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  ageOfMajority = [(AKUserInformation *)selfCopy ageOfMajority];
+  MEMORY[0x1E69E5920](ageOfMajority);
+  if (ageOfMajority)
   {
     [v11[0] addObject:@"ageOfMajority"];
   }
 
-  v7 = [(AKUserInformation *)v12 isLegacyStudent];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  isLegacyStudent = [(AKUserInformation *)selfCopy isLegacyStudent];
+  MEMORY[0x1E69E5920](isLegacyStudent);
+  if (isLegacyStudent)
   {
     [v11[0] addObject:@"studentAccount"];
   }
 
-  v6 = [(AKUserInformation *)v12 birthYear];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  birthYear = [(AKUserInformation *)selfCopy birthYear];
+  MEMORY[0x1E69E5920](birthYear);
+  if (birthYear)
   {
     [v11[0] addObject:@"yob"];
   }
 
-  v5 = [(AKUserInformation *)v12 birthMonth];
-  MEMORY[0x1E69E5920](v5);
-  if (v5)
+  birthMonth = [(AKUserInformation *)selfCopy birthMonth];
+  MEMORY[0x1E69E5920](birthMonth);
+  if (birthMonth)
   {
     [v11[0] addObject:@"birthMM"];
   }
 
-  v4 = [(AKUserInformation *)v12 birthDay];
-  MEMORY[0x1E69E5920](v4);
-  if (v4)
+  birthDay = [(AKUserInformation *)selfCopy birthDay];
+  MEMORY[0x1E69E5920](birthDay);
+  if (birthDay)
   {
     [v11[0] addObject:@"birthDD"];
   }
@@ -3705,33 +3705,33 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getManagedAccountFields
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [MEMORY[0x1E695DF70] array];
-  v8 = [(AKUserInformation *)v10 managedOrganizationType];
-  MEMORY[0x1E69E5920](v8);
-  if (v8)
+  managedOrganizationType = [(AKUserInformation *)selfCopy managedOrganizationType];
+  MEMORY[0x1E69E5920](managedOrganizationType);
+  if (managedOrganizationType)
   {
     [v9[0] addObject:@"orgType"];
   }
 
-  v7 = [(AKUserInformation *)v10 managedOrganizationName];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  managedOrganizationName = [(AKUserInformation *)selfCopy managedOrganizationName];
+  MEMORY[0x1E69E5920](managedOrganizationName);
+  if (managedOrganizationName)
   {
     [v9[0] addObject:@"orgName"];
   }
 
-  v6 = [(AKUserInformation *)v10 isNotificationEmailAvailable];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  isNotificationEmailAvailable = [(AKUserInformation *)selfCopy isNotificationEmailAvailable];
+  MEMORY[0x1E69E5920](isNotificationEmailAvailable);
+  if (isNotificationEmailAvailable)
   {
     [v9[0] addObject:@"notificationEmailAvailable"];
   }
 
-  v5 = [(AKUserInformation *)v10 notificationEmail];
-  MEMORY[0x1E69E5920](v5);
-  if (v5)
+  notificationEmail = [(AKUserInformation *)selfCopy notificationEmail];
+  MEMORY[0x1E69E5920](notificationEmail);
+  if (notificationEmail)
   {
     [v9[0] addObject:@"notificationEmail"];
   }
@@ -3744,20 +3744,20 @@ BOOL __72__AKUserInformation_Updates__updateableFieldNamesForAccountWithAltDSID_
 
 - (id)_getAdvancedSecurityFields
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [MEMORY[0x1E695DF70] array];
-  v6 = [(AKUserInformation *)v8 criticalAccountEditsAllowed];
-  MEMORY[0x1E69E5920](v6);
-  if (v6)
+  criticalAccountEditsAllowed = [(AKUserInformation *)selfCopy criticalAccountEditsAllowed];
+  MEMORY[0x1E69E5920](criticalAccountEditsAllowed);
+  if (criticalAccountEditsAllowed)
   {
     [v7[0] addObject:@"isCriticalAccountEditAllowed"];
   }
 
-  v4 = [(AKUserInformation *)v8 adpBlockMode];
-  v5 = [(NSNumber *)v4 BOOLValue];
-  MEMORY[0x1E69E5920](v4);
-  if (v5)
+  adpBlockMode = [(AKUserInformation *)selfCopy adpBlockMode];
+  bOOLValue = [(NSNumber *)adpBlockMode BOOLValue];
+  MEMORY[0x1E69E5920](adpBlockMode);
+  if (bOOLValue)
   {
     [v7[0] addObject:@"adpBlockMode"];
   }

@@ -1,29 +1,29 @@
 @interface CAMDrawerRAWButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)imageNameForAXHUD;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setRAWMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)didSelectMenuItem:(id)item;
+- (void)setRAWMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerRAWButton
 
-- (void)setRAWMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setRAWMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_rawMode != a3)
+  if (self->_rawMode != mode)
   {
-    self->_rawMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_rawMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerRAWButton *)self rawMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerRAWButton *)self rawMode];
 
   return self;
 }
@@ -47,16 +47,16 @@
   return v2;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerRAWButton *)self rawMode];
-  v6 = [v4 value];
+  itemCopy = item;
+  rawMode = [(CAMDrawerRAWButton *)self rawMode];
+  value = [itemCopy value];
 
-  v7 = [v6 integerValue];
-  if (v5 != v7)
+  integerValue = [value integerValue];
+  if (rawMode != integerValue)
   {
-    [(CAMDrawerRAWButton *)self setRAWMode:v7 animated:1];
+    [(CAMDrawerRAWButton *)self setRAWMode:integerValue animated:1];
 
     [(CAMDrawerRAWButton *)self sendActionsForControlEvents:4096];
   }
@@ -66,15 +66,15 @@
 {
   if ([(CAMDrawerRAWButton *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"CAMRAWButtonOff-AXHUD";
+    imageNameForCurrentState = @"CAMRAWButtonOff-AXHUD";
   }
 
   else
   {
-    v3 = [(CAMDrawerRAWButton *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMDrawerRAWButton *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 @end

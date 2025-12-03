@@ -1,55 +1,55 @@
 @interface WidgetMultiStackViewController
-- (BOOL)widgetStackViewController:(id)a3 isDataSourceBlockedForScreenTimeExpiration:(id)a4;
-- (_TtC14CarPlayAssetUI30WidgetMultiStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)widgetStackViewController:(id)a3 containerApplicationNameForDataSource:(id)a4;
-- (id)widgetStackViewController:(id)a3 containerBundleIdentifierForDataSource:(id)a4;
-- (id)widgetStackViewController:(id)a3 viewControllerForDataSource:(id)a4;
+- (BOOL)widgetStackViewController:(id)controller isDataSourceBlockedForScreenTimeExpiration:(id)expiration;
+- (_TtC14CarPlayAssetUI30WidgetMultiStackViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)widgetStackViewController:(id)controller containerApplicationNameForDataSource:(id)source;
+- (id)widgetStackViewController:(id)controller containerBundleIdentifierForDataSource:(id)source;
+- (id)widgetStackViewController:(id)controller viewControllerForDataSource:(id)source;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)widgetHostViewController:(id)a3 receivedTouchEvent:(id)a4;
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4;
-- (void)widgetStackViewController:(id)a3 didActivateDataSource:(id)a4 fromUserInteraction:(BOOL)a5;
-- (void)widgetStackViewController:(id)a3 didRemoveViewController:(id)a4;
+- (void)widgetHostViewController:(id)controller receivedTouchEvent:(id)event;
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch;
+- (void)widgetStackViewController:(id)controller didActivateDataSource:(id)source fromUserInteraction:(BOOL)interaction;
+- (void)widgetStackViewController:(id)controller didRemoveViewController:(id)viewController;
 @end
 
 @implementation WidgetMultiStackViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_242ECB1E0();
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_242ECB5F0();
 }
 
-- (_TtC14CarPlayAssetUI30WidgetMultiStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14CarPlayAssetUI30WidgetMultiStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)widgetStackViewController:(id)a3 viewControllerForDataSource:(id)a4
+- (id)widgetStackViewController:(id)controller viewControllerForDataSource:(id)source
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = WidgetMultiStackViewController.widgetStackViewController(_:viewControllerFor:)(v5);
+  selfCopy = self;
+  v7 = WidgetMultiStackViewController.widgetStackViewController(_:viewControllerFor:)(controllerCopy);
 
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)widgetStackViewController:(id)a3 containerApplicationNameForDataSource:(id)a4
+- (id)widgetStackViewController:(id)controller containerApplicationNameForDataSource:(id)source
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_242ED11C4();
   v8 = v7;
 
@@ -67,20 +67,20 @@
   return v9;
 }
 
-- (id)widgetStackViewController:(id)a3 containerBundleIdentifierForDataSource:(id)a4
+- (id)widgetStackViewController:(id)controller containerBundleIdentifierForDataSource:(id)source
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
   if (v6)
   {
     v7 = v6;
-    v8 = a3;
+    controllerCopy = controller;
     swift_unknownObjectRetain();
-    v9 = self;
-    v10 = [v7 containerBundleIdentifier];
-    if (v10)
+    selfCopy = self;
+    containerBundleIdentifier = [v7 containerBundleIdentifier];
+    if (containerBundleIdentifier)
     {
-      v11 = v10;
+      v11 = containerBundleIdentifier;
       sub_242F04F30();
 
       swift_unknownObjectRelease();
@@ -100,49 +100,49 @@
   return v6;
 }
 
-- (BOOL)widgetStackViewController:(id)a3 isDataSourceBlockedForScreenTimeExpiration:(id)a4
+- (BOOL)widgetStackViewController:(id)controller isDataSourceBlockedForScreenTimeExpiration:(id)expiration
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_242ED12D8();
 
   swift_unknownObjectRelease();
   return v7 & 1;
 }
 
-- (void)widgetStackViewController:(id)a3 didActivateDataSource:(id)a4 fromUserInteraction:(BOOL)a5
+- (void)widgetStackViewController:(id)controller didActivateDataSource:(id)source fromUserInteraction:(BOOL)interaction
 {
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_242ED13EC(a4, a5);
+  selfCopy = self;
+  sub_242ED13EC(source, interaction);
 
   swift_unknownObjectRelease();
 }
 
-- (void)widgetStackViewController:(id)a3 didRemoveViewController:(id)a4
+- (void)widgetStackViewController:(id)controller didRemoveViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_242ED1DD0(v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_242ED1DD0(viewControllerCopy);
 }
 
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  WidgetMultiStackViewController.widgetHostViewController(_:requestsLaunch:)(v6, v7);
+  controllerCopy = controller;
+  launchCopy = launch;
+  selfCopy = self;
+  WidgetMultiStackViewController.widgetHostViewController(_:requestsLaunch:)(controllerCopy, launchCopy);
 }
 
-- (void)widgetHostViewController:(id)a3 receivedTouchEvent:(id)a4
+- (void)widgetHostViewController:(id)controller receivedTouchEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s14CarPlayAssetUI30WidgetMultiStackViewControllerC010widgetHosthI0_18receivedTouchEventySo011CHUISWidgetkhI0C_So010CHUISTouchN0CtF_0(v6);
+  controllerCopy = controller;
+  eventCopy = event;
+  selfCopy = self;
+  _s14CarPlayAssetUI30WidgetMultiStackViewControllerC010widgetHosthI0_18receivedTouchEventySo011CHUISWidgetkhI0C_So010CHUISTouchN0CtF_0(controllerCopy);
 }
 
 @end

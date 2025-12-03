@@ -1,31 +1,31 @@
 @interface HKChartSummaryTrendSpan
-- (BOOL)isEqual:(id)a3;
-- (HKChartSummaryTrendSpan)initWithTrendDateInterval:(id)a3 trendAverage:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKChartSummaryTrendSpan)initWithTrendDateInterval:(id)interval trendAverage:(id)average;
 @end
 
 @implementation HKChartSummaryTrendSpan
 
-- (HKChartSummaryTrendSpan)initWithTrendDateInterval:(id)a3 trendAverage:(id)a4
+- (HKChartSummaryTrendSpan)initWithTrendDateInterval:(id)interval trendAverage:(id)average
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  averageCopy = average;
   v12.receiver = self;
   v12.super_class = HKChartSummaryTrendSpan;
   v9 = [(HKChartSummaryTrendSpan *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_trendDateInterval, a3);
-    objc_storeStrong(&v10->_trendAverage, a4);
+    objc_storeStrong(&v9->_trendDateInterval, interval);
+    objc_storeStrong(&v10->_trendAverage, average);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(HKQuantity *)self->_trendAverage isEqual:v5->_trendAverage])
       {
         v6 = [(NSDateInterval *)self->_trendDateInterval isEqual:v5->_trendDateInterval];

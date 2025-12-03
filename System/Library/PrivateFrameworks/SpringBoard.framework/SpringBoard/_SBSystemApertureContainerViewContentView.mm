@@ -1,27 +1,27 @@
 @interface _SBSystemApertureContainerViewContentView
 - (UIView)contentView;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentView:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentView:(id)view;
 @end
 
 @implementation _SBSystemApertureContainerViewContentView
 
 - (UIView)contentView
 {
-  v2 = [(_SBSystemApertureContainerViewContentView *)self subviews];
-  v3 = [v2 sbsa_onlyObjectOrNilAssert];
+  subviews = [(_SBSystemApertureContainerViewContentView *)self subviews];
+  sbsa_onlyObjectOrNilAssert = [subviews sbsa_onlyObjectOrNilAssert];
 
-  return v3;
+  return sbsa_onlyObjectOrNilAssert;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v4 = a3;
-  v5 = [(_SBSystemApertureContainerViewContentView *)self contentView];
+  viewCopy = view;
+  contentView = [(_SBSystemApertureContainerViewContentView *)self contentView];
   if ((BSEqualObjects() & 1) == 0)
   {
-    [v5 removeFromSuperview];
-    [(_SBSystemApertureContainerViewContentView *)self addSubview:v4];
+    [contentView removeFromSuperview];
+    [(_SBSystemApertureContainerViewContentView *)self addSubview:viewCopy];
     [(_SBSystemApertureContainerViewContentView *)self bounds];
     v7 = v6;
     v9 = v8;
@@ -32,7 +32,7 @@
     v15[1] = 3221225472;
     v15[2] = __60___SBSystemApertureContainerViewContentView_setContentView___block_invoke;
     v15[3] = &unk_2783AC828;
-    v16 = v4;
+    v16 = viewCopy;
     v17 = v7;
     v18 = v9;
     v19 = v11;
@@ -41,17 +41,17 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v18.receiver = self;
   v18.super_class = _SBSystemApertureContainerViewContentView;
   [(_SBSystemApertureContainerViewContentView *)&v18 setBounds:?];
-  v4 = [(_SBSystemApertureContainerViewContentView *)self contentView];
-  v5 = v4;
+  contentView = [(_SBSystemApertureContainerViewContentView *)self contentView];
+  v5 = contentView;
   memset(&v17, 0, sizeof(v17));
-  if (v4)
+  if (contentView)
   {
-    [v4 transform];
+    [contentView transform];
   }
 
   BSRectWithSize();
@@ -66,8 +66,8 @@
   v19.size.width = v11;
   v19.size.height = v13;
   CGRectApplyAffineTransform(v19, &v16);
-  v14 = [(_SBSystemApertureContainerViewContentView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(_SBSystemApertureContainerViewContentView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectRoundToScale();
   [v5 setBounds:?];
 

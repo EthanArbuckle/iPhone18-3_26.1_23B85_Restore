@@ -1,6 +1,6 @@
 @interface VFXImageSource
 - (id)textureSource;
-- (void)connectToProxy:(__CFXImageProxy *)a3;
+- (void)connectToProxy:(__CFXImageProxy *)proxy;
 @end
 
 @implementation VFXImageSource
@@ -16,12 +16,12 @@
   return 0;
 }
 
-- (void)connectToProxy:(__CFXImageProxy *)a3
+- (void)connectToProxy:(__CFXImageProxy *)proxy
 {
-  sub_1AF27679C(a3, self, 0);
+  sub_1AF27679C(proxy, self, 0);
   v4[0] = xmmword_1F24EBEA8;
   v4[1] = *&off_1F24EBEB8;
-  sub_1AF276824(a3, v4);
+  sub_1AF276824(proxy, v4);
 }
 
 @end

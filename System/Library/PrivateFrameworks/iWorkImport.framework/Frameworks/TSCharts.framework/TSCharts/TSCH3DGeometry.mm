@@ -3,10 +3,10 @@
 - (TSCH3DGeometry)init;
 - (box<glm::detail::tvec3<float>>)geometryBounds;
 - (id).cxx_construct;
-- (void)allocateArrays:(int)a3;
+- (void)allocateArrays:(int)arrays;
 - (void)normalArray;
 - (void)reset;
-- (void)transformArrays:(void *)a3;
+- (void)transformArrays:(void *)arrays;
 - (void)vertexArray;
 @end
 
@@ -14,7 +14,7 @@
 
 + (id)geometry
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -83,7 +83,7 @@
   return objc_msgSend_container(normalBuffer, a2, v2, v3, v4);
 }
 
-- (void)transformArrays:(void *)a3
+- (void)transformArrays:(void *)arrays
 {
   numVertices = self->_numVertices;
   if (numVertices)
@@ -107,11 +107,11 @@
       v20 = v8[1];
     }
 
-    v36 = *(a3 + 1);
-    v44 = *a3;
+    v36 = *(arrays + 1);
+    v44 = *arrays;
     v45 = v36;
-    v37 = *(a3 + 3);
-    v46 = *(a3 + 2);
+    v37 = *(arrays + 3);
+    v46 = *(arrays + 2);
     v47 = v37;
     while (v19 != v20)
     {
@@ -123,7 +123,7 @@
 
     v39 = *v18;
     v38 = v18[1];
-    sub_276154554(a3, &v44);
+    sub_276154554(arrays, &v44);
     *&v40 = v44.i64[0];
     *&v41 = *(&v45 + 4);
     *(&v40 + 1) = __PAIR64__(v45, v44.u32[2]);
@@ -141,18 +141,18 @@
   }
 }
 
-- (void)allocateArrays:(int)a3
+- (void)allocateArrays:(int)arrays
 {
-  if (self->_numVertices != a3)
+  if (self->_numVertices != arrays)
   {
     v25 = v5;
     v26 = v4;
     v27 = v3;
     vertexBuffer = self->_vertexBuffer;
-    v13 = a3;
+    arraysCopy = arrays;
     if (!vertexBuffer)
     {
-      v14 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec3DataBuffer, a2, v7, v8, v9, a3);
+      v14 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec3DataBuffer, a2, v7, v8, v9, arrays);
       v15 = self->_vertexBuffer;
       self->_vertexBuffer = v14;
 
@@ -160,11 +160,11 @@
     }
 
     v16 = objc_msgSend_container(vertexBuffer, a2, v7, v8, v9, v6, v25, v26, v27);
-    sub_2761EDA00(v16, v13);
+    sub_2761EDA00(v16, arraysCopy);
     normalBuffer = self->_normalBuffer;
     if (!normalBuffer)
     {
-      v22 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec3DataBuffer, v17, v18, v19, v20, v13);
+      v22 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec3DataBuffer, v17, v18, v19, v20, arraysCopy);
       v23 = self->_normalBuffer;
       self->_normalBuffer = v22;
 
@@ -172,8 +172,8 @@
     }
 
     v24 = objc_msgSend_container(normalBuffer, v17, v18, v19, v20);
-    sub_2761EDA00(v24, v13);
-    self->_numVertices = a3;
+    sub_2761EDA00(v24, arraysCopy);
+    self->_numVertices = arrays;
   }
 }
 

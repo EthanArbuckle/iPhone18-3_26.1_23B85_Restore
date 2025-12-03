@@ -1,28 +1,28 @@
 @interface ODFUNNELSiriSchemaODFUNNELClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithDictionary:(id)a3;
-- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithDictionary:(id)dictionary;
+- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)a3;
-- (void)setHasUserAggregationIdRotationTimestampMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)ms;
+- (void)setHasUserAggregationIdRotationTimestampMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODFUNNELSiriSchemaODFUNNELClientEventMetadata
 
-- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithDictionary:(id)a3
+- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ODFUNNELSiriSchemaODFUNNELClientEventMetadata;
   v5 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"odfunnelId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"odfunnelId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)v5 setOdfunnelId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELClientEventMetadata setEventTimestampInMsSince1970:](v5, "setEventTimestampInMsSince1970:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"aggregationInterval"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"aggregationInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)v5 setAggregationInterval:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"deviceAggregationId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"deviceAggregationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)v5 setDeviceAggregationId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELClientEventMetadata setUserAggregationIdRotationTimestampMs:](v5, "setUserAggregationIdRotationTimestampMs:", [v13 unsignedLongLongValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithJSON:(id)a3
+- (ODFUNNELSiriSchemaODFUNNELClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,58 +109,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aggregationInterval)
   {
-    v4 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aggregationInterval = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+    dictionaryRepresentation = [aggregationInterval dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aggregationInterval"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aggregationInterval"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aggregationInterval"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aggregationInterval"];
     }
   }
 
   if (self->_deviceAggregationId)
   {
-    v7 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    deviceAggregationId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+    dictionaryRepresentation2 = [deviceAggregationId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"deviceAggregationId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"deviceAggregationId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"deviceAggregationId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"deviceAggregationId"];
     }
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODFUNNELSiriSchemaODFUNNELClientEventMetadata eventTimestampInMsSince1970](self, "eventTimestampInMsSince1970")}];
-    [v3 setObject:v10 forKeyedSubscript:@"eventTimestampInMsSince1970"];
+    [dictionary setObject:v10 forKeyedSubscript:@"eventTimestampInMsSince1970"];
   }
 
   if (self->_odfunnelId)
   {
-    v11 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+    dictionaryRepresentation3 = [odfunnelId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"odfunnelId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"odfunnelId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"odfunnelId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"odfunnelId"];
     }
   }
 
@@ -168,7 +168,7 @@
   if ((has & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODFUNNELSiriSchemaODFUNNELClientEventMetadata userAggregationIdExpirationTimestampMs](self, "userAggregationIdExpirationTimestampMs")}];
-    [v3 setObject:v15 forKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
+    [dictionary setObject:v15 forKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
 
     has = self->_has;
   }
@@ -176,12 +176,12 @@
   if ((has & 2) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODFUNNELSiriSchemaODFUNNELClientEventMetadata userAggregationIdRotationTimestampMs](self, "userAggregationIdRotationTimestampMs")}];
-    [v3 setObject:v16 forKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
+    [dictionary setObject:v16 forKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -223,28 +223,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
-  v6 = [v4 odfunnelId];
-  if ((v5 != 0) == (v6 == 0))
+  odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+  odfunnelId2 = [equalCopy odfunnelId];
+  if ((odfunnelId != 0) == (odfunnelId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
-  if (v7)
+  odfunnelId3 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+  if (odfunnelId3)
   {
-    v8 = v7;
-    v9 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
-    v10 = [v4 odfunnelId];
-    v11 = [v9 isEqual:v10];
+    v8 = odfunnelId3;
+    odfunnelId4 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+    odfunnelId5 = [equalCopy odfunnelId];
+    v11 = [odfunnelId4 isEqual:odfunnelId5];
 
     if (!v11)
     {
@@ -256,7 +256,7 @@ LABEL_6:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_20;
   }
@@ -264,26 +264,26 @@ LABEL_6:
   if (*&self->_has)
   {
     eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970;
-    if (eventTimestampInMsSince1970 != [v4 eventTimestampInMsSince1970])
+    if (eventTimestampInMsSince1970 != [equalCopy eventTimestampInMsSince1970])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
-  v6 = [v4 aggregationInterval];
-  if ((v5 != 0) == (v6 == 0))
+  odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+  odfunnelId2 = [equalCopy aggregationInterval];
+  if ((odfunnelId != 0) == (odfunnelId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
-  if (v13)
+  aggregationInterval = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+  if (aggregationInterval)
   {
-    v14 = v13;
-    v15 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
-    v16 = [v4 aggregationInterval];
-    v17 = [v15 isEqual:v16];
+    v14 = aggregationInterval;
+    aggregationInterval2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+    aggregationInterval3 = [equalCopy aggregationInterval];
+    v17 = [aggregationInterval2 isEqual:aggregationInterval3];
 
     if (!v17)
     {
@@ -295,22 +295,22 @@ LABEL_6:
   {
   }
 
-  v5 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
-  v6 = [v4 deviceAggregationId];
-  if ((v5 != 0) == (v6 == 0))
+  odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+  odfunnelId2 = [equalCopy deviceAggregationId];
+  if ((odfunnelId != 0) == (odfunnelId2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
-  if (v18)
+  deviceAggregationId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+  if (deviceAggregationId)
   {
-    v19 = v18;
-    v20 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
-    v21 = [v4 deviceAggregationId];
-    v22 = [v20 isEqual:v21];
+    v19 = deviceAggregationId;
+    deviceAggregationId2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+    deviceAggregationId3 = [equalCopy deviceAggregationId];
+    v22 = [deviceAggregationId2 isEqual:deviceAggregationId3];
 
     if (!v22)
     {
@@ -324,25 +324,25 @@ LABEL_19:
 
   has = self->_has;
   v26 = (*&has >> 1) & 1;
-  v27 = v4[56];
+  v27 = equalCopy[56];
   if (v26 == ((v27 >> 1) & 1))
   {
     if (v26)
     {
       userAggregationIdRotationTimestampMs = self->_userAggregationIdRotationTimestampMs;
-      if (userAggregationIdRotationTimestampMs != [v4 userAggregationIdRotationTimestampMs])
+      if (userAggregationIdRotationTimestampMs != [equalCopy userAggregationIdRotationTimestampMs])
       {
         goto LABEL_20;
       }
 
       has = self->_has;
-      v27 = v4[56];
+      v27 = equalCopy[56];
     }
 
     v29 = (*&has >> 2) & 1;
     if (v29 == ((v27 >> 2) & 1))
     {
-      if (!v29 || (userAggregationIdExpirationTimestampMs = self->_userAggregationIdExpirationTimestampMs, userAggregationIdExpirationTimestampMs == [v4 userAggregationIdExpirationTimestampMs]))
+      if (!v29 || (userAggregationIdExpirationTimestampMs = self->_userAggregationIdExpirationTimestampMs, userAggregationIdExpirationTimestampMs == [equalCopy userAggregationIdExpirationTimestampMs]))
       {
         v23 = 1;
         goto LABEL_21;
@@ -357,14 +357,14 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+  toCopy = to;
+  odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
 
-  if (v4)
+  if (odfunnelId)
   {
-    v5 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+    odfunnelId2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -373,19 +373,19 @@ LABEL_21:
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+  aggregationInterval = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
 
-  if (v6)
+  if (aggregationInterval)
   {
-    v7 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+    aggregationInterval2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+  deviceAggregationId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
 
-  if (v8)
+  if (deviceAggregationId)
   {
-    v9 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+    deviceAggregationId2 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -396,17 +396,17 @@ LABEL_21:
     has = self->_has;
   }
 
-  v11 = v12;
+  v11 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)a3
+- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -419,9 +419,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserAggregationIdRotationTimestampMs:(BOOL)a3
+- (void)setHasUserAggregationIdRotationTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -434,35 +434,35 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = ODFUNNELSiriSchemaODFUNNELClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  odfunnelId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self odfunnelId];
+  v7 = [odfunnelId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deleteOdfunnelId];
   }
 
-  v9 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  aggregationInterval = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self aggregationInterval];
+  v10 = [aggregationInterval applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deleteAggregationInterval];
   }
 
-  v12 = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  deviceAggregationId = [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deviceAggregationId];
+  v13 = [deviceAggregationId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODFUNNELSiriSchemaODFUNNELClientEventMetadata *)self deleteDeviceAggregationId];
   }

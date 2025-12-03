@@ -1,27 +1,27 @@
 @interface COSSockPuppetAppListController
 - (COSSockPuppetAppListController)init;
-- (id)addShowOnWatchSectionToSpecifiers:(id)a3;
+- (id)addShowOnWatchSectionToSpecifiers:(id)specifiers;
 - (id)deleteAppOnGizmoSpecifier;
 - (id)device;
-- (id)puppetAppShows:(id)a3;
+- (id)puppetAppShows:(id)shows;
 - (id)showOnWatchSpecifier;
 - (id)specifiers;
-- (void)_resetAfterAppDeletionResponse:(int64_t)a3;
-- (void)_resetAfterSockPuppetResponseWithState:(int64_t)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)_resetAfterAppDeletionResponse:(int64_t)response;
+- (void)_resetAfterSockPuppetResponseWithState:(int64_t)state;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)deleteAppAlert:(id)a3;
-- (void)deleteAppOnGizmo:(id)a3;
-- (void)launchTestFlight:(id)a3;
-- (void)presentACError:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)recheckWatchAppInstallState:(int64_t)a3;
-- (void)restrictShowOnWatchSpecifierIfNecessary:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setPuppetAppShows:(id)a3 specifier:(id)a4;
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)deleteAppAlert:(id)alert;
+- (void)deleteAppOnGizmo:(id)gizmo;
+- (void)launchTestFlight:(id)flight;
+- (void)presentACError:(id)error;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)recheckWatchAppInstallState:(int64_t)state;
+- (void)restrictShowOnWatchSpecifierIfNecessary:(id)necessary;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setPuppetAppShows:(id)shows specifier:(id)specifier;
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSSockPuppetAppListController
@@ -59,52 +59,52 @@
   [(COSSockPuppetAppListController *)&v6 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSSockPuppetAppListController;
-  [(COSSockPuppetAppListController *)&v16 viewWillAppear:a3];
+  [(COSSockPuppetAppListController *)&v16 viewWillAppear:appear];
   v4 = OBJC_IVAR___PSViewController__specifier;
   v5 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:PSAppSettingsBundleIDKey];
   if (v5)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = [v6 bundleURL];
+    bundleURL = [v6 bundleURL];
 
     v8 = [_NSLocalizedStringResource alloc];
-    v9 = [*&self->PSAppListController_opaque[v4] name];
+    name = [*&self->PSAppListController_opaque[v4] name];
     v10 = +[NSLocale currentLocale];
-    v11 = [v8 initWithKey:v9 table:0 locale:v10 bundleURL:v7];
+    v11 = [v8 initWithKey:name table:0 locale:v10 bundleURL:bundleURL];
 
-    v12 = [*&self->PSAppListController_opaque[v4] identifier];
+    identifier = [*&self->PSAppListController_opaque[v4] identifier];
     v13 = [@"bridge:root=" stringByAppendingString:v5];
     v14 = [NSURL URLWithString:v13];
-    [BPSWatchSettingsNavigationDonation emitNavigationEventForApplicationSettingWithIconSpecifierIdentifier:v12 title:v11 localizedNavigationComponents:&__NSArray0__struct deepLink:v14];
+    [BPSWatchSettingsNavigationDonation emitNavigationEventForApplicationSettingWithIconSpecifierIdentifier:identifier title:v11 localizedNavigationComponents:&__NSArray0__struct deepLink:v14];
   }
 
   else
   {
-    v7 = pbb_bridge_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    bundleURL = pbb_bridge_log();
+    if (os_log_type_enabled(bundleURL, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [*&self->PSAppListController_opaque[v4] identifier];
+      identifier2 = [*&self->PSAppListController_opaque[v4] identifier];
       *buf = 138412290;
-      v18 = v15;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Skipping donation for identifier: %@", buf, 0xCu);
+      v18 = identifier2;
+      _os_log_impl(&_mh_execute_header, bundleURL, OS_LOG_TYPE_DEFAULT, "Skipping donation for identifier: %@", buf, 0xCu);
     }
   }
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSViewController__specifier;
   v4 = PSAppSettingsBundleIDKey;
   v5 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:PSAppSettingsBundleIDKey];
   v6 = sub_10002D914(v5);
 
   v63 = v4;
-  v7 = [*&v2->PSAppListController_opaque[v3] propertyForKey:v4];
+  v7 = [*&selfCopy->PSAppListController_opaque[v3] propertyForKey:v4];
   v71 = 0;
   v8 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v7 allowPlaceholder:0 error:&v71];
   v9 = v71;
@@ -132,16 +132,16 @@
       v15 = [NSBundle bundleWithURL:v14];
 
       v6 = v13;
-      [*&v2->PSAppListController_opaque[v3] setProperty:v15 forKey:PSAppSettingsBundleKey];
+      [*&selfCopy->PSAppListController_opaque[v3] setProperty:v15 forKey:PSAppSettingsBundleKey];
     }
   }
 
-  v70.receiver = v2;
+  v70.receiver = selfCopy;
   v70.super_class = COSSockPuppetAppListController;
-  v16 = [(COSSockPuppetAppListController *)&v70 specifiers];
-  v17 = [v16 mutableCopy];
+  specifiers = [(COSSockPuppetAppListController *)&v70 specifiers];
+  v17 = [specifiers mutableCopy];
 
-  v18 = [*&v2->PSAppListController_opaque[v3] propertyForKey:@"COSSockPuppetWatchKitVersionKey"];
+  v18 = [*&selfCopy->PSAppListController_opaque[v3] propertyForKey:@"COSSockPuppetWatchKitVersionKey"];
   v19 = v18;
   if (v18 && ([v18 isEqualToString:@"1.0"] & 1) == 0)
   {
@@ -151,7 +151,7 @@
     v62 = v3;
     v54 = v8;
     v55 = v9;
-    v20 = v2;
+    v20 = selfCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
@@ -214,7 +214,7 @@
       while (v22);
     }
 
-    v2 = v20;
+    selfCopy = v20;
     v9 = v55;
     v7 = v56;
     v17 = v53;
@@ -224,15 +224,15 @@
     v6 = v52;
   }
 
-  v32 = [*&v2->PSAppListController_opaque[v3] propertyForKey:PSIsThirdPartyDetailKey];
-  v33 = [v32 BOOLValue];
+  v32 = [*&selfCopy->PSAppListController_opaque[v3] propertyForKey:PSIsThirdPartyDetailKey];
+  bOOLValue = [v32 BOOLValue];
 
-  if ((v33 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v34 = [*&v2->PSAppListController_opaque[v3] propertyForKey:@"COSSockPuppetInstallationState"];
-    v35 = [v34 integerValue];
+    v34 = [*&selfCopy->PSAppListController_opaque[v3] propertyForKey:@"COSSockPuppetInstallationState"];
+    integerValue = [v34 integerValue];
 
-    if ((v35 - 3) < 0xFFFFFFFFFFFFFFFELL)
+    if ((integerValue - 3) < 0xFFFFFFFFFFFFFFFELL)
     {
       v36 = v6;
     }
@@ -256,7 +256,7 @@
         v38 = v40;
       }
 
-      v41 = [PSSpecifier preferenceSpecifierNamed:v38 target:v2 set:0 get:0 detail:0 cell:13 edit:0];
+      v41 = [PSSpecifier preferenceSpecifierNamed:v38 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
       v42 = [UIImage imageNamed:@"tf-icon"];
       [v41 setButtonAction:"launchTestFlight:"];
       v43 = NSStringFromSelector("launchTestFlight:");
@@ -269,46 +269,46 @@
       goto LABEL_34;
     }
 
-    if ([(COSSockPuppetAppListController *)v2 showsOnGizmoEnabled]&& v35 != 3)
+    if ([(COSSockPuppetAppListController *)selfCopy showsOnGizmoEnabled]&& integerValue != 3)
     {
-      [(COSSockPuppetAppListController *)v2 addShowOnWatchSectionToSpecifiers:v17];
+      [(COSSockPuppetAppListController *)selfCopy addShowOnWatchSectionToSpecifiers:v17];
       v17 = v38 = v17;
 LABEL_34:
     }
   }
 
-  v44 = [(COSSockPuppetAppListController *)v2 customSpecifiers];
-  if ([v44 count])
+  customSpecifiers = [(COSSockPuppetAppListController *)selfCopy customSpecifiers];
+  if ([customSpecifiers count])
   {
-    v45 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v44 count]);
-    [v17 insertObjects:v44 atIndexes:v45];
+    v45 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [customSpecifiers count]);
+    [v17 insertObjects:customSpecifiers atIndexes:v45];
   }
 
-  v46 = [*&v2->PSAppListController_opaque[v3] propertyForKey:PSIDKey];
+  v46 = [*&selfCopy->PSAppListController_opaque[v3] propertyForKey:PSIDKey];
   v47 = [v46 isEqualToString:@"VICTORY_ROW_ID"];
 
   if (v47)
   {
     v48 = +[LSApplicationWorkspace defaultWorkspace];
-    [v48 addObserver:v2];
+    [v48 addObserver:selfCopy];
   }
 
   v49 = BPSRemoveCapabilityIncompatibleSpecifiersFromArray();
-  v50 = *&v2->PSAppListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&v2->PSAppListController_opaque[OBJC_IVAR___PSListController__specifiers] = v49;
+  v50 = *&selfCopy->PSAppListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  *&selfCopy->PSAppListController_opaque[OBJC_IVAR___PSListController__specifiers] = v49;
 
   return v17;
 }
 
-- (id)addShowOnWatchSectionToSpecifiers:(id)a3
+- (id)addShowOnWatchSectionToSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = OBJC_IVAR___PSViewController__specifier;
   v6 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetInstallationState"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v8 = [*&self->PSAppListController_opaque[v5] propertyForKey:@"applicationMode"];
-  v9 = [v8 integerValue];
+  integerValue2 = [v8 integerValue];
 
   v10 = [LSApplicationRecord alloc];
   v11 = PSAppSettingsBundleIDKey;
@@ -339,13 +339,13 @@ LABEL_34:
 
   else
   {
-    v19 = [v13 applicationState];
-    v20 = [v19 isInstalled];
+    applicationState = [v13 applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    v18 = v20 ^ 1;
+    v18 = isInstalled ^ 1;
   }
 
-  if (v7 == 2)
+  if (integerValue == 2)
   {
     v21 = v18;
   }
@@ -355,7 +355,7 @@ LABEL_34:
     v21 = 0;
   }
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((integerValue2 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v22 = v21;
   }
@@ -366,14 +366,14 @@ LABEL_34:
   }
 
   v23 = [PSSpecifier groupSpecifierWithID:@"SHOW_ON_GIZMO_GROUP_ID"];
-  if (v7 == 1)
+  if (integerValue == 1)
   {
     v24 = @"GIZMO_APP_INSTALLING";
   }
 
   else
   {
-    if (v7 != 4)
+    if (integerValue != 4)
     {
       v26 = 0;
       goto LABEL_21;
@@ -387,29 +387,29 @@ LABEL_34:
 
   if (v26)
   {
-    [(COSSockPuppetAppListController *)self recheckWatchAppInstallState:v7];
+    [(COSSockPuppetAppListController *)self recheckWatchAppInstallState:integerValue];
   }
 
 LABEL_21:
   [v23 setProperty:v26 forKey:PSFooterTextGroupKey];
-  [v4 insertObject:v23 atIndex:0];
+  [specifiersCopy insertObject:v23 atIndex:0];
   if (v22)
   {
-    v27 = [(COSSockPuppetAppListController *)self deleteAppOnGizmoSpecifier];
-    [v27 setIdentifier:@"DELETE_ON_GIZMO"];
+    deleteAppOnGizmoSpecifier = [(COSSockPuppetAppListController *)self deleteAppOnGizmoSpecifier];
+    [deleteAppOnGizmoSpecifier setIdentifier:@"DELETE_ON_GIZMO"];
   }
 
   else
   {
-    v27 = [(COSSockPuppetAppListController *)self showOnWatchSpecifier];
+    deleteAppOnGizmoSpecifier = [(COSSockPuppetAppListController *)self showOnWatchSpecifier];
   }
 
-  [v4 insertObject:v27 atIndex:1];
+  [specifiersCopy insertObject:deleteAppOnGizmoSpecifier atIndex:1];
 
-  return v4;
+  return specifiersCopy;
 }
 
-- (void)recheckWatchAppInstallState:(int64_t)a3
+- (void)recheckWatchAppInstallState:(int64_t)state
 {
   v5 = +[ACXDeviceConnection sharedDeviceConnection];
   v6 = sub_10000DB38();
@@ -419,7 +419,7 @@ LABEL_21:
   v8[2] = sub_10001A24C;
   v8[3] = &unk_100268558;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = state;
   [v5 applicationIsInstalledOnPairedDevice:v6 withBundleID:v7 completion:v8];
 }
 
@@ -452,7 +452,7 @@ LABEL_21:
   return v6;
 }
 
-- (void)deleteAppAlert:(id)a3
+- (void)deleteAppAlert:(id)alert
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"DELETE_ON_GIZMO_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable"];
@@ -479,22 +479,22 @@ LABEL_21:
   [(COSSockPuppetAppListController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)deleteAppOnGizmo:(id)a3
+- (void)deleteAppOnGizmo:(id)gizmo
 {
   v4 = OBJC_IVAR___PSViewController__specifier;
   v5 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:BPSNotificationAppBBSectionInfo];
-  v6 = [v5 sectionID];
+  sectionID = [v5 sectionID];
 
-  v7 = [(COSSockPuppetAppListController *)self device];
+  device = [(COSSockPuppetAppListController *)self device];
   v8 = +[ACXDeviceConnection sharedDeviceConnection];
   v9 = pbb_bridge_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [*&self->PSAppListController_opaque[v4] name];
+    name = [*&self->PSAppListController_opaque[v4] name];
     *buf = 138412546;
-    v22 = v10;
+    v22 = name;
     v23 = 2112;
-    v24 = v6;
+    v24 = sectionID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Deleting %@ on Gizmo with watch bundle id: %@", buf, 0x16u);
   }
 
@@ -502,10 +502,10 @@ LABEL_21:
   v16 = 3221225472;
   v17 = sub_10001AB4C;
   v18 = &unk_1002685E8;
-  v19 = v6;
-  v20 = self;
-  v11 = v6;
-  [v8 removeApplication:v11 fromPairedDevice:v7 completionWithError:&v15];
+  v19 = sectionID;
+  selfCopy = self;
+  v11 = sectionID;
+  [v8 removeApplication:v11 fromPairedDevice:device completionWithError:&v15];
   v12 = [(COSSockPuppetAppListController *)self specifierForID:@"SHOW_ON_GIZMO_GROUP_ID", v15, v16, v17, v18];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"GIZMO_APP_UNINSTALLING" value:&stru_10026E598 table:@"Localizable"];
@@ -514,50 +514,50 @@ LABEL_21:
   [(COSSockPuppetAppListController *)self reloadSpecifier:v12 animated:0];
 }
 
-- (void)_resetAfterSockPuppetResponseWithState:(int64_t)a3
+- (void)_resetAfterSockPuppetResponseWithState:(int64_t)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001ACFC;
   v3[3] = &unk_100268220;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)_resetAfterAppDeletionResponse:(int64_t)a3
+- (void)_resetAfterAppDeletionResponse:(int64_t)response
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001AEB0;
   v3[3] = &unk_100268220;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = response;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
 - (id)device
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 activeWatch];
+  activeWatch = [v2 activeWatch];
 
-  return v3;
+  return activeWatch;
 }
 
-- (void)setPuppetAppShows:(id)a3 specifier:(id)a4
+- (void)setPuppetAppShows:(id)shows specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  showsCopy = shows;
+  specifierCopy = specifier;
   v8 = OBJC_IVAR___PSViewController__specifier;
   v9 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:PSAppSettingsBundleIDKey];
   v10 = sub_10002D914(v9);
 
   v11 = [*&self->PSAppListController_opaque[v8] propertyForKey:BPSNotificationAppBBSectionInfo];
-  v12 = [v11 sectionID];
+  sectionID = [v11 sectionID];
 
   v13 = +[ACXDeviceConnection sharedDeviceConnection];
-  v14 = [(COSSockPuppetAppListController *)self device];
-  if ([v6 BOOLValue])
+  device = [(COSSockPuppetAppListController *)self device];
+  if ([showsCopy BOOLValue])
   {
     v15 = pbb_bridge_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -576,9 +576,9 @@ LABEL_21:
       if (v18)
       {
         *buf = 138412546;
-        v44 = v12;
+        v44 = sectionID;
         v45 = 2112;
-        v46 = v14;
+        v46 = device;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Check if app %@ needs update for %@", buf, 0x16u);
       }
 
@@ -588,8 +588,8 @@ LABEL_21:
       v39[3] = &unk_100268610;
       v39[4] = self;
       v40 = v13;
-      v41 = v12;
-      v42 = v14;
+      v41 = sectionID;
+      v42 = device;
       [v40 fetchLocallyAvailableApplicationWithBundleID:v41 forPairedDevice:v42 completion:v39];
 
       v19 = v40;
@@ -607,9 +607,9 @@ LABEL_21:
       v36[1] = 3221225472;
       v36[2] = sub_10001BAE8;
       v36[3] = &unk_1002685E8;
-      v37 = v12;
-      v38 = self;
-      [v13 installApplication:v37 onPairedDevice:v14 completion:v36];
+      v37 = sectionID;
+      selfCopy = self;
+      [v13 installApplication:v37 onPairedDevice:device completion:v36];
       v19 = v37;
     }
   }
@@ -621,19 +621,19 @@ LABEL_21:
     v31 = 3221225472;
     v32 = sub_10001BC30;
     v33 = &unk_1002685E8;
-    v34 = v12;
-    v35 = self;
-    [v13 removeApplication:v34 fromPairedDevice:v14 completionWithError:&v30];
+    v34 = sectionID;
+    selfCopy2 = self;
+    [v13 removeApplication:v34 fromPairedDevice:device completionWithError:&v30];
     v19 = v34;
   }
 
   [*&self->PSAppListController_opaque[v8] setProperty:&__kCFBooleanTrue forKey:@"COSSockPuppetStateChanging"];
-  [(COSSockPuppetAppListController *)self restrictShowOnWatchSpecifierIfNecessary:v7];
+  [(COSSockPuppetAppListController *)self restrictShowOnWatchSpecifierIfNecessary:specifierCopy];
   v20 = [(COSSockPuppetAppListController *)self specifierForID:@"SHOW_ON_GIZMO_GROUP_ID"];
-  v21 = [v6 BOOLValue];
+  bOOLValue = [showsCopy BOOLValue];
   v22 = +[NSBundle mainBundle];
   v23 = v22;
-  if (v21)
+  if (bOOLValue)
   {
     v24 = @"GIZMO_APP_INSTALLING";
   }
@@ -646,15 +646,15 @@ LABEL_21:
   v25 = [v22 localizedStringForKey:v24 value:&stru_10026E598 table:{@"Localizable", v30, v31, v32, v33}];
   [v20 setProperty:v25 forKey:PSFooterTextGroupKey];
 
-  if (v10 && ![v6 BOOLValue])
+  if (v10 && ![showsCopy BOOLValue])
   {
-    if (([v6 BOOLValue] & 1) == 0)
+    if (([showsCopy BOOLValue] & 1) == 0)
     {
-      [v7 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-      [(COSSockPuppetAppListController *)self reloadSpecifier:v7 animated:0];
+      [specifierCopy setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+      [(COSSockPuppetAppListController *)self reloadSpecifier:specifierCopy animated:0];
     }
 
-    v26 = self;
+    selfCopy4 = self;
     v27 = v20;
     v28 = 0;
   }
@@ -662,27 +662,27 @@ LABEL_21:
   else
   {
     [(COSSockPuppetAppListController *)self reloadSpecifier:v20 animated:1];
-    v26 = self;
-    v27 = v7;
+    selfCopy4 = self;
+    v27 = specifierCopy;
     v28 = 1;
   }
 
-  [(COSSockPuppetAppListController *)v26 reloadSpecifier:v27 animated:v28];
+  [(COSSockPuppetAppListController *)selfCopy4 reloadSpecifier:v27 animated:v28];
   WeakRetained = objc_loadWeakRetained(&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained reloadSpecifiers];
 }
 
-- (void)presentACError:(id)a3
+- (void)presentACError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"ACXUserPresentableErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"ACXUserPresentableErrorDomain"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:NSLocalizedFailureReasonErrorKey];
-    v9 = [v7 objectForKey:NSLocalizedDescriptionKey];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKey:NSLocalizedFailureReasonErrorKey];
+    v9 = [userInfo objectForKey:NSLocalizedDescriptionKey];
     v10 = pbb_bridge_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -709,7 +709,7 @@ LABEL_21:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v7;
+        v18 = userInfo;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "AppConduit app install error did not have a title and/or a description, userinfo: %@", buf, 0xCu);
       }
     }
@@ -722,7 +722,7 @@ LABEL_21:
       block[3] = &unk_100268638;
       v14 = v8;
       v15 = v9;
-      v16 = self;
+      selfCopy = self;
       dispatch_async(&_dispatch_main_q, block);
 
       v12 = v14;
@@ -731,17 +731,17 @@ LABEL_21:
 
   else
   {
-    v7 = pbb_bridge_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    userInfo = pbb_bridge_log();
+    if (os_log_type_enabled(userInfo, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AppConduit installation error is not presentable: %@", buf, 0xCu);
+      v18 = errorCopy;
+      _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_DEFAULT, "AppConduit installation error is not presentable: %@", buf, 0xCu);
     }
   }
 }
 
-- (id)puppetAppShows:(id)a3
+- (id)puppetAppShows:(id)shows
 {
   v4 = OBJC_IVAR___PSViewController__specifier;
   v5 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetStateChanging"];
@@ -754,9 +754,9 @@ LABEL_21:
   else
   {
     v8 = [*&self->PSAppListController_opaque[v4] propertyForKey:@"COSSockPuppetInstallationState"];
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
 
-    if ((v9 - 1) >= 2)
+    if ((integerValue - 1) >= 2)
     {
       v10 = &__kCFBooleanFalse;
     }
@@ -774,7 +774,7 @@ LABEL_21:
   return v11;
 }
 
-- (void)launchTestFlight:(id)a3
+- (void)launchTestFlight:(id)flight
 {
   if (sub_10002D754())
   {
@@ -790,86 +790,86 @@ LABEL_21:
   BPSOpenSensitiveURLAsync();
 }
 
-- (void)restrictShowOnWatchSpecifierIfNecessary:(id)a3
+- (void)restrictShowOnWatchSpecifierIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(COSSockPuppetAppListController *)self puppetAppShows:v4];
-  v6 = [v5 BOOLValue];
+  necessaryCopy = necessary;
+  v5 = [(COSSockPuppetAppListController *)self puppetAppShows:necessaryCopy];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[MCProfileConnection sharedConnection];
-  v8 = [v7 isOnDeviceAppInstallationAllowed];
+  isOnDeviceAppInstallationAllowed = [v7 isOnDeviceAppInstallationAllowed];
 
   v9 = +[MCProfileConnection sharedConnection];
-  v10 = [v9 isAppRemovalAllowed];
+  isAppRemovalAllowed = [v9 isAppRemovalAllowed];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v11 = v10;
+    v11 = isAppRemovalAllowed;
   }
 
   else
   {
-    v11 = v8;
+    v11 = isOnDeviceAppInstallationAllowed;
   }
 
   v12 = [NSNumber numberWithBool:v11];
-  [v4 setProperty:v12 forKey:PSEnabledKey];
+  [necessaryCopy setProperty:v12 forKey:PSEnabledKey];
 }
 
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state
 {
-  v6 = a3;
+  applicationCopy = application;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = applicationCopy;
     v12 = 1024;
-    v13 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "updateInstallStateForApplication:(%@) installState:(%d)", &v10, 0x12u);
   }
 
   v8 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetAppBundleIDKey"];
-  v9 = [v6 isEqualToString:v8];
+  v9 = [applicationCopy isEqualToString:v8];
 
   if (v9)
   {
-    [(COSSockPuppetAppListController *)self _resetAfterSockPuppetResponseWithState:a4];
+    [(COSSockPuppetAppListController *)self _resetAfterSockPuppetResponseWithState:state];
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(COSSockPuppetAppListController *)self specifierForID:@"SHOWS_ON_GIZMO", a4];
-  [(COSSockPuppetAppListController *)self restrictShowOnWatchSpecifierIfNecessary:v5];
-  [(COSSockPuppetAppListController *)self reloadSpecifier:v5];
+  info = [(COSSockPuppetAppListController *)self specifierForID:@"SHOWS_ON_GIZMO", info];
+  [(COSSockPuppetAppListController *)self restrictShowOnWatchSpecifierIfNecessary:info];
+  [(COSSockPuppetAppListController *)self reloadSpecifier:info];
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSSockPuppetAppListController *)self device];
-  if (v8)
+  valueCopy = value;
+  specifierCopy = specifier;
+  device = [(COSSockPuppetAppListController *)self device];
+  if (device)
   {
-    [PSRootController setPreferenceValue:v6 specifier:v7];
+    [PSRootController setPreferenceValue:valueCopy specifier:specifierCopy];
     v9 = OBJC_IVAR___PSViewController__specifier;
     v10 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetAppBundleIDKey"];
     v11 = [NPSDomainAccessor alloc];
     v12 = sub_100019D1C(*&self->PSAppListController_opaque[v9]);
-    v13 = [v11 initWithDomain:v12 pairedDevice:v8];
+    v13 = [v11 initWithDomain:v12 pairedDevice:device];
 
     v14 = objc_opt_new();
     if (v13)
     {
-      v25 = v7;
-      v26 = v6;
+      v25 = specifierCopy;
+      v26 = valueCopy;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v15 = [v13 copyKeyList];
-      v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      copyKeyList = [v13 copyKeyList];
+      v16 = [copyKeyList countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v16)
       {
         v17 = v16;
@@ -880,7 +880,7 @@ LABEL_21:
           {
             if (*v29 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(copyKeyList);
             }
 
             v20 = *(*(&v28 + 1) + 8 * i);
@@ -891,34 +891,34 @@ LABEL_21:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v17 = [copyKeyList countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v17);
       }
 
-      v7 = v25;
-      v6 = v26;
+      specifierCopy = v25;
+      valueCopy = v26;
     }
 
     else
     {
-      v15 = pbb_bridge_log();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      copyKeyList = pbb_bridge_log();
+      if (os_log_type_enabled(copyKeyList, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         *v33 = "[COSSockPuppetAppListController setPreferenceValue:specifier:]";
         *&v33[8] = 2112;
         *&v33[10] = v10;
         v34 = 2112;
-        v35 = v7;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: domainAccessor for identifier (%@) is nil! Specifier: %@", buf, 0x20u);
+        v35 = specifierCopy;
+        _os_log_impl(&_mh_execute_header, copyKeyList, OS_LOG_TYPE_DEFAULT, "%s: domainAccessor for identifier (%@) is nil! Specifier: %@", buf, 0x20u);
       }
     }
 
     v22 = +[ACXDeviceConnection sharedDeviceConnection];
     v27 = 0;
-    [v22 updatePreferencesForApplicationWithIdentifier:v10 preferences:v14 writingToPreferencesLocation:0 forPairedDevice:v8 options:0 error:&v27];
+    [v22 updatePreferencesForApplicationWithIdentifier:v10 preferences:v14 writingToPreferencesLocation:0 forPairedDevice:device options:0 error:&v27];
     v23 = v27;
 
     if (v23)
@@ -951,15 +951,15 @@ LABEL_21:
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v5 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:PSAppSettingsBundleIDKey];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = installCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -996,22 +996,22 @@ LABEL_21:
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = OBJC_IVAR___PSViewController__specifier;
   v6 = [*&self->PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetInstallationState"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 2)
+  if (integerValue == 2)
   {
     v8 = [*&self->PSAppListController_opaque[v5] propertyForKey:PSAppSettingsBundleIDKey];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v16 = v4;
-    v9 = v4;
+    v16 = uninstallCopy;
+    v9 = uninstallCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -1027,8 +1027,8 @@ LABEL_21:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * v13) bundleIdentifier];
-          v15 = [v14 isEqualToString:v8];
+          bundleIdentifier = [*(*(&v18 + 1) + 8 * v13) bundleIdentifier];
+          v15 = [bundleIdentifier isEqualToString:v8];
 
           if (v15)
           {
@@ -1050,7 +1050,7 @@ LABEL_21:
       while (v11);
     }
 
-    v4 = v16;
+    uninstallCopy = v16;
   }
 }
 

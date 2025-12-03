@@ -1,20 +1,20 @@
 @interface TVSettingsLanguageSettingsController
 - (BOOL)_shouldEditButtonBeEnabled;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (TVSettingsLanguageSettingsController)init;
-- (id)_specifierForLanguage:(id)a3;
+- (id)_specifierForLanguage:(id)language;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_preferredLanguagesDidChange:(id)a3;
-- (void)_setUseDefaultSubtitleLanguages:(id)a3;
-- (void)_showAddAudioLanguagePicker:(id)a3;
-- (void)_showAddSubtitleLanguagePicker:(id)a3;
-- (void)_willResignActive:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_preferredLanguagesDidChange:(id)change;
+- (void)_setUseDefaultSubtitleLanguages:(id)languages;
+- (void)_showAddAudioLanguagePicker:(id)picker;
+- (void)_showAddSubtitleLanguagePicker:(id)picker;
+- (void)_willResignActive:(id)active;
 - (void)dealloc;
 - (void)reloadSpecifiers;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -33,13 +33,13 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(TVSettingsLanguageSettingsController *)v3 navigationItem];
-    v6 = [(TVSettingsLanguageSettingsController *)v4 editButtonItem];
-    [v5 setRightBarButtonItem:v6];
+    navigationItem = [(TVSettingsLanguageSettingsController *)v3 navigationItem];
+    editButtonItem = [(TVSettingsLanguageSettingsController *)v4 editButtonItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
 
-    v7 = [(TVSettingsLanguageSettingsController *)v4 navigationItem];
-    v8 = [v7 rightBarButtonItem];
-    [v8 setEnabled:0];
+    navigationItem2 = [(TVSettingsLanguageSettingsController *)v4 navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v4 selector:"_preferredLanguagesDidChange:" name:@"PreferredAudioLanguagesDidChangeNotification" object:0];
@@ -68,29 +68,29 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(TVSettingsLanguageSettingsController *)self parentController];
+  parentController = [(TVSettingsLanguageSettingsController *)self parentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong((&self->_hasLocalChange + 3), v3);
+    objc_storeStrong((&self->_hasLocalChange + 3), parentController);
   }
 
-  v4 = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
-  *(&self->super + 1) = [v4 count];
+  selectedAudioLanguages = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
+  *(&self->super + 1) = [selectedAudioLanguages count];
 
-  v5 = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
-  *(&self->_numberOfAudioLanguages + 4) = [v5 count];
+  preferredSubtitleLanguageCodes = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
+  *(&self->_numberOfAudioLanguages + 4) = [preferredSubtitleLanguageCodes count];
 
   v9.receiver = self;
   v9.super_class = TVSettingsLanguageSettingsController;
   [(TVSettingsLanguageSettingsController *)&v9 viewDidLoad];
-  v6 = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
-  v7 = [(TVSettingsLanguageSettingsController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  _shouldEditButtonBeEnabled = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
+  navigationItem = [(TVSettingsLanguageSettingsController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_shouldEditButtonBeEnabled];
 }
 
-- (void)_willResignActive:(id)a3
+- (void)_willResignActive:(id)active
 {
   if ([(TVSettingsLanguageSettingsController *)self isEditing])
   {
@@ -101,28 +101,28 @@
 
 - (void)reloadSpecifiers
 {
-  v3 = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
-  *(&self->super + 1) = [v3 count];
+  selectedAudioLanguages = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
+  *(&self->super + 1) = [selectedAudioLanguages count];
 
-  v4 = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
-  *(&self->_numberOfAudioLanguages + 4) = [v4 count];
+  preferredSubtitleLanguageCodes = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
+  *(&self->_numberOfAudioLanguages + 4) = [preferredSubtitleLanguageCodes count];
 
   v8.receiver = self;
   v8.super_class = TVSettingsLanguageSettingsController;
   [(TVSettingsLanguageSettingsController *)&v8 reloadSpecifiers];
-  v5 = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
-  v6 = [(TVSettingsLanguageSettingsController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:v5];
+  _shouldEditButtonBeEnabled = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
+  navigationItem = [(TVSettingsLanguageSettingsController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_shouldEditButtonBeEnabled];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = TVSettingsLanguageSettingsController;
-  v4 = a3;
-  [(TVSettingsLanguageSettingsController *)&v7 setSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"TVSettingsTopLevelSettingsVCKey", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(TVSettingsLanguageSettingsController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"TVSettingsTopLevelSettingsVCKey", v7.receiver, v7.super_class}];
 
   v6 = *(&self->_hasLocalChange + 3);
   *(&self->_hasLocalChange + 3) = v5;
@@ -150,8 +150,8 @@
 
     v59 = v9;
     [v4 addObject:v9];
-    v12 = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
-    v13 = [v12 mutableCopy];
+    selectedAudioLanguages = [*(&self->_hasLocalChange + 3) selectedAudioLanguages];
+    v13 = [selectedAudioLanguages mutableCopy];
 
     [v13 sortUsingComparator:&stru_209A8];
     v68 = 0u;
@@ -193,8 +193,8 @@
     [*(&self->_numberOfSubtitleLanguages + 4) setProperty:@"AddNewAudioLanguage" forKey:PSIDKey];
     [*(&self->_numberOfSubtitleLanguages + 4) setButtonAction:"_showAddAudioLanguagePicker:"];
     [v4 addObject:*(&self->_numberOfSubtitleLanguages + 4)];
-    v25 = [*(&self->_hasLocalChange + 3) useDefaultSubtitleLanguages];
-    v26 = [v25 BOOLValue];
+    useDefaultSubtitleLanguages = [*(&self->_hasLocalChange + 3) useDefaultSubtitleLanguages];
+    bOOLValue = [useDefaultSubtitleLanguages BOOLValue];
 
     v27 = [NSBundle bundleForClass:objc_opt_class()];
     v28 = [v27 localizedStringForKey:@"DOWNLOAD_SUBTITLE_LANGUAGES_TITLE" value:&stru_21328 table:@"TVSettings"];
@@ -202,8 +202,8 @@
     v30 = *(&self->_addAudioLanguageSpecifier + 4);
     *(&self->_addAudioLanguageSpecifier + 4) = v29;
 
-    v57 = v26;
-    if (v26)
+    v57 = bOOLValue;
+    if (bOOLValue)
     {
       v31 = *(&self->_addAudioLanguageSpecifier + 4);
       v32 = [NSBundle bundleForClass:objc_opt_class()];
@@ -232,8 +232,8 @@
 
     [*(&self->_subtitleLanguageSpecifiers + 4) setProperty:@"AddNewSubtitleLanguage" forKey:v24];
     [*(&self->_subtitleLanguageSpecifiers + 4) setButtonAction:"_showAddSubtitleLanguagePicker:"];
-    v44 = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
-    v45 = [v44 mutableCopy];
+    preferredSubtitleLanguageCodes = [*(&self->_hasLocalChange + 3) preferredSubtitleLanguageCodes];
+    v45 = [preferredSubtitleLanguageCodes mutableCopy];
 
     [v45 sortUsingComparator:&stru_209C8];
     v46 = objc_alloc_init(NSMutableArray);
@@ -288,34 +288,34 @@
   return v3;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = ([v5 section] || *(&self->super + 1) >= 2uLL) && (objc_msgSend(v5, "section") != &dword_0 + 1 || objc_msgSend(v5, "row") != 0);
+  pathCopy = path;
+  v6 = ([pathCopy section] || *(&self->super + 1) >= 2uLL) && (objc_msgSend(pathCopy, "section") != &dword_0 + 1 || objc_msgSend(pathCopy, "row") != 0);
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 section] && (v8 = *(&self->super + 1), v8 <= objc_msgSend(v7, "row")) || objc_msgSend(v7, "section") == &dword_0 + 2 && (v9 = *(&self->_numberOfAudioLanguages + 4), v9 <= objc_msgSend(v7, "row")))
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section] && (v8 = *(&self->super + 1), v8 <= objc_msgSend(pathCopy, "row")) || objc_msgSend(pathCopy, "section") == &dword_0 + 2 && (v9 = *(&self->_numberOfAudioLanguages + 4), v9 <= objc_msgSend(pathCopy, "row")))
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [(TVSettingsLanguageSettingsController *)self tableView:v6 canEditRowAtIndexPath:v7];
+    v10 = [(TVSettingsLanguageSettingsController *)self tableView:viewCopy canEditRowAtIndexPath:pathCopy];
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  if ([(TVSettingsLanguageSettingsController *)self isEditing:a3]&& BYTE4(self->_addSubtitleLanguageSpecifier) == 1)
+  if ([(TVSettingsLanguageSettingsController *)self isEditing:view]&& BYTE4(self->_addSubtitleLanguageSpecifier) == 1)
   {
     [(TVSettingsLanguageSettingsController *)self setEditing:0 animated:1];
   }
@@ -323,15 +323,15 @@
   BYTE4(self->_addSubtitleLanguageSpecifier) = 0;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 1)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (style == 1)
   {
-    v9 = [v7 section];
+    section = [pathCopy section];
     v10 = OBJC_IVAR___PSListController__specifiers;
-    v11 = v9 ? @"com.apple.videos:SubtitleLanguagesGroupSpecifierID" : @"com.apple.videos:AudioLanguagesGroupSpecifier";
+    v11 = section ? @"com.apple.videos:SubtitleLanguagesGroupSpecifierID" : @"com.apple.videos:AudioLanguagesGroupSpecifier";
     v12 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] indexOfSpecifierWithID:v11];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -349,10 +349,10 @@
 
         BYTE5(self->_addSubtitleLanguageSpecifier) = 1;
         v16 = *(&self->_hasLocalChange + 3);
-        if (v9)
+        if (section)
         {
-          v17 = [v16 preferredSubtitleLanguageCodes];
-          v18 = [v17 mutableCopy];
+          preferredSubtitleLanguageCodes = [v16 preferredSubtitleLanguageCodes];
+          v18 = [preferredSubtitleLanguageCodes mutableCopy];
 
           [v18 removeObject:v14];
           *(&self->_numberOfAudioLanguages + 4) = [v18 count];
@@ -362,8 +362,8 @@
 
         else
         {
-          v19 = [v16 selectedAudioLanguages];
-          v18 = [v19 mutableCopy];
+          selectedAudioLanguages = [v16 selectedAudioLanguages];
+          v18 = [selectedAudioLanguages mutableCopy];
 
           [v18 removeObject:v14];
           *(&self->super + 1) = [v18 count];
@@ -372,10 +372,10 @@
       }
 
       [(TVSettingsLanguageSettingsController *)self removeSpecifier:v13 animated:1];
-      v20 = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
-      v21 = [(TVSettingsLanguageSettingsController *)self navigationItem];
-      v22 = [v21 rightBarButtonItem];
-      [v22 setEnabled:v20];
+      _shouldEditButtonBeEnabled = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
+      navigationItem = [(TVSettingsLanguageSettingsController *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:_shouldEditButtonBeEnabled];
 
       if (![(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled]&& (BYTE4(self->_addSubtitleLanguageSpecifier) & 1) == 0)
       {
@@ -385,9 +385,9 @@
   }
 }
 
-- (void)_showAddAudioLanguagePicker:(id)a3
+- (void)_showAddAudioLanguagePicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   v5 = qword_28000;
   if (os_log_type_enabled(qword_28000, OS_LOG_TYPE_DEFAULT))
   {
@@ -397,14 +397,14 @@
 
   v6 = [(TVSettingsAddLanguageSetupController *)[TVSettingsAddAudioLanguageSetupController alloc] initWithTopLevelController:*(&self->_hasLocalChange + 3)];
   [(TVSettingsAddAudioLanguageSetupController *)v6 setParentController:self];
-  [(TVSettingsAddAudioLanguageSetupController *)v6 setSpecifier:v4];
-  [v4 setTarget:self];
+  [(TVSettingsAddAudioLanguageSetupController *)v6 setSpecifier:pickerCopy];
+  [pickerCopy setTarget:self];
   [(TVSettingsLanguageSettingsController *)self showController:v6];
 }
 
-- (void)_showAddSubtitleLanguagePicker:(id)a3
+- (void)_showAddSubtitleLanguagePicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   v5 = qword_28000;
   if (os_log_type_enabled(qword_28000, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,8 +414,8 @@
 
   v6 = [(TVSettingsAddLanguageSetupController *)[TVSettingsAddSubtitleLanguageSetupController alloc] initWithTopLevelController:*(&self->_hasLocalChange + 3)];
   [(TVSettingsAddSubtitleLanguageSetupController *)v6 setParentController:self];
-  [(TVSettingsAddSubtitleLanguageSetupController *)v6 setSpecifier:v4];
-  [v4 setTarget:self];
+  [(TVSettingsAddSubtitleLanguageSetupController *)v6 setSpecifier:pickerCopy];
+  [pickerCopy setTarget:self];
   [(TVSettingsLanguageSettingsController *)self showController:v6];
 }
 
@@ -426,18 +426,18 @@
     return 1;
   }
 
-  v3 = [*(&self->_hasLocalChange + 3) useDefaultSubtitleLanguages];
-  v4 = ([v3 BOOLValue] & 1) == 0 && *(&self->_numberOfAudioLanguages + 4) != 0;
+  useDefaultSubtitleLanguages = [*(&self->_hasLocalChange + 3) useDefaultSubtitleLanguages];
+  v4 = ([useDefaultSubtitleLanguages BOOLValue] & 1) == 0 && *(&self->_numberOfAudioLanguages + 4) != 0;
 
   return v4;
 }
 
-- (id)_specifierForLanguage:(id)a3
+- (id)_specifierForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:0 set:0 get:0 detail:0 cell:3 edit:0];
-  [v4 setProperty:v3 forKey:PSIDKey];
-  if ([v3 isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
+  languageCopy = language;
+  v4 = [PSSpecifier preferenceSpecifierNamed:languageCopy target:0 set:0 get:0 detail:0 cell:3 edit:0];
+  [v4 setProperty:languageCopy forKey:PSIDKey];
+  if ([languageCopy isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -450,15 +450,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"])
+  if ([languageCopy isEqualToString:@"DEVICE_AUDIO_LANGUAGE"])
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"DEVICE_AUDIO_LANGUAGE_FORMAT"];
     v6 = [v9 localizedStringForKey:v10 value:&stru_21328 table:@"TVSettings"];
 
     v11 = +[NSLocale preferredLanguages];
-    v12 = [v11 firstObject];
-    v8 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v12];
+    firstObject = [v11 firstObject];
+    v8 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:firstObject];
 
     v13 = [NSString stringWithFormat:v6, v8];
     [v4 setName:v13];
@@ -466,7 +466,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:@"DEFAULT_LANGUAGE"])
+  if ([languageCopy isEqualToString:@"DEFAULT_LANGUAGE"])
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -474,7 +474,7 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v6 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v3];
+  v6 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:languageCopy];
   [v4 setName:v6];
 LABEL_7:
 
@@ -483,7 +483,7 @@ LABEL_7:
   return v4;
 }
 
-- (void)_preferredLanguagesDidChange:(id)a3
+- (void)_preferredLanguagesDidChange:(id)change
 {
   if ((BYTE5(self->_addSubtitleLanguageSpecifier) & 1) == 0)
   {
@@ -493,9 +493,9 @@ LABEL_7:
   BYTE5(self->_addSubtitleLanguageSpecifier) = 0;
 }
 
-- (void)_setUseDefaultSubtitleLanguages:(id)a3
+- (void)_setUseDefaultSubtitleLanguages:(id)languages
 {
-  v18 = a3;
+  languagesCopy = languages;
   [*(&self->_hasLocalChange + 3) setUseDefaultSubtitleLanguages:?];
   v4 = objc_alloc_init(NSMutableArray);
   v5 = v4;
@@ -514,9 +514,9 @@ LABEL_7:
     [v5 addObject:?];
   }
 
-  v6 = [v18 BOOLValue];
+  bOOLValue = [languagesCopy BOOLValue];
   v7 = *(&self->_addAudioLanguageSpecifier + 4);
-  if (v6)
+  if (bOOLValue)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"DOWNLOAD_SUBTITLE_LANGUAGES_EXPLANATION" value:&stru_21328 table:@"TVSettings"];
@@ -544,10 +544,10 @@ LABEL_7:
   }
 
   [(TVSettingsLanguageSettingsController *)self endUpdates];
-  v15 = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
-  v16 = [(TVSettingsLanguageSettingsController *)self navigationItem];
-  v17 = [v16 rightBarButtonItem];
-  [v17 setEnabled:v15];
+  _shouldEditButtonBeEnabled = [(TVSettingsLanguageSettingsController *)self _shouldEditButtonBeEnabled];
+  navigationItem = [(TVSettingsLanguageSettingsController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_shouldEditButtonBeEnabled];
 }
 
 @end

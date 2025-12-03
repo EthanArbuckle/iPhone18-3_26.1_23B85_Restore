@@ -1,23 +1,23 @@
 @interface InAppDownload
-- (InAppDownload)initWithIdentifier:(id)a3 transactionIdentifier:(id)a4 info:(id)a5;
+- (InAppDownload)initWithIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier info:(id)info;
 @end
 
 @implementation InAppDownload
 
-- (InAppDownload)initWithIdentifier:(id)a3 transactionIdentifier:(id)a4 info:(id)a5
+- (InAppDownload)initWithIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier info:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = InAppDownload;
   v12 = [(InAppDownload *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_info, a5);
-    objc_storeStrong(&v13->_transactionIdentifier, a4);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_info, info);
+    objc_storeStrong(&v13->_transactionIdentifier, transactionIdentifier);
   }
 
   return v13;

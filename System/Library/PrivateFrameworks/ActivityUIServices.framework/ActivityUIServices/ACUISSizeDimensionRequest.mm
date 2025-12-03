@@ -1,58 +1,58 @@
 @interface ACUISSizeDimensionRequest
-+ (id)fixed:(double)a3;
-- (ACUISSizeDimensionRequest)initWithCoder:(id)a3;
-- (ACUISSizeDimensionRequest)initWithDimensionRequest:(id)a3;
-- (ACUISSizeDimensionRequest)initWithMinimum:(double)a3 maximum:(double)a4 type:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)fixed:(double)fixed;
+- (ACUISSizeDimensionRequest)initWithCoder:(id)coder;
+- (ACUISSizeDimensionRequest)initWithDimensionRequest:(id)request;
+- (ACUISSizeDimensionRequest)initWithMinimum:(double)minimum maximum:(double)maximum type:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (id)_sizeDimensionRequest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACUISSizeDimensionRequest
 
-- (ACUISSizeDimensionRequest)initWithMinimum:(double)a3 maximum:(double)a4 type:(int64_t)a5
+- (ACUISSizeDimensionRequest)initWithMinimum:(double)minimum maximum:(double)maximum type:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = ACUISSizeDimensionRequest;
   result = [(ACUISSizeDimensionRequest *)&v9 init];
   if (result)
   {
-    result->_minimum = a3;
-    result->_maximum = a4;
-    result->_type = a5;
+    result->_minimum = minimum;
+    result->_maximum = maximum;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (ACUISSizeDimensionRequest)initWithDimensionRequest:(id)a3
+- (ACUISSizeDimensionRequest)initWithDimensionRequest:(id)request
 {
-  v4 = a3;
-  [v4 minimum];
+  requestCopy = request;
+  [requestCopy minimum];
   v6 = v5;
-  [v4 maximum];
+  [requestCopy maximum];
   v8 = v7;
-  v9 = [v4 type];
+  type = [requestCopy type];
 
-  v10 = [(ACUISSizeDimensionRequest *)self objcTypeFromSwift:v9];
+  v10 = [(ACUISSizeDimensionRequest *)self objcTypeFromSwift:type];
 
   return [(ACUISSizeDimensionRequest *)self initWithMinimum:v10 maximum:v6 type:v8];
 }
 
-+ (id)fixed:(double)a3
++ (id)fixed:(double)fixed
 {
-  v3 = [[a1 alloc] initWithMinimum:0 maximum:a3 type:a3];
+  v3 = [[self alloc] initWithMinimum:0 maximum:fixed type:fixed];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_minimum == v5->_minimum && self->_maximum == v5->_maximum && self->_type == v5->_type;
     }
 
@@ -115,42 +115,42 @@
   [v3 appendString:v5 withName:@"type"];
   v6 = [v4 appendDouble:@"minimum" withName:2 decimalPrecision:self->_minimum];
   v7 = [v4 appendDouble:@"maximum" withName:2 decimalPrecision:self->_maximum];
-  v8 = [v4 build];
+  build = [v4 build];
 
-  return v8;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ACUISSizeDimensionRequest alloc];
   [(ACUISSizeDimensionRequest *)self minimum];
   v6 = v5;
   [(ACUISSizeDimensionRequest *)self maximum];
   v8 = v7;
-  v9 = [(ACUISSizeDimensionRequest *)self type];
+  type = [(ACUISSizeDimensionRequest *)self type];
 
-  return [(ACUISSizeDimensionRequest *)v4 initWithMinimum:v9 maximum:v6 type:v8];
+  return [(ACUISSizeDimensionRequest *)v4 initWithMinimum:type maximum:v6 type:v8];
 }
 
-- (ACUISSizeDimensionRequest)initWithCoder:(id)a3
+- (ACUISSizeDimensionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"min"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"min"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"max"];
+  [coderCopy decodeDoubleForKey:@"max"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"type"];
+  v9 = [coderCopy decodeIntegerForKey:@"type"];
 
   return [(ACUISSizeDimensionRequest *)self initWithMinimum:v9 maximum:v6 type:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimum = self->_minimum;
-  v5 = a3;
-  [v5 encodeDouble:@"min" forKey:minimum];
-  [v5 encodeDouble:@"max" forKey:self->_maximum];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"min" forKey:minimum];
+  [coderCopy encodeDouble:@"max" forKey:self->_maximum];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
 - (id)_sizeDimensionRequest

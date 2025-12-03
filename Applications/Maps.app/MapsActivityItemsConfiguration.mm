@@ -1,10 +1,10 @@
 @interface MapsActivityItemsConfiguration
 - (BOOL)_hasItemsForActivityItemsConfiguration;
-- (BOOL)activityItemsConfigurationSupportsInteraction:(id)a3;
+- (BOOL)activityItemsConfigurationSupportsInteraction:(id)interaction;
 - (NSArray)itemProvidersForActivityItemsConfiguration;
 - (UIActivityItemsConfiguration)internalActivityItemsConfiguration;
 - (id)_excludedInteractions;
-- (void)setShareItemSource:(id)a3;
+- (void)setShareItemSource:(id)source;
 @end
 
 @implementation MapsActivityItemsConfiguration
@@ -18,21 +18,21 @@
   return v2;
 }
 
-- (void)setShareItemSource:(id)a3
+- (void)setShareItemSource:(id)source
 {
-  objc_storeStrong(&self->_shareItemSource, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_shareItemSource, source);
+  sourceCopy = source;
   internalActivityItemsConfiguration = self->_internalActivityItemsConfiguration;
   self->_internalActivityItemsConfiguration = 0;
 
   [(NSTimer *)self->_invalidationTimer invalidate];
 }
 
-- (BOOL)activityItemsConfigurationSupportsInteraction:(id)a3
+- (BOOL)activityItemsConfigurationSupportsInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
-  v6 = [v5 activityItemsConfigurationSupportsInteraction:v4];
+  interactionCopy = interaction;
+  internalActivityItemsConfiguration = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
+  v6 = [internalActivityItemsConfiguration activityItemsConfigurationSupportsInteraction:interactionCopy];
 
   return v6;
 }
@@ -42,19 +42,19 @@
   internalActivityItemsConfiguration = self->_internalActivityItemsConfiguration;
   if (!internalActivityItemsConfiguration)
   {
-    v4 = [(MapsActivityItemsConfiguration *)self shareItemSource];
+    shareItemSource = [(MapsActivityItemsConfiguration *)self shareItemSource];
 
-    if (v4)
+    if (shareItemSource)
     {
-      v5 = [(MapsActivityItemsConfiguration *)self shareItemSource];
+      shareItemSource2 = [(MapsActivityItemsConfiguration *)self shareItemSource];
     }
 
     else
     {
       v6 = +[UIApplication _maps_keyMapsSceneDelegate];
-      v7 = [v6 chromeViewController];
+      chromeViewController = [v6 chromeViewController];
 
-      v5 = [v7 currentShareItemSource];
+      shareItemSource2 = [chromeViewController currentShareItemSource];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100C8F58C;
@@ -66,16 +66,16 @@
     }
 
     v10 = [UIActivityItemsConfiguration alloc];
-    v11 = [v5 activityProviders];
-    v12 = [v5 applicationActivities];
-    v13 = [v10 _initWithActivityItems:v11 applicationActivities:v12];
+    activityProviders = [shareItemSource2 activityProviders];
+    applicationActivities = [shareItemSource2 applicationActivities];
+    v13 = [v10 _initWithActivityItems:activityProviders applicationActivities:applicationActivities];
     v14 = self->_internalActivityItemsConfiguration;
     self->_internalActivityItemsConfiguration = v13;
 
-    v15 = [v5 excludedActivityTypes];
-    [(UIActivityItemsConfiguration *)self->_internalActivityItemsConfiguration _setExcludedActivityTypes:v15];
+    excludedActivityTypes = [shareItemSource2 excludedActivityTypes];
+    [(UIActivityItemsConfiguration *)self->_internalActivityItemsConfiguration _setExcludedActivityTypes:excludedActivityTypes];
 
-    [(UIActivityItemsConfiguration *)self->_internalActivityItemsConfiguration setLocalObject:v5];
+    [(UIActivityItemsConfiguration *)self->_internalActivityItemsConfiguration setLocalObject:shareItemSource2];
     internalActivityItemsConfiguration = self->_internalActivityItemsConfiguration;
   }
 
@@ -91,8 +91,8 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "checkHasActivityItems", "", buf, 2u);
   }
 
-  v4 = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
-  v5 = [v4 _hasItemsForActivityItemsConfiguration];
+  internalActivityItemsConfiguration = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
+  _hasItemsForActivityItemsConfiguration = [internalActivityItemsConfiguration _hasItemsForActivityItemsConfiguration];
 
   v6 = sub_100798C48();
   if (os_signpost_enabled(v6))
@@ -101,7 +101,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "checkHasActivityItems", "", v8, 2u);
   }
 
-  return v5;
+  return _hasItemsForActivityItemsConfiguration;
 }
 
 - (NSArray)itemProvidersForActivityItemsConfiguration
@@ -113,8 +113,8 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "getItemProviders", "", buf, 2u);
   }
 
-  v4 = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
-  v5 = [v4 itemProvidersForActivityItemsConfiguration];
+  internalActivityItemsConfiguration = [(MapsActivityItemsConfiguration *)self internalActivityItemsConfiguration];
+  itemProvidersForActivityItemsConfiguration = [internalActivityItemsConfiguration itemProvidersForActivityItemsConfiguration];
 
   v6 = sub_100798C48();
   if (os_signpost_enabled(v6))
@@ -123,7 +123,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "getItemProviders", "", v8, 2u);
   }
 
-  return v5;
+  return itemProvidersForActivityItemsConfiguration;
 }
 
 @end

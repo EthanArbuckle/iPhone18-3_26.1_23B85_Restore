@@ -1,6 +1,6 @@
 @interface VCMediaStreamMultiwayConfigAudio
 - (VCMediaStreamMultiwayConfigAudio)init;
-- (void)addV2CodecConfiguration:(id)a3;
+- (void)addV2CodecConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (void)addV2CodecConfiguration:(id)a3
+- (void)addV2CodecConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_v2CodecConfigurations, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "codecType")}]);
-    v5 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [a3 codecType]);
-    -[VCMediaStreamMultiwayConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", v5, [a3 networkPayload]);
-    v6 = [a3 networkPayload];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_v2CodecConfigurations, "setObject:forKeyedSubscript:", configuration, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(configuration, "codecType")}]);
+    v5 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [configuration codecType]);
+    -[VCMediaStreamMultiwayConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", v5, [configuration networkPayload]);
+    networkPayload = [configuration networkPayload];
 
-    [(VCMediaStreamMultiwayConfig *)self addTxPayloadType:v5 networkPayload:v6];
+    [(VCMediaStreamMultiwayConfig *)self addTxPayloadType:v5 networkPayload:networkPayload];
   }
 }
 

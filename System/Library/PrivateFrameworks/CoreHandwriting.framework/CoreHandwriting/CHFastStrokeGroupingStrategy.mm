@@ -1,59 +1,59 @@
 @interface CHFastStrokeGroupingStrategy
-- (CHFastStrokeGroupingStrategy)initWithStrokeProvider:(id)a3 locales:(id)a4 clutterFilter:(id)a5;
-- (id)fastGroupingResultWithFastGroupingClusters:(void *)a3 clusteredStrokes:(id)a4;
-- (id)groupingResultForContextStrokes:(id)a3 clusteredStrokes:(id)a4 fastGroupingResult:(id)a5 point:(CGPoint)a6 tokenizationLevel:(int64_t)a7;
-- (id)groupingResultUsingStrokes:(id)a3 distanceMetric:(int)a4 mergingDistanceThreshold:(double)a5 clusteringLinkage:(int)a6 anchorPoints:(unint64_t)a7 shouldCancel:(id)a8;
-- (id)lineGroupingResultUsingStrokes:(id)a3 shouldCancel:(id)a4;
-- (vector<CHFastGroupingCluster,)clustersForStrokes:(CHFastStrokeGroupingStrategy *)self shouldMakeSingleCluster:(SEL)a3 anchorPoints:(id)a4;
+- (CHFastStrokeGroupingStrategy)initWithStrokeProvider:(id)provider locales:(id)locales clutterFilter:(id)filter;
+- (id)fastGroupingResultWithFastGroupingClusters:(void *)clusters clusteredStrokes:(id)strokes;
+- (id)groupingResultForContextStrokes:(id)strokes clusteredStrokes:(id)clusteredStrokes fastGroupingResult:(id)result point:(CGPoint)point tokenizationLevel:(int64_t)level;
+- (id)groupingResultUsingStrokes:(id)strokes distanceMetric:(int)metric mergingDistanceThreshold:(double)threshold clusteringLinkage:(int)linkage anchorPoints:(unint64_t)points shouldCancel:(id)cancel;
+- (id)lineGroupingResultUsingStrokes:(id)strokes shouldCancel:(id)cancel;
+- (vector<CHFastGroupingCluster,)clustersForStrokes:(CHFastStrokeGroupingStrategy *)self shouldMakeSingleCluster:(SEL)cluster anchorPoints:(id)points;
 @end
 
 @implementation CHFastStrokeGroupingStrategy
 
-- (CHFastStrokeGroupingStrategy)initWithStrokeProvider:(id)a3 locales:(id)a4 clutterFilter:(id)a5
+- (CHFastStrokeGroupingStrategy)initWithStrokeProvider:(id)provider locales:(id)locales clutterFilter:(id)filter
 {
-  v9 = a4;
-  v10 = a5;
+  localesCopy = locales;
+  filterCopy = filter;
   v14.receiver = self;
   v14.super_class = CHFastStrokeGroupingStrategy;
-  v11 = [(CHStrokeGroupingStrategy *)&v14 initWithStrokeProvider:a3];
+  v11 = [(CHStrokeGroupingStrategy *)&v14 initWithStrokeProvider:provider];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_locales, a4);
-    objc_storeStrong(&v12->_clutterFilter, a5);
+    objc_storeStrong(&v11->_locales, locales);
+    objc_storeStrong(&v12->_clutterFilter, filter);
   }
 
   return v12;
 }
 
-- (id)lineGroupingResultUsingStrokes:(id)a3 shouldCancel:(id)a4
+- (id)lineGroupingResultUsingStrokes:(id)strokes shouldCancel:(id)cancel
 {
-  v4 = objc_msgSend_groupingResultUsingStrokes_distanceMetric_mergingDistanceThreshold_clusteringLinkage_anchorPoints_shouldCancel_(self, a2, a3, 3, 1, 1, a4, 30.0);
+  v4 = objc_msgSend_groupingResultUsingStrokes_distanceMetric_mergingDistanceThreshold_clusteringLinkage_anchorPoints_shouldCancel_(self, a2, strokes, 3, 1, 1, cancel, 30.0);
 
   return v4;
 }
 
-- (id)fastGroupingResultWithFastGroupingClusters:(void *)a3 clusteredStrokes:(id)a4
+- (id)fastGroupingResultWithFastGroupingClusters:(void *)clusters clusteredStrokes:(id)strokes
 {
-  v6 = a4;
+  strokesCopy = strokes;
   v7 = [CHStrokeFastGroupingResult alloc];
   v13 = objc_msgSend_strokeProvider(self, v8, v9, v10, v11, v12);
   v19 = objc_msgSend_strategyIdentifier(self, v14, v15, v16, v17, v18);
-  v21 = objc_msgSend_initWithFastGroupingClusters_clusteredStrokes_strokeProvider_strategyIdentifier_clutterFilter_(v7, v20, a3, v6, v13, v19, self->_clutterFilter);
+  v21 = objc_msgSend_initWithFastGroupingClusters_clusteredStrokes_strokeProvider_strategyIdentifier_clutterFilter_(v7, v20, clusters, strokesCopy, v13, v19, self->_clutterFilter);
 
   return v21;
 }
 
-- (id)groupingResultUsingStrokes:(id)a3 distanceMetric:(int)a4 mergingDistanceThreshold:(double)a5 clusteringLinkage:(int)a6 anchorPoints:(unint64_t)a7 shouldCancel:(id)a8
+- (id)groupingResultUsingStrokes:(id)strokes distanceMetric:(int)metric mergingDistanceThreshold:(double)threshold clusteringLinkage:(int)linkage anchorPoints:(unint64_t)points shouldCancel:(id)cancel
 {
   v118 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a8;
-  v98 = self;
-  objc_msgSend_clustersForStrokes_shouldMakeSingleCluster_anchorPoints_(self, v15, v13, 0, a7, v16);
-  v97 = v14;
-  v17 = self;
-  if (v14 && v14[2](v14))
+  strokesCopy = strokes;
+  cancelCopy = cancel;
+  selfCopy = self;
+  objc_msgSend_clustersForStrokes_shouldMakeSingleCluster_anchorPoints_(self, v15, strokesCopy, 0, points, v16);
+  v97 = cancelCopy;
+  selfCopy2 = self;
+  if (cancelCopy && cancelCopy[2](cancelCopy))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -71,7 +71,7 @@
     goto LABEL_100;
   }
 
-  if (a6 != 1)
+  if (linkage != 1)
   {
     goto LABEL_83;
   }
@@ -93,7 +93,7 @@
     goto LABEL_77;
   }
 
-  v96 = v13;
+  v96 = strokesCopy;
   v22 = 0;
   v23 = vcvtpd_u64_f64(v20 / ceil(v21));
   v99 = v23;
@@ -115,8 +115,8 @@
     }
 
     v25 = v22 + 1;
-    v24 = a5;
-    sub_1839710F4(&v102, v17, &__p, a4, 1, v14, v24);
+    thresholdCopy = threshold;
+    sub_1839710F4(&v102, selfCopy2, &__p, metric, 1, cancelCopy, thresholdCopy);
     v27 = v102;
     v26 = v103;
     v28 = v103 - v102;
@@ -282,7 +282,7 @@ LABEL_33:
       v53 = *(&v116 + 1);
     }
 
-    v17 = v98;
+    selfCopy2 = selfCopy;
     *(&v116 + 1) = v29;
     v54 = v116;
     v55 = v38 + v116 - v29;
@@ -360,7 +360,7 @@ LABEL_33:
       operator delete(v54);
     }
 
-    v14 = v97;
+    cancelCopy = v97;
     v34 = v102;
     v23 = v99;
     if (!v102)
@@ -426,8 +426,8 @@ LABEL_13:
   while (v25 != v100);
   v76 = *(&v116 + 1);
   v75 = v116;
-  v13 = v96;
-  a6 = 1;
+  strokesCopy = v96;
+  linkage = 1;
 LABEL_77:
   sub_183975F34(&v107, v75, v76, 0x8E38E38E38E38E39 * ((v76 - v75) >> 3));
   v77 = v116;
@@ -447,7 +447,7 @@ LABEL_77:
 
       while (v80 != v77);
       v78 = v116;
-      v17 = v98;
+      selfCopy2 = selfCopy;
     }
 
     *(&v116 + 1) = v77;
@@ -455,8 +455,8 @@ LABEL_77:
   }
 
 LABEL_83:
-  v81 = a5;
-  sub_1839710F4(buf, v17, &v107, a4, a6, v14, v81);
+  thresholdCopy2 = threshold;
+  sub_1839710F4(buf, selfCopy2, &v107, metric, linkage, cancelCopy, thresholdCopy2);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -470,9 +470,9 @@ LABEL_83:
     _os_log_impl(&dword_18366B000, v82, OS_LOG_TYPE_DEBUG, "%lu clusters found by the fast grouping algorithm", &v116, 0xCu);
   }
 
-  if (!v14 || !v14[2](v14))
+  if (!cancelCopy || !cancelCopy[2](cancelCopy))
   {
-    v19 = objc_msgSend_fastGroupingResultWithFastGroupingClusters_clusteredStrokes_(v17, v83, buf, v13, v84, v85);
+    v19 = objc_msgSend_fastGroupingResultWithFastGroupingClusters_clusteredStrokes_(selfCopy2, v83, buf, strokesCopy, v84, v85);
     v87 = *buf;
     if (!*buf)
     {
@@ -522,7 +522,7 @@ LABEL_95:
 
       while (v90 != v87);
       v88 = *buf;
-      v14 = v97;
+      cancelCopy = v97;
     }
 
     v110 = v87;
@@ -547,7 +547,7 @@ LABEL_100:
 
       while (v94 != v91);
       v92 = v107;
-      v14 = v97;
+      cancelCopy = v97;
     }
 
     v108 = v91;
@@ -557,10 +557,10 @@ LABEL_100:
   return v19;
 }
 
-- (vector<CHFastGroupingCluster,)clustersForStrokes:(CHFastStrokeGroupingStrategy *)self shouldMakeSingleCluster:(SEL)a3 anchorPoints:(id)a4
+- (vector<CHFastGroupingCluster,)clustersForStrokes:(CHFastStrokeGroupingStrategy *)self shouldMakeSingleCluster:(SEL)cluster anchorPoints:(id)points
 {
   v7 = a5;
-  v9 = a4;
+  pointsCopy = points;
   v10 = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
@@ -568,9 +568,9 @@ LABEL_100:
   v142[0] = 0;
   v142[1] = 0;
   v141 = v142;
-  for (i = objc_msgSend_count(v9, v11, v12, v13, v14, v15, a6); v10 < i; i = objc_msgSend_count(v9, v21, v22, v23, v24, v25, v116))
+  for (i = objc_msgSend_count(pointsCopy, v11, v12, v13, v14, v15, a6); v10 < i; i = objc_msgSend_count(pointsCopy, v21, v22, v23, v24, v25, v116))
   {
-    v118 = objc_msgSend_objectAtIndexedSubscript_(v9, v17, v10, v18, v19, v20);
+    v118 = objc_msgSend_objectAtIndexedSubscript_(pointsCopy, v17, v10, v18, v19, v20);
     clutterFilter = self->_clutterFilter;
     if (!clutterFilter || (objc_msgSend_encodedStrokeIdentifier(v118, v26, v27, v28, v29, v30), v32 = objc_claimAutoreleasedReturnValue(), isHighDensityStroke = objc_msgSend_isHighDensityStroke_(clutterFilter, v33, v32, v34, v35, v36), v32, (isHighDensityStroke & 1) == 0))
     {
@@ -783,24 +783,24 @@ LABEL_100:
   return result;
 }
 
-- (id)groupingResultForContextStrokes:(id)a3 clusteredStrokes:(id)a4 fastGroupingResult:(id)a5 point:(CGPoint)a6 tokenizationLevel:(int64_t)a7
+- (id)groupingResultForContextStrokes:(id)strokes clusteredStrokes:(id)clusteredStrokes fastGroupingResult:(id)result point:(CGPoint)point tokenizationLevel:(int64_t)level
 {
-  x = a6.x;
-  y = a6.y;
+  x = point.x;
+  y = point.y;
   v315 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v284 = a4;
-  v11 = a5;
-  v282 = a7;
-  v283 = v11;
-  v285 = v10;
-  if (!a7)
+  strokesCopy = strokes;
+  clusteredStrokesCopy = clusteredStrokes;
+  resultCopy = result;
+  levelCopy = level;
+  v283 = resultCopy;
+  v285 = strokesCopy;
+  if (!level)
   {
-    v64 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v12, v10, v14, v15, v16);
+    v64 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v12, strokesCopy, v14, v15, v16);
     goto LABEL_192;
   }
 
-  if (!v11)
+  if (!resultCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -834,14 +834,14 @@ LABEL_47:
         v303[0] = 0;
         v303[1] = 0;
         v304 = 0;
-        v22 = a7;
-        if (a7 == 1)
+        levelCopy3 = level;
+        if (level == 1)
         {
           goto LABEL_4;
         }
 
 LABEL_48:
-        if ((v22 - 3) <= 1)
+        if ((levelCopy3 - 3) <= 1)
         {
           v67 = 126 - 2 * __clz(0x8E38E38E38E38E39 * ((v303[1] - v303[0]) >> 3));
           if (v303[1] == v303[0])
@@ -866,18 +866,18 @@ LABEL_48:
     goto LABEL_47;
   }
 
-  objc_msgSend_fastGroupingClusters(v11, v12, v13, v14, v15, v16);
-  v22 = a7;
-  if (a7 != 1)
+  objc_msgSend_fastGroupingClusters(resultCopy, v12, v13, v14, v15, v16);
+  levelCopy3 = level;
+  if (level != 1)
   {
     goto LABEL_48;
   }
 
 LABEL_4:
-  if (objc_msgSend_count(v10, v17, v18, v19, v20, v21))
+  if (objc_msgSend_count(strokesCopy, v17, v18, v19, v20, v21))
   {
-    obj = v10;
-    v23 = v284;
+    obj = strokesCopy;
+    v23 = clusteredStrokesCopy;
     if (self)
     {
       v24 = v303[0];
@@ -1312,7 +1312,7 @@ LABEL_53:
 LABEL_109:
   if (!objc_msgSend_count(v285, v17, v18, v19, v20, v21))
   {
-    objb = v284;
+    objb = clusteredStrokesCopy;
     v281 = v283;
     if (self)
     {
@@ -1466,7 +1466,7 @@ LABEL_109:
         while (v291 < 0x8E38E38E38E38E39 * ((v303[1] - v303[0]) >> 3));
       }
 
-      if ((v282 - 3) >= 2)
+      if ((levelCopy - 3) >= 2)
       {
         v275 = v286;
         v64 = v286;
@@ -1477,7 +1477,7 @@ LABEL_109:
         v205 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v281, v124, 0, 0, v127, v128);
         v211 = objc_msgSend_strokeGroupClusters(v281, v206, v207, v208, v209, v210);
         v218 = objc_msgSend_allObjects(v286, v212, v213, v214, v215, v216);
-        if (v282 == 3)
+        if (levelCopy == 3)
         {
           objc_msgSend_strokeIdentifiersInProximalGroupsForStrokeIdentifiers_sortedStrokeGroups_clusteredStrokeGroups_unusedStrokeIdentifiers_(CHRecognitionSession, v217, v218, v205, v211, 0);
         }
@@ -1501,15 +1501,15 @@ LABEL_109:
   }
 
   v290 = v285;
-  v106 = v284;
+  v106 = clusteredStrokesCopy;
   v288 = v283;
   if (self)
   {
-    if ((v282 - 3) <= 1)
+    if ((levelCopy - 3) <= 1)
     {
       obja = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v288, v107, 0, 0, v110, v111);
       v118 = objc_msgSend_strokeGroupClusters(v288, v112, v113, v114, v115, v116);
-      if (v282 == 3)
+      if (levelCopy == 3)
       {
         objc_msgSend_strokeIdentifiersInProximalGroupsForStrokeIdentifiers_sortedStrokeGroups_clusteredStrokeGroups_unusedStrokeIdentifiers_(CHRecognitionSession, v117, v290, obja, v118, 0);
       }

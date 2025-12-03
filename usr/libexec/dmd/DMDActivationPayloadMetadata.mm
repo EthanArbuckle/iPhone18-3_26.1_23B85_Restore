@@ -1,5 +1,5 @@
 @interface DMDActivationPayloadMetadata
-+ (id)fetchRequestForActivationsFromOrganizationWithIdentifier:(id)a3;
++ (id)fetchRequestForActivationsFromOrganizationWithIdentifier:(id)identifier;
 - (void)updateStateDictionaryIfNeeded;
 @end
 
@@ -7,7 +7,7 @@
 
 - (void)updateStateDictionaryIfNeeded
 {
-  v34 = [(DMDPayloadMetadata *)self status];
+  status = [(DMDPayloadMetadata *)self status];
   v39 = objc_opt_new();
   v41 = objc_opt_new();
   v40 = objc_opt_new();
@@ -15,7 +15,7 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v35 = self;
+  selfCopy = self;
   obj = [(DMDActivationPayloadMetadata *)self outgoingPayloadMetadataReferences];
   v3 = [obj countByEnumeratingWithState:&v43 objects:v59 count:16];
   if (v3)
@@ -41,19 +41,19 @@
         if (objc_opt_isKindOfClass())
         {
           v57[0] = v37;
-          v10 = [v9 identifier];
+          identifier = [v9 identifier];
           v57[1] = v36;
-          v58[0] = v10;
-          v11 = [v9 serverHash];
-          v58[1] = v11;
+          v58[0] = identifier;
+          serverHash = [v9 serverHash];
+          v58[1] = serverHash;
           v12 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:2];
-          v13 = [v9 identifier];
-          [v39 setObject:v12 forKeyedSubscript:v13];
+          identifier2 = [v9 identifier];
+          [v39 setObject:v12 forKeyedSubscript:identifier2];
 
-          v14 = [v9 installed];
-          v15 = [v9 identifier];
-          v16 = [v39 objectForKeyedSubscript:v15];
-          if (v14)
+          installed = [v9 installed];
+          identifier3 = [v9 identifier];
+          v16 = [v39 objectForKeyedSubscript:identifier3];
+          if (installed)
           {
             v17 = v41;
           }
@@ -63,8 +63,8 @@
             v17 = v40;
           }
 
-          v6 &= v14 ^ 1;
-          v7 &= v14;
+          v6 &= installed ^ 1;
+          v7 &= installed;
           v5 = v38;
           [v17 addObject:v16];
         }
@@ -84,23 +84,23 @@
 
   [v41 sortUsingComparator:&stru_1000CDC10];
   [v40 sortUsingComparator:&stru_1000CDC10];
-  v18 = [v39 allValues];
-  v19 = [v18 mutableCopy];
+  allValues = [v39 allValues];
+  v19 = [allValues mutableCopy];
 
   [v19 sortUsingComparator:&stru_1000CDC10];
   v20 = objc_opt_new();
   v21 = objc_opt_new();
   [v21 setObject:v19 forKeyedSubscript:@"ActivatedConfigurations"];
-  v22 = [(DMDActivationPayloadMetadata *)self predicatePayloadMetadata];
-  [v21 addEntriesFromDictionary:v22];
+  predicatePayloadMetadata = [(DMDActivationPayloadMetadata *)self predicatePayloadMetadata];
+  [v21 addEntriesFromDictionary:predicatePayloadMetadata];
 
   [v20 setObject:v21 forKeyedSubscript:DMFDeclarationStatePayloadKey];
   if ([(DMDActivationPayloadMetadata *)self installed])
   {
     if (v7)
     {
-      v23 = v34;
-      if (([v34 isEqualToString:DMFDeclarationStatusRemoved] & 1) == 0)
+      v23 = status;
+      if (([status isEqualToString:DMFDeclarationStatusRemoved] & 1) == 0)
       {
         v24 = DMFDeclarationStatusInstalled;
         v25 = DMFDeclarationStateStatusKey;
@@ -108,7 +108,7 @@
 LABEL_22:
         [v26 setObject:v24 forKeyedSubscript:v25];
 LABEL_26:
-        [(DMDDeclarationPayloadMetadata *)v35 setStateDictionary:v20];
+        [(DMDDeclarationPayloadMetadata *)selfCopy setStateDictionary:v20];
         goto LABEL_27;
       }
 
@@ -134,7 +134,7 @@ LABEL_25:
     v33 = [NSArray arrayWithObjects:v31 count:2];
     [v20 setObject:v33 forKeyedSubscript:DMFDeclarationStateReasonKey];
 
-    v23 = v34;
+    v23 = status;
     goto LABEL_26;
   }
 
@@ -159,8 +159,8 @@ LABEL_25:
   }
 
   v27 = DMFDeclarationStatusRemoved;
-  v23 = v34;
-  if (([v34 isEqualToString:DMFDeclarationStatusRemoved] & 1) == 0)
+  v23 = status;
+  if (([status isEqualToString:DMFDeclarationStatusRemoved] & 1) == 0)
   {
     v25 = DMFDeclarationStateStatusKey;
     v26 = v20;
@@ -171,15 +171,15 @@ LABEL_25:
 LABEL_27:
 }
 
-+ (id)fetchRequestForActivationsFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestForActivationsFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", v4];
+  identifierCopy = identifier;
+  fetchRequest = [self fetchRequest];
+  identifierCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", identifierCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:identifierCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
 @end

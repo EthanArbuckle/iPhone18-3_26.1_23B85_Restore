@@ -1,19 +1,19 @@
 @interface _DASRemoteWidgetBudgetPolicy
-+ (BOOL)budgetIsPositive:(id)a3;
-+ (BOOL)isBudgetAvailable:(id)a3;
++ (BOOL)budgetIsPositive:(id)positive;
++ (BOOL)isBudgetAvailable:(id)available;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASRemoteWidgetBudgetPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)loadUnavailable;
-- (void)logActualUnavailableDurationWithState:(id)a3;
-- (void)logExhaustedDuration:(double)a3 withPluginConsideration:(BOOL)a4;
-- (void)logUnavailableDurationWithState:(id)a3;
+- (void)logActualUnavailableDurationWithState:(id)state;
+- (void)logExhaustedDuration:(double)duration withPluginConsideration:(BOOL)consideration;
+- (void)logUnavailableDurationWithState:(id)state;
 - (void)registerDailyTimer;
-- (void)saveActualUnavailableDate:(id)a3;
-- (void)saveUnavailableDate:(id)a3;
+- (void)saveActualUnavailableDate:(id)date;
+- (void)saveUnavailableDate:(id)date;
 @end
 
 @implementation _DASRemoteWidgetBudgetPolicy
@@ -60,9 +60,9 @@
     policyDescription = v2->_policyDescription;
     v2->_policyDescription = @"Blocks remote widget activities based on remaining budget.";
 
-    v7 = [(_DASRemoteWidgetBudgetPolicy *)v2 initializeTriggers];
+    initializeTriggers = [(_DASRemoteWidgetBudgetPolicy *)v2 initializeTriggers];
     triggers = v2->_triggers;
-    v2->_triggers = v7;
+    v2->_triggers = initializeTriggers;
 
     [(_DASRemoteWidgetBudgetPolicy *)v2 loadUnavailable];
     [(_DASRemoteWidgetBudgetPolicy *)v2 registerDailyTimer];
@@ -77,7 +77,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000AAF20;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B6E0 != -1)
   {
     dispatch_once(&qword_10020B6E0, block);
@@ -88,44 +88,44 @@
   return v2;
 }
 
-+ (BOOL)isBudgetAvailable:(id)a3
++ (BOOL)isBudgetAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = +[_CDContextQueries keyPathForPluginStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  v5 = [availableCopy objectForKeyedSubscript:v4];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:v3];
+    v7 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:availableCopy];
   }
 
   return v7;
 }
 
-+ (BOOL)budgetIsPositive:(id)a3
++ (BOOL)budgetIsPositive:(id)positive
 {
-  v3 = a3;
+  positiveCopy = positive;
   v4 = +[_DASBudgetManager sharedInstance];
   v5 = [v4 budgetKeyPathForBudgetName:@"com.apple.dasd.remoteWidget"];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [positiveCopy objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)registerDailyTimer
@@ -172,16 +172,16 @@ LABEL_5:
   dispatch_activate(v11);
 }
 
-- (void)logExhaustedDuration:(double)a3 withPluginConsideration:(BOOL)a4
+- (void)logExhaustedDuration:(double)duration withPluginConsideration:(BOOL)consideration
 {
-  v4 = a4;
+  considerationCopy = consideration;
   v6 = [_DASDaemonLogger logForCategory:@"remoteWidgetBudget"];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (considerationCopy)
   {
     if (v7)
     {
-      sub_100127808(a3);
+      sub_100127808(duration);
     }
 
     v8 = v11;
@@ -194,7 +194,7 @@ LABEL_5:
   {
     if (v7)
     {
-      sub_10012776C(a3);
+      sub_10012776C(duration);
     }
 
     v8 = v10;
@@ -205,14 +205,14 @@ LABEL_5:
 
   *(v8 + 2) = v9;
   *(v8 + 3) = &unk_1001B7BB0;
-  v8[4] = a3;
+  v8[4] = duration;
   AnalyticsSendEventLazy();
 }
 
-- (void)logUnavailableDurationWithState:(id)a3
+- (void)logUnavailableDurationWithState:(id)state
 {
-  v4 = a3;
-  v5 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:v4];
+  stateCopy = state;
+  v5 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:stateCopy];
   p_unavailableDate = &self->_unavailableDate;
   unavailableDate = self->_unavailableDate;
   if (v5)
@@ -255,12 +255,12 @@ LABEL_13:
     [(_DASRemoteWidgetBudgetPolicy *)self saveUnavailableDate:self->_unavailableDate];
   }
 
-  [(_DASRemoteWidgetBudgetPolicy *)self logActualUnavailableDurationWithState:v4];
+  [(_DASRemoteWidgetBudgetPolicy *)self logActualUnavailableDurationWithState:stateCopy];
 }
 
-- (void)logActualUnavailableDurationWithState:(id)a3
+- (void)logActualUnavailableDurationWithState:(id)state
 {
-  v4 = [_DASRemoteWidgetBudgetPolicy isBudgetAvailable:a3];
+  v4 = [_DASRemoteWidgetBudgetPolicy isBudgetAvailable:state];
   p_actualUnavailableDate = &self->_actualUnavailableDate;
   actualUnavailableDate = self->_actualUnavailableDate;
   if (v4)
@@ -314,11 +314,11 @@ LABEL_14:
   }
 }
 
-- (void)saveUnavailableDate:(id)a3
+- (void)saveUnavailableDate:(id)date
 {
-  v4 = a3;
-  v12 = v4;
-  if (!v4)
+  dateCopy = date;
+  v12 = dateCopy;
+  if (!dateCopy)
   {
     v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     [v5 removeObjectForKey:@"remoteWidgetUnavailableInterval"];
@@ -326,10 +326,10 @@ LABEL_14:
     v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     [v6 removeObjectForKey:@"remoteWidgetUnavailableToday"];
 
-    v4 = 0;
+    dateCopy = 0;
   }
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
   v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   v10 = [NSNumber numberWithDouble:v8];
@@ -339,19 +339,19 @@ LABEL_14:
   [v11 setBool:self->_unavailableToday forKey:@"remoteWidgetUnavailableToday"];
 }
 
-- (void)saveActualUnavailableDate:(id)a3
+- (void)saveActualUnavailableDate:(id)date
 {
-  v3 = a3;
-  v9 = v3;
-  if (!v3)
+  dateCopy = date;
+  v9 = dateCopy;
+  if (!dateCopy)
   {
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     [v4 removeObjectForKey:@"remoteWidgetActualUnavailableInterval"];
 
-    v3 = 0;
+    dateCopy = 0;
   }
 
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v6 = v5;
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   v8 = [NSNumber numberWithDouble:v6];
@@ -399,24 +399,24 @@ LABEL_14:
   }
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"com.apple.das.remoteWidgetBudget"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"))
+  triggerCopy = trigger;
+  stateCopy = state;
+  if (([triggerCopy isEqualToString:@"com.apple.das.remoteWidgetBudget"] & 1) == 0 && !objc_msgSend(triggerCopy, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin"))
   {
     goto LABEL_5;
   }
 
-  v8 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:v7];
+  v8 = [_DASRemoteWidgetBudgetPolicy budgetIsPositive:stateCopy];
   v9 = +[_CDContextQueries keyPathForPluginStatus];
-  v10 = [v7 objectForKeyedSubscript:v9];
-  v11 = [v10 BOOLValue];
+  v10 = [stateCopy objectForKeyedSubscript:v9];
+  bOOLValue = [v10 BOOLValue];
 
-  if (![v6 isEqualToString:@"com.apple.das.remoteWidgetBudget"])
+  if (![triggerCopy isEqualToString:@"com.apple.das.remoteWidgetBudget"])
   {
-    [(_DASRemoteWidgetBudgetPolicy *)self logActualUnavailableDurationWithState:v7];
-    if (!(v8 & 1 | ((v11 & 1) == 0)))
+    [(_DASRemoteWidgetBudgetPolicy *)self logActualUnavailableDurationWithState:stateCopy];
+    if (!(v8 & 1 | ((bOOLValue & 1) == 0)))
     {
       goto LABEL_5;
     }
@@ -426,8 +426,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [(_DASRemoteWidgetBudgetPolicy *)self logUnavailableDurationWithState:v7];
-  if (v11 & 1 | ((v8 & 1) == 0))
+  [(_DASRemoteWidgetBudgetPolicy *)self logUnavailableDurationWithState:stateCopy];
+  if (bOOLValue & 1 | ((v8 & 1) == 0))
   {
     goto LABEL_7;
   }
@@ -439,14 +439,14 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 schedulingPriority];
-  if (v4 <= _DASSchedulingPriorityUtility && [v3 targetDevice] == 3)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority <= _DASSchedulingPriorityUtility && [activityCopy targetDevice] == 3)
   {
-    v5 = [v3 widgetID];
-    v6 = v5 != 0;
+    widgetID = [activityCopy widgetID];
+    v6 = widgetID != 0;
   }
 
   else
@@ -457,11 +457,11 @@ LABEL_8:
   return v6;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  v7 = [_DASRemoteWidgetBudgetPolicy isBudgetAvailable:v5];
+  v7 = [_DASRemoteWidgetBudgetPolicy isBudgetAvailable:stateCopy];
 
   if (v7)
   {

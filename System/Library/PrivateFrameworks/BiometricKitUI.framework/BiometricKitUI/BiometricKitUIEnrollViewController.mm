@@ -1,20 +1,20 @@
 @interface BiometricKitUIEnrollViewController
 - (BiometricKitUIEnrollResultDelegate)delegate;
-- (id)propertyForKey:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
+- (id)propertyForKey:(id)key;
+- (void)setProperty:(id)property forKey:(id)key;
 @end
 
 @implementation BiometricKitUIEnrollViewController
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   if (!self->_properties)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     properties = self->_properties;
-    self->_properties = v8;
+    self->_properties = dictionary;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -22,16 +22,16 @@
     [BiometricKitUIEnrollViewController setProperty:forKey:];
   }
 
-  [(NSMutableDictionary *)self->_properties setValue:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_properties setValue:propertyCopy forKey:keyCopy];
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   properties = self->_properties;
   if (properties)
   {
-    v6 = [(NSMutableDictionary *)properties valueForKey:v4];
+    v6 = [(NSMutableDictionary *)properties valueForKey:keyCopy];
   }
 
   else

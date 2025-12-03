@@ -1,7 +1,7 @@
 @interface CKDateUtilities
-+ (id)relativeDateFormatterFromDate:(id)a3 toDate:(id)a4;
-+ (id)relativeDateOnlyFormatterFromDate:(id)a3 toDate:(id)a4;
-+ (id)relativeFullDateOnlyFormatterFromDate:(id)a3 toDate:(id)a4;
++ (id)relativeDateFormatterFromDate:(id)date toDate:(id)toDate;
++ (id)relativeDateOnlyFormatterFromDate:(id)date toDate:(id)toDate;
++ (id)relativeFullDateOnlyFormatterFromDate:(id)date toDate:(id)toDate;
 + (id)thePastDateFormatter;
 + (id)thePastDateFormatterNoTime;
 + (id)thePastFullDateFormatterNoTime;
@@ -17,94 +17,94 @@
 
 @implementation CKDateUtilities
 
-+ (id)relativeDateFormatterFromDate:(id)a3 toDate:(id)a4
++ (id)relativeDateFormatterFromDate:(id)date toDate:(id)toDate
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 __ck_currentCalendar];
-  v10 = [v9 __ck_unitOfDisambiguityFromDate:v8 toDate:v7];
+  toDateCopy = toDate;
+  dateCopy = date;
+  __ck_currentCalendar = [v6 __ck_currentCalendar];
+  v10 = [__ck_currentCalendar __ck_unitOfDisambiguityFromDate:dateCopy toDate:toDateCopy];
 
   if (v10 == 8)
   {
-    v11 = [a1 thisYearDateFormatter];
+    thisYearDateFormatter = [self thisYearDateFormatter];
   }
 
   else
   {
     if (v10 == 4)
     {
-      [a1 thePastDateFormatter];
+      [self thePastDateFormatter];
     }
 
     else
     {
-      [a1 thisWeekRelativeDateFormatter];
+      [self thisWeekRelativeDateFormatter];
     }
-    v11 = ;
+    thisYearDateFormatter = ;
   }
 
-  return v11;
+  return thisYearDateFormatter;
 }
 
-+ (id)relativeDateOnlyFormatterFromDate:(id)a3 toDate:(id)a4
++ (id)relativeDateOnlyFormatterFromDate:(id)date toDate:(id)toDate
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 __ck_currentCalendar];
-  v10 = [v9 __ck_unitOfDisambiguityFromDate:v8 toDate:v7];
+  toDateCopy = toDate;
+  dateCopy = date;
+  __ck_currentCalendar = [v6 __ck_currentCalendar];
+  v10 = [__ck_currentCalendar __ck_unitOfDisambiguityFromDate:dateCopy toDate:toDateCopy];
 
   if (v10 == 8)
   {
-    v11 = [a1 thisYearDateFormatterNoTime];
+    thisYearDateFormatterNoTime = [self thisYearDateFormatterNoTime];
   }
 
   else
   {
     if (v10 == 4)
     {
-      [a1 thePastDateFormatterNoTime];
+      [self thePastDateFormatterNoTime];
     }
 
     else
     {
-      [a1 thisWeekRelativeDateFormatterNoTime];
+      [self thisWeekRelativeDateFormatterNoTime];
     }
-    v11 = ;
+    thisYearDateFormatterNoTime = ;
   }
 
-  return v11;
+  return thisYearDateFormatterNoTime;
 }
 
-+ (id)relativeFullDateOnlyFormatterFromDate:(id)a3 toDate:(id)a4
++ (id)relativeFullDateOnlyFormatterFromDate:(id)date toDate:(id)toDate
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 __ck_currentCalendar];
-  v10 = [v9 __ck_unitOfDisambiguityFromDate:v8 toDate:v7];
+  toDateCopy = toDate;
+  dateCopy = date;
+  __ck_currentCalendar = [v6 __ck_currentCalendar];
+  v10 = [__ck_currentCalendar __ck_unitOfDisambiguityFromDate:dateCopy toDate:toDateCopy];
 
   if (v10 == 8)
   {
-    v11 = [a1 thisYearFullDateFormatterNoTime];
+    thisYearFullDateFormatterNoTime = [self thisYearFullDateFormatterNoTime];
   }
 
   else
   {
     if (v10 == 4)
     {
-      [a1 thePastFullDateFormatterNoTime];
+      [self thePastFullDateFormatterNoTime];
     }
 
     else
     {
-      [a1 thisWeekRelativeDateFormatterNoTime];
+      [self thisWeekRelativeDateFormatterNoTime];
     }
-    v11 = ;
+    thisYearFullDateFormatterNoTime = ;
   }
 
-  return v11;
+  return thisYearFullDateFormatterNoTime;
 }
 
 + (id)thisWeekRelativeDateFormatter

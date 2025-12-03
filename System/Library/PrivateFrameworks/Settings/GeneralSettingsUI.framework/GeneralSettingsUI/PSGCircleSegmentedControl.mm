@@ -1,35 +1,35 @@
 @interface PSGCircleSegmentedControl
 - (PSGCircleSegmentedControl)init;
 - (PSGCircleSegmentedControlDelegate)delegate;
-- (id)_circleImageWithColor:(id)a3 fillColor:(id)a4 diameter:(double)a5;
-- (id)styleSensitiveImage:(id)a3;
-- (void)addSegmentWithTitle:(id)a3;
-- (void)segmentTapped:(id)a3;
-- (void)selectSegmentAtIndex:(unint64_t)a3;
-- (void)setSelectedSegmentIndex:(unint64_t)a3;
+- (id)_circleImageWithColor:(id)color fillColor:(id)fillColor diameter:(double)diameter;
+- (id)styleSensitiveImage:(id)image;
+- (void)addSegmentWithTitle:(id)title;
+- (void)segmentTapped:(id)tapped;
+- (void)selectSegmentAtIndex:(unint64_t)index;
+- (void)setSelectedSegmentIndex:(unint64_t)index;
 @end
 
 @implementation PSGCircleSegmentedControl
 
-- (id)_circleImageWithColor:(id)a3 fillColor:(id)a4 diameter:(double)a5
+- (id)_circleImageWithColor:(id)color fillColor:(id)fillColor diameter:(double)diameter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  colorCopy = color;
+  fillColorCopy = fillColor;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
-  v16.width = a5;
-  v16.height = a5;
+  v16.width = diameter;
+  v16.height = diameter;
   UIGraphicsBeginImageContextWithOptions(v16, 0, v11);
 
-  v12 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{1.0, 1.0, a5 + -2.0, a5 + -2.0}];
-  if (v8)
+  v12 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{1.0, 1.0, diameter + -2.0, diameter + -2.0}];
+  if (fillColorCopy)
   {
-    [v8 set];
+    [fillColorCopy set];
     [v12 fill];
   }
 
-  [v7 set];
+  [colorCopy set];
   [v12 stroke];
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -114,40 +114,40 @@
     [(UILabel *)v11->_label setNumberOfLines:0];
     [(UILabel *)v11->_label setAdjustsFontSizeToFitWidth:1];
     [(PSGCircleSegmentedControl *)v11 addSubview:v11->_label];
-    v29 = [(UIStackView *)v11->_stack topAnchor];
-    v30 = [(PSGCircleSegmentedControl *)v11 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    topAnchor = [(UIStackView *)v11->_stack topAnchor];
+    topAnchor2 = [(PSGCircleSegmentedControl *)v11 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v31 setActive:1];
 
-    v32 = [(UIStackView *)v11->_stack leadingAnchor];
-    v33 = [(PSGCircleSegmentedControl *)v11 leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leadingAnchor = [(UIStackView *)v11->_stack leadingAnchor];
+    leadingAnchor2 = [(PSGCircleSegmentedControl *)v11 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v34 setActive:1];
 
-    v35 = [(UIStackView *)v11->_stack trailingAnchor];
-    v36 = [(PSGCircleSegmentedControl *)v11 trailingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    trailingAnchor = [(UIStackView *)v11->_stack trailingAnchor];
+    trailingAnchor2 = [(PSGCircleSegmentedControl *)v11 trailingAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v37 setActive:1];
 
-    v38 = [(UIStackView *)v11->_stack bottomAnchor];
-    v39 = [(UILabel *)v11->_label topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor = [(UIStackView *)v11->_stack bottomAnchor];
+    topAnchor3 = [(UILabel *)v11->_label topAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
     [v40 setActive:1];
 
-    v41 = [(UILabel *)v11->_label leadingAnchor];
-    v42 = [(PSGCircleSegmentedControl *)v11 leadingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    leadingAnchor3 = [(UILabel *)v11->_label leadingAnchor];
+    leadingAnchor4 = [(PSGCircleSegmentedControl *)v11 leadingAnchor];
+    v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v43 setActive:1];
 
-    v44 = [(UILabel *)v11->_label trailingAnchor];
-    v45 = [(PSGCircleSegmentedControl *)v11 trailingAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    trailingAnchor3 = [(UILabel *)v11->_label trailingAnchor];
+    trailingAnchor4 = [(PSGCircleSegmentedControl *)v11 trailingAnchor];
+    v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v46 setActive:1];
 
-    v47 = [(UILabel *)v11->_label bottomAnchor];
-    v48 = [(PSGCircleSegmentedControl *)v11 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v11->_label bottomAnchor];
+    bottomAnchor3 = [(PSGCircleSegmentedControl *)v11 bottomAnchor];
     [(UIImage *)v2->_activeImage size];
-    v50 = [v47 constraintEqualToAnchor:v48 constant:-(v49 + 20.0)];
+    v50 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-(v49 + 20.0)];
     [v50 setActive:1];
 
     objc_destroyWeak(&v59);
@@ -191,14 +191,14 @@ id __33__PSGCircleSegmentedControl_init__block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (id)styleSensitiveImage:(id)a3
+- (id)styleSensitiveImage:(id)image
 {
-  v22 = self;
+  selfCopy = self;
   v32[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  imageCopy = image;
   v4 = MEMORY[0x277D75C80];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = [v4 traitCollectionWithDisplayScale:?];
 
   v7 = objc_alloc_init(MEMORY[0x277D755C0]);
@@ -214,14 +214,14 @@ id __33__PSGCircleSegmentedControl_init__block_invoke_3(uint64_t a1)
   do
   {
     v11 = v10;
-    v12 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:{*(&xmmword_21CF58B40 + v8), v22}];
+    v12 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:{*(&xmmword_21CF58B40 + v8), selfCopy}];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke;
     v23[3] = &unk_278325638;
     v25 = &v26;
-    v13 = v3;
+    v13 = imageCopy;
     v24 = v13;
     [v12 performAsCurrentTraitCollection:v23];
     v14 = v27[5];
@@ -238,8 +238,8 @@ id __33__PSGCircleSegmentedControl_init__block_invoke_3(uint64_t a1)
   }
 
   while ((v11 & 1) != 0);
-  v18 = [(PSGCircleSegmentedControl *)v22 traitCollection];
-  v19 = [v7 imageWithTraitCollection:v18];
+  traitCollection = [(PSGCircleSegmentedControl *)selfCopy traitCollection];
+  v19 = [v7 imageWithTraitCollection:traitCollection];
 
   _Block_object_dispose(&v26, 8);
   v20 = *MEMORY[0x277D85DE8];
@@ -257,11 +257,11 @@ uint64_t __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke(uint
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)addSegmentWithTitle:(id)a3
+- (void)addSegmentWithTitle:(id)title
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D755E8];
-  v5 = a3;
+  titleCopy = title;
   v6 = [[v4 alloc] initWithImage:self->_placeholderImage];
   [(NSMutableArray *)self->_segmentPlaceholders addObject:v6];
   [(UIStackView *)self->_stack addArrangedSubview:v6];
@@ -269,18 +269,18 @@ uint64_t __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke(uint
   [v7 setImage:self->_buttonImage animated:0];
   [v7 setImage:self->_highlightedImage forState:1];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v7 setTitle:v5 forState:0];
+  [v7 setTitle:titleCopy forState:0];
 
   [v7 addTarget:self action:sel_segmentTapped_ forControlEvents:0x2000];
   [(NSMutableArray *)self->_segments addObject:v7];
   [(PSGCircleSegmentedControl *)self addSubview:v7];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 centerXAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerXAnchor = [v7 centerXAnchor];
+  centerXAnchor2 = [v6 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v11 = [v7 centerYAnchor];
-  v12 = [v6 centerYAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerYAnchor = [v7 centerYAnchor];
+  centerYAnchor2 = [v6 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   segmentConstraints = self->_segmentConstraints;
   v17[0] = v10;
@@ -292,7 +292,7 @@ uint64_t __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSelectedSegmentIndex:(unint64_t)a3
+- (void)setSelectedSegmentIndex:(unint64_t)index
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:?];
@@ -339,15 +339,15 @@ uint64_t __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke(uint
     objc_storeStrong(&self->_selectedSegment, v5);
     [(PSGCircleSegment *)self->_selectedSegment setSelected:1];
     [(PSGCircleSegment *)self->_selectedSegment setUserInteractionEnabled:0];
-    [(PSGCircleSegmentedControl *)self setPositionConstraintsActive:0 forButtonAtIndex:a3];
+    [(PSGCircleSegmentedControl *)self setPositionConstraintsActive:0 forButtonAtIndex:index];
     selectedSegmentConstraints = self->_selectedSegmentConstraints;
-    v13 = [(PSGCircleSegment *)self->_selectedSegment centerXAnchor];
-    v14 = [(PSGCircleSegmentedControl *)self centerXAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerXAnchor = [(PSGCircleSegment *)self->_selectedSegment centerXAnchor];
+    centerXAnchor2 = [(PSGCircleSegmentedControl *)self centerXAnchor];
+    v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v27[0] = v15;
-    v16 = [(PSGCircleSegment *)self->_selectedSegment bottomAnchor];
-    v17 = [(PSGCircleSegmentedControl *)self bottomAnchor];
-    [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(PSGCircleSegment *)self->_selectedSegment bottomAnchor];
+    bottomAnchor2 = [(PSGCircleSegmentedControl *)self bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v19 = v18 = v5;
     v27[1] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
@@ -360,33 +360,33 @@ uint64_t __49__PSGCircleSegmentedControl_styleSensitiveImage___block_invoke(uint
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)segmentTapped:(id)a3
+- (void)segmentTapped:(id)tapped
 {
-  v4 = [(NSMutableArray *)self->_segments indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_segments indexOfObject:tapped];
   if (v4 < [(NSMutableArray *)self->_segments count])
   {
     [(PSGCircleSegmentedControl *)self selectSegmentAtIndex:v4];
-    v5 = [(PSGCircleSegmentedControl *)self delegate];
-    [v5 segmentedControl:self didSelectSegmentAtIndex:v4];
+    delegate = [(PSGCircleSegmentedControl *)self delegate];
+    [delegate segmentedControl:self didSelectSegmentAtIndex:v4];
   }
 }
 
-- (void)selectSegmentAtIndex:(unint64_t)a3
+- (void)selectSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments indexOfObject:self->_selectedSegment]!= a3)
+  if ([(NSMutableArray *)self->_segments indexOfObject:self->_selectedSegment]!= index)
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
     selectedSegment = self->_selectedSegment;
     v7 = MEMORY[0x277D75D18];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __50__PSGCircleSegmentedControl_selectSegmentAtIndex___block_invoke;
     v12 = &unk_278325218;
-    v13 = self;
-    v14 = a3;
+    selfCopy = self;
+    indexCopy = index;
     v8 = selectedSegment;
     [v7 animateWithDuration:0 delay:&v9 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:0.7 completion:0.0];
-    [v5 setImage:self->_activeImage animated:{1, v9, v10, v11, v12, v13, v14}];
+    [v5 setImage:self->_activeImage animated:{1, v9, v10, v11, v12, selfCopy, indexCopy}];
     [(PSGCircleSegment *)v8 setImage:self->_buttonImage animated:1];
   }
 }

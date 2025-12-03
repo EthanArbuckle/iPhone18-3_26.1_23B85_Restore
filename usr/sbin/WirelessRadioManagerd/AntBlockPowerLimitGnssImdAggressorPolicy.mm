@@ -1,8 +1,8 @@
 @interface AntBlockPowerLimitGnssImdAggressorPolicy
 - (AntBlockPowerLimitGnssImdAggressorPolicy)init;
-- (void)addPolicy:(id)a3;
-- (void)extractPolicy:(id)a3;
-- (void)setParameter:(unsigned int)a3 CellularBand:(unsigned int)a4 CellFreq:(unsigned int)a5 CellBW:(unsigned int)a6;
+- (void)addPolicy:(id)policy;
+- (void)extractPolicy:(id)policy;
+- (void)setParameter:(unsigned int)parameter CellularBand:(unsigned int)band CellFreq:(unsigned int)freq CellBW:(unsigned int)w;
 @end
 
 @implementation AntBlockPowerLimitGnssImdAggressorPolicy
@@ -21,28 +21,28 @@
   return v2;
 }
 
-- (void)setParameter:(unsigned int)a3 CellularBand:(unsigned int)a4 CellFreq:(unsigned int)a5 CellBW:(unsigned int)a6
+- (void)setParameter:(unsigned int)parameter CellularBand:(unsigned int)band CellFreq:(unsigned int)freq CellBW:(unsigned int)w
 {
-  self->_mCellularCoexTech = a3;
-  self->_mCellularBand = a4;
-  self->_mCellularFrequencyKHz = a5;
-  self->_mCellularBandwidthKHz = a6;
+  self->_mCellularCoexTech = parameter;
+  self->_mCellularBand = band;
+  self->_mCellularFrequencyKHz = freq;
+  self->_mCellularBandwidthKHz = w;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  policyCopy = policy;
+  v5 = policyCopy;
+  if (policyCopy)
   {
-    v6 = [v4 objectForKey:@"Coex_Tech"];
-    v7 = [v6 integerValue];
+    v6 = [policyCopy objectForKey:@"Coex_Tech"];
+    integerValue = [v6 integerValue];
     v8 = [v5 objectForKey:@"Cellular_Band"];
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
     v10 = [v5 objectForKey:@"Cellular_Center_Frequency_KHz"];
-    v11 = [v10 integerValue];
+    integerValue3 = [v10 integerValue];
     v12 = [v5 objectForKey:@"Cellular_Bandwidth_KHz"];
-    -[AntBlockPowerLimitGnssImdAggressorPolicy setParameter:CellularBand:CellFreq:CellBW:](self, "setParameter:CellularBand:CellFreq:CellBW:", v7, v9, v11, [v12 integerValue]);
+    -[AntBlockPowerLimitGnssImdAggressorPolicy setParameter:CellularBand:CellFreq:CellBW:](self, "setParameter:CellularBand:CellFreq:CellBW:", integerValue, integerValue2, integerValue3, [v12 integerValue]);
 
     v28 = v5;
     obj = [v5 objectForKey:@"Band_Policy"];
@@ -61,7 +61,7 @@
         {
           for (i = 0; i != v14; i = i + 1)
           {
-            v16 = self;
+            selfCopy = self;
             if (*v32 != v30)
             {
               objc_enumerationMutation(obj);
@@ -84,14 +84,14 @@
             }
 
             v23 = [v17 objectForKey:@"Enable"];
-            v24 = [v23 BOOLValue];
+            bOOLValue = [v23 BOOLValue];
             v25 = [v17 objectForKey:@"Cellular_Ant_Bitmap"];
-            v26 = [v25 integerValue];
+            integerValue4 = [v25 integerValue];
             v27 = [v17 objectForKey:@"Mitigation_Type"];
-            -[AntBlockPowerLimitGnssImdBandPolicy setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:](v18, "setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:", v24, v26, [v27 integerValue], v22);
+            -[AntBlockPowerLimitGnssImdBandPolicy setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:](v18, "setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:", bOOLValue, integerValue4, [v27 integerValue], v22);
 
-            self = v16;
-            [(AntBlockPowerLimitGnssImdAggressorPolicy *)v16 addPolicy:v18];
+            self = selfCopy;
+            [(AntBlockPowerLimitGnssImdAggressorPolicy *)selfCopy addPolicy:v18];
           }
 
           v14 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)addPolicy:(id)a3
+- (void)addPolicy:(id)policy
 {
-  if (a3)
+  if (policy)
   {
     mBandPolicy = self->_mBandPolicy;
     if (mBandPolicy)

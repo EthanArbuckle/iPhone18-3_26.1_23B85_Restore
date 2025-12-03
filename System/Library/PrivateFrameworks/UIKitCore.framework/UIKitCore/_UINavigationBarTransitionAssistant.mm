@@ -1,70 +1,70 @@
 @interface _UINavigationBarTransitionAssistant
-+ (id)popTransitionAssistantForNavigationBar:(id)a3 delegate:(id)a4 crossfade:(BOOL)a5;
-+ (id)pushTransitionAssistantForNavigationBar:(id)a3 delegate:(id)a4 crossfade:(BOOL)a5;
++ (id)popTransitionAssistantForNavigationBar:(id)bar delegate:(id)delegate crossfade:(BOOL)crossfade;
++ (id)pushTransitionAssistantForNavigationBar:(id)bar delegate:(id)delegate crossfade:(BOOL)crossfade;
 - (BOOL)shouldAnimateAlongside;
 - (UINavigationBar)navigationBar;
 - (UIViewControllerTransitionCoordinator)transitionCoordinator;
 - (_UINavigationBarDelegatePrivate)delegate;
-- (_UINavigationBarTransitionAssistant)initWithNavigationBar:(id)a3 delegate:(id)a4;
-- (int64_t)_transitionOverrideFrom:(id)a3 defaultingTo:(int64_t)a4;
-- (void)_clearAnimationsWithDuration:(double)a3 curve:(int64_t)a4 reverse:(BOOL)a5;
+- (_UINavigationBarTransitionAssistant)initWithNavigationBar:(id)bar delegate:(id)delegate;
+- (int64_t)_transitionOverrideFrom:(id)from defaultingTo:(int64_t)to;
+- (void)_clearAnimationsWithDuration:(double)duration curve:(int64_t)curve reverse:(BOOL)reverse;
 - (void)_finishTrackingAnimations;
 - (void)_getInteractive;
-- (void)_getPopDurationAndTransitionAlwaysCrossfade:(BOOL)a3;
-- (void)_getPushDurationAndTransitionAlwaysCrossfade:(BOOL)a3;
+- (void)_getPopDurationAndTransitionAlwaysCrossfade:(BOOL)crossfade;
+- (void)_getPushDurationAndTransitionAlwaysCrossfade:(BOOL)crossfade;
 - (void)_getTransitionCoordinator;
 - (void)_startTrackingAnimations;
-- (void)cancelInteractiveTransitionPercent:(double)a3 completionSpeed:(double)a4 completionCurve:(int64_t)a5;
+- (void)cancelInteractiveTransitionPercent:(double)percent completionSpeed:(double)speed completionCurve:(int64_t)curve;
 - (void)decrementAnimationCount;
-- (void)finishInteractiveTransitionPercent:(double)a3 completionSpeed:(double)a4 completionCurve:(int64_t)a5;
+- (void)finishInteractiveTransitionPercent:(double)percent completionSpeed:(double)speed completionCurve:(int64_t)curve;
 - (void)finishTrackingInteractiveTransition;
 - (void)incrementAnimationCount;
 - (void)startInteractiveTransition;
-- (void)updateInteractiveTransitionPercent:(double)a3;
+- (void)updateInteractiveTransitionPercent:(double)percent;
 @end
 
 @implementation _UINavigationBarTransitionAssistant
 
-- (_UINavigationBarTransitionAssistant)initWithNavigationBar:(id)a3 delegate:(id)a4
+- (_UINavigationBarTransitionAssistant)initWithNavigationBar:(id)bar delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  barCopy = bar;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _UINavigationBarTransitionAssistant;
   v8 = [(_UINavigationBarTransitionAssistant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_navigationBar, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_navigationBar, barCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-+ (id)pushTransitionAssistantForNavigationBar:(id)a3 delegate:(id)a4 crossfade:(BOOL)a5
++ (id)pushTransitionAssistantForNavigationBar:(id)bar delegate:(id)delegate crossfade:(BOOL)crossfade
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithNavigationBar:v9 delegate:v8];
+  crossfadeCopy = crossfade;
+  delegateCopy = delegate;
+  barCopy = bar;
+  v10 = [[self alloc] initWithNavigationBar:barCopy delegate:delegateCopy];
 
   [v10 _getTransitionCoordinator];
-  [v10 _getPushDurationAndTransitionAlwaysCrossfade:v5];
+  [v10 _getPushDurationAndTransitionAlwaysCrossfade:crossfadeCopy];
   [v10 _getInteractive];
 
   return v10;
 }
 
-+ (id)popTransitionAssistantForNavigationBar:(id)a3 delegate:(id)a4 crossfade:(BOOL)a5
++ (id)popTransitionAssistantForNavigationBar:(id)bar delegate:(id)delegate crossfade:(BOOL)crossfade
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithNavigationBar:v9 delegate:v8];
+  crossfadeCopy = crossfade;
+  delegateCopy = delegate;
+  barCopy = bar;
+  v10 = [[self alloc] initWithNavigationBar:barCopy delegate:delegateCopy];
 
   [v10 _getTransitionCoordinator];
-  [v10 _getPopDurationAndTransitionAlwaysCrossfade:v5];
+  [v10 _getPopDurationAndTransitionAlwaysCrossfade:crossfadeCopy];
   [v10 _getInteractive];
 
   return v10;
@@ -87,23 +87,23 @@
 {
   if (self->_interactive && !self->_interruptable)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     animationIDs = self->_animationIDs;
-    self->_animationIDs = v3;
+    self->_animationIDs = array;
 
     [(_UINavigationBarTransitionAssistant *)self _startTrackingAnimations];
     if (!+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v6 = [WeakRetained layer];
+      layer = [WeakRetained layer];
 
-      [v6 setSpeed:0.0];
-      [v6 setTimeOffset:0.0];
+      [layer setSpeed:0.0];
+      [layer setTimeOffset:0.0];
     }
   }
 }
 
-- (void)updateInteractiveTransitionPercent:(double)a3
+- (void)updateInteractiveTransitionPercent:(double)percent
 {
   v19 = *MEMORY[0x1E69E9840];
   if (!self->_interruptable)
@@ -131,7 +131,7 @@
 
             v10 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:*(*(&v14 + 1) + 8 * i)];
             [v10 pauseAnimation];
-            [v10 setFractionComplete:a3];
+            [v10 setFractionComplete:percent];
           }
 
           v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -143,17 +143,17 @@
 
     else
     {
-      v11 = self->_duration * a3;
+      v11 = self->_duration * percent;
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v12 = [WeakRetained layer];
-      [v12 setTimeOffset:v11];
+      layer = [WeakRetained layer];
+      [layer setTimeOffset:v11];
     }
   }
 }
 
-- (void)_clearAnimationsWithDuration:(double)a3 curve:(int64_t)a4 reverse:(BOOL)a5
+- (void)_clearAnimationsWithDuration:(double)duration curve:(int64_t)curve reverse:(BOOL)reverse
 {
-  v5 = a5;
+  reverseCopy = reverse;
   v31 = *MEMORY[0x1E69E9840];
   if (+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
   {
@@ -177,9 +177,9 @@
           }
 
           v14 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:*(*(&v25 + 1) + 8 * i)];
-          v15 = [[UICubicTimingParameters alloc] initWithAnimationCurve:a4];
-          [v14 setReversed:v5];
-          [v14 continueAnimationWithTimingParameters:v15 durationFactor:a3 / self->_duration];
+          v15 = [[UICubicTimingParameters alloc] initWithAnimationCurve:curve];
+          [v14 setReversed:reverseCopy];
+          [v14 continueAnimationWithTimingParameters:v15 durationFactor:duration / self->_duration];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -210,7 +210,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [UIView _completeAnimationWithUUID:*(*(&v21 + 1) + 8 * j) duration:a4 curve:v5 reverse:a3, v21];
+          [UIView _completeAnimationWithUUID:*(*(&v21 + 1) + 8 * j) duration:curve curve:reverseCopy reverse:duration, v21];
         }
 
         v17 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -224,53 +224,53 @@
   self->_animationIDs = 0;
 }
 
-- (void)finishInteractiveTransitionPercent:(double)a3 completionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)finishInteractiveTransitionPercent:(double)percent completionSpeed:(double)speed completionCurve:(int64_t)curve
 {
   self->_cancelledTransition = 0;
   if (!self->_interruptable)
   {
     if (+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
     {
-      v9 = (1.0 - a3) * self->_duration / a4;
+      v9 = (1.0 - percent) * self->_duration / speed;
 
-      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:a5 curve:0 reverse:v9];
+      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:curve curve:0 reverse:v9];
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v14 = [WeakRetained layer];
+      layer = [WeakRetained layer];
 
       duration = self->_duration;
-      [v14 timeOffset];
-      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:a5 curve:0 reverse:duration - v12];
-      *&v13 = a4;
-      [v14 setSpeed:v13];
+      [layer timeOffset];
+      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:curve curve:0 reverse:duration - v12];
+      *&v13 = speed;
+      [layer setSpeed:v13];
     }
   }
 }
 
-- (void)cancelInteractiveTransitionPercent:(double)a3 completionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)cancelInteractiveTransitionPercent:(double)percent completionSpeed:(double)speed completionCurve:(int64_t)curve
 {
   self->_cancelledTransition = 1;
   if (!self->_interruptable)
   {
     if (+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
     {
-      v9 = self->_duration * a3 / a4;
+      v9 = self->_duration * percent / speed;
 
-      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:a5 curve:1 reverse:v9];
+      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:curve curve:1 reverse:v9];
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v12 = [WeakRetained layer];
+      layer = [WeakRetained layer];
 
-      [v12 timeOffset];
-      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:a5 curve:1 reverse:?];
-      *&v11 = a4;
-      [v12 setSpeed:v11];
+      [layer timeOffset];
+      [(_UINavigationBarTransitionAssistant *)self _clearAnimationsWithDuration:curve curve:1 reverse:?];
+      *&v11 = speed;
+      [layer setSpeed:v11];
     }
   }
 }
@@ -341,12 +341,12 @@
       if (v4 && !+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
       {
         WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-        v9 = [WeakRetained layer];
+        layer = [WeakRetained layer];
 
         LODWORD(v8) = 1.0;
-        [v9 setSpeed:v8];
-        [v9 setBeginTime:0.0];
-        [v9 setTimeOffset:0.0];
+        [layer setSpeed:v8];
+        [layer setBeginTime:0.0];
+        [layer setTimeOffset:0.0];
       }
     }
   }
@@ -357,48 +357,48 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained _hasInterruptibleNavigationTransition];
+    _hasInterruptibleNavigationTransition = [WeakRetained _hasInterruptibleNavigationTransition];
   }
 
   else
   {
-    v3 = 0;
+    _hasInterruptibleNavigationTransition = 0;
   }
 
-  self->_interruptable = v3;
+  self->_interruptable = _hasInterruptibleNavigationTransition;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [WeakRetained _transitionCoordinator];
-    objc_storeWeak(&self->_transitionCoordinator, v4);
+    _transitionCoordinator = [WeakRetained _transitionCoordinator];
+    objc_storeWeak(&self->_transitionCoordinator, _transitionCoordinator);
   }
 }
 
-- (int64_t)_transitionOverrideFrom:(id)a3 defaultingTo:(int64_t)a4
+- (int64_t)_transitionOverrideFrom:(id)from defaultingTo:(int64_t)to
 {
-  v5 = [a3 _navigationBarTransitionVariant];
-  v6 = 4;
-  if (v5 != 2)
+  _navigationBarTransitionVariant = [from _navigationBarTransitionVariant];
+  toCopy = 4;
+  if (_navigationBarTransitionVariant != 2)
   {
-    v6 = a4;
+    toCopy = to;
   }
 
-  if (v5 == 1)
+  if (_navigationBarTransitionVariant == 1)
   {
     return 3;
   }
 
   else
   {
-    return v6;
+    return toCopy;
   }
 }
 
-- (void)_getPushDurationAndTransitionAlwaysCrossfade:(BOOL)a3
+- (void)_getPushDurationAndTransitionAlwaysCrossfade:(BOOL)crossfade
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained _willPerformCustomNavigationTransitionForPush])
   {
-    if (a3)
+    if (crossfade)
     {
       v5 = 3;
     }
@@ -420,12 +420,12 @@
   }
 }
 
-- (void)_getPopDurationAndTransitionAlwaysCrossfade:(BOOL)a3
+- (void)_getPopDurationAndTransitionAlwaysCrossfade:(BOOL)crossfade
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained _willPerformCustomNavigationTransitionForPop])
   {
-    if (a3)
+    if (crossfade)
     {
       v5 = 3;
     }

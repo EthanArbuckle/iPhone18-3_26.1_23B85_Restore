@@ -6,13 +6,13 @@
 
 - (void)pkui_compactNavigationContainer
 {
-  v2 = [a1 parentViewController];
-  v3 = [v2 parentViewController];
+  parentViewController = [self parentViewController];
+  v2ParentViewController = [parentViewController parentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = v2ParentViewController;
   }
 
   else
@@ -21,8 +21,8 @@
   }
 
   v5 = v4;
-  v6 = [v5 containedNavigationController];
-  if (v6 == a1)
+  containedNavigationController = [v5 containedNavigationController];
+  if (containedNavigationController == self)
   {
     v7 = v5;
   }

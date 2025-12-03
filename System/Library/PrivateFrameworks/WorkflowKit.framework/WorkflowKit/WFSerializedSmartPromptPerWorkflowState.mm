@@ -1,35 +1,35 @@
 @interface WFSerializedSmartPromptPerWorkflowState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WFSerializedSmartPromptPerWorkflowState)initWithData:(id)a3 actionUUID:(id)a4;
-- (WFSerializedSmartPromptPerWorkflowState)initWithDictionary:(id)a3;
+- (WFSerializedSmartPromptPerWorkflowState)initWithData:(id)data actionUUID:(id)d;
+- (WFSerializedSmartPromptPerWorkflowState)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WFSerializedSmartPromptPerWorkflowState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(WFSerializedSmartPromptPerWorkflowState *)self data];
-      v8 = [WFSmartPromptState stateFromDatabaseData:v7];
-      v9 = [v8 wfSerializedRepresentation];
+      data = [(WFSerializedSmartPromptPerWorkflowState *)self data];
+      v8 = [WFSmartPromptState stateFromDatabaseData:data];
+      wfSerializedRepresentation = [v8 wfSerializedRepresentation];
 
-      v10 = [(WFSerializedSmartPromptPerWorkflowState *)v6 data];
-      v11 = [WFSmartPromptState stateFromDatabaseData:v10];
-      v12 = [v11 wfSerializedRepresentation];
+      data2 = [(WFSerializedSmartPromptPerWorkflowState *)v6 data];
+      v11 = [WFSmartPromptState stateFromDatabaseData:data2];
+      wfSerializedRepresentation2 = [v11 wfSerializedRepresentation];
 
-      v13 = [v9 isEqualToDictionary:v12];
+      v13 = [wfSerializedRepresentation isEqualToDictionary:wfSerializedRepresentation2];
     }
 
     else
@@ -43,49 +43,49 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(WFSerializedSmartPromptPerWorkflowState *)self data];
-  [v3 setObject:v4 forKey:@"data"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  data = [(WFSerializedSmartPromptPerWorkflowState *)self data];
+  [dictionary setObject:data forKey:@"data"];
 
-  v5 = [(WFSerializedSmartPromptPerWorkflowState *)self actionUUID];
+  actionUUID = [(WFSerializedSmartPromptPerWorkflowState *)self actionUUID];
 
-  if (v5)
+  if (actionUUID)
   {
-    v6 = [(WFSerializedSmartPromptPerWorkflowState *)self actionUUID];
-    [v3 setObject:v6 forKey:@"actionUUID"];
+    actionUUID2 = [(WFSerializedSmartPromptPerWorkflowState *)self actionUUID];
+    [dictionary setObject:actionUUID2 forKey:@"actionUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (WFSerializedSmartPromptPerWorkflowState)initWithDictionary:(id)a3
+- (WFSerializedSmartPromptPerWorkflowState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"actionUUID"];
-  v6 = [v4 objectForKeyedSubscript:@"data"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"actionUUID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"data"];
 
   if (v6)
   {
     self = [(WFSerializedSmartPromptPerWorkflowState *)self initWithData:v6 actionUUID:v5];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (WFSerializedSmartPromptPerWorkflowState)initWithData:(id)a3 actionUUID:(id)a4
+- (WFSerializedSmartPromptPerWorkflowState)initWithData:(id)data actionUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  dCopy = d;
+  if (!dataCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFSerializedSmartPromptPerWorkflowState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSerializedSmartPromptPerWorkflowState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v17.receiver = self;
@@ -93,11 +93,11 @@
   v9 = [(WFSerializedSmartPromptPerWorkflowState *)&v17 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dCopy copy];
     actionUUID = v9->_actionUUID;
     v9->_actionUUID = v10;
 
-    v12 = [v7 copy];
+    v12 = [dataCopy copy];
     data = v9->_data;
     v9->_data = v12;
 

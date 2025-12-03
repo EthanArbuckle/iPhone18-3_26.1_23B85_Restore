@@ -5,17 +5,17 @@
 + (id)_unsupervisedAllowedKeys;
 + (id)allAllowedPlatformKeys;
 + (id)userEnrollmentAllowedKeysFilter;
-- (BOOL)_verifyIntersectionMaxCount:(unint64_t)a3 forFeature:(id)a4 error:(id *)a5;
-- (BOOL)_verifyMaxCount:(unint64_t)a3 forItems:(id)a4 forFeature:(id)a5 error:(id *)a6;
-- (BOOL)_verifyUnionMaxCount:(unint64_t)a3 forFeature:(id)a4 error:(id *)a5;
-- (MCRestrictionsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (BOOL)_verifyIntersectionMaxCount:(unint64_t)count forFeature:(id)feature error:(id *)error;
+- (BOOL)_verifyMaxCount:(unint64_t)count forItems:(id)items forFeature:(id)feature error:(id *)error;
+- (BOOL)_verifyUnionMaxCount:(unint64_t)count forFeature:(id)feature error:(id *)error;
+- (MCRestrictionsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)_defaultValueRestrictions;
 - (id)_enforcedFeatureStrings;
 - (id)_intersectionStrings;
-- (id)_invalidFieldErrorWithFieldName:(id)a3;
+- (id)_invalidFieldErrorWithFieldName:(id)name;
 - (id)_restrictedFeatureStrings;
 - (id)_unionStrings;
-- (id)filterForUserEnrollmentOutError:(id *)a3;
+- (id)filterForUserEnrollmentOutError:(id *)error;
 - (id)installationWarnings;
 - (id)localizedRestrictionStrings;
 - (id)stubDictionary;
@@ -214,24 +214,24 @@ void __58__MCRestrictionsPayload__ephemeralMultiUserOnlyKeysFilter__block_invoke
   return v3;
 }
 
-- (id)_invalidFieldErrorWithFieldName:(id)a3
+- (id)_invalidFieldErrorWithFieldName:(id)name
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, name, v3, v4, v5, v6, v7, name);
   v10 = [v8 MCErrorWithDomain:@"MCProfileErrorDomain" code:1003 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-- (MCRestrictionsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCRestrictionsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v252 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v233.receiver = self;
   v233.super_class = MCRestrictionsPayload;
-  v197 = v8;
-  v10 = [(MCPayload *)&v233 initWithDictionary:v8 profile:v9 outError:a5];
+  v197 = dictionaryCopy;
+  v10 = [(MCPayload *)&v233 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     v15 = 0;
@@ -239,16 +239,16 @@ void __58__MCRestrictionsPayload__ephemeralMultiUserOnlyKeysFilter__block_invoke
   }
 
   p_isa = &v10->super.super.isa;
-  v171 = a5;
-  v174 = v9;
+  errorCopy = error;
+  v174 = profileCopy;
   v12 = +[MCRestrictionManager sharedManager];
-  v13 = [v12 defaultRestrictions];
+  defaultRestrictions = [v12 defaultRestrictions];
 
-  v195 = [v13 objectForKeyedSubscript:@"restrictedBool"];
-  v170 = v13;
-  v193 = [v13 objectForKeyedSubscript:@"restrictedValue"];
-  v14 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  if ([v14 isSupervised])
+  v195 = [defaultRestrictions objectForKeyedSubscript:@"restrictedBool"];
+  v170 = defaultRestrictions;
+  v193 = [defaultRestrictions objectForKeyedSubscript:@"restrictedValue"];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  if ([mEMORY[0x1E69AD420] isSupervised])
   {
 
 LABEL_6:
@@ -256,18 +256,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [p_isa profile];
-  v17 = [v16 isStub];
+  profile = [p_isa profile];
+  isStub = [profile isStub];
 
-  if (v17)
+  if (isStub)
   {
     goto LABEL_6;
   }
 
   buf[0] = 0;
   v75 = objc_opt_class();
-  v76 = [v174 signerCertificates];
-  [v75 evaluateTrustOfCertificateChain:v76 signatureVersion:0 outIsAllowedToInstallUnsupportedPayloads:0 outIsAllowedToWriteDefaults:0 outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:buf];
+  signerCertificates = [v174 signerCertificates];
+  [v75 evaluateTrustOfCertificateChain:signerCertificates signatureVersion:0 outIsAllowedToInstallUnsupportedPayloads:0 outIsAllowedToWriteDefaults:0 outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:buf];
 
   if (buf[0])
   {
@@ -281,20 +281,20 @@ LABEL_7:
 
   v168 = +[MCRestrictionsPayload _platformSpecificKeyFilter];
   [v20 MCFilterRestrictionPayloadKeys:?];
-  v21 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  if ([v21 userMode] == 1)
+  mEMORY[0x1E69AD420]2 = [MEMORY[0x1E69AD420] sharedConfiguration];
+  if ([mEMORY[0x1E69AD420]2 userMode] == 1)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x1E6999800] isSharediPad];
+  isSharediPad = [MEMORY[0x1E6999800] isSharediPad];
 
-  if ((v22 & 1) == 0)
+  if ((isSharediPad & 1) == 0)
   {
-    v21 = +[MCRestrictionsPayload _ephemeralMultiUserOnlyKeysFilter];
-    [v20 MCFilterOutRestrictionPayloadKeys:v21];
+    mEMORY[0x1E69AD420]2 = +[MCRestrictionsPayload _ephemeralMultiUserOnlyKeysFilter];
+    [v20 MCFilterOutRestrictionPayloadKeys:mEMORY[0x1E69AD420]2];
     goto LABEL_10;
   }
 
@@ -310,19 +310,19 @@ LABEL_11:
   v25 = p_isa[11];
   p_isa[11] = v24;
 
-  v26 = [MEMORY[0x1E695DF90] dictionary];
-  v27 = [MEMORY[0x1E695DF90] dictionary];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
-  v194 = v26;
-  [p_isa[11] setObject:v26 forKeyedSubscript:@"restrictedBool"];
-  v192 = v27;
-  [p_isa[11] setObject:v27 forKeyedSubscript:@"restrictedValue"];
-  v185 = v28;
-  [p_isa[11] setObject:v28 forKeyedSubscript:@"intersection"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  v194 = dictionary;
+  [p_isa[11] setObject:dictionary forKeyedSubscript:@"restrictedBool"];
+  v192 = dictionary2;
+  [p_isa[11] setObject:dictionary2 forKeyedSubscript:@"restrictedValue"];
+  v185 = dictionary3;
+  [p_isa[11] setObject:dictionary3 forKeyedSubscript:@"intersection"];
   v196 = p_isa;
-  v176 = v29;
-  [p_isa[11] setObject:v29 forKeyedSubscript:@"union"];
+  v176 = dictionary4;
+  [p_isa[11] setObject:dictionary4 forKeyedSubscript:@"union"];
   v231 = 0u;
   v232 = 0u;
   v229 = 0u;
@@ -350,23 +350,23 @@ LABEL_11:
           if (objc_opt_respondsToSelector())
           {
             v37 = [v195 objectForKey:v35];
-            v38 = [v37 MCMutableDeepCopy];
+            mCMutableDeepCopy = [v37 MCMutableDeepCopy];
 
-            if (!v38)
+            if (!mCMutableDeepCopy)
             {
-              v38 = objc_alloc_init(MEMORY[0x1E695DF90]);
+              mCMutableDeepCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
             }
 
-            [v38 setObject:v36 forKey:@"value"];
-            [v194 setObject:v38 forKey:v35];
+            [mCMutableDeepCopy setObject:v36 forKey:@"value"];
+            [v194 setObject:mCMutableDeepCopy forKey:v35];
           }
 
           else
           {
-            v39 = [(MCPayload *)v196 profile];
-            v40 = [v39 isStub];
+            profile2 = [(MCPayload *)v196 profile];
+            isStub2 = [profile2 isStub];
 
-            if (!v40)
+            if (!isStub2)
             {
               v41 = [(MCRestrictionsPayload *)v196 _invalidFieldErrorWithFieldName:v35];
 
@@ -374,7 +374,7 @@ LABEL_11:
               {
                 v15 = v196;
 LABEL_71:
-                v77 = v171;
+                v77 = errorCopy;
                 v78 = v185;
                 goto LABEL_135;
               }
@@ -423,23 +423,23 @@ LABEL_27:
           if (objc_opt_isKindOfClass())
           {
             v49 = [v193 objectForKey:v47];
-            v50 = [v49 MCMutableDeepCopy];
+            mCMutableDeepCopy2 = [v49 MCMutableDeepCopy];
 
-            if (!v50)
+            if (!mCMutableDeepCopy2)
             {
-              v50 = objc_alloc_init(MEMORY[0x1E695DF90]);
+              mCMutableDeepCopy2 = objc_alloc_init(MEMORY[0x1E695DF90]);
             }
 
-            [v50 setObject:v48 forKey:@"value"];
-            [v192 setObject:v50 forKey:v47];
+            [mCMutableDeepCopy2 setObject:v48 forKey:@"value"];
+            [v192 setObject:mCMutableDeepCopy2 forKey:v47];
           }
 
           else
           {
-            v51 = [(MCPayload *)v196 profile];
-            v52 = [v51 isStub];
+            profile3 = [(MCPayload *)v196 profile];
+            isStub3 = [profile3 isStub];
 
-            if (!v52)
+            if (!isStub3)
             {
               v15 = v196;
               v41 = [(MCRestrictionsPayload *)v196 _invalidFieldErrorWithFieldName:v47];
@@ -447,7 +447,7 @@ LABEL_27:
               if (v41)
               {
 LABEL_96:
-                v77 = v171;
+                v77 = errorCopy;
                 v78 = v185;
                 v30 = v191;
                 goto LABEL_135;
@@ -566,8 +566,8 @@ LABEL_61:
           v72 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v59];
           [v71 intersectSet:v72];
           v246 = @"values";
-          v73 = [v71 allObjects];
-          v247 = v73;
+          allObjects = [v71 allObjects];
+          v247 = allObjects;
           v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v247 forKeys:&v246 count:1];
           [v185 setObject:v74 forKeyedSubscript:v67];
 
@@ -589,10 +589,10 @@ LABEL_61:
         goto LABEL_65;
       }
 
-      v65 = [(MCPayload *)v15 profile];
-      v66 = [v65 isStub];
+      profile4 = [(MCPayload *)v15 profile];
+      isStub4 = [profile4 isStub];
 
-      if (!v66)
+      if (!isStub4)
       {
         break;
       }
@@ -720,10 +720,10 @@ LABEL_91:
 
         else
         {
-          v93 = [(MCPayload *)v196 profile];
-          v94 = [v93 isStub];
+          profile5 = [(MCPayload *)v196 profile];
+          isStub5 = [profile5 isStub];
 
-          if ((v94 & 1) == 0)
+          if ((isStub5 & 1) == 0)
           {
             v41 = [(MCRestrictionsPayload *)v196 _invalidFieldErrorWithFieldName:v84];
 LABEL_99:
@@ -754,7 +754,7 @@ LABEL_99:
 LABEL_100:
   v15 = v196;
 LABEL_101:
-  v77 = v171;
+  v77 = errorCopy;
   v78 = v185;
 
   if ([v174 isStub])
@@ -786,17 +786,17 @@ LABEL_101:
 
         v101 = *(*(&v205 + 1) + 8 * k);
         v102 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v101 allowPlaceholder:1 error:0];
-        v103 = [v102 appTags];
-        v104 = [v103 containsObject:@"hidden"];
+        appTags = [v102 appTags];
+        v104 = [appTags containsObject:@"hidden"];
 
-        v105 = [v102 compatibilityObject];
-        v106 = [v105 bundleType];
-        v107 = [v106 isEqualToString:v183];
+        compatibilityObject = [v102 compatibilityObject];
+        bundleType = [compatibilityObject bundleType];
+        v107 = [bundleType isEqualToString:v183];
 
-        v108 = [v102 applicationState];
-        LODWORD(v105) = [v108 isAlwaysAvailable];
+        applicationState = [v102 applicationState];
+        LODWORD(compatibilityObject) = [applicationState isAlwaysAvailable];
 
-        if (v105 && (v104 & 1) == 0 && !v107 || (MCUnrestrictableApps(), v109 = objc_claimAutoreleasedReturnValue(), v110 = [v109 containsObject:v101], v109, v110))
+        if (compatibilityObject && (v104 & 1) == 0 && !v107 || (MCUnrestrictableApps(), v109 = objc_claimAutoreleasedReturnValue(), v110 = [v109 containsObject:v101], v109, v110))
         {
           v138 = v101;
 
@@ -845,17 +845,17 @@ LABEL_101:
         v114 = v112;
         v115 = *(*(&v201 + 1) + 8 * m);
         v116 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v115 allowPlaceholder:1 error:0];
-        v117 = [v116 appTags];
-        v118 = [v117 containsObject:@"hidden"];
+        appTags2 = [v116 appTags];
+        v118 = [appTags2 containsObject:@"hidden"];
 
-        v119 = [v116 compatibilityObject];
-        v120 = [v119 bundleType];
-        v121 = [v120 isEqualToString:v177];
+        compatibilityObject2 = [v116 compatibilityObject];
+        bundleType2 = [compatibilityObject2 bundleType];
+        v121 = [bundleType2 isEqualToString:v177];
 
-        v122 = [v116 applicationState];
-        LODWORD(v119) = [v122 isAlwaysAvailable];
+        applicationState2 = [v116 applicationState];
+        LODWORD(compatibilityObject2) = [applicationState2 isAlwaysAvailable];
 
-        if (v119 && (v118 & 1) == 0 && !v121 || (MCUnrestrictableApps(), v123 = objc_claimAutoreleasedReturnValue(), v124 = [v123 containsObject:v115], v123, v124))
+        if (compatibilityObject2 && (v118 & 1) == 0 && !v121 || (MCUnrestrictableApps(), v123 = objc_claimAutoreleasedReturnValue(), v124 = [v123 containsObject:v115], v123, v124))
         {
           v138 = v115;
 
@@ -930,7 +930,7 @@ LABEL_132:
 LABEL_133:
 
   v41 = v135;
-  v77 = v171;
+  v77 = errorCopy;
   v78 = v185;
 LABEL_134:
   if (v41)
@@ -950,12 +950,12 @@ LABEL_135:
       v159 = v158;
       v160 = objc_opt_class();
       v161 = v160;
-      v162 = [v156 MCVerboseDescription];
+      mCVerboseDescription = [v156 MCVerboseDescription];
       *buf = 138543618;
       v235 = v160;
       v78 = v185;
       v236 = 2114;
-      v237 = v162;
+      v237 = mCVerboseDescription;
       v30 = v191;
       _os_log_impl(&dword_1A795B000, v159, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
@@ -963,7 +963,7 @@ LABEL_135:
     v15 = 0;
   }
 
-  v9 = v174;
+  profileCopy = v174;
 LABEL_141:
 
   v163 = *MEMORY[0x1E69E9840];
@@ -975,8 +975,8 @@ LABEL_141:
   v63 = *MEMORY[0x1E69E9840];
   v58.receiver = self;
   v58.super_class = MCRestrictionsPayload;
-  v3 = [(MCPayload *)&v58 stubDictionary];
-  v40 = self;
+  stubDictionary = [(MCPayload *)&v58 stubDictionary];
+  selfCopy = self;
   [(NSMutableDictionary *)self->_restrictions objectForKey:@"restrictedBool"];
   v54 = 0u;
   v55 = 0u;
@@ -999,10 +999,10 @@ LABEL_141:
         v8 = *(*(&v54 + 1) + 8 * i);
         v9 = [obj objectForKey:v8];
         v10 = [v9 objectForKey:@"value"];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        v12 = [MEMORY[0x1E696AD98] numberWithBool:v11];
-        [v3 setObject:v12 forKey:v8];
+        v12 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+        [stubDictionary setObject:v12 forKey:v8];
       }
 
       v5 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -1011,7 +1011,7 @@ LABEL_141:
     while (v5);
   }
 
-  v13 = [(NSMutableDictionary *)v40->_restrictions objectForKey:@"restrictedValue"];
+  v13 = [(NSMutableDictionary *)selfCopy->_restrictions objectForKey:@"restrictedValue"];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -1034,7 +1034,7 @@ LABEL_141:
         v19 = [v13 objectForKey:v18];
         v20 = [v19 objectForKey:@"value"];
 
-        [v3 setObject:v20 forKey:v18];
+        [stubDictionary setObject:v20 forKey:v18];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v50 objects:v61 count:16];
@@ -1043,7 +1043,7 @@ LABEL_141:
     while (v15);
   }
 
-  v21 = [(NSMutableDictionary *)v40->_restrictions objectForKeyedSubscript:@"intersection", v13];
+  v21 = [(NSMutableDictionary *)selfCopy->_restrictions objectForKeyedSubscript:@"intersection", v13];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -1066,7 +1066,7 @@ LABEL_141:
         v27 = [v21 objectForKeyedSubscript:v26];
         v28 = [v27 objectForKeyedSubscript:@"values"];
 
-        [v3 setObject:v28 forKeyedSubscript:v26];
+        [stubDictionary setObject:v28 forKeyedSubscript:v26];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v46 objects:v60 count:16];
@@ -1075,7 +1075,7 @@ LABEL_141:
     while (v23);
   }
 
-  v29 = [(NSMutableDictionary *)v40->_restrictions objectForKeyedSubscript:@"union"];
+  v29 = [(NSMutableDictionary *)selfCopy->_restrictions objectForKeyedSubscript:@"union"];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -1098,7 +1098,7 @@ LABEL_141:
         v35 = [v29 objectForKeyedSubscript:v34];
         v36 = [v35 objectForKeyedSubscript:@"values"];
 
-        [v3 setObject:v36 forKeyedSubscript:v34];
+        [stubDictionary setObject:v36 forKeyedSubscript:v34];
       }
 
       v31 = [v29 countByEnumeratingWithState:&v42 objects:v59 count:16];
@@ -1109,41 +1109,41 @@ LABEL_141:
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return stubDictionary;
 }
 
-- (BOOL)_verifyIntersectionMaxCount:(unint64_t)a3 forFeature:(id)a4 error:(id *)a5
+- (BOOL)_verifyIntersectionMaxCount:(unint64_t)count forFeature:(id)feature error:(id *)error
 {
   restrictions = self->_restrictions;
-  v9 = a4;
-  v10 = [MCRestrictionManager intersectedValuesForFeature:v9 withRestrictionsDictionary:restrictions];
-  LOBYTE(a5) = [(MCRestrictionsPayload *)self _verifyMaxCount:a3 forItems:v10 forFeature:v9 error:a5];
+  featureCopy = feature;
+  v10 = [MCRestrictionManager intersectedValuesForFeature:featureCopy withRestrictionsDictionary:restrictions];
+  LOBYTE(error) = [(MCRestrictionsPayload *)self _verifyMaxCount:count forItems:v10 forFeature:featureCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_verifyUnionMaxCount:(unint64_t)a3 forFeature:(id)a4 error:(id *)a5
+- (BOOL)_verifyUnionMaxCount:(unint64_t)count forFeature:(id)feature error:(id *)error
 {
   restrictions = self->_restrictions;
-  v9 = a4;
-  v10 = [MCRestrictionManager unionValuesForFeature:v9 withRestrictionsDictionary:restrictions];
-  LOBYTE(a5) = [(MCRestrictionsPayload *)self _verifyMaxCount:a3 forItems:v10 forFeature:v9 error:a5];
+  featureCopy = feature;
+  v10 = [MCRestrictionManager unionValuesForFeature:featureCopy withRestrictionsDictionary:restrictions];
+  LOBYTE(error) = [(MCRestrictionsPayload *)self _verifyMaxCount:count forItems:v10 forFeature:featureCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_verifyMaxCount:(unint64_t)a3 forItems:(id)a4 forFeature:(id)a5 error:(id *)a6
+- (BOOL)_verifyMaxCount:(unint64_t)count forItems:(id)items forFeature:(id)feature error:(id *)error
 {
-  v9 = a5;
-  v17 = [a4 count];
-  if (v17 > a3)
+  featureCopy = feature;
+  v17 = [items count];
+  if (v17 > count)
   {
     v18 = MEMORY[0x1E696ABC0];
-    v19 = MCErrorArray(@"ERROR_PROFILE_FIELD_TOO_MANY_VALUES_P_FIELD", v10, v11, v12, v13, v14, v15, v16, v9);
-    *a6 = [v18 MCErrorWithDomain:@"MCRestrictionsErrorDomain" code:3005 descriptionArray:v19 errorType:@"MCFatalError"];
+    v19 = MCErrorArray(@"ERROR_PROFILE_FIELD_TOO_MANY_VALUES_P_FIELD", v10, v11, v12, v13, v14, v15, v16, featureCopy);
+    *error = [v18 MCErrorWithDomain:@"MCRestrictionsErrorDomain" code:3005 descriptionArray:v19 errorType:@"MCFatalError"];
   }
 
-  return v17 <= a3;
+  return v17 <= count;
 }
 
 - (id)_restrictedFeatureStrings
@@ -1928,8 +1928,8 @@ void __38__MCRestrictionsPayload__unionStrings__block_invoke()
   v19[2] = @"localizedString";
   v4 = +[MCRestrictionManager sharedManager];
   v5 = [v4 effectiveValueForSetting:@"enforcedSoftwareUpdateDelay"];
-  v6 = [v5 unsignedIntValue];
-  v14 = MCLocalizedFormat(@"FEATURE_SOFTWARE_UPDATE_DELAY", v7, v8, v9, v10, v11, v12, v13, v6);
+  unsignedIntValue = [v5 unsignedIntValue];
+  v14 = MCLocalizedFormat(@"FEATURE_SOFTWARE_UPDATE_DELAY", v7, v8, v9, v10, v11, v12, v13, unsignedIntValue);
   v20[2] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
   [_defaultValueRestrictions_dict setObject:v15 forKeyedSubscript:@"enforcedSoftwareUpdateDelay"];
@@ -2004,10 +2004,10 @@ void __50__MCRestrictionsPayload__defaultValueRestrictions__block_invoke()
   v99 = *MEMORY[0x1E69E9840];
   v76 = objc_opt_new();
   v3 = self->_restrictions;
-  v4 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v5 = [v4 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  if ((v5 & 1) == 0)
+  if ((isSupervised & 1) == 0)
   {
     v6 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
@@ -2067,7 +2067,7 @@ void __50__MCRestrictionsPayload__defaultValueRestrictions__block_invoke()
   v70 = v11;
   if ([v9 count])
   {
-    v18 = self;
+    selfCopy = self;
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
@@ -2103,16 +2103,16 @@ void __50__MCRestrictionsPayload__defaultValueRestrictions__block_invoke()
               goto LABEL_30;
             }
 
-            v27 = [(MCRestrictionsPayload *)v18 _enforcedFeatureStrings];
+            _enforcedFeatureStrings = [(MCRestrictionsPayload *)selfCopy _enforcedFeatureStrings];
           }
 
           else
           {
-            v27 = [(MCRestrictionsPayload *)v18 _restrictedFeatureStrings];
+            _enforcedFeatureStrings = [(MCRestrictionsPayload *)selfCopy _restrictedFeatureStrings];
           }
 
-          v28 = v27;
-          v29 = [v27 objectForKey:v24];
+          v28 = _enforcedFeatureStrings;
+          v29 = [_enforcedFeatureStrings objectForKey:v24];
 
           if (v29)
           {
@@ -2128,7 +2128,7 @@ LABEL_30:
       {
 LABEL_32:
 
-        self = v18;
+        self = selfCopy;
         v10 = v71;
         v9 = v72;
         v11 = v70;
@@ -2159,12 +2159,12 @@ LABEL_32:
           }
 
           v34 = *(*(&v85 + 1) + 8 * j);
-          v35 = [(MCRestrictionsPayload *)self _defaultValueRestrictions];
-          v36 = [v35 objectForKey:v34];
+          _defaultValueRestrictions = [(MCRestrictionsPayload *)self _defaultValueRestrictions];
+          v36 = [_defaultValueRestrictions objectForKey:v34];
 
           if (v36)
           {
-            v37 = self;
+            selfCopy2 = self;
             v38 = [v30 objectForKeyedSubscript:v34];
             v39 = [v38 objectForKeyedSubscript:@"value"];
             v40 = [v38 objectForKeyedSubscript:@"preferSmallerValues"];
@@ -2182,9 +2182,9 @@ LABEL_32:
             if (v39)
             {
               v43 = [v39 compare:v42];
-              v44 = [v40 BOOLValue];
+              bOOLValue = [v40 BOOLValue];
               v45 = -1;
-              if (!v44)
+              if (!bOOLValue)
               {
                 v45 = 1;
               }
@@ -2196,7 +2196,7 @@ LABEL_32:
               }
             }
 
-            self = v37;
+            self = selfCopy2;
           }
         }
 
@@ -2233,8 +2233,8 @@ LABEL_32:
           }
 
           v52 = *(*(&v81 + 1) + 8 * k);
-          v53 = [(MCRestrictionsPayload *)self _intersectionStrings];
-          v54 = [v53 objectForKeyedSubscript:v52];
+          _intersectionStrings = [(MCRestrictionsPayload *)self _intersectionStrings];
+          v54 = [_intersectionStrings objectForKeyedSubscript:v52];
 
           if (v54)
           {
@@ -2272,8 +2272,8 @@ LABEL_32:
           }
 
           v61 = *(*(&v77 + 1) + 8 * m);
-          v62 = [(MCRestrictionsPayload *)self _unionStrings];
-          v63 = [v62 objectForKeyedSubscript:v61];
+          _unionStrings = [(MCRestrictionsPayload *)self _unionStrings];
+          v63 = [_unionStrings objectForKeyedSubscript:v61];
 
           if (v63)
           {
@@ -2300,20 +2300,20 @@ LABEL_32:
 - (id)installationWarnings
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[MCRestrictionManager sharedManager];
   v5 = [v4 restrictedBoolForFeature:@"allowPhotoStream"];
 
-  v6 = [(MCRestrictionsPayload *)self restrictions];
-  v7 = [MCRestrictionManager restrictedBoolForFeature:@"allowPhotoStream" withRestrictionsDictionary:v6];
+  restrictions = [(MCRestrictionsPayload *)self restrictions];
+  v7 = [MCRestrictionManager restrictedBoolForFeature:@"allowPhotoStream" withRestrictionsDictionary:restrictions];
 
   if (v5 != 2 && v7 == 2)
   {
     v9 = MCPLPhotoLibraryClass();
     if (v9)
     {
-      v10 = [v9 sharedPhotoLibrary];
-      [v10 photoStreamAlbums];
+      sharedPhotoLibrary = [v9 sharedPhotoLibrary];
+      [sharedPhotoLibrary photoStreamAlbums];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
@@ -2339,7 +2339,7 @@ LABEL_32:
               v13 = MCLocalizedString(@"INSTALL_WARNING_PHOTO_STREAM_RESTRICTION");
               v17 = MCLocalizedStringByDevice(@"INSTALL_WARNING_PHOTO_STREAM");
               v18 = [MCProfileWarning warningWithLocalizedTitle:v13 localizedBody:v17 isLongForm:0];
-              [v3 addObject:v18];
+              [array addObject:v18];
 
               goto LABEL_17;
             }
@@ -2374,8 +2374,8 @@ LABEL_17:
   v20 = +[MCRestrictionManager sharedManager];
   v21 = [v20 restrictedBoolForFeature:@"allowCloudPhotoLibrary"];
 
-  v22 = [(MCRestrictionsPayload *)self restrictions];
-  v23 = [MCRestrictionManager restrictedBoolForFeature:@"allowCloudPhotoLibrary" withRestrictionsDictionary:v22];
+  restrictions2 = [(MCRestrictionsPayload *)self restrictions];
+  v23 = [MCRestrictionManager restrictedBoolForFeature:@"allowCloudPhotoLibrary" withRestrictionsDictionary:restrictions2];
 
   if (v21 != 2 && v23 == 2)
   {
@@ -2386,8 +2386,8 @@ LABEL_17:
     v26 = MCPLPhotoLibraryClass();
     if (v25 && v26)
     {
-      v27 = [v26 sharedPhotoLibrary];
-      [v25 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:v27 outCount:&v53 photoCount:&v52 videoCount:&v51];
+      sharedPhotoLibrary2 = [v26 sharedPhotoLibrary];
+      [v25 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:sharedPhotoLibrary2 outCount:&v53 photoCount:&v52 videoCount:&v51];
 
       v28 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
@@ -2429,7 +2429,7 @@ LABEL_17:
       v39 = v36;
       v40 = MCLocalizedString(@"INSTALL_WARNING_CLOUD_PHOTO_LIBRARY_RESTRICTION");
       v41 = [MCProfileWarning warningWithLocalizedTitle:v40 localizedBody:v39 isLongForm:0];
-      [v3 addObject:v41];
+      [array addObject:v41];
     }
 
     else
@@ -2446,27 +2446,27 @@ LABEL_17:
   v42 = +[MCRestrictionManager sharedManager];
   v43 = [v42 restrictedBoolForFeature:@"allowPairedWatch"];
 
-  v44 = [(MCRestrictionsPayload *)self restrictions];
-  v45 = [MCRestrictionManager restrictedBoolForFeature:@"allowPairedWatch" withRestrictionsDictionary:v44];
+  restrictions3 = [(MCRestrictionsPayload *)self restrictions];
+  v45 = [MCRestrictionManager restrictedBoolForFeature:@"allowPairedWatch" withRestrictionsDictionary:restrictions3];
 
   if (v43 != 2 && v45 == 2)
   {
     v46 = MCLocalizedString(@"INSTALL_WARNING_PAIRED_WATCH_RESTRICTION");
     v47 = MCLocalizedStringByDevice(@"INSTALL_WARNING_PAIRED_WATCH");
     v48 = [MCProfileWarning warningWithLocalizedTitle:v46 localizedBody:v47 isLongForm:0];
-    [v3 addObject:v48];
+    [array addObject:v48];
   }
 
   v49 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (id)filterForUserEnrollmentOutError:(id *)a3
+- (id)filterForUserEnrollmentOutError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = +[MCRestrictionsPayload userEnrollmentAllowedKeysFilter];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   restrictions = self->_restrictions;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
@@ -2474,7 +2474,7 @@ LABEL_17:
   v17 = &unk_1E77D25A8;
   v7 = v4;
   v18 = v7;
-  v8 = v5;
+  v8 = array;
   v19 = v8;
   [(NSMutableDictionary *)restrictions enumerateKeysAndObjectsUsingBlock:&v14];
   if ([v8 count])
@@ -2484,9 +2484,9 @@ LABEL_17:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [(MCPayload *)self friendlyName];
+      friendlyName = [(MCPayload *)self friendlyName];
       *buf = 138543618;
-      v21 = v11;
+      v21 = friendlyName;
       v22 = 2114;
       v23 = v8;
       _os_log_impl(&dword_1A795B000, v10, OS_LOG_TYPE_INFO, "Payload “%{public}@” has restrictions that we are ignoring. They are: %{public}@", buf, 0x16u);

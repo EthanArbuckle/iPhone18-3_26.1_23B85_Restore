@@ -1,17 +1,17 @@
 @interface UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UISwipeActionStandardButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"UIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UISwipeActionStandardButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"UIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,23 +21,23 @@
   v3 = [(UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit *)self safeUIViewForKey:@"imageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
-  v6 = [v5 safeValueForKey:@"_imageAsset"];
+  image = [v4 image];
+  v6 = [image safeValueForKey:@"_imageAsset"];
   v7 = [v6 safeStringForKey:@"assetName"];
 
   if ([v7 isEqualToString:@"envelope.fill"])
   {
-    v8 = accessibilityLocalizedString(@"action.email.all");
+    accessibilityLabel = accessibilityLocalizedString(@"action.email.all");
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit;
-    v8 = [(UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit *)&v11 accessibilityLabel];
+    accessibilityLabel = [(UISwipeActionStandardButtonAccessibility__ContactsUI__UIKit *)&v11 accessibilityLabel];
   }
 
-  v9 = v8;
+  v9 = accessibilityLabel;
 
   return v9;
 }

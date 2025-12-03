@@ -1,27 +1,27 @@
 @interface HUAlarmEditView
-- (HUAlarmEditView)initWithFrame:(CGRect)a3;
-- (HUAlarmEditView)initWithFrame:(CGRect)a3 supportsMusicAlarm:(BOOL)a4;
+- (HUAlarmEditView)initWithFrame:(CGRect)frame;
+- (HUAlarmEditView)initWithFrame:(CGRect)frame supportsMusicAlarm:(BOOL)alarm;
 - (void)layoutSubviews;
 @end
 
 @implementation HUAlarmEditView
 
-- (HUAlarmEditView)initWithFrame:(CGRect)a3 supportsMusicAlarm:(BOOL)a4
+- (HUAlarmEditView)initWithFrame:(CGRect)frame supportsMusicAlarm:(BOOL)alarm
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3) || (v26.receiver = self, v26.super_class = HUAlarmEditView, v10 = [(HUAlarmEditView *)&v26 initWithFrame:x, y, width, height], (self = v10) == 0))
+  alarmCopy = alarm;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsNull(frame) || (v26.receiver = self, v26.super_class = HUAlarmEditView, v10 = [(HUAlarmEditView *)&v26 initWithFrame:x, y, width, height], (self = v10) == 0))
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v10->_accessorySupportsMusicAlarm = v4;
-    if (v4)
+    v10->_accessorySupportsMusicAlarm = alarmCopy;
+    if (alarmCopy)
     {
       v11 = objc_alloc(MEMORY[0x277D75B40]);
       v12 = [v11 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -55,25 +55,25 @@
       [(HUAlarmEditView *)self addSubview:self->_timePicker];
     }
 
-    v24 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(HUAlarmEditView *)self setBackgroundColor:v24];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(HUAlarmEditView *)self setBackgroundColor:systemBackgroundColor];
 
     self = self;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (HUAlarmEditView)initWithFrame:(CGRect)a3
+- (HUAlarmEditView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3) || (v20.receiver = self, v20.super_class = HUAlarmEditView, (self = [(HUAlarmEditView *)&v20 initWithFrame:x, y, width, height]) == 0))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsNull(frame) || (v20.receiver = self, v20.super_class = HUAlarmEditView, (self = [(HUAlarmEditView *)&v20 initWithFrame:x, y, width, height]) == 0))
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -96,14 +96,14 @@
     [(UITableView *)self->_settingsTable setAlwaysBounceVertical:0];
     [(HUAlarmEditView *)self addSubview:self->_settingsTable];
     [(HUAlarmEditView *)self addSubview:self->_timePicker];
-    v17 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(HUAlarmEditView *)self setBackgroundColor:v17];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(HUAlarmEditView *)self setBackgroundColor:systemBackgroundColor];
 
     self = self;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)layoutSubviews

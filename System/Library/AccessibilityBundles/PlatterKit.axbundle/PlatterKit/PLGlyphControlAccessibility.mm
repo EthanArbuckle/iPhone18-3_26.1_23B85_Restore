@@ -1,16 +1,16 @@
 @interface PLGlyphControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityPath;
 @end
 
 @implementation PLGlyphControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLGlyphControl" hasInstanceMethod:@"_backgroundMaterialView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLGlyphControl" hasInstanceMethod:@"_cornerRadius" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLGlyphControl" hasInstanceMethod:@"_backgroundMaterialView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLGlyphControl" hasInstanceMethod:@"_cornerRadius" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityPath

@@ -1,7 +1,7 @@
 @interface PHMediaFormatLivePhotoBundleConversionRequest
-- (BOOL)prepareWithError:(id *)a3;
-- (void)enqueueSubrequestsOnConversionManager:(id)a3;
-- (void)enumerateSubrequests:(id)a3;
+- (BOOL)prepareWithError:(id *)error;
+- (void)enqueueSubrequestsOnConversionManager:(id)manager;
+- (void)enumerateSubrequests:(id)subrequests;
 - (void)postProcessSuccessfulCompositeRequest;
 @end
 
@@ -26,21 +26,21 @@
   if (v5)
   {
     v7 = objc_alloc(MEMORY[0x277D3B520]);
-    v8 = [(PHMediaFormatConversionRequest *)self source];
-    v9 = [v8 fileURL];
-    v10 = [v7 initWithBundleAtURL:v9];
+    source = [(PHMediaFormatConversionRequest *)self source];
+    fileURL = [source fileURL];
+    v10 = [v7 initWithBundleAtURL:fileURL];
 
     if (v10)
     {
-      v11 = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
-      v12 = [v11 videoConversionRequest];
-      v13 = [v12 destination];
-      v14 = [v13 fileURL];
+      livePhotoConversionRequest = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
+      videoConversionRequest = [livePhotoConversionRequest videoConversionRequest];
+      destination = [videoConversionRequest destination];
+      fileURL2 = [destination fileURL];
 
-      v15 = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
-      v16 = [v15 imageConversionRequest];
-      v17 = [v16 destination];
-      v18 = [v17 fileURL];
+      livePhotoConversionRequest2 = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
+      imageConversionRequest = [livePhotoConversionRequest2 imageConversionRequest];
+      destination2 = [imageConversionRequest destination];
+      fileURL3 = [destination2 fileURL];
 
       if ([(PHMediaFormatConversionCompositeRequest *)self requiresFormatConversion])
       {
@@ -53,16 +53,16 @@
       }
       v19 = ;
       v20 = objc_alloc(MEMORY[0x277D3B520]);
-      v29 = v14;
-      v21 = [v14 path];
-      v28 = v18;
-      v22 = [v18 path];
+      v29 = fileURL2;
+      path = [fileURL2 path];
+      v28 = fileURL3;
+      path2 = [fileURL3 path];
       [v10 imageDisplayTime];
-      v23 = [v20 initWithPathToVideo:v21 pathToImage:v22 imageDisplayTime:buf pairingIdentifier:v19];
+      v23 = [v20 initWithPathToVideo:path pathToImage:path2 imageDisplayTime:buf pairingIdentifier:v19];
 
-      v24 = [v3 temporaryOutputFileURL];
+      temporaryOutputFileURL = [v3 temporaryOutputFileURL];
       v30 = v6;
-      v25 = [v23 writeToBundleAtURL:v24 error:&v30];
+      v25 = [v23 writeToBundleAtURL:temporaryOutputFileURL error:&v30];
       v26 = v30;
 
       if (v25)
@@ -141,24 +141,24 @@ uint64_t __86__PHMediaFormatLivePhotoBundleConversionRequest_postProcessSuccessf
   return result;
 }
 
-- (void)enumerateSubrequests:(id)a3
+- (void)enumerateSubrequests:(id)subrequests
 {
-  v5 = a3;
-  v6 = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
-  (*(a3 + 2))(v5, v6);
+  subrequestsCopy = subrequests;
+  livePhotoConversionRequest = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
+  (*(subrequests + 2))(subrequestsCopy, livePhotoConversionRequest);
 }
 
-- (void)enqueueSubrequestsOnConversionManager:(id)a3
+- (void)enqueueSubrequestsOnConversionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(PHMediaFormatConversionCompositeRequest *)self propagateRequestOptionsToSubrequests];
-  v5 = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
+  livePhotoConversionRequest = [(PHMediaFormatLivePhotoBundleConversionRequest *)self livePhotoConversionRequest];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnConversionManager___block_invoke;
   v6[3] = &unk_27989BA48;
   v6[4] = self;
-  [v4 enqueueConversionRequest:v5 completionHandler:v6];
+  [managerCopy enqueueConversionRequest:livePhotoConversionRequest completionHandler:v6];
 }
 
 void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnConversionManager___block_invoke(uint64_t a1)
@@ -175,22 +175,22 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(PHMediaFormatConversionRequest *)self source];
-  v6 = [v5 fileURL];
+  source = [(PHMediaFormatConversionRequest *)self source];
+  fileURL = [source fileURL];
 
-  v7 = [objc_alloc(MEMORY[0x277D3B520]) initWithBundleAtURL:v6];
+  v7 = [objc_alloc(MEMORY[0x277D3B520]) initWithBundleAtURL:fileURL];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 imagePath];
-    v10 = [v8 videoPath];
-    v11 = v10;
-    if (v9)
+    imagePath = [v7 imagePath];
+    videoPath = [v8 videoPath];
+    v11 = videoPath;
+    if (imagePath)
     {
-      v12 = v10 == 0;
+      v12 = videoPath == 0;
     }
 
     else
@@ -203,7 +203,7 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v34 = v6;
+        v34 = fileURL;
         _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to get image and video path from pvt bundle at path %@", buf, 0xCu);
       }
 
@@ -212,14 +212,14 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
 
     else
     {
-      v31 = v9;
-      v32 = v10;
-      v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
+      v31 = imagePath;
+      v32 = videoPath;
+      v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:imagePath];
       v15 = [PHMediaFormatConversionSource imageSourceForFileURL:v14];
 
-      v16 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+      destinationCapabilities = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
       v29 = v15;
-      v17 = [PHMediaFormatConversionRequest requestForSource:v15 destinationCapabilities:v16 error:a3];
+      v17 = [PHMediaFormatConversionRequest requestForSource:v15 destinationCapabilities:destinationCapabilities error:error];
 
       v30 = v17;
       if (v17)
@@ -228,20 +228,20 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
         v18 = [MEMORY[0x277CBEBC0] fileURLWithPath:v32];
         v19 = [PHMediaFormatConversionSource videoSourceForFileURL:v18];
 
-        v20 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+        destinationCapabilities2 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
         v28 = v19;
-        v21 = [PHMediaFormatConversionRequest requestForSource:v19 destinationCapabilities:v20 error:a3];
+        v21 = [PHMediaFormatConversionRequest requestForSource:v19 destinationCapabilities:destinationCapabilities2 error:error];
 
         if (v21)
         {
-          v22 = [PHMediaFormatLivePhotoConversionRequest requestForImageConversionRequest:v17 videoConversionRequest:v21 error:a3];
+          v22 = [PHMediaFormatLivePhotoConversionRequest requestForImageConversionRequest:v17 videoConversionRequest:v21 error:error];
           v13 = v22 != 0;
           if (v22)
           {
             [(PHMediaFormatConversionRequest *)self setLivePhotoPairingIdentifierBehavior:4];
-            v23 = [MEMORY[0x277CCAD78] UUID];
-            v24 = [v23 UUIDString];
-            [(PHMediaFormatConversionRequest *)self setLivePhotoPairingIdentifier:v24];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            uUIDString = [uUID UUIDString];
+            [(PHMediaFormatConversionRequest *)self setLivePhotoPairingIdentifier:uUIDString];
 
             [(PHMediaFormatLivePhotoBundleConversionRequest *)self setLivePhotoConversionRequest:v22];
             [v22 setParentRequest:self];
@@ -250,7 +250,7 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
           else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v34 = v6;
+            v34 = fileURL;
             _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create live photo bundle request for %@", buf, 0xCu);
           }
         }
@@ -267,13 +267,13 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
           v13 = 0;
         }
 
-        v9 = v31;
+        imagePath = v31;
       }
 
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v9 = v31;
+        imagePath = v31;
         v34 = v31;
         _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create live photo bundle image subrequest for %@", buf, 0xCu);
         v13 = 0;
@@ -283,7 +283,7 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
       else
       {
         v13 = 0;
-        v9 = v31;
+        imagePath = v31;
         v11 = v32;
       }
     }
@@ -291,16 +291,16 @@ void __87__PHMediaFormatLivePhotoBundleConversionRequest_enqueueSubrequestsOnCon
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PHMediaFormatConversionErrorDomain" code:5 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"PHMediaFormatConversionErrorDomain" code:5 userInfo:0];
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v27 = [v6 path];
+      path = [fileURL path];
       *buf = 138412290;
-      v34 = v27;
+      v34 = path;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create live photo bundle with path %@", buf, 0xCu);
     }
 

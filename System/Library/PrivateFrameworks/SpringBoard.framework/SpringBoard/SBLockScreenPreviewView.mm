@@ -1,5 +1,5 @@
 @interface SBLockScreenPreviewView
-- (SBLockScreenPreviewView)initWithFrame:(CGRect)a3 wallpaperController:(id)a4 options:(unint64_t)a5 wallpaperImage:(id)a6;
+- (SBLockScreenPreviewView)initWithFrame:(CGRect)frame wallpaperController:(id)controller options:(unint64_t)options wallpaperImage:(id)image;
 - (id)_statusBarReusePool;
 - (void)_layoutCallToActionLabel;
 - (void)_layoutDateView;
@@ -10,35 +10,35 @@
 - (void)_layoutStatusBar;
 - (void)_layoutWallpaperView;
 - (void)_setupCallToActionLabel;
-- (void)_setupDateViewWithOptions:(unint64_t)a3;
+- (void)_setupDateViewWithOptions:(unint64_t)options;
 - (void)_setupHomeGrabberView;
 - (void)_setupPageControl;
 - (void)_setupProudLockIconView;
 - (void)_setupQuickActionView;
 - (void)_setupStatusBar;
-- (void)_setupWallpaperViewWithImage:(id)a3;
+- (void)_setupWallpaperViewWithImage:(id)image;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation SBLockScreenPreviewView
 
-- (SBLockScreenPreviewView)initWithFrame:(CGRect)a3 wallpaperController:(id)a4 options:(unint64_t)a5 wallpaperImage:(id)a6
+- (SBLockScreenPreviewView)initWithFrame:(CGRect)frame wallpaperController:(id)controller options:(unint64_t)options wallpaperImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  imageCopy = image;
   v24.receiver = self;
   v24.super_class = SBLockScreenPreviewView;
-  v16 = [(SBLockScreenPreviewView *)&v24 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SBLockScreenPreviewView *)&v24 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_wallpaperController, a4);
-    if ((a5 & 0x400) != 0)
+    objc_storeStrong(&height->_wallpaperController, controller);
+    if ((options & 0x400) != 0)
     {
       v19 = objc_alloc(MEMORY[0x277D760A8]);
       v20 = 2;
@@ -46,9 +46,9 @@
 
     else
     {
-      if ((a5 & 0x800) == 0)
+      if ((options & 0x800) == 0)
       {
-        v18 = [v14 legibilitySettingsForVariant:0];
+        v18 = [controllerCopy legibilitySettingsForVariant:0];
         goto LABEL_8;
       }
 
@@ -61,18 +61,18 @@ LABEL_8:
     legibilitySettings = v17->_legibilitySettings;
     v17->_legibilitySettings = v18;
 
-    if ((a5 & 0x40) == 0)
+    if ((options & 0x40) == 0)
     {
-      [(SBLockScreenPreviewView *)v17 _setupWallpaperViewWithImage:v15];
+      [(SBLockScreenPreviewView *)v17 _setupWallpaperViewWithImage:imageCopy];
     }
 
-    [(SBLockScreenPreviewView *)v17 _setupDateViewWithOptions:a5];
-    if ((a5 & 1) == 0)
+    [(SBLockScreenPreviewView *)v17 _setupDateViewWithOptions:options];
+    if ((options & 1) == 0)
     {
       [(SBLockScreenPreviewView *)v17 _setupStatusBar];
     }
 
-    if ((a5 & 0x22) == 0x20)
+    if ((options & 0x22) == 0x20)
     {
       [(SBLockScreenPreviewView *)v17 _setupPageControl];
     }
@@ -83,12 +83,12 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    if ((a5 & 8) != 0)
+    if ((options & 8) != 0)
     {
-      if ((a5 & 0x10) != 0)
+      if ((options & 0x10) != 0)
       {
 LABEL_17:
-        if ((a5 & 0x20) != 0)
+        if ((options & 0x20) != 0)
         {
 LABEL_19:
           v22 = v17;
@@ -104,14 +104,14 @@ LABEL_18:
     else
     {
       [(SBLockScreenPreviewView *)v17 _setupProudLockIconView];
-      if ((a5 & 0x10) != 0)
+      if ((options & 0x10) != 0)
       {
         goto LABEL_17;
       }
     }
 
     [(SBLockScreenPreviewView *)v17 _setupQuickActionView];
-    if ((a5 & 0x20) != 0)
+    if ((options & 0x20) != 0)
     {
       goto LABEL_19;
     }
@@ -126,24 +126,24 @@ LABEL_20:
 
 - (void)dealloc
 {
-  v3 = [(SBLockScreenPreviewView *)self _statusBarReusePool];
-  [v3 recycleStatusBar:self->_statusBar];
+  _statusBarReusePool = [(SBLockScreenPreviewView *)self _statusBarReusePool];
+  [_statusBarReusePool recycleStatusBar:self->_statusBar];
 
   v4.receiver = self;
   v4.super_class = SBLockScreenPreviewView;
   [(SBLockScreenPreviewView *)&v4 dealloc];
 }
 
-- (void)_setupWallpaperViewWithImage:(id)a3
+- (void)_setupWallpaperViewWithImage:(id)image
 {
-  v4 = a3;
-  if (v4)
+  imageCopy = image;
+  if (imageCopy)
   {
     goto LABEL_8;
   }
 
-  v5 = [(SBWallpaperController *)self->_wallpaperController wallpaperConfigurationManager];
-  v6 = [v5 wallpaperConfigurationForVariant:0 includingValuesForTypes:4];
+  wallpaperConfigurationManager = [(SBWallpaperController *)self->_wallpaperController wallpaperConfigurationManager];
+  v6 = [wallpaperConfigurationManager wallpaperConfigurationForVariant:0 includingValuesForTypes:4];
   if (_os_feature_enabled_impl())
   {
     v7 = SBLogWallpaper();
@@ -155,19 +155,19 @@ LABEL_20:
 
   else
   {
-    v8 = [v6 proceduralWallpaperInfo];
+    proceduralWallpaperInfo = [v6 proceduralWallpaperInfo];
 
-    if (!v8)
+    if (!proceduralWallpaperInfo)
     {
 
       goto LABEL_11;
     }
   }
 
-  v9 = [v6 wallpaperThumbnailImage];
-  v4 = [v9 resizableImageWithCapInsets:1 resizingMode:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  wallpaperThumbnailImage = [v6 wallpaperThumbnailImage];
+  imageCopy = [wallpaperThumbnailImage resizableImageWithCapInsets:1 resizingMode:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
-  if (!v4)
+  if (!imageCopy)
   {
 LABEL_11:
     v14 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:0 transformOptions:2];
@@ -180,7 +180,7 @@ LABEL_11:
 
 LABEL_8:
   v10 = MEMORY[0x277D755E8];
-  wallpaperView = v4;
+  wallpaperView = imageCopy;
   v12 = [[v10 alloc] initWithImage:wallpaperView];
   v13 = self->_wallpaperView;
   self->_wallpaperView = v12;
@@ -191,56 +191,56 @@ LABEL_9:
   [(SBLockScreenPreviewView *)self addSubview:self->_wallpaperView];
 }
 
-- (void)_setupDateViewWithOptions:(unint64_t)a3
+- (void)_setupDateViewWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   if (_os_feature_enabled_impl())
   {
     v5 = objc_alloc_init(MEMORY[0x277D65EB8]);
     dateViewController = self->_dateViewController;
     self->_dateViewController = v5;
 
-    v7 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+    dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x277D65EB0]);
-    v7 = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    dateView = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   }
 
   dateView = self->_dateView;
-  self->_dateView = v7;
+  self->_dateView = dateView;
 
   v10 = self->_dateView;
-  if ((v3 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [(SBFLockScreenDateView *)v10 setDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(SBFLockScreenDateView *)v10 setDate:date];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:190057260.0];
+    date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:190057260.0];
     v12 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"America/Los_Angeles"];
-    [(SBFLockScreenDateView *)v10 _setDate:v11 inTimeZone:v12];
+    [(SBFLockScreenDateView *)v10 _setDate:date inTimeZone:v12];
   }
 
-  v13 = [MEMORY[0x277D02C20] rootSettings];
-  v18 = [v13 lookSettings];
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  lookSettings = [rootSettings lookSettings];
 
-  if ([v18 useSettingsDateTime] && objc_msgSend(v18, "customizesDateTime"))
+  if ([lookSettings useSettingsDateTime] && objc_msgSend(lookSettings, "customizesDateTime"))
   {
     v14 = self->_dateView;
-    v15 = [v18 customTimeFont];
-    [(SBFLockScreenDateView *)v14 setCustomTimeFont:v15];
+    customTimeFont = [lookSettings customTimeFont];
+    [(SBFLockScreenDateView *)v14 setCustomTimeFont:customTimeFont];
 
-    -[SBFLockScreenDateView setSubtitleOnTop:](self->_dateView, "setSubtitleOnTop:", [v18 subtitleAboveTime]);
+    -[SBFLockScreenDateView setSubtitleOnTop:](self->_dateView, "setSubtitleOnTop:", [lookSettings subtitleAboveTime]);
   }
 
   v16 = self->_dateView;
-  v17 = [MEMORY[0x277D65EB0] timeFont];
-  [(SBFLockScreenDateView *)v16 setCustomTimeFont:v17];
+  timeFont = [MEMORY[0x277D65EB0] timeFont];
+  [(SBFLockScreenDateView *)v16 setCustomTimeFont:timeFont];
 
   [(SBFLockScreenDateView *)self->_dateView setLegibilitySettings:self->_legibilitySettings];
   [(SBLockScreenPreviewView *)self addSubview:self->_dateView];
@@ -248,17 +248,17 @@ LABEL_9:
 
 - (void)_setupStatusBar
 {
-  v3 = [(SBLockScreenPreviewView *)self _statusBarReusePool];
+  _statusBarReusePool = [(SBLockScreenPreviewView *)self _statusBarReusePool];
   [(SBLockScreenPreviewView *)self bounds];
-  v4 = [v3 getReusableStatusBarWithReason:@"Lock Screen Preview Status Bar" withFrame:{0.0, 0.0}];
+  v4 = [_statusBarReusePool getReusableStatusBarWithReason:@"Lock Screen Preview Status Bar" withFrame:{0.0, 0.0}];
   statusBar = self->_statusBar;
   self->_statusBar = v4;
 
   [(UIStatusBar *)self->_statusBar setOrientation:1];
   [(UIStatusBar *)self->_statusBar setLegibilityStyle:[(_UILegibilitySettings *)self->_legibilitySettings style]];
   v6 = self->_statusBar;
-  v7 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UIStatusBar *)v6 setForegroundColor:v7];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UIStatusBar *)v6 setForegroundColor:primaryColor];
 
   [(UIStatusBar *)self->_statusBar requestStyle:[(_UILegibilitySettings *)self->_legibilitySettings style]!= 2];
   [(UIStatusBar *)self->_statusBar sb_setSnapshotOverridesWithTimeEnabled:0 overriddenDate:0];
@@ -312,9 +312,9 @@ LABEL_9:
 - (void)_setupQuickActionView
 {
   v5 = objc_alloc_init(MEMORY[0x277D02C78]);
-  v3 = [v5 view];
+  view = [v5 view];
   quickActionsView = self->_quickActionsView;
-  self->_quickActionsView = v3;
+  self->_quickActionsView = view;
 
   [(CSQuickActionsView *)self->_quickActionsView setLegibilitySettings:self->_legibilitySettings];
   [(SBLockScreenPreviewView *)self addSubview:self->_quickActionsView];
@@ -451,12 +451,12 @@ LABEL_9:
 
 - (id)_statusBarReusePool
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v4 = [v3 statusBarManager];
-  v5 = [v4 reusePool];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  statusBarManager = [embeddedDisplayWindowScene statusBarManager];
+  reusePool = [statusBarManager reusePool];
 
-  return v5;
+  return reusePool;
 }
 
 - (void)_setupWallpaperViewWithImage:(void *)a1 .cold.1(void *a1, NSObject *a2)

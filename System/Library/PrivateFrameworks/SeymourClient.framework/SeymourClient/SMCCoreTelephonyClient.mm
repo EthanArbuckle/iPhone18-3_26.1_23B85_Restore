@@ -1,13 +1,13 @@
 @interface SMCCoreTelephonyClient
-- (SMCCoreTelephonyClient)initWithQueue:(id)a3;
+- (SMCCoreTelephonyClient)initWithQueue:(id)queue;
 - (SMCCoreTelephonyClientDelegate)delegate;
 - (void)_updatePreferredDataSubscriptionContext;
 - (void)activate;
-- (void)dataSettingsChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
-- (void)internetDataStatus:(id)a3;
-- (void)roaming:(char *)a3 error:(id *)a4;
-- (void)servingNetworkChanged:(id)a3;
+- (void)dataSettingsChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
+- (void)internetDataStatus:(id)status;
+- (void)roaming:(char *)roaming error:(id *)error;
+- (void)servingNetworkChanged:(id)changed;
 @end
 
 @implementation SMCCoreTelephonyClient
@@ -30,30 +30,30 @@
   self->_preferredDataSubscriptionContext = v8;
 }
 
-- (SMCCoreTelephonyClient)initWithQueue:(id)a3
+- (SMCCoreTelephonyClient)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SMCCoreTelephonyClient;
   v6 = [(SMCCoreTelephonyClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)roaming:(char *)a3 error:(id *)a4
+- (void)roaming:(char *)roaming error:(id *)error
 {
-  v5 = [(CoreTelephonyClient *)self->_ctClient getDataStatus:0 error:a4];
+  v5 = [(CoreTelephonyClient *)self->_ctClient getDataStatus:0 error:error];
   if (v5)
   {
     v7 = v5;
     v6 = [v5 inHomeCountry] ^ 1;
     v5 = v7;
-    *a3 = v6;
+    *roaming = v6;
   }
 }
 
@@ -67,34 +67,34 @@
   self->_preferredDataSubscriptionContext = v4;
 }
 
-- (void)dataSettingsChanged:(id)a3
+- (void)dataSettingsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 isCellularDataEnabled];
+  isCellularDataEnabled = [changedCopy isCellularDataEnabled];
 
-  [WeakRetained cellularDataStateChangedWithCellularDataEnabled:v5];
+  [WeakRetained cellularDataStateChangedWithCellularDataEnabled:isCellularDataEnabled];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  v8 = a4;
-  if ([(CTXPCServiceSubscriptionContext *)self->_preferredDataSubscriptionContext isEqual:a3])
+  infoCopy = info;
+  if ([(CTXPCServiceSubscriptionContext *)self->_preferredDataSubscriptionContext isEqual:status])
   {
-    v6 = [(SMCCoreTelephonyClient *)self _getRoamingFromDataStatus:v8];
+    v6 = [(SMCCoreTelephonyClient *)self _getRoamingFromDataStatus:infoCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained cellularDataStateChangedWithRoaming:v6];
   }
 }
 
-- (void)internetDataStatus:(id)a3
+- (void)internetDataStatus:(id)status
 {
-  v4 = [(SMCCoreTelephonyClient *)self _getRoamingFromDataStatus:a3];
+  v4 = [(SMCCoreTelephonyClient *)self _getRoamingFromDataStatus:status];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained cellularDataStateChangedWithRoaming:v4];
 }
 
-- (void)servingNetworkChanged:(id)a3
+- (void)servingNetworkChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained cellularDataStateChanged];

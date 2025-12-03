@@ -1,35 +1,35 @@
 @interface MapsAppTestRAP
 - (BOOL)runTest;
 - (SEL)rapSel;
-- (void)cleanup:(BOOL)a3;
-- (void)handleRAPControllerLoaded:(id)a3;
-- (void)handleRAPProblemNotListedControllerLoaded:(id)a3;
-- (void)handleRAPThankYouControllerLoaded:(id)a3;
-- (void)handleSettingsTableViewControllerLoaded:(id)a3;
+- (void)cleanup:(BOOL)cleanup;
+- (void)handleRAPControllerLoaded:(id)loaded;
+- (void)handleRAPProblemNotListedControllerLoaded:(id)loaded;
+- (void)handleRAPThankYouControllerLoaded:(id)loaded;
+- (void)handleSettingsTableViewControllerLoaded:(id)loaded;
 - (void)handleTappingFromSettingsButtonIntoSettingsTableViewController;
 - (void)overridePrivacyConsent;
 - (void)overrideProblemSubmissionURL;
 - (void)overrideServerControlledUI;
 - (void)restorePrivacyConsent;
 - (void)restoreProblemSubmissionURL;
-- (void)setRapSel:(SEL)a3;
+- (void)setRapSel:(SEL)sel;
 @end
 
 @implementation MapsAppTestRAP
 
-- (void)setRapSel:(SEL)a3
+- (void)setRapSel:(SEL)sel
 {
-  if (a3)
+  if (sel)
   {
-    v3 = a3;
+    selCopy = sel;
   }
 
   else
   {
-    v3 = 0;
+    selCopy = 0;
   }
 
-  self->_rapSel = v3;
+  self->_rapSel = selCopy;
 }
 
 - (SEL)rapSel
@@ -45,47 +45,47 @@
   }
 }
 
-- (void)handleRAPThankYouControllerLoaded:(id)a3
+- (void)handleRAPThankYouControllerLoaded:(id)loaded
 {
   [(MapsAppTest *)self finishedSubTest:@"displayRAPThankYouController"];
 
   [(MapsAppTest *)self finishedTest];
 }
 
-- (void)handleRAPProblemNotListedControllerLoaded:(id)a3
+- (void)handleRAPProblemNotListedControllerLoaded:(id)loaded
 {
-  v15 = a3;
+  loadedCopy = loaded;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:self->_rapNotificationString object:0];
-  v5 = [v15 object];
+  object = [loadedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v15 object];
-    v8 = [v7 rapReportComposerCommentTableViewCell];
-    v9 = v8;
-    if (v8)
+    object2 = [loadedCopy object];
+    rapReportComposerCommentTableViewCell = [object2 rapReportComposerCommentTableViewCell];
+    v9 = rapReportComposerCommentTableViewCell;
+    if (rapReportComposerCommentTableViewCell)
     {
-      [v8 beginEditingCommentIfPossible];
+      [rapReportComposerCommentTableViewCell beginEditingCommentIfPossible];
       [v9 setCommentText:{@"Test, Not a real report"}];
-      v10 = [v9 textDidChange];
+      textDidChange = [v9 textDidChange];
 
-      if (v10)
+      if (textDidChange)
       {
-        v11 = [v9 textDidChange];
-        v12 = [v9 commentText];
-        (v11)[2](v11, v12);
+        textDidChange2 = [v9 textDidChange];
+        commentText = [v9 commentText];
+        (textDidChange2)[2](textDidChange2, commentText);
       }
 
       [v4 addObserver:self selector:"handleRAPThankYouControllerLoaded:" name:@"RAPAcknowledgementViewControllerDidAppearNotification" object:0];
       [(MapsAppTest *)self startedSubTest:@"displayRAPThankYouController"];
-      v13 = [v7 navigationController];
+      navigationController = [object2 navigationController];
       if (objc_opt_respondsToSelector())
       {
         v14 = +[RAPAcknowledgementOptions defaultOptions];
-        [v13 _sendWithFinalOutcome:1 acknowledgementOptions:v14];
+        [navigationController _sendWithFinalOutcome:1 acknowledgementOptions:v14];
       }
     }
 
@@ -101,22 +101,22 @@
   }
 }
 
-- (void)handleRAPControllerLoaded:(id)a3
+- (void)handleRAPControllerLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   v24 = +[NSNotificationCenter defaultCenter];
   [v24 removeObserver:self name:@"RAPReportComposerCategoryViewControllerDidAppearNotification" object:0];
   [(MapsAppTest *)self finishedSubTest:@"displayRAPController"];
-  v25 = v4;
-  [v4 object];
+  v25 = loadedCopy;
+  [loadedCopy object];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v23 = v29 = 0u;
-  v5 = [v23 tableView];
-  v6 = [v5 visibleCells];
+  tableView = [v23 tableView];
+  visibleCells = [tableView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -127,13 +127,13 @@ LABEL_3:
     {
       if (*v27 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(visibleCells);
       }
 
       v11 = *(*(&v26 + 1) + 8 * v10);
-      v12 = [v11 viewModel];
-      v13 = [v12 title];
-      v14 = [v13 isEqualToString:self->_rapQuestionCellTitle];
+      viewModel = [v11 viewModel];
+      title = [viewModel title];
+      v14 = [title isEqualToString:self->_rapQuestionCellTitle];
 
       if (v14)
       {
@@ -142,7 +142,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v8 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -153,8 +153,8 @@ LABEL_3:
     }
 
     v15 = v23;
-    v16 = [v23 tableView];
-    v17 = [v16 indexPathForCell:v11];
+    tableView2 = [v23 tableView];
+    v17 = [tableView2 indexPathForCell:v11];
 
     if (!v17)
     {
@@ -174,16 +174,16 @@ LABEL_3:
     }
 
     [v24 addObserver:self selector:rapSel name:self->_rapNotificationString object:0];
-    v21 = [v23 tableView];
-    [v21 selectRowAtIndexPath:v17 animated:1 scrollPosition:1];
+    tableView3 = [v23 tableView];
+    [tableView3 selectRowAtIndexPath:v17 animated:1 scrollPosition:1];
 
     if (self->_rapCurrentSubTestName)
     {
       [(MapsAppTest *)self startedSubTest:?];
     }
 
-    v22 = [v23 tableView];
-    [v23 tableView:v22 didSelectRowAtIndexPath:v17];
+    tableView4 = [v23 tableView];
+    [v23 tableView:tableView4 didSelectRowAtIndexPath:v17];
   }
 
   else
@@ -198,29 +198,29 @@ LABEL_13:
   }
 }
 
-- (void)handleSettingsTableViewControllerLoaded:(id)a3
+- (void)handleSettingsTableViewControllerLoaded:(id)loaded
 {
-  v11 = a3;
+  loadedCopy = loaded;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"SettingsTableViewControllerDidAppearNotification" object:0];
-  v5 = [v11 object];
+  object = [loadedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v11 object];
-    v8 = [v7 indexPathForMenuItem:1];
+    object2 = [loadedCopy object];
+    v8 = [object2 indexPathForMenuItem:1];
     if (v8)
     {
       [v4 addObserver:self selector:"handleRAPControllerLoaded:" name:@"RAPReportComposerCategoryViewControllerDidAppearNotification" object:0];
-      v9 = [v7 tableView];
-      [v9 selectRowAtIndexPath:v8 animated:1 scrollPosition:1];
+      tableView = [object2 tableView];
+      [tableView selectRowAtIndexPath:v8 animated:1 scrollPosition:1];
 
       [(MapsAppTest *)self startedTest];
       [(MapsAppTest *)self startedSubTest:@"displayRAPController"];
-      v10 = [v7 tableView];
-      [v7 tableView:v10 didSelectRowAtIndexPath:v8];
+      tableView2 = [object2 tableView];
+      [object2 tableView:tableView2 didSelectRowAtIndexPath:v8];
     }
 
     else
@@ -237,8 +237,8 @@ LABEL_13:
 
 - (void)handleTappingFromSettingsButtonIntoSettingsTableViewController
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestOpenSettings];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestOpenSettings];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"handleSettingsTableViewControllerLoaded:" name:@"SettingsTableViewControllerDidAppearNotification" object:0];
@@ -301,9 +301,9 @@ LABEL_13:
   GEOConfigSetBOOL();
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(MapsAppTestRAP *)self restoreProblemSubmissionURL];
   [(MapsAppTestRAP *)self restorePrivacyConsent];
   [(MapsAppTestRAP *)self restoreServerControlledUI];
@@ -319,21 +319,21 @@ LABEL_13:
 
   v8.receiver = self;
   v8.super_class = MapsAppTestRAP;
-  [(MapsAppTest *)&v8 cleanup:v3];
+  [(MapsAppTest *)&v8 cleanup:cleanupCopy];
 }
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
   [(MapsAppTestRAP *)self overrideProblemSubmissionURL];
   [(MapsAppTestRAP *)self overridePrivacyConsent];
   [(MapsAppTestRAP *)self overrideServerControlledUI];
   v4 = [[RAPProblemNotListedQuestion alloc] initWithReport:0 parentQuestion:0];
-  v5 = [(RAPProblemNotListedQuestion *)v4 localizedTitle];
+  localizedTitle = [(RAPProblemNotListedQuestion *)v4 localizedTitle];
   rapQuestionCellTitle = self->_rapQuestionCellTitle;
-  self->_rapQuestionCellTitle = v5;
+  self->_rapQuestionCellTitle = localizedTitle;
 
   self->_rapSel = "handleRAPProblemNotListedControllerLoaded:";
   objc_storeStrong(&self->_rapNotificationString, @"RAPReportComposerCommentViewControllerDidAppearNotification");

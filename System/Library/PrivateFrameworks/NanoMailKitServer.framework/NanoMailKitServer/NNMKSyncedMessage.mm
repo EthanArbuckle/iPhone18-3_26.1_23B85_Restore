@@ -1,51 +1,51 @@
 @interface NNMKSyncedMessage
 - (BOOL)isContentCompletelySynced;
 - (NNMKSyncedMessage)init;
-- (NNMKSyncedMessage)initWithMessage:(id)a3 useDefaultMailbox:(BOOL)a4;
+- (NNMKSyncedMessage)initWithMessage:(id)message useDefaultMailbox:(BOOL)mailbox;
 @end
 
 @implementation NNMKSyncedMessage
 
-- (NNMKSyncedMessage)initWithMessage:(id)a3 useDefaultMailbox:(BOOL)a4
+- (NNMKSyncedMessage)initWithMessage:(id)message useDefaultMailbox:(BOOL)mailbox
 {
-  v4 = a4;
-  v6 = a3;
+  mailboxCopy = mailbox;
+  messageCopy = message;
   v7 = [(NNMKSyncedMessage *)self init];
   if (v7)
   {
-    v8 = [v6 messageId];
+    messageId = [messageCopy messageId];
     messageId = v7->_messageId;
-    v7->_messageId = v8;
+    v7->_messageId = messageId;
 
-    v10 = [v6 messageId];
-    v11 = [v10 nnmk_sanitizedFileNameString];
+    messageId2 = [messageCopy messageId];
+    nnmk_sanitizedFileNameString = [messageId2 nnmk_sanitizedFileNameString];
     sanitizedMessageId = v7->_sanitizedMessageId;
-    v7->_sanitizedMessageId = v11;
+    v7->_sanitizedMessageId = nnmk_sanitizedFileNameString;
 
-    v7->_status = [v6 status];
-    v13 = [v6 dateReceived];
+    v7->_status = [messageCopy status];
+    dateReceived = [messageCopy dateReceived];
     dateReceived = v7->_dateReceived;
-    v7->_dateReceived = v13;
+    v7->_dateReceived = dateReceived;
 
-    v15 = [v6 conversationId];
+    conversationId = [messageCopy conversationId];
     conversationId = v7->_conversationId;
-    v7->_conversationId = v15;
+    v7->_conversationId = conversationId;
 
-    if (v4)
+    if (mailboxCopy)
     {
-      v17 = @"-1";
+      mailboxId = @"-1";
     }
 
     else
     {
-      v17 = [v6 mailboxId];
+      mailboxId = [messageCopy mailboxId];
     }
 
     mailboxId = v7->_mailboxId;
-    v7->_mailboxId = &v17->isa;
+    v7->_mailboxId = &mailboxId->isa;
 
-    v7->_isThreadSpecific = [v6 isThreadSpecific];
-    v7->_isSpecialMailboxSpecific = [v6 isSpecialMailboxSpecific];
+    v7->_isThreadSpecific = [messageCopy isThreadSpecific];
+    v7->_isSpecialMailboxSpecific = [messageCopy isSpecialMailboxSpecific];
   }
 
   return v7;
@@ -90,8 +90,8 @@
     return 0;
   }
 
-  v3 = [(NNMKSyncedMessage *)self attachmentsContentIdsNotYetSynced];
-  v4 = [v3 count] == 0;
+  attachmentsContentIdsNotYetSynced = [(NNMKSyncedMessage *)self attachmentsContentIdsNotYetSynced];
+  v4 = [attachmentsContentIdsNotYetSynced count] == 0;
 
   return v4;
 }

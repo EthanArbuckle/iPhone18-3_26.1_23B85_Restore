@@ -1,81 +1,81 @@
 @interface HFCharacteristicReadResponse
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFCharacteristicReadResponse)initWithCharacteristic:(id)a3 readTraits:(id)a4 value:(id)a5 error:(id)a6;
-- (HFCharacteristicReadResponse)initWithHomeKitResponse:(id)a3 value:(id)a4 readTraits:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HFCharacteristicReadResponse)initWithCharacteristic:(id)characteristic readTraits:(id)traits value:(id)value error:(id)error;
+- (HFCharacteristicReadResponse)initWithHomeKitResponse:(id)response value:(id)value readTraits:(id)traits;
 - (NSString)description;
-- (id)valueWithExpectedClass:(Class)a3;
+- (id)valueWithExpectedClass:(Class)class;
 - (unint64_t)hash;
 @end
 
 @implementation HFCharacteristicReadResponse
 
-- (HFCharacteristicReadResponse)initWithCharacteristic:(id)a3 readTraits:(id)a4 value:(id)a5 error:(id)a6
+- (HFCharacteristicReadResponse)initWithCharacteristic:(id)characteristic readTraits:(id)traits value:(id)value error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  characteristicCopy = characteristic;
+  traitsCopy = traits;
+  valueCopy = value;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = HFCharacteristicReadResponse;
   v15 = [(HFCharacteristicReadResponse *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_characteristic, a3);
-    objc_storeStrong(&v16->_readTraits, a4);
-    objc_storeStrong(&v16->_value, a5);
-    objc_storeStrong(&v16->_error, a6);
+    objc_storeStrong(&v15->_characteristic, characteristic);
+    objc_storeStrong(&v16->_readTraits, traits);
+    objc_storeStrong(&v16->_value, value);
+    objc_storeStrong(&v16->_error, error);
   }
 
   return v16;
 }
 
-- (HFCharacteristicReadResponse)initWithHomeKitResponse:(id)a3 value:(id)a4 readTraits:(id)a5
+- (HFCharacteristicReadResponse)initWithHomeKitResponse:(id)response value:(id)value readTraits:(id)traits
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 request];
-  v12 = [v11 characteristic];
-  v13 = [v10 error];
+  traitsCopy = traits;
+  valueCopy = value;
+  responseCopy = response;
+  request = [responseCopy request];
+  characteristic = [request characteristic];
+  error = [responseCopy error];
 
-  v14 = [(HFCharacteristicReadResponse *)self initWithCharacteristic:v12 readTraits:v8 value:v9 error:v13];
+  v14 = [(HFCharacteristicReadResponse *)self initWithCharacteristic:characteristic readTraits:traitsCopy value:valueCopy error:error];
   return v14;
 }
 
-- (id)valueWithExpectedClass:(Class)a3
+- (id)valueWithExpectedClass:(Class)class
 {
-  v5 = [(HFCharacteristicReadResponse *)self value];
-  if (v5)
+  value = [(HFCharacteristicReadResponse *)self value];
+  if (value)
   {
-    v6 = v5;
-    v7 = [(HFCharacteristicReadResponse *)self value];
+    v6 = value;
+    value2 = [(HFCharacteristicReadResponse *)self value];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v9 = [(HFCharacteristicReadResponse *)self value];
-      v10 = [(HFCharacteristicReadResponse *)self value];
+      value3 = [(HFCharacteristicReadResponse *)self value];
+      value4 = [(HFCharacteristicReadResponse *)self value];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = NSStringFromClass(a3);
-      NSLog(&cfstr_ReadValueIsOfC.isa, v9, v12, v13);
+      v13 = NSStringFromClass(class);
+      NSLog(&cfstr_ReadValueIsOfC.isa, value3, v12, v13);
     }
   }
 
-  v14 = [(HFCharacteristicReadResponse *)self value];
+  value5 = [(HFCharacteristicReadResponse *)self value];
   if (objc_opt_isKindOfClass())
   {
-    v15 = [(HFCharacteristicReadResponse *)self value];
+    value6 = [(HFCharacteristicReadResponse *)self value];
   }
 
   else
   {
-    v15 = 0;
+    value6 = 0;
   }
 
-  return v15;
+  return value6;
 }
 
 + (NAIdentity)na_identity
@@ -103,19 +103,19 @@ void __43__HFCharacteristicReadResponse_na_identity__block_invoke_2()
   qword_280E038A0 = v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -123,16 +123,16 @@ void __43__HFCharacteristicReadResponse_na_identity__block_invoke_2()
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFCharacteristicReadResponse *)self characteristic];
-  v5 = [v4 hf_prettyDescription];
-  v6 = [v3 appendObject:v5 withName:@"characteristic"];
+  characteristic = [(HFCharacteristicReadResponse *)self characteristic];
+  hf_prettyDescription = [characteristic hf_prettyDescription];
+  v6 = [v3 appendObject:hf_prettyDescription withName:@"characteristic"];
 
-  v7 = [(HFCharacteristicReadResponse *)self readTraits];
-  if ([v7 count])
+  readTraits = [(HFCharacteristicReadResponse *)self readTraits];
+  if ([readTraits count])
   {
-    v8 = [(HFCharacteristicReadResponse *)self readTraits];
-    v9 = [v8 allObjects];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    readTraits2 = [(HFCharacteristicReadResponse *)self readTraits];
+    allObjects = [readTraits2 allObjects];
+    v10 = [allObjects sortedArrayUsingSelector:sel_compare_];
     v11 = [v10 componentsJoinedByString:{@", "}];
   }
 
@@ -142,15 +142,15 @@ void __43__HFCharacteristicReadResponse_na_identity__block_invoke_2()
   }
 
   v12 = [v3 appendObject:v11 withName:@"readTraits"];
-  v13 = [(HFCharacteristicReadResponse *)self value];
-  v14 = [v3 appendObject:v13 withName:@"value" skipIfNil:1];
+  value = [(HFCharacteristicReadResponse *)self value];
+  v14 = [v3 appendObject:value withName:@"value" skipIfNil:1];
 
-  v15 = [(HFCharacteristicReadResponse *)self error];
-  v16 = [v3 appendObject:v15 withName:@"error" skipIfNil:1];
+  error = [(HFCharacteristicReadResponse *)self error];
+  v16 = [v3 appendObject:error withName:@"error" skipIfNil:1];
 
-  v17 = [v3 build];
+  build = [v3 build];
 
-  return v17;
+  return build;
 }
 
 @end

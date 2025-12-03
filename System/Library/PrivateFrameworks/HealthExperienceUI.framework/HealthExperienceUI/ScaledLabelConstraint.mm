@@ -38,7 +38,7 @@
 
 - (void)textSizeChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA095EAC();
 }
 

@@ -1,46 +1,46 @@
 @interface SKCloudServiceSetupViewController
-- (SKCloudServiceSetupViewController)initWithConfiguration:(id)a3;
-- (SKCloudServiceSetupViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_errorWithCode:(int64_t)a3 errorDescriptionLocalizationKey:(id)a4;
-- (id)_subscriptionOfferOptionsWithAction:(id)a3 messageIdentifier:(id)a4;
+- (SKCloudServiceSetupViewController)initWithConfiguration:(id)configuration;
+- (SKCloudServiceSetupViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_errorWithCode:(int64_t)code errorDescriptionLocalizationKey:(id)key;
+- (id)_subscriptionOfferOptionsWithAction:(id)action messageIdentifier:(id)identifier;
 - (id)delegate;
-- (void)_didReceiveRemoteViewController:(id)a3;
-- (void)_dismissCloudServiceSetupViewControllerWithAnimation:(BOOL)a3 completion:(id)a4;
+- (void)_didReceiveRemoteViewController:(id)controller;
+- (void)_dismissCloudServiceSetupViewControllerWithAnimation:(BOOL)animation completion:(id)completion;
 - (void)_reloadWithActiveCloudServiceSetupReloadContext;
 - (void)_remoteViewControllerExtensionWasInterrupted;
 - (void)_reportCompletionForInlineOfferUnsupported;
 - (void)_reportErrorForMissingSystemMusicApplication;
 - (void)_requestRemoteViewController;
-- (void)cloudServiceSetupRemoteViewController:(id)a3 didFinishLoadingWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)cloudServiceSetupRemoteViewController:(id)a3 requestsDismissingSafariViewControllerAnimated:(BOOL)a4 completion:(id)a5;
-- (void)cloudServiceSetupRemoteViewController:(id)a3 requestsPresentingSafariViewControllerWithURL:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)cloudServiceSetupRemoteViewController:(id)controller didFinishLoadingWithSuccess:(BOOL)success error:(id)error;
+- (void)cloudServiceSetupRemoteViewController:(id)controller requestsDismissingSafariViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)cloudServiceSetupRemoteViewController:(id)controller requestsPresentingSafariViewControllerWithURL:(id)l animated:(BOOL)animated completion:(id)completion;
 - (void)dealloc;
-- (void)handleSafariScriptURL:(id)a3;
+- (void)handleSafariScriptURL:(id)l;
 - (void)loadWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler;
-- (void)overrideCreditCardPresentationWithCompletion:(id)a3;
-- (void)overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4;
-- (void)reloadWithContext:(id)a3;
-- (void)safariViewController:(id)a3 didCompleteInitialLoad:(BOOL)a4;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)setModalInPresentation:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)overrideCreditCardPresentationWithCompletion:(id)completion;
+- (void)overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object;
+- (void)reloadWithContext:(id)context;
+- (void)safariViewController:(id)controller didCompleteInitialLoad:(BOOL)load;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)setModalInPresentation:(BOOL)presentation;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKCloudServiceSetupViewController
 
-- (SKCloudServiceSetupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKCloudServiceSetupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = objc_alloc_init(SKCloudServiceSetupConfiguration);
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 infoDictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v8 = [v7 objectForKey:@"CFBundleIdentifier"];
+  v8 = [infoDictionary objectForKey:@"CFBundleIdentifier"];
   [(SKCloudServiceSetupConfiguration *)v5 setApplicationIdentifier:v8];
 
-  v9 = [v7 objectForKey:@"CFBundleVersion"];
+  v9 = [infoDictionary objectForKey:@"CFBundleVersion"];
   [(SKCloudServiceSetupConfiguration *)v5 setApplicationVersion:v9];
 
   [(SKCloudServiceSetupConfiguration *)v5 setTargetsFinanceApplication:1];
@@ -50,15 +50,15 @@
   return v10;
 }
 
-- (SKCloudServiceSetupViewController)initWithConfiguration:(id)a3
+- (SKCloudServiceSetupViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = SKCloudServiceSetupViewController;
   v5 = [(SKCloudServiceSetupViewController *)&v13 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -73,9 +73,9 @@
       [(SKCloudServiceSetupViewController *)v5 addChildViewController:v5->_subscriptionOfferViewController];
       if ([(SKCloudServiceSetupViewController *)v5 isViewLoaded])
       {
-        v10 = [(SKCloudServiceSetupViewController *)v5 view];
-        v11 = [(_MusicSubscriptionOfferViewController *)v5->_subscriptionOfferViewController view];
-        [v10 addSubview:v11];
+        view = [(SKCloudServiceSetupViewController *)v5 view];
+        view2 = [(_MusicSubscriptionOfferViewController *)v5->_subscriptionOfferViewController view];
+        [view addSubview:view2];
       }
 
       [(_MusicSubscriptionOfferViewController *)v5->_subscriptionOfferViewController didMoveToParentViewController:v5];
@@ -100,8 +100,8 @@
     if (([(_MusicSubscriptionOfferViewController *)*p_subscriptionOfferViewController isViewLoaded]& 1) != 0)
     {
 LABEL_3:
-      v5 = [(_MusicSubscriptionOfferViewController *)*p_subscriptionOfferViewController view];
-      [v5 removeFromSuperview];
+      view = [(_MusicSubscriptionOfferViewController *)*p_subscriptionOfferViewController view];
+      [view removeFromSuperview];
     }
   }
 
@@ -128,7 +128,7 @@ LABEL_5:
   [(SKCloudServiceSetupViewController *)&v7 dealloc];
 }
 
-- (void)setModalInPresentation:(BOOL)a3
+- (void)setModalInPresentation:(BOOL)presentation
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -140,26 +140,26 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = SKCloudServiceSetupViewController;
   [(SKCloudServiceSetupViewController *)&v7 viewDidLoad];
-  v3 = [(SKCloudServiceSetupViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SKCloudServiceSetupViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   subscriptionOfferViewController = self->_subscriptionOfferViewController;
   if (subscriptionOfferViewController || (subscriptionOfferViewController = self->_remoteViewContainerViewController) != 0)
   {
-    v6 = [(_MusicSubscriptionOfferViewController *)subscriptionOfferViewController view];
-    [v3 bounds];
-    [v6 setFrame:?];
-    [v6 setAutoresizingMask:18];
-    [v3 addSubview:v6];
+    view2 = [(_MusicSubscriptionOfferViewController *)subscriptionOfferViewController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SKCloudServiceSetupViewController;
-  [(SKCloudServiceSetupViewController *)&v5 viewDidAppear:a3];
+  [(SKCloudServiceSetupViewController *)&v5 viewDidAppear:appear];
   self->_isFullyAppeared = 1;
   alertController = self->_alertController;
   if (alertController)
@@ -168,45 +168,45 @@ LABEL_5:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SKCloudServiceSetupViewController;
-  [(SKCloudServiceSetupViewController *)&v6 viewWillAppear:a3];
+  [(SKCloudServiceSetupViewController *)&v6 viewWillAppear:appear];
   if (self->_alertController)
   {
-    v4 = [(SKCloudServiceSetupViewController *)self view];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [v4 setBackgroundColor:v5];
+    view = [(SKCloudServiceSetupViewController *)self view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    [v4 setOpaque:0];
+    [view setOpaque:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKCloudServiceSetupViewController;
-  [(SKCloudServiceSetupViewController *)&v4 viewWillDisappear:a3];
+  [(SKCloudServiceSetupViewController *)&v4 viewWillDisappear:disappear];
   self->_isFullyAppeared = 0;
 }
 
-- (void)safariViewController:(id)a3 didCompleteInitialLoad:(BOOL)a4
+- (void)safariViewController:(id)controller didCompleteInitialLoad:(BOOL)load
 {
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v6;
   }
@@ -227,29 +227,29 @@ LABEL_5:
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v11, v10}];
     free(v9);
     SSFileLog();
 LABEL_10:
   }
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v6;
   }
@@ -270,7 +270,7 @@ LABEL_10:
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v12, v11}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v12, v11}];
     free(v9);
     SSFileLog();
 LABEL_10:
@@ -280,33 +280,33 @@ LABEL_10:
   self->_safariViewController = 0;
 }
 
-- (void)cloudServiceSetupRemoteViewController:(id)a3 didFinishLoadingWithSuccess:(BOOL)a4 error:(id)a5
+- (void)cloudServiceSetupRemoteViewController:(id)controller didFinishLoadingWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v10 = a5;
+  successCopy = success;
+  errorCopy = error;
   v7 = _Block_copy(self->_loadCompletionHandler);
   if (v7)
   {
     loadCompletionHandler = self->_loadCompletionHandler;
     self->_loadCompletionHandler = 0;
 
-    v9 = v10;
-    if (!v10 && !v5)
+    v9 = errorCopy;
+    if (!errorCopy && !successCopy)
     {
       v9 = [(SKCloudServiceSetupViewController *)self _errorWithCode:0 errorDescriptionLocalizationKey:@"UNKNOWN_ERROR"];
     }
 
-    v10 = v9;
-    v7[2](v7, v5);
+    errorCopy = v9;
+    v7[2](v7, successCopy);
   }
 }
 
-- (void)cloudServiceSetupRemoteViewController:(id)a3 requestsPresentingSafariViewControllerWithURL:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)cloudServiceSetupRemoteViewController:(id)controller requestsPresentingSafariViewControllerWithURL:(id)l animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  lCopy = l;
+  completionCopy = completion;
   if (self->_safariViewController)
   {
     v17[0] = MEMORY[0x1E69E9820];
@@ -314,10 +314,10 @@ LABEL_10:
     v17[2] = __141__SKCloudServiceSetupViewController_cloudServiceSetupRemoteViewController_requestsPresentingSafariViewControllerWithURL_animated_completion___block_invoke;
     v17[3] = &unk_1E7B28768;
     v17[4] = self;
-    v18 = v10;
-    v19 = v11;
-    v21 = v7;
-    v20 = v12;
+    v18 = controllerCopy;
+    v19 = lCopy;
+    v21 = animatedCopy;
+    v20 = completionCopy;
     [(SKCloudServiceSetupViewController *)self cloudServiceSetupRemoteViewController:v18 requestsDismissingSafariViewControllerAnimated:0 completion:v17];
   }
 
@@ -341,22 +341,22 @@ LABEL_10:
 
     v14 = v13;
     _Block_object_dispose(&v23, 8);
-    v15 = [[v13 alloc] initWithURL:v11];
+    v15 = [[v13 alloc] initWithURL:lCopy];
     safariViewController = self->_safariViewController;
     self->_safariViewController = v15;
 
     [(SFSafariViewController *)self->_safariViewController setDelegate:self];
     [(SFSafariViewController *)self->_safariViewController setModalPresentationStyle:3];
-    [(SKCloudServiceSetupViewController *)self presentViewController:self->_safariViewController animated:v7 completion:v12];
+    [(SKCloudServiceSetupViewController *)self presentViewController:self->_safariViewController animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)cloudServiceSetupRemoteViewController:(id)a3 requestsDismissingSafariViewControllerAnimated:(BOOL)a4 completion:(id)a5
+- (void)cloudServiceSetupRemoteViewController:(id)controller requestsDismissingSafariViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v10 = completionCopy;
   safariViewController = self->_safariViewController;
   if (safariViewController)
   {
@@ -365,13 +365,13 @@ LABEL_10:
     v12[2] = __133__SKCloudServiceSetupViewController_cloudServiceSetupRemoteViewController_requestsDismissingSafariViewControllerAnimated_completion___block_invoke;
     v12[3] = &unk_1E7B28438;
     v12[4] = self;
-    v13 = v9;
-    [(SFSafariViewController *)safariViewController dismissViewControllerAnimated:v6 completion:v12];
+    v13 = completionCopy;
+    [(SFSafariViewController *)safariViewController dismissViewControllerAnimated:animatedCopy completion:v12];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -392,16 +392,16 @@ uint64_t __133__SKCloudServiceSetupViewController_cloudServiceSetupRemoteViewCon
   return result;
 }
 
-- (void)overrideCreditCardPresentationWithCompletion:(id)a3
+- (void)overrideCreditCardPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__SKCloudServiceSetupViewController_overrideCreditCardPresentationWithCompletion___block_invoke;
   v6[3] = &unk_1E7B27B30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -432,17 +432,17 @@ void __82__SKCloudServiceSetupViewController_overrideCreditCardPresentationWithC
   [*(a1 + 32) presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)overrideRedeemCameraPerformAction:(int64_t)a3 withObject:(id)a4
+- (void)overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__SKCloudServiceSetupViewController_overrideRedeemCameraPerformAction_withObject___block_invoke;
   block[3] = &unk_1E7B27B80;
-  v9 = v6;
-  v10 = a3;
+  v9 = objectCopy;
+  actionCopy = action;
   block[4] = self;
-  v7 = v6;
+  v7 = objectCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -857,15 +857,15 @@ void __71__SKCloudServiceSetupViewController_loadWithOptions_completionHandler__
   }
 }
 
-- (void)reloadWithContext:(id)a3
+- (void)reloadWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   activeCloudServiceSetupReloadContext = self->_activeCloudServiceSetupReloadContext;
-  if (activeCloudServiceSetupReloadContext != v4)
+  if (activeCloudServiceSetupReloadContext != contextCopy)
   {
-    v8 = v4;
-    activeCloudServiceSetupReloadContext = [activeCloudServiceSetupReloadContext isEqual:v4];
-    v4 = v8;
+    v8 = contextCopy;
+    activeCloudServiceSetupReloadContext = [activeCloudServiceSetupReloadContext isEqual:contextCopy];
+    contextCopy = v8;
     if ((activeCloudServiceSetupReloadContext & 1) == 0)
     {
       v6 = [v8 copy];
@@ -873,30 +873,30 @@ void __71__SKCloudServiceSetupViewController_loadWithOptions_completionHandler__
       self->_activeCloudServiceSetupReloadContext = v6;
 
       activeCloudServiceSetupReloadContext = [(SKCloudServiceSetupViewController *)self _reloadWithActiveCloudServiceSetupReloadContext];
-      v4 = v8;
+      contextCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](activeCloudServiceSetupReloadContext, v4);
+  MEMORY[0x1EEE66BB8](activeCloudServiceSetupReloadContext, contextCopy);
 }
 
-- (void)handleSafariScriptURL:(id)a3
+- (void)handleSafariScriptURL:(id)l
 {
   remoteViewContainerViewController = self->_remoteViewContainerViewController;
-  v4 = a3;
-  v5 = [(_UIResilientRemoteViewContainerViewController *)remoteViewContainerViewController remoteViewController];
-  v6 = [v5 serviceViewControllerProxy];
+  lCopy = l;
+  remoteViewController = [(_UIResilientRemoteViewContainerViewController *)remoteViewContainerViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v6 handleSafariScriptURL:v4];
+  [serviceViewControllerProxy handleSafariScriptURL:lCopy];
 }
 
-- (id)_errorWithCode:(int64_t)a3 errorDescriptionLocalizationKey:(id)a4
+- (id)_errorWithCode:(int64_t)code errorDescriptionLocalizationKey:(id)key
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a4;
+  keyCopy = key;
   v7 = [v5 bundleForClass:objc_opt_class()];
-  v8 = [v7 localizedStringForKey:v6 value:&stru_1F29BCE20 table:0];
+  v8 = [v7 localizedStringForKey:keyCopy value:&stru_1F29BCE20 table:0];
 
   if (v8)
   {
@@ -910,7 +910,7 @@ void __71__SKCloudServiceSetupViewController_loadWithOptions_completionHandler__
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:a3 userInfo:v9];
+  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:code userInfo:v9];
 
   return v10;
 }
@@ -971,9 +971,9 @@ void __71__SKCloudServiceSetupViewController_loadWithOptions_completionHandler__
     [(SKCloudServiceSetupViewController *)self addChildViewController:self->_remoteViewContainerViewController];
     if ([(SKCloudServiceSetupViewController *)self isViewLoaded])
     {
-      v7 = [(SKCloudServiceSetupViewController *)self view];
-      v8 = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController view];
-      [v7 addSubview:v8];
+      view = [(SKCloudServiceSetupViewController *)self view];
+      view2 = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController view];
+      [view addSubview:view2];
     }
 
     [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController didMoveToParentViewController:self];
@@ -1049,9 +1049,9 @@ void __65__SKCloudServiceSetupViewController__requestRemoteViewController__block
   [WeakRetained _didReceiveRemoteViewController:v4];
 }
 
-- (void)_didReceiveRemoteViewController:(id)a3
+- (void)_didReceiveRemoteViewController:(id)controller
 {
-  [a3 setDelegate:self];
+  [controller setDelegate:self];
   [(SKCloudServiceSetupViewController *)self _endDelayingPresentation];
   self->_isRemoteViewControllerReady = 1;
 
@@ -1062,41 +1062,41 @@ void __65__SKCloudServiceSetupViewController__requestRemoteViewController__block
 {
   if (self->_isRemoteViewControllerReady && self->_activeCloudServiceSetupReloadContext)
   {
-    v3 = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController remoteViewController];
-    v4 = [v3 serviceViewControllerProxy];
+    remoteViewController = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
     if (!self->_hasInitializedServiceViewController)
     {
-      [v4 applyConfiguration:self->_configuration];
+      [serviceViewControllerProxy applyConfiguration:self->_configuration];
       self->_hasInitializedServiceViewController = 1;
     }
 
-    [v4 reloadWithContext:self->_activeCloudServiceSetupReloadContext];
+    [serviceViewControllerProxy reloadWithContext:self->_activeCloudServiceSetupReloadContext];
   }
 }
 
-- (void)_dismissCloudServiceSetupViewControllerWithAnimation:(BOOL)a3 completion:(id)a4
+- (void)_dismissCloudServiceSetupViewControllerWithAnimation:(BOOL)animation completion:(id)completion
 {
-  v4 = a3;
+  animationCopy = animation;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(SKCloudServiceSetupViewController *)self parentViewController];
-  if (v7)
+  completionCopy = completion;
+  parentViewController = [(SKCloudServiceSetupViewController *)self parentViewController];
+  if (parentViewController)
   {
-    v8 = [MEMORY[0x1E69D4938] sharedConfig];
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v10;
     }
@@ -1109,9 +1109,9 @@ void __65__SKCloudServiceSetupViewController__requestRemoteViewController__block
     if (v12)
     {
       v16 = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v7;
+      v19 = parentViewController;
       LODWORD(v15) = 22;
       v13 = _os_log_send_and_compose_impl();
 
@@ -1122,7 +1122,7 @@ LABEL_12:
         goto LABEL_14;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v16, v15}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v16, v15}];
       free(v13);
       SSFileLog();
     }
@@ -1130,7 +1130,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(SKCloudServiceSetupViewController *)self dismissViewControllerAnimated:v4 completion:v6];
+  [(SKCloudServiceSetupViewController *)self dismissViewControllerAnimated:animationCopy completion:completionCopy];
 LABEL_14:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1138,9 +1138,9 @@ LABEL_14:
     [WeakRetained cloudServiceSetupViewControllerDidDismiss:self];
   }
 
-  if (v6 && v7)
+  if (completionCopy && parentViewController)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1148,16 +1148,16 @@ LABEL_14:
 {
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v3 = [(SKCloudServiceSetupViewController *)self transitionCoordinator];
-    if (v3)
+    transitionCoordinator = [(SKCloudServiceSetupViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
-      v4 = v3;
+      v4 = transitionCoordinator;
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __81__SKCloudServiceSetupViewController__remoteViewControllerExtensionWasInterrupted__block_invoke_2;
       v5[3] = &unk_1E7B28828;
       v5[4] = self;
-      [v3 animateAlongsideTransition:0 completion:v5];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v5];
     }
 
     else if (self->_isFullyAppeared)
@@ -1178,10 +1178,10 @@ LABEL_14:
   }
 }
 
-- (id)_subscriptionOfferOptionsWithAction:(id)a3 messageIdentifier:(id)a4
+- (id)_subscriptionOfferOptionsWithAction:(id)action messageIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1209,9 +1209,9 @@ LABEL_14:
 
   v9 = *v7;
   v10 = get_MusicSubscriptionOfferMessageIdentifierJoin();
-  if (![v6 isEqualToString:@"join"])
+  if (![identifierCopy isEqualToString:@"join"])
   {
-    if ([v6 isEqualToString:@"addMusic"])
+    if ([identifierCopy isEqualToString:@"addMusic"])
     {
       v26 = 0;
       v27 = &v26;
@@ -1242,7 +1242,7 @@ LABEL_15:
       [SKCloudServiceSetupViewController _subscriptionOfferOptionsWithAction:messageIdentifier:];
     }
 
-    if (![v6 isEqualToString:@"playMusic"])
+    if (![identifierCopy isEqualToString:@"playMusic"])
     {
       goto LABEL_17;
     }

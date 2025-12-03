@@ -1,14 +1,14 @@
 @interface CNContactGroupPickerViewController
 + (id)os_log;
-- (BOOL)isValidGroupAtIndexPath:(id)a3;
-- (CNContactGroupPickerViewController)initWithContactStore:(id)a3 sourceAccountExternalIdentifiers:(id)a4;
+- (BOOL)isValidGroupAtIndexPath:(id)path;
+- (CNContactGroupPickerViewController)initWithContactStore:(id)store sourceAccountExternalIdentifiers:(id)identifiers;
 - (CNContactGroupPickerViewControllerDelegate)delegate;
-- (NSDirectionalEdgeInsets)bottomSeparatorInsetsForIndexPath:(id)a3 configuration:(id)a4;
-- (id)accessoryTintColorForStateEnabled:(BOOL)a3;
-- (id)cellAccessoriesForItem:(id)a3 enabled:(BOOL)a4;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)cancel:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (NSDirectionalEdgeInsets)bottomSeparatorInsetsForIndexPath:(id)path configuration:(id)configuration;
+- (id)accessoryTintColorForStateEnabled:(BOOL)enabled;
+- (id)cellAccessoriesForItem:(id)item enabled:(BOOL)enabled;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)cancel:(id)cancel;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)reloadData;
 - (void)setupCollectionView;
 - (void)setupDiffableDataSource;
@@ -25,12 +25,12 @@
   return WeakRetained;
 }
 
-- (BOOL)isValidGroupAtIndexPath:(id)a3
+- (BOOL)isValidGroupAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
-  v5 = [(CNContactGroupPickerViewController *)self diffableDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  diffableDataSource = [(CNContactGroupPickerViewController *)self diffableDataSource];
+  v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -46,8 +46,8 @@
 
   if (v8)
   {
-    v9 = [v8 group];
-    v10 = v9 != 0;
+    group = [v8 group];
+    v10 = group != 0;
   }
 
   else
@@ -58,14 +58,14 @@
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a4;
+  pathCopy = path;
   if ([(CNContactGroupPickerViewController *)self isValidGroupAtIndexPath:?])
   {
     objc_opt_class();
-    v5 = [(CNContactGroupPickerViewController *)self diffableDataSource];
-    v6 = [v5 itemIdentifierForIndexPath:v11];
+    diffableDataSource = [(CNContactGroupPickerViewController *)self diffableDataSource];
+    v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -78,19 +78,19 @@
 
     v8 = v7;
 
-    v9 = [(CNContactGroupPickerViewController *)self delegate];
-    v10 = [v8 group];
+    delegate = [(CNContactGroupPickerViewController *)self delegate];
+    group = [v8 group];
 
-    [v9 groupPicker:self didSelectGroup:v10];
+    [delegate groupPicker:self didSelectGroup:group];
   }
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v11 = a3;
-  v4 = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
-  v5 = [v4 sections];
-  v6 = [v5 count];
+  stateCopy = state;
+  accountsAndGroupsDataSource = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
+  sections = [accountsAndGroupsDataSource sections];
+  v6 = [sections count];
 
   if (v6)
   {
@@ -99,8 +99,8 @@
 
   else
   {
-    v8 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-    v7 = [v8 updatedConfigurationForState:v11];
+    emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+    v7 = [emptyConfiguration updatedConfigurationForState:stateCopy];
 
     v9 = CNContactsUIBundle();
     v10 = [v9 localizedStringForKey:@"NO_GROUPS" value:&stru_1F0CE7398 table:@"Localized"];
@@ -117,10 +117,10 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v3 = [(CNContactGroupPickerViewController *)self sectionController];
-  v4 = [v3 associatedSectionIdentifiers];
+  sectionController = [(CNContactGroupPickerViewController *)self sectionController];
+  associatedSectionIdentifiers = [sectionController associatedSectionIdentifiers];
 
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v47 count:16];
+  v5 = [associatedSectionIdentifiers countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v5)
   {
     v6 = v5;
@@ -132,29 +132,29 @@
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(associatedSectionIdentifiers);
         }
 
         v9 = *(*(&v40 + 1) + 8 * v8);
-        v10 = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
-        v11 = [v10 sections];
-        v12 = [v11 containsObject:v9];
+        accountsAndGroupsDataSource = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
+        sections = [accountsAndGroupsDataSource sections];
+        v12 = [sections containsObject:v9];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [(CNContactGroupPickerViewController *)self sectionController];
-          v14 = [v13 snapshotForSection:v9];
+          sectionController2 = [(CNContactGroupPickerViewController *)self sectionController];
+          v14 = [sectionController2 snapshotForSection:v9];
 
           [v14 deleteAllItems];
-          v15 = [(CNContactGroupPickerViewController *)self sectionController];
-          [v15 applySnapshot:v14 toSection:v9 animatingDifferences:0];
+          sectionController3 = [(CNContactGroupPickerViewController *)self sectionController];
+          [sectionController3 applySnapshot:v14 toSection:v9 animatingDifferences:0];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v40 objects:v47 count:16];
+      v6 = [associatedSectionIdentifiers countByEnumeratingWithState:&v40 objects:v47 count:16];
     }
 
     while (v6);
@@ -164,11 +164,11 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
-  v17 = [v16 sections];
+  accountsAndGroupsDataSource2 = [(CNContactGroupPickerViewController *)self accountsAndGroupsDataSource];
+  sections2 = [accountsAndGroupsDataSource2 sections];
 
-  obj = v17;
-  v18 = [v17 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  obj = sections2;
+  v18 = [sections2 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v18)
   {
     v19 = v18;
@@ -186,13 +186,13 @@
 
         v23 = *(*(&v36 + 1) + 8 * v22);
         v24 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-        v25 = [v23 title];
-        v26 = (*(v21 + 16))(v21, v25);
+        title = [v23 title];
+        v26 = (*(v21 + 16))(v21, title);
 
         if (v26)
         {
-          v27 = [v23 items];
-          [v24 appendItems:v27];
+          items = [v23 items];
+          [v24 appendItems:items];
         }
 
         else
@@ -201,16 +201,16 @@
           v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
           [v24 appendItems:v28];
 
-          v29 = [v23 items];
-          [v24 appendItems:v29 intoParent:v23];
+          items2 = [v23 items];
+          [v24 appendItems:items2 intoParent:v23];
 
           v44 = v23;
-          v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-          [v24 expandItems:v27];
+          items = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
+          [v24 expandItems:items];
         }
 
-        v30 = [(CNContactGroupPickerViewController *)self sectionController];
-        [v30 applySnapshot:v24 toSection:v23 animatingDifferences:0 completion:0];
+        sectionController4 = [(CNContactGroupPickerViewController *)self sectionController];
+        [sectionController4 applySnapshot:v24 toSection:v23 animatingDifferences:0 completion:0];
 
         ++v22;
       }
@@ -222,19 +222,19 @@
     while (v19);
   }
 
-  v31 = [(CNContactGroupPickerViewController *)self diffableDataSource];
-  v32 = [v31 snapshot];
+  diffableDataSource = [(CNContactGroupPickerViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
-  v33 = [v32 itemIdentifiers];
-  [v32 reloadItemsWithIdentifiers:v33];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  [snapshot reloadItemsWithIdentifiers:itemIdentifiers];
 
-  v34 = [(CNContactGroupPickerViewController *)self diffableDataSource];
-  [v34 applySnapshot:v32 animatingDifferences:0];
+  diffableDataSource2 = [(CNContactGroupPickerViewController *)self diffableDataSource];
+  [diffableDataSource2 applySnapshot:snapshot animatingDifferences:0];
 }
 
-- (id)accessoryTintColorForStateEnabled:(BOOL)a3
+- (id)accessoryTintColorForStateEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v5 = 0;
   }
@@ -247,24 +247,24 @@
   return v5;
 }
 
-- (id)cellAccessoriesForItem:(id)a3 enabled:(BOOL)a4
+- (id)cellAccessoriesForItem:(id)item enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CNContactGroupPickerViewController *)self accessoryTintColorForStateEnabled:v4];
+  enabledCopy = enabled;
+  itemCopy = item;
+  v7 = [(CNContactGroupPickerViewController *)self accessoryTintColorForStateEnabled:enabledCopy];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 contactCountString];
-  if (v9)
+  contactCountString = [itemCopy contactCountString];
+  if (contactCountString)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:v9];
+    v10 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:contactCountString];
     [v10 setTintColor:v7];
     [v8 addObject:v10];
   }
 
-  v11 = [v6 groupSymbol];
-  if (v11)
+  groupSymbol = [itemCopy groupSymbol];
+  if (groupSymbol)
   {
-    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
+    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:groupSymbol];
     v13 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v12 placement:0];
     [v13 setTintColor:v7];
     [v8 addObject:v13];
@@ -300,14 +300,14 @@
 
   [(CNContactGroupPickerViewController *)self setSectionController:v11];
   v12 = objc_alloc(MEMORY[0x1E69DC820]);
-  v13 = [(CNContactGroupPickerViewController *)self collectionView];
+  collectionView = [(CNContactGroupPickerViewController *)self collectionView];
   v19 = v11;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-  v15 = [v12 initWithCollectionView:v13 sectionControllers:v14 rendererIdentifierProvider:&__block_literal_global_40];
+  v15 = [v12 initWithCollectionView:collectionView sectionControllers:v14 rendererIdentifierProvider:&__block_literal_global_40];
 
   [(CNContactGroupPickerViewController *)self setDiffableDataSource:v15];
-  v16 = [(CNContactGroupPickerViewController *)self collectionView];
-  [v16 setDelegate:self];
+  collectionView2 = [(CNContactGroupPickerViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 }
 
 void __61__CNContactGroupPickerViewController_setupDiffableDataSource__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -426,22 +426,22 @@ void __61__CNContactGroupPickerViewController_setupDiffableDataSource__block_inv
   }
 }
 
-- (NSDirectionalEdgeInsets)bottomSeparatorInsetsForIndexPath:(id)a3 configuration:(id)a4
+- (NSDirectionalEdgeInsets)bottomSeparatorInsetsForIndexPath:(id)path configuration:(id)configuration
 {
-  v6 = a3;
-  [a4 bottomSeparatorInsets];
+  pathCopy = path;
+  [configuration bottomSeparatorInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CNContactGroupPickerViewController *)self collectionView];
-  v16 = [v15 numberOfItemsInSection:{objc_msgSend(v6, "section")}];
+  collectionView = [(CNContactGroupPickerViewController *)self collectionView];
+  v16 = [collectionView numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
 
-  v17 = [v6 row];
+  v17 = [pathCopy row];
   if (v17 == v16 - 1)
   {
-    v18 = [(CNContactGroupPickerViewController *)self view];
-    [v18 layoutMargins];
+    view = [(CNContactGroupPickerViewController *)self view];
+    [view layoutMargins];
     v10 = v19;
   }
 
@@ -459,8 +459,8 @@ void __61__CNContactGroupPickerViewController_setupDiffableDataSource__block_inv
 - (void)setupCollectionView
 {
   v3 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:1];
-  v4 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [v3 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   objc_initWeak(&location, self);
   v13 = MEMORY[0x1E69E9820];
@@ -471,20 +471,20 @@ void __61__CNContactGroupPickerViewController_setupDiffableDataSource__block_inv
   [v3 setItemSeparatorHandler:&v13];
   v5 = [MEMORY[0x1E69DC808] layoutWithListConfiguration:{v3, v13, v14, v15, v16}];
   v6 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v7 = [(CNContactGroupPickerViewController *)self view];
-  [v7 bounds];
+  view = [(CNContactGroupPickerViewController *)self view];
+  [view bounds];
   v8 = [v6 initWithFrame:v5 collectionViewLayout:?];
   [(CNContactGroupPickerViewController *)self setCollectionView:v8];
 
-  v9 = [(CNContactGroupPickerViewController *)self view];
-  v10 = [(CNContactGroupPickerViewController *)self collectionView];
-  [v9 addSubview:v10];
+  view2 = [(CNContactGroupPickerViewController *)self view];
+  collectionView = [(CNContactGroupPickerViewController *)self collectionView];
+  [view2 addSubview:collectionView];
 
-  v11 = [(CNContactGroupPickerViewController *)self collectionView];
-  [v11 setAutoresizingMask:18];
+  collectionView2 = [(CNContactGroupPickerViewController *)self collectionView];
+  [collectionView2 setAutoresizingMask:18];
 
-  v12 = [(CNContactGroupPickerViewController *)self collectionView];
-  [v12 setDelegate:self];
+  collectionView3 = [(CNContactGroupPickerViewController *)self collectionView];
+  [collectionView3 setDelegate:self];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -507,28 +507,28 @@ id __57__CNContactGroupPickerViewController_setupCollectionView__block_invoke(ui
   return v5;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(CNContactGroupPickerViewController *)self delegate];
+  delegate = [(CNContactGroupPickerViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CNContactGroupPickerViewController *)self delegate];
-    [v5 groupPickerDidCancel:self];
+    delegate2 = [(CNContactGroupPickerViewController *)self delegate];
+    [delegate2 groupPickerDidCancel:self];
   }
 
   else
   {
-    v5 = [(CNContactGroupPickerViewController *)self navigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    delegate2 = [(CNContactGroupPickerViewController *)self navigationController];
+    [delegate2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)setupNavigationButtons
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-  v3 = [(CNContactGroupPickerViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:v4];
+  navigationItem = [(CNContactGroupPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 }
 
 - (void)viewDidLoad
@@ -542,23 +542,23 @@ id __57__CNContactGroupPickerViewController_setupCollectionView__block_invoke(ui
   [(CNContactGroupPickerViewController *)self reloadData];
 }
 
-- (CNContactGroupPickerViewController)initWithContactStore:(id)a3 sourceAccountExternalIdentifiers:(id)a4
+- (CNContactGroupPickerViewController)initWithContactStore:(id)store sourceAccountExternalIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = CNContactGroupPickerViewController;
   v8 = [(CNContactGroupPickerViewController *)&v16 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[CNAccountsAndGroupsDataSource alloc] initWithStore:v6];
+    v9 = [[CNAccountsAndGroupsDataSource alloc] initWithStore:storeCopy];
     [(CNContactGroupPickerViewController *)v8 setAccountsAndGroupsDataSource:v9];
 
-    v10 = [(CNContactGroupPickerViewController *)v8 accountsAndGroupsDataSource];
-    [v10 setOnlyShowsGroupsInSections:1];
+    accountsAndGroupsDataSource = [(CNContactGroupPickerViewController *)v8 accountsAndGroupsDataSource];
+    [accountsAndGroupsDataSource setOnlyShowsGroupsInSections:1];
 
-    v11 = [(CNContactGroupPickerViewController *)v8 accountsAndGroupsDataSource];
-    [v11 setSourceAccountExternalIdentifiers:v7];
+    accountsAndGroupsDataSource2 = [(CNContactGroupPickerViewController *)v8 accountsAndGroupsDataSource];
+    [accountsAndGroupsDataSource2 setSourceAccountExternalIdentifiers:identifiersCopy];
 
     v12 = CNContactsUIBundle();
     v13 = [v12 localizedStringForKey:@"LISTS" value:&stru_1F0CE7398 table:@"Localized"];

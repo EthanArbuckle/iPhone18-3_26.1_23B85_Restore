@@ -20,9 +20,9 @@
 - (void)_updateChrome;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setArrowBackgroundColor:(id)a3;
-- (void)setArrowOffset:(double)a3;
-- (void)setPopoverBackgroundColor:(id)a3;
+- (void)setArrowBackgroundColor:(id)color;
+- (void)setArrowOffset:(double)offset;
+- (void)setPopoverBackgroundColor:(id)color;
 @end
 
 @implementation _UIPopoverLegacyChromeView
@@ -31,15 +31,15 @@
 {
   [objc_opt_class() arrowBase];
   v4 = floor(v3 * 0.5);
-  v5 = [(_UIPopoverStandardChromeView *)self arrowDirection];
-  if (v5 - 1 < 2)
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  if (arrowDirection - 1 < 2)
   {
     [(UIView *)self bounds];
     v8 = floor(v9 * 0.5) + -8.0 - v4;
     return -v8;
   }
 
-  if (v5 == 4 || (result = 0.0, v5 == 8))
+  if (arrowDirection == 4 || (result = 0.0, arrowDirection == 8))
   {
     [(UIView *)self bounds];
     v8 = floor(v7 * 0.5) + -24.0 + 16.0 - v4 + -2.0;
@@ -53,8 +53,8 @@
 {
   [objc_opt_class() arrowBase];
   v4 = floor(v3 * 0.5);
-  v5 = [(_UIPopoverStandardChromeView *)self arrowDirection];
-  if (v5 - 1 < 2)
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  if (arrowDirection - 1 < 2)
   {
     [(UIView *)self bounds];
     v8 = floor(v10 * 0.5);
@@ -62,7 +62,7 @@
     return v8 + v9 - v4;
   }
 
-  if (v5 == 4 || (result = 0.0, v5 == 8))
+  if (arrowDirection == 4 || (result = 0.0, arrowDirection == 8))
   {
     [(UIView *)self bounds];
     v8 = floor(v7 * 0.5);
@@ -78,9 +78,9 @@
   v5.receiver = self;
   v5.super_class = _UIPopoverLegacyChromeView;
   [(UIView *)&v5 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -299,8 +299,8 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self->_effectView maskView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  maskView = [(UIView *)self->_effectView maskView];
+  [maskView setFrame:{v4, v6, v8, v10}];
 
   if ([(_UIPopoverStandardChromeView *)self arrowDirection]!= -1)
   {
@@ -314,10 +314,10 @@ LABEL_7:
   }
 
   self->_wasPinned = [(_UIPopoverLegacyChromeView *)self isPinned];
-  v13 = [(_UIPopoverStandardChromeView *)self arrowDirection];
-  if (v13 > 3)
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  if (arrowDirection > 3)
   {
-    if (v13 == 4 || v13 == 8)
+    if (arrowDirection == 4 || arrowDirection == 8)
     {
       [(_UIPopoverLegacyChromeView *)self _layoutArrowViewsLeftOrRight];
       goto LABEL_13;
@@ -326,13 +326,13 @@ LABEL_7:
 
   else
   {
-    if ((v13 - 1) < 2)
+    if ((arrowDirection - 1) < 2)
     {
       [(_UIPopoverLegacyChromeView *)self _layoutArrowViewsUpOrDown];
       goto LABEL_13;
     }
 
-    if (!v13)
+    if (!arrowDirection)
     {
       [(_UIPopoverLegacyChromeView *)self _layoutArrowViewsNone];
       goto LABEL_13;
@@ -349,22 +349,22 @@ LABEL_13:
   v20.super_class = _UIPopoverLegacyChromeView;
   [(UIPopoverBackgroundView *)&v20 layoutSubviews];
   [(_UIPopoverLegacyChromeView *)self _updateBackgroundStyle];
-  v17 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+  viewToMaskWhenContentExtendsOverArrow = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
 
-  if (v17)
+  if (viewToMaskWhenContentExtendsOverArrow)
   {
     maskView = self->_maskView;
-    v19 = [(UIVisualEffectView *)self->_effectView contentView];
-    [v19 frame];
+    contentView = [(UIVisualEffectView *)self->_effectView contentView];
+    [contentView frame];
     [(UIView *)maskView setFrame:?];
   }
 }
 
 - (double)arrowOffset
 {
-  v3 = [(_UIPopoverLegacyChromeView *)self useShortMode];
+  useShortMode = [(_UIPopoverLegacyChromeView *)self useShortMode];
   result = 0.0;
-  if (!v3)
+  if (!useShortMode)
   {
     v5.receiver = self;
     v5.super_class = _UIPopoverLegacyChromeView;
@@ -374,13 +374,13 @@ LABEL_13:
   return result;
 }
 
-- (void)setArrowOffset:(double)a3
+- (void)setArrowOffset:(double)offset
 {
   if (![(_UIPopoverLegacyChromeView *)self useShortMode])
   {
     v5.receiver = self;
     v5.super_class = _UIPopoverLegacyChromeView;
-    [(_UIPopoverStandardChromeView *)&v5 setArrowOffset:a3];
+    [(_UIPopoverStandardChromeView *)&v5 setArrowOffset:offset];
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -409,16 +409,16 @@ LABEL_13:
 
 - (void)_updateChrome
 {
-  v3 = [(UIPopoverBackgroundView *)self _chromeHidden];
+  _chromeHidden = [(UIPopoverBackgroundView *)self _chromeHidden];
   v4 = 1.0;
-  if (v3)
+  if (_chromeHidden)
   {
     v4 = 0.0;
   }
 
   [(UIView *)self->_effectView setAlpha:v4];
-  v5 = [(_UIPopoverLegacyChromeView *)self legacyBackgroundEffect];
-  [(UIVisualEffectView *)self->_effectView setEffect:v5];
+  legacyBackgroundEffect = [(_UIPopoverLegacyChromeView *)self legacyBackgroundEffect];
+  [(UIVisualEffectView *)self->_effectView setEffect:legacyBackgroundEffect];
 }
 
 - (BOOL)useShortMode
@@ -435,19 +435,19 @@ LABEL_13:
 
 - (id)_effectiveBackgroundEffect
 {
-  v3 = [(_UIPopoverStandardChromeView *)self backgroundEffect];
-  v4 = v3;
-  if (v3)
+  backgroundEffect = [(_UIPopoverStandardChromeView *)self backgroundEffect];
+  v4 = backgroundEffect;
+  if (backgroundEffect)
   {
-    v5 = v3;
+    legacyBackgroundEffect = backgroundEffect;
   }
 
   else
   {
-    v5 = [(_UIPopoverLegacyChromeView *)self legacyBackgroundEffect];
+    legacyBackgroundEffect = [(_UIPopoverLegacyChromeView *)self legacyBackgroundEffect];
   }
 
-  v6 = v5;
+  v6 = legacyBackgroundEffect;
 
   return v6;
 }
@@ -462,23 +462,23 @@ LABEL_13:
   else
   {
     v3 = [UIVisualEffectView alloc];
-    v4 = [(_UIPopoverLegacyChromeView *)self _effectiveBackgroundEffect];
-    v5 = [(UIVisualEffectView *)v3 initWithEffect:v4];
+    _effectiveBackgroundEffect = [(_UIPopoverLegacyChromeView *)self _effectiveBackgroundEffect];
+    v5 = [(UIVisualEffectView *)v3 initWithEffect:_effectiveBackgroundEffect];
     effectView = self->_effectView;
     self->_effectView = v5;
 
-    v7 = [(UIPopoverBackgroundView *)self _chromeHidden];
+    _chromeHidden = [(UIPopoverBackgroundView *)self _chromeHidden];
     v8 = 1.0;
-    if (v7)
+    if (_chromeHidden)
     {
       v8 = 0.0;
     }
 
     [(UIView *)self->_effectView setAlpha:v8];
     [(UIVisualEffectView *)self->_effectView _setUseLiveMasking:1];
-    v9 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
-    v10 = [(UIVisualEffectView *)self->_effectView contentView];
-    [v10 setBackgroundColor:v9];
+    popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+    contentView = [(UIVisualEffectView *)self->_effectView contentView];
+    [contentView setBackgroundColor:popoverBackgroundColor];
   }
 
   v11 = self->_effectView;
@@ -517,8 +517,8 @@ LABEL_13:
     v4 = 99;
   }
 
-  v5 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
-  v3 = [_UIPopoverBackgroundVisualEffect effectWithStyle:v4 tint:v5];
+  popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+  v3 = [_UIPopoverBackgroundVisualEffect effectWithStyle:v4 tint:popoverBackgroundColor];
 
 LABEL_8:
 
@@ -537,10 +537,10 @@ LABEL_8:
 
     else
     {
-      v4 = [(UIView *)self traitCollection];
-      v5 = [v4 userInterfaceStyle];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v5 == 2)
+      if (userInterfaceStyle == 2)
       {
         return 7;
       }
@@ -557,43 +557,43 @@ LABEL_8:
 
 - (void)_updateBackgroundStyle
 {
-  v3 = [(_UIPopoverLegacyChromeView *)self _resolvedBackgroundStyle];
-  if (v3 != self->_backgroundStyle)
+  _resolvedBackgroundStyle = [(_UIPopoverLegacyChromeView *)self _resolvedBackgroundStyle];
+  if (_resolvedBackgroundStyle != self->_backgroundStyle)
   {
-    v4 = v3;
-    self->_backgroundStyle = v3;
-    v5 = [(UIView *)self window];
+    v4 = _resolvedBackgroundStyle;
+    self->_backgroundStyle = _resolvedBackgroundStyle;
+    window = [(UIView *)self window];
 
-    if (v5)
+    if (window)
     {
       v24 = [[_UIPopoverViewArtworkLoader alloc] initWithBackgroundStyle:v4];
       v6 = self->_leftCapView;
-      v7 = [(UIView *)v6 directionSelector];
-      v8 = [(_UIPopoverLegacyChromeView *)self useShortMode];
-      v9 = [(UIView *)self traitCollection];
-      v10 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:v7 shortArtwork:v8 traitCollection:v9];
+      directionSelector = [(UIView *)v6 directionSelector];
+      useShortMode = [(_UIPopoverLegacyChromeView *)self useShortMode];
+      traitCollection = [(UIView *)self traitCollection];
+      v10 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:directionSelector shortArtwork:useShortMode traitCollection:traitCollection];
 
-      v11 = [(UIView *)v6 layer];
-      [v11 setContents:{objc_msgSend(v10, "CGImage")}];
+      layer = [(UIView *)v6 layer];
+      [layer setContents:{objc_msgSend(v10, "CGImage")}];
 
       v12 = self->_arrowView;
-      v13 = [(UIView *)v12 directionSelector];
-      v14 = [(_UIPopoverLegacyChromeView *)self useShortMode];
-      v15 = [(UIView *)self traitCollection];
-      v16 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:v13 shortArtwork:v14 traitCollection:v15];
+      directionSelector2 = [(UIView *)v12 directionSelector];
+      useShortMode2 = [(_UIPopoverLegacyChromeView *)self useShortMode];
+      traitCollection2 = [(UIView *)self traitCollection];
+      v16 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:directionSelector2 shortArtwork:useShortMode2 traitCollection:traitCollection2];
 
-      v17 = [(UIView *)v12 layer];
-      [v17 setContents:{objc_msgSend(v16, "CGImage")}];
+      layer2 = [(UIView *)v12 layer];
+      [layer2 setContents:{objc_msgSend(v16, "CGImage")}];
 
       v18 = self->_rightCapView;
-      v19 = [(UIView *)v18 directionSelector];
-      v20 = [(_UIPopoverLegacyChromeView *)self useShortMode];
-      v21 = [(UIView *)self traitCollection];
-      v22 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:v19 shortArtwork:v20 traitCollection:v21];
+      directionSelector3 = [(UIView *)v18 directionSelector];
+      useShortMode3 = [(_UIPopoverLegacyChromeView *)self useShortMode];
+      traitCollection3 = [(UIView *)self traitCollection];
+      v22 = [(_UIPopoverViewArtworkLoader *)v24 templateImageForDirection:directionSelector3 shortArtwork:useShortMode3 traitCollection:traitCollection3];
 
-      v23 = [(UIView *)v18 layer];
+      layer3 = [(UIView *)v18 layer];
 
-      [v23 setContents:{objc_msgSend(v22, "CGImage")}];
+      [layer3 setContents:{objc_msgSend(v22, "CGImage")}];
       if ((v4 - 6) < 2 || v4 == 100)
       {
         [(_UIPopoverLegacyChromeView *)self _configureEffectView];
@@ -630,21 +630,21 @@ LABEL_8:
   }
 
   v55 = [[_UIPopoverViewArtworkLoader alloc] initWithBackgroundStyle:self->_backgroundStyle];
-  v3 = [(_UIPopoverStandardChromeView *)self arrowDirection];
-  if (v3 <= 1)
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  if (arrowDirection <= 1)
   {
-    if (!v3)
+    if (!arrowDirection)
     {
-      v13 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowLeftEndCapView];
+      bottomArrowLeftEndCapView = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowLeftEndCapView];
       leftCapView = self->_leftCapView;
-      self->_leftCapView = v13;
+      self->_leftCapView = bottomArrowLeftEndCapView;
 
-      v4 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowRightEndCapView];
+      bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowRightEndCapView];
       v9 = 568;
       goto LABEL_28;
     }
 
-    if (v3 != 1)
+    if (arrowDirection != 1)
     {
 LABEL_19:
       v15 = MEMORY[0x1E695DF30];
@@ -654,49 +654,49 @@ LABEL_19:
       goto LABEL_29;
     }
 
-    v5 = [(_UIPopoverViewArtworkLoader *)v55 topArrowLeftEndCapView];
+    topArrowLeftEndCapView = [(_UIPopoverViewArtworkLoader *)v55 topArrowLeftEndCapView];
     v6 = self->_leftCapView;
-    self->_leftCapView = v5;
+    self->_leftCapView = topArrowLeftEndCapView;
 
     [(_UIPopoverLegacyChromeView *)self arrowOffset];
     if ([(_UIPopoverStandardChromeView *)self wouldPinForOffset:?])
     {
-      v4 = [(_UIPopoverViewArtworkLoader *)v55 topArrowPinnedView];
+      bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 topArrowPinnedView];
       goto LABEL_14;
     }
 
-    v26 = [(_UIPopoverViewArtworkLoader *)v55 topArrowView];
+    topArrowView = [(_UIPopoverViewArtworkLoader *)v55 topArrowView];
     arrowView = self->_arrowView;
-    self->_arrowView = v26;
+    self->_arrowView = topArrowView;
 
-    v4 = [(_UIPopoverViewArtworkLoader *)v55 topArrowRightEndCapView];
+    bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 topArrowRightEndCapView];
 LABEL_27:
     v9 = 568;
     goto LABEL_28;
   }
 
-  if (v3 == 2)
+  if (arrowDirection == 2)
   {
-    v7 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowLeftEndCapView];
+    bottomArrowLeftEndCapView2 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowLeftEndCapView];
     v8 = self->_leftCapView;
-    self->_leftCapView = v7;
+    self->_leftCapView = bottomArrowLeftEndCapView2;
 
     [(_UIPopoverLegacyChromeView *)self arrowOffset];
     if ([(_UIPopoverStandardChromeView *)self wouldPinForOffset:?])
     {
-      v4 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowPinnedView];
+      bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowPinnedView];
       goto LABEL_14;
     }
 
-    v24 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowView];
+    bottomArrowView = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowView];
     v25 = self->_arrowView;
-    self->_arrowView = v24;
+    self->_arrowView = bottomArrowView;
 
-    v4 = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowRightEndCapView];
+    bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 bottomArrowRightEndCapView];
     goto LABEL_27;
   }
 
-  if (v3 != 4 && v3 != 8)
+  if (arrowDirection != 4 && arrowDirection != 8)
   {
     goto LABEL_19;
   }
@@ -706,7 +706,7 @@ LABEL_27:
     [(_UIPopoverLegacyChromeView *)self arrowOffset];
     if ([(_UIPopoverStandardChromeView *)self wouldPinForOffset:?]&& ([(_UIPopoverLegacyChromeView *)self arrowOffset], v10 < 0.0))
     {
-      v11 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowPinnedTopView];
+      rightArrowPinnedTopView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowPinnedTopView];
       v12 = 552;
     }
 
@@ -718,132 +718,132 @@ LABEL_27:
         [(_UIPopoverLegacyChromeView *)self arrowOffset];
         if (v18 > 0.0)
         {
-          v19 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowPinnedBottomView];
+          rightArrowPinnedBottomView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowPinnedBottomView];
           v20 = self->_arrowView;
-          self->_arrowView = v19;
+          self->_arrowView = rightArrowPinnedBottomView;
 
-          v4 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowTopEndCapView];
+          bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowTopEndCapView];
           v9 = 560;
           goto LABEL_28;
         }
       }
 
-      v21 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowView];
+      rightArrowView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowView];
       v22 = self->_arrowView;
-      self->_arrowView = v21;
+      self->_arrowView = rightArrowView;
 
-      v11 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowTopEndCapView];
+      rightArrowPinnedTopView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowTopEndCapView];
       v12 = 560;
     }
 
     v23 = *(&self->super.super.super.super.super.isa + v12);
-    *(&self->super.super.super.super.super.isa + v12) = v11;
+    *(&self->super.super.super.super.super.isa + v12) = rightArrowPinnedTopView;
 
-    v4 = [(_UIPopoverViewArtworkLoader *)v55 rightArrowBottomEndCapView];
+    bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 rightArrowBottomEndCapView];
     goto LABEL_27;
   }
 
-  v4 = [(_UIPopoverViewArtworkLoader *)v55 shortRightArrowView];
+  bottomArrowRightEndCapView = [(_UIPopoverViewArtworkLoader *)v55 shortRightArrowView];
 LABEL_14:
   v9 = 552;
 LABEL_28:
   v17 = *(&self->super.super.super.super.super.isa + v9);
-  *(&self->super.super.super.super.super.isa + v9) = v4;
+  *(&self->super.super.super.super.super.isa + v9) = bottomArrowRightEndCapView;
 LABEL_29:
 
   backgroundStyle = self->_backgroundStyle;
   if ((backgroundStyle - 6) < 2 || backgroundStyle == 100)
   {
-    v29 = self;
-    [(_UIPopoverLegacyChromeView *)v29 _configureEffectView];
-    [(UIView *)v29 bounds];
-    [(UIView *)v29->_effectView setFrame:?];
+    selfCopy = self;
+    [(_UIPopoverLegacyChromeView *)selfCopy _configureEffectView];
+    [(UIView *)selfCopy bounds];
+    [(UIView *)selfCopy->_effectView setFrame:?];
     v30 = [UIView alloc];
-    v31 = [(UIVisualEffectView *)v29->_effectView contentView];
+    contentView = [(UIVisualEffectView *)selfCopy->_effectView contentView];
 
-    [v31 frame];
-    v32 = [(UIView *)v30 initWithFrame:?];
+    [contentView frame];
+    selfCopy2 = [(UIView *)v30 initWithFrame:?];
 
-    [(UIView *)v32 setUserInteractionEnabled:0];
-    arrowBackgroundView = v29->_arrowBackgroundView;
+    [(UIView *)selfCopy2 setUserInteractionEnabled:0];
+    arrowBackgroundView = selfCopy->_arrowBackgroundView;
     if (!arrowBackgroundView)
     {
       v34 = objc_alloc_init(UIView);
-      v35 = v29->_arrowBackgroundView;
-      v29->_arrowBackgroundView = v34;
+      v35 = selfCopy->_arrowBackgroundView;
+      selfCopy->_arrowBackgroundView = v34;
 
-      arrowBackgroundView = v29->_arrowBackgroundView;
+      arrowBackgroundView = selfCopy->_arrowBackgroundView;
     }
 
-    v36 = [(UIView *)arrowBackgroundView superview];
-    v37 = [(UIVisualEffectView *)v29->_effectView contentView];
+    superview = [(UIView *)arrowBackgroundView superview];
+    contentView2 = [(UIVisualEffectView *)selfCopy->_effectView contentView];
 
-    if (v36 != v37)
+    if (superview != contentView2)
     {
-      v38 = [(UIVisualEffectView *)v29->_effectView contentView];
-      [v38 addSubview:v29->_arrowBackgroundView];
+      contentView3 = [(UIVisualEffectView *)selfCopy->_effectView contentView];
+      [contentView3 addSubview:selfCopy->_arrowBackgroundView];
     }
 
-    v39 = v29->_arrowBackgroundView;
-    v40 = [(_UIPopoverStandardChromeView *)v29 arrowBackgroundColor];
-    [(UIView *)v39 setBackgroundColor:v40];
+    v39 = selfCopy->_arrowBackgroundView;
+    arrowBackgroundColor = [(_UIPopoverStandardChromeView *)selfCopy arrowBackgroundColor];
+    [(UIView *)v39 setBackgroundColor:arrowBackgroundColor];
 
     v41 = 1;
   }
 
   else
   {
-    v32 = self;
+    selfCopy2 = self;
     v41 = 0;
   }
 
-  v42 = [(UIView *)self->_arrowView superview];
-  v43 = v42;
-  if (v42 == v32)
+  superview2 = [(UIView *)self->_arrowView superview];
+  v43 = superview2;
+  if (superview2 == selfCopy2)
   {
   }
 
   else
   {
-    v44 = [(_UIPopoverStandardChromeView *)self arrowDirection];
+    arrowDirection2 = [(_UIPopoverStandardChromeView *)self arrowDirection];
 
-    if (v44)
+    if (arrowDirection2)
     {
-      [(UIView *)v32 addSubview:self->_arrowView];
+      [(UIView *)selfCopy2 addSubview:self->_arrowView];
     }
   }
 
-  v45 = [(UIView *)self->_leftCapView superview];
+  superview3 = [(UIView *)self->_leftCapView superview];
 
-  if (v45 != v32)
+  if (superview3 != selfCopy2)
   {
-    [(UIView *)v32 addSubview:self->_leftCapView];
+    [(UIView *)selfCopy2 addSubview:self->_leftCapView];
   }
 
-  v46 = [(UIView *)self->_rightCapView superview];
+  superview4 = [(UIView *)self->_rightCapView superview];
 
-  if (v46 != v32)
+  if (superview4 != selfCopy2)
   {
-    [(UIView *)v32 addSubview:self->_rightCapView];
+    [(UIView *)selfCopy2 addSubview:self->_rightCapView];
   }
 
   if (v41)
   {
-    v47 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+    viewToMaskWhenContentExtendsOverArrow = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
 
-    if (v47)
+    if (viewToMaskWhenContentExtendsOverArrow)
     {
-      v48 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
-      [v48 setMaskView:v32];
+      viewToMaskWhenContentExtendsOverArrow2 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+      [viewToMaskWhenContentExtendsOverArrow2 setMaskView:selfCopy2];
     }
 
     else
     {
-      [(UIView *)self->_effectView setMaskView:v32];
+      [(UIView *)self->_effectView setMaskView:selfCopy2];
     }
   }
 
-  objc_storeStrong(&self->_maskView, v32);
+  objc_storeStrong(&self->_maskView, selfCopy2);
   if ([(_UIPopoverStandardChromeView *)self isDebugModeEnabled])
   {
     v49 = self->_arrowView;
@@ -899,12 +899,12 @@ LABEL_29:
   return v3;
 }
 
-- (void)setPopoverBackgroundColor:(id)a3
+- (void)setPopoverBackgroundColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = _UIPopoverLegacyChromeView;
-  v4 = a3;
-  [(_UIPopoverStandardChromeView *)&v8 setPopoverBackgroundColor:v4];
+  colorCopy = color;
+  [(_UIPopoverStandardChromeView *)&v8 setPopoverBackgroundColor:colorCopy];
   if (self->_effectView)
   {
     v5 = [(_UIPopoverLegacyChromeView *)self legacyBackgroundEffect:v8.receiver];
@@ -920,19 +920,19 @@ LABEL_29:
   }
 
   v7 = [(UIVisualEffectView *)effectView contentView:v8.receiver];
-  [v7 setBackgroundColor:v4];
+  [v7 setBackgroundColor:colorCopy];
 }
 
-- (void)setArrowBackgroundColor:(id)a3
+- (void)setArrowBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = _UIPopoverLegacyChromeView;
-  [(_UIPopoverStandardChromeView *)&v6 setArrowBackgroundColor:v4];
+  [(_UIPopoverStandardChromeView *)&v6 setArrowBackgroundColor:colorCopy];
   arrowBackgroundView = self->_arrowBackgroundView;
   if (arrowBackgroundView)
   {
-    [(UIView *)arrowBackgroundView setBackgroundColor:v4];
+    [(UIView *)arrowBackgroundView setBackgroundColor:colorCopy];
   }
 }
 

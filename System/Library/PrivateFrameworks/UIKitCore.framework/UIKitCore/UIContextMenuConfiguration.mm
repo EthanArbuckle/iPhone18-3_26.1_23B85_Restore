@@ -13,7 +13,7 @@
 
 - (BOOL)_isCollectionViewBackgroundMenu
 {
-  v3 = [(UIContextMenuConfiguration *)self _internalIdentifier];
+  _internalIdentifier = [(UIContextMenuConfiguration *)self _internalIdentifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,8 +22,8 @@
     return 0;
   }
 
-  v5 = [(UIContextMenuConfiguration *)self _internalIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.UIKit.UICollectionView.backgroundMenu"];
+  _internalIdentifier2 = [(UIContextMenuConfiguration *)self _internalIdentifier];
+  v6 = [_internalIdentifier2 isEqualToString:@"com.apple.UIKit.UICollectionView.backgroundMenu"];
 
   return v6;
 }
@@ -60,9 +60,9 @@
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v5 = self->_identifier;
-    self->_identifier = v4;
+    self->_identifier = uUID;
 
     identifier = self->_identifier;
   }
@@ -72,46 +72,46 @@
 
 - (BOOL)_isMultiItemMenu
 {
-  v2 = [(UIContextMenuConfiguration *)self _effectiveSecondaryItemIdentifiers];
-  v3 = [v2 count] != 0;
+  _effectiveSecondaryItemIdentifiers = [(UIContextMenuConfiguration *)self _effectiveSecondaryItemIdentifiers];
+  v3 = [_effectiveSecondaryItemIdentifiers count] != 0;
 
   return v3;
 }
 
 - (id)_effectiveInternalIdentifier
 {
-  v3 = [(UIContextMenuConfiguration *)self _internalIdentifier];
-  v4 = v3;
-  if (v3)
+  _internalIdentifier = [(UIContextMenuConfiguration *)self _internalIdentifier];
+  v4 = _internalIdentifier;
+  if (_internalIdentifier)
   {
-    v5 = v3;
+    identifier = _internalIdentifier;
   }
 
   else
   {
-    v5 = [(UIContextMenuConfiguration *)self identifier];
+    identifier = [(UIContextMenuConfiguration *)self identifier];
   }
 
-  v6 = v5;
+  v6 = identifier;
 
   return v6;
 }
 
 - (NSSet)_effectiveSecondaryItemIdentifiers
 {
-  v3 = [(UIContextMenuConfiguration *)self _internalSecondaryItemIdentifiers];
-  v4 = v3;
-  if (v3)
+  _internalSecondaryItemIdentifiers = [(UIContextMenuConfiguration *)self _internalSecondaryItemIdentifiers];
+  v4 = _internalSecondaryItemIdentifiers;
+  if (_internalSecondaryItemIdentifiers)
   {
-    v5 = v3;
+    secondaryItemIdentifiers = _internalSecondaryItemIdentifiers;
   }
 
   else
   {
-    v5 = [(UIContextMenuConfiguration *)self secondaryItemIdentifiers];
+    secondaryItemIdentifiers = [(UIContextMenuConfiguration *)self secondaryItemIdentifiers];
   }
 
-  v6 = v5;
+  v6 = secondaryItemIdentifiers;
 
   return v6;
 }

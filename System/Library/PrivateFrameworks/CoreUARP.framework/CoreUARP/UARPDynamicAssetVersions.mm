@@ -2,7 +2,7 @@
 + (id)tag;
 - (BOOL)decomposeUARP;
 - (UARPDynamicAssetVersions)init;
-- (UARPDynamicAssetVersions)initWithURL:(id)a3;
+- (UARPDynamicAssetVersions)initWithURL:(id)l;
 - (id)description;
 @end
 
@@ -15,15 +15,15 @@
   return 0;
 }
 
-- (UARPDynamicAssetVersions)initWithURL:(id)a3
+- (UARPDynamicAssetVersions)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = UARPDynamicAssetVersions;
   v5 = [(UARPDynamicAssetVersions *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -82,8 +82,8 @@
 
   if ([(UARPSuperBinaryAsset *)self->_asset expandHeadersAndTLVs:0])
   {
-    v5 = [(UARPSuperBinaryAsset *)self->_asset tlvs];
-    v6 = [UARPSuperBinaryAssetTLV findTLVsWithType:1155952129 tlvs:v5];
+    tlvs = [(UARPSuperBinaryAsset *)self->_asset tlvs];
+    v6 = [UARPSuperBinaryAssetTLV findTLVsWithType:1155952129 tlvs:tlvs];
 
     v18 = 0u;
     v19 = 0u;
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) valueAsString];
-          if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+          valueAsString = [*(*(&v16 + 1) + 8 * i) valueAsString];
+          if (!valueAsString || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -116,7 +116,7 @@
             goto LABEL_17;
           }
 
-          [(NSMutableArray *)self->_serialNumbers addObject:v12];
+          [(NSMutableArray *)self->_serialNumbers addObject:valueAsString];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];

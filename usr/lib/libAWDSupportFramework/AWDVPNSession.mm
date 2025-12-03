@@ -1,27 +1,27 @@
 @interface AWDVPNSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppVpnUsed:(BOOL)a3;
-- (void)setHasConnectFailed:(BOOL)a3;
-- (void)setHasDisconnectReason:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasIpv4Installed:(BOOL)a3;
-- (void)setHasIpv6Installed:(BOOL)a3;
-- (void)setHasOutBytes:(BOOL)a3;
-- (void)setHasProxyInstalled:(BOOL)a3;
-- (void)setHasReassertCount:(BOOL)a3;
-- (void)setHasSystemAuthenMethod:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTriggerTrafficClass:(BOOL)a3;
-- (void)setHasTriggerType:(BOOL)a3;
-- (void)setHasUserAuthenMethod:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppVpnUsed:(BOOL)used;
+- (void)setHasConnectFailed:(BOOL)failed;
+- (void)setHasDisconnectReason:(BOOL)reason;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasIpv4Installed:(BOOL)installed;
+- (void)setHasIpv6Installed:(BOOL)installed;
+- (void)setHasOutBytes:(BOOL)bytes;
+- (void)setHasProxyInstalled:(BOOL)installed;
+- (void)setHasReassertCount:(BOOL)count;
+- (void)setHasSystemAuthenMethod:(BOOL)method;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTriggerTrafficClass:(BOOL)class;
+- (void)setHasTriggerType:(BOOL)type;
+- (void)setHasUserAuthenMethod:(BOOL)method;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDVPNSession
@@ -34,9 +34,9 @@
   [(AWDVPNSession *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTriggerType:(BOOL)a3
+- (void)setHasTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasTriggerTrafficClass:(BOOL)a3
+- (void)setHasTriggerTrafficClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 512;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIpv4Installed:(BOOL)a3
+- (void)setHasIpv4Installed:(BOOL)installed
 {
-  if (a3)
+  if (installed)
   {
     v3 = 32;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIpv6Installed:(BOOL)a3
+- (void)setHasIpv6Installed:(BOOL)installed
 {
-  if (a3)
+  if (installed)
   {
     v3 = 64;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasProxyInstalled:(BOOL)a3
+- (void)setHasProxyInstalled:(BOOL)installed
 {
-  if (a3)
+  if (installed)
   {
     v3 = 0x4000;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasAppVpnUsed:(BOOL)a3
+- (void)setHasAppVpnUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 4096;
   }
@@ -139,9 +139,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSystemAuthenMethod:(BOOL)a3
+- (void)setHasSystemAuthenMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 256;
   }
@@ -154,9 +154,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUserAuthenMethod:(BOOL)a3
+- (void)setHasUserAuthenMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 2048;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasDisconnectReason:(BOOL)a3
+- (void)setHasDisconnectReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasConnectFailed:(BOOL)a3
+- (void)setHasConnectFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 0x2000;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -214,9 +214,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasReassertCount:(BOOL)a3
+- (void)setHasReassertCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -229,9 +229,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasOutBytes:(BOOL)a3
+- (void)setHasOutBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -253,22 +253,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   protocol = self->_protocol;
   if (protocol)
   {
-    [v3 setObject:protocol forKey:@"protocol"];
+    [dictionary setObject:protocol forKey:@"protocol"];
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_triggerType), @"trigger_type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_triggerType), @"trigger_type"}];
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -287,7 +287,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_triggerTrafficClass), @"trigger_traffic_class"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_triggerTrafficClass), @"trigger_traffic_class"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -301,7 +301,7 @@ LABEL_8:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ipv4Installed), @"ipv4_installed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ipv4Installed), @"ipv4_installed"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -315,7 +315,7 @@ LABEL_9:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ipv6Installed), @"ipv6_installed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ipv6Installed), @"ipv6_installed"}];
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -329,7 +329,7 @@ LABEL_10:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_proxyInstalled), @"proxy_installed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_proxyInstalled), @"proxy_installed"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -343,7 +343,7 @@ LABEL_11:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_appVpnUsed), @"app_vpn_used"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_appVpnUsed), @"app_vpn_used"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -357,7 +357,7 @@ LABEL_12:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_systemAuthenMethod), @"system_authen_method"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_systemAuthenMethod), @"system_authen_method"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -371,7 +371,7 @@ LABEL_13:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_userAuthenMethod), @"user_authen_method"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_userAuthenMethod), @"user_authen_method"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -385,7 +385,7 @@ LABEL_14:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_disconnectReason), @"disconnect_reason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_disconnectReason), @"disconnect_reason"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -399,7 +399,7 @@ LABEL_15:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_connectFailed), @"connect_failed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_connectFailed), @"connect_failed"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -413,7 +413,7 @@ LABEL_16:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -424,17 +424,17 @@ LABEL_17:
     }
 
 LABEL_33:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_inBytes), @"in_bytes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_inBytes), @"in_bytes"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_19;
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reassertCount), @"reassert_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reassertCount), @"reassert_count"}];
   has = self->_has;
   if (has)
   {
@@ -445,13 +445,13 @@ LABEL_18:
   if ((has & 2) != 0)
   {
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_outBytes), @"out_bytes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_outBytes), @"out_bytes"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
@@ -665,24 +665,24 @@ LABEL_33:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 40) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 40) |= 4u;
   }
 
   if (self->_protocol)
   {
-    [a3 setProtocol:?];
+    [to setProtocol:?];
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(a3 + 17) = self->_triggerType;
-    *(a3 + 40) |= 0x400u;
+    *(to + 17) = self->_triggerType;
+    *(to + 40) |= 0x400u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -701,8 +701,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 16) = self->_triggerTrafficClass;
-  *(a3 + 40) |= 0x200u;
+  *(to + 16) = self->_triggerTrafficClass;
+  *(to + 40) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -716,8 +716,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  *(a3 + 10) = self->_ipv4Installed;
-  *(a3 + 40) |= 0x20u;
+  *(to + 10) = self->_ipv4Installed;
+  *(to + 40) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -731,8 +731,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  *(a3 + 11) = self->_ipv6Installed;
-  *(a3 + 40) |= 0x40u;
+  *(to + 11) = self->_ipv6Installed;
+  *(to + 40) |= 0x40u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -746,8 +746,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(a3 + 78) = self->_proxyInstalled;
-  *(a3 + 40) |= 0x4000u;
+  *(to + 78) = self->_proxyInstalled;
+  *(to + 40) |= 0x4000u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -761,8 +761,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(a3 + 76) = self->_appVpnUsed;
-  *(a3 + 40) |= 0x1000u;
+  *(to + 76) = self->_appVpnUsed;
+  *(to + 40) |= 0x1000u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -776,8 +776,8 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(a3 + 15) = self->_systemAuthenMethod;
-  *(a3 + 40) |= 0x100u;
+  *(to + 15) = self->_systemAuthenMethod;
+  *(to + 40) |= 0x100u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -791,8 +791,8 @@ LABEL_13:
   }
 
 LABEL_28:
-  *(a3 + 18) = self->_userAuthenMethod;
-  *(a3 + 40) |= 0x800u;
+  *(to + 18) = self->_userAuthenMethod;
+  *(to + 40) |= 0x800u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -806,8 +806,8 @@ LABEL_14:
   }
 
 LABEL_29:
-  *(a3 + 8) = self->_disconnectReason;
-  *(a3 + 40) |= 8u;
+  *(to + 8) = self->_disconnectReason;
+  *(to + 40) |= 8u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -821,8 +821,8 @@ LABEL_15:
   }
 
 LABEL_30:
-  *(a3 + 77) = self->_connectFailed;
-  *(a3 + 40) |= 0x2000u;
+  *(to + 77) = self->_connectFailed;
+  *(to + 40) |= 0x2000u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -836,8 +836,8 @@ LABEL_16:
   }
 
 LABEL_31:
-  *(a3 + 9) = self->_duration;
-  *(a3 + 40) |= 0x10u;
+  *(to + 9) = self->_duration;
+  *(to + 40) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -851,8 +851,8 @@ LABEL_17:
   }
 
 LABEL_32:
-  *(a3 + 14) = self->_reassertCount;
-  *(a3 + 40) |= 0x80u;
+  *(to + 14) = self->_reassertCount;
+  *(to + 40) |= 0x80u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -866,21 +866,21 @@ LABEL_18:
   }
 
 LABEL_33:
-  *(a3 + 1) = self->_inBytes;
-  *(a3 + 40) |= 1u;
+  *(to + 1) = self->_inBytes;
+  *(to + 40) |= 1u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_19:
-  *(a3 + 2) = self->_outBytes;
-  *(a3 + 40) |= 2u;
+  *(to + 2) = self->_outBytes;
+  *(to + 40) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -888,7 +888,7 @@ LABEL_19:
     *(v5 + 80) |= 4u;
   }
 
-  *(v6 + 48) = [(NSString *)self->_protocol copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_protocol copyWithZone:zone];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
@@ -1089,19 +1089,19 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 40);
+  v7 = *(equal + 40);
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_timestamp != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_timestamp != *(equal + 3))
     {
       goto LABEL_88;
     }
@@ -1113,7 +1113,7 @@ LABEL_17:
   }
 
   protocol = self->_protocol;
-  if (protocol | *(a3 + 6))
+  if (protocol | *(equal + 6))
   {
     v5 = [(NSString *)protocol isEqual:?];
     if (!v5)
@@ -1124,36 +1124,36 @@ LABEL_17:
     has = self->_has;
   }
 
-  v9 = *(a3 + 40);
+  v9 = *(equal + 40);
   if ((has & 0x400) != 0)
   {
-    if ((*(a3 + 40) & 0x400) == 0 || self->_triggerType != *(a3 + 17))
+    if ((*(equal + 40) & 0x400) == 0 || self->_triggerType != *(equal + 17))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x400) != 0)
+  else if ((*(equal + 40) & 0x400) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x200) != 0)
   {
-    if ((*(a3 + 40) & 0x200) == 0 || self->_triggerTrafficClass != *(a3 + 16))
+    if ((*(equal + 40) & 0x200) == 0 || self->_triggerTrafficClass != *(equal + 16))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x200) != 0)
+  else if ((*(equal + 40) & 0x200) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_ipv4Installed != *(a3 + 10))
+    if ((v9 & 0x20) == 0 || self->_ipv4Installed != *(equal + 10))
     {
       goto LABEL_88;
     }
@@ -1166,7 +1166,7 @@ LABEL_17:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_ipv6Installed != *(a3 + 11))
+    if ((v9 & 0x40) == 0 || self->_ipv6Installed != *(equal + 11))
     {
       goto LABEL_88;
     }
@@ -1179,87 +1179,87 @@ LABEL_17:
 
   if ((has & 0x4000) != 0)
   {
-    if ((*(a3 + 40) & 0x4000) == 0)
+    if ((*(equal + 40) & 0x4000) == 0)
     {
       goto LABEL_88;
     }
 
-    v10 = *(a3 + 78);
+    v10 = *(equal + 78);
     if (self->_proxyInstalled)
     {
-      if ((*(a3 + 78) & 1) == 0)
+      if ((*(equal + 78) & 1) == 0)
       {
         goto LABEL_88;
       }
     }
 
-    else if (*(a3 + 78))
+    else if (*(equal + 78))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x4000) != 0)
+  else if ((*(equal + 40) & 0x4000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x1000) != 0)
   {
-    if ((*(a3 + 40) & 0x1000) == 0)
+    if ((*(equal + 40) & 0x1000) == 0)
     {
       goto LABEL_88;
     }
 
-    v11 = *(a3 + 76);
+    v11 = *(equal + 76);
     if (self->_appVpnUsed)
     {
-      if ((*(a3 + 76) & 1) == 0)
+      if ((*(equal + 76) & 1) == 0)
       {
         goto LABEL_88;
       }
     }
 
-    else if (*(a3 + 76))
+    else if (*(equal + 76))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x1000) != 0)
+  else if ((*(equal + 40) & 0x1000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x100) != 0)
   {
-    if ((*(a3 + 40) & 0x100) == 0 || self->_systemAuthenMethod != *(a3 + 15))
+    if ((*(equal + 40) & 0x100) == 0 || self->_systemAuthenMethod != *(equal + 15))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x100) != 0)
+  else if ((*(equal + 40) & 0x100) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x800) != 0)
   {
-    if ((*(a3 + 40) & 0x800) == 0 || self->_userAuthenMethod != *(a3 + 18))
+    if ((*(equal + 40) & 0x800) == 0 || self->_userAuthenMethod != *(equal + 18))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(a3 + 40) & 0x800) != 0)
+  else if ((*(equal + 40) & 0x800) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_disconnectReason != *(a3 + 8))
+    if ((v9 & 8) == 0 || self->_disconnectReason != *(equal + 8))
     {
       goto LABEL_88;
     }
@@ -1272,18 +1272,18 @@ LABEL_17:
 
   if ((has & 0x2000) != 0)
   {
-    if ((*(a3 + 40) & 0x2000) != 0)
+    if ((*(equal + 40) & 0x2000) != 0)
     {
-      v12 = *(a3 + 77);
+      v12 = *(equal + 77);
       if (self->_connectFailed)
       {
-        if ((*(a3 + 77) & 1) == 0)
+        if ((*(equal + 77) & 1) == 0)
         {
           goto LABEL_88;
         }
       }
 
-      else if (*(a3 + 77))
+      else if (*(equal + 77))
       {
         goto LABEL_88;
       }
@@ -1296,7 +1296,7 @@ LABEL_88:
     return v5;
   }
 
-  if ((*(a3 + 40) & 0x2000) != 0)
+  if ((*(equal + 40) & 0x2000) != 0)
   {
     goto LABEL_88;
   }
@@ -1304,7 +1304,7 @@ LABEL_88:
 LABEL_63:
   if ((has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_duration != *(a3 + 9))
+    if ((v9 & 0x10) == 0 || self->_duration != *(equal + 9))
     {
       goto LABEL_88;
     }
@@ -1317,7 +1317,7 @@ LABEL_63:
 
   if ((has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_reassertCount != *(a3 + 14))
+    if ((v9 & 0x80) == 0 || self->_reassertCount != *(equal + 14))
     {
       goto LABEL_88;
     }
@@ -1330,7 +1330,7 @@ LABEL_63:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_inBytes != *(a3 + 1))
+    if ((v9 & 1) == 0 || self->_inBytes != *(equal + 1))
     {
       goto LABEL_88;
     }
@@ -1344,7 +1344,7 @@ LABEL_63:
   LOBYTE(v5) = (v9 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_outBytes != *(a3 + 2))
+    if ((v9 & 2) == 0 || self->_outBytes != *(equal + 2))
     {
       goto LABEL_88;
     }
@@ -1561,25 +1561,25 @@ LABEL_18:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 40) & 4) != 0)
+  if ((*(from + 40) & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDVPNSession *)self setProtocol:?];
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x400) != 0)
   {
-    self->_triggerType = *(a3 + 17);
+    self->_triggerType = *(from + 17);
     *&self->_has |= 0x400u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
     if ((v5 & 0x200) == 0)
     {
 LABEL_7:
@@ -1592,14 +1592,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 40) & 0x200) == 0)
+  else if ((*(from + 40) & 0x200) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_triggerTrafficClass = *(a3 + 16);
+  self->_triggerTrafficClass = *(from + 16);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -1612,9 +1612,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_ipv4Installed = *(a3 + 10);
+  self->_ipv4Installed = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -1627,9 +1627,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_ipv6Installed = *(a3 + 11);
+  self->_ipv6Installed = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_10:
@@ -1642,9 +1642,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_proxyInstalled = *(a3 + 78);
+  self->_proxyInstalled = *(from + 78);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_11:
@@ -1657,9 +1657,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_appVpnUsed = *(a3 + 76);
+  self->_appVpnUsed = *(from + 76);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -1672,9 +1672,9 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_systemAuthenMethod = *(a3 + 15);
+  self->_systemAuthenMethod = *(from + 15);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x800) == 0)
   {
 LABEL_13:
@@ -1687,9 +1687,9 @@ LABEL_13:
   }
 
 LABEL_28:
-  self->_userAuthenMethod = *(a3 + 18);
+  self->_userAuthenMethod = *(from + 18);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_14:
@@ -1702,9 +1702,9 @@ LABEL_14:
   }
 
 LABEL_29:
-  self->_disconnectReason = *(a3 + 8);
+  self->_disconnectReason = *(from + 8);
   *&self->_has |= 8u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_15:
@@ -1717,9 +1717,9 @@ LABEL_15:
   }
 
 LABEL_30:
-  self->_connectFailed = *(a3 + 77);
+  self->_connectFailed = *(from + 77);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_16:
@@ -1732,9 +1732,9 @@ LABEL_16:
   }
 
 LABEL_31:
-  self->_duration = *(a3 + 9);
+  self->_duration = *(from + 9);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x80) == 0)
   {
 LABEL_17:
@@ -1747,9 +1747,9 @@ LABEL_17:
   }
 
 LABEL_32:
-  self->_reassertCount = *(a3 + 14);
+  self->_reassertCount = *(from + 14);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_18:
@@ -1762,15 +1762,15 @@ LABEL_18:
   }
 
 LABEL_33:
-  self->_inBytes = *(a3 + 1);
+  self->_inBytes = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 40) & 2) == 0)
+  if ((*(from + 40) & 2) == 0)
   {
     return;
   }
 
 LABEL_19:
-  self->_outBytes = *(a3 + 2);
+  self->_outBytes = *(from + 2);
   *&self->_has |= 2u;
 }
 

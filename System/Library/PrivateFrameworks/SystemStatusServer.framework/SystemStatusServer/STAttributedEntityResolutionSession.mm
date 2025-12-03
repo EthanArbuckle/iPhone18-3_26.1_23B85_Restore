@@ -1,28 +1,28 @@
 @interface STAttributedEntityResolutionSession
-- (STAttributedEntityResolutionSession)initWithEntityResolver:(id)a3 identityResolver:(id)a4 cache:(id)a5;
-- (id)_entityWithResolvedIdentityForEntity:(uint64_t)a1;
-- (id)resolveEntity:(id)a3;
+- (STAttributedEntityResolutionSession)initWithEntityResolver:(id)resolver identityResolver:(id)identityResolver cache:(id)cache;
+- (id)_entityWithResolvedIdentityForEntity:(uint64_t)entity;
+- (id)resolveEntity:(id)entity;
 - (void)dealloc;
 - (void)invalidate;
-- (void)resolveEntities:(id)a3;
+- (void)resolveEntities:(id)entities;
 @end
 
 @implementation STAttributedEntityResolutionSession
 
-- (STAttributedEntityResolutionSession)initWithEntityResolver:(id)a3 identityResolver:(id)a4 cache:(id)a5
+- (STAttributedEntityResolutionSession)initWithEntityResolver:(id)resolver identityResolver:(id)identityResolver cache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resolverCopy = resolver;
+  identityResolverCopy = identityResolver;
+  cacheCopy = cache;
   v15.receiver = self;
   v15.super_class = STAttributedEntityResolutionSession;
   v12 = [(STAttributedEntityResolutionSession *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entityResolver, a3);
-    objc_storeStrong(&v13->_identityResolver, a4);
-    objc_storeStrong(&v13->_cache, a5);
+    objc_storeStrong(&v12->_entityResolver, resolver);
+    objc_storeStrong(&v13->_identityResolver, identityResolver);
+    objc_storeStrong(&v13->_cache, cache);
   }
 
   return v13;
@@ -35,10 +35,10 @@
   [(STAttributedEntityResolutionSession *)&v2 dealloc];
 }
 
-- (void)resolveEntities:(id)a3
+- (void)resolveEntities:(id)entities
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   if (self)
   {
     cache = self->_cache;
@@ -50,7 +50,7 @@
   }
 
   v6 = cache;
-  v7 = [v4 bs_map:&__block_literal_global_9];
+  v7 = [entitiesCopy bs_map:&__block_literal_global_9];
   v26 = v7;
   if (self)
   {
@@ -65,12 +65,12 @@
   }
 
   v9 = entityResolver;
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v4;
+  v11 = entitiesCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v12)
   {
@@ -87,7 +87,7 @@
         }
 
         v16 = [(STAttributedEntityResolutionSession *)self _entityWithResolvedIdentityForEntity:?];
-        [v10 addObject:v16];
+        [array addObject:v16];
         v17 = [(STReferenceCountedCache *)v6 cachedObjectForKey:v16];
         if (!v17)
         {
@@ -153,27 +153,27 @@
 
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, v24, v10, 40);
+    objc_setProperty_nonatomic_copy(self, v24, array, 40);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_entityWithResolvedIdentityForEntity:(uint64_t)a1
+- (id)_entityWithResolvedIdentityForEntity:(uint64_t)entity
 {
-  if (a1)
+  if (entity)
   {
-    v3 = *(a1 + 24);
+    v3 = *(entity + 24);
     v4 = a2;
-    v5 = [v4 executableIdentity];
-    v6 = [v3 resolvedIdentityForIdentity:v5];
+    executableIdentity = [v4 executableIdentity];
+    v6 = [v3 resolvedIdentityForIdentity:executableIdentity];
 
-    v7 = [v4 website];
-    v8 = [v4 isSystemService];
-    v9 = [v4 localizedDisplayName];
-    v10 = [v4 localizedExecutableDisplayName];
+    website = [v4 website];
+    isSystemService = [v4 isSystemService];
+    localizedDisplayName = [v4 localizedDisplayName];
+    localizedExecutableDisplayName = [v4 localizedExecutableDisplayName];
 
-    v11 = [objc_alloc(MEMORY[0x277D6B8F0]) initWithExecutableIdentity:v6 website:v7 systemService:v8 localizedDisplayName:v9 localizedExecutableDisplayName:v10];
+    v11 = [objc_alloc(MEMORY[0x277D6B8F0]) initWithExecutableIdentity:v6 website:website systemService:isSystemService localizedDisplayName:localizedDisplayName localizedExecutableDisplayName:localizedExecutableDisplayName];
   }
 
   else
@@ -259,9 +259,9 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolveEntity:(id)a3
+- (id)resolveEntity:(id)entity
 {
-  v4 = [(STAttributedEntityResolutionSession *)self _entityWithResolvedIdentityForEntity:a3];
+  v4 = [(STAttributedEntityResolutionSession *)self _entityWithResolvedIdentityForEntity:entity];
   if (self)
   {
     cache = self->_cache;

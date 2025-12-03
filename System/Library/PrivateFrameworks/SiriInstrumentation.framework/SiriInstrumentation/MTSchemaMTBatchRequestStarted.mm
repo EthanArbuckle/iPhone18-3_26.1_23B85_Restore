@@ -1,32 +1,32 @@
 @interface MTSchemaMTBatchRequestStarted
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTBatchRequestStarted)initWithDictionary:(id)a3;
-- (MTSchemaMTBatchRequestStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTBatchRequestStarted)initWithDictionary:(id)dictionary;
+- (MTSchemaMTBatchRequestStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTBatchRequestStarted
 
-- (MTSchemaMTBatchRequestStarted)initWithDictionary:(id)a3
+- (MTSchemaMTBatchRequestStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MTSchemaMTBatchRequestStarted;
   v5 = [(MTSchemaMTBatchRequestStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numParagraphs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numParagraphs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTBatchRequestStarted setNumParagraphs:](v5, "setNumParagraphs:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"sequenceNumber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"sequenceNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (MTSchemaMTBatchRequestStarted)initWithJSON:(id)a3
+- (MTSchemaMTBatchRequestStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTBatchRequestStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTBatchRequestStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTBatchRequestStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,23 +76,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MTSchemaMTBatchRequestStarted numParagraphs](self, "numParagraphs")}];
-    [v3 setObject:v4 forKeyedSubscript:@"numParagraphs"];
+    [dictionary setObject:v4 forKeyedSubscript:@"numParagraphs"];
   }
 
   if (self->_sequenceNumber)
   {
-    v5 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"sequenceNumber"];
+    sequenceNumber = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
+    v6 = [sequenceNumber copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"sequenceNumber"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -110,22 +110,22 @@
   return [(NSString *)self->_sequenceNumber hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (numParagraphs = self->_numParagraphs, numParagraphs == [v4 numParagraphs]))
+      if ((*&self->_has & 1) == 0 || (numParagraphs = self->_numParagraphs, numParagraphs == [equalCopy numParagraphs]))
       {
-        v6 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
-        v7 = [v4 sequenceNumber];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        sequenceNumber = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
+        sequenceNumber2 = [equalCopy sequenceNumber];
+        v8 = sequenceNumber2;
+        if ((sequenceNumber != 0) != (sequenceNumber2 == 0))
         {
-          v9 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
-          if (!v9)
+          sequenceNumber3 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
+          if (!sequenceNumber3)
           {
 
 LABEL_13:
@@ -133,10 +133,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
-          v12 = [v4 sequenceNumber];
-          v13 = [v11 isEqual:v12];
+          v10 = sequenceNumber3;
+          sequenceNumber4 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
+          sequenceNumber5 = [equalCopy sequenceNumber];
+          v13 = [sequenceNumber4 isEqual:sequenceNumber5];
 
           if (v13)
           {
@@ -157,21 +157,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
+  sequenceNumber = [(MTSchemaMTBatchRequestStarted *)self sequenceNumber];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (sequenceNumber)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

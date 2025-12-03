@@ -1,25 +1,25 @@
 @interface REMLModel
-+ (REMLModel)modelWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5;
++ (REMLModel)modelWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon;
 + (unint64_t)featureBitWidth;
 + (unint64_t)maxFeatureCount;
-- (BOOL)saveModelToURL:(id)a3 error:(id *)a4;
+- (BOOL)saveModelToURL:(id)l error:(id *)error;
 - (NSString)name;
 - (REMLModel)init;
-- (REMLModel)initWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5;
-- (id)predictWithFeatures:(id)a3;
-- (id)predictionSetWithFeatures:(id)a3;
+- (REMLModel)initWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon;
+- (id)predictWithFeatures:(id)features;
+- (id)predictionSetWithFeatures:(id)features;
 - (unint64_t)featureBitWidth;
 - (unint64_t)maxFeatureCount;
 - (void)_clearCache;
 - (void)clearModel;
-- (void)setWantsPredictionCache:(BOOL)a3;
+- (void)setWantsPredictionCache:(BOOL)cache;
 @end
 
 @implementation REMLModel
 
-+ (REMLModel)modelWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5
++ (REMLModel)modelWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon
 {
-  v7 = a3;
+  setCopy = set;
   v8 = objc_opt_class();
   if ([v8 isSubclassOfClass:objc_opt_class()] && (v9 = objc_opt_class(), (objc_msgSend(v9, "isEqual:", objc_opt_class()) & 1) == 0))
   {
@@ -80,9 +80,9 @@ LABEL_17:
   }
 
   v11 = [v10 alloc];
-  *&v12 = a4;
-  *&v13 = a5;
-  v14 = [v11 initWithFeatureSet:v7 priorMean:v12 modelVarianceEpsilon:v13];
+  *&v12 = mean;
+  *&v13 = epsilon;
+  v14 = [v11 initWithFeatureSet:setCopy priorMean:v12 modelVarianceEpsilon:v13];
 
   return v14;
 }
@@ -186,9 +186,9 @@ LABEL_15:
   v2 = [(REMLModel *)&v7 init];
   if (v2)
   {
-    v3 = [[REConcurrentDictionary alloc] initWeakToStrongDictionary];
+    initWeakToStrongDictionary = [[REConcurrentDictionary alloc] initWeakToStrongDictionary];
     predictionCache = v2->_predictionCache;
-    v2->_predictionCache = v3;
+    v2->_predictionCache = initWeakToStrongDictionary;
 
     v2->_wantsPredictionCache = 0;
     v2->_allowsExploreExploit = 1;
@@ -199,24 +199,24 @@ LABEL_15:
   return v2;
 }
 
-- (REMLModel)initWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5
+- (REMLModel)initWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon
 {
   result = [(REMLModel *)self init];
   if (result)
   {
-    result->_priorMean = a4;
-    result->_varianceEpsilon = a5;
+    result->_priorMean = mean;
+    result->_varianceEpsilon = epsilon;
   }
 
   return result;
 }
 
-- (void)setWantsPredictionCache:(BOOL)a3
+- (void)setWantsPredictionCache:(BOOL)cache
 {
-  if (self->_wantsPredictionCache != a3)
+  if (self->_wantsPredictionCache != cache)
   {
-    self->_wantsPredictionCache = a3;
-    if (!a3)
+    self->_wantsPredictionCache = cache;
+    if (!cache)
     {
       [(REConcurrentDictionary *)self->_predictionCache removeAllObjects];
     }
@@ -233,16 +233,16 @@ LABEL_15:
   }
 }
 
-- (id)predictWithFeatures:(id)a3
+- (id)predictWithFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [(REMLModel *)self wantsPredictionCache];
-  if (!v5 || ([(REConcurrentDictionary *)self->_predictionCache objectForKey:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  featuresCopy = features;
+  wantsPredictionCache = [(REMLModel *)self wantsPredictionCache];
+  if (!wantsPredictionCache || ([(REConcurrentDictionary *)self->_predictionCache objectForKey:featuresCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(REMLModel *)self _predictWithFeatures:v4];
-    if (v5)
+    v6 = [(REMLModel *)self _predictWithFeatures:featuresCopy];
+    if (wantsPredictionCache)
     {
-      [(REConcurrentDictionary *)self->_predictionCache setObject:v6 forKey:v4];
+      [(REConcurrentDictionary *)self->_predictionCache setObject:v6 forKey:featuresCopy];
     }
   }
 
@@ -251,20 +251,20 @@ LABEL_15:
   return v7;
 }
 
-- (id)predictionSetWithFeatures:(id)a3
+- (id)predictionSetWithFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = [REMLPredictionSet alloc];
-  v6 = [(REMLModel *)self predictWithFeatures:v4];
+  v6 = [(REMLModel *)self predictWithFeatures:featuresCopy];
 
   v7 = [(REMLPredictionSet *)v5 initWithPrediction:v6];
 
   return v7;
 }
 
-- (BOOL)saveModelToURL:(id)a3 error:(id *)a4
+- (BOOL)saveModelToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if (self->_implementsDebugSaving)
   {
     if (_fetchedInternalBuildOnceToken_12 != -1)
@@ -274,7 +274,7 @@ LABEL_15:
 
     if (_isInternalDevice_12 == 1)
     {
-      v7 = [v6 URLByAppendingPathExtension:@"debug"];
+      v7 = [lCopy URLByAppendingPathExtension:@"debug"];
       v13 = 0;
       v8 = [(REMLModel *)self _saveDebugModelToURL:v7 error:&v13];
       v9 = v13;
@@ -289,7 +289,7 @@ LABEL_15:
     }
   }
 
-  v11 = [(REMLModel *)self _saveModelToURL:v6 error:a4];
+  v11 = [(REMLModel *)self _saveModelToURL:lCopy error:error];
 
   return v11;
 }

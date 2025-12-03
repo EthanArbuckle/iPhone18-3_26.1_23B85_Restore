@@ -1,5 +1,5 @@
 @interface LibMPSource
-- (void)downloadManager:(id)a3 didEnqueueAssetDownloads:(id)a4 didRemoveAssetDownloads:(id)a5;
+- (void)downloadManager:(id)manager didEnqueueAssetDownloads:(id)downloads didRemoveAssetDownloads:(id)assetDownloads;
 - (void)mpMediaLibraryContentChanged;
 - (void)mpMediaLibraryDownloadingDidChange;
 - (void)refreshRentalMenu;
@@ -7,40 +7,40 @@
 
 @implementation LibMPSource
 
-- (void)downloadManager:(id)a3 didEnqueueAssetDownloads:(id)a4 didRemoveAssetDownloads:(id)a5
+- (void)downloadManager:(id)manager didEnqueueAssetDownloads:(id)downloads didRemoveAssetDownloads:(id)assetDownloads
 {
-  if (a4)
+  if (downloads)
   {
     sub_1E3280A90(0, &qword_1ECF32758);
     sub_1E42062B4();
   }
 
-  if (a5)
+  if (assetDownloads)
   {
     sub_1E3280A90(0, &qword_1ECF32758);
     sub_1E42062B4();
   }
 
-  v8 = a3;
-  v9 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1E3AD6BE4();
 }
 
 - (void)mpMediaLibraryContentChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AD6D34();
 }
 
 - (void)mpMediaLibraryDownloadingDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AD7160();
 }
 
 - (void)refreshRentalMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AD7308();
 }
 

@@ -1,7 +1,7 @@
 @interface PHSOSKappaDialCountdownViewModel
 - (NSString)subtitleString;
 - (NSString)titleString;
-- (id)countdownString:(unint64_t)a3;
+- (id)countdownString:(unint64_t)string;
 - (unint64_t)countdownWithAudio;
 @end
 
@@ -36,9 +36,9 @@
   }
 }
 
-- (id)countdownString:(unint64_t)a3
+- (id)countdownString:(unint64_t)string
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:string];
   v4 = [NSNumberFormatter localizedStringFromNumber:v3 numberStyle:0];
 
   return v4;

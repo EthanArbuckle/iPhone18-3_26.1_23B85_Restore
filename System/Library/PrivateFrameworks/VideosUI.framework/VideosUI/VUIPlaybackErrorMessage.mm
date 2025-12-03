@@ -1,8 +1,8 @@
 @interface VUIPlaybackErrorMessage
 + (id)sharedInstance;
 - (id)_getLanguageCode;
-- (id)_getSessionInfoFor:(id)a3 andMode:(id)a4;
-- (void)getLocalizedErrorMessageFor:(id)a3 withPlaybackMode:(id)a4 withError:(id)a5 completion:(id)a6;
+- (id)_getSessionInfoFor:(id)for andMode:(id)mode;
+- (void)getLocalizedErrorMessageFor:(id)for withPlaybackMode:(id)mode withError:(id)error completion:(id)completion;
 @end
 
 @implementation VUIPlaybackErrorMessage
@@ -26,24 +26,24 @@ void __41__VUIPlaybackErrorMessage_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_11 = v0;
 }
 
-- (void)getLocalizedErrorMessageFor:(id)a3 withPlaybackMode:(id)a4 withError:(id)a5 completion:(id)a6
+- (void)getLocalizedErrorMessageFor:(id)for withPlaybackMode:(id)mode withError:(id)error completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(VUIPlaybackErrorMessage *)self _getLanguageCode];
-  v15 = [(VUIPlaybackErrorMessage *)self _getSessionInfoFor:v13 andMode:v12];
+  completionCopy = completion;
+  errorCopy = error;
+  modeCopy = mode;
+  forCopy = for;
+  _getLanguageCode = [(VUIPlaybackErrorMessage *)self _getLanguageCode];
+  v15 = [(VUIPlaybackErrorMessage *)self _getSessionInfoFor:forCopy andMode:modeCopy];
 
-  v16 = [objc_alloc(MEMORY[0x1E69C6778]) initWithAppTarget:0 locale:v14];
+  v16 = [objc_alloc(MEMORY[0x1E69C6778]) initWithAppTarget:0 locale:_getLanguageCode];
   v17 = [objc_alloc(MEMORY[0x1E69C6780]) initWithConfig:v16 logger:&__block_literal_global_36_0 metricsRecorder:&__block_literal_global_41 defaultAlert:&__block_literal_global_45];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_withError_completion___block_invoke_3;
   v19[3] = &unk_1E8735528;
-  v20 = v10;
-  v18 = v10;
-  [v17 fetchLocalizedErrorMessageForItems:v15 usingError:v11 completionHandler:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [v17 fetchLocalizedErrorMessageForItems:v15 usingError:errorCopy completionHandler:v19];
 }
 
 void __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_withError_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -119,23 +119,23 @@ void __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_
 
 - (id)_getLanguageCode
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 arrayForKey:@"AppleLanguages"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults arrayForKey:@"AppleLanguages"];
 
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_getSessionInfoFor:(id)a3 andMode:(id)a4
+- (id)_getSessionInfoFor:(id)for andMode:(id)mode
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  modeCopy = mode;
   v8 = objc_opt_new();
-  if (v6)
+  if (forCopy)
   {
-    v9 = [v6 hasTrait:*MEMORY[0x1E69D5E50]];
+    v9 = [forCopy hasTrait:*MEMORY[0x1E69D5E50]];
     v10 = @"VOD";
     if (v9)
     {
@@ -147,7 +147,7 @@ void __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     [v8 setObject:v12 forKey:@"contentType"];
 
-    v13 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C70]];
+    v13 = [forCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C70]];
     v14 = v13;
     if (v13)
     {
@@ -161,7 +161,7 @@ void __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_
       }
     }
 
-    v18 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+    v18 = [forCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
     v19 = v18;
     if (v18)
     {
@@ -170,18 +170,18 @@ void __93__VUIPlaybackErrorMessage_getLocalizedErrorMessageFor_withPlaybackMode_
       [v8 setObject:v20 forKey:@"brandId"];
     }
 
-    v21 = [(VUIPlaybackErrorMessage *)self _getLanguageCode];
-    v22 = v21;
-    if (v21)
+    _getLanguageCode = [(VUIPlaybackErrorMessage *)self _getLanguageCode];
+    v22 = _getLanguageCode;
+    if (_getLanguageCode)
     {
-      v27 = v21;
+      v27 = _getLanguageCode;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
       [v8 setObject:v23 forKey:@"locale"];
     }
 
-    if (v7)
+    if (modeCopy)
     {
-      v26 = v7;
+      v26 = modeCopy;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
       [v8 setObject:v24 forKey:@"playbackMode"];
     }

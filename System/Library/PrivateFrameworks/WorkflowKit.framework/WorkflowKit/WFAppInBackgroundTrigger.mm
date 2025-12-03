@@ -1,30 +1,30 @@
 @interface WFAppInBackgroundTrigger
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (BOOL)hasValidConfiguration;
 - (WFAppInBackgroundTrigger)init;
-- (WFAppInBackgroundTrigger)initWithCoder:(id)a3;
-- (id)awakeAfterUsingCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFAppInBackgroundTrigger)initWithCoder:(id)coder;
+- (id)awakeAfterUsingCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppInBackgroundTrigger
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = WFAppInBackgroundTrigger;
-  v4 = [(WFTrigger *)&v8 copyWithZone:a3];
-  v5 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-  v6 = [v5 copy];
+  v4 = [(WFTrigger *)&v8 copyWithZone:zone];
+  selectedBundleIdentifiers = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+  v6 = [selectedBundleIdentifiers copy];
   [v4 setSelectedBundleIdentifiers:v6];
 
   return v4;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
   v4 = objc_alloc_init(WFAppInFocusTrigger);
   [(WFAppInFocusTrigger *)v4 setOnFocus:0];
@@ -33,26 +33,26 @@
   return v4;
 }
 
-- (WFAppInBackgroundTrigger)initWithCoder:(id)a3
+- (WFAppInBackgroundTrigger)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = WFAppInBackgroundTrigger;
-  v5 = [(WFTrigger *)&v24 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v24 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x1E695E0F0];
     [(WFAppInBackgroundTrigger *)v5 setSelectedBundleIdentifiers:MEMORY[0x1E695E0F0]];
-    if ([v4 containsValueForKey:@"appIdentifiers"])
+    if ([coderCopy containsValueForKey:@"appIdentifiers"])
     {
       v8 = MEMORY[0x1E695DFD8];
       v26[0] = objc_opt_class();
       v26[1] = objc_opt_class();
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
       v10 = [v8 setWithArray:v9];
-      v11 = [v4 decodeObjectOfClasses:v10 forKey:@"appIdentifiers"];
+      v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"appIdentifiers"];
       v12 = v11;
       if (v11)
       {
@@ -69,7 +69,7 @@
 
     else
     {
-      if (![v4 containsValueForKey:@"selectedApps"])
+      if (![coderCopy containsValueForKey:@"selectedApps"])
       {
 LABEL_13:
         v21 = v6;
@@ -81,7 +81,7 @@ LABEL_13:
       v25[1] = objc_opt_class();
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
       v16 = [v14 setWithArray:v15];
-      v17 = [v4 decodeObjectOfClasses:v16 forKey:@"selectedApps"];
+      v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"selectedApps"];
       v18 = v17;
       if (v17)
       {
@@ -109,40 +109,40 @@ LABEL_14:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFAppInBackgroundTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"appIdentifiers"];
+  [coderCopy encodeObject:v5 forKey:@"appIdentifiers"];
 }
 
 - (id)localizedPastTenseDescription
 {
-  v3 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-  v4 = [v3 count];
+  selectedBundleIdentifiers = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+  v4 = [selectedBundleIdentifiers count];
 
   if (v4 == 1)
   {
     v5 = objc_alloc(MEMORY[0x1E69635F8]);
-    v6 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    selectedBundleIdentifiers2 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+    v7 = [selectedBundleIdentifiers2 objectAtIndexedSubscript:0];
     v8 = [v5 initWithBundleIdentifier:v7 allowPlaceholder:1 error:0];
 
-    v9 = [v8 localizedName];
+    localizedName = [v8 localizedName];
     v10 = MEMORY[0x1E696AEC0];
     v11 = WFLocalizedString(@"Closed “%@”");
-    v12 = [v10 localizedStringWithFormat:v11, v9];
+    v12 = [v10 localizedStringWithFormat:v11, localizedName];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
     v8 = WFLocalizedString(@"Closed any of %lu apps");
-    v9 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-    v12 = [v13 localizedStringWithFormat:v8, objc_msgSend(v9, "count")];
+    localizedName = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+    v12 = [v13 localizedStringWithFormat:v8, objc_msgSend(localizedName, "count")];
   }
 
   return v12;
@@ -150,28 +150,28 @@ LABEL_14:
 
 - (id)localizedDescriptionWithConfigurationSummary
 {
-  v3 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-  v4 = [v3 count];
+  selectedBundleIdentifiers = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+  v4 = [selectedBundleIdentifiers count];
 
   if (v4 == 1)
   {
     v5 = objc_alloc(MEMORY[0x1E69635F8]);
-    v6 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    selectedBundleIdentifiers2 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+    v7 = [selectedBundleIdentifiers2 objectAtIndexedSubscript:0];
     v8 = [v5 initWithBundleIdentifier:v7 allowPlaceholder:1 error:0];
 
-    v9 = [v8 localizedName];
+    localizedName = [v8 localizedName];
     v10 = MEMORY[0x1E696AEC0];
     v11 = WFLocalizedString(@"When “%@” is closed");
-    v12 = [v10 localizedStringWithFormat:v11, v9];
+    v12 = [v10 localizedStringWithFormat:v11, localizedName];
   }
 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
     v8 = WFLocalizedPluralString(@"When any of %lu apps is closed");
-    v9 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-    v12 = [v13 localizedStringWithFormat:v8, objc_msgSend(v9, "count")];
+    localizedName = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+    v12 = [v13 localizedStringWithFormat:v8, objc_msgSend(localizedName, "count")];
   }
 
   return v12;
@@ -179,8 +179,8 @@ LABEL_14:
 
 - (BOOL)hasValidConfiguration
 {
-  v2 = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
-  v3 = [v2 count] != 0;
+  selectedBundleIdentifiers = [(WFAppInBackgroundTrigger *)self selectedBundleIdentifiers];
+  v3 = [selectedBundleIdentifiers count] != 0;
 
   return v3;
 }
@@ -202,11 +202,11 @@ LABEL_14:
   return v2;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Close App", @"Close App");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

@@ -1,54 +1,54 @@
 @interface _SBActiveRemoteTransientOverlayViewProviderAdapter
-- (BOOL)isPresentingOnBehalfOfApplication:(id)a3;
-- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)a3;
-- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)a3;
-- (BOOL)isPresentingTransientOverlay:(id)a3;
+- (BOOL)isPresentingOnBehalfOfApplication:(id)application;
+- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)string;
+- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)identifier;
+- (BOOL)isPresentingTransientOverlay:(id)overlay;
 - (SBDeviceApplicationRemoteTransientOverlayViewProvider)sceneBackedProvider;
 - (SBDeviceApplicationRemoteTransientOverlayViewProvider)viewServiceProvider;
 - (SBWindowScene)windowScene;
-- (void)dismissRemoteTransientOverlayViewController:(id)a3;
-- (void)presentRemoteTransientOverlayViewController:(id)a3 presentationRequest:(id)a4;
+- (void)dismissRemoteTransientOverlayViewController:(id)controller;
+- (void)presentRemoteTransientOverlayViewController:(id)controller presentationRequest:(id)request;
 @end
 
 @implementation _SBActiveRemoteTransientOverlayViewProviderAdapter
 
-- (void)presentRemoteTransientOverlayViewController:(id)a3 presentationRequest:(id)a4
+- (void)presentRemoteTransientOverlayViewController:(id)controller presentationRequest:(id)request
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [v6 isSceneBacked];
+  requestCopy = request;
+  controllerCopy = controller;
+  isSceneBacked = [requestCopy isSceneBacked];
   v8 = 8;
-  if (v7)
+  if (isSceneBacked)
   {
     v8 = 16;
   }
 
   WeakRetained = objc_loadWeakRetained((&self->super.isa + v8));
-  [WeakRetained presentRemoteTransientOverlayViewController:v10 presentationRequest:v6];
+  [WeakRetained presentRemoteTransientOverlayViewController:controllerCopy presentationRequest:requestCopy];
 
-  [v10 updateDisplayLayoutElementWithBuilder:&__block_literal_global_380];
+  [controllerCopy updateDisplayLayoutElementWithBuilder:&__block_literal_global_380];
 }
 
-- (void)dismissRemoteTransientOverlayViewController:(id)a3
+- (void)dismissRemoteTransientOverlayViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_sceneBackedProvider);
   v5 = objc_loadWeakRetained(&self->_viewServiceProvider);
-  v6 = [WeakRetained isPresentingTransientOverlay:v4] == 0;
+  v6 = [WeakRetained isPresentingTransientOverlay:controllerCopy] == 0;
   v7 = WeakRetained;
   if (v6)
   {
     v7 = v5;
   }
 
-  [v7 dismissRemoteTransientOverlayViewController:v4];
+  [v7 dismissRemoteTransientOverlayViewController:controllerCopy];
 }
 
-- (BOOL)isPresentingTransientOverlay:(id)a3
+- (BOOL)isPresentingTransientOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   WeakRetained = objc_loadWeakRetained(&self->_viewServiceProvider);
-  if ([WeakRetained isPresentingTransientOverlay:v4])
+  if ([WeakRetained isPresentingTransientOverlay:overlayCopy])
   {
     v6 = 1;
   }
@@ -56,7 +56,7 @@
   else
   {
     v7 = objc_loadWeakRetained(&self->_sceneBackedProvider);
-    v6 = [v7 isPresentingTransientOverlay:v4];
+    v6 = [v7 isPresentingTransientOverlay:overlayCopy];
   }
 
   return v6;
@@ -65,34 +65,34 @@
 - (SBWindowScene)windowScene
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewServiceProvider);
-  v3 = [WeakRetained windowScene];
+  windowScene = [WeakRetained windowScene];
 
-  return v3;
+  return windowScene;
 }
 
-- (BOOL)isPresentingOnBehalfOfApplication:(id)a3
+- (BOOL)isPresentingOnBehalfOfApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_viewServiceProvider);
-  v6 = [WeakRetained isPresentingOnBehalfOfApplication:v4];
+  v6 = [WeakRetained isPresentingOnBehalfOfApplication:applicationCopy];
 
   return v6;
 }
 
-- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)a3
+- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_viewServiceProvider);
-  v6 = [WeakRetained isPresentingOnBehalfOfSceneIdentityTokenString:v4];
+  v6 = [WeakRetained isPresentingOnBehalfOfSceneIdentityTokenString:stringCopy];
 
   return v6;
 }
 
-- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)a3
+- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_viewServiceProvider);
-  v6 = [WeakRetained isPresentingOnBehalfOfScenePersistentIdentifier:v4];
+  v6 = [WeakRetained isPresentingOnBehalfOfScenePersistentIdentifier:identifierCopy];
 
   return v6;
 }

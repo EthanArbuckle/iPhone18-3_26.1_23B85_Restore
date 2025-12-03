@@ -1,32 +1,32 @@
 @interface MFCastleEmailAliasUpdater
-- (MFCastleEmailAliasUpdater)initWithAccountID:(id)a3 aliasSupport:(id)a4;
-- (id)_aliasesFromData:(uint64_t)a1;
-- (id)_defaultEmailAddressFromData:(uint64_t)a1;
-- (id)_emailsFromData:(uint64_t)a1;
-- (id)_headerStringFromDate:(uint64_t)a1;
+- (MFCastleEmailAliasUpdater)initWithAccountID:(id)d aliasSupport:(id)support;
+- (id)_aliasesFromData:(uint64_t)data;
+- (id)_defaultEmailAddressFromData:(uint64_t)data;
+- (id)_emailsFromData:(uint64_t)data;
+- (id)_headerStringFromDate:(uint64_t)date;
 - (id)_sourceApplicationBundleIdentifier;
-- (id)createRequestWithLastSyncDate:(void *)a3 entityTag:;
+- (id)createRequestWithLastSyncDate:(void *)date entityTag:;
 - (void)_createURLSession;
-- (void)_getEmailAddressAndAliasesWithLastSyncDate:(void *)a3 entityTag:(void *)a4 handler:;
-- (void)_getEmailAddressAndAliasesWithRequest:(void *)a3 handler:;
-- (void)_getEmailAddressAndAliasesWithResponse:(void *)a3 responseData:(void *)a4 error:(void *)a5 handler:;
-- (void)getEmailAddressAndAliasesWithLastSyncDate:(id)a3 entityTag:(id)a4 handler:(id)a5;
+- (void)_getEmailAddressAndAliasesWithLastSyncDate:(void *)date entityTag:(void *)tag handler:;
+- (void)_getEmailAddressAndAliasesWithRequest:(void *)request handler:;
+- (void)_getEmailAddressAndAliasesWithResponse:(void *)response responseData:(void *)data error:(void *)error handler:;
+- (void)getEmailAddressAndAliasesWithLastSyncDate:(id)date entityTag:(id)tag handler:(id)handler;
 @end
 
 @implementation MFCastleEmailAliasUpdater
 
-- (MFCastleEmailAliasUpdater)initWithAccountID:(id)a3 aliasSupport:(id)a4
+- (MFCastleEmailAliasUpdater)initWithAccountID:(id)d aliasSupport:(id)support
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  supportCopy = support;
   v16.receiver = self;
   v16.super_class = MFCastleEmailAliasUpdater;
   v9 = [(MFCastleEmailAliasUpdater *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountID, a3);
-    objc_storeStrong(&v10->_aliasSupport, a4);
+    objc_storeStrong(&v9->_accountID, d);
+    objc_storeStrong(&v10->_aliasSupport, support);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_UTILITY, 0);
     v13 = dispatch_queue_create("com.apple.message.icloud.alias-update", v12);
@@ -37,51 +37,51 @@
   return v10;
 }
 
-- (void)_getEmailAddressAndAliasesWithLastSyncDate:(void *)a3 entityTag:(void *)a4 handler:
+- (void)_getEmailAddressAndAliasesWithLastSyncDate:(void *)date entityTag:(void *)tag handler:
 {
   v19 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dateCopy = date;
+  tagCopy = tag;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
-    if (*(a1 + 8) == 1)
+    dispatch_assert_queue_V2(*(self + 32));
+    if (*(self + 8) == 1)
     {
       v10 = [MEMORY[0x1E699B710] log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = *(a1 + 16);
+        v11 = *(self + 16);
         *buf = 138543362;
         v18 = v11;
         _os_log_impl(&dword_1B0389000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] updateEmailAddressAndAliases: Update already running.", buf, 0xCu);
       }
 
-      v9[2](v9, 0);
+      tagCopy[2](tagCopy, 0);
     }
 
     else
     {
-      *(a1 + 8) = 1;
-      ++*(a1 + 12);
-      v12 = [(MFCastleEmailAliasUpdater *)a1 createRequestWithLastSyncDate:v7 entityTag:v8];
+      *(self + 8) = 1;
+      ++*(self + 12);
+      v12 = [(MFCastleEmailAliasUpdater *)self createRequestWithLastSyncDate:v7 entityTag:dateCopy];
       if (v12)
       {
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __90__MFCastleEmailAliasUpdater__getEmailAddressAndAliasesWithLastSyncDate_entityTag_handler___block_invoke;
         v15[3] = &unk_1E7AA50F0;
-        v15[4] = a1;
-        v16 = v9;
-        [(MFCastleEmailAliasUpdater *)a1 _getEmailAddressAndAliasesWithRequest:v12 handler:v15];
+        v15[4] = self;
+        v16 = tagCopy;
+        [(MFCastleEmailAliasUpdater *)self _getEmailAddressAndAliasesWithRequest:v12 handler:v15];
       }
 
       else
       {
         v13 = objc_alloc_init(CastleEmailAliasUpdateResult);
-        (v9)[2](v9, v13);
+        (tagCopy)[2](tagCopy, v13);
 
-        *(a1 + 8) = 0;
+        *(self + 8) = 0;
       }
     }
   }
@@ -89,49 +89,49 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createRequestWithLastSyncDate:(void *)a3 entityTag:
+- (id)createRequestWithLastSyncDate:(void *)date entityTag:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  dateCopy = date;
+  if (!self)
   {
     goto LABEL_14;
   }
 
   v7 = +[MFNetworkController sharedInstance];
-  v8 = [v7 isNetworkUp];
+  isNetworkUp = [v7 isNetworkUp];
 
-  if ((v8 & 1) == 0)
+  if ((isNetworkUp & 1) == 0)
   {
     v15 = [MEMORY[0x1E699B710] log];
-    [MFCastleEmailAliasUpdater createRequestWithLastSyncDate:v15 entityTag:a1];
+    [MFCastleEmailAliasUpdater createRequestWithLastSyncDate:v15 entityTag:self];
 LABEL_14:
     v10 = 0;
     goto LABEL_10;
   }
 
-  v9 = [*(a1 + 24) aliasLookupURL];
-  if (v9)
+  aliasLookupURL = [*(self + 24) aliasLookupURL];
+  if (aliasLookupURL)
   {
-    v10 = [MEMORY[0x1E695AC18] requestWithURL:v9];
+    v10 = [MEMORY[0x1E695AC18] requestWithURL:aliasLookupURL];
     [v10 setHTTPMethod:@"GET"];
-    v11 = [*(a1 + 24) aliasAuthorizationHeader];
-    [v10 setValue:v11 forHTTPHeaderField:@"Authorization"];
+    aliasAuthorizationHeader = [*(self + 24) aliasAuthorizationHeader];
+    [v10 setValue:aliasAuthorizationHeader forHTTPHeaderField:@"Authorization"];
 
-    v12 = [*(a1 + 24) aliasUserAgent];
-    [v10 setValue:v12 forHTTPHeaderField:*MEMORY[0x1E699B188]];
+    aliasUserAgent = [*(self + 24) aliasUserAgent];
+    [v10 setValue:aliasUserAgent forHTTPHeaderField:*MEMORY[0x1E699B188]];
 
     [v10 ak_addDeviceUDIDHeader];
     [v10 ak_addClientInfoHeader];
     if (v5)
     {
-      v13 = [(MFCastleEmailAliasUpdater *)a1 _headerStringFromDate:v5];
+      v13 = [(MFCastleEmailAliasUpdater *)self _headerStringFromDate:v5];
       [v10 setValue:v13 forHTTPHeaderField:@"If-Modified-Since"];
     }
 
-    if (v6)
+    if (dateCopy)
     {
-      [v10 setValue:v6 forKey:@"If-None-Match"];
+      [v10 setValue:dateCopy forKey:@"If-None-Match"];
     }
   }
 
@@ -145,35 +145,35 @@ LABEL_10:
   return v10;
 }
 
-- (void)_getEmailAddressAndAliasesWithRequest:(void *)a3 handler:
+- (void)_getEmailAddressAndAliasesWithRequest:(void *)request handler:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
-    v7 = [(MFCastleEmailAliasUpdater *)a1 _createURLSession];
+    _createURLSession = [(MFCastleEmailAliasUpdater *)self _createURLSession];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __75__MFCastleEmailAliasUpdater__getEmailAddressAndAliasesWithRequest_handler___block_invoke;
     v15[3] = &unk_1E7AA5118;
-    v15[4] = a1;
-    v17 = v6;
-    v8 = v7;
+    v15[4] = self;
+    v17 = requestCopy;
+    v8 = _createURLSession;
     v16 = v8;
     v9 = [v8 dataTaskWithRequest:v5 completionHandler:v15];
     v10 = [MEMORY[0x1E699B710] log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *(a1 + 16);
-      v12 = *(a1 + 12);
-      v13 = [v9 taskIdentifier];
+      v11 = *(self + 16);
+      v12 = *(self + 12);
+      taskIdentifier = [v9 taskIdentifier];
       *buf = 138543874;
       v19 = v11;
       v20 = 1024;
       v21 = v12;
       v22 = 2048;
-      v23 = v13;
+      v23 = taskIdentifier;
       _os_log_impl(&dword_1B0389000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@ #%u] Starting URL session task %llu", buf, 0x1Cu);
     }
 
@@ -185,16 +185,16 @@ LABEL_10:
 
 - (void)_createURLSession
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
-    [v2 setTimeoutIntervalForResource:300.0];
-    v3 = [(MFCastleEmailAliasUpdater *)v1 _sourceApplicationBundleIdentifier];
-    if (v3)
+    ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration setTimeoutIntervalForResource:300.0];
+    _sourceApplicationBundleIdentifier = [(MFCastleEmailAliasUpdater *)selfCopy _sourceApplicationBundleIdentifier];
+    if (_sourceApplicationBundleIdentifier)
     {
-      [v2 set_sourceApplicationBundleIdentifier:v3];
-      v4 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:v3];
+      [ephemeralSessionConfiguration set_sourceApplicationBundleIdentifier:_sourceApplicationBundleIdentifier];
+      v4 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:_sourceApplicationBundleIdentifier];
     }
 
     else
@@ -202,46 +202,46 @@ LABEL_10:
       v4 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:@"maild"];
     }
 
-    [v2 set_appleIDContext:v4];
+    [ephemeralSessionConfiguration set_appleIDContext:v4];
 
     v5 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [v5 setMaxConcurrentOperationCount:1];
-    [v5 setUnderlyingQueue:v1[4]];
-    v1 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v2 delegate:0 delegateQueue:v5];
+    [v5 setUnderlyingQueue:selfCopy[4]];
+    selfCopy = [MEMORY[0x1E695AC78] sessionWithConfiguration:ephemeralSessionConfiguration delegate:0 delegateQueue:v5];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_getEmailAddressAndAliasesWithResponse:(void *)a3 responseData:(void *)a4 error:(void *)a5 handler:
+- (void)_getEmailAddressAndAliasesWithResponse:(void *)response responseData:(void *)data error:(void *)error handler:
 {
   v62 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
-    if (!v9 || v11)
+    dispatch_assert_queue_V2(*(self + 32));
+    if (!v9 || dataCopy)
     {
       v18 = [MEMORY[0x1E699B710] log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v37 = *(a1 + 16);
-        v38 = *(a1 + 12);
-        v39 = [v11 ef_publicDescription];
+        v37 = *(self + 16);
+        v38 = *(self + 12);
+        ef_publicDescription = [dataCopy ef_publicDescription];
         *buf = 138543874;
         v55 = v37;
         v56 = 1024;
         v57 = v38;
         v58 = 2114;
-        *&v59 = v39;
+        *&v59 = ef_publicDescription;
         _os_log_error_impl(&dword_1B0389000, v18, OS_LOG_TYPE_ERROR, "[%{public}@ #%u] updateEmailAddressAndAliases: Email alias request failed: %{public}@", buf, 0x1Cu);
       }
 
-      v17 = objc_alloc_init(CastleEmailAliasUpdateResult);
-      v12[2](v12, v17);
+      host = objc_alloc_init(CastleEmailAliasUpdateResult);
+      errorCopy[2](errorCopy, host);
     }
 
     else
@@ -249,29 +249,29 @@ LABEL_10:
       v13 = [MEMORY[0x1E699B710] log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v53 = *(a1 + 16);
-        v40 = *(a1 + 12);
-        v51 = [v9 statusCode];
+        v53 = *(self + 16);
+        v40 = *(self + 12);
+        statusCode = [v9 statusCode];
         v41 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v42 = v10;
-        if (!v10)
+        data = responseCopy;
+        if (!responseCopy)
         {
-          v42 = [MEMORY[0x1E695DEF0] data];
+          data = [MEMORY[0x1E695DEF0] data];
         }
 
-        v49 = v42;
-        v43 = [v41 initWithData:v42 encoding:4];
+        v49 = data;
+        v43 = [v41 initWithData:data encoding:4];
         *buf = 138544130;
         v44 = v53;
         v55 = v53;
         v56 = 1024;
         v57 = v40;
         v58 = 1024;
-        LODWORD(v59) = v51;
+        LODWORD(v59) = statusCode;
         WORD2(v59) = 2112;
         *(&v59 + 6) = v43;
         _os_log_debug_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEBUG, "[%{public}@ #%u] updateEmailAddressAndAliases: Received (status=%d) '%@'", buf, 0x22u);
-        if (!v10)
+        if (!responseCopy)
         {
 
           v44 = v53;
@@ -283,8 +283,8 @@ LABEL_10:
         v14 = [MEMORY[0x1E699B710] log];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = *(a1 + 16);
-          v16 = *(a1 + 12);
+          v15 = *(self + 16);
+          v16 = *(self + 12);
           *buf = 138543618;
           v55 = v15;
           v56 = 1024;
@@ -293,17 +293,17 @@ LABEL_10:
         }
 
         LOBYTE(v48) = 0;
-        v17 = [[CastleEmailAliasUpdateResult alloc] initWithReceiveEmailAliasAddresses:0 emailAddresses:0 defaultEmailAddress:0 entityTag:0 isSuccess:1 notModified:1 accountNeedsToUpdateProperties:v48];
-        v12[2](v12, v17);
+        host = [[CastleEmailAliasUpdateResult alloc] initWithReceiveEmailAliasAddresses:0 emailAddresses:0 defaultEmailAddress:0 entityTag:0 isSuccess:1 notModified:1 accountNeedsToUpdateProperties:v48];
+        errorCopy[2](errorCopy, host);
       }
 
       else
       {
-        v19 = [v9 statusCode];
-        if (v10 && v19 == 200)
+        statusCode2 = [v9 statusCode];
+        if (responseCopy && statusCode2 == 200)
         {
-          v17 = [v9 valueForHTTPHeaderField:@"ETag"];
-          v20 = [(MFCastleEmailAliasUpdater *)a1 _aliasesFromData:v10];
+          host = [v9 valueForHTTPHeaderField:@"ETag"];
+          v20 = [(MFCastleEmailAliasUpdater *)self _aliasesFromData:responseCopy];
           v21 = v20;
           v22 = MEMORY[0x1E695E0F8];
           if (v20)
@@ -313,14 +313,14 @@ LABEL_10:
 
           v23 = v22;
 
-          v24 = [(MFCastleEmailAliasUpdater *)a1 _emailsFromData:v10];
-          v52 = [(MFCastleEmailAliasUpdater *)a1 _defaultEmailAddressFromData:v10];
+          v24 = [(MFCastleEmailAliasUpdater *)self _emailsFromData:responseCopy];
+          v52 = [(MFCastleEmailAliasUpdater *)self _defaultEmailAddressFromData:responseCopy];
           v25 = [MEMORY[0x1E699B710] log];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             v50 = v24;
-            v26 = *(a1 + 16);
-            v27 = *(a1 + 12);
+            v26 = *(self + 16);
+            v27 = *(self + 12);
             v28 = [(CastleEmailAliasUpdateResult *)v23 count];
             v29 = [v50 count];
             *buf = 138544642;
@@ -334,45 +334,45 @@ LABEL_10:
             WORD5(v59) = 1024;
             HIDWORD(v59) = v52 != 0;
             v60 = 2114;
-            v61 = v17;
+            v61 = host;
             _os_log_impl(&dword_1B0389000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@ #%u] updateEmailAddressAndAliases: Got response. aliases: %d, emails: %d, defaultEmail: %{BOOL}d, entityTag: %{public}@", buf, 0x2Eu);
 
             v24 = v50;
           }
 
           LOBYTE(v48) = 0;
-          v30 = [[CastleEmailAliasUpdateResult alloc] initWithReceiveEmailAliasAddresses:v23 emailAddresses:v24 defaultEmailAddress:v52 entityTag:v17 isSuccess:1 notModified:0 accountNeedsToUpdateProperties:v48];
-          v12[2](v12, v30);
+          v30 = [[CastleEmailAliasUpdateResult alloc] initWithReceiveEmailAliasAddresses:v23 emailAddresses:v24 defaultEmailAddress:v52 entityTag:host isSuccess:1 notModified:0 accountNeedsToUpdateProperties:v48];
+          errorCopy[2](errorCopy, v30);
         }
 
         else
         {
           v31 = [v9 URL];
-          v17 = [v31 host];
+          host = [v31 host];
 
           v32 = [MEMORY[0x1E699B710] log];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v45 = *(a1 + 16);
-            v46 = *(a1 + 12);
-            v47 = [v9 statusCode];
+            v45 = *(self + 16);
+            v46 = *(self + 12);
+            statusCode3 = [v9 statusCode];
             *buf = 138544130;
             v55 = v45;
             v56 = 1024;
             v57 = v46;
             v58 = 2112;
-            *&v59 = v17;
+            *&v59 = host;
             WORD4(v59) = 1024;
-            *(&v59 + 10) = v47;
+            *(&v59 + 10) = statusCode3;
             _os_log_error_impl(&dword_1B0389000, v32, OS_LOG_TYPE_ERROR, "[%{public}@ #%u] updateEmailAddressAndAliases: Email alias request to [%@] failed with status code [%d]", buf, 0x22u);
           }
 
-          if (([v9 statusCode] == 404 || (v35 = objc_msgSend(v9, "statusCode"), !v10) || v35 == 405) && -[CastleEmailAliasUpdateResult hasPrefix:](v17, "hasPrefix:", @"p99-"))
+          if (([v9 statusCode] == 404 || (v35 = objc_msgSend(v9, "statusCode"), !responseCopy) || v35 == 405) && -[CastleEmailAliasUpdateResult hasPrefix:](host, "hasPrefix:", @"p99-"))
           {
             v33 = [MEMORY[0x1E699B710] log];
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
-              [MFCastleEmailAliasUpdater _getEmailAddressAndAliasesWithResponse:a1 responseData:? error:? handler:?];
+              [MFCastleEmailAliasUpdater _getEmailAddressAndAliasesWithResponse:self responseData:? error:? handler:?];
             }
 
             v34 = 1;
@@ -385,7 +385,7 @@ LABEL_10:
 
           LOBYTE(v48) = v34;
           v23 = [[CastleEmailAliasUpdateResult alloc] initWithReceiveEmailAliasAddresses:0 emailAddresses:0 defaultEmailAddress:0 entityTag:0 isSuccess:0 notModified:0 accountNeedsToUpdateProperties:v48];
-          v12[2](v12, v23);
+          errorCopy[2](errorCopy, v23);
         }
       }
     }
@@ -394,12 +394,12 @@ LABEL_10:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_aliasesFromData:(uint64_t)a1
+- (id)_aliasesFromData:(uint64_t)data
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v21 = v3;
-  if (a1)
+  if (data)
   {
     v22 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:0];
     objc_opt_class();
@@ -417,7 +417,7 @@ LABEL_10:
         v4 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v4)
         {
-          v5 = 0;
+          dictionary = 0;
           v25 = *v33;
           v26 = v4;
           do
@@ -468,14 +468,14 @@ LABEL_10:
                             v15 = [v13 componentsWithString:v14];
 
                             [v15 setDisplayName:v7];
-                            v16 = [v15 stringValue];
-                            if (!v5)
+                            stringValue = [v15 stringValue];
+                            if (!dictionary)
                             {
-                              v5 = [MEMORY[0x1E695DF90] dictionary];
+                              dictionary = [MEMORY[0x1E695DF90] dictionary];
                             }
 
                             v17 = [v12 objectForKeyedSubscript:{@"canSendFrom", v20, v21}];
-                            [v5 setObject:v17 forKeyedSubscript:v16];
+                            [dictionary setObject:v17 forKeyedSubscript:stringValue];
                           }
                         }
 
@@ -497,38 +497,38 @@ LABEL_10:
 
         else
         {
-          v5 = 0;
+          dictionary = 0;
         }
       }
 
       else
       {
-        v5 = 0;
+        dictionary = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      dictionary = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_emailsFromData:(uint64_t)a1
+- (id)_emailsFromData:(uint64_t)data
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v16 = v3;
-  if (a1)
+  if (data)
   {
     v17 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:0];
     objc_opt_class();
@@ -547,7 +547,7 @@ LABEL_10:
           v18 = 0u;
           v19 = 0u;
           v4 = v14;
-          v5 = 0;
+          dictionary = 0;
           v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v6)
           {
@@ -565,14 +565,14 @@ LABEL_10:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  if (!v5)
+                  if (!dictionary)
                   {
-                    v5 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
                   }
 
                   v10 = [v9 objectForKeyedSubscript:{@"canSendFrom", v14}];
                   v11 = [v9 objectForKeyedSubscript:@"address"];
-                  [v5 setObject:v10 forKeyedSubscript:v11];
+                  [dictionary setObject:v10 forKeyedSubscript:v11];
                 }
               }
 
@@ -585,36 +585,36 @@ LABEL_10:
 
         else
         {
-          v5 = 0;
+          dictionary = 0;
         }
       }
 
       else
       {
-        v5 = 0;
+        dictionary = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      dictionary = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_defaultEmailAddressFromData:(uint64_t)a1
+- (id)_defaultEmailAddressFromData:(uint64_t)data
 {
   v3 = a2;
-  if (a1)
+  if (data)
   {
     v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:0];
     v5 = [v4 objectForKeyedSubscript:@"defaultAddress"];
@@ -634,14 +634,14 @@ LABEL_10:
   return v5;
 }
 
-- (id)_headerStringFromDate:(uint64_t)a1
+- (id)_headerStringFromDate:(uint64_t)date
 {
   v3 = a2;
-  if (a1)
+  if (date)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v5 = [MEMORY[0x1E695DF58] ef_posixLocale];
-    [v4 setLocale:v5];
+    ef_posixLocale = [MEMORY[0x1E695DF58] ef_posixLocale];
+    [v4 setLocale:ef_posixLocale];
 
     [v4 setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"];
     v6 = [v4 stringFromDate:v3];
@@ -657,33 +657,33 @@ LABEL_10:
 
 - (id)_sourceApplicationBundleIdentifier
 {
-  if (a1)
+  if (self)
   {
     v1 = MFUserAgent();
     if (v1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v2 = [v1 sourceApplicationBundleIdentifier];
+      sourceApplicationBundleIdentifier = [v1 sourceApplicationBundleIdentifier];
     }
 
     else
     {
-      v2 = 0;
+      sourceApplicationBundleIdentifier = 0;
     }
   }
 
   else
   {
-    v2 = 0;
+    sourceApplicationBundleIdentifier = 0;
   }
 
-  return v2;
+  return sourceApplicationBundleIdentifier;
 }
 
-- (void)getEmailAddressAndAliasesWithLastSyncDate:(id)a3 entityTag:(id)a4 handler:(id)a5
+- (void)getEmailAddressAndAliasesWithLastSyncDate:(id)date entityTag:(id)tag handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  tagCopy = tag;
+  handlerCopy = handler;
   if (self)
   {
     queue = self->_queue;
@@ -699,12 +699,12 @@ LABEL_10:
   v17[2] = __89__MFCastleEmailAliasUpdater_getEmailAddressAndAliasesWithLastSyncDate_entityTag_handler___block_invoke;
   v17[3] = &unk_1E7AA50C8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = dateCopy;
+  v19 = tagCopy;
+  v20 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = tagCopy;
+  v14 = dateCopy;
   v15 = queue;
   v16 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, v17);
   dispatch_async(v15, v16);

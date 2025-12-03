@@ -1,10 +1,10 @@
 @interface WBUGeneratedPasswordCredentialUpdater
 + (id)sharedUpdater;
 - (WBUGeneratedPasswordCredentialUpdater)init;
-- (void)_performRequest:(id)a3 completionHandler:(id)a4;
-- (void)_saveNewAccountWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)_updateExistingSavedAccount:(id)a3 withNewGeneratedPassword:(id)a4 completionHandler:(id)a5;
-- (void)updateCredentialWithNewUsername:(id)a3 newGeneratedPassword:(id)a4 lastGeneratedPassword:(id)a5 credentialURL:(id)a6 protectionSpace:(id)a7 savedAccountContext:(id)a8 shouldSaveNewCredential:(BOOL)a9 shouldSaveExistingCredential:(BOOL)a10 associatedDomainsManager:(id)a11 completionHandler:(id)a12;
+- (void)_performRequest:(id)request completionHandler:(id)handler;
+- (void)_saveNewAccountWithRequest:(id)request completionHandler:(id)handler;
+- (void)_updateExistingSavedAccount:(id)account withNewGeneratedPassword:(id)password completionHandler:(id)handler;
+- (void)updateCredentialWithNewUsername:(id)username newGeneratedPassword:(id)password lastGeneratedPassword:(id)generatedPassword credentialURL:(id)l protectionSpace:(id)space savedAccountContext:(id)context shouldSaveNewCredential:(BOOL)credential shouldSaveExistingCredential:(BOOL)self0 associatedDomainsManager:(id)self1 completionHandler:(id)self2;
 @end
 
 @implementation WBUGeneratedPasswordCredentialUpdater
@@ -24,9 +24,9 @@
     queue = v2->_queue;
     v2->_queue = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     urlsToUpdateRequests = v2->_urlsToUpdateRequests;
-    v2->_urlsToUpdateRequests = v9;
+    v2->_urlsToUpdateRequests = dictionary;
 
     v11 = [MEMORY[0x277CBEB58] set];
     urlsScheduledForUpdating = v2->_urlsScheduledForUpdating;
@@ -57,41 +57,41 @@ uint64_t __54__WBUGeneratedPasswordCredentialUpdater_sharedUpdater__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updateCredentialWithNewUsername:(id)a3 newGeneratedPassword:(id)a4 lastGeneratedPassword:(id)a5 credentialURL:(id)a6 protectionSpace:(id)a7 savedAccountContext:(id)a8 shouldSaveNewCredential:(BOOL)a9 shouldSaveExistingCredential:(BOOL)a10 associatedDomainsManager:(id)a11 completionHandler:(id)a12
+- (void)updateCredentialWithNewUsername:(id)username newGeneratedPassword:(id)password lastGeneratedPassword:(id)generatedPassword credentialURL:(id)l protectionSpace:(id)space savedAccountContext:(id)context shouldSaveNewCredential:(BOOL)credential shouldSaveExistingCredential:(BOOL)self0 associatedDomainsManager:(id)self1 completionHandler:(id)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a11;
-  v25 = a12;
+  usernameCopy = username;
+  passwordCopy = password;
+  generatedPasswordCopy = generatedPassword;
+  lCopy = l;
+  spaceCopy = space;
+  contextCopy = context;
+  managerCopy = manager;
+  handlerCopy = handler;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __262__WBUGeneratedPasswordCredentialUpdater_updateCredentialWithNewUsername_newGeneratedPassword_lastGeneratedPassword_credentialURL_protectionSpace_savedAccountContext_shouldSaveNewCredential_shouldSaveExistingCredential_associatedDomainsManager_completionHandler___block_invoke;
   v42[3] = &unk_279EB1F60;
-  v26 = v25;
+  v26 = handlerCopy;
   v43 = v26;
   v27 = MEMORY[0x2743DCFC0](v42);
   v28 = v27;
-  if (v21 && v22 && (v18 || v19 || v20))
+  if (lCopy && spaceCopy && (usernameCopy || passwordCopy || generatedPasswordCopy))
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __262__WBUGeneratedPasswordCredentialUpdater_updateCredentialWithNewUsername_newGeneratedPassword_lastGeneratedPassword_credentialURL_protectionSpace_savedAccountContext_shouldSaveNewCredential_shouldSaveExistingCredential_associatedDomainsManager_completionHandler___block_invoke_3;
     block[3] = &unk_279EB1FB0;
-    v31 = v18;
-    v32 = v19;
-    v33 = v20;
-    v34 = v21;
-    v35 = v22;
-    v36 = v23;
-    v40 = a9;
-    v41 = a10;
-    v37 = v24;
-    v38 = self;
+    v31 = usernameCopy;
+    v32 = passwordCopy;
+    v33 = generatedPasswordCopy;
+    v34 = lCopy;
+    v35 = spaceCopy;
+    v36 = contextCopy;
+    credentialCopy = credential;
+    existingCredentialCopy = existingCredential;
+    v37 = managerCopy;
+    selfCopy = self;
     v39 = v28;
     dispatch_async(queue, block);
   }
@@ -167,19 +167,19 @@ void __262__WBUGeneratedPasswordCredentialUpdater_updateCredentialWithNewUsernam
   (*(a1[6] + 16))();
 }
 
-- (void)_performRequest:(id)a3 completionHandler:(id)a4
+- (void)_performRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D49B58] sharedStore];
+  requestCopy = request;
+  handlerCopy = handler;
+  mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
   v9 = MEMORY[0x277D49B40];
-  v10 = [v6 protectionSpace];
-  v11 = [v10 safari_URL];
-  v12 = [v9 criteriaForExactFQDNPasswordMatchesOfURL:v11];
+  protectionSpace = [requestCopy protectionSpace];
+  safari_URL = [protectionSpace safari_URL];
+  v12 = [v9 criteriaForExactFQDNPasswordMatchesOfURL:safari_URL];
 
   v13 = objc_alloc(MEMORY[0x277D49B70]);
-  v14 = [v6 username];
-  v15 = [v13 initWithString:v14 matchingType:1];
+  username = [requestCopy username];
+  v15 = [v13 initWithString:username matchingType:1];
   [v12 setUserNameQuery:v15];
 
   [v12 setOptions:{objc_msgSend(v12, "options") | 2}];
@@ -187,12 +187,12 @@ void __262__WBUGeneratedPasswordCredentialUpdater_updateCredentialWithNewUsernam
   v18[1] = 3221225472;
   v18[2] = __75__WBUGeneratedPasswordCredentialUpdater__performRequest_completionHandler___block_invoke;
   v18[3] = &unk_279EB1FD8;
-  v19 = v6;
-  v20 = self;
-  v21 = v7;
-  v16 = v7;
-  v17 = v6;
-  [v8 savedAccountsMatchingCriteria:v12 withCompletionHandler:v18];
+  v19 = requestCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = requestCopy;
+  [mEMORY[0x277D49B58] savedAccountsMatchingCriteria:v12 withCompletionHandler:v18];
 }
 
 void __75__WBUGeneratedPasswordCredentialUpdater__performRequest_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -223,36 +223,36 @@ void __75__WBUGeneratedPasswordCredentialUpdater__performRequest_completionHandl
   }
 }
 
-- (void)_saveNewAccountWithRequest:(id)a3 completionHandler:(id)a4
+- (void)_saveNewAccountWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D499B8] sharedLogger];
-  [v8 didUseGeneratedPassword];
+  requestCopy = request;
+  handlerCopy = handler;
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didUseGeneratedPassword];
 
-  v9 = [MEMORY[0x277D49B58] sharedStore];
-  v10 = [v6 protectionSpace];
-  v11 = [v6 savedAccountContext];
-  v12 = [v6 username];
-  v13 = [v6 generatedPassword];
-  v14 = [v10 safari_userVisibleSiteForProtectionSpace];
+  mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
+  protectionSpace = [requestCopy protectionSpace];
+  savedAccountContext = [requestCopy savedAccountContext];
+  username = [requestCopy username];
+  generatedPassword = [requestCopy generatedPassword];
+  safari_userVisibleSiteForProtectionSpace = [protectionSpace safari_userVisibleSiteForProtectionSpace];
   v15 = *MEMORY[0x277D49C38];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __86__WBUGeneratedPasswordCredentialUpdater__saveNewAccountWithRequest_completionHandler___block_invoke;
   v21[3] = &unk_279EB2028;
   v21[4] = self;
-  v22 = v9;
-  v23 = v10;
-  v24 = v11;
-  v25 = v6;
-  v26 = v7;
-  v16 = v7;
-  v17 = v6;
-  v18 = v11;
-  v19 = v10;
-  v20 = v9;
-  [v20 saveUser:v12 password:v13 forUserTypedSite:v14 groupID:v15 completionHandler:v21];
+  v22 = mEMORY[0x277D49B58];
+  v23 = protectionSpace;
+  v24 = savedAccountContext;
+  v25 = requestCopy;
+  v26 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = requestCopy;
+  v18 = savedAccountContext;
+  v19 = protectionSpace;
+  v20 = mEMORY[0x277D49B58];
+  [v20 saveUser:username password:generatedPassword forUserTypedSite:safari_userVisibleSiteForProtectionSpace groupID:v15 completionHandler:v21];
 }
 
 void __86__WBUGeneratedPasswordCredentialUpdater__saveNewAccountWithRequest_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -295,26 +295,26 @@ void __86__WBUGeneratedPasswordCredentialUpdater__saveNewAccountWithRequest_comp
   [v2 setSavedAccountAsDefault:v3 forProtectionSpace:v4 context:v5 associatedDomainsManager:v6 completionHandler:v7];
 }
 
-- (void)_updateExistingSavedAccount:(id)a3 withNewGeneratedPassword:(id)a4 completionHandler:(id)a5
+- (void)_updateExistingSavedAccount:(id)account withNewGeneratedPassword:(id)password completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  accountCopy = account;
+  handlerCopy = handler;
   v9 = MEMORY[0x277D49B28];
-  v10 = a4;
+  passwordCopy = password;
   v11 = objc_alloc_init(v9);
-  [v11 setSavedAccount:v7];
-  [v11 setPassword:v10];
+  [v11 setSavedAccount:accountCopy];
+  [v11 setPassword:passwordCopy];
 
-  v12 = [MEMORY[0x277D49B58] sharedStore];
+  mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __112__WBUGeneratedPasswordCredentialUpdater__updateExistingSavedAccount_withNewGeneratedPassword_completionHandler___block_invoke;
   v15[3] = &unk_279EB18A8;
-  v16 = v7;
-  v17 = v8;
-  v13 = v7;
-  v14 = v8;
-  [v12 changeSavedAccountWithRequest:v11 completionHandler:v15];
+  v16 = accountCopy;
+  v17 = handlerCopy;
+  v13 = accountCopy;
+  v14 = handlerCopy;
+  [mEMORY[0x277D49B58] changeSavedAccountWithRequest:v11 completionHandler:v15];
 }
 
 @end

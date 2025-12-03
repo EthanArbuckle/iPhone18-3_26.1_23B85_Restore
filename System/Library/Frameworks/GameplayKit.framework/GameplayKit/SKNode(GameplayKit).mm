@@ -50,7 +50,7 @@
         {
           v42 = 0;
           v43 = 0;
-          *&v14 = a1;
+          *&v14 = self;
           if ([v13 _pathFromTextureToPoints:&v43 outSize:&v42 accuracy:v14])
           {
             if (v42)
@@ -468,8 +468,8 @@ LABEL_39:
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v10 physicsBody];
-        v12 = v11 == 0;
+        physicsBody = [v10 physicsBody];
+        v12 = physicsBody == 0;
 
         if (!v12)
         {

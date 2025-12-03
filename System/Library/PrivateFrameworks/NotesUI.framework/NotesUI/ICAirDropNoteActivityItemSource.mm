@@ -1,25 +1,25 @@
 @interface ICAirDropNoteActivityItemSource
-- (ICAirDropNoteActivityItemSource)initWithTitle:(id)a3 airDropDocumentCreator:(id)a4;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (ICAirDropNoteActivityItemSource)initWithTitle:(id)title airDropDocumentCreator:(id)creator;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 - (id)airDropActivityItem;
 @end
 
 @implementation ICAirDropNoteActivityItemSource
 
-- (ICAirDropNoteActivityItemSource)initWithTitle:(id)a3 airDropDocumentCreator:(id)a4
+- (ICAirDropNoteActivityItemSource)initWithTitle:(id)title airDropDocumentCreator:(id)creator
 {
-  v6 = a4;
+  creatorCopy = creator;
   v10.receiver = self;
   v10.super_class = ICAirDropNoteActivityItemSource;
-  v7 = [(ICNoteBaseActivityItemSource *)&v10 initWithTitle:a3];
+  v7 = [(ICNoteBaseActivityItemSource *)&v10 initWithTitle:title];
   v8 = v7;
   if (v7)
   {
-    if (v6)
+    if (creatorCopy)
     {
-      [(ICAirDropNoteActivityItemSource *)v7 setAirDropDocumentCreator:v6];
+      [(ICAirDropNoteActivityItemSource *)v7 setAirDropDocumentCreator:creatorCopy];
     }
 
     else
@@ -33,41 +33,41 @@
   return v8;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFF8]);
 
   return v3;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDA78]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDA78]])
   {
-    v5 = [(ICAirDropNoteActivityItemSource *)self airDropActivityItem];
+    airDropActivityItem = [(ICAirDropNoteActivityItemSource *)self airDropActivityItem];
   }
 
   else
   {
-    v5 = 0;
+    airDropActivityItem = 0;
   }
 
-  return v5;
+  return airDropActivityItem;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDA98]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDA98]])
   {
-    v4 = [*MEMORY[0x1E6982DB8] identifier];
+    identifier = [*MEMORY[0x1E6982DB8] identifier];
   }
 
   else
   {
-    v4 = *MEMORY[0x1E69B7978];
+    identifier = *MEMORY[0x1E69B7978];
   }
 
-  return v4;
+  return identifier;
 }
 
 - (id)airDropActivityItem
@@ -75,12 +75,12 @@
   airDropActivityItem = self->_airDropActivityItem;
   if (!airDropActivityItem)
   {
-    v4 = [(ICAirDropNoteActivityItemSource *)self airDropDocumentCreator];
-    v5 = v4[2]();
+    airDropDocumentCreator = [(ICAirDropNoteActivityItemSource *)self airDropDocumentCreator];
+    v5 = airDropDocumentCreator[2]();
 
-    v6 = [v5 activityItem];
+    activityItem = [v5 activityItem];
     v7 = self->_airDropActivityItem;
-    self->_airDropActivityItem = v6;
+    self->_airDropActivityItem = activityItem;
 
     airDropActivityItem = self->_airDropActivityItem;
   }

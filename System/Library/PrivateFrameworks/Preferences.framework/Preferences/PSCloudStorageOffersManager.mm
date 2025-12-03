@@ -1,22 +1,22 @@
 @interface PSCloudStorageOffersManager
 - (PSCloudStorageOffersManagerDelegate)delegate;
-- (void)_setupFlowWithNavigationController:(id)a3 modally:(BOOL)a4;
-- (void)beginFlowWithNavigationController:(id)a3 modally:(BOOL)a4;
-- (void)beginFlowWithNavigationController:(id)a3 purchaseToken:(id)a4 buyParameters:(id)a5 requestHeaders:(id)a6 modally:(BOOL)a7;
+- (void)_setupFlowWithNavigationController:(id)controller modally:(BOOL)modally;
+- (void)beginFlowWithNavigationController:(id)controller modally:(BOOL)modally;
+- (void)beginFlowWithNavigationController:(id)controller purchaseToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers modally:(BOOL)modally;
 - (void)cancelLoad;
-- (void)commerceDelegate:(id)a3 didCompleteWithError:(id)a4;
-- (void)commerceDelegate:(id)a3 loadDidFailWithError:(id)a4;
-- (void)commerceDelegate:(id)a3 willPresentObjectModel:(id)a4 page:(id)a5;
-- (void)commerceDelegateDidCancel:(id)a3;
+- (void)commerceDelegate:(id)delegate didCompleteWithError:(id)error;
+- (void)commerceDelegate:(id)delegate loadDidFailWithError:(id)error;
+- (void)commerceDelegate:(id)delegate willPresentObjectModel:(id)model page:(id)page;
+- (void)commerceDelegateDidCancel:(id)cancel;
 - (void)dealloc;
 @end
 
 @implementation PSCloudStorageOffersManager
 
-- (void)_setupFlowWithNavigationController:(id)a3 modally:(BOOL)a4
+- (void)_setupFlowWithNavigationController:(id)controller modally:(BOOL)modally
 {
-  v4 = a4;
-  v6 = a3;
+  modallyCopy = modally;
+  controllerCopy = controller;
   [(PSCloudStorageOffersManager *)self cancelLoad];
   v12 = 0;
   v13 = &v12;
@@ -36,7 +36,7 @@
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  v9 = [[v7 alloc] initWithNavigationController:v6 needsModalPresentation:v4];
+  v9 = [[v7 alloc] initWithNavigationController:controllerCopy needsModalPresentation:modallyCopy];
   commerceDelegate = self->_commerceDelegate;
   self->_commerceDelegate = v9;
 
@@ -48,11 +48,11 @@
   [(CommerceRemoteUIDelegate *)self->_commerceDelegate setSupportsModernAlerts:[(PSCloudStorageOffersManager *)self supportsModernAlerts]];
 }
 
-- (void)beginFlowWithNavigationController:(id)a3 modally:(BOOL)a4
+- (void)beginFlowWithNavigationController:(id)controller modally:(BOOL)modally
 {
-  v4 = a4;
-  v6 = a3;
-  [(PSCloudStorageOffersManager *)self _setupFlowWithNavigationController:v6 modally:v4];
+  modallyCopy = modally;
+  controllerCopy = controller;
+  [(PSCloudStorageOffersManager *)self _setupFlowWithNavigationController:controllerCopy modally:modallyCopy];
   commerceDelegate = self->_commerceDelegate;
   v11 = 0;
   v12 = &v11;
@@ -81,14 +81,14 @@
   [(CommerceRemoteUIDelegate *)commerceDelegate loadURLforKey:*v8];
 }
 
-- (void)beginFlowWithNavigationController:(id)a3 purchaseToken:(id)a4 buyParameters:(id)a5 requestHeaders:(id)a6 modally:(BOOL)a7
+- (void)beginFlowWithNavigationController:(id)controller purchaseToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers modally:(BOOL)modally
 {
-  v7 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  [(PSCloudStorageOffersManager *)self _setupFlowWithNavigationController:a3 modally:v7];
-  [(CommerceRemoteUIDelegate *)self->_commerceDelegate purchaseWithToken:v14 buyParameters:v13 requestHeaders:v12];
+  modallyCopy = modally;
+  headersCopy = headers;
+  parametersCopy = parameters;
+  tokenCopy = token;
+  [(PSCloudStorageOffersManager *)self _setupFlowWithNavigationController:controller modally:modallyCopy];
+  [(CommerceRemoteUIDelegate *)self->_commerceDelegate purchaseWithToken:tokenCopy buyParameters:parametersCopy requestHeaders:headersCopy];
 }
 
 - (void)cancelLoad
@@ -106,26 +106,26 @@
   [(PSCloudStorageOffersManager *)&v3 dealloc];
 }
 
-- (void)commerceDelegate:(id)a3 willPresentObjectModel:(id)a4 page:(id)a5
+- (void)commerceDelegate:(id)delegate willPresentObjectModel:(id)model page:(id)page
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v39 = a5;
+  delegateCopy = delegate;
+  modelCopy = model;
+  pageCopy = page;
   if ([(PSCloudStorageOffersManager *)self requiredStorageThreshold])
   {
-    v40 = self;
-    v33 = v9;
-    v34 = v8;
+    selfCopy = self;
+    v33 = modelCopy;
+    v34 = delegateCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v10 = [v39 tableViewOM];
-    v11 = [v10 sections];
+    tableViewOM = [pageCopy tableViewOM];
+    sections = [tableViewOM sections];
 
-    obj = v11;
-    v37 = [v11 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    obj = sections;
+    v37 = [sections countByEnumeratingWithState:&v45 objects:v50 count:16];
     v12 = 0;
     if (v37)
     {
@@ -146,8 +146,8 @@
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v15 = [v14 rows];
-          v16 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          rows = [v14 rows];
+          v16 = [rows countByEnumeratingWithState:&v41 objects:v49 count:16];
           if (v16)
           {
             v17 = v16;
@@ -158,21 +158,21 @@
               {
                 if (*v42 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(rows);
                 }
 
                 v20 = *(*(&v41 + 1) + 8 * i);
-                v21 = [v20 attributes];
-                v22 = [v21 objectForKeyedSubscript:@"totalStorage"];
+                attributes = [v20 attributes];
+                v22 = [attributes objectForKeyedSubscript:@"totalStorage"];
 
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) != 0 && (v23 = strtoull([v22 UTF8String], 0, 0), v23 < -[PSCloudStorageOffersManager requiredStorageThreshold](v40, "requiredStorageThreshold")))
+                if ((objc_opt_isKindOfClass() & 1) != 0 && (v23 = strtoull([v22 UTF8String], 0, 0), v23 < -[PSCloudStorageOffersManager requiredStorageThreshold](selfCopy, "requiredStorageThreshold")))
                 {
                   [v20 setEnabled:0];
                   if ([v20 isSelected])
                   {
-                    v24 = [v20 attributes];
-                    v25 = [v24 objectForKeyedSubscript:@"radioGroup"];
+                    attributes2 = [v20 attributes];
+                    v25 = [attributes2 objectForKeyedSubscript:@"radioGroup"];
 
                     [v20 setSelected:0];
                     v12 = v25;
@@ -181,21 +181,21 @@
 
                 else
                 {
-                  v26 = [v20 attributes];
-                  v27 = [v26 objectForKeyedSubscript:@"radioGroup"];
+                  attributes3 = [v20 attributes];
+                  v27 = [attributes3 objectForKeyedSubscript:@"radioGroup"];
                   v28 = [v27 isEqualToString:v12];
 
                   if (v28)
                   {
-                    v29 = [v39 tableViewOM];
-                    [v29 setSelectedRadioGroupRow:v20];
+                    tableViewOM2 = [pageCopy tableViewOM];
+                    [tableViewOM2 setSelectedRadioGroupRow:v20];
 
                     v12 = 0;
                   }
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
+              v17 = [rows countByEnumeratingWithState:&v41 objects:v49 count:16];
             }
 
             while (v17);
@@ -211,9 +211,9 @@
       while (v37);
     }
 
-    v9 = v33;
-    v8 = v34;
-    self = v40;
+    modelCopy = v33;
+    delegateCopy = v34;
+    self = selfCopy;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -222,25 +222,25 @@
   if (v31)
   {
     v32 = objc_loadWeakRetained(&self->_delegate);
-    [v32 manager:self willPresentViewController:v39];
+    [v32 manager:self willPresentViewController:pageCopy];
   }
 }
 
-- (void)commerceDelegate:(id)a3 loadDidFailWithError:(id)a4
+- (void)commerceDelegate:(id)delegate loadDidFailWithError:(id)error
 {
-  v8 = a4;
-  NSLog(&cfstr_ErrorLoadingCo.isa, v8);
+  errorCopy = error;
+  NSLog(&cfstr_ErrorLoadingCo.isa, errorCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 manager:self loadDidFailWithError:v8];
+    [v7 manager:self loadDidFailWithError:errorCopy];
   }
 }
 
-- (void)commerceDelegateDidCancel:(id)a3
+- (void)commerceDelegateDidCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -266,11 +266,11 @@
   }
 }
 
-- (void)commerceDelegate:(id)a3 didCompleteWithError:(id)a4
+- (void)commerceDelegate:(id)delegate didCompleteWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -281,12 +281,12 @@
     if (v11)
     {
       v13 = 138543362;
-      v14 = v7;
+      v14 = errorCopy;
       _os_log_impl(&dword_18B008000, v10, OS_LOG_TYPE_DEFAULT, "calling delegate manager:didCompleteWithError:%{public}@", &v13, 0xCu);
     }
 
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 manager:self didCompleteWithError:v7];
+    [v12 manager:self didCompleteWithError:errorCopy];
   }
 
   else
@@ -294,11 +294,11 @@
     if (v11)
     {
       v13 = 138543362;
-      v14 = v7;
+      v14 = errorCopy;
       _os_log_impl(&dword_18B008000, v10, OS_LOG_TYPE_DEFAULT, "client did not implement manager:didCompleteWithError: (error:%{public}@)", &v13, 0xCu);
     }
 
-    [(PSCloudStorageOffersManager *)self commerceDelegateDidCancel:v6];
+    [(PSCloudStorageOffersManager *)self commerceDelegateDidCancel:delegateCopy];
   }
 }
 

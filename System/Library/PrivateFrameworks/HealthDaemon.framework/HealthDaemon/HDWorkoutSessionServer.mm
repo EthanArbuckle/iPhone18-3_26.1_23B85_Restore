@@ -1,104 +1,104 @@
 @interface HDWorkoutSessionServer
-+ (BOOL)finishAllWorkoutSessionsForClient:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)finishAllWorkoutsExcludingSessions:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_sessionControllerClassFromWorkoutConfiguration:(void *)a3 clientApplicationIdentifier:(void *)a4 profile:;
-+ (id)recoveredSessionServerWithProfile:(id)a3 sessionUUID:(id)a4 error:(id *)a5;
-+ (id)workoutConfigurationForRecoveryWithProfile:(id)a3 sessionUUID:(id)a4 error:(id *)a5;
-+ (void)_finishSessionControllerForSessionEntity:(void *)a3 profile:(void *)a4 transaction:(uint64_t)a5 error:;
-- (BOOL)_queue_clientApplicationCanStartWorkoutSessionWithError:(id *)a3;
-- (BOOL)_queue_resendWorkoutEventsToDataDestination:(uint64_t)a3 error:;
-- (BOOL)beginNewActivityWithConfiguration:(id)a3 date:(id)a4 metadata:(id)a5 error:(id *)a6;
-- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)a3 error:(id *)a4;
-- (BOOL)endCurrentActivityOnDate:(id)a3 error:(id *)a4;
-- (BOOL)endWithError:(id *)a3;
++ (BOOL)finishAllWorkoutSessionsForClient:(id)client profile:(id)profile error:(id *)error;
++ (BOOL)finishAllWorkoutsExcludingSessions:(id)sessions profile:(id)profile error:(id *)error;
++ (id)_sessionControllerClassFromWorkoutConfiguration:(void *)configuration clientApplicationIdentifier:(void *)identifier profile:;
++ (id)recoveredSessionServerWithProfile:(id)profile sessionUUID:(id)d error:(id *)error;
++ (id)workoutConfigurationForRecoveryWithProfile:(id)profile sessionUUID:(id)d error:(id *)error;
++ (void)_finishSessionControllerForSessionEntity:(void *)entity profile:(void *)profile transaction:(uint64_t)transaction error:;
+- (BOOL)_queue_clientApplicationCanStartWorkoutSessionWithError:(id *)error;
+- (BOOL)_queue_resendWorkoutEventsToDataDestination:(uint64_t)destination error:;
+- (BOOL)beginNewActivityWithConfiguration:(id)configuration date:(id)date metadata:(id)metadata error:(id *)error;
+- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)configurations error:(id *)error;
+- (BOOL)endCurrentActivityOnDate:(id)date error:(id *)error;
+- (BOOL)endWithError:(id *)error;
 - (BOOL)isFirstParty;
 - (BOOL)isGymKit;
 - (BOOL)isMirroring;
-- (BOOL)pauseWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)resumeWithError:(id *)a3;
-- (BOOL)setTargetState:(int64_t)a3 date:(id)a4 error:(id *)a5;
+- (BOOL)pauseWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)resumeWithError:(id *)error;
+- (BOOL)setTargetState:(int64_t)state date:(id)date error:(id *)error;
 - (BOOL)shouldStopPreviousSession;
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)unitTest_updateLatestActivityDate:(id)a3;
+- (BOOL)startActivityWithDate:(id)date error:(id *)error;
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error;
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error;
+- (BOOL)unitTest_updateLatestActivityDate:(id)date;
 - (HDHealthStoreClient)client;
 - (HDWorkoutDataAccumulator)workoutDataAccumulator;
-- (HDWorkoutSessionServer)initWithProfile:(id)a3 configuration:(id)a4 sessionUUID:(id)a5;
+- (HDWorkoutSessionServer)initWithProfile:(id)profile configuration:(id)configuration sessionUUID:(id)d;
 - (HDWorkoutSessionTaskServer)taskServer;
 - (HKWorkoutConfiguration)currentActivityConfiguration;
 - (NSString)description;
 - (id)currentWorkoutSnapshot;
-- (id)taskServerConfigurationForRecoveryWithError:(id *)a3;
+- (id)taskServerConfigurationForRecoveryWithError:(id *)error;
 - (int64_t)sessionType;
 - (int64_t)state;
-- (uint64_t)_queue_endCurrentActivityOnDate:(void *)a3 error:;
-- (void)_processTargetStoppingStateWithDate:(uint64_t)a1;
-- (void)_queue_evaluateRequestedTargetStateAtDate:(uint64_t)a1;
-- (void)_queue_generateConfigurationUpdate:(uint64_t)a1;
-- (void)_queue_generateError:(uint64_t)a1;
-- (void)_queue_generateEvent:(uint64_t)a1;
-- (void)_queue_generateEventWithType:(void *)a3 date:;
-- (void)_queue_setIsMirroring:(void *)a3 completion:;
-- (void)_queue_setTargetState:(void *)a3 date:(void *)a4 completion:;
+- (uint64_t)_queue_endCurrentActivityOnDate:(void *)date error:;
+- (void)_processTargetStoppingStateWithDate:(uint64_t)date;
+- (void)_queue_evaluateRequestedTargetStateAtDate:(uint64_t)date;
+- (void)_queue_generateConfigurationUpdate:(uint64_t)update;
+- (void)_queue_generateError:(uint64_t)error;
+- (void)_queue_generateEvent:(uint64_t)event;
+- (void)_queue_generateEventWithType:(void *)type date:;
+- (void)_queue_setIsMirroring:(void *)mirroring completion:;
+- (void)_queue_setTargetState:(void *)state date:(void *)date completion:;
 - (void)_queue_setupSessionController;
 - (void)_queue_startInvalidationTimer;
 - (void)_queue_startLatestActivityUpdateTimer;
-- (void)autoPauseWithDate:(id)a3;
-- (void)autoResumeWithDate:(id)a3;
+- (void)autoPauseWithDate:(id)date;
+- (void)autoResumeWithDate:(id)date;
 - (void)dealloc;
 - (void)didBecomeCurrent;
-- (void)didBeginNewActivity:(id)a3;
-- (void)didDetectActivityChange:(id)a3;
-- (void)didDisconnectFromRemoteWithError:(id)a3;
-- (void)didEndCurrentActivity:(id)a3;
-- (void)didReceiveDataFromRemoteWorkoutSession:(id)a3 completion:(id)a4;
-- (void)didResignCurrentWithError:(id)a3;
+- (void)didBeginNewActivity:(id)activity;
+- (void)didDetectActivityChange:(id)change;
+- (void)didDisconnectFromRemoteWithError:(id)error;
+- (void)didEndCurrentActivity:(id)activity;
+- (void)didReceiveDataFromRemoteWorkoutSession:(id)session completion:(id)completion;
+- (void)didResignCurrentWithError:(id)error;
 - (void)endHeartRateRecovery;
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)finishAggregationWithDate:(id)a3;
-- (void)generateConfigurationUpdate:(id)a3;
-- (void)generateError:(id)a3;
-- (void)generateEvent:(id)a3;
-- (void)generateMetadata:(id)a3;
-- (void)invalidateTaskServer:(id)a3;
-- (void)notifyClientsOfGeneratedTypesUpdate:(id)a3 configuration:(id)a4 didUpdateActivity:(BOOL)a5 earliestSampleDate:(id)a6;
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity completion:(id)completion;
+- (void)finishAggregationWithDate:(id)date;
+- (void)generateConfigurationUpdate:(id)update;
+- (void)generateError:(id)error;
+- (void)generateEvent:(id)event;
+- (void)generateMetadata:(id)metadata;
+- (void)invalidateTaskServer:(id)server;
+- (void)notifyClientsOfGeneratedTypesUpdate:(id)update configuration:(id)configuration didUpdateActivity:(BOOL)activity earliestSampleDate:(id)date;
 - (void)remoteSessionDidRecover;
-- (void)sendDataToRemoteWorkoutSession:(id)a3 completion:(id)a4;
+- (void)sendDataToRemoteWorkoutSession:(id)session completion:(id)completion;
 - (void)sendStartMirroringRequest;
-- (void)setAssociatedWorkoutBuilderEntity:(id)a3;
-- (void)setTaskServer:(id)a3;
-- (void)setWorkoutDataAccumulator:(id)a3;
-- (void)startMirroringToCompanionDeviceWithCompletion:(id)a3;
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6;
-- (void)stateMachine:(id)a3 didTransition:(id)a4 fromState:(id)a5 toState:(id)a6 date:(id)a7 error:(id)a8;
-- (void)stateMachine:(id)a3 persistTransition:(id)a4;
-- (void)stateMachine:(id)a3 willEnterState:(id)a4 date:(id)a5 error:(id)a6;
-- (void)stopMirroringToCompanionDeviceWithCompletion:(id)a3;
-- (void)syncCurrentActivity:(id)a3 completion:(id)a4;
-- (void)syncSessionEvent:(int64_t)a3 date:(id)a4;
-- (void)syncWorkoutEvents:(id)a3 completion:(id)a4;
+- (void)setAssociatedWorkoutBuilderEntity:(id)entity;
+- (void)setTaskServer:(id)server;
+- (void)setWorkoutDataAccumulator:(id)accumulator;
+- (void)startMirroringToCompanionDeviceWithCompletion:(id)completion;
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error;
+- (void)stateMachine:(id)machine didTransition:(id)transition fromState:(id)state toState:(id)toState date:(id)date error:(id)error;
+- (void)stateMachine:(id)machine persistTransition:(id)transition;
+- (void)stateMachine:(id)machine willEnterState:(id)state date:(id)date error:(id)error;
+- (void)stopMirroringToCompanionDeviceWithCompletion:(id)completion;
+- (void)syncCurrentActivity:(id)activity completion:(id)completion;
+- (void)syncSessionEvent:(int64_t)event date:(id)date;
+- (void)syncWorkoutEvents:(id)events completion:(id)completion;
 - (void)unitTest_generateStopEvent;
-- (void)unitTest_generateWorkoutConfigurationUpdate:(id)a3;
-- (void)unitTest_setExtendedPauseInterval:(double)a3;
-- (void)unitTest_setStopEventGenerationWaitInterval:(double)a3;
-- (void)workoutDataDestination:(id)a3 didInsertEvent:(id)a4;
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5;
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6;
-- (void)workoutDataDestinationRequestGeneratedTypes:(id)a3;
+- (void)unitTest_generateWorkoutConfigurationUpdate:(id)update;
+- (void)unitTest_setExtendedPauseInterval:(double)interval;
+- (void)unitTest_setStopEventGenerationWaitInterval:(double)interval;
+- (void)workoutDataDestination:(id)destination didInsertEvent:(id)event;
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to;
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion;
+- (void)workoutDataDestinationRequestGeneratedTypes:(id)types;
 @end
 
 @implementation HDWorkoutSessionServer
 
-+ (id)recoveredSessionServerWithProfile:(id)a3 sessionUUID:(id)a4 error:(id *)a5
++ (id)recoveredSessionServerWithProfile:(id)profile sessionUUID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 workoutConfigurationForRecoveryWithProfile:v8 sessionUUID:v9 error:a5];
+  profileCopy = profile;
+  dCopy = d;
+  v10 = [self workoutConfigurationForRecoveryWithProfile:profileCopy sessionUUID:dCopy error:error];
   if (v10)
   {
-    v11 = [[HDWorkoutSessionServer alloc] initWithProfile:v8 configuration:v10 sessionUUID:v9];
+    v11 = [[HDWorkoutSessionServer alloc] initWithProfile:profileCopy configuration:v10 sessionUUID:dCopy];
   }
 
   else
@@ -109,11 +109,11 @@
   return v11;
 }
 
-+ (id)workoutConfigurationForRecoveryWithProfile:(id)a3 sessionUUID:(id)a4 error:(id *)a5
++ (id)workoutConfigurationForRecoveryWithProfile:(id)profile sessionUUID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [HDWorkoutSessionEntity lookupSessionWithIdentifier:v8 profile:v7 error:a5];
+  profileCopy = profile;
+  dCopy = d;
+  v9 = [HDWorkoutSessionEntity lookupSessionWithIdentifier:dCopy profile:profileCopy error:error];
   if (v9)
   {
     v19 = 0;
@@ -123,14 +123,14 @@
     v23 = __Block_byref_object_dispose__185;
     v24 = 0;
     v10 = objc_opt_class();
-    v11 = [v7 database];
+    database = [profileCopy database];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __87__HDWorkoutSessionServer_workoutConfigurationForRecoveryWithProfile_sessionUUID_error___block_invoke;
     v16[3] = &unk_278619398;
     v18 = &v19;
     v17 = v9;
-    v12 = [v10 performReadTransactionWithHealthDatabase:v11 error:a5 block:v16];
+    v12 = [v10 performReadTransactionWithHealthDatabase:database error:error block:v16];
 
     if (v12)
     {
@@ -193,26 +193,26 @@ uint64_t __87__HDWorkoutSessionServer_workoutConfigurationForRecoveryWithProfile
   return v11;
 }
 
-+ (BOOL)finishAllWorkoutSessionsForClient:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)finishAllWorkoutSessionsForClient:(id)client profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 sourceManager];
-  v11 = [v10 sourceForClient:v9 error:a5];
+  profileCopy = profile;
+  clientCopy = client;
+  sourceManager = [profileCopy sourceManager];
+  v11 = [sourceManager sourceForClient:clientCopy error:error];
 
-  v12 = [v8 database];
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__HDWorkoutSessionServer_finishAllWorkoutSessionsForClient_profile_error___block_invoke;
   v16[3] = &unk_278614698;
   v17 = v11;
-  v18 = v8;
-  v19 = a1;
-  v13 = v8;
+  v18 = profileCopy;
+  selfCopy = self;
+  v13 = profileCopy;
   v14 = v11;
-  LOBYTE(a5) = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  LOBYTE(error) = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __74__HDWorkoutSessionServer_finishAllWorkoutSessionsForClient_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -274,72 +274,72 @@ LABEL_12:
   return v14;
 }
 
-+ (void)_finishSessionControllerForSessionEntity:(void *)a3 profile:(void *)a4 transaction:(uint64_t)a5 error:
++ (void)_finishSessionControllerForSessionEntity:(void *)entity profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  entityCopy = entity;
+  profileCopy = profile;
   v11 = objc_opt_self();
-  v12 = [v8 sessionIdentifierWithTransaction:v10 error:a5];
+  v12 = [v8 sessionIdentifierWithTransaction:profileCopy error:transaction];
   if (v12)
   {
-    v13 = [v8 workoutConfigurationWithTransaction:v10 error:a5];
-    v14 = [v9 workoutManager];
-    v15 = [v14 biomeInterface];
-    [v15 stopSessionWithIdentifier:v12 recoveredWorkoutConfiguration:v13];
+    v13 = [v8 workoutConfigurationWithTransaction:profileCopy error:transaction];
+    workoutManager = [entityCopy workoutManager];
+    biomeInterface = [workoutManager biomeInterface];
+    [biomeInterface stopSessionWithIdentifier:v12 recoveredWorkoutConfiguration:v13];
 
     if (v13)
     {
-      v16 = [v8 clientApplicationIdentifier:v10 error:a5];
+      v16 = [v8 clientApplicationIdentifier:profileCopy error:transaction];
       if (v16)
       {
-        v17 = [(HDWorkoutSessionServer *)v11 _sessionControllerClassFromWorkoutConfiguration:v13 clientApplicationIdentifier:v16 profile:v9];
-        v18 = [v17 recoveryIdentifier];
-        if (v18)
+        v17 = [(HDWorkoutSessionServer *)v11 _sessionControllerClassFromWorkoutConfiguration:v13 clientApplicationIdentifier:v16 profile:entityCopy];
+        recoveryIdentifier = [v17 recoveryIdentifier];
+        if (recoveryIdentifier)
         {
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
           v19[2] = __93__HDWorkoutSessionServer__finishSessionControllerForSessionEntity_profile_transaction_error___block_invoke;
           v19[3] = &unk_27862CB10;
           v21 = v17;
-          v20 = v9;
-          [HDWorkoutSessionControllerEntity retrieveArchivedStateFromRecoveryIdentifier:v18 workoutSession:v8 transaction:v10 error:a5 block:v19];
+          v20 = entityCopy;
+          [HDWorkoutSessionControllerEntity retrieveArchivedStateFromRecoveryIdentifier:recoveryIdentifier workoutSession:v8 transaction:profileCopy error:transaction block:v19];
         }
       }
     }
   }
 }
 
-+ (id)_sessionControllerClassFromWorkoutConfiguration:(void *)a3 clientApplicationIdentifier:(void *)a4 profile:
++ (id)_sessionControllerClassFromWorkoutConfiguration:(void *)configuration clientApplicationIdentifier:(void *)identifier profile:
 {
   v39 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   objc_opt_self();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [v8 daemon];
-  v10 = [v9 pluginManager];
-  v11 = [v10 pluginsConformingToProtocol:&unk_283D71678];
-  v12 = [v11 allValues];
+  daemon = [identifierCopy daemon];
+  pluginManager = [daemon pluginManager];
+  v11 = [pluginManager pluginsConformingToProtocol:&unk_283D71678];
+  allValues = [v11 allValues];
 
-  v13 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v13 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v34;
     v27 = *v34;
-    v28 = v8;
+    v28 = identifierCopy;
     do
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v34 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = *(*(&v33 + 1) + 8 * i);
@@ -347,7 +347,7 @@ LABEL_12:
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v18 = [v17 workoutSessionControllerClassesForProfile:{v8, v27}];
+        v18 = [v17 workoutSessionControllerClassesForProfile:{identifierCopy, v27}];
         v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v19)
         {
@@ -363,11 +363,11 @@ LABEL_12:
               }
 
               v23 = *(*(&v29 + 1) + 8 * j);
-              if ([v23 supportsWorkoutConfiguration:v6 clientApplicationIdentifier:v7])
+              if ([v23 supportsWorkoutConfiguration:v6 clientApplicationIdentifier:configurationCopy])
               {
                 v24 = v23;
 
-                v8 = v28;
+                identifierCopy = v28;
                 goto LABEL_18;
               }
             }
@@ -383,16 +383,16 @@ LABEL_12:
         }
 
         v15 = v27;
-        v8 = v28;
+        identifierCopy = v28;
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v14);
   }
 
-  [HDFirstPartyWorkoutSessionController supportsWorkoutConfiguration:v6 clientApplicationIdentifier:v7];
+  [HDFirstPartyWorkoutSessionController supportsWorkoutConfiguration:v6 clientApplicationIdentifier:configurationCopy];
   v24 = objc_opt_class();
 LABEL_18:
 
@@ -415,23 +415,23 @@ void __93__HDWorkoutSessionServer__finishSessionControllerForSessionEntity_profi
   }
 }
 
-+ (BOOL)finishAllWorkoutsExcludingSessions:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)finishAllWorkoutsExcludingSessions:(id)sessions profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  sessionsCopy = sessions;
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__HDWorkoutSessionServer_finishAllWorkoutsExcludingSessions_profile_error___block_invoke;
   v14[3] = &unk_278614698;
-  v15 = v8;
-  v16 = v9;
-  v17 = a1;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  v15 = sessionsCopy;
+  v16 = profileCopy;
+  selfCopy = self;
+  v11 = profileCopy;
+  v12 = sessionsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:error block:v14];
 
-  return a5;
+  return error;
 }
 
 uint64_t __75__HDWorkoutSessionServer_finishAllWorkoutsExcludingSessions_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -504,12 +504,12 @@ LABEL_14:
   return v17;
 }
 
-- (HDWorkoutSessionServer)initWithProfile:(id)a3 configuration:(id)a4 sessionUUID:(id)a5
+- (HDWorkoutSessionServer)initWithProfile:(id)profile configuration:(id)configuration sessionUUID:(id)d
 {
   v208 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v180 = a4;
-  v183 = a5;
+  obj = profile;
+  configurationCopy = configuration;
+  dCopy = d;
   v189.receiver = self;
   v189.super_class = HDWorkoutSessionServer;
   v8 = [(HDWorkoutSessionServer *)&v189 init];
@@ -526,8 +526,8 @@ LABEL_14:
     observers = v9->_observers;
     v9->_observers = v13;
 
-    objc_storeStrong(&v9->_workoutConfiguration, a4);
-    objc_storeStrong(&v9->_identifier, a5);
+    objc_storeStrong(&v9->_workoutConfiguration, configuration);
+    objc_storeStrong(&v9->_identifier, d);
     firstActivityConfiguration = v9->_firstActivityConfiguration;
     v9->_firstActivityConfiguration = 0;
 
@@ -543,7 +543,7 @@ LABEL_14:
     v9->_extendedPauseTimeout = 900.0;
     if ([(HDWorkoutSessionServer *)v9 sessionType]!= 1)
     {
-      v175 = v183;
+      v175 = dCopy;
       v17 = objc_opt_self();
       v18 = objc_alloc(MEMORY[0x277CCDA28]);
       v19 = [MEMORY[0x277CCDA28] nameForOwner:v17 UUID:v175 tag:0];
@@ -686,20 +686,20 @@ LABEL_14:
       v129 = MEMORY[0x277CCACA8];
       [(HKWorkoutConfiguration *)v9->_workoutConfiguration activityType];
       v130 = _HKWorkoutActivityNameForActivityType();
-      v131 = [v129 stringWithFormat:@"activity=%@", v130];
-      [v128 addObject:v131];
+      v130 = [v129 stringWithFormat:@"activity=%@", v130];
+      [v128 addObject:v130];
 
       v132 = MEMORY[0x277CCACA8];
       [(HKWorkoutConfiguration *)v9->_workoutConfiguration locationType];
       v133 = _HKWorkoutSessionLocationTypeName();
-      v134 = [v132 stringWithFormat:@"location=%@", v133];
-      [v128 addObject:v134];
+      v133 = [v132 stringWithFormat:@"location=%@", v133];
+      [v128 addObject:v133];
 
-      v135 = [(HKWorkoutConfiguration *)v9->_workoutConfiguration fitnessMachineSessionUUID];
-      if (v135)
+      fitnessMachineSessionUUID = [(HKWorkoutConfiguration *)v9->_workoutConfiguration fitnessMachineSessionUUID];
+      if (fitnessMachineSessionUUID)
       {
-        v136 = [MEMORY[0x277CCACA8] stringWithFormat:@"ftm_session=%@", v135];
-        [v128 addObject:v136];
+        v135 = [MEMORY[0x277CCACA8] stringWithFormat:@"ftm_session=%@", fitnessMachineSessionUUID];
+        [v128 addObject:v135];
       }
 
       if ([(HKWorkoutConfiguration *)v9->_workoutConfiguration activityType]== HKWorkoutActivityTypeSwimming)
@@ -707,22 +707,22 @@ LABEL_14:
         v137 = MEMORY[0x277CCACA8];
         [(HKWorkoutConfiguration *)v9->_workoutConfiguration swimmingLocationType];
         v138 = _HKWorkoutSwimmingLocationTypeName();
-        v139 = [v137 stringWithFormat:@"swimming_location=%@", v138];
-        [v128 addObject:v139];
+        v138 = [v137 stringWithFormat:@"swimming_location=%@", v138];
+        [v128 addObject:v138];
       }
 
-      v140 = [(HKWorkoutConfiguration *)v9->_workoutConfiguration lapLength];
-      if (v140)
+      lapLength = [(HKWorkoutConfiguration *)v9->_workoutConfiguration lapLength];
+      if (lapLength)
       {
-        v141 = [MEMORY[0x277CCACA8] stringWithFormat:@"lap_length=%@", v140];
-        [v128 addObject:v141];
+        v140 = [MEMORY[0x277CCACA8] stringWithFormat:@"lap_length=%@", lapLength];
+        [v128 addObject:v140];
       }
 
-      v142 = [(HKWorkoutConfiguration *)v9->_workoutConfiguration predictionSessionUUID];
-      if (v142)
+      predictionSessionUUID = [(HKWorkoutConfiguration *)v9->_workoutConfiguration predictionSessionUUID];
+      if (predictionSessionUUID)
       {
-        v143 = [MEMORY[0x277CCACA8] stringWithFormat:@"prediction_uuiud=%@", v142];
-        [v128 addObject:v143];
+        v142 = [MEMORY[0x277CCACA8] stringWithFormat:@"prediction_uuiud=%@", predictionSessionUUID];
+        [v128 addObject:v142];
       }
 
       v144 = [v128 componentsJoinedByString:{@", "}];
@@ -773,7 +773,7 @@ LABEL_14:
       v193 = 0;
       v150 = objc_opt_class();
       v151 = objc_loadWeakRetained(&v9->_profile);
-      v152 = [v151 database];
+      database = [v151 database];
       v191 = 0;
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
@@ -783,7 +783,7 @@ LABEL_14:
       *(&v205 + 1) = v196;
       v206 = v194;
       v207 = v192;
-      v153 = [v150 performReadTransactionWithHealthDatabase:v152 error:&v191 block:buf];
+      v153 = [v150 performReadTransactionWithHealthDatabase:database error:&v191 block:buf];
       v154 = v191;
 
       if (v153)
@@ -825,8 +825,8 @@ LABEL_33:
 LABEL_34:
         v166 = [HDWorkoutSessionRapportSyncController alloc];
         v167 = objc_loadWeakRetained(&v9->_profile);
-        v168 = [v167 rapportMessenger];
-        v169 = [(HDWorkoutSessionRapportSyncController *)v166 initWithRapportMessenger:v168 sessionServer:v9];
+        rapportMessenger = [v167 rapportMessenger];
+        v169 = [(HDWorkoutSessionRapportSyncController *)v166 initWithRapportMessenger:rapportMessenger sessionServer:v9];
         syncController = v9->_syncController;
         v9->_syncController = v169;
 
@@ -910,7 +910,7 @@ LABEL_35:
 - (void)_queue_startInvalidationTimer
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = MEMORY[0x277CCC330];
@@ -918,32 +918,32 @@ LABEL_35:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning invalidation timer.", buf, 0xCu);
     }
 
-    objc_initWeak(&location, a1);
-    v4 = [objc_alloc(MEMORY[0x277CCDDB0]) initWithQueue:*(a1 + 16) completion:&__block_literal_global_717];
-    v5 = *(a1 + 96);
-    *(a1 + 96) = v4;
+    objc_initWeak(&location, self);
+    v4 = [objc_alloc(MEMORY[0x277CCDDB0]) initWithQueue:*(self + 16) completion:&__block_literal_global_717];
+    v5 = *(self + 96);
+    *(self + 96) = v4;
 
-    v6 = *(a1 + 96);
+    v6 = *(self + 96);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__HDWorkoutSessionServer__queue_startInvalidationTimer__block_invoke_2;
     v21[3] = &unk_278616F38;
     objc_copyWeak(&v22, &location);
     [v6 startWithTimeoutInterval:v21 handler:300.0];
-    [*(a1 + 104) invalidate];
-    v7 = *(a1 + 104);
-    *(a1 + 104) = 0;
+    [*(self + 104) invalidate];
+    v7 = *(self + 104);
+    *(self + 104) = 0;
 
-    if (*(a1 + 272))
+    if (*(self + 272))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v9 = [WeakRetained daemon];
-      v10 = [v9 processStateManager];
-      v11 = [v10 processIdentifierForApplicationIdentifier:*(a1 + 272)];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      daemon = [WeakRetained daemon];
+      processStateManager = [daemon processStateManager];
+      v11 = [processStateManager processIdentifierForApplicationIdentifier:*(self + 272)];
 
       if (v11 == -1)
       {
@@ -951,9 +951,9 @@ LABEL_35:
         v17 = *v2;
         if (os_log_type_enabled(*v2, OS_LOG_TYPE_ERROR))
         {
-          v19 = *(a1 + 272);
+          v19 = *(self + 272);
           *buf = 138543362;
-          v25 = v19;
+          selfCopy = v19;
           _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "Unable to get pid for %{public}@", buf, 0xCu);
         }
       }
@@ -964,9 +964,9 @@ LABEL_35:
         v12 = *v2;
         if (os_log_type_enabled(*v2, OS_LOG_TYPE_INFO))
         {
-          v13 = *(a1 + 272);
+          v13 = *(self + 272);
           *buf = 138543362;
-          v25 = v13;
+          selfCopy = v13;
           _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_INFO, "Taking reconnection assertion for process %{public}@", buf, 0xCu);
         }
 
@@ -975,10 +975,10 @@ LABEL_35:
         v20[1] = 3221225472;
         v20[2] = __55__HDWorkoutSessionServer__queue_startInvalidationTimer__block_invoke_722;
         v20[3] = &unk_27862CCC0;
-        v20[4] = a1;
+        v20[4] = self;
         v15 = [v14 initWithPID:v11 flags:3 reason:19 name:@"HealthKit Background Workout (Reconnect)" withHandler:v20];
-        v16 = *(a1 + 104);
-        *(a1 + 104) = v15;
+        v16 = *(self + 104);
+        *(self + 104) = v15;
       }
     }
 
@@ -1003,13 +1003,13 @@ LABEL_35:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDWorkoutSessionServer *)self identifier];
-  v7 = [v6 hk_shortRepresentation];
+  identifier = [(HDWorkoutSessionServer *)self identifier];
+  hk_shortRepresentation = [identifier hk_shortRepresentation];
   [(HDWorkoutSessionServer *)self state];
   v8 = _HKWorkoutSessionServerStateToString();
   [(HDWorkoutSessionServer *)self sessionType];
   v9 = HKWorkoutSessionTypeToString();
-  v10 = [v3 stringWithFormat:@"<%@-%@ [%@] [%@]>", v5, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@-%@ [%@] [%@]>", v5, hk_shortRepresentation, v8, v9];
 
   return v10;
 }
@@ -1024,8 +1024,8 @@ LABEL_35:
 
 - (BOOL)isGymKit
 {
-  v2 = [(HKWorkoutConfiguration *)self->_workoutConfiguration fitnessMachineSessionUUID];
-  v3 = v2 != 0;
+  fitnessMachineSessionUUID = [(HKWorkoutConfiguration *)self->_workoutConfiguration fitnessMachineSessionUUID];
+  v3 = fitnessMachineSessionUUID != 0;
 
   return v3;
 }
@@ -1033,22 +1033,22 @@ LABEL_35:
 - (HDHealthStoreClient)client
 {
   WeakRetained = objc_loadWeakRetained(&self->_taskServer);
-  v3 = [WeakRetained client];
+  client = [WeakRetained client];
 
-  return v3;
+  return client;
 }
 
-- (void)setTaskServer:(id)a3
+- (void)setTaskServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HDWorkoutSessionServer_setTaskServer___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   dispatch_sync(queue, v7);
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
@@ -1204,44 +1204,44 @@ LABEL_27:
 - (void)_queue_setupSessionController
 {
   v59 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    if (![a1 sessionType])
+    dispatch_assert_queue_V2(*(self + 16));
+    if (![self sessionType])
     {
-      dispatch_assert_queue_V2(*(a1 + 16));
+      dispatch_assert_queue_V2(*(self + 16));
       v45 = [HDWorkoutSessionConfiguration alloc];
-      v46 = [a1 identifier];
-      v42 = *(a1 + 264);
-      WeakRetained = objc_loadWeakRetained((a1 + 280));
-      v41 = [WeakRetained sessionType];
-      v43 = objc_loadWeakRetained((a1 + 280));
-      v2 = [v43 client];
-      v3 = *(a1 + 24);
-      v4 = *(a1 + 272);
-      v5 = objc_loadWeakRetained((a1 + 280));
-      v6 = [v5 requiresCoreLocationAssertion];
-      v7 = objc_loadWeakRetained((a1 + 280));
-      v8 = [v7 supportsAppRelaunchForRecovery];
-      v9 = objc_loadWeakRetained((a1 + 280));
-      v10 = [v9 supports3rdPartyAOT];
-      BYTE3(v40) = [a1 isFirstParty];
-      BYTE2(v40) = v10;
-      BYTE1(v40) = v8;
-      LOBYTE(v40) = v6;
-      v11 = [HDWorkoutSessionConfiguration initWithSessionIdentifier:v45 workoutConfiguration:"initWithSessionIdentifier:workoutConfiguration:sessionType:client:processBundleIdentifier:applicationIdentifier:requiresCoreLocationAssertion:supportsAppRelaunchForRecovery:supports3rdPartyAOT:enableWorkoutChangeDetection:activityConfigurations:" sessionType:v46 client:v42 processBundleIdentifier:v41 applicationIdentifier:v2 requiresCoreLocationAssertion:v3 supportsAppRelaunchForRecovery:v4 supports3rdPartyAOT:v40 enableWorkoutChangeDetection:*(a1 + 304) activityConfigurations:?];
+      identifier = [self identifier];
+      v42 = *(self + 264);
+      WeakRetained = objc_loadWeakRetained((self + 280));
+      sessionType = [WeakRetained sessionType];
+      v43 = objc_loadWeakRetained((self + 280));
+      client = [v43 client];
+      v3 = *(self + 24);
+      v4 = *(self + 272);
+      v5 = objc_loadWeakRetained((self + 280));
+      requiresCoreLocationAssertion = [v5 requiresCoreLocationAssertion];
+      v7 = objc_loadWeakRetained((self + 280));
+      supportsAppRelaunchForRecovery = [v7 supportsAppRelaunchForRecovery];
+      v9 = objc_loadWeakRetained((self + 280));
+      supports3rdPartyAOT = [v9 supports3rdPartyAOT];
+      BYTE3(v40) = [self isFirstParty];
+      BYTE2(v40) = supports3rdPartyAOT;
+      BYTE1(v40) = supportsAppRelaunchForRecovery;
+      LOBYTE(v40) = requiresCoreLocationAssertion;
+      v11 = [HDWorkoutSessionConfiguration initWithSessionIdentifier:v45 workoutConfiguration:"initWithSessionIdentifier:workoutConfiguration:sessionType:client:processBundleIdentifier:applicationIdentifier:requiresCoreLocationAssertion:supportsAppRelaunchForRecovery:supports3rdPartyAOT:enableWorkoutChangeDetection:activityConfigurations:" sessionType:identifier client:v42 processBundleIdentifier:sessionType applicationIdentifier:client requiresCoreLocationAssertion:v3 supportsAppRelaunchForRecovery:v4 supports3rdPartyAOT:v40 enableWorkoutChangeDetection:*(self + 304) activityConfigurations:?];
 
-      v12 = *(a1 + 88);
+      v12 = *(self + 88);
       if (v12)
       {
-        [v12 workoutSessionServer:a1 didChangeConfiguration:v11];
+        [v12 workoutSessionServer:self didChangeConfiguration:v11];
       }
 
       else
       {
-        v13 = *(a1 + 264);
-        v14 = *(a1 + 272);
-        v15 = objc_loadWeakRetained((a1 + 8));
+        v13 = *(self + 264);
+        v14 = *(self + 272);
+        v15 = objc_loadWeakRetained((self + 8));
         v16 = [HDWorkoutSessionServer _sessionControllerClassFromWorkoutConfiguration:v13 clientApplicationIdentifier:v14 profile:v15];
 
         _HKInitializeLogging();
@@ -1252,35 +1252,35 @@ LABEL_27:
           v19 = v18;
           v20 = NSStringFromClass(v16);
           *buf = 138543618;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2114;
           *&buf[14] = v20;
           _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating session controller of class %{public}@", buf, 0x16u);
         }
 
-        v21 = [(objc_class *)v16 recoveryIdentifier];
-        v22 = v21;
-        if (v21)
+        recoveryIdentifier = [(objc_class *)v16 recoveryIdentifier];
+        v22 = recoveryIdentifier;
+        if (recoveryIdentifier)
         {
           v47 = 0;
-          v23 = v21;
+          v23 = recoveryIdentifier;
           v48 = 0;
           v49 = &v48;
           v50 = 0x3032000000;
           v51 = __Block_byref_object_copy__185;
           v52 = __Block_byref_object_dispose__185;
           v53 = 0;
-          v24 = objc_loadWeakRetained((a1 + 8));
-          v25 = [v24 database];
+          v24 = objc_loadWeakRetained((self + 8));
+          database = [v24 database];
           *buf = MEMORY[0x277D85DD0];
           *&buf[8] = 3221225472;
           *&buf[16] = __85__HDWorkoutSessionServer__retrieveSessionControllerStateForRecoveryIdentifier_error___block_invoke;
           v55 = &unk_278615F88;
           v26 = v23;
           v56 = v26;
-          v57 = a1;
+          selfCopy = self;
           v58 = &v48;
-          v27 = [(HDHealthEntity *)HDWorkoutSessionControllerEntity performReadTransactionWithHealthDatabase:v25 error:&v47 block:buf];
+          v27 = [(HDHealthEntity *)HDWorkoutSessionControllerEntity performReadTransactionWithHealthDatabase:database error:&v47 block:buf];
 
           if (v27)
           {
@@ -1306,7 +1306,7 @@ LABEL_27:
               if (os_log_type_enabled(*v17, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                *&buf[4] = a1;
+                *&buf[4] = self;
                 *&buf[12] = 2114;
                 *&buf[14] = v31;
                 _os_log_error_impl(&dword_228986000, v32, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve recovery state with error: %{public}@", buf, 0x16u);
@@ -1321,15 +1321,15 @@ LABEL_27:
         }
 
         v33 = [v16 alloc];
-        v34 = objc_loadWeakRetained((a1 + 8));
-        v35 = [v33 initWithProfile:v34 sessionConfiguration:v11 sessionStateController:a1 recoveryState:v29];
-        v36 = *(a1 + 88);
-        *(a1 + 88) = v35;
+        v34 = objc_loadWeakRetained((self + 8));
+        v35 = [v33 initWithProfile:v34 sessionConfiguration:v11 sessionStateController:self recoveryState:v29];
+        v36 = *(self + 88);
+        *(self + 88) = v35;
 
-        [*(a1 + 88) workoutSessionServer:a1 didTransitionFromState:1 toState:objc_msgSend(a1 date:{"state"), 0}];
-        v37 = [*(a1 + 88) currentGeneratedTypes];
-        v38 = [*(a1 + 88) dataSourceConfiguration];
-        [a1 notifyClientsOfGeneratedTypesUpdate:v37 configuration:v38 didUpdateActivity:0 earliestSampleDate:0];
+        [*(self + 88) workoutSessionServer:self didTransitionFromState:1 toState:objc_msgSend(self date:{"state"), 0}];
+        currentGeneratedTypes = [*(self + 88) currentGeneratedTypes];
+        dataSourceConfiguration = [*(self + 88) dataSourceConfiguration];
+        [self notifyClientsOfGeneratedTypesUpdate:currentGeneratedTypes configuration:dataSourceConfiguration didUpdateActivity:0 earliestSampleDate:0];
       }
     }
   }
@@ -1340,39 +1340,39 @@ LABEL_27:
 - (void)_queue_startLatestActivityUpdateTimer
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting latest activity update timer.", buf, 0xCu);
     }
 
-    objc_initWeak(buf, a1);
-    v3 = a1[22];
+    objc_initWeak(buf, self);
+    v3 = self[22];
     if (v3)
     {
       dispatch_source_cancel(v3);
     }
 
-    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, a1[2]);
-    v5 = a1[22];
-    a1[22] = v4;
+    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self[2]);
+    v5 = self[22];
+    self[22] = v4;
 
-    v6 = a1[22];
+    v6 = self[22];
     v7 = dispatch_walltime(0, 180000000000);
     dispatch_source_set_timer(v6, v7, 0x29E8D60800uLL, 0x3B9ACA00uLL);
-    v8 = a1[22];
+    v8 = self[22];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __63__HDWorkoutSessionServer__queue_startLatestActivityUpdateTimer__block_invoke;
     handler[3] = &unk_278616F38;
     objc_copyWeak(&v11, buf);
     dispatch_source_set_event_handler(v8, handler);
-    dispatch_activate(a1[22]);
+    dispatch_activate(self[22]);
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
@@ -1386,17 +1386,17 @@ void __40__HDWorkoutSessionServer_setTaskServer___block_invoke_2()
   [v0 postNotificationName:@"HDWorkoutManagerStateDidChange" object:0];
 }
 
-- (void)invalidateTaskServer:(id)a3
+- (void)invalidateTaskServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HDWorkoutSessionServer_invalidateTaskServer___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   dispatch_sync(queue, v7);
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
@@ -1421,23 +1421,23 @@ void __47__HDWorkoutSessionServer_invalidateTaskServer___block_invoke_2()
   [v0 postNotificationName:@"HDWorkoutManagerStateDidChange" object:0];
 }
 
-- (void)setAssociatedWorkoutBuilderEntity:(id)a3
+- (void)setAssociatedWorkoutBuilderEntity:(id)entity
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entityCopy = entity;
   persistentEntity = self->_persistentEntity;
   v6 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v16 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__HDWorkoutSessionServer_setAssociatedWorkoutBuilderEntity___block_invoke;
   v14[3] = &unk_278613218;
   v14[4] = self;
-  v9 = v4;
+  v9 = entityCopy;
   v15 = v9;
-  v10 = [v6 performWriteTransactionWithHealthDatabase:v8 error:&v16 block:v14];
+  v10 = [v6 performWriteTransactionWithHealthDatabase:database error:&v16 block:v14];
   v11 = v16;
 
   if ((v10 & 1) == 0)
@@ -1447,7 +1447,7 @@ void __47__HDWorkoutSessionServer_invalidateTaskServer___block_invoke_2()
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v11;
       _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to save associated workout builder entity: %{public}@", buf, 0x16u);
@@ -1457,17 +1457,17 @@ void __47__HDWorkoutSessionServer_invalidateTaskServer___block_invoke_2()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWorkoutDataAccumulator:(id)a3
+- (void)setWorkoutDataAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDWorkoutSessionServer_setWorkoutDataAccumulator___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accumulatorCopy;
+  v6 = accumulatorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1611,9 +1611,9 @@ LABEL_9:
 - (int64_t)sessionType
 {
   WeakRetained = objc_loadWeakRetained(&self->_taskServer);
-  v3 = [WeakRetained sessionType];
+  sessionType = [WeakRetained sessionType];
 
-  return v3;
+  return sessionType;
 }
 
 - (BOOL)isFirstParty
@@ -1632,16 +1632,16 @@ LABEL_9:
 - (BOOL)shouldStopPreviousSession
 {
   WeakRetained = objc_loadWeakRetained(&self->_taskServer);
-  v3 = [WeakRetained shouldStopPreviousSession];
+  shouldStopPreviousSession = [WeakRetained shouldStopPreviousSession];
 
-  return v3;
+  return shouldStopPreviousSession;
 }
 
 - (HKWorkoutConfiguration)currentActivityConfiguration
 {
-  v3 = [(HKWorkoutActivity *)self->_currentActivity workoutConfiguration];
-  workoutConfiguration = v3;
-  if (!v3)
+  workoutConfiguration = [(HKWorkoutActivity *)self->_currentActivity workoutConfiguration];
+  workoutConfiguration = workoutConfiguration;
+  if (!workoutConfiguration)
   {
     workoutConfiguration = self->_workoutConfiguration;
   }
@@ -2057,7 +2057,7 @@ void __48__HDWorkoutSessionServer__recoverPersistedState__block_invoke_2(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)taskServerConfigurationForRecoveryWithError:(id *)a3
+- (id)taskServerConfigurationForRecoveryWithError:(id *)error
 {
   v4 = objc_alloc_init(MEMORY[0x277CCDC98]);
   queue = self->_queue;
@@ -2067,7 +2067,7 @@ void __48__HDWorkoutSessionServer__recoverPersistedState__block_invoke_2(uint64_
   v9[3] = &unk_278613920;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(queue, v9);
   v7 = v6;
 
@@ -2087,31 +2087,31 @@ uint64_t __70__HDWorkoutSessionServer_taskServerConfigurationForRecoveryWithErro
   return [v3 setSessionType:v2];
 }
 
-- (BOOL)_queue_resendWorkoutEventsToDataDestination:(uint64_t)a3 error:
+- (BOOL)_queue_resendWorkoutEventsToDataDestination:(uint64_t)destination error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     v11 = 0;
     v12 = &v11;
     v13 = 0x3032000000;
     v14 = __Block_byref_object_copy__185;
     v15 = __Block_byref_object_dispose__185;
     v16 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __76__HDWorkoutSessionServer__queue_resendWorkoutEventsToDataDestination_error___block_invoke;
     v10[3] = &unk_278619398;
-    v10[4] = a1;
+    v10[4] = self;
     v10[5] = &v11;
-    v8 = [(HDHealthEntity *)HDWorkoutSessionEntity performReadTransactionWithHealthDatabase:v7 error:a3 block:v10];
+    v8 = [(HDHealthEntity *)HDWorkoutSessionEntity performReadTransactionWithHealthDatabase:database error:destination block:v10];
 
     if (v8)
     {
-      [v5 addWorkoutEvents:v12[5] dataSource:a1];
+      [v5 addWorkoutEvents:v12[5] dataSource:self];
     }
 
     _Block_object_dispose(&v11, 8);
@@ -2135,17 +2135,17 @@ BOOL __76__HDWorkoutSessionServer__queue_resendWorkoutEventsToDataDestination_er
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to
 {
-  v6 = a3;
+  destinationCopy = destination;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__HDWorkoutSessionServer_workoutDataDestination_requestsDataFrom_to___block_invoke;
   v9[3] = &unk_278613920;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = destinationCopy;
+  v8 = destinationCopy;
   dispatch_async(queue, v9);
 }
 
@@ -2175,20 +2175,20 @@ void __69__HDWorkoutSessionServer_workoutDataDestination_requestsDataFrom_to___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  destinationCopy = destination;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__HDWorkoutSessionServer_workoutDataDestination_requestsFinalDataFrom_to_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = destinationCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = destinationCopy;
   dispatch_async(queue, block);
 }
 
@@ -2202,10 +2202,10 @@ void __85__HDWorkoutSessionServer_workoutDataDestination_requestsFinalDataFrom_t
   (*(a1[6] + 16))();
 }
 
-- (void)workoutDataDestination:(id)a3 didInsertEvent:(id)a4
+- (void)workoutDataDestination:(id)destination didInsertEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  eventCopy = event;
   if (self->_isMirroring)
   {
     _HKInitializeLogging();
@@ -2213,9 +2213,9 @@ void __85__HDWorkoutSessionServer_workoutDataDestination_requestsFinalDataFrom_t
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v5;
+      v13 = eventCopy;
       _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending background runtime request for event: %{public}@.", buf, 0x16u);
     }
 
@@ -2253,7 +2253,7 @@ void __64__HDWorkoutSessionServer_workoutDataDestination_didInsertEvent___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutDataDestinationRequestGeneratedTypes:(id)a3
+- (void)workoutDataDestinationRequestGeneratedTypes:(id)types
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2276,26 +2276,26 @@ void __70__HDWorkoutSessionServer_workoutDataDestinationRequestGeneratedTypes___
   }
 }
 
-- (void)stateMachine:(id)a3 persistTransition:(id)a4
+- (void)stateMachine:(id)machine persistTransition:(id)transition
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  machineCopy = machine;
+  transitionCopy = transition;
   persistentEntity = self->_persistentEntity;
   v9 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v21 = 0;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__HDWorkoutSessionServer_stateMachine_persistTransition___block_invoke;
   v17[3] = &unk_278615D40;
-  v12 = v6;
+  v12 = machineCopy;
   v18 = v12;
-  v19 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = transitionCopy;
   v20 = v13;
-  LOBYTE(v9) = [v9 performWriteTransactionWithHealthDatabase:v11 error:&v21 block:v17];
+  LOBYTE(v9) = [v9 performWriteTransactionWithHealthDatabase:database error:&v21 block:v17];
   v14 = v21;
 
   if ((v9 & 1) == 0)
@@ -2305,7 +2305,7 @@ void __70__HDWorkoutSessionServer_workoutDataDestinationRequestGeneratedTypes___
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v14;
       _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update persisted session state: %{public}@.", buf, 0x16u);
@@ -2345,25 +2345,25 @@ LABEL_7:
   return v8;
 }
 
-- (void)_processTargetStoppingStateWithDate:(uint64_t)a1
+- (void)_processTargetStoppingStateWithDate:(uint64_t)date
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1 && !*(a1 + 200) && !*(a1 + 48))
+  if (date && !*(date + 200) && !*(date + 48))
   {
-    v5 = *(a1 + 112);
+    v5 = *(date + 112);
     v6 = objc_opt_class();
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v8 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((date + 8));
+    database = [WeakRetained database];
     v19 = 0;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __62__HDWorkoutSessionServer__processTargetStoppingStateWithDate___block_invoke;
     v17[3] = &unk_278613218;
-    v17[4] = a1;
+    v17[4] = date;
     v9 = v4;
     v18 = v9;
-    v10 = [v6 performWriteTransactionWithHealthDatabase:v8 error:&v19 block:v17];
+    v10 = [v6 performWriteTransactionWithHealthDatabase:database error:&v19 block:v17];
     v11 = v19;
 
     if ((v10 & 1) == 0)
@@ -2373,20 +2373,20 @@ LABEL_7:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v21 = a1;
+        dateCopy = date;
         v22 = 2114;
         v23 = v11;
         _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update requested end date: %{public}@.", buf, 0x16u);
       }
     }
 
-    objc_storeStrong((a1 + 200), a2);
-    v13 = *(a1 + 16);
+    objc_storeStrong((date + 200), a2);
+    v13 = *(date + 16);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__HDWorkoutSessionServer__processTargetStoppingStateWithDate___block_invoke_587;
     block[3] = &unk_278613920;
-    block[4] = a1;
+    block[4] = date;
     v16 = v9;
     dispatch_async(v13, block);
   }
@@ -2411,27 +2411,27 @@ void __62__HDWorkoutSessionServer__processTargetStoppingStateWithDate___block_in
   }
 }
 
-- (uint64_t)_queue_endCurrentActivityOnDate:(void *)a3 error:
+- (uint64_t)_queue_endCurrentActivityOnDate:(void *)date error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v6 = *(a1 + 56);
+    dispatch_assert_queue_V2(*(self + 16));
+    v6 = *(self + 56);
     if (v6)
     {
-      v7 = [v6 startDate];
-      v8 = [v7 hk_isBeforeDate:v5];
+      startDate = [v6 startDate];
+      v8 = [startDate hk_isBeforeDate:v5];
 
       if (v8)
       {
-        if ([a1 isActive])
+        if ([self isActive])
         {
-          v9 = *(a1 + 56);
+          v9 = *(self + 56);
           [v9 _setEndDate:v5];
-          [*(a1 + 88) endCurrentActivity:v9];
-          v10 = *(a1 + 56);
-          *(a1 + 56) = 0;
+          [*(self + 88) endCurrentActivity:v9];
+          v10 = *(self + 56);
+          *(self + 56) = 0;
           goto LABEL_13;
         }
 
@@ -2453,21 +2453,21 @@ void __62__HDWorkoutSessionServer__processTargetStoppingStateWithDate___block_in
     }
 
     v13 = [v11 hk_error:3 description:v12];
-    [(HDWorkoutSessionServer *)a1 _queue_generateError:v13];
+    [(HDWorkoutSessionServer *)self _queue_generateError:v13];
     v10 = v13;
     if (v10)
     {
-      if (a3)
+      if (date)
       {
         v14 = v10;
-        a1 = 0;
-        *a3 = v10;
+        self = 0;
+        *date = v10;
       }
 
       else
       {
         _HKLogDroppedError();
-        a1 = 0;
+        self = 0;
       }
 
       v9 = v10;
@@ -2476,48 +2476,48 @@ void __62__HDWorkoutSessionServer__processTargetStoppingStateWithDate___block_in
 
     v9 = 0;
 LABEL_13:
-    a1 = 1;
+    self = 1;
 LABEL_16:
   }
 
-  return a1;
+  return self;
 }
 
-- (void)stateMachine:(id)a3 willEnterState:(id)a4 date:(id)a5 error:(id)a6
+- (void)stateMachine:(id)machine willEnterState:(id)state date:(id)date error:(id)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  machineCopy = machine;
+  stateCopy = state;
+  dateCopy = date;
+  errorCopy = error;
   targetStateMachine = self->_targetStateMachine;
-  v15 = [v11 index];
-  if (targetStateMachine == v10)
+  index = [stateCopy index];
+  if (targetStateMachine == machineCopy)
   {
-    if (v15 == 6 || v15 == 3)
+    if (index == 6 || index == 3)
     {
-      [(HDWorkoutSessionServer *)self _processTargetStoppingStateWithDate:v12];
+      [(HDWorkoutSessionServer *)self _processTargetStoppingStateWithDate:dateCopy];
     }
 
-    else if (v15 == 2)
+    else if (index == 2)
     {
-      v28 = v12;
+      v28 = dateCopy;
       if (!self->_startDate && !self->_requestedStartDate)
       {
         persistentEntity = self->_persistentEntity;
         v30 = objc_opt_class();
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v31 = [WeakRetained database];
+        database = [WeakRetained database];
         v42 = 0;
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __61__HDWorkoutSessionServer__processTargetRunningStateWithDate___block_invoke;
         v48 = &unk_278613218;
-        v49 = self;
+        selfCopy = self;
         v50 = v28;
         v32 = v30;
-        v33 = v31;
-        v37 = [v32 performWriteTransactionWithHealthDatabase:v31 error:&v42 block:buf];
+        v33 = database;
+        v37 = [v32 performWriteTransactionWithHealthDatabase:database error:&v42 block:buf];
         v34 = v42;
 
         if ((v37 & 1) == 0)
@@ -2527,31 +2527,31 @@ LABEL_16:
           if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
           {
             *v43 = 138543618;
-            v44 = self;
+            selfCopy2 = self;
             v45 = 2114;
             v46 = v34;
             _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update start date: %{public}@.", v43, 0x16u);
           }
         }
 
-        objc_storeStrong(&self->_requestedStartDate, a5);
+        objc_storeStrong(&self->_requestedStartDate, date);
       }
     }
   }
 
-  else if (v15 == 7 && !self->_startDate)
+  else if (index == 7 && !self->_startDate)
   {
     requestedStartDate = self->_requestedStartDate;
     if (!requestedStartDate)
     {
-      requestedStartDate = v12;
+      requestedStartDate = dateCopy;
     }
 
     v17 = requestedStartDate;
     v18 = self->_persistentEntity;
     v19 = objc_opt_class();
     v20 = objc_loadWeakRetained(&self->_profile);
-    v21 = [v20 database];
+    database2 = [v20 database];
     v41 = 0;
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
@@ -2560,7 +2560,7 @@ LABEL_16:
     v39[4] = self;
     v22 = v17;
     v40 = v22;
-    v23 = [v19 performWriteTransactionWithHealthDatabase:v21 error:&v41 block:v39];
+    v23 = [v19 performWriteTransactionWithHealthDatabase:database2 error:&v41 block:v39];
     v24 = v41;
 
     if ((v23 & 1) == 0)
@@ -2585,16 +2585,16 @@ LABEL_16:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (self->_stateMachine == a3)
+  dateCopy = date;
+  if (self->_stateMachine == machine)
   {
-    v11 = [a4 index];
-    if (v11 > 7)
+    index = [state index];
+    if (index > 7)
     {
-      if ((v11 - 15) < 2)
+      if ((index - 15) < 2)
       {
         startDate = self->_startDate;
         if (startDate)
@@ -2603,12 +2603,12 @@ LABEL_16:
           [(NSDate *)startDate timeIntervalSinceNow];
           if (v32 >= -v33 || self->_failureError)
           {
-            [(HKStateMachine *)self->_stateMachine enqueueEvent:107 date:v9 error:0 completion:&__block_literal_global_589];
+            [(HKStateMachine *)self->_stateMachine enqueueEvent:107 date:dateCopy error:0 completion:&__block_literal_global_589];
           }
         }
       }
 
-      else if (v11 == 8)
+      else if (index == 8)
       {
         _HKInitializeLogging();
         v41 = *MEMORY[0x277CCC330];
@@ -2647,7 +2647,7 @@ LABEL_16:
         objc_destroyWeak(location);
       }
 
-      else if (v11 == 17)
+      else if (index == 17)
       {
         stopDate = self->_stopDate;
         if (!stopDate)
@@ -2655,7 +2655,7 @@ LABEL_16:
           stopDate = self->_requestedEndDate;
           if (!stopDate)
           {
-            stopDate = v9;
+            stopDate = dateCopy;
           }
         }
 
@@ -2688,7 +2688,7 @@ LABEL_16:
         persistentEntity = self->_persistentEntity;
         v21 = objc_opt_class();
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v23 = [WeakRetained database];
+        database = [WeakRetained database];
         location[0] = MEMORY[0x277D85DD0];
         location[1] = 3221225472;
         location[2] = __79__HDWorkoutSessionServer__queue_deleteSessionAndFinishAssociatedBuilderAtDate___block_invoke;
@@ -2696,7 +2696,7 @@ LABEL_16:
         location[5] = &buf;
         v66 = 0;
         location[4] = self;
-        v24 = [v21 performWriteTransactionWithHealthDatabase:v23 error:&v66 block:location];
+        v24 = [v21 performWriteTransactionWithHealthDatabase:database error:&v66 block:location];
         v63 = v66;
 
         if ((v24 & 1) == 0)
@@ -2706,7 +2706,7 @@ LABEL_16:
           if (os_log_type_enabled(*v16, OS_LOG_TYPE_ERROR))
           {
             *v67 = 138543362;
-            v68 = self;
+            selfCopy3 = self;
             _os_log_error_impl(&dword_228986000, v25, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete session entity when finishing.", v67, 0xCu);
           }
         }
@@ -2718,7 +2718,7 @@ LABEL_16:
           if (os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT))
           {
             *v67 = 138543362;
-            v68 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: Finishing associated builder.", v67, 0xCu);
           }
 
@@ -2734,7 +2734,7 @@ LABEL_16:
           if (os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT))
           {
             *v67 = 138543362;
-            v68 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_228986000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@: No associated builder entity found during finish; workout will not be automatically saved.", v67, 0xCu);
           }
         }
@@ -2742,8 +2742,8 @@ LABEL_16:
         if (self->_sendHeartBeatFailureAnalytics)
         {
           v51 = objc_loadWeakRetained(&self->_profile);
-          v52 = [v51 workoutManager];
-          v53 = [v52 mirroringManager];
+          workoutManager = [v51 workoutManager];
+          mirroringManager = [workoutManager mirroringManager];
 
           if (self->_startDate)
           {
@@ -2756,28 +2756,28 @@ LABEL_16:
             v55 = -1.0;
           }
 
-          v56 = [v53 analyticsCollector];
+          analyticsCollector = [mirroringManager analyticsCollector];
           v57 = objc_loadWeakRetained(&self->_profile);
-          v58 = [v57 daemon];
-          v59 = [v58 analyticsSubmissionCoordinator];
+          daemon = [v57 daemon];
+          analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
           numberOfHeartbeatFailures = self->_numberOfHeartbeatFailures;
-          v61 = [(HDWorkoutSessionServer *)self isFirstParty];
-          v62 = [(HDWorkoutSessionServer *)self identifier];
-          [v56 submitHeartBeatFailuresWithCoordinator:v59 numOfHeartbeatFailures:numberOfHeartbeatFailures workoutDuration:v61 isFirstParty:v62 sessionID:v55];
+          isFirstParty = [(HDWorkoutSessionServer *)self isFirstParty];
+          identifier = [(HDWorkoutSessionServer *)self identifier];
+          [analyticsCollector submitHeartBeatFailuresWithCoordinator:analyticsSubmissionCoordinator numOfHeartbeatFailures:numberOfHeartbeatFailures workoutDuration:isFirstParty isFirstParty:identifier sessionID:v55];
         }
 
         _Block_object_dispose(&buf, 8);
       }
     }
 
-    else if ((v11 - 2) < 2)
+    else if ((index - 2) < 2)
     {
       v64 = 0;
       v29 = [(HDWorkoutSessionServer *)self _queue_clientApplicationCanStartWorkoutSessionWithError:&v64];
       v30 = v64;
       if (v29)
       {
-        [(HKStateMachine *)self->_stateMachine enqueueEvent:100 date:v9 error:0 completion:&__block_literal_global_591];
+        [(HKStateMachine *)self->_stateMachine enqueueEvent:100 date:dateCopy error:0 completion:&__block_literal_global_591];
       }
 
       else
@@ -2786,7 +2786,7 @@ LABEL_16:
       }
     }
 
-    else if (v11 == 4)
+    else if (index == 4)
     {
       v34 = *MEMORY[0x277D10AA0];
       v35 = @"Slow preparing";
@@ -2806,7 +2806,7 @@ LABEL_16:
       [(_HKExpiringCompletionTimer *)v38 startWithTimeoutInterval:&buf handler:8.0];
     }
 
-    else if (v11 == 7 && self->_extendedPauseTimer)
+    else if (index == 7 && self->_extendedPauseTimer)
     {
       _HKInitializeLogging();
       v12 = *MEMORY[0x277CCC330];
@@ -2826,18 +2826,18 @@ LABEL_16:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateMachine:(id)a3 didTransition:(id)a4 fromState:(id)a5 toState:(id)a6 date:(id)a7 error:(id)a8
+- (void)stateMachine:(id)machine didTransition:(id)transition fromState:(id)state toState:(id)toState date:(id)date error:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a3;
+  transitionCopy = transition;
+  stateCopy = state;
+  toStateCopy = toState;
+  dateCopy = date;
+  errorCopy = error;
+  machineCopy = machine;
   os_unfair_lock_lock(&self->_currentStateLock);
-  v20 = [(HKStateMachine *)self->_stateMachine currentState];
-  self->_currentStateLock_currentState = [v20 index];
+  currentState = [(HKStateMachine *)self->_stateMachine currentState];
+  self->_currentStateLock_currentState = [currentState index];
 
   os_unfair_lock_unlock(&self->_currentStateLock);
   targetStateMachine = self->_targetStateMachine;
@@ -2845,9 +2845,9 @@ LABEL_16:
   _HKInitializeLogging();
   v22 = *MEMORY[0x277CCC330];
   v23 = os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT);
-  if (targetStateMachine != v19)
+  if (targetStateMachine != machineCopy)
   {
-    if (v14)
+    if (transitionCopy)
     {
       if (!v23)
       {
@@ -2855,9 +2855,9 @@ LABEL_16:
       }
 
       *buf = 138543618;
-      v55 = self;
+      selfCopy5 = self;
       v56 = 2114;
-      v57 = v14;
+      v57 = transitionCopy;
       v24 = "%{public}@: (#w0) %{public}@.";
     }
 
@@ -2869,17 +2869,17 @@ LABEL_16:
       }
 
       *buf = 138543618;
-      v55 = self;
+      selfCopy5 = self;
       v56 = 2114;
-      v57 = v16;
+      v57 = toStateCopy;
       v24 = "%{public}@: (#w0) Enter at %{public}@.";
     }
 
     _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, v24, buf, 0x16u);
 LABEL_11:
-    if (v17)
+    if (dateCopy)
     {
-      if (v15)
+      if (stateCopy)
       {
         goto LABEL_13;
       }
@@ -2887,13 +2887,13 @@ LABEL_11:
 
     else
     {
-      v17 = [MEMORY[0x277CBEAA8] date];
-      if (v15)
+      dateCopy = [MEMORY[0x277CBEAA8] date];
+      if (stateCopy)
       {
 LABEL_13:
-        v26 = [v15 index];
-        v27 = [v16 index];
-        if (v26 == 4)
+        index = [stateCopy index];
+        index2 = [toStateCopy index];
+        if (index == 4)
         {
           [(_HKExpiringCompletionTimer *)self->_tailSpinTimer invalidate];
           tailSpinTimer = self->_tailSpinTimer;
@@ -2901,33 +2901,33 @@ LABEL_13:
         }
 
 LABEL_17:
-        if (v27 == 7)
+        if (index2 == 7)
         {
-          if ((v26 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+          if ((index & 0xFFFFFFFFFFFFFFFDLL) == 8)
           {
-            [(HDWorkoutSessionServer *)self _queue_generateEventWithType:v17 date:?];
+            [(HDWorkoutSessionServer *)self _queue_generateEventWithType:dateCopy date:?];
 LABEL_23:
             if (!self->_isMirroring)
             {
 LABEL_44:
-              [(HDWorkoutSessionController *)self->_sessionController workoutSessionServer:self didTransitionFromState:v26 toState:v27 date:v17, v46];
+              [(HDWorkoutSessionController *)self->_sessionController workoutSessionServer:self didTransitionFromState:index toState:index2 date:dateCopy, v46];
               observers = self->_observers;
               v48[0] = MEMORY[0x277D85DD0];
               v48[1] = 3221225472;
               v48[2] = __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_date_error___block_invoke_610;
               v48[3] = &unk_27862CB88;
               v48[4] = self;
-              v50 = v27;
-              v51 = v26;
-              v17 = v17;
-              v49 = v17;
+              v50 = index2;
+              v51 = index;
+              dateCopy = dateCopy;
+              v49 = dateCopy;
               [(HKObserverSet *)observers notifyObservers:v48];
-              if (v18)
+              if (errorCopy)
               {
-                [(HDWorkoutSessionServer *)self _queue_generateError:v18];
+                [(HDWorkoutSessionServer *)self _queue_generateError:errorCopy];
               }
 
-              [(HDWorkoutSessionServer *)self _queue_evaluateRequestedTargetStateAtDate:v17];
+              [(HDWorkoutSessionServer *)self _queue_evaluateRequestedTargetStateAtDate:dateCopy];
 
               goto LABEL_47;
             }
@@ -2938,7 +2938,7 @@ LABEL_40:
             if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v55 = self;
+              selfCopy5 = self;
               _os_log_impl(&dword_228986000, v42, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Sending session state update", buf, 0xCu);
             }
 
@@ -2948,7 +2948,7 @@ LABEL_40:
             v52[2] = __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_date_error___block_invoke_609;
             v52[3] = &unk_2786130B0;
             v52[4] = self;
-            [(HDWorkoutSessionRapportSyncController *)syncController sendStateUpdate:v27 date:v17 completion:v52, v46];
+            [(HDWorkoutSessionRapportSyncController *)syncController sendStateUpdate:index2 date:dateCopy completion:v52, v46];
             if (HKWorkoutSessionStateFromServerState() == 3)
             {
               [(HDWorkoutSessionServer *)self stopMirroringToCompanionDeviceWithCompletion:0];
@@ -2958,12 +2958,12 @@ LABEL_40:
           }
         }
 
-        else if (v27 == 11)
+        else if (index2 == 11)
         {
-          if ((v26 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+          if ((index & 0xFFFFFFFFFFFFFFFDLL) == 8)
           {
-            v29 = [MEMORY[0x277CBEAA8] date];
-            [(HDWorkoutSessionServer *)self _queue_generateEventWithType:v29 date:?];
+            date = [MEMORY[0x277CBEAA8] date];
+            [(HDWorkoutSessionServer *)self _queue_generateEventWithType:date date:?];
 
             goto LABEL_23;
           }
@@ -2978,34 +2978,34 @@ LABEL_40:
           dispatch_after(v31, queue, block);
         }
 
-        else if (v15 && v27 == 8)
+        else if (stateCopy && index2 == 8)
         {
-          [(HDWorkoutSessionServer *)self _queue_generateEventWithType:v17 date:?];
+          [(HDWorkoutSessionServer *)self _queue_generateEventWithType:dateCopy date:?];
         }
 
-        if ((v27 - 17) <= 0xFFFFFFFFFFFFFFFDLL && (v26 - 15) <= 1)
+        if ((index2 - 17) <= 0xFFFFFFFFFFFFFFFDLL && (index - 15) <= 1)
         {
           WeakRetained = objc_loadWeakRetained(&self->_profile);
           [WeakRetained nanoSyncManager];
-          v34 = v47 = v16;
+          v34 = v47 = toStateCopy;
           [v34 syncHealthDataWithOptions:1 reason:@"syncing after heart rate recovery" completion:&__block_literal_global_600_0];
 
           v46 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
           v35 = objc_loadWeakRetained(&self->_profile);
-          v36 = [v35 cloudSyncManager];
-          v37 = v26;
-          v38 = v14;
-          v39 = v15;
-          v40 = v18;
+          cloudSyncManager = [v35 cloudSyncManager];
+          v37 = index;
+          v38 = transitionCopy;
+          v39 = stateCopy;
+          v40 = errorCopy;
           v41 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v46];
-          [v36 syncWithRequest:v41 reason:@"Heart rate recovery completed" completion:&__block_literal_global_608_0];
+          [cloudSyncManager syncWithRequest:v41 reason:@"Heart rate recovery completed" completion:&__block_literal_global_608_0];
 
-          v18 = v40;
-          v15 = v39;
-          v14 = v38;
-          v26 = v37;
+          errorCopy = v40;
+          stateCopy = v39;
+          transitionCopy = v38;
+          index = v37;
 
-          v16 = v47;
+          toStateCopy = v47;
         }
 
         if (!self->_isMirroring)
@@ -3013,7 +3013,7 @@ LABEL_40:
           goto LABEL_44;
         }
 
-        if (v27 == 4)
+        if (index2 == 4)
         {
           [(HDWorkoutSessionServer *)self sendStartMirroringRequest];
         }
@@ -3022,12 +3022,12 @@ LABEL_40:
       }
     }
 
-    v27 = [v16 index];
-    v26 = 1;
+    index2 = [toStateCopy index];
+    index = 1;
     goto LABEL_17;
   }
 
-  if (v14)
+  if (transitionCopy)
   {
     if (!v23)
     {
@@ -3035,9 +3035,9 @@ LABEL_40:
     }
 
     *buf = 138543618;
-    v55 = self;
+    selfCopy5 = self;
     v56 = 2114;
-    v57 = v14;
+    v57 = transitionCopy;
     v25 = "%{public}@: (#w0) Target State: %{public}@.";
   }
 
@@ -3049,19 +3049,19 @@ LABEL_40:
     }
 
     *buf = 138543618;
-    v55 = self;
+    selfCopy5 = self;
     v56 = 2114;
-    v57 = v16;
+    v57 = toStateCopy;
     v25 = "%{public}@: (#w0) Target State Initialized at %{public}@.";
   }
 
   _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, v25, buf, 0x16u);
 LABEL_31:
-  v30 = [(HKStateMachine *)self->_stateMachine currentState];
+  currentState2 = [(HKStateMachine *)self->_stateMachine currentState];
 
-  if (v30)
+  if (currentState2)
   {
-    [(HDWorkoutSessionServer *)self _queue_evaluateRequestedTargetStateAtDate:v17];
+    [(HDWorkoutSessionServer *)self _queue_evaluateRequestedTargetStateAtDate:dateCopy];
   }
 
 LABEL_47:
@@ -3069,44 +3069,44 @@ LABEL_47:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_evaluateRequestedTargetStateAtDate:(uint64_t)a1
+- (void)_queue_evaluateRequestedTargetStateAtDate:(uint64_t)date
 {
-  v3 = a2;
-  if (a1)
+  date = a2;
+  if (date)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    if (!v3)
+    dispatch_assert_queue_V2(*(date + 16));
+    if (!date)
     {
-      v3 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v4 = [*(a1 + 144) currentState];
-    v5 = [v4 index];
+    currentState = [*(date + 144) currentState];
+    index = [currentState index];
 
-    v6 = *(a1 + 136);
+    v6 = *(date + 136);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __68__HDWorkoutSessionServer__queue_evaluateRequestedTargetStateAtDate___block_invoke;
     v7[3] = &unk_27861DCA0;
-    v7[4] = a1;
-    v7[5] = v5;
-    [v6 enqueueEvent:v5 date:v3 error:0 completion:v7];
+    v7[4] = date;
+    v7[5] = index;
+    [v6 enqueueEvent:index date:date error:0 completion:v7];
   }
 }
 
-- (void)_queue_generateEventWithType:(void *)a3 date:
+- (void)_queue_generateEventWithType:(void *)type date:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1[2];
-    v6 = a3;
+    v5 = self[2];
+    typeCopy = type;
     dispatch_assert_queue_V2(v5);
     v7 = objc_alloc(MEMORY[0x277CCDE58]);
-    v8 = [a1 identifier];
-    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v6 duration:0.0];
+    identifier = [self identifier];
+    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:typeCopy duration:0.0];
 
-    v10 = [v7 initWithEventType:a2 sessionId:v8 dateInterval:v9 metadata:0];
-    [(HDWorkoutSessionServer *)a1 _queue_generateEvent:v10];
+    v10 = [v7 initWithEventType:a2 sessionId:identifier dateInterval:v9 metadata:0];
+    [(HDWorkoutSessionServer *)self _queue_generateEvent:v10];
   }
 }
 
@@ -3180,24 +3180,24 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
 
 - (void)sendStartMirroringRequest
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 216) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained workoutManager];
-    v4 = [v3 mirroringManager];
+    *(self + 216) = 1;
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    workoutManager = [WeakRetained workoutManager];
+    mirroringManager = [workoutManager mirroringManager];
 
-    v5 = [v4 analyticsCollector];
-    [v5 startMirroring];
+    analyticsCollector = [mirroringManager analyticsCollector];
+    [analyticsCollector startMirroring];
 
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__HDWorkoutSessionServer_sendStartMirroringRequest__block_invoke;
     v8[3] = &unk_278616020;
-    v8[4] = a1;
-    v9 = v4;
-    v7 = v4;
+    v8[4] = self;
+    v9 = mirroringManager;
+    v7 = mirroringManager;
     [v6 sendMirroringStartRequestWithCompletion:v8];
   }
 }
@@ -3224,26 +3224,26 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_generateError:(uint64_t)a1
+- (void)_queue_generateError:(uint64_t)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v4 = *(a1 + 112);
+    dispatch_assert_queue_V2(*(error + 16));
+    v4 = *(error + 112);
     v5 = objc_opt_class();
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((error + 8));
+    database = [WeakRetained database];
     v20 = 0;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __47__HDWorkoutSessionServer__queue_generateError___block_invoke;
     v18[3] = &unk_278613218;
-    v18[4] = a1;
+    v18[4] = error;
     v8 = v3;
     v19 = v8;
-    v9 = [v5 performWriteTransactionWithHealthDatabase:v7 error:&v20 block:v18];
+    v9 = [v5 performWriteTransactionWithHealthDatabase:database error:&v20 block:v18];
     v10 = v20;
 
     if ((v9 & 1) == 0)
@@ -3253,7 +3253,7 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v22 = a1;
+        errorCopy = error;
         v23 = 2114;
         v24 = v10;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to record workout session failure: %{public}@", buf, 0x16u);
@@ -3261,15 +3261,15 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
     }
 
     v12 = [v8 copy];
-    v13 = *(a1 + 152);
-    *(a1 + 152) = v12;
+    v13 = *(error + 152);
+    *(error + 152) = v12;
 
-    v14 = *(a1 + 80);
+    v14 = *(error + 80);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __47__HDWorkoutSessionServer__queue_generateError___block_invoke_711;
     v16[3] = &unk_27862CB38;
-    v16[4] = a1;
+    v16[4] = error;
     v17 = v8;
     [v14 notifyObservers:v16];
   }
@@ -3277,9 +3277,9 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setTargetState:(int64_t)a3 date:(id)a4 error:(id *)a5
+- (BOOL)setTargetState:(int64_t)state date:(id)date error:(id *)error
 {
-  v8 = a4;
+  dateCopy = date;
   dispatch_assert_queue_not_V2(self->_queue);
   v27 = 0;
   v28 = &v27;
@@ -3297,8 +3297,8 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
   block[2] = __52__HDWorkoutSessionServer_setTargetState_date_error___block_invoke;
   block[3] = &unk_27862CBB0;
   block[4] = self;
-  v20 = a3;
-  v10 = v8;
+  stateCopy = state;
+  v10 = dateCopy;
   v17 = v10;
   v18 = &v27;
   v19 = &v21;
@@ -3314,10 +3314,10 @@ void __82__HDWorkoutSessionServer_stateMachine_didTransition_fromState_toState_d
     v13 = v12;
     if (v12)
     {
-      if (a5)
+      if (error)
       {
         v14 = v12;
-        *a5 = v13;
+        *error = v13;
       }
 
       else
@@ -3360,24 +3360,24 @@ void __52__HDWorkoutSessionServer_setTargetState_date_error___block_invoke_2(uin
   }
 }
 
-- (void)_queue_setTargetState:(void *)a3 date:(void *)a4 completion:
+- (void)_queue_setTargetState:(void *)state date:(void *)date completion:
 {
-  v10 = a3;
-  v7 = a4;
-  if (a1)
+  stateCopy = state;
+  dateCopy = date;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v8 = [*(a1 + 144) currentState];
-    v9 = [v8 index];
+    dispatch_assert_queue_V2(*(self + 16));
+    currentState = [*(self + 144) currentState];
+    index = [currentState index];
 
-    if (v9 == a2)
+    if (index == a2)
     {
-      v7[2](v7, 1, 0);
+      dateCopy[2](dateCopy, 1, 0);
     }
 
     else
     {
-      [*(a1 + 144) enqueueEvent:a2 date:v10 error:0 completion:v7];
+      [*(self + 144) enqueueEvent:a2 date:stateCopy error:0 completion:dateCopy];
     }
   }
 }
@@ -3400,17 +3400,17 @@ void __42__HDWorkoutSessionServer_didBecomeCurrent__block_invoke(uint64_t a1)
   [v1 enqueueEvent:101 date:v2 error:0 completion:&__block_literal_global_612];
 }
 
-- (void)didResignCurrentWithError:(id)a3
+- (void)didResignCurrentWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDWorkoutSessionServer_didResignCurrentWithError___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3430,73 +3430,73 @@ void __52__HDWorkoutSessionServer_didResignCurrentWithError___block_invoke(uint6
   [v5 enqueueEvent:102 date:v6 error:v4 completion:v7];
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [(HDWorkoutSessionServer *)self setTargetState:5 date:v5 error:a3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(error) = [(HDWorkoutSessionServer *)self setTargetState:5 date:date error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)startActivityWithDate:(id)date error:(id *)error
 {
-  if (a3)
+  if (date)
   {
 
-    return [(HDWorkoutSessionServer *)self setTargetState:2 date:a3 error:a4];
+    return [(HDWorkoutSessionServer *)self setTargetState:2 date:date error:error];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(HDWorkoutSessionServer *)self setTargetState:2 date:v7 error:a4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [(HDWorkoutSessionServer *)self setTargetState:2 date:date error:error];
 
     return v8;
   }
 }
 
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error
 {
-  if (a3)
+  if (date)
   {
 
-    return [(HDWorkoutSessionServer *)self setTargetState:6 date:a3 error:a4];
+    return [(HDWorkoutSessionServer *)self setTargetState:6 date:date error:error];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(HDWorkoutSessionServer *)self setTargetState:6 date:v7 error:a4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [(HDWorkoutSessionServer *)self setTargetState:6 date:date error:error];
 
     return v8;
   }
 }
 
-- (BOOL)endWithError:(id *)a3
+- (BOOL)endWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [(HDWorkoutSessionServer *)self setTargetState:3 date:v5 error:a3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(error) = [(HDWorkoutSessionServer *)self setTargetState:3 date:date error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)pauseWithError:(id *)a3
+- (BOOL)pauseWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [(HDWorkoutSessionServer *)self setTargetState:4 date:v5 error:a3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(error) = [(HDWorkoutSessionServer *)self setTargetState:4 date:date error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)resumeWithError:(id *)a3
+- (BOOL)resumeWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [(HDWorkoutSessionServer *)self setTargetState:2 date:v5 error:a3];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(error) = [(HDWorkoutSessionServer *)self setTargetState:2 date:date error:error];
 
-  return a3;
+  return error;
 }
 
-- (void)autoPauseWithDate:(id)a3
+- (void)autoPauseWithDate:(id)date
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3514,7 +3514,7 @@ void __44__HDWorkoutSessionServer_autoPauseWithDate___block_invoke(uint64_t a1)
   [v1 enqueueEvent:103 date:v2 error:0 completion:&__block_literal_global_616];
 }
 
-- (void)autoResumeWithDate:(id)a3
+- (void)autoResumeWithDate:(id)date
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3550,64 +3550,64 @@ void __46__HDWorkoutSessionServer_endHeartRateRecovery__block_invoke(uint64_t a1
   [v1 enqueueEvent:107 date:v2 error:0 completion:&__block_literal_global_620];
 }
 
-- (void)finishAggregationWithDate:(id)a3
+- (void)finishAggregationWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HDWorkoutSessionServer_finishAggregationWithDate___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)generateEvent:(id)a3
+- (void)generateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HDWorkoutSessionServer_generateEvent___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_generateEvent:(uint64_t)a1
+- (void)_queue_generateEvent:(uint64_t)event
 {
   v43 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(event + 16));
     _HKInitializeLogging();
     v4 = MEMORY[0x277CCC330];
     v5 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v40 = a1;
+      eventCopy4 = event;
       v41 = 2114;
       v42 = v3;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_INFO, "%{public}@: Generated event: %{public}@", buf, 0x16u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((event + 8));
+    database = [WeakRetained database];
     v38 = 0;
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __47__HDWorkoutSessionServer__queue_generateEvent___block_invoke;
     v36[3] = &unk_278613218;
-    v36[4] = a1;
+    v36[4] = event;
     v8 = v3;
     v37 = v8;
-    v9 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v7 error:&v38 block:v36];
+    v9 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:&v38 block:v36];
     v10 = v38;
 
     if (!v9)
@@ -3617,60 +3617,60 @@ void __46__HDWorkoutSessionServer_endHeartRateRecovery__block_invoke(uint64_t a1
       if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v40 = a1;
+        eventCopy4 = event;
         v41 = 2114;
         v42 = v10;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to persist workout event: %{public}@", buf, 0x16u);
       }
     }
 
-    v12 = *(a1 + 80);
+    v12 = *(event + 80);
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __47__HDWorkoutSessionServer__queue_generateEvent___block_invoke_705;
     v34[3] = &unk_27862CB38;
-    v34[4] = a1;
+    v34[4] = event;
     v13 = v8;
     v35 = v13;
     [v12 notifyObservers:v34];
-    v14 = *(a1 + 32);
+    v14 = *(event + 32);
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __47__HDWorkoutSessionServer__queue_generateEvent___block_invoke_2;
     v31[3] = &unk_278613880;
     v15 = v13;
     v32 = v15;
-    v33 = a1;
+    eventCopy3 = event;
     [v14 sendToDestinationProcessors:v31];
     if ([v15 eventType] == 1)
     {
-      v16 = *(a1 + 16);
+      v16 = *(event + 16);
       v17 = v15;
       dispatch_assert_queue_V2(v16);
-      v18 = *(a1 + 200);
+      v18 = *(event + 200);
       if (v18)
       {
         v19 = v18;
-        v20 = *(a1 + 48);
-        *(a1 + 48) = v19;
+        dateInterval = *(event + 48);
+        *(event + 48) = v19;
       }
 
       else
       {
-        v20 = [v17 dateInterval];
-        v21 = [v20 endDate];
-        v22 = *(a1 + 48);
-        *(a1 + 48) = v21;
+        dateInterval = [v17 dateInterval];
+        endDate = [dateInterval endDate];
+        v22 = *(event + 48);
+        *(event + 48) = endDate;
       }
 
-      v23 = *(a1 + 136);
-      v24 = [v17 dateInterval];
+      v23 = *(event + 136);
+      dateInterval2 = [v17 dateInterval];
 
-      v25 = [v24 startDate];
-      [v23 enqueueEvent:105 date:v25 error:0 completion:&__block_literal_global_714];
+      startDate = [dateInterval2 startDate];
+      [v23 enqueueEvent:105 date:startDate error:0 completion:&__block_literal_global_714];
     }
 
-    if (*(a1 + 64) == 1)
+    if (*(event + 64) == 1)
     {
       v26 = [MEMORY[0x277CCDC68] _workoutEventWithInternalEvent:v15];
       if (v26)
@@ -3680,18 +3680,18 @@ void __46__HDWorkoutSessionServer_endHeartRateRecovery__block_invoke(uint64_t a1
         if (os_log_type_enabled(*v4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v40 = a1;
+          eventCopy4 = event;
           v41 = 2114;
           v42 = v26;
           _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Sending update for event: %{public}@", buf, 0x16u);
         }
 
-        v28 = *(a1 + 72);
+        v28 = *(event + 72);
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __47__HDWorkoutSessionServer__queue_generateEvent___block_invoke_708;
         v30[3] = &unk_2786130B0;
-        v30[4] = a1;
+        v30[4] = event;
         [v28 sendEventUpdate:v26 completion:v30];
       }
     }
@@ -3700,31 +3700,31 @@ void __46__HDWorkoutSessionServer_endHeartRateRecovery__block_invoke(uint64_t a1
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateError:(id)a3
+- (void)generateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HDWorkoutSessionServer_generateError___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)generateMetadata:(id)a3
+- (void)generateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HDWorkoutSessionServer_generateMetadata___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3746,51 +3746,51 @@ void __43__HDWorkoutSessionServer_generateMetadata___block_invoke(uint64_t a1)
   }
 }
 
-- (void)generateConfigurationUpdate:(id)a3
+- (void)generateConfigurationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDWorkoutSessionServer_generateConfigurationUpdate___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_sync(queue, v7);
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)_queue_generateConfigurationUpdate:(uint64_t)a1
+- (void)_queue_generateConfigurationUpdate:(uint64_t)update
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (update)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(update + 16));
     _HKInitializeLogging();
     v4 = MEMORY[0x277CCC330];
     v5 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v21 = a1;
+      updateCopy2 = update;
       v22 = 2114;
       v23 = v3;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_INFO, "%{public}@: Generated configuration update : %{public}@", buf, 0x16u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((update + 8));
+    database = [WeakRetained database];
     v19 = 0;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __61__HDWorkoutSessionServer__queue_generateConfigurationUpdate___block_invoke;
     v17[3] = &unk_278613218;
-    v17[4] = a1;
+    v17[4] = update;
     v8 = v3;
     v18 = v8;
-    v9 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v7 error:&v19 block:v17];
+    v9 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:&v19 block:v17];
     v10 = v19;
 
     if (!v9)
@@ -3800,20 +3800,20 @@ void __43__HDWorkoutSessionServer_generateMetadata___block_invoke(uint64_t a1)
       if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v21 = a1;
+        updateCopy2 = update;
         v22 = 2114;
         v23 = v10;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to persist workout configuration update: %{public}@", buf, 0x16u);
       }
     }
 
-    v12 = *(a1 + 32);
+    v12 = *(update + 32);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__HDWorkoutSessionServer__queue_generateConfigurationUpdate___block_invoke_712;
     v14[3] = &unk_278613880;
     v15 = v8;
-    v16 = a1;
+    updateCopy3 = update;
     [v12 sendToDestinationProcessors:v14];
   }
 
@@ -3826,21 +3826,21 @@ void __54__HDWorkoutSessionServer_generateConfigurationUpdate___block_invoke_2()
   [v0 postNotificationName:@"HDWorkoutManagerStateDidChange" object:0];
 }
 
-- (void)didBeginNewActivity:(id)a3
+- (void)didBeginNewActivity:(id)activity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v18 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__HDWorkoutSessionServer_didBeginNewActivity___block_invoke;
   v16[3] = &unk_278613218;
   v16[4] = self;
-  v7 = v4;
+  v7 = activityCopy;
   v17 = v7;
-  v8 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v6 error:&v18 block:v16];
+  v8 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:&v18 block:v16];
   v9 = v18;
 
   if (!v8)
@@ -3850,7 +3850,7 @@ void __54__HDWorkoutSessionServer_generateConfigurationUpdate___block_invoke_2()
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v9;
       _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to persist current activity: %{public}@", buf, 0x16u);
@@ -3910,19 +3910,19 @@ void __46__HDWorkoutSessionServer_didBeginNewActivity___block_invoke_4()
   [v0 postNotificationName:@"HDWorkoutManagerStateDidChange" object:0];
 }
 
-- (void)didEndCurrentActivity:(id)a3
+- (void)didEndCurrentActivity:(id)activity
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[4] = self;
   v16 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__HDWorkoutSessionServer_didEndCurrentActivity___block_invoke;
   v15[3] = &unk_278616048;
-  v7 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:v6 error:&v16 block:v15];
+  v7 = [(HDHealthEntity *)HDWorkoutSessionEntity performWriteTransactionWithHealthDatabase:database error:&v16 block:v15];
   v8 = v16;
 
   if (!v7)
@@ -3932,7 +3932,7 @@ void __46__HDWorkoutSessionServer_didBeginNewActivity___block_invoke_4()
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v8;
       _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to persist current activity: %{public}@", buf, 0x16u);
@@ -3945,8 +3945,8 @@ void __46__HDWorkoutSessionServer_didBeginNewActivity___block_invoke_4()
   v13[2] = __48__HDWorkoutSessionServer_didEndCurrentActivity___block_invoke_631;
   v13[3] = &unk_278613920;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = activityCopy;
+  v11 = activityCopy;
   dispatch_sync(queue, v13);
   HKDispatchAsyncOnGlobalConcurrentQueue();
 
@@ -3992,17 +3992,17 @@ void __48__HDWorkoutSessionServer_didEndCurrentActivity___block_invoke_4()
   [v0 postNotificationName:@"HDWorkoutManagerStateDidChange" object:0];
 }
 
-- (void)didDetectActivityChange:(id)a3
+- (void)didDetectActivityChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HDWorkoutSessionServer_didDetectActivityChange___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_sync(queue, v7);
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
@@ -4030,15 +4030,15 @@ void __50__HDWorkoutSessionServer_didDetectActivityChange___block_invoke_3()
 - (HDWorkoutDataAccumulator)workoutDataAccumulator
 {
   WeakRetained = objc_loadWeakRetained(&self->_taskServer);
-  v3 = [WeakRetained workoutDataAccumulator];
+  workoutDataAccumulator = [WeakRetained workoutDataAccumulator];
 
-  return v3;
+  return workoutDataAccumulator;
 }
 
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  identifierCopy = identifier;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -4056,9 +4056,9 @@ void __50__HDWorkoutSessionServer_didDetectActivityChange___block_invoke_3()
   block[3] = &unk_278622020;
   v21 = &v29;
   block[4] = self;
-  v11 = v8;
+  v11 = stateCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v20 = v12;
   v22 = &v23;
   dispatch_sync(queue, block);
@@ -4066,10 +4066,10 @@ void __50__HDWorkoutSessionServer_didDetectActivityChange___block_invoke_3()
   v14 = v13;
   if (v13)
   {
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -4138,50 +4138,50 @@ void __82__HDWorkoutSessionServer_storeSessionControllerState_forRecoveryIdentif
   }
 }
 
-- (void)notifyClientsOfGeneratedTypesUpdate:(id)a3 configuration:(id)a4 didUpdateActivity:(BOOL)a5 earliestSampleDate:(id)a6
+- (void)notifyClientsOfGeneratedTypesUpdate:(id)update configuration:(id)configuration didUpdateActivity:(BOOL)activity earliestSampleDate:(id)date
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  updateCopy = update;
+  configurationCopy = configuration;
+  dateCopy = date;
   _HKInitializeLogging();
   v13 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v10;
+    v32 = updateCopy;
     _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Generated types updated: %{public}@", buf, 0x16u);
   }
 
-  v14 = [(HKWorkoutActivity *)self->_currentActivity startDate];
-  startDate = v14;
-  if (v14 || (startDate = self->_startDate) != 0 || (startDate = self->_requestedStartDate) != 0 || (startDate = v12) != 0)
+  startDate = [(HKWorkoutActivity *)self->_currentActivity startDate];
+  startDate = startDate;
+  if (startDate || (startDate = self->_startDate) != 0 || (startDate = self->_requestedStartDate) != 0 || (startDate = dateCopy) != 0)
   {
-    v16 = startDate;
+    date = startDate;
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v17 = v16;
+  v17 = date;
 
   workoutDataFlowLink = self->_workoutDataFlowLink;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __113__HDWorkoutSessionServer_notifyClientsOfGeneratedTypesUpdate_configuration_didUpdateActivity_earliestSampleDate___block_invoke;
   v23[3] = &unk_27861A3A0;
-  v24 = v11;
-  v25 = v10;
-  v28 = a5;
-  v26 = self;
+  v24 = configurationCopy;
+  v25 = updateCopy;
+  activityCopy = activity;
+  selfCopy2 = self;
   v27 = v17;
   v19 = v17;
-  v20 = v10;
-  v21 = v11;
+  v20 = updateCopy;
+  v21 = configurationCopy;
   [(HKDataFlowLink *)workoutDataFlowLink sendToDestinationProcessors:v23];
 
   v22 = *MEMORY[0x277D85DE8];
@@ -4208,12 +4208,12 @@ BOOL __85__HDWorkoutSessionServer__retrieveSessionControllerStateForRecoveryIden
   return [HDWorkoutSessionControllerEntity retrieveArchivedStateFromRecoveryIdentifier:v4 workoutSession:v5 transaction:a2 error:a3 block:v7];
 }
 
-- (BOOL)beginNewActivityWithConfiguration:(id)a3 date:(id)a4 metadata:(id)a5 error:(id *)a6
+- (BOOL)beginNewActivityWithConfiguration:(id)configuration date:(id)date metadata:(id)metadata error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  configurationCopy = configuration;
+  dateCopy = date;
+  metadataCopy = metadata;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -4230,23 +4230,23 @@ BOOL __85__HDWorkoutSessionServer__retrieveSessionControllerStateForRecoveryIden
   block[2] = __80__HDWorkoutSessionServer_beginNewActivityWithConfiguration_date_metadata_error___block_invoke;
   block[3] = &unk_27862CC00;
   block[4] = self;
-  v14 = v10;
+  v14 = configurationCopy;
   v28 = v14;
   v31 = &v33;
-  v15 = v11;
+  v15 = dateCopy;
   v29 = v15;
   v32 = &v39;
-  v16 = v12;
+  v16 = metadataCopy;
   v30 = v16;
   dispatch_sync(queue, block);
   v17 = v34[5];
   v18 = v17;
   if (v17)
   {
-    if (a6)
+    if (error)
     {
       v19 = v17;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
@@ -4262,7 +4262,7 @@ BOOL __85__HDWorkoutSessionServer__retrieveSessionControllerStateForRecoveryIden
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v44 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Sending current activity update", buf, 0xCu);
     }
 
@@ -4476,10 +4476,10 @@ void __80__HDWorkoutSessionServer_beginNewActivityWithConfiguration_date_metadat
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)endCurrentActivityOnDate:(id)a3 error:(id *)a4
+- (BOOL)endCurrentActivityOnDate:(id)date error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dateCopy = date;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -4503,7 +4503,7 @@ void __80__HDWorkoutSessionServer_beginNewActivityWithConfiguration_date_metadat
   block[3] = &unk_27862CC28;
   v21 = &v30;
   block[4] = self;
-  v8 = v6;
+  v8 = dateCopy;
   v20 = v8;
   v22 = &v36;
   v23 = &v24;
@@ -4512,10 +4512,10 @@ void __80__HDWorkoutSessionServer_beginNewActivityWithConfiguration_date_metadat
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -4531,7 +4531,7 @@ void __80__HDWorkoutSessionServer_beginNewActivityWithConfiguration_date_metadat
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v41 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Sending current activity end", buf, 0xCu);
     }
 
@@ -4594,15 +4594,15 @@ void __57__HDWorkoutSessionServer_endCurrentActivityOnDate_error___block_invoke_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)a3 error:(id *)a4
+- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)configurations error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationsCopy = configurations;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  v7 = [configurationsCopy countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v7)
   {
     v8 = *v42;
@@ -4612,21 +4612,21 @@ void __57__HDWorkoutSessionServer_endCurrentActivityOnDate_error___block_invoke_
       {
         if (*v42 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(configurationsCopy);
         }
 
         v10 = *(*(&v41 + 1) + 8 * i);
-        v11 = [v10 suggestedActivityUUID];
-        v12 = v11 == 0;
+        suggestedActivityUUID = [v10 suggestedActivityUUID];
+        v12 = suggestedActivityUUID == 0;
 
         if (v12)
         {
-          v13 = [MEMORY[0x277CCAD78] UUID];
-          [v10 setSuggestedActivityUUID:v13];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          [v10 setSuggestedActivityUUID:uUID];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v7 = [configurationsCopy countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v7);
@@ -4640,23 +4640,23 @@ void __57__HDWorkoutSessionServer_endCurrentActivityOnDate_error___block_invoke_
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = configurationsCopy;
     _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Enabling automatic detection for configurations %{public}@", buf, 0x16u);
   }
 
   persistentEntity = self->_persistentEntity;
   v17 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v19 = [WeakRetained database];
+  database = [WeakRetained database];
   v40 = 0;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __82__HDWorkoutSessionServer_enableAutomaticDetectionForActivityConfigurations_error___block_invoke;
   v38[3] = &unk_278613218;
   v38[4] = self;
-  v20 = v6;
+  v20 = configurationsCopy;
   v39 = v20;
-  LOBYTE(v17) = [v17 performWriteTransactionWithHealthDatabase:v19 error:&v40 block:v38];
+  LOBYTE(v17) = [v17 performWriteTransactionWithHealthDatabase:database error:&v40 block:v38];
   v21 = v40;
 
   if ((v17 & 1) == 0)
@@ -4676,10 +4676,10 @@ void __57__HDWorkoutSessionServer_endCurrentActivityOnDate_error___block_invoke_
     v24 = v23;
     if (v23)
     {
-      if (a4)
+      if (error)
       {
         v25 = v23;
-        *a4 = v24;
+        *error = v24;
       }
 
       else
@@ -4699,14 +4699,14 @@ void __57__HDWorkoutSessionServer_endCurrentActivityOnDate_error___block_invoke_
   v33 = __82__HDWorkoutSessionServer_enableAutomaticDetectionForActivityConfigurations_error___block_invoke_648;
   v34 = &unk_27861F190;
   v37 = buf;
-  v35 = self;
+  selfCopy = self;
   v27 = v20;
   v36 = v27;
   dispatch_sync(queue, &v31);
   v28 = *(*&buf[8] + 24);
   if (!v28)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Not supported with the current workout session", v31, v32, v33, v34, v35}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Not supported with the current workout session", v31, v32, v33, v34, selfCopy}];
   }
 
   _Block_object_dispose(buf, 8);
@@ -4726,14 +4726,14 @@ void __82__HDWorkoutSessionServer_enableAutomaticDetectionForActivityConfigurati
   }
 }
 
-- (void)startMirroringToCompanionDeviceWithCompletion:(id)a3
+- (void)startMirroringToCompanionDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__HDWorkoutSessionServer_startMirroringToCompanionDeviceWithCompletion___block_invoke;
   aBlock[3] = &unk_2786130D8;
-  v11 = v4;
+  v11 = completionCopy;
   v5 = _Block_copy(aBlock);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -4803,24 +4803,24 @@ LABEL_13:
   [(HDWorkoutSessionServer *)v9 sendStartMirroringRequest];
 }
 
-- (void)_queue_setIsMirroring:(void *)a3 completion:
+- (void)_queue_setIsMirroring:(void *)mirroring completion:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  mirroringCopy = mirroring;
+  if (self)
   {
-    v6 = *(a1 + 112);
+    v6 = *(self + 112);
     v7 = objc_opt_class();
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v9 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     v16 = 0;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__HDWorkoutSessionServer__queue_setIsMirroring_completion___block_invoke;
     v14[3] = &unk_27862CC78;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = a2;
-    v10 = [v7 performWriteTransactionWithHealthDatabase:v9 error:&v16 block:v14];
+    v10 = [v7 performWriteTransactionWithHealthDatabase:database error:&v16 block:v14];
     v11 = v16;
 
     if ((v10 & 1) == 0)
@@ -4830,17 +4830,17 @@ LABEL_13:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v18 = a1;
+        selfCopy = self;
         v19 = 2114;
         v20 = v11;
         _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Failed to persist mirroring state with error: %{public}@", buf, 0x16u);
       }
     }
 
-    *(a1 + 64) = a2;
-    if (v5)
+    *(self + 64) = a2;
+    if (mirroringCopy)
     {
-      v5[2](v5, v10, v11);
+      mirroringCopy[2](mirroringCopy, v10, v11);
     }
   }
 
@@ -4877,14 +4877,14 @@ void __51__HDWorkoutSessionServer_sendStartMirroringRequest__block_invoke(uint64
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMirroringToCompanionDeviceWithCompletion:(id)a3
+- (void)stopMirroringToCompanionDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__HDWorkoutSessionServer_stopMirroringToCompanionDeviceWithCompletion___block_invoke;
   aBlock[3] = &unk_2786130D8;
-  v11 = v4;
+  v11 = completionCopy;
   v5 = _Block_copy(aBlock);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -4990,9 +4990,9 @@ void __71__HDWorkoutSessionServer_stopMirroringToCompanionDeviceWithCompletion__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDisconnectFromRemoteWithError:(id)a3
+- (void)didDisconnectFromRemoteWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     queue = self->_queue;
@@ -5011,8 +5011,8 @@ void __71__HDWorkoutSessionServer_stopMirroringToCompanionDeviceWithCompletion__
   v8[2] = __59__HDWorkoutSessionServer_didDisconnectFromRemoteWithError___block_invoke;
   v8[3] = &unk_278613920;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(v6, v8);
 }
 
@@ -5027,12 +5027,12 @@ void __59__HDWorkoutSessionServer_didDisconnectFromRemoteWithError___block_invok
   [v1 sendToDestinationProcessors:v2];
 }
 
-- (void)sendDataToRemoteWorkoutSession:(id)a3 completion:(id)a4
+- (void)sendDataToRemoteWorkoutSession:(id)session completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  sessionCopy = session;
+  completionCopy = completion;
+  if ([sessionCopy length])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -5040,8 +5040,8 @@ void __59__HDWorkoutSessionServer_didDisconnectFromRemoteWithError___block_invok
     block[2] = __68__HDWorkoutSessionServer_sendDataToRemoteWorkoutSession_completion___block_invoke;
     block[3] = &unk_278616D18;
     block[4] = self;
-    v14 = v7;
-    v13 = v6;
+    v14 = completionCopy;
+    v13 = sessionCopy;
     dispatch_async(queue, block);
   }
 
@@ -5052,12 +5052,12 @@ void __59__HDWorkoutSessionServer_didDisconnectFromRemoteWithError___block_invok
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Data is nil. Nothing to send", buf, 0xCu);
     }
 
     v10 = [MEMORY[0x277CCA9B8] hk_error:11 description:@"No data to send."];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -5098,20 +5098,20 @@ void __68__HDWorkoutSessionServer_sendDataToRemoteWorkoutSession_completion___bl
   }
 }
 
-- (void)didReceiveDataFromRemoteWorkoutSession:(id)a3 completion:(id)a4
+- (void)didReceiveDataFromRemoteWorkoutSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HDWorkoutSessionServer_didReceiveDataFromRemoteWorkoutSession_completion___block_invoke;
   block[3] = &unk_278616D18;
-  v12 = v6;
-  v13 = v7;
+  v12 = sessionCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = sessionCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -5178,41 +5178,41 @@ void __76__HDWorkoutSessionServer_didReceiveDataFromRemoteWorkoutSession_complet
   return v3;
 }
 
-- (void)syncCurrentActivity:(id)a3 completion:(id)a4
+- (void)syncCurrentActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
+  activityCopy = activity;
   workoutDataFlowLink = self->_workoutDataFlowLink;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__HDWorkoutSessionServer_syncCurrentActivity_completion___block_invoke;
   v10[3] = &unk_278620F08;
-  v11 = v6;
-  v8 = v6;
-  v9 = a4;
+  v11 = activityCopy;
+  v8 = activityCopy;
+  completionCopy = completion;
   [(HKDataFlowLink *)workoutDataFlowLink sendToDestinationProcessors:v10];
-  v9[2](v9, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)syncWorkoutEvents:(id)a3 completion:(id)a4
+- (void)syncWorkoutEvents:(id)events completion:(id)completion
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = [v4 hk_error:3 description:@"Cannot add events from remote session"];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)syncSessionEvent:(int64_t)a3 date:(id)a4
+- (void)syncSessionEvent:(int64_t)event date:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HDWorkoutSessionServer_syncSessionEvent_date___block_invoke;
   block[3] = &unk_278614E78;
-  v10 = v6;
-  v11 = a3;
+  v10 = dateCopy;
+  eventCopy = event;
   block[4] = self;
-  v8 = v6;
+  v8 = dateCopy;
   dispatch_async(queue, block);
 }
 
@@ -5290,9 +5290,9 @@ void __49__HDWorkoutSessionServer_remoteSessionDidRecover__block_invoke(uint64_t
   }
 }
 
-- (void)unitTest_setStopEventGenerationWaitInterval:(double)a3
+- (void)unitTest_setStopEventGenerationWaitInterval:(double)interval
 {
-  if (a3 >= 0.0)
+  if (interval >= 0.0)
   {
     v6[6] = v3;
     v6[7] = v4;
@@ -5302,7 +5302,7 @@ void __49__HDWorkoutSessionServer_remoteSessionDidRecover__block_invoke(uint64_t
     v6[2] = __70__HDWorkoutSessionServer_unitTest_setStopEventGenerationWaitInterval___block_invoke;
     v6[3] = &unk_2786138F8;
     v6[4] = self;
-    *&v6[5] = a3;
+    *&v6[5] = interval;
     dispatch_sync(queue, v6);
   }
 }
@@ -5332,23 +5332,23 @@ void __52__HDWorkoutSessionServer_unitTest_generateStopEvent__block_invoke(uint6
   [(HDWorkoutSessionServer *)v1 _queue_generateEventWithType:v2 date:?];
 }
 
-- (void)unitTest_generateWorkoutConfigurationUpdate:(id)a3
+- (void)unitTest_generateWorkoutConfigurationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__HDWorkoutSessionServer_unitTest_generateWorkoutConfigurationUpdate___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)unitTest_updateLatestActivityDate:(id)a3
+- (BOOL)unitTest_updateLatestActivityDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -5358,10 +5358,10 @@ void __52__HDWorkoutSessionServer_unitTest_generateStopEvent__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __60__HDWorkoutSessionServer_unitTest_updateLatestActivityDate___block_invoke;
   block[3] = &unk_27861F190;
-  v9 = v4;
+  v9 = dateCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dateCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -5388,7 +5388,7 @@ void __60__HDWorkoutSessionServer_unitTest_updateLatestActivityDate___block_invo
   *(*(a1[6] + 8) + 24) = v3;
 }
 
-- (void)unitTest_setExtendedPauseInterval:(double)a3
+- (void)unitTest_setExtendedPauseInterval:(double)interval
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -5396,7 +5396,7 @@ void __60__HDWorkoutSessionServer_unitTest_updateLatestActivityDate___block_invo
   v4[2] = __60__HDWorkoutSessionServer_unitTest_setExtendedPauseInterval___block_invoke;
   v4[3] = &unk_2786138F8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_sync(queue, v4);
 }
 
@@ -5407,22 +5407,22 @@ double __60__HDWorkoutSessionServer_unitTest_setExtendedPauseInterval___block_in
   return result;
 }
 
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity completion:(id)completion
 {
-  if (a4)
+  if (activity)
   {
     sessionController = self->_sessionController;
-    v11 = a5;
-    [(HDWorkoutSessionController *)sessionController fakeActivityDetection:a3 workoutActivity:a4];
-    (*(a5 + 2))(v11, 1, 0);
+    completionCopy = completion;
+    [(HDWorkoutSessionController *)sessionController fakeActivityDetection:detection workoutActivity:activity];
+    (*(completion + 2))(completionCopy, 1, 0);
   }
 
   else
   {
     v9 = MEMORY[0x277CCA9B8];
-    v10 = a5;
-    v11 = [v9 hk_error:3 description:@"Workout Activity is nil"];
-    (*(a5 + 2))(v10, 0);
+    completionCopy2 = completion;
+    completionCopy = [v9 hk_error:3 description:@"Workout Activity is nil"];
+    (*(completion + 2))(completionCopy2, 0);
   }
 }
 
@@ -5711,7 +5711,7 @@ void __63__HDWorkoutSessionServer__queue_startLatestActivityUpdateTimer__block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_clientApplicationCanStartWorkoutSessionWithError:(id *)a3
+- (BOOL)_queue_clientApplicationCanStartWorkoutSessionWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   if ([(HDHealthStoreClient *)self->_client hasEntitlement:*MEMORY[0x277CCB890]])
@@ -5722,7 +5722,7 @@ void __63__HDWorkoutSessionServer__queue_startLatestActivityUpdateTimer__block_i
     {
       applicationIdentifier = self->_applicationIdentifier;
       v24 = 138543618;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2114;
       v27 = applicationIdentifier;
       v7 = "%{public}@: Workout session allowed to start for %{public}@ because it has private entitlement";
@@ -5742,7 +5742,7 @@ LABEL_7:
     {
       v8 = self->_applicationIdentifier;
       v24 = 138543618;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2114;
       v27 = v8;
       v7 = "%{public}@: Workout session allowed to start for %{public}@ because it is in recovery";
@@ -5755,8 +5755,8 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained workoutManager];
-  v11 = [v10 allowBackgroundStartForApplicationIdentifier:self->_applicationIdentifier];
+  workoutManager = [WeakRetained workoutManager];
+  v11 = [workoutManager allowBackgroundStartForApplicationIdentifier:self->_applicationIdentifier];
 
   if (v11)
   {
@@ -5764,10 +5764,10 @@ LABEL_9:
   }
 
   v15 = objc_loadWeakRetained(&self->_profile);
-  v16 = [v15 daemon];
-  v17 = [v16 processStateManager];
+  daemon = [v15 daemon];
+  processStateManager = [daemon processStateManager];
 
-  if ([v17 isApplicationFrontBoardVisibleForBundleIdentifier:self->_applicationIdentifier])
+  if ([processStateManager isApplicationFrontBoardVisibleForBundleIdentifier:self->_applicationIdentifier])
   {
     _HKInitializeLogging();
     v18 = *MEMORY[0x277CCC330];
@@ -5775,7 +5775,7 @@ LABEL_9:
     {
       v19 = self->_applicationIdentifier;
       v24 = 138543618;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2114;
       v27 = v19;
       _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: Workout session allowed to start for %{public}@", &v24, 0x16u);
@@ -5792,7 +5792,7 @@ LABEL_9:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       v24 = 138543618;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2114;
       v27 = v20;
       _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@", &v24, 0x16u);
@@ -5802,10 +5802,10 @@ LABEL_9:
     v12 = v22 == 0;
     if (v22)
     {
-      if (a3)
+      if (error)
       {
         v23 = v22;
-        *a3 = v22;
+        *error = v22;
       }
 
       else

@@ -1,16 +1,16 @@
 @interface AppleEthernetInterfaceCell
-- (AppleEthernetInterfaceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)initializeWithInterface:(id)a3;
+- (AppleEthernetInterfaceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)initializeWithInterface:(id)interface;
 - (void)prepareForReuse;
 @end
 
 @implementation AppleEthernetInterfaceCell
 
-- (AppleEthernetInterfaceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AppleEthernetInterfaceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AppleEthernetInterfaceCell;
-  v4 = [(AppleEthernetInterfaceCell *)&v7 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(AppleEthernetInterfaceCell *)&v7 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -25,15 +25,15 @@
   v4.receiver = self;
   v4.super_class = AppleEthernetInterfaceCell;
   [(AppleEthernetInterfaceCell *)&v4 prepareForReuse];
-  v3 = [(AppleEthernetInterfaceCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(AppleEthernetInterfaceCell *)self textLabel];
+  [textLabel setText:0];
 }
 
-- (void)initializeWithInterface:(id)a3
+- (void)initializeWithInterface:(id)interface
 {
-  v5 = [a3 displayName];
-  v4 = [(AppleEthernetInterfaceCell *)self textLabel];
-  [v4 setText:v5];
+  displayName = [interface displayName];
+  textLabel = [(AppleEthernetInterfaceCell *)self textLabel];
+  [textLabel setText:displayName];
 }
 
 @end

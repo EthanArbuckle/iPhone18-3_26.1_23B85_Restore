@@ -1,11 +1,11 @@
 @interface NavTrafficIncidentReportingContaineeViewController
-- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithIncidentReportingDelegate:(id)a3;
-- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithIncidentReportingDelegate:(id)delegate;
+- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps58NavTrafficIncidentReportingContaineeViewControllerDelegate_)incidentReportingDelegate;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavTrafficIncidentReportingContaineeViewController
@@ -17,7 +17,7 @@
   return Strong;
 }
 
-- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithIncidentReportingDelegate:(id)a3
+- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithIncidentReportingDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   sub_100381D9C();
@@ -32,11 +32,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(MapsHostingContaineeViewController *)&v5 viewDidLoad];
-  v3 = [v2 cardPresentationController];
-  if (v3)
+  cardPresentationController = [v2 cardPresentationController];
+  if (cardPresentationController)
   {
-    v4 = v3;
-    [v3 setEdgeAttachedRegularHeightDimmingBehavior:2];
+    v4 = cardPresentationController;
+    [cardPresentationController setEdgeAttachedRegularHeightDimmingBehavior:2];
   }
 
   else
@@ -45,28 +45,28 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100380244(a3);
+  selfCopy = self;
+  sub_100380244(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003803F8(a3);
+  selfCopy = self;
+  sub_1003803F8(appear);
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v4 = self;
-  sub_100380784(a3);
+  selfCopy = self;
+  sub_100380784(layout);
   v6 = v5;
 
   return v6;
 }
 
-- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps50NavTrafficIncidentReportingContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -9,7 +9,7 @@
 
 - (CGImage)sbf_colorSpace
 {
-  result = [a1 CGImage];
+  result = [self CGImage];
   if (result)
   {
 
@@ -25,28 +25,28 @@
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = CGColorSpaceRetain([a1 sbf_colorSpace]);
+    v6 = CGColorSpaceRetain([self sbf_colorSpace]);
     if (v6)
     {
-      v7 = __sbfImageByApplyingColorSpace(a1, 0);
+      selfCopy = __sbfImageByApplyingColorSpace(self, 0);
     }
 
     else
     {
-      v7 = a1;
+      selfCopy = self;
     }
 
-    v9 = v7;
-    v10 = v4[2](v4, v7);
+    v9 = selfCopy;
+    v10 = v4[2](v4, selfCopy);
     v11 = v10;
     if (v10)
     {
-      v8 = __sbfImageByApplyingColorSpace(v10, v6);
+      selfCopy2 = __sbfImageByApplyingColorSpace(v10, v6);
     }
 
     else
     {
-      v8 = 0;
+      selfCopy2 = 0;
     }
 
     CGColorSpaceRelease(v6);
@@ -56,23 +56,23 @@
 
   else
   {
-    v8 = a1;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 - (id)sbf_imageByConvertingToColorSpace:()SBFImageColorSpaceUtilities type:
 {
-  [a1 size];
+  [self size];
   v8 = v7;
   v10 = v9;
-  [a1 scale];
+  [self scale];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__UIImage_SBFImageColorSpaceUtilities__sbf_imageByConvertingToColorSpace_type___block_invoke;
   v14[3] = &unk_1E807F178;
-  v14[4] = a1;
+  v14[4] = self;
   v12 = _SBFCGBitmapImageCreate(a4, a3, 0, v14, 0, v8, v10, v11);
 
   return v12;
@@ -80,9 +80,9 @@
 
 - (id)sbf_ATXSafeCGImageBackedImage
 {
-  v1 = [a1 sbf_CGImageBackedImageWithMaximumBitsPerComponent:8 skipCIF10FitsInSRGBCheck:0];
-  v2 = [v1 sbf_colorSpace];
-  if (v2)
+  v1 = [self sbf_CGImageBackedImageWithMaximumBitsPerComponent:8 skipCIF10FitsInSRGBCheck:0];
+  sbf_colorSpace = [v1 sbf_colorSpace];
+  if (sbf_colorSpace)
   {
     Type = CGColorSpaceGetType();
     if (Type <= 5 && ((1 << Type) & 0x27) != 0)
@@ -91,7 +91,7 @@
     }
   }
 
-  v5 = CGColorSpaceCopyName(v2);
+  v5 = CGColorSpaceCopyName(sbf_colorSpace);
   v6 = v5;
   v7 = *MEMORY[0x1E695F1C0];
   if (v5)

@@ -1,7 +1,7 @@
 @interface _NUVideoAssetMedia
 - (NSArray)requiredSourceMedias;
-- (_NUVideoAssetMedia)initWithAsset:(id)a3 resourceID:(id)a4 format:(id)a5 geometry:(id)a6;
-- (_NUVideoAssetMedia)initWithVideoAsset:(id)a3 track:(id)a4 format:(id)a5 geometry:(id)a6;
+- (_NUVideoAssetMedia)initWithAsset:(id)asset resourceID:(id)d format:(id)format geometry:(id)geometry;
+- (_NUVideoAssetMedia)initWithVideoAsset:(id)asset track:(id)track format:(id)format geometry:(id)geometry;
 @end
 
 @implementation _NUVideoAssetMedia
@@ -15,14 +15,14 @@
   return v2;
 }
 
-- (_NUVideoAssetMedia)initWithVideoAsset:(id)a3 track:(id)a4 format:(id)a5 geometry:(id)a6
+- (_NUVideoAssetMedia)initWithVideoAsset:(id)asset track:(id)track format:(id)format geometry:(id)geometry
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  assetCopy = asset;
+  trackCopy = track;
+  formatCopy = format;
+  geometryCopy = geometry;
+  if (!trackCopy)
   {
     v18 = NUAssertLogger_10839();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -43,8 +43,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v25;
         v37 = 2114;
@@ -55,8 +55,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -65,22 +65,22 @@
     _NUAssertFailHandler("[_NUVideoAssetMedia initWithVideoAsset:track:format:geometry:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 523, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "track != nil");
   }
 
-  v14 = v13;
-  v15 = [[_NUVideoAssetResourceID alloc] initWithAssetTrack:v11];
+  v14 = geometryCopy;
+  v15 = [[_NUVideoAssetResourceID alloc] initWithAssetTrack:trackCopy];
   v34.receiver = self;
   v34.super_class = _NUVideoAssetMedia;
-  v16 = [(_NUAssetMedia *)&v34 initWithAsset:v10 resourceID:v15 format:v12 geometry:v14];
+  v16 = [(_NUAssetMedia *)&v34 initWithAsset:assetCopy resourceID:v15 format:formatCopy geometry:v14];
 
   return v16;
 }
 
-- (_NUVideoAssetMedia)initWithAsset:(id)a3 resourceID:(id)a4 format:(id)a5 geometry:(id)a6
+- (_NUVideoAssetMedia)initWithAsset:(id)asset resourceID:(id)d format:(id)format geometry:(id)geometry
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  formatCopy = format;
+  geometryCopy = geometry;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -124,8 +124,8 @@ LABEL_8:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v23 callStackSymbols];
+      v26 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -141,8 +141,8 @@ LABEL_8:
     v29 = MEMORY[0x1E696AF00];
     v30 = specific;
     v31 = v27;
-    v32 = [v29 callStackSymbols];
-    v33 = [v32 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v29 callStackSymbols];
+    v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v41 = specific;
     v42 = 2114;

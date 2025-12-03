@@ -1,22 +1,22 @@
 @interface PGHighlightItemRestorer
-+ (id)restoreExistingHighlightItemListsFromBackingHighlightItems:(id)a3 usingModelReader:(id)a4 progressBlock:(id)a5;
++ (id)restoreExistingHighlightItemListsFromBackingHighlightItems:(id)items usingModelReader:(id)reader progressBlock:(id)block;
 @end
 
 @implementation PGHighlightItemRestorer
 
-+ (id)restoreExistingHighlightItemListsFromBackingHighlightItems:(id)a3 usingModelReader:(id)a4 progressBlock:(id)a5
++ (id)restoreExistingHighlightItemListsFromBackingHighlightItems:(id)items usingModelReader:(id)reader progressBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = _Block_copy(a5);
-  v10 = [v7 count];
-  v11 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  readerCopy = reader;
+  v9 = _Block_copy(block);
+  v10 = [itemsCopy count];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v7;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v13)
   {
@@ -37,9 +37,9 @@
 
         v20 = *(*(&v29 + 1) + 8 * i);
         v17 = v15 + v17;
-        v21 = [v8 fetchChildHighlightItemsForHighlightItem:v20 sharingFilter:{2, v27}];
+        v21 = [readerCopy fetchChildHighlightItemsForHighlightItem:v20 sharingFilter:{2, v27}];
         v22 = [[PGHighlightItemList alloc] initWithParentHighlightItem:v20 childHighlightItems:v21];
-        [v11 addObject:v22];
+        [array addObject:v22];
         if (v9)
         {
           Current = CFAbsoluteTimeGetCurrent();
@@ -77,7 +77,7 @@
     }
   }
 
-  v24 = v11;
+  v24 = array;
 LABEL_16:
 
   v25 = *MEMORY[0x277D85DE8];

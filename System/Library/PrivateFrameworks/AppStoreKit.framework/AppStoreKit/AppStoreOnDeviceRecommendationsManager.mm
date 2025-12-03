@@ -1,15 +1,15 @@
 @interface AppStoreOnDeviceRecommendationsManager
 - (_TtC11AppStoreKit38AppStoreOnDeviceRecommendationsManager)init;
-- (id)performRequest:(id)a3;
+- (id)performRequest:(id)request;
 @end
 
 @implementation AppStoreOnDeviceRecommendationsManager
 
-- (id)performRequest:(id)a3
+- (id)performRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1E18DC620(v4);
+  requestCopy = request;
+  selfCopy = self;
+  v6 = sub_1E18DC620(requestCopy);
 
   return v6;
 }

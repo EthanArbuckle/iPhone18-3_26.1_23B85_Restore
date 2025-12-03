@@ -1,13 +1,13 @@
 @interface PPKImageWriter
 + (id)log;
-+ (uint64_t)supportsGainMapForImageDataType:(uint64_t)a1;
-+ (uint64_t)supportsHDRForImageDataType:(uint64_t)a1;
-- (BOOL)writeUsingBaseImage:(id)a3 annotationImage:(CGImage *)a4 sdrAnnotationImage:(CGImage *)a5 asImageOfType:(id)a6 toConsumer:(CGDataConsumer *)a7 annotationMetadata:(id)a8 modifiedMetadataHandler:(id)a9 encryptPrivateMetadata:(BOOL)a10 error:(id *)a11;
-- (id)encodedModelFromData:(int)a3 encrypt:;
-- (void)addGainMapImageToImageDestination:(CGImage *)a3 sdrImage:(CGImage *)a4 hdrImage:(const CGImageMetadata *)a5 imageMetadata:(void *)a6 imageOptions:;
-- (void)addHDRImageToImageDestination:(CGImage *)a3 hdrImage:(const CGImageMetadata *)a4 imageMetadata:(void *)a5 imageOptions:;
-- (void)addSDRHEICImageToImageDestination:(CGImage *)a3 sdrImage:(const CGImageMetadata *)a4 imageMetadata:(void *)a5 imageOptions:;
-- (void)writeUsingBaseImageData:(uint64_t)a3 annotationImage:(uint64_t)a4 sdrAnnotationImage:(uint64_t)a5 asImageOfType:(uint64_t)a6 toConsumer:(uint64_t)a7 annotationMetadata:modifiedMetadataHandler:encryptPrivateMetadata:error:;
++ (uint64_t)supportsGainMapForImageDataType:(uint64_t)type;
++ (uint64_t)supportsHDRForImageDataType:(uint64_t)type;
+- (BOOL)writeUsingBaseImage:(id)image annotationImage:(CGImage *)annotationImage sdrAnnotationImage:(CGImage *)sdrAnnotationImage asImageOfType:(id)type toConsumer:(CGDataConsumer *)consumer annotationMetadata:(id)metadata modifiedMetadataHandler:(id)handler encryptPrivateMetadata:(BOOL)self0 error:(id *)self1;
+- (id)encodedModelFromData:(int)data encrypt:;
+- (void)addGainMapImageToImageDestination:(CGImage *)destination sdrImage:(CGImage *)image hdrImage:(const CGImageMetadata *)hdrImage imageMetadata:(void *)metadata imageOptions:;
+- (void)addHDRImageToImageDestination:(CGImage *)destination hdrImage:(const CGImageMetadata *)image imageMetadata:(void *)metadata imageOptions:;
+- (void)addSDRHEICImageToImageDestination:(CGImage *)destination sdrImage:(const CGImageMetadata *)image imageMetadata:(void *)metadata imageOptions:;
+- (void)writeUsingBaseImageData:(uint64_t)data annotationImage:(uint64_t)image sdrAnnotationImage:(uint64_t)annotationImage asImageOfType:(uint64_t)type toConsumer:(uint64_t)consumer annotationMetadata:modifiedMetadataHandler:encryptPrivateMetadata:error:;
 @end
 
 @implementation PPKImageWriter
@@ -32,7 +32,7 @@ void __21__PPKImageWriter_log__block_invoke()
   log__sharedLog = v0;
 }
 
-+ (uint64_t)supportsHDRForImageDataType:(uint64_t)a1
++ (uint64_t)supportsHDRForImageDataType:(uint64_t)type
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -50,7 +50,7 @@ void __21__PPKImageWriter_log__block_invoke()
   return v4;
 }
 
-+ (uint64_t)supportsGainMapForImageDataType:(uint64_t)a1
++ (uint64_t)supportsGainMapForImageDataType:(uint64_t)type
 {
   v2 = a2;
   objc_opt_self();
@@ -77,15 +77,15 @@ void __21__PPKImageWriter_log__block_invoke()
   return v4;
 }
 
-- (BOOL)writeUsingBaseImage:(id)a3 annotationImage:(CGImage *)a4 sdrAnnotationImage:(CGImage *)a5 asImageOfType:(id)a6 toConsumer:(CGDataConsumer *)a7 annotationMetadata:(id)a8 modifiedMetadataHandler:(id)a9 encryptPrivateMetadata:(BOOL)a10 error:(id *)a11
+- (BOOL)writeUsingBaseImage:(id)image annotationImage:(CGImage *)annotationImage sdrAnnotationImage:(CGImage *)sdrAnnotationImage asImageOfType:(id)type toConsumer:(CGDataConsumer *)consumer annotationMetadata:(id)metadata modifiedMetadataHandler:(id)handler encryptPrivateMetadata:(BOOL)self0 error:(id *)self1
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v63 = a9;
+  imageCopy = image;
+  typeCopy = type;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v17 = &kMetadataEncryptedModelTag;
-  if (!a10)
+  if (!privateMetadata)
   {
     v17 = &kMetadataModelTag;
   }
@@ -111,12 +111,12 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = CGImageSourceCreateWithURL(v14, 0);
+    v18 = CGImageSourceCreateWithURL(imageCopy, 0);
   }
 
   else
   {
-    v18 = CGImageSourceCreateWithData(v14, 0);
+    v18 = CGImageSourceCreateWithData(imageCopy, 0);
   }
 
   v19 = v18;
@@ -160,16 +160,16 @@ LABEL_16:
   CGImageMetadataRegisterNamespaceForPrefix(Mutable, kMetadataNamespacePaperKit, kMetadataPrefixPaperKit, &err);
   if (v23)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixAnnotationKit, name];
-    CGImageMetadataRemoveTagWithPath(Mutable, 0, v27);
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, name];
-    CGImageMetadataRemoveTagWithPath(Mutable, 0, v28);
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixAnnotationKit, name];
+    CGImageMetadataRemoveTagWithPath(Mutable, 0, name);
+    name2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, name];
+    CGImageMetadataRemoveTagWithPath(Mutable, 0, name2);
   }
 
   v29 = ImageAtIndex;
   if (ImageAtIndex)
   {
-    v30 = CGImageRetain(a4);
+    v30 = CGImageRetain(annotationImage);
     if (_os_feature_enabled_impl())
     {
       ColorSpace = CGImageGetColorSpace(v30);
@@ -204,14 +204,14 @@ LABEL_16:
       _os_log_impl(&dword_1D38C4000, v38, OS_LOG_TYPE_DEFAULT, "Image headroom: %g, wantsEDR: %d", buf, 0x12u);
     }
 
-    v39 = CGImageDestinationCreateWithDataConsumer(a7, v15, 1uLL, 0);
+    v39 = CGImageDestinationCreateWithDataConsumer(consumer, typeCopy, 1uLL, 0);
     if (v39)
     {
       v40 = v39;
-      if (v16)
+      if (metadataCopy)
       {
         consumera = objc_autoreleasePoolPush();
-        v59 = [(PPKImageWriter *)self encodedModelFromData:v16 encrypt:a10];
+        v59 = [(PPKImageWriter *)self encodedModelFromData:metadataCopy encrypt:privateMetadata];
         v57 = [v59 base64EncodedStringWithOptions:0];
         v53 = CGImageMetadataTagCreate(kMetadataNamespacePaperKit, kMetadataPrefixPaperKit, name, kCGImageMetadataTypeString, v57);
         if (v53)
@@ -245,16 +245,16 @@ LABEL_16:
       v47 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:Height];
       [(__CFDictionary *)options setObject:v47 forKey:*MEMORY[0x1E696DD58]];
 
-      if (v63)
+      if (handlerCopy)
       {
-        v63[2]();
+        handlerCopy[2]();
       }
 
-      if (v56 && [PPKImageWriter supportsGainMapForImageDataType:v15])
+      if (v56 && [PPKImageWriter supportsGainMapForImageDataType:typeCopy])
       {
-        if (a5)
+        if (sdrAnnotationImage)
         {
-          [(PPKImageWriter *)self addGainMapImageToImageDestination:v40 sdrImage:a5 hdrImage:v30 imageMetadata:Mutable imageOptions:options];
+          [(PPKImageWriter *)self addGainMapImageToImageDestination:v40 sdrImage:sdrAnnotationImage hdrImage:v30 imageMetadata:Mutable imageOptions:options];
         }
 
         else
@@ -265,8 +265,8 @@ LABEL_16:
 
       else
       {
-        v48 = [*MEMORY[0x1E6982E00] identifier];
-        v49 = [(__CFString *)v15 isEqualToString:v48];
+        identifier = [*MEMORY[0x1E6982E00] identifier];
+        v49 = [(__CFString *)typeCopy isEqualToString:identifier];
 
         if (v49)
         {
@@ -341,7 +341,7 @@ LABEL_16:
     CFRelease(Mutable);
   }
 
-  if (a11)
+  if (error)
   {
     v51 = v35;
   }
@@ -353,28 +353,28 @@ LABEL_16:
 
   if ((v51 & 1) == 0)
   {
-    *a11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:512 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:512 userInfo:0];
   }
 
   return v35;
 }
 
-- (void)writeUsingBaseImageData:(uint64_t)a3 annotationImage:(uint64_t)a4 sdrAnnotationImage:(uint64_t)a5 asImageOfType:(uint64_t)a6 toConsumer:(uint64_t)a7 annotationMetadata:modifiedMetadataHandler:encryptPrivateMetadata:error:
+- (void)writeUsingBaseImageData:(uint64_t)data annotationImage:(uint64_t)image sdrAnnotationImage:(uint64_t)annotationImage asImageOfType:(uint64_t)type toConsumer:(uint64_t)consumer annotationMetadata:modifiedMetadataHandler:encryptPrivateMetadata:error:
 {
   if (result)
   {
-    return OUTLINED_FUNCTION_0_0(result, a2, a3, a4, a5, a6, a7);
+    return OUTLINED_FUNCTION_0_0(result, a2, data, image, annotationImage, type, consumer);
   }
 
   return result;
 }
 
-- (id)encodedModelFromData:(int)a3 encrypt:
+- (id)encodedModelFromData:(int)data encrypt:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (data)
     {
       v6 = +[PPKPayloadEncryption sharedInstance];
       v7 = [(PPKPayloadEncryption *)v6 encryptData:v5];
@@ -394,73 +394,73 @@ LABEL_16:
   return v8;
 }
 
-- (void)addGainMapImageToImageDestination:(CGImage *)a3 sdrImage:(CGImage *)a4 hdrImage:(const CGImageMetadata *)a5 imageMetadata:(void *)a6 imageOptions:
+- (void)addGainMapImageToImageDestination:(CGImage *)destination sdrImage:(CGImage *)image hdrImage:(const CGImageMetadata *)hdrImage imageMetadata:(void *)metadata imageOptions:
 {
-  v11 = a6;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v23 = v11;
-    if (v11)
+    v23 = metadataCopy;
+    if (metadataCopy)
     {
-      v12 = [v11 mutableCopy];
+      dictionary = [metadataCopy mutableCopy];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = v12;
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    v13 = dictionary;
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v15 = MEMORY[0x1E695E118];
-    [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D300]];
-    [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D200]];
+    [dictionary2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D300]];
+    [dictionary2 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D200]];
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963956];
-    [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696D2E0]];
+    [dictionary2 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696D2E0]];
 
-    [v14 setObject:*MEMORY[0x1E695F0B8] forKeyedSubscript:*MEMORY[0x1E696D2D8]];
+    [dictionary2 setObject:*MEMORY[0x1E695F0B8] forKeyedSubscript:*MEMORY[0x1E696D2D8]];
     v17 = *MEMORY[0x1E696D338];
-    [v14 setObject:&unk_1F4F83328 forKeyedSubscript:*MEMORY[0x1E696D338]];
+    [dictionary2 setObject:&unk_1F4F83328 forKeyedSubscript:*MEMORY[0x1E696D338]];
     v18 = *MEMORY[0x1E696D310];
-    [v13 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696D310]];
-    if (a3)
+    [v13 setObject:dictionary2 forKeyedSubscript:*MEMORY[0x1E696D310]];
+    if (destination)
     {
-      v19 = a3;
+      imageCopy = destination;
     }
 
     else
     {
-      v19 = a4;
+      imageCopy = image;
     }
 
-    CGImageDestinationAddImageAndMetadata(a2, v19, a5, v13);
-    v20 = [MEMORY[0x1E695DF90] dictionary];
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [v20 setObject:*MEMORY[0x1E696D318] forKeyedSubscript:*MEMORY[0x1E696D308]];
+    CGImageDestinationAddImageAndMetadata(a2, imageCopy, hdrImage, v13);
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary3 setObject:*MEMORY[0x1E696D318] forKeyedSubscript:*MEMORY[0x1E696D308]];
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963956];
-    [v21 setObject:v22 forKeyedSubscript:*MEMORY[0x1E696D2E8]];
+    [dictionary4 setObject:v22 forKeyedSubscript:*MEMORY[0x1E696D2E8]];
 
-    [v21 setObject:&unk_1F4F832E8 forKeyedSubscript:*MEMORY[0x1E696D2F0]];
-    [v21 setObject:*MEMORY[0x1E695F0C8] forKeyedSubscript:*MEMORY[0x1E696D2D0]];
-    [v21 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D2F8]];
-    [v21 setObject:&unk_1F4F83328 forKeyedSubscript:v17];
-    [v20 setObject:v21 forKeyedSubscript:v18];
-    CGImageDestinationAddImage(a2, a4, v20);
+    [dictionary4 setObject:&unk_1F4F832E8 forKeyedSubscript:*MEMORY[0x1E696D2F0]];
+    [dictionary4 setObject:*MEMORY[0x1E695F0C8] forKeyedSubscript:*MEMORY[0x1E696D2D0]];
+    [dictionary4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D2F8]];
+    [dictionary4 setObject:&unk_1F4F83328 forKeyedSubscript:v17];
+    [dictionary3 setObject:dictionary4 forKeyedSubscript:v18];
+    CGImageDestinationAddImage(a2, image, dictionary3);
 
-    v11 = v23;
+    metadataCopy = v23;
   }
 }
 
-- (void)addHDRImageToImageDestination:(CGImage *)a3 hdrImage:(const CGImageMetadata *)a4 imageMetadata:(void *)a5 imageOptions:
+- (void)addHDRImageToImageDestination:(CGImage *)destination hdrImage:(const CGImageMetadata *)image imageMetadata:(void *)metadata imageOptions:
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v9 = a5;
+    metadataCopy = metadata;
     v10 = +[PPKImageWriter log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      ColorSpace = CGImageGetColorSpace(a3);
+      ColorSpace = CGImageGetColorSpace(destination);
       Name = CGColorSpaceGetName(ColorSpace);
       CGImageGetContentHeadroom();
       v14 = 138412546;
@@ -470,42 +470,42 @@ LABEL_16:
       _os_log_impl(&dword_1D38C4000, v10, OS_LOG_TYPE_DEFAULT, "Write HDR image with color space: %@, headroom: %g", &v14, 0x16u);
     }
 
-    [(PPKImageWriter *)a1 addGainMapImageToImageDestination:a2 sdrImage:0 hdrImage:a3 imageMetadata:a4 imageOptions:v9];
+    [(PPKImageWriter *)self addGainMapImageToImageDestination:a2 sdrImage:0 hdrImage:destination imageMetadata:image imageOptions:metadataCopy];
   }
 }
 
-- (void)addSDRHEICImageToImageDestination:(CGImage *)a3 sdrImage:(const CGImageMetadata *)a4 imageMetadata:(void *)a5 imageOptions:
+- (void)addSDRHEICImageToImageDestination:(CGImage *)destination sdrImage:(const CGImageMetadata *)image imageMetadata:(void *)metadata imageOptions:
 {
-  v9 = a5;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v13 = v9;
-    if (v9)
+    v13 = metadataCopy;
+    if (metadataCopy)
     {
-      v10 = [v9 mutableCopy];
+      dictionary = [metadataCopy mutableCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v11 = v10;
+    v11 = dictionary;
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963956];
     [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696E148]];
 
     [v11 setObject:&unk_1F4F83318 forKeyedSubscript:*MEMORY[0x1E696D338]];
-    if (a4)
+    if (image)
     {
-      CGImageDestinationAddImageAndMetadata(a2, a3, a4, v11);
+      CGImageDestinationAddImageAndMetadata(a2, destination, image, v11);
     }
 
     else
     {
-      CGImageDestinationAddImage(a2, a3, v11);
+      CGImageDestinationAddImage(a2, destination, v11);
     }
 
-    v9 = v13;
+    metadataCopy = v13;
   }
 }
 

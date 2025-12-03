@@ -6,22 +6,22 @@
 
 - (id)_gkPrefixedURIHandle
 {
-  v3 = [(_PSRecipient *)self handle];
-  v4 = [v3 length];
+  handle = [(_PSRecipient *)self handle];
+  v4 = [handle length];
 
   if (v4)
   {
-    v5 = [(_PSRecipient *)self handle];
-    v6 = [IDSURI URIWithUnprefixedURI:v5];
-    v7 = [v6 prefixedURI];
+    handle2 = [(_PSRecipient *)self handle];
+    v6 = [IDSURI URIWithUnprefixedURI:handle2];
+    prefixedURI = [v6 prefixedURI];
   }
 
   else
   {
-    v7 = 0;
+    prefixedURI = 0;
   }
 
-  return v7;
+  return prefixedURI;
 }
 
 @end

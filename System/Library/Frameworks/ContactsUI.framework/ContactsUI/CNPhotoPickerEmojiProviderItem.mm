@@ -1,21 +1,21 @@
 @interface CNPhotoPickerEmojiProviderItem
-+ (id)addNewEmojiProviderItemWithSize:(CGSize)a3;
-+ (id)suggestedEmojiItemsForString:(id)a3 variantsManager:(id)a4 size:(CGSize)a5 locale:(id)a6;
-+ (id)thumbnailViewForImage:(id)a3;
++ (id)addNewEmojiProviderItemWithSize:(CGSize)size;
++ (id)suggestedEmojiItemsForString:(id)string variantsManager:(id)manager size:(CGSize)size locale:(id)locale;
++ (id)thumbnailViewForImage:(id)image;
 - (CGSize)size;
-- (CNPhotoPickerEmojiProviderItem)initWithStringRepresentation:(id)a3 backgroundColorVariant:(id)a4 size:(CGSize)a5;
+- (CNPhotoPickerEmojiProviderItem)initWithStringRepresentation:(id)representation backgroundColorVariant:(id)variant size:(CGSize)size;
 - (UIColor)backgroundColor;
 - (id)contactImageForMetadataStore;
-- (id)copyWithStringRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createVariantsItemsWithVariantsManager:(id)a3;
-- (id)generateImageRepresentationForEmojiString:(id)a3;
+- (id)copyWithStringRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createVariantsItemsWithVariantsManager:(id)manager;
+- (id)generateImageRepresentationForEmojiString:(id)string;
 - (id)generateThumbnailImageDataIfNeeded;
 - (id)imageData;
 - (id)thumbnailImageData;
-- (id)updatedProviderItemWithText:(id)a3;
-- (id)updatedProviderItemWithText:(id)a3 backgroundColorVariant:(id)a4;
-- (void)updateVisualIdentity:(id)a3;
+- (id)updatedProviderItemWithText:(id)text;
+- (id)updatedProviderItemWithText:(id)text backgroundColorVariant:(id)variant;
+- (void)updateVisualIdentity:(id)identity;
 @end
 
 @implementation CNPhotoPickerEmojiProviderItem
@@ -29,18 +29,18 @@
   return result;
 }
 
-- (id)createVariantsItemsWithVariantsManager:(id)a3
+- (id)createVariantsItemsWithVariantsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if ([(CNPhotoPickerEmojiProviderItem *)self allowsVariants])
   {
-    v5 = [v4 avatarBackgrounds];
+    avatarBackgrounds = [managerCopy avatarBackgrounds];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73__CNPhotoPickerEmojiProviderItem_createVariantsItemsWithVariantsManager___block_invoke;
     v8[3] = &unk_1E74E57A8;
     v8[4] = self;
-    v6 = [v5 _cn_map:v8];
+    v6 = [avatarBackgrounds _cn_map:v8];
   }
 
   else
@@ -61,56 +61,56 @@ id __73__CNPhotoPickerEmojiProviderItem_createVariantsItemsWithVariantsManager__
   return v5;
 }
 
-- (id)updatedProviderItemWithText:(id)a3 backgroundColorVariant:(id)a4
+- (id)updatedProviderItemWithText:(id)text backgroundColorVariant:(id)variant
 {
-  v6 = a4;
-  v7 = a3;
+  variantCopy = variant;
+  textCopy = text;
   v8 = [CNPhotoPickerEmojiProviderItem alloc];
   [(CNPhotoPickerEmojiProviderItem *)self size];
-  v9 = [(CNPhotoPickerEmojiProviderItem *)v8 initWithStringRepresentation:v7 backgroundColorVariant:v6 size:?];
+  v9 = [(CNPhotoPickerEmojiProviderItem *)v8 initWithStringRepresentation:textCopy backgroundColorVariant:variantCopy size:?];
 
   return v9;
 }
 
-- (id)updatedProviderItemWithText:(id)a3
+- (id)updatedProviderItemWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [CNPhotoPickerEmojiProviderItem alloc];
-  v6 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
   [(CNPhotoPickerEmojiProviderItem *)self size];
-  v7 = [(CNPhotoPickerEmojiProviderItem *)v5 initWithStringRepresentation:v4 backgroundColorVariant:v6 size:?];
+  v7 = [(CNPhotoPickerEmojiProviderItem *)v5 initWithStringRepresentation:textCopy backgroundColorVariant:backgroundColorVariant size:?];
 
   return v7;
 }
 
-- (id)generateImageRepresentationForEmojiString:(id)a3
+- (id)generateImageRepresentationForEmojiString:(id)string
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = &stru_1F0CE7398;
-  if (a3)
+  stringCopy = &stru_1F0CE7398;
+  if (string)
   {
-    v5 = a3;
+    stringCopy = string;
   }
 
-  v6 = v5;
-  v7 = a3;
+  v6 = stringCopy;
+  stringCopy2 = string;
   v30.width = 190.0;
   v30.height = 190.0;
   UIGraphicsBeginImageContextWithOptions(v30, 0, 3.0);
   v8 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, 190.0, 190.0}];
   [v8 addClip];
-  v9 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
 
-  if (!v9)
+  if (!backgroundColorVariant)
   {
     v10 = objc_alloc_init(CNPhotoPickerVariantsManager);
-    v11 = [(CNPhotoPickerVariantsManager *)v10 randomColorVariant];
-    [(CNPhotoPickerEmojiProviderItem *)self setBackgroundColorVariant:v11];
+    randomColorVariant = [(CNPhotoPickerVariantsManager *)v10 randomColorVariant];
+    [(CNPhotoPickerEmojiProviderItem *)self setBackgroundColorVariant:randomColorVariant];
   }
 
-  v12 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
-  v13 = [v12 color];
-  v14 = [CNPhotoPickerVariantsManager colorGradientBackground:v13];
+  backgroundColorVariant2 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  color = [backgroundColorVariant2 color];
+  v14 = [CNPhotoPickerVariantsManager colorGradientBackground:color];
 
   [v14 drawInRect:{0.0, 0.0, 190.0, 190.0}];
   v15 = +[CNUIFontRepository visualIdentityEditorTextFont];
@@ -144,94 +144,94 @@ id __73__CNPhotoPickerEmojiProviderItem_createVariantsItemsWithVariantsManager__
 - (id)contactImageForMetadataStore
 {
   v3 = objc_alloc(MEMORY[0x1E695CD88]);
-  v4 = [(CNPhotoPickerEmojiProviderItem *)self imageData];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v3 initWithImageData:v4 cropRect:v5 lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  imageData = [(CNPhotoPickerEmojiProviderItem *)self imageData];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v3 initWithImageData:imageData cropRect:date lastUsedDate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   [v6 setSource:4];
-  v7 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
-  v8 = [v7 colorName];
-  [v6 setVariant:v8];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  colorName = [backgroundColorVariant colorName];
+  [v6 setVariant:colorName];
 
-  v9 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
-  [v6 setDisplayString:v9];
+  stringRepresentation = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
+  [v6 setDisplayString:stringRepresentation];
 
   return v6;
 }
 
 - (id)generateThumbnailImageDataIfNeeded
 {
-  v3 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+  dataRepresentation = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
 
-  if (v3)
+  if (dataRepresentation)
   {
     goto LABEL_2;
   }
 
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
-  if ((*(v5 + 16))(v5, v6))
+  stringRepresentation = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
+  if ((*(v5 + 16))(v5, stringRepresentation))
   {
   }
 
   else
   {
-    v7 = [(CNPhotoPickerEmojiProviderItem *)self thumbnailImageData];
+    thumbnailImageData = [(CNPhotoPickerEmojiProviderItem *)self thumbnailImageData];
 
-    if (v7)
+    if (thumbnailImageData)
     {
       v13.receiver = self;
       v13.super_class = CNPhotoPickerEmojiProviderItem;
-      v8 = [(CNPhotoPickerProviderItem *)&v13 generateThumbnailImageDataIfNeeded];
+      generateThumbnailImageDataIfNeeded = [(CNPhotoPickerProviderItem *)&v13 generateThumbnailImageDataIfNeeded];
 LABEL_2:
-      v4 = [(CNPhotoPickerEmojiProviderItem *)self thumbnailImageData];
+      thumbnailImageData2 = [(CNPhotoPickerEmojiProviderItem *)self thumbnailImageData];
       goto LABEL_8;
     }
   }
 
-  v9 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
-  v10 = [(CNPhotoPickerEmojiProviderItem *)self generateImageRepresentationForEmojiString:v9];
+  stringRepresentation2 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
+  v10 = [(CNPhotoPickerEmojiProviderItem *)self generateImageRepresentationForEmojiString:stringRepresentation2];
   v11 = UIImagePNGRepresentation(v10);
   [(CNPhotoPickerEmojiProviderItem *)self setDataRepresentation:v11];
 
-  v4 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+  thumbnailImageData2 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
 LABEL_8:
 
-  return v4;
+  return thumbnailImageData2;
 }
 
 - (id)thumbnailImageData
 {
-  v3 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+  dataRepresentation = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
 
-  if (v3)
+  if (dataRepresentation)
   {
-    v4 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+    dataRepresentation2 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CNPhotoPickerEmojiProviderItem;
-    v4 = [(CNPhotoPickerProviderItem *)&v6 thumbnailImageData];
+    dataRepresentation2 = [(CNPhotoPickerProviderItem *)&v6 thumbnailImageData];
   }
 
-  return v4;
+  return dataRepresentation2;
 }
 
 - (id)imageData
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
-  if ((*(v3 + 16))(v3, v4))
+  stringRepresentation = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
+  if ((*(v3 + 16))(v3, stringRepresentation))
   {
-    v5 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+    dataRepresentation = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
 
-    if (!v5)
+    if (!dataRepresentation)
     {
       v9.receiver = self;
       v9.super_class = CNPhotoPickerEmojiProviderItem;
-      v6 = [(CNPhotoPickerProviderItem *)&v9 imageData];
+      imageData = [(CNPhotoPickerProviderItem *)&v9 imageData];
       goto LABEL_6;
     }
   }
@@ -240,81 +240,81 @@ LABEL_8:
   {
   }
 
-  v7 = [(CNPhotoPickerEmojiProviderItem *)self generateThumbnailImageDataIfNeeded];
-  v6 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+  generateThumbnailImageDataIfNeeded = [(CNPhotoPickerEmojiProviderItem *)self generateThumbnailImageDataIfNeeded];
+  imageData = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
 LABEL_6:
 
-  return v6;
+  return imageData;
 }
 
-- (void)updateVisualIdentity:(id)a3
+- (void)updateVisualIdentity:(id)identity
 {
   v4.receiver = self;
   v4.super_class = CNPhotoPickerEmojiProviderItem;
-  v3 = a3;
-  [(CNPhotoPickerProviderItem *)&v4 updateVisualIdentity:v3];
-  [v3 updateImageType:{4, v4.receiver, v4.super_class}];
+  identityCopy = identity;
+  [(CNPhotoPickerProviderItem *)&v4 updateVisualIdentity:identityCopy];
+  [identityCopy updateImageType:{4, v4.receiver, v4.super_class}];
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
-  v3 = [v2 color];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  color = [backgroundColorVariant color];
 
-  return v3;
+  return color;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CNPhotoPickerEmojiProviderItem;
-  v4 = [(CNPhotoPickerProviderItem *)&v9 copyWithZone:a3];
+  v4 = [(CNPhotoPickerProviderItem *)&v9 copyWithZone:zone];
   [(CNPhotoPickerEmojiProviderItem *)self size];
   [v4 setSize:?];
-  v5 = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
-  [v4 setStringRepresentation:v5];
+  stringRepresentation = [(CNPhotoPickerEmojiProviderItem *)self stringRepresentation];
+  [v4 setStringRepresentation:stringRepresentation];
 
-  v6 = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
-  [v4 setDataRepresentation:v6];
+  dataRepresentation = [(CNPhotoPickerEmojiProviderItem *)self dataRepresentation];
+  [v4 setDataRepresentation:dataRepresentation];
 
-  v7 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
-  [v4 setBackgroundColorVariant:v7];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  [v4 setBackgroundColorVariant:backgroundColorVariant];
 
   return v4;
 }
 
-- (id)copyWithStringRepresentation:(id)a3
+- (id)copyWithStringRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [CNPhotoPickerEmojiProviderItem alloc];
-  v6 = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
+  backgroundColorVariant = [(CNPhotoPickerEmojiProviderItem *)self backgroundColorVariant];
   [(CNPhotoPickerEmojiProviderItem *)self size];
-  v7 = [(CNPhotoPickerEmojiProviderItem *)v5 initWithStringRepresentation:v4 backgroundColorVariant:v6 size:?];
+  v7 = [(CNPhotoPickerEmojiProviderItem *)v5 initWithStringRepresentation:representationCopy backgroundColorVariant:backgroundColorVariant size:?];
 
   return v7;
 }
 
-- (CNPhotoPickerEmojiProviderItem)initWithStringRepresentation:(id)a3 backgroundColorVariant:(id)a4 size:(CGSize)a5
+- (CNPhotoPickerEmojiProviderItem)initWithStringRepresentation:(id)representation backgroundColorVariant:(id)variant size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v10 = a3;
-  v11 = a4;
+  height = size.height;
+  width = size.width;
+  representationCopy = representation;
+  representationCopy2 = representation;
+  variantCopy = variant;
   v12 = [(CNPhotoPickerProviderItem *)self initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 cropRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_stringRepresentation, v8);
-    v14 = v11;
-    if (!v11)
+    objc_storeStrong(&v12->_stringRepresentation, representationCopy);
+    randomColorVariant = variantCopy;
+    if (!variantCopy)
     {
-      v8 = objc_alloc_init(CNPhotoPickerVariantsManager);
-      v14 = [(CNPhotoPickerVariantsManager *)v8 randomColorVariant];
+      representationCopy = objc_alloc_init(CNPhotoPickerVariantsManager);
+      randomColorVariant = [(CNPhotoPickerVariantsManager *)representationCopy randomColorVariant];
     }
 
-    objc_storeStrong(&v13->_backgroundColorVariant, v14);
-    if (!v11)
+    objc_storeStrong(&v13->_backgroundColorVariant, randomColorVariant);
+    if (!variantCopy)
     {
     }
 
@@ -326,28 +326,28 @@ LABEL_6:
   return v13;
 }
 
-+ (id)suggestedEmojiItemsForString:(id)a3 variantsManager:(id)a4 size:(CGSize)a5 locale:(id)a6
++ (id)suggestedEmojiItemsForString:(id)string variantsManager:(id)manager size:(CGSize)size locale:(id)locale
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  stringCopy = string;
+  managerCopy = manager;
+  localeCopy = locale;
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v29 = v10;
-    v27 = [objc_alloc(MEMORY[0x1E699BB08]) initWithQueryString:v10 andLocale:v12];
-    v13 = [v27 tokens];
-    v28 = v12;
-    v14 = [v12 languageCode];
+    v29 = stringCopy;
+    v27 = [objc_alloc(MEMORY[0x1E699BB08]) initWithQueryString:stringCopy andLocale:localeCopy];
+    tokens = [v27 tokens];
+    v28 = localeCopy;
+    languageCode = [localeCopy languageCode];
     v15 = CEMCreateEmojiLocaleData();
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v13;
+    obj = tokens;
     v32 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v32)
     {
@@ -376,10 +376,10 @@ LABEL_4:
             CFArrayGetValueAtIndex(v19, i);
             v21 = [CNPhotoPickerEmojiProviderItem alloc];
             String = CEMEmojiTokenGetString();
-            v23 = [v11 randomColorVariant];
-            v24 = [(CNPhotoPickerEmojiProviderItem *)v21 initWithStringRepresentation:String backgroundColorVariant:v23 size:width, height];
+            randomColorVariant = [managerCopy randomColorVariant];
+            height = [(CNPhotoPickerEmojiProviderItem *)v21 initWithStringRepresentation:String backgroundColorVariant:randomColorVariant size:width, height];
 
-            v25 = [v16 arrayByAddingObject:v24];
+            v25 = [v16 arrayByAddingObject:height];
 
             v16 = v25;
           }
@@ -410,8 +410,8 @@ LABEL_4:
       CFRelease(v15);
     }
 
-    v12 = v28;
-    v10 = v29;
+    localeCopy = v28;
+    stringCopy = v29;
   }
 
   else
@@ -422,10 +422,10 @@ LABEL_4:
   return v16;
 }
 
-+ (id)thumbnailViewForImage:(id)a3
++ (id)thumbnailViewForImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4;
   v6 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v5, v5}];
   [v6 setAutoresizingMask:18];
@@ -434,16 +434,16 @@ LABEL_4:
   [v7 setCenter:?];
   [v7 setAutoresizingMask:18];
   [v7 setContentMode:2];
-  [v7 setImage:v3];
+  [v7 setImage:imageCopy];
 
   [v6 addSubview:v7];
 
   return v6;
 }
 
-+ (id)addNewEmojiProviderItemWithSize:(CGSize)a3
++ (id)addNewEmojiProviderItemWithSize:(CGSize)size
 {
-  v3 = [[CNPhotoPickerEmojiProviderItem alloc] initWithStringRepresentation:&stru_1F0CE7398 backgroundColorVariant:0 size:a3.width, a3.height];
+  v3 = [[CNPhotoPickerEmojiProviderItem alloc] initWithStringRepresentation:&stru_1F0CE7398 backgroundColorVariant:0 size:size.width, size.height];
 
   return v3;
 }

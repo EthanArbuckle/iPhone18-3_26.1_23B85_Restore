@@ -1,10 +1,10 @@
 @interface NTArticleListSectionFetchDescriptor
 - (NTArticleListSectionFetchDescriptor)init;
-- (NTArticleListSectionFetchDescriptor)initWithArticleListConfiguration:(id)a3;
-- (id)assembleResultsWithCatchUpOperation:(id)a3;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (NTArticleListSectionFetchDescriptor)initWithArticleListConfiguration:(id)configuration;
+- (id)assembleResultsWithCatchUpOperation:(id)operation;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTArticleListSectionFetchDescriptor
@@ -35,10 +35,10 @@
   objc_exception_throw(v6);
 }
 
-- (NTArticleListSectionFetchDescriptor)initWithArticleListConfiguration:(id)a3
+- (NTArticleListSectionFetchDescriptor)initWithArticleListConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTArticleListSectionFetchDescriptor initWithArticleListConfiguration:];
   }
@@ -48,7 +48,7 @@
   v5 = [(NTArticleListSectionFetchDescriptor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     articleListRequest = v5->_articleListRequest;
     v5->_articleListRequest = v6;
   }
@@ -56,24 +56,24 @@
   return v5;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NTArticleListSectionFetchDescriptor *)self articleListRequest];
-  [v4 addArticleListRequest:v5];
+  requestCopy = request;
+  articleListRequest = [(NTArticleListSectionFetchDescriptor *)self articleListRequest];
+  [requestCopy addArticleListRequest:articleListRequest];
 }
 
-- (id)assembleResultsWithCatchUpOperation:(id)a3
+- (id)assembleResultsWithCatchUpOperation:(id)operation
 {
-  v4 = [a3 resultsByArticleListID];
-  v5 = [(NTArticleListSectionFetchDescriptor *)self articleListRequest];
-  v6 = [v5 articleListID];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  resultsByArticleListID = [operation resultsByArticleListID];
+  articleListRequest = [(NTArticleListSectionFetchDescriptor *)self articleListRequest];
+  articleListID = [articleListRequest articleListID];
+  v7 = [resultsByArticleListID objectForKeyedSubscript:articleListID];
 
   return v7;
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
   v3 = [MEMORY[0x277D31040] transformationWithSortMethod:0];
   v4 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v3];
@@ -81,9 +81,9 @@
   return v4;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v5 = [MEMORY[0x277D31018] transformationWithLimit:a4];
+  v5 = [MEMORY[0x277D31018] transformationWithLimit:limit];
   v6 = [[NTFeedTransformationItemFeedTransformation alloc] initWithFeedItemTransformation:v5];
 
   return v6;

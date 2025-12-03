@@ -1,5 +1,5 @@
 @interface ENAuthCacheEntry
-+ (ENAuthCacheEntry)entryWithResult:(id)a3;
++ (ENAuthCacheEntry)entryWithResult:(id)result;
 - (BOOL)isValid;
 @end
 
@@ -7,30 +7,30 @@
 
 - (BOOL)isValid
 {
-  v3 = [(ENAuthCacheEntry *)self cachedDate];
-  [v3 timeIntervalSinceNow];
+  cachedDate = [(ENAuthCacheEntry *)self cachedDate];
+  [cachedDate timeIntervalSinceNow];
   v5 = fabs(v4);
 
-  v6 = [(ENAuthCacheEntry *)self authResult];
-  v7 = [v6 expiration];
-  v8 = [v7 longLongValue];
-  v9 = [(ENAuthCacheEntry *)self authResult];
-  v10 = [v9 currentTime];
-  v11 = (v8 - [v10 longLongValue]) / 1000;
+  authResult = [(ENAuthCacheEntry *)self authResult];
+  expiration = [authResult expiration];
+  longLongValue = [expiration longLongValue];
+  authResult2 = [(ENAuthCacheEntry *)self authResult];
+  currentTime = [authResult2 currentTime];
+  v11 = (longLongValue - [currentTime longLongValue]) / 1000;
 
   return v5 <= v11 * 0.9;
 }
 
-+ (ENAuthCacheEntry)entryWithResult:(id)a3
++ (ENAuthCacheEntry)entryWithResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v3 = a3;
+    resultCopy = result;
     v4 = objc_alloc_init(ENAuthCacheEntry);
-    [(ENAuthCacheEntry *)v4 setAuthResult:v3];
+    [(ENAuthCacheEntry *)v4 setAuthResult:resultCopy];
 
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [(ENAuthCacheEntry *)v4 setCachedDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(ENAuthCacheEntry *)v4 setCachedDate:date];
   }
 
   else

@@ -1,41 +1,41 @@
 @interface HFCameraTimelapsePosterFrameGenerator
 - (HFCameraTimelapseClipInfoProvider)timelapseClipInfoProvider;
-- (HFCameraTimelapsePosterFrameGenerator)initWithTimelapseClipInfoProvider:(id)a3 andDelegate:(id)a4;
+- (HFCameraTimelapsePosterFrameGenerator)initWithTimelapseClipInfoProvider:(id)provider andDelegate:(id)delegate;
 - (HFCameraTimelapsePosterFrameGeneratorDelegate)delegate;
-- (id)_generateOffsetsForHighQualityClip:(id)a3 withStep:(unint64_t)a4;
-- (id)_generateTimelapseOffsetsFromOffsets:(id)a3 forTimelapseDiff:(double)a4;
-- (id)_generationRequestForImageGenerator:(id)a3 withKey:(id)a4;
-- (id)generatePosterFramesForHighQualityClip:(id)a3 withStep:(unint64_t)a4 atSize:(CGSize)a5;
-- (void)_generatePosterFramesForAsset:(id)a3 forOffsets:(id)a4 atSize:(CGSize)a5 withHighQualityClip:(id)a6 andTimelapseOffset:(double)a7;
-- (void)_generatePosterFramesForTimelapseClip:(id)a3 withHighQualityClip:(id)a4 forOffsets:(id)a5 atSize:(CGSize)a6;
-- (void)_removeGenerationRequestForImageGenerator:(id)a3 withKey:(id)a4;
+- (id)_generateOffsetsForHighQualityClip:(id)clip withStep:(unint64_t)step;
+- (id)_generateTimelapseOffsetsFromOffsets:(id)offsets forTimelapseDiff:(double)diff;
+- (id)_generationRequestForImageGenerator:(id)generator withKey:(id)key;
+- (id)generatePosterFramesForHighQualityClip:(id)clip withStep:(unint64_t)step atSize:(CGSize)size;
+- (void)_generatePosterFramesForAsset:(id)asset forOffsets:(id)offsets atSize:(CGSize)size withHighQualityClip:(id)clip andTimelapseOffset:(double)offset;
+- (void)_generatePosterFramesForTimelapseClip:(id)clip withHighQualityClip:(id)qualityClip forOffsets:(id)offsets atSize:(CGSize)size;
+- (void)_removeGenerationRequestForImageGenerator:(id)generator withKey:(id)key;
 - (void)dealloc;
-- (void)imageGenerator:(id)a3 didGenerateImage:(id)a4 requestedTime:(id *)a5 actualTime:(id *)a6 forKey:(id)a7;
-- (void)imageGenerator:(id)a3 failedToGenerateImageForRequestedTime:(id *)a4 actualTime:(id *)a5 forKey:(id)a6;
-- (void)imageGenerator:(id)a3 finishedGeneratingImagesForKey:(id)a4;
+- (void)imageGenerator:(id)generator didGenerateImage:(id)image requestedTime:(id *)time actualTime:(id *)actualTime forKey:(id)key;
+- (void)imageGenerator:(id)generator failedToGenerateImageForRequestedTime:(id *)time actualTime:(id *)actualTime forKey:(id)key;
+- (void)imageGenerator:(id)generator finishedGeneratingImagesForKey:(id)key;
 @end
 
 @implementation HFCameraTimelapsePosterFrameGenerator
 
-- (HFCameraTimelapsePosterFrameGenerator)initWithTimelapseClipInfoProvider:(id)a3 andDelegate:(id)a4
+- (HFCameraTimelapsePosterFrameGenerator)initWithTimelapseClipInfoProvider:(id)provider andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = HFCameraTimelapsePosterFrameGenerator;
   v8 = [(HFCameraTimelapsePosterFrameGenerator *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_timelapseClipInfoProvider, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_timelapseClipInfoProvider, providerCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = dispatch_queue_create("com.apple.home.HFCameraTimelapsePosterFrameGenerator.generationQueue", MEMORY[0x277D85CD8]);
     generationQueue = v9->_generationQueue;
     v9->_generationQueue = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     posterFrameGenerationRequests = v9->_posterFrameGenerationRequests;
-    v9->_posterFrameGenerationRequests = v12;
+    v9->_posterFrameGenerationRequests = dictionary;
   }
 
   return v9;
@@ -43,49 +43,49 @@
 
 - (void)dealloc
 {
-  v3 = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
-  [v3 removeAllObjects];
+  posterFrameGenerationRequests = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
+  [posterFrameGenerationRequests removeAllObjects];
 
   v4.receiver = self;
   v4.super_class = HFCameraTimelapsePosterFrameGenerator;
   [(HFCameraTimelapsePosterFrameGenerator *)&v4 dealloc];
 }
 
-- (id)generatePosterFramesForHighQualityClip:(id)a3 withStep:(unint64_t)a4 atSize:(CGSize)a5
+- (id)generatePosterFramesForHighQualityClip:(id)clip withStep:(unint64_t)step atSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   location[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [(HFCameraTimelapsePosterFrameGenerator *)self timelapseClipInfoProvider];
-  v11 = [v9 startDate];
-  v12 = [v10 timelapseClipPositionForDate:v11 inHighQualityClip:v9];
+  clipCopy = clip;
+  timelapseClipInfoProvider = [(HFCameraTimelapsePosterFrameGenerator *)self timelapseClipInfoProvider];
+  startDate = [clipCopy startDate];
+  v12 = [timelapseClipInfoProvider timelapseClipPositionForDate:startDate inHighQualityClip:clipCopy];
 
   if (v12)
   {
-    v13 = [(HFCameraTimelapsePosterFrameGenerator *)self _generateOffsetsForHighQualityClip:v9 withStep:a4];
+    v13 = [(HFCameraTimelapsePosterFrameGenerator *)self _generateOffsetsForHighQualityClip:clipCopy withStep:step];
     if (+[HFUtilities isInternalTest])
     {
-      v14 = [v12 clip];
-      [(HFCameraTimelapsePosterFrameGenerator *)self _generatePosterFramesForTimelapseClip:v14 withHighQualityClip:v9 forOffsets:v13 atSize:width, height];
+      clip = [v12 clip];
+      [(HFCameraTimelapsePosterFrameGenerator *)self _generatePosterFramesForTimelapseClip:clip withHighQualityClip:clipCopy forOffsets:v13 atSize:width, height];
     }
 
     else
     {
       objc_initWeak(location, self);
-      v17 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+      generationQueue = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __96__HFCameraTimelapsePosterFrameGenerator_generatePosterFramesForHighQualityClip_withStep_atSize___block_invoke;
       v22[3] = &unk_277DFEDB0;
       objc_copyWeak(v26, location);
       v23 = v12;
-      v24 = v9;
+      v24 = clipCopy;
       v18 = v13;
       v25 = v18;
       v26[1] = *&width;
       v26[2] = *&height;
-      dispatch_async(v17, v22);
+      dispatch_async(generationQueue, v22);
 
       v19 = v25;
       v13 = v18;
@@ -101,12 +101,12 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v9;
+      *(location + 4) = clipCopy;
       _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "Error: Poster generator missing timelapse for clip %@", location, 0xCu);
     }
 
-    v16 = [(HFCameraTimelapsePosterFrameGenerator *)self delegate];
-    [v16 failedToFindTimelapseClipForHighQualityClip:v9];
+    delegate = [(HFCameraTimelapsePosterFrameGenerator *)self delegate];
+    [delegate failedToFindTimelapseClipForHighQualityClip:clipCopy];
 
     v13 = MEMORY[0x277CBEBF8];
   }
@@ -123,30 +123,30 @@ void __96__HFCameraTimelapsePosterFrameGenerator_generatePosterFramesForHighQual
   [WeakRetained _generatePosterFramesForTimelapseClip:v2 withHighQualityClip:*(a1 + 40) forOffsets:*(a1 + 48) atSize:{*(a1 + 64), *(a1 + 72)}];
 }
 
-- (void)_generatePosterFramesForTimelapseClip:(id)a3 withHighQualityClip:(id)a4 forOffsets:(id)a5 atSize:(CGSize)a6
+- (void)_generatePosterFramesForTimelapseClip:(id)clip withHighQualityClip:(id)qualityClip forOffsets:(id)offsets atSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(HFCameraTimelapsePosterFrameGenerator *)self timelapseClipInfoProvider];
-  v15 = [v14 timelapseURLForTimelapseClip:v11];
+  clipCopy = clip;
+  qualityClipCopy = qualityClip;
+  offsetsCopy = offsets;
+  timelapseClipInfoProvider = [(HFCameraTimelapsePosterFrameGenerator *)self timelapseClipInfoProvider];
+  v15 = [timelapseClipInfoProvider timelapseURLForTimelapseClip:clipCopy];
 
-  v16 = [v11 startDate];
-  v17 = [v12 startDate];
-  [v16 timeIntervalSinceDate:v17];
+  startDate = [clipCopy startDate];
+  startDate2 = [qualityClipCopy startDate];
+  [startDate timeIntervalSinceDate:startDate2];
   v19 = v18;
 
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v21 = [v15 path];
-  v22 = [v20 fileExistsAtPath:v21];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v15 path];
+  v22 = [defaultManager fileExistsAtPath:path];
 
   if (v22)
   {
     v23 = [MEMORY[0x277CE63D8] assetWithURL:v15];
-    [(HFCameraTimelapsePosterFrameGenerator *)self _generatePosterFramesForAsset:v23 forOffsets:v13 atSize:v12 withHighQualityClip:width andTimelapseOffset:height, v19];
+    [(HFCameraTimelapsePosterFrameGenerator *)self _generatePosterFramesForAsset:v23 forOffsets:offsetsCopy atSize:qualityClipCopy withHighQualityClip:width andTimelapseOffset:height, v19];
   }
 
   else
@@ -155,68 +155,68 @@ void __96__HFCameraTimelapsePosterFrameGenerator_generatePosterFramesForHighQual
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v27 = 138412546;
-      v28 = v11;
+      v28 = clipCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = qualityClipCopy;
       _os_log_error_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_ERROR, "Error: No file for timelapse clip %@ for clip %@", &v27, 0x16u);
     }
 
-    v25 = [(HFCameraTimelapsePosterFrameGenerator *)self delegate];
-    [v25 failedToFindTimelapseClipForHighQualityClip:v12];
+    delegate = [(HFCameraTimelapsePosterFrameGenerator *)self delegate];
+    [delegate failedToFindTimelapseClipForHighQualityClip:qualityClipCopy];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generatePosterFramesForAsset:(id)a3 forOffsets:(id)a4 atSize:(CGSize)a5 withHighQualityClip:(id)a6 andTimelapseOffset:(double)a7
+- (void)_generatePosterFramesForAsset:(id)asset forOffsets:(id)offsets atSize:(CGSize)size withHighQualityClip:(id)clip andTimelapseOffset:(double)offset
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = [v15 uniqueIdentifier];
-  v17 = [v16 UUIDString];
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  offsetsCopy = offsets;
+  clipCopy = clip;
+  uniqueIdentifier = [clipCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
   v18 = [[HFCameraImageGenerator alloc] initWithDelegate:self];
   objc_initWeak(&location, self);
-  v19 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+  generationQueue = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_forOffsets_atSize_withHighQualityClip_andTimelapseOffset___block_invoke;
   block[3] = &unk_277DFEDD8;
   objc_copyWeak(v37, &location);
-  v20 = v15;
+  v20 = clipCopy;
   v34 = v20;
-  v37[1] = *&a7;
+  v37[1] = *&offset;
   v21 = v18;
   v35 = v21;
-  v22 = v17;
+  v22 = uUIDString;
   v36 = v22;
-  dispatch_barrier_async(v19, block);
+  dispatch_barrier_async(generationQueue, block);
 
   if (+[HFUtilities isInternalTest])
   {
-    v23 = [(HFCameraTimelapsePosterFrameGenerator *)self _generateTimelapseOffsetsFromOffsets:v14 forTimelapseDiff:a7];
-    [(HFCameraImageGenerator *)v21 generateImagesFromAsset:v13 forOffsets:v23 atSize:v22 withKey:width, height];
+    v23 = [(HFCameraTimelapsePosterFrameGenerator *)self _generateTimelapseOffsetsFromOffsets:offsetsCopy forTimelapseDiff:offset];
+    [(HFCameraImageGenerator *)v21 generateImagesFromAsset:assetCopy forOffsets:v23 atSize:v22 withKey:width, height];
   }
 
   else
   {
-    v24 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+    generationQueue2 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_forOffsets_atSize_withHighQualityClip_andTimelapseOffset___block_invoke_2;
     v25[3] = &unk_277DFEE00;
     v25[4] = self;
-    v26 = v14;
-    v30 = a7;
+    v26 = offsetsCopy;
+    offsetCopy = offset;
     v27 = v21;
-    v28 = v13;
+    v28 = assetCopy;
     v31 = width;
     v32 = height;
     v29 = v22;
-    dispatch_async(v24, v25);
+    dispatch_async(generationQueue2, v25);
   }
 
   objc_destroyWeak(v37);
@@ -249,25 +249,25 @@ void __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_
   [*(a1 + 48) generateImagesFromAsset:*(a1 + 56) forOffsets:v2 atSize:*(a1 + 64) withKey:{*(a1 + 80), *(a1 + 88)}];
 }
 
-- (id)_generateOffsetsForHighQualityClip:(id)a3 withStep:(unint64_t)a4
+- (id)_generateOffsetsForHighQualityClip:(id)clip withStep:(unint64_t)step
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4)
+  clipCopy = clip;
+  array = [MEMORY[0x277CBEB18] array];
+  if (step)
   {
-    [v5 duration];
+    [clipCopy duration];
     if (v7 > 0.0)
     {
       v8 = 0.0;
-      v9 = a4;
+      stepCopy = step;
       do
       {
         v10 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
-        [v6 addObject:v10];
+        [array addObject:v10];
 
-        v8 = v9;
-        [v5 duration];
-        v9 += a4;
+        v8 = stepCopy;
+        [clipCopy duration];
+        stepCopy += step;
       }
 
       while (v11 > v8);
@@ -277,22 +277,22 @@ void __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_
   else
   {
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-    [v6 addObject:v12];
+    [array addObject:v12];
   }
 
-  return v6;
+  return array;
 }
 
-- (id)_generateTimelapseOffsetsFromOffsets:(id)a3 forTimelapseDiff:(double)a4
+- (id)_generateTimelapseOffsetsFromOffsets:(id)offsets forTimelapseDiff:(double)diff
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  offsetsCopy = offsets;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = offsetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -308,8 +308,8 @@ void __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_
         }
 
         [*(*(&v16 + 1) + 8 * i) doubleValue];
-        v13 = [MEMORY[0x277CCABB0] numberWithDouble:v12 - a4];
-        [v6 addObject:v13];
+        diff = [MEMORY[0x277CCABB0] numberWithDouble:v12 - diff];
+        [array addObject:diff];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -320,29 +320,29 @@ void __128__HFCameraTimelapsePosterFrameGenerator__generatePosterFramesForAsset_
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (void)imageGenerator:(id)a3 didGenerateImage:(id)a4 requestedTime:(id *)a5 actualTime:(id *)a6 forKey:(id)a7
+- (void)imageGenerator:(id)generator didGenerateImage:(id)image requestedTime:(id *)time actualTime:(id *)actualTime forKey:(id)key
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  generatorCopy = generator;
+  imageCopy = image;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v14 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+  generationQueue = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __105__HFCameraTimelapsePosterFrameGenerator_imageGenerator_didGenerateImage_requestedTime_actualTime_forKey___block_invoke;
   v18[3] = &unk_277DFEE28;
   objc_copyWeak(&v22, &location);
-  v19 = v11;
-  v20 = v13;
-  v23 = *a5;
-  v21 = v12;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  dispatch_barrier_async(v14, v18);
+  v19 = generatorCopy;
+  v20 = keyCopy;
+  v23 = *time;
+  v21 = imageCopy;
+  v15 = imageCopy;
+  v16 = keyCopy;
+  v17 = generatorCopy;
+  dispatch_barrier_async(generationQueue, v18);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -363,23 +363,23 @@ void __105__HFCameraTimelapsePosterFrameGenerator_imageGenerator_didGenerateImag
   [v7 didGeneratePosterFrame:v8 forHighQualityClip:v9 atOffset:v6 withTimelapseOffset:Seconds];
 }
 
-- (void)imageGenerator:(id)a3 failedToGenerateImageForRequestedTime:(id *)a4 actualTime:(id *)a5 forKey:(id)a6
+- (void)imageGenerator:(id)generator failedToGenerateImageForRequestedTime:(id *)time actualTime:(id *)actualTime forKey:(id)key
 {
-  v9 = a3;
-  v10 = a6;
+  generatorCopy = generator;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v11 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+  generationQueue = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__HFCameraTimelapsePosterFrameGenerator_imageGenerator_failedToGenerateImageForRequestedTime_actualTime_forKey___block_invoke;
   block[3] = &unk_277DFEE50;
   objc_copyWeak(&v17, &location);
-  v15 = v9;
-  v16 = v10;
-  v18 = *a4;
-  v12 = v10;
-  v13 = v9;
-  dispatch_barrier_async(v11, block);
+  v15 = generatorCopy;
+  v16 = keyCopy;
+  v18 = *time;
+  v12 = keyCopy;
+  v13 = generatorCopy;
+  dispatch_barrier_async(generationQueue, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -398,22 +398,22 @@ void __112__HFCameraTimelapsePosterFrameGenerator_imageGenerator_failedToGenerat
   [v7 failedToGeneratePosterFrameForHighQualityClip:v8 atOffset:v6];
 }
 
-- (void)imageGenerator:(id)a3 finishedGeneratingImagesForKey:(id)a4
+- (void)imageGenerator:(id)generator finishedGeneratingImagesForKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  generatorCopy = generator;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
+  generationQueue = [(HFCameraTimelapsePosterFrameGenerator *)self generationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__HFCameraTimelapsePosterFrameGenerator_imageGenerator_finishedGeneratingImagesForKey___block_invoke;
   v11[3] = &unk_277DF6458;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, v11);
+  v12 = generatorCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = generatorCopy;
+  dispatch_barrier_async(generationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -425,12 +425,12 @@ void __87__HFCameraTimelapsePosterFrameGenerator_imageGenerator_finishedGenerati
   [WeakRetained _removeGenerationRequestForImageGenerator:*(a1 + 32) withKey:*(a1 + 40)];
 }
 
-- (id)_generationRequestForImageGenerator:(id)a3 withKey:(id)a4
+- (id)_generationRequestForImageGenerator:(id)generator withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  generatorCopy = generator;
+  keyCopy = key;
+  posterFrameGenerationRequests = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
+  v9 = [posterFrameGenerationRequests objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
@@ -438,7 +438,7 @@ void __87__HFCameraTimelapsePosterFrameGenerator_imageGenerator_finishedGenerati
     v12[1] = 3221225472;
     v12[2] = __85__HFCameraTimelapsePosterFrameGenerator__generationRequestForImageGenerator_withKey___block_invoke;
     v12[3] = &unk_277DFEE78;
-    v13 = v6;
+    v13 = generatorCopy;
     v10 = [v9 na_firstObjectPassingTest:v12];
   }
 
@@ -458,19 +458,19 @@ uint64_t __85__HFCameraTimelapsePosterFrameGenerator__generationRequestForImageG
   return v4;
 }
 
-- (void)_removeGenerationRequestForImageGenerator:(id)a3 withKey:(id)a4
+- (void)_removeGenerationRequestForImageGenerator:(id)generator withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  generatorCopy = generator;
+  keyCopy = key;
+  posterFrameGenerationRequests = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
+  v9 = [posterFrameGenerationRequests objectForKeyedSubscript:keyCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__HFCameraTimelapsePosterFrameGenerator__removeGenerationRequestForImageGenerator_withKey___block_invoke;
   v13[3] = &unk_277DFEE78;
-  v14 = v6;
-  v10 = v6;
+  v14 = generatorCopy;
+  v10 = generatorCopy;
   v11 = [v9 na_firstObjectPassingTest:v13];
   if (v11)
   {
@@ -479,8 +479,8 @@ uint64_t __85__HFCameraTimelapsePosterFrameGenerator__generationRequestForImageG
 
   if (![v9 count])
   {
-    v12 = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
-    [v12 setObject:0 forKeyedSubscript:v7];
+    posterFrameGenerationRequests2 = [(HFCameraTimelapsePosterFrameGenerator *)self posterFrameGenerationRequests];
+    [posterFrameGenerationRequests2 setObject:0 forKeyedSubscript:keyCopy];
   }
 }
 

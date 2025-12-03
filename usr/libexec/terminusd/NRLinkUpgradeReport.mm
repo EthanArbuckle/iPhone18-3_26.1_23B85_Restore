@@ -1,14 +1,14 @@
 @interface NRLinkUpgradeReport
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation NRLinkUpgradeReport
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       advice = self->_advice;
       if (v5)
       {
@@ -58,13 +58,13 @@ LABEL_12:
   {
     if (!advice)
     {
-      v5 = @"None";
+      advice = @"None";
       goto LABEL_13;
     }
 
     if (advice == 1)
     {
-      v5 = @"BluetoothDefault";
+      advice = @"BluetoothDefault";
       goto LABEL_13;
     }
   }
@@ -74,18 +74,18 @@ LABEL_12:
     switch(advice)
     {
       case 2:
-        v5 = @"BluetoothClassic";
+        advice = @"BluetoothClassic";
         goto LABEL_13;
       case 4:
-        v5 = @"WiFi";
+        advice = @"WiFi";
         goto LABEL_13;
       case 128:
-        v5 = @"NoUpgrade";
+        advice = @"NoUpgrade";
         goto LABEL_13;
     }
   }
 
-  v5 = [[NSString alloc] initWithFormat:@"Unknown(%llu)", advice];
+  advice = [[NSString alloc] initWithFormat:@"Unknown(%llu)", advice];
 LABEL_13:
   reason = self->_reason;
   v7 = objc_alloc_init(NSMutableArray);
@@ -401,7 +401,7 @@ LABEL_38:
     v9 = @"<none>";
   }
 
-  v10 = [v3 initWithFormat:@"[%@ %@ since:%.2f rate:%llu/hr]", v5, v9, *&self->_timeSinceLastAdvice, self->_rateOfAdvicePerHour];
+  v10 = [v3 initWithFormat:@"[%@ %@ since:%.2f rate:%llu/hr]", advice, v9, *&self->_timeSinceLastAdvice, self->_rateOfAdvicePerHour];
 
   return v10;
 }

@@ -1,19 +1,19 @@
 @interface HMDRapportDeviceClientWrapper
 + (id)logCategory;
-- (HMDRapportDeviceClientWrapper)initWithClient:(id)a3;
-- (void)_completeQueuedRequestsWithError:(id)a3;
-- (void)_queueRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)activateWithCompletion:(id)a3;
+- (HMDRapportDeviceClientWrapper)initWithClient:(id)client;
+- (void)_completeQueuedRequestsWithError:(id)error;
+- (void)_queueRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)sendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
+- (void)sendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
 @end
 
 @implementation HMDRapportDeviceClientWrapper
 
-- (void)_completeQueuedRequestsWithError:(id)a3
+- (void)_completeQueuedRequestsWithError:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     requestQueue = self->_requestQueue;
@@ -27,14 +27,14 @@
   if (([(NSMutableArray *)requestQueue hmf_isEmpty]& 1) == 0)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
       if (self)
       {
-        v9 = v7->_requestQueue;
+        v9 = selfCopy->_requestQueue;
       }
 
       else
@@ -47,7 +47,7 @@
       v23 = v6;
       if (self)
       {
-        client = v7->_client;
+        client = selfCopy->_client;
       }
 
       else
@@ -56,15 +56,15 @@
       }
 
       v13 = client;
-      v14 = [(RPCompanionLinkClient *)v13 destinationDevice];
+      destinationDevice = [(RPCompanionLinkClient *)v13 destinationDevice];
       *buf = 138544130;
       v31 = v24;
       v32 = 2048;
       v33 = v11;
       v34 = 2112;
-      v35 = v14;
+      v35 = destinationDevice;
       v36 = 2112;
-      v37 = v4;
+      v37 = errorCopy;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Completing %lu queued request(s) to device: %@, with error: %@", buf, 0x2Au);
     }
 
@@ -75,7 +75,7 @@
     v26 = 0u;
     if (self)
     {
-      v15 = v7->_requestQueue;
+      v15 = selfCopy->_requestQueue;
     }
 
     else
@@ -109,7 +109,7 @@
 
     if (self)
     {
-      v21 = v7->_requestQueue;
+      v21 = selfCopy->_requestQueue;
     }
 
     else
@@ -123,22 +123,22 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queueRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)_queueRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    if (v15)
+    if (selfCopy)
     {
-      client = v15->_client;
+      client = selfCopy->_client;
     }
 
     else
@@ -147,19 +147,19 @@
     }
 
     v19 = client;
-    v20 = [(RPCompanionLinkClient *)v19 destinationDevice];
+    destinationDevice = [(RPCompanionLinkClient *)v19 destinationDevice];
     *buf = 138543618;
     v36 = v17;
     v37 = 2112;
-    v38 = v20;
+    v38 = destinationDevice;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Queuing request to device: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  objc_initWeak(buf, v15);
-  if (v15)
+  objc_initWeak(buf, selfCopy);
+  if (selfCopy)
   {
-    requestQueue = v15->_requestQueue;
+    requestQueue = selfCopy->_requestQueue;
   }
 
   else
@@ -173,13 +173,13 @@
   aBlock[2] = __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_responseHandler___block_invoke;
   aBlock[3] = &unk_278672B10;
   objc_copyWeak(&v34, buf);
-  v23 = v13;
+  v23 = handlerCopy;
   v33 = v23;
-  v24 = v10;
+  v24 = dCopy;
   v30 = v24;
-  v25 = v11;
+  v25 = requestCopy;
   v31 = v25;
-  v26 = v12;
+  v26 = optionsCopy;
   v32 = v26;
   v27 = _Block_copy(aBlock);
   [(NSMutableArray *)v22 addObject:v27];
@@ -216,13 +216,13 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
   }
 }
 
-- (void)sendRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (self && (activateState = self->_activateState, activateState >= 2))
   {
     if (activateState == 3)
@@ -231,7 +231,7 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
       v16 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3212];
       v17 = [v15 hmInternalErrorWithCode:3203 underlyingError:v16];
       v18 = [v15 hmErrorWithCode:54 description:@"Communication failure." reason:@"Cannot send request on client that failed to activate." suggestion:0 underlyingError:v17];
-      (*(v13 + 2))(v13, 0, 0, v18);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v18);
     }
 
     else
@@ -239,7 +239,7 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
       if (activateState != 2)
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
         {
@@ -255,13 +255,13 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
         [v25 submitLogEvent:v24];
       }
 
-      [(RPCompanionLinkClient *)self->_client sendRequestID:v10 request:v11 options:v12 responseHandler:v13];
+      [(RPCompanionLinkClient *)self->_client sendRequestID:dCopy request:requestCopy options:optionsCopy responseHandler:handlerCopy];
     }
   }
 
   else
   {
-    [(HMDRapportDeviceClientWrapper *)self _queueRequestID:v10 request:v11 options:v12 responseHandler:v13];
+    [(HMDRapportDeviceClientWrapper *)self _queueRequestID:dCopy request:requestCopy options:optionsCopy responseHandler:handlerCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -295,16 +295,16 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
   [(RPCompanionLinkClient *)client invalidate];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     if (self->_activateState)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
@@ -322,7 +322,7 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
       if (self->_activateState)
       {
         v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1 description:@"Unexpected error." reason:@"Activate called more than once." suggestion:0];
-        v4[2](v4, v12);
+        completionCopy[2](completionCopy, v12);
         goto LABEL_11;
       }
     }
@@ -331,14 +331,14 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy2 = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
     if (self)
     {
-      client = v6->_client;
+      client = selfCopy2->_client;
     }
 
     else
@@ -347,26 +347,26 @@ void __81__HMDRapportDeviceClientWrapper__queueRequestID_request_options_respons
     }
 
     v10 = client;
-    v11 = [(RPCompanionLinkClient *)v10 destinationDevice];
+    destinationDevice = [(RPCompanionLinkClient *)v10 destinationDevice];
     *buf = 138543618;
     v23 = v8;
     v24 = 2112;
-    v25 = v11;
+    v25 = destinationDevice;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Activating client for destination: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   if (self)
   {
-    self = v6->_client;
+    self = selfCopy2->_client;
   }
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__HMDRapportDeviceClientWrapper_activateWithCompletion___block_invoke;
   v20[3] = &unk_278689A68;
-  v20[4] = v6;
-  v21 = v4;
+  v20[4] = selfCopy2;
+  v21 = completionCopy;
   [(HMDRapportDeviceClientWrapper *)self activateWithCompletion:v20];
   v12 = v21;
 LABEL_11:
@@ -405,16 +405,16 @@ void __56__HMDRapportDeviceClientWrapper_activateWithCompletion___block_invoke(u
   }
 }
 
-- (HMDRapportDeviceClientWrapper)initWithClient:(id)a3
+- (HMDRapportDeviceClientWrapper)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = HMDRapportDeviceClientWrapper;
   v6 = [(HMDRapportDeviceClientWrapper *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     requestQueue = v7->_requestQueue;
     v7->_requestQueue = v8;

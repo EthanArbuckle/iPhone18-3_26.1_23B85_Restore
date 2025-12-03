@@ -1,53 +1,53 @@
 @interface ATXModeConfigurationUIFlowMetricLogger
-- (ATXModeConfigurationUIFlowMetricLogger)initWithContactStore:(id)a3;
-- (ATXModeConfigurationUIFlowMetricLogger)initWithFocusModeSignalsLogger:(id)a3 contactStore:(id)a4;
-- (ATXModeConfigurationUIFlowMetricLogger)initWithModeConfigurationUIFlowLoggingBiomeStream:(id)a3 focusModeSignalsLogger:(id)a4 contactStore:(id)a5;
+- (ATXModeConfigurationUIFlowMetricLogger)initWithContactStore:(id)store;
+- (ATXModeConfigurationUIFlowMetricLogger)initWithFocusModeSignalsLogger:(id)logger contactStore:(id)store;
+- (ATXModeConfigurationUIFlowMetricLogger)initWithModeConfigurationUIFlowLoggingBiomeStream:(id)stream focusModeSignalsLogger:(id)logger contactStore:(id)store;
 - (id)modeConfigurationUIFlowBookmark;
-- (unint64_t)numEntitiesAdded:(id)a3;
-- (unint64_t)numEntitiesRemoved:(id)a3;
-- (unint64_t)numSuggestedEntitiesAdded:(id)a3;
-- (unint64_t)numSuggestedEntitiesRemoved:(id)a3;
-- (void)logCompletion:(id)a3;
-- (void)logModeConfigurationUIFlowMetricWithXPCActivity:(id)a3;
-- (void)writeBookmarkToFile:(id)a3;
+- (unint64_t)numEntitiesAdded:(id)added;
+- (unint64_t)numEntitiesRemoved:(id)removed;
+- (unint64_t)numSuggestedEntitiesAdded:(id)added;
+- (unint64_t)numSuggestedEntitiesRemoved:(id)removed;
+- (void)logCompletion:(id)completion;
+- (void)logModeConfigurationUIFlowMetricWithXPCActivity:(id)activity;
+- (void)writeBookmarkToFile:(id)file;
 @end
 
 @implementation ATXModeConfigurationUIFlowMetricLogger
 
-- (ATXModeConfigurationUIFlowMetricLogger)initWithContactStore:(id)a3
+- (ATXModeConfigurationUIFlowMetricLogger)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(ATXModeConfigurationUIFlowMetricLogger *)self initWithModeConfigurationUIFlowLoggingBiomeStream:v5 focusModeSignalsLogger:v6 contactStore:v4];
+  v7 = [(ATXModeConfigurationUIFlowMetricLogger *)self initWithModeConfigurationUIFlowLoggingBiomeStream:v5 focusModeSignalsLogger:v6 contactStore:storeCopy];
 
   return v7;
 }
 
-- (ATXModeConfigurationUIFlowMetricLogger)initWithFocusModeSignalsLogger:(id)a3 contactStore:(id)a4
+- (ATXModeConfigurationUIFlowMetricLogger)initWithFocusModeSignalsLogger:(id)logger contactStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  loggerCopy = logger;
   v8 = objc_opt_new();
-  v9 = [(ATXModeConfigurationUIFlowMetricLogger *)self initWithModeConfigurationUIFlowLoggingBiomeStream:v8 focusModeSignalsLogger:v7 contactStore:v6];
+  v9 = [(ATXModeConfigurationUIFlowMetricLogger *)self initWithModeConfigurationUIFlowLoggingBiomeStream:v8 focusModeSignalsLogger:loggerCopy contactStore:storeCopy];
 
   return v9;
 }
 
-- (ATXModeConfigurationUIFlowMetricLogger)initWithModeConfigurationUIFlowLoggingBiomeStream:(id)a3 focusModeSignalsLogger:(id)a4 contactStore:(id)a5
+- (ATXModeConfigurationUIFlowMetricLogger)initWithModeConfigurationUIFlowLoggingBiomeStream:(id)stream focusModeSignalsLogger:(id)logger contactStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  loggerCopy = logger;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = ATXModeConfigurationUIFlowMetricLogger;
   v12 = [(ATXModeConfigurationUIFlowMetricLogger *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_modeConfigurationUIFlowLoggingBiomeStream, a3);
-    objc_storeStrong(&v13->_focusModeSignalsLogger, a4);
-    v14 = [[ATXFocusModeContactsMetricLogger alloc] initWithContactStore:v11];
+    objc_storeStrong(&v12->_modeConfigurationUIFlowLoggingBiomeStream, stream);
+    objc_storeStrong(&v13->_focusModeSignalsLogger, logger);
+    v14 = [[ATXFocusModeContactsMetricLogger alloc] initWithContactStore:storeCopy];
     focusModeContactsLogger = v13->_focusModeContactsLogger;
     v13->_focusModeContactsLogger = v14;
   }
@@ -72,21 +72,21 @@
   return v5;
 }
 
-- (void)logCompletion:(id)a3
+- (void)logCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 state];
+  completionCopy = completion;
+  state = [completionCopy state];
   v5 = __atxlog_handle_hero();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (state)
   {
     if (v6)
     {
-      v7 = [v3 error];
-      v8 = [v7 description];
+      error = [completionCopy error];
+      v8 = [error description];
       v10 = 136315138;
-      v11 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Error in receiving events from modeConfigurationUIFlowLogging stream: %s\n", &v10, 0xCu);
     }
   }
@@ -100,10 +100,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logModeConfigurationUIFlowMetricWithXPCActivity:(id)a3
+- (void)logModeConfigurationUIFlowMetricWithXPCActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ATXModeConfigurationUIFlowMetricLogger *)self modeConfigurationUIFlowBookmark];
+  activityCopy = activity;
+  modeConfigurationUIFlowBookmark = [(ATXModeConfigurationUIFlowMetricLogger *)self modeConfigurationUIFlowBookmark];
   modeConfigurationUIFlowLoggingBiomeStream = self->_modeConfigurationUIFlowLoggingBiomeStream;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v8 = [(ATXModeConfigurationUIFlowLoggingBiomeStream *)modeConfigurationUIFlowLoggingBiomeStream publisherFromStartTime:v7 + -1209600.0];
@@ -111,24 +111,24 @@
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = 0;
-  v9 = [v5 bookmark];
+  bookmark = [modeConfigurationUIFlowBookmark bookmark];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlowMetricWithXPCActivity___block_invoke;
   v16[3] = &unk_2785A0308;
   v16[4] = self;
   v18 = v19;
-  v10 = v5;
+  v10 = modeConfigurationUIFlowBookmark;
   v17 = v10;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlowMetricWithXPCActivity___block_invoke_28;
   v13[3] = &unk_278597C90;
   v13[4] = self;
-  v11 = v4;
+  v11 = activityCopy;
   v14 = v11;
   v15 = v19;
-  v12 = [v8 drivableSinkWithBookmark:v9 completion:v16 shouldContinue:v13];
+  v12 = [v8 drivableSinkWithBookmark:bookmark completion:v16 shouldContinue:v13];
 
   _Block_object_dispose(v19, 8);
 }
@@ -219,10 +219,10 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
   return v15 ^ 1u;
 }
 
-- (void)writeBookmarkToFile:(id)a3
+- (void)writeBookmarkToFile:(id)file
 {
   v6 = 0;
-  [a3 saveBookmarkWithError:&v6];
+  [file saveBookmarkWithError:&v6];
   v4 = v6;
   if (v4)
   {
@@ -234,20 +234,20 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
   }
 }
 
-- (unint64_t)numEntitiesAdded:(id)a3
+- (unint64_t)numEntitiesAdded:(id)added
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  addedCopy = added;
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  v5 = [v3 previousEntityIdentifiers];
-  v6 = [v4 initWithArray:v5];
+  previousEntityIdentifiers = [addedCopy previousEntityIdentifiers];
+  v6 = [v4 initWithArray:previousEntityIdentifiers];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v3 currentEntityIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  currentEntityIdentifiers = [addedCopy currentEntityIdentifiers];
+  v8 = [currentEntityIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -259,13 +259,13 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentEntityIdentifiers);
         }
 
         v10 += [v6 containsObject:*(*(&v15 + 1) + 8 * i)] ^ 1;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [currentEntityIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -280,20 +280,20 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
   return v10;
 }
 
-- (unint64_t)numEntitiesRemoved:(id)a3
+- (unint64_t)numEntitiesRemoved:(id)removed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  removedCopy = removed;
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  v5 = [v3 currentEntityIdentifiers];
-  v6 = [v4 initWithArray:v5];
+  currentEntityIdentifiers = [removedCopy currentEntityIdentifiers];
+  v6 = [v4 initWithArray:currentEntityIdentifiers];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v3 previousEntityIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  previousEntityIdentifiers = [removedCopy previousEntityIdentifiers];
+  v8 = [previousEntityIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -305,13 +305,13 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(previousEntityIdentifiers);
         }
 
         v10 += [v6 containsObject:*(*(&v15 + 1) + 8 * i)] ^ 1;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [previousEntityIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -326,24 +326,24 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
   return v10;
 }
 
-- (unint64_t)numSuggestedEntitiesAdded:(id)a3
+- (unint64_t)numSuggestedEntitiesAdded:(id)added
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  addedCopy = added;
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  v5 = [v3 suggestedEntityIdentifiers];
-  v6 = [v4 initWithArray:v5];
+  suggestedEntityIdentifiers = [addedCopy suggestedEntityIdentifiers];
+  v6 = [v4 initWithArray:suggestedEntityIdentifiers];
 
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
-  v8 = [v3 previousEntityIdentifiers];
-  v9 = [v7 initWithArray:v8];
+  previousEntityIdentifiers = [addedCopy previousEntityIdentifiers];
+  v9 = [v7 initWithArray:previousEntityIdentifiers];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v3 currentEntityIdentifiers];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  currentEntityIdentifiers = [addedCopy currentEntityIdentifiers];
+  v11 = [currentEntityIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -355,7 +355,7 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(currentEntityIdentifiers);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
@@ -365,7 +365,7 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [currentEntityIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
@@ -380,19 +380,19 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
   return v13;
 }
 
-- (unint64_t)numSuggestedEntitiesRemoved:(id)a3
+- (unint64_t)numSuggestedEntitiesRemoved:(id)removed
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  removedCopy = removed;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CEB440] sharedInstance];
-  v7 = [v3 dndModeUUID];
-  v8 = [v6 atxModeForDNDMode:v7];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  dndModeUUID = [removedCopy dndModeUUID];
+  v8 = [mEMORY[0x277CEB440] atxModeForDNDMode:dndModeUUID];
 
-  if ([v3 modeConfigurationEntityType])
+  if ([removedCopy modeConfigurationEntityType])
   {
-    if ([v3 modeConfigurationEntityType] != 1)
+    if ([removedCopy modeConfigurationEntityType] != 1)
     {
       goto LABEL_19;
     }
@@ -420,8 +420,8 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v39 + 1) + 8 * i) identifier];
-          [v5 addObject:v17];
+          identifier = [*(*(&v39 + 1) + 8 * i) identifier];
+          [v5 addObject:identifier];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -452,8 +452,8 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
             objc_enumerationMutation(v12);
           }
 
-          v22 = [*(*(&v43 + 1) + 8 * j) identifier];
-          [v5 addObject:v22];
+          identifier2 = [*(*(&v43 + 1) + 8 * j) identifier];
+          [v5 addObject:identifier2];
         }
 
         v19 = [v12 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -465,15 +465,15 @@ uint64_t __90__ATXModeConfigurationUIFlowMetricLogger_logModeConfigurationUIFlow
 
 LABEL_19:
   v23 = objc_alloc(MEMORY[0x277CBEB98]);
-  v24 = [v3 currentEntityIdentifiers];
-  v25 = [v23 initWithArray:v24];
+  currentEntityIdentifiers = [removedCopy currentEntityIdentifiers];
+  v25 = [v23 initWithArray:currentEntityIdentifiers];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v26 = [v3 previousEntityIdentifiers];
-  v27 = [v26 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  previousEntityIdentifiers = [removedCopy previousEntityIdentifiers];
+  v27 = [previousEntityIdentifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v27)
   {
     v28 = v27;
@@ -485,7 +485,7 @@ LABEL_19:
       {
         if (*v36 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(previousEntityIdentifiers);
         }
 
         v32 = *(*(&v35 + 1) + 8 * k);
@@ -495,7 +495,7 @@ LABEL_19:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v28 = [previousEntityIdentifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
     }
 
     while (v28);

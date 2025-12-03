@@ -2,21 +2,21 @@
 - (TSUProgressContext)init;
 - (double)currentPosition;
 - (double)overallProgress;
-- (id)addProgressObserverBlock:(id)a3;
+- (id)addProgressObserverBlock:(id)block;
 - (id)description;
-- (void)addProgressObserver:(id)a3 selector:(SEL)a4;
-- (void)advanceProgress:(double)a3;
-- (void)createStageWithSteps:(double)a3;
-- (void)createStageWithSteps:(double)a3 takingSteps:(double)a4;
+- (void)addProgressObserver:(id)observer selector:(SEL)selector;
+- (void)advanceProgress:(double)progress;
+- (void)createStageWithSteps:(double)steps;
+- (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps;
 - (void)dealloc;
 - (void)endStage;
-- (void)nextSubStageWillTakeThisManyOfMySteps:(double)a3;
-- (void)removeProgressObserver:(id)a3;
-- (void)reportProgress:(double)a3 overallProgress:(double)a4;
+- (void)nextSubStageWillTakeThisManyOfMySteps:(double)steps;
+- (void)removeProgressObserver:(id)observer;
+- (void)reportProgress:(double)progress overallProgress:(double)overallProgress;
 - (void)reset;
-- (void)setMessage:(id)a3;
-- (void)setPercentageProgressFromTCProgressContext:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)setMessage:(id)message;
+- (void)setPercentageProgressFromTCProgressContext:(double)context;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation TSUProgressContext
@@ -32,56 +32,56 @@
   objc_sync_exit(self);
 }
 
-- (void)addProgressObserver:(id)a3 selector:(SEL)a4
+- (void)addProgressObserver:(id)observer selector:(SEL)selector
 {
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v7 addObserver:a3 selector:a4 name:@"TSUProgressNotification" object:self];
+  [defaultCenter addObserver:observer selector:selector name:@"TSUProgressNotification" object:self];
 }
 
-- (id)addProgressObserverBlock:(id)a3
+- (id)addProgressObserverBlock:(id)block
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_27706DBDC;
   v7[3] = &unk_27A701DF0;
-  v7[4] = a3;
-  return [v5 tsu_addObserverForName:@"TSUProgressNotification" object:self queue:0 usingBlock:v7];
+  v7[4] = block;
+  return [defaultCenter tsu_addObserverForName:@"TSUProgressNotification" object:self queue:0 usingBlock:v7];
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  MEMORY[0x2821F9670](v3, sel_removeObserver_name_object_);
+  MEMORY[0x2821F9670](defaultCenter, sel_removeObserver_name_object_);
 }
 
-- (void)createStageWithSteps:(double)a3 takingSteps:(double)a4
+- (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps
 {
-  if (a3 >= 0.0)
+  if (steps >= 0.0)
   {
-    v6 = a3;
+    stepsCopy = steps;
   }
 
   else
   {
-    v6 = 1.0;
+    stepsCopy = 1.0;
   }
 
-  if (a4 <= 0.0 && TSUDefaultCat_init_token != -1)
+  if (takingSteps <= 0.0 && TSUDefaultCat_init_token != -1)
   {
     sub_277113A64();
   }
 
   objc_sync_enter(self);
   m_currentStage = self->m_currentStage;
-  self->m_currentStage = [[TSUProgressStage alloc] initWithSteps:self takingSteps:v6 inContext:a4];
+  self->m_currentStage = [[TSUProgressStage alloc] initWithSteps:self takingSteps:stepsCopy inContext:takingSteps];
 
   objc_sync_exit(self);
 }
 
-- (void)createStageWithSteps:(double)a3
+- (void)createStageWithSteps:(double)steps
 {
   objc_sync_enter(self);
   m_currentStage = self->m_currentStage;
@@ -96,13 +96,13 @@
   MEMORY[0x2821F9670](self, sel_createStageWithSteps_takingSteps_);
 }
 
-- (void)nextSubStageWillTakeThisManyOfMySteps:(double)a3
+- (void)nextSubStageWillTakeThisManyOfMySteps:(double)steps
 {
   objc_sync_enter(self);
   m_currentStage = self->m_currentStage;
   if (m_currentStage)
   {
-    [(TSUProgressStage *)m_currentStage setNextSubStageParentSize:a3];
+    [(TSUProgressStage *)m_currentStage setNextSubStageParentSize:steps];
   }
 
   objc_sync_exit(self);
@@ -118,7 +118,7 @@
   objc_sync_exit(self);
 }
 
-- (void)advanceProgress:(double)a3
+- (void)advanceProgress:(double)progress
 {
   objc_sync_enter(self);
   [-[TSUProgressContext currentStage](self "currentStage")];
@@ -126,7 +126,7 @@
   objc_sync_exit(self);
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   objc_sync_enter(self);
   [-[TSUProgressContext currentStage](self "currentStage")];
@@ -134,7 +134,7 @@
   objc_sync_exit(self);
 }
 
-- (void)setPercentageProgressFromTCProgressContext:(double)a3
+- (void)setPercentageProgressFromTCProgressContext:(double)context
 {
   objc_sync_enter(self);
   [-[TSUProgressContext currentStage](self "currentStage")];
@@ -142,26 +142,26 @@
   objc_sync_exit(self);
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  if (!a3)
+  if (!message)
   {
-    a3 = &stru_28862C2A0;
+    message = &stru_28862C2A0;
   }
 
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:@"TSUProgressMessage"];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithObject:message forKey:@"TSUProgressMessage"];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v5 postNotificationName:@"TSUProgressNotification" object:self userInfo:v4];
+  [defaultCenter postNotificationName:@"TSUProgressNotification" object:self userInfo:v4];
 }
 
 - (double)currentPosition
 {
   objc_sync_enter(self);
-  v3 = [(TSUProgressContext *)self currentStage];
-  if (v3)
+  currentStage = [(TSUProgressContext *)self currentStage];
+  if (currentStage)
   {
-    [v3 currentPosition];
+    [currentStage currentPosition];
     m_lastProgressReport = v4;
   }
 
@@ -177,10 +177,10 @@
 - (double)overallProgress
 {
   objc_sync_enter(self);
-  v3 = [(TSUProgressContext *)self currentStage];
-  if (v3)
+  currentStage = [(TSUProgressContext *)self currentStage];
+  if (currentStage)
   {
-    [v3 overallProgress];
+    [currentStage overallProgress];
     m_lastOverallProgress = v4;
   }
 
@@ -200,21 +200,21 @@
   v5 = v4;
   [(TSUProgressContext *)self overallProgress];
   v7 = [v3 stringWithFormat:@"TSUProgressContext %p: currentPosition = %g, overallProgress = %g", self, v5, v6];
-  v8 = [(TSUProgressContext *)self currentStage];
-  [v7 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"\ncurrentStage: %@", v8)}];
-  v9 = [MEMORY[0x277CCAB68] string];
-  v10 = [v8 parentStage];
-  if (v10)
+  currentStage = [(TSUProgressContext *)self currentStage];
+  [v7 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"\ncurrentStage: %@", currentStage)}];
+  string = [MEMORY[0x277CCAB68] string];
+  parentStage = [currentStage parentStage];
+  if (parentStage)
   {
-    v11 = v10;
+    parentStage2 = parentStage;
     do
     {
-      [v9 appendString:@"    "];
-      [v7 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"\n%@parent: %@", v9, v11)}];
-      v11 = [v11 parentStage];
+      [string appendString:@"    "];
+      [v7 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"\n%@parent: %@", string, parentStage2)}];
+      parentStage2 = [parentStage2 parentStage];
     }
 
-    while (v11);
+    while (parentStage2);
   }
 
   return v7;
@@ -245,20 +245,20 @@
   [(TSUProgressContext *)&v3 dealloc];
 }
 
-- (void)reportProgress:(double)a3 overallProgress:(double)a4
+- (void)reportProgress:(double)progress overallProgress:(double)overallProgress
 {
   objc_sync_enter(self);
-  self->m_lastOverallProgress = a4;
+  self->m_lastOverallProgress = overallProgress;
   m_lastReportTime = self->m_lastReportTime;
-  if (!m_lastReportTime || ([(NSDate *)m_lastReportTime timeIntervalSinceNow], a3 >= 100.0) || v8 < -0.1 || a3 - self->m_lastProgressReport >= 5.0)
+  if (!m_lastReportTime || ([(NSDate *)m_lastReportTime timeIntervalSinceNow], progress >= 100.0) || v8 < -0.1 || progress - self->m_lastProgressReport >= 5.0)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:overallProgress];
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v9, @"TSUProgressCurrentPosition", v10, @"TSUProgressOverallProgress", 0}];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 
     self->m_lastReportTime = [MEMORY[0x277CBEAA8] date];
-    self->m_lastProgressReport = a3;
+    self->m_lastProgressReport = progress;
   }
 
   objc_sync_exit(self);

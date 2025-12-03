@@ -1,15 +1,15 @@
 @interface MAIndexCache
-- (BOOL)isEqual:(id)a3;
-- (MAIndexCache)initWithLabels:(id)a3;
-- (int64_t)indexOfLabel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MAIndexCache)initWithLabels:(id)labels;
+- (int64_t)indexOfLabel:(id)label;
 @end
 
 @implementation MAIndexCache
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -20,8 +20,8 @@
     if (objc_opt_isKindOfClass())
     {
       labels = self->_labels;
-      v6 = [(MAIndexCache *)v4 labels];
-      v7 = [(NSArray *)labels isEqual:v6];
+      labels = [(MAIndexCache *)equalCopy labels];
+      v7 = [(NSArray *)labels isEqual:labels];
     }
 
     else
@@ -33,33 +33,33 @@
   return v7;
 }
 
-- (int64_t)indexOfLabel:(id)a3
+- (int64_t)indexOfLabel:(id)label
 {
-  v3 = [(NSDictionary *)self->_cache objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_cache objectForKeyedSubscript:label];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (MAIndexCache)initWithLabels:(id)a3
+- (MAIndexCache)initWithLabels:(id)labels
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelsCopy = labels;
   v25.receiver = self;
   v25.super_class = MAIndexCache;
   v5 = [(MAIndexCache *)&v25 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelsCopy copy];
     labels = v5->_labels;
     v5->_labels = v6;
 
@@ -68,8 +68,8 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v4;
-    v9 = v4;
+    v20 = labelsCopy;
+    v9 = labelsCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v10)
     {
@@ -104,7 +104,7 @@
     cache = v5->_cache;
     v5->_cache = v8;
 
-    v4 = v20;
+    labelsCopy = v20;
   }
 
   v18 = *MEMORY[0x277D85DE8];

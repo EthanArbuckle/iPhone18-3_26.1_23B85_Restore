@@ -1,5 +1,5 @@
 @interface _TUIDynamicArrayContainer
-- (BOOL)needsValidationForTransactionGroup:(id)a3;
+- (BOOL)needsValidationForTransactionGroup:(id)group;
 - (BOOL)windowLowerLoadTriggered;
 - (BOOL)windowLowerUnloadTriggered;
 - (BOOL)windowUpperLoadTriggered;
@@ -8,86 +8,86 @@
 - (Class)layoutClass;
 - (TUIModelContaining)parentModel;
 - (_NSRange)windowRange;
-- (_TUIDynamicArrayContainer)initWithEnumerator:(id)a3 binding:(id)a4 array:(id)a5 context:(id)a6 transactionCoordinator:(id)a7 dynamicController:(id)a8 nodes:(id)a9 snapshot:(id)a10 options:(id)a11 flags:(unint64_t)a12 builderClass:(Class)a13;
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5;
-- (id)windowLowerLoadTriggerChildBoxFlipped:(BOOL)a3;
-- (id)windowLowerUnloadTriggerChildBoxFlipped:(BOOL)a3;
-- (id)windowUpperLoadTriggerChildBoxFlipped:(BOOL)a3;
-- (id)windowUpperUnloadTriggerChildBoxFlipped:(BOOL)a3;
-- (void)appendLayoutChildrenToArray:(id)a3;
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4;
-- (void)dynamicChanged:(id)a3 transaction:(id)a4;
-- (void)instantiateWithContext:(id)a3;
+- (_TUIDynamicArrayContainer)initWithEnumerator:(id)enumerator binding:(id)binding array:(id)array context:(id)context transactionCoordinator:(id)coordinator dynamicController:(id)controller nodes:(id)nodes snapshot:(id)self0 options:(id)self1 flags:(unint64_t)self2 builderClass:(Class)self3;
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout;
+- (id)windowLowerLoadTriggerChildBoxFlipped:(BOOL)flipped;
+- (id)windowLowerUnloadTriggerChildBoxFlipped:(BOOL)flipped;
+- (id)windowUpperLoadTriggerChildBoxFlipped:(BOOL)flipped;
+- (id)windowUpperUnloadTriggerChildBoxFlipped:(BOOL)flipped;
+- (void)appendLayoutChildrenToArray:(id)array;
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array;
+- (void)dynamicChanged:(id)changed transaction:(id)transaction;
+- (void)instantiateWithContext:(id)context;
 - (void)onContainedModelsChanged;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation _TUIDynamicArrayContainer
 
-- (_TUIDynamicArrayContainer)initWithEnumerator:(id)a3 binding:(id)a4 array:(id)a5 context:(id)a6 transactionCoordinator:(id)a7 dynamicController:(id)a8 nodes:(id)a9 snapshot:(id)a10 options:(id)a11 flags:(unint64_t)a12 builderClass:(Class)a13
+- (_TUIDynamicArrayContainer)initWithEnumerator:(id)enumerator binding:(id)binding array:(id)array context:(id)context transactionCoordinator:(id)coordinator dynamicController:(id)controller nodes:(id)nodes snapshot:(id)self0 options:(id)self1 flags:(unint64_t)self2 builderClass:(Class)self3
 {
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  v29 = a11;
+  arrayCopy = array;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  snapshotCopy = snapshot;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = _TUIDynamicArrayContainer;
   v24 = [(_TUIDynamicArrayContainer *)&v30 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeWeak(&v24->_transactionCoordinator, v21);
-    objc_storeWeak(&v25->_dynamicController, v22);
-    v26 = [v19 instanceForObserver:v25];
+    objc_storeWeak(&v24->_transactionCoordinator, coordinatorCopy);
+    objc_storeWeak(&v25->_dynamicController, controllerCopy);
+    v26 = [arrayCopy instanceForObserver:v25];
     instance = v25->_instance;
     v25->_instance = v26;
 
-    objc_storeStrong(&v25->_snapshot, a10);
-    v25->_enumerator.index = a3.var0;
-    v25->_nodes = a9;
-    v25->_binding = a4;
-    objc_storeStrong(&v25->_options, a11);
-    v25->_flags = a12;
-    v25->_builderClass = a13;
-    [(_TUIDynamicArrayContainer *)v25 instantiateWithContext:v20];
+    objc_storeStrong(&v25->_snapshot, snapshot);
+    v25->_enumerator.index = enumerator.var0;
+    v25->_nodes = nodes;
+    v25->_binding = binding;
+    objc_storeStrong(&v25->_options, options);
+    v25->_flags = flags;
+    v25->_builderClass = class;
+    [(_TUIDynamicArrayContainer *)v25 instantiateWithContext:contextCopy];
   }
 
   return v25;
 }
 
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  arrayCopy = array;
   children = self->_children;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_80D88;
   v11[3] = &unk_25DFA8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = protocolCopy;
+  v13 = arrayCopy;
+  v9 = arrayCopy;
+  v10 = protocolCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v11];
 }
 
 - (Class)layoutClass
 {
   v2 = TUIAncestorBoxFromModel(self);
-  v3 = [v2 dynamicArrayLayoutContainerClass];
+  dynamicArrayLayoutContainerClass = [v2 dynamicArrayLayoutContainerClass];
 
-  return v3;
+  return dynamicArrayLayoutContainerClass;
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   [(NSArray *)self->_children enumerateObjectsUsingBlock:&stru_2604D8];
   children = self->_children;
-  self->_children = v4;
-  v6 = v4;
+  self->_children = childrenCopy;
+  v6 = childrenCopy;
 
   v7 = self->_children;
   v8[0] = _NSConcreteStackBlock;
@@ -99,50 +99,50 @@
   [(_TUIDynamicArrayContainer *)self onContainedModelsChanged];
 }
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_80FB8;
   v7[3] = &unk_25DF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 
 - (void)onContainedModelsChanged
 {
-  v2 = [(_TUIDynamicArrayContainer *)self parentModel];
-  [v2 onContainedModelsChanged];
+  parentModel = [(_TUIDynamicArrayContainer *)self parentModel];
+  [parentModel onContainedModelsChanged];
 }
 
 - (Class)dynamicArrayLayoutIterationClass
 {
   v2 = TUIAncestorBoxFromModel(self);
-  v3 = [v2 dynamicArrayLayoutIterationClass];
+  dynamicArrayLayoutIterationClass = [v2 dynamicArrayLayoutIterationClass];
 
-  return v3;
+  return dynamicArrayLayoutIterationClass;
 }
 
-- (void)dynamicChanged:(id)a3 transaction:(id)a4
+- (void)dynamicChanged:(id)changed transaction:(id)transaction
 {
-  v5 = a4;
+  transactionCopy = transaction;
   WeakRetained = objc_loadWeakRetained(&self->_transactionCoordinator);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_810FC;
   v7[3] = &unk_25EB80;
   v7[4] = self;
-  [WeakRetained scheduleLayoutUpdateWithTransaction:v5 block:v7];
+  [WeakRetained scheduleLayoutUpdateWithTransaction:transactionCopy block:v7];
 }
 
-- (void)instantiateWithContext:(id)a3
+- (void)instantiateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
-  v6 = [(TUIDynamicArrayInstance *)self->_instance count];
+  fetchInitial = [(TUIDynamicArrayInstance *)self->_instance count];
   if ((self->_flags & 2) != 0)
   {
     options = self->_options;
@@ -150,20 +150,20 @@
     {
       if ([(TUIDynamicInstantiateOptions *)options fetchInitial]!= 0x7FFFFFFFFFFFFFFFLL)
       {
-        v6 = [(TUIDynamicInstantiateOptions *)self->_options fetchInitial];
+        fetchInitial = [(TUIDynamicInstantiateOptions *)self->_options fetchInitial];
       }
     }
   }
 
   v8 = [(TUIDynamicArrayInstance *)self->_instance count];
-  if (v6 >= v8)
+  if (fetchInitial >= v8)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = v6;
+    v9 = fetchInitial;
   }
 
   self->_instantiateWindow.location = 0;
@@ -173,19 +173,19 @@
   v14 = 3221225472;
   v15 = sub_81274;
   v16 = &unk_260528;
-  v17 = self;
-  v18 = v4;
+  selfCopy = self;
+  v18 = contextCopy;
   v19 = v5;
-  v20 = v6;
+  v20 = fetchInitial;
   v11 = v5;
-  v12 = v4;
+  v12 = contextCopy;
   [(TUIDynamicArrayInstance *)instance objectsInRange:0 block:v9, &v13];
-  [(_TUIDynamicArrayContainer *)self updateModelChildren:v11, v13, v14, v15, v16, v17];
+  [(_TUIDynamicArrayContainer *)self updateModelChildren:v11, v13, v14, v15, v16, selfCopy];
 }
 
-- (BOOL)needsValidationForTransactionGroup:(id)a3
+- (BOOL)needsValidationForTransactionGroup:(id)group
 {
-  if (([(TUIDynamicArrayInstance *)self->_instance optimizeUpdatesForTransactionGroup:a3]& 1) != 0)
+  if (([(TUIDynamicArrayInstance *)self->_instance optimizeUpdatesForTransactionGroup:group]& 1) != 0)
   {
     return 1;
   }
@@ -199,21 +199,21 @@
   return result;
 }
 
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = TUIProtocolCast(&OBJC_PROTOCOL___TUIDynamicArrayLayout, a5);
+  contextCopy = context;
+  groupCopy = group;
+  v10 = TUIProtocolCast(&OBJC_PROTOCOL___TUIDynamicArrayLayout, layout);
   WeakRetained = objc_loadWeakRetained(&self->_parentModel);
   if (objc_opt_respondsToSelector())
   {
     v12 = objc_loadWeakRetained(&self->_parentModel);
-    v13 = [v12 allowDynamicWindowInstantiation];
+    allowDynamicWindowInstantiation = [v12 allowDynamicWindowInstantiation];
   }
 
   else
   {
-    v13 = 0;
+    allowDynamicWindowInstantiation = 0;
   }
 
   snapshot = self->_snapshot;
@@ -221,32 +221,32 @@
   v19[1] = 3221225472;
   v19[2] = sub_81610;
   v19[3] = &unk_260618;
-  v23 = v13;
+  v23 = allowDynamicWindowInstantiation;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
+  v20 = contextCopy;
+  v21 = groupCopy;
   v22 = v10;
   v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v16 = groupCopy;
+  v17 = contextCopy;
   [v17 evaluateWithSnapshot:snapshot block:v19];
 
   return self;
 }
 
-- (id)windowLowerLoadTriggerChildBoxFlipped:(BOOL)a3
+- (id)windowLowerLoadTriggerChildBoxFlipped:(BOOL)flipped
 {
-  v5 = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || (location = self->_instantiateWindow.location) == 0 || (location + v5 != 0x7FFFFFFFFFFFFFFFLL ? (v7 = v5 >= self->_instantiateWindow.length) : (v7 = 1), v7))
+  fetchPadding = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
+  if (fetchPadding == 0x7FFFFFFFFFFFFFFFLL || (location = self->_instantiateWindow.location) == 0 || (location + fetchPadding != 0x7FFFFFFFFFFFFFFFLL ? (v7 = fetchPadding >= self->_instantiateWindow.length) : (v7 = 1), v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v10 = [(NSArray *)self->_children objectAtIndexedSubscript:v5];
+    v10 = [(NSArray *)self->_children objectAtIndexedSubscript:fetchPadding];
     v11 = v10;
-    if (a3)
+    if (flipped)
     {
       sub_82F98(v10);
     }
@@ -261,16 +261,16 @@
   return v8;
 }
 
-- (id)windowLowerUnloadTriggerChildBoxFlipped:(BOOL)a3
+- (id)windowLowerUnloadTriggerChildBoxFlipped:(BOOL)flipped
 {
-  v5 = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
+  fetchPadding = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (fetchPadding != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
-    v8 = [(TUIDynamicInstantiateOptions *)self->_options fetchDelta]== 0x7FFFFFFFFFFFFFFFLL ? 1 : [(TUIDynamicInstantiateOptions *)self->_options fetchDelta];
-    v9 = v8 + v7;
-    if (v8 + v7 != 0x7FFFFFFFFFFFFFFFLL && v9 <= self->_instantiateWindow.length)
+    v7 = fetchPadding;
+    fetchDelta = [(TUIDynamicInstantiateOptions *)self->_options fetchDelta]== 0x7FFFFFFFFFFFFFFFLL ? 1 : [(TUIDynamicInstantiateOptions *)self->_options fetchDelta];
+    v9 = fetchDelta + v7;
+    if (fetchDelta + v7 != 0x7FFFFFFFFFFFFFFFLL && v9 <= self->_instantiateWindow.length)
     {
       v6 = v9 + self->_instantiateWindow.location - 1;
     }
@@ -309,7 +309,7 @@ LABEL_9:
   {
     v15 = [(NSArray *)self->_children objectAtIndexedSubscript:v6 - self->_instantiateWindow.location];
     v16 = v15;
-    if (a3)
+    if (flipped)
     {
       sub_83008(v15);
     }
@@ -326,10 +326,10 @@ LABEL_10:
   return v10;
 }
 
-- (id)windowUpperLoadTriggerChildBoxFlipped:(BOOL)a3
+- (id)windowUpperLoadTriggerChildBoxFlipped:(BOOL)flipped
 {
-  v5 = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, length = self->_instantiateWindow.length, v5 >= length) || (v8 = self->_instantiateWindow.location + length, v8 >= [(TUIDynamicArrayInstance *)self->_instance count]) || self->_instantiateWindow.location + self->_instantiateWindow.length + ~v6 == 0x7FFFFFFFFFFFFFFFLL)
+  fetchPadding = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
+  if (fetchPadding == 0x7FFFFFFFFFFFFFFFLL || (v6 = fetchPadding, length = self->_instantiateWindow.length, fetchPadding >= length) || (v8 = self->_instantiateWindow.location + length, v8 >= [(TUIDynamicArrayInstance *)self->_instance count]) || self->_instantiateWindow.location + self->_instantiateWindow.length + ~v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
   }
@@ -338,7 +338,7 @@ LABEL_10:
   {
     v11 = [(NSArray *)self->_children objectAtIndexedSubscript:self->_instantiateWindow.length + ~v6];
     v12 = v11;
-    if (a3)
+    if (flipped)
     {
       sub_83008(v11);
     }
@@ -353,16 +353,16 @@ LABEL_10:
   return v9;
 }
 
-- (id)windowUpperUnloadTriggerChildBoxFlipped:(BOOL)a3
+- (id)windowUpperUnloadTriggerChildBoxFlipped:(BOOL)flipped
 {
-  v5 = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
+  fetchPadding = [(TUIDynamicInstantiateOptions *)self->_options fetchPadding];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (fetchPadding != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
-    v8 = [(TUIDynamicInstantiateOptions *)self->_options fetchDelta]== 0x7FFFFFFFFFFFFFFFLL ? 1 : [(TUIDynamicInstantiateOptions *)self->_options fetchDelta];
-    v9 = v8 + v7;
-    if (v8 + v7 != 0x7FFFFFFFFFFFFFFFLL)
+    v7 = fetchPadding;
+    fetchDelta = [(TUIDynamicInstantiateOptions *)self->_options fetchDelta]== 0x7FFFFFFFFFFFFFFFLL ? 1 : [(TUIDynamicInstantiateOptions *)self->_options fetchDelta];
+    v9 = fetchDelta + v7;
+    if (fetchDelta + v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       length = self->_instantiateWindow.length;
       v11 = length >= v9;
@@ -406,7 +406,7 @@ LABEL_10:
   {
     v17 = [(NSArray *)self->_children objectAtIndexedSubscript:v6 - self->_instantiateWindow.location];
     v18 = v17;
-    if (a3)
+    if (flipped)
     {
       sub_82F98(v17);
     }
@@ -439,12 +439,12 @@ LABEL_11:
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   *(self + 104) |= 1u;
   WeakRetained = objc_loadWeakRetained(&self->_dynamicController);
-  LOBYTE(v3) = [WeakRetained invalidateInstantiation:v3];
+  LOBYTE(selfCopy) = [WeakRetained invalidateInstantiation:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)windowUpperLoadTriggered
@@ -454,12 +454,12 @@ LABEL_11:
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   *(self + 104) |= 2u;
   WeakRetained = objc_loadWeakRetained(&self->_dynamicController);
-  LOBYTE(v2) = [WeakRetained invalidateInstantiation:v2];
+  LOBYTE(selfCopy) = [WeakRetained invalidateInstantiation:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)windowLowerUnloadTriggered
@@ -469,12 +469,12 @@ LABEL_11:
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   *(self + 104) |= 4u;
   WeakRetained = objc_loadWeakRetained(&self->_dynamicController);
-  LOBYTE(v2) = [WeakRetained invalidateInstantiation:v2];
+  LOBYTE(selfCopy) = [WeakRetained invalidateInstantiation:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)windowUpperUnloadTriggered
@@ -484,12 +484,12 @@ LABEL_11:
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   *(self + 104) |= 8u;
   WeakRetained = objc_loadWeakRetained(&self->_dynamicController);
-  LOBYTE(v2) = [WeakRetained invalidateInstantiation:v2];
+  LOBYTE(selfCopy) = [WeakRetained invalidateInstantiation:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (TUIModelContaining)parentModel

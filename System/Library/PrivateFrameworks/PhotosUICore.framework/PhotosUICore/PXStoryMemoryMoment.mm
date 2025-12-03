@@ -1,15 +1,15 @@
 @interface PXStoryMemoryMoment
 - (PXDisplayAsset)lastAsset;
-- (PXStoryMemoryMoment)initWithDisplayAssets:(id)a3 indexSet:(id)a4 diagnosticDistanceCalculator:(id)a5;
-- (PXStoryMemoryMoment)initWithDisplayAssets:(id)a3 indicesArray:(id)a4 diagnosticDistanceCalculator:(id)a5;
+- (PXStoryMemoryMoment)initWithDisplayAssets:(id)assets indexSet:(id)set diagnosticDistanceCalculator:(id)calculator;
+- (PXStoryMemoryMoment)initWithDisplayAssets:(id)assets indicesArray:(id)array diagnosticDistanceCalculator:(id)calculator;
 - (_NSRange)assetIndexRange;
 - (double)faceClusteringDistance;
 - (double)locationClusteringDistance;
 - (double)timeClusteringDistance;
 - (double)totalWeightedClusteringDistance;
-- (id)assetAtIndex:(unint64_t)a3;
+- (id)assetAtIndex:(unint64_t)index;
 - (void)_calculateDiagnostics;
-- (void)enumerateAssetsUsingBlock:(id)a3;
+- (void)enumerateAssetsUsingBlock:(id)block;
 @end
 
 @implementation PXStoryMemoryMoment
@@ -59,14 +59,14 @@
   self->_diagnosticsCalculated = 1;
   diagnosticDistanceCalculator = self->_diagnosticDistanceCalculator;
   displayAssets = self->_displayAssets;
-  v5 = [(PXStoryMemoryMoment *)self firstGlobalIndex];
-  v6 = [(PXStoryMemoryMoment *)self lastGlobalIndex];
+  firstGlobalIndex = [(PXStoryMemoryMoment *)self firstGlobalIndex];
+  lastGlobalIndex = [(PXStoryMemoryMoment *)self lastGlobalIndex];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PXStoryMemoryMoment__calculateDiagnostics__block_invoke;
   v7[3] = &unk_1E773CE00;
   v7[4] = self;
-  [(PXStoryMemoryMomentClusteringDistanceCalculator *)diagnosticDistanceCalculator clusteringDistanceForAssets:displayAssets fromIndex:v5 toIndex:v6 resultHandler:v7];
+  [(PXStoryMemoryMomentClusteringDistanceCalculator *)diagnosticDistanceCalculator clusteringDistanceForAssets:displayAssets fromIndex:firstGlobalIndex toIndex:lastGlobalIndex resultHandler:v7];
 }
 
 uint64_t __44__PXStoryMemoryMoment__calculateDiagnostics__block_invoke(uint64_t result, double a2, double a3, double a4, double a5)
@@ -80,9 +80,9 @@ uint64_t __44__PXStoryMemoryMoment__calculateDiagnostics__block_invoke(uint64_t 
 
 - (_NSRange)assetIndexRange
 {
-  v3 = [(NSIndexSet *)self->_indices firstIndex];
+  firstIndex = [(NSIndexSet *)self->_indices firstIndex];
   v4 = [(NSIndexSet *)self->_indices count];
-  v5 = v3;
+  v5 = firstIndex;
   result.length = v4;
   result.location = v5;
   return result;
@@ -95,17 +95,17 @@ uint64_t __44__PXStoryMemoryMoment__calculateDiagnostics__block_invoke(uint64_t 
   return [(PXStoryMemoryMoment *)self assetAtIndex:v3];
 }
 
-- (void)enumerateAssetsUsingBlock:(id)a3
+- (void)enumerateAssetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   indices = self->_indices;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PXStoryMemoryMoment_enumerateAssetsUsingBlock___block_invoke;
   v7[3] = &unk_1E773CDD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSIndexSet *)indices enumerateIndexesUsingBlock:v7];
 }
 
@@ -116,34 +116,34 @@ void __49__PXStoryMemoryMoment_enumerateAssetsUsingBlock___block_invoke(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)assetAtIndex:(unint64_t)a3
+- (id)assetAtIndex:(unint64_t)index
 {
-  if ([(PXStoryMemoryMoment *)self count]<= a3)
+  if ([(PXStoryMemoryMoment *)self count]<= index)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryMoment.m" lineNumber:71 description:{@"Index %ld beyond bounds [0 .. %ld]", a3, -[PXStoryMemoryMoment count](self, "count") - 1}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryMoment.m" lineNumber:71 description:{@"Index %ld beyond bounds [0 .. %ld]", index, -[PXStoryMemoryMoment count](self, "count") - 1}];
   }
 
-  v6 = [(NSIndexSet *)self->_indices firstIndex]+ a3;
+  v6 = [(NSIndexSet *)self->_indices firstIndex]+ index;
   displayAssets = self->_displayAssets;
 
   return [(PXDisplayAssetFetchResult *)displayAssets objectAtIndex:v6];
 }
 
-- (PXStoryMemoryMoment)initWithDisplayAssets:(id)a3 indexSet:(id)a4 diagnosticDistanceCalculator:(id)a5
+- (PXStoryMemoryMoment)initWithDisplayAssets:(id)assets indexSet:(id)set diagnosticDistanceCalculator:(id)calculator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 rangeCount] >= 2)
+  assetsCopy = assets;
+  setCopy = set;
+  calculatorCopy = calculator;
+  if ([setCopy rangeCount] >= 2)
   {
-    v12 = [v10 firstIndex];
-    v13 = [v10 lastIndex];
-    v14 = v13 - [v10 firstIndex];
-    v15 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{v12, v14 + 1}];
+    firstIndex = [setCopy firstIndex];
+    lastIndex = [setCopy lastIndex];
+    v14 = lastIndex - [setCopy firstIndex];
+    v15 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{firstIndex, v14 + 1}];
     v16 = [v15 copy];
 
-    v10 = v16;
+    setCopy = v16;
   }
 
   v22.receiver = self;
@@ -152,29 +152,29 @@ void __49__PXStoryMemoryMoment_enumerateAssetsUsingBlock___block_invoke(uint64_t
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_displayAssets, a3);
-    v19 = [v10 copy];
+    objc_storeStrong(&v17->_displayAssets, assets);
+    v19 = [setCopy copy];
     indices = v18->_indices;
     v18->_indices = v19;
 
-    objc_storeStrong(&v18->_diagnosticDistanceCalculator, a5);
+    objc_storeStrong(&v18->_diagnosticDistanceCalculator, calculator);
   }
 
   return v18;
 }
 
-- (PXStoryMemoryMoment)initWithDisplayAssets:(id)a3 indicesArray:(id)a4 diagnosticDistanceCalculator:(id)a5
+- (PXStoryMemoryMoment)initWithDisplayAssets:(id)assets indicesArray:(id)array diagnosticDistanceCalculator:(id)calculator
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  arrayCopy = array;
+  calculatorCopy = calculator;
   v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v9;
+  v12 = arrayCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -200,7 +200,7 @@ void __49__PXStoryMemoryMoment_enumerateAssetsUsingBlock___block_invoke(uint64_t
     while (v14);
   }
 
-  v17 = [(PXStoryMemoryMoment *)self initWithDisplayAssets:v8 indexSet:v11 diagnosticDistanceCalculator:v10];
+  v17 = [(PXStoryMemoryMoment *)self initWithDisplayAssets:assetsCopy indexSet:v11 diagnosticDistanceCalculator:calculatorCopy];
   return v17;
 }
 

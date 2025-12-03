@@ -1,17 +1,17 @@
 @interface ImageColorAnalyzer
-+ (id)colorsForImage:(id)a3;
++ (id)colorsForImage:(id)image;
 - (NSArray)dominantColors;
-- (void)analyzeImage:(id)a3;
+- (void)analyzeImage:(id)image;
 @end
 
 @implementation ImageColorAnalyzer
 
-+ (id)colorsForImage:(id)a3
++ (id)colorsForImage:(id)image
 {
   v75 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v4 = objc_alloc_init(a1);
-  objc_msgSend_analyzeImage_(v4, v5, v56, v6);
+  imageCopy = image;
+  v4 = objc_alloc_init(self);
+  objc_msgSend_analyzeImage_(v4, v5, imageCopy, v6);
   v58 = objc_msgSend_backgroundColor(v4, v7, v8, v9);
   v57 = objc_msgSend_dominantColors(v4, v10, v11, v12);
   v16 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14, v15);
@@ -39,7 +39,7 @@
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v27 = objc_msgSend_copy(v16, v21, v22, 0.0, v56);
+        v27 = objc_msgSend_copy(v16, v21, v22, 0.0, imageCopy);
         v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v28, &v64, v29, v73, 16);
         if (v31)
         {
@@ -104,7 +104,7 @@ LABEL_16:
           }
 
           v54 = *(*(&v60 + 1) + 8 * k);
-          if ((objc_msgSend_color_isCloseToOtherColor_(v4, v49, v54, v51, v58, v56) & 1) == 0)
+          if ((objc_msgSend_color_isCloseToOtherColor_(v4, v49, v54, v51, v58, imageCopy) & 1) == 0)
           {
             objc_msgSend_addObject_(v16, v49, v54, v51);
           }
@@ -120,10 +120,10 @@ LABEL_16:
   return v16;
 }
 
-- (void)analyzeImage:(id)a3
+- (void)analyzeImage:(id)image
 {
-  v5 = a3;
-  v9 = objc_msgSend_CGImage(a3, v6, v7, v8);
+  imageCopy = image;
+  v9 = objc_msgSend_CGImage(image, v6, v7, v8);
   SRGB = CGColorSpaceGetSRGB();
   if (SRGB)
   {

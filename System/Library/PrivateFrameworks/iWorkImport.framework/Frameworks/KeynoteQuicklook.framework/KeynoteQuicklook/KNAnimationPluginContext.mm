@@ -15,8 +15,8 @@
 - (NSDictionary)transitionAttributes;
 - (NSString)description;
 - (TSDRep)rep;
-- (void)setAnimatedBuild:(id)a3;
-- (void)setTransitionAttributes:(id)a3;
+- (void)setAnimatedBuild:(id)build;
+- (void)setTransitionAttributes:(id)attributes;
 @end
 
 @implementation KNAnimationPluginContext
@@ -233,11 +233,11 @@ LABEL_11:
   return v49;
 }
 
-- (void)setAnimatedBuild:(id)a3
+- (void)setAnimatedBuild:(id)build
 {
-  v4 = a3;
-  objc_storeWeak(&self->_animatedBuild, v4);
-  v7 = objc_msgSend_attributes(v4, v5, v6);
+  buildCopy = build;
+  objc_storeWeak(&self->_animatedBuild, buildCopy);
+  v7 = objc_msgSend_attributes(buildCopy, v5, v6);
 
   v13 = objc_msgSend_valueForAttributeKey_(v7, v8, @"KNBuildCustomAttributesRandomNumberSeed");
 
@@ -252,11 +252,11 @@ LABEL_11:
   }
 }
 
-- (void)setTransitionAttributes:(id)a3
+- (void)setTransitionAttributes:(id)attributes
 {
-  v4 = a3;
-  objc_storeWeak(&self->_transitionAttributes, v4);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"KNTransitionCustomAttributesRandomNumberSeed");
+  attributesCopy = attributes;
+  objc_storeWeak(&self->_transitionAttributes, attributesCopy);
+  v10 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v5, @"KNTransitionCustomAttributesRandomNumberSeed");
 
   v7 = v10;
   if (v10)

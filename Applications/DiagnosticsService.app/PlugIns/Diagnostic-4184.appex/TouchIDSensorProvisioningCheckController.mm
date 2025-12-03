@@ -17,12 +17,12 @@
     if (([(TouchIDSensorProvisioningCheckController *)self isCancelled]& 1) == 0)
     {
       v4 = [v8 objectForKeyedSubscript:@"data"];
-      v5 = [(TouchIDSensorProvisioningCheckController *)self result];
-      [v5 setData:v4];
+      result = [(TouchIDSensorProvisioningCheckController *)self result];
+      [result setData:v4];
 
       v6 = [v8 objectForKeyedSubscript:@"testStatus"];
-      v7 = [(TouchIDSensorProvisioningCheckController *)self result];
-      [v7 setStatusCode:v6];
+      result2 = [(TouchIDSensorProvisioningCheckController *)self result];
+      [result2 setStatusCode:v6];
     }
   }
 

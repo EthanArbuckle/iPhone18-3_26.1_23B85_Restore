@@ -1,74 +1,74 @@
 @interface DIKeyRetriever
-+ (BOOL)KKMSKeyWithURL:(id)a3 destKey:(char *)a4 destKeySize:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)WKMSKeyWithURL:(id)a3 authData:(const AuthData *)a4 destKey:(char *)a5 destKeySize:(unint64_t)a6 error:(id *)a7;
-+ (BOOL)decryptKeyWithData:(id)a3 destKey:(char *)a4 destKeySize:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)writeHexKeyToBuffer:(char *)a3 hexKey:(id)a4 error:(id *)a5;
-+ (id)getRequestWithURL:(id)a3 error:(id *)a4;
-+ (id)hintFormat:(id)a3;
-+ (id)jsonResponseWithRequest:(id)a3 session:(id)a4 error:(id *)a5;
-+ (id)newACEndpointWithEnvironment:(id)a3 error:(id *)a4;
-+ (id)newDawTokenWithError:(id *)a3;
-+ (id)newEnvWithDictionary:(id)a3 error:(id *)a4;
-+ (id)newSessionWithError:(id *)a3;
-+ (id)newUrl:(id)a3;
-+ (id)postRequestWithURL:(id)a3 session:(id)a4 data:(id)a5 error:(id *)a6;
-+ (id)requestSynchronousDataWithRequest:(id)a3 session:(id)a4 error:(id *)a5;
++ (BOOL)KKMSKeyWithURL:(id)l destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error;
++ (BOOL)WKMSKeyWithURL:(id)l authData:(const AuthData *)data destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error;
++ (BOOL)decryptKeyWithData:(id)data destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error;
++ (BOOL)writeHexKeyToBuffer:(char *)buffer hexKey:(id)key error:(id *)error;
++ (id)getRequestWithURL:(id)l error:(id *)error;
++ (id)hintFormat:(id)format;
++ (id)jsonResponseWithRequest:(id)request session:(id)session error:(id *)error;
++ (id)newACEndpointWithEnvironment:(id)environment error:(id *)error;
++ (id)newDawTokenWithError:(id *)error;
++ (id)newEnvWithDictionary:(id)dictionary error:(id *)error;
++ (id)newSessionWithError:(id *)error;
++ (id)newUrl:(id)url;
++ (id)postRequestWithURL:(id)l session:(id)session data:(id)data error:(id *)error;
++ (id)requestSynchronousDataWithRequest:(id)request session:(id)session error:(id *)error;
 @end
 
 @implementation DIKeyRetriever
 
-+ (id)newACEndpointWithEnvironment:(id)a3 error:(id *)a4
++ (id)newACEndpointWithEnvironment:(id)environment error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isEqual:@"uat"])
+  environmentCopy = environment;
+  if ([environmentCopy isEqual:@"uat"])
   {
     v6 = @"saks-ac-uat.g.apple.com";
   }
 
-  else if ([v5 isEqual:@"prod"])
+  else if ([environmentCopy isEqual:@"prod"])
   {
     v6 = @"saks-ac-prod.g.apple.com";
   }
 
-  else if ([v5 isEqual:@"dev"])
+  else if ([environmentCopy isEqual:@"dev"])
   {
     v6 = @"saks-ac-dev.g.apple.com";
   }
 
   else
   {
-    v6 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS environment" error:a4];
+    v6 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS environment" error:error];
   }
 
   return v6;
 }
 
-+ (id)newDawTokenWithError:(id *)a3
++ (id)newDawTokenWithError:(id *)error
 {
-  v4 = [MEMORY[0x277CCAC10] pipe];
-  v5 = [v4 fileHandleForReading];
+  pipe = [MEMORY[0x277CCAC10] pipe];
+  fileHandleForReading = [pipe fileHandleForReading];
   v6 = objc_alloc_init(MEMORY[0x277CCACB0]);
   v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/usr/local/bin/appleconnect"];
   [v6 setExecutableURL:v7];
 
   [v6 setArguments:&unk_285C0F458];
-  [v6 setStandardOutput:v4];
-  if ([v6 launchAndReturnError:a3])
+  [v6 setStandardOutput:pipe];
+  if ([v6 launchAndReturnError:error])
   {
     [v6 waitUntilExit];
     if ([v6 terminationStatus])
     {
-      v8 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Could not generate daw token - AppleConnect Failure" error:a3];
+      v8 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Could not generate daw token - AppleConnect Failure" error:error];
     }
 
     else
     {
-      v9 = [v5 readDataToEndOfFileAndReturnError:a3];
+      v9 = [fileHandleForReading readDataToEndOfFileAndReturnError:error];
       if (v9)
       {
         v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
-        v11 = [MEMORY[0x277CCA900] newlineCharacterSet];
-        v8 = [v10 stringByTrimmingCharactersInSet:v11];
+        newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+        v8 = [v10 stringByTrimmingCharactersInSet:newlineCharacterSet];
       }
 
       else
@@ -86,19 +86,19 @@
   return v8;
 }
 
-+ (id)newSessionWithError:(id *)a3
++ (id)newSessionWithError:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [a1 newDawTokenWithError:a3];
+  v3 = [self newDawTokenWithError:error];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", v3, @"Authorization"];
     v11[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v4 setHTTPAdditionalHeaders:v6];
+    [ephemeralSessionConfiguration setHTTPAdditionalHeaders:v6];
 
-    v7 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v4];
+    v7 = [MEMORY[0x277CBABB8] sessionWithConfiguration:ephemeralSessionConfiguration];
   }
 
   else
@@ -110,9 +110,9 @@
   return v7;
 }
 
-+ (id)hintFormat:(id)a3
++ (id)hintFormat:(id)format
 {
-  if ([a3 hasPrefix:@"<"])
+  if ([format hasPrefix:@"<"])
   {
     return @"plist";
   }
@@ -123,10 +123,10 @@
   }
 }
 
-+ (id)requestSynchronousDataWithRequest:(id)a3 session:(id)a4 error:(id *)a5
++ (id)requestSynchronousDataWithRequest:(id)request session:(id)session error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  sessionCopy = session;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -148,12 +148,12 @@
   v17 = &v24;
   v10 = v9;
   v15 = v10;
-  v11 = [v8 dataTaskWithRequest:v7 completionHandler:v14];
+  v11 = [sessionCopy dataTaskWithRequest:requestCopy completionHandler:v14];
   [v11 resume];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v12 = v25[5];
@@ -251,71 +251,71 @@ void __66__DIKeyRetriever_requestSynchronousDataWithRequest_session_error___bloc
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)jsonResponseWithRequest:(id)a3 session:(id)a4 error:(id *)a5
++ (id)jsonResponseWithRequest:(id)request session:(id)session error:(id *)error
 {
-  v6 = [a1 requestSynchronousDataWithRequest:a3 session:a4 error:?];
+  v6 = [self requestSynchronousDataWithRequest:request session:session error:?];
   if (v6)
   {
-    [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:a5];
+    [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:error];
   }
 
   else
   {
-    [DIError nilWithEnumValue:150 verboseInfo:@"AEA key retrieval failed" error:a5];
+    [DIError nilWithEnumValue:150 verboseInfo:@"AEA key retrieval failed" error:error];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)postRequestWithURL:(id)a3 session:(id)a4 data:(id)a5 error:(id *)a6
++ (id)postRequestWithURL:(id)l session:(id)session data:(id)data error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBAB50] requestWithURL:a3];
+  sessionCopy = session;
+  dataCopy = data;
+  v12 = [MEMORY[0x277CBAB50] requestWithURL:l];
   [v12 setHTTPMethod:@"POST"];
   [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  if (v11)
+  if (dataCopy)
   {
-    [v12 setHTTPBody:v11];
+    [v12 setHTTPBody:dataCopy];
   }
 
-  v13 = [a1 jsonResponseWithRequest:v12 session:v10 error:a6];
+  v13 = [self jsonResponseWithRequest:v12 session:sessionCopy error:error];
 
   return v13;
 }
 
-+ (id)getRequestWithURL:(id)a3 error:(id *)a4
++ (id)getRequestWithURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x277CBAB50] requestWithURL:a3];
+  v6 = [MEMORY[0x277CBAB50] requestWithURL:l];
   [v6 setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-  v7 = [MEMORY[0x277CBABB8] sharedSession];
-  v8 = [a1 requestSynchronousDataWithRequest:v6 session:v7 error:a4];
+  mEMORY[0x277CBABB8] = [MEMORY[0x277CBABB8] sharedSession];
+  v8 = [self requestSynchronousDataWithRequest:v6 session:mEMORY[0x277CBABB8] error:error];
 
   if (!v8)
   {
-    v8 = [DIError nilWithEnumValue:150 verboseInfo:@"AEA key retrieval failed" error:a4];
+    v8 = [DIError nilWithEnumValue:150 verboseInfo:@"AEA key retrieval failed" error:error];
   }
 
   return v8;
 }
 
-+ (id)newEnvWithDictionary:(id)a3 error:(id *)a4
++ (id)newEnvWithDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
-    v9 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS metadata (json format expected)" error:a4];
+    v9 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS metadata (json format expected)" error:error];
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKey:@"metadata"];
+  v7 = [dictionaryCopy objectForKey:@"metadata"];
   v8 = [v7 valueForKey:@"environment"];
 
   if (!v8)
   {
-    v9 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS metadata (no environment field)" error:a4];
+    v9 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Not valid SAKS metadata (no environment field)" error:error];
 LABEL_5:
     v8 = v9;
   }
@@ -323,22 +323,22 @@ LABEL_5:
   return v8;
 }
 
-+ (id)newUrl:(id)a3
++ (id)newUrl:(id)url
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://%@/v1/ac/decrypt", a3];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://%@/v1/ac/decrypt", url];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
 
   return v4;
 }
 
-+ (BOOL)writeHexKeyToBuffer:(char *)a3 hexKey:(id)a4 error:(id *)a5
++ (BOOL)writeHexKeyToBuffer:(char *)buffer hexKey:(id)key error:(id *)error
 {
-  v7 = a4;
-  v8 = [v7 UTF8String];
-  v9 = strnlen(v8, 0x41uLL);
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
+  v9 = strnlen(uTF8String, 0x41uLL);
   if (v9 == 64)
   {
-    if (strlen(v8) != 64)
+    if (strlen(uTF8String) != 64)
     {
       v11 = "Key is not 32 bytes size.";
 LABEL_11:
@@ -357,9 +357,9 @@ LABEL_11:
     v11 = "Key is not hexadecimal number.";
     do
     {
-      *__str = *&v8[2 * v10];
+      *__str = *&uTF8String[2 * v10];
       v12 = strtol(__str, 0, 16);
-      a3[v10] = v12;
+      buffer[v10] = v12;
       if (!v12 && *__str != 12336)
       {
         goto LABEL_11;
@@ -375,20 +375,20 @@ LABEL_11:
   else
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid size hex key %lu", v9];
-    v13 = [DIError failWithPOSIXCode:22 verboseInfo:v14 error:a5];
+    v13 = [DIError failWithPOSIXCode:22 verboseInfo:v14 error:error];
   }
 
   return v13;
 }
 
-+ (BOOL)KKMSKeyWithURL:(id)a3 destKey:(char *)a4 destKeySize:(unint64_t)a5 error:(id *)a6
++ (BOOL)KKMSKeyWithURL:(id)l destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error
 {
-  v9 = a3;
-  v10 = [DIKeyRetriever newSessionWithError:a6];
+  lCopy = l;
+  v10 = [DIKeyRetriever newSessionWithError:error];
   if (v10)
   {
-    v11 = [v9 URLByAppendingPathComponent:@"decryption-components"];
-    v12 = [DIKeyRetriever postRequestWithURL:v11 session:v10 data:0 error:a6];
+    v11 = [lCopy URLByAppendingPathComponent:@"decryption-components"];
+    v12 = [DIKeyRetriever postRequestWithURL:v11 session:v10 data:0 error:error];
     v13 = v12;
     if (v12)
     {
@@ -399,12 +399,12 @@ LABEL_11:
         v16 = [v14 objectForKeyedSubscript:@"key"];
         if (v16)
         {
-          v17 = [a1 writeHexKeyToBuffer:a4 hexKey:v16 error:a6];
+          v17 = [self writeHexKeyToBuffer:key hexKey:v16 error:error];
         }
 
         else
         {
-          v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in KKMS response" error:a6];
+          v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in KKMS response" error:error];
         }
 
         v18 = v17;
@@ -412,7 +412,7 @@ LABEL_11:
 
       else
       {
-        v18 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in KKMS response" error:a6];
+        v18 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in KKMS response" error:error];
       }
     }
 
@@ -430,31 +430,31 @@ LABEL_11:
   return v18;
 }
 
-+ (BOOL)WKMSKeyWithURL:(id)a3 authData:(const AuthData *)a4 destKey:(char *)a5 destKeySize:(unint64_t)a6 error:(id *)a7
++ (BOOL)WKMSKeyWithURL:(id)l authData:(const AuthData *)data destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error
 {
-  v10 = [DIKeyRetriever getRequestWithURL:a3 error:a7, a5, a6];
+  v10 = [DIKeyRetriever getRequestWithURL:l error:error, key, size];
   if (v10)
   {
-    v11 = frk_metadata_from_aea_auth_data(a4->var0, a7);
+    v11 = frk_metadata_from_aea_auth_data(data->var0, error);
     v12 = v11;
     if (v11)
     {
-      v13 = frk_unwrapped_symmetric_key_with_shipping_private_key(v11, v10, a7);
+      v13 = frk_unwrapped_symmetric_key_with_shipping_private_key(v11, v10, error);
       v14 = v13;
       if (v13)
       {
         if ([v13 length] == 32)
         {
-          v15 = [v14 bytes];
-          v16 = v15[1];
-          *a5 = *v15;
-          *(a5 + 1) = v16;
+          bytes = [v14 bytes];
+          v16 = bytes[1];
+          *key = *bytes;
+          *(key + 1) = v16;
           v17 = 1;
         }
 
         else
         {
-          v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid key size" error:a7];
+          v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid key size" error:error];
         }
       }
 
@@ -478,16 +478,16 @@ LABEL_11:
   return v17;
 }
 
-+ (BOOL)decryptKeyWithData:(id)a3 destKey:(char *)a4 destKeySize:(unint64_t)a5 error:(id *)a6
++ (BOOL)decryptKeyWithData:(id)data destKey:(char *)key destKeySize:(unint64_t)size error:(id *)error
 {
-  v9 = a3;
-  v10 = [a1 hintFormat:v9];
-  v11 = [v9 dataUsingEncoding:4];
-  v12 = v9;
+  dataCopy = data;
+  v10 = [self hintFormat:dataCopy];
+  v11 = [dataCopy dataUsingEncoding:4];
+  v12 = dataCopy;
   if ([v10 isEqual:@"plist"])
   {
-    v13 = [MEMORY[0x277CCAC58] propertyListWithData:v11 options:0 format:0 error:a6];
-    v14 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v13 options:1 error:a6];
+    v13 = [MEMORY[0x277CCAC58] propertyListWithData:v11 options:0 format:0 error:error];
+    v14 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v13 options:1 error:error];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v14, "bytes")}];
 
     v16 = v13;
@@ -502,7 +502,7 @@ LABEL_3:
 
   else
   {
-    [MEMORY[0x277CCAAA0] JSONObjectWithData:v11 options:0 error:a6];
+    [MEMORY[0x277CCAAA0] JSONObjectWithData:v11 options:0 error:error];
     v16 = v15 = v12;
     if (!v16)
     {
@@ -510,21 +510,21 @@ LABEL_3:
     }
   }
 
-  v18 = [DIKeyRetriever newEnvWithDictionary:v16 error:a6];
+  v18 = [DIKeyRetriever newEnvWithDictionary:v16 error:error];
   if (v18)
   {
-    v36 = a4;
-    v19 = [DIKeyRetriever newACEndpointWithEnvironment:v18 error:a6];
+    keyCopy = key;
+    v19 = [DIKeyRetriever newACEndpointWithEnvironment:v18 error:error];
     if (v19)
     {
-      v20 = [DIKeyRetriever newSessionWithError:a6];
+      v20 = [DIKeyRetriever newSessionWithError:error];
       if (v20)
       {
         v38 = v20;
         v35 = v19;
         v37 = [DIKeyRetriever newUrl:v19];
         v21 = [v15 dataUsingEncoding:4];
-        v22 = [DIKeyRetriever postRequestWithURL:v37 session:v38 data:v21 error:a6];
+        v22 = [DIKeyRetriever postRequestWithURL:v37 session:v38 data:v21 error:error];
 
         if (v22)
         {
@@ -533,36 +533,36 @@ LABEL_3:
           if (v23)
           {
             v24 = v23;
-            v25 = [v24 UTF8String];
-            v26 = v25;
-            if (v25)
+            uTF8String = [v24 UTF8String];
+            v26 = uTF8String;
+            if (uTF8String)
             {
-              v27 = strnlen(v25, 0x59uLL);
+              v27 = strnlen(uTF8String, 0x59uLL);
               if (v27 == 88)
               {
                 v28 = *(v26 + 1);
-                *v36 = *v26;
-                *(v36 + 1) = v28;
+                *keyCopy = *v26;
+                *(keyCopy + 1) = v28;
                 v29 = *(v26 + 2);
                 v30 = *(v26 + 3);
                 v31 = *(v26 + 4);
-                *(v36 + 10) = *(v26 + 10);
-                *(v36 + 3) = v30;
-                *(v36 + 4) = v31;
-                *(v36 + 2) = v29;
+                *(keyCopy + 10) = *(v26 + 10);
+                *(keyCopy + 3) = v30;
+                *(keyCopy + 4) = v31;
+                *(keyCopy + 2) = v29;
                 v17 = 1;
               }
 
               else
               {
                 v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid size of saks response %lu", v27];
-                v17 = [DIError failWithPOSIXCode:22 verboseInfo:v32 error:a6];
+                v17 = [DIError failWithPOSIXCode:22 verboseInfo:v32 error:error];
               }
             }
 
             else
             {
-              v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in SAKS response" error:a6];
+              v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Missing key in SAKS response" error:error];
             }
 
             v19 = v35;
@@ -572,7 +572,7 @@ LABEL_3:
           {
             v24 = 0;
             v19 = v35;
-            v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Bad or missing key in SAKS response." error:a6];
+            v17 = [DIError failWithPOSIXCode:22 verboseInfo:@"Bad or missing key in SAKS response." error:error];
           }
 
           v22 = v34;

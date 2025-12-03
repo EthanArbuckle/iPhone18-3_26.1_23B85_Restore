@@ -1,13 +1,13 @@
 @interface OADBlip
-+ (id)pathExtensionForBlipType:(int)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pathExtensionForBlipType:(int)type;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OADBlip
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -17,7 +17,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5 || !TCObjectEqual(self->mMainSubBlip, v5[2]))
   {
     goto LABEL_6;
@@ -29,16 +29,16 @@ LABEL_7:
   return v6;
 }
 
-+ (id)pathExtensionForBlipType:(int)a3
++ (id)pathExtensionForBlipType:(int)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_2799C7C80[a3 - 1];
+    return off_2799C7C80[type - 1];
   }
 }
 

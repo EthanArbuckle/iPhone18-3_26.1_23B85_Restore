@@ -1,28 +1,28 @@
 @interface DAAsset
 - (CGSize)size;
-- (DAAsset)initWithDictionary:(id)a3;
+- (DAAsset)initWithDictionary:(id)dictionary;
 @end
 
 @implementation DAAsset
 
-- (DAAsset)initWithDictionary:(id)a3
+- (DAAsset)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21 = 0;
   v20.receiver = self;
   v20.super_class = DAAsset;
-  v5 = [(DASpecification *)&v20 initWithDictionary:v4];
+  v5 = [(DASpecification *)&v20 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 dk_stringFromRequiredKey:@"name" maxLength:100 failed:&v21];
+    v6 = [dictionaryCopy dk_stringFromRequiredKey:@"name" maxLength:100 failed:&v21];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 dk_numberFromRequiredKey:@"frameHeight" lowerBound:&off_1000112E0 upperBound:&off_1000112F0 failed:&v21];
+    v8 = [dictionaryCopy dk_numberFromRequiredKey:@"frameHeight" lowerBound:&off_1000112E0 upperBound:&off_1000112F0 failed:&v21];
     [v8 doubleValue];
     v10 = v9;
 
-    v11 = [v4 dk_numberFromRequiredKey:@"frameWidth" lowerBound:&off_1000112E0 upperBound:&off_1000112F0 failed:&v21];
+    v11 = [dictionaryCopy dk_numberFromRequiredKey:@"frameWidth" lowerBound:&off_1000112E0 upperBound:&off_1000112F0 failed:&v21];
     [v11 doubleValue];
     v13 = v12;
 

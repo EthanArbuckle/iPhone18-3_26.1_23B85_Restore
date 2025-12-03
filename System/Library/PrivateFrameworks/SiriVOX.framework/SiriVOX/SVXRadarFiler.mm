@@ -11,9 +11,9 @@
   v2 = [(SVXRadarFiler *)&v6 init];
   if (v2)
   {
-    v3 = [getTapToRadarServiceClass() shared];
+    shared = [getTapToRadarServiceClass() shared];
     ttrService = v2->_ttrService;
-    v2->_ttrService = v3;
+    v2->_ttrService = shared;
   }
 
   return v2;

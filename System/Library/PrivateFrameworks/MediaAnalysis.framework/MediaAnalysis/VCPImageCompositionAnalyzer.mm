@@ -1,24 +1,24 @@
 @interface VCPImageCompositionAnalyzer
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
 @end
 
 @implementation VCPImageCompositionAnalyzer
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = v8;
-  if (v8 && ((*(v8 + 2))(v8) & 1) != 0)
+  cancelCopy = cancel;
+  v9 = cancelCopy;
+  if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
   {
     v10 = -128;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v31 = 0;
-    v12 = [[VCPVanishingPointDetector alloc] initWithImage:a3];
+    v12 = [[VCPVanishingPointDetector alloc] initWithImage:buffer];
     v30 = 0;
     v10 = [(VCPVanishingPointDetector *)v12 detect:&v32 withConfidence:&v31 dominantLine:&v30];
     v13 = v30;
@@ -44,21 +44,21 @@
       v23 = [v20 arrayWithObjects:{v21, v22, 0}];
 
       v24 = NSStringFromPoint(v32);
-      [v11 setObject:v24 forKey:@"vanishingPoint"];
+      [dictionary setObject:v24 forKey:@"vanishingPoint"];
 
       LODWORD(v25) = v31;
       v26 = [MEMORY[0x1E696AD98] numberWithFloat:v25];
-      [v11 setObject:v26 forKey:@"vanishingPointConfidence"];
+      [dictionary setObject:v26 forKey:@"vanishingPointConfidence"];
 
-      [v11 setObject:v23 forKey:@"dominantLine"];
+      [dictionary setObject:v23 forKey:@"dominantLine"];
       v36 = @"CompositionResults";
       v33 = @"attributes";
-      v34 = v11;
+      v34 = dictionary;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v35 = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
       v37[0] = v28;
-      *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
+      *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     }
   }
 

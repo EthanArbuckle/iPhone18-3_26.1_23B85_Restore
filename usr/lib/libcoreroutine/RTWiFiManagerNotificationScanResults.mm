@@ -1,18 +1,18 @@
 @interface RTWiFiManagerNotificationScanResults
-- (RTWiFiManagerNotificationScanResults)initWithScanResults:(id)a3;
+- (RTWiFiManagerNotificationScanResults)initWithScanResults:(id)results;
 @end
 
 @implementation RTWiFiManagerNotificationScanResults
 
-- (RTWiFiManagerNotificationScanResults)initWithScanResults:(id)a3
+- (RTWiFiManagerNotificationScanResults)initWithScanResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = RTWiFiManagerNotificationScanResults;
   v5 = [(RTNotification *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultsCopy copy];
     scanResults = v5->_scanResults;
     v5->_scanResults = v6;
   }

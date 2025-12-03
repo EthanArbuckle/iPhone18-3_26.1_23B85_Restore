@@ -6,10 +6,10 @@
 
 - (id)hu_presentedItem
 {
-  v1 = [a1 visibleViewController];
-  v2 = [v1 hu_presentedItem];
+  visibleViewController = [self visibleViewController];
+  hu_presentedItem = [visibleViewController hu_presentedItem];
 
-  return v2;
+  return hu_presentedItem;
 }
 
 @end

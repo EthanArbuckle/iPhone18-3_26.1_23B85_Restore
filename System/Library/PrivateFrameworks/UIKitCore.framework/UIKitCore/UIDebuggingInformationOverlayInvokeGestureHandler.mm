@@ -1,6 +1,6 @@
 @interface UIDebuggingInformationOverlayInvokeGestureHandler
 + (id)mainHandler;
-- (void)_handleActivationGesture:(id)a3;
+- (void)_handleActivationGesture:(id)gesture;
 @end
 
 @implementation UIDebuggingInformationOverlayInvokeGestureHandler
@@ -24,9 +24,9 @@ void __64__UIDebuggingInformationOverlayInvokeGestureHandler_mainHandler__block_
   qword_1ED49AA28 = v0;
 }
 
-- (void)_handleActivationGesture:(id)a3
+- (void)_handleActivationGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
     if (!self->_didCreateTools)
     {

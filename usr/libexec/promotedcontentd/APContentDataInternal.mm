@@ -1,33 +1,33 @@
 @interface APContentDataInternal
-+ (BOOL)isFinalMessage:(int)a3;
++ (BOOL)isFinalMessage:(int)message;
 - (APContentDataInternal)init;
-- (APContentDataInternal)initWithAdData:(id)a3 identifier:(id)a4 contextIdentifier:(id)a5 placementType:(int64_t)a6 maxSize:(id)a7;
-- (APContentDataInternal)initWithContent:(id)a3 privateContent:(id)a4 andTransientContent:(id)a5;
-- (APContentDataInternal)initWithContentDataProvider:(id)a3;
-- (APContentDataInternal)initWithUnfilledReason:(int64_t)a3 error:(id)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 containerSize:(id)a7 placementType:(int64_t)a8 journeyStartRelayValues:(id)a9;
+- (APContentDataInternal)initWithAdData:(id)data identifier:(id)identifier contextIdentifier:(id)contextIdentifier placementType:(int64_t)type maxSize:(id)size;
+- (APContentDataInternal)initWithContent:(id)content privateContent:(id)privateContent andTransientContent:(id)transientContent;
+- (APContentDataInternal)initWithContentDataProvider:(id)provider;
+- (APContentDataInternal)initWithUnfilledReason:(int64_t)reason error:(id)error contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier containerSize:(id)size placementType:(int64_t)type journeyStartRelayValues:(id)values;
 - (BOOL)_hasSentFinalEvent;
-- (BOOL)canSend50PercentImpression:(BOOL)a3;
-- (BOOL)canSendImpression:(BOOL)a3;
+- (BOOL)canSend50PercentImpression:(BOOL)impression;
+- (BOOL)canSendImpression:(BOOL)impression;
 - (BOOL)hasConfirmed50PercentImpression;
 - (BOOL)hasConfirmedImpression;
-- (BOOL)hasSentStatusEvent:(int)a3;
-- (BOOL)isFirstMessage:(int)a3;
+- (BOOL)hasSentStatusEvent:(int)event;
+- (BOOL)isFirstMessage:(int)message;
 - (BOOL)isPlaceholder;
-- (BOOL)shouldSendAdSpaceStatusEvent:(int)a3;
-- (id)_loadJourneyStartRelayValuesFromAdData:(id)a3;
-- (id)initRateLimitedForContextId:(id)a3 containerSize:(id)a4 placementType:(int64_t)a5;
+- (BOOL)shouldSendAdSpaceStatusEvent:(int)event;
+- (id)_loadJourneyStartRelayValuesFromAdData:(id)data;
+- (id)initRateLimitedForContextId:(id)id containerSize:(id)size placementType:(int64_t)type;
 - (void)_accumulatePlaybackTimeIfNoDuration;
-- (void)_clicked:(id)a3;
+- (void)_clicked:(id)_clicked;
 - (void)_updateLastPlaybackTimestamp;
-- (void)_visibleStateChanged:(int64_t)a3 duration:(double)a4 shouldUseNewVisibleLogic:(BOOL)a5;
-- (void)accumulate50PercentVisibilityTime:(double)a3;
-- (void)accumulateVisibilityTime:(double)a3;
-- (void)addTimeSpent:(double)a3;
-- (void)appearedOnScreenWithStatus:(int)a3;
-- (void)carouselElementClicked:(id)a3 element:(int)a4;
+- (void)_visibleStateChanged:(int64_t)changed duration:(double)duration shouldUseNewVisibleLogic:(BOOL)logic;
+- (void)accumulate50PercentVisibilityTime:(double)time;
+- (void)accumulateVisibilityTime:(double)time;
+- (void)addTimeSpent:(double)spent;
+- (void)appearedOnScreenWithStatus:(int)status;
+- (void)carouselElementClicked:(id)clicked element:(int)element;
 - (void)carouselFinishedSent;
-- (void)carouselVisibleStateChanged:(int64_t)a3 duration:(double)a4 elements:(id)a5 partialElements:(id)a6 shouldUseNewVisibleLogic:(BOOL)a7;
-- (void)clicked:(id)a3;
+- (void)carouselVisibleStateChanged:(int64_t)changed duration:(double)duration elements:(id)elements partialElements:(id)partialElements shouldUseNewVisibleLogic:(BOOL)logic;
+- (void)clicked:(id)clicked;
 - (void)confirm50PercentImpression;
 - (void)confirmClick;
 - (void)confirmImpression;
@@ -37,15 +37,15 @@
 - (void)interfaceReady;
 - (void)interfaceReplaced;
 - (void)loadFailed;
-- (void)pendingConfirmedClick:(BOOL)a3;
+- (void)pendingConfirmedClick:(BOOL)click;
 - (void)resetTimeSpent;
 - (void)resetTransientData;
-- (void)statusEventSent:(int)a3;
-- (void)videoLoaded:(double)a3;
-- (void)videoStateChanged:(double)a3 fromMetric:(int64_t)a4;
+- (void)statusEventSent:(int)sent;
+- (void)videoLoaded:(double)loaded;
+- (void)videoStateChanged:(double)changed fromMetric:(int64_t)metric;
 - (void)videoUnloaded;
-- (void)visibleStateChanged:(int64_t)a3 duration:(double)a4 shouldUseNewVisibleLogic:(BOOL)a5;
-- (void)volumeChanged:(double)a3;
+- (void)visibleStateChanged:(int64_t)changed duration:(double)duration shouldUseNewVisibleLogic:(BOOL)logic;
+- (void)volumeChanged:(double)changed;
 - (void)wasFullyVisible;
 @end
 
@@ -74,19 +74,19 @@
   return v2;
 }
 
-- (APContentDataInternal)initWithAdData:(id)a3 identifier:(id)a4 contextIdentifier:(id)a5 placementType:(int64_t)a6 maxSize:(id)a7
+- (APContentDataInternal)initWithAdData:(id)data identifier:(id)identifier contextIdentifier:(id)contextIdentifier placementType:(int64_t)type maxSize:(id)size
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  var1 = size.var1;
+  var0 = size.var0;
+  dataCopy = data;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
   v28.receiver = self;
   v28.super_class = APContentDataInternal;
   v16 = [(APContentDataInternal *)&v28 init];
   if (v16)
   {
-    v17 = [[APContentData alloc] initWithAdData:v13 identifier:v14 contextIdentifier:v15 placementType:a6 maxSize:{var0, var1}];
+    v17 = [[APContentData alloc] initWithAdData:dataCopy identifier:identifierCopy contextIdentifier:contextIdentifierCopy placementType:type maxSize:{var0, var1}];
     content = v16->_content;
     v16->_content = v17;
 
@@ -94,7 +94,7 @@
     v20 = v16->_content;
     v16->_content = v19;
 
-    v21 = [[APContentDataPrivate alloc] initWithAdData:v13 forPlacementType:a6];
+    v21 = [[APContentDataPrivate alloc] initWithAdData:dataCopy forPlacementType:type];
     privateContent = v16->_privateContent;
     v16->_privateContent = v21;
 
@@ -102,7 +102,7 @@
     transientContent = v16->_transientContent;
     v16->_transientContent = v23;
 
-    v25 = [(APContentDataInternal *)v16 _loadJourneyStartRelayValuesFromAdData:v13];
+    v25 = [(APContentDataInternal *)v16 _loadJourneyStartRelayValuesFromAdData:dataCopy];
     journeyStartRelayValues = v16->_journeyStartRelayValues;
     v16->_journeyStartRelayValues = v25;
   }
@@ -110,18 +110,18 @@
   return v16;
 }
 
-- (APContentDataInternal)initWithUnfilledReason:(int64_t)a3 error:(id)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 containerSize:(id)a7 placementType:(int64_t)a8 journeyStartRelayValues:(id)a9
+- (APContentDataInternal)initWithUnfilledReason:(int64_t)reason error:(id)error contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier containerSize:(id)size placementType:(int64_t)type journeyStartRelayValues:(id)values
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
+  var1 = size.var1;
+  var0 = size.var0;
+  errorCopy = error;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
+  valuesCopy = values;
   v21 = [(APContentDataInternal *)self init];
   if (v21)
   {
-    v22 = [[APContentData alloc] initWithUnfilledReason:a3 error:v17 contentIdentifier:v18 contextIdentifier:v19 containerSize:a8 placementType:{var0, var1}];
+    v22 = [[APContentData alloc] initWithUnfilledReason:reason error:errorCopy contentIdentifier:identifierCopy contextIdentifier:contextIdentifierCopy containerSize:type placementType:{var0, var1}];
     content = v21->_content;
     v21->_content = v22;
 
@@ -129,67 +129,67 @@
     privateContent = v21->_privateContent;
     v21->_privateContent = v24;
 
-    objc_storeStrong(&v21->_journeyStartRelayValues, a9);
+    objc_storeStrong(&v21->_journeyStartRelayValues, values);
   }
 
   return v21;
 }
 
-- (APContentDataInternal)initWithContent:(id)a3 privateContent:(id)a4 andTransientContent:(id)a5
+- (APContentDataInternal)initWithContent:(id)content privateContent:(id)privateContent andTransientContent:(id)transientContent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contentCopy = content;
+  privateContentCopy = privateContent;
+  transientContentCopy = transientContent;
   v12 = [(APContentDataInternal *)self init];
   v13 = v12;
   if (v12)
   {
-    if (v9)
+    if (contentCopy)
     {
-      objc_storeStrong(&v12->_content, a3);
+      objc_storeStrong(&v12->_content, content);
     }
 
-    if (v10)
+    if (privateContentCopy)
     {
-      objc_storeStrong(&v13->_privateContent, a4);
+      objc_storeStrong(&v13->_privateContent, privateContent);
     }
 
-    if (v11)
+    if (transientContentCopy)
     {
-      objc_storeStrong(&v13->_transientContent, a5);
+      objc_storeStrong(&v13->_transientContent, transientContent);
     }
   }
 
   return v13;
 }
 
-- (APContentDataInternal)initWithContentDataProvider:(id)a3
+- (APContentDataInternal)initWithContentDataProvider:(id)provider
 {
-  v5 = a3;
-  v6 = [v5 contentData];
-  v7 = [v5 contentDataPrivate];
-  v8 = [v5 contentDataTransient];
-  v9 = [(APContentDataInternal *)self initWithContent:v6 privateContent:v7 andTransientContent:v8];
+  providerCopy = provider;
+  contentData = [providerCopy contentData];
+  contentDataPrivate = [providerCopy contentDataPrivate];
+  contentDataTransient = [providerCopy contentDataTransient];
+  v9 = [(APContentDataInternal *)self initWithContent:contentData privateContent:contentDataPrivate andTransientContent:contentDataTransient];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_contentDataProvider, a3);
+    objc_storeStrong(&v9->_contentDataProvider, provider);
   }
 
   return v9;
 }
 
-- (id)initRateLimitedForContextId:(id)a3 containerSize:(id)a4 placementType:(int64_t)a5
+- (id)initRateLimitedForContextId:(id)id containerSize:(id)size placementType:(int64_t)type
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
+  var1 = size.var1;
+  var0 = size.var0;
+  idCopy = id;
   v18.receiver = self;
   v18.super_class = APContentDataInternal;
   v10 = [(APContentDataInternal *)&v18 init];
   if (v10)
   {
-    v11 = [[APContentData alloc] initRateLimitedForContextId:v9 containerSize:a5 placementType:{var0, var1}];
+    v11 = [[APContentData alloc] initRateLimitedForContextId:idCopy containerSize:type placementType:{var0, var1}];
     content = v10->_content;
     v10->_content = v11;
 
@@ -212,76 +212,76 @@
   _objc_release_x1();
 }
 
-- (void)accumulateVisibilityTime:(double)a3
+- (void)accumulateVisibilityTime:(double)time
 {
-  v5 = [(APContentDataInternal *)self privateContent];
-  v6 = [v5 isCarouselAd];
+  privateContent = [(APContentDataInternal *)self privateContent];
+  isCarouselAd = [privateContent isCarouselAd];
 
-  if (v6)
+  if (isCarouselAd)
   {
-    v7 = [(APContentDataInternal *)self transientContent];
-    [v7 carouselVisibleTime];
-    [v7 setCarouselVisibleTime:v8 + a3];
+    transientContent = [(APContentDataInternal *)self transientContent];
+    [transientContent carouselVisibleTime];
+    [transientContent setCarouselVisibleTime:v8 + time];
   }
 
   if (![(APContentDataInternal *)self hasConfirmedImpression])
   {
-    v9 = [(APContentDataInternal *)self transientContent];
-    [v9 accumulatedVisibilityTime];
+    transientContent2 = [(APContentDataInternal *)self transientContent];
+    [transientContent2 accumulatedVisibilityTime];
     v11 = v10;
-    v12 = [(APContentDataInternal *)self content];
-    [v12 impressionThreshold];
+    content = [(APContentDataInternal *)self content];
+    [content impressionThreshold];
     v14 = v13;
 
     if (v11 <= v14)
     {
-      v16 = [(APContentDataInternal *)self transientContent];
-      [v16 accumulatedVisibilityTime];
-      [v16 setAccumulatedVisibilityTime:v15 + a3];
+      transientContent3 = [(APContentDataInternal *)self transientContent];
+      [transientContent3 accumulatedVisibilityTime];
+      [transientContent3 setAccumulatedVisibilityTime:v15 + time];
     }
   }
 }
 
-- (void)accumulate50PercentVisibilityTime:(double)a3
+- (void)accumulate50PercentVisibilityTime:(double)time
 {
-  v5 = [(APContentDataInternal *)self privateContent];
-  v6 = [v5 isCarouselAd];
+  privateContent = [(APContentDataInternal *)self privateContent];
+  isCarouselAd = [privateContent isCarouselAd];
 
-  if (v6)
+  if (isCarouselAd)
   {
-    v7 = [(APContentDataInternal *)self transientContent];
-    [v7 carousel50PercentVisibleTime];
-    [v7 setCarousel50PercentVisibleTime:v8 + a3];
+    transientContent = [(APContentDataInternal *)self transientContent];
+    [transientContent carousel50PercentVisibleTime];
+    [transientContent setCarousel50PercentVisibleTime:v8 + time];
   }
 
   if (![(APContentDataInternal *)self hasConfirmed50PercentImpression])
   {
-    v9 = [(APContentDataInternal *)self transientContent];
-    [v9 accumulated50PercentVisibilityTime];
+    transientContent2 = [(APContentDataInternal *)self transientContent];
+    [transientContent2 accumulated50PercentVisibilityTime];
     v11 = v10;
-    v12 = [(APContentDataInternal *)self content];
-    [v12 impressionThreshold];
+    content = [(APContentDataInternal *)self content];
+    [content impressionThreshold];
     v14 = v13;
 
     if (v11 <= v14)
     {
-      v16 = [(APContentDataInternal *)self transientContent];
-      [v16 accumulated50PercentVisibilityTime];
-      [v16 setAccumulated50PercentVisibilityTime:v15 + a3];
+      transientContent3 = [(APContentDataInternal *)self transientContent];
+      [transientContent3 accumulated50PercentVisibilityTime];
+      [transientContent3 setAccumulated50PercentVisibilityTime:v15 + time];
     }
   }
 }
 
-- (void)appearedOnScreenWithStatus:(int)a3
+- (void)appearedOnScreenWithStatus:(int)status
 {
-  v3 = *&a3;
+  v3 = *&status;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(APContentDataInternal *)self content];
-    v7 = [v6 contextIdentifier];
-    v8 = [(APContentDataInternal *)self content];
-    v9 = [v8 identifier];
+    content = [(APContentDataInternal *)self content];
+    contextIdentifier = [content contextIdentifier];
+    content2 = [(APContentDataInternal *)self content];
+    identifier = [content2 identifier];
     if (v3 > 359)
     {
       switch(v3)
@@ -407,27 +407,27 @@ LABEL_27:
     }
 
     *buf = 138543874;
-    v15 = v7;
+    v15 = contextIdentifier;
     v16 = 2114;
-    v17 = v9;
+    v17 = identifier;
     v18 = 2114;
     v19 = v10;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content for context %{public}@ with ID %{public}@ appeared on screen with status %{public}@.", buf, 0x20u);
   }
 
-  v11 = [(APContentDataInternal *)self transientContent];
-  [v11 setHasBeenOnScreen:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setHasBeenOnScreen:1];
 
-  v12 = [(APContentDataInternal *)self transientContent];
-  [v12 setLastStatusCode:v3];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 setLastStatusCode:v3];
 
-  v13 = [(APContentDataInternal *)self transientContent];
-  [v13 save];
+  transientContent3 = [(APContentDataInternal *)self transientContent];
+  [transientContent3 save];
 }
 
-- (BOOL)canSendImpression:(BOOL)a3
+- (BOOL)canSendImpression:(BOOL)impression
 {
-  v3 = a3;
+  impressionCopy = impression;
   if ([(APContentDataInternal *)self hasConfirmedImpression])
   {
     v5 = APLogForCategory();
@@ -438,31 +438,31 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v6 = [(APContentDataInternal *)self content];
-    v7 = [v6 identifier];
+    content = [(APContentDataInternal *)self content];
+    identifier = [content identifier];
     *buf = 138543362;
-    v38 = v7;
+    v38 = identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can NOT send viewable impression - it has already impressed.", buf, 0xCu);
 LABEL_4:
 
     goto LABEL_55;
   }
 
-  v8 = [(APContentDataInternal *)self transientContent];
-  v9 = [v8 lastStatusCode];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  lastStatusCode = [transientContent lastStatusCode];
 
-  if (v9 != 3000)
+  if (lastStatusCode != 3000)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v13 = [(APContentDataInternal *)self content];
-      v14 = [v13 identifier];
-      v15 = [(APContentDataInternal *)self transientContent];
-      v16 = [v15 lastStatusCode];
-      if (v16 > 359)
+      content2 = [(APContentDataInternal *)self content];
+      identifier2 = [content2 identifier];
+      transientContent2 = [(APContentDataInternal *)self transientContent];
+      lastStatusCode2 = [transientContent2 lastStatusCode];
+      if (lastStatusCode2 > 359)
       {
-        switch(v16)
+        switch(lastStatusCode2)
         {
           case 3000:
             v17 = @"ADStatusCodeNoError";
@@ -507,12 +507,12 @@ LABEL_4:
             v17 = @"ADStatusCodeAdVideoLoadError";
             break;
           default:
-            if (v16 == 360)
+            if (lastStatusCode2 == 360)
             {
               v17 = @"ADStatusCodeNoAdDueToSubscriptionStatus";
             }
 
-            else if (v16 == 370)
+            else if (lastStatusCode2 == 370)
             {
               v17 = @"ADStatusCodeNoAdDueToPolicyRequirement";
             }
@@ -520,7 +520,7 @@ LABEL_4:
             else
             {
 LABEL_42:
-              v17 = [NSString stringWithFormat:@"(unknown: %i)", v16];
+              v17 = [NSString stringWithFormat:@"(unknown: %i)", lastStatusCode2];
             }
 
             break;
@@ -530,7 +530,7 @@ LABEL_42:
       else
       {
         v17 = @"ADStatusCodeUnknown";
-        switch(v16)
+        switch(lastStatusCode2)
         {
           case 0:
             break;
@@ -585,7 +585,7 @@ LABEL_42:
       }
 
       *buf = 138543618;
-      v38 = v14;
+      v38 = identifier2;
       v39 = 2112;
       v40 = v17;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can NOT send viewable impression - current ASE code is %@.", buf, 0x16u);
@@ -594,13 +594,13 @@ LABEL_42:
     goto LABEL_55;
   }
 
-  if (!v3)
+  if (!impressionCopy)
   {
-    v18 = [(APContentDataInternal *)self transientContent];
-    [v18 accumulatedVisibilityTime];
+    transientContent3 = [(APContentDataInternal *)self transientContent];
+    [transientContent3 accumulatedVisibilityTime];
     v20 = v19;
-    v21 = [(APContentDataInternal *)self content];
-    [v21 impressionThreshold];
+    content3 = [(APContentDataInternal *)self content];
+    [content3 impressionThreshold];
     v23 = v22;
 
     v5 = APLogForCategory();
@@ -612,15 +612,15 @@ LABEL_42:
         goto LABEL_55;
       }
 
-      v6 = [(APContentDataInternal *)self content];
-      v7 = [v6 identifier];
-      v25 = [(APContentDataInternal *)self transientContent];
-      [v25 accumulatedVisibilityTime];
+      content = [(APContentDataInternal *)self content];
+      identifier = [content identifier];
+      transientContent4 = [(APContentDataInternal *)self transientContent];
+      [transientContent4 accumulatedVisibilityTime];
       v27 = v26;
-      v28 = [(APContentDataInternal *)self content];
-      [v28 impressionThreshold];
+      content4 = [(APContentDataInternal *)self content];
+      [content4 impressionThreshold];
       *buf = 138543874;
-      v38 = v7;
+      v38 = identifier;
       v39 = 2048;
       v40 = v27;
       v41 = 2048;
@@ -636,15 +636,15 @@ LABEL_42:
       goto LABEL_56;
     }
 
-    v11 = [(APContentDataInternal *)self content];
-    v30 = [v11 identifier];
-    v31 = [(APContentDataInternal *)self content];
-    [v31 impressionThreshold];
+    content5 = [(APContentDataInternal *)self content];
+    identifier3 = [content5 identifier];
+    content6 = [(APContentDataInternal *)self content];
+    [content6 impressionThreshold];
     v33 = v32;
-    v34 = [(APContentDataInternal *)self transientContent];
-    [v34 accumulatedVisibilityTime];
+    transientContent5 = [(APContentDataInternal *)self transientContent];
+    [transientContent5 accumulatedVisibilityTime];
     *buf = 138543874;
-    v38 = v30;
+    v38 = identifier3;
     v39 = 2048;
     v40 = v33;
     v41 = 2048;
@@ -659,10 +659,10 @@ LABEL_42:
   v10 = 1;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v11 = [(APContentDataInternal *)self content];
-    v12 = [v11 identifier];
+    content5 = [(APContentDataInternal *)self content];
+    identifier4 = [content5 identifier];
     *buf = 138543362;
-    v38 = v12;
+    v38 = identifier4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can send viewable impression due to interaction", buf, 0xCu);
 
 LABEL_20:
@@ -673,18 +673,18 @@ LABEL_56:
   return v10;
 }
 
-- (BOOL)canSend50PercentImpression:(BOOL)a3
+- (BOOL)canSend50PercentImpression:(BOOL)impression
 {
-  v3 = a3;
+  impressionCopy = impression;
   if ([(APContentDataInternal *)self hasConfirmed50PercentImpression])
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(APContentDataInternal *)self content];
-      v7 = [v6 identifier];
+      content = [(APContentDataInternal *)self content];
+      identifier = [content identifier];
       *buf = 138543362;
-      v54 = v7;
+      v54 = identifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can NOT send 50 percent viewable impression - it has already impressed.", buf, 0xCu);
     }
 
@@ -693,21 +693,21 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  v8 = [(APContentDataInternal *)self transientContent];
-  v9 = [v8 lastStatusCode];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  lastStatusCode = [transientContent lastStatusCode];
 
-  if (v9 != 3000)
+  if (lastStatusCode != 3000)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v13 = [(APContentDataInternal *)self content];
-      v14 = [v13 identifier];
-      v15 = [(APContentDataInternal *)self transientContent];
-      v16 = [v15 lastStatusCode];
-      if (v16 > 359)
+      content2 = [(APContentDataInternal *)self content];
+      identifier2 = [content2 identifier];
+      transientContent2 = [(APContentDataInternal *)self transientContent];
+      lastStatusCode2 = [transientContent2 lastStatusCode];
+      if (lastStatusCode2 > 359)
       {
-        switch(v16)
+        switch(lastStatusCode2)
         {
           case 3000:
             v17 = @"ADStatusCodeNoError";
@@ -752,12 +752,12 @@ LABEL_54:
             v17 = @"ADStatusCodeAdVideoLoadError";
             break;
           default:
-            if (v16 == 360)
+            if (lastStatusCode2 == 360)
             {
               v17 = @"ADStatusCodeNoAdDueToSubscriptionStatus";
             }
 
-            else if (v16 == 370)
+            else if (lastStatusCode2 == 370)
             {
               v17 = @"ADStatusCodeNoAdDueToPolicyRequirement";
             }
@@ -765,7 +765,7 @@ LABEL_54:
             else
             {
 LABEL_41:
-              v17 = [NSString stringWithFormat:@"(unknown: %i)", v16];
+              v17 = [NSString stringWithFormat:@"(unknown: %i)", lastStatusCode2];
             }
 
             break;
@@ -775,7 +775,7 @@ LABEL_41:
       else
       {
         v17 = @"ADStatusCodeUnknown";
-        switch(v16)
+        switch(lastStatusCode2)
         {
           case 0:
             break;
@@ -830,7 +830,7 @@ LABEL_41:
       }
 
       *buf = 138543618;
-      v54 = v14;
+      v54 = identifier2;
       v55 = 2112;
       v56 = v17;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can NOT send 50 percent viewable impression - current ASE code is %@.", buf, 0x16u);
@@ -839,38 +839,38 @@ LABEL_41:
     goto LABEL_54;
   }
 
-  if (v3)
+  if (impressionCopy)
   {
     v5 = APLogForCategory();
     v10 = 1;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v11 = [(APContentDataInternal *)self content];
-      v12 = [v11 identifier];
+      content3 = [(APContentDataInternal *)self content];
+      identifier3 = [content3 identifier];
       *buf = 138543362;
-      v54 = v12;
+      v54 = identifier3;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Content with ID %{public}@ can send 50 percent viewable impression due to interaction", buf, 0xCu);
     }
   }
 
   else
   {
-    v18 = [(APContentDataInternal *)self transientContent];
-    [v18 accumulated50PercentVisibilityTime];
+    transientContent3 = [(APContentDataInternal *)self transientContent];
+    [transientContent3 accumulated50PercentVisibilityTime];
     v20 = v19;
-    v21 = [(APContentDataInternal *)self content];
-    [v21 impressionThreshold];
+    content4 = [(APContentDataInternal *)self content];
+    [content4 impressionThreshold];
     if (v20 >= v22)
     {
     }
 
     else
     {
-      v23 = [(APContentDataInternal *)self transientContent];
-      [v23 accumulatedVisibilityTime];
+      transientContent4 = [(APContentDataInternal *)self transientContent];
+      [transientContent4 accumulatedVisibilityTime];
       v25 = v24;
-      v26 = [(APContentDataInternal *)self content];
-      [v26 impressionThreshold];
+      content5 = [(APContentDataInternal *)self content];
+      [content5 impressionThreshold];
       v28 = v27;
 
       if (v25 < v28)
@@ -878,21 +878,21 @@ LABEL_41:
         v5 = APLogForCategory();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
         {
-          v29 = [(APContentDataInternal *)self content];
-          v30 = [v29 identifier];
-          v31 = [(APContentDataInternal *)self transientContent];
-          [v31 accumulated50PercentVisibilityTime];
+          content6 = [(APContentDataInternal *)self content];
+          identifier4 = [content6 identifier];
+          transientContent5 = [(APContentDataInternal *)self transientContent];
+          [transientContent5 accumulated50PercentVisibilityTime];
           v33 = v32;
-          v34 = [(APContentDataInternal *)self content];
-          [v34 impressionThreshold];
+          content7 = [(APContentDataInternal *)self content];
+          [content7 impressionThreshold];
           v36 = v35;
-          v37 = [(APContentDataInternal *)self transientContent];
-          [v37 accumulatedVisibilityTime];
+          transientContent6 = [(APContentDataInternal *)self transientContent];
+          [transientContent6 accumulatedVisibilityTime];
           v39 = v38;
-          v40 = [(APContentDataInternal *)self content];
-          [v40 impressionThreshold];
+          content8 = [(APContentDataInternal *)self content];
+          [content8 impressionThreshold];
           *buf = 138544386;
-          v54 = v30;
+          v54 = identifier4;
           v55 = 2048;
           v56 = v33;
           v57 = 2048;
@@ -912,18 +912,18 @@ LABEL_41:
     v10 = 1;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v42 = [(APContentDataInternal *)self content];
-      v43 = [v42 identifier];
-      v44 = [(APContentDataInternal *)self transientContent];
-      [v44 accumulated50PercentVisibilityTime];
+      content9 = [(APContentDataInternal *)self content];
+      identifier5 = [content9 identifier];
+      transientContent7 = [(APContentDataInternal *)self transientContent];
+      [transientContent7 accumulated50PercentVisibilityTime];
       v46 = v45;
-      v47 = [(APContentDataInternal *)self transientContent];
-      [v47 accumulatedVisibilityTime];
+      transientContent8 = [(APContentDataInternal *)self transientContent];
+      [transientContent8 accumulatedVisibilityTime];
       v49 = v48;
-      v50 = [(APContentDataInternal *)self content];
-      [v50 impressionThreshold];
+      content10 = [(APContentDataInternal *)self content];
+      [content10 impressionThreshold];
       *buf = 138544130;
-      v54 = v43;
+      v54 = identifier5;
       v55 = 2048;
       v56 = v46;
       v57 = 2048;
@@ -941,50 +941,50 @@ LABEL_55:
 
 - (void)confirmImpression
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setHasConfirmedImpression:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setHasConfirmedImpression:1];
 
-  v4 = [(APContentDataInternal *)self privateContent];
-  [v4 setConsumedImpressions:{objc_msgSend(v4, "consumedImpressions") + 1}];
+  privateContent = [(APContentDataInternal *)self privateContent];
+  [privateContent setConsumedImpressions:{objc_msgSend(privateContent, "consumedImpressions") + 1}];
 
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 
-  v6 = [(APContentDataInternal *)self privateContent];
-  [v6 save];
+  privateContent2 = [(APContentDataInternal *)self privateContent];
+  [privateContent2 save];
 }
 
 - (void)confirm50PercentImpression
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setHasConfirmed50PercentImpression:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setHasConfirmed50PercentImpression:1];
 
-  v4 = [(APContentDataInternal *)self privateContent];
-  [v4 setConsumed50PercentImpressions:{objc_msgSend(v4, "consumed50PercentImpressions") + 1}];
+  privateContent = [(APContentDataInternal *)self privateContent];
+  [privateContent setConsumed50PercentImpressions:{objc_msgSend(privateContent, "consumed50PercentImpressions") + 1}];
 
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 
-  v6 = [(APContentDataInternal *)self privateContent];
-  [v6 save];
+  privateContent2 = [(APContentDataInternal *)self privateContent];
+  [privateContent2 save];
 }
 
 - (void)resetTimeSpent
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setTimeSpent:0.0];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setTimeSpent:0.0];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (void)discarded
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setDiscarded:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setDiscarded:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (void)eventSent
@@ -992,137 +992,137 @@ LABEL_55:
   v3 = +[NSDate date];
   [v3 timeIntervalSince1970];
   v5 = v4;
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 setLastSentEventTime:v5];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setLastSentEventTime:v5];
 
-  v7 = [(APContentDataInternal *)self transientContent];
-  [v7 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (void)interfaceReady
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setInterfaceReady:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setInterfaceReady:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (void)carouselElementClicked:(id)a3 element:(int)a4
+- (void)carouselElementClicked:(id)clicked element:(int)element
 {
-  v4 = *&a4;
-  [(APContentDataInternal *)self _clicked:a3.var0, a3.var1];
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 setClickedCarouselElement:v4];
+  v4 = *&element;
+  [(APContentDataInternal *)self _clicked:clicked.var0, clicked.var1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setClickedCarouselElement:v4];
 
-  v7 = [(APContentDataInternal *)self transientContent];
-  [v7 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (void)carouselFinishedSent
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setCarouselFinishedSent:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setCarouselFinishedSent:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (void)_clicked:(id)a3
+- (void)_clicked:(id)_clicked
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 setClickLocation:{var0, var1}];
+  var1 = _clicked.var1;
+  var0 = _clicked.var0;
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setClickLocation:{var0, var1}];
 
   v7 = +[NSDate date];
   [v7 timeIntervalSince1970];
   v9 = v8;
-  v10 = [(APContentDataInternal *)self transientContent];
-  [v10 setClickTime:v9];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 setClickTime:v9];
 
-  v11 = [(APContentDataInternal *)self transientContent];
-  [v11 setClickCount:{objc_msgSend(v11, "clickCount") + 1}];
+  transientContent3 = [(APContentDataInternal *)self transientContent];
+  [transientContent3 setClickCount:{objc_msgSend(transientContent3, "clickCount") + 1}];
 }
 
-- (void)clicked:(id)a3
+- (void)clicked:(id)clicked
 {
-  [(APContentDataInternal *)self _clicked:a3.var0, a3.var1];
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  [(APContentDataInternal *)self _clicked:clicked.var0, clicked.var1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent save];
 }
 
 - (void)confirmClick
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setHasConfirmedClick:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setHasConfirmedClick:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (BOOL)hasConfirmedImpression
 {
-  v2 = [(APContentDataInternal *)self transientContent];
-  v3 = [v2 hasConfirmedImpression];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  hasConfirmedImpression = [transientContent hasConfirmedImpression];
 
-  return v3;
+  return hasConfirmedImpression;
 }
 
 - (BOOL)hasConfirmed50PercentImpression
 {
-  v2 = [(APContentDataInternal *)self transientContent];
-  v3 = [v2 hasConfirmed50PercentImpression];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  hasConfirmed50PercentImpression = [transientContent hasConfirmed50PercentImpression];
 
-  return v3;
+  return hasConfirmed50PercentImpression;
 }
 
 - (void)incrementVideoEventSequence
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setVideoEventSequence:{objc_msgSend(v3, "videoEventSequence") + 1}];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setVideoEventSequence:{objc_msgSend(transientContent, "videoEventSequence") + 1}];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (void)pendingConfirmedClick:(BOOL)a3
+- (void)pendingConfirmedClick:(BOOL)click
 {
-  v3 = a3;
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 setPendingConfirmedClick:v3];
+  clickCopy = click;
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setPendingConfirmedClick:clickCopy];
 
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (BOOL)isFirstMessage:(int)a3
+- (BOOL)isFirstMessage:(int)message
 {
   v3 = 1;
-  if (a3 <= 0xD)
+  if (message <= 0xD)
   {
-    if (((1 << a3) & 0x361E) != 0)
+    if (((1 << message) & 0x361E) != 0)
     {
       return v3;
     }
 
-    if (a3 == 8)
+    if (message == 8)
     {
 LABEL_8:
-      v5 = [(APContentDataInternal *)self transientContent];
-      v6 = [v5 sentStatusCodes];
-      v3 = [v6 count] == 0;
+      transientContent = [(APContentDataInternal *)self transientContent];
+      sentStatusCodes = [transientContent sentStatusCodes];
+      v3 = [sentStatusCodes count] == 0;
 
       return v3;
     }
   }
 
-  if ((a3 - 3000) > 0xC)
+  if ((message - 3000) > 0xC)
   {
-    return a3 == 360;
+    return message == 360;
   }
 
-  v4 = 1 << (a3 + 72);
+  v4 = 1 << (message + 72);
   if ((v4 & 0x1782) == 0)
   {
     if ((v4 & 0x11) != 0)
@@ -1130,20 +1130,20 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    return a3 == 360;
+    return message == 360;
   }
 
   return v3;
 }
 
-+ (BOOL)isFinalMessage:(int)a3
++ (BOOL)isFinalMessage:(int)message
 {
   result = 1;
-  if (a3 > 369)
+  if (message > 369)
   {
-    if ((a3 - 3000) <= 0xD)
+    if ((message - 3000) <= 0xD)
     {
-      v4 = 1 << (a3 + 72);
+      v4 = 1 << (message + 72);
       if ((v4 & 0x37A0) != 0)
       {
         return result;
@@ -1155,7 +1155,7 @@ LABEL_8:
       }
     }
 
-    if (a3 != 370)
+    if (message != 370)
     {
       return 0;
     }
@@ -1163,20 +1163,20 @@ LABEL_8:
 
   else
   {
-    if (a3 <= 0xF)
+    if (message <= 0xF)
     {
-      if (((1 << a3) & 0xF31E) != 0)
+      if (((1 << message) & 0xF31E) != 0)
       {
         return result;
       }
 
-      if (a3 == 10)
+      if (message == 10)
       {
         return 0;
       }
     }
 
-    if (a3 != 360)
+    if (message != 360)
     {
       return 0;
     }
@@ -1187,49 +1187,49 @@ LABEL_8:
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(APContentDataInternal *)self content];
-  v3 = [v2 identifier];
-  v4 = [APContentDataInternal isPlaceholderIdentifier:v3];
+  content = [(APContentDataInternal *)self content];
+  identifier = [content identifier];
+  v4 = [APContentDataInternal isPlaceholderIdentifier:identifier];
 
   return v4;
 }
 
 - (void)loadFailed
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setLastStatusCode:8];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setLastStatusCode:8];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (BOOL)hasSentStatusEvent:(int)a3
+- (BOOL)hasSentStatusEvent:(int)event
 {
-  v3 = *&a3;
-  v4 = [(APContentDataInternal *)self transientContent];
-  v5 = [v4 sentStatusCodes];
+  v3 = *&event;
+  transientContent = [(APContentDataInternal *)self transientContent];
+  sentStatusCodes = [transientContent sentStatusCodes];
   v6 = [NSNumber numberWithInt:v3];
-  v7 = [v5 containsObject:v6];
+  v7 = [sentStatusCodes containsObject:v6];
 
   return v7;
 }
 
 - (void)interfaceReplaced
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setInterfaceReplaced:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setInterfaceReplaced:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (void)wasFullyVisible
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setWasFullyVisible:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setWasFullyVisible:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 - (BOOL)_hasSentFinalEvent
@@ -1238,10 +1238,10 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(APContentDataInternal *)self transientContent];
-  v3 = [v2 sentStatusCodes];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  sentStatusCodes = [transientContent sentStatusCodes];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [sentStatusCodes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -1251,7 +1251,7 @@ LABEL_8:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sentStatusCodes);
         }
 
         if (+[APContentDataInternal isFinalMessage:](APContentDataInternal, "isFinalMessage:", [*(*(&v8 + 1) + 8 * i) intValue]))
@@ -1261,7 +1261,7 @@ LABEL_8:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [sentStatusCodes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -1276,17 +1276,17 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)shouldSendAdSpaceStatusEvent:(int)a3
+- (BOOL)shouldSendAdSpaceStatusEvent:(int)event
 {
-  v3 = *&a3;
-  if (a3 <= 0)
+  v3 = *&event;
+  if (event <= 0)
   {
-    v7 = [(APContentDataInternal *)self content];
-    v8 = [v7 serverUnfilledReason];
+    content = [(APContentDataInternal *)self content];
+    serverUnfilledReason = [content serverUnfilledReason];
 
     v9 = APLogForCategory();
     v5 = v9;
-    if (v8 != 1020)
+    if (serverUnfilledReason != 1020)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -1305,10 +1305,10 @@ LABEL_11:
       goto LABEL_164;
     }
 
-    v10 = [(APContentDataInternal *)self content];
-    v11 = [v10 identifier];
+    content2 = [(APContentDataInternal *)self content];
+    identifier = [content2 identifier];
     *buf = 138412290;
-    v52 = v11;
+    v52 = identifier;
     v12 = "Not sending ASE due to status condition discard for content %@";
     goto LABEL_10;
   }
@@ -1441,12 +1441,12 @@ LABEL_87:
         }
       }
 
-      v43 = [(APContentDataInternal *)self content];
-      v44 = [v43 identifier];
+      content3 = [(APContentDataInternal *)self content];
+      identifier2 = [content3 identifier];
       *buf = 138543618;
       v52 = v3;
       v53 = 2114;
-      v54 = v44;
+      v54 = identifier2;
       v46 = "shouldSendAdSpaceStatusEvent: NOT sending ASE %{public}@ for content %{public}@ - a final ASE was previously sent.";
 LABEL_163:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v46, buf, 0x16u);
@@ -1457,26 +1457,26 @@ LABEL_163:
     goto LABEL_164;
   }
 
-  v13 = [(APContentDataInternal *)self transientContent];
-  v14 = [v13 discarded];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  discarded = [transientContent discarded];
 
-  if (!v14)
+  if (!discarded)
   {
     v16 = [(APContentDataInternal *)self hasSentStatusEvent:v3];
-    if ((v16 & 1) != 0 || (-[APContentDataInternal transientContent](self, "transientContent"), v14 = objc_claimAutoreleasedReturnValue(), [v14 lastStatusCode] == v3))
+    if ((v16 & 1) != 0 || (-[APContentDataInternal transientContent](self, "transientContent"), discarded = objc_claimAutoreleasedReturnValue(), [discarded lastStatusCode] == v3))
     {
-      v17 = [(APContentDataInternal *)self transientContent];
-      v18 = [v17 hasBeenOnScreen];
+      transientContent2 = [(APContentDataInternal *)self transientContent];
+      hasBeenOnScreen = [transientContent2 hasBeenOnScreen];
 
       if (v16)
       {
-        if ((v18 & 1) == 0)
+        if ((hasBeenOnScreen & 1) == 0)
         {
 LABEL_29:
           if ([(APContentDataInternal *)self isPlaceholder])
           {
-            v20 = [(APContentDataInternal *)self transientContent];
-            v19 = [v20 interfaceReplaced] ^ 1;
+            transientContent3 = [(APContentDataInternal *)self transientContent];
+            v19 = [transientContent3 interfaceReplaced] ^ 1;
           }
 
           else
@@ -1486,26 +1486,26 @@ LABEL_29:
 
           if (v3 == 8 && v19)
           {
-            v21 = [(APContentDataInternal *)self transientContent];
-            v22 = [v21 hasBeenOnScreen];
+            transientContent4 = [(APContentDataInternal *)self transientContent];
+            hasBeenOnScreen2 = [transientContent4 hasBeenOnScreen];
 
-            if (v22)
+            if (hasBeenOnScreen2)
             {
               v23 = +[NSDate date];
               [v23 timeIntervalSince1970];
               v25 = v24;
-              v26 = [(APContentDataInternal *)self transientContent];
-              [v26 lastSentEventTime];
+              transientContent5 = [(APContentDataInternal *)self transientContent];
+              [transientContent5 lastSentEventTime];
               v28 = v25 - v27;
 
               v29 = APLogForCategory();
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
               {
-                v30 = [(APContentDataInternal *)self content];
-                v31 = [v30 identifier];
+                content4 = [(APContentDataInternal *)self content];
+                identifier3 = [content4 identifier];
                 v32 = @" NOT";
                 *buf = 138543874;
-                v52 = v31;
+                v52 = identifier3;
                 if (v28 <= 180.0)
                 {
                   v32 = &stru_1004810B8;
@@ -1533,10 +1533,10 @@ LABEL_29:
               goto LABEL_164;
             }
 
-            v10 = [(APContentDataInternal *)self content];
-            v11 = [v10 identifier];
+            content2 = [(APContentDataInternal *)self content];
+            identifier = [content2 identifier];
             *buf = 138543362;
-            v52 = v11;
+            v52 = identifier;
             v12 = "shouldSendAdSpaceStatusEvent: NOT sending AssetLoadFailure for content %{public}@ because the WebView never appeared on screen.";
 LABEL_10:
             _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v12, buf, 0xCu);
@@ -1548,8 +1548,8 @@ LABEL_41:
           v33 = APLogForCategory();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
-            v50 = [(APContentDataInternal *)self content];
-            v34 = [v50 identifier];
+            content5 = [(APContentDataInternal *)self content];
+            identifier4 = [content5 identifier];
             if (v19)
             {
               v35 = @"YES";
@@ -1572,8 +1572,8 @@ LABEL_41:
 
             v47 = v35;
             v48 = v36;
-            v49 = [(APContentDataInternal *)self transientContent];
-            v37 = [v49 lastStatusCode];
+            transientContent6 = [(APContentDataInternal *)self transientContent];
+            lastStatusCode = [transientContent6 lastStatusCode];
             if ([(APContentDataInternal *)self isPlaceholder])
             {
               v38 = @"YES";
@@ -1584,10 +1584,10 @@ LABEL_41:
               v38 = @"NO";
             }
 
-            v39 = [(APContentDataInternal *)self transientContent];
-            v40 = [v39 interfaceReplaced];
+            transientContent7 = [(APContentDataInternal *)self transientContent];
+            interfaceReplaced = [transientContent7 interfaceReplaced];
             *buf = 138544898;
-            if (v40)
+            if (interfaceReplaced)
             {
               v41 = @"YES";
             }
@@ -1597,7 +1597,7 @@ LABEL_41:
               v41 = @"NO";
             }
 
-            v52 = v34;
+            v52 = identifier4;
             v53 = 2112;
             v54 = v47;
             v55 = 2114;
@@ -1605,7 +1605,7 @@ LABEL_41:
             v57 = 1024;
             v58 = v3;
             v59 = 1024;
-            v60 = v37;
+            v60 = lastStatusCode;
             v61 = 2114;
             v62 = v38;
             v63 = 2114;
@@ -1624,8 +1624,8 @@ LABEL_41:
             goto LABEL_164;
           }
 
-          v43 = [(APContentDataInternal *)self content];
-          v44 = [v43 identifier];
+          content3 = [(APContentDataInternal *)self content];
+          identifier2 = [content3 identifier];
           if (v3 > 369)
           {
             switch(v3)
@@ -1750,7 +1750,7 @@ LABEL_151:
           }
 
           *buf = 138543618;
-          v52 = v44;
+          v52 = identifier2;
           v53 = 2114;
           v54 = v3;
           v46 = "%{public}@ has already reported AdSpaceStatusEvent %{public}@. Ignoring.";
@@ -1761,7 +1761,7 @@ LABEL_151:
       else
       {
 
-        if ((v18 & 1) == 0)
+        if ((hasBeenOnScreen & 1) == 0)
         {
           goto LABEL_29;
         }
@@ -1900,12 +1900,12 @@ LABEL_119:
       }
     }
 
-    v43 = [(APContentDataInternal *)self content];
-    v44 = [v43 identifier];
+    content3 = [(APContentDataInternal *)self content];
+    identifier2 = [content3 identifier];
     *buf = 138543618;
     v52 = v3;
     v53 = 2114;
-    v54 = v44;
+    v54 = identifier2;
     v46 = "shouldSendAdSpaceStatusEvent: NOT sending ASE %{public}@ for content %{public}@ - it has been discarded.";
     goto LABEL_163;
   }
@@ -1915,29 +1915,29 @@ LABEL_164:
   return 0;
 }
 
-- (void)statusEventSent:(int)a3
+- (void)statusEventSent:(int)sent
 {
-  v3 = *&a3;
-  v5 = [(APContentDataInternal *)self transientContent];
-  v6 = [v5 sentStatusCodes];
+  v3 = *&sent;
+  transientContent = [(APContentDataInternal *)self transientContent];
+  sentStatusCodes = [transientContent sentStatusCodes];
   v7 = [NSNumber numberWithInt:v3];
-  [v6 addObject:v7];
+  [sentStatusCodes addObject:v7];
 
-  v8 = [(APContentDataInternal *)self transientContent];
-  [v8 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (void)videoLoaded:(double)a3
+- (void)videoLoaded:(double)loaded
 {
-  v4 = fmax(a3, 0.0);
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 setDuration:v4];
+  v4 = fmax(loaded, 0.0);
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setDuration:v4];
 
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 setPlaybackInProgress:0];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 setPlaybackInProgress:0];
 
-  v7 = [(APContentDataInternal *)self transientContent];
-  [v7 save];
+  transientContent3 = [(APContentDataInternal *)self transientContent];
+  [transientContent3 save];
 }
 
 - (void)_updateLastPlaybackTimestamp
@@ -1945,75 +1945,75 @@ LABEL_164:
   v6 = +[NSDate date];
   [v6 timeIntervalSince1970];
   v4 = v3;
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 setLastPlaybackTimestamp:v4];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setLastPlaybackTimestamp:v4];
 }
 
 - (void)_accumulatePlaybackTimeIfNoDuration
 {
-  v12 = [(APContentDataInternal *)self transientContent];
-  if (([v12 hasDuration] & 1) == 0)
+  transientContent = [(APContentDataInternal *)self transientContent];
+  if (([transientContent hasDuration] & 1) == 0)
   {
-    v3 = [(APContentDataInternal *)self transientContent];
-    v4 = [v3 playbackInProgress];
+    transientContent2 = [(APContentDataInternal *)self transientContent];
+    playbackInProgress = [transientContent2 playbackInProgress];
 
-    if (!v4)
+    if (!playbackInProgress)
     {
       return;
     }
 
-    v12 = [(APContentDataInternal *)self transientContent];
+    transientContent = [(APContentDataInternal *)self transientContent];
     v5 = +[NSDate date];
     [v5 timeIntervalSince1970];
     v7 = v6;
-    v8 = [(APContentDataInternal *)self transientContent];
-    [v8 lastPlaybackTimestamp];
+    transientContent3 = [(APContentDataInternal *)self transientContent];
+    [transientContent3 lastPlaybackTimestamp];
     v10 = v7 - v9;
-    [v12 accumulatedPlaybackTime];
-    [v12 setAccumulatedPlaybackTime:v11 + v10];
+    [transientContent accumulatedPlaybackTime];
+    [transientContent setAccumulatedPlaybackTime:v11 + v10];
   }
 }
 
-- (void)videoStateChanged:(double)a3 fromMetric:(int64_t)a4
+- (void)videoStateChanged:(double)changed fromMetric:(int64_t)metric
 {
-  if (a3 >= 0.0)
+  if (changed >= 0.0)
   {
-    v8 = [(APContentDataInternal *)self transientContent];
-    [v8 lastPosition];
+    transientContent = [(APContentDataInternal *)self transientContent];
+    [transientContent lastPosition];
     v10 = v9;
 
-    v11 = [(APContentDataInternal *)self transientContent];
-    v12 = [v11 hasDuration];
+    transientContent2 = [(APContentDataInternal *)self transientContent];
+    hasDuration = [transientContent2 hasDuration];
 
-    if (v12)
+    if (hasDuration)
     {
-      v13 = a3 - v10;
-      if (a3 - v10 > 0.0)
+      v13 = changed - v10;
+      if (changed - v10 > 0.0)
       {
-        v14 = [(APContentDataInternal *)self transientContent];
-        v15 = [(APContentDataInternal *)self transientContent];
-        [v15 duration];
+        transientContent3 = [(APContentDataInternal *)self transientContent];
+        transientContent4 = [(APContentDataInternal *)self transientContent];
+        [transientContent4 duration];
         v17 = v16;
-        [v14 accumulatedPlaybackTime];
-        [v14 setAccumulatedPlaybackTime:v18 + v13 * v17];
+        [transientContent3 accumulatedPlaybackTime];
+        [transientContent3 setAccumulatedPlaybackTime:v18 + v13 * v17];
       }
     }
 
-    v19 = [(APContentDataInternal *)self transientContent];
-    [v19 setLastPosition:a3];
+    transientContent5 = [(APContentDataInternal *)self transientContent];
+    [transientContent5 setLastPosition:changed];
 
-    if (a4 <= 1602)
+    if (metric <= 1602)
     {
-      if (a4 != 1600 && a4 != 1602)
+      if (metric != 1600 && metric != 1602)
       {
         goto LABEL_24;
       }
 
       [(APContentDataInternal *)self _updateLastPlaybackTimestamp];
-      v22 = [(APContentDataInternal *)self transientContent];
-      v23 = [v22 playbackInProgress];
+      transientContent6 = [(APContentDataInternal *)self transientContent];
+      playbackInProgress = [transientContent6 playbackInProgress];
 
-      if (v23)
+      if (playbackInProgress)
       {
         v24 = APLogForCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -2025,48 +2025,48 @@ LABEL_164:
         goto LABEL_23;
       }
 
-      v25 = [(APContentDataInternal *)self transientContent];
-      v24 = v25;
+      transientContent7 = [(APContentDataInternal *)self transientContent];
+      v24 = transientContent7;
       v26 = 1;
     }
 
     else
     {
-      if (a4 != 1603 && a4 != 1604)
+      if (metric != 1603 && metric != 1604)
       {
-        if (a4 == 1609)
+        if (metric == 1609)
         {
           [(APContentDataInternal *)self _accumulatePlaybackTimeIfNoDuration];
           [(APContentDataInternal *)self _updateLastPlaybackTimestamp];
-          v20 = a3 < 1.0 && a3 >= 0.0;
-          v21 = [(APContentDataInternal *)self transientContent];
-          [v21 setPlaybackInProgress:v20];
+          v20 = changed < 1.0 && changed >= 0.0;
+          transientContent8 = [(APContentDataInternal *)self transientContent];
+          [transientContent8 setPlaybackInProgress:v20];
         }
 
         goto LABEL_24;
       }
 
       [(APContentDataInternal *)self _accumulatePlaybackTimeIfNoDuration];
-      v25 = [(APContentDataInternal *)self transientContent];
-      v24 = v25;
+      transientContent7 = [(APContentDataInternal *)self transientContent];
+      v24 = transientContent7;
       v26 = 0;
     }
 
-    [v25 setPlaybackInProgress:v26];
+    [transientContent7 setPlaybackInProgress:v26];
 LABEL_23:
 
 LABEL_24:
-    v5 = [(APContentDataInternal *)self transientContent];
-    [v5 save];
+    transientContent9 = [(APContentDataInternal *)self transientContent];
+    [transientContent9 save];
     goto LABEL_25;
   }
 
-  v5 = APLogForCategory();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  transientContent9 = APLogForCategory();
+  if (os_log_type_enabled(transientContent9, OS_LOG_TYPE_ERROR))
   {
     v27 = 134217984;
-    v28 = a3;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "updateAccumulatedPlaybackTime: position cannot be negative (%.2f)", &v27, 0xCu);
+    changedCopy = changed;
+    _os_log_impl(&_mh_execute_header, transientContent9, OS_LOG_TYPE_ERROR, "updateAccumulatedPlaybackTime: position cannot be negative (%.2f)", &v27, 0xCu);
   }
 
 LABEL_25:
@@ -2074,18 +2074,18 @@ LABEL_25:
 
 - (void)videoUnloaded
 {
-  v3 = [(APContentDataInternal *)self transientContent];
-  [v3 setVideoUnloadedSent:1];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setVideoUnloadedSent:1];
 
-  v4 = [(APContentDataInternal *)self transientContent];
-  [v4 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (void)_visibleStateChanged:(int64_t)a3 duration:(double)a4 shouldUseNewVisibleLogic:(BOOL)a5
+- (void)_visibleStateChanged:(int64_t)changed duration:(double)duration shouldUseNewVisibleLogic:(BOOL)logic
 {
-  if (a5)
+  if (logic)
   {
-    if (a3 >= 100)
+    if (changed >= 100)
     {
 
       [(APContentDataInternal *)self accumulateVisibilityTime:?];
@@ -2095,13 +2095,13 @@ LABEL_25:
 
   else
   {
-    v8 = [(APContentDataInternal *)self privateContent];
-    v9 = [v8 isOutstreamVideo];
+    privateContent = [(APContentDataInternal *)self privateContent];
+    isOutstreamVideo = [privateContent isOutstreamVideo];
 
-    if (a3 >= 50 && v9)
+    if (changed >= 50 && isOutstreamVideo)
     {
-      [(APContentDataInternal *)self accumulateVisibilityTime:a4];
-      if (a3 != 50)
+      [(APContentDataInternal *)self accumulateVisibilityTime:duration];
+      if (changed != 50)
       {
         return;
       }
@@ -2109,80 +2109,80 @@ LABEL_25:
       goto LABEL_16;
     }
 
-    if (a3 >= 100)
+    if (changed >= 100)
     {
-      [(APContentDataInternal *)self accumulateVisibilityTime:a4];
+      [(APContentDataInternal *)self accumulateVisibilityTime:duration];
 
-      [(APContentDataInternal *)self accumulate50PercentVisibilityTime:a4];
+      [(APContentDataInternal *)self accumulate50PercentVisibilityTime:duration];
       return;
     }
   }
 
-  if (a3 >= 50)
+  if (changed >= 50)
   {
-    [(APContentDataInternal *)self accumulate50PercentVisibilityTime:a4];
-    v10 = [(APContentDataInternal *)self transientContent];
-    [v10 setAccumulatedVisibilityTime:0.0];
+    [(APContentDataInternal *)self accumulate50PercentVisibilityTime:duration];
+    transientContent = [(APContentDataInternal *)self transientContent];
+    [transientContent setAccumulatedVisibilityTime:0.0];
 
 LABEL_16:
 
-    [(APContentDataInternal *)self addTimeSpent:a4];
+    [(APContentDataInternal *)self addTimeSpent:duration];
     return;
   }
 
-  v11 = [(APContentDataInternal *)self transientContent];
-  [v11 setAccumulatedVisibilityTime:0.0];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 setAccumulatedVisibilityTime:0.0];
 
-  v12 = [(APContentDataInternal *)self transientContent];
-  [v12 setAccumulated50PercentVisibilityTime:0.0];
+  transientContent3 = [(APContentDataInternal *)self transientContent];
+  [transientContent3 setAccumulated50PercentVisibilityTime:0.0];
 }
 
-- (void)visibleStateChanged:(int64_t)a3 duration:(double)a4 shouldUseNewVisibleLogic:(BOOL)a5
+- (void)visibleStateChanged:(int64_t)changed duration:(double)duration shouldUseNewVisibleLogic:(BOOL)logic
 {
-  [(APContentDataInternal *)self _visibleStateChanged:a3 duration:a5 shouldUseNewVisibleLogic:a4];
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 save];
+  [(APContentDataInternal *)self _visibleStateChanged:changed duration:logic shouldUseNewVisibleLogic:duration];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent save];
 }
 
-- (void)carouselVisibleStateChanged:(int64_t)a3 duration:(double)a4 elements:(id)a5 partialElements:(id)a6 shouldUseNewVisibleLogic:(BOOL)a7
+- (void)carouselVisibleStateChanged:(int64_t)changed duration:(double)duration elements:(id)elements partialElements:(id)partialElements shouldUseNewVisibleLogic:(BOOL)logic
 {
-  v7 = a7;
-  v12 = a6;
-  v13 = a5;
-  [(APContentDataInternal *)self _visibleStateChanged:a3 duration:v7 shouldUseNewVisibleLogic:a4];
-  v14 = [(APContentDataInternal *)self transientContent];
-  [v14 setCarouselElementsVisible:v13];
+  logicCopy = logic;
+  partialElementsCopy = partialElements;
+  elementsCopy = elements;
+  [(APContentDataInternal *)self _visibleStateChanged:changed duration:logicCopy shouldUseNewVisibleLogic:duration];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setCarouselElementsVisible:elementsCopy];
 
-  v15 = [(APContentDataInternal *)self transientContent];
-  [v15 setCarouselElementsPartiallyVisible:v12];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 setCarouselElementsPartiallyVisible:partialElementsCopy];
 
-  v16 = [(APContentDataInternal *)self transientContent];
-  [v16 save];
+  transientContent3 = [(APContentDataInternal *)self transientContent];
+  [transientContent3 save];
 }
 
-- (void)volumeChanged:(double)a3
+- (void)volumeChanged:(double)changed
 {
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 setVolume:a3];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent setVolume:changed];
 
-  v6 = [(APContentDataInternal *)self transientContent];
-  [v6 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
-- (id)_loadJourneyStartRelayValuesFromAdData:(id)a3
+- (id)_loadJourneyStartRelayValuesFromAdData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [NSMutableDictionary alloc];
-  v5 = [v3 journeyStartRelayValues];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  journeyStartRelayValues = [dataCopy journeyStartRelayValues];
+  v6 = [v4 initWithCapacity:{objc_msgSend(journeyStartRelayValues, "count")}];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = v3;
-  v7 = [v3 journeyStartRelayValues];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v21 = dataCopy;
+  journeyStartRelayValues2 = [dataCopy journeyStartRelayValues];
+  v8 = [journeyStartRelayValues2 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2194,7 +2194,7 @@ LABEL_16:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(journeyStartRelayValues2);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
@@ -2212,10 +2212,10 @@ LABEL_16:
 
         if ([v12 hasValueInt])
         {
-          v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 valueInt]);
+          valueString = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 valueInt]);
 LABEL_18:
-          v16 = v15;
-          if (!v15)
+          v16 = valueString;
+          if (!valueString)
           {
             goto LABEL_22;
           }
@@ -2227,20 +2227,20 @@ LABEL_18:
 
         if ([v12 hasValueBool])
         {
-          v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 valueBool]);
+          valueString = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 valueBool]);
           goto LABEL_18;
         }
 
         if ([v12 hasValueDouble])
         {
           [v12 valueDouble];
-          v15 = [NSNumber numberWithDouble:?];
+          valueString = [NSNumber numberWithDouble:?];
           goto LABEL_18;
         }
 
         if ([v12 hasValueString])
         {
-          v15 = [v12 valueString];
+          valueString = [v12 valueString];
           goto LABEL_18;
         }
 
@@ -2262,7 +2262,7 @@ LABEL_22:
       }
 
       while (v9 != v11);
-      v18 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v18 = [journeyStartRelayValues2 countByEnumeratingWithState:&v22 objects:v28 count:16];
       v9 = v18;
     }
 
@@ -2274,14 +2274,14 @@ LABEL_22:
   return v19;
 }
 
-- (void)addTimeSpent:(double)a3
+- (void)addTimeSpent:(double)spent
 {
-  v5 = [(APContentDataInternal *)self transientContent];
-  [v5 timeSpent];
-  [v5 setTimeSpent:v6 + a3];
+  transientContent = [(APContentDataInternal *)self transientContent];
+  [transientContent timeSpent];
+  [transientContent setTimeSpent:v6 + spent];
 
-  v7 = [(APContentDataInternal *)self transientContent];
-  [v7 save];
+  transientContent2 = [(APContentDataInternal *)self transientContent];
+  [transientContent2 save];
 }
 
 @end

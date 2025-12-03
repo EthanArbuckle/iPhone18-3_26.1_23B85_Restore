@@ -1,21 +1,21 @@
 @interface PLGuestAssetSyncEngine
-+ (BOOL)_guestAssetSyncStatusIsSet:(int64_t)a3 inLibrary:(id)a4;
-+ (id)_resumeMarkerObjectIDInGlobalValuesOfLibrary:(id)a3 storedInLibrary:(id)a4;
-+ (void)_setGuestAssetSyncStatus:(int64_t)a3 inLibrary:(id)a4;
-- (BOOL)_deleteAssetWithUuid:(id)a3 syndicationIdentifier:(id)a4 fromLibrary:(id)a5;
-- (BOOL)_inTransaction_deleteAssetWithUuid:(id)a3 syndicationIdentifier:(id)a4 fromLibrary:(id)a5;
-- (PLGuestAssetSyncEngine)initWithDelegate:(id)a3;
++ (BOOL)_guestAssetSyncStatusIsSet:(int64_t)set inLibrary:(id)library;
++ (id)_resumeMarkerObjectIDInGlobalValuesOfLibrary:(id)library storedInLibrary:(id)inLibrary;
++ (void)_setGuestAssetSyncStatus:(int64_t)status inLibrary:(id)library;
+- (BOOL)_deleteAssetWithUuid:(id)uuid syndicationIdentifier:(id)identifier fromLibrary:(id)library;
+- (BOOL)_inTransaction_deleteAssetWithUuid:(id)uuid syndicationIdentifier:(id)identifier fromLibrary:(id)library;
+- (PLGuestAssetSyncEngine)initWithDelegate:(id)delegate;
 - (PLGuestAssetSyncEngineDelegate)delegate;
-- (id)_assetWithUUID:(id)a3 orSyndicationIdentifier:(id)a4 inLibrary:(id)a5;
-- (id)workItemObjectIDsInLibrary:(id)a3 error:(id *)a4;
-- (void)_deleteAllWorkItemsInSourceLibrary:(id)a3;
-- (void)_finishProcessingWorkItemManagedObjectID:(id)a3 library:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_initialSyncTransferNextAssetFromSourceLibrary:(id)a3 targetLibrary:(id)a4 iterator:(id)a5 completion:(id)a6;
-- (void)_markAsWasGuestAssetOnAssetWithSyndicationIdentifier:(id)a3 inLibrary:(id)a4;
-- (void)_processSyndicationLibraryAsset:(id)a3 targetLibrary:(id)a4 completion:(id)a5;
-- (void)_syncAsset:(id)a3 toLibrary:(id)a4 completion:(id)a5;
-- (void)performInitialSyncWithSourceLibrary:(id)a3 targetLibrary:(id)a4 completion:(id)a5;
-- (void)processWorkItemObjectID:(id)a3 sourceLibrary:(id)a4 targetLibrary:(id)a5 completion:(id)a6;
+- (id)_assetWithUUID:(id)d orSyndicationIdentifier:(id)identifier inLibrary:(id)library;
+- (id)workItemObjectIDsInLibrary:(id)library error:(id *)error;
+- (void)_deleteAllWorkItemsInSourceLibrary:(id)library;
+- (void)_finishProcessingWorkItemManagedObjectID:(id)d library:(id)library error:(id)error completion:(id)completion;
+- (void)_initialSyncTransferNextAssetFromSourceLibrary:(id)library targetLibrary:(id)targetLibrary iterator:(id)iterator completion:(id)completion;
+- (void)_markAsWasGuestAssetOnAssetWithSyndicationIdentifier:(id)identifier inLibrary:(id)library;
+- (void)_processSyndicationLibraryAsset:(id)asset targetLibrary:(id)library completion:(id)completion;
+- (void)_syncAsset:(id)asset toLibrary:(id)library completion:(id)completion;
+- (void)performInitialSyncWithSourceLibrary:(id)library targetLibrary:(id)targetLibrary completion:(id)completion;
+- (void)processWorkItemObjectID:(id)d sourceLibrary:(id)library targetLibrary:(id)targetLibrary completion:(id)completion;
 @end
 
 @implementation PLGuestAssetSyncEngine
@@ -27,13 +27,13 @@
   return WeakRetained;
 }
 
-- (void)performInitialSyncWithSourceLibrary:(id)a3 targetLibrary:(id)a4 completion:(id)a5
+- (void)performInitialSyncWithSourceLibrary:(id)library targetLibrary:(id)targetLibrary completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([objc_opt_class() _guestAssetSyncStatusIsSet:1 inLibrary:v8] & 1) == 0)
+  libraryCopy = library;
+  targetLibraryCopy = targetLibrary;
+  completionCopy = completion;
+  if (([objc_opt_class() _guestAssetSyncStatusIsSet:1 inLibrary:libraryCopy] & 1) == 0)
   {
     v11 = PLSyndicationGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -42,25 +42,25 @@
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: Detected syndication library rebuild, dropping initial sync resume markers and starting over", buf, 2u);
     }
 
-    [objc_opt_class() _setGuestAssetSyncStatus:1 inLibrary:v8];
-    [objc_opt_class() _setGuestAssetSyncStatus:0 inLibrary:v9];
-    v12 = [v9 globalValues];
-    [v12 setGuestAssetInitialSyncResumeMarker:0];
+    [objc_opt_class() _setGuestAssetSyncStatus:1 inLibrary:libraryCopy];
+    [objc_opt_class() _setGuestAssetSyncStatus:0 inLibrary:targetLibraryCopy];
+    globalValues = [targetLibraryCopy globalValues];
+    [globalValues setGuestAssetInitialSyncResumeMarker:0];
   }
 
-  v13 = [objc_opt_class() _guestAssetSyncStatusIsSet:2 inLibrary:v9];
+  v13 = [objc_opt_class() _guestAssetSyncStatusIsSet:2 inLibrary:targetLibraryCopy];
   v14 = objc_opt_class();
   if (v13)
   {
-    v15 = v8;
+    v15 = libraryCopy;
   }
 
   else
   {
-    v15 = v9;
+    v15 = targetLibraryCopy;
   }
 
-  v16 = [v14 _resumeMarkerObjectIDInGlobalValuesOfLibrary:v9 storedInLibrary:v15];
+  v16 = [v14 _resumeMarkerObjectIDInGlobalValuesOfLibrary:targetLibraryCopy storedInLibrary:v15];
   v17 = off_1E7560000;
   v18 = off_1E7560000;
   if (v13)
@@ -70,7 +70,7 @@
 
   v25 = PLSyndicationGetLog();
   v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-  v50 = v10;
+  v50 = completionCopy;
   if (v16)
   {
     if (v26)
@@ -85,13 +85,13 @@
   {
     if (v26)
     {
-      v27 = [v9 libraryID];
+      libraryID = [targetLibraryCopy libraryID];
       *buf = 138412290;
-      v62 = v27;
+      v62 = libraryID;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: Starting initial sync for library: %@, no resume token found, deleting all queued work items in syndication library", buf, 0xCu);
     }
 
-    [(PLGuestAssetSyncEngine *)self _deleteAllWorkItemsInSourceLibrary:v8];
+    [(PLGuestAssetSyncEngine *)self _deleteAllWorkItemsInSourceLibrary:libraryCopy];
   }
 
   v28 = [PLManagedObjectPagingIterator alloc];
@@ -100,11 +100,11 @@
   v49 = v16;
   v31 = [(PLManagedObjectPagingIterator *)v28 initWithEntityName:v29 resultType:0 resumeObjectID:v16 additionalPredicate:v30];
 
-  v32 = [v9 managedObjectContext];
-  v24 = [(PLManagedObjectPagingIterator *)v31 nextObjectWithManagedObjectContext:v32];
+  managedObjectContext = [targetLibraryCopy managedObjectContext];
+  v24 = [(PLManagedObjectPagingIterator *)v31 nextObjectWithManagedObjectContext:managedObjectContext];
 
-  v33 = [(PLGuestAssetSyncEngine *)self delegate];
-  LOBYTE(v16) = [v33 guestAssetSyncManagerShouldCancel:self];
+  delegate = [(PLGuestAssetSyncEngine *)self delegate];
+  LOBYTE(v16) = [delegate guestAssetSyncManagerShouldCancel:self];
 
   v51 = v31;
   if ([v24 isSuccess] && (v16 & 1) == 0)
@@ -112,32 +112,32 @@
     do
     {
       v16 = v24;
-      v34 = [v24 result];
+      result = [v24 result];
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __87__PLGuestAssetSyncEngine_performInitialSyncWithSourceLibrary_targetLibrary_completion___block_invoke;
       v56[3] = &unk_1E7578100;
-      v57 = v34;
-      v35 = v8;
-      v58 = v8;
-      v59 = self;
-      v36 = v9;
+      v57 = result;
+      v35 = libraryCopy;
+      v58 = libraryCopy;
+      selfCopy = self;
+      v36 = targetLibraryCopy;
       v60 = v36;
-      v37 = v34;
+      v37 = result;
       [v36 performTransactionAndWait:v56];
-      v38 = [v37 objectID];
-      v39 = [v38 URIRepresentation];
-      v40 = [v39 absoluteString];
-      v41 = [v36 globalValues];
-      [v41 setGuestAssetInitialSyncResumeMarker:v40];
+      objectID = [v37 objectID];
+      uRIRepresentation = [objectID URIRepresentation];
+      absoluteString = [uRIRepresentation absoluteString];
+      globalValues2 = [v36 globalValues];
+      [globalValues2 setGuestAssetInitialSyncResumeMarker:absoluteString];
 
-      v42 = [v36 managedObjectContext];
-      v24 = [(PLManagedObjectPagingIterator *)v51 nextObjectWithManagedObjectContext:v42];
+      managedObjectContext2 = [v36 managedObjectContext];
+      v24 = [(PLManagedObjectPagingIterator *)v51 nextObjectWithManagedObjectContext:managedObjectContext2];
 
-      v43 = [(PLGuestAssetSyncEngine *)self delegate];
-      LODWORD(v16) = [v43 guestAssetSyncManagerShouldCancel:self];
+      delegate2 = [(PLGuestAssetSyncEngine *)self delegate];
+      LODWORD(v16) = [delegate2 guestAssetSyncManagerShouldCancel:self];
 
-      v8 = v35;
+      libraryCopy = v35;
     }
 
     while ([v24 isSuccess] && !v16);
@@ -145,9 +145,9 @@
 
   if ([v24 isFailure])
   {
-    v44 = [v24 error];
-    v10 = v50;
-    (*(v50 + 2))(v50, 0, v44);
+    error = [v24 error];
+    completionCopy = v50;
+    (*(v50 + 2))(v50, 0, error);
 
     v23 = v51;
 LABEL_27:
@@ -159,7 +159,7 @@ LABEL_27:
   if (v16)
   {
     v45 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    v10 = v50;
+    completionCopy = v50;
     (*(v50 + 2))(v50, 0, v45);
 
     goto LABEL_27;
@@ -169,18 +169,18 @@ LABEL_27:
   v18 = off_1E7560000;
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
-    v47 = [v9 libraryID];
+    libraryID2 = [targetLibraryCopy libraryID];
     *buf = 138412290;
-    v62 = v47;
+    v62 = libraryID2;
     _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: Initial sync, verify SPL Guest assets complete for library: %@", buf, 0xCu);
   }
 
-  v48 = [v9 globalValues];
-  [v48 setGuestAssetInitialSyncResumeMarker:0];
+  globalValues3 = [targetLibraryCopy globalValues];
+  [globalValues3 setGuestAssetInitialSyncResumeMarker:0];
 
-  [objc_opt_class() _setGuestAssetSyncStatus:2 inLibrary:v9];
+  [objc_opt_class() _setGuestAssetSyncStatus:2 inLibrary:targetLibraryCopy];
   v16 = 0;
-  v10 = v50;
+  completionCopy = v50;
   v17 = off_1E7560000;
 LABEL_9:
   v19 = PLSyndicationGetLog();
@@ -192,18 +192,18 @@ LABEL_9:
   }
 
   v20 = objc_alloc(v17[66]);
-  v21 = [(__objc2_class *)v18[53] entityName];
-  v22 = [(__objc2_class *)v18[53] predicateForShouldSyncToSPL];
-  v23 = [v20 initWithEntityName:v21 resultType:1 resumeObjectID:v16 additionalPredicate:v22];
+  entityName = [(__objc2_class *)v18[53] entityName];
+  predicateForShouldSyncToSPL = [(__objc2_class *)v18[53] predicateForShouldSyncToSPL];
+  v23 = [v20 initWithEntityName:entityName resultType:1 resumeObjectID:v16 additionalPredicate:predicateForShouldSyncToSPL];
 
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __87__PLGuestAssetSyncEngine_performInitialSyncWithSourceLibrary_targetLibrary_completion___block_invoke_65;
   v52[3] = &unk_1E7578128;
-  v53 = v9;
-  v54 = self;
-  v55 = v10;
-  [(PLGuestAssetSyncEngine *)self _initialSyncTransferNextAssetFromSourceLibrary:v8 targetLibrary:v53 iterator:v23 completion:v52];
+  v53 = targetLibraryCopy;
+  selfCopy2 = self;
+  v55 = completionCopy;
+  [(PLGuestAssetSyncEngine *)self _initialSyncTransferNextAssetFromSourceLibrary:libraryCopy targetLibrary:v53 iterator:v23 completion:v52];
 
   v24 = v53;
 LABEL_28:
@@ -326,31 +326,31 @@ void __87__PLGuestAssetSyncEngine_performInitialSyncWithSourceLibrary_targetLibr
   }
 }
 
-- (void)_initialSyncTransferNextAssetFromSourceLibrary:(id)a3 targetLibrary:(id)a4 iterator:(id)a5 completion:(id)a6
+- (void)_initialSyncTransferNextAssetFromSourceLibrary:(id)library targetLibrary:(id)targetLibrary iterator:(id)iterator completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PLGuestAssetSyncEngine *)self delegate];
-  v15 = [v14 guestAssetSyncManagerShouldCancel:self];
+  libraryCopy = library;
+  targetLibraryCopy = targetLibrary;
+  iteratorCopy = iterator;
+  completionCopy = completion;
+  delegate = [(PLGuestAssetSyncEngine *)self delegate];
+  v15 = [delegate guestAssetSyncManagerShouldCancel:self];
 
   if (v15)
   {
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    v13[2](v13, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   else
   {
-    v17 = [v10 managedObjectContext];
-    v16 = [v12 nextObjectWithManagedObjectContext:v17];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v16 = [iteratorCopy nextObjectWithManagedObjectContext:managedObjectContext];
 
     if (v16)
     {
       if ([v16 isSuccess])
       {
-        v18 = [v16 result];
+        result = [v16 result];
         v30 = 0;
         v31 = &v30;
         v32 = 0x2020000000;
@@ -359,15 +359,15 @@ void __87__PLGuestAssetSyncEngine_performInitialSyncWithSourceLibrary_targetLibr
         v22[1] = 3221225472;
         v22[2] = __107__PLGuestAssetSyncEngine__initialSyncTransferNextAssetFromSourceLibrary_targetLibrary_iterator_completion___block_invoke;
         v22[3] = &unk_1E75780B0;
-        v23 = v10;
-        v19 = v18;
+        v23 = libraryCopy;
+        v19 = result;
         v29 = &v30;
         v24 = v19;
-        v25 = self;
-        v26 = v11;
-        v20 = v13;
+        selfCopy = self;
+        v26 = targetLibraryCopy;
+        v20 = completionCopy;
         v28 = v20;
-        v27 = v12;
+        v27 = iteratorCopy;
         [v23 performBlockAndWait:v22];
         if ((v31[3] & 1) == 0)
         {
@@ -379,14 +379,14 @@ void __87__PLGuestAssetSyncEngine_performInitialSyncWithSourceLibrary_targetLibr
 
       else
       {
-        v21 = [v16 error];
-        v13[2](v13, 0, v21);
+        error = [v16 error];
+        completionCopy[2](completionCopy, 0, error);
       }
     }
 
     else
     {
-      v13[2](v13, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 }
@@ -460,16 +460,16 @@ uint64_t __107__PLGuestAssetSyncEngine__initialSyncTransferNextAssetFromSourceLi
   }
 }
 
-- (void)_deleteAllWorkItemsInSourceLibrary:(id)a3
+- (void)_deleteAllWorkItemsInSourceLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PLGuestAssetSyncEngine__deleteAllWorkItemsInSourceLibrary___block_invoke;
   v6[3] = &unk_1E7578848;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = libraryCopy;
+  selfCopy = self;
+  v5 = libraryCopy;
   [v5 performTransactionAndWait:v6];
 }
 
@@ -513,27 +513,27 @@ void __61__PLGuestAssetSyncEngine__deleteAllWorkItemsInSourceLibrary___block_inv
   }
 }
 
-- (void)_syncAsset:(id)a3 toLibrary:(id)a4 completion:(id)a5
+- (void)_syncAsset:(id)asset toLibrary:(id)library completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 uuid];
-  v12 = [v8 additionalAttributes];
-  v33 = [v12 syndicationIdentifier];
+  assetCopy = asset;
+  libraryCopy = library;
+  completionCopy = completion;
+  uuid = [assetCopy uuid];
+  additionalAttributes = [assetCopy additionalAttributes];
+  syndicationIdentifier = [additionalAttributes syndicationIdentifier];
 
-  v13 = [v8 shouldSyncToSPL];
+  shouldSyncToSPL = [assetCopy shouldSyncToSPL];
   v14 = PLSyndicationGetLog();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v13)
+  if (shouldSyncToSPL)
   {
     if (v15)
     {
       *buf = 138543618;
-      *&buf[4] = v11;
+      *&buf[4] = uuid;
       *&buf[12] = 2114;
-      *&buf[14] = v33;
+      *&buf[14] = syndicationIdentifier;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "GuestAssetSync: _syncAsset %{public}@ / %{public}@ begin", buf, 0x16u);
     }
 
@@ -549,42 +549,42 @@ void __61__PLGuestAssetSyncEngine__deleteAllWorkItemsInSourceLibrary___block_inv
     v47 = &v46;
     v48 = 0x2020000000;
     v49 = 0;
-    v16 = [v8 syndicationState];
-    v17 = v16;
-    v18 = (v16 >> 1) & 1;
+    syndicationState = [assetCopy syndicationState];
+    v17 = syndicationState;
+    v18 = (syndicationState >> 1) & 1;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __58__PLGuestAssetSyncEngine__syncAsset_toLibrary_completion___block_invoke;
     v38[3] = &unk_1E7578010;
-    v19 = v33;
+    v19 = syndicationIdentifier;
     v39 = v19;
-    v20 = v9;
+    v20 = libraryCopy;
     v40 = v20;
     v42 = buf;
     v45 = v18;
-    v21 = v11;
+    v21 = uuid;
     v41 = v21;
     v43 = &v46;
     v44 = &v50;
     [v20 performBlockAndWait:v38];
     if (*(v47 + 24) == 1)
     {
-      [v8 updateSyndicationStateWithSavedToLibrary:(v17 & 2) == 0];
+      [assetCopy updateSyndicationStateWithSavedToLibrary:(v17 & 2) == 0];
     }
 
     if ((*(*&buf[8] + 24) & 1) != 0 || (v17 & 2) == 0)
     {
       if ((v51[3] & 1) == 0)
       {
-        v32 = [(PLGuestAssetSyncEngine *)self delegate];
+        delegate = [(PLGuestAssetSyncEngine *)self delegate];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __58__PLGuestAssetSyncEngine__syncAsset_toLibrary_completion___block_invoke_47;
         v34[3] = &unk_1E7578038;
         v34[4] = self;
         v35 = v20;
-        v36 = v10;
-        [v32 guestAssetSyncManager:self isTransferingAsset:v8 toLibrary:v35 completion:v34];
+        v36 = completionCopy;
+        [delegate guestAssetSyncManager:self isTransferingAsset:assetCopy toLibrary:v35 completion:v34];
 
 LABEL_25:
         _Block_object_dispose(&v46, 8);
@@ -606,18 +606,18 @@ LABEL_25:
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "GuestAssetSync: no existing asset in SPL. Resetting savedToLibrary for source asset %{public}@ / %{public}@, skipping this sync pass", v54, 0x16u);
       }
 
-      [v8 updateSyndicationStateWithSavedToLibrary:0];
+      [assetCopy updateSyndicationStateWithSavedToLibrary:0];
       *(v51 + 24) = 1;
     }
 
-    v26 = [v8 managedObjectContext];
-    v27 = [v26 hasChanges];
+    managedObjectContext = [assetCopy managedObjectContext];
+    hasChanges = [managedObjectContext hasChanges];
 
-    if (v27)
+    if (hasChanges)
     {
-      v28 = [v8 managedObjectContext];
+      managedObjectContext2 = [assetCopy managedObjectContext];
       v37 = 0;
-      v29 = [v28 save:&v37];
+      v29 = [managedObjectContext2 save:&v37];
       v30 = v37;
 
       if ((v29 & 1) == 0)
@@ -637,21 +637,21 @@ LABEL_25:
       v30 = 0;
     }
 
-    (*(v10 + 2))(v10, v30);
+    (*(completionCopy + 2))(completionCopy, v30);
 
     goto LABEL_25;
   }
 
   if (v15)
   {
-    v23 = [v8 uuid];
-    [v8 savedAssetType];
+    uuid2 = [assetCopy uuid];
+    [assetCopy savedAssetType];
     v24 = PLValidatedSavedAssetTypeDescription();
-    v25 = PLManagedAssetSyndicationStateDescription([v8 syndicationState]);
+    v25 = PLManagedAssetSyndicationStateDescription([assetCopy syndicationState]);
     *buf = 138544130;
-    *&buf[4] = v23;
+    *&buf[4] = uuid2;
     *&buf[12] = 2114;
-    *&buf[14] = v33;
+    *&buf[14] = syndicationIdentifier;
     *&buf[22] = 2114;
     v59 = v24;
     v60 = 2114;
@@ -659,15 +659,15 @@ LABEL_25:
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "GuestAssetSync: _syncAsset %{public}@ / %{public}@ (%{public}@) syndicationState %{public}@ says don't sync to SPL", buf, 0x2Au);
   }
 
-  [(PLGuestAssetSyncEngine *)self _deleteAssetWithUuid:v11 syndicationIdentifier:v33 fromLibrary:v9];
+  [(PLGuestAssetSyncEngine *)self _deleteAssetWithUuid:uuid syndicationIdentifier:syndicationIdentifier fromLibrary:libraryCopy];
   [MEMORY[0x1E69BF328] maskForGuestAsset];
-  [v8 savedAssetType];
+  [assetCopy savedAssetType];
   if (PLValidatedSavedAssetTypeApplies())
   {
-    [(PLGuestAssetSyncEngine *)self _markAsWasGuestAssetOnAssetWithSyndicationIdentifier:v33 inLibrary:v9];
+    [(PLGuestAssetSyncEngine *)self _markAsWasGuestAssetOnAssetWithSyndicationIdentifier:syndicationIdentifier inLibrary:libraryCopy];
   }
 
-  (*(v10 + 2))(v10, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_26:
 }
 
@@ -715,18 +715,18 @@ void __58__PLGuestAssetSyncEngine__syncAsset_toLibrary_completion___block_invoke
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_markAsWasGuestAssetOnAssetWithSyndicationIdentifier:(id)a3 inLibrary:(id)a4
+- (void)_markAsWasGuestAssetOnAssetWithSyndicationIdentifier:(id)identifier inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  libraryCopy = library;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __89__PLGuestAssetSyncEngine__markAsWasGuestAssetOnAssetWithSyndicationIdentifier_inLibrary___block_invoke;
   v9[3] = &unk_1E7578848;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = libraryCopy;
+  v7 = libraryCopy;
+  v8 = identifierCopy;
   [v7 performTransactionAndWait:v9];
 }
 
@@ -741,11 +741,11 @@ void __89__PLGuestAssetSyncEngine__markAsWasGuestAssetOnAssetWithSyndicationIden
   }
 }
 
-- (BOOL)_deleteAssetWithUuid:(id)a3 syndicationIdentifier:(id)a4 fromLibrary:(id)a5
+- (BOOL)_deleteAssetWithUuid:(id)uuid syndicationIdentifier:(id)identifier fromLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  uuidCopy = uuid;
+  identifierCopy = identifier;
+  libraryCopy = library;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -756,17 +756,17 @@ void __89__PLGuestAssetSyncEngine__markAsWasGuestAssetOnAssetWithSyndicationIden
   v15[3] = &unk_1E75780D8;
   v19 = &v20;
   v15[4] = self;
-  v11 = v8;
+  v11 = uuidCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = libraryCopy;
   v18 = v13;
   [v13 performTransactionAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(uuidCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return uuidCopy;
 }
 
 uint64_t __81__PLGuestAssetSyncEngine__deleteAssetWithUuid_syndicationIdentifier_fromLibrary___block_invoke(uint64_t a1)
@@ -776,18 +776,18 @@ uint64_t __81__PLGuestAssetSyncEngine__deleteAssetWithUuid_syndicationIdentifier
   return result;
 }
 
-- (BOOL)_inTransaction_deleteAssetWithUuid:(id)a3 syndicationIdentifier:(id)a4 fromLibrary:(id)a5
+- (BOOL)_inTransaction_deleteAssetWithUuid:(id)uuid syndicationIdentifier:(id)identifier fromLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PLGuestAssetSyncEngine *)self _assetWithUUID:v8 orSyndicationIdentifier:a4 inLibrary:a5];
+  uuidCopy = uuid;
+  v9 = [(PLGuestAssetSyncEngine *)self _assetWithUUID:uuidCopy orSyndicationIdentifier:identifier inLibrary:library];
   if (!v9)
   {
     v12 = PLSyndicationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = uuidCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "GuestAssetSync: Unable to delete guest asset with uuid %@, does not exist", &v16, 0xCu);
     }
 
@@ -808,7 +808,7 @@ uint64_t __81__PLGuestAssetSyncEngine__deleteAssetWithUuid_syndicationIdentifier
       v16 = 138543618;
       v17 = v14;
       v18 = 2114;
-      v19 = v8;
+      v19 = uuidCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "GuestAssetSync: Not deleting %{public}@ asset in system library with uuid %{public}@", &v16, 0x16u);
     }
 
@@ -820,7 +820,7 @@ LABEL_10:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
-    v17 = v8;
+    v17 = uuidCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: Deleting guest asset from system library with uuid %{public}@", &v16, 0xCu);
   }
 
@@ -832,31 +832,31 @@ LABEL_11:
   return v13;
 }
 
-- (id)_assetWithUUID:(id)a3 orSyndicationIdentifier:(id)a4 inLibrary:(id)a5
+- (id)_assetWithUUID:(id)d orSyndicationIdentifier:(id)identifier inLibrary:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PLManagedAsset assetWithUUID:v7 inLibrary:v9];
+  dCopy = d;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  v10 = [PLManagedAsset assetWithUUID:dCopy inLibrary:libraryCopy];
   v11 = v10;
-  if (v8)
+  if (identifierCopy)
   {
     if (!v10)
     {
-      v11 = [PLManagedAsset assetWithSyndicationIdentifier:v8 inLibrary:v9];
+      v11 = [PLManagedAsset assetWithSyndicationIdentifier:identifierCopy inLibrary:libraryCopy];
       if (v11)
       {
         v12 = PLSyndicationGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 uuid];
+          uuid = [v11 uuid];
           v15 = 138543874;
-          v16 = v8;
+          v16 = identifierCopy;
           v17 = 2114;
-          v18 = v7;
+          v18 = dCopy;
           v19 = 2112;
-          v20 = v13;
+          v20 = uuid;
           _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "GuestAssetSync: Found asset by looking up syndicationIdentifier %{public}@ uuid %{public}@ did not match asset uuid %{public%}@", &v15, 0x20u);
         }
       }
@@ -866,12 +866,12 @@ LABEL_11:
   return v11;
 }
 
-- (void)processWorkItemObjectID:(id)a3 sourceLibrary:(id)a4 targetLibrary:(id)a5 completion:(id)a6
+- (void)processWorkItemObjectID:(id)d sourceLibrary:(id)library targetLibrary:(id)targetLibrary completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  libraryCopy = library;
+  targetLibraryCopy = targetLibrary;
+  completionCopy = completion;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -886,16 +886,16 @@ LABEL_11:
   v18[1] = 3221225472;
   v18[2] = __89__PLGuestAssetSyncEngine_processWorkItemObjectID_sourceLibrary_targetLibrary_completion___block_invoke;
   v18[3] = &unk_1E7577FE8;
-  v14 = v11;
+  v14 = libraryCopy;
   v19 = v14;
-  v15 = v10;
+  v15 = dCopy;
   v24 = v26;
   v20 = v15;
-  v21 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = targetLibraryCopy;
   v22 = v16;
   v25 = &v28;
-  v17 = v13;
+  v17 = completionCopy;
   v23 = v17;
   [v14 performBlockAndWait:v18];
   if ((v29[3] & 1) == 0)
@@ -1033,29 +1033,29 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_processSyndicationLibraryAsset:(id)a3 targetLibrary:(id)a4 completion:(id)a5
+- (void)_processSyndicationLibraryAsset:(id)asset targetLibrary:(id)library completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 shouldSyncToSPL];
+  assetCopy = asset;
+  libraryCopy = library;
+  completionCopy = completion;
+  shouldSyncToSPL = [assetCopy shouldSyncToSPL];
   v12 = PLSyndicationGetLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (shouldSyncToSPL)
   {
     if (v13)
     {
-      v14 = [v8 uuid];
-      v15 = [v8 additionalAttributes];
-      v16 = [v15 syndicationIdentifier];
-      [v8 savedAssetType];
+      uuid = [assetCopy uuid];
+      additionalAttributes = [assetCopy additionalAttributes];
+      syndicationIdentifier = [additionalAttributes syndicationIdentifier];
+      [assetCopy savedAssetType];
       v17 = PLValidatedSavedAssetTypeDescription();
-      v18 = PLManagedAssetSyndicationStateDescription([v8 syndicationState]);
+      v18 = PLManagedAssetSyndicationStateDescription([assetCopy syndicationState]);
       v29 = 138544130;
-      v30 = v14;
+      v30 = uuid;
       v31 = 2114;
-      v32 = v16;
+      v32 = syndicationIdentifier;
       v33 = 2114;
       v34 = v17;
       v35 = 2114;
@@ -1063,23 +1063,23 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "GuestAssetSync: %{public}@ / %{public}@ (%{public}@) syndicationState %{public}@ says sync to SPL", &v29, 0x2Au);
     }
 
-    [(PLGuestAssetSyncEngine *)self _syncAsset:v8 toLibrary:v9 completion:v10];
+    [(PLGuestAssetSyncEngine *)self _syncAsset:assetCopy toLibrary:libraryCopy completion:completionCopy];
   }
 
   else
   {
     if (v13)
     {
-      v19 = [v8 uuid];
-      v20 = [v8 additionalAttributes];
-      v21 = [v20 syndicationIdentifier];
-      [v8 savedAssetType];
+      uuid2 = [assetCopy uuid];
+      additionalAttributes2 = [assetCopy additionalAttributes];
+      syndicationIdentifier2 = [additionalAttributes2 syndicationIdentifier];
+      [assetCopy savedAssetType];
       v22 = PLValidatedSavedAssetTypeDescription();
-      v23 = PLManagedAssetSyndicationStateDescription([v8 syndicationState]);
+      v23 = PLManagedAssetSyndicationStateDescription([assetCopy syndicationState]);
       v29 = 138544130;
-      v30 = v19;
+      v30 = uuid2;
       v31 = 2114;
-      v32 = v21;
+      v32 = syndicationIdentifier2;
       v33 = 2114;
       v34 = v22;
       v35 = 2114;
@@ -1087,40 +1087,40 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "GuestAssetSync: %{public}@ / %{public}@ (%{public}@) syndicationState %{public}@ says don't sync to SPL", &v29, 0x2Au);
     }
 
-    v24 = [v8 uuid];
-    v25 = [v8 additionalAttributes];
-    v26 = [v25 syndicationIdentifier];
-    [(PLGuestAssetSyncEngine *)self _deleteAssetWithUuid:v24 syndicationIdentifier:v26 fromLibrary:v9];
+    uuid3 = [assetCopy uuid];
+    additionalAttributes3 = [assetCopy additionalAttributes];
+    syndicationIdentifier3 = [additionalAttributes3 syndicationIdentifier];
+    [(PLGuestAssetSyncEngine *)self _deleteAssetWithUuid:uuid3 syndicationIdentifier:syndicationIdentifier3 fromLibrary:libraryCopy];
 
     [MEMORY[0x1E69BF328] maskForGuestAsset];
-    [v8 savedAssetType];
+    [assetCopy savedAssetType];
     if (PLValidatedSavedAssetTypeApplies())
     {
-      v27 = [v8 additionalAttributes];
-      v28 = [v27 syndicationIdentifier];
-      [(PLGuestAssetSyncEngine *)self _markAsWasGuestAssetOnAssetWithSyndicationIdentifier:v28 inLibrary:v9];
+      additionalAttributes4 = [assetCopy additionalAttributes];
+      syndicationIdentifier4 = [additionalAttributes4 syndicationIdentifier];
+      [(PLGuestAssetSyncEngine *)self _markAsWasGuestAssetOnAssetWithSyndicationIdentifier:syndicationIdentifier4 inLibrary:libraryCopy];
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_finishProcessingWorkItemManagedObjectID:(id)a3 library:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_finishProcessingWorkItemManagedObjectID:(id)d library:(id)library error:(id)error completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  libraryCopy = library;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __92__PLGuestAssetSyncEngine__finishProcessingWorkItemManagedObjectID_library_error_completion___block_invoke;
   v15[3] = &unk_1E7578848;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = a6;
-  v14 = a5;
+  v16 = dCopy;
+  v17 = libraryCopy;
+  v11 = libraryCopy;
+  v12 = dCopy;
+  completionCopy = completion;
+  errorCopy = error;
   [v11 performTransactionAndWait:v15];
-  v13[2](v13, v14);
+  completionCopy[2](completionCopy, errorCopy);
 }
 
 void __92__PLGuestAssetSyncEngine__finishProcessingWorkItemManagedObjectID_library_error_completion___block_invoke(uint64_t a1)
@@ -1145,9 +1145,9 @@ void __92__PLGuestAssetSyncEngine__finishProcessingWorkItemManagedObjectID_libra
   }
 }
 
-- (id)workItemObjectIDsInLibrary:(id)a3 error:(id *)a4
+- (id)workItemObjectIDsInLibrary:(id)library error:(id *)error
 {
-  v5 = a3;
+  libraryCopy = library;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1165,16 +1165,16 @@ void __92__PLGuestAssetSyncEngine__finishProcessingWorkItemManagedObjectID_libra
   v11[2] = __59__PLGuestAssetSyncEngine_workItemObjectIDsInLibrary_error___block_invoke;
   v11[3] = &unk_1E7578870;
   v13 = &v21;
-  v6 = v5;
+  v6 = libraryCopy;
   v12 = v6;
   v14 = &v15;
   [v6 performBlockAndWait:v11];
   v7 = v22[5];
   v8 = v16[5];
-  if (!v7 && a4)
+  if (!v7 && error)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v22[5];
@@ -1205,33 +1205,33 @@ void __59__PLGuestAssetSyncEngine_workItemObjectIDsInLibrary_error___block_invok
   *(v9 + 40) = v8;
 }
 
-- (PLGuestAssetSyncEngine)initWithDelegate:(id)a3
+- (PLGuestAssetSyncEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PLGuestAssetSyncEngine;
   v5 = [(PLGuestAssetSyncEngine *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-+ (id)_resumeMarkerObjectIDInGlobalValuesOfLibrary:(id)a3 storedInLibrary:(id)a4
++ (id)_resumeMarkerObjectIDInGlobalValuesOfLibrary:(id)library storedInLibrary:(id)inLibrary
 {
-  v5 = a4;
-  v6 = [a3 globalValues];
-  v7 = [v6 guestAssetInitialSyncResumeMarker];
+  inLibraryCopy = inLibrary;
+  globalValues = [library globalValues];
+  guestAssetInitialSyncResumeMarker = [globalValues guestAssetInitialSyncResumeMarker];
 
-  if (v7)
+  if (guestAssetInitialSyncResumeMarker)
   {
-    v8 = [v5 managedObjectContext];
-    v9 = [v8 persistentStoreCoordinator];
-    v10 = [MEMORY[0x1E695DFF8] URLWithString:v7];
-    v11 = [v9 managedObjectIDForURIRepresentation:v10];
+    managedObjectContext = [inLibraryCopy managedObjectContext];
+    persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+    v10 = [MEMORY[0x1E695DFF8] URLWithString:guestAssetInitialSyncResumeMarker];
+    v11 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v10];
   }
 
   else
@@ -1242,28 +1242,28 @@ void __59__PLGuestAssetSyncEngine_workItemObjectIDsInLibrary_error___block_invok
   return v11;
 }
 
-+ (void)_setGuestAssetSyncStatus:(int64_t)a3 inLibrary:(id)a4
++ (void)_setGuestAssetSyncStatus:(int64_t)status inLibrary:(id)library
 {
-  v10 = a4;
-  v5 = [v10 globalValues];
-  v6 = [v5 guestAssetSyncStatus];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  guestAssetSyncStatus = [globalValues guestAssetSyncStatus];
 
-  if (!v6 || (v7 = [v6 integerValue], a3 |= v7, a3 != v7))
+  if (!guestAssetSyncStatus || (v7 = [guestAssetSyncStatus integerValue], status |= v7, status != v7))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v9 = [v10 globalValues];
-    [v9 setGuestAssetSyncStatus:v8];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+    globalValues2 = [libraryCopy globalValues];
+    [globalValues2 setGuestAssetSyncStatus:v8];
   }
 }
 
-+ (BOOL)_guestAssetSyncStatusIsSet:(int64_t)a3 inLibrary:(id)a4
++ (BOOL)_guestAssetSyncStatusIsSet:(int64_t)set inLibrary:(id)library
 {
-  v5 = [a4 globalValues];
-  v6 = [v5 guestAssetSyncStatus];
+  globalValues = [library globalValues];
+  guestAssetSyncStatus = [globalValues guestAssetSyncStatus];
 
-  if (v6)
+  if (guestAssetSyncStatus)
   {
-    v7 = (a3 & ~[v6 integerValue]) == 0;
+    v7 = (set & ~[guestAssetSyncStatus integerValue]) == 0;
   }
 
   else

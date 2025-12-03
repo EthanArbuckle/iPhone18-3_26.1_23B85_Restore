@@ -5,14 +5,14 @@
 - (void)activate;
 - (void)dismissBTPrompt;
 - (void)dismissChargingStatus;
-- (void)dismissUIAnimated:(BOOL)a3;
+- (void)dismissUIAnimated:(BOOL)animated;
 - (void)dismissUnlockPrompt;
 - (void)enableBluetoothTapped;
 - (void)invalidate;
 - (void)pairTapped;
 - (void)releaseHUDTransaction;
-- (void)setDeviceType:(unint64_t)a3;
-- (void)setShouldShowWhatsNew:(BOOL)a3;
+- (void)setDeviceType:(unint64_t)type;
+- (void)setShouldShowWhatsNew:(BOOL)new;
 - (void)showChargingStatus;
 - (void)showEnableBluetoothPill;
 - (void)showPairConsentPrompt;
@@ -21,7 +21,7 @@
 - (void)showPairingSuccess;
 - (void)showSubsequentPairSuccess;
 - (void)showUnlockPrompt;
-- (void)updateDeviceInfoWithDeviceType:(unint64_t)a3 batteryLevel:(double)a4 batteryLevelKnown:(BOOL)a5 edge:(unint64_t)a6 orientation:(unint64_t)a7 isCharging:(BOOL)a8 identifier:(id)a9;
+- (void)updateDeviceInfoWithDeviceType:(unint64_t)type batteryLevel:(double)level batteryLevelKnown:(BOOL)known edge:(unint64_t)edge orientation:(unint64_t)orientation isCharging:(BOOL)charging identifier:(id)identifier;
 @end
 
 @implementation SFB332SetupObserver
@@ -59,111 +59,111 @@
   return v2;
 }
 
-- (void)updateDeviceInfoWithDeviceType:(unint64_t)a3 batteryLevel:(double)a4 batteryLevelKnown:(BOOL)a5 edge:(unint64_t)a6 orientation:(unint64_t)a7 isCharging:(BOOL)a8 identifier:(id)a9
+- (void)updateDeviceInfoWithDeviceType:(unint64_t)type batteryLevel:(double)level batteryLevelKnown:(BOOL)known edge:(unint64_t)edge orientation:(unint64_t)orientation isCharging:(BOOL)charging identifier:(id)identifier
 {
-  v9 = a8;
-  v12 = a5;
-  v16 = a9;
-  v17 = [(SFB332SetupObserver *)self delegate];
-  [v17 updateDeviceInfoWithDeviceType:a3 batteryLevel:v12 batteryLevelKnown:a6 edge:a7 orientation:v9 isCharging:v16 identifier:a4];
+  chargingCopy = charging;
+  knownCopy = known;
+  identifierCopy = identifier;
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate updateDeviceInfoWithDeviceType:type batteryLevel:knownCopy batteryLevelKnown:edge edge:orientation orientation:chargingCopy isCharging:identifierCopy identifier:level];
 }
 
 - (void)showPairingStarted
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showPairingStarted];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showPairingStarted];
 }
 
 - (void)showEnableBluetoothPill
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showEnableBluetoothPill];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showEnableBluetoothPill];
 }
 
 - (void)showPairingSuccess
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showPairingSuccess];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showPairingSuccess];
 }
 
 - (void)showPairingFailure
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showPairingFailure];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showPairingFailure];
 }
 
 - (void)showSubsequentPairSuccess
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showSubsequentPairSuccess];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showSubsequentPairSuccess];
 }
 
 - (void)showChargingStatus
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showChargingStatus];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showChargingStatus];
 }
 
 - (void)dismissChargingStatus
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 dismissChargingStatus];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate dismissChargingStatus];
 }
 
 - (void)showUnlockPrompt
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showUnlockPrompt];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showUnlockPrompt];
 }
 
 - (void)showPairConsentPrompt
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 showPairConsentPrompt];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate showPairConsentPrompt];
 }
 
 - (void)dismissUnlockPrompt
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 dismissUnlockPrompt];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate dismissUnlockPrompt];
 }
 
 - (void)dismissBTPrompt
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 dismissBTPrompt];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate dismissBTPrompt];
 }
 
 - (void)releaseHUDTransaction
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 releaseHUDTransaction];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate releaseHUDTransaction];
 }
 
 - (void)acquireHUDTransaction
 {
-  v2 = [(SFB332SetupObserver *)self delegate];
-  [v2 acquireHUDTransaction];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate acquireHUDTransaction];
 }
 
-- (void)setShouldShowWhatsNew:(BOOL)a3
+- (void)setShouldShowWhatsNew:(BOOL)new
 {
-  v3 = a3;
-  v4 = [(SFB332SetupObserver *)self delegate];
-  [v4 setShouldShowWhatsNew:v3];
+  newCopy = new;
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate setShouldShowWhatsNew:newCopy];
 }
 
-- (void)setDeviceType:(unint64_t)a3
+- (void)setDeviceType:(unint64_t)type
 {
-  v4 = [(SFB332SetupObserver *)self delegate];
-  [v4 setDeviceType:a3];
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate setDeviceType:type];
 }
 
-- (void)dismissUIAnimated:(BOOL)a3
+- (void)dismissUIAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SFB332SetupObserver *)self delegate];
-  [v4 dismissUIAnimated:v3];
+  animatedCopy = animated;
+  delegate = [(SFB332SetupObserver *)self delegate];
+  [delegate dismissUIAnimated:animatedCopy];
 }
 
 - (void)enableBluetoothTapped

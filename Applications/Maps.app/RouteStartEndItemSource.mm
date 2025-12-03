@@ -3,12 +3,12 @@
 - (NSSet)keysForStartLocation;
 - (RouteStartEndItemSource)init;
 - (id)allItems;
-- (id)itemMatchingLocation:(id)a3;
+- (id)itemMatchingLocation:(id)location;
 - (void)_updateItemVisibility;
 - (void)clearStartAndEndLocations;
-- (void)setStartLocation:(id)a3 endLocation:(id)a4;
-- (void)setStartLocation:(id)a3 endLocations:(id)a4;
-- (void)setVisibilityMask:(unint64_t)a3;
+- (void)setStartLocation:(id)location endLocation:(id)endLocation;
+- (void)setStartLocation:(id)location endLocations:(id)locations;
+- (void)setVisibilityMask:(unint64_t)mask;
 @end
 
 @implementation RouteStartEndItemSource
@@ -51,13 +51,13 @@
   return v4;
 }
 
-- (id)itemMatchingLocation:(id)a3
+- (id)itemMatchingLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy)
   {
-    if ([v4 isEqualToSearchResult:self->_startLocation forPurpose:5])
+    if ([locationCopy isEqualToSearchResult:self->_startLocation forPurpose:5])
     {
       v6 = self->_startItem;
     }
@@ -75,7 +75,7 @@
       v9[1] = 3221225472;
       v9[2] = sub_10066B564;
       v9[3] = &unk_1016253C0;
-      v11 = self;
+      selfCopy = self;
       v12 = &v13;
       v10 = v5;
       [(NSArray *)endLocations enumerateObjectsUsingBlock:v9];
@@ -101,7 +101,7 @@
   v9 = 3221225472;
   v10 = sub_10066B6A8;
   v11 = &unk_101661A90;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_sync(lockQueue, &v8);
@@ -132,15 +132,15 @@
   return v3;
 }
 
-- (void)setStartLocation:(id)a3 endLocations:(id)a4
+- (void)setStartLocation:(id)location endLocations:(id)locations
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (self->_startLocation != v7 || (endLocations = self->_endLocations, v13 = v8, v14 = endLocations, v13 | v14) && (v15 = v14, v16 = [v13 isEqual:v14], v15, v13, (v16 & 1) == 0))
+  locationCopy = location;
+  locationsCopy = locations;
+  v9 = locationsCopy;
+  if (self->_startLocation != locationCopy || (endLocations = self->_endLocations, v13 = locationsCopy, v14 = endLocations, v13 | v14) && (v15 = v14, v16 = [v13 isEqual:v14], v15, v13, (v16 & 1) == 0))
   {
-    objc_storeStrong(&self->_startLocation, a3);
-    objc_storeStrong(&self->_endLocations, a4);
+    objc_storeStrong(&self->_startLocation, location);
+    objc_storeStrong(&self->_endLocations, locations);
     startLocation = self->_startLocation;
     if (startLocation && ![(SearchResult *)startLocation isDynamicCurrentLocation])
     {
@@ -168,30 +168,30 @@
   }
 }
 
-- (void)setStartLocation:(id)a3 endLocation:(id)a4
+- (void)setStartLocation:(id)location endLocation:(id)endLocation
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  endLocationCopy = endLocation;
+  v7 = endLocationCopy;
+  if (endLocationCopy)
   {
-    v10 = v6;
-    v8 = a3;
-    v9 = [NSArray arrayWithObjects:&v10 count:1];
-    [(RouteStartEndItemSource *)self setStartLocation:v8 endLocations:v9, v10];
+    v10 = endLocationCopy;
+    locationCopy = location;
+    locationCopy2 = [NSArray arrayWithObjects:&v10 count:1];
+    [(RouteStartEndItemSource *)self setStartLocation:locationCopy endLocations:locationCopy2, v10];
   }
 
   else
   {
-    v9 = a3;
-    [(RouteStartEndItemSource *)self setStartLocation:v9 endLocations:0];
+    locationCopy2 = location;
+    [(RouteStartEndItemSource *)self setStartLocation:locationCopy2 endLocations:0];
   }
 }
 
-- (void)setVisibilityMask:(unint64_t)a3
+- (void)setVisibilityMask:(unint64_t)mask
 {
-  if (self->_visibilityMask != a3)
+  if (self->_visibilityMask != mask)
   {
-    self->_visibilityMask = a3;
+    self->_visibilityMask = mask;
     [(RouteStartEndItemSource *)self _updateItemVisibility];
 
     [(PersonalizedItemSource *)self _notifyObserversItemsDidChange];

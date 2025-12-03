@@ -3,18 +3,18 @@
 - (CCUIButtonModuleViewController)moduleViewController;
 - (FBSDisplayLayoutMonitor)layoutMonitor;
 - (id)_primaryApplicationBundleIdentifier;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 - (id)iconGlyph;
-- (void)_cleanupRemoteAlertHandle:(id)a3;
+- (void)_cleanupRemoteAlertHandle:(id)handle;
 - (void)_updateIconGlyph;
 - (void)activateAlert;
-- (void)activateAlertWithPresentationTarget:(id)a3;
+- (void)activateAlertWithPresentationTarget:(id)target;
 - (void)activateSystemPaper;
 - (void)dealloc;
-- (void)handleTapWithTouchType:(int64_t)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)handleTapWithTouchType:(int64_t)type;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation ICSystemPaperControlCenterModule
@@ -27,9 +27,9 @@
   [(ICSystemPaperControlCenterModule *)&v3 dealloc];
 }
 
-- (void)handleTapWithTouchType:(int64_t)a3
+- (void)handleTapWithTouchType:(int64_t)type
 {
-  v4 = [(ICSystemPaperControlCenterModule *)self isOnCoverSheetOrAppSwitcher];
+  isOnCoverSheetOrAppSwitcher = [(ICSystemPaperControlCenterModule *)self isOnCoverSheetOrAppSwitcher];
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -37,10 +37,10 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "About to open System Paper from the Control Center", buf, 2u);
   }
 
-  v6 = [(ICSystemPaperControlCenterModule *)self contentModuleContext];
-  [v6 dismissControlCenter];
+  contentModuleContext = [(ICSystemPaperControlCenterModule *)self contentModuleContext];
+  [contentModuleContext dismissControlCenter];
 
-  if (v4)
+  if (isOnCoverSheetOrAppSwitcher)
   {
     v16[0] = FBSOpenApplicationOptionKeyUnlockDevice;
     v16[1] = FBSOpenApplicationOptionKeyPromptUnlockDevice;
@@ -49,12 +49,12 @@
     v7 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
     v8 = [FBSOpenApplicationOptions optionsWithDictionary:v7];
 
-    v9 = [(ICSystemPaperControlCenterModule *)self _primaryApplicationBundleIdentifier];
+    _primaryApplicationBundleIdentifier = [(ICSystemPaperControlCenterModule *)self _primaryApplicationBundleIdentifier];
     v10 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
     v11 = v10;
-    if (v9)
+    if (_primaryApplicationBundleIdentifier)
     {
-      v12 = v9;
+      v12 = _primaryApplicationBundleIdentifier;
     }
 
     else
@@ -84,9 +84,9 @@
 - (void)activateSystemPaper
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = [[SBSSystemNotesPresentationConfiguration alloc] initWithSceneBundleIdentifier:@"com.apple.mobilenotes" userActivity:0 preferredPresentationMode:0];
     v5 = [[SBSSystemNotesPresentationHandle alloc] initWithConfiguration:v6];
@@ -102,19 +102,19 @@
 
 - (void)activateAlert
 {
-  v3 = [(ICSystemPaperControlCenterModule *)self _primaryApplicationBundleIdentifier];
-  if ([v3 length])
+  _primaryApplicationBundleIdentifier = [(ICSystemPaperControlCenterModule *)self _primaryApplicationBundleIdentifier];
+  if ([_primaryApplicationBundleIdentifier length])
   {
-    v4 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v3];
+    v4 = [RBSProcessPredicate predicateMatchingBundleIdentifier:_primaryApplicationBundleIdentifier];
     v5 = +[RBSProcessStateDescriptor descriptor];
     v6 = [RBSProcessState statesForPredicate:v4 withDescriptor:v5 error:0];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
     v12 = 0;
-    if ([v7 isRunning])
+    if ([firstObject isRunning])
     {
-      v8 = [v7 process];
-      v9 = [v8 pid];
+      process = [firstObject process];
+      v9 = [process pid];
 
       v10 = [BSProcessHandle processHandleForPID:v9];
       v12 = [[SBSRemoteAlertPresentationTarget alloc] initWithTargetProcess:v10];
@@ -132,11 +132,11 @@
   [(ICSystemPaperControlCenterModule *)self activateAlertWithPresentationTarget:v11];
 }
 
-- (void)activateAlertWithPresentationTarget:(id)a3
+- (void)activateAlertWithPresentationTarget:(id)target
 {
-  v4 = [(ICSystemPaperControlCenterModule *)self remoteAlertHandle];
+  remoteAlertHandle = [(ICSystemPaperControlCenterModule *)self remoteAlertHandle];
 
-  if (v4)
+  if (remoteAlertHandle)
   {
     v5 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -192,11 +192,11 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(ICSystemPaperControlCenterModule *)self layoutMonitor];
-  v3 = [v2 currentLayout];
-  v4 = [v3 elements];
+  layoutMonitor = [(ICSystemPaperControlCenterModule *)self layoutMonitor];
+  currentLayout = [layoutMonitor currentLayout];
+  elements = [currentLayout elements];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -209,12 +209,12 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        if ([v12 isEqualToString:v8])
+        identifier = [v11 identifier];
+        if ([identifier isEqualToString:v8])
         {
 
 LABEL_13:
@@ -222,8 +222,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v13 = [v11 identifier];
-        v14 = [v13 isEqualToString:v9];
+        identifier2 = [v11 identifier];
+        v14 = [identifier2 isEqualToString:v9];
 
         if (v14)
         {
@@ -231,7 +231,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
       v15 = 0;
       if (v6)
       {
@@ -254,37 +254,37 @@ LABEL_14:
 
 - (id)_primaryApplicationBundleIdentifier
 {
-  v2 = [(ICSystemPaperControlCenterModule *)self layoutMonitor];
-  v3 = [v2 currentLayout];
+  layoutMonitor = [(ICSystemPaperControlCenterModule *)self layoutMonitor];
+  currentLayout = [layoutMonitor currentLayout];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 elements];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v5)
+  elements = [currentLayout elements];
+  bundleIdentifier = [elements countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (bundleIdentifier)
   {
     v6 = *v11;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != bundleIdentifier; i = i + 1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if ([v8 isUIApplicationElement] && objc_msgSend(v8, "layoutRole") == &dword_0 + 1)
         {
-          v5 = [v8 bundleIdentifier];
+          bundleIdentifier = [v8 bundleIdentifier];
           goto LABEL_12;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v5)
+      bundleIdentifier = [elements countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (bundleIdentifier)
       {
         continue;
       }
@@ -295,14 +295,14 @@ LABEL_14:
 
 LABEL_12:
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = ICSystemPaperControlCenterModule;
-  v4 = [(ICSystemPaperControlCenterModule *)&v7 contentViewControllerForContext:a3];
+  v4 = [(ICSystemPaperControlCenterModule *)&v7 contentViewControllerForContext:context];
   objc_opt_class();
   v5 = ICDynamicCast();
   [(ICSystemPaperControlCenterModule *)self setModuleViewController:v5];
@@ -324,8 +324,8 @@ LABEL_12:
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:-1 scale:30.0];
   v4 = +[UIScreen mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [v3 configurationWithTraitCollection:v5];
+  traitCollection = [v4 traitCollection];
+  v6 = [v3 configurationWithTraitCollection:traitCollection];
 
   v7 = [UIImage _systemImageNamed:@"quicknote" withConfiguration:v6];
   [v7 size];
@@ -365,24 +365,24 @@ LABEL_12:
   v51.size.height = height;
   v27 = -CGRectGetMinY(v51);
   v28 = +[UIApplication sharedApplication];
-  v29 = [v28 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v28 userInterfaceLayoutDirection];
 
-  if (v29 == &dword_0 + 1)
+  if (userInterfaceLayoutDirection == &dword_0 + 1)
   {
-    v30 = [v7 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation = [v7 imageWithHorizontallyFlippedOrientation];
 
-    v7 = v30;
+    v7 = imageWithHorizontallyFlippedOrientation;
   }
 
-  v31 = [(ICSystemPaperControlCenterModule *)self remoteAlertHandle];
-  v32 = [v31 isActive];
+  remoteAlertHandle = [(ICSystemPaperControlCenterModule *)self remoteAlertHandle];
+  isActive = [remoteAlertHandle isActive];
 
   v33 = [[UIGraphicsImageRenderer alloc] initWithSize:{width, height}];
   v40 = _NSConcreteStackBlock;
   v41 = 3221225472;
   v42 = sub_1E3C;
   v43 = &unk_82C8;
-  v47 = v32;
+  v47 = isActive;
   v44 = v7;
   v45 = v26;
   v46 = v27;
@@ -390,22 +390,22 @@ LABEL_12:
   v35 = [v33 imageWithActions:&v40];
   v36 = [v35 imageWithRenderingMode:{2, v40, v41, v42, v43}];
 
-  if (v29 == &dword_0 + 1)
+  if (userInterfaceLayoutDirection == &dword_0 + 1)
   {
-    v37 = [v36 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation2 = [v36 imageWithHorizontallyFlippedOrientation];
   }
 
   else
   {
-    v37 = v36;
+    imageWithHorizontallyFlippedOrientation2 = v36;
   }
 
-  v38 = v37;
+  v38 = imageWithHorizontallyFlippedOrientation2;
 
   return v38;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -414,32 +414,32 @@ LABEL_12:
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_2324(v5);
   }
 
-  [(ICSystemPaperControlCenterModule *)self _cleanupRemoteAlertHandle:v4];
+  [(ICSystemPaperControlCenterModule *)self _cleanupRemoteAlertHandle:deactivateCopy];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 domain];
-  if ([v8 isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
+  errorCopy = error;
+  handleCopy = handle;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
   {
-    if (![v6 code] || objc_msgSend(v6, "code") == &dword_4 + 1)
+    if (![errorCopy code] || objc_msgSend(errorCopy, "code") == &dword_4 + 1)
     {
 
       goto LABEL_11;
     }
 
-    v9 = [v6 code] == &dword_4;
+    v9 = [errorCopy code] == &dword_4;
   }
 
   else
@@ -447,13 +447,13 @@ LABEL_12:
     v9 = 0;
   }
 
-  if (!v6 || v9)
+  if (!errorCopy || v9)
   {
 LABEL_11:
     v10 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_23E0(v6, v10);
+      sub_23E0(errorCopy, v10);
     }
 
     goto LABEL_13;
@@ -462,23 +462,23 @@ LABEL_11:
   v10 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_2368(v6, v10);
+    sub_2368(errorCopy, v10);
   }
 
 LABEL_13:
 
-  [(ICSystemPaperControlCenterModule *)self _cleanupRemoteAlertHandle:v7];
+  [(ICSystemPaperControlCenterModule *)self _cleanupRemoteAlertHandle:handleCopy];
 }
 
-- (void)_cleanupRemoteAlertHandle:(id)a3
+- (void)_cleanupRemoteAlertHandle:(id)handle
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_20FC;
   v5[3] = &unk_82F0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  handleCopy = handle;
+  selfCopy = self;
+  v4 = handleCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

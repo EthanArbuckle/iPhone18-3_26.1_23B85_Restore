@@ -1,25 +1,25 @@
 @interface ImageColorAnalyzer
-+ (id)colorsForImage:(id)a3;
++ (id)colorsForImage:(id)image;
 - (NSArray)dominantColors;
-- (void)analyzeImage:(id)a3;
+- (void)analyzeImage:(id)image;
 @end
 
 @implementation ImageColorAnalyzer
 
-+ (id)colorsForImage:(id)a3
++ (id)colorsForImage:(id)image
 {
-  v20 = a3;
-  v4 = objc_alloc_init(a1);
-  [v4 analyzeImage:v20];
-  v22 = [v4 backgroundColor];
-  v21 = [v4 dominantColors];
+  imageCopy = image;
+  v4 = objc_alloc_init(self);
+  [v4 analyzeImage:imageCopy];
+  backgroundColor = [v4 backgroundColor];
+  dominantColors = [v4 dominantColors];
   v5 = +[NSMutableArray array];
-  [v5 addObject:v22];
+  [v5 addObject:backgroundColor];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v21;
+  obj = dominantColors;
   v6 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
@@ -83,7 +83,7 @@ LABEL_16:
   if ([v5 count] <= 7)
   {
     [v5 removeAllObjects];
-    [v5 addObject:v22];
+    [v5 addObject:backgroundColor];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -103,7 +103,7 @@ LABEL_16:
           }
 
           v18 = *(*(&v24 + 1) + 8 * k);
-          if (([v4 color:v18 isCloseToOtherColor:{v22, v20}] & 1) == 0)
+          if (([v4 color:v18 isCloseToOtherColor:{backgroundColor, imageCopy}] & 1) == 0)
           {
             [v5 addObject:v18];
           }
@@ -119,18 +119,18 @@ LABEL_16:
   return v5;
 }
 
-- (void)analyzeImage:(id)a3
+- (void)analyzeImage:(id)image
 {
-  v5 = a3;
-  v6 = [a3 CGImage];
+  imageCopy = image;
+  cGImage = [image CGImage];
   SRGB = CGColorSpaceGetSRGB();
   if (SRGB)
   {
-    CopyWithColorSpace = CGImageCreateCopyWithColorSpace(v6, SRGB);
+    CopyWithColorSpace = CGImageCreateCopyWithColorSpace(cGImage, SRGB);
     v9 = CopyWithColorSpace;
     if (CopyWithColorSpace)
     {
-      v6 = CopyWithColorSpace;
+      cGImage = CopyWithColorSpace;
     }
   }
 
@@ -147,7 +147,7 @@ LABEL_16:
     v12.origin.y = CGPointZero.y;
     v12.size.width = 102.0;
     v12.size.height = 102.0;
-    CGContextDrawImage(v10, v12, v6);
+    CGContextDrawImage(v10, v12, cGImage);
   }
 
   if (v9)

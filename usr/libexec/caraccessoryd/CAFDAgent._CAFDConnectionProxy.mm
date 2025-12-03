@@ -1,8 +1,8 @@
 @interface CAFDAgent._CAFDConnectionProxy
 - (NSString)description;
 - (_TtCC13caraccessoryd9CAFDAgent20_CAFDConnectionProxy)init;
-- (void)fetchAppLinksSnapshotWithReply:(id)a3;
-- (void)fetchNowPlayingSnapshotWithReply:(id)a3;
+- (void)fetchAppLinksSnapshotWithReply:(id)reply;
+- (void)fetchNowPlayingSnapshotWithReply:(id)reply;
 - (void)invalidate;
 - (void)refreshAppLinksSnapshot;
 - (void)refreshNowPlayingSnapshot;
@@ -10,33 +10,33 @@
 
 @implementation CAFDAgent._CAFDConnectionProxy
 
-- (void)fetchAppLinksSnapshotWithReply:(id)a3
+- (void)fetchAppLinksSnapshotWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   CAFDAgent._CAFDConnectionProxy.fetchAppLinksSnapshot(reply:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned CAFAppLinksSnapshot, @unowned NSError?) -> (), v5);
 }
 
 - (void)refreshAppLinksSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   CAFDAgent._CAFDConnectionProxy.refreshAppLinksSnapshot()();
 }
 
-- (void)fetchNowPlayingSnapshotWithReply:(id)a3
+- (void)fetchNowPlayingSnapshotWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   CAFDAgent._CAFDConnectionProxy.fetchNowPlayingSnapshot(reply:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned CAFAppLinksSnapshot, @unowned NSError?) -> (), v5);
 }
 
 - (void)refreshNowPlayingSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   CAFDAgent._CAFDConnectionProxy.refreshNowPlayingSnapshot()();
 }
 
@@ -44,7 +44,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC13caraccessoryd9CAFDAgent20_CAFDConnectionProxy_connection);
   swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   BSServiceConnectionHost.CAFDDescription.getter();
 
   v5 = String._bridgeToObjectiveC()();
@@ -61,7 +61,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   CAFDAgent._CAFDConnectionProxy.activate()("invalidate proxy %@", &selRef_invalidate);
 }
 

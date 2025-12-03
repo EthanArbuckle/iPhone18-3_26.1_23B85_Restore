@@ -1,30 +1,30 @@
 @interface UASharedPasteboardInfo
-- (BOOL)isEqual:(id)a3;
-- (UASharedPasteboardInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UASharedPasteboardInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UASharedPasteboardInfo
 
-- (UASharedPasteboardInfo)initWithCoder:(id)a3
+- (UASharedPasteboardInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UASharedPasteboardInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoDataFileKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoDataFileKey"];
     [(UASharedPasteboardInfo *)v5 setDataFile:v6];
 
-    -[UASharedPasteboardInfo setDataSize:](v5, "setDataSize:", [v4 decodeIntegerForKey:@"UASharedPasteboardInfoDataSizeKey"]);
+    -[UASharedPasteboardInfo setDataSize:](v5, "setDataSize:", [coderCopy decodeIntegerForKey:@"UASharedPasteboardInfoDataSizeKey"]);
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"UASharedPasteboardInfoItemsKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"UASharedPasteboardInfoItemsKey"];
     [(UASharedPasteboardInfo *)v5 setItems:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoDataPathKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UASharedPasteboardInfoDataPathKey"];
     [(UASharedPasteboardInfo *)v5 setSharedDataPath:v11];
 
     v12 = MEMORY[0x277CBEB98];
@@ -32,43 +32,43 @@
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
 
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"UASharedPasteboardInfoExtensionKey"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"UASharedPasteboardInfoExtensionKey"];
     [(UASharedPasteboardInfo *)v5 setSandboxExtensions:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardInfo *)self dataFile];
-  [v4 encodeObject:v5 forKey:@"UASharedPasteboardInfoDataFileKey"];
+  coderCopy = coder;
+  dataFile = [(UASharedPasteboardInfo *)self dataFile];
+  [coderCopy encodeObject:dataFile forKey:@"UASharedPasteboardInfoDataFileKey"];
 
-  [v4 encodeInteger:-[UASharedPasteboardInfo dataSize](self forKey:{"dataSize"), @"UASharedPasteboardInfoDataSizeKey"}];
-  v6 = [(UASharedPasteboardInfo *)self items];
-  [v4 encodeObject:v6 forKey:@"UASharedPasteboardInfoItemsKey"];
+  [coderCopy encodeInteger:-[UASharedPasteboardInfo dataSize](self forKey:{"dataSize"), @"UASharedPasteboardInfoDataSizeKey"}];
+  items = [(UASharedPasteboardInfo *)self items];
+  [coderCopy encodeObject:items forKey:@"UASharedPasteboardInfoItemsKey"];
 
-  v7 = [(UASharedPasteboardInfo *)self sharedDataPath];
-  [v4 encodeObject:v7 forKey:@"UASharedPasteboardInfoDataPathKey"];
+  sharedDataPath = [(UASharedPasteboardInfo *)self sharedDataPath];
+  [coderCopy encodeObject:sharedDataPath forKey:@"UASharedPasteboardInfoDataPathKey"];
 
-  v8 = [(UASharedPasteboardInfo *)self sandboxExtensions];
-  [v4 encodeObject:v8 forKey:@"UASharedPasteboardInfoExtensionKey"];
+  sandboxExtensions = [(UASharedPasteboardInfo *)self sandboxExtensions];
+  [coderCopy encodeObject:sandboxExtensions forKey:@"UASharedPasteboardInfoExtensionKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UASharedPasteboardInfo *)self dataSize];
-    if (v6 == [v5 dataSize])
+    v5 = equalCopy;
+    dataSize = [(UASharedPasteboardInfo *)self dataSize];
+    if (dataSize == [v5 dataSize])
     {
-      v7 = [(UASharedPasteboardInfo *)self items];
-      v8 = [v5 items];
-      v9 = [v7 isEqual:v8];
+      items = [(UASharedPasteboardInfo *)self items];
+      items2 = [v5 items];
+      v9 = [items isEqual:items2];
     }
 
     else
@@ -85,20 +85,20 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(UASharedPasteboardInfo);
-  v6 = [(UASharedPasteboardInfo *)self dataFile];
-  v7 = [v6 copy];
+  dataFile = [(UASharedPasteboardInfo *)self dataFile];
+  v7 = [dataFile copy];
   [(UASharedPasteboardInfo *)v5 setDataFile:v7];
 
   [(UASharedPasteboardInfo *)v5 setDataSize:[(UASharedPasteboardInfo *)self dataSize]];
-  v8 = [(UASharedPasteboardInfo *)self items];
-  v9 = [v8 copyWithZone:a3];
+  items = [(UASharedPasteboardInfo *)self items];
+  v9 = [items copyWithZone:zone];
   [(UASharedPasteboardInfo *)v5 setItems:v9];
 
-  v10 = [(UASharedPasteboardInfo *)self sharedDataPath];
-  v11 = [v10 copy];
+  sharedDataPath = [(UASharedPasteboardInfo *)self sharedDataPath];
+  v11 = [sharedDataPath copy];
   [(UASharedPasteboardInfo *)v5 setSharedDataPath:v11];
 
   return v5;
@@ -117,8 +117,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UASharedPasteboardInfo *)self items];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  items = [(UASharedPasteboardInfo *)self items];
+  v6 = [items countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -129,14 +129,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) description];
         [v3 appendFormat:@"%@\r\n", v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v7 = [items countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v7);

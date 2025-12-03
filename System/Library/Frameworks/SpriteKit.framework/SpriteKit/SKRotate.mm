@@ -1,18 +1,18 @@
 @interface SKRotate
-+ (id)rotateByAngle:(double)a3 duration:(double)a4;
-+ (id)rotateByX:(double)a3 duration:(double)a4;
-+ (id)rotateByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6;
-+ (id)rotateByY:(double)a3 duration:(double)a4;
-+ (id)rotateToAngle:(double)a3 duration:(double)a4;
-+ (id)rotateToAngle:(double)a3 duration:(double)a4 shortestUnitArc:(BOOL)a5;
-+ (id)rotateToX:(double)a3 duration:(double)a4;
-+ (id)rotateToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6;
-+ (id)rotateToY:(double)a3 duration:(double)a4;
++ (id)rotateByAngle:(double)angle duration:(double)duration;
++ (id)rotateByX:(double)x duration:(double)duration;
++ (id)rotateByX:(double)x y:(double)y z:(double)z duration:(double)duration;
++ (id)rotateByY:(double)y duration:(double)duration;
++ (id)rotateToAngle:(double)angle duration:(double)duration;
++ (id)rotateToAngle:(double)angle duration:(double)duration shortestUnitArc:(BOOL)arc;
++ (id)rotateToX:(double)x duration:(double)duration;
++ (id)rotateToX:(double)x y:(double)y z:(double)z duration:(double)duration;
++ (id)rotateToY:(double)y duration:(double)duration;
 - (SKRotate)init;
-- (SKRotate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKRotate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRotate
@@ -29,12 +29,12 @@
   return 0;
 }
 
-- (SKRotate)initWithCoder:(id)a3
+- (SKRotate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKRotate;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -42,182 +42,182 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = SKRotate;
-  [(SKAction *)&v18 encodeWithCoder:v4];
+  [(SKAction *)&v18 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19];
-  [v4 encodeObject:v5 forKey:@"_rotX"];
+  [coderCopy encodeObject:v5 forKey:@"_rotX"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var20];
-  [v4 encodeObject:v6 forKey:@"_rotY"];
+  [coderCopy encodeObject:v6 forKey:@"_rotY"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var21];
-  [v4 encodeObject:v7 forKey:@"_rotZ"];
+  [coderCopy encodeObject:v7 forKey:@"_rotZ"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var25];
-  [v4 encodeObject:v8 forKey:@"_lastRotX"];
+  [coderCopy encodeObject:v8 forKey:@"_lastRotX"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var26];
-  [v4 encodeObject:v9 forKey:@"_lastRotY"];
+  [coderCopy encodeObject:v9 forKey:@"_lastRotY"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var27];
-  [v4 encodeObject:v10 forKey:@"_lastRotZ"];
+  [coderCopy encodeObject:v10 forKey:@"_lastRotZ"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var28];
-  [v4 encodeObject:v11 forKey:@"_lastRatio"];
+  [coderCopy encodeObject:v11 forKey:@"_lastRatio"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var29];
-  [v4 encodeObject:v12 forKey:@"_isReversed"];
+  [coderCopy encodeObject:v12 forKey:@"_isReversed"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var30];
-  [v4 encodeObject:v13 forKey:@"_isRelative"];
+  [coderCopy encodeObject:v13 forKey:@"_isRelative"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var31];
-  [v4 encodeObject:v14 forKey:@"_isUnitArc"];
+  [coderCopy encodeObject:v14 forKey:@"_isUnitArc"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var32];
-  [v4 encodeObject:v15 forKey:@"_useX"];
+  [coderCopy encodeObject:v15 forKey:@"_useX"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var33];
-  [v4 encodeObject:v16 forKey:@"_useY"];
+  [coderCopy encodeObject:v16 forKey:@"_useY"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var34];
-  [v4 encodeObject:v17 forKey:@"_useZ"];
+  [coderCopy encodeObject:v17 forKey:@"_useZ"];
 }
 
-+ (id)rotateByAngle:(double)a3 duration:(double)a4
++ (id)rotateByAngle:(double)angle duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
   mycaction->var30 = 1;
-  v8 = a3;
-  mycaction->var21 = v8;
+  angleCopy = angle;
+  mycaction->var21 = angleCopy;
   *&mycaction->var32 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateToAngle:(double)a3 duration:(double)a4
++ (id)rotateToAngle:(double)angle duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
-  v8 = a3;
-  mycaction->var21 = v8;
+  angleCopy = angle;
+  mycaction->var21 = angleCopy;
   *&mycaction->var30 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateToAngle:(double)a3 duration:(double)a4 shortestUnitArc:(BOOL)a5
++ (id)rotateToAngle:(double)angle duration:(double)duration shortestUnitArc:(BOOL)arc
 {
   v8 = objc_alloc_init(SKRotate);
   mycaction = v8->_mycaction;
   mycaction->var30 = 0;
-  mycaction->var31 = a5;
-  v10 = a3;
-  mycaction->var21 = v10;
+  mycaction->var31 = arc;
+  angleCopy = angle;
+  mycaction->var21 = angleCopy;
   *&mycaction->var32 = 0;
-  [(SKAction *)v8 setDuration:a4];
+  [(SKAction *)v8 setDuration:duration];
 
   return v8;
 }
 
-+ (id)rotateByX:(double)a3 duration:(double)a4
++ (id)rotateByX:(double)x duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
   mycaction->var30 = 1;
-  v8 = a3;
-  mycaction->var19 = v8;
+  xCopy = x;
+  mycaction->var19 = xCopy;
   *&mycaction->var33 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateToX:(double)a3 duration:(double)a4
++ (id)rotateToX:(double)x duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
   mycaction->var30 = 0;
-  v8 = a3;
-  mycaction->var19 = v8;
+  xCopy = x;
+  mycaction->var19 = xCopy;
   *&mycaction->var33 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateByY:(double)a3 duration:(double)a4
++ (id)rotateByY:(double)y duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
   mycaction->var30 = 1;
-  v8 = a3;
-  mycaction->var20 = v8;
+  yCopy = y;
+  mycaction->var20 = yCopy;
   mycaction->var32 = 0;
   mycaction->var34 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateToY:(double)a3 duration:(double)a4
++ (id)rotateToY:(double)y duration:(double)duration
 {
   v6 = objc_alloc_init(SKRotate);
   mycaction = v6->_mycaction;
   mycaction->var30 = 0;
-  v8 = a3;
-  mycaction->var20 = v8;
+  yCopy = y;
+  mycaction->var20 = yCopy;
   mycaction->var32 = 0;
   mycaction->var34 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)rotateByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6
++ (id)rotateByX:(double)x y:(double)y z:(double)z duration:(double)duration
 {
   v10 = objc_alloc_init(SKRotate);
   mycaction = v10->_mycaction;
   mycaction->var30 = 1;
-  v12 = a3;
-  v13 = a4;
-  mycaction->var19 = v12;
-  mycaction->var20 = v13;
-  v14 = a5;
-  mycaction->var21 = v14;
-  [(SKAction *)v10 setDuration:a6];
+  xCopy = x;
+  yCopy = y;
+  mycaction->var19 = xCopy;
+  mycaction->var20 = yCopy;
+  zCopy = z;
+  mycaction->var21 = zCopy;
+  [(SKAction *)v10 setDuration:duration];
 
   return v10;
 }
 
-+ (id)rotateToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6
++ (id)rotateToX:(double)x y:(double)y z:(double)z duration:(double)duration
 {
   v10 = objc_alloc_init(SKRotate);
   mycaction = v10->_mycaction;
   mycaction->var30 = 0;
-  v12 = a3;
-  v13 = a4;
-  mycaction->var19 = v12;
-  mycaction->var20 = v13;
-  v14 = a5;
-  mycaction->var21 = v14;
-  [(SKAction *)v10 setDuration:a6];
+  xCopy = x;
+  yCopy = y;
+  mycaction->var19 = xCopy;
+  mycaction->var20 = yCopy;
+  zCopy = z;
+  mycaction->var21 = zCopy;
+  [(SKAction *)v10 setDuration:duration];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKRotate;
-  result = [(SKAction *)&v7 copyWithZone:a3];
+  result = [(SKAction *)&v7 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 112) = *&mycaction->var19;

@@ -1,43 +1,43 @@
 @interface HUTriggerHeaderCell
-- (HUTriggerHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUTriggerHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateTitleLabel;
 - (void)prepareForReuse;
-- (void)setLayoutOptions:(id)a3;
+- (void)setLayoutOptions:(id)options;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUTriggerHeaderCell
 
-- (HUTriggerHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTriggerHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = HUTriggerHeaderCell;
-  v4 = [(HUTriggerHeaderCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUTriggerHeaderCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HUTriggerHeaderCell *)v4 setSelectionStyle:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(HUTriggerHeaderCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(HUTriggerHeaderCell *)v5 setBackgroundColor:clearColor];
 
     v7 = objc_alloc(MEMORY[0x277D756B8]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(HUTriggerHeaderCell *)v5 setTitleLabel:v8];
 
-    v9 = [(HUTriggerHeaderCell *)v5 titleLabel];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(HUTriggerHeaderCell *)v5 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(HUTriggerHeaderCell *)v5 titleLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(HUTriggerHeaderCell *)v5 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v11 = [MEMORY[0x277D75348] labelColor];
-    v12 = [(HUTriggerHeaderCell *)v5 titleLabel];
-    [v12 setTextColor:v11];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    titleLabel3 = [(HUTriggerHeaderCell *)v5 titleLabel];
+    [titleLabel3 setTextColor:labelColor];
 
-    v13 = [(HUTriggerHeaderCell *)v5 contentView];
-    v14 = [(HUTriggerHeaderCell *)v5 titleLabel];
-    [v13 addSubview:v14];
+    contentView = [(HUTriggerHeaderCell *)v5 contentView];
+    titleLabel4 = [(HUTriggerHeaderCell *)v5 titleLabel];
+    [contentView addSubview:titleLabel4];
 
     v5->_contentBottomMargin = 9.0;
     [(UITableViewCell *)v5 removeMargins];
@@ -47,12 +47,12 @@
   return v5;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_layoutOptions] & 1) == 0)
+  optionsCopy = options;
+  if (([optionsCopy isEqual:self->_layoutOptions] & 1) == 0)
   {
-    objc_storeStrong(&self->_layoutOptions, a3);
+    objc_storeStrong(&self->_layoutOptions, options);
     [(HUTriggerHeaderCell *)self setNeedsUpdateConstraints];
     [(HUTriggerHeaderCell *)self _updateTitleLabel];
   }
@@ -66,32 +66,32 @@
   [(HUTriggerHeaderCell *)self setContentBottomMargin:9.0];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUTriggerHeaderCell *)self item];
-  v15 = [v4 latestResults];
+  item = [(HUTriggerHeaderCell *)self item];
+  latestResults = [item latestResults];
 
-  v5 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v6 = [v5 localizedUppercaseString];
-  v7 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v7 setText:v6];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  localizedUppercaseString = [v5 localizedUppercaseString];
+  titleLabel = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel setText:localizedUppercaseString];
 
-  v8 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v8 setHidden:v5 == 0];
+  titleLabel2 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel2 setHidden:v5 == 0];
 
   v9 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D769D0] traits:32770];
-  v10 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v10 setFont:v9];
+  titleLabel3 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel3 setFont:v9];
 
-  v11 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v11 setTextAlignment:4];
+  titleLabel4 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel4 setTextAlignment:4];
 
-  v12 = [MEMORY[0x277D75348] systemGrayColor];
-  v13 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v13 setTextColor:v12];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  titleLabel5 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel5 setTextColor:systemGrayColor];
 
-  v14 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v14 setNumberOfLines:0];
+  titleLabel6 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel6 setNumberOfLines:0];
 
   [(HUTriggerHeaderCell *)self setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
   [(HUTriggerHeaderCell *)self setNeedsUpdateConstraints];
@@ -99,51 +99,51 @@
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUTriggerHeaderCell *)self titleLabel];
-  v5 = [v4 firstBaselineAnchor];
-  v6 = [(HUTriggerHeaderCell *)self contentView];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:40.0];
-  [v3 addObject:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  titleLabel = [(HUTriggerHeaderCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+  contentView = [(HUTriggerHeaderCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:40.0];
+  [array addObject:v8];
 
-  v9 = [(HUTriggerHeaderCell *)self titleLabel];
-  v10 = [v9 leadingAnchor];
-  v11 = [(HUTriggerHeaderCell *)self contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 leadingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
-  [v3 addObject:v14];
+  titleLabel2 = [(HUTriggerHeaderCell *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  contentView2 = [(HUTriggerHeaderCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v14];
 
-  v15 = [(HUTriggerHeaderCell *)self titleLabel];
-  v16 = [v15 trailingAnchor];
-  v17 = [(HUTriggerHeaderCell *)self contentView];
-  v18 = [v17 layoutMarginsGuide];
-  v19 = [v18 trailingAnchor];
-  v20 = [v16 constraintEqualToAnchor:v19];
-  [v3 addObject:v20];
+  titleLabel3 = [(HUTriggerHeaderCell *)self titleLabel];
+  trailingAnchor = [titleLabel3 trailingAnchor];
+  contentView3 = [(HUTriggerHeaderCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v20];
 
-  v21 = [(HUTriggerHeaderCell *)self titleLabel];
-  v22 = [v21 lastBaselineAnchor];
-  v23 = [(HUTriggerHeaderCell *)self contentView];
-  v24 = [v23 bottomAnchor];
+  titleLabel4 = [(HUTriggerHeaderCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
+  contentView4 = [(HUTriggerHeaderCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
   [(HUTriggerHeaderCell *)self contentBottomMargin];
-  v26 = [v22 constraintEqualToAnchor:v24 constant:-v25];
-  [v3 addObject:v26];
+  v26 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-v25];
+  [array addObject:v26];
 
-  v27 = [(HUTriggerHeaderCell *)self constraints];
-  LOBYTE(v22) = [v3 isEqualToArray:v27];
+  constraints = [(HUTriggerHeaderCell *)self constraints];
+  LOBYTE(lastBaselineAnchor) = [array isEqualToArray:constraints];
 
-  if ((v22 & 1) == 0)
+  if ((lastBaselineAnchor & 1) == 0)
   {
     v28 = MEMORY[0x277CCAAD0];
-    v29 = [(HUTriggerHeaderCell *)self constraints];
-    [v28 deactivateConstraints:v29];
+    constraints2 = [(HUTriggerHeaderCell *)self constraints];
+    [v28 deactivateConstraints:constraints2];
 
-    [(HUTriggerHeaderCell *)self setConstraints:v3];
+    [(HUTriggerHeaderCell *)self setConstraints:array];
     v30 = MEMORY[0x277CCAAD0];
-    v31 = [(HUTriggerHeaderCell *)self constraints];
-    [v30 activateConstraints:v31];
+    constraints3 = [(HUTriggerHeaderCell *)self constraints];
+    [v30 activateConstraints:constraints3];
   }
 
   v32.receiver = self;
@@ -153,26 +153,26 @@
 
 - (void)_updateTitleLabel
 {
-  v3 = [(HUTriggerHeaderCell *)self layoutOptions];
-  v4 = [v3 sectionHeaderFont];
-  v5 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v5 setFont:v4];
+  layoutOptions = [(HUTriggerHeaderCell *)self layoutOptions];
+  sectionHeaderFont = [layoutOptions sectionHeaderFont];
+  titleLabel = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel setFont:sectionHeaderFont];
 
-  v6 = [(HUTriggerHeaderCell *)self layoutOptions];
+  layoutOptions2 = [(HUTriggerHeaderCell *)self layoutOptions];
 
-  if (v6 && (-[HUTriggerHeaderCell layoutOptions](self, "layoutOptions"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 contentColorStyle], v7, v8 != 1))
+  if (layoutOptions2 && (-[HUTriggerHeaderCell layoutOptions](self, "layoutOptions"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 contentColorStyle], v7, v8 != 1))
   {
-    v9 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] systemGrayColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
-  v11 = v9;
-  v10 = [(HUTriggerHeaderCell *)self titleLabel];
-  [v10 setTextColor:v11];
+  v11 = systemWhiteColor;
+  titleLabel2 = [(HUTriggerHeaderCell *)self titleLabel];
+  [titleLabel2 setTextColor:v11];
 }
 
 @end

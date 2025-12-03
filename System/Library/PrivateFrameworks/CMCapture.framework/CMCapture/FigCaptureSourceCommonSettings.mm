@@ -1,6 +1,6 @@
 @interface FigCaptureSourceCommonSettings
 - (void)dealloc;
-- (void)initWithCommonSettingsDictionary:(void *)a1;
+- (void)initWithCommonSettingsDictionary:(void *)dictionary;
 @end
 
 @implementation FigCaptureSourceCommonSettings
@@ -12,14 +12,14 @@
   [(FigCaptureSourceCommonSettings *)&v3 dealloc];
 }
 
-- (void)initWithCommonSettingsDictionary:(void *)a1
+- (void)initWithCommonSettingsDictionary:(void *)dictionary
 {
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = dictionary;
   v6.super_class = FigCaptureSourceCommonSettings;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)

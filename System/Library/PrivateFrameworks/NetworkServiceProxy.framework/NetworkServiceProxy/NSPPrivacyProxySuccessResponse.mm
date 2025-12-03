@@ -1,11 +1,11 @@
 @interface NSPPrivacyProxySuccessResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxySuccessResponse
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxySuccessResponse;
   v4 = [(NSPPrivacyProxySuccessResponse *)&v8 description];
-  v5 = [(NSPPrivacyProxySuccessResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxySuccessResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   quota = self->_quota;
   if (quota)
   {
-    v5 = [(NSPPrivacyProxyQuota *)quota dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"quota"];
+    dictionaryRepresentation = [(NSPPrivacyProxyQuota *)quota dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"quota"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_quota)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   quota = self->_quota;
   if (quota)
   {
-    [a3 setQuota:quota];
+    [to setQuota:quota];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSPPrivacyProxyQuota *)self->_quota copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSPPrivacyProxyQuota *)self->_quota copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     quota = self->_quota;
-    if (quota | v4[1])
+    if (quota | equalCopy[1])
     {
       v6 = [(NSPPrivacyProxyQuota *)quota isEqual:?];
     }
@@ -87,11 +87,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   quota = self->_quota;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (quota)
   {
     if (v6)

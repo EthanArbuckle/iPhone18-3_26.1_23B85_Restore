@@ -1,21 +1,21 @@
 @interface PPQuickTypeFormatter
-+ (id)formatterWithQuery:(id)a3;
-- (id)_dateFormatForTemplate:(uint64_t)a1;
++ (id)formatterWithQuery:(id)query;
+- (id)_dateFormatForTemplate:(uint64_t)template;
 - (id)attributionPattern;
 - (id)destinationLabel;
 - (id)distanceLabel;
 - (id)etaLabel;
-- (id)formattedBirthday:(id)a3;
-- (id)formattedEventTime:(id)a3;
-- (id)formattedLengthInMeters:(double)a3;
-- (id)formattedMeasurement:(id)a3 allowDecimals:(BOOL)a4 scaleUnits:(BOOL)a5;
-- (id)formattedPostalAddress:(id)a3;
-- (id)formattedStringForLabel:(id)a3;
-- (id)formattedStringsForLabels:(id)a3;
-- (id)formattedTimeInterval:(double)a3;
+- (id)formattedBirthday:(id)birthday;
+- (id)formattedEventTime:(id)time;
+- (id)formattedLengthInMeters:(double)meters;
+- (id)formattedMeasurement:(id)measurement allowDecimals:(BOOL)decimals scaleUnits:(BOOL)units;
+- (id)formattedPostalAddress:(id)address;
+- (id)formattedStringForLabel:(id)label;
+- (id)formattedStringsForLabels:(id)labels;
+- (id)formattedTimeInterval:(double)interval;
 - (id)inviteLinkLabel;
-- (id)itemLabelForBundleId:(void *)a1 typeLabel:(void *)a2;
-- (id)localizedAppNameForBundleIdentifier:(id)a3;
+- (id)itemLabelForBundleId:(void *)id typeLabel:(void *)label;
+- (id)localizedAppNameForBundleIdentifier:(id)identifier;
 - (id)makeBirthdayFormatter;
 - (id)makeChineseBirthdayFormatter;
 - (id)makeDateComponentFormatter;
@@ -26,11 +26,11 @@
 - (id)makeMeasurementWholeFormatter;
 - (id)makeShortEventFormatter;
 - (id)makeYearlessChineseBirthdayFormatter;
-- (id)navigationItemLabelForTypeLabel:(id)a3 destination:(id)a4;
+- (id)navigationItemLabelForTypeLabel:(id)label destination:(id)destination;
 - (id)streetLabel;
 - (id)timeLeftLabel;
-- (uint64_t)_isYearlessComponents:(uint64_t)a1;
-- (void)_localizedStringForKey:(void *)a1;
+- (uint64_t)_isYearlessComponents:(uint64_t)components;
+- (void)_localizedStringForKey:(void *)key;
 @end
 
 @implementation PPQuickTypeFormatter
@@ -61,11 +61,11 @@
   return v3;
 }
 
-- (void)_localizedStringForKey:(void *)a1
+- (void)_localizedStringForKey:(void *)key
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (key)
   {
     v12 = 0;
     v13 = &v12;
@@ -73,7 +73,7 @@
     v15 = __Block_byref_object_copy__12954;
     v16 = __Block_byref_object_dispose__12955;
     v17 = 0;
-    v5 = a1[17];
+    v5 = key[17];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__PPQuickTypeFormatter__localizedStringForKey___block_invoke;
@@ -81,14 +81,14 @@
     v10 = &v12;
     v11 = sel__localizedStringForKey_;
     v8 = v3;
-    v9 = a1;
+    keyCopy = key;
     [v5 runWithLockAcquired:v7];
-    a1 = v13[5];
+    key = v13[5];
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return a1;
+  return key;
 }
 
 void __47__PPQuickTypeFormatter__localizedStringForKey___block_invoke(void *a1, void *a2)
@@ -384,39 +384,39 @@ LABEL_24:
   return v3;
 }
 
-- (id)navigationItemLabelForTypeLabel:(id)a3 destination:(id)a4
+- (id)navigationItemLabelForTypeLabel:(id)label destination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  labelCopy = label;
+  destinationCopy = destination;
+  if ([destinationCopy length])
   {
-    v14 = _PASValidatedFormat(v6, @"%@", v8, v9, v10, v11, v12, v13, v7);
-    v15 = [PPQuickTypeFormatter itemLabelForBundleId:v14 typeLabel:?];
+    destinationLabel = _PASValidatedFormat(labelCopy, @"%@", v8, v9, v10, v11, v12, v13, destinationCopy);
+    v15 = [PPQuickTypeFormatter itemLabelForBundleId:destinationLabel typeLabel:?];
   }
 
   else
   {
-    v14 = [(PPQuickTypeFormatter *)self destinationLabel];
-    v22 = _PASValidatedFormat(v6, @"%@", v16, v17, v18, v19, v20, v21, v14);
+    destinationLabel = [(PPQuickTypeFormatter *)self destinationLabel];
+    v22 = _PASValidatedFormat(labelCopy, @"%@", v16, v17, v18, v19, v20, v21, destinationLabel);
     v15 = [PPQuickTypeFormatter itemLabelForBundleId:v22 typeLabel:?];
   }
 
   return v15;
 }
 
-- (id)itemLabelForBundleId:(void *)a1 typeLabel:(void *)a2
+- (id)itemLabelForBundleId:(void *)id typeLabel:(void *)label
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = @"com.apple.Maps";
-  v5 = a2;
-  if (a1)
+  labelCopy = label;
+  if (id)
   {
-    v6 = [a1 localizedAppNameForBundleIdentifier:@"com.apple.Maps"];
-    v7 = [a1 attributionPattern];
-    v14 = v7;
-    if (v7)
+    v6 = [id localizedAppNameForBundleIdentifier:@"com.apple.Maps"];
+    attributionPattern = [id attributionPattern];
+    v14 = attributionPattern;
+    if (attributionPattern)
     {
-      v15 = _PASValidatedFormat(v7, @"%@%@", v8, v9, v10, v11, v12, v13, v5);
+      v15 = _PASValidatedFormat(attributionPattern, @"%@%@", v8, v9, v10, v11, v12, v13, labelCopy);
     }
 
     else
@@ -427,11 +427,11 @@ LABEL_24:
         *buf = 138412546;
         v21 = @"com.apple.Maps";
         v22 = 2112;
-        v23 = v5;
+        v23 = labelCopy;
         _os_log_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEFAULT, "Formatter failed to get label pattern for bundle: %@ label: %@", buf, 0x16u);
       }
 
-      v15 = v5;
+      v15 = labelCopy;
     }
 
     v17 = v15;
@@ -447,19 +447,19 @@ LABEL_24:
   return v17;
 }
 
-- (id)formattedTimeInterval:(double)a3
+- (id)formattedTimeInterval:(double)interval
 {
-  v4 = [(PPQuickTypeFormatter *)self makeDateComponentFormatter];
-  v5 = [v4 stringFromTimeInterval:a3];
+  makeDateComponentFormatter = [(PPQuickTypeFormatter *)self makeDateComponentFormatter];
+  v5 = [makeDateComponentFormatter stringFromTimeInterval:interval];
 
   return v5;
 }
 
 - (id)makeDateComponentFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dateComponentFormatter = v2->_dateComponentFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dateComponentFormatter = selfCopy->_dateComponentFormatter;
   if (dateComponentFormatter)
   {
     v4 = dateComponentFormatter;
@@ -468,52 +468,52 @@ LABEL_24:
   else
   {
     v5 = objc_opt_new();
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    [v6 setLocale:v2->_locale];
-    [(NSDateComponentsFormatter *)v5 setCalendar:v6];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    [currentCalendar setLocale:selfCopy->_locale];
+    [(NSDateComponentsFormatter *)v5 setCalendar:currentCalendar];
     [(NSDateComponentsFormatter *)v5 setUnitsStyle:5];
     [(NSDateComponentsFormatter *)v5 setAllowedUnits:96];
-    v7 = v2->_dateComponentFormatter;
-    v2->_dateComponentFormatter = v5;
+    v7 = selfCopy->_dateComponentFormatter;
+    selfCopy->_dateComponentFormatter = v5;
     v8 = v5;
 
-    v4 = v2->_dateComponentFormatter;
+    v4 = selfCopy->_dateComponentFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)formattedPostalAddress:(id)a3
+- (id)formattedPostalAddress:(id)address
 {
   v4 = MEMORY[0x277D0EAA8];
-  v5 = a3;
+  addressCopy = address;
   v6 = [v4 alloc];
-  v7 = [v5 toCNPostalAddress];
+  toCNPostalAddress = [addressCopy toCNPostalAddress];
 
-  v8 = [(NSLocale *)self->_locale languageCode];
-  v9 = [(NSLocale *)self->_locale countryCode];
-  v10 = [v6 initWithCNPostalAddress:v7 language:v8 country:v9 phoneticLocale:self->_desiredLanguage];
+  languageCode = [(NSLocale *)self->_locale languageCode];
+  countryCode = [(NSLocale *)self->_locale countryCode];
+  v10 = [v6 initWithCNPostalAddress:toCNPostalAddress language:languageCode country:countryCode phoneticLocale:self->_desiredLanguage];
 
   v11 = [v10 fullAddressNoCurrentCountryWithMultiline:0];
 
   return v11;
 }
 
-- (id)formattedLengthInMeters:(double)a3
+- (id)formattedLengthInMeters:(double)meters
 {
-  v4 = [(PPQuickTypeFormatter *)self makeLengthFormatter];
-  v5 = [v4 stringFromMeters:a3];
+  makeLengthFormatter = [(PPQuickTypeFormatter *)self makeLengthFormatter];
+  v5 = [makeLengthFormatter stringFromMeters:meters];
 
   return v5;
 }
 
 - (id)makeLengthFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lengthFormatter = v2->_lengthFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lengthFormatter = selfCopy->_lengthFormatter;
   if (lengthFormatter)
   {
     v4 = lengthFormatter;
@@ -525,31 +525,31 @@ LABEL_24:
     v6 = objc_opt_new();
     [v6 setMaximumFractionDigits:1];
     [(NSLengthFormatter *)v5 setNumberFormatter:v6];
-    v7 = v2->_lengthFormatter;
-    v2->_lengthFormatter = v5;
+    v7 = selfCopy->_lengthFormatter;
+    selfCopy->_lengthFormatter = v5;
     v8 = v5;
 
-    v4 = v2->_lengthFormatter;
+    v4 = selfCopy->_lengthFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)formattedMeasurement:(id)a3 allowDecimals:(BOOL)a4 scaleUnits:(BOOL)a5
+- (id)formattedMeasurement:(id)measurement allowDecimals:(BOOL)decimals scaleUnits:(BOOL)units
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  unitsCopy = units;
+  decimalsCopy = decimals;
+  measurementCopy = measurement;
+  if (decimalsCopy)
   {
-    v9 = [(PPQuickTypeFormatter *)self makeMeasurementDecimalFormatter];
+    makeMeasurementDecimalFormatter = [(PPQuickTypeFormatter *)self makeMeasurementDecimalFormatter];
   }
 
   else
   {
-    if (v5)
+    if (unitsCopy)
     {
       [(PPQuickTypeFormatter *)self makeMeasurementWholeFormatter];
     }
@@ -558,20 +558,20 @@ LABEL_24:
     {
       [(PPQuickTypeFormatter *)self makeMeasurementUnscaledFormatter];
     }
-    v9 = ;
+    makeMeasurementDecimalFormatter = ;
   }
 
-  v10 = v9;
-  v11 = [v9 stringFromMeasurement:v8];
+  v10 = makeMeasurementDecimalFormatter;
+  v11 = [makeMeasurementDecimalFormatter stringFromMeasurement:measurementCopy];
 
   return v11;
 }
 
 - (id)makeMeasurementUnscaledFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  measurementUnscaledFormatter = v2->_measurementUnscaledFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  measurementUnscaledFormatter = selfCopy->_measurementUnscaledFormatter;
   if (measurementUnscaledFormatter)
   {
     v4 = measurementUnscaledFormatter;
@@ -580,30 +580,30 @@ LABEL_24:
   else
   {
     v5 = objc_opt_new();
-    [(NSMeasurementFormatter *)v5 setLocale:v2->_locale];
+    [(NSMeasurementFormatter *)v5 setLocale:selfCopy->_locale];
     [(NSMeasurementFormatter *)v5 setUnitOptions:1];
     v6 = objc_opt_new();
     [v6 setMaximumFractionDigits:0];
     [v6 setMinimumFractionDigits:0];
     [v6 setMinimumIntegerDigits:1];
     [(NSMeasurementFormatter *)v5 setNumberFormatter:v6];
-    v7 = v2->_measurementUnscaledFormatter;
-    v2->_measurementUnscaledFormatter = v5;
+    v7 = selfCopy->_measurementUnscaledFormatter;
+    selfCopy->_measurementUnscaledFormatter = v5;
     v8 = v5;
 
-    v4 = v2->_measurementUnscaledFormatter;
+    v4 = selfCopy->_measurementUnscaledFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeMeasurementDecimalFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  measurementDecimalFormatter = v2->_measurementDecimalFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  measurementDecimalFormatter = selfCopy->_measurementDecimalFormatter;
   if (measurementDecimalFormatter)
   {
     v4 = measurementDecimalFormatter;
@@ -612,30 +612,30 @@ LABEL_24:
   else
   {
     v5 = objc_opt_new();
-    [(NSMeasurementFormatter *)v5 setLocale:v2->_locale];
+    [(NSMeasurementFormatter *)v5 setLocale:selfCopy->_locale];
     [(NSMeasurementFormatter *)v5 setUnitOptions:3];
     v6 = objc_opt_new();
     [v6 setMaximumFractionDigits:1];
     [v6 setMinimumFractionDigits:1];
     [v6 setMinimumIntegerDigits:1];
     [(NSMeasurementFormatter *)v5 setNumberFormatter:v6];
-    v7 = v2->_measurementDecimalFormatter;
-    v2->_measurementDecimalFormatter = v5;
+    v7 = selfCopy->_measurementDecimalFormatter;
+    selfCopy->_measurementDecimalFormatter = v5;
     v8 = v5;
 
-    v4 = v2->_measurementDecimalFormatter;
+    v4 = selfCopy->_measurementDecimalFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeMeasurementWholeFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  measurementWholeFormatter = v2->_measurementWholeFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  measurementWholeFormatter = selfCopy->_measurementWholeFormatter;
   if (measurementWholeFormatter)
   {
     v4 = measurementWholeFormatter;
@@ -644,34 +644,34 @@ LABEL_24:
   else
   {
     v5 = objc_opt_new();
-    [(NSMeasurementFormatter *)v5 setLocale:v2->_locale];
+    [(NSMeasurementFormatter *)v5 setLocale:selfCopy->_locale];
     [(NSMeasurementFormatter *)v5 setUnitOptions:3];
     v6 = objc_opt_new();
     [v6 setMaximumFractionDigits:0];
     [v6 setMinimumFractionDigits:0];
     [v6 setMinimumIntegerDigits:1];
     [(NSMeasurementFormatter *)v5 setNumberFormatter:v6];
-    v7 = v2->_measurementWholeFormatter;
-    v2->_measurementWholeFormatter = v5;
+    v7 = selfCopy->_measurementWholeFormatter;
+    selfCopy->_measurementWholeFormatter = v5;
     v8 = v5;
 
-    v4 = v2->_measurementWholeFormatter;
+    v4 = selfCopy->_measurementWholeFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)localizedAppNameForBundleIdentifier:(id)a3
+- (id)localizedAppNameForBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSCache *)self->_appNameCache objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSCache *)self->_appNameCache objectForKey:identifierCopy];
   if (!v5)
   {
     v12 = 0;
-    v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v12];
+    v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v12];
     v7 = v12;
     if (v6)
     {
@@ -683,7 +683,7 @@ LABEL_24:
 
       if (v5)
       {
-        [(NSCache *)self->_appNameCache setObject:v5 forKey:v4];
+        [(NSCache *)self->_appNameCache setObject:v5 forKey:identifierCopy];
       }
     }
 
@@ -693,7 +693,7 @@ LABEL_24:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v7;
         _os_log_error_impl(&dword_23224A000, v6, OS_LOG_TYPE_ERROR, "PPQuickTypeFormatter: Failed to get application record for %@: %@", buf, 0x16u);
@@ -708,9 +708,9 @@ LABEL_24:
   return v5;
 }
 
-- (id)formattedStringsForLabels:(id)a3
+- (id)formattedStringsForLabels:(id)labels
 {
-  v4 = a3;
+  labelsCopy = labels;
   if (formattedStringsForLabels__onceToken != -1)
   {
     dispatch_once(&formattedStringsForLabels__onceToken, &__block_literal_global_69_13016);
@@ -735,7 +735,7 @@ LABEL_24:
   v12[2] = __50__PPQuickTypeFormatter_formattedStringsForLabels___block_invoke_3;
   v12[3] = &unk_278974EA0;
   v15 = &v16;
-  v8 = v4;
+  v8 = labelsCopy;
   v13 = v8;
   v9 = v6;
   v14 = v9;
@@ -917,36 +917,36 @@ void __50__PPQuickTypeFormatter_formattedStringsForLabels___block_invoke()
   formattedStringsForLabels__lprojAndLabelToLocalizedStringCache = v6;
 }
 
-- (id)formattedStringForLabel:(id)a3
+- (id)formattedStringForLabel:(id)label
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  labelCopy = label;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v11 count:1];
+  labelCopy2 = label;
+  v6 = [v4 arrayWithObjects:&labelCopy count:1];
 
-  v7 = [(PPQuickTypeFormatter *)self formattedStringsForLabels:v6, v11, v12];
-  v8 = [v7 firstObject];
+  v7 = [(PPQuickTypeFormatter *)self formattedStringsForLabels:v6, labelCopy, v12];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)formattedEventTime:(id)a3
+- (id)formattedEventTime:(id)time
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = timeCopy;
     _os_log_debug_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEBUG, "formatting event time: %@", &v12, 0xCu);
   }
 
   v6 = PPNextMidnight();
-  v7 = [v4 compare:v6];
+  v7 = [timeCopy compare:v6];
 
   if (v7 == 1)
   {
@@ -958,28 +958,28 @@ void __50__PPQuickTypeFormatter_formattedStringsForLabels___block_invoke()
     [(PPQuickTypeFormatter *)self makeShortEventFormatter];
   }
   v8 = ;
-  v9 = [v8 stringFromDate:v4];
+  v9 = [v8 stringFromDate:timeCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)formattedBirthday:(id)a3
+- (id)formattedBirthday:(id)birthday
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  birthdayCopy = birthday;
   v5 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v39 = 138412290;
-    v40 = v4;
+    v40 = birthdayCopy;
     _os_log_debug_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEBUG, "formatting birthday: %@", &v39, 0xCu);
   }
 
-  v6 = [v4 calendar];
-  v7 = [v6 calendarIdentifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CBE5C0]];
+  calendar = [birthdayCopy calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  v8 = [calendarIdentifier isEqualToString:*MEMORY[0x277CBE5C0]];
 
   if (v8)
   {
@@ -990,19 +990,19 @@ void __50__PPQuickTypeFormatter_formattedStringsForLabels___block_invoke()
       _os_log_debug_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEBUG, "using gregorian formatter", &v39, 2u);
     }
 
-    v10 = [(PPQuickTypeFormatter *)self makeBirthdayFormatter];
+    makeBirthdayFormatter = [(PPQuickTypeFormatter *)self makeBirthdayFormatter];
 LABEL_7:
-    v11 = v10;
+    v11 = makeBirthdayFormatter;
     goto LABEL_16;
   }
 
-  v12 = [v4 calendar];
-  v13 = [v12 calendarIdentifier];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CBE590]];
+  calendar2 = [birthdayCopy calendar];
+  calendarIdentifier2 = [calendar2 calendarIdentifier];
+  v14 = [calendarIdentifier2 isEqualToString:*MEMORY[0x277CBE590]];
 
   if (v14)
   {
-    v15 = [(PPQuickTypeFormatter *)self _isYearlessComponents:v4];
+    v15 = [(PPQuickTypeFormatter *)self _isYearlessComponents:birthdayCopy];
     v16 = pp_quicktype_log_handle();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
     if (v15)
@@ -1013,7 +1013,7 @@ LABEL_7:
         _os_log_debug_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEBUG, "using yearless chinese formatter", &v39, 2u);
       }
 
-      v10 = [(PPQuickTypeFormatter *)self makeYearlessChineseBirthdayFormatter];
+      makeBirthdayFormatter = [(PPQuickTypeFormatter *)self makeYearlessChineseBirthdayFormatter];
     }
 
     else
@@ -1024,7 +1024,7 @@ LABEL_7:
         _os_log_debug_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEBUG, "using chinese formatter", &v39, 2u);
       }
 
-      v10 = [(PPQuickTypeFormatter *)self makeChineseBirthdayFormatter];
+      makeBirthdayFormatter = [(PPQuickTypeFormatter *)self makeChineseBirthdayFormatter];
     }
 
     goto LABEL_7;
@@ -1041,24 +1041,24 @@ LABEL_7:
   v19 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v11 setTimeZone:v19];
 
-  v20 = [v4 calendar];
-  [v11 setCalendar:v20];
+  calendar3 = [birthdayCopy calendar];
+  [v11 setCalendar:calendar3];
 
   IntlUtilityClass = getIntlUtilityClass();
-  v22 = [v4 calendar];
-  v23 = [v22 calendarIdentifier];
-  v24 = [IntlUtilityClass localeForCalendarID:v23];
+  calendar4 = [birthdayCopy calendar];
+  calendarIdentifier3 = [calendar4 calendarIdentifier];
+  v24 = [IntlUtilityClass localeForCalendarID:calendarIdentifier3];
   [v11 setLocale:v24];
 
   v25 = [(PPQuickTypeFormatter *)self _dateFormatForTemplate:?];
   [v11 setDateFormat:v25];
 
 LABEL_16:
-  v26 = [v4 calendar];
-  v27 = v26;
+  calendar5 = [birthdayCopy calendar];
+  v27 = calendar5;
   if (self)
   {
-    v28 = v4;
+    v28 = birthdayCopy;
     v29 = [v27 copy];
 
     v30 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
@@ -1080,11 +1080,11 @@ LABEL_16:
 
     else
     {
-      v33 = [v31 date];
-      self = v33;
-      if (v29 && v33)
+      date = [v31 date];
+      self = date;
+      if (v29 && date)
       {
-        v34 = [v29 components:2097182 fromDate:v33];
+        v34 = [v29 components:2097182 fromDate:date];
         v35 = [v29 dateFromComponents:v34];
 
         self = v35;
@@ -1094,7 +1094,7 @@ LABEL_16:
 
   else
   {
-    v29 = v26;
+    v29 = calendar5;
   }
 
   if (self)
@@ -1112,45 +1112,45 @@ LABEL_16:
   return v36;
 }
 
-- (uint64_t)_isYearlessComponents:(uint64_t)a1
+- (uint64_t)_isYearlessComponents:(uint64_t)components
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (components)
   {
     if ([v3 year] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a1 = 1;
+      components = 1;
     }
 
     else
     {
-      a1 = [v4 calendar];
+      components = [v4 calendar];
 
-      if (a1)
+      if (components)
       {
         IntlUtilityClass = getIntlUtilityClass();
-        v6 = [v4 calendar];
-        a1 = [IntlUtilityClass isYearlessDate:v4 forCalendar:v6];
+        calendar = [v4 calendar];
+        components = [IntlUtilityClass isYearlessDate:v4 forCalendar:calendar];
       }
     }
   }
 
-  return a1;
+  return components;
 }
 
-- (id)_dateFormatForTemplate:(uint64_t)a1
+- (id)_dateFormatForTemplate:(uint64_t)template
 {
   v3 = a2;
-  if (a1)
+  if (template)
   {
-    v4 = [*(a1 + 80) objectForKey:v3];
+    v4 = [*(template + 80) objectForKey:v3];
     if (!v4)
     {
-      v4 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v3 options:0 locale:*(a1 + 16)];
+      v4 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v3 options:0 locale:*(template + 16)];
       if (v4)
       {
-        [*(a1 + 80) setObject:v4 forKey:v3];
+        [*(template + 80) setObject:v4 forKey:v3];
       }
     }
   }
@@ -1165,9 +1165,9 @@ LABEL_16:
 
 - (id)makeBirthdayFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  birthdayFormatter = v2->_birthdayFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  birthdayFormatter = selfCopy->_birthdayFormatter;
   if (birthdayFormatter)
   {
     v4 = birthdayFormatter;
@@ -1182,30 +1182,30 @@ LABEL_16:
     v7 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
     [(NSDateFormatter *)v5 setCalendar:v7];
 
-    [(NSDateFormatter *)v5 setLocale:v2->_locale];
-    v8 = [(PPQuickTypeFormatter *)v2 _dateFormatForTemplate:?];
+    [(NSDateFormatter *)v5 setLocale:selfCopy->_locale];
+    v8 = [(PPQuickTypeFormatter *)selfCopy _dateFormatForTemplate:?];
     [(NSDateFormatter *)v5 setDateFormat:v8];
 
     v9 = objc_opt_new();
     v10 = [(NSDateFormatter *)v5 stringFromDate:v9];
 
-    v11 = v2->_birthdayFormatter;
-    v2->_birthdayFormatter = v5;
+    v11 = selfCopy->_birthdayFormatter;
+    selfCopy->_birthdayFormatter = v5;
     v12 = v5;
 
-    v4 = v2->_birthdayFormatter;
+    v4 = selfCopy->_birthdayFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeChineseBirthdayFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  chineseBirthdayFormatter = v2->_chineseBirthdayFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  chineseBirthdayFormatter = selfCopy->_chineseBirthdayFormatter;
   if (chineseBirthdayFormatter)
   {
     v4 = chineseBirthdayFormatter;
@@ -1229,23 +1229,23 @@ LABEL_16:
     v10 = objc_opt_new();
     v11 = [(NSDateFormatter *)v5 stringFromDate:v10];
 
-    v12 = v2->_chineseBirthdayFormatter;
-    v2->_chineseBirthdayFormatter = v5;
+    v12 = selfCopy->_chineseBirthdayFormatter;
+    selfCopy->_chineseBirthdayFormatter = v5;
     v13 = v5;
 
-    v4 = v2->_chineseBirthdayFormatter;
+    v4 = selfCopy->_chineseBirthdayFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeYearlessChineseBirthdayFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  yearlessChineseBirthdayFormatter = v2->_yearlessChineseBirthdayFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  yearlessChineseBirthdayFormatter = selfCopy->_yearlessChineseBirthdayFormatter;
   if (yearlessChineseBirthdayFormatter)
   {
     v4 = yearlessChineseBirthdayFormatter;
@@ -1267,30 +1267,30 @@ LABEL_16:
     [(NSDateFormatter *)v5 setDateStyle:3];
     [(NSDateFormatter *)v5 setTimeStyle:0];
     v10 = MEMORY[0x277CCA968];
-    v11 = [(NSDateFormatter *)v5 locale];
-    v12 = [v10 dateFormatFromTemplate:@"MMMMd" options:0 locale:v11];
+    locale = [(NSDateFormatter *)v5 locale];
+    v12 = [v10 dateFormatFromTemplate:@"MMMMd" options:0 locale:locale];
     [(NSDateFormatter *)v5 setDateFormat:v12];
 
     v13 = objc_opt_new();
     v14 = [(NSDateFormatter *)v5 stringFromDate:v13];
 
-    v15 = v2->_yearlessChineseBirthdayFormatter;
-    v2->_yearlessChineseBirthdayFormatter = v5;
+    v15 = selfCopy->_yearlessChineseBirthdayFormatter;
+    selfCopy->_yearlessChineseBirthdayFormatter = v5;
     v16 = v5;
 
-    v4 = v2->_yearlessChineseBirthdayFormatter;
+    v4 = selfCopy->_yearlessChineseBirthdayFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeLongEventFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  longEventFormatter = v2->_longEventFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  longEventFormatter = selfCopy->_longEventFormatter;
   if (longEventFormatter)
   {
     v4 = longEventFormatter;
@@ -1299,30 +1299,30 @@ LABEL_16:
   else
   {
     v5 = objc_opt_new();
-    [(NSDateFormatter *)v5 setLocale:v2->_locale];
-    v6 = [(PPQuickTypeFormatter *)v2 _dateFormatForTemplate:?];
+    [(NSDateFormatter *)v5 setLocale:selfCopy->_locale];
+    v6 = [(PPQuickTypeFormatter *)selfCopy _dateFormatForTemplate:?];
     [(NSDateFormatter *)v5 setDateFormat:v6];
 
     v7 = objc_opt_new();
     v8 = [(NSDateFormatter *)v5 stringFromDate:v7];
 
-    v9 = v2->_longEventFormatter;
-    v2->_longEventFormatter = v5;
+    v9 = selfCopy->_longEventFormatter;
+    selfCopy->_longEventFormatter = v5;
     v10 = v5;
 
-    v4 = v2->_longEventFormatter;
+    v4 = selfCopy->_longEventFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)makeShortEventFormatter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shortEventFormatter = v2->_shortEventFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shortEventFormatter = selfCopy->_shortEventFormatter;
   if (shortEventFormatter)
   {
     v4 = shortEventFormatter;
@@ -1331,43 +1331,43 @@ LABEL_16:
   else
   {
     v5 = objc_opt_new();
-    [(NSDateFormatter *)v5 setLocale:v2->_locale];
-    v6 = [(PPQuickTypeFormatter *)v2 _dateFormatForTemplate:?];
+    [(NSDateFormatter *)v5 setLocale:selfCopy->_locale];
+    v6 = [(PPQuickTypeFormatter *)selfCopy _dateFormatForTemplate:?];
     [(NSDateFormatter *)v5 setDateFormat:v6];
 
     v7 = objc_opt_new();
     v8 = [(NSDateFormatter *)v5 stringFromDate:v7];
 
-    v9 = v2->_shortEventFormatter;
-    v2->_shortEventFormatter = v5;
+    v9 = selfCopy->_shortEventFormatter;
+    selfCopy->_shortEventFormatter = v5;
     v10 = v5;
 
-    v4 = v2->_shortEventFormatter;
+    v4 = selfCopy->_shortEventFormatter;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-+ (id)formatterWithQuery:(id)a3
++ (id)formatterWithQuery:(id)query
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   objc_opt_self();
   v25[0] = @"locale";
-  v5 = [v4 localeIdentifier];
+  localeIdentifier = [queryCopy localeIdentifier];
 
-  v6 = v5;
-  if (!v5)
+  localeIdentifier2 = localeIdentifier;
+  if (!localeIdentifier)
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v3 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier2 = [currentLocale localeIdentifier];
   }
 
-  v19 = v6;
+  v19 = localeIdentifier2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:v25 count:1];
-  if (!v5)
+  if (!localeIdentifier)
   {
   }
 
@@ -1389,7 +1389,7 @@ LABEL_16:
   aBlock[3] = &unk_278974EA0;
   v9 = v7;
   v16 = v9;
-  v10 = v4;
+  v10 = queryCopy;
   v17 = v10;
   v18 = &v19;
   v11 = _Block_copy(aBlock);

@@ -6,9 +6,9 @@
 
 - (uint64_t)sbf_EXIFOrientation
 {
-  v1 = [a1 imageOrientation];
+  imageOrientation = [self imageOrientation];
 
-  return MEMORY[0x1EEE4E0F0](v1);
+  return MEMORY[0x1EEE4E0F0](imageOrientation);
 }
 
 @end

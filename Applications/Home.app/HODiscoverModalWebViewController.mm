@@ -1,17 +1,17 @@
 @interface HODiscoverModalWebViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (HODiscoverModalWebViewController)init;
-- (HODiscoverModalWebViewController)initWithCoder:(id)a3;
-- (HODiscoverModalWebViewController)initWithURLString:(id)a3;
+- (HODiscoverModalWebViewController)initWithCoder:(id)coder;
+- (HODiscoverModalWebViewController)initWithURLString:(id)string;
 - (double)_getStatusBarHeight;
 - (void)_addWebViewConstraints;
-- (void)handlePanGesture:(id)a3;
+- (void)handlePanGesture:(id)gesture;
 - (void)viewDidLoad;
 @end
 
 @implementation HODiscoverModalWebViewController
 
-- (HODiscoverModalWebViewController)initWithCoder:(id)a3
+- (HODiscoverModalWebViewController)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("initWithURL:");
@@ -29,11 +29,11 @@
   return 0;
 }
 
-- (HODiscoverModalWebViewController)initWithURLString:(id)a3
+- (HODiscoverModalWebViewController)initWithURLString:(id)string
 {
   v7.receiver = self;
   v7.super_class = HODiscoverModalWebViewController;
-  v3 = [(HODiscoverWebViewController *)&v7 initWithURLString:a3];
+  v3 = [(HODiscoverWebViewController *)&v7 initWithURLString:string];
   if (v3)
   {
     if ((+[HFUtilities isAMac]& 1) == 0)
@@ -67,30 +67,30 @@
   [(HODiscoverWebViewController *)&v10 viewDidLoad];
   [(HODiscoverModalWebViewController *)self setTitle:0];
   v3 = +[HFUtilities isAMac];
-  v4 = [(HODiscoverModalWebViewController *)self navigationController];
-  [v4 setNavigationBarHidden:v3];
+  navigationController = [(HODiscoverModalWebViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:v3];
 
   if ((+[HFUtilities isAMac]& 1) == 0)
   {
-    v5 = [(HODiscoverWebViewController *)self webView];
-    v6 = [v5 scrollView];
+    webView = [(HODiscoverWebViewController *)self webView];
+    scrollView = [webView scrollView];
     [(HODiscoverModalWebViewController *)self _getStatusBarHeight];
-    [v6 setContentInset:{-v7, 0.0, 0.0, 0.0}];
+    [scrollView setContentInset:{-v7, 0.0, 0.0, 0.0}];
 
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_dismissedButtonPressed:"];
-    v9 = [(HODiscoverModalWebViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(HODiscoverModalWebViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
-  v5 = [(HODiscoverModalWebViewController *)self presentationController];
+  presentationController = [(HODiscoverModalWebViewController *)self presentationController];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = presentationController;
   }
 
   else
@@ -100,12 +100,12 @@
 
   v12 = v6;
 
-  v7 = [(HODiscoverWebViewController *)self contentView];
-  [v4 translationInView:v7];
+  contentView = [(HODiscoverWebViewController *)self contentView];
+  [gestureCopy translationInView:contentView];
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 == 2)
+  state = [gestureCopy state];
+  if (state == 2)
   {
     [v12 dismissalPanTranslationChanged:v9];
   }
@@ -113,7 +113,7 @@
   else
   {
     v11 = v12;
-    if (v10 != 3)
+    if (state != 3)
     {
       goto LABEL_9;
     }
@@ -125,13 +125,13 @@
 LABEL_9:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   objc_opt_class();
-  v5 = [(HODiscoverModalWebViewController *)self presentationController];
+  presentationController = [(HODiscoverModalWebViewController *)self presentationController];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = presentationController;
   }
 
   else
@@ -141,51 +141,51 @@ LABEL_9:
 
   v7 = v6;
 
-  v8 = [(HODiscoverWebViewController *)self webView];
-  v9 = [v8 scrollView];
-  [v9 contentOffset];
+  webView = [(HODiscoverWebViewController *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView contentOffset];
   if (v10 <= 0.0)
   {
-    v11 = 1;
+    shouldAllowViewTranslation = 1;
   }
 
   else
   {
-    v11 = [v7 shouldAllowViewTranslation];
+    shouldAllowViewTranslation = [v7 shouldAllowViewTranslation];
   }
 
-  return v11;
+  return shouldAllowViewTranslation;
 }
 
 - (void)_addWebViewConstraints
 {
   v23 = objc_alloc_init(NSMutableArray);
-  v3 = [(HODiscoverWebViewController *)self webView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(HODiscoverWebViewController *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  webView = [(HODiscoverWebViewController *)self webView];
+  leadingAnchor = [webView leadingAnchor];
+  contentView = [(HODiscoverWebViewController *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v23 addObject:v7];
 
-  v8 = [(HODiscoverWebViewController *)self webView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(HODiscoverWebViewController *)self contentView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  webView2 = [(HODiscoverWebViewController *)self webView];
+  trailingAnchor = [webView2 trailingAnchor];
+  contentView2 = [(HODiscoverWebViewController *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v23 addObject:v12];
 
-  v13 = [(HODiscoverWebViewController *)self webView];
-  v14 = [v13 bottomAnchor];
-  v15 = [(HODiscoverWebViewController *)self contentView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  webView3 = [(HODiscoverWebViewController *)self webView];
+  bottomAnchor = [webView3 bottomAnchor];
+  contentView3 = [(HODiscoverWebViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 addObject:v17];
 
-  v18 = [(HODiscoverWebViewController *)self webView];
-  v19 = [v18 topAnchor];
-  v20 = [(HODiscoverWebViewController *)self contentView];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  webView4 = [(HODiscoverWebViewController *)self webView];
+  topAnchor = [webView4 topAnchor];
+  contentView4 = [(HODiscoverWebViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 addObject:v22];
 
   [NSLayoutConstraint activateConstraints:v23];
@@ -194,15 +194,15 @@ LABEL_9:
 - (double)_getStatusBarHeight
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 windows];
-  v4 = [v3 na_filter:&stru_1000C2170];
-  v5 = [v4 firstObject];
+  windows = [v2 windows];
+  v4 = [windows na_filter:&stru_1000C2170];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 windowScene];
-    v7 = [v6 statusBarManager];
-    [v7 statusBarFrame];
+    windowScene = [firstObject windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v9 = v8;
   }
 

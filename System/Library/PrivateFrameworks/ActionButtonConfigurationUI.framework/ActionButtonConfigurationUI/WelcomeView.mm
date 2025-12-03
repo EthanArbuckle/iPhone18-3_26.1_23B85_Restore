@@ -1,12 +1,12 @@
 @interface WelcomeView
-- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithCoder:(id)a3;
-- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithFrame:(CGRect)a3;
+- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithCoder:(id)coder;
+- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation WelcomeView
 
-- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithCoder:(id)a3
+- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI11WelcomeView_stackView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI11WelcomeView_labelContainerView) = 0;
@@ -20,11 +20,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DDE3B3C();
 }
 
-- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithFrame:(CGRect)a3
+- (_TtC27ActionButtonConfigurationUI11WelcomeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

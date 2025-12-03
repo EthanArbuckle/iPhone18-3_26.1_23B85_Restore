@@ -11,11 +11,11 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ : %p ", v5, self];
 
-  v7 = [(WiFiWalletPass *)self SSID];
-  [v6 appendFormat:@"SSID: %@ ", v7];
+  sSID = [(WiFiWalletPass *)self SSID];
+  [v6 appendFormat:@"SSID: %@ ", sSID];
 
-  v8 = [(WiFiWalletPass *)self password];
-  if (v8)
+  password = [(WiFiWalletPass *)self password];
+  if (password)
   {
     v9 = @"YES";
   }
@@ -27,11 +27,11 @@
 
   [v6 appendFormat:@"Password: %@ ", v9];
 
-  v10 = [(WiFiWalletPass *)self uniqueIdentifier];
-  [v6 appendFormat:@"Idenitifer: %@ ", v10];
+  uniqueIdentifier = [(WiFiWalletPass *)self uniqueIdentifier];
+  [v6 appendFormat:@"Idenitifer: %@ ", uniqueIdentifier];
 
-  v11 = [(WiFiWalletPass *)self captiveToken];
-  if (v11)
+  captiveToken = [(WiFiWalletPass *)self captiveToken];
+  if (captiveToken)
   {
     v12 = @"YES";
   }

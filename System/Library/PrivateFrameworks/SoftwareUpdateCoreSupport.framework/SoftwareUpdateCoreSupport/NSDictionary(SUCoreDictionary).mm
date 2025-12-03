@@ -41,7 +41,7 @@
   v5[3] = &unk_1E86FCA08;
   v5[4] = v6;
   v5[5] = &v8;
-  [a1 enumerateKeysAndObjectsUsingBlock:v5];
+  [self enumerateKeysAndObjectsUsingBlock:v5];
   v1 = [v9[5] stringByAppendingString:@"}"];
   v2 = v9[5];
   v9[5] = v1;
@@ -56,7 +56,7 @@
 - (uint64_t)safeBooleanForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     a4 = [v7 BOOLValue];
@@ -74,7 +74,7 @@
       v8 = @"NO";
     }
 
-    [a1 _logReturningDefault:v7 forKey:v6 valueType:@"BOOLean" defaultValueName:v8];
+    [self _logReturningDefault:v7 forKey:v6 valueType:@"BOOLean" defaultValueName:v8];
   }
 
   return a4;
@@ -83,7 +83,7 @@
 - (uint64_t)safeLLForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     a4 = [v7 longLongValue];
@@ -92,7 +92,7 @@
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", a4];
-    [a1 _logReturningDefault:v7 forKey:v6 valueType:@"ll" defaultValueName:v8];
+    [self _logReturningDefault:v7 forKey:v6 valueType:@"ll" defaultValueName:v8];
   }
 
   return a4;
@@ -101,7 +101,7 @@
 - (uint64_t)safeULForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     a4 = [v7 unsignedLongValue];
@@ -110,7 +110,7 @@
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", a4];
-    [a1 _logReturningDefault:v7 forKey:v6 valueType:@"ul" defaultValueName:v8];
+    [self _logReturningDefault:v7 forKey:v6 valueType:@"ul" defaultValueName:v8];
   }
 
   return a4;
@@ -119,7 +119,7 @@
 - (uint64_t)safeULLForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     a4 = [v7 unsignedLongLongValue];
@@ -128,7 +128,7 @@
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%llu", a4];
-    [a1 _logReturningDefault:v7 forKey:v6 valueType:@"ull" defaultValueName:v8];
+    [self _logReturningDefault:v7 forKey:v6 valueType:@"ull" defaultValueName:v8];
   }
 
   return a4;
@@ -137,7 +137,7 @@
 - (uint64_t)safeIntegerForKey:()SUCoreDictionary
 {
   v4 = a3;
-  v5 = [a1 safeIntegerForKey:v4 defaultValue:{objc_msgSend(&unk_1F5BE9790, "integerValue")}];
+  v5 = [self safeIntegerForKey:v4 defaultValue:{objc_msgSend(&unk_1F5BE9790, "integerValue")}];
 
   return v5;
 }
@@ -145,7 +145,7 @@
 - (uint64_t)safeIntegerForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     a4 = [v7 integerValue];
@@ -154,7 +154,7 @@
   else
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%llu", a4];
-    [a1 _logReturningDefault:v7 forKey:v6 valueType:@"integer" defaultValueName:v8];
+    [self _logReturningDefault:v7 forKey:v6 valueType:@"integer" defaultValueName:v8];
   }
 
   return a4;
@@ -163,24 +163,24 @@
 - (unint64_t)safeTriStateForKey:()SUCoreDictionary defaultValue:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 integerValue];
-      if (v8 < 2)
+      integerValue = [v7 integerValue];
+      if (integerValue < 2)
       {
         goto LABEL_12;
       }
 
       v9 = +[SUCoreLog sharedLogger];
-      v10 = [v9 oslog];
+      oslog = [v9 oslog];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        [(NSDictionary(SUCoreDictionary) *)v6 safeTriStateForKey:v7 defaultValue:v10];
+        [(NSDictionary(SUCoreDictionary) *)v6 safeTriStateForKey:v7 defaultValue:oslog];
       }
     }
   }
@@ -188,29 +188,29 @@
   if (a4 >= 3)
   {
     v11 = +[SUCoreLog sharedLogger];
-    v12 = [v11 oslog];
+    oslog2 = [v11 oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
-      [(NSDictionary(SUCoreDictionary) *)v6 safeTriStateForKey:a4 defaultValue:v12];
+      [(NSDictionary(SUCoreDictionary) *)v6 safeTriStateForKey:a4 defaultValue:oslog2];
     }
 
     a4 = 2;
   }
 
   v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%llu", a4];
-  [a1 _logReturningDefault:v7 forKey:v6 valueType:@"integer" defaultValueName:v13];
+  [self _logReturningDefault:v7 forKey:v6 valueType:@"integer" defaultValueName:v13];
 
-  v8 = a4;
+  integerValue = a4;
 LABEL_12:
 
-  return v8;
+  return integerValue;
 }
 
 - (id)safeStringForKey:()SUCoreDictionary
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
@@ -218,7 +218,7 @@ LABEL_12:
 
   else
   {
-    [a1 _logReturningNil:v5 forKey:v4 valueType:@"string"];
+    [self _logReturningNil:v5 forKey:v4 valueType:@"string"];
     v6 = 0;
   }
 
@@ -230,7 +230,7 @@ LABEL_12:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 objectForKey:v8];
+  v11 = [self objectForKey:v8];
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v12 = v11;
@@ -238,7 +238,7 @@ LABEL_12:
 
   else
   {
-    [a1 _logReturningNil:v11 forKey:v8 valueType:@"dictionary" fromBase:v9 withKeyDescription:v10];
+    [self _logReturningNil:v11 forKey:v8 valueType:@"dictionary" fromBase:v9 withKeyDescription:v10];
     v12 = 0;
   }
 
@@ -248,7 +248,7 @@ LABEL_12:
 - (id)safeDataForKey:()SUCoreDictionary
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (!v5)
   {
     goto LABEL_6;
@@ -265,7 +265,7 @@ LABEL_12:
   if ((objc_opt_isKindOfClass() & 1) == 0 || (v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:1]) == 0)
   {
 LABEL_6:
-    [a1 _logReturningNil:v5 forKey:v4 valueType:@"data"];
+    [self _logReturningNil:v5 forKey:v4 valueType:@"data"];
     v6 = 0;
   }
 
@@ -277,7 +277,7 @@ LABEL_7:
 - (id)safeDateForKey:()SUCoreDictionary
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
     objc_opt_class();
@@ -305,7 +305,7 @@ LABEL_7:
     }
   }
 
-  [a1 _logReturningNil:v5 forKey:v4 valueType:@"date"];
+  [self _logReturningNil:v5 forKey:v4 valueType:@"date"];
   v6 = 0;
 LABEL_10:
 
@@ -315,7 +315,7 @@ LABEL_10:
 - (id)safeObjectForKey:()SUCoreDictionary ofClass:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -342,7 +342,7 @@ LABEL_10:
       v10 = @"nil-object-class";
     }
 
-    [a1 _logReturningNil:v7 forKey:v6 valueType:v10];
+    [self _logReturningNil:v7 forKey:v6 valueType:v10];
 
     v8 = 0;
   }
@@ -366,8 +366,8 @@ LABEL_10:
   v41 = 0;
   if (a4)
   {
-    v16 = [MEMORY[0x1E696AEC0] string];
-    v17 = [v16 stringByPaddingToLength:4 * a4 withString:@" " startingAtIndex:0];
+    string = [MEMORY[0x1E696AEC0] string];
+    v17 = [string stringByPaddingToLength:4 * a4 withString:@" " startingAtIndex:0];
 
     if (a6)
     {
@@ -395,7 +395,7 @@ LABEL_10:
   v37[2] = __152__NSDictionary_SUCoreDictionary___safeDescriptionWithName_atNestedLevel_maxNestedLevel_showingSubLevelName_withMaxValueLength_providingSubstitutionMap___block_invoke;
   v37[3] = &unk_1E86FC990;
   v37[4] = &v38;
-  [a1 enumerateKeysAndObjectsUsingBlock:v37];
+  [self enumerateKeysAndObjectsUsingBlock:v37];
   if (v39[3])
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[%llu]", a4];
@@ -412,7 +412,7 @@ LABEL_10:
     v21 = v20;
     v30 = v21;
     v31 = v17;
-    [a1 enumerateKeysAndObjectsUsingBlock:v28];
+    [self enumerateKeysAndObjectsUsingBlock:v28];
   }
 
   v22 = v43[5];
@@ -457,7 +457,7 @@ LABEL_10:
     v14[5] = &v22;
     v14[6] = &v16;
     v14[7] = a4;
-    [a1 enumerateKeysAndObjectsUsingBlock:v14];
+    [self enumerateKeysAndObjectsUsingBlock:v14];
     v11 = v17[5];
     if (v11)
     {
@@ -493,8 +493,8 @@ LABEL_10:
   v10 = a4 - v6;
   if (v10 != 0 && v9)
   {
-    v11 = [MEMORY[0x1E696AEC0] string];
-    v12 = [v11 stringByPaddingToLength:v10 withString:@" " startingAtIndex:0];
+    string = [MEMORY[0x1E696AEC0] string];
+    v12 = [string stringByPaddingToLength:v10 withString:@" " startingAtIndex:0];
 
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", v12, v8];
   }
@@ -539,21 +539,21 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v7 unsignedLongLongValue];
-      if (!v12)
+      unsignedLongLongValue = [v7 unsignedLongLongValue];
+      if (!unsignedLongLongValue)
       {
         v9 = @"0[NO]";
         goto LABEL_37;
       }
 
-      if (v12 == 1)
+      if (unsignedLongLongValue == 1)
       {
         v9 = @"1[YES]";
         goto LABEL_37;
       }
 
-      v15 = [MEMORY[0x1E695DF58] currentLocale];
-      v11 = [v7 descriptionWithLocale:v15];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v11 = [v7 descriptionWithLocale:currentLocale];
 
       if (!v11)
       {
@@ -665,21 +665,21 @@ LABEL_37:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 safeSummary];
+      safeSummary = [v3 safeSummary];
     }
 
     else
     {
-      v4 = @"NOT-DICTIONARY";
+      safeSummary = @"NOT-DICTIONARY";
     }
   }
 
   else
   {
-    v4 = @"NONE";
+    safeSummary = @"NONE";
   }
 
-  return v4;
+  return safeSummary;
 }
 
 - (void)_logReturningDefault:()SUCoreDictionary forKey:valueType:defaultValueName:
@@ -691,9 +691,9 @@ LABEL_37:
   if (a3)
   {
     v12 = +[SUCoreLog sharedLogger];
-    v13 = [v12 oslog];
+    oslog = [v12 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543874;
       v16 = v9;
@@ -701,7 +701,7 @@ LABEL_37:
       v18 = v10;
       v19 = 2114;
       v20 = v11;
-      _os_log_error_impl(&dword_1E0F71000, v13, OS_LOG_TYPE_ERROR, "[SUCoreDictionary] key '%{public}@' is the incorrect class, returning %{public}@ default value: %{public}@", &v15, 0x20u);
+      _os_log_error_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_ERROR, "[SUCoreDictionary] key '%{public}@' is the incorrect class, returning %{public}@ default value: %{public}@", &v15, 0x20u);
     }
   }
 
@@ -719,9 +719,9 @@ LABEL_37:
   if (v11)
   {
     v16 = +[SUCoreLog sharedLogger];
-    v17 = [v16 oslog];
+    oslog = [v16 oslog];
 
-    v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
+    v18 = os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR);
     if (v14)
     {
       if (v15)
@@ -741,7 +741,7 @@ LABEL_37:
           v36 = 2114;
           v37 = v13;
           v21 = "[SUCoreDictionary] [%{public}@] key '%{public}@' (%{public}@) references value of the incorrect class (%{public}@), returning %{public}@ value: nil";
-          v22 = v17;
+          v22 = oslog;
           v23 = 52;
 LABEL_14:
           _os_log_error_impl(&dword_1E0F71000, v22, OS_LOG_TYPE_ERROR, v21, &v28, v23);
@@ -785,7 +785,7 @@ LABEL_15:
           v32 = 2114;
           v33 = v13;
           v21 = "[SUCoreDictionary] key '%{public}@' references value of the incorrect class (%{public}@), returning %{public}@ value: nil";
-          v22 = v17;
+          v22 = oslog;
           v23 = 32;
           goto LABEL_14;
         }
@@ -811,7 +811,7 @@ LABEL_15:
       v21 = "[SUCoreDictionary] key '%{public}@' (%{public}@) references value of the incorrect class (%{public}@), returning %{public}@ value: nil";
     }
 
-    v22 = v17;
+    v22 = oslog;
     v23 = 42;
     goto LABEL_14;
   }

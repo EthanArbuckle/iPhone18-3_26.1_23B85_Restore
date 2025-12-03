@@ -1,9 +1,9 @@
 @interface SBSwitcherLayoutCalculationsCache
-- (CGRect)frameForKey:(id)a3 validityToken:(id)a4 fallback:(id)a5;
+- (CGRect)frameForKey:(id)key validityToken:(id)token fallback:(id)fallback;
 - (SBSwitcherLayoutCalculationsCache)init;
 - (SBSwitcherLayoutCalculationsCacheDelegate)delegate;
-- (double)scaleForKey:(id)a3 validityToken:(id)a4 fallback:(id)a5;
-- (void)rebuildIfNecessaryForValidityToken:(id)a3;
+- (double)scaleForKey:(id)key validityToken:(id)token fallback:(id)fallback;
+- (void)rebuildIfNecessaryForValidityToken:(id)token;
 @end
 
 @implementation SBSwitcherLayoutCalculationsCache
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (CGRect)frameForKey:(id)a3 validityToken:(id)a4 fallback:(id)a5
+- (CGRect)frameForKey:(id)key validityToken:(id)token fallback:(id)fallback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [(SBSwitcherLayoutCalculationsCache *)self rebuildIfNecessaryForValidityToken:a4];
-  v10 = [(NSDictionary *)self->_cachedLayoutCalculationsByKey objectForKey:v8];
+  keyCopy = key;
+  fallbackCopy = fallback;
+  [(SBSwitcherLayoutCalculationsCache *)self rebuildIfNecessaryForValidityToken:token];
+  v10 = [(NSDictionary *)self->_cachedLayoutCalculationsByKey objectForKey:keyCopy];
   v11 = v10;
   if (v10)
   {
@@ -42,11 +42,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v25 = 138412290;
-      v26 = v8;
+      v26 = keyCopy;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "Cache didn't have layoutCalculations for key %@", &v25, 0xCu);
     }
 
-    v12 = v9[2](v9);
+    v12 = fallbackCopy[2](fallbackCopy);
   }
 
   v17 = v12;
@@ -65,13 +65,13 @@
   return result;
 }
 
-- (double)scaleForKey:(id)a3 validityToken:(id)a4 fallback:(id)a5
+- (double)scaleForKey:(id)key validityToken:(id)token fallback:(id)fallback
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [(SBSwitcherLayoutCalculationsCache *)self rebuildIfNecessaryForValidityToken:a4];
-  v10 = [(NSDictionary *)self->_cachedLayoutCalculationsByKey objectForKey:v8];
+  keyCopy = key;
+  fallbackCopy = fallback;
+  [(SBSwitcherLayoutCalculationsCache *)self rebuildIfNecessaryForValidityToken:token];
+  v10 = [(NSDictionary *)self->_cachedLayoutCalculationsByKey objectForKey:keyCopy];
   v11 = v10;
   if (v10)
   {
@@ -84,11 +84,11 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = keyCopy;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "Cache didn't have layoutCalculations for key %@", &v16, 0xCu);
     }
 
-    v12 = v9[2](v9);
+    v12 = fallbackCopy[2](fallbackCopy);
   }
 
   v14 = v12;
@@ -96,22 +96,22 @@
   return v14;
 }
 
-- (void)rebuildIfNecessaryForValidityToken:(id)a3
+- (void)rebuildIfNecessaryForValidityToken:(id)token
 {
-  v9 = a3;
+  tokenCopy = token;
   if (![(SBSwitcherLayoutCalculationsCacheValidityToken *)self->_validityToken isEqual:?])
   {
-    v6 = [(SBSwitcherLayoutCalculationsCache *)self delegate];
-    if (!v6)
+    delegate = [(SBSwitcherLayoutCalculationsCache *)self delegate];
+    if (!delegate)
     {
       [(SBSwitcherLayoutCalculationsCache *)a2 rebuildIfNecessaryForValidityToken:?];
     }
 
-    v7 = [v6 buildLayoutCalculationsForCache:self];
+    v7 = [delegate buildLayoutCalculationsForCache:self];
     cachedLayoutCalculationsByKey = self->_cachedLayoutCalculationsByKey;
     self->_cachedLayoutCalculationsByKey = v7;
 
-    objc_storeStrong(&self->_validityToken, a3);
+    objc_storeStrong(&self->_validityToken, token);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface _CDRateAndTotalLimiter
 - (BOOL)credit;
 - (BOOL)debited;
-- (_CDRateAndTotalLimiter)initWithCount:(int64_t)a3 perPeriod:(double)a4 totalCountLimit:(int64_t)a5;
+- (_CDRateAndTotalLimiter)initWithCount:(int64_t)count perPeriod:(double)period totalCountLimit:(int64_t)limit;
 - (id)description;
 @end
 
@@ -9,21 +9,21 @@
 
 - (BOOL)debited
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = _CDRateAndTotalLimiter;
   if (![(_CDRateLimiter *)&v7 debited])
   {
     goto LABEL_5;
   }
 
-  currentTotal = v2->_currentTotal;
-  v2->_currentTotal = currentTotal + 1;
-  if (currentTotal >= v2->_totalCount)
+  currentTotal = selfCopy->_currentTotal;
+  selfCopy->_currentTotal = currentTotal + 1;
+  if (currentTotal >= selfCopy->_totalCount)
   {
-    v2->_currentTotal = currentTotal;
-    v6.receiver = v2;
+    selfCopy->_currentTotal = currentTotal;
+    v6.receiver = selfCopy;
     v6.super_class = _CDRateAndTotalLimiter;
     [(_CDRateLimiter *)&v6 credit];
 LABEL_5:
@@ -33,19 +33,19 @@ LABEL_5:
 
   v4 = 1;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (_CDRateAndTotalLimiter)initWithCount:(int64_t)a3 perPeriod:(double)a4 totalCountLimit:(int64_t)a5
+- (_CDRateAndTotalLimiter)initWithCount:(int64_t)count perPeriod:(double)period totalCountLimit:(int64_t)limit
 {
   v7.receiver = self;
   v7.super_class = _CDRateAndTotalLimiter;
-  result = [(_CDRateLimiter *)&v7 initWithCount:a3 perPeriod:a4];
+  result = [(_CDRateLimiter *)&v7 initWithCount:count perPeriod:period];
   if (result)
   {
-    result->_totalCount = a5;
+    result->_totalCount = limit;
   }
 
   return result;
@@ -53,15 +53,15 @@ LABEL_6:
 
 - (BOOL)credit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5.receiver = selfCopy;
   v5.super_class = _CDRateAndTotalLimiter;
-  v3 = [(_CDRateLimiter *)&v5 credit];
-  --v2->_currentTotal;
-  objc_sync_exit(v2);
+  credit = [(_CDRateLimiter *)&v5 credit];
+  --selfCopy->_currentTotal;
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return credit;
 }
 
 - (id)description

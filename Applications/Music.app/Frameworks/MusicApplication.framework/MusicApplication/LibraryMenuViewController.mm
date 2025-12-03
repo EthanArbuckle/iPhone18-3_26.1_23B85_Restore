@@ -1,22 +1,22 @@
 @interface LibraryMenuViewController
-- (_TtC16MusicApplication25LibraryMenuViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC16MusicApplication25LibraryMenuViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC16MusicApplication25LibraryMenuViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC16MusicApplication25LibraryMenuViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation LibraryMenuViewController
 
-- (_TtC16MusicApplication25LibraryMenuViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication25LibraryMenuViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_AB92A0();
     v7 = v6;
@@ -28,65 +28,65 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1EC7D4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1EC7D4(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1ECA00();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for LibraryMenuViewController();
   v4 = v5.receiver;
-  [(LibraryMenuViewController *)&v5 viewWillAppear:v3];
+  [(LibraryMenuViewController *)&v5 viewWillAppear:appearCopy];
   [v4 loadViewIfNeeded];
   *(v4 + OBJC_IVAR____TtC16MusicApplication25LibraryMenuViewController_pendingSelectedIdentifier) = 13;
   sub_1EF7F8();
   RequestResponse.Controller.isAutomaticReloadingEnabled.setter(1);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for LibraryMenuViewController();
   v4 = v5.receiver;
-  [(LibraryMenuViewController *)&v5 viewDidAppear:v3];
+  [(LibraryMenuViewController *)&v5 viewDidAppear:appearCopy];
   sub_1EF7F8();
   v4[OBJC_IVAR____TtC16MusicApplication25LibraryMenuViewController_allowsAnimatedChanges] = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for LibraryMenuViewController();
   v4 = v5.receiver;
-  [(LibraryMenuViewController *)&v5 viewWillDisappear:v3];
+  [(LibraryMenuViewController *)&v5 viewWillDisappear:disappearCopy];
   RequestResponse.Controller.isAutomaticReloadingEnabled.setter(0);
   v4[OBJC_IVAR____TtC16MusicApplication25LibraryMenuViewController_allowsAnimatedChanges] = 0;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1EE208(a3, a4);
+  selfCopy = self;
+  sub_1EE208(editing, animated);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1EEF68(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1EEF68(change);
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   v4 = sub_AB3820();
   v5 = *(v4 - 8);
@@ -97,7 +97,7 @@
   return 0;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -107,9 +107,9 @@
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
   sub_AB3790();
-  v14 = a3;
-  v15 = a4;
-  v16 = self;
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
   sub_1EF278(v10, v13);
 
   v17 = *(v8 + 8);
@@ -127,7 +127,7 @@
   return v19;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -136,8 +136,8 @@
   sub_AB3790();
   type metadata accessor for LibraryMenuViewController.Cell();
   v11 = swift_dynamicCastClass();
-  v12 = a4;
-  v13 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   if (v11)
   {
     [v11 _setDrawsSeparatorAtTopOfSection:0];
@@ -148,7 +148,7 @@
   (*(v8 + 8))(v10, v7);
 }
 
-- (_TtC16MusicApplication25LibraryMenuViewController)initWithStyle:(int64_t)a3
+- (_TtC16MusicApplication25LibraryMenuViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

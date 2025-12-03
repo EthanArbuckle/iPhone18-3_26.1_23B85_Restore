@@ -1,33 +1,33 @@
 @interface MobileDocumentReaderSessionProxy
 - (_TtC8coreidvd32MobileDocumentReaderSessionProxy)init;
-- (void)cachedIssuerRootsWithCompletionHandler:(id)a3;
-- (void)canRequestDocument:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)a3 completionHandler:(id)a4;
-- (void)cancelReadWithCompletionHandler:(id)a3;
-- (void)certificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 completionHandler:(id)a4;
-- (void)clearCachedIssuerRootsWithCompletionHandler:(id)a3;
-- (void)deleteCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 completionHandler:(id)a4;
-- (void)deleteIdentityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)a3 completionHandler:(id)a4;
-- (void)identityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)a3 completionHandler:(id)a4;
-- (void)loadIssuerRootsWithCompletionHandler:(id)a3;
-- (void)merchantFor:(NSString *)a3 completionHandler:(id)a4;
-- (void)prepareWith:(_TtC7CoreIDV36XPCMobileDocumentReaderConfiguration *)a3 completionHandler:(id)a4;
-- (void)readDocumentWith:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)a3 engagementType:(_TtC7CoreIDV43XPCMobileDocumentReaderDeviceEngagementType *)a4 completionHandler:(id)a5;
-- (void)readerInstanceIdentifierWithCompletionHandler:(id)a3;
-- (void)registerAuditToken:(_TtC7CoreIDV13XPCAuditToken *)a3 completionHandler:(id)a4;
-- (void)storeCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 certificateDER:(NSString *)a4 externalData:(NSData *)a5 completionHandler:(id)a6;
+- (void)cachedIssuerRootsWithCompletionHandler:(id)handler;
+- (void)canRequestDocument:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)document completionHandler:(id)handler;
+- (void)cancelReadWithCompletionHandler:(id)handler;
+- (void)certificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate completionHandler:(id)handler;
+- (void)clearCachedIssuerRootsWithCompletionHandler:(id)handler;
+- (void)deleteCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate completionHandler:(id)handler;
+- (void)deleteIdentityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)key completionHandler:(id)handler;
+- (void)identityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)key completionHandler:(id)handler;
+- (void)loadIssuerRootsWithCompletionHandler:(id)handler;
+- (void)merchantFor:(NSString *)for completionHandler:(id)handler;
+- (void)prepareWith:(_TtC7CoreIDV36XPCMobileDocumentReaderConfiguration *)with completionHandler:(id)handler;
+- (void)readDocumentWith:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)with engagementType:(_TtC7CoreIDV43XPCMobileDocumentReaderDeviceEngagementType *)type completionHandler:(id)handler;
+- (void)readerInstanceIdentifierWithCompletionHandler:(id)handler;
+- (void)registerAuditToken:(_TtC7CoreIDV13XPCAuditToken *)token completionHandler:(id)handler;
+- (void)storeCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate certificateDER:(NSString *)r externalData:(NSData *)data completionHandler:(id)handler;
 @end
 
 @implementation MobileDocumentReaderSessionProxy
 
-- (void)registerAuditToken:(_TtC7CoreIDV13XPCAuditToken *)a3 completionHandler:(id)a4
+- (void)registerAuditToken:(_TtC7CoreIDV13XPCAuditToken *)token completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = token;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -42,18 +42,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E69F8;
   v15[5] = v14;
-  v16 = a3;
+  tokenCopy = token;
 
   sub_100500D54(0, 0, v10, &unk_1006E6A00, v15);
 }
 
-- (void)readerInstanceIdentifierWithCompletionHandler:(id)a3
+- (void)readerInstanceIdentifierWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -73,15 +73,15 @@
   sub_100500D54(0, 0, v8, &unk_1006E69E0, v13);
 }
 
-- (void)prepareWith:(_TtC7CoreIDV36XPCMobileDocumentReaderConfiguration *)a3 completionHandler:(id)a4
+- (void)prepareWith:(_TtC7CoreIDV36XPCMobileDocumentReaderConfiguration *)with completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = with;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -96,20 +96,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E69B8;
   v15[5] = v14;
-  v16 = a3;
+  withCopy = with;
 
   sub_100500D54(0, 0, v10, &unk_1006E69C0, v15);
 }
 
-- (void)merchantFor:(NSString *)a3 completionHandler:(id)a4
+- (void)merchantFor:(NSString *)for completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -124,20 +124,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E28D8;
   v15[5] = v14;
-  v16 = a3;
+  forCopy = for;
 
   sub_100500D54(0, 0, v10, &unk_1006E28E0, v15);
 }
 
-- (void)canRequestDocument:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)a3 completionHandler:(id)a4
+- (void)canRequestDocument:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)document completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = document;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -152,21 +152,21 @@
   v15[3] = 0;
   v15[4] = &unk_1006E28B8;
   v15[5] = v14;
-  v16 = a3;
+  documentCopy = document;
 
   sub_100500D54(0, 0, v10, &unk_1006E28C0, v15);
 }
 
-- (void)readDocumentWith:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)a3 engagementType:(_TtC7CoreIDV43XPCMobileDocumentReaderDeviceEngagementType *)a4 completionHandler:(id)a5
+- (void)readDocumentWith:(_TtC7CoreIDV30XPCMobileDocumentReaderRequest *)with engagementType:(_TtC7CoreIDV43XPCMobileDocumentReaderDeviceEngagementType *)type completionHandler:(id)handler
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = with;
+  v14[3] = type;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -181,19 +181,19 @@
   v17[3] = 0;
   v17[4] = &unk_1006E6978;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  withCopy = with;
+  typeCopy = type;
 
   sub_100500D54(0, 0, v12, &unk_1006E6980, v17);
 }
 
-- (void)cancelReadWithCompletionHandler:(id)a3
+- (void)cancelReadWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -213,15 +213,15 @@
   sub_100500D54(0, 0, v8, &unk_1006E6960, v13);
 }
 
-- (void)identityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)a3 completionHandler:(id)a4
+- (void)identityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)key completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = key;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -236,20 +236,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E6938;
   v15[5] = v14;
-  v16 = a3;
+  keyCopy = key;
 
   sub_100500D54(0, 0, v10, &unk_1006E6940, v15);
 }
 
-- (void)deleteIdentityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)a3 completionHandler:(id)a4
+- (void)deleteIdentityKey:(_TtC7CoreIDV41XPCMobileDocumentReaderIdentityKeyRequest *)key completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = key;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -264,20 +264,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E6918;
   v15[5] = v14;
-  v16 = a3;
+  keyCopy = key;
 
   sub_100500D54(0, 0, v10, &unk_1006E6920, v15);
 }
 
-- (void)certificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 completionHandler:(id)a4
+- (void)certificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = certificate;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -292,22 +292,22 @@
   v15[3] = 0;
   v15[4] = &unk_1006E68F8;
   v15[5] = v14;
-  v16 = a3;
+  certificateCopy = certificate;
 
   sub_100500D54(0, 0, v10, &unk_1006E6900, v15);
 }
 
-- (void)storeCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 certificateDER:(NSString *)a4 externalData:(NSData *)a5 completionHandler:(id)a6
+- (void)storeCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate certificateDER:(NSString *)r externalData:(NSData *)data completionHandler:(id)handler
 {
   v11 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = certificate;
+  v16[3] = r;
+  v16[4] = data;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -322,22 +322,22 @@
   v19[3] = 0;
   v19[4] = &unk_1006E68D8;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  certificateCopy = certificate;
+  rCopy = r;
+  dataCopy = data;
 
   sub_100500D54(0, 0, v14, &unk_1006E68E0, v19);
 }
 
-- (void)deleteCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)a3 completionHandler:(id)a4
+- (void)deleteCertificate:(_TtC7CoreIDV41XPCMobileDocumentReaderCertificateRequest *)certificate completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = certificate;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -352,18 +352,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E68B8;
   v15[5] = v14;
-  v16 = a3;
+  certificateCopy = certificate;
 
   sub_100500D54(0, 0, v10, &unk_1006E68C0, v15);
 }
 
-- (void)cachedIssuerRootsWithCompletionHandler:(id)a3
+- (void)cachedIssuerRootsWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -383,13 +383,13 @@
   sub_100500D54(0, 0, v8, &unk_1006E68A0, v13);
 }
 
-- (void)clearCachedIssuerRootsWithCompletionHandler:(id)a3
+- (void)clearCachedIssuerRootsWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -409,13 +409,13 @@
   sub_100500D54(0, 0, v8, &unk_1006E6880, v13);
 }
 
-- (void)loadIssuerRootsWithCompletionHandler:(id)a3
+- (void)loadIssuerRootsWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

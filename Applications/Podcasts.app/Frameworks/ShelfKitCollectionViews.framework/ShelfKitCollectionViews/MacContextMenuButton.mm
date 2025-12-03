@@ -1,30 +1,30 @@
 @interface MacContextMenuButton
-- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation MacContextMenuButton
 
-- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithCoder:(id)coder
 {
   result = sub_30D648();
   __break(1u);
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  v9 = sub_B8C20(v7, x, y);
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
+  v9 = sub_B8C20(interactionCopy, x, y);
 
   return v9;
 }
 
-- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews20MacContextMenuButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

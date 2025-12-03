@@ -1,14 +1,14 @@
 @interface SWKeyboardConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)inputAccessoryViewFrame;
 - (CGRect)keyboardFrame;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SWKeyboardConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SWKeyboardConfiguration alloc];
   isKeyboardSplit = self->_isKeyboardSplit;
@@ -28,13 +28,13 @@
   return [(SWKeyboardConfiguration *)v4 initWithKeyboardFrame:isKeyboardSplit inputAccessoryViewFrame:isKeyboardFloating isKeyboardSplit:isHardwareKeyboard isKeyboardFloating:isKeyboardVisible isHardwareKeyboard:isPencilInputExpected isKeyboardVisible:x isPencilInputExpected:y, width, height, v14, v15, v16, v17];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5)
     {
       goto LABEL_9;
@@ -78,11 +78,11 @@
       goto LABEL_9;
     }
 
-    v30 = [(SWKeyboardConfiguration *)self isKeyboardSplit];
-    if (v30 == [v5 isKeyboardSplit] && (v31 = -[SWKeyboardConfiguration isKeyboardFloating](self, "isKeyboardFloating"), v31 == objc_msgSend(v5, "isKeyboardFloating")) && (v32 = -[SWKeyboardConfiguration isHardwareKeyboard](self, "isHardwareKeyboard"), v32 == objc_msgSend(v5, "isHardwareKeyboard")) && (v33 = -[SWKeyboardConfiguration isKeyboardVisible](self, "isKeyboardVisible"), v33 == objc_msgSend(v5, "isKeyboardVisible")))
+    isKeyboardSplit = [(SWKeyboardConfiguration *)self isKeyboardSplit];
+    if (isKeyboardSplit == [v5 isKeyboardSplit] && (v31 = -[SWKeyboardConfiguration isKeyboardFloating](self, "isKeyboardFloating"), v31 == objc_msgSend(v5, "isKeyboardFloating")) && (v32 = -[SWKeyboardConfiguration isHardwareKeyboard](self, "isHardwareKeyboard"), v32 == objc_msgSend(v5, "isHardwareKeyboard")) && (v33 = -[SWKeyboardConfiguration isKeyboardVisible](self, "isKeyboardVisible"), v33 == objc_msgSend(v5, "isKeyboardVisible")))
     {
-      v36 = [(SWKeyboardConfiguration *)self isPencilInputExpected];
-      v34 = v36 ^ [v5 isPencilInputExpected] ^ 1;
+      isPencilInputExpected = [(SWKeyboardConfiguration *)self isPencilInputExpected];
+      v34 = isPencilInputExpected ^ [v5 isPencilInputExpected] ^ 1;
     }
 
     else

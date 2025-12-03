@@ -6,19 +6,19 @@
 - (NSString)platform;
 - (NSString)storeFrontIdentifier;
 - (void)_updateRestrictionsAndNotifyIfNeeded;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
-- (void)accountControllerDidAttemptSignIn:(id)a3;
-- (void)accountDidAttemptSignOut:(uint64_t)a1;
-- (void)accountWillAttemptSignOut:(uint64_t)a1;
-- (void)addObserver:(id)a3;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
+- (void)accountControllerDidAttemptSignIn:(id)in;
+- (void)accountDidAttemptSignOut:(uint64_t)out;
+- (void)accountWillAttemptSignOut:(uint64_t)out;
+- (void)addObserver:(id)observer;
 - (void)beginDelayingNotifications;
 - (void)dealloc;
 - (void)endDelayingNotifications;
-- (void)registerOnAccountChange:(id)a3;
-- (void)registerOnRestrictionChange:(id)a3;
-- (void)registerOnStorefrontChange:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)unregisterOnAccountChange:(id)a3;
+- (void)registerOnAccountChange:(id)change;
+- (void)registerOnRestrictionChange:(id)change;
+- (void)registerOnStorefrontChange:(id)change;
+- (void)removeObserver:(id)observer;
+- (void)unregisterOnAccountChange:(id)change;
 - (void)unregisterOnRestrictionChange;
 - (void)unregisterOnStorefrontChange;
 @end
@@ -61,9 +61,9 @@
     v2->_observers = v16;
 
     v18 = +[BUAccountsProvider sharedProvider];
-    v19 = [v18 currentStorefront];
+    currentStorefront = [v18 currentStorefront];
     storeFrontIdentifier = v2->_storeFrontIdentifier;
-    v2->_storeFrontIdentifier = v19;
+    v2->_storeFrontIdentifier = currentStorefront;
 
     v21 = +[BURestrictionsProvider sharedInstance];
     [v21 addObserver:v2];
@@ -124,20 +124,20 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableArray *)self->_observers addObject:v4];
+  [(NSMutableArray *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -174,17 +174,17 @@
   }
 
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == &dword_4 + 1)
+  if (userInterfaceIdiom == &dword_4 + 1)
   {
     return @"iPad";
   }
 
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v6 userInterfaceIdiom];
 
-  if (!v7)
+  if (!userInterfaceIdiom2)
   {
     return @"iPhone";
   }
@@ -220,9 +220,9 @@
   return v3;
 }
 
-- (void)registerOnStorefrontChange:(id)a3
+- (void)registerOnStorefrontChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -231,7 +231,7 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &v8, 0xCu);
   }
 
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  v6 = [JSManagedValue managedValueWithValue:changeCopy];
 
   storefrontChangeHandler = self->_storefrontChangeHandler;
   self->_storefrontChangeHandler = v6;
@@ -244,9 +244,9 @@
   _objc_release_x1();
 }
 
-- (void)registerOnAccountChange:(id)a3
+- (void)registerOnAccountChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -255,34 +255,34 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v6 = [(JSAStore *)self callbackQueue];
+  callbackQueue = [(JSAStore *)self callbackQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_255AC;
   v8[3] = &unk_B2128;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = changeCopy;
+  v7 = changeCopy;
+  dispatch_async(callbackQueue, v8);
 }
 
-- (void)unregisterOnAccountChange:(id)a3
+- (void)unregisterOnAccountChange:(id)change
 {
-  v4 = a3;
-  v5 = [(JSAStore *)self callbackQueue];
+  changeCopy = change;
+  callbackQueue = [(JSAStore *)self callbackQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_256D4;
   v7[3] = &unk_B2128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(callbackQueue, v7);
 }
 
-- (void)registerOnRestrictionChange:(id)a3
+- (void)registerOnRestrictionChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -291,7 +291,7 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &v8, 0xCu);
   }
 
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  v6 = [JSManagedValue managedValueWithValue:changeCopy];
 
   restrictionHandler = self->_restrictionHandler;
   self->_restrictionHandler = v6;
@@ -306,12 +306,12 @@
 
 - (BOOL)isAuthenticated
 {
-  v3 = [(JSAStore *)self account];
-  if (v3)
+  account = [(JSAStore *)self account];
+  if (account)
   {
-    v4 = [(JSAStore *)self account];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v5 length] != 0;
+    account2 = [(JSAStore *)self account];
+    uniqueIdentifier = [account2 uniqueIdentifier];
+    v6 = [uniqueIdentifier length] != 0;
   }
 
   else
@@ -334,8 +334,8 @@
     }
 
     [(JSAStore *)self setShouldDelayNotifications:1];
-    v4 = [(JSAStore *)self callbackQueue];
-    dispatch_suspend(v4);
+    callbackQueue = [(JSAStore *)self callbackQueue];
+    dispatch_suspend(callbackQueue);
   }
 }
 
@@ -351,27 +351,27 @@
     }
 
     [(JSAStore *)self setShouldDelayNotifications:0];
-    v4 = [(JSAStore *)self callbackQueue];
-    dispatch_resume(v4);
+    callbackQueue = [(JSAStore *)self callbackQueue];
+    dispatch_resume(callbackQueue);
   }
 }
 
 - (void)_updateRestrictionsAndNotifyIfNeeded
 {
   objc_initWeak(&location, self);
-  v3 = [(JSAStore *)self restrictionsQueue];
+  restrictionsQueue = [(JSAStore *)self restrictionsQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_25AA8;
   v4[3] = &unk_B23B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(restrictionsQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
   v5 = JSALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -392,7 +392,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)accountControllerDidAttemptSignIn:(id)a3
+- (void)accountControllerDidAttemptSignIn:(id)in
 {
   objc_initWeak(&location, self);
   accountQueue = self->_accountQueue;
@@ -406,11 +406,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)accountDidAttemptSignOut:(uint64_t)a1
+- (void)accountDidAttemptSignOut:(uint64_t)out
 {
-  if (a1)
+  if (out)
   {
-    v3 = sub_265BC(a1);
+    v3 = sub_265BC(out);
     sub_265E0();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)
@@ -447,11 +447,11 @@
   }
 }
 
-- (void)accountWillAttemptSignOut:(uint64_t)a1
+- (void)accountWillAttemptSignOut:(uint64_t)out
 {
-  if (a1)
+  if (out)
   {
-    v3 = sub_265BC(a1);
+    v3 = sub_265BC(out);
     sub_265E0();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)

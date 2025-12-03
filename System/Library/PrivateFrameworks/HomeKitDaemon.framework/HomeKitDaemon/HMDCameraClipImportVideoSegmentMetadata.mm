@@ -1,13 +1,13 @@
 @interface HMDCameraClipImportVideoSegmentMetadata
-- (HMDCameraClipImportVideoSegmentMetadata)initWithVideoSegmentMetadata:(id)a3;
+- (HMDCameraClipImportVideoSegmentMetadata)initWithVideoSegmentMetadata:(id)metadata;
 @end
 
 @implementation HMDCameraClipImportVideoSegmentMetadata
 
-- (HMDCameraClipImportVideoSegmentMetadata)initWithVideoSegmentMetadata:(id)a3
+- (HMDCameraClipImportVideoSegmentMetadata)initWithVideoSegmentMetadata:(id)metadata
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v30.receiver = self;
   v30.super_class = HMDCameraClipImportVideoSegmentMetadata;
   v5 = [(HMDCameraClipImportVideoSegmentMetadata *)&v30 init];
@@ -16,7 +16,7 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 hmf_stringForKey:@"data"];
+  v6 = [metadataCopy hmf_stringForKey:@"data"];
   if (!v6)
   {
     v16 = objc_autoreleasePoolPush();
@@ -28,7 +28,7 @@
       *buf = 138543618;
       v32 = v19;
       v33 = 2112;
-      v34 = v4;
+      v34 = metadataCopy;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Could not find resourcePath in video segment metadata: %@", buf, 0x16u);
     }
 
@@ -37,7 +37,7 @@
   }
 
   v7 = v6;
-  v8 = [v4 hmf_numberForKey:@"isHeader"];
+  v8 = [metadataCopy hmf_numberForKey:@"isHeader"];
   if (!v8)
   {
     v20 = objc_autoreleasePoolPush();
@@ -49,7 +49,7 @@
       *buf = 138543618;
       v32 = v23;
       v33 = 2112;
-      v34 = v4;
+      v34 = metadataCopy;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Could not find isHeader in video segment metadata: %@", buf, 0x16u);
     }
 
@@ -58,7 +58,7 @@
   }
 
   v9 = v8;
-  v10 = [v4 hmf_numberForKey:@"duration"];
+  v10 = [metadataCopy hmf_numberForKey:@"duration"];
   if (!v10)
   {
     v24 = objc_autoreleasePoolPush();
@@ -70,7 +70,7 @@
       *buf = 138543618;
       v32 = v27;
       v33 = 2112;
-      v34 = v4;
+      v34 = metadataCopy;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Could not find duration in video segment metadata: %@", buf, 0x16u);
     }
 

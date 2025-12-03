@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterVideoResolutionStruct
 - (MTRCameraAVStreamManagementClusterVideoResolutionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterVideoResolutionStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)self width];
-  [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)v4 setWidth:v5];
+  width = [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)self width];
+  [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)v4 setWidth:width];
 
-  v6 = [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)self height];
-  [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)v4 setHeight:v6];
+  height = [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)self height];
+  [(MTRCameraAVStreamManagementClusterVideoResolutionStruct *)v4 setHeight:height];
 
   return v4;
 }

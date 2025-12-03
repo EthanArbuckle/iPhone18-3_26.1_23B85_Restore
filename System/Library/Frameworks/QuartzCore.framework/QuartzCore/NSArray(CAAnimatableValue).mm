@@ -9,19 +9,19 @@
 - (uint64_t)CA_interpolateValues:()CAAnimatableValue ::interpolator:
 {
   v36 = *MEMORY[0x1E69E9840];
-  v11 = [a1 count];
-  v35 = a1;
+  v11 = [self count];
+  selfCopy = self;
   if (v11 >= [a4 count])
   {
-    v12 = a4;
+    selfCopy2 = a4;
   }
 
   else
   {
-    v12 = a1;
+    selfCopy2 = self;
   }
 
-  v13 = [v12 count];
+  v13 = [selfCopy2 count];
   v14 = v13;
   if (a3)
   {
@@ -87,7 +87,7 @@ LABEL_40:
 
     else
     {
-      v31 = v35;
+      v31 = selfCopy;
     }
 
     goto LABEL_43;
@@ -144,7 +144,7 @@ LABEL_26:
     goto LABEL_40;
   }
 
-  [v35 getObjects:v17 range:{0, v14}];
+  [selfCopy getObjects:v17 range:{0, v14}];
   [a4 getObjects:v21 range:{0, v14}];
   if (a3)
   {
@@ -152,7 +152,7 @@ LABEL_26:
   }
 
   v34 = v21;
-  v35 = v17;
+  selfCopy = v17;
   if (a5)
   {
     [a5 getObjects:v22 range:{0, v14}];
@@ -161,7 +161,7 @@ LABEL_26:
   if (v14)
   {
     v24 = v34;
-    v23 = v35;
+    v23 = selfCopy;
     v25 = v20;
     v26 = v22;
     for (i = v14; i; --i)
@@ -197,8 +197,8 @@ LABEL_38:
     }
   }
 
-  v17 = v35;
-  v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:v14];
+  v17 = selfCopy;
+  v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:selfCopy count:v14];
   v21 = v34;
 LABEL_43:
   if (v15 > 0x1000 && v20)
@@ -227,18 +227,18 @@ LABEL_43:
 - (uint64_t)CA_interpolateValue:()CAAnimatableValue byFraction:
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7 >= [a4 count])
   {
-    v8 = a4;
+    selfCopy = a4;
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  v9 = [v8 count];
+  v9 = [selfCopy count];
   v10 = v9;
   v11 = 8 * v9;
   if ((8 * v9) > 0x1000)
@@ -271,18 +271,18 @@ LABEL_43:
   {
     if (a2 >= 0.5)
     {
-      v16 = a4;
+      selfCopy2 = a4;
     }
 
     else
     {
-      v16 = a1;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    [a1 getObjects:v12 range:{0, v10}];
+    [self getObjects:v12 range:{0, v10}];
     [a4 getObjects:v14 range:{0, v10}];
     if (v10)
     {
@@ -301,7 +301,7 @@ LABEL_43:
       while (v20);
     }
 
-    v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:v10];
+    selfCopy2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:v10];
   }
 
   if (v11 > 0x1000 && v14)
@@ -314,14 +314,14 @@ LABEL_43:
     free(v12);
   }
 
-  return v16;
+  return selfCopy2;
 }
 
 - (void)CA_addValue:()CAAnimatableValue multipliedBy:
 {
-  v6 = a1;
+  selfCopy = self;
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7 >= [a3 count])
   {
     v8 = a3;
@@ -329,7 +329,7 @@ LABEL_43:
 
   else
   {
-    v8 = v6;
+    v8 = selfCopy;
   }
 
   v9 = [v8 count];
@@ -363,7 +363,7 @@ LABEL_43:
 
   if (!v15)
   {
-    [v6 getObjects:v12 range:{0, v10}];
+    [selfCopy getObjects:v12 range:{0, v10}];
     [a3 getObjects:v14 range:{0, v10}];
     if (v10)
     {
@@ -381,7 +381,7 @@ LABEL_43:
       while (v18);
     }
 
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:v10];
+    selfCopy = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:v10];
   }
 
   if (v11 > 0x1000 && v14)
@@ -394,7 +394,7 @@ LABEL_43:
     free(v12);
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

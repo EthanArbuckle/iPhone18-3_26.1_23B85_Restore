@@ -1,11 +1,11 @@
 @interface PlatterCopyButton
 - (CGSize)intrinsicContentSize;
-- (_TtC7Measure17PlatterCopyButton)initWithCoder:(id)a3;
+- (_TtC7Measure17PlatterCopyButton)initWithCoder:(id)coder;
 @end
 
 @implementation PlatterCopyButton
 
-- (_TtC7Measure17PlatterCopyButton)initWithCoder:(id)a3
+- (_TtC7Measure17PlatterCopyButton)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

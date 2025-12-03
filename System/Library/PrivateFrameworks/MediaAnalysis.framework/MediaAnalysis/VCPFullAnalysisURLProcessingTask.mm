@@ -1,18 +1,18 @@
 @interface VCPFullAnalysisURLProcessingTask
-+ (id)taskForURLAsset:(id)a3 withOptions:(id)a4 analysisTypes:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (VCPFullAnalysisURLProcessingTask)initWithURLAsset:(id)a3 withOptions:(id)a4 analysisTypes:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7;
++ (id)taskForURLAsset:(id)asset withOptions:(id)options analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (VCPFullAnalysisURLProcessingTask)initWithURLAsset:(id)asset withOptions:(id)options analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (int)run;
-- (int)runWithCancelBlock:(id)a3;
+- (int)runWithCancelBlock:(id)block;
 @end
 
 @implementation VCPFullAnalysisURLProcessingTask
 
-- (VCPFullAnalysisURLProcessingTask)initWithURLAsset:(id)a3 withOptions:(id)a4 analysisTypes:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (VCPFullAnalysisURLProcessingTask)initWithURLAsset:(id)asset withOptions:(id)options analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v31.receiver = self;
   v31.super_class = VCPFullAnalysisURLProcessingTask;
   v16 = [(VCPFullAnalysisURLProcessingTask *)&v31 init];
@@ -21,42 +21,42 @@
   if (v16)
   {
     atomic_store(0, &v16->_cancel);
-    v19 = [v12 count];
+    v19 = [assetCopy count];
     if (v19)
     {
-      v19 = [v12 objectAtIndexedSubscript:0];
+      v19 = [assetCopy objectAtIndexedSubscript:0];
     }
 
     assetURL = v18->_assetURL;
     v18->_assetURL = v19;
 
-    if ([v12 count] < 2)
+    if ([assetCopy count] < 2)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = [v12 objectAtIndexedSubscript:1];
+      v21 = [assetCopy objectAtIndexedSubscript:1];
     }
 
     pairedAssetURL = v18->_pairedAssetURL;
     v18->_pairedAssetURL = v21;
 
-    v23 = 0xFFFFFFFFFFFFFLL;
-    if (a5)
+    typesCopy = 0xFFFFFFFFFFFFFLL;
+    if (types)
     {
-      v23 = a5;
+      typesCopy = types;
     }
 
-    v18->_analysisTypes = v23;
-    v24 = _Block_copy(v14);
+    v18->_analysisTypes = typesCopy;
+    v24 = _Block_copy(handlerCopy);
     progressHandler = v18->_progressHandler;
     v18->_progressHandler = v24;
 
-    if (v15)
+    if (completionHandlerCopy)
     {
-      v26 = v15;
+      v26 = completionHandlerCopy;
     }
 
     else
@@ -69,20 +69,20 @@
     v18->_completionHandler = v27;
 
     v18->_noResultStrip = 0;
-    objc_storeStrong(&v17->_options, a4);
+    objc_storeStrong(&v17->_options, options);
     v29 = v18;
   }
 
   return v18;
 }
 
-+ (id)taskForURLAsset:(id)a3 withOptions:(id)a4 analysisTypes:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7
++ (id)taskForURLAsset:(id)asset withOptions:(id)options analysisTypes:(unint64_t)types progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [objc_alloc(objc_opt_class()) initWithURLAsset:v11 withOptions:v12 analysisTypes:a5 progressHandler:v13 completionHandler:v14];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v15 = [objc_alloc(objc_opt_class()) initWithURLAsset:assetCopy withOptions:optionsCopy analysisTypes:types progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v15;
 }
@@ -97,17 +97,17 @@
   return [(VCPFullAnalysisURLProcessingTask *)self runWithCancelBlock:v3];
 }
 
-- (int)runWithCancelBlock:(id)a3
+- (int)runWithCancelBlock:(id)block
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
     progressHandler[2](0.0);
   }
 
-  if (v4 && (v4[2](v4) & 1) != 0)
+  if (blockCopy && (blockCopy[2](blockCopy) & 1) != 0)
   {
     v6 = -128;
     goto LABEL_46;
@@ -134,8 +134,8 @@
     if (v14)
     {
       v15 = [VCPMovieAnalyzer analyzerWithVCPAsset:v14 withExistingAnalysis:self->_partialAnalysis forAnalysisTypes:self->_analysisTypes withOptions:0];
-      v16 = [v15 analyzeAsset:v4 streamed:0];
-      v17 = [v15 status];
+      v16 = [v15 analyzeAsset:blockCopy streamed:0];
+      status = [v15 status];
       goto LABEL_13;
     }
 
@@ -245,10 +245,10 @@ LABEL_38:
 
 LABEL_28:
   v15 = [VCPPhotoAnalyzer analyzerWithVCPAsset:v14 forAnalysisTypes:self->_analysisTypes];
-  v16 = [v15 analyzeAsset:v4 withOptions:self->_options];
-  v17 = [v15 status];
+  v16 = [v15 analyzeAsset:blockCopy withOptions:self->_options];
+  status = [v15 status];
 LABEL_13:
-  v18 = v17;
+  v18 = status;
 
   if (v18 == 4)
   {

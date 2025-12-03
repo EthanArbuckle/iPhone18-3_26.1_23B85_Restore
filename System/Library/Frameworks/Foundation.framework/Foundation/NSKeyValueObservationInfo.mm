@@ -1,8 +1,8 @@
 @interface NSKeyValueObservationInfo
 - (BOOL)containsOnlyInternalObservationHelpers;
-- (BOOL)isEqual:(id)a3;
-- (id)_copyByAddingObservance:(id)a3;
-- (id)_initWithObservances:(id *)a3 count:(unint64_t)a4 hashValue:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (id)_copyByAddingObservance:(id)observance;
+- (id)_initWithObservances:(id *)observances count:(unint64_t)count hashValue:(unint64_t)value;
 - (id)description;
 - (void)dealloc;
 @end
@@ -18,25 +18,25 @@
   [(NSKeyValueObservationInfo *)&v3 dealloc];
 }
 
-- (id)_copyByAddingObservance:(id)a3
+- (id)_copyByAddingObservance:(id)observance
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(NSKeyValueObservationInfo);
   v6 = [(NSArray *)self->_observances count];
   v7 = v6;
-  if (a3)
+  if (observance)
   {
-    v8 = a3 + 41;
+    v8 = observance + 41;
     v9 = 32;
-    if (*(a3 + 41))
+    if (*(observance + 41))
     {
       v9 = 8;
     }
 
-    v10 = *(a3 + v9);
-    v12 = *(a3 + 2);
-    v11 = *(a3 + 3);
-    if ((*(a3 + 41) & 1) == 0)
+    v10 = *(observance + v9);
+    v12 = *(observance + 2);
+    v11 = *(observance + 3);
+    if ((*(observance + 41) & 1) == 0)
     {
       v13 = 0;
       goto LABEL_7;
@@ -56,7 +56,7 @@
     }
   }
 
-  v13 = *(a3 + 4);
+  v13 = *(observance + 4);
 LABEL_7:
   LODWORD(v14) = 0;
   cachedHash = self->_cachedHash;
@@ -92,7 +92,7 @@ LABEL_7:
   v32 = 0;
   v24 = _CFCreateArrayStorage();
   [(NSArray *)self->_observances getObjects:v24 range:0, v7];
-  *(v24 + 8 * v7) = a3;
+  *(v24 + 8 * v7) = observance;
   if (v7 != -1)
   {
     v25 = v24;
@@ -121,7 +121,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)_initWithObservances:(id *)a3 count:(unint64_t)a4 hashValue:(unint64_t)a5
+- (id)_initWithObservances:(id *)observances count:(unint64_t)count hashValue:(unint64_t)value
 {
   v28[4] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -132,12 +132,12 @@ LABEL_7:
     return v8;
   }
 
-  v8->_observances = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a3 count:a4];
-  v8->_cachedHash = a5;
+  v8->_observances = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:observances count:count];
+  v8->_cachedHash = value;
   v8->_cachedIsShareable = 1;
-  if (!a5)
+  if (!value)
   {
-    if (!a4)
+    if (!count)
     {
       return v8;
     }
@@ -146,7 +146,7 @@ LABEL_7:
     v10 = 0;
     while (1)
     {
-      v11 = a3[v10];
+      v11 = observances[v10];
       if (v11)
       {
         v12 = (v11 + 41);
@@ -214,21 +214,21 @@ LABEL_17:
         v8->_cachedIsShareable = 0;
       }
 
-      if (++v10 == a4)
+      if (++v10 == count)
       {
         return v8;
       }
     }
   }
 
-  for (; a4; --a4)
+  for (; count; --count)
   {
-    if ((*(*a3 + 41) & 2) == 0)
+    if ((*(*observances + 41) & 2) == 0)
     {
       v8->_cachedIsShareable = 0;
     }
 
-    ++a3;
+    ++observances;
   }
 
   return v8;
@@ -275,16 +275,16 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v5 = [(NSArray *)self->_observances count];
-  v6 = [*(a3 + 1) count];
+  v6 = [*(equal + 1) count];
   if (v6 != v5)
   {
     return 0;
@@ -296,7 +296,7 @@ LABEL_17:
     v8 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
     [(NSArray *)self->_observances getObjects:v8 range:0, v5];
     v9 = malloc_type_malloc(8 * v5, 0x80040B8603338uLL);
-    [*(a3 + 1) getObjects:v9 range:{0, v5}];
+    [*(equal + 1) getObjects:v9 range:{0, v5}];
     if (!v5)
     {
       v10 = 1;
@@ -312,7 +312,7 @@ LABEL_16:
   if (!v5)
   {
     [(NSArray *)self->_observances getObjects:0 range:0, 0];
-    [*(a3 + 1) getObjects:0 range:{0, 0}];
+    [*(equal + 1) getObjects:0 range:{0, 0}];
     return 1;
   }
 
@@ -323,7 +323,7 @@ LABEL_16:
   MEMORY[0x1EEE9AC00](v11);
   v9 = v8;
   bzero(v8, 8 * v5);
-  [*(a3 + 1) getObjects:v8 range:{0, v5}];
+  [*(equal + 1) getObjects:v8 range:{0, v5}];
 LABEL_9:
   if (*v8 == *v9)
   {

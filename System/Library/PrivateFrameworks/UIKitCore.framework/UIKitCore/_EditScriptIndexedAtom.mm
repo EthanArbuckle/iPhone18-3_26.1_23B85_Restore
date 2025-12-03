@@ -1,24 +1,24 @@
 @interface _EditScriptIndexedAtom
-+ (_EditScriptIndexedAtom)atomWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
-- (_EditScriptIndexedAtom)initWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
++ (_EditScriptIndexedAtom)atomWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b;
+- (_EditScriptIndexedAtom)initWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b;
 - (id)description;
 @end
 
 @implementation _EditScriptIndexedAtom
 
-- (_EditScriptIndexedAtom)initWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
+- (_EditScriptIndexedAtom)initWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v10 = a5;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = _EditScriptIndexedAtom;
   v11 = [(_EditScriptIndexedAtom *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(_EditScriptIndexedAtom *)v11 setEditOperation:a3];
-    [(_EditScriptIndexedAtom *)v12 setIndexToEdit:a4];
-    [(_EditScriptIndexedAtom *)v12 setIndexInArrayB:a6];
-    [(_EditScriptIndexedAtom *)v12 setReplacementText:v10];
+    [(_EditScriptIndexedAtom *)v11 setEditOperation:operation];
+    [(_EditScriptIndexedAtom *)v12 setIndexToEdit:edit];
+    [(_EditScriptIndexedAtom *)v12 setIndexInArrayB:b];
+    [(_EditScriptIndexedAtom *)v12 setReplacementText:textCopy];
   }
 
   return v12;
@@ -68,10 +68,10 @@ LABEL_6:
   return v9;
 }
 
-+ (_EditScriptIndexedAtom)atomWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
++ (_EditScriptIndexedAtom)atomWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v9 = a5;
-  v10 = [[_EditScriptIndexedAtom alloc] initWithEditOperation:a3 indexToEdit:a4 newText:v9 indexInArrayB:a6];
+  textCopy = text;
+  v10 = [[_EditScriptIndexedAtom alloc] initWithEditOperation:operation indexToEdit:edit newText:textCopy indexInArrayB:b];
 
   return v10;
 }

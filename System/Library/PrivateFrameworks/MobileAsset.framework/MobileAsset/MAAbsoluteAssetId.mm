@@ -1,61 +1,61 @@
 @interface MAAbsoluteAssetId
-- (BOOL)isEqual:(id)a3;
-- (MAAbsoluteAssetId)initWithAssetId:(id)a3 forAssetType:(id)a4 attributes:(id)a5;
-- (MAAbsoluteAssetId)initWithCoder:(id)a3;
-- (MAAbsoluteAssetId)initWithPlist:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MAAbsoluteAssetId)initWithAssetId:(id)id forAssetType:(id)type attributes:(id)attributes;
+- (MAAbsoluteAssetId)initWithCoder:(id)coder;
+- (MAAbsoluteAssetId)initWithPlist:(id)plist;
 - (id)description;
-- (id)diffFrom:(id)a3;
-- (id)diffFromAsset:(id)a3;
-- (id)diffFromAssetId:(id)a3 assetType:(id)a4 attributes:(id)a5;
+- (id)diffFrom:(id)from;
+- (id)diffFromAsset:(id)asset;
+- (id)diffFromAssetId:(id)id assetType:(id)type attributes:(id)attributes;
 - (id)encodeAsPlist;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAbsoluteAssetId
 
-- (MAAbsoluteAssetId)initWithAssetId:(id)a3 forAssetType:(id)a4 attributes:(id)a5
+- (MAAbsoluteAssetId)initWithAssetId:(id)id forAssetType:(id)type attributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  typeCopy = type;
+  attributesCopy = attributes;
   v33.receiver = self;
   v33.super_class = MAAbsoluteAssetId;
   v12 = [(MAAbsoluteAssetId *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetType, a4);
-    objc_storeStrong(&v13->_assetId, a3);
-    v14 = getHashFromAttributesInSet(v10, v11, 0);
+    objc_storeStrong(&v12->_assetType, type);
+    objc_storeStrong(&v13->_assetId, id);
+    v14 = getHashFromAttributesInSet(typeCopy, attributesCopy, 0);
     allAttributesHash = v13->_allAttributesHash;
     v13->_allAttributesHash = v14;
 
-    v16 = getHashFromAssetIdAttributes(v10, v11);
+    v16 = getHashFromAssetIdAttributes(typeCopy, attributesCopy);
     assetIdHash = v13->_assetIdHash;
     v13->_assetIdHash = v16;
 
-    v18 = getHashFromNonAssetIdAttributes(v10, v11);
+    v18 = getHashFromNonAssetIdAttributes(typeCopy, attributesCopy);
     nonAssetIdHash = v13->_nonAssetIdHash;
     v13->_nonAssetIdHash = v18;
 
     v20 = attributesInDownloadContent();
-    v21 = getHashFromAttributesInSet(v10, v11, v20);
+    v21 = getHashFromAttributesInSet(typeCopy, attributesCopy, v20);
     downloadContentHash = v13->_downloadContentHash;
     v13->_downloadContentHash = v21;
 
     v23 = attributesInDownloadUrl();
-    v24 = getHashFromAttributesInSet(v10, v11, v23);
+    v24 = getHashFromAttributesInSet(typeCopy, attributesCopy, v23);
     downloadUrlHash = v13->_downloadUrlHash;
     v13->_downloadUrlHash = v24;
 
     v26 = attributesInDownloadPolicy();
-    v27 = getHashFromAttributesInSet(v10, v11, v26);
+    v27 = getHashFromAttributesInSet(typeCopy, attributesCopy, v26);
     downloadPolicyHash = v13->_downloadPolicyHash;
     v13->_downloadPolicyHash = v27;
 
     v29 = attributesInPallasDynamicAssetId();
-    v30 = getHashFromAttributesInSet(v10, v11, v29);
+    v30 = getHashFromAttributesInSet(typeCopy, attributesCopy, v29);
     pallasAssetIdHash = v13->_pallasAssetIdHash;
     v13->_pallasAssetIdHash = v30;
   }
@@ -63,47 +63,47 @@
   return v13;
 }
 
-- (MAAbsoluteAssetId)initWithCoder:(id)a3
+- (MAAbsoluteAssetId)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MAAbsoluteAssetId;
   v5 = [(MAAbsoluteAssetId *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetId"];
     assetId = v5->_assetId;
     v5->_assetId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributesHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributesHash"];
     allAttributesHash = v5->_allAttributesHash;
     v5->_allAttributesHash = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetIdHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetIdHash"];
     assetIdHash = v5->_assetIdHash;
     v5->_assetIdHash = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonIdHash"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonIdHash"];
     nonAssetIdHash = v5->_nonAssetIdHash;
     v5->_nonAssetIdHash = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentHash"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentHash"];
     downloadContentHash = v5->_downloadContentHash;
     v5->_downloadContentHash = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
     downloadUrlHash = v5->_downloadUrlHash;
     v5->_downloadUrlHash = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"policyHash"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"policyHash"];
     downloadPolicyHash = v5->_downloadPolicyHash;
     v5->_downloadPolicyHash = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pallasDynamicAssetIdHash"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pallasDynamicAssetIdHash"];
     pallasAssetIdHash = v5->_pallasAssetIdHash;
     v5->_pallasAssetIdHash = v22;
   }
@@ -111,47 +111,47 @@
   return v5;
 }
 
-- (MAAbsoluteAssetId)initWithPlist:(id)a3
+- (MAAbsoluteAssetId)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v25.receiver = self;
   v25.super_class = MAAbsoluteAssetId;
   v5 = [(MAAbsoluteAssetId *)&v25 init];
   if (v5)
   {
-    v6 = getPlistString(v4, @"assetId");
+    v6 = getPlistString(plistCopy, @"assetId");
     assetId = v5->_assetId;
     v5->_assetId = v6;
 
-    v8 = getPlistString(v4, @"assetType");
+    v8 = getPlistString(plistCopy, @"assetType");
     assetType = v5->_assetType;
     v5->_assetType = v8;
 
-    v10 = getPlistString(v4, @"attributesHash");
+    v10 = getPlistString(plistCopy, @"attributesHash");
     allAttributesHash = v5->_allAttributesHash;
     v5->_allAttributesHash = v10;
 
-    v12 = getPlistString(v4, @"assetIdHash");
+    v12 = getPlistString(plistCopy, @"assetIdHash");
     assetIdHash = v5->_assetIdHash;
     v5->_assetIdHash = v12;
 
-    v14 = getPlistString(v4, @"nonIdHash");
+    v14 = getPlistString(plistCopy, @"nonIdHash");
     nonAssetIdHash = v5->_nonAssetIdHash;
     v5->_nonAssetIdHash = v14;
 
-    v16 = getPlistString(v4, @"contentHash");
+    v16 = getPlistString(plistCopy, @"contentHash");
     downloadContentHash = v5->_downloadContentHash;
     v5->_downloadContentHash = v16;
 
-    v18 = getPlistString(v4, @"urlHash");
+    v18 = getPlistString(plistCopy, @"urlHash");
     downloadUrlHash = v5->_downloadUrlHash;
     v5->_downloadUrlHash = v18;
 
-    v20 = getPlistString(v4, @"policyHash");
+    v20 = getPlistString(plistCopy, @"policyHash");
     downloadPolicyHash = v5->_downloadPolicyHash;
     v5->_downloadPolicyHash = v20;
 
-    v22 = getPlistString(v4, @"pallasDynamicAssetIdHash");
+    v22 = getPlistString(plistCopy, @"pallasDynamicAssetIdHash");
     pallasAssetIdHash = v5->_pallasAssetIdHash;
     v5->_pallasAssetIdHash = v22;
   }
@@ -159,32 +159,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MAAbsoluteAssetId *)self assetId];
-  [v6 encodeObject:v4 forKey:@"assetId"];
+  coderCopy = coder;
+  assetId = [(MAAbsoluteAssetId *)self assetId];
+  [coderCopy encodeObject:assetId forKey:@"assetId"];
 
-  v5 = [(MAAbsoluteAssetId *)self assetType];
-  [v6 encodeObject:v5 forKey:@"assetType"];
+  assetType = [(MAAbsoluteAssetId *)self assetType];
+  [coderCopy encodeObject:assetType forKey:@"assetType"];
 
-  [v6 encodeObject:self->_allAttributesHash forKey:@"attributesHash"];
-  [v6 encodeObject:self->_assetIdHash forKey:@"assetIdHash"];
-  [v6 encodeObject:self->_nonAssetIdHash forKey:@"nonIdHash"];
-  [v6 encodeObject:self->_downloadContentHash forKey:@"contentHash"];
-  [v6 encodeObject:self->_downloadUrlHash forKey:@"urlHash"];
-  [v6 encodeObject:self->_downloadPolicyHash forKey:@"policyHash"];
-  [v6 encodeObject:self->_pallasAssetIdHash forKey:@"pallasDynamicAssetIdHash"];
+  [coderCopy encodeObject:self->_allAttributesHash forKey:@"attributesHash"];
+  [coderCopy encodeObject:self->_assetIdHash forKey:@"assetIdHash"];
+  [coderCopy encodeObject:self->_nonAssetIdHash forKey:@"nonIdHash"];
+  [coderCopy encodeObject:self->_downloadContentHash forKey:@"contentHash"];
+  [coderCopy encodeObject:self->_downloadUrlHash forKey:@"urlHash"];
+  [coderCopy encodeObject:self->_downloadPolicyHash forKey:@"policyHash"];
+  [coderCopy encodeObject:self->_pallasAssetIdHash forKey:@"pallasDynamicAssetIdHash"];
 }
 
 - (id)encodeAsPlist
 {
   v3 = objc_opt_new();
-  v4 = [(MAAbsoluteAssetId *)self assetId];
-  [v3 setValue:v4 forKey:@"assetId"];
+  assetId = [(MAAbsoluteAssetId *)self assetId];
+  [v3 setValue:assetId forKey:@"assetId"];
 
-  v5 = [(MAAbsoluteAssetId *)self assetType];
-  [v3 setValue:v5 forKey:@"assetType"];
+  assetType = [(MAAbsoluteAssetId *)self assetType];
+  [v3 setValue:assetType forKey:@"assetType"];
 
   [v3 setValue:self->_allAttributesHash forKey:@"attributesHash"];
   [v3 setValue:self->_assetIdHash forKey:@"assetIdHash"];
@@ -197,46 +197,46 @@
   return v3;
 }
 
-- (id)diffFrom:(id)a3
+- (id)diffFrom:(id)from
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  fromCopy = from;
+  if (fromCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     assetType = self->_assetType;
-    v6 = [v4 assetType];
-    v29 = [(NSString *)assetType isEqual:v6];
+    assetType = [fromCopy assetType];
+    v29 = [(NSString *)assetType isEqual:assetType];
 
     assetId = self->_assetId;
-    v8 = [v4 assetId];
-    v28 = [(NSString *)assetId isEqual:v8];
+    assetId = [fromCopy assetId];
+    v28 = [(NSString *)assetId isEqual:assetId];
 
     allAttributesHash = self->_allAttributesHash;
-    v10 = [v4 allAttributesHash];
-    LODWORD(allAttributesHash) = [(NSString *)allAttributesHash isEqual:v10];
+    allAttributesHash = [fromCopy allAttributesHash];
+    LODWORD(allAttributesHash) = [(NSString *)allAttributesHash isEqual:allAttributesHash];
 
     assetIdHash = self->_assetIdHash;
-    v12 = [v4 assetIdHash];
-    LODWORD(assetIdHash) = [(NSString *)assetIdHash isEqual:v12];
+    assetIdHash = [fromCopy assetIdHash];
+    LODWORD(assetIdHash) = [(NSString *)assetIdHash isEqual:assetIdHash];
 
     nonAssetIdHash = self->_nonAssetIdHash;
-    v14 = [v4 nonIdHash];
-    LODWORD(nonAssetIdHash) = [(NSString *)nonAssetIdHash isEqual:v14];
+    nonIdHash = [fromCopy nonIdHash];
+    LODWORD(nonAssetIdHash) = [(NSString *)nonAssetIdHash isEqual:nonIdHash];
 
     downloadContentHash = self->_downloadContentHash;
-    v16 = [v4 contentHash];
-    v17 = [(NSString *)downloadContentHash isEqual:v16]^ 1;
+    contentHash = [fromCopy contentHash];
+    v17 = [(NSString *)downloadContentHash isEqual:contentHash]^ 1;
 
     downloadUrlHash = self->_downloadUrlHash;
-    v19 = [v4 urlHash];
-    LOBYTE(assetType) = [(NSString *)downloadUrlHash isEqual:v19]^ 1;
+    urlHash = [fromCopy urlHash];
+    LOBYTE(assetType) = [(NSString *)downloadUrlHash isEqual:urlHash]^ 1;
 
     downloadPolicyHash = self->_downloadPolicyHash;
-    v21 = [v4 policyHash];
-    LOBYTE(assetId) = [(NSString *)downloadPolicyHash isEqual:v21]^ 1;
+    policyHash = [fromCopy policyHash];
+    LOBYTE(assetId) = [(NSString *)downloadPolicyHash isEqual:policyHash]^ 1;
 
     pallasAssetIdHash = self->_pallasAssetIdHash;
-    v23 = [v4 pallasDynamicAssetIdHash];
-    LODWORD(pallasAssetIdHash) = [(NSString *)pallasAssetIdHash isEqual:v23];
+    pallasDynamicAssetIdHash = [fromCopy pallasDynamicAssetIdHash];
+    LODWORD(pallasAssetIdHash) = [(NSString *)pallasAssetIdHash isEqual:pallasDynamicAssetIdHash];
 
     BYTE2(v27) = assetId;
     BYTE1(v27) = assetType;
@@ -254,30 +254,30 @@
   return v25;
 }
 
-- (id)diffFromAsset:(id)a3
+- (id)diffFromAsset:(id)asset
 {
-  v4 = [a3 absoluteAssetId];
-  v5 = [(MAAbsoluteAssetId *)self diffFrom:v4];
+  absoluteAssetId = [asset absoluteAssetId];
+  v5 = [(MAAbsoluteAssetId *)self diffFrom:absoluteAssetId];
 
   return v5;
 }
 
-- (id)diffFromAssetId:(id)a3 assetType:(id)a4 attributes:(id)a5
+- (id)diffFromAssetId:(id)id assetType:(id)type attributes:(id)attributes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MAAbsoluteAssetId alloc] initWithAssetId:v10 forAssetType:v9 attributes:v8];
+  attributesCopy = attributes;
+  typeCopy = type;
+  idCopy = id;
+  v11 = [[MAAbsoluteAssetId alloc] initWithAssetId:idCopy forAssetType:typeCopy attributes:attributesCopy];
 
   v12 = [(MAAbsoluteAssetId *)self diffFrom:v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -287,14 +287,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAAbsoluteAssetId *)v5 assetId];
-      v7 = [(MAAbsoluteAssetId *)self assetId];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      assetId = [(MAAbsoluteAssetId *)v5 assetId];
+      assetId2 = [(MAAbsoluteAssetId *)self assetId];
+      if ([assetId isEqualToString:assetId2])
       {
-        v8 = [(MAAbsoluteAssetId *)v5 assetType];
-        v9 = [(MAAbsoluteAssetId *)self assetType];
-        v10 = [v8 isEqualToString:v9];
+        assetType = [(MAAbsoluteAssetId *)v5 assetType];
+        assetType2 = [(MAAbsoluteAssetId *)self assetType];
+        v10 = [assetType isEqualToString:assetType2];
       }
 
       else
@@ -314,12 +314,12 @@
 
 - (id)summary
 {
-  v3 = [(MAAbsoluteAssetId *)self hasOnlyAssetTypeAndId];
+  hasOnlyAssetTypeAndId = [(MAAbsoluteAssetId *)self hasOnlyAssetTypeAndId];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MAAbsoluteAssetId *)self assetType];
-  v6 = [(MAAbsoluteAssetId *)self assetId];
-  v7 = v6;
-  if (v3)
+  assetType = [(MAAbsoluteAssetId *)self assetType];
+  assetId = [(MAAbsoluteAssetId *)self assetId];
+  v7 = assetId;
+  if (hasOnlyAssetTypeAndId)
   {
     v8 = @"%@:%@";
   }
@@ -329,7 +329,7 @@
     v8 = @"%@:%@(+)";
   }
 
-  v9 = [v4 stringWithFormat:v8, v5, v6];
+  v9 = [v4 stringWithFormat:v8, assetType, assetId];
 
   return v9;
 }
@@ -337,9 +337,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAbsoluteAssetId *)self assetId];
-  v5 = [(MAAbsoluteAssetId *)self assetType];
-  v6 = [v3 stringWithFormat:@"(%@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@)", @"assetId", v4, @"assetType", v5, @"attributesHash", self->_allAttributesHash, @"assetIdHash", self->_assetIdHash, @"nonIdHash", self->_nonAssetIdHash, @"pallasDynamicAssetIdHash", self->_pallasAssetIdHash, @"contentHash", self->_downloadContentHash, @"urlHash", self->_downloadUrlHash, @"policyHash", self->_downloadPolicyHash];
+  assetId = [(MAAbsoluteAssetId *)self assetId];
+  assetType = [(MAAbsoluteAssetId *)self assetType];
+  v6 = [v3 stringWithFormat:@"(%@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@ %@=%@)", @"assetId", assetId, @"assetType", assetType, @"attributesHash", self->_allAttributesHash, @"assetIdHash", self->_assetIdHash, @"nonIdHash", self->_nonAssetIdHash, @"pallasDynamicAssetIdHash", self->_pallasAssetIdHash, @"contentHash", self->_downloadContentHash, @"urlHash", self->_downloadUrlHash, @"policyHash", self->_downloadPolicyHash];
 
   return v6;
 }

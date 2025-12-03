@@ -1,23 +1,23 @@
 @interface HKStatisticsCollectionQuery
-+ (void)configureClientInterface:(id)a3;
-- (BOOL)_comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:(id)a3;
-- (BOOL)_predicateContainsStrictStartOrEndDateComparisonPredicate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (BOOL)_comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:(id)predicate;
+- (BOOL)_predicateContainsStrictStartOrEndDateComparisonPredicate:(id)predicate;
 - (HKStatisticsCollectionQuery)initWithQuantityType:(HKQuantityType *)quantityType quantitySamplePredicate:(NSPredicate *)quantitySamplePredicate options:(HKStatisticsOptions)options anchorDate:(NSDate *)anchorDate intervalComponents:(NSDateComponents *)intervalComponents;
-- (HKStatisticsCollectionQuery)initWithSampleType:(id)a3 samplePredicate:(id)a4 options:(unint64_t)a5 anchorDate:(id)a6 intervalComponents:(id)a7;
-- (void)_queue_deliverInitialStatisticsObjects:(id)a3 anchor:(id)a4 queryUUID:(id)a5;
-- (void)_queue_deliverResetStatisticsObjects:(id)a3 forQuery:(id)a4;
-- (void)_queue_deliverStatisticsObjects:(id)a3 forQuery:(id)a4;
-- (void)client_deliverStatisticsBatch:(id)a3 resetStatistics:(BOOL)a4 isFinal:(BOOL)a5 anchor:(id)a6 query:(id)a7;
-- (void)client_deliverUpdatedStatistics:(id)a3 anchor:(id)a4 query:(id)a5;
-- (void)client_finishedCachingStatisticsWithCacheHits:(int64_t)a3 error:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKStatisticsCollectionQuery)initWithSampleType:(id)type samplePredicate:(id)predicate options:(unint64_t)options anchorDate:(id)date intervalComponents:(id)components;
+- (void)_queue_deliverInitialStatisticsObjects:(id)objects anchor:(id)anchor queryUUID:(id)d;
+- (void)_queue_deliverResetStatisticsObjects:(id)objects forQuery:(id)query;
+- (void)_queue_deliverStatisticsObjects:(id)objects forQuery:(id)query;
+- (void)client_deliverStatisticsBatch:(id)batch resetStatistics:(BOOL)statistics isFinal:(BOOL)final anchor:(id)anchor query:(id)query;
+- (void)client_deliverUpdatedStatistics:(id)statistics anchor:(id)anchor query:(id)query;
+- (void)client_finishedCachingStatisticsWithCacheHits:(int64_t)hits error:(id)error;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
-- (void)setCacheSettings:(id)a3;
-- (void)setDateInterval:(id)a3;
+- (void)setCacheSettings:(id)settings;
+- (void)setDateInterval:(id)interval;
 - (void)setInitialResultsHandler:(void *)initialResultsHandler;
-- (void)setMergeStrategy:(unint64_t)a3;
+- (void)setMergeStrategy:(unint64_t)strategy;
 - (void)setStatisticsUpdateHandler:(void *)statisticsUpdateHandler;
 @end
 
@@ -34,19 +34,19 @@
   return result;
 }
 
-- (HKStatisticsCollectionQuery)initWithSampleType:(id)a3 samplePredicate:(id)a4 options:(unint64_t)a5 anchorDate:(id)a6 intervalComponents:(id)a7
+- (HKStatisticsCollectionQuery)initWithSampleType:(id)type samplePredicate:(id)predicate options:(unint64_t)options anchorDate:(id)date intervalComponents:(id)components
 {
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  componentsCopy = components;
   v22.receiver = self;
   v22.super_class = HKStatisticsCollectionQuery;
-  v15 = [(HKQuery *)&v22 _initWithObjectType:a3 predicate:a4];
+  v15 = [(HKQuery *)&v22 _initWithObjectType:type predicate:predicate];
   v16 = v15;
   if (v15)
   {
-    v15->_options = a5;
-    objc_storeStrong(&v15->_anchorDate, a6);
-    v17 = [v14 copy];
+    v15->_options = options;
+    objc_storeStrong(&v15->_anchorDate, date);
+    v17 = [componentsCopy copy];
     intervalComponents = v16->_intervalComponents;
     v16->_intervalComponents = v17;
 
@@ -63,7 +63,7 @@
 {
   v5 = initialResultsHandler;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__HKStatisticsCollectionQuery_setInitialResultsHandler___block_invoke;
@@ -71,7 +71,7 @@
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __56__HKStatisticsCollectionQuery_setInitialResultsHandler___block_invoke(uint64_t a1)
@@ -88,7 +88,7 @@ uint64_t __56__HKStatisticsCollectionQuery_setInitialResultsHandler___block_invo
 {
   v5 = statisticsUpdateHandler;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__HKStatisticsCollectionQuery_setStatisticsUpdateHandler___block_invoke;
@@ -96,7 +96,7 @@ uint64_t __56__HKStatisticsCollectionQuery_setInitialResultsHandler___block_invo
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __58__HKStatisticsCollectionQuery_setStatisticsUpdateHandler___block_invoke(uint64_t a1)
@@ -109,32 +109,32 @@ uint64_t __58__HKStatisticsCollectionQuery_setStatisticsUpdateHandler___block_in
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setMergeStrategy:(unint64_t)a3
+- (void)setMergeStrategy:(unint64_t)strategy
 {
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v5 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__HKStatisticsCollectionQuery_setMergeStrategy___block_invoke;
   v6[3] = &unk_1E7378630;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = strategy;
+  dispatch_sync(queue, v6);
 }
 
-- (void)setDateInterval:(id)a3
+- (void)setDateInterval:(id)interval
 {
-  v5 = a3;
+  intervalCopy = interval;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__HKStatisticsCollectionQuery_setDateInterval___block_invoke;
   v8[3] = &unk_1E7378400;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = intervalCopy;
+  v7 = intervalCopy;
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __47__HKStatisticsCollectionQuery_setDateInterval___block_invoke(uint64_t a1)
@@ -147,19 +147,19 @@ uint64_t __47__HKStatisticsCollectionQuery_setDateInterval___block_invoke(uint64
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setCacheSettings:(id)a3
+- (void)setCacheSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__HKStatisticsCollectionQuery_setCacheSettings___block_invoke;
   v8[3] = &unk_1E7378400;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = settingsCopy;
+  v7 = settingsCopy;
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __48__HKStatisticsCollectionQuery_setCacheSettings___block_invoke(uint64_t a1)
@@ -172,34 +172,34 @@ uint64_t __48__HKStatisticsCollectionQuery_setCacheSettings___block_invoke(uint6
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKStatisticsCollectionQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverStatisticsBatch_resetStatistics_isFinal_anchor_query_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverStatisticsBatch_resetStatistics_isFinal_anchor_query_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKStatisticsCollectionQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setAnchorDate:{self->_anchorDate, v5.receiver, v5.super_class}];
-  [v4 setOptions:self->_options];
-  [v4 setIntervalComponents:self->_intervalComponents];
-  [v4 setMergeStrategy:self->_mergeStrategy];
-  [v4 setDateInterval:self->_dateInterval];
-  [v4 setCacheSettings:self->_cacheSettings];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setAnchorDate:{self->_anchorDate, v5.receiver, v5.super_class}];
+  [configurationCopy setOptions:self->_options];
+  [configurationCopy setIntervalComponents:self->_intervalComponents];
+  [configurationCopy setMergeStrategy:self->_mergeStrategy];
+  [configurationCopy setDateInterval:self->_dateInterval];
+  [configurationCopy setCacheSettings:self->_cacheSettings];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v8.receiver = self;
   v8.super_class = HKStatisticsCollectionQuery;
-  [(HKQuery *)&v8 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v8 queue_queryDidDeactivate:deactivate];
   lastAnchor = self->_lastAnchor;
   self->_lastAnchor = 0;
 
@@ -216,23 +216,23 @@ uint64_t __48__HKStatisticsCollectionQuery_setCacheSettings___block_invoke(uint6
 - (void)queue_validate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
-  v4 = [v2 identifier];
+  identifier = [v2 identifier];
   OUTLINED_FUNCTION_0_27(&dword_19197B000, v5, v6, "Not using cached results for query with caching identifier %@ due to strict start and end date enforcement", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_hasReceivedInitialResults)
   {
     v5 = _Block_copy(self->_statisticsUpdateHandler);
     if (v5)
     {
-      v6 = [(HKQuery *)self clientQueue];
+      clientQueue = [(HKQuery *)self clientQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __50__HKStatisticsCollectionQuery_queue_deliverError___block_invoke_2;
@@ -242,10 +242,10 @@ uint64_t __48__HKStatisticsCollectionQuery_setCacheSettings___block_invoke(uint6
       v12 = v5;
       v10[4] = self;
       v8 = &v11;
-      v11 = v4;
+      v11 = errorCopy;
       v9 = v10;
 LABEL_6:
-      dispatch_async(v6, v9);
+      dispatch_async(clientQueue, v9);
     }
   }
 
@@ -254,7 +254,7 @@ LABEL_6:
     v5 = _Block_copy(self->_initialResultsHandler);
     if (v5)
     {
-      v6 = [(HKQuery *)self clientQueue];
+      clientQueue = [(HKQuery *)self clientQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __50__HKStatisticsCollectionQuery_queue_deliverError___block_invoke;
@@ -264,33 +264,33 @@ LABEL_6:
       v15 = v5;
       block[4] = self;
       v8 = &v14;
-      v14 = v4;
+      v14 = errorCopy;
       v9 = block;
       goto LABEL_6;
     }
   }
 }
 
-- (void)client_deliverStatisticsBatch:(id)a3 resetStatistics:(BOOL)a4 isFinal:(BOOL)a5 anchor:(id)a6 query:(id)a7
+- (void)client_deliverStatisticsBatch:(id)batch resetStatistics:(BOOL)statistics isFinal:(BOOL)final anchor:(id)anchor query:(id)query
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(HKQuery *)self queue];
+  batchCopy = batch;
+  anchorCopy = anchor;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__HKStatisticsCollectionQuery_client_deliverStatisticsBatch_resetStatistics_isFinal_anchor_query___block_invoke;
   block[3] = &unk_1E7383AC0;
-  v23 = a4;
+  statisticsCopy = statistics;
   block[4] = self;
-  v20 = v12;
-  v24 = a5;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, block);
+  v20 = batchCopy;
+  finalCopy = final;
+  v21 = anchorCopy;
+  v22 = queryCopy;
+  v16 = queryCopy;
+  v17 = anchorCopy;
+  v18 = batchCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __98__HKStatisticsCollectionQuery_client_deliverStatisticsBatch_resetStatistics_isFinal_anchor_query___block_invoke(uint64_t result)
@@ -342,24 +342,24 @@ uint64_t __98__HKStatisticsCollectionQuery_client_deliverStatisticsBatch_resetSt
   return result;
 }
 
-- (void)client_deliverUpdatedStatistics:(id)a3 anchor:(id)a4 query:(id)a5
+- (void)client_deliverUpdatedStatistics:(id)statistics anchor:(id)anchor query:(id)query
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKQuery *)self queue];
+  statisticsCopy = statistics;
+  anchorCopy = anchor;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__HKStatisticsCollectionQuery_client_deliverUpdatedStatistics_anchor_query___block_invoke;
   v15[3] = &unk_1E737B738;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = anchorCopy;
+  v17 = statisticsCopy;
+  v18 = queryCopy;
+  v12 = queryCopy;
+  v13 = statisticsCopy;
+  v14 = anchorCopy;
+  dispatch_async(queue, v15);
 }
 
 void __76__HKStatisticsCollectionQuery_client_deliverUpdatedStatistics_anchor_query___block_invoke(uint64_t a1)
@@ -382,19 +382,19 @@ void __76__HKStatisticsCollectionQuery_client_deliverUpdatedStatistics_anchor_qu
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)client_finishedCachingStatisticsWithCacheHits:(int64_t)a3 error:(id)a4
+- (void)client_finishedCachingStatisticsWithCacheHits:(int64_t)hits error:(id)error
 {
-  v6 = a4;
-  v7 = [(HKQuery *)self queue];
+  errorCopy = error;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCacheHits_error___block_invoke;
   block[3] = &unk_1E73767D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = errorCopy;
+  hitsCopy = hits;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCacheHits_error___block_invoke(void *a1)
@@ -408,22 +408,22 @@ void __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCache
   }
 }
 
-- (void)_queue_deliverInitialStatisticsObjects:(id)a3 anchor:(id)a4 queryUUID:(id)a5
+- (void)_queue_deliverInitialStatisticsObjects:(id)objects anchor:(id)anchor queryUUID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  [(HKStatisticsCollectionQuery *)self setLastAnchor:a4];
-  v10 = [(HKStatisticsCollectionQuery *)self statisticsCollection];
-  if (v10)
+  objectsCopy = objects;
+  dCopy = d;
+  [(HKStatisticsCollectionQuery *)self setLastAnchor:anchor];
+  statisticsCollection = [(HKStatisticsCollectionQuery *)self statisticsCollection];
+  if (statisticsCollection)
   {
-    v11 = v10;
-    [(HKStatisticsCollectionQuery *)self _queue_deliverResetStatisticsObjects:v8 forQuery:v9];
+    v11 = statisticsCollection;
+    [(HKStatisticsCollectionQuery *)self _queue_deliverResetStatisticsObjects:objectsCopy forQuery:dCopy];
   }
 
   else
   {
-    v12 = [(HKQuery *)self objectType];
+    objectType = [(HKQuery *)self objectType];
     v13 = [HKStatisticsCollection alloc];
     anchorDate = self->_anchorDate;
     intervalComponents = self->_intervalComponents;
@@ -431,14 +431,14 @@ void __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCache
     v33[1] = 3221225472;
     v33[2] = __87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsObjects_anchor_queryUUID___block_invoke;
     v33[3] = &unk_1E7383AE8;
-    v16 = v12;
+    v16 = objectType;
     v34 = v16;
     v11 = [(HKStatisticsCollection *)v13 initWithAnchorDate:anchorDate statisticsInterval:intervalComponents emptyStatisticsConstructor:v33];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v17 = v8;
+    v17 = objectsCopy;
     v18 = [v17 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v18)
     {
@@ -467,10 +467,10 @@ void __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCache
     [(HKStatisticsCollectionQuery *)self setStatisticsCollection:v11];
     self->_hasReceivedInitialResults = 1;
     v22 = _Block_copy(self->_initialResultsHandler);
-    v23 = [(HKStatisticsCollectionQuery *)self queue_shouldDeactivateAfterInitialResults];
+    queue_shouldDeactivateAfterInitialResults = [(HKStatisticsCollectionQuery *)self queue_shouldDeactivateAfterInitialResults];
     if (v22)
     {
-      v24 = v23;
+      v24 = queue_shouldDeactivateAfterInitialResults;
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsObjects_anchor_queryUUID___block_invoke_2;
@@ -478,7 +478,7 @@ void __83__HKStatisticsCollectionQuery_client_finishedCachingStatisticsWithCache
       v28 = v22;
       v26[4] = self;
       v27 = v11;
-      [(HKQuery *)self queue_dispatchToClientForUUID:v9 shouldDeactivate:v24 block:v26];
+      [(HKQuery *)self queue_dispatchToClientForUUID:dCopy shouldDeactivate:v24 block:v26];
     }
   }
 
@@ -494,16 +494,16 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
   return v7;
 }
 
-- (void)_queue_deliverResetStatisticsObjects:(id)a3 forQuery:(id)a4
+- (void)_queue_deliverResetStatisticsObjects:(id)objects forQuery:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKQuery *)self queue];
-  dispatch_assert_queue_V2(v8);
+  queryCopy = query;
+  objectsCopy = objects;
+  queue = [(HKQuery *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = _Block_copy(self->_statisticsUpdateHandler);
   v10 = self->_statisticsCollection;
-  [(HKStatisticsCollection *)v10 _resetStatistics:v7];
+  [(HKStatisticsCollection *)v10 _resetStatistics:objectsCopy];
 
   if (v9)
   {
@@ -514,23 +514,23 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
     v13 = v9;
     v11[4] = self;
     v12 = v10;
-    [(HKQuery *)self queue_dispatchToClientForUUID:v6 shouldDeactivate:0 block:v11];
+    [(HKQuery *)self queue_dispatchToClientForUUID:queryCopy shouldDeactivate:0 block:v11];
   }
 }
 
-- (void)_queue_deliverStatisticsObjects:(id)a3 forQuery:(id)a4
+- (void)_queue_deliverStatisticsObjects:(id)objects forQuery:(id)query
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v17 = a4;
-  v7 = [(HKQuery *)self queue];
-  dispatch_assert_queue_V2(v7);
+  objectsCopy = objects;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -560,7 +560,7 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
             v18[4] = self;
             v18[5] = v13;
             v19 = v15;
-            [(HKQuery *)self queue_dispatchToClientForUUID:v17 shouldDeactivate:0 block:v18];
+            [(HKQuery *)self queue_dispatchToClientForUUID:queryCopy shouldDeactivate:0 block:v18];
           }
         }
       }
@@ -574,10 +574,10 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_predicateContainsStrictStartOrEndDateComparisonPredicate:(id)a3
+- (BOOL)_predicateContainsStrictStartOrEndDateComparisonPredicate:(id)predicate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -585,8 +585,8 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 subpredicates];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subpredicates = [predicateCopy subpredicates];
+    v6 = [subpredicates countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -598,13 +598,13 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subpredicates);
           }
 
           v8 |= [(HKStatisticsCollectionQuery *)self _predicateContainsStrictStartOrEndDateComparisonPredicate:*(*(&v13 + 1) + 8 * i)];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [subpredicates countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -619,23 +619,23 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
   else
   {
     objc_opt_class();
-    LOBYTE(v8) = (objc_opt_isKindOfClass() & 1) != 0 && [(HKStatisticsCollectionQuery *)self _comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:v4];
+    LOBYTE(v8) = (objc_opt_isKindOfClass() & 1) != 0 && [(HKStatisticsCollectionQuery *)self _comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:predicateCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v8 & 1;
 }
 
-- (BOOL)_comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:(id)a3
+- (BOOL)_comparisonPredicateContainsStrictStartOrEndDateComparisonPredicate:(id)predicate
 {
-  v3 = a3;
-  v4 = [v3 leftExpression];
-  if ([v4 expressionType] == 3)
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v5 = [v4 keyPath];
-    v6 = [v3 predicateOperatorType];
-    v7 = [v5 isEqual:@"startDate"];
-    if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    keyPath = [leftExpression keyPath];
+    predicateOperatorType = [predicateCopy predicateOperatorType];
+    v7 = [keyPath isEqual:@"startDate"];
+    if ((predicateOperatorType & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v8 = v7;
     }
@@ -645,7 +645,7 @@ HKStatistics *__87__HKStatisticsCollectionQuery__queue_deliverInitialStatisticsO
       v8 = 0;
     }
 
-    v9 = v8 | [v5 isEqual:@"endDate"] & (v6 < 2);
+    v9 = v8 | [keyPath isEqual:@"endDate"] & (predicateOperatorType < 2);
   }
 
   else

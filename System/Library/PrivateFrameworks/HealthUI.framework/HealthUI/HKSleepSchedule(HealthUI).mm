@@ -14,8 +14,8 @@
   [v2 setFormattingContext:2];
   v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v3 setFormattingContext:5];
-  v4 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-  v5 = [a1 hk_localizedWeekdaysListWithGregorianCalendar:v4 standaloneFormatter:v2 listItemFormatter:v3];
+  hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+  v5 = [self hk_localizedWeekdaysListWithGregorianCalendar:hk_gregorianCalendar standaloneFormatter:v2 listItemFormatter:v3];
 
   return v5;
 }
@@ -26,22 +26,22 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  if (![a1 weekdays])
+  if (![self weekdays])
   {
-    v14 = [a1 overrideDayIndex];
-    v16 = _OverrideStringForCalendar(v8, v14);
+    overrideDayIndex = [self overrideDayIndex];
+    v16 = _OverrideStringForCalendar(v8, overrideDayIndex);
 LABEL_10:
-    v18 = v16;
+    hk_localizedFirstWordCapitalizedString = v16;
 
     goto LABEL_11;
   }
 
-  v11 = [a1 weekdays];
+  weekdays = [self weekdays];
   v12 = *MEMORY[0x1E696BE50];
-  if (v11 == *MEMORY[0x1E696BE50])
+  if (weekdays == *MEMORY[0x1E696BE50])
   {
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v14 = v13;
+    overrideDayIndex = v13;
     v15 = @"SLEEP_SCHEDULE_EVERY_DAY";
 LABEL_9:
     v16 = [v13 localizedStringForKey:v15 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
@@ -49,27 +49,27 @@ LABEL_9:
   }
 
   v17 = _WeekendDaysInCalendar(v8);
-  if ([a1 weekdays] == v17)
+  if ([self weekdays] == v17)
   {
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v14 = v13;
+    overrideDayIndex = v13;
     v15 = @"SLEEP_SCHEDULE_WEEKENDS";
     goto LABEL_9;
   }
 
-  if ([a1 weekdays] == (v12 & ~v17))
+  if ([self weekdays] == (v12 & ~v17))
   {
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v14 = v13;
+    overrideDayIndex = v13;
     v15 = @"SLEEP_SCHEDULE_WEEKDAYS";
     goto LABEL_9;
   }
 
-  [a1 weekdays];
-  if (HKSleepScheduleWeekdaysIsSingleDay() && ([a1 weekdays], v20 = NSWeekdayComponentFromHKSleepScheduleWeekday(), v21 = v20 - 1, v20 >= 1))
+  [self weekdays];
+  if (HKSleepScheduleWeekdaysIsSingleDay() && ([self weekdays], v20 = NSWeekdayComponentFromHKSleepScheduleWeekday(), v21 = v20 - 1, v20 >= 1))
   {
-    v22 = [v9 standaloneWeekdaySymbols];
-    v18 = [v22 objectAtIndexedSubscript:v21];
+    standaloneWeekdaySymbols = [v9 standaloneWeekdaySymbols];
+    hk_localizedFirstWordCapitalizedString = [standaloneWeekdaySymbols objectAtIndexedSubscript:v21];
   }
 
   else
@@ -98,10 +98,10 @@ LABEL_9:
           v29 = *(*(&v35 + 1) + 8 * i);
           [v29 integerValue];
           v30 = HKSleepScheduleWeekdayFromWeekdayComponent();
-          if (([a1 weekdays] & v30) != 0)
+          if (([self weekdays] & v30) != 0)
           {
-            v31 = [v10 shortStandaloneWeekdaySymbols];
-            v32 = [v31 objectAtIndexedSubscript:{objc_msgSend(v29, "integerValue") - 1}];
+            shortStandaloneWeekdaySymbols = [v10 shortStandaloneWeekdaySymbols];
+            v32 = [shortStandaloneWeekdaySymbols objectAtIndexedSubscript:{objc_msgSend(v29, "integerValue") - 1}];
             [v23 addObject:v32];
           }
         }
@@ -113,36 +113,36 @@ LABEL_9:
     }
 
     v33 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v23];
-    v18 = [v33 hk_localizedFirstWordCapitalizedString];
+    hk_localizedFirstWordCapitalizedString = [v33 hk_localizedFirstWordCapitalizedString];
 
     v9 = v34;
   }
 
 LABEL_11:
 
-  return v18;
+  return hk_localizedFirstWordCapitalizedString;
 }
 
 - (id)hk_localizedScheduledSleepDuration
 {
-  v2 = [a1 bedTimeComponents];
-  if (v2 && (v3 = v2, [a1 wakeTimeComponents], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
+  bedTimeComponents = [self bedTimeComponents];
+  if (bedTimeComponents && (v3 = bedTimeComponents, [self wakeTimeComponents], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = [MEMORY[0x1E696AB88] hk_hourMinuteOnlyDateIntervalFormatter];
-    v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v7 = [a1 bedTimeComponents];
-    v8 = [v6 dateFromComponents:v7];
+    hk_hourMinuteOnlyDateIntervalFormatter = [MEMORY[0x1E696AB88] hk_hourMinuteOnlyDateIntervalFormatter];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    bedTimeComponents2 = [self bedTimeComponents];
+    v8 = [currentCalendar dateFromComponents:bedTimeComponents2];
 
-    v9 = [a1 wakeTimeComponents];
-    v10 = [v6 dateFromComponents:v9];
+    wakeTimeComponents = [self wakeTimeComponents];
+    v10 = [currentCalendar dateFromComponents:wakeTimeComponents];
 
-    v11 = [v5 stringFromDate:v8 toDate:v10];
+    v11 = [hk_hourMinuteOnlyDateIntervalFormatter stringFromDate:v8 toDate:v10];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v11 = [v5 localizedStringForKey:@"SLEEP_SCHEDULE_NO_TIMES_TEXT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
+    hk_hourMinuteOnlyDateIntervalFormatter = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+    v11 = [hk_hourMinuteOnlyDateIntervalFormatter localizedStringForKey:@"SLEEP_SCHEDULE_NO_TIMES_TEXT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
   }
 
   return v11;
@@ -150,16 +150,16 @@ LABEL_11:
 
 - (id)hk_localizedBedtime
 {
-  v1 = [a1 bedTimeComponents];
-  v2 = _TimeStringForDateComponents(v1);
+  bedTimeComponents = [self bedTimeComponents];
+  v2 = _TimeStringForDateComponents(bedTimeComponents);
 
   return v2;
 }
 
 - (id)hk_localizedWakeTime
 {
-  v1 = [a1 wakeTimeComponents];
-  v2 = _TimeStringForDateComponents(v1);
+  wakeTimeComponents = [self wakeTimeComponents];
+  v2 = _TimeStringForDateComponents(wakeTimeComponents);
 
   return v2;
 }

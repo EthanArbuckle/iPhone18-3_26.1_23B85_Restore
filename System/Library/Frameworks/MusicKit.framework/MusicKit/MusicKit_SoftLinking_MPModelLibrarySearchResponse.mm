@@ -1,29 +1,29 @@
 @interface MusicKit_SoftLinking_MPModelLibrarySearchResponse
-+ (int64_t)_modelObjectTypeForLibrarySearchResultModelKind:(id)a3;
-- (void)enumerateSectionLegacyObjectTypesUsingBlock:(id)a3;
++ (int64_t)_modelObjectTypeForLibrarySearchResultModelKind:(id)kind;
+- (void)enumerateSectionLegacyObjectTypesUsingBlock:(id)block;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibrarySearchResponse
 
-- (void)enumerateSectionLegacyObjectTypesUsingBlock:(id)a3
+- (void)enumerateSectionLegacyObjectTypesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MusicKit_SoftLinking_MPModelResponse *)self results];
-  v6 = [v5 _underlyingSectionedCollection];
+  blockCopy = block;
+  results = [(MusicKit_SoftLinking_MPModelResponse *)self results];
+  _underlyingSectionedCollection = [results _underlyingSectionedCollection];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __97__MusicKit_SoftLinking_MPModelLibrarySearchResponse_enumerateSectionLegacyObjectTypesUsingBlock___block_invoke;
   v8[3] = &unk_27822A168;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateSectionsUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [_underlyingSectionedCollection enumerateSectionsUsingBlock:v8];
 }
 
-+ (int64_t)_modelObjectTypeForLibrarySearchResultModelKind:(id)a3
++ (int64_t)_modelObjectTypeForLibrarySearchResultModelKind:(id)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -175,7 +175,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (([v3 variants] & 8) != 0)
+              if (([kindCopy variants] & 8) != 0)
               {
                 v6 = 22;
               }

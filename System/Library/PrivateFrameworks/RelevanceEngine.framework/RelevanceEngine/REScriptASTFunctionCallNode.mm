@@ -1,53 +1,53 @@
 @interface REScriptASTFunctionCallNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTFunctionCallNode)initWithFunctionName:(id)a3 arguments:(id)a4;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTFunctionCallNode)initWithFunctionName:(id)name arguments:(id)arguments;
 - (id)dependencies;
 @end
 
 @implementation REScriptASTFunctionCallNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
-  if (!REExpectTokenTypeInBuffer(v5, 6uLL, a4))
+  bufferCopy = buffer;
+  if (!REExpectTokenTypeInBuffer(bufferCopy, 6uLL, error))
   {
     v11 = 0;
     goto LABEL_19;
   }
 
-  v6 = [v5 currentToken];
-  [v5 push];
-  [v5 next];
-  if (REExpectTokenTypeInBuffer(v5, 0x20uLL, a4))
+  currentToken = [bufferCopy currentToken];
+  [bufferCopy push];
+  [bufferCopy next];
+  if (REExpectTokenTypeInBuffer(bufferCopy, 0x20uLL, error))
   {
-    [v5 next];
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [REScriptASTExpressionNode parseBuffer:v5 error:a4];
+    [bufferCopy next];
+    array = [MEMORY[0x277CBEB18] array];
+    v8 = [REScriptASTExpressionNode parseBuffer:bufferCopy error:error];
     if (v8)
     {
       v9 = v8;
-      [v7 addObject:v8];
-      if (REExpectTokenTypeInBuffer(v5, 0x1BuLL, a4))
+      [array addObject:v8];
+      if (REExpectTokenTypeInBuffer(bufferCopy, 0x1BuLL, error))
       {
         while (1)
         {
-          [v5 next];
-          v10 = [REScriptASTExpressionNode parseBuffer:v5 error:a4];
+          [bufferCopy next];
+          v10 = [REScriptASTExpressionNode parseBuffer:bufferCopy error:error];
 
           if (!v10)
           {
             break;
           }
 
-          [v7 addObject:v10];
+          [array addObject:v10];
           v9 = v10;
-          if (!REExpectTokenTypeInBuffer(v5, 0x1BuLL, a4))
+          if (!REExpectTokenTypeInBuffer(bufferCopy, 0x1BuLL, error))
           {
             goto LABEL_12;
           }
         }
 
-        [v5 pop];
+        [bufferCopy pop];
         goto LABEL_16;
       }
 
@@ -60,26 +60,26 @@
     }
 
 LABEL_12:
-    if (REExpectTokenTypeInBuffer(v5, 0x21uLL, a4))
+    if (REExpectTokenTypeInBuffer(bufferCopy, 0x21uLL, error))
     {
-      [v5 next];
-      [v5 consume];
+      [bufferCopy next];
+      [bufferCopy consume];
       v12 = [REScriptASTFunctionCallNode alloc];
-      v13 = [v7 copy];
-      v11 = [(REScriptASTFunctionCallNode *)v12 initWithFunctionName:v6 arguments:v13];
+      v13 = [array copy];
+      v11 = [(REScriptASTFunctionCallNode *)v12 initWithFunctionName:currentToken arguments:v13];
 
 LABEL_17:
       goto LABEL_18;
     }
 
-    [v5 pop];
+    [bufferCopy pop];
 
 LABEL_16:
     v11 = 0;
     goto LABEL_17;
   }
 
-  [v5 pop];
+  [bufferCopy pop];
   v11 = 0;
 LABEL_18:
 
@@ -88,18 +88,18 @@ LABEL_19:
   return v11;
 }
 
-- (REScriptASTFunctionCallNode)initWithFunctionName:(id)a3 arguments:(id)a4
+- (REScriptASTFunctionCallNode)initWithFunctionName:(id)name arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  argumentsCopy = arguments;
   v12.receiver = self;
   v12.super_class = REScriptASTFunctionCallNode;
-  v9 = [(REScriptASTNode *)&v12 initWithToken:v7];
+  v9 = [(REScriptASTNode *)&v12 initWithToken:nameCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_functionIdentifier, a3);
-    objc_storeStrong(&v10->_arguments, a4);
+    objc_storeStrong(&v9->_functionIdentifier, name);
+    objc_storeStrong(&v10->_arguments, arguments);
   }
 
   return v10;
@@ -128,8 +128,8 @@ LABEL_19:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) dependencies];
-        [v3 unionSet:v9];
+        dependencies = [*(*(&v13 + 1) + 8 * i) dependencies];
+        [v3 unionSet:dependencies];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];

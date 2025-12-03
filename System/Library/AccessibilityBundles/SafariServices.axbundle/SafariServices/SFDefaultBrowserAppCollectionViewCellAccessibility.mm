@@ -1,18 +1,18 @@
 @interface SFDefaultBrowserAppCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SFDefaultBrowserAppCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFDefaultBrowserAppCollectionViewCell" hasInstanceVariable:@"_lockupView" withType:"ASCLockupView"];
-  [v3 validateClass:@"ASCLockupView" hasInstanceMethod:@"lockup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCLockup" hasInstanceVariable:@"_title" withType:"NSString"];
-  [v3 validateClass:@"ASCLockup" hasInstanceVariable:@"_subtitle" withType:"NSString"];
-  [v3 validateClass:@"ASCLockup" hasInstanceVariable:@"_heading" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFDefaultBrowserAppCollectionViewCell" hasInstanceVariable:@"_lockupView" withType:"ASCLockupView"];
+  [validationsCopy validateClass:@"ASCLockupView" hasInstanceMethod:@"lockup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCLockup" hasInstanceVariable:@"_title" withType:"NSString"];
+  [validationsCopy validateClass:@"ASCLockup" hasInstanceVariable:@"_subtitle" withType:"NSString"];
+  [validationsCopy validateClass:@"ASCLockup" hasInstanceVariable:@"_heading" withType:"NSString"];
 }
 
 - (id)accessibilityLabel

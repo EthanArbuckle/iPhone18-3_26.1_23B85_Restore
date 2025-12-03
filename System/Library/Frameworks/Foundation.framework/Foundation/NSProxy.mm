@@ -1,32 +1,32 @@
 @interface NSProxy
-+ (BOOL)conformsToProtocol:(id)a3;
-+ (BOOL)isAncestorOfObject:(id)a3;
-+ (BOOL)isKindOfClass:(Class)a3;
-+ (BOOL)isSubclassOfClass:(Class)a3;
++ (BOOL)conformsToProtocol:(id)protocol;
++ (BOOL)isAncestorOfObject:(id)object;
++ (BOOL)isKindOfClass:(Class)class;
++ (BOOL)isSubclassOfClass:(Class)class;
 + (BOOL)respondsToSelector:(SEL)aSelector;
 + (id)_copyDescription;
 + (id)alloc;
 + (id)allocWithZone:(NSZone *)zone;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)methodSignatureForSelector:(SEL)a3;
-+ (id)performSelector:(SEL)a3;
-+ (id)performSelector:(SEL)a3 withObject:(id)a4;
-+ (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-+ (void)doesNotRecognizeSelector:(SEL)a3;
-+ (void)forwardInvocation:(id)a3;
-+ (void)instanceMethodForSelector:(SEL)a3;
-+ (void)methodForSelector:(SEL)a3;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)methodSignatureForSelector:(SEL)selector;
++ (id)performSelector:(SEL)selector;
++ (id)performSelector:(SEL)selector withObject:(id)object;
++ (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
++ (void)doesNotRecognizeSelector:(SEL)selector;
++ (void)forwardInvocation:(id)invocation;
++ (void)instanceMethodForSelector:(SEL)selector;
++ (void)methodForSelector:(SEL)selector;
 - (BOOL)_tryRetain;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)isMemberOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)isMemberOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (Class)superclass;
 - (NSProxy)retain;
 - (id)_copyDescription;
-- (id)performSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3 withObject:(id)a4;
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
+- (id)performSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector withObject:(id)object;
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
 - (void)release;
 @end
 
@@ -94,15 +94,15 @@
     return 0;
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
 
   return class_respondsToSelector(Class, aSelector);
 }
 
-+ (BOOL)isAncestorOfObject:(id)a3
++ (BOOL)isAncestorOfObject:(id)object
 {
   Superclass = objc_opt_class();
-  for (i = Superclass != 0; Superclass != a1 && Superclass; i = Superclass != 0)
+  for (i = Superclass != 0; Superclass != self && Superclass; i = Superclass != 0)
   {
     Superclass = class_getSuperclass(Superclass);
   }
@@ -110,9 +110,9 @@
   return i;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  if (!a3 || !__methodDescriptionForSelector(a1, a3))
+  if (!selector || !__methodDescriptionForSelector(self, selector))
   {
     return 0;
   }
@@ -122,15 +122,15 @@
   return [v4 signatureWithObjCTypes:v3];
 }
 
-+ (id)methodSignatureForSelector:(SEL)a3
++ (id)methodSignatureForSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
     return 0;
   }
 
-  Class = object_getClass(a1);
-  if (!__methodDescriptionForSelector(Class, a3))
+  Class = object_getClass(self);
+  if (!__methodDescriptionForSelector(Class, selector))
   {
     return 0;
   }
@@ -140,28 +140,28 @@
   return [v6 signatureWithObjCTypes:v5];
 }
 
-+ (void)forwardInvocation:(id)a3
++ (void)forwardInvocation:(id)invocation
 {
-  if (a3)
+  if (invocation)
   {
-    a3 = [a3 selector];
+    invocation = [invocation selector];
   }
 
-  [a1 doesNotRecognizeSelector:a3];
+  [self doesNotRecognizeSelector:invocation];
 }
 
-+ (void)doesNotRecognizeSelector:(SEL)a3
++ (void)doesNotRecognizeSelector:(SEL)selector
 {
-  v4 = _NSMethodExceptionProem(a1, a3);
-  NSLog(@"%@: unrecognized selector sent to class %p", v4, a1);
-  v5 = [NSString stringWithFormat:@"%@: unrecognized selector sent to class %p", v4, a1];
+  v4 = _NSMethodExceptionProem(self, selector);
+  NSLog(@"%@: unrecognized selector sent to class %p", v4, self);
+  v5 = [NSString stringWithFormat:@"%@: unrecognized selector sent to class %p", v4, self];
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v5 userInfo:0]);
 }
 
 + (id)_copyDescription
 {
   _CFAutoreleasePoolPush();
-  v3 = [a1 description];
+  v3 = [self description];
   _CFAutoreleasePoolPop();
   return v3;
 }
@@ -174,70 +174,70 @@
   return v3;
 }
 
-+ (id)performSelector:(SEL)a3
++ (id)performSelector:(SEL)selector
 {
-  if (!a3)
-  {
-    _NSObjectRaiseNullSelectorException(a1, a2);
-  }
-
-  return [a1 a3];
-}
-
-- (id)performSelector:(SEL)a3
-{
-  if (!a3)
+  if (!selector)
   {
     _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  return [self a3];
+  return [self selector];
 }
 
-+ (id)performSelector:(SEL)a3 withObject:(id)a4
+- (id)performSelector:(SEL)selector
 {
-  if (!a3)
-  {
-    _NSObjectRaiseNullSelectorException(a1, a2);
-  }
-
-  return [a1 a3];
-}
-
-- (id)performSelector:(SEL)a3 withObject:(id)a4
-{
-  if (!a3)
+  if (!selector)
   {
     _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  return [self a3];
+  return [self selector];
 }
 
-+ (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
++ (id)performSelector:(SEL)selector withObject:(id)object
 {
-  if (!a3)
-  {
-    _NSObjectRaiseNullSelectorException(a1, a2);
-  }
-
-  return [a1 a3];
-}
-
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
-{
-  if (!a3)
+  if (!selector)
   {
     _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  return [self a3];
+  return [self selector];
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
+- (id)performSelector:(SEL)selector withObject:(id)object
+{
+  if (!selector)
+  {
+    _NSObjectRaiseNullSelectorException(self, a2);
+  }
+
+  return [self selector];
+}
+
++ (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
+{
+  if (!selector)
+  {
+    _NSObjectRaiseNullSelectorException(self, a2);
+  }
+
+  return [self selector];
+}
+
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
+{
+  if (!selector)
+  {
+    _NSObjectRaiseNullSelectorException(self, a2);
+  }
+
+  return [self selector];
+}
+
++ (BOOL)isSubclassOfClass:(Class)class
 {
   v3 = Superclass != 0;
-  if (Superclass && Superclass != a3)
+  if (Superclass && Superclass != class)
   {
     do
     {
@@ -245,16 +245,16 @@
       v3 = Superclass != 0;
     }
 
-    while (Superclass != a3 && Superclass);
+    while (Superclass != class && Superclass);
   }
 
   return v3;
 }
 
-+ (BOOL)isKindOfClass:(Class)a3
++ (BOOL)isKindOfClass:(Class)class
 {
-  Class = object_getClass(a1);
-  for (i = Class != 0; Class != a3 && Class; i = Class != 0)
+  Class = object_getClass(self);
+  for (i = Class != 0; Class != class && Class; i = Class != 0)
   {
     Class = class_getSuperclass(Class);
   }
@@ -262,7 +262,7 @@
   return i;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
@@ -274,27 +274,27 @@
   return v6[0];
 }
 
-- (BOOL)isMemberOfClass:(Class)a3
+- (BOOL)isMemberOfClass:(Class)class
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v7[0] = 0;
   v5 = _NSMessageBuilder();
-  [v5 isMemberOfClass:a3];
+  [v5 isMemberOfClass:class];
   object_dispose(v5);
   [(NSProxy *)self forwardInvocation:0];
   [0 getReturnValue:v7];
   return v7[0];
 }
 
-+ (BOOL)conformsToProtocol:(id)a3
++ (BOOL)conformsToProtocol:(id)protocol
 {
   v3 = 0;
-  if (a1 && a3)
+  if (self && protocol)
   {
-    Superclass = a1;
+    Superclass = self;
     do
     {
-      v3 = class_conformsToProtocol(Superclass, a3);
+      v3 = class_conformsToProtocol(Superclass, protocol);
       if (v3)
       {
         break;
@@ -309,19 +309,19 @@
   return v3;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v7[0] = 0;
   v5 = _NSMessageBuilder();
-  [v5 conformsToProtocol:a3];
+  [v5 conformsToProtocol:protocol];
   object_dispose(v5);
   [(NSProxy *)self forwardInvocation:0];
   [0 getReturnValue:v7];
   return v7[0];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
@@ -333,26 +333,26 @@
   return v6[0];
 }
 
-+ (void)instanceMethodForSelector:(SEL)a3
++ (void)instanceMethodForSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
-    _NSObjectRaiseNullSelectorException(a1, a2);
+    _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  return class_getMethodImplementation(a1, a3);
+  return class_getMethodImplementation(self, selector);
 }
 
-+ (void)methodForSelector:(SEL)a3
++ (void)methodForSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
-    _NSObjectRaiseNullSelectorException(a1, a2);
+    _NSObjectRaiseNullSelectorException(self, a2);
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
 
-  return class_getMethodImplementation(Class, a3);
+  return class_getMethodImplementation(Class, selector);
 }
 
 @end

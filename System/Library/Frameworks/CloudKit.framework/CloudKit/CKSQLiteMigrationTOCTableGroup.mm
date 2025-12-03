@@ -1,15 +1,15 @@
 @interface CKSQLiteMigrationTOCTableGroup
-- (CKSQLiteMigrationTOCTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5;
+- (CKSQLiteMigrationTOCTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database;
 - (id)_tableClasses;
 @end
 
 @implementation CKSQLiteMigrationTOCTableGroup
 
-- (CKSQLiteMigrationTOCTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5
+- (CKSQLiteMigrationTOCTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database
 {
   v6.receiver = self;
   v6.super_class = CKSQLiteMigrationTOCTableGroup;
-  return [(CKSQLiteTOCTableGroup *)&v6 initWithName:a3 options:a4 | 1 database:a5];
+  return [(CKSQLiteTOCTableGroup *)&v6 initWithName:name options:options | 1 database:database];
 }
 
 - (id)_tableClasses

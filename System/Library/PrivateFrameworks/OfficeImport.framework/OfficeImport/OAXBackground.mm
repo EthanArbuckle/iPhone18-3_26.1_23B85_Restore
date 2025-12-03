@@ -1,15 +1,15 @@
 @interface OAXBackground
-+ (id)readBackgroundFromParentNode:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5;
++ (id)readBackgroundFromParentNode:(_xmlNode *)node inNamespace:(id)namespace state:(id)state;
 @end
 
 @implementation OAXBackground
 
-+ (id)readBackgroundFromParentNode:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5
++ (id)readBackgroundFromParentNode:(_xmlNode *)node inNamespace:(id)namespace state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  namespaceCopy = namespace;
+  stateCopy = state;
   v25 = 0;
-  v9 = OCXFindChild(a3, v7, "bg");
+  v9 = OCXFindChild(node, namespaceCopy, "bg");
   if (!v9)
   {
     v11 = 0;
@@ -17,11 +17,11 @@
   }
 
   v24 = 0;
-  v10 = [OAXStyleMatrix readReferenceFromParentNode:v9 name:"bgRef" inNamespace:v7 color:&v24 index:&v25];
+  v10 = [OAXStyleMatrix readReferenceFromParentNode:v9 name:"bgRef" inNamespace:namespaceCopy color:&v24 index:&v25];
   v11 = v24;
   if (!v10)
   {
-    v17 = OCXFindChild(v9, v7, "bgPr");
+    v17 = OCXFindChild(v9, namespaceCopy, "bgPr");
     if (v17)
     {
       v18 = OCXFirstChild(v17);
@@ -44,8 +44,8 @@
 
         else
         {
-          v19 = [v8 packagePart];
-          v14 = [OAXFill readFillFromXmlNode:v18 packagePart:v19 drawingState:v8];
+          packagePart = [stateCopy packagePart];
+          v14 = [OAXFill readFillFromXmlNode:v18 packagePart:packagePart drawingState:stateCopy];
 
           if (v9)
           {
@@ -55,8 +55,8 @@
 
         if (xmlStrEqual(v18->name, "effectLst"))
         {
-          v20 = [v8 packagePart];
-          v9 = [OAXEffect readEffectsFromXmlNode:v18 packagePart:v20 drawingState:v8];
+          packagePart2 = [stateCopy packagePart];
+          v9 = [OAXEffect readEffectsFromXmlNode:v18 packagePart:packagePart2 drawingState:stateCopy];
         }
 
         else
@@ -75,8 +75,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = [v8 styleMatrix];
-  v13 = [v12 bgFillAtIndex:v25];
+  styleMatrix = [stateCopy styleMatrix];
+  v13 = [styleMatrix bgFillAtIndex:v25];
   v14 = [v13 copy];
 
   v9 = 0;

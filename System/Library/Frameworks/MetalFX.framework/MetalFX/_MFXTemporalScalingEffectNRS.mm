@@ -2,31 +2,31 @@
 - (CGPoint)jitterOffset;
 - (CGPoint)motionVectorScale;
 - (CGPoint)previousJitterOffset;
-- (_MFXTemporalScalingEffectNRS)initWithDevice:(id)a3 descriptor:(id)a4;
+- (_MFXTemporalScalingEffectNRS)initWithDevice:(id)device descriptor:(id)descriptor;
 - (__n128)currentViewToClipMatrix;
 - (__n128)currentWorldToViewMatrix;
 - (__n128)previousViewToClipMatrix;
 - (__n128)previousWorldToViewMatrix;
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3;
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3;
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3;
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3;
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix;
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix;
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix;
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix;
 - (float)jitterOffsetX;
 - (float)motionVectorScaleX;
 - (id).cxx_construct;
-- (void)encodeToCommandBuffer:(id)a3;
-- (void)encodeToCommandQueue:(id)a3;
-- (void)initExposureWithDevice:(void *)a3 library:(int)a4 autoexposureEnabled:;
-- (void)initOutputResolutionPassesWithDevice:(void *)a3 library:;
-- (void)initRenderResolutionPassesWithDevice:(void *)a3 library:;
+- (void)encodeToCommandBuffer:(id)buffer;
+- (void)encodeToCommandQueue:(id)queue;
+- (void)initExposureWithDevice:(void *)device library:(int)library autoexposureEnabled:;
+- (void)initOutputResolutionPassesWithDevice:(void *)device library:;
+- (void)initRenderResolutionPassesWithDevice:(void *)device library:;
 @end
 
 @implementation _MFXTemporalScalingEffectNRS
 
-- (_MFXTemporalScalingEffectNRS)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MFXTemporalScalingEffectNRS)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
   v32.receiver = self;
   v32.super_class = _MFXTemporalScalingEffectNRS;
   v8 = [(_MTLFXEffectBase *)&v32 init];
@@ -35,40 +35,40 @@
   v8->_depthTextureUsage = 1;
   v8->_motionTextureUsage = 1;
   v8->_reactiveTextureUsage = 1;
-  v8->_colorTextureFormat = [v7 colorTextureFormat];
-  v8->_depthTextureFormat = [v7 depthTextureFormat];
-  v8->_motionTextureFormat = [v7 motionTextureFormat];
-  v9 = [v7 outputTextureFormat];
+  v8->_colorTextureFormat = [descriptorCopy colorTextureFormat];
+  v8->_depthTextureFormat = [descriptorCopy depthTextureFormat];
+  v8->_motionTextureFormat = [descriptorCopy motionTextureFormat];
+  outputTextureFormat = [descriptorCopy outputTextureFormat];
   v10 = 115;
-  if (v9)
+  if (outputTextureFormat)
   {
-    v10 = v9;
+    v10 = outputTextureFormat;
   }
 
   v8->_outputTextureFormat = v10;
-  v11 = [v7 inputWidth];
-  v8->_inputWidth = v11;
-  v8->_inputContentWidth = v11;
-  v12 = [v7 inputHeight];
-  v8->_inputHeight = v12;
-  v8->_inputContentHeight = v12;
-  v8->_outputWidth = [v7 outputWidth];
-  v13 = [v7 outputHeight];
-  v8->_outputHeight = v13;
+  inputWidth = [descriptorCopy inputWidth];
+  v8->_inputWidth = inputWidth;
+  v8->_inputContentWidth = inputWidth;
+  inputHeight = [descriptorCopy inputHeight];
+  v8->_inputHeight = inputHeight;
+  v8->_inputContentHeight = inputHeight;
+  v8->_outputWidth = [descriptorCopy outputWidth];
+  outputHeight = [descriptorCopy outputHeight];
+  v8->_outputHeight = outputHeight;
   outputWidth = v8->_outputWidth;
   inputWidth = v8->_inputWidth;
   inputHeight = v8->_inputHeight;
-  if ([v7 isInputContentPropertiesEnabled])
+  if ([descriptorCopy isInputContentPropertiesEnabled])
   {
-    [v7 inputContentMinScale];
+    [descriptorCopy inputContentMinScale];
     v8->_inputContentMinScale = v17;
-    [v7 inputContentMaxScale];
+    [descriptorCopy inputContentMaxScale];
   }
 
   else
   {
     v19 = outputWidth / inputWidth;
-    v20 = v13 / inputHeight;
+    v20 = outputHeight / inputHeight;
     v21 = fminf(v19, v20);
     v18 = fmaxf(v19, v20);
     v8->_inputContentMinScale = v21;
@@ -81,16 +81,16 @@
     v24 = [v23 pathForResource:@"default" ofType:@"metallib"];
     v25 = [MEMORY[0x277CBEBC0] URLWithString:v24];
     v31 = 0;
-    v26 = [v6 newLibraryWithURL:v25 error:&v31];
+    v26 = [deviceCopy newLibraryWithURL:v25 error:&v31];
     v27 = v31;
 
-    v28 = [v6 newBufferWithLength:1 options:32];
+    v28 = [deviceCopy newBufferWithLength:1 options:32];
     internal_is_history_invalid = v8->_internal_is_history_invalid;
     v8->_internal_is_history_invalid = v28;
 
-    -[_MFXTemporalScalingEffectNRS initExposureWithDevice:library:autoexposureEnabled:](v8, v6, v26, [v7 isAutoExposureEnabled]);
-    [(_MFXTemporalScalingEffectNRS *)v8 initRenderResolutionPassesWithDevice:v6 library:v26];
-    [(_MFXTemporalScalingEffectNRS *)v8 initOutputResolutionPassesWithDevice:v6 library:v26];
+    -[_MFXTemporalScalingEffectNRS initExposureWithDevice:library:autoexposureEnabled:](v8, deviceCopy, v26, [descriptorCopy isAutoExposureEnabled]);
+    [(_MFXTemporalScalingEffectNRS *)v8 initRenderResolutionPassesWithDevice:deviceCopy library:v26];
+    [(_MFXTemporalScalingEffectNRS *)v8 initOutputResolutionPassesWithDevice:deviceCopy library:v26];
     v8->_reset = 1;
     v22 = v8;
   }
@@ -104,55 +104,55 @@
   return v22;
 }
 
-- (void)initExposureWithDevice:(void *)a3 library:(int)a4 autoexposureEnabled:
+- (void)initExposureWithDevice:(void *)device library:(int)library autoexposureEnabled:
 {
   v20 = a2;
-  v7 = a3;
-  if (a1)
+  deviceCopy = device;
+  if (self)
   {
-    *(a1 + 268) = 1065353216;
-    *(a1 + 72) = 1040187392;
+    *(self + 268) = 1065353216;
+    *(self + 72) = 1040187392;
     v8 = [v20 newBufferWithLength:2 options:0];
-    v9 = *(a1 + 80);
-    *(a1 + 80) = v8;
+    v9 = *(self + 80);
+    *(self + 80) = v8;
 
     v10 = [v20 newBufferWithLength:2 options:0];
-    v11 = *(a1 + 88);
-    *(a1 + 88) = v10;
+    v11 = *(self + 88);
+    *(self + 88) = v10;
 
-    *[*(a1 + 80) contents] = COERCE_UNSIGNED_INT(1.0);
-    *[*(a1 + 88) contents] = COERCE_UNSIGNED_INT(1.0);
-    if (a4)
+    *[*(self + 80) contents] = COERCE_UNSIGNED_INT(1.0);
+    *[*(self + 88) contents] = COERCE_UNSIGNED_INT(1.0);
+    if (library)
     {
-      v12 = computeKernel(v7, v20, @"luma_log_sum_nrs", 0, 0, 0, 1);
-      v13 = *(a1 + 104);
-      *(a1 + 104) = v12;
+      v12 = computeKernel(deviceCopy, v20, @"luma_log_sum_nrs", 0, 0, 0, 1);
+      v13 = *(self + 104);
+      *(self + 104) = v12;
 
       v14 = [v20 newBufferWithLength:0x2000 options:0];
-      v15 = *(a1 + 96);
-      *(a1 + 96) = v14;
+      v15 = *(self + 96);
+      *(self + 96) = v14;
 
       v16 = objc_opt_new();
-      [v16 setConstantValue:a1 + 72 type:3 atIndex:9];
-      v17 = computeKernel(v7, v20, @"luma_log_sum_to_exposure", 0, v16, 0x400uLL, 1);
-      v18 = *(a1 + 112);
-      *(a1 + 112) = v17;
+      [v16 setConstantValue:self + 72 type:3 atIndex:9];
+      v17 = computeKernel(deviceCopy, v20, @"luma_log_sum_to_exposure", 0, v16, 0x400uLL, 1);
+      v18 = *(self + 112);
+      *(self + 112) = v17;
     }
 
     else
     {
-      v19 = computeKernel(v7, v20, @"exposure_texture_to_buffer", 0, 0, 0, 0);
-      v16 = *(a1 + 120);
-      *(a1 + 120) = v19;
+      v19 = computeKernel(deviceCopy, v20, @"exposure_texture_to_buffer", 0, 0, 0, 0);
+      v16 = *(self + 120);
+      *(self + 120) = v19;
     }
   }
 }
 
-- (void)initRenderResolutionPassesWithDevice:(void *)a3 library:
+- (void)initRenderResolutionPassesWithDevice:(void *)device library:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  deviceCopy = device;
+  if (self)
   {
     v7 = [v5 supportsFamily:1004];
     v36 = v7;
@@ -168,7 +168,7 @@
 
     v35 = v8;
     v34 = [v5 supportsFamily:1001];
-    v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:*(a1 + 392) height:*(a1 + 400) mipmapped:0];
+    v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:*(self + 392) height:*(self + 400) mipmapped:0];
     v10 = v9;
     if ((v8 | v7))
     {
@@ -184,31 +184,31 @@
     [v10 setStorageMode:2];
     [v10 setCompressionMode:1];
     v12 = [v5 newTextureWithDescriptor:v10];
-    v13 = *(a1 + 128);
-    *(a1 + 128) = v12;
+    v13 = *(self + 128);
+    *(self + 128) = v12;
 
     [v10 setPixelFormat:65];
     v14 = [v5 newTextureWithDescriptor:v10];
-    v15 = *(a1 + 136);
-    *(a1 + 136) = v14;
+    v15 = *(self + 136);
+    *(self + 136) = v14;
 
     [v10 setPixelFormat:115];
     v16 = [v5 newTextureWithDescriptor:v10];
-    v17 = *(a1 + 144);
-    *(a1 + 144) = v16;
+    v17 = *(self + 144);
+    *(self + 144) = v16;
 
     [v10 setPixelFormat:115];
     v18 = [v5 newTextureWithDescriptor:v10];
-    v19 = *(a1 + 152);
-    *(a1 + 152) = v18;
+    v19 = *(self + 152);
+    *(self + 152) = v18;
 
     v20 = [v5 newTextureWithDescriptor:v10];
-    v21 = *(a1 + 160);
-    *(a1 + 160) = v20;
+    v21 = *(self + 160);
+    *(self + 160) = v20;
 
     v22 = [v5 newTextureWithDescriptor:v10];
-    v23 = *(a1 + 168);
-    *(a1 + 168) = v22;
+    v23 = *(self + 168);
+    *(self + 168) = v22;
 
     v24 = objc_opt_new();
     [v24 setConstantValue:&v35 type:53 atIndex:0];
@@ -217,30 +217,30 @@
     if (v36 == 1)
     {
       v33 = 0;
-      v27 = tileKernel(v6, v5, @"unified_low_resolution_tile", &v33, v24, 512, v25, v26, 115, 65);
+      v27 = tileKernel(deviceCopy, v5, @"unified_low_resolution_tile", &v33, v24, 512, v25, v26, 115, 65);
       v28 = v33;
-      v29 = *(a1 + 184);
-      *(a1 + 184) = v27;
+      v29 = *(self + 184);
+      *(self + 184) = v27;
     }
 
     else
     {
       v32 = 0;
-      v30 = computeKernel(v6, v5, @"unified_low_resolution_tile", &v32, v24, 0x200uLL, 1);
+      v30 = computeKernel(deviceCopy, v5, @"unified_low_resolution_tile", &v32, v24, 0x200uLL, 1);
       v28 = v32;
-      v31 = *(a1 + 176);
-      *(a1 + 176) = v30;
+      v31 = *(self + 176);
+      *(self + 176) = v30;
 
-      *(a1 + 192) = v35;
+      *(self + 192) = v35;
     }
   }
 }
 
-- (void)initOutputResolutionPassesWithDevice:(void *)a3 library:
+- (void)initOutputResolutionPassesWithDevice:(void *)device library:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  deviceCopy = device;
+  if (self)
   {
     v7 = [v5 supportsFamily:1004];
     v35 = v7;
@@ -256,7 +256,7 @@
 
     v34 = v8;
     v9 = [v5 supportsFamily:1001];
-    v10 = *(a1 + 384);
+    v10 = *(self + 384);
     v33 = v9;
     v39 = 0;
     v37 = 0u;
@@ -270,53 +270,53 @@
       v11 = 4;
     }
 
-    *(a1 + 304) = v11;
-    v12 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:*(a1 + 408) height:*(a1 + 416) mipmapped:0];
-    [v12 setUsage:*(a1 + 304) | 1];
+    *(self + 304) = v11;
+    v12 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:*(self + 408) height:*(self + 416) mipmapped:0];
+    [v12 setUsage:*(self + 304) | 1];
     [v12 setStorageMode:2];
     [v12 setCompressionMode:1];
     v13 = [v5 newTextureWithDescriptor:v12];
-    v14 = *(a1 + 200);
-    *(a1 + 200) = v13;
+    v14 = *(self + 200);
+    *(self + 200) = v13;
 
     v15 = [v5 newTextureWithDescriptor:v12];
-    v16 = *(a1 + 208);
-    *(a1 + 208) = v15;
+    v16 = *(self + 208);
+    *(self + 208) = v15;
 
     v17 = [v5 newTextureWithDescriptor:v12];
-    v18 = *(a1 + 216);
-    *(a1 + 216) = v17;
+    v18 = *(self + 216);
+    *(self + 216) = v17;
 
     v19 = [v5 newTextureWithDescriptor:v12];
-    v20 = *(a1 + 224);
-    *(a1 + 224) = v19;
+    v20 = *(self + 224);
+    *(self + 224) = v19;
 
-    *(a1 + 249) = 0;
+    *(self + 249) = 0;
     v21 = objc_opt_new();
     [v21 setConstantValue:&v34 type:53 atIndex:0];
     [v21 setConstantValue:&v35 type:53 atIndex:1];
     [v21 setConstantValue:&v33 type:53 atIndex:2];
     [v21 setConstantValue:&v32 type:53 atIndex:3];
-    [v21 setConstantValue:a1 + 72 type:3 atIndex:4];
+    [v21 setConstantValue:self + 72 type:3 atIndex:4];
     if (v35 == 1)
     {
       v31 = 0;
-      v29 = *(a1 + 384);
-      v24 = tileKernel(v6, v5, @"unified_pass_tile", &v31, v21, 512, v22, v23, 115, 115);
+      v29 = *(self + 384);
+      v24 = tileKernel(deviceCopy, v5, @"unified_pass_tile", &v31, v21, 512, v22, v23, 115, 115);
       v25 = v31;
-      v26 = *(a1 + 240);
-      *(a1 + 240) = v24;
+      v26 = *(self + 240);
+      *(self + 240) = v24;
     }
 
     else
     {
       v30 = 0;
-      v27 = computeKernel(v6, v5, @"unified_pass_tile", &v30, v21, 0x200uLL, 1);
+      v27 = computeKernel(deviceCopy, v5, @"unified_pass_tile", &v30, v21, 0x200uLL, 1);
       v25 = v30;
-      v28 = *(a1 + 232);
-      *(a1 + 232) = v27;
+      v28 = *(self + 232);
+      *(self + 232) = v27;
 
-      *(a1 + 248) = v34;
+      *(self + 248) = v34;
     }
   }
 }
@@ -353,10 +353,10 @@
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
   v92 = *MEMORY[0x277D85DE8];
-  v80 = a3;
+  bufferCopy = buffer;
   [(_MTLFXEffectBase *)self _beginEncode];
   if (MTLReportFailureTypeEnabled())
   {
@@ -392,15 +392,15 @@
   MetalFxScopedSignpost::MetalFxScopedSignpost(v87, 0, self, 0, self->super.super.super._encodeID, 0);
   if (MTLTraceEnabled())
   {
-    [v80 globalTraceObjectID];
+    [bufferCopy globalTraceObjectID];
     kdebug_trace();
   }
 
-  v12 = [v80 computeCommandEncoder];
-  [(_MTLFXEffect *)self _didCreateComputeCommandEncoder:v12 forEncode:self->super.super.super._encodeID];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [(_MTLFXEffect *)self _didCreateComputeCommandEncoder:computeCommandEncoder forEncode:self->super.super.super._encodeID];
   if (self->_fence)
   {
-    [v12 waitForFence:?];
+    [computeCommandEncoder waitForFence:?];
   }
 
   if (self->_internalExposure.lumaLogSums)
@@ -410,43 +410,43 @@
     WORD1(v84[0]) = v14;
     LOWORD(v84[0]) = v13;
     v86 = v14 * v13;
-    [v12 setComputePipelineState:self->_internalExposure.lumaLogSumKernel];
-    [v12 setTexture:self->_colorTexture atIndex:0];
-    [v12 setBytes:v84 length:4 atIndex:1];
-    [v12 setBytes:&self->_preExposure length:4 atIndex:2];
-    [v12 setBuffer:self->_internalExposure.lumaLogSums offset:0 atIndex:0];
+    [computeCommandEncoder setComputePipelineState:self->_internalExposure.lumaLogSumKernel];
+    [computeCommandEncoder setTexture:self->_colorTexture atIndex:0];
+    [computeCommandEncoder setBytes:v84 length:4 atIndex:1];
+    [computeCommandEncoder setBytes:&self->_preExposure length:4 atIndex:2];
+    [computeCommandEncoder setBuffer:self->_internalExposure.lumaLogSums offset:0 atIndex:0];
     v88 = xmmword_2398F2880;
     *&v89 = 1;
     *v85 = [(MTLComputePipelineState *)self->_internalExposure.lumaLogSumKernel threadExecutionWidth];
     *&v85[8] = vdupq_n_s64(1uLL);
-    [v12 dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
-    [v12 setComputePipelineState:self->_internalExposure.lumaLogSumToExposureKernel];
-    [v12 setBuffer:self->_internalExposure.lumaLogSums offset:0 atIndex:0];
-    [v12 setBytes:&v86 length:4 atIndex:1];
-    [v12 setBuffer:self->_internalExposure.currExposure offset:0 atIndex:2];
-    [v12 setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:3];
-    [v12 setBuffer:self->_internal_is_history_invalid offset:0 atIndex:4];
-    [v12 setBytes:&self->_reset length:1 atIndex:5];
+    [computeCommandEncoder dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
+    [computeCommandEncoder setComputePipelineState:self->_internalExposure.lumaLogSumToExposureKernel];
+    [computeCommandEncoder setBuffer:self->_internalExposure.lumaLogSums offset:0 atIndex:0];
+    [computeCommandEncoder setBytes:&v86 length:4 atIndex:1];
+    [computeCommandEncoder setBuffer:self->_internalExposure.currExposure offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:3];
+    [computeCommandEncoder setBuffer:self->_internal_is_history_invalid offset:0 atIndex:4];
+    [computeCommandEncoder setBytes:&self->_reset length:1 atIndex:5];
     v88 = vdupq_n_s64(1uLL);
     *&v89 = 1;
     *v85 = xmmword_2398F2890;
     *&v85[16] = 1;
-    [v12 dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
+    [computeCommandEncoder dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
   }
 
   else
   {
-    [v12 setComputePipelineState:self->_internalExposure.exposureToBufferKernel];
-    [v12 setTexture:self->_exposureTexture atIndex:0];
-    [v12 setBuffer:self->_internalExposure.currExposure offset:0 atIndex:0];
-    [v12 setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:1];
-    [v12 setBuffer:self->_internal_is_history_invalid offset:0 atIndex:2];
-    [v12 setBytes:&self->_reset length:1 atIndex:3];
+    [computeCommandEncoder setComputePipelineState:self->_internalExposure.exposureToBufferKernel];
+    [computeCommandEncoder setTexture:self->_exposureTexture atIndex:0];
+    [computeCommandEncoder setBuffer:self->_internalExposure.currExposure offset:0 atIndex:0];
+    [computeCommandEncoder setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:1];
+    [computeCommandEncoder setBuffer:self->_internal_is_history_invalid offset:0 atIndex:2];
+    [computeCommandEncoder setBytes:&self->_reset length:1 atIndex:3];
     v88 = vdupq_n_s64(1uLL);
     *&v89 = 1;
     *v85 = v88;
     *&v85[16] = 1;
-    [v12 dispatchThreads:&v88 threadsPerThreadgroup:v85];
+    [computeCommandEncoder dispatchThreads:&v88 threadsPerThreadgroup:v85];
   }
 
   v15 = self->_inputContentWidth;
@@ -508,7 +508,7 @@ LABEL_28:
         v81[3] = &unk_278AA4B50;
         v79 = v26;
         v82 = v79;
-        [v80 addCompletedHandler:v81];
+        [bufferCopy addCompletedHandler:v81];
 
         goto LABEL_29;
       }
@@ -522,9 +522,9 @@ LABEL_29:
   p_internalRenderResolution = &self->_internalRenderResolution;
   if (self->_internalRenderResolution.tileKernel)
   {
-    if (v12)
+    if (computeCommandEncoder)
     {
-      [v12 endEncoding];
+      [computeCommandEncoder endEncoding];
     }
 
     v28 = p_internalRenderResolution->colorRangeReduced;
@@ -539,29 +539,29 @@ LABEL_29:
     v89 = v32;
     v90 = self->_internalRenderResolution.variance1;
     v91 = self->_internalRenderResolution.variance2;
-    v34 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-    [v34 setTileWidth:32];
-    [v34 setTileHeight:16];
-    [v34 setThreadgroupMemoryLength:10080];
+    renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    [renderPassDescriptor setTileWidth:32];
+    [renderPassDescriptor setTileHeight:16];
+    [renderPassDescriptor setThreadgroupMemoryLength:10080];
     v35 = 0;
     v36 = 48;
     do
     {
       v37 = v88.i64[v35];
-      v38 = [v34 colorAttachments];
-      v39 = [v38 objectAtIndexedSubscript:v35];
+      colorAttachments = [renderPassDescriptor colorAttachments];
+      v39 = [colorAttachments objectAtIndexedSubscript:v35];
       [v39 setLoadAction:0];
 
-      v40 = [v34 colorAttachments];
-      v41 = [v40 objectAtIndexedSubscript:v35];
+      colorAttachments2 = [renderPassDescriptor colorAttachments];
+      v41 = [colorAttachments2 objectAtIndexedSubscript:v35];
       [v41 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-      v42 = [v34 colorAttachments];
-      v43 = [v42 objectAtIndexedSubscript:v35];
+      colorAttachments3 = [renderPassDescriptor colorAttachments];
+      v43 = [colorAttachments3 objectAtIndexedSubscript:v35];
       [v43 setStoreAction:1];
 
-      v44 = [v34 colorAttachments];
-      v45 = [v44 objectAtIndexedSubscript:v35];
+      colorAttachments4 = [renderPassDescriptor colorAttachments];
+      v45 = [colorAttachments4 objectAtIndexedSubscript:v35];
       [v45 setTexture:v37];
 
       ++v35;
@@ -569,7 +569,7 @@ LABEL_29:
     }
 
     while (v36);
-    v46 = [v80 renderCommandEncoderWithDescriptor:v34];
+    v46 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
     [(_MTLFXEffect *)self _didCreateRenderCommandEncoder:v46 forEncode:self->super.super.super._encodeID];
     [v46 setTileTexture:self->_colorTexture atIndex:0];
     [v46 setTileTexture:self->_depthTexture atIndex:1];
@@ -597,51 +597,51 @@ LABEL_29:
     if (!self->_internalOutputResolution.tileKernel)
     {
 LABEL_37:
-      v12 = [v80 computeCommandEncoder];
-      [(_MTLFXEffect *)self _didCreateComputeCommandEncoder:v12 forEncode:self->super.super.super._encodeID];
+      computeCommandEncoder = [bufferCopy computeCommandEncoder];
+      [(_MTLFXEffect *)self _didCreateComputeCommandEncoder:computeCommandEncoder forEncode:self->super.super.super._encodeID];
 LABEL_51:
       v65 = self->_outputWidth;
       v66 = self->_outputHeight;
-      [v12 setTexture:p_internalRenderResolution->colorRangeReduced atIndex:0];
-      [v12 setTexture:self->_internalRenderResolution.pixelData atIndex:1];
-      [v12 setTexture:self->_internalRenderResolution.dilatedFlow atIndex:2];
-      [v12 setTexture:p_internalOutputResolution->prevHistory0 atIndex:4];
-      [v12 setTexture:self->_internalOutputResolution.prevHistory1 atIndex:5];
-      [v12 setTexture:self->_internalOutputResolution.currHistory0 atIndex:6];
-      [v12 setTexture:self->_internalOutputResolution.currHistory1 atIndex:7];
-      [v12 setTexture:v79 atIndex:8];
-      [v12 setTexture:self->_internalRenderResolution.variance0 atIndex:12];
-      [v12 setTexture:self->_internalRenderResolution.variance1 atIndex:13];
-      [v12 setTexture:self->_internalRenderResolution.variance2 atIndex:14];
-      [v12 setBytes:v84 length:16 atIndex:1];
-      [v12 setBytes:&v86 length:4 atIndex:2];
-      [v12 setBytes:&self->_preExposure length:4 atIndex:3];
-      [v12 setBuffer:self->_internalExposure.currExposure offset:0 atIndex:4];
-      [v12 setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:5];
-      [v12 setBuffer:self->_internal_is_history_invalid offset:0 atIndex:6];
-      [v12 setThreadgroupMemoryLength:3840 atIndex:0];
-      [v12 setThreadgroupMemoryLength:7680 atIndex:1];
-      [v12 setThreadgroupMemoryLength:7680 atIndex:2];
+      [computeCommandEncoder setTexture:p_internalRenderResolution->colorRangeReduced atIndex:0];
+      [computeCommandEncoder setTexture:self->_internalRenderResolution.pixelData atIndex:1];
+      [computeCommandEncoder setTexture:self->_internalRenderResolution.dilatedFlow atIndex:2];
+      [computeCommandEncoder setTexture:p_internalOutputResolution->prevHistory0 atIndex:4];
+      [computeCommandEncoder setTexture:self->_internalOutputResolution.prevHistory1 atIndex:5];
+      [computeCommandEncoder setTexture:self->_internalOutputResolution.currHistory0 atIndex:6];
+      [computeCommandEncoder setTexture:self->_internalOutputResolution.currHistory1 atIndex:7];
+      [computeCommandEncoder setTexture:v79 atIndex:8];
+      [computeCommandEncoder setTexture:self->_internalRenderResolution.variance0 atIndex:12];
+      [computeCommandEncoder setTexture:self->_internalRenderResolution.variance1 atIndex:13];
+      [computeCommandEncoder setTexture:self->_internalRenderResolution.variance2 atIndex:14];
+      [computeCommandEncoder setBytes:v84 length:16 atIndex:1];
+      [computeCommandEncoder setBytes:&v86 length:4 atIndex:2];
+      [computeCommandEncoder setBytes:&self->_preExposure length:4 atIndex:3];
+      [computeCommandEncoder setBuffer:self->_internalExposure.currExposure offset:0 atIndex:4];
+      [computeCommandEncoder setBuffer:self->_internalExposure.prevExposure offset:0 atIndex:5];
+      [computeCommandEncoder setBuffer:self->_internal_is_history_invalid offset:0 atIndex:6];
+      [computeCommandEncoder setThreadgroupMemoryLength:3840 atIndex:0];
+      [computeCommandEncoder setThreadgroupMemoryLength:7680 atIndex:1];
+      [computeCommandEncoder setThreadgroupMemoryLength:7680 atIndex:2];
       if (self->_internalOutputResolution.kernelUsesImageblock)
       {
-        [v12 setImageblockWidth:32 height:16];
+        [computeCommandEncoder setImageblockWidth:32 height:16];
       }
 
-      [v12 setComputePipelineState:self->_internalOutputResolution.kernel];
+      [computeCommandEncoder setComputePipelineState:self->_internalOutputResolution.kernel];
       v88.i64[0] = (v65 + 31) >> 5;
       v88.i64[1] = (v66 + 15) >> 4;
       *&v89 = 1;
       *v85 = xmmword_2398F28A0;
       *&v85[16] = 1;
-      [v12 dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
+      [computeCommandEncoder dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
       if (self->_fence)
       {
-        [v12 updateFence:?];
+        [computeCommandEncoder updateFence:?];
       }
 
-      if (v12)
+      if (computeCommandEncoder)
       {
-        [v12 endEncoding];
+        [computeCommandEncoder endEncoding];
       }
 
       goto LABEL_57;
@@ -652,40 +652,40 @@ LABEL_51:
   {
     inputWidth = self->_inputWidth;
     inputHeight = self->_inputHeight;
-    [v12 setTexture:self->_colorTexture atIndex:0];
-    [v12 setTexture:self->_depthTexture atIndex:1];
-    [v12 setTexture:self->_motionTexture atIndex:2];
-    [v12 setTexture:p_internalRenderResolution->colorRangeReduced atIndex:3];
-    [v12 setTexture:self->_internalRenderResolution.dilatedFlow atIndex:4];
-    [v12 setTexture:self->_internalRenderResolution.pixelData atIndex:5];
-    [v12 setTexture:self->_internalRenderResolution.variance0 atIndex:6];
-    [v12 setTexture:self->_internalRenderResolution.variance1 atIndex:7];
-    [v12 setTexture:self->_internalRenderResolution.variance2 atIndex:8];
-    [v12 setBytes:&v83 length:4 atIndex:0];
-    [v12 setBytes:v84 length:16 atIndex:1];
-    [v12 setBytes:&v86 length:4 atIndex:2];
-    [v12 setBytes:&self->_preExposure length:4 atIndex:3];
-    [v12 setBuffer:self->_internalExposure.currExposure offset:0 atIndex:4];
-    [v12 setBuffer:self->_internal_is_history_invalid offset:0 atIndex:6];
-    [v12 setThreadgroupMemoryLength:5760 atIndex:0];
-    [v12 setThreadgroupMemoryLength:1440 atIndex:1];
-    [v12 setThreadgroupMemoryLength:2880 atIndex:2];
+    [computeCommandEncoder setTexture:self->_colorTexture atIndex:0];
+    [computeCommandEncoder setTexture:self->_depthTexture atIndex:1];
+    [computeCommandEncoder setTexture:self->_motionTexture atIndex:2];
+    [computeCommandEncoder setTexture:p_internalRenderResolution->colorRangeReduced atIndex:3];
+    [computeCommandEncoder setTexture:self->_internalRenderResolution.dilatedFlow atIndex:4];
+    [computeCommandEncoder setTexture:self->_internalRenderResolution.pixelData atIndex:5];
+    [computeCommandEncoder setTexture:self->_internalRenderResolution.variance0 atIndex:6];
+    [computeCommandEncoder setTexture:self->_internalRenderResolution.variance1 atIndex:7];
+    [computeCommandEncoder setTexture:self->_internalRenderResolution.variance2 atIndex:8];
+    [computeCommandEncoder setBytes:&v83 length:4 atIndex:0];
+    [computeCommandEncoder setBytes:v84 length:16 atIndex:1];
+    [computeCommandEncoder setBytes:&v86 length:4 atIndex:2];
+    [computeCommandEncoder setBytes:&self->_preExposure length:4 atIndex:3];
+    [computeCommandEncoder setBuffer:self->_internalExposure.currExposure offset:0 atIndex:4];
+    [computeCommandEncoder setBuffer:self->_internal_is_history_invalid offset:0 atIndex:6];
+    [computeCommandEncoder setThreadgroupMemoryLength:5760 atIndex:0];
+    [computeCommandEncoder setThreadgroupMemoryLength:1440 atIndex:1];
+    [computeCommandEncoder setThreadgroupMemoryLength:2880 atIndex:2];
     if (self->_internalRenderResolution.kernelUsesImageblock)
     {
-      [v12 setImageblockWidth:32 height:16];
+      [computeCommandEncoder setImageblockWidth:32 height:16];
     }
 
-    [v12 setComputePipelineState:self->_internalRenderResolution.kernel];
+    [computeCommandEncoder setComputePipelineState:self->_internalRenderResolution.kernel];
     v88.i64[0] = (inputWidth + 31) >> 5;
     v88.i64[1] = (inputHeight + 15) >> 4;
     *&v89 = 1;
     *v85 = xmmword_2398F28A0;
     *&v85[16] = 1;
-    [v12 dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
+    [computeCommandEncoder dispatchThreadgroups:&v88 threadsPerThreadgroup:v85];
     p_tileKernel = &self->_internalOutputResolution.tileKernel;
     if (!self->_internalOutputResolution.tileKernel)
     {
-      if (v12)
+      if (computeCommandEncoder)
       {
         goto LABEL_51;
       }
@@ -693,38 +693,38 @@ LABEL_51:
       goto LABEL_37;
     }
 
-    if (v12)
+    if (computeCommandEncoder)
     {
-      [v12 endEncoding];
+      [computeCommandEncoder endEncoding];
     }
   }
 
   v88.i64[0] = self->_internalOutputResolution.currHistory0;
   v88.i64[1] = self->_internalOutputResolution.currHistory1;
   *&v89 = v79;
-  v50 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  [v50 setTileWidth:32];
-  [v50 setTileHeight:16];
-  [v50 setThreadgroupMemoryLength:19200];
+  renderPassDescriptor2 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  [renderPassDescriptor2 setTileWidth:32];
+  [renderPassDescriptor2 setTileHeight:16];
+  [renderPassDescriptor2 setThreadgroupMemoryLength:19200];
   v51 = 0;
   v52 = 24;
   do
   {
     v53 = v88.i64[v51];
-    v54 = [v50 colorAttachments];
-    v55 = [v54 objectAtIndexedSubscript:v51];
+    colorAttachments5 = [renderPassDescriptor2 colorAttachments];
+    v55 = [colorAttachments5 objectAtIndexedSubscript:v51];
     [v55 setLoadAction:0];
 
-    v56 = [v50 colorAttachments];
-    v57 = [v56 objectAtIndexedSubscript:v51];
+    colorAttachments6 = [renderPassDescriptor2 colorAttachments];
+    v57 = [colorAttachments6 objectAtIndexedSubscript:v51];
     [v57 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v58 = [v50 colorAttachments];
-    v59 = [v58 objectAtIndexedSubscript:v51];
+    colorAttachments7 = [renderPassDescriptor2 colorAttachments];
+    v59 = [colorAttachments7 objectAtIndexedSubscript:v51];
     [v59 setStoreAction:1];
 
-    v60 = [v50 colorAttachments];
-    v61 = [v60 objectAtIndexedSubscript:v51];
+    colorAttachments8 = [renderPassDescriptor2 colorAttachments];
+    v61 = [colorAttachments8 objectAtIndexedSubscript:v51];
     [v61 setTexture:v53];
 
     ++v51;
@@ -732,7 +732,7 @@ LABEL_51:
   }
 
   while (v52);
-  v62 = [v80 renderCommandEncoderWithDescriptor:v50];
+  v62 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor2];
   [(_MTLFXEffect *)self _didCreateRenderCommandEncoder:v62 forEncode:self->super.super.super._encodeID];
   [v62 setTileTexture:p_internalRenderResolution->colorRangeReduced atIndex:0];
   [v62 setTileTexture:self->_internalRenderResolution.pixelData atIndex:1];
@@ -791,11 +791,11 @@ LABEL_57:
   v75 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
-  v4 = [a3 commandBuffer];
+  commandBuffer = [queue commandBuffer];
   [(_MFXTemporalScalingEffectNRS *)self encodeToCommandBuffer:?];
-  [v4 commit];
+  [commandBuffer commit];
 }
 
 - (CGPoint)previousJitterOffset
@@ -809,17 +809,17 @@ LABEL_57:
 
 - (__n128)currentWorldToViewMatrix
 {
-  result = *(a1 + 480);
-  v2 = *(a1 + 496);
-  v3 = *(a1 + 512);
-  v4 = *(a1 + 528);
+  result = *(self + 480);
+  v2 = *(self + 496);
+  v3 = *(self + 512);
+  v4 = *(self + 528);
   return result;
 }
 
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix
 {
   result[30] = a2;
-  result[31] = a3;
+  result[31] = matrix;
   result[32] = a4;
   result[33] = a5;
   return result;
@@ -827,17 +827,17 @@ LABEL_57:
 
 - (__n128)currentViewToClipMatrix
 {
-  result = *(a1 + 544);
-  v2 = *(a1 + 560);
-  v3 = *(a1 + 576);
-  v4 = *(a1 + 592);
+  result = *(self + 544);
+  v2 = *(self + 560);
+  v3 = *(self + 576);
+  v4 = *(self + 592);
   return result;
 }
 
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix
 {
   result[34] = a2;
-  result[35] = a3;
+  result[35] = matrix;
   result[36] = a4;
   result[37] = a5;
   return result;
@@ -845,17 +845,17 @@ LABEL_57:
 
 - (__n128)previousWorldToViewMatrix
 {
-  result = *(a1 + 608);
-  v2 = *(a1 + 624);
-  v3 = *(a1 + 640);
-  v4 = *(a1 + 656);
+  result = *(self + 608);
+  v2 = *(self + 624);
+  v3 = *(self + 640);
+  v4 = *(self + 656);
   return result;
 }
 
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix
 {
   result[38] = a2;
-  result[39] = a3;
+  result[39] = matrix;
   result[40] = a4;
   result[41] = a5;
   return result;
@@ -863,17 +863,17 @@ LABEL_57:
 
 - (__n128)previousViewToClipMatrix
 {
-  result = *(a1 + 672);
-  v2 = *(a1 + 688);
-  v3 = *(a1 + 704);
-  v4 = *(a1 + 720);
+  result = *(self + 672);
+  v2 = *(self + 688);
+  v3 = *(self + 704);
+  v4 = *(self + 720);
   return result;
 }
 
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix
 {
   result[42] = a2;
-  result[43] = a3;
+  result[43] = matrix;
   result[44] = a4;
   result[45] = a5;
   return result;

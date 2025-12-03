@@ -1,5 +1,5 @@
 @interface CBScalablePipe
-- (CBScalablePipe)initWithPipeManager:(id)a3 info:(id)a4;
+- (CBScalablePipe)initWithPipeManager:(id)manager info:(id)info;
 - (id)description;
 - (void)dealloc;
 - (void)setOrphan;
@@ -7,56 +7,56 @@
 
 @implementation CBScalablePipe
 
-- (CBScalablePipe)initWithPipeManager:(id)a3 info:(id)a4
+- (CBScalablePipe)initWithPipeManager:(id)manager info:(id)info
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  infoCopy = info;
   v37.receiver = self;
   v37.super_class = CBScalablePipe;
   v9 = [(CBScalablePipe *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pipeManager, a3);
-    v11 = [[CBPeer alloc] initWithInfo:v8 manager:v7];
+    objc_storeStrong(&v9->_pipeManager, manager);
+    v11 = [[CBPeer alloc] initWithInfo:infoCopy manager:managerCopy];
     peer = v10->_peer;
     v10->_peer = v11;
 
     objc_storeStrong(&v10->_central, v10->_peer);
-    v13 = [v8 objectForKeyedSubscript:@"kCBMsgArgName"];
+    v13 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgName"];
     name = v10->_name;
     v10->_name = v13;
 
-    v15 = [v8 objectForKeyedSubscript:@"kCBMsgArgType"];
+    v15 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgType"];
     v10->_type = [v15 integerValue];
 
-    v16 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgPriority"];
+    v16 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgPriority"];
     v10->_priority = [v16 integerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgReliable"];
+    v17 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgReliable"];
     v10->_reliablePipe = [v17 integerValue] != 0;
 
-    v18 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgPeerType"];
+    v18 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgPeerType"];
     v10->_peerType = [v18 integerValue];
 
-    v19 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgPeerCLVersion"];
+    v19 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgPeerCLVersion"];
     v10->_peerCLVersion = [v19 integerValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgPeerCLFeatures"];
+    v20 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgPeerCLFeatures"];
     v10->_peerCLFeatures = [v20 unsignedIntValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArglocalCLVersion"];
+    v21 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArglocalCLVersion"];
     v10->_localCLVersion = [v21 integerValue];
 
-    v22 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArglocalCLFeatures"];
+    v22 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArglocalCLFeatures"];
     v10->_localCLFeatures = [v22 unsignedIntValue];
 
-    v23 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgSocket"];
+    v23 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgSocket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v8 objectForKeyedSubscript:@"kCBLePipeMsgArgSocket"];
+      v24 = [infoCopy objectForKeyedSubscript:@"kCBLePipeMsgArgSocket"];
       v10->_socket = [v24 intValue];
 
       readStream[0] = 0;

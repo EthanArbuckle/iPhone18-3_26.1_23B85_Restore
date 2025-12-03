@@ -1,51 +1,51 @@
 @interface CRImage_PixelBuffer
-+ (__CVBuffer)_convertPixelBuffer:(__CVBuffer *)a3 toFormat:(unsigned int)a4 iosurfaceBacking:(BOOL)a5;
++ (__CVBuffer)_convertPixelBuffer:(__CVBuffer *)buffer toFormat:(unsigned int)format iosurfaceBacking:(BOOL)backing;
 - (CGImage)cgImage;
-- (CRImage_PixelBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3;
-- (CRImage_PixelBuffer)initWithContentsOfURL:(id)a3 toColorSpace:(int)a4;
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4;
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5;
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6;
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6 format:(unsigned int)a7 hardwareAcceleration:(BOOL)a8 iosurfaceBacking:(BOOL)a9;
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6 format:(unsigned int)a7 hardwareAcceleration:(BOOL)a8 toSurface:(__IOSurface *)a9;
-- (__CVBuffer)_pixelBufferFromUrl:(id)a3;
-- (id)imageByApplyingBinaryMask:(id)a3;
-- (id)imageByConvertingToColorSpace:(int)a3 forceDataCopy:(BOOL)a4;
-- (id)imageByCorrectingFromOrientation:(unsigned int)a3;
-- (id)imageByCroppingRectangle:(CGRect)a3 iosurfaceBacking:(BOOL)a4;
-- (id)imageByCroppingRectangle:(CGRect)a3 toSurface:(__IOSurface *)a4;
+- (CRImage_PixelBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer;
+- (CRImage_PixelBuffer)initWithContentsOfURL:(id)l toColorSpace:(int)space;
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size;
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize;
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode;
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode format:(unsigned int)format hardwareAcceleration:(BOOL)acceleration iosurfaceBacking:(BOOL)backing;
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode format:(unsigned int)format hardwareAcceleration:(BOOL)acceleration toSurface:(__IOSurface *)surface;
+- (__CVBuffer)_pixelBufferFromUrl:(id)url;
+- (id)imageByApplyingBinaryMask:(id)mask;
+- (id)imageByConvertingToColorSpace:(int)space forceDataCopy:(BOOL)copy;
+- (id)imageByCorrectingFromOrientation:(unsigned int)orientation;
+- (id)imageByCroppingRectangle:(CGRect)rectangle iosurfaceBacking:(BOOL)backing;
+- (id)imageByCroppingRectangle:(CGRect)rectangle toSurface:(__IOSurface *)surface;
 - (id)imageByDilating;
 - (id)imageByInvertingIntensity;
-- (id)imageByOverlayingRects:(CGRect *)a3 count:(int64_t)a4 lineWidth:(double)a5 red:(double)a6 green:(double)a7 blue:(double)a8 alpha:(double)a9;
-- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)a3 height:(unint64_t)a4 paddingMode:(unint64_t)a5 alignCenter:(BOOL)a6;
-- (id)imageByScalingToWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (id)imageByOverlayingRects:(CGRect *)rects count:(int64_t)count lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)width height:(unint64_t)height paddingMode:(unint64_t)mode alignCenter:(BOOL)center;
+- (id)imageByScalingToWidth:(unint64_t)width height:(unint64_t)height;
 - (unint64_t)height;
 - (unint64_t)width;
 - (vImage_Buffer)vImage;
 - (void)dealloc;
-- (void)writeToFile:(id)a3;
+- (void)writeToFile:(id)file;
 @end
 
 @implementation CRImage_PixelBuffer
 
 - (unint64_t)height
 {
-  v2 = [(CRImage_PixelBuffer *)self pixelBuffer];
+  pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
 
-  return CVPixelBufferGetHeight(v2);
+  return CVPixelBufferGetHeight(pixelBuffer);
 }
 
 - (unint64_t)width
 {
-  v2 = [(CRImage_PixelBuffer *)self pixelBuffer];
+  pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
 
-  return CVPixelBufferGetWidth(v2);
+  return CVPixelBufferGetWidth(pixelBuffer);
 }
 
-- (CRImage_PixelBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3
+- (CRImage_PixelBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Attempting to initialize CRImage_PixelBuffer with nil CVPixelBufferRef" userInfo:0];
     objc_exception_throw(v11);
@@ -56,7 +56,7 @@
   v4 = [(CRImage *)&v12 init];
   if (v4)
   {
-    v5 = CVPixelBufferRetain(a3);
+    v5 = CVPixelBufferRetain(buffer);
     v4->super._pixelBuffer = v5;
     PixelFormatType = CVPixelBufferGetPixelFormatType(v5);
     if (PixelFormatType <= 875704421)
@@ -109,11 +109,11 @@ LABEL_13:
   return v4;
 }
 
-- (CRImage_PixelBuffer)initWithContentsOfURL:(id)a3 toColorSpace:(int)a4
+- (CRImage_PixelBuffer)initWithContentsOfURL:(id)l toColorSpace:(int)space
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 3)
+  lCopy = l;
+  if (space == 3)
   {
     v12.receiver = self;
     v12.super_class = CRImage_PixelBuffer;
@@ -121,11 +121,11 @@ LABEL_13:
     v8 = v7;
     if (v7)
     {
-      v7->super._pixelBuffer = [(CRImage_PixelBuffer *)v7 _pixelBufferFromUrl:v6];
+      v7->super._pixelBuffer = [(CRImage_PixelBuffer *)v7 _pixelBufferFromUrl:lCopy];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -134,40 +134,40 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v14 = a4;
+      spaceCopy = space;
       _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_ERROR, "[CRImage_PixelBuffer initWithContentsOfURL:toColorSpace:] Unsupported colorspace: %d ", buf, 8u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6 format:(unsigned int)a7 hardwareAcceleration:(BOOL)a8 toSurface:(__IOSurface *)a9
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode format:(unsigned int)format hardwareAcceleration:(BOOL)acceleration toSurface:(__IOSurface *)surface
 {
-  v10 = a8;
-  height = a4.height;
-  width = a4.width;
-  if (*a9)
+  accelerationCopy = acceleration;
+  height = size.height;
+  width = size.width;
+  if (*surface)
   {
-    v17 = [(CRImage_PixelBuffer *)self width:a5];
-    v18 = [(CRImage_PixelBuffer *)self height];
+    v17 = [(CRImage_PixelBuffer *)self width:toSize];
+    height = [(CRImage_PixelBuffer *)self height];
     PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
     pixelBufferOut = 0;
     v20 = *MEMORY[0x1E695E480];
     v21 = 0;
-    if (!CVPixelBufferCreateWithIOSurface(*MEMORY[0x1E695E480], *a9, MEMORY[0x1E695E0F8], &pixelBufferOut))
+    if (!CVPixelBufferCreateWithIOSurface(*MEMORY[0x1E695E480], *surface, MEMORY[0x1E695E0F8], &pixelBufferOut))
     {
       v39 = PixelFormatType;
       v22 = width;
       v23 = height;
-      v24 = (v18 * a3);
-      v25 = (v17 * a3);
+      v24 = (height * scale);
+      v25 = (v17 * scale);
       pixelTransferSessionOut = 0;
       VTPixelTransferSessionCreate(v20, &pixelTransferSessionOut);
       v26 = *MEMORY[0x1E695E4D0];
-      if (v10)
+      if (accelerationCopy)
       {
         v27 = *MEMORY[0x1E695E4D0];
       }
@@ -202,10 +202,10 @@ LABEL_13:
 
       v30 = v28;
       v31 = v29;
-      if (a5)
+      if (toSize)
       {
-        a5->width = v30;
-        a5->height = v31;
+        toSize->width = v30;
+        toSize->height = v31;
       }
 
       v42.width = v22;
@@ -216,11 +216,11 @@ LABEL_13:
       VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983DB8], v34);
       VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983E58], v26);
       v35 = pixelTransferSessionOut;
-      v36 = [(CRImage_PixelBuffer *)self pixelBuffer];
-      VTPixelTransferSessionTransferImage(v35, v36, pixelBufferOut);
+      pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
+      VTPixelTransferSessionTransferImage(v35, pixelBuffer, pixelBufferOut);
       VTPixelTransferSessionInvalidate(pixelTransferSessionOut);
       CFRelease(pixelTransferSessionOut);
-      if (v39 == a7)
+      if (v39 == format)
       {
         v21 = pixelBufferOut;
       }
@@ -234,9 +234,9 @@ LABEL_13:
 
   else
   {
-    v21 = [(CRImage_PixelBuffer *)self pixelBufferWithScale:a5 paddedToSize:a6 adjustedToSize:*&a7 paddingMode:a8 format:1 hardwareAcceleration:a3 iosurfaceBacking:a4.width, a4.height];
+    v21 = [(CRImage_PixelBuffer *)self pixelBufferWithScale:toSize paddedToSize:mode adjustedToSize:*&format paddingMode:acceleration format:1 hardwareAcceleration:scale iosurfaceBacking:size.width, size.height];
     IOSurface = CVPixelBufferGetIOSurface(v21);
-    *a9 = IOSurface;
+    *surface = IOSurface;
     if (IOSurface)
     {
       CFRetain(IOSurface);
@@ -251,19 +251,19 @@ LABEL_13:
   return v21;
 }
 
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6 format:(unsigned int)a7 hardwareAcceleration:(BOOL)a8 iosurfaceBacking:(BOOL)a9
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode format:(unsigned int)format hardwareAcceleration:(BOOL)acceleration iosurfaceBacking:(BOOL)backing
 {
-  v9 = a9;
-  v10 = a8;
-  height = a4.height;
-  width = a4.width;
-  v16 = [(CRImage_PixelBuffer *)self width:a5];
-  v17 = [(CRImage_PixelBuffer *)self height];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v19 = v18;
-  if (v9)
+  backingCopy = backing;
+  accelerationCopy = acceleration;
+  height = size.height;
+  width = size.width;
+  v16 = [(CRImage_PixelBuffer *)self width:toSize];
+  height = [(CRImage_PixelBuffer *)self height];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v19 = dictionary;
+  if (backingCopy)
   {
-    [(__CFDictionary *)v18 setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
+    [(__CFDictionary *)dictionary setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
   }
 
   PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
@@ -281,7 +281,7 @@ LABEL_13:
     pixelTransferSessionOut = 0;
     VTPixelTransferSessionCreate(v23, &pixelTransferSessionOut);
     v25 = *MEMORY[0x1E695E4D0];
-    if (v10)
+    if (accelerationCopy)
     {
       v26 = *MEMORY[0x1E695E4D0];
     }
@@ -294,8 +294,8 @@ LABEL_13:
     VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983DF8], v26);
     VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983DF0], v26);
     VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983E30], *MEMORY[0x1E69840E0]);
-    v27 = (v16 * a3);
-    v28 = (v17 * a3);
+    v27 = (v16 * scale);
+    v28 = (height * scale);
     if (v27 >= v21)
     {
       v27 = width;
@@ -308,10 +308,10 @@ LABEL_13:
 
     v29 = v27;
     v30 = v28;
-    if (a5)
+    if (toSize)
     {
-      a5->width = v29;
-      a5->height = v30;
+      toSize->width = v29;
+      toSize->height = v30;
     }
 
     v40.width = v21;
@@ -322,11 +322,11 @@ LABEL_13:
     VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983DB8], v33);
     VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x1E6983E58], v25);
     v34 = pixelTransferSessionOut;
-    v35 = [(CRImage_PixelBuffer *)self pixelBuffer];
-    VTPixelTransferSessionTransferImage(v34, v35, pixelBufferOut);
+    pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
+    VTPixelTransferSessionTransferImage(v34, pixelBuffer, pixelBufferOut);
     VTPixelTransferSessionInvalidate(pixelTransferSessionOut);
     CFRelease(pixelTransferSessionOut);
-    if (PixelFormatType == a7)
+    if (PixelFormatType == format)
     {
       v24 = pixelBufferOut;
     }
@@ -341,16 +341,16 @@ LABEL_13:
   return v24;
 }
 
-- (id)imageByConvertingToColorSpace:(int)a3 forceDataCopy:(BOOL)a4
+- (id)imageByConvertingToColorSpace:(int)space forceDataCopy:(BOOL)copy
 {
-  v4 = a4;
-  v5 = *&a3;
+  copyCopy = copy;
+  v5 = *&space;
   v15 = *MEMORY[0x1E69E9840];
-  if ([(CRImage *)self colorSpace]== a3 && !v4)
+  if ([(CRImage *)self colorSpace]== space && !copyCopy)
   {
-    v7 = self;
+    selfCopy = self;
 LABEL_18:
-    v11 = v7;
+    v11 = selfCopy;
     goto LABEL_19;
   }
 
@@ -359,7 +359,7 @@ LABEL_18:
     if (v5 == 3)
     {
       v8 = 875704422;
-      if (v4)
+      if (copyCopy)
       {
         goto LABEL_17;
       }
@@ -381,10 +381,10 @@ LABEL_18:
       }
 
       v8 = 32;
-      if (v4)
+      if (copyCopy)
       {
 LABEL_17:
-        v7 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:v5 forceDataCopy:v4];
+        selfCopy = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:v5 forceDataCopy:copyCopy];
         goto LABEL_18;
       }
     }
@@ -393,7 +393,7 @@ LABEL_17:
   else
   {
     v8 = 1278226488;
-    if (v4)
+    if (copyCopy)
     {
       goto LABEL_17;
     }
@@ -417,14 +417,14 @@ LABEL_19:
   return v11;
 }
 
-- (id)imageByCroppingRectangle:(CGRect)a3 toSurface:(__IOSurface *)a4
+- (id)imageByCroppingRectangle:(CGRect)rectangle toSurface:(__IOSurface *)surface
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = *a4;
-  if (*a4)
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  v9 = *surface;
+  if (*surface)
   {
     pixelBufferOut = 0;
     if (CVPixelBufferCreateWithIOSurface(*MEMORY[0x1E695E480], v9, MEMORY[0x1E695E0F8], &pixelBufferOut))
@@ -434,8 +434,8 @@ LABEL_19:
 
     else
     {
-      v13 = [(CRImage_PixelBuffer *)self pixelBuffer];
-      CRCropRectangleFromPixelBuffer(v13, pixelBufferOut, x, y, width, height);
+      pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
+      CRCropRectangleFromPixelBuffer(pixelBuffer, pixelBufferOut, x, y, width, height);
       v14 = [CRImage_PixelBuffer alloc];
       v10 = [(CRImage_PixelBuffer *)v14 initWithCVPixelBuffer:pixelBufferOut];
       CVPixelBufferRelease(pixelBufferOut);
@@ -444,42 +444,42 @@ LABEL_19:
 
   else
   {
-    v10 = [(CRImage_PixelBuffer *)self imageByCroppingRectangle:1 iosurfaceBacking:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    v10 = [(CRImage_PixelBuffer *)self imageByCroppingRectangle:1 iosurfaceBacking:rectangle.origin.x, rectangle.origin.y, rectangle.size.width, rectangle.size.height];
     IOSurface = CVPixelBufferGetIOSurface([(CRImage_PixelBuffer *)v10 pixelBuffer]);
-    *a4 = IOSurface;
+    *surface = IOSurface;
     CFRetain(IOSurface);
   }
 
   return v10;
 }
 
-- (id)imageByCroppingRectangle:(CGRect)a3 iosurfaceBacking:(BOOL)a4
+- (id)imageByCroppingRectangle:(CGRect)rectangle iosurfaceBacking:(BOOL)backing
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CRImage_PixelBuffer *)self width];
-  v11 = [(CRImage_PixelBuffer *)self height];
-  v31.size.width = v10;
-  v31.size.height = v11;
+  backingCopy = backing;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  width = [(CRImage_PixelBuffer *)self width];
+  height = [(CRImage_PixelBuffer *)self height];
+  v31.size.width = width;
+  v31.size.height = height;
   v31.origin.x = 0.0;
   v31.origin.y = 0.0;
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
   v30.size.height = height;
-  if (!CGRectEqualToRect(v30, v31) || v4)
+  if (!CGRectEqualToRect(v30, v31) || backingCopy)
   {
-    if (v4 || [(CRImage *)self colorSpace]&& [(CRImage *)self colorSpace]!= 1 && [(CRImage *)self colorSpace]!= 2)
+    if (backingCopy || [(CRImage *)self colorSpace]&& [(CRImage *)self colorSpace]!= 1 && [(CRImage *)self colorSpace]!= 2)
     {
       PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
-      v14 = [MEMORY[0x1E695DF90] dictionary];
-      v15 = v14;
-      if (v4)
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v15 = dictionary;
+      if (backingCopy)
       {
-        [(__CFDictionary *)v14 setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
+        [(__CFDictionary *)dictionary setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
       }
 
       texture[0] = 0;
@@ -490,25 +490,25 @@ LABEL_19:
 
       else
       {
-        v19 = [(CRImage_PixelBuffer *)self pixelBuffer];
-        CRCropRectangleFromPixelBuffer(v19, texture[0], x, y, width, height);
+        pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
+        CRCropRectangleFromPixelBuffer(pixelBuffer, texture[0], x, y, width, height);
         v20 = [CRImage_PixelBuffer alloc];
         v16 = [(CRImage_PixelBuffer *)v20 initWithCVPixelBuffer:texture[0]];
         CVPixelBufferRelease(texture[0]);
       }
 
-      v12 = v16;
+      selfCopy = v16;
     }
 
     else
     {
-      v12 = objc_alloc_init(CRImage);
-      [(CRImage *)v12 setColorSpace:[(CRImage *)self colorSpace]];
+      selfCopy = objc_alloc_init(CRImage);
+      [(CRImage *)selfCopy setColorSpace:[(CRImage *)self colorSpace]];
       v17 = objc_opt_class();
-      v18 = [(CRImage *)self colorSpace];
+      colorSpace = [(CRImage *)self colorSpace];
       if (v17)
       {
-        [v17 allocateVImageBufferWithWidth:width height:height colorSpace:v18];
+        [v17 allocateVImageBufferWithWidth:width height:height colorSpace:colorSpace];
       }
 
       else
@@ -519,8 +519,8 @@ LABEL_19:
 
       *texture = v27;
       v26 = v28;
-      [(CRImage *)v12 setVImage:texture];
-      [(CRImage *)v12 setVImageDataIsCopy:1];
+      [(CRImage *)selfCopy setVImage:texture];
+      [(CRImage *)selfCopy setVImageDataIsCopy:1];
       if ([(CRImage *)self colorSpace])
       {
         v21 = 4;
@@ -531,10 +531,10 @@ LABEL_19:
         v21 = 1;
       }
 
-      v22 = [(CRImage_PixelBuffer *)self pixelBuffer];
-      if (v12)
+      pixelBuffer2 = [(CRImage_PixelBuffer *)self pixelBuffer];
+      if (selfCopy)
       {
-        [(CRImage_PixelBuffer *)v12 vImage];
+        [(CRImage_PixelBuffer *)selfCopy vImage];
         v23 = texture[0];
       }
 
@@ -545,46 +545,46 @@ LABEL_19:
         v26 = 0u;
       }
 
-      CRCopyRectangleCropMemoryFromPixelBuffer(v22, v23, v21, x, y, width, height);
+      CRCopyRectangleCropMemoryFromPixelBuffer(pixelBuffer2, v23, v21, x, y, width, height);
     }
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)imageByCorrectingFromOrientation:(unsigned int)a3
+- (id)imageByCorrectingFromOrientation:(unsigned int)orientation
 {
-  if (a3 - 1 <= 1)
+  if (orientation - 1 <= 1)
   {
-    v4 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v6 = [(CRImage_PixelBuffer *)self width];
-  v7 = [(CRImage_PixelBuffer *)self height];
+  width = [(CRImage_PixelBuffer *)self width];
+  height = [(CRImage_PixelBuffer *)self height];
   v8 = 0;
-  if (a3 <= 8)
+  if (orientation <= 8)
   {
-    if (((1 << a3) & 0x18) != 0)
+    if (((1 << orientation) & 0x18) != 0)
     {
       v8 = *MEMORY[0x1E6983FF0];
     }
 
     else
     {
-      if (((1 << a3) & 0xC0) != 0)
+      if (((1 << orientation) & 0xC0) != 0)
       {
         v9 = MEMORY[0x1E6984000];
       }
 
       else
       {
-        if (((1 << a3) & 0x120) == 0)
+        if (((1 << orientation) & 0x120) == 0)
         {
           goto LABEL_11;
         }
@@ -593,8 +593,8 @@ LABEL_19:
       }
 
       v8 = *v9;
-      v6 = [(CRImage_PixelBuffer *)self height];
-      v7 = [(CRImage_PixelBuffer *)self width];
+      width = [(CRImage_PixelBuffer *)self height];
+      height = [(CRImage_PixelBuffer *)self width];
     }
   }
 
@@ -606,28 +606,28 @@ LABEL_11:
   VTSessionSetProperty(pixelRotationSessionOut, *MEMORY[0x1E6983D98], v8);
   VTSessionSetProperty(pixelRotationSessionOut, *MEMORY[0x1E6983DF0], *MEMORY[0x1E695E4C0]);
   PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
-  v12 = CVPixelBufferCreate(v10, v6, v7, PixelFormatType, MEMORY[0x1E695E0F8], &destinationBuffer);
+  v12 = CVPixelBufferCreate(v10, width, height, PixelFormatType, MEMORY[0x1E695E0F8], &destinationBuffer);
   v13 = pixelRotationSessionOut;
   if (v12)
   {
     CFRelease(pixelRotationSessionOut);
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = [(CRImage_PixelBuffer *)self pixelBuffer];
-    VTPixelRotationSessionRotateImage(v13, v14, destinationBuffer);
+    pixelBuffer = [(CRImage_PixelBuffer *)self pixelBuffer];
+    VTPixelRotationSessionRotateImage(v13, pixelBuffer, destinationBuffer);
     VTPixelRotationSessionInvalidate(pixelRotationSessionOut);
     CFRelease(pixelRotationSessionOut);
     v15 = [CRImage_PixelBuffer alloc];
-    v4 = [(CRImage_PixelBuffer *)v15 initWithCVPixelBuffer:destinationBuffer];
+    selfCopy = [(CRImage_PixelBuffer *)v15 initWithCVPixelBuffer:destinationBuffer];
     CVPixelBufferRelease(destinationBuffer);
   }
 
 LABEL_14:
 
-  return v4;
+  return selfCopy;
 }
 
 - (vImage_Buffer)vImage
@@ -651,48 +651,48 @@ LABEL_14:
 - (CGImage)cgImage
 {
   v2 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v3 = [(CRImage *)v2 cgImage];
+  cgImage = [(CRImage *)v2 cgImage];
 
-  return v3;
+  return cgImage;
 }
 
-- (id)imageByScalingToWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)imageByScalingToWidth:(unint64_t)width height:(unint64_t)height
 {
   v6 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v7 = [(CRImage *)v6 imageByScalingToWidth:a3 height:a4];
+  v7 = [(CRImage *)v6 imageByScalingToWidth:width height:height];
 
   return v7;
 }
 
-- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)a3 height:(unint64_t)a4 paddingMode:(unint64_t)a5 alignCenter:(BOOL)a6
+- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)width height:(unint64_t)height paddingMode:(unint64_t)mode alignCenter:(BOOL)center
 {
-  v6 = a6;
-  v11 = [(CRImage *)self colorSpace];
+  centerCopy = center;
+  colorSpace = [(CRImage *)self colorSpace];
   v12 = [CRImage alloc];
-  if (v11)
+  if (colorSpace)
   {
     v13 = [(CRImage *)v12 initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:[(CRImage *)self colorSpace]];
-    v14 = [(CRImage *)v13 imageByPaddingToRatioAndScalingToWidth:a3 height:a4 paddingMode:a5 alignCenter:v6];
+    v14 = [(CRImage *)v13 imageByPaddingToRatioAndScalingToWidth:width height:height paddingMode:mode alignCenter:centerCopy];
   }
 
   else
   {
-    v14 = [(CRImage *)v12 initWithWidth:a3 height:a4 colorSpace:0];
-    v15 = (([(CRImage_PixelBuffer *)self height]* a3) / a4);
-    if ([(CRImage_PixelBuffer *)self width]> v15)
+    v14 = [(CRImage *)v12 initWithWidth:width height:height colorSpace:0];
+    width = (([(CRImage_PixelBuffer *)self height]* width) / height);
+    if ([(CRImage_PixelBuffer *)self width]> width)
     {
-      v15 = [(CRImage_PixelBuffer *)self width];
+      width = [(CRImage_PixelBuffer *)self width];
     }
 
-    v16 = (([(CRImage_PixelBuffer *)self width]* a4) / a3);
-    if ([(CRImage_PixelBuffer *)self height]> v16)
+    height = (([(CRImage_PixelBuffer *)self width]* height) / width);
+    if ([(CRImage_PixelBuffer *)self height]> height)
     {
-      v16 = [(CRImage_PixelBuffer *)self height];
+      height = [(CRImage_PixelBuffer *)self height];
     }
 
-    if (v6)
+    if (centerCopy)
     {
-      v17 = (v15 - [(CRImage_PixelBuffer *)self width]) >> 1;
+      v17 = (width - [(CRImage_PixelBuffer *)self width]) >> 1;
     }
 
     else
@@ -700,19 +700,19 @@ LABEL_14:
       v17 = 0;
     }
 
-    v25 = [(CRImage_PixelBuffer *)self height];
-    v13 = [[CRImage alloc] initWithWidth:v15 height:v16 colorSpace:0];
+    height2 = [(CRImage_PixelBuffer *)self height];
+    v13 = [[CRImage alloc] initWithWidth:width height:height colorSpace:0];
     CVPixelBufferLockBaseAddress([(CRImage_PixelBuffer *)self pixelBuffer], 1uLL);
     BaseAddress = CVPixelBufferGetBaseAddress([(CRImage_PixelBuffer *)self pixelBuffer]);
     Width = CVPixelBufferGetWidth([(CRImage_PixelBuffer *)self pixelBuffer]);
     Height = CVPixelBufferGetHeight([(CRImage_PixelBuffer *)self pixelBuffer]);
     BytesPerRow = CVPixelBufferGetBytesPerRow([(CRImage_PixelBuffer *)self pixelBuffer]);
     CVPixelBufferGetPlaneCount([(CRImage_PixelBuffer *)self pixelBuffer]);
-    v22 = CRImagePaddingValueForMode(a5, BaseAddress, Width, Height, BytesPerRow);
+    v22 = CRImagePaddingValueForMode(mode, BaseAddress, Width, Height, BytesPerRow);
     memset(v13->_vImage.data, v22, v13->_vImage.height * v13->_vImage.rowBytes);
     if (Height)
     {
-      v23 = (v16 - v25) >> 1;
+      v23 = (height - height2) >> 1;
       do
       {
         memcpy(v13->_vImage.data + v13->_vImage.rowBytes * v23 + v17, BaseAddress, Width);
@@ -734,68 +734,68 @@ LABEL_14:
 - (id)imageByDilating
 {
   v2 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v3 = [(CRImage *)v2 imageByDilating];
+  imageByDilating = [(CRImage *)v2 imageByDilating];
 
-  return v3;
+  return imageByDilating;
 }
 
-- (id)imageByApplyingBinaryMask:(id)a3
+- (id)imageByApplyingBinaryMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   v5 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v6 = [(CRImage *)v5 imageByApplyingBinaryMask:v4];
+  v6 = [(CRImage *)v5 imageByApplyingBinaryMask:maskCopy];
 
   return v6;
 }
 
-- (void)writeToFile:(id)a3
+- (void)writeToFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v4 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  [(CRImage *)v4 writeToFile:v5];
+  [(CRImage *)v4 writeToFile:fileCopy];
 }
 
 - (id)imageByInvertingIntensity
 {
   v2 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v3 = [(CRImage *)v2 imageByInvertingIntensity];
+  imageByInvertingIntensity = [(CRImage *)v2 imageByInvertingIntensity];
 
-  return v3;
+  return imageByInvertingIntensity;
 }
 
-- (id)imageByOverlayingRects:(CGRect *)a3 count:(int64_t)a4 lineWidth:(double)a5 red:(double)a6 green:(double)a7 blue:(double)a8 alpha:(double)a9
+- (id)imageByOverlayingRects:(CGRect *)rects count:(int64_t)count lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v16 = [[CRImage alloc] initWithCVPixelBuffer:[(CRImage_PixelBuffer *)self pixelBuffer] toColorSpace:1];
-  v17 = [(CRImage *)v16 imageByOverlayingRects:a3 count:a4 strings:0 lineWidth:a5 red:a6 green:a7 blue:a8 alpha:a9];
+  v17 = [(CRImage *)v16 imageByOverlayingRects:rects count:count strings:0 lineWidth:width red:red green:green blue:blue alpha:alpha];
 
   return v17;
 }
 
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
 
-  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:0 paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:a3 format:width, height];
+  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:0 paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:scale format:width, height];
 }
 
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer]);
 
-  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:a5 paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:a3 format:width, height];
+  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:toSize paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:scale format:width, height];
 }
 
-- (CRImage_PixelBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6
+- (CRImage_PixelBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer:a5]);
+  height = size.height;
+  width = size.width;
+  PixelFormatType = CVPixelBufferGetPixelFormatType([(CRImage_PixelBuffer *)self pixelBuffer:toSize]);
 
-  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:a5 paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:a3 format:width, height];
+  return [(CRImage_PixelBuffer *)self pixelBufferWithScale:toSize paddedToSize:1 adjustedToSize:PixelFormatType paddingMode:scale format:width, height];
 }
 
 - (void)dealloc
@@ -812,15 +812,15 @@ LABEL_14:
   [(CRImage *)&v4 dealloc];
 }
 
-- (__CVBuffer)_pixelBufferFromUrl:(id)a3
+- (__CVBuffer)_pixelBufferFromUrl:(id)url
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  urlCopy = url;
   v4 = MEMORY[0x1E695F658];
   v18 = *MEMORY[0x1E695F948];
   v19[0] = MEMORY[0x1E695E118];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v6 = [v4 imageWithContentsOfURL:v3 options:v5];
+  v6 = [v4 imageWithContentsOfURL:urlCopy options:v5];
 
   v7 = [objc_alloc(MEMORY[0x1E695F620]) initWithOptions:0];
   [v6 extent];
@@ -844,24 +844,24 @@ LABEL_14:
   return v13;
 }
 
-+ (__CVBuffer)_convertPixelBuffer:(__CVBuffer *)a3 toFormat:(unsigned int)a4 iosurfaceBacking:(BOOL)a5
++ (__CVBuffer)_convertPixelBuffer:(__CVBuffer *)buffer toFormat:(unsigned int)format iosurfaceBacking:(BOOL)backing
 {
-  v5 = a5;
+  backingCopy = backing;
   pixelTransferSessionOut = 0;
   v8 = *MEMORY[0x1E695E480];
   VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &pixelTransferSessionOut);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = v11;
-  if (v5)
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v12 = dictionary;
+  if (backingCopy)
   {
-    [(__CFDictionary *)v11 setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
+    [(__CFDictionary *)dictionary setObject:MEMORY[0x1E695E0F8] forKey:*MEMORY[0x1E69660D8]];
   }
 
   v15 = 0;
-  CVPixelBufferCreate(v8, Width, Height, a4, v12, &v15);
-  VTPixelTransferSessionTransferImage(pixelTransferSessionOut, a3, v15);
+  CVPixelBufferCreate(v8, Width, Height, format, v12, &v15);
+  VTPixelTransferSessionTransferImage(pixelTransferSessionOut, buffer, v15);
   VTPixelTransferSessionInvalidate(pixelTransferSessionOut);
   CFRelease(pixelTransferSessionOut);
   v13 = v15;

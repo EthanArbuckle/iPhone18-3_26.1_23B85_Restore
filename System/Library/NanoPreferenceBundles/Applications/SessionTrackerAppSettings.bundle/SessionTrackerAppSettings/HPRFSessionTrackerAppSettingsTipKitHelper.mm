@@ -14,18 +14,18 @@
 
 + (void)sendWorkoutPlaylistSelectedTipEvent
 {
-  v0 = [BiomeLibrary() Discoverability];
+  discoverability = [BiomeLibrary() Discoverability];
   swift_unknownObjectRelease();
-  v1 = [v0 Signals];
+  signals = [discoverability Signals];
   swift_unknownObjectRelease();
-  v2 = [v1 source];
+  source = [signals source];
 
   v3 = objc_allocWithZone(BMDiscoverabilitySignals);
   v4 = sub_22864();
   v5 = sub_22864();
   v6 = [v3 initWithContentIdentifier:v4 context:v5 osBuild:0 userInfo:0];
 
-  [v2 sendEvent:v6];
+  [source sendEvent:v6];
   sub_22264();
 }
 

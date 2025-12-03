@@ -1,48 +1,48 @@
 @interface VKMapCanvas
-+ (BOOL)supportsMapType:(int)a3 scale:(int)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToCoordinate:(CGPoint)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToMapPoint:(CGPoint)a3;
++ (BOOL)supportsMapType:(int)type scale:(int)scale;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToCoordinate:(CGPoint)coordinate;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToMapPoint:(CGPoint)point;
 - (BOOL)_isGlobeActive;
-- (CGPoint)convertCoordinateToPoint:(id)a3;
-- (CGPoint)convertMapPointToPoint:(id)a3;
+- (CGPoint)convertCoordinateToPoint:(id)point;
+- (CGPoint)convertMapPointToPoint:(id)point;
 - (NSArray)overlays;
 - (NSArray)visibleTileSets;
 - (VKInteractiveMapDelegate)delegate;
-- (VKMapCanvas)initWithMapEngine:(void *)a3 inBackground:(BOOL)a4;
+- (VKMapCanvas)initWithMapEngine:(void *)engine inBackground:(BOOL)background;
 - (VKPuckAnimator)puckAnimator;
 - (__n128)visibleTileSets;
 - (id).cxx_construct;
 - (id)annotationCoordinateTest;
 - (id)annotationRectTest;
 - (id)attributionsForCurrentRegion;
-- (id)consoleString:(BOOL)a3;
+- (id)consoleString:(BOOL)string;
 - (id)detailedDescription;
 - (id)globeAnnotationCoordinateTest;
 - (id)globeAnnotationRectTest;
-- (id)markerAtScreenPoint:(CGPoint)a3 enableExtendedFeatureMarkers:(BOOL)a4;
-- (optional<float>)_zoomLevelForCanvasSize:(CGSize)a3;
+- (id)markerAtScreenPoint:(CGPoint)point enableExtendedFeatureMarkers:(BOOL)markers;
+- (optional<float>)_zoomLevelForCanvasSize:(CGSize)size;
 - (uint64_t)observeValueForKeyPath:ofObject:change:context:;
-- (void)addOverlay:(id)a3;
+- (void)addOverlay:(id)overlay;
 - (void)dealloc;
-- (void)debugHighlightObjectAtPoint:(CGPoint)a3 highlightTarget:(unsigned __int8)a4;
+- (void)debugHighlightObjectAtPoint:(CGPoint)point highlightTarget:(unsigned __int8)target;
 - (void)didBecomeActive;
 - (void)didBecomeInActive;
-- (void)goToTileX:(int)a3 Y:(int)a4 Z:(int)a5 tileSize:(int)a6;
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4;
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)goToTileX:(int)x Y:(int)y Z:(int)z tileSize:(int)size;
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay;
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)observeValueForKeyPath:ofObject:change:context:;
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4;
-- (void)removeOverlay:(id)a3;
-- (void)setCameraHorizontalOffset:(double)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setCanonicalSkyHeight:(double)a3;
-- (void)setForceRasterizationForGlobe:(BOOL)a3;
-- (void)setMapType:(int)a3 animated:(BOOL)a4;
-- (void)transferStateFromCanvas:(id)a3;
-- (void)transitionToTracking:(BOOL)a3 mapMode:(int64_t)a4 startLocation:(id)a5 startCourse:(double)a6 cameraController:(id)a7 pounceCompletionHandler:(id)a8;
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options;
+- (void)removeOverlay:(id)overlay;
+- (void)setCameraHorizontalOffset:(double)offset duration:(double)duration timingFunction:(id)function;
+- (void)setCanonicalSkyHeight:(double)height;
+- (void)setForceRasterizationForGlobe:(BOOL)globe;
+- (void)setMapType:(int)type animated:(BOOL)animated;
+- (void)transferStateFromCanvas:(id)canvas;
+- (void)transitionToTracking:(BOOL)tracking mapMode:(int64_t)mode startLocation:(id)location startCourse:(double)course cameraController:(id)controller pounceCompletionHandler:(id)handler;
 - (void)updateCameraForFrameResize;
 - (void)updateOverlays;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
 - (void)visibleTileSets;
 @end
 
@@ -100,11 +100,11 @@
         }
 
 LABEL_13:
-        v13 = [(VKCameraController *)self->super._cameraController cameraDelegate];
-        v14 = v13;
-        if (v13)
+        cameraDelegate = [(VKCameraController *)self->super._cameraController cameraDelegate];
+        v14 = cameraDelegate;
+        if (cameraDelegate)
         {
-          [v13 willBeginRegionChangeAccess:0];
+          [cameraDelegate willBeginRegionChangeAccess:0];
         }
 
         else
@@ -117,8 +117,8 @@ LABEL_13:
         [(VKCamera *)self->super._vkCamera._obj depthForViewWidth:exp2((v17 - val))];
         v19 = v18;
         v20 = self->super._vkCamera._obj;
-        v21 = [(VKCamera *)v20 footprint];
-        [v21 maxDepth];
+        footprint = [(VKCamera *)v20 footprint];
+        [footprint maxDepth];
         v23 = v22;
 
         v24 = self->super._vkCamera._obj;
@@ -137,10 +137,10 @@ LABEL_13:
         if (BYTE8(v38) == 1)
         {
           v26 = self->super._vkCamera._obj;
-          v27 = [(VKCamera *)v26 position];
-          v28 = *v27;
-          v29 = v27[1];
-          v30 = v27[2];
+          position = [(VKCamera *)v26 position];
+          v28 = *position;
+          v29 = position[1];
+          v30 = position[2];
 
           if ((BYTE8(v38) & 1) == 0)
           {
@@ -156,8 +156,8 @@ LABEL_13:
         }
 
         [(VKCameraController *)self->super._cameraController updateCameraToPositionOrientationLimits];
-        v33 = [(VKCameraController *)self->super._cameraController cameraDelegate];
-        [v33 didEndRegionChangeAccess:v39];
+        cameraDelegate2 = [(VKCameraController *)self->super._cameraController cameraDelegate];
+        [cameraDelegate2 didEndRegionChangeAccess:v39];
 
         self->_lastValidCanvasSizeZoomLevel.var0.__val_ = val;
         self->_lastValidCanvasSizeZoomLevel.__engaged_ = v12;
@@ -284,11 +284,11 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)setForceRasterizationForGlobe:(BOOL)a3
+- (void)setForceRasterizationForGlobe:(BOOL)globe
 {
-  if (self->_forceRasterizationForGlobe != a3)
+  if (self->_forceRasterizationForGlobe != globe)
   {
-    self->_forceRasterizationForGlobe = a3;
+    self->_forceRasterizationForGlobe = globe;
     md::OverlayContainer::belowOverlays(&v12, self->_overlayContainer.__ptr_);
     v4 = v12;
     v5 = v13;
@@ -355,7 +355,7 @@ LABEL_12:
   }
 }
 
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options
 {
   v8[3] = *MEMORY[0x1E69E9840];
   std::string::basic_string[abi:nn200100]<0>(v8, "Last Canvas Size");
@@ -365,32 +365,32 @@ LABEL_12:
   std::vector<gdc::DebugTreeValue>::__init_with_size[abi:nn200100]<gdc::DebugTreeValue const*,gdc::DebugTreeValue const*>(v5, v6, v8, 2uLL);
 }
 
-- (void)setCanonicalSkyHeight:(double)a3
+- (void)setCanonicalSkyHeight:(double)height
 {
-  self->_canonicalSkyHeight = a3;
+  self->_canonicalSkyHeight = height;
   [(MDRenderTarget *)self->super._displayTarget size];
   if (v4 > 0.0)
   {
     v5 = v4;
     canonicalSkyHeight = self->_canonicalSkyHeight;
-    v8 = [(VKScreenCanvas *)self cameraController];
-    v7 = [v8 vkCamera];
-    [v7 setFractionOfScreenAboveFarClipPlaneAtCanonicalPitch:canonicalSkyHeight / v5];
+    cameraController = [(VKScreenCanvas *)self cameraController];
+    vkCamera = [cameraController vkCamera];
+    [vkCamera setFractionOfScreenAboveFarClipPlaneAtCanonicalPitch:canonicalSkyHeight / v5];
   }
 }
 
-- (void)setCameraHorizontalOffset:(double)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setCameraHorizontalOffset:(double)offset duration:(double)duration timingFunction:(id)function
 {
-  v8 = a5;
+  functionCopy = function;
   [(VKAnimation *)self->_horizontalOffsetAnimation stop];
-  if (a4 <= 0.0 || v8 == 0)
+  if (duration <= 0.0 || functionCopy == 0)
   {
     [(MDRenderTarget *)self->super._displayTarget size];
     v10 = 0.0;
     if (v11 > 0.0)
     {
       [(MDRenderTarget *)self->super._displayTarget size];
-      v10 = a3 / v12;
+      v10 = offset / v12;
     }
 
     [(VKCamera *)self->super._vkCamera._obj setHorizontalOffset:v10];
@@ -400,7 +400,7 @@ LABEL_12:
   else
   {
     objc_initWeak(&location, self);
-    v13 = [[VKTimedAnimation alloc] initWithDuration:a4];
+    v13 = [[VKTimedAnimation alloc] initWithDuration:duration];
     horizontalOffsetAnimation = self->_horizontalOffsetAnimation;
     self->_horizontalOffsetAnimation = v13;
 
@@ -416,9 +416,9 @@ LABEL_12:
     v21[2] = __65__VKMapCanvas_setCameraHorizontalOffset_duration_timingFunction___block_invoke;
     v21[3] = &unk_1E7B305F8;
     objc_copyWeak(v23, &location);
-    v22 = v8;
+    v22 = functionCopy;
     v23[1] = *&v19;
-    v23[2] = *&a3;
+    v23[2] = *&offset;
     [(VKTimedAnimation *)self->_horizontalOffsetAnimation setStepHandler:v21];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -459,17 +459,17 @@ void __65__VKMapCanvas_setCameraHorizontalOffset_duration_timingFunction___block
   *(v1 + 696) = 0;
 }
 
-- (void)transitionToTracking:(BOOL)a3 mapMode:(int64_t)a4 startLocation:(id)a5 startCourse:(double)a6 cameraController:(id)a7 pounceCompletionHandler:(id)a8
+- (void)transitionToTracking:(BOOL)tracking mapMode:(int64_t)mode startLocation:(id)location startCourse:(double)course cameraController:(id)controller pounceCompletionHandler:(id)handler
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v13 = a3;
-  v15 = a7;
-  v16 = a8;
-  if (a4 == 1)
+  var1 = location.var1;
+  var0 = location.var0;
+  trackingCopy = tracking;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if (mode == 1)
   {
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 postNotificationName:@"VKPounceWillStartNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VKPounceWillStartNotification" object:self userInfo:0];
   }
 
   objc_opt_class();
@@ -478,17 +478,17 @@ void __65__VKMapCanvas_setCameraHorizontalOffset_duration_timingFunction___block
     [(VKCameraController *)self->super._cameraController stopRegionAnimation];
   }
 
-  [(VKScreenCanvas *)self setCameraController:v15];
-  [v15 setScreenCanvas:self];
+  [(VKScreenCanvas *)self setCameraController:controllerCopy];
+  [controllerCopy setScreenCanvas:self];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __111__VKMapCanvas_transitionToTracking_mapMode_startLocation_startCourse_cameraController_pounceCompletionHandler___block_invoke;
   v19[3] = &unk_1E7B305D0;
-  v18 = v16;
+  v18 = handlerCopy;
   v20 = v18;
-  v21 = a4;
+  modeCopy = mode;
   v19[4] = self;
-  [v15 startWithPounce:v13 startLocation:v19 startCourse:var0 pounceCompletionHandler:{var1, a6}];
+  [controllerCopy startWithPounce:trackingCopy startLocation:v19 startCourse:var0 pounceCompletionHandler:{var1, course}];
 }
 
 void __111__VKMapCanvas_transitionToTracking_mapMode_startLocation_startCourse_cameraController_pounceCompletionHandler___block_invoke(void *a1)
@@ -519,11 +519,11 @@ void __111__VKMapCanvas_transitionToTracking_mapMode_startLocation_startCourse_c
   [v2 postNotificationName:@"VKPounceDidEndNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (id)markerAtScreenPoint:(CGPoint)a3 enableExtendedFeatureMarkers:(BOOL)a4
+- (id)markerAtScreenPoint:(CGPoint)point enableExtendedFeatureMarkers:(BOOL)markers
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  markersCopy = markers;
+  y = point.y;
+  x = point.x;
   v43 = *MEMORY[0x1E69E9840];
   [(MDRenderTarget *)self->super._displayTarget size];
   v9 = v8;
@@ -603,7 +603,7 @@ LABEL_31:
       }
     }
 
-    if (!v4 || (mapEngine = self->super._mapEngine, md::HomeQueueScheduler::waitForSynchronization(*(mapEngine + 47360), "[VKMapCanvas markerAtScreenPoint:enableExtendedFeatureMarkers:]"), v26 = *(mapEngine + 41672), v27 = *(v26 + 40), v28 = *(v26 + 48), v27 == v28))
+    if (!markersCopy || (mapEngine = self->super._mapEngine, md::HomeQueueScheduler::waitForSynchronization(*(mapEngine + 47360), "[VKMapCanvas markerAtScreenPoint:enableExtendedFeatureMarkers:]"), v26 = *(mapEngine + 41672), v27 = *(v26 + 40), v28 = *(v26 + 48), v27 == v28))
     {
 LABEL_28:
       mapEngine = 0;
@@ -683,13 +683,13 @@ LABEL_35:
   return mapEngine;
 }
 
-- (void)debugHighlightObjectAtPoint:(CGPoint)a3 highlightTarget:(unsigned __int8)a4
+- (void)debugHighlightObjectAtPoint:(CGPoint)point highlightTarget:(unsigned __int8)target
 {
   v83 = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (target == 1)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     mapEngine = self->super._mapEngine;
     md::HomeQueueScheduler::waitForSynchronization(mapEngine[5920], "[VKMapCanvas debugHighlightObjectAtPoint:highlightTarget:]");
     v7 = *(mapEngine[5209] + 5);
@@ -999,18 +999,18 @@ LABEL_61:
   }
 }
 
-- (void)goToTileX:(int)a3 Y:(int)a4 Z:(int)a5 tileSize:(int)a6
+- (void)goToTileX:(int)x Y:(int)y Z:(int)z tileSize:(int)size
 {
-  v11 = (1 << a5);
+  v11 = (1 << z);
   [(MDRenderTarget *)self->super._displayTarget size];
   v13 = v12;
   v14 = 1.0 / v11 * 0.5;
-  v19[0] = v14 + a3 * (1.0 / v11);
-  v19[1] = v14 + (-1.0 - a4 + v11) * (1.0 / v11);
+  v19[0] = v14 + x * (1.0 / v11);
+  v19[1] = v14 + (-1.0 - y + v11) * (1.0 / v11);
   [(VKCamera *)self->super._vkCamera._obj tanHalfHorizFOV];
   v16 = v15;
-  v17 = log2(v13 / a6);
-  v19[2] = 0.5 / (v16 * exp2((a5 - v17)));
+  v17 = log2(v13 / size);
+  v19[2] = 0.5 / (v16 * exp2((z - v17)));
   memset(v18, 0, 24);
   v18[3] = 0x3FF0000000000000;
   [(VKCamera *)self->super._vkCamera._obj setOrientation:v18];
@@ -1076,13 +1076,13 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  belowOverlayCopy = belowOverlay;
   ptr = self->_overlayContainer.__ptr_;
-  v9 = v6;
-  v10 = v7;
+  v9 = overlayCopy;
+  v10 = belowOverlayCopy;
   v18 = v10;
   std::mutex::lock((ptr + 232));
   v11 = ptr + 24 * [v9 level];
@@ -1129,13 +1129,13 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  aboveOverlayCopy = aboveOverlay;
   ptr = self->_overlayContainer.__ptr_;
-  v9 = v6;
-  v10 = v7;
+  v9 = overlayCopy;
+  v10 = aboveOverlayCopy;
   v20 = v10;
   std::mutex::lock((ptr + 232));
   v11 = ptr + 24 * [v9 level];
@@ -1195,15 +1195,15 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   ptr = self->_overlayContainer.__ptr_;
-  v6 = v4;
+  v6 = overlayCopy;
   std::mutex::lock((ptr + 232));
-  v7 = [v6 level];
-  v8 = ptr + 24 * v7;
+  level = [v6 level];
+  v8 = ptr + 24 * level;
   v9 = *(v8 + 20);
   v10 = *(v8 + 21);
   v11 = v8 + 160;
@@ -1310,23 +1310,23 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
     *(ptr + 344) = v18 != *(ptr + 26);
   }
 
-  v25 = [v6 areResourcesRequired];
-  if (v7 <= 1 && *(ptr + 2 * v7 + v25))
+  areResourcesRequired = [v6 areResourcesRequired];
+  if (level <= 1 && *(ptr + 2 * level + areResourcesRequired))
   {
     v26 = v6;
     if (([v26 canProvideVectorData] & 1) == 0)
     {
-      v27 = [v26 rasterTileProvider];
+      rasterTileProvider = [v26 rasterTileProvider];
 
-      if (!v27)
+      if (!rasterTileProvider)
       {
         [v26 customTileProvider];
       }
     }
 
     [v26 identifier];
-    v28 = [v26 rasterTileProvider];
-    if (!v28)
+    rasterTileProvider2 = [v26 rasterTileProvider];
+    if (!rasterTileProvider2)
     {
       [v26 customTileProvider];
     }
@@ -1366,10 +1366,10 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  v4 = a3;
-  md::OverlayContainer::addOverlay(self->_overlayContainer.__ptr_, v4);
+  overlayCopy = overlay;
+  md::OverlayContainer::addOverlay(self->_overlayContainer.__ptr_, overlayCopy);
   cntrl = self->_overlayContainer.__cntrl_;
   ptr = self->_overlayContainer.__ptr_;
   v8 = cntrl;
@@ -1378,14 +1378,14 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
     atomic_fetch_add_explicit(cntrl + 2, 1uLL, memory_order_relaxed);
   }
 
-  [(VKOverlay *)v4 setStandardContainer:&ptr];
+  [(VKOverlay *)overlayCopy setStandardContainer:&ptr];
   if (v8)
   {
     std::__shared_weak_count::__release_weak(v8);
   }
 
-  [(VKOverlay *)v4 setRunLoopController:self->super._runLoopController];
-  [(VKOverlay *)v4 setForceRasterizationForGlobe:self->_forceRasterizationForGlobe];
+  [(VKOverlay *)overlayCopy setRunLoopController:self->super._runLoopController];
+  [(VKOverlay *)overlayCopy setForceRasterizationForGlobe:self->_forceRasterizationForGlobe];
   [(VKMapCanvas *)self updateOverlays];
   var0 = self->super._runLoopController->var0;
   if (var0)
@@ -1412,10 +1412,10 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   }
 }
 
-- (CGPoint)convertCoordinateToPoint:(id)a3
+- (CGPoint)convertCoordinateToPoint:(id)point
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
+  var0 = point.var0;
+  var1 = point.var1;
   if ([(VKCameraController *)self->super._cameraController usesVKCamera])
   {
     v4 = tan(var0 * 0.00872664626 + 0.785398163);
@@ -1450,9 +1450,9 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
       v37 = vmulq_f64(v24, vdupq_n_s64(0x3F91DF46A2529D39uLL));
       v38 = 0;
       v25 = *([(VKScreenCanvas *)self mapEngine]+ 41712);
-      v26 = [(VKScreenCanvas *)self mapEngine];
-      v27 = v26 + 5120;
-      v28 = v26[5234];
+      mapEngine = [(VKScreenCanvas *)self mapEngine];
+      v27 = mapEngine + 5120;
+      v28 = mapEngine[5234];
       v29 = v27[115];
       if (v29)
       {
@@ -1477,10 +1477,10 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   return result;
 }
 
-- (CGPoint)convertMapPointToPoint:(id)a3
+- (CGPoint)convertMapPointToPoint:(id)point
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   if ([(VKCameraController *)self->super._cameraController usesVKCamera])
   {
     v6 = 1.0 - var1 / *(MEMORY[0x1E69A1690] + 8);
@@ -1514,9 +1514,9 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
       v34 = fmod(v22 + 6.28318531, 6.28318531) + -3.14159265;
       v35 = 0;
       v23 = *([(VKScreenCanvas *)self mapEngine]+ 41712);
-      v24 = [(VKScreenCanvas *)self mapEngine];
-      v25 = v24 + 5120;
-      v26 = v24[5234];
+      mapEngine = [(VKScreenCanvas *)self mapEngine];
+      v25 = mapEngine + 5120;
+      v26 = mapEngine[5234];
       v27 = v25[115];
       if (v27)
       {
@@ -1541,13 +1541,13 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToCoordinate:(CGPoint)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToCoordinate:(CGPoint)coordinate
 {
-  y = a3.y;
-  x = a3.x;
-  v4 = [(VKCameraController *)self->super._cameraController usesVKCamera];
+  y = coordinate.y;
+  x = coordinate.x;
+  usesVKCamera = [(VKCameraController *)self->super._cameraController usesVKCamera];
   [(MDRenderTarget *)self->super._displayTarget size];
-  if (v4)
+  if (usesVKCamera)
   {
     if (v5 <= 0.0)
     {
@@ -1640,12 +1640,12 @@ BOOL __44__VKMapCanvas_globeAnnotationCoordinateTest__block_invoke(uint64_t a1, 
     {
 LABEL_23:
       v34 = self->super._vkCamera._obj;
-      v35 = [(VKCamera *)v34 position];
+      position = [(VKCamera *)v34 position];
       v36 = self->super._vkCamera._obj;
-      v37 = [(VKCamera *)v36 position];
+      position2 = [(VKCamera *)v36 position];
       [(VKCamera *)self->super._vkCamera._obj position];
-      v38 = *v35;
-      v39 = *(v37 + 8);
+      v38 = *position;
+      v39 = *(position2 + 8);
     }
 
     v40 = exp(v39 * 6.28318531 + -3.14159265);
@@ -1672,9 +1672,9 @@ LABEL_23:
     v20.f64[0] = x;
     v20.f64[1] = y;
     v59 = v20;
-    v21 = [(VKScreenCanvas *)self mapEngine];
-    v22 = v21 + 5120;
-    v23 = v21[5234];
+    mapEngine = [(VKScreenCanvas *)self mapEngine];
+    v22 = mapEngine + 5120;
+    v23 = mapEngine[5234];
     v24 = v22[115];
     if (v24)
     {
@@ -1694,9 +1694,9 @@ LABEL_23:
     if (v26 == -3.14159265 && v27 == -3.14159265 && v28 == 0.0)
     {
 LABEL_21:
-      v29 = [(VKScreenCanvas *)self mapEngine];
-      v30 = v29 + 5120;
-      v31 = v29[5234];
+      mapEngine2 = [(VKScreenCanvas *)self mapEngine];
+      v30 = mapEngine2 + 5120;
+      v31 = mapEngine2[5234];
       v32 = v30[115];
       if (v32)
       {
@@ -1724,10 +1724,10 @@ LABEL_21:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToMapPoint:(CGPoint)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPointToMapPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(VKCameraController *)self->super._cameraController usesVKCamera])
   {
     [(MDRenderTarget *)self->super._displayTarget size];
@@ -1764,9 +1764,9 @@ LABEL_15:
   v11.f64[0] = x;
   v11.f64[1] = y;
   v26 = v11;
-  v12 = [(VKScreenCanvas *)self mapEngine];
-  v13 = v12 + 5120;
-  v14 = v12[5234];
+  mapEngine = [(VKScreenCanvas *)self mapEngine];
+  v13 = mapEngine + 5120;
+  v14 = mapEngine[5234];
   v15 = v13[115];
   if (v15)
   {
@@ -1799,17 +1799,17 @@ LABEL_16:
   return result;
 }
 
-- (optional<float>)_zoomLevelForCanvasSize:(CGSize)a3
+- (optional<float>)_zoomLevelForCanvasSize:(CGSize)size
 {
   v4 = 0;
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
-      v7 = [(VKCamera *)self->super._vkCamera._obj footprint];
-      [v7 maxDepth];
+      width = size.width;
+      footprint = [(VKCamera *)self->super._vkCamera._obj footprint];
+      [footprint maxDepth];
       v9 = v8;
 
       [(VKCamera *)self->super._vkCamera._obj tanHalfVerticalFOV];
@@ -1823,7 +1823,7 @@ LABEL_16:
   return v4;
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v20 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_puckAnimator);
@@ -1831,7 +1831,7 @@ LABEL_16:
 
   v14.receiver = self;
   v14.super_class = VKMapCanvas;
-  [(VKScreenCanvas *)&v14 updateWithTimestamp:a4 withContext:a3];
+  [(VKScreenCanvas *)&v14 updateWithTimestamp:context withContext:timestamp];
   if ([(VKCameraController *)self->super._cameraController shouldUpdateCameraWithVKCamera])
   {
     v8 = self->super._vkCamera._obj;
@@ -1877,7 +1877,7 @@ LABEL_16:
   }
 }
 
-- (id)consoleString:(BOOL)a3
+- (id)consoleString:(BOOL)string
 {
   v4 = objc_opt_respondsToSelector();
   v5 = 0.0;
@@ -2070,18 +2070,18 @@ LABEL_30:
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (_PreserveModelTileKVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (_PreserveModelTileKVOContext == context)
   {
     v13 = +[VKDebugSettings sharedSettings];
-    v14 = [v13 preserveModelTile];
+    preserveModelTile = [v13 preserveModelTile];
 
-    if (v14)
+    if (preserveModelTile)
     {
       v15 = *(self->super._mapEngine + 5213);
       v16 = *(v15 + 24);
@@ -2097,13 +2097,13 @@ LABEL_30:
   {
     v17.receiver = self;
     v17.super_class = VKMapCanvas;
-    [(VKMapCanvas *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VKMapCanvas *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)observeValueForKeyPath:ofObject:change:context:
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(v2 + 80);
   v4 = *(v2 + 88);
   if (v3 != v4)
@@ -2150,11 +2150,11 @@ LABEL_30:
   [(VKScreenCanvas *)&v5 dealloc];
 }
 
-- (VKMapCanvas)initWithMapEngine:(void *)a3 inBackground:(BOOL)a4
+- (VKMapCanvas)initWithMapEngine:(void *)engine inBackground:(BOOL)background
 {
   v21.receiver = self;
   v21.super_class = VKMapCanvas;
-  v4 = [(VKScreenCanvas *)&v21 initWithMapEngine:a3 inBackground:a4];
+  v4 = [(VKScreenCanvas *)&v21 initWithMapEngine:engine inBackground:background];
   v5 = v4;
   v6 = v4;
   if (v4)
@@ -2198,17 +2198,17 @@ LABEL_30:
   return v6;
 }
 
-- (void)transferStateFromCanvas:(id)a3
+- (void)transferStateFromCanvas:(id)canvas
 {
   v9 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VKMapCanvas;
-  [(VKScreenCanvas *)&v7 transferStateFromCanvas:a3];
-  v4 = [(VKCameraController *)self->super._cameraController cameraDelegate];
-  v5 = v4;
-  if (v4)
+  [(VKScreenCanvas *)&v7 transferStateFromCanvas:canvas];
+  cameraDelegate = [(VKCameraController *)self->super._cameraController cameraDelegate];
+  v5 = cameraDelegate;
+  if (cameraDelegate)
   {
-    [v4 willBeginRegionChangeAccess:0];
+    [cameraDelegate willBeginRegionChangeAccess:0];
   }
 
   else
@@ -2217,15 +2217,15 @@ LABEL_30:
   }
 
   [(VKCameraController *)self->super._cameraController updateCameraToPositionOrientationLimits];
-  v6 = [(VKCameraController *)self->super._cameraController cameraDelegate];
-  [v6 didEndRegionChangeAccess:v8];
+  cameraDelegate2 = [(VKCameraController *)self->super._cameraController cameraDelegate];
+  [cameraDelegate2 didEndRegionChangeAccess:v8];
 
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v8);
 }
 
-- (void)setMapType:(int)a3 animated:(BOOL)a4
+- (void)setMapType:(int)type animated:(BOOL)animated
 {
-  [(MDRenderTarget *)self->super._displayTarget size:*&a3];
+  [(MDRenderTarget *)self->super._displayTarget size:*&type];
   v6 = v5;
   [(MDRenderTarget *)self->super._displayTarget size];
   if (v7 * v6 > 0.0)
@@ -2241,7 +2241,7 @@ LABEL_30:
   mapEngine = self->super._mapEngine;
   if (mapEngine && (v3 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((mapEngine[5241] + 16), 0x2B7C4502BD3C99C6uLL)) != 0 && (v4 = v3[5]) != 0 && (v5 = *(v4 + 120)) != 0 && (v6 = md::SceneContext::layerDataInView(v5, 27), v7 = v6 + 1, v8 = *v6, *v6 != v6 + 1))
   {
-    v9 = 0;
+    array = 0;
     do
     {
       v11 = v8[4];
@@ -2260,9 +2260,9 @@ LABEL_30:
           v14 = *(v12 + 32);
           if (v13 != v14)
           {
-            if (!v9)
+            if (!array)
             {
-              v9 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
               v15 = *(v11 + 728);
               v13 = *(v15 + 24);
               v14 = *(v15 + 32);
@@ -2271,12 +2271,12 @@ LABEL_30:
             while (v13 != v14)
             {
               v16 = *(v13 + 8);
-              v17 = [v9 containsObject:v16];
+              v17 = [array containsObject:v16];
 
               if ((v17 & 1) == 0)
               {
                 v18 = *(v13 + 8);
-                [v9 addObject:v18];
+                [array addObject:v18];
               }
 
               v13 += 24;
@@ -2322,17 +2322,17 @@ LABEL_30:
 
   else
   {
-    v9 = 0;
+    array = 0;
   }
 
-  return v9;
+  return array;
 }
 
 - (NSArray)visibleTileSets
 {
   v14[20] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v14[15] = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v14[15] = array;
   mapEngine = self->super._mapEngine;
   if (mapEngine)
   {
@@ -2382,7 +2382,7 @@ LABEL_13:
     }
   }
 
-  v12 = v3;
+  v12 = array;
 
   return v12;
 }
@@ -2398,7 +2398,7 @@ LABEL_13:
     {
       v32 = *v4;
       std::unordered_set<gdc::ResourceKey,gdc::ResourceKeyHash,std::equal_to<gdc::ResourceKey>,std::allocator<gdc::ResourceKey>>::unordered_set(&__p, (v4 + 4));
-      v5 = gdc::ResourceManager::resourceFetcher(*(**a1 + 4), *(**a1 + 5), v32);
+      v5 = gdc::ResourceManager::resourceFetcher(*(**self + 4), *(**self + 5), v32);
       v6 = (*(*v5 + 80))(v5);
       if (v7)
       {
@@ -2426,7 +2426,7 @@ LABEL_33:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = *a1[1];
+    v9 = *self[1];
     v10 = [v9 countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v10)
     {
@@ -2468,7 +2468,7 @@ LABEL_33:
     v11 = objc_alloc_init(MEMORY[0x1E69A2408]);
     [v11 setStyle:HIDWORD(v8)];
     [v11 setIdentifier:v8];
-    [*a1[1] addObject:v11];
+    [*self[1] addObject:v11];
 LABEL_18:
     v16 = v34;
     if (v34)
@@ -2502,35 +2502,35 @@ LABEL_31:
 - (__n128)visibleTileSets
 {
   *a2 = &unk_1F29E65A0;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-+ (BOOL)supportsMapType:(int)a3 scale:(int)a4
++ (BOOL)supportsMapType:(int)type scale:(int)scale
 {
-  v4 = *&a4;
-  v6 = [MEMORY[0x1E69A2478] modernManager];
-  v7 = [v6 activeTileGroup];
+  v4 = *&scale;
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
 
   v8 = 1;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (!a3)
+    if (!type)
     {
       goto LABEL_24;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
-        v9 = [v7 activeTileSetForTileType:7 scale:v4];
+        v9 = [activeTileGroup activeTileSetForTileType:7 scale:v4];
 
-        v10 = [v7 activeTileSetForTileType:20 scale:0];
+        v10 = [activeTileGroup activeTileSetForTileType:20 scale:0];
 
-        v11 = [v7 activeTileSetForTileType:6 scale:v4];
+        v11 = [activeTileGroup activeTileSetForTileType:6 scale:v4];
 
         if (v9)
         {
@@ -2551,32 +2551,32 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    v16 = [v7 activeTileSetForTileType:7 scale:v4];
+    v16 = [activeTileGroup activeTileSetForTileType:7 scale:v4];
 LABEL_23:
     v8 = v16 != 0;
 
     goto LABEL_24;
   }
 
-  if ((a3 - 5) < 4)
+  if ((type - 5) < 4)
   {
     goto LABEL_24;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v16 = [v7 activeTileSetForTileType:92 scale:1];
+    v16 = [activeTileGroup activeTileSetForTileType:92 scale:1];
     goto LABEL_23;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     goto LABEL_21;
   }
 
-  v14 = [v7 activeTileSetForTileType:92 scale:1];
+  v14 = [activeTileGroup activeTileSetForTileType:92 scale:1];
 
-  v15 = [v7 activeTileSetForTileType:66 scale:0];
+  v15 = [activeTileGroup activeTileSetForTileType:66 scale:0];
 
   if (v14)
   {

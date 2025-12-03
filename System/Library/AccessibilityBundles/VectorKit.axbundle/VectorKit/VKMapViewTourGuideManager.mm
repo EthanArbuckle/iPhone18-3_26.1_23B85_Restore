@@ -3,39 +3,39 @@
 + (void)decreaseDetailLevel;
 + (void)increaseDetailLevel;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_center;
-- (BOOL)_elementIntersectsElement:(id)a3 point:(CGPoint)a4 radius:(double)a5;
-- (BOOL)_elementValidForCurrentDetailLevel:(id)a3;
-- (BOOL)_elementsInvalidForCenter:(id)a3;
-- (BOOL)_setZoomLevelForUserSpeed:(double)a3;
+- (BOOL)_elementIntersectsElement:(id)element point:(CGPoint)point radius:(double)radius;
+- (BOOL)_elementValidForCurrentDetailLevel:(id)level;
+- (BOOL)_elementsInvalidForCenter:(id)center;
+- (BOOL)_setZoomLevelForUserSpeed:(double)speed;
 - (VKMapView)mapView;
-- (VKMapViewTourGuideManager)initWithMapView:(id)a3 elementManager:(id)a4;
+- (VKMapViewTourGuideManager)initWithMapView:(id)view elementManager:(id)manager;
 - (double)_normalizedThetaFromTheta:(double)result;
 - (double)_yaw;
-- (id)_descriptionForOrientation:(int64_t)a3;
+- (id)_descriptionForOrientation:(int64_t)orientation;
 - (id)_elements;
-- (id)_tourLocationForUserPoint:(CGPoint)a3 radius:(double)a4 ignoreLocation:(id)a5;
-- (id)_tourPOIForUserPoint:(CGPoint)a3 radius:(double)a4 futureUserTheta:(double)a5 thetaFromCourse:(double *)a6 shouldFilterIfBehind:(BOOL)a7;
-- (id)tourStatusForMapView:(id)a3;
+- (id)_tourLocationForUserPoint:(CGPoint)point radius:(double)radius ignoreLocation:(id)location;
+- (id)_tourPOIForUserPoint:(CGPoint)point radius:(double)radius futureUserTheta:(double)theta thetaFromCourse:(double *)course shouldFilterIfBehind:(BOOL)behind;
+- (id)tourStatusForMapView:(id)view;
 - (int64_t)_orientation;
-- (unint64_t)_tourPOISideFromTheta:(double)a3;
-- (void)_queueTourStatusAnnouncement:(id)a3;
+- (unint64_t)_tourPOISideFromTheta:(double)theta;
+- (void)_queueTourStatusAnnouncement:(id)announcement;
 - (void)_startObservingUpdates;
 - (void)_stopObservingUpdates;
 - (void)_updateElements;
-- (void)_updateElementsComplete:(id)a3;
-- (void)_updateTourStatusWithCenter:(id)a3 location:(id)a4 orientation:(int64_t)a5;
+- (void)_updateElementsComplete:(id)complete;
+- (void)_updateTourStatusWithCenter:(id)center location:(id)location orientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)locationManagerUpdatedHeading:(id)a3;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)locationManagerUpdatedHeading:(id)heading;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)startTour;
 - (void)stopTour;
 @end
 
 @implementation VKMapViewTourGuideManager
 
-- (BOOL)_elementsInvalidForCenter:(id)a3
+- (BOOL)_elementsInvalidForCenter:(id)center
 {
-  v3 = [(VKMapViewTourGuideManager *)self mapView:a3.var0];
+  v3 = [(VKMapViewTourGuideManager *)self mapView:center.var0];
   [v3 bounds];
   x = v10.origin.x;
   y = v10.origin.y;
@@ -67,13 +67,13 @@
   return 1;
 }
 
-- (BOOL)_elementValidForCurrentDetailLevel:(id)a3
+- (BOOL)_elementValidForCurrentDetailLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = levelCopy;
   }
 
   else
@@ -87,16 +87,16 @@
   return v7;
 }
 
-- (BOOL)_elementIntersectsElement:(id)a3 point:(CGPoint)a4 radius:(double)a5
+- (BOOL)_elementIntersectsElement:(id)element point:(CGPoint)point radius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v33 = *MEMORY[0x29EDCA608];
-  v8 = a3;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = elementCopy;
   }
 
   else
@@ -105,17 +105,17 @@
   }
 
   v10 = v9;
-  v11 = [v10 hitTestPaths];
+  hitTestPaths = [v10 hitTestPaths];
 
-  if (!v11)
+  if (!hitTestPaths)
   {
-    v12 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = [v10 paths];
-    v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    paths = [v10 paths];
+    v14 = [paths countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v14)
     {
       v15 = *v28;
@@ -125,32 +125,32 @@
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(paths);
           }
 
-          CopyByStrokingPath = CGPathCreateCopyByStrokingPath(*(*(&v27 + 1) + 8 * i), 0, a5, kCGLineCapRound, kCGLineJoinRound, 0.0);
-          [v12 addObject:CopyByStrokingPath];
+          CopyByStrokingPath = CGPathCreateCopyByStrokingPath(*(*(&v27 + 1) + 8 * i), 0, radius, kCGLineCapRound, kCGLineJoinRound, 0.0);
+          [array addObject:CopyByStrokingPath];
           if (CopyByStrokingPath)
           {
             CFRelease(CopyByStrokingPath);
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v14 = [paths countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v14);
     }
 
-    [v10 setHitTestPaths:v12];
+    [v10 setHitTestPaths:array];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v18 = [v10 hitTestPaths];
-  v19 = [v18 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  hitTestPaths2 = [v10 hitTestPaths];
+  v19 = [hitTestPaths2 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v19)
   {
     v20 = *v24;
@@ -160,7 +160,7 @@
       {
         if (*v24 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(hitTestPaths2);
         }
 
         v34.x = x;
@@ -172,7 +172,7 @@
         }
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v19 = [hitTestPaths2 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v19)
       {
         continue;
@@ -187,10 +187,10 @@ LABEL_25:
   return v19;
 }
 
-- (id)_tourPOIForUserPoint:(CGPoint)a3 radius:(double)a4 futureUserTheta:(double)a5 thetaFromCourse:(double *)a6 shouldFilterIfBehind:(BOOL)a7
+- (id)_tourPOIForUserPoint:(CGPoint)point radius:(double)radius futureUserTheta:(double)theta thetaFromCourse:(double *)course shouldFilterIfBehind:(BOOL)behind
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -205,7 +205,7 @@ LABEL_25:
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v14 = [(VKMapViewTourGuideManager *)self _elements];
+  _elements = [(VKMapViewTourGuideManager *)self _elements];
   v17[0] = MEMORY[0x29EDCA5F8];
   v17[1] = 3221225472;
   v17[2] = __110__VKMapViewTourGuideManager__tourPOIForUserPoint_radius_futureUserTheta_thetaFromCourse_shouldFilterIfBehind___block_invoke;
@@ -214,16 +214,16 @@ LABEL_25:
   *&v17[9] = y;
   v17[4] = self;
   v17[5] = v29;
-  *&v17[10] = a4;
-  *&v17[11] = a5;
-  v18 = a7;
+  *&v17[10] = radius;
+  *&v17[11] = theta;
+  behindCopy = behind;
   v17[6] = &v23;
   v17[7] = &v19;
-  [v14 enumerateObjectsUsingBlock:v17];
+  [_elements enumerateObjectsUsingBlock:v17];
 
-  if (a6)
+  if (course)
   {
-    *a6 = v20[3];
+    *course = v20[3];
   }
 
   v15 = v24[5];
@@ -268,30 +268,30 @@ void __110__VKMapViewTourGuideManager__tourPOIForUserPoint_radius_futureUserThet
   }
 }
 
-- (id)_tourLocationForUserPoint:(CGPoint)a3 radius:(double)a4 ignoreLocation:(id)a5
+- (id)_tourLocationForUserPoint:(CGPoint)point radius:(double)radius ignoreLocation:(id)location
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  locationCopy = location;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__2;
   v25 = __Block_byref_object_dispose__2;
   v26 = 0;
-  v10 = [(VKMapViewTourGuideManager *)self _elements];
+  _elements = [(VKMapViewTourGuideManager *)self _elements];
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
   v14[2] = __77__VKMapViewTourGuideManager__tourLocationForUserPoint_radius_ignoreLocation___block_invoke;
   v14[3] = &unk_29F318980;
-  v11 = v9;
+  v11 = locationCopy;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v18 = x;
   v19 = y;
-  v20 = a4;
+  radiusCopy = radius;
   v17 = &v21;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [_elements enumerateObjectsUsingBlock:v14];
 
   v12 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -322,13 +322,13 @@ void __77__VKMapViewTourGuideManager__tourLocationForUserPoint_radius_ignoreLoca
   }
 }
 
-- (void)_queueTourStatusAnnouncement:(id)a3
+- (void)_queueTourStatusAnnouncement:(id)announcement
 {
-  v8 = a3;
-  if (v8)
+  announcementCopy = announcement;
+  if (announcementCopy)
   {
-    v4 = [(VKMapViewTourGuideManager *)self lastTourStatusAnnouncement];
-    v5 = [v4 isEqualToString:v8];
+    lastTourStatusAnnouncement = [(VKMapViewTourGuideManager *)self lastTourStatusAnnouncement];
+    v5 = [lastTourStatusAnnouncement isEqualToString:announcementCopy];
 
     if ((v5 & 1) == 0)
     {
@@ -336,17 +336,17 @@ void __77__VKMapViewTourGuideManager__tourLocationForUserPoint_radius_ignoreLoca
       [v6 clearOutputQueue];
 
       v7 = +[VKMapViewOutputManager sharedOutputManager];
-      [v7 queueOutput:v8];
+      [v7 queueOutput:announcementCopy];
     }
   }
 
-  [(VKMapViewTourGuideManager *)self setLastTourStatusAnnouncement:v8];
+  [(VKMapViewTourGuideManager *)self setLastTourStatusAnnouncement:announcementCopy];
 }
 
-- (BOOL)_setZoomLevelForUserSpeed:(double)a3
+- (BOOL)_setZoomLevelForUserSpeed:(double)speed
 {
-  v4 = [(VKMapViewTourGuideManager *)self mapView];
-  [v4 accessibilityZoomLevel];
+  mapView = [(VKMapViewTourGuideManager *)self mapView];
+  [mapView accessibilityZoomLevel];
   v6 = v5;
 
   v7 = time(0);
@@ -362,24 +362,24 @@ LABEL_7:
         return fabsf(v6 + -16.0) < 0.1;
       }
 
-      v9 = [(VKMapViewTourGuideManager *)self mapView];
-      v10 = [(VKMapViewTourGuideManager *)self mapView];
-      [v10 bounds];
+      mapView2 = [(VKMapViewTourGuideManager *)self mapView];
+      mapView3 = [(VKMapViewTourGuideManager *)self mapView];
+      [mapView3 bounds];
       MidX = CGRectGetMidX(v17);
-      v12 = [(VKMapViewTourGuideManager *)self mapView];
-      [v12 bounds];
-      [v9 accessibilityZoomInAtPoint:{MidX, CGRectGetMidY(v18)}];
+      mapView4 = [(VKMapViewTourGuideManager *)self mapView];
+      [mapView4 bounds];
+      [mapView2 accessibilityZoomInAtPoint:{MidX, CGRectGetMidY(v18)}];
     }
 
     else
     {
-      v9 = [(VKMapViewTourGuideManager *)self mapView];
-      v10 = [(VKMapViewTourGuideManager *)self mapView];
-      [v10 bounds];
+      mapView2 = [(VKMapViewTourGuideManager *)self mapView];
+      mapView3 = [(VKMapViewTourGuideManager *)self mapView];
+      [mapView3 bounds];
       v11 = CGRectGetMidX(v15);
-      v12 = [(VKMapViewTourGuideManager *)self mapView];
-      [v12 bounds];
-      [v9 accessibilityZoomOutAtPoint:{v11, CGRectGetMidY(v16)}];
+      mapView4 = [(VKMapViewTourGuideManager *)self mapView];
+      [mapView4 bounds];
+      [mapView2 accessibilityZoomOutAtPoint:{v11, CGRectGetMidY(v16)}];
     }
 
     [(VKMapViewTourGuideManager *)self setSecondsSinceZoomRequest:time(0)];
@@ -441,11 +441,11 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   return result;
 }
 
-- (unint64_t)_tourPOISideFromTheta:(double)a3
+- (unint64_t)_tourPOISideFromTheta:(double)theta
 {
-  if (a3 <= 0.523598776)
+  if (theta <= 0.523598776)
   {
-    return a3 < -0.523598776;
+    return theta < -0.523598776;
   }
 
   else
@@ -454,36 +454,36 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   }
 }
 
-- (void)_updateTourStatusWithCenter:(id)a3 location:(id)a4 orientation:(int64_t)a5
+- (void)_updateTourStatusWithCenter:(id)center location:(id)location orientation:(int64_t)orientation
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = center.var1;
+  var0 = center.var0;
   v64 = *MEMORY[0x29EDCA608];
-  v56 = a4;
-  v55 = [(VKMapViewTourGuideManager *)self mapView];
-  v8 = [v55 accessibilityContainer];
-  [v55 convertCoordinate:v55 toPointToLayer:{var0, var1}];
+  locationCopy = location;
+  mapView = [(VKMapViewTourGuideManager *)self mapView];
+  accessibilityContainer = [mapView accessibilityContainer];
+  [mapView convertCoordinate:mapView toPointToLayer:{var0, var1}];
   UIAccessibilityPointForPoint();
   v59 = v10;
   v60 = v9;
 
   [(VKMapViewTourGuideManager *)self _yaw];
   v12 = v11;
-  [v56 speed];
+  [locationCopy speed];
   v58 = v13;
-  v14 = [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:0 radius:v60 ignoreLocation:v59, 15.0];
-  if (!v14)
+  lastCurrentTourLocation = [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:0 radius:v60 ignoreLocation:v59, 15.0];
+  if (!lastCurrentTourLocation)
   {
-    v14 = [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:0 radius:v60 ignoreLocation:v59, 30.0];
-    if (!v14)
+    lastCurrentTourLocation = [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:0 radius:v60 ignoreLocation:v59, 30.0];
+    if (!lastCurrentTourLocation)
     {
-      v14 = [(VKMapViewTourGuideManager *)self lastCurrentTourLocation];
+      lastCurrentTourLocation = [(VKMapViewTourGuideManager *)self lastCurrentTourLocation];
     }
   }
 
   if (v58 > 0.35)
   {
-    [v56 course];
+    [locationCopy course];
     v18 = (v19 - v12) * 3.14159265 / 180.0;
     v61 = 0.0;
     v16 = *MEMORY[0x29EDB90B8];
@@ -515,7 +515,7 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
     v26 = v59 - v25;
     if (!v22)
     {
-      [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:v14 radius:v60 + (i + 5) * sinval ignoreLocation:v59 - v25, (i + 5) / 3.0];
+      [(VKMapViewTourGuideManager *)self _tourLocationForUserPoint:lastCurrentTourLocation radius:v60 + (i + 5) * sinval ignoreLocation:v59 - v25, (i + 5) / 3.0];
       v16 = v60 + (i + 5) * sinval;
       v22 = v17 = v26;
     }
@@ -541,18 +541,18 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   if (v30 || [MEMORY[0x29EDBD6B0] willLogDebug])
   {
     v31 = MEMORY[0x29EDBA0F8];
-    [v56 coordinate];
+    [locationCopy coordinate];
     v33 = v32;
-    [v56 coordinate];
+    [locationCopy coordinate];
     v35 = v34;
-    [v56 speed];
+    [locationCopy speed];
     v37 = v36;
-    [v56 course];
+    [locationCopy course];
     v39 = v38;
-    v40 = [v14 accessibilityLabel];
-    v41 = [v22 accessibilityLabel];
-    v42 = [v15 accessibilityLabel];
-    v43 = v42;
+    accessibilityLabel = [lastCurrentTourLocation accessibilityLabel];
+    accessibilityLabel2 = [v22 accessibilityLabel];
+    accessibilityLabel3 = [v15 accessibilityLabel];
+    v43 = accessibilityLabel3;
     v44 = @"Right";
     if (v29 == 1)
     {
@@ -564,15 +564,15 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
       v44 = @"None";
     }
 
-    v45 = [v31 stringWithFormat:@"Location: %f, %f\nSpeed: %f\nCourse: %f\nYaw: %f\nFutureUserTheta: %f\nCurrent: %@\nFuture: %@\nPOI: %@\nPOIFromCourse: %f\nSide: %@", v33, v35, v37, v39, *&v12, v18 * 180.0 / 3.14159265, v40, v41, v42, v61 * 180.0 / 3.14159265, v44];
+    v45 = [v31 stringWithFormat:@"Location: %f, %f\nSpeed: %f\nCourse: %f\nYaw: %f\nFutureUserTheta: %f\nCurrent: %@\nFuture: %@\nPOI: %@\nPOIFromCourse: %f\nSide: %@", v33, v35, v37, v39, *&v12, v18 * 180.0 / 3.14159265, accessibilityLabel, accessibilityLabel2, accessibilityLabel3, v61 * 180.0 / 3.14159265, v44];
 
     [v30 setDebugMessage:v45];
-    v46 = [MEMORY[0x29EDBD6B0] sharedInstance];
-    v47 = [v46 ignoreLogging];
+    mEMORY[0x29EDBD6B0] = [MEMORY[0x29EDBD6B0] sharedInstance];
+    ignoreLogging = [mEMORY[0x29EDBD6B0] ignoreLogging];
 
-    if ((v47 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v48 = [MEMORY[0x29EDBD6B0] identifier];
+      identifier = [MEMORY[0x29EDBD6B0] identifier];
       v49 = AXLoggerForFacility();
 
       v50 = AXOSLogLevelFromAXLogLevel();
@@ -592,45 +592,45 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   }
 
   [v30 setCurrentPoint:v60 frontierPoint:{v59, v16, v17, v54}];
-  v52 = [(VKMapViewTourGuideManager *)self tourStatus];
-  [v52 updateTourStatusWithCurrentLocation:v14 currentPoint:v22 futureLocation:v15 futurePoint:v29 tourPOI:v58 <= 0.35 tourPOISide:v60 isStationary:{v59, v16, v17}];
-  [v56 speed];
+  tourStatus = [(VKMapViewTourGuideManager *)self tourStatus];
+  [tourStatus updateTourStatusWithCurrentLocation:lastCurrentTourLocation currentPoint:v22 futureLocation:v15 futurePoint:v29 tourPOI:v58 <= 0.35 tourPOISide:v60 isStationary:{v59, v16, v17}];
+  [locationCopy speed];
   if ([(VKMapViewTourGuideManager *)self _setZoomLevelForUserSpeed:?])
   {
-    v53 = [v52 shortTourStatusAnnouncement];
-    [(VKMapViewTourGuideManager *)self _queueTourStatusAnnouncement:v53];
+    shortTourStatusAnnouncement = [tourStatus shortTourStatusAnnouncement];
+    [(VKMapViewTourGuideManager *)self _queueTourStatusAnnouncement:shortTourStatusAnnouncement];
   }
 
-  [(VKMapViewTourGuideManager *)self setLastCurrentTourLocation:v14];
+  [(VKMapViewTourGuideManager *)self setLastCurrentTourLocation:lastCurrentTourLocation];
 }
 
 - (void)_startObservingUpdates
 {
-  v5 = [MEMORY[0x29EDBB270] sharedLocationManager];
-  [v5 startHeadingUpdateWithObserver:self];
-  [v5 startLocationUpdateWithObserver:self];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  v4 = [(VKMapViewTourGuideManager *)self elementManager];
-  [v3 addObserver:self selector:sel__updateElementsComplete_ name:@"UpdateAccessibilityElementsComplete" object:v4];
+  mEMORY[0x29EDBB270] = [MEMORY[0x29EDBB270] sharedLocationManager];
+  [mEMORY[0x29EDBB270] startHeadingUpdateWithObserver:self];
+  [mEMORY[0x29EDBB270] startLocationUpdateWithObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
+  [defaultCenter addObserver:self selector:sel__updateElementsComplete_ name:@"UpdateAccessibilityElementsComplete" object:elementManager];
 }
 
 - (void)_stopObservingUpdates
 {
-  v5 = [MEMORY[0x29EDBB270] sharedLocationManager];
-  [v5 stopHeadingUpdateWithObserver:self];
-  [v5 stopLocationUpdateWithObserver:self];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  v4 = [(VKMapViewTourGuideManager *)self elementManager];
-  [v3 removeObserver:self name:@"UpdateAccessibilityElementsComplete" object:v4];
+  mEMORY[0x29EDBB270] = [MEMORY[0x29EDBB270] sharedLocationManager];
+  [mEMORY[0x29EDBB270] stopHeadingUpdateWithObserver:self];
+  [mEMORY[0x29EDBB270] stopLocationUpdateWithObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
+  [defaultCenter removeObserver:self name:@"UpdateAccessibilityElementsComplete" object:elementManager];
 }
 
 - (id)_elements
 {
-  v3 = [(VKMapViewTourGuideManager *)self elementManager];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(VKMapViewTourGuideManager *)self mapView];
-    v5 = [v3 accessibilityElementsForMapView:v4];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    v5 = [elementManager accessibilityElementsForMapView:mapView];
   }
 
   else
@@ -643,11 +643,11 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_center
 {
-  v3 = [(VKMapViewTourGuideManager *)self elementManager];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(VKMapViewTourGuideManager *)self mapView];
-    [v3 centerForMapView:v4];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    [elementManager centerForMapView:mapView];
     v6 = v5;
     v8 = v7;
   }
@@ -668,11 +668,11 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
 
 - (int64_t)_orientation
 {
-  v3 = [(VKMapViewTourGuideManager *)self elementManager];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(VKMapViewTourGuideManager *)self mapView];
-    v5 = [v3 orientationForMapView:v4];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    v5 = [elementManager orientationForMapView:mapView];
   }
 
   else
@@ -685,12 +685,12 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
 
 - (double)_yaw
 {
-  v3 = [(VKMapViewTourGuideManager *)self elementManager];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
   v4 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(VKMapViewTourGuideManager *)self mapView];
-    [v3 yawForMapView:v5];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    [elementManager yawForMapView:mapView];
     v4 = v6;
   }
 
@@ -699,32 +699,32 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
 
 - (void)_updateElements
 {
-  v4 = [(VKMapViewTourGuideManager *)self elementManager];
+  elementManager = [(VKMapViewTourGuideManager *)self elementManager];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(VKMapViewTourGuideManager *)self mapView];
-    [v4 updateAccessibilityElementsForMapView:v3];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    [elementManager updateAccessibilityElementsForMapView:mapView];
   }
 }
 
-- (id)tourStatusForMapView:(id)a3
+- (id)tourStatusForMapView:(id)view
 {
-  v4 = a3;
-  v5 = [(VKMapViewTourGuideManager *)self mapView];
+  viewCopy = view;
+  mapView = [(VKMapViewTourGuideManager *)self mapView];
 
-  if (v5 == v4)
+  if (mapView == viewCopy)
   {
-    v7 = [(VKMapViewTourGuideManager *)self tourStatus];
-    v6 = [v7 longTourStatusAnnouncement];
+    tourStatus = [(VKMapViewTourGuideManager *)self tourStatus];
+    longTourStatusAnnouncement = [tourStatus longTourStatusAnnouncement];
   }
 
   else
   {
     _AXLogWithFacility();
-    v6 = 0;
+    longTourStatusAnnouncement = 0;
   }
 
-  return v6;
+  return longTourStatusAnnouncement;
 }
 
 - (void)dealloc
@@ -737,12 +737,12 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   [(VKMapViewTourGuideManager *)&v3 dealloc];
 }
 
-- (VKMapViewTourGuideManager)initWithMapView:(id)a3 elementManager:(id)a4
+- (VKMapViewTourGuideManager)initWithMapView:(id)view elementManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  viewCopy = view;
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!viewCopy || !managerCopy)
   {
     _AXAssert();
   }
@@ -753,78 +753,78 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_elementManager, a4);
+    objc_storeStrong(&v9->_elementManager, manager);
     v11 = objc_alloc_init(VKMapViewTourStatus);
     tourStatus = v10->_tourStatus;
     v10->_tourStatus = v11;
 
-    objc_storeWeak(&v10->_mapView, v6);
+    objc_storeWeak(&v10->_mapView, viewCopy);
   }
 
   return v10;
 }
 
-- (void)_updateElementsComplete:(id)a3
+- (void)_updateElementsComplete:(id)complete
 {
   v11 = +[VKMapDebugView sharedInstance];
   [v11 removePointsAndPaths];
-  v4 = [(VKMapViewTourGuideManager *)self _elements];
+  _elements = [(VKMapViewTourGuideManager *)self _elements];
   v5 = objc_opt_class();
-  v6 = AXVKAccessibilityPaths(v4, v5, 25);
+  v6 = AXVKAccessibilityPaths(_elements, v5, 25);
   [v11 addBuildingPaths:v6];
 
   v7 = objc_opt_class();
-  v8 = AXVKAccessibilityPaths(v4, v7, 0);
+  v8 = AXVKAccessibilityPaths(_elements, v7, 0);
   [v11 addPOIPaths:v8];
 
   v9 = objc_opt_class();
-  v10 = AXVKAccessibilityPaths(v4, v9, 1);
+  v10 = AXVKAccessibilityPaths(_elements, v9, 1);
   [v11 addRoadPaths:v10];
 }
 
-- (id)_descriptionForOrientation:(int64_t)a3
+- (id)_descriptionForOrientation:(int64_t)orientation
 {
-  if (a3 > 4)
+  if (orientation > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_29F3189C8[a3];
+    return off_29F3189C8[orientation];
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
   v27 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  locationCopy = location;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     if (CFAbsoluteTimeGetCurrent() - *&[VKMapViewTourGuideManager locationManagerUpdatedLocation:]::LastProcessTime >= 0.5)
     {
       [VKMapViewTourGuideManager locationManagerUpdatedLocation:]::LastProcessTime = CFAbsoluteTimeGetCurrent();
-      v5 = [(VKMapViewTourGuideManager *)self mapView];
-      [v5 accessibilityCenter];
+      mapView = [(VKMapViewTourGuideManager *)self mapView];
+      [mapView accessibilityCenter];
       v7 = v6;
       v9 = v8;
 
       if ([(VKMapViewTourGuideManager *)self _elementsInvalidForCenter:v7, v9])
       {
-        v11 = [MEMORY[0x29EDBA0B0] processInfo];
-        [v11 systemUptime];
+        processInfo = [MEMORY[0x29EDBA0B0] processInfo];
+        [processInfo systemUptime];
         v13 = v12;
 
         v10 = v13 - *&[VKMapViewTourGuideManager locationManagerUpdatedLocation:]::lastUpdate;
         if (v13 - *&[VKMapViewTourGuideManager locationManagerUpdatedLocation:]::lastUpdate > 2.0)
         {
           [VKMapViewTourGuideManager locationManagerUpdatedLocation:]::lastUpdate = *&v13;
-          v14 = [MEMORY[0x29EDBD6B0] sharedInstance];
-          v15 = [v14 ignoreLogging];
+          mEMORY[0x29EDBD6B0] = [MEMORY[0x29EDBD6B0] sharedInstance];
+          ignoreLogging = [mEMORY[0x29EDBD6B0] ignoreLogging];
 
-          if ((v15 & 1) == 0)
+          if ((ignoreLogging & 1) == 0)
           {
-            v16 = [MEMORY[0x29EDBD6B0] identifier];
+            identifier = [MEMORY[0x29EDBD6B0] identifier];
             v17 = AXLoggerForFacility();
 
             v18 = AXOSLogLevelFromAXLogLevel();
@@ -845,18 +845,18 @@ void __55__VKMapViewTourGuideManager__setZoomLevelForUserSpeed___block_invoke(ui
         }
       }
 
-      v21 = [(VKMapViewTourGuideManager *)self mapView];
-      v22 = [v21 accessibilityOrientation];
+      mapView2 = [(VKMapViewTourGuideManager *)self mapView];
+      accessibilityOrientation = [mapView2 accessibilityOrientation];
 
-      if ([(VKMapViewTourGuideManager *)self _elementsInvalidForOrientation:v22])
+      if ([(VKMapViewTourGuideManager *)self _elementsInvalidForOrientation:accessibilityOrientation])
       {
         AXPerformBlockOnMainThreadAfterDelay();
       }
 
-      v23 = [v4 lastLocation];
-      v24 = [v23 copy];
+      lastLocation = [locationCopy lastLocation];
+      v24 = [lastLocation copy];
 
-      [(VKMapViewTourGuideManager *)self _updateTourStatusWithCenter:v24 location:v22 orientation:v7, v9];
+      [(VKMapViewTourGuideManager *)self _updateTourStatusWithCenter:v24 location:accessibilityOrientation orientation:v7, v9];
     }
   }
 
@@ -897,28 +897,28 @@ uint64_t __60__VKMapViewTourGuideManager_locationManagerUpdatedLocation___block_
   return [*(a1 + 32) _updateElements];
 }
 
-- (void)locationManagerUpdatedHeading:(id)a3
+- (void)locationManagerUpdatedHeading:(id)heading
 {
-  v4 = a3;
+  headingCopy = heading;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(VKMapViewTourGuideManager *)self mapView];
-    v6 = [v5 accessibilityOrientation];
+    mapView = [(VKMapViewTourGuideManager *)self mapView];
+    accessibilityOrientation = [mapView accessibilityOrientation];
 
-    if ([(VKMapViewTourGuideManager *)self _elementsInvalidForOrientation:v6])
+    if ([(VKMapViewTourGuideManager *)self _elementsInvalidForOrientation:accessibilityOrientation])
     {
       AXPerformBlockOnMainThreadAfterDelay();
     }
 
-    v7 = [(VKMapViewTourGuideManager *)self mapView];
-    [v7 accessibilityCenter];
+    mapView2 = [(VKMapViewTourGuideManager *)self mapView];
+    [mapView2 accessibilityCenter];
     v9 = v8;
     v11 = v10;
 
-    v12 = [v4 lastLocation];
-    v13 = [v12 copy];
+    lastLocation = [headingCopy lastLocation];
+    v13 = [lastLocation copy];
 
-    [(VKMapViewTourGuideManager *)self _updateTourStatusWithCenter:v13 location:v6 orientation:v9, v11];
+    [(VKMapViewTourGuideManager *)self _updateTourStatusWithCenter:v13 location:accessibilityOrientation orientation:v9, v11];
   }
 
   else
@@ -969,9 +969,9 @@ uint64_t __59__VKMapViewTourGuideManager_locationManagerUpdatedHeading___block_i
     [(VKMapViewTourGuideManager *)self setSecondsSinceZoomRequest:time(0)];
     [(VKMapViewTourGuideManager *)self setLastCurrentTourLocation:0];
     [(VKMapViewTourGuideManager *)self _startObservingUpdates];
-    v4 = [MEMORY[0x29EDC7938] sharedApplication];
-    [v4 setIdleTimerDisabled:1];
-    [v4 _accessibilitySetIsTourGuideRunning:1];
+    mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+    [mEMORY[0x29EDC7938] setIdleTimerDisabled:1];
+    [mEMORY[0x29EDC7938] _accessibilitySetIsTourGuideRunning:1];
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
@@ -1016,19 +1016,19 @@ uint64_t __38__VKMapViewTourGuideManager_startTour__block_invoke(uint64_t a1)
 
   [(VKMapViewTourGuideManager *)self setRunning:0];
   [(VKMapViewTourGuideManager *)self _stopObservingUpdates];
-  v4 = [MEMORY[0x29EDC7938] sharedApplication];
-  [v4 setIdleTimerDisabled:0];
-  [v4 _accessibilitySetIsTourGuideRunning:0];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  [mEMORY[0x29EDC7938] setIdleTimerDisabled:0];
+  [mEMORY[0x29EDC7938] _accessibilitySetIsTourGuideRunning:0];
 }
 
 + (id)_descriptionForDetailLevel
 {
   if ((__tourGuideDetailLevel + 1) <= 2)
   {
-    a1 = AXVectorKitLocString(off_29F3189F0[__tourGuideDetailLevel + 1]);
+    self = AXVectorKitLocString(off_29F3189F0[__tourGuideDetailLevel + 1]);
   }
 
-  return a1;
+  return self;
 }
 
 + (void)increaseDetailLevel
@@ -1039,20 +1039,20 @@ uint64_t __38__VKMapViewTourGuideManager_startTour__block_invoke(uint64_t a1)
   }
 
   v2 = *MEMORY[0x29EDC7EA8];
-  v3 = [a1 _descriptionForDetailLevel];
-  UIAccessibilityPostNotification(v2, v3);
+  _descriptionForDetailLevel = [self _descriptionForDetailLevel];
+  UIAccessibilityPostNotification(v2, _descriptionForDetailLevel);
 }
 
 + (void)decreaseDetailLevel
 {
-  if (([a1 detailLevel] & 0x8000000000000000) == 0)
+  if (([self detailLevel] & 0x8000000000000000) == 0)
   {
     --__tourGuideDetailLevel;
   }
 
   v3 = *MEMORY[0x29EDC7EA8];
-  v4 = [a1 _descriptionForDetailLevel];
-  UIAccessibilityPostNotification(v3, v4);
+  _descriptionForDetailLevel = [self _descriptionForDetailLevel];
+  UIAccessibilityPostNotification(v3, _descriptionForDetailLevel);
 }
 
 - (VKMapView)mapView

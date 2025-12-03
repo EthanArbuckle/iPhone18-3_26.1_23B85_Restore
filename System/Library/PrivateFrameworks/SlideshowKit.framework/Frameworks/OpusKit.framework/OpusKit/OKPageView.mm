@@ -1,6 +1,6 @@
 @interface OKPageView
-- (BOOL)_canRespondToEventWithPoint:(CGPoint)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_canRespondToEventWithPoint:(CGPoint)point;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)commonInit;
 - (void)dealloc;
 @end
@@ -21,10 +21,10 @@
   [(OFUIView *)&v2 dealloc];
 }
 
-- (BOOL)_canRespondToEventWithPoint:(CGPoint)a3
+- (BOOL)_canRespondToEventWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [-[OKPageView pageViewController](self "pageViewController")];
   v7.f64[1] = v6;
   v9.f64[1] = v8;
@@ -36,16 +36,16 @@
   return v24;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8 = [(OKPageView *)self _canRespondToEventWithPoint:?];
   if (v8)
   {
     v10.receiver = self;
     v10.super_class = OKPageView;
-    LOBYTE(v8) = [(OKPageView *)&v10 pointInside:a4 withEvent:x, y];
+    LOBYTE(v8) = [(OKPageView *)&v10 pointInside:event withEvent:x, y];
   }
 
   return v8;

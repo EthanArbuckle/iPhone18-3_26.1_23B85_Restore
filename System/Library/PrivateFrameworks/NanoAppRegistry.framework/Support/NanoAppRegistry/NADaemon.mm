@@ -1,6 +1,6 @@
 @interface NADaemon
 + (id)sharedDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NADaemon)init;
 - (void)migrateFixedLibraryPathIfNeeded;
 - (void)setup;
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000085F4;
   block[3] = &unk_100018668;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100020BB8 != -1)
   {
     dispatch_once(&qword_100020BB8, block);
@@ -77,22 +77,22 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   workspaceListener = self->_workspaceListener;
-  if (workspaceListener == a3)
+  if (workspaceListener == listener)
   {
-    v7 = a4;
+    connectionCopy = connection;
     v8 = NARWorkspaceServiceInterface();
-    [v7 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = [[NADWorkspaceConnection alloc] initWithApplicationStore:self->_applicationStore];
-    [v7 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
 
-    [v7 resume];
+    [connectionCopy resume];
   }
 
-  return workspaceListener == a3;
+  return workspaceListener == listener;
 }
 
 - (void)migrateFixedLibraryPathIfNeeded

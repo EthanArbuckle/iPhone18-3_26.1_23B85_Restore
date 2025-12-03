@@ -1,20 +1,20 @@
 @interface REElementBlockAction
-- (BOOL)isEqual:(id)a3;
-- (REElementBlockAction)initWithAction:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REElementBlockAction)initWithAction:(id)action;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REElementBlockAction
 
-- (REElementBlockAction)initWithAction:(id)a3
+- (REElementBlockAction)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = REElementBlockAction;
   v5 = [(REElementBlockAction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [actionCopy copy];
     action = v5->_action;
     v5->_action = v6;
   }
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = REElementBlockAction;
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[3] == self->_action;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[3] == self->_action;
 
   return v5;
 }

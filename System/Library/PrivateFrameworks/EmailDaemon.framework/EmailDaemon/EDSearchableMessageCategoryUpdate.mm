@@ -1,29 +1,29 @@
 @interface EDSearchableMessageCategoryUpdate
 - (EDSearchableMessageCategoryUpdate)init;
-- (EDSearchableMessageCategoryUpdate)initWithCategory:(id)a3;
-- (void)addToAttributes:(id)a3;
+- (EDSearchableMessageCategoryUpdate)initWithCategory:(id)category;
+- (void)addToAttributes:(id)attributes;
 @end
 
 @implementation EDSearchableMessageCategoryUpdate
 
-- (EDSearchableMessageCategoryUpdate)initWithCategory:(id)a3
+- (EDSearchableMessageCategoryUpdate)initWithCategory:(id)category
 {
   v3 = (&self->super.isa + OBJC_IVAR___EDSearchableMessageCategoryUpdate__underlying);
   v3[3] = &type metadata for SearchableMessageCategoryUpdate;
-  *v3 = a3;
+  *v3 = category;
   v6.receiver = self;
   v6.super_class = EDSearchableMessageCategoryUpdate;
-  v4 = a3;
+  categoryCopy = category;
   return [(EDSearchableMessageCategoryUpdate *)&v6 init];
 }
 
-- (void)addToAttributes:(id)a3
+- (void)addToAttributes:(id)attributes
 {
   sub_1C640DBAC(self + OBJC_IVAR___EDSearchableMessageCategoryUpdate__underlying, v8);
-  v5 = a3;
-  v6 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   swift_dynamicCast();
-  [v5 setMailCategories_];
+  [attributesCopy setMailCategories_];
 }
 
 - (EDSearchableMessageCategoryUpdate)init

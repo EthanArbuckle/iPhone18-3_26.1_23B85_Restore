@@ -8,12 +8,12 @@
 - (CGRect)stageFrameInRoot;
 - (CGRect)webFrame;
 - (CGRect)webFrameInRoot;
-- (CGSize)p_idealForMaxSize:(CGSize)a3;
-- (CGSize)webSizeInStageSize:(CGSize)a3;
-- (THWWebLayout)initWithInfo:(id)a3;
+- (CGSize)p_idealForMaxSize:(CGSize)size;
+- (CGSize)webSizeInStageSize:(CGSize)size;
+- (THWWebLayout)initWithInfo:(id)info;
 - (id)childrenForLayout;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (void)dealloc;
 - (void)hidePlayButton;
@@ -21,11 +21,11 @@
 
 @implementation THWWebLayout
 
-- (THWWebLayout)initWithInfo:(id)a3
+- (THWWebLayout)initWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = THWWebLayout;
-  v3 = [(THWWebLayout *)&v5 initWithInfo:a3];
+  v3 = [(THWWebLayout *)&v5 initWithInfo:info];
   if (v3)
   {
     v3->_playButtonLayout = objc_alloc_init(THWButtonControlLayout);
@@ -122,7 +122,7 @@
   return result;
 }
 
-- (CGSize)webSizeInStageSize:(CGSize)a3
+- (CGSize)webSizeInStageSize:(CGSize)size
 {
   [-[THWWebLayout info](self "info")];
 
@@ -215,16 +215,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWWebLayout *)self delegate];
+  delegate = [(THWWebLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWWebLayout *)self delegate];
+  delegate = [(THWWebLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (id)childrenForLayout
@@ -250,9 +250,9 @@
   return [v3 arrayByAddingObject:playButtonLayout];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
-  if (self->_playButtonLayout != a3)
+  if (self->_playButtonLayout != layout)
   {
     return 0;
   }
@@ -263,7 +263,7 @@
   return v9;
 }
 
-- (CGSize)p_idealForMaxSize:(CGSize)a3
+- (CGSize)p_idealForMaxSize:(CGSize)size
 {
   [objc_msgSend(-[THWWebLayout info](self "info")];
   TSDScaleSizeWithinSize();

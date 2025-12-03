@@ -1,30 +1,30 @@
 @interface MBPrebuddyBulletedIconTextView
-- (MBPrebuddyBulletedIconTextView)initWithImage:(id)a3 title:(id)a4 detail:(id)a5 tappableText:(id)a6;
+- (MBPrebuddyBulletedIconTextView)initWithImage:(id)image title:(id)title detail:(id)detail tappableText:(id)text;
 - (MBPrebuddyBulletedIconTextViewDelegate)delegate;
 - (double)_horizontalMargins;
 - (void)_setUp;
-- (void)didTapText:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)didTapText:(id)text;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation MBPrebuddyBulletedIconTextView
 
-- (MBPrebuddyBulletedIconTextView)initWithImage:(id)a3 title:(id)a4 detail:(id)a5 tappableText:(id)a6
+- (MBPrebuddyBulletedIconTextView)initWithImage:(id)image title:(id)title detail:(id)detail tappableText:(id)text
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  imageCopy = image;
+  titleCopy = title;
+  detailCopy = detail;
+  textCopy = text;
   v18.receiver = self;
   v18.super_class = MBPrebuddyBulletedIconTextView;
   v15 = [(MBPrebuddyBulletedIconTextView *)&v18 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_image, a3);
-    objc_storeStrong(&v16->_title, a4);
-    objc_storeStrong(&v16->_detail, a5);
-    objc_storeStrong(&v16->_tappableText, a6);
+    objc_storeStrong(&v15->_image, image);
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_detail, detail);
+    objc_storeStrong(&v16->_tappableText, text);
     [(MBPrebuddyBulletedIconTextView *)v16 _setUp];
   }
 
@@ -69,8 +69,8 @@
   v12 = [UIFont _preferredFontForTextStyle:UIFontTextStyleHeadline weight:UIFontWeightRegular];
   [(UILabel *)self->_tappableLabel setFont:v12];
 
-  v13 = [(MBPrebuddyBulletedIconTextView *)self tintColor];
-  [(UILabel *)self->_tappableLabel setTextColor:v13];
+  tintColor = [(MBPrebuddyBulletedIconTextView *)self tintColor];
+  [(UILabel *)self->_tappableLabel setTextColor:tintColor];
 
   [(UILabel *)self->_tappableLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_tappableLabel setNumberOfLines:0];
@@ -88,38 +88,38 @@
   [(UIStackView *)self->_textStack setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_textStack setAxis:1];
   [(MBPrebuddyBulletedIconTextView *)self addSubview:self->_textStack];
-  v43 = [(UIImageView *)self->_imageView leadingAnchor];
-  v42 = [(MBPrebuddyBulletedIconTextView *)self leadingAnchor];
+  leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(MBPrebuddyBulletedIconTextView *)self leadingAnchor];
   [(MBPrebuddyBulletedIconTextView *)self _leadingMargins];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:?];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v46[0] = v41;
-  v40 = [(UIImageView *)self->_imageView topAnchor];
-  v39 = [(MBPrebuddyBulletedIconTextView *)self topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:7.0];
+  topAnchor = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor2 = [(MBPrebuddyBulletedIconTextView *)self topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.0];
   v46[1] = v38;
-  v37 = [(UIImageView *)self->_imageView widthAnchor];
-  v36 = [v37 constraintEqualToConstant:40.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v36 = [widthAnchor constraintEqualToConstant:40.0];
   v46[2] = v36;
-  v35 = [(UIImageView *)self->_imageView heightAnchor];
-  v34 = [(UIImageView *)self->_imageView widthAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_imageView widthAnchor];
+  v33 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v46[3] = v33;
-  v32 = [(UIStackView *)self->_textStack leadingAnchor];
-  v31 = [(UIImageView *)self->_imageView trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:14.0];
+  leadingAnchor3 = [(UIStackView *)self->_textStack leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:14.0];
   v46[4] = v30;
-  v29 = [(UIStackView *)self->_textStack topAnchor];
-  v28 = [(MBPrebuddyBulletedIconTextView *)self topAnchor];
-  v18 = [v29 constraintEqualToAnchor:v28 constant:2.0];
+  topAnchor3 = [(UIStackView *)self->_textStack topAnchor];
+  topAnchor4 = [(MBPrebuddyBulletedIconTextView *)self topAnchor];
+  v18 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:2.0];
   v46[5] = v18;
-  v19 = [(UIStackView *)self->_textStack trailingAnchor];
-  v20 = [(MBPrebuddyBulletedIconTextView *)self trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_textStack trailingAnchor];
+  trailingAnchor3 = [(MBPrebuddyBulletedIconTextView *)self trailingAnchor];
   [(MBPrebuddyBulletedIconTextView *)self _trailingMargins];
-  v22 = [v19 constraintEqualToAnchor:v20 constant:-v21];
+  v22 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v21];
   v46[6] = v22;
-  v23 = [(UIStackView *)self->_textStack bottomAnchor];
-  v24 = [(MBPrebuddyBulletedIconTextView *)self bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor = [(UIStackView *)self->_textStack bottomAnchor];
+  bottomAnchor2 = [(MBPrebuddyBulletedIconTextView *)self bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[7] = v25;
   v26 = [NSArray arrayWithObjects:v46 count:8];
   [NSLayoutConstraint activateConstraints:v26];
@@ -128,35 +128,35 @@
   [(UILabel *)self->_tappableLabel addGestureRecognizer:v27];
 }
 
-- (void)didTapText:(id)a3
+- (void)didTapText:(id)text
 {
-  v4 = [(MBPrebuddyBulletedIconTextView *)self delegate];
-  [v4 didTapHighlightedText:self];
+  delegate = [(MBPrebuddyBulletedIconTextView *)self delegate];
+  [delegate didTapHighlightedText:self];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MBPrebuddyBulletedIconTextView *)self tintColor];
+  colorCopy = color;
+  tintColor = [(MBPrebuddyBulletedIconTextView *)self tintColor];
 
-  if (v5 != v4)
+  if (tintColor != colorCopy)
   {
     v7.receiver = self;
     v7.super_class = MBPrebuddyBulletedIconTextView;
-    [(MBPrebuddyBulletedIconTextView *)&v7 setTintColor:v4];
-    [(UIImageView *)self->_imageView setTintColor:v4];
-    v6 = [(MBPrebuddyBulletedIconTextView *)self tintColor];
-    [(UILabel *)self->_tappableLabel setTextColor:v6];
+    [(MBPrebuddyBulletedIconTextView *)&v7 setTintColor:colorCopy];
+    [(UIImageView *)self->_imageView setTintColor:colorCopy];
+    tintColor2 = [(MBPrebuddyBulletedIconTextView *)self tintColor];
+    [(UILabel *)self->_tappableLabel setTextColor:tintColor2];
   }
 }
 
 - (double)_horizontalMargins
 {
-  v2 = [(MBPrebuddyBulletedIconTextView *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
+  traitCollection = [(MBPrebuddyBulletedIconTextView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   result = 54.0;
-  if (v3 < 2)
+  if (horizontalSizeClass < 2)
   {
     return 10.0;
   }

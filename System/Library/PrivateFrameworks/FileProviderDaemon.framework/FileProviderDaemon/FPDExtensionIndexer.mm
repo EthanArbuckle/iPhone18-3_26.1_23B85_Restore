@@ -1,39 +1,39 @@
 @interface FPDExtensionIndexer
-- (void)dropIndexForReason:(unint64_t)a3 completion:(id)a4;
-- (void)indexOneBatchWithCompletionHandler:(id)a3;
+- (void)dropIndexForReason:(unint64_t)reason completion:(id)completion;
+- (void)indexOneBatchWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPDExtensionIndexer
 
-- (void)indexOneBatchWithCompletionHandler:(id)a3
+- (void)indexOneBatchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v9 = [(FPDDomainIndexer *)self domain];
-  v5 = [v9 session];
-  v6 = [v5 newFileProviderProxyWithTimeout:0 pid:180.0];
-  v7 = [(FPDDomainIndexer *)self domain];
-  v8 = [v7 identifier];
-  [v6 indexOneBatchInDomain:v8 completionHandler:v4];
+  handlerCopy = handler;
+  domain = [(FPDDomainIndexer *)self domain];
+  session = [domain session];
+  v6 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
+  domain2 = [(FPDDomainIndexer *)self domain];
+  identifier = [domain2 identifier];
+  [v6 indexOneBatchInDomain:identifier completionHandler:handlerCopy];
 }
 
-- (void)dropIndexForReason:(unint64_t)a3 completion:(id)a4
+- (void)dropIndexForReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FPDDomainIndexer *)self domain];
-  v8 = [v7 session];
-  v9 = [v8 newFileProviderProxyWithTimeout:0 pid:180.0];
+  completionCopy = completion;
+  domain = [(FPDDomainIndexer *)self domain];
+  session = [domain session];
+  v9 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
 
-  v10 = [(FPDDomainIndexer *)self domain];
-  v11 = [v10 identifier];
+  domain2 = [(FPDDomainIndexer *)self domain];
+  identifier = [domain2 identifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__FPDExtensionIndexer_dropIndexForReason_completion___block_invoke;
   v13[3] = &unk_1E83C1C98;
-  v14 = v6;
-  v15 = a3;
+  v14 = completionCopy;
+  reasonCopy = reason;
   v13[4] = self;
-  v12 = v6;
-  [v9 dropIndexForDomain:v11 dropReason:a3 completionHandler:v13];
+  v12 = completionCopy;
+  [v9 dropIndexForDomain:identifier dropReason:reason completionHandler:v13];
 }
 
 void __53__FPDExtensionIndexer_dropIndexForReason_completion___block_invoke(uint64_t a1, void *a2)

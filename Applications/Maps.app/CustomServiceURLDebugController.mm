@@ -1,12 +1,12 @@
 @interface CustomServiceURLDebugController
 - ($6E15C01CA1BE37A4936191A84F7075E2)defaultsKey;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CustomServiceURLDebugController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CustomServiceURLDebugController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CustomServiceURLDebugController
@@ -21,20 +21,20 @@
   return result;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [(CustomServiceURLDebugController *)self navigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  navigationController = [(CustomServiceURLDebugController *)self navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v6 = [(UITextField *)self->_textField text];
-  if ([v6 length])
+  text = [(UITextField *)self->_textField text];
+  if ([text length])
   {
-    if (v6)
+    if (text)
     {
       GEOConfigSetString();
       goto LABEL_6;
@@ -46,12 +46,12 @@
   }
 
   _GEOConfigRemoveValue();
-  v6 = 0;
+  text = 0;
 LABEL_6:
   callback = self->_callback;
   if (callback)
   {
-    callback[2](callback, v6, 0);
+    callback[2](callback, text, 0);
   }
 
   v5 = +[NSNotificationCenter defaultCenter];
@@ -60,7 +60,7 @@ LABEL_6:
   [(UITextField *)self->_textField resignFirstResponder];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v5 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   [v5 setAccessoryType:0];
@@ -77,41 +77,41 @@ LABEL_6:
   [(UITextField *)self->_textField sizeToFit];
   [(UITextField *)self->_textField frame];
   v9 = v8;
-  v10 = [v5 contentView];
-  [v10 bounds];
+  contentView = [v5 contentView];
+  [contentView bounds];
   v12 = v11 + -12.0;
 
-  v13 = [v5 contentView];
-  [v13 bounds];
+  contentView2 = [v5 contentView];
+  [contentView2 bounds];
   v15 = (v14 - v12) * 0.5;
 
-  v16 = [v5 contentView];
-  [v16 bounds];
+  contentView3 = [v5 contentView];
+  [contentView3 bounds];
   v18 = (v17 - v9) * 0.5;
 
   [(UITextField *)self->_textField setFrame:v15, v18, v12, v9];
-  v19 = [v5 contentView];
-  [v19 addSubview:self->_textField];
+  contentView4 = [v5 contentView];
+  [contentView4 addSubview:self->_textField];
 
   return v5;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   UIKeyboardForceOrderOutAutomaticAnimated();
   v5.receiver = self;
   v5.super_class = CustomServiceURLDebugController;
-  [(CustomServiceURLDebugController *)&v5 viewWillDisappear:v3];
+  [(CustomServiceURLDebugController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(UITextField *)self->_textField becomeFirstResponder];
   v5.receiver = self;
   v5.super_class = CustomServiceURLDebugController;
-  [(CustomServiceURLDebugController *)&v5 viewDidAppear:v3];
+  [(CustomServiceURLDebugController *)&v5 viewDidAppear:appearCopy];
 }
 
 - (void)dealloc
@@ -122,11 +122,11 @@ LABEL_6:
   [(CustomServiceURLDebugController *)&v3 dealloc];
 }
 
-- (CustomServiceURLDebugController)initWithStyle:(int64_t)a3
+- (CustomServiceURLDebugController)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = CustomServiceURLDebugController;
-  v3 = [(CustomServiceURLDebugController *)&v9 initWithStyle:a3];
+  v3 = [(CustomServiceURLDebugController *)&v9 initWithStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(UITextField);

@@ -1,22 +1,22 @@
 @interface SKUIIPhoneSlideshowCell
 - (CGRect)imageFrame;
 - (CGSize)imageSize;
-- (SKUIIPhoneSlideshowCell)initWithFrame:(CGRect)a3;
+- (SKUIIPhoneSlideshowCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setVideo:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)setVideo:(BOOL)video;
 @end
 
 @implementation SKUIIPhoneSlideshowCell
 
-- (SKUIIPhoneSlideshowCell)initWithFrame:(CGRect)a3
+- (SKUIIPhoneSlideshowCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIPhoneSlideshowCell initWithFrame:];
@@ -24,19 +24,19 @@
 
   v13.receiver = self;
   v13.super_class = SKUIIPhoneSlideshowCell;
-  v8 = [(SKUIIPhoneSlideshowCell *)&v13 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIIPhoneSlideshowCell *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D755E8]);
-    imageView = v8->_imageView;
-    v8->_imageView = v9;
+    imageView = height->_imageView;
+    height->_imageView = v9;
 
-    [(UIImageView *)v8->_imageView setContentMode:1];
-    v11 = [(SKUIIPhoneSlideshowCell *)v8 contentView];
-    [v11 addSubview:v8->_imageView];
+    [(UIImageView *)height->_imageView setContentMode:1];
+    contentView = [(SKUIIPhoneSlideshowCell *)height contentView];
+    [contentView addSubview:height->_imageView];
   }
 
-  return v8;
+  return height;
 }
 
 - (CGRect)imageFrame
@@ -49,40 +49,40 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_imageView setImage:v6];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     [(SKUIIPhoneSlideshowCell *)self setNeedsLayout];
-    v5 = v6;
+    v5 = imageCopy;
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(SKUIIPhoneSlideshowCell *)self setNeedsLayout];
   }
 }
 
-- (void)setVideo:(BOOL)a3
+- (void)setVideo:(BOOL)video
 {
   playIcon = self->_playIcon;
-  if ((((playIcon == 0) ^ a3) & 1) == 0)
+  if ((((playIcon == 0) ^ video) & 1) == 0)
   {
-    v5 = a3;
+    videoCopy = video;
     [(UIImageView *)playIcon removeFromSuperview];
     v6 = self->_playIcon;
     self->_playIcon = 0;
 
-    if (v5)
+    if (videoCopy)
     {
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = MEMORY[0x277D755B8];
@@ -101,24 +101,24 @@
       v11 = self->_playIcon;
       self->_playIcon = v10;
 
-      v12 = [(SKUIIPhoneSlideshowCell *)self contentView];
-      [v12 addSubview:self->_playIcon];
+      contentView = [(SKUIIPhoneSlideshowCell *)self contentView];
+      [contentView addSubview:self->_playIcon];
 
       [(SKUIIPhoneSlideshowCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SKUIIPhoneSlideshowCell;
   [(SKUIIPhoneSlideshowCell *)&v9 setHighlighted:?];
   if (self->_playIcon)
   {
     v5 = MEMORY[0x277D755B8];
-    if (v3)
+    if (highlightedCopy)
     {
       v6 = @"PlayControlPressed";
     }
@@ -141,8 +141,8 @@
   v19.receiver = self;
   v19.super_class = SKUIIPhoneSlideshowCell;
   [(SKUIIPhoneSlideshowCell *)&v19 layoutSubviews];
-  v3 = [(SKUIIPhoneSlideshowCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIIPhoneSlideshowCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -153,8 +153,8 @@
     height = self->_imageSize.height;
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
     {
-      v12 = [(UIImageView *)imageView image];
-      [v12 size];
+      image = [(UIImageView *)imageView image];
+      [image size];
       width = v13;
       height = v14;
 

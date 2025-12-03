@@ -1,15 +1,15 @@
 @interface PowerUIAnalyticsManager
 + (id)sharedInstance;
-+ (int)convertTimelineStringToOBCEvent:(id)a3;
-+ (int)obcModeOfOperationToBiomeModeOfOperation:(unint64_t)a3;
-- (BOOL)submitEngagementEventWithBatteryLevel:(id)a3 targetSoC:(id)a4 predictedEndOfCharge:(id)a5 modeOfOperation:(int)a6 eventType:(int)a7;
-- (BOOL)submitGaugingEventWithUpdateType:(int)a3 qmaxState:(int)a4 daysSinceQMax:(id)a5 ocvState:(int)a6 daysSinceOCV:(id)a7 fullChargeState:(int)a8 daysSinceFullChargeAttempt:(id)a9;
++ (int)convertTimelineStringToOBCEvent:(id)event;
++ (int)obcModeOfOperationToBiomeModeOfOperation:(unint64_t)operation;
+- (BOOL)submitEngagementEventWithBatteryLevel:(id)level targetSoC:(id)c predictedEndOfCharge:(id)charge modeOfOperation:(int)operation eventType:(int)type;
+- (BOOL)submitGaugingEventWithUpdateType:(int)type qmaxState:(int)state daysSinceQMax:(id)max ocvState:(int)ocvState daysSinceOCV:(id)v fullChargeState:(int)chargeState daysSinceFullChargeAttempt:(id)attempt;
 - (PowerUIAnalyticsManager)init;
-- (id)chargingStatisticsForSessionBetween:(id)a3 and:(id)a4;
-- (id)chargingStatisticsFrom:(id)a3 to:(id)a4;
-- (id)chargingStatisticsSince:(id)a3;
-- (id)gaugingMitigationStatisticsSince:(id)a3;
-- (id)stringFromEngagementEvent:(id)a3;
+- (id)chargingStatisticsForSessionBetween:(id)between and:(id)and;
+- (id)chargingStatisticsFrom:(id)from to:(id)to;
+- (id)chargingStatisticsSince:(id)since;
+- (id)gaugingMitigationStatisticsSince:(id)since;
+- (id)stringFromEngagementEvent:(id)event;
 - (void)printExistingEvents;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __41__PowerUIAnalyticsManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -66,40 +66,40 @@ uint64_t __41__PowerUIAnalyticsManager_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (int)convertTimelineStringToOBCEvent:(id)a3
++ (int)convertTimelineStringToOBCEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EligibleForIdle"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"EligibleForIdle"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Plugin"])
+  else if ([eventCopy isEqualToString:@"Plugin"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Unplug"])
+  else if ([eventCopy isEqualToString:@"Unplug"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FullyCharged"])
+  else if ([eventCopy isEqualToString:@"FullyCharged"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Engaged"])
+  else if ([eventCopy isEqualToString:@"Engaged"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"TopOff"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Interrupted"))
+  else if ([eventCopy isEqualToString:@"TopOff"] & 1) != 0 || (objc_msgSend(eventCopy, "isEqualToString:", @"Interrupted"))
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([eventCopy isEqualToString:@"Disabled"])
   {
     v4 = 4;
   }
@@ -107,9 +107,9 @@ uint64_t __41__PowerUIAnalyticsManager_sharedInstance__block_invoke(uint64_t a1)
   else
   {
     v4 = 3;
-    if (([v3 isEqualToString:@"TempDisabled"] & 1) == 0)
+    if (([eventCopy isEqualToString:@"TempDisabled"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"TemporarilyDisabled"])
+      if ([eventCopy isEqualToString:@"TemporarilyDisabled"])
       {
         v4 = 3;
       }
@@ -124,32 +124,32 @@ uint64_t __41__PowerUIAnalyticsManager_sharedInstance__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (int)obcModeOfOperationToBiomeModeOfOperation:(unint64_t)a3
++ (int)obcModeOfOperationToBiomeModeOfOperation:(unint64_t)operation
 {
-  if (a3 - 1 > 6)
+  if (operation - 1 > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_21B8482C8[a3 - 1];
+    return dword_21B8482C8[operation - 1];
   }
 }
 
 - (void)printExistingEvents
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Charging];
-  v6 = [v5 SmartCharging];
-  v7 = [v6 publisher];
+  device = [v3 Device];
+  charging = [device Charging];
+  smartCharging = [charging SmartCharging];
+  publisher = [smartCharging publisher];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__PowerUIAnalyticsManager_printExistingEvents__block_invoke_2;
   v9[3] = &unk_2782D3F10;
   v9[4] = self;
-  v8 = [v7 sinkWithCompletion:&__block_literal_global_2 receiveInput:v9];
+  v8 = [publisher sinkWithCompletion:&__block_literal_global_2 receiveInput:v9];
 }
 
 void __46__PowerUIAnalyticsManager_printExistingEvents__block_invoke_2(uint64_t a1, void *a2)
@@ -195,24 +195,24 @@ void __46__PowerUIAnalyticsManager_printExistingEvents__block_invoke_2(uint64_t 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)submitEngagementEventWithBatteryLevel:(id)a3 targetSoC:(id)a4 predictedEndOfCharge:(id)a5 modeOfOperation:(int)a6 eventType:(int)a7
+- (BOOL)submitEngagementEventWithBatteryLevel:(id)level targetSoC:(id)c predictedEndOfCharge:(id)charge modeOfOperation:(int)operation eventType:(int)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a7)
+  levelCopy = level;
+  cCopy = c;
+  chargeCopy = charge;
+  if (type)
   {
     eventSubmissionQueue = self->_eventSubmissionQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __122__PowerUIAnalyticsManager_submitEngagementEventWithBatteryLevel_targetSoC_predictedEndOfCharge_modeOfOperation_eventType___block_invoke;
     block[3] = &unk_2782D3F38;
-    v19 = v12;
-    v20 = v13;
-    v23 = a6;
-    v24 = a7;
-    v21 = v14;
-    v22 = self;
+    v19 = levelCopy;
+    v20 = cCopy;
+    operationCopy = operation;
+    typeCopy = type;
+    v21 = chargeCopy;
+    selfCopy = self;
     dispatch_sync(eventSubmissionQueue, block);
   }
 
@@ -226,7 +226,7 @@ void __46__PowerUIAnalyticsManager_printExistingEvents__block_invoke_2(uint64_t 
     }
   }
 
-  return a7 != 0;
+  return type != 0;
 }
 
 void __122__PowerUIAnalyticsManager_submitEngagementEventWithBatteryLevel_targetSoC_predictedEndOfCharge_modeOfOperation_eventType___block_invoke(uint64_t a1)
@@ -273,13 +273,13 @@ void __122__PowerUIAnalyticsManager_submitEngagementEventWithBatteryLevel_target
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)submitGaugingEventWithUpdateType:(int)a3 qmaxState:(int)a4 daysSinceQMax:(id)a5 ocvState:(int)a6 daysSinceOCV:(id)a7 fullChargeState:(int)a8 daysSinceFullChargeAttempt:(id)a9
+- (BOOL)submitGaugingEventWithUpdateType:(int)type qmaxState:(int)state daysSinceQMax:(id)max ocvState:(int)ocvState daysSinceOCV:(id)v fullChargeState:(int)chargeState daysSinceFullChargeAttempt:(id)attempt
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
+  maxCopy = max;
+  vCopy = v;
+  attemptCopy = attempt;
   log = self->_log;
-  if (a3)
+  if (type)
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
@@ -291,14 +291,14 @@ void __122__PowerUIAnalyticsManager_submitEngagementEventWithBatteryLevel_target
     v21[1] = 3221225472;
     v21[2] = __149__PowerUIAnalyticsManager_submitGaugingEventWithUpdateType_qmaxState_daysSinceQMax_ocvState_daysSinceOCV_fullChargeState_daysSinceFullChargeAttempt___block_invoke;
     v21[3] = &unk_2782D3F60;
-    v26 = a3;
-    v27 = a4;
-    v22 = v15;
-    v28 = a6;
-    v23 = v16;
-    v29 = a8;
-    v24 = v17;
-    v25 = self;
+    typeCopy = type;
+    stateCopy = state;
+    v22 = maxCopy;
+    ocvStateCopy = ocvState;
+    v23 = vCopy;
+    chargeStateCopy = chargeState;
+    v24 = attemptCopy;
+    selfCopy = self;
     dispatch_async(eventSubmissionQueue, v21);
   }
 
@@ -308,7 +308,7 @@ void __122__PowerUIAnalyticsManager_submitEngagementEventWithBatteryLevel_target
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Unknown gauging event for AnalyticsManager, do not add to stream", buf, 2u);
   }
 
-  return a3 != 0;
+  return type != 0;
 }
 
 void __149__PowerUIAnalyticsManager_submitGaugingEventWithUpdateType_qmaxState_daysSinceQMax_ocvState_daysSinceOCV_fullChargeState_daysSinceFullChargeAttempt___block_invoke(uint64_t a1)
@@ -355,34 +355,34 @@ void __149__PowerUIAnalyticsManager_submitGaugingEventWithUpdateType_qmaxState_d
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stringFromEngagementEvent:(id)a3
+- (id)stringFromEngagementEvent:(id)event
 {
   v18 = MEMORY[0x277CCACA8];
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  [v4 timestamp];
+  eventCopy = event;
+  [eventCopy timestamp];
   v5 = [v3 dateWithTimeIntervalSinceReferenceDate:?];
-  v6 = [v4 eventBody];
-  v7 = [v6 batteryLevel];
-  v8 = [v4 eventBody];
-  v9 = [v8 targetSoC];
-  v10 = [v4 eventBody];
-  [v10 predictedEndOfCharge];
+  eventBody = [eventCopy eventBody];
+  batteryLevel = [eventBody batteryLevel];
+  eventBody2 = [eventCopy eventBody];
+  targetSoC = [eventBody2 targetSoC];
+  eventBody3 = [eventCopy eventBody];
+  [eventBody3 predictedEndOfCharge];
   v12 = v11;
-  v13 = [v4 eventBody];
-  v14 = [v13 mode];
-  v15 = [v4 eventBody];
+  eventBody4 = [eventCopy eventBody];
+  mode = [eventBody4 mode];
+  eventBody5 = [eventCopy eventBody];
 
-  v16 = [v18 stringWithFormat:@"%@: SoC: %d - TargetSoC: %d - PredictedEoC: %f - Mode: %d - event: %d", v5, v7, v9, v12, v14, objc_msgSend(v15, "obcEvent")];
+  v16 = [v18 stringWithFormat:@"%@: SoC: %d - TargetSoC: %d - PredictedEoC: %f - Mode: %d - event: %d", v5, batteryLevel, targetSoC, v12, mode, objc_msgSend(eventBody5, "obcEvent")];
 
   return v16;
 }
 
-- (id)chargingStatisticsForSessionBetween:(id)a3 and:(id)a4
+- (id)chargingStatisticsForSessionBetween:(id)between and:(id)and
 {
   v84[8] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  betweenCopy = between;
+  andCopy = and;
   v81[0] = 0;
   v81[1] = v81;
   v81[2] = 0x3032000000;
@@ -458,19 +458,19 @@ void __149__PowerUIAnalyticsManager_submitGaugingEventWithUpdateType_qmaxState_d
   v36 = 0x2020000000;
   v37 = 0;
   v9 = BiomeLibrary();
-  v10 = [v9 Device];
-  v11 = [v10 Charging];
-  v12 = [v11 SmartCharging];
-  v13 = [v12 publisher];
+  device = [v9 Device];
+  charging = [device Charging];
+  smartCharging = [charging SmartCharging];
+  publisher = [smartCharging publisher];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __67__PowerUIAnalyticsManager_chargingStatisticsForSessionBetween_and___block_invoke;
   v31[3] = &unk_2782D3F88;
-  v14 = v6;
+  v14 = betweenCopy;
   v32 = v14;
-  v15 = v7;
+  v15 = andCopy;
   v33 = v15;
-  v16 = [v13 filterWithIsIncluded:v31];
+  v16 = [publisher filterWithIsIncluded:v31];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __67__PowerUIAnalyticsManager_chargingStatisticsForSessionBetween_and___block_invoke_2;
@@ -976,20 +976,20 @@ LABEL_54:
   }
 }
 
-- (id)chargingStatisticsSince:(id)a3
+- (id)chargingStatisticsSince:(id)since
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  sinceCopy = since;
   v6 = [v4 now];
-  v7 = [(PowerUIAnalyticsManager *)self chargingStatisticsFrom:v5 to:v6];
+  v7 = [(PowerUIAnalyticsManager *)self chargingStatisticsFrom:sinceCopy to:v6];
 
   return v7;
 }
 
-- (id)chargingStatisticsFrom:(id)a3 to:(id)a4
+- (id)chargingStatisticsFrom:(id)from to:(id)to
 {
-  v44 = a3;
-  v6 = a4;
+  fromCopy = from;
+  toCopy = to;
   v7 = os_transaction_create();
   v93[0] = 0;
   v93[1] = v93;
@@ -1056,12 +1056,12 @@ LABEL_54:
   }
 
   while (v8);
-  v9 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v44 endDate:v6 maxEvents:0 lastN:0 reversed:0];
+  v9 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:fromCopy endDate:toCopy maxEvents:0 lastN:0 reversed:0];
   v10 = BiomeLibrary();
-  v11 = [v10 Device];
-  v12 = [v11 Charging];
-  v13 = [v12 SmartCharging];
-  v14 = [v13 publisherWithOptions:v9];
+  device = [v10 Device];
+  charging = [device Charging];
+  smartCharging = [charging SmartCharging];
+  v14 = [smartCharging publisherWithOptions:v9];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __53__PowerUIAnalyticsManager_chargingStatisticsFrom_to___block_invoke;
@@ -1086,30 +1086,30 @@ LABEL_54:
   v45[16] = &v63;
   v15 = [v14 sinkWithCompletion:v46 receiveInput:v45];
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = [MEMORY[0x277CCABB0] numberWithInt:*(v80 + 6)];
-  [v16 setObject:v17 forKeyedSubscript:@"numberChargeSessions"];
+  [dictionary setObject:v17 forKeyedSubscript:@"numberChargeSessions"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInt:*(v76 + 6)];
-  [v16 setObject:v18 forKeyedSubscript:@"numberChargeSessionsWithEligibleTime"];
+  [dictionary setObject:v18 forKeyedSubscript:@"numberChargeSessionsWithEligibleTime"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithInt:*(v68 + 6)];
-  [v16 setObject:v19 forKeyedSubscript:@"numberChargeSessionsReachingTargetSoC"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numberChargeSessionsReachingTargetSoC"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInt:*(v72 + 6)];
-  [v16 setObject:v20 forKeyedSubscript:@"numberUnderCharges"];
+  [dictionary setObject:v20 forKeyedSubscript:@"numberUnderCharges"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:v88[3] / 3600.0];
-  [v16 setObject:v21 forKeyedSubscript:@"totalTime"];
+  [dictionary setObject:v21 forKeyedSubscript:@"totalTime"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:v84[3] / 60.0];
-  [v16 setObject:v22 forKeyedSubscript:@"totalEligible"];
+  [dictionary setObject:v22 forKeyedSubscript:@"totalEligible"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInt:*(v60 + 6)];
-  [v16 setObject:v23 forKeyedSubscript:@"totalFullDisableEvents"];
+  [dictionary setObject:v23 forKeyedSubscript:@"totalFullDisableEvents"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInt:*(v64 + 6)];
-  [v16 setObject:v24 forKeyedSubscript:@"totalTempDisableEvents"];
+  [dictionary setObject:v24 forKeyedSubscript:@"totalTempDisableEvents"];
 
   for (i = 0; [v54[5] count] > i; ++i)
   {
@@ -1118,7 +1118,7 @@ LABEL_54:
     [v27 doubleValue];
     v29 = [v26 numberWithDouble:v28 / 3600.0];
     v30 = BMDeviceSmartChargingModeOfOperationAsString();
-    [v16 setObject:v29 forKeyedSubscript:v30];
+    [dictionary setObject:v29 forKeyedSubscript:v30];
   }
 
   v43 = v9;
@@ -1141,13 +1141,13 @@ LABEL_54:
     v38 = MEMORY[0x277CCABB0];
     v39 = [v48[5] objectAtIndexedSubscript:v31];
     v40 = [v38 numberWithInt:{objc_msgSend(v39, "intValue")}];
-    [v16 setObject:v40 forKeyedSubscript:v37];
+    [dictionary setObject:v40 forKeyedSubscript:v37];
 
     ++v31;
   }
 
   v41 = [MEMORY[0x277CCABB0] numberWithBool:v32 & 1];
-  [v16 setObject:v41 forKeyedSubscript:@"sawEngagement"];
+  [dictionary setObject:v41 forKeyedSubscript:@"sawEngagement"];
 
   _Block_object_dispose(&v47, 8);
   _Block_object_dispose(&v53, 8);
@@ -1164,7 +1164,7 @@ LABEL_54:
 
   _Block_object_dispose(v93, 8);
 
-  return v16;
+  return dictionary;
 }
 
 void __53__PowerUIAnalyticsManager_chargingStatisticsFrom_to___block_invoke(uint64_t a1, void *a2)
@@ -1325,9 +1325,9 @@ LABEL_25:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)gaugingMitigationStatisticsSince:(id)a3
+- (id)gaugingMitigationStatisticsSince:(id)since
 {
-  v30 = a3;
+  sinceCopy = since;
   v28 = os_transaction_create();
   v78 = 0;
   v79 = &v78;
@@ -1384,19 +1384,19 @@ LABEL_25:
   v36[4] = __Block_byref_object_dispose__0;
   v37 = 0;
   v3 = objc_alloc(MEMORY[0x277CF1A50]);
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
-  v33 = [v3 initWithStartDate:v30 endDate:v4 maxEvents:0 lastN:0 reversed:0];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v33 = [v3 initWithStartDate:sinceCopy endDate:distantFuture maxEvents:0 lastN:0 reversed:0];
 
   v32 = BiomeLibrary();
-  v31 = [v32 Device];
-  v5 = [v31 Charging];
-  v6 = [v5 SmartCharging];
-  v7 = [v6 publisherWithOptions:v33];
+  device = [v32 Device];
+  charging = [device Charging];
+  smartCharging = [charging SmartCharging];
+  v7 = [smartCharging publisherWithOptions:v33];
   v8 = BiomeLibrary();
-  v9 = [v8 Device];
-  v10 = [v9 Charging];
-  v11 = [v10 BatteryGauging];
-  v12 = [v11 publisherWithOptions:v33];
+  device2 = [v8 Device];
+  charging2 = [device2 Charging];
+  batteryGauging = [charging2 BatteryGauging];
+  v12 = [batteryGauging publisherWithOptions:v33];
   v13 = [v7 orderedMergeWithOther:v12 comparator:&__block_literal_global_161];
   v14 = [v13 filterWithIsIncluded:&__block_literal_global_163];
   v35[0] = MEMORY[0x277D85DD0];
@@ -1423,36 +1423,36 @@ LABEL_25:
   v34[16] = &v46;
   v15 = [v14 sinkWithCompletion:v35 receiveInput:v34];
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = [MEMORY[0x277CCABB0] numberWithInt:*(v79 + 6)];
-  [v16 setObject:v17 forKeyedSubscript:@"nrOfDOD0AtQualifiedQmaxUpdates"];
+  [dictionary setObject:v17 forKeyedSubscript:@"nrOfDOD0AtQualifiedQmaxUpdates"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInt:*(v75 + 6)];
-  [v16 setObject:v18 forKeyedSubscript:@"nrOfQMaxTooOld"];
+  [dictionary setObject:v18 forKeyedSubscript:@"nrOfQMaxTooOld"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithInt:*(v71 + 6)];
-  [v16 setObject:v19 forKeyedSubscript:@"nrOfDOD0TooSmall"];
+  [dictionary setObject:v19 forKeyedSubscript:@"nrOfDOD0TooSmall"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInt:*(v67 + 6)];
-  [v16 setObject:v20 forKeyedSubscript:@"nrOfQMaxRequested"];
+  [dictionary setObject:v20 forKeyedSubscript:@"nrOfQMaxRequested"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInt:*(v63 + 6)];
-  [v16 setObject:v21 forKeyedSubscript:@"nrOfOCVRequested"];
+  [dictionary setObject:v21 forKeyedSubscript:@"nrOfOCVRequested"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInt:*(v59 + 6)];
-  [v16 setObject:v22 forKeyedSubscript:@"nrOfPeriodicFullChargeRequested"];
+  [dictionary setObject:v22 forKeyedSubscript:@"nrOfPeriodicFullChargeRequested"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInt:*(v55 + 6)];
-  [v16 setObject:v23 forKeyedSubscript:@"maxDaysSinceQmax"];
+  [dictionary setObject:v23 forKeyedSubscript:@"maxDaysSinceQmax"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInt:*(v51 + 6)];
-  [v16 setObject:v24 forKeyedSubscript:@"maxDaysSinceOCV"];
+  [dictionary setObject:v24 forKeyedSubscript:@"maxDaysSinceOCV"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithInt:*(v47 + 6)];
-  [v16 setObject:v25 forKeyedSubscript:@"maxDaysSinceLastFullCharge"];
+  [dictionary setObject:v25 forKeyedSubscript:@"maxDaysSinceLastFullCharge"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithInt:*(v43 + 6)];
-  [v16 setObject:v26 forKeyedSubscript:@"nrOfSessionsReachingFullCharge"];
+  [dictionary setObject:v26 forKeyedSubscript:@"nrOfSessionsReachingFullCharge"];
 
   _Block_object_dispose(v36, 8);
   _Block_object_dispose(v38, 8);
@@ -1468,7 +1468,7 @@ LABEL_25:
   _Block_object_dispose(&v74, 8);
   _Block_object_dispose(&v78, 8);
 
-  return v16;
+  return dictionary;
 }
 
 uint64_t __60__PowerUIAnalyticsManager_gaugingMitigationStatisticsSince___block_invoke(uint64_t a1, void *a2, void *a3)

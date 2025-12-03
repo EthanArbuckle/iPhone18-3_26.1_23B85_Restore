@@ -1,10 +1,10 @@
 @interface SNFileUtils
-+ (BOOL)addPurgeablePropertyToURL:(id)a3 error:(id *)a4;
++ (BOOL)addPurgeablePropertyToURL:(id)l error:(id *)error;
 @end
 
 @implementation SNFileUtils
 
-+ (BOOL)addPurgeablePropertyToURL:(id)a3 error:(id *)a4
++ (BOOL)addPurgeablePropertyToURL:(id)l error:(id *)error
 {
   v4 = sub_1C9A91558();
   v5 = *(v4 - 8);

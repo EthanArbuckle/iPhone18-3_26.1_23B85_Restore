@@ -1,10 +1,10 @@
 @interface GymKitDisclaimerView
-- (_TtC9SeymourUI20GymKitDisclaimerView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI20GymKitDisclaimerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GymKitDisclaimerView
 
-- (_TtC9SeymourUI20GymKitDisclaimerView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20GymKitDisclaimerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,32 +1,32 @@
 @interface PKAccountUserNotificationSettings
 + (id)defaultNotificationSettings;
-- (BOOL)_isEqualToAccountUserNotificationSettings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKAccountUserNotificationSettings)initWithAccountUserNotificationSettings:(id)a3;
-- (PKAccountUserNotificationSettings)initWithCoder:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)_isEqualToAccountUserNotificationSettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountUserNotificationSettings)initWithAccountUserNotificationSettings:(id)settings;
+- (PKAccountUserNotificationSettings)initWithCoder:(id)coder;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountUserNotificationSettings
 
-- (PKAccountUserNotificationSettings)initWithAccountUserNotificationSettings:(id)a3
+- (PKAccountUserNotificationSettings)initWithAccountUserNotificationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = PKAccountUserNotificationSettings;
   v5 = [(PKAccountUserNotificationSettings *)&v11 init];
   if (v5)
   {
-    v5->_transactionNotificationsEnabled = [v4 transactionNotificationsEnabled];
-    v6 = [v4 transactionNotificationThreshold];
+    v5->_transactionNotificationsEnabled = [settingsCopy transactionNotificationsEnabled];
+    transactionNotificationThreshold = [settingsCopy transactionNotificationThreshold];
     transactionNotificationThreshold = v5->_transactionNotificationThreshold;
-    v5->_transactionNotificationThreshold = v6;
+    v5->_transactionNotificationThreshold = transactionNotificationThreshold;
 
-    v8 = [v4 monthlySpendNotificationThreshold];
+    monthlySpendNotificationThreshold = [settingsCopy monthlySpendNotificationThreshold];
     monthlySpendNotificationThreshold = v5->_monthlySpendNotificationThreshold;
-    v5->_monthlySpendNotificationThreshold = v8;
+    v5->_monthlySpendNotificationThreshold = monthlySpendNotificationThreshold;
   }
 
   return v5;
@@ -34,34 +34,34 @@
 
 + (id)defaultNotificationSettings
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[8] = 1;
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserNotificationSettings *)self _isEqualToAccountUserNotificationSettings:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserNotificationSettings *)self _isEqualToAccountUserNotificationSettings:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToAccountUserNotificationSettings:(id)a3
+- (BOOL)_isEqualToAccountUserNotificationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_transactionNotificationsEnabled != *(v4 + 8))
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (!settingsCopy || self->_transactionNotificationsEnabled != *(settingsCopy + 8))
   {
     goto LABEL_10;
   }
@@ -114,20 +114,20 @@ LABEL_11:
   return v5;
 }
 
-- (PKAccountUserNotificationSettings)initWithCoder:(id)a3
+- (PKAccountUserNotificationSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountUserNotificationSettings;
   v5 = [(PKAccountUserNotificationSettings *)&v11 init];
   if (v5)
   {
-    v5->_transactionNotificationsEnabled = [v4 decodeBoolForKey:@"transactionNotificationsEnabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionNotificationThreshold"];
+    v5->_transactionNotificationsEnabled = [coderCopy decodeBoolForKey:@"transactionNotificationsEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionNotificationThreshold"];
     transactionNotificationThreshold = v5->_transactionNotificationThreshold;
     v5->_transactionNotificationThreshold = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monthlySpendNotificationThreshold"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monthlySpendNotificationThreshold"];
     monthlySpendNotificationThreshold = v5->_monthlySpendNotificationThreshold;
     v5->_monthlySpendNotificationThreshold = v8;
   }
@@ -135,18 +135,18 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transactionNotificationsEnabled = self->_transactionNotificationsEnabled;
-  v5 = a3;
-  [v5 encodeBool:transactionNotificationsEnabled forKey:@"transactionNotificationsEnabled"];
-  [v5 encodeObject:self->_transactionNotificationThreshold forKey:@"transactionNotificationThreshold"];
-  [v5 encodeObject:self->_monthlySpendNotificationThreshold forKey:@"monthlySpendNotificationThreshold"];
+  coderCopy = coder;
+  [coderCopy encodeBool:transactionNotificationsEnabled forKey:@"transactionNotificationsEnabled"];
+  [coderCopy encodeObject:self->_transactionNotificationThreshold forKey:@"transactionNotificationThreshold"];
+  [coderCopy encodeObject:self->_monthlySpendNotificationThreshold forKey:@"monthlySpendNotificationThreshold"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PKMutableAccountUserNotificationSettings allocWithZone:a3];
+  v4 = [PKMutableAccountUserNotificationSettings allocWithZone:zone];
 
   return [(PKAccountUserNotificationSettings *)v4 initWithAccountUserNotificationSettings:self];
 }

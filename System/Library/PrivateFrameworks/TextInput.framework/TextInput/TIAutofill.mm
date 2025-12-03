@@ -1,6 +1,6 @@
 @interface TIAutofill
 + (BOOL)isSuggestingStrongPasswordsAvailable;
-+ (void)sendAutofillCredentialCandidate:(id)a3 completionHandler:(id)a4;
++ (void)sendAutofillCredentialCandidate:(id)candidate completionHandler:(id)handler;
 @end
 
 @implementation TIAutofill
@@ -34,11 +34,11 @@
   return v5;
 }
 
-+ (void)sendAutofillCredentialCandidate:(id)a3 completionHandler:(id)a4
++ (void)sendAutofillCredentialCandidate:(id)candidate completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  candidateCopy = candidate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (sendAutofillCredentialCandidate_completionHandler__onceToken != -1)
     {
@@ -55,13 +55,13 @@
     v12[1] = 3221225472;
     v12[2] = __64__TIAutofill_sendAutofillCredentialCandidate_completionHandler___block_invoke_2;
     v12[3] = &unk_1E6F4CD38;
-    v9 = v6;
+    v9 = handlerCopy;
     v13 = v9;
     v10 = [v7 remoteObjectProxyWithErrorHandler:v12];
     v11 = v10;
     if (v10)
     {
-      [v10 reportSelectedAutofillCredential:v5 completionHandler:v9];
+      [v10 reportSelectedAutofillCredential:candidateCopy completionHandler:v9];
     }
 
     else

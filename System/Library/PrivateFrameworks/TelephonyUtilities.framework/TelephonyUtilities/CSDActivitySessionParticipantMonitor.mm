@@ -1,14 +1,14 @@
 @interface CSDActivitySessionParticipantMonitor
-- (void)evaluateConversation:(id)a3;
+- (void)evaluateConversation:(id)conversation;
 @end
 
 @implementation CSDActivitySessionParticipantMonitor
 
-- (void)evaluateConversation:(id)a3
+- (void)evaluateConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003D86B8(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1003D86B8(conversationCopy);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface _NSUndoActionInfo
-- (_NSUndoActionInfo)initWithCoder:(id)a3;
-- (_NSUndoActionInfo)initWithUUID:(id)a3 name:(id)a4 discardable:(BOOL)a5;
+- (_NSUndoActionInfo)initWithCoder:(id)coder;
+- (_NSUndoActionInfo)initWithUUID:(id)d name:(id)name discardable:(BOOL)discardable;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSUndoActionInfo
 
-- (_NSUndoActionInfo)initWithUUID:(id)a3 name:(id)a4 discardable:(BOOL)a5
+- (_NSUndoActionInfo)initWithUUID:(id)d name:(id)name discardable:(BOOL)discardable
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -16,39 +16,39 @@
   v8 = [(_NSUndoActionInfo *)&v10 init];
   if (v8)
   {
-    v8->_uuid = [a3 copy];
-    v8->_name = [a4 copy];
-    v8->_discardable = a5;
+    v8->_uuid = [d copy];
+    v8->_name = [name copy];
+    v8->_discardable = discardable;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSUndoActionInfo cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeObject:self->_uuid forKey:@"NSUUID"];
-  [a3 encodeObject:self->_name forKey:@"NSName"];
+  [coder encodeObject:self->_uuid forKey:@"NSUUID"];
+  [coder encodeObject:self->_name forKey:@"NSName"];
   discardable = self->_discardable;
 
-  [a3 encodeBool:discardable forKey:@"NSDiscardable"];
+  [coder encodeBool:discardable forKey:@"NSDiscardable"];
 }
 
-- (_NSUndoActionInfo)initWithCoder:(id)a3
+- (_NSUndoActionInfo)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSUndoActionInfo cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
-  v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSName"}];
+  v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSName"}];
   if (v7)
   {
     if ((_NSIsNSString() & 1) == 0)
@@ -66,7 +66,7 @@
     }
   }
 
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSUUID"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSUUID"];
   if (!v8 || (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v15 = @"NSDebugDescription";
@@ -75,11 +75,11 @@
     v13 = &v16;
     v14 = &v15;
 LABEL_12:
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v12, "dictionaryWithObjects:forKeys:count:", v13, v14, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v12, "dictionaryWithObjects:forKeys:count:", v13, v14, 1))}];
     return 0;
   }
 
-  v10 = [a3 decodeBoolForKey:@"NSDiscardable"];
+  v10 = [coder decodeBoolForKey:@"NSDiscardable"];
 
   return [(_NSUndoActionInfo *)self initWithUUID:v9 name:v7 discardable:v10];
 }

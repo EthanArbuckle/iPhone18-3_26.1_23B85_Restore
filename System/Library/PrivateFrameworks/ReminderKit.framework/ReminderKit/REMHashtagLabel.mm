@@ -1,78 +1,78 @@
 @interface REMHashtagLabel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHashtagLabel:(id)a3;
-- (REMHashtagLabel)initWithCoder:(id)a3;
-- (REMHashtagLabel)initWithName:(id)a3;
-- (REMHashtagLabel)initWithName:(id)a3 canonicalName:(id)a4 firstOccurrenceCreationDate:(id)a5 recencyDate:(id)a6 uuidForChangeTracking:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHashtagLabel:(id)label;
+- (REMHashtagLabel)initWithCoder:(id)coder;
+- (REMHashtagLabel)initWithName:(id)name;
+- (REMHashtagLabel)initWithName:(id)name canonicalName:(id)canonicalName firstOccurrenceCreationDate:(id)date recencyDate:(id)recencyDate uuidForChangeTracking:(id)tracking;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMHashtagLabel
 
-- (REMHashtagLabel)initWithName:(id)a3
+- (REMHashtagLabel)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = REMHashtagLabel;
   v6 = [(REMHashtagLabel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (REMHashtagLabel)initWithName:(id)a3 canonicalName:(id)a4 firstOccurrenceCreationDate:(id)a5 recencyDate:(id)a6 uuidForChangeTracking:(id)a7
+- (REMHashtagLabel)initWithName:(id)name canonicalName:(id)canonicalName firstOccurrenceCreationDate:(id)date recencyDate:(id)recencyDate uuidForChangeTracking:(id)tracking
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  canonicalNameCopy = canonicalName;
+  dateCopy = date;
+  recencyDateCopy = recencyDate;
+  trackingCopy = tracking;
   v21.receiver = self;
   v21.super_class = REMHashtagLabel;
   v17 = [(REMHashtagLabel *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_name, a3);
-    objc_storeStrong(&v18->_canonicalName, a4);
-    objc_storeStrong(&v18->_firstOccurrenceCreationDate, a5);
-    objc_storeStrong(&v18->_recencyDate, a6);
-    objc_storeStrong(&v18->_uuidForChangeTracking, a7);
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v18->_canonicalName, canonicalName);
+    objc_storeStrong(&v18->_firstOccurrenceCreationDate, date);
+    objc_storeStrong(&v18->_recencyDate, recencyDate);
+    objc_storeStrong(&v18->_uuidForChangeTracking, tracking);
   }
 
   return v18;
 }
 
-- (REMHashtagLabel)initWithCoder:(id)a3
+- (REMHashtagLabel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = REMHashtagLabel;
   v5 = [(REMHashtagLabel *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canonicalName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canonicalName"];
     canonicalName = v5->_canonicalName;
     v5->_canonicalName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstOccurrenceCreationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstOccurrenceCreationDate"];
     firstOccurrenceCreationDate = v5->_firstOccurrenceCreationDate;
     v5->_firstOccurrenceCreationDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recencyDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recencyDate"];
     recencyDate = v5->_recencyDate;
     v5->_recencyDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuidForChangeTracking"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuidForChangeTracking"];
     uuidForChangeTracking = v5->_uuidForChangeTracking;
     v5->_uuidForChangeTracking = v14;
   }
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMHashtagLabel *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(REMHashtagLabel *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(REMHashtagLabel *)self canonicalName];
-  [v4 encodeObject:v6 forKey:@"canonicalName"];
+  canonicalName = [(REMHashtagLabel *)self canonicalName];
+  [coderCopy encodeObject:canonicalName forKey:@"canonicalName"];
 
-  v7 = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
-  [v4 encodeObject:v7 forKey:@"firstOccurrenceCreationDate"];
+  firstOccurrenceCreationDate = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
+  [coderCopy encodeObject:firstOccurrenceCreationDate forKey:@"firstOccurrenceCreationDate"];
 
-  v8 = [(REMHashtagLabel *)self recencyDate];
-  [v4 encodeObject:v8 forKey:@"recencyDate"];
+  recencyDate = [(REMHashtagLabel *)self recencyDate];
+  [coderCopy encodeObject:recencyDate forKey:@"recencyDate"];
 
-  v9 = [(REMHashtagLabel *)self uuidForChangeTracking];
-  [v4 encodeObject:v9 forKey:@"uuidForChangeTracking"];
+  uuidForChangeTracking = [(REMHashtagLabel *)self uuidForChangeTracking];
+  [coderCopy encodeObject:uuidForChangeTracking forKey:@"uuidForChangeTracking"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -118,28 +118,28 @@
   return v7;
 }
 
-- (BOOL)isEqualToHashtagLabel:(id)a3
+- (BOOL)isEqualToHashtagLabel:(id)label
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  labelCopy = label;
+  v5 = labelCopy;
+  if (labelCopy != self)
   {
-    v6 = v4;
+    v6 = labelCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMHashtagLabel *)self name];
-      v8 = [(REMHashtagLabel *)v6 name];
-      v9 = v8;
-      if (v7 == v8)
+      name = [(REMHashtagLabel *)self name];
+      name2 = [(REMHashtagLabel *)v6 name];
+      v9 = name2;
+      if (name == name2)
       {
       }
 
       else
       {
-        v10 = [(REMHashtagLabel *)self name];
-        v11 = [(REMHashtagLabel *)v6 name];
-        v12 = [v10 isEqual:v11];
+        name3 = [(REMHashtagLabel *)self name];
+        name4 = [(REMHashtagLabel *)v6 name];
+        v12 = [name3 isEqual:name4];
 
         if (!v12)
         {
@@ -147,18 +147,18 @@
         }
       }
 
-      v14 = [(REMHashtagLabel *)self canonicalName];
-      v15 = [(REMHashtagLabel *)v6 canonicalName];
-      v16 = v15;
-      if (v14 == v15)
+      canonicalName = [(REMHashtagLabel *)self canonicalName];
+      canonicalName2 = [(REMHashtagLabel *)v6 canonicalName];
+      v16 = canonicalName2;
+      if (canonicalName == canonicalName2)
       {
       }
 
       else
       {
-        v17 = [(REMHashtagLabel *)self canonicalName];
-        v18 = [(REMHashtagLabel *)v6 canonicalName];
-        v19 = [v17 isEqual:v18];
+        canonicalName3 = [(REMHashtagLabel *)self canonicalName];
+        canonicalName4 = [(REMHashtagLabel *)v6 canonicalName];
+        v19 = [canonicalName3 isEqual:canonicalName4];
 
         if (!v19)
         {
@@ -166,18 +166,18 @@
         }
       }
 
-      v20 = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
-      v21 = [(REMHashtagLabel *)v6 firstOccurrenceCreationDate];
-      v22 = v21;
-      if (v20 == v21)
+      firstOccurrenceCreationDate = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
+      firstOccurrenceCreationDate2 = [(REMHashtagLabel *)v6 firstOccurrenceCreationDate];
+      v22 = firstOccurrenceCreationDate2;
+      if (firstOccurrenceCreationDate == firstOccurrenceCreationDate2)
       {
       }
 
       else
       {
-        v23 = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
-        v24 = [(REMHashtagLabel *)v6 firstOccurrenceCreationDate];
-        v25 = [v23 isEqual:v24];
+        firstOccurrenceCreationDate3 = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
+        firstOccurrenceCreationDate4 = [(REMHashtagLabel *)v6 firstOccurrenceCreationDate];
+        v25 = [firstOccurrenceCreationDate3 isEqual:firstOccurrenceCreationDate4];
 
         if (!v25)
         {
@@ -185,18 +185,18 @@
         }
       }
 
-      v26 = [(REMHashtagLabel *)self recencyDate];
-      v27 = [(REMHashtagLabel *)v6 recencyDate];
-      v28 = v27;
-      if (v26 == v27)
+      recencyDate = [(REMHashtagLabel *)self recencyDate];
+      recencyDate2 = [(REMHashtagLabel *)v6 recencyDate];
+      v28 = recencyDate2;
+      if (recencyDate == recencyDate2)
       {
       }
 
       else
       {
-        v29 = [(REMHashtagLabel *)self recencyDate];
-        v30 = [(REMHashtagLabel *)v6 recencyDate];
-        v31 = [v29 isEqual:v30];
+        recencyDate3 = [(REMHashtagLabel *)self recencyDate];
+        recencyDate4 = [(REMHashtagLabel *)v6 recencyDate];
+        v31 = [recencyDate3 isEqual:recencyDate4];
 
         if (!v31)
         {
@@ -204,18 +204,18 @@
         }
       }
 
-      v33 = [(REMHashtagLabel *)self uuidForChangeTracking];
-      v34 = [(REMHashtagLabel *)v6 uuidForChangeTracking];
-      if (v33 == v34)
+      uuidForChangeTracking = [(REMHashtagLabel *)self uuidForChangeTracking];
+      uuidForChangeTracking2 = [(REMHashtagLabel *)v6 uuidForChangeTracking];
+      if (uuidForChangeTracking == uuidForChangeTracking2)
       {
         v13 = 1;
       }
 
       else
       {
-        v35 = [(REMHashtagLabel *)self uuidForChangeTracking];
-        v36 = [(REMHashtagLabel *)v6 uuidForChangeTracking];
-        v13 = [v35 isEqual:v36];
+        uuidForChangeTracking3 = [(REMHashtagLabel *)self uuidForChangeTracking];
+        uuidForChangeTracking4 = [(REMHashtagLabel *)v6 uuidForChangeTracking];
+        v13 = [uuidForChangeTracking3 isEqual:uuidForChangeTracking4];
       }
 
       goto LABEL_19;
@@ -238,12 +238,12 @@ LABEL_20:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMHashtagLabel *)self name];
-  v6 = [(REMHashtagLabel *)self canonicalName];
-  v7 = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
-  v8 = [(REMHashtagLabel *)self recencyDate];
-  v9 = [(REMHashtagLabel *)self uuidForChangeTracking];
-  v10 = [v3 stringWithFormat:@"<%@: %p name: %@, canonicalName: %@, firstOccurrenceCreationDate: %@, recencyDate: %@, uuidForChangeTracking: %@>", v4, self, v5, v6, v7, v8, v9];
+  name = [(REMHashtagLabel *)self name];
+  canonicalName = [(REMHashtagLabel *)self canonicalName];
+  firstOccurrenceCreationDate = [(REMHashtagLabel *)self firstOccurrenceCreationDate];
+  recencyDate = [(REMHashtagLabel *)self recencyDate];
+  uuidForChangeTracking = [(REMHashtagLabel *)self uuidForChangeTracking];
+  v10 = [v3 stringWithFormat:@"<%@: %p name: %@, canonicalName: %@, firstOccurrenceCreationDate: %@, recencyDate: %@, uuidForChangeTracking: %@>", v4, self, name, canonicalName, firstOccurrenceCreationDate, recencyDate, uuidForChangeTracking];
 
   return v10;
 }

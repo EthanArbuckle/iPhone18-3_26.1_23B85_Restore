@@ -1,20 +1,20 @@
 @interface HDMedicationPregnancyLactationStatusObserver
-- (BOOL)_deleteAllPregnancyLactationInteractionsOfType:(void *)a3 transaction:(void *)a4 reason:(uint64_t)a5 error:;
-- (HDMedicationPregnancyLactationStatusObserver)initWithProfile:(id)a3;
-- (uint64_t)_deletePregnancyInteractionsWithReason:(uint64_t)a3 error:;
-- (uint64_t)_queryAndDeleteLactationInteractionsWithReason:(void *)a3 transaction:(void *)a4 error:;
-- (uint64_t)doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:(uint64_t)a1;
+- (BOOL)_deleteAllPregnancyLactationInteractionsOfType:(void *)type transaction:(void *)transaction reason:(uint64_t)reason error:;
+- (HDMedicationPregnancyLactationStatusObserver)initWithProfile:(id)profile;
+- (uint64_t)_deletePregnancyInteractionsWithReason:(uint64_t)reason error:;
+- (uint64_t)_queryAndDeleteLactationInteractionsWithReason:(void *)reason transaction:(void *)transaction error:;
+- (uint64_t)doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:(uint64_t)error;
 - (void)_deleteLactationInteractionsOnProtectedDataAvailabilityIfNeeded;
 - (void)_deletePregancyInteractionsOnProtectedDataAvailabilityIfNeeded;
-- (void)_pregnancyModelWasUpdated:(uint64_t)a1;
-- (void)_protectedDataDidBecomeAvailable:(uint64_t)a1;
-- (void)_queryAndDeleteLactationInteractionsWithReason:(uint64_t)a1;
-- (void)_samplesOfTypesWereRemoved:(void *)a3 anchor:;
-- (void)_samplesWereAdded:(void *)a3 anchor:;
-- (void)pregnancyModelDidUpdate:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)_pregnancyModelWasUpdated:(uint64_t)updated;
+- (void)_protectedDataDidBecomeAvailable:(uint64_t)available;
+- (void)_queryAndDeleteLactationInteractionsWithReason:(uint64_t)reason;
+- (void)_samplesOfTypesWereRemoved:(void *)removed anchor:;
+- (void)_samplesWereAdded:(void *)added anchor:;
+- (void)pregnancyModelDidUpdate:(id)update;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDMedicationPregnancyLactationStatusObserver
@@ -22,10 +22,10 @@
 - (void)_deletePregancyInteractionsOnProtectedDataAvailabilityIfNeeded
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = HKSensitiveLogItem();
-    v3 = atomic_load((a1 + 24));
+    v3 = atomic_load((self + 24));
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -34,7 +34,7 @@ LABEL_3:
     }
 
     v12 = 0;
-    v5 = [(HDMedicationPregnancyLactationStatusObserver *)a1 _deletePregnancyInteractionsWithReason:&v12 error:?];
+    v5 = [(HDMedicationPregnancyLactationStatusObserver *)self _deletePregnancyInteractionsWithReason:&v12 error:?];
     v6 = v12;
     _HKInitializeLogging();
     v7 = HKLogMedication();
@@ -45,7 +45,7 @@ LABEL_3:
       {
 LABEL_10:
 
-        atomic_store(v5 ^ 1, (a1 + 24));
+        atomic_store(v5 ^ 1, (self + 24));
         goto LABEL_3;
       }
 
@@ -85,62 +85,62 @@ LABEL_4:
 
 - (void)_deleteLactationInteractionsOnProtectedDataAvailabilityIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = atomic_load((a1 + 25));
+    v2 = atomic_load((self + 25));
     if (v2)
     {
       v3 = MEMORY[0x277D10848];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v5 = [WeakRetained database];
-      v9[4] = a1;
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      database = [WeakRetained database];
+      v9[4] = self;
       v10 = 0;
       OUTLINED_FUNCTION_0_1();
       v9[1] = 3221225472;
       v9[2] = __111__HDMedicationPregnancyLactationStatusObserver__deleteLactationInteractionsOnProtectedDataAvailabilityIfNeeded__block_invoke;
       v9[3] = &unk_2796CD388;
-      v6 = [v3 performWriteTransactionWithHealthDatabase:v5 error:&v10 block:v9];
+      v6 = [v3 performWriteTransactionWithHealthDatabase:database error:&v10 block:v9];
       v7 = v10;
 
       if (v6)
       {
-        v8 = 0;
+        hk_isDatabaseAccessibilityError = 0;
       }
 
       else
       {
-        v8 = [v7 hk_isDatabaseAccessibilityError];
+        hk_isDatabaseAccessibilityError = [v7 hk_isDatabaseAccessibilityError];
       }
 
-      atomic_store(v8, (a1 + 25));
+      atomic_store(hk_isDatabaseAccessibilityError, (self + 25));
     }
   }
 }
 
-- (HDMedicationPregnancyLactationStatusObserver)initWithProfile:(id)a3
+- (HDMedicationPregnancyLactationStatusObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDMedicationPregnancyLactationStatusObserver;
   v5 = [(HDMedicationPregnancyLactationStatusObserver *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
     atomic_store(0, &v6->_shouldAttemptToDeletePregnancyDismissedInteractions);
     atomic_store(1u, &v6->_shouldQueryLactationSampleToDeleteDismissedInteractionsIfNeeded);
     v6->_accessLock._os_unfair_lock_opaque = 0;
     v8 = v7;
-    [v4 registerProfileReadyObserver:v6 queue:0];
+    [profileCopy registerProfileReadyObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   v5 = HKLogMedication();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -157,25 +157,25 @@ LABEL_4:
     }
   }
 
-  v9 = [v4 profileExtensionsConformingToProtocol:{&unk_2863E4610, *v19}];
-  v10 = [v9 firstObject];
+  v9 = [readyCopy profileExtensionsConformingToProtocol:{&unk_2863E4610, *v19}];
+  firstObject = [v9 firstObject];
   provider = self->_provider;
-  self->_provider = v10;
+  self->_provider = firstObject;
 
-  v12 = [(HKMCPregnancyModelProvidingInterface *)self->_provider getPregnancyModelProvider];
-  [v12 registerObserver:self isUserInitiated:0];
+  getPregnancyModelProvider = [(HKMCPregnancyModelProvidingInterface *)self->_provider getPregnancyModelProvider];
+  [getPregnancyModelProvider registerObserver:self isUserInitiated:0];
 
-  v13 = [v4 dataManager];
+  dataManager = [readyCopy dataManager];
   v14 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB9F0]];
-  [v13 addObserver:self forDataType:v14];
+  [dataManager addObserver:self forDataType:v14];
 
-  v15 = [v4 database];
-  [v15 addProtectedDataObserver:self];
+  database = [readyCopy database];
+  [database addProtectedDataObserver:self];
 
-  v16 = [v4 database];
+  database2 = [readyCopy database];
 
-  v17 = [v16 isProtectedDataAvailable];
-  if (v17)
+  isProtectedDataAvailable = [database2 isProtectedDataAvailable];
+  if (isProtectedDataAvailable)
   {
     [(HDMedicationPregnancyLactationStatusObserver *)self _deleteLactationInteractionsOnProtectedDataAvailabilityIfNeeded];
   }
@@ -183,11 +183,11 @@ LABEL_4:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 hk_containsObjectPassingTest:&__block_literal_global_3])
+  addedCopy = added;
+  anchorCopy = anchor;
+  if ([addedCopy hk_containsObjectPassingTest:&__block_literal_global_3])
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = HKSensitiveLogItem();
@@ -196,7 +196,7 @@ LABEL_4:
     [(HDMedicationPregnancyLactationStatusObserver *)self _queryAndDeleteLactationInteractionsWithReason:v9];
   }
 
-  [(HDMedicationPregnancyLactationStatusObserver *)self _samplesWereAdded:v10 anchor:v6];
+  [(HDMedicationPregnancyLactationStatusObserver *)self _samplesWereAdded:addedCopy anchor:anchorCopy];
 }
 
 BOOL __68__HDMedicationPregnancyLactationStatusObserver_samplesAdded_anchor___block_invoke(uint64_t a1, void *a2)
@@ -208,16 +208,16 @@ BOOL __68__HDMedicationPregnancyLactationStatusObserver_samplesAdded_anchor___bl
   return v4;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 hk_containsObjectPassingTest:&__block_literal_global_380])
+  removedCopy = removed;
+  anchorCopy = anchor;
+  if ([removedCopy hk_containsObjectPassingTest:&__block_literal_global_380])
   {
     [HDMedicationPregnancyLactationStatusObserver samplesOfTypesWereRemoved:? anchor:?];
   }
 
-  [(HDMedicationPregnancyLactationStatusObserver *)self _samplesOfTypesWereRemoved:v7 anchor:v6];
+  [(HDMedicationPregnancyLactationStatusObserver *)self _samplesOfTypesWereRemoved:removedCopy anchor:anchorCopy];
 }
 
 BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemoved_anchor___block_invoke(uint64_t a1, void *a2)
@@ -230,14 +230,14 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   return v5 == v4;
 }
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = HKSensitiveLogItem();
-  if (![v4 state])
+  if (![updateCopy state])
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v4, "state")];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(updateCopy, "state")];
     v7 = MEMORY[0x277CCACA8];
     v8 = HKSensitiveLogItem();
     v9 = [v7 stringWithFormat:@"responding to update to new %@ state: %@", v5, v8];
@@ -295,21 +295,21 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
     }
   }
 
-  [(HDMedicationPregnancyLactationStatusObserver *)self _pregnancyModelWasUpdated:v4];
+  [(HDMedicationPregnancyLactationStatusObserver *)self _pregnancyModelWasUpdated:updateCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:(uint64_t)a1
+- (uint64_t)doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
   v4 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB9F0]];
   v5 = MEMORY[0x277D105E8];
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((error + 8));
   v15 = 0;
   v7 = [v5 mostRecentSampleWithType:v4 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v15];
   v8 = v15;
@@ -331,9 +331,9 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
 
   if (v7)
   {
-    v11 = [v7 endDate];
-    v12 = [MEMORY[0x277CBEAA8] distantFuture];
-    if (v11 == v12)
+    endDate = [v7 endDate];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    if (endDate == distantFuture)
     {
       v13 = 1;
     }
@@ -352,59 +352,59 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   return v13;
 }
 
-- (void)_protectedDataDidBecomeAvailable:(uint64_t)a1
+- (void)_protectedDataDidBecomeAvailable:(uint64_t)available
 {
-  if (a1)
+  if (available)
   {
-    v4 = MEMORY[0x253084B70](*(a1 + 40));
+    v4 = MEMORY[0x253084B70](*(available + 40));
     if (v4)
     {
       v5 = v4;
-      v4[2](v4, a1, a2);
+      v4[2](v4, available, a2);
       v4 = v5;
     }
   }
 }
 
-- (void)_queryAndDeleteLactationInteractionsWithReason:(uint64_t)a1
+- (void)_queryAndDeleteLactationInteractionsWithReason:(uint64_t)reason
 {
   v3 = a2;
-  if (a1)
+  if (reason)
   {
     v4 = MEMORY[0x277D10848];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v6 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((reason + 8));
+    database = [WeakRetained database];
     v12 = 0;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __95__HDMedicationPregnancyLactationStatusObserver__queryAndDeleteLactationInteractionsWithReason___block_invoke;
     v10[3] = &unk_2796CD5C8;
-    v10[4] = a1;
+    v10[4] = reason;
     v11 = v3;
-    v7 = [v4 performWriteTransactionWithHealthDatabase:v6 error:&v12 block:v10];
+    v7 = [v4 performWriteTransactionWithHealthDatabase:database error:&v12 block:v10];
     v8 = v12;
 
     if (v7)
     {
-      v9 = 0;
+      hk_isDatabaseAccessibilityError = 0;
     }
 
     else
     {
-      v9 = [v8 hk_isDatabaseAccessibilityError];
+      hk_isDatabaseAccessibilityError = [v8 hk_isDatabaseAccessibilityError];
     }
 
-    atomic_store(v9, (a1 + 25));
+    atomic_store(hk_isDatabaseAccessibilityError, (reason + 25));
   }
 }
 
-- (void)_samplesWereAdded:(void *)a3 anchor:
+- (void)_samplesWereAdded:(void *)added anchor:
 {
   v9 = a2;
-  v5 = a3;
-  if (a1)
+  addedCopy = added;
+  if (self)
   {
-    v6 = MEMORY[0x253084B70](*(a1 + 48));
+    v6 = MEMORY[0x253084B70](*(self + 48));
     if (v6)
     {
       v7 = OUTLINED_FUNCTION_1_1();
@@ -413,13 +413,13 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   }
 }
 
-- (void)_samplesOfTypesWereRemoved:(void *)a3 anchor:
+- (void)_samplesOfTypesWereRemoved:(void *)removed anchor:
 {
   v9 = a2;
-  v5 = a3;
-  if (a1)
+  removedCopy = removed;
+  if (self)
   {
-    v6 = MEMORY[0x253084B70](*(a1 + 56));
+    v6 = MEMORY[0x253084B70](*(self + 56));
     if (v6)
     {
       v7 = OUTLINED_FUNCTION_1_1();
@@ -428,21 +428,21 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   }
 }
 
-- (uint64_t)_deletePregnancyInteractionsWithReason:(uint64_t)a3 error:
+- (uint64_t)_deletePregnancyInteractionsWithReason:(uint64_t)reason error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x277D10848];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v8 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     OUTLINED_FUNCTION_0_1();
     v11[1] = 3221225472;
     v11[2] = __93__HDMedicationPregnancyLactationStatusObserver__deletePregnancyInteractionsWithReason_error___block_invoke;
     v11[3] = &unk_2796CD5C8;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v5;
-    v9 = [v6 performWriteTransactionWithHealthDatabase:v8 error:a3 block:v11];
+    v9 = [v6 performWriteTransactionWithHealthDatabase:database error:reason block:v11];
   }
 
   else
@@ -453,25 +453,25 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   return v9;
 }
 
-- (void)_pregnancyModelWasUpdated:(uint64_t)a1
+- (void)_pregnancyModelWasUpdated:(uint64_t)updated
 {
   v5 = a2;
-  if (a1)
+  if (updated)
   {
-    v3 = MEMORY[0x253084B70](*(a1 + 64));
+    v3 = MEMORY[0x253084B70](*(updated + 64));
     v4 = v3;
     if (v3)
     {
-      (*(v3 + 16))(v3, a1, v5);
+      (*(v3 + 16))(v3, updated, v5);
     }
   }
 }
 
-- (BOOL)_deleteAllPregnancyLactationInteractionsOfType:(void *)a3 transaction:(void *)a4 reason:(uint64_t)a5 error:
+- (BOOL)_deleteAllPregnancyLactationInteractionsOfType:(void *)type transaction:(void *)transaction reason:(uint64_t)reason error:
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (a1)
+  transactionCopy = transaction;
+  if (self)
   {
     v10 = @"lactation";
     if (a2 == 1)
@@ -480,7 +480,7 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
     }
 
     v11 = v10;
-    v12 = a3;
+    typeCopy = type;
     _HKInitializeLogging();
     v13 = HKLogMedication();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -493,7 +493,7 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
       v27 = 2112;
       v28 = v16;
       v29 = 2112;
-      v30 = v9;
+      v30 = transactionCopy;
       _os_log_impl(&dword_25181C000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will delete %@ dismissed interaction objects, %@", buf, 0x20u);
     }
 
@@ -502,9 +502,9 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
     v19 = HDDismissedPregnancyLactationInteractionPredicateForInteractionTypes(v18);
 
-    v20 = [v12 databaseForEntityClass:objc_opt_class()];
+    v20 = [typeCopy databaseForEntityClass:objc_opt_class()];
 
-    v21 = [(HDSQLiteEntity *)HDDismissedPregnancyLactationInteractionEntity deleteEntitiesInDatabase:v20 predicate:v19 error:a5];
+    v21 = [(HDSQLiteEntity *)HDDismissedPregnancyLactationInteractionEntity deleteEntitiesInDatabase:v20 predicate:v19 error:reason];
   }
 
   else
@@ -516,12 +516,12 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
   return v21;
 }
 
-- (uint64_t)_queryAndDeleteLactationInteractionsWithReason:(void *)a3 transaction:(void *)a4 error:
+- (uint64_t)_queryAndDeleteLactationInteractionsWithReason:(void *)reason transaction:(void *)transaction error:
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  reasonCopy = reason;
+  if (!self)
   {
     v10 = 0;
     goto LABEL_18;
@@ -529,7 +529,7 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
 
   v9 = HKSensitiveLogItem();
   v29 = 0;
-  v10 = [(HDMedicationPregnancyLactationStatusObserver *)a1 doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:?];
+  v10 = [(HDMedicationPregnancyLactationStatusObserver *)self doesMostRecentLactationSampleHaveDistantFutureEndDateWithError:?];
   v11 = v29;
   if (!v10)
   {
@@ -547,11 +547,11 @@ BOOL __81__HDMedicationPregnancyLactationStatusObserver_samplesOfTypesWereRemove
     v12 = v11;
     if (v12)
     {
-      if (a4)
+      if (transaction)
       {
         v20 = v12;
         v10 = 0;
-        *a4 = v12;
+        *transaction = v12;
 LABEL_15:
         v14 = v12;
 LABEL_16:
@@ -571,7 +571,7 @@ LABEL_16:
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, no %@ sample with distant future end date found", v7, v9];
     v28 = v11;
-    v13 = [(HDMedicationPregnancyLactationStatusObserver *)a1 _deleteAllPregnancyLactationInteractionsOfType:v8 transaction:v12 reason:&v28 error:?];
+    v13 = [(HDMedicationPregnancyLactationStatusObserver *)self _deleteAllPregnancyLactationInteractionsOfType:reasonCopy transaction:v12 reason:&v28 error:?];
     v14 = v28;
 
     _HKInitializeLogging();
@@ -605,10 +605,10 @@ LABEL_16:
       v14 = v14;
       if (v14)
       {
-        if (a4)
+        if (transaction)
         {
           v25 = v14;
-          *a4 = v14;
+          *transaction = v14;
         }
 
         else

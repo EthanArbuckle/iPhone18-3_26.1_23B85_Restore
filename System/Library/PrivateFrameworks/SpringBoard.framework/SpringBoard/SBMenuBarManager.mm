@@ -1,75 +1,75 @@
 @interface SBMenuBarManager
-- (BOOL)_hitTestInMenuBarContentWithPoint:(CGPoint)a3 gestureWindow:(id)a4;
-- (BOOL)_hitTestInMenuBarWindowWithPoint:(CGPoint)a3 gestureWindow:(id)a4;
+- (BOOL)_hitTestInMenuBarContentWithPoint:(CGPoint)point gestureWindow:(id)window;
+- (BOOL)_hitTestInMenuBarWindowWithPoint:(CGPoint)point gestureWindow:(id)window;
 - (BOOL)_isMenuBarGenerallyDisabled;
-- (BOOL)_isTopScreenEdgeProtectedForScene:(id)a3;
-- (BOOL)_locationIsInMenuBarRevealArea:(CGPoint)a3;
-- (BOOL)_touchIsInMenuBarRevealArea:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)isPointInsideMenuBarContent:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (BOOL)shouldAllowCoverSheetPresentationGestureAtLocation:(CGPoint)a3 isTouchGesture:(BOOL)a4;
-- (BOOL)shouldDisableMenusForAppRestrictionForViewController:(id)a3;
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4;
-- (SBMenuBarManager)initWithWindowScene:(id)a3;
+- (BOOL)_isTopScreenEdgeProtectedForScene:(id)scene;
+- (BOOL)_locationIsInMenuBarRevealArea:(CGPoint)area;
+- (BOOL)_touchIsInMenuBarRevealArea:(id)area;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)isPointInsideMenuBarContent:(CGPoint)content fromCoordinateSpace:(id)space;
+- (BOOL)shouldAllowCoverSheetPresentationGestureAtLocation:(CGPoint)location isTouchGesture:(BOOL)gesture;
+- (BOOL)shouldDisableMenusForAppRestrictionForViewController:(id)controller;
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer;
+- (SBMenuBarManager)initWithWindowScene:(id)scene;
 - (SBWindowScene)windowScene;
-- (double)maximumContentWidthForMenuBarViewController:(id)a3;
-- (id)displayNameForWebAppWithSceneIdentifier:(id)a3;
-- (id)viewForSystemGestureRecognizer:(id)a3;
+- (double)maximumContentWidthForMenuBarViewController:(id)controller;
+- (id)displayNameForWebAppWithSceneIdentifier:(id)identifier;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
 - (void)_acquireHideAppStatusBarAssertionIfNeeded;
 - (void)_cancelDismissPeekedMenuBarTimer;
 - (void)_cancelMenuRevealTimer;
 - (void)_createWindowControlsViewController;
-- (void)_dismissMenuBarAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_handleAdjustPresentedMenuHoverGesture:(id)a3;
-- (void)_handleContentSizeCategoryDidChange:(id)a3;
-- (void)_handleDismissMenuBarHoverGesture:(id)a3;
-- (void)_handleGuidedAccessActivationChanged:(id)a3;
-- (void)_handlePresentGesture:(id)a3;
-- (void)_handleShowMenuBarHoverGesture:(id)a3;
+- (void)_dismissMenuBarAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_handleAdjustPresentedMenuHoverGesture:(id)gesture;
+- (void)_handleContentSizeCategoryDidChange:(id)change;
+- (void)_handleDismissMenuBarHoverGesture:(id)gesture;
+- (void)_handleGuidedAccessActivationChanged:(id)changed;
+- (void)_handlePresentGesture:(id)gesture;
+- (void)_handleShowMenuBarHoverGesture:(id)gesture;
 - (void)_notifyObserversOfVisibilityChange;
 - (void)_scheduleDismissPeekedMenuBarTimer;
-- (void)_setMenuBarVisible:(BOOL)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5;
-- (void)_setupTransitionSystemStatusBarIfNeededForTransitioningToPresented:(BOOL)a3;
+- (void)_setMenuBarVisible:(BOOL)visible animated:(BOOL)animated userInitiated:(BOOL)initiated;
+- (void)_setupTransitionSystemStatusBarIfNeededForTransitioningToPresented:(BOOL)presented;
 - (void)_setupWindowControlsWrapperView;
-- (void)_updateMenuBarVisibilityWithRequestedVisibility:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateMenuBarVisibilityWithRequestedVisibility:(BOOL)visibility;
+- (void)addObserver:(id)observer;
 - (void)cancelMenuBarRevealForHeldModifierKey;
-- (void)menuWillPresentForViewController:(id)a3;
+- (void)menuWillPresentForViewController:(id)controller;
 - (void)openHelpMenu;
 - (void)peekMenuBar;
-- (void)removeObserver:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
 - (void)scheduleMenuBarRevealForHeldModifierKey;
 - (void)toggleMenuBarVisibilityForSystemKeyboardShortcut;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBMenuBarManager
 
-- (SBMenuBarManager)initWithWindowScene:(id)a3
+- (SBMenuBarManager)initWithWindowScene:(id)scene
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sceneCopy = scene;
   v40.receiver = self;
   v40.super_class = SBMenuBarManager;
   v5 = [(SBMenuBarManager *)&v40 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v7 = +[SBMenuBarDomain rootSettings];
     menuBarSettings = v6->_menuBarSettings;
     v6->_menuBarSettings = v7;
 
     v9 = +[SBDefaults localDefaults];
-    v10 = [v9 gestureDefaults];
+    gestureDefaults = [v9 gestureDefaults];
     gestureDefaults = v6->_gestureDefaults;
-    v6->_gestureDefaults = v10;
+    v6->_gestureDefaults = gestureDefaults;
 
     v12 = +[SBDefaults localDefaults];
-    v13 = [v12 externalDisplayDefaults];
+    externalDisplayDefaults = [v12 externalDisplayDefaults];
     externalDisplayDefaults = v6->_externalDisplayDefaults;
-    v6->_externalDisplayDefaults = v13;
+    v6->_externalDisplayDefaults = externalDisplayDefaults;
 
     objc_initWeak(&location, v6);
     v15 = MEMORY[0x277D43280];
@@ -102,25 +102,25 @@
     v6->_pointerDismissMenuBarHoverGestureRecognizer = v23;
 
     [(UIHoverGestureRecognizer *)v6->_pointerDismissMenuBarHoverGestureRecognizer setDelegate:v6];
-    v25 = [v4 systemGestureManager];
-    [v25 addGestureRecognizer:v6->_presentGestureRecognizer withType:141];
-    [v25 addGestureRecognizer:v6->_pointerShowMenuBarHoverGestureRecognizer withType:142];
-    [v25 addGestureRecognizer:v6->_pointerDismissMenuBarHoverGestureRecognizer withType:143];
-    [v25 gestureRecognizerOfType:1 shouldRequireFailureOfGestureRecognizer:v6->_presentGestureRecognizer];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v6 selector:sel__handleCoverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
-    [v26 addObserver:v6 selector:sel__handleGuidedAccessActivationChanged_ name:@"SBGuidedAccessActivationChangedNotification" object:0];
-    [v26 addObserver:v6 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
-    if ([v4 isMainDisplayWindowScene])
+    systemGestureManager = [sceneCopy systemGestureManager];
+    [systemGestureManager addGestureRecognizer:v6->_presentGestureRecognizer withType:141];
+    [systemGestureManager addGestureRecognizer:v6->_pointerShowMenuBarHoverGestureRecognizer withType:142];
+    [systemGestureManager addGestureRecognizer:v6->_pointerDismissMenuBarHoverGestureRecognizer withType:143];
+    [systemGestureManager gestureRecognizerOfType:1 shouldRequireFailureOfGestureRecognizer:v6->_presentGestureRecognizer];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleCoverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__handleGuidedAccessActivationChanged_ name:@"SBGuidedAccessActivationChangedNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    if ([sceneCopy isMainDisplayWindowScene])
     {
       objc_initWeak(&from, v6);
-      v27 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __40__SBMenuBarManager_initWithWindowScene___block_invoke_28;
       v34[3] = &unk_2783AFD98;
       objc_copyWeak(&v35, &from);
-      v28 = [v26 addObserverForName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 queue:v27 usingBlock:v34];
+      v28 = [defaultCenter addObserverForName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 queue:mainQueue usingBlock:v34];
       externalDisplayConnectionObserver = v6->_externalDisplayConnectionObserver;
       v6->_externalDisplayConnectionObserver = v28;
 
@@ -128,12 +128,12 @@
       objc_destroyWeak(&from);
     }
 
-    else if ([v4 isExtendedDisplayWindowScene])
+    else if ([sceneCopy isExtendedDisplayWindowScene])
     {
       v41 = @"present";
       v42[0] = MEMORY[0x277CBEC38];
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-      [v26 postNotificationName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 userInfo:v30];
+      [defaultCenter postNotificationName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 userInfo:v30];
     }
 
     v31 = objc_alloc_init(SBMenuBarDemoMenuProvider);
@@ -167,68 +167,68 @@ void __40__SBMenuBarManager_initWithWindowScene___block_invoke_28(uint64_t a1, v
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v12[1] = *MEMORY[0x277D85DE8];
   menuBarSceneUpdateAssertion = self->_menuBarSceneUpdateAssertion;
-  v5 = a3;
+  disconnectCopy = disconnect;
   [(BSInvalidatable *)menuBarSceneUpdateAssertion invalidate];
   [(PSPointerClientController *)self->_pointerClientController invalidate];
   [(BSInvalidatable *)self->_guidedAccessSystemGestureDisableAssertion invalidate];
   menuBarSceneProvider = self->_menuBarSceneProvider;
   self->_menuBarSceneProvider = 0;
 
-  v7 = [v5 systemGestureManager];
-  [v7 removeGestureRecognizer:self->_presentGestureRecognizer];
-  [v7 removeGestureRecognizer:self->_pointerShowMenuBarHoverGestureRecognizer];
-  [v7 removeGestureRecognizer:self->_pointerDismissMenuBarHoverGestureRecognizer];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
-  v9 = [v5 isExtendedDisplayWindowScene];
+  systemGestureManager = [disconnectCopy systemGestureManager];
+  [systemGestureManager removeGestureRecognizer:self->_presentGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_pointerShowMenuBarHoverGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_pointerDismissMenuBarHoverGestureRecognizer];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
+  isExtendedDisplayWindowScene = [disconnectCopy isExtendedDisplayWindowScene];
 
-  if (v9)
+  if (isExtendedDisplayWindowScene)
   {
     v11 = @"present";
     v12[0] = MEMORY[0x277CBEC28];
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    [v8 postNotificationName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 userInfo:v10];
+    [defaultCenter postNotificationName:@"__SBExtendedDisplayMenuBarManagerPresenceChangedNotification" object:0 userInfo:v10];
   }
 
   else if (self->_externalDisplayConnectionObserver)
   {
-    [v8 removeObserver:?];
+    [defaultCenter removeObserver:?];
   }
 }
 
-- (void)_setMenuBarVisible:(BOOL)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5
+- (void)_setMenuBarVisible:(BOOL)visible animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  if (self->_menuBarVisible != a3)
+  if (self->_menuBarVisible != visible)
   {
-    v5 = a4;
+    animatedCopy = animated;
     menuBarViewController = self->_menuBarViewController;
-    if (a3)
+    if (visible)
     {
       if (!menuBarViewController)
       {
-        v8 = a5;
-        v9 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
-        if (v9)
+        initiatedCopy = initiated;
+        menuBarRecipientScene = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+        if (menuBarRecipientScene)
         {
           WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-          v11 = [WeakRetained statusBarManager];
-          v12 = [v11 assertionManager];
-          v13 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider isStatusBarStyleControlledBySystem];
-          v14 = [v11 reusePool];
-          v15 = [v14 getReusableStatusBarWithReason:@"menu bar"];
+          statusBarManager = [WeakRetained statusBarManager];
+          assertionManager = [statusBarManager assertionManager];
+          isStatusBarStyleControlledBySystem = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider isStatusBarStyleControlledBySystem];
+          reusePool = [statusBarManager reusePool];
+          v15 = [reusePool getReusableStatusBarWithReason:@"menu bar"];
           menuBarStatusBar = self->_menuBarStatusBar;
           self->_menuBarStatusBar = v15;
 
           self->_oldStatusBarTranslatesAutoresizingMaskValue = [(UIStatusBar *)self->_menuBarStatusBar translatesAutoresizingMaskIntoConstraints];
           [(SBMenuBarManager *)self _createWindowControlsViewController];
-          if (([WeakRetained isExternalDisplayWindowScene] & 1) == 0 && v8)
+          if (([WeakRetained isExternalDisplayWindowScene] & 1) == 0 && initiatedCopy)
           {
-            v17 = [MEMORY[0x277D65DD0] sharedInstance];
-            [v17 emitEvent:69];
+            mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+            [mEMORY[0x277D65DD0] emitEvent:69];
           }
 
           objc_initWeak(&location, self);
@@ -238,14 +238,14 @@ void __40__SBMenuBarManager_initWithWindowScene___block_invoke_28(uint64_t a1, v
           v23[2] = __62__SBMenuBarManager__setMenuBarVisible_animated_userInitiated___block_invoke;
           v23[3] = &unk_2783AFE10;
           objc_copyWeak(&v27, &location);
-          v24 = v9;
-          v19 = v11;
+          v24 = menuBarRecipientScene;
+          v19 = statusBarManager;
           v25 = v19;
-          v28 = v13;
-          v20 = v12;
+          v28 = isStatusBarStyleControlledBySystem;
+          v20 = assertionManager;
           v26 = v20;
-          v29 = v5;
-          v21 = [(SBMenuBarViewController *)v18 initWithScene:v24 delegate:self animateInitialPresentation:v5 loadCompletion:v23];
+          v29 = animatedCopy;
+          v21 = [(SBMenuBarViewController *)v18 initWithScene:v24 delegate:self animateInitialPresentation:animatedCopy loadCompletion:v23];
           v22 = self->_menuBarViewController;
           self->_menuBarViewController = v21;
 
@@ -258,7 +258,7 @@ void __40__SBMenuBarManager_initWithWindowScene___block_invoke_28(uint64_t a1, v
     else if (menuBarViewController)
     {
 
-      [(SBMenuBarManager *)self _dismissMenuBarAnimated:a4];
+      [(SBMenuBarManager *)self _dismissMenuBarAnimated:animated];
     }
   }
 }
@@ -475,9 +475,9 @@ void __62__SBMenuBarManager__setMenuBarVisible_animated_userInitiated___block_in
   [a1[5] setDisabledPartIdentifiers:0];
 }
 
-- (BOOL)isPointInsideMenuBarContent:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (BOOL)isPointInsideMenuBarContent:(CGPoint)content fromCoordinateSpace:(id)space
 {
-  [(SBMenuBarWindow *)self->_menuBarWindow convertPoint:a4 fromCoordinateSpace:a3.x, a3.y];
+  [(SBMenuBarWindow *)self->_menuBarWindow convertPoint:space fromCoordinateSpace:content.x, content.y];
   if (!self->_menuBarVisible)
   {
     return 0;
@@ -507,9 +507,9 @@ void __62__SBMenuBarManager__setMenuBarVisible_animated_userInitiated___block_in
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(SBMenuBarViewController *)self->_menuBarViewController view];
-  [v19 frame];
-  [v19 convertRect:self->_menuBarWindow toView:?];
+  view = [(SBMenuBarViewController *)self->_menuBarViewController view];
+  [view frame];
+  [view convertRect:self->_menuBarWindow toView:?];
   v37 = v21;
   v38 = v20;
   v23 = v22;
@@ -546,15 +546,15 @@ void __62__SBMenuBarManager__setMenuBarVisible_animated_userInitiated___block_in
   return v31;
 }
 
-- (BOOL)shouldAllowCoverSheetPresentationGestureAtLocation:(CGPoint)a3 isTouchGesture:(BOOL)a4
+- (BOOL)shouldAllowCoverSheetPresentationGestureAtLocation:(CGPoint)location isTouchGesture:(BOOL)gesture
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  gestureCopy = gesture;
+  y = location.y;
+  x = location.x;
   if ([(SBMenuBarSceneProviding *)self->_menuBarSceneProvider isMenuBarSupported])
   {
-    v8 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
-    if (!v4 || (LOBYTE(v9) = 1, [(SBGestureDefaults *)self->_gestureDefaults swipeToRevealMenuBarGesturesEnabled]) && v8 && !self->_menuBarVisible && ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:v8])
+    menuBarRecipientScene = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+    if (!gestureCopy || (LOBYTE(v9) = 1, [(SBGestureDefaults *)self->_gestureDefaults swipeToRevealMenuBarGesturesEnabled]) && menuBarRecipientScene && !self->_menuBarVisible && ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:menuBarRecipientScene])
     {
       v9 = ![(SBMenuBarManager *)self _locationIsInMenuBarRevealArea:x, y];
     }
@@ -602,9 +602,9 @@ void __68__SBMenuBarManager_toggleMenuBarVisibilityForSystemKeyboardShortcut__bl
 - (void)scheduleMenuBarRevealForHeldModifierKey
 {
   [(SBMenuBarManager *)self cancelMenuBarRevealForHeldModifierKey];
-  v3 = [(SBMenuBarManager *)self windowScene];
-  v4 = [v3 transientUIInteractionManager];
-  [v4 registerParticipantForTapToDismiss:self];
+  windowScene = [(SBMenuBarManager *)self windowScene];
+  transientUIInteractionManager = [windowScene transientUIInteractionManager];
+  [transientUIInteractionManager registerParticipantForTapToDismiss:self];
 
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CBEBB8];
@@ -617,8 +617,8 @@ void __68__SBMenuBarManager_toggleMenuBarVisibilityForSystemKeyboardShortcut__bl
   heldModifierKeyRevealTimer = self->_heldModifierKeyRevealTimer;
   self->_heldModifierKeyRevealTimer = v6;
 
-  v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v8 addTimer:self->_heldModifierKeyRevealTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->_heldModifierKeyRevealTimer forMode:*MEMORY[0x277CBE738]];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -646,25 +646,25 @@ void __59__SBMenuBarManager_scheduleMenuBarRevealForHeldModifierKey__block_invok
     self->_heldModifierKeyRevealTimer = 0;
 
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v5 = [WeakRetained transientUIInteractionManager];
-    [v5 unregisterParticipantForTapToDismiss:self];
+    transientUIInteractionManager = [WeakRetained transientUIInteractionManager];
+    [transientUIInteractionManager unregisterParticipantForTapToDismiss:self];
   }
 }
 
-- (void)_updateMenuBarVisibilityWithRequestedVisibility:(BOOL)a3
+- (void)_updateMenuBarVisibilityWithRequestedVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   [(SBMenuBarManager *)self cancelMenuBarRevealForHeldModifierKey];
-  v5 = [(SBMenuBarManager *)self windowScene];
-  if (([v5 isExtendedDisplayWindowScene] & 1) == 0)
+  windowScene = [(SBMenuBarManager *)self windowScene];
+  if (([windowScene isExtendedDisplayWindowScene] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(SBMenuBarSettings *)self->_menuBarSettings alwaysVisibleOnExternalDisplay];
+  alwaysVisibleOnExternalDisplay = [(SBMenuBarSettings *)self->_menuBarSettings alwaysVisibleOnExternalDisplay];
 
-  if (!v6)
+  if (!alwaysVisibleOnExternalDisplay)
   {
     goto LABEL_8;
   }
@@ -672,37 +672,37 @@ void __59__SBMenuBarManager_scheduleMenuBarRevealForHeldModifierKey__block_invok
   if (![(SBMenuBarSceneProviding *)self->_menuBarSceneProvider isStatusBarStyleControlledBySystem])
   {
 LABEL_6:
-    v3 = 0;
+    visibilityCopy = 0;
     goto LABEL_8;
   }
 
-  v3 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
-  if (!v3)
+  visibilityCopy = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+  if (!visibilityCopy)
   {
 LABEL_8:
     v8 = 1;
     goto LABEL_9;
   }
 
-  v7 = [(SBMenuBarManager *)self _isMenuBarGenerallyDisabled];
+  _isMenuBarGenerallyDisabled = [(SBMenuBarManager *)self _isMenuBarGenerallyDisabled];
 
-  if (v7)
+  if (_isMenuBarGenerallyDisabled)
   {
     goto LABEL_6;
   }
 
   if (!self->_menuBarVisible || ([(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene], v9 = objc_claimAutoreleasedReturnValue(), [(SBMenuBarViewController *)self->_menuBarViewController menuProvidingScene], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, (v11 & 1) != 0))
   {
-    v3 = 1;
+    visibilityCopy = 1;
     goto LABEL_8;
   }
 
   [(SBMenuBarManager *)self _setMenuBarVisible:0 animated:0 userInitiated:0];
   v8 = 0;
-  v3 = 1;
+  visibilityCopy = 1;
 LABEL_9:
 
-  [(SBMenuBarManager *)self _setMenuBarVisible:v3 animated:v8 userInitiated:1];
+  [(SBMenuBarManager *)self _setMenuBarVisible:visibilityCopy animated:v8 userInitiated:1];
 }
 
 - (void)openHelpMenu
@@ -759,12 +759,12 @@ LABEL_12:
       return;
     }
 
-    v3 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
-    [v3 style];
+    appLeadingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
+    [appLeadingStatusBarStyleRequest style];
     v4 = _UIStatusBarResolvedStyleFromStyle();
 
-    v5 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
-    [v5 style];
+    appTrailingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
+    [appTrailingStatusBarStyleRequest style];
     v6 = _UIStatusBarResolvedStyleFromStyle();
 
     [(SBMenuBarManager *)self _createWindowControlsViewController];
@@ -837,27 +837,27 @@ void __31__SBMenuBarManager_peekMenuBar__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -865,12 +865,12 @@ void __31__SBMenuBarManager_peekMenuBar__block_invoke_3(uint64_t a1)
   }
 }
 
-- (double)maximumContentWidthForMenuBarViewController:(id)a3
+- (double)maximumContentWidthForMenuBarViewController:(id)controller
 {
   [(UIStatusBar *)self->_menuBarStatusBar frame];
   v5 = v4;
-  v6 = [(UIStatusBar *)self->_menuBarStatusBar statusBar];
-  [v6 maximumPossibleMenuBarWidth];
+  statusBar = [(UIStatusBar *)self->_menuBarStatusBar statusBar];
+  [statusBar maximumPossibleMenuBarWidth];
   if (v7 > 0.0)
   {
     v5 = v7;
@@ -879,14 +879,14 @@ void __31__SBMenuBarManager_peekMenuBar__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (void)menuWillPresentForViewController:(id)a3
+- (void)menuWillPresentForViewController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:controller];
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -913,26 +913,26 @@ void __31__SBMenuBarManager_peekMenuBar__block_invoke_3(uint64_t a1)
   }
 }
 
-- (BOOL)shouldDisableMenusForAppRestrictionForViewController:(id)a3
+- (BOOL)shouldDisableMenusForAppRestrictionForViewController:(id)controller
 {
-  v4 = [a3 menuProvidingScene];
+  menuProvidingScene = [controller menuProvidingScene];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained sceneManager];
-  v7 = [v6 existingSceneHandleForScene:v4];
-  v8 = [v7 application];
+  sceneManager = [WeakRetained sceneManager];
+  v7 = [sceneManager existingSceneHandleForScene:menuProvidingScene];
+  application = [v7 application];
 
-  if (v8)
+  if (application)
   {
-    v9 = [v8 info];
-    if ([v9 isBlockedForScreenTimeExpiration])
+    info = [application info];
+    if ([info isBlockedForScreenTimeExpiration])
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [v8 bundleIdentifier];
-      v10 = [SBApplicationAppProtectionAssistant shouldShieldApplicationWithBundleIdentifier:v11];
+      bundleIdentifier = [application bundleIdentifier];
+      v10 = [SBApplicationAppProtectionAssistant shouldShieldApplicationWithBundleIdentifier:bundleIdentifier];
     }
   }
 
@@ -944,39 +944,39 @@ void __31__SBMenuBarManager_peekMenuBar__block_invoke_3(uint64_t a1)
   return v10;
 }
 
-- (id)displayNameForWebAppWithSceneIdentifier:(id)a3
+- (id)displayNameForWebAppWithSceneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained iconController];
-  v7 = [v6 iconModel];
-  v8 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v4];
+  iconController = [WeakRetained iconController];
+  iconModel = [iconController iconModel];
+  v8 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:identifierCopy];
 
-  v9 = [v7 leafIconForIdentifier:v8];
-  v10 = [v9 displayName];
+  v9 = [iconModel leafIconForIdentifier:v8];
+  displayName = [v9 displayName];
 
-  return v10;
+  return displayName;
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBMenuBarManager *)self windowScene];
-  v4 = [v3 statusBarManager];
-  v5 = [v4 statusBar];
+  windowScene = [(SBMenuBarManager *)self windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  return v5;
+  return statusBar;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if ([(SBMenuBarManager *)self _isMenuBarGenerallyDisabled])
   {
     goto LABEL_2;
   }
 
-  if (self->_presentGestureRecognizer != v6)
+  if (self->_presentGestureRecognizer != recognizerCopy)
   {
     v8 = 1;
     goto LABEL_12;
@@ -990,12 +990,12 @@ LABEL_2:
 
   else
   {
-    v9 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
-    v10 = v9;
+    menuBarRecipientScene = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+    v10 = menuBarRecipientScene;
     v8 = 0;
-    if (!self->_menuBarVisible && v9)
+    if (!self->_menuBarVisible && menuBarRecipientScene)
     {
-      v8 = ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:v9]&& [(SBMenuBarManager *)self _touchIsInMenuBarRevealArea:v7];
+      v8 = ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:menuBarRecipientScene]&& [(SBMenuBarManager *)self _touchIsInMenuBarRevealArea:touchCopy];
     }
   }
 
@@ -1004,38 +1004,38 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_touchIsInMenuBarRevealArea:(id)a3
+- (BOOL)_touchIsInMenuBarRevealArea:(id)area
 {
-  v3 = self;
+  selfCopy = self;
   presentGestureRecognizer = self->_presentGestureRecognizer;
-  v5 = a3;
-  v6 = [(SBMenuBarManager *)v3 viewForSystemGestureRecognizer:presentGestureRecognizer];
+  areaCopy = area;
+  v6 = [(SBMenuBarManager *)selfCopy viewForSystemGestureRecognizer:presentGestureRecognizer];
   _UISystemGestureLocationForTouchInView();
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(v3) = [(SBMenuBarManager *)v3 _locationIsInMenuBarRevealArea:v8, v10];
-  return v3;
+  LOBYTE(selfCopy) = [(SBMenuBarManager *)selfCopy _locationIsInMenuBarRevealArea:v8, v10];
+  return selfCopy;
 }
 
-- (BOOL)_locationIsInMenuBarRevealArea:(CGPoint)a3
+- (BOOL)_locationIsInMenuBarRevealArea:(CGPoint)area
 {
-  v3 = [(SBMenuBarManager *)self windowScene:a3.x];
-  v4 = [v3 switcherController];
+  v3 = [(SBMenuBarManager *)self windowScene:area.x];
+  switcherController = [v3 switcherController];
 
-  [v4 effectiveLeadingStatusBarPartFrame];
+  [switcherController effectiveLeadingStatusBarPartFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 effectiveTrailingStatusBarPartFrame];
+  [switcherController effectiveTrailingStatusBarPartFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v21 = MEMORY[0x277D76620];
-  v22 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-  if (v22 == 1)
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection == 1)
   {
     v23 = v20;
   }
@@ -1045,7 +1045,7 @@ LABEL_12:
     v23 = v12;
   }
 
-  if (v22 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v24 = v18;
   }
@@ -1055,7 +1055,7 @@ LABEL_12:
     v24 = v10;
   }
 
-  if (v22 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v25 = v16;
   }
@@ -1065,7 +1065,7 @@ LABEL_12:
     v25 = v8;
   }
 
-  if (v22 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v26 = v14;
   }
@@ -1076,8 +1076,8 @@ LABEL_12:
   }
 
   CGRectGetMaxX(*(&v23 - 3));
-  v27 = [*v21 userInterfaceLayoutDirection];
-  if (v27 == 1)
+  userInterfaceLayoutDirection2 = [*v21 userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v28 = v12;
   }
@@ -1087,7 +1087,7 @@ LABEL_12:
     v28 = v20;
   }
 
-  if (v27 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v29 = v10;
   }
@@ -1097,7 +1097,7 @@ LABEL_12:
     v29 = v18;
   }
 
-  if (v27 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v30 = v8;
   }
@@ -1107,7 +1107,7 @@ LABEL_12:
     v30 = v16;
   }
 
-  if (v27 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v31 = v6;
   }
@@ -1131,26 +1131,26 @@ LABEL_12:
   return v32;
 }
 
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  touchCopy = touch;
   [(SBMenuBarManager *)self cancelMenuBarRevealForHeldModifierKey];
-  v6 = [v5 window];
-  v7 = [v5 view];
-  [v5 locationInView:v7];
+  window = [touchCopy window];
+  view = [touchCopy view];
+  [touchCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  [v6 convertPoint:v6 toView:{v9, v11}];
+  [window convertPoint:window toView:{v9, v11}];
   v13 = v12;
   v15 = v14;
 
-  if (self->_dismissPeekedMenuTimer && [(SBMenuBarManager *)self _hitTestInMenuBarContentWithPoint:v6 gestureWindow:v13, v15])
+  if (self->_dismissPeekedMenuTimer && [(SBMenuBarManager *)self _hitTestInMenuBarContentWithPoint:window gestureWindow:v13, v15])
   {
     [(SBMenuBarManager *)self _cancelDismissPeekedMenuBarTimer];
   }
 
-  v16 = [(SBMenuBarManager *)self _hitTestInMenuBarWindowWithPoint:v6 gestureWindow:v13, v15];
+  v16 = [(SBMenuBarManager *)self _hitTestInMenuBarWindowWithPoint:window gestureWindow:v13, v15];
   if (!v16)
   {
     [(SBMenuBarManager *)self requestMenuBarVisibility:0];
@@ -1159,25 +1159,25 @@ LABEL_12:
   return !v16;
 }
 
-- (void)_handlePresentGesture:(id)a3
+- (void)_handlePresentGesture:(id)gesture
 {
-  if ([a3 state] == 2)
+  if ([gesture state] == 2)
   {
 
     [(SBMenuBarManager *)self setMenuBarVisible:1];
   }
 }
 
-- (void)_handleShowMenuBarHoverGesture:(id)a3
+- (void)_handleShowMenuBarHoverGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 2 && !self->_menuBarVisible && !self->_pointerMenuRevealDelayTimer && -[PSPointerClientController pointerVisibilityState](self->_pointerClientController, "pointerVisibilityState") == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 2 && !self->_menuBarVisible && !self->_pointerMenuRevealDelayTimer && -[PSPointerClientController pointerVisibilityState](self->_pointerClientController, "pointerVisibilityState") == 1)
   {
-    v5 = [(SBMenuBarManager *)self viewForSystemGestureRecognizer:v4];
+    v5 = [(SBMenuBarManager *)self viewForSystemGestureRecognizer:gestureCopy];
     _UISystemGestureLocationInView();
     v7 = v6;
     v9 = v8;
-    v10 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+    menuBarRecipientScene = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
     [(SBMenuBarSettings *)self->_menuBarSettings menuRevealYThresholdForPointer];
     v12 = v11;
     if (self->_isOnEmbeddedDisplayWithExternalConnected && [(SBExternalDisplayDefaults *)self->_externalDisplayDefaults arrangementEdge]== 1)
@@ -1186,7 +1186,7 @@ LABEL_12:
       v12 = v12 + v13;
     }
 
-    if ([(SBMenuBarManager *)self _locationIsInMenuBarRevealArea:v7, v9]&& v9 <= v12 && v10 && ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:v10])
+    if ([(SBMenuBarManager *)self _locationIsInMenuBarRevealArea:v7, v9]&& v9 <= v12 && menuBarRecipientScene && ![(SBMenuBarManager *)self _isTopScreenEdgeProtectedForScene:menuBarRecipientScene])
     {
       v14 = MEMORY[0x277CBEBB8];
       [(SBMenuBarSettings *)self->_menuBarSettings menuRevealDelay];
@@ -1199,8 +1199,8 @@ LABEL_12:
       pointerMenuRevealDelayTimer = self->_pointerMenuRevealDelayTimer;
       self->_pointerMenuRevealDelayTimer = v15;
 
-      v17 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v17 addTimer:self->_pointerMenuRevealDelayTimer forMode:*MEMORY[0x277CBE738]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop addTimer:self->_pointerMenuRevealDelayTimer forMode:*MEMORY[0x277CBE738]];
     }
   }
 }
@@ -1214,13 +1214,13 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
   return [v2 _cancelMenuRevealTimer];
 }
 
-- (void)_handleDismissMenuBarHoverGesture:(id)a3
+- (void)_handleDismissMenuBarHoverGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self->_menuBarVisible && self->_menuBarWasRevealedFromPointer || self->_pointerMenuRevealDelayTimer)
   {
-    v14 = v4;
-    v5 = [(SBMenuBarManager *)self viewForSystemGestureRecognizer:v4];
+    v14 = gestureCopy;
+    v5 = [(SBMenuBarManager *)self viewForSystemGestureRecognizer:gestureCopy];
     _UISystemGestureLocationInView();
     v8 = v7;
     if (self->_pointerMenuRevealDelayTimer)
@@ -1235,15 +1235,15 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
     else
     {
       v10 = v6;
-      v11 = [(SBMenuBarManager *)self menuBarViewController];
-      if ([v11 isShowingMenu])
+      menuBarViewController = [(SBMenuBarManager *)self menuBarViewController];
+      if ([menuBarViewController isShowingMenu])
       {
       }
 
       else
       {
-        v12 = [v5 window];
-        v13 = [(SBMenuBarManager *)self _hitTestInMenuBarWindowWithPoint:v12 gestureWindow:v10, v8];
+        window = [v5 window];
+        v13 = [(SBMenuBarManager *)self _hitTestInMenuBarWindowWithPoint:window gestureWindow:v10, v8];
 
         if (!v13)
         {
@@ -1252,17 +1252,17 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
       }
     }
 
-    v4 = v14;
+    gestureCopy = v14;
   }
 }
 
-- (void)_handleAdjustPresentedMenuHoverGesture:(id)a3
+- (void)_handleAdjustPresentedMenuHoverGesture:(id)gesture
 {
-  v10 = a3;
-  if ([v10 state] == 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 2)
   {
-    v4 = [v10 view];
-    [v10 locationInView:v4];
+    view = [gestureCopy view];
+    [gestureCopy locationInView:view];
     v6 = v5;
     v8 = v7;
 
@@ -1271,42 +1271,42 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
   }
 }
 
-- (BOOL)_hitTestInMenuBarWindowWithPoint:(CGPoint)a3 gestureWindow:(id)a4
+- (BOOL)_hitTestInMenuBarWindowWithPoint:(CGPoint)point gestureWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 screen];
-  v9 = [v8 fixedCoordinateSpace];
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
+  screen = [windowCopy screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  [v7 convertPoint:v9 toCoordinateSpace:{x, y}];
+  [windowCopy convertPoint:fixedCoordinateSpace toCoordinateSpace:{x, y}];
   v11 = v10;
   v13 = v12;
 
-  [(SBMenuBarWindow *)self->_menuBarWindow convertPoint:v9 fromCoordinateSpace:v11, v13];
+  [(SBMenuBarWindow *)self->_menuBarWindow convertPoint:fixedCoordinateSpace fromCoordinateSpace:v11, v13];
   v14 = [(SBFTouchPassThroughWindow *)self->_menuBarWindow hitTest:0 withEvent:?];
   LOBYTE(self) = v14 != 0;
 
   return self;
 }
 
-- (BOOL)_hitTestInMenuBarContentWithPoint:(CGPoint)a3 gestureWindow:(id)a4
+- (BOOL)_hitTestInMenuBarContentWithPoint:(CGPoint)point gestureWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 screen];
-  v9 = [v8 fixedCoordinateSpace];
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
+  screen = [windowCopy screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  [v7 convertPoint:v9 toCoordinateSpace:{x, y}];
+  [windowCopy convertPoint:fixedCoordinateSpace toCoordinateSpace:{x, y}];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SBMenuBarViewController *)self->_menuBarViewController viewIfLoaded];
-  v15 = v14;
-  if (v14)
+  viewIfLoaded = [(SBMenuBarViewController *)self->_menuBarViewController viewIfLoaded];
+  v15 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v14 convertPoint:v9 fromCoordinateSpace:{v11, v13}];
+    [viewIfLoaded convertPoint:fixedCoordinateSpace fromCoordinateSpace:{v11, v13}];
     v16 = [v15 hitTest:0 withEvent:?];
     v17 = v16 != 0;
   }
@@ -1319,14 +1319,14 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
   return v17;
 }
 
-- (BOOL)_isTopScreenEdgeProtectedForScene:(id)a3
+- (BOOL)_isTopScreenEdgeProtectedForScene:(id)scene
 {
-  v4 = a3;
-  if ([(SBMenuBarSceneProviding *)self->_menuBarSceneProvider shouldProtectTopScreenEdgeForScene:v4])
+  sceneCopy = scene;
+  if ([(SBMenuBarSceneProviding *)self->_menuBarSceneProvider shouldProtectTopScreenEdgeForScene:sceneCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v6 = [WeakRetained sceneManager];
-    v7 = [v6 existingSceneHandleForScene:v4];
+    sceneManager = [WeakRetained sceneManager];
+    v7 = [sceneManager existingSceneHandleForScene:sceneCopy];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)
@@ -1349,8 +1349,8 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
 
     v12 = v10;
 
-    v13 = [v12 screenEdgesDeferringSystemGestures];
-    v11 = v13 & 1;
+    screenEdgesDeferringSystemGestures = [v12 screenEdgesDeferringSystemGestures];
+    v11 = screenEdgesDeferringSystemGestures & 1;
   }
 
   else
@@ -1361,11 +1361,11 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
   return v11;
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   menuBarViewController = self->_menuBarViewController;
-  v6 = a3;
-  v7 = [(SBMenuBarViewController *)menuBarViewController menuProvidingScene];
+  invalidateCopy = invalidate;
+  menuProvidingScene = [(SBMenuBarViewController *)menuBarViewController menuProvidingScene];
   v8 = BSEqualObjects();
 
   if (v8)
@@ -1377,8 +1377,8 @@ uint64_t __51__SBMenuBarManager__handleShowMenuBarHoverGesture___block_invoke(ui
 
 - (BOOL)_isMenuBarGenerallyDisabled
 {
-  v3 = +[SBSetupManager sharedInstance];
-  if ([v3 isInSetupMode])
+  menuBarRecipientScene = +[SBSetupManager sharedInstance];
+  if ([menuBarRecipientScene isInSetupMode])
   {
     v4 = 1;
 LABEL_12:
@@ -1390,12 +1390,12 @@ LABEL_12:
 
   if ((IsActive & 1) == 0)
   {
-    v3 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
-    if (v3)
+    menuBarRecipientScene = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider menuBarRecipientScene];
+    if (menuBarRecipientScene)
     {
-      v6 = [(SBMenuBarManager *)self windowScene];
-      v7 = [v6 sceneManager];
-      v8 = [v7 existingSceneHandleForScene:v3];
+      windowScene = [(SBMenuBarManager *)self windowScene];
+      sceneManager = [windowScene sceneManager];
+      v8 = [sceneManager existingSceneHandleForScene:menuBarRecipientScene];
     }
 
     else
@@ -1403,13 +1403,13 @@ LABEL_12:
       v8 = 0;
     }
 
-    v9 = [v8 application];
-    if (v9)
+    application = [v8 application];
+    if (application)
     {
-      v10 = [SBApp privacyPreflightController];
-      v11 = [v9 info];
-      v12 = [v11 applicationIdentity];
-      v4 = [v10 requiresPreflightForApplication:v12];
+      privacyPreflightController = [SBApp privacyPreflightController];
+      info = [application info];
+      applicationIdentity = [info applicationIdentity];
+      v4 = [privacyPreflightController requiresPreflightForApplication:applicationIdentity];
     }
 
     else
@@ -1425,9 +1425,9 @@ LABEL_12:
 
 - (void)_createWindowControlsViewController
 {
-  v3 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider windowControlsViewController];
+  windowControlsViewController = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider windowControlsViewController];
   windowControlsViewController = self->_windowControlsViewController;
-  self->_windowControlsViewController = v3;
+  self->_windowControlsViewController = windowControlsViewController;
 
   v5 = self->_windowControlsViewController;
 
@@ -1438,18 +1438,18 @@ LABEL_12:
 {
   if (self->_windowControlsViewController)
   {
-    v8 = [(SBMenuBarWindow *)self->_menuBarWindow rootViewController];
-    [v8 addChildViewController:self->_windowControlsViewController];
+    rootViewController = [(SBMenuBarWindow *)self->_menuBarWindow rootViewController];
+    [rootViewController addChildViewController:self->_windowControlsViewController];
     v3 = [SBWindowControlsWrapperView alloc];
-    v4 = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
-    v5 = [(SBWindowControlsWrapperView *)v3 initWithWindowControlsView:v4];
+    view = [(SWKWindowControlsViewController *)self->_windowControlsViewController view];
+    v5 = [(SBWindowControlsWrapperView *)v3 initWithWindowControlsView:view];
     windowControlsWrapperView = self->_windowControlsWrapperView;
     self->_windowControlsWrapperView = v5;
 
-    v7 = [v8 view];
-    [v7 addSubview:self->_windowControlsWrapperView];
+    view2 = [rootViewController view];
+    [view2 addSubview:self->_windowControlsWrapperView];
 
-    [(SWKWindowControlsViewController *)self->_windowControlsViewController didMoveToParentViewController:v8];
+    [(SWKWindowControlsViewController *)self->_windowControlsViewController didMoveToParentViewController:rootViewController];
   }
 }
 
@@ -1487,10 +1487,10 @@ LABEL_12:
   }
 }
 
-- (void)_handleGuidedAccessActivationChanged:(id)a3
+- (void)_handleGuidedAccessActivationChanged:(id)changed
 {
   IsActive = SBGuidedAccessIsActive();
-  v5 = [(SBMenuBarManager *)self windowScene];
+  windowScene = [(SBMenuBarManager *)self windowScene];
   guidedAccessSystemGestureDisableAssertion = self->_guidedAccessSystemGestureDisableAssertion;
   if (IsActive)
   {
@@ -1499,10 +1499,10 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    v11 = v5;
+    v11 = windowScene;
     v7 = [MEMORY[0x277CBEB98] setWithArray:&unk_28336DF68];
-    v8 = [v11 systemGestureManager];
-    v9 = [v8 acquireSystemGestureDisableAssertionForReason:@"menu bar disabled for guided access" forSystemGestureTypes:v7];
+    systemGestureManager = [v11 systemGestureManager];
+    v9 = [systemGestureManager acquireSystemGestureDisableAssertionForReason:@"menu bar disabled for guided access" forSystemGestureTypes:v7];
     v10 = self->_guidedAccessSystemGestureDisableAssertion;
     self->_guidedAccessSystemGestureDisableAssertion = v9;
   }
@@ -1514,19 +1514,19 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    v11 = v5;
+    v11 = windowScene;
     [(BSInvalidatable *)guidedAccessSystemGestureDisableAssertion invalidate];
     v7 = self->_guidedAccessSystemGestureDisableAssertion;
     self->_guidedAccessSystemGestureDisableAssertion = 0;
   }
 
-  v5 = v11;
+  windowScene = v11;
 LABEL_7:
 }
 
-- (void)_handleContentSizeCategoryDidChange:(id)a3
+- (void)_handleContentSizeCategoryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_menuBarVisible)
   {
     objc_initWeak(&location, self);
@@ -1550,16 +1550,16 @@ void __56__SBMenuBarManager__handleContentSizeCategoryDidChange___block_invoke(u
   }
 }
 
-- (void)_dismissMenuBarAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_dismissMenuBarAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __59__SBMenuBarManager__dismissMenuBarAnimated_withCompletion___block_invoke;
   v25[3] = &unk_2783A9C98;
   v25[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v26 = v7;
   v8 = MEMORY[0x223D6F7F0](v25);
   v9 = v8;
@@ -1567,8 +1567,8 @@ void __56__SBMenuBarManager__handleContentSizeCategoryDidChange___block_invoke(u
   {
     self->_menuBarVisible = 0;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v11 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
-    v12 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
+    appLeadingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
+    appTrailingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
     if (([(SBMenuBarSceneProviding *)self->_menuBarSceneProvider isStatusBarStyleControlledBySystem]& 1) == 0)
     {
       [(SBMenuBarManager *)self _setupTransitionSystemStatusBarIfNeededForTransitioningToPresented:0];
@@ -1579,15 +1579,15 @@ void __56__SBMenuBarManager__handleContentSizeCategoryDidChange___block_invoke(u
     v21[2] = __59__SBMenuBarManager__dismissMenuBarAnimated_withCompletion___block_invoke_2;
     v21[3] = &unk_2783A9BD8;
     v21[4] = self;
-    v22 = v11;
-    v23 = v12;
+    v22 = appLeadingStatusBarStyleRequest;
+    v23 = appTrailingStatusBarStyleRequest;
     v24 = WeakRetained;
     v13 = WeakRetained;
-    v14 = v12;
-    v15 = v11;
+    v14 = appTrailingStatusBarStyleRequest;
+    v15 = appLeadingStatusBarStyleRequest;
     v16 = MEMORY[0x223D6F7F0](v21);
-    v17 = [(SBMenuBarViewController *)self->_menuBarViewController menuProvidingScene];
-    [v17 removeObserver:self];
+    menuProvidingScene = [(SBMenuBarViewController *)self->_menuBarViewController menuProvidingScene];
+    [menuProvidingScene removeObserver:self];
 
     menuBarViewController = self->_menuBarViewController;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1596,7 +1596,7 @@ void __56__SBMenuBarManager__handleContentSizeCategoryDidChange___block_invoke(u
     v19[3] = &unk_2783A9C98;
     v19[4] = self;
     v20 = v9;
-    [(SBMenuBarViewController *)menuBarViewController dismissAnimated:v4 alongsideAnimations:v16 completion:v19];
+    [(SBMenuBarViewController *)menuBarViewController dismissAnimated:animatedCopy alongsideAnimations:v16 completion:v19];
     [(SBMenuBarManager *)self _notifyObserversOfVisibilityChange];
   }
 
@@ -1709,16 +1709,16 @@ void __59__SBMenuBarManager__dismissMenuBarAnimated_withCompletion___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_setupTransitionSystemStatusBarIfNeededForTransitioningToPresented:(BOOL)a3
+- (void)_setupTransitionSystemStatusBarIfNeededForTransitioningToPresented:(BOOL)presented
 {
-  v3 = a3;
+  presentedCopy = presented;
   v43[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
-  v6 = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
-  v7 = v6;
-  if (v5)
+  appLeadingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appLeadingStatusBarStyleRequest];
+  appTrailingStatusBarStyleRequest = [(SBMenuBarSceneProviding *)self->_menuBarSceneProvider appTrailingStatusBarStyleRequest];
+  v7 = appTrailingStatusBarStyleRequest;
+  if (appLeadingStatusBarStyleRequest)
   {
-    v8 = v6 == 0;
+    v8 = appTrailingStatusBarStyleRequest == 0;
   }
 
   else
@@ -1729,29 +1729,29 @@ void __59__SBMenuBarManager__dismissMenuBarAnimated_withCompletion___block_invok
   if (v8 && !self->_transitionOnlySystemStatusBar)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v9 = [WeakRetained statusBarManager];
-    v10 = [(UIStatusBar *)self->_menuBarStatusBar statusBar];
-    v11 = [v9 reusePool];
-    v12 = [v11 getReusableStatusBarWithReason:@"menu bar transition helper"];
+    statusBarManager = [WeakRetained statusBarManager];
+    statusBar = [(UIStatusBar *)self->_menuBarStatusBar statusBar];
+    reusePool = [statusBarManager reusePool];
+    v12 = [reusePool getReusableStatusBarWithReason:@"menu bar transition helper"];
     transitionOnlySystemStatusBar = self->_transitionOnlySystemStatusBar;
     self->_transitionOnlySystemStatusBar = v12;
 
-    if (v3)
+    if (presentedCopy)
     {
-      v14 = [v9 assertionManager];
-      v15 = [v14 currentEffectiveStatusBarStyleRequest];
+      assertionManager = [statusBarManager assertionManager];
+      currentEffectiveStatusBarStyleRequest = [assertionManager currentEffectiveStatusBarStyleRequest];
     }
 
     else
     {
-      v15 = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:objc_msgSend(v10 foregroundColor:{"style"), 0}];
+      currentEffectiveStatusBarStyleRequest = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:objc_msgSend(statusBar foregroundColor:{"style"), 0}];
     }
 
-    v36 = v10;
-    v37 = v9;
-    v35 = v15;
-    [(UIStatusBar *)self->_transitionOnlySystemStatusBar setStyleRequest:v15];
-    if (v5)
+    v36 = statusBar;
+    v37 = statusBarManager;
+    v35 = currentEffectiveStatusBarStyleRequest;
+    [(UIStatusBar *)self->_transitionOnlySystemStatusBar setStyleRequest:currentEffectiveStatusBarStyleRequest];
+    if (appLeadingStatusBarStyleRequest)
     {
       v16 = self->_transitionOnlySystemStatusBar;
       v43[0] = *MEMORY[0x277D6C038];
@@ -1769,18 +1769,18 @@ void __59__SBMenuBarManager__dismissMenuBarAnimated_withCompletion___block_invok
       if (!v7)
       {
 LABEL_15:
-        v34 = [(SBMenuBarWindow *)self->_menuBarWindow rootViewController];
-        v25 = [v34 view];
-        [v25 addSubview:self->_transitionOnlySystemStatusBar];
+        rootViewController = [(SBMenuBarWindow *)self->_menuBarWindow rootViewController];
+        view = [rootViewController view];
+        [view addSubview:self->_transitionOnlySystemStatusBar];
         [(UIStatusBar *)self->_transitionOnlySystemStatusBar setTranslatesAutoresizingMaskIntoConstraints:0];
         v32 = MEMORY[0x277CCAAD0];
-        v33 = [(UIStatusBar *)self->_transitionOnlySystemStatusBar topAnchor];
-        v26 = [v25 topAnchor];
-        v27 = [v33 constraintEqualToAnchor:v26];
+        topAnchor = [(UIStatusBar *)self->_transitionOnlySystemStatusBar topAnchor];
+        topAnchor2 = [view topAnchor];
+        v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v39[0] = v27;
-        v28 = [(UIStatusBar *)self->_transitionOnlySystemStatusBar widthAnchor];
-        v29 = [v25 widthAnchor];
-        v30 = [v28 constraintEqualToAnchor:v29];
+        widthAnchor = [(UIStatusBar *)self->_transitionOnlySystemStatusBar widthAnchor];
+        widthAnchor2 = [view widthAnchor];
+        v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v39[1] = v30;
         v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
         [v32 activateConstraints:v31];
@@ -1814,8 +1814,8 @@ LABEL_16:
   if (!self->_hideAppStatusBarAssertion)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v4 = [WeakRetained switcherController];
-    v5 = [v4 requestInAppStatusBarHiddenAssertionForReason:@"menu bar visible over apps" animated:0];
+    switcherController = [WeakRetained switcherController];
+    v5 = [switcherController requestInAppStatusBarHiddenAssertionForReason:@"menu bar visible over apps" animated:0];
     hideAppStatusBarAssertion = self->_hideAppStatusBarAssertion;
     self->_hideAppStatusBarAssertion = v5;
   }
@@ -1840,8 +1840,8 @@ LABEL_16:
   v6[4] = self;
   v4 = [v3 timerWithTimeInterval:0 repeats:v6 block:?];
   [(SBMenuBarManager *)self setDismissPeekedMenuTimer:v4];
-  v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 addTimer:v4 forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:v4 forMode:*MEMORY[0x277CBE738]];
 }
 
 - (void)_cancelDismissPeekedMenuBarTimer

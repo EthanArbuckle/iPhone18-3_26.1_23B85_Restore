@@ -1,41 +1,41 @@
 @interface STLockoutPolicyController
-- (BOOL)_actionIgnoreLimitForTodayWithCompletionHandler:(id)a3;
-- (BOOL)_actionOneMoreMinuteWithCompletionHandler:(id)a3;
-- (BOOL)_actionRemindMeInMinutesWithCompletionHandler:(id)a3;
-- (BOOL)_actionRemindMeInOneHourWithCompletionHandler:(id)a3;
-- (BOOL)_changeInternalStateTo:(unint64_t)a3;
-- (BOOL)_requestAdditionalTime:(int64_t)a3 withCompletionHandler:(id)a4;
-- (BOOL)handleAction:(int64_t)a3 withCompletionHandler:(id)a4;
+- (BOOL)_actionIgnoreLimitForTodayWithCompletionHandler:(id)handler;
+- (BOOL)_actionOneMoreMinuteWithCompletionHandler:(id)handler;
+- (BOOL)_actionRemindMeInMinutesWithCompletionHandler:(id)handler;
+- (BOOL)_actionRemindMeInOneHourWithCompletionHandler:(id)handler;
+- (BOOL)_changeInternalStateTo:(unint64_t)to;
+- (BOOL)_requestAdditionalTime:(int64_t)time withCompletionHandler:(id)handler;
+- (BOOL)handleAction:(int64_t)action withCompletionHandler:(id)handler;
 - (BOOL)shouldAllowOneMoreMinute;
 - (CNContainer)iCloudContainer;
 - (NSSet)blockedContactsHandles;
 - (STLockoutPolicyController)init;
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 delegate:(id)a5;
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 conversationContext:(id)a4 contactStore:(id)a5 delegate:(id)a6;
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 delegate:(id)a4;
-- (STLockoutPolicyController)initWithCategoryIdentifier:(id)a3 delegate:(id)a4;
-- (STLockoutPolicyController)initWithWebsiteURL:(id)a3 delegate:(id)a4;
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier contactsHandles:(id)handles delegate:(id)delegate;
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier conversationContext:(id)context contactStore:(id)store delegate:(id)delegate;
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier delegate:(id)delegate;
+- (STLockoutPolicyController)initWithCategoryIdentifier:(id)identifier delegate:(id)delegate;
+- (STLockoutPolicyController)initWithWebsiteURL:(id)l delegate:(id)delegate;
 - (double)_timeIntervalToEndOfDay;
 - (id)_makeAskForTimeResource;
-- (void)_allowedByContactsHandleDidChange:(id)a3 conversationContext:(id)a4;
-- (void)_allowedByScreenTimeDidChange:(BOOL)a3 conversationContext:(id)a4;
-- (void)_applicationCurrentlyLimitedDidChange:(BOOL)a3 conversationContext:(id)a4;
-- (void)_askForTimeResponseWithState:(int64_t)a3 respondingParent:(id)a4 amountGranted:(id)a5 error:(id)a6;
-- (void)_authenticatedApproveForAdditionalTime:(double)a3 withCompletionHandler:(id)a4;
+- (void)_allowedByContactsHandleDidChange:(id)change conversationContext:(id)context;
+- (void)_allowedByScreenTimeDidChange:(BOOL)change conversationContext:(id)context;
+- (void)_applicationCurrentlyLimitedDidChange:(BOOL)change conversationContext:(id)context;
+- (void)_askForTimeResponseWithState:(int64_t)state respondingParent:(id)parent amountGranted:(id)granted error:(id)error;
+- (void)_authenticatedApproveForAdditionalTime:(double)time withCompletionHandler:(id)handler;
 - (void)_changePolicyToCurrent;
-- (void)_changePolicyToCurrentWithBundleIdentifier:(id)a3;
-- (void)_changePolicyToCurrentWithCategoryIdentifier:(id)a3;
-- (void)_changePolicyToCurrentWithURL:(id)a3;
+- (void)_changePolicyToCurrentWithBundleIdentifier:(id)identifier;
+- (void)_changePolicyToCurrentWithCategoryIdentifier:(id)identifier;
+- (void)_changePolicyToCurrentWithURL:(id)l;
 - (void)_changeStateToBeforePending;
 - (void)_changeStateToInitial;
-- (void)_handleChangeToPolicy:(int64_t)a3;
-- (void)_setupCategoryPolicyMonitorForIdentifier:(id)a3;
-- (void)_setupWebsitePolicyMonitorForURL:(id)a3;
-- (void)_updateAllowedByScreenTime:(BOOL)a3 applicationCurrentlyLimited:(BOOL)a4 allowedByContactsHandle:(id)a5;
+- (void)_handleChangeToPolicy:(int64_t)policy;
+- (void)_setupCategoryPolicyMonitorForIdentifier:(id)identifier;
+- (void)_setupWebsitePolicyMonitorForURL:(id)l;
+- (void)_updateAllowedByScreenTime:(BOOL)time applicationCurrentlyLimited:(BOOL)limited allowedByContactsHandle:(id)handle;
 - (void)dealloc;
 - (void)iCloudContainer;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBundleIdentifier:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBundleIdentifier:(id)identifier;
 - (void)shouldAllowOneMoreMinute;
 @end
 
@@ -48,18 +48,18 @@
   return [(STLockoutPolicyController *)&v3 init];
 }
 
-- (STLockoutPolicyController)initWithCategoryIdentifier:(id)a3 delegate:(id)a4
+- (STLockoutPolicyController)initWithCategoryIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = STLockoutPolicyController;
   v8 = [(STLockoutPolicyController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [v6 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [identifierCopy copy];
     categoryIdentifier = v9->_categoryIdentifier;
     v9->_categoryIdentifier = v10;
 
@@ -73,40 +73,40 @@
   return v9;
 }
 
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 delegate:(id)a4
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = STLockoutPolicyController;
   v9 = [(STLockoutPolicyController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10->_style = 0;
     v11 = objc_opt_new();
     managementState = v10->_managementState;
     v10->_managementState = v11;
 
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (STLockoutPolicyController)initWithWebsiteURL:(id)a3 delegate:(id)a4
+- (STLockoutPolicyController)initWithWebsiteURL:(id)l delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = STLockoutPolicyController;
   v9 = [(STLockoutPolicyController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_websiteURL, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_websiteURL, l);
     v10->_style = 1;
     [(STLockoutPolicyController *)v10 _setupWebsitePolicyMonitorForURL:v10->_websiteURL];
     v11 = objc_opt_new();
@@ -117,23 +117,23 @@
   return v10;
 }
 
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 contactsHandles:(id)a4 delegate:(id)a5
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier contactsHandles:(id)handles delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  handlesCopy = handles;
   v31.receiver = self;
   v31.super_class = STLockoutPolicyController;
-  v10 = a5;
+  delegateCopy = delegate;
   v11 = [(STLockoutPolicyController *)&v31 init];
-  v12 = [v8 copy];
+  v12 = [identifierCopy copy];
   bundleIdentifier = v11->_bundleIdentifier;
   v11->_bundleIdentifier = v12;
 
-  v14 = [v9 copy];
+  v14 = [handlesCopy copy];
   contactsHandles = v11->_contactsHandles;
   v11->_contactsHandles = v14;
 
-  objc_storeWeak(&v11->_delegate, v10);
+  objc_storeWeak(&v11->_delegate, delegateCopy);
   v11->_style = 3;
   v11->_state = 0;
   v16 = objc_opt_new();
@@ -149,12 +149,12 @@
   v27[1] = 3221225472;
   v27[2] = __79__STLockoutPolicyController_initWithBundleIdentifier_contactsHandles_delegate___block_invoke;
   v27[3] = &unk_278338F10;
-  v28 = v8;
+  v28 = identifierCopy;
   v21 = v11;
   v29 = v21;
-  v30 = v9;
-  v22 = v9;
-  v23 = v8;
+  v30 = handlesCopy;
+  v22 = handlesCopy;
+  v23 = identifierCopy;
   [v20 requestConversationWithBundleIdentifier:v23 completionHandler:v27];
   v24 = v30;
   v25 = v21;
@@ -206,36 +206,36 @@ void __79__STLockoutPolicyController_initWithBundleIdentifier_contactsHandles_de
   [v6 addObserver:*(a1 + 32) forKeyPath:@"allowedByContactsHandle" options:1 context:@"KVOContextLockoutPolicyController"];
 }
 
-- (STLockoutPolicyController)initWithBundleIdentifier:(id)a3 conversationContext:(id)a4 contactStore:(id)a5 delegate:(id)a6
+- (STLockoutPolicyController)initWithBundleIdentifier:(id)identifier conversationContext:(id)context contactStore:(id)store delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  storeCopy = store;
   v28.receiver = self;
   v28.super_class = STLockoutPolicyController;
-  v12 = a6;
-  v13 = a3;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v14 = [(STLockoutPolicyController *)&v28 init];
-  v15 = [v13 copy];
+  v15 = [identifierCopy copy];
 
   bundleIdentifier = v14->_bundleIdentifier;
   v14->_bundleIdentifier = v15;
 
-  v17 = [v10 allowedByContactsHandle];
-  v18 = [v17 allKeys];
-  v19 = [v18 copy];
+  allowedByContactsHandle = [contextCopy allowedByContactsHandle];
+  allKeys = [allowedByContactsHandle allKeys];
+  v19 = [allKeys copy];
   contactsHandles = v14->_contactsHandles;
   v14->_contactsHandles = v19;
 
-  objc_storeWeak(&v14->_delegate, v12);
+  objc_storeWeak(&v14->_delegate, delegateCopy);
   v14->_style = 3;
   v14->_state = 0;
   v21 = objc_opt_new();
   managementState = v14->_managementState;
   v14->_managementState = v21;
 
-  if (v11)
+  if (storeCopy)
   {
-    v23 = v11;
+    v23 = storeCopy;
   }
 
   else
@@ -247,8 +247,8 @@ void __79__STLockoutPolicyController_initWithBundleIdentifier_contactsHandles_de
   v14->_contactStore = v23;
 
   conversationContext = v14->_conversationContext;
-  v14->_conversationContext = v10;
-  v26 = v10;
+  v14->_conversationContext = contextCopy;
+  v26 = contextCopy;
 
   [(STConversationContext *)v14->_conversationContext addObserver:v14 forKeyPath:@"allowedByScreenTime" options:1 context:@"KVOContextLockoutPolicyController"];
   [(STConversationContext *)v14->_conversationContext addObserver:v14 forKeyPath:@"applicationCurrentlyLimited" options:1 context:@"KVOContextLockoutPolicyController"];
@@ -257,12 +257,12 @@ void __79__STLockoutPolicyController_initWithBundleIdentifier_contactsHandles_de
   return v14;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  objc_storeStrong(&self->_bundleIdentifier, a3);
+  objc_storeStrong(&self->_bundleIdentifier, identifier);
   v6 = +[STBlockingUILog log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,7 +282,7 @@ void __79__STLockoutPolicyController_initWithBundleIdentifier_contactsHandles_de
   v13[3] = &unk_278338F38;
   objc_copyWeak(v15, buf);
   v15[1] = v8;
-  v10 = v5;
+  v10 = identifierCopy;
   v14 = v10;
   v11 = [v9 initWithPolicyChangeHandler:v13];
   applicationPolicyMonitor = self->_applicationPolicyMonitor;
@@ -334,65 +334,65 @@ void __49__STLockoutPolicyController_setBundleIdentifier___block_invoke_2(uint64
   }
 }
 
-- (BOOL)handleAction:(int64_t)a3 withCompletionHandler:(id)a4
+- (BOOL)handleAction:(int64_t)action withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
+  handlerCopy = handler;
+  v7 = handlerCopy;
   v8 = 1;
-  if (a3 <= 2)
+  if (action <= 2)
   {
-    if (a3)
+    if (action)
     {
-      if (a3 == 1)
+      if (action == 1)
       {
-        if (v6)
+        if (handlerCopy)
         {
-          (*(v6 + 2))(v6, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
         }
 
         v8 = 0;
       }
 
-      else if (a3 == 2)
+      else if (action == 2)
       {
-        v9 = [(STLockoutPolicyController *)self _requestAdditionalTime:2 withCompletionHandler:v6];
+        v9 = [(STLockoutPolicyController *)self _requestAdditionalTime:2 withCompletionHandler:handlerCopy];
 LABEL_16:
         v8 = v9;
       }
     }
 
-    else if (v6)
+    else if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    if (a3 <= 4)
+    if (action <= 4)
     {
-      if (a3 == 3)
+      if (action == 3)
       {
-        v9 = [(STLockoutPolicyController *)self _actionIgnoreLimitForTodayWithCompletionHandler:v6];
+        v9 = [(STLockoutPolicyController *)self _actionIgnoreLimitForTodayWithCompletionHandler:handlerCopy];
       }
 
       else
       {
-        v9 = [(STLockoutPolicyController *)self _actionRemindMeInMinutesWithCompletionHandler:v6];
+        v9 = [(STLockoutPolicyController *)self _actionRemindMeInMinutesWithCompletionHandler:handlerCopy];
       }
 
       goto LABEL_16;
     }
 
-    if (a3 == 5)
+    if (action == 5)
     {
-      v9 = [(STLockoutPolicyController *)self _actionRemindMeInOneHourWithCompletionHandler:v6];
+      v9 = [(STLockoutPolicyController *)self _actionRemindMeInOneHourWithCompletionHandler:handlerCopy];
       goto LABEL_16;
     }
 
-    if (a3 == 6)
+    if (action == 6)
     {
-      v9 = [(STLockoutPolicyController *)self _actionOneMoreMinuteWithCompletionHandler:v6];
+      v9 = [(STLockoutPolicyController *)self _actionOneMoreMinuteWithCompletionHandler:handlerCopy];
       goto LABEL_16;
     }
   }
@@ -412,9 +412,9 @@ LABEL_16:
 
 - (NSSet)blockedContactsHandles
 {
-  v3 = [(STLockoutPolicyController *)self conversationContext];
-  v4 = [v3 allowedByContactsHandle];
-  v5 = [v4 keysOfEntriesPassingTest:&__block_literal_global_3];
+  conversationContext = [(STLockoutPolicyController *)self conversationContext];
+  allowedByContactsHandle = [conversationContext allowedByContactsHandle];
+  v5 = [allowedByContactsHandle keysOfEntriesPassingTest:&__block_literal_global_3];
   v6 = v5;
   if (v5)
   {
@@ -424,8 +424,8 @@ LABEL_16:
   else
   {
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(STLockoutPolicyController *)self contactsHandles];
-    v7 = [v8 setWithArray:v9];
+    contactsHandles = [(STLockoutPolicyController *)self contactsHandles];
+    v7 = [v8 setWithArray:contactsHandles];
   }
 
   return v7;
@@ -440,9 +440,9 @@ LABEL_16:
   if (v4)
   {
     v6 = [MEMORY[0x277CBDAD8] predicateForContainersInAccountWithExternalIdentifier:v4];
-    v7 = [(STLockoutPolicyController *)self contactStore];
+    contactStore = [(STLockoutPolicyController *)self contactStore];
     v14 = v5;
-    v8 = [v7 containersMatchingPredicate:v6 error:&v14];
+    v8 = [contactStore containersMatchingPredicate:v6 error:&v14];
     v9 = v14;
 
     if (v8)
@@ -489,9 +489,9 @@ LABEL_14:
   return v10;
 }
 
-- (void)_setupCategoryPolicyMonitorForIdentifier:(id)a3
+- (void)_setupCategoryPolicyMonitorForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   reuseIdentifier = self->_reuseIdentifier;
   objc_initWeak(&location, self);
@@ -502,7 +502,7 @@ LABEL_14:
   v10[3] = &unk_278338F38;
   objc_copyWeak(v12, &location);
   v12[1] = reuseIdentifier;
-  v7 = v4;
+  v7 = identifierCopy;
   v11 = v7;
   v8 = [v6 initWithPolicyChangeHandler:v10];
   categoryPolicyMonitor = self->_categoryPolicyMonitor;
@@ -551,9 +551,9 @@ void __70__STLockoutPolicyController__setupCategoryPolicyMonitorForIdentifier___
   }
 }
 
-- (void)_setupWebsitePolicyMonitorForURL:(id)a3
+- (void)_setupWebsitePolicyMonitorForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   reuseIdentifier = self->_reuseIdentifier;
   objc_initWeak(&location, self);
@@ -564,7 +564,7 @@ void __70__STLockoutPolicyController__setupCategoryPolicyMonitorForIdentifier___
   v10[3] = &unk_278338F38;
   objc_copyWeak(v12, &location);
   v12[1] = reuseIdentifier;
-  v7 = v4;
+  v7 = lCopy;
   v11 = v7;
   v8 = [v6 initWithPolicyChangeHandler:v10];
   websitePolicyMonitor = self->_websitePolicyMonitor;
@@ -613,58 +613,58 @@ void __62__STLockoutPolicyController__setupWebsitePolicyMonitorForURL___block_in
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == @"KVOContextLockoutPolicyController")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"KVOContextLockoutPolicyController")
   {
-    if ([v10 isEqualToString:@"allowedByScreenTime"])
+    if ([pathCopy isEqualToString:@"allowedByScreenTime"])
     {
-      v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v14)
+      if (v13 == null)
       {
 
         v13 = 0;
       }
 
-      -[STLockoutPolicyController _allowedByScreenTimeDidChange:conversationContext:](self, "_allowedByScreenTimeDidChange:conversationContext:", [v13 BOOLValue], v11);
+      -[STLockoutPolicyController _allowedByScreenTimeDidChange:conversationContext:](self, "_allowedByScreenTimeDidChange:conversationContext:", [v13 BOOLValue], objectCopy);
     }
 
-    else if ([v10 isEqualToString:@"applicationCurrentlyLimited"])
+    else if ([pathCopy isEqualToString:@"applicationCurrentlyLimited"])
     {
-      v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v15)
+      if (v13 == null2)
       {
 
         v13 = 0;
       }
 
-      -[STLockoutPolicyController _applicationCurrentlyLimitedDidChange:conversationContext:](self, "_applicationCurrentlyLimitedDidChange:conversationContext:", [v13 BOOLValue], v11);
+      -[STLockoutPolicyController _applicationCurrentlyLimitedDidChange:conversationContext:](self, "_applicationCurrentlyLimitedDidChange:conversationContext:", [v13 BOOLValue], objectCopy);
     }
 
     else
     {
-      if (![v10 isEqualToString:@"allowedByContactsHandle"])
+      if (![pathCopy isEqualToString:@"allowedByContactsHandle"])
       {
         goto LABEL_16;
       }
 
-      v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v16)
+      if (v13 == null3)
       {
 
         v13 = 0;
       }
 
-      [(STLockoutPolicyController *)self _allowedByContactsHandleDidChange:v13 conversationContext:v11];
+      [(STLockoutPolicyController *)self _allowedByContactsHandleDidChange:v13 conversationContext:objectCopy];
     }
 
     goto LABEL_16;
@@ -672,21 +672,21 @@ void __62__STLockoutPolicyController__setupWebsitePolicyMonitorForURL___block_in
 
   v17.receiver = self;
   v17.super_class = STLockoutPolicyController;
-  [(STLockoutPolicyController *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(STLockoutPolicyController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_allowedByScreenTimeDidChange:(BOOL)a3 conversationContext:(id)a4
+- (void)_allowedByScreenTimeDidChange:(BOOL)change conversationContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__STLockoutPolicyController__allowedByScreenTimeDidChange_conversationContext___block_invoke;
   block[3] = &unk_278338F60;
-  v10 = a3;
+  changeCopy = change;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = contextCopy;
+  v7 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -699,17 +699,17 @@ void __79__STLockoutPolicyController__allowedByScreenTimeDidChange_conversationC
   [v3 _updateAllowedByScreenTime:v2 applicationCurrentlyLimited:v4 allowedByContactsHandle:v5];
 }
 
-- (void)_applicationCurrentlyLimitedDidChange:(BOOL)a3 conversationContext:(id)a4
+- (void)_applicationCurrentlyLimitedDidChange:(BOOL)change conversationContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__STLockoutPolicyController__applicationCurrentlyLimitedDidChange_conversationContext___block_invoke;
   block[3] = &unk_278338F60;
   block[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = contextCopy;
+  changeCopy = change;
+  v7 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -722,19 +722,19 @@ void __87__STLockoutPolicyController__applicationCurrentlyLimitedDidChange_conve
   [v2 _updateAllowedByScreenTime:v3 applicationCurrentlyLimited:v4 allowedByContactsHandle:v5];
 }
 
-- (void)_allowedByContactsHandleDidChange:(id)a3 conversationContext:(id)a4
+- (void)_allowedByContactsHandleDidChange:(id)change conversationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  contextCopy = context;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__STLockoutPolicyController__allowedByContactsHandleDidChange_conversationContext___block_invoke;
   block[3] = &unk_278338EE8;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = contextCopy;
+  v12 = changeCopy;
+  v8 = changeCopy;
+  v9 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -748,19 +748,19 @@ uint64_t __83__STLockoutPolicyController__allowedByContactsHandleDidChange_conve
   return [v2 _updateAllowedByScreenTime:v3 applicationCurrentlyLimited:v4 allowedByContactsHandle:v5];
 }
 
-- (void)_updateAllowedByScreenTime:(BOOL)a3 applicationCurrentlyLimited:(BOOL)a4 allowedByContactsHandle:(id)a5
+- (void)_updateAllowedByScreenTime:(BOOL)time applicationCurrentlyLimited:(BOOL)limited allowedByContactsHandle:(id)handle
 {
-  v5 = a4;
-  v8 = a5;
-  v12 = v8;
-  if (a3)
+  limitedCopy = limited;
+  handleCopy = handle;
+  v12 = handleCopy;
+  if (time)
   {
     v9 = 9;
   }
 
   else
   {
-    v10 = [v8 keysOfEntriesPassingTest:&__block_literal_global_3];
+    v10 = [handleCopy keysOfEntriesPassingTest:&__block_literal_global_3];
     v11 = [v10 count];
 
     if (!v11)
@@ -768,7 +768,7 @@ uint64_t __83__STLockoutPolicyController__allowedByContactsHandleDidChange_conve
       goto LABEL_8;
     }
 
-    if (v5)
+    if (limitedCopy)
     {
       v9 = 8;
     }
@@ -800,12 +800,12 @@ LABEL_8:
     websiteURL = self->_websiteURL;
     if (websiteURL)
     {
-      v11 = [(NSURL *)websiteURL host];
-      if (v11)
+      host = [(NSURL *)websiteURL host];
+      if (host)
       {
         v12 = self->_managementState;
         v19 = 0;
-        v5 = [(STManagementState *)v12 shouldAllowOneMoreMinuteForWebDomain:v11 error:&v19];
+        v5 = [(STManagementState *)v12 shouldAllowOneMoreMinuteForWebDomain:host error:&v19];
         v7 = v19;
       }
 
@@ -833,7 +833,7 @@ LABEL_14:
         [STLockoutPolicyController shouldAllowOneMoreMinute];
       }
 
-      v8 = 1;
+      bOOLValue = 1;
       goto LABEL_17;
     }
 
@@ -856,29 +856,29 @@ LABEL_14:
   }
 
 LABEL_4:
-  v8 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_17:
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)_changePolicyToCurrentWithCategoryIdentifier:(id)a3
+- (void)_changePolicyToCurrentWithCategoryIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     reuseIdentifier = self->_reuseIdentifier;
     objc_initWeak(&location, self);
     categoryPolicyMonitor = self->_categoryPolicyMonitor;
-    v13[0] = v4;
+    v13[0] = identifierCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __74__STLockoutPolicyController__changePolicyToCurrentWithCategoryIdentifier___block_invoke;
     v9[3] = &unk_278338FB0;
-    v10 = v4;
+    v10 = identifierCopy;
     objc_copyWeak(v11, &location);
     v11[1] = reuseIdentifier;
     [(DMFCategoryPolicyMonitor *)categoryPolicyMonitor requestPoliciesForCategoryIdentifiers:v7 completionHandler:v9];
@@ -954,23 +954,23 @@ void __74__STLockoutPolicyController__changePolicyToCurrentWithCategoryIdentifie
   }
 }
 
-- (void)_changePolicyToCurrentWithBundleIdentifier:(id)a3
+- (void)_changePolicyToCurrentWithBundleIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     reuseIdentifier = self->_reuseIdentifier;
     objc_initWeak(&location, self);
     applicationPolicyMonitor = self->_applicationPolicyMonitor;
-    v13[0] = v4;
+    v13[0] = identifierCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __72__STLockoutPolicyController__changePolicyToCurrentWithBundleIdentifier___block_invoke;
     v9[3] = &unk_278338FB0;
-    v10 = v4;
+    v10 = identifierCopy;
     objc_copyWeak(v11, &location);
     v11[1] = reuseIdentifier;
     [(DMFApplicationPolicyMonitor *)applicationPolicyMonitor requestPoliciesForBundleIdentifiers:v7 completionHandler:v9];
@@ -1046,23 +1046,23 @@ void __72__STLockoutPolicyController__changePolicyToCurrentWithBundleIdentifier_
   }
 }
 
-- (void)_changePolicyToCurrentWithURL:(id)a3
+- (void)_changePolicyToCurrentWithURL:(id)l
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     reuseIdentifier = self->_reuseIdentifier;
     objc_initWeak(&location, self);
     websitePolicyMonitor = self->_websitePolicyMonitor;
-    v13[0] = v4;
+    v13[0] = lCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invoke;
     v9[3] = &unk_278338FB0;
-    v10 = v4;
+    v10 = lCopy;
     objc_copyWeak(v11, &location);
     v11[1] = reuseIdentifier;
     [(DMFWebsitePolicyMonitor *)websitePolicyMonitor requestPoliciesForWebsites:v7 completionHandler:v9];
@@ -1145,14 +1145,14 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_handleChangeToPolicy:(int64_t)a3
+- (void)_handleChangeToPolicy:(int64_t)policy
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (a3 <= 2)
+  if (policy <= 2)
   {
-    if (a3)
+    if (policy)
     {
-      if (a3 == 1)
+      if (policy == 1)
       {
         v11 = +[STBlockingUILog log];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1161,13 +1161,13 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
           _os_log_impl(&dword_21DD93000, v11, OS_LOG_TYPE_DEFAULT, "change to policy Warn", v16, 2u);
         }
 
-        v6 = self;
+        selfCopy5 = self;
         v7 = 2;
       }
 
       else
       {
-        if (a3 != 2)
+        if (policy != 2)
         {
           return;
         }
@@ -1179,7 +1179,7 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
           _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "change to policy Ask", buf, 2u);
         }
 
-        v6 = self;
+        selfCopy5 = self;
         v7 = 3;
       }
     }
@@ -1193,14 +1193,14 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
         _os_log_impl(&dword_21DD93000, v9, OS_LOG_TYPE_DEFAULT, "change to policy OK", v17, 2u);
       }
 
-      v6 = self;
+      selfCopy5 = self;
       v7 = 9;
     }
 
     goto LABEL_26;
   }
 
-  switch(a3)
+  switch(policy)
   {
     case 3:
       v10 = +[STBlockingUILog log];
@@ -1210,7 +1210,7 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
         _os_log_impl(&dword_21DD93000, v10, OS_LOG_TYPE_DEFAULT, "change to policy Ask Pending", v14, 2u);
       }
 
-      v6 = self;
+      selfCopy5 = self;
       v7 = 4;
       goto LABEL_26;
     case 4:
@@ -1221,10 +1221,10 @@ void __59__STLockoutPolicyController__changePolicyToCurrentWithURL___block_invok
         _os_log_impl(&dword_21DD93000, v12, OS_LOG_TYPE_DEFAULT, "change to policy Blocked", v13, 2u);
       }
 
-      v6 = self;
+      selfCopy5 = self;
       v7 = 6;
 LABEL_26:
-      [(STLockoutPolicyController *)v6 _changeInternalStateTo:v7];
+      [(STLockoutPolicyController *)selfCopy5 _changeInternalStateTo:v7];
       return;
     case 5:
       v8 = +[STBlockingUILog log];
@@ -1254,7 +1254,7 @@ LABEL_26:
         _os_log_impl(&dword_21DD93000, v4, OS_LOG_TYPE_DEFAULT, "Reverting state to Warn", &v11, 2u);
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 2;
       goto LABEL_12;
     }
@@ -1267,10 +1267,10 @@ LABEL_26:
         _os_log_impl(&dword_21DD93000, v4, OS_LOG_TYPE_DEFAULT, "Reverting state to Ask", &v11, 2u);
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 3;
 LABEL_12:
-      [(STLockoutPolicyController *)v6 _changeInternalStateTo:v7];
+      [(STLockoutPolicyController *)selfCopy2 _changeInternalStateTo:v7];
       return;
     }
 
@@ -1299,17 +1299,17 @@ LABEL_12:
   }
 }
 
-- (BOOL)_changeInternalStateTo:(unint64_t)a3
+- (BOOL)_changeInternalStateTo:(unint64_t)to
 {
   v20 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   state = self->_state;
-  if (state == a3)
+  if (state == to)
   {
     v15 = +[STBlockingUILog log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = STStringFromLockoutState(a3);
+      v16 = STStringFromLockoutState(to);
       v18 = 138412290;
       v19 = v16;
       _os_log_impl(&dword_21DD93000, v15, OS_LOG_TYPE_DEFAULT, "skipping change to state: already %@", &v18, 0xCu);
@@ -1323,7 +1323,7 @@ LABEL_12:
     v6 = +[STBlockingUILog log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = STStringFromLockoutState(a3);
+      v7 = STStringFromLockoutState(to);
       v18 = 138412290;
       v19 = v7;
       _os_log_impl(&dword_21DD93000, v6, OS_LOG_TYPE_DEFAULT, "WARNING: change to state %@: lockout state is Dismissing", &v18, 0xCu);
@@ -1333,18 +1333,18 @@ LABEL_12:
   v8 = +[STBlockingUILog log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = STStringFromLockoutState(a3);
+    v9 = STStringFromLockoutState(to);
     v18 = 138412290;
     v19 = v9;
     _os_log_impl(&dword_21DD93000, v8, OS_LOG_TYPE_DEFAULT, "changing lockout state to %@", &v18, 0xCu);
   }
 
-  if (a3 == 4)
+  if (to == 4)
   {
     self->_stateBeforePending = self->_state;
   }
 
-  self->_state = a3;
+  self->_state = to;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -1357,19 +1357,19 @@ LABEL_12:
       v13 = +[STBlockingUILog log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = STStringFromLockoutState(a3);
+        v14 = STStringFromLockoutState(to);
         v18 = 138412290;
         v19 = v14;
         _os_log_impl(&dword_21DD93000, v13, OS_LOG_TYPE_DEFAULT, "calling delegate  stateDidChange to %@", &v18, 0xCu);
       }
 
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 stateDidChange:a3];
+      [v15 stateDidChange:to];
 LABEL_17:
     }
   }
 
-  return state != a3;
+  return state != to;
 }
 
 - (void)_changeStateToInitial
@@ -1390,38 +1390,38 @@ LABEL_17:
 
 - (double)_timeIntervalToEndOfDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 dateByAddingUnit:16 value:1 toDate:v3 options:0];
-  v5 = [v2 components:252 fromDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date options:0];
+  v5 = [currentCalendar components:252 fromDate:v4];
   [v5 setHour:0];
   [v5 setMinute:0];
   [v5 setSecond:0];
-  v6 = [v2 dateFromComponents:v5];
-  [v6 timeIntervalSinceDate:v3];
+  v6 = [currentCalendar dateFromComponents:v5];
+  [v6 timeIntervalSinceDate:date];
   v8 = v7;
 
   return v8;
 }
 
-- (void)_authenticatedApproveForAdditionalTime:(double)a3 withCompletionHandler:(id)a4
+- (void)_authenticatedApproveForAdditionalTime:(double)time withCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   reuseIdentifier = self->_reuseIdentifier;
-  v8 = [(STLockoutPolicyController *)self _makeAskForTimeResource];
+  _makeAskForTimeResource = [(STLockoutPolicyController *)self _makeAskForTimeResource];
   askForTimeResource = self->_askForTimeResource;
-  self->_askForTimeResource = v8;
+  self->_askForTimeResource = _makeAskForTimeResource;
 
-  v10 = a3;
-  if (a3 != 60.0)
+  timeCopy2 = time;
+  if (time != 60.0)
   {
-    v10 = a3;
-    if (a3 == 0.0)
+    timeCopy2 = time;
+    if (time == 0.0)
     {
       [(STLockoutPolicyController *)self _timeIntervalToEndOfDay];
-      v10 = v11;
+      timeCopy2 = v11;
     }
   }
 
@@ -1429,7 +1429,7 @@ LABEL_17:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = self->_askForTimeResource;
-    v14 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
+    v14 = [MEMORY[0x277CCABB0] numberWithDouble:timeCopy2];
     *buf = 138412546;
     v25 = v13;
     v26 = 2114;
@@ -1442,21 +1442,21 @@ LABEL_17:
   v19 = 3221225472;
   v20 = __90__STLockoutPolicyController__authenticatedApproveForAdditionalTime_withCompletionHandler___block_invoke;
   v21 = &unk_278339000;
-  v23[1] = *&v10;
+  v23[1] = *&timeCopy2;
   objc_copyWeak(v23, buf);
   v23[2] = reuseIdentifier;
-  v15 = v6;
+  v15 = handlerCopy;
   v22 = v15;
   v16 = _Block_copy(&v18);
   v17 = self->_askForTimeResource;
-  if (a3 == 60.0)
+  if (time == 60.0)
   {
     [(STAskForTimeResource *)v17 approveOneMoreMinuteWithCompletionHandler:v16, v18, v19, v20, v21];
   }
 
   else
   {
-    [(STAskForTimeResource *)v17 approveAdditionalTime:v16 completionHandler:v10, v18, v19, v20, v21];
+    [(STAskForTimeResource *)v17 approveAdditionalTime:v16 completionHandler:timeCopy2, v18, v19, v20, v21];
   }
 
   objc_destroyWeak(v23);
@@ -1524,10 +1524,10 @@ uint64_t __90__STLockoutPolicyController__authenticatedApproveForAdditionalTime_
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_requestAdditionalTime:(int64_t)a3 withCompletionHandler:(id)a4
+- (BOOL)_requestAdditionalTime:(int64_t)time withCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[STBlockingUILog log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1547,9 +1547,9 @@ uint64_t __90__STLockoutPolicyController__authenticatedApproveForAdditionalTime_
     }
   }
 
-  v9 = [(STLockoutPolicyController *)self _makeAskForTimeResource];
+  _makeAskForTimeResource = [(STLockoutPolicyController *)self _makeAskForTimeResource];
   askForTimeResource = self->_askForTimeResource;
-  self->_askForTimeResource = v9;
+  self->_askForTimeResource = _makeAskForTimeResource;
 
   v11 = +[STBlockingUILog log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1589,7 +1589,7 @@ uint64_t __90__STLockoutPolicyController__authenticatedApproveForAdditionalTime_
   v21[1] = 0x40AC200000000000;
   objc_copyWeak(v21, buf);
   v21[2] = reuseIdentifier;
-  v17 = v5;
+  v17 = handlerCopy;
   v20 = v17;
   [(STAskForTimeResource *)v16 requestAdditionalTime:v19 completionHandler:3600.0];
 
@@ -1656,38 +1656,38 @@ void __74__STLockoutPolicyController__requestAdditionalTime_withCompletionHandle
   }
 }
 
-- (BOOL)_actionOneMoreMinuteWithCompletionHandler:(id)a3
+- (BOOL)_actionOneMoreMinuteWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:v4 withCompletionHandler:60.0];
+  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:handlerCopy withCompletionHandler:60.0];
 
   return 1;
 }
 
-- (BOOL)_actionRemindMeInMinutesWithCompletionHandler:(id)a3
+- (BOOL)_actionRemindMeInMinutesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:v4 withCompletionHandler:900.0];
+  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:handlerCopy withCompletionHandler:900.0];
 
   return 1;
 }
 
-- (BOOL)_actionRemindMeInOneHourWithCompletionHandler:(id)a3
+- (BOOL)_actionRemindMeInOneHourWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:v4 withCompletionHandler:3600.0];
+  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:handlerCopy withCompletionHandler:3600.0];
 
   return 1;
 }
 
-- (BOOL)_actionIgnoreLimitForTodayWithCompletionHandler:(id)a3
+- (BOOL)_actionIgnoreLimitForTodayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:v4 withCompletionHandler:0.0];
+  [(STLockoutPolicyController *)self _authenticatedApproveForAdditionalTime:handlerCopy withCompletionHandler:0.0];
 
   return 1;
 }
@@ -1710,8 +1710,8 @@ void __74__STLockoutPolicyController__requestAdditionalTime_withCompletionHandle
     if (self->_websiteURL)
     {
       v7 = objc_alloc(MEMORY[0x277D4B918]);
-      v8 = [(NSURL *)self->_websiteURL host];
-      v9 = [v7 initWithWebsiteDomain:v8 changeHandler:v4];
+      host = [(NSURL *)self->_websiteURL host];
+      v9 = [v7 initWithWebsiteDomain:host changeHandler:v4];
 
       goto LABEL_9;
     }
@@ -1771,18 +1771,18 @@ void __52__STLockoutPolicyController__makeAskForTimeResource__block_invoke_2(uin
   }
 }
 
-- (void)_askForTimeResponseWithState:(int64_t)a3 respondingParent:(id)a4 amountGranted:(id)a5 error:(id)a6
+- (void)_askForTimeResponseWithState:(int64_t)state respondingParent:(id)parent amountGranted:(id)granted error:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  parentCopy = parent;
+  grantedCopy = granted;
+  errorCopy = error;
+  if (!errorCopy)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-    if (a3 <= 2)
+    if (state <= 2)
     {
-      if (!a3)
+      if (!state)
       {
         v13 = +[STBlockingUILog log];
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1797,9 +1797,9 @@ void __52__STLockoutPolicyController__makeAskForTimeResource__block_invoke_2(uin
         goto LABEL_4;
       }
 
-      if (a3 != 1)
+      if (state != 1)
       {
-        if (a3 != 2)
+        if (state != 2)
         {
           goto LABEL_6;
         }
@@ -1824,14 +1824,14 @@ LABEL_23:
         _os_log_impl(&dword_21DD93000, v24, OS_LOG_TYPE_DEFAULT, "ask for time response: request pending", v31, 2u);
       }
 
-      v21 = self;
+      selfCopy3 = self;
       v22 = 4;
 LABEL_35:
-      [(STLockoutPolicyController *)v21 _changeInternalStateTo:v22, *v31, *&v31[16], v32];
+      [(STLockoutPolicyController *)selfCopy3 _changeInternalStateTo:v22, *v31, *&v31[16], v32];
       goto LABEL_6;
     }
 
-    if (a3 == 3)
+    if (state == 3)
     {
       v17 = +[STBlockingUILog log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1850,9 +1850,9 @@ LABEL_24:
       goto LABEL_6;
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 != 5)
+      if (state != 5)
       {
         goto LABEL_6;
       }
@@ -1867,21 +1867,21 @@ LABEL_24:
       v20 = self->_askForTimeResource;
       self->_askForTimeResource = 0;
 
-      v21 = self;
+      selfCopy3 = self;
       v22 = 6;
       goto LABEL_35;
     }
 
     v25 = +[STBlockingUILog log];
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (grantedCopy)
     {
       if (v26)
       {
         *v31 = 138412546;
-        *&v31[4] = v10;
+        *&v31[4] = parentCopy;
         *&v31[12] = 2112;
-        *&v31[14] = v11;
+        *&v31[14] = grantedCopy;
         v27 = "ask for time response: parent %@ approved for %@ seconds";
         v28 = v25;
         v29 = 22;
@@ -1893,7 +1893,7 @@ LABEL_33:
     else if (v26)
     {
       *v31 = 138412290;
-      *&v31[4] = v10;
+      *&v31[4] = parentCopy;
       v27 = "ask for time response: parent %@ approved for rest of day";
       v28 = v25;
       v29 = 12;
@@ -1903,7 +1903,7 @@ LABEL_33:
     v30 = self->_askForTimeResource;
     self->_askForTimeResource = 0;
 
-    v21 = self;
+    selfCopy3 = self;
     v22 = 5;
     goto LABEL_35;
   }
@@ -1912,9 +1912,9 @@ LABEL_33:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *v31 = 67109378;
-    *&v31[4] = a3;
+    *&v31[4] = state;
     *&v31[8] = 2112;
-    *&v31[10] = v12;
+    *&v31[10] = errorCopy;
     v14 = "ask for time response: request state %d, error: %@";
     v15 = v13;
     v16 = 18;

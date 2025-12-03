@@ -1,6 +1,6 @@
 @interface SSEventsTableBase
 - (SSEventsTableBase)init;
-- (void)performTransactionWithBlock:(id)a3;
+- (void)performTransactionWithBlock:(id)block;
 @end
 
 @implementation SSEventsTableBase
@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [objc_opt_class() databasePath];
+    databasePath = [objc_opt_class() databasePath];
     v5 = [SSSQLiteDatabase alloc];
-    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4 isDirectory:0];
+    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:databasePath isDirectory:0];
     v7 = [(SSSQLiteDatabase *)v5 initWithDatabaseURL:v6 readOnly:0 protectionType:*MEMORY[0x1E696A388]];
     database = v2->_database;
     v2->_database = v7;
@@ -91,17 +91,17 @@ LABEL_13:
   }
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   database = self->_database;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SSEventsTableBase_performTransactionWithBlock___block_invoke;
   v7[3] = &unk_1E84AEF70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v7];
 }
 

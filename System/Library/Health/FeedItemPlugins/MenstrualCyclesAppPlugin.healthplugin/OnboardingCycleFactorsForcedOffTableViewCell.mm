@@ -1,13 +1,13 @@
 @interface OnboardingCycleFactorsForcedOffTableViewCell
-- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation OnboardingCycleFactorsForcedOffTableViewCell
 
-- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v5 = sub_29E2C33A4();
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin44OnboardingCycleFactorsForcedOffTableViewCell)initWithCoder:(id)coder
 {
   result = sub_29E2C4724();
   __break(1u);

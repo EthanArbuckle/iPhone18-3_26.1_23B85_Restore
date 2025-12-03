@@ -1,11 +1,11 @@
 @interface JavaUtilUnsafeArrayList
-- (BOOL)addWithId:(id)a3;
+- (BOOL)addWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilUnsafeArrayList
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   array = self->array_;
   if (!array)
@@ -35,7 +35,7 @@ LABEL_7:
 
   v8 = self->size_;
   self->size_ = v8 + 1;
-  IOSObjectArray_Set(array, v8, a3);
+  IOSObjectArray_Set(array, v8, id);
   ++self->super.modCount_;
   return 1;
 }

@@ -1,11 +1,11 @@
 @interface AnalogClockFaceViewController
-- (_TtC11ClockPoster29AnalogClockFaceViewController)initWithCoder:(id)a3;
+- (_TtC11ClockPoster29AnalogClockFaceViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation AnalogClockFaceViewController
 
-- (_TtC11ClockPoster29AnalogClockFaceViewController)initWithCoder:(id)a3
+- (_TtC11ClockPoster29AnalogClockFaceViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11ClockPoster29AnalogClockFaceViewController_clockFace;
   type metadata accessor for AnalogClockFaceView();
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E48D7E40();
 }
 

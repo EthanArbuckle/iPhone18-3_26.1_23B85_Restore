@@ -40,74 +40,74 @@
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_foregroundApps count])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"foreground:[%@]", -[NSArray componentsJoinedByString:](self->_foregroundApps, "componentsJoinedByString:", @", "))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"foreground:[%@]", -[NSArray componentsJoinedByString:](self->_foregroundApps, "componentsJoinedByString:", @", "))}];
   }
 
   if ([(NSArray *)self->_obscuredApps count])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"obscured:[%@]", -[NSArray componentsJoinedByString:](self->_obscuredApps, "componentsJoinedByString:", @", "))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"obscured:[%@]", -[NSArray componentsJoinedByString:](self->_obscuredApps, "componentsJoinedByString:", @", "))}];
   }
 
   if ([(NSArray *)self->_transitioningApps count])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"transitioning:[%@]", -[NSArray componentsJoinedByString:](self->_transitioningApps, "componentsJoinedByString:", @", "))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"transitioning:[%@]", -[NSArray componentsJoinedByString:](self->_transitioningApps, "componentsJoinedByString:", @", "))}];
   }
 
   if ([(NSArray *)self->_pipApps count])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"pip:[%@]", -[NSArray componentsJoinedByString:](self->_pipApps, "componentsJoinedByString:", @", "))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"pip:[%@]", -[NSArray componentsJoinedByString:](self->_pipApps, "componentsJoinedByString:", @", "))}];
   }
 
   if (self->_onHomeScreen)
   {
-    [v3 addObject:@"Home Screen"];
+    [array addObject:@"Home Screen"];
   }
 
   if (self->_onLockScreen)
   {
-    [v3 addObject:@"Lock Screen"];
+    [array addObject:@"Lock Screen"];
   }
 
   if (self->_siriVisible)
   {
-    [v3 addObject:@"siri: 1"];
+    [array addObject:@"siri: 1"];
   }
 
   if (self->_paymentServiceVisible)
   {
-    [v3 addObject:@"paymentService: 1"];
+    [array addObject:@"paymentService: 1"];
   }
 
   if (self->_paymentServiceIDVerifierVisible)
   {
-    [v3 addObject:@"paymentServiceIDVerifier: 1"];
+    [array addObject:@"paymentServiceIDVerifier: 1"];
   }
 
-  if (![v3 count])
+  if (![array count])
   {
-    [v3 addObject:@"ništa"];
+    [array addObject:@"ništa"];
   }
 
   displayType = self->_displayType;
   if (displayType <= 2)
   {
-    [v3 insertObject:off_1E7999778[displayType] atIndex:0];
+    [array insertObject:off_1E7999778[displayType] atIndex:0];
   }
 
   if (self->_timestamp)
   {
-    [v3 insertObject:objc_msgSend(sLayoutTimestampDateFormatter atIndex:{"stringFromDate:"), 0}];
+    [array insertObject:objc_msgSend(sLayoutTimestampDateFormatter atIndex:{"stringFromDate:"), 0}];
   }
 
-  return [v3 componentsJoinedByString:{@", "}];
+  return [array componentsJoinedByString:{@", "}];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
     sLayoutTimestampDateFormatter = v2;

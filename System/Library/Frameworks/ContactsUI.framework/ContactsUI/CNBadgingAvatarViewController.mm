@@ -1,14 +1,14 @@
 @interface CNBadgingAvatarViewController
 - (CNBadgingAvatarViewController)init;
-- (CNBadgingAvatarViewController)initWithSettings:(id)a3;
+- (CNBadgingAvatarViewController)initWithSettings:(id)settings;
 - (CNUIObjectViewControllerDelegate)objectViewControllerDelegate;
 - (NSArray)contacts;
 - (UIView)view;
 - (id)descriptorForRequiredKeys;
-- (id)hostingViewControllerForController:(id)a3;
-- (void)setBadgeImage:(id)a3;
-- (void)setBadgeStyleSettings:(id)a3;
-- (void)setContacts:(id)a3;
+- (id)hostingViewControllerForController:(id)controller;
+- (void)setBadgeImage:(id)image;
+- (void)setBadgeStyleSettings:(id)settings;
+- (void)setContacts:(id)contacts;
 - (void)setupContainerViewIfNeeded;
 @end
 
@@ -21,55 +21,55 @@
   return WeakRetained;
 }
 
-- (id)hostingViewControllerForController:(id)a3
+- (id)hostingViewControllerForController:(id)controller
 {
-  v4 = [(CNBadgingAvatarViewController *)self objectViewControllerDelegate];
-  v5 = [v4 hostingViewControllerForController:self];
+  objectViewControllerDelegate = [(CNBadgingAvatarViewController *)self objectViewControllerDelegate];
+  v5 = [objectViewControllerDelegate hostingViewControllerForController:self];
 
   return v5;
 }
 
-- (void)setBadgeStyleSettings:(id)a3
+- (void)setBadgeStyleSettings:(id)settings
 {
-  objc_storeStrong(&self->_badgeStyleSettings, a3);
-  v5 = a3;
-  v6 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
-  [v6 setBadgeStyleSettings:v5];
+  objc_storeStrong(&self->_badgeStyleSettings, settings);
+  settingsCopy = settings;
+  badgingAvatarView = [(CNBadgingAvatarViewController *)self badgingAvatarView];
+  [badgingAvatarView setBadgeStyleSettings:settingsCopy];
 }
 
-- (void)setBadgeImage:(id)a3
+- (void)setBadgeImage:(id)image
 {
-  objc_storeStrong(&self->_badgeImage, a3);
-  v5 = a3;
-  v6 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
-  [v6 setBadgeImage:v5];
+  objc_storeStrong(&self->_badgeImage, image);
+  imageCopy = image;
+  badgingAvatarView = [(CNBadgingAvatarViewController *)self badgingAvatarView];
+  [badgingAvatarView setBadgeImage:imageCopy];
 }
 
 - (void)setupContainerViewIfNeeded
 {
-  v3 = [(CNBadgingAvatarViewController *)self containerView];
+  containerView = [(CNBadgingAvatarViewController *)self containerView];
 
-  if (!v3)
+  if (!containerView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CNBadgingAvatarViewController *)self setContainerView:v5];
 
-    v6 = [(CNBadgingAvatarViewController *)self containerView];
-    v7 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
-    [v6 addSubview:v7];
+    containerView2 = [(CNBadgingAvatarViewController *)self containerView];
+    badgingAvatarView = [(CNBadgingAvatarViewController *)self badgingAvatarView];
+    [containerView2 addSubview:badgingAvatarView];
 
-    v8 = [(CNBadgingAvatarViewController *)self containerView];
-    [v8 frame];
+    containerView3 = [(CNBadgingAvatarViewController *)self containerView];
+    [containerView3 frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
-    [v17 setFrame:{v10, v12, v14, v16}];
+    badgingAvatarView2 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
+    [badgingAvatarView2 setFrame:{v10, v12, v14, v16}];
 
-    v18 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
-    [v18 setAutoresizingMask:18];
+    badgingAvatarView3 = [(CNBadgingAvatarViewController *)self badgingAvatarView];
+    [badgingAvatarView3 setAutoresizingMask:18];
   }
 }
 
@@ -82,17 +82,17 @@
 
 - (NSArray)contacts
 {
-  v2 = [(CNBadgingAvatarViewController *)self avatarViewController];
-  v3 = [v2 contacts];
+  avatarViewController = [(CNBadgingAvatarViewController *)self avatarViewController];
+  contacts = [avatarViewController contacts];
 
-  return v3;
+  return contacts;
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(CNBadgingAvatarViewController *)self avatarViewController];
-  [v5 setContacts:v4];
+  contactsCopy = contacts;
+  avatarViewController = [(CNBadgingAvatarViewController *)self avatarViewController];
+  [avatarViewController setContacts:contactsCopy];
 }
 
 - (CNBadgingAvatarViewController)init
@@ -103,15 +103,15 @@
   return v4;
 }
 
-- (CNBadgingAvatarViewController)initWithSettings:(id)a3
+- (CNBadgingAvatarViewController)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = CNBadgingAvatarViewController;
   v5 = [(CNBadgingAvatarViewController *)&v12 init];
   if (v5)
   {
-    v6 = [[CNAvatarViewController alloc] initWithSettings:v4];
+    v6 = [[CNAvatarViewController alloc] initWithSettings:settingsCopy];
     avatarViewController = v5->_avatarViewController;
     v5->_avatarViewController = v6;
 
@@ -128,18 +128,18 @@
 
 - (id)descriptorForRequiredKeys
 {
-  v4 = [(CNBadgingAvatarViewController *)self avatarViewController];
+  avatarViewController = [(CNBadgingAvatarViewController *)self avatarViewController];
 
-  if (!v4)
+  if (!avatarViewController)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CNBadgingAvatarViewController.m" lineNumber:336 description:@"CNBadgingAvatarViewController - Avatar View Controller required to get descriptorsForRequiredKeys"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNBadgingAvatarViewController.m" lineNumber:336 description:@"CNBadgingAvatarViewController - Avatar View Controller required to get descriptorsForRequiredKeys"];
   }
 
-  v5 = [(CNBadgingAvatarViewController *)self avatarViewController];
-  v6 = [v5 descriptorForRequiredKeys];
+  avatarViewController2 = [(CNBadgingAvatarViewController *)self avatarViewController];
+  descriptorForRequiredKeys = [avatarViewController2 descriptorForRequiredKeys];
 
-  return v6;
+  return descriptorForRequiredKeys;
 }
 
 @end

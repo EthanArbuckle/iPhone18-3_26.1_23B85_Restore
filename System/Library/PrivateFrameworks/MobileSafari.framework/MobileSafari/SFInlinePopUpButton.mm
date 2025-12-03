@@ -1,12 +1,12 @@
 @interface SFInlinePopUpButton
-- (SFInlinePopUpButton)initWithCoder:(id)a3;
-- (SFInlinePopUpButton)initWithFrame:(CGRect)a3;
+- (SFInlinePopUpButton)initWithCoder:(id)coder;
+- (SFInlinePopUpButton)initWithFrame:(CGRect)frame;
 - (void)updateValueText;
 @end
 
 @implementation SFInlinePopUpButton
 
-- (SFInlinePopUpButton)initWithCoder:(id)a3
+- (SFInlinePopUpButton)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR___SFInlinePopUpButton_valueText);
   *v3 = 0;
@@ -19,11 +19,11 @@
 
 - (void)updateValueText
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA2E374();
 }
 
-- (SFInlinePopUpButton)initWithFrame:(CGRect)a3
+- (SFInlinePopUpButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

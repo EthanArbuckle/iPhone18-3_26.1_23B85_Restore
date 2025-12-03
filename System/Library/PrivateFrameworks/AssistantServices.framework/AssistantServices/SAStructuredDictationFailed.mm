@@ -7,22 +7,22 @@
 - (id)ad_error
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(SAStructuredDictationFailed *)self userFacingReasonTitle];
-  if (v4)
+  userFacingReasonTitle = [(SAStructuredDictationFailed *)self userFacingReasonTitle];
+  if (userFacingReasonTitle)
   {
-    [v3 setObject:v4 forKey:AFSiriLocalizedFailureTitleKey];
+    [v3 setObject:userFacingReasonTitle forKey:AFSiriLocalizedFailureTitleKey];
   }
 
-  v5 = [(SAStructuredDictationFailed *)self userFacingReasonDescription];
-  if (v5)
+  userFacingReasonDescription = [(SAStructuredDictationFailed *)self userFacingReasonDescription];
+  if (userFacingReasonDescription)
   {
-    [v3 setObject:v5 forKey:AFSiriLocalizedFailureDescriptionKey];
+    [v3 setObject:userFacingReasonDescription forKey:AFSiriLocalizedFailureDescriptionKey];
   }
 
-  v6 = [(SAStructuredDictationFailed *)self recognition];
-  if (v6)
+  recognition = [(SAStructuredDictationFailed *)self recognition];
+  if (recognition)
   {
-    [v3 setObject:v6 forKey:AFSiriRecognitionKey];
+    [v3 setObject:recognition forKey:AFSiriRecognitionKey];
   }
 
   v7 = [NSError errorWithDomain:AFSiriStructuredDictationErrorDomain code:[(SAStructuredDictationFailed *)self errorCode] userInfo:v3];

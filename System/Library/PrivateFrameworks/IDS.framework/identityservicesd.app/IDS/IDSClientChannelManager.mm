@@ -1,15 +1,15 @@
 @interface IDSClientChannelManager
 + (id)sharedInstance;
-- (BOOL)addClient:(id)a3;
-- (BOOL)addClient:(id)a3 path:(id)a4 endpoint:(id)a5;
-- (BOOL)connectProtocolHandlerForClient:(id)a3;
-- (BOOL)connectTransportThreadForClient:(id)a3;
-- (BOOL)registerClientChannelDestination:(id)a3 connectHandler:(id)a4;
-- (BOOL)unregisterClientChannelDestination:(id)a3 clientUUID:(id)a4;
+- (BOOL)addClient:(id)client;
+- (BOOL)addClient:(id)client path:(id)path endpoint:(id)endpoint;
+- (BOOL)connectProtocolHandlerForClient:(id)client;
+- (BOOL)connectTransportThreadForClient:(id)client;
+- (BOOL)registerClientChannelDestination:(id)destination connectHandler:(id)handler;
+- (BOOL)unregisterClientChannelDestination:(id)destination clientUUID:(id)d;
 - (IDSClientChannelManager)init;
-- (id)_getClientChannelconnectHandlerForDestination:(id)a3;
+- (id)_getClientChannelconnectHandlerForDestination:(id)destination;
 - (id)initForTesting;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation IDSClientChannelManager
@@ -239,7 +239,7 @@ LABEL_18:
       if (v48)
       {
         v49 = v3->_agent;
-        v50 = [(IDSNexusAgent *)v49 agentUUID];
+        agentUUID = [(IDSNexusAgent *)v49 agentUUID];
         if ([(NWNetworkAgentRegistration *)v3->_registration isRegistered])
         {
           v51 = @"YES";
@@ -250,15 +250,15 @@ LABEL_18:
           v51 = @"NO";
         }
 
-        v52 = [(NWNetworkAgentRegistration *)v3->_registration registeredUUID];
+        registeredUUID = [(NWNetworkAgentRegistration *)v3->_registration registeredUUID];
         *buf = 134218754;
         *&buf[4] = v49;
         *&buf[12] = 2112;
-        *&buf[14] = v50;
+        *&buf[14] = agentUUID;
         *&buf[22] = 2112;
         *&buf[24] = v51;
         *&buf[32] = 2112;
-        *&buf[34] = v52;
+        *&buf[34] = registeredUUID;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Registered IDS Nexus Agent (%p) %@ (isRegistered %@ registrationUUID %@)", buf, 0x2Au);
       }
 
@@ -337,9 +337,9 @@ LABEL_46:
   return v3;
 }
 
-- (BOOL)connectTransportThreadForClient:(id)a3
+- (BOOL)connectTransportThreadForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   memset(src, 170, sizeof(src));
   if (!os_nexus_controller_alloc_provider_instance())
@@ -359,13 +359,13 @@ LABEL_46:
       goto LABEL_9;
     }
 
-    v9 = [*(v4 + 3) parameters];
-    v10 = [v9 processUUID];
+    parameters = [*(clientCopy + 3) parameters];
+    processUUID = [parameters processUUID];
 
     memset(v27, 170, sizeof(v27));
-    [v10 getUUIDBytes:v27];
-    v11 = [*(v4 + 3) parameters];
-    [v11 pid];
+    [processUUID getUUIDBytes:v27];
+    parameters2 = [*(clientCopy + 3) parameters];
+    [parameters2 pid];
 
     if (os_nexus_controller_bind_provider_instance())
     {
@@ -377,47 +377,47 @@ LABEL_46:
       }
 
       v7 = 0;
-      v4[9] = 1;
+      clientCopy[9] = 1;
       goto LABEL_36;
     }
 
-    v13 = [*(v4 + 3) parameters];
-    v14 = [v13 account];
+    parameters3 = [*(clientCopy + 3) parameters];
+    account = [parameters3 account];
 
-    if (v14)
+    if (account)
     {
-      v15 = [NSScanner scannerWithString:v14];
-      [v15 scanUnsignedLongLong:v4 + 144];
+      v15 = [NSScanner scannerWithString:account];
+      [v15 scanUnsignedLongLong:clientCopy + 144];
     }
 
-    uuid_copy(v4 + 32, src);
+    uuid_copy(clientCopy + 32, src);
     v16 = os_channel_attr_create();
-    *(v4 + 12) = v16;
+    *(clientCopy + 12) = v16;
     if (v16)
     {
       os_channel_attr_set_key();
       os_channel_attr_set();
       extended = os_channel_create_extended();
-      *(v4 + 11) = extended;
+      *(clientCopy + 11) = extended;
       if (extended)
       {
         os_channel_get_fd();
         os_channel_ring_id();
         os_channel_rx_ring();
         os_channel_ring_id();
-        *(v4 + 13) = os_channel_tx_ring();
+        *(clientCopy + 13) = os_channel_tx_ring();
         *v26 = 0;
         assign_message = nw_path_create_assign_message();
         if (assign_message)
         {
           registration = self->_registration;
           v20 = [NSData dataWithBytes:assign_message length:*v26];
-          LOBYTE(registration) = [(NWNetworkAgentRegistration *)registration assignNexusData:v20 toClient:*(v4 + 2)];
+          LOBYTE(registration) = [(NWNetworkAgentRegistration *)registration assignNexusData:v20 toClient:*(clientCopy + 2)];
 
           free(assign_message);
           if (registration)
           {
-            v24 = v4;
+            v24 = clientCopy;
             v23 = v24;
             IDSTransportThreadAddSocket();
 
@@ -448,7 +448,7 @@ LABEL_36:
 
 LABEL_34:
         v7 = 0;
-        v4[9] = 1;
+        clientCopy[9] = 1;
         goto LABEL_35;
       }
 
@@ -482,33 +482,33 @@ LABEL_34:
 
 LABEL_9:
   v7 = 0;
-  v4[9] = 1;
+  clientCopy[9] = 1;
 LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (BOOL)connectProtocolHandlerForClient:(id)a3
+- (BOOL)connectProtocolHandlerForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
   v5 = malloc_type_calloc(1uLL, 0x40uLL, 0x10A0040C9AB51B7uLL);
   *(v5 + 2) = &unk_100CBCF48;
   *(v5 + 3) = &unk_100CBCF70;
-  uuid_copy(v5, v4 + 112);
-  *(v5 + 5) = v4;
+  uuid_copy(v5, clientCopy + 112);
+  *(v5 + 5) = clientCopy;
   channel_to_new_instance = nw_nexus_create_channel_to_new_instance();
   if (channel_to_new_instance)
   {
     memset(uu, 170, sizeof(uu));
     if ((nw_channel_get_nexus_instance() & 1) == 0)
     {
-      v8 = +[IDSFoundationLog ClientChannelManager];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      processUUID = +[IDSFoundationLog ClientChannelManager];
+      if (os_log_type_enabled(processUUID, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "nw_channel_get_nexus_instance failed", buf, 2u);
+        _os_log_impl(&_mh_execute_header, processUUID, OS_LOG_TYPE_DEFAULT, "nw_channel_get_nexus_instance failed", buf, 2u);
       }
 
       v13 = 0;
@@ -516,16 +516,16 @@ LABEL_10:
     }
 
     nw_channel_get_key();
-    v7 = [*(v4 + 3) parameters];
-    v8 = [v7 processUUID];
+    parameters = [*(clientCopy + 3) parameters];
+    processUUID = [parameters processUUID];
 
-    v9 = [*(v4 + 3) parameters];
-    v10 = [v9 pid];
+    parameters2 = [*(clientCopy + 3) parameters];
+    v10 = [parameters2 pid];
 
-    if (v8)
+    if (processUUID)
     {
       memset(buf, 170, 16);
-      [v8 getUUIDBytes:buf];
+      [processUUID getUUIDBytes:buf];
       v11 = nw_nexus_bind_client_port();
     }
 
@@ -542,7 +542,7 @@ LABEL_10:
         *buf = 67109378;
         *&buf[4] = v10;
         *&buf[8] = 2112;
-        *&buf[10] = v8;
+        *&buf[10] = processUUID;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "nw_nexus_bind_client_port failed for pid %d processUUID %@", buf, 0x12u);
       }
 
@@ -564,19 +564,19 @@ LABEL_10:
     {
       registration = self->_registration;
       v19 = [NSData dataWithBytes:assign_message length:0];
-      LOBYTE(registration) = [(NWNetworkAgentRegistration *)registration assignNexusData:v19 toClient:*(v4 + 2)];
+      LOBYTE(registration) = [(NWNetworkAgentRegistration *)registration assignNexusData:v19 toClient:*(clientCopy + 2)];
 
       free(assign_message);
       if (registration)
       {
-        [v15 getUUIDBytes:v4 + 32];
-        objc_storeStrong(v4 + 8, channel_to_new_instance);
-        *(v4 + 10) = v5;
+        [v15 getUUIDBytes:clientCopy + 32];
+        objc_storeStrong(clientCopy + 8, channel_to_new_instance);
+        *(clientCopy + 10) = v5;
         v20 = +[IDSFoundationLog ClientChannelManager];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *v23 = 134218242;
-          v24 = v4;
+          v24 = clientCopy;
           v25 = 2080;
           v26 = buf;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Connected to protocol handler channel object %p for nexus instance [%s]", v23, 0x16u);
@@ -630,15 +630,15 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)addClient:(id)a3
+- (BOOL)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [NWPath pathForClientID:v4];
+  clientCopy = client;
+  v5 = [NWPath pathForClientID:clientCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 endpoint];
-    v8 = [(IDSClientChannelManager *)self addClient:v4 path:v6 endpoint:v7];
+    endpoint = [v5 endpoint];
+    v8 = [(IDSClientChannelManager *)self addClient:clientCopy path:v6 endpoint:endpoint];
   }
 
   else
@@ -647,7 +647,7 @@ LABEL_30:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = clientCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed to get path for client UUID %@", &v11, 0xCu);
     }
 
@@ -657,37 +657,37 @@ LABEL_30:
   return v8;
 }
 
-- (BOOL)addClient:(id)a3 path:(id)a4 endpoint:(id)a5
+- (BOOL)addClient:(id)client path:(id)path endpoint:(id)endpoint
 {
-  v9 = a3;
-  v10 = a4;
-  v32 = a5;
+  clientCopy = client;
+  pathCopy = path;
+  endpointCopy = endpoint;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [v10 parameters];
-  LODWORD(a5) = [v11 pid];
-  v30 = [v11 processUUID];
-  v29 = a5;
-  v31 = [(IDSClientChannel *)v32 hostname];
+  parameters = [pathCopy parameters];
+  LODWORD(endpoint) = [parameters pid];
+  processUUID = [parameters processUUID];
+  endpointCopy2 = endpoint;
+  hostname = [(IDSClientChannel *)endpointCopy hostname];
   v12 = +[IDSFoundationLog ClientChannelManager];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 endpoint];
-    v14 = [v10 parameters];
-    v15 = [(IDSClientChannel *)v32 port];
+    endpoint = [pathCopy endpoint];
+    parameters2 = [pathCopy parameters];
+    port = [(IDSClientChannel *)endpointCopy port];
     *buf = 138413314;
-    v34 = v9;
+    v34 = clientCopy;
     v35 = 2112;
-    v36 = v13;
+    v36 = endpoint;
     v37 = 2112;
-    *v38 = v14;
+    *v38 = parameters2;
     *&v38[8] = 2112;
-    *&v38[10] = v10;
+    *&v38[10] = pathCopy;
     *&v38[18] = 1024;
-    *&v38[20] = [v15 intValue];
+    *&v38[20] = [port intValue];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Client UUID %@ requested nexus\n\t%@\n\t%@\n\t%@, endpoint port: %d", buf, 0x30u);
   }
 
-  v16 = [(NSMutableDictionary *)self->_clientChannels objectForKeyedSubscript:v9];
+  v16 = [(NSMutableDictionary *)self->_clientChannels objectForKeyedSubscript:clientCopy];
   if (v16)
   {
     v17 = +[IDSFoundationLog ClientChannelManager];
@@ -696,7 +696,7 @@ LABEL_30:
       *buf = 134218498;
       v34 = v16;
       v35 = 2112;
-      v36 = v9;
+      v36 = clientCopy;
       v37 = 2112;
       *v38 = v16;
       _os_log_impl(&_mh_execute_header, &v17->super, OS_LOG_TYPE_DEFAULT, "We already created the clientChannel %p for the client %@. (IDSClientChannel %@)", buf, 0x20u);
@@ -705,24 +705,24 @@ LABEL_30:
 
   else
   {
-    v17 = [[IDSClientChannel alloc] initWithDestination:v31];
+    v17 = [[IDSClientChannel alloc] initWithDestination:hostname];
     v18 = +[NSMutableArray array];
     [(IDSClientChannel *)v17 setCachedDataForClient:v18];
 
-    objc_storeStrong(&v17->_uuid, a3);
-    objc_storeStrong(&v17->_path, a4);
-    v19 = [(IDSClientChannel *)v32 port];
-    v17->_hasMetadata = [v19 intValue] > 0;
+    objc_storeStrong(&v17->_uuid, client);
+    objc_storeStrong(&v17->_path, path);
+    port2 = [(IDSClientChannel *)endpointCopy port];
+    v17->_hasMetadata = [port2 intValue] > 0;
 
-    v17->_transportType = [v11 dataMode] == 2;
+    v17->_transportType = [parameters dataMode] == 2;
     [(NSUUID *)v17->_uuid getUUIDBytes:v17->_flowID];
-    [(NSMutableDictionary *)self->_clientChannels setObject:v17 forKeyedSubscript:v9];
-    v20 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:v31];
+    [(NSMutableDictionary *)self->_clientChannels setObject:v17 forKeyedSubscript:clientCopy];
+    v20 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:hostname];
     v21 = v20;
     if (v20)
     {
-      (*(v20 + 16))(v20, v31, v17);
-      [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:v9 forKeyedSubscript:v31];
+      (*(v20 + 16))(v20, hostname, v17);
+      [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:clientCopy forKeyedSubscript:hostname];
       v22 = [(NSMutableDictionary *)self->_clientChannels count];
       v23 = +[IDSFoundationLog ClientChannelManager];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -730,13 +730,13 @@ LABEL_30:
         *buf = 134219266;
         v34 = v17;
         v35 = 2112;
-        v36 = v31;
+        v36 = hostname;
         v37 = 2112;
-        *v38 = v32;
+        *v38 = endpointCopy;
         *&v38[8] = 1024;
-        *&v38[10] = v29;
+        *&v38[10] = endpointCopy2;
         *&v38[14] = 2112;
-        *&v38[16] = v30;
+        *&v38[16] = processUUID;
         v39 = 1024;
         v40 = v22;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Created channel object %p for destination %@ endpoint [%@] pid %d processUUID %@. Active clients: %u", buf, 0x36u);
@@ -745,9 +745,9 @@ LABEL_30:
       if (v22 >= 0x1E)
       {
         v24 = +[IMLockdownManager sharedInstance];
-        v25 = [v24 isInternalInstall];
+        isInternalInstall = [v24 isInternalInstall];
 
-        if (v25)
+        if (isInternalInstall)
         {
           v26 = +[IDSFoundationLog ClientChannelManager];
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -773,17 +773,17 @@ LABEL_30:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v34 = v31;
+        v34 = hostname;
         v35 = 2112;
-        v36 = v32;
+        v36 = endpointCopy;
         v37 = 1024;
-        *v38 = v29;
+        *v38 = endpointCopy2;
         *&v38[4] = 2112;
-        *&v38[6] = v30;
+        *&v38[6] = processUUID;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Failed finding connectHandler for destination %@ endpoint [%@] pid %d processUUID %@", buf, 0x26u);
       }
 
-      [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:v9 forKeyedSubscript:v31];
+      [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:clientCopy forKeyedSubscript:hostname];
     }
   }
 
@@ -791,17 +791,17 @@ LABEL_30:
   return 1;
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_clientChannels objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_clientChannels setObject:0 forKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_clientChannels objectForKeyedSubscript:clientCopy];
+  [(NSMutableDictionary *)self->_clientChannels setObject:0 forKeyedSubscript:clientCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v6 = [v5 destination];
-    if (!v6)
+    destination = [v5 destination];
+    if (!destination)
     {
 LABEL_11:
 
@@ -813,8 +813,8 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_10034D4E8;
     block[3] = &unk_100BD6E40;
-    v19 = v6;
-    v8 = v4;
+    v19 = destination;
+    v8 = clientCopy;
     v20 = v8;
     v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, block);
     dispatch_sync(v7, v9);
@@ -826,7 +826,7 @@ LABEL_11:
       v17 = v8;
       IDSTransportThreadAddSyncBlock();
 
-      v10 = v16;
+      readHandler = v16;
     }
 
     else
@@ -848,11 +848,11 @@ LABEL_10:
       v12 = v5[8];
       v5[8] = 0;
 
-      v10 = [v5 readHandler];
+      readHandler = [v5 readHandler];
       v13 = [[NSString alloc] initWithFormat:@"client %@ closed connection", v8];
       v14 = [[NSDictionary alloc] initWithObjectsAndKeys:{v13, NSLocalizedDescriptionKey, 0}];
       v15 = [[NSError alloc] initWithDomain:@"ClientChannel" code:9001 userInfo:v14];
-      (v10)[2](v10, 0, 0, 0, 0, v15);
+      (readHandler)[2](readHandler, 0, 0, 0, 0, v15);
     }
 
     goto LABEL_10;
@@ -861,16 +861,16 @@ LABEL_10:
 LABEL_12:
 }
 
-- (BOOL)registerClientChannelDestination:(id)a3 connectHandler:(id)a4
+- (BOOL)registerClientChannelDestination:(id)destination connectHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v7 copy];
+  v8 = [handlerCopy copy];
   v9 = objc_retainBlock(v8);
-  [(NSMutableDictionary *)self->_clientChannelRegistrations setObject:v9 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_clientChannelRegistrations setObject:v9 forKeyedSubscript:destinationCopy];
 
-  v10 = [(NSMutableDictionary *)self->_pendingClientUUIDs objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)self->_pendingClientUUIDs objectForKeyedSubscript:destinationCopy];
   v11 = +[IDSFoundationLog ClientChannelManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -878,7 +878,7 @@ LABEL_12:
     clientChannelRegistrations = self->_clientChannelRegistrations;
     clientChannels = self->_clientChannels;
     v17 = 138413058;
-    v18 = v6;
+    v18 = destinationCopy;
     v19 = 2048;
     v20 = v12;
     v21 = 2112;
@@ -891,11 +891,11 @@ LABEL_12:
   if (v10)
   {
     v15 = [(NSMutableDictionary *)self->_clientChannels objectForKeyedSubscript:v10];
-    [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:v10 forKeyedSubscript:v6];
-    [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:v10 forKeyedSubscript:destinationCopy];
+    [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:0 forKeyedSubscript:destinationCopy];
     if (v15)
     {
-      (*(v7 + 2))(v7, v6, v15);
+      (*(handlerCopy + 2))(handlerCopy, destinationCopy, v15);
     }
   }
 
@@ -903,23 +903,23 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)unregisterClientChannelDestination:(id)a3 clientUUID:(id)a4
+- (BOOL)unregisterClientChannelDestination:(id)destination clientUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping objectForKeyedSubscript:v6];
-  if (([v7 isEqual:v8] & 1) == 0 && v7 | v8)
+  v8 = [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping objectForKeyedSubscript:destinationCopy];
+  if (([dCopy isEqual:v8] & 1) == 0 && dCopy | v8)
   {
     v15 = +[IDSFoundationLog ClientChannelManager];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412802;
-      v18 = v7;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v8;
       v21 = 2112;
-      v22 = v6;
+      v22 = destinationCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "skipping unregisterClientChannelDestination; clientUUID %@ does not match storedClientUUID %@ for destination %@", &v17, 0x20u);
     }
 
@@ -931,12 +931,12 @@ LABEL_12:
     v9 = +[IDSFoundationLog ClientChannelManager];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:v6];
+      v10 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:destinationCopy];
       v11 = objc_retainBlock(v10);
       clientChannelRegistrations = self->_clientChannelRegistrations;
       clientChannels = self->_clientChannels;
       v17 = 138413314;
-      v18 = v6;
+      v18 = destinationCopy;
       v19 = 2112;
       v20 = v8;
       v21 = 2048;
@@ -948,9 +948,9 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "unregisterClientChannelDestination %@ clientUUID %@ handler %p all handlers [%@] channels [%@]", &v17, 0x34u);
     }
 
-    [(NSMutableDictionary *)self->_clientChannelRegistrations setObject:0 forKeyedSubscript:v6];
-    [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:0 forKeyedSubscript:v6];
-    [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_clientChannelRegistrations setObject:0 forKeyedSubscript:destinationCopy];
+    [(NSMutableDictionary *)self->_pendingClientUUIDs setObject:0 forKeyedSubscript:destinationCopy];
+    [(NSMutableDictionary *)self->_destinationToRegisteredClientUUIDMapping setObject:0 forKeyedSubscript:destinationCopy];
     v14 = 1;
   }
 
@@ -958,9 +958,9 @@ LABEL_12:
   return v14;
 }
 
-- (id)_getClientChannelconnectHandlerForDestination:(id)a3
+- (id)_getClientChannelconnectHandlerForDestination:(id)destination
 {
-  v3 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_clientChannelRegistrations objectForKeyedSubscript:destination];
   v4 = objc_retainBlock(v3);
 
   return v4;

@@ -1,22 +1,22 @@
 @interface ATXGamePlayKitDecisionNode
-- (ATXGamePlayKitDecisionNode)initWithNode:(shared_ptr<ATXGamePlayKitCDecisionNode>)a3 tree:(id)a4;
+- (ATXGamePlayKitDecisionNode)initWithNode:(shared_ptr<ATXGamePlayKitCDecisionNode>)node tree:(id)tree;
 - (id).cxx_construct;
 - (id)attribute;
-- (id)createBranchWithPredicate:(id)a3 attribute:(id)a4;
-- (id)createBranchWithValue:(id)a3 attribute:(id)a4;
-- (id)createBranchWithWeight:(int64_t)a3 attribute:(id)a4;
-- (id)createChildWithAttribute:(id)a3 randomSource:(id)a4 withBranch:(id)a5;
-- (id)getNodeAtBranch:(id)a3;
+- (id)createBranchWithPredicate:(id)predicate attribute:(id)attribute;
+- (id)createBranchWithValue:(id)value attribute:(id)attribute;
+- (id)createBranchWithWeight:(int64_t)weight attribute:(id)attribute;
+- (id)createChildWithAttribute:(id)attribute randomSource:(id)source withBranch:(id)branch;
+- (id)getNodeAtBranch:(id)branch;
 - (void)dealloc;
-- (void)setAttribute:(id)a3;
+- (void)setAttribute:(id)attribute;
 @end
 
 @implementation ATXGamePlayKitDecisionNode
 
-- (ATXGamePlayKitDecisionNode)initWithNode:(shared_ptr<ATXGamePlayKitCDecisionNode>)a3 tree:(id)a4
+- (ATXGamePlayKitDecisionNode)initWithNode:(shared_ptr<ATXGamePlayKitCDecisionNode>)node tree:(id)tree
 {
-  ptr = a3.__ptr_;
-  v6 = a3.__cntrl_;
+  ptr = node.__ptr_;
+  v6 = node.__cntrl_;
   v13.receiver = self;
   v13.super_class = ATXGamePlayKitDecisionNode;
   v7 = [(ATXGamePlayKitDecisionNode *)&v13 init];
@@ -53,15 +53,15 @@
   [(ATXGamePlayKitDecisionNode *)&v2 dealloc];
 }
 
-- (void)setAttribute:(id)a3
+- (void)setAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   ptr = self->_node.__ptr_;
   if (ptr)
   {
-    v7 = v5;
-    objc_storeStrong(ptr + 7, a3);
-    v5 = v7;
+    v7 = attributeCopy;
+    objc_storeStrong(ptr + 7, attribute);
+    attributeCopy = v7;
   }
 }
 
@@ -81,15 +81,15 @@
   return v4;
 }
 
-- (id)createChildWithAttribute:(id)a3 randomSource:(id)a4 withBranch:(id)a5
+- (id)createChildWithAttribute:(id)attribute randomSource:(id)source withBranch:(id)branch
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attributeCopy = attribute;
+  sourceCopy = source;
+  branchCopy = branch;
   ptr = self->_node.__ptr_;
   if (!ptr)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create new child with branch: %@ and attribute: %@ from nil node.", v11, v9, v10, v9];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create new child with branch: %@ and attribute: %@ from nil node.", branchCopy, attributeCopy, sourceCopy, attributeCopy];
     v36 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v36);
   }
@@ -99,21 +99,21 @@
     [**ptr superclass];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create child for node type: %@, with branch: %@", objc_msgSend(**self->_node.__ptr_, "superclass"), v11];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create child for node type: %@, with branch: %@", objc_msgSend(**self->_node.__ptr_, "superclass"), branchCopy];
       v37 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v37);
     }
 
     ptr = self->_node.__ptr_;
     v13 = *(ptr + 9);
-    if (!v10 && v13)
+    if (!sourceCopy && v13)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create child for random node type with branch: %@", v11];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create child for random node type with branch: %@", branchCopy];
       v38 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v38);
     }
 
-    if (v10 && !v13)
+    if (sourceCopy && !v13)
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"ATXGamePlayKitDecisionTree: Cannot create child for node type: %@ with random branch", objc_msgSend(**ptr, "superclass")];
       v39 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -121,22 +121,22 @@
     }
   }
 
-  if (v10)
+  if (sourceCopy)
   {
     if (*(ptr + 9))
     {
       v14 = [ATXGamePlayKitRandomDistribution alloc];
-      v15 = [*(self->_node.__ptr_ + 9) highestValue];
-      v16 = [v11 integerValue] + v15;
+      highestValue = [*(self->_node.__ptr_ + 9) highestValue];
+      integerValue = [branchCopy integerValue] + highestValue;
     }
 
     else
     {
       v14 = [ATXGamePlayKitRandomDistribution alloc];
-      v16 = [v11 integerValue];
+      integerValue = [branchCopy integerValue];
     }
 
-    v25 = [(ATXGamePlayKitRandomDistribution *)v14 initWithRandomSource:v10 lowestValue:0 highestValue:v16];
+    v25 = [(ATXGamePlayKitRandomDistribution *)v14 initWithRandomSource:sourceCopy lowestValue:0 highestValue:integerValue];
     v26 = self->_node.__ptr_;
     v27 = *(v26 + 9);
     *(v26 + 9) = v25;
@@ -157,7 +157,7 @@
   v22 = 0;
   do
   {
-    if ([v11 isEqual:v17[v19]])
+    if ([branchCopy isEqual:v17[v19]])
     {
       v23 = *self->_node.__ptr_ + v19 * 8;
       v22 = *(v23 + 8);
@@ -187,9 +187,9 @@ LABEL_24:
     _ZNSt3__115allocate_sharedB8ne200100I27ATXGamePlayKitCDecisionNodeNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
   }
 
-  objc_storeStrong(v22 + 7, a3);
+  objc_storeStrong(v22 + 7, attribute);
   v28 = self->_node.__ptr_;
-  v29 = v11;
+  v29 = branchCopy;
   v43 = v22;
   v44 = v21;
   if (v21)
@@ -241,27 +241,27 @@ LABEL_24:
   return v34;
 }
 
-- (id)createBranchWithValue:(id)a3 attribute:(id)a4
+- (id)createBranchWithValue:(id)value attribute:(id)attribute
 {
-  v4 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:a4 randomSource:0 withBranch:a3];
+  v4 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:attribute randomSource:0 withBranch:value];
 
   return v4;
 }
 
-- (id)createBranchWithPredicate:(id)a3 attribute:(id)a4
+- (id)createBranchWithPredicate:(id)predicate attribute:(id)attribute
 {
-  v4 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:a4 randomSource:0 withBranch:a3];
+  v4 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:attribute randomSource:0 withBranch:predicate];
 
   return v4;
 }
 
-- (id)createBranchWithWeight:(int64_t)a3 attribute:(id)a4
+- (id)createBranchWithWeight:(int64_t)weight attribute:(id)attribute
 {
-  v6 = a4;
+  attributeCopy = attribute;
   WeakRetained = objc_loadWeakRetained(&self->_tree);
-  v8 = [WeakRetained randomSource];
+  randomSource = [WeakRetained randomSource];
 
-  if (!v8)
+  if (!randomSource)
   {
     v9 = +[ATXGamePlayKitRandomSource sharedRandom];
     v10 = objc_loadWeakRetained(&self->_tree);
@@ -269,16 +269,16 @@ LABEL_24:
   }
 
   v11 = objc_loadWeakRetained(&self->_tree);
-  v12 = [v11 randomSource];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v14 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:v6 randomSource:v12 withBranch:v13];
+  randomSource2 = [v11 randomSource];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:weight];
+  v14 = [(ATXGamePlayKitDecisionNode *)self createChildWithAttribute:attributeCopy randomSource:randomSource2 withBranch:v13];
 
   return v14;
 }
 
-- (id)getNodeAtBranch:(id)a3
+- (id)getNodeAtBranch:(id)branch
 {
-  v4 = a3;
+  branchCopy = branch;
   ptr = self->_node.__ptr_;
   v7 = *ptr;
   v6 = *(ptr + 1);
@@ -290,7 +290,7 @@ LABEL_24:
       goto LABEL_12;
     }
 
-    if ([*v7 isEqual:v4])
+    if ([*v7 isEqual:branchCopy])
     {
       break;
     }

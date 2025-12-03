@@ -1,18 +1,18 @@
 @interface PAEInsectEye
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEInsectEye)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEInsectEye)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEInsectEye
 
-- (PAEInsectEye)initWithAPIManager:(id)a3
+- (PAEInsectEye)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEInsectEye;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -46,11 +46,11 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"InsectEye::Size" value:0 table:0];
     v10 = 64.0;
-    if (v7)
+    if (versionAtCreation)
     {
       v10 = 128.0;
       v11 = 2048.0;
@@ -61,7 +61,7 @@
       v11 = 512.0;
     }
 
-    if (v7)
+    if (versionAtCreation)
     {
       v12 = 512.0;
     }
@@ -71,7 +71,7 @@
       v12 = 128.0;
     }
 
-    if (v7)
+    if (versionAtCreation)
     {
       v13 = 32.0;
     }
@@ -90,35 +90,35 @@
   return v6;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
     v10 = v9;
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
     v11 = fabs(v36[0]);
-    [a4 width];
-    [a4 height];
+    [input width];
+    [input height];
     v35 = 0.0;
-    [v10 getFloatValue:&v35 fromParm:1 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v35 fromParm:1 atFxTime:info->var0.var1];
     v35 = v11 * v35;
     v34 = 0.0;
-    [v10 getFloatValue:&v34 fromParm:2 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v34 fromParm:2 atFxTime:info->var0.var1];
     v33 = 0;
-    [v10 getFloatValue:&v33 fromParm:3 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v33 fromParm:3 atFxTime:info->var0.var1];
     v31 = 0;
     v32 = 0;
     v30 = 0;
-    [v10 getRedValue:&v32 greenValue:&v31 blueValue:&v30 fromParm:4 atFxTime:a5->var0.var1];
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    [v10 getRedValue:&v32 greenValue:&v31 blueValue:&v30 fromParm:4 atFxTime:info->var0.var1];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -126,7 +126,7 @@
           v29 = 0;
         }
 
-        [a4 bounds];
+        [input bounds];
         v27.f64[0] = v12;
         v27.f64[1] = v13;
         v28.f64[0] = v14;
@@ -140,7 +140,7 @@
             (*(*v29 + 16))(v29);
           }
 
-          [(PAESharedDefaultBase *)self smear:&v25 fromImage:a4 toImage:a4];
+          [(PAESharedDefaultBase *)self smear:&v25 fromImage:input toImage:input];
           v16 = v26;
           if (v29 == v26)
           {
@@ -189,15 +189,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

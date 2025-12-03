@@ -1,8 +1,8 @@
 @interface CNPosterPreviewViewWrapper
 - (UIViewController)hostingController;
 - (_TtC10ContactsUI26CNPosterPreviewViewWrapper)init;
-- (_TtC10ContactsUI26CNPosterPreviewViewWrapper)initWithConfiguration:(id)a3 contact:(id)a4 editingState:(int64_t)a5 delegate:(id)a6 windowScene:(id)a7;
-- (void)setHostingController:(id)a3;
+- (_TtC10ContactsUI26CNPosterPreviewViewWrapper)initWithConfiguration:(id)configuration contact:(id)contact editingState:(int64_t)state delegate:(id)delegate windowScene:(id)scene;
+- (void)setHostingController:(id)controller;
 @end
 
 @implementation CNPosterPreviewViewWrapper
@@ -14,22 +14,22 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
   v5 = OBJC_IVAR____TtC10ContactsUI26CNPosterPreviewViewWrapper_hostingController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC10ContactsUI26CNPosterPreviewViewWrapper)initWithConfiguration:(id)a3 contact:(id)a4 editingState:(int64_t)a5 delegate:(id)a6 windowScene:(id)a7
+- (_TtC10ContactsUI26CNPosterPreviewViewWrapper)initWithConfiguration:(id)configuration contact:(id)contact editingState:(int64_t)state delegate:(id)delegate windowScene:(id)scene
 {
-  v11 = a3;
-  v12 = a4;
+  configurationCopy = configuration;
+  contactCopy = contact;
   swift_unknownObjectRetain();
-  v13 = a7;
-  v14 = sub_199B7C894(v11, v12, a5, a6, a7);
+  sceneCopy = scene;
+  v14 = sub_199B7C894(configurationCopy, contactCopy, state, delegate, scene);
 
   swift_unknownObjectRelease();
   return v14;

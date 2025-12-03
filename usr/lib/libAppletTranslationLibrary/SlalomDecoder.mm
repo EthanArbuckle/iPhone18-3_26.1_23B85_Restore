@@ -1,18 +1,18 @@
 @interface SlalomDecoder
-+ (BOOL)isJREServiceProviderID:(unsigned __int8)a3;
++ (BOOL)isJREServiceProviderID:(unsigned __int8)d;
 + (id)sharedInstance;
 - (SlalomDecoder)init;
-- (id)DecodeStartE1TLV:(id *)a3 error:(id *)a4;
-- (id)DecodeTransactionE1TLV:(id *)a3 error:(id *)a4;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)parseDeselectEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-- (id)parseEndEvent:(id)a3 withApplet:(id)a4 withTransceiver:(id)a5 error:(id *)a6;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)parseStartEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-- (id)parseTransactionEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
+- (id)DecodeStartE1TLV:(id *)v error:(id *)error;
+- (id)DecodeTransactionE1TLV:(id *)v error:(id *)error;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseDeselectEvent:(id)event withApplet:(id)applet error:(id *)error;
+- (id)parseEndEvent:(id)event withApplet:(id)applet withTransceiver:(id)transceiver error:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseStartEvent:(id)event withApplet:(id)applet error:(id *)error;
+- (id)parseTransactionEvent:(id)event withApplet:(id)applet error:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
 - (void)cleanup;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __31__SlalomDecoder_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -79,40 +79,40 @@ uint64_t __31__SlalomDecoder_sharedInstance__block_invoke(uint64_t a1)
   self->_serviceProvider = 0;
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  eventCopy = event;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
   if (self->_eotInProgress)
   {
     goto LABEL_28;
   }
 
-  if ([v14 length] <= 1)
+  if ([eventCopy length] <= 1)
   {
     v19 = ATLLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      *v68 = [v14 length];
+      *v68 = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v19, OS_LOG_TYPE_ERROR, "Short eventData? %u", buf, 8u);
     }
 
-    v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(v14, "length")];
+    v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Short eventData? %u", objc_msgSend(eventCopy, "length")];
     v21 = v20;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_27;
     }
 
-    v22 = *a8;
+    v22 = *error;
     v23 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
-    if (*a8)
+    if (*error)
     {
       v25 = *MEMORY[0x277CCA7E8];
       v72[0] = *MEMORY[0x277CCA450];
@@ -139,7 +139,7 @@ uint64_t __31__SlalomDecoder_sharedInstance__block_invoke(uint64_t a1)
     v44 = v23;
     v45 = 6;
 LABEL_26:
-    *a8 = [v44 errorWithDomain:@"ATL" code:v45 userInfo:v43];
+    *error = [v44 errorWithDomain:@"ATL" code:v45 userInfo:v43];
 
 LABEL_27:
 LABEL_28:
@@ -147,38 +147,38 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v30 = *[v14 bytes];
-  v31 = *([v14 bytes] + 1);
+  v30 = *[eventCopy bytes];
+  v31 = *([eventCopy bytes] + 1);
   if (v30 == 16 && v31 == 1)
   {
     v32 = ATLLogObject();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *v68 = v15;
+      *v68 = appletCopy;
       *&v68[8] = 2112;
-      v69 = v16;
+      v69 = packageCopy;
       v70 = 2112;
-      v71 = v17;
+      v71 = moduleCopy;
       _os_log_impl(&dword_22EEF5000, v32, OS_LOG_TYPE_ERROR, "No suitable decoder for AID %@ PID %@ MID %@", buf, 0x20u);
     }
 
-    v33 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", v15, v16, v17];
-    v21 = v33;
-    if (!a8)
+    moduleCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No suitable decoder for AID %@ PID %@ MID %@", appletCopy, packageCopy, moduleCopy];
+    v21 = moduleCopy;
+    if (!error)
     {
       goto LABEL_27;
     }
 
-    v34 = *a8;
+    v34 = *error;
     v35 = MEMORY[0x277CCA9B8];
     v36 = *MEMORY[0x277CCA450];
-    if (*a8)
+    if (*error)
     {
       v37 = *MEMORY[0x277CCA7E8];
       v63[0] = *MEMORY[0x277CCA450];
       v63[1] = v37;
-      v64[0] = v33;
+      v64[0] = moduleCopy;
       v64[1] = v34;
       v38 = MEMORY[0x277CBEAC0];
       v39 = v64;
@@ -189,7 +189,7 @@ LABEL_28:
     else
     {
       v65 = *MEMORY[0x277CCA450];
-      v66 = v33;
+      v66 = moduleCopy;
       v38 = MEMORY[0x277CBEAC0];
       v39 = &v66;
       v40 = &v65;
@@ -206,13 +206,13 @@ LABEL_28:
   {
     if (v30 == 17)
     {
-      v42 = [(SlalomDecoder *)self parseTransactionEvent:v14 withApplet:v15 error:a8];
+      v42 = [(SlalomDecoder *)self parseTransactionEvent:eventCopy withApplet:appletCopy error:error];
       goto LABEL_39;
     }
 
     if (v30 == 18)
     {
-      v42 = [(SlalomDecoder *)self parseDeselectEvent:v14 withApplet:v15 error:a8];
+      v42 = [(SlalomDecoder *)self parseDeselectEvent:eventCopy withApplet:appletCopy error:error];
       goto LABEL_39;
     }
 
@@ -229,15 +229,15 @@ LABEL_32:
 
     v50 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid event type 0x%x version 0x%x", v30, v31];
     v21 = v50;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_27;
     }
 
-    v51 = *a8;
+    v51 = *error;
     v52 = MEMORY[0x277CCA9B8];
     v53 = *MEMORY[0x277CCA450];
-    if (*a8)
+    if (*error)
     {
       v54 = *MEMORY[0x277CCA7E8];
       v59[0] = *MEMORY[0x277CCA450];
@@ -268,7 +268,7 @@ LABEL_32:
 
   if (v30 == 1)
   {
-    v42 = [(SlalomDecoder *)self parseStartEvent:v14 withApplet:v15 error:a8];
+    v42 = [(SlalomDecoder *)self parseStartEvent:eventCopy withApplet:appletCopy error:error];
     goto LABEL_39;
   }
 
@@ -277,7 +277,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v42 = [(SlalomDecoder *)self parseEndEvent:v14 withApplet:v15 withTransceiver:v18 error:a8];
+  v42 = [(SlalomDecoder *)self parseEndEvent:eventCopy withApplet:appletCopy withTransceiver:transceiverCopy error:error];
 LABEL_39:
   v46 = v42;
 LABEL_29:
@@ -287,35 +287,35 @@ LABEL_29:
   return v46;
 }
 
-- (id)parseStartEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
+- (id)parseStartEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] == 22)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] == 22)
   {
-    v10 = [v8 bytes];
-    if (*(v10 + 1) == 7)
+    bytes = [eventCopy bytes];
+    if (*(bytes + 1) == 7)
     {
       v58[0] = &unk_2843C6AB8;
       v58[1] = &unk_2843C6AD0;
       v59[0] = @"Contact";
       v59[1] = @"Contactless";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v10 + 2)];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 2)];
       v13 = [v11 objectForKeyedSubscript:v12];
 
       if (v13)
       {
-        *v68 = v10 + 3;
-        *&v68[8] = [v8 length] - 3;
-        v14 = [(SlalomDecoder *)self DecodeStartE1TLV:v68 error:a5];
+        *v68 = bytes + 3;
+        *&v68[8] = [eventCopy length] - 3;
+        v14 = [(SlalomDecoder *)self DecodeStartE1TLV:v68 error:error];
         v52[0] = @"EventType";
         v52[1] = @"appletIdentifier";
         v53[0] = @"StartEvent";
-        v53[1] = v9;
+        v53[1] = appletCopy;
         v52[2] = @"Version";
-        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v10 + 1)];
+        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
         v53[2] = v15;
         v53[3] = v13;
         v52[3] = @"Interface";
@@ -348,20 +348,20 @@ LABEL_29:
         v35 = ATLLogObject();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          v36 = *(v10 + 2);
+          v36 = *(bytes + 2);
           *v68 = 67109120;
           *&v68[4] = v36;
           _os_log_impl(&dword_22EEF5000, v35, OS_LOG_TYPE_ERROR, "Unknown interface type %u", v68, 8u);
         }
 
-        v37 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown interface type %u", *(v10 + 2)];
+        v37 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown interface type %u", *(bytes + 2)];
         v38 = v37;
-        if (a5)
+        if (error)
         {
-          v39 = *a5;
+          v39 = *error;
           v40 = MEMORY[0x277CCA9B8];
           v41 = *MEMORY[0x277CCA450];
-          if (*a5)
+          if (*error)
           {
             v42 = *MEMORY[0x277CCA7E8];
             v54[0] = *MEMORY[0x277CCA450];
@@ -385,7 +385,7 @@ LABEL_29:
           }
 
           v49 = [v43 dictionaryWithObjects:v44 forKeys:v45 count:v46];
-          *a5 = [v40 errorWithDomain:@"ATL" code:3 userInfo:v49];
+          *error = [v40 errorWithDomain:@"ATL" code:3 userInfo:v49];
         }
       }
 
@@ -395,20 +395,20 @@ LABEL_29:
     v28 = ATLLogObject();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = *(v10 + 1);
+      v29 = *(bytes + 1);
       *v68 = 67109120;
       *&v68[4] = v29;
       _os_log_impl(&dword_22EEF5000, v28, OS_LOG_TYPE_ERROR, "Start Event version %u", v68, 8u);
     }
 
-    v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start Event version %u", *(v10 + 1)];
+    v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start Event version %u", *(bytes + 1)];
     v11 = v30;
-    if (a5)
+    if (error)
     {
-      v31 = *a5;
+      v31 = *error;
       v22 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v33 = *MEMORY[0x277CCA7E8];
         v60[0] = *MEMORY[0x277CCA450];
@@ -436,20 +436,20 @@ LABEL_29:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *v68 = 134218240;
-      *&v68[4] = [v8 length];
+      *&v68[4] = [eventCopy length];
       *&v68[12] = 2048;
       *&v68[14] = 22;
       _os_log_impl(&dword_22EEF5000, v19, OS_LOG_TYPE_ERROR, "Start Event length %zu (exp %zu)", v68, 0x16u);
     }
 
-    v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start Event length %zu (exp %zu)", objc_msgSend(v8, "length"), 22];
+    v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Start Event length %zu (exp %zu)", objc_msgSend(eventCopy, "length"), 22];
     v11 = v20;
-    if (a5)
+    if (error)
     {
-      v21 = *a5;
+      v21 = *error;
       v22 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v24 = *MEMORY[0x277CCA7E8];
         v64[0] = *MEMORY[0x277CCA450];
@@ -463,7 +463,7 @@ LABEL_17:
         v34 = 2;
 LABEL_26:
         v13 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:v34];
-        *a5 = [v22 errorWithDomain:@"ATL" code:3 userInfo:v13];
+        *error = [v22 errorWithDomain:@"ATL" code:3 userInfo:v13];
 LABEL_27:
 
         goto LABEL_28;
@@ -486,33 +486,33 @@ LABEL_28:
   return 0;
 }
 
-- (id)parseEndEvent:(id)a3 withApplet:(id)a4 withTransceiver:(id)a5 error:(id *)a6
+- (id)parseEndEvent:(id)event withApplet:(id)applet withTransceiver:(id)transceiver error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 length] != 2)
+  eventCopy = event;
+  if ([eventCopy length] != 2)
   {
     v21 = ATLLogObject();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *v39 = [v7 length];
+      *v39 = [eventCopy length];
       *&v39[8] = 2048;
       v40 = 2;
       _os_log_impl(&dword_22EEF5000, v21, OS_LOG_TYPE_ERROR, "End Event length %zu (exp %zu)", buf, 0x16u);
     }
 
-    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End Event length %zu (exp %zu)", objc_msgSend(v7, "length"), 2];
+    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End Event length %zu (exp %zu)", objc_msgSend(eventCopy, "length"), 2];
     v13 = v22;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_18;
     }
 
-    v23 = *a6;
+    v23 = *error;
     v15 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
-    if (*a6)
+    if (*error)
     {
       v25 = *MEMORY[0x277CCA7E8];
       v34[0] = *MEMORY[0x277CCA450];
@@ -535,10 +535,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [v7 bytes];
-  if (*(v8 + 1) != 7)
+  bytes = [eventCopy bytes];
+  if (*(bytes + 1) != 7)
   {
-    v9 = v8;
+    v9 = bytes;
     v10 = ATLLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -552,15 +552,15 @@ LABEL_16:
 
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End Event version %u (exp %u)", *(v9 + 1), 7];
     v13 = v12;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_18;
     }
 
-    v14 = *a6;
+    v14 = *error;
     v15 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277CCA450];
-    if (*a6)
+    if (*error)
     {
       v17 = *MEMORY[0x277CCA7E8];
       v30[0] = *MEMORY[0x277CCA450];
@@ -574,7 +574,7 @@ LABEL_13:
       v26 = 2;
 LABEL_17:
       v27 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:v26];
-      *a6 = [v15 errorWithDomain:@"ATL" code:3 userInfo:v27];
+      *error = [v15 errorWithDomain:@"ATL" code:3 userInfo:v27];
 
 LABEL_18:
       goto LABEL_19;
@@ -594,22 +594,22 @@ LABEL_19:
   return 0;
 }
 
-- (id)parseDeselectEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
+- (id)parseDeselectEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] == 3)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] == 3)
   {
-    v10 = [v8 bytes];
-    if (*(v10 + 1) == 7)
+    bytes = [eventCopy bytes];
+    if (*(bytes + 1) == 7)
     {
       v52[0] = &unk_2843C6AB8;
       v52[1] = &unk_2843C6AD0;
       v53[0] = @"Contact";
       v53[1] = @"Contactless";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v10 + 2)];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 2)];
       v13 = [v11 objectForKeyedSubscript:v12];
 
       if (v13)
@@ -617,7 +617,7 @@ LABEL_19:
         v46[0] = @"EventType";
         v46[1] = @"appletIdentifier";
         v47[0] = @"DeselectEvent";
-        v47[1] = v9;
+        v47[1] = appletCopy;
         v46[2] = @"Interface";
         v47[2] = v13;
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
@@ -637,20 +637,20 @@ LABEL_19:
         v32 = ATLLogObject();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v33 = *(v10 + 2);
+          v33 = *(bytes + 2);
           *buf = 67109120;
           *v63 = v33;
           _os_log_impl(&dword_22EEF5000, v32, OS_LOG_TYPE_ERROR, "Unknown interface type %u", buf, 8u);
         }
 
-        v34 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown interface type %u", *(v10 + 2)];
+        v34 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown interface type %u", *(bytes + 2)];
         v14 = v34;
-        if (a5)
+        if (error)
         {
-          v35 = *a5;
+          v35 = *error;
           v36 = MEMORY[0x277CCA9B8];
           v37 = *MEMORY[0x277CCA450];
-          if (*a5)
+          if (*error)
           {
             v38 = *MEMORY[0x277CCA7E8];
             v48[0] = *MEMORY[0x277CCA450];
@@ -674,7 +674,7 @@ LABEL_19:
           }
 
           v43 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:v42];
-          *a5 = [v36 errorWithDomain:@"ATL" code:3 userInfo:v43];
+          *error = [v36 errorWithDomain:@"ATL" code:3 userInfo:v43];
         }
       }
 
@@ -684,7 +684,7 @@ LABEL_19:
     v25 = ATLLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = *(v10 + 1);
+      v26 = *(bytes + 1);
       *buf = 67109376;
       *v63 = v26;
       *&v63[4] = 1024;
@@ -692,14 +692,14 @@ LABEL_19:
       _os_log_impl(&dword_22EEF5000, v25, OS_LOG_TYPE_ERROR, "Deselect Event version  %u (exp %u)", buf, 0xEu);
     }
 
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Deselect Event version  %u (exp %u)", *(v10 + 1), 1];
+    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Deselect Event version  %u (exp %u)", *(bytes + 1), 1];
     v11 = v27;
-    if (a5)
+    if (error)
     {
-      v28 = *a5;
+      v28 = *error;
       v19 = MEMORY[0x277CCA9B8];
       v29 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v30 = *MEMORY[0x277CCA7E8];
         v54[0] = *MEMORY[0x277CCA450];
@@ -727,20 +727,20 @@ LABEL_19:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *v63 = [v8 length];
+      *v63 = [eventCopy length];
       *&v63[8] = 2048;
       v64 = 3;
       _os_log_impl(&dword_22EEF5000, v16, OS_LOG_TYPE_ERROR, "Deselect Event length %zu (exp %zu)", buf, 0x16u);
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Deselect Event length %zu (exp %zu)", objc_msgSend(v8, "length"), 3];
+    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Deselect Event length %zu (exp %zu)", objc_msgSend(eventCopy, "length"), 3];
     v11 = v17;
-    if (a5)
+    if (error)
     {
-      v18 = *a5;
+      v18 = *error;
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v21 = *MEMORY[0x277CCA7E8];
         v58[0] = *MEMORY[0x277CCA450];
@@ -754,7 +754,7 @@ LABEL_17:
         v31 = 2;
 LABEL_26:
         v13 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v31];
-        *a5 = [v19 errorWithDomain:@"ATL" code:3 userInfo:v13];
+        *error = [v19 errorWithDomain:@"ATL" code:3 userInfo:v13];
 LABEL_30:
 
         goto LABEL_31;
@@ -777,34 +777,34 @@ LABEL_31:
   return 0;
 }
 
-- (id)parseTransactionEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
+- (id)parseTransactionEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] <= 2)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] <= 2)
   {
     v10 = ATLLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *&buf[4] = [v8 length];
+      *&buf[4] = [eventCopy length];
       *&buf[12] = 2048;
       *&buf[14] = 3;
       _os_log_impl(&dword_22EEF5000, v10, OS_LOG_TYPE_ERROR, "Transaction Event length %zu (at least %zu)", buf, 0x16u);
     }
 
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Transaction Event length %zu (at least %zu)", objc_msgSend(v8, "length"), 3];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Transaction Event length %zu (at least %zu)", objc_msgSend(eventCopy, "length"), 3];
     v12 = v11;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_45;
     }
 
-    v13 = *a5;
+    v13 = *error;
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v16 = *MEMORY[0x277CCA7E8];
       v87[0] = *MEMORY[0x277CCA450];
@@ -818,7 +818,7 @@ LABEL_27:
       v42 = 2;
 LABEL_44:
       v58 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:v42];
-      *a5 = [v14 errorWithDomain:@"ATL" code:3 userInfo:v58];
+      *error = [v14 errorWithDomain:@"ATL" code:3 userInfo:v58];
 
 LABEL_45:
       v57 = 0;
@@ -833,9 +833,9 @@ LABEL_45:
     goto LABEL_43;
   }
 
-  v20 = [v8 bytes];
-  v21 = v20;
-  if (*(v20 + 1) != 7)
+  bytes = [eventCopy bytes];
+  v21 = bytes;
+  if (*(bytes + 1) != 7)
   {
     v36 = ATLLogObject();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -850,15 +850,15 @@ LABEL_45:
 
     v38 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Transaction Event version %u (exp %u)", *(v21 + 1), 7];
     v12 = v38;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_45;
     }
 
-    v39 = *a5;
+    v39 = *error;
     v14 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v41 = *MEMORY[0x277CCA7E8];
       v83[0] = *MEMORY[0x277CCA450];
@@ -881,9 +881,9 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  *buf = v20 + 3;
-  *&buf[8] = [v8 length] - 3;
-  v22 = [(SlalomDecoder *)self DecodeTransactionE1TLV:buf error:a5];
+  *buf = bytes + 3;
+  *&buf[8] = [eventCopy length] - 3;
+  v22 = [(SlalomDecoder *)self DecodeTransactionE1TLV:buf error:error];
   v81[0] = &unk_2843C6AB8;
   v81[1] = &unk_2843C6AD0;
   v82[0] = @"Contact";
@@ -897,7 +897,7 @@ LABEL_43:
     v75[0] = @"EventType";
     v75[1] = @"appletIdentifier";
     v76[0] = @"TransactionEvent";
-    v76[1] = v9;
+    v76[1] = appletCopy;
     v75[2] = @"Version";
     v26 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v21 + 1)];
     v76[2] = v26;
@@ -910,13 +910,13 @@ LABEL_43:
     v27 = [MEMORY[0x277CBEA90] dataWithDERItem:buf];
     v76[5] = v27;
     v75[6] = @"parsedInfo";
-    v28 = v22;
+    null = v22;
     if (!v22)
     {
-      v28 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v76[6] = v28;
+    v76[6] = null;
     v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:7];
     if (!v22)
     {
@@ -934,7 +934,7 @@ LABEL_43:
     {
       v31 = v30;
       v61 = v22;
-      v62 = v9;
+      v62 = appletCopy;
       v32 = *v67;
       while (2)
       {
@@ -966,7 +966,7 @@ LABEL_43:
       v35 = 1;
 LABEL_30:
       v22 = v61;
-      v9 = v62;
+      appletCopy = v62;
     }
 
     else
@@ -993,7 +993,7 @@ LABEL_30:
       v71[1] = &unk_2843C6B18;
       v70[2] = @"appletIdentifier";
       v70[3] = @"Interface";
-      v71[2] = v9;
+      v71[2] = appletCopy;
       v71[3] = v64;
       v70[4] = @"Version";
       v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v21 + 1)];
@@ -1032,12 +1032,12 @@ LABEL_49:
 
     v45 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown interface type %u", *(v21 + 2)];
     v46 = v45;
-    if (a5)
+    if (error)
     {
-      v47 = *a5;
+      v47 = *error;
       v48 = MEMORY[0x277CCA9B8];
       v49 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v50 = *MEMORY[0x277CCA7E8];
         v77[0] = *MEMORY[0x277CCA450];
@@ -1062,7 +1062,7 @@ LABEL_49:
 
       v56 = [v51 dictionaryWithObjects:v52 forKeys:v53 count:v54];
       [v48 errorWithDomain:@"ATL" code:3 userInfo:v56];
-      *a5 = v57 = 0;
+      *error = v57 = 0;
       goto LABEL_49;
     }
 
@@ -1077,13 +1077,13 @@ LABEL_51:
   return v57;
 }
 
-- (id)DecodeTransactionE1TLV:(id *)a3 error:(id *)a4
+- (id)DecodeTransactionE1TLV:(id *)v error:(id *)error
 {
   v118[1] = *MEMORY[0x277D85DE8];
   v88 = 0;
   v89 = 0;
   v90 = 0;
-  v6 = DERDecodeItemCtx(a3, &v88);
+  v6 = DERDecodeItemCtx(v, &v88);
   if (v6)
   {
     v7 = v6;
@@ -1097,12 +1097,12 @@ LABEL_51:
 
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Transaction Event E1 %d", v7];
     v10 = v9;
-    if (a4)
+    if (error)
     {
-      v11 = *a4;
+      v11 = *error;
       v12 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v14 = *MEMORY[0x277CCA7E8];
         v115[0] = *MEMORY[0x277CCA450];
@@ -1126,7 +1126,7 @@ LABEL_51:
       }
 
       v47 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-      *a4 = [v12 errorWithDomain:@"ATL" code:3 userInfo:v47];
+      *error = [v12 errorWithDomain:@"ATL" code:3 userInfo:v47];
     }
 
 LABEL_32:
@@ -1148,12 +1148,12 @@ LABEL_32:
     v86 = v88;
     v37 = [v36 initWithFormat:@"Unexpected tag 0x%llx"];
     v38 = v37;
-    if (a4)
+    if (error)
     {
-      v39 = *a4;
+      v39 = *error;
       v40 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v42 = *MEMORY[0x277CCA7E8];
         v109[0] = *MEMORY[0x277CCA450];
@@ -1177,24 +1177,24 @@ LABEL_32:
       }
 
       v48 = [v43 dictionaryWithObjects:v44 forKeys:v45 count:v46];
-      *a4 = [v40 errorWithDomain:@"ATL" code:3 userInfo:v48];
+      *error = [v40 errorWithDomain:@"ATL" code:3 userInfo:v48];
     }
 
-    LogBinary(OS_LOG_TYPE_ERROR, "[SlalomDecoder DecodeTransactionE1TLV:error:]", 356, a3->var0, a3->var1, @"E1 TLV data", v49, v50, v86);
+    LogBinary(OS_LOG_TYPE_ERROR, "[SlalomDecoder DecodeTransactionE1TLV:error:]", 356, v->var0, v->var1, @"E1 TLV data", v49, v50, v86);
     goto LABEL_32;
   }
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  v87 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v20 = v90;
   if (v90 < 1)
   {
 LABEL_20:
     v91[0] = @"OPRead";
     v91[1] = @"OPWrite";
-    v33 = v87;
-    v92[0] = v19;
-    v92[1] = v87;
+    v33 = array2;
+    v92[0] = array;
+    v92[1] = array2;
     v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:v91 count:2];
     goto LABEL_66;
   }
@@ -1216,11 +1216,11 @@ LABEL_20:
 
       v55 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Transaction Event E1, length issue: %@", v53];
       v56 = v55;
-      if (a4)
+      if (error)
       {
-        v57 = *a4;
+        v57 = *error;
         v58 = MEMORY[0x277CCA9B8];
-        if (*a4)
+        if (*error)
         {
           v59 = *MEMORY[0x277CCA7E8];
           v105[0] = *MEMORY[0x277CCA450];
@@ -1265,12 +1265,12 @@ LABEL_20:
 
       v74 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Transaction Event C2 tag, length issue: %@", v53];
       v56 = v74;
-      if (a4)
+      if (error)
       {
-        v75 = *a4;
+        v75 = *error;
         v58 = MEMORY[0x277CCA9B8];
         v76 = *MEMORY[0x277CCA450];
-        if (*a4)
+        if (*error)
         {
           v77 = *MEMORY[0x277CCA7E8];
           v97[0] = *MEMORY[0x277CCA450];
@@ -1292,7 +1292,7 @@ LABEL_62:
         v83 = 1;
 LABEL_63:
         v85 = [v60 dictionaryWithObjects:v61 forKeys:v62 count:v83];
-        *a4 = [v58 errorWithDomain:@"ATL" code:3 userInfo:v85];
+        *error = [v58 errorWithDomain:@"ATL" code:3 userInfo:v85];
       }
 
 LABEL_64:
@@ -1300,7 +1300,7 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v28 = v19;
+    v28 = array;
     v29 = v23[1];
     v26 = objc_alloc_init(SlalomWriteOperation);
     v30 = *(v25 + v22);
@@ -1314,9 +1314,9 @@ LABEL_64:
       LODWORD(v32) = v21 + 8;
     }
 
-    [v87 addObject:v26];
+    [array2 addObject:v26];
     v21 = v32;
-    v19 = v28;
+    array = v28;
 LABEL_19:
 
     v20 = v90;
@@ -1341,12 +1341,12 @@ LABEL_19:
 
       v79 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Transaction Event C1 tag, length issue: %@", v53];
       v56 = v79;
-      if (a4)
+      if (error)
       {
-        v80 = *a4;
+        v80 = *error;
         v58 = MEMORY[0x277CCA9B8];
         v81 = *MEMORY[0x277CCA450];
-        if (!*a4)
+        if (!*error)
         {
           v103 = *MEMORY[0x277CCA450];
           v104 = v79;
@@ -1377,7 +1377,7 @@ LABEL_56:
     v21 += 6;
     [(SlalomWriteOperation *)v26 setBlockNumber:*(v23 + 2)];
     [(SlalomWriteOperation *)v26 setServiceCode:v27];
-    [v19 addObject:v26];
+    [array addObject:v26];
     goto LABEL_19;
   }
 
@@ -1391,12 +1391,12 @@ LABEL_56:
 
   v64 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Transaction Event E1, tag received was not C0 or C1: %2X", v24];
   v53 = v64;
-  if (a4)
+  if (error)
   {
-    v65 = *a4;
+    v65 = *error;
     v66 = MEMORY[0x277CCA9B8];
     v67 = *MEMORY[0x277CCA450];
-    if (*a4)
+    if (*error)
     {
       v68 = *MEMORY[0x277CCA7E8];
       v93[0] = *MEMORY[0x277CCA450];
@@ -1420,13 +1420,13 @@ LABEL_56:
     }
 
     v84 = [v69 dictionaryWithObjects:v70 forKeys:v71 count:v72];
-    *a4 = [v66 errorWithDomain:@"ATL" code:3 userInfo:v84];
+    *error = [v66 errorWithDomain:@"ATL" code:3 userInfo:v84];
   }
 
 LABEL_65:
 
   v34 = 0;
-  v33 = v87;
+  v33 = array2;
 LABEL_66:
 
 LABEL_33:
@@ -1435,13 +1435,13 @@ LABEL_33:
   return v34;
 }
 
-- (id)DecodeStartE1TLV:(id *)a3 error:(id *)a4
+- (id)DecodeStartE1TLV:(id *)v error:(id *)error
 {
   v96[1] = *MEMORY[0x277D85DE8];
   v72 = 0;
   v73[0] = 0;
   v73[1] = 0;
-  v7 = DERDecodeItemCtx(a3, &v72);
+  v7 = DERDecodeItemCtx(v, &v72);
   if (v7)
   {
     v8 = v7;
@@ -1455,12 +1455,12 @@ LABEL_33:
 
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Start Event E1 %d", v8];
     v11 = v10;
-    if (a4)
+    if (error)
     {
-      v12 = *a4;
+      v12 = *error;
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v15 = *MEMORY[0x277CCA7E8];
         v93[0] = *MEMORY[0x277CCA450];
@@ -1484,7 +1484,7 @@ LABEL_33:
       }
 
       v43 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-      *a4 = [v13 errorWithDomain:@"ATL" code:3 userInfo:v43];
+      *error = [v13 errorWithDomain:@"ATL" code:3 userInfo:v43];
     }
 
     goto LABEL_42;
@@ -1509,14 +1509,14 @@ LABEL_33:
 
       v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Start Event E1 contents %d", v21];
       v11 = v23;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_42;
       }
 
-      v24 = *a4;
+      v24 = *error;
       v25 = MEMORY[0x277CCA9B8];
-      if (*a4)
+      if (*error)
       {
         v26 = *MEMORY[0x277CCA7E8];
         v82[0] = *MEMORY[0x277CCA450];
@@ -1540,7 +1540,7 @@ LABEL_33:
       }
 
       v44 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:v30];
-      *a4 = [v25 errorWithDomain:@"ATL" code:3 userInfo:v44];
+      *error = [v25 errorWithDomain:@"ATL" code:3 userInfo:v44];
       goto LABEL_41;
     }
 
@@ -1578,8 +1578,8 @@ LABEL_33:
       [v11 setObject:v51 forKeyedSubscript:@"SystemCode"];
 
       v52 = [MEMORY[0x277CBEA90] dataWithBytes:v87 length:8];
-      v53 = [v52 asHexString];
-      [v11 setObject:v53 forKeyedSubscript:@"IDm"];
+      asHexString = [v52 asHexString];
+      [v11 setObject:asHexString forKeyedSubscript:@"IDm"];
     }
 
     else
@@ -1597,15 +1597,15 @@ LABEL_33:
       v60 = [MEMORY[0x277CBEA90] dataWithDERItem:&v88];
       v47 = [v59 initWithFormat:@"Unknown SP identifier %@", v60];
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_40;
       }
 
-      v61 = *a4;
+      v61 = *error;
       v62 = MEMORY[0x277CCA9B8];
       v63 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v64 = *MEMORY[0x277CCA7E8];
         v74[0] = *MEMORY[0x277CCA450];
@@ -1629,7 +1629,7 @@ LABEL_33:
       }
 
       v52 = [v65 dictionaryWithObjects:v66 forKeys:v67 count:v68];
-      *a4 = [v62 errorWithDomain:@"ATL" code:3 userInfo:v52];
+      *error = [v62 errorWithDomain:@"ATL" code:3 userInfo:v52];
     }
 
 LABEL_40:
@@ -1651,12 +1651,12 @@ LABEL_42:
   v71 = v72;
   v33 = [v32 initWithFormat:@"Unexpected tag 0x%llx"];
   v34 = v33;
-  if (a4)
+  if (error)
   {
-    v35 = *a4;
+    v35 = *error;
     v36 = MEMORY[0x277CCA9B8];
     v37 = *MEMORY[0x277CCA450];
-    if (*a4)
+    if (*error)
     {
       v38 = *MEMORY[0x277CCA7E8];
       v89[0] = *MEMORY[0x277CCA450];
@@ -1680,26 +1680,26 @@ LABEL_42:
     }
 
     v54 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:v42];
-    *a4 = [v36 errorWithDomain:@"ATL" code:3 userInfo:v54];
+    *error = [v36 errorWithDomain:@"ATL" code:3 userInfo:v54];
   }
 
-  LogBinary(OS_LOG_TYPE_ERROR, "[SlalomDecoder DecodeStartE1TLV:error:]", 446, a3->var0, a3->var1, @"E1 TLV data", v55, v56, v71);
+  LogBinary(OS_LOG_TYPE_ERROR, "[SlalomDecoder DecodeStartE1TLV:error:]", 446, v->var0, v->var1, @"E1 TLV data", v55, v56, v71);
 LABEL_43:
   v69 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v546[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [MEMORY[0x277CBEA90] dataWithHexString:v13];
+  historyCopy = history;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  v16 = [MEMORY[0x277CBEA90] dataWithHexString:appletCopy];
   v17 = SelectByNameCmd(v16);
 
-  v18 = [v12 transceiveAndCheckSW:v17 error:a7];
+  v18 = [historyCopy transceiveAndCheckSW:v17 error:error];
   v19 = v18;
   if (!v18)
   {
@@ -1727,13 +1727,13 @@ LABEL_43:
 
     v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to find tag 'A5' in Slalom SELECT response, %d", v21];
     v24 = v23;
-    if (a7)
+    if (error)
     {
-      v25 = v15;
-      v26 = *a7;
+      v25 = moduleCopy;
+      v26 = *error;
       v27 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v29 = *MEMORY[0x277CCA7E8];
         v543[0] = *MEMORY[0x277CCA450];
@@ -1757,9 +1757,9 @@ LABEL_43:
       }
 
       v48 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:v33];
-      *a7 = [v27 errorWithDomain:@"ATL" code:3 userInfo:v48];
+      *error = [v27 errorWithDomain:@"ATL" code:3 userInfo:v48];
 
-      v15 = v25;
+      moduleCopy = v25;
     }
 
     v34 = 0;
@@ -1777,7 +1777,7 @@ LABEL_43:
   v35 = DERParseSequenceSpec(v453, &selectResponseA5ContentSpec, buf, 0x18uLL);
   if (!v35)
   {
-    v434 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v49 = *v541;
     v429 = [MEMORY[0x277CBEA90] dataWithBytes:v537 length:?];
     if (v49 >= 0xE0)
@@ -1790,24 +1790,24 @@ LABEL_43:
       v50 = v49;
     }
 
-    v440 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v441 = v17;
-    v428 = v13;
+    v428 = appletCopy;
     if (v50 > 5)
     {
       if (v50 <= 7)
       {
         if (v50 != 6)
         {
-          v51 = [MEMORY[0x277CBEB38] dictionary];
-          [v51 setObject:&unk_2843C6BA8 forKeyedSubscript:@"SPRaw"];
-          [v51 setObject:@"Gondola" forKeyedSubscript:@"SP"];
-          v52 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:0 withTransceiver:v12 withError:a7];
-          v53 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:1 withTransceiver:v12 withError:a7];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary2 setObject:&unk_2843C6BA8 forKeyedSubscript:@"SPRaw"];
+          [dictionary2 setObject:@"Gondola" forKeyedSubscript:@"SP"];
+          v52 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:0 withTransceiver:historyCopy withError:error];
+          v53 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:1 withTransceiver:historyCopy withError:error];
           v54 = v53;
           if (!v52 || !v53)
           {
-            v430 = v15;
+            v430 = moduleCopy;
             v117 = ATLLogObject();
             if (os_log_type_enabled(v117, OS_LOG_TYPE_ERROR))
             {
@@ -1817,14 +1817,14 @@ LABEL_43:
 
             v118 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Gondola S/N, invalid blocks"];
             v119 = v118;
-            if (a7)
+            if (error)
             {
-              v120 = v51;
-              v121 = v14;
-              v122 = *a7;
+              v120 = dictionary2;
+              v121 = packageCopy;
+              v122 = *error;
               v123 = MEMORY[0x277CCA9B8];
               v124 = *MEMORY[0x277CCA450];
-              if (*a7)
+              if (*error)
               {
                 v125 = *MEMORY[0x277CCA7E8];
                 v504[0] = *MEMORY[0x277CCA450];
@@ -1848,10 +1848,10 @@ LABEL_43:
               }
 
               v273 = [v126 dictionaryWithObjects:v127 forKeys:v128 count:v129];
-              *a7 = [v123 errorWithDomain:@"ATL" code:3 userInfo:v273];
+              *error = [v123 errorWithDomain:@"ATL" code:3 userInfo:v273];
 
-              v14 = v121;
-              v51 = v120;
+              packageCopy = v121;
+              dictionary2 = v120;
             }
 
             v70 = 0;
@@ -1861,57 +1861,57 @@ LABEL_43:
           }
 
           v55 = [GondolaDecoder decodeCardNumberFromBlock0:v52 andBlock1:v53];
-          [v51 setObject:v55 forKeyedSubscript:@"CardIdentifier"];
+          [dictionary2 setObject:v55 forKeyedSubscript:@"CardIdentifier"];
 
-          v56 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:0 withTransceiver:v12 withError:a7];
+          v56 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:0 withTransceiver:historyCopy withError:error];
           v57 = v52;
           v58 = v54;
           v59 = v56;
 
-          v60 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:1 withTransceiver:v12 withError:a7];
+          v60 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:1 withTransceiver:historyCopy withError:error];
 
           v435 = v59;
           if (v59 && v60)
           {
-            v410 = v51;
+            v410 = dictionary2;
             v61 = [GondolaDecoder isCardUsageFlag:v59];
             v420 = v60;
             v62 = [GondolaDecoder isCardEffectiveFlag:v60];
             if (v61)
             {
               [MEMORY[0x277CCABB0] numberWithInt:v62 ^ 1];
-              v64 = v63 = v15;
-              [v51 setObject:v64 forKeyedSubscript:@"CardDenyListed"];
+              v64 = v63 = moduleCopy;
+              [dictionary2 setObject:v64 forKeyedSubscript:@"CardDenyListed"];
 
-              v15 = v63;
+              moduleCopy = v63;
             }
 
             else
             {
-              [v51 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"CardDenyListed"];
+              [dictionary2 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"CardDenyListed"];
             }
 
             if (self->_debug)
             {
               v232 = [MEMORY[0x277CCABB0] numberWithBool:v61];
-              [v51 setObject:v232 forKeyedSubscript:@"CardActivated"];
+              [dictionary2 setObject:v232 forKeyedSubscript:@"CardActivated"];
 
               v233 = [MEMORY[0x277CCABB0] numberWithBool:v62];
-              [v51 setObject:v233 forKeyedSubscript:@"CardEffective"];
+              [dictionary2 setObject:v233 forKeyedSubscript:@"CardEffective"];
 
               v234 = [MEMORY[0x277CCACA8] hexStringFromBytes:v542 length:2];
-              [v51 setObject:v234 forKeyedSubscript:@"LifeCycleState"];
+              [dictionary2 setObject:v234 forKeyedSubscript:@"LifeCycleState"];
             }
 
             v235 = v420;
             v236 = [GondolaDecoder decodeEnrollmentDateAfterDelivery:v420];
             v237 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-            v238 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26647 withBlockNumber:0 withTransceiver:v12 withError:a7];
+            v238 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26647 withBlockNumber:0 withTransceiver:historyCopy withError:error];
 
             v409 = v237;
             if (v238)
             {
-              v415 = v12;
+              v415 = historyCopy;
               v407 = v236;
               v437 = v238;
               v239 = [GondolaDecoder getPurseBalance:v238];
@@ -1926,20 +1926,20 @@ LABEL_43:
               v240 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v499 forKeys:v498 count:4];
               [v237 addObject:v240];
 
-              v418 = [MEMORY[0x277CBEB18] array];
+              array2 = [MEMORY[0x277CBEB18] array];
               v241 = 0;
               v242 = @"TopUp";
               v243 = @"Amount";
-              v426 = v14;
-              v432 = v15;
+              v426 = packageCopy;
+              v432 = moduleCopy;
               while (1)
               {
                 v244 = v243;
                 v245 = v242;
                 v423 = v235;
-                v246 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:v241 withTransceiver:v12 withError:a7];
+                v246 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:v241 withTransceiver:historyCopy withError:error];
 
-                v235 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:v241 | 1u withTransceiver:v12 withError:a7];
+                v235 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:v241 | 1u withTransceiver:historyCopy withError:error];
 
                 v247 = !v246 || v235 == 0;
                 v437 = v246;
@@ -1957,7 +1957,7 @@ LABEL_43:
                 if (v250)
                 {
                   v251 = [v248 objectForKeyedSubscript:v242];
-                  [v418 addObject:v251];
+                  [array2 addObject:v251];
                 }
 
                 v252 = [v248 objectForKeyedSubscript:@"Charge"];
@@ -1966,26 +1966,26 @@ LABEL_43:
                 if (v253)
                 {
                   v254 = [v248 objectForKeyedSubscript:@"Charge"];
-                  [v418 addObject:v254];
+                  [array2 addObject:v254];
                 }
 
                 v255 = v241;
                 v241 += 2;
-                v15 = v432;
+                moduleCopy = v432;
                 if (v255 >= 4)
                 {
                   v420 = v235;
                   v256 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"SerialNumber" ascending:0];
                   v489 = v256;
                   v257 = [MEMORY[0x277CBEA60] arrayWithObjects:&v489 count:1];
-                  v258 = [v418 sortedArrayUsingDescriptors:v257];
-                  [v434 setObject:v258 forKeyedSubscript:@"TransactionHistory"];
+                  v258 = [array2 sortedArrayUsingDescriptors:v257];
+                  [dictionary setObject:v258 forKeyedSubscript:@"TransactionHistory"];
 
                   v450 = 0u;
                   v451 = 0u;
                   v448 = 0u;
                   v449 = 0u;
-                  v259 = v418;
+                  v259 = array2;
                   v260 = [v259 countByEnumeratingWithState:&v448 objects:v488 count:16];
                   if (v260)
                   {
@@ -2018,22 +2018,22 @@ LABEL_43:
                     while (v261);
                   }
 
-                  v12 = v415;
-                  v267 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:7 withTransceiver:v415 withError:a7];
+                  historyCopy = v415;
+                  v267 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:7 withTransceiver:v415 withError:error];
 
                   if (v267)
                   {
                     v268 = [GondolaDecoder decodeAutoTopUpAmount:v267];
-                    v14 = v426;
-                    v15 = v432;
+                    packageCopy = v426;
+                    moduleCopy = v432;
                     v17 = v441;
                     v269 = v409;
                     if ([v268 intValue] >= 1)
                     {
-                      [v434 setObject:v268 forKeyedSubscript:@"CardDefaultAAVSAmount"];
+                      [dictionary setObject:v268 forKeyedSubscript:@"CardDefaultAAVSAmount"];
                     }
 
-                    v270 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26699 withBlockNumber:0 withTransceiver:v415 withError:a7];
+                    v270 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26699 withBlockNumber:0 withTransceiver:v415 withError:error];
 
                     if (v270)
                     {
@@ -2051,7 +2051,7 @@ LABEL_43:
 
                       [v410 setObject:v409 forKeyedSubscript:@"Balances"];
                       v186 = v410;
-                      [v434 setObject:v410 forKeyedSubscript:@"State"];
+                      [dictionary setObject:v410 forKeyedSubscript:@"State"];
 
                       v187 = 0;
                       v188 = 0;
@@ -2059,15 +2059,15 @@ LABEL_43:
 LABEL_198:
 
                       v68 = v188;
-                      v194 = v434;
+                      v194 = dictionary;
                       v70 = v187;
 LABEL_337:
                       v34 = v194;
 LABEL_349:
 
-                      v13 = v428;
+                      appletCopy = v428;
                       v72 = v429;
-                      v39 = v434;
+                      v39 = dictionary;
 LABEL_350:
 
                       goto LABEL_351;
@@ -2083,13 +2083,13 @@ LABEL_350:
 
                     v286 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Gondola loyalty balances, invalid block"];
                     v285 = v410;
-                    if (a7)
+                    if (error)
                     {
-                      v399 = *a7;
+                      v399 = *error;
                       v375 = MEMORY[0x277CCA9B8];
                       v400 = *MEMORY[0x277CCA450];
                       v437 = v286;
-                      if (*a7)
+                      if (*error)
                       {
                         v401 = *MEMORY[0x277CCA7E8];
                         v480[0] = *MEMORY[0x277CCA450];
@@ -2103,7 +2103,7 @@ LABEL_327:
                         v402 = 2;
 LABEL_344:
                         v395 = [v378 dictionaryWithObjects:v379 forKeys:v380 count:v402];
-                        *a7 = [v375 errorWithDomain:@"ATL" code:3 userInfo:v395];
+                        *error = [v375 errorWithDomain:@"ATL" code:3 userInfo:v395];
                         goto LABEL_345;
                       }
 
@@ -2121,8 +2121,8 @@ LABEL_343:
                   else
                   {
                     v373 = ATLLogObject();
-                    v14 = v426;
-                    v15 = v432;
+                    packageCopy = v426;
+                    moduleCopy = v432;
                     v17 = v441;
                     v269 = v409;
                     if (os_log_type_enabled(v373, OS_LOG_TYPE_ERROR))
@@ -2134,13 +2134,13 @@ LABEL_343:
                     v286 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Gondola AAVS settings, invalid block"];
                     v285 = v410;
                     v236 = v407;
-                    if (a7)
+                    if (error)
                     {
-                      v374 = *a7;
+                      v374 = *error;
                       v375 = MEMORY[0x277CCA9B8];
                       v376 = *MEMORY[0x277CCA450];
                       v437 = v286;
-                      if (*a7)
+                      if (*error)
                       {
                         v377 = *MEMORY[0x277CCA7E8];
                         v484[0] = *MEMORY[0x277CCA450];
@@ -2186,14 +2186,14 @@ LABEL_348:
               v307 = v306;
               v17 = v441;
               v269 = v409;
-              v14 = v426;
-              if (a7)
+              packageCopy = v426;
+              if (error)
               {
-                v308 = v15;
-                v309 = *a7;
+                v308 = moduleCopy;
+                v309 = *error;
                 v310 = MEMORY[0x277CCA9B8];
                 v311 = *MEMORY[0x277CCA450];
-                if (*a7)
+                if (*error)
                 {
                   v312 = *MEMORY[0x277CCA7E8];
                   v490[0] = *MEMORY[0x277CCA450];
@@ -2217,14 +2217,14 @@ LABEL_348:
                 }
 
                 v396 = [v313 dictionaryWithObjects:v314 forKeys:v315 count:v316];
-                *a7 = [v310 errorWithDomain:@"ATL" code:3 userInfo:v396];
+                *error = [v310 errorWithDomain:@"ATL" code:3 userInfo:v396];
 
-                v15 = v308;
+                moduleCopy = v308;
               }
 
               v285 = v410;
               v236 = v407;
-              v395 = v418;
+              v395 = array2;
             }
 
             else
@@ -2239,17 +2239,17 @@ LABEL_348:
 
               v286 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Gondola purse, invalid block"];
               v17 = v441;
-              if (!a7)
+              if (!error)
               {
                 v269 = v409;
                 goto LABEL_346;
               }
 
-              v287 = *a7;
+              v287 = *error;
               v288 = MEMORY[0x277CCA9B8];
               v289 = *MEMORY[0x277CCA450];
               v437 = v286;
-              if (*a7)
+              if (*error)
               {
                 v290 = *MEMORY[0x277CCA7E8];
                 v494[0] = *MEMORY[0x277CCA450];
@@ -2273,7 +2273,7 @@ LABEL_348:
               }
 
               v395 = [v291 dictionaryWithObjects:v292 forKeys:v293 count:v294];
-              *a7 = [v288 errorWithDomain:@"ATL" code:3 userInfo:v395];
+              *error = [v288 errorWithDomain:@"ATL" code:3 userInfo:v395];
               v269 = v409;
             }
 
@@ -2294,14 +2294,14 @@ LABEL_345:
 
           v148 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Gondola Usage Flag and/or Effectiveness Flag, invalid blocks"];
           v149 = v148;
-          if (a7)
+          if (error)
           {
-            v412 = v51;
-            v150 = v15;
-            v151 = *a7;
+            v412 = dictionary2;
+            v150 = moduleCopy;
+            v151 = *error;
             v152 = MEMORY[0x277CCA9B8];
             v153 = *MEMORY[0x277CCA450];
-            if (*a7)
+            if (*error)
             {
               v154 = *MEMORY[0x277CCA7E8];
               v500[0] = *MEMORY[0x277CCA450];
@@ -2325,20 +2325,20 @@ LABEL_345:
             }
 
             v347 = [v155 dictionaryWithObjects:v156 forKeys:v157 count:v158];
-            *a7 = [v152 errorWithDomain:@"ATL" code:3 userInfo:v347];
+            *error = [v152 errorWithDomain:@"ATL" code:3 userInfo:v347];
 
-            v15 = v150;
-            v51 = v412;
+            moduleCopy = v150;
+            dictionary2 = v412;
           }
 
           goto LABEL_321;
         }
 
 LABEL_43:
-        v430 = v15;
-        v424 = v14;
+        v430 = moduleCopy;
+        v424 = packageCopy;
         v73 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v49];
-        [v434 setObject:v73 forKeyedSubscript:@"NFServiceProviderID"];
+        [dictionary setObject:v73 forKeyedSubscript:@"NFServiceProviderID"];
 
         v74 = 0;
         v66 = 0;
@@ -2351,7 +2351,7 @@ LABEL_43:
 
           if (v66)
           {
-            v76 = [v12 transceiveAndCheckSW:v66 error:a7];
+            v76 = [historyCopy transceiveAndCheckSW:v66 error:error];
 
             if (!v76)
             {
@@ -2364,7 +2364,7 @@ LABEL_43:
 
             if (v77)
             {
-              [v440 addObject:v77];
+              [array addObject:v77];
               v70 = v77;
             }
 
@@ -2389,7 +2389,7 @@ LABEL_43:
 
           if (++v74 == 20)
           {
-            if (![v440 count])
+            if (![array count])
             {
               v106 = ATLLogObject();
               if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
@@ -2400,12 +2400,12 @@ LABEL_43:
 
               v107 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Suica History failure: could not get a single history block. Aborting."];
               v108 = v107;
-              if (a7)
+              if (error)
               {
-                v109 = *a7;
+                v109 = *error;
                 v110 = MEMORY[0x277CCA9B8];
                 v111 = *MEMORY[0x277CCA450];
-                if (*a7)
+                if (*error)
                 {
                   v112 = *MEMORY[0x277CCA7E8];
                   v528[0] = *MEMORY[0x277CCA450];
@@ -2429,25 +2429,25 @@ LABEL_43:
                 }
 
                 v197 = [v113 dictionaryWithObjects:v114 forKeys:v115 count:v116];
-                *a7 = [v110 errorWithDomain:@"ATL" code:3 userInfo:v197];
+                *error = [v110 errorWithDomain:@"ATL" code:3 userInfo:v197];
 
-                v14 = v424;
+                packageCopy = v424;
               }
 
               v34 = 0;
-              v15 = v430;
+              moduleCopy = v430;
               goto LABEL_349;
             }
 
-            v79 = [HPHistoryDecoder parseSuicaHistoryBlocks:v440 withIDm:v429];
-            [v434 addEntriesFromDictionary:v79];
+            v79 = [HPHistoryDecoder parseSuicaHistoryBlocks:array withIDm:v429];
+            [dictionary addEntriesFromDictionary:v79];
 
-            [v434 setObject:&unk_2843C6AD0 forKeyedSubscript:@"NFServiceProviderID"];
+            [dictionary setObject:&unk_2843C6AD0 forKeyedSubscript:@"NFServiceProviderID"];
             v80 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v49];
-            [v434 setObject:v80 forKeyedSubscript:@"SPRaw"];
+            [dictionary setObject:v80 forKeyedSubscript:@"SPRaw"];
 
-            v81 = [v429 asHexString];
-            [v434 setObject:v81 forKeyedSubscript:@"NFDPAN"];
+            asHexString = [v429 asHexString];
+            [dictionary setObject:asHexString forKeyedSubscript:@"NFDPAN"];
 
             v82 = FelicaGetDataFileSystemCommand(4239, 0);
 
@@ -2457,7 +2457,7 @@ LABEL_43:
               goto LABEL_121;
             }
 
-            v34 = [v12 transceiveAndCheckSW:v82 error:a7];
+            v34 = [historyCopy transceiveAndCheckSW:v82 error:error];
 
             if (v34)
             {
@@ -2468,12 +2468,12 @@ LABEL_43:
                 v84 = [HPHistoryDecoder getInOutStation:v83];
                 var1 = v84.var1;
                 v86 = [MEMORY[0x277CCABB0] numberWithInt:v84.var0];
-                [v434 setObject:v86 forKeyedSubscript:@"NFInStation"];
+                [dictionary setObject:v86 forKeyedSubscript:@"NFInStation"];
 
                 v87 = [MEMORY[0x277CCABB0] numberWithInt:var1];
-                [v434 setObject:v87 forKeyedSubscript:@"NFInStationShinkansen"];
+                [dictionary setObject:v87 forKeyedSubscript:@"NFInStationShinkansen"];
 
-                v14 = v424;
+                packageCopy = v424;
                 v70 = v83;
               }
 
@@ -2491,7 +2491,7 @@ LABEL_121:
                 goto LABEL_127;
               }
 
-              v68 = [v12 transceiveAndCheckSW:v66 error:a7];
+              v68 = [historyCopy transceiveAndCheckSW:v66 error:error];
 
               if (v68)
               {
@@ -2502,15 +2502,15 @@ LABEL_121:
                 {
                   v192 = [HPHistoryDecoder getGreenCarTicketUsed:v191];
                   v193 = [MEMORY[0x277CCABB0] numberWithBool:v192];
-                  v194 = v434;
-                  [v434 setObject:v193 forKeyedSubscript:@"NFTicketUsed"];
+                  v194 = dictionary;
+                  [dictionary setObject:v193 forKeyedSubscript:@"NFTicketUsed"];
 
-                  v195 = [MEMORY[0x277CBEB18] array];
-                  [v195 addObject:v70];
-                  v196 = [HPHistoryDecoder parseGreencarBlocks:v195];
+                  array3 = [MEMORY[0x277CBEB18] array];
+                  [array3 addObject:v70];
+                  v196 = [HPHistoryDecoder parseGreencarBlocks:array3];
                   if (v196)
                   {
-                    [v434 setObject:v196 forKeyedSubscript:@"NFGreenCarTicket"];
+                    [dictionary setObject:v196 forKeyedSubscript:@"NFGreenCarTicket"];
                   }
 
                   else
@@ -2522,14 +2522,14 @@ LABEL_121:
                       _os_log_impl(&dword_22EEF5000, v275, OS_LOG_TYPE_DEFAULT, "failed to parse GreenCar blocks", v520, 2u);
                     }
 
-                    v14 = v424;
+                    packageCopy = v424;
                   }
 
 LABEL_193:
                   v276 = FelicaGetDataFileSystemCommand(139, 0);
 
                   v66 = v276;
-                  v15 = v430;
+                  moduleCopy = v430;
                   if (!v276)
                   {
                     v17 = v441;
@@ -2537,7 +2537,7 @@ LABEL_193:
                   }
 
                   v277 = v70;
-                  v188 = [v12 transceiveAndCheckSW:v276 error:a7];
+                  v188 = [historyCopy transceiveAndCheckSW:v276 error:error];
 
                   if (v188)
                   {
@@ -2547,17 +2547,17 @@ LABEL_193:
                     {
                       v279 = [HPHistoryDecoder getCommuterBalance:v278];
                       v280 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:HIDWORD(*&v279)];
-                      [v434 setObject:v280 forKeyedSubscript:@"NFBalance"];
+                      [dictionary setObject:v280 forKeyedSubscript:@"NFBalance"];
 
                       v281 = *([v278 bytes] + 8);
                       v282 = [MEMORY[0x277CCABB0] numberWithInt:(v281 >> 4) & 1];
-                      [v434 setObject:v282 forKeyedSubscript:@"NFNotifyOnLowBalance"];
+                      [dictionary setObject:v282 forKeyedSubscript:@"NFNotifyOnLowBalance"];
 
                       v283 = [MEMORY[0x277CCABB0] numberWithInt:(v281 >> 5) & 1];
-                      [v434 setObject:v283 forKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
+                      [dictionary setObject:v283 forKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
 
                       v186 = [MEMORY[0x277CCABB0] numberWithBool:{+[HPHistoryDecoder getIsDenyListed:](HPHistoryDecoder, "getIsDenyListed:", v278)}];
-                      [v434 setObject:v186 forKeyedSubscript:@"NFBlacklisted"];
+                      [dictionary setObject:v186 forKeyedSubscript:@"NFBlacklisted"];
                       v187 = v278;
 LABEL_197:
                       v17 = v441;
@@ -2568,7 +2568,7 @@ LABEL_197:
                     v70 = 0;
                     v17 = v441;
 LABEL_336:
-                    v194 = v434;
+                    v194 = dictionary;
                     goto LABEL_337;
                   }
 
@@ -2581,7 +2581,7 @@ LABEL_185:
                 }
 
 LABEL_127:
-                v194 = v434;
+                v194 = dictionary;
                 goto LABEL_193;
               }
 
@@ -2596,7 +2596,7 @@ LABEL_183:
             }
 
 LABEL_184:
-            v15 = v430;
+            moduleCopy = v430;
             goto LABEL_185;
           }
         }
@@ -2618,13 +2618,13 @@ LABEL_59:
 
       v89 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Could not GET APPLET HISTORY: unknown Service Provider ID %02X in SELECT Response", v50];
       v90 = v89;
-      if (a7)
+      if (error)
       {
-        v91 = v15;
-        v92 = *a7;
+        v91 = moduleCopy;
+        v92 = *error;
         v93 = MEMORY[0x277CCA9B8];
         v94 = *MEMORY[0x277CCA450];
-        if (*a7)
+        if (*error)
         {
           v95 = *MEMORY[0x277CCA7E8];
           v455[0] = *MEMORY[0x277CCA450];
@@ -2648,9 +2648,9 @@ LABEL_59:
         }
 
         v189 = [v96 dictionaryWithObjects:v97 forKeys:v98 count:v99];
-        *a7 = [v93 errorWithDomain:@"ATL" code:3 userInfo:v189];
+        *error = [v93 errorWithDomain:@"ATL" code:3 userInfo:v189];
 
-        v15 = v91;
+        moduleCopy = v91;
       }
 
       goto LABEL_347;
@@ -2663,12 +2663,12 @@ LABEL_59:
 
     if (v50 == 4)
     {
-      v431 = v15;
-      v51 = [MEMORY[0x277CBEB38] dictionary];
-      [v51 setObject:&unk_2843C6B90 forKeyedSubscript:@"SPRaw"];
-      [v51 setObject:@"Mogul" forKeyedSubscript:@"SP"];
-      v100 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:0 withTransceiver:v12 withError:a7];
-      v101 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:1 withTransceiver:v12 withError:a7];
+      v431 = moduleCopy;
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary2 setObject:&unk_2843C6B90 forKeyedSubscript:@"SPRaw"];
+      [dictionary2 setObject:@"Mogul" forKeyedSubscript:@"SP"];
+      v100 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:0 withTransceiver:historyCopy withError:error];
+      v101 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:1 withTransceiver:historyCopy withError:error];
       v102 = v101;
       if (!v100 || !v101)
       {
@@ -2681,12 +2681,12 @@ LABEL_59:
 
         v131 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Mogul card settings, invalid blocks"];
         v132 = v131;
-        if (a7)
+        if (error)
         {
-          v133 = *a7;
+          v133 = *error;
           v134 = MEMORY[0x277CCA9B8];
           v135 = *MEMORY[0x277CCA450];
-          if (*a7)
+          if (*error)
           {
             v136 = *MEMORY[0x277CCA7E8];
             v476[0] = *MEMORY[0x277CCA450];
@@ -2710,9 +2710,9 @@ LABEL_59:
           }
 
           v274 = [v137 dictionaryWithObjects:v138 forKeys:v139 count:v140];
-          *a7 = [v134 errorWithDomain:@"ATL" code:3 userInfo:v274];
+          *error = [v134 errorWithDomain:@"ATL" code:3 userInfo:v274];
 
-          v15 = v431;
+          moduleCopy = v431;
         }
 
         v70 = 0;
@@ -2722,34 +2722,34 @@ LABEL_59:
         goto LABEL_185;
       }
 
-      v425 = v14;
+      v425 = packageCopy;
       v103 = [MogulDecoder decodeCardID:v100];
-      [v51 setObject:v103 forKeyedSubscript:@"CardIdentifier"];
+      [dictionary2 setObject:v103 forKeyedSubscript:@"CardIdentifier"];
       v104 = [MogulDecoder decodeEnableFlag:v102];
       v105 = [MogulDecoder decodeStatusFlag:v102];
       if (!v104 || (v105 & 0xFFFFFFFD) != 0)
       {
         v159 = [MEMORY[0x277CCABB0] numberWithInt:v104 != 1];
-        [v51 setObject:v159 forKeyedSubscript:@"CardDenyListed"];
+        [dictionary2 setObject:v159 forKeyedSubscript:@"CardDenyListed"];
       }
 
       else
       {
-        [v51 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"CardDenyListed"];
+        [dictionary2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"CardDenyListed"];
       }
 
       v160 = [MogulDecoder decodeChargeAmountFlagValue:v102];
       if (v160)
       {
-        [v51 setObject:v160 forKeyedSubscript:@"CardDefaultAAVSAmount"];
+        [dictionary2 setObject:v160 forKeyedSubscript:@"CardDefaultAAVSAmount"];
       }
 
       v161 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-      v162 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21911 withBlockNumber:0 withTransceiver:v12 withError:a7];
+      v162 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21911 withBlockNumber:0 withTransceiver:historyCopy withError:error];
 
       if (v162)
       {
-        v413 = v51;
+        v413 = dictionary2;
         v422 = v162;
         v163 = [MogulDecoder getPurseBalance:v162];
         v474[0] = @"BalanceIdentifier";
@@ -2766,13 +2766,13 @@ LABEL_59:
         v436 = v165;
         [v165 addObject:v164];
 
-        v167 = [MEMORY[0x277CBEB18] array];
+        array4 = [MEMORY[0x277CBEB18] array];
         v168 = 0;
         v169 = 0;
         do
         {
           v170 = v169;
-          v169 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22095 withBlockNumber:v168 withTransceiver:v12 withError:a7];
+          v169 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22095 withBlockNumber:v168 withTransceiver:historyCopy withError:error];
 
           if (!v169)
           {
@@ -2785,13 +2785,13 @@ LABEL_59:
 
             v209 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Mogul history, invalid block"];
             v210 = v209;
-            v51 = v413;
-            if (a7)
+            dictionary2 = v413;
+            if (error)
             {
-              v211 = *a7;
+              v211 = *error;
               v212 = MEMORY[0x277CCA9B8];
               v213 = *MEMORY[0x277CCA450];
-              if (*a7)
+              if (*error)
               {
                 v214 = *MEMORY[0x277CCA7E8];
                 v466[0] = *MEMORY[0x277CCA450];
@@ -2815,9 +2815,9 @@ LABEL_59:
               }
 
               v348 = [v215 dictionaryWithObjects:v216 forKeys:v217 count:v218];
-              *a7 = [v212 errorWithDomain:@"ATL" code:3 userInfo:v348];
+              *error = [v212 errorWithDomain:@"ATL" code:3 userInfo:v348];
 
-              v15 = v431;
+              moduleCopy = v431;
             }
 
             v173 = v422;
@@ -2829,22 +2829,22 @@ LABEL_318:
           v171 = [MogulDecoder decodeTransactionHistoryEntry:v169];
           if (v171)
           {
-            [v167 addObject:v171];
+            [array4 addObject:v171];
           }
 
           v172 = v168++;
         }
 
         while (v172 < 4);
-        [v434 setObject:v167 forKeyedSubscript:@"TransactionHistory"];
+        [dictionary setObject:array4 forKeyedSubscript:@"TransactionHistory"];
 
-        v173 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:0 withTransceiver:v12 withError:a7];
+        v173 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:0 withTransceiver:historyCopy withError:error];
 
-        v174 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:1 withTransceiver:v12 withError:a7];
+        v174 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:1 withTransceiver:historyCopy withError:error];
 
         if (v173 && v174)
         {
-          v414 = v12;
+          v414 = historyCopy;
           v417 = v174;
           v175 = [MogulDecoder decodePointsData:v173 andWith:v174];
           v176 = v175;
@@ -2870,18 +2870,18 @@ LABEL_318:
 
                   v181 = *(*(&v444 + 1) + 8 * j);
                   v463[0] = @"Balance";
-                  v182 = [v181 balance];
-                  v464[0] = v182;
+                  balance = [v181 balance];
+                  v464[0] = balance;
                   v464[1] = @"XXX";
                   v463[1] = @"BalanceCurrency";
                   v463[2] = @"BalanceCurrencyExponent";
                   v464[2] = &unk_2843C6AB8;
                   v463[3] = @"BalanceExpirationDate";
-                  v183 = [v181 expiration];
-                  v464[3] = v183;
+                  expiration = [v181 expiration];
+                  v464[3] = expiration;
                   v463[4] = @"BalanceIdentifier";
-                  v184 = [v181 name];
-                  v464[4] = v184;
+                  name = [v181 name];
+                  v464[4] = name;
                   v185 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v464 forKeys:v463 count:5];
                   [v436 addObject:v185];
                 }
@@ -2895,14 +2895,14 @@ LABEL_318:
 
           v186 = v413;
           [v413 setObject:v436 forKeyedSubscript:@"Balances"];
-          [v434 setObject:v413 forKeyedSubscript:@"State"];
+          [dictionary setObject:v413 forKeyedSubscript:@"State"];
 
           v187 = 0;
           v188 = 0;
           v66 = 0;
-          v12 = v414;
-          v14 = v425;
-          v15 = v431;
+          historyCopy = v414;
+          packageCopy = v425;
+          moduleCopy = v431;
           goto LABEL_197;
         }
 
@@ -2914,16 +2914,16 @@ LABEL_318:
         }
 
         v328 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Mogul loyalty points, invalid blocks"];
-        v167 = v328;
+        array4 = v328;
         v161 = v436;
         v102 = v174;
-        if (a7)
+        if (error)
         {
-          v329 = *a7;
+          v329 = *error;
           v330 = MEMORY[0x277CCA9B8];
           v331 = *MEMORY[0x277CCA450];
-          v51 = v413;
-          if (*a7)
+          dictionary2 = v413;
+          if (*error)
           {
             v332 = *MEMORY[0x277CCA7E8];
             v459[0] = *MEMORY[0x277CCA450];
@@ -2947,12 +2947,12 @@ LABEL_318:
           }
 
           v397 = [v333 dictionaryWithObjects:v334 forKeys:v335 count:v336];
-          *a7 = [v330 errorWithDomain:@"ATL" code:3 userInfo:v397];
+          *error = [v330 errorWithDomain:@"ATL" code:3 userInfo:v397];
 
           goto LABEL_318;
         }
 
-        v51 = v413;
+        dictionary2 = v413;
 LABEL_319:
 
         v17 = v441;
@@ -2970,12 +2970,12 @@ LABEL_319:
         v199 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to retrieve Mogul purse balance, invalid block"];
         v173 = v199;
         v17 = v441;
-        if (a7)
+        if (error)
         {
-          v200 = *a7;
+          v200 = *error;
           v201 = MEMORY[0x277CCA9B8];
           v202 = *MEMORY[0x277CCA450];
-          if (*a7)
+          if (*error)
           {
             v203 = *MEMORY[0x277CCA7E8];
             v470[0] = *MEMORY[0x277CCA450];
@@ -2998,8 +2998,8 @@ LABEL_319:
             v207 = 1;
           }
 
-          v167 = [v204 dictionaryWithObjects:v205 forKeys:v206 count:v207];
-          *a7 = [v201 errorWithDomain:@"ATL" code:3 userInfo:v167];
+          array4 = [v204 dictionaryWithObjects:v205 forKeys:v206 count:v207];
+          *error = [v201 errorWithDomain:@"ATL" code:3 userInfo:array4];
           goto LABEL_319;
         }
       }
@@ -3013,10 +3013,10 @@ LABEL_321:
       goto LABEL_59;
     }
 
-    v65 = [MEMORY[0x277CBEB38] dictionary];
-    [v65 setObject:&unk_2843C6B60 forKeyedSubscript:@"SPRaw"];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary3 setObject:&unk_2843C6B60 forKeyedSubscript:@"SPRaw"];
     v66 = FelicaGetDataFileSystemCommand(279, 0);
-    v421 = v65;
+    v421 = dictionary3;
     if (!v66)
     {
       v411 = 0;
@@ -3025,7 +3025,7 @@ LABEL_321:
       goto LABEL_86;
     }
 
-    v67 = [v12 transceiveAndCheckSW:v66 error:a7];
+    v67 = [historyCopy transceiveAndCheckSW:v66 error:error];
     v68 = v67;
     if (!v67)
     {
@@ -3051,11 +3051,11 @@ LABEL_86:
           goto LABEL_221;
         }
 
-        v142 = [v12 transceiveAndCheckSW:v141 error:a7];
+        v142 = [historyCopy transceiveAndCheckSW:v141 error:error];
 
         if (v142)
         {
-          v143 = v15;
+          v143 = moduleCopy;
           v144 = FeliCaGetBlockDataFromGetDataCommand(v142);
 
           if (v144)
@@ -3082,12 +3082,12 @@ LABEL_86:
             v70 = 0;
           }
 
-          v15 = v143;
+          moduleCopy = v143;
 
-          v65 = v421;
+          dictionary3 = v421;
 LABEL_221:
           v438 = v141;
-          v317 = [v65 objectForKeyedSubscript:@"PointBalance"];
+          v317 = [dictionary3 objectForKeyedSubscript:@"PointBalance"];
 
           if (!v317)
           {
@@ -3100,14 +3100,14 @@ LABEL_221:
           }
 
           v319 = v142;
-          v320 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           v66 = FelicaGetDataFileSystemCommand(776, 0);
 
-          v433 = v15;
+          v433 = moduleCopy;
           if (v66)
           {
-            v419 = v320;
-            v68 = [v12 transceiveAndCheckSW:v66 error:a7];
+            v419 = date;
+            v68 = [historyCopy transceiveAndCheckSW:v66 error:error];
 
             if (v68)
             {
@@ -3128,7 +3128,7 @@ LABEL_221:
 
                 else
                 {
-                  v349 = v14;
+                  v349 = packageCopy;
                   v350 = ATLLogObject();
                   if (os_log_type_enabled(v350, OS_LOG_TYPE_DEFAULT))
                   {
@@ -3136,7 +3136,7 @@ LABEL_221:
                     _os_log_impl(&dword_22EEF5000, v350, OS_LOG_TYPE_DEFAULT, "failed to retrieved AAVS amount", v520, 2u);
                   }
 
-                  v14 = v349;
+                  packageCopy = v349;
                   v324 = v421;
                 }
 
@@ -3151,22 +3151,22 @@ LABEL_221:
                   {
                     [v324 setObject:v325 forKeyedSubscript:@"CardCurrency"];
                     [MEMORY[0x277CCABB0] numberWithShort:*v520];
-                    v353 = v352 = v14;
+                    v353 = v352 = packageCopy;
                     [v421 setObject:v353 forKeyedSubscript:@"CardCurrencyExponent"];
 
-                    v14 = v352;
+                    packageCopy = v352;
                     [v421 setObject:&unk_2843C6BF0 forKeyedSubscript:@"CardCurrencyCode"];
                   }
 
 LABEL_261:
 
                   v419 = v322;
-                  v416 = [MEMORY[0x277CBEB18] array];
+                  array5 = [MEMORY[0x277CBEB18] array];
                   v354 = 0;
                   v439 = v68;
-                  v15 = v433;
+                  moduleCopy = v433;
                   v17 = v441;
-                  v427 = v14;
+                  v427 = packageCopy;
                   while (1)
                   {
                     v355 = v66;
@@ -3174,7 +3174,7 @@ LABEL_261:
 
                     if (v66)
                     {
-                      v68 = [v12 transceiveAndCheckSW:v66 error:a7];
+                      v68 = [historyCopy transceiveAndCheckSW:v66 error:error];
 
                       if (!v68)
                       {
@@ -3196,15 +3196,15 @@ LABEL_261:
 
                           if (![OctopusDecoder filterHistoryEntry:v357])
                           {
-                            [v416 addObject:v357];
+                            [array5 addObject:v357];
                           }
 
                           if (v360)
                           {
-                            [v416 addObject:v360];
+                            [array5 addObject:v360];
                           }
 
-                          v14 = v427;
+                          packageCopy = v427;
                           v17 = v441;
                         }
                       }
@@ -3227,7 +3227,7 @@ LABEL_261:
                       }
 
                       v70 = v356;
-                      v15 = v433;
+                      moduleCopy = v433;
                     }
 
                     if (++v354 == 10)
@@ -3236,7 +3236,7 @@ LABEL_261:
 
                       if (v361)
                       {
-                        v68 = [v12 transceiveAndCheckSW:v361 error:a7];
+                        v68 = [historyCopy transceiveAndCheckSW:v361 error:error];
 
                         if (v68)
                         {
@@ -3245,11 +3245,11 @@ LABEL_261:
 
                           if (v362)
                           {
-                            v363 = v15;
+                            v363 = moduleCopy;
                             v364 = [MEMORY[0x277CCABB0] numberWithInt:{+[OctopusDecoder isDenyListed:](OctopusDecoder, "isDenyListed:", v362)}];
                             [v421 setObject:v364 forKeyedSubscript:@"CardDenyListed"];
 
-                            v15 = v363;
+                            moduleCopy = v363;
                             v365 = v421;
                             v70 = v362;
                             v361 = v442;
@@ -3270,14 +3270,14 @@ LABEL_261:
 
                           v382 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Octopus Card Settings : GET DATA for Service Code %d and block %d is invalid: %@", 520, 0, v68];
                           v383 = v382;
-                          if (a7)
+                          if (error)
                           {
-                            v384 = v15;
-                            v385 = v14;
-                            v386 = *a7;
+                            v384 = moduleCopy;
+                            v385 = packageCopy;
+                            v386 = *error;
                             v387 = MEMORY[0x277CCA9B8];
                             v388 = *MEMORY[0x277CCA450];
-                            if (*a7)
+                            if (*error)
                             {
                               v389 = *MEMORY[0x277CCA7E8];
                               v508[0] = *MEMORY[0x277CCA450];
@@ -3301,16 +3301,16 @@ LABEL_261:
                             }
 
                             v404 = [v390 dictionaryWithObjects:v391 forKeys:v392 count:v393];
-                            *a7 = [v387 errorWithDomain:@"ATL" code:3 userInfo:v404];
+                            *error = [v387 errorWithDomain:@"ATL" code:3 userInfo:v404];
 
-                            v14 = v385;
-                            v15 = v384;
+                            packageCopy = v385;
+                            moduleCopy = v384;
                           }
 
                           v394 = 0;
                           v326 = 0;
                           v66 = v442;
-                          v366 = v416;
+                          v366 = array5;
 LABEL_333:
 
                           v338 = v408;
@@ -3320,7 +3320,7 @@ LABEL_333:
                         v326 = 0;
                         v66 = v361;
 LABEL_289:
-                        v366 = v416;
+                        v366 = array5;
                       }
 
                       else
@@ -3330,10 +3330,10 @@ LABEL_289:
 LABEL_282:
                         v66 = FelicaGetDataFileSystemCommand(2312, 0);
 
-                        v366 = v416;
+                        v366 = array5;
                         if (v66)
                         {
-                          v367 = [v12 transceiveAndCheckSW:v66 error:0];
+                          v367 = [historyCopy transceiveAndCheckSW:v66 error:0];
 
                           if (v367)
                           {
@@ -3344,10 +3344,10 @@ LABEL_282:
                               if ([OctopusDecoder getEnRouteStatus:v368])
                               {
                                 [MEMORY[0x277CBEB18] arrayWithObject:@"TransitTrain"];
-                                v370 = v369 = v15;
+                                v370 = v369 = moduleCopy;
                                 [v421 setObject:v370 forKeyedSubscript:@"TransactionInProgress"];
 
-                                v15 = v369;
+                                moduleCopy = v369;
                                 v365 = v421;
                               }
 
@@ -3366,8 +3366,8 @@ LABEL_282:
                           v367 = v68;
                         }
 
-                        [v434 setObject:v416 forKeyedSubscript:@"TransactionHistory"];
-                        [v434 setObject:v365 forKeyedSubscript:@"State"];
+                        [dictionary setObject:array5 forKeyedSubscript:@"TransactionHistory"];
+                        [dictionary setObject:v365 forKeyedSubscript:@"State"];
                         v326 = 1;
                         v68 = v367;
                       }
@@ -3402,13 +3402,13 @@ LABEL_231:
               }
 
               v338 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Octopus Internal : GET DATA for Service Code %d and block %d is invalid: %@", 776, 0, v68];
-              if (a7)
+              if (error)
               {
-                v339 = *a7;
+                v339 = *error;
                 v340 = MEMORY[0x277CCA9B8];
                 v341 = *MEMORY[0x277CCA450];
                 v408 = v338;
-                if (*a7)
+                if (*error)
                 {
                   v342 = *MEMORY[0x277CCA7E8];
                   v512[0] = *MEMORY[0x277CCA450];
@@ -3434,7 +3434,7 @@ LABEL_231:
                 v403 = [v343 dictionaryWithObjects:v344 forKeys:v345 count:v346];
                 [v340 errorWithDomain:@"ATL" code:3 userInfo:v403];
                 v394 = 0;
-                *a7 = v326 = 0;
+                *error = v326 = 0;
                 v366 = v403;
                 goto LABEL_333;
               }
@@ -3461,7 +3461,7 @@ LABEL_334:
 
           v408 = 0;
           v68 = v319;
-          v322 = v320;
+          v322 = date;
           goto LABEL_231;
         }
 
@@ -3473,7 +3473,7 @@ LABEL_312:
         goto LABEL_348;
       }
 
-      v219 = v14;
+      v219 = packageCopy;
       v295 = ATLLogObject();
       if (os_log_type_enabled(v295, OS_LOG_TYPE_ERROR))
       {
@@ -3483,13 +3483,13 @@ LABEL_312:
 
       v296 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"failed to retrieved balance"];
       v222 = v296;
-      if (a7)
+      if (error)
       {
-        v223 = v15;
-        v297 = *a7;
+        v223 = moduleCopy;
+        v297 = *error;
         v298 = MEMORY[0x277CCA9B8];
         v299 = *MEMORY[0x277CCA450];
-        if (*a7)
+        if (*error)
         {
           v300 = *MEMORY[0x277CCA7E8];
           v524[0] = *MEMORY[0x277CCA450];
@@ -3515,17 +3515,17 @@ LABEL_312:
         v371 = [v301 dictionaryWithObjects:v302 forKeys:v303 count:v304];
         v372 = [v298 errorWithDomain:@"ATL" code:3 userInfo:v371];
 LABEL_310:
-        *a7 = v372;
+        *error = v372;
 
-        v14 = v219;
-        v15 = v223;
+        packageCopy = v219;
+        moduleCopy = v223;
         goto LABEL_311;
       }
     }
 
     else
     {
-      v219 = v14;
+      v219 = packageCopy;
       v220 = ATLLogObject();
       if (os_log_type_enabled(v220, OS_LOG_TYPE_ERROR))
       {
@@ -3540,13 +3540,13 @@ LABEL_310:
 
       v221 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Octopus Purse : GET DATA for Service Code %d and block %d is invalid: %@", 279, 0, v68];
       v222 = v221;
-      if (a7)
+      if (error)
       {
-        v223 = v15;
-        v224 = *a7;
+        v223 = moduleCopy;
+        v224 = *error;
         v225 = MEMORY[0x277CCA9B8];
         v226 = *MEMORY[0x277CCA450];
-        if (*a7)
+        if (*error)
         {
           v227 = *MEMORY[0x277CCA7E8];
           v516[0] = *MEMORY[0x277CCA450];
@@ -3578,12 +3578,12 @@ LABEL_310:
       v70 = 0;
     }
 
-    v14 = v219;
+    packageCopy = v219;
 LABEL_311:
 
     v190 = 0;
     v17 = v441;
-    v65 = v421;
+    dictionary3 = v421;
     goto LABEL_312;
   }
 
@@ -3598,12 +3598,12 @@ LABEL_311:
 
   v38 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode SELECT response contents %d", v36];
   v39 = v38;
-  if (a7)
+  if (error)
   {
-    v40 = *a7;
+    v40 = *error;
     v41 = MEMORY[0x277CCA9B8];
     v42 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v43 = *MEMORY[0x277CCA7E8];
       v532[0] = *MEMORY[0x277CCA450];
@@ -3628,7 +3628,7 @@ LABEL_311:
 
     v72 = [v44 dictionaryWithObjects:v45 forKeys:v46 count:v47];
     [v41 errorWithDomain:@"ATL" code:3 userInfo:v72];
-    *a7 = v34 = 0;
+    *error = v34 = 0;
     goto LABEL_350;
   }
 
@@ -3642,33 +3642,33 @@ LABEL_352:
   return v34;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"Supported";
   v10[1] = @"DelayExpressReentry";
   v11[0] = MEMORY[0x277CBEC38];
   v11[1] = &unk_2843C6AE8;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, a6, a7}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, transceiver, error}];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v88[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  transactionCopy = transaction;
+  appletCopy = applet;
+  if (transactionCopy)
   {
     self->_eotInProgress = 1;
-    v12 = [MEMORY[0x277CBEA90] dataWithHexString:v11];
+    v12 = [MEMORY[0x277CBEA90] dataWithHexString:appletCopy];
     v13 = EndOfTransactionCmd(v12, 0);
-    v14 = [v10 transceive:v13 error:0];
+    v14 = [transactionCopy transceive:v13 error:0];
     v15 = SelectByNameCmd(v12);
 
-    v16 = [v10 transceiveAndCheckSW:v15 error:a7];
+    v16 = [transactionCopy transceiveAndCheckSW:v15 error:error];
     v65[0] = [v16 bytes];
     v65[1] = [v16 length];
     v63 = 0;
@@ -3688,15 +3688,15 @@ LABEL_352:
 
       v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to find tag 'A5' in Slalom SELECT response, %d", v18];
       v21 = v20;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_30;
       }
 
-      v22 = *a7;
+      v22 = *error;
       v23 = MEMORY[0x277CCA9B8];
       v24 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v25 = *MEMORY[0x277CCA7E8];
         v81[0] = *MEMORY[0x277CCA450];
@@ -3710,12 +3710,12 @@ LABEL_19:
         v47 = 2;
 LABEL_29:
         v52 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:v47];
-        *a7 = [v23 errorWithDomain:@"ATL" code:3 userInfo:v52];
+        *error = [v23 errorWithDomain:@"ATL" code:3 userInfo:v52];
 
 LABEL_30:
         self->_eotInProgress = 0;
         [(NSMutableArray *)self->_hciArray removeAllObjects];
-        v49 = 0;
+        dictionary = 0;
 LABEL_31:
 
         goto LABEL_32;
@@ -3750,15 +3750,15 @@ LABEL_31:
 
       v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode SELECT response contents %d", v41];
       v21 = v43;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_30;
       }
 
-      v44 = *a7;
+      v44 = *error;
       v23 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v46 = *MEMORY[0x277CCA7E8];
         v68[0] = *MEMORY[0x277CCA450];
@@ -3799,22 +3799,22 @@ LABEL_28:
       v51 = off_2788744C0;
     }
 
-    v55 = [(__objc2_class *)*v51 generateEndEventFromHCI:self->_hciArray withTransceiver:v10];
+    v55 = [(__objc2_class *)*v51 generateEndEventFromHCI:self->_hciArray withTransceiver:transactionCopy];
     [(NSMutableArray *)self->_hciArray removeAllObjects];
     if (v55)
     {
       v56 = [v55 objectForKeyedSubscript:@"NFServiceProviderID"];
       v62 = [v55 objectForKeyedSubscript:@"readOnly"];
-      v57 = [v56 unsignedShortValue];
+      unsignedShortValue = [v56 unsignedShortValue];
       v58 = -4095;
-      if ([SlalomDecoder isJREServiceProviderID:v57])
+      if ([SlalomDecoder isJREServiceProviderID:unsignedShortValue])
       {
         v60 = v62;
       }
 
       else
       {
-        v59 = v57 & 0xFE;
+        v59 = unsignedShortValue & 0xFE;
         v60 = v62;
         if (v59 != 4)
         {
@@ -3841,13 +3841,13 @@ LABEL_43:
     v58 = -4094;
 LABEL_46:
 
-    v49 = [MEMORY[0x277CBEB38] dictionary];
-    [v49 setObject:v11 forKeyedSubscript:@"appletIdentifier"];
-    [v49 setObject:&unk_2843C6B00 forKeyedSubscript:@"type"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:appletCopy forKeyedSubscript:@"appletIdentifier"];
+    [dictionary setObject:&unk_2843C6B00 forKeyedSubscript:@"type"];
     v61 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v58];
-    [v49 setObject:v61 forKeyedSubscript:@"result"];
+    [dictionary setObject:v61 forKeyedSubscript:@"result"];
 
-    [v49 setObject:v55 forKeyedSubscript:@"felicaInfo"];
+    [dictionary setObject:v55 forKeyedSubscript:@"felicaInfo"];
     self->_eotInProgress = 0;
 
     goto LABEL_31;
@@ -3862,12 +3862,12 @@ LABEL_46:
 
   v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Transceiver is required to process End of Transaction method call."];
   v31 = v30;
-  if (a7)
+  if (error)
   {
-    v32 = *a7;
+    v32 = *error;
     v33 = MEMORY[0x277CCA9B8];
     v34 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v35 = *MEMORY[0x277CCA7E8];
       v85[0] = *MEMORY[0x277CCA450];
@@ -3891,26 +3891,26 @@ LABEL_46:
     }
 
     v48 = [v36 dictionaryWithObjects:v37 forKeys:v38 count:v39];
-    *a7 = [v33 errorWithDomain:@"ATL" code:4 userInfo:v48];
+    *error = [v33 errorWithDomain:@"ATL" code:4 userInfo:v48];
   }
 
   [(NSMutableArray *)self->_hciArray removeAllObjects];
-  v49 = 0;
+  dictionary = 0;
 LABEL_32:
 
   v53 = *MEMORY[0x277D85DE8];
 
-  return v49;
+  return dictionary;
 }
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v221[1] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = [MEMORY[0x277CBEA90] dataWithHexString:a3];
+  transceiverCopy = transceiver;
+  v10 = [MEMORY[0x277CBEA90] dataWithHexString:data];
   v11 = SelectByNameCmd(v10);
 
-  v12 = [v9 transceiveAndCheckSW:v11 error:a7];
+  v12 = [transceiverCopy transceiveAndCheckSW:v11 error:error];
   v13 = v12;
   if (!v12)
   {
@@ -3938,12 +3938,12 @@ LABEL_17:
 
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to find tag 'A5' in Slalom SELECT response, %d", v15];
     v18 = v17;
-    if (a7)
+    if (error)
     {
-      v19 = *a7;
+      v19 = *error;
       v20 = MEMORY[0x277CCA9B8];
       v21 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v22 = *MEMORY[0x277CCA7E8];
         v218[0] = *MEMORY[0x277CCA450];
@@ -3967,7 +3967,7 @@ LABEL_17:
       }
 
       v40 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v26];
-      *a7 = [v20 errorWithDomain:@"ATL" code:3 userInfo:v40];
+      *error = [v20 errorWithDomain:@"ATL" code:3 userInfo:v40];
     }
 
     goto LABEL_17;
@@ -3994,12 +3994,12 @@ LABEL_17:
 
     v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode SELECT response contents %d", v28];
     v31 = v30;
-    if (a7)
+    if (error)
     {
-      v32 = *a7;
+      v32 = *error;
       v33 = MEMORY[0x277CCA9B8];
       v34 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v35 = *MEMORY[0x277CCA7E8];
         v205[0] = *MEMORY[0x277CCA450];
@@ -4027,7 +4027,7 @@ LABEL_17:
       v57 = 3;
 LABEL_27:
       [v56 errorWithDomain:@"ATL" code:v57 userInfo:v43];
-      *a7 = v41 = 0;
+      *error = v41 = 0;
 LABEL_110:
 
       goto LABEL_111;
@@ -4040,25 +4040,25 @@ LABEL_110:
   if (v42 == 7)
   {
     v31 = objc_opt_new();
-    v58 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:0 withTransceiver:v9 withError:a7];
-    v43 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:1 withTransceiver:v9 withError:a7];
+    v58 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
+    v43 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26575 withBlockNumber:1 withTransceiver:transceiverCopy withError:error];
     if (v58)
     {
       v59 = [GondolaDecoder decodeCardNumberFromBlock0:v58 andBlock1:v43];
-      v60 = [v59 asHexString];
-      [v31 setObject:v60 forKeyedSubscript:@"CardNumber"];
+      asHexString = [v59 asHexString];
+      [v31 setObject:asHexString forKeyedSubscript:@"CardNumber"];
 
-      v61 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26647 withBlockNumber:0 withTransceiver:v9 withError:a7];
+      v61 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26647 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
 
       if (v61)
       {
         v62 = [v61 subdataWithOffset:0 length:4];
-        v63 = [v62 asHexString];
-        [v31 setObject:v63 forKeyedSubscript:@"Balance"];
+        asHexString2 = [v62 asHexString];
+        [v31 setObject:asHexString2 forKeyedSubscript:@"Balance"];
 
-        v64 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:1 withTransceiver:v9 withError:a7];
+        v64 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:1 withTransceiver:transceiverCopy withError:error];
 
-        v65 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:0 withTransceiver:v9 withError:a7];
+        v65 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26571 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
 
         if (!v64 || !v65)
         {
@@ -4071,12 +4071,12 @@ LABEL_110:
 
           v110 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Gondola SP Opaque Data"];
           v111 = v110;
-          if (a7)
+          if (error)
           {
-            v112 = *a7;
+            v112 = *error;
             v113 = MEMORY[0x277CCA9B8];
             v114 = *MEMORY[0x277CCA450];
-            if (*a7)
+            if (*error)
             {
               v115 = *MEMORY[0x277CCA7E8];
               v181[0] = *MEMORY[0x277CCA450];
@@ -4100,15 +4100,15 @@ LABEL_110:
             }
 
             v151 = [v116 dictionaryWithObjects:v117 forKeys:v118 count:v119];
-            *a7 = [v113 errorWithDomain:@"ATL" code:8 userInfo:v151];
+            *error = [v113 errorWithDomain:@"ATL" code:8 userInfo:v151];
           }
 
           goto LABEL_107;
         }
 
         v66 = [v64 subdataWithOffset:3 length:3];
-        v67 = [v66 asHexString];
-        [v31 setObject:v67 forKeyedSubscript:@"EntryDate"];
+        asHexString3 = [v66 asHexString];
+        [v31 setObject:asHexString3 forKeyedSubscript:@"EntryDate"];
 
         v68 = [MEMORY[0x277CCABB0] numberWithBool:{+[GondolaDecoder isCardUsageFlag:](GondolaDecoder, "isCardUsageFlag:", v65)}];
         [v31 setObject:v68 forKeyedSubscript:@"UsageStartFlag"];
@@ -4116,22 +4116,22 @@ LABEL_110:
         v69 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v64, "u8:", 12)}];
         [v31 setObject:v69 forKeyedSubscript:@"BrandApplicationStatus"];
 
-        v70 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26699 withBlockNumber:0 withTransceiver:v9 withError:a7];
+        v70 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26699 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
 
         if (v70)
         {
-          v71 = [v70 asHexString];
-          [v31 setObject:v71 forKeyedSubscript:@"PointBlock"];
+          asHexString4 = [v70 asHexString];
+          [v31 setObject:asHexString4 forKeyedSubscript:@"PointBlock"];
 
-          v65 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:7 withTransceiver:v9 withError:a7];
+          v65 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:26635 withBlockNumber:7 withTransceiver:transceiverCopy withError:error];
 
           if (v65)
           {
             v72 = [v65 subdataWithOffset:4 length:5];
-            v73 = [v72 asHexString];
-            [v31 setObject:v73 forKeyedSubscript:@"BitData9"];
+            asHexString5 = [v72 asHexString];
+            [v31 setObject:asHexString5 forKeyedSubscript:@"BitData9"];
 
-            v41 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v31 options:1 error:a7];
+            v41 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v31 options:1 error:error];
 LABEL_108:
             v43 = v64;
             goto LABEL_109;
@@ -4146,17 +4146,17 @@ LABEL_108:
 
           v153 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Gondola SP Opaque Data"];
           v65 = v153;
-          if (!a7)
+          if (!error)
           {
 LABEL_107:
             v41 = 0;
             goto LABEL_108;
           }
 
-          v154 = *a7;
+          v154 = *error;
           v144 = MEMORY[0x277CCA9B8];
           v155 = *MEMORY[0x277CCA450];
-          if (*a7)
+          if (*error)
           {
             v156 = *MEMORY[0x277CCA7E8];
             v173[0] = *MEMORY[0x277CCA450];
@@ -4187,15 +4187,15 @@ LABEL_107:
 
           v142 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Gondola SP Opaque Data"];
           v65 = v142;
-          if (!a7)
+          if (!error)
           {
             goto LABEL_107;
           }
 
-          v143 = *a7;
+          v143 = *error;
           v144 = MEMORY[0x277CCA9B8];
           v145 = *MEMORY[0x277CCA450];
-          if (*a7)
+          if (*error)
           {
             v146 = *MEMORY[0x277CCA7E8];
             v177[0] = *MEMORY[0x277CCA450];
@@ -4209,7 +4209,7 @@ LABEL_95:
             v157 = 2;
 LABEL_106:
             v160 = [v147 dictionaryWithObjects:v148 forKeys:v149 count:v157];
-            *a7 = [v144 errorWithDomain:@"ATL" code:8 userInfo:v160];
+            *error = [v144 errorWithDomain:@"ATL" code:8 userInfo:v160];
 
             goto LABEL_107;
           }
@@ -4234,7 +4234,7 @@ LABEL_106:
 
       v104 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Gondola SP Opaque Data"];
       v65 = v104;
-      if (!a7)
+      if (!error)
       {
 LABEL_86:
         v41 = 0;
@@ -4243,10 +4243,10 @@ LABEL_109:
         goto LABEL_110;
       }
 
-      v105 = *a7;
+      v105 = *error;
       v97 = MEMORY[0x277CCA9B8];
       v106 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v107 = *MEMORY[0x277CCA7E8];
         v185[0] = *MEMORY[0x277CCA450];
@@ -4277,15 +4277,15 @@ LABEL_109:
 
       v95 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Gondola SP Opaque Data"];
       v65 = v95;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_86;
       }
 
-      v96 = *a7;
+      v96 = *error;
       v97 = MEMORY[0x277CCA9B8];
       v98 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v99 = *MEMORY[0x277CCA7E8];
         v189[0] = *MEMORY[0x277CCA450];
@@ -4299,7 +4299,7 @@ LABEL_56:
         v108 = 2;
 LABEL_85:
         v150 = [v100 dictionaryWithObjects:v101 forKeys:v102 count:v108];
-        *a7 = [v97 errorWithDomain:@"ATL" code:8 userInfo:v150];
+        *error = [v97 errorWithDomain:@"ATL" code:8 userInfo:v150];
 
         goto LABEL_86;
       }
@@ -4320,14 +4320,14 @@ LABEL_85:
     v31 = objc_opt_new();
     v43 = objc_opt_new();
     [v43 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    v44 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:0 withTransceiver:v9 withError:a7];
-    v45 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:1 withTransceiver:v9 withError:a7];
+    v44 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
+    v45 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21899 withBlockNumber:1 withTransceiver:transceiverCopy withError:error];
     v46 = v45;
     if (v44 && v45)
     {
       v163 = [MogulDecoder decodeCardID:v44];
-      v47 = [v163 asHexString];
-      [v31 setObject:v47 forKeyedSubscript:@"CardNumber"];
+      asHexString6 = [v163 asHexString];
+      [v31 setObject:asHexString6 forKeyedSubscript:@"CardNumber"];
 
       v48 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{+[MogulDecoder decodeTopupFlag:](MogulDecoder, "decodeTopupFlag:", v46)}];
       [v31 setObject:v48 forKeyedSubscript:@"TopUpFlag"];
@@ -4341,22 +4341,22 @@ LABEL_85:
       v51 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{+[MogulDecoder decodeStatusFlag:](MogulDecoder, "decodeStatusFlag:", v46)}];
       [v31 setObject:v51 forKeyedSubscript:@"StatusFlag"];
 
-      v52 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21911 withBlockNumber:0 withTransceiver:v9 withError:a7];
+      v52 = [SlalomDecoder getDataAndCheckFeliCaServiceCode:21911 withBlockNumber:0 withTransceiver:transceiverCopy withError:error];
 
       if (v52)
       {
-        v53 = [v52 asHexString];
-        [v31 setObject:v53 forKeyedSubscript:@"BalanceBlock"];
+        asHexString7 = [v52 asHexString];
+        [v31 setObject:asHexString7 forKeyedSubscript:@"BalanceBlock"];
 
-        [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:1 withTransceiver:v9 withError:a7];
+        [SlalomDecoder getDataAndCheckFeliCaServiceCode:22027 withBlockNumber:1 withTransceiver:transceiverCopy withError:error];
         v54 = v44 = v52;
 
         if (v54)
         {
-          v55 = [v54 asHexString];
-          [v31 setObject:v55 forKeyedSubscript:@"PointBlock"];
+          asHexString8 = [v54 asHexString];
+          [v31 setObject:asHexString8 forKeyedSubscript:@"PointBlock"];
 
-          v41 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v31 options:1 error:a7];
+          v41 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v31 options:1 error:error];
         }
 
         else
@@ -4371,12 +4371,12 @@ LABEL_85:
 
           v132 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Mogul SP Opaque Data"];
           v54 = v132;
-          if (a7)
+          if (error)
           {
-            v133 = *a7;
+            v133 = *error;
             v134 = MEMORY[0x277CCA9B8];
             v135 = *MEMORY[0x277CCA450];
-            if (*a7)
+            if (*error)
             {
               v136 = *MEMORY[0x277CCA7E8];
               v193[0] = *MEMORY[0x277CCA450];
@@ -4400,7 +4400,7 @@ LABEL_85:
             }
 
             v159 = [v137 dictionaryWithObjects:v138 forKeys:v139 count:v140];
-            *a7 = [v134 errorWithDomain:@"ATL" code:8 userInfo:v159];
+            *error = [v134 errorWithDomain:@"ATL" code:8 userInfo:v159];
           }
 
           v41 = 0;
@@ -4419,12 +4419,12 @@ LABEL_85:
 
         v121 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Mogul SP Opaque Data"];
         v54 = v121;
-        if (a7)
+        if (error)
         {
-          v122 = *a7;
+          v122 = *error;
           v123 = MEMORY[0x277CCA9B8];
           v124 = *MEMORY[0x277CCA450];
-          if (*a7)
+          if (*error)
           {
             v125 = *MEMORY[0x277CCA7E8];
             v197[0] = *MEMORY[0x277CCA450];
@@ -4448,7 +4448,7 @@ LABEL_85:
           }
 
           v158 = [v126 dictionaryWithObjects:v127 forKeys:v128 count:v129];
-          *a7 = [v123 errorWithDomain:@"ATL" code:8 userInfo:v158];
+          *error = [v123 errorWithDomain:@"ATL" code:8 userInfo:v158];
         }
 
         v41 = 0;
@@ -4467,12 +4467,12 @@ LABEL_85:
 
       v85 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode Mogul SP Opaque Data"];
       v86 = v85;
-      if (a7)
+      if (error)
       {
-        v87 = *a7;
+        v87 = *error;
         v164 = MEMORY[0x277CCA9B8];
         v88 = *MEMORY[0x277CCA450];
-        if (*a7)
+        if (*error)
         {
           v89 = *MEMORY[0x277CCA7E8];
           v201[0] = *MEMORY[0x277CCA450];
@@ -4496,7 +4496,7 @@ LABEL_85:
         }
 
         v130 = [v90 dictionaryWithObjects:v91 forKeys:v92 count:v93];
-        *a7 = [v164 errorWithDomain:@"ATL" code:8 userInfo:v130];
+        *error = [v164 errorWithDomain:@"ATL" code:8 userInfo:v130];
       }
 
       v41 = 0;
@@ -4516,12 +4516,12 @@ LABEL_85:
 
   v75 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No Opaque Data for TypeF provider %d", v42];
   v31 = v75;
-  if (a7)
+  if (error)
   {
-    v76 = *a7;
+    v76 = *error;
     v77 = MEMORY[0x277CCA9B8];
     v78 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v79 = *MEMORY[0x277CCA7E8];
       v169[0] = *MEMORY[0x277CCA450];
@@ -4560,17 +4560,17 @@ LABEL_112:
   return v41;
 }
 
-+ (BOOL)isJREServiceProviderID:(unsigned __int8)a3
++ (BOOL)isJREServiceProviderID:(unsigned __int8)d
 {
-  if (a3 > 8u)
+  if (d > 8u)
   {
-    return a3 > 0xDFu;
+    return d > 0xDFu;
   }
 
   result = 1;
-  if (((1 << a3) & 0x142) == 0)
+  if (((1 << d) & 0x142) == 0)
   {
-    return a3 > 0xDFu;
+    return d > 0xDFu;
   }
 
   return result;

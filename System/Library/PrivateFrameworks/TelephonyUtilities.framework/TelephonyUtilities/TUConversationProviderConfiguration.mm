@@ -1,28 +1,28 @@
 @interface TUConversationProviderConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationProvider:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationProvider:(id)provider;
 - (BOOL)supportsVideo;
-- (TUConversationProviderConfiguration)initWithCoder:(id)a3;
-- (TUConversationProviderConfiguration)initWithConfiguration:(id)a3;
-- (TUConversationProviderConfiguration)initWithServiceName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationProviderConfiguration)initWithCoder:(id)coder;
+- (TUConversationProviderConfiguration)initWithConfiguration:(id)configuration;
+- (TUConversationProviderConfiguration)initWithServiceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSupportedMediaTypes:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSupportedMediaTypes:(id)types;
 @end
 
 @implementation TUConversationProviderConfiguration
 
-- (TUConversationProviderConfiguration)initWithServiceName:(id)a3
+- (TUConversationProviderConfiguration)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = TUConversationProviderConfiguration;
   v5 = [(TUConversationProviderConfiguration *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
@@ -47,23 +47,23 @@
   return v5;
 }
 
-- (TUConversationProviderConfiguration)initWithConfiguration:(id)a3
+- (TUConversationProviderConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = TUConversationProviderConfiguration;
   v5 = [(TUConversationProviderConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_serviceName, *(v4 + 2));
-    objc_storeStrong(&v6->_pseudonymFeatureID, *(v4 + 3));
-    objc_storeStrong(&v6->_bundleID, *(v4 + 4));
-    objc_storeStrong(&v6->_supportedMediaTypes, *(v4 + 5));
-    v6->_supportsLinks = *(v4 + 8);
-    v6->_supportsSharePlay = *(v4 + 9);
-    v6->_supportsConversationHandoff = *(v4 + 10);
-    v6->_wantsLeaveOnInvalidation = *(v4 + 11);
+    objc_storeStrong(&v5->_serviceName, *(configurationCopy + 2));
+    objc_storeStrong(&v6->_pseudonymFeatureID, *(configurationCopy + 3));
+    objc_storeStrong(&v6->_bundleID, *(configurationCopy + 4));
+    objc_storeStrong(&v6->_supportedMediaTypes, *(configurationCopy + 5));
+    v6->_supportsLinks = *(configurationCopy + 8);
+    v6->_supportsSharePlay = *(configurationCopy + 9);
+    v6->_supportsConversationHandoff = *(configurationCopy + 10);
+    v6->_wantsLeaveOnInvalidation = *(configurationCopy + 11);
   }
 
   return v6;
@@ -71,19 +71,19 @@
 
 - (BOOL)supportsVideo
 {
-  v2 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
-  v3 = [v2 containsObject:&unk_1F09C62C8];
+  supportedMediaTypes = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
+  v3 = [supportedMediaTypes containsObject:&unk_1F09C62C8];
 
   return v3;
 }
 
-- (void)setSupportedMediaTypes:(id)a3
+- (void)setSupportedMediaTypes:(id)types
 {
-  v7 = a3;
-  v4 = v7;
+  typesCopy = types;
+  v4 = typesCopy;
   if (!+[TUConversationManager allowsVideo])
   {
-    v4 = [v7 objectsPassingTest:&__block_literal_global_47];
+    v4 = [typesCopy objectsPassingTest:&__block_literal_global_47];
   }
 
   if ([v4 count] && !-[NSSet isEqualToSet:](self->_supportedMediaTypes, "isEqualToSet:", v4))
@@ -94,9 +94,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithConfiguration:self];
 }
@@ -104,38 +104,38 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationProviderConfiguration *)self bundleID];
+  bundleID = [(TUConversationProviderConfiguration *)self bundleID];
 
-  if (v4)
+  if (bundleID)
   {
-    v5 = [(TUConversationProviderConfiguration *)self bundleID];
-    [v3 appendFormat:@" bundleID=%@", v5];
+    bundleID2 = [(TUConversationProviderConfiguration *)self bundleID];
+    [v3 appendFormat:@" bundleID=%@", bundleID2];
   }
 
-  v6 = [(TUConversationProviderConfiguration *)self serviceName];
+  serviceName = [(TUConversationProviderConfiguration *)self serviceName];
 
-  if (v6)
+  if (serviceName)
   {
-    v7 = [(TUConversationProviderConfiguration *)self serviceName];
-    [v3 appendFormat:@" serviceName=%@", v7];
+    serviceName2 = [(TUConversationProviderConfiguration *)self serviceName];
+    [v3 appendFormat:@" serviceName=%@", serviceName2];
   }
 
-  v8 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
+  pseudonymFeatureID = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
 
-  if (v8)
+  if (pseudonymFeatureID)
   {
-    v9 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
-    [v3 appendFormat:@" pseudonymFeatureID=%@", v9];
+    pseudonymFeatureID2 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
+    [v3 appendFormat:@" pseudonymFeatureID=%@", pseudonymFeatureID2];
   }
 
-  v10 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
-  v11 = [v10 count];
+  supportedMediaTypes = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
+  v11 = [supportedMediaTypes count];
 
   if (v11)
   {
-    v12 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
-    v13 = [v12 allObjects];
-    v14 = [v13 componentsJoinedByString:{@", "}];
+    supportedMediaTypes2 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
+    allObjects = [supportedMediaTypes2 allObjects];
+    v14 = [allObjects componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" supportedMediaTypes=%@", v14];
   }
 
@@ -164,10 +164,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -175,7 +175,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationProviderConfiguration *)self isEqualToConversationProvider:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationProviderConfiguration *)self isEqualToConversationProvider:equalCopy];
   }
 
   return v5;
@@ -183,41 +183,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationProviderConfiguration *)self serviceName];
-  v4 = [v3 hash];
-  v5 = [(TUConversationProviderConfiguration *)self bundleID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
-  v8 = [v7 hash];
+  serviceName = [(TUConversationProviderConfiguration *)self serviceName];
+  v4 = [serviceName hash];
+  bundleID = [(TUConversationProviderConfiguration *)self bundleID];
+  v6 = [bundleID hash] ^ v4;
+  pseudonymFeatureID = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
+  v8 = [pseudonymFeatureID hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqualToConversationProvider:(id)a3
+- (BOOL)isEqualToConversationProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(TUConversationProviderConfiguration *)self serviceName];
-  v6 = [v4 serviceName];
-  if ([v5 isEqualToString:v6])
+  providerCopy = provider;
+  serviceName = [(TUConversationProviderConfiguration *)self serviceName];
+  serviceName2 = [providerCopy serviceName];
+  if ([serviceName isEqualToString:serviceName2])
   {
-    v7 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
-    v8 = [v4 pseudonymFeatureID];
-    if (TUStringsAreEqualOrNil(v7, v8))
+    pseudonymFeatureID = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
+    pseudonymFeatureID2 = [providerCopy pseudonymFeatureID];
+    if (TUStringsAreEqualOrNil(pseudonymFeatureID, pseudonymFeatureID2))
     {
-      v9 = [(TUConversationProviderConfiguration *)self bundleID];
-      v10 = [v4 bundleID];
-      if (TUStringsAreEqualOrNil(v9, v10))
+      bundleID = [(TUConversationProviderConfiguration *)self bundleID];
+      bundleID2 = [providerCopy bundleID];
+      if (TUStringsAreEqualOrNil(bundleID, bundleID2))
       {
-        v11 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
-        v12 = [v4 supportedMediaTypes];
-        if (TUObjectsAreEqualOrNil(v11, v12))
+        supportedMediaTypes = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
+        supportedMediaTypes2 = [providerCopy supportedMediaTypes];
+        if (TUObjectsAreEqualOrNil(supportedMediaTypes, supportedMediaTypes2))
         {
-          v19 = v11;
-          v13 = [(TUConversationProviderConfiguration *)self supportsLinks];
-          if (v13 == [v4 supportsLinks] && (v14 = -[TUConversationProviderConfiguration supportsSharePlay](self, "supportsSharePlay"), v14 == objc_msgSend(v4, "supportsSharePlay")) && (v15 = -[TUConversationProviderConfiguration supportsConversationHandoff](self, "supportsConversationHandoff"), v15 == objc_msgSend(v4, "supportsConversationHandoff")))
+          v19 = supportedMediaTypes;
+          supportsLinks = [(TUConversationProviderConfiguration *)self supportsLinks];
+          if (supportsLinks == [providerCopy supportsLinks] && (v14 = -[TUConversationProviderConfiguration supportsSharePlay](self, "supportsSharePlay"), v14 == objc_msgSend(providerCopy, "supportsSharePlay")) && (v15 = -[TUConversationProviderConfiguration supportsConversationHandoff](self, "supportsConversationHandoff"), v15 == objc_msgSend(providerCopy, "supportsConversationHandoff")))
           {
-            v18 = [(TUConversationProviderConfiguration *)self wantsLeaveOnInvalidation];
-            v16 = v18 ^ [v4 wantsLeaveOnInvalidation] ^ 1;
+            wantsLeaveOnInvalidation = [(TUConversationProviderConfiguration *)self wantsLeaveOnInvalidation];
+            v16 = wantsLeaveOnInvalidation ^ [providerCopy wantsLeaveOnInvalidation] ^ 1;
           }
 
           else
@@ -225,7 +225,7 @@
             LOBYTE(v16) = 0;
           }
 
-          v11 = v19;
+          supportedMediaTypes = v19;
         }
 
         else
@@ -254,27 +254,27 @@
   return v16;
 }
 
-- (TUConversationProviderConfiguration)initWithCoder:(id)a3
+- (TUConversationProviderConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUConversationProviderConfiguration *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_serviceName);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     serviceName = v5->_serviceName;
     v5->_serviceName = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_bundleID);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     bundleID = v5->_bundleID;
     v5->_bundleID = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_pseudonymFeatureID);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     pseudonymFeatureID = v5->_pseudonymFeatureID;
     v5->_pseudonymFeatureID = v16;
 
@@ -282,60 +282,60 @@
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
     v21 = NSStringFromSelector(sel_supportedMediaTypes);
-    v22 = [v4 decodeObjectOfClasses:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClasses:v20 forKey:v21];
     supportedMediaTypes = v5->_supportedMediaTypes;
     v5->_supportedMediaTypes = v22;
 
     v24 = NSStringFromSelector(sel_supportsLinks);
-    v5->_supportsLinks = [v4 decodeBoolForKey:v24];
+    v5->_supportsLinks = [coderCopy decodeBoolForKey:v24];
 
     v25 = NSStringFromSelector(sel_supportsSharePlay);
-    v5->_supportsSharePlay = [v4 decodeBoolForKey:v25];
+    v5->_supportsSharePlay = [coderCopy decodeBoolForKey:v25];
 
     v26 = NSStringFromSelector(sel_supportsConversationHandoff);
-    v5->_supportsConversationHandoff = [v4 decodeBoolForKey:v26];
+    v5->_supportsConversationHandoff = [coderCopy decodeBoolForKey:v26];
 
     v27 = NSStringFromSelector(sel_wantsLeaveOnInvalidation);
-    v5->_wantsLeaveOnInvalidation = [v4 decodeBoolForKey:v27];
+    v5->_wantsLeaveOnInvalidation = [coderCopy decodeBoolForKey:v27];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationProviderConfiguration *)self serviceName];
+  coderCopy = coder;
+  serviceName = [(TUConversationProviderConfiguration *)self serviceName];
   v6 = NSStringFromSelector(sel_serviceName);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:serviceName forKey:v6];
 
-  v7 = [(TUConversationProviderConfiguration *)self bundleID];
+  bundleID = [(TUConversationProviderConfiguration *)self bundleID];
   v8 = NSStringFromSelector(sel_bundleID);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:bundleID forKey:v8];
 
-  v9 = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
+  pseudonymFeatureID = [(TUConversationProviderConfiguration *)self pseudonymFeatureID];
   v10 = NSStringFromSelector(sel_pseudonymFeatureID);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:pseudonymFeatureID forKey:v10];
 
-  v11 = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
+  supportedMediaTypes = [(TUConversationProviderConfiguration *)self supportedMediaTypes];
   v12 = NSStringFromSelector(sel_supportedMediaTypes);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:supportedMediaTypes forKey:v12];
 
-  v13 = [(TUConversationProviderConfiguration *)self supportsLinks];
+  supportsLinks = [(TUConversationProviderConfiguration *)self supportsLinks];
   v14 = NSStringFromSelector(sel_supportsLinks);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:supportsLinks forKey:v14];
 
-  v15 = [(TUConversationProviderConfiguration *)self supportsSharePlay];
+  supportsSharePlay = [(TUConversationProviderConfiguration *)self supportsSharePlay];
   v16 = NSStringFromSelector(sel_supportsSharePlay);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:supportsSharePlay forKey:v16];
 
-  v17 = [(TUConversationProviderConfiguration *)self supportsConversationHandoff];
+  supportsConversationHandoff = [(TUConversationProviderConfiguration *)self supportsConversationHandoff];
   v18 = NSStringFromSelector(sel_supportsConversationHandoff);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:supportsConversationHandoff forKey:v18];
 
-  v19 = [(TUConversationProviderConfiguration *)self wantsLeaveOnInvalidation];
+  wantsLeaveOnInvalidation = [(TUConversationProviderConfiguration *)self wantsLeaveOnInvalidation];
   v20 = NSStringFromSelector(sel_wantsLeaveOnInvalidation);
-  [v4 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:wantsLeaveOnInvalidation forKey:v20];
 }
 
 @end

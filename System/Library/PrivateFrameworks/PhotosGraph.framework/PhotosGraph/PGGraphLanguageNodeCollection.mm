@@ -1,15 +1,15 @@
 @interface PGGraphLanguageNodeCollection
-+ (id)nodesWithLocaleIdentifiers:(id)a3 inGraph:(id)a4;
++ (id)nodesWithLocaleIdentifiers:(id)identifiers inGraph:(id)graph;
 - (NSSet)locales;
 @end
 
 @implementation PGGraphLanguageNodeCollection
 
-+ (id)nodesWithLocaleIdentifiers:(id)a3 inGraph:(id)a4
++ (id)nodesWithLocaleIdentifiers:(id)identifiers inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphLanguageNode filterWithLocaleIdentifiers:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphLanguageNode filterWithLocaleIdentifiers:identifiers];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

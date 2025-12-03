@@ -1,29 +1,29 @@
 @interface TSMidOperationFailureViewController
-- (TSMidOperationFailureViewController)initWithPlanItemError:(id)a3 updatePlanItem:(id)a4 withBackButton:(BOOL)a5 forCarrier:(id)a6 withCarrierErrorCode:(id)a7 isEmbeddedInResultView:(BOOL)a8;
-- (TSMidOperationFailureViewController)initWithPlans:(id)a3;
-- (TSMidOperationFailureViewController)initWithPlans:(id)a3 isCrossPlatformTransfer:(BOOL)a4;
+- (TSMidOperationFailureViewController)initWithPlanItemError:(id)error updatePlanItem:(id)item withBackButton:(BOOL)button forCarrier:(id)carrier withCarrierErrorCode:(id)code isEmbeddedInResultView:(BOOL)view;
+- (TSMidOperationFailureViewController)initWithPlans:(id)plans;
+- (TSMidOperationFailureViewController)initWithPlans:(id)plans isCrossPlatformTransfer:(BOOL)transfer;
 - (TSMidOperationFailureViewController)initWithSecureIntentRejected;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)initShowErrorOnSourceWithDelayedDownloadECSWithPlanIdentifier:(id)a3;
-- (id)initShowErrorOnSourceWithPlanIdentifier:(id)a3;
+- (id)initShowErrorOnSourceWithDelayedDownloadECSWithPlanIdentifier:(id)identifier;
+- (id)initShowErrorOnSourceWithPlanIdentifier:(id)identifier;
 - (void)_buttonAction;
 - (void)_disableMismatchedPlan;
 - (void)_doneButtonTapped;
 - (void)_locationServiceButtonAction;
 - (void)_userDidTapCancel;
-- (void)prepare:(id)a3;
-- (void)setDefaultNavigationItems:(id)a3;
+- (void)prepare:(id)prepare;
+- (void)setDefaultNavigationItems:(id)items;
 - (void)viewDidLoad;
 @end
 
 @implementation TSMidOperationFailureViewController
 
-- (TSMidOperationFailureViewController)initWithPlans:(id)a3 isCrossPlatformTransfer:(BOOL)a4
+- (TSMidOperationFailureViewController)initWithPlans:(id)plans isCrossPlatformTransfer:(BOOL)transfer
 {
-  v4 = a4;
+  transferCopy = transfer;
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4 && +[TSUtilities inBuddy])
+  plansCopy = plans;
+  if (transferCopy && +[TSUtilities inBuddy])
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"CROSSPLATFORM_TRANSFER_FAIL_TITLE_BUDDY" value:&stru_28753DF48 table:@"Localizable"];
@@ -56,7 +56,7 @@
 
   else
   {
-    v14 = [(TSMidOperationFailureViewController *)self initWithPlans:v6];
+    v14 = [(TSMidOperationFailureViewController *)self initWithPlans:plansCopy];
   }
 
   v19 = v14;
@@ -65,18 +65,18 @@
   return v19;
 }
 
-- (TSMidOperationFailureViewController)initWithPlans:(id)a3
+- (TSMidOperationFailureViewController)initWithPlans:(id)plans
 {
-  v4 = a3;
-  if ([v4 count] < 2)
+  plansCopy = plans;
+  if ([plansCopy count] < 2)
   {
-    v6 = [v4 objectAtIndexedSubscript:0];
-    v7 = [v6 installError];
-    v8 = [v6 planItem];
+    v6 = [plansCopy objectAtIndexedSubscript:0];
+    installError = [v6 installError];
+    planItem = [v6 planItem];
     v9 = +[TSUtilities inBuddy];
-    v10 = [v6 carrierName];
-    v11 = [v6 carrierErrorCode];
-    v5 = [(TSMidOperationFailureViewController *)self initWithPlanItemError:v7 updatePlanItem:v8 withBackButton:v9 forCarrier:v10 withCarrierErrorCode:v11 isEmbeddedInResultView:0];
+    carrierName = [v6 carrierName];
+    carrierErrorCode = [v6 carrierErrorCode];
+    v5 = [(TSMidOperationFailureViewController *)self initWithPlanItemError:installError updatePlanItem:planItem withBackButton:v9 forCarrier:carrierName withCarrierErrorCode:carrierErrorCode isEmbeddedInResultView:0];
   }
 
   else
@@ -121,7 +121,7 @@
   return v10;
 }
 
-- (id)initShowErrorOnSourceWithPlanIdentifier:(id)a3
+- (id)initShowErrorOnSourceWithPlanIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -155,22 +155,22 @@
   return v11;
 }
 
-- (id)initShowErrorOnSourceWithDelayedDownloadECSWithPlanIdentifier:(id)a3
+- (id)initShowErrorOnSourceWithDelayedDownloadECSWithPlanIdentifier:(id)identifier
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"CROSSPLATFORM_TRANSFER_FAIL_TITLE_DELAYED" value:&stru_28753DF48 table:@"Localizable"];
 
   v8 = MEMORY[0x277CCACA8];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CROSSPLATFORM_TRANSFER_FAIL_ON_SOURCE_NUMBER_CROSSPLATFORM_MODEL_DELAYED_%@" value:&stru_28753DF48 table:@"Localizable"];
-  v11 = [v8 stringWithFormat:v10, v5];
+  identifierCopy = [v8 stringWithFormat:v10, identifierCopy];
 
   v20.receiver = self;
   v20.super_class = TSMidOperationFailureViewController;
-  v12 = [(TSMidOperationFailureViewController *)&v20 initWithTitle:v7 detailText:v11 icon:0];
+  v12 = [(TSMidOperationFailureViewController *)&v20 initWithTitle:v7 detailText:identifierCopy icon:0];
   v13 = v12;
   if (v12)
   {
@@ -191,16 +191,16 @@
   return v13;
 }
 
-- (TSMidOperationFailureViewController)initWithPlanItemError:(id)a3 updatePlanItem:(id)a4 withBackButton:(BOOL)a5 forCarrier:(id)a6 withCarrierErrorCode:(id)a7 isEmbeddedInResultView:(BOOL)a8
+- (TSMidOperationFailureViewController)initWithPlanItemError:(id)error updatePlanItem:(id)item withBackButton:(BOOL)button forCarrier:(id)carrier withCarrierErrorCode:(id)code isEmbeddedInResultView:(BOOL)view
 {
-  v13 = a3;
-  v50 = a4;
-  v45 = a6;
-  v14 = a6;
-  v15 = a7;
-  v16 = v14;
-  v17 = v15;
-  v18 = [TSUtilities getErrorTitleDetail:v13 forCarrier:v14];
+  errorCopy = error;
+  itemCopy = item;
+  carrierCopy = carrier;
+  carrierCopy2 = carrier;
+  codeCopy = code;
+  v16 = carrierCopy2;
+  v17 = codeCopy;
+  v18 = [TSUtilities getErrorTitleDetail:errorCopy forCarrier:carrierCopy2];
   v19 = [v18 objectForKeyedSubscript:@"ErrorHeader"];
   v20 = [v18 objectForKeyedSubscript:@"ErrorDetail"];
   v49 = v17;
@@ -209,22 +209,22 @@
     if ([v17 length])
     {
       v43 = v18;
-      v21 = a8;
+      viewCopy = view;
       v22 = v19;
       v23 = MEMORY[0x277CCACA8];
-      v24 = self;
+      selfCopy = self;
       [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v26 = v25 = v13;
+      v26 = v25 = errorCopy;
       [v26 localizedStringForKey:@"ERROR_CODE" value:&stru_28753DF48 table:@"Localizable"];
       v27 = v47 = v16;
       v28 = v23;
       v19 = v22;
-      a8 = v21;
+      view = viewCopy;
       v18 = v43;
       v17 = [v28 stringWithFormat:@"%@: %@", v27, v17];
 
-      v13 = v25;
-      self = v24;
+      errorCopy = v25;
+      self = selfCopy;
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", v20, v17];
 
       v30 = &stru_28753DF48;
@@ -245,15 +245,15 @@ LABEL_6:
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_updatePlanItem, a4);
-    objc_storeStrong(&v32->_planItemError, a3);
-    objc_storeStrong(&v32->_carrierName, v45);
+    objc_storeStrong(&v31->_updatePlanItem, item);
+    objc_storeStrong(&v32->_planItemError, error);
+    objc_storeStrong(&v32->_carrierName, carrierCopy);
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v18];
     errorHeaderDetail = v32->_errorHeaderDetail;
     v32->_errorHeaderDetail = v33;
 
-    v32->_withBackButton = a5;
-    v32->_isEmbeddedInResultView = a8;
+    v32->_withBackButton = button;
+    v32->_isEmbeddedInResultView = view;
     v32->_isContinueByUser = 0;
     v35 = objc_alloc(MEMORY[0x277CC37B0]);
     v36 = [v35 initWithQueue:MEMORY[0x277D85CD0]];
@@ -273,8 +273,8 @@ LABEL_6:
 
   if (v17 && [v17 length])
   {
-    v41 = [(TSMidOperationFailureViewController *)v32 headerView];
-    [v41 addDetailLabel:v20 withErrorCodeSubstr:v17];
+    headerView = [(TSMidOperationFailureViewController *)v32 headerView];
+    [headerView addDetailLabel:v20 withErrorCodeSubstr:v17];
   }
 
   return v32;
@@ -287,21 +287,21 @@ LABEL_6:
   [(TSOBWelcomeController *)&v7 viewDidLoad];
   if (!self->_isEmbeddedInResultView)
   {
-    v3 = [MEMORY[0x277D37618] boldButton];
-    [v3 addTarget:self action:sel__doneButtonTapped forControlEvents:64];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [boldButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
     v4 = [(NSDictionary *)self->_errorHeaderDetail objectForKeyedSubscript:@"ErrorButton"];
-    [v3 setTitle:v4 forState:0];
+    [boldButton setTitle:v4 forState:0];
 
-    v5 = [(TSMidOperationFailureViewController *)self buttonTray];
-    [v5 addButton:v3];
+    buttonTray = [(TSMidOperationFailureViewController *)self buttonTray];
+    [buttonTray addButton:boldButton];
 
-    [v3 setEnabled:1];
+    [boldButton setEnabled:1];
   }
 
   if (!self->_withBackButton)
   {
-    v6 = [(OBBaseWelcomeController *)self navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 
   [(TSMidOperationFailureViewController *)self setDefaultNavigationItems:self];
@@ -313,16 +313,16 @@ LABEL_6:
   {
     if (+[TSUtilities isGreenTeaCapable])
     {
-      v3 = [(NSError *)self->_planItemError domain];
-      v4 = [v3 isEqualToString:*MEMORY[0x277CF9680]];
+      domain = [(NSError *)self->_planItemError domain];
+      v4 = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
       if (v4)
       {
-        v5 = [(NSError *)self->_planItemError code];
+        code = [(NSError *)self->_planItemError code];
         v6 = @"prefs:root=Privacy&path=LOCATION";
-        if (v5 != 12 && v5 != 62)
+        if (code != 12 && code != 62)
         {
-          if (v5 != 63)
+          if (code != 63)
           {
             return;
           }
@@ -330,9 +330,9 @@ LABEL_6:
           v6 = @"prefs:root=Privacy&path=LOCATION/SYSTEM_SERVICES";
         }
 
-        v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
         v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
-        [v8 openSensitiveURL:v7 withOptions:0];
+        [defaultWorkspace openSensitiveURL:v7 withOptions:0];
       }
     }
   }
@@ -350,17 +350,17 @@ LABEL_6:
 - (void)_userDidTapCancel
 {
   self->_isContinueByUser = 1;
-  v2 = [(TSMidOperationFailureViewController *)self delegate];
-  [v2 userDidTapCancel];
+  delegate = [(TSMidOperationFailureViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (void)setDefaultNavigationItems:(id)a3
+- (void)setDefaultNavigationItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   if ([TSUtilities isRegRestActiveLocationServiceOff:self->_planItemError]|| [TSUtilities isRegRestActiveLocationAuthorizedOff:self->_planItemError]|| [TSUtilities isRegRestLocationUnavailable:self->_planItemError])
   {
-    v4 = [v5 navigationItem];
-    [v4 setRightBarButtonItem:self->_cancelButton];
+    navigationItem = [itemsCopy navigationItem];
+    [navigationItem setRightBarButtonItem:self->_cancelButton];
   }
 }
 
@@ -369,19 +369,19 @@ LABEL_6:
   planItemError = self->_planItemError;
   if (planItemError)
   {
-    v4 = [(NSError *)planItemError domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x277CF9680]];
+    domain = [(NSError *)planItemError domain];
+    v5 = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
     if (v5)
     {
-      v6 = [(NSError *)self->_planItemError code];
-      if ((v6 - 62) < 2 || v6 == 12)
+      code = [(NSError *)self->_planItemError code];
+      if ((code - 62) < 2 || code == 12)
       {
 
         [(TSMidOperationFailureViewController *)self _locationServiceButtonAction];
       }
 
-      else if (v6 == 46)
+      else if (code == 46)
       {
 
         [(TSMidOperationFailureViewController *)self _disableMismatchedPlan];
@@ -394,8 +394,8 @@ LABEL_6:
 {
   [(TSMidOperationFailureViewController *)self _buttonAction];
   self->_isContinueByUser = 1;
-  v3 = [(TSMidOperationFailureViewController *)self delegate];
-  [v3 attemptFailed];
+  delegate = [(TSMidOperationFailureViewController *)self delegate];
+  [delegate attemptFailed];
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -405,12 +405,12 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
+  prepareCopy = prepare;
   v5 = self->_planItemError || self->_isSourceSideError || self->_isForCrossPlatform;
-  v6 = v4;
-  (*(v4 + 2))(v4, v5);
+  v6 = prepareCopy;
+  (*(prepareCopy + 2))(prepareCopy, v5);
 }
 
 @end

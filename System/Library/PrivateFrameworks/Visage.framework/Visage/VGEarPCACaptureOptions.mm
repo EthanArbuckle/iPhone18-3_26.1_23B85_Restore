@@ -1,8 +1,8 @@
 @interface VGEarPCACaptureOptions
 - (VGEarPCACaptureOptions)init;
-- (VGEarPCACaptureOptions)initWithSuiteName:(id)a3;
+- (VGEarPCACaptureOptions)initWithSuiteName:(id)name;
 - (id)description;
-- (void)setDefaultsWithSuiteName:(id)a3;
+- (void)setDefaultsWithSuiteName:(id)name;
 @end
 
 @implementation VGEarPCACaptureOptions
@@ -47,24 +47,24 @@
   return v2;
 }
 
-- (VGEarPCACaptureOptions)initWithSuiteName:(id)a3
+- (VGEarPCACaptureOptions)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(VGEarPCACaptureOptions *)self init];
   v6 = v5;
   if (v5)
   {
-    [(VGEarPCACaptureOptions *)v5 setDefaultsWithSuiteName:v4];
+    [(VGEarPCACaptureOptions *)v5 setDefaultsWithSuiteName:nameCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)setDefaultsWithSuiteName:(id)a3
+- (void)setDefaultsWithSuiteName:(id)name
 {
-  v22 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v22];
+  nameCopy = name;
+  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
   v5 = [v4 objectForKey:@"earPresenceThreshold"];
 
   if (v5)

@@ -1,19 +1,19 @@
 @interface PKSearchAccountResult
-- (BOOL)isEqual:(id)a3;
-- (PKSearchAccountResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSearchAccountResult)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKSearchAccountResult
 
-- (PKSearchAccountResult)initWithCoder:(id)a3
+- (PKSearchAccountResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchAccountResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
   }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     accountIdentifier = self->_accountIdentifier;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (accountIdentifier && v6)
     {
       v7 = [(NSString *)accountIdentifier isEqual:?];

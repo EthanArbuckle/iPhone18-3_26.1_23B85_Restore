@@ -1,35 +1,35 @@
 @interface PKCurvedTextLabel
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4;
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect;
 - (CGRect)_glyphsBoundingRect;
 - (CGRect)textBoundingRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDictionary)textAttributes;
-- (PKCurvedTextLabel)initWithFrame:(CGRect)a3;
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3;
+- (PKCurvedTextLabel)initWithFrame:(CGRect)frame;
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range;
 - (__CTLine)_newLineFromDrawableTextStorage;
 - (double)_distance;
-- (void)_enumerateTransformsForDrawableCharacters:(id)a3;
+- (void)_enumerateTransformsForDrawableCharacters:(id)characters;
 - (void)_updateMaxSize;
 - (void)_updateTextColor;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)invalidateCachedSize;
-- (void)setAttributedText:(id)a3;
-- (void)setCenterAngle:(double)a3;
-- (void)setCircleRadius:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setInterior:(BOOL)a3;
-- (void)setMaxAngularWidth:(double)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setCenterAngle:(double)angle;
+- (void)setCircleRadius:(double)radius;
+- (void)setFont:(id)font;
+- (void)setInterior:(BOOL)interior;
+- (void)setMaxAngularWidth:(double)width;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation PKCurvedTextLabel
 
-- (PKCurvedTextLabel)initWithFrame:(CGRect)a3
+- (PKCurvedTextLabel)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PKCurvedTextLabel;
-  v3 = [(PKCurvedTextLabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKCurvedTextLabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DB800]);
@@ -49,9 +49,9 @@
     v3->_textStorage = v8;
 
     [(NSTextStorage *)v3->_textStorage addLayoutManager:v3->_layoutManager];
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     textColor = v3->_textColor;
-    v3->_textColor = v10;
+    v3->_textColor = whiteColor;
   }
 
   return v3;
@@ -59,11 +59,11 @@
 
 - (NSDictionary)textAttributes
 {
-  v2 = [(PKCurvedTextLabel *)self attributedText];
-  v3 = [v2 length];
+  attributedText = [(PKCurvedTextLabel *)self attributedText];
+  v3 = [attributedText length];
   if (v3)
   {
-    v4 = [v2 attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v3}];
+    v4 = [attributedText attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v3}];
   }
 
   else
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (void)setInterior:(BOOL)a3
+- (void)setInterior:(BOOL)interior
 {
-  if (self->_interior != a3)
+  if (self->_interior != interior)
   {
-    self->_interior = a3;
+    self->_interior = interior;
     [(PKCurvedTextLabel *)self invalidateCachedSize];
     [(PKCurvedTextLabel *)self setNeedsLayout];
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)setCircleRadius:(double)a3
+- (void)setCircleRadius:(double)radius
 {
-  if (self->_circleRadius != a3)
+  if (self->_circleRadius != radius)
   {
-    self->_circleRadius = a3;
+    self->_circleRadius = radius;
     [(PKCurvedTextLabel *)self invalidateCachedSize];
     [(PKCurvedTextLabel *)self _updateMaxSize];
     [(PKCurvedTextLabel *)self setNeedsLayout];
@@ -99,11 +99,11 @@
   }
 }
 
-- (void)setCenterAngle:(double)a3
+- (void)setCenterAngle:(double)angle
 {
-  if (self->_centerAngle != a3)
+  if (self->_centerAngle != angle)
   {
-    self->_centerAngle = a3;
+    self->_centerAngle = angle;
     [(PKCurvedTextLabel *)self invalidateCachedSize];
     [(PKCurvedTextLabel *)self setNeedsLayout];
 
@@ -111,17 +111,17 @@
   }
 }
 
-- (void)setMaxAngularWidth:(double)a3
+- (void)setMaxAngularWidth:(double)width
 {
-  v5 = fmod(a3, 6.28318531);
-  if (a3 <= 6.28318531)
+  widthCopy = fmod(width, 6.28318531);
+  if (width <= 6.28318531)
   {
-    v5 = a3;
+    widthCopy = width;
   }
 
-  if (self->_maxAngularWidth != v5)
+  if (self->_maxAngularWidth != widthCopy)
   {
-    self->_maxAngularWidth = v5;
+    self->_maxAngularWidth = widthCopy;
 
     [(PKCurvedTextLabel *)self _updateMaxSize];
   }
@@ -157,12 +157,12 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(PKCurvedTextLabel *)self _updateTextColor];
   }
 }
@@ -178,24 +178,24 @@
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  if (([v4 isEqualToAttributedString:self->_textStorage] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_textStorage] & 1) == 0)
   {
-    if (!v4)
+    if (!textCopy)
     {
       goto LABEL_11;
     }
 
-    v5 = [v4 length];
+    v5 = [textCopy length];
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = [v4 string];
-      v9 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v10 = [v8 rangeOfCharacterFromSet:v9 options:0 range:{v6, v5}];
+      string = [textCopy string];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v10 = [string rangeOfCharacterFromSet:newlineCharacterSet options:0 range:{v6, v5}];
       v12 = v11;
 
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
@@ -211,14 +211,14 @@
 
       else
       {
-        v7 = [v4 mutableCopy];
+        v7 = [textCopy mutableCopy];
       }
 
-      v13 = [v7 mutableString];
-      [v13 replaceCharactersInRange:v10 withString:{v12, @" "}];
+      mutableString = [v7 mutableString];
+      [mutableString replaceCharactersInRange:v10 withString:{v12, @" "}];
 
       v6 = v10 + 1;
-      v5 = [v4 length] - v6;
+      v5 = [textCopy length] - v6;
     }
 
     if (v7)
@@ -230,7 +230,7 @@
     else
     {
 LABEL_11:
-      v16 = [v4 mutableCopy];
+      v16 = [textCopy mutableCopy];
       v17 = v16;
       if (v16)
       {
@@ -335,19 +335,19 @@ void __39__PKCurvedTextLabel_setAttributedText___block_invoke(uint64_t a1, void 
 LABEL_12:
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x1E696AAB0];
-    v5 = a3;
+    textCopy = text;
     v6 = [v4 alloc];
     font = self->_font;
     v10 = *MEMORY[0x1E69DB648];
     v11[0] = font;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v9 = [v6 initWithString:v5 attributes:v8];
+    v9 = [v6 initWithString:textCopy attributes:v8];
   }
 
   else
@@ -358,14 +358,14 @@ LABEL_12:
   [(PKCurvedTextLabel *)self setAttributedText:v9];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
-    v5 = [(PKCurvedTextLabel *)self text];
-    [(PKCurvedTextLabel *)self setText:v5];
+    objc_storeStrong(&self->_font, font);
+    text = [(PKCurvedTextLabel *)self text];
+    [(PKCurvedTextLabel *)self setText:text];
 
     [(PKCurvedTextLabel *)self invalidateCachedSize];
   }
@@ -383,7 +383,7 @@ LABEL_12:
   self->_cachedGlyphsBoundingRect.size = v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   p_cachedSize = &self->_cachedSize;
   if (self->_cachedSizeIsValid)
@@ -394,7 +394,7 @@ LABEL_12:
 
   else
   {
-    [(PKCurvedTextLabel *)self _glyphsBoundingRect:a3.width];
+    [(PKCurvedTextLabel *)self _glyphsBoundingRect:fits.width];
     width = v7;
     height = v8;
     p_cachedSize->width = v7;
@@ -407,17 +407,17 @@ LABEL_12:
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   [(PKCurvedTextLabel *)self _glyphsBoundingRect];
   [PKCurvedTextLabel _offsetOfBoundingRect:"_offsetOfBoundingRect:inRect:" inRect:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(PKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
-  ImageBounds = CTLineGetImageBounds(v8, 0);
+  _newLineFromDrawableTextStorage = [(PKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
+  ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
   x = ImageBounds.origin.x;
   y = ImageBounds.origin.y;
-  CFRelease(v8);
+  CFRelease(_newLineFromDrawableTextStorage);
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3010000000;
@@ -480,7 +480,7 @@ void __36__PKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   return result;
 }
 
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range
 {
   v5 = [(NSLayoutManager *)self->_layoutManager glyphRangeForTextContainer:self->_textContainer];
   v7 = v6;
@@ -488,10 +488,10 @@ void __36__PKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v8 + 1;
-    if (a3)
+    if (range)
     {
-      a3->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
-      a3->length = v10;
+      range->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
+      range->length = v10;
     }
   }
 
@@ -538,18 +538,18 @@ void __36__PKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   return v11;
 }
 
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect
 {
-  rect = a4.size.height;
-  width = a3.size.width;
-  v4 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v11 = CGRectGetWidth(a4);
+  rect = inRect.size.height;
+  width = rect.size.width;
+  v4 = inRect.size.width;
+  y = inRect.origin.y;
+  x = inRect.origin.x;
+  height = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  v11 = CGRectGetWidth(inRect);
   v19.origin.x = v10;
   v19.origin.y = v9;
   v19.size.width = v8;
@@ -654,9 +654,9 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
   return result;
 }
 
-- (void)_enumerateTransformsForDrawableCharacters:(id)a3
+- (void)_enumerateTransformsForDrawableCharacters:(id)characters
 {
-  v87 = a3;
+  charactersCopy = characters;
   [(PKCurvedTextLabel *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -664,8 +664,8 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
   v11 = v10;
   [(PKCurvedTextLabel *)self _distance];
   v13 = v12;
-  v14 = [(PKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
-  ImageBounds = CTLineGetImageBounds(v14, 0);
+  _newLineFromDrawableTextStorage = [(PKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
+  ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
   width = ImageBounds.size.width;
   x = ImageBounds.origin.x;
   y = ImageBounds.origin.y;
@@ -674,10 +674,10 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
   TypographicBounds = 0.0;
   if (self->_hasMonospacedNumbers)
   {
-    TypographicBounds = CTLineGetTypographicBounds(v14, 0, 0, 0);
+    TypographicBounds = CTLineGetTypographicBounds(_newLineFromDrawableTextStorage, 0, 0, 0);
   }
 
-  CFRelease(v14);
+  CFRelease(_newLineFromDrawableTextStorage);
   v75 = y;
   if (self->_hasMonospacedNumbers)
   {
@@ -743,9 +743,9 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
     v111.size.width = rect;
     v13 = *&v84;
     v112 = CGRectOffset(v111, -MidX, -v34);
-    v42 = v87[2];
+    v42 = charactersCopy[2];
     v103 = v104;
-    v42(v87, 0x7FFFFFFFFFFFFFFFLL, 0, &v103, MidX, v34, v112.origin.x, v112.origin.y, v112.size.width, v112.size.height);
+    v42(charactersCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v103, MidX, v34, v112.origin.x, v112.origin.y, v112.size.width, v112.size.height);
   }
 
   v85 = v24 + v26;
@@ -810,7 +810,7 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
       p_b = &v104.b;
     }
 
-    v89 = v87;
+    v89 = charactersCopy;
     v100 = v44;
     v101 = v47;
     [v48 enumerateRangesUsingBlock:v88];
@@ -862,9 +862,9 @@ void __40__PKCurvedTextLabel__glyphsBoundingRect__block_invoke(uint64_t a1, doub
     v117.size.width = v82;
     v117.size.height = v57;
     v118 = CGRectOffset(v117, -v61, -v59);
-    v69 = v87[2];
+    v69 = charactersCopy[2];
     v103 = v104;
-    v69(v87, 0x7FFFFFFFFFFFFFFFLL, 0, &v103, v61, v59, v118.origin.x, v118.origin.y, v118.size.width, v118.size.height);
+    v69(charactersCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v103, v61, v59, v118.origin.x, v118.origin.y, v118.size.width, v118.size.height);
   }
 }
 

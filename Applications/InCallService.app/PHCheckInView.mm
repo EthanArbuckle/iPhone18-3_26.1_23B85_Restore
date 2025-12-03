@@ -1,16 +1,16 @@
 @interface PHCheckInView
-- (PHCheckInView)initWithFrame:(CGRect)a3;
+- (PHCheckInView)initWithFrame:(CGRect)frame;
 - (double)distanceFromBottom;
 - (double)distanceFromTop;
 - (void)commonInit;
-- (void)didFinishSlideForSlidingButton:(id)a3;
+- (void)didFinishSlideForSlidingButton:(id)button;
 - (void)pause;
 - (void)restart;
 - (void)setUpConstraints;
-- (void)start:(id)a3 completion:(id)a4;
+- (void)start:(id)start completion:(id)completion;
 - (void)startCountdown;
 - (void)stop;
-- (void)stopAndNotifyResult:(unint64_t)a3;
+- (void)stopAndNotifyResult:(unint64_t)result;
 - (void)stopCheckInTimer;
 - (void)stopFlash;
 - (void)stopVoiceLoopMessagePlayback;
@@ -19,11 +19,11 @@
 
 @implementation PHCheckInView
 
-- (PHCheckInView)initWithFrame:(CGRect)a3
+- (PHCheckInView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHCheckInView;
-  v3 = [(PHCheckInView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHCheckInView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,60 +38,60 @@
   v3 = objc_alloc_init(UILabel);
   [(PHCheckInView *)self setTitleLabel:v3];
 
-  v4 = [(PHCheckInView *)self titleLabel];
-  [v4 setTextAlignment:1];
+  titleLabel = [(PHCheckInView *)self titleLabel];
+  [titleLabel setTextAlignment:1];
 
-  v5 = [(PHCheckInView *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel2 = [(PHCheckInView *)self titleLabel];
+  [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v6 = [UIFont boldSystemFontOfSize:34.0];
-  v7 = [(PHCheckInView *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel3 = [(PHCheckInView *)self titleLabel];
+  [titleLabel3 setFont:v6];
 
   v8 = +[UIColor whiteColor];
-  v9 = [(PHCheckInView *)self titleLabel];
-  [v9 setTextColor:v8];
+  titleLabel4 = [(PHCheckInView *)self titleLabel];
+  [titleLabel4 setTextColor:v8];
 
-  v10 = [(PHCheckInView *)self titleLabel];
-  [v10 setNumberOfLines:0];
+  titleLabel5 = [(PHCheckInView *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v11 = [(PHCheckInView *)self titleLabel];
-  [(PHCheckInView *)self addSubview:v11];
+  titleLabel6 = [(PHCheckInView *)self titleLabel];
+  [(PHCheckInView *)self addSubview:titleLabel6];
 
   v12 = objc_alloc_init(UILabel);
   [(PHCheckInView *)self setSubtitleLabel:v12];
 
-  v13 = [(PHCheckInView *)self subtitleLabel];
-  [v13 setTextAlignment:1];
+  subtitleLabel = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel setTextAlignment:1];
 
-  v14 = [(PHCheckInView *)self subtitleLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel2 = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v15 = [UIFont systemFontOfSize:22.0];
-  v16 = [(PHCheckInView *)self subtitleLabel];
-  [v16 setFont:v15];
+  subtitleLabel3 = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel3 setFont:v15];
 
   v17 = +[UIColor whiteColor];
-  v18 = [(PHCheckInView *)self subtitleLabel];
-  [v18 setTextColor:v17];
+  subtitleLabel4 = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel4 setTextColor:v17];
 
-  v19 = [(PHCheckInView *)self subtitleLabel];
-  [v19 setNumberOfLines:0];
+  subtitleLabel5 = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel5 setNumberOfLines:0];
 
-  v20 = [(PHCheckInView *)self subtitleLabel];
-  [(PHCheckInView *)self addSubview:v20];
+  subtitleLabel6 = [(PHCheckInView *)self subtitleLabel];
+  [(PHCheckInView *)self addSubview:subtitleLabel6];
 
   v21 = [[PHSlidingButton alloc] initWithSlidingButtonType:7 appearanceType:0 callState:2];
   [(PHCheckInView *)self setSosCallSlidingButton:v21];
 
-  v22 = [(PHCheckInView *)self sosCallSlidingButton];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sosCallSlidingButton = [(PHCheckInView *)self sosCallSlidingButton];
+  [sosCallSlidingButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(PHCheckInView *)self sosCallSlidingButton];
-  [v23 setDelegate:self];
+  sosCallSlidingButton2 = [(PHCheckInView *)self sosCallSlidingButton];
+  [sosCallSlidingButton2 setDelegate:self];
 
-  v24 = [(PHCheckInView *)self sosCallSlidingButton];
-  [(PHCheckInView *)self addSubview:v24];
+  sosCallSlidingButton3 = [(PHCheckInView *)self sosCallSlidingButton];
+  [(PHCheckInView *)self addSubview:sosCallSlidingButton3];
 
   [(PHCheckInView *)self setUpConstraints];
   v25 = dispatch_queue_create("com.apple.incallservice.checkInView.avCapture", 0);
@@ -106,68 +106,68 @@
 - (void)setUpConstraints
 {
   v46 = objc_alloc_init(NSMutableArray);
-  v3 = [(PHCheckInView *)self titleLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHCheckInView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  titleLabel = [(PHCheckInView *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(PHCheckInView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v46 addObject:v6];
 
-  v7 = [(PHCheckInView *)self titleLabel];
-  v8 = [v7 trailingAnchor];
-  v9 = [(PHCheckInView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  titleLabel2 = [(PHCheckInView *)self titleLabel];
+  trailingAnchor = [titleLabel2 trailingAnchor];
+  trailingAnchor2 = [(PHCheckInView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v46 addObject:v10];
 
-  v11 = [(PHCheckInView *)self titleLabel];
-  v12 = [v11 topAnchor];
-  v13 = [(PHCheckInView *)self safeAreaLayoutGuide];
-  v14 = [v13 topAnchor];
+  titleLabel3 = [(PHCheckInView *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  safeAreaLayoutGuide = [(PHCheckInView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
   [(PHCheckInView *)self distanceFromTop];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:?];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v46 addObject:v15];
 
-  v16 = [(PHCheckInView *)self titleLabel];
-  v17 = [v16 centerXAnchor];
-  v18 = [(PHCheckInView *)self centerXAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  titleLabel4 = [(PHCheckInView *)self titleLabel];
+  centerXAnchor = [titleLabel4 centerXAnchor];
+  centerXAnchor2 = [(PHCheckInView *)self centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v46 addObject:v19];
 
-  v20 = [(PHCheckInView *)self subtitleLabel];
-  v21 = [v20 leadingAnchor];
-  v22 = [(PHCheckInView *)self leadingAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  subtitleLabel = [(PHCheckInView *)self subtitleLabel];
+  leadingAnchor3 = [subtitleLabel leadingAnchor];
+  leadingAnchor4 = [(PHCheckInView *)self leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v46 addObject:v23];
 
-  v24 = [(PHCheckInView *)self subtitleLabel];
-  v25 = [v24 trailingAnchor];
-  v26 = [(PHCheckInView *)self trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  subtitleLabel2 = [(PHCheckInView *)self subtitleLabel];
+  trailingAnchor3 = [subtitleLabel2 trailingAnchor];
+  trailingAnchor4 = [(PHCheckInView *)self trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v46 addObject:v27];
 
-  v28 = [(PHCheckInView *)self subtitleLabel];
-  v29 = [v28 topAnchor];
-  v30 = [(PHCheckInView *)self titleLabel];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:22.0];
+  subtitleLabel3 = [(PHCheckInView *)self subtitleLabel];
+  topAnchor3 = [subtitleLabel3 topAnchor];
+  titleLabel5 = [(PHCheckInView *)self titleLabel];
+  bottomAnchor = [titleLabel5 bottomAnchor];
+  v32 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:22.0];
   [v46 addObject:v32];
 
-  v33 = [(PHCheckInView *)self subtitleLabel];
-  v34 = [v33 centerXAnchor];
-  v35 = [(PHCheckInView *)self centerXAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  subtitleLabel4 = [(PHCheckInView *)self subtitleLabel];
+  centerXAnchor3 = [subtitleLabel4 centerXAnchor];
+  centerXAnchor4 = [(PHCheckInView *)self centerXAnchor];
+  v36 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v46 addObject:v36];
 
-  v37 = [(PHCheckInView *)self sosCallSlidingButton];
-  v38 = [v37 centerXAnchor];
-  v39 = [(PHCheckInView *)self centerXAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  sosCallSlidingButton = [(PHCheckInView *)self sosCallSlidingButton];
+  centerXAnchor5 = [sosCallSlidingButton centerXAnchor];
+  centerXAnchor6 = [(PHCheckInView *)self centerXAnchor];
+  v40 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v46 addObject:v40];
 
-  v41 = [(PHCheckInView *)self sosCallSlidingButton];
-  v42 = [v41 bottomAnchor];
-  v43 = [(PHCheckInView *)self bottomAnchor];
+  sosCallSlidingButton2 = [(PHCheckInView *)self sosCallSlidingButton];
+  bottomAnchor2 = [sosCallSlidingButton2 bottomAnchor];
+  bottomAnchor3 = [(PHCheckInView *)self bottomAnchor];
   [(PHCheckInView *)self distanceFromBottom];
-  v45 = [v42 constraintEqualToAnchor:v43 constant:-v44];
+  v45 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v44];
   [v46 addObject:v45];
 
   [NSLayoutConstraint activateConstraints:v46];
@@ -199,21 +199,21 @@
   return v2;
 }
 
-- (void)start:(id)a3 completion:(id)a4
+- (void)start:(id)start completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PHCheckInView *)self setCheckInViewModel:v7];
-  v8 = [v7 titleString];
-  v9 = [(PHCheckInView *)self titleLabel];
-  [v9 setText:v8];
+  completionCopy = completion;
+  startCopy = start;
+  [(PHCheckInView *)self setCheckInViewModel:startCopy];
+  titleString = [startCopy titleString];
+  titleLabel = [(PHCheckInView *)self titleLabel];
+  [titleLabel setText:titleString];
 
-  v10 = [v7 subtitleString];
+  subtitleString = [startCopy subtitleString];
 
-  v11 = [(PHCheckInView *)self subtitleLabel];
-  [v11 setText:v10];
+  subtitleLabel = [(PHCheckInView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleString];
 
-  [(PHCheckInView *)self setCompletion:v6];
+  [(PHCheckInView *)self setCompletion:completionCopy];
 
   [(PHCheckInView *)self startCountdown];
 }
@@ -222,12 +222,12 @@
 {
   [(PHCheckInView *)self stopCheckInTimer];
   [(PHCheckInView *)self stopVoiceLoopMessagePlayback];
-  v3 = [(PHCheckInView *)self checkInViewModel];
-  v4 = [v3 sosVoiceMessageType];
+  checkInViewModel = [(PHCheckInView *)self checkInViewModel];
+  sosVoiceMessageType = [checkInViewModel sosVoiceMessageType];
 
-  if (v4 && (+[SOSUtilities shouldSilenceSOSFlow]& 1) == 0)
+  if (sosVoiceMessageType && (+[SOSUtilities shouldSilenceSOSFlow]& 1) == 0)
   {
-    v5 = [[SOSVoiceMessageManager alloc] initWithMessageType:v4];
+    v5 = [[SOSVoiceMessageManager alloc] initWithMessageType:sosVoiceMessageType];
     [(PHCheckInView *)self setVoiceMessageManager:v5];
 
     v6 = sub_100004F84();
@@ -237,25 +237,25 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHCheckInView,starting check-in voice message", buf, 2u);
     }
 
-    v7 = [(PHCheckInView *)self voiceMessageManager];
-    [v7 startMessagePlayback];
+    voiceMessageManager = [(PHCheckInView *)self voiceMessageManager];
+    [voiceMessageManager startMessagePlayback];
   }
 
-  v8 = [(PHCheckInView *)self checkInTimer];
+  checkInTimer = [(PHCheckInView *)self checkInTimer];
 
-  if (!v8)
+  if (!checkInTimer)
   {
     objc_initWeak(&location, self);
     *buf = 0;
     v23 = buf;
     v24 = 0x2020000000;
-    v9 = [(PHCheckInView *)self checkInViewModel];
-    [v9 timeout];
+    checkInViewModel2 = [(PHCheckInView *)self checkInViewModel];
+    [checkInViewModel2 timeout];
     v11 = v10;
 
     v25 = v11;
-    v12 = [(PHCheckInView *)self checkInViewModel];
-    [v12 countdownTickDuration];
+    checkInViewModel3 = [(PHCheckInView *)self checkInViewModel];
+    [checkInViewModel3 countdownTickDuration];
     v14 = v13;
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
@@ -294,10 +294,10 @@
 
 - (void)stopCheckInTimer
 {
-  v3 = [(PHCheckInView *)self checkInTimer];
-  v4 = [v3 isValid];
+  checkInTimer = [(PHCheckInView *)self checkInTimer];
+  isValid = [checkInTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -306,8 +306,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating PHCheckInView timer", v7, 2u);
     }
 
-    v6 = [(PHCheckInView *)self checkInTimer];
-    [v6 invalidate];
+    checkInTimer2 = [(PHCheckInView *)self checkInTimer];
+    [checkInTimer2 invalidate];
 
     [(PHCheckInView *)self setCheckInTimer:0];
   }
@@ -315,9 +315,9 @@
 
 - (void)stopVoiceLoopMessagePlayback
 {
-  v3 = [(PHCheckInView *)self voiceMessageManager];
+  voiceMessageManager = [(PHCheckInView *)self voiceMessageManager];
 
-  if (v3)
+  if (voiceMessageManager)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -326,8 +326,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHCheckInView,stopping check-in voice message", v6, 2u);
     }
 
-    v5 = [(PHCheckInView *)self voiceMessageManager];
-    [v5 stopMessagePlayback];
+    voiceMessageManager2 = [(PHCheckInView *)self voiceMessageManager];
+    [voiceMessageManager2 stopMessagePlayback];
 
     [(PHCheckInView *)self setVoiceMessageManager:0];
   }
@@ -340,24 +340,24 @@
   [(PHCheckInView *)self stopFlash];
 }
 
-- (void)stopAndNotifyResult:(unint64_t)a3
+- (void)stopAndNotifyResult:(unint64_t)result
 {
   [(PHCheckInView *)self stopVoiceLoopMessagePlayback];
   [(PHCheckInView *)self stopCheckInTimer];
-  v5 = [(PHCheckInView *)self completion];
+  completion = [(PHCheckInView *)self completion];
 
-  if (v5)
+  if (completion)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109120;
-      v8[1] = a3;
+      v8[1] = result;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHCheckInView,returning result,%d", v8, 8u);
     }
 
-    v7 = [(PHCheckInView *)self completion];
-    v7[2](v7, a3);
+    completion2 = [(PHCheckInView *)self completion];
+    completion2[2](completion2, result);
 
     [(PHCheckInView *)self setCompletion:0];
   }
@@ -365,12 +365,12 @@
   [(PHCheckInView *)self stopFlash];
 }
 
-- (void)didFinishSlideForSlidingButton:(id)a3
+- (void)didFinishSlideForSlidingButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PHCheckInView *)self sosCallSlidingButton];
+  buttonCopy = button;
+  sosCallSlidingButton = [(PHCheckInView *)self sosCallSlidingButton];
 
-  if (v5 == v4)
+  if (sosCallSlidingButton == buttonCopy)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -390,13 +390,13 @@
   {
     if (+[SOSUtilities shouldPlayAudioDuringCountdown])
     {
-      v4 = [(PHCheckInView *)self avCaptureDispatchQueue];
+      avCaptureDispatchQueue = [(PHCheckInView *)self avCaptureDispatchQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100072814;
       block[3] = &unk_100356988;
       block[4] = self;
-      dispatch_async(v4, block);
+      dispatch_async(avCaptureDispatchQueue, block);
     }
   }
 }
@@ -406,13 +406,13 @@
   +[SOSUtilities clawReleaseToCallSupport];
   if (v3 != 0.0)
   {
-    v4 = [(PHCheckInView *)self avCaptureDispatchQueue];
+    avCaptureDispatchQueue = [(PHCheckInView *)self avCaptureDispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100072A28;
     block[3] = &unk_100356988;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(avCaptureDispatchQueue, block);
   }
 }
 

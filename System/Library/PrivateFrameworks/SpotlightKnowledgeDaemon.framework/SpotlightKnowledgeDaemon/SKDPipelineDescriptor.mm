@@ -1,35 +1,35 @@
 @interface SKDPipelineDescriptor
-+ (id)descriptorFromSetDescription:(id)a3 processorNames:(id)a4;
++ (id)descriptorFromSetDescription:(id)description processorNames:(id)names;
 - (BOOL)enabled;
 - (NSNumber)version;
 - (NSString)name;
-- (SKDPipelineDescriptor)initWithSetDescription:(id)a3 processorNames:(id)a4;
+- (SKDPipelineDescriptor)initWithSetDescription:(id)description processorNames:(id)names;
 @end
 
 @implementation SKDPipelineDescriptor
 
-+ (id)descriptorFromSetDescription:(id)a3 processorNames:(id)a4
++ (id)descriptorFromSetDescription:(id)description processorNames:(id)names
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SKDPipelineDescriptor alloc] initWithSetDescription:v6 processorNames:v5];
+  namesCopy = names;
+  descriptionCopy = description;
+  v7 = [[SKDPipelineDescriptor alloc] initWithSetDescription:descriptionCopy processorNames:namesCopy];
 
   return v7;
 }
 
-- (SKDPipelineDescriptor)initWithSetDescription:(id)a3 processorNames:(id)a4
+- (SKDPipelineDescriptor)initWithSetDescription:(id)description processorNames:(id)names
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  descriptionCopy = description;
+  namesCopy = names;
   v17.receiver = self;
   v17.super_class = SKDPipelineDescriptor;
   v9 = [(SKDPipelineDescriptor *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_setDescription, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_setDescription, description);
+    v11 = [namesCopy copy];
     processorNames = v10->_processorNames;
     v10->_processorNames = v11;
 
@@ -52,26 +52,26 @@
 
 - (NSString)name
 {
-  v2 = [(SKDPipelineDescriptor *)self setDescription];
-  v3 = [v2 name];
+  setDescription = [(SKDPipelineDescriptor *)self setDescription];
+  name = [setDescription name];
 
-  return v3;
+  return name;
 }
 
 - (NSNumber)version
 {
-  v2 = [(SKDPipelineDescriptor *)self setDescription];
-  v3 = [v2 version];
+  setDescription = [(SKDPipelineDescriptor *)self setDescription];
+  version = [setDescription version];
 
-  return v3;
+  return version;
 }
 
 - (BOOL)enabled
 {
-  v2 = [(SKDPipelineDescriptor *)self setDescription];
-  v3 = [v2 enabled];
+  setDescription = [(SKDPipelineDescriptor *)self setDescription];
+  enabled = [setDescription enabled];
 
-  return v3;
+  return enabled;
 }
 
 @end

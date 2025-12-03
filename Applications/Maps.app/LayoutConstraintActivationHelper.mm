@@ -1,32 +1,32 @@
 @interface LayoutConstraintActivationHelper
 - (LayoutConstraintActivationHelper)init;
-- (id)pendingConstraintsToActivate:(BOOL)a3;
+- (id)pendingConstraintsToActivate:(BOOL)activate;
 - (void)clearPendingConstraints;
 - (void)commitPendingConstraints;
-- (void)scheduleConstraint:(id)a3 activate:(BOOL)a4;
-- (void)scheduleConstraints:(id)a3 activate:(BOOL)a4;
+- (void)scheduleConstraint:(id)constraint activate:(BOOL)activate;
+- (void)scheduleConstraints:(id)constraints activate:(BOOL)activate;
 @end
 
 @implementation LayoutConstraintActivationHelper
 
 - (void)commitPendingConstraints
 {
-  v3 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
-  v4 = [v3 count];
+  pendingConstraintsToDeactivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
+  v4 = [pendingConstraintsToDeactivate count];
 
   if (v4)
   {
-    v5 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
-    [NSLayoutConstraint deactivateConstraints:v5];
+    pendingConstraintsToDeactivate2 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
+    [NSLayoutConstraint deactivateConstraints:pendingConstraintsToDeactivate2];
   }
 
-  v6 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
-  v7 = [v6 count];
+  pendingConstraintsToActivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
+  v7 = [pendingConstraintsToActivate count];
 
   if (v7)
   {
-    v8 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
-    [NSLayoutConstraint activateConstraints:v8];
+    pendingConstraintsToActivate2 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
+    [NSLayoutConstraint activateConstraints:pendingConstraintsToActivate2];
   }
 
   [(LayoutConstraintActivationHelper *)self clearPendingConstraints];
@@ -34,16 +34,16 @@
 
 - (void)clearPendingConstraints
 {
-  v3 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
-  [v3 removeAllObjects];
+  pendingConstraintsToActivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
+  [pendingConstraintsToActivate removeAllObjects];
 
-  v4 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
-  [v4 removeAllObjects];
+  pendingConstraintsToDeactivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
+  [pendingConstraintsToDeactivate removeAllObjects];
 }
 
-- (id)pendingConstraintsToActivate:(BOOL)a3
+- (id)pendingConstraintsToActivate:(BOOL)activate
 {
-  if (a3)
+  if (activate)
   {
     [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
   }
@@ -58,17 +58,17 @@
   return v4;
 }
 
-- (void)scheduleConstraints:(id)a3 activate:(BOOL)a4
+- (void)scheduleConstraints:(id)constraints activate:(BOOL)activate
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  activateCopy = activate;
+  constraintsCopy = constraints;
+  if ([constraintsCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v6;
+    v7 = constraintsCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -84,7 +84,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [(LayoutConstraintActivationHelper *)self scheduleConstraint:*(*(&v12 + 1) + 8 * v11) activate:v4, v12];
+          [(LayoutConstraintActivationHelper *)self scheduleConstraint:*(*(&v12 + 1) + 8 * v11) activate:activateCopy, v12];
           v11 = v11 + 1;
         }
 
@@ -97,46 +97,46 @@
   }
 }
 
-- (void)scheduleConstraint:(id)a3 activate:(BOOL)a4
+- (void)scheduleConstraint:(id)constraint activate:(BOOL)activate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  activateCopy = activate;
+  constraintCopy = constraint;
+  v7 = constraintCopy;
+  if (constraintCopy)
   {
-    v14 = v6;
-    if (v4)
+    v14 = constraintCopy;
+    if (activateCopy)
     {
-      v8 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
-      [v8 removeObject:v14];
+      pendingConstraintsToDeactivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
+      [pendingConstraintsToDeactivate removeObject:v14];
 
-      v9 = [v14 isActive];
+      isActive = [v14 isActive];
       v7 = v14;
-      if (v9)
+      if (isActive)
       {
         goto LABEL_8;
       }
 
-      v10 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
+      pendingConstraintsToActivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
     }
 
     else
     {
-      v11 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
-      [v11 removeObject:v14];
+      pendingConstraintsToActivate2 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToActivate];
+      [pendingConstraintsToActivate2 removeObject:v14];
 
-      v12 = [v14 isActive];
+      isActive2 = [v14 isActive];
       v7 = v14;
-      if (!v12)
+      if (!isActive2)
       {
         goto LABEL_8;
       }
 
-      v10 = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
+      pendingConstraintsToActivate = [(LayoutConstraintActivationHelper *)self pendingConstraintsToDeactivate];
     }
 
-    v13 = v10;
-    [v10 addObject:v14];
+    v13 = pendingConstraintsToActivate;
+    [pendingConstraintsToActivate addObject:v14];
 
     v7 = v14;
   }

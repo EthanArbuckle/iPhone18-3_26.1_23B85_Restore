@@ -1,14 +1,14 @@
 @interface _CNDonationExtensionLogger
 - (_CNDonationExtensionLogger)init;
-- (void)couldNotLoadDonorExtensionForIdentifier:(id)a3 error:(id)a4;
-- (void)couldNotRedonateValuesWithReason:(unint64_t)a3 error:(id)a4;
-- (void)couldNotRenewDonation:(id)a3 error:(id)a4;
-- (void)didExpireDonation:(id)a3 withError:(id)a4;
-- (void)didRedonateValuesWithReason:(unint64_t)a3;
-- (void)didRenewDonation:(id)a3 untilDate:(id)a4;
-- (void)loadedDonorExtension:(id)a3 forIdentifier:(id)a4;
-- (void)willRedonateValuesWithReason:(unint64_t)a3;
-- (void)willRenewDonation:(id)a3;
+- (void)couldNotLoadDonorExtensionForIdentifier:(id)identifier error:(id)error;
+- (void)couldNotRedonateValuesWithReason:(unint64_t)reason error:(id)error;
+- (void)couldNotRenewDonation:(id)donation error:(id)error;
+- (void)didExpireDonation:(id)donation withError:(id)error;
+- (void)didRedonateValuesWithReason:(unint64_t)reason;
+- (void)didRenewDonation:(id)donation untilDate:(id)date;
+- (void)loadedDonorExtension:(id)extension forIdentifier:(id)identifier;
+- (void)willRedonateValuesWithReason:(unint64_t)reason;
+- (void)willRenewDonation:(id)donation;
 @end
 
 @implementation _CNDonationExtensionLogger
@@ -30,134 +30,134 @@
   return v2;
 }
 
-- (void)loadedDonorExtension:(id)a3 forIdentifier:(id)a4
+- (void)loadedDonorExtension:(id)extension forIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v7;
+    v11 = identifierCopy;
     v12 = 2114;
-    v13 = v6;
-    _os_log_impl(&dword_2258E5000, v8, OS_LOG_TYPE_DEFAULT, "Loaded extension for donor '%{public}@': %{public}@", &v10, 0x16u);
+    v13 = extensionCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Loaded extension for donor '%{public}@': %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)couldNotLoadDonorExtensionForIdentifier:(id)a3 error:(id)a4
+- (void)couldNotLoadDonorExtensionForIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  errorCopy = error;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_ERROR))
   {
-    [(_CNDonationExtensionLogger *)v6 couldNotLoadDonorExtensionForIdentifier:v7 error:v8];
+    [(_CNDonationExtensionLogger *)identifierCopy couldNotLoadDonorExtensionForIdentifier:errorCopy error:log_t];
   }
 }
 
-- (void)willRenewDonation:(id)a3
+- (void)willRenewDonation:(id)donation
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  donationCopy = donation;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Will renew donation %{public}@", &v7, 0xCu);
+    v8 = donationCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Will renew donation %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRenewDonation:(id)a3 untilDate:(id)a4
+- (void)didRenewDonation:(id)donation untilDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  donationCopy = donation;
+  dateCopy = date;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = donationCopy;
     v12 = 2114;
-    v13 = v7;
-    _os_log_impl(&dword_2258E5000, v8, OS_LOG_TYPE_DEFAULT, "Donation %{public}@ renewed until %{public}@", &v10, 0x16u);
+    v13 = dateCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Donation %{public}@ renewed until %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didExpireDonation:(id)a3 withError:(id)a4
+- (void)didExpireDonation:(id)donation withError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  donationCopy = donation;
+  errorCopy = error;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = donationCopy;
     v12 = 2114;
-    v13 = v7;
-    _os_log_impl(&dword_2258E5000, v8, OS_LOG_TYPE_DEFAULT, "Will not renew donation %{public}@: %{public}@", &v10, 0x16u);
+    v13 = errorCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Will not renew donation %{public}@: %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)couldNotRenewDonation:(id)a3 error:(id)a4
+- (void)couldNotRenewDonation:(id)donation error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  donationCopy = donation;
+  errorCopy = error;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_ERROR))
   {
     [_CNDonationExtensionLogger couldNotRenewDonation:error:];
   }
 }
 
-- (void)willRedonateValuesWithReason:(unint64_t)a3
+- (void)willRedonateValuesWithReason:(unint64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
     v7 = 138543362;
     v8 = v5;
-    _os_log_impl(&dword_2258E5000, v4, OS_LOG_TYPE_DEFAULT, "Will redonate values (reason %{public}@)", &v7, 0xCu);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Will redonate values (reason %{public}@)", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRedonateValuesWithReason:(unint64_t)a3
+- (void)didRedonateValuesWithReason:(unint64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
     v7 = 138543362;
     v8 = v5;
-    _os_log_impl(&dword_2258E5000, v4, OS_LOG_TYPE_DEFAULT, "Did redonate values (reason %{public}@)", &v7, 0xCu);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Did redonate values (reason %{public}@)", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)couldNotRedonateValuesWithReason:(unint64_t)a3 error:(id)a4
+- (void)couldNotRedonateValuesWithReason:(unint64_t)reason error:(id)error
 {
-  v6 = a4;
-  v7 = [(_CNDonationExtensionLogger *)self log_t];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  log_t = [(_CNDonationExtensionLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_ERROR))
   {
-    [(_CNDonationExtensionLogger *)a3 couldNotRedonateValuesWithReason:v6 error:v7];
+    [(_CNDonationExtensionLogger *)reason couldNotRedonateValuesWithReason:errorCopy error:log_t];
   }
 }
 

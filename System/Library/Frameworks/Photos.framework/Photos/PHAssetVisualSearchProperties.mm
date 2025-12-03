@@ -1,46 +1,46 @@
 @interface PHAssetVisualSearchProperties
 + (id)propertiesToFetch;
-- (PHAssetVisualSearchProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetVisualSearchProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetVisualSearchProperties
 
-- (PHAssetVisualSearchProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetVisualSearchProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v31.receiver = self;
   v31.super_class = PHAssetVisualSearchProperties;
   v10 = [(PHAssetVisualSearchProperties *)&v31 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
-      v12 = [v8 objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchAttributes.visualSearchData"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchAttributes.visualSearchData"];
       visualSearchData = v11->_visualSearchData;
       v11->_visualSearchData = v12;
 
-      v14 = [v8 objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchVersion"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchVersion"];
       v11->_algorithmVersion = [v14 integerValue];
 
-      v15 = [v8 objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchAttributes.adjustmentVersion"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.visualSearchAttributes.adjustmentVersion"];
       adjustmentVersion = v11->_adjustmentVersion;
       v11->_adjustmentVersion = v15;
 
-      v17 = [v8 objectForKeyedSubscript:@"mediaAnalysisAttributes.asset.stickerConfidenceScore"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.asset.stickerConfidenceScore"];
 
       if (v17)
       {
-        v18 = [v8 objectForKeyedSubscript:@"mediaAnalysisAttributes.asset.stickerConfidenceScore"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.asset.stickerConfidenceScore"];
         [v18 floatValue];
         v11->_stickerConfidenceScore = v19;
 
         v20 = @"mediaAnalysisAttributes.visualSearchStickerConfidenceVersion";
 LABEL_7:
-        v29 = [v8 objectForKeyedSubscript:v20];
+        v29 = [dictionaryCopy objectForKeyedSubscript:v20];
         v11->_stickerAlgorithmVersion = [v29 integerValue];
 
         goto LABEL_9;
@@ -49,22 +49,22 @@ LABEL_7:
 
     else
     {
-      v21 = [v8 objectForKeyedSubscript:@"visualSearchAttributes.visualSearchData"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"visualSearchAttributes.visualSearchData"];
       v22 = v11->_visualSearchData;
       v11->_visualSearchData = v21;
 
-      v23 = [v8 objectForKeyedSubscript:@"visualSearchVersion"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"visualSearchVersion"];
       v11->_algorithmVersion = [v23 integerValue];
 
-      v24 = [v8 objectForKeyedSubscript:@"visualSearchAttributes.adjustmentVersion"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"visualSearchAttributes.adjustmentVersion"];
       v25 = v11->_adjustmentVersion;
       v11->_adjustmentVersion = v24;
 
-      v26 = [v8 objectForKeyedSubscript:@"asset.stickerConfidenceScore"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"asset.stickerConfidenceScore"];
 
       if (v26)
       {
-        v27 = [v8 objectForKeyedSubscript:@"asset.stickerConfidenceScore"];
+        v27 = [dictionaryCopy objectForKeyedSubscript:@"asset.stickerConfidenceScore"];
         [v27 floatValue];
         v11->_stickerConfidenceScore = v28;
 

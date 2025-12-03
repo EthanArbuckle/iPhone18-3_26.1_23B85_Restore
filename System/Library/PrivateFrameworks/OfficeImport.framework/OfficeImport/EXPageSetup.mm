@@ -1,6 +1,6 @@
 @interface EXPageSetup
-+ (id)edPageMarginsFrom:(_xmlNode *)a3 state:(id)a4;
-+ (id)edPageSetupFrom:(_xmlNode *)a3 state:(id)a4;
++ (id)edPageMarginsFrom:(_xmlNode *)from state:(id)state;
++ (id)edPageSetupFrom:(_xmlNode *)from state:(id)state;
 + (id)pageOrderEnumMap;
 + (id)pageOrientationEnumMap;
 + (void)pageOrderEnumMap;
@@ -55,14 +55,14 @@ void __37__EXPageSetup_pageOrientationEnumMap__block_invoke()
   +[EXPageSetup pageOrientationEnumMap]::sPageOrientationEnumMap = v0;
 }
 
-+ (id)edPageSetupFrom:(_xmlNode *)a3 state:(id)a4
++ (id)edPageSetupFrom:(_xmlNode *)from state:(id)state
 {
-  v6 = [a4 currentSheet];
-  v7 = [v6 pageSetup];
+  currentSheet = [state currentSheet];
+  pageSetup = [currentSheet pageSetup];
 
-  if (v7)
+  if (pageSetup)
   {
-    if (!a3)
+    if (!from)
     {
       goto LABEL_20;
     }
@@ -70,72 +70,72 @@ void __37__EXPageSetup_pageOrientationEnumMap__block_invoke()
 
   else
   {
-    v7 = +[EDPageSetup pageSetup];
-    if (!a3)
+    pageSetup = +[EDPageSetup pageSetup];
+    if (!from)
     {
       goto LABEL_20;
     }
   }
 
   v19 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "firstPageNumber", &v19))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "firstPageNumber", &v19))
   {
-    [v7 setFirstPageNumber:v19];
+    [pageSetup setFirstPageNumber:v19];
   }
 
   v18 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "fitToHeight", &v18))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "fitToHeight", &v18))
   {
-    [v7 setFitToHeight:v18];
+    [pageSetup setFitToHeight:v18];
   }
 
   v17 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "fitToWidth", &v17))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "fitToWidth", &v17))
   {
-    [v7 setFitToWidth:v17];
+    [pageSetup setFitToWidth:v17];
   }
 
   v16 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "scale", &v16))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "scale", &v16))
   {
-    [v7 setScale:v16];
+    [pageSetup setScale:v16];
   }
 
   v15 = 0;
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "useFirstPageNumber", &v15))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "useFirstPageNumber", &v15))
   {
-    [v7 setCustomFirstPageNumber:v15];
+    [pageSetup setCustomFirstPageNumber:v15];
   }
 
   v14 = 0;
-  v8 = CXOptionalStringAttribute(a3, CXNoNamespace, "orientation", &v14);
+  v8 = CXOptionalStringAttribute(from, CXNoNamespace, "orientation", &v14);
   v9 = v14;
   if (v8)
   {
-    [v7 setOrientation:{objc_msgSend(a1, "edPageOrientationFromPageOrientationString:", v9)}];
+    [pageSetup setOrientation:{objc_msgSend(self, "edPageOrientationFromPageOrientationString:", v9)}];
   }
 
   v13 = 0;
-  v10 = CXOptionalStringAttribute(a3, CXNoNamespace, "pageOrder", &v13);
+  v10 = CXOptionalStringAttribute(from, CXNoNamespace, "pageOrder", &v13);
   v11 = v13;
   if (v10)
   {
-    [v7 setOrder:{objc_msgSend(a1, "edPageOrderFromPageOrderString:", v11)}];
+    [pageSetup setOrder:{objc_msgSend(self, "edPageOrderFromPageOrderString:", v11)}];
   }
 
 LABEL_20:
 
-  return v7;
+  return pageSetup;
 }
 
-+ (id)edPageMarginsFrom:(_xmlNode *)a3 state:(id)a4
++ (id)edPageMarginsFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = [a4 currentSheet];
-  v6 = [v5 pageSetup];
+  currentSheet = [state currentSheet];
+  pageSetup = [currentSheet pageSetup];
 
-  if (v6)
+  if (pageSetup)
   {
-    if (!a3)
+    if (!from)
     {
       goto LABEL_17;
     }
@@ -143,59 +143,59 @@ LABEL_20:
 
   else
   {
-    v6 = +[EDPageSetup pageSetup];
-    if (!a3)
+    pageSetup = +[EDPageSetup pageSetup];
+    if (!from)
     {
       goto LABEL_17;
     }
   }
 
   v14 = 0.0;
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "left", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "left", &v14))
   {
     HIDWORD(v7) = HIDWORD(v14);
     *&v7 = v14;
-    [v6 setLeftMargin:v7];
+    [pageSetup setLeftMargin:v7];
   }
 
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "right", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "right", &v14))
   {
     HIDWORD(v8) = HIDWORD(v14);
     *&v8 = v14;
-    [v6 setRightMargin:v8];
+    [pageSetup setRightMargin:v8];
   }
 
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "top", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "top", &v14))
   {
     HIDWORD(v9) = HIDWORD(v14);
     *&v9 = v14;
-    [v6 setTopMargin:v9];
+    [pageSetup setTopMargin:v9];
   }
 
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "bottom", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "bottom", &v14))
   {
     HIDWORD(v10) = HIDWORD(v14);
     *&v10 = v14;
-    [v6 setBottomMargin:v10];
+    [pageSetup setBottomMargin:v10];
   }
 
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "header", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "header", &v14))
   {
     HIDWORD(v11) = HIDWORD(v14);
     *&v11 = v14;
-    [v6 setHeaderMargin:v11];
+    [pageSetup setHeaderMargin:v11];
   }
 
-  if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "footer", &v14))
+  if (CXOptionalDoubleAttribute(from, CXNoNamespace, "footer", &v14))
   {
     HIDWORD(v12) = HIDWORD(v14);
     *&v12 = v14;
-    [v6 setFooterMargin:v12];
+    [pageSetup setFooterMargin:v12];
   }
 
 LABEL_17:
 
-  return v6;
+  return pageSetup;
 }
 
 + (void)pageOrderEnumMap

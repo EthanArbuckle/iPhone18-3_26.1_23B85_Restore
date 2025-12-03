@@ -1,11 +1,11 @@
 @interface CVNLPCTCBeamState
 - (CVNLPCTCBeamState)init;
 - (id)debugDescription;
-- (id)pathForString:(id)a3;
-- (void)addPath:(id)a3;
+- (id)pathForString:(id)string;
+- (void)addPath:(id)path;
 - (void)applyWordLanguageModelProbabilityToPaths;
-- (void)enumeratePathsWithBlock:(id)a3;
-- (void)kBest:(id *)a3 discarded:(id *)a4 k:(unint64_t)a5 shouldUpdateLMState:(BOOL)a6;
+- (void)enumeratePathsWithBlock:(id)block;
+- (void)kBest:(id *)best discarded:(id *)discarded k:(unint64_t)k shouldUpdateLMState:(BOOL)state;
 - (void)mergePathsWithTrailingWhitespaces;
 @end
 
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (void)addPath:(id)a3
+- (void)addPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   mutablePaths = self->_mutablePaths;
-  v19 = v4;
-  v9 = objc_msgSend_string(v4, v6, v7, v8);
+  v19 = pathCopy;
+  v9 = objc_msgSend_string(pathCopy, v6, v7, v8);
   v12 = objc_msgSend_objectForKeyedSubscript_(mutablePaths, v10, v9, v11);
 
   if (v12)
@@ -61,27 +61,27 @@
   return v6;
 }
 
-- (id)pathForString:(id)a3
+- (id)pathForString:(id)string
 {
-  v4 = objc_msgSend_objectForKeyedSubscript_(self->_mutablePaths, a2, a3, v3);
+  v4 = objc_msgSend_objectForKeyedSubscript_(self->_mutablePaths, a2, string, v3);
 
   return v4;
 }
 
-- (void)enumeratePathsWithBlock:(id)a3
+- (void)enumeratePathsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   mutablePaths = self->_mutablePaths;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1D9DB970C;
   v9[3] = &unk_1E858E360;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(mutablePaths, v7, v9, v8);
 }
 
-- (void)kBest:(id *)a3 discarded:(id *)a4 k:(unint64_t)a5 shouldUpdateLMState:(BOOL)a6
+- (void)kBest:(id *)best discarded:(id *)discarded k:(unint64_t)k shouldUpdateLMState:(BOOL)state
 {
   v91 = 0;
   v92 = &v91;
@@ -92,7 +92,7 @@
   v98 = 0;
   v99 = 0;
   __p = 0;
-  if (objc_msgSend_count(self->_mutablePaths, a2, a3, a4))
+  if (objc_msgSend_count(self->_mutablePaths, a2, best, discarded))
   {
     v14 = v92;
     v15 = objc_msgSend_count(self->_mutablePaths, v11, v12, v13);
@@ -116,13 +116,13 @@
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(mutablePaths, v16, v90, v17);
     v20 = v92[6];
     v21 = v92[7];
-    v22 = v21 - v20 - 1;
-    if (v22 >= a5)
+    kCopy = v21 - v20 - 1;
+    if (kCopy >= k)
     {
-      v22 = a5;
+      kCopy = k;
     }
 
-    v23 = &v20[v22];
+    v23 = &v20[kCopy];
     if (v23 != v21)
     {
       do
@@ -446,7 +446,7 @@ LABEL_86:
       v20 = v92[6];
     }
 
-    v60 = v20[v22];
+    v60 = v20[kCopy];
   }
 
   else
@@ -464,20 +464,20 @@ LABEL_86:
   v88 = v60;
   v79 = v76;
   v86 = v79;
-  v89 = a6;
+  stateCopy = state;
   v80 = v77;
   v87 = v80;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v78, v81, v85, v82);
-  if (a3)
+  if (best)
   {
     v83 = v79;
-    *a3 = v79;
+    *best = v79;
   }
 
-  if (a4)
+  if (discarded)
   {
     v84 = v80;
-    *a4 = v80;
+    *discarded = v80;
   }
 
   _Block_object_dispose(&v91, 8);

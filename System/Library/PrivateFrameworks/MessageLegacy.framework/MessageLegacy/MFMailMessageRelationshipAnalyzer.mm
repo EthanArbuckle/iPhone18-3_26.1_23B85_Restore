@@ -1,38 +1,38 @@
 @interface MFMailMessageRelationshipAnalyzer
-+ (BOOL)isMessage:(id)a3 addressedToMailingListForMessage:(id)a4;
-+ (BOOL)isMessage:(id)a3 addressedToPreviousSender:(id)a4;
-+ (BOOL)isMessage:(id)a3 responseToMessage:(id)a4 previousSenders:(id)a5 myEmailAddresses:(id)a6;
-+ (BOOL)isMessage:(id)a3 sentByAddress:(id)a4;
-+ (id)analysisOfConversation:(id)a3;
-+ (id)analyzeMessages:(id)a3 myEmailAddresses:(id)a4;
++ (BOOL)isMessage:(id)message addressedToMailingListForMessage:(id)forMessage;
++ (BOOL)isMessage:(id)message addressedToPreviousSender:(id)sender;
++ (BOOL)isMessage:(id)message responseToMessage:(id)toMessage previousSenders:(id)senders myEmailAddresses:(id)addresses;
++ (BOOL)isMessage:(id)message sentByAddress:(id)address;
++ (id)analysisOfConversation:(id)conversation;
++ (id)analyzeMessages:(id)messages myEmailAddresses:(id)addresses;
 + (id)myEmailAddresses;
-+ (id)recipientsOfMessage:(id)a3;
-+ (id)sendersOfMessage:(id)a3;
-+ (unint64_t)relationOfMessage:(id)a3 toMessage:(id)a4;
-+ (unint64_t)relationOfMessage:(id)a3 toMessage:(id)a4 previousSenders:(id)a5 myEmailAddresses:(id)a6;
-- (MFMailMessageRelationshipAnalyzer)initWithMessages:(id)a3 relationships:(id)a4;
-- (unint64_t)relationOfMessage:(id)a3;
++ (id)recipientsOfMessage:(id)message;
++ (id)sendersOfMessage:(id)message;
++ (unint64_t)relationOfMessage:(id)message toMessage:(id)toMessage;
++ (unint64_t)relationOfMessage:(id)message toMessage:(id)toMessage previousSenders:(id)senders myEmailAddresses:(id)addresses;
+- (MFMailMessageRelationshipAnalyzer)initWithMessages:(id)messages relationships:(id)relationships;
+- (unint64_t)relationOfMessage:(id)message;
 - (void)dealloc;
 @end
 
 @implementation MFMailMessageRelationshipAnalyzer
 
-+ (id)analysisOfConversation:(id)a3
++ (id)analysisOfConversation:(id)conversation
 {
-  v3 = [[a1 alloc] initWithMessages:a3 relationships:{objc_msgSend(a1, "analyzeMessages:myEmailAddresses:", a3, objc_msgSend(a1, "myEmailAddresses"))}];
+  v3 = [[self alloc] initWithMessages:conversation relationships:{objc_msgSend(self, "analyzeMessages:myEmailAddresses:", conversation, objc_msgSend(self, "myEmailAddresses"))}];
 
   return v3;
 }
 
-- (MFMailMessageRelationshipAnalyzer)initWithMessages:(id)a3 relationships:(id)a4
+- (MFMailMessageRelationshipAnalyzer)initWithMessages:(id)messages relationships:(id)relationships
 {
   v8.receiver = self;
   v8.super_class = MFMailMessageRelationshipAnalyzer;
   v6 = [(MFMailMessageRelationshipAnalyzer *)&v8 init];
   if (v6)
   {
-    v6->_messages = [a3 copy];
-    v6->_relationships = [a4 copy];
+    v6->_messages = [messages copy];
+    v6->_relationships = [relationships copy];
   }
 
   return v6;
@@ -45,9 +45,9 @@
   [(MFMailMessageRelationshipAnalyzer *)&v3 dealloc];
 }
 
-- (unint64_t)relationOfMessage:(id)a3
+- (unint64_t)relationOfMessage:(id)message
 {
-  v4 = [(NSArray *)self->_messages indexOfObject:a3];
+  v4 = [(NSArray *)self->_messages indexOfObject:message];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -58,20 +58,20 @@
   return [v6 unsignedIntegerValue];
 }
 
-+ (id)analyzeMessages:(id)a3 myEmailAddresses:(id)a4
++ (id)analyzeMessages:(id)messages myEmailAddresses:(id)addresses
 {
-  v7 = [a3 firstObject];
-  v8 = [MEMORY[0x277CBEB40] orderedSet];
-  [v8 addObjectsFromArray:{objc_msgSend(a1, "sendersOfMessage:", v7)}];
+  firstObject = [messages firstObject];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  [orderedSet addObjectsFromArray:{objc_msgSend(self, "sendersOfMessage:", firstObject)}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresses___block_invoke;
   v10[3] = &unk_2798B74B0;
-  v10[4] = a1;
-  v10[5] = v7;
-  v10[6] = v8;
-  v10[7] = a4;
-  return [a3 ef_map:v10];
+  v10[4] = self;
+  v10[5] = firstObject;
+  v10[6] = orderedSet;
+  v10[7] = addresses;
+  return [messages ef_map:v10];
 }
 
 uint64_t __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresses___block_invoke(uint64_t a1, uint64_t a2)
@@ -83,31 +83,31 @@ uint64_t __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresse
   return [v5 numberWithUnsignedInteger:v4];
 }
 
-+ (id)sendersOfMessage:(id)a3
++ (id)sendersOfMessage:(id)message
 {
-  v4 = [MEMORY[0x277CBEB18] array];
-  [v4 addObjectsFromArray:{objc_msgSend(a3, "senders")}];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObjectsFromArray:{objc_msgSend(message, "senders")}];
 
-  return [v4 ef_map:&__block_literal_global_13];
+  return [array ef_map:&__block_literal_global_13];
 }
 
-+ (unint64_t)relationOfMessage:(id)a3 toMessage:(id)a4
++ (unint64_t)relationOfMessage:(id)message toMessage:(id)toMessage
 {
-  v7 = [a1 myEmailAddresses];
+  myEmailAddresses = [self myEmailAddresses];
 
-  return [a1 relationOfMessage:a3 toMessage:a4 previousSenders:0 myEmailAddresses:v7];
+  return [self relationOfMessage:message toMessage:toMessage previousSenders:0 myEmailAddresses:myEmailAddresses];
 }
 
-+ (unint64_t)relationOfMessage:(id)a3 toMessage:(id)a4 previousSenders:(id)a5 myEmailAddresses:(id)a6
++ (unint64_t)relationOfMessage:(id)message toMessage:(id)toMessage previousSenders:(id)senders myEmailAddresses:(id)addresses
 {
-  if ([a4 isEqual:?])
+  if ([toMessage isEqual:?])
   {
     return 0;
   }
 
-  if ([a1 isMessage:a3 responseToMessage:a4 previousSenders:a5 myEmailAddresses:a6])
+  if ([self isMessage:message responseToMessage:toMessage previousSenders:senders myEmailAddresses:addresses])
   {
-    if ([a1 isMessageDraft:a3])
+    if ([self isMessageDraft:message])
     {
       return 2;
     }
@@ -118,7 +118,7 @@ uint64_t __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresse
     }
   }
 
-  else if ([a1 isMessage:a3 forwardOfMessage:a4 myEmailAddresses:a6])
+  else if ([self isMessage:message forwardOfMessage:toMessage myEmailAddresses:addresses])
   {
     return 3;
   }
@@ -129,12 +129,12 @@ uint64_t __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresse
   }
 }
 
-+ (BOOL)isMessage:(id)a3 responseToMessage:(id)a4 previousSenders:(id)a5 myEmailAddresses:(id)a6
++ (BOOL)isMessage:(id)message responseToMessage:(id)toMessage previousSenders:(id)senders myEmailAddresses:(id)addresses
 {
-  v10 = [a1 isMessage:a3 sentByAddress:a6];
+  v10 = [self isMessage:message sentByAddress:addresses];
   if (v10)
   {
-    if ([a1 isMessage:a3 addressedToPreviousSender:a5])
+    if ([self isMessage:message addressedToPreviousSender:senders])
     {
       LOBYTE(v10) = 1;
     }
@@ -142,21 +142,21 @@ uint64_t __70__MFMailMessageRelationshipAnalyzer_analyzeMessages_myEmailAddresse
     else
     {
 
-      LOBYTE(v10) = [a1 isMessage:a3 addressedToMailingListForMessage:a4];
+      LOBYTE(v10) = [self isMessage:message addressedToMailingListForMessage:toMessage];
     }
   }
 
   return v10;
 }
 
-+ (BOOL)isMessage:(id)a3 addressedToPreviousSender:(id)a4
++ (BOOL)isMessage:(id)message addressedToPreviousSender:(id)sender
 {
-  v5 = [a1 recipientsOfMessage:a3];
+  v5 = [self recipientsOfMessage:message];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__MFMailMessageRelationshipAnalyzer_isMessage_addressedToPreviousSender___block_invoke;
   v7[3] = &unk_2798B74F8;
-  v7[4] = a4;
+  v7[4] = sender;
   return [v5 ef_any:v7];
 }
 
@@ -168,14 +168,14 @@ uint64_t __73__MFMailMessageRelationshipAnalyzer_isMessage_addressedToPreviousSe
   return [v2 containsObject:v3];
 }
 
-+ (BOOL)isMessage:(id)a3 addressedToMailingListForMessage:(id)a4
++ (BOOL)isMessage:(id)message addressedToMailingListForMessage:(id)forMessage
 {
-  v6 = [a4 headersIfAvailable];
-  v7 = [objc_msgSend(v6 firstHeaderForKey:{*MEMORY[0x277D06FC0]), "mf_uncommentedAddress"}];
+  headersIfAvailable = [forMessage headersIfAvailable];
+  v7 = [objc_msgSend(headersIfAvailable firstHeaderForKey:{*MEMORY[0x277D06FC0]), "mf_uncommentedAddress"}];
   v8 = [v7 length];
   if (v8)
   {
-    v9 = [a1 recipientsOfMessage:a3];
+    v9 = [self recipientsOfMessage:message];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __80__MFMailMessageRelationshipAnalyzer_isMessage_addressedToMailingListForMessage___block_invoke;
@@ -187,9 +187,9 @@ uint64_t __73__MFMailMessageRelationshipAnalyzer_isMessage_addressedToPreviousSe
   return v8;
 }
 
-+ (id)recipientsOfMessage:(id)a3
++ (id)recipientsOfMessage:(id)message
 {
-  v3 = [a3 to];
+  v3 = [message to];
 
   return [v3 ef_map:&__block_literal_global_8];
 }
@@ -202,15 +202,15 @@ uint64_t __73__MFMailMessageRelationshipAnalyzer_isMessage_addressedToPreviousSe
   return [v3 ef_flatten];
 }
 
-+ (BOOL)isMessage:(id)a3 sentByAddress:(id)a4
++ (BOOL)isMessage:(id)message sentByAddress:(id)address
 {
-  v5 = [objc_msgSend(a3 "firstSender")];
+  v5 = [objc_msgSend(message "firstSender")];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__MFMailMessageRelationshipAnalyzer_isMessage_sentByAddress___block_invoke;
   v7[3] = &unk_2798B74F8;
   v7[4] = v5;
-  return [a4 ef_any:v7];
+  return [address ef_any:v7];
 }
 
 uint64_t __61__MFMailMessageRelationshipAnalyzer_isMessage_sentByAddress___block_invoke(uint64_t a1, void *a2)

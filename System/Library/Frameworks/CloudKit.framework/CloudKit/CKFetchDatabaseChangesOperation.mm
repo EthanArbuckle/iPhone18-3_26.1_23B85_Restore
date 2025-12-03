@@ -1,22 +1,22 @@
 @interface CKFetchDatabaseChangesOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchDatabaseChangesOperation)init;
 - (CKFetchDatabaseChangesOperation)initWithPreviousServerChangeToken:(CKServerChangeToken *)previousServerChangeToken;
 - (id)activityCreate;
 - (id)hierarchicalRecordZoneWithIDChangedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)changeTokenUpdatedBlock;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)fetchDatabaseChangesCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleChangeForRecordZoneID:(id)a3 parentZoneID:(id)a4;
-- (void)handleChangeSetCompletionWithServerChangeToken:(id)a3 databaseChangesStatus:(int64_t)a4 error:(id)a5 reply:(id)a6;
-- (void)handleDeleteForRecordZoneID:(id)a3;
-- (void)handleEncryptedDataResetForRecordZoneID:(id)a3;
-- (void)handlePurgeForRecordZoneID:(id)a3;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleChangeForRecordZoneID:(id)d parentZoneID:(id)iD;
+- (void)handleChangeSetCompletionWithServerChangeToken:(id)token databaseChangesStatus:(int64_t)status error:(id)error reply:(id)reply;
+- (void)handleDeleteForRecordZoneID:(id)d;
+- (void)handleEncryptedDataResetForRecordZoneID:(id)d;
+- (void)handlePurgeForRecordZoneID:(id)d;
 - (void)performCKOperation;
 - (void)recordZoneWithIDChangedBlock;
 - (void)recordZoneWithIDWasDeletedBlock;
@@ -24,7 +24,7 @@
 - (void)recordZoneWithIDWasPurgedBlock;
 - (void)setChangeTokenUpdatedBlock:(void *)changeTokenUpdatedBlock;
 - (void)setFetchDatabaseChangesCompletionBlock:(void *)fetchDatabaseChangesCompletionBlock;
-- (void)setHierarchicalRecordZoneWithIDChangedBlock:(id)a3;
+- (void)setHierarchicalRecordZoneWithIDChangedBlock:(id)block;
 - (void)setRecordZoneWithIDChangedBlock:(void *)recordZoneWithIDChangedBlock;
 - (void)setRecordZoneWithIDWasDeletedBlock:(void *)recordZoneWithIDWasDeletedBlock;
 - (void)setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:(void *)recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock;
@@ -581,9 +581,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setHierarchicalRecordZoneWithIDChangedBlock:(id)a3
+- (void)setHierarchicalRecordZoneWithIDChangedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -597,16 +597,16 @@ LABEL_9:
     v12[2] = sub_1885FF0BC;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     hierarchicalRecordZoneWithIDChangedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_hierarchicalRecordZoneWithIDChangedBlock != v6)
+  if (self->_hierarchicalRecordZoneWithIDChangedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     hierarchicalRecordZoneWithIDChangedBlock = self->_hierarchicalRecordZoneWithIDChangedBlock;
     self->_hierarchicalRecordZoneWithIDChangedBlock = v9;
 LABEL_9:
@@ -649,33 +649,33 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_previousServerChangeToken(self, v5, v6);
-  objc_msgSend_setPreviousServerChangeToken_(v4, v8, v7);
+  objc_msgSend_setPreviousServerChangeToken_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_resultsLimit(self, v9, v10);
-  objc_msgSend_setResultsLimit_(v4, v12, v11);
+  objc_msgSend_setResultsLimit_(infoCopy, v12, v11);
   AllChanges = objc_msgSend_fetchAllChanges(self, v13, v14);
-  objc_msgSend_setFetchAllChanges_(v4, v16, AllChanges);
+  objc_msgSend_setFetchAllChanges_(infoCopy, v16, AllChanges);
   v17.receiver = self;
   v17.super_class = CKFetchDatabaseChangesOperation;
-  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = CKFetchDatabaseChangesOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_previousServerChangeToken(v4, v5, v6, v17.receiver, v17.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_previousServerChangeToken(infoCopy, v5, v6, v17.receiver, v17.super_class);
   objc_msgSend_setPreviousServerChangeToken_(self, v8, v7);
 
-  v11 = objc_msgSend_resultsLimit(v4, v9, v10);
+  v11 = objc_msgSend_resultsLimit(infoCopy, v9, v10);
   objc_msgSend_setResultsLimit_(self, v12, v11);
-  AllChanges = objc_msgSend_fetchAllChanges(v4, v13, v14);
+  AllChanges = objc_msgSend_fetchAllChanges(infoCopy, v13, v14);
 
   objc_msgSend_setFetchAllChanges_(self, v16, AllChanges);
 }
@@ -731,11 +731,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)handleChangeForRecordZoneID:(id)a3 parentZoneID:(id)a4
+- (void)handleChangeForRecordZoneID:(id)d parentZoneID:(id)iD
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -779,13 +779,13 @@ LABEL_9:
     if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       v51 = 138412290;
-      v52 = v6;
+      v52 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v16, OS_SIGNPOST_EVENT, v21, "CKFetchDatabaseChangesOperation", "Record zone %@ changed", &v51, 0xCu);
     }
   }
 
   v22 = objc_msgSend_zoneIDsForMetrics(self, v10, v11);
-  objc_msgSend_addObject_(v22, v23, v6);
+  objc_msgSend_addObject_(v22, v23, dCopy);
 
   v26 = objc_msgSend_hierarchicalRecordZoneWithIDChangedBlock_wrapper(self, v24, v25);
   v29 = v26;
@@ -828,13 +828,13 @@ LABEL_9:
       v51 = 138543874;
       v52 = v46;
       v53 = 2112;
-      v54 = v6;
+      v54 = dCopy;
       v55 = 2112;
-      v56 = v7;
+      v56 = iDCopy;
       _os_log_debug_impl(&dword_1883EA000, v43, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a hierarchical changed zone with ID %@ with parent zone ID %@", &v51, 0x20u);
     }
 
-    v30[2](v30, v6, v7);
+    v30[2](v30, dCopy, iDCopy);
   }
 
   else if (v38)
@@ -852,20 +852,20 @@ LABEL_9:
       v51 = 138543618;
       v52 = v50;
       v53 = 2112;
-      v54 = v6;
+      v54 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v47, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a changed zone with ID %@", &v51, 0x16u);
     }
 
-    v38[2](v38, v6);
+    v38[2](v38, dCopy);
   }
 
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeleteForRecordZoneID:(id)a3
+- (void)handleDeleteForRecordZoneID:(id)d
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -909,13 +909,13 @@ LABEL_9:
     if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       v35 = 138412290;
-      v36 = v4;
+      v36 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v13, OS_SIGNPOST_EVENT, v18, "CKFetchDatabaseChangesOperation", "Record zone %@ deleted", &v35, 0xCu);
     }
   }
 
   v19 = objc_msgSend_zoneIDsForMetrics(self, v7, v8);
-  objc_msgSend_addObject_(v19, v20, v4);
+  objc_msgSend_addObject_(v19, v20, dCopy);
 
   v23 = objc_msgSend_recordZoneWithIDWasDeletedBlock_wrapper(self, v21, v22);
   v26 = v23;
@@ -945,20 +945,20 @@ LABEL_9:
       v35 = 138543618;
       v36 = v34;
       v37 = 2112;
-      v38 = v4;
+      v38 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v31, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a deleted zone with ID %@", &v35, 0x16u);
     }
 
-    v27[2](v27, v4);
+    v27[2](v27, dCopy);
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePurgeForRecordZoneID:(id)a3
+- (void)handlePurgeForRecordZoneID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1002,13 +1002,13 @@ LABEL_9:
     if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       v51 = 138412290;
-      v52 = v4;
+      v52 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v13, OS_SIGNPOST_EVENT, v18, "CKFetchDatabaseChangesOperation", "Record zone %@ purged", &v51, 0xCu);
     }
   }
 
   v19 = objc_msgSend_zoneIDsForMetrics(self, v7, v8);
-  objc_msgSend_addObject_(v19, v20, v4);
+  objc_msgSend_addObject_(v19, v20, dCopy);
 
   v23 = objc_msgSend_recordZoneWithIDWasPurgedBlock_wrapper(self, v21, v22);
   v26 = v23;
@@ -1053,14 +1053,14 @@ LABEL_9:
       v51 = 138543618;
       v52 = v43;
       v53 = 2112;
-      v54 = v4;
+      v54 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v40, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a purged zone with ID %@", &v51, 0x16u);
 
       v39 = v27;
     }
 
 LABEL_28:
-    v39[2](v39, v4);
+    v39[2](v39, dCopy);
     goto LABEL_29;
   }
 
@@ -1081,7 +1081,7 @@ LABEL_28:
       v51 = 138543618;
       v52 = v50;
       v53 = 2112;
-      v54 = v4;
+      v54 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v47, OS_LOG_TYPE_DEBUG, "Operation %{public}@ making a delete callback about a purged zone with ID %@", &v51, 0x16u);
 
       v39 = v35;
@@ -1095,10 +1095,10 @@ LABEL_29:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleEncryptedDataResetForRecordZoneID:(id)a3
+- (void)handleEncryptedDataResetForRecordZoneID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1142,13 +1142,13 @@ LABEL_29:
     if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       v51 = 138412290;
-      v52 = v4;
+      v52 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v13, OS_SIGNPOST_EVENT, v18, "CKFetchDatabaseChangesOperation", "Record zone %@ encrypted data reset", &v51, 0xCu);
     }
   }
 
   v19 = objc_msgSend_zoneIDsForMetrics(self, v7, v8);
-  objc_msgSend_addObject_(v19, v20, v4);
+  objc_msgSend_addObject_(v19, v20, dCopy);
 
   v23 = objc_msgSend_recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock_wrapper(self, v21, v22);
   v26 = v23;
@@ -1193,14 +1193,14 @@ LABEL_29:
       v51 = 138543618;
       v52 = v43;
       v53 = 2112;
-      v54 = v4;
+      v54 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v40, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a zone deleted due to encrypted data reset with ID %@", &v51, 0x16u);
 
       v39 = v27;
     }
 
 LABEL_28:
-    v39[2](v39, v4);
+    v39[2](v39, dCopy);
     goto LABEL_29;
   }
 
@@ -1221,7 +1221,7 @@ LABEL_28:
       v51 = 138543618;
       v52 = v50;
       v53 = 2112;
-      v54 = v4;
+      v54 = dCopy;
       _os_log_debug_impl(&dword_1883EA000, v47, OS_LOG_TYPE_DEBUG, "Operation %{public}@ making a delete callback about a zone deleted due to encrypted data reset with ID %@", &v51, 0x16u);
 
       v39 = v35;
@@ -1235,12 +1235,12 @@ LABEL_29:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleChangeSetCompletionWithServerChangeToken:(id)a3 databaseChangesStatus:(int64_t)a4 error:(id)a5 reply:(id)a6
+- (void)handleChangeSetCompletionWithServerChangeToken:(id)token databaseChangesStatus:(int64_t)status error:(id)error reply:(id)reply
 {
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v14 = objc_msgSend_CKClientSuitableError(a5, v12, v13);
+  tokenCopy = token;
+  replyCopy = reply;
+  v14 = objc_msgSend_CKClientSuitableError(error, v12, v13);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1292,7 +1292,7 @@ LABEL_29:
     }
 
     *v69 = 138412546;
-    *&v69[4] = v10;
+    *&v69[4] = tokenCopy;
     *&v69[12] = 2112;
     *&v69[14] = v14;
     v29 = "Server change token updated to %@ with error: %@";
@@ -1336,7 +1336,7 @@ LABEL_29:
   if ((v41 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
     *v69 = 138412290;
-    *&v69[4] = v10;
+    *&v69[4] = tokenCopy;
     v29 = "Server change token updated to %@";
     v30 = v23;
     v31 = v41;
@@ -1348,7 +1348,7 @@ LABEL_20:
 LABEL_21:
 
 LABEL_22:
-  if (a4 != -1)
+  if (status != -1)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -1363,16 +1363,16 @@ LABEL_22:
       *v69 = 138543618;
       *&v69[4] = v61;
       *&v69[12] = 2048;
-      *&v69[14] = a4;
+      *&v69[14] = status;
       _os_log_debug_impl(&dword_1883EA000, v58, OS_LOG_TYPE_DEBUG, "Operation %{public}@ updating databaseChangesStatus to %ld", v69, 0x16u);
     }
 
-    objc_msgSend_setStatus_(self, v43, a4, *v69, *&v69[16], v70);
+    objc_msgSend_setStatus_(self, v43, status, *v69, *&v69[16], v70);
   }
 
-  if (v10)
+  if (tokenCopy)
   {
-    objc_msgSend_setServerChangeToken_(self, v17, v10);
+    objc_msgSend_setServerChangeToken_(self, v17, tokenCopy);
     v46 = objc_msgSend_changeTokenUpdatedBlock(self, v44, v45);
 
     if (v46)
@@ -1390,12 +1390,12 @@ LABEL_22:
         *v69 = 138543618;
         *&v69[4] = v65;
         *&v69[12] = 2114;
-        *&v69[14] = v10;
+        *&v69[14] = tokenCopy;
         _os_log_debug_impl(&dword_1883EA000, v62, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about a server change token %{public}@", v69, 0x16u);
       }
 
       v50 = objc_msgSend_changeTokenUpdatedBlock(self, v48, v49, *v69, *&v69[8]);
-      v50[2](v50, v10);
+      v50[2](v50, tokenCopy);
       goto LABEL_35;
     }
 
@@ -1412,7 +1412,7 @@ LABEL_22:
       *v69 = 138543618;
       *&v69[4] = v68;
       *&v69[12] = 2114;
-      *&v69[14] = v10;
+      *&v69[14] = tokenCopy;
       _os_log_debug_impl(&dword_1883EA000, v50, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received a server change token (%{public}@) but no changeTokenUpdatedBlock has been set.", v69, 0x16u);
 
 LABEL_35:
@@ -1429,15 +1429,15 @@ LABEL_35:
     v56 = 0;
   }
 
-  v11[2](v11, v56);
+  replyCopy[2](replyCopy, v56);
 
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1511,7 +1511,7 @@ LABEL_35:
 
   if (v36)
   {
-    v40 = objc_msgSend_CKClientSuitableError(v4, v38, v39);
+    v40 = objc_msgSend_CKClientSuitableError(errorCopy, v38, v39);
     if (v40)
     {
       if (ck_log_initialization_predicate != -1)
@@ -1574,7 +1574,7 @@ LABEL_35:
     v40 = v43;
     v47 = objc_msgSend_operationID(self, v45, v46);
     v50 = objc_msgSend_serverChangeToken(self, v48, v49);
-    v53 = objc_msgSend_CKClientSuitableError(v4, v51, v52);
+    v53 = objc_msgSend_CKClientSuitableError(errorCopy, v51, v52);
     *buf = 138543874;
     v80 = v47;
     v81 = 2114;
@@ -1594,15 +1594,15 @@ LABEL_34:
   objc_msgSend_setHierarchicalRecordZoneWithIDChangedBlock_(self, v65, 0);
   v78.receiver = self;
   v78.super_class = CKFetchDatabaseChangesOperation;
-  [(CKOperation *)&v78 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v78 _finishOnCallbackQueueWithError:errorCopy];
 
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1646,7 +1646,7 @@ LABEL_34:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchDatabaseChangesOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -1654,15 +1654,15 @@ LABEL_34:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleChangeSetCompletionWithServerChangeToken_databaseChangesStatus_error_reply_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleChangeSetCompletionWithServerChangeToken_databaseChangesStatus_error_reply_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchDatabaseChangesOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

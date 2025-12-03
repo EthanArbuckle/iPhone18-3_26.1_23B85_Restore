@@ -1,26 +1,26 @@
 @interface AdaptiveOCV
-+ (id)algorithmWithData:(id)a3;
++ (id)algorithmWithData:(id)data;
 - (basic_string<char,)programName;
 - (id).cxx_construct;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (id)output;
-- (id)preRun:(id)a3;
-- (int)runWithData:(id)a3;
+- (id)preRun:(id)run;
+- (int)runWithData:(id)data;
 @end
 
 @implementation AdaptiveOCV
 
-+ (id)algorithmWithData:(id)a3
++ (id)algorithmWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__AdaptiveOCV_algorithmWithData___block_invoke;
   v10[3] = &unk_278D050D8;
-  v11 = v4;
-  v12 = a1;
+  v11 = dataCopy;
+  selfCopy = self;
   v5 = +[AdaptiveOCV algorithmWithData:]::onceToken;
-  v6 = v4;
+  v6 = dataCopy;
   if (v5 != -1)
   {
     dispatch_once(&+[AdaptiveOCV algorithmWithData:]::onceToken, v10);
@@ -39,9 +39,9 @@ uint64_t __33__AdaptiveOCV_algorithmWithData___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, init);
   v73[13] = *MEMORY[0x277D85DE8];
   v32 = v4;
   v38 = [v32 objectForKey:@"smcData"];
@@ -785,22 +785,22 @@ LABEL_8:
   AdaptiveOcvAlgo::ParameterPack::ParameterPack(v41, &v40, v21);
 }
 
-- (int)runWithData:(id)a3
+- (int)runWithData:(id)data
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, data);
   v5 = v4;
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [v5 isEqual:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    v7 = [v5 isEqual:null];
 
     if ((v7 & 1) == 0)
     {
       v8 = [v5 objectForKeyedSubscript:@"BDC_AMA"];
       if (v8)
       {
-        v9 = [MEMORY[0x277CBEB68] null];
-        if ([v8 isEqual:v9])
+        null2 = [MEMORY[0x277CBEB68] null];
+        if ([v8 isEqual:null2])
         {
         }
 
@@ -816,8 +816,8 @@ LABEL_8:
               goto LABEL_11;
             }
 
-            v12 = [MEMORY[0x277CBEB68] null];
-            if (([v11 isEqual:v12] & 1) == 0)
+            null3 = [MEMORY[0x277CBEB68] null];
+            if (([v11 isEqual:null3] & 1) == 0)
             {
               v13 = [v11 count];
 
@@ -826,26 +826,26 @@ LABEL_8:
                 goto LABEL_11;
               }
 
-              v12 = [v11 lastObject];
-              AdaptiveOcvAlgo::Deserialization::setMlOcvFromDictionary(v12, v3 + 28, v14);
+              null3 = [v11 lastObject];
+              AdaptiveOcvAlgo::Deserialization::setMlOcvFromDictionary(null3, v3 + 28, v14);
             }
 
 LABEL_11:
-            v15 = [(NSDictionary *)v3 model];
-            v16 = [(NSDictionary *)v3 model];
+            model = [(NSDictionary *)v3 model];
+            model2 = [(NSDictionary *)v3 model];
             [(NSDictionary *)v3 persistentStateCache];
-            AdaptiveOcvAlgo::CoreEngine::init(v15, v16, &v27, &v3[28]);
+            AdaptiveOcvAlgo::CoreEngine::init(model, model2, &v27, &v3[28]);
             AdaptiveOcvAlgo::PersistentState::~PersistentState(&v26);
-            v17 = [(NSDictionary *)v3 model];
+            model3 = [(NSDictionary *)v3 model];
             memcpy(&v26, &v3[119], sizeof(v26));
-            AdaptiveOcvAlgo::CoreEngine::setState(v17, &v26);
+            AdaptiveOcvAlgo::CoreEngine::setState(model3, &v26);
             v18 = [v5 objectForKeyedSubscript:@"BDC_AMA"];
             v19 = [v18 count];
 
             AdaptiveOcvAlgo::SystemLoadBuffer::SystemLoadBuffer(v25, v19);
             AdaptiveOcvAlgo::Deserialization::setSystemLoadBufferFromArray(v25, v8, v20);
             AdaptiveOcvAlgo::SystemLoadBuffer::view(v25, v24);
-            v21 = [(NSDictionary *)v3 model];
+            model4 = [(NSDictionary *)v3 model];
             *&v26.table_dist[16] = v24[4];
             *&v26.table_dist[20] = v24[5];
             *&v26.table_dist[24] = v24[6];
@@ -853,7 +853,7 @@ LABEL_11:
             *&v26.table_dist[4] = v24[1];
             *&v26.table_dist[12] = v24[3];
             *&v26.table_dist[8] = v24[2];
-            AdaptiveOcvAlgo::CoreEngine::runAlgorithm(v21, &v26, v22);
+            AdaptiveOcvAlgo::CoreEngine::runAlgorithm(model4, &v26, v22);
           }
         }
       }
@@ -867,9 +867,9 @@ LABEL_11:
 {
   v2 = (MEMORY[0x28223BE20])(self, a2);
   v29[4] = *MEMORY[0x277D85DE8];
-  v3 = [v2 outputReady];
+  outputReady = [v2 outputReady];
   v4 = MEMORY[0x277CBEC10];
-  if (v3)
+  if (outputReady)
   {
     v28[0] = @"savedAlgoState";
     v26[0] = @"kSavedAlgoStateAdaptiveOCVCoreAlgo";
@@ -933,13 +933,13 @@ LABEL_11:
   return v4;
 }
 
-- (id)preRun:(id)a3
+- (id)preRun:(id)run
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"streamCurrentDate"];
-  v5 = [MEMORY[0x277CBEB68] null];
-  v6 = [v4 isEqual:v5];
+  runCopy = run;
+  v4 = [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
+  null = [MEMORY[0x277CBEB68] null];
+  v6 = [v4 isEqual:null];
 
   if (v6)
   {
@@ -948,21 +948,21 @@ LABEL_11:
 
   else
   {
-    [v3 objectForKeyedSubscript:@"streamCurrentDate"];
+    [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
   }
   v7 = ;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v9 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v9 setDay:-30];
-  v10 = [v8 dateByAddingComponents:v9 toDate:v7 options:0];
-  v11 = [v3 objectForKeyedSubscript:@"streamLastRunDate"];
+  v10 = [currentCalendar dateByAddingComponents:v9 toDate:v7 options:0];
+  v11 = [runCopy objectForKeyedSubscript:@"streamLastRunDate"];
   if (!v11)
   {
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x277CBEB68] null];
-  v13 = [v11 isEqual:v12];
+  null2 = [MEMORY[0x277CBEB68] null];
+  v13 = [v11 isEqual:null2];
 
   if (v13)
   {

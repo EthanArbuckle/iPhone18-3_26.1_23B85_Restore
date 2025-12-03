@@ -1,35 +1,35 @@
 @interface SKInvocationQueueProxy
-- (SKInvocationQueueProxy)initWithProtocol:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setInvocationTarget:(id)a3;
+- (SKInvocationQueueProxy)initWithProtocol:(id)protocol;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)setInvocationTarget:(id)target;
 @end
 
 @implementation SKInvocationQueueProxy
 
-- (SKInvocationQueueProxy)initWithProtocol:(id)a3
+- (SKInvocationQueueProxy)initWithProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = SKInvocationQueueProxy;
   v6 = [(SKInvocationQueueProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_protocol, a3);
+    objc_storeStrong(&v6->_protocol, protocol);
   }
 
   return v7;
 }
 
-- (void)setInvocationTarget:(id)a3
+- (void)setInvocationTarget:(id)target
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  targetCopy = target;
   p_invocationTarget = &self->_invocationTarget;
-  if (self->_invocationTarget != v5)
+  if (self->_invocationTarget != targetCopy)
   {
-    objc_storeStrong(&self->_invocationTarget, a3);
+    objc_storeStrong(&self->_invocationTarget, target);
     if (*p_invocationTarget)
     {
       v14 = 0u;
@@ -67,13 +67,13 @@
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v7 = v4;
+  invocationCopy = invocation;
+  v7 = invocationCopy;
   if (self->_invocationTarget)
   {
-    [v4 invokeWithTarget:?];
+    [invocationCopy invokeWithTarget:?];
   }
 
   else
@@ -84,22 +84,22 @@
       invocationQueue = self->_invocationQueue;
       self->_invocationQueue = v5;
 
-      v4 = v7;
+      invocationCopy = v7;
     }
 
-    [v4 retainArguments];
+    [invocationCopy retainArguments];
     [(NSMutableArray *)self->_invocationQueue addObject:v7];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = SKInvocationQueueProxy;
   v5 = [(SKInvocationQueueProxy *)&v8 methodSignatureForSelector:?];
   if (!v5)
   {
-    MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 1, 1);
     if (MethodDescription.types)
     {
       v5 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:MethodDescription.types];

@@ -4,40 +4,40 @@
 + (id)getAppsWithStates;
 + (id)sharedInstance;
 - (AppStateMonitor)init;
-- (BOOL)_trackerSetHasForeground:(id)a3;
+- (BOOL)_trackerSetHasForeground:(id)foreground;
 - (BOOL)hasAnyForegroundApp;
-- (BOOL)identifierShouldBeIgnored:(id)a3;
-- (BOOL)rbsProcessStateToForeground:(id)a3;
+- (BOOL)identifierShouldBeIgnored:(id)ignored;
+- (BOOL)rbsProcessStateToForeground:(id)foreground;
 - (id)foregroundAppKeys;
 - (id)getAppsWithStates;
-- (id)trackerForPid:(int)a3;
-- (void)_removeStateTracker:(id)a3 hadForeground:(BOOL *)a4 hasForeground:(BOOL *)a5;
+- (id)trackerForPid:(int)pid;
+- (void)_removeStateTracker:(id)tracker hadForeground:(BOOL *)foreground hasForeground:(BOOL *)hasForeground;
 - (void)enable;
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4;
+- (void)handleStateUpdate:(id)update forProcess:(id)process;
 @end
 
 @implementation AppStateMonitor
 
 + (id)getAppsWithStates
 {
-  v2 = [a1 sharedInstance];
-  v3 = v2;
-  if (v2)
+  sharedInstance = [self sharedInstance];
+  v3 = sharedInstance;
+  if (sharedInstance)
   {
-    v4 = [v2 queue];
+    queue = [sharedInstance queue];
 
-    if (v4)
+    if (queue)
     {
-      v4 = [v3 getAppsWithStates];
+      queue = [v3 getAppsWithStates];
     }
   }
 
   else
   {
-    v4 = 0;
+    queue = 0;
   }
 
-  return v4;
+  return queue;
 }
 
 void __36__AppStateMonitor_getAppsWithStates__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -117,7 +117,7 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __33__AppStateMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_10 != -1)
   {
     dispatch_once(&sharedInstance_pred_10, block);
@@ -130,10 +130,10 @@ LABEL_3:
 
 + (id)foregroundAppKeys
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 foregroundAppKeys];
+  sharedInstance = [self sharedInstance];
+  foregroundAppKeys = [sharedInstance foregroundAppKeys];
 
-  return v3;
+  return foregroundAppKeys;
 }
 
 - (id)foregroundAppKeys
@@ -192,10 +192,10 @@ LABEL_11:
 
 + (BOOL)hasAnyForegroundApp
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 hasAnyForegroundApp];
+  sharedInstance = [self sharedInstance];
+  hasAnyForegroundApp = [sharedInstance hasAnyForegroundApp];
 
-  return v3;
+  return hasAnyForegroundApp;
 }
 
 - (BOOL)hasAnyForegroundApp
@@ -215,7 +215,7 @@ LABEL_11:
   return result;
 }
 
-- (id)trackerForPid:(int)a3
+- (id)trackerForPid:(int)pid
 {
   v8 = 0;
   v9 = &v8;
@@ -228,7 +228,7 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __33__AppStateMonitor_trackerForPid___block_invoke;
   v6[3] = &unk_27898B818;
-  v7 = a3;
+  pidCopy = pid;
   v6[4] = &v8;
   [(NSMutableDictionary *)appBundlesMonitored enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v9[5];
@@ -276,18 +276,18 @@ void __33__AppStateMonitor_trackerForPid___block_invoke(uint64_t a1, uint64_t a2
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_trackerSetHasForeground:(id)a3
+- (BOOL)_trackerSetHasForeground:(id)foreground
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  foregroundCopy = foreground;
+  v4 = foregroundCopy;
+  if (foregroundCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v3;
+    v5 = foregroundCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -330,30 +330,30 @@ LABEL_12:
   return v6;
 }
 
-- (void)_removeStateTracker:(id)a3 hadForeground:(BOOL *)a4 hasForeground:(BOOL *)a5
+- (void)_removeStateTracker:(id)tracker hadForeground:(BOOL *)foreground hasForeground:(BOOL *)hasForeground
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 identifier];
-  if (v9)
+  trackerCopy = tracker;
+  identifier = [trackerCopy identifier];
+  if (identifier)
   {
-    v10 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:v9];
+    v10 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:identifier];
     if (v10)
     {
-      if (a4)
+      if (foreground)
       {
-        *a4 = [(AppStateMonitor *)self _trackerSetHasForeground:v10];
+        *foreground = [(AppStateMonitor *)self _trackerSetHasForeground:v10];
       }
 
-      [v10 removeObject:v8];
-      if (a5)
+      [v10 removeObject:trackerCopy];
+      if (hasForeground)
       {
-        *a5 = [(AppStateMonitor *)self _trackerSetHasForeground:v10];
+        *hasForeground = [(AppStateMonitor *)self _trackerSetHasForeground:v10];
       }
 
       if (![v10 count])
       {
-        [(NSMutableDictionary *)self->_appBundlesMonitored removeObjectForKey:v9];
+        [(NSMutableDictionary *)self->_appBundlesMonitored removeObjectForKey:identifier];
       }
     }
 
@@ -363,7 +363,7 @@ LABEL_12:
       if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412290;
-        v15 = v9;
+        v15 = identifier;
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_ERROR, "_removeStateTracker can't find trackers for bundle name %@", &v14, 0xCu);
       }
     }
@@ -375,7 +375,7 @@ LABEL_12:
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = trackerCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "_removeStateTracker can't get bundle name for %@", &v14, 0xCu);
     }
   }
@@ -383,10 +383,10 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)identifierShouldBeIgnored:(id)a3
+- (BOOL)identifierShouldBeIgnored:(id)ignored
 {
-  v3 = a3;
-  v4 = v3;
+  ignoredCopy = ignored;
+  v4 = ignoredCopy;
   if (identifierShouldBeIgnored__onceToken != -1)
   {
     [AppStateMonitor identifierShouldBeIgnored:];
@@ -400,7 +400,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!ignoredCopy)
   {
     goto LABEL_5;
   }
@@ -418,35 +418,35 @@ void __45__AppStateMonitor_identifierShouldBeIgnored___block_invoke()
   identifierShouldBeIgnored__kIdentifiersToIgnore = &unk_2847EEB38;
 }
 
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4
+- (void)handleStateUpdate:(id)update forProcess:(id)process
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identity];
-  v9 = [v8 embeddedApplicationIdentifier];
-  if (!v9)
+  updateCopy = update;
+  processCopy = process;
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+  if (!embeddedApplicationIdentifier)
   {
-    v9 = [v8 xpcServiceIdentifier];
-    if (!v9)
+    embeddedApplicationIdentifier = [identity xpcServiceIdentifier];
+    if (!embeddedApplicationIdentifier)
     {
-      if (![v7 hasConsistentLaunchdJob] || (objc_msgSend(v7, "consistentJobLabel"), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![processCopy hasConsistentLaunchdJob] || (objc_msgSend(processCopy, "consistentJobLabel"), (embeddedApplicationIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v10 = [v7 bundle];
-        v9 = [v10 identifier];
+        bundle = [processCopy bundle];
+        embeddedApplicationIdentifier = [bundle identifier];
       }
     }
   }
 
-  if ([(AppStateMonitor *)self identifierShouldBeIgnored:v9])
+  if ([(AppStateMonitor *)self identifierShouldBeIgnored:embeddedApplicationIdentifier])
   {
     v11 = procStateLogHandle;
     if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      *v81 = v9;
+      *v81 = embeddedApplicationIdentifier;
       *&v81[8] = 2112;
-      *&v81[10] = v6;
+      *&v81[10] = updateCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "%@ incorrectly identified as app with update %@, ignoring", buf, 0x16u);
     }
 
@@ -455,34 +455,34 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  if (v9)
+  if (embeddedApplicationIdentifier)
   {
     v75 = 0;
-    v12 = [v7 pid];
+    v12 = [processCopy pid];
     v70 = pid_to_uuid(v12);
-    v13 = [v6 state];
-    v14 = [(AppStateMonitor *)self rbsProcessStateToForeground:v13];
+    state = [updateCopy state];
+    v14 = [(AppStateMonitor *)self rbsProcessStateToForeground:state];
 
     obj = self->_appBundlesMonitored;
     objc_sync_enter(obj);
     hasAnyForegroundApp = self->_hasAnyForegroundApp;
     v73 = [(AppStateMonitor *)self trackerForPid:v12];
-    v15 = [v6 state];
-    if ([v15 taskState] == 1)
+    state2 = [updateCopy state];
+    if ([state2 taskState] == 1)
     {
     }
 
     else
     {
-      v21 = [v6 state];
-      v22 = [v21 taskState];
+      state3 = [updateCopy state];
+      taskState = [state3 taskState];
 
-      if (v22 != 3)
+      if (taskState != 3)
       {
-        v30 = [v6 state];
-        v31 = [v30 taskState];
+        state4 = [updateCopy state];
+        taskState2 = [state4 taskState];
 
-        if (!v31)
+        if (!taskState2)
         {
           v60 = procStateLogHandle;
           if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_ERROR))
@@ -497,55 +497,55 @@ LABEL_57:
 
         if (v73)
         {
-          v32 = [v73 uuid];
-          v33 = [v32 isEqual:v70];
+          uuid = [v73 uuid];
+          v33 = [uuid isEqual:v70];
 
           if ((v33 & 1) == 0)
           {
             v61 = procStateLogHandle;
             if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
             {
-              v62 = [v73 uuid];
+              uuid2 = [v73 uuid];
               *buf = 67109634;
               *v81 = v12;
               *&v81[4] = 2112;
               *&v81[6] = v70;
               *&v81[14] = 2112;
-              *&v81[16] = v62;
+              *&v81[16] = uuid2;
               _os_log_impl(&dword_23255B000, v61, OS_LOG_TYPE_ERROR, "State change notification for pid %d has uuid %@, not matching previous %@", buf, 0x1Cu);
             }
 
             goto LABEL_24;
           }
 
-          v34 = [v73 identifier];
-          v35 = [v34 isEqualToString:v9];
+          identifier = [v73 identifier];
+          v35 = [identifier isEqualToString:embeddedApplicationIdentifier];
 
           if (v35)
           {
-            v36 = [v73 identifier];
+            identifier2 = [v73 identifier];
 
-            v37 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:v36];
+            v37 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:identifier2];
             HIBYTE(v75) = [(AppStateMonitor *)self _trackerSetHasForeground:v37];
             [v73 setForeground:v14];
             LOBYTE(v75) = v14;
 
             v72 = 0;
             v27 = 0;
-            v9 = v36;
+            embeddedApplicationIdentifier = identifier2;
             goto LABEL_25;
           }
 
-          v63 = [v73 identifier];
+          identifier3 = [v73 identifier];
           v64 = procStateLogHandle;
           if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109634;
             *v81 = v12;
             *&v81[4] = 2112;
-            *&v81[6] = v9;
+            *&v81[6] = embeddedApplicationIdentifier;
             *&v81[14] = 2112;
-            *&v81[16] = v63;
+            *&v81[16] = identifier3;
             _os_log_impl(&dword_23255B000, v64, OS_LOG_TYPE_DEFAULT, "State change notification for pid %d now has bundle %@, not matching previous %@", buf, 0x1Cu);
           }
 
@@ -560,7 +560,7 @@ LABEL_57:
 
           else
           {
-            v27 = v63;
+            v27 = identifier3;
             v72 = v70;
           }
         }
@@ -575,11 +575,11 @@ LABEL_57:
 
         if (v65)
         {
-          [(AppStateTracker *)v65 setIdentifier:v9];
+          [(AppStateTracker *)v65 setIdentifier:embeddedApplicationIdentifier];
           [(AppStateTracker *)v65 setUuid:v70];
           [(AppStateTracker *)v65 setPid:v12];
           [(AppStateTracker *)v65 setForeground:v14];
-          v66 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:v9];
+          v66 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:embeddedApplicationIdentifier];
           if (v66)
           {
             HIBYTE(v75) = [(AppStateMonitor *)self _trackerSetHasForeground:v66];
@@ -588,7 +588,7 @@ LABEL_57:
           else
           {
             v66 = objc_alloc_init(MEMORY[0x277CBEB58]);
-            [(NSMutableDictionary *)self->_appBundlesMonitored setObject:v66 forKey:v9];
+            [(NSMutableDictionary *)self->_appBundlesMonitored setObject:v66 forKey:embeddedApplicationIdentifier];
           }
 
           [v66 addObject:v65];
@@ -608,26 +608,26 @@ LABEL_57:
 
     if (v73)
     {
-      v23 = [v73 identifier];
+      identifier4 = [v73 identifier];
 
       [(AppStateMonitor *)self _removeStateTracker:v73 hadForeground:&v75 + 1 hasForeground:&v75];
       v24 = procStateLogHandle;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [v6 state];
-        v26 = [v25 taskState];
+        state5 = [updateCopy state];
+        taskState3 = [state5 taskState];
         *buf = 67109634;
-        *v81 = v26;
+        *v81 = taskState3;
         *&v81[4] = 1024;
         *&v81[6] = v12;
         *&v81[10] = 2112;
-        *&v81[12] = v23;
+        *&v81[12] = identifier4;
         _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "Removed state tracker with taskState %u, pid %d, for %@", buf, 0x18u);
       }
 
       v72 = 0;
       v27 = 0;
-      v9 = v23;
+      embeddedApplicationIdentifier = identifier4;
 LABEL_25:
       v28 = v75;
       if (HIBYTE(v75) == v75)
@@ -637,7 +637,7 @@ LABEL_25:
 
       else
       {
-        v29 = v9;
+        v29 = embeddedApplicationIdentifier;
         if (v28)
         {
           v71 = v70;
@@ -664,8 +664,8 @@ LABEL_38:
             v78 = @"kAppStateKeyAppsActivityDetail";
             v79 = v45;
             v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
-            v47 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v47 postNotificationName:@"kAppStateStatsNotificationAppsWithStatesChanged" object:self userInfo:v46];
+            defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter postNotificationName:@"kAppStateStatsNotificationAppsWithStatesChanged" object:self userInfo:v46];
           }
 
           objc_sync_exit(obj);
@@ -689,8 +689,8 @@ LABEL_38:
               [v49 setObject:v71 forKeyedSubscript:@"kAppStateKeyForegroundActivityBundleUUID"];
             }
 
-            v51 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v51 postNotificationName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:self userInfo:v49];
+            defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter2 postNotificationName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:self userInfo:v49];
           }
 
           if (v27)
@@ -713,8 +713,8 @@ LABEL_38:
               [v53 setObject:v72 forKeyedSubscript:@"kAppStateKeyForegroundActivityBundleUUID"];
             }
 
-            v55 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v55 postNotificationName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:self userInfo:v53];
+            defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter3 postNotificationName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:self userInfo:v53];
           }
 
           if (hasAnyForegroundApp != v67)
@@ -724,16 +724,16 @@ LABEL_38:
             v77 = v56;
             v57 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
 
-            v58 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v58 postNotificationName:@"kAppStateNotificationForegroundActivity" object:self userInfo:v57];
+            defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter4 postNotificationName:@"kAppStateNotificationForegroundActivity" object:self userInfo:v57];
           }
 
           goto LABEL_57;
         }
 
         v38 = v70;
-        v39 = [(AppStateMonitor *)self foregroundAppKeys];
-        if (![v39 count])
+        foregroundAppKeys = [(AppStateMonitor *)self foregroundAppKeys];
+        if (![foregroundAppKeys count])
         {
           self->_hasAnyForegroundApp = 0;
         }
@@ -758,29 +758,29 @@ LABEL_24:
   if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    *v81 = v6;
+    *v81 = updateCopy;
     *&v81[8] = 2112;
-    *&v81[10] = v7;
+    *&v81[10] = processCopy;
     _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_ERROR, "handleStateUpdate unable to determine app identifier, update is %@ process %@", buf, 0x16u);
   }
 
-  v9 = +[SystemSettingsRelay defaultRelay];
-  if (![v9 autoBugCaptureEnabled])
+  embeddedApplicationIdentifier = +[SystemSettingsRelay defaultRelay];
+  if (![embeddedApplicationIdentifier autoBugCaptureEnabled])
   {
     goto LABEL_57;
   }
 
   v17 = +[SystemProperties sharedInstance];
-  v18 = [v17 internalBuild];
+  internalBuild = [v17 internalBuild];
 
-  if (v18)
+  if (internalBuild)
   {
     v19 = objc_alloc_init(MEMORY[0x277D6AFC8]);
-    v9 = v19;
+    embeddedApplicationIdentifier = v19;
     if (v19)
     {
       v20 = [v19 signatureWithDomain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220] subType:@"AppState handling" subtypeContext:@"Unable to retrieve identifier" detectedProcess:@"symptomsd" triggerThresholdValues:0];
-      [v9 snapshotWithSignature:v20 duration:0 events:0 payload:0 actions:&__block_literal_global_142 reply:0.0];
+      [embeddedApplicationIdentifier snapshotWithSignature:v20 duration:0 events:0 payload:0 actions:&__block_literal_global_142 reply:0.0];
     }
 
     goto LABEL_57;
@@ -806,15 +806,15 @@ void __48__AppStateMonitor_handleStateUpdate_forProcess___block_invoke(uint64_t 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)rbsProcessStateToForeground:(id)a3
+- (BOOL)rbsProcessStateToForeground:(id)foreground
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 taskState];
-  if (v4 == 4 || v4 == 2)
+  foregroundCopy = foreground;
+  taskState = [foregroundCopy taskState];
+  if (taskState == 4 || taskState == 2)
   {
-    v6 = [v3 endowmentNamespaces];
-    v7 = [v6 containsObject:@"com.apple.frontboard.visibility"];
+    endowmentNamespaces = [foregroundCopy endowmentNamespaces];
+    v7 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
   }
 
   else
@@ -826,12 +826,12 @@ void __48__AppStateMonitor_handleStateUpdate_forProcess___block_invoke(uint64_t 
   if (os_log_type_enabled(procStateLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [v3 taskState];
-    v11 = [v3 process];
+    taskState2 = [foregroundCopy taskState];
+    process = [foregroundCopy process];
     v14[0] = 67109376;
-    v14[1] = v10;
+    v14[1] = taskState2;
     v15 = 1024;
-    v16 = [v11 pid];
+    v16 = [process pid];
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "AppStateMonitor RBS taskState %u, pid %d", v14, 0xEu);
   }
 

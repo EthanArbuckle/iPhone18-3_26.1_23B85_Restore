@@ -6,11 +6,11 @@
 
 - (id)accountID
 {
-  v2 = [(PKDashboardBankConnectLinkedAccountData *)self account];
-  v3 = [v2 fullyQualifiedAccountIdentifier];
-  v4 = [v3 accountID];
+  account = [(PKDashboardBankConnectLinkedAccountData *)self account];
+  fullyQualifiedAccountIdentifier = [account fullyQualifiedAccountIdentifier];
+  accountID = [fullyQualifiedAccountIdentifier accountID];
 
-  return v4;
+  return accountID;
 }
 
 @end

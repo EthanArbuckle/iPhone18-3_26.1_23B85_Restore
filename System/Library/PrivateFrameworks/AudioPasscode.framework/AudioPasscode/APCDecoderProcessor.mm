@@ -1,17 +1,17 @@
 @interface APCDecoderProcessor
-- (APCDecoderProcessor)initWithInputURL:(id)a3 codecConfig:(id)a4 resultData:(id)a5 error:(id *)a6;
-- (BOOL)getResultData:(id *)a3;
+- (APCDecoderProcessor)initWithInputURL:(id)l codecConfig:(id)config resultData:(id)data error:(id *)error;
+- (BOOL)getResultData:(id *)data;
 - (id)run;
 @end
 
 @implementation APCDecoderProcessor
 
-- (APCDecoderProcessor)initWithInputURL:(id)a3 codecConfig:(id)a4 resultData:(id)a5 error:(id *)a6
+- (APCDecoderProcessor)initWithInputURL:(id)l codecConfig:(id)config resultData:(id)data error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  configCopy = config;
+  dataCopy = data;
   v42.receiver = self;
   v42.super_class = APCDecoderProcessor;
   v13 = [(APCDecoderProcessor *)&v42 init];
@@ -21,12 +21,12 @@
   }
 
   v14 = 0;
-  if (v10 && v11)
+  if (lCopy && configCopy)
   {
     +[AUPasscodeDecoder registerAU];
     v15 = [AUPasscodeDecoder alloc];
     +[AUPasscodeDecoder getAUDesc];
-    v16 = [(AUPasscodeDecoder *)v15 initWithComponentDescription:buf options:0 error:a6];
+    v16 = [(AUPasscodeDecoder *)v15 initWithComponentDescription:buf options:0 error:error];
     decoderAU = v13->_decoderAU;
     v13->_decoderAU = v16;
 
@@ -36,8 +36,8 @@
       payloadsReceived = v13->_payloadsReceived;
       v13->_payloadsReceived = v18;
 
-      [v11 setSampleRate:-1];
-      [(AUPasscodeDecoder *)v13->_decoderAU setCodecConfig:v11];
+      [configCopy setSampleRate:-1];
+      [(AUPasscodeDecoder *)v13->_decoderAU setCodecConfig:configCopy];
       objc_initWeak(&location, v13->_payloadsReceived);
       v20 = dispatch_get_global_queue(0, 0);
       [(AUPasscodeDecoder *)v13->_decoderAU setDispatchQueue:v20];
@@ -49,35 +49,35 @@
       objc_copyWeak(&v40, &location);
       [(AUPasscodeDecoder *)v13->_decoderAU setDataHandler:&v36];
       [(AUPasscodeDecoder *)v13->_decoderAU setRenderingOffline:1, v36, v37, v38, v39];
-      [(AUPasscodeDecoder *)v13->_decoderAU setResultData:v12];
-      v21 = [(AUPasscodeDecoder *)v13->_decoderAU resultData];
-      LOBYTE(v20) = v21 == 0;
+      [(AUPasscodeDecoder *)v13->_decoderAU setResultData:dataCopy];
+      resultData = [(AUPasscodeDecoder *)v13->_decoderAU resultData];
+      LOBYTE(v20) = resultData == 0;
 
       if ((v20 & 1) == 0)
       {
-        v22 = [(AUPasscodeDecoder *)v13->_decoderAU resultData];
-        [v22 reset];
+        resultData2 = [(AUPasscodeDecoder *)v13->_decoderAU resultData];
+        [resultData2 reset];
       }
 
       v23 = APCLogObject();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v46 = v10;
+        v46 = lCopy;
         _os_log_impl(&dword_24158E000, v23, OS_LOG_TYPE_INFO, "Recording URL: %@", buf, 0xCu);
       }
 
-      v24 = -[AUAudioUnitOfflineProcessor initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:]([AUAudioUnitOfflineProcessor alloc], "initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:", v13->_decoderAU, v10, 0, [v11 sampleRate]);
+      v24 = -[AUAudioUnitOfflineProcessor initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:]([AUAudioUnitOfflineProcessor alloc], "initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:", v13->_decoderAU, lCopy, 0, [configCopy sampleRate]);
       processor = v13->_processor;
       v13->_processor = v24;
 
       if (v13->_processor)
       {
-        v26 = [(AUPasscodeDecoder *)v13->_decoderAU inputBusses];
-        v27 = [v26 objectAtIndexedSubscript:0];
-        v28 = [v27 format];
-        [v28 sampleRate];
-        [v11 setSampleRate:v29];
+        inputBusses = [(AUPasscodeDecoder *)v13->_decoderAU inputBusses];
+        v27 = [inputBusses objectAtIndexedSubscript:0];
+        format = [v27 format];
+        [format sampleRate];
+        [configCopy setSampleRate:v29];
 
         objc_destroyWeak(&v40);
         objc_destroyWeak(&location);
@@ -97,7 +97,7 @@ LABEL_11:
       v43 = *MEMORY[0x277CCA450];
       v44 = @"Failed to create the offline decoder processor";
       v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      *a6 = [v32 errorWithDomain:@"com.apple.audiopasscode" code:101 userInfo:v33];
+      *error = [v32 errorWithDomain:@"com.apple.audiopasscode" code:101 userInfo:v33];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
@@ -137,28 +137,28 @@ void __69__APCDecoderProcessor_initWithInputURL_codecConfig_resultData_error___b
   return payloadsReceived;
 }
 
-- (BOOL)getResultData:(id *)a3
+- (BOOL)getResultData:(id *)data
 {
-  v5 = [(AUPasscodeDecoder *)self->_decoderAU resultData];
-  if (v5)
+  resultData = [(AUPasscodeDecoder *)self->_decoderAU resultData];
+  if (resultData)
   {
-    v6 = v5;
-    v7 = [(AUPasscodeDecoder *)self->_decoderAU resultData];
-    v8 = [v7 isValid];
+    v6 = resultData;
+    resultData2 = [(AUPasscodeDecoder *)self->_decoderAU resultData];
+    isValid = [resultData2 isValid];
 
-    if (v8)
+    if (isValid)
     {
-      *a3 = [(AUPasscodeDecoder *)self->_decoderAU resultData];
-      LOBYTE(v5) = 1;
+      *data = [(AUPasscodeDecoder *)self->_decoderAU resultData];
+      LOBYTE(resultData) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(resultData) = 0;
     }
   }
 
-  return v5;
+  return resultData;
 }
 
 @end

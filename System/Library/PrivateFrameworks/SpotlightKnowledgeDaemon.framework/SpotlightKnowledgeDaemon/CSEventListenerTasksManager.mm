@@ -1,14 +1,14 @@
 @interface CSEventListenerTasksManager
 + (void)initialize;
-- (BOOL)alwaysAllowed:(id)a3;
-- (void)endJobForDelegate:(id)a3;
-- (void)endTaskForIndexType:(int)a3 delegate:(id)a4;
+- (BOOL)alwaysAllowed:(id)allowed;
+- (void)endJobForDelegate:(id)delegate;
+- (void)endTaskForIndexType:(int)type delegate:(id)delegate;
 - (void)eventListenerManagerSetupScheduler;
 - (void)launchIntensiveTasks;
 - (void)launchQueryUpdatesTasks;
-- (void)registerEventListenerDelegates:(id)a3;
-- (void)setTurboMode:(BOOL)a3;
-- (void)startTaskForIndexType:(int)a3 delegate:(id)a4;
+- (void)registerEventListenerDelegates:(id)delegates;
+- (void)setTurboMode:(BOOL)mode;
+- (void)startTaskForIndexType:(int)type delegate:(id)delegate;
 @end
 
 @implementation CSEventListenerTasksManager
@@ -37,7 +37,7 @@
     +[CSEventListenerTasksManager initialize];
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = objc_opt_new();
     v7 = gCSEventListenerTasksManager;
@@ -61,9 +61,9 @@ void __41__CSEventListenerTasksManager_initialize__block_invoke()
   }
 }
 
-- (void)setTurboMode:(BOOL)a3
+- (void)setTurboMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v36 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
@@ -78,7 +78,7 @@ void __41__CSEventListenerTasksManager_initialize__block_invoke()
   v6 = indexPath();
   v7 = [v6 stringByAppendingPathComponent:@".turbo"];
 
-  if (v3)
+  if (modeCopy)
   {
     v32 = 0;
     [&stru_2846CE8D8 writeToFile:v7 atomically:1 encoding:4 error:&v32];
@@ -91,9 +91,9 @@ void __41__CSEventListenerTasksManager_initialize__block_invoke()
 
   else
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v31 = 0;
-    [v9 removeItemAtPath:v7 error:&v31];
+    [defaultManager removeItemAtPath:v7 error:&v31];
     v8 = v31;
 
     if (!v8)
@@ -112,10 +112,10 @@ void __41__CSEventListenerTasksManager_initialize__block_invoke()
   }
 
 LABEL_13:
-  if (sTurboMode != v3)
+  if (sTurboMode != modeCopy)
   {
-    sTurboMode = v3;
-    if ((v3 & 1) == 0)
+    sTurboMode = modeCopy;
+    if ((modeCopy & 1) == 0)
     {
       for (i = 0; i != 10; ++i)
       {
@@ -138,10 +138,10 @@ LABEL_13:
       goto LABEL_45;
     }
 
-    v11 = [MEMORY[0x277D657A0] sharedContext];
-    v12 = [v11 enableEmbeddings];
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
 
-    if (v12)
+    if (enableEmbeddings)
     {
       if (getPriorityStatus_token != -1)
       {
@@ -157,10 +157,10 @@ LABEL_13:
       completeEmbeddingsTask(&getEmbeddingsStatus_sEmbeddingsStatus);
     }
 
-    v13 = [MEMORY[0x277D657A0] sharedContext];
-    v14 = [v13 enableKeyphrases];
+    mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+    enableKeyphrases = [mEMORY[0x277D657A0]2 enableKeyphrases];
 
-    if (v14)
+    if (enableKeyphrases)
     {
       if (getKeyphrasesStatus_token != -1)
       {
@@ -170,17 +170,17 @@ LABEL_13:
       completeKeyphrasesTask(&getKeyphrasesStatus_status);
     }
 
-    v15 = [MEMORY[0x277D657A0] sharedContext];
-    if ([v15 enableSuggestedEvents])
+    mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+    if ([mEMORY[0x277D657A0]3 enableSuggestedEvents])
     {
     }
 
     else
     {
-      v19 = [MEMORY[0x277D657A0] sharedContext];
-      v20 = [v19 enableDocumentUnderstanding];
+      mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+      enableDocumentUnderstanding = [mEMORY[0x277D657A0]4 enableDocumentUnderstanding];
 
-      if (!v20)
+      if (!enableDocumentUnderstanding)
       {
 LABEL_38:
         v29 = 0u;
@@ -232,10 +232,10 @@ LABEL_46:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerEventListenerDelegates:(id)a3
+- (void)registerEventListenerDelegates:(id)delegates
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegatesCopy = delegates;
   v5 = indexPath();
   v6 = [v5 stringByAppendingPathComponent:@".turbo"];
 
@@ -253,17 +253,17 @@ LABEL_46:
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if ([v4 count])
+  if ([delegatesCopy count])
   {
     v22 = v6;
-    v23 = self;
+    selfCopy = self;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v4;
-    v10 = v4;
+    v24 = delegatesCopy;
+    v10 = delegatesCopy;
     v11 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
     if (!v11)
     {
@@ -285,12 +285,12 @@ LABEL_46:
         if ([v15 conformsToProtocol:&unk_2846E9BE8])
         {
           [(NSArray *)v9 addObject:v15];
-          v16 = [v15 config];
-          if (v16)
+          config = [v15 config];
+          if (config)
           {
-            v17 = [[CSEventListenerTask alloc] initWithConfig:v16];
-            v18 = [v15 taskName];
-            [(NSDictionary *)v8 setObject:v17 forKey:v18];
+            v17 = [[CSEventListenerTask alloc] initWithConfig:config];
+            taskName = [v15 taskName];
+            [(NSDictionary *)v8 setObject:v17 forKey:taskName];
           }
         }
 
@@ -301,12 +301,12 @@ LABEL_46:
             continue;
           }
 
-          v16 = SKGLogInit();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          config = SKGLogInit();
+          if (os_log_type_enabled(config, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v31 = v15;
-            _os_log_error_impl(&dword_231B25000, v16, OS_LOG_TYPE_ERROR, "### %@ does not conform to CSEventListenerDelegate protocol", buf, 0xCu);
+            _os_log_error_impl(&dword_231B25000, config, OS_LOG_TYPE_ERROR, "### %@ does not conform to CSEventListenerDelegate protocol", buf, 0xCu);
           }
         }
       }
@@ -316,11 +316,11 @@ LABEL_46:
       {
 LABEL_20:
 
-        self = v23;
-        delegates = v23->_delegates;
-        v23->_delegates = v9;
+        self = selfCopy;
+        delegates = selfCopy->_delegates;
+        selfCopy->_delegates = v9;
 
-        v4 = v24;
+        delegatesCopy = v24;
         v6 = v22;
         break;
       }
@@ -334,12 +334,12 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTaskForIndexType:(int)a3 delegate:(id)a4
+- (void)startTaskForIndexType:(int)type delegate:(id)delegate
 {
-  v5 = a4;
+  delegateCopy = delegate;
   tasks = self->_tasks;
-  v7 = [v5 taskName];
-  v8 = [(NSDictionary *)tasks objectForKeyedSubscript:v7];
+  taskName = [delegateCopy taskName];
+  v8 = [(NSDictionary *)tasks objectForKeyedSubscript:taskName];
 
   if (v8)
   {
@@ -348,12 +348,12 @@ LABEL_20:
 
   else
   {
-    v9 = [v5 eventType];
-    if (v9 < 0xA)
+    eventType = [delegateCopy eventType];
+    if (eventType < 0xA)
     {
-      if ((v9 & 0xE) != 4)
+      if ((eventType & 0xE) != 4)
       {
-        switch(v9)
+        switch(eventType)
         {
           case 3u:
             v11 = getKeyphrasesWorkGroup();
@@ -365,7 +365,7 @@ LABEL_20:
             v11 = getPriorityWorkGroup();
             break;
           default:
-            if ((v9 & 0xE) != 6)
+            if ((eventType & 0xE) != 6)
             {
               goto LABEL_3;
             }
@@ -395,12 +395,12 @@ LABEL_20:
 LABEL_3:
 }
 
-- (void)endTaskForIndexType:(int)a3 delegate:(id)a4
+- (void)endTaskForIndexType:(int)type delegate:(id)delegate
 {
-  v5 = a4;
+  delegateCopy = delegate;
   tasks = self->_tasks;
-  v7 = [v5 taskName];
-  v8 = [(NSDictionary *)tasks objectForKeyedSubscript:v7];
+  taskName = [delegateCopy taskName];
+  v8 = [(NSDictionary *)tasks objectForKeyedSubscript:taskName];
 
   if (v8)
   {
@@ -409,12 +409,12 @@ LABEL_3:
 
   else
   {
-    v9 = [v5 eventType];
-    if (v9 < 0xA)
+    eventType = [delegateCopy eventType];
+    if (eventType < 0xA)
     {
-      if ((v9 & 0xE) != 4)
+      if ((eventType & 0xE) != 4)
       {
-        switch(v9)
+        switch(eventType)
         {
           case 3u:
             v11 = getKeyphrasesWorkGroup();
@@ -426,7 +426,7 @@ LABEL_3:
             v11 = getPriorityWorkGroup();
             break;
           default:
-            if ((v9 & 0xE) != 6)
+            if ((eventType & 0xE) != 6)
             {
               goto LABEL_3;
             }
@@ -456,21 +456,21 @@ LABEL_3:
 LABEL_3:
 }
 
-- (void)endJobForDelegate:(id)a3
+- (void)endJobForDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [v4 eventType];
-  if ((v5 & 0xFFFFFFFE) == 4)
+  delegateCopy = delegate;
+  eventType = [delegateCopy eventType];
+  if ((eventType & 0xFFFFFFFE) == 4)
   {
     goto LABEL_10;
   }
 
-  v6 = v5;
+  v6 = eventType;
   if (sTurboMode != 1)
   {
     tasks = self->_tasks;
-    v9 = [v4 taskName];
-    v10 = [(NSDictionary *)tasks objectForKeyedSubscript:v9];
+    taskName = [delegateCopy taskName];
+    v10 = [(NSDictionary *)tasks objectForKeyedSubscript:taskName];
 
     if (v10)
     {
@@ -540,7 +540,7 @@ LABEL_32:
           v15[4] = v12;
           dispatch_async(v14, v15);
           os_unfair_lock_unlock(v12 + 2);
-          [v4 didCompleteJournal];
+          [delegateCopy didCompleteJournal];
         }
 
         else
@@ -722,10 +722,10 @@ void __49__CSEventListenerTasksManager_endJobForDelegate___block_invoke_190(uint
         objc_enumerationMutation(v3);
       }
 
-      v10 = [*(*(&v34 + 1) + 8 * v9) eventType];
-      if (v10 <= 2)
+      eventType = [*(*(&v34 + 1) + 8 * v9) eventType];
+      if (eventType <= 2)
       {
-        if (v10 == 1)
+        if (eventType == 1)
         {
           if (getPriorityStatus_token != -1)
           {
@@ -742,18 +742,18 @@ void __49__CSEventListenerTasksManager_endJobForDelegate___block_invoke_190(uint
             }
           }
 
-          v20 = [MEMORY[0x277CF0810] sharedScheduler];
+          mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
           *v39 = MEMORY[0x277D85DD0];
           v40 = 3221225472;
           v41 = __setupPriorityTaskHandler_block_invoke;
           v42 = &__block_descriptor_40_e34_v16__0__BGNonRepeatingSystemTask_8l;
           v43 = &getPriorityStatus_sPriorityStatus;
-          [v20 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.priority" usingQueue:qword_28158ACA0 launchHandler:v39];
+          [mEMORY[0x277CF0810] registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.priority" usingQueue:qword_28158ACA0 launchHandler:v39];
 
           goto LABEL_37;
         }
 
-        if (v10 != 2)
+        if (eventType != 2)
         {
           goto LABEL_37;
         }
@@ -773,13 +773,13 @@ void __49__CSEventListenerTasksManager_endJobForDelegate___block_invoke_190(uint
           }
         }
 
-        v14 = [MEMORY[0x277CF0810] sharedScheduler];
+        mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
         *v39 = MEMORY[0x277D85DD0];
         v40 = 3221225472;
         v41 = __setupEmbeddingsTaskHandler_block_invoke;
         v42 = &__block_descriptor_40_e34_v16__0__BGNonRepeatingSystemTask_8l;
         v43 = &getEmbeddingsStatus_sEmbeddingsStatus;
-        [v14 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task" usingQueue:qword_28158AD78 launchHandler:v39];
+        [mEMORY[0x277CF0810]2 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task" usingQueue:qword_28158AD78 launchHandler:v39];
 
         v15 = @"com.apple.spotlightknowledged.task.cleanup.embeddings";
         v16 = @"com.apple.spotlightknowledged.task.ab-cleanup.embeddings";
@@ -789,7 +789,7 @@ LABEL_27:
         goto LABEL_37;
       }
 
-      switch(v10)
+      switch(eventType)
       {
         case 3:
           if (getKeyphrasesStatus_token != -1)
@@ -807,13 +807,13 @@ LABEL_27:
             }
           }
 
-          v18 = [MEMORY[0x277CF0810] sharedScheduler];
+          mEMORY[0x277CF0810]3 = [MEMORY[0x277CF0810] sharedScheduler];
           *v39 = MEMORY[0x277D85DD0];
           v40 = 3221225472;
           v41 = __setupKeyphrasesTaskHandler_block_invoke;
           v42 = &__block_descriptor_40_e34_v16__0__BGNonRepeatingSystemTask_8l;
           v43 = &getKeyphrasesStatus_status;
-          [v18 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.keyphrases" usingQueue:qword_28158AD30 launchHandler:v39];
+          [mEMORY[0x277CF0810]3 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.keyphrases" usingQueue:qword_28158AD30 launchHandler:v39];
 
           v15 = @"com.apple.spotlightknowledged.task.cleanup.keyphrases";
           v16 = @"com.apple.spotlightknowledged.task.ab-cleanup.keyphrases";
@@ -889,13 +889,13 @@ LABEL_41:
       }
     }
 
-    v28 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810]4 = [MEMORY[0x277CF0810] sharedScheduler];
     *v39 = MEMORY[0x277D85DD0];
     v40 = 3221225472;
     v41 = __setupPreExtractionTaskHandler_block_invoke;
     v42 = &__block_descriptor_40_e34_v16__0__BGNonRepeatingSystemTask_8l;
     v43 = &getPreExtractionStatus_status;
-    [v28 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.preextraction" usingQueue:qword_28158ACE8 launchHandler:v39];
+    [mEMORY[0x277CF0810]4 registerForTaskWithIdentifier:@"com.apple.spotlightknowledged.task.preextraction" usingQueue:qword_28158ACE8 launchHandler:v39];
 
 LABEL_57:
     setupQueryUpdatesTasks();
@@ -910,27 +910,27 @@ LABEL_57:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)alwaysAllowed:(id)a3
+- (BOOL)alwaysAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   tasks = self->_tasks;
-  v6 = [v4 taskName];
-  v7 = [(NSDictionary *)tasks objectForKeyedSubscript:v6];
+  taskName = [allowedCopy taskName];
+  v7 = [(NSDictionary *)tasks objectForKeyedSubscript:taskName];
 
   if (v7)
   {
     v8 = [v7 needsThrottling] ^ 1;
   }
 
-  else if (([v4 eventFlags] & 0x40) != 0)
+  else if (([allowedCopy eventFlags] & 0x40) != 0)
   {
     LOBYTE(v8) = 0;
   }
 
   else
   {
-    v9 = [v4 eventType];
-    LOBYTE(v8) = v9 > 9 || (v9 & 0xE) == 4;
+    eventType = [allowedCopy eventType];
+    LOBYTE(v8) = eventType > 9 || (eventType & 0xE) == 4;
   }
 
   return v8;
@@ -944,10 +944,10 @@ LABEL_57:
     goto LABEL_43;
   }
 
-  v3 = [MEMORY[0x277D657A0] sharedContext];
-  v4 = [v3 enableEmbeddings];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
 
-  if (v4)
+  if (enableEmbeddings)
   {
     if (getPriorityStatus_token != -1)
     {
@@ -957,13 +957,13 @@ LABEL_57:
     launchPriorityTask(&getPriorityStatus_sPriorityStatus);
   }
 
-  v5 = [MEMORY[0x277D657A0] sharedContext];
-  if ([v5 enableEmbeddings])
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  if ([mEMORY[0x277D657A0]2 enableEmbeddings])
   {
-    v4 = +[CSXPCEventListener sharedInstance];
-    v6 = [v4 embeddingsJobCount];
+    enableEmbeddings = +[CSXPCEventListener sharedInstance];
+    embeddingsJobCount = [enableEmbeddings embeddingsJobCount];
 
-    if (v6 >= 2)
+    if (embeddingsJobCount >= 2)
     {
       if (getEmbeddingsStatus_token != -1)
       {
@@ -978,13 +978,13 @@ LABEL_57:
   {
   }
 
-  v7 = [MEMORY[0x277D657A0] sharedContext];
-  if ([v7 enableKeyphrases])
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  if ([mEMORY[0x277D657A0]3 enableKeyphrases])
   {
-    v4 = +[CSXPCEventListener sharedInstance];
-    v8 = [v4 keyphrasesJobCount];
+    enableEmbeddings = +[CSXPCEventListener sharedInstance];
+    keyphrasesJobCount = [enableEmbeddings keyphrasesJobCount];
 
-    if (v8 >= 2)
+    if (keyphrasesJobCount >= 2)
     {
       if (getKeyphrasesStatus_token != -1)
       {
@@ -999,13 +999,13 @@ LABEL_57:
   {
   }
 
-  v9 = [MEMORY[0x277D657A0] sharedContext];
-  v10 = [v9 enableDocumentUnderstanding];
-  v11 = v10;
-  if (v10)
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  enableDocumentUnderstanding = [mEMORY[0x277D657A0]4 enableDocumentUnderstanding];
+  v11 = enableDocumentUnderstanding;
+  if (enableDocumentUnderstanding)
   {
-    v4 = +[CSXPCEventListener sharedInstance];
-    if ([v4 docUnderstandingJobCount] >= 2)
+    enableEmbeddings = +[CSXPCEventListener sharedInstance];
+    if ([enableEmbeddings docUnderstandingJobCount] >= 2)
     {
 
 LABEL_29:
@@ -1019,8 +1019,8 @@ LABEL_29:
     }
   }
 
-  v12 = [MEMORY[0x277D657A0] sharedContext];
-  if (![v12 enableSuggestedEvents])
+  mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+  if (![mEMORY[0x277D657A0]5 enableSuggestedEvents])
   {
 
     if (v11)
@@ -1031,12 +1031,12 @@ LABEL_29:
   }
 
   v13 = +[CSXPCEventListener sharedInstance];
-  v14 = [v13 suggestedEventsJobCount];
+  suggestedEventsJobCount = [v13 suggestedEventsJobCount];
 
   if (v11)
   {
 
-    if (v14 > 1)
+    if (suggestedEventsJobCount > 1)
     {
       goto LABEL_29;
     }
@@ -1045,7 +1045,7 @@ LABEL_29:
   else
   {
 
-    if (v14 >= 2)
+    if (suggestedEventsJobCount >= 2)
     {
       goto LABEL_29;
     }

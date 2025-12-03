@@ -1,6 +1,6 @@
 @interface CSEventListenerManagerDefaultSignposter
 - (unint64_t)beginProcessJournalsInterval;
-- (void)endProcessJournalsIntervalWithSignpostID:(unint64_t)a3 stopReason:(id)a4 indexType:(int)a5 taskName:(id)a6 processedJournalsCount:(unint64_t)a7 journalQueueCount:(unint64_t)a8;
+- (void)endProcessJournalsIntervalWithSignpostID:(unint64_t)d stopReason:(id)reason indexType:(int)type taskName:(id)name processedJournalsCount:(unint64_t)count journalQueueCount:(unint64_t)queueCount;
 @end
 
 @implementation CSEventListenerManagerDefaultSignposter
@@ -21,26 +21,26 @@
   return v3;
 }
 
-- (void)endProcessJournalsIntervalWithSignpostID:(unint64_t)a3 stopReason:(id)a4 indexType:(int)a5 taskName:(id)a6 processedJournalsCount:(unint64_t)a7 journalQueueCount:(unint64_t)a8
+- (void)endProcessJournalsIntervalWithSignpostID:(unint64_t)d stopReason:(id)reason indexType:(int)type taskName:(id)name processedJournalsCount:(unint64_t)count journalQueueCount:(unint64_t)queueCount
 {
   v28 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a6;
+  reasonCopy = reason;
+  nameCopy = name;
   v15 = SKGLogUpdaterInit();
   v16 = v15;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     v18 = 138544386;
-    v19 = v13;
+    v19 = reasonCopy;
     v20 = 1024;
-    v21 = a5;
+    typeCopy = type;
     v22 = 2112;
-    v23 = v14;
+    v23 = nameCopy;
     v24 = 2048;
-    v25 = a7;
+    countCopy = count;
     v26 = 2048;
-    v27 = a8;
-    _os_signpost_emit_with_name_impl(&dword_231B25000, v16, OS_SIGNPOST_INTERVAL_END, a3, "ProcessJournals", "stopReason=%{public}@ indexType=%d taskName=%@ processedJournalsCount=%lu journalQueueCount=%lu", &v18, 0x30u);
+    queueCountCopy = queueCount;
+    _os_signpost_emit_with_name_impl(&dword_231B25000, v16, OS_SIGNPOST_INTERVAL_END, d, "ProcessJournals", "stopReason=%{public}@ indexType=%d taskName=%@ processedJournalsCount=%lu journalQueueCount=%lu", &v18, 0x30u);
   }
 
   v17 = *MEMORY[0x277D85DE8];

@@ -1,10 +1,10 @@
 @interface BRCXPCTokenClient
 - (NSString)description;
-- (void)currentAccountCopyTokenWithBundleID:(id)a3 version:(id)a4 reply:(id)a5;
-- (void)fetchContainerPathForCurrentPersonaWithReply:(id)a3;
-- (void)fetchGroupContainerPathForCurrentPersonaWithReply:(id)a3;
-- (void)getPrimaryiCloudAccountStatus:(id)a3;
-- (void)prepareFileProvidersWithReply:(id)a3;
+- (void)currentAccountCopyTokenWithBundleID:(id)d version:(id)version reply:(id)reply;
+- (void)fetchContainerPathForCurrentPersonaWithReply:(id)reply;
+- (void)fetchGroupContainerPathForCurrentPersonaWithReply:(id)reply;
+- (void)getPrimaryiCloudAccountStatus:(id)status;
+- (void)prepareFileProvidersWithReply:(id)reply;
 @end
 
 @implementation BRCXPCTokenClient
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (void)prepareFileProvidersWithReply:(id)a3
+- (void)prepareFileProvidersWithReply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v17, 0, sizeof(v17));
   __brc_create_section(1, "[BRCXPCTokenClient prepareFileProvidersWithReply:]", 1341, 0, v17);
   v5 = brc_bread_crumbs();
@@ -33,9 +33,9 @@
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v19 = v7;
+    selfCopy2 = v7;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v9;
     v24 = 2080;
@@ -50,7 +50,7 @@
   v15[2] = __51__BRCXPCTokenClient_prepareFileProvidersWithReply___block_invoke;
   v15[3] = &unk_2785014D0;
   v15[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v16 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v15);
 
@@ -61,9 +61,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = 0;
+      selfCopy = 0;
       v22 = 2112;
       v23 = v12;
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -99,34 +99,34 @@ void __51__BRCXPCTokenClient_prepareFileProvidersWithReply___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentAccountCopyTokenWithBundleID:(id)a3 version:(id)a4 reply:(id)a5
+- (void)currentAccountCopyTokenWithBundleID:(id)d version:(id)version reply:(id)reply
 {
   v79 = *MEMORY[0x277D85DE8];
-  v68 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BRCXPCClient *)self session];
-  v11 = [v10 accountHandler];
+  dCopy = d;
+  versionCopy = version;
+  replyCopy = reply;
+  session = [(BRCXPCClient *)self session];
+  accountHandler = [session accountHandler];
 
-  if (v11)
+  if (accountHandler)
   {
-    v12 = 0;
+    br_dsid = 0;
     goto LABEL_3;
   }
 
   v33 = +[BRCAccountHandler currentiCloudAccount];
   if ([v33 br_isEnabledForCloudDocs])
   {
-    v34 = [v33 br_personaIdentifier];
-    if ([v34 isEqualToString:@"__defaultPersonaID__"])
+    br_personaIdentifier = [v33 br_personaIdentifier];
+    if ([br_personaIdentifier isEqualToString:@"__defaultPersonaID__"])
     {
     }
 
     else
     {
-      v40 = [v33 br_personaIdentifier];
+      br_personaIdentifier2 = [v33 br_personaIdentifier];
 
-      if (v40)
+      if (br_personaIdentifier2)
       {
         v41 = 0;
         goto LABEL_32;
@@ -138,16 +138,16 @@ void __51__BRCXPCTokenClient_prepareFileProvidersWithReply___block_invoke(uint64
       [BRCXPCTokenClient currentAccountCopyTokenWithBundleID:version:reply:];
     }
 
-    v40 = currentAccountCopyTokenWithBundleID_version_reply____personalPersona;
+    br_personaIdentifier2 = currentAccountCopyTokenWithBundleID_version_reply____personalPersona;
     v41 = 1;
 LABEL_32:
-    v42 = [MEMORY[0x277D77BF8] sharedManager];
-    v67 = [v42 currentPersona];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
     *buf = 0;
-    v43 = [v67 userPersonaUniqueString];
-    v65 = v43;
-    if (v43 == v40 || ([v43 isEqualToString:{v40, v43}] & 1) != 0)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v65 = userPersonaUniqueString;
+    if (userPersonaUniqueString == br_personaIdentifier2 || ([userPersonaUniqueString isEqualToString:{br_personaIdentifier2, userPersonaUniqueString}] & 1) != 0)
     {
       v44 = 0;
     }
@@ -157,7 +157,7 @@ LABEL_32:
       if (voucher_process_can_use_arbitrary_personas())
       {
         v69 = 0;
-        v52 = [v67 copyCurrentPersonaContextWithError:&v69];
+        v52 = [currentPersona copyCurrentPersonaContextWithError:&v69];
         v53 = v69;
         v54 = *buf;
         *buf = v52;
@@ -172,7 +172,7 @@ LABEL_32:
           }
         }
 
-        v44 = [v67 br_generateAndRestorePersonaContextWithPersonaUniqueString:v40];
+        v44 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:br_personaIdentifier2];
 
         if (!v44)
         {
@@ -183,9 +183,9 @@ LABEL_32:
         v58 = brc_default_log();
         if (os_log_type_enabled(v58, 0x90u))
         {
-          v59 = [v33 br_personaIdentifier];
+          br_personaIdentifier3 = [v33 br_personaIdentifier];
           ctx.ctx[0] = 138412802;
-          *&ctx.ctx[1] = v59;
+          *&ctx.ctx[1] = br_personaIdentifier3;
           LOWORD(ctx.ctx[3]) = 2112;
           *(&ctx.ctx[3] + 2) = v44;
           HIWORD(ctx.ctx[5]) = 2112;
@@ -196,7 +196,7 @@ LABEL_32:
 
       else
       {
-        if (!v41 || ([v67 isDataSeparatedPersona] & 1) != 0)
+        if (!v41 || ([currentPersona isDataSeparatedPersona] & 1) != 0)
         {
           v63 = brc_bread_crumbs();
           v64 = brc_default_log();
@@ -222,13 +222,13 @@ LABEL_32:
 
 LABEL_35:
     v45 = +[BRCAccountsManager sharedManager];
-    v11 = [v45 getOrCreateAccountHandlerForACAccount:v33];
+    accountHandler = [v45 getOrCreateAccountHandlerForACAccount:v33];
 
-    v12 = [v33 br_dsid];
-    if ([v11 finishedLoading])
+    br_dsid = [v33 br_dsid];
+    if ([accountHandler finishedLoading])
     {
-      v46 = [v11 session];
-      v47 = v46 == 0;
+      session2 = [accountHandler session];
+      v47 = session2 == 0;
 
       if (v47)
       {
@@ -247,7 +247,7 @@ LABEL_35:
           _os_log_impl(&dword_223E7A000, v62, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &ctx, 0x2Au);
         }
 
-        (*(v9 + 2))(v9, 0, 0);
+        (*(replyCopy + 2))(replyCopy, 0, 0);
         _BRRestorePersona();
 
         goto LABEL_22;
@@ -273,35 +273,35 @@ LABEL_3:
 
     if (v13 == 1 || v13 == 253)
     {
-      v16 = [v11 ubiquityTokenSalt];
-      v17 = [(BRCXPCClient *)self bundleID];
-      if (v12)
+      ubiquityTokenSalt = [accountHandler ubiquityTokenSalt];
+      bundleID = [(BRCXPCClient *)self bundleID];
+      if (br_dsid)
       {
         goto LABEL_9;
       }
 
-      v18 = [v11 session];
-      v19 = [v18 accountFacade];
-      v12 = [v19 accountDSID];
+      session3 = [accountHandler session];
+      accountFacade = [session3 accountFacade];
+      br_dsid = [accountFacade accountDSID];
 
-      if (v12)
+      if (br_dsid)
       {
 LABEL_9:
         memset(&ctx, 0, sizeof(ctx));
-        v20 = v12;
-        v21 = [v12 UTF8String];
-        v22 = strlen(v21);
-        CCHmacInit(&ctx, 0, v21, v22);
-        v23 = v16;
-        v24 = [v16 UTF8String];
-        v25 = strlen(v24);
-        CCHmacUpdate(&ctx, v24, v25);
+        v20 = br_dsid;
+        uTF8String = [br_dsid UTF8String];
+        v22 = strlen(uTF8String);
+        CCHmacInit(&ctx, 0, uTF8String, v22);
+        v23 = ubiquityTokenSalt;
+        uTF8String2 = [ubiquityTokenSalt UTF8String];
+        v25 = strlen(uTF8String2);
+        CCHmacUpdate(&ctx, uTF8String2, v25);
         CCHmacUpdate(&ctx, ":", 1uLL);
-        v26 = v17;
-        v27 = [v17 UTF8String];
-        if (v27)
+        v26 = bundleID;
+        uTF8String3 = [bundleID UTF8String];
+        if (uTF8String3)
         {
-          v28 = v27;
+          v28 = uTF8String3;
         }
 
         else
@@ -328,7 +328,7 @@ LABEL_9:
           _os_log_impl(&dword_223E7A000, v32, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        (*(v9 + 2))(v9, v30, 0);
+        (*(replyCopy + 2))(replyCopy, v30, 0);
       }
 
       else
@@ -355,7 +355,7 @@ LABEL_9:
           _os_log_impl(&dword_223E7A000, v51, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &ctx, 0x2Au);
         }
 
-        (*(v9 + 2))(v9, 0, 0);
+        (*(replyCopy + 2))(replyCopy, 0, 0);
       }
     }
 
@@ -376,11 +376,11 @@ LABEL_9:
         _os_log_impl(&dword_223E7A000, v36, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &ctx, 0x2Au);
       }
 
-      (*(v9 + 2))(v9, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0);
     }
 
 LABEL_22:
-    v33 = v11;
+    v33 = accountHandler;
     goto LABEL_23;
   }
 
@@ -399,7 +399,7 @@ LABEL_22:
     _os_log_impl(&dword_223E7A000, v39, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &ctx, 0x2Au);
   }
 
-  (*(v9 + 2))(v9, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 0, 0);
 LABEL_23:
 
   v37 = *MEMORY[0x277D85DE8];
@@ -413,10 +413,10 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
   currentAccountCopyTokenWithBundleID_version_reply____personalPersona = v0;
 }
 
-- (void)getPrimaryiCloudAccountStatus:(id)a3
+- (void)getPrimaryiCloudAccountStatus:(id)status
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  statusCopy = status;
   memset(v47, 0, sizeof(v47));
   __brc_create_section(1, "[BRCXPCTokenClient getPrimaryiCloudAccountStatus:]", 1425, 0, v47);
   v4 = brc_bread_crumbs();
@@ -427,9 +427,9 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
     v7 = qos_class_self();
     v8 = BRCPrettyPrintEnumWithContext(v7, &brc_qos_entries, 0);
     *buf = 134219010;
-    v51 = v6;
+    selfCopy2 = v6;
     v52 = 2112;
-    v53 = self;
+    selfCopy = self;
     v54 = 2112;
     v55 = v8;
     v56 = 2080;
@@ -444,7 +444,7 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
   v45[2] = __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke;
   v45[3] = &unk_2785014D0;
   v45[4] = self;
-  v43 = v3;
+  v43 = statusCopy;
   v46 = v43;
   v9 = _brc_ipc_check_logged_status(self, 0, v45);
 
@@ -452,11 +452,11 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
   {
     v10 = +[BRCAccountHandler currentiCloudAccount];
     v11 = [v10 isEnabledForDataclass:*MEMORY[0x277CB91D8]];
-    v12 = [v10 br_isCloudDocsMigrationComplete];
-    v41 = [v10 br_dsid];
+    br_isCloudDocsMigrationComplete = [v10 br_isCloudDocsMigrationComplete];
+    br_dsid = [v10 br_dsid];
     v13 = +[BRCAccountsManager sharedManager];
-    v14 = [v10 identifier];
-    v42 = [v13 accountHandlerForACAccountID:v14];
+    identifier = [v10 identifier];
+    v42 = [v13 accountHandlerForACAccountID:identifier];
 
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
@@ -473,12 +473,12 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
     }
 
     v19 = BRGetMigrationStatusForDSID();
-    v20 = [v42 loggedOutError];
-    v21 = [v20 br_isCloudDocsErrorCode:22];
-    v38 = v20;
-    v22 = [v42 session];
-    v23 = [v22 clientState];
-    v39 = [v23 objectForKeyedSubscript:@"kBRCFPFSMigrationStateKey"];
+    loggedOutError = [v42 loggedOutError];
+    v21 = [loggedOutError br_isCloudDocsErrorCode:22];
+    v38 = loggedOutError;
+    session = [v42 session];
+    clientState = [session clientState];
+    v39 = [clientState objectForKeyedSubscript:@"kBRCFPFSMigrationStateKey"];
 
     if (v39)
     {
@@ -497,7 +497,7 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
     v25 = [MEMORY[0x277CCABB0] numberWithBool:v11];
     v49[1] = v25;
     v48[2] = *MEMORY[0x277CFAB18];
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:br_isCloudDocsMigrationComplete];
     v49[2] = v26;
     v48[3] = *MEMORY[0x277CFAB20];
     v27 = [MEMORY[0x277CCABB0] numberWithBool:v21];
@@ -510,8 +510,8 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
     v49[5] = v29;
     v48[6] = *MEMORY[0x277CFAB38];
     v30 = MEMORY[0x277CCABB0];
-    v31 = [(BRCXPCClient *)self session];
-    v32 = [v30 numberWithInt:v31 != 0];
+    session2 = [(BRCXPCClient *)self session];
+    v32 = [v30 numberWithInt:session2 != 0];
     v49[6] = v32;
     v48[7] = *MEMORY[0x277CFAB28];
     v33 = [MEMORY[0x277CCABB0] numberWithBool:v24];
@@ -523,9 +523,9 @@ void __71__BRCXPCTokenClient_currentAccountCopyTokenWithBundleID_version_reply__
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2112;
-      v53 = v34;
+      selfCopy = v34;
       v54 = 2112;
       v55 = 0;
       v56 = 2112;
@@ -565,10 +565,10 @@ void __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchContainerPathForCurrentPersonaWithReply:(id)a3
+- (void)fetchContainerPathForCurrentPersonaWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCTokenClient fetchContainerPathForCurrentPersonaWithReply:]", 1474, 0, v19);
   v5 = brc_bread_crumbs();
@@ -579,9 +579,9 @@ void __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke(uint64
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -596,7 +596,7 @@ void __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke(uint64
   v17[2] = __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v18 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v17);
 
@@ -606,11 +606,11 @@ void __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke(uint64
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
+      homeDirForCurrentPersona = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
       *buf = 138413058;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v14;
+      selfCopy = homeDirForCurrentPersona;
       v24 = 2112;
       v25 = 0;
       v26 = 2112;
@@ -618,8 +618,8 @@ void __51__BRCXPCTokenClient_getPrimaryiCloudAccountStatus___block_invoke(uint64
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    v15 = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
-    (*(v10 + 2))(v10, v15, 0);
+    homeDirForCurrentPersona2 = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
+    (*(v10 + 2))(v10, homeDirForCurrentPersona2, 0);
   }
 
   __brc_leave_section(v19);
@@ -651,10 +651,10 @@ void __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchGroupContainerPathForCurrentPersonaWithReply:(id)a3
+- (void)fetchGroupContainerPathForCurrentPersonaWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCTokenClient fetchGroupContainerPathForCurrentPersonaWithReply:]", 1483, 0, v19);
   v5 = brc_bread_crumbs();
@@ -665,9 +665,9 @@ void __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___bloc
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -682,7 +682,7 @@ void __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___bloc
   v17[2] = __71__BRCXPCTokenClient_fetchGroupContainerPathForCurrentPersonaWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v18 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v17);
 
@@ -692,11 +692,11 @@ void __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___bloc
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [MEMORY[0x277CCACA8] br_personaGroupDir];
+      br_personaGroupDir = [MEMORY[0x277CCACA8] br_personaGroupDir];
       *buf = 138413058;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v14;
+      selfCopy = br_personaGroupDir;
       v24 = 2112;
       v25 = 0;
       v26 = 2112;
@@ -704,8 +704,8 @@ void __66__BRCXPCTokenClient_fetchContainerPathForCurrentPersonaWithReply___bloc
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    v15 = [MEMORY[0x277CCACA8] br_personaGroupDir];
-    (*(v10 + 2))(v10, v15, 0);
+    br_personaGroupDir2 = [MEMORY[0x277CCACA8] br_personaGroupDir];
+    (*(v10 + 2))(v10, br_personaGroupDir2, 0);
   }
 
   __brc_leave_section(v19);

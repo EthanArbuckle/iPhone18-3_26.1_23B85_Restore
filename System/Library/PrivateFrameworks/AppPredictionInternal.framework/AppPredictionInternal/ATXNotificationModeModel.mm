@@ -1,86 +1,86 @@
 @interface ATXNotificationModeModel
-- (ATXNotificationModeModel)initWithMode:(unint64_t)a3 contactStore:(id)a4;
-- (double)scoreFromEngagementFeatures:(id)a3 dismissalFeatures:(id)a4 hiddenFeatures:(id)a5 clearedFeatures:(id)a6 expiredFeatures:(id)a7 scoredApp:(id)a8 scoredContact:(id)a9;
-- (id)modeEntityScoreFromEngagementFeatures:(id)a3 dismissalFeatures:(id)a4 hiddenFeatures:(id)a5 clearedFeatures:(id)a6 expiredFeatures:(id)a7 scoredApp:(id)a8 scoredContact:(id)a9;
-- (id)scoredEntitiesWithScoredAppEntities:(id)a3 scoredContactEntities:(id)a4;
-- (void)addSubFeaturesToFeatureDict:(id)a3 subFeatures:(id)a4 prefix:(id)a5;
+- (ATXNotificationModeModel)initWithMode:(unint64_t)mode contactStore:(id)store;
+- (double)scoreFromEngagementFeatures:(id)features dismissalFeatures:(id)dismissalFeatures hiddenFeatures:(id)hiddenFeatures clearedFeatures:(id)clearedFeatures expiredFeatures:(id)expiredFeatures scoredApp:(id)app scoredContact:(id)contact;
+- (id)modeEntityScoreFromEngagementFeatures:(id)features dismissalFeatures:(id)dismissalFeatures hiddenFeatures:(id)hiddenFeatures clearedFeatures:(id)clearedFeatures expiredFeatures:(id)expiredFeatures scoredApp:(id)app scoredContact:(id)contact;
+- (id)scoredEntitiesWithScoredAppEntities:(id)entities scoredContactEntities:(id)contactEntities;
+- (void)addSubFeaturesToFeatureDict:(id)dict subFeatures:(id)features prefix:(id)prefix;
 @end
 
 @implementation ATXNotificationModeModel
 
-- (ATXNotificationModeModel)initWithMode:(unint64_t)a3 contactStore:(id)a4
+- (ATXNotificationModeModel)initWithMode:(unint64_t)mode contactStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = ATXNotificationModeModel;
   v8 = [(ATXNotificationModeModel *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_mode = a3;
+    v8->_mode = mode;
     v10 = objc_opt_new();
     notificationModeEntityModelWeights = v9->_notificationModeEntityModelWeights;
     v9->_notificationModeEntityModelWeights = v10;
 
-    objc_storeStrong(&v9->_contactStore, a4);
+    objc_storeStrong(&v9->_contactStore, store);
   }
 
   return v9;
 }
 
-- (id)scoredEntitiesWithScoredAppEntities:(id)a3 scoredContactEntities:(id)a4
+- (id)scoredEntitiesWithScoredAppEntities:(id)entities scoredContactEntities:(id)contactEntities
 {
-  v37 = a3;
-  v39 = a4;
+  entitiesCopy = entities;
+  contactEntitiesCopy = contactEntities;
   context = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
   v7 = [ATXModeEntityModelTrainer eventProviderForMode:self->_mode];
   v51 = [[ATXNotificationEventProvider alloc] initWithEventType:1 contactStore:self->_contactStore];
   v50 = [[ATXModeEntityCorrelator alloc] initWithModeEventProvider:v7 entityEventProvider:v51];
-  v36 = [(ATXModeEntityCorrelator *)v50 entityFeaturesForModeEntityScoring];
+  entityFeaturesForModeEntityScoring = [(ATXModeEntityCorrelator *)v50 entityFeaturesForModeEntityScoring];
   v49 = [[ATXNotificationEventProvider alloc] initWithEventType:8 contactStore:self->_contactStore];
   v48 = [[ATXModeEntityCorrelator alloc] initWithModeEventProvider:v7 entityEventProvider:v49];
-  v8 = [(ATXModeEntityCorrelator *)v48 entityFeaturesForModeEntityScoring];
+  entityFeaturesForModeEntityScoring2 = [(ATXModeEntityCorrelator *)v48 entityFeaturesForModeEntityScoring];
   v47 = [[ATXNotificationEventProvider alloc] initWithEventType:6 contactStore:self->_contactStore];
   v46 = [[ATXModeEntityCorrelator alloc] initWithModeEventProvider:v7 entityEventProvider:v47];
-  v9 = [(ATXModeEntityCorrelator *)v46 entityFeaturesForModeEntityScoring];
+  entityFeaturesForModeEntityScoring3 = [(ATXModeEntityCorrelator *)v46 entityFeaturesForModeEntityScoring];
   v45 = [[ATXNotificationEventProvider alloc] initWithEventType:3 contactStore:self->_contactStore];
   v44 = v7;
   v43 = [[ATXModeEntityCorrelator alloc] initWithModeEventProvider:v7 entityEventProvider:v45];
-  v10 = [(ATXModeEntityCorrelator *)v43 entityFeaturesForModeEntityScoring];
-  v35 = self;
+  entityFeaturesForModeEntityScoring4 = [(ATXModeEntityCorrelator *)v43 entityFeaturesForModeEntityScoring];
+  selfCopy = self;
   v42 = [[ATXNotificationEventProvider alloc] initWithEventType:10 contactStore:self->_contactStore];
   v41 = [[ATXModeEntityCorrelator alloc] initWithModeEventProvider:v7 entityEventProvider:v42];
-  v11 = [(ATXModeEntityCorrelator *)v41 entityFeaturesForModeEntityScoring];
+  entityFeaturesForModeEntityScoring5 = [(ATXModeEntityCorrelator *)v41 entityFeaturesForModeEntityScoring];
   v12 = objc_opt_new();
   v13 = objc_opt_new();
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __86__ATXNotificationModeModel_scoredEntitiesWithScoredAppEntities_scoredContactEntities___block_invoke;
   v62[3] = &unk_2785A0A80;
-  v14 = v8;
+  v14 = entityFeaturesForModeEntityScoring2;
   v63 = v14;
-  v15 = v9;
+  v15 = entityFeaturesForModeEntityScoring3;
   v64 = v15;
-  v16 = v10;
+  v16 = entityFeaturesForModeEntityScoring4;
   v65 = v16;
-  v17 = v11;
+  v17 = entityFeaturesForModeEntityScoring5;
   v66 = v17;
   v67 = v12;
-  v18 = v37;
+  v18 = entitiesCopy;
   v68 = v18;
   v69 = v13;
-  v40 = v39;
+  v40 = contactEntitiesCopy;
   v70 = v40;
-  v71 = self;
+  selfCopy2 = self;
   v19 = v6;
   v72 = v19;
   v38 = v13;
   v20 = v12;
-  [v36 enumerateKeysAndObjectsUsingBlock:v62];
+  [entityFeaturesForModeEntityScoring enumerateKeysAndObjectsUsingBlock:v62];
   v21 = objc_alloc(MEMORY[0x277CBEB58]);
-  v22 = [v18 allKeys];
-  v23 = [v21 initWithArray:v22];
+  allKeys = [v18 allKeys];
+  v23 = [v21 initWithArray:allKeys];
 
   v24 = v20;
   [v23 minusSet:v20];
@@ -90,19 +90,19 @@
   v53[3] = &unk_2785A0AA8;
   v25 = v18;
   v54 = v25;
-  v55 = v36;
+  v55 = entityFeaturesForModeEntityScoring;
   v56 = v14;
   v57 = v15;
   v58 = v16;
   v59 = v17;
-  v60 = v35;
+  v60 = selfCopy;
   v26 = v19;
   v61 = v26;
   v27 = v17;
   v28 = v16;
   v29 = v15;
   v30 = v14;
-  v31 = v36;
+  v31 = entityFeaturesForModeEntityScoring;
   [v23 enumerateObjectsUsingBlock:v53];
   v32 = v61;
   v33 = v26;
@@ -207,42 +207,42 @@ void __86__ATXNotificationModeModel_scoredEntitiesWithScoredAppEntities_scoredCo
   [v20 setObject:v3 forKey:v21];
 }
 
-- (id)modeEntityScoreFromEngagementFeatures:(id)a3 dismissalFeatures:(id)a4 hiddenFeatures:(id)a5 clearedFeatures:(id)a6 expiredFeatures:(id)a7 scoredApp:(id)a8 scoredContact:(id)a9
+- (id)modeEntityScoreFromEngagementFeatures:(id)features dismissalFeatures:(id)dismissalFeatures hiddenFeatures:(id)hiddenFeatures clearedFeatures:(id)clearedFeatures expiredFeatures:(id)expiredFeatures scoredApp:(id)app scoredContact:(id)contact
 {
-  v15 = a8;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  [(ATXNotificationModeModel *)self scoreFromEngagementFeatures:v21 dismissalFeatures:v20 hiddenFeatures:v19 clearedFeatures:v18 expiredFeatures:v17 scoredApp:v15 scoredContact:v16];
+  appCopy = app;
+  contactCopy = contact;
+  expiredFeaturesCopy = expiredFeatures;
+  clearedFeaturesCopy = clearedFeatures;
+  hiddenFeaturesCopy = hiddenFeatures;
+  dismissalFeaturesCopy = dismissalFeatures;
+  featuresCopy = features;
+  [(ATXNotificationModeModel *)self scoreFromEngagementFeatures:featuresCopy dismissalFeatures:dismissalFeaturesCopy hiddenFeatures:hiddenFeaturesCopy clearedFeatures:clearedFeaturesCopy expiredFeatures:expiredFeaturesCopy scoredApp:appCopy scoredContact:contactCopy];
   v23 = v22;
   v24 = objc_opt_new();
-  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v21 prefix:@"engaged"];
+  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:featuresCopy prefix:@"engaged"];
 
-  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v20 prefix:@"dismissed"];
-  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v19 prefix:@"hidden"];
+  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:dismissalFeaturesCopy prefix:@"dismissed"];
+  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:hiddenFeaturesCopy prefix:@"hidden"];
 
-  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v18 prefix:@"cleared"];
-  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v17 prefix:@"expired"];
+  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:clearedFeaturesCopy prefix:@"cleared"];
+  [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:expiredFeaturesCopy prefix:@"expired"];
 
-  if (v15)
+  if (appCopy)
   {
     v25 = [ATXModeEntityScoringFeatures alloc];
-    v26 = [v15 scoreMetadata];
-    v27 = [v26 featureVector];
-    v28 = [(ATXModeEntityScoringFeatures *)v25 initFromJSON:v27];
+    scoreMetadata = [appCopy scoreMetadata];
+    featureVector = [scoreMetadata featureVector];
+    v28 = [(ATXModeEntityScoringFeatures *)v25 initFromJSON:featureVector];
 
     [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v28 prefix:@"app"];
   }
 
-  if (v16)
+  if (contactCopy)
   {
     v29 = [ATXModeEntityScoringFeatures alloc];
-    v30 = [v16 scoreMetadata];
-    v31 = [v30 featureVector];
-    v32 = [(ATXModeEntityScoringFeatures *)v29 initFromJSON:v31];
+    scoreMetadata2 = [contactCopy scoreMetadata];
+    featureVector2 = [scoreMetadata2 featureVector];
+    v32 = [(ATXModeEntityScoringFeatures *)v29 initFromJSON:featureVector2];
 
     [(ATXNotificationModeModel *)self addSubFeaturesToFeatureDict:v24 subFeatures:v32 prefix:@"contact"];
   }
@@ -255,20 +255,20 @@ void __86__ATXNotificationModeModel_scoredEntitiesWithScoredAppEntities_scoredCo
   return v33;
 }
 
-- (void)addSubFeaturesToFeatureDict:(id)a3 subFeatures:(id)a4 prefix:(id)a5
+- (void)addSubFeaturesToFeatureDict:(id)dict subFeatures:(id)features prefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 jsonRepresentation];
+  dictCopy = dict;
+  prefixCopy = prefix;
+  jsonRepresentation = [features jsonRepresentation];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__ATXNotificationModeModel_addSubFeaturesToFeatureDict_subFeatures_prefix___block_invoke;
   v12[3] = &unk_2785A0AD0;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  v13 = dictCopy;
+  v14 = prefixCopy;
+  v10 = prefixCopy;
+  v11 = dictCopy;
+  [jsonRepresentation enumerateKeysAndObjectsUsingBlock:v12];
 }
 
 void __75__ATXNotificationModeModel_addSubFeaturesToFeatureDict_subFeatures_prefix___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -305,23 +305,23 @@ void __75__ATXNotificationModeModel_addSubFeaturesToFeatureDict_subFeatures_pref
   [v5 setObject:v8 forKey:v7];
 }
 
-- (double)scoreFromEngagementFeatures:(id)a3 dismissalFeatures:(id)a4 hiddenFeatures:(id)a5 clearedFeatures:(id)a6 expiredFeatures:(id)a7 scoredApp:(id)a8 scoredContact:(id)a9
+- (double)scoreFromEngagementFeatures:(id)features dismissalFeatures:(id)dismissalFeatures hiddenFeatures:(id)hiddenFeatures clearedFeatures:(id)clearedFeatures expiredFeatures:(id)expiredFeatures scoredApp:(id)app scoredContact:(id)contact
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v144 = a7;
-  v19 = a8;
-  v20 = a9;
-  v145 = v20;
-  v143 = v19;
-  if (v19)
+  featuresCopy = features;
+  dismissalFeaturesCopy = dismissalFeatures;
+  hiddenFeaturesCopy = hiddenFeatures;
+  clearedFeaturesCopy = clearedFeatures;
+  expiredFeaturesCopy = expiredFeatures;
+  appCopy = app;
+  contactCopy = contact;
+  v145 = contactCopy;
+  v143 = appCopy;
+  if (appCopy)
   {
     v21 = [ATXModeEntityScoringFeatures alloc];
-    v22 = [v19 scoreMetadata];
-    v23 = [v22 featureVector];
-    v24 = [(ATXModeEntityScoringFeatures *)v21 initFromJSON:v23];
+    scoreMetadata = [appCopy scoreMetadata];
+    featureVector = [scoreMetadata featureVector];
+    v24 = [(ATXModeEntityScoringFeatures *)v21 initFromJSON:featureVector];
 
     v25 = v145;
     if (!v145)
@@ -332,23 +332,23 @@ void __75__ATXNotificationModeModel_addSubFeaturesToFeatureDict_subFeatures_pref
     goto LABEL_3;
   }
 
-  v25 = v20;
+  v25 = contactCopy;
   v24 = 0;
-  if (v20)
+  if (contactCopy)
   {
 LABEL_3:
     v26 = [ATXModeEntityScoringFeatures alloc];
-    v27 = [v25 scoreMetadata];
-    v28 = [v27 featureVector];
-    v25 = [(ATXModeEntityScoringFeatures *)v26 initFromJSON:v28];
+    scoreMetadata2 = [v25 scoreMetadata];
+    featureVector2 = [scoreMetadata2 featureVector];
+    v25 = [(ATXModeEntityScoringFeatures *)v26 initFromJSON:featureVector2];
   }
 
 LABEL_4:
   if (v24)
   {
-    v29 = [v24 entitySpecificFeatures];
-    v30 = [v29 appCategoryScore_v2];
-    [v30 doubleValue];
+    entitySpecificFeatures = [v24 entitySpecificFeatures];
+    appCategoryScore_v2 = [entitySpecificFeatures appCategoryScore_v2];
+    [appCategoryScore_v2 doubleValue];
     v32 = v31;
 
     [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights appCategoryScoreComponent];
@@ -371,9 +371,9 @@ LABEL_4:
     v50 = v48 * v49;
     [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights appGlobalOccurrencesComponent];
     v52 = v51;
-    v53 = [v24 globalOccurrences];
+    globalOccurrences = [v24 globalOccurrences];
     v54 = 1.0;
-    if (!v53)
+    if (!globalOccurrences)
     {
       v54 = 0.0;
     }
@@ -391,11 +391,11 @@ LABEL_4:
     if (v25)
     {
 LABEL_8:
-      v56 = [v25 entitySpecificFeatures];
-      v57 = [v56 isFavoriteContact];
+      entitySpecificFeatures2 = [v25 entitySpecificFeatures];
+      isFavoriteContact = [entitySpecificFeatures2 isFavoriteContact];
 
-      v58 = [v25 entitySpecificFeatures];
-      LODWORD(v56) = [v58 isVIPContact];
+      entitySpecificFeatures3 = [v25 entitySpecificFeatures];
+      LODWORD(entitySpecificFeatures2) = [entitySpecificFeatures3 isVIPContact];
 
       [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights contactClassConditionalProbabilityComponent];
       v60 = v59;
@@ -412,75 +412,75 @@ LABEL_8:
       [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights contactGlobalOccurrencesComponent];
       v72 = v71 * [v25 entityOccurredGloballyOverLastNDays:{-[ATXNotificationModeEntityModelWeights numOfDays](self->_notificationModeEntityModelWeights, "numOfDays")}];
       [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights contactIsFavoriteComponent];
-      v74 = v73 * v57;
+      v74 = v73 * isFavoriteContact;
       [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights contactIsVIPComponent];
-      v55 = v55 + v62 + v66 + v70 + v72 + v74 + v75 * v56;
+      v55 = v55 + v62 + v66 + v70 + v72 + v74 + v75 * entitySpecificFeatures2;
     }
   }
 
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights engagementGlobalPopularityComponent];
   v77 = v76;
-  [v15 globalPopularity];
+  [featuresCopy globalPopularity];
   v79 = v77 * v78;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights engagementModePopularityComponent];
   v81 = v80;
-  [v15 modePopularity];
+  [featuresCopy modePopularity];
   v83 = v81 * v82;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights engagementClassConditionalProbabilityComponent];
   v85 = v84;
-  [v15 classConditionalProbability];
+  [featuresCopy classConditionalProbability];
   v87 = v85 * v86;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights engagementPosteriorProbabilityComponent];
   v89 = v88;
-  [v15 posteriorProbability];
+  [featuresCopy posteriorProbability];
   v91 = v55 + v79 + v83 + v87 + v89 * v90;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights clearGlobalPopularityComponent];
   v93 = v92;
-  [v18 globalPopularity];
+  [clearedFeaturesCopy globalPopularity];
   v95 = v93 * v94;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights clearModePopularityComponent];
   v97 = v96;
-  [v18 modePopularity];
+  [clearedFeaturesCopy modePopularity];
   v99 = v97 * v98;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights clearClassConditionalProbabilityComponent];
   v101 = v100;
-  [v18 classConditionalProbability];
+  [clearedFeaturesCopy classConditionalProbability];
   v103 = v101 * v102;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights clearPosteriorProbabilityComponent];
   v105 = v104;
-  [v18 posteriorProbability];
+  [clearedFeaturesCopy posteriorProbability];
   v107 = v91 + v95 + v99 + v103 + v105 * v106;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights hiddenGlobalPopularityComponent];
   v109 = v108;
-  [v17 globalPopularity];
+  [hiddenFeaturesCopy globalPopularity];
   v111 = v109 * v110;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights hiddenModePopularityComponent];
   v113 = v112;
-  [v17 modePopularity];
+  [hiddenFeaturesCopy modePopularity];
   v115 = v113 * v114;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights hiddenClassConditionalProbabilityComponent];
   v117 = v116;
-  [v17 classConditionalProbability];
+  [hiddenFeaturesCopy classConditionalProbability];
   v119 = v117 * v118;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights hiddenPosteriorProbabilityComponent];
   v121 = v120;
-  [v17 posteriorProbability];
+  [hiddenFeaturesCopy posteriorProbability];
   v123 = v107 + v111 + v115 + v119 + v121 * v122;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights dismissGlobalPopularityComponent];
   v125 = v124;
-  [v16 globalPopularity];
+  [dismissalFeaturesCopy globalPopularity];
   v127 = v125 * v126;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights dismissModePopularityComponent];
   v129 = v128;
-  [v16 modePopularity];
+  [dismissalFeaturesCopy modePopularity];
   v131 = v129 * v130;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights dismissClassConditionalProbabilityComponent];
   v133 = v132;
-  [v16 classConditionalProbability];
+  [dismissalFeaturesCopy classConditionalProbability];
   v135 = v133 * v134;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights dismissPosteriorProbabilityComponent];
   v137 = v136;
-  [v16 posteriorProbability];
+  [dismissalFeaturesCopy posteriorProbability];
   v139 = v123 + v127 + v131 + v135 + v137 * v138;
   [(ATXNotificationModeEntityModelWeights *)self->_notificationModeEntityModelWeights bias];
   *&v140 = v140 + v139;

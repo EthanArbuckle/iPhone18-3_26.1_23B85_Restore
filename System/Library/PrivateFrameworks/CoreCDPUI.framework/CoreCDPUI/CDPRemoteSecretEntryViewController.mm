@@ -1,134 +1,134 @@
 @interface CDPRemoteSecretEntryViewController
-- (BOOL)validatePIN:(id)a3;
-- (CDPRemoteSecretEntryViewController)initWithDevice:(id)a3 validator:(id)a4 delegate:(id)a5;
-- (CDPRemoteSecretEntryViewController)initWithIsNumeric:(BOOL)a3 numericLength:(id)a4 validator:(id)a5 delegate:(id)a6;
-- (CDPRemoteSecretEntryViewController)initWithValidator:(id)a3;
+- (BOOL)validatePIN:(id)n;
+- (CDPRemoteSecretEntryViewController)initWithDevice:(id)device validator:(id)validator delegate:(id)delegate;
+- (CDPRemoteSecretEntryViewController)initWithIsNumeric:(BOOL)numeric numericLength:(id)length validator:(id)validator delegate:(id)delegate;
+- (CDPRemoteSecretEntryViewController)initWithValidator:(id)validator;
 - (id)_passcodeEntryExplaination;
 - (id)_passcodeEntryRequestForDevice;
-- (void)_handleSecretValidationWithPasscode:(id)a3;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)_handleSecretValidationWithPasscode:(id)passcode;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
-- (void)didEnterValidRemoteSecret:(id)a3;
+- (void)didEnterValidRemoteSecret:(id)secret;
 - (void)disableUserInteractionAndStartSpinner;
 - (void)enableUserInteractionAndStopSpinner;
-- (void)setPane:(id)a3;
-- (void)showIncorrectRemoteSecretAlertForPasscode:(id)a3 withRecoveryError:(id)a4 completion:(id)a5;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setPane:(id)pane;
+- (void)showIncorrectRemoteSecretAlertForPasscode:(id)passcode withRecoveryError:(id)error completion:(id)completion;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CDPRemoteSecretEntryViewController
 
-- (CDPRemoteSecretEntryViewController)initWithDevice:(id)a3 validator:(id)a4 delegate:(id)a5
+- (CDPRemoteSecretEntryViewController)initWithDevice:(id)device validator:(id)validator delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 hasNumericSecret];
-  v13 = [v9 numericSecretLength];
-  v14 = [(CDPRemoteSecretEntryViewController *)self initWithIsNumeric:v12 numericLength:v13 validator:v11 delegate:v10];
+  deviceCopy = device;
+  delegateCopy = delegate;
+  validatorCopy = validator;
+  hasNumericSecret = [deviceCopy hasNumericSecret];
+  numericSecretLength = [deviceCopy numericSecretLength];
+  v14 = [(CDPRemoteSecretEntryViewController *)self initWithIsNumeric:hasNumericSecret numericLength:numericSecretLength validator:validatorCopy delegate:delegateCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_remoteRecoveryDevice, a3);
+    objc_storeStrong(&v14->_remoteRecoveryDevice, device);
     v14->_remainingAttempts = [(CDPDevice *)v14->_remoteRecoveryDevice remainingAttempts];
   }
 
   return v14;
 }
 
-- (CDPRemoteSecretEntryViewController)initWithIsNumeric:(BOOL)a3 numericLength:(id)a4 validator:(id)a5 delegate:(id)a6
+- (CDPRemoteSecretEntryViewController)initWithIsNumeric:(BOOL)numeric numericLength:(id)length validator:(id)validator delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = [(CDPRemoteSecretEntryViewController *)self initWithValidator:a5];
+  lengthCopy = length;
+  delegateCopy = delegate;
+  v13 = [(CDPRemoteSecretEntryViewController *)self initWithValidator:validator];
   v14 = v13;
   if (v13)
   {
-    *(&v13->_hasNumericSecret + 1) = a3;
-    objc_storeStrong(&v13->_numericSecretLength, a4);
+    *(&v13->_hasNumericSecret + 1) = numeric;
+    objc_storeStrong(&v13->_numericSecretLength, length);
     v14->_remainingAttempts = 3;
-    objc_storeWeak(&v14->_delegate, v12);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     [(DevicePINController *)v14 setPinDelegate:v14];
     if ([(CDPRemoteSecretEntryViewController *)v14 simplePIN])
     {
       [(DevicePINController *)v14 setPinLength:[(NSNumber *)v14->_numericSecretLength integerValue]];
     }
 
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v17 = v16 != 1 && *(&v14->_hasNumericSecret + 1);
+    v17 = userInterfaceIdiom != 1 && *(&v14->_hasNumericSecret + 1);
     [(DevicePINController *)v14 setNumericPIN:v17];
     WeakRetained = objc_loadWeakRetained(&v14->_delegate);
-    v19 = [WeakRetained performingAccountRecovery];
+    performingAccountRecovery = [WeakRetained performingAccountRecovery];
 
-    if (v19)
+    if (performingAccountRecovery)
     {
       v20 = [MEMORY[0x277CFD508] builderForKey:@"GENERIC_NEXT_BUTTON"];
-      v21 = [v20 localizedString];
-      [(DevicePINController *)v14 setDoneButtonTitle:v21];
+      localizedString = [v20 localizedString];
+      [(DevicePINController *)v14 setDoneButtonTitle:localizedString];
     }
   }
 
   return v14;
 }
 
-- (CDPRemoteSecretEntryViewController)initWithValidator:(id)a3
+- (CDPRemoteSecretEntryViewController)initWithValidator:(id)validator
 {
-  v5 = a3;
+  validatorCopy = validator;
   v6 = [(CDPPassphraseEntryViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_validator, a3);
+    objc_storeStrong(&v6->_validator, validator);
   }
 
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = CDPRemoteSecretEntryViewController;
-  [(DevicePINController *)&v9 viewWillAppear:a3];
-  v4 = [(CDPRemoteSecretEntryViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  [(DevicePINController *)&v9 viewWillAppear:appear];
+  navigationController = [(CDPRemoteSecretEntryViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6 == self)
+  if (firstObject == self)
   {
-    v7 = [(CDPRemoteSecretEntryViewController *)self navigationController];
-    v8 = [v7 navigationBar];
-    [v8 _setBackgroundOpacity:0.0];
+    navigationController2 = [(CDPRemoteSecretEntryViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar _setBackgroundOpacity:0.0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CDPRemoteSecretEntryViewController;
-  [(DevicePINController *)&v4 viewDidDisappear:a3];
+  [(DevicePINController *)&v4 viewDidDisappear:disappear];
   [(CDPRemoteSecretEntryViewController *)self enableUserInteractionAndStopSpinner];
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v9.receiver = self;
   v9.super_class = CDPRemoteSecretEntryViewController;
-  [(DevicePINController *)&v9 setPane:v4];
+  [(DevicePINController *)&v9 setPane:paneCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = paneCopy;
     [v5 setRemoteSecretType:0];
     [v5 setDevice:self->_remoteRecoveryDevice];
-    v6 = [(CDPRemoteSecretEntryViewController *)self escapeOffer];
-    [v6 setPresentingViewController:self];
+    escapeOffer = [(CDPRemoteSecretEntryViewController *)self escapeOffer];
+    [escapeOffer setPresentingViewController:self];
 
-    v7 = [(CDPRemoteSecretEntryViewController *)self escapeOffer];
-    [v5 setEscapeOffer:v7];
+    escapeOffer2 = [(CDPRemoteSecretEntryViewController *)self escapeOffer];
+    [v5 setEscapeOffer:escapeOffer2];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [v5 setRemoteAccountRecovery:{objc_msgSend(WeakRetained, "performingAccountRecovery")}];
@@ -139,23 +139,23 @@
 {
   if ([(CDPDevice *)self->_remoteRecoveryDevice isCurrentDevice])
   {
-    v3 = [MEMORY[0x277CFD4F8] sharedInstance];
-    if ([v3 hasLocalSecret])
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    if ([mEMORY[0x277CFD4F8] hasLocalSecret])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v5 = [WeakRetained performingAccountRecovery];
+      performingAccountRecovery = [WeakRetained performingAccountRecovery];
 
-      if (v5)
+      if (performingAccountRecovery)
       {
-        v6 = [MEMORY[0x277CFD4F8] sharedInstance];
-        v7 = [v6 deviceClass];
+        mEMORY[0x277CFD4F8]2 = [MEMORY[0x277CFD4F8] sharedInstance];
+        deviceClass = [mEMORY[0x277CFD4F8]2 deviceClass];
 
         v8 = [MEMORY[0x277CFD508] builderForKey:@"ACCOUNT_RECOVERY_CURRENT_DEVICE_REMOTE_SECRET_INSTRUCTIONS_REBRAND"];
-        v9 = [v8 addSecretType:1];
-        v10 = [v9 addDeviceClass:v7];
+        modelClass = [v8 addSecretType:1];
+        v10 = [modelClass addDeviceClass:deviceClass];
 LABEL_9:
         v17 = v10;
-        v16 = [v10 localizedString];
+        localizedString = [v10 localizedString];
 
         goto LABEL_10;
       }
@@ -165,49 +165,49 @@ LABEL_9:
     {
     }
 
-    v7 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MESSAGE_SAME"];
-    v8 = [v7 addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
-    v9 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
-    v10 = [v8 addUnqualifiedDeviceClass:v9];
+    deviceClass = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MESSAGE_SAME"];
+    v8 = [deviceClass addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
+    modelClass = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
+    v10 = [v8 addUnqualifiedDeviceClass:modelClass];
     goto LABEL_9;
   }
 
   if (self->_remoteRecoveryDevice)
   {
     v11 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MESSAGE_OTHER"];
-    v8 = [v7 addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
-    v12 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
-    v13 = [v8 addUnqualifiedDeviceClass:v12];
-    v14 = [v13 localizedString];
-    v15 = [(CDPDevice *)self->_remoteRecoveryDevice localizedName];
-    v16 = [v11 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+    deviceClass = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_MESSAGE_OTHER"];
+    v8 = [deviceClass addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
+    modelClass2 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
+    v13 = [v8 addUnqualifiedDeviceClass:modelClass2];
+    localizedString2 = [v13 localizedString];
+    localizedName = [(CDPDevice *)self->_remoteRecoveryDevice localizedName];
+    localizedString = [v11 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, localizedName];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = CDPLocalizedString();
+  localizedString = CDPLocalizedString();
 LABEL_11:
 
-  return v16;
+  return localizedString;
 }
 
 - (id)_passcodeEntryExplaination
 {
   v3 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_SUBTITLE_REBRAND"];
   v4 = [v3 addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
-  v5 = [v4 localizedString];
+  localizedString = [v4 localizedString];
 
-  return v5;
+  return localizedString;
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
   if (self->_validationState == 2)
   {
     self->_validationState = 0;
-    [(CDPRemoteSecretEntryViewController *)self didEnterValidRemoteSecret:a3];
+    [(CDPRemoteSecretEntryViewController *)self didEnterValidRemoteSecret:n];
   }
 }
 
@@ -217,12 +217,12 @@ LABEL_11:
   [WeakRetained cancelledRemoteSecretEntry:self];
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSDetailController *)self pane];
-  [v5 resignFirstResponder];
+  nCopy = n;
+  pane = [(PSDetailController *)self pane];
+  [pane resignFirstResponder];
 
   validationState = self->_validationState;
   v7 = _CDPLogSystem();
@@ -289,7 +289,7 @@ LABEL_11:
 
     v9 = 1;
     self->_validationState = 1;
-    [(CDPRemoteSecretEntryViewController *)self _handleSecretValidationWithPasscode:v4];
+    [(CDPRemoteSecretEntryViewController *)self _handleSecretValidationWithPasscode:nCopy];
   }
 
 LABEL_19:
@@ -302,7 +302,7 @@ LABEL_19:
   return v9;
 }
 
-- (void)didEnterValidRemoteSecret:(id)a3
+- (void)didEnterValidRemoteSecret:(id)secret
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -314,10 +314,10 @@ LABEL_19:
   [WeakRetained remoteSecretEntry:self didAcceptValidRemoteSecretForDevice:self->_remoteRecoveryDevice];
 }
 
-- (void)_handleSecretValidationWithPasscode:(id)a3
+- (void)_handleSecretValidationWithPasscode:(id)passcode
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passcodeCopy = passcode;
   [(CDPRemoteSecretEntryViewController *)self disableUserInteractionAndStartSpinner];
   validator = self->_validator;
   remoteRecoveryDevice = self->_remoteRecoveryDevice;
@@ -337,8 +337,8 @@ LABEL_19:
   v9[2] = __74__CDPRemoteSecretEntryViewController__handleSecretValidationWithPasscode___block_invoke;
   v9[3] = &unk_278E2B870;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = passcodeCopy;
+  v8 = passcodeCopy;
   [(CDPRemoteDeviceSecretValidator *)validator validateSecret:v8 devices:v7 type:0 withCompletion:v9];
   if (remoteRecoveryDevice)
   {
@@ -576,74 +576,74 @@ LABEL_42:
   }
 }
 
-- (void)showIncorrectRemoteSecretAlertForPasscode:(id)a3 withRecoveryError:(id)a4 completion:(id)a5
+- (void)showIncorrectRemoteSecretAlertForPasscode:(id)passcode withRecoveryError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   if (self->_remoteRecoveryDevice)
   {
-    v10 = [a4 userInfo];
-    v11 = [v10 allValues];
-    v12 = [v11 firstObject];
+    userInfo = [error userInfo];
+    allValues = [userInfo allValues];
+    firstObject = [allValues firstObject];
 
-    v46 = v8;
-    if (![v12 cdp_isCDPErrorWithCode:-5205])
+    v46 = passcodeCopy;
+    if (![firstObject cdp_isCDPErrorWithCode:-5205])
     {
       v17 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_RECOVERY_ERROR_TITLE"];
-      v15 = [v17 localizedString];
+      localizedString = [v17 localizedString];
 
       v18 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_RECOVERY_ERROR_MESSAGE"];
       v19 = [v18 addSecretType:{-[CDPDevice localSecretType](self->_remoteRecoveryDevice, "localSecretType")}];
-      v20 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
-      v21 = [v19 addDeviceClass:v20];
-      v16 = [v21 localizedString];
+      modelClass = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
+      v21 = [v19 addDeviceClass:modelClass];
+      localizedString2 = [v21 localizedString];
 
 LABEL_16:
-      v8 = v46;
+      passcodeCopy = v46;
       goto LABEL_17;
     }
 
-    v13 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v44 = [v13 deviceClass];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
 
-    v14 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
-    if ([v14 length])
+    modelClass2 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
+    if ([modelClass2 length])
     {
-      v45 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
+      modelClass3 = [(CDPDevice *)self->_remoteRecoveryDevice modelClass];
     }
 
     else
     {
-      v45 = 0;
+      modelClass3 = 0;
     }
 
-    v22 = [(CDPDevice *)self->_remoteRecoveryDevice localSecretType];
+    localSecretType = [(CDPDevice *)self->_remoteRecoveryDevice localSecretType];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (([WeakRetained performingAccountRecovery] & 1) == 0)
     {
-      v24 = [MEMORY[0x277CFD4F8] sharedInstance];
-      if ([v24 hasLocalSecret])
+      mEMORY[0x277CFD4F8]2 = [MEMORY[0x277CFD4F8] sharedInstance];
+      if ([mEMORY[0x277CFD4F8]2 hasLocalSecret])
       {
-        v25 = [MEMORY[0x277D262A0] sharedConnection];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
         v49 = 0;
-        v26 = [v25 unlockDeviceWithPasscode:v8 outError:&v49];
+        v26 = [mEMORY[0x277D262A0] unlockDeviceWithPasscode:passcodeCopy outError:&v49];
         v43 = v49;
 
         if (v26)
         {
           v27 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE_OTHER_DEVICE"];
-          v28 = [v27 addSecretType:v22];
-          v29 = [v28 addDeviceClass:v45];
-          v15 = [v29 localizedString];
+          v28 = [v27 addSecretType:localSecretType];
+          v29 = [v28 addDeviceClass:modelClass3];
+          localizedString = [v29 localizedString];
 
           v30 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_MESSAGE_OTHER_DEVICE"];
-          v31 = [v30 addSecretType:v22];
-          v32 = [v31 addDeviceClass:v45];
-          v42 = [v32 addSecretType:v22];
-          v33 = [v42 addDeviceClass:v44];
-          v16 = [v33 localizedString];
+          v31 = [v30 addSecretType:localSecretType];
+          v32 = [v31 addDeviceClass:modelClass3];
+          v42 = [v32 addSecretType:localSecretType];
+          v33 = [v42 addDeviceClass:deviceClass];
+          localizedString2 = [v33 localizedString];
 
-          v34 = v45;
+          v34 = modelClass3;
 LABEL_15:
 
           goto LABEL_16;
@@ -651,14 +651,14 @@ LABEL_15:
 
 LABEL_14:
         v35 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_TITLE"];
-        v36 = [v35 addSecretType:v22];
-        v15 = [v36 localizedString];
+        v36 = [v35 addSecretType:localSecretType];
+        localizedString = [v36 localizedString];
 
         v30 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_INCORRECT_MESSAGE"];
-        v34 = v45;
-        v31 = [v30 addDeviceClass:v45];
-        v32 = [v31 addSecretType:v22];
-        v16 = [v32 localizedString];
+        v34 = modelClass3;
+        v31 = [v30 addDeviceClass:modelClass3];
+        v32 = [v31 addSecretType:localSecretType];
+        localizedString2 = [v32 localizedString];
         goto LABEL_15;
       }
     }
@@ -667,8 +667,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v15 = CDPLocalizedString();
-  v16 = CDPLocalizedString();
+  localizedString = CDPLocalizedString();
+  localizedString2 = CDPLocalizedString();
 LABEL_17:
   v37 = MEMORY[0x277D750F8];
   v38 = CDPLocalizedString();
@@ -677,11 +677,11 @@ LABEL_17:
   v47[2] = __109__CDPRemoteSecretEntryViewController_showIncorrectRemoteSecretAlertForPasscode_withRecoveryError_completion___block_invoke;
   v47[3] = &unk_278E2BAC8;
   v47[4] = self;
-  v48 = v9;
-  v39 = v9;
+  v48 = completionCopy;
+  v39 = completionCopy;
   v40 = [v37 actionWithTitle:v38 style:0 handler:v47];
 
-  v41 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:v16 preferredStyle:1];
+  v41 = [MEMORY[0x277D75110] alertControllerWithTitle:localizedString message:localizedString2 preferredStyle:1];
   [v41 addAction:v40];
   [(CDPRemoteSecretEntryViewController *)self presentViewController:v41 animated:1 completion:0];
 }
@@ -701,21 +701,21 @@ uint64_t __109__CDPRemoteSecretEntryViewController_showIncorrectRemoteSecretAler
 
 - (void)disableUserInteractionAndStartSpinner
 {
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v4 = [(CDPRemoteSecretEntryViewController *)self navigationItem];
-  [v3 startAnimatingInNavItem:v4 forIdentifier:@"remoteSecretValidator" hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(CDPRemoteSecretEntryViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"remoteSecretValidator" hideBackButton:1];
 
-  v5 = [(CDPRemoteSecretEntryViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view = [(CDPRemoteSecretEntryViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)enableUserInteractionAndStopSpinner
 {
-  v2 = [(CDPRemoteSecretEntryViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(CDPRemoteSecretEntryViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  [v3 stopAnimatingForIdentifier:@"remoteSecretValidator"];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"remoteSecretValidator"];
 }
 
 - (void)validatePIN:.cold.1()

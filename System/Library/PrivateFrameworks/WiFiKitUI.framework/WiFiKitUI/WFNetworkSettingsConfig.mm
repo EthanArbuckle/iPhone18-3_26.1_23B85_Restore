@@ -1,12 +1,12 @@
 @interface WFNetworkSettingsConfig
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNetworkSettingsConfig:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNetworkSettingsConfig:(id)config;
 - (BOOL)validIPv4Configuration;
 - (BOOL)validIPv6Configuration;
 - (BOOL)validProxyConfiguration;
 - (WFNetworkSettingsConfig)init;
-- (id)changesBetweenConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)changesBetweenConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WFNetworkSettingsConfig
@@ -26,19 +26,19 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(WFNetworkSettingsConfig);
   if (v5)
   {
-    v6 = [(WFNetworkSettingsConfig *)self healthRecommendations];
-    [(WFNetworkSettingsConfig *)v5 setHealthRecommendations:v6];
+    healthRecommendations = [(WFNetworkSettingsConfig *)self healthRecommendations];
+    [(WFNetworkSettingsConfig *)v5 setHealthRecommendations:healthRecommendations];
 
-    v7 = [(WFNetworkSettingsConfig *)self ssid];
-    [(WFNetworkSettingsConfig *)v5 setSsid:v7];
+    ssid = [(WFNetworkSettingsConfig *)self ssid];
+    [(WFNetworkSettingsConfig *)v5 setSsid:ssid];
 
-    v8 = [(WFNetworkSettingsConfig *)self displayFriendlyName];
-    v9 = [v8 copyWithZone:a3];
+    displayFriendlyName = [(WFNetworkSettingsConfig *)self displayFriendlyName];
+    v9 = [displayFriendlyName copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setDisplayFriendlyName:v9];
 
     [(WFNetworkSettingsConfig *)v5 setCurrent:[(WFNetworkSettingsConfig *)self current]];
@@ -60,98 +60,98 @@
     [(WFNetworkSettingsConfig *)v5 setNetworkQualityVisible:[(WFNetworkSettingsConfig *)self networkQualityVisible]];
     [(WFNetworkSettingsConfig *)self networkQualityResponsiveness];
     [(WFNetworkSettingsConfig *)v5 setNetworkQualityResponsiveness:?];
-    v10 = [(WFNetworkSettingsConfig *)self networkQualityDate];
-    v11 = [v10 copyWithZone:a3];
+    networkQualityDate = [(WFNetworkSettingsConfig *)self networkQualityDate];
+    v11 = [networkQualityDate copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setNetworkQualityDate:v11];
 
     [(WFNetworkSettingsConfig *)v5 setIpv4Config:[(WFNetworkSettingsConfig *)self ipv4Config]];
-    v12 = [(WFNetworkSettingsConfig *)self ipv4Address];
-    v13 = [v12 copyWithZone:a3];
+    ipv4Address = [(WFNetworkSettingsConfig *)self ipv4Address];
+    v13 = [ipv4Address copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4Address:v13];
 
-    v14 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-    v15 = [v14 copyWithZone:a3];
+    ipv4AddressManual = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+    v15 = [ipv4AddressManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4AddressManual:v15];
 
-    v16 = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
-    v17 = [v16 copyWithZone:a3];
+    ipv4SubnetMask = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
+    v17 = [ipv4SubnetMask copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4SubnetMask:v17];
 
-    v18 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-    v19 = [v18 copyWithZone:a3];
+    ipv4SubnetMaskManual = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+    v19 = [ipv4SubnetMaskManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4SubnetMaskManual:v19];
 
-    v20 = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
-    v21 = [v20 copyWithZone:a3];
+    ipv4RouterAddress = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
+    v21 = [ipv4RouterAddress copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4RouterAddress:v21];
 
-    v22 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-    v23 = [v22 copyWithZone:a3];
+    ipv4RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+    v23 = [ipv4RouterAddressManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv4RouterAddressManual:v23];
 
-    v24 = [(WFNetworkSettingsConfig *)self dhcpClientID];
-    v25 = [v24 copyWithZone:a3];
+    dhcpClientID = [(WFNetworkSettingsConfig *)self dhcpClientID];
+    v25 = [dhcpClientID copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setDhcpClientID:v25];
 
-    v26 = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
-    v27 = [v26 copyWithZone:a3];
+    dhcpLeaseExpirationDate = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
+    v27 = [dhcpLeaseExpirationDate copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setDhcpLeaseExpirationDate:v27];
 
     [(WFNetworkSettingsConfig *)v5 setIpv6Config:[(WFNetworkSettingsConfig *)self ipv6Config]];
-    v28 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
-    v29 = [v28 copyWithZone:a3];
+    ipv6Addresses = [(WFNetworkSettingsConfig *)self ipv6Addresses];
+    v29 = [ipv6Addresses copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6Addresses:v29];
 
-    v30 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
-    v31 = [v30 copyWithZone:a3];
+    ipv6PrefixLengths = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
+    v31 = [ipv6PrefixLengths copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6PrefixLengths:v31];
 
-    v32 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-    v33 = [v32 copyWithZone:a3];
+    ipv6AddressManual = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+    v33 = [ipv6AddressManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6AddressManual:v33];
 
-    v34 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
-    v35 = [v34 copyWithZone:a3];
+    ipv6RouterAddress = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
+    v35 = [ipv6RouterAddress copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6RouterAddress:v35];
 
-    v36 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
-    v37 = [v36 copyWithZone:a3];
+    ipv6RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
+    v37 = [ipv6RouterAddressManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6RouterAddressManual:v37];
 
-    v38 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
-    v39 = [v38 copyWithZone:a3];
+    ipv6PrefixLengthManual = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
+    v39 = [ipv6PrefixLengthManual copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setIpv6PrefixLengthManual:v39];
 
     [(WFNetworkSettingsConfig *)v5 setDnsConfig:[(WFNetworkSettingsConfig *)self dnsConfig]];
-    v40 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
-    v41 = [v40 copyWithZone:a3];
+    dnsServerAddresses = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
+    v41 = [dnsServerAddresses copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setDnsServerAddresses:v41];
 
-    v42 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
-    v43 = [v42 copyWithZone:a3];
+    dnsSearchDomains = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
+    v43 = [dnsSearchDomains copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setDnsSearchDomains:v43];
 
     [(WFNetworkSettingsConfig *)v5 setHttpProxyConfigurable:[(WFNetworkSettingsConfig *)self httpProxyConfigurable]];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyConfig:[(WFNetworkSettingsConfig *)self httpProxyConfig]];
-    v44 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-    v45 = [v44 copyWithZone:a3];
+    httpProxyServerAddress = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+    v45 = [httpProxyServerAddress copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyServerAddress:v45];
 
-    v46 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-    v47 = [v46 copyWithZone:a3];
+    httpProxyServerPort = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+    v47 = [httpProxyServerPort copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyServerPort:v47];
 
     [(WFNetworkSettingsConfig *)v5 setHttpProxyAuthenticationRequired:[(WFNetworkSettingsConfig *)self httpProxyAuthenticationRequired]];
-    v48 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-    v49 = [v48 copyWithZone:a3];
+    httpProxyUsername = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+    v49 = [httpProxyUsername copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyUsername:v49];
 
-    v50 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
-    v51 = [v50 copyWithZone:a3];
+    httpProxyPassword = [(WFNetworkSettingsConfig *)self httpProxyPassword];
+    v51 = [httpProxyPassword copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyPassword:v51];
 
-    v52 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
-    v53 = [v52 copyWithZone:a3];
+    httpProxyConfigPAC = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
+    v53 = [httpProxyConfigPAC copyWithZone:zone];
     [(WFNetworkSettingsConfig *)v5 setHttpProxyConfigPAC:v53];
   }
 
@@ -165,23 +165,23 @@
     goto LABEL_10;
   }
 
-  v3 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-  if (!v3)
+  httpProxyServerAddress = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+  if (!httpProxyServerAddress)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-  v6 = [v5 isEmpty];
+  v4 = httpProxyServerAddress;
+  httpProxyServerAddress2 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+  isEmpty = [httpProxyServerAddress2 isEmpty];
 
-  if (v6)
+  if (isEmpty)
   {
     goto LABEL_6;
   }
 
-  v7 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-  if (!v7 || (v8 = v7, -[WFNetworkSettingsConfig httpProxyServerPort](self, "httpProxyServerPort"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, v8, (v10 & 1) != 0))
+  httpProxyServerPort = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+  if (!httpProxyServerPort || (v8 = httpProxyServerPort, -[WFNetworkSettingsConfig httpProxyServerPort](self, "httpProxyServerPort"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEmpty], v9, v8, (v10 & 1) != 0))
   {
 LABEL_6:
     LOBYTE(v11) = 0;
@@ -195,11 +195,11 @@ LABEL_10:
     return v11;
   }
 
-  v12 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-  if (v12)
+  httpProxyUsername = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+  if (httpProxyUsername)
   {
-    v13 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-    v11 = [v13 isEmpty] ^ 1;
+    httpProxyUsername2 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+    v11 = [httpProxyUsername2 isEmpty] ^ 1;
   }
 
   else
@@ -215,64 +215,64 @@ LABEL_10:
   if ([(WFNetworkSettingsConfig *)self ipv4Config]!= 2)
   {
 LABEL_12:
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(ipv4AddressManual) = 1;
+    return ipv4AddressManual;
   }
 
-  v3 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-  if (v3)
+  ipv4AddressManual = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+  if (ipv4AddressManual)
   {
-    v4 = v3;
-    v5 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-    if ([v5 isEmpty])
+    v4 = ipv4AddressManual;
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+    if ([ipv4AddressManual2 isEmpty])
     {
 LABEL_4:
 
 LABEL_13:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(ipv4AddressManual) = 0;
+      return ipv4AddressManual;
     }
 
-    v6 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-    v7 = [v6 isValidIPv4Address];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+    isValidIPv4Address = [ipv4AddressManual3 isValidIPv4Address];
 
-    if (!v7)
+    if (!isValidIPv4Address)
     {
       goto LABEL_13;
     }
 
-    v3 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-    if (v3)
+    ipv4AddressManual = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+    if (ipv4AddressManual)
     {
-      v4 = v3;
-      v5 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-      if ([v5 isEmpty])
+      v4 = ipv4AddressManual;
+      ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+      if ([ipv4AddressManual2 isEmpty])
       {
         goto LABEL_4;
       }
 
-      v8 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-      v9 = [v8 isValidSubnetMask];
+      ipv4SubnetMaskManual = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+      isValidSubnetMask = [ipv4SubnetMaskManual isValidSubnetMask];
 
-      if (!v9)
+      if (!isValidSubnetMask)
       {
         goto LABEL_13;
       }
 
-      v10 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-      if (v10)
+      ipv4RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+      if (ipv4RouterAddressManual)
       {
-        v4 = v10;
-        v5 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-        if ([v5 isEmpty])
+        v4 = ipv4RouterAddressManual;
+        ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+        if ([ipv4AddressManual2 isEmpty])
         {
           goto LABEL_4;
         }
 
-        v11 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-        v12 = [v11 isValidIPv4Address];
+        ipv4RouterAddressManual2 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+        isValidIPv4Address2 = [ipv4RouterAddressManual2 isValidIPv4Address];
 
-        if (!v12)
+        if (!isValidIPv4Address2)
         {
           goto LABEL_13;
         }
@@ -282,7 +282,7 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return ipv4AddressManual;
 }
 
 - (BOOL)validIPv6Configuration
@@ -292,168 +292,168 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v3 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-  if (v3)
+  ipv6AddressManual = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+  if (ipv6AddressManual)
   {
-    v4 = v3;
-    v5 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-    v6 = [v5 isEmpty];
+    v4 = ipv6AddressManual;
+    ipv6AddressManual2 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+    isEmpty = [ipv6AddressManual2 isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(ipv6AddressManual) = 0;
+      return ipv6AddressManual;
     }
 
 LABEL_5:
-    LOBYTE(v3) = 1;
+    LOBYTE(ipv6AddressManual) = 1;
   }
 
-  return v3;
+  return ipv6AddressManual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFNetworkSettingsConfig *)self isEqualToNetworkSettingsConfig:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFNetworkSettingsConfig *)self isEqualToNetworkSettingsConfig:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToNetworkSettingsConfig:(id)a3
+- (BOOL)isEqualToNetworkSettingsConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(WFNetworkSettingsConfig *)self ssid];
-  v6 = [v4 ssid];
-  v7 = [v5 isEqualToString:v6];
+  configCopy = config;
+  ssid = [(WFNetworkSettingsConfig *)self ssid];
+  ssid2 = [configCopy ssid];
+  v7 = [ssid isEqualToString:ssid2];
 
   if (!v7)
   {
     goto LABEL_20;
   }
 
-  v8 = [(WFNetworkSettingsConfig *)self displayFriendlyName];
-  v9 = [v4 displayFriendlyName];
-  v10 = [v8 isEqualToString:v9];
+  displayFriendlyName = [(WFNetworkSettingsConfig *)self displayFriendlyName];
+  displayFriendlyName2 = [configCopy displayFriendlyName];
+  v10 = [displayFriendlyName isEqualToString:displayFriendlyName2];
 
   if (!v10)
   {
     goto LABEL_20;
   }
 
-  v11 = [(WFNetworkSettingsConfig *)self current];
-  if (v11 != [v4 current])
+  current = [(WFNetworkSettingsConfig *)self current];
+  if (current != [configCopy current])
   {
     goto LABEL_20;
   }
 
-  v12 = [(WFNetworkSettingsConfig *)self forgetable];
-  if (v12 != [v4 forgetable])
+  forgetable = [(WFNetworkSettingsConfig *)self forgetable];
+  if (forgetable != [configCopy forgetable])
   {
     goto LABEL_20;
   }
 
-  v13 = [(WFNetworkSettingsConfig *)self joinable];
-  if (v13 != [v4 joinable])
+  joinable = [(WFNetworkSettingsConfig *)self joinable];
+  if (joinable != [configCopy joinable])
   {
     goto LABEL_20;
   }
 
-  v14 = [(WFNetworkSettingsConfig *)self manageable];
-  if (v14 != [v4 manageable])
+  manageable = [(WFNetworkSettingsConfig *)self manageable];
+  if (manageable != [configCopy manageable])
   {
     goto LABEL_20;
   }
 
-  v15 = [(WFNetworkSettingsConfig *)self cloudSyncable];
-  if (v15 != [v4 cloudSyncable])
+  cloudSyncable = [(WFNetworkSettingsConfig *)self cloudSyncable];
+  if (cloudSyncable != [configCopy cloudSyncable])
   {
     goto LABEL_20;
   }
 
-  v16 = [(WFNetworkSettingsConfig *)self canRenewLease];
-  if (v16 != [v4 canRenewLease])
+  canRenewLease = [(WFNetworkSettingsConfig *)self canRenewLease];
+  if (canRenewLease != [configCopy canRenewLease])
   {
     goto LABEL_20;
   }
 
-  v17 = [(WFNetworkSettingsConfig *)self autoJoinConfigurable];
-  if (v17 != [v4 autoJoinConfigurable])
+  autoJoinConfigurable = [(WFNetworkSettingsConfig *)self autoJoinConfigurable];
+  if (autoJoinConfigurable != [configCopy autoJoinConfigurable])
   {
     goto LABEL_20;
   }
 
-  v18 = [(WFNetworkSettingsConfig *)self autoJoinEnabled];
-  if (v18 != [v4 autoJoinEnabled])
+  autoJoinEnabled = [(WFNetworkSettingsConfig *)self autoJoinEnabled];
+  if (autoJoinEnabled != [configCopy autoJoinEnabled])
   {
     goto LABEL_20;
   }
 
-  v19 = [(WFNetworkSettingsConfig *)self autoLoginConfigurable];
-  if (v19 != [v4 autoLoginConfigurable])
+  autoLoginConfigurable = [(WFNetworkSettingsConfig *)self autoLoginConfigurable];
+  if (autoLoginConfigurable != [configCopy autoLoginConfigurable])
   {
     goto LABEL_20;
   }
 
-  v20 = [(WFNetworkSettingsConfig *)self autoLoginEnabled];
-  if (v20 != [v4 autoLoginEnabled])
+  autoLoginEnabled = [(WFNetworkSettingsConfig *)self autoLoginEnabled];
+  if (autoLoginEnabled != [configCopy autoLoginEnabled])
   {
     goto LABEL_20;
   }
 
-  v21 = [(WFNetworkSettingsConfig *)self saveDataModeConfigurable];
-  if (v21 != [v4 saveDataModeConfigurable])
+  saveDataModeConfigurable = [(WFNetworkSettingsConfig *)self saveDataModeConfigurable];
+  if (saveDataModeConfigurable != [configCopy saveDataModeConfigurable])
   {
     goto LABEL_20;
   }
 
-  v22 = [(WFNetworkSettingsConfig *)self isInSaveDataMode];
-  if (v22 != [v4 isInSaveDataMode])
+  isInSaveDataMode = [(WFNetworkSettingsConfig *)self isInSaveDataMode];
+  if (isInSaveDataMode != [configCopy isInSaveDataMode])
   {
     goto LABEL_20;
   }
 
-  v23 = [(WFNetworkSettingsConfig *)self privacyProxyTierStatus];
-  if (v23 != [v4 privacyProxyTierStatus])
+  privacyProxyTierStatus = [(WFNetworkSettingsConfig *)self privacyProxyTierStatus];
+  if (privacyProxyTierStatus != [configCopy privacyProxyTierStatus])
   {
     goto LABEL_20;
   }
 
-  v24 = [(WFNetworkSettingsConfig *)self privacyProxyEnabled];
-  if (v24 != [v4 privacyProxyEnabled])
+  privacyProxyEnabled = [(WFNetworkSettingsConfig *)self privacyProxyEnabled];
+  if (privacyProxyEnabled != [configCopy privacyProxyEnabled])
   {
     goto LABEL_20;
   }
 
-  v25 = [(WFNetworkSettingsConfig *)self wifiOutrankEnabled];
-  if (v25 != [v4 wifiOutrankEnabled])
+  wifiOutrankEnabled = [(WFNetworkSettingsConfig *)self wifiOutrankEnabled];
+  if (wifiOutrankEnabled != [configCopy wifiOutrankEnabled])
   {
     goto LABEL_20;
   }
 
-  v26 = [(WFNetworkSettingsConfig *)self networkQualityVisible];
-  if (v26 != [v4 networkQualityVisible])
+  networkQualityVisible = [(WFNetworkSettingsConfig *)self networkQualityVisible];
+  if (networkQualityVisible != [configCopy networkQualityVisible])
   {
     goto LABEL_20;
   }
 
   [(WFNetworkSettingsConfig *)self networkQualityResponsiveness];
   v28 = v27;
-  [v4 networkQualityResponsiveness];
+  [configCopy networkQualityResponsiveness];
   if (v28 != v29)
   {
     goto LABEL_20;
   }
 
-  v32 = [(WFNetworkSettingsConfig *)self networkQualityDate];
-  if (v32 || ([v4 networkQualityDate], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  networkQualityDate = [(WFNetworkSettingsConfig *)self networkQualityDate];
+  if (networkQualityDate || ([configCopy networkQualityDate], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v33 = [(WFNetworkSettingsConfig *)self networkQualityDate];
-    v34 = [v4 networkQualityDate];
-    v35 = [v33 isEqual:v34];
+    networkQualityDate2 = [(WFNetworkSettingsConfig *)self networkQualityDate];
+    networkQualityDate3 = [configCopy networkQualityDate];
+    v35 = [networkQualityDate2 isEqual:networkQualityDate3];
 
-    if (v32)
+    if (networkQualityDate)
     {
 
       if (!v35)
@@ -472,20 +472,20 @@ LABEL_5:
     }
   }
 
-  v36 = [(WFNetworkSettingsConfig *)self ipv4Config];
-  if (v36 != [v4 ipv4Config])
+  ipv4Config = [(WFNetworkSettingsConfig *)self ipv4Config];
+  if (ipv4Config != [configCopy ipv4Config])
   {
     goto LABEL_20;
   }
 
-  v37 = [(WFNetworkSettingsConfig *)self ipv4Address];
-  if (v37 || ([v4 ipv4Address], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4Address = [(WFNetworkSettingsConfig *)self ipv4Address];
+  if (ipv4Address || ([configCopy ipv4Address], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v38 = [(WFNetworkSettingsConfig *)self ipv4Address];
-    v39 = [v4 ipv4Address];
-    v40 = [v38 isEqualToString:v39];
+    ipv4Address2 = [(WFNetworkSettingsConfig *)self ipv4Address];
+    ipv4Address3 = [configCopy ipv4Address];
+    v40 = [ipv4Address2 isEqualToString:ipv4Address3];
 
-    if (v37)
+    if (ipv4Address)
     {
 
       if (!v40)
@@ -504,14 +504,14 @@ LABEL_5:
     }
   }
 
-  v41 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-  if (v41 || ([v4 ipv4AddressManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4AddressManual = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+  if (ipv4AddressManual || ([configCopy ipv4AddressManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v42 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-    v43 = [v4 ipv4AddressManual];
-    v44 = [v42 isEqualToString:v43];
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+    ipv4AddressManual3 = [configCopy ipv4AddressManual];
+    v44 = [ipv4AddressManual2 isEqualToString:ipv4AddressManual3];
 
-    if (v41)
+    if (ipv4AddressManual)
     {
 
       if (!v44)
@@ -530,14 +530,14 @@ LABEL_5:
     }
   }
 
-  v45 = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
-  if (v45 || ([v4 ipv4SubnetMask], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4SubnetMask = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
+  if (ipv4SubnetMask || ([configCopy ipv4SubnetMask], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v46 = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
-    v47 = [v4 ipv4SubnetMask];
-    v48 = [v46 isEqualToString:v47];
+    ipv4SubnetMask2 = [(WFNetworkSettingsConfig *)self ipv4SubnetMask];
+    ipv4SubnetMask3 = [configCopy ipv4SubnetMask];
+    v48 = [ipv4SubnetMask2 isEqualToString:ipv4SubnetMask3];
 
-    if (v45)
+    if (ipv4SubnetMask)
     {
 
       if (!v48)
@@ -556,14 +556,14 @@ LABEL_5:
     }
   }
 
-  v49 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-  if (v49 || ([v4 ipv4SubnetMaskManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4SubnetMaskManual = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+  if (ipv4SubnetMaskManual || ([configCopy ipv4SubnetMaskManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v50 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-    v51 = [v4 ipv4SubnetMaskManual];
-    v52 = [v50 isEqualToString:v51];
+    ipv4SubnetMaskManual2 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+    ipv4SubnetMaskManual3 = [configCopy ipv4SubnetMaskManual];
+    v52 = [ipv4SubnetMaskManual2 isEqualToString:ipv4SubnetMaskManual3];
 
-    if (v49)
+    if (ipv4SubnetMaskManual)
     {
 
       if (!v52)
@@ -582,14 +582,14 @@ LABEL_5:
     }
   }
 
-  v53 = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
-  if (v53 || ([v4 ipv4RouterAddress], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4RouterAddress = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
+  if (ipv4RouterAddress || ([configCopy ipv4RouterAddress], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v54 = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
-    v55 = [v4 ipv4RouterAddress];
-    v56 = [v54 isEqualToString:v55];
+    ipv4RouterAddress2 = [(WFNetworkSettingsConfig *)self ipv4RouterAddress];
+    ipv4RouterAddress3 = [configCopy ipv4RouterAddress];
+    v56 = [ipv4RouterAddress2 isEqualToString:ipv4RouterAddress3];
 
-    if (v53)
+    if (ipv4RouterAddress)
     {
 
       if (!v56)
@@ -608,14 +608,14 @@ LABEL_5:
     }
   }
 
-  v57 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-  if (v57 || ([v4 ipv4RouterAddressManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+  if (ipv4RouterAddressManual || ([configCopy ipv4RouterAddressManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v58 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-    v59 = [v4 ipv4RouterAddressManual];
-    v60 = [v58 isEqualToString:v59];
+    ipv4RouterAddressManual2 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+    ipv4RouterAddressManual3 = [configCopy ipv4RouterAddressManual];
+    v60 = [ipv4RouterAddressManual2 isEqualToString:ipv4RouterAddressManual3];
 
-    if (v57)
+    if (ipv4RouterAddressManual)
     {
 
       if (!v60)
@@ -634,14 +634,14 @@ LABEL_5:
     }
   }
 
-  v61 = [(WFNetworkSettingsConfig *)self dhcpClientID];
-  if (v61 || ([v4 dhcpClientID], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dhcpClientID = [(WFNetworkSettingsConfig *)self dhcpClientID];
+  if (dhcpClientID || ([configCopy dhcpClientID], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v62 = [(WFNetworkSettingsConfig *)self dhcpClientID];
-    v63 = [v4 dhcpClientID];
-    v64 = [v62 isEqualToString:v63];
+    dhcpClientID2 = [(WFNetworkSettingsConfig *)self dhcpClientID];
+    dhcpClientID3 = [configCopy dhcpClientID];
+    v64 = [dhcpClientID2 isEqualToString:dhcpClientID3];
 
-    if (v61)
+    if (dhcpClientID)
     {
 
       if (!v64)
@@ -660,14 +660,14 @@ LABEL_5:
     }
   }
 
-  v65 = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
-  if (v65 || ([v4 dhcpLeaseExpirationDate], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dhcpLeaseExpirationDate = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
+  if (dhcpLeaseExpirationDate || ([configCopy dhcpLeaseExpirationDate], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v66 = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
-    v67 = [v4 dhcpLeaseExpirationDate];
-    v68 = [v66 isEqual:v67];
+    dhcpLeaseExpirationDate2 = [(WFNetworkSettingsConfig *)self dhcpLeaseExpirationDate];
+    dhcpLeaseExpirationDate3 = [configCopy dhcpLeaseExpirationDate];
+    v68 = [dhcpLeaseExpirationDate2 isEqual:dhcpLeaseExpirationDate3];
 
-    if (v65)
+    if (dhcpLeaseExpirationDate)
     {
 
       if (!v68)
@@ -686,20 +686,20 @@ LABEL_5:
     }
   }
 
-  v69 = [(WFNetworkSettingsConfig *)self ipv6Config];
-  if (v69 != [v4 ipv6Config])
+  ipv6Config = [(WFNetworkSettingsConfig *)self ipv6Config];
+  if (ipv6Config != [configCopy ipv6Config])
   {
     goto LABEL_20;
   }
 
-  v70 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
-  if (v70 || ([v4 ipv6Addresses], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6Addresses = [(WFNetworkSettingsConfig *)self ipv6Addresses];
+  if (ipv6Addresses || ([configCopy ipv6Addresses], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v71 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
-    v72 = [v4 ipv6Addresses];
-    v73 = [v71 isEqualToArray:v72];
+    ipv6Addresses2 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
+    ipv6Addresses3 = [configCopy ipv6Addresses];
+    v73 = [ipv6Addresses2 isEqualToArray:ipv6Addresses3];
 
-    if (v70)
+    if (ipv6Addresses)
     {
 
       if (!v73)
@@ -718,14 +718,14 @@ LABEL_5:
     }
   }
 
-  v74 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
-  if (v74 || ([v4 ipv6PrefixLengths], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6PrefixLengths = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
+  if (ipv6PrefixLengths || ([configCopy ipv6PrefixLengths], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v75 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
-    v76 = [v4 ipv6PrefixLengths];
-    v77 = [v75 isEqualToArray:v76];
+    ipv6PrefixLengths2 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
+    ipv6PrefixLengths3 = [configCopy ipv6PrefixLengths];
+    v77 = [ipv6PrefixLengths2 isEqualToArray:ipv6PrefixLengths3];
 
-    if (v74)
+    if (ipv6PrefixLengths)
     {
 
       if (!v77)
@@ -744,14 +744,14 @@ LABEL_5:
     }
   }
 
-  v78 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-  if (v78 || ([v4 ipv6AddressManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6AddressManual = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+  if (ipv6AddressManual || ([configCopy ipv6AddressManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v79 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-    v80 = [v4 ipv6AddressManual];
-    v81 = [v79 isEqualToString:v80];
+    ipv6AddressManual2 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+    ipv6AddressManual3 = [configCopy ipv6AddressManual];
+    v81 = [ipv6AddressManual2 isEqualToString:ipv6AddressManual3];
 
-    if (v78)
+    if (ipv6AddressManual)
     {
 
       if (!v81)
@@ -770,14 +770,14 @@ LABEL_5:
     }
   }
 
-  v82 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
-  if (v82 || ([v4 ipv6RouterAddress], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6RouterAddress = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
+  if (ipv6RouterAddress || ([configCopy ipv6RouterAddress], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v83 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
-    v84 = [v4 ipv6RouterAddress];
-    v85 = [v83 isEqualToString:v84];
+    ipv6RouterAddress2 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
+    ipv6RouterAddress3 = [configCopy ipv6RouterAddress];
+    v85 = [ipv6RouterAddress2 isEqualToString:ipv6RouterAddress3];
 
-    if (v82)
+    if (ipv6RouterAddress)
     {
 
       if (!v85)
@@ -796,14 +796,14 @@ LABEL_5:
     }
   }
 
-  v86 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
-  if (v86 || ([v4 ipv6RouterAddressManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
+  if (ipv6RouterAddressManual || ([configCopy ipv6RouterAddressManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v87 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
-    v88 = [v4 ipv6RouterAddressManual];
-    v89 = [v87 isEqualToString:v88];
+    ipv6RouterAddressManual2 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
+    ipv6RouterAddressManual3 = [configCopy ipv6RouterAddressManual];
+    v89 = [ipv6RouterAddressManual2 isEqualToString:ipv6RouterAddressManual3];
 
-    if (v86)
+    if (ipv6RouterAddressManual)
     {
 
       if (!v89)
@@ -822,14 +822,14 @@ LABEL_5:
     }
   }
 
-  v90 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
-  if (v90 || ([v4 ipv6PrefixLengthManual], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6PrefixLengthManual = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
+  if (ipv6PrefixLengthManual || ([configCopy ipv6PrefixLengthManual], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v91 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
-    v92 = [v4 ipv6PrefixLengthManual];
-    v93 = [v91 isEqualToString:v92];
+    ipv6PrefixLengthManual2 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
+    ipv6PrefixLengthManual3 = [configCopy ipv6PrefixLengthManual];
+    v93 = [ipv6PrefixLengthManual2 isEqualToString:ipv6PrefixLengthManual3];
 
-    if (v90)
+    if (ipv6PrefixLengthManual)
     {
 
       if (!v93)
@@ -848,20 +848,20 @@ LABEL_5:
     }
   }
 
-  v94 = [(WFNetworkSettingsConfig *)self dnsConfig];
-  if (v94 != [v4 dnsConfig])
+  dnsConfig = [(WFNetworkSettingsConfig *)self dnsConfig];
+  if (dnsConfig != [configCopy dnsConfig])
   {
     goto LABEL_20;
   }
 
-  v95 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
-  if (v95 || ([v4 dnsServerAddresses], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dnsServerAddresses = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
+  if (dnsServerAddresses || ([configCopy dnsServerAddresses], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v96 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
-    v97 = [v4 dnsServerAddresses];
-    v98 = [v96 isEqualToArray:v97];
+    dnsServerAddresses2 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
+    dnsServerAddresses3 = [configCopy dnsServerAddresses];
+    v98 = [dnsServerAddresses2 isEqualToArray:dnsServerAddresses3];
 
-    if (v95)
+    if (dnsServerAddresses)
     {
 
       if (!v98)
@@ -880,14 +880,14 @@ LABEL_5:
     }
   }
 
-  v99 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
-  if (v99 || ([v4 dnsSearchDomains], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  dnsSearchDomains = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
+  if (dnsSearchDomains || ([configCopy dnsSearchDomains], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v100 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
-    v101 = [v4 dnsSearchDomains];
-    v102 = [v100 isEqualToArray:v101];
+    dnsSearchDomains2 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
+    dnsSearchDomains3 = [configCopy dnsSearchDomains];
+    v102 = [dnsSearchDomains2 isEqualToArray:dnsSearchDomains3];
 
-    if (v99)
+    if (dnsSearchDomains)
     {
 
       if (!v102)
@@ -906,26 +906,26 @@ LABEL_5:
     }
   }
 
-  v103 = [(WFNetworkSettingsConfig *)self httpProxyConfigurable];
-  if (v103 != [v4 httpProxyConfigurable])
+  httpProxyConfigurable = [(WFNetworkSettingsConfig *)self httpProxyConfigurable];
+  if (httpProxyConfigurable != [configCopy httpProxyConfigurable])
   {
     goto LABEL_20;
   }
 
-  v104 = [(WFNetworkSettingsConfig *)self httpProxyConfig];
-  if (v104 != [v4 httpProxyConfig])
+  httpProxyConfig = [(WFNetworkSettingsConfig *)self httpProxyConfig];
+  if (httpProxyConfig != [configCopy httpProxyConfig])
   {
     goto LABEL_20;
   }
 
-  v105 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-  if (v105 || ([v4 httpProxyServerAddress], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyServerAddress = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+  if (httpProxyServerAddress || ([configCopy httpProxyServerAddress], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v106 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-    v107 = [v4 httpProxyServerAddress];
-    v108 = [v106 isEqualToString:v107];
+    httpProxyServerAddress2 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+    httpProxyServerAddress3 = [configCopy httpProxyServerAddress];
+    v108 = [httpProxyServerAddress2 isEqualToString:httpProxyServerAddress3];
 
-    if (v105)
+    if (httpProxyServerAddress)
     {
 
       if (!v108)
@@ -944,14 +944,14 @@ LABEL_5:
     }
   }
 
-  v109 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-  if (v109 || ([v4 httpProxyServerPort], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyServerPort = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+  if (httpProxyServerPort || ([configCopy httpProxyServerPort], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v110 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-    v111 = [v4 httpProxyServerPort];
-    v112 = [v110 isEqualToString:v111];
+    httpProxyServerPort2 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+    httpProxyServerPort3 = [configCopy httpProxyServerPort];
+    v112 = [httpProxyServerPort2 isEqualToString:httpProxyServerPort3];
 
-    if (v109)
+    if (httpProxyServerPort)
     {
 
       if (!v112)
@@ -970,20 +970,20 @@ LABEL_5:
     }
   }
 
-  v113 = [(WFNetworkSettingsConfig *)self httpProxyAuthenticationRequired];
-  if (v113 != [v4 httpProxyAuthenticationRequired])
+  httpProxyAuthenticationRequired = [(WFNetworkSettingsConfig *)self httpProxyAuthenticationRequired];
+  if (httpProxyAuthenticationRequired != [configCopy httpProxyAuthenticationRequired])
   {
     goto LABEL_20;
   }
 
-  v114 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-  if (v114 || ([v4 httpProxyUsername], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyUsername = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+  if (httpProxyUsername || ([configCopy httpProxyUsername], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v115 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-    v116 = [v4 httpProxyUsername];
-    v117 = [v115 isEqualToString:v116];
+    httpProxyUsername2 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+    httpProxyUsername3 = [configCopy httpProxyUsername];
+    v117 = [httpProxyUsername2 isEqualToString:httpProxyUsername3];
 
-    if (v114)
+    if (httpProxyUsername)
     {
 
       if (!v117)
@@ -1002,21 +1002,21 @@ LABEL_5:
     }
   }
 
-  v118 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
-  if (!v118)
+  httpProxyPassword = [(WFNetworkSettingsConfig *)self httpProxyPassword];
+  if (!httpProxyPassword)
   {
-    v9 = [v4 httpProxyPassword];
-    if (!v9)
+    displayFriendlyName2 = [configCopy httpProxyPassword];
+    if (!displayFriendlyName2)
     {
 LABEL_154:
-      v122 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
-      if (v122 || ([v4 httpProxyConfigPAC], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+      httpProxyConfigPAC = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
+      if (httpProxyConfigPAC || ([configCopy httpProxyConfigPAC], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v123 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
-        v124 = [v4 httpProxyConfigPAC];
-        v30 = [v123 isEqualToString:v124];
+        httpProxyConfigPAC2 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
+        httpProxyConfigPAC3 = [configCopy httpProxyConfigPAC];
+        v30 = [httpProxyConfigPAC2 isEqualToString:httpProxyConfigPAC3];
 
-        if (v122)
+        if (httpProxyConfigPAC)
         {
 LABEL_160:
 
@@ -1033,11 +1033,11 @@ LABEL_160:
     }
   }
 
-  v119 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
-  v120 = [v4 httpProxyPassword];
-  v121 = [v119 isEqualToString:v120];
+  httpProxyPassword2 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
+  httpProxyPassword3 = [configCopy httpProxyPassword];
+  v121 = [httpProxyPassword2 isEqualToString:httpProxyPassword3];
 
-  if (!v118)
+  if (!httpProxyPassword)
   {
 
     if ((v121 & 1) == 0)
@@ -1060,65 +1060,65 @@ LABEL_21:
   return v30;
 }
 
-- (id)changesBetweenConfig:(id)a3
+- (id)changesBetweenConfig:(id)config
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [(WFNetworkSettingsConfig *)self autoJoinEnabled];
-  v10 = 0x277CCA000;
-  if (v9 != [v7 autoJoinEnabled])
+  configCopy = config;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  autoJoinEnabled = [(WFNetworkSettingsConfig *)self autoJoinEnabled];
+  ipv4AddressManual5 = 0x277CCA000;
+  if (autoJoinEnabled != [configCopy autoJoinEnabled])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "autoJoinEnabled")}];
-    [v8 setObject:v11 forKey:@"autoJoinEnabled"];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "autoJoinEnabled")}];
+    [dictionary setObject:v11 forKey:@"autoJoinEnabled"];
   }
 
-  v12 = [(WFNetworkSettingsConfig *)self autoLoginEnabled];
-  if (v12 != [v7 autoLoginEnabled])
+  autoLoginEnabled = [(WFNetworkSettingsConfig *)self autoLoginEnabled];
+  if (autoLoginEnabled != [configCopy autoLoginEnabled])
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "autoLoginEnabled")}];
-    [v8 setObject:v13 forKey:@"autoLoginEnabled"];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "autoLoginEnabled")}];
+    [dictionary setObject:v13 forKey:@"autoLoginEnabled"];
   }
 
-  v14 = [(WFNetworkSettingsConfig *)self isInSaveDataMode];
-  if (v14 != [v7 isInSaveDataMode])
+  isInSaveDataMode = [(WFNetworkSettingsConfig *)self isInSaveDataMode];
+  if (isInSaveDataMode != [configCopy isInSaveDataMode])
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "isInSaveDataMode")}];
-    [v8 setObject:v15 forKey:@"isInSaveDataMode"];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "isInSaveDataMode")}];
+    [dictionary setObject:v15 forKey:@"isInSaveDataMode"];
   }
 
-  v16 = [(WFNetworkSettingsConfig *)self privacyProxyEnabled];
-  if (v16 != [v7 privacyProxyEnabled])
+  privacyProxyEnabled = [(WFNetworkSettingsConfig *)self privacyProxyEnabled];
+  if (privacyProxyEnabled != [configCopy privacyProxyEnabled])
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "privacyProxyEnabled")}];
-    [v8 setObject:v17 forKey:@"privacyProxyEnabled"];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "privacyProxyEnabled")}];
+    [dictionary setObject:v17 forKey:@"privacyProxyEnabled"];
   }
 
-  v18 = [(WFNetworkSettingsConfig *)self wifiOutrankEnabled];
-  if (v18 != [v7 wifiOutrankEnabled])
+  wifiOutrankEnabled = [(WFNetworkSettingsConfig *)self wifiOutrankEnabled];
+  if (wifiOutrankEnabled != [configCopy wifiOutrankEnabled])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "wifiOutrankEnabled")}];
-    [v8 setObject:v19 forKey:@"wifiOutrankEnabled"];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "wifiOutrankEnabled")}];
+    [dictionary setObject:v19 forKey:@"wifiOutrankEnabled"];
   }
 
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  v21 = [(WFNetworkSettingsConfig *)self ipv4Config];
-  if (v21 != [v7 ipv4Config])
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  ipv4Config = [(WFNetworkSettingsConfig *)self ipv4Config];
+  if (ipv4Config != [configCopy ipv4Config])
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "ipv4Config")}];
-    [v20 setObject:v22 forKey:@"ipv4Config"];
+    v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "ipv4Config")}];
+    [dictionary2 setObject:v22 forKey:@"ipv4Config"];
   }
 
-  v23 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-  if (v23 || ([v7 ipv4AddressManual], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4AddressManual = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+  if (ipv4AddressManual || ([configCopy ipv4AddressManual], (ipv4AddressManual5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
-    v5 = [v7 ipv4AddressManual];
-    v3 = [v4 isEqualToString:v5];
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4AddressManual];
+    ipv4AddressManual3 = [configCopy ipv4AddressManual];
+    ipv6AddressManual4 = [ipv4AddressManual2 isEqualToString:ipv4AddressManual3];
 
-    if (v23)
+    if (ipv4AddressManual)
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_23;
       }
@@ -1127,17 +1127,17 @@ LABEL_21:
     else
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_23;
       }
     }
 
-    v24 = [v7 ipv4AddressManual];
-    if (v24)
+    ipv4AddressManual4 = [configCopy ipv4AddressManual];
+    if (ipv4AddressManual4)
     {
-      v10 = [v7 ipv4AddressManual];
-      [v103 setObject:v10 forKey:@"ipv4AddressManual"];
+      ipv4AddressManual5 = [configCopy ipv4AddressManual];
+      [v103 setObject:ipv4AddressManual5 forKey:@"ipv4AddressManual"];
     }
 
     else
@@ -1147,17 +1147,17 @@ LABEL_21:
   }
 
 LABEL_23:
-  v25 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-  if (v25 || ([v7 ipv4SubnetMaskManual], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4SubnetMaskManual = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+  if (ipv4SubnetMaskManual || ([configCopy ipv4SubnetMaskManual], (ipv4AddressManual5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
-    v5 = [v7 ipv4SubnetMaskManual];
-    v3 = [v4 isEqualToString:v5];
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4SubnetMaskManual];
+    ipv4AddressManual3 = [configCopy ipv4SubnetMaskManual];
+    ipv6AddressManual4 = [ipv4AddressManual2 isEqualToString:ipv4AddressManual3];
 
-    if (v25)
+    if (ipv4SubnetMaskManual)
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_33;
       }
@@ -1166,17 +1166,17 @@ LABEL_23:
     else
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_33;
       }
     }
 
-    v26 = [v7 ipv4SubnetMaskManual];
-    if (v26)
+    ipv4SubnetMaskManual2 = [configCopy ipv4SubnetMaskManual];
+    if (ipv4SubnetMaskManual2)
     {
-      v10 = [v7 ipv4SubnetMaskManual];
-      [v103 setObject:v10 forKey:@"ipv4SubnetMaskManual"];
+      ipv4AddressManual5 = [configCopy ipv4SubnetMaskManual];
+      [v103 setObject:ipv4AddressManual5 forKey:@"ipv4SubnetMaskManual"];
     }
 
     else
@@ -1186,17 +1186,17 @@ LABEL_23:
   }
 
 LABEL_33:
-  v27 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-  if (v27 || ([v7 ipv4RouterAddressManual], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv4RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+  if (ipv4RouterAddressManual || ([configCopy ipv4RouterAddressManual], (ipv4AddressManual5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
-    v5 = [v7 ipv4RouterAddressManual];
-    v3 = [v4 isEqualToString:v5];
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self ipv4RouterAddressManual];
+    ipv4AddressManual3 = [configCopy ipv4RouterAddressManual];
+    ipv6AddressManual4 = [ipv4AddressManual2 isEqualToString:ipv4AddressManual3];
 
-    if (v27)
+    if (ipv4RouterAddressManual)
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_43;
       }
@@ -1205,17 +1205,17 @@ LABEL_33:
     else
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_43;
       }
     }
 
-    v28 = [v7 ipv4RouterAddressManual];
-    if (v28)
+    ipv4RouterAddressManual2 = [configCopy ipv4RouterAddressManual];
+    if (ipv4RouterAddressManual2)
     {
-      v10 = [v7 ipv4RouterAddressManual];
-      [v103 setObject:v10 forKey:@"ipv4RouterAddressManual"];
+      ipv4AddressManual5 = [configCopy ipv4RouterAddressManual];
+      [v103 setObject:ipv4AddressManual5 forKey:@"ipv4RouterAddressManual"];
     }
 
     else
@@ -1225,17 +1225,17 @@ LABEL_33:
   }
 
 LABEL_43:
-  v29 = [(WFNetworkSettingsConfig *)self dhcpClientID];
-  if (v29 || ([v7 dhcpClientID], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  dhcpClientID = [(WFNetworkSettingsConfig *)self dhcpClientID];
+  if (dhcpClientID || ([configCopy dhcpClientID], (ipv4AddressManual5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(WFNetworkSettingsConfig *)self dhcpClientID];
-    v5 = [v7 dhcpClientID];
-    v3 = [v4 isEqualToString:v5];
+    ipv4AddressManual2 = [(WFNetworkSettingsConfig *)self dhcpClientID];
+    ipv4AddressManual3 = [configCopy dhcpClientID];
+    ipv6AddressManual4 = [ipv4AddressManual2 isEqualToString:ipv4AddressManual3];
 
-    if (v29)
+    if (dhcpClientID)
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_53;
       }
@@ -1244,17 +1244,17 @@ LABEL_43:
     else
     {
 
-      if (v3)
+      if (ipv6AddressManual4)
       {
         goto LABEL_53;
       }
     }
 
-    v30 = [v7 dhcpClientID];
-    if (v30)
+    dhcpClientID2 = [configCopy dhcpClientID];
+    if (dhcpClientID2)
     {
-      v31 = [v7 dhcpClientID];
-      [v103 setObject:v31 forKey:@"dhcpClientID"];
+      dhcpClientID3 = [configCopy dhcpClientID];
+      [v103 setObject:dhcpClientID3 forKey:@"dhcpClientID"];
     }
 
     else
@@ -1266,29 +1266,29 @@ LABEL_43:
 LABEL_53:
   if ([v103 count])
   {
-    [v8 setObject:v103 forKey:@"WFIPv4Changes"];
+    [dictionary setObject:v103 forKey:@"WFIPv4Changes"];
   }
 
-  v32 = [MEMORY[0x277CBEB38] dictionary];
-  v33 = [(WFNetworkSettingsConfig *)self ipv6Config];
-  if (v33 != [v7 ipv6Config])
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  ipv6Config = [(WFNetworkSettingsConfig *)self ipv6Config];
+  if (ipv6Config != [configCopy ipv6Config])
   {
-    v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "ipv6Config")}];
-    [v32 setObject:v34 forKey:@"ipv6Config"];
+    v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "ipv6Config")}];
+    [dictionary3 setObject:v34 forKey:@"ipv6Config"];
   }
 
-  v104 = v32;
-  v35 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
-  if (v35 || ([v7 ipv6Addresses], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v104 = dictionary3;
+  ipv6Addresses = [(WFNetworkSettingsConfig *)self ipv6Addresses];
+  if (ipv6Addresses || ([configCopy ipv6Addresses], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
-    v36 = [v7 ipv6Addresses];
-    v4 = [v5 isEqualToArray:v36];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6Addresses];
+    ipv6Addresses2 = [configCopy ipv6Addresses];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToArray:ipv6Addresses2];
 
-    if (v35)
+    if (ipv6Addresses)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_67;
       }
@@ -1297,38 +1297,38 @@ LABEL_53:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_67;
       }
     }
 
-    v37 = [v7 ipv6Addresses];
-    if (v37)
+    ipv6Addresses3 = [configCopy ipv6Addresses];
+    if (ipv6Addresses3)
     {
-      [v7 ipv6Addresses];
+      [configCopy ipv6Addresses];
     }
 
     else
     {
       [MEMORY[0x277CBEA60] array];
     }
-    v3 = ;
-    [v32 setObject:v3 forKey:@"ipv6Addresses"];
+    ipv6AddressManual4 = ;
+    [dictionary3 setObject:ipv6AddressManual4 forKey:@"ipv6Addresses"];
   }
 
 LABEL_67:
-  v38 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
-  if (v38 || ([v7 ipv6PrefixLengths], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6PrefixLengths = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
+  if (ipv6PrefixLengths || ([configCopy ipv6PrefixLengths], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
-    v39 = [v7 ipv6PrefixLengths];
-    v4 = [v5 isEqualToArray:v39];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengths];
+    ipv6PrefixLengths2 = [configCopy ipv6PrefixLengths];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToArray:ipv6PrefixLengths2];
 
-    if (v38)
+    if (ipv6PrefixLengths)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_77;
       }
@@ -1337,38 +1337,38 @@ LABEL_67:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_77;
       }
     }
 
-    v40 = [v7 ipv6PrefixLengths];
-    if (v40)
+    ipv6PrefixLengths3 = [configCopy ipv6PrefixLengths];
+    if (ipv6PrefixLengths3)
     {
-      [v7 ipv6PrefixLengths];
+      [configCopy ipv6PrefixLengths];
     }
 
     else
     {
       [MEMORY[0x277CBEA60] array];
     }
-    v3 = ;
-    [v32 setObject:v3 forKey:@"ipv6PrefixLengths"];
+    ipv6AddressManual4 = ;
+    [dictionary3 setObject:ipv6AddressManual4 forKey:@"ipv6PrefixLengths"];
   }
 
 LABEL_77:
-  v41 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-  if (v41 || ([v7 ipv6AddressManual], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6AddressManual = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+  if (ipv6AddressManual || ([configCopy ipv6AddressManual], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
-    v42 = [v7 ipv6AddressManual];
-    v4 = [v5 isEqualToString:v42];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6AddressManual];
+    ipv6AddressManual2 = [configCopy ipv6AddressManual];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToString:ipv6AddressManual2];
 
-    if (v41)
+    if (ipv6AddressManual)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_87;
       }
@@ -1377,37 +1377,37 @@ LABEL_77:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_87;
       }
     }
 
-    v43 = [v7 ipv6AddressManual];
-    if (v43)
+    ipv6AddressManual3 = [configCopy ipv6AddressManual];
+    if (ipv6AddressManual3)
     {
-      v3 = [v7 ipv6AddressManual];
-      [v32 setObject:v3 forKey:@"ipv6AddressManual"];
+      ipv6AddressManual4 = [configCopy ipv6AddressManual];
+      [dictionary3 setObject:ipv6AddressManual4 forKey:@"ipv6AddressManual"];
     }
 
     else
     {
-      [v32 setObject:&stru_288308678 forKey:@"ipv6AddressManual"];
+      [dictionary3 setObject:&stru_288308678 forKey:@"ipv6AddressManual"];
     }
   }
 
 LABEL_87:
-  v44 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
-  if (v44 || ([v7 ipv6RouterAddress], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6RouterAddress = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
+  if (ipv6RouterAddress || ([configCopy ipv6RouterAddress], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
-    v45 = [v7 ipv6RouterAddress];
-    v4 = [v5 isEqualToString:v45];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6RouterAddress];
+    ipv6RouterAddress2 = [configCopy ipv6RouterAddress];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToString:ipv6RouterAddress2];
 
-    if (v44)
+    if (ipv6RouterAddress)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_97;
       }
@@ -1416,37 +1416,37 @@ LABEL_87:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_97;
       }
     }
 
-    v46 = [v7 ipv6RouterAddress];
-    if (v46)
+    ipv6RouterAddress3 = [configCopy ipv6RouterAddress];
+    if (ipv6RouterAddress3)
     {
-      v3 = [v7 ipv6RouterAddress];
-      [v32 setObject:v3 forKey:@"ipv6RouterAddress"];
+      ipv6AddressManual4 = [configCopy ipv6RouterAddress];
+      [dictionary3 setObject:ipv6AddressManual4 forKey:@"ipv6RouterAddress"];
     }
 
     else
     {
-      [v32 setObject:&stru_288308678 forKey:@"ipv6RouterAddress"];
+      [dictionary3 setObject:&stru_288308678 forKey:@"ipv6RouterAddress"];
     }
   }
 
 LABEL_97:
-  v47 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
-  if (v47 || ([v7 ipv6RouterAddressManual], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6RouterAddressManual = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
+  if (ipv6RouterAddressManual || ([configCopy ipv6RouterAddressManual], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
-    v48 = [v7 ipv6RouterAddressManual];
-    v4 = [v5 isEqualToString:v48];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6RouterAddressManual];
+    ipv6RouterAddressManual2 = [configCopy ipv6RouterAddressManual];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToString:ipv6RouterAddressManual2];
 
-    if (v47)
+    if (ipv6RouterAddressManual)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_107;
       }
@@ -1455,37 +1455,37 @@ LABEL_97:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_107;
       }
     }
 
-    v49 = [v7 ipv6RouterAddressManual];
-    if (v49)
+    ipv6RouterAddressManual3 = [configCopy ipv6RouterAddressManual];
+    if (ipv6RouterAddressManual3)
     {
-      v3 = [v7 ipv6RouterAddressManual];
-      [v32 setObject:v3 forKey:@"ipv6RouterAddressManual"];
+      ipv6AddressManual4 = [configCopy ipv6RouterAddressManual];
+      [dictionary3 setObject:ipv6AddressManual4 forKey:@"ipv6RouterAddressManual"];
     }
 
     else
     {
-      [v32 setObject:&stru_288308678 forKey:@"ipv6RouterAddressManual"];
+      [dictionary3 setObject:&stru_288308678 forKey:@"ipv6RouterAddressManual"];
     }
   }
 
 LABEL_107:
-  v50 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
-  if (v50 || ([v7 ipv6PrefixLengthManual], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  ipv6PrefixLengthManual = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
+  if (ipv6PrefixLengthManual || ([configCopy ipv6PrefixLengthManual], (ipv6AddressManual4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
-    v51 = [v7 ipv6PrefixLengthManual];
-    v4 = [v5 isEqualToString:v51];
+    ipv4AddressManual3 = [(WFNetworkSettingsConfig *)self ipv6PrefixLengthManual];
+    ipv6PrefixLengthManual2 = [configCopy ipv6PrefixLengthManual];
+    ipv4AddressManual2 = [ipv4AddressManual3 isEqualToString:ipv6PrefixLengthManual2];
 
-    if (v50)
+    if (ipv6PrefixLengthManual)
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_117;
       }
@@ -1494,50 +1494,50 @@ LABEL_107:
     else
     {
 
-      if (v4)
+      if (ipv4AddressManual2)
       {
         goto LABEL_117;
       }
     }
 
-    v52 = [v7 ipv6PrefixLengthManual];
-    if (v52)
+    ipv6PrefixLengthManual3 = [configCopy ipv6PrefixLengthManual];
+    if (ipv6PrefixLengthManual3)
     {
-      v53 = [v7 ipv6PrefixLengthManual];
-      [v32 setObject:v53 forKey:@"ipv6PrefixLengthManual"];
+      ipv6PrefixLengthManual4 = [configCopy ipv6PrefixLengthManual];
+      [dictionary3 setObject:ipv6PrefixLengthManual4 forKey:@"ipv6PrefixLengthManual"];
     }
 
     else
     {
-      [v32 setObject:&stru_288308678 forKey:@"ipv6PrefixLengthManual"];
+      [dictionary3 setObject:&stru_288308678 forKey:@"ipv6PrefixLengthManual"];
     }
   }
 
 LABEL_117:
-  if ([v32 count])
+  if ([dictionary3 count])
   {
-    [v8 setObject:v32 forKey:@"WFIPv6Changes"];
+    [dictionary setObject:dictionary3 forKey:@"WFIPv6Changes"];
   }
 
-  v54 = [MEMORY[0x277CBEB38] dictionary];
-  v55 = [(WFNetworkSettingsConfig *)self dnsConfig];
-  if (v55 != [v7 dnsConfig])
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  dnsConfig = [(WFNetworkSettingsConfig *)self dnsConfig];
+  if (dnsConfig != [configCopy dnsConfig])
   {
-    v56 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "dnsConfig")}];
-    [v54 setObject:v56 forKey:@"dnsConfig"];
+    v56 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "dnsConfig")}];
+    [dictionary4 setObject:v56 forKey:@"dnsConfig"];
   }
 
-  v57 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
-  if (v57 || ([v7 dnsServerAddresses], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  dnsServerAddresses = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
+  if (dnsServerAddresses || ([configCopy dnsServerAddresses], (ipv4AddressManual2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v58 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
-    v59 = [v7 dnsServerAddresses];
-    v5 = [v58 isEqualToArray:v59];
+    dnsServerAddresses2 = [(WFNetworkSettingsConfig *)self dnsServerAddresses];
+    dnsServerAddresses3 = [configCopy dnsServerAddresses];
+    ipv4AddressManual3 = [dnsServerAddresses2 isEqualToArray:dnsServerAddresses3];
 
-    if (v57)
+    if (dnsServerAddresses)
     {
 
-      if (v5)
+      if (ipv4AddressManual3)
       {
         goto LABEL_131;
       }
@@ -1546,38 +1546,38 @@ LABEL_117:
     else
     {
 
-      if (v5)
+      if (ipv4AddressManual3)
       {
         goto LABEL_131;
       }
     }
 
-    v60 = [v7 dnsServerAddresses];
-    if (v60)
+    dnsServerAddresses4 = [configCopy dnsServerAddresses];
+    if (dnsServerAddresses4)
     {
-      [v7 dnsServerAddresses];
+      [configCopy dnsServerAddresses];
     }
 
     else
     {
       [MEMORY[0x277CBEA60] array];
     }
-    v4 = ;
-    [v54 setObject:v4 forKey:@"dnsServerAddresses"];
+    ipv4AddressManual2 = ;
+    [dictionary4 setObject:ipv4AddressManual2 forKey:@"dnsServerAddresses"];
   }
 
 LABEL_131:
-  v61 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
-  if (v61 || ([v7 dnsSearchDomains], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  dnsSearchDomains = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
+  if (dnsSearchDomains || ([configCopy dnsSearchDomains], (ipv4AddressManual2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v62 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
-    v63 = [v7 dnsSearchDomains];
-    v5 = [v62 isEqualToArray:v63];
+    dnsSearchDomains2 = [(WFNetworkSettingsConfig *)self dnsSearchDomains];
+    dnsSearchDomains3 = [configCopy dnsSearchDomains];
+    ipv4AddressManual3 = [dnsSearchDomains2 isEqualToArray:dnsSearchDomains3];
 
-    if (v61)
+    if (dnsSearchDomains)
     {
 
-      if (v5)
+      if (ipv4AddressManual3)
       {
         goto LABEL_141;
       }
@@ -1586,16 +1586,16 @@ LABEL_131:
     else
     {
 
-      if (v5)
+      if (ipv4AddressManual3)
       {
         goto LABEL_141;
       }
     }
 
-    v64 = [v7 dnsSearchDomains];
-    if (v64)
+    dnsSearchDomains4 = [configCopy dnsSearchDomains];
+    if (dnsSearchDomains4)
     {
-      [v7 dnsSearchDomains];
+      [configCopy dnsSearchDomains];
     }
 
     else
@@ -1603,31 +1603,31 @@ LABEL_131:
       [MEMORY[0x277CBEA60] array];
     }
     v65 = ;
-    [v54 setObject:v65 forKey:@"dnsSearchDomains"];
+    [dictionary4 setObject:v65 forKey:@"dnsSearchDomains"];
   }
 
 LABEL_141:
-  if ([v54 count])
+  if ([dictionary4 count])
   {
-    [v8 setObject:v54 forKey:@"WFDNSChangesKey"];
+    [dictionary setObject:dictionary4 forKey:@"WFDNSChangesKey"];
   }
 
-  v66 = [MEMORY[0x277CBEB38] dictionary];
-  v67 = [(WFNetworkSettingsConfig *)self httpProxyConfig];
-  if (v67 != [v7 httpProxyConfig])
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+  httpProxyConfig = [(WFNetworkSettingsConfig *)self httpProxyConfig];
+  if (httpProxyConfig != [configCopy httpProxyConfig])
   {
-    v68 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "httpProxyConfig")}];
-    [v66 setObject:v68 forKey:@"httpProxyConfig"];
+    v68 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "httpProxyConfig")}];
+    [dictionary5 setObject:v68 forKey:@"httpProxyConfig"];
   }
 
-  v69 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-  if (v69 || ([v7 httpProxyServerAddress], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyServerAddress = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+  if (httpProxyServerAddress || ([configCopy httpProxyServerAddress], (ipv4AddressManual3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v70 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
-    v71 = [v7 httpProxyServerAddress];
-    v72 = [v70 isEqualToString:v71];
+    httpProxyServerAddress2 = [(WFNetworkSettingsConfig *)self httpProxyServerAddress];
+    httpProxyServerAddress3 = [configCopy httpProxyServerAddress];
+    v72 = [httpProxyServerAddress2 isEqualToString:httpProxyServerAddress3];
 
-    if (v69)
+    if (httpProxyServerAddress)
     {
 
       if (v72)
@@ -1645,28 +1645,28 @@ LABEL_141:
       }
     }
 
-    v73 = [v7 httpProxyServerAddress];
-    if (v73)
+    httpProxyServerAddress4 = [configCopy httpProxyServerAddress];
+    if (httpProxyServerAddress4)
     {
-      v74 = [v7 httpProxyServerAddress];
-      [v66 setObject:v74 forKey:@"httpProxyServerAddress"];
+      httpProxyServerAddress5 = [configCopy httpProxyServerAddress];
+      [dictionary5 setObject:httpProxyServerAddress5 forKey:@"httpProxyServerAddress"];
     }
 
     else
     {
-      [v66 setObject:&stru_288308678 forKey:@"httpProxyServerAddress"];
+      [dictionary5 setObject:&stru_288308678 forKey:@"httpProxyServerAddress"];
     }
   }
 
 LABEL_155:
-  v75 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-  if (v75 || ([v7 httpProxyServerPort], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyServerPort = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+  if (httpProxyServerPort || ([configCopy httpProxyServerPort], (ipv4AddressManual3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v76 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
-    v77 = [v7 httpProxyServerPort];
-    v78 = [v76 isEqualToString:v77];
+    httpProxyServerPort2 = [(WFNetworkSettingsConfig *)self httpProxyServerPort];
+    httpProxyServerPort3 = [configCopy httpProxyServerPort];
+    v78 = [httpProxyServerPort2 isEqualToString:httpProxyServerPort3];
 
-    if (v75)
+    if (httpProxyServerPort)
     {
 
       if (v78)
@@ -1684,35 +1684,35 @@ LABEL_155:
       }
     }
 
-    v79 = [v7 httpProxyServerPort];
-    if (v79)
+    httpProxyServerPort4 = [configCopy httpProxyServerPort];
+    if (httpProxyServerPort4)
     {
-      v80 = [v7 httpProxyServerPort];
-      [v66 setObject:v80 forKey:@"httpProxyServerPort"];
+      httpProxyServerPort5 = [configCopy httpProxyServerPort];
+      [dictionary5 setObject:httpProxyServerPort5 forKey:@"httpProxyServerPort"];
     }
 
     else
     {
-      [v66 setObject:&stru_288308678 forKey:@"httpProxyServerPort"];
+      [dictionary5 setObject:&stru_288308678 forKey:@"httpProxyServerPort"];
     }
   }
 
 LABEL_165:
-  v81 = [(WFNetworkSettingsConfig *)self httpProxyAuthenticationRequired];
-  if (v81 != [v7 httpProxyAuthenticationRequired])
+  httpProxyAuthenticationRequired = [(WFNetworkSettingsConfig *)self httpProxyAuthenticationRequired];
+  if (httpProxyAuthenticationRequired != [configCopy httpProxyAuthenticationRequired])
   {
-    v82 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "httpProxyAuthenticationRequired")}];
-    [v66 setObject:v82 forKey:@"httpProxyAuthenticationRequired"];
+    v82 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "httpProxyAuthenticationRequired")}];
+    [dictionary5 setObject:v82 forKey:@"httpProxyAuthenticationRequired"];
   }
 
-  v83 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-  if (v83 || ([v7 httpProxyUsername], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyUsername = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+  if (httpProxyUsername || ([configCopy httpProxyUsername], (ipv4AddressManual3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v84 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
-    v85 = [v7 httpProxyUsername];
-    v86 = [v84 isEqualToString:v85];
+    httpProxyUsername2 = [(WFNetworkSettingsConfig *)self httpProxyUsername];
+    httpProxyUsername3 = [configCopy httpProxyUsername];
+    v86 = [httpProxyUsername2 isEqualToString:httpProxyUsername3];
 
-    if (v83)
+    if (httpProxyUsername)
     {
 
       if (v86)
@@ -1730,28 +1730,28 @@ LABEL_165:
       }
     }
 
-    v87 = [v7 httpProxyUsername];
-    if (v87)
+    httpProxyUsername4 = [configCopy httpProxyUsername];
+    if (httpProxyUsername4)
     {
-      v88 = [v7 httpProxyUsername];
-      [v66 setObject:v88 forKey:@"httpProxyUsername"];
+      httpProxyUsername5 = [configCopy httpProxyUsername];
+      [dictionary5 setObject:httpProxyUsername5 forKey:@"httpProxyUsername"];
     }
 
     else
     {
-      [v66 setObject:&stru_288308678 forKey:@"httpProxyUsername"];
+      [dictionary5 setObject:&stru_288308678 forKey:@"httpProxyUsername"];
     }
   }
 
 LABEL_177:
-  v89 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
-  if (v89 || ([v7 httpProxyPassword], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyPassword = [(WFNetworkSettingsConfig *)self httpProxyPassword];
+  if (httpProxyPassword || ([configCopy httpProxyPassword], (ipv4AddressManual3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v90 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
-    v91 = [v7 httpProxyPassword];
-    v92 = [v90 isEqualToString:v91];
+    httpProxyPassword2 = [(WFNetworkSettingsConfig *)self httpProxyPassword];
+    httpProxyPassword3 = [configCopy httpProxyPassword];
+    v92 = [httpProxyPassword2 isEqualToString:httpProxyPassword3];
 
-    if (v89)
+    if (httpProxyPassword)
     {
 
       if (v92)
@@ -1769,28 +1769,28 @@ LABEL_177:
       }
     }
 
-    v93 = [v7 httpProxyPassword];
-    if (v93)
+    httpProxyPassword4 = [configCopy httpProxyPassword];
+    if (httpProxyPassword4)
     {
-      v94 = [v7 httpProxyPassword];
-      [v66 setObject:v94 forKey:@"httpProxyPassword"];
+      httpProxyPassword5 = [configCopy httpProxyPassword];
+      [dictionary5 setObject:httpProxyPassword5 forKey:@"httpProxyPassword"];
     }
 
     else
     {
-      [v66 setObject:&stru_288308678 forKey:@"httpProxyPassword"];
+      [dictionary5 setObject:&stru_288308678 forKey:@"httpProxyPassword"];
     }
   }
 
 LABEL_187:
-  v95 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
-  if (v95 || ([v7 httpProxyConfigPAC], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  httpProxyConfigPAC = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
+  if (httpProxyConfigPAC || ([configCopy httpProxyConfigPAC], (ipv4AddressManual3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v96 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
-    v97 = [v7 httpProxyConfigPAC];
-    v98 = [v96 isEqualToString:v97];
+    httpProxyConfigPAC2 = [(WFNetworkSettingsConfig *)self httpProxyConfigPAC];
+    httpProxyConfigPAC3 = [configCopy httpProxyConfigPAC];
+    v98 = [httpProxyConfigPAC2 isEqualToString:httpProxyConfigPAC3];
 
-    if (v95)
+    if (httpProxyConfigPAC)
     {
 
       if (v98)
@@ -1808,34 +1808,34 @@ LABEL_187:
       }
     }
 
-    v99 = [v7 httpProxyConfigPAC];
-    if (v99)
+    httpProxyConfigPAC4 = [configCopy httpProxyConfigPAC];
+    if (httpProxyConfigPAC4)
     {
-      v100 = [v7 httpProxyConfigPAC];
-      [v66 setObject:v100 forKey:@"httpProxyConfigPAC"];
+      httpProxyConfigPAC5 = [configCopy httpProxyConfigPAC];
+      [dictionary5 setObject:httpProxyConfigPAC5 forKey:@"httpProxyConfigPAC"];
     }
 
     else
     {
-      [v66 setObject:&stru_288308678 forKey:@"httpProxyConfigPAC"];
+      [dictionary5 setObject:&stru_288308678 forKey:@"httpProxyConfigPAC"];
     }
   }
 
 LABEL_197:
-  if ([v66 count])
+  if ([dictionary5 count])
   {
-    [v8 setObject:v66 forKey:@"WFProxyChangesKey"];
+    [dictionary setObject:dictionary5 forKey:@"WFProxyChangesKey"];
   }
 
-  if (![v8 count])
+  if (![dictionary count])
   {
 
-    v8 = 0;
+    dictionary = 0;
   }
 
-  v101 = v8;
+  v101 = dictionary;
 
-  return v8;
+  return dictionary;
 }
 
 @end

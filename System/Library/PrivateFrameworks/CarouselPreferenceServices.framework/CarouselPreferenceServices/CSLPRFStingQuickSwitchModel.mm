@@ -1,15 +1,15 @@
 @interface CSLPRFStingQuickSwitchModel
 - (BOOL)isQuickSwitchEnabled;
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3;
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3 settingsModel:(id)a4;
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3 settingsModel:(id)a4 settings:(id)a5;
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate;
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate settingsModel:(id)model;
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate settingsModel:(id)model settings:(id)settings;
 - (CSLPRFStingQuickSwitchModelDelegate)delegate;
 - (NSArray)availableQuickSwitchActions;
-- (id)existingItemForActionType:(unint64_t)a3;
+- (id)existingItemForActionType:(unint64_t)type;
 - (void)lock_restoreFromSettings;
-- (void)quickSwitchItemDidChange:(id)a3;
+- (void)quickSwitchItemDidChange:(id)change;
 - (void)restoreFromSettings;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLPRFStingQuickSwitchModel
@@ -21,20 +21,20 @@
   return WeakRetained;
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   [(CSLPRFStingQuickSwitchModel *)self restoreFromSettings];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained quickSwitchModelDidChange:self];
 }
 
-- (void)quickSwitchItemDidChange:(id)a3
+- (void)quickSwitchItemDidChange:(id)change
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   obj = self;
   objc_sync_enter(obj);
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -54,16 +54,16 @@
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 actionType];
-        if (v11 == [v4 actionType])
+        actionType = [v10 actionType];
+        if (actionType == [changeCopy actionType])
         {
-          [v10 setAvailableForQuickSwitch:{objc_msgSend(v4, "isAvailableForQuickSwitch")}];
+          [v10 setAvailableForQuickSwitch:{objc_msgSend(changeCopy, "isAvailableForQuickSwitch")}];
         }
 
         v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isAvailableForQuickSwitch")}];
-        v13 = [v10 settingsItem];
-        v14 = [v13 identifier];
-        [v5 setObject:v12 forKeyedSubscript:v14];
+        settingsItem = [v10 settingsItem];
+        identifier = [settingsItem identifier];
+        [dictionary setObject:v12 forKeyedSubscript:identifier];
       }
 
       v7 = [(NSArray *)v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -73,7 +73,7 @@
   }
 
   quickSwitchSettings = obj->_quickSwitchSettings;
-  v16 = [v5 copy];
+  v16 = [dictionary copy];
   [(CSLPRFStingQuickSwitchSettings *)quickSwitchSettings setQuickSwitchActionAvailability:v16];
 
   objc_sync_exit(obj);
@@ -86,14 +86,14 @@
 - (NSArray)availableQuickSwitchActions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2->_allQuickSwitchItems;
+  v4 = selfCopy->_allQuickSwitchItems;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -121,23 +121,23 @@
   }
 
   v9 = [v3 copy];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)existingItemForActionType:(unint64_t)a3
+- (id)existingItemForActionType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4->_allQuickSwitchItems;
+  v5 = selfCopy->_allQuickSwitchItems;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -152,7 +152,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 actionType] == a3)
+        if ([v9 actionType] == type)
         {
           v10 = v9;
           goto LABEL_11;
@@ -172,7 +172,7 @@
   v10 = 0;
 LABEL_11:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
@@ -180,12 +180,12 @@ LABEL_11:
 
 - (BOOL)isQuickSwitchEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CSLPRFStingQuickSwitchSettings *)v2->_quickSwitchSettings isQuickSwitchEnabled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isQuickSwitchEnabled = [(CSLPRFStingQuickSwitchSettings *)selfCopy->_quickSwitchSettings isQuickSwitchEnabled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isQuickSwitchEnabled;
 }
 
 - (void)lock_restoreFromSettings
@@ -193,24 +193,24 @@ LABEL_11:
   v38 = *MEMORY[0x277D85DE8];
   self->_quickSwitchEnabled = [(CSLPRFStingQuickSwitchSettings *)self->_quickSwitchSettings isQuickSwitchEnabled];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(CSLPRFStingSettingsModel *)self->_stingModel quickActionItems];
-  v26 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  quickActionItems = [(CSLPRFStingSettingsModel *)self->_stingModel quickActionItems];
+  v26 = [v3 initWithCapacity:{objc_msgSend(quickActionItems, "count")}];
 
   v5 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSLPRFStingSettingsModel *)self->_stingModel quickActionItems];
-    v7 = [(CSLPRFStingSettingsModel *)self->_stingModel defaultQuickActionItems];
+    quickActionItems2 = [(CSLPRFStingSettingsModel *)self->_stingModel quickActionItems];
+    defaultQuickActionItems = [(CSLPRFStingSettingsModel *)self->_stingModel defaultQuickActionItems];
     *buf = 138412802;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
-    v35 = v6;
+    v35 = quickActionItems2;
     v36 = 2112;
-    v37 = v7;
+    v37 = defaultQuickActionItems;
     _os_log_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEFAULT, "%@: _settingsModel.quickActionItems %@ _settingsModel.defaultQuickActionItems %@", buf, 0x20u);
   }
 
-  v8 = [(CSLPRFStingQuickSwitchSettings *)self->_quickSwitchSettings quickSwitchActionAvailability];
+  quickSwitchActionAvailability = [(CSLPRFStingQuickSwitchSettings *)self->_quickSwitchSettings quickSwitchActionAvailability];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -231,40 +231,40 @@ LABEL_11:
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v13 linkActionType];
-        if ((v14 - 1) > 0x29)
+        linkActionType = [v13 linkActionType];
+        if ((linkActionType - 1) > 0x29)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = off_278744510[v14 - 1];
+          v15 = off_278744510[linkActionType - 1];
         }
 
         v16 = v15;
-        v17 = [v8 objectForKeyedSubscript:v16];
+        v17 = [quickSwitchActionAvailability objectForKeyedSubscript:v16];
         v18 = v17;
         if (v17)
         {
-          v19 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
         }
 
         else
         {
-          v19 = 1;
+          bOOLValue = 1;
         }
 
         v20 = -[CSLPRFStingQuickSwitchModel existingItemForActionType:](self, "existingItemForActionType:", [v13 linkActionType]);
         if (v20)
         {
           v21 = v20;
-          [(CSLPRFStingQuickSwitchItem *)v20 setAvailableForQuickSwitch:v19];
+          [(CSLPRFStingQuickSwitchItem *)v20 setAvailableForQuickSwitch:bOOLValue];
         }
 
         else
         {
-          v21 = [[CSLPRFStingQuickSwitchItem alloc] initWithDelegate:self settingsItem:v13 availability:v19];
+          v21 = [[CSLPRFStingQuickSwitchItem alloc] initWithDelegate:self settingsItem:v13 availability:bOOLValue];
         }
 
         [(NSArray *)v26 addObject:v21];
@@ -280,7 +280,7 @@ LABEL_11:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v26;
     _os_log_impl(&dword_22CE92000, v22, OS_LOG_TYPE_DEFAULT, "%@: allQuickSwitchItems %@", buf, 0x16u);
@@ -300,21 +300,21 @@ LABEL_11:
   objc_sync_exit(obj);
 }
 
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3 settingsModel:(id)a4 settings:(id)a5
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate settingsModel:(id)model settings:(id)settings
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  modelCopy = model;
+  settingsCopy = settings;
   v17.receiver = self;
   v17.super_class = CSLPRFStingQuickSwitchModel;
   v11 = [(CSLPRFStingQuickSwitchModel *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_stingModel, a4);
-    objc_storeStrong(&v12->_quickSwitchSettings, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_stingModel, model);
+    objc_storeStrong(&v12->_quickSwitchSettings, settings);
     [(CSLPRFTwoWaySyncSetting *)v12->_quickSwitchSettings setDelegate:v12];
     v13 = cslprf_sting_settings_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -334,27 +334,27 @@ LABEL_11:
   return v12;
 }
 
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3 settingsModel:(id)a4
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate settingsModel:(id)model
 {
-  v6 = a4;
-  v7 = a3;
+  modelCopy = model;
+  delegateCopy = delegate;
   v8 = +[CSLPRFStingQuickSwitchSettings fetchQuickSwitchSettings];
-  v9 = [(CSLPRFStingQuickSwitchModel *)self initWithDelegate:v7 settingsModel:v6 settings:v8];
+  v9 = [(CSLPRFStingQuickSwitchModel *)self initWithDelegate:delegateCopy settingsModel:modelCopy settings:v8];
 
   return v9;
 }
 
-- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)a3
+- (CSLPRFStingQuickSwitchModel)initWithDelegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(CSLPRFStingConfiguration);
   v6 = objc_alloc_init(CSLPRFStingSettingsModel);
   v7 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v5;
     v15 = 2112;
@@ -362,7 +362,7 @@ LABEL_11:
     _os_log_impl(&dword_22CE92000, v7, OS_LOG_TYPE_DEFAULT, "%@:configuration %@ settingsModel %@", &v11, 0x20u);
   }
 
-  v8 = [(CSLPRFStingQuickSwitchModel *)self initWithDelegate:v4 settingsModel:v6];
+  v8 = [(CSLPRFStingQuickSwitchModel *)self initWithDelegate:delegateCopy settingsModel:v6];
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }

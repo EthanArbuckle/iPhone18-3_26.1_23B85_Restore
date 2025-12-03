@@ -3,7 +3,7 @@
 - (PKMessageExtensionMessageBubbleViewControllerDelegate)delegate;
 - (void)didTapMessage;
 - (void)viewDidLoad;
-- (void)willBecomeContentViewControllerForAppViewController:(id)a3 withMessageFromMe:(BOOL)a4;
+- (void)willBecomeContentViewControllerForAppViewController:(id)controller withMessageFromMe:(BOOL)me;
 @end
 
 @implementation PKMessageExtensionMessageBubbleViewController
@@ -28,21 +28,21 @@
   v8.receiver = self;
   v8.super_class = PKMessageExtensionMessageBubbleViewController;
   [(PKMessageExtensionMessageBubbleViewController *)&v8 viewDidLoad];
-  v3 = [(PKMessageExtensionMessageBubbleViewController *)self view];
+  view = [(PKMessageExtensionMessageBubbleViewController *)self view];
   v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didDoubleTapMessage];
   [v4 setNumberOfTapsRequired:2];
-  [v3 addGestureRecognizer:v4];
+  [view addGestureRecognizer:v4];
   v5 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_didLongPressMessage];
-  [v3 addGestureRecognizer:v5];
+  [view addGestureRecognizer:v5];
   v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapMessage];
   [v6 setNumberOfTapsRequired:1];
   [v6 requireGestureRecognizerToFail:v4];
   [v6 requireGestureRecognizerToFail:v5];
-  [v3 addGestureRecognizer:v6];
+  [view addGestureRecognizer:v6];
   bubbleView = self->_bubbleView;
-  [v3 bounds];
+  [view bounds];
   [(PKMessageExtensionMessageBubbleView *)bubbleView setFrame:?];
-  [v3 addSubview:self->_bubbleView];
+  [view addSubview:self->_bubbleView];
 }
 
 - (void)didTapMessage
@@ -63,9 +63,9 @@
   [v5 messageExtensionMessageBubbleViewControllerDidTapMessage:self];
 }
 
-- (void)willBecomeContentViewControllerForAppViewController:(id)a3 withMessageFromMe:(BOOL)a4
+- (void)willBecomeContentViewControllerForAppViewController:(id)controller withMessageFromMe:(BOOL)me
 {
-  [a3 _balloonMaskEdgeInsets];
+  [controller _balloonMaskEdgeInsets];
   bubbleView = self->_bubbleView;
 
   [(PKMessageExtensionMessageBubbleView *)bubbleView setContentInset:?];

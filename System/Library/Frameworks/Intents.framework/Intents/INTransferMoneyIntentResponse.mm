@@ -1,22 +1,22 @@
 @interface INTransferMoneyIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INCurrencyAmount)transferFee;
 - (INDateComponentsRange)transactionScheduledDate;
 - (INPaymentAccount)fromAccount;
 - (INPaymentAccount)toAccount;
 - (INPaymentAmount)transactionAmount;
-- (INTransferMoneyIntentResponse)initWithBackingStore:(id)a3;
+- (INTransferMoneyIntentResponse)initWithBackingStore:(id)store;
 - (INTransferMoneyIntentResponse)initWithCode:(INTransferMoneyIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INTransferMoneyIntentResponse)initWithCoder:(id)a3;
+- (INTransferMoneyIntentResponse)initWithCoder:(id)coder;
 - (INTransferMoneyIntentResponseCode)code;
 - (NSString)transactionNote;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFromAccount:(INPaymentAccount *)fromAccount;
 - (void)setToAccount:(INPaymentAccount *)toAccount;
 - (void)setTransactionAmount:(INPaymentAmount *)transactionAmount;
@@ -31,88 +31,88 @@
 {
   v27[7] = *MEMORY[0x1E69E9840];
   v26[0] = @"code";
-  v3 = [(INTransferMoneyIntentResponse *)self code];
-  v25 = v3;
-  if (v3 < 8)
+  code = [(INTransferMoneyIntentResponse *)self code];
+  v25 = code;
+  if (code < 8)
   {
-    v4 = off_1E727EA60[v3];
-    v24 = v4;
+    null = off_1E727EA60[code];
+    v24 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v24 = 0;
   }
 
-  v23 = v4;
-  v27[0] = v4;
+  v23 = null;
+  v27[0] = null;
   v26[1] = @"fromAccount";
-  v5 = [(INTransferMoneyIntentResponse *)self fromAccount];
-  v6 = v5;
-  if (!v5)
+  fromAccount = [(INTransferMoneyIntentResponse *)self fromAccount];
+  v6 = fromAccount;
+  if (!fromAccount)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    fromAccount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v5;
-  v27[1] = v5;
+  v22 = fromAccount;
+  v27[1] = fromAccount;
   v26[2] = @"toAccount";
-  v7 = [(INTransferMoneyIntentResponse *)self toAccount];
-  v8 = v7;
-  if (!v7)
+  toAccount = [(INTransferMoneyIntentResponse *)self toAccount];
+  v8 = toAccount;
+  if (!toAccount)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    toAccount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v7;
-  v27[2] = v7;
+  v21 = toAccount;
+  v27[2] = toAccount;
   v26[3] = @"transactionAmount";
-  v9 = [(INTransferMoneyIntentResponse *)self transactionAmount];
-  v10 = v9;
-  if (!v9)
+  transactionAmount = [(INTransferMoneyIntentResponse *)self transactionAmount];
+  v10 = transactionAmount;
+  if (!transactionAmount)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    transactionAmount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v9;
+  v27[3] = transactionAmount;
   v26[4] = @"transactionScheduledDate";
-  v11 = [(INTransferMoneyIntentResponse *)self transactionScheduledDate];
-  v12 = v11;
-  if (!v11)
+  transactionScheduledDate = [(INTransferMoneyIntentResponse *)self transactionScheduledDate];
+  null2 = transactionScheduledDate;
+  if (!transactionScheduledDate)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v12;
+  v27[4] = null2;
   v26[5] = @"transactionNote";
-  v13 = [(INTransferMoneyIntentResponse *)self transactionNote];
-  v14 = v13;
-  if (!v13)
+  transactionNote = [(INTransferMoneyIntentResponse *)self transactionNote];
+  null3 = transactionNote;
+  if (!transactionNote)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v14;
+  v27[5] = null3;
   v26[6] = @"transferFee";
-  v15 = [(INTransferMoneyIntentResponse *)self transferFee];
-  v16 = v15;
-  if (!v15)
+  transferFee = [(INTransferMoneyIntentResponse *)self transferFee];
+  null4 = transferFee;
+  if (!transferFee)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[6] = v16;
+  v27[6] = null4;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:7];
-  if (!v15)
+  if (!transferFee)
   {
   }
 
-  if (!v13)
+  if (!transactionNote)
   {
   }
 
-  if (!v11)
+  if (!transactionScheduledDate)
   {
   }
 
@@ -140,154 +140,154 @@
 - (void)setTransferFee:(INCurrencyAmount *)transferFee
 {
   v4 = transferFee;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToCurrencyAmountValue(v4);
 
-  [v5 setTransferFee:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransferFee:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setTransactionNote:(NSString *)transactionNote
 {
   v4 = transactionNote;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 setTransactionNote:v4];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setTransactionNote:v4];
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setTransactionScheduledDate:(INDateComponentsRange *)transactionScheduledDate
 {
   v4 = transactionScheduledDate;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDateTimeRange(v4);
 
-  [v5 setTransactionScheduledDate:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransactionScheduledDate:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setTransactionAmount:(INPaymentAmount *)transactionAmount
 {
   v4 = transactionAmount;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToPaymentAmountValue(v4);
 
-  [v5 setTransactionAmount:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransactionAmount:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setToAccount:(INPaymentAccount *)toAccount
 {
   v4 = toAccount;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToFinancialAccountValue(v4);
 
-  [v5 setToAccount:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setToAccount:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setFromAccount:(INPaymentAccount *)fromAccount
 {
   v4 = fromAccount;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToFinancialAccountValue(v4);
 
-  [v5 setFromAccount:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setFromAccount:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (INCurrencyAmount)transferFee
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transferFee];
-  v4 = INIntentSlotValueTransformFromCurrencyAmountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transferFee = [_responseMessagePBRepresentation transferFee];
+  v4 = INIntentSlotValueTransformFromCurrencyAmountValue(transferFee);
 
   return v4;
 }
 
 - (NSString)transactionNote
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionNote];
-  v4 = [v3 copy];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionNote = [_responseMessagePBRepresentation transactionNote];
+  v4 = [transactionNote copy];
 
   return v4;
 }
 
 - (INDateComponentsRange)transactionScheduledDate
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionScheduledDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionScheduledDate = [_responseMessagePBRepresentation transactionScheduledDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(transactionScheduledDate);
 
   return v4;
 }
 
 - (INPaymentAmount)transactionAmount
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionAmount];
-  v4 = INIntentSlotValueTransformFromPaymentAmountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionAmount = [_responseMessagePBRepresentation transactionAmount];
+  v4 = INIntentSlotValueTransformFromPaymentAmountValue(transactionAmount);
 
   return v4;
 }
 
 - (INPaymentAccount)toAccount
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 toAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  toAccount = [_responseMessagePBRepresentation toAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(toAccount);
 
   return v4;
 }
 
 - (INPaymentAccount)fromAccount
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 fromAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  fromAccount = [_responseMessagePBRepresentation fromAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(fromAccount);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INTransferMoneyIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INTransferMoneyIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INTransferMoneyIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INTransferMoneyIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INTransferMoneyIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INTransferMoneyIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INTransferMoneyIntentResponseCodeFailureCredentialsUnverified"])
+  if ([nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeFailureCredentialsUnverified"])
   {
     v5 = 6;
   }
@@ -297,7 +297,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INTransferMoneyIntentResponseCodeFailureInsufficientFunds"];
+  v6 = [nameCopy isEqualToString:@"INTransferMoneyIntentResponseCodeFailureInsufficientFunds"];
 
   if (v6)
   {
@@ -312,30 +312,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INTransferMoneyIntentResponse *)self code];
-  if ((v2 - 1) > 6)
+  code = [(INTransferMoneyIntentResponse *)self code];
+  if ((code - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FA48[v2 - 1];
+    return qword_18EE5FA48[code - 1];
   }
 }
 
-- (INTransferMoneyIntentResponse)initWithCoder:(id)a3
+- (INTransferMoneyIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INTransferMoneyIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INTransferMoneyIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INTransferMoneyIntentResponseCode)code
@@ -345,18 +345,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INTransferMoneyIntentResponse)initWithBackingStore:(id)a3
+- (INTransferMoneyIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INTransferMoneyIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INTransferMoneyIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INTransferMoneyIntentResponse)initWithCode:(INTransferMoneyIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -397,9 +397,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 7)
+  if (code == 7)
   {
     v3 = 2;
   }
@@ -409,7 +409,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -420,56 +420,56 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FA28[a3 - 1];
+    return dword_18EE5FA28[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 6;
   v8 = 4;
-  if (a5)
+  if (requested)
   {
     v8 = 5;
   }
 
-  if (a4 == 2)
+  if (code == 2)
   {
     v8 = 7;
   }
 
-  if (a4 != 1)
+  if (code != 1)
   {
     v7 = v8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

@@ -1,43 +1,43 @@
 @interface PHASuggestionGenerationTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (PHASuggestionGenerationTask)init;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (id)initForFastPass;
 - (id)taskClassDependencies;
-- (unsigned)suggestionProfileFromSuggestionType:(unsigned __int16)a3 subtype:(unsigned __int16)a4;
-- (void)timeoutFatal:(BOOL)a3;
+- (unsigned)suggestionProfileFromSuggestionType:(unsigned __int16)type subtype:(unsigned __int16)subtype;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHASuggestionGenerationTask
 
-- (unsigned)suggestionProfileFromSuggestionType:(unsigned __int16)a3 subtype:(unsigned __int16)a4
+- (unsigned)suggestionProfileFromSuggestionType:(unsigned __int16)type subtype:(unsigned __int16)subtype
 {
-  if (a4 == 502)
+  if (subtype == 502)
   {
     return 3;
   }
 
-  if (a3 > 0xEu)
+  if (type > 0xEu)
   {
     return 0;
   }
 
-  return byte_22FCDE638[a3];
+  return byte_22FCDE638[type];
 }
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
-  v55 = [v7 photoLibrary];
+  photoLibrary = [managerCopy photoLibrary];
   v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [[PHASuggestionController alloc] initWithGraphManager:v7];
+  v9 = [[PHASuggestionController alloc] initWithGraphManager:managerCopy];
   if (self->_suggestionOptionsDictionary)
   {
     v10 = [objc_alloc(MEMORY[0x277D3BBF0]) initWithOptionsDictionary:self->_suggestionOptionsDictionary];
@@ -50,16 +50,16 @@
 
   v11 = v10;
   [v10 setDefaultStartAndEndDatesIfNeeded];
-  v51 = v7;
+  v51 = managerCopy;
   v12 = [(NSDictionary *)self->_suggestionOptionsDictionary objectForKeyedSubscript:*MEMORY[0x277D3B0A0]];
 
   [(PHASuggestionController *)v9 ingestExistingSuggestionsWithOptions:v11];
-  v13 = [v55 librarySpecificFetchOptions];
-  [v13 setIncludePendingMemories:1];
-  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v13];
-  v54 = [v14 fetchedObjects];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
+  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+  fetchedObjects = [v14 fetchedObjects];
 
-  [(PHASuggestionController *)v9 setExistingMemories:v54];
+  [(PHASuggestionController *)v9 setExistingMemories:fetchedObjects];
   [(PHASuggestionController *)v9 cacheWidgetSuggestionsWithCurrentlyFeaturedState];
   if (v67[3])
   {
@@ -67,7 +67,7 @@
     goto LABEL_7;
   }
 
-  v15 = [v8 isCancelledWithProgress:0.0];
+  v15 = [reporterCopy isCancelledWithProgress:0.0];
   *(v67 + 24) = v15;
   if (v15)
   {
@@ -81,12 +81,12 @@ LABEL_7:
       _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
       v16 = [MEMORY[0x277D22C28] errorForCode:-4];
 LABEL_12:
       v17 = 0;
-      *a5 = v16;
+      *error = v16;
       goto LABEL_77;
     }
 
@@ -108,12 +108,12 @@ LABEL_16:
     v63[2] = __90__PHASuggestionGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke;
     v63[3] = &unk_2788B2178;
     v65 = &v66;
-    v64 = v8;
+    v64 = reporterCopy;
     v21 = [(PHASuggestionController *)v9 generateSingleAssetSuggestionsWithOptions:v11 progress:v63];
     v22 = self->_loggingConnection;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = v8;
+      v23 = reporterCopy;
       v24 = [v21 count];
       v25 = [v21 componentsJoinedByString:{@", "}];
       *buf = 67109378;
@@ -122,7 +122,7 @@ LABEL_16:
       *&v75[6] = v25;
       _os_log_impl(&dword_22FA28000, v22, OS_LOG_TYPE_INFO, "[PHASuggestionGenerationTask] Generated %d Single Asset suggestions with local identifiers %@", buf, 0x12u);
 
-      v8 = v23;
+      reporterCopy = v23;
     }
 
     if (*(v67 + 24) == 1)
@@ -136,9 +136,9 @@ LABEL_16:
         _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
-        *a5 = [MEMORY[0x277D22C28] errorForCode:-4];
+        *error = [MEMORY[0x277D22C28] errorForCode:-4];
       }
 
       goto LABEL_76;
@@ -151,12 +151,12 @@ LABEL_16:
   }
 
   v27 = [(NSDictionary *)self->_suggestionOptionsDictionary objectForKeyedSubscript:*MEMORY[0x277D3B0C8]];
-  v28 = [v27 integerValue];
+  integerValue = [v27 integerValue];
 
   v29 = [(NSDictionary *)self->_suggestionOptionsDictionary objectForKeyedSubscript:*MEMORY[0x277D3B0B8]];
   LOWORD(v27) = [v29 integerValue];
 
-  v26 = [(PHASuggestionGenerationTask *)self suggestionProfileFromSuggestionType:v28 subtype:v27];
+  v26 = [(PHASuggestionGenerationTask *)self suggestionProfileFromSuggestionType:integerValue subtype:v27];
   v50 = 0;
   if (!v26)
   {
@@ -176,12 +176,12 @@ LABEL_29:
     v60[2] = __90__PHASuggestionGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke_209;
     v60[3] = &unk_2788B2178;
     v62 = &v66;
-    v61 = v8;
+    v61 = reporterCopy;
     v30 = [(PHASuggestionController *)v9 generateOnThisDayAssetSuggestionsWithOptions:v11 progress:v60];
     v31 = self->_loggingConnection;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v49 = v8;
+      v49 = reporterCopy;
       v32 = [v30 count];
       v33 = [v30 componentsJoinedByString:{@", "}];
       *buf = 67109378;
@@ -190,7 +190,7 @@ LABEL_29:
       *&v75[6] = v33;
       _os_log_impl(&dword_22FA28000, v31, OS_LOG_TYPE_INFO, "[PHASuggestionGenerationTask] Generated %d On This Day suggestions with local identifiers %@", buf, 0x12u);
 
-      v8 = v49;
+      reporterCopy = v49;
     }
 
     if (*(v67 + 24) == 1)
@@ -204,9 +204,9 @@ LABEL_29:
         _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
-        *a5 = [MEMORY[0x277D22C28] errorForCode:-4];
+        *error = [MEMORY[0x277D22C28] errorForCode:-4];
       }
 
       goto LABEL_76;
@@ -229,15 +229,15 @@ LABEL_29:
   {
     if (!v12)
     {
-      v35 = [(PHASuggestionController *)v9 newFeaturedSuggestionsCount];
-      if (v35 >= 0xA)
+      newFeaturedSuggestionsCount = [(PHASuggestionController *)v9 newFeaturedSuggestionsCount];
+      if (newFeaturedSuggestionsCount >= 0xA)
       {
         v36 = 1;
       }
 
       else
       {
-        v36 = 10 - v35;
+        v36 = 10 - newFeaturedSuggestionsCount;
       }
 
       [v11 setMaximumNumberOfSuggestions:v36];
@@ -249,7 +249,7 @@ LABEL_29:
     v57[2] = __90__PHASuggestionGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke_210;
     v57[3] = &unk_2788B2178;
     v59 = &v66;
-    v58 = v8;
+    v58 = reporterCopy;
     v37 = [(PHASuggestionController *)v9 generateWidgetSuggestionsWithOptions:v11 progress:v57];
     v38 = self->_loggingConnection;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -274,9 +274,9 @@ LABEL_29:
         _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
-        *a5 = [MEMORY[0x277D22C28] errorForCode:-4];
+        *error = [MEMORY[0x277D22C28] errorForCode:-4];
       }
 
       goto LABEL_76;
@@ -315,7 +315,7 @@ LABEL_29:
 
   else
   {
-    v45 = [v8 isCancelledWithProgress:1.0];
+    v45 = [reporterCopy isCancelledWithProgress:1.0];
     *(v67 + 24) = v45;
     if ((v45 & 1) == 0)
     {
@@ -349,7 +349,7 @@ LABEL_29:
     _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  if (a5 && !*a5)
+  if (error && !*error)
   {
     v16 = [MEMORY[0x277D22C28] errorForCode:-4];
     goto LABEL_12;
@@ -433,9 +433,9 @@ uint64_t __90__PHASuggestionGenerationTask_generateSuggestionsWithGraphManager_p
   return result;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHASuggestionGenerationTask timeoutFatal:]", "PHASuggestionGenerationTask.m", 113, "NO");
   }
@@ -447,23 +447,23 @@ uint64_t __90__PHASuggestionGenerationTask_generateSuggestionsWithGraphManager_p
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = [(PHASuggestionGenerationTask *)self generateSuggestionsWithGraphManager:a3 progressReporter:v8 error:a5];
-  v10 = [v8 throughputReportBlock];
+  reporterCopy = reporter;
+  v9 = [(PHASuggestionGenerationTask *)self generateSuggestionsWithGraphManager:manager progressReporter:reporterCopy error:error];
+  throughputReportBlock = [reporterCopy throughputReportBlock];
 
-  if (v10)
+  if (throughputReportBlock)
   {
-    v11 = [v8 throughputReportBlock];
+    throughputReportBlock2 = [reporterCopy throughputReportBlock];
     v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277D3B0D8]];
-    v11[2](v11, [v12 count], 0);
+    throughputReportBlock2[2](throughputReportBlock2, [v12 count], 0);
   }
 
   return v9 != 0;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v4 = PLIsFeaturedContentAllowed();
   if ((v4 & 1) == 0)

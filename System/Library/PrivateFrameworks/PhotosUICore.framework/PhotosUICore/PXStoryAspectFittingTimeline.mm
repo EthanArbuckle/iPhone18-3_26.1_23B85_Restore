@@ -1,40 +1,40 @@
 @interface PXStoryAspectFittingTimeline
-- (PXStoryAspectFittingTimeline)initWithOriginalTimeline:(id)a3 keySegmentMix:(id *)a4;
-- (void)_enumerateClipsKeySegmentWithTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
+- (PXStoryAspectFittingTimeline)initWithOriginalTimeline:(id)timeline keySegmentMix:(id *)mix;
+- (void)_enumerateClipsKeySegmentWithTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
 - (void)_setupKeySegmentDisplayAssetClips;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXStoryAspectFittingTimeline
 
-- (void)_enumerateClipsKeySegmentWithTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)_enumerateClipsKeySegmentWithTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a5;
+  blockCopy = block;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __87__PXStoryAspectFittingTimeline__enumerateClipsKeySegmentWithTimeRange_rect_usingBlock___block_invoke;
   v34[3] = &unk_1E7743FC0;
-  v12 = v11;
+  v12 = blockCopy;
   v35 = v12;
   v33.receiver = self;
   v33.super_class = PXStoryAspectFittingTimeline;
-  v13 = *&a3->var0.var3;
-  v24[0] = *&a3->var0.var0;
+  v13 = *&range->var0.var3;
+  v24[0] = *&range->var0.var0;
   v24[1] = v13;
-  v24[2] = *&a3->var1.var1;
+  v24[2] = *&range->var1.var1;
   [(PXStoryDerivedTimeline *)&v33 enumerateClipsInTimeRange:v24 rect:v34 usingBlock:x, y, width, height];
   v32 = 0;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [(PXStoryAspectFittingTimeline *)self keySegmentDisplayAssetClips];
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  keySegmentDisplayAssetClips = [(PXStoryAspectFittingTimeline *)self keySegmentDisplayAssetClips];
+  v15 = [keySegmentDisplayAssetClips countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v15)
   {
     v16 = v15;
@@ -45,7 +45,7 @@ LABEL_3:
     {
       if (*v29 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(keySegmentDisplayAssetClips);
       }
 
       v19 = *(*(&v28 + 1) + 8 * v18);
@@ -85,7 +85,7 @@ LABEL_3:
 
       if (v16 == ++v18)
       {
-        v16 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v16 = [keySegmentDisplayAssetClips countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v16)
         {
           goto LABEL_3;
@@ -205,34 +205,34 @@ void __65__PXStoryAspectFittingTimeline__setupKeySegmentDisplayAssetClips__block
   }
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   memset(&v25[1], 0, sizeof(CMTimeRange));
   [(PXStoryDerivedTimeline *)self timeRangeForSegmentWithIdentifier:[(PXStoryAspectFittingTimeline *)self keySegmentIdentifier]];
-  v12 = *&a3->var0.var3;
-  *&lhs.start.value = *&a3->var0.var0;
+  v12 = *&range->var0.var3;
+  *&lhs.start.value = *&range->var0.var0;
   *&lhs.start.epoch = v12;
-  *&lhs.duration.timescale = *&a3->var1.var1;
+  *&lhs.duration.timescale = *&range->var1.var1;
   v25[0] = v25[1];
   if (PXStoryTimeRangeIntersectsTimeRange(&lhs, v25))
   {
     memset(v25, 0, 48);
-    v13 = *&a3->var0.var3;
-    *&lhs.start.value = *&a3->var0.var0;
+    v13 = *&range->var0.var3;
+    *&lhs.start.value = *&range->var0.var0;
     *&lhs.start.epoch = v13;
-    *&lhs.duration.timescale = *&a3->var1.var1;
+    *&lhs.duration.timescale = *&range->var1.var1;
     v23 = v25[1];
     PXStoryTimeRangeIntersection(&lhs, &v23, v25);
     memset(&v23, 0, sizeof(v23));
     *&lhs.start.value = *&v25[0].start.value;
     lhs.start.epoch = v25[0].start.epoch;
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     CMTimeSubtract(&duration, &lhs.start, &rhs.start);
     *&lhs.start.value = *&v25[0].start.value;
     lhs.start.epoch = v25[0].start.epoch;
@@ -241,10 +241,10 @@ void __65__PXStoryAspectFittingTimeline__setupKeySegmentDisplayAssetClips__block
     memset(&rhs, 0, sizeof(rhs));
     lhs = v25[0];
     CMTimeRangeGetEnd(&v21, &lhs);
-    v14 = *&a3->var0.var3;
-    *&lhs.start.value = *&a3->var0.var0;
+    v14 = *&range->var0.var3;
+    *&lhs.start.value = *&range->var0.var0;
     *&lhs.start.epoch = v14;
-    *&lhs.duration.timescale = *&a3->var1.var1;
+    *&lhs.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(&v19, &lhs);
     lhs = v25[0];
     CMTimeRangeGetEnd(&v18, &lhs);
@@ -257,37 +257,37 @@ void __65__PXStoryAspectFittingTimeline__setupKeySegmentDisplayAssetClips__block
     v17.receiver = self;
     v17.super_class = PXStoryAspectFittingTimeline;
     lhs = v23;
-    [(PXStoryDerivedTimeline *)&v17 enumerateClipsInTimeRange:&lhs rect:v11 usingBlock:x, y, width, height];
+    [(PXStoryDerivedTimeline *)&v17 enumerateClipsInTimeRange:&lhs rect:blockCopy usingBlock:x, y, width, height];
     lhs = v25[0];
-    [(PXStoryAspectFittingTimeline *)self _enumerateClipsKeySegmentWithTimeRange:&lhs rect:v11 usingBlock:x, y, width, height];
+    [(PXStoryAspectFittingTimeline *)self _enumerateClipsKeySegmentWithTimeRange:&lhs rect:blockCopy usingBlock:x, y, width, height];
     lhs = rhs;
-    [(PXStoryDerivedTimeline *)&v16 enumerateClipsInTimeRange:&lhs rect:v11 usingBlock:x, y, width, height, self, PXStoryAspectFittingTimeline];
+    [(PXStoryDerivedTimeline *)&v16 enumerateClipsInTimeRange:&lhs rect:blockCopy usingBlock:x, y, width, height, self, PXStoryAspectFittingTimeline];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = PXStoryAspectFittingTimeline;
-    v15 = *&a3->var0.var3;
-    *&lhs.start.value = *&a3->var0.var0;
+    v15 = *&range->var0.var3;
+    *&lhs.start.value = *&range->var0.var0;
     *&lhs.start.epoch = v15;
-    *&lhs.duration.timescale = *&a3->var1.var1;
-    [(PXStoryDerivedTimeline *)&v24 enumerateClipsInTimeRange:&lhs rect:v11 usingBlock:x, y, width, height, v16.receiver, v16.super_class];
+    *&lhs.duration.timescale = *&range->var1.var1;
+    [(PXStoryDerivedTimeline *)&v24 enumerateClipsInTimeRange:&lhs rect:blockCopy usingBlock:x, y, width, height, v16.receiver, v16.super_class];
   }
 }
 
-- (PXStoryAspectFittingTimeline)initWithOriginalTimeline:(id)a3 keySegmentMix:(id *)a4
+- (PXStoryAspectFittingTimeline)initWithOriginalTimeline:(id)timeline keySegmentMix:(id *)mix
 {
   v9.receiver = self;
   v9.super_class = PXStoryAspectFittingTimeline;
-  v5 = [(PXStoryDerivedTimeline *)&v9 initWithOriginalTimeline:a3];
+  v5 = [(PXStoryDerivedTimeline *)&v9 initWithOriginalTimeline:timeline];
   v6 = v5;
   if (v5)
   {
-    p_var2 = &a4->var2;
-    if (a4->var1 <= 0.5)
+    p_var2 = &mix->var2;
+    if (mix->var1 <= 0.5)
     {
-      p_var2 = a4;
+      p_var2 = mix;
     }
 
     v5->_keySegmentIdentifier = p_var2->var0;

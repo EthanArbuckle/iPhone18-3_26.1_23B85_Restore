@@ -1,52 +1,52 @@
 @interface CSSiriMobileBluetoothDeviceProxy
-- (CSSiriMobileBluetoothDeviceProxy)initWithAddress:(id)a3 dataSource:(id)a4 queue:(id)a5;
-- (CSSiriMobileBluetoothDeviceProxy)initWithDeviceUID:(id)a3 dataSource:(id)a4 queue:(id)a5;
+- (CSSiriMobileBluetoothDeviceProxy)initWithAddress:(id)address dataSource:(id)source queue:(id)queue;
+- (CSSiriMobileBluetoothDeviceProxy)initWithDeviceUID:(id)d dataSource:(id)source queue:(id)queue;
 - (NSString)description;
 - (id)deviceInfo;
 - (id)identifier;
-- (void)_accessBTDeviceAndAccessoryManagerUsingBlock:(id)a3;
-- (void)_enumerateObserversUsingBlock:(id)a3;
-- (void)_fetchDeviceInfoWithCompletion:(id)a3;
-- (void)_getDeviceInfo:(id)a3;
+- (void)_accessBTDeviceAndAccessoryManagerUsingBlock:(id)block;
+- (void)_enumerateObserversUsingBlock:(id)block;
+- (void)_fetchDeviceInfoWithCompletion:(id)completion;
+- (void)_getDeviceInfo:(id)info;
 - (void)_invalidate;
-- (void)_reload:(BOOL)a3;
-- (void)_updateDeviceInfo:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)connect:(id)a3;
+- (void)_reload:(BOOL)_reload;
+- (void)_updateDeviceInfo:(id)info;
+- (void)addObserver:(id)observer;
+- (void)connect:(id)connect;
 - (void)dealloc;
-- (void)disconnect:(id)a3;
-- (void)getConversationAwareness:(id)a3;
-- (void)getDeviceInfo:(id)a3;
-- (void)getHeadphoneInEarDetectionState:(id)a3;
-- (void)getHeadphoneListeningMode:(id)a3;
-- (void)getPersonalVolume:(id)a3;
+- (void)disconnect:(id)disconnect;
+- (void)getConversationAwareness:(id)awareness;
+- (void)getDeviceInfo:(id)info;
+- (void)getHeadphoneInEarDetectionState:(id)state;
+- (void)getHeadphoneListeningMode:(id)mode;
+- (void)getPersonalVolume:(id)volume;
 - (void)invalidate;
 - (void)prewarm;
 - (void)reload;
-- (void)removeObserver:(id)a3;
-- (void)setConversationAwareness:(BOOL)a3 completion:(id)a4;
-- (void)setHeadphoneListeningMode:(int64_t)a3 completion:(id)a4;
-- (void)setPersonalVolume:(BOOL)a3 completion:(id)a4;
-- (void)updateDeviceInfo:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setConversationAwareness:(BOOL)awareness completion:(id)completion;
+- (void)setHeadphoneListeningMode:(int64_t)mode completion:(id)completion;
+- (void)setPersonalVolume:(BOOL)volume completion:(id)completion;
+- (void)updateDeviceInfo:(id)info;
 @end
 
 @implementation CSSiriMobileBluetoothDeviceProxy
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
     {
-      v6 = [(NSHashTable *)observers setRepresentation];
+      setRepresentation = [(NSHashTable *)observers setRepresentation];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __66__CSSiriMobileBluetoothDeviceProxy__enumerateObserversUsingBlock___block_invoke;
       v7[3] = &unk_2784C5E20;
-      v8 = v4;
-      [v6 enumerateObjectsUsingBlock:v7];
+      v8 = blockCopy;
+      [setRepresentation enumerateObjectsUsingBlock:v7];
     }
   }
 }
@@ -91,11 +91,11 @@ void __47__CSSiriMobileBluetoothDeviceProxy__invalidate__block_invoke(uint64_t a
   }
 }
 
-- (void)_accessBTDeviceAndAccessoryManagerUsingBlock:(id)a3
+- (void)_accessBTDeviceAndAccessoryManagerUsingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = MEMORY[0x277CEF0A0];
     v6 = *MEMORY[0x277CEF0A0];
@@ -104,7 +104,7 @@ void __47__CSSiriMobileBluetoothDeviceProxy__invalidate__block_invoke(uint64_t a
       *buf = 136315394;
       v20 = "[CSSiriMobileBluetoothDeviceProxy _accessBTDeviceAndAccessoryManagerUsingBlock:]";
       v21 = 2112;
-      v22 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_INFO, "%s Getting BTDevice and BTAccessoryManager for %@...", buf, 0x16u);
     }
 
@@ -119,7 +119,7 @@ void __47__CSSiriMobileBluetoothDeviceProxy__invalidate__block_invoke(uint64_t a
         v17[2] = __81__CSSiriMobileBluetoothDeviceProxy__accessBTDeviceAndAccessoryManagerUsingBlock___block_invoke;
         v17[3] = &unk_2784C5DA8;
         v17[4] = self;
-        v18 = v4;
+        v18 = blockCopy;
         [WeakRetained getBTDeviceWithDeviceUID:deviceUID completion:v17];
         v9 = v18;
 LABEL_13:
@@ -136,7 +136,7 @@ LABEL_14:
         v15[2] = __81__CSSiriMobileBluetoothDeviceProxy__accessBTDeviceAndAccessoryManagerUsingBlock___block_invoke_2;
         v15[3] = &unk_2784C5DA8;
         v15[4] = self;
-        v16 = v4;
+        v16 = blockCopy;
         [WeakRetained getBTDeviceWithAddress:address completion:v15];
         v9 = v16;
         goto LABEL_13;
@@ -148,7 +148,7 @@ LABEL_14:
         *buf = 136315394;
         v20 = "[CSSiriMobileBluetoothDeviceProxy _accessBTDeviceAndAccessoryManagerUsingBlock:]";
         v21 = 2112;
-        v22 = self;
+        selfCopy4 = self;
         v14 = "%s Device UID and address of %@ are nil.";
 LABEL_19:
         _os_log_error_impl(&dword_222E4D000, v10, OS_LOG_TYPE_ERROR, v14, buf, 0x16u);
@@ -163,7 +163,7 @@ LABEL_19:
         *buf = 136315394;
         v20 = "[CSSiriMobileBluetoothDeviceProxy _accessBTDeviceAndAccessoryManagerUsingBlock:]";
         v21 = 2112;
-        v22 = self;
+        selfCopy4 = self;
         v14 = "%s Data source of %@ is nil.";
         goto LABEL_19;
       }
@@ -175,11 +175,11 @@ LABEL_19:
       *buf = 136315394;
       v20 = "[CSSiriMobileBluetoothDeviceProxy _accessBTDeviceAndAccessoryManagerUsingBlock:]";
       v21 = 2112;
-      v22 = self;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_222E4D000, v11, OS_LOG_TYPE_ERROR, "%s Failed getting BTDevice and BTAccessoryManager for %@.", buf, 0x16u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
     goto LABEL_14;
   }
 
@@ -250,11 +250,11 @@ void __81__CSSiriMobileBluetoothDeviceProxy__accessBTDeviceAndAccessoryManagerUs
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchDeviceInfoWithCompletion:(id)a3
+- (void)_fetchDeviceInfoWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = *MEMORY[0x277CEF0A0];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO))
@@ -262,7 +262,7 @@ void __81__CSSiriMobileBluetoothDeviceProxy__accessBTDeviceAndAccessoryManagerUs
       *buf = 136315394;
       v10 = "[CSSiriMobileBluetoothDeviceProxy _fetchDeviceInfoWithCompletion:]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_INFO, "%s Fetching device info for %@...", buf, 0x16u);
     }
 
@@ -271,7 +271,7 @@ void __81__CSSiriMobileBluetoothDeviceProxy__accessBTDeviceAndAccessoryManagerUs
     v7[2] = __67__CSSiriMobileBluetoothDeviceProxy__fetchDeviceInfoWithCompletion___block_invoke;
     v7[3] = &unk_2784C5DA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CSSiriMobileBluetoothDeviceProxy *)self _accessBTDeviceAndAccessoryManagerUsingBlock:v7];
   }
 
@@ -546,10 +546,10 @@ LABEL_41:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDeviceInfo:(id)a3
+- (void)_updateDeviceInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x277CEF0A0];
   v6 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO))
@@ -557,15 +557,15 @@ LABEL_41:
     *buf = 136315394;
     v20 = "[CSSiriMobileBluetoothDeviceProxy _updateDeviceInfo:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = infoCopy;
     _os_log_impl(&dword_222E4D000, v6, OS_LOG_TYPE_INFO, "%s deviceInfo = %@", buf, 0x16u);
   }
 
   deviceInfo = self->_deviceInfo;
-  if (deviceInfo != v4 && ([(AFBluetoothDeviceInfo *)deviceInfo isEqual:v4]& 1) == 0)
+  if (deviceInfo != infoCopy && ([(AFBluetoothDeviceInfo *)deviceInfo isEqual:infoCopy]& 1) == 0)
   {
     v8 = self->_deviceInfo;
-    v9 = [(AFBluetoothDeviceInfo *)v4 copy];
+    v9 = [(AFBluetoothDeviceInfo *)infoCopy copy];
     v10 = self->_deviceInfo;
     self->_deviceInfo = v9;
 
@@ -606,15 +606,15 @@ void __54__CSSiriMobileBluetoothDeviceProxy__updateDeviceInfo___block_invoke(voi
   }
 }
 
-- (void)_getDeviceInfo:(id)a3
+- (void)_getDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     if (self->_deviceInfo)
     {
-      v4[2](v4);
+      infoCopy[2](infoCopy);
     }
 
     else
@@ -624,7 +624,7 @@ void __54__CSSiriMobileBluetoothDeviceProxy__updateDeviceInfo___block_invoke(voi
       v6[2] = __51__CSSiriMobileBluetoothDeviceProxy__getDeviceInfo___block_invoke;
       v6[3] = &unk_2784C5D30;
       v6[4] = self;
-      v7 = v4;
+      v7 = infoCopy;
       [(CSSiriMobileBluetoothDeviceProxy *)self _fetchDeviceInfoWithCompletion:v6];
     }
   }
@@ -638,12 +638,12 @@ void __51__CSSiriMobileBluetoothDeviceProxy__getDeviceInfo___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_reload:(BOOL)a3
+- (void)_reload:(BOOL)_reload
 {
   v12 = *MEMORY[0x277D85DE8];
   if (self->_deviceInfo)
   {
-    v3 = !a3;
+    v3 = !_reload;
   }
 
   else
@@ -659,7 +659,7 @@ void __51__CSSiriMobileBluetoothDeviceProxy__getDeviceInfo___block_invoke(uint64
       *buf = 136315394;
       v9 = "[CSSiriMobileBluetoothDeviceProxy _reload:]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_INFO, "%s Reloading device info for %@...", buf, 0x16u);
     }
 
@@ -706,17 +706,17 @@ void __44__CSSiriMobileBluetoothDeviceProxy__reload___block_invoke(uint64_t a1, 
   dispatch_async(queue, block);
 }
 
-- (void)setPersonalVolume:(BOOL)a3 completion:(id)a4
+- (void)setPersonalVolume:(BOOL)volume completion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v8 = 136315138;
     v9 = "[CSSiriMobileBluetoothDeviceProxy setPersonalVolume:completion:]";
     _os_log_error_impl(&dword_222E4D000, v5, OS_LOG_TYPE_ERROR, "%s Method not supported", &v8, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -724,11 +724,11 @@ void __44__CSSiriMobileBluetoothDeviceProxy__reload___block_invoke(uint64_t a1, 
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
     v6 = [objc_alloc(MEMORY[0x277CEF1A0]) initWithValue:0 status:3];
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 
 LABEL_4:
@@ -736,17 +736,17 @@ LABEL_4:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConversationAwareness:(BOOL)a3 completion:(id)a4
+- (void)setConversationAwareness:(BOOL)awareness completion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v8 = 136315138;
     v9 = "[CSSiriMobileBluetoothDeviceProxy setConversationAwareness:completion:]";
     _os_log_error_impl(&dword_222E4D000, v5, OS_LOG_TYPE_ERROR, "%s Method not supported", &v8, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -754,11 +754,11 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
     v6 = [objc_alloc(MEMORY[0x277CEF1A0]) initWithValue:0 status:3];
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 
 LABEL_4:
@@ -766,17 +766,17 @@ LABEL_4:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPersonalVolume:(id)a3
+- (void)getPersonalVolume:(id)volume
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  volumeCopy = volume;
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v7 = 136315138;
     v8 = "[CSSiriMobileBluetoothDeviceProxy getPersonalVolume:]";
     _os_log_error_impl(&dword_222E4D000, v4, OS_LOG_TYPE_ERROR, "%s Method not supported", &v7, 0xCu);
-    if (!v3)
+    if (!volumeCopy)
     {
       goto LABEL_4;
     }
@@ -784,11 +784,11 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (volumeCopy)
   {
 LABEL_3:
     v5 = [objc_alloc(MEMORY[0x277CEF1A0]) initWithValue:0 status:3];
-    v3[2](v3, v5);
+    volumeCopy[2](volumeCopy, v5);
   }
 
 LABEL_4:
@@ -796,17 +796,17 @@ LABEL_4:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getConversationAwareness:(id)a3
+- (void)getConversationAwareness:(id)awareness
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  awarenessCopy = awareness;
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v7 = 136315138;
     v8 = "[CSSiriMobileBluetoothDeviceProxy getConversationAwareness:]";
     _os_log_error_impl(&dword_222E4D000, v4, OS_LOG_TYPE_ERROR, "%s Method not supported", &v7, 0xCu);
-    if (!v3)
+    if (!awarenessCopy)
     {
       goto LABEL_4;
     }
@@ -814,11 +814,11 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (awarenessCopy)
   {
 LABEL_3:
     v5 = [objc_alloc(MEMORY[0x277CEF1A0]) initWithValue:0 status:3];
-    v3[2](v3, v5);
+    awarenessCopy[2](awarenessCopy, v5);
   }
 
 LABEL_4:
@@ -826,11 +826,11 @@ LABEL_4:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -838,16 +838,16 @@ LABEL_4:
     v7[2] = __51__CSSiriMobileBluetoothDeviceProxy_removeObserver___block_invoke;
     v7[3] = &unk_2784C6FA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -855,7 +855,7 @@ LABEL_4:
     v7[2] = __48__CSSiriMobileBluetoothDeviceProxy_addObserver___block_invoke;
     v7[3] = &unk_2784C6FA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -878,17 +878,17 @@ uint64_t __48__CSSiriMobileBluetoothDeviceProxy_addObserver___block_invoke(uint6
   return [v2 addObject:v6];
 }
 
-- (void)disconnect:(id)a3
+- (void)disconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CSSiriMobileBluetoothDeviceProxy_disconnect___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   dispatch_async(queue, v7);
 }
 
@@ -916,17 +916,17 @@ uint64_t __47__CSSiriMobileBluetoothDeviceProxy_disconnect___block_invoke_2(uint
   return MEMORY[0x2821F9730]();
 }
 
-- (void)connect:(id)a3
+- (void)connect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CSSiriMobileBluetoothDeviceProxy_connect___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectCopy;
+  v6 = connectCopy;
   dispatch_async(queue, v7);
 }
 
@@ -954,17 +954,17 @@ uint64_t __44__CSSiriMobileBluetoothDeviceProxy_connect___block_invoke_2(uint64_
   return MEMORY[0x2821F9730]();
 }
 
-- (void)setHeadphoneListeningMode:(int64_t)a3 completion:(id)a4
+- (void)setHeadphoneListeningMode:(int64_t)mode completion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v7 = 136315138;
     v8 = "[CSSiriMobileBluetoothDeviceProxy setHeadphoneListeningMode:completion:]";
     _os_log_error_impl(&dword_222E4D000, v5, OS_LOG_TYPE_ERROR, "%s Method not supported", &v7, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -972,10 +972,10 @@ uint64_t __44__CSSiriMobileBluetoothDeviceProxy_connect___block_invoke_2(uint64_
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_4:
@@ -983,17 +983,17 @@ LABEL_4:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getHeadphoneListeningMode:(id)a3
+- (void)getHeadphoneListeningMode:(id)mode
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modeCopy = mode;
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSSiriMobileBluetoothDeviceProxy getHeadphoneListeningMode:]";
     _os_log_error_impl(&dword_222E4D000, v4, OS_LOG_TYPE_ERROR, "%s Method not supported", &v6, 0xCu);
-    if (!v3)
+    if (!modeCopy)
     {
       goto LABEL_4;
     }
@@ -1001,10 +1001,10 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (modeCopy)
   {
 LABEL_3:
-    v3[2](v3, 1);
+    modeCopy[2](modeCopy, 1);
   }
 
 LABEL_4:
@@ -1012,17 +1012,17 @@ LABEL_4:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getHeadphoneInEarDetectionState:(id)a3
+- (void)getHeadphoneInEarDetectionState:(id)state
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v4 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSSiriMobileBluetoothDeviceProxy getHeadphoneInEarDetectionState:]";
     _os_log_error_impl(&dword_222E4D000, v4, OS_LOG_TYPE_ERROR, "%s Method not supported", &v6, 0xCu);
-    if (!v3)
+    if (!stateCopy)
     {
       goto LABEL_4;
     }
@@ -1030,10 +1030,10 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (stateCopy)
   {
 LABEL_3:
-    v3[2](v3, 0);
+    stateCopy[2](stateCopy, 0);
   }
 
 LABEL_4:
@@ -1041,11 +1041,11 @@ LABEL_4:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getDeviceInfo:(id)a3
+- (void)getDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1053,7 +1053,7 @@ LABEL_4:
     v7[2] = __50__CSSiriMobileBluetoothDeviceProxy_getDeviceInfo___block_invoke;
     v7[3] = &unk_2784C6E98;
     v7[4] = self;
-    v8 = v4;
+    v8 = infoCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1174,9 +1174,9 @@ void __46__CSSiriMobileBluetoothDeviceProxy_deviceInfo__block_invoke_117(uint64_
 
 - (id)identifier
 {
-  v3 = [(NSUUID *)self->_deviceUID UUIDString];
-  address = v3;
-  if (!v3)
+  uUIDString = [(NSUUID *)self->_deviceUID UUIDString];
+  address = uUIDString;
+  if (!uUIDString)
   {
     address = self->_address;
   }
@@ -1208,32 +1208,32 @@ void __46__CSSiriMobileBluetoothDeviceProxy_deviceInfo__block_invoke_117(uint64_
   dispatch_async(queue, block);
 }
 
-- (void)updateDeviceInfo:(id)a3
+- (void)updateDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__CSSiriMobileBluetoothDeviceProxy_updateDeviceInfo___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSSiriMobileBluetoothDeviceProxy)initWithDeviceUID:(id)a3 dataSource:(id)a4 queue:(id)a5
+- (CSSiriMobileBluetoothDeviceProxy)initWithDeviceUID:(id)d dataSource:(id)source queue:(id)queue
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  sourceCopy = source;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CSSiriMobileBluetoothDeviceProxy;
   v11 = [(CSSiriMobileBluetoothDeviceProxy *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     deviceUID = v11->_deviceUID;
     v11->_deviceUID = v12;
 
@@ -1247,8 +1247,8 @@ void __46__CSSiriMobileBluetoothDeviceProxy_deviceInfo__block_invoke_117(uint64_
       _os_log_impl(&dword_222E4D000, v14, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v11->_dataSource, v9);
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v11->_queue, queue);
     queue = v11->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1308,18 +1308,18 @@ void __71__CSSiriMobileBluetoothDeviceProxy_initWithDeviceUID_dataSource_queue__
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (CSSiriMobileBluetoothDeviceProxy)initWithAddress:(id)a3 dataSource:(id)a4 queue:(id)a5
+- (CSSiriMobileBluetoothDeviceProxy)initWithAddress:(id)address dataSource:(id)source queue:(id)queue
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  sourceCopy = source;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CSSiriMobileBluetoothDeviceProxy;
   v11 = [(CSSiriMobileBluetoothDeviceProxy *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [addressCopy copy];
     address = v11->_address;
     v11->_address = v12;
 
@@ -1333,8 +1333,8 @@ void __71__CSSiriMobileBluetoothDeviceProxy_initWithDeviceUID_dataSource_queue__
       _os_log_impl(&dword_222E4D000, v14, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v11->_dataSource, v9);
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v11->_queue, queue);
     queue = v11->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1403,7 +1403,7 @@ void __69__CSSiriMobileBluetoothDeviceProxy_initWithAddress_dataSource_queue___b
     *buf = 136315394;
     v7 = "[CSSiriMobileBluetoothDeviceProxy dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_222E4D000, v3, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 

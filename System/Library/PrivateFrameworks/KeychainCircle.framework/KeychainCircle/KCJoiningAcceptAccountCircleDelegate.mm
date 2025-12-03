@@ -1,19 +1,19 @@
 @interface KCJoiningAcceptAccountCircleDelegate
 + (id)delegate;
-- (id)circleGetInitialSyncViews:(unsigned int)a3 error:(id *)a4;
-- (id)circleJoinDataFor:(__OpaqueSOSPeerInfo *)a3 error:(id *)a4;
+- (id)circleGetInitialSyncViews:(unsigned int)views error:(id *)error;
+- (id)circleJoinDataFor:(__OpaqueSOSPeerInfo *)for error:(id *)error;
 @end
 
 @implementation KCJoiningAcceptAccountCircleDelegate
 
-- (id)circleGetInitialSyncViews:(unsigned int)a3 error:(id *)a4
+- (id)circleGetInitialSyncViews:(unsigned int)views error:(id *)error
 {
   v4 = SOSCCCopyInitialSyncData();
 
   return v4;
 }
 
-- (id)circleJoinDataFor:(__OpaqueSOSPeerInfo *)a3 error:(id *)a4
+- (id)circleJoinDataFor:(__OpaqueSOSPeerInfo *)for error:(id *)error
 {
   v4 = SOSCCCopyCircleJoiningBlob();
 

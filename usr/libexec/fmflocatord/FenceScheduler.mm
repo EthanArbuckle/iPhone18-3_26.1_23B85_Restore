@@ -1,37 +1,37 @@
 @interface FenceScheduler
 + (const)alarmStream;
 + (const)timerIdentifier;
-+ (id)_nextStartOrEndDateFrom:(id)a3 forSchedules:(id)a4;
-+ (id)firstDateFromDates:(id)a3 order:(int64_t)a4;
-- (FenceScheduler)initWithDelegate:(id)a3;
++ (id)_nextStartOrEndDateFrom:(id)from forSchedules:(id)schedules;
++ (id)firstDateFromDates:(id)dates order:(int64_t)order;
+- (FenceScheduler)initWithDelegate:(id)delegate;
 - (FenceSchedulerDelegate)delegate;
 - (NSArray)currentSchedules;
 - (void)_registerForSignificantTimeChangeNotifications;
-- (void)_significantTimeChange:(id)a3;
+- (void)_significantTimeChange:(id)change;
 - (void)_updateScheduleTimer;
 - (void)notifyDelegateThatCurrentSchedulesDidChange;
-- (void)setSchedules:(id)a3;
+- (void)setSchedules:(id)schedules;
 @end
 
 @implementation FenceScheduler
 
-- (FenceScheduler)initWithDelegate:(id)a3
+- (FenceScheduler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(FenceScheduler *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(FenceScheduler *)v6 _registerForSignificantTimeChangeNotifications];
   }
 
   return v6;
 }
 
-- (void)setSchedules:(id)a3
+- (void)setSchedules:(id)schedules
 {
-  objc_storeStrong(&self->_schedules, a3);
+  objc_storeStrong(&self->_schedules, schedules);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained fenceSchedulerCurrentSchedulesDidChange:self];
 
@@ -40,8 +40,8 @@
 
 - (NSArray)currentSchedules
 {
-  v2 = [(FenceScheduler *)self schedules];
-  v3 = [v2 fm_filter:&stru_10005E5B8];
+  schedules = [(FenceScheduler *)self schedules];
+  v3 = [schedules fm_filter:&stru_10005E5B8];
 
   return v3;
 }
@@ -64,16 +64,16 @@
 
 - (void)notifyDelegateThatCurrentSchedulesDidChange
 {
-  v3 = [(FenceScheduler *)self delegate];
-  [v3 fenceSchedulerCurrentSchedulesDidChange:self];
+  delegate = [(FenceScheduler *)self delegate];
+  [delegate fenceSchedulerCurrentSchedulesDidChange:self];
 }
 
 - (void)_updateScheduleTimer
 {
   v3 = objc_opt_class();
   v4 = +[NSDate date];
-  v5 = [(FenceScheduler *)self schedules];
-  v6 = [v3 _nextStartOrEndDateFrom:v4 forSchedules:v5];
+  schedules = [(FenceScheduler *)self schedules];
+  v6 = [v3 _nextStartOrEndDateFrom:v4 forSchedules:schedules];
 
   if (v6)
   {
@@ -94,28 +94,28 @@
   v11 = sub_10001BBF0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(FenceScheduler *)self schedules];
+    schedules2 = [(FenceScheduler *)self schedules];
     v13 = 136315906;
     v14 = "[FenceScheduler _updateScheduleTimer]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v6;
     v19 = 2112;
-    v20 = v12;
+    v20 = schedules2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: %@ fireDate: %@ schedules: %@", &v13, 0x2Au);
   }
 }
 
-+ (id)_nextStartOrEndDateFrom:(id)a3 forSchedules:(id)a4
++ (id)_nextStartOrEndDateFrom:(id)from forSchedules:(id)schedules
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002AB28;
   v9[3] = &unk_10005E5F0;
-  v10 = a3;
-  v5 = v10;
-  v6 = [a4 fm_map:v9];
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = [schedules fm_map:v9];
   v7 = [objc_opt_class() firstDateFromDates:v6 order:-1];
 
   return v7;
@@ -138,21 +138,21 @@
   }
 }
 
-- (void)_significantTimeChange:(id)a3
+- (void)_significantTimeChange:(id)change
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_updateScheduleTimer" object:0];
 
   [(FenceScheduler *)self performSelector:"_updateScheduleTimer" withObject:0 afterDelay:0.2];
 }
 
-+ (id)firstDateFromDates:(id)a3 order:(int64_t)a4
++ (id)firstDateFromDates:(id)dates order:(int64_t)order
 {
-  v5 = a3;
+  datesCopy = dates;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [datesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -164,11 +164,11 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(datesCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (!v8 || [*(*(&v14 + 1) + 8 * i) compare:v8] == a4)
+        if (!v8 || [*(*(&v14 + 1) + 8 * i) compare:v8] == order)
         {
           v12 = v11;
 
@@ -176,7 +176,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [datesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

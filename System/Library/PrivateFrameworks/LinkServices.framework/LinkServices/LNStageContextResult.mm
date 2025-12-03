@@ -1,8 +1,8 @@
 @interface LNStageContextResult
 + (id)xpcClasses;
-- (LNStageContextResult)initWithCoder:(id)a3;
-- (LNStageContextResult)initWithResult:(id)a3 error:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LNStageContextResult)initWithCoder:(id)coder;
+- (LNStageContextResult)initWithResult:(id)result error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNStageContextResult
@@ -16,16 +16,16 @@
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-- (LNStageContextResult)initWithCoder:(id)a3
+- (LNStageContextResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"result"];
-  v6 = [v4 decodeObjectForKey:@"error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"result"];
+  v6 = [coderCopy decodeObjectForKey:@"error"];
 
   if (v5 | v6)
   {
     self = [(LNStageContextResult *)self initWithResult:v5 error:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -37,35 +37,35 @@
       _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_ERROR, "empty LNStageContextResult from coder", v10, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNStageContextResult *)self result];
-  [v4 encodeObject:v5 forKey:@"result"];
+  coderCopy = coder;
+  result = [(LNStageContextResult *)self result];
+  [coderCopy encodeObject:result forKey:@"result"];
 
-  v6 = [(LNStageContextResult *)self error];
-  [v4 encodeObject:v6 forKey:@"error"];
+  error = [(LNStageContextResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
-- (LNStageContextResult)initWithResult:(id)a3 error:(id)a4
+- (LNStageContextResult)initWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = LNStageContextResult;
   v8 = [(LNStageContextResult *)&v13 init];
   v9 = v8->_result;
-  v8->_result = v6;
-  v10 = v6;
+  v8->_result = resultCopy;
+  v10 = resultCopy;
 
   error = v8->_error;
-  v8->_error = v7;
+  v8->_error = errorCopy;
 
   return v8;
 }

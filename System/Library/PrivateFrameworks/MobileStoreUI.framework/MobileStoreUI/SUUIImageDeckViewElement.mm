@@ -1,15 +1,15 @@
 @interface SUUIImageDeckViewElement
-- (SUUIImageDeckViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIImageDeckViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIImageDeckViewElement
 
-- (SUUIImageDeckViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIImageDeckViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v20.receiver = self;
   v20.super_class = SUUIImageDeckViewElement;
-  v9 = [(SUUIViewElement *)&v20 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v20 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   v10 = v9;
   if (v9)
   {
@@ -17,10 +17,10 @@
     v9->_initialDragRight = 0.25;
     v9->_additionalDragLeft = 0.33;
     v9->_additionalDragRight = 0.33;
-    v11 = [v8 getAttribute:@"initialDragLeft"];
-    v12 = [v8 getAttribute:@"initialDragRight"];
-    v13 = [v8 getAttribute:@"additionalDragLeft"];
-    v14 = [v8 getAttribute:@"additionalDragRight"];
+    v11 = [elementCopy getAttribute:@"initialDragLeft"];
+    v12 = [elementCopy getAttribute:@"initialDragRight"];
+    v13 = [elementCopy getAttribute:@"additionalDragLeft"];
+    v14 = [elementCopy getAttribute:@"additionalDragRight"];
     if (v11 && [v11 length])
     {
       [v11 floatValue];

@@ -1,15 +1,15 @@
 @interface QLMemoryLimitedQueue
-- (QLMemoryLimitedQueue)initWithMaximumMemoryConsumption:(unint64_t)a3 maximumConcurrentTasks:(int)a4;
+- (QLMemoryLimitedQueue)initWithMaximumMemoryConsumption:(unint64_t)consumption maximumConcurrentTasks:(int)tasks;
 - (int)currentTaskCount;
 - (unint64_t)currentSize;
-- (void)addTask:(id)a3;
+- (void)addTask:(id)task;
 - (void)dequeueIfPossible;
-- (void)executeTask:(id)a3;
+- (void)executeTask:(id)task;
 @end
 
 @implementation QLMemoryLimitedQueue
 
-- (QLMemoryLimitedQueue)initWithMaximumMemoryConsumption:(unint64_t)a3 maximumConcurrentTasks:(int)a4
+- (QLMemoryLimitedQueue)initWithMaximumMemoryConsumption:(unint64_t)consumption maximumConcurrentTasks:(int)tasks
 {
   v17.receiver = self;
   v17.super_class = QLMemoryLimitedQueue;
@@ -17,9 +17,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_maxSize = a3;
+    v6->_maxSize = consumption;
     v6->_currentTaskCount = 0;
-    v6->_maxTaskCount = a4;
+    v6->_maxTaskCount = tasks;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.quicklook.memorylimitedqueue.serial", v8);
     serialQueue = v7->_serialQueue;
@@ -38,17 +38,17 @@
   return v7;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__QLMemoryLimitedQueue_addTask___block_invoke;
   v7[3] = &unk_279ADB358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -60,13 +60,13 @@ uint64_t __32__QLMemoryLimitedQueue_addTask___block_invoke(uint64_t a1)
   return [v2 dequeueIfPossible];
 }
 
-- (void)executeTask:(id)a3
+- (void)executeTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [v4 expectedMemoryConsumption];
+  expectedMemoryConsumption = [taskCopy expectedMemoryConsumption];
   currentTaskCount = self->_currentTaskCount;
-  self->_currentSize += v5;
+  self->_currentSize += expectedMemoryConsumption;
   self->_currentTaskCount = currentTaskCount + 1;
   v7 = MEMORY[0x277CDAB78];
   v8 = *(MEMORY[0x277CDAB78] + 112);
@@ -86,9 +86,9 @@ uint64_t __32__QLMemoryLimitedQueue_addTask___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __36__QLMemoryLimitedQueue_executeTask___block_invoke;
   v11[3] = &unk_279ADB358;
-  v12 = v4;
-  v13 = self;
-  v10 = v4;
+  v12 = taskCopy;
+  selfCopy = self;
+  v10 = taskCopy;
   dispatch_async(concurrentQueue, v11);
 }
 
@@ -134,10 +134,10 @@ uint64_t __36__QLMemoryLimitedQueue_executeTask___block_invoke_2(uint64_t a1)
 
       v5 = [(NSMutableArray *)self->_tasks objectAtIndex:v3];
       currentSize = self->_currentSize;
-      v7 = [v5 expectedMemoryConsumption];
+      expectedMemoryConsumption = [v5 expectedMemoryConsumption];
       maxSize = self->_maxSize;
       v9 = [v5 expectedMemoryConsumption] > maxSize && self->_currentTaskCount == 0;
-      if (v7 + currentSize >= maxSize && !v9)
+      if (expectedMemoryConsumption + currentSize >= maxSize && !v9)
       {
         ++v4;
       }

@@ -1,33 +1,33 @@
 @interface CSIntervalList
-- (CSIntervalList)initWithIntervals:(id)a3;
+- (CSIntervalList)initWithIntervals:(id)intervals;
 - (double)durationInSeconds;
 - (double)sum;
 - (double)timeWeightedSum;
 - (id)firstInterval;
-- (id)intersectWithIntervalList:(id)a3;
+- (id)intersectWithIntervalList:(id)list;
 - (id)lastInterval;
 @end
 
 @implementation CSIntervalList
 
-- (CSIntervalList)initWithIntervals:(id)a3
+- (CSIntervalList)initWithIntervals:(id)intervals
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalsCopy = intervals;
   v19.receiver = self;
   v19.super_class = CSIntervalList;
   v5 = [(CSIntervalList *)&v19 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     intervalArray = v5->_intervalArray;
-    v5->_intervalArray = v6;
+    v5->_intervalArray = array;
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v4;
+    v8 = intervalsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
@@ -60,56 +60,56 @@
 
 - (id)lastInterval
 {
-  v3 = [(NSMutableArray *)self->_intervalArray count];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_intervalArray count];
+  if (lastObject)
   {
-    v3 = [(NSMutableArray *)self->_intervalArray lastObject];
+    lastObject = [(NSMutableArray *)self->_intervalArray lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)firstInterval
 {
-  v3 = [(NSMutableArray *)self->_intervalArray count];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_intervalArray count];
+  if (firstObject)
   {
-    v3 = [(NSMutableArray *)self->_intervalArray firstObject];
+    firstObject = [(NSMutableArray *)self->_intervalArray firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (id)intersectWithIntervalList:(id)a3
+- (id)intersectWithIntervalList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [CSIntervalList alloc];
   v25 = [(CSIntervalList *)v5 initWithIntervals:MEMORY[0x277CBEBF8]];
   if ([(CSIntervalList *)self count])
   {
     v6 = 0;
     v7 = 0;
-    v26 = v4;
+    v26 = listCopy;
     do
     {
-      if (v7 >= [v4 count])
+      if (v7 >= [listCopy count])
       {
         break;
       }
 
       v8 = [(NSMutableArray *)self->_intervalArray objectAtIndexedSubscript:v6];
-      v9 = [v4 intervalArray];
-      v10 = [v9 objectAtIndexedSubscript:v7];
+      intervalArray = [listCopy intervalArray];
+      v10 = [intervalArray objectAtIndexedSubscript:v7];
 
-      v11 = [v8 startTime];
-      v12 = [v10 startTime];
-      v13 = [v11 laterDate:v12];
+      startTime = [v8 startTime];
+      startTime2 = [v10 startTime];
+      v13 = [startTime laterDate:startTime2];
 
-      v14 = [v8 endTime];
-      v15 = [v10 endTime];
-      v16 = [v14 earlierDate:v15];
+      endTime = [v8 endTime];
+      endTime2 = [v10 endTime];
+      v16 = [endTime earlierDate:endTime2];
 
-      v17 = self;
+      selfCopy = self;
       if ([v13 compare:v16] == -1)
       {
         [v8 value];
@@ -117,9 +117,9 @@
         [(CSIntervalList *)v25 addInterval:v19];
       }
 
-      v20 = [v8 endTime];
-      v21 = [v10 endTime];
-      v22 = [v20 compare:v21];
+      endTime3 = [v8 endTime];
+      endTime4 = [v10 endTime];
+      v22 = [endTime3 compare:endTime4];
 
       if (v22 == -1)
       {
@@ -131,9 +131,9 @@
         ++v7;
       }
 
-      v23 = [(CSIntervalList *)v17 count];
-      self = v17;
-      v4 = v26;
+      v23 = [(CSIntervalList *)selfCopy count];
+      self = selfCopy;
+      listCopy = v26;
     }
 
     while (v6 < v23);
@@ -208,9 +208,9 @@
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 endTime];
-        v10 = [v8 startTime];
-        [v9 timeIntervalSinceDate:v10];
+        endTime = [v8 endTime];
+        startTime = [v8 startTime];
+        [endTime timeIntervalSinceDate:startTime];
         v12 = v11;
 
         if (v12 > 0.0)
@@ -259,9 +259,9 @@
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 endTime];
-        v10 = [v8 startTime];
-        [v9 timeIntervalSinceDate:v10];
+        endTime = [v8 endTime];
+        startTime = [v8 startTime];
+        [endTime timeIntervalSinceDate:startTime];
         v12 = v11;
 
         v6 = v6 + v12;

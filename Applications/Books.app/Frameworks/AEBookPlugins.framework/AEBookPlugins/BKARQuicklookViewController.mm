@@ -1,20 +1,20 @@
 @interface BKARQuicklookViewController
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
 @end
 
 @implementation BKARQuicklookViewController
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(BKARQuicklookViewController *)self ARModelDataURL];
+  aRModelDataURL = [(BKARQuicklookViewController *)self ARModelDataURL];
 
-  return v3 != 0;
+  return aRModelDataURL != 0;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v4 = [(BKARQuicklookViewController *)self ARModelDataURL:a3];
+  v4 = [(BKARQuicklookViewController *)self ARModelDataURL:controller];
   v5 = BUProtocolCast();
 
   return v5;

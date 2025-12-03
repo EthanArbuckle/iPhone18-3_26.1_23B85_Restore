@@ -1,21 +1,21 @@
 @interface AVTPresetResourcesLoadingTask
-- (AVTPresetResourcesLoadingTask)initWithPresetResources:(id)a3 completionHandler:(id)a4;
+- (AVTPresetResourcesLoadingTask)initWithPresetResources:(id)resources completionHandler:(id)handler;
 @end
 
 @implementation AVTPresetResourcesLoadingTask
 
-- (AVTPresetResourcesLoadingTask)initWithPresetResources:(id)a3 completionHandler:(id)a4
+- (AVTPresetResourcesLoadingTask)initWithPresetResources:(id)resources completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  resourcesCopy = resources;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = AVTPresetResourcesLoadingTask;
   v9 = [(AVTPresetResourcesLoadingTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presetResources, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_presetResources, resources);
+    v11 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }

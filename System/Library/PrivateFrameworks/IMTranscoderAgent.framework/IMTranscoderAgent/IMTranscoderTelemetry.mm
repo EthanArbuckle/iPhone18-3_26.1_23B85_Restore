@@ -1,16 +1,16 @@
 @interface IMTranscoderTelemetry
 - (IMTranscoderTelemetry)init;
-- (int64_t)_telemetryImageTypeForUTI:(id)a3;
-- (void)_emitSignpostPreviewGenerationRange:(int64_t)a3 begin:(BOOL)a4;
-- (void)_emitSignpostTranscodeRange:(int64_t)a3 begin:(BOOL)a4;
-- (void)emitPreviewGenerationBeginFromUTI:(id)a3;
-- (void)emitPreviewGenerationEndFromUTI:(id)a3;
-- (void)emitSignpostNoTranscodeFromUTI:(id)a3;
-- (void)emitSignpostTranscodeFinalForDestinationUTI:(id)a3;
-- (void)emitSignpostTranscodeSkipSourceUTI:(id)a3;
-- (void)emitSignpostTranscodeStepForDestinationUTI:(id)a3;
-- (void)emitTranscodeBeginFromUTI:(id)a3;
-- (void)emitTranscodeEndFromUTI:(id)a3;
+- (int64_t)_telemetryImageTypeForUTI:(id)i;
+- (void)_emitSignpostPreviewGenerationRange:(int64_t)range begin:(BOOL)begin;
+- (void)_emitSignpostTranscodeRange:(int64_t)range begin:(BOOL)begin;
+- (void)emitPreviewGenerationBeginFromUTI:(id)i;
+- (void)emitPreviewGenerationEndFromUTI:(id)i;
+- (void)emitSignpostNoTranscodeFromUTI:(id)i;
+- (void)emitSignpostTranscodeFinalForDestinationUTI:(id)i;
+- (void)emitSignpostTranscodeSkipSourceUTI:(id)i;
+- (void)emitSignpostTranscodeStepForDestinationUTI:(id)i;
+- (void)emitTranscodeBeginFromUTI:(id)i;
+- (void)emitTranscodeEndFromUTI:(id)i;
 @end
 
 @implementation IMTranscoderTelemetry
@@ -25,60 +25,60 @@
   return v2;
 }
 
-- (int64_t)_telemetryImageTypeForUTI:(id)a3
+- (int64_t)_telemetryImageTypeForUTI:(id)i
 {
-  if (UTTypeConformsTo(a3, *MEMORY[0x277CC20C8]))
+  if (UTTypeConformsTo(i, *MEMORY[0x277CC20C8]))
   {
     return 1;
   }
 
-  if (UTTypeConformsTo(a3, @"public.heif-standard"))
+  if (UTTypeConformsTo(i, @"public.heif-standard"))
   {
     return 2;
   }
 
-  if (UTTypeConformsTo(a3, *MEMORY[0x277CC2120]))
+  if (UTTypeConformsTo(i, *MEMORY[0x277CC2120]))
   {
     return 3;
   }
 
-  return 4 * (UTTypeConformsTo(a3, *MEMORY[0x277CC2088]) != 0);
+  return 4 * (UTTypeConformsTo(i, *MEMORY[0x277CC2088]) != 0);
 }
 
-- (void)emitTranscodeBeginFromUTI:(id)a3
+- (void)emitTranscodeBeginFromUTI:(id)i
 {
-  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, i, v3, v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel__emitSignpostTranscodeRange_begin_, v8, 1, v9, v10, v11);
 }
 
-- (void)emitTranscodeEndFromUTI:(id)a3
+- (void)emitTranscodeEndFromUTI:(id)i
 {
-  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, i, v3, v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel__emitSignpostTranscodeRange_begin_, v8, 0, v9, v10, v11);
 }
 
-- (void)emitPreviewGenerationBeginFromUTI:(id)a3
+- (void)emitPreviewGenerationBeginFromUTI:(id)i
 {
-  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, i, v3, v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel__emitSignpostPreviewGenerationRange_begin_, v8, 1, v9, v10, v11);
 }
 
-- (void)emitPreviewGenerationEndFromUTI:(id)a3
+- (void)emitPreviewGenerationEndFromUTI:(id)i
 {
-  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, a3, v3, v4, v5, v6);
+  v8 = objc_msgSend__telemetryImageTypeForUTI_(self, a2, i, v3, v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel__emitSignpostPreviewGenerationRange_begin_, v8, 0, v9, v10, v11);
 }
 
-- (void)_emitSignpostPreviewGenerationRange:(int64_t)a3 begin:(BOOL)a4
+- (void)_emitSignpostPreviewGenerationRange:(int64_t)range begin:(BOOL)begin
 {
-  v4 = a4;
+  beginCopy = begin;
   v7 = _iMessageTelemetryLogHandle();
   v8 = v7;
-  if (v4)
+  if (beginCopy)
   {
     v9 = 1;
   }
@@ -88,11 +88,11 @@
     v9 = 2;
   }
 
-  if (a3 <= 1)
+  if (range <= 1)
   {
-    if (a3)
+    if (range)
     {
-      if (a3 == 1)
+      if (range == 1)
       {
         signpostId = self->_signpostId;
         if (signpostId)
@@ -125,7 +125,7 @@
 
   else
   {
-    switch(a3)
+    switch(range)
     {
       case 2:
         signpostId = self->_signpostId;
@@ -171,12 +171,12 @@ LABEL_25:
   }
 }
 
-- (void)_emitSignpostTranscodeRange:(int64_t)a3 begin:(BOOL)a4
+- (void)_emitSignpostTranscodeRange:(int64_t)range begin:(BOOL)begin
 {
-  v4 = a4;
+  beginCopy = begin;
   v7 = _iMessageTelemetryLogHandle();
   v8 = v7;
-  if (v4)
+  if (beginCopy)
   {
     v9 = 1;
   }
@@ -186,11 +186,11 @@ LABEL_25:
     v9 = 2;
   }
 
-  if (a3 <= 1)
+  if (range <= 1)
   {
-    if (a3)
+    if (range)
     {
-      if (a3 == 1)
+      if (range == 1)
       {
         signpostId = self->_signpostId;
         if (signpostId)
@@ -223,7 +223,7 @@ LABEL_25:
 
   else
   {
-    switch(a3)
+    switch(range)
     {
       case 2:
         signpostId = self->_signpostId;
@@ -269,10 +269,10 @@ LABEL_25:
   }
 }
 
-- (void)emitSignpostNoTranscodeFromUTI:(id)a3
+- (void)emitSignpostNoTranscodeFromUTI:(id)i
 {
   v5 = _iMessageTelemetryLogHandle();
-  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, a3, v7, v8, v9, v10);
+  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, i, v7, v8, v9, v10);
   if (v11 <= 1)
   {
     if (v11)
@@ -351,10 +351,10 @@ LABEL_22:
   }
 }
 
-- (void)emitSignpostTranscodeStepForDestinationUTI:(id)a3
+- (void)emitSignpostTranscodeStepForDestinationUTI:(id)i
 {
   v5 = _iMessageTelemetryLogHandle();
-  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, a3, v7, v8, v9, v10);
+  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, i, v7, v8, v9, v10);
   if (v11 <= 1)
   {
     if (v11)
@@ -433,10 +433,10 @@ LABEL_22:
   }
 }
 
-- (void)emitSignpostTranscodeFinalForDestinationUTI:(id)a3
+- (void)emitSignpostTranscodeFinalForDestinationUTI:(id)i
 {
   v5 = _iMessageTelemetryLogHandle();
-  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, a3, v7, v8, v9, v10);
+  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, i, v7, v8, v9, v10);
   if (v11 <= 1)
   {
     if (v11)
@@ -515,10 +515,10 @@ LABEL_22:
   }
 }
 
-- (void)emitSignpostTranscodeSkipSourceUTI:(id)a3
+- (void)emitSignpostTranscodeSkipSourceUTI:(id)i
 {
   v5 = _iMessageTelemetryLogHandle();
-  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, a3, v7, v8, v9, v10);
+  v11 = objc_msgSend__telemetryImageTypeForUTI_(self, v6, i, v7, v8, v9, v10);
   if (v11 <= 1)
   {
     if (v11)

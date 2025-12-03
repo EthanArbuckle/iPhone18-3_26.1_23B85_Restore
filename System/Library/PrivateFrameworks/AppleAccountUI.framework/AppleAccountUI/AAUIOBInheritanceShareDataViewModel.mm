@@ -1,14 +1,14 @@
 @interface AAUIOBInheritanceShareDataViewModel
-- (AAUIOBInheritanceShareDataViewModel)initWithBeneficiaryName:(id)a3;
+- (AAUIOBInheritanceShareDataViewModel)initWithBeneficiaryName:(id)name;
 @end
 
 @implementation AAUIOBInheritanceShareDataViewModel
 
-- (AAUIOBInheritanceShareDataViewModel)initWithBeneficiaryName:(id)a3
+- (AAUIOBInheritanceShareDataViewModel)initWithBeneficiaryName:(id)name
 {
   v4.receiver = self;
   v4.super_class = AAUIOBInheritanceShareDataViewModel;
-  result = [(AAOBInheritanceShareDataModel *)&v4 initWithBeneficiaryName:a3];
+  result = [(AAOBInheritanceShareDataModel *)&v4 initWithBeneficiaryName:name];
   if (result)
   {
     result->_contentViewLayout = 2;

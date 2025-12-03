@@ -1,5 +1,5 @@
 @interface PKPaymentTransactionIconRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (id)logoURL;
 - (unint64_t)hash;
@@ -12,8 +12,8 @@
   transaction = self->_transaction;
   if (transaction)
   {
-    v4 = [(PKPaymentTransaction *)transaction merchant];
-    v5 = [v4 logoImageURL];
+    merchant = [(PKPaymentTransaction *)transaction merchant];
+    logoImageURL = [merchant logoImageURL];
   }
 
   else
@@ -21,25 +21,25 @@
     merchant = self->_merchant;
     if (merchant)
     {
-      v5 = [(PKMerchant *)merchant logoImageURL];
+      logoImageURL = [(PKMerchant *)merchant logoImageURL];
     }
 
     else
     {
-      v5 = 0;
+      logoImageURL = 0;
     }
   }
 
-  return v5;
+  return logoImageURL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_size.width == v4[6] ? (v5 = self->_size.height == v4[7]) : (v5 = 0), v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_size.width == equalCopy[6] ? (v5 = self->_size.height == equalCopy[7]) : (v5 = 0), v5))
   {
-    v7 = *(v4 + 4);
+    v7 = *(equalCopy + 4);
     v8 = self->_cacheKey;
     v9 = v7;
     v10 = v9;

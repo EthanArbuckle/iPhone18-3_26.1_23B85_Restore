@@ -1,8 +1,8 @@
 @interface MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     updateToken = v2->_updateToken;
-    v2->_updateToken = v3;
+    v2->_updateToken = data;
 
     newVersion = v2->_newVersion;
     v2->_newVersion = &unk_284C3E4C8;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams);
-  v5 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self updateToken];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setUpdateToken:v5];
+  updateToken = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self updateToken];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setUpdateToken:updateToken];
 
-  v6 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self getNewVersion];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setNewVersion:v6];
+  getNewVersion = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self getNewVersion];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setNewVersion:getNewVersion];
 
-  v7 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self timedInvokeTimeoutMs];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self timedInvokeTimeoutMs];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self serverSideProcessingTimeout];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self serverSideProcessingTimeout];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,19 +61,19 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v23 = 0uLL;
-  v24 = 0;
+  unsignedIntValue = 0;
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self updateToken];
-  sub_238DB6950(v15, [v5 bytes], objc_msgSend(v5, "length"));
+  updateToken = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self updateToken];
+  sub_238DB6950(v15, [updateToken bytes], objc_msgSend(updateToken, "length"));
 
   v23 = v15[0];
-  v6 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self getNewVersion];
-  v24 = [v6 unsignedIntValue];
+  getNewVersion = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self getNewVersion];
+  unsignedIntValue = [getNewVersion unsignedIntValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v20);
   if (v20)
@@ -94,8 +94,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v14;
       v9 = v7;
     }
@@ -123,19 +123,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -146,7 +146,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x10FB00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

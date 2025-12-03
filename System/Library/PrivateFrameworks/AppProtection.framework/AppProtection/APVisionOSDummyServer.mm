@@ -1,21 +1,21 @@
 @interface APVisionOSDummyServer
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)dummyServiceConnectionForServiceName:(id)a3;
-- (void)authenticateForBundle:(id)a3 interfacePresentationTarget:(id *)a4 completion:(id)a5;
-- (void)authenticateForExtensionWithUUID:(id)a3 reasonDescription:(id)a4 completion:(id)a5;
-- (void)authenticateUnconditionallyWithReason:(id)a3 completion:(id)a4;
-- (void)beginAuthTimeoutExtensionTransactionForBundle:(id)a3 transactionUUID:(id)a4 completion:(id)a5;
-- (void)beginMonitoringForExtensionUUID:(id)a3 monitorUUID:(id)a4;
-- (void)beginTransactionForAccessOfBundle:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantReason:(int64_t)a5 transactionUUID:(id)a6 completion:(id)a7;
-- (void)endMonitoringForMonitorUUID:(id)a3;
-- (void)extensionRequiresAuthentication:(id)a3 completion:(id)a4;
-- (void)getConfiguration:(id)a3;
-- (void)getIsChallengeCurrentlyRequiredForBundle:(id)a3 completion:(id)a4;
-- (void)getPerAppManagedProtectability:(id)a3;
-- (void)getStateDumpWithCompletion:(id)a3;
-- (void)initiateAuthenticationWithShieldingForBundle:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantReason:(int64_t)a5 completion:(id)a6;
-- (void)monitorTransactionWithUUID:(id)a3 invalidationBlock:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)dummyServiceConnectionForServiceName:(id)name;
+- (void)authenticateForBundle:(id)bundle interfacePresentationTarget:(id *)target completion:(id)completion;
+- (void)authenticateForExtensionWithUUID:(id)d reasonDescription:(id)description completion:(id)completion;
+- (void)authenticateUnconditionallyWithReason:(id)reason completion:(id)completion;
+- (void)beginAuthTimeoutExtensionTransactionForBundle:(id)bundle transactionUUID:(id)d completion:(id)completion;
+- (void)beginMonitoringForExtensionUUID:(id)d monitorUUID:(id)iD;
+- (void)beginTransactionForAccessOfBundle:(id)bundle onBehalfOfProcessWithAuditToken:(id *)token accessGrantReason:(int64_t)reason transactionUUID:(id)d completion:(id)completion;
+- (void)endMonitoringForMonitorUUID:(id)d;
+- (void)extensionRequiresAuthentication:(id)authentication completion:(id)completion;
+- (void)getConfiguration:(id)configuration;
+- (void)getIsChallengeCurrentlyRequiredForBundle:(id)bundle completion:(id)completion;
+- (void)getPerAppManagedProtectability:(id)protectability;
+- (void)getStateDumpWithCompletion:(id)completion;
+- (void)initiateAuthenticationWithShieldingForBundle:(id)bundle onBehalfOfProcessWithAuditToken:(id *)token accessGrantReason:(int64_t)reason completion:(id)completion;
+- (void)monitorTransactionWithUUID:(id)d invalidationBlock:(id)block;
 @end
 
 @implementation APVisionOSDummyServer
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (id)dummyServiceConnectionForServiceName:(id)a3
+- (id)dummyServiceConnectionForServiceName:(id)name
 {
   v4 = sub_185B67E4C();
   result = sub_185AF4204(v4, v5);
@@ -40,12 +40,12 @@
   {
     v10 = v7;
     v11 = v8;
-    v12 = self;
+    selfCopy = self;
 
-    v13 = [v10 endpoint];
-    v14 = [objc_allocWithZone(MEMORY[0x1E696B0B8]) initWithListenerEndpoint_];
+    endpoint = [v10 endpoint];
+    initWithListenerEndpoint_ = [objc_allocWithZone(MEMORY[0x1E696B0B8]) initWithListenerEndpoint_];
 
-    return v14;
+    return initWithListenerEndpoint_;
   }
 
   else
@@ -56,100 +56,100 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_185AF4498(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_185AF4498(listenerCopy, connectionCopy);
 
   return v9;
 }
 
-- (void)getConfiguration:(id)a3
+- (void)getConfiguration:(id)configuration
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(configuration);
   v4 = [objc_allocWithZone(APClientState) init];
   v3[2](v3, v4, 0);
   _Block_release(v3);
 }
 
-- (void)getPerAppManagedProtectability:(id)a3
+- (void)getPerAppManagedProtectability:(id)protectability
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(protectability);
   sub_185B52F9C(MEMORY[0x1E69E7CC0]);
   v4 = objc_allocWithZone(APPerAppManagedProtectability);
   sub_185ADF590(0, &qword_1EA8CB630, off_1E6EE83A0);
   v5 = sub_185B67D7C();
 
-  v6 = [v4 initWithPerAppProtectability_];
+  initWithPerAppProtectability_ = [v4 initWithPerAppProtectability_];
 
-  v3[2](v3, v6, 0);
+  v3[2](v3, initWithPerAppProtectability_, 0);
   _Block_release(v3);
 }
 
-- (void)initiateAuthenticationWithShieldingForBundle:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantReason:(int64_t)a5 completion:(id)a6
+- (void)initiateAuthenticationWithShieldingForBundle:(id)bundle onBehalfOfProcessWithAuditToken:(id *)token accessGrantReason:(int64_t)reason completion:(id)completion
 {
-  v6 = _Block_copy(a6);
+  v6 = _Block_copy(completion);
   v6[2](v6, 0);
 
   _Block_release(v6);
 }
 
-- (void)beginTransactionForAccessOfBundle:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantReason:(int64_t)a5 transactionUUID:(id)a6 completion:(id)a7
+- (void)beginTransactionForAccessOfBundle:(id)bundle onBehalfOfProcessWithAuditToken:(id *)token accessGrantReason:(int64_t)reason transactionUUID:(id)d completion:(id)completion
 {
   v8 = sub_185B67AFC();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8, v11);
   v13 = &v15 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a7);
+  v14 = _Block_copy(completion);
   sub_185B67ADC();
   v14[2](v14, 0);
   _Block_release(v14);
   (*(v9 + 8))(v13, v8);
 }
 
-- (void)getIsChallengeCurrentlyRequiredForBundle:(id)a3 completion:(id)a4
+- (void)getIsChallengeCurrentlyRequiredForBundle:(id)bundle completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   sub_185ADF590(0, &qword_1EA8CC020, 0x1E696AD98);
   v5 = sub_185B6825C();
   v4[2](v4, v5, 0);
   _Block_release(v4);
 }
 
-- (void)authenticateUnconditionallyWithReason:(id)a3 completion:(id)a4
+- (void)authenticateUnconditionallyWithReason:(id)reason completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v4[2](v4, 1, 0);
 
   _Block_release(v4);
 }
 
-- (void)authenticateForBundle:(id)a3 interfacePresentationTarget:(id *)a4 completion:(id)a5
+- (void)authenticateForBundle:(id)bundle interfacePresentationTarget:(id *)target completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   v5[2](v5, 0);
 
   _Block_release(v5);
 }
 
-- (void)beginAuthTimeoutExtensionTransactionForBundle:(id)a3 transactionUUID:(id)a4 completion:(id)a5
+- (void)beginAuthTimeoutExtensionTransactionForBundle:(id)bundle transactionUUID:(id)d completion:(id)completion
 {
   v6 = sub_185B67AFC();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6, v9);
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   sub_185B67ADC();
   v12[2](v12, 0);
   _Block_release(v12);
   (*(v7 + 8))(v11, v6);
 }
 
-- (void)monitorTransactionWithUUID:(id)a3 invalidationBlock:(id)a4
+- (void)monitorTransactionWithUUID:(id)d invalidationBlock:(id)block
 {
   v4 = sub_185B67AFC();
   v5 = *(v4 - 8);
@@ -160,17 +160,17 @@
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)getStateDumpWithCompletion:(id)a3
+- (void)getStateDumpWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_185AF59F8(v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)beginMonitoringForExtensionUUID:(id)a3 monitorUUID:(id)a4
+- (void)beginMonitoringForExtensionUUID:(id)d monitorUUID:(id)iD
 {
   v4 = sub_185B67AFC();
   v5 = *(v4 - 8);
@@ -186,7 +186,7 @@
   v14(v13, v4);
 }
 
-- (void)endMonitoringForMonitorUUID:(id)a3
+- (void)endMonitoringForMonitorUUID:(id)d
 {
   v3 = sub_185B67AFC();
   v4 = *(v3 - 8);
@@ -197,28 +197,28 @@
   (*(v4 + 8))(v8, v3);
 }
 
-- (void)authenticateForExtensionWithUUID:(id)a3 reasonDescription:(id)a4 completion:(id)a5
+- (void)authenticateForExtensionWithUUID:(id)d reasonDescription:(id)description completion:(id)completion
 {
   v6 = sub_185B67AFC();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6, v9);
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   sub_185B67ADC();
   v12[2](v12, 1, 0);
   _Block_release(v12);
   (*(v7 + 8))(v11, v6);
 }
 
-- (void)extensionRequiresAuthentication:(id)a3 completion:(id)a4
+- (void)extensionRequiresAuthentication:(id)authentication completion:(id)completion
 {
   v5 = sub_185B67AFC();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x1EEE9AC00](v5, v8);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   sub_185B67ADC();
   v11[2](v11, 1, 0);
   _Block_release(v11);

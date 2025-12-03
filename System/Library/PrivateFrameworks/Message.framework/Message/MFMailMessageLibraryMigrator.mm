@@ -1,16 +1,16 @@
 @interface MFMailMessageLibraryMigrator
 + (OS_os_log)log;
-- (BOOL)_checkForeignKeysWithConnection:(id)a3;
-- (BOOL)_runAddBusinessColumnsUpgradeStepForConnection:(id)a3 db:(sqlite3 *)a4;
-- (BOOL)migrateWithDatabaseConnection:(id)a3 schema:(id)a4;
-- (MFMailMessageLibraryMigrator)initWithDelegate:(id)a3;
+- (BOOL)_checkForeignKeysWithConnection:(id)connection;
+- (BOOL)_runAddBusinessColumnsUpgradeStepForConnection:(id)connection db:(sqlite3 *)db;
+- (BOOL)migrateWithDatabaseConnection:(id)connection schema:(id)schema;
+- (MFMailMessageLibraryMigrator)initWithDelegate:(id)delegate;
 - (MFMailMessageLibraryMigratorDelegate)delegate;
-- (int64_t)_checkContentProtectionStateForUpgradeStartingFromVersion:(int)a3;
-- (void)addPostMigrationBlock:(id)a3;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)detachProtectedDatabaseWithConnection:(id)a3;
+- (int64_t)_checkContentProtectionStateForUpgradeStartingFromVersion:(int)version;
+- (void)addPostMigrationBlock:(id)block;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)detachProtectedDatabaseWithConnection:(id)connection;
 - (void)resetTTRPromptAndForceReindex;
-- (void)runPostMigrationBlocksWithConnection:(id)a3;
+- (void)runPostMigrationBlocksWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryMigrator
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __35__MFMailMessageLibraryMigrator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_17 != -1)
   {
     dispatch_once(&log_onceToken_17, block);
@@ -40,16 +40,16 @@ void __35__MFMailMessageLibraryMigrator_log__block_invoke(uint64_t a1)
   log_log_17 = v1;
 }
 
-- (MFMailMessageLibraryMigrator)initWithDelegate:(id)a3
+- (MFMailMessageLibraryMigrator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MFMailMessageLibraryMigrator;
   v5 = [(MFMailMessageLibraryMigrator *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.message.MFMailMessageLibraryMigrator.contentProtectionQueue", v7);
     contentProtectionQueue = v6->_contentProtectionQueue;
@@ -67,19 +67,19 @@ void __35__MFMailMessageLibraryMigrator_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (BOOL)migrateWithDatabaseConnection:(id)a3 schema:(id)a4
+- (BOOL)migrateWithDatabaseConnection:(id)connection schema:(id)schema
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 isValid] & 1) != 0)
+  connectionCopy = connection;
+  schemaCopy = schema;
+  if (connectionCopy && ([connectionCopy isValid] & 1) != 0)
   {
     v29 = 0;
-    v8 = [v6 performWithOptions:6 transactionError:&v29 block:&__block_literal_global_41];
+    v8 = [connectionCopy performWithOptions:6 transactionError:&v29 block:&__block_literal_global_41];
     v9 = v29;
     if (v8)
     {
-      v10 = _LibraryVersion([v6 sqlDB]);
+      v10 = _LibraryVersion([connectionCopy sqlDB]);
       if (v10 == 231002)
       {
         v11 = +[MFMailMessageLibraryMigrator log];
@@ -105,7 +105,7 @@ LABEL_32:
         _os_log_impl(&dword_1B0389000, v17, OS_LOG_TYPE_DEFAULT, "Starting migration", buf, 2u);
       }
 
-      [v6 executeStatementString:@"PRAGMA foreign_keys = OFF;" errorMessage:@"disabling foreign keys"];
+      [connectionCopy executeStatementString:@"PRAGMA foreign_keys = OFF;" errorMessage:@"disabling foreign keys"];
       if (!_os_feature_enabled_impl() || v10 <= 224002)
       {
         contentProtectionQueue = self->_contentProtectionQueue;
@@ -117,11 +117,11 @@ LABEL_32:
       v28 = v18;
       do
       {
-        v21 = [(MFMailMessageLibraryMigrator *)self migrationState];
-        [v21 lockWhenCondition:0];
+        migrationState = [(MFMailMessageLibraryMigrator *)self migrationState];
+        [migrationState lockWhenCondition:0];
 
-        v22 = [(MFMailMessageLibraryMigrator *)self migrationState];
-        [v22 unlock];
+        migrationState2 = [(MFMailMessageLibraryMigrator *)self migrationState];
+        [migrationState2 unlock];
 
         v23 = +[MFMailMessageLibraryMigrator log];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -133,7 +133,7 @@ LABEL_32:
           _os_log_impl(&dword_1B0389000, v23, OS_LOG_TYPE_DEFAULT, "Starting migration steps from version %lld, attempt %lu", buf, 0x16u);
         }
 
-        v24 = [(MFMailMessageLibraryMigrator *)self _runMigrationStepsFromVersion:v10 connection:v6 schema:v7];
+        v24 = [(MFMailMessageLibraryMigrator *)self _runMigrationStepsFromVersion:v10 connection:connectionCopy schema:schemaCopy];
         if (v24 != 1)
         {
           break;
@@ -146,7 +146,7 @@ LABEL_32:
         EFUnregisterContentProtectionObserver();
       }
 
-      [v6 executeStatementString:@"PRAGMA foreign_keys = ON;" errorMessage:@"reënable foreign keys"];
+      [connectionCopy executeStatementString:@"PRAGMA foreign_keys = ON;" errorMessage:@"reënable foreign keys"];
       if (!v24)
       {
         v11 = +[MFMailMessageLibraryMigrator log];
@@ -176,8 +176,8 @@ LABEL_33:
       v11 = +[MFMailMessageLibraryMigrator log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v9 ef_publicDescription];
-        [(MFMailMessageLibraryMigrator *)v16 migrateWithDatabaseConnection:buf schema:v11];
+        ef_publicDescription = [v9 ef_publicDescription];
+        [(MFMailMessageLibraryMigrator *)ef_publicDescription migrateWithDatabaseConnection:buf schema:v11];
       }
     }
 
@@ -4459,16 +4459,16 @@ void __80__MFMailMessageLibraryMigrator__runMigrationStepsFromVersion_connection
   }
 }
 
-- (BOOL)_runAddBusinessColumnsUpgradeStepForConnection:(id)a3 db:(sqlite3 *)a4
+- (BOOL)_runAddBusinessColumnsUpgradeStepForConnection:(id)connection db:(sqlite3 *)db
 {
-  v5 = a3;
-  HasBeenInitialized = _protectedIndexHasBeenInitialized(v5);
-  v7 = [MEMORY[0x1E699B408] runWithConnection:v5 protectedIndexInitialized:HasBeenInitialized protectedDatabaseName:@"protected"];
-  _HandleSQLiteError(a4, @"Add business columns businesses.localized_brand_name, business_addresses.last_bcs_sync");
+  connectionCopy = connection;
+  HasBeenInitialized = _protectedIndexHasBeenInitialized(connectionCopy);
+  v7 = [MEMORY[0x1E699B408] runWithConnection:connectionCopy protectedIndexInitialized:HasBeenInitialized protectedDatabaseName:@"protected"];
+  _HandleSQLiteError(db, @"Add business columns businesses.localized_brand_name, business_addresses.last_bcs_sync");
   if (HasBeenInitialized)
   {
     v11 = 0;
-    v7 = [MEMORY[0x1E699B508] runWithConnection:v5 error:&v11];
+    v7 = [MEMORY[0x1E699B508] runWithConnection:connectionCopy error:&v11];
     v8 = v11;
     if ((v7 & 1) == 0)
     {
@@ -4483,10 +4483,10 @@ void __80__MFMailMessageLibraryMigrator__runMigrationStepsFromVersion_connection
   return v7;
 }
 
-- (int64_t)_checkContentProtectionStateForUpgradeStartingFromVersion:(int)a3
+- (int64_t)_checkContentProtectionStateForUpgradeStartingFromVersion:(int)version
 {
   v5 = _os_feature_enabled_impl();
-  if (a3 >= 224003 && (v5 & 1) != 0)
+  if (version >= 224003 && (v5 & 1) != 0)
   {
     return 2;
   }
@@ -4495,13 +4495,13 @@ void __80__MFMailMessageLibraryMigrator__runMigrationStepsFromVersion_connection
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(MFMailMessageLibraryMigrator *)self contentProtectionQueue];
+  contentProtectionQueue = [(MFMailMessageLibraryMigrator *)self contentProtectionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__MFMailMessageLibraryMigrator__checkContentProtectionStateForUpgradeStartingFromVersion___block_invoke;
   block[3] = &unk_1E7AA65C8;
   block[4] = &v14;
-  dispatch_sync(v7, block);
+  dispatch_sync(contentProtectionQueue, block);
 
   if (v15[3])
   {
@@ -4510,11 +4510,11 @@ void __80__MFMailMessageLibraryMigrator__runMigrationStepsFromVersion_connection
 
   else
   {
-    v8 = [(MFMailMessageLibraryMigrator *)self migrationState];
-    [v8 lock];
+    migrationState = [(MFMailMessageLibraryMigrator *)self migrationState];
+    [migrationState lock];
 
-    v9 = [(MFMailMessageLibraryMigrator *)self migrationState];
-    [v9 unlockWithCondition:1];
+    migrationState2 = [(MFMailMessageLibraryMigrator *)self migrationState];
+    [migrationState2 unlockWithCondition:1];
 
     v10 = +[MFMailMessageLibraryMigrator log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -4537,11 +4537,11 @@ uint64_t __90__MFMailMessageLibraryMigrator__checkContentProtectionStateForUpgra
   return result;
 }
 
-- (BOOL)_checkForeignKeysWithConnection:(id)a3
+- (BOOL)_checkForeignKeysWithConnection:(id)connection
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 preparedStatementForQueryString:@"PRAGMA foreign_key_check"];
+  connectionCopy = connection;
+  v4 = [connectionCopy preparedStatementForQueryString:@"PRAGMA foreign_key_check"];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -4559,7 +4559,7 @@ uint64_t __90__MFMailMessageLibraryMigrator__checkContentProtectionStateForUpgra
   v6 = v4;
   v18 = v6;
   v21 = &v26;
-  v7 = v3;
+  v7 = connectionCopy;
   v19 = v7;
   v8 = v5;
   v9 = v15;
@@ -4644,17 +4644,17 @@ void __64__MFMailMessageLibraryMigrator__checkForeignKeysWithConnection___block_
   [(MFMailMessageLibraryMigrator *)self noteNeedsSpotlightReindex];
 }
 
-- (void)addPostMigrationBlock:(id)a3
+- (void)addPostMigrationBlock:(id)block
 {
   postMigrationBlocks = self->_postMigrationBlocks;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   [(NSMutableArray *)postMigrationBlocks addObject:?];
 }
 
-- (void)runPostMigrationBlocksWithConnection:(id)a3
+- (void)runPostMigrationBlocksWithConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [(NSMutableArray *)self->_postMigrationBlocks copy];
   [(NSMutableArray *)self->_postMigrationBlocks removeAllObjects];
   v13 = 0u;
@@ -4690,16 +4690,16 @@ void __64__MFMailMessageLibraryMigrator__checkForeignKeysWithConnection___block_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)detachProtectedDatabaseWithConnection:(id)a3
+- (void)detachProtectedDatabaseWithConnection:(id)connection
 {
-  v5 = a3;
-  v4 = [(MFMailMessageLibraryMigrator *)self delegate];
-  [v4 mailMessageLibraryMigrator:self detachProtectedDatabaseWithConnection:v5];
+  connectionCopy = connection;
+  delegate = [(MFMailMessageLibraryMigrator *)self delegate];
+  [delegate mailMessageLibraryMigrator:self detachProtectedDatabaseWithConnection:connectionCopy];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
-  v5 = [(MFMailMessageLibraryMigrator *)self contentProtectionQueue:a3];
+  v5 = [(MFMailMessageLibraryMigrator *)self contentProtectionQueue:changed];
   dispatch_assert_queue_V2(v5);
 
   if (EFProtectedDataAvailable())
@@ -4711,11 +4711,11 @@ void __64__MFMailMessageLibraryMigrator__checkForeignKeysWithConnection___block_
       _os_log_impl(&dword_1B0389000, v6, OS_LOG_TYPE_DEFAULT, "Protected Index became available", v9, 2u);
     }
 
-    v7 = [(MFMailMessageLibraryMigrator *)self migrationState];
-    [v7 lock];
+    migrationState = [(MFMailMessageLibraryMigrator *)self migrationState];
+    [migrationState lock];
 
-    v8 = [(MFMailMessageLibraryMigrator *)self migrationState];
-    [v8 unlockWithCondition:0];
+    migrationState2 = [(MFMailMessageLibraryMigrator *)self migrationState];
+    [migrationState2 unlockWithCondition:0];
   }
 }
 

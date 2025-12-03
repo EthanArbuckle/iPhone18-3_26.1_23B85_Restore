@@ -3,8 +3,8 @@
 + (id)tmpDirLog;
 - (id)bespokeTemporaryDirectory;
 - (id)preferredTemporaryDirectory;
-- (id)secureTemporarySubdirectoryWithName:(id)a3;
-- (id)secureTemporarySubdirectoryWithSubpathComponents:(id)a3;
+- (id)secureTemporarySubdirectoryWithName:(id)name;
+- (id)secureTemporarySubdirectoryWithSubpathComponents:(id)components;
 - (id)temporaryDirectory;
 @end
 
@@ -50,28 +50,28 @@ uint64_t __32__CNFileServices_sharedInstance__block_invoke()
 
 - (id)temporaryDirectory
 {
-  v3 = [(CNFileServices *)self preferredTemporaryDirectory];
-  if (!v3)
+  preferredTemporaryDirectory = [(CNFileServices *)self preferredTemporaryDirectory];
+  if (!preferredTemporaryDirectory)
   {
-    v3 = [(CNFileServices *)self bespokeTemporaryDirectory];
-    if (!v3)
+    preferredTemporaryDirectory = [(CNFileServices *)self bespokeTemporaryDirectory];
+    if (!preferredTemporaryDirectory)
     {
-      v3 = [(CNFileServices *)self temporaryDirectoryOfLastResort];
+      preferredTemporaryDirectory = [(CNFileServices *)self temporaryDirectoryOfLastResort];
     }
   }
 
-  return v3;
+  return preferredTemporaryDirectory;
 }
 
-- (id)secureTemporarySubdirectoryWithName:(id)a3
+- (id)secureTemporarySubdirectoryWithName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v10 = a3;
+    nameCopy = name;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v10 count:1];
+    nameCopy2 = name;
+    v6 = [v4 arrayWithObjects:&nameCopy count:1];
   }
 
   else
@@ -79,25 +79,25 @@ uint64_t __32__CNFileServices_sharedInstance__block_invoke()
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [(CNFileServices *)self secureTemporarySubdirectoryWithSubpathComponents:v6, v10, v11];
+  v7 = [(CNFileServices *)self secureTemporarySubdirectoryWithSubpathComponents:v6, nameCopy, v11];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)secureTemporarySubdirectoryWithSubpathComponents:(id)a3
+- (id)secureTemporarySubdirectoryWithSubpathComponents:(id)components
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNFileServices *)self temporaryDirectory];
-  v6 = [v5 URLByAppendingPathComponent:@"TemporaryItems" isDirectory:1];
+  componentsCopy = components;
+  temporaryDirectory = [(CNFileServices *)self temporaryDirectory];
+  v6 = [temporaryDirectory URLByAppendingPathComponent:@"TemporaryItems" isDirectory:1];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = componentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -127,22 +127,22 @@ uint64_t __32__CNFileServices_sharedInstance__block_invoke()
     while (v9);
   }
 
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v22 = 0;
-  v15 = [v14 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v22];
+  v15 = [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v22];
   v16 = v22;
   if ((v15 & 1) == 0 && ![CNFoundationError isFileAlreadyExistsError:v16])
   {
-    v17 = [objc_opt_class() tmpDirLog];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    tmpDirLog = [objc_opt_class() tmpDirLog];
+    if (os_log_type_enabled(tmpDirLog, OS_LOG_TYPE_ERROR))
     {
-      [(CNFileServices *)v6 secureTemporarySubdirectoryWithSubpathComponents:v16, v17];
+      [(CNFileServices *)v6 secureTemporarySubdirectoryWithSubpathComponents:v16, tmpDirLog];
     }
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(tmpDirLog, OS_LOG_TYPE_DEFAULT))
     {
       *v21 = 0;
-      _os_log_impl(&dword_1859F0000, v17, OS_LOG_TYPE_DEFAULT, "The action with a temporary URL will still be attempted, but the behavior is now undefined.", v21, 2u);
+      _os_log_impl(&dword_1859F0000, tmpDirLog, OS_LOG_TYPE_DEFAULT, "The action with a temporary URL will still be attempted, but the behavior is now undefined.", v21, 2u);
     }
   }
 
@@ -164,19 +164,19 @@ uint64_t __32__CNFileServices_sharedInstance__block_invoke()
       goto LABEL_9;
     }
 
-    v5 = [objc_opt_class() tmpDirLog];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    tmpDirLog = [objc_opt_class() tmpDirLog];
+    if (os_log_type_enabled(tmpDirLog, OS_LOG_TYPE_ERROR))
     {
-      [(CNFileServices *)v5 preferredTemporaryDirectory];
+      [(CNFileServices *)tmpDirLog preferredTemporaryDirectory];
     }
   }
 
   else
   {
-    v5 = [objc_opt_class() tmpDirLog];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    tmpDirLog = [objc_opt_class() tmpDirLog];
+    if (os_log_type_enabled(tmpDirLog, OS_LOG_TYPE_ERROR))
     {
-      [(CNFileServices *)v5 preferredTemporaryDirectory];
+      [(CNFileServices *)tmpDirLog preferredTemporaryDirectory];
     }
   }
 
@@ -188,10 +188,10 @@ LABEL_9:
 
 - (id)bespokeTemporaryDirectory
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/" isDirectory:1];
   v9 = 0;
-  v4 = [v2 URLForDirectory:99 inDomain:1 appropriateForURL:v3 create:1 error:&v9];
+  v4 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v3 create:1 error:&v9];
 
   if (v4)
   {
@@ -200,11 +200,11 @@ LABEL_9:
 
   else
   {
-    v6 = [objc_opt_class() tmpDirLog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    tmpDirLog = [objc_opt_class() tmpDirLog];
+    if (os_log_type_enabled(tmpDirLog, OS_LOG_TYPE_INFO))
     {
       *v8 = 0;
-      _os_log_impl(&dword_1859F0000, v6, OS_LOG_TYPE_INFO, "FileManager did not provide an item replacement directory", v8, 2u);
+      _os_log_impl(&dword_1859F0000, tmpDirLog, OS_LOG_TYPE_INFO, "FileManager did not provide an item replacement directory", v8, 2u);
     }
   }
 

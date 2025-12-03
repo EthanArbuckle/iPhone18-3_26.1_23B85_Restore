@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (TIStatisticChangeCache)init;
 - (id)flush;
-- (void)addValue:(int)a3 toStatisticWithName:(id)a4 andInputMode:(id)a5;
-- (void)addValue:(int)a3 toStatisticWithName:(id)a4 inCache:(id)a5;
+- (void)addValue:(int)value toStatisticWithName:(id)name andInputMode:(id)mode;
+- (void)addValue:(int)value toStatisticWithName:(id)name inCache:(id)cache;
 @end
 
 @implementation TIStatisticChangeCache
@@ -71,9 +71,9 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
 
         v9 = *(*(&v42 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_cacheWithoutInputMode objectForKey:v9];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
-        v12 = [TIStatisticChange statisticChangeWithName:v9 andValue:v11 andInputMode:0];
+        v12 = [TIStatisticChange statisticChangeWithName:v9 andValue:intValue andInputMode:0];
         [v3 addObject:v12];
       }
 
@@ -92,7 +92,7 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
   if (v32)
   {
     v30 = *v39;
-    v31 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -126,9 +126,9 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
 
               v20 = *(*(&v34 + 1) + 8 * j);
               v21 = [v15 objectForKey:v20];
-              v22 = [v21 intValue];
+              intValue2 = [v21 intValue];
 
-              v23 = [TIStatisticChange statisticChangeWithName:v20 andValue:v22 andInputMode:v14];
+              v23 = [TIStatisticChange statisticChangeWithName:v20 andValue:intValue2 andInputMode:v14];
               [v3 addObject:v23];
             }
 
@@ -139,7 +139,7 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
         }
 
         v13 = v33 + 1;
-        self = v31;
+        self = selfCopy;
       }
 
       while (v33 + 1 != v32);
@@ -160,12 +160,12 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)addValue:(int)a3 toStatisticWithName:(id)a4 inCache:(id)a5
+- (void)addValue:(int)value toStatisticWithName:(id)name inCache:(id)cache
 {
-  v6 = *&a3;
-  v7 = a5;
-  v8 = a4;
-  v9 = [v7 objectForKey:v8];
+  v6 = *&value;
+  cacheCopy = cache;
+  nameCopy = name;
+  v9 = [cacheCopy objectForKey:nameCopy];
   v11 = v9;
   if (v9)
   {
@@ -173,21 +173,21 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:v6];
-  [v7 setValue:v10 forKey:v8];
+  [cacheCopy setValue:v10 forKey:nameCopy];
 }
 
-- (void)addValue:(int)a3 toStatisticWithName:(id)a4 andInputMode:(id)a5
+- (void)addValue:(int)value toStatisticWithName:(id)name andInputMode:(id)mode
 {
-  v6 = *&a3;
-  v12 = a4;
-  v8 = a5;
-  if (v8)
+  v6 = *&value;
+  nameCopy = name;
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_cacheWithInputMode objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_cacheWithInputMode objectForKey:modeCopy];
     if (!v9)
     {
-      v10 = [(NSMutableDictionary *)self->_cacheWithInputMode allKeys];
-      v11 = [v10 count];
+      allKeys = [(NSMutableDictionary *)self->_cacheWithInputMode allKeys];
+      v11 = [allKeys count];
 
       if (v11)
       {
@@ -195,15 +195,15 @@ uint64_t __40__TIStatisticChangeCache_sharedInstance__block_invoke()
       }
 
       v9 = objc_opt_new();
-      [(NSMutableDictionary *)self->_cacheWithInputMode setObject:v9 forKey:v8];
+      [(NSMutableDictionary *)self->_cacheWithInputMode setObject:v9 forKey:modeCopy];
     }
 
-    [(TIStatisticChangeCache *)self addValue:v6 toStatisticWithName:v12 inCache:v9];
+    [(TIStatisticChangeCache *)self addValue:v6 toStatisticWithName:nameCopy inCache:v9];
   }
 
   else
   {
-    [(TIStatisticChangeCache *)self addValue:v6 toStatisticWithName:v12 inCache:self->_cacheWithoutInputMode];
+    [(TIStatisticChangeCache *)self addValue:v6 toStatisticWithName:nameCopy inCache:self->_cacheWithoutInputMode];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface _UIPencilEvent
 - (id)_init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)registerInteraction:(uint64_t)a1;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)registerInteraction:(uint64_t)interaction;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_cancelAndRemoveAllDescriptorsAndInteractions;
-- (uint64_t)_shouldCollectInteraction:(int)a3 consultingInteraction:(void *)a4 constrainedToWindow:;
-- (void)_cancelAndRemoveInteractionsInAllDeliveryRecordsFromFilter:(uint64_t)a1;
+- (uint64_t)_shouldCollectInteraction:(int)interaction consultingInteraction:(void *)consultingInteraction constrainedToWindow:;
+- (void)_cancelAndRemoveInteractionsInAllDeliveryRecordsFromFilter:(uint64_t)filter;
 - (void)_cleanupAfterDispatch;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
 - (void)dealloc;
 - (void)sendToInteractions;
-- (void)unregisterAllInteractionsForWindow:(uint64_t)a1;
+- (void)unregisterAllInteractionsForWindow:(uint64_t)window;
 @end
 
 @implementation _UIPencilEvent
@@ -22,23 +22,23 @@
 {
   v11.receiver = self;
   v11.super_class = _UIPencilEvent;
-  v2 = [(UIEvent *)&v11 _init];
-  if (v2)
+  _init = [(UIEvent *)&v11 _init];
+  if (_init)
   {
     v3 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0 valueOptions:512];
-    v4 = v2[24];
-    v2[24] = v3;
+    v4 = _init[24];
+    _init[24] = v3;
 
-    v2[21] = 0x7FF8000000000000;
+    _init[21] = 0x7FF8000000000000;
     v5 = [UINotificationFeedbackGenerator alloc];
     v6 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1EFE30130];
     v7 = [_UINotificationFeedbackGeneratorConfiguration privateConfigurationForTypes:v6];
     v8 = [(UIFeedbackGenerator *)v5 initWithConfiguration:v7];
-    v9 = v2[19];
-    v2[19] = v8;
+    v9 = _init[19];
+    _init[19] = v8;
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
@@ -49,55 +49,55 @@
   [(UIEvent *)&v3 dealloc];
 }
 
-- (id)registerInteraction:(uint64_t)a1
+- (id)registerInteraction:(uint64_t)interaction
 {
   v71[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!interaction)
   {
     goto LABEL_4;
   }
 
-  if ([*(a1 + 176) containsObject:a2])
+  if ([*(interaction + 176) containsObject:a2])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:sel_registerInteraction_ object:a1 file:@"_UIPencilEvent.m" lineNumber:444 description:{@"%s: Interaction is already registered with event: interaction: %@; event: %@", "-[_UIPencilEvent registerInteraction:]", a2, a1}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_registerInteraction_ object:interaction file:@"_UIPencilEvent.m" lineNumber:444 description:{@"%s: Interaction is already registered with event: interaction: %@; event: %@", "-[_UIPencilEvent registerInteraction:]", a2, interaction}];
 
 LABEL_4:
     v5 = 0;
     goto LABEL_26;
   }
 
-  v6 = [a2 view];
-  v7 = [v6 _window];
+  view = [a2 view];
+  _window = [view _window];
   if (!a2 || (*(a2 + 8) < 0 ? (v8 = *(a2 + 32)) : (v8 = [a2 _dispatchBehavior], *(a2 + 32) = v8), v8 != 2))
   {
-    v9 = [MEMORY[0x1E696B098] valueWithPointer:v7];
-    v10 = *(a1 + 184);
+    v9 = [MEMORY[0x1E696B098] valueWithPointer:_window];
+    v10 = *(interaction + 184);
     if (!v10)
     {
       v11 = objc_opt_new();
-      v12 = *(a1 + 184);
-      *(a1 + 184) = v11;
+      v12 = *(interaction + 184);
+      *(interaction + 184) = v11;
 
-      v10 = *(a1 + 184);
+      v10 = *(interaction + 184);
     }
 
     [v10 addObject:v9];
   }
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, interaction);
   objc_initWeak(&from, a2);
   v13 = ++qword_1ED497210;
   v14 = objc_opt_class();
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%p-%lu", class_getName(v14), a2, v13];
   v16 = MEMORY[0x1E696AEC0];
-  v17 = a1;
+  interactionCopy = interaction;
   v18 = MEMORY[0x1E696AEC0];
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [v18 stringWithFormat:@"<%@: %p>", v20, v17];
+  interactionCopy = [v18 stringWithFormat:@"<%@: %p>", v20, interactionCopy];
 
-  v22 = [v16 stringWithFormat:@"Registering interaction with: %@", v21];
+  v22 = [v16 stringWithFormat:@"Registering interaction with: %@", interactionCopy];
 
   v23 = objc_alloc(MEMORY[0x1E698E778]);
   v24 = MEMORY[0x1E69E96A0];
@@ -132,13 +132,13 @@ LABEL_4:
       }
 
       v61 = v48;
-      v49 = [v44 view];
-      if (v49)
+      view2 = [v44 view];
+      if (view2)
       {
         v50 = MEMORY[0x1E696AEC0];
         v51 = objc_opt_class();
         v52 = NSStringFromClass(v51);
-        v53 = [v50 stringWithFormat:@"<%@: %p>", v52, v49];
+        v53 = [v50 stringWithFormat:@"<%@: %p>", v52, view2];
       }
 
       else
@@ -147,7 +147,7 @@ LABEL_4:
       }
 
       v59 = v53;
-      v54 = v17;
+      v54 = interactionCopy;
       v55 = MEMORY[0x1E696AEC0];
       v56 = objc_opt_class();
       v57 = NSStringFromClass(v56);
@@ -165,28 +165,28 @@ LABEL_4:
     }
   }
 
-  v26 = v17[22];
+  v26 = interactionCopy[22];
   if (!v26)
   {
-    v27 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v28 = v17[22];
-    v17[22] = v27;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v28 = interactionCopy[22];
+    interactionCopy[22] = weakObjectsHashTable;
 
-    v26 = v17[22];
+    v26 = interactionCopy[22];
   }
 
   [v26 addObject:a2];
-  if (!v17[18] && [v17[22] count])
+  if (!interactionCopy[18] && [interactionCopy[22] count])
   {
-    v29 = [v17[22] anyObject];
-    v30 = [v29 view];
-    v31 = [v30 _window];
-    v32 = [v31 _windowHostingScene];
+    anyObject = [interactionCopy[22] anyObject];
+    view3 = [anyObject view];
+    _window2 = [view3 _window];
+    _windowHostingScene = [_window2 _windowHostingScene];
 
-    objc_initWeak(&v68, v17);
+    objc_initWeak(&v68, interactionCopy);
     v33 = MEMORY[0x1E696AEC0];
-    v34 = [v32 _sceneIdentifier];
-    v35 = [v33 stringWithFormat:@"UIKit - PencilEvent - %@", v34];
+    _sceneIdentifier = [_windowHostingScene _sceneIdentifier];
+    v35 = [v33 stringWithFormat:@"UIKit - PencilEvent - %@", _sceneIdentifier];
 
     v36 = MEMORY[0x1E69E96A0];
     *buf = MEMORY[0x1E69E9820];
@@ -195,8 +195,8 @@ LABEL_4:
     v70 = &unk_1E70F6320;
     objc_copyWeak(v71, &v68);
     v37 = BSLogAddStateCaptureBlockForUserRequestsOnlyWithTitle();
-    v38 = v17[18];
-    v17[18] = v37;
+    v38 = interactionCopy[18];
+    interactionCopy[18] = v37;
 
     objc_destroyWeak(v71);
     objc_destroyWeak(&v68);
@@ -204,9 +204,9 @@ LABEL_4:
 
   if (!a2 || (*(a2 + 8) < 0 ? (v39 = *(a2 + 32)) : (v39 = [a2 _dispatchBehavior], *(a2 + 32) = v39), v39 != 2))
   {
-    v40 = [a2 view];
-    v41 = [v40 _window];
-    _UIPencilEventRequestBarrelFocusIfAbleForWindow(v41, 0);
+    view4 = [a2 view];
+    _window3 = [view4 _window];
+    _UIPencilEventRequestBarrelFocusIfAbleForWindow(_window3, 0);
   }
 
   v5 = v62;
@@ -221,16 +221,16 @@ LABEL_26:
   return v5;
 }
 
-- (void)unregisterAllInteractionsForWindow:(uint64_t)a1
+- (void)unregisterAllInteractionsForWindow:(uint64_t)window
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (window)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [*(a1 + 176) copy];
+    v3 = [*(window + 176) copy];
     v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
@@ -246,10 +246,10 @@ LABEL_26:
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [v8 view];
-          v10 = [v9 _window];
+          view = [v8 view];
+          _window = [view _window];
 
-          if (v10 == a2)
+          if (_window == a2)
           {
             [(UIPencilInteraction *)v8 _unregisterFromEvent];
           }
@@ -263,16 +263,16 @@ LABEL_26:
   }
 }
 
-- (void)_cancelAndRemoveInteractionsInAllDeliveryRecordsFromFilter:(uint64_t)a1
+- (void)_cancelAndRemoveInteractionsInAllDeliveryRecordsFromFilter:(uint64_t)filter
 {
   v29 = *MEMORY[0x1E69E9840];
-  v20 = *(a1 + 160);
-  v21 = *(a1 + 136);
+  v20 = *(filter + 160);
+  v21 = *(filter + 136);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = *(a1 + 192);
+  obj = *(filter + 192);
   v4 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
   {
@@ -289,7 +289,7 @@ LABEL_26:
         }
 
         v7 = *(*(&v24 + 1) + 8 * v6);
-        v8 = [*(a1 + 192) objectForKey:v7];
+        v8 = [*(filter + 192) objectForKey:v7];
         v9 = v8;
         if (v8)
         {
@@ -325,19 +325,19 @@ LABEL_14:
             v14 = 250;
           }
 
-          *(a1 + 136) = v14;
-          *(a1 + 160) = 4;
-          objc_storeStrong((a1 + 200), v7);
-          v15 = [v12 allObjects];
-          v16 = *(a1 + 208);
-          *(a1 + 208) = v15;
+          *(filter + 136) = v14;
+          *(filter + 160) = 4;
+          objc_storeStrong((filter + 200), v7);
+          allObjects = [v12 allObjects];
+          v16 = *(filter + 208);
+          *(filter + 208) = allObjects;
 
-          [(_UIPencilEvent *)a1 sendToInteractions];
-          v17 = *(a1 + 200);
-          *(a1 + 200) = 0;
+          [(_UIPencilEvent *)filter sendToInteractions];
+          v17 = *(filter + 200);
+          *(filter + 200) = 0;
 
-          v18 = *(a1 + 208);
-          *(a1 + 208) = 0;
+          v18 = *(filter + 208);
+          *(filter + 208) = 0;
 
           [v10 minusSet:v12];
         }
@@ -353,20 +353,20 @@ LABEL_14:
     while (v19);
   }
 
-  *(a1 + 136) = v21;
-  *(a1 + 160) = v20;
+  *(filter + 136) = v21;
+  *(filter + 160) = v20;
 }
 
 - (void)sendToInteractions
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   v2 = &OBJC_IVAR____UISystemBackgroundView__strokeView;
-  v3 = *(a1 + 136);
+  v3 = *(self + 136);
   if (v3 == 250)
   {
     v4 = +[UIEventSessionActionAnalytics sharedInstance];
@@ -374,10 +374,10 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  if (v3 == 251 && (*(a1 + 160) | 2) == 3)
+  if (v3 == 251 && (*(self + 160) | 2) == 3)
   {
     v4 = +[UIEventSessionActionAnalytics sharedInstance];
-    [v4 didPencilSqueezeWithPhase:*(a1 + 160)];
+    [v4 didPencilSqueezeWithPhase:*(self + 160)];
 LABEL_7:
   }
 
@@ -385,7 +385,7 @@ LABEL_7:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(a1 + 208);
+  v5 = *(self + 208);
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v6)
   {
@@ -410,12 +410,12 @@ LABEL_7:
           if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
           {
             v23 = MEMORY[0x1E696AEC0];
-            v14 = a1;
+            selfCopy = self;
             v15 = objc_opt_class();
             v21 = NSStringFromClass(v15);
-            v24 = [v23 stringWithFormat:@"<%@: %p>", v21, v14];
+            selfCopy = [v23 stringWithFormat:@"<%@: %p>", v21, selfCopy];
 
-            v16 = v24;
+            v16 = selfCopy;
             if (v11)
             {
               v25 = MEMORY[0x1E696AEC0];
@@ -443,27 +443,27 @@ LABEL_7:
           }
         }
 
-        [(UIPencilInteraction *)v11 _performCallbacksWithEvent:a1];
+        [(UIPencilInteraction *)v11 _performCallbacksWithEvent:self];
         if (v11)
         {
           if (*(v11 + 8) < 0)
           {
-            v13 = *(v11 + 32);
+            _dispatchBehavior = *(v11 + 32);
           }
 
           else
           {
-            v13 = [v11 _dispatchBehavior];
-            *(v11 + 32) = v13;
+            _dispatchBehavior = [v11 _dispatchBehavior];
+            *(v11 + 32) = _dispatchBehavior;
           }
         }
 
         else
         {
-          v13 = 0;
+          _dispatchBehavior = 0;
         }
 
-        v8 |= v13 != 2;
+        v8 |= _dispatchBehavior != 2;
         ++v10;
       }
 
@@ -474,11 +474,11 @@ LABEL_7:
 
     while (v19);
 
-    if ((v8 & 1) != 0 && *(a1 + v2[506]) == 250)
+    if ((v8 & 1) != 0 && *(self + v2[506]) == 250)
     {
-      if (*(a1 + 128))
+      if (*(self + 128))
       {
-        [*(a1 + 152) _privateNotificationOccurred:1023 atLocation:1.79769313e308 senderID:1.79769313e308];
+        [*(self + 152) _privateNotificationOccurred:1023 atLocation:1.79769313e308 senderID:1.79769313e308];
       }
     }
   }
@@ -520,45 +520,45 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)_shouldCollectInteraction:(int)a3 consultingInteraction:(void *)a4 constrainedToWindow:
+- (uint64_t)_shouldCollectInteraction:(int)interaction consultingInteraction:(void *)consultingInteraction constrainedToWindow:
 {
-  if (!a1 || ![a2 isEnabled])
+  if (!self || ![a2 isEnabled])
   {
     return 0;
   }
 
-  if (a4)
+  if (consultingInteraction)
   {
-    v4 = [a2 view];
-    v5 = [v4 _window];
-    if (v5 != a4)
+    view = [a2 view];
+    _window = [view _window];
+    if (_window != consultingInteraction)
     {
-      v10 = 0;
+      _isInVisibleHierarchy = 0;
 LABEL_11:
 
-      return v10;
+      return _isInVisibleHierarchy;
     }
   }
 
-  v11 = [a2 view];
-  v10 = [(UIView *)v11 _isInVisibleHierarchy];
-  if (v10 && a3)
+  view2 = [a2 view];
+  _isInVisibleHierarchy = [(UIView *)view2 _isInVisibleHierarchy];
+  if (_isInVisibleHierarchy && interaction)
   {
-    v10 = [(UIPencilInteraction *)a2 _internalShouldReceiveEvent:a1];
+    _isInVisibleHierarchy = [(UIPencilInteraction *)a2 _internalShouldReceiveEvent:self];
   }
 
-  if (a4)
+  if (consultingInteraction)
   {
     goto LABEL_11;
   }
 
-  return v10;
+  return _isInVisibleHierarchy;
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
   v86 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!event)
   {
     v69.receiver = self;
     v69.super_class = _UIPencilEvent;
@@ -568,15 +568,15 @@ LABEL_11:
 
   if (!_UIEventHIDIsPencilBarrelEvent())
   {
-    v67 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v67 handleFailureInMethod:a2 object:self file:@"_UIPencilEvent.m" lineNumber:748 description:{@"Invalid hidEvent type for %@: %@", objc_opt_class(), a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPencilEvent.m" lineNumber:748 description:{@"Invalid hidEvent type for %@: %@", objc_opt_class(), event}];
 
     return;
   }
 
   v69.receiver = self;
   v69.super_class = _UIPencilEvent;
-  [(UIEvent *)&v69 _setHIDEvent:a3];
+  [(UIEvent *)&v69 _setHIDEvent:event];
   IntegerValue = IOHIDEventGetIntegerValue();
   SenderID = IOHIDEventGetSenderID();
   v8 = 251;
@@ -625,7 +625,7 @@ LABEL_19:
   self->_phase = v10;
   if (!_os_feature_enabled_impl())
   {
-    if (_UIEventHIDGetChildVendorDefinedForceStageEvent(a3))
+    if (_UIEventHIDGetChildVendorDefinedForceStageEvent(event))
     {
       v11 = *(IOHIDEventGetDataValue() + 40);
       goto LABEL_25;
@@ -636,7 +636,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!_UIEventHIDGetChildForceStageEvent(a3))
+  if (!_UIEventHIDGetChildForceStageEvent(event))
   {
     goto LABEL_24;
   }
@@ -662,7 +662,7 @@ LABEL_25:
     v64 = v12;
     Type = IOHIDEventGetType();
     v17 = IOHIDEventGetSenderID();
-    v63 = a3;
+    eventCopy = event;
     v18 = IOHIDEventGetIntegerValue();
     v78 = 0u;
     v79 = 0u;
@@ -741,7 +741,7 @@ LABEL_45:
     v29 = 0;
     v30 = &OBJC_IVAR____UISystemBackgroundView__strokeView;
 LABEL_53:
-    v31 = [_UIGenericGestureHIDEventDescriptor descriptorWithEvent:v63];
+    v31 = [_UIGenericGestureHIDEventDescriptor descriptorWithEvent:eventCopy];
     v32 = objc_opt_new();
 
     v66 = v31;
@@ -777,19 +777,19 @@ LABEL_54:
             {
               if (*(v39 + 8) < 0)
               {
-                v40 = *(v39 + 32);
+                _dispatchBehavior = *(v39 + 32);
               }
 
               else
               {
-                v40 = [*(*(&v74 + 1) + 8 * v38) _dispatchBehavior];
-                *(v39 + 32) = v40;
+                _dispatchBehavior = [*(*(&v74 + 1) + 8 * v38) _dispatchBehavior];
+                *(v39 + 32) = _dispatchBehavior;
               }
             }
 
             else
             {
-              v40 = 0;
+              _dispatchBehavior = 0;
             }
 
             if ([(_UIPencilEvent *)self _shouldCollectInteraction:v39 consultingInteraction:1 constrainedToWindow:v14])
@@ -805,9 +805,9 @@ LABEL_54:
               }
 
               [v41 addObject:v39];
-              if ((v40 != 0) | v36 & 1)
+              if ((_dispatchBehavior != 0) | v36 & 1)
               {
-                if (v40 == 1)
+                if (_dispatchBehavior == 1)
                 {
                   v42 = v68;
                   if (!v68)
@@ -909,9 +909,9 @@ LABEL_54:
   }
 
   v55 = v54;
-  v56 = [v55 allObjects];
+  allObjects = [v55 allObjects];
   interactionsForDispatch = self->_interactionsForDispatch;
-  self->_interactionsForDispatch = v56;
+  self->_interactionsForDispatch = allObjects;
 
   if (!v53)
   {
@@ -920,7 +920,7 @@ LABEL_54:
     {
       if (subtype != 251)
       {
-        v59 = [(NSHashTable *)self->_registeredInteractions allObjects];
+        allObjects2 = [(NSHashTable *)self->_registeredInteractions allObjects];
         v84[0] = MEMORY[0x1E69E9820];
         v84[1] = 3221225472;
         v84[2] = __89___UIPencilEvent__collectAllActiveInteractionsConstrainedToWindow_consultingInteraction___block_invoke;
@@ -929,7 +929,7 @@ LABEL_54:
         v84[4] = self;
         v84[5] = v14;
         v60 = [MEMORY[0x1E696AE18] predicateWithBlock:v84];
-        v61 = [v59 filteredArrayUsingPredicate:v60];
+        v61 = [allObjects2 filteredArrayUsingPredicate:v60];
 
         v62 = self->_interactionsForDispatch;
         self->_interactionsForDispatch = v61;
@@ -966,10 +966,10 @@ LABEL_54:
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPencilEvent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPencilEvent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1022,26 +1022,26 @@ LABEL_54:
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPencilEvent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPencilEvent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPencilEvent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPencilEvent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   subtype = self->_subtype;
   v7 = @"squeeze";
   v8 = @"(unknown)";
@@ -1072,7 +1072,7 @@ LABEL_54:
   v14[3] = &unk_1E70F35B8;
   v10 = v5;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v11 = [v10 modifyBody:v14];
   v12 = v10;
 

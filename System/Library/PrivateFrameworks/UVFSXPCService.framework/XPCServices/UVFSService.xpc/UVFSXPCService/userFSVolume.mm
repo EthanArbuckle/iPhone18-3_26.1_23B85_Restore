@@ -1,74 +1,74 @@
 @interface userFSVolume
-+ (id)newWithDevice:(id)a3 fsType:(id)a4 volumeName:(id)a5 rootNode:(void *)a6 errorState:(id)a7 returnError:(id *)a8;
-- (BOOL)getNodeFromFileID:(unint64_t)a3 outNode:(id *)a4;
++ (id)newWithDevice:(id)device fsType:(id)type volumeName:(id)name rootNode:(void *)node errorState:(id)state returnError:(id *)error;
+- (BOOL)getNodeFromFileID:(unint64_t)d outNode:(id *)node;
 - (BOOL)pauseIOQueue;
-- (char)pathStringForNode:(id)a3 name:(id)a4 buffer:(char *)a5 bufferSize:(unint64_t)a6 outLength:(unint64_t *)a7;
-- (id)getFileSystemRepresentation:(id)a3 error:(int *)a4;
+- (char)pathStringForNode:(id)node name:(id)name buffer:(char *)buffer bufferSize:(unint64_t)size outLength:(unint64_t *)length;
+- (id)getFileSystemRepresentation:(id)representation error:(int *)error;
 - (id)getFreeSpaceInVolume;
-- (id)getNodeForFH:(id)a3 withError:(int *)a4;
+- (id)getNodeForFH:(id)h withError:(int *)error;
 - (id)grantLIFSKextAccessToFD;
-- (id)lookupWithParent:(id)a3 andName:(id)a4;
+- (id)lookupWithParent:(id)parent andName:(id)name;
 - (id)registerSpotlightNotifer;
 - (id)revokeLIFSKextAccessToFD;
-- (id)updateRootNode:(void *)a3 errorState:(id)a4;
-- (int)searchVolume:(id)a3 withCriteria:(id)a4 withSearchToken:(id)a5 andWithResultsHandler:(id)a6;
+- (id)updateRootNode:(void *)node errorState:(id)state;
+- (int)searchVolume:(id)volume withCriteria:(id)criteria withSearchToken:(id)token andWithResultsHandler:(id)handler;
 - (userFSVolume)init;
-- (userFSVolume)initWithDevice:(id)a3 fsType:(id)a4 volumeName:(id)a5 UVFSRootNode:(void *)a6 errorState:(id)a7 returnError:(id *)a8;
-- (void)LIRead:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6;
-- (void)LIRead:(id)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 reply:(id)a6;
+- (userFSVolume)initWithDevice:(id)device fsType:(id)type volumeName:(id)name UVFSRootNode:(void *)node errorState:(id)state returnError:(id *)error;
+- (void)LIRead:(id)read atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply;
+- (void)LIRead:(id)read length:(unint64_t)length atOffset:(unint64_t)offset reply:(id)reply;
 - (void)LISearchAbortAll;
-- (void)LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6;
-- (void)abortAllClientSearchesFor:(unint64_t)a3;
-- (void)abortSearch:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)blockmapFile:(id)a3 range:(_NSRange)a4 flags:(unsigned int)a5 operationID:(unint64_t)a6 reply:(id)a7;
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
+- (void)LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply;
+- (void)abortAllClientSearchesFor:(unint64_t)for;
+- (void)abortSearch:(id)search requestID:(unint64_t)d reply:(id)reply;
+- (void)blockmapFile:(id)file range:(_NSRange)range flags:(unsigned int)flags operationID:(unint64_t)d reply:(id)reply;
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
 - (void)createAppleDoubleManagerIfNeeded;
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
 - (void)dealloc;
-- (void)endIO:(id)a3 range:(_NSRange)a4 status:(int)a5 flags:(unsigned int)a6 operationID:(unint64_t)a7 reply:(id)a8;
-- (void)fetchVolumeMachPortLabeled:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)insertIntoFHCache:(id)a3;
-- (void)insertIntoNameCache:(id)a3 withParent:(id)a4;
-- (void)insertIntoNameCache:(id)a3 withParent:(id)a4 withName:(id)a5;
-- (void)invalidateFileNodesForConnection:(unint64_t)a3;
-- (void)listXattrsOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)lookupin:(id)a3 name:(id)a4 forClient:(unint64_t)a5 usingFlags:(unsigned int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)makeLinkOf:(id)a3 named:(id)a4 inDirectory:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 andClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)otherAttributeOf:(id)a3 named:(id)a4 reply:(id)a5;
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)parentsAndAttributesForItemsByID:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
+- (void)endIO:(id)o range:(_NSRange)range status:(int)status flags:(unsigned int)flags operationID:(unint64_t)d reply:(id)reply;
+- (void)fetchVolumeMachPortLabeled:(id)labeled forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
+- (void)insertIntoFHCache:(id)cache;
+- (void)insertIntoNameCache:(id)cache withParent:(id)parent;
+- (void)insertIntoNameCache:(id)cache withParent:(id)parent withName:(id)name;
+- (void)invalidateFileNodesForConnection:(unint64_t)connection;
+- (void)listXattrsOf:(id)of requestID:(unint64_t)d reply:(id)reply;
+- (void)lookupin:(id)lookupin name:(id)name forClient:(unint64_t)client usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)makeLinkOf:(id)of named:(id)named inDirectory:(id)directory andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
+- (void)otherAttributeOf:(id)of named:(id)named reply:(id)reply;
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply;
+- (void)parentsAndAttributesForItemsByID:(id)d requestID:(unint64_t)iD reply:(id)reply;
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply;
 - (void)purgeFHToNodeTable;
 - (void)purgeMappingTables;
 - (void)purgeNameToFHTable;
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)reclaim:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)removeFromFHCache:(id)a3;
-- (void)removeFromNameCache:(id)a3 withParent:(id)a4;
-- (void)removeFromNameCache:(id)a3 withParent:(id)a4 withName:(id)a5;
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)renameItemIn:(id)a3 named:(id)a4 toDirectory:(id)a5 newName:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9;
+- (void)readDirectory:(id)directory amount:(unint64_t)amount cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory amount:(unint64_t)amount requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply;
+- (void)reclaim:(id)reclaim forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)removeFromFHCache:(id)cache;
+- (void)removeFromNameCache:(id)cache withParent:(id)parent;
+- (void)removeFromNameCache:(id)cache withParent:(id)parent withName:(id)name;
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)renameItemIn:(id)in named:(id)named toDirectory:(id)directory newName:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
 - (void)resumeIOQueue;
 - (void)revokeDeviceIfNeeded;
-- (void)rootFileHandleForClient:(unint64_t)a3 reply:(id)a4;
-- (void)search:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 forClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)setOtherAttributeOf:(id)a3 named:(id)a4 value:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)setXattrOf:(id)a3 named:(id)a4 value:(id)a5 how:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
+- (void)rootFileHandleForClient:(unint64_t)client reply:(id)reply;
+- (void)search:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply;
+- (void)setOtherAttributeOf:(id)of named:(id)named value:(id)value requestID:(unint64_t)d reply:(id)reply;
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)setXattrOf:(id)of named:(id)named value:(id)value how:(int)how requestID:(unint64_t)d reply:(id)reply;
 - (void)startSyncerIfNeeded;
-- (void)unmount:(unsigned int)a3;
-- (void)verifyExistenceWithFileIDs:(id)a3 reply:(id)a4;
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)xattrOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
+- (void)unmount:(unsigned int)unmount;
+- (void)verifyExistenceWithFileIDs:(id)ds reply:(id)reply;
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply;
+- (void)xattrOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation userFSVolume
@@ -197,10 +197,10 @@ LABEL_7:
   return v2;
 }
 
-- (id)updateRootNode:(void *)a3 errorState:(id)a4
+- (id)updateRootNode:(void *)node errorState:(id)state
 {
-  v7 = a4;
-  if (!(a3 | v7))
+  stateCopy = state;
+  if (!(node | stateCopy))
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -210,12 +210,12 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3)
+  if (node)
   {
     rootNode = self->_rootNode;
-    if (!rootNode || [(liveFSNode *)rootNode UVFSNode]!= a3)
+    if (!rootNode || [(liveFSNode *)rootNode UVFSNode]!= node)
     {
-      v9 = [[liveFSNode alloc] initWithVolume:self andRootUVFSNode:a3];
+      v9 = [[liveFSNode alloc] initWithVolume:self andRootUVFSNode:node];
       v10 = self->_rootNode;
       self->_rootNode = v9;
 
@@ -236,7 +236,7 @@ LABEL_9:
 LABEL_11:
   if (![(NSString *)self->_volumeName length])
   {
-    if (v7)
+    if (stateCopy)
     {
       v14 = 0;
       if (v11)
@@ -295,16 +295,16 @@ LABEL_58:
 LABEL_59:
 
           metaDataQueueNamePrefix = self->_metaDataQueueNamePrefix;
-          v44 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceName];
-          v45 = [NSString stringWithFormat:@"%@.%@.%@", metaDataQueueNamePrefix, v44, self->_volumeName];
+          deviceName = [(LiveFSRawDevice *)self->_volumeRawDevice deviceName];
+          v45 = [NSString stringWithFormat:@"%@.%@.%@", metaDataQueueNamePrefix, deviceName, self->_volumeName];
           serialQueueName = self->_serialQueueName;
           self->_serialQueueName = v45;
 
           metaDataRequests = self->_metaDataRequests;
           [(NSString *)self->_serialQueueName UTF8String];
           dispatch_queue_set_label_nocopy();
-          v48 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceName];
-          v49 = [NSString stringWithFormat:@"com.apple.filesystem.uvfs.dataIO.%@.%@", v48, self->_volumeName];
+          deviceName2 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceName];
+          v49 = [NSString stringWithFormat:@"com.apple.filesystem.uvfs.dataIO.%@.%@", deviceName2, self->_volumeName];
           concurrentQueueName = self->_concurrentQueueName;
           self->_concurrentQueueName = v49;
 
@@ -360,7 +360,7 @@ LABEL_43:
 
   v13 = [(NSString *)self->_volumeName isEqualToString:@"Untitled"];
   v14 = 0;
-  if (!v7 && v13)
+  if (!stateCopy && v13)
   {
     goto LABEL_24;
   }
@@ -411,14 +411,14 @@ LABEL_53:
     goto LABEL_62;
   }
 
-  v37 = [v24 bytes];
-  self->_useMetadataBuf = (*v37 & 0x400000000) != 0;
-  v38 = *v37;
-  self->_useKOIO = (*v37 & 0x40000000) != 0;
+  bytes = [v24 bytes];
+  self->_useMetadataBuf = (*bytes & 0x400000000) != 0;
+  v38 = *bytes;
+  self->_useKOIO = (*bytes & 0x40000000) != 0;
   if ((v38 & 0x40000000) != 0)
   {
-    v39 = [(userFSVolume *)self grantLIFSKextAccessToFD];
-    if (v39)
+    grantLIFSKextAccessToFD = [(userFSVolume *)self grantLIFSKextAccessToFD];
+    if (grantLIFSKextAccessToFD)
     {
       self->_useKOIO = 0;
     }
@@ -443,7 +443,7 @@ LABEL_53:
 
   v14 = v26;
 LABEL_61:
-  objc_storeStrong(&self->_errorState, a4);
+  objc_storeStrong(&self->_errorState, state);
 
   v12 = 0;
 LABEL_62:
@@ -451,15 +451,15 @@ LABEL_62:
   return v12;
 }
 
-- (userFSVolume)initWithDevice:(id)a3 fsType:(id)a4 volumeName:(id)a5 UVFSRootNode:(void *)a6 errorState:(id)a7 returnError:(id *)a8
+- (userFSVolume)initWithDevice:(id)device fsType:(id)type volumeName:(id)name UVFSRootNode:(void *)node errorState:(id)state returnError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (*a8)
+  deviceCopy = device;
+  typeCopy = type;
+  nameCopy = name;
+  stateCopy = state;
+  if (*error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   v18 = [(userFSVolume *)self init];
@@ -468,9 +468,9 @@ LABEL_62:
     goto LABEL_7;
   }
 
-  v38 = v15;
-  [v14 deviceName];
-  v19 = obj = a5;
+  v38 = typeCopy;
+  [deviceCopy deviceName];
+  v19 = obj = name;
   v20 = [NSString stringWithFormat:@"com.apple.%@.ostransaction", v19];
   v21 = +[UserFSSleepManager getUserFSSleepManager];
   powerAssertManager = v18->_powerAssertManager;
@@ -481,55 +481,55 @@ LABEL_62:
   os_transaction = v18->_os_transaction;
   v18->_os_transaction = v23;
 
-  v25 = [NSString stringWithFormat:@"%@.%@.%@", v18->_metaDataQueueNamePrefix, v19, v16];
+  nameCopy = [NSString stringWithFormat:@"%@.%@.%@", v18->_metaDataQueueNamePrefix, v19, nameCopy];
   serialQueueName = v18->_serialQueueName;
-  v18->_serialQueueName = v25;
+  v18->_serialQueueName = nameCopy;
 
-  v36 = a4;
-  v27 = v17;
+  typeCopy2 = type;
+  v27 = stateCopy;
   metaDataRequests = v18->_metaDataRequests;
   [(NSString *)v18->_serialQueueName UTF8String];
   dispatch_queue_set_label_nocopy();
-  v29 = [NSString stringWithFormat:@"com.apple.filesystem.uvfs.dataIO.%@.%@", v19, v16];
+  nameCopy2 = [NSString stringWithFormat:@"com.apple.filesystem.uvfs.dataIO.%@.%@", v19, nameCopy];
   concurrentQueueName = v18->_concurrentQueueName;
-  v18->_concurrentQueueName = v29;
+  v18->_concurrentQueueName = nameCopy2;
 
   IORequests = v18->_IORequests;
   [(NSString *)v18->_concurrentQueueName UTF8String];
-  v17 = v27;
+  stateCopy = v27;
   dispatch_queue_set_label_nocopy();
-  objc_storeStrong(&v18->_volumeRawDevice, a3);
-  v18->_volumeDeviceFD = [v14 deviceFD];
-  v18->_readOnly = [v14 deviceIsReadOnly];
+  objc_storeStrong(&v18->_volumeRawDevice, device);
+  v18->_volumeDeviceFD = [deviceCopy deviceFD];
+  v18->_readOnly = [deviceCopy deviceIsReadOnly];
   objc_storeStrong(&v18->_volumeName, obj);
-  objc_storeStrong(&v18->_fsType, v36);
-  v32 = [(userFSVolume *)v18 updateRootNode:a6 errorState:v27];
+  objc_storeStrong(&v18->_fsType, typeCopy2);
+  v32 = [(userFSVolume *)v18 updateRootNode:node errorState:v27];
   if (!v32)
   {
 
-    v15 = v38;
+    typeCopy = v38;
 LABEL_7:
     v34 = v18;
     goto LABEL_8;
   }
 
   v33 = v32;
-  *a8 = v33;
+  *error = v33;
 
   v34 = 0;
-  v15 = v38;
+  typeCopy = v38;
 LABEL_8:
 
   return v34;
 }
 
-+ (id)newWithDevice:(id)a3 fsType:(id)a4 volumeName:(id)a5 rootNode:(void *)a6 errorState:(id)a7 returnError:(id *)a8
++ (id)newWithDevice:(id)device fsType:(id)type volumeName:(id)name rootNode:(void *)node errorState:(id)state returnError:(id *)error
 {
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[a1 alloc] initWithDevice:v17 fsType:v16 volumeName:v15 UVFSRootNode:a6 errorState:v14 returnError:a8];
+  stateCopy = state;
+  nameCopy = name;
+  typeCopy = type;
+  deviceCopy = device;
+  v18 = [[self alloc] initWithDevice:deviceCopy fsType:typeCopy volumeName:nameCopy UVFSRootNode:node errorState:stateCopy returnError:error];
 
   return v18;
 }
@@ -619,10 +619,10 @@ LABEL_8:
 
         else
         {
-          v12 = [(liveFSNode *)v10 reclaim];
-          if (v12)
+          reclaim = [(liveFSNode *)v10 reclaim];
+          if (reclaim)
           {
-            v13 = v12;
+            v13 = reclaim;
             v14 = userfs_log_default;
             if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
             {
@@ -648,7 +648,7 @@ LABEL_8:
   [(NSMutableDictionary *)self->mountFHtoNodeTable removeAllObjects];
 }
 
-- (BOOL)getNodeFromFileID:(unint64_t)a3 outNode:(id *)a4
+- (BOOL)getNodeFromFileID:(unint64_t)d outNode:(id *)node
 {
   v16 = 0u;
   v17 = 0u;
@@ -671,10 +671,10 @@ LABEL_8:
         }
 
         v12 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKey:*(*(&v16 + 1) + 8 * v11), v16];
-        if ([v12 lfn_fileid] == a3)
+        if ([v12 lfn_fileid] == d)
         {
           v14 = v12;
-          *a4 = v12;
+          *node = v12;
           if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
           {
             sub_100021264();
@@ -715,20 +715,20 @@ LABEL_8:
   [(userFSVolume *)self purgeFHToNodeTable];
 }
 
-- (void)unmount:(unsigned int)a3
+- (void)unmount:(unsigned int)unmount
 {
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100021350(self);
   }
 
-  v5 = [(userFSVolume *)self metaDataRequests];
+  metaDataRequests = [(userFSVolume *)self metaDataRequests];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008D30;
   block[3] = &unk_100038668;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(metaDataRequests, block);
 
   dispatch_group_wait(self->_searchGroup, 0xFFFFFFFFFFFFFFFFLL);
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -736,18 +736,18 @@ LABEL_8:
     sub_1000213F8();
   }
 
-  v6 = [(userFSVolume *)self metaDataRequests];
+  metaDataRequests2 = [(userFSVolume *)self metaDataRequests];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008D88;
   v9[3] = &unk_1000387F8;
   v9[4] = self;
-  v10 = a3;
-  dispatch_sync(v6, v9);
+  unmountCopy = unmount;
+  dispatch_sync(metaDataRequests2, v9);
 
   if (self->_useKOIO)
   {
-    v7 = [(userFSVolume *)self revokeLIFSKextAccessToFD];
+    revokeLIFSKextAccessToFD = [(userFSVolume *)self revokeLIFSKextAccessToFD];
   }
 
   [(LiveFSRawDevice *)self->_volumeRawDevice unloadVolume:self];
@@ -836,94 +836,94 @@ LABEL_6:
   }
 }
 
-- (void)insertIntoFHCache:(id)a3
+- (void)insertIntoFHCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   mountFHtoNodeTable = self->mountFHtoNodeTable;
-  v6 = [v4 lfn_fh];
-  [(NSMutableDictionary *)mountFHtoNodeTable setObject:v4 forKeyedSubscript:v6];
+  lfn_fh = [cacheCopy lfn_fh];
+  [(NSMutableDictionary *)mountFHtoNodeTable setObject:cacheCopy forKeyedSubscript:lfn_fh];
 
   v7 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     v8 = self->mountFHtoNodeTable;
     v9 = v7;
-    v10 = [v4 lfn_fh];
-    v11 = [v4 lfn_name];
+    lfn_fh2 = [cacheCopy lfn_fh];
+    lfn_name = [cacheCopy lfn_name];
     v12 = 134219010;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = v8;
     v16 = 2112;
-    v17 = v10;
+    v17 = lfn_fh2;
     v18 = 2112;
-    v19 = v11;
+    v19 = lfn_name;
     v20 = 2048;
-    v21 = v4;
+    v21 = cacheCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "LFV[%p]: FHCache[%p]: + fh[%@] => %@[%p]", &v12, 0x34u);
   }
 }
 
-- (void)removeFromFHCache:(id)a3
+- (void)removeFromFHCache:(id)cache
 {
-  v4 = a3;
-  if ([v4 isNodeReclaimable])
+  cacheCopy = cache;
+  if ([cacheCopy isNodeReclaimable])
   {
     mountFHtoNodeTable = self->mountFHtoNodeTable;
-    v6 = [v4 lfn_fh];
-    [(NSMutableDictionary *)mountFHtoNodeTable removeObjectForKey:v6];
+    lfn_fh = [cacheCopy lfn_fh];
+    [(NSMutableDictionary *)mountFHtoNodeTable removeObjectForKey:lfn_fh];
 
     v7 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
       v8 = self->mountFHtoNodeTable;
       v9 = v7;
-      v10 = [v4 lfn_fh];
-      v11 = [v4 lfn_name];
+      lfn_fh2 = [cacheCopy lfn_fh];
+      lfn_name = [cacheCopy lfn_name];
       v12 = 134219010;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
       v15 = v8;
       v16 = 2112;
-      v17 = v10;
+      v17 = lfn_fh2;
       v18 = 2048;
-      v19 = v4;
+      v19 = cacheCopy;
       v20 = 2112;
-      v21 = v11;
+      v21 = lfn_name;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "LFV[%p]: FHCache[%p]: - fh[%@] => name[%p]:[%@]", &v12, 0x34u);
     }
   }
 }
 
-- (id)getNodeForFH:(id)a3 withError:(int *)a4
+- (id)getNodeForFH:(id)h withError:(int *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKeyedSubscript:h];
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
     goto LABEL_5;
   }
 
   if (v5)
   {
-    v7 = [v5 lfn_parent];
-    if (v7)
+    lfn_parent = [v5 lfn_parent];
+    if (lfn_parent)
     {
-      v8 = v7;
-      v9 = [v6 lfn_name];
-      v10 = [v9 isEqualToString:&stru_100038E98];
+      v8 = lfn_parent;
+      lfn_name = [v6 lfn_name];
+      v10 = [lfn_name isEqualToString:&stru_100038E98];
 
-      if (a4)
+      if (error)
       {
         if (v10)
         {
 LABEL_5:
-          *a4 = 70;
+          *error = 70;
         }
       }
     }
@@ -932,45 +932,45 @@ LABEL_5:
   return v6;
 }
 
-- (id)getFileSystemRepresentation:(id)a3 error:(int *)a4
+- (id)getFileSystemRepresentation:(id)representation error:(int *)error
 {
-  v6 = a3;
-  if (v6)
+  representationCopy = representation;
+  if (representationCopy)
   {
     v7 = [NSMutableData dataWithLength:1025];
-    v8 = [(userFSVolume *)self volumeRawDevice];
-    v9 = [v8 fsPlugin];
-    if ([v9 FSOps])
+    volumeRawDevice = [(userFSVolume *)self volumeRawDevice];
+    fsPlugin = [volumeRawDevice fsPlugin];
+    if ([fsPlugin FSOps])
     {
-      v10 = [(userFSVolume *)self volumeRawDevice];
-      v11 = [v10 fsPlugin];
-      v12 = *([v11 FSOps] + 39);
+      volumeRawDevice2 = [(userFSVolume *)self volumeRawDevice];
+      fsPlugin2 = [volumeRawDevice2 fsPlugin];
+      v12 = *([fsPlugin2 FSOps] + 39);
 
       if (v12)
       {
-        v13 = [(userFSVolume *)self volumeRawDevice];
-        v14 = [v13 fsPlugin];
-        v15 = (*([v14 FSOps] + 39))(objc_msgSend(v6, "UTF8String"), objc_msgSend(v7, "bytes"), 1025, -[userFSVolume isCaseSensitive](self, "isCaseSensitive"));
+        volumeRawDevice3 = [(userFSVolume *)self volumeRawDevice];
+        fsPlugin3 = [volumeRawDevice3 fsPlugin];
+        v15 = (*([fsPlugin3 FSOps] + 39))(objc_msgSend(representationCopy, "UTF8String"), objc_msgSend(v7, "bytes"), 1025, -[userFSVolume isCaseSensitive](self, "isCaseSensitive"));
 
         if (v15)
         {
           if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
           {
             sub_100021854();
-            if (!a4)
+            if (!error)
             {
               goto LABEL_16;
             }
           }
 
-          else if (!a4)
+          else if (!error)
           {
 LABEL_16:
-            v17 = v6;
+            v17 = representationCopy;
             goto LABEL_17;
           }
 
-          *a4 = v15;
+          *error = v15;
           goto LABEL_16;
         }
 
@@ -987,7 +987,7 @@ LABEL_17:
     {
     }
 
-    if (([v6 getFileSystemRepresentation:objc_msgSend(v7 maxLength:{"bytes"), 1025}] & 1) == 0)
+    if (([representationCopy getFileSystemRepresentation:objc_msgSend(v7 maxLength:{"bytes"), 1025}] & 1) == 0)
     {
       goto LABEL_16;
     }
@@ -1001,9 +1001,9 @@ LABEL_17:
   }
 
   v16 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = 22;
+    *error = 22;
   }
 
 LABEL_18:
@@ -1011,28 +1011,28 @@ LABEL_18:
   return v16;
 }
 
-- (void)insertIntoNameCache:(id)a3 withParent:(id)a4
+- (void)insertIntoNameCache:(id)cache withParent:(id)parent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 lfn_name];
-  [(userFSVolume *)self insertIntoNameCache:v7 withParent:v6 withName:v8];
+  parentCopy = parent;
+  cacheCopy = cache;
+  lfn_name = [cacheCopy lfn_name];
+  [(userFSVolume *)self insertIntoNameCache:cacheCopy withParent:parentCopy withName:lfn_name];
 }
 
-- (void)insertIntoNameCache:(id)a3 withParent:(id)a4 withName:(id)a5
+- (void)insertIntoNameCache:(id)cache withParent:(id)parent withName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cacheCopy = cache;
+  parentCopy = parent;
+  nameCopy = name;
   v16 = 0;
   pthread_rwlock_wrlock(&self->mountNameToNodeCacheLock);
-  v11 = [(userFSVolume *)self getFileSystemRepresentation:v10 error:&v16];
+  v11 = [(userFSVolume *)self getFileSystemRepresentation:nameCopy error:&v16];
   if (v11)
   {
     mountNameToNodeCache = self->mountNameToNodeCache;
-    v13 = [v9 lfn_fh];
-    v14 = [LiveFSItemPair newWithParent:v13 fname:v11 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
-    [(NSMutableDictionary *)mountNameToNodeCache setObject:v8 forKeyedSubscript:v14];
+    lfn_fh = [parentCopy lfn_fh];
+    v14 = [LiveFSItemPair newWithParent:lfn_fh fname:v11 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
+    [(NSMutableDictionary *)mountNameToNodeCache setObject:cacheCopy forKeyedSubscript:v14];
   }
 
   else
@@ -1045,9 +1045,9 @@ LABEL_18:
       v19 = 1024;
       v20 = v16;
       v21 = 2048;
-      v22 = v8;
+      v22 = cacheCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = nameCopy;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: getFileSystemRepresentation error:%d:node:%p:name:%@.", buf, 0x26u);
     }
   }
@@ -1055,36 +1055,36 @@ LABEL_18:
   pthread_rwlock_unlock(&self->mountNameToNodeCacheLock);
 }
 
-- (void)removeFromNameCache:(id)a3 withParent:(id)a4
+- (void)removeFromNameCache:(id)cache withParent:(id)parent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 lfn_name];
-  [(userFSVolume *)self removeFromNameCache:v7 withParent:v6 withName:v8];
+  parentCopy = parent;
+  cacheCopy = cache;
+  lfn_name = [cacheCopy lfn_name];
+  [(userFSVolume *)self removeFromNameCache:cacheCopy withParent:parentCopy withName:lfn_name];
 }
 
-- (void)removeFromNameCache:(id)a3 withParent:(id)a4 withName:(id)a5
+- (void)removeFromNameCache:(id)cache withParent:(id)parent withName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cacheCopy = cache;
+  parentCopy = parent;
+  nameCopy = name;
   v38 = 0;
   v11 = 56;
   pthread_rwlock_wrlock(&self->mountNameToNodeCacheLock);
-  v12 = [(userFSVolume *)self getFileSystemRepresentation:v10 error:&v38];
+  v12 = [(userFSVolume *)self getFileSystemRepresentation:nameCopy error:&v38];
   if (v12)
   {
     mountNameToNodeCache = self->mountNameToNodeCache;
-    v14 = [v9 lfn_fh];
+    lfn_fh = [parentCopy lfn_fh];
     v33 = v12;
-    v15 = [LiveFSItemPair newWithParent:v14 fname:v12 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
+    v15 = [LiveFSItemPair newWithParent:lfn_fh fname:v12 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
     [(NSMutableDictionary *)mountNameToNodeCache removeObjectForKey:v15];
 
-    if (([v8 isNodeReclaimable] & 1) == 0)
+    if (([cacheCopy isNodeReclaimable] & 1) == 0)
     {
       v30 = 56;
-      v31 = v10;
-      v32 = v9;
+      v31 = nameCopy;
+      v32 = parentCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -1107,32 +1107,32 @@ LABEL_18:
             v21 = *(*(&v34 + 1) + 8 * i);
             v22 = [(NSMutableDictionary *)self->mountNameToNodeCache objectForKey:v21, v30, v31, v32];
 
-            if (v22 == v8)
+            if (v22 == cacheCopy)
             {
-              v23 = [v21 itemId];
-              v24 = [(userFSVolume *)self getNodeForFH:v23 withError:&v38];
+              itemId = [v21 itemId];
+              v24 = [(userFSVolume *)self getNodeForFH:itemId withError:&v38];
 
               if (!v38 && v24)
               {
-                v26 = [v21 filename];
-                [v8 updateName:v26 andParent:v24];
+                filename = [v21 filename];
+                [cacheCopy updateName:filename andParent:v24];
 
                 v27 = userfs_log_default;
                 if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
                 {
                   v28 = v27;
-                  v29 = [v21 filename];
+                  filename2 = [v21 filename];
                   *buf = 134218498;
-                  v41 = v8;
+                  v41 = cacheCopy;
                   v42 = 2112;
-                  *v43 = v29;
+                  *v43 = filename2;
                   *&v43[8] = 2048;
                   *&v43[10] = v24;
                   _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "removeFromNameCache: liveFSNode [%p] name [%@] and parent [%p] were updated", buf, 0x20u);
                 }
 
-                v10 = v31;
-                v9 = v32;
+                nameCopy = v31;
+                parentCopy = v32;
                 v11 = v30;
                 goto LABEL_21;
               }
@@ -1149,12 +1149,12 @@ LABEL_18:
         }
       }
 
-      v10 = v31;
-      v9 = v32;
+      nameCopy = v31;
+      parentCopy = v32;
       v11 = v30;
     }
 
-    [v8 updateName:&stru_100038E98 andParent:{0, v30, v31, v32}];
+    [cacheCopy updateName:&stru_100038E98 andParent:{0, v30, v31, v32}];
 LABEL_21:
     v12 = v33;
   }
@@ -1169,9 +1169,9 @@ LABEL_21:
       v42 = 1024;
       *v43 = v38;
       *&v43[4] = 2048;
-      *&v43[6] = v8;
+      *&v43[6] = cacheCopy;
       *&v43[14] = 2112;
-      *&v43[16] = v10;
+      *&v43[16] = nameCopy;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s: getFileSystemRepresentation error:%d:node:%p:name:%@.", buf, 0x26u);
     }
   }
@@ -1179,18 +1179,18 @@ LABEL_21:
   pthread_rwlock_unlock(&self->LiveFSVolume_opaque[v11]);
 }
 
-- (id)lookupWithParent:(id)a3 andName:(id)a4
+- (id)lookupWithParent:(id)parent andName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  nameCopy = name;
   v15 = 0;
   pthread_rwlock_rdlock(&self->mountNameToNodeCacheLock);
-  v8 = [(userFSVolume *)self getFileSystemRepresentation:v7 error:&v15];
+  v8 = [(userFSVolume *)self getFileSystemRepresentation:nameCopy error:&v15];
   if (v8)
   {
     mountNameToNodeCache = self->mountNameToNodeCache;
-    v10 = [v6 lfn_fh];
-    v11 = [LiveFSItemPair newWithParent:v10 fname:v8 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
+    lfn_fh = [parentCopy lfn_fh];
+    v11 = [LiveFSItemPair newWithParent:lfn_fh fname:v8 caseSensitivity:[(userFSVolume *)self isCaseSensitive]];
     v12 = [(NSMutableDictionary *)mountNameToNodeCache objectForKeyedSubscript:v11];
   }
 
@@ -1204,9 +1204,9 @@ LABEL_21:
       v18 = 1024;
       v19 = v15;
       v20 = 2048;
-      v21 = v6;
+      v21 = parentCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = nameCopy;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s: getFileSystemRepresentation error:%d:parent:%p:name:%@.", buf, 0x26u);
     }
 
@@ -1218,39 +1218,39 @@ LABEL_21:
   return v12;
 }
 
-- (char)pathStringForNode:(id)a3 name:(id)a4 buffer:(char *)a5 bufferSize:(unint64_t)a6 outLength:(unint64_t *)a7
+- (char)pathStringForNode:(id)node name:(id)name buffer:(char *)buffer bufferSize:(unint64_t)size outLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [(userFSVolume *)self rootNode];
-  v15 = v12;
+  nodeCopy = node;
+  nameCopy = name;
+  rootNode = [(userFSVolume *)self rootNode];
+  v15 = nodeCopy;
   v16 = v15;
-  if (v13 || v14 != v15)
+  if (nameCopy || rootNode != v15)
   {
-    if (v13)
+    if (nameCopy)
     {
-      v18 = v13;
+      v18 = nameCopy;
     }
 
     else
     {
-      v19 = [v15 lfn_name];
-      if ([v19 isEqualToString:&stru_100038E98])
+      lfn_name = [v15 lfn_name];
+      if ([lfn_name isEqualToString:&stru_100038E98])
       {
         if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
         {
           sub_100021A48();
         }
 
-        v13 = 0;
-        a5 = 0;
+        nameCopy = 0;
+        buffer = 0;
         v17 = v16;
 LABEL_29:
 
         goto LABEL_30;
       }
 
-      v18 = v19;
+      v18 = lfn_name;
     }
 
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -1258,31 +1258,31 @@ LABEL_29:
       sub_100021950();
     }
 
-    v31 = a7;
+    lengthCopy = length;
     v32 = v16;
-    v20 = v13 != 0;
-    v30 = &a5[a6];
-    if (v13 || v14 != v16)
+    v20 = nameCopy != 0;
+    v30 = &buffer[size];
+    if (nameCopy || rootNode != v16)
     {
       v22 = 0;
       v17 = v16;
-      v23 = &a5[a6];
+      v23 = &buffer[size];
       while (1)
       {
-        v24 = [v18 UTF8String];
-        if (!v24)
+        uTF8String = [v18 UTF8String];
+        if (!uTF8String)
         {
           break;
         }
 
-        v25 = v24;
-        v26 = strlen(v24);
-        v27 = a6 >= v26 + 1;
-        a6 -= v26 + 1;
+        v25 = uTF8String;
+        v26 = strlen(uTF8String);
+        v27 = size >= v26 + 1;
+        size -= v26 + 1;
         if (!v27)
         {
-          a5 = 0;
-          v19 = v18;
+          buffer = 0;
+          lfn_name = v18;
           v16 = v32;
           goto LABEL_29;
         }
@@ -1293,17 +1293,17 @@ LABEL_29:
         if (!v20)
         {
           [v17 lfn_parent];
-          v17 = v13 = v17;
+          v17 = nameCopy = v17;
         }
 
-        v19 = [v17 lfn_name];
+        lfn_name = [v17 lfn_name];
 
         v20 = 0;
-        v13 = 0;
+        nameCopy = 0;
         v22 = 47;
         v23 = v21;
-        v18 = v19;
-        if (v17 == v14)
+        v18 = lfn_name;
+        if (v17 == rootNode)
         {
           goto LABEL_23;
         }
@@ -1315,17 +1315,17 @@ LABEL_29:
         sub_1000219C8();
       }
 
-      a5 = 0;
-      v19 = v18;
+      buffer = 0;
+      lfn_name = v18;
     }
 
     else
     {
-      v19 = v18;
+      lfn_name = v18;
       v17 = v16;
-      v21 = &a5[a6];
+      v21 = &buffer[size];
 LABEL_23:
-      a5 = v21;
+      buffer = v21;
       v28 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -1333,7 +1333,7 @@ LABEL_23:
         v16 = v32;
         v34 = v32;
         v35 = 2080;
-        v36 = a5;
+        bufferCopy = buffer;
         _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "pathToStringForNode:%p path:%s", buf, 0x16u);
       }
 
@@ -1342,19 +1342,19 @@ LABEL_23:
         v16 = v32;
       }
 
-      v13 = 0;
-      *v31 = &v30[~a5];
+      nameCopy = 0;
+      *lengthCopy = &v30[~buffer];
     }
 
     goto LABEL_29;
   }
 
-  *a5 = 0;
-  *a7 = 0;
+  *buffer = 0;
+  *length = 0;
   v17 = v15;
 LABEL_30:
 
-  return a5;
+  return buffer;
 }
 
 - (void)startSyncerIfNeeded
@@ -1413,10 +1413,10 @@ LABEL_30:
     if (v6)
     {
       v7 = v6;
-      v8 = [(userFSVolume *)self volumeRawDevice];
-      v9 = [v8 deviceIsFile];
+      volumeRawDevice = [(userFSVolume *)self volumeRawDevice];
+      deviceIsFile = [volumeRawDevice deviceIsFile];
 
-      if (v9)
+      if (deviceIsFile)
       {
         if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -1481,47 +1481,47 @@ LABEL_30:
   }
 }
 
-- (void)rootFileHandleForClient:(unint64_t)a3 reply:(id)a4
+- (void)rootFileHandleForClient:(unint64_t)client reply:(id)reply
 {
-  v5 = a4;
-  v6 = [(userFSVolume *)self errorState];
+  replyCopy = reply;
+  errorState = [(userFSVolume *)self errorState];
 
-  if (v6)
+  if (errorState)
   {
-    v7 = [(userFSVolume *)self errorState];
-    v5[2](v5, 0, v7);
+    errorState2 = [(userFSVolume *)self errorState];
+    replyCopy[2](replyCopy, 0, errorState2);
   }
 
   else
   {
-    v7 = [(liveFSNode *)self->_rootNode getFH];
-    (v5)[2](v5, v7, 0);
+    errorState2 = [(liveFSNode *)self->_rootNode getFH];
+    (replyCopy)[2](replyCopy, errorState2, 0);
   }
 }
 
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  attributesCopy = attributes;
+  replyCopy = reply;
   v14 = 0;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100021D34();
   }
 
-  v9 = [(userFSVolume *)self getNodeForFH:v7 withError:&v14];
+  v9 = [(userFSVolume *)self getNodeForFH:attributesCopy withError:&v14];
   v10 = v9;
-  v11 = 0;
+  getAttrData = 0;
   if (!v14 && v9)
   {
-    v12 = [v9 getDeviceFD];
-    if (v12 != -1)
+    getDeviceFD = [v9 getDeviceFD];
+    if (getDeviceFD != -1)
     {
       [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     }
 
-    v11 = [v10 getAttrData];
-    if (!v11)
+    getAttrData = [v10 getAttrData];
+    if (!getAttrData)
     {
       v14 = 5;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
@@ -1530,7 +1530,7 @@ LABEL_30:
       }
     }
 
-    if (v12 != -1)
+    if (getDeviceFD != -1)
     {
       [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     }
@@ -1540,54 +1540,54 @@ LABEL_30:
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v16 = v7;
+    v16 = attributesCopy;
     v17 = 1024;
     v18 = v14;
     v19 = 2048;
-    v20 = v11;
+    v20 = getAttrData;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "LIGetAttr(%@): reply(%d, %p)", buf, 0x1Cu);
   }
 
-  v8[2](v8, v14, v11);
+  replyCopy[2](replyCopy, v14, getAttrData);
 }
 
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v28 = a4;
-  v10 = a6;
+  ofCopy = of;
+  toCopy = to;
+  replyCopy = reply;
   v31 = 0;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100021E14();
   }
 
-  v27 = v9;
-  v11 = [(userFSVolume *)self getNodeForFH:v9 withError:&v31];
+  v27 = ofCopy;
+  v11 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v31];
   v12 = v11;
-  v13 = 0;
-  v14 = 2;
-  v15 = 0;
-  v16 = 0;
-  v17 = 0;
-  v18 = 0;
+  getFreeSpaceInVolume = 0;
+  hiddenStatus = 2;
+  lfn_interestedClients = 0;
+  lfn_interestedClients3 = 0;
+  lfn_parent = 0;
+  lfn_interestedClients2 = 0;
   v19 = 0;
   if (!v31 && v11)
   {
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     v30 = 0;
-    v20 = [v12 setAttributeTo:v28 withResultingAttribute:&v30];
+    v20 = [v12 setAttributeTo:toCopy withResultingAttribute:&v30];
     v19 = v30;
     v31 = v20;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     if (v31 || !v19)
     {
 
-      v13 = 0;
-      v15 = 0;
-      v16 = 0;
-      v17 = 0;
-      v18 = 0;
+      getFreeSpaceInVolume = 0;
+      lfn_interestedClients = 0;
+      lfn_interestedClients3 = 0;
+      lfn_parent = 0;
+      lfn_interestedClients2 = 0;
       v19 = 0;
       goto LABEL_23;
     }
@@ -1609,55 +1609,55 @@ LABEL_30:
       }
     }
 
-    v15 = [v12 lfn_interestedClients];
-    v14 = [v12 hiddenStatus];
-    if (v15)
+    lfn_interestedClients = [v12 lfn_interestedClients];
+    hiddenStatus = [v12 hiddenStatus];
+    if (lfn_interestedClients)
     {
-      v17 = [v12 lfn_parent];
-      if (v17)
+      lfn_parent = [v12 lfn_parent];
+      if (lfn_parent)
       {
-        v23 = [v12 lfn_parent];
-        v18 = [v23 lfn_interestedClients];
+        lfn_parent2 = [v12 lfn_parent];
+        lfn_interestedClients2 = [lfn_parent2 lfn_interestedClients];
 
-        if (v18)
+        if (lfn_interestedClients2)
         {
-          v24 = [v12 lfn_parent];
-          v18 = [v24 lfn_fh];
+          lfn_parent3 = [v12 lfn_parent];
+          lfn_interestedClients2 = [lfn_parent3 lfn_fh];
 
-          v25 = [v12 lfn_parent];
-          v16 = [v25 lfn_interestedClients];
+          lfn_parent4 = [v12 lfn_parent];
+          lfn_interestedClients3 = [lfn_parent4 lfn_interestedClients];
 
-          v17 = [v12 lfn_name];
+          lfn_parent = [v12 lfn_name];
         }
 
         else
         {
-          v16 = 0;
-          v17 = 0;
+          lfn_interestedClients3 = 0;
+          lfn_parent = 0;
         }
 
         goto LABEL_20;
       }
 
-      v16 = 0;
+      lfn_interestedClients3 = 0;
     }
 
     else
     {
-      v16 = 0;
-      v17 = 0;
+      lfn_interestedClients3 = 0;
+      lfn_parent = 0;
     }
 
-    v18 = 0;
+    lfn_interestedClients2 = 0;
 LABEL_20:
-    if ((*([v28 bytes] + 8) & 0x40) != 0)
+    if ((*([toCopy bytes] + 8) & 0x40) != 0)
     {
-      v13 = [(userFSVolume *)self getFreeSpaceInVolume];
+      getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
     }
 
     else
     {
-      v13 = 0;
+      getFreeSpaceInVolume = 0;
     }
   }
 
@@ -1670,35 +1670,35 @@ LABEL_23:
     v34 = 2048;
     v35 = v19;
     v36 = 2048;
-    v37 = v15;
+    v37 = lfn_interestedClients;
     v38 = 1024;
-    v39 = v14;
+    v39 = hiddenStatus;
     _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "LISetAttr: reply(%d, %p, %#llx, %d)", buf, 0x22u);
   }
 
-  v10[2](v10, v31, v19, v18, v16, v17, v15, v14, v13);
+  replyCopy[2](replyCopy, v31, v19, lfn_interestedClients2, lfn_interestedClients3, lfn_parent, lfn_interestedClients, hiddenStatus, getFreeSpaceInVolume);
 }
 
-- (void)lookupin:(id)a3 name:(id)a4 forClient:(unint64_t)a5 usingFlags:(unsigned int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)lookupin:(id)lookupin name:(id)name forClient:(unint64_t)client usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  lookupinCopy = lookupin;
+  nameCopy = name;
+  replyCopy = reply;
   v54 = 0;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100021F40();
   }
 
-  v16 = [(userFSVolume *)self getNodeForFH:v13 withError:&v54];
+  v16 = [(userFSVolume *)self getNodeForFH:lookupinCopy withError:&v54];
   v40 = v16;
-  v41 = v13;
+  v41 = lookupinCopy;
   if (v54)
   {
     v17 = 0;
-    v18 = 0;
-    v19 = 0;
-    v20 = 0;
+    getFH = 0;
+    getAttrData2 = 0;
+    getAttrData = 0;
     v21 = 0;
     v22 = 0;
 LABEL_16:
@@ -1707,33 +1707,33 @@ LABEL_16:
   }
 
   v23 = v16;
-  if ([v14 length] == 1 && !objc_msgSend(v14, "compare:", @"."))
+  if ([nameCopy length] == 1 && !objc_msgSend(nameCopy, "compare:", @"."))
   {
     v54 = 0;
-    v25 = v23;
+    lfn_parent2 = v23;
   }
 
   else
   {
-    if ([v14 length] != 2 || objc_msgSend(v14, "compare:", @".."))
+    if ([nameCopy length] != 2 || objc_msgSend(nameCopy, "compare:", @".."))
     {
       [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
       v53 = 0;
-      v24 = [v23 lookup:v14 withResultingNode:&v53];
+      v24 = [v23 lookup:nameCopy withResultingNode:&v53];
       v22 = v53;
       v54 = v24;
       [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
       goto LABEL_14;
     }
 
-    v26 = [v23 lfn_parent];
+    lfn_parent = [v23 lfn_parent];
 
-    if (!v26)
+    if (!lfn_parent)
     {
       v17 = 0;
-      v18 = 0;
-      v19 = 0;
-      v20 = 0;
+      getFH = 0;
+      getAttrData2 = 0;
+      getAttrData = 0;
       v21 = 0;
       v22 = 0;
       v54 = 22;
@@ -1741,46 +1741,46 @@ LABEL_16:
     }
 
     v54 = 0;
-    v25 = [v23 lfn_parent];
+    lfn_parent2 = [v23 lfn_parent];
   }
 
-  v22 = v25;
+  v22 = lfn_parent2;
 LABEL_14:
   if (v54)
   {
     v17 = 0;
-    v18 = 0;
-    v19 = 0;
-    v20 = 0;
+    getFH = 0;
+    getAttrData2 = 0;
+    getAttrData = 0;
     v21 = 0;
     goto LABEL_16;
   }
 
   [v22 getFH];
-  v17 = v29 = a5;
-  v20 = [v22 getAttrData];
+  v17 = v29 = client;
+  getAttrData = [v22 getAttrData];
   v36 = v29;
   [v22 setLfn_inUseClientSet:{objc_msgSend(v22, "lfn_inUseClientSet") | v29}];
-  v37 = a6;
-  if ((a6 & 0x20000000) != 0)
+  flagsCopy = flags;
+  if ((flags & 0x20000000) != 0)
   {
-    v30 = [NSString stringWithFormat:@"._%@", v14];
+    nameCopy = [NSString stringWithFormat:@"._%@", nameCopy];
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     v52 = 0;
-    v35 = v30;
-    v27 = [v23 lookup:v30 withResultingNode:&v52];
+    v35 = nameCopy;
+    v27 = [v23 lookup:nameCopy withResultingNode:&v52];
     v21 = v52;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
-    v18 = 0;
-    v19 = 0;
+    getFH = 0;
+    getAttrData2 = 0;
     if (!v27)
     {
-      v18 = [v21 getFH];
-      v19 = [v21 getAttrData];
+      getFH = [v21 getFH];
+      getAttrData2 = [v21 getAttrData];
       [v21 setLfn_inUseClientSet:{objc_msgSend(v21, "lfn_inUseClientSet") | v36}];
     }
 
-    if (!v20)
+    if (!getAttrData)
     {
       goto LABEL_17;
     }
@@ -1788,37 +1788,37 @@ LABEL_14:
 
   else
   {
-    v18 = 0;
-    v19 = 0;
+    getFH = 0;
+    getAttrData2 = 0;
     v21 = 0;
     v27 = 0xFFFFFFFFLL;
-    if (!v20)
+    if (!getAttrData)
     {
       goto LABEL_17;
     }
   }
 
-  v31 = [v20 bytes];
-  if ((v37 & 0x10000000) != 0 && v31)
+  bytes = [getAttrData bytes];
+  if ((flagsCopy & 0x10000000) != 0 && bytes)
   {
-    v38 = *([v20 bytes] + 6);
+    v38 = *([getAttrData bytes] + 6);
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_10000B210;
     v42[3] = &unk_100038820;
     v43 = v41;
-    v44 = v14;
+    v44 = nameCopy;
     v17 = v17;
     v45 = v17;
-    v20 = v20;
-    v46 = v20;
-    v49 = v15;
+    getAttrData = getAttrData;
+    v46 = getAttrData;
+    v49 = replyCopy;
     v50 = v54;
     v51 = v27;
-    v18 = v18;
-    v47 = v18;
-    v19 = v19;
-    v48 = v19;
+    getFH = getFH;
+    v47 = getFH;
+    getAttrData2 = getAttrData2;
+    v48 = getAttrData2;
     [(userFSVolume *)self blockmapFile:v17 range:0 flags:v38 operationID:257 reply:0, v42];
 
     goto LABEL_20;
@@ -1831,30 +1831,30 @@ LABEL_17:
     v39 = v54;
     v32 = v17;
     v33 = v28;
-    v34 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     *buf = 138413570;
     v56 = v41;
     v57 = 2112;
-    v58 = v14;
+    v58 = nameCopy;
     v59 = 1024;
     v60 = v39;
     v61 = 1024;
     v62 = v27;
     v63 = 2080;
-    v64 = v34;
+    v64 = uTF8String;
     v65 = 2048;
-    v66 = v20;
+    v66 = getAttrData;
     _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "LILookup(%@/%@): reply(%d, %d, %s, %p)", buf, 0x36u);
   }
 
-  (*(v15 + 2))(v15, v54, v27, v17, v20, v18, v19, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, v54, v27, v17, getAttrData, getFH, getAttrData2, 0, 0, 0);
 LABEL_20:
 }
 
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  ofCopy = of;
+  replyCopy = reply;
   v21 = 0;
   v20 = 0;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -1862,7 +1862,7 @@ LABEL_20:
     sub_100021FB8();
   }
 
-  v9 = [(userFSVolume *)self getNodeForFH:v7 withError:&v21];
+  v9 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v21];
   v10 = v9;
   v11 = 0;
   if (v21)
@@ -1918,7 +1918,7 @@ LABEL_20:
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v23 = v7;
+    v23 = ofCopy;
     v24 = 1024;
     v25 = v21;
     v26 = 2048;
@@ -1928,35 +1928,35 @@ LABEL_20:
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "LIReadLink(%@): reply(%d, %p, %p)", buf, 0x26u);
   }
 
-  v8[2](v8, v21, v11, v12);
+  replyCopy[2](replyCopy, v21, v11, v12);
 }
 
-- (void)LIRead:(id)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 reply:(id)a6
+- (void)LIRead:(id)read length:(unint64_t)length atOffset:(unint64_t)offset reply:(id)reply
 {
-  v10 = a6;
-  v11 = a3;
-  [NSMutableData dataWithLength:a4];
+  replyCopy = reply;
+  readCopy = read;
+  [NSMutableData dataWithLength:length];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000B6FC;
   v14[3] = &unk_100038848;
-  v16 = v10;
-  v15 = v17 = a4;
-  v12 = v10;
+  v16 = replyCopy;
+  v15 = v17 = length;
+  v12 = replyCopy;
   v13 = v15;
-  [(userFSVolume *)self LIRead:v11 atOffset:a5 withBuffer:v13 reply:v14];
+  [(userFSVolume *)self LIRead:readCopy atOffset:offset withBuffer:v13 reply:v14];
 }
 
-- (void)LIRead:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6
+- (void)LIRead:(id)read atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply
 {
-  v10 = a5;
-  v11 = a6;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v25 = 0;
-  v12 = [(userFSVolume *)self getNodeForFH:a3 withError:&v25];
+  v12 = [(userFSVolume *)self getNodeForFH:read withError:&v25];
   v13 = v12;
   if (v25)
   {
-    v11[2](v11);
+    replyCopy[2](replyCopy);
   }
 
   else
@@ -1966,10 +1966,10 @@ LABEL_20:
     v18 = sub_10000B98C;
     v19 = &unk_100038870;
     v20 = v12;
-    v24 = a4;
-    v21 = v10;
-    v22 = self;
-    v23 = v11;
+    offsetCopy = offset;
+    v21 = bufferCopy;
+    selfCopy = self;
+    v23 = replyCopy;
     v14 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &v16);
     if (dispatchAsyncConcurentLiveItemIO)
     {
@@ -1979,28 +1979,28 @@ LABEL_20:
         sub_1000220AC();
       }
 
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, v22];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, selfCopy];
       dispatch_group_async(self->_IOGroup, self->_IORequests, v14);
     }
 
     else
     {
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, v22];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, selfCopy];
       v14[2](v14);
     }
   }
 }
 
-- (void)LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6
+- (void)LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply
 {
-  v10 = a5;
-  v11 = a6;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v25 = 0;
-  v12 = [(userFSVolume *)self getNodeForFH:a3 withError:&v25];
+  v12 = [(userFSVolume *)self getNodeForFH:write withError:&v25];
   v13 = v12;
   if (v25)
   {
-    v11[2](v11);
+    replyCopy[2](replyCopy);
   }
 
   else
@@ -2010,10 +2010,10 @@ LABEL_20:
     v18 = sub_10000BBE8;
     v19 = &unk_100038870;
     v20 = v12;
-    v24 = a4;
-    v21 = v10;
-    v22 = self;
-    v23 = v11;
+    offsetCopy = offset;
+    v21 = bufferCopy;
+    selfCopy = self;
+    v23 = replyCopy;
     v14 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &v16);
     if (dispatchAsyncConcurentLiveItemIO)
     {
@@ -2023,24 +2023,24 @@ LABEL_20:
         sub_1000220AC();
       }
 
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, v22];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, selfCopy];
       dispatch_group_async(self->_IOGroup, self->_IORequests, v14);
     }
 
     else
     {
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, v22];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v16, v17, v18, v19, v20, v21, selfCopy];
       v14[2](v14);
     }
   }
 }
 
-- (void)blockmapFile:(id)a3 range:(_NSRange)a4 flags:(unsigned int)a5 operationID:(unint64_t)a6 reply:(id)a7
+- (void)blockmapFile:(id)file range:(_NSRange)range flags:(unsigned int)flags operationID:(unint64_t)d reply:(id)reply
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  v14 = a7;
+  length = range.length;
+  location = range.location;
+  fileCopy = file;
+  replyCopy = reply;
   v28 = 0;
   v15 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -2048,19 +2048,19 @@ LABEL_20:
     *buf = 136315906;
     v30 = "[userFSVolume blockmapFile:range:flags:operationID:reply:]";
     v31 = 2112;
-    v32 = v13;
+    v32 = fileCopy;
     v33 = 1024;
-    v34 = a5;
+    flagsCopy = flags;
     v35 = 2048;
-    v36 = a6;
+    dCopy = d;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s(%@): flags = 0x%x, opID = %llu.", buf, 0x26u);
   }
 
-  v16 = [(userFSVolume *)self getNodeForFH:v13 withError:&v28];
+  v16 = [(userFSVolume *)self getNodeForFH:fileCopy withError:&v28];
   v17 = v16;
   if (v28)
   {
-    v14[2](v14);
+    replyCopy[2](replyCopy);
   }
 
   else
@@ -2069,13 +2069,13 @@ LABEL_20:
     block[1] = 3221225472;
     block[2] = sub_10000BF30;
     block[3] = &unk_100038898;
-    v27 = a5;
+    flagsCopy2 = flags;
     v24 = location;
     v25 = length;
-    v26 = a6;
+    dCopy2 = d;
     v21 = v16;
-    v22 = self;
-    v23 = v14;
+    selfCopy = self;
+    v23 = replyCopy;
     v18 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
     if (dispatchAsyncConcurentLiveItemIO)
     {
@@ -2097,12 +2097,12 @@ LABEL_20:
   }
 }
 
-- (void)endIO:(id)a3 range:(_NSRange)a4 status:(int)a5 flags:(unsigned int)a6 operationID:(unint64_t)a7 reply:(id)a8
+- (void)endIO:(id)o range:(_NSRange)range status:(int)status flags:(unsigned int)flags operationID:(unint64_t)d reply:(id)reply
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a3;
-  v15 = a8;
+  length = range.length;
+  location = range.location;
+  oCopy = o;
+  replyCopy = reply;
   v33 = 0;
   v16 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -2110,19 +2110,19 @@ LABEL_20:
     *buf = 136315906;
     v35 = "[userFSVolume endIO:range:status:flags:operationID:reply:]";
     v36 = 2112;
-    v37 = v14;
+    v37 = oCopy;
     v38 = 1024;
-    v39 = a5;
+    statusCopy = status;
     v40 = 2048;
-    v41 = a7;
+    dCopy = d;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s(%@): ioStatus = %u, opID = %llu.", buf, 0x26u);
   }
 
-  v17 = [(userFSVolume *)self getNodeForFH:v14 withError:&v33];
+  v17 = [(userFSVolume *)self getNodeForFH:oCopy withError:&v33];
   v18 = v17;
   if (v33)
   {
-    v15[2](v15);
+    replyCopy[2](replyCopy);
   }
 
   else
@@ -2133,12 +2133,12 @@ LABEL_20:
     v24 = &unk_1000388C0;
     v28 = location;
     v29 = length;
-    v31 = a5;
-    v32 = a6;
-    v30 = a7;
+    statusCopy2 = status;
+    flagsCopy = flags;
+    dCopy2 = d;
     v25 = v17;
-    v26 = self;
-    v27 = v15;
+    selfCopy = self;
+    v27 = replyCopy;
     v19 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &v21);
     if (dispatchAsyncConcurentLiveItemIO)
     {
@@ -2148,26 +2148,26 @@ LABEL_20:
         sub_1000220AC();
       }
 
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v21, v22, v23, v24, v25, v26];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v21, v22, v23, v24, v25, selfCopy];
       dispatch_group_async(self->_IOGroup, self->_IORequests, v19);
     }
 
     else
     {
-      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v21, v22, v23, v24, v25, v26];
+      [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests, v21, v22, v23, v24, v25, selfCopy];
       v19[2](v19);
     }
   }
 }
 
-- (void)fetchVolumeMachPortLabeled:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)fetchVolumeMachPortLabeled:(id)labeled forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a6;
+  labeledCopy = labeled;
+  replyCopy = reply;
   if (self->_useKOIO || self->_useMetadataBuf)
   {
-    v10 = [(LiveFSServiceUserClient *)self->_kernelUserClient getVolumePort];
-    if ((v10 - 1) >= 0xFFFFFFFE)
+    getVolumePort = [(LiveFSServiceUserClient *)self->_kernelUserClient getVolumePort];
+    if ((getVolumePort - 1) >= 0xFFFFFFFE)
     {
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -2177,8 +2177,8 @@ LABEL_20:
 
     else
     {
-      v11 = v10;
-      v12 = [LiveFSMachPort newByCopyingPort:v10];
+      v11 = getVolumePort;
+      v12 = [LiveFSMachPort newByCopyingPort:getVolumePort];
       if (v12)
       {
         v13 = v12;
@@ -2194,13 +2194,13 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s: volumePort = %d, LiveFSMachPort = %p.", &v15, 0x1Cu);
         }
 
-        v9[2](v9, 0, v13);
+        replyCopy[2](replyCopy, 0, v13);
 
         goto LABEL_11;
       }
     }
 
-    v9[2](v9, 22, 0);
+    replyCopy[2](replyCopy, 22, 0);
     goto LABEL_11;
   }
 
@@ -2209,85 +2209,85 @@ LABEL_20:
     sub_100022160();
   }
 
-  v9[2](v9, 45, 0);
+  replyCopy[2](replyCopy, 45, 0);
 LABEL_11:
 }
 
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  inCopy = in;
+  namedCopy = named;
+  attributesCopy = attributes;
+  replyCopy = reply;
   v38 = 0;
   v17 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     v31 = v17;
-    v32 = objc_retainBlock(v16);
+    v32 = objc_retainBlock(replyCopy);
     *buf = 138413314;
-    *v40 = v13;
+    *v40 = inCopy;
     *&v40[8] = 2112;
-    *&v40[10] = v14;
+    *&v40[10] = namedCopy;
     *&v40[18] = 2048;
-    *&v40[20] = v15;
+    *&v40[20] = attributesCopy;
     *&v40[28] = 2048;
-    *&v40[30] = a6;
+    *&v40[30] = client;
     *&v40[38] = 2048;
     *&v40[40] = v32;
     _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "LICreate(%@/%@, %p, 0x%llx, %p): start", buf, 0x34u);
   }
 
-  v35 = v13;
-  v18 = [(userFSVolume *)self getNodeForFH:v13 withError:&v38];
-  v34 = v15;
+  v35 = inCopy;
+  v18 = [(userFSVolume *)self getNodeForFH:inCopy withError:&v38];
+  v34 = attributesCopy;
   if (v38)
   {
-    v19 = v14;
+    v19 = namedCopy;
     v20 = 0;
-    v21 = 0;
-    v22 = 0;
-    v23 = 0;
+    lfn_interestedClients = 0;
+    getAttrData2 = 0;
+    getAttrData = 0;
     v24 = 0;
   }
 
   else
   {
-    v25 = [NSMutableData dataWithData:v15];
+    v25 = [NSMutableData dataWithData:attributesCopy];
     *([v25 mutableBytes] + 6) = 1;
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     v37 = 0;
-    v19 = v14;
-    v26 = [v18 createDirEntry:v14 withAttrs:v25 withData:0 withResultingNode:&v37];
+    v19 = namedCopy;
+    v26 = [v18 createDirEntry:namedCopy withAttrs:v25 withData:0 withResultingNode:&v37];
     v24 = v37;
     v38 = v26;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     if (v38)
     {
       v20 = 0;
-      v21 = 0;
-      v22 = 0;
-      v23 = 0;
+      lfn_interestedClients = 0;
+      getAttrData2 = 0;
+      getAttrData = 0;
     }
 
     else
     {
       [(userFSVolume *)self startSyncerIfNeeded];
       [v24 getFH];
-      v20 = v33 = a6;
-      v23 = [v18 getAttrData];
-      v21 = [v18 lfn_interestedClients];
-      v22 = [v24 getAttrData];
+      v20 = v33 = client;
+      getAttrData = [v18 getAttrData];
+      lfn_interestedClients = [v18 lfn_interestedClients];
+      getAttrData2 = [v24 getAttrData];
       [v24 setLfn_inUseClientSet:{objc_msgSend(v24, "lfn_inUseClientSet") | v33}];
       if (self->_spotlightIsEnabled)
       {
-        if (v22)
+        if (getAttrData2)
         {
           v36 = 0;
           v30 = [(userFSVolume *)self pathStringForNode:v18 name:v19 buffer:buf bufferSize:1024 outLength:&v36];
           if (v30)
           {
-            [(CSLiveFSVolume *)self->_spotlightNotifer sendEventOfType:0 pid:0 path:v30 pathLength:v36 attributes:v22];
+            [(CSLiveFSVolume *)self->_spotlightNotifer sendEventOfType:0 pid:0 path:v30 pathLength:v36 attributes:getAttrData2];
           }
         }
       }
@@ -2300,97 +2300,97 @@ LABEL_11:
     *buf = 67110144;
     *v40 = v38;
     *&v40[4] = 2048;
-    *&v40[6] = v23;
+    *&v40[6] = getAttrData;
     *&v40[14] = 2048;
-    *&v40[16] = v21;
+    *&v40[16] = lfn_interestedClients;
     *&v40[24] = 2048;
     *&v40[26] = v20;
     *&v40[34] = 2048;
-    *&v40[36] = v22;
+    *&v40[36] = getAttrData2;
     _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "LICreate(): reply(%d, %p, %#llx, %p, %p)", buf, 0x30u);
   }
 
   v28 = v38;
-  v29 = [(userFSVolume *)self getFreeSpaceInVolume];
-  (*(v16 + 2))(v16, v28, v23, v21, v20, v22, v29);
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
+  (*(replyCopy + 2))(replyCopy, v28, getAttrData, lfn_interestedClients, v20, getAttrData2, getFreeSpaceInVolume);
 }
 
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  inCopy = in;
+  namedCopy = named;
+  attributesCopy = attributes;
+  replyCopy = reply;
   v41 = 0;
   v17 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v31 = v13;
+    v31 = inCopy;
     v32 = v17;
-    v33 = [v13 UTF8String];
-    v34 = [v14 UTF8String];
-    v35 = objc_retainBlock(v16);
+    uTF8String = [inCopy UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    v35 = objc_retainBlock(replyCopy);
     *buf = 136315906;
-    *v43 = v33;
+    *v43 = uTF8String;
     *&v43[8] = 2080;
-    *&v43[10] = v34;
+    *&v43[10] = uTF8String2;
     *&v43[18] = 2048;
-    *&v43[20] = v15;
+    *&v43[20] = attributesCopy;
     *&v43[28] = 2048;
     *&v43[30] = v35;
     _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "LIMakeDir(%s, %s, %p, %p): start", buf, 0x2Au);
   }
 
-  v38 = v13;
-  v18 = [(userFSVolume *)self getNodeForFH:v13 withError:&v41];
-  v37 = v15;
+  v38 = inCopy;
+  v18 = [(userFSVolume *)self getNodeForFH:inCopy withError:&v41];
+  v37 = attributesCopy;
   if (v41)
   {
-    v19 = v14;
-    v20 = 0;
-    v21 = 0;
-    v22 = 0;
+    v19 = namedCopy;
+    getFH = 0;
+    getAttrData = 0;
+    lfn_interestedClients = 0;
     v23 = 0;
     v24 = 0;
   }
 
   else
   {
-    v25 = [NSMutableData dataWithData:v15];
+    v25 = [NSMutableData dataWithData:attributesCopy];
     *([v25 mutableBytes] + 6) = 2;
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     v40 = 0;
-    v19 = v14;
-    v26 = [v18 createDirEntry:v14 withAttrs:v25 withData:0 withResultingNode:&v40];
+    v19 = namedCopy;
+    v26 = [v18 createDirEntry:namedCopy withAttrs:v25 withData:0 withResultingNode:&v40];
     v24 = v40;
     v41 = v26;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     if (v41)
     {
-      v20 = 0;
-      v21 = 0;
-      v22 = 0;
+      getFH = 0;
+      getAttrData = 0;
+      lfn_interestedClients = 0;
       v23 = 0;
     }
 
     else
     {
       [(userFSVolume *)self startSyncerIfNeeded];
-      v20 = [v24 getFH];
+      getFH = [v24 getFH];
       [v18 getAttrData];
-      v23 = v36 = a6;
-      v22 = [v18 lfn_interestedClients];
-      v21 = [v24 getAttrData];
+      v23 = v36 = client;
+      lfn_interestedClients = [v18 lfn_interestedClients];
+      getAttrData = [v24 getAttrData];
       [v24 setLfn_inUseClientSet:{objc_msgSend(v24, "lfn_inUseClientSet") | v36}];
       if (self->_spotlightIsEnabled)
       {
-        if (v21)
+        if (getAttrData)
         {
           v39 = 0;
           v30 = [(userFSVolume *)self pathStringForNode:v18 name:v19 buffer:buf bufferSize:1024 outLength:&v39];
           if (v30)
           {
-            [(CSLiveFSVolume *)self->_spotlightNotifer sendEventOfType:7 pid:0 path:v30 pathLength:v39 attributes:v21];
+            [(CSLiveFSVolume *)self->_spotlightNotifer sendEventOfType:7 pid:0 path:v30 pathLength:v39 attributes:getAttrData];
           }
         }
       }
@@ -2405,95 +2405,95 @@ LABEL_11:
     *&v43[4] = 2048;
     *&v43[6] = v23;
     *&v43[14] = 2048;
-    *&v43[16] = v20;
+    *&v43[16] = getFH;
     *&v43[24] = 2048;
-    *&v43[26] = v21;
+    *&v43[26] = getAttrData;
     _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "LIMakeDir(): reply(%d, %p, %p, %p).\n", buf, 0x26u);
   }
 
   v28 = v41;
-  v29 = [(userFSVolume *)self getFreeSpaceInVolume];
-  (*(v16 + 2))(v16, v28, v23, v22, v20, v21, v29);
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
+  (*(replyCopy + 2))(replyCopy, v28, v23, lfn_interestedClients, getFH, getAttrData, getFreeSpaceInVolume);
 }
 
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 andClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  namedCopy = named;
+  contentsCopy = contents;
+  attributesCopy = attributes;
   v33 = 0;
-  v17 = a9;
-  v18 = [(userFSVolume *)self getNodeForFH:a3 withError:&v33];
+  replyCopy = reply;
+  v18 = [(userFSVolume *)self getNodeForFH:in withError:&v33];
   v19 = v33;
-  v30 = v16;
-  v31 = v14;
+  v30 = attributesCopy;
+  v31 = namedCopy;
   if (v33)
   {
-    v20 = v15;
+    v20 = contentsCopy;
     v21 = 0;
-    v22 = 0;
-    v23 = 0;
-    v24 = 0;
+    lfn_interestedClients = 0;
+    getAttrData = 0;
+    getFH = 0;
     v25 = 0;
   }
 
   else
   {
-    v26 = [NSMutableData dataWithData:v16];
+    v26 = [NSMutableData dataWithData:attributesCopy];
     *([v26 mutableBytes] + 6) = 3;
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
     v32 = 0;
-    v20 = v15;
-    v27 = [v18 createDirEntry:v14 withAttrs:v26 withData:v15 withResultingNode:&v32];
+    v20 = contentsCopy;
+    v27 = [v18 createDirEntry:namedCopy withAttrs:v26 withData:contentsCopy withResultingNode:&v32];
     v25 = v32;
     v33 = v27;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     if (v33)
     {
       v21 = 0;
-      v22 = 0;
-      v23 = 0;
-      v24 = 0;
+      lfn_interestedClients = 0;
+      getAttrData = 0;
+      getFH = 0;
     }
 
     else
     {
       [(userFSVolume *)self startSyncerIfNeeded];
-      v24 = [v25 getFH];
+      getFH = [v25 getFH];
       [v18 getAttrData];
-      v21 = v29 = a7;
-      v22 = [v18 lfn_interestedClients];
-      v23 = [v25 getAttrData];
+      v21 = v29 = client;
+      lfn_interestedClients = [v18 lfn_interestedClients];
+      getAttrData = [v25 getAttrData];
       [v25 setLfn_inUseClientSet:{objc_msgSend(v25, "lfn_inUseClientSet") | v29}];
     }
 
     v19 = v33;
   }
 
-  v28 = [(userFSVolume *)self getFreeSpaceInVolume];
-  v17[2](v17, v19, v21, v22, v24, v23, v28);
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
+  replyCopy[2](replyCopy, v19, v21, lfn_interestedClients, getFH, getAttrData, getFreeSpaceInVolume);
 }
 
-- (void)makeLinkOf:(id)a3 named:(id)a4 inDirectory:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)makeLinkOf:(id)of named:(id)named inDirectory:(id)directory andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
+  namedCopy = named;
+  directoryCopy = directory;
   v42 = 0;
-  v14 = a8;
-  v15 = [(userFSVolume *)self getNodeForFH:a3 withError:&v42];
-  v39 = v12;
+  replyCopy = reply;
+  v15 = [(userFSVolume *)self getNodeForFH:of withError:&v42];
+  v39 = namedCopy;
   if (v42)
   {
     v16 = 0;
 LABEL_4:
     v17 = 0;
     v18 = 0;
-    v19 = 0;
-    v20 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_interestedClients = 0;
     goto LABEL_5;
   }
 
-  v16 = [(userFSVolume *)self getNodeForFH:v13 withError:&v42];
+  v16 = [(userFSVolume *)self getNodeForFH:directoryCopy withError:&v42];
   if (v42)
   {
     goto LABEL_4;
@@ -2502,13 +2502,13 @@ LABEL_4:
   [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
   v40 = 0;
   v41 = 0;
-  v23 = [v15 link:v16 withName:v12 fileAttrOut:&v41 dirAttrOut:&v40];
+  v23 = [v15 link:v16 withName:namedCopy fileAttrOut:&v41 dirAttrOut:&v40];
   v17 = v41;
   v18 = v40;
   v42 = v23;
   [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
-  v20 = [v16 lfn_interestedClients];
-  v19 = [v15 lfn_interestedClients];
+  lfn_interestedClients = [v16 lfn_interestedClients];
+  lfn_interestedClients2 = [v15 lfn_interestedClients];
   if (!v42)
   {
     [(userFSVolume *)self startSyncerIfNeeded];
@@ -2516,45 +2516,45 @@ LABEL_4:
     {
       if ([v15 lfn_check_appledouble])
       {
-        v24 = [v15 lfn_appledouble];
-        if (v24)
+        lfn_appledouble = [v15 lfn_appledouble];
+        if (lfn_appledouble)
         {
-          v25 = v24;
-          v35 = [v15 lfn_appledouble];
-          v37 = [v35 purpose];
+          v25 = lfn_appledouble;
+          lfn_appledouble2 = [v15 lfn_appledouble];
+          purpose = [lfn_appledouble2 purpose];
 
-          if (v37 != 2)
+          if (purpose != 2)
           {
-            v26 = [v15 lfn_appledouble];
-            [v26 reclaimFile];
+            lfn_appledouble3 = [v15 lfn_appledouble];
+            [lfn_appledouble3 reclaimFile];
 
             [v15 setLfn_appledouble:0];
           }
         }
 
-        v27 = [v15 lfn_appledouble];
+        lfn_appledouble4 = [v15 lfn_appledouble];
 
-        if (!v27)
+        if (!lfn_appledouble4)
         {
-          v38 = [(userFSVolume *)self appleDoubleManager];
-          v36 = [v15 lfn_fh];
-          v33 = [v15 lfn_name];
-          v34 = [v15 lfn_parent];
-          v32 = [v34 lfn_fh];
-          v28 = [v38 AppleDoubleForNamespaceWithBaseFile:v36 named:v33 inDirectory:v32];
+          appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
+          lfn_fh = [v15 lfn_fh];
+          lfn_name = [v15 lfn_name];
+          lfn_parent = [v15 lfn_parent];
+          lfn_fh2 = [lfn_parent lfn_fh];
+          v28 = [appleDoubleManager AppleDoubleForNamespaceWithBaseFile:lfn_fh named:lfn_name inDirectory:lfn_fh2];
           [v15 setLfn_appledouble:v28];
         }
 
-        v29 = [v15 lfn_appledouble];
-        [v15 setLfn_check_appledouble:{objc_msgSend(v29, "containerFileExists")}];
+        lfn_appledouble5 = [v15 lfn_appledouble];
+        [v15 setLfn_check_appledouble:{objc_msgSend(lfn_appledouble5, "containerFileExists")}];
 
-        v30 = [v15 lfn_appledouble];
-        [v30 linkFileToDirectory:v13 andName:v39];
+        lfn_appledouble6 = [v15 lfn_appledouble];
+        [lfn_appledouble6 linkFileToDirectory:directoryCopy andName:v39];
 
         if (([v15 lfn_check_appledouble] & 1) == 0)
         {
-          v31 = [v15 lfn_appledouble];
-          [v31 reclaimFile];
+          lfn_appledouble7 = [v15 lfn_appledouble];
+          [lfn_appledouble7 reclaimFile];
 
           [v15 setLfn_appledouble:0];
         }
@@ -2564,52 +2564,52 @@ LABEL_4:
 
 LABEL_5:
   v21 = v42;
-  v22 = [(userFSVolume *)self getFreeSpaceInVolume];
-  v14[2](v14, v21, v18, v20, v17, v19, v22);
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
+  replyCopy[2](replyCopy, v21, v18, lfn_interestedClients, v17, lfn_interestedClients2, getFreeSpaceInVolume);
 }
 
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v86 = a5;
-  v15 = a8;
+  itemCopy = item;
+  fromCopy = from;
+  namedCopy = named;
+  replyCopy = reply;
   v97 = 0;
   v16 = userfs_log_default;
-  v87 = v15;
+  v87 = replyCopy;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v52 = v14;
+    v52 = fromCopy;
     v53 = v16;
-    v54 = [v14 UTF8String];
-    v55 = [v86 UTF8String];
-    v56 = objc_retainBlock(v15);
-    v57 = v13;
+    uTF8String = [fromCopy UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    v56 = objc_retainBlock(replyCopy);
+    v57 = itemCopy;
     v58 = v56;
     *buf = 136315906;
-    v99 = v54;
+    v99 = uTF8String;
     v100 = 2080;
-    v101 = v55;
+    v101 = uTF8String2;
     v102 = 2048;
     v103 = v56;
     v104 = 2080;
     label = dispatch_queue_get_label(0);
     _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "removeItem(%s, %s, %p): start on %s", buf, 0x2Au);
 
-    v13 = v57;
-    v15 = v87;
+    itemCopy = v57;
+    replyCopy = v87;
   }
 
-  v17 = [(userFSVolume *)self pauseIOQueue];
-  v85 = [(userFSVolume *)self getNodeForFH:v14 withError:&v97];
+  pauseIOQueue = [(userFSVolume *)self pauseIOQueue];
+  v85 = [(userFSVolume *)self getNodeForFH:fromCopy withError:&v97];
   if (v97)
   {
-    v18 = self;
-    v19 = 0;
-    v20 = 0;
-    v21 = 0;
+    selfCopy4 = self;
+    lfn_fh3 = 0;
+    lfn_interestedClients = 0;
+    lfn_interestedClients2 = 0;
     v22 = 0;
-    if (!v17)
+    if (!pauseIOQueue)
     {
       goto LABEL_6;
     }
@@ -2617,31 +2617,31 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v79 = a6;
-  v80 = v17;
-  v25 = [(userFSVolume *)self getNodeForFH:v13 withError:&v97];
+  flagsCopy = flags;
+  v80 = pauseIOQueue;
+  v25 = [(userFSVolume *)self getNodeForFH:itemCopy withError:&v97];
   v83 = v25;
   if (v97 || (v26 = v25) == 0)
   {
-    v18 = self;
+    selfCopy4 = self;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000221E0(&v97);
     }
 
-    v19 = 0;
-    v20 = 0;
-    v21 = 0;
+    lfn_fh3 = 0;
+    lfn_interestedClients = 0;
+    lfn_interestedClients2 = 0;
     v22 = 0;
     v97 = 2;
   }
 
   else
   {
-    if ([v13 length])
+    if ([itemCopy length])
     {
-      v27 = [v26 getFH];
-      v28 = [v27 isEqualToString:v13];
+      getFH = [v26 getFH];
+      v28 = [getFH isEqualToString:itemCopy];
 
       if ((v28 & 1) == 0)
       {
@@ -2654,12 +2654,12 @@ LABEL_5:
       }
     }
 
-    v29 = [(userFSVolume *)self isCaseSensitive];
-    v30 = [v26 lfn_name];
-    v31 = v30;
-    if (v29)
+    isCaseSensitive = [(userFSVolume *)self isCaseSensitive];
+    lfn_name = [v26 lfn_name];
+    v31 = lfn_name;
+    if (isCaseSensitive)
     {
-      v32 = [v30 isEqualToString:v86];
+      v32 = [lfn_name isEqualToString:namedCopy];
 
       if (v32)
       {
@@ -2669,9 +2669,9 @@ LABEL_5:
 
     else
     {
-      v33 = [v30 lowercaseString];
-      v34 = [v86 lowercaseString];
-      v35 = [v33 isEqualToString:v34];
+      lowercaseString = [lfn_name lowercaseString];
+      lowercaseString2 = [namedCopy lowercaseString];
+      v35 = [lowercaseString isEqualToString:lowercaseString2];
 
       if (v35)
       {
@@ -2699,9 +2699,9 @@ LABEL_5:
       }
 
       v37 = *v94;
-      v78 = v14;
+      v78 = fromCopy;
       v81 = v36;
-      v82 = self;
+      selfCopy3 = self;
       v84 = *v94;
 LABEL_30:
       v38 = 0;
@@ -2716,34 +2716,34 @@ LABEL_30:
         v40 = [(NSMutableDictionary *)self->mountNameToNodeCache objectForKey:v39];
         if (v26 == v40)
         {
-          v41 = [v39 itemId];
-          v42 = [v26 lfn_parent];
-          v43 = [v42 lfn_fh];
-          if ([v41 isEqualToString:v43])
+          itemId = [v39 itemId];
+          lfn_parent = [v26 lfn_parent];
+          lfn_fh = [lfn_parent lfn_fh];
+          if ([itemId isEqualToString:lfn_fh])
           {
-            v44 = [(userFSVolume *)self isCaseSensitive];
-            v45 = [v26 lfn_name];
-            v46 = v45;
-            if (v44)
+            isCaseSensitive2 = [(userFSVolume *)self isCaseSensitive];
+            lfn_name2 = [v26 lfn_name];
+            v46 = lfn_name2;
+            if (isCaseSensitive2)
             {
-              v47 = [v39 filename];
-              v48 = [v46 isEqualToString:v47];
+              filename = [v39 filename];
+              v48 = [v46 isEqualToString:filename];
             }
 
             else
             {
-              v47 = [v45 lowercaseString];
-              v49 = [v39 filename];
-              v50 = [v49 lowercaseString];
-              v48 = [v47 isEqualToString:v50];
+              filename = [lfn_name2 lowercaseString];
+              filename2 = [v39 filename];
+              lowercaseString3 = [filename2 lowercaseString];
+              v48 = [filename isEqualToString:lowercaseString3];
 
               v26 = v83;
-              v14 = v78;
+              fromCopy = v78;
             }
 
-            v15 = v87;
+            replyCopy = v87;
             v36 = v81;
-            self = v82;
+            self = selfCopy3;
             v37 = v84;
             if (v48)
             {
@@ -2759,7 +2759,7 @@ LABEL_30:
             goto LABEL_39;
           }
 
-          v15 = v87;
+          replyCopy = v87;
           v37 = v84;
         }
 
@@ -2786,86 +2786,86 @@ LABEL_50:
     v61 = v85;
     if (!v97)
     {
-      v60 = [v85 remove:1 named:v86 node:v26 usingFlags:v79];
+      v60 = [v85 remove:1 named:namedCopy node:v26 usingFlags:flagsCopy];
     }
 
     v97 = v60;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
-    v13 = v77;
+    itemCopy = v77;
     if (v97)
     {
-      v18 = self;
-      v19 = 0;
-      v20 = 0;
-      v21 = 0;
+      selfCopy4 = self;
+      lfn_fh3 = 0;
+      lfn_interestedClients = 0;
+      lfn_interestedClients2 = 0;
       v22 = 0;
     }
 
     else
     {
       [(userFSVolume *)self startSyncerIfNeeded];
-      if ([v26 lfn_check_appledouble] && (+[LiveFSAppleDoubleManager isDotUnderBarFileName:](LiveFSAppleDoubleManager, "isDotUnderBarFileName:", v86) & 1) == 0)
+      if ([v26 lfn_check_appledouble] && (+[LiveFSAppleDoubleManager isDotUnderBarFileName:](LiveFSAppleDoubleManager, "isDotUnderBarFileName:", namedCopy) & 1) == 0)
       {
-        v62 = [v26 lfn_appledouble];
-        if (v62)
+        lfn_appledouble = [v26 lfn_appledouble];
+        if (lfn_appledouble)
         {
-          v63 = v62;
-          v64 = [v26 lfn_appledouble];
-          v65 = [v64 purpose];
+          v63 = lfn_appledouble;
+          lfn_appledouble2 = [v26 lfn_appledouble];
+          purpose = [lfn_appledouble2 purpose];
 
           v61 = v85;
-          if (v65 != 2)
+          if (purpose != 2)
           {
-            v66 = [v26 lfn_appledouble];
-            [v66 reclaimFile];
+            lfn_appledouble3 = [v26 lfn_appledouble];
+            [lfn_appledouble3 reclaimFile];
 
             [v26 setLfn_appledouble:0];
           }
         }
 
-        v67 = [v26 lfn_appledouble];
+        lfn_appledouble4 = [v26 lfn_appledouble];
 
-        if (!v67)
+        if (!lfn_appledouble4)
         {
-          v68 = [(userFSVolume *)self appleDoubleManager];
-          v69 = [v26 lfn_fh];
-          v70 = [v68 AppleDoubleForNamespaceWithBaseFile:v69 named:v86 inDirectory:v14];
+          appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
+          lfn_fh2 = [v26 lfn_fh];
+          v70 = [appleDoubleManager AppleDoubleForNamespaceWithBaseFile:lfn_fh2 named:namedCopy inDirectory:fromCopy];
           [v26 setLfn_appledouble:v70];
 
           v61 = v85;
         }
 
-        v71 = [v26 lfn_appledouble];
-        [v26 setLfn_check_appledouble:{objc_msgSend(v71, "containerFileExists")}];
+        lfn_appledouble5 = [v26 lfn_appledouble];
+        [v26 setLfn_check_appledouble:{objc_msgSend(lfn_appledouble5, "containerFileExists")}];
 
-        v72 = [v26 lfn_appledouble];
-        [v72 removeFile];
+        lfn_appledouble6 = [v26 lfn_appledouble];
+        [lfn_appledouble6 removeFile];
 
-        v73 = [v26 lfn_appledouble];
-        [v73 reclaimFile];
+        lfn_appledouble7 = [v26 lfn_appledouble];
+        [lfn_appledouble7 reclaimFile];
 
         [v26 setLfn_appledouble:0];
       }
 
-      v20 = [v26 lfn_interestedClients];
-      v19 = [v26 lfn_fh];
+      lfn_interestedClients = [v26 lfn_interestedClients];
+      lfn_fh3 = [v26 lfn_fh];
       [v26 forceUpdateLinkCount];
-      [(userFSVolume *)self removeFromNameCache:v26 withParent:v61 withName:v86];
+      [(userFSVolume *)self removeFromNameCache:v26 withParent:v61 withName:namedCopy];
       [v61 getAttrData];
       v74 = v61;
-      v22 = v18 = self;
-      v21 = [v74 lfn_interestedClients];
-      if (v18->_spotlightIsEnabled)
+      v22 = selfCopy4 = self;
+      lfn_interestedClients2 = [v74 lfn_interestedClients];
+      if (selfCopy4->_spotlightIsEnabled)
       {
         v92 = 0;
-        v75 = [(userFSVolume *)v18 pathStringForNode:v74 name:v86 buffer:buf bufferSize:1024 outLength:&v92];
+        v75 = [(userFSVolume *)selfCopy4 pathStringForNode:v74 name:namedCopy buffer:buf bufferSize:1024 outLength:&v92];
         if (v75)
         {
           v91 = 0;
           memset(v90, 0, sizeof(v90));
           v89 = v75;
           v76 = [NSData dataWithBytes:v90 length:184];
-          [(CSLiveFSVolume *)v18->_spotlightNotifer sendEventOfType:1 pid:0 path:v89 pathLength:v92 attributes:v76];
+          [(CSLiveFSVolume *)selfCopy4->_spotlightNotifer sendEventOfType:1 pid:0 path:v89 pathLength:v92 attributes:v76];
         }
       }
     }
@@ -2874,7 +2874,7 @@ LABEL_50:
   if (v80)
   {
 LABEL_5:
-    [(userFSVolume *)v18 resumeIOQueue];
+    [(userFSVolume *)selfCopy4 resumeIOQueue];
   }
 
 LABEL_6:
@@ -2884,8 +2884,8 @@ LABEL_6:
   }
 
   v23 = v97;
-  v24 = [(userFSVolume *)v18 getFreeSpaceInVolume];
-  (*(v15 + 2))(v15, v23, v22, v21, v20, v19, 0, v24);
+  getFreeSpaceInVolume = [(userFSVolume *)selfCopy4 getFreeSpaceInVolume];
+  (*(replyCopy + 2))(replyCopy, v23, v22, lfn_interestedClients2, lfn_interestedClients, lfn_fh3, 0, getFreeSpaceInVolume);
 
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -2893,84 +2893,84 @@ LABEL_6:
   }
 }
 
-- (void)renameItemIn:(id)a3 named:(id)a4 toDirectory:(id)a5 newName:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)renameItemIn:(id)in named:(id)named toDirectory:(id)directory newName:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v92 = a5;
-  v16 = a6;
-  v17 = a9;
+  inCopy = in;
+  namedCopy = named;
+  directoryCopy = directory;
+  nameCopy = name;
+  replyCopy = reply;
   v95 = 0;
   v18 = userfs_log_default;
-  v91 = v16;
+  v91 = nameCopy;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v34 = v14;
+    v34 = inCopy;
     v90 = v18;
-    v35 = [v14 UTF8String];
-    v36 = [v15 UTF8String];
-    v37 = a7;
-    v38 = [v92 UTF8String];
-    v39 = [v16 UTF8String];
-    v40 = objc_retainBlock(v17);
+    uTF8String = [inCopy UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    flagsCopy = flags;
+    uTF8String3 = [directoryCopy UTF8String];
+    uTF8String4 = [nameCopy UTF8String];
+    v40 = objc_retainBlock(replyCopy);
     *buf = 136316162;
-    v97 = v35;
+    v97 = uTF8String;
     v98 = 2080;
-    v99 = v36;
+    v99 = uTF8String2;
     v100 = 2080;
-    v101 = v38;
-    a7 = v37;
+    v101 = uTF8String3;
+    flags = flagsCopy;
     v102 = 2080;
-    v103 = v39;
-    v16 = v91;
+    v103 = uTF8String4;
+    nameCopy = v91;
     v104 = 2048;
     v105 = v40;
     _os_log_debug_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEBUG, "LIRename(%s, %s, %s, %s, %p): start", buf, 0x34u);
   }
 
-  v19 = [(userFSVolume *)self pauseIOQueue];
-  v88 = v14;
-  v89 = v15;
-  if (!v15 || !v16 || (~a7 & 6) == 0)
+  pauseIOQueue = [(userFSVolume *)self pauseIOQueue];
+  v88 = inCopy;
+  v89 = namedCopy;
+  if (!namedCopy || !nameCopy || (~flags & 6) == 0)
   {
-    v20 = 0;
-    v21 = 0;
+    lfn_interestedClients4 = 0;
+    lfn_fh3 = 0;
     v22 = 0;
     v23 = 0;
     v24 = 0;
-    v25 = 0;
+    getAttrData = 0;
     v82 = 0;
     v83 = 0;
-    v85 = 0;
-    v86 = 0;
-    v26 = 0;
+    lfn_interestedClients3 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_fh = 0;
     v84 = 0;
-    v87 = 0;
+    lfn_interestedClients = 0;
     v27 = 0;
     v28 = 22;
     goto LABEL_7;
   }
 
-  if ((a7 & 2) != 0 && (self->volCapInterfaces & 0x40000) == 0 || (a7 & 4) != 0 && (self->volCapInterfaces & 0x80000) == 0)
+  if ((flags & 2) != 0 && (self->volCapInterfaces & 0x40000) == 0 || (flags & 4) != 0 && (self->volCapInterfaces & 0x80000) == 0)
   {
-    v20 = 0;
-    v21 = 0;
+    lfn_interestedClients4 = 0;
+    lfn_fh3 = 0;
     v22 = 0;
     v23 = 0;
     v24 = 0;
-    v25 = 0;
+    getAttrData = 0;
     v82 = 0;
     v83 = 0;
-    v85 = 0;
-    v86 = 0;
-    v26 = 0;
+    lfn_interestedClients3 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_fh = 0;
     v84 = 0;
-    v87 = 0;
+    lfn_interestedClients = 0;
     v27 = 0;
     v28 = 45;
 LABEL_7:
     v95 = v28;
-    if (!v19)
+    if (!pauseIOQueue)
     {
       goto LABEL_9;
     }
@@ -2978,76 +2978,76 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  log = v19;
-  v32 = [(userFSVolume *)self getNodeForFH:v14 withError:&v95];
+  log = pauseIOQueue;
+  v32 = [(userFSVolume *)self getNodeForFH:inCopy withError:&v95];
   v33 = v32;
   if (v95)
   {
     v27 = v32;
-    v20 = 0;
-    v21 = 0;
+    lfn_interestedClients4 = 0;
+    lfn_fh3 = 0;
     v22 = 0;
     v23 = 0;
     v24 = 0;
-    v25 = 0;
+    getAttrData = 0;
     v82 = 0;
     v83 = 0;
-    v85 = 0;
-    v86 = 0;
-    v26 = 0;
+    lfn_interestedClients3 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_fh = 0;
     v84 = 0;
-    v87 = 0;
+    lfn_interestedClients = 0;
   }
 
   else
   {
-    v87 = [v32 lfn_interestedClients];
-    v45 = [(userFSVolume *)self lookupWithParent:v33 andName:v15];
+    lfn_interestedClients = [v32 lfn_interestedClients];
+    v45 = [(userFSVolume *)self lookupWithParent:v33 andName:namedCopy];
     v24 = v45;
     if (v45)
     {
-      v78 = a7;
-      v86 = [v45 lfn_interestedClients];
+      flagsCopy2 = flags;
+      lfn_interestedClients2 = [v45 lfn_interestedClients];
       v84 = v24;
-      v26 = [v24 lfn_fh];
+      lfn_fh = [v24 lfn_fh];
       v22 = 0;
       v94 = 0;
       if (self->_spotlightIsEnabled)
       {
-        v22 = strdup([(userFSVolume *)self pathStringForNode:v33 name:v15 buffer:buf bufferSize:1024 outLength:&v94]);
+        v22 = strdup([(userFSVolume *)self pathStringForNode:v33 name:namedCopy buffer:buf bufferSize:1024 outLength:&v94]);
       }
 
-      v46 = [(userFSVolume *)self getNodeForFH:v92 withError:&v95];
+      v46 = [(userFSVolume *)self getNodeForFH:directoryCopy withError:&v95];
       v82 = v46;
       if (v95)
       {
         v27 = v33;
-        v20 = 0;
-        v21 = 0;
+        lfn_interestedClients4 = 0;
+        lfn_fh3 = 0;
         v23 = 0;
         v24 = 0;
-        v25 = 0;
+        getAttrData = 0;
         v83 = 0;
-        v85 = 0;
+        lfn_interestedClients3 = 0;
       }
 
       else
       {
         v47 = v46;
-        v85 = [v46 lfn_interestedClients];
-        v83 = [(userFSVolume *)self lookupWithParent:v47 andName:v16];
+        lfn_interestedClients3 = [v46 lfn_interestedClients];
+        v83 = [(userFSVolume *)self lookupWithParent:v47 andName:nameCopy];
         [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
         v74 = v33;
-        v95 = [v33 rename:v84 named:v15 withToDirNode:v47 withToNode:v83 withToName:v16 andFlags:v78];
+        v95 = [v33 rename:v84 named:namedCopy withToDirNode:v47 withToNode:v83 withToName:nameCopy andFlags:flagsCopy2];
         [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
         if (v95)
         {
           v27 = v33;
-          v20 = 0;
-          v21 = 0;
+          lfn_interestedClients4 = 0;
+          lfn_fh3 = 0;
           v23 = 0;
           v24 = 0;
-          v25 = 0;
+          getAttrData = 0;
         }
 
         else
@@ -3062,70 +3062,70 @@ LABEL_7:
             v23 = strdup([(userFSVolume *)self pathStringForNode:v82 name:v91 buffer:buf bufferSize:1024 outLength:&v93]);
           }
 
-          if ([v84 lfn_check_appledouble] && (+[LiveFSAppleDoubleManager isDotUnderBarFileName:](LiveFSAppleDoubleManager, "isDotUnderBarFileName:", v15) & 1) == 0)
+          if ([v84 lfn_check_appledouble] && (+[LiveFSAppleDoubleManager isDotUnderBarFileName:](LiveFSAppleDoubleManager, "isDotUnderBarFileName:", namedCopy) & 1) == 0)
           {
-            if ((v78 & 2) != 0 && os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_FAULT))
+            if ((flagsCopy2 & 2) != 0 && os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_FAULT))
             {
               sub_100022640();
             }
 
             v50 = v84;
-            v51 = [v84 lfn_appledouble];
-            if (v51)
+            lfn_appledouble = [v84 lfn_appledouble];
+            if (lfn_appledouble)
             {
-              v52 = v51;
-              v53 = [v84 lfn_appledouble];
-              v54 = [v53 purpose];
+              v52 = lfn_appledouble;
+              lfn_appledouble2 = [v84 lfn_appledouble];
+              purpose = [lfn_appledouble2 purpose];
 
               v50 = v84;
-              v55 = v54 == 2;
+              v55 = purpose == 2;
               v48 = v74;
               if (!v55)
               {
-                v56 = [v84 lfn_appledouble];
-                [v56 reclaimFile];
+                lfn_appledouble3 = [v84 lfn_appledouble];
+                [lfn_appledouble3 reclaimFile];
 
                 [v84 setLfn_appledouble:0];
               }
             }
 
-            v57 = [v50 lfn_appledouble];
+            lfn_appledouble4 = [v50 lfn_appledouble];
 
-            if (!v57)
+            if (!lfn_appledouble4)
             {
-              v58 = [(userFSVolume *)self appleDoubleManager];
-              v59 = [v50 lfn_fh];
-              [v58 AppleDoubleForNamespaceWithBaseFile:v59 named:v15 inDirectory:v14];
+              appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
+              lfn_fh2 = [v50 lfn_fh];
+              [appleDoubleManager AppleDoubleForNamespaceWithBaseFile:lfn_fh2 named:namedCopy inDirectory:inCopy];
               v61 = v60 = v48;
               [v84 setLfn_appledouble:v61];
 
               v48 = v60;
-              v15 = v89;
+              namedCopy = v89;
 
               v50 = v84;
             }
 
-            v62 = [v50 lfn_appledouble];
-            [v50 setLfn_check_appledouble:{objc_msgSend(v62, "containerFileExists")}];
+            lfn_appledouble5 = [v50 lfn_appledouble];
+            [v50 setLfn_check_appledouble:{objc_msgSend(lfn_appledouble5, "containerFileExists")}];
 
-            v63 = [v50 lfn_appledouble];
-            [v63 renameFileToDirectory:v92 andName:v91];
+            lfn_appledouble6 = [v50 lfn_appledouble];
+            [lfn_appledouble6 renameFileToDirectory:directoryCopy andName:v91];
 
-            v64 = [v50 lfn_appledouble];
-            [v64 reclaimFile];
+            lfn_appledouble7 = [v50 lfn_appledouble];
+            [lfn_appledouble7 reclaimFile];
 
             [v50 setLfn_appledouble:0];
             v49 = v82;
           }
 
-          if ((v78 & 2) != 0)
+          if ((flagsCopy2 & 2) != 0)
           {
             if (v83)
             {
               [(userFSVolume *)self removeFromNameCache:v83 withParent:v49];
               v65 = v84;
               [(userFSVolume *)self removeFromNameCache:v84 withParent:v48];
-              [v83 updateName:v15 andParent:v48];
+              [v83 updateName:namedCopy andParent:v48];
               [v84 updateName:v91 andParent:v49];
               [(userFSVolume *)self insertIntoNameCache:v83 withParent:v48];
             }
@@ -3138,13 +3138,13 @@ LABEL_7:
             }
 
             [(userFSVolume *)self insertIntoNameCache:v65 withParent:v49];
-            v20 = 0;
-            v21 = 0;
+            lfn_interestedClients4 = 0;
+            lfn_fh3 = 0;
           }
 
           else
           {
-            v20 = v83;
+            lfn_interestedClients4 = v83;
             if (v83)
             {
               if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -3152,8 +3152,8 @@ LABEL_7:
                 sub_100022674();
               }
 
-              v21 = [v83 lfn_fh];
-              v20 = [v83 lfn_interestedClients];
+              lfn_fh3 = [v83 lfn_fh];
+              lfn_interestedClients4 = [v83 lfn_interestedClients];
               [userFSVolume removeFromNameCache:"removeFromNameCache:withParent:withName:" withParent:v83 withName:?];
               if ([v83 isNodeReclaimable])
               {
@@ -3166,7 +3166,7 @@ LABEL_7:
 
             else
             {
-              v21 = 0;
+              lfn_fh3 = 0;
             }
 
             if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -3174,7 +3174,7 @@ LABEL_7:
               sub_1000226B0();
             }
 
-            [(userFSVolume *)self removeFromNameCache:v84 withParent:v48 withName:v15];
+            [(userFSVolume *)self removeFromNameCache:v84 withParent:v48 withName:namedCopy];
             [v84 updateName:? andParent:?];
             v49 = v82;
             v48 = v74;
@@ -3183,23 +3183,23 @@ LABEL_7:
           }
 
           v27 = v48;
-          v25 = [v48 getAttrData];
-          v66 = [v49 getAttrData];
-          v24 = v66;
-          if (self->_spotlightIsEnabled && v66 && v23 && v22)
+          getAttrData = [v48 getAttrData];
+          getAttrData2 = [v49 getAttrData];
+          v24 = getAttrData2;
+          if (self->_spotlightIsEnabled && getAttrData2 && v23 && v22)
           {
-            v67 = 0;
-            if ((v78 & 2) != 0 && v83)
+            getAttrData3 = 0;
+            if ((flagsCopy2 & 2) != 0 && v83)
             {
-              v67 = [v83 getAttrData];
+              getAttrData3 = [v83 getAttrData];
             }
 
             v76 = v94;
-            v79 = v67;
+            v79 = getAttrData3;
             v69 = v93;
             spotlightNotifer = self->_spotlightNotifer;
-            v72 = [v84 getAttrData];
-            [(CSLiveFSVolume *)spotlightNotifer sendPairedEventOfType:3 pid:0 fromPath:v22 fromPathLength:v76 fromAttributes:v79 toPath:v23 toPathLength:v69 toAttributes:v72];
+            getAttrData4 = [v84 getAttrData];
+            [(CSLiveFSVolume *)spotlightNotifer sendPairedEventOfType:3 pid:0 fromPath:v22 fromPathLength:v76 fromAttributes:v79 toPath:v23 toPathLength:v69 toAttributes:getAttrData4];
           }
         }
       }
@@ -3208,16 +3208,16 @@ LABEL_7:
     else
     {
       v27 = v33;
-      v20 = 0;
-      v21 = 0;
+      lfn_interestedClients4 = 0;
+      lfn_fh3 = 0;
       v22 = 0;
       v23 = 0;
-      v25 = 0;
+      getAttrData = 0;
       v82 = 0;
       v83 = 0;
-      v85 = 0;
-      v86 = 0;
-      v26 = 0;
+      lfn_interestedClients3 = 0;
+      lfn_interestedClients2 = 0;
+      lfn_fh = 0;
       v84 = 0;
       v95 = 2;
     }
@@ -3245,119 +3245,119 @@ LABEL_9:
   {
     v41 = v88;
     loga = v29;
-    v77 = [v88 UTF8String];
-    v75 = [v89 UTF8String];
-    v73 = [v92 UTF8String];
-    v42 = [v91 UTF8String];
-    v43 = objc_retainBlock(v17);
+    uTF8String5 = [v88 UTF8String];
+    uTF8String6 = [v89 UTF8String];
+    uTF8String7 = [directoryCopy UTF8String];
+    uTF8String8 = [v91 UTF8String];
+    v43 = objc_retainBlock(replyCopy);
     v71 = v95;
-    v44 = [v21 UTF8String];
+    uTF8String9 = [lfn_fh3 UTF8String];
     *buf = 136318978;
-    v97 = v77;
+    v97 = uTF8String5;
     v98 = 2080;
-    v99 = v75;
+    v99 = uTF8String6;
     v100 = 2080;
-    v101 = v73;
+    v101 = uTF8String7;
     v102 = 2080;
-    v103 = v42;
+    v103 = uTF8String8;
     v104 = 2048;
     v105 = v43;
     v106 = 1024;
     v107 = v71;
     v108 = 2048;
-    v109 = v25;
+    v109 = getAttrData;
     v110 = 2048;
-    v111 = v87;
+    v111 = lfn_interestedClients;
     v112 = 2048;
     v113 = v24;
     v114 = 2048;
-    v115 = v85;
+    v115 = lfn_interestedClients3;
     v116 = 2048;
-    v117 = v86;
+    v117 = lfn_interestedClients2;
     v118 = 2048;
-    v119 = v26;
+    v119 = lfn_fh;
     v120 = 1024;
     v121 = 0;
     v122 = 2048;
-    v123 = v20;
+    v123 = lfn_interestedClients4;
     v124 = 2080;
-    v125 = v44;
+    v125 = uTF8String9;
     v126 = 1024;
     v127 = 0;
     _os_log_debug_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEBUG, "LIRename(%s, %s, %s, %s, %p): reply(%d, %p, %#llx, %p, %#llx, %#llx, %p, %d, %#llx, %s, %d)", buf, 0x96u);
   }
 
   v30 = v95;
-  v31 = [(userFSVolume *)self getFreeSpaceInVolume];
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
   LOBYTE(v68) = 0;
-  (*(v17 + 2))(v17, v30, v25, v87, v24, v85, v86, v26, v68, v20, v21, 0, v31);
+  (*(replyCopy + 2))(replyCopy, v30, getAttrData, lfn_interestedClients, v24, lfn_interestedClients3, lfn_interestedClients2, lfn_fh, v68, lfn_interestedClients4, lfn_fh3, 0, getFreeSpaceInVolume);
 }
 
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)readDirectory:(id)directory amount:(unint64_t)amount cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a8;
-  v15 = a3;
-  [LiveFSSharedMutableBuffer dataWithLength:a4];
+  replyCopy = reply;
+  directoryCopy = directory;
+  [LiveFSSharedMutableBuffer dataWithLength:amount];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000F5F8;
   v18[3] = &unk_1000388E8;
-  v20 = v14;
-  v19 = v21 = a4;
-  v16 = v14;
+  v20 = replyCopy;
+  v19 = v21 = amount;
+  v16 = replyCopy;
   v17 = v19;
-  [(userFSVolume *)self readDirectory:v15 intoBuffer:v17 cookie:a5 verifier:a6 requestID:a7 reply:v18];
+  [(userFSVolume *)self readDirectory:directoryCopy intoBuffer:v17 cookie:cookie verifier:verifier requestID:d reply:v18];
 }
 
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)readDirectory:(id)directory amount:(unint64_t)amount requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v16 = a9;
-  v17 = a3;
-  [LiveFSSharedMutableBuffer dataWithLength:a4];
+  replyCopy = reply;
+  directoryCopy = directory;
+  [LiveFSSharedMutableBuffer dataWithLength:amount];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000F7EC;
   v20[3] = &unk_1000388E8;
-  v22 = v16;
-  v21 = v23 = a4;
-  v18 = v16;
+  v22 = replyCopy;
+  v21 = v23 = amount;
+  v18 = replyCopy;
   v19 = v21;
-  [(userFSVolume *)self readDirectory:v17 intoBuffer:v19 requestedAttributes:a5 cookie:a6 verifier:a7 requestID:a8 reply:v20];
+  [(userFSVolume *)self readDirectory:directoryCopy intoBuffer:v19 requestedAttributes:attributes cookie:cookie verifier:verifier requestID:d reply:v20];
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  directoryCopy = directory;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v29 = 0;
-  v27 = a6;
+  verifierCopy = verifier;
   v28 = 0;
   v16 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v19 = v13;
+    v19 = directoryCopy;
     v20 = v16;
-    v21 = [v13 UTF8String];
-    v22 = objc_retainBlock(v15);
+    uTF8String = [directoryCopy UTF8String];
+    v22 = objc_retainBlock(replyCopy);
     *buf = 136316162;
-    v31 = v21;
+    v31 = uTF8String;
     v32 = 2048;
-    v33 = v14;
+    v33 = bufferCopy;
     v34 = 2048;
-    v35 = a5;
+    cookieCopy2 = cookie;
     v36 = 2048;
-    v37 = a6;
+    verifierCopy3 = verifier;
     v38 = 2048;
     v39 = v22;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "LIReadDir(%s, %p, 0x%llx, 0x%llx, %p): start", buf, 0x34u);
   }
 
-  v17 = [(userFSVolume *)self getNodeForFH:v13 withError:&v29];
+  v17 = [(userFSVolume *)self getNodeForFH:directoryCopy withError:&v29];
   if (!v29)
   {
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
-    v29 = [v17 readDirectoryEntries:v14 withCookie:a5 withLengthOut:&v28 andWithVerifier:&v27];
+    v29 = [v17 readDirectoryEntries:bufferCopy withCookie:cookie withLengthOut:&v28 andWithVerifier:&verifierCopy];
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
     if (v29 == -1001)
     {
@@ -3371,18 +3371,18 @@ LABEL_9:
   v18 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v23 = v13;
+    v23 = directoryCopy;
     v24 = v18;
-    v25 = [v13 UTF8String];
-    v26 = objc_retainBlock(v15);
+    uTF8String2 = [directoryCopy UTF8String];
+    v26 = objc_retainBlock(replyCopy);
     *buf = 136316930;
-    v31 = v25;
+    v31 = uTF8String2;
     v32 = 2048;
-    v33 = v14;
+    v33 = bufferCopy;
     v34 = 2048;
-    v35 = a5;
+    cookieCopy2 = cookie;
     v36 = 2048;
-    v37 = a6;
+    verifierCopy3 = verifier;
     v38 = 2048;
     v39 = v26;
     v40 = 1024;
@@ -3390,64 +3390,64 @@ LABEL_9:
     v42 = 2048;
     v43 = v28;
     v44 = 2048;
-    v45 = v27;
+    v45 = verifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "LIReadDir(%s, %p, 0x%llx, 0x%llx, %p): reply(%d, %ld, 0x%llx)", buf, 0x4Eu);
   }
 
-  (*(v15 + 2))(v15, v29, v28, v27);
+  (*(replyCopy + 2))(replyCopy, v29, v28, verifierCopy);
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a9;
+  directoryCopy = directory;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v29 = 0;
-  v27 = a7;
+  verifierCopy = verifier;
   v28 = 0;
   v16 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v19 = v13;
+    v19 = directoryCopy;
     v20 = v16;
-    v21 = [v13 UTF8String];
-    v22 = objc_retainBlock(v15);
+    uTF8String = [directoryCopy UTF8String];
+    v22 = objc_retainBlock(replyCopy);
     *buf = 136316162;
-    v31 = v21;
+    v31 = uTF8String;
     v32 = 2048;
-    v33 = v14;
+    v33 = bufferCopy;
     v34 = 2048;
-    v35 = a6;
+    cookieCopy2 = cookie;
     v36 = 2048;
-    v37 = a7;
+    verifierCopy3 = verifier;
     v38 = 2048;
     v39 = v22;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "LIReadDirAndAttrs(%s, %p, 0x%llx, 0x%llx, %p): start", buf, 0x34u);
   }
 
-  v17 = [(userFSVolume *)self getNodeForFH:v13 withError:&v29];
+  v17 = [(userFSVolume *)self getNodeForFH:directoryCopy withError:&v29];
   if (!v29)
   {
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
-    v29 = [v17 readDirectoryEntriesWithAttrs:v14 withCookie:a6 withLengthOut:&v28 andWithVerifier:&v27];
+    v29 = [v17 readDirectoryEntriesWithAttrs:bufferCopy withCookie:cookie withLengthOut:&v28 andWithVerifier:&verifierCopy];
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
   }
 
   v18 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v23 = v13;
+    v23 = directoryCopy;
     v24 = v18;
-    v25 = [v13 UTF8String];
-    v26 = objc_retainBlock(v15);
+    uTF8String2 = [directoryCopy UTF8String];
+    v26 = objc_retainBlock(replyCopy);
     *buf = 136316930;
-    v31 = v25;
+    v31 = uTF8String2;
     v32 = 2048;
-    v33 = v14;
+    v33 = bufferCopy;
     v34 = 2048;
-    v35 = a6;
+    cookieCopy2 = cookie;
     v36 = 2048;
-    v37 = a7;
+    verifierCopy3 = verifier;
     v38 = 2048;
     v39 = v26;
     v40 = 1024;
@@ -3455,18 +3455,18 @@ LABEL_9:
     v42 = 2048;
     v43 = v28;
     v44 = 2048;
-    v45 = v27;
+    v45 = verifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "LIReadDirWithAttrs(%s, %p, 0x%llx, 0x%llx, %p): reply(%d, %ld, 0x%llx)", buf, 0x4Eu);
   }
 
-  (*(v15 + 2))(v15, v29, v28, v27);
+  (*(replyCopy + 2))(replyCopy, v29, v28, verifierCopy);
 }
 
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v12 = 0;
-  v8 = [(userFSVolume *)self getNodeForFH:a3 withError:&v12];
+  v8 = [(userFSVolume *)self getNodeForFH:statistics withError:&v12];
   if (v12)
   {
     v9 = 0;
@@ -3482,14 +3482,14 @@ LABEL_9:
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
   }
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v12 = 0;
-  v8 = [(userFSVolume *)self getNodeForFH:a3 withError:&v12];
+  v8 = [(userFSVolume *)self getNodeForFH:configuration withError:&v12];
   if (v12)
   {
     v9 = 0;
@@ -3505,26 +3505,26 @@ LABEL_9:
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
   }
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)otherAttributeOf:(id)a3 named:(id)a4 reply:(id)a5
+- (void)otherAttributeOf:(id)of named:(id)named reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ofCopy = of;
+  namedCopy = named;
+  replyCopy = reply;
   v11 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     v17 = v11;
-    v18 = [v8 lfn_fh];
-    v19 = [v18 UTF8String];
-    v20 = [v9 UTF8String];
-    v21 = objc_retainBlock(v10);
+    lfn_fh = [ofCopy lfn_fh];
+    uTF8String = [lfn_fh UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    v21 = objc_retainBlock(replyCopy);
     *buf = 136315650;
-    v30 = v19;
+    v30 = uTF8String;
     v31 = 2080;
-    v32 = v20;
+    v32 = uTF8String2;
     v33 = 2048;
     v34 = v21;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "LIGetFSAttr(%s, [%s], %p)", buf, 0x20u);
@@ -3532,14 +3532,14 @@ LABEL_9:
 
   [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
   v28 = 0;
-  v12 = [v8 getFileSystemAttribute:v9 andResult:&v28];
+  v12 = [ofCopy getFileSystemAttribute:namedCopy andResult:&v28];
   v13 = v28;
   [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
-  if (!v12 && [v9 isEqualToString:@"_N_caps_interfaces"])
+  if (!v12 && [namedCopy isEqualToString:@"_N_caps_interfaces"])
   {
     v14 = [NSMutableData dataWithData:v13];
-    v15 = [v14 mutableBytes];
-    *v15 |= 0x100000uLL;
+    mutableBytes = [v14 mutableBytes];
+    *mutableBytes |= 0x100000uLL;
 
     v13 = v14;
   }
@@ -3548,15 +3548,15 @@ LABEL_9:
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     v22 = v16;
-    v23 = [v8 lfn_fh];
-    v24 = [v23 UTF8String];
-    v25 = [v9 UTF8String];
-    v26 = objc_retainBlock(v10);
+    lfn_fh2 = [ofCopy lfn_fh];
+    uTF8String3 = [lfn_fh2 UTF8String];
+    uTF8String4 = [namedCopy UTF8String];
+    v26 = objc_retainBlock(replyCopy);
     v27 = [v13 length];
     *buf = 136316418;
-    v30 = v24;
+    v30 = uTF8String3;
     v31 = 2080;
-    v32 = v25;
+    v32 = uTF8String4;
     v33 = 2048;
     v34 = v26;
     v35 = 1024;
@@ -3568,16 +3568,16 @@ LABEL_9:
     _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "LIGetFSAttr(%s, [%s], %p: reply(%d, %p[%lu])", buf, 0x3Au);
   }
 
-  (*(v10 + 2))(v10, v12, v13);
+  (*(replyCopy + 2))(replyCopy, v12, v13);
 }
 
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  ofCopy = of;
+  namedCopy = named;
+  replyCopy = reply;
   v13 = 0;
-  v12 = [(userFSVolume *)self getNodeForFH:v9 withError:&v13];
+  v12 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v13];
   if (v13)
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
@@ -3585,37 +3585,37 @@ LABEL_9:
       sub_1000226EC();
     }
 
-    (*(v11 + 2))(v11, v13, 0);
+    (*(replyCopy + 2))(replyCopy, v13, 0);
   }
 
   else
   {
-    [(userFSVolume *)self otherAttributeOf:v12 named:v10 reply:v11];
+    [(userFSVolume *)self otherAttributeOf:v12 named:namedCopy reply:replyCopy];
   }
 }
 
-- (void)setOtherAttributeOf:(id)a3 named:(id)a4 value:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)setOtherAttributeOf:(id)of named:(id)named value:(id)value requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  ofCopy = of;
+  namedCopy = named;
+  valueCopy = value;
+  replyCopy = reply;
   v34 = 0;
   v15 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v21 = v11;
+    v21 = ofCopy;
     log = v15;
-    v22 = [v11 UTF8String];
-    v23 = [v12 UTF8String];
-    v24 = [v13 length];
-    v25 = objc_retainBlock(v14);
+    uTF8String = [ofCopy UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    v24 = [valueCopy length];
+    v25 = objc_retainBlock(replyCopy);
     *buf = 136316162;
-    *&buf[4] = v22;
+    *&buf[4] = uTF8String;
     v36 = 2080;
-    v37 = v23;
+    v37 = uTF8String2;
     v38 = 2048;
-    v39 = v13;
+    v39 = valueCopy;
     v40 = 2048;
     v41 = v24;
     v42 = 2048;
@@ -3623,7 +3623,7 @@ LABEL_9:
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "LISetFSAttr(%s, [%s], %p[%lu], %p)", buf, 0x34u);
   }
 
-  v16 = [(userFSVolume *)self getNodeForFH:v11 withError:&v34];
+  v16 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v34];
   if (v34)
   {
     v17 = 0;
@@ -3632,10 +3632,10 @@ LABEL_9:
   else
   {
     [(UserFSSleepManager *)self->_powerAssertManager disableSystemSleepDelayed:self->_metaDataRequests];
-    if ([v12 isEqual:@"_N_SYNC"])
+    if ([namedCopy isEqual:@"_N_SYNC"])
     {
       *buf = 0;
-      [v13 getBytes:buf length:8];
+      [valueCopy getBytes:buf length:8];
       v18 = [v16 syncTheFileSystem:*buf];
       v17 = 0;
     }
@@ -3643,36 +3643,36 @@ LABEL_9:
     else
     {
       v33 = 0;
-      v18 = [v16 setFileSystemAttributes:v12 toValue:v13 andResult:&v33];
+      v18 = [v16 setFileSystemAttributes:namedCopy toValue:valueCopy andResult:&v33];
       v17 = v33;
     }
 
     v34 = v18;
     [(UserFSSleepManager *)self->_powerAssertManager reenableSystemSleep];
-    if (!v34 && [v12 isEqualToString:@"_O_f_preallocate"])
+    if (!v34 && [namedCopy isEqualToString:@"_O_f_preallocate"])
     {
-      v19 = [(userFSVolume *)self getFreeSpaceInVolume];
+      getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
       goto LABEL_12;
     }
   }
 
-  v19 = 0;
+  getFreeSpaceInVolume = 0;
 LABEL_12:
   v20 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v26 = v11;
+    v26 = ofCopy;
     loga = v20;
-    v30 = [v11 UTF8String];
-    v27 = [v12 UTF8String];
-    v28 = [v13 length];
-    v29 = objc_retainBlock(v14);
+    uTF8String3 = [ofCopy UTF8String];
+    uTF8String4 = [namedCopy UTF8String];
+    v28 = [valueCopy length];
+    v29 = objc_retainBlock(replyCopy);
     *buf = 136316674;
-    *&buf[4] = v30;
+    *&buf[4] = uTF8String3;
     v36 = 2080;
-    v37 = v27;
+    v37 = uTF8String4;
     v38 = 2048;
-    v39 = v13;
+    v39 = valueCopy;
     v40 = 2048;
     v41 = v28;
     v42 = 2048;
@@ -3684,51 +3684,51 @@ LABEL_12:
     _os_log_debug_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEBUG, "LISetFSAttr(%s, [%s], %p[%lu], %p): reply(%d, %p)", buf, 0x44u);
   }
 
-  (*(v14 + 2))(v14, v34, v17, v19);
+  (*(replyCopy + 2))(replyCopy, v34, v17, getFreeSpaceInVolume);
 }
 
-- (void)xattrOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)xattrOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  ofCopy = of;
+  namedCopy = named;
+  replyCopy = reply;
   v75 = 0;
   v12 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v24 = v9;
+    v24 = ofCopy;
     v25 = v12;
-    v26 = [v9 UTF8String];
-    v27 = [v10 UTF8String];
-    v28 = objc_retainBlock(v11);
+    uTF8String = [ofCopy UTF8String];
+    uTF8String2 = [namedCopy UTF8String];
+    v28 = objc_retainBlock(replyCopy);
     *buf = 136315650;
-    v77 = v26;
+    v77 = uTF8String;
     v78 = 2080;
-    v79 = v27;
+    v79 = uTF8String2;
     v80 = 2048;
     v81 = v28;
     _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "LIGetXattr(%s, [%s], %p): start", buf, 0x20u);
   }
 
-  if (!sub_100010F58(v10))
+  if (!sub_100010F58(namedCopy))
   {
-    v14 = [(userFSVolume *)self getNodeForFH:v9 withError:&v75];
-    v15 = [v14 lfn_xattrCache];
-    v16 = v15;
+    v14 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v75];
+    lfn_xattrCache = [v14 lfn_xattrCache];
+    v16 = lfn_xattrCache;
     if (v75)
     {
       v17 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v34 = v9;
+        v34 = ofCopy;
         v35 = v17;
-        v36 = [v9 UTF8String];
-        v37 = [v10 UTF8String];
-        v38 = objc_retainBlock(v11);
+        uTF8String3 = [ofCopy UTF8String];
+        uTF8String4 = [namedCopy UTF8String];
+        v38 = objc_retainBlock(replyCopy);
         *buf = 136315906;
-        v77 = v36;
+        v77 = uTF8String3;
         v78 = 2080;
-        v79 = v37;
+        v79 = uTF8String4;
         v80 = 2048;
         v81 = v38;
         v82 = 1024;
@@ -3736,116 +3736,116 @@ LABEL_12:
         _os_log_debug_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "LIGetXattr(%s, %s, %p): reply(%d, nil) 1", buf, 0x26u);
       }
 
-      v11[2](v11, v75, 0);
+      replyCopy[2](replyCopy, v75, 0);
       goto LABEL_20;
     }
 
     v74 = 0;
-    v18 = [v15 dataForName:v10 wasNegative:&v74];
+    lfn_name = [lfn_xattrCache dataForName:namedCopy wasNegative:&v74];
     v19 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
       v39 = v19;
-      v40 = objc_retainBlock(v11);
+      v40 = objc_retainBlock(replyCopy);
       *buf = 138413314;
-      v77 = v9;
+      v77 = ofCopy;
       v78 = 2112;
-      v79 = v10;
+      v79 = namedCopy;
       v80 = 2048;
       v81 = v40;
       v82 = 2112;
-      *v83 = v18;
+      *v83 = lfn_name;
       *&v83[8] = 1024;
       *&v83[10] = v74;
       _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "LIGetXattr(%@, %@, %p): xattrData: %@ wasNegative: %d", buf, 0x30u);
 
-      if (v18)
+      if (lfn_name)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v18)
+    else if (lfn_name)
     {
 LABEL_13:
-      v20 = v11[2];
-      v21 = v11;
+      v20 = replyCopy[2];
+      v21 = replyCopy;
       v22 = 0;
       goto LABEL_14;
     }
 
     if (v74 == 1)
     {
-      v20 = v11[2];
-      v21 = v11;
+      v20 = replyCopy[2];
+      v21 = replyCopy;
       v22 = 93;
       v23 = 0;
       goto LABEL_18;
     }
 
-    v41 = [(userFSVolume *)self appleDoubleManager];
+    appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
 
-    if (v41)
+    if (appleDoubleManager)
     {
       v75 = 93;
       if ([v14 lfn_check_appledouble])
       {
-        v42 = [(userFSVolume *)self rootNode];
+        rootNode = [(userFSVolume *)self rootNode];
 
-        if (v14 == v42)
+        if (v14 == rootNode)
         {
-          v71 = v14;
-          v18 = @".";
+          lfn_parent = v14;
+          lfn_name = @".";
         }
 
         else
         {
-          v18 = [v14 lfn_name];
-          v71 = [v14 lfn_parent];
+          lfn_name = [v14 lfn_name];
+          lfn_parent = [v14 lfn_parent];
         }
 
-        v47 = [v14 lfn_appledouble];
-        if (v47)
+        lfn_appledouble = [v14 lfn_appledouble];
+        if (lfn_appledouble)
         {
-          v48 = v47;
+          v48 = lfn_appledouble;
           [v14 lfn_appledouble];
-          v49 = v69 = v18;
-          v50 = [v49 purpose];
+          v49 = v69 = lfn_name;
+          purpose = [v49 purpose];
 
-          v18 = v69;
-          if (v50)
+          lfn_name = v69;
+          if (purpose)
           {
-            v51 = [v14 lfn_appledouble];
-            [v51 reclaimFile];
+            lfn_appledouble2 = [v14 lfn_appledouble];
+            [lfn_appledouble2 reclaimFile];
 
             [v14 setLfn_appledouble:0];
           }
         }
 
-        v52 = [v14 lfn_appledouble];
+        lfn_appledouble3 = [v14 lfn_appledouble];
 
-        if (!v52)
+        if (!lfn_appledouble3)
         {
-          v53 = [(userFSVolume *)self appleDoubleManager];
-          v54 = [v71 getFH];
-          v55 = [v53 AppleDoubleForReadingWithBaseFile:v9 named:v18 inDirectory:v54];
+          appleDoubleManager2 = [(userFSVolume *)self appleDoubleManager];
+          getFH = [lfn_parent getFH];
+          v55 = [appleDoubleManager2 AppleDoubleForReadingWithBaseFile:ofCopy named:lfn_name inDirectory:getFH];
           [v14 setLfn_appledouble:v55];
         }
 
-        v45 = [v14 lfn_appledouble];
+        lfn_appledouble4 = [v14 lfn_appledouble];
 
-        if (v45)
+        if (lfn_appledouble4)
         {
-          v56 = [v14 lfn_appledouble];
-          [v14 setLfn_check_appledouble:{objc_msgSend(v56, "containerFileExists")}];
+          lfn_appledouble5 = [v14 lfn_appledouble];
+          [v14 setLfn_check_appledouble:{objc_msgSend(lfn_appledouble5, "containerFileExists")}];
 
-          v57 = [v14 lfn_appledouble];
-          v45 = [v57 valueForXattrNamed:v10 posixError:&v75];
+          lfn_appledouble6 = [v14 lfn_appledouble];
+          lfn_appledouble4 = [lfn_appledouble6 valueForXattrNamed:namedCopy posixError:&v75];
 
           if (([v14 lfn_check_appledouble] & 1) == 0)
           {
-            v58 = [v14 lfn_appledouble];
-            [v58 reclaimFile];
+            lfn_appledouble7 = [v14 lfn_appledouble];
+            [lfn_appledouble7 reclaimFile];
 
             [v14 setLfn_appledouble:0];
           }
@@ -3856,94 +3856,94 @@ LABEL_13:
           [v14 setLfn_check_appledouble:0];
         }
 
-        v46 = v71;
+        v46 = lfn_parent;
       }
 
       else
       {
-        v45 = 0;
+        lfn_appledouble4 = 0;
         v46 = 0;
-        v18 = 0;
+        lfn_name = 0;
       }
 
       v59 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v60 = v9;
+        v60 = ofCopy;
         v70 = v59;
         v72 = v46;
-        v61 = [v9 UTF8String];
-        v62 = [v10 UTF8String];
-        v63 = objc_retainBlock(v11);
+        uTF8String5 = [ofCopy UTF8String];
+        uTF8String6 = [namedCopy UTF8String];
+        v63 = objc_retainBlock(replyCopy);
         *buf = 136316162;
-        v77 = v61;
+        v77 = uTF8String5;
         v78 = 2080;
-        v79 = v62;
+        v79 = uTF8String6;
         v80 = 2048;
         v81 = v63;
         v82 = 1024;
         *v83 = v75;
         *&v83[4] = 2048;
-        *&v83[6] = v45;
+        *&v83[6] = lfn_appledouble4;
         v46 = v72;
         _os_log_debug_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEBUG, "LIGetXattr(%s, %s, %p): reply(%d, %p) 3", buf, 0x30u);
       }
 
       if (v75 == 93)
       {
-        [v16 setNegativeForName:v10];
+        [v16 setNegativeForName:namedCopy];
       }
 
-      else if (v45)
+      else if (lfn_appledouble4)
       {
-        [v16 setData:v45 forName:v10];
+        [v16 setData:lfn_appledouble4 forName:namedCopy];
       }
 
-      v11[2](v11, v75, v45);
+      replyCopy[2](replyCopy, v75, lfn_appledouble4);
 
       goto LABEL_19;
     }
 
     v73 = 0;
-    v43 = [v14 getXAttr:v10 withBuffer:&v73];
-    v18 = v73;
+    v43 = [v14 getXAttr:namedCopy withBuffer:&v73];
+    lfn_name = v73;
     v75 = v43;
     v44 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
-      v64 = v9;
+      v64 = ofCopy;
       v65 = v44;
-      v66 = [v9 UTF8String];
-      v67 = [v10 UTF8String];
-      v68 = objc_retainBlock(v11);
+      uTF8String7 = [ofCopy UTF8String];
+      uTF8String8 = [namedCopy UTF8String];
+      v68 = objc_retainBlock(replyCopy);
       *buf = 136316162;
-      v77 = v66;
+      v77 = uTF8String7;
       v78 = 2080;
-      v79 = v67;
+      v79 = uTF8String8;
       v80 = 2048;
       v81 = v68;
       v82 = 1024;
       *v83 = v75;
       *&v83[4] = 2048;
-      *&v83[6] = v18;
+      *&v83[6] = lfn_name;
       _os_log_debug_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEBUG, "LIGetXattr(%s, %s, %p): reply(%d, %p) 2", buf, 0x30u);
     }
 
     if (v75 == 93)
     {
-      [v16 setNegativeForName:v10];
+      [v16 setNegativeForName:namedCopy];
     }
 
-    else if (v18)
+    else if (lfn_name)
     {
-      [v16 setData:v18 forName:v10];
+      [v16 setData:lfn_name forName:namedCopy];
     }
 
     v22 = v75;
-    v20 = v11[2];
-    v21 = v11;
+    v20 = replyCopy[2];
+    v21 = replyCopy;
 LABEL_14:
-    v23 = v18;
+    v23 = lfn_name;
 LABEL_18:
     v20(v21, v22, v23);
 LABEL_19:
@@ -3955,15 +3955,15 @@ LABEL_20:
   v13 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v29 = v9;
+    v29 = ofCopy;
     v30 = v13;
-    v31 = [v9 UTF8String];
-    v32 = [v10 UTF8String];
-    v33 = objc_retainBlock(v11);
+    uTF8String9 = [ofCopy UTF8String];
+    uTF8String10 = [namedCopy UTF8String];
+    v33 = objc_retainBlock(replyCopy);
     *buf = 136315906;
-    v77 = v31;
+    v77 = uTF8String9;
     v78 = 2080;
-    v79 = v32;
+    v79 = uTF8String10;
     v80 = 2048;
     v81 = v33;
     v82 = 1024;
@@ -3971,77 +3971,77 @@ LABEL_20:
     _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "LIGetXattr(%s, %s, %p): reply(%d, nil) filtered xattr", buf, 0x26u);
   }
 
-  v11[2](v11, 93, 0);
+  replyCopy[2](replyCopy, 93, 0);
 LABEL_21:
 }
 
-- (void)setXattrOf:(id)a3 named:(id)a4 value:(id)a5 how:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)setXattrOf:(id)of named:(id)named value:(id)value how:(int)how requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v142 = 0;
+  ofCopy = of;
+  namedCopy = named;
+  valueCopy = value;
+  replyCopy = reply;
+  aDFileErr2 = 0;
   v17 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v27 = v13;
+    v27 = ofCopy;
     v28 = v17;
-    v29 = v15;
-    v30 = [v13 UTF8String];
-    v31 = v13;
-    v32 = a6;
-    v33 = [v14 UTF8String];
-    v34 = objc_retainBlock(v16);
+    v29 = valueCopy;
+    uTF8String = [ofCopy UTF8String];
+    v31 = ofCopy;
+    howCopy = how;
+    uTF8String2 = [namedCopy UTF8String];
+    v34 = objc_retainBlock(replyCopy);
     *buf = 136316162;
-    v152 = v30;
-    v15 = v29;
+    v152 = uTF8String;
+    valueCopy = v29;
     v153 = 2080;
-    v154 = v33;
-    a6 = v32;
-    v13 = v31;
+    v154 = uTF8String2;
+    how = howCopy;
+    ofCopy = v31;
     v155 = 2048;
     v156 = v29;
     v157 = 1024;
-    v158 = a6;
+    howCopy2 = how;
     v159 = 2048;
     v160 = v34;
     _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): start", buf, 0x30u);
   }
 
-  if (!sub_100010F58(v14))
+  if (!sub_100010F58(namedCopy))
   {
-    v19 = [(userFSVolume *)self getNodeForFH:v13 withError:&v142];
-    v20 = [v19 lfn_xattrCache];
-    if (v142)
+    v19 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&aDFileErr2];
+    lfn_xattrCache = [v19 lfn_xattrCache];
+    if (aDFileErr2)
     {
-      v21 = a6;
+      howCopy3 = how;
       v22 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v96 = v13;
+        v96 = ofCopy;
         loga = v22;
-        v135 = v15;
-        v97 = [v13 UTF8String];
-        v98 = [v14 UTF8String];
-        v99 = objc_retainBlock(v16);
+        v135 = valueCopy;
+        uTF8String3 = [ofCopy UTF8String];
+        uTF8String4 = [namedCopy UTF8String];
+        v99 = objc_retainBlock(replyCopy);
         *buf = 136316418;
-        v152 = v97;
-        v15 = v135;
+        v152 = uTF8String3;
+        valueCopy = v135;
         v153 = 2080;
-        v154 = v98;
+        v154 = uTF8String4;
         v155 = 2048;
         v156 = v135;
         v157 = 1024;
-        v158 = v21;
+        howCopy2 = howCopy3;
         v159 = 2048;
         v160 = v99;
         v161 = 1024;
-        v162 = v142;
+        v162 = aDFileErr2;
         _os_log_debug_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): reply(%d) 1", buf, 0x36u);
       }
 
-      (*(v16 + 2))(v16, v142, 0, 0, 0, 0, 2);
+      (*(replyCopy + 2))(replyCopy, aDFileErr2, 0, 0, 0, 0, 2);
       goto LABEL_117;
     }
 
@@ -4052,107 +4052,107 @@ LABEL_21:
       v23 = [(userFSVolume *)self pathStringForNode:v19 name:0 buffer:buf bufferSize:1024 outLength:&v141];
     }
 
-    v24 = [v14 isEqualToString:@"com.apple.FinderInfo"];
+    v24 = [namedCopy isEqualToString:@"com.apple.FinderInfo"];
     v25 = 0;
-    if (!a6 && v24)
+    if (!how && v24)
     {
-      if ([v15 bytes])
+      if ([valueCopy bytes])
       {
-        v26 = [v15 bytes];
-        v25 = (*v26 | v26[1] | v26[2] | v26[3]) == 0;
-        if (*v26 | v26[1] | v26[2] | v26[3])
+        bytes = [valueCopy bytes];
+        v25 = (*bytes | bytes[1] | bytes[2] | bytes[3]) == 0;
+        if (*bytes | bytes[1] | bytes[2] | bytes[3])
         {
-          a6 = 0;
+          how = 0;
         }
 
         else
         {
-          a6 = 3;
+          how = 3;
         }
       }
 
       else
       {
         v25 = 0;
-        a6 = 0;
+        how = 0;
       }
     }
 
     v132 = v25;
-    v137 = a6;
-    v35 = [(userFSVolume *)self appleDoubleManager];
+    howCopy4 = how;
+    appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
 
-    if (v35)
+    if (appleDoubleManager)
     {
-      v36 = [(userFSVolume *)self rootNode];
+      rootNode = [(userFSVolume *)self rootNode];
 
-      v134 = v15;
+      v134 = valueCopy;
       v129 = v23;
-      if (v19 == v36)
+      if (v19 == rootNode)
       {
-        v130 = v19;
+        lfn_parent = v19;
         log = @".";
       }
 
       else
       {
         log = [v19 lfn_name];
-        v130 = [v19 lfn_parent];
+        lfn_parent = [v19 lfn_parent];
       }
 
-      v39 = [v19 lfn_appledouble];
-      if (v39)
+      lfn_appledouble = [v19 lfn_appledouble];
+      if (lfn_appledouble)
       {
-        v40 = v39;
-        v41 = [v19 lfn_appledouble];
-        v42 = [v41 purpose];
+        v40 = lfn_appledouble;
+        lfn_appledouble2 = [v19 lfn_appledouble];
+        purpose = [lfn_appledouble2 purpose];
 
-        if (v42 != 1)
+        if (purpose != 1)
         {
           if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
           {
             sub_1000227BC();
           }
 
-          v43 = [v19 lfn_appledouble];
-          [v43 reclaimFile];
+          lfn_appledouble3 = [v19 lfn_appledouble];
+          [lfn_appledouble3 reclaimFile];
 
           [v19 setLfn_appledouble:0];
         }
       }
 
-      v44 = [v19 lfn_appledouble];
+      lfn_appledouble4 = [v19 lfn_appledouble];
 
-      if (!v44)
+      if (!lfn_appledouble4)
       {
-        if (v137 == 3)
+        if (howCopy4 == 3)
         {
-          v52 = [(userFSVolume *)self appleDoubleManager];
-          v53 = [v130 getFH];
-          v54 = [v52 AppleDoubleForReadingWithBaseFile:v13 named:log inDirectory:v53];
+          appleDoubleManager2 = [(userFSVolume *)self appleDoubleManager];
+          getFH = [lfn_parent getFH];
+          v54 = [appleDoubleManager2 AppleDoubleForReadingWithBaseFile:ofCopy named:log inDirectory:getFH];
           [v19 setLfn_appledouble:v54];
 
-          v55 = [v19 lfn_appledouble];
+          lfn_appledouble5 = [v19 lfn_appledouble];
 
-          if (!v55)
+          if (!lfn_appledouble5)
           {
             goto LABEL_92;
           }
 
-          v56 = [v19 lfn_appledouble];
-          v57 = [v56 containerFileExists];
+          lfn_appledouble6 = [v19 lfn_appledouble];
+          containerFileExists = [lfn_appledouble6 containerFileExists];
 
-          v58 = [v19 lfn_appledouble];
-          [v58 reclaimFile];
+          lfn_appledouble7 = [v19 lfn_appledouble];
+          [lfn_appledouble7 reclaimFile];
 
           [v19 setLfn_appledouble:0];
-          if ((v57 & 1) == 0)
+          if ((containerFileExists & 1) == 0)
           {
 LABEL_92:
             v100 = os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG);
             if (v132)
             {
-              v15 = v134;
+              valueCopy = v134;
               if (v100)
               {
                 sub_10002299C();
@@ -4163,7 +4163,7 @@ LABEL_92:
 
             else
             {
-              v15 = v134;
+              valueCopy = v134;
               if (v100)
               {
                 sub_100022960();
@@ -4172,8 +4172,8 @@ LABEL_92:
               v101 = 93;
             }
 
-            (*(v16 + 2))(v16, v101, 0, 0, 0, 0, 2);
-            v77 = 0;
+            (*(replyCopy + 2))(replyCopy, v101, 0, 0, 0, 0, 2);
+            lfn_fh = 0;
             goto LABEL_115;
           }
 
@@ -4188,77 +4188,77 @@ LABEL_92:
           sub_100022834();
         }
 
-        v59 = [(userFSVolume *)self appleDoubleManager];
-        v60 = [v130 getFH];
-        v61 = [v59 AppleDoubleForWritingWithBaseFile:v13 named:log inDirectory:v60];
+        appleDoubleManager3 = [(userFSVolume *)self appleDoubleManager];
+        getFH2 = [lfn_parent getFH];
+        v61 = [appleDoubleManager3 AppleDoubleForWritingWithBaseFile:ofCopy named:log inDirectory:getFH2];
         [v19 setLfn_appledouble:v61];
 
-        v62 = [v19 lfn_appledouble];
-        if (v62)
+        lfn_appledouble8 = [v19 lfn_appledouble];
+        if (lfn_appledouble8)
         {
-          v63 = v62;
-          v64 = [v19 lfn_appledouble];
-          v65 = [v64 ADFileErr];
+          v63 = lfn_appledouble8;
+          lfn_appledouble9 = [v19 lfn_appledouble];
+          aDFileErr = [lfn_appledouble9 ADFileErr];
 
-          if (v65)
+          if (aDFileErr)
           {
-            v66 = [v19 lfn_appledouble];
-            v142 = [v66 ADFileErr];
+            lfn_appledouble10 = [v19 lfn_appledouble];
+            aDFileErr2 = [lfn_appledouble10 ADFileErr];
 
-            v67 = [v19 lfn_appledouble];
-            [v67 reclaimFile];
+            lfn_appledouble11 = [v19 lfn_appledouble];
+            [lfn_appledouble11 reclaimFile];
 
             [v19 setLfn_appledouble:0];
-            if (v142 == 28)
+            if (aDFileErr2 == 28)
             {
-              v68 = [(userFSVolume *)self appleDoubleManager];
-              [v130 getFH];
-              v70 = v69 = v20;
-              v71 = [v68 AppleDoubleForNamespaceWithBaseFile:v13 named:log inDirectory:v70];
+              appleDoubleManager4 = [(userFSVolume *)self appleDoubleManager];
+              [lfn_parent getFH];
+              v70 = v69 = lfn_xattrCache;
+              v71 = [appleDoubleManager4 AppleDoubleForNamespaceWithBaseFile:ofCopy named:log inDirectory:v70];
               [v19 setLfn_appledouble:v71];
 
-              v20 = v69;
-              v72 = [v19 lfn_appledouble];
+              lfn_xattrCache = v69;
+              lfn_appledouble12 = [v19 lfn_appledouble];
 
-              if (v72)
+              if (lfn_appledouble12)
               {
-                v73 = [v19 lfn_appledouble];
-                [v73 removeFile];
+                lfn_appledouble13 = [v19 lfn_appledouble];
+                [lfn_appledouble13 removeFile];
 
-                v74 = [v19 lfn_appledouble];
-                [v74 reclaimFile];
+                lfn_appledouble14 = [v19 lfn_appledouble];
+                [lfn_appledouble14 reclaimFile];
 
                 [v19 setLfn_appledouble:0];
               }
             }
 
-            (*(v16 + 2))(v16, v142, 0, 0, 0, 0, 2);
+            (*(replyCopy + 2))(replyCopy, aDFileErr2, 0, 0, 0, 0, 2);
             goto LABEL_71;
           }
         }
       }
 
-      v45 = [v19 lfn_appledouble];
+      lfn_appledouble15 = [v19 lfn_appledouble];
 
       v46 = userfs_log_default;
       v47 = os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG);
-      if (!v45)
+      if (!lfn_appledouble15)
       {
         if (v47)
         {
-          v120 = v13;
+          v120 = ofCopy;
           v121 = v46;
-          v122 = [v13 UTF8String];
-          v123 = [v14 UTF8String];
-          v124 = objc_retainBlock(v16);
+          uTF8String5 = [ofCopy UTF8String];
+          uTF8String6 = [namedCopy UTF8String];
+          v124 = objc_retainBlock(replyCopy);
           *v143 = 136316418;
-          v144 = v122;
+          v144 = uTF8String5;
           v145 = 2080;
-          *v146 = v123;
+          *v146 = uTF8String6;
           *&v146[8] = 2048;
           *&v146[10] = v134;
           *&v146[18] = 1024;
-          *&v146[20] = v137;
+          *&v146[20] = howCopy4;
           v147 = 2048;
           v148 = v124;
           v149 = 1024;
@@ -4266,10 +4266,10 @@ LABEL_92:
           _os_log_debug_impl(&_mh_execute_header, v121, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): reply(%d) 3", v143, 0x36u);
         }
 
-        (*(v16 + 2))(v16, 5, 0, 0, 0, 0, 2);
+        (*(replyCopy + 2))(replyCopy, 5, 0, 0, 0, 0, 2);
 LABEL_71:
-        v77 = 0;
-        v15 = v134;
+        lfn_fh = 0;
+        valueCopy = v134;
 LABEL_115:
 
         goto LABEL_116;
@@ -4281,14 +4281,14 @@ LABEL_115:
       }
 
       [v19 setLfn_check_appledouble:1];
-      v48 = [v19 lfn_appledouble];
-      v49 = v48;
-      if (v137 == 3)
+      lfn_appledouble16 = [v19 lfn_appledouble];
+      v49 = lfn_appledouble16;
+      if (howCopy4 == 3)
       {
-        v142 = [v48 removeXattrNamed:v14];
+        aDFileErr2 = [lfn_appledouble16 removeXattrNamed:namedCopy];
 
         v50 = v132;
-        if (v142 != 93)
+        if (aDFileErr2 != 93)
         {
           v50 = 0;
         }
@@ -4301,110 +4301,110 @@ LABEL_115:
             sub_100022924();
           }
 
-          v142 = 0;
+          aDFileErr2 = 0;
         }
 
         else
         {
           v51 = v129;
-          if (v142)
+          if (aDFileErr2)
           {
             goto LABEL_103;
           }
         }
 
-        [v20 setNegativeForName:v14];
+        [lfn_xattrCache setNegativeForName:namedCopy];
         if (!self->_spotlightIsEnabled || !v51)
         {
           goto LABEL_102;
         }
 
         v102 = v51;
-        v86 = [v19 getAttrData];
-        if (v86)
+        getAttrData = [v19 getAttrData];
+        if (getAttrData)
         {
-          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrRemovedEventForPID:0 path:v102 pathLength:v141 xAttrName:v14 attributes:v86];
+          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrRemovedEventForPID:0 path:v102 pathLength:v141 xAttrName:namedCopy attributes:getAttrData];
         }
       }
 
       else
       {
-        v142 = [v48 setValue:v134 forXattrNamed:v14 how:v137];
+        aDFileErr2 = [lfn_appledouble16 setValue:v134 forXattrNamed:namedCopy how:howCopy4];
 
-        if (v142)
+        if (aDFileErr2)
         {
           goto LABEL_103;
         }
 
-        [v20 setData:v134 forName:v14];
+        [lfn_xattrCache setData:v134 forName:namedCopy];
         if (!self->_spotlightIsEnabled || !v129)
         {
 LABEL_102:
-          if (!v142)
+          if (!aDFileErr2)
           {
-            v109 = [v19 lfn_parent];
+            lfn_parent2 = [v19 lfn_parent];
 
-            if (v109)
+            if (lfn_parent2)
             {
-              v110 = [v19 lfn_parent];
-              v103 = [v110 lfn_interestedClients];
+              lfn_parent3 = [v19 lfn_parent];
+              lfn_interestedClients = [lfn_parent3 lfn_interestedClients];
 
-              if (v103)
+              if (lfn_interestedClients)
               {
-                v111 = [v19 lfn_parent];
-                v77 = [v111 lfn_fh];
+                lfn_parent4 = [v19 lfn_parent];
+                lfn_fh = [lfn_parent4 lfn_fh];
 
                 goto LABEL_105;
               }
 
 LABEL_104:
-              v77 = 0;
+              lfn_fh = 0;
 LABEL_105:
-              v104 = v20;
-              v105 = [v19 lfn_appledouble];
-              [v105 reclaimFile];
+              v104 = lfn_xattrCache;
+              lfn_appledouble17 = [v19 lfn_appledouble];
+              [lfn_appledouble17 reclaimFile];
 
               [v19 setLfn_appledouble:0];
               v106 = userfs_log_default;
               if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
               {
-                v116 = v13;
+                v116 = ofCopy;
                 v117 = v106;
-                v133 = [v13 UTF8String];
-                v118 = [v14 UTF8String];
-                v119 = objc_retainBlock(v16);
+                uTF8String7 = [ofCopy UTF8String];
+                uTF8String8 = [namedCopy UTF8String];
+                v119 = objc_retainBlock(replyCopy);
                 *v143 = 136316418;
-                v144 = v133;
+                v144 = uTF8String7;
                 v145 = 2080;
-                *v146 = v118;
+                *v146 = uTF8String8;
                 *&v146[8] = 2048;
                 *&v146[10] = v134;
                 *&v146[18] = 1024;
-                *&v146[20] = v137;
+                *&v146[20] = howCopy4;
                 v147 = 2048;
                 v148 = v119;
                 v149 = 1024;
-                v150 = v142;
+                v150 = aDFileErr2;
                 _os_log_debug_impl(&_mh_execute_header, v117, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): reply(%d) 4", v143, 0x36u);
               }
 
-              v107 = v142;
-              v108 = [v19 lfn_name];
-              (*(v16 + 2))(v16, v107, v77, v103, v108, [v19 lfn_interestedClients], objc_msgSend(v19, "hiddenStatus"));
+              v107 = aDFileErr2;
+              lfn_name = [v19 lfn_name];
+              (*(replyCopy + 2))(replyCopy, v107, lfn_fh, lfn_interestedClients, lfn_name, [v19 lfn_interestedClients], objc_msgSend(v19, "hiddenStatus"));
 
-              v15 = v134;
-              v20 = v104;
+              valueCopy = v134;
+              lfn_xattrCache = v104;
               goto LABEL_115;
             }
           }
 
 LABEL_103:
-          v103 = 0;
+          lfn_interestedClients = 0;
           goto LABEL_104;
         }
 
-        v86 = [v19 getAttrData];
-        if (v86)
+        getAttrData = [v19 getAttrData];
+        if (getAttrData)
         {
           v87 = userfs_log_default;
           v88 = os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG);
@@ -4419,53 +4419,53 @@ LABEL_103:
             *&v146[4] = 2080;
             *&v146[6] = v129;
             *&v146[14] = 2112;
-            *&v146[16] = v14;
+            *&v146[16] = namedCopy;
             _os_log_debug_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEBUG, "LISetXattr[ad]:spotlightnotifier:%@:sendXattrModifiedEventForPID:%d:%s:%@", v143, 0x26u);
             v89 = &selRef_setFsPlugin_;
           }
 
-          [*&self->LiveFSVolume_opaque[*(v89 + 313)] sendXattrModifiedEventForPID:0 path:v129 pathLength:v141 xAttrName:v14 xAttrValue:v134 attributes:v86];
+          [*&self->LiveFSVolume_opaque[*(v89 + 313)] sendXattrModifiedEventForPID:0 path:v129 pathLength:v141 xAttrName:namedCopy xAttrValue:v134 attributes:getAttrData];
         }
       }
 
       goto LABEL_102;
     }
 
-    v142 = [v19 setXAttr:v14 withXAttr:v15 how:v137];
+    aDFileErr2 = [v19 setXAttr:namedCopy withXAttr:valueCopy how:howCopy4];
     v37 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
-      v112 = v13;
+      v112 = ofCopy;
       logb = v37;
-      v136 = v15;
-      v113 = [v13 UTF8String];
+      v136 = valueCopy;
+      uTF8String9 = [ofCopy UTF8String];
       v114 = v23;
-      v115 = [v14 UTF8String];
-      v131 = objc_retainBlock(v16);
+      uTF8String10 = [namedCopy UTF8String];
+      v131 = objc_retainBlock(replyCopy);
       *v143 = 136316418;
-      v144 = v113;
-      v15 = v136;
+      v144 = uTF8String9;
+      valueCopy = v136;
       v145 = 2080;
-      *v146 = v115;
+      *v146 = uTF8String10;
       v23 = v114;
       *&v146[8] = 2048;
       *&v146[10] = v136;
       *&v146[18] = 1024;
-      *&v146[20] = v137;
+      *&v146[20] = howCopy4;
       v147 = 2048;
       v148 = v131;
       v149 = 1024;
-      v150 = v142;
+      v150 = aDFileErr2;
       _os_log_debug_impl(&_mh_execute_header, logb, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): reply(%d) 2", v143, 0x36u);
     }
 
     v38 = v132;
-    if (v142 != 93)
+    if (aDFileErr2 != 93)
     {
       v38 = 0;
     }
 
-    v127 = v20;
+    v127 = lfn_xattrCache;
     if (v38)
     {
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -4473,25 +4473,25 @@ LABEL_103:
         sub_1000229D8();
       }
 
-      v142 = 0;
+      aDFileErr2 = 0;
     }
 
-    else if (v142)
+    else if (aDFileErr2)
     {
-      v75 = v15;
+      v75 = valueCopy;
       goto LABEL_89;
     }
 
     [(userFSVolume *)self startSyncerIfNeeded];
-    if (v137 == 3)
+    if (howCopy4 == 3)
     {
-      [v20 setNegativeForName:v14];
+      [lfn_xattrCache setNegativeForName:namedCopy];
       if (self->_spotlightIsEnabled && v23)
       {
-        v76 = [v19 getAttrData];
-        if (v76)
+        getAttrData2 = [v19 getAttrData];
+        if (getAttrData2)
         {
-          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrRemovedEventForPID:0 path:v23 pathLength:v141 xAttrName:v14 attributes:v76];
+          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrRemovedEventForPID:0 path:v23 pathLength:v141 xAttrName:namedCopy attributes:getAttrData2];
         }
 
 LABEL_85:
@@ -4500,11 +4500,11 @@ LABEL_85:
 
     else
     {
-      [v20 setData:v15 forName:v14];
+      [lfn_xattrCache setData:valueCopy forName:namedCopy];
       if (self->_spotlightIsEnabled && v23)
       {
-        v76 = [v19 getAttrData];
-        if (v76)
+        getAttrData2 = [v19 getAttrData];
+        if (getAttrData2)
         {
           v90 = userfs_log_default;
           if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -4517,36 +4517,36 @@ LABEL_85:
             *&v146[4] = 2080;
             *&v146[6] = v23;
             *&v146[14] = 2112;
-            *&v146[16] = v14;
+            *&v146[16] = namedCopy;
             _os_log_debug_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEBUG, "LISetXattr[nxa]:spotlightnotifier:%@:sendXattrModifiedEventForPID:%d:%s:%@", v143, 0x26u);
           }
 
-          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrModifiedEventForPID:0 path:v23 pathLength:v141 xAttrName:v14 xAttrValue:v15 attributes:v76];
+          [(CSLiveFSVolume *)self->_spotlightNotifer sendXattrModifiedEventForPID:0 path:v23 pathLength:v141 xAttrName:namedCopy xAttrValue:valueCopy attributes:getAttrData2];
         }
 
         goto LABEL_85;
       }
     }
 
-    v75 = v15;
-    v91 = [v19 lfn_parent];
+    v75 = valueCopy;
+    lfn_parent5 = [v19 lfn_parent];
 
-    if (v91)
+    if (lfn_parent5)
     {
-      v92 = [v19 lfn_parent];
-      v93 = [v92 lfn_interestedClients];
+      lfn_parent6 = [v19 lfn_parent];
+      lfn_interestedClients2 = [lfn_parent6 lfn_interestedClients];
 
-      if (v93)
+      if (lfn_interestedClients2)
       {
-        v94 = [v19 lfn_parent];
-        v77 = [v94 lfn_fh];
+        lfn_parent7 = [v19 lfn_parent];
+        lfn_fh = [lfn_parent7 lfn_fh];
 
 LABEL_91:
-        v95 = v142;
+        v95 = aDFileErr2;
         log = [v19 lfn_name];
-        (*(v16 + 2))(v16, v95, v77, v93, log, [v19 lfn_interestedClients], objc_msgSend(v19, "hiddenStatus"));
-        v15 = v75;
-        v20 = v128;
+        (*(replyCopy + 2))(replyCopy, v95, lfn_fh, lfn_interestedClients2, log, [v19 lfn_interestedClients], objc_msgSend(v19, "hiddenStatus"));
+        valueCopy = v75;
+        lfn_xattrCache = v128;
 LABEL_116:
 
 LABEL_117:
@@ -4554,36 +4554,36 @@ LABEL_117:
       }
 
 LABEL_90:
-      v77 = 0;
+      lfn_fh = 0;
       goto LABEL_91;
     }
 
 LABEL_89:
-    v93 = 0;
+    lfn_interestedClients2 = 0;
     goto LABEL_90;
   }
 
   v18 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v78 = v13;
+    v78 = ofCopy;
     v79 = v18;
-    v80 = v15;
-    v81 = [v13 UTF8String];
-    v82 = v13;
-    v83 = a6;
-    v84 = [v14 UTF8String];
-    v85 = objc_retainBlock(v16);
+    v80 = valueCopy;
+    uTF8String11 = [ofCopy UTF8String];
+    v82 = ofCopy;
+    howCopy5 = how;
+    uTF8String12 = [namedCopy UTF8String];
+    v85 = objc_retainBlock(replyCopy);
     *buf = 136316418;
-    v152 = v81;
-    v15 = v80;
+    v152 = uTF8String11;
+    valueCopy = v80;
     v153 = 2080;
-    v154 = v84;
+    v154 = uTF8String12;
     v155 = 2048;
     v156 = v80;
     v157 = 1024;
-    v158 = v83;
-    v13 = v82;
+    howCopy2 = howCopy5;
+    ofCopy = v82;
     v159 = 2048;
     v160 = v85;
     v161 = 1024;
@@ -4591,34 +4591,34 @@ LABEL_89:
     _os_log_debug_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEBUG, "LISetXattr(%s, %s, %p, %d, %p): reply(%d) filtered xattr", buf, 0x36u);
   }
 
-  (*(v16 + 2))(v16, 45, 0, 0, 0, 0, 2);
+  (*(replyCopy + 2))(replyCopy, 45, 0, 0, 0, 0, 2);
 LABEL_118:
 }
 
-- (void)listXattrsOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)listXattrsOf:(id)of requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  ofCopy = of;
+  replyCopy = reply;
   v50 = 0;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100022A14();
   }
 
-  v9 = [(userFSVolume *)self getNodeForFH:v7 withError:&v50];
-  v10 = [v9 lfn_xattrCache];
-  v11 = v10;
+  v9 = [(userFSVolume *)self getNodeForFH:ofCopy withError:&v50];
+  lfn_xattrCache = [v9 lfn_xattrCache];
+  v11 = lfn_xattrCache;
   if (v50)
   {
     v12 = userfs_log_default;
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
-      v21 = v7;
+      v21 = ofCopy;
       v22 = v12;
-      v23 = [v7 UTF8String];
-      v24 = objc_retainBlock(v8);
+      uTF8String = [ofCopy UTF8String];
+      v24 = objc_retainBlock(replyCopy);
       *buf = 136315906;
-      v52 = v23;
+      v52 = uTF8String;
       v53 = 2048;
       v54 = v24;
       v55 = 1024;
@@ -4628,83 +4628,83 @@ LABEL_118:
       _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "LIListXattrs(%s, %p): reply(%d, %@) 1", buf, 0x26u);
     }
 
-    (*(v8 + 2))(v8, v50, &__NSArray0__struct);
+    (*(replyCopy + 2))(replyCopy, v50, &__NSArray0__struct);
   }
 
-  else if ([v10 noXattrsPresent])
+  else if ([lfn_xattrCache noXattrsPresent])
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
       sub_100022AD0();
     }
 
-    (*(v8 + 2))(v8, 0, &__NSArray0__struct);
+    (*(replyCopy + 2))(replyCopy, 0, &__NSArray0__struct);
   }
 
   else
   {
-    v13 = [(userFSVolume *)self appleDoubleManager];
+    appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
 
-    if (v13)
+    if (appleDoubleManager)
     {
       if ([v9 lfn_check_appledouble])
       {
-        v14 = [(userFSVolume *)self rootNode];
+        rootNode = [(userFSVolume *)self rootNode];
 
-        if (v9 == v14)
+        if (v9 == rootNode)
         {
-          v15 = v9;
-          v48 = @".";
+          lfn_parent = v9;
+          lfn_name = @".";
         }
 
         else
         {
-          v48 = [v9 lfn_name];
-          v15 = [v9 lfn_parent];
+          lfn_name = [v9 lfn_name];
+          lfn_parent = [v9 lfn_parent];
         }
 
-        v26 = [v9 lfn_appledouble];
-        if (v26)
+        lfn_appledouble = [v9 lfn_appledouble];
+        if (lfn_appledouble)
         {
-          v27 = v26;
-          v28 = [v9 lfn_appledouble];
-          v29 = [v28 purpose];
+          v27 = lfn_appledouble;
+          lfn_appledouble2 = [v9 lfn_appledouble];
+          purpose = [lfn_appledouble2 purpose];
 
-          if (v29)
+          if (purpose)
           {
-            v30 = [v9 lfn_appledouble];
-            [v30 reclaimFile];
+            lfn_appledouble3 = [v9 lfn_appledouble];
+            [lfn_appledouble3 reclaimFile];
 
             [v9 setLfn_appledouble:0];
           }
         }
 
-        v31 = [v9 lfn_appledouble];
+        lfn_appledouble4 = [v9 lfn_appledouble];
 
-        v19 = v48;
-        if (!v31)
+        v19 = lfn_name;
+        if (!lfn_appledouble4)
         {
-          v32 = [(userFSVolume *)self appleDoubleManager];
-          v33 = [v15 getFH];
-          v34 = [v32 AppleDoubleForReadingWithBaseFile:v7 named:v48 inDirectory:v33];
+          appleDoubleManager2 = [(userFSVolume *)self appleDoubleManager];
+          getFH = [lfn_parent getFH];
+          v34 = [appleDoubleManager2 AppleDoubleForReadingWithBaseFile:ofCopy named:lfn_name inDirectory:getFH];
           [v9 setLfn_appledouble:v34];
         }
 
-        v20 = [v9 lfn_appledouble];
+        lfn_appledouble5 = [v9 lfn_appledouble];
 
-        if (v20)
+        if (lfn_appledouble5)
         {
-          v35 = [v9 lfn_appledouble];
-          [v9 setLfn_check_appledouble:{objc_msgSend(v35, "containerFileExists")}];
+          lfn_appledouble6 = [v9 lfn_appledouble];
+          [v9 setLfn_check_appledouble:{objc_msgSend(lfn_appledouble6, "containerFileExists")}];
 
-          v36 = [v9 lfn_appledouble];
-          v37 = [v36 allXattrNamesAndPosixError:&v50];
-          v20 = sub_10001271C(v37);
+          lfn_appledouble7 = [v9 lfn_appledouble];
+          v37 = [lfn_appledouble7 allXattrNamesAndPosixError:&v50];
+          lfn_appledouble5 = sub_10001271C(v37);
 
           if (([v9 lfn_check_appledouble] & 1) == 0)
           {
-            v38 = [v9 lfn_appledouble];
-            [v38 reclaimFile];
+            lfn_appledouble8 = [v9 lfn_appledouble];
+            [lfn_appledouble8 reclaimFile];
 
             [v9 setLfn_appledouble:0];
           }
@@ -4718,35 +4718,35 @@ LABEL_118:
 
       else
       {
-        v15 = 0;
+        lfn_parent = 0;
         v19 = 0;
-        v20 = &__NSArray0__struct;
+        lfn_appledouble5 = &__NSArray0__struct;
       }
 
       v39 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v40 = v7;
+        v40 = ofCopy;
         v41 = v39;
-        v42 = [v7 UTF8String];
-        v43 = objc_retainBlock(v8);
+        uTF8String2 = [ofCopy UTF8String];
+        v43 = objc_retainBlock(replyCopy);
         *buf = 136315906;
-        v52 = v42;
+        v52 = uTF8String2;
         v53 = 2048;
         v54 = v43;
         v55 = 1024;
         v56 = v50;
         v57 = 2112;
-        v58 = v20;
+        v58 = lfn_appledouble5;
         _os_log_debug_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, "LIListXattrs(%s, %p): reply(%d, %@) 4", buf, 0x26u);
       }
 
       if (!v50)
       {
-        [v11 setNoXattrsPresent:{objc_msgSend(v20, "count") == 0}];
+        [v11 setNoXattrsPresent:{objc_msgSend(lfn_appledouble5, "count") == 0}];
       }
 
-      (*(v8 + 2))(v8);
+      (*(replyCopy + 2))(replyCopy);
     }
 
     else
@@ -4771,12 +4771,12 @@ LABEL_118:
       v25 = userfs_log_default;
       if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v44 = v7;
+        v44 = ofCopy;
         v45 = v25;
-        v46 = [v7 UTF8String];
-        v47 = objc_retainBlock(v8);
+        uTF8String3 = [ofCopy UTF8String];
+        v47 = objc_retainBlock(replyCopy);
         *buf = 136315906;
-        v52 = v46;
+        v52 = uTF8String3;
         v53 = 2048;
         v54 = v47;
         v55 = 1024;
@@ -4791,48 +4791,48 @@ LABEL_118:
         [v11 setNoXattrsPresent:{objc_msgSend(v19, "count") == 0}];
       }
 
-      (*(v8 + 2))(v8);
+      (*(replyCopy + 2))(replyCopy);
     }
   }
 }
 
-- (void)search:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 forClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)search:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  searchCopy = search;
+  tokenCopy = token;
+  criteriaCopy = criteria;
+  proxyCopy = proxy;
+  replyCopy = reply;
   if (self->_allowSearch)
   {
-    v18 = [v15 objectForKeyedSubscript:LISearchFileContentsInclude];
+    v18 = [criteriaCopy objectForKeyedSubscript:LISearchFileContentsInclude];
 
     if (v18)
     {
-      v19 = 45;
+      startSearch = 45;
     }
 
     else
     {
       pthread_rwlock_wrlock(&self->searchRequestsRWLock);
-      v20 = [(NSMutableDictionary *)self->searchRequests objectForKeyedSubscript:v14];
+      v20 = [(NSMutableDictionary *)self->searchRequests objectForKeyedSubscript:tokenCopy];
 
       if (v20)
       {
         pthread_rwlock_unlock(&self->searchRequestsRWLock);
-        v19 = 17;
+        startSearch = 17;
       }
 
       else
       {
-        v21 = [[liveFilesSearchRequest alloc] initWithVolume:self withStartLocation:v23 withSearchToken:v14 withSearchCriteria:v15 withProxy:v16 andWithCallerID:a7];
+        v21 = [[liveFilesSearchRequest alloc] initWithVolume:self withStartLocation:searchCopy withSearchToken:tokenCopy withSearchCriteria:criteriaCopy withProxy:proxyCopy andWithCallerID:client];
         if (v21)
         {
           v22 = v21;
-          v19 = [(liveFilesSearchRequest *)v21 startSearch];
-          if (!v19)
+          startSearch = [(liveFilesSearchRequest *)v21 startSearch];
+          if (!startSearch)
           {
-            [(NSMutableDictionary *)self->searchRequests setObject:v22 forKeyedSubscript:v14];
+            [(NSMutableDictionary *)self->searchRequests setObject:v22 forKeyedSubscript:tokenCopy];
           }
 
           pthread_rwlock_unlock(&self->searchRequestsRWLock);
@@ -4841,7 +4841,7 @@ LABEL_118:
         else
         {
           pthread_rwlock_unlock(&self->searchRequestsRWLock);
-          v19 = 12;
+          startSearch = 12;
         }
       }
     }
@@ -4849,10 +4849,10 @@ LABEL_118:
 
   else
   {
-    v19 = 53;
+    startSearch = 53;
   }
 
-  v17[2](v17, v19);
+  replyCopy[2](replyCopy, startSearch);
 }
 
 - (void)LISearchAbortAll
@@ -4867,7 +4867,7 @@ LABEL_118:
   pthread_rwlock_unlock(&self->searchRequestsRWLock);
 }
 
-- (void)abortAllClientSearchesFor:(unint64_t)a3
+- (void)abortAllClientSearchesFor:(unint64_t)for
 {
   pthread_rwlock_rdlock(&self->searchRequestsRWLock);
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -4880,59 +4880,59 @@ LABEL_118:
   v6[1] = 3221225472;
   v6[2] = sub_100012C5C;
   v6[3] = &unk_100038948;
-  v6[4] = a3;
+  v6[4] = for;
   [(NSMutableDictionary *)searchRequests enumerateKeysAndObjectsUsingBlock:v6];
   pthread_rwlock_unlock(&self->searchRequestsRWLock);
 }
 
-- (void)abortSearch:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)abortSearch:(id)search requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  searchCopy = search;
+  replyCopy = reply;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100022C38();
   }
 
   pthread_rwlock_rdlock(&self->searchRequestsRWLock);
-  v9 = [(NSMutableDictionary *)self->searchRequests objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->searchRequests objectForKeyedSubscript:searchCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 abortSearch];
+    abortSearch = [v9 abortSearch];
   }
 
   else
   {
-    v11 = 2;
+    abortSearch = 2;
   }
 
   pthread_rwlock_unlock(&self->searchRequestsRWLock);
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, abortSearch);
 }
 
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
+  openCopy = open;
+  replyCopy = reply;
   v23 = 0;
   v11 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v15 = v9;
+    v15 = openCopy;
     v16 = v11;
-    v17 = [v9 UTF8String];
-    v18 = objc_retainBlock(v10);
+    uTF8String = [openCopy UTF8String];
+    v18 = objc_retainBlock(replyCopy);
     *buf = 136315650;
-    v25 = v17;
+    v25 = uTF8String;
     v26 = 1024;
-    v27 = a4;
+    modeCopy2 = mode;
     v28 = 2048;
     v29 = v18;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "LIOpen(%s, %o, %p): start", buf, 0x1Cu);
   }
 
-  v12 = [(userFSVolume *)self getNodeForFH:v9 withError:&v23];
+  v12 = [(userFSVolume *)self getNodeForFH:openCopy withError:&v23];
   v13 = v12;
   if (!v23 || v23 == 70 && v12)
   {
@@ -4942,14 +4942,14 @@ LABEL_118:
   v14 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v19 = v9;
+    v19 = openCopy;
     v20 = v14;
-    v21 = [v9 UTF8String];
-    v22 = objc_retainBlock(v10);
+    uTF8String2 = [openCopy UTF8String];
+    v22 = objc_retainBlock(replyCopy);
     *buf = 136315906;
-    v25 = v21;
+    v25 = uTF8String2;
     v26 = 1024;
-    v27 = a4;
+    modeCopy2 = mode;
     v28 = 2048;
     v29 = v22;
     v30 = 1024;
@@ -4957,33 +4957,33 @@ LABEL_118:
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "LIOpen(%s, %o, %p):  reply(%d)", buf, 0x22u);
   }
 
-  (*(v10 + 2))(v10, v23);
+  (*(replyCopy + 2))(replyCopy, v23);
 }
 
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
+  closeCopy = close;
+  replyCopy = reply;
   v41 = 0;
   v11 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v30 = v9;
+    v30 = closeCopy;
     v31 = v11;
-    v32 = [v9 UTF8String];
-    v33 = objc_retainBlock(v10);
+    uTF8String = [closeCopy UTF8String];
+    v33 = objc_retainBlock(replyCopy);
     *buf = 136315650;
-    v43 = v32;
+    v43 = uTF8String;
     v44 = 1024;
-    v45 = a4;
+    modeCopy = mode;
     v46 = 2048;
     v47 = v33;
     _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "LIClose(%s, %o, %p): start", buf, 0x1Cu);
   }
 
-  v12 = [(userFSVolume *)self getNodeForFH:v9 withError:&v41];
+  v12 = [(userFSVolume *)self getNodeForFH:closeCopy withError:&v41];
   v13 = v12;
-  v39 = a4;
+  modeCopy2 = mode;
   if (v41)
   {
     goto LABEL_4;
@@ -5001,15 +5001,15 @@ LABEL_118:
 LABEL_4:
     v14 = 0;
     v15 = 0;
-    v16 = 0;
-    v17 = 0;
-    v18 = 0;
-    v19 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_parent = 0;
+    lfn_interestedClients = 0;
+    lfn_interestedClients3 = 0;
     goto LABEL_23;
   }
 
   v41 = 0;
-  v18 = [v13 lfn_interestedClients];
+  lfn_interestedClients = [v13 lfn_interestedClients];
   v20 = [v13 lfn_openCount] - 1;
   [v13 setLfn_openCount:v20];
   if (v20)
@@ -5017,16 +5017,16 @@ LABEL_4:
     v14 = 0;
 LABEL_11:
     v15 = 0;
-    v16 = 0;
-    v17 = 0;
-    v19 = 0;
+    lfn_interestedClients2 = 0;
+    lfn_parent = 0;
+    lfn_interestedClients3 = 0;
     goto LABEL_23;
   }
 
-  v21 = [v13 lfn_wasWritten];
+  lfn_wasWritten = [v13 lfn_wasWritten];
   [v13 setLfn_wasWritten:0];
   v14 = [v13 hiddenStatus] != 2;
-  if (!v21)
+  if (!lfn_wasWritten)
   {
     goto LABEL_11;
   }
@@ -5040,56 +5040,56 @@ LABEL_11:
       v23 = v22;
       spotlightNotifer = self->_spotlightNotifer;
       v25 = v40;
-      v26 = [v13 getAttrData];
-      [(CSLiveFSVolume *)spotlightNotifer sendEventOfType:4 pid:0 path:v23 pathLength:v25 attributes:v26];
+      getAttrData = [v13 getAttrData];
+      [(CSLiveFSVolume *)spotlightNotifer sendEventOfType:4 pid:0 path:v23 pathLength:v25 attributes:getAttrData];
     }
   }
 
-  v17 = [v13 lfn_parent];
-  if (!v17)
+  lfn_parent = [v13 lfn_parent];
+  if (!lfn_parent)
   {
-    v16 = 0;
+    lfn_interestedClients2 = 0;
 LABEL_21:
-    v19 = 0;
+    lfn_interestedClients3 = 0;
     goto LABEL_22;
   }
 
-  v27 = [v13 lfn_parent];
-  v16 = [v27 lfn_interestedClients];
+  lfn_parent2 = [v13 lfn_parent];
+  lfn_interestedClients2 = [lfn_parent2 lfn_interestedClients];
 
-  if (!v16)
+  if (!lfn_interestedClients2)
   {
-    v17 = 0;
+    lfn_parent = 0;
     goto LABEL_21;
   }
 
-  v28 = [v13 lfn_parent];
-  v17 = [v28 lfn_fh];
+  lfn_parent3 = [v13 lfn_parent];
+  lfn_parent = [lfn_parent3 lfn_fh];
 
-  v29 = [v13 lfn_parent];
-  v19 = [v29 lfn_interestedClients];
+  lfn_parent4 = [v13 lfn_parent];
+  lfn_interestedClients3 = [lfn_parent4 lfn_interestedClients];
 
-  v16 = [v13 lfn_name];
+  lfn_interestedClients2 = [v13 lfn_name];
 LABEL_22:
   v15 = 1;
 LABEL_23:
   v34 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v35 = v9;
+    v35 = closeCopy;
     log = v34;
-    v36 = [v9 UTF8String];
-    v37 = objc_retainBlock(v10);
+    uTF8String2 = [closeCopy UTF8String];
+    v37 = objc_retainBlock(replyCopy);
     *buf = 136316674;
-    v43 = v36;
+    v43 = uTF8String2;
     v44 = 1024;
-    v45 = v39;
+    modeCopy = modeCopy2;
     v46 = 2048;
     v47 = v37;
     v48 = 1024;
     v49 = v41;
     v50 = 2048;
-    v51 = v18;
+    v51 = lfn_interestedClients;
     v52 = 1024;
     v53 = v15;
     v54 = 1024;
@@ -5097,25 +5097,25 @@ LABEL_23:
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "LIClose(%s, %o, %p):  reply(%d, %#llx, %d, %d)", buf, 0x38u);
   }
 
-  (*(v10 + 2))(v10, v41, v17, v19, v16, v18, v15, v14);
+  (*(replyCopy + 2))(replyCopy, v41, lfn_parent, lfn_interestedClients3, lfn_interestedClients2, lfn_interestedClients, v15, v14);
 }
 
-- (void)reclaim:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)reclaim:(id)reclaim forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
-  v41 = 0;
+  reclaimCopy = reclaim;
+  replyCopy = reply;
+  reclaim = 0;
   v11 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v31 = v9;
+    v31 = reclaimCopy;
     v32 = v11;
-    v33 = [v9 UTF8String];
-    v34 = objc_retainBlock(v10);
+    uTF8String = [reclaimCopy UTF8String];
+    v34 = objc_retainBlock(replyCopy);
     *buf = 136315906;
-    v43 = v33;
+    v43 = uTF8String;
     v44 = 2048;
-    v45 = a4;
+    clientCopy3 = client;
     v46 = 2048;
     v47 = v34;
     v48 = 2080;
@@ -5123,67 +5123,67 @@ LABEL_23:
     _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "LIReclaim(%s, %llu, %p): start on %s", buf, 0x2Au);
   }
 
-  v12 = [(userFSVolume *)self appleDoubleManager];
+  appleDoubleManager = [(userFSVolume *)self appleDoubleManager];
 
-  if (v12 && (-[userFSVolume appleDoubleManager](self, "appleDoubleManager"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 clientID], v13, v14 == a4))
+  if (appleDoubleManager && (-[userFSVolume appleDoubleManager](self, "appleDoubleManager"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 clientID], v13, v14 == client))
   {
-    v15 = 0;
+    pauseIOQueue = 0;
   }
 
   else
   {
-    v15 = [(userFSVolume *)self pauseIOQueue];
+    pauseIOQueue = [(userFSVolume *)self pauseIOQueue];
   }
 
-  v16 = [(userFSVolume *)self getNodeForFH:v9 withError:&v41];
+  v16 = [(userFSVolume *)self getNodeForFH:reclaimCopy withError:&reclaim];
   v17 = v16;
-  if (!v41 || (v41 = v16 != 0, v16))
+  if (!reclaim || (reclaim = v16 != 0, v16))
   {
-    v18 = [v16 lfn_appledouble];
+    lfn_appledouble = [v16 lfn_appledouble];
 
-    if (v18)
+    if (lfn_appledouble)
     {
-      v19 = [v17 lfn_appledouble];
-      [v19 reclaimFile];
+      lfn_appledouble2 = [v17 lfn_appledouble];
+      [lfn_appledouble2 reclaimFile];
 
       [v17 setLfn_appledouble:0];
     }
 
-    v20 = [v17 lfn_inUseClientSet];
-    [v17 setLfn_inUseClientSet:v20 & ~a4];
-    if ((v20 & a4) == 0 || [v17 lfn_inUseClientSet] || !objc_msgSend(v17, "isNodeReclaimable"))
+    lfn_inUseClientSet = [v17 lfn_inUseClientSet];
+    [v17 setLfn_inUseClientSet:lfn_inUseClientSet & ~client];
+    if ((lfn_inUseClientSet & client) == 0 || [v17 lfn_inUseClientSet] || !objc_msgSend(v17, "isNodeReclaimable"))
     {
-      v41 = 0;
+      reclaim = 0;
       goto LABEL_22;
     }
 
-    v21 = [v17 lfn_name];
-    if (([v21 isEqualToString:&stru_100038E98] & 1) == 0)
+    lfn_name = [v17 lfn_name];
+    if (([lfn_name isEqualToString:&stru_100038E98] & 1) == 0)
     {
-      v22 = [v17 lfn_parent];
+      lfn_parent = [v17 lfn_parent];
 
-      if (!v22)
+      if (!lfn_parent)
       {
 LABEL_18:
         [(userFSVolume *)self removeFromFHCache:v17];
-        v41 = [v17 reclaim];
-        if (v41)
+        reclaim = [v17 reclaim];
+        if (reclaim)
         {
           v23 = userfs_log_default;
           if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
           {
-            v24 = v9;
+            v24 = reclaimCopy;
             v25 = v23;
-            v26 = [v9 UTF8String];
-            v27 = objc_retainBlock(v10);
+            uTF8String2 = [reclaimCopy UTF8String];
+            v27 = objc_retainBlock(replyCopy);
             *buf = 136315906;
-            v43 = v26;
+            v43 = uTF8String2;
             v44 = 2048;
-            v45 = a4;
+            clientCopy3 = client;
             v46 = 2048;
             v47 = v27;
             v48 = 1024;
-            LODWORD(v49[0]) = v41;
+            LODWORD(v49[0]) = reclaim;
             _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "LIReclaim(%s, %llu, %p): fs reclaim error: %d", buf, 0x26u);
           }
         }
@@ -5191,15 +5191,15 @@ LABEL_18:
         goto LABEL_22;
       }
 
-      v21 = [v17 lfn_parent];
-      [(userFSVolume *)self removeFromNameCache:v17 withParent:v21];
+      lfn_name = [v17 lfn_parent];
+      [(userFSVolume *)self removeFromNameCache:v17 withParent:lfn_name];
     }
 
     goto LABEL_18;
   }
 
 LABEL_22:
-  if (v15)
+  if (pauseIOQueue)
   {
     [(userFSVolume *)self resumeIOQueue];
   }
@@ -5207,16 +5207,16 @@ LABEL_22:
   v28 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v35 = v9;
+    v35 = reclaimCopy;
     v36 = v28;
-    v37 = [v9 UTF8String];
-    v38 = objc_retainBlock(v10);
-    v39 = v41;
+    uTF8String3 = [reclaimCopy UTF8String];
+    v38 = objc_retainBlock(replyCopy);
+    v39 = reclaim;
     label = dispatch_queue_get_label(0);
     *buf = 136316162;
-    v43 = v37;
+    v43 = uTF8String3;
     v44 = 2048;
-    v45 = a4;
+    clientCopy3 = client;
     v46 = 2048;
     v47 = v38;
     v48 = 1024;
@@ -5226,20 +5226,20 @@ LABEL_22:
     _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "LIReclaim(%s, %llu, %p): reply(%d) on %s", buf, 0x30u);
   }
 
-  v29 = v41;
-  v30 = [(userFSVolume *)self getFreeSpaceInVolume];
-  (*(v10 + 2))(v10, v29, v30);
+  v29 = reclaim;
+  getFreeSpaceInVolume = [(userFSVolume *)self getFreeSpaceInVolume];
+  (*(replyCopy + 2))(replyCopy, v29, getFreeSpaceInVolume);
 }
 
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
   v9 = a4;
-  v11 = a3;
-  v12 = a7;
-  v13 = ~a5;
-  if (![v11 isEqualToString:LIUpdateNSFileProviderRootContainerItemIdentifier])
+  interestCopy = interest;
+  replyCopy = reply;
+  v13 = ~client;
+  if (![interestCopy isEqualToString:LIUpdateNSFileProviderRootContainerItemIdentifier])
   {
-    v16 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKey:v11];
+    v16 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKey:interestCopy];
     if (!v16)
     {
       v14 = NSPOSIXErrorDomain;
@@ -5248,15 +5248,15 @@ LABEL_22:
     }
 
     v17 = v16;
-    v18 = [v16 lfn_interestedClients];
+    lfn_interestedClients = [v16 lfn_interestedClients];
     if (v9)
     {
-      v19 = v18 | a5;
+      v19 = lfn_interestedClients | client;
     }
 
     else
     {
-      v19 = v18 & v13;
+      v19 = lfn_interestedClients & v13;
     }
 
     [v17 setLfn_interestedClients:v19];
@@ -5272,12 +5272,12 @@ LABEL_20:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v20 = [(NSMutableDictionary *)self->mountFHtoNodeTable allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    allKeys = [(NSMutableDictionary *)self->mountFHtoNodeTable allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v21)
     {
       v22 = v21;
-      v31 = v12;
+      v31 = replyCopy;
       v23 = 0;
       v24 = *v36;
       do
@@ -5288,7 +5288,7 @@ LABEL_20:
         {
           if (*v36 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = [(NSMutableDictionary *)self->mountFHtoNodeTable objectForKey:*(*(&v35 + 1) + 8 * v25)];
@@ -5299,12 +5299,12 @@ LABEL_20:
         }
 
         while (v22 != v25);
-        v22 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v22);
 
-      v12 = v31;
+      replyCopy = v31;
     }
 
     goto LABEL_20;
@@ -5321,30 +5321,30 @@ LABEL_21:
   block[2] = sub_100013B20;
   block[3] = &unk_100038970;
   v33 = v27;
-  v34 = v12;
+  v34 = replyCopy;
   v29 = v27;
-  v30 = v12;
+  v30 = replyCopy;
   dispatch_async(v28, block);
 }
 
-- (void)invalidateFileNodesForConnection:(unint64_t)a3
+- (void)invalidateFileNodesForConnection:(unint64_t)connection
 {
-  v5 = [(userFSVolume *)self metaDataRequests];
+  metaDataRequests = [(userFSVolume *)self metaDataRequests];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100013BC8;
   v6[3] = &unk_100038998;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = connection;
+  dispatch_async(metaDataRequests, v6);
 }
 
-- (int)searchVolume:(id)a3 withCriteria:(id)a4 withSearchToken:(id)a5 andWithResultsHandler:(id)a6
+- (int)searchVolume:(id)volume withCriteria:(id)criteria withSearchToken:(id)token andWithResultsHandler:(id)handler
 {
-  v121 = a3;
-  v120 = a4;
-  v123 = a5;
-  v118 = a6;
+  volumeCopy = volume;
+  criteriaCopy = criteria;
+  tokenCopy = token;
+  handlerCopy = handler;
   v197 = 0;
   v198[0] = &v197;
   v198[1] = 0x2020000000;
@@ -5356,7 +5356,7 @@ LABEL_21:
   }
 
   pthread_rwlock_rdlock(&self->searchRequestsRWLock);
-  v10 = [(NSMutableDictionary *)self->searchRequests objectForKey:v123];
+  v10 = [(NSMutableDictionary *)self->searchRequests objectForKey:tokenCopy];
   pthread_rwlock_unlock(&self->searchRequestsRWLock);
   v127 = v10;
   if (v10)
@@ -5375,22 +5375,22 @@ LABEL_21:
       goto LABEL_141;
     }
 
-    v11 = [(userFSVolume *)self volumeRawDevice];
-    v12 = [v11 fsPlugin];
-    v13 = *([v12 FSOps] + 30);
+    volumeRawDevice = [(userFSVolume *)self volumeRawDevice];
+    fsPlugin = [volumeRawDevice fsPlugin];
+    v13 = *([fsPlugin FSOps] + 30);
 
     if (v13)
     {
       v14 = userfs_log_default;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [v127 startLocation];
-        sub_100022DCC(v15, v225, v14);
+        startLocation = [v127 startLocation];
+        sub_100022DCC(startLocation, v225, v14);
       }
 
       *(v198[0] + 24) = 0;
-      v16 = [v127 startLocation];
-      v17 = [pathElement pathElementFromName:0 withParentFH:v16 withCookie:0 andWithCookieVerifier:0];
+      startLocation2 = [v127 startLocation];
+      v17 = [pathElement pathElementFromName:0 withParentFH:startLocation2 withCookie:0 andWithCookieVerifier:0];
       [(pathStack *)v122 push:v17];
 
       v18 = 0;
@@ -5416,31 +5416,31 @@ LABEL_21:
         v188 = sub_100008688;
         v189 = sub_100008698;
         v190 = 0;
-        v184 = [v126 cookie];
-        v183 = [v126 cookieVerifier];
+        cookie = [v126 cookie];
+        cookieVerifier = [v126 cookieVerifier];
         v19 = userfs_log_default;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v100 = [v126 parentFH];
-          v101 = [v126 elementName];
+          parentFH = [v126 parentFH];
+          elementName = [v126 elementName];
           *v214 = 138412546;
-          *&v214[4] = v100;
+          *&v214[4] = parentFH;
           *&v214[12] = 2112;
-          *&v214[14] = v101;
+          *&v214[14] = elementName;
           _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "searchVolume:pop:%@/%@", v214, 0x16u);
         }
 
-        v20 = [v126 elementName];
-        v21 = v20 == 0;
+        elementName2 = [v126 elementName];
+        v21 = elementName2 == 0;
 
         if (v21)
         {
-          v27 = [v126 parentFH];
+          parentFH2 = [v126 parentFH];
           v28 = v192[5];
-          v192[5] = v27;
+          v192[5] = parentFH2;
 
 LABEL_22:
-          v29 = [(userFSVolume *)self metaDataRequests];
+          metaDataRequests = [(userFSVolume *)self metaDataRequests];
           v177[0] = _NSConcreteStackBlock;
           v177[1] = 3221225472;
           v177[2] = sub_100015C24;
@@ -5449,7 +5449,7 @@ LABEL_22:
           v177[4] = self;
           v177[6] = &v191;
           v177[7] = &v197;
-          dispatch_sync(v29, v177);
+          dispatch_sync(metaDataRequests, v177);
 
           v30 = v126;
           v31 = v127;
@@ -5459,11 +5459,11 @@ LABEL_22:
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
               v104 = v192[5];
-              v105 = [v126 parentFH];
+              parentFH3 = [v126 parentFH];
               *v214 = 138412546;
               *&v214[4] = v104;
               *&v214[12] = 2112;
-              *&v214[14] = v105;
+              *&v214[14] = parentFH3;
               _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Failed to get the node(reclaimed?) for %@, skipping in: %@", v214, 0x16u);
             }
 
@@ -5479,16 +5479,16 @@ LABEL_133:
               v98 = userfs_log_default;
               if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
               {
-                v106 = [v186[5] getFH];
-                v107 = [v186[5] lfn_name];
+                getFH = [v186[5] getFH];
+                lfn_name = [v186[5] lfn_name];
                 *v214 = 138412546;
-                *&v214[4] = v106;
+                *&v214[4] = getFH;
                 *&v214[12] = 2112;
-                *&v214[14] = v107;
+                *&v214[14] = lfn_name;
                 _os_log_debug_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEBUG, "searchVolume:scanDir:done:reclaiming %@[%@]", v214, 0x16u);
               }
 
-              v99 = [(userFSVolume *)self metaDataRequests];
+              metaDataRequests2 = [(userFSVolume *)self metaDataRequests];
               v131[0] = _NSConcreteStackBlock;
               v131[1] = 3221225472;
               v131[2] = sub_10001636C;
@@ -5496,7 +5496,7 @@ LABEL_133:
               v131[4] = self;
               v133 = &v185;
               v132 = v127;
-              dispatch_sync(v99, v131);
+              dispatch_sync(metaDataRequests2, v131);
 
               v26 = 0;
               goto LABEL_136;
@@ -5516,9 +5516,9 @@ LABEL_133:
             v215 = 0u;
             memset(v214, 0, sizeof(v214));
             v89 = v186[5];
-            v90 = [v127 searchCriteria];
+            searchCriteria = [v127 searchCriteria];
             v175 = 0;
-            LODWORD(v89) = [v89 scanDirectoryForMatches:v90 withScanDirCookie:&v184 withScanDirCookieVerifier:&v183 withSearchResultType:&v176 withSearchResult:&v175 withSearchResultAttr:v214];
+            LODWORD(v89) = [v89 scanDirectoryForMatches:searchCriteria withScanDirCookie:&cookie withScanDirCookieVerifier:&cookieVerifier withSearchResultType:&v176 withSearchResult:&v175 withSearchResultAttr:v214];
             v125 = v175;
             *(v198[0] + 24) = v89;
 
@@ -5590,9 +5590,9 @@ LABEL_125:
             v96 = userfs_log_default;
             if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
             {
-              v97 = [v186[5] lfn_name];
+              lfn_name2 = [v186[5] lfn_name];
               *v208 = 138412290;
-              *&v208[4] = v97;
+              *&v208[4] = lfn_name2;
               _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_INFO, "searchVolume:scanDir:dir:changed:%@", v208, 0xCu);
             }
 
@@ -5607,18 +5607,18 @@ LABEL_125:
             goto LABEL_118;
           }
 
-          [v126 setCookie:v184];
-          [v126 setCookieVerifier:v183];
+          [v126 setCookie:cookie];
+          [v126 setCookieVerifier:cookieVerifier];
           v93 = userfs_log_default;
           if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
           {
-            v75 = [v186[5] lfn_name];
+            lfn_name3 = [v186[5] lfn_name];
             *v208 = 138413058;
-            *&v208[4] = v75;
+            *&v208[4] = lfn_name3;
             *&v208[12] = 2048;
-            *&v208[14] = v184;
+            *&v208[14] = cookie;
             *&v208[22] = 2048;
-            v209 = v183;
+            v209 = cookieVerifier;
             LOWORD(v210) = 1024;
             *(&v210 + 2) = v176;
             _os_log_debug_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEBUG, "searchVolume:scanDir:%@:cookie:%#llx:cookieVerf:%#llx:action:%u", v208, 0x26u);
@@ -5641,9 +5641,9 @@ LABEL_116:
               v44 = userfs_log_default;
               if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
               {
-                v84 = [v126 cookie];
+                cookie2 = [v126 cookie];
                 *v208 = 134217984;
-                *&v208[4] = v84;
+                *&v208[4] = cookie2;
                 _os_log_fault_impl(&_mh_execute_header, v44, OS_LOG_TYPE_FAULT, "search: Recieved No Action but cookie is not EOF [%llu]", v208, 0xCu);
               }
 
@@ -5674,7 +5674,7 @@ LABEL_84:
 
             else
             {
-              v72 = [(userFSVolume *)self metaDataRequests];
+              metaDataRequests3 = [(userFSVolume *)self metaDataRequests];
               v135[0] = _NSConcreteStackBlock;
               v135[1] = 3221225472;
               v135[2] = sub_100016228;
@@ -5686,7 +5686,7 @@ LABEL_84:
               v137 = v127;
               v139 = &v197;
               v140 = v208;
-              dispatch_sync(v72, v135);
+              dispatch_sync(metaDataRequests3, v135);
 
               v74 = userfs_log_default;
               if (*(v198[0] + 24))
@@ -5710,18 +5710,18 @@ LABEL_84:
                 v76 = userfs_log_default;
                 if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
                 {
-                  v86 = [v126 elementName];
-                  v87 = [v126 cookie];
+                  elementName3 = [v126 elementName];
+                  cookie3 = [v126 cookie];
                   *buf = 138412546;
-                  *&buf[4] = v86;
+                  *&buf[4] = elementName3;
                   *&buf[12] = 2048;
-                  *&buf[14] = v87;
+                  *&buf[14] = cookie3;
                   _os_log_debug_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEBUG, "searchVolume:push:[%@]@%#llx", buf, 0x16u);
                 }
 
                 [(pathStack *)v122 push:v126];
                 v45 = v186[5];
-                v77 = [(userFSVolume *)self metaDataRequests];
+                metaDataRequests4 = [(userFSVolume *)self metaDataRequests];
                 v134[0] = _NSConcreteStackBlock;
                 v134[1] = 3221225472;
                 v134[2] = sub_10001630C;
@@ -5730,7 +5730,7 @@ LABEL_84:
                 v134[5] = &v185;
                 v134[6] = v208;
                 v134[7] = &v197;
-                dispatch_sync(v77, v134);
+                dispatch_sync(metaDataRequests4, v134);
 
                 v78 = userfs_log_default;
                 if (*(v198[0] + 24))
@@ -5758,9 +5758,9 @@ LABEL_84:
                     sub_100022E78();
                   }
 
-                  v81 = [v186[5] lfn_name];
-                  v82 = [v45 getFH];
-                  v83 = [pathElement pathElementFromName:v81 withParentFH:v82 withCookie:0 andWithCookieVerifier:0];
+                  lfn_name4 = [v186[5] lfn_name];
+                  getFH2 = [v45 getFH];
+                  v83 = [pathElement pathElementFromName:lfn_name4 withParentFH:getFH2 withCookie:0 andWithCookieVerifier:0];
                   [(pathStack *)v122 push:v83];
 
                   v26 = 6;
@@ -5773,17 +5773,17 @@ LABEL_84:
             goto LABEL_130;
           }
 
-          v33 = [(pathStack *)v122 fullPath];
-          v34 = [v126 elementName];
+          fullPath = [(pathStack *)v122 fullPath];
+          elementName4 = [v126 elementName];
           v35 = objc_alloc_init(NSMutableString);
-          if (v33 && ([v33 isEqualToString:&stru_100038E98] & 1) == 0)
+          if (fullPath && ([fullPath isEqualToString:&stru_100038E98] & 1) == 0)
           {
-            [v35 appendFormat:@"%@/", v33];
+            [v35 appendFormat:@"%@/", fullPath];
           }
 
-          if (v34)
+          if (elementName4)
           {
-            [v35 appendFormat:@"%@/", v34];
+            [v35 appendFormat:@"%@/", elementName4];
           }
 
           [v35 appendString:v125];
@@ -5795,10 +5795,10 @@ LABEL_84:
             _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "searchVolume:match:%@", v208, 0xCu);
           }
 
-          v37 = [v120 objectForKeyedSubscript:LISearchObjXattrsToReturn];
+          v37 = [criteriaCopy objectForKeyedSubscript:LISearchObjXattrsToReturn];
           v117 = v35;
-          v115 = v33;
-          v116 = v34;
+          v115 = fullPath;
+          v116 = elementName4;
 
           if (v37)
           {
@@ -5815,13 +5815,13 @@ LABEL_84:
             v38 = userfs_log_default;
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
             {
-              [v120 objectForKeyedSubscript:LISearchObjXattrsToReturn];
+              [criteriaCopy objectForKeyedSubscript:LISearchObjXattrsToReturn];
               objc_claimAutoreleasedReturnValue();
               sub_100022E24();
             }
 
             v39 = objc_alloc_init(NSMutableDictionary);
-            v40 = [(userFSVolume *)self metaDataRequests];
+            metaDataRequests5 = [(userFSVolume *)self metaDataRequests];
             v165[0] = _NSConcreteStackBlock;
             v165[1] = 3221225472;
             v165[2] = sub_100015C84;
@@ -5834,7 +5834,7 @@ LABEL_84:
             v167 = v114;
             v169 = &v171;
             v170 = v208;
-            dispatch_sync(v40, v165);
+            dispatch_sync(metaDataRequests5, v165);
 
             v42 = *(v172 + 6);
             if (v42)
@@ -5854,7 +5854,7 @@ LABEL_84:
               v164 = 0u;
               v161 = 0u;
               v162 = 0u;
-              v46 = [v120 objectForKeyedSubscript:LISearchObjXattrsToReturn];
+              v46 = [criteriaCopy objectForKeyedSubscript:LISearchObjXattrsToReturn];
               v47 = [v46 countByEnumeratingWithState:&v161 objects:v207 count:16];
               if (v47)
               {
@@ -5895,7 +5895,7 @@ LABEL_84:
                         _os_log_debug_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEBUG, "search: xattrNamePrefix = '%@'", v200, 0xCu);
                       }
 
-                      v52 = [(userFSVolume *)self metaDataRequests];
+                      metaDataRequests6 = [(userFSVolume *)self metaDataRequests];
                       v154[0] = _NSConcreteStackBlock;
                       v154[1] = 3221225472;
                       v154[2] = sub_100015DCC;
@@ -5904,7 +5904,7 @@ LABEL_84:
                       v154[5] = v208;
                       v154[6] = &v171;
                       v154[7] = &v155;
-                      dispatch_sync(v52, v154);
+                      dispatch_sync(metaDataRequests6, v154);
 
                       if (!*(v172 + 6) && v156[5])
                       {
@@ -5939,7 +5939,7 @@ LABEL_84:
                                   _os_log_debug_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEBUG, "search: xattr name '%@' matches prefix '%@'", v200, 0x16u);
                                 }
 
-                                v59 = [(userFSVolume *)self metaDataRequests];
+                                metaDataRequests7 = [(userFSVolume *)self metaDataRequests];
                                 v145[0] = _NSConcreteStackBlock;
                                 v145[1] = 3221225472;
                                 v145[2] = sub_100015ED4;
@@ -5950,7 +5950,7 @@ LABEL_84:
                                 v148 = &v171;
                                 v149 = buf;
                                 v146 = v39;
-                                dispatch_sync(v59, v145);
+                                dispatch_sync(metaDataRequests7, v145);
                               }
                             }
 
@@ -5964,7 +5964,7 @@ LABEL_84:
 
                     else
                     {
-                      v60 = [(userFSVolume *)self metaDataRequests];
+                      metaDataRequests8 = [(userFSVolume *)self metaDataRequests];
                       v144[0] = _NSConcreteStackBlock;
                       v144[1] = 3221225472;
                       v144[2] = sub_100016060;
@@ -5974,7 +5974,7 @@ LABEL_84:
                       v144[6] = v208;
                       v144[7] = &v171;
                       v144[8] = buf;
-                      dispatch_sync(v60, v144);
+                      dispatch_sync(metaDataRequests8, v144);
 
                       v61 = *(v172 + 6);
                       if (v61 != 93)
@@ -6018,7 +6018,7 @@ LABEL_84:
                 while (v47);
               }
 
-              v65 = [(userFSVolume *)self metaDataRequests];
+              metaDataRequests9 = [(userFSVolume *)self metaDataRequests];
               v141[0] = _NSConcreteStackBlock;
               v141[1] = 3221225472;
               v141[2] = sub_10001616C;
@@ -6026,7 +6026,7 @@ LABEL_84:
               v141[4] = self;
               v143 = v208;
               v142 = v114;
-              dispatch_async(v65, v141);
+              dispatch_async(metaDataRequests9, v141);
 
               v42 = 0;
             }
@@ -6039,16 +6039,16 @@ LABEL_77:
               v66 = userfs_log_default;
               if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
               {
-                v79 = [v186[5] lfn_name];
+                lfn_name5 = [v186[5] lfn_name];
                 *v208 = 138412546;
-                *&v208[4] = v79;
+                *&v208[4] = lfn_name5;
                 *&v208[12] = 2112;
                 *&v208[14] = v117;
                 _os_log_debug_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEBUG, "searchVolume:scanDir:%@:match:%@:posting", v208, 0x16u);
               }
 
-              v67 = [v127 resultsHandler];
-              v68 = v67;
+              resultsHandler = [v127 resultsHandler];
+              v68 = resultsHandler;
               if (v39)
               {
                 v69 = v39;
@@ -6059,7 +6059,7 @@ LABEL_77:
                 v69 = &__NSDictionary0__struct;
               }
 
-              [v67 addSearchResult:v117 attributes:v214 attributeSize:184 xAttrs:v69];
+              [resultsHandler addSearchResult:v117 attributes:v214 attributeSize:184 xAttrs:v69];
             }
 
             v70 = v176;
@@ -6075,7 +6075,7 @@ LABEL_77:
           goto LABEL_77;
         }
 
-        v22 = [(userFSVolume *)self metaDataRequests];
+        metaDataRequests10 = [(userFSVolume *)self metaDataRequests];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100015B38;
@@ -6086,7 +6086,7 @@ LABEL_77:
         v180 = v127;
         v181 = &v197;
         v182 = &v191;
-        dispatch_sync(v22, block);
+        dispatch_sync(metaDataRequests10, block);
 
         v24 = *(v198[0] + 24);
         if (v24)
@@ -6094,12 +6094,12 @@ LABEL_77:
           v25 = userfs_log_default;
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v102 = [v23 elementName];
-            v103 = [v23 parentFH];
+            elementName5 = [v23 elementName];
+            parentFH4 = [v23 parentFH];
             *v214 = 138412546;
-            *&v214[4] = v102;
+            *&v214[4] = elementName5;
             *&v214[12] = 2112;
-            *&v214[14] = v103;
+            *&v214[14] = parentFH4;
             _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to lookup: %@, skipping in: %@", v214, 0x16u);
           }
 
@@ -6176,17 +6176,17 @@ LABEL_151:
   {
     v111 = *(v198[0] + 24);
     *v214 = 138412546;
-    *&v214[4] = v121;
+    *&v214[4] = volumeCopy;
     *&v214[12] = 1024;
     *&v214[14] = v111;
     _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_INFO, "searchVolume:posting:done:%@:%d", v214, 0x12u);
   }
 
-  v112 = [v10 resultsHandler];
-  [v112 tokenDone:*(v198[0] + 24)];
+  resultsHandler2 = [v10 resultsHandler];
+  [resultsHandler2 tokenDone:*(v198[0] + 24)];
 
   pthread_rwlock_wrlock(&self->searchRequestsRWLock);
-  [(NSMutableDictionary *)self->searchRequests removeObjectForKey:v123];
+  [(NSMutableDictionary *)self->searchRequests removeObjectForKey:tokenCopy];
   pthread_rwlock_unlock(&self->searchRequestsRWLock);
   [v127 invalidateConnections];
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -6200,14 +6200,14 @@ LABEL_151:
   return 0;
 }
 
-- (void)verifyExistenceWithFileIDs:(id)a3 reply:(id)a4
+- (void)verifyExistenceWithFileIDs:(id)ds reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length] >> 3;
+  dsCopy = ds;
+  replyCopy = reply;
+  v8 = [dsCopy length] >> 3;
   if (v8)
   {
-    +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [v6 length] >> 3);
+    +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", [dsCopy length] >> 3);
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000165C0;
@@ -6223,9 +6223,9 @@ LABEL_151:
     v15[3] = &unk_100038BD8;
     v15[4] = self;
     v20 = v8;
-    v16 = v6;
+    v16 = dsCopy;
     v18 = v10;
-    v19 = v7;
+    v19 = replyCopy;
     v17 = v9;
     v13 = v9;
     v14 = v10;
@@ -6234,22 +6234,22 @@ LABEL_151:
 
   else
   {
-    (*(v7 + 2))(v7, 22, 0);
+    (*(replyCopy + 2))(replyCopy, 22, 0);
   }
 }
 
-- (void)parentsAndAttributesForItemsByID:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)parentsAndAttributesForItemsByID:(id)d requestID:(unint64_t)iD reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 length] >> 3;
+  dCopy = d;
+  replyCopy = reply;
+  v9 = [dCopy length] >> 3;
   if (v9)
   {
-    v10 = [(liveFSNode *)self->_rootNode getAttrData];
-    v11 = v10;
-    if (v10)
+    getAttrData = [(liveFSNode *)self->_rootNode getAttrData];
+    v11 = getAttrData;
+    if (getAttrData)
     {
-      v12 = *([v10 bytes] + 8);
+      v12 = *([getAttrData bytes] + 8);
       IOGroup = self->_IOGroup;
       IORequests = self->_IORequests;
       block[0] = _NSConcreteStackBlock;
@@ -6257,22 +6257,22 @@ LABEL_151:
       block[2] = sub_1000167EC;
       block[3] = &unk_100038C28;
       v20 = v9;
-      v16 = v7;
-      v17 = self;
-      v18 = v8;
+      v16 = dCopy;
+      selfCopy = self;
+      v18 = replyCopy;
       v19 = v12;
       dispatch_group_async(IOGroup, IORequests, block);
     }
 
     else
     {
-      (*(v8 + 2))(v8, 22, 0);
+      (*(replyCopy + 2))(replyCopy, 22, 0);
     }
   }
 
   else
   {
-    (*(v8 + 2))(v8, 22, 0);
+    (*(replyCopy + 2))(replyCopy, 22, 0);
   }
 }
 
@@ -6284,14 +6284,14 @@ LABEL_151:
   v10 = sub_100008688;
   v11 = sub_100008698;
   v12 = 0;
-  v3 = [(userFSVolume *)self rootNode];
+  rootNode = [(userFSVolume *)self rootNode];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100016EE4;
   v6[3] = &unk_100038C50;
   v6[4] = self;
   v6[5] = &v7;
-  [(userFSVolume *)self otherAttributeOf:v3 named:@"_N_f_bavail" reply:v6];
+  [(userFSVolume *)self otherAttributeOf:rootNode named:@"_N_f_bavail" reply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

@@ -1,15 +1,15 @@
 @interface JFXCVASegMatting_NoOp
-- (id)initForFrameSet:(id)a3;
+- (id)initForFrameSet:(id)set;
 @end
 
 @implementation JFXCVASegMatting_NoOp
 
-- (id)initForFrameSet:(id)a3
+- (id)initForFrameSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = JFXCVASegMatting_NoOp;
-  v5 = [(JFXMatting *)&v9 initForFrameSet:v4];
+  v5 = [(JFXMatting *)&v9 initForFrameSet:setCopy];
   v6 = v5;
   if (v5)
   {

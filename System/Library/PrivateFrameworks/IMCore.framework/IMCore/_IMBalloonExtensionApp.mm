@@ -4,14 +4,14 @@
 - (BOOL)isLaunchProhibited;
 - (BOOL)isPreDawnAndAppStoreStickerGenre;
 - (BOOL)isStickerPackOnly;
-- (BOOL)linkedBeforeSDKVersion:(id)a3;
+- (BOOL)linkedBeforeSDKVersion:(id)version;
 - (BOOL)shouldDelayViewControllerPresentation;
 - (BOOL)shouldForceIntoSendMenu;
 - (BOOL)showInBrowser;
 - (BOOL)showInSendMenu;
 - (BOOL)showableInBrowser;
-- (_IMBalloonExtensionApp)initWithPluginBundle:(id)a3 extension:(id)a4;
-- (_IMBalloonExtensionApp)initWithPluginBundle:(id)a3 extension:(id)a4 pluginKitProxyClass:(Class)a5 proxy:(id)a6;
+- (_IMBalloonExtensionApp)initWithPluginBundle:(id)bundle extension:(id)extension;
+- (_IMBalloonExtensionApp)initWithPluginBundle:(id)bundle extension:(id)extension pluginKitProxyClass:(Class)class proxy:(id)proxy;
 - (double)presentationDelay;
 - (id)_bundleIDToPresentationDelayMapping;
 - (id)_bundleIDsForDawnSendMenuTemporaryDisplayOverride;
@@ -154,11 +154,11 @@
   return v6;
 }
 
-- (_IMBalloonExtensionApp)initWithPluginBundle:(id)a3 extension:(id)a4
+- (_IMBalloonExtensionApp)initWithPluginBundle:(id)bundle extension:(id)extension
 {
   v6 = qword_1ED767688;
-  v7 = a4;
-  v8 = a3;
+  extensionCopy = extension;
+  bundleCopy = bundle;
   if (v6 != -1)
   {
     sub_1A84E1DF8();
@@ -166,35 +166,35 @@
 
   v9 = qword_1ED767690;
   v10 = qword_1ED767690;
-  v12 = objc_msgSend_initWithPluginBundle_extension_pluginKitProxyClass_proxy_(self, v11, v8, v7, v9, 0);
+  v12 = objc_msgSend_initWithPluginBundle_extension_pluginKitProxyClass_proxy_(self, v11, bundleCopy, extensionCopy, v9, 0);
 
   return v12;
 }
 
-- (_IMBalloonExtensionApp)initWithPluginBundle:(id)a3 extension:(id)a4 pluginKitProxyClass:(Class)a5 proxy:(id)a6
+- (_IMBalloonExtensionApp)initWithPluginBundle:(id)bundle extension:(id)extension pluginKitProxyClass:(Class)class proxy:(id)proxy
 {
   v174 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v15 = v12;
-  if (v11 && !v12)
+  bundleCopy = bundle;
+  extensionCopy = extension;
+  proxyCopy = proxy;
+  v15 = proxyCopy;
+  if (extensionCopy && !proxyCopy)
   {
-    v16 = objc_msgSend_identifier(v11, v13, v14);
-    v15 = objc_msgSend_pluginKitProxyForIdentifier_(a5, v17, v16);
+    v16 = objc_msgSend_identifier(extensionCopy, v13, v14);
+    v15 = objc_msgSend_pluginKitProxyForIdentifier_(class, v17, v16);
   }
 
   v18 = objc_msgSend_containingBundle(v15, v13, v14);
   v168.receiver = self;
   v168.super_class = _IMBalloonExtensionApp;
-  v19 = [(IMBalloonApp *)&v168 initWithPluginBundle:v10 appBundle:v18];
+  v19 = [(IMBalloonApp *)&v168 initWithPluginBundle:bundleCopy appBundle:v18];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_extension, a4);
+    objc_storeStrong(&v19->_extension, extension);
     objc_storeStrong(&v19->_proxy, v15);
     v22 = objc_msgSend_bundleIdentifier(v15, v20, v21);
-    v25 = objc_msgSend_infoDictionary(v11, v23, v24);
+    v25 = objc_msgSend_infoDictionary(extensionCopy, v23, v24);
     v27 = objc_msgSend_objectForKey_(v25, v26, @"NSExtension");
     v29 = objc_msgSend_objectForKey_(v27, v28, @"MSMessagePayloadProviderIdentifier");
 
@@ -226,7 +226,7 @@
       v39 = v45;
     }
 
-    v48 = objc_msgSend_bundleIdentifier(v10, v46, v47);
+    v48 = objc_msgSend_bundleIdentifier(bundleCopy, v46, v47);
     v50 = objc_msgSend_stringByAppendingFormat_(v48, v49, @":%@:%@", v39, v22);
 
     objc_msgSend_setIdentifier_(v19, v51, v50);
@@ -236,7 +236,7 @@
     v166[3] = &unk_1E7813400;
     v52 = v50;
     v167 = v52;
-    objc_msgSend_setRequestInterruptionBlock_(v11, v53, v166);
+    objc_msgSend_setRequestInterruptionBlock_(extensionCopy, v53, v166);
     v56 = objc_msgSend_localizedName(v15, v54, v55);
     v59 = objc_msgSend_length(v56, v57, v58);
 
@@ -370,7 +370,7 @@ LABEL_17:
           objc_msgSend_setShouldHideAttributionInformation_(v19, v149, 1);
         }
 
-        v151 = objc_msgSend_infoDictionary(v11, v149, v150);
+        v151 = objc_msgSend_infoDictionary(extensionCopy, v149, v150);
         v153 = objc_msgSend_objectForKeyedSubscript_(v151, v152, @"LSExecutableSDKVersion");
         v157 = v153;
         if (v153 && objc_msgSend_length(v153, v154, v155))
@@ -522,10 +522,10 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)linkedBeforeSDKVersion:(id)a3
+- (BOOL)linkedBeforeSDKVersion:(id)version
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   objc_msgSend_sdkVersionNumber(self, v5, v6);
   sub_1A84E8A9C(v7);
   v9 = *(v8 + 1776);
@@ -610,8 +610,8 @@ LABEL_10:
 {
   v16.receiver = self;
   v16.super_class = _IMBalloonExtensionApp;
-  v3 = [(IMBalloonApp *)&v16 showInBrowser];
-  if (v3)
+  showInBrowser = [(IMBalloonApp *)&v16 showInBrowser];
+  if (showInBrowser)
   {
     v6 = objc_msgSend_applicationType(self, v4, v5);
     v8 = sub_1A84E8A54(v7);
@@ -619,24 +619,24 @@ LABEL_10:
 
     if (isEqualToString)
     {
-      LOBYTE(v3) = objc_msgSend_isEnabledUnremovableApp(self, v13, v14);
+      LOBYTE(showInBrowser) = objc_msgSend_isEnabledUnremovableApp(self, v13, v14);
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(showInBrowser) = 1;
     }
   }
 
-  return v3;
+  return showInBrowser;
 }
 
 - (BOOL)showableInBrowser
 {
   v16.receiver = self;
   v16.super_class = _IMBalloonExtensionApp;
-  v3 = [(IMBalloonApp *)&v16 showInBrowser];
-  if (v3)
+  showInBrowser = [(IMBalloonApp *)&v16 showInBrowser];
+  if (showInBrowser)
   {
     v6 = objc_msgSend_applicationType(self, v4, v5);
     v8 = sub_1A84E8A54(v7);
@@ -644,16 +644,16 @@ LABEL_10:
 
     if (isEqualToString)
     {
-      LOBYTE(v3) = objc_msgSend_isEnabledUnremovableApp(self, v13, v14) ^ 1;
+      LOBYTE(showInBrowser) = objc_msgSend_isEnabledUnremovableApp(self, v13, v14) ^ 1;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(showInBrowser) = 1;
     }
   }
 
-  return v3;
+  return showInBrowser;
 }
 
 - (BOOL)isLaunchProhibited

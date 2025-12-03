@@ -1,34 +1,34 @@
 @interface ABPK2DExtrapolationFiltering
-- (ABPK2DExtrapolationFiltering)initWithUse3DSkeletonForExtrapolation:(BOOL)a3 shouldPush3DSupportSkeleton:(BOOL)a4 withExtrapolationTime:(double)a5;
-- (abpk::Human)_getTrackedHumanForHumans:(abpk:(double)a4@<D0> :(float64x2_t)a5@<Q1> Human *)a3@<X8> atTimestamp:(float64_t)a6@<D2> withImageResolution:;
+- (ABPK2DExtrapolationFiltering)initWithUse3DSkeletonForExtrapolation:(BOOL)extrapolation shouldPush3DSupportSkeleton:(BOOL)skeleton withExtrapolationTime:(double)time;
+- (abpk::Human)_getTrackedHumanForHumans:(abpk:(double)humans@<D0> :(float64x2_t)a5@<Q1> Human *)a3@<X8> atTimestamp:(float64_t)timestamp@<D2> withImageResolution:;
 - (id).cxx_construct;
-- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)a4 :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :(id)a8 Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:personTracker:;
-- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)a4 :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:;
-- (void)_getTrackedHumanForHumans:(void *)a3@<X3> atTimestamp:(uint64_t)a4@<X8> withImageResolution:(double)a5@<D0> withPersonTracker:(CGFloat)a6@<D1>;
+- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)abpk :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :(id)a8 Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:personTracker:;
+- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)abpk :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:;
+- (void)_getTrackedHumanForHumans:(void *)humans@<X3> atTimestamp:(uint64_t)timestamp@<X8> withImageResolution:(double)resolution@<D0> withPersonTracker:(CGFloat)tracker@<D1>;
 @end
 
 @implementation ABPK2DExtrapolationFiltering
 
-- (ABPK2DExtrapolationFiltering)initWithUse3DSkeletonForExtrapolation:(BOOL)a3 shouldPush3DSupportSkeleton:(BOOL)a4 withExtrapolationTime:(double)a5
+- (ABPK2DExtrapolationFiltering)initWithUse3DSkeletonForExtrapolation:(BOOL)extrapolation shouldPush3DSupportSkeleton:(BOOL)skeleton withExtrapolationTime:(double)time
 {
   v9.receiver = self;
   v9.super_class = ABPK2DExtrapolationFiltering;
   result = [(ABPK2DExtrapolationFiltering *)&v9 init];
   if (result)
   {
-    result->_extrapolationTime = a5;
-    result->_use3DSupportSkeletonForExtrapolation = a3;
-    result->_shouldPush3DSupportSkeleton = a4;
+    result->_extrapolationTime = time;
+    result->_use3DSupportSkeletonForExtrapolation = extrapolation;
+    result->_shouldPush3DSupportSkeleton = skeleton;
     result->_lastANSTTrackedInstanceId = 10000;
   }
 
   return result;
 }
 
-- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)a4 :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:
+- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)abpk :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:
 {
-  height = a4.height;
-  width = a4.width;
+  height = abpk.height;
+  width = abpk.width;
   v13 = a7;
   memset(v15, 0, sizeof(v15));
   std::vector<abpk::Human>::__init_with_size[abi:ne200100]<abpk::Human*,abpk::Human*>(v15, a3->__begin_, a3->__end_, 0xEEEEEEEEEEEEEEEFLL * ((a3->__end_ - a3->__begin_) >> 3));
@@ -39,10 +39,10 @@
   return a6;
 }
 
-- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)a4 :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :(id)a8 Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:personTracker:
+- (int)performExtrapolationOnHumans:()vector<abpk:(std:(CGSize)abpk :(double)a5 allocator<abpk:(int64_t)a6 :(id)a7 Human>> *)a3 :(id)a8 Human withImageResolution:atTimestamp:rotationNeeded:previousSkeleton3D:personTracker:
 {
-  height = a4.height;
-  width = a4.width;
+  height = abpk.height;
+  width = abpk.width;
   v82[2] = *MEMORY[0x277D85DE8];
   anon_178 = self->_anon_178;
   v16 = a7;
@@ -360,7 +360,7 @@ LABEL_58:
   v55 = self->_aligned3DSkeleton;
   if (v55 && self->_use3DSupportSkeletonForExtrapolation)
   {
-    v56 = [(ABPK2DDetectionResult *)v55 rawJointsOutput];
+    rawJointsOutput = [(ABPK2DDetectionResult *)v55 rawJointsOutput];
     v57 = v19 - v20;
     memset(&v71, 0, sizeof(v71));
     std::vector<int>::reserve(&v71, (v19 - v20) >> 2);
@@ -380,7 +380,7 @@ LABEL_58:
       v60 = 4;
       do
       {
-        if (*(*buf + 4 * v58) || (v61 = vsub_f32(*(*abpk::Human::jointVector(self->_anon_100) + 8 * v58), *(v56 + 8 * v58)), sqrtf(vaddv_f32(vmul_f32(v61, v61))) <= 0.03))
+        if (*(*buf + 4 * v58) || (v61 = vsub_f32(*(*abpk::Human::jointVector(self->_anon_100) + 8 * v58), *(rawJointsOutput + 8 * v58)), sqrtf(vaddv_f32(vmul_f32(v61, v61))) <= 0.03))
         {
           std::vector<float>::push_back[abi:ne200100](&v71.__begin_, (*self->_anon_100 + v60 - 4));
           std::vector<float>::push_back[abi:ne200100](&v71.__begin_, (*self->_anon_100 + v60));
@@ -388,8 +388,8 @@ LABEL_58:
 
         else
         {
-          v69 = HIDWORD(*(v56 + 8 * v58));
-          v70 = *(v56 + 8 * v58);
+          v69 = HIDWORD(*(rawJointsOutput + 8 * v58));
+          v70 = *(rawJointsOutput + 8 * v58);
           std::vector<float>::push_back[abi:ne200100](&v71.__begin_, &v70);
           v70 = v69;
           std::vector<float>::push_back[abi:ne200100](&v71.__begin_, &v70);
@@ -458,12 +458,12 @@ LABEL_96:
   return v41;
 }
 
-- (void)_getTrackedHumanForHumans:(void *)a3@<X3> atTimestamp:(uint64_t)a4@<X8> withImageResolution:(double)a5@<D0> withPersonTracker:(CGFloat)a6@<D1>
+- (void)_getTrackedHumanForHumans:(void *)humans@<X3> atTimestamp:(uint64_t)timestamp@<X8> withImageResolution:(double)resolution@<D0> withPersonTracker:(CGFloat)tracker@<D1>
 {
   v75 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  humansCopy = humans;
   v14 = __ABPKLogSharedInstance();
-  v72 = a5;
+  resolutionCopy = resolution;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
@@ -471,11 +471,11 @@ LABEL_96:
   }
 
   v15 = 0;
-  v16 = a6;
-  v17 = v16 / 288.0;
+  trackerCopy = tracker;
+  v17 = trackerCopy / 288.0;
   v18 = a7;
   v19 = v18 / 192.0;
-  while ([v13 count] > v15)
+  while ([humansCopy count] > v15)
   {
     v20 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -485,7 +485,7 @@ LABEL_96:
       _os_log_impl(&dword_23EDDC000, v20, OS_LOG_TYPE_DEBUG, " Person: %d ", buf, 8u);
     }
 
-    v21 = [v13 objectAtIndexedSubscript:v15];
+    v21 = [humansCopy objectAtIndexedSubscript:v15];
     [v21 boundingBox];
     printCGRect(v79, v17, v19);
 
@@ -513,7 +513,7 @@ LABEL_96:
         _os_log_impl(&dword_23EDDC000, v25, OS_LOG_TYPE_DEBUG, " Human: %lu ", buf, 0xCu);
       }
 
-      v76.width = a6;
+      v76.width = tracker;
       v76.height = a7;
       v80.origin.x = abpk::Human::boundingBox(v23, v76);
       printCGRect(v80, 1.0, 1.0);
@@ -533,21 +533,21 @@ LABEL_96:
     _os_log_impl(&dword_23EDDC000, v26, OS_LOG_TYPE_DEBUG, " _lastANSTTrackedInstanceId %lu ", buf, 0xCu);
   }
 
-  for (i = 0; i < [v13 count]; ++i)
+  for (i = 0; i < [humansCopy count]; ++i)
   {
-    v29 = [v13 objectAtIndexedSubscript:i];
+    v29 = [humansCopy objectAtIndexedSubscript:i];
     v30 = [v29 objectID] == *(x0_0 + 82);
 
     if (v30)
     {
-      v45 = [v13 objectAtIndexedSubscript:i];
+      v45 = [humansCopy objectAtIndexedSubscript:i];
       [v45 boundingBox];
       v47 = v46;
       v49 = v48;
       v51 = v50;
       v53 = v52;
 
-      v54 = [v13 objectAtIndexedSubscript:i];
+      v54 = [humansCopy objectAtIndexedSubscript:i];
       *&v43 = COERCE_DOUBLE([v54 objectID]);
 
       v55 = v17;
@@ -556,7 +556,7 @@ LABEL_96:
       v37 = v49 * v19;
       v39 = v51 * v55;
       v41 = v53 * v56;
-      x0_0[83] = v72;
+      x0_0[83] = resolutionCopy;
       goto LABEL_30;
     }
   }
@@ -570,7 +570,7 @@ LABEL_96:
 
   x0_0[2] = x0_0[1];
   x0_0[18] = x0_0[17];
-  if (a5 - x0_0[83] > 2.0)
+  if (resolution - x0_0[83] > 2.0)
   {
     v32 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -579,14 +579,14 @@ LABEL_96:
       _os_log_impl(&dword_23EDDC000, v32, OS_LOG_TYPE_DEBUG, " Primary person occluded for more than set threshold. Shifting tracking to a different person ", buf, 2u);
     }
 
-    v33 = [v13 objectAtIndexedSubscript:0];
+    v33 = [humansCopy objectAtIndexedSubscript:0];
     [v33 boundingBox];
     v35 = v34;
     v37 = v36;
     v39 = v38;
     v41 = v40;
 
-    v42 = [v13 objectAtIndexedSubscript:0];
+    v42 = [humansCopy objectAtIndexedSubscript:0];
     *&v43 = COERCE_DOUBLE([v42 objectID]);
 
     v44 = __ABPKLogSharedInstance();
@@ -610,7 +610,7 @@ LABEL_30:
       v59 = -10000.0;
       do
       {
-        v77.width = a6;
+        v77.width = tracker;
         v77.height = a7;
         v60 = abpk::Human::boundingBox(v57, v77);
         v64 = computeIOUbetweenRects(v60, v61, v62, v63, v35, v37, v39, v41);
@@ -676,7 +676,7 @@ LABEL_43:
       _os_log_impl(&dword_23EDDC000, v69, OS_LOG_TYPE_DEBUG, " Human ", buf, 2u);
     }
 
-    v78.width = a6;
+    v78.width = tracker;
     v78.height = a7;
     v82.origin.x = abpk::Human::boundingBox(v58, v78);
     printCGRect(v82, 1.0, 1.0);
@@ -688,7 +688,7 @@ LABEL_43:
 
     x0_0[82] = *&v43;
     *(x0_0 + 81) = v58;
-    abpk::Human::Human(a4, v58);
+    abpk::Human::Human(timestamp, v58);
     goto LABEL_55;
   }
 
@@ -699,22 +699,22 @@ LABEL_43:
     _os_log_impl(&dword_23EDDC000, v70, OS_LOG_TYPE_DEBUG, " Primary person occluded. Waiting for them to be visible. ", buf, 2u);
   }
 
-  *(a4 + 112) = 0;
-  *(a4 + 80) = 0u;
-  *(a4 + 96) = 0u;
-  *(a4 + 48) = 0u;
-  *(a4 + 64) = 0u;
-  *(a4 + 16) = 0u;
-  *(a4 + 32) = 0u;
-  *a4 = 0u;
+  *(timestamp + 112) = 0;
+  *(timestamp + 80) = 0u;
+  *(timestamp + 96) = 0u;
+  *(timestamp + 48) = 0u;
+  *(timestamp + 64) = 0u;
+  *(timestamp + 16) = 0u;
+  *(timestamp + 32) = 0u;
+  *timestamp = 0u;
 LABEL_55:
 
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (abpk::Human)_getTrackedHumanForHumans:(abpk:(double)a4@<D0> :(float64x2_t)a5@<Q1> Human *)a3@<X8> atTimestamp:(float64_t)a6@<D2> withImageResolution:
+- (abpk::Human)_getTrackedHumanForHumans:(abpk:(double)humans@<D0> :(float64x2_t)a5@<Q1> Human *)a3@<X8> atTimestamp:(float64_t)timestamp@<D2> withImageResolution:
 {
-  if (*(a1 + 8) == *(a1 + 16))
+  if (*(self + 8) == *(self + 16))
   {
     v9 = *a2;
     if (*a2 != a2[1])
@@ -724,12 +724,12 @@ LABEL_55:
       do
       {
         v27 = v26[13];
-        *&a4 = abpk::Human::area(v26, *&a4);
-        *&a4 = *&a4 + v27;
-        if (*&a4 > v25)
+        *&humans = abpk::Human::area(v26, *&humans);
+        *&humans = *&humans + v27;
+        if (*&humans > v25)
         {
           v9 = v26;
-          v25 = *&a4;
+          v25 = *&humans;
         }
 
         v26 += 15;
@@ -750,33 +750,33 @@ LABEL_55:
 
     else
     {
-      v11 = a4;
-      a5.f64[1] = a6;
+      humansCopy = humans;
+      a5.f64[1] = timestamp;
       v12 = 3.4028e38;
       v37 = a5;
       do
       {
         memset(&buf, 0, sizeof(buf));
-        std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&buf, *(a1 + 8), *(a1 + 16), (*(a1 + 16) - *(a1 + 8)) >> 2);
+        std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&buf, *(self + 8), *(self + 16), (*(self + 16) - *(self + 8)) >> 2);
         v39 = 0;
         v40 = 0;
         v41 = 0;
-        std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v39, *(a1 + 32), *(a1 + 40), (*(a1 + 40) - *(a1 + 32)) >> 2);
+        std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v39, *(self + 32), *(self + 40), (*(self + 40) - *(self + 32)) >> 2);
         __p = 0;
         v43 = 0;
         v44 = 0;
-        std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&__p, *(a1 + 56), *(a1 + 64), (*(a1 + 64) - *(a1 + 56)) >> 3);
-        v13 = *(a1 + 96);
-        v45 = *(a1 + 80);
+        std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&__p, *(self + 56), *(self + 64), (*(self + 64) - *(self + 56)) >> 3);
+        v13 = *(self + 96);
+        v45 = *(self + 80);
         v46[0] = v13;
-        *(v46 + 12) = *(a1 + 108);
-        v14 = abpk::SkeletonJointFilter<float>::filter(&buf, *v10, (v10[1] - *v10) >> 2, v11);
+        *(v46 + 12) = *(self + 108);
+        v14 = abpk::SkeletonJointFilter<float>::filter(&buf, *v10, (v10[1] - *v10) >> 2, humansCopy);
         v15 = *v10;
         v16 = v10[1];
         v17 = v16 - *v10;
         if (v16 == *v10)
         {
-          a4 = 0.0;
+          humans = 0.0;
         }
 
         else
@@ -784,7 +784,7 @@ LABEL_55:
           v18 = 0;
           v19 = v17 >> 2;
           begin = v14->__begin_;
-          a4 = 0.0;
+          humans = 0.0;
           do
           {
             v21 = vcvt_f32_f64(vmulq_f64(v37, vcvtq_f64_f32(*v15)));
@@ -795,7 +795,7 @@ LABEL_55:
               if (((v23.i32[0] | v23.i32[1]) & 1) == 0)
               {
                 v24 = vsub_f32(v21, v22);
-                *&a4 = *&a4 + sqrtf(vaddv_f32(vmul_f32(v24, v24)));
+                *&humans = *&humans + sqrtf(vaddv_f32(vmul_f32(v24, v24)));
               }
             }
 
@@ -807,10 +807,10 @@ LABEL_55:
           while (v18 < v19);
         }
 
-        if (*&a4 <= v12)
+        if (*&humans <= v12)
         {
           v9 = v10;
-          v12 = *&a4;
+          v12 = *&humans;
         }
 
         if (__p)
@@ -838,16 +838,16 @@ LABEL_55:
       v10 = *a2;
     }
 
-    *&a4 = (4 * (((v10[1] - *v10) >> 1) + ((v10[1] - *v10) >> 3)));
-    if (v12 > *&a4)
+    *&humans = (4 * (((v10[1] - *v10) >> 1) + ((v10[1] - *v10) >> 3)));
+    if (v12 > *&humans)
     {
-      *(a1 + 16) = *(a1 + 8);
-      *(a1 + 144) = *(a1 + 136);
+      *(self + 16) = *(self + 8);
+      *(self + 144) = *(self + 136);
     }
   }
 
   v28 = v9[13];
-  v29 = abpk::Human::area(v9, *&a4);
+  v29 = abpk::Human::area(v9, *&humans);
   v30 = v29.f32[0] + v28;
   v31 = *a2;
   v32 = -2147500000.0;
@@ -883,12 +883,12 @@ LABEL_55:
       _os_log_impl(&dword_23EDDC000, v35, OS_LOG_TYPE_DEBUG, " Resetting tracking as new human found ", &buf, 2u);
     }
 
-    *(a1 + 16) = *(a1 + 8);
-    *(a1 + 144) = *(a1 + 136);
+    *(self + 16) = *(self + 8);
+    *(self + 144) = *(self + 136);
     v9 = v31;
   }
 
-  *(a1 + 648) = v9;
+  *(self + 648) = v9;
   return abpk::Human::Human(a3, v9);
 }
 

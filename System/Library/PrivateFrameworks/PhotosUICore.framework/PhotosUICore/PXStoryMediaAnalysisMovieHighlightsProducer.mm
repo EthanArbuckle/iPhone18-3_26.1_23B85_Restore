@@ -1,18 +1,18 @@
 @interface PXStoryMediaAnalysisMovieHighlightsProducer
 - (PXStoryMediaAnalysisMovieHighlightsProducer)init;
-- (PXStoryMediaAnalysisMovieHighlightsProducer)initWithStoryConfiguration:(id)a3;
-- (id)_requestMovieCurationForAssets:(id)a3 completionHandler:(id)a4;
-- (id)requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6;
-- (void)_requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6;
+- (PXStoryMediaAnalysisMovieHighlightsProducer)initWithStoryConfiguration:(id)configuration;
+- (id)_requestMovieCurationForAssets:(id)assets completionHandler:(id)handler;
+- (id)requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler;
+- (void)_requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryMediaAnalysisMovieHighlightsProducer
 
-- (id)_requestMovieCurationForAssets:(id)a3 completionHandler:(id)a4
+- (id)_requestMovieCurationForAssets:(id)assets completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v8 = os_signpost_id_make_with_pointer(self->_log, self);
   v9 = self->_log;
   v10 = v9;
@@ -22,30 +22,30 @@
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PXStoryMovieHighlightsMediaAnalysisRequest", "", buf, 2u);
   }
 
-  v11 = [v6 copy];
+  v11 = [assetsCopy copy];
   v12 = +[PXStorySettings sharedInstance];
-  v13 = [v12 allowOnDemandVideoAnalysis];
-  v14 = [v12 useBestHighlightTrim];
+  allowOnDemandVideoAnalysis = [v12 allowOnDemandVideoAnalysis];
+  useBestHighlightTrim = [v12 useBestHighlightTrim];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!self->_didProcessConfiguration)
   {
-    v46 = v13;
-    v16 = [(PXStoryConfiguration *)self->_storyConfiguration assetCollection];
+    v46 = allowOnDemandVideoAnalysis;
+    assetCollection = [(PXStoryConfiguration *)self->_storyConfiguration assetCollection];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v17 = v16;
+      v17 = assetCollection;
 
       if (!v17)
       {
 LABEL_11:
         self->_didProcessConfiguration = 1;
 
-        v13 = v46;
+        allowOnDemandVideoAnalysis = v46;
         goto LABEL_12;
       }
 
-      v16 = [MEMORY[0x1E69C1510] getCuratedAssetPlaybackTimeRangesForMemory:v17];
-      v18 = [v16 copy];
+      assetCollection = [MEMORY[0x1E69C1510] getCuratedAssetPlaybackTimeRangesForMemory:v17];
+      v18 = [assetCollection copy];
       customTimeRangeByAssetUUID = self->_customTimeRangeByAssetUUID;
       self->_customTimeRangeByAssetUUID = v18;
     }
@@ -62,11 +62,11 @@ LABEL_12:
   v20 = self->_customTimeRangeByAssetUUID;
   if (v20 && [(NSDictionary *)v20 count])
   {
-    v47 = v13;
-    v41 = v14;
+    v47 = allowOnDemandVideoAnalysis;
+    v41 = useBestHighlightTrim;
     v43 = v8;
-    v44 = v7;
-    v45 = v6;
+    v44 = handlerCopy;
+    v45 = assetsCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -89,8 +89,8 @@ LABEL_12:
           }
 
           v27 = self->_customTimeRangeByAssetUUID;
-          v28 = [*(*(&v56 + 1) + 8 * i) uuid];
-          v29 = [(NSDictionary *)v27 objectForKeyedSubscript:v28];
+          uuid = [*(*(&v56 + 1) + 8 * i) uuid];
+          v29 = [(NSDictionary *)v27 objectForKeyedSubscript:uuid];
 
           if (v29)
           {
@@ -123,15 +123,15 @@ LABEL_12:
       while (v23);
     }
 
-    v7 = v44;
-    v6 = v45;
+    handlerCopy = v44;
+    assetsCopy = v45;
     v11 = v42;
     v8 = v43;
-    v14 = v41;
-    v13 = v47;
+    useBestHighlightTrim = v41;
+    allowOnDemandVideoAnalysis = v47;
   }
 
-  v33 = v13 == 0;
+  v33 = allowOnDemandVideoAnalysis == 0;
   v34 = 46;
   mediaAnalyzer = self->_mediaAnalyzer;
   v48[0] = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@ LABEL_12:
     v34 = 47;
   }
 
-  if (v14)
+  if (useBestHighlightTrim)
   {
     v36 = v34 | 0x10;
   }
@@ -155,9 +155,9 @@ LABEL_12:
 
   v48[4] = self;
   v49 = v11;
-  v50 = v7;
+  v50 = handlerCopy;
   v51 = v8;
-  v37 = v7;
+  v37 = handlerCopy;
   v38 = v11;
   v39 = [(PXMediaAnalyzer *)mediaAnalyzer requestAnalysisForAssets:v38 options:v36 contexts:v15 resultHandler:v48];
 
@@ -279,11 +279,11 @@ void __96__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieCurationForA
   dispatch_async(v30, block);
 }
 
-- (void)_requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6
+- (void)_requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  assetsCopy = assets;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v12 = os_signpost_id_make_with_pointer(self->_log, self);
   v13 = self->_log;
   v14 = v13;
@@ -294,7 +294,7 @@ void __96__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieCurationForA
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PXStoryMovieHighlightsProduction", "", buf, 2u);
   }
 
-  v15 = [v9 count];
+  v15 = [assetsCopy count];
   batchSize = self->_batchSize;
   v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:batchSize];
   v18 = objc_alloc_init(MEMORY[0x1E696AE38]);
@@ -307,14 +307,14 @@ void __96__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieCurationForA
   aBlock[1] = 3221225472;
   aBlock[2] = __120__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieHighlightsForAssets_partialCollection_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7742F90;
-  v33 = self;
+  selfCopy = self;
   aBlock[4] = self;
   v20 = v19;
   v38 = v20;
   v41 = buf;
   v42 = v12;
   spid = v12;
-  v35 = v11;
+  v35 = handlerCopy;
   v40 = v35;
   v34 = v18;
   v39 = v34;
@@ -323,11 +323,11 @@ void __96__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieCurationForA
   {
     for (i = 0; i != v15; ++i)
     {
-      v23 = [v9 objectAtIndex:{i, spid}];
+      v23 = [assetsCopy objectAtIndex:{i, spid}];
       if (([v23 playbackStyle] - 3) <= 2)
       {
         ++*(v44 + 3);
-        v24 = [v10 movieHighlightsForDisplayAsset:v23];
+        v24 = [collectionCopy movieHighlightsForDisplayAsset:v23];
         if (v24)
         {
           [(PXStoryMovieHighlightsConcreteMutableCollection *)v20 setMovieHighlightCuration:v24 forDisplayAsset:v23];
@@ -359,7 +359,7 @@ void __96__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieCurationForA
     v27 = [(PXStoryProducerResult *)v25 initWithObject:v26];
 
     (*(v35 + 2))(v35, v27);
-    v28 = v33->_log;
+    v28 = selfCopy->_log;
     v29 = v28;
     if (v32 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
     {
@@ -442,11 +442,11 @@ void __120__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieHighlightsF
   }
 }
 
-- (id)requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6
+- (id)requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  assetsCopy = assets;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
   workQueue = self->_workQueue;
   v22[0] = MEMORY[0x1E69E9820];
@@ -455,14 +455,14 @@ void __120__PXStoryMediaAnalysisMovieHighlightsProducer__requestMovieHighlightsF
   v22[3] = &unk_1E7743080;
   v15 = v13;
   v23 = v15;
-  v24 = self;
-  v25 = v10;
-  v26 = v11;
-  v27 = v12;
-  v28 = a5;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  selfCopy = self;
+  v25 = assetsCopy;
+  v26 = collectionCopy;
+  v27 = handlerCopy;
+  optionsCopy = options;
+  v16 = handlerCopy;
+  v17 = collectionCopy;
+  v18 = assetsCopy;
   dispatch_async(workQueue, v22);
   v19 = v27;
   v20 = v15;
@@ -479,14 +479,14 @@ uint64_t __119__PXStoryMediaAnalysisMovieHighlightsProducer_requestMovieHighligh
   return [v2 resignCurrent];
 }
 
-- (PXStoryMediaAnalysisMovieHighlightsProducer)initWithStoryConfiguration:(id)a3
+- (PXStoryMediaAnalysisMovieHighlightsProducer)initWithStoryConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [(PXStoryMediaAnalysisMovieHighlightsProducer *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storyConfiguration, a3);
+    objc_storeStrong(&v6->_storyConfiguration, configuration);
     v7->_didProcessConfiguration = 0;
     customTimeRangeByAssetUUID = v7->_customTimeRangeByAssetUUID;
     v7->_customTimeRangeByAssetUUID = 0;

@@ -1,26 +1,26 @@
 @interface LNEnumMetadata
-+ (BOOL)ln_enumIdentifierIsSystem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)visibleForUse:(int64_t)a3;
-- (LNEnumMetadata)initWithCoder:(id)a3;
-- (LNEnumMetadata)initWithIdentifier:(id)a3 cases:(id)a4;
-- (LNEnumMetadata)initWithIdentifier:(id)a3 displayTypeName:(id)a4 cases:(id)a5 customIntentEnumTypeName:(id)a6;
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayRepresentation:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9 availabilityAnnotations:(id)a10 system:(id)a11 fullyQualifiedTypeName:(id)a12 assistantDefinedSchemas:(id)a13;
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayRepresentation:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9 availabilityAnnotations:(id)a10 system:(id)a11 fullyQualifiedTypeName:(id)a12 assistantDefinedSchemas:(id)a13 visibilityMetadata:(id)a14 allowedTargets:(id)a15;
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayTypeName:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9;
++ (BOOL)ln_enumIdentifierIsSystem:(id)system;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)visibleForUse:(int64_t)use;
+- (LNEnumMetadata)initWithCoder:(id)coder;
+- (LNEnumMetadata)initWithIdentifier:(id)identifier cases:(id)cases;
+- (LNEnumMetadata)initWithIdentifier:(id)identifier displayTypeName:(id)name cases:(id)cases customIntentEnumTypeName:(id)typeName;
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayRepresentation:(id)representation cases:(id)cases customIntentEnumTypeName:(id)typeName availabilityAnnotations:(id)self0 system:(id)self1 fullyQualifiedTypeName:(id)self2 assistantDefinedSchemas:(id)self3;
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayRepresentation:(id)representation cases:(id)cases customIntentEnumTypeName:(id)typeName availabilityAnnotations:(id)self0 system:(id)self1 fullyQualifiedTypeName:(id)self2 assistantDefinedSchemas:(id)self3 visibilityMetadata:(id)self4 allowedTargets:(id)self5;
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayTypeName:(id)typeName cases:(id)cases customIntentEnumTypeName:(id)enumTypeName;
 - (LNStaticDeferredLocalizedString)displayTypeName;
 - (NSNumber)isSystem;
 - (NSString)description;
-- (id)copyWithDescriptiveMetadataFromEnum:(id)a3 usingLibraryKey:(id)a4;
-- (id)mangledTypeNameForBundleIdentifier:(id)a3;
-- (id)metadataByAddingEffectiveBundleIdentifiers:(id)a3 mangledTypeNameByBundleIdentifier:(id)a4;
+- (id)copyWithDescriptiveMetadataFromEnum:(id)enum usingLibraryKey:(id)key;
+- (id)mangledTypeNameForBundleIdentifier:(id)identifier;
+- (id)metadataByAddingEffectiveBundleIdentifiers:(id)identifiers mangledTypeNameByBundleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEnumMetadata
 
-+ (BOOL)ln_enumIdentifierIsSystem:(id)a3
++ (BOOL)ln_enumIdentifierIsSystem:(id)system
 {
   v3 = sub_18F093B8C();
   v5 = static LNEnumMetadata.enumIdentifierIsSystem(enumIdentifier:)(v3, v4);
@@ -28,20 +28,20 @@
   return v5 & 1;
 }
 
-- (id)metadataByAddingEffectiveBundleIdentifiers:(id)a3 mangledTypeNameByBundleIdentifier:(id)a4
+- (id)metadataByAddingEffectiveBundleIdentifiers:(id)identifiers mangledTypeNameByBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v8 = [(LNEnumMetadata *)self copy];
-  v9 = [v8 effectiveBundleIdentifiers];
-  v10 = [v7 array];
+  effectiveBundleIdentifiers = [v8 effectiveBundleIdentifiers];
+  array = [identifiersCopy array];
 
-  v11 = [v9 if_orderedSetByAddingObjectsFromArray:v10];
+  v11 = [effectiveBundleIdentifiers if_orderedSetByAddingObjectsFromArray:array];
   v12 = v8[8];
   v8[8] = v11;
 
-  v13 = [v8 mangledTypeNameByBundleIdentifier];
-  v14 = [v13 if_dictionaryByAddingEntriesFromDictionary:v6];
+  mangledTypeNameByBundleIdentifier = [v8 mangledTypeNameByBundleIdentifier];
+  v14 = [mangledTypeNameByBundleIdentifier if_dictionaryByAddingEntriesFromDictionary:identifierCopy];
 
   v15 = v8[7];
   v8[7] = v14;
@@ -49,77 +49,77 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNEnumMetadata *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNEnumMetadata *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNEnumMetadata *)self displayRepresentation];
-  [v4 encodeObject:v6 forKey:@"displayRepresentation"];
+  displayRepresentation = [(LNEnumMetadata *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 
-  v7 = [(LNEnumMetadata *)self cases];
-  [v4 encodeObject:v7 forKey:@"cases"];
+  cases = [(LNEnumMetadata *)self cases];
+  [coderCopy encodeObject:cases forKey:@"cases"];
 
-  v8 = [(LNEnumMetadata *)self customIntentEnumTypeName];
-  [v4 encodeObject:v8 forKey:@"customIntentEnumTypeName"];
+  customIntentEnumTypeName = [(LNEnumMetadata *)self customIntentEnumTypeName];
+  [coderCopy encodeObject:customIntentEnumTypeName forKey:@"customIntentEnumTypeName"];
 
-  v9 = [(LNEnumMetadata *)self mangledTypeName];
-  [v4 encodeObject:v9 forKey:@"mangledTypeName"];
+  mangledTypeName = [(LNEnumMetadata *)self mangledTypeName];
+  [coderCopy encodeObject:mangledTypeName forKey:@"mangledTypeName"];
 
-  v10 = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
-  [v4 encodeObject:v10 forKey:@"mangledTypeNameByBundleIdentifier"];
+  mangledTypeNameByBundleIdentifier = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
+  [coderCopy encodeObject:mangledTypeNameByBundleIdentifier forKey:@"mangledTypeNameByBundleIdentifier"];
 
-  v11 = [(LNEnumMetadata *)self effectiveBundleIdentifiers];
-  [v4 encodeObject:v11 forKey:@"effectiveBundleIdentifiers"];
+  effectiveBundleIdentifiers = [(LNEnumMetadata *)self effectiveBundleIdentifiers];
+  [coderCopy encodeObject:effectiveBundleIdentifiers forKey:@"effectiveBundleIdentifiers"];
 
-  v12 = [(LNEnumMetadata *)self availabilityAnnotations];
-  [v4 encodeObject:v12 forKey:@"availabilityAnnotations"];
+  availabilityAnnotations = [(LNEnumMetadata *)self availabilityAnnotations];
+  [coderCopy encodeObject:availabilityAnnotations forKey:@"availabilityAnnotations"];
 
-  v13 = [(LNEnumMetadata *)self isSystem];
-  [v4 encodeObject:v13 forKey:@"system"];
+  isSystem = [(LNEnumMetadata *)self isSystem];
+  [coderCopy encodeObject:isSystem forKey:@"system"];
 
-  v14 = [(LNEnumMetadata *)self fullyQualifiedTypeName];
-  [v4 encodeObject:v14 forKey:@"fullyQualifiedTypeName"];
+  fullyQualifiedTypeName = [(LNEnumMetadata *)self fullyQualifiedTypeName];
+  [coderCopy encodeObject:fullyQualifiedTypeName forKey:@"fullyQualifiedTypeName"];
 
-  v15 = [(LNEnumMetadata *)self assistantDefinedSchemas];
-  [v4 encodeObject:v15 forKey:@"assistantDefinedSchemas"];
+  assistantDefinedSchemas = [(LNEnumMetadata *)self assistantDefinedSchemas];
+  [coderCopy encodeObject:assistantDefinedSchemas forKey:@"assistantDefinedSchemas"];
 
-  v16 = [(LNEnumMetadata *)self visibilityMetadata];
-  [v4 encodeObject:v16 forKey:@"visibilityMetadata"];
+  visibilityMetadata = [(LNEnumMetadata *)self visibilityMetadata];
+  [coderCopy encodeObject:visibilityMetadata forKey:@"visibilityMetadata"];
 
-  v17 = [(LNEnumMetadata *)self allowedTargets];
-  [v4 encodeObject:v17 forKey:@"allowedTargets"];
+  allowedTargets = [(LNEnumMetadata *)self allowedTargets];
+  [coderCopy encodeObject:allowedTargets forKey:@"allowedTargets"];
 }
 
-- (LNEnumMetadata)initWithCoder:(id)a3
+- (LNEnumMetadata)initWithCoder:(id)coder
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
   v6 = MEMORY[0x1E695DFD8];
   v55[0] = objc_opt_class();
   v55[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
   v8 = [v6 setWithArray:v7];
-  v52 = [v3 decodeObjectOfClasses:v8 forKey:@"cases"];
+  v52 = [coderCopy decodeObjectOfClasses:v8 forKey:@"cases"];
 
-  v53 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
+  v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"effectiveBundleIdentifiers"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"effectiveBundleIdentifiers"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v54 = [v3 decodeObjectOfClasses:v15 forKey:@"mangledTypeNameByBundleIdentifier"];
+  v54 = [coderCopy decodeObjectOfClasses:v15 forKey:@"mangledTypeNameByBundleIdentifier"];
 
   v16 = 0;
   if (!v4 || !v5)
   {
-    v38 = self;
+    selfCopy4 = self;
     v17 = v52;
     v19 = v53;
     v18 = v54;
@@ -136,7 +136,7 @@
   v19 = v53;
   if (!v53 || !v54)
   {
-    v38 = self;
+    selfCopy4 = self;
     goto LABEL_12;
   }
 
@@ -144,21 +144,21 @@
   {
     v49 = v5;
     v48 = v4;
-    v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"customIntentEnumTypeName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customIntentEnumTypeName"];
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v21 setWithObjects:{v22, v23, objc_opt_class(), 0}];
-    v47 = [v3 decodeObjectOfClasses:v24 forKey:@"availabilityAnnotations"];
+    v47 = [coderCopy decodeObjectOfClasses:v24 forKey:@"availabilityAnnotations"];
 
-    v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"system"];
-    v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"fullyQualifiedTypeName"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"system"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullyQualifiedTypeName"];
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v3 decodeObjectOfClasses:v29 forKey:@"assistantDefinedSchemas"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"assistantDefinedSchemas"];
 
-    v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"visibilityMetadata"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visibilityMetadata"];
     if (!v31)
     {
       v31 = [[LNVisibilityMetadata alloc] initWithIsDiscoverable:1 assistantOnly:0];
@@ -167,7 +167,7 @@
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v3 decodeObjectOfClasses:v34 forKey:@"allowedTargets"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"allowedTargets"];
 
     v43 = v26;
     v44 = v30;
@@ -178,20 +178,20 @@
     v42 = v25;
     v41 = v20;
     v5 = v49;
-    v37 = self;
+    selfCopy3 = self;
     v51 = v20;
     v19 = v53;
-    v38 = [(LNEnumMetadata *)v37 initWithIdentifier:v48 mangledTypeName:v53 mangledTypeNameByBundleIdentifier:v54 effectiveBundleIdentifiers:v12 displayRepresentation:v49 cases:v52 customIntentEnumTypeName:v41 availabilityAnnotations:v47 system:v42 fullyQualifiedTypeName:v43 assistantDefinedSchemas:v44 visibilityMetadata:v31 allowedTargets:v35];
+    selfCopy4 = [(LNEnumMetadata *)selfCopy3 initWithIdentifier:v48 mangledTypeName:v53 mangledTypeNameByBundleIdentifier:v54 effectiveBundleIdentifiers:v12 displayRepresentation:v49 cases:v52 customIntentEnumTypeName:v41 availabilityAnnotations:v47 system:v42 fullyQualifiedTypeName:v43 assistantDefinedSchemas:v44 visibilityMetadata:v31 allowedTargets:v35];
 
     v17 = v52;
     v18 = v54;
-    v16 = v38;
+    v16 = selfCopy4;
   }
 
   else
   {
 LABEL_10:
-    v38 = self;
+    selfCopy4 = self;
     v19 = v53;
   }
 
@@ -201,24 +201,24 @@ LABEL_12:
   return v16;
 }
 
-- (id)copyWithDescriptiveMetadataFromEnum:(id)a3 usingLibraryKey:(id)a4
+- (id)copyWithDescriptiveMetadataFromEnum:(id)enum usingLibraryKey:(id)key
 {
-  v5 = a3;
+  enumCopy = enum;
   v6 = [(LNEnumMetadata *)self copy];
-  v7 = [v6[3] name];
-  v8 = [v7 key];
+  name = [v6[3] name];
+  v8 = [name key];
   v9 = [v8 length];
 
   if (!v9)
   {
     v10 = [LNTypeDisplayRepresentation alloc];
-    v11 = [v5 displayRepresentation];
-    v12 = [v11 name];
-    v13 = [(LNEnumMetadata *)self displayRepresentation];
-    v14 = [v13 numericFormat];
-    v15 = [(LNEnumMetadata *)self displayRepresentation];
-    v16 = [v15 synonyms];
-    v17 = [(LNTypeDisplayRepresentation *)v10 initWithName:v12 numericFormat:v14 synonyms:v16];
+    displayRepresentation = [enumCopy displayRepresentation];
+    name2 = [displayRepresentation name];
+    displayRepresentation2 = [(LNEnumMetadata *)self displayRepresentation];
+    numericFormat = [displayRepresentation2 numericFormat];
+    displayRepresentation3 = [(LNEnumMetadata *)self displayRepresentation];
+    synonyms = [displayRepresentation3 synonyms];
+    v17 = [(LNTypeDisplayRepresentation *)v10 initWithName:name2 numericFormat:numericFormat synonyms:synonyms];
     v18 = v6[3];
     v6[3] = v17;
   }
@@ -226,25 +226,25 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
 LABEL_72:
 
       goto LABEL_73;
     }
 
-    v7 = [(LNEnumMetadata *)self identifier];
-    v8 = [(LNEnumMetadata *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNEnumMetadata *)self identifier];
+    identifier2 = [(LNEnumMetadata *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -252,7 +252,7 @@ LABEL_72:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -264,17 +264,17 @@ LABEL_72:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(assistantDefinedSchemas3) = 0;
 LABEL_71:
 
         goto LABEL_72;
       }
     }
 
-    v16 = [(LNEnumMetadata *)self displayRepresentation];
-    v17 = [(LNEnumMetadata *)v6 displayRepresentation];
-    v14 = v16;
-    v18 = v17;
+    displayRepresentation = [(LNEnumMetadata *)self displayRepresentation];
+    displayRepresentation2 = [(LNEnumMetadata *)v6 displayRepresentation];
+    v14 = displayRepresentation;
+    v18 = displayRepresentation2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -282,7 +282,7 @@ LABEL_71:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
       v19 = v18;
       v20 = v14;
       if (!v14 || !v18)
@@ -295,38 +295,38 @@ LABEL_71:
       if (!v21)
       {
 LABEL_27:
-        LOBYTE(v12) = 0;
+        LOBYTE(assistantDefinedSchemas3) = 0;
 LABEL_70:
 
         goto LABEL_71;
       }
     }
 
-    v22 = [(LNEnumMetadata *)self cases];
-    v23 = [(LNEnumMetadata *)v6 cases];
+    cases = [(LNEnumMetadata *)self cases];
+    cases2 = [(LNEnumMetadata *)v6 cases];
 
-    if (v22 != v23)
+    if (cases != cases2)
     {
-      v24 = [(LNEnumMetadata *)self cases];
-      if (!v24)
+      cases3 = [(LNEnumMetadata *)self cases];
+      if (!cases3)
       {
         goto LABEL_27;
       }
 
-      v25 = v24;
-      v26 = [(LNEnumMetadata *)v6 cases];
+      v25 = cases3;
+      cases4 = [(LNEnumMetadata *)v6 cases];
 
-      if (!v26)
+      if (!cases4)
       {
         goto LABEL_27;
       }
 
       v27 = MEMORY[0x1E695DFD8];
-      v81 = [(LNEnumMetadata *)self cases];
-      v28 = [v27 setWithArray:v81];
+      cases5 = [(LNEnumMetadata *)self cases];
+      v28 = [v27 setWithArray:cases5];
       v29 = MEMORY[0x1E695DFD8];
-      v30 = [(LNEnumMetadata *)v6 cases];
-      v31 = [v29 setWithArray:v30];
+      cases6 = [(LNEnumMetadata *)v6 cases];
+      v31 = [v29 setWithArray:cases6];
       v79 = [v28 isEqualToSet:v31];
 
       if (!v79)
@@ -335,10 +335,10 @@ LABEL_70:
       }
     }
 
-    v32 = [(LNEnumMetadata *)self customIntentEnumTypeName];
-    v33 = [(LNEnumMetadata *)v6 customIntentEnumTypeName];
-    v20 = v32;
-    v34 = v33;
+    customIntentEnumTypeName = [(LNEnumMetadata *)self customIntentEnumTypeName];
+    customIntentEnumTypeName2 = [(LNEnumMetadata *)v6 customIntentEnumTypeName];
+    v20 = customIntentEnumTypeName;
+    v34 = customIntentEnumTypeName2;
     v19 = v34;
     v82 = v20;
     if (v20 == v34)
@@ -347,26 +347,26 @@ LABEL_70:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
       v35 = v34;
       if (!v20 || !v34)
       {
         goto LABEL_68;
       }
 
-      LODWORD(v12) = [v20 isEqualToString:v34];
+      LODWORD(assistantDefinedSchemas3) = [v20 isEqualToString:v34];
 
-      if (!v12)
+      if (!assistantDefinedSchemas3)
       {
         goto LABEL_69;
       }
     }
 
     v80 = v19;
-    v36 = [(LNEnumMetadata *)self availabilityAnnotations];
-    v37 = [(LNEnumMetadata *)v6 availabilityAnnotations];
-    v38 = v36;
-    v39 = v37;
+    availabilityAnnotations = [(LNEnumMetadata *)self availabilityAnnotations];
+    availabilityAnnotations2 = [(LNEnumMetadata *)v6 availabilityAnnotations];
+    v38 = availabilityAnnotations;
+    v39 = availabilityAnnotations2;
     v77 = v39;
     v78 = v38;
     if (v38 == v39)
@@ -375,7 +375,7 @@ LABEL_70:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
       if (!v38)
       {
         v40 = v39;
@@ -396,7 +396,7 @@ LABEL_66:
 
       if (!v41)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(assistantDefinedSchemas3) = 0;
         v19 = v80;
 LABEL_67:
         v35 = v77;
@@ -410,14 +410,14 @@ LABEL_69:
       }
     }
 
-    v42 = [(LNEnumMetadata *)self fullyQualifiedTypeName];
-    v43 = [(LNEnumMetadata *)v6 fullyQualifiedTypeName];
-    v38 = v42;
-    v44 = v43;
+    fullyQualifiedTypeName = [(LNEnumMetadata *)self fullyQualifiedTypeName];
+    fullyQualifiedTypeName2 = [(LNEnumMetadata *)v6 fullyQualifiedTypeName];
+    v38 = fullyQualifiedTypeName;
+    v44 = fullyQualifiedTypeName2;
     v45 = v44;
     if (v38 != v44)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(assistantDefinedSchemas3) = 0;
       v76 = v38;
       v46 = v44;
       if (v38)
@@ -435,13 +435,13 @@ LABEL_69:
           }
 
 LABEL_41:
-          v49 = [(LNEnumMetadata *)self assistantDefinedSchemas];
-          v50 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
+          assistantDefinedSchemas = [(LNEnumMetadata *)self assistantDefinedSchemas];
+          assistantDefinedSchemas2 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
 
-          if (v49 != v50)
+          if (assistantDefinedSchemas != assistantDefinedSchemas2)
           {
-            v12 = [(LNEnumMetadata *)self assistantDefinedSchemas];
-            if (!v12)
+            assistantDefinedSchemas3 = [(LNEnumMetadata *)self assistantDefinedSchemas];
+            if (!assistantDefinedSchemas3)
             {
 LABEL_51:
               v19 = v80;
@@ -449,33 +449,33 @@ LABEL_51:
               goto LABEL_66;
             }
 
-            v51 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
+            assistantDefinedSchemas4 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
 
-            if (!v51)
+            if (!assistantDefinedSchemas4)
             {
               goto LABEL_50;
             }
 
             v52 = MEMORY[0x1E695DFD8];
-            v73 = [(LNEnumMetadata *)self assistantDefinedSchemas];
-            v53 = [v52 setWithArray:v73];
+            assistantDefinedSchemas5 = [(LNEnumMetadata *)self assistantDefinedSchemas];
+            v53 = [v52 setWithArray:assistantDefinedSchemas5];
             v54 = MEMORY[0x1E695DFD8];
-            v69 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
-            v55 = [v54 setWithArray:v69];
+            assistantDefinedSchemas6 = [(LNEnumMetadata *)v6 assistantDefinedSchemas];
+            v55 = [v54 setWithArray:assistantDefinedSchemas6];
             v71 = [v53 isEqualToSet:v55];
 
             if (!v71)
             {
 LABEL_50:
-              LOBYTE(v12) = 0;
+              LOBYTE(assistantDefinedSchemas3) = 0;
               goto LABEL_51;
             }
           }
 
-          v56 = [(LNEnumMetadata *)self visibilityMetadata];
-          v57 = [(LNEnumMetadata *)v6 visibilityMetadata];
-          v58 = v56;
-          v59 = v57;
+          visibilityMetadata = [(LNEnumMetadata *)self visibilityMetadata];
+          visibilityMetadata2 = [(LNEnumMetadata *)v6 visibilityMetadata];
+          v58 = visibilityMetadata;
+          v59 = visibilityMetadata2;
           v72 = v59;
           v74 = v58;
           v76 = v38;
@@ -485,7 +485,7 @@ LABEL_50:
 
           else
           {
-            LOBYTE(v12) = 0;
+            LOBYTE(assistantDefinedSchemas3) = 0;
             if (!v58)
             {
               v60 = v59;
@@ -508,7 +508,7 @@ LABEL_63:
 
             if (!v62)
             {
-              LOBYTE(v12) = 0;
+              LOBYTE(assistantDefinedSchemas3) = 0;
               v19 = v80;
 LABEL_64:
               v38 = v74;
@@ -518,25 +518,25 @@ LABEL_64:
             }
           }
 
-          v63 = [(LNEnumMetadata *)self allowedTargets];
-          v64 = [(LNEnumMetadata *)v6 allowedTargets];
-          v65 = v63;
-          v66 = v64;
+          allowedTargets = [(LNEnumMetadata *)self allowedTargets];
+          allowedTargets2 = [(LNEnumMetadata *)v6 allowedTargets];
+          v65 = allowedTargets;
+          v66 = allowedTargets2;
           v70 = v66;
           if (v65 == v66)
           {
-            LOBYTE(v12) = 1;
+            LOBYTE(assistantDefinedSchemas3) = 1;
           }
 
           else
           {
-            LOBYTE(v12) = 0;
+            LOBYTE(assistantDefinedSchemas3) = 0;
             if (v65)
             {
               v19 = v80;
               if (v66)
               {
-                LOBYTE(v12) = [v65 isEqualToArray:v66];
+                LOBYTE(assistantDefinedSchemas3) = [v65 isEqualToArray:v66];
               }
 
               goto LABEL_61;
@@ -570,10 +570,10 @@ LABEL_65:
     goto LABEL_41;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(assistantDefinedSchemas3) = 1;
 LABEL_73:
 
-  return v12;
+  return assistantDefinedSchemas3;
 }
 
 - (unint64_t)hash
@@ -588,20 +588,20 @@ LABEL_73:
   v18 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v16 = NSStringFromClass(v3);
-  v14 = [(LNEnumMetadata *)self displayRepresentation];
-  v4 = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
-  v20 = [(LNEnumMetadata *)self effectiveBundleIdentifiers];
-  v19 = [v20 array];
-  v17 = [v19 valueForKeyPath:@"description"];
+  displayRepresentation = [(LNEnumMetadata *)self displayRepresentation];
+  mangledTypeNameByBundleIdentifier = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
+  effectiveBundleIdentifiers = [(LNEnumMetadata *)self effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v17 = [array valueForKeyPath:@"description"];
   v5 = [v17 componentsJoinedByString:{@", "}];
-  v15 = [(LNEnumMetadata *)self allowedTargets];
-  v6 = [v15 valueForKeyPath:@"description"];
+  allowedTargets = [(LNEnumMetadata *)self allowedTargets];
+  v6 = [allowedTargets valueForKeyPath:@"description"];
   v7 = [v6 componentsJoinedByString:{@", "}];
-  v8 = [(LNEnumMetadata *)self availabilityAnnotations];
-  v9 = [(LNEnumMetadata *)self fullyQualifiedTypeName];
-  v10 = [(LNEnumMetadata *)self assistantDefinedSchemas];
-  v11 = [(LNEnumMetadata *)self visibilityMetadata];
-  v12 = [v18 stringWithFormat:@"<%@: %p, displayRepresentation: %@, mangledTypeNameByBundleIdentifier: %@, effectiveBundleIdentifiers: [%@], allowedTargets: [%@], availabilityAnnotations: %@, fullyQualifiedTypeName: %@, assistantDefinedSchemas: %@, visibility: %@>", v16, self, v14, v4, v5, v7, v8, v9, v10, v11];
+  availabilityAnnotations = [(LNEnumMetadata *)self availabilityAnnotations];
+  fullyQualifiedTypeName = [(LNEnumMetadata *)self fullyQualifiedTypeName];
+  assistantDefinedSchemas = [(LNEnumMetadata *)self assistantDefinedSchemas];
+  visibilityMetadata = [(LNEnumMetadata *)self visibilityMetadata];
+  v12 = [v18 stringWithFormat:@"<%@: %p, displayRepresentation: %@, mangledTypeNameByBundleIdentifier: %@, effectiveBundleIdentifiers: [%@], allowedTargets: [%@], availabilityAnnotations: %@, fullyQualifiedTypeName: %@, assistantDefinedSchemas: %@, visibility: %@>", v16, self, displayRepresentation, mangledTypeNameByBundleIdentifier, v5, v7, availabilityAnnotations, fullyQualifiedTypeName, assistantDefinedSchemas, visibilityMetadata];
 
   return v12;
 }
@@ -617,68 +617,68 @@ LABEL_73:
   else
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(LNEnumMetadata *)self identifier];
-    v3 = [v4 numberWithBool:{+[LNEnumMetadata ln_enumIdentifierIsSystem:](LNEnumMetadata, "ln_enumIdentifierIsSystem:", v5)}];
+    identifier = [(LNEnumMetadata *)self identifier];
+    v3 = [v4 numberWithBool:{+[LNEnumMetadata ln_enumIdentifierIsSystem:](LNEnumMetadata, "ln_enumIdentifierIsSystem:", identifier)}];
   }
 
   return v3;
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
-  v4 = [(LNEnumMetadata *)self visibilityMetadata];
-  LOBYTE(a3) = [v4 visibleForUse:a3];
+  visibilityMetadata = [(LNEnumMetadata *)self visibilityMetadata];
+  LOBYTE(use) = [visibilityMetadata visibleForUse:use];
 
-  return a3;
+  return use;
 }
 
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayRepresentation:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9 availabilityAnnotations:(id)a10 system:(id)a11 fullyQualifiedTypeName:(id)a12 assistantDefinedSchemas:(id)a13 visibilityMetadata:(id)a14 allowedTargets:(id)a15
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayRepresentation:(id)representation cases:(id)cases customIntentEnumTypeName:(id)typeName availabilityAnnotations:(id)self0 system:(id)self1 fullyQualifiedTypeName:(id)self2 assistantDefinedSchemas:(id)self3 visibilityMetadata:(id)self4 allowedTargets:(id)self5
 {
-  v20 = a3;
-  v71 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v72 = a8;
-  v24 = a9;
-  v25 = a10;
-  v69 = a11;
-  v67 = a12;
-  v66 = a13;
-  v26 = a14;
-  v65 = a15;
-  v70 = v20;
-  if (!v20)
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifiersCopy = identifiers;
+  representationCopy = representation;
+  casesCopy = cases;
+  typeNameCopy = typeName;
+  annotationsCopy = annotations;
+  systemCopy = system;
+  qualifiedTypeNameCopy = qualifiedTypeName;
+  schemasCopy = schemas;
+  metadataCopy = metadata;
+  targetsCopy = targets;
+  v70 = identifierCopy;
+  if (!identifierCopy)
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v27 = v23;
-  if (!v23)
+  v27 = representationCopy;
+  if (!representationCopy)
   {
-    v60 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v60 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"displayRepresentation"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"displayRepresentation"}];
   }
 
-  v28 = v21;
-  if (!v71)
+  v28 = bundleIdentifierCopy;
+  if (!nameCopy)
   {
-    v61 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v61 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"mangledTypeName"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"mangledTypeName"}];
   }
 
-  if (!v72)
+  if (!casesCopy)
   {
-    v62 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v62 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"cases"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"cases"}];
   }
 
   v29 = v28;
-  if (!v26)
+  if (!metadataCopy)
   {
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v63 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"visibilityMetadata"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"visibilityMetadata"}];
   }
 
   v73.receiver = self;
@@ -694,15 +694,15 @@ LABEL_73:
     displayRepresentation = v30->_displayRepresentation;
     v30->_displayRepresentation = v33;
 
-    v35 = [v72 copy];
+    v35 = [casesCopy copy];
     cases = v30->_cases;
     v30->_cases = v35;
 
-    v37 = [v24 copy];
+    v37 = [typeNameCopy copy];
     customIntentEnumTypeName = v30->_customIntentEnumTypeName;
     v30->_customIntentEnumTypeName = v37;
 
-    v39 = [v71 copy];
+    v39 = [nameCopy copy];
     mangledTypeName = v30->_mangledTypeName;
     v30->_mangledTypeName = v39;
 
@@ -710,31 +710,31 @@ LABEL_73:
     mangledTypeNameByBundleIdentifier = v30->_mangledTypeNameByBundleIdentifier;
     v30->_mangledTypeNameByBundleIdentifier = v41;
 
-    v43 = [v22 copy];
+    v43 = [identifiersCopy copy];
     effectiveBundleIdentifiers = v30->_effectiveBundleIdentifiers;
     v30->_effectiveBundleIdentifiers = v43;
 
-    v45 = [v25 copy];
+    v45 = [annotationsCopy copy];
     availabilityAnnotations = v30->_availabilityAnnotations;
     v30->_availabilityAnnotations = v45;
 
-    v47 = [v69 copy];
+    v47 = [systemCopy copy];
     system = v30->_system;
     v30->_system = v47;
 
-    v49 = [v67 copy];
+    v49 = [qualifiedTypeNameCopy copy];
     fullyQualifiedTypeName = v30->_fullyQualifiedTypeName;
     v30->_fullyQualifiedTypeName = v49;
 
-    v51 = [v66 copy];
+    v51 = [schemasCopy copy];
     assistantDefinedSchemas = v30->_assistantDefinedSchemas;
     v30->_assistantDefinedSchemas = v51;
 
-    v53 = [v26 copy];
+    v53 = [metadataCopy copy];
     visibilityMetadata = v30->_visibilityMetadata;
     v30->_visibilityMetadata = v53;
 
-    v55 = [v65 copy];
+    v55 = [targetsCopy copy];
     allowedTargets = v30->_allowedTargets;
     v30->_allowedTargets = v55;
 
@@ -744,95 +744,95 @@ LABEL_73:
   return v30;
 }
 
-- (id)mangledTypeNameForBundleIdentifier:(id)a3
+- (id)mangledTypeNameForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEnumMetadata.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
-  v6 = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  mangledTypeNameByBundleIdentifier = [(LNEnumMetadata *)self mangledTypeNameByBundleIdentifier];
+  v7 = [mangledTypeNameByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    mangledTypeName = v7;
   }
 
   else
   {
-    v9 = [(LNEnumMetadata *)self mangledTypeName];
+    mangledTypeName = [(LNEnumMetadata *)self mangledTypeName];
   }
 
-  v10 = v9;
+  v10 = mangledTypeName;
 
   return v10;
 }
 
-- (LNEnumMetadata)initWithIdentifier:(id)a3 cases:(id)a4
+- (LNEnumMetadata)initWithIdentifier:(id)identifier cases:(id)cases
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LNStaticDeferredLocalizedString alloc] initWithLocalizedKey:v7 bundleIdentifier:0 bundleURL:0 table:0];
-  v9 = [(LNEnumMetadata *)self initWithIdentifier:v7 displayTypeName:v8 cases:v6];
+  casesCopy = cases;
+  identifierCopy = identifier;
+  v8 = [[LNStaticDeferredLocalizedString alloc] initWithLocalizedKey:identifierCopy bundleIdentifier:0 bundleURL:0 table:0];
+  v9 = [(LNEnumMetadata *)self initWithIdentifier:identifierCopy displayTypeName:v8 cases:casesCopy];
 
   return v9;
 }
 
-- (LNEnumMetadata)initWithIdentifier:(id)a3 displayTypeName:(id)a4 cases:(id)a5 customIntentEnumTypeName:(id)a6
+- (LNEnumMetadata)initWithIdentifier:(id)identifier displayTypeName:(id)name cases:(id)cases customIntentEnumTypeName:(id)typeName
 {
   v10 = MEMORY[0x1E695DFB8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 orderedSet];
-  v16 = [(LNEnumMetadata *)self initWithIdentifier:v14 mangledTypeName:v14 mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:v15 displayTypeName:v13 cases:v12 customIntentEnumTypeName:v11];
+  typeNameCopy = typeName;
+  casesCopy = cases;
+  nameCopy = name;
+  identifierCopy = identifier;
+  orderedSet = [v10 orderedSet];
+  v16 = [(LNEnumMetadata *)self initWithIdentifier:identifierCopy mangledTypeName:identifierCopy mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:orderedSet displayTypeName:nameCopy cases:casesCopy customIntentEnumTypeName:typeNameCopy];
 
   return v16;
 }
 
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayTypeName:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayTypeName:(id)typeName cases:(id)cases customIntentEnumTypeName:(id)enumTypeName
 {
   v13 = MEMORY[0x1E695DFB8];
-  v14 = a9;
-  v15 = a8;
-  v16 = a7;
-  v17 = a3;
-  v18 = [v13 orderedSet];
-  v19 = [[LNTypeDisplayRepresentation alloc] initWithName:v16 numericFormat:0];
+  enumTypeNameCopy = enumTypeName;
+  casesCopy = cases;
+  typeNameCopy = typeName;
+  identifierCopy = identifier;
+  orderedSet = [v13 orderedSet];
+  v19 = [[LNTypeDisplayRepresentation alloc] initWithName:typeNameCopy numericFormat:0];
 
-  v20 = [(LNEnumMetadata *)self initWithIdentifier:v17 mangledTypeName:v17 mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:v18 displayRepresentation:v19 cases:v15 customIntentEnumTypeName:v14];
+  v20 = [(LNEnumMetadata *)self initWithIdentifier:identifierCopy mangledTypeName:identifierCopy mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:orderedSet displayRepresentation:v19 cases:casesCopy customIntentEnumTypeName:enumTypeNameCopy];
   return v20;
 }
 
-- (LNEnumMetadata)initWithIdentifier:(id)a3 mangledTypeName:(id)a4 mangledTypeNameByBundleIdentifier:(id)a5 effectiveBundleIdentifiers:(id)a6 displayRepresentation:(id)a7 cases:(id)a8 customIntentEnumTypeName:(id)a9 availabilityAnnotations:(id)a10 system:(id)a11 fullyQualifiedTypeName:(id)a12 assistantDefinedSchemas:(id)a13
+- (LNEnumMetadata)initWithIdentifier:(id)identifier mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers displayRepresentation:(id)representation cases:(id)cases customIntentEnumTypeName:(id)typeName availabilityAnnotations:(id)self0 system:(id)self1 fullyQualifiedTypeName:(id)self2 assistantDefinedSchemas:(id)self3
 {
-  v31 = a13;
-  v30 = a12;
-  v27 = a11;
-  v17 = a10;
-  v23 = a9;
-  v24 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v26 = a4;
-  v21 = a3;
+  schemasCopy = schemas;
+  qualifiedTypeNameCopy = qualifiedTypeName;
+  systemCopy = system;
+  annotationsCopy = annotations;
+  typeNameCopy = typeName;
+  casesCopy = cases;
+  representationCopy = representation;
+  identifiersCopy = identifiers;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
   v29 = [[LNVisibilityMetadata alloc] initWithIsDiscoverable:1 assistantOnly:0];
-  v33 = [(LNEnumMetadata *)self initWithIdentifier:v21 mangledTypeName:v26 mangledTypeNameByBundleIdentifier:v20 effectiveBundleIdentifiers:v19 displayRepresentation:v18 cases:v24 customIntentEnumTypeName:v23 availabilityAnnotations:v17 system:v27 fullyQualifiedTypeName:v30 assistantDefinedSchemas:v31 visibilityMetadata:v29];
+  v33 = [(LNEnumMetadata *)self initWithIdentifier:identifierCopy mangledTypeName:nameCopy mangledTypeNameByBundleIdentifier:bundleIdentifierCopy effectiveBundleIdentifiers:identifiersCopy displayRepresentation:representationCopy cases:casesCopy customIntentEnumTypeName:typeNameCopy availabilityAnnotations:annotationsCopy system:systemCopy fullyQualifiedTypeName:qualifiedTypeNameCopy assistantDefinedSchemas:schemasCopy visibilityMetadata:v29];
 
   return v33;
 }
 
 - (LNStaticDeferredLocalizedString)displayTypeName
 {
-  v2 = [(LNEnumMetadata *)self displayRepresentation];
-  v3 = [v2 name];
+  displayRepresentation = [(LNEnumMetadata *)self displayRepresentation];
+  name = [displayRepresentation name];
 
-  return v3;
+  return name;
 }
 
 @end

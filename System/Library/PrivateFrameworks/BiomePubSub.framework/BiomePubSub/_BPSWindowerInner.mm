@@ -1,25 +1,25 @@
 @interface _BPSWindowerInner
-- (_BPSWindowerInner)initWithDownstream:(id)a3 key:(id)a4 assigner:(id)a5;
+- (_BPSWindowerInner)initWithDownstream:(id)downstream key:(id)key assigner:(id)assigner;
 - (id)upstreamSubscriptions;
-- (int64_t)receiveInput:(id)a3;
-- (int64_t)receiveInput:(id)a3 key:(id)a4 identifier:(id)a5;
+- (int64_t)receiveInput:(id)input;
+- (int64_t)receiveInput:(id)input key:(id)key identifier:(id)identifier;
 - (void)cancel;
-- (void)cancelWithKey:(id)a3 identifier:(id)a4;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveCompletion:(id)a3 key:(id)a4 identifier:(id)a5;
-- (void)receiveSubscription:(id)a3;
-- (void)receiveSubscription:(id)a3 key:(id)a4 identifier:(id)a5;
-- (void)requestDemand:(int64_t)a3;
-- (void)requestDemand:(int64_t)a3 key:(id)a4 identifier:(id)a5;
+- (void)cancelWithKey:(id)key identifier:(id)identifier;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveCompletion:(id)completion key:(id)key identifier:(id)identifier;
+- (void)receiveSubscription:(id)subscription;
+- (void)receiveSubscription:(id)subscription key:(id)key identifier:(id)identifier;
+- (void)requestDemand:(int64_t)demand;
+- (void)requestDemand:(int64_t)demand key:(id)key identifier:(id)identifier;
 @end
 
 @implementation _BPSWindowerInner
 
-- (_BPSWindowerInner)initWithDownstream:(id)a3 key:(id)a4 assigner:(id)a5
+- (_BPSWindowerInner)initWithDownstream:(id)downstream key:(id)key assigner:(id)assigner
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  downstreamCopy = downstream;
+  keyCopy = key;
+  assignerCopy = assigner;
   v30.receiver = self;
   v30.super_class = _BPSWindowerInner;
   v12 = [(_BPSWindowerInner *)&v30 init];
@@ -27,12 +27,12 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_downstream, a3);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_downstream, downstream);
+    v14 = _Block_copy(keyCopy);
     key = v13->_key;
     v13->_key = v14;
 
-    objc_storeStrong(&v13->_assigner, a5);
+    objc_storeStrong(&v13->_assigner, assigner);
     v16 = [[BPSSubscriptionStatus alloc] initWithState:0 subscription:0];
     status = v13->_status;
     v13->_status = v16;
@@ -66,15 +66,15 @@
   return v13;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]== 1)
+  completionCopy = completion;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v32 = v4;
+    v32 = completionCopy;
     v6 = MEMORY[0x1E695E0F0];
     v38 = [MEMORY[0x1E695E0F0] mutableCopy];
     v37 = [v6 mutableCopy];
@@ -82,7 +82,7 @@
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v5->_windowsStatus;
+    obj = selfCopy->_windowsStatus;
     v35 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v35)
     {
@@ -103,7 +103,7 @@
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v9 = [(NSMutableDictionary *)v5->_windowsStatus objectForKeyedSubscript:v8];
+          v9 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:v8];
           v10 = [v9 countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v10)
           {
@@ -119,11 +119,11 @@
                 }
 
                 v14 = *(*(&v39 + 1) + 8 * i);
-                v15 = [(NSMutableDictionary *)v5->_windows objectForKeyedSubscript:v8];
+                v15 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:v8];
                 v16 = [v15 objectForKeyedSubscript:v14];
                 [v38 addObject:v16];
 
-                v17 = [(NSMutableDictionary *)v5->_windowsStatus objectForKeyedSubscript:v8];
+                v17 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:v8];
                 v18 = [v17 objectForKeyedSubscript:v14];
                 [v37 addObject:v18];
               }
@@ -144,22 +144,22 @@
       while (v35);
     }
 
-    v4 = v32;
+    completionCopy = v32;
     if ([v38 count])
     {
       v19 = 0;
       do
       {
         v20 = [v37 objectAtIndexedSubscript:v19];
-        v21 = [v20 state];
+        state = [v20 state];
 
-        if (v21 == 1)
+        if (state == 1)
         {
-          os_unfair_lock_unlock(&v5->_lock);
+          os_unfair_lock_unlock(&selfCopy->_lock);
           v22 = [v38 objectAtIndexedSubscript:v19];
           [v22 receiveCompletion:v32];
 
-          os_unfair_lock_lock(&v5->_lock);
+          os_unfair_lock_lock(&selfCopy->_lock);
           v23 = [v37 objectAtIndexedSubscript:v19];
           [v23 setState:2];
 
@@ -173,111 +173,111 @@
       while ([v38 count] > v19);
     }
 
-    [(BPSSubscriptionStatus *)v5->_status setState:2];
-    [(BPSSubscriptionStatus *)v5->_status setSubscription:0];
-    [(NSMutableDictionary *)v5->_windows removeAllObjects];
-    [(NSMutableDictionary *)v5->_windowsDemand removeAllObjects];
-    [(NSMutableDictionary *)v5->_windowsBuffer removeAllObjects];
-    [(NSMutableDictionary *)v5->_windowsStatus removeAllObjects];
-    v25 = [(_BPSWindowerInner *)v5 downstream];
-    v26 = [v32 state];
-    if (v26 == 1)
+    [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+    [(BPSSubscriptionStatus *)selfCopy->_status setSubscription:0];
+    [(NSMutableDictionary *)selfCopy->_windows removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsDemand removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsBuffer removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsStatus removeAllObjects];
+    downstream = [(_BPSWindowerInner *)selfCopy downstream];
+    state2 = [v32 state];
+    if (state2 == 1)
     {
-      v29 = [v32 error];
-      [(NSMutableArray *)v5->_buffer removeAllObjects];
-      os_unfair_lock_unlock(&v5->_lock);
-      v30 = [BPSCompletion failureWithError:v29];
-      [v25 receiveCompletion:v30];
+      error = [v32 error];
+      [(NSMutableArray *)selfCopy->_buffer removeAllObjects];
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      v30 = [BPSCompletion failureWithError:error];
+      [downstream receiveCompletion:v30];
     }
 
     else
     {
-      if (v26)
+      if (state2)
       {
 LABEL_30:
 
         goto LABEL_31;
       }
 
-      if (v5->_demand >= 1)
+      if (selfCopy->_demand >= 1)
       {
         do
         {
-          if (![(NSMutableArray *)v5->_buffer count])
+          if (![(NSMutableArray *)selfCopy->_buffer count])
           {
             break;
           }
 
-          --v5->_demand;
-          v27 = [(NSMutableArray *)v5->_buffer objectAtIndexedSubscript:0];
-          [(NSMutableArray *)v5->_buffer removeObjectAtIndex:0];
-          os_unfair_lock_unlock(&v5->_lock);
-          v28 = [v25 receiveInput:v27];
-          os_unfair_lock_lock(&v5->_lock);
-          v5->_demand += v28;
+          --selfCopy->_demand;
+          v27 = [(NSMutableArray *)selfCopy->_buffer objectAtIndexedSubscript:0];
+          [(NSMutableArray *)selfCopy->_buffer removeObjectAtIndex:0];
+          os_unfair_lock_unlock(&selfCopy->_lock);
+          v28 = [downstream receiveInput:v27];
+          os_unfair_lock_lock(&selfCopy->_lock);
+          selfCopy->_demand += v28;
         }
 
-        while (v5->_demand > 0);
+        while (selfCopy->_demand > 0);
       }
 
-      os_unfair_lock_unlock(&v5->_lock);
-      v29 = +[BPSCompletion success];
-      [v25 receiveCompletion:v29];
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      error = +[BPSCompletion success];
+      [downstream receiveCompletion:error];
     }
 
     goto LABEL_30;
   }
 
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 LABEL_31:
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v67 = v4;
-  v6 = (*(v5->_key + 2))();
+  inputCopy = input;
+  selfCopy = self;
+  v67 = inputCopy;
+  v6 = (*(selfCopy->_key + 2))();
   v7 = [v6 copyWithZone:0];
 
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]== 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v8 = [(NSMutableDictionary *)v5->_windows objectForKeyedSubscript:v7];
+    v8 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:v7];
 
     v9 = &OBJC_IVAR____BPSRemoveDuplicatesInner__last;
     v10 = &OBJC_IVAR____BPSRemoveDuplicatesInner__last;
     if (v8)
     {
-      v11 = [(NSMutableDictionary *)v5->_windows objectForKeyedSubscript:v7];
-      v12 = [v11 allValues];
+      v11 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:v7];
+      allValues = [v11 allValues];
     }
 
     else
     {
       v13 = MEMORY[0x1E695E0F8];
       v14 = [MEMORY[0x1E695E0F8] mutableCopy];
-      [(NSMutableDictionary *)v5->_windows setObject:v14 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)selfCopy->_windows setObject:v14 forKeyedSubscript:v7];
 
       v15 = [v13 mutableCopy];
-      [(NSMutableDictionary *)v5->_windowsDemand setObject:v15 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)selfCopy->_windowsDemand setObject:v15 forKeyedSubscript:v7];
 
       v16 = [v13 mutableCopy];
-      [(NSMutableDictionary *)v5->_windowsBuffer setObject:v16 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)selfCopy->_windowsBuffer setObject:v16 forKeyedSubscript:v7];
 
       v11 = [v13 mutableCopy];
-      [(NSMutableDictionary *)v5->_windowsStatus setObject:v11 forKeyedSubscript:v7];
-      v12 = MEMORY[0x1E695E0F0];
+      [(NSMutableDictionary *)selfCopy->_windowsStatus setObject:v11 forKeyedSubscript:v7];
+      allValues = MEMORY[0x1E695E0F0];
     }
 
-    v17 = v5->_assigner;
-    os_unfair_lock_unlock(&v5->_lock);
+    v17 = selfCopy->_assigner;
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v61 = v17;
-    v18 = [(BPSWindowAssigner *)v17 assignWindow:v12 input:v67];
-    os_unfair_lock_lock(&v5->_lock);
+    v18 = [(BPSWindowAssigner *)v17 assignWindow:allValues input:v67];
+    os_unfair_lock_lock(&selfCopy->_lock);
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
@@ -288,8 +288,8 @@ LABEL_31:
     {
       v64 = v7;
       v65 = *v73;
-      v63 = v5;
-      v66 = v12;
+      v63 = selfCopy;
+      v66 = allValues;
       do
       {
         v19 = 0;
@@ -302,21 +302,21 @@ LABEL_31:
 
           v69 = v19;
           v20 = *(*(&v72 + 1) + 8 * v19);
-          v21 = [v20 identifier];
-          if ([v12 containsObject:v20])
+          identifier = [v20 identifier];
+          if ([allValues containsObject:v20])
           {
             v22 = v10[439];
-            v23 = [*(&v5->super.super.super.isa + v22) objectForKeyedSubscript:v7];
-            v24 = [v23 objectForKeyedSubscript:v21];
+            v23 = [*(&selfCopy->super.super.super.isa + v22) objectForKeyedSubscript:v7];
+            v24 = [v23 objectForKeyedSubscript:identifier];
             [v24 addObject:v67];
 
             v70 = v9[438];
-            v25 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-            v26 = [(_BPSWindowerSide *)v25 objectForKeyedSubscript:v21];
+            v25 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+            v26 = [(_BPSWindowerSide *)v25 objectForKeyedSubscript:identifier];
             if ([(_BPSWindowerInner *)v26 integerValue]>= 1)
             {
-              v27 = [*(&v5->super.super.super.isa + v22) objectForKeyedSubscript:v7];
-              v28 = [v27 objectForKeyedSubscript:v21];
+              v27 = [*(&selfCopy->super.super.super.isa + v22) objectForKeyedSubscript:v7];
+              v28 = [v27 objectForKeyedSubscript:identifier];
               v71 = v22;
               v29 = [v28 count];
 
@@ -328,42 +328,42 @@ LABEL_31:
               while (1)
               {
                 v30 = MEMORY[0x1E696AD98];
-                v31 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-                v32 = [v31 objectForKeyedSubscript:v21];
+                v31 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+                v32 = [v31 objectForKeyedSubscript:identifier];
                 v33 = [v30 numberWithInteger:{objc_msgSend(v32, "integerValue") - 1}];
-                v34 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-                [v34 setObject:v33 forKeyedSubscript:v21];
+                v34 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+                [v34 setObject:v33 forKeyedSubscript:identifier];
 
-                v35 = [*(&v5->super.super.super.isa + v71) objectForKeyedSubscript:v7];
-                v36 = [v35 objectForKeyedSubscript:v21];
+                v35 = [*(&selfCopy->super.super.super.isa + v71) objectForKeyedSubscript:v7];
+                v36 = [v35 objectForKeyedSubscript:identifier];
                 v25 = [v36 objectAtIndexedSubscript:0];
 
-                v37 = [*(&v5->super.super.super.isa + v71) objectForKeyedSubscript:v7];
-                v38 = [v37 objectForKeyedSubscript:v21];
+                v37 = [*(&selfCopy->super.super.super.isa + v71) objectForKeyedSubscript:v7];
+                v38 = [v37 objectForKeyedSubscript:identifier];
                 [v38 removeObjectAtIndex:0];
 
-                v39 = [(NSMutableDictionary *)v5->_windows objectForKeyedSubscript:v7];
-                v26 = [v39 objectForKeyedSubscript:v21];
+                v39 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:v7];
+                v26 = [v39 objectForKeyedSubscript:identifier];
 
-                os_unfair_lock_unlock(&v5->_lock);
+                os_unfair_lock_unlock(&selfCopy->_lock);
                 v40 = [(_BPSWindowerInner *)v26 receiveInput:v25];
-                os_unfair_lock_lock(&v5->_lock);
+                os_unfair_lock_lock(&selfCopy->_lock);
                 v41 = MEMORY[0x1E696AD98];
-                v42 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-                v43 = [v42 objectForKeyedSubscript:v21];
+                v42 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+                v43 = [v42 objectForKeyedSubscript:identifier];
                 v44 = [v41 numberWithInteger:{objc_msgSend(v43, "integerValue") + v40}];
-                v45 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-                [v45 setObject:v44 forKeyedSubscript:v21];
+                v45 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+                [v45 setObject:v44 forKeyedSubscript:identifier];
 
-                v46 = [*(&v5->super.super.super.isa + v70) objectForKeyedSubscript:v7];
-                v47 = [v46 objectForKeyedSubscript:v21];
+                v46 = [*(&selfCopy->super.super.super.isa + v70) objectForKeyedSubscript:v7];
+                v47 = [v46 objectForKeyedSubscript:identifier];
                 if ([v47 integerValue] < 1)
                 {
                   break;
                 }
 
-                v48 = [*(&v5->super.super.super.isa + v71) objectForKeyedSubscript:v7];
-                v49 = [v48 objectForKeyedSubscript:v21];
+                v48 = [*(&selfCopy->super.super.super.isa + v71) objectForKeyedSubscript:v7];
+                v49 = [v48 objectForKeyedSubscript:identifier];
                 v50 = [v49 count];
 
                 if (!v50)
@@ -376,38 +376,38 @@ LABEL_31:
 
           else
           {
-            v51 = [(NSMutableDictionary *)v5->_windows objectForKeyedSubscript:v7];
-            [v51 setObject:v20 forKeyedSubscript:v21];
+            v51 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:v7];
+            [v51 setObject:v20 forKeyedSubscript:identifier];
 
-            v52 = [*(&v5->super.super.super.isa + v9[438]) objectForKeyedSubscript:v7];
-            [v52 setObject:&unk_1F48701A8 forKeyedSubscript:v21];
+            v52 = [*(&selfCopy->super.super.super.isa + v9[438]) objectForKeyedSubscript:v7];
+            [v52 setObject:&unk_1F48701A8 forKeyedSubscript:identifier];
 
             v76 = v67;
             v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
             v54 = [v53 mutableCopy];
-            v55 = [*(&v5->super.super.super.isa + v10[439]) objectForKeyedSubscript:v7];
-            [v55 setObject:v54 forKeyedSubscript:v21];
+            v55 = [*(&selfCopy->super.super.super.isa + v10[439]) objectForKeyedSubscript:v7];
+            [v55 setObject:v54 forKeyedSubscript:identifier];
 
             v56 = [[BPSSubscriptionStatus alloc] initWithState:0 subscription:v20];
-            v57 = [(NSMutableDictionary *)v5->_windowsStatus objectForKeyedSubscript:v7];
-            [v57 setObject:v56 forKeyedSubscript:v21];
+            v57 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:v7];
+            [v57 setObject:v56 forKeyedSubscript:identifier];
 
-            v26 = v5;
-            os_unfair_lock_unlock(&v5->_lock);
-            v25 = [[_BPSWindowerSide alloc] initWithKey:v7 identifier:v21 windowerInner:v26];
+            v26 = selfCopy;
+            os_unfair_lock_unlock(&selfCopy->_lock);
+            v25 = [[_BPSWindowerSide alloc] initWithKey:v7 identifier:identifier windowerInner:v26];
             [v20 setDownstream:v25];
             [v20 receiveSubscription:v25];
-            os_unfair_lock_lock(&v5->_lock);
+            os_unfair_lock_lock(&selfCopy->_lock);
           }
 
-          v5 = v63;
+          selfCopy = v63;
           v7 = v64;
 LABEL_19:
 
           v19 = v69 + 1;
           v9 = &OBJC_IVAR____BPSRemoveDuplicatesInner__last;
           v10 = &OBJC_IVAR____BPSRemoveDuplicatesInner__last;
-          v12 = v66;
+          allValues = v66;
         }
 
         while (v69 + 1 != v68);
@@ -418,55 +418,55 @@ LABEL_19:
       while (v58);
     }
 
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   else
   {
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v59 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v7 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state])
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v7 cancel];
+    [subscriptionCopy cancel];
   }
 
   else
   {
     [(BPSSubscriptionStatus *)self->_status setState:1];
-    [(BPSSubscriptionStatus *)self->_status setSubscription:v7];
+    [(BPSSubscriptionStatus *)self->_status setSubscription:subscriptionCopy];
     downstream = self->_downstream;
-    v5 = self;
+    selfCopy = self;
     v6 = downstream;
     os_unfair_lock_unlock(&self->_lock);
-    [(BPSSubscriber *)v6 receiveSubscription:v5];
+    [(BPSSubscriber *)v6 receiveSubscription:selfCopy];
 
-    [v7 requestDemand:0x7FFFFFFFFFFFFFFFLL];
+    [subscriptionCopy requestDemand:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
 - (void)cancel
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  os_unfair_lock_lock(&v2->_lock);
-  if ([(BPSSubscriptionStatus *)v2->_status state]== 1)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
     v3 = [MEMORY[0x1E695E0F0] mutableCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v4 = v2->_windowsStatus;
+    v4 = selfCopy->_windowsStatus;
     v5 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v5)
     {
@@ -481,9 +481,9 @@ LABEL_19:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [(NSMutableDictionary *)v2->_windowsStatus objectForKeyedSubscript:*(*(&v24 + 1) + 8 * i)];
-          v10 = [v9 allValues];
-          [v3 addObjectsFromArray:v10];
+          v9 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:*(*(&v24 + 1) + 8 * i)];
+          allValues = [v9 allValues];
+          [v3 addObjectsFromArray:allValues];
         }
 
         v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -514,11 +514,11 @@ LABEL_19:
           v16 = *(*(&v20 + 1) + 8 * j);
           if ([v16 state] == 1)
           {
-            os_unfair_lock_unlock(&v2->_lock);
-            v17 = [v16 subscription];
-            [v17 cancel];
+            os_unfair_lock_unlock(&selfCopy->_lock);
+            subscription = [v16 subscription];
+            [subscription cancel];
 
-            os_unfair_lock_lock(&v2->_lock);
+            os_unfair_lock_lock(&selfCopy->_lock);
             [v16 setState:2];
             [v16 setSubscription:0];
           }
@@ -530,47 +530,47 @@ LABEL_19:
       while (v13);
     }
 
-    [(BPSSubscriptionStatus *)v2->_status setState:2];
-    [(NSMutableDictionary *)v2->_windows removeAllObjects];
-    [(NSMutableDictionary *)v2->_windowsDemand removeAllObjects];
-    [(NSMutableDictionary *)v2->_windowsBuffer removeAllObjects];
-    [(NSMutableDictionary *)v2->_windowsStatus removeAllObjects];
-    v18 = [(BPSSubscriptionStatus *)v2->_status subscription];
-    [(BPSSubscriptionStatus *)v2->_status setSubscription:0];
-    os_unfair_lock_unlock(&v2->_lock);
-    [v18 cancel];
+    [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+    [(NSMutableDictionary *)selfCopy->_windows removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsDemand removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsBuffer removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_windowsStatus removeAllObjects];
+    subscription2 = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+    [(BPSSubscriptionStatus *)selfCopy->_status setSubscription:0];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [subscription2 cancel];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v2->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v5 = self;
-  v15 = v5;
-  if (a3 <= 0)
+  selfCopy = self;
+  v15 = selfCopy;
+  if (demand <= 0)
   {
-    [(_BPSWindowerInner *)a2 requestDemand:v5];
-    v5 = v15;
+    [(_BPSWindowerInner *)a2 requestDemand:selfCopy];
+    selfCopy = v15;
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v6 = [(BPSSubscriptionStatus *)v15->_status state];
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSSubscriptionStatus *)v15->_status state];
   v7 = v15;
-  if (v6 == 1 && !v15->_recursion)
+  if (state == 1 && !v15->_recursion)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (demand != 0x7FFFFFFFFFFFFFFFLL)
     {
       demand = v15->_demand;
       if (demand != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v10 = demand + a3;
+        v10 = demand + demand;
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v8 = v10;
@@ -593,10 +593,10 @@ LABEL_19:
         --v15->_demand;
         v12 = [(NSMutableArray *)v15->_buffer objectAtIndexedSubscript:0];
         [(NSMutableArray *)v15->_buffer removeObjectAtIndex:0];
-        v13 = [(_BPSWindowerInner *)v15 downstream];
+        downstream = [(_BPSWindowerInner *)v15 downstream];
         v15->_recursion = 1;
         os_unfair_lock_unlock(&v15->_lock);
-        v14 = [v13 receiveInput:v12];
+        v14 = [downstream receiveInput:v12];
         os_unfair_lock_lock(&v15->_lock);
         v15->_recursion = 0;
         v15->_demand += v14;
@@ -611,106 +611,106 @@ LABEL_19:
   os_unfair_lock_unlock(&v7->_lock);
 }
 
-- (void)receiveCompletion:(id)a3 key:(id)a4 identifier:(id)a5
+- (void)receiveCompletion:(id)completion key:(id)key identifier:(id)identifier
 {
-  v22 = a4;
-  v7 = a5;
-  v8 = self;
-  os_unfair_lock_lock(&v8->_lock);
-  if ([(BPSSubscriptionStatus *)v8->_status state]== 1)
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v9 = [(NSMutableDictionary *)v8->_windowsStatus objectForKeyedSubscript:v22];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    v9 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v10 = [v9 objectForKeyedSubscript:identifierCopy];
     if (v10)
     {
       v11 = v10;
-      v12 = [(NSMutableDictionary *)v8->_windowsStatus objectForKeyedSubscript:v22];
-      v13 = [v12 objectForKeyedSubscript:v7];
-      v14 = [v13 state];
+      v12 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v13 = [v12 objectForKeyedSubscript:identifierCopy];
+      state = [v13 state];
 
-      if (v14 != 1)
+      if (state != 1)
       {
         goto LABEL_6;
       }
 
-      v15 = [(NSMutableDictionary *)v8->_windowsStatus objectForKeyedSubscript:v22];
-      v16 = [v15 objectForKeyedSubscript:v7];
+      v15 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v16 = [v15 objectForKeyedSubscript:identifierCopy];
       [v16 setState:2];
 
-      v17 = [(NSMutableDictionary *)v8->_windowsStatus objectForKeyedSubscript:v22];
-      v18 = [v17 objectForKeyedSubscript:v7];
+      v17 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v18 = [v17 objectForKeyedSubscript:identifierCopy];
       [v18 setSubscription:0];
 
-      v19 = [(NSMutableDictionary *)v8->_windows objectForKeyedSubscript:v22];
-      [v19 removeObjectForKey:v7];
+      v19 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:keyCopy];
+      [v19 removeObjectForKey:identifierCopy];
 
-      v20 = [(NSMutableDictionary *)v8->_windowsDemand objectForKeyedSubscript:v22];
-      [v20 removeObjectForKey:v7];
+      v20 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+      [v20 removeObjectForKey:identifierCopy];
 
-      v21 = [(NSMutableDictionary *)v8->_windowsBuffer objectForKeyedSubscript:v22];
-      [v21 removeObjectForKey:v7];
+      v21 = [(NSMutableDictionary *)selfCopy->_windowsBuffer objectForKeyedSubscript:keyCopy];
+      [v21 removeObjectForKey:identifierCopy];
 
-      v9 = [(NSMutableDictionary *)v8->_windowsStatus objectForKeyedSubscript:v22];
-      [v9 removeObjectForKey:v7];
+      v9 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      [v9 removeObjectForKey:identifierCopy];
     }
   }
 
 LABEL_6:
-  os_unfair_lock_unlock(&v8->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
-- (int64_t)receiveInput:(id)a3 key:(id)a4 identifier:(id)a5
+- (int64_t)receiveInput:(id)input key:(id)key identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  os_unfair_lock_lock(&v11->_lock);
-  if ([(BPSSubscriptionStatus *)v11->_status state]== 1)
+  inputCopy = input;
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v12 = [(NSMutableDictionary *)v11->_windowsStatus objectForKeyedSubscript:v9];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    v12 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v13 = [v12 objectForKeyedSubscript:identifierCopy];
     if (v13)
     {
       v14 = v13;
-      v15 = [(NSMutableDictionary *)v11->_windowsStatus objectForKeyedSubscript:v9];
-      v16 = [v15 objectForKeyedSubscript:v10];
-      v29 = v8;
-      v17 = [v16 state];
+      v15 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v16 = [v15 objectForKeyedSubscript:identifierCopy];
+      v29 = inputCopy;
+      state = [v16 state];
 
-      v18 = v17 == 1;
-      v8 = v29;
+      v18 = state == 1;
+      inputCopy = v29;
       if (v18)
       {
-        buffer = v11->_buffer;
+        buffer = selfCopy->_buffer;
         v20 = [BPSWindowerInput alloc];
-        v21 = [(NSMutableDictionary *)v11->_windows objectForKeyedSubscript:v9];
-        v22 = [v21 objectForKeyedSubscript:v10];
-        v23 = [v22 metadata];
-        v24 = [(BPSWindowerInput *)v20 initWithAggregate:v29 key:v9 metadata:v23];
+        v21 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:keyCopy];
+        v22 = [v21 objectForKeyedSubscript:identifierCopy];
+        metadata = [v22 metadata];
+        v24 = [(BPSWindowerInput *)v20 initWithAggregate:v29 key:keyCopy metadata:metadata];
         [(NSMutableArray *)buffer addObject:v24];
 
-        v8 = v29;
-        if (v11->_demand >= 1)
+        inputCopy = v29;
+        if (selfCopy->_demand >= 1)
         {
           do
           {
-            if (![(NSMutableArray *)v11->_buffer count])
+            if (![(NSMutableArray *)selfCopy->_buffer count])
             {
               break;
             }
 
-            --v11->_demand;
-            v25 = [(NSMutableArray *)v11->_buffer objectAtIndexedSubscript:0];
-            [(NSMutableArray *)v11->_buffer removeObjectAtIndex:0];
-            v26 = [(_BPSWindowerInner *)v11 downstream];
-            os_unfair_lock_unlock(&v11->_lock);
-            v27 = [v26 receiveInput:v25];
-            os_unfair_lock_lock(&v11->_lock);
-            v11->_demand += v27;
+            --selfCopy->_demand;
+            v25 = [(NSMutableArray *)selfCopy->_buffer objectAtIndexedSubscript:0];
+            [(NSMutableArray *)selfCopy->_buffer removeObjectAtIndex:0];
+            downstream = [(_BPSWindowerInner *)selfCopy downstream];
+            os_unfair_lock_unlock(&selfCopy->_lock);
+            v27 = [downstream receiveInput:v25];
+            os_unfair_lock_lock(&selfCopy->_lock);
+            selfCopy->_demand += v27;
           }
 
-          while (v11->_demand > 0);
+          while (selfCopy->_demand > 0);
         }
       }
     }
@@ -720,40 +720,40 @@ LABEL_6:
     }
   }
 
-  os_unfair_lock_unlock(&v11->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   return 0;
 }
 
-- (void)receiveSubscription:(id)a3 key:(id)a4 identifier:(id)a5
+- (void)receiveSubscription:(id)subscription key:(id)key identifier:(id)identifier
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  subscriptionCopy = subscription;
+  keyCopy = key;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state]== 1)
   {
-    v10 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:v8];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    v10 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v11 = [v10 objectForKeyedSubscript:identifierCopy];
     if (v11)
     {
       v12 = v11;
-      v13 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:v8];
-      v14 = [v13 objectForKeyedSubscript:v9];
-      v15 = [v14 state];
+      v13 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v14 = [v13 objectForKeyedSubscript:identifierCopy];
+      state = [v14 state];
 
-      if (!v15)
+      if (!state)
       {
-        v16 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:v8];
-        v17 = [v16 objectForKeyedSubscript:v9];
+        v16 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:keyCopy];
+        v17 = [v16 objectForKeyedSubscript:identifierCopy];
         [v17 setState:1];
 
-        v18 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:v8];
-        v19 = [v18 objectForKeyedSubscript:v9];
-        [v19 setSubscription:v20];
+        v18 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:keyCopy];
+        v19 = [v18 objectForKeyedSubscript:identifierCopy];
+        [v19 setSubscription:subscriptionCopy];
 
         os_unfair_lock_unlock(&self->_lock);
-        [v20 requestDemand:0x7FFFFFFFFFFFFFFFLL];
+        [subscriptionCopy requestDemand:0x7FFFFFFFFFFFFFFFLL];
         goto LABEL_7;
       }
     }
@@ -764,55 +764,55 @@ LABEL_6:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [v20 cancel];
+  [subscriptionCopy cancel];
 LABEL_7:
 }
 
-- (void)cancelWithKey:(id)a3 identifier:(id)a4
+- (void)cancelWithKey:(id)key identifier:(id)identifier
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = self;
-  os_unfair_lock_lock(&v7->_lock);
-  if ([(BPSSubscriptionStatus *)v7->_status state]== 1)
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v8 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v9 = [v8 objectForKeyedSubscript:identifierCopy];
     if (v9)
     {
       v10 = v9;
-      v11 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-      v12 = [v11 objectForKeyedSubscript:v6];
-      v13 = [v12 state];
+      v11 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+      v12 = [v11 objectForKeyedSubscript:identifierCopy];
+      state = [v12 state];
 
-      if (v13 == 1)
+      if (state == 1)
       {
-        v14 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-        v15 = [v14 objectForKeyedSubscript:v6];
-        v16 = [v15 subscription];
+        v14 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+        v15 = [v14 objectForKeyedSubscript:identifierCopy];
+        subscription = [v15 subscription];
 
-        v17 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-        v18 = [v17 objectForKeyedSubscript:v6];
+        v17 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+        v18 = [v17 objectForKeyedSubscript:identifierCopy];
         [v18 setState:2];
 
-        v19 = [(NSMutableDictionary *)v7->_windows objectForKeyedSubscript:v25];
-        [v19 removeObjectForKey:v6];
+        v19 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:keyCopy];
+        [v19 removeObjectForKey:identifierCopy];
 
-        v20 = [(NSMutableDictionary *)v7->_windowsDemand objectForKeyedSubscript:v25];
-        [v20 removeObjectForKey:v6];
+        v20 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+        [v20 removeObjectForKey:identifierCopy];
 
-        v21 = [(NSMutableDictionary *)v7->_windowsBuffer objectForKeyedSubscript:v25];
-        [v21 removeObjectForKey:v6];
+        v21 = [(NSMutableDictionary *)selfCopy->_windowsBuffer objectForKeyedSubscript:keyCopy];
+        [v21 removeObjectForKey:identifierCopy];
 
-        v22 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-        [v22 removeObjectForKey:v6];
+        v22 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+        [v22 removeObjectForKey:identifierCopy];
 
-        v23 = [(NSMutableDictionary *)v7->_windowsStatus objectForKeyedSubscript:v25];
-        v24 = [v23 objectForKeyedSubscript:v6];
+        v23 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+        v24 = [v23 objectForKeyedSubscript:identifierCopy];
         [v24 setSubscription:0];
 
-        os_unfair_lock_unlock(&v7->_lock);
-        [v16 cancel];
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        [subscription cancel];
 
         goto LABEL_7;
       }
@@ -823,26 +823,26 @@ LABEL_7:
     }
   }
 
-  os_unfair_lock_unlock(&v7->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 LABEL_7:
 }
 
-- (void)requestDemand:(int64_t)a3 key:(id)a4 identifier:(id)a5
+- (void)requestDemand:(int64_t)demand key:(id)key identifier:(id)identifier
 {
-  v56 = a4;
-  v9 = a5;
-  v10 = self;
-  if (a3 <= 0)
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
+  if (demand <= 0)
   {
-    [_BPSWindowerInner requestDemand:a2 key:v10 identifier:?];
+    [_BPSWindowerInner requestDemand:a2 key:selfCopy identifier:?];
   }
 
   v11 = 8;
-  os_unfair_lock_lock(&v10->_lock);
-  if ([(BPSSubscriptionStatus *)v10->_status state]== 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v12 = [(NSMutableDictionary *)v10->_windowsStatus objectForKeyedSubscript:v56];
-    v13 = [v12 objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v13 = [v12 objectForKeyedSubscript:identifierCopy];
     if (!v13)
     {
 LABEL_22:
@@ -851,13 +851,13 @@ LABEL_22:
     }
 
     v14 = v13;
-    v15 = [(NSMutableDictionary *)v10->_windowsStatus objectForKeyedSubscript:v56];
-    v16 = [v15 objectForKeyedSubscript:v9];
-    v17 = [v16 state];
+    v15 = [(NSMutableDictionary *)selfCopy->_windowsStatus objectForKeyedSubscript:keyCopy];
+    v16 = [v15 objectForKeyedSubscript:identifierCopy];
+    state = [v16 state];
 
-    if (v17 == 1 && !v10->_sideRecursion)
+    if (state == 1 && !selfCopy->_sideRecursion)
     {
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL || (-[NSMutableDictionary objectForKeyedSubscript:](v10->_windowsDemand, "objectForKeyedSubscript:", v56), v18 = objc_claimAutoreleasedReturnValue(), [v18 objectForKeyedSubscript:v9], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "integerValue"), v19, v18, v20 == 0x7FFFFFFFFFFFFFFFLL))
+      if (demand == 0x7FFFFFFFFFFFFFFFLL || (-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_windowsDemand, "objectForKeyedSubscript:", keyCopy), v18 = objc_claimAutoreleasedReturnValue(), [v18 objectForKeyedSubscript:identifierCopy], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "integerValue"), v19, v18, v20 == 0x7FFFFFFFFFFFFFFFLL))
       {
         v21 = [MEMORY[0x1E696AD98] numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
       }
@@ -865,9 +865,9 @@ LABEL_22:
       else
       {
         v22 = MEMORY[0x1E696AD98];
-        v23 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-        v24 = [v23 objectForKeyedSubscript:v9];
-        v25 = [v24 integerValue] + a3;
+        v23 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+        v24 = [v23 objectForKeyedSubscript:identifierCopy];
+        v25 = [v24 integerValue] + demand;
 
         if (v25 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -882,16 +882,16 @@ LABEL_22:
         v21 = [v22 numberWithInteger:v26];
       }
 
-      v27 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-      [v27 setObject:v21 forKeyedSubscript:v9];
+      v27 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+      [v27 setObject:v21 forKeyedSubscript:identifierCopy];
 
-      v12 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-      v28 = [v12 objectForKeyedSubscript:v9];
+      v12 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+      v28 = [v12 objectForKeyedSubscript:identifierCopy];
       if ([v28 integerValue] >= 1)
       {
         v29 = 48;
-        v30 = [(NSMutableDictionary *)v10->_windowsBuffer objectForKeyedSubscript:v56];
-        v31 = [v30 objectForKeyedSubscript:v9];
+        v30 = [(NSMutableDictionary *)selfCopy->_windowsBuffer objectForKeyedSubscript:keyCopy];
+        v31 = [v30 objectForKeyedSubscript:identifierCopy];
         v32 = [v31 count];
 
         if (!v32)
@@ -903,45 +903,45 @@ LABEL_22:
         while (1)
         {
           v33 = MEMORY[0x1E696AD98];
-          v34 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56, v55];
-          v35 = [v34 objectForKeyedSubscript:v9];
+          v34 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy, v55];
+          v35 = [v34 objectForKeyedSubscript:identifierCopy];
           v36 = [v33 numberWithInteger:{objc_msgSend(v35, "integerValue") - 1}];
-          v37 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-          [v37 setObject:v36 forKeyedSubscript:v9];
+          v37 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+          [v37 setObject:v36 forKeyedSubscript:identifierCopy];
 
-          v38 = [*(&v10->super.super.super.isa + v29) objectForKeyedSubscript:v56];
-          v39 = [v38 objectForKeyedSubscript:v9];
+          v38 = [*(&selfCopy->super.super.super.isa + v29) objectForKeyedSubscript:keyCopy];
+          v39 = [v38 objectForKeyedSubscript:identifierCopy];
           v12 = [v39 objectAtIndexedSubscript:0];
 
-          v40 = [*(&v10->super.super.super.isa + v29) objectForKeyedSubscript:v56];
-          v41 = [v40 objectForKeyedSubscript:v9];
+          v40 = [*(&selfCopy->super.super.super.isa + v29) objectForKeyedSubscript:keyCopy];
+          v41 = [v40 objectForKeyedSubscript:identifierCopy];
           [v41 removeObjectAtIndex:0];
 
-          v42 = [(NSMutableDictionary *)v10->_windows objectForKeyedSubscript:v56];
-          v28 = [v42 objectForKeyedSubscript:v9];
+          v42 = [(NSMutableDictionary *)selfCopy->_windows objectForKeyedSubscript:keyCopy];
+          v28 = [v42 objectForKeyedSubscript:identifierCopy];
 
-          v10->_sideRecursion = 1;
-          os_unfair_lock_unlock((v10 + v11));
+          selfCopy->_sideRecursion = 1;
+          os_unfair_lock_unlock((selfCopy + v11));
           v43 = [v28 receiveInput:v12];
-          os_unfair_lock_lock((v10 + v11));
-          v10->_sideRecursion = 0;
+          os_unfair_lock_lock((selfCopy + v11));
+          selfCopy->_sideRecursion = 0;
           v44 = MEMORY[0x1E696AD98];
-          v45 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-          [v45 objectForKeyedSubscript:v9];
+          v45 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+          [v45 objectForKeyedSubscript:identifierCopy];
           v47 = v46 = v29;
           v48 = [v44 numberWithInteger:{objc_msgSend(v47, "integerValue") + v43}];
-          v49 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-          [v49 setObject:v48 forKeyedSubscript:v9];
+          v49 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+          [v49 setObject:v48 forKeyedSubscript:identifierCopy];
 
-          v50 = [(NSMutableDictionary *)v10->_windowsDemand objectForKeyedSubscript:v56];
-          v51 = [v50 objectForKeyedSubscript:v9];
+          v50 = [(NSMutableDictionary *)selfCopy->_windowsDemand objectForKeyedSubscript:keyCopy];
+          v51 = [v50 objectForKeyedSubscript:identifierCopy];
           if ([v51 integerValue] < 1)
           {
             break;
           }
 
-          v52 = [*(&v10->super.super.super.isa + v46) objectForKeyedSubscript:v56];
-          v53 = [v52 objectForKeyedSubscript:v9];
+          v52 = [*(&selfCopy->super.super.super.isa + v46) objectForKeyedSubscript:keyCopy];
+          v53 = [v52 objectForKeyedSubscript:identifierCopy];
           v54 = [v53 count];
 
           v29 = v46;
@@ -960,15 +960,15 @@ LABEL_22:
   }
 
 LABEL_23:
-  os_unfair_lock_unlock((v10 + v11));
+  os_unfair_lock_unlock((selfCopy + v11));
 }
 
 - (id)upstreamSubscriptions
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695E0F0] mutableCopy];
-  v4 = [(NSMutableDictionary *)self->_windowsStatus allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_10];
+  allKeys = [(NSMutableDictionary *)self->_windowsStatus allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_10];
 
   v18 = 0u;
   v19 = 0u;
@@ -990,8 +990,8 @@ LABEL_23:
         }
 
         v11 = [(NSMutableDictionary *)self->_windowsStatus objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i), v16];
-        v12 = [v11 allValues];
-        [v3 addObjectsFromArray:v12];
+        allValues = [v11 allValues];
+        [v3 addObjectsFromArray:allValues];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];

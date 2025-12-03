@@ -1,12 +1,12 @@
 @interface AdvertSearchResultCollectionViewCell
-- (_TtC8AppStore36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AdvertSearchResultCollectionViewCell
 
-- (_TtC8AppStore36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

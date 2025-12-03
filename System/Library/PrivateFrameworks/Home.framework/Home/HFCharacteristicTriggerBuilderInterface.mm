@@ -1,34 +1,34 @@
 @interface HFCharacteristicTriggerBuilderInterface
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4;
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value;
 - (NSSet)characteristics;
-- (id)thresholdValueForCharacteristic:(id)a3 thresholdValueRange:(id)a4;
-- (id)triggerValueForCharacteristic:(id)a3;
+- (id)thresholdValueForCharacteristic:(id)characteristic thresholdValueRange:(id)range;
+- (id)triggerValueForCharacteristic:(id)characteristic;
 - (void)removeAllCharacteristics;
-- (void)removeCharacteristic:(id)a3;
-- (void)setCharacteristic:(id)a3 triggerValue:(id)a4;
-- (void)setCharacteristic:(id)a3 triggerValueRange:(id)a4;
+- (void)removeCharacteristic:(id)characteristic;
+- (void)setCharacteristic:(id)characteristic triggerValue:(id)value;
+- (void)setCharacteristic:(id)characteristic triggerValueRange:(id)range;
 @end
 
 @implementation HFCharacteristicTriggerBuilderInterface
 
 - (NSSet)characteristics
 {
-  v2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v3 = [v2 characteristics];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  characteristics = [triggerBuilder characteristics];
 
-  return v3;
+  return characteristics;
 }
 
-- (void)setCharacteristic:(id)a3 triggerValue:(id)a4
+- (void)setCharacteristic:(id)characteristic triggerValue:(id)value
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = v17;
-  v9 = v7;
-  if (!v17)
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  v8 = characteristicCopy;
+  v9 = valueCopy;
+  if (!characteristicCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
 
     v8 = 0;
   }
@@ -36,39 +36,39 @@
   [(HFCharacteristicTriggerBuilderInterface *)self removeCharacteristic:v8];
   if (v9)
   {
-    v10 = [MEMORY[0x277CD19F8] hf_allTriggerValuesForCharacteristic:v17 similarToValue:v9];
-    v11 = [v10 count];
-    v12 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    triggerBuilder2 = [MEMORY[0x277CD19F8] hf_allTriggerValuesForCharacteristic:characteristicCopy similarToValue:v9];
+    v11 = [triggerBuilder2 count];
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
     if (v11 == 1)
     {
       v13 = [HFCharacteristicValueEventBuilder alloc];
-      v14 = [v10 anyObject];
-      v15 = [(HFCharacteristicValueEventBuilder *)v13 initWithCharacteristic:v17 triggerValue:v14];
-      [(HFCharacteristicValueEventBuilder *)v12 addEventBuilder:v15];
+      anyObject = [triggerBuilder2 anyObject];
+      v15 = [(HFCharacteristicValueEventBuilder *)v13 initWithCharacteristic:characteristicCopy triggerValue:anyObject];
+      [(HFCharacteristicValueEventBuilder *)triggerBuilder addEventBuilder:v15];
     }
 
     else
     {
-      v14 = [[HFCharacteristicMultiValueEventBuilder alloc] initWithCharacteristic:v17 values:v10];
-      [(HFCharacteristicValueEventBuilder *)v12 addEventBuilder:v14];
+      anyObject = [[HFCharacteristicMultiValueEventBuilder alloc] initWithCharacteristic:characteristicCopy values:triggerBuilder2];
+      [(HFCharacteristicValueEventBuilder *)triggerBuilder addEventBuilder:anyObject];
     }
   }
 
   else
   {
-    v10 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    v12 = [[HFCharacteristicValueEventBuilder alloc] initWithCharacteristic:v17 triggerValue:0];
-    [v10 addEventBuilder:v12];
+    triggerBuilder2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    triggerBuilder = [[HFCharacteristicValueEventBuilder alloc] initWithCharacteristic:characteristicCopy triggerValue:0];
+    [triggerBuilder2 addEventBuilder:triggerBuilder];
   }
 }
 
-- (void)setCharacteristic:(id)a3 triggerValueRange:(id)a4
+- (void)setCharacteristic:(id)characteristic triggerValueRange:(id)range
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  characteristicCopy = characteristic;
+  rangeCopy = range;
+  if (characteristicCopy)
   {
-    if (v7)
+    if (rangeCopy)
     {
       goto LABEL_3;
     }
@@ -76,40 +76,40 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
 
-    if (v7)
+    if (rangeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"triggerValueRange"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFEventTriggerBuilder+LegacyInterfaces.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"triggerValueRange"}];
 
 LABEL_3:
-  [(HFCharacteristicTriggerBuilderInterface *)self removeCharacteristic:v12];
-  v8 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v9 = [[HFCharacteristicThresholdRangeEventBuilder alloc] initWithCharacteristic:v12 thresholdRange:v7];
-  [v8 addEventBuilder:v9];
+  [(HFCharacteristicTriggerBuilderInterface *)self removeCharacteristic:characteristicCopy];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  v9 = [[HFCharacteristicThresholdRangeEventBuilder alloc] initWithCharacteristic:characteristicCopy thresholdRange:rangeCopy];
+  [triggerBuilder addEventBuilder:v9];
 }
 
-- (void)removeCharacteristic:(id)a3
+- (void)removeCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v7 = [v6 eventBuilders];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  eventBuilders = [triggerBuilder eventBuilders];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HFCharacteristicTriggerBuilderInterface_removeCharacteristic___block_invoke;
   v11[3] = &unk_277DF9A08;
-  v12 = v4;
+  v12 = characteristicCopy;
   v13 = v5;
   v8 = v5;
-  v9 = v4;
-  [v7 na_each:v11];
+  v9 = characteristicCopy;
+  [eventBuilders na_each:v11];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -159,9 +159,9 @@ void __64__HFCharacteristicTriggerBuilderInterface_removeCharacteristic___block_
 
 - (void)removeAllCharacteristics
 {
-  v3 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v4 = [v3 eventBuilders];
-  v5 = [v4 na_filter:&__block_literal_global_209];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  eventBuilders = [triggerBuilder eventBuilders];
+  v5 = [eventBuilders na_filter:&__block_literal_global_209];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__HFCharacteristicTriggerBuilderInterface_removeAllCharacteristics__block_invoke_2;
@@ -178,21 +178,21 @@ void __67__HFCharacteristicTriggerBuilderInterface_removeAllCharacteristics__blo
   [v4 removeEventBuilder:v3];
 }
 
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v9 = [v8 eventBuilders];
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  eventBuilders = [triggerBuilder eventBuilders];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__HFCharacteristicTriggerBuilderInterface_wouldFireForCharacteristic_value___block_invoke;
   v14[3] = &unk_277E00CF0;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 na_any:v14];
+  v15 = characteristicCopy;
+  v16 = valueCopy;
+  v10 = valueCopy;
+  v11 = characteristicCopy;
+  v12 = [eventBuilders na_any:v14];
 
   return v12;
 }
@@ -274,21 +274,21 @@ LABEL_16:
   return v13;
 }
 
-- (id)thresholdValueForCharacteristic:(id)a3 thresholdValueRange:(id)a4
+- (id)thresholdValueForCharacteristic:(id)characteristic thresholdValueRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v9 = [v8 eventBuilders];
+  characteristicCopy = characteristic;
+  rangeCopy = range;
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  eventBuilders = [triggerBuilder eventBuilders];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __95__HFCharacteristicTriggerBuilderInterface_thresholdValueForCharacteristic_thresholdValueRange___block_invoke;
   v22 = &unk_277E00CF0;
-  v10 = v7;
+  v10 = rangeCopy;
   v23 = v10;
-  v11 = v6;
+  v11 = characteristicCopy;
   v24 = v11;
-  v12 = [v9 na_firstObjectPassingTest:&v19];
+  v12 = [eventBuilders na_firstObjectPassingTest:&v19];
 
   objc_opt_class();
   v13 = v12;
@@ -306,8 +306,8 @@ LABEL_16:
 
   if (v15)
   {
-    v16 = [v15 thresholdRange];
-    v17 = [v11 hf_thresholdValueForRange:v16];
+    thresholdRange = [v15 thresholdRange];
+    v17 = [v11 hf_thresholdValueForRange:thresholdRange];
   }
 
   else
@@ -414,12 +414,12 @@ LABEL_20:
   return v17;
 }
 
-- (id)triggerValueForCharacteristic:(id)a3
+- (id)triggerValueForCharacteristic:(id)characteristic
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v5 = [v4 eventBuilders];
-  v6 = [v3 setWithArray:v5];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  eventBuilders = [triggerBuilder eventBuilders];
+  v6 = [v3 setWithArray:eventBuilders];
   v7 = [v6 na_map:&__block_literal_global_104];
 
   return v7;

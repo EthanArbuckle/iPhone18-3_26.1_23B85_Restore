@@ -1,7 +1,7 @@
 @interface PNWallpaperCropResult
-+ (id)cropScoreSortDescriptorForOrientation:(int64_t)a3;
-- (PNWallpaperCropResult)initWithAsset:(id)a3 classification:(unint64_t)a4 headroomFeasible:(BOOL)a5 withFaceRegions:(BOOL)a6;
-- (id)cropForOrientation:(int64_t)a3;
++ (id)cropScoreSortDescriptorForOrientation:(int64_t)orientation;
+- (PNWallpaperCropResult)initWithAsset:(id)asset classification:(unint64_t)classification headroomFeasible:(BOOL)feasible withFaceRegions:(BOOL)regions;
+- (id)cropForOrientation:(int64_t)orientation;
 - (id)dictionaryRepresentation;
 @end
 
@@ -11,53 +11,53 @@
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"portraitCrop";
-  v3 = [(PNWallpaperCropResult *)self portraitCrop];
-  v4 = [v3 description];
+  portraitCrop = [(PNWallpaperCropResult *)self portraitCrop];
+  v4 = [portraitCrop description];
   v9[1] = @"landscapeCrop";
   v10[0] = v4;
-  v5 = [(PNWallpaperCropResult *)self landscapeCrop];
-  v6 = [v5 description];
+  landscapeCrop = [(PNWallpaperCropResult *)self landscapeCrop];
+  v6 = [landscapeCrop description];
   v10[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   return v7;
 }
 
-- (id)cropForOrientation:(int64_t)a3
+- (id)cropForOrientation:(int64_t)orientation
 {
-  if (a3 == 2)
+  if (orientation == 2)
   {
-    v3 = [(PNWallpaperCropResult *)self landscapeCrop];
+    landscapeCrop = [(PNWallpaperCropResult *)self landscapeCrop];
   }
 
-  else if (a3 == 1)
+  else if (orientation == 1)
   {
-    v3 = [(PNWallpaperCropResult *)self portraitCrop];
+    landscapeCrop = [(PNWallpaperCropResult *)self portraitCrop];
   }
 
   else
   {
-    v3 = 0;
+    landscapeCrop = 0;
   }
 
-  return v3;
+  return landscapeCrop;
 }
 
-- (PNWallpaperCropResult)initWithAsset:(id)a3 classification:(unint64_t)a4 headroomFeasible:(BOOL)a5 withFaceRegions:(BOOL)a6
+- (PNWallpaperCropResult)initWithAsset:(id)asset classification:(unint64_t)classification headroomFeasible:(BOOL)feasible withFaceRegions:(BOOL)regions
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  regionsCopy = regions;
+  feasibleCopy = feasible;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = PNWallpaperCropResult;
   v11 = [(PNWallpaperCropResult *)&v17 init];
   if (v11)
   {
-    v12 = [[PNWallpaperCrop alloc] initWithAsset:v10 orientation:1 classification:a4 headroomFeasible:v7 withFaceRegions:v6];
+    v12 = [[PNWallpaperCrop alloc] initWithAsset:assetCopy orientation:1 classification:classification headroomFeasible:feasibleCopy withFaceRegions:regionsCopy];
     portraitCrop = v11->_portraitCrop;
     v11->_portraitCrop = v12;
 
-    v14 = [[PNWallpaperCrop alloc] initWithAsset:v10 orientation:2 classification:a4 headroomFeasible:v7 withFaceRegions:v6];
+    v14 = [[PNWallpaperCrop alloc] initWithAsset:assetCopy orientation:2 classification:classification headroomFeasible:feasibleCopy withFaceRegions:regionsCopy];
     landscapeCrop = v11->_landscapeCrop;
     v11->_landscapeCrop = v14;
   }
@@ -65,9 +65,9 @@
   return v11;
 }
 
-+ (id)cropScoreSortDescriptorForOrientation:(int64_t)a3
++ (id)cropScoreSortDescriptorForOrientation:(int64_t)orientation
 {
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v5 = @"cropResult.portraitCrop.cropScore";
 LABEL_5:
@@ -76,7 +76,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     v5 = @"cropResult.landscapeCrop.cropScore";
     goto LABEL_5;

@@ -8,23 +8,23 @@
 - (HDCodableEmergencyContact)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableEmergencyContact);
-  v3 = [a1 name];
-  [(HDCodableEmergencyContact *)v2 setName:v3];
+  name = [self name];
+  [(HDCodableEmergencyContact *)v2 setName:name];
 
-  v4 = [a1 nameContactIdentifier];
-  [(HDCodableEmergencyContact *)v2 setNameContactIdentifier:v4];
+  nameContactIdentifier = [self nameContactIdentifier];
+  [(HDCodableEmergencyContact *)v2 setNameContactIdentifier:nameContactIdentifier];
 
-  v5 = [a1 phoneNumber];
-  [(HDCodableEmergencyContact *)v2 setPhoneNumber:v5];
+  phoneNumber = [self phoneNumber];
+  [(HDCodableEmergencyContact *)v2 setPhoneNumber:phoneNumber];
 
-  v6 = [a1 phoneNumberContactIdentifier];
-  [(HDCodableEmergencyContact *)v2 setPhoneNumberContactIdentifier:v6];
+  phoneNumberContactIdentifier = [self phoneNumberContactIdentifier];
+  [(HDCodableEmergencyContact *)v2 setPhoneNumberContactIdentifier:phoneNumberContactIdentifier];
 
-  v7 = [a1 phoneNumberLabel];
-  [(HDCodableEmergencyContact *)v2 setPhoneNumberLabel:v7];
+  phoneNumberLabel = [self phoneNumberLabel];
+  [(HDCodableEmergencyContact *)v2 setPhoneNumberLabel:phoneNumberLabel];
 
-  v8 = [a1 relationship];
-  [(HDCodableEmergencyContact *)v2 setRelationship:v8];
+  relationship = [self relationship];
+  [(HDCodableEmergencyContact *)v2 setRelationship:relationship];
 
   return v2;
 }
@@ -38,24 +38,24 @@
     v4 = MEMORY[0x277CCDDA0];
     v5 = v3;
     v6 = objc_alloc_init(v4);
-    v7 = [v5 name];
-    [v6 setName:v7];
+    name = [v5 name];
+    [v6 setName:name];
 
-    v8 = [v5 nameContactIdentifier];
-    [v6 setNameContactIdentifier:v8];
+    nameContactIdentifier = [v5 nameContactIdentifier];
+    [v6 setNameContactIdentifier:nameContactIdentifier];
 
-    v9 = [v5 phoneNumber];
-    [v6 setPhoneNumber:v9];
+    phoneNumber = [v5 phoneNumber];
+    [v6 setPhoneNumber:phoneNumber];
 
-    v10 = [v5 phoneNumberContactIdentifier];
-    [v6 setPhoneNumberContactIdentifier:v10];
+    phoneNumberContactIdentifier = [v5 phoneNumberContactIdentifier];
+    [v6 setPhoneNumberContactIdentifier:phoneNumberContactIdentifier];
 
-    v11 = [v5 phoneNumberLabel];
-    [v6 setPhoneNumberLabel:v11];
+    phoneNumberLabel = [v5 phoneNumberLabel];
+    [v6 setPhoneNumberLabel:phoneNumberLabel];
 
-    v12 = [v5 relationship];
+    relationship = [v5 relationship];
 
-    [v6 setRelationship:v12];
+    [v6 setRelationship:relationship];
   }
 
   else

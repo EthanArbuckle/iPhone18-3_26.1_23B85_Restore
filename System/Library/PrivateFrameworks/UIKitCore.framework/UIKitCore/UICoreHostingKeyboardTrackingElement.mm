@@ -1,22 +1,22 @@
 @interface UICoreHostingKeyboardTrackingElement
-- (BOOL)prepareKeyboardWithSize:(CGSize)a3 inWindow:(id)a4;
+- (BOOL)prepareKeyboardWithSize:(CGSize)size inWindow:(id)window;
 - (_TtC5UIKit36UICoreHostingKeyboardTrackingElement)init;
 - (void)updateKeyboard;
 @end
 
 @implementation UICoreHostingKeyboardTrackingElement
 
-- (BOOL)prepareKeyboardWithSize:(CGSize)a3 inWindow:(id)a4
+- (BOOL)prepareKeyboardWithSize:(CGSize)size inWindow:(id)window
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v9 = Strong;
-    v10 = a4;
-    v11 = self;
-    v12 = sub_188DA084C(v10, width, height);
+    windowCopy = window;
+    selfCopy = self;
+    v12 = sub_188DA084C(windowCopy, width, height);
   }
 
   else
@@ -33,7 +33,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_188F92F10();
   }
 }

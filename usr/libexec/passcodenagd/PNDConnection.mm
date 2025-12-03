@@ -1,15 +1,15 @@
 @interface PNDConnection
 + (BOOL)isChangingPasscode;
 + (NSObject)statusLock;
-+ (unint64_t)_cdpSecretTypeFromUnlockScreenType:(int)a3;
++ (unint64_t)_cdpSecretTypeFromUnlockScreenType:(int)type;
 + (void)_checkPasscodeCompliance;
-+ (void)notifyCDPOfNewPasscodeWithContext:(id)a3 completion:(id)a4;
++ (void)notifyCDPOfNewPasscodeWithContext:(id)context completion:(id)completion;
 + (void)registerKeepAliveFileDeleteNotification;
 + (void)registerLanguageChangedNotification;
 + (void)registerLockStateChangedNotification;
 + (void)registerSpringboardNotification;
-+ (void)setIsChangingPasscode:(BOOL)a3;
-+ (void)setPendingKeepAliveDeletion:(BOOL)a3;
++ (void)setIsChangingPasscode:(BOOL)passcode;
++ (void)setPendingKeepAliveDeletion:(BOOL)deletion;
 + (void)shutdown;
 @end
 
@@ -29,23 +29,23 @@
 
 + (BOOL)isChangingPasscode
 {
-  v2 = [a1 statusLock];
-  objc_sync_enter(v2);
+  statusLock = [self statusLock];
+  objc_sync_enter(statusLock);
   v3 = byte_10000C3B8;
-  objc_sync_exit(v2);
+  objc_sync_exit(statusLock);
 
   return v3;
 }
 
-+ (void)setIsChangingPasscode:(BOOL)a3
++ (void)setIsChangingPasscode:(BOOL)passcode
 {
-  v5 = [a1 statusLock];
-  objc_sync_enter(v5);
-  byte_10000C3B8 = a3;
+  statusLock = [self statusLock];
+  objc_sync_enter(statusLock);
+  byte_10000C3B8 = passcode;
   v6 = byte_10000C3B9;
-  objc_sync_exit(v5);
+  objc_sync_exit(statusLock);
 
-  if (!a3 && v6)
+  if (!passcode && v6)
   {
     v7 = _MCLogObjects[6];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -54,15 +54,15 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling postponed keep-alive deletion notification", v8, 2u);
     }
 
-    [a1 shutdown];
+    [self shutdown];
   }
 }
 
-+ (void)setPendingKeepAliveDeletion:(BOOL)a3
++ (void)setPendingKeepAliveDeletion:(BOOL)deletion
 {
-  obj = [a1 statusLock];
+  obj = [self statusLock];
   objc_sync_enter(obj);
-  byte_10000C3B9 = a3;
+  byte_10000C3B9 = deletion;
   objc_sync_exit(obj);
 }
 
@@ -80,7 +80,7 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Could not open file at Keep-Alive file!", buf, 2u);
     }
 
-    [a1 shutdown];
+    [self shutdown];
   }
 
   v6 = dispatch_source_create(&_dispatch_source_type_vnode, v4, 1uLL, &_dispatch_main_q);
@@ -91,7 +91,7 @@
   handler[1] = 3221225472;
   handler[2] = sub_1000024EC;
   handler[3] = &unk_100008398;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(qword_10000C3B0, handler);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -142,7 +142,7 @@
   v6[1] = 3221225472;
   v6[2] = sub_100002884;
   v6[3] = &unk_1000083F8;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = notify_register_dispatch("com.apple.springboard.homescreenunlocked", &out_token, v3, v6);
 
   if (v4)
@@ -195,32 +195,32 @@
   [v4 getPasscodeComplianceWarningLastLockDate:v3 completionBlock:v5];
 }
 
-+ (void)notifyCDPOfNewPasscodeWithContext:(id)a3 completion:(id)a4
++ (void)notifyCDPOfNewPasscodeWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = +[MCProfileConnection sharedConnection];
-  v9 = [v7 externalizedContext];
-  v10 = [v8 unlockScreenTypeForPasscodeContext:v9 outSimplePasscodeType:0];
+  externalizedContext = [contextCopy externalizedContext];
+  v10 = [v8 unlockScreenTypeForPasscodeContext:externalizedContext outSimplePasscodeType:0];
 
-  v11 = [a1 _cdpSecretTypeFromUnlockScreenType:v10];
+  v11 = [self _cdpSecretTypeFromUnlockScreenType:v10];
   v12 = objc_alloc_init(CDPContext);
   [v12 setType:6];
   v13 = [[CDPStateController alloc] initWithContext:v12];
-  v14 = [v7 passcode];
+  passcode = [contextCopy passcode];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100003130;
   v16[3] = &unk_1000084B0;
-  v17 = v6;
-  v15 = v6;
-  [v13 localSecretChangedTo:v14 secretType:v11 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [v13 localSecretChangedTo:passcode secretType:v11 completion:v16];
 }
 
-+ (unint64_t)_cdpSecretTypeFromUnlockScreenType:(int)a3
++ (unint64_t)_cdpSecretTypeFromUnlockScreenType:(int)type
 {
-  if ((a3 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
     return 2;
   }

@@ -2,56 +2,56 @@
 - (BOOL)_isActiveSessionDetailsFetchedFromCloudKitSinceBoot;
 - (BOOL)_isActiveSessionDetailsLocalRecordExpired;
 - (BOOL)isActiveSessionDetailsOutOfSync;
-- (BOOL)isEligibleForCacheUpdateForCurrentDeviceIdentifier:(id)a3 sessionManagerState:(id)a4;
-- (SMActiveSessionZone)initWithQueue:(id)a3 defaultsManager:(id)a4;
-- (id)_createActiveSessionDetailsFromCKRecord:(id)a3;
+- (BOOL)isEligibleForCacheUpdateForCurrentDeviceIdentifier:(id)identifier sessionManagerState:(id)state;
+- (SMActiveSessionZone)initWithQueue:(id)queue defaultsManager:(id)manager;
+- (id)_createActiveSessionDetailsFromCKRecord:(id)record;
 - (id)_getLatestActiveSessionDetailsLocalCopy;
 - (id)_getSyncEngineMetadata;
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4;
-- (void)_addObserver:(id)a3;
-- (void)_fetchActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4;
-- (void)_fetchActiveSessionDetailsWithRetryCount:(unint64_t)a3 qosOptions:(id)a4 completion:(id)a5;
-- (void)_handleFetchedRecordZoneChanges:(id)a3;
-- (void)_handleStateUpdate:(id)a3;
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context;
+- (void)_addObserver:(id)observer;
+- (void)_fetchActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion;
+- (void)_fetchActiveSessionDetailsWithRetryCount:(unint64_t)count qosOptions:(id)options completion:(id)completion;
+- (void)_handleFetchedRecordZoneChanges:(id)changes;
+- (void)_handleStateUpdate:(id)update;
 - (void)_initializeSyncEngine;
-- (void)_notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_persistSyncEngineMetadata:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (void)_notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:(id)completed success:(BOOL)success error:(id)error;
+- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error;
+- (void)_persistSyncEngineMetadata:(id)metadata;
+- (void)_removeObserver:(id)observer;
 - (void)_saveLatestActiveSessionDetailsLocalCopy;
-- (void)_saveLatestActiveSessionDetailsStateToDefaults:(id)a3;
+- (void)_saveLatestActiveSessionDetailsStateToDefaults:(id)defaults;
 - (void)_setup;
 - (void)_updateActiveSessionDetailsFromCloudKitRecord;
-- (void)_updateActiveSessionDetailsLocalCopy:(id)a3;
-- (void)_writeActiveSessionDetails:(id)a3 pendingRetryCount:(int64_t)a4 qos:(id)a5 completion:(id)a6;
-- (void)_writeActiveSessionDetailsOnCloudToInitiateHandoff:(id)a3 handler:(id)a4;
-- (void)_writeActiveSessionDetailsRecord:(id)a3 qos:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)checkActiveSessionDetailsZoneAvailibilityWithQos:(id)a3 completion:(id)a4;
+- (void)_updateActiveSessionDetailsLocalCopy:(id)copy;
+- (void)_writeActiveSessionDetails:(id)details pendingRetryCount:(int64_t)count qos:(id)qos completion:(id)completion;
+- (void)_writeActiveSessionDetailsOnCloudToInitiateHandoff:(id)handoff handler:(id)handler;
+- (void)_writeActiveSessionDetailsRecord:(id)record qos:(id)qos completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)checkActiveSessionDetailsZoneAvailibilityWithQos:(id)qos completion:(id)completion;
 - (void)dealloc;
-- (void)deleteActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4;
-- (void)fetchActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4;
-- (void)fetchActiveSessionDetailsWithHandler:(id)a3;
-- (void)handleFetchedRecordZoneChanges:(id)a3;
-- (void)handleStateUpdate:(id)a3;
+- (void)deleteActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion;
+- (void)fetchActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion;
+- (void)fetchActiveSessionDetailsWithHandler:(id)handler;
+- (void)handleFetchedRecordZoneChanges:(id)changes;
+- (void)handleStateUpdate:(id)update;
 - (void)initializeSyncEngine;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)setup;
-- (void)setupZoneWithQos:(id)a3 completion:(id)a4;
-- (void)syncEngine:(id)a3 handleEvent:(id)a4;
+- (void)setupZoneWithQos:(id)qos completion:(id)completion;
+- (void)syncEngine:(id)engine handleEvent:(id)event;
 - (void)updateActiveSessionDetailsFromCloudKitRecord;
-- (void)writeActiveSessionDetailOnCloudToInitiateHandoff:(id)a3 handler:(id)a4;
-- (void)writeActiveSessionDetails:(id)a3 pendingRetryCount:(int64_t)a4 qos:(id)a5 completion:(id)a6;
+- (void)writeActiveSessionDetailOnCloudToInitiateHandoff:(id)handoff handler:(id)handler;
+- (void)writeActiveSessionDetails:(id)details pendingRetryCount:(int64_t)count qos:(id)qos completion:(id)completion;
 @end
 
 @implementation SMActiveSessionZone
 
-- (SMActiveSessionZone)initWithQueue:(id)a3 defaultsManager:(id)a4
+- (SMActiveSessionZone)initWithQueue:(id)queue defaultsManager:(id)manager
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  queueCopy = queue;
+  managerCopy = manager;
+  if (queueCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -74,11 +74,11 @@
     v15 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:v14];
     v22.receiver = self;
     v22.super_class = SMActiveSessionZone;
-    v16 = [(SMCloudKitZone *)&v22 initWithZone:v15 queue:v7];
+    v16 = [(SMCloudKitZone *)&v22 initWithZone:v15 queue:queueCopy];
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_defaultsManager, a4);
+      objc_storeStrong(&v16->_defaultsManager, manager);
       v18 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
       observers = v17->_observers;
       v17->_observers = v18;
@@ -88,7 +88,7 @@
 
     self = v17;
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -100,21 +100,21 @@
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue", buf, 2u);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [(SMCloudKitZone *)self queue];
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__SMActiveSessionZone_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
@@ -139,8 +139,8 @@
       [(RTDefaultsManager *)self->_defaultsManager setObject:0 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
       [(RTDefaultsManager *)self->_defaultsManager setObject:0 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
       [(RTDefaultsManager *)self->_defaultsManager setObject:MEMORY[0x277CBEC28] forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
-      v5 = [(SMActiveSessionZone *)self defaultsManager];
-      [RTBootInfo setBootSessionIDWithDefaultsManager:v5 defaultsKey:@"SMDefaultsBootInfoActiveSessionDetailsIsFetchedSinceBootkey"];
+      defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+      [RTBootInfo setBootSessionIDWithDefaultsManager:defaultsManager defaultsKey:@"SMDefaultsBootInfoActiveSessionDetailsIsFetchedSinceBootkey"];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -165,8 +165,8 @@
 
     else
     {
-      v8 = [(SMActiveSessionZone *)self _getLatestActiveSessionDetailsLocalCopy];
-      [(SMActiveSessionZone *)self setLatestActiveSessionDetails:v8];
+      _getLatestActiveSessionDetailsLocalCopy = [(SMActiveSessionZone *)self _getLatestActiveSessionDetailsLocalCopy];
+      [(SMActiveSessionZone *)self setLatestActiveSessionDetails:_getLatestActiveSessionDetailsLocalCopy];
     }
   }
 }
@@ -184,38 +184,38 @@
   [(SMCloudKitZone *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMCloudKitZone *)self queue];
+  observerCopy = observer;
+  queue = [(SMCloudKitZone *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SMActiveSessionZone_addObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMCloudKitZone *)self queue];
+  observerCopy = observer;
+  queue = [(SMCloudKitZone *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SMActiveSessionZone_removeObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -235,13 +235,13 @@
     }
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -261,21 +261,21 @@
     }
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
-- (void)_notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:(id)completed success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  completedCopy = completed;
+  errorCopy = error;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [(SMActiveSessionZone *)self observers];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  observers = [(SMActiveSessionZone *)self observers];
+  v11 = [observers countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v11)
   {
     v13 = v11;
@@ -291,7 +291,7 @@
       {
         if (*v28 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(observers);
         }
 
         v17 = *(*(&v27 + 1) + 8 * v16);
@@ -300,10 +300,10 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             v18 = v14;
-            v19 = v10;
-            v20 = v9;
-            v21 = v6;
-            v22 = v8;
+            v19 = observers;
+            v20 = errorCopy;
+            v21 = successCopy;
+            v22 = completedCopy;
             v23 = v15;
             v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -316,35 +316,35 @@
             }
 
             v15 = v23;
-            v8 = v22;
-            v6 = v21;
-            v9 = v20;
-            v10 = v19;
+            completedCopy = v22;
+            successCopy = v21;
+            errorCopy = v20;
+            observers = v19;
             v14 = v18;
             v13 = v26;
           }
 
-          [v17 onActiveSessionDetailsFetchAttemptFromCKCompleted:v8 success:v6 error:{v9, v25}];
+          [v17 onActiveSessionDetailsFetchAttemptFromCKCompleted:completedCopy success:successCopy error:{errorCopy, v25}];
         }
 
         ++v16;
       }
 
       while (v13 != v16);
-      v13 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v13 = [observers countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)setupZoneWithQos:(id)a3 completion:(id)a4
+- (void)setupZoneWithQos:(id)qos completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  qosCopy = qos;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!qosCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -383,13 +383,13 @@ LABEL_13:
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(SMCloudKitZone *)self zoneID];
-      v14 = [v13 zoneName];
+      zoneID = [(SMCloudKitZone *)self zoneID];
+      zoneName = [zoneID zoneName];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v25 = v14;
+      v25 = zoneName;
       v26 = 2112;
       v27 = v16;
       v28 = 2112;
@@ -400,7 +400,7 @@ LABEL_13:
     }
   }
 
-  v18 = [(SMCloudKitZone *)self privateDatabase];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __51__SMActiveSessionZone_setupZoneWithQos_completion___block_invoke;
@@ -408,7 +408,7 @@ LABEL_13:
   v20[4] = self;
   v22 = a2;
   v21 = v9;
-  [(SMCloudKitZone *)self saveZoneToDatabase:v18 qos:v7 withCompletion:v20];
+  [(SMCloudKitZone *)self saveZoneToDatabase:privateDatabase qos:qosCopy withCompletion:v20];
 
 LABEL_11:
 }
@@ -463,12 +463,12 @@ void __51__SMActiveSessionZone_setupZoneWithQos_completion___block_invoke(uint64
   v10();
 }
 
-- (void)checkActiveSessionDetailsZoneAvailibilityWithQos:(id)a3 completion:(id)a4
+- (void)checkActiveSessionDetailsZoneAvailibilityWithQos:(id)qos completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  qosCopy = qos;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(SMActiveSessionZone *)self activeSessionZoneAvailable])
     {
@@ -488,21 +488,21 @@ void __51__SMActiveSessionZone_setupZoneWithQos_completion___block_invoke(uint64
         }
       }
 
-      v8[2](v8, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
-      v14 = [(SMCloudKitZone *)self privateDatabase];
+      privateDatabase = [(SMCloudKitZone *)self privateDatabase];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __83__SMActiveSessionZone_checkActiveSessionDetailsZoneAvailibilityWithQos_completion___block_invoke;
       v15[3] = &unk_2788C4E28;
       v15[4] = self;
       v18 = a2;
-      v17 = v8;
-      v16 = v7;
-      [(SMCloudKitZone *)self fetchZoneFromDatabase:v14 qos:v16 withCompletion:v15];
+      v17 = completionCopy;
+      v16 = qosCopy;
+      [(SMCloudKitZone *)self fetchZoneFromDatabase:privateDatabase qos:v16 withCompletion:v15];
     }
   }
 
@@ -659,13 +659,13 @@ void __83__SMActiveSessionZone_checkActiveSessionDetailsZoneAvailibilityWithQos_
   v6();
 }
 
-- (void)_writeActiveSessionDetailsRecord:(id)a3 qos:(id)a4 completion:(id)a5
+- (void)_writeActiveSessionDetailsRecord:(id)record qos:(id)qos completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  recordCopy = record;
+  qosCopy = qos;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!recordCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -680,7 +680,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -697,11 +697,11 @@ LABEL_9:
   v15[1] = 3221225472;
   v15[2] = __71__SMActiveSessionZone__writeActiveSessionDetailsRecord_qos_completion___block_invoke;
   v15[3] = &unk_2788CFFA8;
-  v16 = v9;
-  v17 = self;
+  v16 = recordCopy;
+  selfCopy = self;
   v20 = a2;
   v19 = v12;
-  v18 = v10;
+  v18 = qosCopy;
   [(SMActiveSessionZone *)self checkActiveSessionDetailsZoneAvailibilityWithQos:v18 completion:v15];
 
   v13 = v16;
@@ -949,32 +949,32 @@ void __71__SMActiveSessionZone__writeActiveSessionDetailsRecord_qos_completion__
   v8();
 }
 
-- (void)writeActiveSessionDetails:(id)a3 pendingRetryCount:(int64_t)a4 qos:(id)a5 completion:(id)a6
+- (void)writeActiveSessionDetails:(id)details pendingRetryCount:(int64_t)count qos:(id)qos completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SMCloudKitZone *)self queue];
+  detailsCopy = details;
+  qosCopy = qos;
+  completionCopy = completion;
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__SMActiveSessionZone_writeActiveSessionDetails_pendingRetryCount_qos_completion___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = detailsCopy;
+  v20 = completionCopy;
+  countCopy = count;
+  v19 = qosCopy;
+  v14 = completionCopy;
+  v15 = qosCopy;
+  v16 = detailsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_writeActiveSessionDetails:(id)a3 pendingRetryCount:(int64_t)a4 qos:(id)a5 completion:(id)a6
+- (void)_writeActiveSessionDetails:(id)details pendingRetryCount:(int64_t)count qos:(id)qos completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  detailsCopy = details;
+  qosCopy = qos;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -983,12 +983,12 @@ void __71__SMActiveSessionZone__writeActiveSessionDetailsRecord_qos_completion__
   objc_copyWeak(v21, &location);
   v17[4] = self;
   v21[1] = a2;
-  v14 = v13;
+  v14 = completionCopy;
   v20 = v14;
-  v21[2] = a4;
-  v15 = v11;
+  v21[2] = count;
+  v15 = detailsCopy;
   v18 = v15;
-  v16 = v12;
+  v16 = qosCopy;
   v19 = v16;
   [(SMActiveSessionZone *)self _writeActiveSessionDetailsRecord:v15 qos:v16 completion:v17];
 
@@ -1130,13 +1130,13 @@ LABEL_25:
 
 - (void)updateActiveSessionDetailsFromCloudKitRecord
 {
-  v3 = [(SMCloudKitZone *)self queue];
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SMActiveSessionZone_updateActiveSessionDetailsFromCloudKitRecord__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_updateActiveSessionDetailsFromCloudKitRecord
@@ -1188,29 +1188,29 @@ void __68__SMActiveSessionZone__updateActiveSessionDetailsFromCloudKitRecord__bl
   [*(a1 + 32) _onActiveSessionDetailsFetchAttemptFromCKCompleted:v7 success:a3 error:{v8, *v15}];
 }
 
-- (void)fetchActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4
+- (void)fetchActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMCloudKitZone *)self queue];
+  qosCopy = qos;
+  completionCopy = completion;
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SMActiveSessionZone_fetchActiveSessionDetailsRecordWithQos_completion___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = qosCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = qosCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4
+- (void)_fetchActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  qosCopy = qos;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!qosCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1225,7 +1225,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1239,8 +1239,8 @@ LABEL_12:
   }
 
   v10 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v11 = [(SMCloudKitZone *)self zoneID];
-  v12 = [v10 initWithRecordName:@"ActiveSessionDetails" zoneID:v11];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v12 = [v10 initWithRecordName:@"ActiveSessionDetails" zoneID:zoneID];
 
   v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
   v14 = os_signpost_id_make_with_pointer(v13, v12);
@@ -1253,7 +1253,7 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_2304B3000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "SMHandoffSessionFetchActiveSessionDetailsCkLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v17 = [(SMCloudKitZone *)self privateDatabase];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__SMActiveSessionZone__fetchActiveSessionDetailsRecordWithQos_completion___block_invoke;
@@ -1262,7 +1262,7 @@ LABEL_12:
   v22 = a2;
   v19[4] = self;
   v20 = v9;
-  [(SMCloudKitZone *)self fetchRecord:v12 fromDatabase:v17 qos:v7 withCompletion:v19];
+  [(SMCloudKitZone *)self fetchRecord:v12 fromDatabase:privateDatabase qos:qosCopy withCompletion:v19];
 
 LABEL_10:
 }
@@ -1391,10 +1391,10 @@ void __74__SMActiveSessionZone__fetchActiveSessionDetailsRecordWithQos_completio
   }
 }
 
-- (void)_fetchActiveSessionDetailsWithRetryCount:(unint64_t)a3 qosOptions:(id)a4 completion:(id)a5
+- (void)_fetchActiveSessionDetailsWithRetryCount:(unint64_t)count qosOptions:(id)options completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1402,11 +1402,11 @@ void __74__SMActiveSessionZone__fetchActiveSessionDetailsRecordWithQos_completio
   v13[3] = &unk_2788D0048;
   objc_copyWeak(v16, &location);
   v16[1] = a2;
-  v11 = v10;
-  v16[2] = a3;
+  v11 = completionCopy;
+  v16[2] = count;
   v15 = v11;
   v13[4] = self;
-  v12 = v9;
+  v12 = optionsCopy;
   v14 = v12;
   [(SMActiveSessionZone *)self _fetchActiveSessionDetailsRecordWithQos:v12 completion:v13];
 
@@ -1554,20 +1554,20 @@ LABEL_30:
 LABEL_29:
 }
 
-- (void)_updateActiveSessionDetailsLocalCopy:(id)a3
+- (void)_updateActiveSessionDetailsLocalCopy:(id)copy
 {
-  [(SMActiveSessionZone *)self setLatestActiveSessionDetails:a3];
+  [(SMActiveSessionZone *)self setLatestActiveSessionDetails:copy];
 
   [(SMActiveSessionZone *)self _saveLatestActiveSessionDetailsLocalCopy];
 }
 
-- (void)deleteActiveSessionDetailsRecordWithQos:(id)a3 completion:(id)a4
+- (void)deleteActiveSessionDetailsRecordWithQos:(id)qos completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  qosCopy = qos;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!qosCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1582,7 +1582,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1596,22 +1596,22 @@ LABEL_9:
   }
 
   v10 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v11 = [(SMCloudKitZone *)self zoneID];
-  v12 = [v10 initWithRecordName:@"ActiveSessionDetails" zoneID:v11];
+  zoneID = [(SMCloudKitZone *)self zoneID];
+  v12 = [v10 initWithRecordName:@"ActiveSessionDetails" zoneID:zoneID];
 
   v23[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-  v14 = [(SMCloudKitZone *)self privateDatabase];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completion___block_invoke;
   v17[3] = &unk_2788C5A70;
   v18 = v12;
-  v19 = self;
+  selfCopy = self;
   v21 = a2;
   v20 = v9;
   v15 = v12;
-  [(SMCloudKitZone *)self deleteRecords:v13 fromDatabase:v14 qos:v7 withCompletion:v17];
+  [(SMCloudKitZone *)self deleteRecords:v13 fromDatabase:privateDatabase qos:qosCopy withCompletion:v17];
 
 LABEL_7:
 }
@@ -1670,22 +1670,22 @@ void __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completio
 
 - (void)initializeSyncEngine
 {
-  v3 = [(SMCloudKitZone *)self queue];
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SMActiveSessionZone_initializeSyncEngine__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_initializeSyncEngine
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(SMActiveSessionZone *)self _getSyncEngineMetadata];
+  _getSyncEngineMetadata = [(SMActiveSessionZone *)self _getSyncEngineMetadata];
   v5 = objc_alloc(MEMORY[0x277CBC6F0]);
-  v6 = [(SMCloudKitZone *)self privateDatabase];
-  v7 = [v5 initWithDatabase:v6 stateSerialization:v4 delegate:self];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
+  v7 = [v5 initWithDatabase:privateDatabase stateSerialization:_getSyncEngineMetadata delegate:self];
 
   [v7 setApsMachServiceName:*MEMORY[0x277D4AC48]];
   [v7 setPriority:2];
@@ -1717,7 +1717,7 @@ void __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completio
         v17 = @"NO";
       }
 
-      if (!v4)
+      if (!_getSyncEngineMetadata)
       {
         v16 = @"NO";
       }
@@ -1736,8 +1736,8 @@ void __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completio
 - (id)_getSyncEngineMetadata
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SMActiveSessionZone *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadata"];
+  defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadata"];
 
   if (v4)
   {
@@ -1795,10 +1795,10 @@ void __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completio
   return v10;
 }
 
-- (void)_persistSyncEngineMetadata:(id)a3
+- (void)_persistSyncEngineMetadata:(id)metadata
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  metadataCopy = metadata;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1812,49 +1812,49 @@ void __74__SMActiveSessionZone_deleteActiveSessionDetailsRecordWithQos_completio
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
-      v23 = v5;
+      v23 = metadataCopy;
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "#SafetyCache,Initiator:%@,%@,ActiveSessionDetails, metadata %@", buf, 0x20u);
     }
   }
 
   v17 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v17];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:metadataCopy requiringSecureCoding:1 error:&v17];
   v8 = v17;
   if (!v8)
   {
-    v13 = [(SMActiveSessionZone *)self defaultsManager];
-    [v13 setObject:v7 forKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadata"];
+    defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+    [defaultsManager setObject:v7 forKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadata"];
 
-    v9 = [(SMActiveSessionZone *)self defaultsManager];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v9 setObject:v11 forKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadataDate"];
+    defaultsManager2 = [(SMActiveSessionZone *)self defaultsManager];
+    date = [MEMORY[0x277CBEAA8] date];
+    [defaultsManager2 setObject:date forKey:@"RTDefaultsSafetyCacheActiveSessionZoneCKSyncEngineMetadataDate"];
     goto LABEL_9;
   }
 
-  v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  defaultsManager2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+  if (os_log_type_enabled(defaultsManager2, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
-    v11 = NSStringFromClass(v10);
+    date = NSStringFromClass(v10);
     v12 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v19 = v11;
+    v19 = date;
     v20 = 2112;
     v21 = v12;
     v22 = 2112;
-    v23 = v5;
-    _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "#SafetyCache,Initiator,sessionID:%@,%@,ActiveSessionDetails, Failed to encode metadata, %@", buf, 0x20u);
+    v23 = metadataCopy;
+    _os_log_error_impl(&dword_2304B3000, defaultsManager2, OS_LOG_TYPE_ERROR, "#SafetyCache,Initiator,sessionID:%@,%@,ActiveSessionDetails, Failed to encode metadata, %@", buf, 0x20u);
 
 LABEL_9:
   }
 }
 
-- (void)syncEngine:(id)a3 handleEvent:(id)a4
+- (void)syncEngine:(id)engine handleEvent:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  engineCopy = engine;
+  eventCopy = event;
+  if (!eventCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1877,7 +1877,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_syncEngine != v7)
+  if (self->_syncEngine != engineCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1890,7 +1890,7 @@ LABEL_6:
       v24 = 2112;
       v25 = v12;
       v26 = 2112;
-      v27 = v7;
+      v27 = engineCopy;
       v13 = "#SafetyCache,Initiator:%@,%@, Sync engine %@ doesn't match internal reference.";
       v14 = v9;
       v15 = 32;
@@ -1916,33 +1916,33 @@ LABEL_17:
       v24 = 2112;
       v25 = v19;
       v26 = 2112;
-      v27 = v8;
+      v27 = eventCopy;
       v28 = 2048;
-      v29 = [(CKSyncEngine *)v8 type];
+      type = [(CKSyncEngine *)eventCopy type];
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "#SafetyCache,Initiator, %@,%@, CKSyncEngine incoming event %@, %lu", &v22, 0x2Au);
     }
   }
 
-  v20 = [(CKSyncEngine *)v8 type];
-  if (v20 == 3)
+  type2 = [(CKSyncEngine *)eventCopy type];
+  if (type2 == 3)
   {
-    [(SMActiveSessionZone *)self handleFetchedRecordZoneChanges:v8];
+    [(SMActiveSessionZone *)self handleFetchedRecordZoneChanges:eventCopy];
   }
 
-  else if (!v20)
+  else if (!type2)
   {
-    [(SMActiveSessionZone *)self handleStateUpdate:v8];
+    [(SMActiveSessionZone *)self handleStateUpdate:eventCopy];
   }
 
 LABEL_7:
 }
 
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context
 {
   v81 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (self->_syncEngine == v7)
+  engineCopy = engine;
+  contextCopy = context;
+  if (self->_syncEngine == engineCopy)
   {
     aSelector = a2;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1963,24 +1963,24 @@ LABEL_7:
       }
     }
 
-    v53 = v8;
-    v54 = v7;
-    v11 = [v8 options];
-    v12 = [v11 zoneIDs];
+    v53 = contextCopy;
+    v54 = engineCopy;
+    options = [contextCopy options];
+    zoneIDs = [options zoneIDs];
 
-    v13 = [(CKSyncEngine *)self->_syncEngine state];
-    v14 = [v13 pendingRecordZoneChanges];
+    state = [(CKSyncEngine *)self->_syncEngine state];
+    pendingRecordZoneChanges = [state pendingRecordZoneChanges];
 
-    v57 = self;
-    v58 = v12;
-    if (v12)
+    selfCopy = self;
+    v58 = zoneIDs;
+    if (zoneIDs)
     {
       v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v16 = v14;
+      v16 = pendingRecordZoneChanges;
       v17 = [v16 countByEnumeratingWithState:&v68 objects:v80 count:16];
       if (v17)
       {
@@ -1996,9 +1996,9 @@ LABEL_7:
             }
 
             v21 = *(*(&v68 + 1) + 8 * i);
-            v22 = [v21 recordID];
-            v23 = [v22 zoneID];
-            v24 = [v58 containsObject:v23];
+            recordID = [v21 recordID];
+            zoneID = [recordID zoneID];
+            v24 = [v58 containsObject:zoneID];
 
             if (v24)
             {
@@ -2012,9 +2012,9 @@ LABEL_7:
         while (v18);
       }
 
-      v14 = [MEMORY[0x277CBEA60] arrayWithArray:v15];
+      pendingRecordZoneChanges = [MEMORY[0x277CBEA60] arrayWithArray:v15];
 
-      self = v57;
+      self = selfCopy;
     }
 
     v25 = objc_alloc(MEMORY[0x277CBC730]);
@@ -2024,14 +2024,14 @@ LABEL_7:
     v67[3] = &unk_2788D0070;
     v67[4] = self;
     v67[5] = a2;
-    v52 = v14;
+    v52 = pendingRecordZoneChanges;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v55 = [v25 initWithPendingChanges:v14 recordProvider:v67];
-    v26 = [v55 recordsToSave];
-    v27 = [v26 countByEnumeratingWithState:&v63 objects:v79 count:16];
+    v55 = [v25 initWithPendingChanges:pendingRecordZoneChanges recordProvider:v67];
+    recordsToSave = [v55 recordsToSave];
+    v27 = [recordsToSave countByEnumeratingWithState:&v63 objects:v79 count:16];
     if (v27)
     {
       v28 = v27;
@@ -2043,7 +2043,7 @@ LABEL_7:
         {
           if (*v64 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(recordsToSave);
           }
 
           v32 = *(*(&v63 + 1) + 8 * j);
@@ -2066,7 +2066,7 @@ LABEL_7:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v63 objects:v79 count:16];
+        v28 = [recordsToSave countByEnumeratingWithState:&v63 objects:v79 count:16];
       }
 
       while (v28);
@@ -2076,8 +2076,8 @@ LABEL_7:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v37 = [v55 recordIDsToDelete];
-    v38 = [v37 countByEnumeratingWithState:&v59 objects:v72 count:16];
+    recordIDsToDelete = [v55 recordIDsToDelete];
+    v38 = [recordIDsToDelete countByEnumeratingWithState:&v59 objects:v72 count:16];
     if (v38)
     {
       v39 = v38;
@@ -2089,7 +2089,7 @@ LABEL_7:
         {
           if (*v60 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(recordIDsToDelete);
           }
 
           v43 = *(*(&v59 + 1) + 8 * k);
@@ -2112,14 +2112,14 @@ LABEL_7:
           }
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v59 objects:v72 count:16];
+        v39 = [recordIDsToDelete countByEnumeratingWithState:&v59 objects:v72 count:16];
       }
 
       while (v39);
     }
 
-    v8 = v53;
-    v7 = v54;
+    contextCopy = v53;
+    engineCopy = v54;
     v9 = v55;
   }
 
@@ -2153,30 +2153,30 @@ uint64_t __70__SMActiveSessionZone_syncEngine_nextRecordZoneChangeBatchForContex
   return 0;
 }
 
-- (void)handleStateUpdate:(id)a3
+- (void)handleStateUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SMCloudKitZone *)self queue];
+  updateCopy = update;
+  queue = [(SMCloudKitZone *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__SMActiveSessionZone_handleStateUpdate___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  v6 = updateCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_handleStateUpdate:(id)a3
+- (void)_handleStateUpdate:(id)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 stateUpdateEvent];
-  v7 = v6;
-  if (v6)
+  updateCopy = update;
+  stateUpdateEvent = [updateCopy stateUpdateEvent];
+  v7 = stateUpdateEvent;
+  if (stateUpdateEvent)
   {
-    v8 = [v6 stateSerialization];
-    [(SMActiveSessionZone *)self _persistSyncEngineMetadata:v8];
+    stateSerialization = [stateUpdateEvent stateSerialization];
+    [(SMActiveSessionZone *)self _persistSyncEngineMetadata:stateSerialization];
   }
 
   else
@@ -2186,8 +2186,8 @@ uint64_t __70__SMActiveSessionZone_syncEngine_nextRecordZoneChangeBatchForContex
       goto LABEL_4;
     }
 
-    v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    stateSerialization = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(stateSerialization, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
@@ -2197,32 +2197,32 @@ uint64_t __70__SMActiveSessionZone_syncEngine_nextRecordZoneChangeBatchForContex
       v14 = 2112;
       v15 = v11;
       v16 = 2112;
-      v17 = v5;
-      _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "#SafetyCache,Initiator,sessionID:%@,%@,ActiveSessionDetails, Called back for invalid CKSyncEngineStateUpdateEvent (%@)", &v12, 0x20u);
+      v17 = updateCopy;
+      _os_log_impl(&dword_2304B3000, stateSerialization, OS_LOG_TYPE_INFO, "#SafetyCache,Initiator,sessionID:%@,%@,ActiveSessionDetails, Called back for invalid CKSyncEngineStateUpdateEvent (%@)", &v12, 0x20u);
     }
   }
 
 LABEL_4:
 }
 
-- (void)handleFetchedRecordZoneChanges:(id)a3
+- (void)handleFetchedRecordZoneChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(SMCloudKitZone *)self queue];
+  changesCopy = changes;
+  queue = [(SMCloudKitZone *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SMActiveSessionZone_handleFetchedRecordZoneChanges___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changesCopy;
+  v6 = changesCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_handleFetchedRecordZoneChanges:(id)a3
+- (void)_handleFetchedRecordZoneChanges:(id)changes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changesCopy = changes;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2236,29 +2236,29 @@ LABEL_4:
       v19 = 2112;
       v20 = v9;
       v21 = 2112;
-      v22 = v5;
+      v22 = changesCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "#SafetyCache,Initiator:%@,%@,event, %@", buf, 0x20u);
     }
   }
 
-  v10 = [v5 fetchedRecordZoneChangesEvent];
-  v11 = v10;
-  if (v10)
+  fetchedRecordZoneChangesEvent = [changesCopy fetchedRecordZoneChangesEvent];
+  v11 = fetchedRecordZoneChangesEvent;
+  if (fetchedRecordZoneChangesEvent)
   {
-    v12 = [v10 modifications];
+    modifications = [fetchedRecordZoneChangesEvent modifications];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke;
     v16[3] = &unk_2788D0098;
     v16[4] = self;
     v16[5] = a2;
-    [v12 enumerateObjectsUsingBlock:v16];
+    [modifications enumerateObjectsUsingBlock:v16];
   }
 
   else
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    modifications = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(modifications, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
@@ -2268,8 +2268,8 @@ LABEL_4:
       v19 = 2112;
       v20 = v15;
       v21 = 2112;
-      v22 = v5;
-      _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "#SafetyCache,Initiator:%@,%@, Called back for invalid CKSyncEngineFetchedRecordZoneChangesEvent %@", buf, 0x20u);
+      v22 = changesCopy;
+      _os_log_error_impl(&dword_2304B3000, modifications, OS_LOG_TYPE_ERROR, "#SafetyCache,Initiator:%@,%@, Called back for invalid CKSyncEngineFetchedRecordZoneChangesEvent %@", buf, 0x20u);
     }
   }
 }
@@ -2331,12 +2331,12 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
   }
 }
 
-- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  completedCopy = completed;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2345,18 +2345,18 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
       v13 = 136315906;
       v14 = "[SMActiveSessionZone _onActiveSessionDetailsFetchAttemptFromCKCompleted:success:error:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = completedCopy;
       v17 = 1024;
-      v18 = v6;
+      v18 = successCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = errorCopy;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s, fetchedActiveSessionDetails, %@, success, %{Bool}d, error, %@", &v13, 0x26u);
     }
   }
 
-  if (v9 || !v6)
+  if (errorCopy || !successCopy)
   {
-    if (!v6 && ([v9 code] == 11 || objc_msgSend(v9, "code") == 26))
+    if (!successCopy && ([errorCopy code] == 11 || objc_msgSend(errorCopy, "code") == 26))
     {
       [(SMActiveSessionZone *)self setLatestActiveSessionDetails:0];
       [(SMActiveSessionZone *)self _saveLatestActiveSessionDetailsStateToDefaults:0];
@@ -2364,45 +2364,45 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
 
     else
     {
-      v11 = [(SMActiveSessionZone *)self defaultsManager];
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v11 setObject:v12 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
+      defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+      date = [MEMORY[0x277CBEAA8] date];
+      [defaultsManager setObject:date forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
     }
   }
 
   else
   {
-    [(SMActiveSessionZone *)self _updateActiveSessionDetailsLocalCopy:v8];
+    [(SMActiveSessionZone *)self _updateActiveSessionDetailsLocalCopy:completedCopy];
   }
 
-  [(SMActiveSessionZone *)self _notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:v8 success:v6 error:v9];
+  [(SMActiveSessionZone *)self _notifyObserversForActiveSessionDetailsFetchAttemptedFromCKCompleted:completedCopy success:successCopy error:errorCopy];
 }
 
-- (id)_createActiveSessionDetailsFromCKRecord:(id)a3
+- (id)_createActiveSessionDetailsFromCKRecord:(id)record
 {
-  v3 = a3;
-  if (v3)
+  recordCopy = record;
+  if (recordCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CCAD78]);
-    v5 = [v3 encryptedValues];
-    v6 = [v5 objectForKeyedSubscript:@"SessionID"];
+    encryptedValues = [recordCopy encryptedValues];
+    v6 = [encryptedValues objectForKeyedSubscript:@"SessionID"];
     v7 = [v4 initWithUUIDString:v6];
 
     v8 = objc_alloc(MEMORY[0x277CCAD78]);
-    v9 = [v3 encryptedValues];
-    v10 = [v9 objectForKeyedSubscript:@"ActiveDeviceIdentifier"];
+    encryptedValues2 = [recordCopy encryptedValues];
+    v10 = [encryptedValues2 objectForKeyedSubscript:@"ActiveDeviceIdentifier"];
     v11 = [v8 initWithUUIDString:v10];
 
     v12 = 0;
     if (v7 && v11)
     {
       v13 = objc_alloc(MEMORY[0x277D4AA58]);
-      v14 = [v3 encryptedValues];
-      v15 = [v14 objectForKeyedSubscript:@"CacheReleasedDate"];
-      v16 = [v3 encryptedValues];
-      v17 = [v16 objectForKeyedSubscript:@"ScheduledSendGUID"];
-      v18 = [v3 encryptedValues];
-      v19 = [v18 objectForKeyedSubscript:@"ReceiverHandles"];
+      encryptedValues3 = [recordCopy encryptedValues];
+      v15 = [encryptedValues3 objectForKeyedSubscript:@"CacheReleasedDate"];
+      encryptedValues4 = [recordCopy encryptedValues];
+      v17 = [encryptedValues4 objectForKeyedSubscript:@"ScheduledSendGUID"];
+      encryptedValues5 = [recordCopy encryptedValues];
+      v19 = [encryptedValues5 objectForKeyedSubscript:@"ReceiverHandles"];
       v12 = [v13 initWithSessionID:v7 activeDeviceIdentifier:v11 cacheReleasedDate:v15 scheduledSendGUID:v17 receiverHandles:v19];
     }
   }
@@ -2460,13 +2460,13 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
 - (BOOL)_isActiveSessionDetailsLocalRecordExpired
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SMActiveSessionZone *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
+  defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v3];
     v6 = v5 < 1800.0;
   }
 
@@ -2500,9 +2500,9 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
 - (BOOL)_isActiveSessionDetailsFetchedFromCloudKitSinceBoot
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [(SMActiveSessionZone *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
-  v4 = [v3 BOOLValue];
+  defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
+  bOOLValue = [v3 BOOLValue];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -2510,7 +2510,7 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v7 = @"YES";
       }
@@ -2523,24 +2523,24 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isEligibleForCacheUpdateForCurrentDeviceIdentifier:(id)a3 sessionManagerState:(id)a4
+- (BOOL)isEligibleForCacheUpdateForCurrentDeviceIdentifier:(id)identifier sessionManagerState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
-  v9 = [v8 sessionID];
-  v10 = [v7 configuration];
+  identifierCopy = identifier;
+  stateCopy = state;
+  latestActiveSessionDetails = [(SMActiveSessionZone *)self latestActiveSessionDetails];
+  sessionID = [latestActiveSessionDetails sessionID];
+  configuration = [stateCopy configuration];
 
-  v11 = [v10 sessionID];
-  if ([v9 isEqual:v11])
+  sessionID2 = [configuration sessionID];
+  if ([sessionID isEqual:sessionID2])
   {
-    v12 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
-    v13 = [v12 activeDeviceIdentifier];
-    v14 = [v13 isEqual:v6];
+    latestActiveSessionDetails2 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
+    activeDeviceIdentifier = [latestActiveSessionDetails2 activeDeviceIdentifier];
+    v14 = [activeDeviceIdentifier isEqual:identifierCopy];
   }
 
   else
@@ -2570,27 +2570,27 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
   return v14;
 }
 
-- (void)writeActiveSessionDetailOnCloudToInitiateHandoff:(id)a3 handler:(id)a4
+- (void)writeActiveSessionDetailOnCloudToInitiateHandoff:(id)handoff handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMCloudKitZone *)self queue];
+  handoffCopy = handoff;
+  handlerCopy = handler;
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__SMActiveSessionZone_writeActiveSessionDetailOnCloudToInitiateHandoff_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = handoffCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = handoffCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_writeActiveSessionDetailsOnCloudToInitiateHandoff:(id)a3 handler:(id)a4
+- (void)_writeActiveSessionDetailsOnCloudToInitiateHandoff:(id)handoff handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  handoffCopy = handoff;
+  handlerCopy = handler;
   v9 = [[SMCloudKitQosOptions alloc] initWithDefaultQos:1 masqueradeBundleID:0 xpcActivity:0];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
@@ -2599,11 +2599,11 @@ void __55__SMActiveSessionZone__handleFetchedRecordZoneChanges___block_invoke(ui
   v12[3] = &unk_2788CCDC8;
   objc_copyWeak(v16, &location);
   v16[1] = a2;
-  v10 = v8;
+  v10 = handlerCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = handoffCopy;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   [(SMActiveSessionZone *)self _writeActiveSessionDetails:v11 pendingRetryCount:3 qos:v9 completion:v12];
 
   objc_destroyWeak(v16);
@@ -2665,19 +2665,19 @@ void __82__SMActiveSessionZone__writeActiveSessionDetailsOnCloudToInitiateHandof
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchActiveSessionDetailsWithHandler:(id)a3
+- (void)fetchActiveSessionDetailsWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(SMCloudKitZone *)self queue];
+  handlerCopy = handler;
+  queue = [(SMCloudKitZone *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
   block[4] = self;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invoke(uint64_t a1)
@@ -2746,9 +2746,9 @@ void __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invo
 - (void)_saveLatestActiveSessionDetailsLocalCopy
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
+  latestActiveSessionDetails = [(SMActiveSessionZone *)self latestActiveSessionDetails];
 
-  if (!v4)
+  if (!latestActiveSessionDetails)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2762,9 +2762,9 @@ void __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invo
   }
 
   v6 = MEMORY[0x277CCAAB0];
-  v7 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
+  latestActiveSessionDetails2 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
   v15 = 0;
-  v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v15];
+  v8 = [v6 archivedDataWithRootObject:latestActiveSessionDetails2 requiringSecureCoding:1 error:&v15];
   v9 = v15;
 
   if (v9)
@@ -2775,13 +2775,13 @@ void __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invo
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v14 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
+      latestActiveSessionDetails3 = [(SMActiveSessionZone *)self latestActiveSessionDetails];
       *buf = 138413058;
       v17 = v12;
       v18 = 2112;
       v19 = v13;
       v20 = 2112;
-      v21 = v14;
+      v21 = latestActiveSessionDetails3;
       v22 = 2112;
       v23 = v9;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,Initiator,%@,%@, Failed to serialize activeSessionDetails, %@, error, %@", buf, 0x2Au);
@@ -2791,27 +2791,27 @@ void __60__SMActiveSessionZone_fetchActiveSessionDetailsWithHandler___block_invo
   [(SMActiveSessionZone *)self _saveLatestActiveSessionDetailsStateToDefaults:v8];
 }
 
-- (void)_saveLatestActiveSessionDetailsStateToDefaults:(id)a3
+- (void)_saveLatestActiveSessionDetailsStateToDefaults:(id)defaults
 {
   defaultsManager = self->_defaultsManager;
-  v5 = a3;
+  defaultsCopy = defaults;
   [(RTDefaultsManager *)defaultsManager setObject:MEMORY[0x277CBEC38] forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
-  v6 = [(SMActiveSessionZone *)self defaultsManager];
-  [v6 setObject:v5 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsKey"];
+  defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+  [defaultsManager setObject:defaultsCopy forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsKey"];
 
-  v7 = [(SMActiveSessionZone *)self defaultsManager];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v7 setObject:v8 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
+  defaultsManager2 = [(SMActiveSessionZone *)self defaultsManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager2 setObject:date forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
 
-  v9 = [(SMActiveSessionZone *)self defaultsManager];
-  [v9 setObject:0 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
+  defaultsManager3 = [(SMActiveSessionZone *)self defaultsManager];
+  [defaultsManager3 setObject:0 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
 }
 
 - (id)_getLatestActiveSessionDetailsLocalCopy
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SMActiveSessionZone *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsKey"];
+  defaultsManager = [(SMActiveSessionZone *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsKey"];
 
   if (v4)
   {

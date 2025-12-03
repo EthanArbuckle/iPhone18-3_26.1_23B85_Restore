@@ -1,20 +1,20 @@
 @interface MTUniversalPlaybackPositionTransactionContext
 + (id)UPPDomainVersion;
-+ (void)setUPPDomainVersion:(id)a3;
++ (void)setUPPDomainVersion:(id)version;
 - (id)lastSyncedDomainVersion;
 @end
 
 @implementation MTUniversalPlaybackPositionTransactionContext
 
-+ (void)setUPPDomainVersion:(id)a3
++ (void)setUPPDomainVersion:(id)version
 {
-  v6 = a3;
-  v3 = [v6 length];
+  versionCopy = version;
+  v3 = [versionCopy length];
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = v4;
   if (v3)
   {
-    [v4 setObject:v6 forKey:@"kMTUPPTransitionContextUPPDomainVersionKey"];
+    [v4 setObject:versionCopy forKey:@"kMTUPPTransitionContextUPPDomainVersionKey"];
   }
 
   else

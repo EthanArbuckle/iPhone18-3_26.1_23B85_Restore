@@ -1,23 +1,23 @@
 @interface SafariProfileNameEditableTableCell
 - (BOOL)canReload;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SafariProfileNameEditableTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = SafariProfileNameEditableTableCell;
-  [(SafariSettingsEditableTableCell *)&v7 refreshCellContentsWithSpecifier:a3];
-  v4 = [(SafariProfileNameEditableTableCell *)self textField];
-  [v4 setClearButtonMode:1];
-  [v4 setEnabled:1];
+  [(SafariSettingsEditableTableCell *)&v7 refreshCellContentsWithSpecifier:specifier];
+  textField = [(SafariProfileNameEditableTableCell *)self textField];
+  [textField setClearButtonMode:1];
+  [textField setEnabled:1];
   v5 = +[UIColor labelColor];
-  [v4 setTextColor:v5];
+  [textField setTextColor:v5];
 
   if ([(SafariProfileNameEditableTableCell *)self _sf_usesLeftToRightLayout])
   {
@@ -29,30 +29,30 @@
     v6 = 2;
   }
 
-  [v4 setTextAlignment:v6];
+  [textField setTextAlignment:v6];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(SafariProfileNameEditableTableCell *)self textField];
+  returnCopy = return;
+  textField = [(SafariProfileNameEditableTableCell *)self textField];
 
-  if (v5 == v4)
+  if (textField == returnCopy)
   {
-    v6 = [(SafariProfileNameEditableTableCell *)self textField];
-    [v6 resignFirstResponder];
+    textField2 = [(SafariProfileNameEditableTableCell *)self textField];
+    [textField2 resignFirstResponder];
   }
 
-  return v5 != v4;
+  return textField != returnCopy;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
-  v9 = [a3 text];
-  v10 = [v9 stringByReplacingCharactersInRange:location withString:{length, v8}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v10 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   v11 = [v10 length];
   LOBYTE(location) = v11 <= WBSProfileNameCharacterCountLimit;
@@ -60,12 +60,12 @@
   return location;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v3 = [(SafariProfileNameEditableTableCell *)self specifier];
-  v4 = [v3 target];
+  specifier = [(SafariProfileNameEditableTableCell *)self specifier];
+  target = [specifier target];
 
-  [v4 profileNameCellDidResignFirstResponder];
+  [target profileNameCellDidResignFirstResponder];
 }
 
 - (BOOL)canReload

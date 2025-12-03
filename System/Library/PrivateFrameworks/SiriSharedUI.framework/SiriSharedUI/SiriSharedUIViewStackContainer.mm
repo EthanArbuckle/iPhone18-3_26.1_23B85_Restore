@@ -1,32 +1,32 @@
 @interface SiriSharedUIViewStackContainer
-- (BOOL)hasContentAtPoint:(CGPoint)a3;
+- (BOOL)hasContentAtPoint:(CGPoint)point;
 - (NSArray)contentViews;
-- (SiriSharedUIViewStackContainer)initWithFrame:(CGRect)a3 contentViews:(id)a4;
+- (SiriSharedUIViewStackContainer)initWithFrame:(CGRect)frame contentViews:(id)views;
 - (SiriSharedUIViewStackContainerDelegate)delegate;
 - (double)topPadding;
 - (id)_mostRecentBottomStackViewAnchor;
 - (id)_mostRecentTopStackViewAnchor;
-- (id)_stackContainingContentView:(id)a3;
-- (id)stackableViewsWithAttachment:(int64_t)a3;
-- (void)_attachContentView:(id)a3;
+- (id)_stackContainingContentView:(id)view;
+- (id)stackableViewsWithAttachment:(int64_t)attachment;
+- (void)_attachContentView:(id)view;
 - (void)_configureContainingView;
-- (void)_configureCustomTopAndBottomViews:(id)a3;
+- (void)_configureCustomTopAndBottomViews:(id)views;
 - (void)_snapshotContentViewFramesForTransition;
 - (void)_updateContainingViewConstraints;
 - (void)_updateContainingViewTopConstraint;
 - (void)_updateContainingViewTrailingConstraint;
 - (void)_updateLeadingTrailingConstraints;
 - (void)_updateScrollViewContentInsets;
-- (void)addContentView:(id)a3;
-- (void)addContentView:(id)a3 fromViewController:(id)a4;
-- (void)bringSubviewToFront:(id)a3;
+- (void)addContentView:(id)view;
+- (void)addContentView:(id)view fromViewController:(id)controller;
+- (void)bringSubviewToFront:(id)front;
 - (void)didDismissModalContent;
 - (void)relayout;
-- (void)removeContentView:(id)a3;
+- (void)removeContentView:(id)view;
 - (void)safeAreaInsetsDidChange;
-- (void)setBottomPadding:(double)a3 animatedWithDuration:(double)a4 animationOptions:(unint64_t)a5 alongsideAnimations:(id)a6 completion:(id)a7;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)stackableContentWillUpdateLayout:(id)a3 withUpdatedContentSize:(CGSize)a4 animated:(BOOL)a5;
+- (void)setBottomPadding:(double)padding animatedWithDuration:(double)duration animationOptions:(unint64_t)options alongsideAnimations:(id)animations completion:(id)completion;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)stackableContentWillUpdateLayout:(id)layout withUpdatedContentSize:(CGSize)size animated:(BOOL)animated;
 - (void)updateConstraints;
 - (void)willDismissModalContent;
 - (void)willPresentModalContent;
@@ -34,18 +34,18 @@
 
 @implementation SiriSharedUIViewStackContainer
 
-- (SiriSharedUIViewStackContainer)initWithFrame:(CGRect)a3 contentViews:(id)a4
+- (SiriSharedUIViewStackContainer)initWithFrame:(CGRect)frame contentViews:(id)views
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  viewsCopy = views;
   v13.receiver = self;
   v13.super_class = SiriSharedUIViewStackContainer;
-  v10 = [(SiriSharedUIViewStackContainer *)&v13 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(SiriSharedUIViewStackContainer *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -55,11 +55,11 @@
       _os_log_impl(&dword_21E3EB000, v11, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
     }
 
-    [(SiriSharedUIViewStackContainer *)v10 _configureContainingView];
-    [(SiriSharedUIViewStackContainer *)v10 _setContentViews:v9];
+    [(SiriSharedUIViewStackContainer *)height _configureContainingView];
+    [(SiriSharedUIViewStackContainer *)height _setContentViews:viewsCopy];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)_configureContainingView
@@ -78,52 +78,52 @@
   [(SiriSharedUIStandardScrollView *)self->_scrollView setScrollEnabled:0];
   [(SiriSharedUIStandardScrollView *)self->_scrollView setContentInsetAdjustmentBehavior:2];
   [(SiriSharedUIViewStackContainer *)self addSubview:self->_scrollView];
-  v52 = [(SiriSharedUIStandardScrollView *)self->_scrollView frameLayoutGuide];
-  v5 = [(SiriSharedUIViewStackContainer *)self safeAreaLayoutGuide];
+  frameLayoutGuide = [(SiriSharedUIStandardScrollView *)self->_scrollView frameLayoutGuide];
+  safeAreaLayoutGuide = [(SiriSharedUIViewStackContainer *)self safeAreaLayoutGuide];
   IsPad = SiriSharedUIDeviceIsPad();
-  v7 = [v52 leadingAnchor];
-  v8 = [v5 leadingAnchor];
+  leadingAnchor = [frameLayoutGuide leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
   if (IsPad)
   {
-    [v7 constraintEqualToAnchor:v8 constant:30.0];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
   }
 
   else
   {
-    [v7 constraintEqualToAnchor:v8];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   }
   v9 = ;
   leadingContainerConstraint = self->_leadingContainerConstraint;
   self->_leadingContainerConstraint = v9;
 
   [(NSLayoutConstraint *)self->_leadingContainerConstraint setActive:1];
-  v11 = [v52 topAnchor];
-  v12 = [v5 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:self->_topPadding];
+  topAnchor = [frameLayoutGuide topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_topPadding];
   topContainerConstraint = self->_topContainerConstraint;
   self->_topContainerConstraint = v13;
 
   [(SiriSharedUIViewStackContainer *)self _updateContainingViewTopConstraint];
   [(NSLayoutConstraint *)self->_topContainerConstraint setActive:1];
-  v15 = [v52 trailingAnchor];
-  v16 = [v5 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:0.0];
+  trailingAnchor = [frameLayoutGuide trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   trailingContainerConstraint = self->_trailingContainerConstraint;
   self->_trailingContainerConstraint = v17;
 
   [(SiriSharedUIViewStackContainer *)self _updateContainingViewTrailingConstraint];
   [(NSLayoutConstraint *)self->_trailingContainerConstraint setActive:1];
-  v19 = [v52 bottomAnchor];
-  v20 = [(SiriSharedUIViewStackContainer *)self bottomAnchor];
+  bottomAnchor = [frameLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(SiriSharedUIViewStackContainer *)self bottomAnchor];
   [(SiriSharedUIViewStackContainer *)self bottomPadding];
-  v22 = [v19 constraintEqualToAnchor:v20 constant:-v21];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v21];
 
   [(NSLayoutConstraint *)v22 setActive:1];
   bottomContainerConstraint = self->_bottomContainerConstraint;
   self->_bottomContainerConstraint = v22;
   v24 = v22;
 
-  v25 = [(SiriSharedUIStandardScrollView *)self->_scrollView contentLayoutGuide];
+  contentLayoutGuide = [(SiriSharedUIStandardScrollView *)self->_scrollView contentLayoutGuide];
   v26 = [SiriSharedUIStandardView alloc];
   v27 = [(SiriSharedUIStandardView *)v26 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   containingView = self->_containingView;
@@ -131,39 +131,39 @@
 
   [(UIView *)self->_containingView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SiriSharedUIStandardScrollView *)self->_scrollView addContentView:self->_containingView];
-  v29 = [(UIView *)self->_containingView leadingAnchor];
-  v30 = [v25 leadingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  leadingAnchor3 = [(UIView *)self->_containingView leadingAnchor];
+  leadingAnchor4 = [contentLayoutGuide leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v31 setActive:1];
 
-  v32 = [(UIView *)self->_containingView topAnchor];
-  v33 = [v25 topAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  topAnchor3 = [(UIView *)self->_containingView topAnchor];
+  topAnchor4 = [contentLayoutGuide topAnchor];
+  v34 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v34 setActive:1];
 
-  v35 = [(UIView *)self->_containingView trailingAnchor];
-  v36 = [v25 trailingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  trailingAnchor3 = [(UIView *)self->_containingView trailingAnchor];
+  trailingAnchor4 = [contentLayoutGuide trailingAnchor];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v37 setActive:1];
 
-  v38 = [(UIView *)self->_containingView bottomAnchor];
-  v39 = [v25 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  bottomAnchor3 = [(UIView *)self->_containingView bottomAnchor];
+  bottomAnchor4 = [contentLayoutGuide bottomAnchor];
+  v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v40 setActive:1];
 
-  v41 = [(UIView *)self->_containingView leadingAnchor];
-  v42 = [v52 leadingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  leadingAnchor5 = [(UIView *)self->_containingView leadingAnchor];
+  leadingAnchor6 = [frameLayoutGuide leadingAnchor];
+  v43 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v43 setActive:1];
 
-  v44 = [(UIView *)self->_containingView widthAnchor];
-  v45 = [v52 widthAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  widthAnchor = [(UIView *)self->_containingView widthAnchor];
+  widthAnchor2 = [frameLayoutGuide widthAnchor];
+  v46 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v46 setActive:1];
 
-  v47 = [(UIView *)self->_containingView heightAnchor];
-  v48 = [v52 heightAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  heightAnchor = [(UIView *)self->_containingView heightAnchor];
+  heightAnchor2 = [frameLayoutGuide heightAnchor];
+  v49 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v50) = 1148846080;
   [(NSLayoutConstraint *)v49 setPriority:v50];
@@ -172,13 +172,13 @@
   self->_containingViewHeightConstraint = v49;
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  v3 = a3;
-  self->_isInAmbient = a3;
+  ambientCopy = ambient;
+  self->_isInAmbient = ambient;
   [(SiriSharedUIStandardScrollView *)self->_scrollView setScrollEnabled:?];
   LODWORD(v5) = 1148846080;
-  if (v3)
+  if (ambientCopy)
   {
     *&v5 = 250.0;
   }
@@ -279,8 +279,8 @@
         v8 = v7;
         v10 = v9;
         v12 = v11;
-        v13 = [v16 windowScene];
-        SiriSharedUICompactSlideOverContentSpacingOnPad([v13 interfaceOrientation], v6, v8, v10, v12);
+        windowScene = [v16 windowScene];
+        SiriSharedUICompactSlideOverContentSpacingOnPad([windowScene interfaceOrientation], v6, v8, v10, v12);
         v15 = v14;
 
         IsPad = [(NSLayoutConstraint *)self->_trailingContainerConstraint setConstant:-v15];
@@ -312,9 +312,9 @@
     goto LABEL_11;
   }
 
-  v6 = [(SiriSharedUIViewStackContainer *)self window];
-  v7 = [v6 windowScene];
-  if (([v7 interfaceOrientation] - 3) > 1)
+  window = [(SiriSharedUIViewStackContainer *)self window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) > 1)
   {
 
 LABEL_10:
@@ -337,10 +337,10 @@ LABEL_11:
   [(NSLayoutConstraint *)topContainerConstraint setConstant:v5];
 }
 
-- (void)_configureCustomTopAndBottomViews:(id)a3
+- (void)_configureCustomTopAndBottomViews:(id)views
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   v5 = [SiriSharedUIViewStack alloc];
   v6 = MEMORY[0x277CBEBF8];
   v7 = [(SiriSharedUIViewStack *)v5 initWithContentViews:MEMORY[0x277CBEBF8]];
@@ -363,7 +363,7 @@ LABEL_11:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = v4;
+  v15 = viewsCopy;
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v16)
   {
@@ -390,12 +390,12 @@ LABEL_11:
   }
 }
 
-- (BOOL)hasContentAtPoint:(CGPoint)a3
+- (BOOL)hasContentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SiriSharedUIViewStackContainer *)self _transitionalContentViewFrames];
-  v7 = [v6 containsPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _transitionalContentViewFrames = [(SiriSharedUIViewStackContainer *)self _transitionalContentViewFrames];
+  v7 = [_transitionalContentViewFrames containsPoint:{x, y}];
 
   if (v7)
   {
@@ -408,7 +408,7 @@ LABEL_11:
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v9 = [(SiriSharedUIViewStackContainer *)self contentViews];
+    contentViews = [(SiriSharedUIViewStackContainer *)self contentViews];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__SiriSharedUIViewStackContainer_hasContentAtPoint___block_invoke;
@@ -417,7 +417,7 @@ LABEL_11:
     *&v11[7] = y;
     v11[4] = self;
     v11[5] = &v12;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [contentViews enumerateObjectsUsingBlock:v11];
 
     v8 = *(v13 + 24);
     _Block_object_dispose(&v12, 8);
@@ -465,49 +465,49 @@ void __52__SiriSharedUIViewStackContainer_hasContentAtPoint___block_invoke(uint6
 
 - (id)_mostRecentBottomStackViewAnchor
 {
-  v3 = [(SiriSharedUIViewStack *)self->_bottomViewStack mostRecentlyAddedView];
-  v4 = [v3 topAnchor];
-  v5 = v4;
-  if (v4)
+  mostRecentlyAddedView = [(SiriSharedUIViewStack *)self->_bottomViewStack mostRecentlyAddedView];
+  topAnchor = [mostRecentlyAddedView topAnchor];
+  v5 = topAnchor;
+  if (topAnchor)
   {
-    v6 = v4;
+    bottomAnchor = topAnchor;
   }
 
   else
   {
-    v6 = [(UIView *)self->_containingView bottomAnchor];
+    bottomAnchor = [(UIView *)self->_containingView bottomAnchor];
   }
 
-  v7 = v6;
+  v7 = bottomAnchor;
 
   return v7;
 }
 
 - (id)_mostRecentTopStackViewAnchor
 {
-  v3 = [(SiriSharedUIViewStack *)self->_topViewStack mostRecentlyAddedView];
-  v4 = [v3 bottomAnchor];
-  v5 = v4;
-  if (v4)
+  mostRecentlyAddedView = [(SiriSharedUIViewStack *)self->_topViewStack mostRecentlyAddedView];
+  bottomAnchor = [mostRecentlyAddedView bottomAnchor];
+  v5 = bottomAnchor;
+  if (bottomAnchor)
   {
-    v6 = v4;
+    topAnchor = bottomAnchor;
   }
 
   else
   {
-    v6 = [(UIView *)self->_containingView topAnchor];
+    topAnchor = [(UIView *)self->_containingView topAnchor];
   }
 
-  v7 = v6;
+  v7 = topAnchor;
 
   return v7;
 }
 
-- (id)_stackContainingContentView:(id)a3
+- (id)_stackContainingContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   p_bottomViewStack = &self->_bottomViewStack;
-  if ([(SiriSharedUIViewStack *)self->_bottomViewStack containsContentView:v4]|| (p_bottomViewStack = &self->_topViewStack, [(SiriSharedUIViewStack *)self->_topViewStack containsContentView:v4]) || (p_bottomViewStack = &self->_listViewStack, [(SiriSharedUIViewStack *)self->_listViewStack containsContentView:v4]) || (p_bottomViewStack = &self->_customConstraintsViewStack, [(SiriSharedUIViewStack *)self->_customConstraintsViewStack containsContentView:v4]))
+  if ([(SiriSharedUIViewStack *)self->_bottomViewStack containsContentView:viewCopy]|| (p_bottomViewStack = &self->_topViewStack, [(SiriSharedUIViewStack *)self->_topViewStack containsContentView:viewCopy]) || (p_bottomViewStack = &self->_listViewStack, [(SiriSharedUIViewStack *)self->_listViewStack containsContentView:viewCopy]) || (p_bottomViewStack = &self->_customConstraintsViewStack, [(SiriSharedUIViewStack *)self->_customConstraintsViewStack containsContentView:viewCopy]))
   {
     v6 = *p_bottomViewStack;
   }
@@ -531,40 +531,40 @@ void __52__SiriSharedUIViewStackContainer_hasContentAtPoint___block_invoke(uint6
 - (void)_snapshotContentViewFramesForTransition
 {
   v3 = [SiriSharedUIRectSet alloc];
-  v4 = [(SiriSharedUIViewStackContainer *)self contentViews];
-  v5 = [(SiriSharedUIRectSet *)v3 initWithFramesForViews:v4 inCoordinateSpace:self];
+  contentViews = [(SiriSharedUIViewStackContainer *)self contentViews];
+  v5 = [(SiriSharedUIRectSet *)v3 initWithFramesForViews:contentViews inCoordinateSpace:self];
 
   [(SiriSharedUIViewStackContainer *)self _setTransitionalContentViewFrames:v5];
 }
 
-- (void)setBottomPadding:(double)a3 animatedWithDuration:(double)a4 animationOptions:(unint64_t)a5 alongsideAnimations:(id)a6 completion:(id)a7
+- (void)setBottomPadding:(double)padding animatedWithDuration:(double)duration animationOptions:(unint64_t)options alongsideAnimations:(id)animations completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
-  if (self->_bottomPadding == a3)
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (self->_bottomPadding == padding)
   {
-    if (v12)
+    if (animationsCopy)
     {
-      v12[2](v12);
+      animationsCopy[2](animationsCopy);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    self->_bottomPadding = a3;
+    self->_bottomPadding = padding;
     [(SiriSharedUIViewStackContainer *)self _snapshotContentViewFramesForTransition];
-    v14 = [(SiriSharedUIViewStackContainer *)self contentViews];
+    contentViews = [(SiriSharedUIViewStackContainer *)self contentViews];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v15 = [contentViews countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v15)
     {
       v16 = v15;
@@ -576,14 +576,14 @@ void __52__SiriSharedUIViewStackContainer_hasContentAtPoint___block_invoke(uint6
         {
           if (*v27 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(contentViews);
           }
 
           [*(*(&v26 + 1) + 8 * v18++) setNeedsLayout];
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v16 = [contentViews countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v16);
@@ -596,16 +596,16 @@ void __52__SiriSharedUIViewStackContainer_hasContentAtPoint___block_invoke(uint6
     v23[2] = __120__SiriSharedUIViewStackContainer_setBottomPadding_animatedWithDuration_animationOptions_alongsideAnimations_completion___block_invoke;
     v23[3] = &unk_278354B08;
     v23[4] = self;
-    v24 = v14;
-    v25 = v12;
+    v24 = contentViews;
+    v25 = animationsCopy;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __120__SiriSharedUIViewStackContainer_setBottomPadding_animatedWithDuration_animationOptions_alongsideAnimations_completion___block_invoke_2;
     v21[3] = &unk_278354B30;
     v21[4] = self;
-    v22 = v13;
-    v20 = v14;
-    [v19 animateWithDuration:a5 delay:v23 options:v21 animations:a4 completion:0.0];
+    v22 = completionCopy;
+    v20 = contentViews;
+    [v19 animateWithDuration:options delay:v23 options:v21 animations:duration completion:0.0];
   }
 }
 
@@ -668,105 +668,105 @@ uint64_t __120__SiriSharedUIViewStackContainer_setBottomPadding_animatedWithDura
 
 - (NSArray)contentViews
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  contentViews = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
+  [array addObjectsFromArray:contentViews];
 
-  v5 = [(SiriSharedUIViewStack *)self->_topViewStack contentViews];
-  [v3 addObjectsFromArray:v5];
+  contentViews2 = [(SiriSharedUIViewStack *)self->_topViewStack contentViews];
+  [array addObjectsFromArray:contentViews2];
 
-  v6 = [(SiriSharedUIViewStack *)self->_customConstraintsViewStack contentViews];
-  [v3 addObjectsFromArray:v6];
+  contentViews3 = [(SiriSharedUIViewStack *)self->_customConstraintsViewStack contentViews];
+  [array addObjectsFromArray:contentViews3];
 
-  v7 = [(SiriSharedUIViewStack *)self->_listViewStack contentViews];
-  [v3 addObjectsFromArray:v7];
+  contentViews4 = [(SiriSharedUIViewStack *)self->_listViewStack contentViews];
+  [array addObjectsFromArray:contentViews4];
 
-  v8 = [v3 copy];
+  v8 = [array copy];
 
   return v8;
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
   containingView = self->_containingView;
   if (containingView)
   {
-    [(UIView *)containingView bringSubviewToFront:a3];
+    [(UIView *)containingView bringSubviewToFront:front];
   }
 }
 
-- (void)addContentView:(id)a3 fromViewController:(id)a4
+- (void)addContentView:(id)view fromViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SiriSharedUIViewStackContainer *)self delegate];
-  [v8 viewStackContainer:self willBeginHostingChildViewController:v6];
+  controllerCopy = controller;
+  viewCopy = view;
+  delegate = [(SiriSharedUIViewStackContainer *)self delegate];
+  [delegate viewStackContainer:self willBeginHostingChildViewController:controllerCopy];
 
-  [(SiriSharedUIViewStackContainer *)self addContentView:v7];
-  v9 = [(SiriSharedUIViewStackContainer *)self delegate];
-  [v9 viewStackContainer:self didBeginHostingChildViewController:v6];
+  [(SiriSharedUIViewStackContainer *)self addContentView:viewCopy];
+  delegate2 = [(SiriSharedUIViewStackContainer *)self delegate];
+  [delegate2 viewStackContainer:self didBeginHostingChildViewController:controllerCopy];
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
-  v6 = a3;
-  [v6 setStackContainerDelegate:self];
+  viewCopy = view;
+  [viewCopy setStackContainerDelegate:self];
   v4 = +[SiriSharedUIViewStackConstraints constraints];
-  [v6 setStackConstraints:v4];
+  [viewCopy setStackConstraints:v4];
 
-  [(UIView *)self->_containingView addSubview:v6];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(SiriSharedUIViewStackContainer *)self _attachContentView:v6];
-  v5 = [v6 attachmentType];
-  if (v5 <= 3)
+  [(UIView *)self->_containingView addSubview:viewCopy];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(SiriSharedUIViewStackContainer *)self _attachContentView:viewCopy];
+  attachmentType = [viewCopy attachmentType];
+  if (attachmentType <= 3)
   {
-    [*(&self->super.super.super.super.isa + *off_278354B78[v5]) addContentView:v6];
+    [*(&self->super.super.super.super.isa + *off_278354B78[attachmentType]) addContentView:viewCopy];
   }
 }
 
-- (void)removeContentView:(id)a3
+- (void)removeContentView:(id)view
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 removeFromSuperview];
-  v5 = [(SiriSharedUIViewStackContainer *)self _stackContainingContentView:v4];
-  v6 = [v5 nextViewAfterContentView:v4];
-  v26 = self;
-  v7 = [v4 attachmentType] == 1 && objc_msgSend(v6, "attachmentType") == 1;
-  v8 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  [viewCopy removeFromSuperview];
+  v5 = [(SiriSharedUIViewStackContainer *)self _stackContainingContentView:viewCopy];
+  v6 = [v5 nextViewAfterContentView:viewCopy];
+  selfCopy = self;
+  v7 = [viewCopy attachmentType] == 1 && objc_msgSend(v6, "attachmentType") == 1;
+  array = [MEMORY[0x277CBEB18] array];
   if (v7)
   {
-    v9 = [v4 stackConstraints];
-    v10 = [v9 bottomConstraint];
+    stackConstraints = [viewCopy stackConstraints];
+    bottomConstraint = [stackConstraints bottomConstraint];
 
-    if (v10)
+    if (bottomConstraint)
     {
-      [v8 addObject:v10];
+      [array addObject:bottomConstraint];
     }
 
-    v11 = [v6 stackConstraints];
-    v12 = [v11 bottomConstraint];
+    stackConstraints2 = [v6 stackConstraints];
+    bottomConstraint2 = [stackConstraints2 bottomConstraint];
 
-    if (v12)
+    if (bottomConstraint2)
     {
-      [v12 setActive:0];
-      [v6 removeConstraint:v12];
+      [bottomConstraint2 setActive:0];
+      [v6 removeConstraint:bottomConstraint2];
     }
   }
 
-  v13 = [v4 stackConstraints];
-  v14 = [v13 heightConstraint];
-  [v14 setActive:0];
+  stackConstraints3 = [viewCopy stackConstraints];
+  heightConstraint = [stackConstraints3 heightConstraint];
+  [heightConstraint setActive:0];
 
-  v15 = [v4 stackConstraints];
-  [v15 setHeightConstraint:0];
+  stackConstraints4 = [viewCopy stackConstraints];
+  [stackConstraints4 setHeightConstraint:0];
 
-  [v5 removeContentView:v4];
+  [v5 removeContentView:viewCopy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = v8;
+  v16 = array;
   v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v17)
   {
@@ -783,13 +783,13 @@ uint64_t __120__SiriSharedUIViewStackContainer_setBottomPadding_animatedWithDura
         }
 
         v21 = *(*(&v27 + 1) + 8 * v20);
-        v22 = [v6 bottomAnchor];
-        v23 = [v21 secondAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        bottomAnchor = [v6 bottomAnchor];
+        secondAnchor = [v21 secondAnchor];
+        v24 = [bottomAnchor constraintEqualToAnchor:secondAnchor];
 
         [v24 setActive:1];
-        v25 = [v6 stackConstraints];
-        [v25 setBottomConstraint:v24];
+        stackConstraints5 = [v6 stackConstraints];
+        [stackConstraints5 setBottomConstraint:v24];
 
         ++v20;
       }
@@ -802,77 +802,77 @@ uint64_t __120__SiriSharedUIViewStackContainer_setBottomPadding_animatedWithDura
   }
 
   [v6 portraitContentSize];
-  [(SiriSharedUIViewStackContainer *)v26 stackableContentWillUpdateLayout:v6 withUpdatedContentSize:0 animated:?];
+  [(SiriSharedUIViewStackContainer *)selfCopy stackableContentWillUpdateLayout:v6 withUpdatedContentSize:0 animated:?];
 }
 
-- (void)_attachContentView:(id)a3
+- (void)_attachContentView:(id)view
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attachmentType];
-  [v4 portraitContentSize];
+  viewCopy = view;
+  attachmentType = [viewCopy attachmentType];
+  [viewCopy portraitContentSize];
   v7 = v6;
-  v8 = [v4 leadingAnchor];
-  v9 = [(UIView *)self->_containingView leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:0.0];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_containingView leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
 
   [v10 setActive:1];
-  v11 = [v4 stackConstraints];
-  [v11 setLeadingConstraint:v10];
+  stackConstraints = [viewCopy stackConstraints];
+  [stackConstraints setLeadingConstraint:v10];
 
-  v12 = [v4 trailingAnchor];
-  v13 = [(UIView *)self->_containingView trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:0.0];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_containingView trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
 
   [v14 setActive:1];
-  v15 = [v4 stackConstraints];
-  [v15 setTrailingConstraint:v14];
+  stackConstraints2 = [viewCopy stackConstraints];
+  [stackConstraints2 setTrailingConstraint:v14];
 
-  if (v5 > 1)
+  if (attachmentType > 1)
   {
-    if (v5 == 2)
+    if (attachmentType == 2)
     {
-      v31 = [v4 bottomAnchor];
-      v32 = [(UIView *)self->_containingView bottomAnchor];
-      v18 = [v31 constraintLessThanOrEqualToAnchor:v32];
+      bottomAnchor = [viewCopy bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_containingView bottomAnchor];
+      v18 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
 
       LODWORD(v33) = 1148846080;
       [v18 setPriority:v33];
       [v18 setActive:1];
-      v34 = [v4 stackConstraints];
-      [v34 setBottomConstraint:v18];
+      stackConstraints3 = [viewCopy stackConstraints];
+      [stackConstraints3 setBottomConstraint:v18];
 
-      v35 = [v4 topAnchor];
-      v36 = [(UIView *)self->_containingView topAnchor];
-      v22 = [v35 constraintGreaterThanOrEqualToAnchor:v36];
+      topAnchor = [viewCopy topAnchor];
+      topAnchor2 = [(UIView *)self->_containingView topAnchor];
+      stackConstraints10 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
 
-      v24 = v22;
+      v24 = stackConstraints10;
       LODWORD(v23) = 1148846080;
 LABEL_11:
       [v24 setPriority:v23];
-      [v22 setActive:1];
-      v37 = [v4 stackConstraints];
-      [v37 setTopConstraint:v22];
+      [stackConstraints10 setActive:1];
+      stackConstraints4 = [viewCopy stackConstraints];
+      [stackConstraints4 setTopConstraint:stackConstraints10];
 
       goto LABEL_14;
     }
 
-    if (v5 != 3)
+    if (attachmentType != 3)
     {
       goto LABEL_15;
     }
 
-    v25 = [(SiriSharedUIViewStack *)self->_listViewStack mostRecentlyAddedView];
-    v18 = v25;
-    if (v25)
+    mostRecentlyAddedView = [(SiriSharedUIViewStack *)self->_listViewStack mostRecentlyAddedView];
+    v18 = mostRecentlyAddedView;
+    if (mostRecentlyAddedView)
     {
-      v26 = [v25 stackConstraints];
-      v27 = [v26 bottomConstraint];
+      stackConstraints5 = [mostRecentlyAddedView stackConstraints];
+      bottomConstraint = [stackConstraints5 bottomConstraint];
 
-      [v18 removeConstraint:v27];
-      [v27 setActive:0];
-      v28 = [v18 stackConstraints];
-      [v28 setBottomConstraint:0];
+      [v18 removeConstraint:bottomConstraint];
+      [bottomConstraint setActive:0];
+      stackConstraints6 = [v18 stackConstraints];
+      [stackConstraints6 setBottomConstraint:0];
 
       [v18 bottomAnchor];
     }
@@ -881,58 +881,58 @@ LABEL_11:
     {
       [(UIView *)self->_containingView topAnchor];
     }
-    v22 = ;
-    v38 = [v4 topAnchor];
-    v39 = [v38 constraintEqualToAnchor:v22];
+    stackConstraints10 = ;
+    topAnchor3 = [viewCopy topAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:stackConstraints10];
 
     [v39 setActive:1];
-    v40 = [v4 stackConstraints];
-    [v40 setTopConstraint:v39];
+    stackConstraints7 = [viewCopy stackConstraints];
+    [stackConstraints7 setTopConstraint:v39];
 
-    v41 = [v4 bottomAnchor];
-    v42 = [(UIView *)self->_containingView bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    bottomAnchor3 = [viewCopy bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_containingView bottomAnchor];
+    v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
 
     [v43 setActive:1];
-    v44 = [v4 stackConstraints];
-    [v44 setBottomConstraint:v43];
+    stackConstraints8 = [viewCopy stackConstraints];
+    [stackConstraints8 setBottomConstraint:v43];
   }
 
   else
   {
-    if (v5)
+    if (attachmentType)
     {
-      if (v5 != 1)
+      if (attachmentType != 1)
       {
         goto LABEL_15;
       }
 
-      v16 = [v4 bottomAnchor];
-      v17 = [(SiriSharedUIViewStackContainer *)self _mostRecentBottomStackViewAnchor];
-      [v4 attachmentYOffset];
-      v18 = [v16 constraintEqualToAnchor:v17 constant:?];
+      bottomAnchor5 = [viewCopy bottomAnchor];
+      _mostRecentBottomStackViewAnchor = [(SiriSharedUIViewStackContainer *)self _mostRecentBottomStackViewAnchor];
+      [viewCopy attachmentYOffset];
+      v18 = [bottomAnchor5 constraintEqualToAnchor:_mostRecentBottomStackViewAnchor constant:?];
 
       [v18 setActive:1];
-      v19 = [v4 stackConstraints];
-      [v19 setBottomConstraint:v18];
+      stackConstraints9 = [viewCopy stackConstraints];
+      [stackConstraints9 setBottomConstraint:v18];
 
-      v20 = [v4 topAnchor];
-      v21 = [(UIView *)self->_containingView topAnchor];
-      v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21];
+      topAnchor4 = [viewCopy topAnchor];
+      topAnchor5 = [(UIView *)self->_containingView topAnchor];
+      stackConstraints10 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5];
 
       LODWORD(v23) = 1148846080;
-      v24 = v22;
+      v24 = stackConstraints10;
       goto LABEL_11;
     }
 
-    v29 = [v4 topAnchor];
-    v30 = [(SiriSharedUIViewStackContainer *)self _mostRecentTopStackViewAnchor];
-    [v4 attachmentYOffset];
-    v18 = [v29 constraintEqualToAnchor:v30 constant:?];
+    topAnchor6 = [viewCopy topAnchor];
+    _mostRecentTopStackViewAnchor = [(SiriSharedUIViewStackContainer *)self _mostRecentTopStackViewAnchor];
+    [viewCopy attachmentYOffset];
+    v18 = [topAnchor6 constraintEqualToAnchor:_mostRecentTopStackViewAnchor constant:?];
 
     [v18 setActive:1];
-    v22 = [v4 stackConstraints];
-    [v22 setTopConstraint:v18];
+    stackConstraints10 = [viewCopy stackConstraints];
+    [stackConstraints10 setTopConstraint:v18];
   }
 
 LABEL_14:
@@ -940,15 +940,15 @@ LABEL_14:
 LABEL_15:
   if (objc_opt_respondsToSelector())
   {
-    v45 = [v4 customAttachmentConstraints];
-    v46 = v45;
-    if (v45)
+    customAttachmentConstraints = [viewCopy customAttachmentConstraints];
+    v46 = customAttachmentConstraints;
+    if (customAttachmentConstraints)
     {
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v47 = [v45 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v47 = [customAttachmentConstraints countByEnumeratingWithState:&v55 objects:v59 count:16];
       if (v47)
       {
         v48 = v47;
@@ -973,18 +973,18 @@ LABEL_15:
     }
   }
 
-  v51 = [v4 heightAnchor];
-  v52 = [v51 constraintEqualToConstant:v7];
+  heightAnchor = [viewCopy heightAnchor];
+  v52 = [heightAnchor constraintEqualToConstant:v7];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 useLowerPriorityHeightConstraint])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [viewCopy useLowerPriorityHeightConstraint])
   {
     LODWORD(v53) = 1137180672;
     [v52 setPriority:v53];
   }
 
   [v52 setActive:1];
-  v54 = [v4 stackConstraints];
-  [v54 setHeightConstraint:v52];
+  stackConstraints11 = [viewCopy stackConstraints];
+  [stackConstraints11 setHeightConstraint:v52];
 }
 
 - (void)relayout
@@ -995,8 +995,8 @@ LABEL_15:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(SiriSharedUIViewStackContainer *)self contentViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  contentViews = [(SiriSharedUIViewStackContainer *)self contentViews];
+  v4 = [contentViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1008,7 +1008,7 @@ LABEL_15:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contentViews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1021,7 +1021,7 @@ LABEL_15:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [contentViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1030,21 +1030,21 @@ LABEL_15:
 
 - (void)willPresentModalContent
 {
-  v3 = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
-  v4 = [v3 count];
+  contentViews = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
+  v4 = [contentViews count];
 
   if (v4)
   {
     v5 = [(SiriSharedUIViewStack *)self->_bottomViewStack viewAtIndex:0];
-    v6 = [v5 stackConstraints];
-    v13 = [v6 bottomConstraint];
+    stackConstraints = [v5 stackConstraints];
+    bottomConstraint = [stackConstraints bottomConstraint];
 
     LODWORD(v7) = 1132068864;
-    [v13 setPriority:v7];
-    v8 = [(SiriSharedUIViewStack *)self->_bottomViewStack mostRecentlyAddedView];
-    v9 = [v8 topAnchor];
-    v10 = [(UIView *)self->_containingView topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    [bottomConstraint setPriority:v7];
+    mostRecentlyAddedView = [(SiriSharedUIViewStack *)self->_bottomViewStack mostRecentlyAddedView];
+    topAnchor = [mostRecentlyAddedView topAnchor];
+    topAnchor2 = [(UIView *)self->_containingView topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     temporaryTopConstraintForBottomViewStack = self->_temporaryTopConstraintForBottomViewStack;
     self->_temporaryTopConstraintForBottomViewStack = v11;
 
@@ -1055,17 +1055,17 @@ LABEL_15:
 
 - (void)willDismissModalContent
 {
-  v3 = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
-  v4 = [v3 count];
+  contentViews = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
+  v4 = [contentViews count];
 
   if (v4)
   {
     v5 = [(SiriSharedUIViewStack *)self->_bottomViewStack viewAtIndex:0];
-    v6 = [v5 stackConstraints];
-    v8 = [v6 bottomConstraint];
+    stackConstraints = [v5 stackConstraints];
+    bottomConstraint = [stackConstraints bottomConstraint];
 
     LODWORD(v7) = 1148846080;
-    [v8 setPriority:v7];
+    [bottomConstraint setPriority:v7];
     [(NSLayoutConstraint *)self->_temporaryTopConstraintForBottomViewStack setActive:0];
     [(SiriSharedUIViewStackContainer *)self layoutIfNeeded];
   }
@@ -1073,8 +1073,8 @@ LABEL_15:
 
 - (void)didDismissModalContent
 {
-  v3 = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
-  v4 = [v3 count];
+  contentViews = [(SiriSharedUIViewStack *)self->_bottomViewStack contentViews];
+  v4 = [contentViews count];
 
   if (v4)
   {
@@ -1084,13 +1084,13 @@ LABEL_15:
   }
 }
 
-- (void)stackableContentWillUpdateLayout:(id)a3 withUpdatedContentSize:(CGSize)a4 animated:(BOOL)a5
+- (void)stackableContentWillUpdateLayout:(id)layout withUpdatedContentSize:(CGSize)size animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(SiriSharedUIViewStackContainer *)self _stackContainingContentView:v9];
+  animatedCopy = animated;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  v10 = [(SiriSharedUIViewStackContainer *)self _stackContainingContentView:layoutCopy];
   if (v10)
   {
     [(UIView *)self->_containingView frame];
@@ -1104,37 +1104,37 @@ LABEL_15:
       v12 = 0.0;
     }
 
-    v13 = [v9 stackConstraints];
-    v14 = [v13 leadingConstraint];
-    [v14 setConstant:v12];
+    stackConstraints = [layoutCopy stackConstraints];
+    leadingConstraint = [stackConstraints leadingConstraint];
+    [leadingConstraint setConstant:v12];
 
-    v15 = [v9 stackConstraints];
-    v16 = [v15 trailingConstraint];
-    [v16 setConstant:-v12];
+    stackConstraints2 = [layoutCopy stackConstraints];
+    trailingConstraint = [stackConstraints2 trailingConstraint];
+    [trailingConstraint setConstant:-v12];
 
-    v17 = [v9 stackConstraints];
-    v18 = [v17 heightConstraint];
+    stackConstraints3 = [layoutCopy stackConstraints];
+    heightConstraint = [stackConstraints3 heightConstraint];
 
-    [v9 removeConstraint:v18];
-    [v18 setActive:0];
-    v19 = [v9 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:height];
+    [layoutCopy removeConstraint:heightConstraint];
+    [heightConstraint setActive:0];
+    heightAnchor = [layoutCopy heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:height];
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 useLowerPriorityHeightConstraint])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [layoutCopy useLowerPriorityHeightConstraint])
     {
       LODWORD(v21) = 1137180672;
       [v20 setPriority:v21];
     }
 
     [v20 setActive:1];
-    v22 = [v9 stackConstraints];
-    [v22 setHeightConstraint:v20];
+    stackConstraints4 = [layoutCopy stackConstraints];
+    [stackConstraints4 setHeightConstraint:v20];
 
-    [v9 setNeedsLayout];
-    v23 = [v9 superview];
-    [v23 setNeedsLayout];
+    [layoutCopy setNeedsLayout];
+    superview = [layoutCopy superview];
+    [superview setNeedsLayout];
 
-    if (v5)
+    if (animatedCopy)
     {
       objc_initWeak(&location, self);
       v24 = MEMORY[0x277D75D18];
@@ -1170,11 +1170,11 @@ void __99__SiriSharedUIViewStackContainer_stackableContentWillUpdateLayout_withU
   }
 }
 
-- (id)stackableViewsWithAttachment:(int64_t)a3
+- (id)stackableViewsWithAttachment:(int64_t)attachment
 {
-  if (a3 <= 3)
+  if (attachment <= 3)
   {
-    a2 = [*(&self->super.super.super.super.isa + *off_278354B78[a3]) contentViews];
+    a2 = [*(&self->super.super.super.super.isa + *off_278354B78[attachment]) contentViews];
   }
 
   return a2;

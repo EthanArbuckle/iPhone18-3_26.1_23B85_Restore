@@ -1,16 +1,16 @@
 @interface SKUIScrollingTabNavigationBar
 - (UIOffset)positionOffset;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPositionOffset:(UIOffset)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setPositionOffset:(UIOffset)offset;
 @end
 
 @implementation SKUIScrollingTabNavigationBar
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -30,12 +30,12 @@
   [(SKUIScrollingTabNavigationBar *)&v16 setCenter:v14, v15];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,10 +76,10 @@
   return result;
 }
 
-- (void)setPositionOffset:(UIOffset)a3
+- (void)setPositionOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

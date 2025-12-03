@@ -1,8 +1,8 @@
 @interface SBSPhysicalButtonTargetMonitorClient
 - (SBSPhysicalButtonTargetMonitorClient)init;
 - (void)invalidate;
-- (void)setPhysicalButtonTargets:(id)a3;
-- (void)startObservingPresenceOfPhysicalButtonTargets:(id)a3;
+- (void)setPhysicalButtonTargets:(id)targets;
+- (void)startObservingPresenceOfPhysicalButtonTargets:(id)targets;
 @end
 
 @implementation SBSPhysicalButtonTargetMonitorClient
@@ -20,28 +20,28 @@
   return result;
 }
 
-- (void)startObservingPresenceOfPhysicalButtonTargets:(id)a3
+- (void)startObservingPresenceOfPhysicalButtonTargets:(id)targets
 {
-  v5 = a3;
+  targetsCopy = targets;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_connection)
   {
     [(SBSPhysicalButtonTargetMonitorClient *)a2 startObservingPresenceOfPhysicalButtonTargets:?];
   }
 
-  if (!v5)
+  if (!targetsCopy)
   {
     [(SBSPhysicalButtonTargetMonitorClient *)a2 startObservingPresenceOfPhysicalButtonTargets:?];
   }
 
-  v6 = MEMORY[0x193AFFB30](v5);
+  v6 = MEMORY[0x193AFFB30](targetsCopy);
   lock_observationBlock = self->_lock_observationBlock;
   self->_lock_observationBlock = v6;
 
   v8 = MEMORY[0x1E698F498];
-  v9 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v10 = +[SBSPhysicalButtonTargetMonitorServiceSpecification identifier];
-  v11 = [v8 endpointForMachName:v9 service:v10 instance:0];
+  v11 = [v8 endpointForMachName:defaultShellMachName service:v10 instance:0];
 
   v12 = [MEMORY[0x1E698F490] connectionWithEndpoint:v11];
   objc_storeStrong(&self->_lock_connection, v12);
@@ -130,15 +130,15 @@ void __86__SBSPhysicalButtonTargetMonitorClient_startObservingPresenceOfPhysical
   [(BSServiceConnection *)v4 invalidate];
 }
 
-- (void)setPhysicalButtonTargets:(id)a3
+- (void)setPhysicalButtonTargets:(id)targets
 {
-  v5 = a3;
+  targetsCopy = targets;
   os_unfair_lock_lock(&self->_lock);
   v4 = MEMORY[0x193AFFB30](self->_lock_observationBlock);
   os_unfair_lock_unlock(&self->_lock);
   if (v4)
   {
-    v4[2](v4, [v5 unsignedIntegerValue]);
+    v4[2](v4, [targetsCopy unsignedIntegerValue]);
   }
 }
 

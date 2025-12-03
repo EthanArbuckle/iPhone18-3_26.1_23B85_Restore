@@ -1,8 +1,8 @@
 @interface _ACComponentWrapper
-- (_ACComponentWrapper)initWithCoder:(id)a3;
-- (_ACComponentWrapper)initWithComponent:(void *)a3;
+- (_ACComponentWrapper)initWithCoder:(id)coder;
+- (_ACComponentWrapper)initWithComponent:(void *)component;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ACComponentWrapper
@@ -14,17 +14,17 @@
   return self;
 }
 
-- (_ACComponentWrapper)initWithCoder:(id)a3
+- (_ACComponentWrapper)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeIntForKey:@"implType"];
-  [v3 decodeIntForKey:@"priority"];
-  v31[0] = [v3 decodeInt32ForKey:@"type"];
-  v31[1] = [v3 decodeInt32ForKey:@"subType"];
-  v31[2] = [v3 decodeInt32ForKey:@"manufacturer"];
-  v32 = [v3 decodeInt32ForKey:@"flags"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeIntForKey:@"implType"];
+  [coderCopy decodeIntForKey:@"priority"];
+  v31[0] = [coderCopy decodeInt32ForKey:@"type"];
+  v31[1] = [coderCopy decodeInt32ForKey:@"subType"];
+  v31[2] = [coderCopy decodeInt32ForKey:@"manufacturer"];
+  v32 = [coderCopy decodeInt32ForKey:@"flags"];
   v33 = 0;
-  v5 = [v3 decodeInt32ForKey:@"version"];
+  v5 = [coderCopy decodeInt32ForKey:@"version"];
   v6 = 0x1E696A000uLL;
   {
     v18 = MEMORY[0x1E695DFD8];
@@ -32,20 +32,20 @@
     [_ACComponentWrapper initWithCoder:]::arrayOfString = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
   }
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   applesauce::CF::StringRef::from_ns(&v30, v7);
 
-  v8 = [v3 decodeObjectOfClasses:-[_ACComponentWrapper initWithCoder:]::arrayOfString forKey:@"tags"];
+  v8 = [coderCopy decodeObjectOfClasses:-[_ACComponentWrapper initWithCoder:]::arrayOfString forKey:@"tags"];
   applesauce::CF::ArrayRef::from_ns(&v29, v8);
 
-  [v3 decodeIntForKey:@"wasValidated"];
-  [v3 decodeIntForKey:@"validationResult"];
+  [coderCopy decodeIntForKey:@"wasValidated"];
+  [coderCopy decodeIntForKey:@"validationResult"];
   if (v4 != 1)
   {
     if (v4 == 3)
     {
-      v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
-      v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"factoryFunctionName"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentifier"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"factoryFunctionName"];
       applesauce::CF::StringRef::from_ns(&cf, v10);
 
       v23 = 0;
@@ -64,30 +64,30 @@
   }
 
   v11 = *(v6 + 3776);
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
   applesauce::CF::StringRef::from_ns(&cf, v12);
 
-  v13 = [v3 decodeObjectOfClasses:-[_ACComponentWrapper initWithCoder:]::arrayOfNumber forKey:@"archs"];
+  v13 = [coderCopy decodeObjectOfClasses:-[_ACComponentWrapper initWithCoder:]::arrayOfNumber forKey:@"archs"];
   applesauce::CF::ArrayRef::from_ns(&v27, v13);
 
   v14 = *(v6 + 3776);
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"factoryFunctionName"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"factoryFunctionName"];
   applesauce::CF::StringRef::from_ns(&v26, v15);
 
   v16 = *(v6 + 3776);
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"className"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"className"];
   applesauce::CF::StringRef::from_ns(&v25, v17);
 
   AudioComponentRegistrationInfo::AudioComponentRegistrationInfo(v24, v31, v32, &v30, v5, &v26, &v25, &v29);
   APComponent_FromBundle_Loadable::create_shared();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   ptr = self->mComponent.__ptr_;
-  v11 = v4;
-  [v4 encodeInt:*(ptr + 8) forKey:@"implType"];
+  v11 = coderCopy;
+  [coderCopy encodeInt:*(ptr + 8) forKey:@"implType"];
   [v11 encodeInt:*(ptr + 15) forKey:@"priority"];
   [v11 encodeInt32:*(ptr + 9) forKey:@"type"];
   [v11 encodeInt32:*(ptr + 10) forKey:@"subType"];
@@ -125,10 +125,10 @@
   }
 }
 
-- (_ACComponentWrapper)initWithComponent:(void *)a3
+- (_ACComponentWrapper)initWithComponent:(void *)component
 {
-  v5 = *a3;
-  v4 = *(a3 + 1);
+  v5 = *component;
+  v4 = *(component + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);

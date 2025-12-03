@@ -1,24 +1,24 @@
 @interface UAFSchemaUAFAssetUsageAlias
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (UAFSchemaUAFAssetUsageAlias)initWithDictionary:(id)a3;
-- (UAFSchemaUAFAssetUsageAlias)initWithJSON:(id)a3;
+- (UAFSchemaUAFAssetUsageAlias)initWithDictionary:(id)dictionary;
+- (UAFSchemaUAFAssetUsageAlias)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UAFSchemaUAFAssetUsageAlias
 
-- (UAFSchemaUAFAssetUsageAlias)initWithDictionary:(id)a3
+- (UAFSchemaUAFAssetUsageAlias)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = UAFSchemaUAFAssetUsageAlias;
   v5 = [(UAFSchemaUAFAssetUsageAlias *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aliasName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aliasName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(UAFSchemaUAFAssetUsageAlias *)v5 setAliasName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aliasValue"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aliasValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (UAFSchemaUAFAssetUsageAlias)initWithJSON:(id)a3
+- (UAFSchemaUAFAssetUsageAlias)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(UAFSchemaUAFAssetUsageAlias *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(UAFSchemaUAFAssetUsageAlias *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(UAFSchemaUAFAssetUsageAlias *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aliasName)
   {
-    v4 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aliasName"];
+    aliasName = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
+    v5 = [aliasName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aliasName"];
   }
 
   if (self->_aliasValue)
   {
-    v6 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"aliasValue"];
+    aliasValue = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
+    v7 = [aliasValue copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"aliasValue"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
-  v6 = [v4 aliasName];
-  if ((v5 != 0) == (v6 == 0))
+  aliasName = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
+  aliasName2 = [equalCopy aliasName];
+  if ((aliasName != 0) == (aliasName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
-  if (v7)
+  aliasName3 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
+  if (aliasName3)
   {
-    v8 = v7;
-    v9 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
-    v10 = [v4 aliasName];
-    v11 = [v9 isEqual:v10];
+    v8 = aliasName3;
+    aliasName4 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
+    aliasName5 = [equalCopy aliasName];
+    v11 = [aliasName4 isEqual:aliasName5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
-  v6 = [v4 aliasValue];
-  if ((v5 != 0) != (v6 == 0))
+  aliasName = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
+  aliasName2 = [equalCopy aliasValue];
+  if ((aliasName != 0) != (aliasName2 == 0))
   {
-    v12 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
-    if (!v12)
+    aliasValue = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
+    if (!aliasValue)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
-    v15 = [v4 aliasValue];
-    v16 = [v14 isEqual:v15];
+    v13 = aliasValue;
+    aliasValue2 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
+    aliasValue3 = [equalCopy aliasValue];
+    v16 = [aliasValue2 isEqual:aliasValue3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
+  toCopy = to;
+  aliasName = [(UAFSchemaUAFAssetUsageAlias *)self aliasName];
 
-  if (v4)
+  if (aliasName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
+  aliasValue = [(UAFSchemaUAFAssetUsageAlias *)self aliasValue];
 
-  if (v5)
+  if (aliasValue)
   {
     PBDataWriterWriteStringField();
   }

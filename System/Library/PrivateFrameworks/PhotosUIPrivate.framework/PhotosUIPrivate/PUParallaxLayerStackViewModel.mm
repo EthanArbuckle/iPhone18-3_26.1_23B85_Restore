@@ -1,5 +1,5 @@
 @interface PUParallaxLayerStackViewModel
-+ (unint64_t)_changeDescriptorBetweenOldStyle:(id)a3 newStyle:(id)a4;
++ (unint64_t)_changeDescriptorBetweenOldStyle:(id)style newStyle:(id)newStyle;
 - (BOOL)canApplyHeadroom;
 - (BOOL)canApplyParallax;
 - (BOOL)canCreateSettlingEffectLayerView;
@@ -22,8 +22,8 @@
 - (BOOL)userAdjustedVisibleFrame;
 - (CGAffineTransform)adaptiveLayoutTransform;
 - (CGPoint)parallaxVector;
-- (CGRect)_calculateNormalizedAdaptiveTimeRectForOrientation:(int64_t)a3 containerFrame:(CGRect)a4 configuredSalientContentRectangle:(CGRect)a5;
-- (CGRect)_viewRectForLayoutRect:(CGRect)a3;
+- (CGRect)_calculateNormalizedAdaptiveTimeRectForOrientation:(int64_t)orientation containerFrame:(CGRect)frame configuredSalientContentRectangle:(CGRect)rectangle;
+- (CGRect)_viewRectForLayoutRect:(CGRect)rect;
 - (CGRect)configuredSalientContentRectangle;
 - (CGRect)containerFrame;
 - (CGRect)contentRect;
@@ -31,7 +31,7 @@
 - (CGRect)extendedImageRect;
 - (CGRect)inactiveFrame;
 - (CGRect)landscapeVisibleFrame;
-- (CGRect)layoutRectForViewRect:(CGRect)a3;
+- (CGRect)layoutRectForViewRect:(CGRect)rect;
 - (CGRect)normalizedVisibleFrame;
 - (CGRect)originalImageRect;
 - (CGRect)portraitVisibleFrame;
@@ -46,11 +46,11 @@
 - (NSString)spatialPhotoFailuresDiagnosticDescription;
 - (PFWallpaperCompoundLayerStack)compoundLayerStack;
 - (PUParallaxLayerStackViewModel)init;
-- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 deviceOrientation:(int64_t)a6 allowedBehaviors:(unint64_t)a7;
-- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)a3 initialStyle:(id)a4 compoundLayerStack:(id)a5 deviceOrientation:(int64_t)a6 allowedBehaviors:(unint64_t)a7;
+- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style deviceOrientation:(int64_t)orientation allowedBehaviors:(unint64_t)behaviors;
+- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)item initialStyle:(id)style compoundLayerStack:(id)stack deviceOrientation:(int64_t)orientation allowedBehaviors:(unint64_t)behaviors;
 - (UIEdgeInsets)containerInsets;
 - (double)clockAreaLuminance;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)environment;
 - (unint64_t)clockIntersection;
 - (void)_invalidateAdditionalViewTitleHeight;
@@ -69,12 +69,12 @@
 - (void)_invalidateOrientation;
 - (void)_invalidateVisibleFrameCrossesHeadroomBoundary;
 - (void)_invalidateVisibleFrameWithContainerFrame;
-- (void)_signalLayerStackPropertiesChange:(unint64_t)a3;
-- (void)_signalStylePropertiesChange:(unint64_t)a3;
+- (void)_signalLayerStackPropertiesChange:(unint64_t)change;
+- (void)_signalStylePropertiesChange:(unint64_t)change;
 - (void)_updateAdditionalViewTitleHeight;
 - (void)_updateClockAppearsAboveForeground;
 - (void)_updateCurrentLayerStack;
-- (void)_updateCurrentLayerStackProperties:(id)a3 changeDescriptor:(unint64_t)a4;
+- (void)_updateCurrentLayerStackProperties:(id)properties changeDescriptor:(unint64_t)descriptor;
 - (void)_updateCurrentLayout;
 - (void)_updateCurrentLayoutProperties;
 - (void)_updateCurrentNormalizedVisibleRect;
@@ -83,83 +83,83 @@
 - (void)_updateEffectiveDefaultLayouts;
 - (void)_updateHeadroomVisibilityAmount;
 - (void)_updateInitialPortraitLayout;
-- (void)_updateLayerStackPropertiesForAllOrientations:(id)a3 changeDescriptor:(unint64_t)a4;
+- (void)_updateLayerStackPropertiesForAllOrientations:(id)orientations changeDescriptor:(unint64_t)descriptor;
 - (void)_updateLayoutConfiguration;
 - (void)_updateLegibilityVignetteVisible;
 - (void)_updateOrientation;
 - (void)_updateVisibleFrameCrossesHeadroomBoundary;
 - (void)_updateVisibleFrameWithContainerFrame;
-- (void)_updateVisibleFrameWithContainerFrameSetFirstTime:(BOOL)a3;
+- (void)_updateVisibleFrameWithContainerFrameSetFirstTime:(BOOL)time;
 - (void)_updateVisibleFrameWithContainerFrameUsingConfiguration;
 - (void)didEndChangeHandling;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performPrivateChanges:(id)a3;
-- (void)reportSpatialPhotoGenerationError:(id)a3;
-- (void)setAdaptiveLayoutTransform:(CGAffineTransform *)a3;
-- (void)setAdditionalViewTitleHeight:(double)a3;
-- (void)setAnimationCurve:(id)a3;
-- (void)setAnimationDuration:(double)a3;
-- (void)setAppliesDepthToAllOrientations:(BOOL)a3;
-- (void)setBacklightLuminance:(int64_t)a3;
-- (void)setClockAppearsAboveForeground:(BOOL)a3;
-- (void)setClockAreaLuminance:(double)a3;
-- (void)setClockIntersection:(unint64_t)a3;
-- (void)setClockLayerOrder:(id)a3;
-- (void)setConfiguredSalientContentRectangle:(CGRect)a3;
-- (void)setContainerFrame:(CGRect)a3;
-- (void)setContainerInsets:(UIEdgeInsets)a3;
-- (void)setCurrentLayerStack:(id)a3;
-- (void)setCurrentLayout:(id)a3;
-- (void)setCurrentNormalizedVisibleFrame:(CGRect)a3;
-- (void)setDebugHUDRepresentation:(id)a3;
-- (void)setDefaultLayout:(id)a3;
-- (void)setDefaultSpatialLayout:(id)a3;
-- (void)setDepthEnabled:(BOOL)a3;
-- (void)setDesiredHeadroomVisibilityAmount:(double)a3;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setEffectiveDefaultLayout:(id)a3;
-- (void)setEffectiveHeadroomLayout:(id)a3;
-- (void)setHeadroomLayout:(id)a3;
-- (void)setHeadroomSpatialLayout:(id)a3;
-- (void)setHeadroomState:(int64_t)a3;
-- (void)setHeadroomVisibilityAmount:(double)a3;
-- (void)setLandscapeLayerStack:(id)a3;
-- (void)setLandscapeOverrideTitleHeight:(double)a3;
-- (void)setLandscapeUserAdjustedTitleHeightOffset:(double)a3;
-- (void)setLayoutOrder:(int64_t)a3;
-- (void)setLegibilityVignetteEnabled:(BOOL)a3;
-- (void)setLegibilityVignetteVisible:(BOOL)a3;
-- (void)setLoadingSpatialPhoto:(BOOL)a3;
-- (void)setNormalizedVisibleFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)setNormalizedVisibleFrameForInactiveOrientation:(CGRect)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverrideTitleHeight:(double)a3;
-- (void)setParallaxDisabled:(BOOL)a3;
-- (void)setParallaxVector:(CGPoint)a3;
-- (void)setPortraitLayerStack:(id)a3;
-- (void)setSalientContentFrame:(CGRect)a3;
-- (void)setSettlingEffectEnabled:(BOOL)a3;
-- (void)setShouldAlwaysUseSpatialPhotoForGallery:(BOOL)a3;
-- (void)setShouldLoopSettlingEffectForGallery:(BOOL)a3;
-- (void)setShowsDebugHUD:(BOOL)a3;
-- (void)setSpatialPhotoEnabled:(BOOL)a3;
-- (void)setSpatialPhotoLoadingProgress:(double)a3;
-- (void)setStyle:(id)a3;
-- (void)setTargetAdditionalViewTitleHeight:(double)a3;
-- (void)setUserAdjustedTitleHeightOffset:(double)a3;
-- (void)setUserAdjustedVisibleFrame:(BOOL)a3;
-- (void)setVisibilityAmount:(double)a3;
-- (void)setVisibilityEffects:(int64_t)a3;
-- (void)setVisibleFrame:(CGRect)a3;
-- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)a3;
-- (void)updateBackfillLayersFromLayerStack:(id)a3;
-- (void)updateLayerStack:(id)a3;
-- (void)updateLayoutPropertiesWithLayerStack:(id)a3;
-- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)a3 layerStack:(id)a4;
-- (void)updateSpatialPhotoWithLayerStack:(id)a3 layout:(id)a4;
-- (void)updateSpatialPhotoWithLayout:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performPrivateChanges:(id)changes;
+- (void)reportSpatialPhotoGenerationError:(id)error;
+- (void)setAdaptiveLayoutTransform:(CGAffineTransform *)transform;
+- (void)setAdditionalViewTitleHeight:(double)height;
+- (void)setAnimationCurve:(id)curve;
+- (void)setAnimationDuration:(double)duration;
+- (void)setAppliesDepthToAllOrientations:(BOOL)orientations;
+- (void)setBacklightLuminance:(int64_t)luminance;
+- (void)setClockAppearsAboveForeground:(BOOL)foreground;
+- (void)setClockAreaLuminance:(double)luminance;
+- (void)setClockIntersection:(unint64_t)intersection;
+- (void)setClockLayerOrder:(id)order;
+- (void)setConfiguredSalientContentRectangle:(CGRect)rectangle;
+- (void)setContainerFrame:(CGRect)frame;
+- (void)setContainerInsets:(UIEdgeInsets)insets;
+- (void)setCurrentLayerStack:(id)stack;
+- (void)setCurrentLayout:(id)layout;
+- (void)setCurrentNormalizedVisibleFrame:(CGRect)frame;
+- (void)setDebugHUDRepresentation:(id)representation;
+- (void)setDefaultLayout:(id)layout;
+- (void)setDefaultSpatialLayout:(id)layout;
+- (void)setDepthEnabled:(BOOL)enabled;
+- (void)setDesiredHeadroomVisibilityAmount:(double)amount;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setEffectiveDefaultLayout:(id)layout;
+- (void)setEffectiveHeadroomLayout:(id)layout;
+- (void)setHeadroomLayout:(id)layout;
+- (void)setHeadroomSpatialLayout:(id)layout;
+- (void)setHeadroomState:(int64_t)state;
+- (void)setHeadroomVisibilityAmount:(double)amount;
+- (void)setLandscapeLayerStack:(id)stack;
+- (void)setLandscapeOverrideTitleHeight:(double)height;
+- (void)setLandscapeUserAdjustedTitleHeightOffset:(double)offset;
+- (void)setLayoutOrder:(int64_t)order;
+- (void)setLegibilityVignetteEnabled:(BOOL)enabled;
+- (void)setLegibilityVignetteVisible:(BOOL)visible;
+- (void)setLoadingSpatialPhoto:(BOOL)photo;
+- (void)setNormalizedVisibleFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setNormalizedVisibleFrameForInactiveOrientation:(CGRect)orientation;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverrideTitleHeight:(double)height;
+- (void)setParallaxDisabled:(BOOL)disabled;
+- (void)setParallaxVector:(CGPoint)vector;
+- (void)setPortraitLayerStack:(id)stack;
+- (void)setSalientContentFrame:(CGRect)frame;
+- (void)setSettlingEffectEnabled:(BOOL)enabled;
+- (void)setShouldAlwaysUseSpatialPhotoForGallery:(BOOL)gallery;
+- (void)setShouldLoopSettlingEffectForGallery:(BOOL)gallery;
+- (void)setShowsDebugHUD:(BOOL)d;
+- (void)setSpatialPhotoEnabled:(BOOL)enabled;
+- (void)setSpatialPhotoLoadingProgress:(double)progress;
+- (void)setStyle:(id)style;
+- (void)setTargetAdditionalViewTitleHeight:(double)height;
+- (void)setUserAdjustedTitleHeightOffset:(double)offset;
+- (void)setUserAdjustedVisibleFrame:(BOOL)frame;
+- (void)setVisibilityAmount:(double)amount;
+- (void)setVisibilityEffects:(int64_t)effects;
+- (void)setVisibleFrame:(CGRect)frame;
+- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)boundary;
+- (void)updateBackfillLayersFromLayerStack:(id)stack;
+- (void)updateLayerStack:(id)stack;
+- (void)updateLayoutPropertiesWithLayerStack:(id)stack;
+- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)item layerStack:(id)stack;
+- (void)updateSpatialPhotoWithLayerStack:(id)stack layout:(id)layout;
+- (void)updateSpatialPhotoWithLayout:(id)layout;
 @end
 
 @implementation PUParallaxLayerStackViewModel
@@ -273,9 +273,9 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 2) != 0 && AdditionalViewTitleHeightAnimatorObservationContext_49142 == a5)
+  if ((change & 2) != 0 && AdditionalViewTitleHeightAnimatorObservationContext_49142 == context)
   {
     v7[5] = v5;
     v7[6] = v6;
@@ -288,42 +288,42 @@
   }
 }
 
-- (void)_signalStylePropertiesChange:(unint64_t)a3
+- (void)_signalStylePropertiesChange:(unint64_t)change
 {
-  [(PUParallaxLayerStackViewModel *)self setStylePropertiesChange:[(PUParallaxLayerStackViewModel *)self stylePropertiesChange]| a3];
+  [(PUParallaxLayerStackViewModel *)self setStylePropertiesChange:[(PUParallaxLayerStackViewModel *)self stylePropertiesChange]| change];
 
   [(PUParallaxLayerStackViewModel *)self signalChange:16];
 }
 
-- (void)_signalLayerStackPropertiesChange:(unint64_t)a3
+- (void)_signalLayerStackPropertiesChange:(unint64_t)change
 {
-  [(PUParallaxLayerStackViewModel *)self setCurrentLayerStackPropertiesChange:[(PUParallaxLayerStackViewModel *)self currentLayerStackPropertiesChange]| a3];
+  [(PUParallaxLayerStackViewModel *)self setCurrentLayerStackPropertiesChange:[(PUParallaxLayerStackViewModel *)self currentLayerStackPropertiesChange]| change];
 
   [(PUParallaxLayerStackViewModel *)self signalChange:4];
 }
 
-- (void)_updateLayerStackPropertiesForAllOrientations:(id)a3 changeDescriptor:(unint64_t)a4
+- (void)_updateLayerStackPropertiesForAllOrientations:(id)orientations changeDescriptor:(unint64_t)descriptor
 {
-  v7 = a3;
-  v8 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-  v9 = (*(a3 + 2))(v7, v8);
+  orientationsCopy = orientations;
+  portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+  v9 = (*(orientations + 2))(orientationsCopy, portraitLayerStack);
   [(PUParallaxLayerStackViewModel *)self setPortraitLayerStack:v9];
 
-  v10 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-  v11 = (*(a3 + 2))(v7, v10);
+  landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+  v11 = (*(orientations + 2))(orientationsCopy, landscapeLayerStack);
 
   [(PUParallaxLayerStackViewModel *)self setLandscapeLayerStack:v11];
-  v12 = [(PUParallaxLayerStackViewModel *)self orientation];
-  if (v12 == 2)
+  orientation = [(PUParallaxLayerStackViewModel *)self orientation];
+  if (orientation == 2)
   {
     currentLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-    v15 = currentLayerStack;
+    portraitLayerStack2 = currentLayerStack;
     if (!currentLayerStack)
     {
-      v15 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+      portraitLayerStack2 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
     }
 
-    objc_storeStrong(&self->_currentLayerStack, v15);
+    objc_storeStrong(&self->_currentLayerStack, portraitLayerStack2);
     if (!currentLayerStack)
     {
     }
@@ -331,63 +331,63 @@
 
   else
   {
-    if (v12 != 1)
+    if (orientation != 1)
     {
       goto LABEL_9;
     }
 
-    v13 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+    portraitLayerStack3 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
     currentLayerStack = self->_currentLayerStack;
-    self->_currentLayerStack = v13;
+    self->_currentLayerStack = portraitLayerStack3;
   }
 
 LABEL_9:
-  [(PUParallaxLayerStackViewModel *)self _signalLayerStackPropertiesChange:a4];
+  [(PUParallaxLayerStackViewModel *)self _signalLayerStackPropertiesChange:descriptor];
 
   [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
 }
 
-- (void)_updateCurrentLayerStackProperties:(id)a3 changeDescriptor:(unint64_t)a4
+- (void)_updateCurrentLayerStackProperties:(id)properties changeDescriptor:(unint64_t)descriptor
 {
-  v6 = (*(a3 + 2))(a3, self->_currentLayerStack);
-  v7 = v6;
-  if (self->_currentLayerStack != v6)
+  _invalidateDebugHUDRepresentation = (*(properties + 2))(properties, self->_currentLayerStack);
+  v7 = _invalidateDebugHUDRepresentation;
+  if (self->_currentLayerStack != _invalidateDebugHUDRepresentation)
   {
-    v9 = v6;
-    objc_storeStrong(&self->_currentLayerStack, v6);
-    v8 = [(PUParallaxLayerStackViewModel *)self orientation];
-    if (v8 == 2)
+    v9 = _invalidateDebugHUDRepresentation;
+    objc_storeStrong(&self->_currentLayerStack, _invalidateDebugHUDRepresentation);
+    orientation = [(PUParallaxLayerStackViewModel *)self orientation];
+    if (orientation == 2)
     {
       [(PUParallaxLayerStackViewModel *)self setLandscapeLayerStack:v9];
     }
 
-    else if (v8 == 1)
+    else if (orientation == 1)
     {
       [(PUParallaxLayerStackViewModel *)self setPortraitLayerStack:v9];
     }
 
-    [(PUParallaxLayerStackViewModel *)self _signalLayerStackPropertiesChange:a4];
-    v6 = [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
+    [(PUParallaxLayerStackViewModel *)self _signalLayerStackPropertiesChange:descriptor];
+    _invalidateDebugHUDRepresentation = [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
     v7 = v9;
-    if ((a4 & 2) != 0)
+    if ((descriptor & 2) != 0)
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self _invalidateHeadroomVisibilityAmount];
+      _invalidateDebugHUDRepresentation = [(PUParallaxLayerStackViewModel *)self _invalidateHeadroomVisibilityAmount];
       v7 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](_invalidateDebugHUDRepresentation, v7);
 }
 
-- (void)setDebugHUDRepresentation:(id)a3
+- (void)setDebugHUDRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   debugHUDRepresentation = self->_debugHUDRepresentation;
-  if (debugHUDRepresentation != v4)
+  if (debugHUDRepresentation != representationCopy)
   {
-    v8 = v4;
-    debugHUDRepresentation = [debugHUDRepresentation isEqual:v4];
-    v4 = v8;
+    v8 = representationCopy;
+    debugHUDRepresentation = [debugHUDRepresentation isEqual:representationCopy];
+    representationCopy = v8;
     if ((debugHUDRepresentation & 1) == 0)
     {
       v6 = [v8 copy];
@@ -395,11 +395,11 @@ LABEL_9:
       self->_debugHUDRepresentation = v6;
 
       debugHUDRepresentation = [(PUParallaxLayerStackViewModel *)self signalChange:0x40000];
-      v4 = v8;
+      representationCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](debugHUDRepresentation, v4);
+  MEMORY[0x1EEE66BB8](debugHUDRepresentation, representationCopy);
 }
 
 - (void)_updateDebugHUDRepresentation
@@ -409,24 +409,24 @@ LABEL_9:
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v62[0] = @"Device Orientation";
-    v4 = [(PUParallaxLayerStackViewModel *)self deviceOrientation];
+    deviceOrientation = [(PUParallaxLayerStackViewModel *)self deviceOrientation];
     v5 = @"unknown";
-    if ((v4 - 1) <= 3)
+    if ((deviceOrientation - 1) <= 3)
     {
-      v5 = off_1E7B740D0[v4 - 1];
+      v5 = off_1E7B740D0[deviceOrientation - 1];
     }
 
     v6 = v5;
     v62[1] = @"Layout Orientation";
     v63[0] = v6;
-    v7 = [(PUParallaxLayerStackViewModel *)self orientation];
+    orientation = [(PUParallaxLayerStackViewModel *)self orientation];
     v8 = @"portrait";
-    if (v7 != 1)
+    if (orientation != 1)
     {
       v8 = @"unknown";
     }
 
-    if (v7 == 2)
+    if (orientation == 2)
     {
       v8 = @"landscape";
     }
@@ -439,8 +439,8 @@ LABEL_9:
     if ([(PUParallaxLayerStackViewModel *)self environment]== 2)
     {
       v60 = @"Style";
-      v11 = [(PUParallaxLayerStackViewModel *)self style];
-      v12 = [v11 debugDescription];
+      style = [(PUParallaxLayerStackViewModel *)self style];
+      v12 = [style debugDescription];
       v13 = v12;
       v14 = @"none";
       if (v12)
@@ -453,15 +453,15 @@ LABEL_9:
       [v3 addEntriesFromDictionary:v15];
     }
 
-    v16 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-    v17 = [v16 layers];
-    v18 = [v17 count];
+    currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+    layers = [currentLayerStack layers];
+    v18 = [layers count];
 
     if (v18)
     {
       v58 = @"Layers";
-      v19 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-      v20 = [v19 layers];
+      currentLayerStack2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+      layers2 = [currentLayerStack2 layers];
       v21 = PXMap();
       v22 = [v21 sortedArrayUsingSelector:sel_compare_];
       v23 = [v22 componentsJoinedByString:{@", "}];
@@ -505,19 +505,19 @@ LABEL_9:
     v57[4] = v51;
     v56[5] = @"Clock Shift";
     v39 = MEMORY[0x1E696AEC0];
-    v40 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    [v40 maxClockShift];
+    currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    [currentLayout maxClockShift];
     v42 = [v39 stringWithFormat:@"%.2f", v41];
     v57[5] = v42;
     v56[6] = @"Layout Variant";
     v43 = MEMORY[0x1E696AEC0];
-    v44 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    v45 = [v43 stringWithFormat:@"%ld", objc_msgSend(v44, "layoutVariant")];
+    currentLayout2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    v45 = [v43 stringWithFormat:@"%ld", objc_msgSend(currentLayout2, "layoutVariant")];
     v57[6] = v45;
     v56[7] = @"Visible Rect";
     v46 = MEMORY[0x1E696AEC0];
-    v47 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    [v47 visibleFrame];
+    currentLayout3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    [currentLayout3 visibleFrame];
     v48 = NSStringFromCGRect(v68);
     v49 = [v46 stringWithFormat:@"%@", v48];
     v57[7] = v49;
@@ -530,40 +530,40 @@ LABEL_9:
 
 - (void)_invalidateDebugHUDRepresentation
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDebugHUDRepresentation];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDebugHUDRepresentation];
 }
 
-- (void)setHeadroomVisibilityAmount:(double)a3
+- (void)setHeadroomVisibilityAmount:(double)amount
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_headroomVisibilityAmount = a3;
+    self->_headroomVisibilityAmount = amount;
 
     [(PUParallaxLayerStackViewModel *)self signalChange:0x100000];
   }
 }
 
-- (void)setHeadroomState:(int64_t)a3
+- (void)setHeadroomState:(int64_t)state
 {
-  if (self->_headroomState != a3)
+  if (self->_headroomState != state)
   {
-    self->_headroomState = a3;
+    self->_headroomState = state;
   }
 }
 
 - (void)_updateHeadroomVisibilityAmount
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v4 = [v3 mayContainBakedHeadroom];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  mayContainBakedHeadroom = [currentLayerStack mayContainBakedHeadroom];
 
-  v5 = [(PUParallaxLayerStackViewModel *)self representsPureStyle];
-  v6 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v7 = [v6 layout];
-  v8 = [v7 canApplyHeadroom];
+  representsPureStyle = [(PUParallaxLayerStackViewModel *)self representsPureStyle];
+  currentLayerStack2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  layout = [currentLayerStack2 layout];
+  canApplyHeadroom = [layout canApplyHeadroom];
 
   v9 = 0.0;
-  if ((v4 & 1) == 0 && v8 && !v5)
+  if ((mayContainBakedHeadroom & 1) == 0 && canApplyHeadroom && !representsPureStyle)
   {
     [(PUParallaxLayerStackViewModel *)self desiredHeadroomVisibilityAmount];
   }
@@ -573,15 +573,15 @@ LABEL_9:
 
 - (void)_invalidateHeadroomVisibilityAmount
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHeadroomVisibilityAmount];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHeadroomVisibilityAmount];
 }
 
-- (void)setDesiredHeadroomVisibilityAmount:(double)a3
+- (void)setDesiredHeadroomVisibilityAmount:(double)amount
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_desiredHeadroomVisibilityAmount = a3;
+    self->_desiredHeadroomVisibilityAmount = amount;
 
     [(PUParallaxLayerStackViewModel *)self _invalidateHeadroomVisibilityAmount];
   }
@@ -589,9 +589,9 @@ LABEL_9:
 
 - (void)_updateDesiredHeadroomVisibilityAmount
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self visibleFrameCrossesHeadroomBoundary];
+  visibleFrameCrossesHeadroomBoundary = [(PUParallaxLayerStackViewModel *)self visibleFrameCrossesHeadroomBoundary];
   v4 = 0.0;
-  if (v3)
+  if (visibleFrameCrossesHeadroomBoundary)
   {
     v4 = 1.0;
   }
@@ -601,15 +601,15 @@ LABEL_9:
 
 - (void)_invalidateDesiredHeadroomVisibilityAmount
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredHeadroomVisibilityAmount];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredHeadroomVisibilityAmount];
 }
 
-- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)a3
+- (void)setVisibleFrameCrossesHeadroomBoundary:(BOOL)boundary
 {
-  if (self->_visibleFrameCrossesHeadroomBoundary != a3)
+  if (self->_visibleFrameCrossesHeadroomBoundary != boundary)
   {
-    self->_visibleFrameCrossesHeadroomBoundary = a3;
+    self->_visibleFrameCrossesHeadroomBoundary = boundary;
     [(PUParallaxLayerStackViewModel *)self _invalidateDesiredHeadroomVisibilityAmount];
   }
 }
@@ -627,15 +627,15 @@ LABEL_9:
 
 - (void)_invalidateVisibleFrameCrossesHeadroomBoundary
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateVisibleFrameCrossesHeadroomBoundary];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateVisibleFrameCrossesHeadroomBoundary];
 }
 
-- (void)setLegibilityVignetteVisible:(BOOL)a3
+- (void)setLegibilityVignetteVisible:(BOOL)visible
 {
-  if (self->_legibilityVignetteVisible != a3)
+  if (self->_legibilityVignetteVisible != visible)
   {
-    self->_legibilityVignetteVisible = a3;
+    self->_legibilityVignetteVisible = visible;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x100000000];
   }
 }
@@ -657,96 +657,96 @@ LABEL_9:
 
 - (void)_invalidateLegibilityVignetteVisible
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLegibilityVignetteVisible];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLegibilityVignetteVisible];
 }
 
 - (void)_updateLayoutConfiguration
 {
   v3 = objc_alloc(MEMORY[0x1E69C0938]);
-  v10 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-  v4 = [v10 layout];
-  v5 = [v4 configuration];
-  v6 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-  v7 = [v6 layout];
-  v8 = [v7 configuration];
-  v9 = [v3 initWithPortraitConfiguration:v5 landscapeConfiguration:v8];
+  portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+  layout = [portraitLayerStack layout];
+  configuration = [layout configuration];
+  landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+  layout2 = [landscapeLayerStack layout];
+  configuration2 = [layout2 configuration];
+  v9 = [v3 initWithPortraitConfiguration:configuration landscapeConfiguration:configuration2];
   [(PUParallaxLayerStackViewModel *)self setLayoutConfiguration:v9];
 }
 
 - (void)_invalidateLayoutConfiguration
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLayoutConfiguration];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLayoutConfiguration];
 }
 
 - (PFWallpaperCompoundLayerStack)compoundLayerStack
 {
   v3 = objc_alloc(MEMORY[0x1E69C0940]);
-  v4 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-  v5 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-  v6 = [v3 initWithPortraitLayerStack:v4 landscapeLayerStack:v5];
+  portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+  landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+  v6 = [v3 initWithPortraitLayerStack:portraitLayerStack landscapeLayerStack:landscapeLayerStack];
 
   return v6;
 }
 
-- (void)setClockAppearsAboveForeground:(BOOL)a3
+- (void)setClockAppearsAboveForeground:(BOOL)foreground
 {
-  if (self->_clockAppearsAboveForeground != a3)
+  if (self->_clockAppearsAboveForeground != foreground)
   {
-    self->_clockAppearsAboveForeground = a3;
+    self->_clockAppearsAboveForeground = foreground;
     [(PUParallaxLayerStackViewModel *)self signalChange:4096];
   }
 }
 
 - (void)_updateClockAppearsAboveForeground
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
+  clockLayerOrder = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
 
-  if (v3)
+  if (clockLayerOrder)
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
-    v4 = ([v5 isEqualToString:*MEMORY[0x1E69C0BA0]] & 1) != 0 || !-[PUParallaxLayerStackViewModel depthEnabled](self, "depthEnabled") || -[PUParallaxLayerStackViewModel settlingEffectEnabled](self, "settlingEffectEnabled");
+    clockLayerOrder2 = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
+    v4 = ([clockLayerOrder2 isEqualToString:*MEMORY[0x1E69C0BA0]] & 1) != 0 || !-[PUParallaxLayerStackViewModel depthEnabled](self, "depthEnabled") || -[PUParallaxLayerStackViewModel settlingEffectEnabled](self, "settlingEffectEnabled");
     [(PUParallaxLayerStackViewModel *)self setClockAppearsAboveForeground:v4];
   }
 }
 
 - (void)_invalidateClockAppearsAboveForeground
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateClockAppearsAboveForeground];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateClockAppearsAboveForeground];
 }
 
 - (void)_updateInitialPortraitLayout
 {
-  v8 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v8 normalizedVisibleFrame];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout normalizedVisibleFrame];
   PXSizeGetAspectRatio();
   v4 = v3;
-  v5 = [(PUParallaxLayerStackViewModel *)self allowedBehaviors];
-  v6 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
-  if (v6)
+  allowedBehaviors = [(PUParallaxLayerStackViewModel *)self allowedBehaviors];
+  initialPortraitLayout = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
+  if (initialPortraitLayout)
   {
   }
 
-  else if (v4 <= 1.0 || (v5 & 8) != 0)
+  else if (v4 <= 1.0 || (allowedBehaviors & 8) != 0)
   {
-    [(PUParallaxLayerStackViewModel *)self setInitialPortraitLayout:v8];
+    [(PUParallaxLayerStackViewModel *)self setInitialPortraitLayout:currentLayout];
   }
 }
 
 - (void)_invalidateInitialPortraitLayout
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialPortraitLayout];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialPortraitLayout];
 }
 
-- (void)setSalientContentFrame:(CGRect)a3
+- (void)setSalientContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_salientContentFrame = &self->_salientContentFrame;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
@@ -759,11 +759,11 @@ LABEL_9:
   }
 }
 
-- (void)setAdditionalViewTitleHeight:(double)a3
+- (void)setAdditionalViewTitleHeight:(double)height
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_additionalViewTitleHeight = a3;
+    self->_additionalViewTitleHeight = height;
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
 
     [(PUParallaxLayerStackViewModel *)self signalChange:0x800000];
@@ -772,73 +772,73 @@ LABEL_9:
 
 - (void)_updateAdditionalViewTitleHeight
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
-  [v3 presentationValue];
+  additionalViewTitleHeightAnimator = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
+  [additionalViewTitleHeightAnimator presentationValue];
   [(PUParallaxLayerStackViewModel *)self setAdditionalViewTitleHeight:?];
 }
 
 - (void)_invalidateAdditionalViewTitleHeight
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAdditionalViewTitleHeight];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAdditionalViewTitleHeight];
 }
 
-- (void)setTargetAdditionalViewTitleHeight:(double)a3
+- (void)setTargetAdditionalViewTitleHeight:(double)height
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
     targetAdditionalViewTitleHeight = self->_targetAdditionalViewTitleHeight;
-    self->_targetAdditionalViewTitleHeight = a3;
+    self->_targetAdditionalViewTitleHeight = height;
     if ([(PUParallaxLayerStackViewModel *)self environment]== 2 && ([(PUParallaxLayerStackViewModel *)self allowedBehaviors]& 0x100) != 0 && [(PUParallaxLayerStackViewModel *)self userAdjustedVisibleFrame])
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
-      if (([v6 isAnimating] & 1) == 0)
+      additionalViewTitleHeightAnimator = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
+      if (([additionalViewTitleHeightAnimator isAnimating] & 1) == 0)
       {
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __68__PUParallaxLayerStackViewModel_setTargetAdditionalViewTitleHeight___block_invoke;
         v9[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
         *&v9[4] = targetAdditionalViewTitleHeight;
-        [v6 performChangesWithoutAnimation:v9];
+        [additionalViewTitleHeightAnimator performChangesWithoutAnimation:v9];
       }
 
-      v7 = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
-      [v7 approximateVelocity];
+      additionalViewTitleHeightAnimator2 = [(PUParallaxLayerStackViewModel *)self additionalViewTitleHeightAnimator];
+      [additionalViewTitleHeightAnimator2 approximateVelocity];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __68__PUParallaxLayerStackViewModel_setTargetAdditionalViewTitleHeight___block_invoke_2;
       v8[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
-      *&v8[4] = a3;
-      [v6 performChangesUsingDefaultSpringAnimationWithInitialVelocity:v8 changes:?];
+      *&v8[4] = height;
+      [additionalViewTitleHeightAnimator performChangesUsingDefaultSpringAnimationWithInitialVelocity:v8 changes:?];
     }
 
     else
     {
 
-      [(PUParallaxLayerStackViewModel *)self setAdditionalViewTitleHeight:a3];
+      [(PUParallaxLayerStackViewModel *)self setAdditionalViewTitleHeight:height];
     }
   }
 }
 
 - (void)_updateCurrentLayoutProperties
 {
-  v59 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  v3 = [v59 layoutVariant];
-  v4 = [(PUParallaxLayerStackViewModel *)self deviceOrientation];
-  [(PUParallaxLayerStackViewModel *)self setSupportsAdaptiveLayout:v3 == 2];
-  [v59 salientContentFrame];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  layoutVariant = [currentLayout layoutVariant];
+  deviceOrientation = [(PUParallaxLayerStackViewModel *)self deviceOrientation];
+  [(PUParallaxLayerStackViewModel *)self setSupportsAdaptiveLayout:layoutVariant == 2];
+  [currentLayout salientContentFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v57 = v11;
-  [v59 visibleFrame];
+  [currentLayout visibleFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if ([v59 layoutVariant] == 2)
+  if ([currentLayout layoutVariant] == 2)
   {
-    [v59 adaptiveVisibleFrame];
+    [currentLayout adaptiveVisibleFrame];
     PXRectWithSizeAlignedToRectEdges();
     v13 = v20;
     v15 = v21;
@@ -855,7 +855,7 @@ LABEL_9:
     v26 = v10 / v17;
   }
 
-  v27 = v4 - 3;
+  v27 = deviceOrientation - 3;
   v28 = v8 - v15;
   if (v19 != 0.0)
   {
@@ -883,17 +883,17 @@ LABEL_9:
   Height = CGRectGetHeight(v61);
   v43 = 0.0;
   v44 = 0.0;
-  if (v3 == 2)
+  if (layoutVariant == 2)
   {
     v55 = Height;
-    [v59 visibleFrame];
+    [currentLayout visibleFrame];
     v56 = v31;
     v58 = v33;
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    [v59 adaptiveVisibleFrame];
+    [currentLayout adaptiveVisibleFrame];
     v53 = CGRectGetHeight(v62);
     v63.origin.x = v46;
     v63.origin.y = v48;
@@ -910,11 +910,11 @@ LABEL_9:
   }
 
   [(PUParallaxLayerStackViewModel *)self setAdaptiveLayoutAvailableContentHeight:v44];
-  [v59 layoutVariant];
+  [currentLayout layoutVariant];
   if (PFPosterIsLayoutVariantAdaptive())
   {
     [(PUParallaxLayerStackViewModel *)self deviceOrientation];
-    v43 = PUPosterAdditionalViewTitleHeight(v59, v31, v33, v35, v37);
+    v43 = PUPosterAdditionalViewTitleHeight(currentLayout, v31, v33, v35, v37);
   }
 
   [(PUParallaxLayerStackViewModel *)self setTargetAdditionalViewTitleHeight:v43];
@@ -922,25 +922,25 @@ LABEL_9:
 
 - (void)_invalidateCurrentLayoutProperties
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentLayoutProperties];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentLayoutProperties];
 }
 
-- (void)setLandscapeUserAdjustedTitleHeightOffset:(double)a3
+- (void)setLandscapeUserAdjustedTitleHeightOffset:(double)offset
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_landscapeUserAdjustedTitleHeightOffset = a3;
+    self->_landscapeUserAdjustedTitleHeightOffset = offset;
 
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
   }
 }
 
-- (void)setUserAdjustedTitleHeightOffset:(double)a3
+- (void)setUserAdjustedTitleHeightOffset:(double)offset
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_userAdjustedTitleHeightOffset = a3;
+    self->_userAdjustedTitleHeightOffset = offset;
 
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
   }
@@ -973,32 +973,32 @@ LABEL_9:
   return (v3 | v4) & 1;
 }
 
-- (void)setLandscapeOverrideTitleHeight:(double)a3
+- (void)setLandscapeOverrideTitleHeight:(double)height
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_landscapeOverrideTitleHeight = a3;
+    self->_landscapeOverrideTitleHeight = height;
 
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
   }
 }
 
-- (void)setOverrideTitleHeight:(double)a3
+- (void)setOverrideTitleHeight:(double)height
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_overrideTitleHeight = a3;
+    self->_overrideTitleHeight = height;
 
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
   }
 }
 
-- (void)setCurrentNormalizedVisibleFrame:(CGRect)a3
+- (void)setCurrentNormalizedVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_currentNormalizedVisibleFrame = &self->_currentNormalizedVisibleFrame;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
@@ -1014,8 +1014,8 @@ LABEL_9:
 
 - (void)_updateCurrentNormalizedVisibleRect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 normalizedVisibleFrame];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout normalizedVisibleFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1027,16 +1027,16 @@ LABEL_9:
   v31.size.height = v11;
   if (CGRectIsEmpty(v31))
   {
-    v12 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    [v12 imageSize];
+    currentLayout2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    [currentLayout2 imageSize];
     PXRectWithOriginAndSize();
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    [v21 deviceResolution];
+    currentLayout3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    [currentLayout3 deviceResolution];
     PXSizeGetAspectRatio();
     PXRectWithAspectRatioFittingRect();
     v23 = v22;
@@ -1066,31 +1066,31 @@ LABEL_9:
 
 - (void)_invalidateCurrentNormalizedVisibleRect
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentNormalizedVisibleRect];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentNormalizedVisibleRect];
 }
 
-- (CGRect)_calculateNormalizedAdaptiveTimeRectForOrientation:(int64_t)a3 containerFrame:(CGRect)a4 configuredSalientContentRectangle:(CGRect)a5
+- (CGRect)_calculateNormalizedAdaptiveTimeRectForOrientation:(int64_t)orientation containerFrame:(CGRect)frame configuredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a5.size.height;
-  y = a5.origin.y;
-  v7 = a4.size.height;
-  width = a4.size.width;
+  height = rectangle.size.height;
+  y = rectangle.origin.y;
+  v7 = frame.size.height;
+  width = frame.size.width;
   memset(&v38, 0, sizeof(v38));
-  if (a3 >= 2)
+  if (orientation >= 2)
   {
-    if (a3 != 2)
+    if (orientation != 2)
     {
-      v10 = 0;
+      timeRectCollectionLandscape = 0;
       v33 = 0.0;
       v11 = 0.0;
       v13 = 0.0;
       goto LABEL_7;
     }
 
-    x = a5.origin.x;
-    v34 = a5.size.width;
-    v10 = [MEMORY[0x1E69C0790] timeRectCollectionLandscape];
+    x = rectangle.origin.x;
+    v34 = rectangle.size.width;
+    timeRectCollectionLandscape = [MEMORY[0x1E69C0790] timeRectCollectionLandscape];
     v11 = 170.0;
     v12 = 4;
     v33 = v7;
@@ -1099,9 +1099,9 @@ LABEL_9:
 
   else
   {
-    x = a5.origin.x;
-    v34 = a5.size.width;
-    v10 = [MEMORY[0x1E69C0790] timeRectCollectionPortrait];
+    x = rectangle.origin.x;
+    v34 = rectangle.size.width;
+    timeRectCollectionLandscape = [MEMORY[0x1E69C0790] timeRectCollectionPortrait];
     v11 = 0.0;
     v12 = 1;
     v33 = width;
@@ -1109,21 +1109,21 @@ LABEL_9:
   }
 
   PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(v12, &v38);
-  a5.size.width = v34;
-  a5.origin.x = x;
+  rectangle.size.width = v34;
+  rectangle.origin.x = x;
 LABEL_7:
   v37 = v38;
-  v39.origin.x = a5.origin.x;
+  v39.origin.x = rectangle.origin.x;
   v39.origin.y = y;
-  v39.size.width = a5.size.width;
+  v39.size.width = rectangle.size.width;
   v39.size.height = height;
   v40 = CGRectApplyAffineTransform(v39, &v37);
   v35 = v13;
   v14 = v11 + v13 - v40.size.height;
-  [v10 minTimeRect];
+  [timeRectCollectionLandscape minTimeRect];
   v37 = v38;
   v42 = CGRectApplyAffineTransform(v41, &v37);
-  [v10 rectForPointSpaceHeight:v14 - v42.origin.y];
+  [timeRectCollectionLandscape rectForPointSpaceHeight:v14 - v42.origin.y];
   v15 = v43.origin.x;
   v16 = v43.origin.y;
   v17 = v43.size.width;
@@ -1134,13 +1134,13 @@ LABEL_7:
   v20 = v44.origin.y;
   v21 = v44.size.width;
   v22 = v44.size.height;
-  v23 = [(PUParallaxLayerStackViewManager *)self->_viewManager debugInfoViewIfLoaded];
+  debugInfoViewIfLoaded = [(PUParallaxLayerStackViewManager *)self->_viewManager debugInfoViewIfLoaded];
   *v36 = v19;
   *&v36[1] = v20;
   *&v36[2] = v21;
   *&v36[3] = v22;
   v24 = [MEMORY[0x1E696B098] valueWithBytes:v36 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v23 setDebugTimeRect:v24];
+  [debugInfoViewIfLoaded setDebugTimeRect:v24];
 
   v25 = 0.0;
   v26 = 0.0;
@@ -1169,35 +1169,35 @@ LABEL_7:
   return result;
 }
 
-- (void)setConfiguredSalientContentRectangle:(CGRect)a3
+- (void)setConfiguredSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   p_configuredSalientContentRectangle = &self->_configuredSalientContentRectangle;
-  if (!CGRectEqualToRect(self->_configuredSalientContentRectangle, a3))
+  if (!CGRectEqualToRect(self->_configuredSalientContentRectangle, rectangle))
   {
     p_configuredSalientContentRectangle->origin.x = x;
     p_configuredSalientContentRectangle->origin.y = y;
     p_configuredSalientContentRectangle->size.width = width;
     p_configuredSalientContentRectangle->size.height = height;
-    v9 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    if (v9)
+    currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    if (currentLayout)
     {
-      v10 = v9;
-      v11 = [(PUParallaxLayerStackViewModel *)self didSetContainerFrame];
+      v10 = currentLayout;
+      didSetContainerFrame = [(PUParallaxLayerStackViewModel *)self didSetContainerFrame];
 
-      if (v11)
+      if (didSetContainerFrame)
       {
-        v12 = [(PUParallaxLayerStackViewModel *)self orientation];
+        orientation = [(PUParallaxLayerStackViewModel *)self orientation];
         [(PUParallaxLayerStackViewModel *)self containerFrame];
         v14 = v13;
         v16 = v15;
         v18 = v17;
         v20 = v19;
         [(PUParallaxLayerStackViewModel *)self configuredSalientContentRectangle];
-        [(PUParallaxLayerStackViewModel *)self _calculateNormalizedAdaptiveTimeRectForOrientation:v12 containerFrame:v14 configuredSalientContentRectangle:v16, v18, v20, v21, v22, v23, v24];
+        [(PUParallaxLayerStackViewModel *)self _calculateNormalizedAdaptiveTimeRectForOrientation:orientation containerFrame:v14 configuredSalientContentRectangle:v16, v18, v20, v21, v22, v23, v24];
         v25 = v30.origin.x;
         v26 = v30.origin.y;
         v27 = v30.size.width;
@@ -1248,12 +1248,12 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
   return v15;
 }
 
-- (void)setCurrentLayout:(id)a3
+- (void)setCurrentLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_currentLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1263,7 +1263,7 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentLayout, a3);
+      objc_storeStrong(&self->_currentLayout, layout);
       [(PUParallaxLayerStackViewModel *)self _invalidateClockAppearsAboveForeground];
       [(PUParallaxLayerStackViewModel *)self _invalidateInitialPortraitLayout];
       [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayoutProperties];
@@ -1274,23 +1274,23 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
 - (void)_updateCurrentLayout
 {
-  v4 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v4 layout];
-  [(PUParallaxLayerStackViewModel *)self setCurrentLayout:v3];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  layout = [currentLayerStack layout];
+  [(PUParallaxLayerStackViewModel *)self setCurrentLayout:layout];
 }
 
 - (void)_invalidateCurrentLayout
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentLayout];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentLayout];
 }
 
-- (void)setEffectiveHeadroomLayout:(id)a3
+- (void)setEffectiveHeadroomLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_effectiveHeadroomLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1300,18 +1300,18 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_effectiveHeadroomLayout, a3);
+      objc_storeStrong(&self->_effectiveHeadroomLayout, layout);
       [(PUParallaxLayerStackViewModel *)self signalChange:0x4000000];
     }
   }
 }
 
-- (void)setEffectiveDefaultLayout:(id)a3
+- (void)setEffectiveDefaultLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_effectiveDefaultLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1321,7 +1321,7 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_effectiveDefaultLayout, a3);
+      objc_storeStrong(&self->_effectiveDefaultLayout, layout);
       [(PUParallaxLayerStackViewModel *)self signalChange:8];
     }
   }
@@ -1331,16 +1331,16 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 {
   if ([(PUParallaxLayerStackViewModel *)self spatialPhotoEnabled])
   {
-    v3 = [(PUParallaxLayerStackViewModel *)self defaultSpatialLayout];
-    [(PUParallaxLayerStackViewModel *)self setEffectiveDefaultLayout:v3];
+    defaultSpatialLayout = [(PUParallaxLayerStackViewModel *)self defaultSpatialLayout];
+    [(PUParallaxLayerStackViewModel *)self setEffectiveDefaultLayout:defaultSpatialLayout];
 
     [(PUParallaxLayerStackViewModel *)self headroomSpatialLayout];
   }
 
   else
   {
-    v4 = [(PUParallaxLayerStackViewModel *)self defaultLayout];
-    [(PUParallaxLayerStackViewModel *)self setEffectiveDefaultLayout:v4];
+    defaultLayout = [(PUParallaxLayerStackViewModel *)self defaultLayout];
+    [(PUParallaxLayerStackViewModel *)self setEffectiveDefaultLayout:defaultLayout];
 
     [(PUParallaxLayerStackViewModel *)self headroomLayout];
   }
@@ -1350,16 +1350,16 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
 - (void)_invalidateEffectiveDefaultLayouts
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateEffectiveDefaultLayouts];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateEffectiveDefaultLayouts];
 }
 
-- (void)setCurrentLayerStack:(id)a3
+- (void)setCurrentLayerStack:(id)stack
 {
-  v8 = a3;
+  stackCopy = stack;
   v5 = self->_currentLayerStack;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == stackCopy)
   {
   }
 
@@ -1369,7 +1369,7 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentLayerStack, a3);
+      objc_storeStrong(&self->_currentLayerStack, stack);
       [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayout];
       [(PUParallaxLayerStackViewModel *)self _invalidateCurrentNormalizedVisibleRect];
       [(PUParallaxLayerStackViewModel *)self _invalidateHeadroomVisibilityAmount];
@@ -1380,52 +1380,52 @@ id __70__PUParallaxLayerStackViewModel_setConfiguredSalientContentRectangle___bl
 
 - (void)_updateCurrentLayerStack
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self orientation];
-  if (!v3)
+  orientation = [(PUParallaxLayerStackViewModel *)self orientation];
+  if (!orientation)
   {
     goto LABEL_4;
   }
 
-  if (v3 == 2)
+  if (orientation == 2)
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-    v6 = v5;
-    if (v5)
+    landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+    v6 = landscapeLayerStack;
+    if (landscapeLayerStack)
     {
-      v7 = v5;
+      portraitLayerStack = landscapeLayerStack;
     }
 
     else
     {
-      v7 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+      portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
     }
 
-    v8 = v7;
+    v8 = portraitLayerStack;
 
-    v4 = v8;
+    portraitLayerStack2 = v8;
     goto LABEL_10;
   }
 
-  if (v3 != 1)
+  if (orientation != 1)
   {
-    v4 = 0;
+    portraitLayerStack2 = 0;
   }
 
   else
   {
 LABEL_4:
-    v4 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+    portraitLayerStack2 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
   }
 
 LABEL_10:
-  v9 = v4;
-  [(PUParallaxLayerStackViewModel *)self setCurrentLayerStack:v4];
+  v9 = portraitLayerStack2;
+  [(PUParallaxLayerStackViewModel *)self setCurrentLayerStack:portraitLayerStack2];
 }
 
 - (void)_invalidateCurrentLayerStack
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentLayerStack];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentLayerStack];
 }
 
 - (void)_updateVisibleFrameWithContainerFrame
@@ -1452,15 +1452,15 @@ LABEL_10:
 
 - (void)_invalidateVisibleFrameWithContainerFrame
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateVisibleFrameWithContainerFrame];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateVisibleFrameWithContainerFrame];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayerStack];
     [(PUParallaxLayerStackViewModel *)self _invalidateVisibleFrameWithContainerFrame];
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
@@ -1502,8 +1502,8 @@ LABEL_10:
 
 - (void)_invalidateOrientation
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOrientation];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOrientation];
 }
 
 - (void)didEndChangeHandling
@@ -1520,58 +1520,58 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = PUParallaxLayerStackViewModel;
   [(PUParallaxLayerStackViewModel *)&v4 didPerformChanges];
-  v3 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performPrivateChanges:(id)a3
+- (void)performPrivateChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUParallaxLayerStackViewModel;
-  [(PUParallaxLayerStackViewModel *)&v3 performChanges:a3];
+  [(PUParallaxLayerStackViewModel *)&v3 performChanges:changes];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUParallaxLayerStackViewModel;
-  [(PUParallaxLayerStackViewModel *)&v3 performChanges:a3];
+  [(PUParallaxLayerStackViewModel *)&v3 performChanges:changes];
 }
 
-- (void)setLegibilityVignetteEnabled:(BOOL)a3
+- (void)setLegibilityVignetteEnabled:(BOOL)enabled
 {
-  if (self->_legibilityVignetteEnabled != a3)
+  if (self->_legibilityVignetteEnabled != enabled)
   {
-    self->_legibilityVignetteEnabled = a3;
+    self->_legibilityVignetteEnabled = enabled;
     [(PUParallaxLayerStackViewModel *)self _invalidateLegibilityVignetteVisible];
   }
 }
 
-- (void)setAnimationCurve:(id)a3
+- (void)setAnimationCurve:(id)curve
 {
-  v5 = a3;
-  if (self->_animationCurve != v5)
+  curveCopy = curve;
+  if (self->_animationCurve != curveCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_animationCurve, a3);
-    v5 = v6;
+    v6 = curveCopy;
+    objc_storeStrong(&self->_animationCurve, curve);
+    curveCopy = v6;
   }
 }
 
-- (void)setAnimationDuration:(double)a3
+- (void)setAnimationDuration:(double)duration
 {
-  if (vabdd_f64(self->_animationDuration, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_animationDuration, duration) > 0.00000999999975)
   {
-    self->_animationDuration = a3;
+    self->_animationDuration = duration;
   }
 }
 
-- (void)setHeadroomSpatialLayout:(id)a3
+- (void)setHeadroomSpatialLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_headroomSpatialLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1581,18 +1581,18 @@ LABEL_10:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_headroomSpatialLayout, a3);
+      objc_storeStrong(&self->_headroomSpatialLayout, layout);
       [(PUParallaxLayerStackViewModel *)self _invalidateEffectiveDefaultLayouts];
     }
   }
 }
 
-- (void)setDefaultSpatialLayout:(id)a3
+- (void)setDefaultSpatialLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_defaultSpatialLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1602,18 +1602,18 @@ LABEL_10:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_defaultSpatialLayout, a3);
+      objc_storeStrong(&self->_defaultSpatialLayout, layout);
       [(PUParallaxLayerStackViewModel *)self _invalidateEffectiveDefaultLayouts];
     }
   }
 }
 
-- (void)setHeadroomLayout:(id)a3
+- (void)setHeadroomLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_headroomLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1623,18 +1623,18 @@ LABEL_10:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_headroomLayout, a3);
+      objc_storeStrong(&self->_headroomLayout, layout);
       [(PUParallaxLayerStackViewModel *)self _invalidateEffectiveDefaultLayouts];
     }
   }
 }
 
-- (void)setDefaultLayout:(id)a3
+- (void)setDefaultLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   v5 = self->_defaultLayout;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layoutCopy)
   {
   }
 
@@ -1644,41 +1644,41 @@ LABEL_10:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_defaultLayout, a3);
+      objc_storeStrong(&self->_defaultLayout, layout);
       [(PUParallaxLayerStackViewModel *)self _invalidateEffectiveDefaultLayouts];
     }
   }
 }
 
-- (void)setSpatialPhotoLoadingProgress:(double)a3
+- (void)setSpatialPhotoLoadingProgress:(double)progress
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_spatialPhotoLoadingProgress = a3;
+    self->_spatialPhotoLoadingProgress = progress;
 
     [(PUParallaxLayerStackViewModel *)self signalChange:0x10000000];
   }
 }
 
-- (void)setLoadingSpatialPhoto:(BOOL)a3
+- (void)setLoadingSpatialPhoto:(BOOL)photo
 {
-  if (self->_loadingSpatialPhoto != a3)
+  if (self->_loadingSpatialPhoto != photo)
   {
-    self->_loadingSpatialPhoto = a3;
+    self->_loadingSpatialPhoto = photo;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x8000000];
   }
 }
 
-- (void)reportSpatialPhotoGenerationError:(id)a3
+- (void)reportSpatialPhotoGenerationError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   [(PUParallaxLayerStackViewModel *)self setLoadingSpatialPhoto:0];
-  v4 = [v6 domain];
-  if ([v4 isEqual:*MEMORY[0x1E69C0BC8]])
+  domain = [errorCopy domain];
+  if ([domain isEqual:*MEMORY[0x1E69C0BC8]])
   {
-    v5 = [v6 code];
+    code = [errorCopy code];
 
-    if (v5 == 1002)
+    if (code == 1002)
     {
 
       [(PUParallaxLayerStackViewModel *)self setDebugSpatialPhotoGenerationError:0];
@@ -1690,22 +1690,22 @@ LABEL_10:
   {
   }
 
-  [(PUParallaxLayerStackViewModel *)self setDebugSpatialPhotoGenerationError:v6];
-  if (v6)
+  [(PUParallaxLayerStackViewModel *)self setDebugSpatialPhotoGenerationError:errorCopy];
+  if (errorCopy)
   {
     [(PUParallaxLayerStackViewModel *)self signalChange:0x2000000];
   }
 }
 
-- (void)updateLayoutPropertiesWithLayerStack:(id)a3
+- (void)updateLayoutPropertiesWithLayerStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PUParallaxLayerStackViewModel_updateLayoutPropertiesWithLayerStack___block_invoke;
   v6[3] = &unk_1E7B7A290;
-  v7 = v4;
-  v5 = v4;
+  v7 = stackCopy;
+  v5 = stackCopy;
   [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v6 changeDescriptor:2];
   [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayout];
 }
@@ -1720,18 +1720,18 @@ id __70__PUParallaxLayerStackViewModel_updateLayoutPropertiesWithLayerStack___bl
   return v5;
 }
 
-- (void)updateSpatialPhotoWithLayout:(id)a3
+- (void)updateSpatialPhotoWithLayout:(id)layout
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  layoutCopy = layout;
+  v5 = layoutCopy;
+  if (layoutCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__PUParallaxLayerStackViewModel_updateSpatialPhotoWithLayout___block_invoke;
     v6[3] = &unk_1E7B7A368;
     v6[4] = self;
-    v7 = v4;
+    v7 = layoutCopy;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v6 changeDescriptor:0];
   }
 }
@@ -1757,42 +1757,42 @@ id __62__PUParallaxLayerStackViewModel_updateSpatialPhotoWithLayout___block_invo
   return v7;
 }
 
-- (void)updateSpatialPhotoWithLayerStack:(id)a3 layout:(id)a4
+- (void)updateSpatialPhotoWithLayerStack:(id)stack layout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  stackCopy = stack;
+  layoutCopy = layout;
   [(PUParallaxLayerStackViewModel *)self setLoadingSpatialPhoto:0];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 spatialPhotoBackgroundLayer];
+  spatialPhotoBackgroundLayer = [stackCopy spatialPhotoBackgroundLayer];
 
-  if (v9)
+  if (spatialPhotoBackgroundLayer)
   {
-    v10 = [v6 spatialPhotoBackgroundLayer];
-    [v8 addObject:v10];
+    spatialPhotoBackgroundLayer2 = [stackCopy spatialPhotoBackgroundLayer];
+    [v8 addObject:spatialPhotoBackgroundLayer2];
   }
 
-  v11 = [v6 spatialPhotoForegroundLayer];
+  spatialPhotoForegroundLayer = [stackCopy spatialPhotoForegroundLayer];
 
-  if (v11)
+  if (spatialPhotoForegroundLayer)
   {
-    v12 = [v6 spatialPhotoForegroundLayer];
-    [v8 addObject:v12];
+    spatialPhotoForegroundLayer2 = [stackCopy spatialPhotoForegroundLayer];
+    [v8 addObject:spatialPhotoForegroundLayer2];
   }
 
-  v13 = [v6 spatialPhotoBackgroundBackfillLayer];
+  spatialPhotoBackgroundBackfillLayer = [stackCopy spatialPhotoBackgroundBackfillLayer];
 
-  if (v13)
+  if (spatialPhotoBackgroundBackfillLayer)
   {
-    v14 = [v6 spatialPhotoBackgroundBackfillLayer];
-    [v8 addObject:v14];
+    spatialPhotoBackgroundBackfillLayer2 = [stackCopy spatialPhotoBackgroundBackfillLayer];
+    [v8 addObject:spatialPhotoBackgroundBackfillLayer2];
   }
 
-  v15 = [v6 spatialPhotoForegroundBackfillLayer];
+  spatialPhotoForegroundBackfillLayer = [stackCopy spatialPhotoForegroundBackfillLayer];
 
-  if (v15)
+  if (spatialPhotoForegroundBackfillLayer)
   {
-    v16 = [v6 spatialPhotoForegroundBackfillLayer];
-    [v8 addObject:v16];
+    spatialPhotoForegroundBackfillLayer2 = [stackCopy spatialPhotoForegroundBackfillLayer];
+    [v8 addObject:spatialPhotoForegroundBackfillLayer2];
   }
 
   if ([v8 count])
@@ -1803,9 +1803,9 @@ id __62__PUParallaxLayerStackViewModel_updateSpatialPhotoWithLayout___block_invo
     v17[2] = __73__PUParallaxLayerStackViewModel_updateSpatialPhotoWithLayerStack_layout___block_invoke;
     v17[3] = &unk_1E7B7A340;
     v17[4] = self;
-    v18 = v7;
+    v18 = layoutCopy;
     v19 = v8;
-    v20 = v6;
+    v20 = stackCopy;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v17 changeDescriptor:2];
   }
 }
@@ -1834,22 +1834,22 @@ id __73__PUParallaxLayerStackViewModel_updateSpatialPhotoWithLayerStack_layout__
   return v9;
 }
 
-- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)a3 layerStack:(id)a4
+- (void)updatePhotoEffectsWithLoadedSegmentationItem:(id)item layerStack:(id)stack
 {
-  v7 = a3;
-  if (self->_segmentationItem != v7)
+  itemCopy = item;
+  if (self->_segmentationItem != itemCopy)
   {
-    objc_storeStrong(&self->_segmentationItem, a3);
-    v8 = a4;
-    v9 = [v8 settlingEffectLayer];
+    objc_storeStrong(&self->_segmentationItem, item);
+    stackCopy = stack;
+    settlingEffectLayer = [stackCopy settlingEffectLayer];
 
-    if (v9)
+    if (settlingEffectLayer)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __89__PUParallaxLayerStackViewModel_updatePhotoEffectsWithLoadedSegmentationItem_layerStack___block_invoke;
       v10[3] = &unk_1E7B7A290;
-      v11 = v9;
+      v11 = settlingEffectLayer;
       [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v10 changeDescriptor:2];
     }
   }
@@ -1868,15 +1868,15 @@ id __89__PUParallaxLayerStackViewModel_updatePhotoEffectsWithLoadedSegmentationI
   return v5;
 }
 
-- (void)setClockIntersection:(unint64_t)a3
+- (void)setClockIntersection:(unint64_t)intersection
 {
-  if ([(PUParallaxLayerStackViewModel *)self clockIntersection]!= a3)
+  if ([(PUParallaxLayerStackViewModel *)self clockIntersection]!= intersection)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __54__PUParallaxLayerStackViewModel_setClockIntersection___block_invoke;
     v5[3] = &__block_descriptor_40_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v5[4] = a3;
+    v5[4] = intersection;
     [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v5 changeDescriptor:0];
     [(PUParallaxLayerStackViewModel *)self signalChange:256];
     [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayout];
@@ -1896,26 +1896,26 @@ id __54__PUParallaxLayerStackViewModel_setClockIntersection___block_invoke(uint6
 
 - (unint64_t)clockIntersection
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  v3 = [v2 clockIntersection];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  clockIntersection = [currentLayout clockIntersection];
 
-  return v3;
+  return clockIntersection;
 }
 
 - (double)clockAreaLuminance
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  [v2 clockAreaLuminance];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  [currentLayerStack clockAreaLuminance];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setClockAreaLuminance:(double)a3
+- (void)setClockAreaLuminance:(double)luminance
 {
-  v5 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  [v5 clockAreaLuminance];
-  v7 = vabdd_f64(a3, v6);
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  [currentLayerStack clockAreaLuminance];
+  v7 = vabdd_f64(luminance, v6);
 
   if (v7 > 0.00000999999975)
   {
@@ -1923,23 +1923,23 @@ id __54__PUParallaxLayerStackViewModel_setClockIntersection___block_invoke(uint6
     v8[1] = 3221225472;
     v8[2] = __55__PUParallaxLayerStackViewModel_setClockAreaLuminance___block_invoke;
     v8[3] = &__block_descriptor_40_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    *&v8[4] = a3;
+    *&v8[4] = luminance;
     [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v8 changeDescriptor:32];
   }
 }
 
-- (void)setClockLayerOrder:(id)a3
+- (void)setClockLayerOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
+  orderCopy = order;
+  clockLayerOrder = [(PUParallaxLayerStackViewModel *)self clockLayerOrder];
 
-  if (v5 != v4)
+  if (clockLayerOrder != orderCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __52__PUParallaxLayerStackViewModel_setClockLayerOrder___block_invoke;
     v6[3] = &unk_1E7B7A290;
-    v7 = v4;
+    v7 = orderCopy;
     [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v6 changeDescriptor:16];
     [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayout];
   }
@@ -1947,21 +1947,21 @@ id __54__PUParallaxLayerStackViewModel_setClockIntersection___block_invoke(uint6
 
 - (NSString)clockLayerOrder
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  v3 = [v2 clockLayerOrder];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  clockLayerOrder = [currentLayout clockLayerOrder];
 
-  return v3;
+  return clockLayerOrder;
 }
 
-- (void)updateBackfillLayersFromLayerStack:(id)a3
+- (void)updateBackfillLayersFromLayerStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PUParallaxLayerStackViewModel_updateBackfillLayersFromLayerStack___block_invoke;
   v6[3] = &unk_1E7B7A290;
-  v7 = v4;
-  v5 = v4;
+  v7 = stackCopy;
+  v5 = stackCopy;
   [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v6 changeDescriptor:2];
 }
 
@@ -1976,14 +1976,14 @@ id __68__PUParallaxLayerStackViewModel_updateBackfillLayersFromLayerStack___bloc
   return v5;
 }
 
-- (void)updateLayerStack:(id)a3
+- (void)updateLayerStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke;
   v6[3] = &unk_1E7B7A290;
-  v5 = v4;
+  v5 = stackCopy;
   v7 = v5;
   [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v6 changeDescriptor:2];
   if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration] && -[PUParallaxLayerStackViewModel needsToAdjustVisibleFrame](self, "needsToAdjustVisibleFrame") && -[PUParallaxLayerStackViewModel orientation](self, "orientation") == 2)
@@ -2003,49 +2003,49 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)setShowsDebugHUD:(BOOL)a3
+- (void)setShowsDebugHUD:(BOOL)d
 {
-  if (self->_showsDebugHUD != a3)
+  if (self->_showsDebugHUD != d)
   {
-    self->_showsDebugHUD = a3;
+    self->_showsDebugHUD = d;
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
 
     [(PUParallaxLayerStackViewModel *)self signalChange:0x80000];
   }
 }
 
-- (void)setShouldAlwaysUseSpatialPhotoForGallery:(BOOL)a3
+- (void)setShouldAlwaysUseSpatialPhotoForGallery:(BOOL)gallery
 {
-  if (self->_shouldAlwaysUseSpatialPhotoForGallery != a3)
+  if (self->_shouldAlwaysUseSpatialPhotoForGallery != gallery)
   {
-    self->_shouldAlwaysUseSpatialPhotoForGallery = a3;
+    self->_shouldAlwaysUseSpatialPhotoForGallery = gallery;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x20000000];
   }
 }
 
-- (void)setShouldLoopSettlingEffectForGallery:(BOOL)a3
+- (void)setShouldLoopSettlingEffectForGallery:(BOOL)gallery
 {
-  if (self->_shouldLoopSettlingEffectForGallery != a3)
+  if (self->_shouldLoopSettlingEffectForGallery != gallery)
   {
-    self->_shouldLoopSettlingEffectForGallery = a3;
+    self->_shouldLoopSettlingEffectForGallery = gallery;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x200000];
   }
 }
 
-- (void)setLayoutOrder:(int64_t)a3
+- (void)setLayoutOrder:(int64_t)order
 {
-  if (self->_layoutOrder != a3)
+  if (self->_layoutOrder != order)
   {
-    self->_layoutOrder = a3;
+    self->_layoutOrder = order;
     [(PUParallaxLayerStackViewModel *)self signalChange:64];
   }
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  if (self->_deviceOrientation != a3)
+  if (self->_deviceOrientation != orientation)
   {
-    self->_deviceOrientation = a3;
+    self->_deviceOrientation = orientation;
     [(PUParallaxLayerStackViewModel *)self _invalidateOrientation];
     [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
 
@@ -2053,70 +2053,70 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
   }
 }
 
-- (void)setBacklightLuminance:(int64_t)a3
+- (void)setBacklightLuminance:(int64_t)luminance
 {
-  if (self->_backlightLuminance != a3)
+  if (self->_backlightLuminance != luminance)
   {
-    self->_backlightLuminance = a3;
+    self->_backlightLuminance = luminance;
     [(PUParallaxLayerStackViewModel *)self signalChange:128];
   }
 }
 
-- (void)setVisibilityEffects:(int64_t)a3
+- (void)setVisibilityEffects:(int64_t)effects
 {
-  if (self->_visibilityEffects != a3)
+  if (self->_visibilityEffects != effects)
   {
-    self->_visibilityEffects = a3;
+    self->_visibilityEffects = effects;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x40000000];
   }
 }
 
-- (void)setVisibilityAmount:(double)a3
+- (void)setVisibilityAmount:(double)amount
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_visibilityAmount = a3;
+    self->_visibilityAmount = amount;
 
     [(PUParallaxLayerStackViewModel *)self signalChange:1024];
   }
 }
 
-- (void)setAdaptiveLayoutTransform:(CGAffineTransform *)a3
+- (void)setAdaptiveLayoutTransform:(CGAffineTransform *)transform
 {
   p_adaptiveLayoutTransform = &self->_adaptiveLayoutTransform;
   v6 = *&self->_adaptiveLayoutTransform.c;
   *&t1.a = *&self->_adaptiveLayoutTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_adaptiveLayoutTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_adaptiveLayoutTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_adaptiveLayoutTransform->c = *&transform->c;
     *&p_adaptiveLayoutTransform->tx = v9;
     *&p_adaptiveLayoutTransform->a = v8;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setParallaxVector:(CGPoint)a3
+- (void)setParallaxVector:(CGPoint)vector
 {
-  if (self->_parallaxVector.x != a3.x || self->_parallaxVector.y != a3.y)
+  if (self->_parallaxVector.x != vector.x || self->_parallaxVector.y != vector.y)
   {
-    self->_parallaxVector = a3;
+    self->_parallaxVector = vector;
     [(PUParallaxLayerStackViewModel *)self signalChange:0x2000];
   }
 }
 
 - (void)_updateVisibleFrameWithContainerFrameUsingConfiguration
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
+  initialPortraitLayout = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
 
-  if (v3)
+  if (initialPortraitLayout)
   {
     v4 = PUPosterGenericCenteredTitleBounds();
     v6 = v5;
@@ -2137,9 +2137,9 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
     v20 = [v17 specificConfigurationWithPortraitTitleBounds:v4 portraitScreenSize:v6 landscapeScreenSize:{v8, v10, v12, v14, v18, v19}];
     [(PUParallaxLayerStackViewModel *)self containerInsets];
     v22 = v21 / v14;
-    v23 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
-    v24 = [v20 portraitConfiguration];
-    v25 = [v23 layoutByUpdatingConfigurationWithSaliency:v24 normalizedTopEdgeInset:v22];
+    initialPortraitLayout2 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
+    portraitConfiguration = [v20 portraitConfiguration];
+    v25 = [initialPortraitLayout2 layoutByUpdatingConfigurationWithSaliency:portraitConfiguration normalizedTopEdgeInset:v22];
 
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -2159,17 +2159,17 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
   }
 }
 
-- (void)_updateVisibleFrameWithContainerFrameSetFirstTime:(BOOL)a3
+- (void)_updateVisibleFrameWithContainerFrameSetFirstTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   if (([(PUParallaxLayerStackViewModel *)self allowedBehaviors]& 8) == 0)
   {
     v5 = [(PUParallaxLayerStackViewModel *)self allowedBehaviors]& 4;
-    v6 = [(PUParallaxLayerStackViewModel *)self orientation];
+    orientation = [(PUParallaxLayerStackViewModel *)self orientation];
     [(PUParallaxLayerStackViewModel *)self containerFrame];
-    v7 = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
-    v8 = v7;
-    if (v7 && [(PUParallaxLayerStackViewModel *)self needsToAdjustVisibleFrame]&& v6 == 2)
+    deviceSupportsLandscapeConfiguration = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
+    v8 = deviceSupportsLandscapeConfiguration;
+    if (deviceSupportsLandscapeConfiguration && [(PUParallaxLayerStackViewModel *)self needsToAdjustVisibleFrame]&& orientation == 2)
     {
       PXRectTransposed();
     }
@@ -2185,14 +2185,14 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
     v9 = _Block_copy(v18);
     if (v5)
     {
-      v10 = [(PUParallaxLayerStackViewModel *)self initialLayerStack];
+      initialLayerStack = [(PUParallaxLayerStackViewModel *)self initialLayerStack];
 
-      if (v10)
+      if (initialLayerStack)
       {
-        v11 = [(PUParallaxLayerStackViewModel *)self initialLayerStack];
-        v12 = [v11 portraitLayerStack];
-        v13 = [v12 layout];
-        [v13 normalizedVisibleFrame];
+        initialLayerStack2 = [(PUParallaxLayerStackViewModel *)self initialLayerStack];
+        portraitLayerStack = [initialLayerStack2 portraitLayerStack];
+        layout = [portraitLayerStack layout];
+        [layout normalizedVisibleFrame];
         self->_currentNormalizedVisibleFrame.origin.x = v14;
         self->_currentNormalizedVisibleFrame.origin.y = v15;
         self->_currentNormalizedVisibleFrame.size.width = v16;
@@ -2200,7 +2200,7 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
       }
     }
 
-    else if (!v3)
+    else if (!timeCopy)
     {
       goto LABEL_15;
     }
@@ -2211,7 +2211,7 @@ id __50__PUParallaxLayerStackViewModel_updateLayerStack___block_invoke(uint64_t 
     v9[2](v9);
     [(PUParallaxLayerStackViewModel *)self setLandscapeVisibleFrame:?];
 LABEL_15:
-    if (v6 == 2)
+    if (orientation == 2)
     {
       [(PUParallaxLayerStackViewModel *)self landscapeVisibleFrame];
     }
@@ -2234,7 +2234,7 @@ LABEL_15:
 
     if ([(PUParallaxLayerStackViewModel *)self needsToAdjustVisibleFrame])
     {
-      if (v6 == 2)
+      if (orientation == 2)
       {
         [(PUParallaxLayerStackViewModel *)self landscapeVisibleFrame];
       }
@@ -2263,12 +2263,12 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
   return result;
 }
 
-- (void)setContainerInsets:(UIEdgeInsets)a3
+- (void)setContainerInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_containerInsets = &self->_containerInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -2281,14 +2281,14 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
   }
 }
 
-- (void)setContainerFrame:(CGRect)a3
+- (void)setContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_containerFrame = &self->_containerFrame;
-  if (!CGRectEqualToRect(self->_containerFrame, a3))
+  if (!CGRectEqualToRect(self->_containerFrame, frame))
   {
     p_containerFrame->origin.x = x;
     p_containerFrame->origin.y = y;
@@ -2300,9 +2300,9 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
     v11.size.height = height;
     if (!CGRectIsEmpty(v11))
     {
-      v9 = [(PUParallaxLayerStackViewModel *)self didSetContainerFrame];
+      didSetContainerFrame = [(PUParallaxLayerStackViewModel *)self didSetContainerFrame];
       [(PUParallaxLayerStackViewModel *)self setDidSetContainerFrame:1];
-      [(PUParallaxLayerStackViewModel *)self _updateVisibleFrameWithContainerFrameSetFirstTime:!v9];
+      [(PUParallaxLayerStackViewModel *)self _updateVisibleFrameWithContainerFrameSetFirstTime:!didSetContainerFrame];
     }
 
     [(PUParallaxLayerStackViewModel *)self _invalidateOrientation];
@@ -2312,23 +2312,23 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v9 = a3;
+  styleCopy = style;
   v5 = self->_style;
   v6 = v5;
-  if (v5 == v9)
+  if (v5 == styleCopy)
   {
   }
 
   else
   {
-    v7 = [(PIParallaxStyle *)v5 isEqual:v9];
+    v7 = [(PIParallaxStyle *)v5 isEqual:styleCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [objc_opt_class() _changeDescriptorBetweenOldStyle:self->_style newStyle:v9];
-      objc_storeStrong(&self->_style, a3);
+      v8 = [objc_opt_class() _changeDescriptorBetweenOldStyle:self->_style newStyle:styleCopy];
+      objc_storeStrong(&self->_style, style);
       if (v8)
       {
         [(PUParallaxLayerStackViewModel *)self _invalidateDebugHUDRepresentation];
@@ -2341,43 +2341,43 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
 - (BOOL)headroomLayoutCanApplyHeadroom
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
-  if (v3)
+  effectiveHeadroomLayout = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
+  if (effectiveHeadroomLayout)
   {
     if ([(PUParallaxLayerStackViewModel *)self orientation]== 2)
     {
-      [v3 landscapeLayout];
+      [effectiveHeadroomLayout landscapeLayout];
     }
 
     else
     {
-      [v3 portraitLayout];
+      [effectiveHeadroomLayout portraitLayout];
     }
     v5 = ;
-    v4 = [v5 canApplyHeadroom];
+    canApplyHeadroom = [v5 canApplyHeadroom];
   }
 
   else
   {
-    v4 = 0;
+    canApplyHeadroom = 0;
   }
 
-  return v4;
+  return canApplyHeadroom;
 }
 
 - (BOOL)headroomLayoutUsesHeadroomArea
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
-  if (v3)
+  effectiveHeadroomLayout = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
+  if (effectiveHeadroomLayout)
   {
     if ([(PUParallaxLayerStackViewModel *)self orientation]== 2)
     {
-      [v3 landscapeLayout];
+      [effectiveHeadroomLayout landscapeLayout];
     }
 
     else
     {
-      [v3 portraitLayout];
+      [effectiveHeadroomLayout portraitLayout];
     }
     v5 = ;
     if ([v5 isUsingHeadroom])
@@ -2392,9 +2392,9 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
     else
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-      v7 = [v6 segmentationMatte];
-      v4 = v7 == 0;
+      segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+      segmentationMatte = [segmentationItem segmentationMatte];
+      v4 = segmentationMatte == 0;
     }
   }
 
@@ -2408,15 +2408,15 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
 - (BOOL)canApplyHeadroom
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v4 = [v3 layout];
-  if ([v4 canApplyHeadroom])
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  layout = [currentLayerStack layout];
+  if ([layout canApplyHeadroom])
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
-    if (v5)
+    effectiveHeadroomLayout = [(PUParallaxLayerStackViewModel *)self effectiveHeadroomLayout];
+    if (effectiveHeadroomLayout)
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self effectiveDefaultLayout];
-      v7 = v6 != 0;
+      effectiveDefaultLayout = [(PUParallaxLayerStackViewModel *)self effectiveDefaultLayout];
+      v7 = effectiveDefaultLayout != 0;
     }
 
     else
@@ -2435,17 +2435,17 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
 - (BOOL)representsPureStyle
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self style];
-  v3 = [v2 kind];
+  style = [(PUParallaxLayerStackViewModel *)self style];
+  kind = [style kind];
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0B08]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0B10]))
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B08]] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B10]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69C0B18]];
+    v4 = [kind isEqualToString:*MEMORY[0x1E69C0B18]];
   }
 
   return v4;
@@ -2453,16 +2453,16 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
 - (BOOL)mainLayersArePruned
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-  if ([v3 hasMainLayers])
+  portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+  if ([portraitLayerStack hasMainLayers])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-    v4 = [v5 hasMainLayers] ^ 1;
+    landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+    v4 = [landscapeLayerStack hasMainLayers] ^ 1;
   }
 
   return v4;
@@ -2470,70 +2470,70 @@ uint64_t __83__PUParallaxLayerStackViewModel__updateVisibleFrameWithContainerFra
 
 - (NSString)spatialPhotoFailuresDiagnosticDescription
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  if ([v3 isSpatialPhotoAvailable])
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  if ([segmentationItem isSpatialPhotoAvailable])
   {
-    [v3 spatialPhotoNormalizedBounds];
+    [segmentationItem spatialPhotoNormalizedBounds];
     if (CGRectIsEmpty(v11))
     {
-      v4 = @"spatialPhotoNormalizedBounds is empty";
+      localizedDescription = @"spatialPhotoNormalizedBounds is empty";
       goto LABEL_11;
     }
 
-    v8 = [(PUParallaxLayerStackViewModel *)self debugSpatialPhotoGenerationError];
+    debugSpatialPhotoGenerationError = [(PUParallaxLayerStackViewModel *)self debugSpatialPhotoGenerationError];
 
-    if (v8)
+    if (debugSpatialPhotoGenerationError)
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self debugSpatialPhotoGenerationError];
-      v4 = [v6 localizedDescription];
+      debugSpatialPhotoGenerationError2 = [(PUParallaxLayerStackViewModel *)self debugSpatialPhotoGenerationError];
+      localizedDescription = [debugSpatialPhotoGenerationError2 localizedDescription];
       goto LABEL_8;
     }
 
-    v4 = @"Unknown Error";
+    localizedDescription = @"Unknown Error";
   }
 
   else
   {
-    if ([v3 spatialPhotoFailedAnyGating])
+    if ([segmentationItem spatialPhotoFailedAnyGating])
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [v3 spatialPhotoGatingDiagnosticsOnlyFailures:1];
-      v7 = [v6 componentsJoinedByString:{@", "}];
-      v4 = [v5 stringWithFormat:@"Gating Failures: [%@]", v7];
+      debugSpatialPhotoGenerationError2 = [segmentationItem spatialPhotoGatingDiagnosticsOnlyFailures:1];
+      v7 = [debugSpatialPhotoGenerationError2 componentsJoinedByString:{@", "}];
+      localizedDescription = [v5 stringWithFormat:@"Gating Failures: [%@]", v7];
 
 LABEL_8:
       goto LABEL_11;
     }
 
-    [v3 spatialPhotoStatus];
-    v4 = PIPosterSpatialPhotoStatusDescription();
+    [segmentationItem spatialPhotoStatus];
+    localizedDescription = PIPosterSpatialPhotoStatusDescription();
   }
 
 LABEL_11:
 
-  return v4;
+  return localizedDescription;
 }
 
 - (BOOL)spatialPhotoFailedUnexpectedly
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  v3 = [v2 spatialPhotoFailedUnexpectedly];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  spatialPhotoFailedUnexpectedly = [segmentationItem spatialPhotoFailedUnexpectedly];
 
-  return v3;
+  return spatialPhotoFailedUnexpectedly;
 }
 
 - (BOOL)canEnableSpatialPhoto
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  v4 = [v3 isSpatialPhotoAvailable];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  isSpatialPhotoAvailable = [segmentationItem isSpatialPhotoAvailable];
 
-  if (!v4)
+  if (!isSpatialPhotoAvailable)
   {
     return 0;
   }
 
-  v5 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  [v5 spatialPhotoNormalizedBounds];
+  segmentationItem2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  [segmentationItem2 spatialPhotoNormalizedBounds];
   IsEmpty = CGRectIsEmpty(v8);
 
   return !IsEmpty;
@@ -2548,8 +2548,8 @@ LABEL_11:
 
   else
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v3 = [v4 isLowPowerModeEnabled] ^ 1;
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v3 = [processInfo isLowPowerModeEnabled] ^ 1;
   }
 
   return v3;
@@ -2557,16 +2557,16 @@ LABEL_11:
 
 - (BOOL)canEnableSettlingEffect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  v4 = [v3 isSettlingEffectAvailable];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  isSettlingEffectAvailable = [segmentationItem isSettlingEffectAvailable];
 
-  if (!v4)
+  if (!isSettlingEffectAvailable)
   {
     return 0;
   }
 
-  v5 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  [v5 settlingEffectNormalizedBounds];
+  segmentationItem2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  [segmentationItem2 settlingEffectNormalizedBounds];
   IsEmpty = CGRectIsEmpty(v8);
 
   return !IsEmpty;
@@ -2584,24 +2584,24 @@ LABEL_11:
     return 1;
   }
 
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  if ([v3 layoutVariant] == 2)
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  if ([currentLayout layoutVariant] == 2)
   {
     goto LABEL_7;
   }
 
-  v4 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  if ([v4 layoutVariant] == 3)
+  currentLayout2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  if ([currentLayout2 layoutVariant] == 3)
   {
 
 LABEL_7:
     return 1;
   }
 
-  v6 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  v7 = [v6 layoutVariant];
+  currentLayout3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  layoutVariant = [currentLayout3 layoutVariant];
 
-  if (v7 == 4)
+  if (layoutVariant == 4)
   {
     return 1;
   }
@@ -2619,19 +2619,19 @@ LABEL_7:
 
 - (BOOL)hasMatte
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  v3 = [v2 segmentationMatte];
-  v4 = v3 != 0;
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  segmentationMatte = [segmentationItem segmentationMatte];
+  v4 = segmentationMatte != 0;
 
   return v4;
 }
 
 - (BOOL)hasEnoughRoomForParallax
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  v3 = [v2 canApplyParallax];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  canApplyParallax = [currentLayout canApplyParallax];
 
-  return v3;
+  return canApplyParallax;
 }
 
 - (BOOL)canApplyParallax
@@ -2644,57 +2644,57 @@ LABEL_7:
   return [(PUParallaxLayerStackViewModel *)self hasEnoughRoomForParallax];
 }
 
-- (void)setParallaxDisabled:(BOOL)a3
+- (void)setParallaxDisabled:(BOOL)disabled
 {
-  if ([(PUParallaxLayerStackViewModel *)self parallaxDisabled]!= a3)
+  if ([(PUParallaxLayerStackViewModel *)self parallaxDisabled]!= disabled)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __53__PUParallaxLayerStackViewModel_setParallaxDisabled___block_invoke;
     v5[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v6 = a3;
+    disabledCopy = disabled;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v5 changeDescriptor:1];
   }
 }
 
 - (BOOL)parallaxDisabled
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v2 parallaxDisabled];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  parallaxDisabled = [currentLayerStack parallaxDisabled];
 
-  return v3;
+  return parallaxDisabled;
 }
 
-- (void)setUserAdjustedVisibleFrame:(BOOL)a3
+- (void)setUserAdjustedVisibleFrame:(BOOL)frame
 {
-  if ([(PUParallaxLayerStackViewModel *)self userAdjustedVisibleFrame]!= a3)
+  if ([(PUParallaxLayerStackViewModel *)self userAdjustedVisibleFrame]!= frame)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __61__PUParallaxLayerStackViewModel_setUserAdjustedVisibleFrame___block_invoke;
     v5[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v6 = a3;
+    frameCopy = frame;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v5 changeDescriptor:128];
   }
 }
 
 - (BOOL)userAdjustedVisibleFrame
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v2 userAdjustedVisibleFrame];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  userAdjustedVisibleFrame = [currentLayerStack userAdjustedVisibleFrame];
 
-  return v3;
+  return userAdjustedVisibleFrame;
 }
 
-- (void)setSpatialPhotoEnabled:(BOOL)a3
+- (void)setSpatialPhotoEnabled:(BOOL)enabled
 {
-  if ([(PUParallaxLayerStackViewModel *)self spatialPhotoEnabled]!= a3)
+  if ([(PUParallaxLayerStackViewModel *)self spatialPhotoEnabled]!= enabled)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__PUParallaxLayerStackViewModel_setSpatialPhotoEnabled___block_invoke;
     v5[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v6 = a3;
+    enabledCopy = enabled;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v5 changeDescriptor:64];
     [(PUParallaxLayerStackViewModel *)self _invalidateEffectiveDefaultLayouts];
     [(PUParallaxLayerStackViewModel *)self _invalidateClockAppearsAboveForeground];
@@ -2703,21 +2703,21 @@ LABEL_7:
 
 - (BOOL)spatialPhotoEnabled
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v2 spatialPhotoEnabled];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  spatialPhotoEnabled = [currentLayerStack spatialPhotoEnabled];
 
-  return v3;
+  return spatialPhotoEnabled;
 }
 
-- (void)setSettlingEffectEnabled:(BOOL)a3
+- (void)setSettlingEffectEnabled:(BOOL)enabled
 {
-  if ([(PUParallaxLayerStackViewModel *)self settlingEffectEnabled]!= a3)
+  if ([(PUParallaxLayerStackViewModel *)self settlingEffectEnabled]!= enabled)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __58__PUParallaxLayerStackViewModel_setSettlingEffectEnabled___block_invoke;
     v5[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v6 = a3;
+    enabledCopy = enabled;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v5 changeDescriptor:8];
     [(PUParallaxLayerStackViewModel *)self _invalidateClockAppearsAboveForeground];
   }
@@ -2725,32 +2725,32 @@ LABEL_7:
 
 - (BOOL)settlingEffectEnabled
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v2 settlingEffectEnabled];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  settlingEffectEnabled = [currentLayerStack settlingEffectEnabled];
 
-  return v3;
+  return settlingEffectEnabled;
 }
 
-- (void)setAppliesDepthToAllOrientations:(BOOL)a3
+- (void)setAppliesDepthToAllOrientations:(BOOL)orientations
 {
-  if (self->_appliesDepthToAllOrientations != a3)
+  if (self->_appliesDepthToAllOrientations != orientations)
   {
-    self->_appliesDepthToAllOrientations = a3;
+    self->_appliesDepthToAllOrientations = orientations;
   }
 }
 
-- (void)setDepthEnabled:(BOOL)a3
+- (void)setDepthEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(PUParallaxLayerStackViewModel *)self appliesDepthToAllOrientations])
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-    if ([v5 depthEnabled] == v3)
+    portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+    if ([portraitLayerStack depthEnabled] == enabledCopy)
     {
-      v6 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-      v7 = [v6 depthEnabled];
+      landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+      depthEnabled = [landscapeLayerStack depthEnabled];
 
-      if (v7 == v3)
+      if (depthEnabled == enabledCopy)
       {
         return;
       }
@@ -2764,13 +2764,13 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = __49__PUParallaxLayerStackViewModel_setDepthEnabled___block_invoke;
     v10[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v11 = v3;
+    v11 = enabledCopy;
     [(PUParallaxLayerStackViewModel *)self _updateLayerStackPropertiesForAllOrientations:v10 changeDescriptor:4];
   }
 
   else
   {
-    if ([(PUParallaxLayerStackViewModel *)self depthEnabled]== v3)
+    if ([(PUParallaxLayerStackViewModel *)self depthEnabled]== enabledCopy)
     {
       return;
     }
@@ -2779,7 +2779,7 @@ LABEL_7:
     v8[1] = 3221225472;
     v8[2] = __49__PUParallaxLayerStackViewModel_setDepthEnabled___block_invoke_2;
     v8[3] = &__block_descriptor_33_e52___PFParallaxLayerStack_16__0__PFParallaxLayerStack_8l;
-    v9 = v3;
+    v9 = enabledCopy;
     [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v8 changeDescriptor:4];
   }
 
@@ -2788,57 +2788,57 @@ LABEL_7:
 
 - (BOOL)depthEnabledInAnyOrientation
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
-  if ([v3 depthEnabled])
+  portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+  if ([portraitLayerStack depthEnabled])
   {
-    v4 = 1;
+    depthEnabled = 1;
   }
 
   else
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
-    v4 = [v5 depthEnabled];
+    landscapeLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+    depthEnabled = [landscapeLayerStack depthEnabled];
   }
 
-  return v4;
+  return depthEnabled;
 }
 
 - (BOOL)depthEnabled
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v3 = [v2 depthEnabled];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  depthEnabled = [currentLayerStack depthEnabled];
 
-  return v3;
+  return depthEnabled;
 }
 
-- (void)setLandscapeLayerStack:(id)a3
+- (void)setLandscapeLayerStack:(id)stack
 {
-  v5 = a3;
-  if (self->_landscapeLayerStack != v5)
+  stackCopy = stack;
+  if (self->_landscapeLayerStack != stackCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_landscapeLayerStack, a3);
+    v6 = stackCopy;
+    objc_storeStrong(&self->_landscapeLayerStack, stack);
     [(PUParallaxLayerStackViewModel *)self _invalidateLayoutConfiguration];
-    v5 = v6;
+    stackCopy = v6;
   }
 }
 
-- (void)setPortraitLayerStack:(id)a3
+- (void)setPortraitLayerStack:(id)stack
 {
-  v5 = a3;
-  if (self->_portraitLayerStack != v5)
+  stackCopy = stack;
+  if (self->_portraitLayerStack != stackCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_portraitLayerStack, a3);
+    v6 = stackCopy;
+    objc_storeStrong(&self->_portraitLayerStack, stack);
     [(PUParallaxLayerStackViewModel *)self _invalidateLayoutConfiguration];
-    v5 = v6;
+    stackCopy = v6;
   }
 }
 
 - (CGRect)inactiveFrame
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 inactiveFrame];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout inactiveFrame];
   [(PUParallaxLayerStackViewModel *)self _viewRectForLayoutRect:?];
   v5 = v4;
   v7 = v6;
@@ -2856,34 +2856,34 @@ LABEL_7:
   return result;
 }
 
-- (void)setNormalizedVisibleFrameForInactiveOrientation:(CGRect)a3
+- (void)setNormalizedVisibleFrameForInactiveOrientation:(CGRect)orientation
 {
   PXRectFlippedVertically();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PUParallaxLayerStackViewModel *)self orientation];
-  if (v12 == 2)
+  orientation = [(PUParallaxLayerStackViewModel *)self orientation];
+  if (orientation == 2)
   {
-    v13 = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
+    portraitLayerStack = [(PUParallaxLayerStackViewModel *)self portraitLayerStack];
     v14 = &OBJC_IVAR___PUParallaxLayerStackViewModel__portraitLayerStack;
   }
 
   else
   {
-    if (v12 != 1)
+    if (orientation != 1)
     {
       return;
     }
 
-    v13 = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
+    portraitLayerStack = [(PUParallaxLayerStackViewModel *)self landscapeLayerStack];
     v14 = &OBJC_IVAR___PUParallaxLayerStackViewModel__landscapeLayerStack;
   }
 
-  v20 = v13;
-  v15 = [v13 layout];
-  v16 = [v15 layoutByUpdatingNormalizedVisibleFrame:1 remapAdaptiveVisibleFrame:{v5, v7, v9, v11}];
+  v20 = portraitLayerStack;
+  layout = [portraitLayerStack layout];
+  v16 = [layout layoutByUpdatingNormalizedVisibleFrame:1 remapAdaptiveVisibleFrame:{v5, v7, v9, v11}];
 
   v17 = [v20 layerStackByUpdatingLayout:v16];
   v18 = *v14;
@@ -2891,9 +2891,9 @@ LABEL_7:
   *(&self->super.super.isa + v18) = v17;
 }
 
-- (void)setNormalizedVisibleFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)setNormalizedVisibleFrame:(CGRect)frame animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   PXRectFlippedVertically();
   v10 = v6;
   v11 = v7;
@@ -2906,10 +2906,10 @@ LABEL_7:
     self->_currentNormalizedVisibleFrame.origin.y = v7;
     self->_currentNormalizedVisibleFrame.size.width = v8;
     self->_currentNormalizedVisibleFrame.size.height = v9;
-    if (v4)
+    if (animatedCopy)
     {
       objc_initWeak(&location, self);
-      v15 = [(PUParallaxLayerStackViewModel *)self viewManager];
+      viewManager = [(PUParallaxLayerStackViewModel *)self viewManager];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___block_invoke;
@@ -2919,7 +2919,7 @@ LABEL_7:
       v28[2] = *&v11;
       v28[3] = *&v12;
       v28[4] = *&v13;
-      [v15 layoutViewsWithDefaultAnimations:v27];
+      [viewManager layoutViewsWithDefaultAnimations:v27];
 
       objc_destroyWeak(v28);
       objc_destroyWeak(&location);
@@ -2930,16 +2930,16 @@ LABEL_7:
       [(PUParallaxLayerStackViewModel *)self signalChange:0x4000];
     }
 
-    v16 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
-    [v16 normalizedVisibleFrame];
+    initialPortraitLayout = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
+    [initialPortraitLayout normalizedVisibleFrame];
     if (vabdd_f64(v20, p_currentNormalizedVisibleFrame->origin.x) <= 0.0001 && vabdd_f64(v17, self->_currentNormalizedVisibleFrame.origin.y) <= 0.0001 && vabdd_f64(v18, self->_currentNormalizedVisibleFrame.size.width) <= 0.0001)
     {
       v24 = vabdd_f64(v19, self->_currentNormalizedVisibleFrame.size.height);
 
       if (v24 <= 0.0001)
       {
-        v22 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
-        if (v22)
+        initialPortraitLayout2 = [(PUParallaxLayerStackViewModel *)self initialPortraitLayout];
+        if (initialPortraitLayout2)
         {
           goto LABEL_13;
         }
@@ -2950,16 +2950,16 @@ LABEL_7:
     {
     }
 
-    v21 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-    v22 = [v21 layoutByUpdatingNormalizedVisibleFrame:1 remapAdaptiveVisibleFrame:{v10, v11, v12, v13}];
+    currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+    initialPortraitLayout2 = [currentLayout layoutByUpdatingNormalizedVisibleFrame:1 remapAdaptiveVisibleFrame:{v10, v11, v12, v13}];
 
 LABEL_13:
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___block_invoke_3;
     v25[3] = &unk_1E7B7A290;
-    v26 = v22;
-    v23 = v22;
+    v26 = initialPortraitLayout2;
+    v23 = initialPortraitLayout2;
     [(PUParallaxLayerStackViewModel *)self _updateCurrentLayerStackProperties:v25 changeDescriptor:0];
     [(PUParallaxLayerStackViewModel *)self _invalidateCurrentLayout];
   }
@@ -3006,10 +3006,10 @@ void __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___bl
   return result;
 }
 
-- (void)setVisibleFrame:(CGRect)a3
+- (void)setVisibleFrame:(CGRect)frame
 {
-  v4 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v4 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
 
   PXRectNormalize();
 
@@ -3018,8 +3018,8 @@ void __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___bl
 
 - (CGRect)visibleFrame
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
 
   [(PUParallaxLayerStackViewModel *)self normalizedVisibleFrame];
 
@@ -3038,14 +3038,14 @@ void __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___bl
   {
     if ([(PUParallaxLayerStackViewModel *)self spatialPhotoEnabled])
     {
-      v7 = [(PUParallaxLayerStackViewModel *)self allowedBehaviors];
-      v8 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-      v9 = v8;
-      if ((v7 & 0x200) != 0)
+      allowedBehaviors = [(PUParallaxLayerStackViewModel *)self allowedBehaviors];
+      currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+      v9 = currentLayerStack;
+      if ((allowedBehaviors & 0x200) != 0)
       {
-        v13 = [v8 spatialPhotoBackfillIncludesHeadroom];
+        spatialPhotoBackfillIncludesHeadroom = [currentLayerStack spatialPhotoBackfillIncludesHeadroom];
 
-        if (!v13)
+        if (!spatialPhotoBackfillIncludesHeadroom)
         {
           goto LABEL_6;
         }
@@ -3053,9 +3053,9 @@ void __68__PUParallaxLayerStackViewModel_setNormalizedVisibleFrame_animated___bl
 
       else
       {
-        v10 = [v8 spatialPhotoIncludesHeadroom];
+        spatialPhotoIncludesHeadroom = [currentLayerStack spatialPhotoIncludesHeadroom];
 
-        if ((v10 & 1) == 0)
+        if ((spatialPhotoIncludesHeadroom & 1) == 0)
         {
 LABEL_6:
           [(PUParallaxLayerStackViewModel *)self spatialPhotoBounds];
@@ -3067,20 +3067,20 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    v11 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-    v12 = [v11 segmentationMatte];
+    segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+    segmentationMatte = [segmentationItem segmentationMatte];
 
-    if (v12)
+    if (segmentationMatte)
     {
 LABEL_8:
       [(PUParallaxLayerStackViewModel *)self extendedImageRect];
       goto LABEL_15;
     }
 
-    v14 = [(PUParallaxLayerStackViewModel *)self headroomState];
-    if (v14 != 2)
+    headroomState = [(PUParallaxLayerStackViewModel *)self headroomState];
+    if (headroomState != 2)
     {
-      if (v14 == 1)
+      if (headroomState == 1)
       {
         goto LABEL_8;
       }
@@ -3089,7 +3089,7 @@ LABEL_8:
       v16 = 0.0;
       v17 = 0.0;
       v18 = 0.0;
-      if (v14)
+      if (headroomState)
       {
         goto LABEL_16;
       }
@@ -3115,13 +3115,13 @@ LABEL_16:
     v19 = PLWallpaperGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(PUParallaxLayerStackViewModel *)self settlingEffectEnabled];
+      settlingEffectEnabled = [(PUParallaxLayerStackViewModel *)self settlingEffectEnabled];
       [(PUParallaxLayerStackViewModel *)self settlingEffectBounds];
       v21 = NSStringFromCGRect(v38);
       [(PUParallaxLayerStackViewModel *)self extendedImageRect];
       v22 = NSStringFromCGRect(v39);
       v31[0] = 67109634;
-      v31[1] = v20;
+      v31[1] = settlingEffectEnabled;
       v32 = 2114;
       v33 = v21;
       v34 = 2114;
@@ -3149,15 +3149,15 @@ LABEL_16:
 
 - (CGRect)spatialPhotoExtendedBounds
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  [v3 spatialPhotoNormalizedBounds];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  [segmentationItem spatialPhotoNormalizedBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v12 extendedImageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout extendedImageSize];
   v14 = v13;
   v16 = v15;
 
@@ -3171,15 +3171,15 @@ LABEL_16:
 
 - (CGRect)spatialPhotoBounds
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  [v3 spatialPhotoNormalizedBounds];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  [segmentationItem spatialPhotoNormalizedBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v12 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
   v14 = v13;
   v16 = v15;
 
@@ -3193,15 +3193,15 @@ LABEL_16:
 
 - (CGRect)settlingEffectBounds
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  [v3 settlingEffectNormalizedBounds];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  [segmentationItem settlingEffectNormalizedBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v12 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
   v14 = v13;
   v16 = v15;
 
@@ -3215,8 +3215,8 @@ LABEL_16:
 
 - (CGRect)originalImageRect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 originalImageExtent];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout originalImageExtent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3232,8 +3232,8 @@ LABEL_16:
 
 - (CGRect)extendedImageRect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 extendedImageExtent];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout extendedImageExtent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3249,8 +3249,8 @@ LABEL_16:
 
 - (CGSize)imageSize
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v2 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
   v4 = v3;
   v6 = v5;
 
@@ -3261,10 +3261,10 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_viewRectForLayoutRect:(CGRect)a3
+- (CGRect)_viewRectForLayoutRect:(CGRect)rect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
 
   PXRectFlippedVertically();
   result.size.height = v7;
@@ -3274,10 +3274,10 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)layoutRectForViewRect:(CGRect)a3
+- (CGRect)layoutRectForViewRect:(CGRect)rect
 {
-  v3 = [(PUParallaxLayerStackViewModel *)self currentLayout];
-  [v3 imageSize];
+  currentLayout = [(PUParallaxLayerStackViewModel *)self currentLayout];
+  [currentLayout imageSize];
 
   PXRectFlippedVertically();
   result.size.height = v7;
@@ -3289,8 +3289,8 @@ LABEL_16:
 
 - (int64_t)environment
 {
-  v2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-  if (v2)
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  if (segmentationItem)
   {
     v3 = 2;
   }
@@ -3308,44 +3308,44 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = PUParallaxLayerStackViewModel;
   v3 = [(PUParallaxLayerStackViewModel *)&v8 debugDescription];
-  v4 = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
-  v5 = [(PUParallaxLayerStackViewModel *)self style];
-  v6 = [v3 stringByAppendingFormat:@" currentLayerStack = %@, style = %@", v4, v5];
+  currentLayerStack = [(PUParallaxLayerStackViewModel *)self currentLayerStack];
+  style = [(PUParallaxLayerStackViewModel *)self style];
+  v6 = [v3 stringByAppendingFormat:@" currentLayerStack = %@, style = %@", currentLayerStack, style];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PUParallaxLayerStackViewModel *)self updater];
-  [v4 updateIfNeeded];
+  updater = [(PUParallaxLayerStackViewModel *)self updater];
+  [updater updateIfNeeded];
 
-  v5 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self segmentationItem];
 
   v6 = objc_alloc(objc_opt_class());
-  if (v5)
+  if (segmentationItem)
   {
-    v7 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
-    v8 = [(PUParallaxLayerStackViewModel *)self style];
-    v9 = [v8 bakedStyle];
-    v10 = [(PUParallaxLayerStackViewModel *)self compoundLayerStack];
-    v11 = [v6 initWithSegmentationItem:v7 initialStyle:v9 compoundLayerStack:v10 deviceOrientation:-[PUParallaxLayerStackViewModel deviceOrientation](self allowedBehaviors:{"deviceOrientation"), -[PUParallaxLayerStackViewModel allowedBehaviors](self, "allowedBehaviors")}];
+    segmentationItem2 = [(PUParallaxLayerStackViewModel *)self segmentationItem];
+    style = [(PUParallaxLayerStackViewModel *)self style];
+    bakedStyle = [style bakedStyle];
+    compoundLayerStack = [(PUParallaxLayerStackViewModel *)self compoundLayerStack];
+    v11 = [v6 initWithSegmentationItem:segmentationItem2 initialStyle:bakedStyle compoundLayerStack:compoundLayerStack deviceOrientation:-[PUParallaxLayerStackViewModel deviceOrientation](self allowedBehaviors:{"deviceOrientation"), -[PUParallaxLayerStackViewModel allowedBehaviors](self, "allowedBehaviors")}];
   }
 
   else
   {
-    v7 = [(PUParallaxLayerStackViewModel *)self compoundLayerStack];
-    v8 = [(PUParallaxLayerStackViewModel *)self style];
-    v9 = [v8 bakedStyle];
-    v11 = [v6 initWithCompoundLayerStack:v7 style:v9 deviceOrientation:-[PUParallaxLayerStackViewModel deviceOrientation](self allowedBehaviors:{"deviceOrientation"), -[PUParallaxLayerStackViewModel allowedBehaviors](self, "allowedBehaviors")}];
+    segmentationItem2 = [(PUParallaxLayerStackViewModel *)self compoundLayerStack];
+    style = [(PUParallaxLayerStackViewModel *)self style];
+    bakedStyle = [style bakedStyle];
+    v11 = [v6 initWithCompoundLayerStack:segmentationItem2 style:bakedStyle deviceOrientation:-[PUParallaxLayerStackViewModel deviceOrientation](self allowedBehaviors:{"deviceOrientation"), -[PUParallaxLayerStackViewModel allowedBehaviors](self, "allowedBehaviors")}];
   }
 
   [(PUParallaxLayerStackViewModel *)self containerFrame];
   [v11 setContainerFrame:?];
   [(PUParallaxLayerStackViewModel *)self animationDuration];
   [v11 setAnimationDuration:?];
-  v12 = [(PUParallaxLayerStackViewModel *)self animationCurve];
-  [v11 setAnimationCurve:v12];
+  animationCurve = [(PUParallaxLayerStackViewModel *)self animationCurve];
+  [v11 setAnimationCurve:animationCurve];
 
   *(v11 + 96) = self->_legibilityVignetteEnabled;
   [v11 setConfiguredSalientContentRectangle:{self->_configuredSalientContentRectangle.origin.x, self->_configuredSalientContentRectangle.origin.y, self->_configuredSalientContentRectangle.size.width, self->_configuredSalientContentRectangle.size.height}];
@@ -3355,21 +3355,21 @@ LABEL_16:
 
 - (PUParallaxLayerStackViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PUParallaxLayerStackViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PUParallaxLayerStackViewModel init]"}];
 
   abort();
 }
 
-- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 deviceOrientation:(int64_t)a6 allowedBehaviors:(unint64_t)a7
+- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style deviceOrientation:(int64_t)orientation allowedBehaviors:(unint64_t)behaviors
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (!v15)
+  itemCopy = item;
+  stackCopy = stack;
+  styleCopy = style;
+  if (!stackCopy)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"compoundLayerStack != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"compoundLayerStack != nil"}];
   }
 
   v43.receiver = self;
@@ -3378,20 +3378,20 @@ LABEL_16:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_initialLayerStack, a4);
-    v19 = [v15 portraitLayerStack];
+    objc_storeStrong(&v17->_initialLayerStack, stack);
+    portraitLayerStack = [stackCopy portraitLayerStack];
     portraitLayerStack = v18->_portraitLayerStack;
-    v18->_portraitLayerStack = v19;
+    v18->_portraitLayerStack = portraitLayerStack;
 
-    v21 = [v15 landscapeLayerStack];
+    landscapeLayerStack = [stackCopy landscapeLayerStack];
     landscapeLayerStack = v18->_landscapeLayerStack;
-    v18->_landscapeLayerStack = v21;
+    v18->_landscapeLayerStack = landscapeLayerStack;
 
     v18->_needsToAdjustVisibleFrame = v18->_landscapeLayerStack == 0;
-    objc_storeStrong(&v18->_segmentationItem, a3);
-    if (v16)
+    objc_storeStrong(&v18->_segmentationItem, item);
+    if (styleCopy)
     {
-      v23 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v16];
+      v23 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:styleCopy];
     }
 
     else
@@ -3400,11 +3400,11 @@ LABEL_16:
     }
 
     objc_storeStrong(&v18->_style, v23);
-    if (v16)
+    if (styleCopy)
     {
     }
 
-    v18->_allowedBehaviors = a7;
+    v18->_allowedBehaviors = behaviors;
     v24 = MEMORY[0x1E695EFD0];
     *&v18->_adaptiveLayoutTransform.tx = *(MEMORY[0x1E695EFD0] + 32);
     v25 = v24[1];
@@ -3422,7 +3422,7 @@ LABEL_16:
 
     v18->_visibilityAmount = 1.0;
     v30 = 1;
-    if (v14)
+    if (itemCopy)
     {
       v31 = 2;
     }
@@ -3434,14 +3434,14 @@ LABEL_16:
 
     v18->_visibilityEffects = v31;
     v18->_backlightLuminance = -1;
-    v18->_deviceOrientation = a6;
-    if ((a6 - 3) < 2)
+    v18->_deviceOrientation = orientation;
+    if ((orientation - 3) < 2)
     {
       v30 = 2;
     }
 
     v18->_orientation = v30;
-    if ((a6 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       p_portraitLayerStack = &v18->_portraitLayerStack;
     }
@@ -3451,17 +3451,17 @@ LABEL_16:
       p_portraitLayerStack = &v18->_landscapeLayerStack;
     }
 
-    v33 = [*p_portraitLayerStack layout];
-    v34 = [v33 isUsingHeadroom];
+    layout = [*p_portraitLayerStack layout];
+    isUsingHeadroom = [layout isUsingHeadroom];
 
-    if (v14)
+    if (itemCopy)
     {
-      v35 = [v14 segmentationMatte];
+      segmentationMatte = [itemCopy segmentationMatte];
 
-      if (!v35)
+      if (!segmentationMatte)
       {
         v36 = 1;
-        if (!v34)
+        if (!isUsingHeadroom)
         {
           v36 = 2;
         }
@@ -3510,54 +3510,54 @@ uint64_t __118__PUParallaxLayerStackViewModel_initWithSegmentationItem_compoundL
   return [v2 _invalidateLayoutConfiguration];
 }
 
-- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)a3 initialStyle:(id)a4 compoundLayerStack:(id)a5 deviceOrientation:(int64_t)a6 allowedBehaviors:(unint64_t)a7
+- (PUParallaxLayerStackViewModel)initWithSegmentationItem:(id)item initialStyle:(id)style compoundLayerStack:(id)stack deviceOrientation:(int64_t)orientation allowedBehaviors:(unint64_t)behaviors
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (!v13)
+  itemCopy = item;
+  styleCopy = style;
+  stackCopy = stack;
+  if (!itemCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"item != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackViewModel.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"item != nil"}];
 
-    if (v14)
+    if (styleCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v18 = [v13 originalStyle];
-    v16 = [(PUParallaxLayerStackViewModel *)self initWithSegmentationItem:v13 compoundLayerStack:v15 style:v18 deviceOrientation:a6 allowedBehaviors:a7];
+    originalStyle = [itemCopy originalStyle];
+    v16 = [(PUParallaxLayerStackViewModel *)self initWithSegmentationItem:itemCopy compoundLayerStack:stackCopy style:originalStyle deviceOrientation:orientation allowedBehaviors:behaviors];
 
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!styleCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v16 = [(PUParallaxLayerStackViewModel *)self initWithSegmentationItem:v13 compoundLayerStack:v15 style:v14 deviceOrientation:a6 allowedBehaviors:a7];
+  v16 = [(PUParallaxLayerStackViewModel *)self initWithSegmentationItem:itemCopy compoundLayerStack:stackCopy style:styleCopy deviceOrientation:orientation allowedBehaviors:behaviors];
 LABEL_6:
 
   return v16;
 }
 
-+ (unint64_t)_changeDescriptorBetweenOldStyle:(id)a3 newStyle:(id)a4
++ (unint64_t)_changeDescriptorBetweenOldStyle:(id)style newStyle:(id)newStyle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 kind];
-  v8 = [v6 kind];
-  v9 = [v7 isEqualToString:v8];
+  styleCopy = style;
+  newStyleCopy = newStyle;
+  kind = [styleCopy kind];
+  kind2 = [newStyleCopy kind];
+  v9 = [kind isEqualToString:kind2];
 
   if (v9)
   {
-    if ([v6 hasTonalityMode])
+    if ([newStyleCopy hasTonalityMode])
     {
-      v10 = [v5 tonality];
-      v11 = 2 * (v10 != [v6 tonality]);
+      tonality = [styleCopy tonality];
+      v11 = 2 * (tonality != [newStyleCopy tonality]);
     }
 
     else
@@ -3565,11 +3565,11 @@ LABEL_6:
       v11 = 0;
     }
 
-    if ([v6 hasColorParameter])
+    if ([newStyleCopy hasColorParameter])
     {
-      v12 = [v5 color];
-      v13 = [v6 color];
-      v14 = [v12 isEqual:v13];
+      color = [styleCopy color];
+      color2 = [newStyleCopy color];
+      v14 = [color isEqual:color2];
 
       if (!v14)
       {
@@ -3577,10 +3577,10 @@ LABEL_6:
       }
     }
 
-    if ([v6 hasBackgroundParameter])
+    if ([newStyleCopy hasBackgroundParameter])
     {
-      v15 = [v5 showsBackground];
-      if (v15 != [v6 showsBackground])
+      showsBackground = [styleCopy showsBackground];
+      if (showsBackground != [newStyleCopy showsBackground])
       {
         v11 |= 8uLL;
       }
@@ -3592,16 +3592,16 @@ LABEL_6:
     v11 = 1;
   }
 
-  v16 = [v5 clockColor];
-  v17 = [v6 clockColor];
-  v18 = v17;
-  if (v16 == v17)
+  clockColor = [styleCopy clockColor];
+  clockColor2 = [newStyleCopy clockColor];
+  v18 = clockColor2;
+  if (clockColor == clockColor2)
   {
   }
 
   else
   {
-    v19 = [v16 isEqual:v17];
+    v19 = [clockColor isEqual:clockColor2];
 
     if (!v19)
     {

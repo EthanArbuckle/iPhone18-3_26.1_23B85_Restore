@@ -1,56 +1,56 @@
 @interface PGPeopleInferencesConveniences
-+ (BOOL)anyPersonNodes:(id)a3 belongToBestSocialGroupsInGraph:(id)a4;
-+ (BOOL)isValidContact:(id)a3;
-+ (BOOL)socialGroupNodes:(id)a3 intersectWithBestSocialGroupsInGraph:(id)a4;
-+ (id)countedPersonNodesFromMomentNodes:(id)a3 amongPersonNodes:(id)a4;
-+ (id)momentNodesAtHomeInMomentNodes:(id)a3;
-+ (id)momentNodesAtWorkInMomentNodes:(id)a3;
-+ (id)momentNodesByAddressNodeFromMomentNodes:(id)a3;
-+ (id)personLocalIdentifierByContactIdentifierFromPersonNodes:(id)a3;
-+ (id)topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:(id)a3 personNodes:(id)a4;
++ (BOOL)anyPersonNodes:(id)nodes belongToBestSocialGroupsInGraph:(id)graph;
++ (BOOL)isValidContact:(id)contact;
++ (BOOL)socialGroupNodes:(id)nodes intersectWithBestSocialGroupsInGraph:(id)graph;
++ (id)countedPersonNodesFromMomentNodes:(id)nodes amongPersonNodes:(id)personNodes;
++ (id)momentNodesAtHomeInMomentNodes:(id)nodes;
++ (id)momentNodesAtWorkInMomentNodes:(id)nodes;
++ (id)momentNodesByAddressNodeFromMomentNodes:(id)nodes;
++ (id)personLocalIdentifierByContactIdentifierFromPersonNodes:(id)nodes;
++ (id)topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:(id)nodes personNodes:(id)personNodes;
 @end
 
 @implementation PGPeopleInferencesConveniences
 
-+ (BOOL)socialGroupNodes:(id)a3 intersectWithBestSocialGroupsInGraph:(id)a4
++ (BOOL)socialGroupNodes:(id)nodes intersectWithBestSocialGroupsInGraph:(id)graph
 {
-  v5 = a4;
-  v6 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v7 = [PGGraphSocialGroupNodeCollection alloc];
-  v8 = [v5 bestSocialGroupNodes];
-  v9 = [(MAElementCollection *)v7 initWithArray:v8 graph:v5];
+  bestSocialGroupNodes = [graphCopy bestSocialGroupNodes];
+  v9 = [(MAElementCollection *)v7 initWithArray:bestSocialGroupNodes graph:graphCopy];
 
-  LOBYTE(v5) = [(MAElementCollection *)v9 intersectsCollection:v6];
-  return v5;
+  LOBYTE(graphCopy) = [(MAElementCollection *)v9 intersectsCollection:nodesCopy];
+  return graphCopy;
 }
 
-+ (BOOL)anyPersonNodes:(id)a3 belongToBestSocialGroupsInGraph:(id)a4
++ (BOOL)anyPersonNodes:(id)nodes belongToBestSocialGroupsInGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [a3 socialGroupNodes];
-  LOBYTE(a1) = [a1 socialGroupNodes:v7 intersectWithBestSocialGroupsInGraph:v6];
+  graphCopy = graph;
+  socialGroupNodes = [nodes socialGroupNodes];
+  LOBYTE(self) = [self socialGroupNodes:socialGroupNodes intersectWithBestSocialGroupsInGraph:graphCopy];
 
-  return a1;
+  return self;
 }
 
-+ (id)topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:(id)a3 personNodes:(id)a4
++ (id)topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:(id)nodes personNodes:(id)personNodes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 socialGroupNodesSortedByImportance];
-  if ([v6 count])
+  personNodesCopy = personNodes;
+  socialGroupNodesSortedByImportance = [nodes socialGroupNodesSortedByImportance];
+  if ([socialGroupNodesSortedByImportance count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v6;
+    v7 = socialGroupNodesSortedByImportance;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v19;
-      v11 = &stru_2843F5C58;
+      anyObject = &stru_2843F5C58;
       while (2)
       {
         for (i = 0; i != v9; ++i)
@@ -60,13 +60,13 @@
             objc_enumerationMutation(v7);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) collection];
-          v14 = [v13 personNodes];
+          collection = [*(*(&v18 + 1) + 8 * i) collection];
+          personNodes = [collection personNodes];
 
-          if ([v14 count] == 1 && (objc_msgSend(v5, "intersectsCollection:", v14) & 1) != 0)
+          if ([personNodes count] == 1 && (objc_msgSend(personNodesCopy, "intersectsCollection:", personNodes) & 1) != 0)
           {
-            v15 = [v14 localIdentifiers];
-            v11 = [v15 anyObject];
+            localIdentifiers = [personNodes localIdentifiers];
+            anyObject = [localIdentifiers anyObject];
 
             goto LABEL_15;
           }
@@ -84,7 +84,7 @@
 
     else
     {
-      v11 = &stru_2843F5C58;
+      anyObject = &stru_2843F5C58;
     }
 
 LABEL_15:
@@ -92,79 +92,79 @@ LABEL_15:
 
   else
   {
-    v11 = &stru_2843F5C58;
+    anyObject = &stru_2843F5C58;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return anyObject;
 }
 
-+ (id)momentNodesAtHomeInMomentNodes:(id)a3
++ (id)momentNodesAtHomeInMomentNodes:(id)nodes
 {
-  v3 = a3;
-  v4 = [v3 graph];
-  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v4];
+  nodesCopy = nodes;
+  graph = [nodesCopy graph];
+  v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
 
-  v6 = [v5 homeNodes];
-  v7 = [v6 addressNodes];
-  v8 = [v7 momentNodes];
-  v9 = [v8 collectionByIntersecting:v3];
+  homeNodes = [v5 homeNodes];
+  addressNodes = [homeNodes addressNodes];
+  momentNodes = [addressNodes momentNodes];
+  v9 = [momentNodes collectionByIntersecting:nodesCopy];
 
   return v9;
 }
 
-+ (id)momentNodesAtWorkInMomentNodes:(id)a3
++ (id)momentNodesAtWorkInMomentNodes:(id)nodes
 {
-  v3 = a3;
-  v4 = [v3 graph];
-  v5 = [v4 meNodeCollection];
-  v6 = [v5 workNodes];
-  v7 = [v6 addressNodes];
-  v8 = [v7 momentNodes];
+  nodesCopy = nodes;
+  graph = [nodesCopy graph];
+  meNodeCollection = [graph meNodeCollection];
+  workNodes = [meNodeCollection workNodes];
+  addressNodes = [workNodes addressNodes];
+  momentNodes = [addressNodes momentNodes];
 
-  v9 = [v8 collectionByIntersecting:v3];
+  v9 = [momentNodes collectionByIntersecting:nodesCopy];
 
   return v9;
 }
 
-+ (id)momentNodesByAddressNodeFromMomentNodes:(id)a3
++ (id)momentNodesByAddressNodeFromMomentNodes:(id)nodes
 {
   v3 = MEMORY[0x277D22BF8];
-  v4 = a3;
+  nodesCopy = nodes;
   v5 = +[PGGraphMomentNode addressOfMoment];
-  v6 = [v3 adjacencyWithSources:v4 relation:v5 targetsClass:objc_opt_class()];
+  v6 = [v3 adjacencyWithSources:nodesCopy relation:v5 targetsClass:objc_opt_class()];
 
-  v7 = [v6 transposed];
+  transposed = [v6 transposed];
 
-  return v7;
+  return transposed;
 }
 
-+ (id)countedPersonNodesFromMomentNodes:(id)a3 amongPersonNodes:(id)a4
++ (id)countedPersonNodesFromMomentNodes:(id)nodes amongPersonNodes:(id)personNodes
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 elementIdentifiers];
-  v8 = [v5 graph];
+  personNodesCopy = personNodes;
+  nodesCopy = nodes;
+  elementIdentifiers = [personNodesCopy elementIdentifiers];
+  graph = [personNodesCopy graph];
 
   v9 = MEMORY[0x277D22BF8];
   v10 = +[PGGraphMomentNode personInMoment];
-  v11 = [v9 adjacencyWithSources:v6 relation:v10 targetsClass:objc_opt_class()];
+  v11 = [v9 adjacencyWithSources:nodesCopy relation:v10 targetsClass:objc_opt_class()];
 
-  v12 = [v11 transposed];
+  transposed = [v11 transposed];
   v13 = objc_alloc_init(MEMORY[0x277CCA940]);
-  v14 = [v12 adjacency];
+  adjacency = [transposed adjacency];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __85__PGPeopleInferencesConveniences_countedPersonNodesFromMomentNodes_amongPersonNodes___block_invoke;
   v21[3] = &unk_27887EE08;
-  v22 = v7;
-  v23 = v8;
+  v22 = elementIdentifiers;
+  v23 = graph;
   v15 = v13;
   v24 = v15;
-  v16 = v8;
-  v17 = v7;
-  [v14 enumerateTargetsBySourceWith:v21];
+  v16 = graph;
+  v17 = elementIdentifiers;
+  [adjacency enumerateTargetsBySourceWith:v21];
 
   v18 = v24;
   v19 = v15;
@@ -211,18 +211,18 @@ void __85__PGPeopleInferencesConveniences_countedPersonNodesFromMomentNodes_amon
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)personLocalIdentifierByContactIdentifierFromPersonNodes:(id)a3
++ (id)personLocalIdentifierByContactIdentifierFromPersonNodes:(id)nodes
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  nodesCopy = nodes;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__PGPeopleInferencesConveniences_personLocalIdentifierByContactIdentifierFromPersonNodes___block_invoke;
   v8[3] = &unk_278889240;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateNodesUsingBlock:v8];
+  [nodesCopy enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -239,18 +239,18 @@ void __90__PGPeopleInferencesConveniences_personLocalIdentifierByContactIdentifi
   }
 }
 
-+ (BOOL)isValidContact:(id)a3
++ (BOOL)isValidContact:(id)contact
 {
-  v3 = a3;
-  if ([v3 isMe] & 1) != 0 || (objc_msgSend(v3, "isOrganization"))
+  contactCopy = contact;
+  if ([contactCopy isMe] & 1) != 0 || (objc_msgSend(contactCopy, "isOrganization"))
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 CNIdentifier];
-    v4 = [v5 length] != 0;
+    cNIdentifier = [contactCopy CNIdentifier];
+    v4 = [cNIdentifier length] != 0;
   }
 
   return v4;

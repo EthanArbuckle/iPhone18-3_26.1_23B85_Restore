@@ -5,14 +5,14 @@
 - (NSString)appBundleIdentifier;
 - (NSString)fallbackDisplayName;
 - (UIColor)widgetTintColor;
-- (WFWidgetConfigurationRequest)initWithCoder:(id)a3;
-- (WFWidgetConfigurationRequest)initWithIntent:(id)a3 bundleIdentifier:(id)a4 intentLocalizationTableBundleURL:(id)a5 widgetBundleScopedURL:(id)a6 family:(int64_t)a7 widgetConfigurationStyle:(unint64_t)a8 widgetConfigurationType:(unint64_t)a9 defaultCardSize:(CGSize)a10 initialCardFrame:(CGRect)a11 widgetDisplayName:(id)a12 widgetDescription:(id)a13 usesWidgetAccentColor:(BOOL)a14 remoteDeviceIdentifier:(id)a15 remoteAppLocalizedName:(id)a16 remoteAppIcon:(id)a17;
-- (WFWidgetConfigurationRequest)initWithIntent:(id)a3 bundleIdentifier:(id)a4 intentLocalizationTableBundleURL:(id)a5 widgetBundleScopedURL:(id)a6 family:(int64_t)a7 widgetConfigurationStyle:(unint64_t)a8 widgetConfigurationType:(unint64_t)a9 defaultCardSize:(CGSize)a10 initialCardFrame:(CGRect)a11 widgetDisplayName:(id)a12 widgetDescription:(id)a13 widgetPrimaryColor:(id)a14 widgetTintColor:(id)a15 usesWidgetAccentColor:(BOOL)a16 remoteDeviceIdentifier:(id)a17 remoteAppLocalizedName:(id)a18 remoteAppIcon:(id)a19;
-- (WFWidgetConfigurationRequest)initWithOptions:(id)a3;
+- (WFWidgetConfigurationRequest)initWithCoder:(id)coder;
+- (WFWidgetConfigurationRequest)initWithIntent:(id)intent bundleIdentifier:(id)identifier intentLocalizationTableBundleURL:(id)l widgetBundleScopedURL:(id)rL family:(int64_t)family widgetConfigurationStyle:(unint64_t)style widgetConfigurationType:(unint64_t)type defaultCardSize:(CGSize)self0 initialCardFrame:(CGRect)self1 widgetDisplayName:(id)self2 widgetDescription:(id)self3 usesWidgetAccentColor:(BOOL)self4 remoteDeviceIdentifier:(id)self5 remoteAppLocalizedName:(id)self6 remoteAppIcon:(id)self7;
+- (WFWidgetConfigurationRequest)initWithIntent:(id)intent bundleIdentifier:(id)identifier intentLocalizationTableBundleURL:(id)l widgetBundleScopedURL:(id)rL family:(int64_t)family widgetConfigurationStyle:(unint64_t)style widgetConfigurationType:(unint64_t)type defaultCardSize:(CGSize)self0 initialCardFrame:(CGRect)self1 widgetDisplayName:(id)self2 widgetDescription:(id)self3 widgetPrimaryColor:(id)self4 widgetTintColor:(id)self5 usesWidgetAccentColor:(BOOL)self6 remoteDeviceIdentifier:(id)self7 remoteAppLocalizedName:(id)self8 remoteAppIcon:(id)self9;
+- (WFWidgetConfigurationRequest)initWithOptions:(id)options;
 - (unint64_t)resolvedWidgetConfigurationStyle;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadWidgetExtensionInformationWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadWidgetExtensionInformationWithCompletion:(id)completion;
 - (void)startAccessingSecurityScopedBundleResource;
 @end
 
@@ -40,50 +40,50 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = INIntentWithTypedIntent();
-  [v8 encodeObject:v4 forKey:@"intent"];
+  [coderCopy encodeObject:v4 forKey:@"intent"];
 
-  [v8 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v8 encodeObject:self->_intentLocalizationTableBundleURL forKey:@"intentLocalizationTableBundleURL"];
-  [v8 encodeObject:self->_widgetBundleScopedURL forKey:@"widgetBundleScopedURL"];
-  [v8 encodeInteger:self->_family forKey:@"family"];
-  [v8 encodeInteger:self->_widgetConfigurationStyle forKey:@"widgetConfigurationStyle"];
-  [v8 encodeInteger:self->_widgetConfigurationType forKey:@"widgetConfigurationType"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_intentLocalizationTableBundleURL forKey:@"intentLocalizationTableBundleURL"];
+  [coderCopy encodeObject:self->_widgetBundleScopedURL forKey:@"widgetBundleScopedURL"];
+  [coderCopy encodeInteger:self->_family forKey:@"family"];
+  [coderCopy encodeInteger:self->_widgetConfigurationStyle forKey:@"widgetConfigurationStyle"];
+  [coderCopy encodeInteger:self->_widgetConfigurationType forKey:@"widgetConfigurationType"];
   v5 = [MEMORY[0x1E696B098] value:&self->_defaultCardSize withObjCType:"{CGSize=dd}"];
-  [v8 encodeObject:v5 forKey:@"defaultCardSize"];
+  [coderCopy encodeObject:v5 forKey:@"defaultCardSize"];
 
   v6 = [MEMORY[0x1E696B098] value:&self->_initialCardFrame withObjCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v8 encodeObject:v6 forKey:@"initialCardFrame"];
+  [coderCopy encodeObject:v6 forKey:@"initialCardFrame"];
 
-  [v8 encodeObject:self->_widgetDisplayName forKey:@"widgetDisplayName"];
-  [v8 encodeObject:self->_widgetDescription forKey:@"widgetDescription"];
-  [v8 encodeBool:self->_usesWidgetAccentColor forKey:@"usesWidgetAccentColor"];
-  [v8 encodeObject:self->_remoteDeviceIdentifier forKey:@"remoteDeviceIdentifier"];
-  [v8 encodeObject:self->_remoteAppLocalizedName forKey:@"remoteAppLocalizedName"];
-  [v8 encodeObject:self->_remoteAppIcon forKey:@"remoteAppIcon"];
+  [coderCopy encodeObject:self->_widgetDisplayName forKey:@"widgetDisplayName"];
+  [coderCopy encodeObject:self->_widgetDescription forKey:@"widgetDescription"];
+  [coderCopy encodeBool:self->_usesWidgetAccentColor forKey:@"usesWidgetAccentColor"];
+  [coderCopy encodeObject:self->_remoteDeviceIdentifier forKey:@"remoteDeviceIdentifier"];
+  [coderCopy encodeObject:self->_remoteAppLocalizedName forKey:@"remoteAppLocalizedName"];
+  [coderCopy encodeObject:self->_remoteAppIcon forKey:@"remoteAppIcon"];
   v7 = INIntentWithTypedIntent();
-  [v8 encodeObject:v7 forKey:@"remoteLocalizedIntent"];
+  [coderCopy encodeObject:v7 forKey:@"remoteLocalizedIntent"];
 
-  [v8 encodeObject:self->_remoteLanguageCode forKey:@"remoteLanguageCode"];
+  [coderCopy encodeObject:self->_remoteLanguageCode forKey:@"remoteLanguageCode"];
 }
 
-- (WFWidgetConfigurationRequest)initWithCoder:(id)a3
+- (WFWidgetConfigurationRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
   v31 = INTypedIntentWithIntent();
 
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v29 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"intentLocalizationTableBundleURL"];
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"widgetBundleScopedURL"];
-  v27 = [v3 decodeIntegerForKey:@"family"];
-  v26 = [v3 decodeIntegerForKey:@"widgetConfigurationStyle"];
-  v24 = [v3 decodeIntegerForKey:@"widgetConfigurationType"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentLocalizationTableBundleURL"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetBundleScopedURL"];
+  v27 = [coderCopy decodeIntegerForKey:@"family"];
+  v26 = [coderCopy decodeIntegerForKey:@"widgetConfigurationStyle"];
+  v24 = [coderCopy decodeIntegerForKey:@"widgetConfigurationType"];
   v34 = *MEMORY[0x1E695F060];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"defaultCardSize"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultCardSize"];
   if (v5)
   {
     objc_opt_class();
@@ -109,7 +109,7 @@
   v8 = *(MEMORY[0x1E695F050] + 16);
   v32 = *MEMORY[0x1E695F050];
   v33 = v8;
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"initialCardFrame"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialCardFrame"];
   if (v9)
   {
     objc_opt_class();
@@ -132,16 +132,16 @@
   v11 = v10;
 
   [v11 getValue:&v32 size:32];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescription"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"widgetDisplayName"];
-  v12 = [v3 decodeBoolForKey:@"usesWidgetAccentColor"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteDeviceIdentifier"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteAppLocalizedName"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteAppIcon"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteLocalizedIntent"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescription"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetDisplayName"];
+  v12 = [coderCopy decodeBoolForKey:@"usesWidgetAccentColor"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteDeviceIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteAppLocalizedName"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteAppIcon"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteLocalizedIntent"];
   v16 = INTypedIntentWithIntent();
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteLanguageCode"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteLanguageCode"];
   LOBYTE(v20) = v12;
   v18 = [(WFWidgetConfigurationRequest *)self initWithIntent:v31 bundleIdentifier:v30 intentLocalizationTableBundleURL:v29 widgetBundleScopedURL:v28 family:v27 widgetConfigurationStyle:v26 widgetConfigurationType:v34 defaultCardSize:v32 initialCardFrame:v33 widgetDisplayName:v24 widgetDescription:v22 usesWidgetAccentColor:v23 remoteDeviceIdentifier:v20 remoteAppLocalizedName:v13 remoteAppIcon:v21, v14];
   [(WFWidgetConfigurationRequest *)v18 setRemoteLocalizedIntent:v16];
@@ -152,111 +152,111 @@
 
 - (void)startAccessingSecurityScopedBundleResource
 {
-  v3 = [(WFWidgetConfigurationRequest *)self intentLocalizationTableBundleURL];
-  v2 = [v3 url];
+  intentLocalizationTableBundleURL = [(WFWidgetConfigurationRequest *)self intentLocalizationTableBundleURL];
+  v2 = [intentLocalizationTableBundleURL url];
   [v2 startAccessingSecurityScopedResource];
 }
 
-- (void)loadWidgetExtensionInformationWithCompletion:(id)a3
+- (void)loadWidgetExtensionInformationWithCompletion:(id)completion
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if ([(WFWidgetConfigurationRequest *)self isWidgetExtensionInformationLoaded])
   {
     goto LABEL_6;
   }
 
-  v5 = [(WFWidgetConfigurationRequest *)self intent];
+  intent = [(WFWidgetConfigurationRequest *)self intent];
   v6 = objc_alloc_init(WFShortcutsWidgetConfigurationIntent);
   v7 = objc_alloc_init(WFShortcutsSmallWidgetConfigurationIntent);
   v8 = softLinkDOCCreateDefaultHomeScreenWidgetIntent();
-  v9 = [v5 _className];
+  _className = [intent _className];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  if ([v9 isEqualToString:v11])
+  if ([_className isEqualToString:v11])
   {
     goto LABEL_5;
   }
 
-  v48 = self;
-  v12 = [v5 _className];
+  selfCopy = self;
+  _className2 = [intent _className];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  if ([v12 isEqualToString:v14])
+  if ([_className2 isEqualToString:v14])
   {
 
 LABEL_5:
 LABEL_6:
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_7;
   }
 
-  v15 = [v5 _className];
+  _className3 = [intent _className];
   v16 = objc_opt_class();
   NSStringFromClass(v16);
-  v17 = v47 = v4;
-  v46 = [v15 isEqualToString:v17];
+  v17 = v47 = completionCopy;
+  v46 = [_className3 isEqualToString:v17];
 
-  v4 = v47;
+  completionCopy = v47;
   if (v46)
   {
     goto LABEL_6;
   }
 
-  v18 = [MEMORY[0x1E696EAE0] sharedProvider];
-  v19 = [(WFWidgetConfigurationRequest *)v48 intent];
-  v20 = [v18 descriptorForIntent:v19];
+  mEMORY[0x1E696EAE0] = [MEMORY[0x1E696EAE0] sharedProvider];
+  intent2 = [(WFWidgetConfigurationRequest *)selfCopy intent];
+  v20 = [mEMORY[0x1E696EAE0] descriptorForIntent:intent2];
 
-  v21 = [v20 extensionBundleIdentifier];
-  if (!v21)
+  extensionBundleIdentifier = [v20 extensionBundleIdentifier];
+  if (!extensionBundleIdentifier)
   {
-    v22 = [(WFWidgetConfigurationRequest *)v48 intent];
+    intent3 = [(WFWidgetConfigurationRequest *)selfCopy intent];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(WFWidgetConfigurationRequest *)v48 intent];
-      v25 = [v24 _asMigratedAppIntent];
+      intent4 = [(WFWidgetConfigurationRequest *)selfCopy intent];
+      _asMigratedAppIntent = [intent4 _asMigratedAppIntent];
 
-      if (v25)
+      if (_asMigratedAppIntent)
       {
-        v26 = [v25 extensionBundleId];
-        v27 = v26;
-        if (v26)
+        extensionBundleId = [_asMigratedAppIntent extensionBundleId];
+        v27 = extensionBundleId;
+        if (extensionBundleId)
         {
-          v28 = v26;
+          launchId = extensionBundleId;
         }
 
         else
         {
-          v28 = [v25 launchId];
+          launchId = [_asMigratedAppIntent launchId];
         }
 
-        v21 = v28;
+        extensionBundleIdentifier = launchId;
       }
 
       else
       {
-        v21 = 0;
+        extensionBundleIdentifier = 0;
       }
     }
 
     else
     {
-      v21 = 0;
+      extensionBundleIdentifier = 0;
     }
   }
 
   v51 = 0;
-  v29 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v21 error:&v51];
+  v29 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:extensionBundleIdentifier error:&v51];
   v30 = v51;
   if (v29)
   {
     v31 = objc_alloc(MEMORY[0x1E696AE98]);
     v32 = [v29 URL];
     v33 = [v31 initWithURL:v32 readonly:1];
-    widgetBundleScopedURL = v48->_widgetBundleScopedURL;
-    v48->_widgetBundleScopedURL = v33;
+    widgetBundleScopedURL = selfCopy->_widgetBundleScopedURL;
+    selfCopy->_widgetBundleScopedURL = v33;
 
     v35 = [v29 URL];
     v49 = 0;
@@ -265,12 +265,12 @@ LABEL_6:
     v36 = v50;
     v37 = v49;
 
-    widgetPrimaryColor = v48->_widgetPrimaryColor;
-    v48->_widgetPrimaryColor = v36;
+    widgetPrimaryColor = selfCopy->_widgetPrimaryColor;
+    selfCopy->_widgetPrimaryColor = v36;
     v39 = v36;
 
-    widgetTintColor = v48->_widgetTintColor;
-    v48->_widgetTintColor = v37;
+    widgetTintColor = selfCopy->_widgetTintColor;
+    selfCopy->_widgetTintColor = v37;
 
     v41 = 0;
   }
@@ -292,7 +292,7 @@ LABEL_6:
     v30 = v45;
   }
 
-  v4 = v47;
+  completionCopy = v47;
   v47[2](v47, v41);
 
 LABEL_7:
@@ -300,8 +300,8 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(WFWidgetConfigurationRequest *)self intentLocalizationTableBundleURL];
-  v4 = [v3 url];
+  intentLocalizationTableBundleURL = [(WFWidgetConfigurationRequest *)self intentLocalizationTableBundleURL];
+  v4 = [intentLocalizationTableBundleURL url];
   [v4 stopAccessingSecurityScopedResource];
 
   v5.receiver = self;
@@ -314,40 +314,40 @@ LABEL_7:
   appBundleIdentifier = self->_appBundleIdentifier;
   if (!appBundleIdentifier)
   {
-    v4 = [(WFWidgetConfigurationRequest *)self intent];
-    if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    intent = [(WFWidgetConfigurationRequest *)self intent];
+    if (intent && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = [objc_alloc(MEMORY[0x1E69ACF60]) initWithOptions:0];
-      v6 = [v4 _intents_bundleIdForLaunching];
-      v7 = [v4 appIntentIdentifier];
-      v8 = [(NSString *)v5 actionsForBundleIdentifier:v6 andActionIdentifier:v7 error:0];
-      v9 = [v8 firstObject];
+      _intents_bundleIdForLaunching = [intent _intents_bundleIdForLaunching];
+      appIntentIdentifier = [intent appIntentIdentifier];
+      v8 = [(NSString *)v5 actionsForBundleIdentifier:_intents_bundleIdForLaunching andActionIdentifier:appIntentIdentifier error:0];
+      firstObject = [v8 firstObject];
 
-      v10 = [v9 attributionBundleIdentifier];
-      v11 = v10;
-      if (v10)
+      attributionBundleIdentifier = [firstObject attributionBundleIdentifier];
+      v11 = attributionBundleIdentifier;
+      if (attributionBundleIdentifier)
       {
-        v12 = v10;
-        v13 = self->_appBundleIdentifier;
+        v12 = attributionBundleIdentifier;
+        intent2 = self->_appBundleIdentifier;
         self->_appBundleIdentifier = v12;
       }
 
       else
       {
-        v13 = [(WFWidgetConfigurationRequest *)self intent];
-        v15 = [v13 _intents_bundleIdForDisplay];
+        intent2 = [(WFWidgetConfigurationRequest *)self intent];
+        _intents_bundleIdForDisplay = [intent2 _intents_bundleIdForDisplay];
         v16 = self->_appBundleIdentifier;
-        self->_appBundleIdentifier = v15;
+        self->_appBundleIdentifier = _intents_bundleIdForDisplay;
       }
     }
 
     else
     {
 
-      v4 = [(WFWidgetConfigurationRequest *)self intent];
-      v14 = [v4 _intents_bundleIdForDisplay];
+      intent = [(WFWidgetConfigurationRequest *)self intent];
+      _intents_bundleIdForDisplay2 = [intent _intents_bundleIdForDisplay];
       v5 = self->_appBundleIdentifier;
-      self->_appBundleIdentifier = v14;
+      self->_appBundleIdentifier = _intents_bundleIdForDisplay2;
     }
 
     appBundleIdentifier = self->_appBundleIdentifier;
@@ -358,8 +358,8 @@ LABEL_7:
 
 - (BOOL)isWidgetExtensionInformationLoaded
 {
-  v2 = [(WFWidgetConfigurationRequest *)self widgetBundleScopedURL];
-  v3 = v2 != 0;
+  widgetBundleScopedURL = [(WFWidgetConfigurationRequest *)self widgetBundleScopedURL];
+  v3 = widgetBundleScopedURL != 0;
 
   return v3;
 }
@@ -419,74 +419,74 @@ LABEL_7:
   return v3;
 }
 
-- (WFWidgetConfigurationRequest)initWithIntent:(id)a3 bundleIdentifier:(id)a4 intentLocalizationTableBundleURL:(id)a5 widgetBundleScopedURL:(id)a6 family:(int64_t)a7 widgetConfigurationStyle:(unint64_t)a8 widgetConfigurationType:(unint64_t)a9 defaultCardSize:(CGSize)a10 initialCardFrame:(CGRect)a11 widgetDisplayName:(id)a12 widgetDescription:(id)a13 widgetPrimaryColor:(id)a14 widgetTintColor:(id)a15 usesWidgetAccentColor:(BOOL)a16 remoteDeviceIdentifier:(id)a17 remoteAppLocalizedName:(id)a18 remoteAppIcon:(id)a19
+- (WFWidgetConfigurationRequest)initWithIntent:(id)intent bundleIdentifier:(id)identifier intentLocalizationTableBundleURL:(id)l widgetBundleScopedURL:(id)rL family:(int64_t)family widgetConfigurationStyle:(unint64_t)style widgetConfigurationType:(unint64_t)type defaultCardSize:(CGSize)self0 initialCardFrame:(CGRect)self1 widgetDisplayName:(id)self2 widgetDescription:(id)self3 widgetPrimaryColor:(id)self4 widgetTintColor:(id)self5 usesWidgetAccentColor:(BOOL)self6 remoteDeviceIdentifier:(id)self7 remoteAppLocalizedName:(id)self8 remoteAppIcon:(id)self9
 {
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
-  v26 = a10.height;
-  v27 = a10.width;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v26 = size.height;
+  v27 = size.width;
   v82 = *MEMORY[0x1E69E9840];
-  v75 = a3;
-  v76 = a4;
-  v66 = a5;
-  v28 = a5;
-  v67 = a6;
-  v74 = a6;
-  v29 = a12;
-  v30 = a13;
-  v73 = a14;
-  v72 = a15;
-  v31 = a17;
-  v32 = a18;
-  v33 = a19;
+  intentCopy = intent;
+  identifierCopy = identifier;
+  lCopy = l;
+  lCopy2 = l;
+  rLCopy = rL;
+  rLCopy2 = rL;
+  nameCopy = name;
+  descriptionCopy = description;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  deviceIdentifierCopy = deviceIdentifier;
+  localizedNameCopy = localizedName;
+  iconCopy = icon;
   v77.receiver = self;
   v77.super_class = WFWidgetConfigurationRequest;
   v34 = [(WFWidgetConfigurationRequest *)&v77 init];
   v35 = v34;
   if (v34)
   {
-    v71 = v28;
-    objc_storeStrong(&v34->_intent, a3);
-    v36 = v76;
-    v37 = [v76 copy];
+    v71 = lCopy2;
+    objc_storeStrong(&v34->_intent, intent);
+    v36 = identifierCopy;
+    v37 = [identifierCopy copy];
     bundleIdentifier = v35->_bundleIdentifier;
     v35->_bundleIdentifier = v37;
 
-    objc_storeStrong(&v35->_intentLocalizationTableBundleURL, v66);
-    objc_storeStrong(&v35->_widgetBundleScopedURL, v67);
-    v35->_family = a7;
-    v35->_widgetConfigurationStyle = a8;
-    v35->_widgetConfigurationType = a9;
+    objc_storeStrong(&v35->_intentLocalizationTableBundleURL, lCopy);
+    objc_storeStrong(&v35->_widgetBundleScopedURL, rLCopy);
+    v35->_family = family;
+    v35->_widgetConfigurationStyle = style;
+    v35->_widgetConfigurationType = type;
     v35->_defaultCardSize.width = v27;
     v35->_defaultCardSize.height = v26;
     v35->_initialCardFrame.origin.x = x;
     v35->_initialCardFrame.origin.y = y;
     v35->_initialCardFrame.size.width = width;
     v35->_initialCardFrame.size.height = height;
-    v39 = [v29 copy];
+    v39 = [nameCopy copy];
     widgetDisplayName = v35->_widgetDisplayName;
     v35->_widgetDisplayName = v39;
 
-    v41 = [v30 copy];
+    v41 = [descriptionCopy copy];
     widgetDescription = v35->_widgetDescription;
     v35->_widgetDescription = v41;
 
-    objc_storeStrong(&v35->_widgetPrimaryColor, a14);
-    objc_storeStrong(&v35->_widgetTintColor, a15);
-    v35->_usesWidgetAccentColor = a16;
-    v43 = [v31 copy];
+    objc_storeStrong(&v35->_widgetPrimaryColor, color);
+    objc_storeStrong(&v35->_widgetTintColor, tintColor);
+    v35->_usesWidgetAccentColor = accentColor;
+    v43 = [deviceIdentifierCopy copy];
     remoteDeviceIdentifier = v35->_remoteDeviceIdentifier;
     v35->_remoteDeviceIdentifier = v43;
 
-    v45 = [v32 copy];
+    v45 = [localizedNameCopy copy];
     remoteAppLocalizedName = v35->_remoteAppLocalizedName;
     v35->_remoteAppLocalizedName = v45;
 
-    v47 = v31;
-    v48 = v33;
-    v49 = [v33 copy];
+    v47 = deviceIdentifierCopy;
+    v48 = iconCopy;
+    v49 = [iconCopy copy];
     remoteAppIcon = v35->_remoteAppIcon;
     v35->_remoteAppIcon = v49;
 
@@ -497,10 +497,10 @@ LABEL_7:
     v35->_remoteLanguageCode = 0;
 
     v53 = MEMORY[0x1E695F060];
-    v54 = v29;
+    v54 = nameCopy;
     if (v35->_intent && (v35->_bundleIdentifier || v35->_remoteDeviceIdentifier) && (v35->_defaultCardSize.width != *MEMORY[0x1E695F060] || v35->_defaultCardSize.height != *(MEMORY[0x1E695F060] + 8)))
     {
-      v28 = v71;
+      lCopy2 = v71;
       if (!v35->_family)
       {
         v63 = getWFWidgetConfigurationLogObject();
@@ -529,7 +529,7 @@ LABEL_7:
         [v56 addObject:@"Bundle Identifier"];
       }
 
-      v57 = v30;
+      v57 = descriptionCopy;
       if (v35->_defaultCardSize.width == *v53 && v35->_defaultCardSize.height == v53[1])
       {
         [v56 addObject:@"Default Card Size"];
@@ -550,52 +550,52 @@ LABEL_7:
       }
 
       v61 = 0;
-      v28 = v71;
-      v30 = v57;
-      v36 = v76;
+      lCopy2 = v71;
+      descriptionCopy = v57;
+      v36 = identifierCopy;
     }
   }
 
   else
   {
-    v62 = v31;
-    v48 = v33;
+    v62 = deviceIdentifierCopy;
+    v48 = iconCopy;
     v61 = 0;
-    v36 = v76;
-    v54 = v29;
+    v36 = identifierCopy;
+    v54 = nameCopy;
     v47 = v62;
   }
 
   return v61;
 }
 
-- (WFWidgetConfigurationRequest)initWithIntent:(id)a3 bundleIdentifier:(id)a4 intentLocalizationTableBundleURL:(id)a5 widgetBundleScopedURL:(id)a6 family:(int64_t)a7 widgetConfigurationStyle:(unint64_t)a8 widgetConfigurationType:(unint64_t)a9 defaultCardSize:(CGSize)a10 initialCardFrame:(CGRect)a11 widgetDisplayName:(id)a12 widgetDescription:(id)a13 usesWidgetAccentColor:(BOOL)a14 remoteDeviceIdentifier:(id)a15 remoteAppLocalizedName:(id)a16 remoteAppIcon:(id)a17
+- (WFWidgetConfigurationRequest)initWithIntent:(id)intent bundleIdentifier:(id)identifier intentLocalizationTableBundleURL:(id)l widgetBundleScopedURL:(id)rL family:(int64_t)family widgetConfigurationStyle:(unint64_t)style widgetConfigurationType:(unint64_t)type defaultCardSize:(CGSize)self0 initialCardFrame:(CGRect)self1 widgetDisplayName:(id)self2 widgetDescription:(id)self3 usesWidgetAccentColor:(BOOL)self4 remoteDeviceIdentifier:(id)self5 remoteAppLocalizedName:(id)self6 remoteAppIcon:(id)self7
 {
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
-  v24 = a10.height;
-  v25 = a10.width;
-  v43 = a3;
-  v40 = a4;
-  v38 = a5;
-  v26 = a6;
-  v27 = a12;
-  v28 = a13;
-  v29 = a15;
-  v30 = a16;
-  v31 = a17;
-  if (v26)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v24 = size.height;
+  v25 = size.width;
+  intentCopy = intent;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  descriptionCopy = description;
+  deviceIdentifierCopy = deviceIdentifier;
+  localizedNameCopy = localizedName;
+  iconCopy = icon;
+  if (rLCopy)
   {
-    v32 = [v26 url];
+    v32 = [rLCopy url];
     [v32 startAccessingSecurityScopedResource];
     v44 = 0;
     v45[0] = 0;
     WFWidgetColorsFromBundle(v32, v45, &v44);
     v33 = v45[0];
-    v34 = v26;
-    v26 = v44;
+    v34 = rLCopy;
+    rLCopy = v44;
     [v32 stopAccessingSecurityScopedResource];
   }
 
@@ -605,49 +605,49 @@ LABEL_7:
     v34 = 0;
   }
 
-  LOBYTE(v36) = a14;
-  v42 = [(WFWidgetConfigurationRequest *)self initWithIntent:v43 bundleIdentifier:v40 intentLocalizationTableBundleURL:v38 widgetBundleScopedURL:v34 family:a7 widgetConfigurationStyle:a8 widgetConfigurationType:v25 defaultCardSize:v24 initialCardFrame:x widgetDisplayName:y widgetDescription:width widgetPrimaryColor:height widgetTintColor:a9 usesWidgetAccentColor:v27 remoteDeviceIdentifier:v28 remoteAppLocalizedName:v33 remoteAppIcon:v26, v36, v29, v30, v31];
+  LOBYTE(v36) = color;
+  iconCopy = [(WFWidgetConfigurationRequest *)self initWithIntent:intentCopy bundleIdentifier:identifierCopy intentLocalizationTableBundleURL:lCopy widgetBundleScopedURL:v34 family:family widgetConfigurationStyle:style widgetConfigurationType:v25 defaultCardSize:v24 initialCardFrame:x widgetDisplayName:y widgetDescription:width widgetPrimaryColor:height widgetTintColor:type usesWidgetAccentColor:nameCopy remoteDeviceIdentifier:descriptionCopy remoteAppLocalizedName:v33 remoteAppIcon:rLCopy, v36, deviceIdentifierCopy, localizedNameCopy, iconCopy];
 
-  return v42;
+  return iconCopy;
 }
 
-- (WFWidgetConfigurationRequest)initWithOptions:(id)a3
+- (WFWidgetConfigurationRequest)initWithOptions:(id)options
 {
   v106 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v91 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v91 handleFailureInMethod:a2 object:self file:@"WFWidgetConfigurationRequest.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWidgetConfigurationRequest.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
-  v100 = self;
-  v6 = [v5 intent];
+  selfCopy = self;
+  intent = [optionsCopy intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v8 = MEMORY[0x1E6963620];
-    v9 = [v5 intent];
-    v10 = [v9 launchId];
-    v11 = [v8 bundleRecordWithBundleIdentifier:v10 allowPlaceholder:0 error:0];
+    intent2 = [optionsCopy intent];
+    launchId = [intent2 launchId];
+    v11 = [v8 bundleRecordWithBundleIdentifier:launchId allowPlaceholder:0 error:0];
   }
 
   else
   {
-    v12 = [v5 intent];
-    v13 = v12;
-    if (v12)
+    intent3 = [optionsCopy intent];
+    v13 = intent3;
+    if (intent3)
     {
-      v14 = [v12 extensionBundleId];
+      extensionBundleId = [intent3 extensionBundleId];
 
-      if (v14)
+      if (extensionBundleId)
       {
         v15 = objc_alloc(MEMORY[0x1E69635D0]);
-        v16 = [v13 extensionBundleId];
+        extensionBundleId2 = [v13 extensionBundleId];
         *buf = 0;
-        v11 = [v15 initWithBundleIdentifier:v16 error:buf];
+        v11 = [v15 initWithBundleIdentifier:extensionBundleId2 error:buf];
         v17 = *buf;
       }
 
@@ -657,12 +657,12 @@ LABEL_7:
         v11 = 0;
       }
 
-      v18 = [v11 intentDefinitionURLs];
-      v19 = [v18 count];
+      intentDefinitionURLs = [v11 intentDefinitionURLs];
+      v19 = [intentDefinitionURLs count];
 
       if (!v19)
       {
-        v20 = [v13 launchId];
+        launchId2 = [v13 launchId];
         v102[1] = 0;
         INExtractAppInfoFromSiriLaunchId();
         v21 = 0;
@@ -682,10 +682,10 @@ LABEL_7:
     }
   }
 
-  v24 = [v11 bundleIdentifier];
-  v25 = [v5 remoteDeviceIdentifier];
+  bundleIdentifier = [v11 bundleIdentifier];
+  remoteDeviceIdentifier = [optionsCopy remoteDeviceIdentifier];
   v99 = v11;
-  if (!v25 || (v26 = v25, [v5 intent], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "extensionBundleId"), v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v26, !v28))
+  if (!remoteDeviceIdentifier || (v26 = remoteDeviceIdentifier, [optionsCopy intent], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "extensionBundleId"), v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v26, !v28))
   {
     v98 = 0;
     goto LABEL_26;
@@ -700,9 +700,9 @@ LABEL_7:
   }
 
   v30 = objc_alloc(MEMORY[0x1E69635D0]);
-  v31 = [v5 intent];
-  v32 = [v31 extensionBundleId];
-  v33 = [v30 initWithBundleIdentifier:v32 error:0];
+  intent4 = [optionsCopy intent];
+  extensionBundleId3 = [intent4 extensionBundleId];
+  v33 = [v30 initWithBundleIdentifier:extensionBundleId3 error:0];
 
   v34 = [v33 URL];
 
@@ -748,7 +748,7 @@ LABEL_24:
 
 LABEL_26:
   v43 = MEMORY[0x1E69D4328];
-  v44 = v24;
+  v44 = bundleIdentifier;
   v45 = objc_alloc_init(v43);
   v46 = [v45 previewMetricsSpecificationForBundleIdentifier:v44];
   v97 = v44;
@@ -772,25 +772,25 @@ LABEL_28:
     _os_log_impl(&dword_1C830A000, v81, OS_LOG_TYPE_FAULT, "%s Cannot load the widget metrics from SpringBoard Services", buf, 0xCu);
   }
 
-  v82 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v82 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v84 = v83;
   v86 = v85;
 
-  v87 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v88 = [v87 traitCollection];
-  v89 = [v88 userInterfaceIdiom];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen2 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v89)
+  if (userInterfaceIdiom)
   {
-    if (v89 == 6)
+    if (userInterfaceIdiom == 6)
     {
       v51 = 600.0;
       v50 = 386.0;
       goto LABEL_29;
     }
 
-    if (v89 == 1)
+    if (userInterfaceIdiom == 1)
     {
       if (fmax(v84, v86) <= 1024.0)
       {
@@ -867,25 +867,25 @@ LABEL_54:
 
 LABEL_29:
 
-  v52 = [v5 intent];
+  intent5 = [optionsCopy intent];
   objc_opt_class();
   v53 = objc_opt_isKindOfClass();
 
   if (v53)
   {
     v54 = MEMORY[0x1E6963620];
-    v55 = [v5 intent];
-    v56 = [v55 extensionBundleId];
-    v57 = [v54 bundleRecordWithBundleIdentifier:v56 allowPlaceholder:0 error:0];
+    intent6 = [optionsCopy intent];
+    extensionBundleId4 = [intent6 extensionBundleId];
+    v57 = [v54 bundleRecordWithBundleIdentifier:extensionBundleId4 allowPlaceholder:0 error:0];
   }
 
   else
   {
-    v58 = [v5 intent];
-    v59 = [v58 _codableDescription];
-    v60 = [v59 localizationBundleIdentifier];
+    intent7 = [optionsCopy intent];
+    _codableDescription = [intent7 _codableDescription];
+    localizationBundleIdentifier = [_codableDescription localizationBundleIdentifier];
 
-    if (!v60)
+    if (!localizationBundleIdentifier)
     {
 LABEL_35:
       v95 = 0;
@@ -894,10 +894,10 @@ LABEL_35:
     }
 
     v61 = MEMORY[0x1E6963620];
-    v55 = [v5 intent];
-    v56 = [v55 _codableDescription];
-    v62 = [v56 localizationBundleIdentifier];
-    v57 = [v61 bundleRecordWithBundleIdentifier:v62 allowPlaceholder:0 error:0];
+    intent6 = [optionsCopy intent];
+    extensionBundleId4 = [intent6 _codableDescription];
+    localizationBundleIdentifier2 = [extensionBundleId4 localizationBundleIdentifier];
+    v57 = [v61 bundleRecordWithBundleIdentifier:localizationBundleIdentifier2 allowPlaceholder:0 error:0];
   }
 
   if (!v57)
@@ -911,22 +911,22 @@ LABEL_35:
   v95 = [v63 initWithURL:v64 readonly:1];
 
 LABEL_36:
-  v65 = [v5 intent];
-  v94 = [v5 family];
-  v93 = [v5 widgetConfigurationStyle];
-  v66 = [v5 widgetConfigurationType];
-  [v5 initialConfigurationCardViewFrame];
+  intent8 = [optionsCopy intent];
+  family = [optionsCopy family];
+  widgetConfigurationStyle = [optionsCopy widgetConfigurationStyle];
+  widgetConfigurationType = [optionsCopy widgetConfigurationType];
+  [optionsCopy initialConfigurationCardViewFrame];
   v68 = v67;
   v70 = v69;
   v72 = v71;
   v74 = v73;
-  v75 = [v5 widgetDisplayName];
-  v76 = [v5 widgetDescription];
-  v77 = [v5 remoteDeviceIdentifier];
-  v78 = [v5 remoteAppLocalizedName];
-  v79 = [v5 remoteAppIcon];
+  widgetDisplayName = [optionsCopy widgetDisplayName];
+  widgetDescription = [optionsCopy widgetDescription];
+  remoteDeviceIdentifier2 = [optionsCopy remoteDeviceIdentifier];
+  remoteAppLocalizedName = [optionsCopy remoteAppLocalizedName];
+  remoteAppIcon = [optionsCopy remoteAppIcon];
   LOBYTE(v92) = 1;
-  v101 = [(WFWidgetConfigurationRequest *)v100 initWithIntent:v65 bundleIdentifier:v97 intentLocalizationTableBundleURL:v95 widgetBundleScopedURL:v98 family:v94 widgetConfigurationStyle:v93 widgetConfigurationType:v50 defaultCardSize:v51 initialCardFrame:v68 widgetDisplayName:v70 widgetDescription:v72 usesWidgetAccentColor:v74 remoteDeviceIdentifier:v66 remoteAppLocalizedName:v75 remoteAppIcon:v76, v92, v77, v78, v79];
+  v101 = [(WFWidgetConfigurationRequest *)selfCopy initWithIntent:intent8 bundleIdentifier:v97 intentLocalizationTableBundleURL:v95 widgetBundleScopedURL:v98 family:family widgetConfigurationStyle:widgetConfigurationStyle widgetConfigurationType:v50 defaultCardSize:v51 initialCardFrame:v68 widgetDisplayName:v70 widgetDescription:v72 usesWidgetAccentColor:v74 remoteDeviceIdentifier:widgetConfigurationType remoteAppLocalizedName:widgetDisplayName remoteAppIcon:widgetDescription, v92, remoteDeviceIdentifier2, remoteAppLocalizedName, remoteAppIcon];
 
   return v101;
 }

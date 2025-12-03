@@ -1,22 +1,22 @@
 @interface REMSmartListSection
-- (REMSmartListSection)initWithStore:(id)a3 smartList:(id)a4 storage:(id)a5;
+- (REMSmartListSection)initWithStore:(id)store smartList:(id)list storage:(id)storage;
 @end
 
 @implementation REMSmartListSection
 
-- (REMSmartListSection)initWithStore:(id)a3 smartList:(id)a4 storage:(id)a5
+- (REMSmartListSection)initWithStore:(id)store smartList:(id)list storage:(id)storage
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 accountCapabilities];
+  listCopy = list;
+  storageCopy = storage;
+  storeCopy = store;
+  accountCapabilities = [listCopy accountCapabilities];
   v15.receiver = self;
   v15.super_class = REMSmartListSection;
-  v13 = [(REMBaseSection *)&v15 initWithStore:v11 accountCapabilities:v12 storage:v10];
+  v13 = [(REMBaseSection *)&v15 initWithStore:storeCopy accountCapabilities:accountCapabilities storage:storageCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_smartList, a4);
+    objc_storeStrong(&v13->_smartList, list);
   }
 
   return v13;

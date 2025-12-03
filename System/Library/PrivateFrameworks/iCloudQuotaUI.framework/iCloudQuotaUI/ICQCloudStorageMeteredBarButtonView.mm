@@ -1,16 +1,16 @@
 @interface ICQCloudStorageMeteredBarButtonView
-+ (id)barButtonItemWithString:(id)a3 andPercentUsed:(double)a4;
-- (ICQCloudStorageMeteredBarButtonView)initWithString:(id)a3 andPercentUsed:(double)a4;
++ (id)barButtonItemWithString:(id)string andPercentUsed:(double)used;
+- (ICQCloudStorageMeteredBarButtonView)initWithString:(id)string andPercentUsed:(double)used;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
 
 @implementation ICQCloudStorageMeteredBarButtonView
 
-+ (id)barButtonItemWithString:(id)a3 andPercentUsed:(double)a4
++ (id)barButtonItemWithString:(id)string andPercentUsed:(double)used
 {
-  v5 = a3;
-  v6 = [[ICQCloudStorageMeteredBarButtonView alloc] initWithString:v5 andPercentUsed:a4];
+  stringCopy = string;
+  v6 = [[ICQCloudStorageMeteredBarButtonView alloc] initWithString:stringCopy andPercentUsed:used];
 
   [(ICQCloudStorageMeteredBarButtonView *)v6 setNeedsLayout];
   [(ICQCloudStorageMeteredBarButtonView *)v6 layoutIfNeeded];
@@ -20,9 +20,9 @@
   return v7;
 }
 
-- (ICQCloudStorageMeteredBarButtonView)initWithString:(id)a3 andPercentUsed:(double)a4
+- (ICQCloudStorageMeteredBarButtonView)initWithString:(id)string andPercentUsed:(double)used
 {
-  v6 = a3;
+  stringCopy = string;
   v24.receiver = self;
   v24.super_class = ICQCloudStorageMeteredBarButtonView;
   v7 = *MEMORY[0x277CBF3A0];
@@ -42,29 +42,29 @@
     v15 = PSToolbarLabelsTextColor();
     [(UILabel *)v11->_storageString setTextColor:v15];
 
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v11->_storageString setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v11->_storageString setBackgroundColor:clearColor];
 
     [(UILabel *)v11->_storageString setTextAlignment:1];
     [(UILabel *)v11->_storageString setLineBreakMode:4];
-    [(UILabel *)v11->_storageString setText:v6];
+    [(UILabel *)v11->_storageString setText:stringCopy];
     [(UILabel *)v11->_storageString sizeToFit];
     [(ICQCloudStorageMeteredBarButtonView *)v11 addSubview:v11->_storageString];
-    v11->_percentUsed = fmin(a4, 1.0);
+    v11->_percentUsed = fmin(used, 1.0);
     v17 = [objc_alloc(MEMORY[0x277D758F0]) initWithProgressViewStyle:1];
     progressBar = v11->_progressBar;
     v11->_progressBar = v17;
 
     v19 = v11->_progressBar;
-    v20 = [MEMORY[0x277D75348] lightGrayColor];
-    [(UIProgressView *)v19 setTrackTintColor:v20];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(UIProgressView *)v19 setTrackTintColor:lightGrayColor];
 
-    *&v21 = a4;
+    *&v21 = used;
     [(UIProgressView *)v11->_progressBar setProgress:v21];
     if (v11->_percentUsed >= 0.949999988)
     {
-      v22 = [MEMORY[0x277D75348] redColor];
-      [(UIProgressView *)v11->_progressBar setProgressTintColor:v22];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [(UIProgressView *)v11->_progressBar setProgressTintColor:redColor];
     }
 
     [(ICQCloudStorageMeteredBarButtonView *)v11 addSubview:v11->_progressBar];

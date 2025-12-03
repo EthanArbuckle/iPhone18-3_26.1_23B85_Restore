@@ -1,23 +1,23 @@
 @interface TMNetworkTimeMap
-- (BOOL)timeZone:(id)a3 matchesOffset:(int)a4 dst:(BOOL)a5 date:(id)a6;
-- (TMNetworkTimeMap)initWithDictionary:(id)a3;
-- (TMNetworkTimeMap)initWithUrl:(id)a3;
+- (BOOL)timeZone:(id)zone matchesOffset:(int)offset dst:(BOOL)dst date:(id)date;
+- (TMNetworkTimeMap)initWithDictionary:(id)dictionary;
+- (TMNetworkTimeMap)initWithUrl:(id)url;
 - (void)dealloc;
 @end
 
 @implementation TMNetworkTimeMap
 
-- (TMNetworkTimeMap)initWithUrl:(id)a3
+- (TMNetworkTimeMap)initWithUrl:(id)url
 {
-  if (a3)
+  if (url)
   {
-    a3 = [NSDictionary dictionaryWithContentsOfURL:?];
+    url = [NSDictionary dictionaryWithContentsOfURL:?];
   }
 
-  return [(TMNetworkTimeMap *)self initWithDictionary:a3];
+  return [(TMNetworkTimeMap *)self initWithDictionary:url];
 }
 
-- (TMNetworkTimeMap)initWithDictionary:(id)a3
+- (TMNetworkTimeMap)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = TMNetworkTimeMap;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TMNetworkTimeMap *)v4 setNetworkMap:a3];
+    [(TMNetworkTimeMap *)v4 setNetworkMap:dictionary];
   }
 
   return v5;
@@ -39,15 +39,15 @@
   [(TMNetworkTimeMap *)&v3 dealloc];
 }
 
-- (BOOL)timeZone:(id)a3 matchesOffset:(int)a4 dst:(BOOL)a5 date:(id)a6
+- (BOOL)timeZone:(id)zone matchesOffset:(int)offset dst:(BOOL)dst date:(id)date
 {
-  v7 = a5;
-  v9 = [NSTimeZone timeZoneWithName:a3];
+  dstCopy = dst;
+  v9 = [NSTimeZone timeZoneWithName:zone];
   result = 0;
   if (v9)
   {
     v10 = v9;
-    if ([(NSTimeZone *)v9 secondsFromGMTForDate:a6]== (60 * a4) && [(NSTimeZone *)v10 isDaylightSavingTimeForDate:a6]== v7)
+    if ([(NSTimeZone *)v9 secondsFromGMTForDate:date]== (60 * offset) && [(NSTimeZone *)v10 isDaylightSavingTimeForDate:date]== dstCopy)
     {
       return 1;
     }

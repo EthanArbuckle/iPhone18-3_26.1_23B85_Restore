@@ -1,6 +1,6 @@
 @interface AMPPrivacyPresentationController
-- (AMPPrivacyPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3;
+- (AMPPrivacyPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview;
 - (void)_prepareDimmingViewIfNecessary;
 - (void)containerViewDidLayoutSubviews;
 - (void)containerViewWillLayoutSubviews;
@@ -9,11 +9,11 @@
 
 @implementation AMPPrivacyPresentationController
 
-- (AMPPrivacyPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (AMPPrivacyPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v7.receiver = self;
   v7.super_class = AMPPrivacyPresentationController;
-  v4 = [(AMPPrivacyPresentationController *)&v7 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(AMPPrivacyPresentationController *)&v7 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -26,19 +26,19 @@
 - (void)containerViewWillLayoutSubviews
 {
   [(AMPPrivacyPresentationController *)self _prepareDimmingViewIfNecessary];
-  v3 = [(AMPPrivacyPresentationController *)self presentedViewController];
-  v21 = [v3 view];
+  presentedViewController = [(AMPPrivacyPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
 
-  [v21 _setContinuousCornerRadius:16.0];
-  v4 = [(AMPPrivacyPresentationController *)self containerView];
-  [v4 bounds];
+  [view _setContinuousCornerRadius:16.0];
+  containerView = [(AMPPrivacyPresentationController *)self containerView];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(AMPPrivacyPresentationController *)self presentedViewController];
-  [v13 preferredContentSize];
+  presentedViewController2 = [(AMPPrivacyPresentationController *)self presentedViewController];
+  [presentedViewController2 preferredContentSize];
   v15 = v14;
   v17 = v16;
 
@@ -71,7 +71,7 @@
   v26.origin.y = v8;
   v26.size.width = v10;
   v26.size.height = v12;
-  [v21 setFrame:{v20, CGRectGetMidY(v26) - v17 * 0.5, v15, v17}];
+  [view setFrame:{v20, CGRectGetMidY(v26) - v17 * 0.5, v15, v17}];
 }
 
 - (void)containerViewDidLayoutSubviews
@@ -79,24 +79,24 @@
   v14.receiver = self;
   v14.super_class = AMPPrivacyPresentationController;
   [(AMPPrivacyPresentationController *)&v14 containerViewDidLayoutSubviews];
-  v3 = [(AMPPrivacyPresentationController *)self dimmingView];
+  dimmingView = [(AMPPrivacyPresentationController *)self dimmingView];
 
-  if (v3)
+  if (dimmingView)
   {
-    v4 = [(AMPPrivacyPresentationController *)self containerView];
-    [v4 bounds];
+    containerView = [(AMPPrivacyPresentationController *)self containerView];
+    [containerView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(AMPPrivacyPresentationController *)self dimmingView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    dimmingView2 = [(AMPPrivacyPresentationController *)self dimmingView];
+    [dimmingView2 setFrame:{v6, v8, v10, v12}];
   }
 }
 
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview
 {
-  [a3 bounds];
+  [superview bounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -106,15 +106,15 @@
 
 - (void)_prepareDimmingViewIfNecessary
 {
-  v10 = [(AMPPrivacyPresentationController *)self presentedViewController];
-  v3 = [(AMPPrivacyPresentationController *)self dimmingView];
+  presentedViewController = [(AMPPrivacyPresentationController *)self presentedViewController];
+  dimmingView = [(AMPPrivacyPresentationController *)self dimmingView];
 
-  v4 = v10;
-  if (!v3 && v10)
+  v4 = presentedViewController;
+  if (!dimmingView && presentedViewController)
   {
-    v5 = [(AMPPrivacyPresentationController *)self containerView];
-    v6 = [(AMPPrivacyPresentationController *)self dimmingView];
-    [v6 removeFromSuperview];
+    containerView = [(AMPPrivacyPresentationController *)self containerView];
+    dimmingView2 = [(AMPPrivacyPresentationController *)self dimmingView];
+    [dimmingView2 removeFromSuperview];
 
     v7 = objc_alloc(MEMORY[0x277D75D18]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -122,18 +122,18 @@
     [v8 setBackgroundColor:v9];
 
     [(AMPPrivacyPresentationController *)self setDimmingView:v8];
-    [v5 insertSubview:v8 atIndex:0];
-    [v5 sendSubviewToBack:v8];
+    [containerView insertSubview:v8 atIndex:0];
+    [containerView sendSubviewToBack:v8];
 
-    v4 = v10;
+    v4 = presentedViewController;
   }
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v4 = [(AMPPrivacyPresentationController *)self containerView];
-  v3 = [(AMPPrivacyPresentationController *)self presentedView];
-  [v4 addSubview:v3];
+  containerView = [(AMPPrivacyPresentationController *)self containerView];
+  presentedView = [(AMPPrivacyPresentationController *)self presentedView];
+  [containerView addSubview:presentedView];
 
   [(AMPPrivacyPresentationController *)self _prepareDimmingViewIfNecessary];
 }

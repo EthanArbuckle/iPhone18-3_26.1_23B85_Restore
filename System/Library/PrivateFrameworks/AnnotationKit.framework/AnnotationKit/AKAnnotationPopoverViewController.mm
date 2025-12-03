@@ -1,16 +1,16 @@
 @interface AKAnnotationPopoverViewController
 - (AKAnnotationEditorDelegate)delegate;
 - (AKAnnotationPopoverViewController)init;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)p_containerFrameForView:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)p_containerFrameForView:(id)view;
 - (CGRect)presentationRect;
-- (int)willPresentInPosition:(CGRect)a3 view:(id)a4;
+- (int)willPresentInPosition:(CGRect)position view:(id)view;
 - (void)dealloc;
 - (void)didHide;
 - (void)didReceiveMemoryWarning;
 - (void)didShow;
 - (void)hide;
-- (void)presentFromRect:(CGRect)a3 view:(id)a4;
+- (void)presentFromRect:(CGRect)rect view:(id)view;
 - (void)viewDidLoad;
 - (void)willHide;
 - (void)willShow;
@@ -46,8 +46,8 @@
   v4.receiver = self;
   v4.super_class = AKAnnotationPopoverViewController;
   [(AKAnnotationPopoverViewController *)&v4 viewDidLoad];
-  v3 = [(AKAnnotationPopoverViewController *)self view];
-  [v3 setUserInteractionEnabled:1];
+  view = [(AKAnnotationPopoverViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,12 +58,12 @@
   [(AKAnnotationPopoverViewController *)&v3 didReceiveMemoryWarning];
 }
 
-- (CGRect)p_containerFrameForView:(id)a3
+- (CGRect)p_containerFrameForView:(id)view
 {
-  v4 = a3;
-  v5 = [(AKAnnotationPopoverViewController *)self traitCollection];
+  viewCopy = view;
+  traitCollection = [(AKAnnotationPopoverViewController *)self traitCollection];
   v6 = [MEMORY[0x277D75C80] traitCollectionWithVerticalSizeClass:1];
-  v7 = [v5 containsTraitsInCollection:v6];
+  v7 = [traitCollection containsTraitsInCollection:v6];
 
   if (v7)
   {
@@ -75,7 +75,7 @@
     v8 = 44.0;
   }
 
-  [v4 frame];
+  [viewCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -93,21 +93,21 @@
   return result;
 }
 
-- (int)willPresentInPosition:(CGRect)a3 view:(id)a4
+- (int)willPresentInPosition:(CGRect)position view:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AKAnnotationPopoverViewController *)self view];
-  [v10 bounds];
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  viewCopy = view;
+  view = [(AKAnnotationPopoverViewController *)self view];
+  [view bounds];
   v29 = v12;
   v30 = v11;
   v27 = v14;
   v28 = v13;
 
-  [(AKAnnotationPopoverViewController *)self p_containerFrameForView:v9];
+  [(AKAnnotationPopoverViewController *)self p_containerFrameForView:viewCopy];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -151,22 +151,22 @@
   return v25;
 }
 
-- (void)presentFromRect:(CGRect)a3 view:(id)a4
+- (void)presentFromRect:(CGRect)rect view:(id)view
 {
-  v5 = a4;
-  [(AKAnnotationPopoverViewController *)self setPresentationView:v5];
-  v6 = [(AKAnnotationPopoverViewController *)self view];
-  [v6 setAlpha:0.0];
+  viewCopy = view;
+  [(AKAnnotationPopoverViewController *)self setPresentationView:viewCopy];
+  view = [(AKAnnotationPopoverViewController *)self view];
+  [view setAlpha:0.0];
 
-  v7 = [(AKAnnotationPopoverViewController *)self view];
-  [v7 bounds];
+  view2 = [(AKAnnotationPopoverViewController *)self view];
+  [view2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   rect = v12;
   v15 = v14;
 
-  [(AKAnnotationPopoverViewController *)self p_containerFrameForView:v5];
+  [(AKAnnotationPopoverViewController *)self p_containerFrameForView:viewCopy];
   x = v57.origin.x;
   y = v57.origin.y;
   width = v57.size.width;
@@ -205,13 +205,13 @@
   v63.size.width = width;
   v63.size.height = height;
   MaxY = CGRectGetMaxY(v63);
-  v48 = CGRectGetMinX(a3);
-  v47 = CGRectGetWidth(a3);
-  v23 = CGRectGetMinY(a3);
+  v48 = CGRectGetMinX(rect);
+  v47 = CGRectGetWidth(rect);
+  v23 = CGRectGetMinY(rect);
   if (v23 < v21 && [(AKAnnotationPopoverViewController *)self canPresentInPosition:1])
   {
     [(AKAnnotationPopoverViewController *)self setPosition:1];
-    v23 = CGRectGetMaxY(a3);
+    v23 = CGRectGetMaxY(rect);
     v64.origin.x = x;
     v64.origin.y = y;
     v64.size.width = v44;
@@ -272,36 +272,36 @@
   }
 
   [(AKAnnotationPopoverViewController *)self setPresentationRect:v27 + -1.0, v29 + -1.0, 2.0, 2.0, *&v44, *&v45];
-  v30 = [(AKAnnotationPopoverViewController *)self position];
-  v31 = [(AKAnnotationPopoverViewController *)self view];
-  v32 = [v31 layer];
-  v33 = v32;
+  position = [(AKAnnotationPopoverViewController *)self position];
+  view3 = [(AKAnnotationPopoverViewController *)self view];
+  layer = [view3 layer];
+  v33 = layer;
   v34 = 0.0;
-  if (v30 != 1)
+  if (position != 1)
   {
     v34 = 1.0;
   }
 
-  [v32 setAnchorPoint:{0.5, v34}];
+  [layer setAnchorPoint:{0.5, v34}];
 
-  v35 = [(AKAnnotationPopoverViewController *)self view];
-  [v35 setCenter:{v27, v29}];
+  view4 = [(AKAnnotationPopoverViewController *)self view];
+  [view4 setCenter:{v27, v29}];
 
-  v36 = [(AKAnnotationPopoverViewController *)self view];
-  [v36 frame];
+  view5 = [(AKAnnotationPopoverViewController *)self view];
+  [view5 frame];
   v68 = CGRectIntegral(v67);
   v37 = v68.origin.x;
   v38 = v68.origin.y;
   v39 = v68.size.width;
   v40 = v68.size.height;
-  v41 = [(AKAnnotationPopoverViewController *)self view];
-  [v41 setFrame:{v37, v38, v39, v40}];
+  view6 = [(AKAnnotationPopoverViewController *)self view];
+  [view6 setFrame:{v37, v38, v39, v40}];
 
-  v42 = [(AKAnnotationPopoverViewController *)self view];
-  [v5 addSubview:v42];
+  view7 = [(AKAnnotationPopoverViewController *)self view];
+  [viewCopy addSubview:view7];
 
-  v43 = [(AKAnnotationPopoverViewController *)self view];
-  [v43 setUserInteractionEnabled:0];
+  view8 = [(AKAnnotationPopoverViewController *)self view];
+  [view8 setUserInteractionEnabled:0];
 
   [(AKAnnotationPopoverViewController *)self willShow];
   v56[0] = MEMORY[0x277D85DD0];
@@ -317,17 +317,17 @@
   [MEMORY[0x277D75D18] animateWithDuration:v56 animations:v55 completion:0.15];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(AKAnnotationPopoverViewController *)self view];
-  [v5 bounds];
+  beginCopy = begin;
+  view = [(AKAnnotationPopoverViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AKAnnotationPopoverViewController *)self view];
-  [v4 locationInView:v14];
+  view2 = [(AKAnnotationPopoverViewController *)self view];
+  [beginCopy locationInView:view2];
   v16 = v15;
   v18 = v17;
 
@@ -337,60 +337,60 @@
   v21.size.height = v13;
   v20.x = v16;
   v20.y = v18;
-  LOBYTE(v4) = CGRectContainsPoint(v21, v20);
+  LOBYTE(beginCopy) = CGRectContainsPoint(v21, v20);
 
-  return v4 ^ 1;
+  return beginCopy ^ 1;
 }
 
 - (void)willShow
 {
-  v3 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 willShowAnnotationEditor:self];
+    [delegate willShowAnnotationEditor:self];
   }
 }
 
 - (void)didShow
 {
-  v3 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   if (!self->mHideOnTouchGestureRecognizer)
   {
     v4 = [AKTouchOutsideViewGestureRecognizer alloc];
-    v5 = [(AKAnnotationPopoverViewController *)self view];
-    v6 = [(AKTouchOutsideViewGestureRecognizer *)v4 initWithTarget:self action:sel_hide watchView:v5];
+    view = [(AKAnnotationPopoverViewController *)self view];
+    v6 = [(AKTouchOutsideViewGestureRecognizer *)v4 initWithTarget:self action:sel_hide watchView:view];
     mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
     self->mHideOnTouchGestureRecognizer = v6;
 
-    v8 = [(AKAnnotationPopoverViewController *)self view];
-    v9 = [v8 superview];
-    [v9 addGestureRecognizer:self->mHideOnTouchGestureRecognizer];
+    view2 = [(AKAnnotationPopoverViewController *)self view];
+    superview = [view2 superview];
+    [superview addGestureRecognizer:self->mHideOnTouchGestureRecognizer];
   }
 
   if (!self->mObserver)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = qword_27E39A178;
-    v12 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_23F493ED4;
     v17[3] = &unk_278C7C398;
     v17[4] = self;
-    v13 = [v10 addObserverForName:v11 object:0 queue:v12 usingBlock:v17];
+    v13 = [defaultCenter addObserverForName:v11 object:0 queue:mainQueue usingBlock:v17];
     mObserver = self->mObserver;
     self->mObserver = v13;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 didShowAnnotationEditor:self];
+    [delegate didShowAnnotationEditor:self];
   }
 
-  v15 = [MEMORY[0x277D75718] sharedMenuController];
-  v16 = [v15 isMenuVisible];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  isMenuVisible = [mEMORY[0x277D75718] isMenuVisible];
 
-  if (v16)
+  if (isMenuVisible)
   {
     [(AKAnnotationPopoverViewController *)self hide];
   }
@@ -398,24 +398,24 @@
 
 - (void)willHide
 {
-  v3 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
-  v9 = v3;
+  v9 = delegate;
   if (mHideOnTouchGestureRecognizer)
   {
-    v5 = [(AKTouchOutsideViewGestureRecognizer *)mHideOnTouchGestureRecognizer view];
-    [v5 removeGestureRecognizer:self->mHideOnTouchGestureRecognizer];
+    view = [(AKTouchOutsideViewGestureRecognizer *)mHideOnTouchGestureRecognizer view];
+    [view removeGestureRecognizer:self->mHideOnTouchGestureRecognizer];
 
     v6 = self->mHideOnTouchGestureRecognizer;
     self->mHideOnTouchGestureRecognizer = 0;
 
-    v3 = v9;
+    delegate = v9;
   }
 
   if (self->mObserver)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:self->mObserver name:qword_27E39A178 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->mObserver name:qword_27E39A178 object:0];
 
     mObserver = self->mObserver;
     self->mObserver = 0;
@@ -429,11 +429,11 @@
 
 - (void)didHide
 {
-  v5 = [(AKAnnotationPopoverViewController *)self delegate];
-  v3 = self;
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
+  selfCopy = self;
   if (objc_opt_respondsToSelector())
   {
-    [v5 didHideAnnotationEditor:self];
+    [delegate didHideAnnotationEditor:self];
   }
 
   [(AKAnnotationPopoverViewController *)self setPresentationRect:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
@@ -446,8 +446,8 @@
   if (self->mHideOnTouchGestureRecognizer)
   {
     [(AKAnnotationPopoverViewController *)self willHide];
-    v3 = [(AKAnnotationPopoverViewController *)self view];
-    [v3 setUserInteractionEnabled:0];
+    view = [(AKAnnotationPopoverViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;

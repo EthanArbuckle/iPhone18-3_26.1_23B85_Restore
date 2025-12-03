@@ -1,26 +1,26 @@
 @interface UIStatusBarManager
-+ (id)_implicitStatusBarAnimationParametersWithClass:(Class)a3;
++ (id)_implicitStatusBarAnimationParametersWithClass:(Class)class;
 - (BOOL)_updateAlpha;
-- (BOOL)_updateStyleForWindow:(id)a3 animationParameters:(id *)a4;
-- (BOOL)_updateVisibilityForWindow:(id)a3 targetOrientation:(int64_t)a4 animationParameters:(id *)a5;
-- (CGPoint)_adjustedLocationForXPosition:(double)a3;
+- (BOOL)_updateStyleForWindow:(id)window animationParameters:(id *)parameters;
+- (BOOL)_updateVisibilityForWindow:(id)window targetOrientation:(int64_t)orientation animationParameters:(id *)parameters;
+- (CGPoint)_adjustedLocationForXPosition:(double)position;
 - (CGRect)_statusBarFrameIgnoringVisibility;
 - (CGRect)statusBarFrame;
-- (CGRect)statusBarFrameForStatusBarHeight:(double)a3;
-- (CGRect)statusBarFrameForStatusBarHeight:(double)a3 inOrientation:(int64_t)a4;
-- (UIStatusBarManager)initWithScene:(id)a3;
+- (CGRect)statusBarFrameForStatusBarHeight:(double)height;
+- (CGRect)statusBarFrameForStatusBarHeight:(double)height inOrientation:(int64_t)orientation;
+- (UIStatusBarManager)initWithScene:(id)scene;
 - (double)defaultStatusBarHeight;
-- (double)defaultStatusBarHeightInOrientation:(int64_t)a3;
+- (double)defaultStatusBarHeightInOrientation:(int64_t)orientation;
 - (double)statusBarHeight;
-- (id)_settingsDiffActionsForScene:(id)a3;
-- (id)_updateStatusBarAppearanceWithClientSettings:(id)a3 transitionContext:(id)a4 animationParameters:(id)a5;
-- (id)updateStatusBarAppearanceWithClientSettings:(id)a3 transitionContext:(id)a4;
-- (void)_handleScrollToTopAtXPosition:(double)a3;
-- (void)_setOverridingStatusBarHidden:(BOOL)a3;
-- (void)_setOverridingStatusBarHidden:(BOOL)a3 animationParameters:(id)a4;
-- (void)_setScene:(id)a3;
-- (void)_visibilityChangedWithOriginalOrientation:(int64_t)a3 targetOrientation:(int64_t)a4 animationParameters:(id)a5;
-- (void)handleTapAction:(id)a3;
+- (id)_settingsDiffActionsForScene:(id)scene;
+- (id)_updateStatusBarAppearanceWithClientSettings:(id)settings transitionContext:(id)context animationParameters:(id)parameters;
+- (id)updateStatusBarAppearanceWithClientSettings:(id)settings transitionContext:(id)context;
+- (void)_handleScrollToTopAtXPosition:(double)position;
+- (void)_setOverridingStatusBarHidden:(BOOL)hidden;
+- (void)_setOverridingStatusBarHidden:(BOOL)hidden animationParameters:(id)parameters;
+- (void)_setScene:(id)scene;
+- (void)_visibilityChangedWithOriginalOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation animationParameters:(id)parameters;
+- (void)handleTapAction:(id)action;
 @end
 
 @implementation UIStatusBarManager
@@ -40,8 +40,8 @@
 {
   if ([UIApp _isSpringBoard])
   {
-    v3 = [UIApp statusBar];
-    [v3 currentHeight];
+    statusBar = [UIApp statusBar];
+    [statusBar currentHeight];
     v5 = v4;
 
     return v5;
@@ -49,9 +49,9 @@
 
   else
   {
-    v7 = [(UIWindowScene *)self->_windowScene _interfaceOrientation];
+    _interfaceOrientation = [(UIWindowScene *)self->_windowScene _interfaceOrientation];
 
-    [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:v7];
+    [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:_interfaceOrientation];
   }
 
   return result;
@@ -59,9 +59,9 @@
 
 - (BOOL)_updateAlpha
 {
-  v3 = [UIApp _isSpringBoard];
+  _isSpringBoard = [UIApp _isSpringBoard];
   v4 = 1.0;
-  if ((v3 & 1) == 0 && self->_overriddingStatusBarHidden)
+  if ((_isSpringBoard & 1) == 0 && self->_overriddingStatusBarHidden)
   {
     v4 = 0.0;
   }
@@ -98,63 +98,63 @@
   return result;
 }
 
-- (UIStatusBarManager)initWithScene:(id)a3
+- (UIStatusBarManager)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = UIStatusBarManager;
   v5 = [(UIStatusBarManager *)&v10 init];
-  [(UIStatusBarManager *)v5 _setScene:v4];
+  [(UIStatusBarManager *)v5 _setScene:sceneCopy];
   v5->_statusBarStyle = -1;
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v6 = [v4 _FBSScene];
-    v7 = [v6 uiClientSettings];
+    _FBSScene = [sceneCopy _FBSScene];
+    uiClientSettings = [_FBSScene uiClientSettings];
 
-    v5->_statusBarHidden = [v7 statusBarHidden];
-    [v7 statusBarAlpha];
+    v5->_statusBarHidden = [uiClientSettings statusBarHidden];
+    [uiClientSettings statusBarAlpha];
     v5->_statusBarAlpha = v8;
   }
 
   return v5;
 }
 
-- (void)_setOverridingStatusBarHidden:(BOOL)a3
+- (void)_setOverridingStatusBarHidden:(BOOL)hidden
 {
-  if (self->_overriddingStatusBarHidden != a3)
+  if (self->_overriddingStatusBarHidden != hidden)
   {
-    self->_overriddingStatusBarHidden = a3;
+    self->_overriddingStatusBarHidden = hidden;
     [(UIStatusBarManager *)self updateStatusBarAppearanceWithAnimationParameters:0];
   }
 }
 
-- (void)_setOverridingStatusBarHidden:(BOOL)a3 animationParameters:(id)a4
+- (void)_setOverridingStatusBarHidden:(BOOL)hidden animationParameters:(id)parameters
 {
-  if (self->_overriddingStatusBarHidden != a3)
+  if (self->_overriddingStatusBarHidden != hidden)
   {
-    self->_overriddingStatusBarHidden = a3;
-    [(UIStatusBarManager *)self updateStatusBarAppearanceWithAnimationParameters:a4];
+    self->_overriddingStatusBarHidden = hidden;
+    [(UIStatusBarManager *)self updateStatusBarAppearanceWithAnimationParameters:parameters];
   }
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v5 = a3;
-  if (v5)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"UIStatusBarManager.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIStatusBarManager.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
     }
   }
 
   windowScene = self->_windowScene;
-  self->_windowScene = v5;
+  self->_windowScene = sceneCopy;
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
@@ -164,21 +164,21 @@
   return v4;
 }
 
-- (CGRect)statusBarFrameForStatusBarHeight:(double)a3 inOrientation:(int64_t)a4
+- (CGRect)statusBarFrameForStatusBarHeight:(double)height inOrientation:(int64_t)orientation
 {
-  [(UIWindowScene *)self->_windowScene _referenceBoundsForOrientation:a4];
-  v8 = a3;
-  result.size.height = v8;
+  [(UIWindowScene *)self->_windowScene _referenceBoundsForOrientation:orientation];
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v7;
   result.origin.y = v6;
   result.origin.x = v5;
   return result;
 }
 
-- (CGRect)statusBarFrameForStatusBarHeight:(double)a3
+- (CGRect)statusBarFrameForStatusBarHeight:(double)height
 {
-  v4 = [(UIWindowScene *)self->_windowScene _coordinateSpace];
-  [v4 bounds];
+  _coordinateSpace = [(UIWindowScene *)self->_windowScene _coordinateSpace];
+  [_coordinateSpace bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -186,8 +186,8 @@
   v11 = v6;
   v12 = v8;
   v13 = v10;
-  v14 = a3;
-  result.size.height = v14;
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v13;
   result.origin.y = v12;
   result.origin.x = v11;
@@ -206,20 +206,20 @@
   return result;
 }
 
-- (double)defaultStatusBarHeightInOrientation:(int64_t)a3
+- (double)defaultStatusBarHeightInOrientation:(int64_t)orientation
 {
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v6 = [(UIScene *)self->_windowScene _effectiveUISettings];
-    [v6 defaultStatusBarHeightForOrientation:a3];
+    _effectiveUISettings = [(UIScene *)self->_windowScene _effectiveUISettings];
+    [_effectiveUISettings defaultStatusBarHeightForOrientation:orientation];
     goto LABEL_5;
   }
 
   v5 = 0.0;
-  if (([UIApp _isStatusBarForcedHiddenForOrientation:a3] & 1) == 0)
+  if (([UIApp _isStatusBarForcedHiddenForOrientation:orientation] & 1) == 0)
   {
-    v6 = [(UIWindowScene *)&self->_windowScene->super.super.super.isa _keyWindow];
-    [(UIStatusBar_Base *)UIStatusBar heightForStyle:0 orientation:a3 inWindow:v6];
+    _effectiveUISettings = [(UIWindowScene *)&self->_windowScene->super.super.super.isa _keyWindow];
+    [(UIStatusBar_Base *)UIStatusBar heightForStyle:0 orientation:orientation inWindow:_effectiveUISettings];
 LABEL_5:
     v5 = v7;
   }
@@ -227,26 +227,26 @@ LABEL_5:
   return v5;
 }
 
-- (id)updateStatusBarAppearanceWithClientSettings:(id)a3 transitionContext:(id)a4
+- (id)updateStatusBarAppearanceWithClientSettings:(id)settings transitionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UIStatusBarAnimationParameters alloc] initWithDefaultParameters];
-  v9 = [v6 animationSettings];
-  [v9 duration];
-  [(UIStatusBarAnimationParameters *)v8 setDuration:?];
+  contextCopy = context;
+  settingsCopy = settings;
+  initWithDefaultParameters = [[UIStatusBarAnimationParameters alloc] initWithDefaultParameters];
+  animationSettings = [contextCopy animationSettings];
+  [animationSettings duration];
+  [(UIStatusBarAnimationParameters *)initWithDefaultParameters setDuration:?];
 
-  v10 = [(UIStatusBarManager *)self _updateStatusBarAppearanceWithClientSettings:v7 transitionContext:v6 animationParameters:v8];
+  v10 = [(UIStatusBarManager *)self _updateStatusBarAppearanceWithClientSettings:settingsCopy transitionContext:contextCopy animationParameters:initWithDefaultParameters];
 
   return v10;
 }
 
-- (id)_updateStatusBarAppearanceWithClientSettings:(id)a3 transitionContext:(id)a4 animationParameters:(id)a5
+- (id)_updateStatusBarAppearanceWithClientSettings:(id)settings transitionContext:(id)context animationParameters:(id)parameters
 {
   v83 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  contextCopy = context;
+  parametersCopy = parameters;
   v11 = [UIWindow _findWindowForControllingOverallAppearanceInWindowScene:self->_windowScene];
   if ([UIApp _viewControllerBasedStatusBarAppearance])
   {
@@ -264,36 +264,36 @@ LABEL_5:
     goto LABEL_55;
   }
 
-  if ([v8 interfaceOrientation])
+  if ([settingsCopy interfaceOrientation])
   {
-    v13 = [v8 interfaceOrientation];
+    interfaceOrientation = [settingsCopy interfaceOrientation];
   }
 
   else
   {
-    v15 = [v11 _orientationTransactionToken];
-    v16 = [v15 state];
+    _orientationTransactionToken = [v11 _orientationTransactionToken];
+    state = [_orientationTransactionToken state];
 
-    if ((v16 - 1) < 2)
+    if ((state - 1) < 2)
     {
-      v17 = [(UIStatusBarManager *)self windowScene];
-      v18 = [v17 _interfaceOrientation];
+      windowScene = [(UIStatusBarManager *)self windowScene];
+      _interfaceOrientation = [windowScene _interfaceOrientation];
 
       goto LABEL_12;
     }
 
-    v13 = [v11 _windowInterfaceOrientation];
+    interfaceOrientation = [v11 _windowInterfaceOrientation];
   }
 
-  v18 = v13;
+  _interfaceOrientation = interfaceOrientation;
 LABEL_12:
   v68 = 0;
-  v19 = [(UIStatusBarManager *)self _updateVisibilityForWindow:v11 targetOrientation:v18 animationParameters:&v68];
+  v19 = [(UIStatusBarManager *)self _updateVisibilityForWindow:v11 targetOrientation:_interfaceOrientation animationParameters:&v68];
   v20 = v68;
   if (self->_statusBarHidden)
   {
     v21 = 0;
-    v22 = 0;
+    _updateAlpha = 0;
     v23 = 0;
     if (v19)
     {
@@ -306,17 +306,17 @@ LABEL_12:
     v67 = 0;
     v21 = [(UIStatusBarManager *)self _updateStyleForWindow:v11 animationParameters:&v67];
     v23 = v67;
-    v22 = [(UIStatusBarManager *)self _updateAlpha];
+    _updateAlpha = [(UIStatusBarManager *)self _updateAlpha];
     if (v19)
     {
       goto LABEL_19;
     }
   }
 
-  if (v21 || v22)
+  if (v21 || _updateAlpha)
   {
 LABEL_19:
-    v50 = v22;
+    v50 = _updateAlpha;
     v51 = v21;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("StatusBar", &_updateStatusBarAppearanceWithClientSettings_transitionContext_animationParameters____s_category);
     if (*CategoryCachedImpl)
@@ -381,7 +381,7 @@ LABEL_19:
       }
     }
 
-    if (v10)
+    if (parametersCopy)
     {
       if (v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -400,32 +400,32 @@ LABEL_32:
           v53 = v26;
           if (v19)
           {
-            v27 = [(UIStatusBarManager *)self windowScene];
-            v28 = [v27 _interfaceOrientation];
+            windowScene2 = [(UIStatusBarManager *)self windowScene];
+            _interfaceOrientation2 = [windowScene2 _interfaceOrientation];
 
-            if (v8)
+            if (settingsCopy)
             {
               aBlock[0] = MEMORY[0x1E69E9820];
               aBlock[1] = 3221225472;
               aBlock[2] = __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_transitionContext_animationParameters___block_invoke;
               aBlock[3] = &unk_1E70F9780;
               aBlock[4] = self;
-              v65 = v28;
-              v66 = v18;
+              v65 = _interfaceOrientation2;
+              v66 = _interfaceOrientation;
               v64 = v20;
               v29 = _Block_copy(aBlock);
             }
 
             else
             {
-              [(UIStatusBarManager *)self _visibilityChangedWithOriginalOrientation:v28 targetOrientation:v18 animationParameters:v20];
+              [(UIStatusBarManager *)self _visibilityChangedWithOriginalOrientation:_interfaceOrientation2 targetOrientation:_interfaceOrientation animationParameters:v20];
               v29 = 0;
             }
 
             if ([UIApp _isSpringBoard])
             {
-              v30 = [UIApp statusBar];
-              [v30 setHidden:self->_statusBarHidden animationParameters:v20];
+              statusBar = [UIApp statusBar];
+              [statusBar setHidden:self->_statusBarHidden animationParameters:v20];
 
               goto LABEL_40;
             }
@@ -439,25 +439,25 @@ LABEL_32:
 LABEL_40:
               if (v51)
               {
-                v31 = [UIApp statusBar];
-                [v31 requestStyle:self->_statusBarResolvedStyle partStyles:self->_statusBarPartStyles animationParameters:v53 forced:0];
+                statusBar2 = [UIApp statusBar];
+                [statusBar2 requestStyle:self->_statusBarResolvedStyle partStyles:self->_statusBarPartStyles animationParameters:v53 forced:0];
               }
 
               if (v50)
               {
                 v32 = self->_statusBarAlpha;
-                v33 = [UIApp statusBar];
-                [v33 setAlpha:v32];
+                statusBar3 = [UIApp statusBar];
+                [statusBar3 setAlpha:v32];
               }
             }
           }
 
           if (([UIApp _isSpringBoard] & 1) == 0)
           {
-            v34 = [(UIStatusBarManager *)self windowScene];
-            v35 = [v34 _viewControllerAppearanceComponent];
+            windowScene3 = [(UIStatusBarManager *)self windowScene];
+            _viewControllerAppearanceComponent = [windowScene3 _viewControllerAppearanceComponent];
 
-            [v35 setPreferredStatusBarVisibility:self->_statusBarVisibility];
+            [_viewControllerAppearanceComponent setPreferredStatusBarVisibility:self->_statusBarVisibility];
             v58[0] = MEMORY[0x1E69E9820];
             v58[1] = 3221225472;
             v58[2] = __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_transitionContext_animationParameters___block_invoke_2;
@@ -469,22 +469,22 @@ LABEL_40:
             v62 = v50;
             v36 = _Block_copy(v58);
             v37 = v36;
-            if (v8)
+            if (settingsCopy)
             {
-              (*(v36 + 2))(v36, v8, v9);
+              (*(v36 + 2))(v36, settingsCopy, contextCopy);
             }
 
             else
             {
-              if (v10)
+              if (parametersCopy)
               {
-                v52 = [v10 bsAnimationSettings];
-                v38 = [v10 skipFencing] ^ 1;
+                bsAnimationSettings = [parametersCopy bsAnimationSettings];
+                v38 = [parametersCopy skipFencing] ^ 1;
               }
 
               else
               {
-                v52 = 0;
+                bsAnimationSettings = 0;
                 v38 = 0;
               }
 
@@ -493,10 +493,10 @@ LABEL_40:
               v54[1] = 3221225472;
               v54[2] = __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_transitionContext_animationParameters___block_invoke_3;
               v54[3] = &unk_1E70FA1E8;
-              v55 = v52;
+              v55 = bsAnimationSettings;
               v56 = v37;
               v57 = v38;
-              v40 = v52;
+              v40 = bsAnimationSettings;
               [(UIScene *)windowScene _updateUIClientSettingsWithUITransitionBlock:v54];
             }
           }
@@ -507,14 +507,14 @@ LABEL_40:
           goto LABEL_54;
         }
 
-        v25 = v10;
-        v23 = v10;
+        v25 = parametersCopy;
+        v23 = parametersCopy;
       }
 
       else
       {
-        v25 = v10;
-        v20 = v10;
+        v25 = parametersCopy;
+        v20 = parametersCopy;
       }
     }
 
@@ -526,7 +526,7 @@ LABEL_40:
     else
     {
       v26 = 0;
-      v10 = 0;
+      parametersCopy = 0;
       v25 = v23;
       if (!v23)
       {
@@ -534,7 +534,7 @@ LABEL_40:
       }
     }
 
-    v10 = v25;
+    parametersCopy = v25;
     goto LABEL_31;
   }
 
@@ -584,15 +584,15 @@ uint64_t __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_
   return *(a1 + 48);
 }
 
-- (void)_visibilityChangedWithOriginalOrientation:(int64_t)a3 targetOrientation:(int64_t)a4 animationParameters:(id)a5
+- (void)_visibilityChangedWithOriginalOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation animationParameters:(id)parameters
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:a3];
+  parametersCopy = parameters;
+  [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:orientation];
   v10 = v9;
-  [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:a4];
+  [(UIStatusBarManager *)self defaultStatusBarHeightInOrientation:targetOrientation];
   v12 = v11;
-  self->_inStatusBarFadeAnimation = [v8 hideAnimation] == 1;
+  self->_inStatusBarFadeAnimation = [parametersCopy hideAnimation] == 1;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__UIStatusBarManager__visibilityChangedWithOriginalOrientation_targetOrientation_animationParameters___block_invoke;
@@ -600,7 +600,7 @@ uint64_t __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_
   v21[4] = self;
   v23 = v10;
   v24 = v12;
-  v13 = v8;
+  v13 = parametersCopy;
   v22 = v13;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -610,18 +610,18 @@ uint64_t __105__UIStatusBarManager__updateStatusBarAppearanceWithClientSettings_
   [UIStatusBarAnimationParameters animateWithParameters:v13 animations:v21 completion:v20];
   if (([UIApp _isSpringBoard] & 1) == 0 && (dyld_program_sdk_at_least() & 1) == 0)
   {
-    v14 = [(UIStatusBarManager *)self windowScene];
-    v15 = [v14 _systemAppearanceManager];
-    [v15 updateScreenEdgesDeferringSystemGestures];
+    windowScene = [(UIStatusBarManager *)self windowScene];
+    _systemAppearanceManager = [windowScene _systemAppearanceManager];
+    [_systemAppearanceManager updateScreenEdgesDeferringSystemGestures];
   }
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v17 = UIApp;
   v25 = @"statusBarIsHidden";
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_statusBarHidden];
   v26[0] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  [v16 postNotificationName:@"_UIApplicationStatusBarHiddenStateChangedNotification" object:v17 userInfo:v19];
+  [defaultCenter postNotificationName:@"_UIApplicationStatusBarHiddenStateChangedNotification" object:v17 userInfo:v19];
 }
 
 void __102__UIStatusBarManager__visibilityChangedWithOriginalOrientation_targetOrientation_animationParameters___block_invoke(double *a1)
@@ -691,31 +691,31 @@ void __102__UIStatusBarManager__visibilityChangedWithOriginalOrientation_targetO
   [v17 postNotificationName:@"UIApplicationStatusBarHeightChangedNotification" object:UIApp userInfo:v16];
 }
 
-+ (id)_implicitStatusBarAnimationParametersWithClass:(Class)a3
++ (id)_implicitStatusBarAnimationParametersWithClass:(Class)class
 {
   v4 = +[UIView _currentAnimationAttributes];
   if (v4)
   {
-    v5 = [[a3 alloc] initWithDefaultParameters];
+    initWithDefaultParameters = [[class alloc] initWithDefaultParameters];
     [v4 _duration];
-    [v5 setDuration:?];
+    [initWithDefaultParameters setDuration:?];
     [v4 _delay];
-    [v5 setDelay:?];
-    [v5 setCurve:{objc_msgSend(v4, "_curve")}];
+    [initWithDefaultParameters setDelay:?];
+    [initWithDefaultParameters setCurve:{objc_msgSend(v4, "_curve")}];
   }
 
   else
   {
-    v5 = [(objc_class *)a3 fencingAnimation];
+    initWithDefaultParameters = [(objc_class *)class fencingAnimation];
   }
 
-  return v5;
+  return initWithDefaultParameters;
 }
 
-- (BOOL)_updateVisibilityForWindow:(id)a3 targetOrientation:(int64_t)a4 animationParameters:(id *)a5
+- (BOOL)_updateVisibilityForWindow:(id)window targetOrientation:(int64_t)orientation animationParameters:(id *)parameters
 {
   v15 = 0;
-  v7 = [UIWindow _preferredStatusBarVisibilityForWindow:a3 targetOrientation:a4 animationProvider:&v15];
+  v7 = [UIWindow _preferredStatusBarVisibilityForWindow:window targetOrientation:orientation animationProvider:&v15];
   v8 = v15;
   v9 = v8;
   statusBarVisibility = self->_statusBarVisibility;
@@ -723,23 +723,23 @@ void __102__UIStatusBarManager__visibilityChangedWithOriginalOrientation_targetO
   {
     self->_statusBarVisibility = v7;
     self->_statusBarHidden = v7 == 1;
-    if (a5)
+    if (parameters)
     {
       if (v8)
       {
-        v11 = [v8 _preferredStatusBarHideAnimationParameters];
-        if (!v11)
+        _preferredStatusBarHideAnimationParameters = [v8 _preferredStatusBarHideAnimationParameters];
+        if (!_preferredStatusBarHideAnimationParameters)
         {
           v12 = objc_opt_class();
-          v11 = [v12 _implicitStatusBarAnimationParametersWithClass:objc_opt_class()];
-          if (v11)
+          _preferredStatusBarHideAnimationParameters = [v12 _implicitStatusBarAnimationParametersWithClass:objc_opt_class()];
+          if (_preferredStatusBarHideAnimationParameters)
           {
-            [v11 setHideAnimation:{objc_msgSend(v9, "preferredStatusBarUpdateAnimation")}];
+            [_preferredStatusBarHideAnimationParameters setHideAnimation:{objc_msgSend(v9, "preferredStatusBarUpdateAnimation")}];
           }
         }
 
-        v13 = v11;
-        *a5 = v11;
+        v13 = _preferredStatusBarHideAnimationParameters;
+        *parameters = _preferredStatusBarHideAnimationParameters;
       }
     }
   }
@@ -747,22 +747,22 @@ void __102__UIStatusBarManager__visibilityChangedWithOriginalOrientation_targetO
   return statusBarVisibility != v7;
 }
 
-- (BOOL)_updateStyleForWindow:(id)a3 animationParameters:(id *)a4
+- (BOOL)_updateStyleForWindow:(id)window animationParameters:(id *)parameters
 {
   v20 = 0;
   v21 = 0;
   v19 = 0;
-  v6 = [UIWindow _preferredStatusBarStyleInWindow:a3 resolvedStyle:&v21 withPartStyles:&v20 animationProvider:&v19];
+  v6 = [UIWindow _preferredStatusBarStyleInWindow:window resolvedStyle:&v21 withPartStyles:&v20 animationProvider:&v19];
   v7 = v20;
   v8 = v20;
   v9 = v19;
   if (v21 == self->_statusBarResolvedStyle && v6 == self->_statusBarStyle)
   {
     statusBarPartStyles = self->_statusBarPartStyles;
-    v11 = v8;
+    _preferredStatusBarStyleAnimationParameters = v8;
     v12 = statusBarPartStyles;
     v13 = v12;
-    if (v11 == v12)
+    if (_preferredStatusBarStyleAnimationParameters == v12)
     {
 
       v15 = 0;
@@ -771,9 +771,9 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (v11 && v12)
+    if (_preferredStatusBarStyleAnimationParameters && v12)
     {
-      v14 = [(NSDictionary *)v11 isEqual:v12];
+      v14 = [(NSDictionary *)_preferredStatusBarStyleAnimationParameters isEqual:v12];
 
       if (v14)
       {
@@ -791,18 +791,18 @@ LABEL_15:
   self->_statusBarStyle = v6;
   objc_storeStrong(&self->_statusBarPartStyles, v7);
   v15 = 1;
-  if (a4 && v9)
+  if (parameters && v9)
   {
-    v11 = [v9 _preferredStatusBarStyleAnimationParameters];
-    if (!v11)
+    _preferredStatusBarStyleAnimationParameters = [v9 _preferredStatusBarStyleAnimationParameters];
+    if (!_preferredStatusBarStyleAnimationParameters)
     {
       v16 = objc_opt_class();
-      v11 = [v16 _implicitStatusBarAnimationParametersWithClass:objc_opt_class()];
-      [(NSDictionary *)v11 setStyleAnimation:1];
+      _preferredStatusBarStyleAnimationParameters = [v16 _implicitStatusBarAnimationParametersWithClass:objc_opt_class()];
+      [(NSDictionary *)_preferredStatusBarStyleAnimationParameters setStyleAnimation:1];
     }
 
-    v17 = v11;
-    *a4 = v11;
+    v17 = _preferredStatusBarStyleAnimationParameters;
+    *parameters = _preferredStatusBarStyleAnimationParameters;
     goto LABEL_15;
   }
 
@@ -811,11 +811,11 @@ LABEL_16:
   return v15;
 }
 
-- (void)handleTapAction:(id)a3
+- (void)handleTapAction:(id)action
 {
-  v6 = a3;
-  v4 = [v6 type];
-  if (v4 == 1)
+  actionCopy = action;
+  type = [actionCopy type];
+  if (type == 1)
   {
     debugMenuHandler = self->_debugMenuHandler;
     if (debugMenuHandler)
@@ -824,14 +824,14 @@ LABEL_16:
     }
   }
 
-  else if (!v4)
+  else if (!type)
   {
-    [v6 xPosition];
+    [actionCopy xPosition];
     [(UIStatusBarManager *)self _handleScrollToTopAtXPosition:?];
   }
 }
 
-- (CGPoint)_adjustedLocationForXPosition:(double)a3
+- (CGPoint)_adjustedLocationForXPosition:(double)position
 {
   [(UIStatusBarManager *)self statusBarFrame];
   v6 = v5;
@@ -843,55 +843,55 @@ LABEL_16:
     goto LABEL_2;
   }
 
-  v15 = [(UIWindowScene *)self->_windowScene screen];
-  [v15 bounds];
+  screen = [(UIWindowScene *)self->_windowScene screen];
+  [screen bounds];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(UIWindowScene *)self->_windowScene _interfaceOrientation];
-  if (v20 > 2)
+  _interfaceOrientation = [(UIWindowScene *)self->_windowScene _interfaceOrientation];
+  if (_interfaceOrientation > 2)
   {
-    if (v20 == 3)
+    if (_interfaceOrientation == 3)
     {
       v27.origin.x = v6;
       v27.origin.y = v8;
       v27.size.width = v10;
       v27.size.height = v12;
       Width = CGRectGetWidth(v27);
-      v13 = a3;
-      a3 = v17 - (Width + 1.0);
+      positionCopy3 = position;
+      position = v17 - (Width + 1.0);
       goto LABEL_3;
     }
 
-    if (v20 == 4)
+    if (_interfaceOrientation == 4)
     {
       v26.origin.x = v6;
       v26.origin.y = v8;
       v26.size.width = v10;
       v26.size.height = v12;
       v21 = CGRectGetWidth(v26);
-      v13 = a3;
-      a3 = v21 + 1.0;
+      positionCopy3 = position;
+      position = v21 + 1.0;
       goto LABEL_3;
     }
 
     goto LABEL_11;
   }
 
-  if (v20 != 1)
+  if (_interfaceOrientation != 1)
   {
-    if (v20 == 2)
+    if (_interfaceOrientation == 2)
     {
       v25.origin.x = v6;
       v25.origin.y = v8;
       v25.size.width = v10;
       v25.size.height = v12;
-      v13 = v19 - (CGRectGetHeight(v25) + 1.0);
+      positionCopy3 = v19 - (CGRectGetHeight(v25) + 1.0);
       goto LABEL_3;
     }
 
 LABEL_11:
-    v13 = a3;
+    positionCopy3 = position;
     goto LABEL_3;
   }
 
@@ -900,32 +900,32 @@ LABEL_2:
   v24.origin.y = v8;
   v24.size.width = v10;
   v24.size.height = v12;
-  v13 = CGRectGetHeight(v24) + 1.0;
+  positionCopy3 = CGRectGetHeight(v24) + 1.0;
 LABEL_3:
-  v14 = a3;
-  result.y = v13;
-  result.x = v14;
+  positionCopy4 = position;
+  result.y = positionCopy3;
+  result.x = positionCopy4;
   return result;
 }
 
-- (void)_handleScrollToTopAtXPosition:(double)a3
+- (void)_handleScrollToTopAtXPosition:(double)position
 {
-  v5 = [(UIWindowScene *)&self->_windowScene->super.super.super.isa _keyWindow];
-  if (v5)
+  _keyWindow = [(UIWindowScene *)&self->_windowScene->super.super.super.isa _keyWindow];
+  if (_keyWindow)
   {
-    v6 = v5;
+    v6 = _keyWindow;
   }
 
   else
   {
-    v7 = [(UIWindowScene *)self->_windowScene screen];
+    screen = [(UIWindowScene *)self->_windowScene screen];
     windowScene = self->_windowScene;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__UIStatusBarManager__handleScrollToTopAtXPosition___block_invoke;
     v10[3] = &unk_1E70FA210;
-    v11 = v7;
-    v9 = v7;
+    v11 = screen;
+    v9 = screen;
     v6 = [(UIWindowScene *)windowScene _topVisibleWindowPassingTest:v10];
 
     if (!v6)
@@ -934,7 +934,7 @@ LABEL_3:
     }
   }
 
-  [(UIStatusBarManager *)self _adjustedLocationForXPosition:a3];
+  [(UIStatusBarManager *)self _adjustedLocationForXPosition:position];
   [v6 _scrollToTopViewsUnderScreenPointIfNecessary:0 resultHandler:?];
 }
 

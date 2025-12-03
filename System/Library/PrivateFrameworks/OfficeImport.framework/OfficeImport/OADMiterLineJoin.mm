@@ -1,12 +1,12 @@
 @interface OADMiterLineJoin
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADMiterLineJoin)initWithDefaults;
 - (float)limit;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
 @end
 
@@ -28,20 +28,20 @@
 {
   v6.receiver = self;
   v6.super_class = OADMiterLineJoin;
-  v2 = [(OADProperties *)&v6 initWithDefaults];
-  v4 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v6 initWithDefaults];
+  v4 = initWithDefaults;
+  if (initWithDefaults)
   {
     LODWORD(v3) = 8.0;
-    [(OADMiterLineJoin *)v2 setLimit:v3];
+    [(OADMiterLineJoin *)initWithDefaults setLimit:v3];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v4;
   if (LOBYTE(self->mLimit))
   {
@@ -66,17 +66,17 @@ void __37__OADMiterLineJoin_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADMiterLineJoin *)self isLimitOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = OADMiterLineJoin;
-  [(OADProperties *)&v9 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((LOBYTE(self->mLimit) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v9 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((LOBYTE(self->mLimit) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     [(OADMiterLineJoin *)self limit];
     v7 = v6;
-    [v4 limit];
+    [valuesCopy limit];
     if (v7 == v8)
     {
       LOBYTE(self->mLimit) &= ~1u;
@@ -92,20 +92,20 @@ void __37__OADMiterLineJoin_defaultProperties__block_invoke()
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if ([(OADMiterLineJoin *)self isLimitOverridden])
     {
-      v6 = [(OADProperties *)self parent];
+      parent2 = [(OADProperties *)self parent];
       [(OADMiterLineJoin *)self limit];
       v8 = v7;
-      [v6 limit];
+      [parent2 limit];
       if (v8 == *&v9)
       {
         LODWORD(v9) = 8.0;
@@ -114,8 +114,8 @@ void __37__OADMiterLineJoin_defaultProperties__block_invoke()
       }
     }
 
-    [(OADProperties *)self setMerged:v4];
-    [(OADProperties *)self setMergedWithParent:v5];
+    [(OADProperties *)self setMerged:isMerged];
+    [(OADProperties *)self setMergedWithParent:isMergedWithParent];
     v10.receiver = self;
     v10.super_class = OADMiterLineJoin;
     [(OADProperties *)&v10 removeUnnecessaryOverrides];
@@ -130,13 +130,13 @@ void __37__OADMiterLineJoin_defaultProperties__block_invoke()
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     mLimit_low = LOBYTE(self->mLimit);
     if ((*(v7 + 24) ^ mLimit_low))
     {

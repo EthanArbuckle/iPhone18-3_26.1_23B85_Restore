@@ -1,13 +1,13 @@
 @interface ACCAppLinksManager
 + (id)sharedManager;
 - (ACCAppLinksManager)init;
-- (BOOL)removeCarPlayAppLinksSubscriber:(id)a3;
-- (BOOL)removeEAAppLinksSubscriber:(id)a3;
-- (id)requestAppLinksIconDataForBundleID:(id)a3 withIconSize:(unsigned __int16)a4;
+- (BOOL)removeCarPlayAppLinksSubscriber:(id)subscriber;
+- (BOOL)removeEAAppLinksSubscriber:(id)subscriber;
+- (id)requestAppLinksIconDataForBundleID:(id)d withIconSize:(unsigned __int16)size;
 - (void)dealloc;
-- (void)handleCarPlayAppLinksStateChangedForCertSerial:(id)a3;
-- (void)handleEAAppLinksStateChangedForCertSerial:(id)a3;
-- (void)requestAppIcons:(id)a3 forUUID:(id)a4;
+- (void)handleCarPlayAppLinksStateChangedForCertSerial:(id)serial;
+- (void)handleEAAppLinksStateChangedForCertSerial:(id)serial;
+- (void)requestAppIcons:(id)icons forUUID:(id)d;
 @end
 
 @implementation ACCAppLinksManager
@@ -85,15 +85,15 @@ void __97__ACCAppLinksManager_addCarPlayAppLinksSubscriber_forCategories_forIcon
   }
 }
 
-- (void)requestAppIcons:(id)a3 forUUID:(id)a4
+- (void)requestAppIcons:(id)icons forUUID:(id)d
 {
-  if (a3)
+  if (icons)
   {
-    if (a4)
+    if (d)
     {
-      v6 = a4;
-      objc_initWeak(&location, a3);
-      objc_initWeak(&v13, v6);
+      dCopy = d;
+      objc_initWeak(&location, icons);
+      objc_initWeak(&v13, dCopy);
 
       objc_initWeak(&from, self);
       workQ = self->_workQ;
@@ -248,10 +248,10 @@ LABEL_21:
   }
 }
 
-- (id)requestAppLinksIconDataForBundleID:(id)a3 withIconSize:(unsigned __int16)a4
+- (id)requestAppLinksIconDataForBundleID:(id)d withIconSize:(unsigned __int16)size
 {
-  v4 = a4;
-  v5 = a3;
+  sizeCopy = size;
+  dCopy = d;
   v6 = dispatch_semaphore_create(0);
   v17 = 0;
   v18 = &v17;
@@ -267,7 +267,7 @@ LABEL_21:
   v16 = &v17;
   v8 = v6;
   v15 = v8;
-  [v7 getIconDataForBundleID:v5 forIconSize:v14 withReply:v4];
+  [v7 getIconDataForBundleID:dCopy forIconSize:v14 withReply:sizeCopy];
 
   v9 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v8, v9))
@@ -308,9 +308,9 @@ void __70__ACCAppLinksManager_requestAppLinksIconDataForBundleID_withIconSize___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)handleCarPlayAppLinksStateChangedForCertSerial:(id)a3
+- (void)handleCarPlayAppLinksStateChangedForCertSerial:(id)serial
 {
-  v4 = a3;
+  serialCopy = serial;
   objc_initWeak(&location, self);
   workQ = self->_workQ;
   v7[0] = _NSConcreteStackBlock;
@@ -318,9 +318,9 @@ void __70__ACCAppLinksManager_requestAppLinksIconDataForBundleID_withIconSize___
   v7[2] = __69__ACCAppLinksManager_handleCarPlayAppLinksStateChangedForCertSerial___block_invoke;
   v7[3] = &unk_100226C78;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = serialCopy;
+  selfCopy = self;
+  v6 = serialCopy;
   dispatch_async(workQ, v7);
 
   objc_destroyWeak(&v10);
@@ -671,9 +671,9 @@ void __69__ACCAppLinksManager_handleCarPlayAppLinksStateChangedForCertSerial___b
   [*(a1 + 32) setCarPlayRetryUpdateTimer:0];
 }
 
-- (void)handleEAAppLinksStateChangedForCertSerial:(id)a3
+- (void)handleEAAppLinksStateChangedForCertSerial:(id)serial
 {
-  v4 = a3;
+  serialCopy = serial;
   objc_initWeak(&location, self);
   workQ = self->_workQ;
   block[0] = _NSConcreteStackBlock;
@@ -681,32 +681,32 @@ void __69__ACCAppLinksManager_handleCarPlayAppLinksStateChangedForCertSerial___b
   block[2] = __64__ACCAppLinksManager_handleEAAppLinksStateChangedForCertSerial___block_invoke;
   block[3] = &unk_100226C50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = serialCopy;
+  v6 = serialCopy;
   dispatch_async(workQ, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)removeCarPlayAppLinksSubscriber:(id)a3
+- (BOOL)removeCarPlayAppLinksSubscriber:(id)subscriber
 {
-  if (a3)
+  if (subscriber)
   {
-    v5 = a3;
+    subscriberCopy = subscriber;
     v6 = +[ACCAppLinksManager sharedManager];
-    v7 = [v6 carPlayAppsSubscriberList];
-    [v7 removeObjectForKey:v5];
+    carPlayAppsSubscriberList = [v6 carPlayAppsSubscriberList];
+    [carPlayAppsSubscriberList removeObjectForKey:subscriberCopy];
 
     v8 = +[ACCAppLinksManager sharedManager];
-    v9 = [v8 carPlayAppsSubscriberList];
-    v10 = [v9 count];
+    carPlayAppsSubscriberList2 = [v8 carPlayAppsSubscriberList];
+    v10 = [carPlayAppsSubscriberList2 count];
 
     if (!v10)
     {
       v11 = +[NSDistributedNotificationCenter defaultCenter];
-      v12 = [(ACCAppLinksManager *)self carPlayAppLinksStateDidChangeObserver];
-      [v11 removeObserver:v12];
+      carPlayAppLinksStateDidChangeObserver = [(ACCAppLinksManager *)self carPlayAppLinksStateDidChangeObserver];
+      [v11 removeObserver:carPlayAppLinksStateDidChangeObserver];
     }
 
     v13 = HIDWORD(gLogObjects);
@@ -733,28 +733,28 @@ void __69__ACCAppLinksManager_handleCarPlayAppLinksStateChangedForCertSerial___b
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v17 = +[ACCAppLinksManager sharedManager];
-      v18 = [v17 carPlayAppsSubscriberList];
+      carPlayAppsSubscriberList3 = [v17 carPlayAppsSubscriberList];
       v27 = 138412290;
-      v28 = v18;
+      v28 = carPlayAppsSubscriberList3;
       OUTLINED_FUNCTION_4_12(&_mh_execute_header, v19, v20, "[#App Links] carPlayAppsSubscriberList: %@", &v27);
     }
   }
 
-  return a3 != 0;
+  return subscriber != 0;
 }
 
-- (BOOL)removeEAAppLinksSubscriber:(id)a3
+- (BOOL)removeEAAppLinksSubscriber:(id)subscriber
 {
-  if (a3)
+  if (subscriber)
   {
-    v4 = a3;
+    subscriberCopy = subscriber;
     v5 = +[ACCAppLinksManager sharedManager];
-    v6 = [v5 eaAppsSubscriberList];
-    [v6 removeObjectForKey:v4];
+    eaAppsSubscriberList = [v5 eaAppsSubscriberList];
+    [eaAppsSubscriberList removeObjectForKey:subscriberCopy];
 
     v7 = +[ACCAppLinksManager sharedManager];
-    v8 = [v7 eaAppsSubscriberList];
-    [v8 count];
+    eaAppsSubscriberList2 = [v7 eaAppsSubscriberList];
+    [eaAppsSubscriberList2 count];
 
     v9 = HIDWORD(gLogObjects);
     v10 = gNumLogObjects;
@@ -780,14 +780,14 @@ void __69__ACCAppLinksManager_handleCarPlayAppLinksStateChangedForCertSerial___b
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = +[ACCAppLinksManager sharedManager];
-      v14 = [v13 eaAppsSubscriberList];
+      eaAppsSubscriberList3 = [v13 eaAppsSubscriberList];
       v23 = 138412290;
-      v24 = v14;
+      v24 = eaAppsSubscriberList3;
       OUTLINED_FUNCTION_4_12(&_mh_execute_header, v15, v16, "[#App Links] eaAppsSubscriberList: %@", &v23);
     }
   }
 
-  return a3 != 0;
+  return subscriber != 0;
 }
 
 void __64__ACCAppLinksManager_handleEAAppLinksStateChangedForCertSerial___block_invoke(uint64_t a1)

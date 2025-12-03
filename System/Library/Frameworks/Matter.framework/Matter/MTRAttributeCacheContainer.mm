@@ -30,8 +30,8 @@
   v13 = attributeId;
   v14 = clientQueue;
   v15 = completion;
-  v16 = [(MTRAttributeCacheContainer *)self realContainer];
-  [v16 readAttributesWithEndpointID:v17 clusterID:v12 attributeID:v13 queue:v14 completion:v15];
+  realContainer = [(MTRAttributeCacheContainer *)self realContainer];
+  [realContainer readAttributesWithEndpointID:v17 clusterID:v12 attributeID:v13 queue:v14 completion:v15];
 }
 
 @end

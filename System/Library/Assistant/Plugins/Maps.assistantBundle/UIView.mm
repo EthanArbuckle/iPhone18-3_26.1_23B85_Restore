@@ -7,9 +7,9 @@
 - (void)_ma_updateSemanticContentAttribute
 {
   v3 = +[NSBundle afui_assistantUIFrameworkBundle];
-  v4 = [v3 assistantLanguageIsRTL];
+  assistantLanguageIsRTL = [v3 assistantLanguageIsRTL];
 
-  if (v4)
+  if (assistantLanguageIsRTL)
   {
     v5 = 4;
   }

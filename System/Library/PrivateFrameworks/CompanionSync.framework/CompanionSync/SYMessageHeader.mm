@@ -1,12 +1,12 @@
 @interface SYMessageHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYMessageHeader
@@ -17,52 +17,52 @@
   v8.receiver = self;
   v8.super_class = SYMessageHeader;
   v4 = [(SYMessageHeader *)&v8 description];
-  v5 = [(SYMessageHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYMessageHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-  [v3 setObject:v4 forKey:@"timestamp"];
+  [dictionary setObject:v4 forKey:@"timestamp"];
 
   sender = self->_sender;
   if (sender)
   {
-    v6 = [(SYPeer *)sender dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"sender"];
+    dictionaryRepresentation = [(SYPeer *)sender dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sender"];
   }
 
   state = self->_state;
   if (state)
   {
-    v8 = [(SYVectorClock *)state dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"state"];
+    dictionaryRepresentation2 = [(SYVectorClock *)state dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"state"];
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v9 forKey:@"version"];
+  [dictionary setObject:v9 forKey:@"version"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_sequenceNumber];
-  [v3 setObject:v10 forKey:@"sequenceNumber"];
+  [dictionary setObject:v10 forKey:@"sequenceNumber"];
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timeout];
-    [v3 setObject:v11 forKey:@"timeout"];
+    [dictionary setObject:v11 forKey:@"timeout"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   timestamp = self->_timestamp;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteDoubleField();
   if (!self->_sender)
   {
@@ -87,30 +87,30 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[3] = *&self->_timestamp;
-  [v4 setSender:self->_sender];
-  [v4 setState:self->_state];
-  *(v4 + 12) = self->_version;
-  v4[1] = self->_sequenceNumber;
+  toCopy = to;
+  toCopy[3] = *&self->_timestamp;
+  [toCopy setSender:self->_sender];
+  [toCopy setState:self->_state];
+  *(toCopy + 12) = self->_version;
+  toCopy[1] = self->_sequenceNumber;
   if (*&self->_has)
   {
-    v4[2] = *&self->_timeout;
-    *(v4 + 52) |= 1u;
+    toCopy[2] = *&self->_timeout;
+    *(toCopy + 52) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_timestamp;
-  v6 = [(SYPeer *)self->_sender copyWithZone:a3];
+  v6 = [(SYPeer *)self->_sender copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(SYVectorClock *)self->_state copyWithZone:a3];
+  v8 = [(SYVectorClock *)self->_state copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -125,21 +125,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  if (self->_timestamp != *(v4 + 3))
+  if (self->_timestamp != *(equalCopy + 3))
   {
     goto LABEL_13;
   }
 
   sender = self->_sender;
-  if (sender | *(v4 + 4))
+  if (sender | *(equalCopy + 4))
   {
     if (![(SYPeer *)sender isEqual:?])
     {
@@ -148,7 +148,7 @@
   }
 
   state = self->_state;
-  if (state | *(v4 + 5))
+  if (state | *(equalCopy + 5))
   {
     if (![(SYVectorClock *)state isEqual:?])
     {
@@ -156,15 +156,15 @@
     }
   }
 
-  if (self->_version != *(v4 + 12) || self->_sequenceNumber != *(v4 + 1))
+  if (self->_version != *(equalCopy + 12) || self->_sequenceNumber != *(equalCopy + 1))
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 52) & 1) == 0;
+  v7 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) != 0 && self->_timeout == *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) != 0 && self->_timeout == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_14;
@@ -248,13 +248,13 @@ LABEL_14:
   return v12 ^ v11 ^ v13 ^ (2654435761 * self->_version) ^ (2654435761u * self->_sequenceNumber) ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_timestamp = *(v4 + 3);
+  fromCopy = from;
+  self->_timestamp = *(fromCopy + 3);
   sender = self->_sender;
-  v6 = *(v4 + 4);
-  v9 = v4;
+  v6 = *(fromCopy + 4);
+  v9 = fromCopy;
   if (sender)
   {
     if (!v6)
@@ -275,10 +275,10 @@ LABEL_14:
     [(SYMessageHeader *)self setSender:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   state = self->_state;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (state)
   {
     if (!v8)
@@ -299,17 +299,17 @@ LABEL_7:
     state = [(SYMessageHeader *)self setState:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  self->_version = *(v4 + 12);
-  self->_sequenceNumber = *(v4 + 1);
-  if (*(v4 + 52))
+  self->_version = *(fromCopy + 12);
+  self->_sequenceNumber = *(fromCopy + 1);
+  if (*(fromCopy + 52))
   {
-    self->_timeout = *(v4 + 2);
+    self->_timeout = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](state, v4);
+  MEMORY[0x1EEE66BB8](state, fromCopy);
 }
 
 @end

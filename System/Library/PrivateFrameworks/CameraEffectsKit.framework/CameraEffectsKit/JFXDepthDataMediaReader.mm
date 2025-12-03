@@ -1,33 +1,33 @@
 @interface JFXDepthDataMediaReader
 - ($AC64C642040120CEEAD84DEEACA9A5CE)readableTimeRange;
 - (BOOL)beginReading;
-- (BOOL)beginReadingAtTimeRange:(id *)a3;
+- (BOOL)beginReadingAtTimeRange:(id *)range;
 - (BOOL)isScrubbing;
-- (JFXDepthDataMediaReader)initWithVideoTrackReader:(id)a3;
+- (JFXDepthDataMediaReader)initWithVideoTrackReader:(id)reader;
 - (NSError)error;
 - (NSString)name;
-- (id)JFX_cachedDepthDataForTime:(id *)a3;
-- (id)JFX_decompressAVDepthDataFromVideoTrackReaderSample:(id)a3;
-- (id)JFX_readDepthDataForTime:(id *)a3;
-- (id)depthDataForTime:(id *)a3;
-- (id)videoSampleForTime:(id *)a3;
+- (id)JFX_cachedDepthDataForTime:(id *)time;
+- (id)JFX_decompressAVDepthDataFromVideoTrackReaderSample:(id)sample;
+- (id)JFX_readDepthDataForTime:(id *)time;
+- (id)depthDataForTime:(id *)time;
+- (id)videoSampleForTime:(id *)time;
 - (int64_t)status;
 - (unint64_t)signPostID;
-- (void)setIsScrubbing:(BOOL)a3;
+- (void)setIsScrubbing:(BOOL)scrubbing;
 @end
 
 @implementation JFXDepthDataMediaReader
 
-- (JFXDepthDataMediaReader)initWithVideoTrackReader:(id)a3
+- (JFXDepthDataMediaReader)initWithVideoTrackReader:(id)reader
 {
-  v5 = a3;
+  readerCopy = reader;
   v19.receiver = self;
   v19.super_class = JFXDepthDataMediaReader;
   v6 = [(JFXDepthDataMediaReader *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reader, a3);
+    objc_storeStrong(&v6->_reader, reader);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_UNSPECIFIED, 0);
 
@@ -48,17 +48,17 @@
   return v7;
 }
 
-- (id)depthDataForTime:(id *)a3
+- (id)depthDataForTime:(id *)time
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = JFXMediaDataReaderIntervalSignpostCategory();
-  v6 = [(JFXDepthDataMediaReader *)self signPostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXDepthDataMediaReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signPostID;
     if (os_signpost_enabled(v5))
     {
-      v15 = *a3;
+      v15 = *time;
       Seconds = CMTimeGetSeconds(&v15);
       LODWORD(v15.var0) = 138412546;
       *(&v15.var0 + 4) = self;
@@ -68,7 +68,7 @@
     }
   }
 
-  v15 = *a3;
+  v15 = *time;
   v9 = [(JFXDepthDataMediaReader *)self JFX_readDepthDataForTime:&v15];
   if (v9)
   {
@@ -76,13 +76,13 @@
   }
 
   v10 = JFXMediaDataReaderIntervalSignpostCategory();
-  v11 = [(JFXDepthDataMediaReader *)self signPostID];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID2 = [(JFXDepthDataMediaReader *)self signPostID];
+  if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
+    v12 = signPostID2;
     if (os_signpost_enabled(v10))
     {
-      v15 = *a3;
+      v15 = *time;
       v13 = CMTimeGetSeconds(&v15);
       LODWORD(v15.var0) = 134217984;
       *(&v15.var0 + 4) = v13;
@@ -93,12 +93,12 @@
   return v9;
 }
 
-- (id)JFX_cachedDepthDataForTime:(id *)a3
+- (id)JFX_cachedDepthDataForTime:(id *)time
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(JFXDepthDataMediaReader *)self cachedDepthData];
-  v6 = v5;
-  if (v5 && ([v5 timeRange], time = *a3, CMTimeRangeContainsTime(&range, &time)))
+  cachedDepthData = [(JFXDepthDataMediaReader *)self cachedDepthData];
+  v6 = cachedDepthData;
+  if (cachedDepthData && ([cachedDepthData timeRange], time = *time, CMTimeRangeContainsTime(&range, &time)))
   {
     v7 = JFXLog_DebugMediaDataReader();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -108,8 +108,8 @@
       v9 = JFXLog_DebugMediaDataReader();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        *&range.start.value = *&a3->var0;
-        range.start.epoch = a3->var3;
+        *&range.start.value = *&time->var0;
+        range.start.epoch = time->var3;
         Seconds = CMTimeGetSeconds(&range.start);
         [v6 timeRange];
         *&range.start.value = v23;
@@ -131,14 +131,14 @@
     }
 
     v10 = JFXMediaDataReaderEventSignpostPointCategory();
-    v11 = [(JFXDepthDataMediaReader *)self signPostID];
-    if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signPostID = [(JFXDepthDataMediaReader *)self signPostID];
+    if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v12 = v11;
+      v12 = signPostID;
       if (os_signpost_enabled(v10))
       {
-        *&range.start.value = *&a3->var0;
-        range.start.epoch = a3->var3;
+        *&range.start.value = *&time->var0;
+        range.start.epoch = time->var3;
         v13 = CMTimeGetSeconds(&range.start);
         [v6 timeRange];
         *&range.start.value = v21;
@@ -170,7 +170,7 @@
   return v16;
 }
 
-- (id)JFX_readDepthDataForTime:(id *)a3
+- (id)JFX_readDepthDataForTime:(id *)time
 {
   v10 = 0;
   v11 = &v10;
@@ -178,15 +178,15 @@
   v13 = __Block_byref_object_copy__10;
   v14 = __Block_byref_object_dispose__10;
   v15 = 0;
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__JFXDepthDataMediaReader_JFX_readDepthDataForTime___block_invoke;
   block[3] = &unk_278D79E10;
   block[4] = self;
   block[5] = &v10;
-  v9 = *a3;
-  dispatch_sync(v5, block);
+  v9 = *time;
+  dispatch_sync(synchronizationQueue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -270,23 +270,23 @@ LABEL_9:
   }
 }
 
-- (id)JFX_decompressAVDepthDataFromVideoTrackReaderSample:(id)a3
+- (id)JFX_decompressAVDepthDataFromVideoTrackReaderSample:(id)sample
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
-  dispatch_assert_queue_V2(v5);
+  sampleCopy = sample;
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
   v6 = JFXMediaDataReaderIntervalSignpostCategory();
-  v7 = [(JFXDepthDataMediaReader *)self signPostID];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXDepthDataMediaReader *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signPostID;
     if (os_signpost_enabled(v6))
     {
-      if (v4)
+      if (sampleCopy)
       {
-        [v4 timeRange];
+        [sampleCopy timeRange];
       }
 
       else
@@ -307,14 +307,14 @@ LABEL_9:
     }
   }
 
-  v10 = [(JFXDepthDataMediaReader *)self depthDecompressor];
+  depthDecompressor = [(JFXDepthDataMediaReader *)self depthDecompressor];
   v31 = 0;
-  v11 = [v10 decompressAVDepthData:objc_msgSend(v4 error:{"sampleBufferRef"), &v31}];
+  v11 = [depthDecompressor decompressAVDepthData:objc_msgSend(sampleCopy error:{"sampleBufferRef"), &v31}];
   v12 = v31;
 
-  if (v4)
+  if (sampleCopy)
   {
-    [v4 timeRange];
+    [sampleCopy timeRange];
   }
 
   else
@@ -327,10 +327,10 @@ LABEL_9:
   *&time.value = v28;
   time.epoch = v29;
   v13 = CMTimeGetSeconds(&time);
-  v14 = [(JFXDepthDataMediaReader *)self depthDecompressor];
-  v15 = [v14 depthCodecType];
+  depthDecompressor2 = [(JFXDepthDataMediaReader *)self depthDecompressor];
+  depthCodecType = [depthDecompressor2 depthCodecType];
 
-  if (!v15)
+  if (!depthCodecType)
   {
     v16 = JFXLog_mediaDataReader();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -345,10 +345,10 @@ LABEL_9:
   {
     if (v18)
     {
-      v26[0] = HIBYTE(v15);
-      v26[1] = BYTE2(v15);
-      v26[2] = BYTE1(v15);
-      v26[3] = v15;
+      v26[0] = HIBYTE(depthCodecType);
+      v26[1] = BYTE2(depthCodecType);
+      v26[2] = BYTE1(depthCodecType);
+      v26[3] = depthCodecType;
       v26[4] = 0;
       LODWORD(time.value) = 138413058;
       *(&time.value + 4) = self;
@@ -367,10 +367,10 @@ LABEL_9:
 
   else if (v18)
   {
-    v27[0] = HIBYTE(v15);
-    v27[1] = BYTE2(v15);
-    v27[2] = BYTE1(v15);
-    v27[3] = v15;
+    v27[0] = HIBYTE(depthCodecType);
+    v27[1] = BYTE2(depthCodecType);
+    v27[2] = BYTE1(depthCodecType);
+    v27[3] = depthCodecType;
     v27[4] = 0;
     LODWORD(time.value) = 138412802;
     *(&time.value + 4) = self;
@@ -386,10 +386,10 @@ LABEL_26:
   }
 
   v22 = JFXMediaDataReaderIntervalSignpostCategory();
-  v23 = [(JFXDepthDataMediaReader *)self signPostID];
-  if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID2 = [(JFXDepthDataMediaReader *)self signPostID];
+  if (signPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v24 = v23;
+    v24 = signPostID2;
     if (os_signpost_enabled(v22))
     {
       LOWORD(time.value) = 0;
@@ -409,14 +409,14 @@ LABEL_26:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__JFXDepthDataMediaReader_readableTimeRange__block_invoke;
   v9[3] = &unk_278D79C60;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v5, v9);
+  dispatch_sync(synchronizationQueue, v9);
 
   v6 = v11;
   v7 = *(v11 + 3);
@@ -453,23 +453,23 @@ __n128 __44__JFXDepthDataMediaReader_readableTimeRange__block_invoke(uint64_t a1
 
 - (BOOL)isScrubbing
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__JFXDepthDataMediaReader_isScrubbing__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(synchronizationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __38__JFXDepthDataMediaReader_isScrubbing__block_invoke(uint64_t a1)
@@ -478,16 +478,16 @@ void __38__JFXDepthDataMediaReader_isScrubbing__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isScrubbing];
 }
 
-- (void)setIsScrubbing:(BOOL)a3
+- (void)setIsScrubbing:(BOOL)scrubbing
 {
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__JFXDepthDataMediaReader_setIsScrubbing___block_invoke;
   v6[3] = &unk_278D79E38;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  scrubbingCopy = scrubbing;
+  dispatch_async(synchronizationQueue, v6);
 }
 
 void __42__JFXDepthDataMediaReader_setIsScrubbing___block_invoke(uint64_t a1)
@@ -503,14 +503,14 @@ void __42__JFXDepthDataMediaReader_setIsScrubbing___block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 2;
-  v3 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__JFXDepthDataMediaReader_status__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(synchronizationQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -531,14 +531,14 @@ void __33__JFXDepthDataMediaReader_status__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__JFXDepthDataMediaReader_error__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(synchronizationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -562,28 +562,28 @@ void __32__JFXDepthDataMediaReader_error__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)beginReadingAtTimeRange:(id *)a3
+- (BOOL)beginReadingAtTimeRange:(id *)range
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__JFXDepthDataMediaReader_beginReadingAtTimeRange___block_invoke;
   v8[3] = &unk_278D7A030;
   v8[4] = self;
   v8[5] = &v12;
-  v6 = *&a3->var0.var3;
-  v9 = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  v9 = *&range->var0.var0;
   v10 = v6;
-  v11 = *&a3->var1.var1;
-  dispatch_sync(v5, v8);
+  v11 = *&range->var1.var1;
+  dispatch_sync(synchronizationQueue, v8);
 
-  LOBYTE(a3) = *(v13 + 24);
+  LOBYTE(range) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return a3;
+  return range;
 }
 
 void __51__JFXDepthDataMediaReader_beginReadingAtTimeRange___block_invoke(uint64_t a1)
@@ -598,23 +598,23 @@ void __51__JFXDepthDataMediaReader_beginReadingAtTimeRange___block_invoke(uint64
 
 - (BOOL)beginReading
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__JFXDepthDataMediaReader_beginReading__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(synchronizationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __39__JFXDepthDataMediaReader_beginReading__block_invoke(uint64_t a1)
@@ -625,21 +625,21 @@ void __39__JFXDepthDataMediaReader_beginReading__block_invoke(uint64_t a1)
 
 - (NSString)name
 {
-  v2 = [(JFXDepthDataMediaReader *)self reader];
-  v3 = [v2 name];
+  reader = [(JFXDepthDataMediaReader *)self reader];
+  name = [reader name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)signPostID
 {
-  v2 = [(JFXDepthDataMediaReader *)self reader];
-  v3 = [v2 signPostID];
+  reader = [(JFXDepthDataMediaReader *)self reader];
+  signPostID = [reader signPostID];
 
-  return v3;
+  return signPostID;
 }
 
-- (id)videoSampleForTime:(id *)a3
+- (id)videoSampleForTime:(id *)time
 {
   v10 = 0;
   v11 = &v10;
@@ -647,15 +647,15 @@ void __39__JFXDepthDataMediaReader_beginReading__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__10;
   v14 = __Block_byref_object_dispose__10;
   v15 = 0;
-  v5 = [(JFXDepthDataMediaReader *)self synchronizationQueue];
+  synchronizationQueue = [(JFXDepthDataMediaReader *)self synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__JFXDepthDataMediaReader_videoSampleForTime___block_invoke;
   block[3] = &unk_278D79E10;
   block[4] = self;
   block[5] = &v10;
-  v9 = *a3;
-  dispatch_sync(v5, block);
+  v9 = *time;
+  dispatch_sync(synchronizationQueue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);

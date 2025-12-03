@@ -1,19 +1,19 @@
 @interface ICCFTypeWrapper
-- (BOOL)isEqual:(id)a3;
-- (ICCFTypeWrapper)initWithCFTypeRef:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICCFTypeWrapper)initWithCFTypeRef:(void *)ref;
 - (void)dealloc;
 @end
 
 @implementation ICCFTypeWrapper
 
-- (ICCFTypeWrapper)initWithCFTypeRef:(void *)a3
+- (ICCFTypeWrapper)initWithCFTypeRef:(void *)ref
 {
   v6.receiver = self;
   v6.super_class = ICCFTypeWrapper;
   v4 = [(ICCFTypeWrapper *)&v6 init];
   if (v4)
   {
-    v4->_cfTypeRef = CFRetain(a3);
+    v4->_cfTypeRef = CFRetain(ref);
   }
 
   return v4;
@@ -32,11 +32,11 @@
   [(ICCFTypeWrapper *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CFEqual(self->_cfTypeRef, [v4 cfTypeRef]) != 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CFEqual(self->_cfTypeRef, [equalCopy cfTypeRef]) != 0;
 
   return v5;
 }

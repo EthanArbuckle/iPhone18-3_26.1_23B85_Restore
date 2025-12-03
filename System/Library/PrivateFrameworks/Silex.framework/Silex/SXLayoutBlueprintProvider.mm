@@ -1,20 +1,20 @@
 @interface SXLayoutBlueprintProvider
-- (void)updateBlueprint:(id)a3;
+- (void)updateBlueprint:(id)blueprint;
 @end
 
 @implementation SXLayoutBlueprintProvider
 
-- (void)updateBlueprint:(id)a3
+- (void)updateBlueprint:(id)blueprint
 {
-  v6 = a3;
-  if (v6)
+  blueprintCopy = blueprint;
+  if (blueprintCopy)
   {
-    v4 = [(SXLayoutBlueprintProvider *)self blueprint];
-    v5 = [v6 isEqual:v4];
+    blueprint = [(SXLayoutBlueprintProvider *)self blueprint];
+    v5 = [blueprintCopy isEqual:blueprint];
 
     if ((v5 & 1) == 0)
     {
-      [(SXLayoutBlueprintProvider *)self setBlueprint:v6];
+      [(SXLayoutBlueprintProvider *)self setBlueprint:blueprintCopy];
     }
   }
 }

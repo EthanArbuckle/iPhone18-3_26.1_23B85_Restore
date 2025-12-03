@@ -1,34 +1,34 @@
 @interface HUWaveformView
-- (HUWaveformView)initWithFrame:(CGRect)a3 waveformColor:(id)a4 backgroundColor:(id)a5;
+- (HUWaveformView)initWithFrame:(CGRect)frame waveformColor:(id)color backgroundColor:(id)backgroundColor;
 - (NSArray)powerLevels;
-- (float)audioLevelForFlamesView:(id)a3;
-- (void)appendPowerLevel:(double)a3;
+- (float)audioLevelForFlamesView:(id)view;
+- (void)appendPowerLevel:(double)level;
 - (void)clearPowerLevels;
 - (void)layoutSubviews;
-- (void)setWaveformColor:(id)a3;
+- (void)setWaveformColor:(id)color;
 @end
 
 @implementation HUWaveformView
 
-- (HUWaveformView)initWithFrame:(CGRect)a3 waveformColor:(id)a4 backgroundColor:(id)a5
+- (HUWaveformView)initWithFrame:(CGRect)frame waveformColor:(id)color backgroundColor:(id)backgroundColor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
   v24.receiver = self;
   v24.super_class = HUWaveformView;
-  v14 = [(HUWaveformView *)&v24 initWithFrame:x, y, width, height];
-  if (v14)
+  height = [(HUWaveformView *)&v24 initWithFrame:x, y, width, height];
+  if (height)
   {
     v15 = objc_opt_new();
-    waveformSlices = v14->_waveformSlices;
-    v14->_waveformSlices = v15;
+    waveformSlices = height->_waveformSlices;
+    height->_waveformSlices = v15;
 
-    objc_storeStrong(&v14->_waveformColor, a4);
-    objc_storeStrong(&v14->_backgroundColor, a5);
+    objc_storeStrong(&height->_waveformColor, color);
+    objc_storeStrong(&height->_backgroundColor, backgroundColor);
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -48,19 +48,19 @@
     v18 = v17;
     _Block_object_dispose(&v26, 8);
     v19 = [v17 alloc];
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    v21 = [v19 initWithFrame:v20 screen:2 fidelity:{x, y, width, height}];
-    flamesView = v14->_flamesView;
-    v14->_flamesView = v21;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    v21 = [v19 initWithFrame:mainScreen screen:2 fidelity:{x, y, width, height}];
+    flamesView = height->_flamesView;
+    height->_flamesView = v21;
 
-    [(SUICFlamesView *)v14->_flamesView setDelegate:v14];
-    [(SUICFlamesView *)v14->_flamesView setMode:1];
-    [(SUICFlamesView *)v14->_flamesView setState:1];
-    [(SUICFlamesView *)v14->_flamesView setDictationColor:v12];
-    [(HUWaveformView *)v14 addSubview:v14->_flamesView];
+    [(SUICFlamesView *)height->_flamesView setDelegate:height];
+    [(SUICFlamesView *)height->_flamesView setMode:1];
+    [(SUICFlamesView *)height->_flamesView setState:1];
+    [(SUICFlamesView *)height->_flamesView setDictationColor:colorCopy];
+    [(HUWaveformView *)height addSubview:height->_flamesView];
   }
 
-  return v14;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -68,59 +68,59 @@
   v6.receiver = self;
   v6.super_class = HUWaveformView;
   [(HUWaveformView *)&v6 layoutSubviews];
-  v3 = [(HUWaveformView *)self layer];
-  [v3 setOpaque:1];
+  layer = [(HUWaveformView *)self layer];
+  [layer setOpaque:1];
 
-  v4 = [(HUWaveformView *)self flamesView];
+  flamesView = [(HUWaveformView *)self flamesView];
   [(HUWaveformView *)self bounds];
-  [v4 setFrame:?];
+  [flamesView setFrame:?];
 
-  v5 = [(HUWaveformView *)self flamesView];
-  [v5 setNeedsLayout];
+  flamesView2 = [(HUWaveformView *)self flamesView];
+  [flamesView2 setNeedsLayout];
 }
 
-- (void)setWaveformColor:(id)a3
+- (void)setWaveformColor:(id)color
 {
-  objc_storeStrong(&self->_waveformColor, a3);
-  v5 = a3;
-  [(SUICFlamesView *)self->_flamesView setDictationColor:v5];
+  objc_storeStrong(&self->_waveformColor, color);
+  colorCopy = color;
+  [(SUICFlamesView *)self->_flamesView setDictationColor:colorCopy];
 }
 
-- (void)appendPowerLevel:(double)a3
+- (void)appendPowerLevel:(double)level
 {
-  v6 = [(HUWaveformView *)self audioPowerLevels];
-  if (!v6)
+  audioPowerLevels = [(HUWaveformView *)self audioPowerLevels];
+  if (!audioPowerLevels)
   {
-    v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    audioPowerLevels = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(HUWaveformView *)self setAudioPowerLevels:?];
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v6 addObject:v5];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:level];
+  [audioPowerLevels addObject:v5];
 }
 
 - (void)clearPowerLevels
 {
   [(HUWaveformView *)self setAudioPowerLevels:0];
-  v3 = [(HUWaveformView *)self waveformSlices];
-  [v3 removeAllObjects];
+  waveformSlices = [(HUWaveformView *)self waveformSlices];
+  [waveformSlices removeAllObjects];
 
   [(HUWaveformView *)self setNeedsLayout];
 }
 
 - (NSArray)powerLevels
 {
-  v2 = [(HUWaveformView *)self audioPowerLevels];
-  v3 = [v2 copy];
+  audioPowerLevels = [(HUWaveformView *)self audioPowerLevels];
+  v3 = [audioPowerLevels copy];
 
   return v3;
 }
 
-- (float)audioLevelForFlamesView:(id)a3
+- (float)audioLevelForFlamesView:(id)view
 {
-  v3 = [(HUWaveformView *)self audioPowerLevels];
-  v4 = [v3 lastObject];
-  [v4 floatValue];
+  audioPowerLevels = [(HUWaveformView *)self audioPowerLevels];
+  lastObject = [audioPowerLevels lastObject];
+  [lastObject floatValue];
   v6 = v5;
 
   return v6;

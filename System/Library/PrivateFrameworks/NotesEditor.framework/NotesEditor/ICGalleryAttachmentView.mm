@@ -1,43 +1,43 @@
 @interface ICGalleryAttachmentView
-+ (CGSize)sizeOfViewForAttachment:(id)a3 textViewContentWidth:(double)a4 existingView:(id)a5;
-+ (double)effectiveAspectRatioForWidth:(double)a3 height:(double)a4;
-+ (id)subAttachmentItemsForGalleryAttachment:(id)a3;
-+ (id)titleForGalleryAttachment:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
++ (CGSize)sizeOfViewForAttachment:(id)attachment textViewContentWidth:(double)width existingView:(id)view;
++ (double)effectiveAspectRatioForWidth:(double)width height:(double)height;
++ (id)subAttachmentItemsForGalleryAttachment:(id)attachment;
++ (id)titleForGalleryAttachment:(id)attachment;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)updateItems;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)collectionViewItemHeight;
 - (double)galleryAttachmentViewItemHeight;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4;
-- (id)attachmentPresenter:(id)a3 transitionViewForIndexPath:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)indexPathForItemClosestToPoint:(CGPoint)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment;
+- (id)attachmentPresenter:(id)presenter transitionViewForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)indexPathForItemClosestToPoint:(CGPoint)point;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)dealloc;
 - (void)didChangeAttachmentTitle;
 - (void)didChangeMergeableData;
 - (void)didUpdatePreviewImages;
-- (void)didUpdateSubAttachmentAtIndex:(int64_t)a3 sizeDidChange:(BOOL)a4;
+- (void)didUpdateSubAttachmentAtIndex:(int64_t)index sizeDidChange:(BOOL)change;
 - (void)didUpdateSubAttachmentItems;
 - (void)invalidateCollectionViewLayout;
-- (void)invalidateCollectionViewLayoutWithNewItemHeight:(double)a3;
+- (void)invalidateCollectionViewLayoutWithNewItemHeight:(double)height;
 - (void)openAttachment;
-- (void)openAttachmentAtIndex:(unint64_t)a3;
-- (void)respondToLongPressReorderingGesture:(id)a3;
-- (void)scrollCollectionViewToIndexPath:(id)a3;
-- (void)setAttachment:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
+- (void)openAttachmentAtIndex:(unint64_t)index;
+- (void)respondToLongPressReorderingGesture:(id)gesture;
+- (void)scrollCollectionViewToIndexPath:(id)path;
+- (void)setAttachment:(id)attachment;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightPatternRegexFinder:(id)finder;
 - (void)setupCollectionViewIfNecessary;
 - (void)updateActivityView;
 - (void)updateAttachmentTitleLabel;
-- (void)updateItemForObjectID:(id)a3;
+- (void)updateItemForObjectID:(id)d;
 - (void)updateItemsAndLayout;
 @end
 
@@ -45,24 +45,24 @@
 
 - (void)dealloc
 {
-  v3 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
+  attachmentDidLoadObserver = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
 
-  if (v3)
+  if (attachmentDidLoadObserver)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
-    [v4 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    attachmentDidLoadObserver2 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
+    [defaultCenter removeObserver:attachmentDidLoadObserver2];
 
     [(ICGalleryAttachmentView *)self setAttachmentDidLoadObserver:0];
   }
 
-  v6 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
+  previewImagesDidUpdateObserver = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
 
-  if (v6)
+  if (previewImagesDidUpdateObserver)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
-    [v7 removeObserver:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    previewImagesDidUpdateObserver2 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
+    [defaultCenter2 removeObserver:previewImagesDidUpdateObserver2];
 
     [(ICGalleryAttachmentView *)self setPreviewImagesDidUpdateObserver:0];
   }
@@ -72,13 +72,13 @@
   [(ICAttachmentView *)&v9 dealloc];
 }
 
-+ (double)effectiveAspectRatioForWidth:(double)a3 height:(double)a4
++ (double)effectiveAspectRatioForWidth:(double)width height:(double)height
 {
   result = 0.75;
-  if (a3 != 0.0 && a4 != 0.0)
+  if (width != 0.0 && height != 0.0)
   {
-    result = a3 / a4;
-    if (a3 / a4 < *MEMORY[0x277D36508])
+    result = width / height;
+    if (width / height < *MEMORY[0x277D36508])
     {
       result = *MEMORY[0x277D36508];
     }
@@ -92,23 +92,23 @@
   return result;
 }
 
-+ (CGSize)sizeOfViewForAttachment:(id)a3 textViewContentWidth:(double)a4 existingView:(id)a5
++ (CGSize)sizeOfViewForAttachment:(id)attachment textViewContentWidth:(double)width existingView:(id)view
 {
-  v8 = a3;
-  v9 = [a5 subAttachmentItems];
-  if (!v9)
+  attachmentCopy = attachment;
+  subAttachmentItems = [view subAttachmentItems];
+  if (!subAttachmentItems)
   {
-    v9 = [a1 subAttachmentItemsForGalleryAttachment:v8];
+    subAttachmentItems = [self subAttachmentItemsForGalleryAttachment:attachmentCopy];
   }
 
-  v10 = floor(a4);
-  [a1 collectionViewLeftRightMargins];
+  v10 = floor(width);
+  [self collectionViewLeftRightMargins];
   v12 = v11;
-  [a1 topButtonHeight];
+  [self topButtonHeight];
   v14 = v13;
-  [a1 collectionViewTopBottomMargins];
+  [self collectionViewTopBottomMargins];
   v16 = v15;
-  v17 = [v9 count];
+  v17 = [subAttachmentItems count];
   if (v10 <= 0.0 || v17 == 0)
   {
     v19 = 160.0;
@@ -117,31 +117,31 @@
 
   else
   {
-    [a1 collectionViewLeftRightMargins];
+    [self collectionViewLeftRightMargins];
     v22 = v21;
-    [a1 collectionViewLeftRightMargins];
+    [self collectionViewLeftRightMargins];
     v24 = v23;
-    v25 = [v9 firstObject];
-    [v25 size];
+    firstObject = [subAttachmentItems firstObject];
+    [firstObject size];
     v27 = v26;
-    [v25 size];
+    [firstObject size];
     [objc_opt_class() effectiveAspectRatioForWidth:v28 height:v27];
     v30 = v29;
-    [a1 collectionViewMaxHeight];
+    [self collectionViewMaxHeight];
     if (v27 >= v31)
     {
       v27 = v31;
     }
 
-    [a1 collectionViewMinHeight];
+    [self collectionViewMinHeight];
     if (v27 < v32)
     {
       v27 = v32;
     }
 
-    v33 = [a1 collectionViewShouldPeek];
-    v34 = [v9 count];
-    if (v33 && ((v35 = v34, v36 = [MEMORY[0x277D75418] ic_isiPad], v10 < 500.0) || !v36))
+    collectionViewShouldPeek = [self collectionViewShouldPeek];
+    v34 = [subAttachmentItems count];
+    if (collectionViewShouldPeek && ((v35 = v34, v36 = [MEMORY[0x277D75418] ic_isiPad], v10 < 500.0) || !v36))
     {
       v39 = v12 + v12;
       v40 = v10 + v24 * -2.0;
@@ -168,11 +168,11 @@
         {
           v39 = v22 + v39;
           v40 = v40 - v22;
-          v45 = [v9 objectAtIndexedSubscript:i];
+          v45 = [subAttachmentItems objectAtIndexedSubscript:i];
           [v45 size];
           v47 = v46;
           [v45 size];
-          [a1 effectiveAspectRatioForWidth:v47 height:?];
+          [self effectiveAspectRatioForWidth:v47 height:?];
           v41 = v41 + round(v27 * v48);
         }
       }
@@ -206,11 +206,11 @@
           v53 = 0.0;
           do
           {
-            v54 = [v9 objectAtIndexedSubscript:v52];
+            v54 = [subAttachmentItems objectAtIndexedSubscript:v52];
             [v54 size];
             v56 = v55;
             [v54 size];
-            [a1 effectiveAspectRatioForWidth:v56 height:?];
+            [self effectiveAspectRatioForWidth:v56 height:?];
             v53 = v53 + v57;
 
             ++v52;
@@ -246,7 +246,7 @@
 
     else
     {
-      [MEMORY[0x277D36798] sizeOfViewForAttachment:v8 textViewContentWidth:v10];
+      [MEMORY[0x277D36798] sizeOfViewForAttachment:attachmentCopy textViewContentWidth:v10];
       v20 = v37;
       v19 = v38;
     }
@@ -259,25 +259,25 @@
   return result;
 }
 
-+ (id)titleForGalleryAttachment:(id)a3
++ (id)titleForGalleryAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 title];
-  if ([v4 length])
+  attachmentCopy = attachment;
+  title = [attachmentCopy title];
+  if ([title length])
   {
-    [v3 title];
+    [attachmentCopy title];
   }
 
   else
   {
-    [v3 defaultTitle];
+    [attachmentCopy defaultTitle];
   }
   v5 = ;
 
-  if ([v3 needsInitialFetchFromCloud])
+  if ([attachmentCopy needsInitialFetchFromCloud])
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"Downloading…" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"Downloading…" value:&stru_282757698 table:0];
 
     v5 = v7;
   }
@@ -302,12 +302,12 @@
   [(ICGalleryAttachmentView *)self invalidateCollectionViewLayoutWithNewItemHeight:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(ICGalleryAttachmentView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -331,9 +331,9 @@
     v16.size.height = height;
     if (!CGRectIsInfinite(v16))
     {
-      v13 = [(ICGalleryAttachmentView *)self attachment];
+      attachment = [(ICGalleryAttachmentView *)self attachment];
 
-      if (v13)
+      if (attachment)
       {
         [(ICGalleryAttachmentView *)self setupCollectionViewIfNecessary];
       }
@@ -341,61 +341,61 @@
   }
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentView *)self attachment];
+  attachmentCopy = attachment;
+  attachment = [(ICGalleryAttachmentView *)self attachment];
 
-  if (v5 != v4)
+  if (attachment != attachmentCopy)
   {
     v23.receiver = self;
     v23.super_class = ICGalleryAttachmentView;
-    [(ICGalleryAttachmentView *)&v23 setAttachment:v4];
+    [(ICGalleryAttachmentView *)&v23 setAttachment:attachmentCopy];
     [(ICGalleryAttachmentView *)self invalidateCollectionViewLayout];
-    v6 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
+    attachmentDidLoadObserver = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
 
-    if (v6)
+    if (attachmentDidLoadObserver)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      v8 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
-      [v7 removeObserver:v8];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      attachmentDidLoadObserver2 = [(ICGalleryAttachmentView *)self attachmentDidLoadObserver];
+      [defaultCenter removeObserver:attachmentDidLoadObserver2];
 
       [(ICGalleryAttachmentView *)self setAttachmentDidLoadObserver:0];
     }
 
-    v9 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
+    previewImagesDidUpdateObserver = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
 
-    if (v9)
+    if (previewImagesDidUpdateObserver)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
-      [v10 removeObserver:v11];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      previewImagesDidUpdateObserver2 = [(ICGalleryAttachmentView *)self previewImagesDidUpdateObserver];
+      [defaultCenter2 removeObserver:previewImagesDidUpdateObserver2];
 
       [(ICGalleryAttachmentView *)self setPreviewImagesDidUpdateObserver:0];
     }
 
-    if (v4)
+    if (attachmentCopy)
     {
       [(ICGalleryAttachmentView *)self updateItems];
       objc_initWeak(&location, self);
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v13 = *MEMORY[0x277D35B88];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __41__ICGalleryAttachmentView_setAttachment___block_invoke;
       v20[3] = &unk_2781ABCA8;
       objc_copyWeak(&v21, &location);
-      v14 = [v12 addObserverForName:v13 object:0 queue:0 usingBlock:v20];
+      v14 = [defaultCenter3 addObserverForName:v13 object:0 queue:0 usingBlock:v20];
       [(ICGalleryAttachmentView *)self setAttachmentDidLoadObserver:v14];
 
-      v15 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v16 = *MEMORY[0x277D35BB8];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __41__ICGalleryAttachmentView_setAttachment___block_invoke_2;
       v18[3] = &unk_2781ABCA8;
       objc_copyWeak(&v19, &location);
-      v17 = [v15 addObserverForName:v16 object:0 queue:0 usingBlock:v18];
+      v17 = [defaultCenter4 addObserverForName:v16 object:0 queue:0 usingBlock:v18];
       [(ICGalleryAttachmentView *)self setPreviewImagesDidUpdateObserver:v17];
 
       objc_destroyWeak(&v19);
@@ -427,13 +427,13 @@ void __41__ICGalleryAttachmentView_setAttachment___block_invoke_2(uint64_t a1, v
   [WeakRetained updateItemForObjectID:v5];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = ICGalleryAttachmentView;
-  v4 = a3;
-  [(ICGalleryAttachmentView *)&v9 setHighlightColor:v4];
-  if (v4)
+  colorCopy = color;
+  [(ICGalleryAttachmentView *)&v9 setHighlightColor:colorCopy];
+  if (colorCopy)
   {
     v5 = *MEMORY[0x277D364B0];
   }
@@ -446,38 +446,38 @@ void __41__ICGalleryAttachmentView_setAttachment___block_invoke_2(uint64_t a1, v
   v6 = [(ICGalleryAttachmentView *)self layer:v9.receiver];
   [v6 setBorderWidth:v5];
 
-  v7 = [v4 CGColor];
-  v8 = [(ICGalleryAttachmentView *)self layer];
-  [v8 setBorderColor:v7];
+  cGColor = [colorCopy CGColor];
+  layer = [(ICGalleryAttachmentView *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
   v4.receiver = self;
   v4.super_class = ICGalleryAttachmentView;
-  [(ICGalleryAttachmentView *)&v4 setHighlightPatternRegexFinder:a3];
+  [(ICGalleryAttachmentView *)&v4 setHighlightPatternRegexFinder:finder];
   [(ICGalleryAttachmentView *)self updateAttachmentTitleLabel];
 }
 
-+ (id)subAttachmentItemsForGalleryAttachment:(id)a3
++ (id)subAttachmentItemsForGalleryAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v4 = [v3 attachmentModel];
+  attachmentModel = [attachmentCopy attachmentModel];
   v5 = ICCheckedDynamicCast();
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [v3 subAttachments];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  subAttachments = [attachmentCopy subAttachments];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(subAttachments, "count")}];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __66__ICGalleryAttachmentView_subAttachmentItemsForGalleryAttachment___block_invoke;
   v16 = &unk_2781ABCD0;
-  v17 = v3;
+  v17 = attachmentCopy;
   v18 = v8;
   v9 = v8;
-  v10 = v3;
+  v10 = attachmentCopy;
   [v5 enumerateSubAttachmentsWithBlock:&v13];
   v11 = [v9 copy];
 
@@ -497,11 +497,11 @@ void __66__ICGalleryAttachmentView_subAttachmentItemsForGalleryAttachment___bloc
 - (BOOL)updateItems
 {
   v3 = objc_opt_class();
-  v4 = [(ICGalleryAttachmentView *)self attachment];
-  v5 = [v3 subAttachmentItemsForGalleryAttachment:v4];
+  attachment = [(ICGalleryAttachmentView *)self attachment];
+  v5 = [v3 subAttachmentItemsForGalleryAttachment:attachment];
 
-  v6 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-  v7 = [v5 isEqual:v6];
+  subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+  v7 = [v5 isEqual:subAttachmentItems];
 
   if ((v7 & 1) == 0)
   {
@@ -539,40 +539,40 @@ void __66__ICGalleryAttachmentView_subAttachmentItemsForGalleryAttachment___bloc
   }
 }
 
-- (void)updateItemForObjectID:(id)a3
+- (void)updateItemForObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277D35E00];
-  v6 = [(ICGalleryAttachmentView *)self attachment];
-  v7 = [v6 managedObjectContext];
-  v8 = [v5 ic_existingObjectWithID:v4 context:v7];
+  attachment = [(ICGalleryAttachmentView *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
+  v8 = [v5 ic_existingObjectWithID:dCopy context:managedObjectContext];
 
-  v9 = [v8 parentAttachment];
-  v10 = [(ICGalleryAttachmentView *)self attachment];
+  parentAttachment = [v8 parentAttachment];
+  attachment2 = [(ICGalleryAttachmentView *)self attachment];
 
-  if (v9 == v10)
+  if (parentAttachment == attachment2)
   {
-    v11 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-    v12 = [v11 count];
+    subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+    v12 = [subAttachmentItems count];
 
     if (v12)
     {
       v13 = 0;
       while (1)
       {
-        v14 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-        v15 = [v14 objectAtIndexedSubscript:v13];
+        subAttachmentItems2 = [(ICGalleryAttachmentView *)self subAttachmentItems];
+        v15 = [subAttachmentItems2 objectAtIndexedSubscript:v13];
 
-        v16 = [v15 attachment];
+        attachment3 = [v15 attachment];
 
-        if (v16 == v8)
+        if (attachment3 == v8)
         {
           break;
         }
 
         ++v13;
-        v17 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-        v18 = [v17 count];
+        subAttachmentItems3 = [(ICGalleryAttachmentView *)self subAttachmentItems];
+        v18 = [subAttachmentItems3 count];
 
         if (v13 >= v18)
         {
@@ -580,15 +580,15 @@ void __66__ICGalleryAttachmentView_subAttachmentItemsForGalleryAttachment___bloc
         }
       }
 
-      v19 = [v8 managedObjectContext];
-      [v19 ic_refreshObject:v8 mergeChanges:0];
+      managedObjectContext2 = [v8 managedObjectContext];
+      [managedObjectContext2 ic_refreshObject:v8 mergeChanges:0];
 
-      v20 = [v15 updateSize];
+      updateSize = [v15 updateSize];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke;
       block[3] = &unk_2781ABD20;
-      v22 = v20;
+      v22 = updateSize;
       block[4] = self;
       block[5] = v13;
       dispatch_async(MEMORY[0x277D85CD0], block);
@@ -619,38 +619,38 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
 
 - (void)openAttachment
 {
-  v3 = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
-  if (v3)
+  indexPathForPreviewing = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
+  if (indexPathForPreviewing)
   {
-    v4 = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
-    v5 = [v4 row];
-    v6 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-    v7 = [v6 count];
+    indexPathForPreviewing2 = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
+    v5 = [indexPathForPreviewing2 row];
+    subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+    v7 = [subAttachmentItems count];
 
     if (v5 >= v7)
     {
-      v3 = 0;
+      indexPathForPreviewing = 0;
     }
 
     else
     {
-      v8 = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
-      v3 = [v8 row];
+      indexPathForPreviewing3 = [(ICGalleryAttachmentView *)self indexPathForPreviewing];
+      indexPathForPreviewing = [indexPathForPreviewing3 row];
 
       [(ICGalleryAttachmentView *)self setIndexPathForPreviewing:0];
     }
   }
 
-  [(ICGalleryAttachmentView *)self openAttachmentAtIndex:v3];
+  [(ICGalleryAttachmentView *)self openAttachmentAtIndex:indexPathForPreviewing];
 }
 
-- (id)indexPathForItemClosestToPoint:(CGPoint)a3
+- (id)indexPathForItemClosestToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = [(ICGalleryAttachmentView *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   if (!v7)
   {
@@ -658,10 +658,10 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [(ICGalleryAttachmentView *)self collectionView];
-    v9 = [v8 indexPathsForVisibleItems];
+    collectionView2 = [(ICGalleryAttachmentView *)self collectionView];
+    indexPathsForVisibleItems = [collectionView2 indexPathsForVisibleItems];
 
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -674,20 +674,20 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(indexPathsForVisibleItems);
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
-          v16 = [(ICGalleryAttachmentView *)self collectionView];
-          v17 = [v16 cellForItemAtIndexPath:v15];
+          collectionView3 = [(ICGalleryAttachmentView *)self collectionView];
+          v17 = [collectionView3 cellForItemAtIndexPath:v15];
 
           [v17 bounds];
           v19 = v18;
           v21 = v20;
           v23 = v22;
           v25 = v24;
-          v26 = [(ICGalleryAttachmentView *)self collectionView];
-          [v17 convertRect:v26 toView:{v19, v21, v23, v25}];
+          collectionView4 = [(ICGalleryAttachmentView *)self collectionView];
+          [v17 convertRect:collectionView4 toView:{v19, v21, v23, v25}];
 
           TSDDistanceToRect();
           if (v27 < v13)
@@ -700,7 +700,7 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v11 = [indexPathsForVisibleItems countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v11);
@@ -715,13 +715,13 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
   return v7;
 }
 
-- (void)invalidateCollectionViewLayoutWithNewItemHeight:(double)a3
+- (void)invalidateCollectionViewLayoutWithNewItemHeight:(double)height
 {
-  v5 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-  [v5 itemHeight];
+  collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+  [collectionViewLayout itemHeight];
   v7 = v6;
 
-  v8 = round(a3);
+  v8 = round(height);
   if (v8 - v7 >= 0.0)
   {
     v9 = v8 - v7;
@@ -732,13 +732,13 @@ uint64_t __49__ICGalleryAttachmentView_updateItemForObjectID___block_invoke(uint
     v9 = -(v8 - v7);
   }
 
-  v10 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-  [v10 invalidateLayoutWithNewItemHeight:v8];
+  collectionViewLayout2 = [(ICGalleryAttachmentView *)self collectionViewLayout];
+  [collectionViewLayout2 invalidateLayoutWithNewItemHeight:v8];
 
   if (v7 == 0.0 || v9 > 20.0)
   {
-    v12 = [(ICGalleryAttachmentView *)self galleryAttachmentViewCellImageCache];
-    [v12 removeAllThumbnailData];
+    galleryAttachmentViewCellImageCache = [(ICGalleryAttachmentView *)self galleryAttachmentViewCellImageCache];
+    [galleryAttachmentViewCellImageCache removeAllThumbnailData];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -767,7 +767,7 @@ void __106__ICGalleryAttachmentView_PlatformSpecificResponsibilty__invalidateCol
     [(ICGalleryAttachmentView *)self setOverrideUserInterfaceStyle:1];
   }
 
-  v78 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([MEMORY[0x277D75418] ic_isVision])
   {
     [MEMORY[0x277D75348] secondarySystemFillColor];
@@ -780,99 +780,99 @@ void __106__ICGalleryAttachmentView_PlatformSpecificResponsibilty__invalidateCol
   v3 = ;
   [(ICGalleryAttachmentView *)self setBackgroundColor:v3];
 
-  v4 = [(ICGalleryAttachmentView *)self titleLabel];
+  titleLabel = [(ICGalleryAttachmentView *)self titleLabel];
 
-  if (!v4)
+  if (!titleLabel)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(ICGalleryAttachmentView *)self setTitleLabel:v5];
 
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v7 = [(ICGalleryAttachmentView *)self titleLabel];
-    [v7 setTextColor:v6];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    titleLabel2 = [(ICGalleryAttachmentView *)self titleLabel];
+    [titleLabel2 setTextColor:secondaryLabelColor];
 
     v8 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*MEMORY[0x277D74420]];
-    v9 = [v8 ic_fontWithSingleLineA];
-    v10 = [(ICGalleryAttachmentView *)self titleLabel];
-    [v10 setFont:v9];
+    ic_fontWithSingleLineA = [v8 ic_fontWithSingleLineA];
+    titleLabel3 = [(ICGalleryAttachmentView *)self titleLabel];
+    [titleLabel3 setFont:ic_fontWithSingleLineA];
 
-    v11 = [(ICGalleryAttachmentView *)self titleLabel];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel4 = [(ICGalleryAttachmentView *)self titleLabel];
+    [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(ICGalleryAttachmentView *)self titleLabel];
-    [v12 setUserInteractionEnabled:0];
+    titleLabel5 = [(ICGalleryAttachmentView *)self titleLabel];
+    [titleLabel5 setUserInteractionEnabled:0];
 
-    v13 = [(ICGalleryAttachmentView *)self titleLabel];
-    [(ICGalleryAttachmentView *)self addSubview:v13];
+    titleLabel6 = [(ICGalleryAttachmentView *)self titleLabel];
+    [(ICGalleryAttachmentView *)self addSubview:titleLabel6];
 
     v14 = objc_alloc_init(MEMORY[0x277D36778]);
     [(ICGalleryAttachmentView *)self setActivityView:v14];
 
-    v15 = [(ICGalleryAttachmentView *)self activityView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityView = [(ICGalleryAttachmentView *)self activityView];
+    [activityView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(ICGalleryAttachmentView *)self activityView];
-    [v16 setLeadingSpace:8.0];
+    activityView2 = [(ICGalleryAttachmentView *)self activityView];
+    [activityView2 setLeadingSpace:8.0];
 
-    v17 = [(ICGalleryAttachmentView *)self activityView];
-    [v17 setTrailingSpace:8.0];
+    activityView3 = [(ICGalleryAttachmentView *)self activityView];
+    [activityView3 setTrailingSpace:8.0];
 
-    v18 = [(ICGalleryAttachmentView *)self activityView];
-    [v18 setCollapsed:1];
+    activityView4 = [(ICGalleryAttachmentView *)self activityView];
+    [activityView4 setCollapsed:1];
 
-    v19 = [(ICGalleryAttachmentView *)self activityView];
-    [(ICGalleryAttachmentView *)self addSubview:v19];
+    activityView5 = [(ICGalleryAttachmentView *)self activityView];
+    [(ICGalleryAttachmentView *)self addSubview:activityView5];
 
-    v20 = [(ICGalleryAttachmentView *)self titleLabel];
-    v21 = [v20 leadingAnchor];
-    v22 = [(ICGalleryAttachmentView *)self leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:9.0];
-    [v78 addObject:v23];
+    titleLabel7 = [(ICGalleryAttachmentView *)self titleLabel];
+    leadingAnchor = [titleLabel7 leadingAnchor];
+    leadingAnchor2 = [(ICGalleryAttachmentView *)self leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:9.0];
+    [array addObject:v23];
 
-    v24 = [(ICGalleryAttachmentView *)self titleLabel];
-    v25 = [v24 trailingAnchor];
-    v26 = [(ICGalleryAttachmentView *)self activityView];
-    v27 = [v26 leadingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
-    [v78 addObject:v28];
+    titleLabel8 = [(ICGalleryAttachmentView *)self titleLabel];
+    trailingAnchor = [titleLabel8 trailingAnchor];
+    activityView6 = [(ICGalleryAttachmentView *)self activityView];
+    leadingAnchor3 = [activityView6 leadingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
+    [array addObject:v28];
 
-    v29 = [(ICGalleryAttachmentView *)self activityView];
-    v30 = [v29 centerYAnchor];
-    v31 = [(ICGalleryAttachmentView *)self titleLabel];
-    v32 = [v31 centerYAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
-    [v78 addObject:v33];
+    activityView7 = [(ICGalleryAttachmentView *)self activityView];
+    centerYAnchor = [activityView7 centerYAnchor];
+    titleLabel9 = [(ICGalleryAttachmentView *)self titleLabel];
+    centerYAnchor2 = [titleLabel9 centerYAnchor];
+    v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v33];
 
-    v34 = [(ICGalleryAttachmentView *)self activityView];
-    v35 = [v34 trailingAnchor];
-    v36 = [(ICGalleryAttachmentView *)self trailingAnchor];
-    v37 = [v35 constraintLessThanOrEqualToAnchor:v36];
+    activityView8 = [(ICGalleryAttachmentView *)self activityView];
+    trailingAnchor2 = [activityView8 trailingAnchor];
+    trailingAnchor3 = [(ICGalleryAttachmentView *)self trailingAnchor];
+    v37 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
 
-    [v78 addObject:v37];
+    [array addObject:v37];
     [(ICGalleryAttachmentView *)self didChangeAttachmentTitle];
   }
 
-  v38 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
 
-  if (!v38)
+  if (!tapGestureRecognizer)
   {
     v39 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_didTapTopOfGalleryView_];
     [(ICGalleryAttachmentView *)self setTapGestureRecognizer:v39];
 
-    v40 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
-    [v40 setDelegate:self];
+    tapGestureRecognizer2 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
+    [tapGestureRecognizer2 setDelegate:self];
 
-    v41 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
-    [(ICGalleryAttachmentView *)self addGestureRecognizer:v41];
+    tapGestureRecognizer3 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
+    [(ICGalleryAttachmentView *)self addGestureRecognizer:tapGestureRecognizer3];
   }
 
-  v42 = [(ICGalleryAttachmentView *)self collectionView];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
 
-  if (!v42)
+  if (!collectionView)
   {
     objc_opt_class();
-    v43 = [(ICGalleryAttachmentView *)self attachment];
-    v44 = [v43 attachmentModel];
+    attachment = [(ICGalleryAttachmentView *)self attachment];
+    attachmentModel = [attachment attachmentModel];
     v45 = ICCheckedDynamicCast();
 
     v46 = objc_alloc_init(MEMORY[0x277D35E38]);
@@ -884,86 +884,86 @@ void __106__ICGalleryAttachmentView_PlatformSpecificResponsibilty__invalidateCol
     [(ICGalleryAttachmentView *)self setCollectionViewLayout:v48];
 
     v49 = objc_alloc(MEMORY[0x277D752A0]);
-    v50 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-    v51 = [v49 initWithFrame:v50 collectionViewLayout:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
+    collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+    v51 = [v49 initWithFrame:collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
     [(ICGalleryAttachmentView *)self setCollectionView:v51];
 
-    v52 = [(ICGalleryAttachmentView *)self collectionView];
+    collectionView2 = [(ICGalleryAttachmentView *)self collectionView];
     v53 = MEMORY[0x277D757B0];
     v54 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v55 = [v53 nibWithNibName:@"ICGalleryAttachmentViewCell" bundle:v54];
-    [v52 registerNib:v55 forCellWithReuseIdentifier:@"ICGalleryViewCollectionViewCell"];
+    [collectionView2 registerNib:v55 forCellWithReuseIdentifier:@"ICGalleryViewCollectionViewCell"];
 
-    v56 = [(ICGalleryAttachmentView *)self collectionView];
-    [v56 setDelegate:self];
+    collectionView3 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView3 setDelegate:self];
 
-    v57 = [(ICGalleryAttachmentView *)self collectionView];
-    [v57 setDataSource:self];
+    collectionView4 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView4 setDataSource:self];
 
-    v58 = [MEMORY[0x277D75348] clearColor];
-    v59 = [(ICGalleryAttachmentView *)self collectionView];
-    [v59 setBackgroundColor:v58];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    collectionView5 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView5 setBackgroundColor:clearColor];
 
-    v60 = [(ICGalleryAttachmentView *)self collectionView];
-    [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
+    collectionView6 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v61 = [(ICGalleryAttachmentView *)self collectionView];
-    [v61 setAlwaysBounceVertical:0];
+    collectionView7 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView7 setAlwaysBounceVertical:0];
 
-    v62 = [(ICGalleryAttachmentView *)self collectionView];
-    [v62 setShowsVerticalScrollIndicator:0];
+    collectionView8 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView8 setShowsVerticalScrollIndicator:0];
 
-    v63 = [(ICGalleryAttachmentView *)self collectionView];
-    [v63 setScrollsToTop:0];
+    collectionView9 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView9 setScrollsToTop:0];
 
-    v64 = [(ICGalleryAttachmentView *)self collectionView];
-    [(ICGalleryAttachmentView *)self addSubview:v64];
+    collectionView10 = [(ICGalleryAttachmentView *)self collectionView];
+    [(ICGalleryAttachmentView *)self addSubview:collectionView10];
 
-    v65 = [(ICGalleryAttachmentView *)self collectionView];
-    v66 = _NSDictionaryOfVariableBindings(&cfstr_Collectionview.isa, v65, 0);
+    collectionView11 = [(ICGalleryAttachmentView *)self collectionView];
+    v66 = _NSDictionaryOfVariableBindings(&cfstr_Collectionview.isa, collectionView11, 0);
     v67 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-0@900-[collectionView]-0@900-|" options:0 metrics:0 views:v66];
-    [v78 addObjectsFromArray:v67];
+    [array addObjectsFromArray:v67];
 
     v68 = MEMORY[0x277CCAAD0];
-    v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"V:|-%g-[collectionView]-0-|", 0x4035000000000000];
-    v70 = [v68 constraintsWithVisualFormat:v69 options:0 metrics:0 views:v66];
-    [v78 addObjectsFromArray:v70];
+    0x4035000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"V:|-%g-[collectionView]-0-|", 0x4035000000000000];
+    v70 = [v68 constraintsWithVisualFormat:0x4035000000000000 options:0 metrics:0 views:v66];
+    [array addObjectsFromArray:v70];
 
-    v71 = [(ICGalleryAttachmentView *)self titleLabel];
-    v72 = [v71 firstBaselineAnchor];
-    v73 = [(ICGalleryAttachmentView *)self collectionView];
-    v74 = [v73 topAnchor];
-    v75 = [v72 constraintEqualToAnchor:v74];
-    [v78 addObject:v75];
+    titleLabel10 = [(ICGalleryAttachmentView *)self titleLabel];
+    firstBaselineAnchor = [titleLabel10 firstBaselineAnchor];
+    collectionView12 = [(ICGalleryAttachmentView *)self collectionView];
+    topAnchor = [collectionView12 topAnchor];
+    v75 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
+    [array addObject:v75];
 
-    v76 = [(ICGalleryAttachmentView *)self layer];
-    [v76 setCornerRadius:9.0];
+    layer = [(ICGalleryAttachmentView *)self layer];
+    [layer setCornerRadius:9.0];
 
-    v77 = [(ICGalleryAttachmentView *)self layer];
-    [v77 setMasksToBounds:1];
+    layer2 = [(ICGalleryAttachmentView *)self layer];
+    [layer2 setMasksToBounds:1];
   }
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v78];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
   [(ICGalleryAttachmentView *)self updateActivityView];
 }
 
-- (void)respondToLongPressReorderingGesture:(id)a3
+- (void)respondToLongPressReorderingGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentView *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ICGalleryAttachmentView *)self collectionView];
-  v20 = [v10 indexPathForItemAtPoint:{v7, v9}];
+  collectionView2 = [(ICGalleryAttachmentView *)self collectionView];
+  v20 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
   [(ICGalleryAttachmentView *)self setMovingIndexPath:?];
 
-  v11 = [v4 state];
-  if (v11 == 3)
+  state = [gestureCopy state];
+  if (state == 3)
   {
-    v15 = [(ICGalleryAttachmentView *)self collectionView];
-    [v15 endInteractiveMovement];
+    collectionView3 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView3 endInteractiveMovement];
 LABEL_9:
 
     [(ICGalleryAttachmentView *)self setMovingIndexPath:0];
@@ -977,18 +977,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v11 == 2)
+  if (state == 2)
   {
-    v14 = [(ICGalleryAttachmentView *)self collectionView];
-    [v14 updateInteractiveMovementTargetPosition:{v7, v9}];
+    collectionView4 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView4 updateInteractiveMovementTargetPosition:{v7, v9}];
 
     goto LABEL_10;
   }
 
-  if (v11 != 1)
+  if (state != 1)
   {
-    v15 = [(ICGalleryAttachmentView *)self collectionView];
-    [v15 cancelInteractiveMovement];
+    collectionView3 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView3 cancelInteractiveMovement];
     goto LABEL_9;
   }
 
@@ -998,16 +998,16 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v13 = [(ICGalleryAttachmentView *)self collectionView];
-  [v13 beginInteractiveMovementForItemAtIndexPath:v20];
+  collectionView5 = [(ICGalleryAttachmentView *)self collectionView];
+  [collectionView5 beginInteractiveMovementForItemAtIndexPath:v20];
 
 LABEL_11:
-  v16 = [(ICGalleryAttachmentView *)self collectionView];
-  v17 = [v16 cellForItemAtIndexPath:v20];
+  collectionView6 = [(ICGalleryAttachmentView *)self collectionView];
+  v17 = [collectionView6 cellForItemAtIndexPath:v20];
 
-  v18 = [(ICGalleryAttachmentView *)self movingIndexPath];
+  movingIndexPath = [(ICGalleryAttachmentView *)self movingIndexPath];
   v19 = 0.5;
-  if (!v18)
+  if (!movingIndexPath)
   {
     v19 = 1.0;
   }
@@ -1020,8 +1020,8 @@ LABEL_14:
 
 - (void)didChangeAttachmentTitle
 {
-  v3 = [(ICGalleryAttachmentView *)self galleryEditorController];
-  [v3 attachmentTitleDidChange];
+  galleryEditorController = [(ICGalleryAttachmentView *)self galleryEditorController];
+  [galleryEditorController attachmentTitleDidChange];
 
   [(ICGalleryAttachmentView *)self updateAttachmentTitleLabel];
 }
@@ -1029,79 +1029,79 @@ LABEL_14:
 - (void)updateAttachmentTitleLabel
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v4 = [(ICGalleryAttachmentView *)self titleLabel];
-  [v4 setTextColor:v3];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  titleLabel = [(ICGalleryAttachmentView *)self titleLabel];
+  [titleLabel setTextColor:secondaryLabelColor];
 
   v5 = objc_opt_class();
-  v6 = [(ICGalleryAttachmentView *)self attachment];
-  v7 = [v5 titleForGalleryAttachment:v6];
+  attachment = [(ICGalleryAttachmentView *)self attachment];
+  v7 = [v5 titleForGalleryAttachment:attachment];
 
-  v8 = [(ICGalleryAttachmentView *)self highlightPatternRegexFinder];
+  highlightPatternRegexFinder = [(ICGalleryAttachmentView *)self highlightPatternRegexFinder];
 
-  if (v8 && v7)
+  if (highlightPatternRegexFinder && v7)
   {
     v19[0] = *MEMORY[0x277D740C0];
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v20[0] = v9;
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    v20[0] = secondaryLabelColor2;
     v19[1] = *MEMORY[0x277D740A8];
     v10 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*MEMORY[0x277D74420]];
-    v11 = [v10 ic_fontWithSingleLineA];
-    v20[1] = v11;
+    ic_fontWithSingleLineA = [v10 ic_fontWithSingleLineA];
+    v20[1] = ic_fontWithSingleLineA;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
     v13 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v12];
     if (v13)
     {
-      v14 = [(ICGalleryAttachmentView *)self highlightPatternRegexFinder];
-      v15 = [MEMORY[0x277D75348] ICTintColor];
-      v16 = [v13 ic_attributedStringByHighlightingRegexFinderMatches:v14 withHighlightColor:v15];
+      highlightPatternRegexFinder2 = [(ICGalleryAttachmentView *)self highlightPatternRegexFinder];
+      iCTintColor = [MEMORY[0x277D75348] ICTintColor];
+      v16 = [v13 ic_attributedStringByHighlightingRegexFinderMatches:highlightPatternRegexFinder2 withHighlightColor:iCTintColor];
 
-      v17 = [(ICGalleryAttachmentView *)self titleLabel];
-      [v17 setAttributedText:v16];
+      titleLabel2 = [(ICGalleryAttachmentView *)self titleLabel];
+      [titleLabel2 setAttributedText:v16];
     }
   }
 
   else
   {
-    v18 = [(ICGalleryAttachmentView *)self titleLabel];
-    [v18 setText:v7];
+    titleLabel3 = [(ICGalleryAttachmentView *)self titleLabel];
+    [titleLabel3 setText:v7];
   }
 }
 
 - (void)didUpdateSubAttachmentItems
 {
-  v3 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v4 = [(ICGalleryAttachmentView *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  [collectionView reloadData];
 
-  v5 = [(ICGalleryAttachmentView *)self galleryEditorController];
-  [v5 updateDocumentViewControllerFromModel];
+  galleryEditorController = [(ICGalleryAttachmentView *)self galleryEditorController];
+  [galleryEditorController updateDocumentViewControllerFromModel];
 
   [(ICGalleryAttachmentView *)self updateActivityView];
 }
 
-- (void)didUpdateSubAttachmentAtIndex:(int64_t)a3 sizeDidChange:(BOOL)a4
+- (void)didUpdateSubAttachmentAtIndex:(int64_t)index sizeDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v13[1] = *MEMORY[0x277D85DE8];
-  v7 = [(ICGalleryAttachmentView *)self collectionView];
-  v8 = [v7 numberOfItemsInSection:0];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  v8 = [collectionView numberOfItemsInSection:0];
 
-  if (v8 > a3)
+  if (v8 > index)
   {
-    v9 = [(ICGalleryAttachmentView *)self collectionView];
-    v10 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+    collectionView2 = [(ICGalleryAttachmentView *)self collectionView];
+    v10 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
     v13[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v9 reloadItemsAtIndexPaths:v11];
+    [collectionView2 reloadItemsAtIndexPaths:v11];
 
-    if (v4)
+    if (changeCopy)
     {
-      v12 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-      [v12 invalidateLayout];
+      collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
   }
 
@@ -1111,10 +1111,10 @@ LABEL_14:
 - (void)updateActivityView
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ICGalleryAttachmentView *)self attachment];
-  v4 = [v3 needsInitialFetchFromCloud];
+  attachment = [(ICGalleryAttachmentView *)self attachment];
+  needsInitialFetchFromCloud = [attachment needsInitialFetchFromCloud];
 
-  if (v4)
+  if (needsInitialFetchFromCloud)
   {
     v5 = 0;
   }
@@ -1125,8 +1125,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+    v7 = [subAttachmentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1138,16 +1138,16 @@ LABEL_14:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subAttachmentItems);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) attachment];
-          v13 = v12 == 0;
+          attachment2 = [*(*(&v15 + 1) + 8 * i) attachment];
+          v13 = attachment2 == 0;
 
           v9 |= v13;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [subAttachmentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -1160,162 +1160,162 @@ LABEL_14:
     }
   }
 
-  v14 = [(ICGalleryAttachmentView *)self activityView];
-  [v14 setCollapsed:v5 & 1];
+  activityView = [(ICGalleryAttachmentView *)self activityView];
+  [activityView setCollapsed:v5 & 1];
 }
 
-- (void)openAttachmentAtIndex:(unint64_t)a3
+- (void)openAttachmentAtIndex:(unint64_t)index
 {
   v26[1] = *MEMORY[0x277D85DE8];
   if (![(ICAttachmentView *)self showRecoverNoteAlertIfNecessary])
   {
     objc_opt_class();
-    v5 = [(ICGalleryAttachmentView *)self attachment];
-    v6 = [v5 attachmentModel];
+    attachment = [(ICGalleryAttachmentView *)self attachment];
+    attachmentModel = [attachment attachmentModel];
     v7 = ICCheckedDynamicCast();
 
     if ([v7 subAttachmentCount])
     {
-      v8 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+      v8 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
       [(ICGalleryAttachmentView *)self setIndexPathForZoomTransition:v8];
 
-      v9 = [(ICGalleryAttachmentView *)self galleryEditorController];
+      galleryEditorController = [(ICGalleryAttachmentView *)self galleryEditorController];
 
-      if (!v9)
+      if (!galleryEditorController)
       {
         v10 = [ICGalleryAttachmentEditorController alloc];
-        v11 = [(ICGalleryAttachmentView *)self attachment];
-        v12 = [(ICGalleryAttachmentEditorController *)v10 initWithGalleryAttachment:v11 browserMode:0 delegate:self];
+        attachment2 = [(ICGalleryAttachmentView *)self attachment];
+        v12 = [(ICGalleryAttachmentEditorController *)v10 initWithGalleryAttachment:attachment2 browserMode:0 delegate:self];
         [(ICGalleryAttachmentView *)self setGalleryEditorController:v12];
       }
 
-      v13 = [v7 singleSubAttachmentAtIndex:a3];
+      v13 = [v7 singleSubAttachmentAtIndex:index];
       if (_UIApplicationIsExtension())
       {
         v14 = [ICAttachmentPresenter alloc];
-        v15 = [(ICGalleryAttachmentView *)self attachment];
-        v26[0] = v15;
+        attachment3 = [(ICGalleryAttachmentView *)self attachment];
+        v26[0] = attachment3;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-        v17 = [(ICGalleryAttachmentView *)self attachment];
-        v18 = [v17 isReadOnly];
-        v19 = [(ICGalleryAttachmentView *)self window];
-        v20 = [v19 rootViewController];
-        v21 = [(ICAttachmentPresenter *)v14 initWithViewControllerManager:0 attachments:v16 startingAtIndex:0 delegate:self displayShowInNote:0 editable:v18 ^ 1u presentingViewController:v20];
+        attachment4 = [(ICGalleryAttachmentView *)self attachment];
+        isReadOnly = [attachment4 isReadOnly];
+        window = [(ICGalleryAttachmentView *)self window];
+        rootViewController = [window rootViewController];
+        v21 = [(ICAttachmentPresenter *)v14 initWithViewControllerManager:0 attachments:v16 startingAtIndex:0 delegate:self displayShowInNote:0 editable:isReadOnly ^ 1u presentingViewController:rootViewController];
         [(ICGalleryAttachmentView *)self setIPhoneSystemPaperAttachmentPresenter:v21];
 
-        v22 = [(ICGalleryAttachmentView *)self iPhoneSystemPaperAttachmentPresenter];
-        [v22 presentAttachmentWithSelectedSubAttachment:v13];
+        iPhoneSystemPaperAttachmentPresenter = [(ICGalleryAttachmentView *)self iPhoneSystemPaperAttachmentPresenter];
+        [iPhoneSystemPaperAttachmentPresenter presentAttachmentWithSelectedSubAttachment:v13];
       }
 
       else
       {
-        v23 = [(ICGalleryAttachmentView *)self ic_viewControllerManager];
-        v24 = [(ICGalleryAttachmentView *)self attachment];
-        v25 = [(ICGalleryAttachmentView *)self attachment];
-        [v23 presentAttachment:v24 delegate:self displayShowInNote:0 editable:objc_msgSend(v25 selectedSubAttachment:"isReadOnly") ^ 1 presentingViewController:{v13, 0}];
+        ic_viewControllerManager = [(ICGalleryAttachmentView *)self ic_viewControllerManager];
+        attachment5 = [(ICGalleryAttachmentView *)self attachment];
+        attachment6 = [(ICGalleryAttachmentView *)self attachment];
+        [ic_viewControllerManager presentAttachment:attachment5 delegate:self displayShowInNote:0 editable:objc_msgSend(attachment6 selectedSubAttachment:"isReadOnly") ^ 1 presentingViewController:{v13, 0}];
       }
     }
   }
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(ICGalleryAttachmentView *)self galleryEditorController];
-  v9 = [v8 row];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  galleryEditorController = [(ICGalleryAttachmentView *)self galleryEditorController];
+  v9 = [pathCopy row];
 
-  v10 = [v7 row];
-  [v11 movePageFromIndex:v9 toIndex:v10];
+  v10 = [indexPathCopy row];
+  [galleryEditorController movePageFromIndex:v9 toIndex:v10];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(ICGalleryAttachmentView *)self subAttachmentItems:a3];
+  v4 = [(ICGalleryAttachmentView *)self subAttachmentItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   objc_opt_class();
-  v6 = [(ICGalleryAttachmentView *)self collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"ICGalleryViewCollectionViewCell" forIndexPath:v5];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"ICGalleryViewCollectionViewCell" forIndexPath:pathCopy];
   v8 = ICCheckedDynamicCast();
 
-  v9 = [v5 row];
-  v10 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-  v11 = [v10 count];
+  v9 = [pathCopy row];
+  subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+  v11 = [subAttachmentItems count];
 
   if (v9 >= v11)
   {
     v16 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(ICGalleryAttachmentView(PlatformSpecificResponsibilty) *)v5 collectionView:v16 cellForItemAtIndexPath:?];
+      [(ICGalleryAttachmentView(PlatformSpecificResponsibilty) *)pathCopy collectionView:v16 cellForItemAtIndexPath:?];
     }
   }
 
   else
   {
     [v8 setDelegate:self];
-    v12 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-    v14 = [v13 attachment];
-    [v8 setAttachment:v14];
+    subAttachmentItems2 = [(ICGalleryAttachmentView *)self subAttachmentItems];
+    v13 = [subAttachmentItems2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    attachment = [v13 attachment];
+    [v8 setAttachment:attachment];
 
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [v8 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v8 setBackgroundColor:clearColor];
   }
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [a4 item];
+  item = [path item];
 
-  [(ICGalleryAttachmentView *)self openAttachmentAtIndex:v5];
+  [(ICGalleryAttachmentView *)self openAttachmentAtIndex:item];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-  [v7 itemSize];
+  pathCopy = path;
+  collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+  [collectionViewLayout itemSize];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v6 item];
-  v13 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-  v14 = [v13 count];
+  item = [pathCopy item];
+  subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+  v14 = [subAttachmentItems count];
 
-  if (v12 < v14)
+  if (item < v14)
   {
-    v15 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-    v16 = [v15 objectAtIndexedSubscript:v12];
+    subAttachmentItems2 = [(ICGalleryAttachmentView *)self subAttachmentItems];
+    v16 = [subAttachmentItems2 objectAtIndexedSubscript:item];
 
-    v17 = [v16 attachment];
+    attachment = [v16 attachment];
 
-    if (v17)
+    if (attachment)
     {
       v18 = objc_opt_class();
-      v19 = [v16 attachment];
-      [v19 sizeWidth];
+      attachment2 = [v16 attachment];
+      [attachment2 sizeWidth];
       v21 = v20;
-      v22 = [v16 attachment];
-      [v22 sizeHeight];
+      attachment3 = [v16 attachment];
+      [attachment3 sizeHeight];
       [v18 effectiveAspectRatioForWidth:v21 height:v23];
       v25 = v24;
 
-      v26 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-      [v26 itemHeight];
+      collectionViewLayout2 = [(ICGalleryAttachmentView *)self collectionViewLayout];
+      [collectionViewLayout2 itemHeight];
       v9 = round(v25 * v27);
 
-      v28 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-      [v28 itemHeight];
+      collectionViewLayout3 = [(ICGalleryAttachmentView *)self collectionViewLayout];
+      [collectionViewLayout3 itemHeight];
       v11 = v29;
     }
   }
@@ -1327,7 +1327,7 @@ LABEL_14:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 9.0;
   v6 = 9.0;
@@ -1342,72 +1342,72 @@ LABEL_14:
 
 - (double)galleryAttachmentViewItemHeight
 {
-  v2 = [(ICGalleryAttachmentView *)self collectionViewLayout];
-  [v2 itemHeight];
+  collectionViewLayout = [(ICGalleryAttachmentView *)self collectionViewLayout];
+  [collectionViewLayout itemHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment
 {
-  v5 = [(ICGalleryAttachmentView *)self collectionView:a3];
-  v6 = [(ICGalleryAttachmentView *)self indexPathForZoomTransition];
-  v7 = [v5 cellForItemAtIndexPath:v6];
+  v5 = [(ICGalleryAttachmentView *)self collectionView:presenter];
+  indexPathForZoomTransition = [(ICGalleryAttachmentView *)self indexPathForZoomTransition];
+  v7 = [v5 cellForItemAtIndexPath:indexPathForZoomTransition];
 
   return v7;
 }
 
-- (id)attachmentPresenter:(id)a3 transitionViewForIndexPath:(id)a4
+- (id)attachmentPresenter:(id)presenter transitionViewForIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICGalleryAttachmentView *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)scrollCollectionViewToIndexPath:(id)a3
+- (void)scrollCollectionViewToIndexPath:(id)path
 {
-  v10 = a3;
-  v4 = [v10 section];
-  v5 = [(ICGalleryAttachmentView *)self collectionView];
-  if (v4 < [v5 numberOfSections])
+  pathCopy = path;
+  section = [pathCopy section];
+  collectionView = [(ICGalleryAttachmentView *)self collectionView];
+  if (section < [collectionView numberOfSections])
   {
-    v6 = [v10 item];
-    v7 = [(ICGalleryAttachmentView *)self collectionView];
-    v8 = [v7 numberOfItemsInSection:{objc_msgSend(v10, "section")}];
+    item = [pathCopy item];
+    collectionView2 = [(ICGalleryAttachmentView *)self collectionView];
+    v8 = [collectionView2 numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
 
-    if (v6 >= v8)
+    if (item >= v8)
     {
       goto LABEL_5;
     }
 
-    v9 = [(ICGalleryAttachmentView *)self collectionView];
-    [v9 scrollToItemAtIndexPath:v10 atScrollPosition:8 animated:0];
+    collectionView3 = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView3 scrollToItemAtIndexPath:pathCopy atScrollPosition:8 animated:0];
 
-    v5 = [(ICGalleryAttachmentView *)self collectionView];
-    [v5 layoutIfNeeded];
+    collectionView = [(ICGalleryAttachmentView *)self collectionView];
+    [collectionView layoutIfNeeded];
   }
 
 LABEL_5:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
+  beginCopy = begin;
+  tapGestureRecognizer = [(ICGalleryAttachmentView *)self tapGestureRecognizer];
 
-  if (v5 == v4)
+  if (tapGestureRecognizer == beginCopy)
   {
-    v7 = [(ICGalleryAttachmentView *)self attachment];
+    attachment = [(ICGalleryAttachmentView *)self attachment];
 
-    if (v7)
+    if (attachment)
     {
-      [v4 locationInView:self];
+      [beginCopy locationInView:self];
       v9 = v8;
-      v10 = [(ICGalleryAttachmentView *)self collectionView];
-      [v10 frame];
+      collectionView = [(ICGalleryAttachmentView *)self collectionView];
+      [collectionView frame];
       v12 = v11;
 
       v6 = v9 < v12;
@@ -1423,7 +1423,7 @@ LABEL_5:
   {
     v14.receiver = self;
     v14.super_class = ICGalleryAttachmentView;
-    v6 = [(ICGalleryAttachmentView *)&v14 gestureRecognizerShouldBegin:v4];
+    v6 = [(ICGalleryAttachmentView *)&v14 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v6;
@@ -1431,8 +1431,8 @@ LABEL_5:
 
 - (id)accessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Scanned document attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Scanned document attachment" value:&stru_282757698 table:0];
 
   return v3;
 }
@@ -1441,25 +1441,25 @@ LABEL_5:
 {
   v20.receiver = self;
   v20.super_class = ICGalleryAttachmentView;
-  v3 = [(ICAttachmentView *)&v20 accessibilityValue];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"%lu scans" value:&stru_282757698 table:0];
+  accessibilityValue = [(ICAttachmentView *)&v20 accessibilityValue];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"%lu scans" value:&stru_282757698 table:0];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-  v8 = [v6 localizedStringWithFormat:v5, objc_msgSend(v7, "count")];
+  subAttachmentItems = [(ICGalleryAttachmentView *)self subAttachmentItems];
+  v8 = [v6 localizedStringWithFormat:v5, objc_msgSend(subAttachmentItems, "count")];
 
-  v9 = [(ICGalleryAttachmentView *)self subAttachmentItems];
-  v10 = [v9 firstObject];
-  v11 = [v10 attachment];
-  v12 = [v11 ocrSummary];
-  v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v14 = [v12 stringByTrimmingCharactersInSet:v13];
+  subAttachmentItems2 = [(ICGalleryAttachmentView *)self subAttachmentItems];
+  firstObject = [subAttachmentItems2 firstObject];
+  attachment = [firstObject attachment];
+  ocrSummary = [attachment ocrSummary];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v14 = [ocrSummary stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v14 length])
   {
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 localizedStringForKey:@"Possible text for first scan: %@" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle2 localizedStringForKey:@"Possible text for first scan: %@" value:&stru_282757698 table:0];
 
     v17 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v16, v14];
   }

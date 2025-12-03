@@ -1,17 +1,17 @@
 @interface _UIScreenFixedCoordinateSpace
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 @end
 
 @implementation _UIScreenFixedCoordinateSpace
 
 - (CGRect)bounds
 {
-  v2 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-  [v2 _referenceBounds];
+  _screen = [(_UIScreenFixedCoordinateSpace *)self _screen];
+  [_screen _referenceBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -28,43 +28,43 @@
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  [(_UIScreenFixedCoordinateSpace *)self convertRect:a4 toCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(_UIScreenFixedCoordinateSpace *)self convertRect:space toCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  [(_UIScreenFixedCoordinateSpace *)self convertRect:a4 fromCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(_UIScreenFixedCoordinateSpace *)self convertRect:space fromCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (space)
   {
-    v9 = a4;
-    v10 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    [v10 _referenceBounds];
+    spaceCopy = space;
+    _screen = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    [_screen _referenceBounds];
     v12 = v11;
     v14 = v13;
-    v15 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    v16 = _UIWindowConvertRectFromSceneReferenceSpaceToSceneSpace([v15 _interfaceOrientation], x, y, width, height, v12, v14);
+    _screen2 = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    v16 = _UIWindowConvertRectFromSceneReferenceSpaceToSceneSpace([_screen2 _interfaceOrientation], x, y, width, height, v12, v14);
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    [v9 convertRect:v23 fromCoordinateSpace:{v16, v18, v20, v22}];
+    _screen3 = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    [spaceCopy convertRect:_screen3 fromCoordinateSpace:{v16, v18, v20, v22}];
     x = v24;
     y = v25;
     width = v26;
@@ -82,28 +82,28 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (space)
   {
-    v9 = a4;
-    v10 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    [v9 convertRect:v10 toCoordinateSpace:{x, y, width, height}];
+    spaceCopy = space;
+    _screen = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    [spaceCopy convertRect:_screen toCoordinateSpace:{x, y, width, height}];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    [v19 _referenceBounds];
+    _screen2 = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    [_screen2 _referenceBounds];
     v21 = v20;
     v23 = v22;
-    v24 = [(_UIScreenFixedCoordinateSpace *)self _screen];
-    x = _UIWindowConvertRectFromSceneSpaceToSceneReferenceSpace([v24 _interfaceOrientation], v12, v14, v16, v18, v21, v23);
+    _screen3 = [(_UIScreenFixedCoordinateSpace *)self _screen];
+    x = _UIWindowConvertRectFromSceneSpaceToSceneReferenceSpace([_screen3 _interfaceOrientation], v12, v14, v16, v18, v21, v23);
     y = v25;
     width = v26;
     height = v27;

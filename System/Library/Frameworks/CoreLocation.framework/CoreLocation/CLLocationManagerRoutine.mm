@@ -2,14 +2,14 @@
 - (CLInertialDataManagerDelegate)inertialDelegate;
 - (CLLocationManagerDelegate)delegate;
 - (CLLocationManagerRoutine)init;
-- (CLLocationManagerRoutine)initWithQueue:(id)a3;
+- (CLLocationManagerRoutine)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)fetchLocationAtDate:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationAtMachContinuousTime:(double)a3 withHandler:(id)a4;
-- (void)fetchLocationsInLastSeconds:(unsigned int)a3 withHandler:(id)a4;
-- (void)fetchRecentLocationsWithOptions:(id)a3 withHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setInertialDelegate:(id)a3;
+- (void)fetchLocationAtDate:(id)date withHandler:(id)handler;
+- (void)fetchLocationAtMachContinuousTime:(double)time withHandler:(id)handler;
+- (void)fetchLocationsInLastSeconds:(unsigned int)seconds withHandler:(id)handler;
+- (void)fetchRecentLocationsWithOptions:(id)options withHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setInertialDelegate:(id)delegate;
 - (void)startUpdatingLocation;
 - (void)stopUpdatingLocation;
 @end
@@ -24,16 +24,16 @@
   return v4;
 }
 
-- (CLLocationManagerRoutine)initWithQueue:(id)a3
+- (CLLocationManagerRoutine)initWithQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
     v6.receiver = self;
     v6.super_class = CLLocationManagerRoutine;
     v4 = [(CLLocationManagerRoutine *)&v6 init];
     if (v4)
     {
-      v4->_locationManagerRoutineProxy = [[_CLLocationManagerRoutineProxy alloc] initWithQueue:a3 locationManagerRoutine:v4];
+      v4->_locationManagerRoutineProxy = [[_CLLocationManagerRoutineProxy alloc] initWithQueue:queue locationManagerRoutine:v4];
     }
   }
 
@@ -76,18 +76,18 @@
   dispatch_async(v3, block);
 }
 
-- (void)fetchLocationAtDate:(id)a3 withHandler:(id)a4
+- (void)fetchLocationAtDate:(id)date withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (handler)
   {
     v7 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_19B893578;
     block[3] = &unk_1E753CFD8;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = date;
+    block[6] = handler;
     block[4] = self;
     dispatch_async(v7, block);
   }
@@ -128,10 +128,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchLocationAtMachContinuousTime:(double)a3 withHandler:(id)a4
+- (void)fetchLocationAtMachContinuousTime:(double)time withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (handler)
   {
     v7 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
     block[0] = MEMORY[0x1E69E9820];
@@ -139,8 +139,8 @@
     block[2] = sub_19B893918;
     block[3] = &unk_1E753D000;
     block[4] = self;
-    block[5] = a4;
-    *&block[6] = a3;
+    block[5] = handler;
+    *&block[6] = time;
     dispatch_async(v7, block);
   }
 
@@ -180,10 +180,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchLocationsInLastSeconds:(unsigned int)a3 withHandler:(id)a4
+- (void)fetchLocationsInLastSeconds:(unsigned int)seconds withHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (handler)
   {
     v7 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
     block[0] = MEMORY[0x1E69E9820];
@@ -191,8 +191,8 @@
     block[2] = sub_19B893CB8;
     block[3] = &unk_1E753D028;
     block[4] = self;
-    block[5] = a4;
-    v13 = a3;
+    block[5] = handler;
+    secondsCopy = seconds;
     dispatch_async(v7, block);
   }
 
@@ -232,18 +232,18 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchRecentLocationsWithOptions:(id)a3 withHandler:(id)a4
+- (void)fetchRecentLocationsWithOptions:(id)options withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (handler)
   {
     v7 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_19B894058;
     block[3] = &unk_1E753CFD8;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = options;
+    block[6] = handler;
     block[4] = self;
     dispatch_async(v7, block);
   }
@@ -284,7 +284,7 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
   v6[0] = MEMORY[0x1E69E9820];
@@ -292,18 +292,18 @@
   v6[2] = sub_19B894268;
   v6[3] = &unk_1E753CF38;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = delegate;
   dispatch_async(v5, v6);
 }
 
 - (CLLocationManagerDelegate)delegate
 {
-  v2 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy];
+  locationManagerRoutineProxy = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy];
 
-  return [(_CLLocationManagerRoutineProxy *)v2 delegate];
+  return [(_CLLocationManagerRoutineProxy *)locationManagerRoutineProxy delegate];
 }
 
-- (void)setInertialDelegate:(id)a3
+- (void)setInertialDelegate:(id)delegate
 {
   v5 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy][8];
   v6[0] = MEMORY[0x1E69E9820];
@@ -311,15 +311,15 @@
   v6[2] = sub_19B894350;
   v6[3] = &unk_1E753CF38;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = delegate;
   dispatch_async(v5, v6);
 }
 
 - (CLInertialDataManagerDelegate)inertialDelegate
 {
-  v2 = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy];
+  locationManagerRoutineProxy = [(CLLocationManagerRoutine *)self locationManagerRoutineProxy];
 
-  return [(_CLLocationManagerRoutineProxy *)v2 inertialDelegate];
+  return [(_CLLocationManagerRoutineProxy *)locationManagerRoutineProxy inertialDelegate];
 }
 
 @end

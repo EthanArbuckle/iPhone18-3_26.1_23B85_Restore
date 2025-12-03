@@ -1,13 +1,13 @@
 @interface JSMediaAPIObject
-- (id)lookup:(id)a3;
+- (id)lookup:(id)lookup;
 @end
 
 @implementation JSMediaAPIObject
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
-  v4 = a3;
-  v5 = self;
+  lookupCopy = lookup;
+  selfCopy = self;
   v6 = sub_10002136C();
 
   return v6;

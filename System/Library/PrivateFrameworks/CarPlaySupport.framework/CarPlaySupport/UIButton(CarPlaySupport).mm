@@ -6,7 +6,7 @@
 
 - (void)cps_setBackgroundColor:()CarPlaySupport forState:
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -26,7 +26,7 @@
   CGContextFillRect(CurrentContext, v13);
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  [v16 setBackgroundImage:v11 forState:v14];
+  [selfCopy setBackgroundImage:v11 forState:v14];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }

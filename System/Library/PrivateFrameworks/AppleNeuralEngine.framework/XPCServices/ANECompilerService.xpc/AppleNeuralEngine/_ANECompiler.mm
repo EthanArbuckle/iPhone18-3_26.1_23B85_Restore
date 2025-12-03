@@ -1,10 +1,10 @@
 @interface _ANECompiler
-+ (id)compileModel:(id *)a3 options:(id)a4 ok:(BOOL *)a5 error:(id *)a6;
-+ (id)compileModelJIT:(id *)a3 ok:(BOOL *)a4 error:(id *)a5;
-+ (id)createErrorWithUnderlyingError:(id)a3;
-+ (id)createInMemoryConstants:(id)a3;
-+ (id)createJITNetworkFromModelAtPath:(id)a3 modelFilename:(id)a4 aotModelAtPath:(id)a5 aotModelFilename:(id)a6;
-+ (id)createNetworkFromModelAtPath:(id)a3 modelFilename:(id)a4;
++ (id)compileModel:(id *)model options:(id)options ok:(BOOL *)ok error:(id *)error;
++ (id)compileModelJIT:(id *)t ok:(BOOL *)ok error:(id *)error;
++ (id)createErrorWithUnderlyingError:(id)error;
++ (id)createInMemoryConstants:(id)constants;
++ (id)createJITNetworkFromModelAtPath:(id)path modelFilename:(id)filename aotModelAtPath:(id)atPath aotModelFilename:(id)modelFilename;
++ (id)createNetworkFromModelAtPath:(id)path modelFilename:(id)filename;
 + (void)initialize;
 @end
 
@@ -17,39 +17,39 @@
   _objc_release_x1();
 }
 
-+ (id)createNetworkFromModelAtPath:(id)a3 modelFilename:(id)a4
++ (id)createNetworkFromModelAtPath:(id)path modelFilename:(id)filename
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  filenameCopy = filename;
   v7 = [&__NSDictionary0__struct mutableCopy];
-  [v7 setObject:v6 forKeyedSubscript:@"NetworkSourceFileName"];
-  [v7 setObject:v5 forKeyedSubscript:@"NetworkSourcePath"];
+  [v7 setObject:filenameCopy forKeyedSubscript:@"NetworkSourceFileName"];
+  [v7 setObject:pathCopy forKeyedSubscript:@"NetworkSourcePath"];
   v8 = [&__NSArray0__struct mutableCopy];
   [v8 addObject:v7];
 
   return v8;
 }
 
-+ (id)createJITNetworkFromModelAtPath:(id)a3 modelFilename:(id)a4 aotModelAtPath:(id)a5 aotModelFilename:(id)a6
++ (id)createJITNetworkFromModelAtPath:(id)path modelFilename:(id)filename aotModelAtPath:(id)atPath aotModelFilename:(id)modelFilename
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  filenameCopy = filename;
+  atPathCopy = atPath;
+  modelFilenameCopy = modelFilename;
   v13 = [&__NSDictionary0__struct mutableCopy];
-  [v13 setObject:v12 forKeyedSubscript:@"NetworkSourceFileName"];
-  [v13 setObject:v11 forKeyedSubscript:@"NetworkSourcePath"];
-  [v13 setObject:v10 forKeyedSubscript:@"NetworkJITShapesName"];
-  [v13 setObject:v9 forKeyedSubscript:@"NetworkJITShapesPath"];
+  [v13 setObject:modelFilenameCopy forKeyedSubscript:@"NetworkSourceFileName"];
+  [v13 setObject:atPathCopy forKeyedSubscript:@"NetworkSourcePath"];
+  [v13 setObject:filenameCopy forKeyedSubscript:@"NetworkJITShapesName"];
+  [v13 setObject:pathCopy forKeyedSubscript:@"NetworkJITShapesPath"];
   v14 = [&__NSArray0__struct mutableCopy];
   [v14 addObject:v13];
 
   return v14;
 }
 
-+ (id)createErrorWithUnderlyingError:(id)a3
++ (id)createErrorWithUnderlyingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
   v6 = [NSString stringWithFormat:@"_ANECompiler : ANECCompile() FAILED"];
   v7 = qword_100021B20;
@@ -61,12 +61,12 @@
   }
 
   v8 = +[_ANEStrings errorDomainCompiler];
-  if (v4)
+  if (errorCopy)
   {
     v15[0] = NSLocalizedDescriptionKey;
     v15[1] = NSUnderlyingErrorKey;
     v16[0] = v6;
-    v16[1] = v4;
+    v16[1] = errorCopy;
     v9 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
     v10 = [NSError errorWithDomain:v8 code:1 userInfo:v9];
   }
@@ -86,18 +86,18 @@
   return v11;
 }
 
-+ (id)compileModelJIT:(id *)a3 ok:(BOOL *)a4 error:(id *)a5
++ (id)compileModelJIT:(id *)t ok:(BOOL *)ok error:(id *)error
 {
   v75 = mach_continuous_time();
   spid = os_signpost_id_generate(qword_100021B20);
-  v83 = a3->var0;
-  v90 = a3->var1;
-  v92 = a3->var4;
-  v87 = a3->var3;
-  v80 = a3->var6;
-  v84 = a3->var5;
-  v89 = a3->var2;
-  var8 = a3->var8;
+  v83 = t->var0;
+  v90 = t->var1;
+  v92 = t->var4;
+  v87 = t->var3;
+  v80 = t->var6;
+  v84 = t->var5;
+  v89 = t->var2;
+  var8 = t->var8;
   v10 = qword_100021B20;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -107,7 +107,7 @@
     *&buf[12] = 2080;
     *&buf[14] = [v84 UTF8String];
     *&buf[22] = 2080;
-    v121 = [v90 UTF8String];
+    uTF8String = [v90 UTF8String];
     LOWORD(v122) = 2080;
     *(&v122 + 2) = [v83 UTF8String];
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%@: START : compileModelJIT compilerRequest.aotModelBinaryPath=%s : inputModelPath(JIT)=%s modelFilename(JIT)=%s", buf, 0x2Au);
@@ -119,7 +119,7 @@
   v78 = (spid - 1);
   if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v13 = *a4;
+    v13 = *ok;
     *buf = 67109376;
     *&buf[8] = 1024;
     *&buf[10] = v13;
@@ -127,7 +127,7 @@
   }
 
   v14 = +[_ANEStrings modelBinaryName];
-  v82 = [a1 createJITNetworkFromModelAtPath:v90 modelFilename:v83 aotModelAtPath:v84 aotModelFilename:v14];
+  v82 = [self createJITNetworkFromModelAtPath:v90 modelFilename:v83 aotModelAtPath:v84 aotModelFilename:v14];
 
   v93 = [&__NSDictionary0__struct mutableCopy];
   [v93 setObject:v82 forKeyedSubscript:@"InputNetworks"];
@@ -170,7 +170,7 @@
       *&buf[12] = 2112;
       *&buf[14] = v90;
       *&buf[22] = 2112;
-      v121 = v89;
+      uTF8String = v89;
       LOWORD(v122) = 2112;
       *(&v122 + 2) = v88;
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@: inputModelPath=%@ : optionsFilePath=%@ : compilerOptions=%@", buf, 0x2Au);
@@ -180,7 +180,7 @@
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v121 = sub_10000C908;
+  uTF8String = sub_10000C908;
   *&v122 = sub_10000C918;
   *(&v122 + 1) = 0;
   v102[0] = 0;
@@ -199,7 +199,7 @@
   if (!v22)
   {
     v23 = +[NSFileManager defaultManager];
-    *a4 = 1;
+    *ok = 1;
     v85 = [v92 stringByAppendingPathComponent:v86];
     v27 = [v92 stringByAppendingPathComponent:v87];
     v100[0] = 0;
@@ -228,7 +228,7 @@
     v31 = [v23 moveItemAtPath:v85 toPath:v27 error:&v99];
     v32 = v99;
 
-    *a4 = v31;
+    *ok = v31;
     if (v31)
     {
       v33 = v77;
@@ -425,7 +425,7 @@ LABEL_69:
 
     else
     {
-      *a4 = 0;
+      *ok = 0;
       v54 = qword_100021B20;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
@@ -443,7 +443,7 @@ LABEL_69:
     goto LABEL_69;
   }
 
-  *a4 = 0;
+  *ok = 0;
   v23 = [*(*&buf[8] + 40) objectForKeyedSubscript:@"ErrorList"];
   v85 = [NSString stringWithFormat:@"ANECCompile(%@) FAILED: err=%@", v90, v23];
   v24 = qword_100021B20;
@@ -454,13 +454,13 @@ LABEL_69:
     sub_1000116FC();
   }
 
-  if (a5)
+  if (error)
   {
     v25 = +[_ANEStrings errorDomainCompiler];
     v106 = NSLocalizedDescriptionKey;
     v107 = v85;
     v26 = [NSDictionary dictionaryWithObjects:&v107 forKeys:&v106 count:1];
-    *a5 = [NSError errorWithDomain:v25 code:v22 userInfo:v26];
+    *error = [NSError errorWithDomain:v25 code:v22 userInfo:v26];
   }
 
   [_ANEDataReporter addValue:1 forScalarKey:@"ModelFailsToCompileANECIR"];
@@ -487,7 +487,7 @@ LABEL_70:
   {
     if (os_signpost_enabled(v60))
     {
-      v62 = *a4;
+      v62 = *ok;
       *v104 = 67109376;
       *v105 = 0;
       *&v105[4] = 1024;
@@ -511,22 +511,22 @@ LABEL_70:
   return v64;
 }
 
-+ (id)compileModel:(id *)a3 options:(id)a4 ok:(BOOL *)a5 error:(id *)a6
++ (id)compileModel:(id *)model options:(id)options ok:(BOOL *)ok error:(id *)error
 {
-  v94 = a4;
-  if (!a3->var7)
+  optionsCopy = options;
+  if (!model->var7)
   {
-    v13 = a3->var1;
-    v14 = a3->var0;
-    v91 = a3->var2;
-    v15 = a3->var4;
-    v88 = a3->var3;
-    v84 = a3->var6;
-    var8 = a3->var8;
+    v13 = model->var1;
+    v14 = model->var0;
+    v91 = model->var2;
+    v15 = model->var4;
+    v88 = model->var3;
+    v84 = model->var6;
+    var8 = model->var8;
     v90 = v13;
     v92 = v14;
     v87 = v15;
-    v85 = [a1 createNetworkFromModelAtPath:v13 modelFilename:v14];
+    v85 = [self createNetworkFromModelAtPath:v13 modelFilename:v14];
     v93 = [&__NSDictionary0__struct mutableCopy];
     [v93 setObject:v85 forKeyedSubscript:@"InputNetworks"];
     v83 = [NSString stringWithFormat:@"%@.tmp", v88];
@@ -547,7 +547,7 @@ LABEL_70:
     }
 
     [v96 setObject:v89 forKeyedSubscript:@"TargetArchitecture"];
-    if (a3->var10)
+    if (model->var10)
     {
       v21 = [_ANECompiler createInMemoryConstants:?];
       [v96 setObject:v21 forKeyedSubscript:@"mpsConstants"];
@@ -644,7 +644,7 @@ LABEL_70:
 
     if (v28)
     {
-      *a5 = 0;
+      *ok = 0;
       v30 = [*(*&v123[8] + 40) objectForKeyedSubscript:@"ErrorList"];
       v86 = [NSString stringWithFormat:@"ANECCompile(%@) FAILED: err=%@", v90, v30];
       v31 = qword_100021B20;
@@ -655,13 +655,13 @@ LABEL_70:
         sub_1000116FC();
       }
 
-      if (a6)
+      if (error)
       {
         v32 = +[_ANEStrings errorDomainCompiler];
         v107 = NSLocalizedDescriptionKey;
         v108 = v86;
         v33 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-        *a6 = [NSError errorWithDomain:v32 code:v28 userInfo:v33];
+        *error = [NSError errorWithDomain:v32 code:v28 userInfo:v33];
       }
 
       [_ANEDataReporter addValue:1 forScalarKey:@"ModelFailsToCompileANECIR"];
@@ -683,7 +683,7 @@ LABEL_86:
     }
 
     v30 = +[NSFileManager defaultManager];
-    *a5 = 1;
+    *ok = 1;
     v86 = [v87 stringByAppendingPathComponent:v83];
     v34 = [v87 stringByAppendingPathComponent:v88];
     v104[0] = 0;
@@ -712,7 +712,7 @@ LABEL_86:
     v38 = [v30 moveItemAtPath:v86 toPath:v34 error:&v103];
     v39 = v103;
 
-    *a5 = v38;
+    *ok = v38;
     if (v38)
     {
       v40 = v81;
@@ -858,11 +858,11 @@ LABEL_47:
       if (!+[_ANEStorageHelper enableApfsPurging])
       {
 LABEL_75:
-        v62 = [v94 objectForKeyedSubscript:kANEFRetainModelsWithoutSourceURLKey];
-        v63 = [v62 BOOLValue];
+        v62 = [optionsCopy objectForKeyedSubscript:kANEFRetainModelsWithoutSourceURLKey];
+        bOOLValue = [v62 BOOLValue];
 
         v64 = v82;
-        if (v63)
+        if (bOOLValue)
         {
           v65 = qword_100021B20;
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
@@ -925,7 +925,7 @@ LABEL_75:
 
     else
     {
-      *a5 = 0;
+      *ok = 0;
       v57 = qword_100021B20;
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
@@ -950,10 +950,10 @@ LABEL_75:
     sub_1000118C4(v11, buf, v10);
   }
 
-  v12 = [a1 compileModelJIT:a3 ok:a5 error:a6];
-  if (!*a5)
+  v12 = [self compileModelJIT:model ok:ok error:error];
+  if (!*ok)
   {
-    v90 = [NSString stringWithFormat:@"compileModelJIT: FAILED: lAttr=%@ : lErr=%@", v12, *a6];
+    v90 = [NSString stringWithFormat:@"compileModelJIT: FAILED: lAttr=%@ : lErr=%@", v12, *error];
     v92 = +[_ANELog compiler];
     if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
     {
@@ -968,15 +968,15 @@ LABEL_89:
   return v12;
 }
 
-+ (id)createInMemoryConstants:(id)a3
++ (id)createInMemoryConstants:(id)constants
 {
-  v43 = a3;
+  constantsCopy = constants;
   v3 = [&__NSDictionary0__struct mutableCopy];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = v43;
+  v4 = constantsCopy;
   v44 = v3;
   v5 = [v4 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v5)
@@ -1007,15 +1007,15 @@ LABEL_3:
         goto LABEL_20;
       }
 
-      v13 = [v11 ioSurface];
-      AllocSize = IOSurfaceGetAllocSize(v13);
-      v15 = [NSData dataWithBytesNoCopy:IOSurfaceGetBaseAddress(v13) length:AllocSize freeWhenDone:0];
+      ioSurface = [v11 ioSurface];
+      AllocSize = IOSurfaceGetAllocSize(ioSurface);
+      v15 = [NSData dataWithBytesNoCopy:IOSurfaceGetBaseAddress(ioSurface) length:AllocSize freeWhenDone:0];
       [v9 setObject:v15 forKeyedSubscript:@"mpsConstantDataRef"];
 
       v16 = [v10 objectForKey:kANEFConstantSurfaceAlignmentKey];
-      LODWORD(v13) = v16 == 0;
+      LODWORD(ioSurface) = v16 == 0;
 
-      if (v13)
+      if (ioSurface)
       {
         break;
       }

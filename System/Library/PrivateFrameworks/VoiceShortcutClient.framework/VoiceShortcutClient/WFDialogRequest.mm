@@ -1,54 +1,54 @@
 @interface WFDialogRequest
 - (NSString)promptForDisplay;
-- (WFDialogRequest)initWithAppBundleIdentifier:(id)a3 prompt:(id)a4;
-- (WFDialogRequest)initWithAttribution:(id)a3 prompt:(id)a4;
-- (WFDialogRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFDialogRequest)initWithAppBundleIdentifier:(id)identifier prompt:(id)prompt;
+- (WFDialogRequest)initWithAttribution:(id)attribution prompt:(id)prompt;
+- (WFDialogRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFDialogRequest *)self attribution];
-  [v4 encodeObject:v5 forKey:@"attribution"];
+  coderCopy = coder;
+  attribution = [(WFDialogRequest *)self attribution];
+  [coderCopy encodeObject:attribution forKey:@"attribution"];
 
-  v6 = [(WFDialogRequest *)self prompt];
-  [v4 encodeObject:v6 forKey:@"prompt"];
+  prompt = [(WFDialogRequest *)self prompt];
+  [coderCopy encodeObject:prompt forKey:@"prompt"];
 
-  [v4 encodeBool:-[WFDialogRequest requiresRunningShortcut](self forKey:{"requiresRunningShortcut"), @"requiresRunningShortcut"}];
-  v7 = [(WFDialogRequest *)self runViewSource];
-  [v4 encodeObject:v7 forKey:@"runViewSource"];
+  [coderCopy encodeBool:-[WFDialogRequest requiresRunningShortcut](self forKey:{"requiresRunningShortcut"), @"requiresRunningShortcut"}];
+  runViewSource = [(WFDialogRequest *)self runViewSource];
+  [coderCopy encodeObject:runViewSource forKey:@"runViewSource"];
 
-  [v4 encodeBool:-[WFDialogRequest isLastAction](self forKey:{"isLastAction"), @"isLastAction"}];
-  v8 = [(WFDialogRequest *)self linkDialog];
-  [v4 encodeObject:v8 forKey:@"linkDialog"];
+  [coderCopy encodeBool:-[WFDialogRequest isLastAction](self forKey:{"isLastAction"), @"isLastAction"}];
+  linkDialog = [(WFDialogRequest *)self linkDialog];
+  [coderCopy encodeObject:linkDialog forKey:@"linkDialog"];
 }
 
-- (WFDialogRequest)initWithCoder:(id)a3
+- (WFDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WFDialogRequest;
   v5 = [(WFDialogRequest *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attribution"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attribution"];
     attribution = v5->_attribution;
     v5->_attribution = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
     prompt = v5->_prompt;
     v5->_prompt = v8;
 
-    v5->_requiresRunningShortcut = [v4 decodeBoolForKey:@"requiresRunningShortcut"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runViewSource"];
+    v5->_requiresRunningShortcut = [coderCopy decodeBoolForKey:@"requiresRunningShortcut"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runViewSource"];
     runViewSource = v5->_runViewSource;
     v5->_runViewSource = v10;
 
-    v5->_isLastAction = [v4 decodeBoolForKey:@"isLastAction"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkDialog"];
+    v5->_isLastAction = [coderCopy decodeBoolForKey:@"isLastAction"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkDialog"];
     linkDialog = v5->_linkDialog;
     v5->_linkDialog = v12;
 
@@ -60,33 +60,33 @@
 
 - (NSString)promptForDisplay
 {
-  v2 = [(WFDialogRequest *)self prompt];
-  if (v2)
+  prompt = [(WFDialogRequest *)self prompt];
+  if (prompt)
   {
-    v3 = [WFTTSString parseAnnotatedString:v2];
-    v4 = [v3 displayString];
+    v3 = [WFTTSString parseAnnotatedString:prompt];
+    displayString = [v3 displayString];
   }
 
   else
   {
-    v4 = 0;
+    displayString = 0;
   }
 
-  return v4;
+  return displayString;
 }
 
-- (WFDialogRequest)initWithAttribution:(id)a3 prompt:(id)a4
+- (WFDialogRequest)initWithAttribution:(id)attribution prompt:(id)prompt
 {
-  v7 = a3;
-  v8 = a4;
+  attributionCopy = attribution;
+  promptCopy = prompt;
   v15.receiver = self;
   v15.super_class = WFDialogRequest;
   v9 = [(WFDialogRequest *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attribution, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_attribution, attribution);
+    v11 = [promptCopy copy];
     prompt = v10->_prompt;
     v10->_prompt = v11;
 
@@ -97,11 +97,11 @@
   return v10;
 }
 
-- (WFDialogRequest)initWithAppBundleIdentifier:(id)a3 prompt:(id)a4
+- (WFDialogRequest)initWithAppBundleIdentifier:(id)identifier prompt:(id)prompt
 {
-  v6 = a4;
-  v7 = [WFDialogAttribution attributionWithAppBundleIdentifier:a3];
-  v8 = [(WFDialogRequest *)self initWithAttribution:v7 prompt:v6];
+  promptCopy = prompt;
+  v7 = [WFDialogAttribution attributionWithAppBundleIdentifier:identifier];
+  v8 = [(WFDialogRequest *)self initWithAttribution:v7 prompt:promptCopy];
 
   return v8;
 }

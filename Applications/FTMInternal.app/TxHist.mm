@@ -1,18 +1,18 @@
 @interface TxHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChanType:(id)a3;
+- (int)StringAsChanType:(id)type;
 - (int)chanType;
 - (unint64_t)hash;
-- (unsigned)numTxLevelAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)numTxLevelAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinTxLevel:(BOOL)a3;
-- (void)setHasWorkMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinTxLevel:(BOOL)level;
+- (void)setHasWorkMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TxHist
@@ -38,25 +38,25 @@
   }
 }
 
-- (int)StringAsChanType:(id)a3
+- (int)StringAsChanType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PUCCH"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PUCCH"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"PUSCH"];
+    v4 = [typeCopy isEqualToString:@"PUSCH"];
   }
 
   return v4;
 }
 
-- (void)setHasWorkMode:(BOOL)a3
+- (void)setHasWorkMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinTxLevel:(BOOL)a3
+- (void)setHasMinTxLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 2;
   }
@@ -84,18 +84,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)numTxLevelAtIndex:(unint64_t)a3
+- (unsigned)numTxLevelAtIndex:(unint64_t)index
 {
   p_numTxLevels = &self->_numTxLevels;
   count = self->_numTxLevels.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_numTxLevels->list[a3];
+  return p_numTxLevels->list[index];
 }
 
 - (id)description
@@ -103,8 +103,8 @@
   v7.receiver = self;
   v7.super_class = TxHist;
   v3 = [(TxHist *)&v7 description];
-  v4 = [(TxHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TxHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -159,9 +159,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -216,9 +216,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -228,8 +228,8 @@ LABEL_5:
     }
 
 LABEL_13:
-    v4[10] = self->_workMode;
-    *(v4 + 44) |= 4u;
+    toCopy[10] = self->_workMode;
+    *(toCopy + 44) |= 4u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -238,8 +238,8 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v4[8] = self->_chanType;
-  *(v4 + 44) |= 1u;
+  toCopy[8] = self->_chanType;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -250,19 +250,19 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    v4[9] = self->_minTxLevel;
-    *(v4 + 44) |= 2u;
+    toCopy[9] = self->_minTxLevel;
+    *(toCopy + 44) |= 2u;
   }
 
 LABEL_5:
-  v9 = v4;
+  v9 = toCopy;
   if ([(TxHist *)self numTxLevelsCount])
   {
     [v9 clearNumTxLevels];
-    v6 = [(TxHist *)self numTxLevelsCount];
-    if (v6)
+    numTxLevelsCount = [(TxHist *)self numTxLevelsCount];
+    if (numTxLevelsCount)
     {
-      v7 = v6;
+      v7 = numTxLevelsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addNumTxLevel:{-[TxHist numTxLevelAtIndex:](self, "numTxLevelAtIndex:", i)}];
@@ -271,9 +271,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 1) == 0)
@@ -315,24 +315,24 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_chanType != *(v4 + 8))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_chanType != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_18:
     IsEqual = 0;
@@ -341,26 +341,26 @@ LABEL_18:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_workMode != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_workMode != *(equalCopy + 10))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_minTxLevel != *(v4 + 9))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_minTxLevel != *(equalCopy + 9))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_18;
   }
@@ -411,15 +411,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_chanType = *(v4 + 8);
+    self->_chanType = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -432,26 +432,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 4) == 0)
+  else if ((*(fromCopy + 44) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_workMode = *(v4 + 10);
+  self->_workMode = *(fromCopy + 10);
   *&self->_has |= 4u;
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
 LABEL_4:
-    self->_minTxLevel = *(v4 + 9);
+    self->_minTxLevel = *(fromCopy + 9);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  v9 = v4;
-  v6 = [v4 numTxLevelsCount];
-  if (v6)
+  v9 = fromCopy;
+  numTxLevelsCount = [fromCopy numTxLevelsCount];
+  if (numTxLevelsCount)
   {
-    v7 = v6;
+    v7 = numTxLevelsCount;
     for (i = 0; i != v7; ++i)
     {
       -[TxHist addNumTxLevel:](self, "addNumTxLevel:", [v9 numTxLevelAtIndex:i]);

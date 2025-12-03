@@ -2,7 +2,7 @@
 + (id)pane;
 - (EDPane)init;
 - (id)description;
-- (void)setTopLeftCell:(id)a3;
+- (void)setTopLeftCell:(id)cell;
 @end
 
 @implementation EDPane
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (void)setTopLeftCell:(id)a3
+- (void)setTopLeftCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   mTopLeftCell = self->mTopLeftCell;
   p_mTopLeftCell = &self->mTopLeftCell;
-  if (mTopLeftCell != v5)
+  if (mTopLeftCell != cellCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTopLeftCell, a3);
-    v5 = v8;
+    v8 = cellCopy;
+    objc_storeStrong(p_mTopLeftCell, cell);
+    cellCopy = v8;
   }
 }
 

@@ -1,38 +1,38 @@
 @interface WFDisambiguationCollectionFilter
-- (WFDisambiguationCollectionFilter)initWithCoder:(id)a3;
-- (WFDisambiguationCollectionFilter)initWithSerializedRepresentation:(id)a3;
-- (WFDisambiguationCollectionFilter)initWithSystemEntityCollectionIdentifier:(id)a3 namedQueryReference:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFDisambiguationCollectionFilter)initWithCoder:(id)coder;
+- (WFDisambiguationCollectionFilter)initWithSerializedRepresentation:(id)representation;
+- (WFDisambiguationCollectionFilter)initWithSystemEntityCollectionIdentifier:(id)identifier namedQueryReference:(id)reference;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serializableRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDisambiguationCollectionFilter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   systemEntityCollectionIdentifier = self->_systemEntityCollectionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:systemEntityCollectionIdentifier forKey:@"systemEntityCollectionIdentifier"];
-  [v5 encodeObject:self->_namedQueryReference forKey:@"namedQueryReference"];
+  coderCopy = coder;
+  [coderCopy encodeObject:systemEntityCollectionIdentifier forKey:@"systemEntityCollectionIdentifier"];
+  [coderCopy encodeObject:self->_namedQueryReference forKey:@"namedQueryReference"];
 }
 
-- (WFDisambiguationCollectionFilter)initWithCoder:(id)a3
+- (WFDisambiguationCollectionFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemEntityCollectionIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namedQueryReference"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemEntityCollectionIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namedQueryReference"];
 
   v7 = [(WFDisambiguationCollectionFilter *)self initWithSystemEntityCollectionIdentifier:v5 namedQueryReference:v6];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
-  v6 = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
-  v7 = [v4 initWithSystemEntityCollectionIdentifier:v5 namedQueryReference:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  systemEntityCollectionIdentifier = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
+  namedQueryReference = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
+  v7 = [v4 initWithSystemEntityCollectionIdentifier:systemEntityCollectionIdentifier namedQueryReference:namedQueryReference];
 
   return v7;
 }
@@ -40,22 +40,22 @@
 - (id)serializableRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
+  systemEntityCollectionIdentifier = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
 
-  if (v4)
+  if (systemEntityCollectionIdentifier)
   {
-    v5 = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
-    v6 = [v5 copy];
+    systemEntityCollectionIdentifier2 = [(WFDisambiguationCollectionFilter *)self systemEntityCollectionIdentifier];
+    v6 = [systemEntityCollectionIdentifier2 copy];
     [v3 setObject:v6 forKeyedSubscript:@"systemEntityCollectionIdentifier"];
   }
 
-  v7 = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
+  namedQueryReference = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
 
-  if (v7)
+  if (namedQueryReference)
   {
-    v8 = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
-    v9 = [v8 serializableRepresentation];
-    [v3 setObject:v9 forKeyedSubscript:@"namedQueryReference"];
+    namedQueryReference2 = [(WFDisambiguationCollectionFilter *)self namedQueryReference];
+    serializableRepresentation = [namedQueryReference2 serializableRepresentation];
+    [v3 setObject:serializableRepresentation forKeyedSubscript:@"namedQueryReference"];
   }
 
   v10 = [v3 copy];
@@ -63,13 +63,13 @@
   return v10;
 }
 
-- (WFDisambiguationCollectionFilter)initWithSerializedRepresentation:(id)a3
+- (WFDisambiguationCollectionFilter)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = representationCopy;
     v6 = [v5 valueForKey:@"systemEntityCollectionIdentifier"];
     v7 = [v5 valueForKey:@"namedQueryReference"];
     if (v7)
@@ -84,31 +84,31 @@
 
     self = [(WFDisambiguationCollectionFilter *)self initWithSystemEntityCollectionIdentifier:v6 namedQueryReference:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (WFDisambiguationCollectionFilter)initWithSystemEntityCollectionIdentifier:(id)a3 namedQueryReference:(id)a4
+- (WFDisambiguationCollectionFilter)initWithSystemEntityCollectionIdentifier:(id)identifier namedQueryReference:(id)reference
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v15.receiver = self;
   v15.super_class = WFDisambiguationCollectionFilter;
   v8 = [(WFDisambiguationCollectionFilter *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     systemEntityCollectionIdentifier = v8->_systemEntityCollectionIdentifier;
     v8->_systemEntityCollectionIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [referenceCopy copy];
     namedQueryReference = v8->_namedQueryReference;
     v8->_namedQueryReference = v11;
 

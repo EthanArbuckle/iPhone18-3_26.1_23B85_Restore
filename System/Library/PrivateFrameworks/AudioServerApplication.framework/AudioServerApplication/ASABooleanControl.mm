@@ -1,15 +1,15 @@
 @interface ASABooleanControl
 - (BOOL)value;
 - (id)coreAudioClassName;
-- (void)setValue:(BOOL)a3;
+- (void)setValue:(BOOL)value;
 @end
 
 @implementation ASABooleanControl
 
-- (void)setValue:(BOOL)a3
+- (void)setValue:(BOOL)value
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1650685548 withData:&v4 ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  valueCopy = value;
+  if (![(ASAObject *)self setMainGlobalProperty:1650685548 withData:&valueCopy ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set value property", v3, 2u);
@@ -31,18 +31,18 @@
 
 - (id)coreAudioClassName
 {
-  v2 = [(ASAObject *)self objectClass];
+  objectClass = [(ASAObject *)self objectClass];
   v3 = @"AudioBooleanControl";
-  if (v2 <= 1885888877)
+  if (objectClass <= 1885888877)
   {
     v4 = 1819504225;
     v8 = @"AudioMuteControl";
-    if (v2 != 1836414053)
+    if (objectClass != 1836414053)
     {
       v8 = @"AudioBooleanControl";
     }
 
-    if (v2 == 1819504226)
+    if (objectClass == 1819504226)
     {
       v7 = @"AudioListenbackControl";
     }
@@ -52,12 +52,12 @@
       v7 = v8;
     }
 
-    if (v2 == 1784767339)
+    if (objectClass == 1784767339)
     {
       v3 = @"AudioJackControl";
     }
 
-    if (v2 == 1668049264)
+    if (objectClass == 1668049264)
     {
       v3 = @"AudioClipLightControl";
     }
@@ -68,17 +68,17 @@
     v4 = 1936682094;
     v5 = @"AudioLFEMuteControl";
     v6 = @"AudioTalkbackControl";
-    if (v2 != 1952541794)
+    if (objectClass != 1952541794)
     {
       v6 = @"AudioBooleanControl";
     }
 
-    if (v2 != 1937072749)
+    if (objectClass != 1937072749)
     {
       v5 = v6;
     }
 
-    if (v2 == 1936682095)
+    if (objectClass == 1936682095)
     {
       v7 = @"AudioSoloControl";
     }
@@ -88,18 +88,18 @@
       v7 = v5;
     }
 
-    if (v2 == 1885893481)
+    if (objectClass == 1885893481)
     {
       v3 = @"AudioInvertControl";
     }
 
-    if (v2 == 1885888878)
+    if (objectClass == 1885888878)
     {
       v3 = @"AudioPhantomPowerControl";
     }
   }
 
-  if (v2 <= v4)
+  if (objectClass <= v4)
   {
     return v3;
   }

@@ -1,20 +1,20 @@
 @interface VNFaceAnalyzerFaceObservationGrouping
-- (id)addToGroupingsRequest:(id)a3 withFaceObservations:(id)a4;
+- (id)addToGroupingsRequest:(id)request withFaceObservations:(id)observations;
 @end
 
 @implementation VNFaceAnalyzerFaceObservationGrouping
 
-- (id)addToGroupingsRequest:(id)a3 withFaceObservations:(id)a4
+- (id)addToGroupingsRequest:(id)request withFaceObservations:(id)observations
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  observationsCopy = observations;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = observationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -28,8 +28,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) uuid];
-        [v8 addObject:v13];
+        uuid = [*(*(&v18 + 1) + 8 * i) uuid];
+        [v8 addObject:uuid];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -44,14 +44,14 @@
   if (v15)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v16 addObject:v6];
+    [v16 addObject:requestCopy];
     [(NSMutableDictionary *)self->_observationGroupsToRequestMapping setObject:v16 forKey:v8];
   }
 
   else
   {
     v16 = [(NSMutableDictionary *)self->_observationGroupsToRequestMapping objectForKey:v8];
-    [v16 addObject:v6];
+    [v16 addObject:requestCopy];
   }
 
   return v8;

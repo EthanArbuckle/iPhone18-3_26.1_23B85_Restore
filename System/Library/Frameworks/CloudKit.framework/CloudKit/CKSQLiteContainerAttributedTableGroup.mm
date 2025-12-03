@@ -1,8 +1,8 @@
 @interface CKSQLiteContainerAttributedTableGroup
-+ (id)attributionNameForSpecialContainerType:(int64_t)a3;
-+ (unint64_t)tableGroupOptionsForContainerType:(int64_t)a3;
-+ (void)attributionFunctionForAttributionName:(id)a3;
-+ (void)attributionFunctionForSpecialContainerType:(int64_t)a3;
++ (id)attributionNameForSpecialContainerType:(int64_t)type;
++ (unint64_t)tableGroupOptionsForContainerType:(int64_t)type;
++ (void)attributionFunctionForAttributionName:(id)name;
++ (void)attributionFunctionForSpecialContainerType:(int64_t)type;
 - (CKSQLiteContainerAttributedTableGroup)init;
 - (id)finishInitializing;
 - (void)createTables;
@@ -14,8 +14,8 @@
 {
   v17.receiver = self;
   v17.super_class = CKSQLiteContainerAttributedTableGroup;
-  v5 = [(CKSQLiteTableGroup *)&v17 finishInitializing];
-  if (v5)
+  finishInitializing = [(CKSQLiteTableGroup *)&v17 finishInitializing];
+  if (finishInitializing)
   {
     goto LABEL_2;
   }
@@ -28,7 +28,7 @@
       if (v7)
       {
         v11 = objc_msgSend_attributionNameForSpecialContainerType_(CKSQLiteContainerAttributedTableGroup, v10, v7);
-        v5 = objc_msgSend_setStringValue_forKey_(self, v12, v11, @"ContainerAttribution");
+        finishInitializing = objc_msgSend_setStringValue_forKey_(self, v12, v11, @"ContainerAttribution");
         self->_attributionFunc = objc_msgSend_attributionFunctionForSpecialContainerType_(CKSQLiteContainerAttributedTableGroup, v13, v7);
 
         goto LABEL_2;
@@ -39,7 +39,7 @@
 
     if (v7)
     {
-      v5 = 0;
+      finishInitializing = 0;
       self->_attributionFunc = objc_msgSend_attributionFunctionForSpecialContainerType_(CKSQLiteContainerAttributedTableGroup, v10, v7);
       goto LABEL_2;
     }
@@ -48,13 +48,13 @@
   else if (objc_msgSend_isNew(0, v3, v4))
   {
 LABEL_12:
-    v5 = 0;
+    finishInitializing = 0;
     goto LABEL_2;
   }
 
   v16 = 0;
   v14 = objc_msgSend_stringValueForKey_error_(self, v10, @"ContainerAttribution", &v16);
-  v5 = v16;
+  finishInitializing = v16;
   if (v14)
   {
     self->_attributionFunc = objc_msgSend_attributionFunctionForAttributionName_(CKSQLiteContainerAttributedTableGroup, v15, v14);
@@ -62,7 +62,7 @@ LABEL_12:
 
 LABEL_2:
 
-  return v5;
+  return finishInitializing;
 }
 
 - (CKSQLiteContainerAttributedTableGroup)init
@@ -89,23 +89,23 @@ LABEL_2:
   objc_msgSend_addSingletonInstanceToGroup_(CKSQLiteKeyValueStore, v3, self);
 }
 
-+ (id)attributionNameForSpecialContainerType:(int64_t)a3
++ (id)attributionNameForSpecialContainerType:(int64_t)type
 {
-  if (a3 > 0x25)
+  if (type > 0x25)
   {
     return @"ATTRIBUTION_FUNCTION_NAME(None)";
   }
 
   else
   {
-    return off_1E70C0B18[a3];
+    return off_1E70C0B18[type];
   }
 }
 
-+ (void)attributionFunctionForAttributionName:(id)a3
++ (void)attributionFunctionForAttributionName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   v7 = objc_msgSend_UTF8String(v4, v5, v6);
   v8 = dlsym(0xFFFFFFFFFFFFFFFDLL, v7);
   if (!v8)
@@ -114,7 +114,7 @@ LABEL_2:
     block[1] = 3221225472;
     block[2] = sub_188672464;
     block[3] = &unk_1E70BC388;
-    v11 = v3;
+    v11 = nameCopy;
     if (qword_1EA919B78 != -1)
     {
       dispatch_once(&qword_1EA919B78, block);
@@ -126,28 +126,28 @@ LABEL_2:
   return v8;
 }
 
-+ (void)attributionFunctionForSpecialContainerType:(int64_t)a3
++ (void)attributionFunctionForSpecialContainerType:(int64_t)type
 {
-  if ((a3 - 1) > 0x24)
+  if ((type - 1) > 0x24)
   {
     return CKSQLiteContainerAttribution_None;
   }
 
   else
   {
-    return off_1EFA2FEC8[a3 - 1];
+    return off_1EFA2FEC8[type - 1];
   }
 }
 
-+ (unint64_t)tableGroupOptionsForContainerType:(int64_t)a3
++ (unint64_t)tableGroupOptionsForContainerType:(int64_t)type
 {
-  if (a3 >= 0x10000)
+  if (type >= 0x10000)
   {
-    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, a1, @"CKSQLiteContainerAttributedTableGroup.m", 91, @"container type value out of range");
+    v7 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, type);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v8, a2, self, @"CKSQLiteContainerAttributedTableGroup.m", 91, @"container type value out of range");
   }
 
-  return a3;
+  return type;
 }
 
 @end

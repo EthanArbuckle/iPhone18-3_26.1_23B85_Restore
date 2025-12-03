@@ -4,7 +4,7 @@
 - (UIView)topView;
 - (_TtC7Measure16InteractiveLabel)bottomLabel;
 - (_TtC7Measure16InteractiveLabel)topLabel;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SecondaryLabelStack
@@ -44,11 +44,11 @@
   return Strong;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC7Measure19SecondaryLabelStack_contentView);
-  *(self + OBJC_IVAR____TtC7Measure19SecondaryLabelStack_contentView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC7Measure19SecondaryLabelStack_contentView) = view;
+  viewCopy = view;
 }
 
 @end

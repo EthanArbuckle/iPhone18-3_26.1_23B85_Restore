@@ -1,6 +1,6 @@
 @interface ATCIOA2Device
-- (ATCIOA2Device)initWithService:(id)a3;
-- (BOOL)performConfiigChangeForNotification:(IOAudio2Notification *)a3 error:(id *)a4;
+- (ATCIOA2Device)initWithService:(id)service;
+- (BOOL)performConfiigChangeForNotification:(IOAudio2Notification *)notification error:(id *)error;
 - (double)sampleRate;
 - (id)_buildInputStreams;
 - (id)_buildOutputStreams;
@@ -11,15 +11,15 @@
 - (unsigned)outputLatency;
 - (unsigned)outputSafetyOffset;
 - (void)dealloc;
-- (void)handleNotification:(IOAudio2Notification *)a3;
+- (void)handleNotification:(IOAudio2Notification *)notification;
 @end
 
 @implementation ATCIOA2Device
 
-- (ATCIOA2Device)initWithService:(id)a3
+- (ATCIOA2Device)initWithService:(id)service
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serviceCopy = service;
   v62.receiver = self;
   v62.super_class = ATCIOA2Device;
   v6 = [(ATCIOA2Device *)&v62 init];
@@ -29,11 +29,11 @@
   }
 
   v7 = v6;
-  v8 = [v5 propertyForKey:@"device name"];
+  v8 = [serviceCopy propertyForKey:@"device name"];
   name = v7->_name;
   v7->_name = v8;
 
-  v10 = [v5 propertyForKey:@"device UID"];
+  v10 = [serviceCopy propertyForKey:@"device UID"];
   uid = v7->_uid;
   v7->_uid = v10;
 
@@ -60,7 +60,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v17 = [v5 connectToServiceOfType:0];
+  v17 = [serviceCopy connectToServiceOfType:0];
   connection = v7->_connection;
   v7->_connection = v17;
 
@@ -95,8 +95,8 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v21 = [(IOKNotificationPort *)v7->_notificationPort machPort];
-  v22 = dispatch_source_create(MEMORY[0x277D85D08], v21, 0, v7->_queue);
+  machPort = [(IOKNotificationPort *)v7->_notificationPort machPort];
+  v22 = dispatch_source_create(MEMORY[0x277D85D08], machPort, 0, v7->_queue);
   notificationSource = v7->_notificationSource;
   v7->_notificationSource = v22;
 
@@ -122,26 +122,26 @@ LABEL_42:
     goto LABEL_33;
   }
 
-  objc_storeStrong(&v25->_service, a3);
-  v26 = [(ATCIOA2Device *)v25 _buildInputStreams];
+  objc_storeStrong(&v25->_service, service);
+  _buildInputStreams = [(ATCIOA2Device *)v25 _buildInputStreams];
   inputStreams = v25->_inputStreams;
-  v25->_inputStreams = v26;
+  v25->_inputStreams = _buildInputStreams;
 
-  v28 = [(ATCIOA2Device *)v25 _buildOutputStreams];
+  _buildOutputStreams = [(ATCIOA2Device *)v25 _buildOutputStreams];
   outputStreams = v25->_outputStreams;
-  v25->_outputStreams = v28;
+  v25->_outputStreams = _buildOutputStreams;
 
   if ([(NSArray *)v25->_inputStreams count])
   {
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v31 = [(NSArray *)v25->_inputStreams firstObject];
-    v32 = [v31 availableFormats];
+    firstObject = [(NSArray *)v25->_inputStreams firstObject];
+    availableFormats = [firstObject availableFormats];
 
-    v33 = [v32 countByEnumeratingWithState:&v54 objects:v64 count:16];
+    v33 = [availableFormats countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v33)
     {
       v34 = v33;
@@ -152,19 +152,19 @@ LABEL_42:
         {
           if (*v55 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(availableFormats);
           }
 
           v37 = MEMORY[0x277CCABB0];
           [*(*(&v54 + 1) + 8 * i) sampleRate];
           v38 = [v37 numberWithDouble:?];
-          if (![(NSArray *)v30 containsObject:v38])
+          if (![(NSArray *)array containsObject:v38])
           {
-            [(NSArray *)v30 addObject:v38];
+            [(NSArray *)array addObject:v38];
           }
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v54 objects:v64 count:16];
+        v34 = [availableFormats countByEnumeratingWithState:&v54 objects:v64 count:16];
       }
 
       while (v34);
@@ -175,21 +175,21 @@ LABEL_42:
   {
     if (![(NSArray *)v25->_outputStreams count])
     {
-      v47 = [MEMORY[0x277CBEA60] array];
+      array2 = [MEMORY[0x277CBEA60] array];
       availableSampleRates = v25->_availableSampleRates;
-      v25->_availableSampleRates = v47;
+      v25->_availableSampleRates = array2;
       goto LABEL_32;
     }
 
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v39 = [(NSArray *)v25->_outputStreams firstObject];
-    v32 = [v39 availableFormats];
+    firstObject2 = [(NSArray *)v25->_outputStreams firstObject];
+    availableFormats = [firstObject2 availableFormats];
 
-    v40 = [v32 countByEnumeratingWithState:&v50 objects:v63 count:16];
+    v40 = [availableFormats countByEnumeratingWithState:&v50 objects:v63 count:16];
     if (v40)
     {
       v41 = v40;
@@ -200,19 +200,19 @@ LABEL_42:
         {
           if (*v51 != v42)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(availableFormats);
           }
 
           v44 = MEMORY[0x277CCABB0];
           [*(*(&v50 + 1) + 8 * j) sampleRate];
           v45 = [v44 numberWithDouble:?];
-          if (![(NSArray *)v30 containsObject:v45])
+          if (![(NSArray *)array containsObject:v45])
           {
-            [(NSArray *)v30 addObject:v45];
+            [(NSArray *)array addObject:v45];
           }
         }
 
-        v41 = [v32 countByEnumeratingWithState:&v50 objects:v63 count:16];
+        v41 = [availableFormats countByEnumeratingWithState:&v50 objects:v63 count:16];
       }
 
       while (v41);
@@ -220,7 +220,7 @@ LABEL_42:
   }
 
   availableSampleRates = v25->_availableSampleRates;
-  v25->_availableSampleRates = v30;
+  v25->_availableSampleRates = array;
 LABEL_32:
 
 LABEL_33:
@@ -291,9 +291,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)inputSafetyOffset
@@ -310,9 +310,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)inputLatency
@@ -329,9 +329,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)outputSafetyOffset
@@ -348,9 +348,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)outputLatency
@@ -367,9 +367,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)ioBufferSize
@@ -386,9 +386,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (id)_buildInputStreams
@@ -398,7 +398,7 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -424,7 +424,7 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
           v13 = [(ATCIOA2Stream *)v12 initWithService:self->_service connection:self->_connection index:v8 input:1 description:v11, v17];
           if (v13)
           {
-            [v4 addObject:v13];
+            [array addObject:v13];
           }
 
           ++v8;
@@ -436,9 +436,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
       while (v7);
     }
 
-    if ([v4 count])
+    if ([array count])
     {
-      v14 = v4;
+      v14 = array;
     }
 
     else
@@ -464,7 +464,7 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -490,7 +490,7 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
           v13 = [(ATCIOA2Stream *)v12 initWithService:self->_service connection:self->_connection index:v8 input:0 description:v11, v17];
           if (v13)
           {
-            [v4 addObject:v13];
+            [array addObject:v13];
           }
 
           ++v8;
@@ -502,9 +502,9 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
       while (v7);
     }
 
-    if ([v4 count])
+    if ([array count])
     {
-      v14 = v4;
+      v14 = array;
     }
 
     else
@@ -523,50 +523,50 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
   return v14;
 }
 
-- (BOOL)performConfiigChangeForNotification:(IOAudio2Notification *)a3 error:(id *)a4
+- (BOOL)performConfiigChangeForNotification:(IOAudio2Notification *)notification error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = [(IOKService *)self->_service properties];
-  v8 = [(IOKConnection *)self->_connection callMethodWithSelector:3 scalarInputs:0 scalarInputCount:0 structInput:a3 structInputSize:32 scalarOutputs:0 scalarOutputCount:0 structOutput:0 structOutputSize:0 error:a4];
-  v9 = [(IOKService *)self->_service properties];
+  properties = [(IOKService *)self->_service properties];
+  v8 = [(IOKConnection *)self->_connection callMethodWithSelector:3 scalarInputs:0 scalarInputCount:0 structInput:notification structInputSize:32 scalarOutputs:0 scalarOutputCount:0 structOutput:0 structOutputSize:0 error:error];
+  properties2 = [(IOKService *)self->_service properties];
   v10 = MEMORY[0x277CBEB18];
-  v11 = [v7 allKeys];
-  v12 = [v10 arrayWithArray:v11];
+  allKeys = [properties allKeys];
+  v12 = [v10 arrayWithArray:allKeys];
 
-  v13 = [v9 allKeys];
-  [v12 removeObjectsInArray:v13];
+  allKeys2 = [properties2 allKeys];
+  [v12 removeObjectsInArray:allKeys2];
 
   v14 = MEMORY[0x277CBEB18];
-  v15 = [v9 allKeys];
-  v16 = [v14 arrayWithArray:v15];
+  allKeys3 = [properties2 allKeys];
+  v16 = [v14 arrayWithArray:allKeys3];
 
-  v17 = [v7 allKeys];
-  [v16 removeObjectsInArray:v17];
+  allKeys4 = [properties allKeys];
+  [v16 removeObjectsInArray:allKeys4];
 
-  v18 = [(ATCIOA2Device *)self _buildInputStreams];
-  [(ATCIOA2Device *)self setInputStreams:v18];
+  _buildInputStreams = [(ATCIOA2Device *)self _buildInputStreams];
+  [(ATCIOA2Device *)self setInputStreams:_buildInputStreams];
 
-  v19 = [(ATCIOA2Device *)self _buildOutputStreams];
-  [(ATCIOA2Device *)self setOutputStreams:v19];
+  _buildOutputStreams = [(ATCIOA2Device *)self _buildOutputStreams];
+  [(ATCIOA2Device *)self setOutputStreams:_buildOutputStreams];
 
-  v20 = [(ATCIOA2Device *)self inputStreams];
-  v21 = [v20 count];
+  inputStreams = [(ATCIOA2Device *)self inputStreams];
+  v21 = [inputStreams count];
 
   if (v21)
   {
     v45 = v16;
     v46 = v12;
     v47 = v8;
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v23 = [(ATCIOA2Device *)self inputStreams];
-    v24 = [v23 firstObject];
-    v25 = [v24 availableFormats];
+    inputStreams2 = [(ATCIOA2Device *)self inputStreams];
+    firstObject = [inputStreams2 firstObject];
+    availableFormats = [firstObject availableFormats];
 
-    v26 = [v25 countByEnumeratingWithState:&v52 objects:v57 count:16];
+    v26 = [availableFormats countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v26)
     {
       v27 = v26;
@@ -577,19 +577,19 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
         {
           if (*v53 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(availableFormats);
           }
 
           v30 = MEMORY[0x277CCABB0];
           [*(*(&v52 + 1) + 8 * i) sampleRate];
           v31 = [v30 numberWithDouble:?];
-          if (([v22 containsObject:v31] & 1) == 0)
+          if (([array containsObject:v31] & 1) == 0)
           {
-            [v22 addObject:v31];
+            [array addObject:v31];
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v52 objects:v57 count:16];
+        v27 = [availableFormats countByEnumeratingWithState:&v52 objects:v57 count:16];
       }
 
       while (v27);
@@ -598,13 +598,13 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
 
   else
   {
-    v32 = [(ATCIOA2Device *)self outputStreams];
-    v33 = [v32 count];
+    outputStreams = [(ATCIOA2Device *)self outputStreams];
+    v33 = [outputStreams count];
 
     if (!v33)
     {
-      v44 = [MEMORY[0x277CBEA60] array];
-      [(ATCIOA2Device *)self setAvailableSampleRates:v44];
+      array2 = [MEMORY[0x277CBEA60] array];
+      [(ATCIOA2Device *)self setAvailableSampleRates:array2];
 
       goto LABEL_23;
     }
@@ -612,16 +612,16 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
     v45 = v16;
     v46 = v12;
     v47 = v8;
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v34 = [(ATCIOA2Device *)self outputStreams];
-    v35 = [v34 firstObject];
-    v25 = [v35 availableFormats];
+    outputStreams2 = [(ATCIOA2Device *)self outputStreams];
+    firstObject2 = [outputStreams2 firstObject];
+    availableFormats = [firstObject2 availableFormats];
 
-    v36 = [v25 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    v36 = [availableFormats countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v36)
     {
       v37 = v36;
@@ -632,26 +632,26 @@ void __33__ATCIOA2Device_initWithService___block_invoke(uint64_t a1)
         {
           if (*v49 != v38)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(availableFormats);
           }
 
           v40 = MEMORY[0x277CCABB0];
           [*(*(&v48 + 1) + 8 * j) sampleRate];
           v41 = [v40 numberWithDouble:?];
-          if (([v22 containsObject:v41] & 1) == 0)
+          if (([array containsObject:v41] & 1) == 0)
           {
-            [v22 addObject:v41];
+            [array addObject:v41];
           }
         }
 
-        v37 = [v25 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        v37 = [availableFormats countByEnumeratingWithState:&v48 objects:v56 count:16];
       }
 
       while (v37);
     }
   }
 
-  [(ATCIOA2Device *)self setAvailableSampleRates:v22];
+  [(ATCIOA2Device *)self setAvailableSampleRates:array];
   v8 = v47;
   v16 = v45;
   v12 = v46;
@@ -661,9 +661,9 @@ LABEL_23:
   return v8;
 }
 
-- (void)handleNotification:(IOAudio2Notification *)a3
+- (void)handleNotification:(IOAudio2Notification *)notification
 {
-  var1 = a3->var1;
+  var1 = notification->var1;
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (var1 == 1751215220)
   {
@@ -712,8 +712,8 @@ LABEL_13:
     _os_log_impl(&dword_241795000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Request Config Change", buf, 2u);
   }
 
-  v7 = *&a3->var4;
-  v12 = *&a3->var0;
+  v7 = *&notification->var4;
+  v12 = *&notification->var0;
   v13 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;

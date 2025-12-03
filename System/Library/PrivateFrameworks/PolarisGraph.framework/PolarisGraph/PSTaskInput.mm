@@ -1,53 +1,53 @@
 @interface PSTaskInput
-+ (PSTaskInput)inputWithKey:(id)a3;
-+ (PSTaskInput)inputWithKey:(id)a3 type:(int64_t)a4;
-+ (PSTaskInput)inputWithKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5;
-+ (PSTaskInput)inputWitheKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5;
-- (PSTaskInput)initWithKey:(char *)a3 type:(int64_t)a4 capacity:(unint64_t)a5;
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5;
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5 forwardingCount:(unint64_t)a6;
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5 sourceInput:(id)a6 forwardingCount:(unint64_t)a7;
++ (PSTaskInput)inputWithKey:(id)key;
++ (PSTaskInput)inputWithKey:(id)key type:(int64_t)type;
++ (PSTaskInput)inputWithKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity;
++ (PSTaskInput)inputWitheKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity;
+- (PSTaskInput)initWithKey:(char *)key type:(int64_t)type capacity:(unint64_t)capacity;
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity;
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity forwardingCount:(unint64_t)count;
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity sourceInput:(id)input forwardingCount:(unint64_t)count;
 - (id)description;
-- (id)getInputResourceForGraph:(id)a3;
+- (id)getInputResourceForGraph:(id)graph;
 @end
 
 @implementation PSTaskInput
 
-+ (PSTaskInput)inputWithKey:(id)a3
++ (PSTaskInput)inputWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [[PSTaskInput alloc] initWithResourceKey:v3 type:0 capacity:1];
+  keyCopy = key;
+  v4 = [[PSTaskInput alloc] initWithResourceKey:keyCopy type:0 capacity:1];
 
   return v4;
 }
 
-+ (PSTaskInput)inputWithKey:(id)a3 type:(int64_t)a4
++ (PSTaskInput)inputWithKey:(id)key type:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[PSTaskInput alloc] initWithResourceKey:v5 type:a4 capacity:1];
+  keyCopy = key;
+  v6 = [[PSTaskInput alloc] initWithResourceKey:keyCopy type:type capacity:1];
 
   return v6;
 }
 
-+ (PSTaskInput)inputWithKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5
++ (PSTaskInput)inputWithKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity
 {
-  v7 = a3;
-  v8 = [[PSTaskInput alloc] initWithResourceKey:v7 type:a4 capacity:a5];
+  keyCopy = key;
+  v8 = [[PSTaskInput alloc] initWithResourceKey:keyCopy type:type capacity:capacity];
 
   return v8;
 }
 
-+ (PSTaskInput)inputWitheKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5
++ (PSTaskInput)inputWitheKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity
 {
-  v7 = a3;
-  v8 = [[PSTaskInput alloc] initWithResourceKey:v7 type:a4 capacity:a5];
+  keyCopy = key;
+  v8 = [[PSTaskInput alloc] initWithResourceKey:keyCopy type:type capacity:capacity];
 
   return v8;
 }
 
-- (PSTaskInput)initWithKey:(char *)a3 type:(int64_t)a4 capacity:(unint64_t)a5
+- (PSTaskInput)initWithKey:(char *)key type:(int64_t)type capacity:(unint64_t)capacity
 {
-  if (a4 == 3)
+  if (type == 3)
   {
     v11 = [PSTaskInput initWithKey:? type:? capacity:?];
     return [(PSTaskInput *)v11 initWithResourceKey:v12 type:v13 capacity:v14, v15];
@@ -55,17 +55,17 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-    v9 = [(PSTaskInput *)self initWithResourceKey:v8 type:a4 capacity:a5 sourceInput:0 forwardingCount:0];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+    v9 = [(PSTaskInput *)self initWithResourceKey:v8 type:type capacity:capacity sourceInput:0 forwardingCount:0];
 
     return v9;
   }
 }
 
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity
 {
-  v8 = a3;
-  if (a4 == 3)
+  keyCopy = key;
+  if (type == 3)
   {
     v12 = [PSTaskInput initWithResourceKey:? type:? capacity:?];
     return [(PSTaskInput *)v12 initSyncedInputWithResourceKey:v13 withSourceInput:v14, v15];
@@ -73,44 +73,44 @@
 
   else
   {
-    v9 = v8;
-    v10 = [(PSTaskInput *)self initWithResourceKey:v8 type:a4 capacity:a5 sourceInput:0 forwardingCount:0];
+    v9 = keyCopy;
+    v10 = [(PSTaskInput *)self initWithResourceKey:keyCopy type:type capacity:capacity sourceInput:0 forwardingCount:0];
 
     return v10;
   }
 }
 
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5 sourceInput:(id)a6 forwardingCount:(unint64_t)a7
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity sourceInput:(id)input forwardingCount:(unint64_t)count
 {
-  v13 = a3;
-  v14 = a6;
+  keyCopy = key;
+  inputCopy = input;
   v18.receiver = self;
   v18.super_class = PSTaskInput;
   v15 = [(PSTaskInput *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_resourceKey, a3);
-    objc_storeStrong(&v16->_resolvedResourceKey, a3);
-    v16->_key = [v13 UTF8String];
-    v16->_type = a4;
-    v16->_capacity = a5;
-    v16->_forwardingCount = a7;
-    objc_storeStrong(&v16->_sourceInputResourceKey, a6);
-    v16->_sourceInputKey = [v14 UTF8String];
+    objc_storeStrong(&v15->_resourceKey, key);
+    objc_storeStrong(&v16->_resolvedResourceKey, key);
+    v16->_key = [keyCopy UTF8String];
+    v16->_type = type;
+    v16->_capacity = capacity;
+    v16->_forwardingCount = count;
+    objc_storeStrong(&v16->_sourceInputResourceKey, input);
+    v16->_sourceInputKey = [inputCopy UTF8String];
     v16->_bufferExpiryOffset = -1;
   }
 
   return v16;
 }
 
-- (id)getInputResourceForGraph:(id)a3
+- (id)getInputResourceForGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = [(NSString *)self->_resourceKey isEqualToString:@"timer"];
-  if (v4 && v5)
+  if (graphCopy && v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"timer%03d", objc_msgSend(v4, "frequency")];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"timer%03d", objc_msgSend(graphCopy, "frequency")];
   }
 
   else
@@ -132,10 +132,10 @@
   return [v3 stringWithFormat:@". . . <%@: %@> Type:%lu Capacity:%lu FwdCount:%lu", v4, resourceKey, self->_type, capacity, self->_forwardingCount];
 }
 
-- (PSTaskInput)initWithResourceKey:(id)a3 type:(int64_t)a4 capacity:(unint64_t)a5 forwardingCount:(unint64_t)a6
+- (PSTaskInput)initWithResourceKey:(id)key type:(int64_t)type capacity:(unint64_t)capacity forwardingCount:(unint64_t)count
 {
-  v10 = a3;
-  if (a4 == 3)
+  keyCopy = key;
+  if (type == 3)
   {
     v14 = [PSTaskInput(Roya) initWithResourceKey:? type:? capacity:? forwardingCount:?];
     return [(PSTaskOutput *)v14 outputWithKey:v15, v16];
@@ -143,8 +143,8 @@
 
   else
   {
-    v11 = v10;
-    v12 = [(PSTaskInput *)self initWithResourceKey:v10 type:a4 capacity:a5 sourceInput:0 forwardingCount:a6];
+    v11 = keyCopy;
+    v12 = [(PSTaskInput *)self initWithResourceKey:keyCopy type:type capacity:capacity sourceInput:0 forwardingCount:count];
 
     return v12;
   }

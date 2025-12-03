@@ -1,29 +1,29 @@
 @interface _EXQuery
 + (id)allExtensionsQuery;
-+ (id)executeQueries:(id)a3;
-+ (id)executeQuery:(id)a3;
-+ (id)extensionPointIdentifierQuery:(id)a3;
-+ (id)extensionPointIdentifierQuery:(id)a3 platform:(unsigned int)a4;
-+ (void)executeQueries:(id)a3 completionHandler:(id)a4;
-+ (void)executeQuery:(id)a3 completionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3;
-- (BOOL)matchesRecord:(id)a3;
++ (id)executeQueries:(id)queries;
++ (id)executeQuery:(id)query;
++ (id)extensionPointIdentifierQuery:(id)query;
++ (id)extensionPointIdentifierQuery:(id)query platform:(unsigned int)platform;
++ (void)executeQueries:(id)queries completionHandler:(id)handler;
++ (void)executeQuery:(id)query completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches;
+- (BOOL)matchesRecord:(id)record;
 - (NSString)extensionPointIdentifier;
-- (_EXQuery)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (_EXQuery)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 - (unsigned)platform;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExtensionPointIdentifier:(id)a3;
-- (void)setPredicate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExtensionPointIdentifier:(id)identifier;
+- (void)setPredicate:(id)predicate;
 @end
 
 @implementation _EXQuery
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   _EXQuery.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -34,17 +34,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _EXQuery.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -53,7 +53,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _EXQuery.isEqual(_:)(v8);
@@ -62,7 +62,7 @@
   return v6 & 1;
 }
 
-+ (id)extensionPointIdentifierQuery:(id)a3
++ (id)extensionPointIdentifierQuery:(id)query
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = specialized static _EXQuery.makeQuery(extensionPointIdentifier:)(v3, v4);
@@ -70,10 +70,10 @@
   return v5;
 }
 
-+ (id)extensionPointIdentifierQuery:(id)a3 platform:(unsigned int)a4
++ (id)extensionPointIdentifierQuery:(id)query platform:(unsigned int)platform
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = specialized static _EXQuery.query(extensionPointIdentifier:platform:)(v5, v6, a4);
+  v7 = specialized static _EXQuery.query(extensionPointIdentifier:platform:)(v5, v6, platform);
 
   return v7;
 }
@@ -85,11 +85,11 @@
   return v2;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   v4 = *(&self->super.isa + OBJC_IVAR____EXQuery_predicate);
-  *(&self->super.isa + OBJC_IVAR____EXQuery_predicate) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____EXQuery_predicate) = predicate;
+  predicateCopy = predicate;
 }
 
 - (NSString)extensionPointIdentifier
@@ -116,9 +116,9 @@
   return v9;
 }
 
-- (void)setExtensionPointIdentifier:(id)a3
+- (void)setExtensionPointIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -136,7 +136,7 @@
   v9 = *(v7 + 4);
   __swift_mutable_project_boxed_opaque_existential_1(v7, v8);
   v10 = *(v9 + 16);
-  v11 = self;
+  selfCopy = self;
   v10(v4, v6, v8, v9);
   swift_endAccess();
 }
@@ -154,46 +154,46 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _EXQuery.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _EXQuery.encode(with:)(coderCopy);
 }
 
-- (_EXQuery)initWithCoder:(id)a3
+- (_EXQuery)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized _EXQuery.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized _EXQuery.init(coder:)(coderCopy);
 
   return v4;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = _EXQuery.matches(_:)(v4);
+  matchesCopy = matches;
+  selfCopy = self;
+  LOBYTE(self) = _EXQuery.matches(_:)(matchesCopy);
 
   return self & 1;
 }
 
-- (BOOL)matchesRecord:(id)a3
+- (BOOL)matchesRecord:(id)record
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = _EXQuery.matches(record:)(v4);
+  recordCopy = record;
+  selfCopy = self;
+  LOBYTE(self) = _EXQuery.matches(record:)(recordCopy);
 
   return self & 1;
 }
 
-+ (id)executeQuery:(id)a3
++ (id)executeQuery:(id)query
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyyXlGMd, _ss23_ContiguousArrayStorageCyyXlGMR);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_1848BBBA0;
-  *(inited + 32) = a3;
-  v5 = a3;
+  *(inited + 32) = query;
+  queryCopy = query;
   v6 = specialized static QueryController.execute(queries:)(inited);
   swift_setDeallocating();
   v7 = *(inited + 16);
@@ -206,24 +206,24 @@
   return v8.super.isa;
 }
 
-+ (void)executeQuery:(id)a3 completionHandler:(id)a4
++ (void)executeQuery:(id)query completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCyyXlGMd, _ss23_ContiguousArrayStorageCyyXlGMR);
   v7 = swift_allocObject();
   *(v7 + 16) = xmmword_1848BBBA0;
-  *(v7 + 32) = a3;
+  *(v7 + 32) = query;
   v8 = swift_allocObject();
   *(v8 + 16) = thunk for @escaping @callee_unowned @convention(block) (@unowned NSArray) -> ()partial apply;
   *(v8 + 24) = v6;
-  v9 = a3;
+  queryCopy = query;
 
   specialized static QueryController.execute(queries:completion:)(v7, partial apply for closure #1 in static _EXQuery.execute(query:completion:), v8);
 }
 
-+ (id)executeQueries:(id)a3
++ (id)executeQueries:(id)queries
 {
   type metadata accessor for _EXQuery();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -237,9 +237,9 @@
   return v5.super.isa;
 }
 
-+ (void)executeQueries:(id)a3 completionHandler:(id)a4
++ (void)executeQueries:(id)queries completionHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   type metadata accessor for _EXQuery();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = swift_allocObject();

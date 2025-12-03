@@ -1,25 +1,25 @@
 @interface VNE5RTSemanticSegmentationMultiGenerator
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4;
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7;
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error;
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error;
 @end
 
 @implementation VNE5RTSemanticSegmentationMultiGenerator
 
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error
 {
-  v4 = [MEMORY[0x1E69DF988] modelFileURLForModelVersion:objc_msgSend(a1 error:{"modelVersion", a3), a4}];
+  v4 = [MEMORY[0x1E69DF988] modelFileURLForModelVersion:objc_msgSend(self error:{"modelVersion", options), error}];
 
   return v4;
 }
 
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v61 = a4;
-  v60 = a5;
-  v12 = a6;
-  v13 = [VNValidationUtilities requiredSessionInOptions:v12 error:a7];
+  outputsCopy = outputs;
+  descriptorCopy = descriptor;
+  specifierCopy = specifier;
+  optionsCopy = options;
+  v13 = [VNValidationUtilities requiredSessionInOptions:optionsCopy error:error];
   if (!v13)
   {
     v23 = 0;
@@ -27,13 +27,13 @@
   }
 
   v59 = v13;
-  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_ObjectClassIDs" inOptions:v12 error:a7];
+  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_ObjectClassIDs" inOptions:optionsCopy error:error];
   v57 = v14;
   if (v14)
   {
-    v15 = [v14 unsignedIntegerValue];
-    v16 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat" inOptions:v12 error:a7];
-    if (!v16 || (v89 = 0, ![VNValidationUtilities getBOOLValue:&v89 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:v12 error:a7]))
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
+    v16 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat" inOptions:optionsCopy error:error];
+    if (!v16 || (v89 = 0, ![VNValidationUtilities getBOOLValue:&v89 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:optionsCopy error:error]))
     {
       v23 = 0;
 LABEL_46:
@@ -41,9 +41,9 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v46 = v61;
+    v46 = descriptorCopy;
     v56 = v16;
-    v45 = [v46 objectMaskDescriptorsForObjectClassIDs:v15 error:a7];
+    v45 = [v46 objectMaskDescriptorsForObjectClassIDs:unsignedIntegerValue error:error];
     if (!v45)
     {
       v23 = 0;
@@ -63,13 +63,13 @@ LABEL_45:
     v88 = 0;
     __p = 0;
     v87 = 0;
-    v58 = [v17 modelVersion];
-    if (v58 == 2)
+    modelVersion = [v17 modelVersion];
+    if (modelVersion == 2)
     {
-      v18 = [v46 objectMaskDescriptorsForObjectClassIDs:2048 error:a7];
-      v19 = [v18 firstObject];
+      v18 = [v46 objectMaskDescriptorsForObjectClassIDs:2048 error:error];
+      firstObject = [v18 firstObject];
 
-      if (!v19)
+      if (!firstObject)
       {
         v48 = 0;
 LABEL_41:
@@ -88,12 +88,12 @@ LABEL_42:
       aBlock[1] = 3221225472;
       aBlock[2] = __145__VNE5RTSemanticSegmentationMultiGenerator_observationsFromE5RTExecutionOutputs_forFunctionDescriptor_originatingRequestSpecifier_options_error___block_invoke;
       aBlock[3] = &unk_1E77B5C08;
-      v48 = v19;
+      v48 = firstObject;
       v83 = v48;
       v84 = v85;
       v20 = _Block_copy(aBlock);
-      v21 = [v48 name];
-      v22 = [v62 accessReadOnlyDataForName:v21 usingBlock:v20 error:a7];
+      name = [v48 name];
+      v22 = [outputsCopy accessReadOnlyDataForName:name usingBlock:v20 error:error];
 
       if ((v22 & 1) == 0)
       {
@@ -106,12 +106,12 @@ LABEL_42:
       v48 = 0;
     }
 
-    v50 = [v17 requestKeyToRequestInfo];
-    v24 = [v50 count];
+    requestKeyToRequestInfo = [v17 requestKeyToRequestInfo];
+    v24 = [requestKeyToRequestInfo count];
     v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v51 = [v17 outputMaskBlobNameToRequestKey];
-    v52 = [v17 outputMaskBlobNameToFeatureName];
-    v25 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OriginalRequestSpecifiers" inOptions:v12 error:a7];
+    outputMaskBlobNameToRequestKey = [v17 outputMaskBlobNameToRequestKey];
+    outputMaskBlobNameToFeatureName = [v17 outputMaskBlobNameToFeatureName];
+    v25 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OriginalRequestSpecifiers" inOptions:optionsCopy error:error];
     v26 = v25;
     if (v25)
     {
@@ -137,8 +137,8 @@ LABEL_42:
             }
 
             v30 = *(*(&v78 + 1) + 8 * i);
-            v31 = [v30 name];
-            if (v58 == 2 && ([v48 name], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v31, "isEqualToString:", v32), v32, v33))
+            name2 = [v30 name];
+            if (modelVersion == 2 && ([v48 name], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(name2, "isEqualToString:", v32), v32, v33))
             {
             }
 
@@ -157,23 +157,23 @@ LABEL_42:
               v65[3] = &unk_1E77B42A0;
               v65[4] = v30;
               v75 = v85;
-              v76 = v58;
-              v37 = v31;
+              v76 = modelVersion;
+              v37 = name2;
               v66 = v37;
               v38 = v56;
               v77 = v89;
               v67 = v38;
-              v68 = self;
+              selfCopy = self;
               v69 = v59;
-              v70 = v51;
-              v71 = v50;
-              v72 = v52;
+              v70 = outputMaskBlobNameToRequestKey;
+              v71 = requestKeyToRequestInfo;
+              v72 = outputMaskBlobNameToFeatureName;
               v73 = v49;
               v39 = v34;
               v74 = v39;
               v40 = _Block_copy(v65);
-              v41 = [v30 name];
-              v42 = [v62 accessReadOnlyDataForName:v41 usingBlock:v40 error:a7];
+              name3 = [v30 name];
+              v42 = [outputsCopy accessReadOnlyDataForName:name3 usingBlock:v40 error:error];
 
               if (v42)
               {
@@ -196,7 +196,7 @@ LABEL_42:
               if (!v42)
               {
                 v23 = 0;
-                v43 = obj;
+                firstObject2 = obj;
                 goto LABEL_38;
               }
             }
@@ -216,15 +216,15 @@ LABEL_42:
       v26 = v49;
       if ([v53 count])
       {
-        if ([v60 specifiesRequestClass:objc_opt_class()])
+        if ([specifierCopy specifiesRequestClass:objc_opt_class()])
         {
           v23 = [v53 copy];
         }
 
         else
         {
-          v43 = [v53 firstObject];
-          v23 = [v43 copy];
+          firstObject2 = [v53 firstObject];
+          v23 = [firstObject2 copy];
 LABEL_38:
 
           v26 = v49;

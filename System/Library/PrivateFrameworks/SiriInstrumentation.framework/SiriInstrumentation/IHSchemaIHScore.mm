@@ -1,27 +1,27 @@
 @interface IHSchemaIHScore
-- (BOOL)isEqual:(id)a3;
-- (IHSchemaIHScore)initWithDictionary:(id)a3;
-- (IHSchemaIHScore)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IHSchemaIHScore)initWithDictionary:(id)dictionary;
+- (IHSchemaIHScore)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasLowerBoundary:(BOOL)a3;
-- (void)setHasUpperBoundary:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasLowerBoundary:(BOOL)boundary;
+- (void)setHasUpperBoundary:(BOOL)boundary;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IHSchemaIHScore
 
-- (IHSchemaIHScore)initWithDictionary:(id)a3
+- (IHSchemaIHScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IHSchemaIHScore;
   v5 = [(IHSchemaIHScore *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"score"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(IHSchemaIHScore *)v5 setScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"upperBoundary"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"upperBoundary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(IHSchemaIHScore *)v5 setUpperBoundary:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"lowerBoundary"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lowerBoundary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,30 +51,30 @@
   return v5;
 }
 
-- (IHSchemaIHScore)initWithJSON:(id)a3
+- (IHSchemaIHScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IHSchemaIHScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IHSchemaIHScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IHSchemaIHScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -87,14 +87,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(IHSchemaIHScore *)self lowerBoundary];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"lowerBoundary"];
+    [dictionary setObject:v9 forKeyedSubscript:@"lowerBoundary"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -117,7 +117,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(IHSchemaIHScore *)self score];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"score"];
+  [dictionary setObject:v11 forKeyedSubscript:@"score"];
 
   if ((*&self->_has & 2) != 0)
   {
@@ -125,13 +125,13 @@ LABEL_4:
     v5 = MEMORY[0x1E696AD98];
     [(IHSchemaIHScore *)self upperBoundary];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"upperBoundary"];
+    [dictionary setObject:v6 forKeyedSubscript:@"upperBoundary"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -255,16 +255,16 @@ LABEL_5:
   return v9 ^ v4 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -273,14 +273,14 @@ LABEL_5:
   if (*&has)
   {
     score = self->_score;
-    [v4 score];
+    [equalCopy score];
     if (score != v8)
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -289,20 +289,20 @@ LABEL_5:
     if (v9)
     {
       upperBoundary = self->_upperBoundary;
-      [v4 upperBoundary];
+      [equalCopy upperBoundary];
       if (upperBoundary != v11)
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
     }
 
     v12 = (*&has >> 2) & 1;
     if (v12 == ((v6 >> 2) & 1))
     {
-      if (!v12 || (lowerBoundary = self->_lowerBoundary, [v4 lowerBoundary], lowerBoundary == v14))
+      if (!v12 || (lowerBoundary = self->_lowerBoundary, [equalCopy lowerBoundary], lowerBoundary == v14))
       {
         v15 = 1;
         goto LABEL_14;
@@ -317,15 +317,15 @@ LABEL_14:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -345,20 +345,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteFloatField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasLowerBoundary:(BOOL)a3
+- (void)setHasLowerBoundary:(BOOL)boundary
 {
-  if (a3)
+  if (boundary)
   {
     v3 = 4;
   }
@@ -371,9 +371,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUpperBoundary:(BOOL)a3
+- (void)setHasUpperBoundary:(BOOL)boundary
 {
-  if (a3)
+  if (boundary)
   {
     v3 = 2;
   }

@@ -1,22 +1,22 @@
 @interface IdentityProofingConsentFlowItem
 - (_TtC13CoreIDVShared31IdentityProofingConsentFlowItem)init;
-- (_TtC13CoreIDVShared31IdentityProofingConsentFlowItem)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared31IdentityProofingConsentFlowItem)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityProofingConsentFlowItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityProofingConsentFlowItem.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityProofingConsentFlowItem.encode(with:)(coderCopy);
 }
 
-- (_TtC13CoreIDVShared31IdentityProofingConsentFlowItem)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared31IdentityProofingConsentFlowItem)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B68DE4(v3);
+  coderCopy = coder;
+  v4 = sub_225B68DE4(coderCopy);
 
   return v4;
 }

@@ -1,10 +1,10 @@
 @interface NEProfileIngestionPayloadInfo
 - (NEProfileIngestionPayloadInfo)init;
-- (NEProfileIngestionPayloadInfo)initWithCoder:(id)a3;
+- (NEProfileIngestionPayloadInfo)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEProfileIngestionPayloadInfo
@@ -64,51 +64,51 @@ LABEL_17:
   return v10;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = NEProfileIngestionPayloadInfo;
   v5 = [(NEProfileIngestionPayloadInfo *)&v45 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"PayloadType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"PayloadType"];
     v7 = isa_nsstring(v6);
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v9 = [v4 objectForKeyedSubscript:@"PayloadType"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"PayloadType"];
       v10 = [v8 initWithString:v9];
       payloadProtocolType = v5->_payloadProtocolType;
       v5->_payloadProtocolType = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"PayloadUUID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"PayloadUUID"];
     v13 = isa_nsstring(v12);
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v15 = [v4 objectForKeyedSubscript:@"PayloadUUID"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"PayloadUUID"];
       v16 = [v14 initWithString:v15];
       payloadUUID = v5->_payloadUUID;
       v5->_payloadUUID = v16;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"PayloadOrganization"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"PayloadOrganization"];
     v19 = isa_nsstring(v18);
 
     if (v19)
     {
       v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v21 = [v4 objectForKeyedSubscript:@"PayloadOrganization"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"PayloadOrganization"];
       v22 = [v20 initWithString:v21];
       payloadOrganization = v5->_payloadOrganization;
       v5->_payloadOrganization = v22;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"PayloadRoot"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"PayloadRoot"];
     v25 = v24;
     if (v24 && isa_nsdictionary(v24))
     {
@@ -153,111 +153,111 @@ LABEL_17:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEProfileIngestionPayloadInfo allocWithZone:?]];
-  v5 = [(NEProfileIngestionPayloadInfo *)self payloadProtocolType];
-  [(NEProfileIngestionPayloadInfo *)v4 setPayloadProtocolType:v5];
+  payloadProtocolType = [(NEProfileIngestionPayloadInfo *)self payloadProtocolType];
+  [(NEProfileIngestionPayloadInfo *)v4 setPayloadProtocolType:payloadProtocolType];
 
-  v6 = [(NEProfileIngestionPayloadInfo *)self payloadUUID];
-  [(NEProfileIngestionPayloadInfo *)v4 setPayloadUUID:v6];
+  payloadUUID = [(NEProfileIngestionPayloadInfo *)self payloadUUID];
+  [(NEProfileIngestionPayloadInfo *)v4 setPayloadUUID:payloadUUID];
 
-  v7 = [(NEProfileIngestionPayloadInfo *)self payloadOrganization];
-  [(NEProfileIngestionPayloadInfo *)v4 setPayloadOrganization:v7];
+  payloadOrganization = [(NEProfileIngestionPayloadInfo *)self payloadOrganization];
+  [(NEProfileIngestionPayloadInfo *)v4 setPayloadOrganization:payloadOrganization];
 
-  v8 = [(NEProfileIngestionPayloadInfo *)self profileIdentifier];
-  [(NEProfileIngestionPayloadInfo *)v4 setProfileIdentifier:v8];
+  profileIdentifier = [(NEProfileIngestionPayloadInfo *)self profileIdentifier];
+  [(NEProfileIngestionPayloadInfo *)v4 setProfileIdentifier:profileIdentifier];
 
-  v9 = [(NEProfileIngestionPayloadInfo *)self profileUUID];
-  [(NEProfileIngestionPayloadInfo *)v4 setProfileUUID:v9];
+  profileUUID = [(NEProfileIngestionPayloadInfo *)self profileUUID];
+  [(NEProfileIngestionPayloadInfo *)v4 setProfileUUID:profileUUID];
 
-  v10 = [(NEProfileIngestionPayloadInfo *)self profileOrganization];
-  [(NEProfileIngestionPayloadInfo *)v4 setProfileOrganization:v10];
+  profileOrganization = [(NEProfileIngestionPayloadInfo *)self profileOrganization];
+  [(NEProfileIngestionPayloadInfo *)v4 setProfileOrganization:profileOrganization];
 
   [(NEProfileIngestionPayloadInfo *)v4 setIsSetAside:[(NEProfileIngestionPayloadInfo *)self isSetAside]];
-  v11 = [(NEProfileIngestionPayloadInfo *)self profileIngestionDate];
-  [(NEProfileIngestionPayloadInfo *)v4 setProfileIngestionDate:v11];
+  profileIngestionDate = [(NEProfileIngestionPayloadInfo *)self profileIngestionDate];
+  [(NEProfileIngestionPayloadInfo *)v4 setProfileIngestionDate:profileIngestionDate];
 
-  v12 = [(NEProfileIngestionPayloadInfo *)self systemVersion];
-  [(NEProfileIngestionPayloadInfo *)v4 setSystemVersion:v12];
+  systemVersion = [(NEProfileIngestionPayloadInfo *)self systemVersion];
+  [(NEProfileIngestionPayloadInfo *)v4 setSystemVersion:systemVersion];
 
   [(NEProfileIngestionPayloadInfo *)v4 setProfileSource:[(NEProfileIngestionPayloadInfo *)self profileSource]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(NEProfileIngestionPayloadInfo *)self payloadProtocolType];
-  [v12 encodeObject:v4 forKey:@"PayloadType"];
+  coderCopy = coder;
+  payloadProtocolType = [(NEProfileIngestionPayloadInfo *)self payloadProtocolType];
+  [coderCopy encodeObject:payloadProtocolType forKey:@"PayloadType"];
 
-  v5 = [(NEProfileIngestionPayloadInfo *)self payloadUUID];
-  [v12 encodeObject:v5 forKey:@"PayloadUUID"];
+  payloadUUID = [(NEProfileIngestionPayloadInfo *)self payloadUUID];
+  [coderCopy encodeObject:payloadUUID forKey:@"PayloadUUID"];
 
-  v6 = [(NEProfileIngestionPayloadInfo *)self payloadOrganization];
-  [v12 encodeObject:v6 forKey:@"PayloadOrganization"];
+  payloadOrganization = [(NEProfileIngestionPayloadInfo *)self payloadOrganization];
+  [coderCopy encodeObject:payloadOrganization forKey:@"PayloadOrganization"];
 
-  v7 = [(NEProfileIngestionPayloadInfo *)self profileIdentifier];
-  [v12 encodeObject:v7 forKey:@"ProfileIdentifier"];
+  profileIdentifier = [(NEProfileIngestionPayloadInfo *)self profileIdentifier];
+  [coderCopy encodeObject:profileIdentifier forKey:@"ProfileIdentifier"];
 
-  v8 = [(NEProfileIngestionPayloadInfo *)self profileUUID];
-  [v12 encodeObject:v8 forKey:@"ProfileUUID"];
+  profileUUID = [(NEProfileIngestionPayloadInfo *)self profileUUID];
+  [coderCopy encodeObject:profileUUID forKey:@"ProfileUUID"];
 
-  v9 = [(NEProfileIngestionPayloadInfo *)self profileOrganization];
-  [v12 encodeObject:v9 forKey:@"ProfileOrganization"];
+  profileOrganization = [(NEProfileIngestionPayloadInfo *)self profileOrganization];
+  [coderCopy encodeObject:profileOrganization forKey:@"ProfileOrganization"];
 
-  [v12 encodeBool:-[NEProfileIngestionPayloadInfo isSetAside](self forKey:{"isSetAside"), @"isSetAside"}];
-  v10 = [(NEProfileIngestionPayloadInfo *)self profileIngestionDate];
-  [v12 encodeObject:v10 forKey:@"profileIngestionDate"];
+  [coderCopy encodeBool:-[NEProfileIngestionPayloadInfo isSetAside](self forKey:{"isSetAside"), @"isSetAside"}];
+  profileIngestionDate = [(NEProfileIngestionPayloadInfo *)self profileIngestionDate];
+  [coderCopy encodeObject:profileIngestionDate forKey:@"profileIngestionDate"];
 
-  v11 = [(NEProfileIngestionPayloadInfo *)self systemVersion];
-  [v12 encodeObject:v11 forKey:@"systemVersion"];
+  systemVersion = [(NEProfileIngestionPayloadInfo *)self systemVersion];
+  [coderCopy encodeObject:systemVersion forKey:@"systemVersion"];
 
-  [v12 encodeInteger:-[NEProfileIngestionPayloadInfo profileSource](self forKey:{"profileSource"), @"profileSource"}];
+  [coderCopy encodeInteger:-[NEProfileIngestionPayloadInfo profileSource](self forKey:{"profileSource"), @"profileSource"}];
 }
 
-- (NEProfileIngestionPayloadInfo)initWithCoder:(id)a3
+- (NEProfileIngestionPayloadInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = NEProfileIngestionPayloadInfo;
   v5 = [(NEProfileIngestionPayloadInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PayloadType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PayloadType"];
     payloadProtocolType = v5->_payloadProtocolType;
     v5->_payloadProtocolType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PayloadUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PayloadUUID"];
     payloadUUID = v5->_payloadUUID;
     v5->_payloadUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PayloadOrganization"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PayloadOrganization"];
     payloadOrganization = v5->_payloadOrganization;
     v5->_payloadOrganization = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProfileIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProfileIdentifier"];
     profileIdentifier = v5->_profileIdentifier;
     v5->_profileIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProfileUUID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProfileUUID"];
     profileUUID = v5->_profileUUID;
     v5->_profileUUID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProfileOrganization"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProfileOrganization"];
     profileOrganization = v5->_profileOrganization;
     v5->_profileOrganization = v16;
 
-    v5->_isSetAside = [v4 decodeBoolForKey:@"isSetAside"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileIngestionDate"];
+    v5->_isSetAside = [coderCopy decodeBoolForKey:@"isSetAside"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileIngestionDate"];
     profileIngestionDate = v5->_profileIngestionDate;
     v5->_profileIngestionDate = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemVersion"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemVersion"];
     systemVersion = v5->_systemVersion;
     v5->_systemVersion = v20;
 
-    v5->_profileSource = [v4 decodeIntegerForKey:@"profileSource"];
+    v5->_profileSource = [coderCopy decodeIntegerForKey:@"profileSource"];
   }
 
   return v5;
@@ -270,14 +270,14 @@ LABEL_17:
   v2 = [(NEProfileIngestionPayloadInfo *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = [v3 operatingSystemVersionString];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    operatingSystemVersionString = [processInfo operatingSystemVersionString];
     systemVersion = v2->_systemVersion;
-    v2->_systemVersion = v4;
+    v2->_systemVersion = operatingSystemVersionString;
 
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     profileIngestionDate = v2->_profileIngestionDate;
-    v2->_profileIngestionDate = v6;
+    v2->_profileIngestionDate = date;
   }
 
   return v2;

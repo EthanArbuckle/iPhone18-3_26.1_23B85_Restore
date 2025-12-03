@@ -1,20 +1,20 @@
 @interface PMLTrackerAWDAdapter
-- (void)postMetricId:(unsigned int)a3 message:(id)a4;
+- (void)postMetricId:(unsigned int)id message:(id)message;
 @end
 
 @implementation PMLTrackerAWDAdapter
 
-- (void)postMetricId:(unsigned int)a3 message:(id)a4
+- (void)postMetricId:(unsigned int)id message:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  messageCopy = message;
   v6 = PML_LogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = messageCopy;
     v10 = 1024;
-    v11 = a3;
+    idCopy = id;
     _os_log_debug_impl(&dword_260D68000, v6, OS_LOG_TYPE_DEBUG, "Sending %@ (%d) to AWD.", &v8, 0x12u);
   }
 

@@ -1,13 +1,13 @@
 @interface PLCPLDownloadContext
-- (void)updateFromDownloadStatusUserInfo:(id)a3;
+- (void)updateFromDownloadStatusUserInfo:(id)info;
 @end
 
 @implementation PLCPLDownloadContext
 
-- (void)updateFromDownloadStatusUserInfo:(id)a3
+- (void)updateFromDownloadStatusUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"progress"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"progress"];
   v11 = v5;
   if (v5)
   {
@@ -20,17 +20,17 @@
     v7 = NAN;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"completed"];
-  v9 = [v8 BOOLValue];
+  v8 = [infoCopy objectForKeyedSubscript:@"completed"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 objectForKeyedSubscript:@"error"];
+  v10 = [infoCopy objectForKeyedSubscript:@"error"];
 
   if (v7 >= 0.0)
   {
     [(PLCPLDownloadContext *)self setProgress:v7];
   }
 
-  [(PLCPLDownloadContext *)self setCompleted:v9];
+  [(PLCPLDownloadContext *)self setCompleted:bOOLValue];
   if (v10)
   {
     [(PLCPLDownloadContext *)self setError:v10];

@@ -1,63 +1,63 @@
 @interface REMListSectionStorage
-- (BOOL)isEqual:(id)a3;
-- (REMListSectionStorage)initWithCoder:(id)a3;
-- (REMListSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 displayName:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (REMListSectionStorage)initWithCoder:(id)coder;
+- (REMListSectionStorage)initWithObjectID:(id)d accountID:(id)iD listID:(id)listID displayName:(id)name;
 - (id)cdKeyToStorageKeyMap;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setListID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setListID:(id)d;
 @end
 
 @implementation REMListSectionStorage
 
-- (void)setListID:(id)a3
+- (void)setListID:(id)d
 {
   v3.receiver = self;
   v3.super_class = REMListSectionStorage;
-  [(REMBaseSectionStorage *)&v3 setParentID:a3];
+  [(REMBaseSectionStorage *)&v3 setParentID:d];
 }
 
-- (REMListSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 displayName:(id)a6
+- (REMListSectionStorage)initWithObjectID:(id)d accountID:(id)iD listID:(id)listID displayName:(id)name
 {
   v7.receiver = self;
   v7.super_class = REMListSectionStorage;
-  return [(REMBaseSectionStorage *)&v7 initWithObjectID:a3 accountID:a4 parentID:a5 displayName:a6];
+  return [(REMBaseSectionStorage *)&v7 initWithObjectID:d accountID:iD parentID:listID displayName:name];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = REMListSectionStorage;
-  v4 = [(REMBaseSectionStorage *)&v7 copyWithZone:a3];
-  v5 = [(REMListSectionStorage *)self canonicalName];
-  [v4 setCanonicalName:v5];
+  v4 = [(REMBaseSectionStorage *)&v7 copyWithZone:zone];
+  canonicalName = [(REMListSectionStorage *)self canonicalName];
+  [v4 setCanonicalName:canonicalName];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = REMListSectionStorage;
-  if ([(REMBaseSectionStorage *)&v12 isEqual:v4])
+  if ([(REMBaseSectionStorage *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(REMListSectionStorage *)self canonicalName];
-      v7 = [v5 canonicalName];
-      if (v6 == v7)
+      canonicalName = [(REMListSectionStorage *)self canonicalName];
+      canonicalName2 = [v5 canonicalName];
+      if (canonicalName == canonicalName2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(REMListSectionStorage *)self canonicalName];
-        v9 = [v5 canonicalName];
-        v10 = [v8 isEqual:v9];
+        canonicalName3 = [(REMListSectionStorage *)self canonicalName];
+        canonicalName4 = [v5 canonicalName];
+        v10 = [canonicalName3 isEqual:canonicalName4];
       }
     }
 
@@ -75,26 +75,26 @@
   return v10 & 1;
 }
 
-- (REMListSectionStorage)initWithCoder:(id)a3
+- (REMListSectionStorage)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = REMListSectionStorage;
-  v3 = a3;
-  v4 = [(REMBaseSectionStorage *)&v7 initWithCoder:v3];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"canonicalName", v7.receiver, v7.super_class}];
+  coderCopy = coder;
+  v4 = [(REMBaseSectionStorage *)&v7 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"canonicalName", v7.receiver, v7.super_class}];
 
   [(REMListSectionStorage *)v4 setCanonicalName:v5];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = REMListSectionStorage;
-  v4 = a3;
-  [(REMBaseSectionStorage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMBaseSectionStorage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(REMListSectionStorage *)self canonicalName:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"canonicalName"];
+  [coderCopy encodeObject:v5 forKey:@"canonicalName"];
 }
 
 - (id)cdKeyToStorageKeyMap

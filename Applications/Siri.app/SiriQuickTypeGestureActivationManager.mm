@@ -1,17 +1,17 @@
 @interface SiriQuickTypeGestureActivationManager
-- (void)canActivateWithCompletionHandler:(id)a3;
-- (void)cancelPrewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)a3;
-- (void)prewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)a3;
+- (void)canActivateWithCompletionHandler:(id)handler;
+- (void)cancelPrewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)handler;
+- (void)prewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)handler;
 @end
 
 @implementation SiriQuickTypeGestureActivationManager
 
-- (void)prewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)a3
+- (void)prewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)handler
 {
   v5 = sub_100093B6C(&qword_10018DFE0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -31,12 +31,12 @@
   sub_1000A80AC(0, 0, v7, &unk_1000F7940, v12);
 }
 
-- (void)cancelPrewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)a3
+- (void)cancelPrewarmForFirstTapOfQuickTypeToSiriGestureWithCompletionHandler:(id)handler
 {
   v5 = sub_100093B6C(&qword_10018DFE0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -56,12 +56,12 @@
   sub_1000A80AC(0, 0, v7, &unk_1000F7920, v12);
 }
 
-- (void)canActivateWithCompletionHandler:(id)a3
+- (void)canActivateWithCompletionHandler:(id)handler
 {
   v5 = sub_100093B6C(&qword_10018DFE0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;

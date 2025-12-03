@@ -1,10 +1,10 @@
 @interface PDNotesSlide
 - (PDNotesSlide)init;
 - (id)description;
-- (id)masterPlaceholderOfType:(int)a3;
-- (id)parentShapePropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)parentTextBodyPropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6;
+- (id)masterPlaceholderOfType:(int)type;
+- (id)parentShapePropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)parentTextBodyPropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex;
 - (void)doneWithContent;
 @end
 
@@ -17,50 +17,50 @@
   return [(PDSlideChild *)&v3 init];
 }
 
-- (id)masterPlaceholderOfType:(int)a3
+- (id)masterPlaceholderOfType:(int)type
 {
-  v3 = *&a3;
-  v4 = [(PDNotesSlide *)self notesMaster];
-  v5 = [v4 placeholderWithType:v3 placeholderTypeIndex:0 overrideIndex:1];
+  v3 = *&type;
+  notesMaster = [(PDNotesSlide *)self notesMaster];
+  v5 = [notesMaster placeholderWithType:v3 placeholderTypeIndex:0 overrideIndex:1];
 
   return v5;
 }
 
-- (id)parentTextBodyPropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)parentTextBodyPropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
-  v5 = [(PDNotesSlide *)self masterPlaceholderOfType:*&a3, *&a4, a5];
-  v6 = [v5 textBody];
-  v7 = [v6 properties];
+  overrideIndex = [(PDNotesSlide *)self masterPlaceholderOfType:*&type, *&index, overrideIndex];
+  textBody = [overrideIndex textBody];
+  properties = [textBody properties];
 
-  return v7;
+  return properties;
 }
 
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = [(PDNotesSlide *)self notesMaster];
-  v10 = v9;
+  v6 = *&type;
+  styleCopy = style;
+  notesMaster = [(PDNotesSlide *)self notesMaster];
+  v10 = notesMaster;
   if (v6 == 1)
   {
-    v11 = [v9 notesTextStyle];
+    notesTextStyle = [notesMaster notesTextStyle];
   }
 
   else
   {
     v12 = [(PDNotesSlide *)self masterPlaceholderOfType:v6];
-    v13 = [v12 textBody];
-    v11 = [v13 textListStyle];
+    textBody = [v12 textBody];
+    notesTextStyle = [textBody textListStyle];
   }
 
-  if (v11)
+  if (notesTextStyle)
   {
-    v14 = v11;
+    v14 = notesTextStyle;
   }
 
   else
   {
-    v14 = v8;
+    v14 = styleCopy;
   }
 
   v15 = v14;
@@ -68,12 +68,12 @@
   return v14;
 }
 
-- (id)parentShapePropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)parentShapePropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
-  v5 = [(PDNotesSlide *)self masterPlaceholderOfType:*&a3, *&a4, a5];
-  v6 = [v5 shapeProperties];
+  overrideIndex = [(PDNotesSlide *)self masterPlaceholderOfType:*&type, *&index, overrideIndex];
+  shapeProperties = [overrideIndex shapeProperties];
 
-  return v6;
+  return shapeProperties;
 }
 
 - (void)doneWithContent

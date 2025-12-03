@@ -1,12 +1,12 @@
 @interface ClientState
-- (void)bagChangeNotificationWithNotification:(id)a3;
+- (void)bagChangeNotificationWithNotification:(id)notification;
 @end
 
 @implementation ClientState
 
-- (void)bagChangeNotificationWithNotification:(id)a3
+- (void)bagChangeNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_1000C399C();
 }

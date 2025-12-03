@@ -1,14 +1,14 @@
 @interface TKVibrationRecorderViewController
-- (TKVibrationRecorderViewController)initWithVibratorController:(id)a3;
+- (TKVibrationRecorderViewController)initWithVibratorController:(id)controller;
 - (void)dealloc;
 @end
 
 @implementation TKVibrationRecorderViewController
 
-- (TKVibrationRecorderViewController)initWithVibratorController:(id)a3
+- (TKVibrationRecorderViewController)initWithVibratorController:(id)controller
 {
-  v4 = a3;
-  v5 = [[TKVibrationRecorderContentViewController alloc] initWithVibratorController:v4];
+  controllerCopy = controller;
+  v5 = [[TKVibrationRecorderContentViewController alloc] initWithVibratorController:controllerCopy];
 
   v6 = [(TKVibrationRecorderViewController *)self initWithRootViewController:v5];
   v7 = v6;

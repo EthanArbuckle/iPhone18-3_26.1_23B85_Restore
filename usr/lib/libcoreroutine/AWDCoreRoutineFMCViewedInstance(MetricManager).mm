@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_284625640;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   v2 = v1;
@@ -27,7 +27,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -73,7 +73,7 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"%@, uiPlacement %d", v4, objc_msgSend(a1, "uiPlacement")];
+  v5 = [v2 stringWithFormat:@"%@, uiPlacement %d", v4, objc_msgSend(self, "uiPlacement")];
 
   return v5;
 }

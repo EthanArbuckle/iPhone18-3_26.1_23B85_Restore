@@ -1,64 +1,64 @@
 @interface WXTable
-+ (id)newTableGrid:(id)a3;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (id)newTableGrid:(id)grid;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXTable
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "tblPr");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "tblPr");
 
   if (v10)
   {
-    v11 = [v8 WXMainNamespace];
-    v12 = OCXFindChild(v10, v11, "tblStyle");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v12 = OCXFindChild(v10, wXMainNamespace2, "tblStyle");
 
     if (v12)
     {
-      v13 = [v8 WXMainNamespace];
-      v14 = CXDefaultStringAttribute(v12, v13, "val", 0);
+      wXMainNamespace3 = [stateCopy WXMainNamespace];
+      v14 = CXDefaultStringAttribute(v12, wXMainNamespace3, "val", 0);
 
-      v15 = [v7 document];
-      v16 = [v15 styleSheet];
+      document = [toCopy document];
+      styleSheet = [document styleSheet];
 
-      v17 = [v16 styleWithId:v14];
+      v17 = [styleSheet styleWithId:v14];
 
       if (v17)
       {
-        v18 = [v7 properties];
-        [v18 setBaseStyle:v17];
+        properties = [toCopy properties];
+        [properties setBaseStyle:v17];
       }
     }
 
-    v19 = [v7 properties];
-    [WXTableProperties readFrom:v10 to:v19 state:v8];
+    properties2 = [toCopy properties];
+    [WXTableProperties readFrom:v10 to:properties2 state:stateCopy];
   }
 
-  v20 = [v8 WXMainNamespace];
-  OCXFindChild(a3, v20, "tblGrid");
+  wXMainNamespace4 = [stateCopy WXMainNamespace];
+  OCXFindChild(from, wXMainNamespace4, "tblGrid");
 
   operator new();
 }
 
-+ (id)newTableGrid:(id)a3
++ (id)newTableGrid:(id)grid
 {
   v30 = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  gridCopy = grid;
   v3 = [MEMORY[0x277CBEB58] set];
-  for (i = 0; i < [v24 rowCount]; ++i)
+  for (i = 0; i < [gridCopy rowCount]; ++i)
   {
-    v5 = [v24 rowAt:i];
+    v5 = [gridCopy rowAt:i];
     for (j = 0; j < [v5 cellCount]; ++j)
     {
       v7 = [v5 cellAt:j];
-      v8 = [v7 properties];
-      v9 = [v8 position];
+      properties = [v7 properties];
+      position = [properties position];
 
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v9];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:position];
       [v3 addObject:v10];
     }
   }
@@ -76,7 +76,7 @@
   v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
-    v15 = 0;
+    unsignedLongValue2 = 0;
     v16 = *v26;
     do
     {
@@ -88,10 +88,10 @@
         }
 
         v18 = *(*(&v25 + 1) + 8 * k);
-        v19 = [v18 unsignedLongValue];
-        v20 = [MEMORY[0x277CCABB0] numberWithLong:v19 - v15];
+        unsignedLongValue = [v18 unsignedLongValue];
+        v20 = [MEMORY[0x277CCABB0] numberWithLong:unsignedLongValue - unsignedLongValue2];
         [v12 addObject:v20];
-        v15 = [v18 unsignedLongValue];
+        unsignedLongValue2 = [v18 unsignedLongValue];
       }
 
       v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];

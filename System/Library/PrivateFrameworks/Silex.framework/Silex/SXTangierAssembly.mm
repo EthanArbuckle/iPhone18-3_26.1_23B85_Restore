@@ -1,30 +1,30 @@
 @interface SXTangierAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXTangierAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerClass:objc_opt_class() factory:&__block_literal_global_101];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_101];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_5];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_5];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F5411280 factory:&__block_literal_global_139_0];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_1F5411280 factory:&__block_literal_global_139_0];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_142];
+  publicContainer4 = [registryCopy publicContainer];
+  v11 = [publicContainer4 registerClass:objc_opt_class() factory:&__block_literal_global_142];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_1F53ABE38 factory:&__block_literal_global_148];
+  publicContainer5 = [registryCopy publicContainer];
+  v13 = [publicContainer5 registerProtocol:&unk_1F53ABE38 factory:&__block_literal_global_148];
 
-  v15 = [v3 publicContainer];
+  publicContainer6 = [registryCopy publicContainer];
 
-  v14 = [v15 registerProtocol:&unk_1F53D0140 factory:&__block_literal_global_164_0];
+  v14 = [publicContainer6 registerProtocol:&unk_1F53D0140 factory:&__block_literal_global_164_0];
 }
 
 SXScrollView *__36__SXTangierAssembly_loadInRegistry___block_invoke()

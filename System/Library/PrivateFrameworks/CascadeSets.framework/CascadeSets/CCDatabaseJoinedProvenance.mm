@@ -1,21 +1,21 @@
 @interface CCDatabaseJoinedProvenance
-+ (id)joinedProvenanceFromDatabaseValueRow:(id)a3;
-- (CCDatabaseJoinedProvenance)initWithProvenance:(id)a3 contentData:(id)a4 metaContentData:(id)a5;
++ (id)joinedProvenanceFromDatabaseValueRow:(id)row;
+- (CCDatabaseJoinedProvenance)initWithProvenance:(id)provenance contentData:(id)data metaContentData:(id)contentData;
 @end
 
 @implementation CCDatabaseJoinedProvenance
 
-+ (id)joinedProvenanceFromDatabaseValueRow:(id)a3
++ (id)joinedProvenanceFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  if (v3)
+  rowCopy = row;
+  if (rowCopy)
   {
-    v4 = [CCProvenanceRecord recordFromDatabaseValueRow:v3];
+    v4 = [CCProvenanceRecord recordFromDatabaseValueRow:rowCopy];
     if (v4)
     {
-      v5 = [v3 columnCount];
-      v6 = [v3 dataValueAtColumnIndex:v5 - 2];
-      v7 = [v3 dataValueAtColumnIndex:v5 - 1];
+      columnCount = [rowCopy columnCount];
+      v6 = [rowCopy dataValueAtColumnIndex:columnCount - 2];
+      v7 = [rowCopy dataValueAtColumnIndex:columnCount - 1];
       v8 = [[CCDatabaseJoinedProvenance alloc] initWithProvenance:v4 contentData:v6 metaContentData:v7];
     }
 
@@ -39,20 +39,20 @@
   return v8;
 }
 
-- (CCDatabaseJoinedProvenance)initWithProvenance:(id)a3 contentData:(id)a4 metaContentData:(id)a5
+- (CCDatabaseJoinedProvenance)initWithProvenance:(id)provenance contentData:(id)data metaContentData:(id)contentData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  provenanceCopy = provenance;
+  dataCopy = data;
+  contentDataCopy = contentData;
   v15.receiver = self;
   v15.super_class = CCDatabaseJoinedProvenance;
   v12 = [(CCDatabaseJoinedProvenance *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_provenance, a3);
-    objc_storeStrong(&v13->_contentData, a4);
-    objc_storeStrong(&v13->_metaContentData, a5);
+    objc_storeStrong(&v12->_provenance, provenance);
+    objc_storeStrong(&v13->_contentData, data);
+    objc_storeStrong(&v13->_metaContentData, contentData);
   }
 
   return v13;

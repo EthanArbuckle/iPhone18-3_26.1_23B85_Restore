@@ -1,38 +1,38 @@
 @interface WFWalletTransactionTriggerConfigurationViewController
-+ (BOOL)passIsAppleAccess:(id)a3;
++ (BOOL)passIsAppleAccess:(id)access;
 - (BOOL)paymentPassesSelected;
-- (WFWalletTransactionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFWalletTransactionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)allPassIdentifiers;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)merchantIconForMerchantType:(unint64_t)a3;
-- (id)passIconForPaymentPass:(id)a3 preferredIconSize:(CGSize)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)merchantIconForMerchantType:(unint64_t)type;
+- (id)passIconForPaymentPass:(id)pass preferredIconSize:(CGSize)size;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_fetchPassesWithCompletion:(id)a3;
-- (void)filterDuplicatePassesFromLocalPasses:(id)a3 watchPasses:(id)a4;
-- (void)presentNavControllerWithRootViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_fetchPassesWithCompletion:(id)completion;
+- (void)filterDuplicatePassesFromLocalPasses:(id)passes watchPasses:(id)watchPasses;
+- (void)presentNavControllerWithRootViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)walletMerchantViewController:(id)a3 didFinishWithMerchants:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)walletMerchantViewController:(id)controller didFinishWithMerchants:(id)merchants;
 @end
 
 @implementation WFWalletTransactionTriggerConfigurationViewController
 
-- (void)walletMerchantViewController:(id)a3 didFinishWithMerchants:(id)a4
+- (void)walletMerchantViewController:(id)controller didFinishWithMerchants:(id)merchants
 {
-  v6 = a3;
-  v7 = [a4 if_map:&__block_literal_global_343];
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setSelectedMerchants:v7];
+  controllerCopy = controller;
+  v7 = [merchants if_map:&__block_literal_global_343];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setSelectedMerchants:v7];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
-  v9 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v9 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantViewController_didFinishWithMerchants___block_invoke(uint64_t a1, void *a2)
@@ -60,25 +60,25 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
   return v10;
 }
 
-- (void)presentNavControllerWithRootViewController:(id)a3
+- (void)presentNavControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [(WFWalletTransactionTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)merchantIconForMerchantType:(unint64_t)a3
+- (id)merchantIconForMerchantType:(unint64_t)type
 {
-  v5 = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIcons];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  merchantIcons = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIcons];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v7 = [merchantIcons objectForKeyedSubscript:v6];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v9;
     v19 = 0;
     v20 = &v19;
@@ -96,66 +96,66 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
     _Block_object_dispose(&v19, 8);
     if (!v11)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"UIImage *WFPKIconForMerchantCategory(PKMerchantCategory, CGSize, CGFloat, BOOL, BOOL)"}];
-      [v17 handleFailureInFunction:v18 file:@"WFWalletTransactionTriggerConfigurationViewController.m" lineNumber:37 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v18 file:@"WFWalletTransactionTriggerConfigurationViewController.m" lineNumber:37 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
-    if (a3 - 1 >= 7)
+    if (type - 1 >= 7)
     {
-      v13 = 0;
+      typeCopy = 0;
     }
 
     else
     {
-      v13 = a3;
+      typeCopy = type;
     }
 
-    v7 = (v11)(v13, 0, 0, 45.0, 45.0, v10);
+    v7 = (v11)(typeCopy, 0, 0, 45.0, 45.0, v10);
 
-    v14 = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIcons];
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v14 setObject:v7 forKeyedSubscript:v15];
+    merchantIcons2 = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIcons];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    [merchantIcons2 setObject:v7 forKeyedSubscript:v15];
   }
 
   return v7;
 }
 
-- (id)passIconForPaymentPass:(id)a3 preferredIconSize:(CGSize)a4
+- (id)passIconForPaymentPass:(id)pass preferredIconSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIcons];
-  v9 = [v7 uniqueID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  height = size.height;
+  width = size.width;
+  passCopy = pass;
+  passIcons = [(WFWalletTransactionTriggerConfigurationViewController *)self passIcons];
+  uniqueID = [passCopy uniqueID];
+  v10 = [passIcons objectForKeyedSubscript:uniqueID];
 
   if (!v10)
   {
     v11 = [MEMORY[0x277D37F20] constraintsWithAspectFitToSize:{width, height}];
-    v12 = [v7 frontFaceImage];
-    v13 = [v12 resizedImageWithConstraints:v11];
+    frontFaceImage = [passCopy frontFaceImage];
+    v13 = [frontFaceImage resizedImageWithConstraints:v11];
 
     PassKitUILibrary();
     v10 = [MEMORY[0x277D755B8] imageWithPKImage:v13];
-    v14 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIcons];
-    v15 = [v7 uniqueID];
-    [v14 setObject:v10 forKeyedSubscript:v15];
+    passIcons2 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIcons];
+    uniqueID2 = [passCopy uniqueID];
+    [passIcons2 setObject:v10 forKeyedSubscript:uniqueID2];
   }
 
   return v10;
 }
 
-- (void)filterDuplicatePassesFromLocalPasses:(id)a3 watchPasses:(id)a4
+- (void)filterDuplicatePassesFromLocalPasses:(id)passes watchPasses:(id)watchPasses
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v42 = [v5 mutableCopy];
-  v43 = [v6 mutableCopy];
+  passesCopy = passes;
+  watchPassesCopy = watchPasses;
+  v42 = [passesCopy mutableCopy];
+  v43 = [watchPassesCopy mutableCopy];
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -163,7 +163,7 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v5;
+  obj = passesCopy;
   v10 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v10)
   {
@@ -180,29 +180,29 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
         }
 
         v14 = *(*(&v54 + 1) + 8 * i);
-        v15 = [v14 uniqueID];
-        [v9 addObject:v15];
+        uniqueID = [v14 uniqueID];
+        [v9 addObject:uniqueID];
 
         if ([v14 passType] == 1)
         {
           v16 = v14;
           if ([objc_opt_class() passIsAppleAccess:v16])
           {
-            v17 = [v16 uniqueID];
+            uniqueID2 = [v16 uniqueID];
 
-            v48 = v17;
+            v48 = uniqueID2;
           }
 
-          v18 = [v16 primaryAccountIdentifier];
-          if (v18)
+          primaryAccountIdentifier = [v16 primaryAccountIdentifier];
+          if (primaryAccountIdentifier)
           {
-            [v7 setObject:v16 forKeyedSubscript:v18];
+            [v7 setObject:v16 forKeyedSubscript:primaryAccountIdentifier];
           }
 
-          v19 = [v16 pairedTerminalIdentifier];
-          if (v19)
+          pairedTerminalIdentifier = [v16 pairedTerminalIdentifier];
+          if (pairedTerminalIdentifier)
           {
-            [v8 setObject:v16 forKeyedSubscript:v19];
+            [v8 setObject:v16 forKeyedSubscript:pairedTerminalIdentifier];
           }
         }
       }
@@ -225,7 +225,7 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v46 = v6;
+  v46 = watchPassesCopy;
   v20 = [v46 countByEnumeratingWithState:&v50 objects:v58 count:16];
   v21 = v43;
   v22 = v48;
@@ -243,17 +243,17 @@ id __109__WFWalletTransactionTriggerConfigurationViewController_walletMerchantVi
         }
 
         v26 = *(*(&v50 + 1) + 8 * j);
-        v27 = [v26 uniqueID];
-        if ([v9 containsObject:v27])
+        uniqueID3 = [v26 uniqueID];
+        if ([v9 containsObject:uniqueID3])
         {
           goto LABEL_36;
         }
 
         if (v22 && [objc_opt_class() passIsAppleAccess:v26])
         {
-          v28 = [v26 uniqueID];
-          v29 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
-          [v29 setObject:v28 forKeyedSubscript:v22];
+          uniqueID4 = [v26 uniqueID];
+          localPassesToRemotePassesUniqueIdentifierMapping = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
+          [localPassesToRemotePassesUniqueIdentifierMapping setObject:uniqueID4 forKeyedSubscript:v22];
 LABEL_35:
 
 LABEL_36:
@@ -265,30 +265,30 @@ LABEL_36:
         {
           if ([v26 isCarKeyPass] && (objc_msgSend(v26, "pairedTerminalIdentifier"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v44, "objectForKey:", v30), v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31))
           {
-            v32 = [v26 pairedTerminalIdentifier];
+            pairedTerminalIdentifier2 = [v26 pairedTerminalIdentifier];
             v33 = v44;
           }
 
           else
           {
-            v34 = [v26 primaryAccountIdentifier];
-            v35 = [v45 objectForKey:v34];
+            primaryAccountIdentifier2 = [v26 primaryAccountIdentifier];
+            v35 = [v45 objectForKey:primaryAccountIdentifier2];
 
             if (!v35)
             {
               goto LABEL_37;
             }
 
-            v32 = [v26 primaryAccountIdentifier];
+            pairedTerminalIdentifier2 = [v26 primaryAccountIdentifier];
             v33 = v45;
           }
 
-          v28 = [v33 objectForKeyedSubscript:v32];
+          uniqueID4 = [v33 objectForKeyedSubscript:pairedTerminalIdentifier2];
 
-          v29 = [v26 uniqueID];
-          v36 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
-          v37 = [v28 uniqueID];
-          [v36 setObject:v29 forKeyedSubscript:v37];
+          localPassesToRemotePassesUniqueIdentifierMapping = [v26 uniqueID];
+          localPassesToRemotePassesUniqueIdentifierMapping2 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
+          v28UniqueID = [uniqueID4 uniqueID];
+          [localPassesToRemotePassesUniqueIdentifierMapping2 setObject:localPassesToRemotePassesUniqueIdentifierMapping forKeyedSubscript:v28UniqueID];
 
           v21 = v43;
           v22 = v48;
@@ -333,26 +333,26 @@ uint64_t __106__WFWalletTransactionTriggerConfigurationViewController_filterDupl
   return v7;
 }
 
-- (void)_fetchPassesWithCompletion:(id)a3
+- (void)_fetchPassesWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277D37FC0] sharedInstance];
-  v5 = [v4 passesOfType:1];
-  v6 = [MEMORY[0x277D37FC0] sharedInstanceWithRemoteLibrary];
-  v7 = [v6 remoteSecureElementPasses];
-  [(WFWalletTransactionTriggerConfigurationViewController *)self filterDuplicatePassesFromLocalPasses:v5 watchPasses:v7];
-  if (v8)
+  completionCopy = completion;
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
+  v5 = [mEMORY[0x277D37FC0] passesOfType:1];
+  mEMORY[0x277D37FC0]2 = [MEMORY[0x277D37FC0] sharedInstanceWithRemoteLibrary];
+  remoteSecureElementPasses = [mEMORY[0x277D37FC0]2 remoteSecureElementPasses];
+  [(WFWalletTransactionTriggerConfigurationViewController *)self filterDuplicatePassesFromLocalPasses:v5 watchPasses:remoteSecureElementPasses];
+  if (completionCopy)
   {
-    v8[2](v8, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFWalletTransactionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFWalletTransactionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"triggerPassParameters"];
 
@@ -368,60 +368,60 @@ uint64_t __106__WFWalletTransactionTriggerConfigurationViewController_filterDupl
       _os_log_impl(&dword_274719000, v10, OS_LOG_TYPE_DEBUG, "%s didselect section: %{public}@", &v63, 0x16u);
     }
 
-    v11 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+    v12 = [passes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [(WFTriggerConfigurationViewController *)self trigger];
-    v14 = [v13 selectedPassUniqueIDs];
-    v15 = [v12 uniqueID];
-    v16 = [v14 containsObject:v15];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedPassUniqueIDs = [trigger selectedPassUniqueIDs];
+    uniqueID = [v12 uniqueID];
+    v16 = [selectedPassUniqueIDs containsObject:uniqueID];
 
     if (v16)
     {
-      v17 = [(WFTriggerConfigurationViewController *)self trigger];
-      v18 = [v17 selectedPassUniqueIDs];
-      v19 = [v18 mutableCopy];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedPassUniqueIDs2 = [trigger2 selectedPassUniqueIDs];
+      trigger11 = [selectedPassUniqueIDs2 mutableCopy];
 
-      v20 = [v12 uniqueID];
-      [(WFWalletMerchantSelectionTableViewController *)v19 removeObject:v20];
+      uniqueID2 = [v12 uniqueID];
+      [(WFWalletMerchantSelectionTableViewController *)trigger11 removeObject:uniqueID2];
 
-      v21 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
-      v22 = [v12 uniqueID];
-      v23 = [v21 objectForKeyedSubscript:v22];
+      localPassesToRemotePassesUniqueIdentifierMapping = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
+      uniqueID3 = [v12 uniqueID];
+      trigger8 = [localPassesToRemotePassesUniqueIdentifierMapping objectForKeyedSubscript:uniqueID3];
 
-      if (v23)
+      if (trigger8)
       {
-        [(WFWalletMerchantSelectionTableViewController *)v19 removeObject:v23];
+        [(WFWalletMerchantSelectionTableViewController *)trigger11 removeObject:trigger8];
       }
 
-      v24 = [(WFTriggerConfigurationViewController *)self trigger];
-      v25 = v24;
-      v26 = v19;
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      allObjects = trigger3;
+      v26 = trigger11;
 LABEL_18:
-      [v24 setSelectedPassUniqueIDs:v26];
+      [trigger3 setSelectedPassUniqueIDs:v26];
       goto LABEL_19;
     }
 
     v37 = MEMORY[0x277CBEB58];
-    v38 = [(WFTriggerConfigurationViewController *)self trigger];
-    v39 = [v38 selectedPassUniqueIDs];
-    v19 = [v37 setWithArray:v39];
+    trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedPassUniqueIDs3 = [trigger4 selectedPassUniqueIDs];
+    trigger11 = [v37 setWithArray:selectedPassUniqueIDs3];
 
-    v40 = [v12 uniqueID];
-    [(WFWalletMerchantSelectionTableViewController *)v19 addObject:v40];
+    uniqueID4 = [v12 uniqueID];
+    [(WFWalletMerchantSelectionTableViewController *)trigger11 addObject:uniqueID4];
 
-    v41 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
-    v42 = [v12 uniqueID];
-    v23 = [v41 objectForKeyedSubscript:v42];
+    localPassesToRemotePassesUniqueIdentifierMapping2 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
+    uniqueID5 = [v12 uniqueID];
+    trigger8 = [localPassesToRemotePassesUniqueIdentifierMapping2 objectForKeyedSubscript:uniqueID5];
 
-    if (v23)
+    if (trigger8)
     {
-      [(WFWalletMerchantSelectionTableViewController *)v19 addObject:v23];
+      [(WFWalletMerchantSelectionTableViewController *)trigger11 addObject:trigger8];
     }
 
-    v25 = [(WFWalletMerchantSelectionTableViewController *)v19 allObjects];
-    v43 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v43 setSelectedPassUniqueIDs:v25];
+    allObjects = [(WFWalletMerchantSelectionTableViewController *)trigger11 allObjects];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger5 setSelectedPassUniqueIDs:allObjects];
 LABEL_14:
 
 LABEL_19:
@@ -433,42 +433,42 @@ LABEL_19:
 
   if (v28)
   {
-    v29 = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
-    v12 = [v29 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    remotePasses = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
+    v12 = [remotePasses objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v30 = [(WFTriggerConfigurationViewController *)self trigger];
-    v31 = [v30 selectedPassUniqueIDs];
-    v32 = [v12 uniqueID];
-    v33 = [v31 containsObject:v32];
+    trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedPassUniqueIDs4 = [trigger6 selectedPassUniqueIDs];
+    uniqueID6 = [v12 uniqueID];
+    v33 = [selectedPassUniqueIDs4 containsObject:uniqueID6];
 
     if (v33)
     {
-      v34 = [(WFTriggerConfigurationViewController *)self trigger];
-      v35 = [v34 selectedPassUniqueIDs];
-      v19 = [v35 mutableCopy];
+      trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedPassUniqueIDs5 = [trigger7 selectedPassUniqueIDs];
+      trigger11 = [selectedPassUniqueIDs5 mutableCopy];
 
-      v36 = [v12 uniqueID];
-      [(WFWalletMerchantSelectionTableViewController *)v19 removeObject:v36];
+      uniqueID7 = [v12 uniqueID];
+      [(WFWalletMerchantSelectionTableViewController *)trigger11 removeObject:uniqueID7];
 
-      v23 = [(WFTriggerConfigurationViewController *)self trigger];
-      [(WFWalletMerchantSelectionTableViewController *)v23 setSelectedPassUniqueIDs:v19];
+      trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+      [(WFWalletMerchantSelectionTableViewController *)trigger8 setSelectedPassUniqueIDs:trigger11];
 LABEL_20:
 
       goto LABEL_21;
     }
 
     v51 = MEMORY[0x277CBEB58];
-    v52 = [(WFTriggerConfigurationViewController *)self trigger];
-    v53 = [v52 selectedPassUniqueIDs];
-    v19 = [v51 setWithArray:v53];
+    trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedPassUniqueIDs6 = [trigger9 selectedPassUniqueIDs];
+    trigger11 = [v51 setWithArray:selectedPassUniqueIDs6];
 
-    v54 = [v12 uniqueID];
-    [(WFWalletMerchantSelectionTableViewController *)v19 addObject:v54];
+    uniqueID8 = [v12 uniqueID];
+    [(WFWalletMerchantSelectionTableViewController *)trigger11 addObject:uniqueID8];
 
-    v23 = [(WFWalletMerchantSelectionTableViewController *)v19 allObjects];
-    v24 = [(WFTriggerConfigurationViewController *)self trigger];
-    v25 = v24;
-    v26 = v23;
+    trigger8 = [(WFWalletMerchantSelectionTableViewController *)trigger11 allObjects];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    allObjects = trigger3;
+    v26 = trigger8;
     goto LABEL_18;
   }
 
@@ -486,47 +486,47 @@ LABEL_20:
     }
 
     v58 = [v7 objectForKeyedSubscript:@"items"];
-    v12 = [v58 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    v12 = [v58 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v59 = [(WFTriggerConfigurationViewController *)self trigger];
-    v60 = [v59 selectedMerchantTypes];
-    v61 = [v60 containsObject:v12];
+    trigger10 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedMerchantTypes = [trigger10 selectedMerchantTypes];
+    v61 = [selectedMerchantTypes containsObject:v12];
 
-    v19 = [(WFTriggerConfigurationViewController *)self trigger];
-    v62 = [(WFWalletMerchantSelectionTableViewController *)v19 selectedMerchantTypes];
-    v23 = v62;
+    trigger11 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedMerchantTypes2 = [(WFWalletMerchantSelectionTableViewController *)trigger11 selectedMerchantTypes];
+    trigger8 = selectedMerchantTypes2;
     if (v61)
     {
-      [(WFWalletMerchantSelectionTableViewController *)v62 if_arrayByRemovingObject:v12];
+      [(WFWalletMerchantSelectionTableViewController *)selectedMerchantTypes2 if_arrayByRemovingObject:v12];
     }
 
     else
     {
-      [(WFWalletMerchantSelectionTableViewController *)v62 arrayByAddingObject:v12];
+      [(WFWalletMerchantSelectionTableViewController *)selectedMerchantTypes2 arrayByAddingObject:v12];
     }
-    v25 = ;
-    v43 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v43 setSelectedMerchantTypes:v25];
+    allObjects = ;
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger5 setSelectedMerchantTypes:allObjects];
     goto LABEL_14;
   }
 
-  v46 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-  v12 = [v46 if_flatMap:&__block_literal_global_329];
+  passes2 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+  v12 = [passes2 if_flatMap:&__block_literal_global_329];
 
   v47 = [WFWalletMerchantSelectionTableViewController alloc];
   v48 = [MEMORY[0x277CBEB98] setWithArray:v12];
-  v49 = [(WFTriggerConfigurationViewController *)self trigger];
-  v50 = [v49 selectedMerchants];
-  v19 = [(WFWalletMerchantSelectionTableViewController *)v47 initWithTransactionIdentifiers:v48 selectedMerchants:v50];
+  trigger12 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedMerchants = [trigger12 selectedMerchants];
+  trigger11 = [(WFWalletMerchantSelectionTableViewController *)v47 initWithTransactionIdentifiers:v48 selectedMerchants:selectedMerchants];
 
-  [(WFWalletMerchantSelectionTableViewController *)v19 setDelegate:self];
-  [(WFWalletTransactionTriggerConfigurationViewController *)self presentNavControllerWithRootViewController:v19];
+  [(WFWalletMerchantSelectionTableViewController *)trigger11 setDelegate:self];
+  [(WFWalletTransactionTriggerConfigurationViewController *)self presentNavControllerWithRootViewController:trigger11];
 LABEL_21:
 
 LABEL_22:
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v55 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v55 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -539,21 +539,21 @@ id __91__WFWalletTransactionTriggerConfigurationViewController_tableView_didSele
   return v3;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFWalletTransactionTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFWalletTransactionTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFWalletTransactionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFWalletTransactionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -563,23 +563,23 @@ id __91__WFWalletTransactionTriggerConfigurationViewController_tableView_didSele
   {
     v69 = v9;
     v13 = v10;
-    v14 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-    v67 = v6;
-    v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+    v67 = pathCopy;
+    trigger4 = [passes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v16 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIconForPaymentPass:v15 preferredIconSize:45.0, 32.0];
+    v16 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIconForPaymentPass:trigger4 preferredIconSize:45.0, 32.0];
     [v13 setImage:v16 width:45.0 height:32.0];
     [v13 setImageTopPadding:10.0 bottomPadding:10.0];
-    [v15 localizedDescription];
+    [trigger4 localizedDescription];
     v18 = v17 = self;
-    v19 = [v13 label];
-    [v19 setText:v18];
+    label = [v13 label];
+    [label setText:v18];
 
-    v20 = v17;
-    v21 = [(WFTriggerConfigurationViewController *)v17 trigger];
-    v22 = [v21 selectedPassUniqueIDs];
-    v23 = [v15 uniqueID];
-    LODWORD(v17) = [v22 containsObject:v23];
+    selfCopy2 = v17;
+    trigger = [(WFTriggerConfigurationViewController *)v17 trigger];
+    selectedPassUniqueIDs = [trigger selectedPassUniqueIDs];
+    uniqueID = [trigger4 uniqueID];
+    LODWORD(v17) = [selectedPassUniqueIDs containsObject:uniqueID];
 
     if (v17)
     {
@@ -597,46 +597,46 @@ LABEL_3:
     {
       v26 = v10;
       v27 = WFLocalizedString(@"Filter Merchants");
-      v28 = [v26 textLabel];
-      [v28 setText:v27];
+      textLabel = [v26 textLabel];
+      [textLabel setText:v27];
 
-      v29 = [(WFTriggerConfigurationViewController *)self trigger];
-      v30 = [v29 selectedMerchants];
-      v31 = [v30 count];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedMerchants = [trigger2 selectedMerchants];
+      v31 = [selectedMerchants count];
 
       if (v31)
       {
-        v32 = [(WFTriggerConfigurationViewController *)self trigger];
-        v33 = [v32 selectedMerchants];
-        v34 = [v33 count];
+        trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedMerchants2 = [trigger3 selectedMerchants];
+        v34 = [selectedMerchants2 count];
 
         if (v34 == 1)
         {
-          v15 = [(WFTriggerConfigurationViewController *)self trigger];
-          v35 = [v15 selectedMerchants];
-          v36 = [v35 firstObject];
-          v37 = [v36 displayName];
-          v38 = [v26 detailTextLabel];
-          [v38 setText:v37];
+          trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+          selectedMerchants3 = [trigger4 selectedMerchants];
+          firstObject = [selectedMerchants3 firstObject];
+          displayName = [firstObject displayName];
+          detailTextLabel = [v26 detailTextLabel];
+          [detailTextLabel setText:displayName];
         }
 
         else
         {
           v61 = MEMORY[0x277CCACA8];
-          v15 = WFLocalizedString(@"Any of %lu Merchants");
-          v35 = [(WFTriggerConfigurationViewController *)self trigger];
-          v62 = [v35 selectedMerchants];
-          v63 = [v61 localizedStringWithFormat:v15, objc_msgSend(v62, "count")];
-          v64 = [v26 detailTextLabel];
-          [v64 setText:v63];
+          trigger4 = WFLocalizedString(@"Any of %lu Merchants");
+          selectedMerchants3 = [(WFTriggerConfigurationViewController *)self trigger];
+          v35SelectedMerchants = [selectedMerchants3 selectedMerchants];
+          v63 = [v61 localizedStringWithFormat:trigger4, objc_msgSend(v35SelectedMerchants, "count")];
+          detailTextLabel2 = [v26 detailTextLabel];
+          [detailTextLabel2 setText:v63];
         }
       }
 
       else
       {
-        v15 = WFLocalizedString(@"Choose");
-        v35 = [v26 detailTextLabel];
-        [v35 setText:v15];
+        trigger4 = WFLocalizedString(@"Choose");
+        selectedMerchants3 = [v26 detailTextLabel];
+        [selectedMerchants3 setText:trigger4];
       }
 
       goto LABEL_20;
@@ -657,52 +657,52 @@ LABEL_3:
 
       v69 = v9;
       v50 = [v8 objectForKeyedSubscript:@"items"];
-      v51 = [v50 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-      v52 = [v51 unsignedIntegerValue];
+      v51 = [v50 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+      unsignedIntegerValue = [v51 unsignedIntegerValue];
 
       v53 = v10;
       v54 = PKLocalizedStringFromMerchantCategory();
-      v55 = [v53 label];
-      [v55 setText:v54];
+      label2 = [v53 label];
+      [label2 setText:v54];
 
-      v15 = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIconForMerchantType:v52];
-      [v53 setImage:v15 width:45.0 height:45.0];
+      trigger4 = [(WFWalletTransactionTriggerConfigurationViewController *)self merchantIconForMerchantType:unsignedIntegerValue];
+      [v53 setImage:trigger4 width:45.0 height:45.0];
       [v53 setImageTopPadding:10.0 bottomPadding:10.0];
       [v53 setCornerRadius:6.0];
-      v68 = self;
-      v56 = [(WFTriggerConfigurationViewController *)self trigger];
-      v57 = [v56 selectedMerchantTypes];
+      selfCopy = self;
+      trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedMerchantTypes = [trigger5 selectedMerchantTypes];
       v58 = [v8 objectForKeyedSubscript:@"items"];
-      v59 = [v58 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-      v60 = [v57 containsObject:v59];
+      v59 = [v58 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+      v60 = [selectedMerchantTypes containsObject:v59];
 
       if (v60)
       {
         [v53 setAccessoryType:3];
       }
 
-      self = v68;
+      self = selfCopy;
       goto LABEL_5;
     }
 
     v69 = v9;
     v13 = v10;
-    v41 = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
-    v67 = v6;
-    v15 = [v41 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    remotePasses = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
+    v67 = pathCopy;
+    trigger4 = [remotePasses objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v16 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIconForPaymentPass:v15 preferredIconSize:42.0, 30.0];
+    v16 = [(WFWalletTransactionTriggerConfigurationViewController *)self passIconForPaymentPass:trigger4 preferredIconSize:42.0, 30.0];
     [v13 setImage:v16 width:42.0 height:30.0];
     [v13 setImageTopPadding:10.0 bottomPadding:10.0];
-    v42 = [v15 localizedDescription];
-    v43 = [v13 label];
-    [v43 setText:v42];
+    localizedDescription = [trigger4 localizedDescription];
+    label3 = [v13 label];
+    [label3 setText:localizedDescription];
 
-    v20 = self;
-    v44 = [(WFTriggerConfigurationViewController *)self trigger];
-    v45 = [v44 selectedPassUniqueIDs];
-    v46 = [v15 uniqueID];
-    v47 = [v45 containsObject:v46];
+    selfCopy2 = self;
+    trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedPassUniqueIDs2 = [trigger6 selectedPassUniqueIDs];
+    uniqueID2 = [trigger4 uniqueID];
+    v47 = [selectedPassUniqueIDs2 containsObject:uniqueID2];
 
     if (v47)
     {
@@ -710,21 +710,21 @@ LABEL_3:
     }
   }
 
-  self = v20;
-  v6 = v67;
+  self = selfCopy2;
+  pathCopy = v67;
 LABEL_5:
   v9 = v69;
 LABEL_20:
 
 LABEL_21:
-  v65 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v65 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v65;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFWalletTransactionTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFWalletTransactionTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqualToString:@"merchants"];
 
@@ -740,7 +740,7 @@ LABEL_21:
 
     if (v10)
     {
-      v11 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+      passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
     }
 
     else
@@ -754,11 +754,11 @@ LABEL_21:
         goto LABEL_9;
       }
 
-      v11 = [v5 objectForKeyedSubscript:@"items"];
+      passes = [v5 objectForKeyedSubscript:@"items"];
     }
 
-    v14 = v11;
-    v8 = [v11 count];
+    v14 = passes;
+    v8 = [passes count];
   }
 
 LABEL_9:
@@ -766,29 +766,29 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFWalletTransactionTriggerConfigurationViewController;
-  [(WFWalletTransactionTriggerConfigurationViewController *)&v6 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 setEstimatedRowHeight:100.0];
+  [(WFWalletTransactionTriggerConfigurationViewController *)&v6 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView setEstimatedRowHeight:100.0];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -830,23 +830,23 @@ uint64_t __72__WFWalletTransactionTriggerConfigurationViewController_viewWillApp
   v7.receiver = self;
   v7.super_class = WFWalletTransactionTriggerConfigurationViewController;
   [(WFTriggerConfigurationViewController *)&v7 viewDidLoad];
-  v3 = [(WFTriggerConfigurationViewController *)self tableView];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forHeaderFooterViewReuseIdentifier:v6];
+  [tableView registerClass:v4 forHeaderFooterViewReuseIdentifier:v6];
 }
 
 - (id)allPassIdentifiers
 {
-  v3 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-  v4 = [v3 if_compactMap:&__block_literal_global_16750];
-  v5 = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
-  v6 = [v5 if_compactMap:&__block_literal_global_293];
+  passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+  v4 = [passes if_compactMap:&__block_literal_global_16750];
+  remotePasses = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
+  v6 = [remotePasses if_compactMap:&__block_literal_global_293];
   v7 = [v4 arrayByAddingObjectsFromArray:v6];
-  v8 = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
-  v9 = [v8 allValues];
-  v10 = [v7 arrayByAddingObjectsFromArray:v9];
+  localPassesToRemotePassesUniqueIdentifierMapping = [(WFWalletTransactionTriggerConfigurationViewController *)self localPassesToRemotePassesUniqueIdentifierMapping];
+  allValues = [localPassesToRemotePassesUniqueIdentifierMapping allValues];
+  v10 = [v7 arrayByAddingObjectsFromArray:allValues];
 
   return v10;
 }
@@ -858,10 +858,10 @@ uint64_t __72__WFWalletTransactionTriggerConfigurationViewController_viewWillApp
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-  v17 = self;
-  v4 = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+  selfCopy = self;
+  remotePasses = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
+  v5 = [passes arrayByAddingObjectsFromArray:remotePasses];
 
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
@@ -882,10 +882,10 @@ uint64_t __72__WFWalletTransactionTriggerConfigurationViewController_viewWillApp
         {
           if ([v10 cardType] == 1)
           {
-            v11 = [(WFTriggerConfigurationViewController *)v17 trigger];
-            v12 = [v11 selectedPassUniqueIDs];
-            v13 = [v10 uniqueID];
-            v14 = [v12 containsObject:v13];
+            trigger = [(WFTriggerConfigurationViewController *)selfCopy trigger];
+            selectedPassUniqueIDs = [trigger selectedPassUniqueIDs];
+            uniqueID = [v10 uniqueID];
+            v14 = [selectedPassUniqueIDs containsObject:uniqueID];
 
             if (v14)
             {
@@ -919,8 +919,8 @@ LABEL_15:
 {
   v35[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
-  v5 = [v4 count];
+  passes = [(WFWalletTransactionTriggerConfigurationViewController *)self passes];
+  v5 = [passes count];
 
   if (v5)
   {
@@ -937,8 +937,8 @@ LABEL_15:
     [v3 addObject:v9];
   }
 
-  v10 = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
-  v11 = [v10 count];
+  remotePasses = [(WFWalletTransactionTriggerConfigurationViewController *)self remotePasses];
+  v11 = [remotePasses count];
 
   if (v11)
   {
@@ -957,9 +957,9 @@ LABEL_15:
 
   if ([(WFWalletTransactionTriggerConfigurationViewController *)self paymentPassesSelected])
   {
-    v16 = [(WFTriggerConfigurationViewController *)self trigger];
-    v17 = [v16 selectedMerchants];
-    v18 = [v17 count];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedMerchants = [trigger selectedMerchants];
+    v18 = [selectedMerchants count];
 
     if (!v18)
     {
@@ -1004,19 +1004,19 @@ LABEL_15:
   return v4;
 }
 
-- (WFWalletTransactionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFWalletTransactionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFWalletTransactionTriggerConfigurationViewController.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWalletTransactionTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWalletTransactionTriggerConfigurationViewController.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWalletTransactionTrigger class]]"}];
   }
 
   v22.receiver = self;
   v22.super_class = WFWalletTransactionTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v22 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v22 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {
@@ -1046,15 +1046,15 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)passIsAppleAccess:(id)a3
++ (BOOL)passIsAppleAccess:(id)access
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [a3 devicePaymentApplications];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  devicePaymentApplications = [access devicePaymentApplications];
+  v4 = [devicePaymentApplications countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1066,7 +1066,7 @@ LABEL_15:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
@@ -1074,8 +1074,8 @@ LABEL_15:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v9 = [v8 automaticSelectionCriteria];
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        automaticSelectionCriteria = [v8 automaticSelectionCriteria];
+        v10 = [automaticSelectionCriteria countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1086,10 +1086,10 @@ LABEL_15:
             {
               if (*v20 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(automaticSelectionCriteria);
               }
 
-              v14 = [*(*(&v19 + 1) + 8 * j) type];
+              type = [*(*(&v19 + 1) + 8 * j) type];
               v15 = PKEqualObjects();
 
               if (v15)
@@ -1100,7 +1100,7 @@ LABEL_15:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v11 = [automaticSelectionCriteria countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v11)
             {
               continue;
@@ -1113,7 +1113,7 @@ LABEL_15:
         v6 = v18;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v5 = [devicePaymentApplications countByEnumeratingWithState:&v23 objects:v28 count:16];
       v16 = 0;
     }
 

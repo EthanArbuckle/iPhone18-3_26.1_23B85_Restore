@@ -1,28 +1,28 @@
 @interface NotificationViewController
-- (BOOL)doesContainValidAppleSafetyAlertData:(id)a3;
-- (BOOL)drawIcon:(id)a3;
+- (BOOL)doesContainValidAppleSafetyAlertData:(id)data;
+- (BOOL)drawIcon:(id)icon;
 - (BOOL)isScreenLocked;
 - (CGSize)getImageBounds;
 - (CGSize)getImageBoundsForPhone;
 - (CGSize)getImageBoundsForWatch;
 - (void)addGestureRecognizer;
-- (void)cellBroadcastMessageReceived:(id)a3;
-- (void)didReceiveNotification:(id)a3;
-- (void)displayDividerStack:(BOOL)a3;
-- (void)displaySafetyAlertStack:(BOOL)a3 withSpinner:(BOOL)a4;
-- (void)displayWeaStackCenterAligned:(BOOL)a3;
-- (void)displayWeaStackTopAligned:(BOOL)a3;
+- (void)cellBroadcastMessageReceived:(id)received;
+- (void)didReceiveNotification:(id)notification;
+- (void)displayDividerStack:(BOOL)stack;
+- (void)displaySafetyAlertStack:(BOOL)stack withSpinner:(BOOL)spinner;
+- (void)displayWeaStackCenterAligned:(BOOL)aligned;
+- (void)displayWeaStackTopAligned:(BOOL)aligned;
 - (void)drawAllIcons;
-- (void)gestureTap:(id)a3;
+- (void)gestureTap:(id)tap;
 - (void)hideAllViews;
 - (void)renderBasedOnScreenState;
 - (void)renderSafetyAlertDetailedView;
 - (void)renderSafetyAlertWithSpinnerView;
 - (void)renderSafetyAlertsView;
-- (void)setLabel:(id)a3 withText:(id)a4 isBold:(BOOL)a5;
-- (void)setTextView:(id)a3 withText:(id)a4 isBold:(BOOL)a5;
-- (void)setupAlertWithNotification:(id)a3;
-- (void)setupTextsWithNotification:(id)a3;
+- (void)setLabel:(id)label withText:(id)text isBold:(BOOL)bold;
+- (void)setTextView:(id)view withText:(id)text isBold:(BOOL)bold;
+- (void)setupAlertWithNotification:(id)notification;
+- (void)setupTextsWithNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -31,9 +31,9 @@
 - (BOOL)isScreenLocked
 {
   v2 = +[IMSystemMonitor sharedInstance];
-  v3 = [v2 isScreenLocked];
+  isScreenLocked = [v2 isScreenLocked];
 
-  return v3;
+  return isScreenLocked;
 }
 
 - (void)viewDidLoad
@@ -67,9 +67,9 @@
 
 - (CGSize)getImageBoundsForWatch
 {
-  v2 = [(NotificationViewController *)self view];
-  v3 = [v2 window];
-  [v3 frame];
+  view = [(NotificationViewController *)self view];
+  window = [view window];
+  [window frame];
   v5 = v4 * 0.5;
 
   v6 = v5;
@@ -82,10 +82,10 @@
 - (CGSize)getImageBounds
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 model];
+  model = [v3 model];
 
-  v5 = [v4 lowercaseString];
-  v6 = [v5 containsString:@"phone"];
+  lowercaseString = [model lowercaseString];
+  v6 = [lowercaseString containsString:@"phone"];
 
   if (v6)
   {
@@ -107,9 +107,9 @@
   return result;
 }
 
-- (BOOL)drawIcon:(id)a3
+- (BOOL)drawIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.cmas.bundle"];
   if (v5)
   {
@@ -131,14 +131,14 @@
       }
 
       v13 = [v6 imageWithSize:{v9, v11}];
-      [v4 setImage:v13];
+      [iconCopy setImage:v13];
 
-      v14 = [(NotificationViewController *)self view];
-      [v14 frame];
+      view = [(NotificationViewController *)self view];
+      [view frame];
       v16 = v15;
-      v17 = [(NotificationViewController *)self view];
-      [v17 frame];
-      [v4 setFrame:v16];
+      view2 = [(NotificationViewController *)self view];
+      [view2 frame];
+      [iconCopy setFrame:v16];
     }
 
     else
@@ -166,77 +166,77 @@
   return v7;
 }
 
-- (void)setLabel:(id)a3 withText:(id)a4 isBold:(BOOL)a5
+- (void)setLabel:(id)label withText:(id)text isBold:(BOOL)bold
 {
   v6 = &UIFontWeightBold;
-  if (!a5)
+  if (!bold)
   {
     v6 = &UIFontWeightRegular;
   }
 
   v7 = *v6;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 font];
-  [v10 pointSize];
+  textCopy = text;
+  labelCopy = label;
+  font = [labelCopy font];
+  [font pointSize];
   v11 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
   v13 = [NSDictionary dictionaryWithObject:v11 forKey:NSFontAttributeName];
 
-  v12 = [[NSMutableAttributedString alloc] initWithString:v8 attributes:v13];
-  [v9 setAttributedText:v12];
-  [v9 setNumberOfLines:0];
-  [v9 setLineBreakMode:0];
+  v12 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v13];
+  [labelCopy setAttributedText:v12];
+  [labelCopy setNumberOfLines:0];
+  [labelCopy setLineBreakMode:0];
 }
 
-- (void)setTextView:(id)a3 withText:(id)a4 isBold:(BOOL)a5
+- (void)setTextView:(id)view withText:(id)text isBold:(BOOL)bold
 {
   v6 = &UIFontWeightBold;
-  if (!a5)
+  if (!bold)
   {
     v6 = &UIFontWeightRegular;
   }
 
   v7 = *v6;
-  v8 = a4;
-  v9 = a3;
+  textCopy = text;
+  viewCopy = view;
   +[UIFont systemFontSize];
   v11 = [UIFont systemFontOfSize:v10 + 3.0 weight:v7];
   v12 = [NSDictionary dictionaryWithObject:v11 forKey:NSFontAttributeName];
 
-  v13 = [[NSMutableAttributedString alloc] initWithString:v8 attributes:v12];
+  v13 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v12];
   v26 = 0;
   v14 = [NSDataDetector dataDetectorWithTypes:2096 error:&v26];
   v15 = v26;
-  v16 = [v8 length];
+  v16 = [textCopy length];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_1000019C4;
   v24 = &unk_1000082A8;
   v25 = v13;
   v17 = v13;
-  [v14 enumerateMatchesInString:v8 options:0 range:0 usingBlock:{v16, &v21}];
+  [v14 enumerateMatchesInString:textCopy options:0 range:0 usingBlock:{v16, &v21}];
 
-  [v9 setAttributedText:{v17, v21, v22, v23, v24}];
-  [v9 setUserInteractionEnabled:1];
-  [v9 setScrollEnabled:0];
-  [v9 setEditable:0];
-  [v9 setSelectable:1];
-  v18 = [v9 textContainer];
-  [v18 setLineFragmentPadding:0.0];
+  [viewCopy setAttributedText:{v17, v21, v22, v23, v24}];
+  [viewCopy setUserInteractionEnabled:1];
+  [viewCopy setScrollEnabled:0];
+  [viewCopy setEditable:0];
+  [viewCopy setSelectable:1];
+  textContainer = [viewCopy textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  [v9 setTextContainerInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  [viewCopy setTextContainerInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
   v19 = +[UIColor clearColor];
-  [v9 setBackgroundColor:v19];
+  [viewCopy setBackgroundColor:v19];
 
   v20 = +[UIColor labelColor];
-  [v9 setTextColor:v20];
+  [viewCopy setTextColor:v20];
 }
 
-- (void)cellBroadcastMessageReceived:(id)a3
+- (void)cellBroadcastMessageReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = qword_10000CD40;
-  if (v4)
+  if (receivedCopy)
   {
     if (os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT))
     {
@@ -244,16 +244,16 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received cellbroadcast message", buf, 2u);
     }
 
-    v6 = [v4 objectForKey:kCTSMSAppleSafetyAlertData];
-    v7 = [v4 objectForKey:@"kCTSMSAppleSafetyAlertMissingForHash"];
+    v6 = [receivedCopy objectForKey:kCTSMSAppleSafetyAlertData];
+    v7 = [receivedCopy objectForKey:@"kCTSMSAppleSafetyAlertMissingForHash"];
     if (!v7)
     {
       goto LABEL_9;
     }
 
-    v8 = [(NotificationViewController *)self centerBody];
-    v9 = [v8 text];
-    v10 = ea_getHashForString(v9);
+    centerBody = [(NotificationViewController *)self centerBody];
+    text = [centerBody text];
+    v10 = ea_getHashForString(text);
     v11 = [v7 isEqualToString:v10];
 
     if (v11)
@@ -265,8 +265,8 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Removing spinner for safety alert...", v44, 2u);
       }
 
-      v13 = [(NotificationViewController *)self safetyAlertSpinner];
-      [v13 setHidden:1];
+      safetyAlertSpinner = [(NotificationViewController *)self safetyAlertSpinner];
+      [safetyAlertSpinner setHidden:1];
     }
 
     else
@@ -282,9 +282,9 @@ LABEL_9:
 
         if (v15 | v17)
         {
-          v18 = [(NotificationViewController *)self centerBody];
-          v19 = [v18 text];
-          v20 = ea_getHashForString(v19);
+          centerBody2 = [(NotificationViewController *)self centerBody];
+          text2 = [centerBody2 text];
+          v20 = ea_getHashForString(text2);
 
           v21 = v20;
           if ([v20 isEqualToString:v15] & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", v17))
@@ -296,8 +296,8 @@ LABEL_9:
               goto LABEL_34;
             }
 
-            v23 = [(NotificationViewController *)self centerBody];
-            [v23 text];
+            centerBody3 = [(NotificationViewController *)self centerBody];
+            [centerBody3 text];
             v40 = v15;
             v24 = v17;
             v26 = v25 = v21;
@@ -309,9 +309,9 @@ LABEL_9:
 
             if (v27 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v28 = [(NotificationViewController *)self instructionText];
-              v29 = self;
-              v30 = v28;
+              instructionText = [(NotificationViewController *)self instructionText];
+              selfCopy2 = self;
+              v30 = instructionText;
               v31 = v41;
             }
 
@@ -323,26 +323,26 @@ LABEL_34:
                 sub_100003E64();
               }
 
-              v28 = [(NotificationViewController *)self instructionText];
+              instructionText = [(NotificationViewController *)self instructionText];
               v31 = &stru_1000084C0;
-              v29 = self;
-              v30 = v28;
+              selfCopy2 = self;
+              v30 = instructionText;
             }
 
-            [(NotificationViewController *)v29 setTextView:v30 withText:v31 isBold:0];
+            [(NotificationViewController *)selfCopy2 setTextView:v30 withText:v31 isBold:0];
 
-            v33 = [(NotificationViewController *)self instructionText];
-            [v33 setTextAlignment:1];
+            instructionText2 = [(NotificationViewController *)self instructionText];
+            [instructionText2 setTextAlignment:1];
 
             v34 = [NSBundle bundleForClass:objc_opt_class()];
             v35 = [v34 localizedStringForKey:@"ADDITIONAL_DETAILS" value:@"Additional Details" table:0];
 
-            v36 = [(NotificationViewController *)self additionalDetails];
-            [(NotificationViewController *)self setLabel:v36 withText:v35 isBold:1];
+            additionalDetails = [(NotificationViewController *)self additionalDetails];
+            [(NotificationViewController *)self setLabel:additionalDetails withText:v35 isBold:1];
 
-            v37 = [(NotificationViewController *)self centerBody];
-            v38 = [v37 text];
-            ea_sendSafetyAlertTapIndication(v38, 1);
+            centerBody4 = [(NotificationViewController *)self centerBody];
+            text3 = [centerBody4 text];
+            ea_sendSafetyAlertTapIndication(text3, 1);
 
             [(NotificationViewController *)self renderBasedOnScreenState];
           }
@@ -382,28 +382,28 @@ LABEL_34:
   }
 }
 
-- (BOOL)doesContainValidAppleSafetyAlertData:(id)a3
+- (BOOL)doesContainValidAppleSafetyAlertData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 content];
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"Instruction"];
+  dataCopy = data;
+  request = [dataCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"Instruction"];
 
-  v8 = [v3 request];
-  v9 = [v8 content];
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"EffectiveTimestamp"];
+  request2 = [dataCopy request];
+  content2 = [request2 content];
+  userInfo2 = [content2 userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:@"EffectiveTimestamp"];
 
   if (!ea_isValidString(v7))
   {
     goto LABEL_4;
   }
 
-  v12 = [v3 request];
-  v13 = [v12 content];
-  v14 = [v13 body];
-  v15 = [v14 rangeOfString:v7];
+  request3 = [dataCopy request];
+  content3 = [request3 content];
+  body = [content3 body];
+  v15 = [body rangeOfString:v7];
 
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -421,16 +421,16 @@ LABEL_4:
 
 - (void)drawAllIcons
 {
-  v3 = [(NotificationViewController *)self centerAlertIcon];
-  v4 = [(NotificationViewController *)self drawIcon:v3];
+  centerAlertIcon = [(NotificationViewController *)self centerAlertIcon];
+  v4 = [(NotificationViewController *)self drawIcon:centerAlertIcon];
 
   if ((v4 & 1) == 0 && os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_ERROR))
   {
     sub_100003ECC();
   }
 
-  v5 = [(NotificationViewController *)self topAlertIcon];
-  v6 = [(NotificationViewController *)self drawIcon:v5];
+  topAlertIcon = [(NotificationViewController *)self topAlertIcon];
+  v6 = [(NotificationViewController *)self drawIcon:topAlertIcon];
 
   if ((v6 & 1) == 0 && os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_ERROR))
   {
@@ -438,20 +438,20 @@ LABEL_4:
   }
 }
 
-- (void)displayWeaStackCenterAligned:(BOOL)a3
+- (void)displayWeaStackCenterAligned:(BOOL)aligned
 {
-  v3 = a3;
-  v5 = [(NotificationViewController *)self weaStackCenterAligned];
-  [v5 setHidden:!v3];
+  alignedCopy = aligned;
+  weaStackCenterAligned = [(NotificationViewController *)self weaStackCenterAligned];
+  [weaStackCenterAligned setHidden:!alignedCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NotificationViewController *)self weaStackCenterAligned];
-  v7 = [v6 subviews];
+  weaStackCenterAligned2 = [(NotificationViewController *)self weaStackCenterAligned];
+  subviews = [weaStackCenterAligned2 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -463,36 +463,36 @@ LABEL_4:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) setHidden:!v3];
+        [*(*(&v12 + 1) + 8 * v11) setHidden:!alignedCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)displaySafetyAlertStack:(BOOL)a3 withSpinner:(BOOL)a4
+- (void)displaySafetyAlertStack:(BOOL)stack withSpinner:(BOOL)spinner
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(NotificationViewController *)self safetyAlertStack];
-  [v7 setHidden:!v5];
+  spinnerCopy = spinner;
+  stackCopy = stack;
+  safetyAlertStack = [(NotificationViewController *)self safetyAlertStack];
+  [safetyAlertStack setHidden:!stackCopy];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(NotificationViewController *)self safetyAlertStack];
-  v9 = [v8 subviews];
+  safetyAlertStack2 = [(NotificationViewController *)self safetyAlertStack];
+  subviews = [safetyAlertStack2 subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -504,25 +504,25 @@ LABEL_4:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v23 + 1) + 8 * v13) setHidden:!v5];
+        [*(*(&v23 + 1) + 8 * v13) setHidden:!stackCopy];
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
-  if (v5)
+  if (stackCopy)
   {
     v14 = qword_10000CD40;
     v15 = os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (spinnerCopy)
     {
       if (v15)
       {
@@ -530,11 +530,11 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Showing spinner view", buf, 2u);
       }
 
-      v16 = [(NotificationViewController *)self safetyAlertStack];
-      [v16 setHidden:0];
+      safetyAlertStack3 = [(NotificationViewController *)self safetyAlertStack];
+      [safetyAlertStack3 setHidden:0];
 
-      v17 = [(NotificationViewController *)self additionalDetails];
-      [v17 setHidden:1];
+      additionalDetails = [(NotificationViewController *)self additionalDetails];
+      [additionalDetails setHidden:1];
 
       v18 = dispatch_time(0, 300000000);
       block[0] = _NSConcreteStackBlock;
@@ -553,29 +553,29 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Showing safety alert detailed view", buf, 2u);
       }
 
-      v19 = [(NotificationViewController *)self additionalDetails];
-      [v19 setHidden:0];
+      additionalDetails2 = [(NotificationViewController *)self additionalDetails];
+      [additionalDetails2 setHidden:0];
 
-      v20 = [(NotificationViewController *)self safetyAlertSpinner];
-      [v20 setHidden:1];
+      safetyAlertSpinner = [(NotificationViewController *)self safetyAlertSpinner];
+      [safetyAlertSpinner setHidden:1];
     }
   }
 }
 
-- (void)displayWeaStackTopAligned:(BOOL)a3
+- (void)displayWeaStackTopAligned:(BOOL)aligned
 {
-  v3 = a3;
-  v5 = [(NotificationViewController *)self weaStackTopAligned];
-  [v5 setHidden:!v3];
+  alignedCopy = aligned;
+  weaStackTopAligned = [(NotificationViewController *)self weaStackTopAligned];
+  [weaStackTopAligned setHidden:!alignedCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NotificationViewController *)self weaStackTopAligned];
-  v7 = [v6 subviews];
+  weaStackTopAligned2 = [(NotificationViewController *)self weaStackTopAligned];
+  subviews = [weaStackTopAligned2 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -587,26 +587,26 @@ LABEL_4:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) setHidden:!v3];
+        [*(*(&v12 + 1) + 8 * v11) setHidden:!alignedCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)displayDividerStack:(BOOL)a3
+- (void)displayDividerStack:(BOOL)stack
 {
-  v3 = a3;
-  v4 = [(NotificationViewController *)self dividerStack];
-  [v4 setHidden:!v3];
+  stackCopy = stack;
+  dividerStack = [(NotificationViewController *)self dividerStack];
+  [dividerStack setHidden:!stackCopy];
 }
 
 - (void)hideAllViews
@@ -636,9 +636,9 @@ LABEL_4:
 
 - (void)renderSafetyAlertsView
 {
-  v3 = [(NotificationViewController *)self instructionText];
-  v4 = [v3 text];
-  v5 = ea_isValidString(v4);
+  instructionText = [(NotificationViewController *)self instructionText];
+  text = [instructionText text];
+  v5 = ea_isValidString(text);
 
   v6 = qword_10000CD40;
   v7 = os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT);
@@ -667,12 +667,12 @@ LABEL_4:
 
 - (void)renderBasedOnScreenState
 {
-  v3 = [(NotificationViewController *)self isScreenLocked];
+  isScreenLocked = [(NotificationViewController *)self isScreenLocked];
   v4 = qword_10000CD40;
   if (os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"unlocked";
-    if (v3)
+    if (isScreenLocked)
     {
       v5 = @"locked";
     }
@@ -683,7 +683,7 @@ LABEL_4:
   }
 
   [(NotificationViewController *)self hideAllViews];
-  if ((v3 & 1) != 0 || [(NotificationViewController *)self userDidTapOnUnlockedScreen])
+  if ((isScreenLocked & 1) != 0 || [(NotificationViewController *)self userDidTapOnUnlockedScreen])
   {
     [(NotificationViewController *)self renderSafetyAlertsView];
   }
@@ -700,33 +700,33 @@ LABEL_4:
     [(NotificationViewController *)self renderTopView];
   }
 
-  v7 = [(NotificationViewController *)self instructionText];
-  [v7 setSelectable:1];
+  instructionText = [(NotificationViewController *)self instructionText];
+  [instructionText setSelectable:1];
 
-  v8 = [(NotificationViewController *)self centerBody];
-  [v8 setSelectable:1];
+  centerBody = [(NotificationViewController *)self centerBody];
+  [centerBody setSelectable:1];
 
-  v9 = [(NotificationViewController *)self topBody];
-  [v9 setSelectable:1];
+  topBody = [(NotificationViewController *)self topBody];
+  [topBody setSelectable:1];
 
-  v10 = [(NotificationViewController *)self view];
-  [v10 layoutIfNeeded];
+  view = [(NotificationViewController *)self view];
+  [view layoutIfNeeded];
 }
 
-- (void)gestureTap:(id)a3
+- (void)gestureTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if (qword_10000CD48 != -1)
   {
     sub_100003F34();
   }
 
-  v5 = [(NotificationViewController *)self isScreenLocked];
+  isScreenLocked = [(NotificationViewController *)self isScreenLocked];
   v6 = qword_10000CD40;
   if (os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"unlocked";
-    if (v5)
+    if (isScreenLocked)
     {
       v7 = @"locked";
     }
@@ -736,11 +736,11 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User tap detected in top view [screen: %@]", &v10, 0xCu);
   }
 
-  v8 = [(NotificationViewController *)self topBody];
-  v9 = [v8 text];
-  ea_sendSafetyAlertTapIndication(v9, 2);
+  topBody = [(NotificationViewController *)self topBody];
+  text = [topBody text];
+  ea_sendSafetyAlertTapIndication(text, 2);
 
-  if ((v5 & 1) == 0)
+  if ((isScreenLocked & 1) == 0)
   {
     [(NotificationViewController *)self setUserDidTapOnUnlockedScreen:1];
   }
@@ -752,83 +752,83 @@ LABEL_4:
 - (void)addGestureRecognizer
 {
   v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"gestureTap:"];
-  v3 = [(NotificationViewController *)self view];
-  [v3 addGestureRecognizer:v4];
+  view = [(NotificationViewController *)self view];
+  [view addGestureRecognizer:v4];
 }
 
-- (void)setupTextsWithNotification:(id)a3
+- (void)setupTextsWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 title];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  title = [content title];
 
-  if (ea_isValidString(v7))
+  if (ea_isValidString(title))
   {
-    v8 = [v4 request];
-    v9 = [v8 content];
-    v10 = [v9 body];
+    request2 = [notificationCopy request];
+    content2 = [request2 content];
+    body = [content2 body];
 
-    if (ea_isValidString(v10))
+    if (ea_isValidString(body))
     {
-      v11 = [(NotificationViewController *)self topTitle];
-      v12 = [v4 request];
-      v13 = [v12 content];
-      v14 = [v13 title];
-      [(NotificationViewController *)self setLabel:v11 withText:v14 isBold:1];
+      topTitle = [(NotificationViewController *)self topTitle];
+      request3 = [notificationCopy request];
+      content3 = [request3 content];
+      title2 = [content3 title];
+      [(NotificationViewController *)self setLabel:topTitle withText:title2 isBold:1];
 
-      v15 = [(NotificationViewController *)self topBody];
-      v16 = [v4 request];
-      v17 = [v16 content];
-      v18 = [v17 body];
-      [(NotificationViewController *)self setTextView:v15 withText:v18 isBold:0];
+      topBody = [(NotificationViewController *)self topBody];
+      request4 = [notificationCopy request];
+      content4 = [request4 content];
+      body2 = [content4 body];
+      [(NotificationViewController *)self setTextView:topBody withText:body2 isBold:0];
 
-      v19 = [(NotificationViewController *)self centerTitle];
-      v20 = [v4 request];
-      v21 = [v20 content];
-      v22 = [v21 title];
-      [(NotificationViewController *)self setLabel:v19 withText:v22 isBold:1];
+      centerTitle = [(NotificationViewController *)self centerTitle];
+      request5 = [notificationCopy request];
+      content5 = [request5 content];
+      title3 = [content5 title];
+      [(NotificationViewController *)self setLabel:centerTitle withText:title3 isBold:1];
 
-      v23 = [(NotificationViewController *)self centerBody];
-      v24 = [v4 request];
-      v25 = [v24 content];
-      v26 = [v25 body];
-      [(NotificationViewController *)self setTextView:v23 withText:v26 isBold:0];
+      centerBody = [(NotificationViewController *)self centerBody];
+      request6 = [notificationCopy request];
+      content6 = [request6 content];
+      body3 = [content6 body];
+      [(NotificationViewController *)self setTextView:centerBody withText:body3 isBold:0];
 
-      v27 = [(NotificationViewController *)self centerBody];
-      [v27 setTextAlignment:1];
+      centerBody2 = [(NotificationViewController *)self centerBody];
+      [centerBody2 setTextAlignment:1];
 
       v28 = [NSBundle bundleForClass:objc_opt_class()];
       v29 = [v28 localizedStringForKey:@"ADDITIONAL_DETAILS" value:@"Additional Details" table:0];
 
-      v30 = [(NotificationViewController *)self additionalDetails];
-      [(NotificationViewController *)self setLabel:v30 withText:v29 isBold:1];
+      additionalDetails = [(NotificationViewController *)self additionalDetails];
+      [(NotificationViewController *)self setLabel:additionalDetails withText:v29 isBold:1];
 
-      if ([(NotificationViewController *)self doesContainValidAppleSafetyAlertData:v4])
+      if ([(NotificationViewController *)self doesContainValidAppleSafetyAlertData:notificationCopy])
       {
-        v31 = [v4 request];
-        v32 = [v31 content];
-        v33 = [v32 userInfo];
-        v34 = [v33 objectForKeyedSubscript:@"Instruction"];
+        request7 = [notificationCopy request];
+        content7 = [request7 content];
+        userInfo = [content7 userInfo];
+        v34 = [userInfo objectForKeyedSubscript:@"Instruction"];
 
         if (ea_isValidString(v34))
         {
-          v35 = [v4 request];
-          v36 = [v35 content];
-          v37 = [v36 body];
-          v38 = [v37 rangeOfString:v34];
+          request8 = [notificationCopy request];
+          content8 = [request8 content];
+          body4 = [content8 body];
+          v38 = [body4 rangeOfString:v34];
 
           if (v38 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v39 = [(NotificationViewController *)self instructionText];
-            v44 = [v4 request];
-            v40 = [v44 content];
-            v41 = [v40 userInfo];
-            v42 = [v41 objectForKeyedSubscript:@"Instruction"];
-            [(NotificationViewController *)self setTextView:v39 withText:v42 isBold:0];
+            instructionText = [(NotificationViewController *)self instructionText];
+            request9 = [notificationCopy request];
+            content9 = [request9 content];
+            userInfo2 = [content9 userInfo];
+            v42 = [userInfo2 objectForKeyedSubscript:@"Instruction"];
+            [(NotificationViewController *)self setTextView:instructionText withText:v42 isBold:0];
 
-            v43 = [(NotificationViewController *)self instructionText];
-            [v43 setTextAlignment:1];
+            instructionText2 = [(NotificationViewController *)self instructionText];
+            [instructionText2 setTextAlignment:1];
           }
         }
       }
@@ -846,40 +846,40 @@ LABEL_4:
   }
 }
 
-- (void)setupAlertWithNotification:(id)a3
+- (void)setupAlertWithNotification:(id)notification
 {
-  v6 = a3;
-  v4 = [(NotificationViewController *)self view];
-  [v4 setNeedsDisplay];
+  notificationCopy = notification;
+  view = [(NotificationViewController *)self view];
+  [view setNeedsDisplay];
 
-  v5 = [(NotificationViewController *)self view];
-  [v5 setNeedsLayout];
+  view2 = [(NotificationViewController *)self view];
+  [view2 setNeedsLayout];
 
   [(NotificationViewController *)self drawAllIcons];
   [(NotificationViewController *)self addGestureRecognizer];
-  [(NotificationViewController *)self setupTextsWithNotification:v6];
+  [(NotificationViewController *)self setupTextsWithNotification:notificationCopy];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(NotificationViewController *)self isScreenLocked];
+  notificationCopy = notification;
+  isScreenLocked = [(NotificationViewController *)self isScreenLocked];
   v6 = qword_10000CD40;
   if (os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 request];
-    v9 = [v8 content];
-    v10 = [v9 userInfo];
+    request = [notificationCopy request];
+    content = [request content];
+    userInfo = [content userInfo];
     v16 = 138412290;
-    v17 = v10;
+    v17 = userInfo;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notification userInfo: %@", &v16, 0xCu);
   }
 
-  [(NotificationViewController *)self setupAlertWithNotification:v4];
+  [(NotificationViewController *)self setupAlertWithNotification:notificationCopy];
   v11 = qword_10000CD40;
   v12 = os_log_type_enabled(qword_10000CD40, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isScreenLocked)
   {
     if (v12)
     {
@@ -887,10 +887,10 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "User tap detected in notification [screen: locked]", &v16, 2u);
     }
 
-    v13 = [v4 request];
-    v14 = [v13 content];
-    v15 = [v14 body];
-    ea_sendSafetyAlertTapIndication(v15, 2);
+    request2 = [notificationCopy request];
+    content2 = [request2 content];
+    body = [content2 body];
+    ea_sendSafetyAlertTapIndication(body, 2);
   }
 
   else if (v12)

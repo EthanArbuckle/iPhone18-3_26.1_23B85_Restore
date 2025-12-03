@@ -71,9 +71,9 @@
 - (BOOL)isHomeGestureEnabled
 {
   v2 = +[SBHomeGestureDomain rootSettings];
-  v3 = [v2 isHomeGestureEnabled];
+  isHomeGestureEnabled = [v2 isHomeGestureEnabled];
 
-  return v3;
+  return isHomeGestureEnabled;
 }
 
 - (BOOL)prefersAlwaysOnOrientation
@@ -111,8 +111,8 @@ uint64_t __38__SBPlatformController_sharedInstance__block_invoke()
     v2->_carrierInstall = MGGetBoolAnswer();
     if (_os_feature_enabled_impl() && (MGGetBoolAnswer() & 1) != 0)
     {
-      v5 = [MEMORY[0x277CF0CA8] sharedInstance];
-      v2->_supportsHWButtonBezelEffects = [v5 deviceClass] == 0;
+      mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+      v2->_supportsHWButtonBezelEffects = [mEMORY[0x277CF0CA8] deviceClass] == 0;
     }
 
     else
@@ -121,20 +121,20 @@ uint64_t __38__SBPlatformController_sharedInstance__block_invoke()
     }
 
     v6 = +[SBDefaults localDefaults];
-    v7 = [v6 workspaceDefaults];
-    v8 = [v7 medusaDeviceSimulation];
+    workspaceDefaults = [v6 workspaceDefaults];
+    medusaDeviceSimulation = [workspaceDefaults medusaDeviceSimulation];
 
-    if ((v8 - 2) < 2)
+    if ((medusaDeviceSimulation - 2) < 2)
     {
       v9 = 1;
     }
 
-    else if (v8 == 4)
+    else if (medusaDeviceSimulation == 4)
     {
       v9 = 2;
     }
 
-    else if (v8)
+    else if (medusaDeviceSimulation)
     {
       v9 = 0;
     }
@@ -248,8 +248,8 @@ uint64_t __50__SBPlatformController_prefersAlwaysOnOrientation__block_invoke()
 
 - (void)_loadDefaultIconInfo
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a3 file:@"SBPlatformController.m" lineNumber:232 description:{@"already loaded defaultIconStateDisplayIdentifiers : %@", *a1}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"SBPlatformController.m" lineNumber:232 description:{@"already loaded defaultIconStateDisplayIdentifiers : %@", *self}];
 }
 
 @end

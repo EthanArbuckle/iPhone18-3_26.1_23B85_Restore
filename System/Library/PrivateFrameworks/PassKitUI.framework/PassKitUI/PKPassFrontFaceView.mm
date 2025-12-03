@@ -1,8 +1,8 @@
 @interface PKPassFrontFaceView
 - (CGRect)barcodeFrame;
 - (CGSize)contentSize;
-- (PKPassFrontFaceView)initWithStyle:(int64_t)a3;
-- (id)_rebucketAuxiliaryFields:(id)a3;
+- (PKPassFrontFaceView)initWithStyle:(int64_t)style;
+- (id)_rebucketAuxiliaryFields:(id)fields;
 - (id)createContactlessLogoView;
 - (id)createExpiredLabel;
 - (id)fetchRelevantBuckets;
@@ -11,13 +11,13 @@
 - (void)_positionBarcodeView;
 - (void)createBodyContentViews;
 - (void)createHeaderContentViews;
-- (void)insertContentView:(id)a3 ofType:(int64_t)a4;
+- (void)insertContentView:(id)view ofType:(int64_t)type;
 - (void)layoutSubviews;
 - (void)setBottomRightItem:(int64_t)bottomRightItem;
-- (void)setPassState:(id)a3;
-- (void)setRelevancyActive:(BOOL)a3;
-- (void)setShowsBarcodeView:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsLinkedApp:(BOOL)a3;
+- (void)setPassState:(id)state;
+- (void)setRelevancyActive:(BOOL)active;
+- (void)setShowsBarcodeView:(BOOL)view animated:(BOOL)animated;
+- (void)setShowsLinkedApp:(BOOL)app;
 - (void)updateValidity;
 @end
 
@@ -25,9 +25,9 @@
 
 - (id)passFaceTemplate
 {
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 displayProfile];
-  v5 = -[PKPassFrontFaceView templateForLayoutMode:](self, "templateForLayoutMode:", [v4 layoutMode]);
+  pass = [(PKPassFaceView *)self pass];
+  displayProfile = [pass displayProfile];
+  v5 = -[PKPassFrontFaceView templateForLayoutMode:](self, "templateForLayoutMode:", [displayProfile layoutMode]);
 
   return v5;
 }
@@ -37,14 +37,14 @@
   v22.receiver = self;
   v22.super_class = PKPassFrontFaceView;
   [(PKPassFaceView *)&v22 createBodyContentViews];
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 style];
-  v5 = [v3 barcode];
-  if (v5 && (v4 - 8) <= 0xFFFFFFFFFFFFFFFDLL)
+  pass = [(PKPassFaceView *)self pass];
+  style = [pass style];
+  barcode = [pass barcode];
+  if (barcode && (style - 8) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v6 = [(PKPassFaceView *)self faceTemplate];
-    [v6 barcodeBottomInset];
-    if (v7 == 0.0 || (v4 - 9) <= 1)
+    faceTemplate = [(PKPassFaceView *)self faceTemplate];
+    [faceTemplate barcodeBottomInset];
+    if (v7 == 0.0 || (style - 9) <= 1)
     {
     }
 
@@ -57,15 +57,15 @@
         barcodeView = self->_barcodeView;
         if (!barcodeView)
         {
-          v10 = [[PKBarcodeStickerView alloc] initWithBarcode:v5 validityState:[PKBarcodeStickerView passStyle:"validityStateForPass:" validityStateForPass:v3], v4];
+          v10 = [[PKBarcodeStickerView alloc] initWithBarcode:barcode validityState:[PKBarcodeStickerView passStyle:"validityStateForPass:" validityStateForPass:pass], style];
           v11 = self->_barcodeView;
           self->_barcodeView = v10;
 
-          v12 = [v3 altImage];
-          if (v12)
+          altImage = [pass altImage];
+          if (altImage)
           {
             v13 = self->_barcodeView;
-            v14 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v12];
+            v14 = [MEMORY[0x1E69DCAB8] imageWithPKImage:altImage];
             [(PKBarcodeStickerView *)v13 setAltImage:v14];
           }
 
@@ -81,12 +81,12 @@
     }
   }
 
-  else if (v4 == 6)
+  else if (style == 6)
   {
     goto LABEL_23;
   }
 
-  if (self->_showsLinkedApp && [v3 linksToApp])
+  if (self->_showsLinkedApp && [pass linksToApp])
   {
     linkedApp = self->_linkedApp;
     if (linkedApp)
@@ -96,21 +96,21 @@
 
     else
     {
-      v16 = (v4 - 9) >= 2;
+      v16 = (style - 9) >= 2;
     }
 
     if (v16)
     {
-      v17 = [[PKLinkedApplication alloc] initWithPass:v3];
+      v17 = [[PKLinkedApplication alloc] initWithPass:pass];
       [(PKLinkedApplication *)v17 setUseSmallIcon:1];
       v18 = [[PKLinkedAppIconView alloc] initWithLinkedApplication:v17];
       v19 = self->_linkedApp;
       self->_linkedApp = v18;
 
-      v20 = [(PKLinkedAppIconView *)self->_linkedApp layer];
-      v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v21 scale];
-      [v20 setRasterizationScale:?];
+      layer = [(PKLinkedAppIconView *)self->_linkedApp layer];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
+      [layer setRasterizationScale:?];
 
       linkedApp = self->_linkedApp;
     }
@@ -123,20 +123,20 @@ LABEL_23:
 
 - (id)fetchRelevantBuckets
 {
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 frontFieldBuckets];
+  pass = [(PKPassFaceView *)self pass];
+  frontFieldBuckets = [pass frontFieldBuckets];
 
-  v5 = [(PKPassFaceView *)self pass];
-  v6 = [v5 style];
+  pass2 = [(PKPassFaceView *)self pass];
+  style = [pass2 style];
 
-  if (v6 == 8 || v6 == 2)
+  if (style == 8 || style == 2)
   {
-    v7 = [(PKPassFrontFaceView *)self _rebucketAuxiliaryFields:v4];
+    v7 = [(PKPassFrontFaceView *)self _rebucketAuxiliaryFields:frontFieldBuckets];
   }
 
   else
   {
-    v7 = v4;
+    v7 = frontFieldBuckets;
   }
 
   v8 = v7;
@@ -149,8 +149,8 @@ LABEL_23:
   v53.receiver = self;
   v53.super_class = PKPassFrontFaceView;
   [(PKPassFaceView *)&v53 layoutSubviews];
-  v3 = [(PKPassFaceView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPassFaceView *)self contentView];
+  [contentView bounds];
   v49 = v4;
   v50 = v5;
   v51 = v7;
@@ -165,8 +165,8 @@ LABEL_23:
     v15 = v11;
     if (!CGRectIsNull(*&v8))
     {
-      v16 = [(PKPassFaceView *)self pass];
-      [v16 logoRect];
+      pass = [(PKPassFaceView *)self pass];
+      [pass logoRect];
       v18 = v17;
       v20 = v19;
       v22 = v21;
@@ -250,16 +250,16 @@ LABEL_23:
 {
   if (self->_barcodeView)
   {
-    v3 = [(PKPassFaceView *)self contentView];
-    [v3 bounds];
+    contentView = [(PKPassFaceView *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
     barcodeView = self->_barcodeView;
-    v13 = [(PKPassFrontFaceView *)self passFaceTemplate];
-    [v13 barcodeMaxSize];
+    passFaceTemplate = [(PKPassFrontFaceView *)self passFaceTemplate];
+    [passFaceTemplate barcodeMaxSize];
     [(PKBarcodeStickerView *)barcodeView sizeThatFits:?];
 
     v17.origin.x = v5;
@@ -267,8 +267,8 @@ LABEL_23:
     v17.size.width = v9;
     v17.size.height = v11;
     CGRectGetMaxY(v17);
-    v14 = [(PKPassFaceView *)self faceTemplate];
-    [v14 barcodeBottomInset];
+    faceTemplate = [(PKPassFaceView *)self faceTemplate];
+    [faceTemplate barcodeBottomInset];
 
     v15 = self->_barcodeView;
     UIRectCenteredXInRect();
@@ -282,35 +282,35 @@ LABEL_23:
   v18.receiver = self;
   v18.super_class = PKPassFrontFaceView;
   [(PKPassFaceView *)&v18 createHeaderContentViews];
-  v3 = [(PKPassFaceView *)self style];
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [v4 logoText];
+  style = [(PKPassFaceView *)self style];
+  pass = [(PKPassFaceView *)self pass];
+  logoText = [pass logoText];
 
-  if (v5)
+  if (logoText)
   {
     PKPassFaceLogoRect();
-    if (!CGRectIsEmpty(v19) && (v3 - 9) >= 2)
+    if (!CGRectIsEmpty(v19) && (style - 9) >= 2)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       logoLabel = self->_logoLabel;
       self->_logoLabel = v6;
 
       v8 = self->_logoLabel;
-      v9 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v8 setBackgroundColor:clearColor];
 
-      v10 = [(PKPassFaceView *)self colorProfile];
-      v11 = [v10 isLight];
+      colorProfile = [(PKPassFaceView *)self colorProfile];
+      isLight = [colorProfile isLight];
       v12 = MEMORY[0x1E695DF90];
       v13 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
-      if (v11)
+      if (isLight)
       {
-        [v10 foregroundAttributesForFont:v13];
+        [colorProfile foregroundAttributesForFont:v13];
       }
 
       else
       {
-        [v10 labelAttributesForFont:v13];
+        [colorProfile labelAttributesForFont:v13];
       }
       v14 = ;
       v15 = [v12 dictionaryWithDictionary:v14];
@@ -319,7 +319,7 @@ LABEL_23:
       [v16 setLineBreakMode:4];
       [v16 setAlignment:0];
       [v15 setObject:v16 forKey:*MEMORY[0x1E69DB688]];
-      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v15];
+      v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:logoText attributes:v15];
       [(UILabel *)self->_logoLabel setAttributedText:v17];
       [(PKPassFrontFaceView *)self insertContentView:self->_logoLabel ofType:0];
     }
@@ -328,16 +328,16 @@ LABEL_23:
 
 - (CGSize)contentSize
 {
-  v2 = [(PKPassFaceView *)self pass];
-  [v2 style];
+  pass = [(PKPassFaceView *)self pass];
+  [pass style];
   PKPassFrontFaceContentSize();
   v4 = v3;
   v6 = v5;
-  if (([v2 hasValidNFCPayload] & 1) != 0 || objc_msgSend(v2, "supportsIssuerBinding"))
+  if (([pass hasValidNFCPayload] & 1) != 0 || objc_msgSend(pass, "supportsIssuerBinding"))
   {
     if (PKValueAddedServicesEnabled())
     {
-      if (([v2 isValid] & 1) != 0 || (objc_msgSend(v2, "barcode"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+      if (([pass isValid] & 1) != 0 || (objc_msgSend(pass, "barcode"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
       {
         PKPassHeightAdjustmentForStyle();
         v6 = v6 - v8;
@@ -352,11 +352,11 @@ LABEL_23:
   return result;
 }
 
-- (PKPassFrontFaceView)initWithStyle:(int64_t)a3
+- (PKPassFrontFaceView)initWithStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = PKPassFrontFaceView;
-  result = [(PKPassFaceView *)&v4 initWithStyle:a3];
+  result = [(PKPassFaceView *)&v4 initWithStyle:style];
   if (result)
   {
     result->_bottomRightItem = 0;
@@ -369,43 +369,43 @@ LABEL_23:
 
 - (void)updateValidity
 {
-  v3 = [(PKPassFrontFaceView *)self barcodeView];
-  v4 = [(PKPassFaceView *)self pass];
-  [v3 setValidity:{+[PKBarcodeStickerView validityStateForPass:](PKBarcodeStickerView, "validityStateForPass:", v4)}];
+  barcodeView = [(PKPassFrontFaceView *)self barcodeView];
+  pass = [(PKPassFaceView *)self pass];
+  [barcodeView setValidity:{+[PKBarcodeStickerView validityStateForPass:](PKBarcodeStickerView, "validityStateForPass:", pass)}];
 
   [(PKPassFrontFaceView *)self _positionBarcodeView];
 }
 
-- (void)setPassState:(id)a3
+- (void)setPassState:(id)state
 {
   v7.receiver = self;
   v7.super_class = PKPassFrontFaceView;
-  v4 = a3;
-  [(PKPassFaceView *)&v7 setPassState:v4];
-  v5 = [v4 relevancyModel];
+  stateCopy = state;
+  [(PKPassFaceView *)&v7 setPassState:stateCopy];
+  relevancyModel = [stateCopy relevancyModel];
 
-  v6 = [v5 isRelevancyActive];
-  [(PKPassFrontFaceView *)self setRelevancyActive:v6];
+  isRelevancyActive = [relevancyModel isRelevancyActive];
+  [(PKPassFrontFaceView *)self setRelevancyActive:isRelevancyActive];
 }
 
-- (void)insertContentView:(id)a3 ofType:(int64_t)a4
+- (void)insertContentView:(id)view ofType:(int64_t)type
 {
-  v6 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = PKPassFrontFaceView;
-  [(PKPassFaceView *)&v8 insertContentView:v6 ofType:a4];
-  if (self->_linkedApp == v6 || self->_bottomRightItemView == v6)
+  [(PKPassFaceView *)&v8 insertContentView:viewCopy ofType:type];
+  if (self->_linkedApp == viewCopy || self->_bottomRightItemView == viewCopy)
   {
-    v7 = [(PKLinkedAppIconView *)v6 superview];
-    [v7 bringSubviewToFront:v6];
+    superview = [(PKLinkedAppIconView *)viewCopy superview];
+    [superview bringSubviewToFront:viewCopy];
   }
 }
 
-- (void)setShowsLinkedApp:(BOOL)a3
+- (void)setShowsLinkedApp:(BOOL)app
 {
-  if (self->_showsLinkedApp == !a3)
+  if (self->_showsLinkedApp == !app)
   {
-    self->_showsLinkedApp = a3;
+    self->_showsLinkedApp = app;
     [(PKLinkedAppIconView *)self->_linkedApp setHidden:?];
     if (self->_linkedApp)
     {
@@ -443,7 +443,7 @@ LABEL_23:
 
   if (bottomRightItem == 2)
   {
-    v5 = [(PKPassFrontFaceView *)self createExpiredLabel];
+    createExpiredLabel = [(PKPassFrontFaceView *)self createExpiredLabel];
   }
 
   else
@@ -453,11 +453,11 @@ LABEL_23:
       goto LABEL_9;
     }
 
-    v5 = [(PKPassFrontFaceView *)self createContactlessLogoView];
+    createExpiredLabel = [(PKPassFrontFaceView *)self createContactlessLogoView];
   }
 
   v6 = self->_bottomRightItemView;
-  self->_bottomRightItemView = v5;
+  self->_bottomRightItemView = createExpiredLabel;
 
 LABEL_9:
   v7 = self->_bottomRightItemView;
@@ -469,13 +469,13 @@ LABEL_9:
   }
 }
 
-- (void)setShowsBarcodeView:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsBarcodeView:(BOOL)view animated:(BOOL)animated
 {
-  if (self->_showsBarcodeView == !a3)
+  if (self->_showsBarcodeView == !view)
   {
-    v4 = a4;
-    self->_showsBarcodeView = a3;
-    if (a3 && !self->_barcodeView)
+    animatedCopy = animated;
+    self->_showsBarcodeView = view;
+    if (view && !self->_barcodeView)
     {
       [(PKPassFrontFaceView *)self createBodyContentViews];
     }
@@ -488,7 +488,7 @@ LABEL_9:
       }
 
       v6 = 0.2;
-      if (!v4)
+      if (!animatedCopy)
       {
         v6 = 0.0;
       }
@@ -531,28 +531,28 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
   return result;
 }
 
-- (void)setRelevancyActive:(BOOL)a3
+- (void)setRelevancyActive:(BOOL)active
 {
-  if (self->_relevancyActive != a3)
+  if (self->_relevancyActive != active)
   {
-    self->_relevancyActive = a3;
+    self->_relevancyActive = active;
   }
 }
 
-- (id)_rebucketAuxiliaryFields:(id)a3
+- (id)_rebucketAuxiliaryFields:(id)fields
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 3)
+  fieldsCopy = fields;
+  if ([fieldsCopy count] > 3)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [v4 lastObject];
+    lastObject = [fieldsCopy lastObject];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v9 = [lastObject countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -563,7 +563,7 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(lastObject);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
@@ -580,15 +580,15 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
           [v14 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [lastObject countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    v15 = [(PKPassFaceView *)self pass];
-    v16 = [v15 frontFieldBuckets];
-    v17 = [v16 mutableCopy];
+    pass = [(PKPassFaceView *)self pass];
+    frontFieldBuckets = [pass frontFieldBuckets];
+    v17 = [frontFieldBuckets mutableCopy];
 
     [v17 removeLastObject];
     [v17 addObject:v6];
@@ -598,7 +598,7 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [fieldsCopy copy];
   }
 
   return v5;
@@ -618,9 +618,9 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
     v3 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
     [v3 setContentMode:1];
     [v3 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 21.0, 24.0}];
-    v9 = [(PKPassFaceView *)self colorProfile];
-    v10 = [v9 foregroundColor];
-    [v3 setTintColor:v10];
+    colorProfile = [(PKPassFaceView *)self colorProfile];
+    foregroundColor = [colorProfile foregroundColor];
+    [v3 setTintColor:foregroundColor];
 
     [v3 setAlpha:0.7];
   }
@@ -645,9 +645,9 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
     [v3 setText:v5];
 
     [v3 setTextAlignment:2];
-    v6 = [(PKPassFaceView *)self colorProfile];
-    v7 = [v6 foregroundColor];
-    [v3 setTextColor:v7];
+    colorProfile = [(PKPassFaceView *)self colorProfile];
+    foregroundColor = [colorProfile foregroundColor];
+    [v3 setTextColor:foregroundColor];
 
     [v3 sizeToFit];
   }
@@ -670,19 +670,19 @@ uint64_t __52__PKPassFrontFaceView_setShowsBarcodeView_animated___block_invoke_2
   [(PKPassBucketTemplate *)v4 setBucketRect:v3 + -15.0 + -115.0, 10.0, 115.0, 40.0];
   [(PKPassBucketTemplate *)v4 setMinFieldPadding:16.0];
   [(PKPassBucketTemplate *)v4 setMaxFields:3];
-  v5 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
+  defaultFieldTemplate = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
   v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:11.0];
-  [v5 setLabelFont:v6];
+  [defaultFieldTemplate setLabelFont:v6];
 
-  v7 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
+  defaultFieldTemplate2 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
   v8 = [MEMORY[0x1E69DB878] systemFontOfSize:21.0];
-  [v7 setValueFont:v8];
+  [defaultFieldTemplate2 setValueFont:v8];
 
-  v9 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
-  [v9 setTextAlignment:2];
+  defaultFieldTemplate3 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
+  [defaultFieldTemplate3 setTextAlignment:2];
 
-  v10 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
-  [v10 setVerticalPadding:-3.0];
+  defaultFieldTemplate4 = [(PKPassBucketTemplate *)v4 defaultFieldTemplate];
+  [defaultFieldTemplate4 setVerticalPadding:-3.0];
 
   return v4;
 }

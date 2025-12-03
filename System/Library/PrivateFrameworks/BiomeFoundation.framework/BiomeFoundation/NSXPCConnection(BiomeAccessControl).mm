@@ -10,8 +10,8 @@
 
 - (id)bm_accessControlPolicy
 {
-  v1 = [a1 bm_userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"bm_accessControlPolicy"];
+  bm_userInfo = [self bm_userInfo];
+  v2 = [bm_userInfo objectForKeyedSubscript:@"bm_accessControlPolicy"];
 
   return v2;
 }
@@ -19,8 +19,8 @@
 - (BMProcess)bm_process
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 bm_userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"bm_process"];
+  bm_userInfo = [self bm_userInfo];
+  v3 = [bm_userInfo objectForKeyedSubscript:@"bm_process"];
 
   if (v3)
   {
@@ -28,14 +28,14 @@
   }
 
   v5 = [BMProcess alloc];
-  [a1 auditToken];
+  [self auditToken];
   v3 = [(BMProcess *)v5 initWithAuditToken:&buf];
-  v6 = [a1 bm_accessControlPolicy];
+  bm_accessControlPolicy = [self bm_accessControlPolicy];
 
-  if (!v6)
+  if (!bm_accessControlPolicy)
   {
-    v11 = [a1 bm_userInfo];
-    [v11 setObject:v3 forKeyedSubscript:@"bm_process"];
+    bm_userInfo2 = [self bm_userInfo];
+    [bm_userInfo2 setObject:v3 forKeyedSubscript:@"bm_process"];
 
 LABEL_2:
     v3 = v3;
@@ -63,7 +63,7 @@ LABEL_2:
   if (os_log_type_enabled(v7, v8))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = a1;
+    *(&buf + 4) = self;
     _os_log_impl(&dword_1AC15D000, v7, v8, "Access control policy already set %@", &buf, 0xCu);
   }
 
@@ -77,21 +77,21 @@ LABEL_9:
 
 - (uint64_t)bm_connectionFlags
 {
-  v1 = [a1 bm_userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"bm_connectionFlags"];
-  v3 = [v2 unsignedLongLongValue];
+  bm_userInfo = [self bm_userInfo];
+  v2 = [bm_userInfo objectForKeyedSubscript:@"bm_connectionFlags"];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (void)setBm_accessControlPolicy:()BiomeAccessControl
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 bm_accessControlPolicy];
-  v6 = [v5 useCase];
+  bm_accessControlPolicy = [self bm_accessControlPolicy];
+  useCase = [bm_accessControlPolicy useCase];
 
-  if (v6)
+  if (useCase)
   {
     v7 = __biome_log_for_category(0);
     *&buf = 0;
@@ -116,18 +116,18 @@ LABEL_9:
     }
 
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = a1;
+    *(&buf + 4) = self;
     v9 = "Access control policy useCase cannot change %@";
     goto LABEL_11;
   }
 
-  v10 = [a1 bm_process];
-  v11 = [v4 process];
+  bm_process = [self bm_process];
+  process = [v4 process];
 
-  if (v10 == v11)
+  if (bm_process == process)
   {
-    v13 = [a1 bm_userInfo];
-    [v13 setObject:v4 forKeyedSubscript:@"bm_accessControlPolicy"];
+    bm_userInfo = [self bm_userInfo];
+    [bm_userInfo setObject:v4 forKeyedSubscript:@"bm_accessControlPolicy"];
 
     goto LABEL_13;
   }
@@ -152,7 +152,7 @@ LABEL_9:
   if (os_log_type_enabled(v7, v8))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = a1;
+    *(&buf + 4) = self;
     v9 = "Access control policy process mismatch %@";
 LABEL_11:
     _os_log_impl(&dword_1AC15D000, v7, v8, v9, &buf, 0xCu);
@@ -167,8 +167,8 @@ LABEL_13:
 - (void)setBm_connectionFlags:()BiomeAccessControl
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a1 bm_userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"bm_connectionFlags"];
+  bm_userInfo = [self bm_userInfo];
+  v6 = [bm_userInfo objectForKeyedSubscript:@"bm_connectionFlags"];
 
   if (v6)
   {
@@ -192,7 +192,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, v8))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = a1;
+      *(&buf + 4) = self;
       _os_log_impl(&dword_1AC15D000, v7, v8, "Connection flags cannot change after being set %@", &buf, 0xCu);
     }
 
@@ -202,8 +202,8 @@ LABEL_13:
   else
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v10 = [a1 bm_userInfo];
-    [v10 setObject:v12 forKeyedSubscript:@"bm_connectionFlags"];
+    bm_userInfo2 = [self bm_userInfo];
+    [bm_userInfo2 setObject:v12 forKeyedSubscript:@"bm_connectionFlags"];
 
     v11 = *MEMORY[0x1E69E9840];
   }

@@ -1,23 +1,23 @@
 @interface ExtensionsRidesharingTemplatedBannerView
 - (CGSize)intrinsicContentSize;
-- (ExtensionsRidesharingTemplatedBannerView)initWithCoder:(id)a3;
-- (ExtensionsRidesharingTemplatedBannerView)initWithFrame:(CGRect)a3;
+- (ExtensionsRidesharingTemplatedBannerView)initWithCoder:(id)coder;
+- (ExtensionsRidesharingTemplatedBannerView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateConstraints;
-- (void)setAppIcon:(id)a3;
+- (void)setAppIcon:(id)icon;
 @end
 
 @implementation ExtensionsRidesharingTemplatedBannerView
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
-  v4 = a3;
-  if (v4)
+  iconCopy = icon;
+  if (iconCopy)
   {
     desaturatedAppIcon = self->_desaturatedAppIcon;
     if (!desaturatedAppIcon)
     {
-      v6 = [[CIImage alloc] initWithImage:v4];
+      v6 = [[CIImage alloc] initWithImage:iconCopy];
       v19[0] = kCIInputImageKey;
       v19[1] = kCIInputSaturationKey;
       v20[0] = v6;
@@ -31,9 +31,9 @@
       v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v11 = [v9 initWithOptions:v10];
 
-      v12 = [v8 outputImage];
-      [v12 extent];
-      v13 = [v11 createCGImage:v12 fromRect:?];
+      outputImage = [v8 outputImage];
+      [outputImage extent];
+      v13 = [v11 createCGImage:outputImage fromRect:?];
       v14 = [[UIImage alloc] initWithCGImage:v13];
       v15 = self->_desaturatedAppIcon;
       self->_desaturatedAppIcon = v14;
@@ -79,59 +79,59 @@
   [(UILabel *)self->_secondaryLabel setContentCompressionResistancePriority:1 forAxis:v6];
   v7 = objc_alloc_init(UILayoutGuide);
   [(ExtensionsRidesharingTemplatedBannerView *)self addLayoutGuide:v7];
-  v49 = [v7 centerYAnchor];
-  v48 = [(ExtensionsRidesharingTemplatedBannerView *)self centerYAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  centerYAnchor = [v7 centerYAnchor];
+  centerYAnchor2 = [(ExtensionsRidesharingTemplatedBannerView *)self centerYAnchor];
+  v47 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v50[0] = v47;
-  v46 = [v7 centerXAnchor];
-  v45 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  centerXAnchor = [v7 centerXAnchor];
+  centerXAnchor2 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
+  v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v50[1] = v44;
-  v42 = [v7 topAnchor];
-  v43 = [(ExtensionsRidesharingTemplatedBannerView *)self layoutMarginsGuide];
-  v41 = [v43 topAnchor];
-  v40 = [v42 constraintGreaterThanOrEqualToAnchor:v41 constant:12.0];
+  topAnchor = [v7 topAnchor];
+  layoutMarginsGuide = [(ExtensionsRidesharingTemplatedBannerView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v40 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:12.0];
   v50[2] = v40;
-  v38 = [v7 bottomAnchor];
-  v39 = [(ExtensionsRidesharingTemplatedBannerView *)self layoutMarginsGuide];
-  v37 = [v39 bottomAnchor];
-  v36 = [v38 constraintLessThanOrEqualToAnchor:v37 constant:-12.0];
+  bottomAnchor = [v7 bottomAnchor];
+  layoutMarginsGuide2 = [(ExtensionsRidesharingTemplatedBannerView *)self layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+  v36 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-12.0];
   v50[3] = v36;
-  v35 = [(UIImageView *)self->_appIconImageView topAnchor];
+  topAnchor3 = [(UIImageView *)self->_appIconImageView topAnchor];
   v31 = v7;
-  v34 = [v7 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor4 = [v7 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v50[4] = v33;
-  v32 = [(UIImageView *)self->_appIconImageView heightAnchor];
-  v30 = [v32 constraintEqualToConstant:60.0];
+  heightAnchor = [(UIImageView *)self->_appIconImageView heightAnchor];
+  v30 = [heightAnchor constraintEqualToConstant:60.0];
   v50[5] = v30;
-  v29 = [(UIImageView *)self->_appIconImageView widthAnchor];
-  v28 = [(UIImageView *)self->_appIconImageView heightAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 multiplier:1.0];
+  widthAnchor = [(UIImageView *)self->_appIconImageView widthAnchor];
+  heightAnchor2 = [(UIImageView *)self->_appIconImageView heightAnchor];
+  v27 = [widthAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
   v50[6] = v27;
-  v26 = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
-  v25 = [(UIImageView *)self->_appIconImageView bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:26.0];
+  firstBaselineAnchor = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
+  bottomAnchor3 = [(UIImageView *)self->_appIconImageView bottomAnchor];
+  v24 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor3 constant:26.0];
   v50[7] = v24;
-  v23 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
-  v22 = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:20.0];
+  firstBaselineAnchor2 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
+  v21 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:20.0];
   v50[8] = v21;
-  v20 = [v7 bottomAnchor];
-  v19 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  bottomAnchor4 = [v7 bottomAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v18 = [bottomAnchor4 constraintEqualToAnchor:lastBaselineAnchor2];
   v50[9] = v18;
-  v8 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
-  v9 = [(UIImageView *)self->_appIconImageView centerXAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerXAnchor3 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
+  centerXAnchor4 = [(UIImageView *)self->_appIconImageView centerXAnchor];
+  v10 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v50[10] = v10;
-  v11 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
-  v12 = [(UILabel *)self->_primaryLabel centerXAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerXAnchor5 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
+  centerXAnchor6 = [(UILabel *)self->_primaryLabel centerXAnchor];
+  v13 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v50[11] = v13;
-  v14 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
-  v15 = [(UILabel *)self->_secondaryLabel centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  centerXAnchor7 = [(ExtensionsRidesharingTemplatedBannerView *)self centerXAnchor];
+  centerXAnchor8 = [(UILabel *)self->_secondaryLabel centerXAnchor];
+  v16 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v50[12] = v16;
   v17 = [NSArray arrayWithObjects:v50 count:13];
   [NSLayoutConstraint activateConstraints:v17];
@@ -172,11 +172,11 @@
   [(ExtensionsRidesharingTemplatedBannerView *)self _updateConstraints];
 }
 
-- (ExtensionsRidesharingTemplatedBannerView)initWithFrame:(CGRect)a3
+- (ExtensionsRidesharingTemplatedBannerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ExtensionsRidesharingTemplatedBannerView;
-  v3 = [(ExtensionsRidesharingTemplatedBannerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionsRidesharingTemplatedBannerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -186,11 +186,11 @@
   return v4;
 }
 
-- (ExtensionsRidesharingTemplatedBannerView)initWithCoder:(id)a3
+- (ExtensionsRidesharingTemplatedBannerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ExtensionsRidesharingTemplatedBannerView;
-  v3 = [(ExtensionsRidesharingTemplatedBannerView *)&v6 initWithCoder:a3];
+  v3 = [(ExtensionsRidesharingTemplatedBannerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

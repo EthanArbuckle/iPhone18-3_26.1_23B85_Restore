@@ -1,8 +1,8 @@
 @interface PKPassFaceTemplate
 - (CGSize)barcodeMaxSize;
 - (PKPassFieldTemplate)defaultFieldTemplate;
-- (id)templateForBucketAtIndex:(unint64_t)a3;
-- (void)addBucketTemplate:(id)a3;
+- (id)templateForBucketAtIndex:(unint64_t)index;
+- (void)addBucketTemplate:(id)template;
 @end
 
 @implementation PKPassFaceTemplate
@@ -22,36 +22,36 @@
   return defaultFieldTemplate;
 }
 
-- (void)addBucketTemplate:(id)a3
+- (void)addBucketTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   bucketTemplates = self->_bucketTemplates;
-  v8 = v4;
+  v8 = templateCopy;
   if (!bucketTemplates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bucketTemplates;
     self->_bucketTemplates = v6;
 
-    v4 = v8;
+    templateCopy = v8;
     bucketTemplates = self->_bucketTemplates;
   }
 
-  [(NSMutableArray *)bucketTemplates addObject:v4];
+  [(NSMutableArray *)bucketTemplates addObject:templateCopy];
 }
 
-- (id)templateForBucketAtIndex:(unint64_t)a3
+- (id)templateForBucketAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_bucketTemplates count]<= a3)
+  if ([(NSMutableArray *)self->_bucketTemplates count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_bucketTemplates objectAtIndex:a3];
-    v6 = [v5 defaultFieldTemplate];
-    v7 = [PKPassFieldTemplate _templateByResolvingTemplate:v6 withDefault:self->_defaultFieldTemplate];
+    v5 = [(NSMutableArray *)self->_bucketTemplates objectAtIndex:index];
+    defaultFieldTemplate = [v5 defaultFieldTemplate];
+    v7 = [PKPassFieldTemplate _templateByResolvingTemplate:defaultFieldTemplate withDefault:self->_defaultFieldTemplate];
 
     [v5 setDefaultFieldTemplate:v7];
   }

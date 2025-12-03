@@ -1,45 +1,45 @@
 @interface HROnboardingInlineExpandedContentView
-+ (double)_badgeFontDistanceEmbedded:(BOOL)a3;
-+ (double)_bodyFontDistanceEmbedded:(BOOL)a3;
-+ (double)_headingBodyFontDistanceEmbedded:(BOOL)a3;
-+ (double)_headingToBadgeFontDistanceEmbedded:(BOOL)a3;
-+ (double)_listFontDistanceEmbedded:(BOOL)a3;
-+ (id)_badgeFontEmbedded:(BOOL)a3;
-+ (id)_badgeFontTextStyleEmbedded:(BOOL)a3;
-+ (id)_badgeLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4;
-+ (id)_bodyFontEmbedded:(BOOL)a3;
-+ (id)_bodyFontTextStyleEmbedded:(BOOL)a3;
-+ (id)_bodyLabelWithAtrialFibrillationLocalizationKey:(id)a3;
-+ (id)_bodyLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4;
-+ (id)_headingBodyFontEmbedded:(BOOL)a3;
-+ (id)_headingLabelWithAtrialFibrillationLocalizationKey:(id)a3;
-+ (id)_headingLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4;
-+ (id)_learnMoreListLabelWithLocalizedText:(id)a3 URLIdentifier:(int64_t)a4 delegate:(id)a5 isEmbedded:(BOOL)a6;
-+ (id)_listLabelWithAtrialFibrillationLocalizationKey:(id)a3;
-+ (id)_listLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4;
-+ (id)_makeViewWithContentItem:(id)a3 isEmbedded:(BOOL)a4;
-+ (id)_spacingBetweenItems:(id)a3 isEmbedded:(BOOL)a4;
++ (double)_badgeFontDistanceEmbedded:(BOOL)embedded;
++ (double)_bodyFontDistanceEmbedded:(BOOL)embedded;
++ (double)_headingBodyFontDistanceEmbedded:(BOOL)embedded;
++ (double)_headingToBadgeFontDistanceEmbedded:(BOOL)embedded;
++ (double)_listFontDistanceEmbedded:(BOOL)embedded;
++ (id)_badgeFontEmbedded:(BOOL)embedded;
++ (id)_badgeFontTextStyleEmbedded:(BOOL)embedded;
++ (id)_badgeLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded;
++ (id)_bodyFontEmbedded:(BOOL)embedded;
++ (id)_bodyFontTextStyleEmbedded:(BOOL)embedded;
++ (id)_bodyLabelWithAtrialFibrillationLocalizationKey:(id)key;
++ (id)_bodyLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded;
++ (id)_headingBodyFontEmbedded:(BOOL)embedded;
++ (id)_headingLabelWithAtrialFibrillationLocalizationKey:(id)key;
++ (id)_headingLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded;
++ (id)_learnMoreListLabelWithLocalizedText:(id)text URLIdentifier:(int64_t)identifier delegate:(id)delegate isEmbedded:(BOOL)embedded;
++ (id)_listLabelWithAtrialFibrillationLocalizationKey:(id)key;
++ (id)_listLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded;
++ (id)_makeViewWithContentItem:(id)item isEmbedded:(BOOL)embedded;
++ (id)_spacingBetweenItems:(id)items isEmbedded:(BOOL)embedded;
 + (id)learnMoreAboutAtrialFibrillationExpandedView;
-+ (id)viewWithItems:(id)a3;
-- (void)setIsOriginalStyle:(BOOL)a3;
++ (id)viewWithItems:(id)items;
+- (void)setIsOriginalStyle:(BOOL)style;
 @end
 
 @implementation HROnboardingInlineExpandedContentView
 
-+ (id)viewWithItems:(id)a3
++ (id)viewWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(HROnboardingInlineExpandedContentView);
   [(HROnboardingInlineExpandedContentView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if ([v4 count])
+  if ([itemsCopy count])
   {
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke;
     v28[3] = &__block_descriptor_41_e31__16__0__HRExpandedContentItem_8l;
-    v28[4] = a1;
+    v28[4] = self;
     v29 = 1;
-    v6 = [v4 hk_map:v28];
+    v6 = [itemsCopy hk_map:v28];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke_2;
@@ -47,14 +47,14 @@
     v7 = v5;
     v27 = v7;
     [v6 enumerateObjectsUsingBlock:v26];
-    v8 = [v6 firstObject];
-    v9 = [v8 firstBaselineAnchor];
-    v10 = [(HROnboardingInlineExpandedContentView *)v7 topAnchor];
+    firstObject = [v6 firstObject];
+    firstBaselineAnchor = [firstObject firstBaselineAnchor];
+    topAnchor = [(HROnboardingInlineExpandedContentView *)v7 topAnchor];
     [objc_opt_class() _bodyFontDistanceEmbedded:1];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:?];
+    v11 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
     [v11 setActive:1];
 
-    v12 = [a1 _spacingBetweenItems:v4 isEmbedded:1];
+    v12 = [self _spacingBetweenItems:itemsCopy isEmbedded:1];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke_3;
@@ -63,9 +63,9 @@
     v13 = v6;
     [v12 enumerateObjectsUsingBlock:&v21];
     v14 = [(HROnboardingInlineExpandedContentView *)v7 bottomAnchor:v21];
-    v15 = [v13 lastObject];
-    v16 = [v15 lastBaselineAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    lastObject = [v13 lastObject];
+    lastBaselineAnchor = [lastObject lastBaselineAnchor];
+    v17 = [v14 constraintEqualToAnchor:lastBaselineAnchor];
     [v17 setActive:1];
 
     v18 = v25;
@@ -107,8 +107,8 @@ void __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke_3(
   v59[12] = *MEMORY[0x277D85DE8];
   v39 = objc_alloc_init(HROnboardingInlineExpandedContentView);
   [(HROnboardingInlineExpandedContentView *)v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v2 = [(HROnboardingInlineExpandedContentView *)v39 widthAnchor];
-  v3 = [v2 constraintLessThanOrEqualToConstant:500.0];
+  widthAnchor = [(HROnboardingInlineExpandedContentView *)v39 widthAnchor];
+  v3 = [widthAnchor constraintLessThanOrEqualToConstant:500.0];
   [v3 setActive:1];
 
   v53 = [objc_opt_class() _bodyLabelWithAtrialFibrillationLocalizationKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_LEARN_MORE_EXPANDED_1"];
@@ -143,11 +143,11 @@ void __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke_3(
   v4 = v39;
   v57 = v4;
   [v41 enumerateObjectsUsingBlock:v56];
-  v5 = [v41 firstObject];
-  v6 = [v5 firstBaselineAnchor];
-  v7 = [(HROnboardingInlineExpandedContentView *)v4 topAnchor];
+  firstObject = [v41 firstObject];
+  firstBaselineAnchor = [firstObject firstBaselineAnchor];
+  topAnchor = [(HROnboardingInlineExpandedContentView *)v4 topAnchor];
   [objc_opt_class() _bodyFontDistanceEmbedded:0];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:?];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v8 setActive:1];
 
   v9 = MEMORY[0x277CCABB0];
@@ -203,10 +203,10 @@ void __55__HROnboardingInlineExpandedContentView_viewWithItems___block_invoke_3(
   v55 = v41;
   v29 = v41;
   [v28 enumerateObjectsUsingBlock:v54];
-  v30 = [(HROnboardingInlineExpandedContentView *)v4 bottomAnchor];
-  v31 = [v29 lastObject];
-  v32 = [v31 lastBaselineAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  bottomAnchor = [(HROnboardingInlineExpandedContentView *)v4 bottomAnchor];
+  lastObject = [v29 lastObject];
+  lastBaselineAnchor = [lastObject lastBaselineAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
   [v33 setActive:1];
 
   v34 = v55;
@@ -238,13 +238,13 @@ void __85__HROnboardingInlineExpandedContentView_learnMoreAboutAtrialFibrillatio
   [v12 setActive:1];
 }
 
-+ (id)_bodyLabelWithAtrialFibrillationLocalizationKey:(id)a3
++ (id)_bodyLabelWithAtrialFibrillationLocalizationKey:(id)key
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(v3);
   v6 = HRHeartRhythmUIFrameworkBundle();
-  v7 = [v6 localizedStringForKey:v4 value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
+  v7 = [v6 localizedStringForKey:keyCopy value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
 
   [v5 setText:v7];
   v8 = [objc_opt_class() _bodyFontEmbedded:0];
@@ -252,19 +252,19 @@ void __85__HROnboardingInlineExpandedContentView_learnMoreAboutAtrialFibrillatio
 
   [v5 setAdjustsFontForContentSizeCategory:1];
   [v5 setNumberOfLines:0];
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v5 setTextColor:v9];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v5 setTextColor:secondaryLabelColor];
 
   return v5;
 }
 
-+ (id)_headingLabelWithAtrialFibrillationLocalizationKey:(id)a3
++ (id)_headingLabelWithAtrialFibrillationLocalizationKey:(id)key
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(v3);
   v6 = HRHeartRhythmUIFrameworkBundle();
-  v7 = [v6 localizedStringForKey:v4 value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
+  v7 = [v6 localizedStringForKey:keyCopy value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
 
   [v5 setText:v7];
   v8 = [objc_opt_class() _headingBodyFontEmbedded:0];
@@ -273,18 +273,18 @@ void __85__HROnboardingInlineExpandedContentView_learnMoreAboutAtrialFibrillatio
   [v5 setAdjustsFontForContentSizeCategory:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setNumberOfLines:0];
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v5 setTextColor:v9];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v5 setTextColor:secondaryLabelColor];
 
   return v5;
 }
 
-+ (id)_listLabelWithAtrialFibrillationLocalizationKey:(id)a3
++ (id)_listLabelWithAtrialFibrillationLocalizationKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [HRBulletedIndentedLabel alloc];
   v5 = HRHeartRhythmUIFrameworkBundle();
-  v6 = [v5 localizedStringForKey:v3 value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
 
   v7 = [(HRBulletedIndentedLabel *)v4 initWithText:v6 isEmbedded:0];
   [(HRBulletedIndentedLabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -292,23 +292,23 @@ void __85__HROnboardingInlineExpandedContentView_learnMoreAboutAtrialFibrillatio
   return v7;
 }
 
-+ (id)_spacingBetweenItems:(id)a3 isEmbedded:(BOOL)a4
++ (id)_spacingBetweenItems:(id)items isEmbedded:(BOOL)embedded
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  if ([v5 count] >= 2)
+  embeddedCopy = embedded;
+  itemsCopy = items;
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  if ([itemsCopy count] >= 2)
   {
-    for (i = 1; i < [v5 count]; ++i)
+    for (i = 1; i < [itemsCopy count]; ++i)
     {
-      v8 = [v5 objectAtIndexedSubscript:i];
-      v9 = [v8 type];
-      if (v9 > 1)
+      v8 = [itemsCopy objectAtIndexedSubscript:i];
+      type = [v8 type];
+      if (type > 1)
       {
-        if (v9 == 2)
+        if (type == 2)
         {
           v14 = MEMORY[0x277CCABB0];
-          [objc_opt_class() _bodyFontDistanceEmbedded:v4];
+          [objc_opt_class() _bodyFontDistanceEmbedded:embeddedCopy];
 LABEL_13:
           v10 = [v14 numberWithDouble:?];
           [v6 addObject:v10];
@@ -317,37 +317,37 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v9 == 3)
+        if (type == 3)
         {
           v14 = MEMORY[0x277CCABB0];
-          [objc_opt_class() _listFontDistanceEmbedded:v4];
+          [objc_opt_class() _listFontDistanceEmbedded:embeddedCopy];
           goto LABEL_13;
         }
       }
 
       else
       {
-        if (!v9)
+        if (!type)
         {
           v14 = MEMORY[0x277CCABB0];
-          [objc_opt_class() _badgeFontDistanceEmbedded:v4];
+          [objc_opt_class() _badgeFontDistanceEmbedded:embeddedCopy];
           goto LABEL_13;
         }
 
-        if (v9 == 1)
+        if (type == 1)
         {
-          v10 = [v5 objectAtIndexedSubscript:i - 1];
-          v11 = [v10 type];
+          v10 = [itemsCopy objectAtIndexedSubscript:i - 1];
+          type2 = [v10 type];
           v12 = MEMORY[0x277CCABB0];
           v13 = objc_opt_class();
-          if (v11)
+          if (type2)
           {
-            [v13 _headingBodyFontDistanceEmbedded:v4];
+            [v13 _headingBodyFontDistanceEmbedded:embeddedCopy];
           }
 
           else
           {
-            [v13 _headingToBadgeFontDistanceEmbedded:v4];
+            [v13 _headingToBadgeFontDistanceEmbedded:embeddedCopy];
           }
 
           v15 = [v12 numberWithDouble:?];
@@ -364,65 +364,65 @@ LABEL_17:
   return v6;
 }
 
-+ (id)_makeViewWithContentItem:(id)a3 isEmbedded:(BOOL)a4
++ (id)_makeViewWithContentItem:(id)item isEmbedded:(BOOL)embedded
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 type];
-  if (v7 <= 1)
+  embeddedCopy = embedded;
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type <= 1)
   {
-    if (v7)
+    if (type)
     {
-      if (v7 != 1)
+      if (type != 1)
       {
         goto LABEL_14;
       }
 
       v8 = objc_opt_class();
-      v9 = [v6 title];
-      v10 = [v8 _headingLabelWithLocalizedText:v9 isEmbedded:v5];
+      title = [itemCopy title];
+      v10 = [v8 _headingLabelWithLocalizedText:title isEmbedded:embeddedCopy];
     }
 
     else
     {
       v17 = objc_opt_class();
-      v9 = [v6 title];
-      v10 = [v17 _badgeLabelWithLocalizedText:v9 isEmbedded:v5];
+      title = [itemCopy title];
+      v10 = [v17 _badgeLabelWithLocalizedText:title isEmbedded:embeddedCopy];
     }
 
     goto LABEL_12;
   }
 
-  if (v7 == 2)
+  if (type == 2)
   {
     v18 = objc_opt_class();
-    v9 = [v6 title];
-    v10 = [v18 _bodyLabelWithLocalizedText:v9 isEmbedded:v5];
+    title = [itemCopy title];
+    v10 = [v18 _bodyLabelWithLocalizedText:title isEmbedded:embeddedCopy];
 LABEL_12:
     v4 = v10;
     goto LABEL_13;
   }
 
-  if (v7 != 3)
+  if (type != 3)
   {
     goto LABEL_14;
   }
 
-  v11 = [v6 learnMore];
+  learnMore = [itemCopy learnMore];
 
   v12 = objc_opt_class();
-  v9 = [v6 title];
-  if (!v11)
+  title = [itemCopy title];
+  if (!learnMore)
   {
-    v10 = [v12 _listLabelWithLocalizedText:v9 isEmbedded:v5];
+    v10 = [v12 _listLabelWithLocalizedText:title isEmbedded:embeddedCopy];
     goto LABEL_12;
   }
 
-  v13 = [v6 learnMore];
-  v14 = [v13 urlIdentifier];
-  v15 = [v6 learnMore];
-  v16 = [v15 delegate];
-  v4 = [v12 _learnMoreListLabelWithLocalizedText:v9 URLIdentifier:v14 delegate:v16 isEmbedded:v5];
+  learnMore2 = [itemCopy learnMore];
+  urlIdentifier = [learnMore2 urlIdentifier];
+  learnMore3 = [itemCopy learnMore];
+  delegate = [learnMore3 delegate];
+  v4 = [v12 _learnMoreListLabelWithLocalizedText:title URLIdentifier:urlIdentifier delegate:delegate isEmbedded:embeddedCopy];
 
 LABEL_13:
 LABEL_14:
@@ -430,111 +430,111 @@ LABEL_14:
   return v4;
 }
 
-- (void)setIsOriginalStyle:(BOOL)a3
+- (void)setIsOriginalStyle:(BOOL)style
 {
-  if (self->_isOriginalStyle != a3)
+  if (self->_isOriginalStyle != style)
   {
-    self->_isOriginalStyle = a3;
+    self->_isOriginalStyle = style;
   }
 }
 
-+ (id)_badgeLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4
++ (id)_badgeLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded
 {
-  v4 = a4;
+  embeddedCopy = embedded;
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(v5);
-  v8 = [objc_opt_class() _badgeFontEmbedded:v4];
+  v8 = [objc_opt_class() _badgeFontEmbedded:embeddedCopy];
   [v7 setFont:v8];
 
   [v7 setAdjustsFontForContentSizeCategory:1];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setNumberOfLines:0];
-  [v7 setText:v6];
+  [v7 setText:textCopy];
 
-  v9 = [MEMORY[0x277D75348] hk_heartKeyColor];
-  [v7 setTextColor:v9];
+  hk_heartKeyColor = [MEMORY[0x277D75348] hk_heartKeyColor];
+  [v7 setTextColor:hk_heartKeyColor];
 
   return v7;
 }
 
-+ (id)_bodyLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4
++ (id)_bodyLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded
 {
-  v4 = a4;
+  embeddedCopy = embedded;
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(v5);
-  v8 = [objc_opt_class() _bodyFontEmbedded:v4];
+  v8 = [objc_opt_class() _bodyFontEmbedded:embeddedCopy];
   [v7 setFont:v8];
 
   [v7 setAdjustsFontForContentSizeCategory:1];
   [v7 setNumberOfLines:0];
-  [v7 setText:v6];
+  [v7 setText:textCopy];
 
-  if (!v4)
+  if (!embeddedCopy)
   {
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v7 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v7 setTextColor:secondaryLabelColor];
   }
 
   return v7;
 }
 
-+ (id)_headingLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4
++ (id)_headingLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded
 {
-  v4 = a4;
+  embeddedCopy = embedded;
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(v5);
-  v8 = [objc_opt_class() _headingBodyFontEmbedded:v4];
+  v8 = [objc_opt_class() _headingBodyFontEmbedded:embeddedCopy];
   [v7 setFont:v8];
 
   [v7 setAdjustsFontForContentSizeCategory:1];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setNumberOfLines:0];
-  [v7 setText:v6];
+  [v7 setText:textCopy];
 
-  if (!v4)
+  if (!embeddedCopy)
   {
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v7 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v7 setTextColor:secondaryLabelColor];
   }
 
   return v7;
 }
 
-+ (id)_listLabelWithLocalizedText:(id)a3 isEmbedded:(BOOL)a4
++ (id)_listLabelWithLocalizedText:(id)text isEmbedded:(BOOL)embedded
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[HRBulletedIndentedLabel alloc] initWithText:v5 isEmbedded:v4];
+  embeddedCopy = embedded;
+  textCopy = text;
+  v6 = [[HRBulletedIndentedLabel alloc] initWithText:textCopy isEmbedded:embeddedCopy];
 
   [(HRBulletedIndentedLabel *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v6;
 }
 
-+ (id)_learnMoreListLabelWithLocalizedText:(id)a3 URLIdentifier:(int64_t)a4 delegate:(id)a5 isEmbedded:(BOOL)a6
++ (id)_learnMoreListLabelWithLocalizedText:(id)text URLIdentifier:(int64_t)identifier delegate:(id)delegate isEmbedded:(BOOL)embedded
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = a3;
+  embeddedCopy = embedded;
+  delegateCopy = delegate;
+  textCopy = text;
   v11 = HRHeartRhythmUIFrameworkBundle();
   v12 = [v11 localizedStringForKey:@"ONBOARDING_LEARN_MORE_WITH_ELLIPSES" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v10, v12];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", textCopy, v12];
 
   v14 = MEMORY[0x277CCAB48];
-  v15 = [objc_opt_class() _bodyFontTextStyleEmbedded:v6];
+  v15 = [objc_opt_class() _bodyFontTextStyleEmbedded:embeddedCopy];
   v16 = [v14 hrui_bulletedString:v13 textStyle:v15];
 
-  v17 = [v16 string];
-  v18 = [v17 rangeOfString:v12];
+  string = [v16 string];
+  v18 = [string rangeOfString:v12];
   v20 = v19;
 
   v21 = *MEMORY[0x277D740C0];
-  v22 = [MEMORY[0x277D75348] hk_appKeyColor];
-  [v16 addAttribute:v21 value:v22 range:{v18, v20}];
+  hk_appKeyColor = [MEMORY[0x277D75348] hk_appKeyColor];
+  [v16 addAttribute:v21 value:hk_appKeyColor range:{v18, v20}];
 
   [v16 addAttribute:*MEMORY[0x277D740E8] value:&stru_2864680B0 range:{v18, v20}];
   v23 = [HRLinkTextView alloc];
@@ -544,14 +544,14 @@ LABEL_14:
   v30[3] = &unk_2796FB9C8;
   v31 = v12;
   v24 = v12;
-  v25 = [(HRLinkTextView *)v23 initWithLinkRange:v18 URLIdentifier:v20 delegate:a4 userInterfaceStyleChanged:v9, v30];
+  v25 = [(HRLinkTextView *)v23 initWithLinkRange:v18 URLIdentifier:v20 delegate:identifier userInterfaceStyleChanged:delegateCopy, v30];
 
-  v26 = [(HRLinkTextView *)v25 textView];
-  [v26 setAttributedText:v16];
+  textView = [(HRLinkTextView *)v25 textView];
+  [textView setAttributedText:v16];
 
-  v27 = [(HRLinkTextView *)v25 textView];
-  v28 = [v27 textContainer];
-  [v28 setLineFragmentPadding:0.0];
+  textView2 = [(HRLinkTextView *)v25 textView];
+  textContainer = [textView2 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   return v25;
 }
@@ -575,28 +575,28 @@ void __112__HROnboardingInlineExpandedContentView__learnMoreListLabelWithLocaliz
   [v10 setAttributedText:v11];
 }
 
-+ (id)_badgeFontEmbedded:(BOOL)a3
++ (id)_badgeFontEmbedded:(BOOL)embedded
 {
   v3 = MEMORY[0x277D74300];
-  v4 = [objc_opt_class() _badgeFontTextStyleEmbedded:a3];
+  v4 = [objc_opt_class() _badgeFontTextStyleEmbedded:embedded];
   v5 = [v3 hk_scalableFontForTextStyle:v4 symbolicTraits:2];
 
   return v5;
 }
 
-+ (double)_badgeFontDistanceEmbedded:(BOOL)a3
++ (double)_badgeFontDistanceEmbedded:(BOOL)embedded
 {
-  v3 = [objc_opt_class() _badgeFontEmbedded:a3];
+  v3 = [objc_opt_class() _badgeFontEmbedded:embedded];
   [v3 _scaledValueForValue:48.0];
   v5 = v4;
 
   return v5;
 }
 
-+ (id)_badgeFontTextStyleEmbedded:(BOOL)a3
++ (id)_badgeFontTextStyleEmbedded:(BOOL)embedded
 {
   v3 = MEMORY[0x277D76918];
-  if (!a3)
+  if (!embedded)
   {
     v3 = MEMORY[0x277D76A20];
   }
@@ -604,10 +604,10 @@ void __112__HROnboardingInlineExpandedContentView__learnMoreListLabelWithLocaliz
   return *v3;
 }
 
-+ (id)_bodyFontTextStyleEmbedded:(BOOL)a3
++ (id)_bodyFontTextStyleEmbedded:(BOOL)embedded
 {
   v3 = MEMORY[0x277D76918];
-  if (!a3)
+  if (!embedded)
   {
     v3 = MEMORY[0x277D76A20];
   }
@@ -615,54 +615,54 @@ void __112__HROnboardingInlineExpandedContentView__learnMoreListLabelWithLocaliz
   return *v3;
 }
 
-+ (id)_headingBodyFontEmbedded:(BOOL)a3
++ (id)_headingBodyFontEmbedded:(BOOL)embedded
 {
   v3 = MEMORY[0x277D74300];
-  v4 = [objc_opt_class() _bodyFontTextStyleEmbedded:a3];
+  v4 = [objc_opt_class() _bodyFontTextStyleEmbedded:embedded];
   v5 = [v3 hk_scalableFontForTextStyle:v4 symbolicTraits:2];
 
   return v5;
 }
 
-+ (id)_bodyFontEmbedded:(BOOL)a3
++ (id)_bodyFontEmbedded:(BOOL)embedded
 {
   v3 = MEMORY[0x277D74300];
-  v4 = [objc_opt_class() _bodyFontTextStyleEmbedded:a3];
+  v4 = [objc_opt_class() _bodyFontTextStyleEmbedded:embedded];
   v5 = [v3 preferredFontForTextStyle:v4];
 
   return v5;
 }
 
-+ (double)_bodyFontDistanceEmbedded:(BOOL)a3
++ (double)_bodyFontDistanceEmbedded:(BOOL)embedded
 {
-  v3 = [objc_opt_class() _bodyFontEmbedded:a3];
+  v3 = [objc_opt_class() _bodyFontEmbedded:embedded];
   [v3 _scaledValueForValue:30.0];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)_headingBodyFontDistanceEmbedded:(BOOL)a3
++ (double)_headingBodyFontDistanceEmbedded:(BOOL)embedded
 {
-  v3 = [objc_opt_class() _headingBodyFontEmbedded:a3];
+  v3 = [objc_opt_class() _headingBodyFontEmbedded:embedded];
   [v3 _scaledValueForValue:48.0];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)_headingToBadgeFontDistanceEmbedded:(BOOL)a3
++ (double)_headingToBadgeFontDistanceEmbedded:(BOOL)embedded
 {
-  v3 = [objc_opt_class() _headingBodyFontEmbedded:a3];
+  v3 = [objc_opt_class() _headingBodyFontEmbedded:embedded];
   [v3 _scaledValueForValue:22.0];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)_listFontDistanceEmbedded:(BOOL)a3
++ (double)_listFontDistanceEmbedded:(BOOL)embedded
 {
-  v3 = [objc_opt_class() _bodyFontEmbedded:a3];
+  v3 = [objc_opt_class() _bodyFontEmbedded:embedded];
   [v3 _scaledValueForValue:34.0];
   v5 = v4;
 

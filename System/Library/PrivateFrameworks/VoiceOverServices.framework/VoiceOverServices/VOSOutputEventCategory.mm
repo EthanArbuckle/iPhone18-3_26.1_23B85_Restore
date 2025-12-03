@@ -6,8 +6,8 @@
 + (id)system;
 + (id)textEditing;
 + (id)voiceOverFeedback;
-- (BOOL)containsOutputEvent:(id)a3;
-- (VOSOutputEventCategory)initWithOutputEvents:(id)a3 localizedCategoryName:(id)a4;
+- (BOOL)containsOutputEvent:(id)event;
+- (VOSOutputEventCategory)initWithOutputEvents:(id)events localizedCategoryName:(id)name;
 @end
 
 @implementation VOSOutputEventCategory
@@ -260,28 +260,28 @@
   return v8;
 }
 
-- (VOSOutputEventCategory)initWithOutputEvents:(id)a3 localizedCategoryName:(id)a4
+- (VOSOutputEventCategory)initWithOutputEvents:(id)events localizedCategoryName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = VOSOutputEventCategory;
   v8 = [(VOSOutputEventCategory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VOSOutputEventCategory *)v8 setLocalizedCategoryName:v7];
-    [(VOSOutputEventCategory *)v9 setOutputEvents:v6];
+    [(VOSOutputEventCategory *)v8 setLocalizedCategoryName:nameCopy];
+    [(VOSOutputEventCategory *)v9 setOutputEvents:eventsCopy];
   }
 
   return v9;
 }
 
-- (BOOL)containsOutputEvent:(id)a3
+- (BOOL)containsOutputEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(VOSOutputEventCategory *)self outputEvents];
-  v6 = [v5 containsObject:v4];
+  eventCopy = event;
+  outputEvents = [(VOSOutputEventCategory *)self outputEvents];
+  v6 = [outputEvents containsObject:eventCopy];
 
   return v6;
 }

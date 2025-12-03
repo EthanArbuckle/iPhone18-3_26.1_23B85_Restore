@@ -1,24 +1,24 @@
 @interface TSCETaggedDecimalListObject
-+ (id)createFromGridValue:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 evaluationContext:(id)a6 ignoreError:(BOOL)a7 ignoreDuplicates:(BOOL)a8 outError:(id *)a9;
++ (id)createFromGridValue:(id)value functionSpec:(id)spec argumentIndex:(int)index evaluationContext:(id)context ignoreError:(BOOL)error ignoreDuplicates:(BOOL)duplicates outError:(id *)outError;
 - (id).cxx_construct;
 @end
 
 @implementation TSCETaggedDecimalListObject
 
-+ (id)createFromGridValue:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 evaluationContext:(id)a6 ignoreError:(BOOL)a7 ignoreDuplicates:(BOOL)a8 outError:(id *)a9
++ (id)createFromGridValue:(id)value functionSpec:(id)spec argumentIndex:(int)index evaluationContext:(id)context ignoreError:(BOOL)error ignoreDuplicates:(BOOL)duplicates outError:(id *)outError
 {
-  v98 = a8;
-  v9 = a7;
+  duplicatesCopy = duplicates;
+  errorCopy = error;
   v115 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v102 = a4;
-  v13 = a6;
-  v96 = v13;
+  valueCopy = value;
+  specCopy = spec;
+  contextCopy = context;
+  v96 = contextCopy;
   v99 = objc_opt_new();
-  v18 = objc_msgSend_count(v12, v14, v15, v16, v17);
+  v18 = objc_msgSend_count(valueCopy, v14, v15, v16, v17);
   v97 = objc_msgSend_taggedDecimalList(v99, v19, v20, v21, v22);
   v100 = objc_msgSend_zero(TSCENumberValue, v23, v24, v25, v26);
-  if (!a9)
+  if (!outError)
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "+[TSCETaggedDecimalListObject createFromGridValue:functionSpec:argumentIndex:evaluationContext:ignoreError:ignoreDuplicates:outError:]", v28, v29);
@@ -30,9 +30,9 @@
 
   memset(v111, 0, sizeof(v111));
   v112 = 1065353216;
-  v43 = v13;
+  v43 = contextCopy;
   v105[0] = v43;
-  v105[1] = v102;
+  v105[1] = specCopy;
   v106 = 0;
   v107[0] = 0;
   *(v107 + 7) = 0;
@@ -52,9 +52,9 @@ LABEL_40:
   v44 = 0;
   while (1)
   {
-    v45 = objc_msgSend_valueAtIndex_accessContext_(v12, v41, v44, v105, v42);
+    v45 = objc_msgSend_valueAtIndex_accessContext_(valueCopy, v41, v44, v105, v42);
     v50 = v45;
-    if (v9 && (objc_msgSend_isError(v45, v46, v47, v48, v49) & 1) != 0 || (objc_msgSend_isNil(v50, v46, v47, v48, v49) & 1) != 0)
+    if (errorCopy && (objc_msgSend_isError(v45, v46, v47, v48, v49) & 1) != 0 || (objc_msgSend_isNil(v50, v46, v47, v48, v49) & 1) != 0)
     {
       goto LABEL_8;
     }
@@ -75,10 +75,10 @@ LABEL_40:
       goto LABEL_30;
     }
 
-    if (!v9)
+    if (!errorCopy)
     {
       v68 = objc_msgSend_errorWithContext_(v50, v54, v43, v56, v57);
-      *a9 = v68;
+      *outError = v68;
       if (v68)
       {
         goto LABEL_48;
@@ -98,21 +98,21 @@ LABEL_8:
     if (v101)
     {
 LABEL_44:
-      v63 = objc_msgSend_functionName(v102, v54, v55, v56, v57);
-      *a9 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v89, v63, v90, v91);
+      v63 = objc_msgSend_functionName(specCopy, v54, v55, v56, v57);
+      *outError = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v89, v63, v90, v91);
       goto LABEL_47;
     }
 
-    v69 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v50, v54, v43, v102, 0, a9);
+    v69 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v50, v54, v43, specCopy, 0, outError);
 
-    if (*a9)
+    if (*outError)
     {
       v103 = v69;
       goto LABEL_48;
     }
 
     objc_msgSend_timeIntervalSinceReferenceDate(v69, v70, v71, v72, v73);
-    if (v98)
+    if (duplicatesCopy)
     {
       TSUDecimal::operator=();
       if (!sub_2214031D4(v111, &v113))
@@ -156,9 +156,9 @@ LABEL_30:
     goto LABEL_44;
   }
 
-  v59 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v50, v54, v43, v102, 0, a9);
+  v59 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v50, v54, v43, specCopy, 0, outError);
   v63 = v59;
-  if (*a9)
+  if (*outError)
   {
     goto LABEL_46;
   }
@@ -176,7 +176,7 @@ LABEL_30:
 LABEL_32:
     v86 = objc_msgSend_rawDecimalValue(v63, v64, v65, v66, v67);
     v104 = *v86;
-    if (v98)
+    if (duplicatesCopy)
     {
       if (!sub_2214031D4(v111, &v104))
       {
@@ -199,8 +199,8 @@ LABEL_32:
     goto LABEL_8;
   }
 
-  v92 = objc_msgSend_functionName(v102, v64, v65, v66, v67);
-  *a9 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v93, v92, v94, v95);
+  v92 = objc_msgSend_functionName(specCopy, v64, v65, v66, v67);
+  *outError = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v93, v92, v94, v95);
 
 LABEL_46:
   v103 = 0;

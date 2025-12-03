@@ -1,33 +1,33 @@
 @interface AMSAccountCachedServerDataAccountResult
-- (AMSAccountCachedServerDataAccountResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSAccountCachedServerDataAccountResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSAccountCachedServerDataAccountResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSAccountCachedServerDataAccountResult *)self fields];
-  [v4 encodeObject:v5 forKey:@"kFields"];
+  coderCopy = coder;
+  fields = [(AMSAccountCachedServerDataAccountResult *)self fields];
+  [coderCopy encodeObject:fields forKey:@"kFields"];
 
-  v6 = [(AMSAccountCachedServerDataAccountResult *)self error];
-  [v4 encodeObject:v6 forKey:@"kError"];
+  error = [(AMSAccountCachedServerDataAccountResult *)self error];
+  [coderCopy encodeObject:error forKey:@"kError"];
 }
 
-- (AMSAccountCachedServerDataAccountResult)initWithCoder:(id)a3
+- (AMSAccountCachedServerDataAccountResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSAccountCachedServerDataAccountResult;
   v5 = [(AMSAccountCachedServerDataAccountResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFields"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFields"];
     fields = v5->_fields;
     v5->_fields = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kError"];
     error = v5->_error;
     v5->_error = v8;
   }

@@ -2,10 +2,10 @@
 - (BOOL)complete;
 - (MCMResult)result;
 - (MCMResultPromise)init;
-- (MCMResultPromise)initWithCompletion:(id)a3;
+- (MCMResultPromise)initWithCompletion:(id)completion;
 - (NSMutableArray)warnings;
 - (id)completion;
-- (void)completeWithResult:(id)a3;
+- (void)completeWithResult:(id)result;
 @end
 
 @implementation MCMResultPromise
@@ -37,9 +37,9 @@
 - (MCMResult)result
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_result;
   if (!v3)
   {
     _os_crash();
@@ -47,20 +47,20 @@
   }
 
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (void)completeWithResult:(id)a3
+- (void)completeWithResult:(id)result
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_complete)
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_complete)
   {
     _os_crash();
     __break(1u);
@@ -69,21 +69,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MCMResultPromise *)v5 warnings];
-    v7 = [v6 copy];
-    [v12 _attachWarnings:v7];
+    warnings = [(MCMResultPromise *)selfCopy warnings];
+    v7 = [warnings copy];
+    [resultCopy _attachWarnings:v7];
   }
 
-  objc_storeStrong(&v5->_result, a3);
-  v5->_complete = 1;
-  v8 = [(MCMResultPromise *)v5 completion];
-  objc_sync_exit(v5);
+  objc_storeStrong(&selfCopy->_result, result);
+  selfCopy->_complete = 1;
+  completion = [(MCMResultPromise *)selfCopy completion];
+  objc_sync_exit(selfCopy);
 
-  if (v8)
+  if (completion)
   {
-    v9 = (v8)[2](v8, v5->_result);
-    result = v5->_result;
-    v5->_result = v9;
+    v9 = (completion)[2](completion, selfCopy->_result);
+    result = selfCopy->_result;
+    selfCopy->_result = v9;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -114,10 +114,10 @@
   return v3;
 }
 
-- (MCMResultPromise)initWithCompletion:(id)a3
+- (MCMResultPromise)initWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = MCMResultPromise;
   v5 = [(MCMResultPromise *)&v14 init];
@@ -127,7 +127,7 @@
     v7 = v5->_result;
     v5->_result = 0;
 
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     completion = v6->_completion;
     v6->_completion = v8;
 

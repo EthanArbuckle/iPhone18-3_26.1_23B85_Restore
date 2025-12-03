@@ -1,24 +1,24 @@
 @interface HMDMicroLocationLogEventObserver
 + (id)logCategory;
-- (HMDMicroLocationLogEventObserver)initWithDataSource:(id)a3 microLocationManager:(id)a4;
-- (id)isEligibleForDonationWithHAPServiceType:(void *)a3 HAPCharacteristicType:;
-- (void)observeEvent:(id)a3;
+- (HMDMicroLocationLogEventObserver)initWithDataSource:(id)source microLocationManager:(id)manager;
+- (id)isEligibleForDonationWithHAPServiceType:(void *)type HAPCharacteristicType:;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation HMDMicroLocationLogEventObserver
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v12 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = [v12 shouldTriggerMicroLocationRecordingScanForLogEventObserver:self];
-    v5 = [v12 shouldTriggerMicroLocationLocalizationScanForLogEventObserver:self];
+    v4 = [eventCopy shouldTriggerMicroLocationRecordingScanForLogEventObserver:self];
+    v5 = [eventCopy shouldTriggerMicroLocationLocalizationScanForLogEventObserver:self];
     v6 = v5;
     if ((v4 & 1) != 0 || v5)
     {
-      v7 = [v12 microLocationMetadataForLogEventObserver:self];
-      v9 = [v12 microLocationScanTriggerTypeForLogEventObserver:self];
+      v7 = [eventCopy microLocationMetadataForLogEventObserver:self];
+      v9 = [eventCopy microLocationScanTriggerTypeForLogEventObserver:self];
       if (v6)
       {
         if (self)
@@ -52,18 +52,18 @@
   }
 }
 
-- (HMDMicroLocationLogEventObserver)initWithDataSource:(id)a3 microLocationManager:(id)a4
+- (HMDMicroLocationLogEventObserver)initWithDataSource:(id)source microLocationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HMDMicroLocationLogEventObserver;
   v8 = [(HMDMicroLocationLogEventObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeStrong(&v9->_microLocationManager, a4);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeStrong(&v9->_microLocationManager, manager);
   }
 
   return v9;
@@ -89,18 +89,18 @@ void __47__HMDMicroLocationLogEventObserver_logCategory__block_invoke()
   logCategory__hmf_once_v2_4247 = v1;
 }
 
-- (id)isEligibleForDonationWithHAPServiceType:(void *)a3 HAPCharacteristicType:
+- (id)isEligibleForDonationWithHAPServiceType:(void *)type HAPCharacteristicType:
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    WeakRetained = objc_loadWeakRetained(self + 2);
     v8 = WeakRetained;
     if (WeakRetained)
     {
-      v9 = [WeakRetained hapMetadataForMicroLocationLogEventObserver:a1];
+      v9 = [WeakRetained hapMetadataForMicroLocationLogEventObserver:self];
       if (([v5 isEqualToString:@"00000228-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v9, "shouldFilterServiceOfTypeFromApp:", v5) & 1) == 0)
       {
         v10 = [v9 isStandardServiceType:v5];
@@ -111,23 +111,23 @@ void __47__HMDMicroLocationLogEventObserver_logCategory__block_invoke()
         v10 = 0;
       }
 
-      if ([v9 shouldFilterCharacteristicOfTypeFromApp:v6])
+      if ([v9 shouldFilterCharacteristicOfTypeFromApp:typeCopy])
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = [v9 isStandardCharacteristicType:v6];
+        v11 = [v9 isStandardCharacteristicType:typeCopy];
       }
 
-      a1 = (v10 & v11);
+      self = (v10 & v11);
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -138,12 +138,12 @@ void __47__HMDMicroLocationLogEventObserver_logCategory__block_invoke()
       }
 
       objc_autoreleasePoolPop(v12);
-      a1 = 0;
+      self = 0;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 @end

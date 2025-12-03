@@ -1,30 +1,30 @@
 @interface RRSchemaRRAnnotatedEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaRRAnnotatedEntity)initWithDictionary:(id)a3;
-- (RRSchemaRRAnnotatedEntity)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RRSchemaRRAnnotatedEntity)initWithDictionary:(id)dictionary;
+- (RRSchemaRRAnnotatedEntity)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAnnotations:(id)a3;
-- (void)setHasHasReference:(BOOL)a3;
-- (void)setHasSaliencyComputedAtTimestampInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnnotations:(id)annotations;
+- (void)setHasHasReference:(BOOL)reference;
+- (void)setHasSaliencyComputedAtTimestampInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaRRAnnotatedEntity
 
-- (RRSchemaRRAnnotatedEntity)initWithDictionary:(id)a3
+- (RRSchemaRRAnnotatedEntity)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = RRSchemaRRAnnotatedEntity;
   v5 = [(RRSchemaRRAnnotatedEntity *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoGraph"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoGraph"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       v6 = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"swiftClassName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"swiftClassName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       v9 = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"group"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"group"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
     }
 
     v28 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"annotations"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"annotations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       v9 = v27;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"saliencyScore"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"saliencyScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,14 +105,14 @@
       [(RRSchemaRRAnnotatedEntity *)v5 setSaliencyScore:?];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"saliencyComputedAtTimestampInSeconds"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"saliencyComputedAtTimestampInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RRSchemaRRAnnotatedEntity setSaliencyComputedAtTimestampInSeconds:](v5, "setSaliencyComputedAtTimestampInSeconds:", [v23 unsignedLongLongValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"hasReference"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"hasReference"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,30 +125,30 @@
   return v5;
 }
 
-- (RRSchemaRRAnnotatedEntity)initWithJSON:(id)a3
+- (RRSchemaRRAnnotatedEntity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaRRAnnotatedEntity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaRRAnnotatedEntity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaRRAnnotatedEntity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,10 +162,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_annotations count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -185,16 +185,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -204,22 +204,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"annotations"];
+    [dictionary setObject:array forKeyedSubscript:@"annotations"];
   }
 
   if (self->_group)
   {
-    v12 = [(RRSchemaRRAnnotatedEntity *)self group];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    group = [(RRSchemaRRAnnotatedEntity *)self group];
+    dictionaryRepresentation2 = [group dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"group"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"group"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"group"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"group"];
     }
   }
 
@@ -227,7 +227,7 @@
   if ((v15 & 4) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[RRSchemaRRAnnotatedEntity hasReference](self, "hasReference")}];
-    [v3 setObject:v22 forKeyedSubscript:@"hasReference"];
+    [dictionary setObject:v22 forKeyedSubscript:@"hasReference"];
 
     v15 = *(&self->_hasReference + 1);
     if ((v15 & 2) == 0)
@@ -248,7 +248,7 @@ LABEL_20:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[RRSchemaRRAnnotatedEntity saliencyComputedAtTimestampInSeconds](self, "saliencyComputedAtTimestampInSeconds", v26)}];
-  [v3 setObject:v23 forKeyedSubscript:@"saliencyComputedAtTimestampInSeconds"];
+  [dictionary setObject:v23 forKeyedSubscript:@"saliencyComputedAtTimestampInSeconds"];
 
   if (*(&self->_hasReference + 1))
   {
@@ -256,36 +256,36 @@ LABEL_21:
     v16 = MEMORY[0x1E696AD98];
     [(RRSchemaRRAnnotatedEntity *)self saliencyScore];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"saliencyScore"];
+    [dictionary setObject:v17 forKeyedSubscript:@"saliencyScore"];
   }
 
 LABEL_22:
   if (self->_swiftClassName)
   {
-    v18 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"swiftClassName"];
+    swiftClassName = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
+    v19 = [swiftClassName copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"swiftClassName"];
   }
 
   if (self->_usoGraph)
   {
-    v20 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    usoGraph = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+    dictionaryRepresentation3 = [usoGraph dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"usoGraph"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"usoGraph"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"usoGraph"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"usoGraph"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -356,28 +356,28 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v14 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
-  v6 = [v4 usoGraph];
-  if ((v5 != 0) == (v6 == 0))
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+  usoGraph2 = [equalCopy usoGraph];
+  if ((usoGraph != 0) == (usoGraph2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
-  if (v7)
+  usoGraph3 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+  if (usoGraph3)
   {
-    v8 = v7;
-    v9 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
-    v10 = [v4 usoGraph];
-    v11 = [v9 isEqual:v10];
+    v8 = usoGraph3;
+    usoGraph4 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+    usoGraph5 = [equalCopy usoGraph];
+    v11 = [usoGraph4 isEqual:usoGraph5];
 
     if (!v11)
     {
@@ -389,20 +389,20 @@ LABEL_12:
   {
   }
 
-  v5 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
-  v6 = [v4 swiftClassName];
-  if ((v5 != 0) == (v6 == 0))
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
+  usoGraph2 = [equalCopy swiftClassName];
+  if ((usoGraph != 0) == (usoGraph2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
-  if (v12)
+  swiftClassName = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
+  if (swiftClassName)
   {
-    v13 = v12;
-    v14 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
-    v15 = [v4 swiftClassName];
-    v16 = [v14 isEqual:v15];
+    v13 = swiftClassName;
+    swiftClassName2 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
+    swiftClassName3 = [equalCopy swiftClassName];
+    v16 = [swiftClassName2 isEqual:swiftClassName3];
 
     if (!v16)
     {
@@ -414,20 +414,20 @@ LABEL_12:
   {
   }
 
-  v5 = [(RRSchemaRRAnnotatedEntity *)self group];
-  v6 = [v4 group];
-  if ((v5 != 0) == (v6 == 0))
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self group];
+  usoGraph2 = [equalCopy group];
+  if ((usoGraph != 0) == (usoGraph2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(RRSchemaRRAnnotatedEntity *)self group];
-  if (v17)
+  group = [(RRSchemaRRAnnotatedEntity *)self group];
+  if (group)
   {
-    v18 = v17;
-    v19 = [(RRSchemaRRAnnotatedEntity *)self group];
-    v20 = [v4 group];
-    v21 = [v19 isEqual:v20];
+    v18 = group;
+    group2 = [(RRSchemaRRAnnotatedEntity *)self group];
+    group3 = [equalCopy group];
+    v21 = [group2 isEqual:group3];
 
     if (!v21)
     {
@@ -439,22 +439,22 @@ LABEL_12:
   {
   }
 
-  v5 = [(RRSchemaRRAnnotatedEntity *)self annotations];
-  v6 = [v4 annotations];
-  if ((v5 != 0) == (v6 == 0))
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self annotations];
+  usoGraph2 = [equalCopy annotations];
+  if ((usoGraph != 0) == (usoGraph2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(RRSchemaRRAnnotatedEntity *)self annotations];
-  if (v22)
+  annotations = [(RRSchemaRRAnnotatedEntity *)self annotations];
+  if (annotations)
   {
-    v23 = v22;
-    v24 = [(RRSchemaRRAnnotatedEntity *)self annotations];
-    v25 = [v4 annotations];
-    v26 = [v24 isEqual:v25];
+    v23 = annotations;
+    annotations2 = [(RRSchemaRRAnnotatedEntity *)self annotations];
+    annotations3 = [equalCopy annotations];
+    v26 = [annotations2 isEqual:annotations3];
 
     if (!v26)
     {
@@ -467,20 +467,20 @@ LABEL_21:
   }
 
   v29 = *(&self->_hasReference + 1);
-  v30 = v4[57];
+  v30 = equalCopy[57];
   if ((v29 & 1) == (v30 & 1))
   {
     if (v29)
     {
       saliencyScore = self->_saliencyScore;
-      [v4 saliencyScore];
+      [equalCopy saliencyScore];
       if (saliencyScore != v32)
       {
         goto LABEL_22;
       }
 
       v29 = *(&self->_hasReference + 1);
-      v30 = v4[57];
+      v30 = equalCopy[57];
     }
 
     v33 = (v29 >> 1) & 1;
@@ -489,19 +489,19 @@ LABEL_21:
       if (v33)
       {
         saliencyComputedAtTimestampInSeconds = self->_saliencyComputedAtTimestampInSeconds;
-        if (saliencyComputedAtTimestampInSeconds != [v4 saliencyComputedAtTimestampInSeconds])
+        if (saliencyComputedAtTimestampInSeconds != [equalCopy saliencyComputedAtTimestampInSeconds])
         {
           goto LABEL_22;
         }
 
         v29 = *(&self->_hasReference + 1);
-        v30 = v4[57];
+        v30 = equalCopy[57];
       }
 
       v35 = (v29 >> 2) & 1;
       if (v35 == ((v30 >> 2) & 1))
       {
-        if (!v35 || (hasReference = self->_hasReference, hasReference == [v4 hasReference]))
+        if (!v35 || (hasReference = self->_hasReference, hasReference == [equalCopy hasReference]))
         {
           v27 = 1;
           goto LABEL_23;
@@ -517,30 +517,30 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+  toCopy = to;
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
 
-  if (v5)
+  if (usoGraph)
   {
-    v6 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+    usoGraph2 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
+  swiftClassName = [(RRSchemaRRAnnotatedEntity *)self swiftClassName];
 
-  if (v7)
+  if (swiftClassName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(RRSchemaRRAnnotatedEntity *)self group];
+  group = [(RRSchemaRRAnnotatedEntity *)self group];
 
-  if (v8)
+  if (group)
   {
-    v9 = [(RRSchemaRRAnnotatedEntity *)self group];
+    group2 = [(RRSchemaRRAnnotatedEntity *)self group];
     PBDataWriterWriteSubmessage();
   }
 
@@ -607,9 +607,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)setHasHasReference:(BOOL)a3
+- (void)setHasHasReference:(BOOL)reference
 {
-  if (a3)
+  if (reference)
   {
     v3 = 4;
   }
@@ -622,9 +622,9 @@ LABEL_18:
   *(&self->_hasReference + 1) = *(&self->_hasReference + 1) & 0xFB | v3;
 }
 
-- (void)setHasSaliencyComputedAtTimestampInSeconds:(BOOL)a3
+- (void)setHasSaliencyComputedAtTimestampInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -637,50 +637,50 @@ LABEL_18:
   *(&self->_hasReference + 1) = *(&self->_hasReference + 1) & 0xFD | v3;
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   annotations = self->_annotations;
-  v8 = v4;
+  v8 = annotationsCopy;
   if (!annotations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_annotations;
-    self->_annotations = v6;
+    self->_annotations = array;
 
-    v4 = v8;
+    annotationsCopy = v8;
     annotations = self->_annotations;
   }
 
-  [(NSArray *)annotations addObject:v4];
+  [(NSArray *)annotations addObject:annotationsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = RRSchemaRRAnnotatedEntity;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  usoGraph = [(RRSchemaRRAnnotatedEntity *)self usoGraph];
+  v7 = [usoGraph applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RRSchemaRRAnnotatedEntity *)self deleteUsoGraph];
   }
 
-  v9 = [(RRSchemaRRAnnotatedEntity *)self group];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  group = [(RRSchemaRRAnnotatedEntity *)self group];
+  v10 = [group applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RRSchemaRRAnnotatedEntity *)self deleteGroup];
   }
 
-  v12 = [(RRSchemaRRAnnotatedEntity *)self annotations];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  annotations = [(RRSchemaRRAnnotatedEntity *)self annotations];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:annotations underConditions:policyCopy];
   [(RRSchemaRRAnnotatedEntity *)self setAnnotations:v13];
 
   return v5;

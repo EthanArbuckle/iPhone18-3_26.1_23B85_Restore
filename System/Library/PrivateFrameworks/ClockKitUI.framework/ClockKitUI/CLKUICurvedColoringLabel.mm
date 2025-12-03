@@ -3,44 +3,44 @@
 - (CGPoint)centerForImage;
 - (CGRect)textBoundingRect;
 - (CGSize)imageViewOverrideSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CLKUICurvedColoringLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CLKUICurvedColoringLabel)initWithFrame:(CGRect)frame;
 - (void)_setUpSnapshot;
 - (void)invalidateCachedSize;
 - (void)layoutSubviews;
-- (void)setBaselineOffset:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCircleRadius:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImagePadding:(double)a3;
-- (void)setImageView:(id)a3;
-- (void)setImageView:(id)a3 placement:(unint64_t)a4 padding:(double)a5;
-- (void)setMaxAngularWidth:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setTextProviderFont:(id)a3;
-- (void)setTracking:(double)a3;
-- (void)setUsesTextProviderTintColoring:(BOOL)a3;
+- (void)setBaselineOffset:(double)offset;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCircleRadius:(double)radius;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setImagePadding:(double)padding;
+- (void)setImageView:(id)view;
+- (void)setImageView:(id)view placement:(unint64_t)placement padding:(double)padding;
+- (void)setMaxAngularWidth:(double)width;
+- (void)setPath:(id)path;
+- (void)setTextProviderFont:(id)font;
+- (void)setTracking:(double)tracking;
+- (void)setUsesTextProviderTintColoring:(BOOL)coloring;
 - (void)sizeToFit;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CLKUICurvedColoringLabel
 
-- (CLKUICurvedColoringLabel)initWithFrame:(CGRect)a3
+- (CLKUICurvedColoringLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = CLKUICurvedColoringLabel;
   v7 = [(CLKUIColoringLabel *)&v11 initWithFrame:?];
   if (v7)
   {
-    v8 = [[CLKUICurvedLabel alloc] initWithFrame:x, y, width, height];
+    height = [[CLKUICurvedLabel alloc] initWithFrame:x, y, width, height];
     curvedLabel = v7->_curvedLabel;
-    v7->_curvedLabel = v8;
+    v7->_curvedLabel = height;
 
     [(CLKUICurvedColoringLabel *)v7 addSubview:v7->_curvedLabel];
     [(CLKUIColoringLabel *)v7 setUsesTextProviderSize:0];
@@ -49,104 +49,104 @@
   return v7;
 }
 
-- (void)setCircleRadius:(double)a3
+- (void)setCircleRadius:(double)radius
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel setCircleRadius:a3];
+  [(CLKUICurvedLabel *)self->_curvedLabel setCircleRadius:radius];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v4.receiver = self;
   v4.super_class = CLKUICurvedColoringLabel;
   [(CLKUIColoringLabel *)&v4 setMaxWidth:?];
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  objc_storeStrong(&self->_path, a3);
-  v5 = a3;
-  [(CLKUICurvedLabel *)self->_curvedLabel setPath:v5];
+  objc_storeStrong(&self->_path, path);
+  pathCopy = path;
+  [(CLKUICurvedLabel *)self->_curvedLabel setPath:pathCopy];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v6.receiver = self;
   v6.super_class = CLKUICurvedColoringLabel;
   [(CLKUIColoringLabel *)&v6 setMaxWidth:?];
 }
 
-- (void)setUsesTextProviderTintColoring:(BOOL)a3
+- (void)setUsesTextProviderTintColoring:(BOOL)coloring
 {
-  v3 = a3;
-  if ([(CLKUICurvedLabel *)self->_curvedLabel attributedTextProvidesColor]!= a3)
+  coloringCopy = coloring;
+  if ([(CLKUICurvedLabel *)self->_curvedLabel attributedTextProvidesColor]!= coloring)
   {
-    [(CLKUICurvedLabel *)self->_curvedLabel setAttributedTextProvidesColor:v3];
+    [(CLKUICurvedLabel *)self->_curvedLabel setAttributedTextProvidesColor:coloringCopy];
     v5.receiver = self;
     v5.super_class = CLKUICurvedColoringLabel;
-    [(CLKUIColoringLabel *)&v5 setUsesTextProviderTintColoring:v3];
+    [(CLKUIColoringLabel *)&v5 setUsesTextProviderTintColoring:coloringCopy];
   }
 }
 
-- (void)setMaxAngularWidth:(double)a3
+- (void)setMaxAngularWidth:(double)width
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel setMaxAngularWidth:a3];
+  [(CLKUICurvedLabel *)self->_curvedLabel setMaxAngularWidth:width];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v4.receiver = self;
   v4.super_class = CLKUICurvedColoringLabel;
   [(CLKUIColoringLabel *)&v4 setMaxWidth:?];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   curvedLabel = self->_curvedLabel;
-  v5 = a3;
-  [(CLKUICurvedLabel *)curvedLabel setFont:v5];
+  fontCopy = font;
+  [(CLKUICurvedLabel *)curvedLabel setFont:fontCopy];
   v6.receiver = self;
   v6.super_class = CLKUICurvedColoringLabel;
-  [(CLKUIColoringLabel *)&v6 setFont:v5];
+  [(CLKUIColoringLabel *)&v6 setFont:fontCopy];
 }
 
-- (void)setTextProviderFont:(id)a3
+- (void)setTextProviderFont:(id)font
 {
-  [(CLKUICurvedColoringLabel *)self setFont:a3];
+  [(CLKUICurvedColoringLabel *)self setFont:font];
 
   [(CLKUIColoringLabel *)self _requeryTextProviderAndNotify:0];
 }
 
-- (void)setTracking:(double)a3
+- (void)setTracking:(double)tracking
 {
   [(CLKUICurvedLabel *)self->_curvedLabel setTracking:?];
   v5.receiver = self;
   v5.super_class = CLKUICurvedColoringLabel;
-  [(CLKUIColoringLabel *)&v5 setTracking:a3];
+  [(CLKUIColoringLabel *)&v5 setTracking:tracking];
 }
 
-- (void)setBaselineOffset:(double)a3
+- (void)setBaselineOffset:(double)offset
 {
   [(CLKUICurvedLabel *)self->_curvedLabel setBaselineOffset:?];
-  if (self->_baselineOffset != a3)
+  if (self->_baselineOffset != offset)
   {
-    self->_baselineOffset = a3;
+    self->_baselineOffset = offset;
 
     [(CLKUIColoringLabel *)self _requeryTextProviderAndNotify:0];
   }
 }
 
-- (void)setImagePadding:(double)a3
+- (void)setImagePadding:(double)padding
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel setImagePadding:a3];
+  [(CLKUICurvedLabel *)self->_curvedLabel setImagePadding:padding];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v4.receiver = self;
   v4.super_class = CLKUICurvedColoringLabel;
   [(CLKUIColoringLabel *)&v4 setMaxWidth:?];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel setImageView:a3];
+  [(CLKUICurvedLabel *)self->_curvedLabel setImageView:view];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v4.receiver = self;
   v4.super_class = CLKUICurvedColoringLabel;
   [(CLKUIColoringLabel *)&v4 setMaxWidth:?];
 }
 
-- (void)setImageView:(id)a3 placement:(unint64_t)a4 padding:(double)a5
+- (void)setImageView:(id)view placement:(unint64_t)placement padding:(double)padding
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel setImageView:a3 placement:a4 padding:a5];
+  [(CLKUICurvedLabel *)self->_curvedLabel setImageView:view placement:placement padding:padding];
   [(CLKUICurvedLabel *)self->_curvedLabel maxLinearTextWidth];
   v6.receiver = self;
   v6.super_class = CLKUICurvedColoringLabel;
@@ -161,11 +161,11 @@
   [(CLKUIColoringLabel *)&v3 invalidateCachedSize];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CLKUICurvedColoringLabel;
-  [(CLKUIColoringLabel *)&v4 traitCollectionDidChange:a3];
+  [(CLKUIColoringLabel *)&v4 traitCollectionDidChange:change];
   [(CLKUICurvedColoringLabel *)self invalidateCachedSize];
 }
 
@@ -177,12 +177,12 @@
   [(CLKUICurvedLabel *)curvedLabel setFrame:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CLKUICurvedColoringLabel *)self frame];
   if ((CLKRectEqualsRect() & 1) == 0)
   {
@@ -194,12 +194,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CLKUICurvedColoringLabel *)self bounds];
   if ((CLKRectEqualsRect() & 1) == 0)
   {
@@ -236,9 +236,9 @@
   [(CLKUICurvedColoringLabel *)self layoutBelowIfNeeded];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CLKUICurvedLabel *)self->_curvedLabel sizeThatFits:a3.width, a3.height];
+  [(CLKUICurvedLabel *)self->_curvedLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

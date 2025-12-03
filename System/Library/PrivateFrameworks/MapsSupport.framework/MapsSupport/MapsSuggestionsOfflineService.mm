@@ -1,6 +1,6 @@
 @interface MapsSuggestionsOfflineService
-- (BOOL)_anyDownloadedRegionContainsCoordinate:(id)a3;
-- (BOOL)shouldKeepEntryWhenOffline:(id)a3;
+- (BOOL)_anyDownloadedRegionContainsCoordinate:(id)coordinate;
+- (BOOL)shouldKeepEntryWhenOffline:(id)offline;
 - (MapsSuggestionsOfflineService)init;
 @end
 
@@ -26,36 +26,36 @@
   return v2;
 }
 
-- (BOOL)shouldKeepEntryWhenOffline:(id)a3
+- (BOOL)shouldKeepEntryWhenOffline:(id)offline
 {
-  v4 = a3;
+  offlineCopy = offline;
   if (GEOConfigGetBOOL())
   {
-    if ([v4 type] == 24)
+    if ([offlineCopy type] == 24)
     {
-      v5 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      geoMapItem = GEOFindOrCreateLog();
+      if (os_log_type_enabled(geoMapItem, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Not showing ContactActivity entries while offline", buf, 2u);
+        _os_log_impl(&_mh_execute_header, geoMapItem, OS_LOG_TYPE_INFO, "Not showing ContactActivity entries while offline", buf, 2u);
       }
 
       v6 = 0;
       goto LABEL_20;
     }
 
-    v5 = [v4 geoMapItem];
-    if (v5)
+    geoMapItem = [offlineCopy geoMapItem];
+    if (geoMapItem)
     {
-      v7 = [v4 geoMapItem];
-      [v7 coordinate];
+      geoMapItem2 = [offlineCopy geoMapItem];
+      [geoMapItem2 coordinate];
       v9 = v8;
       v11 = v10;
 
-      LODWORD(v7) = [(MapsSuggestionsOfflineService *)self _anyDownloadedRegionContainsCoordinate:v9, v11];
+      LODWORD(geoMapItem2) = [(MapsSuggestionsOfflineService *)self _anyDownloadedRegionContainsCoordinate:v9, v11];
       v12 = GEOFindOrCreateLog();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-      if (!v7)
+      if (!geoMapItem2)
       {
         if (v13)
         {
@@ -99,12 +99,12 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v5 = GEOFindOrCreateLog();
+  geoMapItem = GEOFindOrCreateLog();
   v6 = 1;
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(geoMapItem, OS_LOG_TYPE_INFO))
   {
     *v21 = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Maps was NOT forced into offline mode, keeping entry.", v21, 2u);
+    _os_log_impl(&_mh_execute_header, geoMapItem, OS_LOG_TYPE_INFO, "Maps was NOT forced into offline mode, keeping entry.", v21, 2u);
   }
 
 LABEL_20:
@@ -112,10 +112,10 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)_anyDownloadedRegionContainsCoordinate:(id)a3
+- (BOOL)_anyDownloadedRegionContainsCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
   v18 = 0;

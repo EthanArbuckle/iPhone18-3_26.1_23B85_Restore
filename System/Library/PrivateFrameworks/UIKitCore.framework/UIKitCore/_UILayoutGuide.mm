@@ -2,18 +2,18 @@
 + (id)_horizontalLayoutGuide;
 + (id)_verticalLayoutGuide;
 + (id)classFallbacksForKeyedArchiver;
-- (_UILayoutGuide)initWithCoder:(id)a3;
-- (_UILayoutGuide)initWithFrame:(CGRect)a3;
+- (_UILayoutGuide)initWithCoder:(id)coder;
+- (_UILayoutGuide)initWithFrame:(CGRect)frame;
 - (double)length;
 - (id)_layoutVariablesWithAmbiguousValue;
 - (void)_setUpCounterDimensionConstraint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UILayoutGuide
 
-- (_UILayoutGuide)initWithFrame:(CGRect)a3
+- (_UILayoutGuide)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UILayoutGuide;
@@ -100,37 +100,37 @@
   }
 }
 
-- (_UILayoutGuide)initWithCoder:(id)a3
+- (_UILayoutGuide)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UILayoutGuide;
   v4 = [(UIView *)&v6 initWithCoder:?];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"_UILayoutGuideIsHorizontal"])
+    if ([coder containsValueForKey:@"_UILayoutGuideIsHorizontal"])
     {
       v4->_horizontal = 1;
     }
 
-    v4->_archivedIdentifier = [objc_msgSend(a3 decodeObjectForKey:{@"_UILayoutGuideIdentifier", "copy"}];
-    v4->_constraintsToRemoveAtRuntime = [objc_msgSend(a3 decodeObjectForKey:{@"_UILayoutGuideConstraintsToRemove", "copy"}];
+    v4->_archivedIdentifier = [objc_msgSend(coder decodeObjectForKey:{@"_UILayoutGuideIdentifier", "copy"}];
+    v4->_constraintsToRemoveAtRuntime = [objc_msgSend(coder decodeObjectForKey:{@"_UILayoutGuideConstraintsToRemove", "copy"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UILayoutGuide;
   [(UIView *)&v5 encodeWithCoder:?];
   if (self->_horizontal)
   {
-    [a3 encodeBool:1 forKey:@"_UILayoutGuideIsHorizontal"];
+    [coder encodeBool:1 forKey:@"_UILayoutGuideIsHorizontal"];
   }
 
-  [a3 encodeObject:-[_UILayoutGuide _archivedIdentifier](self forKey:{"_archivedIdentifier"), @"_UILayoutGuideIdentifier"}];
-  [a3 encodeObject:-[_UILayoutGuide _constraintsToRemoveAtRuntime](self forKey:{"_constraintsToRemoveAtRuntime"), @"_UILayoutGuideConstraintsToRemove"}];
+  [coder encodeObject:-[_UILayoutGuide _archivedIdentifier](self forKey:{"_archivedIdentifier"), @"_UILayoutGuideIdentifier"}];
+  [coder encodeObject:-[_UILayoutGuide _constraintsToRemoveAtRuntime](self forKey:{"_constraintsToRemoveAtRuntime"), @"_UILayoutGuideConstraintsToRemove"}];
 }
 
 - (void)dealloc
@@ -145,19 +145,19 @@
   v7[1] = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = _UILayoutGuide;
-  v3 = [(UIView *)&v6 _layoutVariablesWithAmbiguousValue];
+  _layoutVariablesWithAmbiguousValue = [(UIView *)&v6 _layoutVariablesWithAmbiguousValue];
   if (self->_horizontal)
   {
-    v4 = [(UIView *)self nsli_minYVariable];
+    nsli_minYVariable = [(UIView *)self nsli_minYVariable];
   }
 
   else
   {
-    v4 = [(UIView *)self nsli_minXVariable];
+    nsli_minYVariable = [(UIView *)self nsli_minXVariable];
   }
 
-  v7[0] = v4;
-  return [v3 arrayByExcludingObjectsInArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v7, 1)}];
+  v7[0] = nsli_minYVariable;
+  return [_layoutVariablesWithAmbiguousValue arrayByExcludingObjectsInArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v7, 1)}];
 }
 
 @end

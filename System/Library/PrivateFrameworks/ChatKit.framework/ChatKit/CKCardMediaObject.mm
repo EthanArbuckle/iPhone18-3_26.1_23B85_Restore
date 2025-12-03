@@ -6,10 +6,10 @@
 
 - (BOOL)shouldShowViewer
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [v2 isFileDataReady];
+  transfer = [(CKMediaObject *)self transfer];
+  isFileDataReady = [transfer isFileDataReady];
 
-  return v3;
+  return isFileDataReady;
 }
 
 @end

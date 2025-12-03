@@ -1,16 +1,16 @@
 @interface SBBiometricMonitorPearlDataSource
 - (SBBiometricMonitorPearlDataSource)init;
-- (SBBiometricMonitorPearlDataSource)initWithPearlDevice:(id)a3;
-- (void)_forEachObserver:(id)a3;
-- (void)_setFaceDetecting:(BOOL)a3;
-- (void)_setMatching:(BOOL)a3;
-- (void)_setPoseIsMarginal:(BOOL)a3;
+- (SBBiometricMonitorPearlDataSource)initWithPearlDevice:(id)device;
+- (void)_forEachObserver:(id)observer;
+- (void)_setFaceDetecting:(BOOL)detecting;
+- (void)_setMatching:(BOOL)matching;
+- (void)_setPoseIsMarginal:(BOOL)marginal;
 - (void)_updateFaceDetecting;
 - (void)_updateMatching;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4;
-- (void)device:(id)a3 pearlStateChanged:(int64_t)a4;
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred;
+- (void)device:(id)device pearlStateChanged:(int64_t)changed;
 @end
 
 @implementation SBBiometricMonitorPearlDataSource
@@ -18,25 +18,25 @@
 - (SBBiometricMonitorPearlDataSource)init
 {
   v3 = objc_alloc_init(MEMORY[0x277D67E78]);
-  v4 = [v3 createPearlDevice];
+  createPearlDevice = [v3 createPearlDevice];
 
-  v5 = [MEMORY[0x277D67C98] sharedInstance];
-  [v5 addObserver:self];
-  v6 = [(SBBiometricMonitorPearlDataSource *)self initWithPearlDevice:v4];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  [mEMORY[0x277D67C98] addObserver:self];
+  v6 = [(SBBiometricMonitorPearlDataSource *)self initWithPearlDevice:createPearlDevice];
 
   return v6;
 }
 
-- (SBBiometricMonitorPearlDataSource)initWithPearlDevice:(id)a3
+- (SBBiometricMonitorPearlDataSource)initWithPearlDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = SBBiometricMonitorPearlDataSource;
   v6 = [(SBBiometricMonitorPearlDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pearlDevice, a3);
+    objc_storeStrong(&v6->_pearlDevice, device);
     [(BKDevicePearl *)v7->_pearlDevice setDelegate:v7];
   }
 
@@ -51,10 +51,10 @@
   [(SBBiometricMonitorPearlDataSource *)&v3 dealloc];
 }
 
-- (void)_forEachObserver:(id)a3
+- (void)_forEachObserver:(id)observer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -75,7 +75,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        observerCopy[2](observerCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -86,13 +86,13 @@
   }
 }
 
-- (void)_setMatching:(BOOL)a3
+- (void)_setMatching:(BOOL)matching
 {
-  if (self->_matching != a3)
+  if (self->_matching != matching)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_matching = a3;
+    self->_matching = matching;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__SBBiometricMonitorPearlDataSource__setMatching___block_invoke;
@@ -119,13 +119,13 @@ void __50__SBBiometricMonitorPearlDataSource__setMatching___block_invoke(uint64_
   }
 }
 
-- (void)_setFaceDetecting:(BOOL)a3
+- (void)_setFaceDetecting:(BOOL)detecting
 {
-  if (self->_faceDetecting != a3)
+  if (self->_faceDetecting != detecting)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_faceDetecting = a3;
+    self->_faceDetecting = detecting;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __55__SBBiometricMonitorPearlDataSource__setFaceDetecting___block_invoke;
@@ -152,13 +152,13 @@ void __55__SBBiometricMonitorPearlDataSource__setFaceDetecting___block_invoke(ui
   }
 }
 
-- (void)_setPoseIsMarginal:(BOOL)a3
+- (void)_setPoseIsMarginal:(BOOL)marginal
 {
-  if (self->_poseIsMarginal != a3)
+  if (self->_poseIsMarginal != marginal)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_poseIsMarginal = a3;
+    self->_poseIsMarginal = marginal;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __56__SBBiometricMonitorPearlDataSource__setPoseIsMarginal___block_invoke;
@@ -191,44 +191,44 @@ void __56__SBBiometricMonitorPearlDataSource__setPoseIsMarginal___block_invoke(u
   [(SBBiometricMonitorPearlDataSource *)self _setFaceDetecting:v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)device:(id)a3 pearlStateChanged:(int64_t)a4
+- (void)device:(id)device pearlStateChanged:(int64_t)changed
 {
-  v6 = a3;
-  v7 = a4 - 1;
-  if ((a4 - 1) <= 4)
+  deviceCopy = device;
+  v7 = changed - 1;
+  if ((changed - 1) <= 4)
   {
     v8 = 0xEu >> v7;
-    v9 = v6;
+    v9 = deviceCopy;
     [(SBBiometricMonitorPearlDataSource *)self _setMatching:(4u >> v7) & 1];
     [(SBBiometricMonitorPearlDataSource *)self _setFaceDetecting:v8 & 1];
-    v6 = v9;
+    deviceCopy = v9;
   }
 }
 
-- (void)device:(id)a3 pearlEventOccurred:(int64_t)a4
+- (void)device:(id)device pearlEventOccurred:(int64_t)occurred
 {
-  v6 = a3;
-  if (a4 > 5)
+  deviceCopy = device;
+  if (occurred > 5)
   {
-    if (a4 == 7)
+    if (occurred == 7)
     {
       v7 = v12;
       v12[0] = MEMORY[0x277D85DD0];
@@ -237,7 +237,7 @@ void __56__SBBiometricMonitorPearlDataSource__setPoseIsMarginal___block_invoke(u
       goto LABEL_10;
     }
 
-    if (a4 == 6)
+    if (occurred == 6)
     {
       v7 = v13;
       v13[0] = MEMORY[0x277D85DD0];
@@ -249,7 +249,7 @@ void __56__SBBiometricMonitorPearlDataSource__setPoseIsMarginal___block_invoke(u
 
   else
   {
-    if (a4 == 3)
+    if (occurred == 3)
     {
       v7 = v11;
       v11[0] = MEMORY[0x277D85DD0];
@@ -258,7 +258,7 @@ void __56__SBBiometricMonitorPearlDataSource__setPoseIsMarginal___block_invoke(u
       goto LABEL_10;
     }
 
-    if (a4 == 4)
+    if (occurred == 4)
     {
       v7 = &v9;
       v9 = MEMORY[0x277D85DD0];

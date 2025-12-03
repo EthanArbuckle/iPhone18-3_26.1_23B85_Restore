@@ -1,31 +1,31 @@
 @interface EKCachedPredictedLocation
-+ (id)cachedPredictedLocationWithTitle:(id)a3 location:(id)a4 calendar:(id)a5;
++ (id)cachedPredictedLocationWithTitle:(id)title location:(id)location calendar:(id)calendar;
 + (id)emptyPrediction;
-- (EKCachedPredictedLocation)initWithTitle:(id)a3 location:(id)a4 calendar:(id)a5;
-- (id)_updatedPredictedLocationRespectingTimeoutBudgetWithError:(id *)a3;
-- (id)fetchPredictedLocationWithDelegate:(id)a3;
+- (EKCachedPredictedLocation)initWithTitle:(id)title location:(id)location calendar:(id)calendar;
+- (id)_updatedPredictedLocationRespectingTimeoutBudgetWithError:(id *)error;
+- (id)fetchPredictedLocationWithDelegate:(id)delegate;
 - (id)frozenCopy;
-- (void)_updatePredictedLocation:(id)a3;
+- (void)_updatePredictedLocation:(id)location;
 @end
 
 @implementation EKCachedPredictedLocation
 
 + (id)emptyPrediction
 {
-  v2 = [[a1 alloc] initWithTitle:&stru_1F1B49D68 location:0 calendar:&stru_1F1B49D68];
+  v2 = [[self alloc] initWithTitle:&stru_1F1B49D68 location:0 calendar:&stru_1F1B49D68];
   [v2 _freeze];
 
   return v2;
 }
 
-+ (id)cachedPredictedLocationWithTitle:(id)a3 location:(id)a4 calendar:(id)a5
++ (id)cachedPredictedLocationWithTitle:(id)title location:(id)location calendar:(id)calendar
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
-  v10 = [v8 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
+  calendarCopy = calendar;
+  locationCopy = location;
+  v9 = [title stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
+  v10 = [locationCopy stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
 
-  v11 = [v7 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
+  v11 = [calendarCopy stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_\\_%@_\\_%@", v9, v10, v11];
   if (cachedPredictedLocationWithTitle_location_calendar__onceToken != -1)
@@ -54,25 +54,25 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
   return [v2 setCountLimit:5000];
 }
 
-- (EKCachedPredictedLocation)initWithTitle:(id)a3 location:(id)a4 calendar:(id)a5
+- (EKCachedPredictedLocation)initWithTitle:(id)title location:(id)location calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  locationCopy = location;
+  calendarCopy = calendar;
   v19.receiver = self;
   v19.super_class = EKCachedPredictedLocation;
   v11 = [(EKCachedPredictedLocation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     eventTitle = v11->_eventTitle;
     v11->_eventTitle = v12;
 
-    v14 = [v9 copy];
+    v14 = [locationCopy copy];
     locationWithoutPrediction = v11->_locationWithoutPrediction;
     v11->_locationWithoutPrediction = v14;
 
-    v16 = [v10 copy];
+    v16 = [calendarCopy copy];
     calendarIdentifier = v11->_calendarIdentifier;
     v11->_calendarIdentifier = v16;
 
@@ -90,14 +90,14 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
   return v2;
 }
 
-- (id)fetchPredictedLocationWithDelegate:(id)a3
+- (id)fetchPredictedLocationWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = CalApproximateContinuousTime();
   os_unfair_lock_lock(&self->_lock);
   if (self->_predictionExpiration < v5)
   {
-    [(EKCachedPredictedLocation *)self _updatePredictedLocation:v4];
+    [(EKCachedPredictedLocation *)self _updatePredictedLocation:delegateCopy];
   }
 
   v6 = self->_cachedPrediction;
@@ -106,9 +106,9 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
   return v6;
 }
 
-- (void)_updatePredictedLocation:(id)a3
+- (void)_updatePredictedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v10 = 0;
   v5 = [(EKCachedPredictedLocation *)self _updatedPredictedLocationRespectingTimeoutBudgetWithError:&v10];
   v6 = v10;
@@ -124,25 +124,25 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
 
   else if (v5)
   {
-    v8 = [v4 suggestedTitleForPredictedLocation];
-    if (!v8)
+    suggestedTitleForPredictedLocation = [locationCopy suggestedTitleForPredictedLocation];
+    if (!suggestedTitleForPredictedLocation)
     {
-      v8 = [v5 address];
+      suggestedTitleForPredictedLocation = [v5 address];
     }
 
-    [v5 setTitle:v8];
+    [v5 setTitle:suggestedTitleForPredictedLocation];
   }
 
   v9 = CalApproximateContinuousTime();
   self->_predictionExpiration = CalNSTimeIntervalToContinuousInterval() + v9;
 }
 
-- (id)_updatedPredictedLocationRespectingTimeoutBudgetWithError:(id *)a3
+- (id)_updatedPredictedLocationRespectingTimeoutBudgetWithError:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AF00] isMainThread];
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
   v6 = *&remainingTimeout;
-  if (v5)
+  if (isMainThread)
   {
     v7 = *&remainingTimeout;
   }
@@ -153,7 +153,7 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
   }
 
   v8 = os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG);
-  if (v5 && v6 <= 0.0)
+  if (isMainThread && v6 <= 0.0)
   {
     if (v8)
     {
@@ -163,9 +163,9 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
     v17 = *MEMORY[0x1E696A578];
     v18[0] = @"Prediction not attempted due to past timeouts";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6992EC0] code:0 userInfo:v9];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6992EC0] code:0 userInfo:v9];
     }
 
     v10 = 0;
@@ -175,13 +175,13 @@ uint64_t __80__EKCachedPredictedLocation_cachedPredictedLocationWithTitle_locati
   if (v8)
   {
     [EKCachedPredictedLocation _updatedPredictedLocationRespectingTimeoutBudgetWithError:];
-    if (v5)
+    if (isMainThread)
     {
       goto LABEL_13;
     }
   }
 
-  else if (v5)
+  else if (isMainThread)
   {
 LABEL_13:
     v11 = mach_absolute_time();
@@ -190,8 +190,8 @@ LABEL_13:
 
   v11 = 0;
 LABEL_16:
-  v10 = [EKStructuredLocationPrediction locationPredictionForTitle:self->_eventTitle location:self->_locationWithoutPrediction calendar:self->_calendarIdentifier error:a3 timeout:v7];
-  if (v5)
+  v10 = [EKStructuredLocationPrediction locationPredictionForTitle:self->_eventTitle location:self->_locationWithoutPrediction calendar:self->_calendarIdentifier error:error timeout:v7];
+  if (isMainThread)
   {
     v12 = mach_absolute_time();
     v16 = 0;

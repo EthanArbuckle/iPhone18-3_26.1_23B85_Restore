@@ -1,22 +1,22 @@
 @interface UARPServiceUARPControllerManager
 + (id)instance;
 - (BOOL)_createUARPLogPath;
-- (BOOL)getAndRemoveFromUARPTransportDict:(id)a3;
-- (BOOL)registerUARPService:(id)a3 withUARPAccessory:(id)a4 withUARPAssetID:(id)a5;
-- (BOOL)relayAACPUARP:(id)a3 uarpMsg:(id)a4 error:(id *)a5;
-- (BOOL)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4 error:(id *)a5;
+- (BOOL)getAndRemoveFromUARPTransportDict:(id)dict;
+- (BOOL)registerUARPService:(id)service withUARPAccessory:(id)accessory withUARPAssetID:(id)d;
+- (BOOL)relayAACPUARP:(id)p uarpMsg:(id)msg error:(id *)error;
+- (BOOL)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg error:(id *)error;
 - (BOOL)startTapToRadar;
-- (BOOL)unregisterUARPService:(id)a3 withUARPAccessory:(id)a4;
+- (BOOL)unregisterUARPService:(id)service withUARPAccessory:(id)accessory;
 - (UARPServiceUARPControllerManager)init;
 - (id)_getUARPLogPath;
-- (void)addUARPTransportDict:(id)a3 UARPAACPSupported:(id)a4;
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4;
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)queryCompleteForAccessory:(id)a3 hwFusingType:(id)a4 error:(id)a5;
-- (void)setOpportunisticConnection:(BOOL)a3 forAccessoryUUID:(id)a4;
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4;
+- (void)addUARPTransportDict:(id)dict UARPAACPSupported:(id)supported;
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD;
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)queryCompleteForAccessory:(id)accessory hwFusingType:(id)type error:(id)error;
+- (void)setOpportunisticConnection:(BOOL)connection forAccessoryUUID:(id)d;
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status;
 - (void)stopTapToRadar;
 @end
 
@@ -51,9 +51,9 @@
 
     [(UARPController *)v2->_uarpController setDelegate:v2];
     [(UARPController *)v2->_uarpController startPersonalizationHelperService:@"com.apple.uarppersonalization.btleserver" entitlement:@"com.apple.uarppersonalization.btleserver"];
-    v7 = [(UARPServiceUARPControllerManager *)v2 _getUARPLogPath];
+    _getUARPLogPath = [(UARPServiceUARPControllerManager *)v2 _getUARPLogPath];
     uarpLogPath = v2->_uarpLogPath;
-    v2->_uarpLogPath = v7;
+    v2->_uarpLogPath = _getUARPLogPath;
 
     [(UARPServiceUARPControllerManager *)v2 _createUARPLogPath];
     v9 = objc_alloc_init(NSMutableDictionary);
@@ -66,13 +66,13 @@
   return v2;
 }
 
-- (BOOL)registerUARPService:(id)a3 withUARPAccessory:(id)a4 withUARPAssetID:(id)a5
+- (BOOL)registerUARPService:(id)service withUARPAccessory:(id)accessory withUARPAssetID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UARPServiceUARPControllerManager *)self uarpController];
-  v12 = [v11 addAccessory:v9 assetID:v10];
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  dCopy = d;
+  uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+  v12 = [uarpController addAccessory:accessoryCopy assetID:dCopy];
 
   if ((v12 & 1) == 0)
   {
@@ -84,8 +84,8 @@
     goto LABEL_8;
   }
 
-  v13 = [(UARPServiceUARPControllerManager *)self uarpController];
-  v14 = [v13 accessoryReachable:v9];
+  uarpController2 = [(UARPServiceUARPControllerManager *)self uarpController];
+  v14 = [uarpController2 accessoryReachable:accessoryCopy];
 
   if ((v14 & 1) == 0)
   {
@@ -100,8 +100,8 @@ LABEL_8:
   }
 
   uarpAccessoryUARPServiceMap = self->uarpAccessoryUARPServiceMap;
-  v16 = [v9 uuid];
-  [(NSMutableDictionary *)uarpAccessoryUARPServiceMap setObject:v8 forKey:v16];
+  uuid = [accessoryCopy uuid];
+  [(NSMutableDictionary *)uarpAccessoryUARPServiceMap setObject:serviceCopy forKey:uuid];
 
   v17 = 1;
 LABEL_9:
@@ -109,22 +109,22 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)unregisterUARPService:(id)a3 withUARPAccessory:(id)a4
+- (BOOL)unregisterUARPService:(id)service withUARPAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v8 = [(UARPServiceUARPControllerManager *)self uarpController];
-    v9 = [v8 accessoryUnreachable:v7];
+    uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+    v9 = [uarpController accessoryUnreachable:accessoryCopy];
 
     if ((v9 & 1) == 0 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_100079C30();
     }
 
-    v10 = [(UARPServiceUARPControllerManager *)self uarpController];
-    v11 = [v10 removeAccessory:v7];
+    uarpController2 = [(UARPServiceUARPControllerManager *)self uarpController];
+    v11 = [uarpController2 removeAccessory:accessoryCopy];
 
     if ((v11 & 1) == 0 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -132,8 +132,8 @@ LABEL_9:
     }
 
     uarpAccessoryUARPServiceMap = self->uarpAccessoryUARPServiceMap;
-    v13 = [v7 uuid];
-    [(NSMutableDictionary *)uarpAccessoryUARPServiceMap removeObjectForKey:v13];
+    uuid = [accessoryCopy uuid];
+    [(NSMutableDictionary *)uarpAccessoryUARPServiceMap removeObjectForKey:uuid];
   }
 
   else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -170,24 +170,24 @@ LABEL_9:
   return v5 == 0;
 }
 
-- (void)addUARPTransportDict:(id)a3 UARPAACPSupported:(id)a4
+- (void)addUARPTransportDict:(id)dict UARPAACPSupported:(id)supported
 {
-  v6 = a3;
-  v7 = a4;
+  dictCopy = dict;
+  supportedCopy = supported;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100079DC0(v8, v6);
+    sub_100079DC0(v8, dictCopy);
   }
 
-  v9 = [(UARPServiceUARPControllerManager *)self uarpAACPTransportAvailability];
-  [v9 setObject:v7 forKey:v6];
+  uarpAACPTransportAvailability = [(UARPServiceUARPControllerManager *)self uarpAACPTransportAvailability];
+  [uarpAACPTransportAvailability setObject:supportedCopy forKey:dictCopy];
 }
 
-- (BOOL)getAndRemoveFromUARPTransportDict:(id)a3
+- (BOOL)getAndRemoveFromUARPTransportDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_uarpAACPTransportAvailability objectForKey:v4];
+  dictCopy = dict;
+  v5 = [(NSMutableDictionary *)self->_uarpAACPTransportAvailability objectForKey:dictCopy];
 
   v6 = qword_1000DDBC8;
   v7 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG);
@@ -195,21 +195,21 @@ LABEL_9:
   {
     if (v7)
     {
-      sub_100079E5C(v6, v4);
+      sub_100079E5C(v6, dictCopy);
     }
 
-    v8 = [(UARPServiceUARPControllerManager *)self uarpAACPTransportAvailability];
-    v9 = [v8 objectForKey:v4];
+    uarpAACPTransportAvailability = [(UARPServiceUARPControllerManager *)self uarpAACPTransportAvailability];
+    v9 = [uarpAACPTransportAvailability objectForKey:dictCopy];
     v10 = v9 != 0;
 
-    [(NSMutableDictionary *)self->_uarpAACPTransportAvailability removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_uarpAACPTransportAvailability removeObjectForKey:dictCopy];
   }
 
   else
   {
     if (v7)
     {
-      sub_100079EF8(v6, v4);
+      sub_100079EF8(v6, dictCopy);
     }
 
     v10 = 0;
@@ -218,39 +218,39 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)relayAACPUARP:(id)a3 uarpMsg:(id)a4 error:(id *)a5
+- (BOOL)relayAACPUARP:(id)p uarpMsg:(id)msg error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  pCopy = p;
+  msgCopy = msg;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100079F94(v9, v7, v8);
+    sub_100079F94(v9, pCopy, msgCopy);
   }
 
-  v10 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v7];
-  [v10 recvDataOverAACP:v8];
+  v10 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:pCopy];
+  [v10 recvDataOverAACP:msgCopy];
 
   return 1;
 }
 
-- (void)setOpportunisticConnection:(BOOL)a3 forAccessoryUUID:(id)a4
+- (void)setOpportunisticConnection:(BOOL)connection forAccessoryUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  dCopy = d;
   v7 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109378;
-    v10[1] = v4;
+    v10[1] = connectionCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "setOpportunisticConnection - isOpportunistic %u, uuid %@", v10, 0x12u);
   }
 
-  v8 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v6];
+  v8 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:dCopy];
   v9 = v8;
-  if (v4)
+  if (connectionCopy)
   {
     [v8 decOpportunisticConnection];
   }
@@ -267,17 +267,17 @@ LABEL_9:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(UARPServiceUARPControllerManager *)self uarpLogPath];
+    uarpLogPath = [(UARPServiceUARPControllerManager *)self uarpLogPath];
     v11 = 138412290;
-    v12 = v5;
+    v12 = uarpLogPath;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "startTapToRadar - URL %@", &v11, 0xCu);
   }
 
   self->_tapToRadarIsOngoing = 1;
-  v6 = [(UARPServiceUARPControllerManager *)self uarpController];
-  v7 = [(UARPServiceUARPControllerManager *)self uarpLogPath];
-  v8 = [NSURL fileURLWithPath:v7 isDirectory:1];
-  v9 = [v6 startTapToRadar:v8];
+  uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+  uarpLogPath2 = [(UARPServiceUARPControllerManager *)self uarpLogPath];
+  v8 = [NSURL fileURLWithPath:uarpLogPath2 isDirectory:1];
+  v9 = [uarpController startTapToRadar:v8];
 
   return v9;
 }
@@ -292,18 +292,18 @@ LABEL_9:
   }
 
   self->_tapToRadarIsOngoing = 0;
-  v4 = [(UARPServiceUARPControllerManager *)self uarpController];
-  [v4 stopTapToRadar];
+  uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+  [uarpController stopTapToRadar];
 }
 
-- (BOOL)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4 error:(id *)a5
+- (BOOL)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  msgCopy = msg;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10007A058(v7, v9, v8);
+    sub_10007A058(accessoryCopy, v9, msgCopy);
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -311,33 +311,33 @@ LABEL_9:
   block[2] = sub_100057AC8;
   block[3] = &unk_1000BD880;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = accessoryCopy;
+  v15 = msgCopy;
+  v10 = msgCopy;
+  v11 = accessoryCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   return 1;
 }
 
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = dCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "assetAvailablityUpdateForAccessoryID - accessory:%@ assetID:%@", buf, 0x16u);
   }
 
-  if ([v7 updateAvailabilityStatus] == 4)
+  if ([iDCopy updateAvailabilityStatus] == 4)
   {
-    v9 = [(UARPServiceUARPControllerManager *)self uarpController];
-    v10 = [v9 downloadAvailableFirmwareUpdate:v6 assetID:v7 withUserIntent:1];
+    uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+    v10 = [uarpController downloadAvailableFirmwareUpdate:dCopy assetID:iDCopy withUserIntent:1];
 
     if ((v10 & 1) == 0 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
@@ -345,17 +345,17 @@ LABEL_9:
     }
   }
 
-  else if ([v7 updateAvailabilityStatus] == 3)
+  else if ([iDCopy updateAvailabilityStatus] == 3)
   {
-    v11 = [(UARPServiceUARPControllerManager *)self uarpController];
-    v16 = v6;
+    uarpController2 = [(UARPServiceUARPControllerManager *)self uarpController];
+    v16 = dCopy;
     v12 = [NSArray arrayWithObjects:&v16 count:1];
-    v13 = [v11 stageFirmwareUpdateOnAccessoryList:v12 withUserIntent:1];
+    v13 = [uarpController2 stageFirmwareUpdateOnAccessoryList:v12 withUserIntent:1];
 
     if (v13)
     {
-      v14 = [v6 uuid];
-      v15 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v14];
+      uuid = [dCopy uuid];
+      v15 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:uuid];
       [v15 incOpportunisticConnection];
     }
 
@@ -366,119 +366,119 @@ LABEL_9:
   }
 }
 
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v9 = a3;
-  v10 = a4;
+  progressCopy = progress;
+  dCopy = d;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138413058;
-    v13 = v9;
+    v13 = progressCopy;
     v14 = 2112;
-    v15 = v10;
+    v15 = dCopy;
     v16 = 2048;
-    v17 = a5;
+    sentCopy = sent;
     v18 = 2048;
-    v19 = a6;
+    totalCopy = total;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "firmwareStagingProgress - accessory:%@ assetID:%@ %lu/%lu", &v12, 0x2Au);
   }
 }
 
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  completeCopy = complete;
+  dCopy = d;
   v10 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
     *buf = 138412802;
-    v16 = v8;
+    v16 = completeCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = dCopy;
     v19 = 2080;
     v20 = UARPFirmwareStagingCompletionStatusToString();
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "firmwareStagingComplete - accessory:%@ assetID:%@ status:%s", buf, 0x20u);
   }
 
-  if (!a5)
+  if (!status)
   {
-    v12 = [(UARPServiceUARPControllerManager *)self uarpController];
-    v14 = v8;
+    uarpController = [(UARPServiceUARPControllerManager *)self uarpController];
+    v14 = completeCopy;
     v13 = [NSArray arrayWithObjects:&v14 count:1];
-    [v12 applyStagedFirmwareOnAccessoryList:v13 withUserIntent:1];
+    [uarpController applyStagedFirmwareOnAccessoryList:v13 withUserIntent:1];
   }
 }
 
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status
 {
-  v5 = a3;
+  completeCopy = complete;
   v6 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
     v10 = 138412546;
-    v11 = v5;
+    v11 = completeCopy;
     v12 = 2080;
     v13 = UARPFirmwareApplicationStatusToString();
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "stagedFirmwareApplicationComplete - accessory:%@ status:%s", &v10, 0x16u);
   }
 
-  v8 = [v5 uuid];
-  v9 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v8];
+  uuid = [completeCopy uuid];
+  v9 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:uuid];
   [v9 decOpportunisticConnection];
 }
 
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
+  completeCopy = complete;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = a4;
-    v12 = [v8 uuid];
-    v13 = [v11 tag];
+    dCopy = d;
+    uuid = [completeCopy uuid];
+    v13 = [dCopy tag];
 
     v16 = 138413058;
-    v17 = v12;
+    v17 = uuid;
     v18 = 1024;
-    v19 = [v13 tag];
+    v13Tag = [v13 tag];
     v20 = 2080;
     v21 = UARPFirmwareStagingCompletionStatusToString();
     v22 = 2048;
-    v23 = a5;
+    statusCopy = status;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "assetSolicitationComplete: Accessory %@ returning asset tag 0x%08x status %s (%lu)", &v16, 0x26u);
   }
 
-  v14 = [v8 uuid];
-  v15 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v14];
+  uuid2 = [completeCopy uuid];
+  v15 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:uuid2];
   [v15 assetSolicitationComplete];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 hwFusingType:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory hwFusingType:(id)type error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  errorCopy = error;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v8;
+    v18 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "queryCompleteForAccessory: HW Fusing type updated for accessory %@", &v17, 0xCu);
   }
 
-  v12 = [v8 uuid];
-  v13 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v12];
+  uuid = [accessoryCopy uuid];
+  v13 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:uuid];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [v8 uuid];
-    v16 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:v15];
-    [v16 queryCompleteForAccessory:v8 hwFusingType:v9 error:v10];
+    uuid2 = [accessoryCopy uuid];
+    v16 = [(UARPServiceUARPControllerManager *)self uarpServiceForAccessoryUuid:uuid2];
+    [v16 queryCompleteForAccessory:accessoryCopy hwFusingType:typeCopy error:errorCopy];
   }
 }
 

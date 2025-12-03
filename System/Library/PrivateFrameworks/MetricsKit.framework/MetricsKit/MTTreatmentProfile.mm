@@ -1,18 +1,18 @@
 @interface MTTreatmentProfile
-+ (id)treatmentProfileWithConfigData:(id)a3;
-- (MTTreatmentProfile)initWithConfigDictionary:(id)a3;
-- (id)performTreatments:(id)a3;
++ (id)treatmentProfileWithConfigData:(id)data;
+- (MTTreatmentProfile)initWithConfigDictionary:(id)dictionary;
+- (id)performTreatments:(id)treatments;
 @end
 
 @implementation MTTreatmentProfile
 
-+ (id)treatmentProfileWithConfigData:(id)a3
++ (id)treatmentProfileWithConfigData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataCopy;
     if (treatmentProfileWithConfigData__onceToken != -1)
     {
       +[MTTreatmentProfile treatmentProfileWithConfigData:];
@@ -45,10 +45,10 @@ uint64_t __53__MTTreatmentProfile_treatmentProfileWithConfigData___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (MTTreatmentProfile)initWithConfigDictionary:(id)a3
+- (MTTreatmentProfile)initWithConfigDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = MTTreatmentProfile;
   v5 = [(MTTreatmentProfile *)&v26 init];
@@ -57,11 +57,11 @@ uint64_t __53__MTTreatmentProfile_treatmentProfileWithConfigData___block_invoke(
     goto LABEL_18;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"version"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 intValue] > 1)
   {
-    v9 = [v4 objectForKeyedSubscript:@"treatments"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"treatments"];
     if (v9)
     {
       objc_opt_class();
@@ -135,22 +135,22 @@ LABEL_19:
   return v8;
 }
 
-- (id)performTreatments:(id)a3
+- (id)performTreatments:(id)treatments
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
-  v4 = a3;
-  v14 = v4;
-  v5 = [(MTTreatmentProfile *)self treatments];
+  treatmentsCopy = treatments;
+  v14 = treatmentsCopy;
+  treatments = [(MTTreatmentProfile *)self treatments];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__MTTreatmentProfile_performTreatments___block_invoke;
   v8[3] = &unk_2798CE938;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [treatments enumerateObjectsUsingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);

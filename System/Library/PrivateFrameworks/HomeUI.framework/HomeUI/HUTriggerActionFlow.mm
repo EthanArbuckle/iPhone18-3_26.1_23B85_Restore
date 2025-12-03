@@ -1,17 +1,17 @@
 @interface HUTriggerActionFlow
-+ (id)selectFlowForState:(unint64_t)a3;
++ (id)selectFlowForState:(unint64_t)state;
 - (BOOL)isSingleFlow;
-- (HUTriggerActionFlow)initWithEditorMode:(unint64_t)a3;
-- (HUTriggerActionFlow)initWithFlowState:(unint64_t)a3 hasChangedState:(BOOL)a4;
+- (HUTriggerActionFlow)initWithEditorMode:(unint64_t)mode;
+- (HUTriggerActionFlow)initWithFlowState:(unint64_t)state hasChangedState:(BOOL)changedState;
 - (id)getNextState;
 - (unint64_t)_nextState;
 @end
 
 @implementation HUTriggerActionFlow
 
-- (HUTriggerActionFlow)initWithEditorMode:(unint64_t)a3
+- (HUTriggerActionFlow)initWithEditorMode:(unint64_t)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 3;
   }
@@ -26,24 +26,24 @@
   return v4;
 }
 
-- (HUTriggerActionFlow)initWithFlowState:(unint64_t)a3 hasChangedState:(BOOL)a4
+- (HUTriggerActionFlow)initWithFlowState:(unint64_t)state hasChangedState:(BOOL)changedState
 {
   v7.receiver = self;
   v7.super_class = HUTriggerActionFlow;
   result = [(HUTriggerActionFlow *)&v7 init];
   if (result)
   {
-    result->_flowState = a3;
-    result->_hasChangedState = a4;
+    result->_flowState = state;
+    result->_hasChangedState = changedState;
   }
 
   return result;
 }
 
-+ (id)selectFlowForState:(unint64_t)a3
++ (id)selectFlowForState:(unint64_t)state
 {
   v4 = [HUTriggerActionFlow alloc];
-  if (a3 == 7)
+  if (state == 7)
   {
     v5 = 6;
   }
@@ -60,10 +60,10 @@
 
 - (unint64_t)_nextState
 {
-  v3 = [(HUTriggerActionFlow *)self flowState];
-  if (v3 < 8)
+  flowState = [(HUTriggerActionFlow *)self flowState];
+  if (flowState < 8)
   {
-    return qword_20D5CAC10[v3];
+    return qword_20D5CAC10[flowState];
   }
 
   return [(HUTriggerActionFlow *)self flowState];

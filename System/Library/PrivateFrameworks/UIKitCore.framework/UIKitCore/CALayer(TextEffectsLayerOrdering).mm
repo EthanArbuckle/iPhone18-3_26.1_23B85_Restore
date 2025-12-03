@@ -7,10 +7,10 @@
 - (uint64_t)compareTextEffectsOrdering:()TextEffectsLayerOrdering
 {
   v4 = a3;
-  v5 = [a1 delegate];
-  v6 = [v4 delegate];
+  delegate = [self delegate];
+  delegate2 = [v4 delegate];
 
-  v7 = [v5 compareTextEffectsOrdering:v6];
+  v7 = [delegate compareTextEffectsOrdering:delegate2];
   return v7;
 }
 

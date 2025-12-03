@@ -1,26 +1,26 @@
 @interface ICASNoteAccessData
-- (ICASNoteAccessData)initWithIsPasswordProtected:(id)a3 isPinned:(id)a4 collaborationStatus:(id)a5 collaborationType:(id)a6;
+- (ICASNoteAccessData)initWithIsPasswordProtected:(id)protected isPinned:(id)pinned collaborationStatus:(id)status collaborationType:(id)type;
 - (id)toDict;
 @end
 
 @implementation ICASNoteAccessData
 
-- (ICASNoteAccessData)initWithIsPasswordProtected:(id)a3 isPinned:(id)a4 collaborationStatus:(id)a5 collaborationType:(id)a6
+- (ICASNoteAccessData)initWithIsPasswordProtected:(id)protected isPinned:(id)pinned collaborationStatus:(id)status collaborationType:(id)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  protectedCopy = protected;
+  pinnedCopy = pinned;
+  statusCopy = status;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = ICASNoteAccessData;
   v15 = [(ICASNoteAccessData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_isPasswordProtected, a3);
-    objc_storeStrong(&v16->_isPinned, a4);
-    objc_storeStrong(&v16->_collaborationStatus, a5);
-    objc_storeStrong(&v16->_collaborationType, a6);
+    objc_storeStrong(&v15->_isPasswordProtected, protected);
+    objc_storeStrong(&v16->_isPinned, pinned);
+    objc_storeStrong(&v16->_collaborationStatus, status);
+    objc_storeStrong(&v16->_collaborationType, type);
   }
 
   return v16;
@@ -30,61 +30,61 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"isPasswordProtected";
-  v3 = [(ICASNoteAccessData *)self isPasswordProtected];
-  if (v3)
+  isPasswordProtected = [(ICASNoteAccessData *)self isPasswordProtected];
+  if (isPasswordProtected)
   {
-    v4 = [(ICASNoteAccessData *)self isPasswordProtected];
+    isPasswordProtected2 = [(ICASNoteAccessData *)self isPasswordProtected];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    isPasswordProtected2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = isPasswordProtected2;
+  v19[0] = isPasswordProtected2;
   v18[1] = @"isPinned";
-  v6 = [(ICASNoteAccessData *)self isPinned];
-  if (v6)
+  isPinned = [(ICASNoteAccessData *)self isPinned];
+  if (isPinned)
   {
-    v7 = [(ICASNoteAccessData *)self isPinned];
+    isPinned2 = [(ICASNoteAccessData *)self isPinned];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    isPinned2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = isPinned2;
+  v19[1] = isPinned2;
   v18[2] = @"collaborationStatus";
-  v9 = [(ICASNoteAccessData *)self collaborationStatus];
-  if (v9)
+  collaborationStatus = [(ICASNoteAccessData *)self collaborationStatus];
+  if (collaborationStatus)
   {
-    v10 = [(ICASNoteAccessData *)self collaborationStatus];
+    collaborationStatus2 = [(ICASNoteAccessData *)self collaborationStatus];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    collaborationStatus2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v19[2] = v10;
+  v11 = collaborationStatus2;
+  v19[2] = collaborationStatus2;
   v18[3] = @"collaborationType";
-  v12 = [(ICASNoteAccessData *)self collaborationType];
-  if (v12)
+  collaborationType = [(ICASNoteAccessData *)self collaborationType];
+  if (collaborationType)
   {
-    v13 = [(ICASNoteAccessData *)self collaborationType];
+    collaborationType2 = [(ICASNoteAccessData *)self collaborationType];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    collaborationType2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = collaborationType2;
+  v19[3] = collaborationType2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

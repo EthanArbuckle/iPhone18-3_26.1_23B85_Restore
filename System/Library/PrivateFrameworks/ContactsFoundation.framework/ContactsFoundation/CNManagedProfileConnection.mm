@@ -1,12 +1,12 @@
 @interface CNManagedProfileConnection
 + (id)sharedConnection;
 - (BOOL)isOpenInRestrictionInEffect;
-- (BOOL)mayShowLocalContactsAccountsForBundleID:(id)a3 sourceAccountManagement:(int64_t)a4;
-- (BOOL)mayShowLocalContactsAccountsForTargetBundleID:(id)a3 targetAccountManagement:(int64_t)a4;
+- (BOOL)mayShowLocalContactsAccountsForBundleID:(id)d sourceAccountManagement:(int64_t)management;
+- (BOOL)mayShowLocalContactsAccountsForTargetBundleID:(id)d targetAccountManagement:(int64_t)management;
 - (CNManagedProfileConnection)init;
-- (CNManagedProfileConnection)initWithProfileConnection:(id)a3;
-- (id)filteredOpenInAccounts:(id)a3 originatingAppBundleID:(id)a4 sourceAccountManagement:(int64_t)a5;
-- (id)filteredOpenInOriginatingAccounts:(id)a3 targetAppBundleID:(id)a4 targetAccountManagement:(int64_t)a5;
+- (CNManagedProfileConnection)initWithProfileConnection:(id)connection;
+- (id)filteredOpenInAccounts:(id)accounts originatingAppBundleID:(id)d sourceAccountManagement:(int64_t)management;
+- (id)filteredOpenInOriginatingAccounts:(id)accounts targetAppBundleID:(id)d targetAccountManagement:(int64_t)management;
 @end
 
 @implementation CNManagedProfileConnection
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __46__CNManagedProfileConnection_sharedConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConnection_cn_once_token_2 != -1)
   {
     dispatch_once(&sharedConnection_cn_once_token_2, block);
@@ -30,10 +30,10 @@
 
 - (BOOL)isOpenInRestrictionInEffect
 {
-  v2 = [(CNManagedProfileConnection *)self profileConnection];
-  v3 = [v2 isOpenInRestrictionInEffect];
+  profileConnection = [(CNManagedProfileConnection *)self profileConnection];
+  isOpenInRestrictionInEffect = [profileConnection isOpenInRestrictionInEffect];
 
-  return v3;
+  return isOpenInRestrictionInEffect;
 }
 
 uint64_t __46__CNManagedProfileConnection_sharedConnection__block_invoke(uint64_t a1)
@@ -45,62 +45,62 @@ uint64_t __46__CNManagedProfileConnection_sharedConnection__block_invoke(uint64_
 
 - (CNManagedProfileConnection)init
 {
-  v3 = [(objc_class *)getMCProfileConnectionClass() sharedConnection];
-  v4 = [(CNManagedProfileConnection *)self initWithProfileConnection:v3];
+  sharedConnection = [(objc_class *)getMCProfileConnectionClass() sharedConnection];
+  v4 = [(CNManagedProfileConnection *)self initWithProfileConnection:sharedConnection];
 
   return v4;
 }
 
-- (CNManagedProfileConnection)initWithProfileConnection:(id)a3
+- (CNManagedProfileConnection)initWithProfileConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = CNManagedProfileConnection;
   v6 = [(CNManagedProfileConnection *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profileConnection, a3);
+    objc_storeStrong(&v6->_profileConnection, connection);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)mayShowLocalContactsAccountsForBundleID:(id)a3 sourceAccountManagement:(int64_t)a4
+- (BOOL)mayShowLocalContactsAccountsForBundleID:(id)d sourceAccountManagement:(int64_t)management
 {
-  v6 = a3;
-  v7 = [(CNManagedProfileConnection *)self profileConnection];
-  LOBYTE(a4) = [v7 mayShowLocalContactsAccountsForBundleID:v6 sourceAccountManagement:a4];
+  dCopy = d;
+  profileConnection = [(CNManagedProfileConnection *)self profileConnection];
+  LOBYTE(management) = [profileConnection mayShowLocalContactsAccountsForBundleID:dCopy sourceAccountManagement:management];
 
-  return a4;
+  return management;
 }
 
-- (BOOL)mayShowLocalContactsAccountsForTargetBundleID:(id)a3 targetAccountManagement:(int64_t)a4
+- (BOOL)mayShowLocalContactsAccountsForTargetBundleID:(id)d targetAccountManagement:(int64_t)management
 {
-  v6 = a3;
-  v7 = [(CNManagedProfileConnection *)self profileConnection];
-  LOBYTE(a4) = [v7 mayShowLocalContactsAccountsForTargetBundleID:v6 targetAccountManagement:a4];
+  dCopy = d;
+  profileConnection = [(CNManagedProfileConnection *)self profileConnection];
+  LOBYTE(management) = [profileConnection mayShowLocalContactsAccountsForTargetBundleID:dCopy targetAccountManagement:management];
 
-  return a4;
+  return management;
 }
 
-- (id)filteredOpenInAccounts:(id)a3 originatingAppBundleID:(id)a4 sourceAccountManagement:(int64_t)a5
+- (id)filteredOpenInAccounts:(id)accounts originatingAppBundleID:(id)d sourceAccountManagement:(int64_t)management
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CNManagedProfileConnection *)self profileConnection];
-  v11 = [v10 filteredOpenInContactsAccounts:v9 originatingAppBundleID:v8 sourceAccountManagement:a5];
+  dCopy = d;
+  accountsCopy = accounts;
+  profileConnection = [(CNManagedProfileConnection *)self profileConnection];
+  v11 = [profileConnection filteredOpenInContactsAccounts:accountsCopy originatingAppBundleID:dCopy sourceAccountManagement:management];
 
   return v11;
 }
 
-- (id)filteredOpenInOriginatingAccounts:(id)a3 targetAppBundleID:(id)a4 targetAccountManagement:(int64_t)a5
+- (id)filteredOpenInOriginatingAccounts:(id)accounts targetAppBundleID:(id)d targetAccountManagement:(int64_t)management
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CNManagedProfileConnection *)self profileConnection];
-  v11 = [v10 filteredOpenInOriginatingContactsAccounts:v9 targetAppBundleID:v8 targetAccountManagement:a5];
+  dCopy = d;
+  accountsCopy = accounts;
+  profileConnection = [(CNManagedProfileConnection *)self profileConnection];
+  v11 = [profileConnection filteredOpenInOriginatingContactsAccounts:accountsCopy targetAppBundleID:dCopy targetAccountManagement:management];
 
   return v11;
 }

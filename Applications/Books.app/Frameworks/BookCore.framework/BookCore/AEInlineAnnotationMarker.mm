@@ -1,28 +1,28 @@
 @interface AEInlineAnnotationMarker
-- (AEInlineAnnotationMarker)initWithAnnotationStyle:(int)a3 pageTheme:(int64_t)a4 contentScale:(double)a5;
+- (AEInlineAnnotationMarker)initWithAnnotationStyle:(int)style pageTheme:(int64_t)theme contentScale:(double)scale;
 - (CGSize)markerSize;
-- (void)renderIn:(CGContext *)a3;
+- (void)renderIn:(CGContext *)in;
 @end
 
 @implementation AEInlineAnnotationMarker
 
-- (AEInlineAnnotationMarker)initWithAnnotationStyle:(int)a3 pageTheme:(int64_t)a4 contentScale:(double)a5
+- (AEInlineAnnotationMarker)initWithAnnotationStyle:(int)style pageTheme:(int64_t)theme contentScale:(double)scale
 {
   v9.receiver = self;
   v9.super_class = AEInlineAnnotationMarker;
   result = [(AEInlineAnnotationMarker *)&v9 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
     result->_markerSize = vdupq_n_s64(0x4040000000000000uLL);
-    result->_pageTheme = a4;
-    result->_contentScale = a5;
+    result->_pageTheme = theme;
+    result->_contentScale = scale;
   }
 
   return result;
 }
 
-- (void)renderIn:(CGContext *)a3
+- (void)renderIn:(CGContext *)in
 {
   v23 = objc_opt_new();
   pageTheme = self->_pageTheme;
@@ -49,15 +49,15 @@
     [v23 setShadowOpacity:v14];
     [v23 setShadowRadius:self->_contentScale * 1.5];
     CGPathRelease(Mutable);
-    v15 = [v6 noteMarkerFillColor];
-    v16 = [v15 bkaxAdjustedForIncreaseContrastAdjustingDarker:v7 & v8];
+    noteMarkerFillColor = [v6 noteMarkerFillColor];
+    v16 = [noteMarkerFillColor bkaxAdjustedForIncreaseContrastAdjustingDarker:v7 & v8];
     [v23 setFillColor:{objc_msgSend(v16, "CGColor")}];
 
     v17 = +[UIColor whiteColor];
     v18 = [v17 bkaxAdjustedForIncreaseContrastAdjustingDarker:v7 & v8];
-    v19 = [v18 CGColor];
+    cGColor = [v18 CGColor];
 
-    [v23 setStrokeColor:v19];
+    [v23 setStrokeColor:cGColor];
     [v23 setLineWidth:2.0];
     LODWORD(v20) = 1063675494;
     [v23 setOpacity:v20];
@@ -72,11 +72,11 @@
     [v21 setPath:v22];
     CGPathRelease(v22);
     [v23 addSublayer:v21];
-    [v21 setFillColor:v19];
+    [v21 setFillColor:cGColor];
     +[CATransaction commit];
   }
 
-  [v23 renderInContext:a3];
+  [v23 renderInContext:in];
 }
 
 - (CGSize)markerSize

@@ -1,15 +1,15 @@
 @interface ML3Collection
-+ (BOOL)_updateRepresentativeItemsForPersistentIDs:(id)a3 usingConnection:(id)a4;
-+ (BOOL)canonicalizeCollectionRepresentativeItemsInLibrary:(id)a3 usingConnection:(id)a4;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 usingConnection:(id)a7;
-+ (BOOL)libraryContentsChangeForProperty:(id)a3;
-+ (BOOL)removeOrphanedCollectionsInLibrary:(id)a3 usingConnection:(id)a4;
-+ (BOOL)updateRepresentativeItemPersistentIDsInLibrary:(id)a3 persistentIDs:(id)a4 usingConnection:(id)a5;
++ (BOOL)_updateRepresentativeItemsForPersistentIDs:(id)ds usingConnection:(id)connection;
++ (BOOL)canonicalizeCollectionRepresentativeItemsInLibrary:(id)library usingConnection:(id)connection;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection;
++ (BOOL)libraryContentsChangeForProperty:(id)property;
++ (BOOL)removeOrphanedCollectionsInLibrary:(id)library usingConnection:(id)connection;
++ (BOOL)updateRepresentativeItemPersistentIDsInLibrary:(id)library persistentIDs:(id)ds usingConnection:(id)connection;
 + (id)collectionEntityClasses;
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4;
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class;
 + (id)propertiesForGroupingUniqueCollections;
 + (void)initialize;
-- (ML3Collection)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6;
+- (ML3Collection)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection;
 - (void)updateCloudStatus;
 @end
 
@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     ML3TrackForeignPropertyForML3CollectionProperties = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"item_artist_pid", @"item_artist_pid", @"album_pid", @"album_pid", @"ROWID", @"item_pid", 0}];
 
@@ -27,8 +27,8 @@
 
 - (void)updateCloudStatus
 {
-  v3 = [objc_opt_class() trackForeignPersistentID];
-  v4 = [ML3ComparisonPredicate predicateWithProperty:v3 equalToInt64:self->super._persistentID];
+  trackForeignPersistentID = [objc_opt_class() trackForeignPersistentID];
+  v4 = [ML3ComparisonPredicate predicateWithProperty:trackForeignPersistentID equalToInt64:self->super._persistentID];
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v6 = [(ML3Entity *)ML3Track queryWithLibrary:WeakRetained predicate:v4 orderingTerms:0];
 
@@ -68,9 +68,9 @@
   }
 
   v9 = [(ML3Entity *)self valueForProperty:@"cloud_status"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
-  if (v10 != v8)
+  if (integerValue != v8)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
     [(ML3Entity *)self setValue:v11 forProperty:@"cloud_status"];
@@ -107,17 +107,17 @@ uint64_t __34__ML3Collection_updateCloudStatus__block_invoke(uint64_t result, ui
   return result;
 }
 
-- (ML3Collection)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6
+- (ML3Collection)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 objectForKey:@"grouping_key"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  ordersCopy = orders;
+  connectionCopy = connection;
+  v14 = [dictionaryCopy objectForKey:@"grouping_key"];
   if (v14)
   {
-    v15 = v14;
+    data = v14;
   }
 
   else
@@ -126,9 +126,9 @@ uint64_t __34__ML3Collection_updateCloudStatus__block_invoke(uint64_t result, ui
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v25 = self;
-    v16 = [objc_opt_class() propertiesForGroupingKey];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    selfCopy = self;
+    propertiesForGroupingKey = [objc_opt_class() propertiesForGroupingKey];
+    v17 = [propertiesForGroupingKey countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -140,15 +140,15 @@ uint64_t __34__ML3Collection_updateCloudStatus__block_invoke(uint64_t result, ui
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(propertiesForGroupingKey);
           }
 
-          v21 = [v10 objectForKey:*(*(&v27 + 1) + 8 * v20)];
+          v21 = [dictionaryCopy objectForKey:*(*(&v27 + 1) + 8 * v20)];
           if ([v21 length])
           {
-            v15 = [v11 groupingKeyForString:v21];
+            data = [libraryCopy groupingKeyForString:v21];
 
-            if (v15)
+            if (data)
             {
 
               goto LABEL_15;
@@ -163,55 +163,55 @@ uint64_t __34__ML3Collection_updateCloudStatus__block_invoke(uint64_t result, ui
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v18 = [propertiesForGroupingKey countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v18);
     }
 
-    v15 = [MEMORY[0x277CBEA90] data];
-    if (v15)
+    data = [MEMORY[0x277CBEA90] data];
+    if (data)
     {
 LABEL_15:
-      v22 = [v10 mutableCopy];
-      [v22 setValue:v15 forKey:@"grouping_key"];
+      v22 = [dictionaryCopy mutableCopy];
+      [v22 setValue:data forKey:@"grouping_key"];
 
-      v10 = v22;
+      dictionaryCopy = v22;
     }
 
-    self = v25;
+    self = selfCopy;
   }
 
   v26.receiver = self;
   v26.super_class = ML3Collection;
-  v23 = [(ML3Entity *)&v26 initWithDictionary:v10 inLibrary:v11 cachedNameOrders:v12 usingConnection:v13];
+  v23 = [(ML3Entity *)&v26 initWithDictionary:dictionaryCopy inLibrary:libraryCopy cachedNameOrders:ordersCopy usingConnection:connectionCopy];
 
   return v23;
 }
 
-+ (BOOL)_updateRepresentativeItemsForPersistentIDs:(id)a3 usingConnection:(id)a4
++ (BOOL)_updateRepresentativeItemsForPersistentIDs:(id)ds usingConnection:(id)connection
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  connectionCopy = connection;
+  if ([dsCopy count])
   {
-    v7 = [a1 trackForeignPersistentID];
-    v8 = [a1 databaseTable];
-    v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"UPDATE %@ SET %@ = IFNULL( (SELECT item_pid FROM item LEFT OUTER JOIN best_artwork_token ON (item.ROWID = best_artwork_token.entity_pid AND best_artwork_token.entity_type = %ld) WHERE item.%@ = %@.ROWID ORDER BY item.media_type, best_artwork_token.available_artwork_token IS NOT NULL DESC LIMIT 1), 0)", v8, @"representative_item_pid", 0, v7, v8];
-    if ([v6 count] < 0x3E9)
+    trackForeignPersistentID = [self trackForeignPersistentID];
+    databaseTable = [self databaseTable];
+    v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"UPDATE %@ SET %@ = IFNULL( (SELECT item_pid FROM item LEFT OUTER JOIN best_artwork_token ON (item.ROWID = best_artwork_token.entity_pid AND best_artwork_token.entity_type = %ld) WHERE item.%@ = %@.ROWID ORDER BY item.media_type, best_artwork_token.available_artwork_token IS NOT NULL DESC LIMIT 1), 0)", databaseTable, @"representative_item_pid", 0, trackForeignPersistentID, databaseTable];
+    if ([dsCopy count] < 0x3E9)
     {
       [v9 appendString:@" WHERE ROWID"];
-      v11 = [v6 allObjects];
+      allObjects = [dsCopy allObjects];
       v13 = +[ML3DatabaseStatementRenderer defaultRenderer];
-      v14 = [v11 count];
+      v14 = [allObjects count];
       if (v14)
       {
         v15 = v14;
         v30 = v13;
-        v27 = v8;
-        v28 = v7;
-        v29 = v6;
+        v27 = databaseTable;
+        v28 = trackForeignPersistentID;
+        v29 = dsCopy;
         v16 = 0;
         v17 = 0;
         v18 = -1;
@@ -227,7 +227,7 @@ LABEL_15:
             v19 = v15 - v17;
           }
 
-          v20 = [v11 subarrayWithRange:{v17, v19}];
+          v20 = [allObjects subarrayWithRange:{v17, v19}];
           if (v18 != v19)
           {
             v21 = [v30 statementWithPrefix:v9 inParameterCount:v19];
@@ -237,7 +237,7 @@ LABEL_15:
           }
 
           v32 = 0;
-          v22 = [v31 executeUpdate:v16 withParameters:v20 error:&v32];
+          v22 = [connectionCopy executeUpdate:v16 withParameters:v20 error:&v32];
           v23 = v32;
           v24 = v23;
           if ((v22 & 1) == 0)
@@ -265,9 +265,9 @@ LABEL_15:
 
         v12 = 0;
 LABEL_23:
-        v7 = v28;
-        v6 = v29;
-        v8 = v27;
+        trackForeignPersistentID = v28;
+        dsCopy = v29;
+        databaseTable = v27;
         v13 = v30;
       }
 
@@ -280,8 +280,8 @@ LABEL_23:
     else
     {
       v33 = 0;
-      v10 = [v31 executeUpdate:v9 withParameters:0 error:&v33];
-      v11 = v33;
+      v10 = [connectionCopy executeUpdate:v9 withParameters:0 error:&v33];
+      allObjects = v33;
       if (v10)
       {
         v12 = 1;
@@ -294,7 +294,7 @@ LABEL_25:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v35 = v11;
+        v35 = allObjects;
         _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_ERROR, "Failed to update collection representative items with error: %{public}@", buf, 0xCu);
       }
 
@@ -323,27 +323,27 @@ LABEL_26:
   return v2;
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6 usingConnection:(id)a7
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___ML3Collection;
-  return objc_msgSendSuper2(&v8, sel_deleteFromLibrary_deletionType_persistentIDs_count_usingConnection_, a3, *&a4, a5, a6, a7);
+  return objc_msgSendSuper2(&v8, sel_deleteFromLibrary_deletionType_persistentIDs_count_usingConnection_, library, *&type, ds, count, connection);
 }
 
-+ (BOOL)removeOrphanedCollectionsInLibrary:(id)a3 usingConnection:(id)a4
++ (BOOL)removeOrphanedCollectionsInLibrary:(id)library usingConnection:(id)connection
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v7 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v42 = 138543362;
-    v43 = v5;
+    v43 = libraryCopy;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "Checking for orphaned collections in library %{public}@", &v42, 0xCu);
   }
 
-  v8 = [v6 executeQuery:@"SELECT album_pid FROM album WHERE album_pid NOT IN (SELECT album_pid FROM item)"];
+  v8 = [connectionCopy executeQuery:@"SELECT album_pid FROM album WHERE album_pid NOT IN (SELECT album_pid FROM item)"];
   v9 = [v8 objectsInColumn:0];
 
   if ([v9 count])
@@ -363,7 +363,7 @@ LABEL_26:
       while (v11 < [v9 count]);
     }
 
-    if (+[ML3Album deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Album, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", v5, 2, v10, [v9 count], v6))
+    if (+[ML3Album deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Album, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", libraryCopy, 2, v10, [v9 count], connectionCopy))
     {
       v13 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -377,7 +377,7 @@ LABEL_26:
     free(v10);
   }
 
-  v14 = [v6 executeQuery:@"SELECT album_artist_pid FROM album_artist WHERE ((album_artist_pid NOT IN (SELECT album_artist_pid FROM item) AND album_artist_pid NOT IN (SELECT album_artist_pid FROM album)) AND album_artist.liked_state=?)" withParameters:&unk_2840C8300];
+  v14 = [connectionCopy executeQuery:@"SELECT album_artist_pid FROM album_artist WHERE ((album_artist_pid NOT IN (SELECT album_artist_pid FROM item) AND album_artist_pid NOT IN (SELECT album_artist_pid FROM album)) AND album_artist.liked_state=?)" withParameters:&unk_2840C8300];
   v15 = [v14 objectsInColumn:0];
 
   if ([v15 count])
@@ -397,7 +397,7 @@ LABEL_26:
       while (v17 < [v15 count]);
     }
 
-    if (+[ML3AlbumArtist deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3AlbumArtist, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", v5, 2, v16, [v15 count], v6))
+    if (+[ML3AlbumArtist deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3AlbumArtist, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", libraryCopy, 2, v16, [v15 count], connectionCopy))
     {
       v19 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -411,7 +411,7 @@ LABEL_26:
     free(v16);
   }
 
-  v20 = [v6 executeQuery:@"SELECT item_artist_pid FROM item_artist WHERE item_artist_pid NOT IN (SELECT item_artist_pid FROM item)"];
+  v20 = [connectionCopy executeQuery:@"SELECT item_artist_pid FROM item_artist WHERE item_artist_pid NOT IN (SELECT item_artist_pid FROM item)"];
   v21 = [v20 objectsInColumn:0];
 
   if ([v21 count])
@@ -431,7 +431,7 @@ LABEL_26:
       while (v23 < [v21 count]);
     }
 
-    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Artist, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", v5, 2, v22, [v21 count], v6))
+    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Artist, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", libraryCopy, 2, v22, [v21 count], connectionCopy))
     {
       v25 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -446,7 +446,7 @@ LABEL_26:
     free(v22);
   }
 
-  v27 = [v6 executeQuery:@"SELECT composer_pid FROM composer WHERE composer_pid NOT IN (SELECT composer_pid FROM item)"];
+  v27 = [connectionCopy executeQuery:@"SELECT composer_pid FROM composer WHERE composer_pid NOT IN (SELECT composer_pid FROM item)"];
   v28 = [v27 objectsInColumn:0];
 
   if ([v28 count])
@@ -466,7 +466,7 @@ LABEL_26:
       while (v30 < [v28 count]);
     }
 
-    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Composer, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", v5, 2, v29, [v28 count], v6))
+    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Composer, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", libraryCopy, 2, v29, [v28 count], connectionCopy))
     {
       v32 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -481,7 +481,7 @@ LABEL_26:
     free(v29);
   }
 
-  v34 = [v6 executeQuery:@"SELECT genre_id FROM genre WHERE genre_id NOT IN (SELECT genre_id FROM item)"];
+  v34 = [connectionCopy executeQuery:@"SELECT genre_id FROM genre WHERE genre_id NOT IN (SELECT genre_id FROM item)"];
   v35 = [v34 objectsInColumn:0];
 
   if ([v35 count])
@@ -501,7 +501,7 @@ LABEL_26:
       while (v37 < [v35 count]);
     }
 
-    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Genre, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", v5, 2, v36, [v35 count], v6))
+    if (+[ML3Collection deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:](ML3Genre, "deleteFromLibrary:deletionType:persistentIDs:count:usingConnection:", libraryCopy, 2, v36, [v35 count], connectionCopy))
     {
       v39 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -519,28 +519,28 @@ LABEL_26:
   return 1;
 }
 
-+ (BOOL)canonicalizeCollectionRepresentativeItemsInLibrary:(id)a3 usingConnection:(id)a4
++ (BOOL)canonicalizeCollectionRepresentativeItemsInLibrary:(id)library usingConnection:(id)connection
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v36 = objc_opt_class();
     v37 = 2114;
-    v38 = v6;
+    v38 = libraryCopy;
     v9 = v36;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "Looking for representative items to update for collection type %{public}@ in library %{public}@", buf, 0x16u);
   }
 
-  v10 = [a1 trackForeignPersistentID];
-  v11 = [a1 databaseTable];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT DISTINCT item.%@ FROM item JOIN %@ USING (%@) LEFT OUTER JOIN best_artwork_token ON (item.ROWID = best_artwork_token.entity_pid AND best_artwork_token.entity_type = %ld) WHERE %@.%@ = item.ROWID AND (((item.media_type & 1024) = 1024) OR best_artwork_token.available_artwork_token IS NULL)", v10, v11, v10, 0, v11, @"representative_item_pid"];
+  trackForeignPersistentID = [self trackForeignPersistentID];
+  databaseTable = [self databaseTable];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT DISTINCT item.%@ FROM item JOIN %@ USING (%@) LEFT OUTER JOIN best_artwork_token ON (item.ROWID = best_artwork_token.entity_pid AND best_artwork_token.entity_type = %ld) WHERE %@.%@ = item.ROWID AND (((item.media_type & 1024) = 1024) OR best_artwork_token.available_artwork_token IS NULL)", trackForeignPersistentID, databaseTable, trackForeignPersistentID, 0, databaseTable, @"representative_item_pid"];
   v13 = [MEMORY[0x277CBEB58] set];
   v28 = v12;
-  v14 = [v7 executeQuery:v12];
+  v14 = [connectionCopy executeQuery:v12];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_usingConnection___block_invoke;
@@ -549,8 +549,8 @@ LABEL_26:
   v34 = v15;
   [v14 enumerateRowsWithBlock:v33];
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@.ROWID FROM %@ WHERE %@.%@ = 0", v11, v11, v11, @"representative_item_pid"];
-  v17 = [v7 executeQuery:v16];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@.ROWID FROM %@ WHERE %@.%@ = 0", databaseTable, databaseTable, databaseTable, @"representative_item_pid"];
+  v17 = [connectionCopy executeQuery:v16];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_usingConnection___block_invoke_2;
@@ -559,8 +559,8 @@ LABEL_26:
   v32 = v18;
   [v17 enumerateRowsWithBlock:v31];
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@.ROWID FROM %@ LEFT OUTER JOIN item ON (%@.%@ = item.ROWID) where %@.ROWID != IFNULL(item.%@, 0)", v11, v11, v11, @"representative_item_pid", v11, v10];
-  v20 = [v7 executeQuery:v19];
+  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@.ROWID FROM %@ LEFT OUTER JOIN item ON (%@.%@ = item.ROWID) where %@.ROWID != IFNULL(item.%@, 0)", databaseTable, databaseTable, databaseTable, @"representative_item_pid", databaseTable, trackForeignPersistentID];
+  v20 = [connectionCopy executeQuery:v19];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_usingConnection___block_invoke_3;
@@ -579,12 +579,12 @@ LABEL_26:
     v37 = 2114;
     v38 = v24;
     v39 = 2114;
-    v40 = v6;
+    v40 = libraryCopy;
     v25 = v24;
     _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "Updating %lu representative items for collection %{public}@ in library %{public}@", buf, 0x20u);
   }
 
-  v26 = [a1 _updateRepresentativeItemsForPersistentIDs:v21 usingConnection:v7];
+  v26 = [self _updateRepresentativeItemsForPersistentIDs:v21 usingConnection:connectionCopy];
   return v26;
 }
 
@@ -621,20 +621,20 @@ uint64_t __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)updateRepresentativeItemPersistentIDsInLibrary:(id)a3 persistentIDs:(id)a4 usingConnection:(id)a5
++ (BOOL)updateRepresentativeItemPersistentIDsInLibrary:(id)library persistentIDs:(id)ds usingConnection:(id)connection
 {
-  v30 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 trackForeignPersistentID];
-  v28 = a1;
-  v11 = [a1 databaseTable];
+  libraryCopy = library;
+  dsCopy = ds;
+  connectionCopy = connection;
+  trackForeignPersistentID = [self trackForeignPersistentID];
+  selfCopy = self;
+  databaseTable = [self databaseTable];
   v12 = [MEMORY[0x277CBEB58] set];
-  v27 = v11;
-  v29 = v10;
-  v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = 0 OR %@", v10, v11, @"representative_item_pid", @"representative_item_pid"];
+  v27 = databaseTable;
+  v29 = trackForeignPersistentID;
+  v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = 0 OR %@", trackForeignPersistentID, databaseTable, @"representative_item_pid", @"representative_item_pid"];
   v31 = +[ML3DatabaseStatementRenderer defaultRenderer];
-  v13 = [v8 count];
+  v13 = [dsCopy count];
   if (v13)
   {
     v14 = v13;
@@ -653,23 +653,23 @@ uint64_t __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_
         v18 = v14 - v16;
       }
 
-      v19 = [v8 subarrayWithRange:{v16, v18}];
+      v19 = [dsCopy subarrayWithRange:{v16, v18}];
       if (v17 != v18)
       {
         [v31 statementWithPrefix:v32 inParameterCount:v18];
         v20 = v12;
-        v21 = v9;
-        v23 = v22 = v8;
+        v21 = connectionCopy;
+        v23 = v22 = dsCopy;
 
         v17 = v18;
         v15 = v23;
-        v8 = v22;
-        v9 = v21;
+        dsCopy = v22;
+        connectionCopy = v21;
         v12 = v20;
       }
 
       v16 += v18;
-      v24 = [v9 executeQuery:v15 withParameters:v19];
+      v24 = [connectionCopy executeQuery:v15 withParameters:v19];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __94__ML3Collection_updateRepresentativeItemPersistentIDsInLibrary_persistentIDs_usingConnection___block_invoke;
@@ -686,7 +686,7 @@ uint64_t __84__ML3Collection_canonicalizeCollectionRepresentativeItemsInLibrary_
     v15 = 0;
   }
 
-  v25 = [v28 _updateRepresentativeItemsForPersistentIDs:v12 usingConnection:v9];
+  v25 = [selfCopy _updateRepresentativeItemsForPersistentIDs:v12 usingConnection:connectionCopy];
 
   return v25;
 }
@@ -702,19 +702,19 @@ uint64_t __94__ML3Collection_updateRepresentativeItemPersistentIDsInLibrary_pers
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)libraryContentsChangeForProperty:(id)a3
++ (BOOL)libraryContentsChangeForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"cloud_status"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"representative_item_pid"))
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"cloud_status"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"representative_item_pid"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___ML3Collection;
-    v5 = objc_msgSendSuper2(&v7, sel_libraryContentsChangeForProperty_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_libraryContentsChangeForProperty_, propertyCopy);
   }
 
   return v5;
@@ -729,17 +729,17 @@ uint64_t __94__ML3Collection_updateRepresentativeItemPersistentIDsInLibrary_pers
   return v2;
 }
 
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class
 {
-  v6 = a3;
-  v9.receiver = a1;
+  propertyCopy = property;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ML3Collection;
-  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, v6, a4);
+  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, propertyCopy, class);
   if (!v7)
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      v7 = [ML3TrackForeignPropertyForML3CollectionProperties objectForKey:v6];
+      v7 = [ML3TrackForeignPropertyForML3CollectionProperties objectForKey:propertyCopy];
     }
 
     else

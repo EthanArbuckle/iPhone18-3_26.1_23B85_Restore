@@ -1,10 +1,10 @@
 @interface PXEditAutomationManagerObjc
-- (PXEditAutomationManagerObjc)initWithDelegate:(id)a3;
+- (PXEditAutomationManagerObjc)initWithDelegate:(id)delegate;
 @end
 
 @implementation PXEditAutomationManagerObjc
 
-- (PXEditAutomationManagerObjc)initWithDelegate:(id)a3
+- (PXEditAutomationManagerObjc)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = PXEditAutomationManagerObjc;

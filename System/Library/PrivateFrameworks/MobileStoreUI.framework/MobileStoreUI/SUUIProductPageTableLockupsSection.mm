@@ -1,23 +1,23 @@
 @interface SUUIProductPageTableLockupsSection
-- (SUUIProductPageTableLockupsSection)initWithLockups:(id)a3 title:(id)a4;
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4;
+- (SUUIProductPageTableLockupsSection)initWithLockups:(id)lockups title:(id)title;
+- (double)heightForCellInTableView:(id)view indexPath:(id)path;
 - (id)_missingItemLoader;
-- (id)_productImageForItem:(id)a3;
-- (id)footerViewForTableView:(id)a3;
-- (id)headerViewForTableView:(id)a3;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (id)_productImageForItem:(id)item;
+- (id)footerViewForTableView:(id)view;
+- (id)headerViewForTableView:(id)view;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
 @end
 
 @implementation SUUIProductPageTableLockupsSection
 
-- (SUUIProductPageTableLockupsSection)initWithLockups:(id)a3 title:(id)a4
+- (SUUIProductPageTableLockupsSection)initWithLockups:(id)lockups title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  lockupsCopy = lockups;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = SUUIProductPageTableLockupsSection;
   v8 = [(SUUIProductPageTableLockupsSection *)&v16 init];
@@ -27,18 +27,18 @@
     artworkRequests = v8->_artworkRequests;
     v8->_artworkRequests = v9;
 
-    v11 = [v6 copy];
+    v11 = [lockupsCopy copy];
     lockups = v8->_lockups;
     v8->_lockups = v11;
 
-    if (v7)
+    if (titleCopy)
     {
       v13 = objc_alloc_init(SUUIProductPageTableHeaderView);
       headerView = v8->_headerView;
       v8->_headerView = v13;
 
       [(SUUIProductPageTableHeaderView *)v8->_headerView setContentInsets:11.0, 15.0, 5.0, 15.0];
-      [(SUUIProductPageTableHeaderView *)v8->_headerView setTitle:v7];
+      [(SUUIProductPageTableHeaderView *)v8->_headerView setTitle:titleCopy];
       [(SUUIProductPageTableHeaderView *)v8->_headerView sizeToFit];
     }
   }
@@ -54,7 +54,7 @@
   [(SUUIProductPageTableLockupsSection *)&v3 dealloc];
 }
 
-- (id)footerViewForTableView:(id)a3
+- (id)footerViewForTableView:(id)view
 {
   footerView = self->_footerView;
   if (!footerView)
@@ -69,7 +69,7 @@
   return footerView;
 }
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -108,8 +108,8 @@
 
   if ([v4 count])
   {
-    v12 = [(SUUIProductPageTableLockupsSection *)self _missingItemLoader];
-    [v12 loadItemsWithIdentifiers:v4 reason:1];
+    _missingItemLoader = [(SUUIProductPageTableLockupsSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsWithIdentifiers:v4 reason:1];
   }
 
   headerView = self->_headerView;
@@ -118,39 +118,39 @@
   return headerView;
 }
 
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4
+- (double)heightForCellInTableView:(id)view indexPath:(id)path
 {
-  v4 = [(SUUIProductPageTableSection *)self clientContext:a3];
+  v4 = [(SUUIProductPageTableSection *)self clientContext:view];
   v5 = dbl_259FCAC40[SUUIUserInterfaceIdiom(v4) == 1];
 
   return v5;
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [SUUIProductPageAction actionWithType:4];
   lockups = self->_lockups;
-  v8 = [v5 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSArray *)lockups objectAtIndex:v8];
-  v10 = [v9 item];
-  [v6 setItem:v10];
+  item = [v9 item];
+  [v6 setItem:item];
 
   return v6;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"LOCKUP"];
-  v8 = [(SUUIProductPageTableSection *)self clientContext];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"LOCKUP"];
+  clientContext = [(SUUIProductPageTableSection *)self clientContext];
   if (!v7)
   {
     v7 = [[SUUILockupItemTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"LOCKUP"];
-    v9 = [(SUUILockupItemTableViewCell *)v7 layout];
-    v10 = [(SUUIProductPageTableSection *)self clientContext];
-    v11 = SUUIUserInterfaceIdiom(v10);
+    layout = [(SUUILockupItemTableViewCell *)v7 layout];
+    clientContext2 = [(SUUIProductPageTableSection *)self clientContext];
+    v11 = SUUIUserInterfaceIdiom(clientContext2);
 
     if (v11 == 1)
     {
@@ -163,27 +163,27 @@
     }
 
     [(SUUILockupItemTableViewCell *)v7 setAccessoryType:v11 != 1];
-    [v9 setItemOfferStyle:v12];
-    [v9 setClientContext:v8];
-    [v9 setContentInsets:{0.0, 15.0, 0.0, 5.0}];
-    [v9 setLayoutStyle:1];
-    [v9 setVerticalAlignment:1];
-    v13 = SUUIUserInterfaceIdiom(v8);
+    [layout setItemOfferStyle:v12];
+    [layout setClientContext:clientContext];
+    [layout setContentInsets:{0.0, 15.0, 0.0, 5.0}];
+    [layout setLayoutStyle:1];
+    [layout setVerticalAlignment:1];
+    v13 = SUUIUserInterfaceIdiom(clientContext);
     v14 = 64.0;
     if (v13 == 1)
     {
       v14 = 72.0;
     }
 
-    [v9 setImageBoundingSize:{v14, v14}];
+    [layout setImageBoundingSize:{v14, v14}];
   }
 
-  v15 = [v6 row];
+  v15 = [pathCopy row];
   lockups = self->_lockups;
-  v17 = [v6 row];
+  v17 = [pathCopy row];
 
   v18 = [(NSArray *)lockups objectAtIndex:v17];
-  v19 = [(SUUILockupItemTableViewCell *)v7 layout];
+  layout2 = [(SUUILockupItemTableViewCell *)v7 layout];
   if (v18)
   {
     [v18 lockupStyle];
@@ -195,38 +195,38 @@
     v20 = 0;
   }
 
-  [v19 setVisibleFields:v20];
-  v21 = [v18 item];
-  if (v21)
+  [layout2 setVisibleFields:v20];
+  item = [v18 item];
+  if (item)
   {
-    [(SUUILockupItemTableViewCell *)v7 configureForItem:v21 clientContext:v8 rowIndex:v15];
-    v22 = [(SUUIProductPageTableLockupsSection *)self _productImageForItem:v21];
-    [v19 setIconImage:v22];
+    [(SUUILockupItemTableViewCell *)v7 configureForItem:item clientContext:clientContext rowIndex:v15];
+    v22 = [(SUUIProductPageTableLockupsSection *)self _productImageForItem:item];
+    [layout2 setIconImage:v22];
   }
 
   else
   {
-    [v19 resetLayout];
-    [v19 setIconImage:0];
+    [layout2 resetLayout];
+    [layout2 setIconImage:0];
   }
 
   return v7;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUITableViewSection *)self delegate];
+  requestCopy = request;
+  imageCopy = image;
+  delegate = [(SUUITableViewSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v24 = v7;
-    v22 = v6;
-    v25 = [v6 requestIdentifier];
-    v9 = [(SUUITableViewSection *)self sectionIndex];
-    v21 = v8;
-    v23 = [v8 tableViewForTableViewSection:self];
+    v24 = imageCopy;
+    v22 = requestCopy;
+    requestIdentifier = [requestCopy requestIdentifier];
+    sectionIndex = [(SUUITableViewSection *)self sectionIndex];
+    v21 = delegate;
+    v23 = [delegate tableViewForTableViewSection:self];
     [v23 indexPathsForVisibleRows];
     v27 = 0u;
     v28 = 0u;
@@ -247,20 +247,20 @@
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          if ([v14 section] == v9)
+          if ([v14 section] == sectionIndex)
           {
             v15 = -[NSArray objectAtIndex:](self->_lockups, "objectAtIndex:", [v14 row]);
-            v16 = [v15 item];
-            if (v16)
+            item = [v15 item];
+            if (item)
             {
-              v17 = [(NSMapTable *)self->_artworkRequests objectForKey:v16];
-              v18 = [v17 unsignedIntegerValue];
+              v17 = [(NSMapTable *)self->_artworkRequests objectForKey:item];
+              unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-              if (v25 == v18)
+              if (requestIdentifier == unsignedIntegerValue)
               {
                 v19 = [v23 cellForRowAtIndexPath:v14];
-                v20 = [v19 layout];
-                [v20 setIconImage:v24];
+                layout = [v19 layout];
+                [layout setIconImage:v24];
 
                 goto LABEL_15;
               }
@@ -280,40 +280,40 @@
 
 LABEL_15:
 
-    v8 = v21;
-    v6 = v22;
-    v7 = v24;
+    delegate = v21;
+    requestCopy = v22;
+    imageCopy = v24;
   }
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v19 = 0uLL;
     v20 = 0;
     SUUILockupStyleDefault(&v19);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(SUUITableViewSection *)self sectionIndex];
+    sectionIndex = [(SUUITableViewSection *)self sectionIndex];
     lockups = self->_lockups;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __92__SUUIProductPageTableLockupsSection_missingItemLoader_didLoadItems_invalidItemIdentifiers___block_invoke;
     v13[3] = &unk_2798F6A80;
-    v14 = v6;
+    v14 = itemsCopy;
     v16 = v19;
     v17 = v20;
     v10 = v7;
     v15 = v10;
-    v18 = v8;
+    v18 = sectionIndex;
     [(NSArray *)lockups enumerateObjectsUsingBlock:v13];
     if ([v10 count])
     {
-      v11 = [(SUUITableViewSection *)self delegate];
+      delegate = [(SUUITableViewSection *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v11 tableViewForTableViewSection:self];
+        v12 = [delegate tableViewForTableViewSection:self];
         [v12 reloadRowsAtIndexPaths:v10 withRowAnimation:100];
       }
     }
@@ -365,8 +365,8 @@ void __92__SUUIProductPageTableLockupsSection_missingItemLoader_didLoadItems_inv
   if (!missingItemLoader)
   {
     v4 = [SUUIMissingItemLoader alloc];
-    v5 = [(SUUIProductPageTableLockupsSection *)self resourceLoader];
-    v6 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:v5];
+    resourceLoader = [(SUUIProductPageTableLockupsSection *)self resourceLoader];
+    v6 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v7 = self->_missingItemLoader;
     self->_missingItemLoader = v6;
 
@@ -377,9 +377,9 @@ void __92__SUUIProductPageTableLockupsSection_missingItemLoader_didLoadItems_inv
   return missingItemLoader;
 }
 
-- (id)_productImageForItem:(id)a3
+- (id)_productImageForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_productImageDataConsumer)
   {
     v5 = +[SUUIStyledImageDataConsumer parentBundleIconConsumer];
@@ -387,22 +387,22 @@ void __92__SUUIProductPageTableLockupsSection_missingItemLoader_didLoadItems_inv
     self->_productImageDataConsumer = v5;
   }
 
-  v7 = [(SUUIProductPageTableLockupsSection *)self resourceLoader];
-  v8 = [(NSMapTable *)self->_artworkRequests objectForKey:v4];
-  v9 = [v8 unsignedIntegerValue];
+  resourceLoader = [(SUUIProductPageTableLockupsSection *)self resourceLoader];
+  v8 = [(NSMapTable *)self->_artworkRequests objectForKey:itemCopy];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (!v9 || ([v7 cachedResourceForRequestIdentifier:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!unsignedIntegerValue || ([resourceLoader cachedResourceForRequestIdentifier:unsignedIntegerValue], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([v7 trySetReason:1 forRequestWithIdentifier:v9])
+    if ([resourceLoader trySetReason:1 forRequestWithIdentifier:unsignedIntegerValue])
     {
       v10 = 0;
     }
 
     else
     {
-      v11 = [v4 artworksProvider];
+      artworksProvider = [itemCopy artworksProvider];
       [(SUUIStyledImageDataConsumer *)self->_productImageDataConsumer imageSize];
-      v12 = [v11 bestArtworkForScaledSize:?];
+      v12 = [artworksProvider bestArtworkForScaledSize:?];
 
       v13 = [v12 URL];
       if (v13)
@@ -413,9 +413,9 @@ void __92__SUUIProductPageTableLockupsSection_missingItemLoader_didLoadItems_inv
         [(SUUIArtworkRequest *)v14 setURL:v13];
         artworkRequests = self->_artworkRequests;
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SUUIResourceRequest requestIdentifier](v14, "requestIdentifier")}];
-        [(NSMapTable *)artworkRequests setObject:v16 forKey:v4];
+        [(NSMapTable *)artworkRequests setObject:v16 forKey:itemCopy];
 
-        [v7 loadResourceWithRequest:v14 reason:1];
+        [resourceLoader loadResourceWithRequest:v14 reason:1];
       }
 
       placeholderImage = self->_placeholderImage;

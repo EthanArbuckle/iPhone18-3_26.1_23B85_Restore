@@ -1,12 +1,12 @@
 @interface BMResourceContainerManager
 + (id)sharedInstance;
 - (BMResourceContainerManager)init;
-- (id)_enforceCurrentPersonaIsUserPersona:(id *)a3;
-- (id)_standardDataVaultContainerForResource:(id)a3;
-- (id)descriptorsFromConfigurationForSetResource:(id)a3;
-- (id)openContainerForResource:(id)a3 mode:(unint64_t)a4 error:(id *)a5;
-- (id)syncPolicyFromConfigurationForSetResource:(id)a3;
-- (unint64_t)serviceDomainFromConfigurationForSetResource:(id)a3;
+- (id)_enforceCurrentPersonaIsUserPersona:(id *)persona;
+- (id)_standardDataVaultContainerForResource:(id)resource;
+- (id)descriptorsFromConfigurationForSetResource:(id)resource;
+- (id)openContainerForResource:(id)resource mode:(unint64_t)mode error:(id *)error;
+- (id)syncPolicyFromConfigurationForSetResource:(id)resource;
+- (unint64_t)serviceDomainFromConfigurationForSetResource:(id)resource;
 @end
 
 @implementation BMResourceContainerManager
@@ -37,16 +37,16 @@ uint64_t __44__BMResourceContainerManager_sharedInstance__block_invoke()
   return [(BMResourceContainerManager *)&v3 init];
 }
 
-- (id)openContainerForResource:(id)a3 mode:(unint64_t)a4 error:(id *)a5
+- (id)openContainerForResource:(id)resource mode:(unint64_t)mode error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  resourceCopy = resource;
   v9 = +[BMPersonaUtilities currentPersonaIdentifierLoggingDescription];
   v10 = __biome_log_for_category(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
-    v12 = BMAccessModePrintableDescription(a4);
+    v12 = BMAccessModePrintableDescription(mode);
     if (v9)
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@" current persona: %@", v9];
@@ -60,7 +60,7 @@ uint64_t __44__BMResourceContainerManager_sharedInstance__block_invoke()
     *buf = 138413058;
     v25 = v11;
     v26 = 2112;
-    v27 = v8;
+    v27 = resourceCopy;
     v28 = 2112;
     v29 = v12;
     v30 = 2112;
@@ -71,7 +71,7 @@ uint64_t __44__BMResourceContainerManager_sharedInstance__block_invoke()
     }
   }
 
-  v14 = [(BMResourceContainerManager *)self routeContainerRequestForResource:v8 mode:a4];
+  v14 = [(BMResourceContainerManager *)self routeContainerRequestForResource:resourceCopy mode:mode];
   v15 = __biome_log_for_category(6);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,19 +88,19 @@ uint64_t __44__BMResourceContainerManager_sharedInstance__block_invoke()
   switch(v14)
   {
     case 3:
-      v19 = [(BMResourceContainerManager *)self _userVaultContainerForCurrentPersona:a5];
+      v19 = [(BMResourceContainerManager *)self _userVaultContainerForCurrentPersona:error];
       goto LABEL_16;
     case 2:
-      v19 = [(BMResourceContainerManager *)self _vanillaContainerForCurrentPersona:a5];
+      v19 = [(BMResourceContainerManager *)self _vanillaContainerForCurrentPersona:error];
       goto LABEL_16;
     case 1:
-      v19 = [(BMResourceContainerManager *)self _standardDataVaultContainerForResource:v8];
+      v19 = [(BMResourceContainerManager *)self _standardDataVaultContainerForResource:resourceCopy];
 LABEL_16:
       v20 = v19;
       goto LABEL_17;
   }
 
-  if (a5)
+  if (error)
   {
     v23 = __biome_log_for_category(6);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -109,7 +109,7 @@ LABEL_16:
     }
 
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMAccessErrorDomain" code:10 userInfo:0];
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -124,9 +124,9 @@ LABEL_17:
   return v20;
 }
 
-- (id)_standardDataVaultContainerForResource:(id)a3
+- (id)_standardDataVaultContainerForResource:(id)resource
 {
-  v3 = BMServiceDomainForResource(a3);
+  v3 = BMServiceDomainForResource(resource);
   v4 = MEMORY[0x1E695DFF8];
   v5 = [BMPaths biomeDirectoryForDomain:v3];
   v6 = [v4 fileURLWithPath:v5];
@@ -136,7 +136,7 @@ LABEL_17:
   return v7;
 }
 
-- (id)_enforceCurrentPersonaIsUserPersona:(id *)a3
+- (id)_enforceCurrentPersonaIsUserPersona:(id *)persona
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v4 = +[BMPersonaUtilities currentPersonaIdentifier];
@@ -157,13 +157,13 @@ LABEL_17:
       [BMResourceContainerManager _enforceCurrentPersonaIsUserPersona:];
     }
 
-    if (a3)
+    if (persona)
     {
       v10 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E696A278];
       v15[0] = v8;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      *a3 = [v10 errorWithDomain:@"BMAccessErrorDomain" code:10 userInfo:v11];
+      *persona = [v10 errorWithDomain:@"BMAccessErrorDomain" code:10 userInfo:v11];
     }
 
     v5 = 0;
@@ -174,26 +174,26 @@ LABEL_17:
   return v5;
 }
 
-- (id)descriptorsFromConfigurationForSetResource:(id)a3
+- (id)descriptorsFromConfigurationForSetResource:(id)resource
 {
-  v3 = [a3 name];
-  v4 = BMResourceDescriptorsLookupFromConfigurationForSet(v3);
+  name = [resource name];
+  v4 = BMResourceDescriptorsLookupFromConfigurationForSet(name);
 
   return v4;
 }
 
-- (id)syncPolicyFromConfigurationForSetResource:(id)a3
+- (id)syncPolicyFromConfigurationForSetResource:(id)resource
 {
-  v3 = [a3 name];
-  v4 = BMResourceSyncPolicyLookupFromConfigurationForSet(v3);
+  name = [resource name];
+  v4 = BMResourceSyncPolicyLookupFromConfigurationForSet(name);
 
   return v4;
 }
 
-- (unint64_t)serviceDomainFromConfigurationForSetResource:(id)a3
+- (unint64_t)serviceDomainFromConfigurationForSetResource:(id)resource
 {
-  v3 = [a3 name];
-  v4 = BMServiceDomainLookupFromConfigurationForSet(v3);
+  name = [resource name];
+  v4 = BMServiceDomainLookupFromConfigurationForSet(name);
 
   return v4;
 }

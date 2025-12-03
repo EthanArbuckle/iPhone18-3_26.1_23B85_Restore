@@ -1,40 +1,40 @@
 @interface CHContactChangeManager
 - (BOOL)processingNotification;
-- (CHContactChangeManager)initWithSpotlightIndexManager:(id)a3 featureFlags:(id)a4;
+- (CHContactChangeManager)initWithSpotlightIndexManager:(id)manager featureFlags:(id)flags;
 - (CHSpotlightIndexManager)spotlightIndexManager;
 - (void)addAcceptedIntroductionsNotifier;
-- (void)contactStoreDidChange:(id)a3;
+- (void)contactStoreDidChange:(id)change;
 - (void)fetchContacts;
 - (void)fetchContactsAfterDelay;
 - (void)handleAcceptedContactsChanged;
-- (void)setCurrentHistoryToken:(id)a3;
-- (void)setProcessingNotification:(BOOL)a3;
-- (void)triggerReindexingForReason:(unint64_t)a3;
+- (void)setCurrentHistoryToken:(id)token;
+- (void)setProcessingNotification:(BOOL)notification;
+- (void)triggerReindexingForReason:(unint64_t)reason;
 - (void)updateCurrentHistoryToken;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation CHContactChangeManager
 
-- (CHContactChangeManager)initWithSpotlightIndexManager:(id)a3 featureFlags:(id)a4
+- (CHContactChangeManager)initWithSpotlightIndexManager:(id)manager featureFlags:(id)flags
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  flagsCopy = flags;
   v17.receiver = self;
   v17.super_class = CHContactChangeManager;
   v8 = [(CHContactChangeManager *)&v17 initWithName:"CHContactChangeManager"];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_spotlightIndexManager, v6);
-    v10 = [v6 contactStore];
+    objc_storeWeak(&v8->_spotlightIndexManager, managerCopy);
+    contactStore = [managerCopy contactStore];
     contactStore = v9->_contactStore;
-    v9->_contactStore = v10;
+    v9->_contactStore = contactStore;
 
-    objc_storeStrong(&v9->_featureFlags, a4);
+    objc_storeStrong(&v9->_featureFlags, flags);
     v12 = +[NSUserDefaults standardUserDefaults];
     v13 = [v12 valueForKey:@"kCHLastFetchedContactHistoryToken"];
     currentHistoryToken = v9->_currentHistoryToken;
@@ -50,14 +50,14 @@
   return v9;
 }
 
-- (void)setCurrentHistoryToken:(id)a3
+- (void)setCurrentHistoryToken:(id)token
 {
-  v6 = a3;
-  if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled]&& self->_currentHistoryToken != v6)
+  tokenCopy = token;
+  if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled]&& self->_currentHistoryToken != tokenCopy)
   {
-    objc_storeStrong(&self->_currentHistoryToken, a3);
+    objc_storeStrong(&self->_currentHistoryToken, token);
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 setValue:v6 forKey:@"kCHLastFetchedContactHistoryToken"];
+    [v5 setValue:tokenCopy forKey:@"kCHLastFetchedContactHistoryToken"];
   }
 }
 
@@ -69,27 +69,27 @@
   return processingNotification;
 }
 
-- (void)setProcessingNotification:(BOOL)a3
+- (void)setProcessingNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_processingNotification != v3)
+  if (self->_processingNotification != notificationCopy)
   {
-    self->_processingNotification = v3;
+    self->_processingNotification = notificationCopy;
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v4 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contacts store reported a change", v5, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contacts store reported a change", v5, 2u);
     }
 
     [(CHContactChangeManager *)self fetchContactsAfterDelay];
@@ -104,13 +104,13 @@
     {
       [(CHContactChangeManager *)self setProcessingNotification:1];
       v3 = dispatch_time(0, 5000000000);
-      v4 = [(CHContactChangeManager *)self queue];
+      queue = [(CHContactChangeManager *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100009F3C;
       block[3] = &unk_100050FA0;
       block[4] = self;
-      dispatch_after(v3, v4, block);
+      dispatch_after(v3, queue, block);
     }
   }
 }
@@ -119,61 +119,61 @@
 {
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v3 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Fetching contacts from CNContactStore", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Fetching contacts from CNContactStore", buf, 2u);
     }
 
-    v4 = [(CHContactChangeManager *)self currentHistoryToken];
+    currentHistoryToken = [(CHContactChangeManager *)self currentHistoryToken];
 
-    if (v4)
+    if (currentHistoryToken)
     {
       v5 = objc_alloc_init(CNChangeHistoryFetchRequest);
-      v6 = [(CHContactChangeManager *)self currentHistoryToken];
-      [v5 setStartingToken:v6];
+      currentHistoryToken2 = [(CHContactChangeManager *)self currentHistoryToken];
+      [v5 setStartingToken:currentHistoryToken2];
 
       v41[0] = CNContactEmailAddressesKey;
       v41[1] = CNContactPhoneNumbersKey;
       v7 = [NSArray arrayWithObjects:v41 count:2];
       [v5 setAdditionalContactKeyDescriptors:v7];
 
-      v8 = [(CHContactChangeManager *)self contactStore];
+      contactStore = [(CHContactChangeManager *)self contactStore];
       v37 = 0;
-      v9 = [v8 countForFetchRequest:v5 error:&v37];
+      v9 = [contactStore countForFetchRequest:v5 error:&v37];
       v10 = v37;
 
       if (v9)
       {
-        v11 = [v9 value];
-        v12 = [v11 unsignedIntegerValue];
+        value = [v9 value];
+        unsignedIntegerValue = [value unsignedIntegerValue];
 
-        if (v12 < 0x65)
+        if (unsignedIntegerValue < 0x65)
         {
-          v21 = [v9 value];
-          v22 = [v21 unsignedIntegerValue];
+          value2 = [v9 value];
+          unsignedIntegerValue2 = [value2 unsignedIntegerValue];
 
-          if (v22)
+          if (unsignedIntegerValue2)
           {
 
-            v23 = [(CHContactChangeManager *)self contactStore];
+            contactStore2 = [(CHContactChangeManager *)self contactStore];
             v36 = 0;
-            v24 = [v23 executeFetchRequest:v5 error:&v36];
+            v24 = [contactStore2 executeFetchRequest:v5 error:&v36];
             v10 = v36;
 
             [(CHContactChangeManager *)self setProcessingNotification:0];
             if (v24)
             {
-              v25 = [v24 currentHistoryToken];
-              [(CHContactChangeManager *)self setCurrentHistoryToken:v25];
+              currentHistoryToken3 = [v24 currentHistoryToken];
+              [(CHContactChangeManager *)self setCurrentHistoryToken:currentHistoryToken3];
 
               v34 = 0u;
               v35 = 0u;
               v32 = 0u;
               v33 = 0u;
-              v26 = [v24 value];
-              v27 = [v26 countByEnumeratingWithState:&v32 objects:v38 count:16];
+              value3 = [v24 value];
+              v27 = [value3 countByEnumeratingWithState:&v32 objects:v38 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -184,13 +184,13 @@
                   {
                     if (*v33 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(value3);
                     }
 
                     [*(*(&v32 + 1) + 8 * i) acceptEventVisitor:self];
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v32 objects:v38 count:16];
+                  v28 = [value3 countByEnumeratingWithState:&v32 objects:v38 count:16];
                 }
 
                 while (v28);
@@ -199,23 +199,23 @@
 
             else
             {
-              v26 = [(CHContactChangeManager *)self logHandle];
-              if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+              value3 = [(CHContactChangeManager *)self logHandle];
+              if (os_log_type_enabled(value3, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
                 v40 = v10;
-                _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Could not fetch Change History from CNContactStore error: %{public}@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, value3, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Could not fetch Change History from CNContactStore error: %{public}@", buf, 0xCu);
               }
             }
           }
 
           else
           {
-            v31 = [(CHContactChangeManager *)self logHandle];
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+            logHandle2 = [(CHContactChangeManager *)self logHandle];
+            if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contact store count is 0, no need to reindex", buf, 2u);
+              _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contact store count is 0, no need to reindex", buf, 2u);
             }
 
             [(CHContactChangeManager *)self setProcessingNotification:0];
@@ -224,118 +224,118 @@
           goto LABEL_33;
         }
 
-        v13 = [(CHContactChangeManager *)self logHandle];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        logHandle3 = [(CHContactChangeManager *)self logHandle];
+        if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v9 value];
-          v15 = [v14 unsignedIntegerValue];
+          value4 = [v9 value];
+          unsignedIntegerValue3 = [value4 unsignedIntegerValue];
           *buf = 134217984;
-          v40 = v15;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contact store count: %lu is greater than threshold, triggering a full reindex", buf, 0xCu);
+          v40 = unsignedIntegerValue3;
+          _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Contact store count: %lu is greater than threshold, triggering a full reindex", buf, 0xCu);
         }
 
-        v16 = [v9 currentHistoryToken];
-        [(CHContactChangeManager *)self setCurrentHistoryToken:v16];
+        currentHistoryToken4 = [v9 currentHistoryToken];
+        [(CHContactChangeManager *)self setCurrentHistoryToken:currentHistoryToken4];
 
-        v17 = self;
+        selfCopy2 = self;
         v18 = 64;
       }
 
       else
       {
-        v20 = [(CHContactChangeManager *)self logHandle];
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        logHandle4 = [(CHContactChangeManager *)self logHandle];
+        if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
           v40 = v10;
-          _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Could not fetch Change History Count from CNContactStore error: %{public}@, triggering a full reindex", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Could not fetch Change History Count from CNContactStore error: %{public}@, triggering a full reindex", buf, 0xCu);
         }
 
-        v17 = self;
+        selfCopy2 = self;
         v18 = 32;
       }
 
-      [(CHContactChangeManager *)v17 triggerReindexingForReason:v18];
+      [(CHContactChangeManager *)selfCopy2 triggerReindexingForReason:v18];
 LABEL_33:
 
       return;
     }
 
-    v19 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    logHandle5 = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: currentHistoryToken is nil , triggering a full reindex", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle5, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: currentHistoryToken is nil , triggering a full reindex", buf, 2u);
     }
 
     [(CHContactChangeManager *)self triggerReindexingForReason:16];
   }
 }
 
-- (void)triggerReindexingForReason:(unint64_t)a3
+- (void)triggerReindexingForReason:(unint64_t)reason
 {
-  [(CHContactChangeManager *)self setNeedsDeferredReindexingForReason:a3];
+  [(CHContactChangeManager *)self setNeedsDeferredReindexingForReason:reason];
 
   [(CHContactChangeManager *)self setProcessingNotification:0];
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v4 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Drop Everything change history event", v5, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Drop Everything change history event", v5, 2u);
     }
 
     [(CHContactChangeManager *)self setNeedsDeferredReindexingForReason:128];
   }
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Add Contact change history event", &v14, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Add Contact change history event", &v14, 2u);
     }
 
-    v6 = [v4 contact];
+    contact = [eventCopy contact];
     v7 = objc_retainBlock(ch_allPhoneNumberLastFourDigits);
     v16[0] = v7;
     v8 = objc_retainBlock(ch_allEmails);
     v16[1] = v8;
     v9 = [NSArray arrayWithObjects:v16 count:2];
-    v10 = [v6 handlesIncluding:v9];
+    v10 = [contact handlesIncluding:v9];
 
-    v11 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138739971;
       v15 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating calls for handle IDs: %{sensitive}@", &v14, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating calls for handle IDs: %{sensitive}@", &v14, 0xCu);
     }
 
     if (v10)
     {
-      v12 = [(CHContactChangeManager *)self spotlightIndexManager];
+      spotlightIndexManager = [(CHContactChangeManager *)self spotlightIndexManager];
 
-      if (v12)
+      if (spotlightIndexManager)
       {
-        v13 = [(CHContactChangeManager *)self spotlightIndexManager];
-        [v13 updateCallsHavingHandles:v10 orContactIdentifier:0];
+        spotlightIndexManager2 = [(CHContactChangeManager *)self spotlightIndexManager];
+        [spotlightIndexManager2 updateCallsHavingHandles:v10 orContactIdentifier:0];
       }
 
       else
       {
-        v13 = [(CHContactChangeManager *)self logHandle];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        spotlightIndexManager2 = [(CHContactChangeManager *)self logHandle];
+        if (os_log_type_enabled(spotlightIndexManager2, OS_LOG_TYPE_ERROR))
         {
           sub_1000328A0();
         }
@@ -344,49 +344,49 @@ LABEL_33:
   }
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v15) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Update Contact change history event", &v15, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Update Contact change history event", &v15, 2u);
     }
 
-    v6 = [v4 contact];
+    contact = [eventCopy contact];
     v7 = objc_retainBlock(ch_allPhoneNumberLastFourDigits);
     v17[0] = v7;
     v8 = objc_retainBlock(ch_allEmails);
     v17[1] = v8;
     v9 = [NSArray arrayWithObjects:v17 count:2];
-    v10 = [v6 handlesIncluding:v9];
+    v10 = [contact handlesIncluding:v9];
 
-    v11 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138739971;
       v16 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating calls for handle IDs: %{sensitive}@", &v15, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating calls for handle IDs: %{sensitive}@", &v15, 0xCu);
     }
 
     if (v10)
     {
-      v12 = [(CHContactChangeManager *)self spotlightIndexManager];
+      spotlightIndexManager = [(CHContactChangeManager *)self spotlightIndexManager];
 
-      if (v12)
+      if (spotlightIndexManager)
       {
-        v13 = [(CHContactChangeManager *)self spotlightIndexManager];
-        v14 = [v6 identifier];
-        [v13 updateCallsHavingHandles:v10 orContactIdentifier:v14];
+        spotlightIndexManager2 = [(CHContactChangeManager *)self spotlightIndexManager];
+        identifier = [contact identifier];
+        [spotlightIndexManager2 updateCallsHavingHandles:v10 orContactIdentifier:identifier];
       }
 
       else
       {
-        v13 = [(CHContactChangeManager *)self logHandle];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        spotlightIndexManager2 = [(CHContactChangeManager *)self logHandle];
+        if (os_log_type_enabled(spotlightIndexManager2, OS_LOG_TYPE_ERROR))
         {
           sub_1000328A0();
         }
@@ -395,33 +395,33 @@ LABEL_33:
   }
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v5 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Delete Contact change history event", v9, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Handling a Delete Contact change history event", v9, 2u);
     }
 
-    v6 = [v4 contactIdentifier];
-    if (v6)
+    contactIdentifier = [eventCopy contactIdentifier];
+    if (contactIdentifier)
     {
-      v7 = [(CHContactChangeManager *)self spotlightIndexManager];
+      spotlightIndexManager = [(CHContactChangeManager *)self spotlightIndexManager];
 
-      if (v7)
+      if (spotlightIndexManager)
       {
-        v8 = [(CHContactChangeManager *)self spotlightIndexManager];
-        [v8 updateCallsHavingHandles:0 orContactIdentifier:v6];
+        spotlightIndexManager2 = [(CHContactChangeManager *)self spotlightIndexManager];
+        [spotlightIndexManager2 updateCallsHavingHandles:0 orContactIdentifier:contactIdentifier];
       }
 
       else
       {
-        v8 = [(CHContactChangeManager *)self logHandle];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        spotlightIndexManager2 = [(CHContactChangeManager *)self logHandle];
+        if (os_log_type_enabled(spotlightIndexManager2, OS_LOG_TYPE_ERROR))
         {
           sub_1000328A0();
         }
@@ -434,16 +434,16 @@ LABEL_33:
 {
   if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
   {
-    v3 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v6 = 0;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating current history token", v6, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "CHContactChangeManager: Updating current history token", v6, 2u);
     }
 
-    v4 = [(CHContactChangeManager *)self contactStore];
-    v5 = [v4 currentHistoryToken];
-    [(CHContactChangeManager *)self setCurrentHistoryToken:v5];
+    contactStore = [(CHContactChangeManager *)self contactStore];
+    currentHistoryToken = [contactStore currentHistoryToken];
+    [(CHContactChangeManager *)self setCurrentHistoryToken:currentHistoryToken];
   }
 }
 
@@ -466,18 +466,18 @@ LABEL_33:
 
 - (void)handleAcceptedContactsChanged
 {
-  v3 = [(CHContactChangeManager *)self spotlightIndexManager];
+  spotlightIndexManager = [(CHContactChangeManager *)self spotlightIndexManager];
 
-  if (v3)
+  if (spotlightIndexManager)
   {
-    v5 = [(CHContactChangeManager *)self spotlightIndexManager];
-    [v5 updateCallsForAcceptedContacts];
+    spotlightIndexManager2 = [(CHContactChangeManager *)self spotlightIndexManager];
+    [spotlightIndexManager2 updateCallsForAcceptedContacts];
   }
 
   else
   {
-    v4 = [(CHContactChangeManager *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    logHandle = [(CHContactChangeManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_1000328A0();
     }

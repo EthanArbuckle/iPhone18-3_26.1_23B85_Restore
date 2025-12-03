@@ -6,7 +6,7 @@
 - (double)introTransitionDuration;
 - (double)outroTransitionDuration;
 - (id)container;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDebugLog;
 - (id)nearestLayerGroup;
@@ -15,55 +15,55 @@
 - (int64_t)index;
 - (int64_t)slideCount;
 - (int64_t)textCount;
-- (void)addEffect:(id)a3;
-- (void)addEffects:(id)a3;
-- (void)addFilter:(id)a3;
-- (void)addFilters:(id)a3;
-- (void)adjustPhasesWithDuration:(double)a3;
-- (void)calculateDurationToSmallest:(BOOL)a3;
+- (void)addEffect:(id)effect;
+- (void)addEffects:(id)effects;
+- (void)addFilter:(id)filter;
+- (void)addFilters:(id)filters;
+- (void)adjustPhasesWithDuration:(double)duration;
+- (void)calculateDurationToSmallest:(BOOL)smallest;
 - (void)cleanup;
 - (void)convertFromEffectContainerToParallelizer;
 - (void)convertFromParallelizerToEffectContainer;
-- (void)copyAudioPlaylist:(id)a3;
-- (void)copyEffects:(id)a3;
-- (void)copyFilters:(id)a3;
-- (void)copyTransition:(id)a3;
-- (void)copyVars:(id)a3;
+- (void)copyAudioPlaylist:(id)playlist;
+- (void)copyEffects:(id)effects;
+- (void)copyFilters:(id)filters;
+- (void)copyTransition:(id)transition;
+- (void)copyVars:(id)vars;
 - (void)dealloc;
 - (void)disconnectTransition;
-- (void)insertEffects:(id)a3 atIndex:(int64_t)a4;
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inEffectsAtIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4;
-- (void)moveEffectsFromIndices:(id)a3 toIndex:(int64_t)a4;
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4;
+- (void)insertEffects:(id)effects atIndex:(int64_t)index;
+- (void)insertFilters:(id)filters atIndex:(int64_t)index;
+- (void)insertObject:(id)object inEffectsAtIndex:(int64_t)index;
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index;
+- (void)moveEffectsFromIndices:(id)indices toIndex:(int64_t)index;
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index;
 - (void)reconnectTransition;
 - (void)removeAllEffects;
 - (void)removeAllFilters;
-- (void)removeEffectsAtIndices:(id)a3;
-- (void)removeFiltersAtIndices:(id)a3;
-- (void)removeObjectFromEffectsAtIndex:(int64_t)a3;
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3;
-- (void)replaceObjectInEffectsAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)setAudioPlaylist:(id)a3;
-- (void)setBackgroundCGColor:(CGColor *)a3;
-- (void)setBackgroundColorString:(id)a3;
-- (void)setContainerEffect:(id)a3;
-- (void)setContainerParallelizer:(id)a3;
-- (void)setContainerPlug:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setParentLayer:(id)a3;
-- (void)setScriptingTransition:(id)a3;
-- (void)setTransition:(id)a3;
-- (void)setUserInfoAttribute:(id)a3 forKey:(id)a4;
+- (void)removeEffectsAtIndices:(id)indices;
+- (void)removeFiltersAtIndices:(id)indices;
+- (void)removeObjectFromEffectsAtIndex:(int64_t)index;
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index;
+- (void)replaceObjectInEffectsAtIndex:(int64_t)index withObject:(id)object;
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object;
+- (void)setAudioPlaylist:(id)playlist;
+- (void)setBackgroundCGColor:(CGColor *)color;
+- (void)setBackgroundColorString:(id)string;
+- (void)setContainerEffect:(id)effect;
+- (void)setContainerParallelizer:(id)parallelizer;
+- (void)setContainerPlug:(id)plug;
+- (void)setDuration:(double)duration;
+- (void)setParentLayer:(id)layer;
+- (void)setScriptingTransition:(id)transition;
+- (void)setTransition:(id)transition;
+- (void)setUserInfoAttribute:(id)attribute forKey:(id)key;
 @end
 
 @implementation MPEffectContainer
 
 + (id)effectContainer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -98,16 +98,16 @@
     effects = [(NSMutableArray *)effects count];
   }
 
-  v5 = [(NSString *)v3 stringByAppendingFormat:@"\t               Effect Count: %d\n", effects];
+  effects = [(NSString *)v3 stringByAppendingFormat:@"\t               Effect Count: %d\n", effects];
   filters = self->_filters;
   if (filters)
   {
     filters = [(NSMutableArray *)filters count];
   }
 
-  v7 = [(NSString *)v5 stringByAppendingFormat:@"\t               Filter Count: %d\n", filters];
+  filters = [(NSString *)effects stringByAppendingFormat:@"\t               Filter Count: %d\n", filters];
   [(MPEffectContainer *)self duration];
-  v9 = [(NSString *)v7 stringByAppendingFormat:@"\t                   Duration: %f\n", v8];
+  v9 = [(NSString *)filters stringByAppendingFormat:@"\t                   Duration: %f\n", v8];
   if ([(MPEffectContainer *)self transition])
   {
     v10 = @"YES";
@@ -143,9 +143,9 @@
   return [(NSString *)v13 stringByAppendingFormat:@"\t Has Container Parallelizer: %@\n", v14];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyVars:self];
   [v4 copyEffects:self->_effects];
   [v4 copyFilters:self->_filters];
@@ -190,9 +190,9 @@
   [(MPEffectContainer *)&v6 dealloc];
 }
 
-- (void)addEffect:(id)a3
+- (void)addEffect:(id)effect
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v6 = [[NSArray alloc] initWithObjects:{effect, 0}];
   effects = self->_effects;
   if (effects)
   {
@@ -207,7 +207,7 @@
   [(MPEffectContainer *)self insertEffects:v6 atIndex:v5];
 }
 
-- (void)addEffects:(id)a3
+- (void)addEffects:(id)effects
 {
   effects = self->_effects;
   if (effects)
@@ -220,24 +220,24 @@
     v6 = 0;
   }
 
-  [(MPEffectContainer *)self insertEffects:a3 atIndex:v6];
+  [(MPEffectContainer *)self insertEffects:effects atIndex:v6];
 }
 
-- (void)insertEffects:(id)a3 atIndex:(int64_t)a4
+- (void)insertEffects:(id)effects atIndex:(int64_t)index
 {
   if (!self->_effects)
   {
     self->_effects = objc_alloc_init(NSMutableArray);
   }
 
-  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(effects, "count")}];
   [(MPEffectContainer *)self willChange:2 valuesAtIndexes:v7 forKey:@"effects"];
-  [(NSMutableArray *)self->_effects insertObjects:a3 atIndexes:v7];
+  [(NSMutableArray *)self->_effects insertObjects:effects atIndexes:v7];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  v8 = [effects countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v8)
   {
     v9 = v8;
@@ -248,13 +248,13 @@
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(effects);
         }
 
         [*(*(&v43 + 1) + 8 * i) setParentContainer:self];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      v9 = [effects countByEnumeratingWithState:&v43 objects:v50 count:16];
     }
 
     while (v9);
@@ -262,7 +262,7 @@
 
   if (self->_containerPlug)
   {
-    if (-[MPEffectContainer shouldBeParallelizer](self, "shouldBeParallelizer") || [a3 count] != &dword_0 + 1)
+    if (-[MPEffectContainer shouldBeParallelizer](self, "shouldBeParallelizer") || [effects count] != &dword_0 + 1)
     {
       if (!self->_containerParallelizer)
       {
@@ -273,7 +273,7 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v14 = [a3 countByEnumeratingWithState:&v39 objects:v49 count:16];
+      v14 = [effects countByEnumeratingWithState:&v39 objects:v49 count:16];
       if (v14)
       {
         v15 = v14;
@@ -284,7 +284,7 @@
           {
             if (*v40 != v16)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(effects);
             }
 
             v18 = *(*(&v39 + 1) + 8 * j);
@@ -293,7 +293,7 @@
             [v18 setContainer:v19];
           }
 
-          v15 = [a3 countByEnumeratingWithState:&v39 objects:v49 count:16];
+          v15 = [effects countByEnumeratingWithState:&v39 objects:v49 count:16];
         }
 
         while (v15);
@@ -338,9 +338,9 @@
 
       v12 = [-[MPLayer montage](self->_parentLayer "montage")];
       [(MCPlug *)self->_containerPlug setContainer:v12];
-      v13 = [a3 lastObject];
-      [v13 setPlug:0];
-      [v13 setContainer:v12];
+      lastObject = [effects lastObject];
+      [lastObject setPlug:0];
+      [lastObject setContainer:v12];
     }
   }
 
@@ -355,7 +355,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = [a3 countByEnumeratingWithState:&v31 objects:v47 count:16];
+    v27 = [effects countByEnumeratingWithState:&v31 objects:v47 count:16];
     if (v27)
     {
       v28 = v27;
@@ -366,13 +366,13 @@
         {
           if (*v32 != v29)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(effects);
           }
 
           [*(*(&v31 + 1) + 8 * m) scaleMainDuration];
         }
 
-        v28 = [a3 countByEnumeratingWithState:&v31 objects:v47 count:16];
+        v28 = [effects countByEnumeratingWithState:&v31 objects:v47 count:16];
       }
 
       while (v28);
@@ -384,16 +384,16 @@
   [(MPEffectContainer *)self didChange:2 valuesAtIndexes:v7 forKey:@"effects"];
 }
 
-- (void)removeEffectsAtIndices:(id)a3
+- (void)removeEffectsAtIndices:(id)indices
 {
   effects = self->_effects;
   if (effects && [(NSMutableArray *)effects count])
   {
     v6 = objc_autoreleasePoolPush();
-    [(MPEffectContainer *)self willChange:3 valuesAtIndexes:a3 forKey:@"effects"];
+    [(MPEffectContainer *)self willChange:3 valuesAtIndexes:indices forKey:@"effects"];
     if ([(NSMutableArray *)self->_effects count]< 2)
     {
-      if (-[NSMutableArray count](self->_effects, "count") == &dword_0 + 1 && ![a3 firstIndex])
+      if (-[NSMutableArray count](self->_effects, "count") == &dword_0 + 1 && ![indices firstIndex])
       {
         v12 = [(NSMutableArray *)self->_effects objectAtIndex:0];
         v13 = v12;
@@ -420,10 +420,10 @@
 
     else
     {
-      v7 = [a3 lastIndex];
-      if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+      lastIndex = [indices lastIndex];
+      if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
       {
-        for (i = v7; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+        for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
         {
           v9 = [(NSMutableArray *)self->_effects objectAtIndex:i];
           v10 = v9;
@@ -440,7 +440,7 @@
       }
     }
 
-    [(NSMutableArray *)self->_effects removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->_effects removeObjectsAtIndexes:indices];
     if (self->_containerParallelizer)
     {
       if ([(MPEffectContainer *)self shouldBeParallelizer])
@@ -484,7 +484,7 @@
       }
     }
 
-    [(MPEffectContainer *)self didChange:3 valuesAtIndexes:a3 forKey:@"effects"];
+    [(MPEffectContainer *)self didChange:3 valuesAtIndexes:indices forKey:@"effects"];
     objc_autoreleasePoolPop(v6);
   }
 }
@@ -498,7 +498,7 @@
   }
 }
 
-- (void)moveEffectsFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveEffectsFromIndices:(id)indices toIndex:(int64_t)index
 {
   if (self->_effects)
   {
@@ -506,9 +506,9 @@
     if (containerParallelizer)
     {
       v8 = [NSMutableArray arrayWithArray:[(MCContainerParallelizer *)containerParallelizer zOrderedPlugs]];
-      v9 = [(NSMutableArray *)v8 objectsAtIndexes:a3];
-      [(NSMutableArray *)v8 removeObjectsAtIndexes:a3];
-      v10 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(v9, "count")}];
+      v9 = [(NSMutableArray *)v8 objectsAtIndexes:indices];
+      [(NSMutableArray *)v8 removeObjectsAtIndexes:indices];
+      v10 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(v9, "count")}];
       [(NSMutableArray *)v8 insertObjects:v9 atIndexes:v10];
 
       v20 = 0u;
@@ -540,16 +540,16 @@
       }
     }
 
-    v16 = [(NSMutableArray *)self->_effects objectsAtIndexes:a3];
-    [(NSMutableArray *)self->_effects removeObjectsAtIndexes:a3];
-    v17 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(v16, "count")}];
+    v16 = [(NSMutableArray *)self->_effects objectsAtIndexes:indices];
+    [(NSMutableArray *)self->_effects removeObjectsAtIndexes:indices];
+    v17 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(v16, "count")}];
     [(NSMutableArray *)self->_effects insertObjects:v16 atIndexes:v17];
   }
 }
 
-- (void)setTransition:(id)a3
+- (void)setTransition:(id)transition
 {
-  if (a3)
+  if (transition)
   {
     v5 = [-[MPEffectContainer parentLayer](self "parentLayer")];
     if ([objc_msgSend(v5 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
@@ -559,10 +559,10 @@
       parentLayer = self->_parentLayer;
       if (parentLayer)
       {
-        v9 = [(MPLayer *)parentLayer effectContainers];
+        effectContainers = [(MPLayer *)parentLayer effectContainers];
         if ([(MPEffectContainer *)self index])
         {
-          v10 = [v9 objectAtIndex:{-[MPEffectContainer index](self, "index") - 1}];
+          v10 = [effectContainers objectAtIndex:{-[MPEffectContainer index](self, "index") - 1}];
         }
 
         else
@@ -570,10 +570,10 @@
           v10 = 0;
         }
 
-        v11 = [(MPEffectContainer *)self index];
-        if (v11 != [v9 count] - 1)
+        index = [(MPEffectContainer *)self index];
+        if (index != [effectContainers count] - 1)
         {
-          v12 = [v9 objectAtIndex:{-[MPEffectContainer index](self, "index") + 1}];
+          v12 = [effectContainers objectAtIndex:{-[MPEffectContainer index](self, "index") + 1}];
           if (v12)
           {
             v13 = v12;
@@ -613,10 +613,10 @@
         }
       }
 
-      [a3 duration];
+      [transition duration];
       if (v23 > v7)
       {
-        [a3 setDuration:v7];
+        [transition setDuration:v7];
       }
     }
   }
@@ -632,9 +632,9 @@
       v26 = v27;
     }
 
-    if (a3)
+    if (transition)
     {
-      [a3 duration];
+      [transition duration];
       v25 = v28;
     }
 
@@ -660,11 +660,11 @@
     }
   }
 
-  if (a3)
+  if (transition)
   {
-    v33 = a3;
-    self->_transition = v33;
-    [(MPTransition *)v33 setParent:self];
+    transitionCopy = transition;
+    self->_transition = transitionCopy;
+    [(MPTransition *)transitionCopy setParent:self];
     if (![(MPEffectContainer *)self isTransitionConnected])
     {
       v34 = self->_parentLayer;
@@ -700,9 +700,9 @@
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:filter];
   filters = self->_filters;
   if (filters)
   {
@@ -717,7 +717,7 @@
   [(MPEffectContainer *)self insertFilters:v4 atIndex:v6];
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
   filters = self->_filters;
   if (filters)
@@ -730,24 +730,24 @@
     v6 = 0;
   }
 
-  [(MPEffectContainer *)self insertFilters:a3 atIndex:v6];
+  [(MPEffectContainer *)self insertFilters:filters atIndex:v6];
 }
 
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4
+- (void)insertFilters:(id)filters atIndex:(int64_t)index
 {
   if (!self->_filters)
   {
     self->_filters = objc_alloc_init(NSMutableArray);
   }
 
-  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(filters, "count")}];
   [(MPEffectContainer *)self willChange:2 valuesAtIndexes:v7 forKey:@"filters"];
-  [(NSMutableArray *)self->_filters insertObjects:a3 atIndexes:v7];
+  [(NSMutableArray *)self->_filters insertObjects:filters atIndexes:v7];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v8 = [filters countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -758,13 +758,13 @@
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
         [*(*(&v21 + 1) + 8 * i) setParent:self];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [filters countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -776,7 +776,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v12 = [filters countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -784,22 +784,22 @@
       do
       {
         v15 = 0;
-        v16 = a4;
+        indexCopy = index;
         do
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
-          a4 = v16 + 1;
-          [*(*(&v17 + 1) + 8 * v15) setFilter:{-[MCPlug insertFilterWithFilterID:atIndex:](self->_containerPlug, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v17 + 1) + 8 * v15), "filterID"), v16)}];
+          index = indexCopy + 1;
+          [*(*(&v17 + 1) + 8 * v15) setFilter:{-[MCPlug insertFilterWithFilterID:atIndex:](self->_containerPlug, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v17 + 1) + 8 * v15), "filterID"), indexCopy)}];
           v15 = v15 + 1;
-          ++v16;
+          ++indexCopy;
         }
 
         while (v13 != v15);
-        v13 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v13 = [filters countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v13);
@@ -809,16 +809,16 @@
   [(MPEffectContainer *)self didChange:2 valuesAtIndexes:v7 forKey:@"filters"];
 }
 
-- (void)removeFiltersAtIndices:(id)a3
+- (void)removeFiltersAtIndices:(id)indices
 {
   filters = self->_filters;
   if (filters && [(NSMutableArray *)filters count])
   {
-    [(MPEffectContainer *)self willChange:3 valuesAtIndexes:a3 forKey:@"filters"];
-    v6 = [a3 lastIndex];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    [(MPEffectContainer *)self willChange:3 valuesAtIndexes:indices forKey:@"filters"];
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v8 = [(NSMutableArray *)self->_filters objectAtIndex:i];
         [v8 setParent:0];
@@ -829,12 +829,12 @@
     containerPlug = self->_containerPlug;
     if (containerPlug)
     {
-      [(MCPlug *)containerPlug removeFiltersAtIndices:a3];
+      [(MCPlug *)containerPlug removeFiltersAtIndices:indices];
     }
 
-    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:indices];
 
-    [(MPEffectContainer *)self didChange:3 valuesAtIndexes:a3 forKey:@"filters"];
+    [(MPEffectContainer *)self didChange:3 valuesAtIndexes:indices forKey:@"filters"];
   }
 }
 
@@ -847,21 +847,21 @@
   }
 }
 
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index
 {
   if (self->_filters)
   {
-    v7 = [a3 firstIndex];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [indices firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      v8 = firstIndex;
       do
       {
         v9 = [(NSMutableArray *)self->_filters objectAtIndex:v8];
         [(NSMutableArray *)self->_filters removeObjectAtIndex:v8];
-        [(NSMutableArray *)self->_filters insertObject:v9 atIndex:a4 - (v8 < a4)];
-        v8 = [a3 indexGreaterThanIndex:v8];
-        ++a4;
+        [(NSMutableArray *)self->_filters insertObject:v9 atIndex:index - (v8 < index)];
+        v8 = [indices indexGreaterThanIndex:v8];
+        ++index;
       }
 
       while (v8 != 0x7FFFFFFFFFFFFFFFLL);
@@ -871,19 +871,19 @@
     if (containerPlug)
     {
 
-      [(MCPlug *)containerPlug moveFiltersAtIndices:a3 toIndex:a4];
+      [(MCPlug *)containerPlug moveFiltersAtIndices:indices toIndex:index];
     }
   }
 }
 
-- (void)setBackgroundColorString:(id)a3
+- (void)setBackgroundColorString:(id)string
 {
-  v4 = [MPUtilities CGColorFromString:a3];
+  v4 = [MPUtilities CGColorFromString:string];
 
   [(MPEffectContainer *)self setBackgroundCGColor:v4];
 }
 
-- (void)setBackgroundCGColor:(CGColor *)a3
+- (void)setBackgroundCGColor:(CGColor *)color
 {
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
@@ -892,9 +892,9 @@
     self->_backgroundColor = 0;
   }
 
-  if (a3)
+  if (color)
   {
-    self->_backgroundColor = CGColorRetain(a3);
+    self->_backgroundColor = CGColorRetain(color);
     if (!self->_containerPlug)
     {
       return;
@@ -911,7 +911,7 @@
       }
     }
 
-    v7 = a3;
+    colorCopy = color;
     goto LABEL_14;
   }
 
@@ -925,15 +925,15 @@
     containerParallelizer = self->_containerParallelizer;
     if (containerParallelizer)
     {
-      v7 = 0;
+      colorCopy = 0;
 LABEL_14:
 
-      [(MCContainerParallelizer *)containerParallelizer setBackgroundColor:v7];
+      [(MCContainerParallelizer *)containerParallelizer setBackgroundColor:colorCopy];
     }
   }
 }
 
-- (void)setAudioPlaylist:(id)a3
+- (void)setAudioPlaylist:(id)playlist
 {
   audioPlaylist = self->_audioPlaylist;
   if (audioPlaylist)
@@ -945,20 +945,20 @@ LABEL_14:
     self->_audioPlaylist = 0;
   }
 
-  if (a3)
+  if (playlist)
   {
-    v6 = a3;
-    self->_audioPlaylist = v6;
-    [(MPAudioPlaylist *)v6 setParentObject:self];
+    playlistCopy = playlist;
+    self->_audioPlaylist = playlistCopy;
+    [(MPAudioPlaylist *)playlistCopy setParentObject:self];
     if (self->_containerPlug)
     {
       if (self->_containerParallelizer || ([(MPEffectContainer *)self convertFromEffectContainerToParallelizer], self->_containerParallelizer))
       {
         [(MPAudioPlaylist *)self->_audioPlaylist setMontage:[(MPLayer *)self->_parentLayer montage]];
         v7 = self->_audioPlaylist;
-        v8 = [(MCContainer *)self->_containerParallelizer audioPlaylistCreateIfNeeded];
+        audioPlaylistCreateIfNeeded = [(MCContainer *)self->_containerParallelizer audioPlaylistCreateIfNeeded];
 
-        [(MPAudioPlaylist *)v7 setAudioPlaylist:v8];
+        [(MPAudioPlaylist *)v7 setAudioPlaylist:audioPlaylistCreateIfNeeded];
       }
     }
   }
@@ -988,9 +988,9 @@ LABEL_14:
   {
     parentLayer = self->_parentLayer;
 LABEL_5:
-    v4 = [(MPLayer *)parentLayer effectContainers];
+    effectContainers = [(MPLayer *)parentLayer effectContainers];
 
-    return [v4 indexOfObject:self];
+    return [effectContainers indexOfObject:self];
   }
 
   containerPlug = self->_containerPlug;
@@ -998,16 +998,16 @@ LABEL_5:
   return [(MCPlug *)containerPlug index];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
-    v3 = a3;
+    durationCopy = duration;
     v5 = [-[MPEffectContainer parentLayer](self "parentLayer")];
-    v6 = [(MPEffectContainer *)self nearestLayerGroup];
-    if (v6)
+    nearestLayerGroup = [(MPEffectContainer *)self nearestLayerGroup];
+    if (nearestLayerGroup)
     {
-      v7 = [v6 autoAdjustDuration] ^ 1;
+      v7 = [nearestLayerGroup autoAdjustDuration] ^ 1;
     }
 
     else
@@ -1020,17 +1020,17 @@ LABEL_5:
       if ((v7 & 1) == 0)
       {
         [(MPEffectContainer *)self findMinDuration];
-        if (v8 > v3)
+        if (v8 > durationCopy)
         {
           [(MPEffectContainer *)self findMinDuration];
-          v3 = v9;
+          durationCopy = v9;
         }
       }
     }
 
     [(MPEffectContainer *)self duration];
-    v11 = v3 - v10;
-    self->_duration = v3;
+    v11 = durationCopy - v10;
+    self->_duration = durationCopy;
     parentLayer = self->_parentLayer;
     if (!((parentLayer == 0) | v7 & 1))
     {
@@ -1090,8 +1090,8 @@ LABEL_5:
 
 - (double)introTransitionDuration
 {
-  v3 = [(MPEffectContainer *)self index];
-  if (!v3)
+  index = [(MPEffectContainer *)self index];
+  if (!index)
   {
     return 0.0;
   }
@@ -1125,9 +1125,9 @@ LABEL_5:
     return self->_containerParallelizer;
   }
 
-  v5 = [(NSMutableArray *)self->_effects lastObject];
+  lastObject = [(NSMutableArray *)self->_effects lastObject];
 
-  return [v5 container];
+  return [lastObject container];
 }
 
 - (double)findMinDuration
@@ -1138,10 +1138,10 @@ LABEL_5:
     return 0.0;
   }
 
-  v4 = [(MPLayer *)parentLayer effectContainers];
+  effectContainers = [(MPLayer *)parentLayer effectContainers];
   if ([(MPEffectContainer *)self index])
   {
-    v5 = [v4 objectAtIndex:{-[MPEffectContainer index](self, "index") - 1}];
+    v5 = [effectContainers objectAtIndex:{-[MPEffectContainer index](self, "index") - 1}];
   }
 
   else
@@ -1293,15 +1293,15 @@ LABEL_5:
 
 - (id)parentDocument
 {
-  v2 = [(MPEffectContainer *)self parentLayer];
+  parentLayer = [(MPEffectContainer *)self parentLayer];
 
-  return [v2 parentDocument];
+  return [parentLayer parentDocument];
 }
 
-- (void)copyVars:(id)a3
+- (void)copyVars:(id)vars
 {
-  self->_startTime = *(a3 + 10);
-  self->_duration = *(a3 + 11);
+  self->_startTime = *(vars + 10);
+  self->_duration = *(vars + 11);
   uuid = self->_uuid;
   if (uuid)
   {
@@ -1316,19 +1316,19 @@ LABEL_5:
     self->_backgroundColor = 0;
   }
 
-  self->_backgroundColor = CGColorCreateCopy(*(a3 + 12));
+  self->_backgroundColor = CGColorCreateCopy(*(vars + 12));
 }
 
-- (void)copyEffects:(id)a3
+- (void)copyEffects:(id)effects
 {
-  if (a3)
+  if (effects)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [effects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1340,7 +1340,7 @@ LABEL_5:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(effects);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -1350,7 +1350,7 @@ LABEL_5:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [effects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -1360,16 +1360,16 @@ LABEL_5:
   }
 }
 
-- (void)copyFilters:(id)a3
+- (void)copyFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1381,7 +1381,7 @@ LABEL_5:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -1391,29 +1391,29 @@ LABEL_5:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    [(MPEffectContainer *)self addFilters:a3];
+    [(MPEffectContainer *)self addFilters:filters];
   }
 }
 
-- (void)copyTransition:(id)a3
+- (void)copyTransition:(id)transition
 {
-  v4 = [a3 copy];
+  v4 = [transition copy];
   [(MPEffectContainer *)self setTransition:v4];
 }
 
-- (void)copyAudioPlaylist:(id)a3
+- (void)copyAudioPlaylist:(id)playlist
 {
-  v4 = [a3 copy];
+  v4 = [playlist copy];
   [(MPEffectContainer *)self setAudioPlaylist:v4];
 }
 
-- (void)adjustPhasesWithDuration:(double)a3
+- (void)adjustPhasesWithDuration:(double)duration
 {
   v20 = 0u;
   v21 = 0u;
@@ -1443,7 +1443,7 @@ LABEL_5:
           v14 = v13;
           v15 = v12 - v13;
           [v10 phaseOutDuration];
-          v17 = v16 - a3;
+          v17 = v16 - duration;
           [v10 mainDuration];
           v19 = v18;
           if (v17 == 0.0)
@@ -1456,7 +1456,7 @@ LABEL_5:
 
           else
           {
-            [v10 setPhaseOutDuration:a3];
+            [v10 setPhaseOutDuration:duration];
             if (v15 == 0.0)
             {
               goto LABEL_12;
@@ -1486,7 +1486,7 @@ LABEL_12:
   [(MPEffectContainer *)self setAudioPlaylist:0];
 }
 
-- (void)setContainerPlug:(id)a3
+- (void)setContainerPlug:(id)plug
 {
   containerPlug = self->_containerPlug;
   if (containerPlug)
@@ -1495,18 +1495,18 @@ LABEL_12:
     self->_containerPlug = 0;
   }
 
-  v6 = a3;
-  self->_containerPlug = v6;
-  if (v6)
+  plugCopy = plug;
+  self->_containerPlug = plugCopy;
+  if (plugCopy)
   {
     if ([(NSMutableArray *)self->_effects count]== &dword_0 + 1)
     {
-      v7 = [(NSMutableArray *)self->_effects lastObject];
-      [v7 phaseInDuration];
+      lastObject = [(NSMutableArray *)self->_effects lastObject];
+      [lastObject phaseInDuration];
       [(MCPlug *)self->_containerPlug setPhaseInDuration:?];
-      [v7 phaseOutDuration];
+      [lastObject phaseOutDuration];
       [(MCPlug *)self->_containerPlug setPhaseOutDuration:?];
-      [v7 mainDuration];
+      [lastObject mainDuration];
     }
 
     else
@@ -1515,9 +1515,9 @@ LABEL_12:
     }
 
     [(MCPlug *)self->_containerPlug setLoopDuration:?];
-    v19 = [(MPEffectContainer *)self shouldBeParallelizer];
+    shouldBeParallelizer = [(MPEffectContainer *)self shouldBeParallelizer];
     containerParallelizer = self->_containerParallelizer;
-    if (v19)
+    if (shouldBeParallelizer)
     {
       if (!containerParallelizer)
       {
@@ -1574,9 +1574,9 @@ LABEL_12:
       self->_containerParallelizer = 0;
       v31 = [-[MPLayer montage](self->_parentLayer "montage")];
       [(MCPlug *)self->_containerPlug setContainer:v31];
-      v32 = [(NSMutableArray *)self->_effects lastObject];
-      [v32 setPlug:0];
-      [v32 setContainer:v31];
+      lastObject2 = [(NSMutableArray *)self->_effects lastObject];
+      [lastObject2 setPlug:0];
+      [lastObject2 setContainer:v31];
     }
 
     v49 = 0u;
@@ -1683,7 +1683,7 @@ LABEL_12:
   }
 }
 
-- (void)setContainerParallelizer:(id)a3
+- (void)setContainerParallelizer:(id)parallelizer
 {
   containerParallelizer = self->_containerParallelizer;
   if (containerParallelizer)
@@ -1692,11 +1692,11 @@ LABEL_12:
     self->_containerParallelizer = 0;
   }
 
-  v6 = a3;
-  self->_containerParallelizer = v6;
-  if (v6)
+  parallelizerCopy = parallelizer;
+  self->_containerParallelizer = parallelizerCopy;
+  if (parallelizerCopy)
   {
-    [(MCContainerParallelizer *)v6 setBackgroundColor:self->_backgroundColor];
+    [(MCContainerParallelizer *)parallelizerCopy setBackgroundColor:self->_backgroundColor];
     audioPlaylist = self->_audioPlaylist;
     if (!audioPlaylist)
     {
@@ -1705,7 +1705,7 @@ LABEL_12:
 
     [(MPAudioPlaylist *)audioPlaylist setMontage:[(MPLayer *)self->_parentLayer montage]];
     v8 = self->_audioPlaylist;
-    v9 = [(MCContainer *)self->_containerParallelizer audioPlaylistCreateIfNeeded];
+    audioPlaylistCreateIfNeeded = [(MCContainer *)self->_containerParallelizer audioPlaylistCreateIfNeeded];
     v10 = v8;
   }
 
@@ -1719,29 +1719,29 @@ LABEL_12:
 
     [(MPAudioPlaylist *)v11 setMontage:0];
     v10 = self->_audioPlaylist;
-    v9 = 0;
+    audioPlaylistCreateIfNeeded = 0;
   }
 
-  [(MPAudioPlaylist *)v10 setAudioPlaylist:v9];
+  [(MPAudioPlaylist *)v10 setAudioPlaylist:audioPlaylistCreateIfNeeded];
 }
 
-- (void)setContainerEffect:(id)a3
+- (void)setContainerEffect:(id)effect
 {
-  v4 = [(NSMutableArray *)self->_effects lastObject];
-  [v4 setPlug:0];
+  lastObject = [(NSMutableArray *)self->_effects lastObject];
+  [lastObject setPlug:0];
 
-  [v4 setContainer:a3];
+  [lastObject setContainer:effect];
 }
 
-- (void)setParentLayer:(id)a3
+- (void)setParentLayer:(id)layer
 {
-  if (a3 && self->_parentLayer)
+  if (layer && self->_parentLayer)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"An effect container may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
   self->_transitionDisconnected = 0;
-  self->_parentLayer = a3;
+  self->_parentLayer = layer;
 }
 
 - (BOOL)shouldBeParallelizer
@@ -1799,19 +1799,19 @@ LABEL_8:
   {
     v3 = [-[MPEffectContainer parentLayer](self "parentLayer")];
     [objc_msgSend(v3 "montage")];
-    v4 = [(NSMutableArray *)self->_effects lastObject];
-    [objc_msgSend(v4 "plug")];
+    lastObject = [(NSMutableArray *)self->_effects lastObject];
+    [objc_msgSend(lastObject "plug")];
     v6 = v5;
-    [objc_msgSend(v4 "plug")];
+    [objc_msgSend(lastObject "plug")];
     v8 = v7;
-    [objc_msgSend(v4 "plug")];
+    [objc_msgSend(lastObject "plug")];
     v10 = v9;
-    v11 = [v4 container];
-    if (v11)
+    container = [lastObject container];
+    if (container)
     {
-      v12 = v11;
-      [v11 specialRetain];
-      -[MCContainerParallelizer removePlug:](self->_containerParallelizer, "removePlug:", [v4 plug]);
+      v12 = container;
+      [container specialRetain];
+      -[MCContainerParallelizer removePlug:](self->_containerParallelizer, "removePlug:", [lastObject plug]);
       [(MCPlug *)self->_containerPlug setContainer:v12];
       [v12 specialRelease];
     }
@@ -1826,10 +1826,10 @@ LABEL_8:
       self->_containerParallelizer = 0;
     }
 
-    [v4 setPlug:0];
-    v14 = [v3 montage];
+    [lastObject setPlug:0];
+    montage = [v3 montage];
 
-    [v14 unlock];
+    [montage unlock];
   }
 }
 
@@ -1867,24 +1867,24 @@ LABEL_8:
   [(MCPlug *)self->_containerPlug setPhaseInDuration:0.0];
   [(MCPlug *)self->_containerPlug setPhaseOutDuration:0.0];
   [v4 setPlug:v8];
-  v15 = [v3 montage];
+  montage = [v3 montage];
 
-  [v15 unlock];
+  [montage unlock];
 }
 
-- (void)calculateDurationToSmallest:(BOOL)a3
+- (void)calculateDurationToSmallest:(BOOL)smallest
 {
-  v3 = a3;
+  smallestCopy = smallest;
   v5 = [(NSMutableArray *)self->_effects count];
   effects = self->_effects;
   if (v5 == &dword_0 + 1)
   {
-    v7 = [(NSMutableArray *)effects lastObject];
-    [v7 phaseInDuration];
+    lastObject = [(NSMutableArray *)effects lastObject];
+    [lastObject phaseInDuration];
     v9 = v8;
-    [v7 phaseOutDuration];
+    [lastObject phaseOutDuration];
     v11 = v10;
-    [v7 mainDuration];
+    [lastObject mainDuration];
     v13 = v12;
     v14 = v9 + v11 + v12;
     [(MPEffectContainer *)self duration];
@@ -1931,7 +1931,7 @@ LABEL_8:
   {
     [-[NSMutableArray objectAtIndex:](self->_effects objectAtIndex:{0), "fullDuration"}];
     v25 = v24;
-    if (v3)
+    if (smallestCopy)
     {
       v58 = 0uLL;
       v59 = 0uLL;
@@ -2049,7 +2049,7 @@ LABEL_8:
   }
 }
 
-- (void)setUserInfoAttribute:(id)a3 forKey:(id)a4
+- (void)setUserInfoAttribute:(id)attribute forKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
@@ -2058,7 +2058,7 @@ LABEL_8:
     self->_attributes = attributes;
   }
 
-  [(NSMutableDictionary *)attributes setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)attributes setObject:attribute forKey:key];
 }
 
 - (int64_t)slideCount
@@ -2133,59 +2133,59 @@ LABEL_8:
 
 - (id)nearestLayerGroup
 {
-  v2 = [(MPEffectContainer *)self parentLayer];
+  parentLayer = [(MPEffectContainer *)self parentLayer];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v2)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && parentLayer)
   {
-    v2 = [v2 parent];
+    parentLayer = [parentLayer parent];
     objc_opt_class();
   }
 
-  return v2;
+  return parentLayer;
 }
 
-- (void)insertObject:(id)a3 inEffectsAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inEffectsAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPEffectContainer *)self insertEffects:v6 atIndex:a4];
+  [(MPEffectContainer *)self insertEffects:v6 atIndex:index];
 }
 
-- (void)removeObjectFromEffectsAtIndex:(int64_t)a3
+- (void)removeObjectFromEffectsAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPEffectContainer *)self removeEffectsAtIndices:v4];
 }
 
-- (void)replaceObjectInEffectsAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInEffectsAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPEffectContainer *)self removeEffectsAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPEffectContainer *)self insertEffects:v7 atIndex:a3];
+  [(MPEffectContainer *)self insertEffects:v7 atIndex:index];
 }
 
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPEffectContainer *)self insertFilters:v6 atIndex:a4];
+  [(MPEffectContainer *)self insertFilters:v6 atIndex:index];
 }
 
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPEffectContainer *)self removeFiltersAtIndices:v4];
 }
 
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPEffectContainer *)self removeFiltersAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPEffectContainer *)self insertFilters:v7 atIndex:a3];
+  [(MPEffectContainer *)self insertFilters:v7 atIndex:index];
 }
 
 - (id)scriptingTransition
@@ -2207,26 +2207,26 @@ LABEL_8:
   }
 }
 
-- (void)setScriptingTransition:(id)a3
+- (void)setScriptingTransition:(id)transition
 {
-  if ([a3 objectForKey:@"transitionID"])
+  if ([transition objectForKey:@"transitionID"])
   {
-    if ([objc_msgSend(a3 objectForKey:{@"transitionID", "isEqualToString:", &stru_1AC858}])
+    if ([objc_msgSend(transition objectForKey:{@"transitionID", "isEqualToString:", &stru_1AC858}])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = +[MPTransition transitionWithTransitionID:](MPTransition, "transitionWithTransitionID:", [a3 objectForKey:@"transitionID"]);
-      if ([a3 objectForKey:@"presetID"])
+      v5 = +[MPTransition transitionWithTransitionID:](MPTransition, "transitionWithTransitionID:", [transition objectForKey:@"transitionID"]);
+      if ([transition objectForKey:@"presetID"])
       {
-        -[MPTransition setPresetID:](v5, "setPresetID:", [a3 objectForKey:@"presetID"]);
+        -[MPTransition setPresetID:](v5, "setPresetID:", [transition objectForKey:@"presetID"]);
       }
 
-      if ([a3 objectForKey:@"duration"])
+      if ([transition objectForKey:@"duration"])
       {
-        [objc_msgSend(a3 objectForKey:{@"duration", "doubleValue"}];
+        [objc_msgSend(transition objectForKey:{@"duration", "doubleValue"}];
         [(MPTransition *)v5 setDuration:?];
       }
     }

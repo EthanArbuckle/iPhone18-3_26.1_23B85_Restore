@@ -6,7 +6,7 @@
 
 - (BOOL)br_isCloudDocsShare
 {
-  v1 = [a1 valueForKey:@"BRAssociatedURLWrapperDataKey"];
+  v1 = [self valueForKey:@"BRAssociatedURLWrapperDataKey"];
   v2 = v1 != 0;
 
   return v2;

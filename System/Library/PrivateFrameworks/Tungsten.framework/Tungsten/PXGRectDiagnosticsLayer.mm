@@ -29,24 +29,24 @@
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [MEMORY[0x277CD9FF0] setAnimationDuration:0.0];
-  v19 = self;
-  v4 = [(PXGRectDiagnosticsLayer *)self superlayer];
-  [v4 bounds];
+  selfCopy = self;
+  superlayer = [(PXGRectDiagnosticsLayer *)self superlayer];
+  [superlayer bounds];
   [(PXGRectDiagnosticsLayer *)self setFrame:?];
 
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v5 = [(PXGRectDiagnosticsLayer *)self layout];
-  if (v5)
+  layout = [(PXGRectDiagnosticsLayer *)self layout];
+  if (layout)
   {
     v6 = +[PXTungstenSettings sharedInstance];
-    v7 = [v6 wantsRectDiagnosticsDebugHUD];
+    wantsRectDiagnosticsDebugHUD = [v6 wantsRectDiagnosticsDebugHUD];
 
-    if (v7)
+    if (wantsRectDiagnosticsDebugHUD)
     {
-      [v5 visibleRect];
+      [layout visibleRect];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __33__PXGRectDiagnosticsLayer_update__block_invoke;
@@ -61,8 +61,8 @@
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = [(PXGRectDiagnosticsLayer *)self rectDiagnosticsProviders];
-      v12 = [v11 countByEnumeratingWithState:&v22 objects:v31 count:16];
+      rectDiagnosticsProviders = [(PXGRectDiagnosticsLayer *)self rectDiagnosticsProviders];
+      v12 = [rectDiagnosticsProviders countByEnumeratingWithState:&v22 objects:v31 count:16];
       if (v12)
       {
         v13 = *v23;
@@ -72,7 +72,7 @@
           {
             if (*v23 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(rectDiagnosticsProviders);
             }
 
             v15 = *(*(&v22 + 1) + 8 * i);
@@ -81,10 +81,10 @@
             v20[2] = __33__PXGRectDiagnosticsLayer_update__block_invoke_2;
             v20[3] = &unk_2782A9968;
             v21 = v10;
-            [v15 enumerateRectDiagnosticsForLayout:v5 usingBlock:v20];
+            [v15 enumerateRectDiagnosticsForLayout:layout usingBlock:v20];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v22 objects:v31 count:16];
+          v12 = [rectDiagnosticsProviders countByEnumeratingWithState:&v22 objects:v31 count:16];
         }
 
         while (v12);
@@ -92,10 +92,10 @@
     }
   }
 
-  v16 = [(PXGRectDiagnosticsLayer *)v19 sublayers];
-  for (j = v28[3]; j < [v16 count]; ++j)
+  sublayers = [(PXGRectDiagnosticsLayer *)selfCopy sublayers];
+  for (j = v28[3]; j < [sublayers count]; ++j)
   {
-    v18 = [v16 objectAtIndexedSubscript:j];
+    v18 = [sublayers objectAtIndexedSubscript:j];
     [v18 setHidden:1];
   }
 

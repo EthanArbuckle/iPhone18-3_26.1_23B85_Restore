@@ -50,13 +50,13 @@
     stewieConnectionMonitor = v2->_stewieConnectionMonitor;
     v2->_stewieConnectionMonitor = v7;
 
-    v9 = [(CTStewieStateMonitor *)v2->_stewieConnectionMonitor start];
-    v10 = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    start = [(CTStewieStateMonitor *)v2->_stewieConnectionMonitor start];
+    iDSOffGridStateManager = [MEMORY[0x1E69A5270] IDSOffGridStateManager];
+    if (os_log_type_enabled(iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       v12 = v2->_stewieConnectionMonitor;
-      if (v9)
+      if (start)
       {
         v11 = @"YES";
       }
@@ -65,7 +65,7 @@
       v19 = v11;
       v20 = 2112;
       v21 = v12;
-      _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Started stewie connection monitor %@ %@", buf, 0x16u);
+      _os_log_impl(&dword_1959FF000, iDSOffGridStateManager, OS_LOG_TYPE_DEFAULT, "Started stewie connection monitor %@ %@", buf, 0x16u);
     }
 
     v13 = [objc_alloc(MEMORY[0x1E69A6118]) initWithRemoteHost:0 delegate:v2];
@@ -79,16 +79,16 @@
 
 - (BOOL)isIMLAvailable
 {
-  v2 = [(CTStewieStateMonitor *)self->_stewieConnectionMonitor getState];
-  v3 = [v2 isAllowedService:16];
+  getState = [(CTStewieStateMonitor *)self->_stewieConnectionMonitor getState];
+  v3 = [getState isAllowedService:16];
 
   return v3;
 }
 
 - (BOOL)isIMLActive
 {
-  v2 = [(CTStewieStateMonitor *)self->_stewieConnectionMonitor getState];
-  v3 = [v2 isActiveService:16];
+  getState = [(CTStewieStateMonitor *)self->_stewieConnectionMonitor getState];
+  v3 = [getState isActiveService:16];
 
   return v3;
 }

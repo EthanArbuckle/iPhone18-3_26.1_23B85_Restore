@@ -1,15 +1,15 @@
 @interface PKiCloudDataController
 - (PKiCloudDataController)init;
-- (id)createiCloudPrinterInfo:(id)a3 newPrinterInfo:(id)a4;
+- (id)createiCloudPrinterInfo:(id)info newPrinterInfo:(id)printerInfo;
 - (id)getiCloudPrintersList;
 - (id)log_iCloudPrinters;
-- (void)addPrinterToiCloudWithInfo:(id)a3;
-- (void)removePrinterFromiCloudWithInfo:(id)a3;
+- (void)addPrinterToiCloudWithInfo:(id)info;
+- (void)removePrinterFromiCloudWithInfo:(id)info;
 - (void)resetiCloudData;
-- (void)setiCloudPrintersList:(id)a3;
+- (void)setiCloudPrintersList:(id)list;
 - (void)synchronizeiCloudData;
-- (void)ubiquitousKeyValueStoreDidChange:(id)a3;
-- (void)updateiCloudPrinter:(id)a3 newInfo:(id)a4 newInfoKey:(id)a5;
+- (void)ubiquitousKeyValueStoreDidChange:(id)change;
+- (void)updateiCloudPrinter:(id)printer newInfo:(id)info newInfoKey:(id)key;
 @end
 
 @implementation PKiCloudDataController
@@ -25,8 +25,8 @@
     [(PKiCloudDataController *)v2 setUbiquitousKeyValueStore:v3];
 
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(PKiCloudDataController *)v2 ubiquitousKeyValueStore];
-    [v4 addObserver:v2 selector:"ubiquitousKeyValueStoreDidChange:" name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:v5];
+    ubiquitousKeyValueStore = [(PKiCloudDataController *)v2 ubiquitousKeyValueStore];
+    [v4 addObserver:v2 selector:"ubiquitousKeyValueStoreDidChange:" name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:ubiquitousKeyValueStore];
 
     [(PKiCloudDataController *)v2 synchronizeiCloudData];
   }
@@ -36,40 +36,40 @@
 
 - (void)synchronizeiCloudData
 {
-  v3 = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
+  ubiquitousKeyValueStore = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100043228;
   v4[3] = &unk_1000A2218;
   v4[4] = self;
-  [v3 synchronizeWithCompletionHandler:v4];
+  [ubiquitousKeyValueStore synchronizeWithCompletionHandler:v4];
 }
 
 - (id)getiCloudPrintersList
 {
-  v2 = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
-  v3 = [v2 objectForKey:@"com.apple.printing.iCloudPrinters"];
+  ubiquitousKeyValueStore = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
+  v3 = [ubiquitousKeyValueStore objectForKey:@"com.apple.printing.iCloudPrinters"];
 
   return v3;
 }
 
-- (void)setiCloudPrintersList:(id)a3
+- (void)setiCloudPrintersList:(id)list
 {
-  v6 = a3;
-  v4 = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
-  [v4 setArray:v6 forKey:@"com.apple.printing.iCloudPrinters"];
+  listCopy = list;
+  ubiquitousKeyValueStore = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
+  [ubiquitousKeyValueStore setArray:listCopy forKey:@"com.apple.printing.iCloudPrinters"];
 
   [(PKiCloudDataController *)self synchronizeiCloudData];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, PrinterTooliCloudPrintersChangedNotification, 0, 0, 1u);
 }
 
-- (void)addPrinterToiCloudWithInfo:(id)a3
+- (void)addPrinterToiCloudWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:PKPrinterUUIDKey];
-  v6 = [(PKiCloudDataController *)self getiCloudPrintersList];
-  v7 = [v6 mutableCopy];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:PKPrinterUUIDKey];
+  getiCloudPrintersList = [(PKiCloudDataController *)self getiCloudPrintersList];
+  v7 = [getiCloudPrintersList mutableCopy];
 
   if (!v7)
   {
@@ -94,7 +94,7 @@
     [v7 removeObjectAtIndex:v9];
   }
 
-  v11 = [(PKiCloudDataController *)self createiCloudPrinterInfo:v10 newPrinterInfo:v4];
+  v11 = [(PKiCloudDataController *)self createiCloudPrinterInfo:v10 newPrinterInfo:infoCopy];
   if (v11)
   {
     [v7 insertObject:v11 atIndex:0];
@@ -103,12 +103,12 @@
   [(PKiCloudDataController *)self setiCloudPrintersList:v7];
 }
 
-- (void)removePrinterFromiCloudWithInfo:(id)a3
+- (void)removePrinterFromiCloudWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:PKPrinterUUIDKey];
-  v6 = [(PKiCloudDataController *)self getiCloudPrintersList];
-  v7 = [v6 mutableCopy];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:PKPrinterUUIDKey];
+  getiCloudPrintersList = [(PKiCloudDataController *)self getiCloudPrintersList];
+  v7 = [getiCloudPrintersList mutableCopy];
 
   if (!v7)
   {
@@ -129,14 +129,14 @@
   }
 }
 
-- (void)updateiCloudPrinter:(id)a3 newInfo:(id)a4 newInfoKey:(id)a5
+- (void)updateiCloudPrinter:(id)printer newInfo:(id)info newInfoKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:PKPrinterUUIDKey];
-  v12 = [(PKiCloudDataController *)self getiCloudPrintersList];
-  v13 = [v12 mutableCopy];
+  printerCopy = printer;
+  infoCopy = info;
+  keyCopy = key;
+  v11 = [printerCopy objectForKeyedSubscript:PKPrinterUUIDKey];
+  getiCloudPrintersList = [(PKiCloudDataController *)self getiCloudPrintersList];
+  v13 = [getiCloudPrintersList mutableCopy];
 
   if (!v13)
   {
@@ -156,7 +156,7 @@
     v17 = [v16 mutableCopy];
 
     [v13 removeObjectAtIndex:v15];
-    [v17 setObject:v9 forKeyedSubscript:v10];
+    [v17 setObject:infoCopy forKeyedSubscript:keyCopy];
     [v13 insertObject:v17 atIndex:0];
     [(PKiCloudDataController *)self setiCloudPrintersList:v13];
   }
@@ -164,8 +164,8 @@
 
 - (void)resetiCloudData
 {
-  v3 = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
-  [v3 removeObjectForKey:@"com.apple.printing.iCloudPrinters"];
+  ubiquitousKeyValueStore = [(PKiCloudDataController *)self ubiquitousKeyValueStore];
+  [ubiquitousKeyValueStore removeObjectForKey:@"com.apple.printing.iCloudPrinters"];
 
   [(PKiCloudDataController *)self synchronizeiCloudData];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -174,20 +174,20 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v5, 0, 0, 1u);
 }
 
-- (void)ubiquitousKeyValueStoreDidChange:(id)a3
+- (void)ubiquitousKeyValueStoreDidChange:(id)change
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSUbiquitousKeyValueStoreChangeReasonKey];
-  v6 = [v5 unsignedIntegerValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSUbiquitousKeyValueStoreChangeReasonKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 >= 4)
+  if (unsignedIntegerValue >= 4)
   {
     v7 = _PKLogCategory(PKLogCategoryDefault[0]);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = v6;
+      v10 = unsignedIntegerValue;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NSUbiquitousKeyValueStoreDidChangeExternallyNotification ignoring unknown notification: %ld", &v9, 0xCu);
     }
   }
@@ -196,28 +196,28 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, PrinterTooliCloudPrintersChangedNotification, 0, 0, 0);
 }
 
-- (id)createiCloudPrinterInfo:(id)a3 newPrinterInfo:(id)a4
+- (id)createiCloudPrinterInfo:(id)info newPrinterInfo:(id)printerInfo
 {
-  v5 = a3;
-  v6 = a4;
-  v52 = v5;
-  v49 = v6;
-  if (v5)
+  infoCopy = info;
+  printerInfoCopy = printerInfo;
+  v52 = infoCopy;
+  v49 = printerInfoCopy;
+  if (infoCopy)
   {
-    v7 = [NSMutableDictionary dictionaryWithDictionary:v5];
+    v7 = [NSMutableDictionary dictionaryWithDictionary:infoCopy];
   }
 
   else
   {
     v7 = +[NSMutableDictionary dictionary];
     v8 = PKPrinterUUIDKey;
-    v9 = [v6 objectForKeyedSubscript:PKPrinterUUIDKey];
+    v9 = [printerInfoCopy objectForKeyedSubscript:PKPrinterUUIDKey];
     [v7 setObject:v9 forKeyedSubscript:v8];
   }
 
   v10 = PKPrinterNameKey;
   v53 = v7;
-  v11 = [v6 objectForKeyedSubscript:PKPrinterNameKey];
+  v11 = [printerInfoCopy objectForKeyedSubscript:PKPrinterNameKey];
   v48 = v11;
   if (v11)
   {
@@ -225,7 +225,7 @@
   }
 
   v12 = PKPrinterDisplayNameKey;
-  v13 = [v6 objectForKeyedSubscript:PKPrinterDisplayNameKey];
+  v13 = [printerInfoCopy objectForKeyedSubscript:PKPrinterDisplayNameKey];
   v47 = v13;
   if (v13)
   {
@@ -233,7 +233,7 @@
   }
 
   v14 = PKPrinterCustomNameKey;
-  v15 = [v6 objectForKeyedSubscript:PKPrinterCustomNameKey];
+  v15 = [printerInfoCopy objectForKeyedSubscript:PKPrinterCustomNameKey];
   v45 = v15;
   if (v15)
   {
@@ -241,7 +241,7 @@
   }
 
   v16 = PKPrinterLocationKey;
-  v17 = [v6 objectForKeyedSubscript:PKPrinterLocationKey];
+  v17 = [printerInfoCopy objectForKeyedSubscript:PKPrinterLocationKey];
   v44 = v17;
   if (v17)
   {
@@ -249,7 +249,7 @@
   }
 
   v18 = PKPrinterCustomLocationKey;
-  v19 = [v6 objectForKeyedSubscript:PKPrinterCustomLocationKey];
+  v19 = [printerInfoCopy objectForKeyedSubscript:PKPrinterCustomLocationKey];
   v43 = v19;
   if (v19)
   {
@@ -257,7 +257,7 @@
   }
 
   v20 = PKPrinterImageDataKey;
-  v50 = [v6 objectForKeyedSubscript:PKPrinterImageDataKey];
+  v50 = [printerInfoCopy objectForKeyedSubscript:PKPrinterImageDataKey];
   if (v50)
   {
     [v7 setObject:v50 forKeyedSubscript:v20];
@@ -266,9 +266,9 @@
   v21 = +[NSDate date];
   [v7 setObject:v21 forKeyedSubscript:PKPrinterLastUsedDateKey];
 
-  v46 = [v6 objectForKeyedSubscript:PKPrinterEndpointKey];
+  v46 = [printerInfoCopy objectForKeyedSubscript:PKPrinterEndpointKey];
   v22 = PKPrinterEndPointsKey;
-  v23 = [v5 objectForKeyedSubscript:PKPrinterEndPointsKey];
+  v23 = [infoCopy objectForKeyedSubscript:PKPrinterEndPointsKey];
   v51 = v23;
   if (v23)
   {
@@ -298,9 +298,9 @@
   }
 
   [v7 setObject:v54 forKeyedSubscript:v22];
-  v26 = [v6 objectForKeyedSubscript:PKPrinterURLKey];
+  v26 = [printerInfoCopy objectForKeyedSubscript:PKPrinterURLKey];
   v27 = PKPrinterURLsKey;
-  v28 = [v5 objectForKeyedSubscript:PKPrinterURLsKey];
+  v28 = [infoCopy objectForKeyedSubscript:PKPrinterURLsKey];
   v29 = v28;
   if (v28)
   {
@@ -370,16 +370,16 @@
 {
   v28 = objc_opt_new();
   v30 = liteGetPrintersForCurrentNetwork();
-  v23 = [(PKiCloudDataController *)self getiCloudPrintersList];
-  v3 = [v23 count];
-  v4 = [v30 networkName];
-  NSLog(@"************************** log_iCloudPrinters numPrinters:%ld, Network '%@'", v3, v4);
+  getiCloudPrintersList = [(PKiCloudDataController *)self getiCloudPrintersList];
+  v3 = [getiCloudPrintersList count];
+  networkName = [v30 networkName];
+  NSLog(@"************************** log_iCloudPrinters numPrinters:%ld, Network '%@'", v3, networkName);
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v23;
+  obj = getiCloudPrintersList;
   v5 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v5)
   {
@@ -405,19 +405,19 @@
         v35 = sub_100044A70;
         v36 = sub_100044A80;
         v37 = 0;
-        v10 = [v30 printers];
+        printers = [v30 printers];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = sub_100044A88;
         v31[3] = &unk_1000A3330;
         v31[4] = v9;
         v31[5] = &v32;
-        [v10 enumerateObjectsUsingBlock:v31];
+        [printers enumerateObjectsUsingBlock:v31];
 
         if (v33[5])
         {
-          v11 = [v30 networkName];
-          v12 = [NSString stringWithFormat:@" network:'%@'", v11];
+          networkName2 = [v30 networkName];
+          v12 = [NSString stringWithFormat:@" network:'%@'", networkName2];
         }
 
         else

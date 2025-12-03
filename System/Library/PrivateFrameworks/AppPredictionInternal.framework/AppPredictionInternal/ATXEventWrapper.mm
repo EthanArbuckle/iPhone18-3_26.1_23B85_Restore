@@ -1,35 +1,35 @@
 @interface ATXEventWrapper
-- (ATXEventWrapper)initWithATXEvent:(id)a3;
-- (ATXEventWrapper)initWithDuetEvent:(id)a3;
+- (ATXEventWrapper)initWithATXEvent:(id)event;
+- (ATXEventWrapper)initWithDuetEvent:(id)event;
 @end
 
 @implementation ATXEventWrapper
 
-- (ATXEventWrapper)initWithDuetEvent:(id)a3
+- (ATXEventWrapper)initWithDuetEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = ATXEventWrapper;
   v6 = [(ATXEventWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dkEvent, a3);
+    objc_storeStrong(&v6->_dkEvent, event);
   }
 
   return v7;
 }
 
-- (ATXEventWrapper)initWithATXEvent:(id)a3
+- (ATXEventWrapper)initWithATXEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = ATXEventWrapper;
   v6 = [(ATXEventWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_atxEvent, a3);
+    objc_storeStrong(&v6->_atxEvent, event);
   }
 
   return v7;

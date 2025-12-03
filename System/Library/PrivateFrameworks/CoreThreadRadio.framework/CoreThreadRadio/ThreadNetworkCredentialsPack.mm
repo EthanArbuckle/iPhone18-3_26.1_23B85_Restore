@@ -1,46 +1,46 @@
 @interface ThreadNetworkCredentialsPack
-- (ThreadNetworkCredentialsPack)initWithCoder:(id)a3;
-- (id)initCreds:(id)a3 credentialsDataSet:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ThreadNetworkCredentialsPack)initWithCoder:(id)coder;
+- (id)initCreds:(id)creds credentialsDataSet:(id)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ThreadNetworkCredentialsPack
 
-- (id)initCreds:(id)a3 credentialsDataSet:(id)a4
+- (id)initCreds:(id)creds credentialsDataSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  credsCopy = creds;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = ThreadNetworkCredentialsPack;
   v9 = [(ThreadNetworkCredentialsPack *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_credentials, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_credentials, creds);
+    objc_storeStrong(p_isa + 2, set);
   }
 
   return p_isa;
 }
 
-- (ThreadNetworkCredentialsPack)initWithCoder:(id)a3
+- (ThreadNetworkCredentialsPack)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creds"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dscreds"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creds"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dscreds"];
 
   v7 = [(ThreadNetworkCredentialsPack *)self initCreds:v5 credentialsDataSet:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ThreadNetworkCredentialsPack *)self credentials];
-  [v4 encodeObject:v5 forKey:@"creds"];
+  coderCopy = coder;
+  credentials = [(ThreadNetworkCredentialsPack *)self credentials];
+  [coderCopy encodeObject:credentials forKey:@"creds"];
 
-  v6 = [(ThreadNetworkCredentialsPack *)self credentialsDataSet];
-  [v4 encodeObject:v6 forKey:@"dscreds"];
+  credentialsDataSet = [(ThreadNetworkCredentialsPack *)self credentialsDataSet];
+  [coderCopy encodeObject:credentialsDataSet forKey:@"dscreds"];
 }
 
 @end

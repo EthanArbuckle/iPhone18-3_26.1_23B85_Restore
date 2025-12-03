@@ -8,26 +8,26 @@
 - (QSSSpeechTranslationAudioPacket)contentAsQSSSpeechTranslationAudioPacket;
 - (QSSStartSpeechTranslationLoggingRequest)contentAsQSSStartSpeechTranslationLoggingRequest;
 - (QSSStartSpeechTranslationRequest)contentAsQSSStartSpeechTranslationRequest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)content_type;
-- (void)setContentAsQSSAudioPacket:(id)a3;
-- (void)setContentAsQSSFinishAudio:(id)a3;
-- (void)setContentAsQSSLanguageDetected:(id)a3;
-- (void)setContentAsQSSResetServerEndpointer:(id)a3;
-- (void)setContentAsQSSSetEndpointerState:(id)a3;
-- (void)setContentAsQSSSpeechTranslationAudioPacket:(id)a3;
-- (void)setContentAsQSSStartSpeechTranslationLoggingRequest:(id)a3;
-- (void)setContentAsQSSStartSpeechTranslationRequest:(id)a3;
-- (void)setContent_type:(int64_t)a3;
+- (void)setContentAsQSSAudioPacket:(id)packet;
+- (void)setContentAsQSSFinishAudio:(id)audio;
+- (void)setContentAsQSSLanguageDetected:(id)detected;
+- (void)setContentAsQSSResetServerEndpointer:(id)endpointer;
+- (void)setContentAsQSSSetEndpointerState:(id)state;
+- (void)setContentAsQSSSpeechTranslationAudioPacket:(id)packet;
+- (void)setContentAsQSSStartSpeechTranslationLoggingRequest:(id)request;
+- (void)setContentAsQSSStartSpeechTranslationRequest:(id)request;
+- (void)setContent_type:(int64_t)content_type;
 @end
 
 @implementation QSSMutableSpeechTranslationStreamingRequest
 
-- (void)setContentAsQSSStartSpeechTranslationLoggingRequest:(id)a3
+- (void)setContentAsQSSStartSpeechTranslationLoggingRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:8];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -46,11 +46,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSResetServerEndpointer:(id)a3
+- (void)setContentAsQSSResetServerEndpointer:(id)endpointer
 {
-  v5 = a3;
+  endpointerCopy = endpointer;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:7];
-  v4 = [v5 copy];
+  v4 = [endpointerCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -69,11 +69,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSetEndpointerState:(id)a3
+- (void)setContentAsQSSSetEndpointerState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:6];
-  v4 = [v5 copy];
+  v4 = [stateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -92,11 +92,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSFinishAudio:(id)a3
+- (void)setContentAsQSSFinishAudio:(id)audio
 {
-  v5 = a3;
+  audioCopy = audio;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:5];
-  v4 = [v5 copy];
+  v4 = [audioCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -115,11 +115,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSSpeechTranslationAudioPacket:(id)a3
+- (void)setContentAsQSSSpeechTranslationAudioPacket:(id)packet
 {
-  v5 = a3;
+  packetCopy = packet;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:4];
-  v4 = [v5 copy];
+  v4 = [packetCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -138,11 +138,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSAudioPacket:(id)a3
+- (void)setContentAsQSSAudioPacket:(id)packet
 {
-  v5 = a3;
+  packetCopy = packet;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:3];
-  v4 = [v5 copy];
+  v4 = [packetCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -161,11 +161,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSLanguageDetected:(id)a3
+- (void)setContentAsQSSLanguageDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:2];
-  v4 = [v5 copy];
+  v4 = [detectedCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -184,11 +184,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSStartSpeechTranslationRequest:(id)a3
+- (void)setContentAsQSSStartSpeechTranslationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(QSSMutableSpeechTranslationStreamingRequest *)self setContent_type:1];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -207,23 +207,23 @@
   return v3;
 }
 
-- (void)setContent_type:(int64_t)a3
+- (void)setContent_type:(int64_t)content_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:content_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)content_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"content_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -238,9 +238,9 @@
   v2 = [(QSSMutableSpeechTranslationStreamingRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

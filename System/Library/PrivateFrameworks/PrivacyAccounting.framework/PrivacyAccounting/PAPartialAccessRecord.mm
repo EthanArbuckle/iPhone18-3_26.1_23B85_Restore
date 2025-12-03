@@ -1,25 +1,25 @@
 @interface PAPartialAccessRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PAPartialAccessRecord)initWithAccess:(id)a3 endTime:(double)a4;
-- (PAPartialAccessRecord)initWithCoder:(id)a3;
+- (PAPartialAccessRecord)initWithAccess:(id)access endTime:(double)time;
+- (PAPartialAccessRecord)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAPartialAccessRecord
 
-- (PAPartialAccessRecord)initWithAccess:(id)a3 endTime:(double)a4
+- (PAPartialAccessRecord)initWithAccess:(id)access endTime:(double)time
 {
-  v7 = a3;
+  accessCopy = access;
   v11.receiver = self;
   v11.super_class = PAPartialAccessRecord;
   v8 = [(PAPartialAccessRecord *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_access, a3);
-    v9->_endTime = a4;
+    objc_storeStrong(&v8->_access, access);
+    v9->_endTime = time;
   }
 
   return v9;
@@ -45,20 +45,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if ([(PAPartialAccessRecord *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(PAPartialAccessRecord *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     access = self->_access;
-    v7 = [(PAPartialAccessRecord *)v5 access];
-    if ([(PAAccess *)access isEqual:v7])
+    access = [(PAPartialAccessRecord *)v5 access];
+    if ([(PAAccess *)access isEqual:access])
     {
       endTime = self->_endTime;
       [(PAPartialAccessRecord *)v5 endTime];
@@ -79,19 +79,19 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   access = self->_access;
-  v5 = a3;
-  [v5 encodeObject:access forKey:@"access"];
-  [v5 encodeDouble:@"endTime" forKey:self->_endTime];
+  coderCopy = coder;
+  [coderCopy encodeObject:access forKey:@"access"];
+  [coderCopy encodeDouble:@"endTime" forKey:self->_endTime];
 }
 
-- (PAPartialAccessRecord)initWithCoder:(id)a3
+- (PAPartialAccessRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"access"];
-  [v4 decodeDoubleForKey:@"endTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"access"];
+  [coderCopy decodeDoubleForKey:@"endTime"];
   v7 = v6;
 
   v8 = [(PAPartialAccessRecord *)self initWithAccess:v5 endTime:v7];

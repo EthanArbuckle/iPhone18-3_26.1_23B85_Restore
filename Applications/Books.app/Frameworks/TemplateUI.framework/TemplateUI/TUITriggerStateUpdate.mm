@@ -1,37 +1,37 @@
 @interface TUITriggerStateUpdate
-- (TUITriggerStateUpdate)initWithTriggerStateUpdate:(id)a3;
-- (id)valueForTriggerWithName:(id)a3;
-- (unint64_t)observationModeForTriggerWithName:(id)a3;
-- (unint64_t)stateForTriggerWithName:(id)a3;
+- (TUITriggerStateUpdate)initWithTriggerStateUpdate:(id)update;
+- (id)valueForTriggerWithName:(id)name;
+- (unint64_t)observationModeForTriggerWithName:(id)name;
+- (unint64_t)stateForTriggerWithName:(id)name;
 @end
 
 @implementation TUITriggerStateUpdate
 
-- (TUITriggerStateUpdate)initWithTriggerStateUpdate:(id)a3
+- (TUITriggerStateUpdate)initWithTriggerStateUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v19.receiver = self;
   v19.super_class = TUITriggerStateUpdate;
   v5 = [(TUITriggerStateUpdate *)&v19 init];
   if (v5)
   {
-    v6 = [v4 triggerNameToTriggerMapping];
-    v7 = [v6 copy];
+    triggerNameToTriggerMapping = [updateCopy triggerNameToTriggerMapping];
+    v7 = [triggerNameToTriggerMapping copy];
     triggerNameToTriggerMapping = v5->_triggerNameToTriggerMapping;
     v5->_triggerNameToTriggerMapping = v7;
 
-    v9 = [v4 triggerToStateMapping];
-    v10 = [v9 copy];
+    triggerToStateMapping = [updateCopy triggerToStateMapping];
+    v10 = [triggerToStateMapping copy];
     triggerToStateMapping = v5->_triggerToStateMapping;
     v5->_triggerToStateMapping = v10;
 
-    v12 = [v4 triggerToValueMapping];
-    v13 = [v12 copy];
+    triggerToValueMapping = [updateCopy triggerToValueMapping];
+    v13 = [triggerToValueMapping copy];
     triggerToValueMapping = v5->_triggerToValueMapping;
     v5->_triggerToValueMapping = v13;
 
-    v15 = [v4 orderedKeys];
-    v16 = [v15 copy];
+    orderedKeys = [updateCopy orderedKeys];
+    v16 = [orderedKeys copy];
     orderedKeys = v5->_orderedKeys;
     v5->_orderedKeys = v16;
   }
@@ -39,26 +39,26 @@
   return v5;
 }
 
-- (unint64_t)stateForTriggerWithName:(id)a3
+- (unint64_t)stateForTriggerWithName:(id)name
 {
-  v4 = a3;
-  if (v4 && ([(NSDictionary *)self->_triggerToStateMapping valueForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  if (nameCopy && ([(NSDictionary *)self->_triggerToStateMapping valueForKey:nameCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (id)valueForTriggerWithName:(id)a3
+- (id)valueForTriggerWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [(NSDictionary *)self->_triggerToValueMapping valueForKey:?];
   }
@@ -71,21 +71,21 @@
   return v4;
 }
 
-- (unint64_t)observationModeForTriggerWithName:(id)a3
+- (unint64_t)observationModeForTriggerWithName:(id)name
 {
-  v4 = a3;
-  if (v4 && ([(NSDictionary *)self->_triggerNameToTriggerMapping valueForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  if (nameCopy && ([(NSDictionary *)self->_triggerNameToTriggerMapping valueForKey:nameCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 observationMode];
+    observationMode = [v5 observationMode];
   }
 
   else
   {
-    v7 = 0;
+    observationMode = 0;
   }
 
-  return v7;
+  return observationMode;
 }
 
 @end

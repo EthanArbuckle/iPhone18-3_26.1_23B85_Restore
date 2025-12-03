@@ -1,28 +1,28 @@
 @interface PKExtensionProvider
-+ (id)providerForExtensionPoint:(id)a3;
-- (PKExtensionProvider)initWithExtensionPoint:(id)a3;
++ (id)providerForExtensionPoint:(id)point;
+- (PKExtensionProvider)initWithExtensionPoint:(id)point;
 - (id)_extensionMatchingEntitlementAttribute;
-- (id)_extensionsForContainingApplicationIdentifiers:(id)a3;
-- (void)_beginMatchingExtensionsWithCompletion:(id)a3;
+- (id)_extensionsForContainingApplicationIdentifiers:(id)identifiers;
+- (void)_beginMatchingExtensionsWithCompletion:(id)completion;
 - (void)_endMatchingExtensions;
-- (void)_finishedMatchingExtensions:(id)a3 withError:(id)a4;
-- (void)_invokeAndClearBeginMatchingCompletionsWithError:(id)a3;
-- (void)beginExtensionRequestWithExtension:(id)a3 inputItems:(id)a4 completion:(id)a5;
+- (void)_finishedMatchingExtensions:(id)extensions withError:(id)error;
+- (void)_invokeAndClearBeginMatchingCompletionsWithError:(id)error;
+- (void)beginExtensionRequestWithExtension:(id)extension inputItems:(id)items completion:(id)completion;
 - (void)dealloc;
-- (void)extensionWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)extensionsWithContainingApplicationIdentifiers:(id)a3 completion:(id)a4;
+- (void)extensionWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)extensionsWithContainingApplicationIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation PKExtensionProvider
 
-+ (id)providerForExtensionPoint:(id)a3
++ (id)providerForExtensionPoint:(id)point
 {
-  v3 = a3;
+  pointCopy = point;
   os_unfair_lock_lock(&_MergedGlobals_247);
-  v4 = [qword_1ED6D1F00 objectForKey:v3];
+  v4 = [qword_1ED6D1F00 objectForKey:pointCopy];
   if (!v4)
   {
-    v4 = [[PKExtensionProvider alloc] initWithExtensionPoint:v3];
+    v4 = [[PKExtensionProvider alloc] initWithExtensionPoint:pointCopy];
     v5 = qword_1ED6D1F00;
     if (!qword_1ED6D1F00)
     {
@@ -33,7 +33,7 @@
       v5 = qword_1ED6D1F00;
     }
 
-    [v5 setObject:v4 forKey:v3];
+    [v5 setObject:v4 forKey:pointCopy];
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_247);
@@ -41,16 +41,16 @@
   return v4;
 }
 
-- (PKExtensionProvider)initWithExtensionPoint:(id)a3
+- (PKExtensionProvider)initWithExtensionPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   v15.receiver = self;
   v15.super_class = PKExtensionProvider;
   v6 = [(PKExtensionProvider *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionPoint, a3);
+    objc_storeStrong(&v6->_extensionPoint, point);
     v8 = objc_alloc_init(MEMORY[0x1E695DF20]);
     passKitExtensions = v7->_passKitExtensions;
     v7->_passKitExtensions = v8;
@@ -75,18 +75,18 @@
   [(PKExtensionProvider *)&v3 dealloc];
 }
 
-- (void)extensionWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)extensionWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Getting extension with bundle identifier: %@", buf, 0xCu);
     }
 
@@ -94,9 +94,9 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __64__PKExtensionProvider_extensionWithBundleIdentifier_completion___block_invoke;
     aBlock[3] = &unk_1E79DC0A0;
-    v9 = v6;
+    v9 = identifierCopy;
     v17 = v9;
-    v18 = v7;
+    v18 = completionCopy;
     v10 = _Block_copy(aBlock);
     extensionQueue = self->_extensionQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -191,18 +191,18 @@ void __64__PKExtensionProvider_extensionWithBundleIdentifier_completion___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)extensionsWithContainingApplicationIdentifiers:(id)a3 completion:(id)a4
+- (void)extensionsWithContainingApplicationIdentifiers:(id)identifiers completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifiersCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Getting extensions with containing application identifiers: %@", buf, 0xCu);
     }
 
@@ -210,9 +210,9 @@ void __64__PKExtensionProvider_extensionWithBundleIdentifier_completion___block_
     aBlock[1] = 3221225472;
     aBlock[2] = __81__PKExtensionProvider_extensionsWithContainingApplicationIdentifiers_completion___block_invoke;
     aBlock[3] = &unk_1E79C4BD0;
-    v9 = v6;
+    v9 = identifiersCopy;
     v17 = v9;
-    v18 = v7;
+    v18 = completionCopy;
     v10 = _Block_copy(aBlock);
     extensionQueue = self->_extensionQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -307,27 +307,27 @@ void __81__PKExtensionProvider_extensionsWithContainingApplicationIdentifiers_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)beginExtensionRequestWithExtension:(id)a3 inputItems:(id)a4 completion:(id)a5
+- (void)beginExtensionRequestWithExtension:(id)extension inputItems:(id)items completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 extension];
-  if (v10)
+  extensionCopy = extension;
+  itemsCopy = items;
+  completionCopy = completion;
+  extension = [extensionCopy extension];
+  if (extension)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __80__PKExtensionProvider_beginExtensionRequestWithExtension_inputItems_completion___block_invoke;
     v12[3] = &unk_1E79D19E8;
-    v14 = v9;
-    v13 = v7;
-    [v10 beginExtensionRequestWithInputItems:v8 completion:v12];
+    v14 = completionCopy;
+    v13 = extensionCopy;
+    [extension beginExtensionRequestWithInputItems:itemsCopy completion:v12];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1001 userInfo:0];
-    (*(v9 + 2))(v9, v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, extensionCopy, 0, v11);
   }
 }
 
@@ -342,11 +342,11 @@ uint64_t __80__PKExtensionProvider_beginExtensionRequestWithExtension_inputItems
   return result;
 }
 
-- (void)_finishedMatchingExtensions:(id)a3 withError:(id)a4
+- (void)_finishedMatchingExtensions:(id)extensions withError:(id)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  errorCopy = error;
   self->_isBeginningMatching = 0;
   extensionMatchTimer = self->_extensionMatchTimer;
   if (extensionMatchTimer)
@@ -356,22 +356,22 @@ uint64_t __80__PKExtensionProvider_beginExtensionRequestWithExtension_inputItems
     self->_extensionMatchTimer = 0;
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    [(PKExtensionProvider *)self _invokeAndClearBeginMatchingCompletionsWithError:v7];
+    [(PKExtensionProvider *)self _invokeAndClearBeginMatchingCompletionsWithError:errorCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __61__PKExtensionProvider__finishedMatchingExtensions_withError___block_invoke;
     v20[3] = &unk_1E79DC0F0;
-    v21 = v10;
-    v22 = self;
-    v11 = v10;
-    [v6 enumerateObjectsUsingBlock:v20];
+    v21 = dictionary;
+    selfCopy = self;
+    v11 = dictionary;
+    [extensionsCopy enumerateObjectsUsingBlock:v20];
     passKitExtensions = self->_passKitExtensions;
     if (v11)
     {
@@ -400,12 +400,12 @@ uint64_t __80__PKExtensionProvider_beginExtensionRequestWithExtension_inputItems
     [(PKExtensionProvider *)self _invokeAndClearBeginMatchingCompletionsWithError:0];
     if (v14)
     {
-      v17 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v23 = @"PKExtensionAvailableExtensions";
-      v18 = [(NSDictionary *)self->_passKitExtensions allValues];
-      v24[0] = v18;
+      allValues = [(NSDictionary *)self->_passKitExtensions allValues];
+      v24[0] = allValues;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      [v17 postNotificationName:@"PKExtensionAvailableExtensionsChangedNotification" object:0 userInfo:v19];
+      [defaultCenter postNotificationName:@"PKExtensionAvailableExtensionsChangedNotification" object:0 userInfo:v19];
     }
   }
 }
@@ -420,14 +420,14 @@ void __61__PKExtensionProvider__finishedMatchingExtensions_withError___block_inv
   [v4 setObject:v5 forKey:v6];
 }
 
-- (void)_beginMatchingExtensionsWithCompletion:(id)a3
+- (void)_beginMatchingExtensionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     beginMatchingCompletions = self->_beginMatchingCompletions;
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     [(NSMutableArray *)beginMatchingCompletions addObject:v7];
   }
 
@@ -444,10 +444,10 @@ void __61__PKExtensionProvider__finishedMatchingExtensions_withError___block_inv
     self->_isBeginningMatching = 1;
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v8 setObject:self->_extensionPoint forKey:*MEMORY[0x1E696A2F8]];
-    v9 = [(PKExtensionProvider *)self _extensionMatchingEntitlementAttribute];
-    if (v9)
+    _extensionMatchingEntitlementAttribute = [(PKExtensionProvider *)self _extensionMatchingEntitlementAttribute];
+    if (_extensionMatchingEntitlementAttribute)
     {
-      [v8 setObject:MEMORY[0x1E695E118] forKey:v9];
+      [v8 setObject:MEMORY[0x1E695E118] forKey:_extensionMatchingEntitlementAttribute];
     }
 
     objc_initWeak(&location, self);
@@ -535,31 +535,31 @@ void __62__PKExtensionProvider__beginMatchingExtensionsWithCompletion___block_in
   }
 }
 
-- (void)_invokeAndClearBeginMatchingCompletionsWithError:(id)a3
+- (void)_invokeAndClearBeginMatchingCompletionsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   beginMatchingCompletions = self->_beginMatchingCompletions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__PKExtensionProvider__invokeAndClearBeginMatchingCompletionsWithError___block_invoke;
   v7[3] = &unk_1E79DC118;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(NSMutableArray *)beginMatchingCompletions enumerateObjectsUsingBlock:v7];
   [(NSMutableArray *)self->_beginMatchingCompletions removeAllObjects];
 }
 
-- (id)_extensionsForContainingApplicationIdentifiers:(id)a3
+- (id)_extensionsForContainingApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_passKitExtensions allValues];
+  identifiersCopy = identifiers;
+  allValues = [(NSDictionary *)self->_passKitExtensions allValues];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PKExtensionProvider__extensionsForContainingApplicationIdentifiers___block_invoke;
   v9[3] = &unk_1E79DC140;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 pk_objectsPassingTest:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [allValues pk_objectsPassingTest:v9];
 
   return v7;
 }

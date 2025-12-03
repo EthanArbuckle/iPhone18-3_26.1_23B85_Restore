@@ -150,15 +150,15 @@
 {
   if (qword_10010CE60)
   {
-    v3 = [a1 newURLActionActivity];
+    newURLActionActivity = [self newURLActionActivity];
   }
 
   else
   {
-    v3 = 0;
+    newURLActionActivity = 0;
   }
 
-  return v3;
+  return newURLActionActivity;
 }
 
 @end

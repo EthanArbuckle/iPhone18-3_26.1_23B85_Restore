@@ -1,18 +1,18 @@
 @interface MTLGPUDebugParallelRenderCommandEncoder
-- (MTLGPUDebugParallelRenderCommandEncoder)initWithParallelRenderCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5 encoderID:(unsigned int)a6;
+- (MTLGPUDebugParallelRenderCommandEncoder)initWithParallelRenderCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor encoderID:(unsigned int)d;
 - (id)renderCommandEncoder;
 @end
 
 @implementation MTLGPUDebugParallelRenderCommandEncoder
 
-- (MTLGPUDebugParallelRenderCommandEncoder)initWithParallelRenderCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5 encoderID:(unsigned int)a6
+- (MTLGPUDebugParallelRenderCommandEncoder)initWithParallelRenderCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor encoderID:(unsigned int)d
 {
   v8.receiver = self;
   v8.super_class = MTLGPUDebugParallelRenderCommandEncoder;
-  result = [(MTLToolsParallelRenderCommandEncoder *)&v8 initWithParallelRenderCommandEncoder:a3 parent:a4 descriptor:a5];
+  result = [(MTLToolsParallelRenderCommandEncoder *)&v8 initWithParallelRenderCommandEncoder:encoder parent:parent descriptor:descriptor];
   if (result)
   {
-    result->_encoderID = a6;
+    result->_encoderID = d;
   }
 
   return result;

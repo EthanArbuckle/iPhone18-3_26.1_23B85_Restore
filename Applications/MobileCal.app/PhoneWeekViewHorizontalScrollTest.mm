@@ -33,30 +33,30 @@
 
 - (void)runTest
 {
-  v3 = [(PhoneWeekViewHorizontalScrollTest *)self checkTestPreconditions];
-  if (v3)
+  checkTestPreconditions = [(PhoneWeekViewHorizontalScrollTest *)self checkTestPreconditions];
+  if (checkTestPreconditions)
   {
-    v4 = [NSString stringWithFormat:@"Test precondition not met: %@", v3];
-    v5 = [(ApplicationTest *)self application];
-    v6 = [objc_opt_class() testName];
-    [v5 startedTest:v6];
+    v4 = [NSString stringWithFormat:@"Test precondition not met: %@", checkTestPreconditions];
+    application = [(ApplicationTest *)self application];
+    testName = [objc_opt_class() testName];
+    [application startedTest:testName];
 
-    v7 = [(ApplicationTest *)self application];
-    v8 = [objc_opt_class() testName];
-    [v7 failedTest:v8 withFailure:v4];
+    application2 = [(ApplicationTest *)self application];
+    testName2 = [objc_opt_class() testName];
+    [application2 failedTest:testName2 withFailure:v4];
   }
 
-  v9 = [(ApplicationTest *)self extractInitialDateOption];
-  v10 = [(ApplicationTest *)self model];
-  [v10 setSelectedDate:v9];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v11 = [(ApplicationTest *)self application];
-  v12 = [v11 rootNavigationController];
+  application3 = [(ApplicationTest *)self application];
+  rootNavigationController = [application3 rootNavigationController];
 
-  v13 = [v12 EKUI_viewHierarchy];
-  if ([v13 ekui_interfaceOrientation] - 1 <= 1)
+  eKUI_viewHierarchy = [rootNavigationController EKUI_viewHierarchy];
+  if ([eKUI_viewHierarchy ekui_interfaceOrientation] - 1 <= 1)
   {
-    v14 = [v12 resetToYearView];
+    resetToYearView = [rootNavigationController resetToYearView];
   }
 
   self->_weeksToScroll = 10;
@@ -73,35 +73,35 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"_mainLoop" name:@"WeekViewController_ScrollDidEndAnimationNotification" object:0];
 
-  v5 = [objc_opt_class() testName];
-  v4 = [(ApplicationTest *)self application];
-  [v4 startedTest:v5];
+  testName = [objc_opt_class() testName];
+  application = [(ApplicationTest *)self application];
+  [application startedTest:testName];
 
   [(PhoneWeekViewHorizontalScrollTest *)self _mainLoop];
 }
 
 - (void)_mainLoop
 {
-  v3 = [(ApplicationTest *)self application];
+  application = [(ApplicationTest *)self application];
   weeksToScroll = self->_weeksToScroll;
-  v10 = v3;
+  v10 = application;
   if (weeksToScroll)
   {
     self->_weeksToScroll = weeksToScroll - 1;
-    v5 = [v3 rootNavigationController];
-    v6 = [v5 topMainViewControllerContainer];
-    v7 = [v6 currentChildViewController];
+    rootNavigationController = [application rootNavigationController];
+    topMainViewControllerContainer = [rootNavigationController topMainViewControllerContainer];
+    currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
-    v8 = [v7 displayedDate];
-    v9 = [v8 calendarDateByAddingWeeks:1];
-    [v7 setDisplayedDate:v9 animated:1];
+    displayedDate = [currentChildViewController displayedDate];
+    v9 = [displayedDate calendarDateByAddingWeeks:1];
+    [currentChildViewController setDisplayedDate:v9 animated:1];
   }
 
   else
   {
-    v5 = [objc_opt_class() testName];
-    v7 = [(ApplicationTest *)self application];
-    [v7 finishedTest:v5 waitForCommit:1 extraResults:0 withTeardownBlock:&stru_1002113D8];
+    rootNavigationController = [objc_opt_class() testName];
+    currentChildViewController = [(ApplicationTest *)self application];
+    [currentChildViewController finishedTest:rootNavigationController waitForCommit:1 extraResults:0 withTeardownBlock:&stru_1002113D8];
   }
 }
 

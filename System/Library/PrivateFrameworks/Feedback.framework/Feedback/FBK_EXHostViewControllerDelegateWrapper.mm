@@ -1,26 +1,26 @@
 @interface FBK_EXHostViewControllerDelegateWrapper
 - (_TtC8FeedbackP33_EE21497D76FC0771846C2AC1D57947B539FBK_EXHostViewControllerDelegateWrapper)init;
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4;
-- (void)hostViewController:(id)a3 didFailToHost:(id)a4 error:(id)a5;
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting;
+- (void)hostViewController:(id)controller didFailToHost:(id)host error:(id)error;
 @end
 
 @implementation FBK_EXHostViewControllerDelegateWrapper
 
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
   sub_1B8BB6F28();
 }
 
-- (void)hostViewController:(id)a3 didFailToHost:(id)a4 error:(id)a5
+- (void)hostViewController:(id)controller didFailToHost:(id)host error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1B8BB7054(a5);
+  controllerCopy = controller;
+  hostCopy = host;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1B8BB7054(error);
 }
 
 - (_TtC8FeedbackP33_EE21497D76FC0771846C2AC1D57947B539FBK_EXHostViewControllerDelegateWrapper)init

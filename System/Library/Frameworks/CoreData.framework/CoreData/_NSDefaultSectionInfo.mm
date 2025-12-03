@@ -3,7 +3,7 @@
 - (id)sectionId;
 - (uint64_t)sectionNumber;
 - (void)dealloc;
-- (void)initWithController:(void *)a3 name:(void *)a4 sectionId:(void *)a5 indexTitle:(uint64_t)a6 sectionOffset:;
+- (void)initWithController:(void *)controller name:(void *)name sectionId:(void *)id indexTitle:(uint64_t)title sectionOffset:;
 @end
 
 @implementation _NSDefaultSectionInfo
@@ -19,8 +19,8 @@
   sectionObjects = self->_sectionObjects;
   if (!sectionObjects)
   {
-    v6 = [(NSArray *)result _fetchedObjects];
-    v7 = v6;
+    _fetchedObjects = [(NSArray *)result _fetchedObjects];
+    v7 = _fetchedObjects;
     sectionOffset = self->_sectionOffset;
     if (sectionOffset)
     {
@@ -29,13 +29,13 @@
 
     else
     {
-      v10 = [v6 count];
+      v10 = [_fetchedObjects count];
       numberOfObjects = self->_numberOfObjects;
       if (v10 == numberOfObjects)
       {
-        v11 = [(NSFetchedResultsController *)self->_controller fetchedObjects];
+        fetchedObjects = [(NSFetchedResultsController *)self->_controller fetchedObjects];
 LABEL_11:
-        v12 = v11;
+        v12 = fetchedObjects;
         self->_sectionObjects = v12;
         v5 = v12;
         goto LABEL_12;
@@ -44,7 +44,7 @@ LABEL_11:
       sectionOffset = self->_sectionOffset;
     }
 
-    v11 = [v7 subarrayWithRange:{sectionOffset, numberOfObjects}];
+    fetchedObjects = [v7 subarrayWithRange:{sectionOffset, numberOfObjects}];
     goto LABEL_11;
   }
 
@@ -82,7 +82,7 @@ LABEL_12:
         {
 LABEL_12:
           *buf = 138412290;
-          v10 = [v1 name];
+          name = [v1 name];
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: (NSFetchedResultsController) section '%@' not found in controller\n", buf, 0xCu);
         }
       }
@@ -97,30 +97,30 @@ LABEL_12:
   return result;
 }
 
-- (void)initWithController:(void *)a3 name:(void *)a4 sectionId:(void *)a5 indexTitle:(uint64_t)a6 sectionOffset:
+- (void)initWithController:(void *)controller name:(void *)name sectionId:(void *)id indexTitle:(uint64_t)title sectionOffset:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = _NSDefaultSectionInfo;
   v11 = objc_msgSendSuper2(&v14, sel_init);
   v12 = v11;
   if (v11)
   {
     v11[1] = a2;
-    v11[2] = [a3 copy];
-    v12[3] = [a5 copy];
+    v11[2] = [controller copy];
+    v12[3] = [id copy];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12[8] = a4;
+      v12[8] = name;
     }
 
     v12[7] = 0;
-    v12[4] = a6;
+    v12[4] = title;
     v12[5] = 0;
   }
 

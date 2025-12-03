@@ -1,5 +1,5 @@
 @interface IDSSessionStartedMetric
-- (IDSSessionStartedMetric)initWithGuid:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(unsigned int)a6;
+- (IDSSessionStartedMetric)initWithGuid:(id)guid protocolVersionNumber:(id)number serviceName:(id)name clientType:(unsigned int)type;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,22 +8,22 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSSessionStartedMetric *)self guid];
-  if (v4)
+  guid = [(IDSSessionStartedMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
-  v5 = [(IDSSessionStartedMetric *)self protocolVersionNumber];
-  if (v5)
+  protocolVersionNumber = [(IDSSessionStartedMetric *)self protocolVersionNumber];
+  if (protocolVersionNumber)
   {
-    CFDictionarySetValue(v3, @"protocolVersionNumber", v5);
+    CFDictionarySetValue(v3, @"protocolVersionNumber", protocolVersionNumber);
   }
 
-  v6 = [(IDSSessionStartedMetric *)self serviceName];
-  if (v6)
+  serviceName = [(IDSSessionStartedMetric *)self serviceName];
+  if (serviceName)
   {
-    CFDictionarySetValue(v3, @"serviceName", v6);
+    CFDictionarySetValue(v3, @"serviceName", serviceName);
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IDSSessionStartedMetric clientType](self, "clientType")}];
@@ -35,21 +35,21 @@
   return v3;
 }
 
-- (IDSSessionStartedMetric)initWithGuid:(id)a3 protocolVersionNumber:(id)a4 serviceName:(id)a5 clientType:(unsigned int)a6
+- (IDSSessionStartedMetric)initWithGuid:(id)guid protocolVersionNumber:(id)number serviceName:(id)name clientType:(unsigned int)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  guidCopy = guid;
+  numberCopy = number;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = IDSSessionStartedMetric;
   v14 = [(IDSSessionStartedMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_guid, a3);
-    objc_storeStrong(&v15->_protocolVersionNumber, a4);
-    objc_storeStrong(&v15->_serviceName, a5);
-    v15->_clientType = a6;
+    objc_storeStrong(&v14->_guid, guid);
+    objc_storeStrong(&v15->_protocolVersionNumber, number);
+    objc_storeStrong(&v15->_serviceName, name);
+    v15->_clientType = type;
   }
 
   return v15;

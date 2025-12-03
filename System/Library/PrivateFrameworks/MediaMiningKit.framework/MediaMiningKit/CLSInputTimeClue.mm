@@ -1,5 +1,5 @@
 @interface CLSInputTimeClue
-+ (id)clueWithDates:(id)a3 serviceManager:(id)a4;
++ (id)clueWithDates:(id)dates serviceManager:(id)manager;
 - (NSArray)events;
 - (double)timeInterval;
 - (id)description;
@@ -11,7 +11,7 @@
 - (id)universalStartDate;
 - (unint64_t)numberOfDays;
 - (void)_computeDateProperties;
-- (void)_prepareWithProgressBlock:(id)a3;
+- (void)_prepareWithProgressBlock:(id)block;
 @end
 
 @implementation CLSInputTimeClue
@@ -43,8 +43,8 @@
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [CLSCalendar dateFromComponents:v8 inTimeZone:0];
         [v3 addObject:v9];
-        v10 = [v8 timeZone];
-        v11 = [CLSCalendar dateFromComponents:v8 inTimeZone:v10];
+        timeZone = [v8 timeZone];
+        v11 = [CLSCalendar dateFromComponents:v8 inTimeZone:timeZone];
 
         [v19 addObject:v11];
         p_universalStartDate = &self->_universalStartDate;
@@ -94,39 +94,39 @@ LABEL_15:
   self->_localDates = v16;
 }
 
-- (void)_prepareWithProgressBlock:(id)a3
+- (void)_prepareWithProgressBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_dateComponentsArray)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v30 = self;
-    v5 = [(CLSClue *)self value];
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+    selfCopy = self;
+    value = [(CLSClue *)self value];
+    v6 = [value countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v33;
       v9 = 0x277CBE000uLL;
-      v31 = v5;
+      v31 = value;
       do
       {
         for (i = 0; i != v7; ++i)
         {
           if (*v33 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(value);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
 
           else
@@ -135,7 +135,7 @@ LABEL_15:
             if (objc_opt_isKindOfClass())
             {
               v12 = [CLSCalendar componentsFromDate:v11 inTimeZone:0];
-              [v4 addObject:v12];
+              [array addObject:v12];
             }
 
             else
@@ -148,57 +148,57 @@ LABEL_15:
                 v15 = [v14 matchesInString:v11 options:0 range:{0, objc_msgSend(v11, "length")}];
                 v16 = [v15 objectAtIndex:0];
 
-                v17 = [v16 timeZone];
-                v18 = v17;
-                if (v17)
+                timeZone = [v16 timeZone];
+                v18 = timeZone;
+                if (timeZone)
                 {
-                  v19 = v17;
+                  systemTimeZone = timeZone;
                 }
 
                 else
                 {
-                  v19 = [MEMORY[0x277CBEBB0] systemTimeZone];
+                  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
                 }
 
-                v22 = v19;
+                v22 = systemTimeZone;
 
-                v23 = [v16 date];
-                v24 = [CLSCalendar componentsFromDate:v23 inTimeZone:v22];
-                [v4 addObject:v24];
+                date = [v16 date];
+                v24 = [CLSCalendar componentsFromDate:date inTimeZone:v22];
+                [array addObject:v24];
 
                 v9 = v13;
-                v5 = v31;
+                value = v31;
               }
 
               else
               {
                 v20 = +[CLSLogging sharedLogging];
-                v21 = [v20 loggingConnection];
+                loggingConnection = [v20 loggingConnection];
 
-                if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
                   v38 = v11;
-                  _os_log_error_impl(&dword_22F907000, v21, OS_LOG_TYPE_ERROR, "Failed to convert date %@ when creating clue", buf, 0xCu);
+                  _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to convert date %@ when creating clue", buf, 0xCu);
                 }
               }
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+        v7 = [value countByEnumeratingWithState:&v32 objects:v39 count:16];
       }
 
       while (v7);
     }
 
-    objc_storeStrong(&v30->_dateComponentsArray, v4);
-    if (!v30->_universalDates)
+    objc_storeStrong(&selfCopy->_dateComponentsArray, array);
+    if (!selfCopy->_universalDates)
     {
-      [(CLSInputTimeClue *)v30 _computeDateProperties];
+      [(CLSInputTimeClue *)selfCopy _computeDateProperties];
     }
 
-    if (!v30->_events)
+    if (!selfCopy->_events)
     {
       if (CLSDeviceIs2GBOrLess_onceToken != -1)
       {
@@ -207,20 +207,20 @@ LABEL_15:
 
       if (CLSDeviceIs2GBOrLess_sDeviceIs2GBOrLess)
       {
-        events = v30->_events;
-        v30->_events = MEMORY[0x277CBEBF8];
+        events = selfCopy->_events;
+        selfCopy->_events = MEMORY[0x277CBEBF8];
       }
 
       else
       {
-        serviceManager = v30->_serviceManager;
-        universalEndDate = v30->_universalEndDate;
-        v36[0] = v30->_universalStartDate;
+        serviceManager = selfCopy->_serviceManager;
+        universalEndDate = selfCopy->_universalEndDate;
+        v36[0] = selfCopy->_universalStartDate;
         v36[1] = universalEndDate;
         events = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
         v28 = [(CLSServiceManager *)serviceManager eventsForDates:events];
-        v29 = v30->_events;
-        v30->_events = v28;
+        v29 = selfCopy->_events;
+        selfCopy->_events = v28;
       }
     }
   }
@@ -234,14 +234,14 @@ LABEL_15:
   v4 = [(CLSClue *)&v15 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(CLSInputTimeClue *)self universalDates];
-  v7 = [v6 allObjects];
-  v8 = [v7 flattenWithSeparator:{@", "}];
+  universalDates = [(CLSInputTimeClue *)self universalDates];
+  allObjects = [universalDates allObjects];
+  v8 = [allObjects flattenWithSeparator:{@", "}];
   [v5 appendFormat:@"\n\tuniversalDates:[%@]", v8];
 
-  v9 = [(CLSInputTimeClue *)self localDates];
-  v10 = [v9 allObjects];
-  v11 = [v10 flattenWithSeparator:{@", "}];
+  localDates = [(CLSInputTimeClue *)self localDates];
+  allObjects2 = [localDates allObjects];
+  v11 = [allObjects2 flattenWithSeparator:{@", "}];
   [v5 appendFormat:@"\n\tlocalDates:[%@]", v11];
 
   if ([(NSArray *)self->_events count])
@@ -327,12 +327,12 @@ LABEL_15:
   return universalDates;
 }
 
-+ (id)clueWithDates:(id)a3 serviceManager:(id)a4
++ (id)clueWithDates:(id)dates serviceManager:(id)manager
 {
-  v5 = a4;
-  v6 = [(CLSClue *)CLSInputTimeClue _clueWithValue:a3 forKey:@"Global Time"];
+  managerCopy = manager;
+  v6 = [(CLSClue *)CLSInputTimeClue _clueWithValue:dates forKey:@"Global Time"];
   v7 = v6[21];
-  v6[21] = v5;
+  v6[21] = managerCopy;
 
   return v6;
 }

@@ -1,9 +1,9 @@
 @interface VSApplicationControllerRequestFactory
-+ (id)_attributeQuerySAMLRequestStringWithAttributeNames:(id)a3 channelID:(id)a4 authenticationToken:(id)a5 error:(id *)a6;
-+ (id)_logoutSAMLRequestStringWithError:(id *)a3;
++ (id)_attributeQuerySAMLRequestStringWithAttributeNames:(id)names channelID:(id)d authenticationToken:(id)token error:(id *)error;
++ (id)_logoutSAMLRequestStringWithError:(id *)error;
 - (id)STBOptOutApplicationControllerRequest;
-- (id)accountMetadataApplicationControllerRequestWithAccountMetadataRequest:(id)a3 authenticationToken:(id)a4;
-- (id)logoutApplicationControllerRequestWithAuthenticationToken:(id)a3;
+- (id)accountMetadataApplicationControllerRequestWithAccountMetadataRequest:(id)request authenticationToken:(id)token;
+- (id)logoutApplicationControllerRequestWithAuthenticationToken:(id)token;
 - (id)silentAuthenticationApplicationControllerRequest;
 @end
 
@@ -17,15 +17,15 @@
   return v2;
 }
 
-- (id)accountMetadataApplicationControllerRequestWithAccountMetadataRequest:(id)a3 authenticationToken:(id)a4
+- (id)accountMetadataApplicationControllerRequestWithAccountMetadataRequest:(id)request authenticationToken:(id)token
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 attributeNames];
-  v8 = [v6 channelIdentifier];
-  v9 = [v6 verificationToken];
+  tokenCopy = token;
+  requestCopy = request;
+  attributeNames = [requestCopy attributeNames];
+  channelIdentifier = [requestCopy channelIdentifier];
+  verificationToken = [requestCopy verificationToken];
 
-  if ([v5 isOpaque])
+  if ([tokenCopy isOpaque])
   {
     v10 = 0;
   }
@@ -33,32 +33,32 @@
   else
   {
     v11 = objc_opt_class();
-    v12 = [v5 body];
-    v10 = [v11 _attributeQuerySAMLRequestStringWithAttributeNames:v7 channelID:v8 authenticationToken:v12 error:0];
+    body = [tokenCopy body];
+    v10 = [v11 _attributeQuerySAMLRequestStringWithAttributeNames:attributeNames channelID:channelIdentifier authenticationToken:body error:0];
   }
 
   v13 = objc_alloc_init(VSApplicationControllerRequest);
   [(VSApplicationControllerRequest *)v13 setType:3];
   [(VSApplicationControllerRequest *)v13 setSAMLRequest:v10];
-  v14 = [v5 body];
-  [(VSApplicationControllerRequest *)v13 setAuthenticationToken:v14];
+  body2 = [tokenCopy body];
+  [(VSApplicationControllerRequest *)v13 setAuthenticationToken:body2];
 
-  [(VSApplicationControllerRequest *)v13 setRequestorVerificationToken:v9];
-  [(VSApplicationControllerRequest *)v13 setAttributeNames:v7];
+  [(VSApplicationControllerRequest *)v13 setRequestorVerificationToken:verificationToken];
+  [(VSApplicationControllerRequest *)v13 setAttributeNames:attributeNames];
 
   return v13;
 }
 
-- (id)logoutApplicationControllerRequestWithAuthenticationToken:(id)a3
+- (id)logoutApplicationControllerRequestWithAuthenticationToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = [objc_opt_class() _logoutSAMLRequestStringWithError:0];
   v5 = objc_alloc_init(VSApplicationControllerRequest);
   [(VSApplicationControllerRequest *)v5 setType:4];
   [(VSApplicationControllerRequest *)v5 setSAMLRequest:v4];
-  v6 = [v3 body];
+  body = [tokenCopy body];
 
-  [(VSApplicationControllerRequest *)v5 setAuthenticationToken:v6];
+  [(VSApplicationControllerRequest *)v5 setAuthenticationToken:body];
 
   return v5;
 }
@@ -71,18 +71,18 @@
   return v2;
 }
 
-+ (id)_attributeQuerySAMLRequestStringWithAttributeNames:(id)a3 channelID:(id)a4 authenticationToken:(id)a5 error:(id *)a6
++ (id)_attributeQuerySAMLRequestStringWithAttributeNames:(id)names channelID:(id)d authenticationToken:(id)token error:(id *)error
 {
-  v7 = [VSSAMLRequestFactory attributeQueryWithAttributeNames:a3 channelID:a4 authNResponse:a5 error:?];
-  v8 = [v7 xmlString:a6];
+  v7 = [VSSAMLRequestFactory attributeQueryWithAttributeNames:names channelID:d authNResponse:token error:?];
+  v8 = [v7 xmlString:error];
 
   return v8;
 }
 
-+ (id)_logoutSAMLRequestStringWithError:(id *)a3
++ (id)_logoutSAMLRequestStringWithError:(id *)error
 {
   v4 = [VSSAMLRequestFactory logoutRequestWithError:?];
-  v5 = [v4 xmlString:a3];
+  v5 = [v4 xmlString:error];
 
   return v5;
 }

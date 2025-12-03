@@ -6,10 +6,10 @@
 
 + (BOOL)isCloudPrivateRelayAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isCloudPrivateRelayAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isCloudPrivateRelayAllowed = [mEMORY[0x277D262A0] isCloudPrivateRelayAllowed];
 
-  if ((v3 & 1) == 0)
+  if ((isCloudPrivateRelayAllowed & 1) == 0)
   {
     v4 = _ICQGetLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -19,7 +19,7 @@
     }
   }
 
-  return v3;
+  return isCloudPrivateRelayAllowed;
 }
 
 @end

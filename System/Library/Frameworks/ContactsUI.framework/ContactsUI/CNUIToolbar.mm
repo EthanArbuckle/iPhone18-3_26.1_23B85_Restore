@@ -1,46 +1,46 @@
 @interface CNUIToolbar
-- (BOOL)isEnabledForItem:(id)a3;
-- (CNUIToolbar)initWithItems:(id)a3;
+- (BOOL)isEnabledForItem:(id)item;
+- (CNUIToolbar)initWithItems:(id)items;
 - (double)borderWidth;
-- (id)buttonForItem:(id)a3;
-- (void)buttonPressed:(id)a3;
+- (id)buttonForItem:(id)item;
+- (void)buttonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3 forItem:(id)a4;
-- (void)setIsAnimating:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled forItem:(id)item;
+- (void)setIsAnimating:(BOOL)animating;
 - (void)setupBorder;
 - (void)setupView;
 @end
 
 @implementation CNUIToolbar
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(CNUIToolbar *)self buttons];
-  v6 = [v5 indexOfObject:v4];
+  pressedCopy = pressed;
+  buttons = [(CNUIToolbar *)self buttons];
+  v6 = [buttons indexOfObject:pressedCopy];
 
-  v7 = [(CNUIToolbar *)self items];
-  v9 = [v7 objectAtIndexedSubscript:v6];
+  items = [(CNUIToolbar *)self items];
+  v9 = [items objectAtIndexedSubscript:v6];
 
-  v8 = [v9 actionBlock];
-  (v8)[2](v8, v9);
+  actionBlock = [v9 actionBlock];
+  (actionBlock)[2](actionBlock, v9);
 }
 
-- (void)setEnabled:(BOOL)a3 forItem:(id)a4
+- (void)setEnabled:(BOOL)enabled forItem:(id)item
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CNUIToolbar *)self items];
-  v8 = [v7 indexOfObject:v6];
+  enabledCopy = enabled;
+  itemCopy = item;
+  items = [(CNUIToolbar *)self items];
+  v8 = [items indexOfObject:itemCopy];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(CNUIToolbar *)self buttons];
-    v11 = [v9 objectAtIndexedSubscript:v8];
+    buttons = [(CNUIToolbar *)self buttons];
+    v11 = [buttons objectAtIndexedSubscript:v8];
 
-    [v11 setEnabled:v4];
+    [v11 setEnabled:enabledCopy];
     v10 = 0.7;
-    if (v4)
+    if (enabledCopy)
     {
       v10 = 1.0;
     }
@@ -49,34 +49,34 @@
   }
 }
 
-- (BOOL)isEnabledForItem:(id)a3
+- (BOOL)isEnabledForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNUIToolbar *)self items];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  items = [(CNUIToolbar *)self items];
+  v6 = [items indexOfObject:itemCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(CNUIToolbar *)self buttons];
-  v9 = [v8 objectAtIndexedSubscript:v6];
+  buttons = [(CNUIToolbar *)self buttons];
+  v9 = [buttons objectAtIndexedSubscript:v6];
 
-  LOBYTE(v8) = [v9 isEnabled];
-  return v8;
+  LOBYTE(buttons) = [v9 isEnabled];
+  return buttons;
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    v4 = a3;
-    self->_isAnimating = a3;
-    v6 = [(CNUIToolbar *)self visualEffectView];
-    [v6 setHidden:v4];
+    animatingCopy = animating;
+    self->_isAnimating = animating;
+    visualEffectView = [(CNUIToolbar *)self visualEffectView];
+    [visualEffectView setHidden:animatingCopy];
 
-    if (v4)
+    if (animatingCopy)
     {
       [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     }
@@ -99,14 +99,14 @@
   v4 = v3;
   [(CNUIToolbar *)self borderWidth];
   v6 = v5;
-  v7 = [(CNUIToolbar *)self border];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  border = [(CNUIToolbar *)self border];
+  [border setFrame:{0.0, 0.0, v4, v6}];
 }
 
 - (double)borderWidth
 {
-  v2 = [(CNUIToolbar *)self _screen];
-  [v2 scale];
+  _screen = [(CNUIToolbar *)self _screen];
+  [_screen scale];
   if (v3 == 0.0)
   {
     if (RoundToScale_onceToken != -1)
@@ -137,30 +137,30 @@
   [(CNUIToolbar *)self addSubview:v18];
   [(CNUIToolbar *)self setVisualEffectView:v18];
   v3 = MEMORY[0x1E69DCF90];
-  v4 = self;
+  selfCopy = self;
   v5 = [v3 alloc];
-  v6 = [(CNUIToolbar *)v4 buttons];
-  v7 = [v5 initWithArrangedSubviews:v6];
+  buttons = [(CNUIToolbar *)selfCopy buttons];
+  v7 = [v5 initWithArrangedSubviews:buttons];
 
   [v7 setAlignment:3];
   [v7 setDistribution:4];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setSpacing:8.0];
-  [(CNUIToolbar *)v4 addSubview:v7];
-  v17 = [v7 topAnchor];
-  v16 = [(CNUIToolbar *)v4 topAnchor];
-  v8 = [v17 constraintEqualToAnchor:v16];
+  [(CNUIToolbar *)selfCopy addSubview:v7];
+  topAnchor = [v7 topAnchor];
+  topAnchor2 = [(CNUIToolbar *)selfCopy topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v8;
-  v9 = [v7 bottomAnchor];
-  v10 = [(CNUIToolbar *)v4 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [(CNUIToolbar *)selfCopy bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[1] = v11;
-  v12 = [v7 trailingAnchor];
-  v13 = [(CNUIToolbar *)v4 trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-20.0];
+  trailingAnchor = [v7 trailingAnchor];
+  trailingAnchor2 = [(CNUIToolbar *)selfCopy trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v20[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-  [(CNUIToolbar *)v4 addConstraints:v15];
+  [(CNUIToolbar *)selfCopy addConstraints:v15];
 }
 
 - (void)setupBorder
@@ -171,8 +171,8 @@
   border = self->_border;
   self->_border = v4;
 
-  v6 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-  [(UIView *)self->_border setBackgroundColor:v6];
+  opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+  [(UIView *)self->_border setBackgroundColor:opaqueSeparatorColor];
 
   [(UIView *)self->_border setAutoresizingMask:34];
   v7 = self->_border;
@@ -180,18 +180,18 @@
   [(CNUIToolbar *)self addSubview:v7];
 }
 
-- (id)buttonForItem:(id)a3
+- (id)buttonForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [MEMORY[0x1E69DC738] buttonWithType:127];
-  if ([v4 isDefault])
+  if ([itemCopy isDefault])
   {
     v6 = 1;
   }
 
   else
   {
-    if (![v4 isCancel])
+    if (![itemCopy isCancel])
     {
       goto LABEL_6;
     }
@@ -201,35 +201,35 @@
 
   [v5 setRole:v6];
 LABEL_6:
-  v7 = [v4 title];
-  [v5 setTitle:v7 forState:0];
+  title = [itemCopy title];
+  [v5 setTitle:title forState:0];
 
   [v5 addTarget:self action:sel_buttonPressed_ forControlEvents:64];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [v5 widthAnchor];
-  v9 = [v8 constraintGreaterThanOrEqualToConstant:90.0];
+  widthAnchor = [v5 widthAnchor];
+  v9 = [widthAnchor constraintGreaterThanOrEqualToConstant:90.0];
   [v9 setActive:1];
 
   return v5;
 }
 
-- (CNUIToolbar)initWithItems:(id)a3
+- (CNUIToolbar)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v14.receiver = self;
   v14.super_class = CNUIToolbar;
   v6 = [(CNUIToolbar *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, items);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __29__CNUIToolbar_initWithItems___block_invoke;
     v12[3] = &unk_1E74E2350;
     v8 = v7;
     v13 = v8;
-    v9 = [v5 _cn_map:v12];
+    v9 = [itemsCopy _cn_map:v12];
     buttons = v8->_buttons;
     v8->_buttons = v9;
 

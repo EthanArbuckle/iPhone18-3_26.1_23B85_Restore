@@ -1,43 +1,43 @@
 @interface HKOverlayRoomCardioFitnessViewController
-- (HKOverlayRoomCardioFitnessViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 analyticsDelegate:(id)a7 interactiveChartOptions:(unint64_t)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10;
+- (HKOverlayRoomCardioFitnessViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay analyticsDelegate:(id)delegate interactiveChartOptions:(unint64_t)options trendModel:(id)model factorDisplayTypes:(id)self0;
 - (HKOverlayRoomCardioFitnessViewControllerAnalyticsDelegate)analyticsDelegate;
-- (id)_buildCardioFitnessLevelDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 cardioFitnessLevel:(int64_t)a6;
-- (id)_buildTrendContextFromApplicationItems:(id)a3 overlayChartController:(id)a4 overlayMode:(int64_t)a5;
-- (id)_configureContextSectionsForFullMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 trendModel:(id)a6;
-- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 trendModel:(id)a6;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_buildCardioFitnessLevelDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store cardioFitnessLevel:(int64_t)level;
+- (id)_buildTrendContextFromApplicationItems:(id)items overlayChartController:(id)controller overlayMode:(int64_t)mode;
+- (id)_configureContextSectionsForFullMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller trendModel:(id)model;
+- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller trendModel:(id)model;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4;
-- (id)initialSelectedContextForMode:(int64_t)a3 containerIndex:(int64_t)a4;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store;
+- (id)initialSelectedContextForMode:(int64_t)mode containerIndex:(int64_t)index;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (id)showAllFiltersButtonTitle;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
-- (int64_t)_cardioFitnessLevelForPreferredOverlay:(int64_t)a3;
-- (int64_t)_preferredOverlayForCardioFitnessLevel:(int64_t)a3;
-- (void)contextDidUpdate:(id)a3 withCardioFitnessLevelData:(id)a4;
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
+- (int64_t)_cardioFitnessLevelForPreferredOverlay:(int64_t)overlay;
+- (int64_t)_preferredOverlayForCardioFitnessLevel:(int64_t)level;
+- (void)contextDidUpdate:(id)update withCardioFitnessLevelData:(id)data;
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem;
 @end
 
 @implementation HKOverlayRoomCardioFitnessViewController
 
-- (HKOverlayRoomCardioFitnessViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 analyticsDelegate:(id)a7 interactiveChartOptions:(unint64_t)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10
+- (HKOverlayRoomCardioFitnessViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay analyticsDelegate:(id)delegate interactiveChartOptions:(unint64_t)options trendModel:(id)model factorDisplayTypes:(id)self0
 {
-  v35 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  if (a6 > 0xB || ((1 << a6) & 0x9E1) == 0)
+  dateCopy = date;
+  itemsCopy = items;
+  delegateCopy = delegate;
+  modelCopy = model;
+  typesCopy = types;
+  if (overlay > 0xB || ((1 << overlay) & 0x9E1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomCardioFitnessViewController.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"_isPreferredOverlaySupported(preferredOverlay)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomCardioFitnessViewController.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"_isPreferredOverlaySupported(preferredOverlay)"}];
   }
 
-  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v18];
+  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v21 = v20;
-  v22 = v35;
+  v22 = dateCopy;
   if (v20)
   {
     v22 = v20;
@@ -47,7 +47,7 @@
 
   v36.receiver = self;
   v36.super_class = HKOverlayRoomCardioFitnessViewController;
-  v24 = [(HKOverlayRoomViewController *)&v36 initWithDisplayDate:v23 applicationItems:v16 factorDisplayTypes:v19 mode:a5];
+  v24 = [(HKOverlayRoomViewController *)&v36 initWithDisplayDate:v23 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v24)
   {
@@ -55,23 +55,23 @@
     contextDelegates = v24->_contextDelegates;
     v24->_contextDelegates = v25;
 
-    v24->_preferredOverlay = a6;
+    v24->_preferredOverlay = overlay;
     preferredContextLocation = v24->_preferredContextLocation;
     v24->_preferredContextLocation = 0;
 
-    objc_storeWeak(&v24->_analyticsDelegate, v17);
-    objc_storeStrong(&v24->_trendModel, a9);
-    if (a5 == 3)
+    objc_storeWeak(&v24->_analyticsDelegate, delegateCopy);
+    objc_storeStrong(&v24->_trendModel, model);
+    if (mode == 3)
     {
       v28 = 0;
     }
 
     else
     {
-      v29 = [v18 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v30 = a6 == 0;
+        v30 = overlay == 0;
       }
 
       else
@@ -80,11 +80,11 @@
       }
 
       v31 = !v30;
-      v28 = v31 | v29;
+      v28 = v31 | selectTrendInitially;
     }
 
     [(HKOverlayRoomViewController *)v24 setShouldSelectInitialOverlay:v28 & 1];
-    [(HKOverlayRoomViewController *)v24 setAdditionalChartOptions:a8];
+    [(HKOverlayRoomViewController *)v24 setAdditionalChartOptions:options];
   }
 
   return v24;
@@ -94,24 +94,24 @@
 {
   if ([(HKOverlayRoomViewController *)self controllerMode]!= 3)
   {
-    v3 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:v3];
+    trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:trendModel];
 
     if (v4 != 8)
     {
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
-  v7 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-  if (v7)
+  trendModel2 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+  if (trendModel2)
   {
-    v8 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-    v9 = [v8 selectTrendInitially];
+    trendModel3 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+    selectTrendInitially = [trendModel3 selectTrendInitially];
 
-    if (v9)
+    if (selectTrendInitially)
     {
       v10 = 73728;
     }
@@ -127,38 +127,38 @@
     v10 = 0x10000;
   }
 
-  v11 = [(HKOverlayRoomViewController *)self primaryDisplayType];
-  v12 = [v11 hk_interactiveChartOptions];
-  v27 = v10 | [(HKOverlayRoomViewController *)self additionalChartOptions]| v12;
+  primaryDisplayType = [(HKOverlayRoomViewController *)self primaryDisplayType];
+  hk_interactiveChartOptions = [primaryDisplayType hk_interactiveChartOptions];
+  v27 = v10 | [(HKOverlayRoomViewController *)self additionalChartOptions]| hk_interactiveChartOptions;
 
   v26 = [HKInteractiveChartOverlayViewController alloc];
-  v30 = [(HKOverlayRoomViewController *)self applicationItems];
-  v31 = [v30 healthStore];
-  v24 = [(HKOverlayRoomViewController *)self primaryDisplayType];
-  v29 = [(HKOverlayRoomViewController *)self applicationItems];
-  v13 = [v29 unitController];
-  v28 = [(HKOverlayRoomViewController *)self applicationItems];
-  v14 = [v28 dateCache];
-  v25 = [(HKOverlayRoomViewController *)self applicationItems];
-  v15 = [v25 chartDataCacheController];
-  v16 = [(HKOverlayRoomViewController *)self applicationItems];
-  v17 = [v16 timeScopeController];
-  v18 = [(HKOverlayRoomViewController *)self applicationItems];
-  v19 = [v18 sampleDateRangeController];
-  v20 = [(HKOverlayRoomViewController *)self displayDate];
-  v21 = v14;
-  v22 = [(HKInteractiveChartOverlayViewController *)v26 initWithHealthStore:v31 primaryDisplayType:v24 unitPreferenceController:v13 dateCache:v14 chartDataCacheController:v15 selectedTimeScopeController:v17 sampleTypeDateRangeController:v19 initialXValue:v20 currentCalendarOverride:0 options:v27];
+  applicationItems2 = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems2 healthStore];
+  primaryDisplayType2 = [(HKOverlayRoomViewController *)self primaryDisplayType];
+  applicationItems3 = [(HKOverlayRoomViewController *)self applicationItems];
+  unitController = [applicationItems3 unitController];
+  applicationItems4 = [(HKOverlayRoomViewController *)self applicationItems];
+  dateCache = [applicationItems4 dateCache];
+  applicationItems5 = [(HKOverlayRoomViewController *)self applicationItems];
+  chartDataCacheController = [applicationItems5 chartDataCacheController];
+  applicationItems6 = [(HKOverlayRoomViewController *)self applicationItems];
+  timeScopeController2 = [applicationItems6 timeScopeController];
+  applicationItems7 = [(HKOverlayRoomViewController *)self applicationItems];
+  sampleDateRangeController = [applicationItems7 sampleDateRangeController];
+  displayDate = [(HKOverlayRoomViewController *)self displayDate];
+  v21 = dateCache;
+  v22 = [(HKInteractiveChartOverlayViewController *)v26 initWithHealthStore:healthStore primaryDisplayType:primaryDisplayType2 unitPreferenceController:unitController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:timeScopeController2 sampleTypeDateRangeController:sampleDateRangeController initialXValue:displayDate currentCalendarOverride:0 options:v27];
 
   [(HKInteractiveChartViewController *)v22 setCurrentValueViewDataSourceDelegate:self];
 
   return v22;
 }
 
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HKPopulationNormsChartViewController alloc] initWithDisplayType:v6 healthStore:v5];
+  storeCopy = store;
+  typeCopy = type;
+  v7 = [[HKPopulationNormsChartViewController alloc] initWithDisplayType:typeCopy healthStore:storeCopy];
 
   if (v7)
   {
@@ -173,16 +173,16 @@
   return v8;
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKOverlayRoomViewController *)self chartController];
-  v8 = [v7 stringForValueRange:v6 timeScope:a4];
+  rangeCopy = range;
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v8 = [chartController stringForValueRange:rangeCopy timeScope:scope];
 
   return v8;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"CARDIO_FITNESS" value:&stru_1F42FFBE0 table:@"Localizable-CardioFitness"];
@@ -198,57 +198,57 @@
   return v3;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v4 = MEMORY[0x1E696C2E0];
   v5 = *MEMORY[0x1E696BDF0];
-  v6 = a3;
+  itemsCopy = items;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  v8 = [v6 displayTypeController];
-  v9 = [v8 displayTypeForObjectType:v7];
+  displayTypeController = [itemsCopy displayTypeController];
+  v9 = [displayTypeController displayTypeForObjectType:v7];
 
   [(HKOverlayRoomCardioFitnessViewController *)self setRepresentativeDisplayType:v9];
-  v10 = [v9 displayCategory];
-  v11 = [v6 unitController];
-  v12 = [v6 chartDataCacheController];
-  v13 = [v9 hk_standardSeriesForTimeScope:5 displayCategory:v10 unitController:v11 dataCacheController:v12];
+  displayCategory = [v9 displayCategory];
+  unitController = [itemsCopy unitController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
+  v13 = [v9 hk_standardSeriesForTimeScope:5 displayCategory:displayCategory unitController:unitController dataCacheController:chartDataCacheController];
 
   v14 = objc_alloc_init(HKChartCache);
-  v15 = [v6 unitController];
-  v16 = [v6 healthStore];
-  v17 = [v9 cardioFitnessDataSourceWithUnitController:v15 healthStore:v16];
+  unitController2 = [itemsCopy unitController];
+  healthStore = [itemsCopy healthStore];
+  v17 = [v9 cardioFitnessDataSourceWithUnitController:unitController2 healthStore:healthStore];
   [(HKChartCache *)v14 setDataSource:v17];
 
   v18 = +[HKOutstandingFetchOperationManager sharedOperationManager];
   [(HKChartCache *)v14 setOperationManager:v18];
 
-  v19 = [v6 chartDataCacheController];
+  chartDataCacheController2 = [itemsCopy chartDataCacheController];
 
-  [v19 addCustomChartCache:v14 forDisplayType:v9];
+  [chartDataCacheController2 addCustomChartCache:v14 forDisplayType:v9];
   v20 = objc_alloc_init(HKCacheBackedChartSeriesDataSource);
   [(HKCacheBackedChartSeriesDataSource *)v20 setChartCache:v14];
   [v13 setDataSource:v20];
   v21 = objc_alloc_init(HKInteractiveChartCardioFitnessFormatter);
   v22 = [HKInteractiveChartDisplayType alloc];
-  v23 = [v9 objectType];
-  v24 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v22, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v13, v9, v21, [v23 code]);
+  objectType = [v9 objectType];
+  v24 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v22, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v13, v9, v21, [objectType code]);
 
   return v24;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomCardioFitnessViewController *)self contextDelegates];
-  [v10 removeAllObjects];
+  itemsCopy = items;
+  controllerCopy = controller;
+  contextDelegates = [(HKOverlayRoomCardioFitnessViewController *)self contextDelegates];
+  [contextDelegates removeAllObjects];
 
-  if ((a3 - 1) < 2)
+  if ((mode - 1) < 2)
   {
     v11 = [HKOverlayContextSectionContainer alloc];
-    v12 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-    v13 = [(HKOverlayRoomCardioFitnessViewController *)self _configureContextSectionsForSingleOverlayMode:a3 applicationItems:v8 overlayChartController:v9 trendModel:v12];
+    trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+    v13 = [(HKOverlayRoomCardioFitnessViewController *)self _configureContextSectionsForSingleOverlayMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy trendModel:trendModel];
     v14 = [(HKOverlayContextSectionContainer *)v11 initWithContainerTitle:0 overlayContextSections:v13];
     v20[0] = v14;
     v15 = v20;
@@ -258,11 +258,11 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     v16 = [HKOverlayContextSectionContainer alloc];
-    v12 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-    v13 = [(HKOverlayRoomCardioFitnessViewController *)self _configureContextSectionsForFullMode:3 applicationItems:v8 overlayChartController:v9 trendModel:v12];
+    trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+    v13 = [(HKOverlayRoomCardioFitnessViewController *)self _configureContextSectionsForFullMode:3 applicationItems:itemsCopy overlayChartController:controllerCopy trendModel:trendModel];
     v14 = [(HKOverlayContextSectionContainer *)v16 initWithContainerTitle:0 overlayContextSections:v13];
     v19 = v14;
     v15 = &v19;
@@ -275,117 +275,117 @@ LABEL_7:
   return v17;
 }
 
-- (id)initialSelectedContextForMode:(int64_t)a3 containerIndex:(int64_t)a4
+- (id)initialSelectedContextForMode:(int64_t)mode containerIndex:(int64_t)index
 {
-  if ([(HKOverlayRoomViewController *)self containerIndexForHealthFactors]== a4)
+  if ([(HKOverlayRoomViewController *)self containerIndexForHealthFactors]== index)
   {
-    v5 = 0;
+    preferredContextLocation = 0;
   }
 
   else
   {
-    v5 = [(HKOverlayRoomCardioFitnessViewController *)self preferredContextLocation];
+    preferredContextLocation = [(HKOverlayRoomCardioFitnessViewController *)self preferredContextLocation];
   }
 
-  return v5;
+  return preferredContextLocation;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  itemsCopy = items;
   preferredOverlay = self->_preferredOverlay;
   if (preferredOverlay == 11 || preferredOverlay == 0)
   {
     preferredOverlay = [(HKOverlayRoomCardioFitnessViewController *)self _preferredOverlayForCardioFitnessLevel:[(HKCardioFitnessLevelData *)self->_initialCardioFitnessLevelData cardioFitnessLevel]];
   }
 
-  v12 = [(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3];
+  v12 = [(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode];
   v13 = [HKOverlayRoomCardioFitnessViewController alloc];
-  v14 = [(HKOverlayRoomCardioFitnessViewController *)self analyticsDelegate];
-  v15 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-  v16 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v17 = [(HKOverlayRoomCardioFitnessViewController *)v13 initWithDisplayDate:v8 applicationItems:v9 mode:a3 preferredOverlay:preferredOverlay analyticsDelegate:v14 interactiveChartOptions:v12 trendModel:v15 factorDisplayTypes:v16];
+  analyticsDelegate = [(HKOverlayRoomCardioFitnessViewController *)self analyticsDelegate];
+  trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v17 = [(HKOverlayRoomCardioFitnessViewController *)v13 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode preferredOverlay:preferredOverlay analyticsDelegate:analyticsDelegate interactiveChartOptions:v12 trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
   return v17;
 }
 
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13 | v6)
+  itemCopy = item;
+  contextItemCopy = contextItem;
+  if (itemCopy | contextItemCopy)
   {
-    v7 = [v13 analyticsIdentifier];
-    v8 = [v6 analyticsIdentifier];
-    v9 = [v7 isEqualToString:v8];
+    analyticsIdentifier = [itemCopy analyticsIdentifier];
+    analyticsIdentifier2 = [contextItemCopy analyticsIdentifier];
+    v9 = [analyticsIdentifier isEqualToString:analyticsIdentifier2];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(HKOverlayRoomCardioFitnessViewController *)self analyticsDelegate];
-      v11 = [v13 analyticsIdentifier];
-      v12 = [v6 analyticsIdentifier];
-      [v10 didChangeFromOverlayWithIdentifier:v11 toOverlayWithIdentifier:v12];
+      analyticsDelegate = [(HKOverlayRoomCardioFitnessViewController *)self analyticsDelegate];
+      analyticsIdentifier3 = [itemCopy analyticsIdentifier];
+      analyticsIdentifier4 = [contextItemCopy analyticsIdentifier];
+      [analyticsDelegate didChangeFromOverlayWithIdentifier:analyticsIdentifier3 toOverlayWithIdentifier:analyticsIdentifier4];
     }
   }
 }
 
-- (void)contextDidUpdate:(id)a3 withCardioFitnessLevelData:(id)a4
+- (void)contextDidUpdate:(id)update withCardioFitnessLevelData:(id)data
 {
-  v6 = a4;
-  v5 = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
+  dataCopy = data;
+  initialCardioFitnessLevelData = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
 
-  if (!v5)
+  if (!initialCardioFitnessLevelData)
   {
-    [(HKOverlayRoomCardioFitnessViewController *)self setInitialCardioFitnessLevelData:v6];
+    [(HKOverlayRoomCardioFitnessViewController *)self setInitialCardioFitnessLevelData:dataCopy];
     [(HKOverlayRoomViewController *)self setShouldSelectInitialOverlay:1];
     [(HKOverlayRoomViewController *)self reloadOverlayContextItems];
   }
 }
 
-- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 trendModel:(id)a6
+- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller trendModel:(id)model
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-  if (v11)
+  itemsCopy = items;
+  controllerCopy = controller;
+  trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+  if (trendModel)
   {
-    v12 = v11;
-    v13 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-    v14 = [v13 selectTrendInitially];
+    v12 = trendModel;
+    trendModel2 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+    selectTrendInitially = [trendModel2 selectTrendInitially];
 
-    if (v14)
+    if (selectTrendInitially)
     {
-      v15 = [(HKOverlayRoomCardioFitnessViewController *)self _buildTrendContextFromApplicationItems:v9 overlayChartController:v10 overlayMode:a3];
+      v15 = [(HKOverlayRoomCardioFitnessViewController *)self _buildTrendContextFromApplicationItems:itemsCopy overlayChartController:controllerCopy overlayMode:mode];
 LABEL_11:
       v22 = v15;
       goto LABEL_12;
     }
   }
 
-  v16 = [(HKOverlayRoomCardioFitnessViewController *)self preferredOverlay];
-  if (v16 == 11 || !v16)
+  preferredOverlay = [(HKOverlayRoomCardioFitnessViewController *)self preferredOverlay];
+  if (preferredOverlay == 11 || !preferredOverlay)
   {
-    v17 = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
+    initialCardioFitnessLevelData = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
 
-    if (!v17)
+    if (!initialCardioFitnessLevelData)
     {
-      v15 = [[_HKCardioFitnessClassificationContext alloc] initWithMode:a3 applicationItems:v9 overlayChartController:v10 delegate:self];
+      v15 = [[_HKCardioFitnessClassificationContext alloc] initWithMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy delegate:self];
       goto LABEL_11;
     }
   }
 
-  v18 = [(HKOverlayRoomCardioFitnessViewController *)self _cardioFitnessLevelForPreferredOverlay:[(HKOverlayRoomCardioFitnessViewController *)self preferredOverlay]];
-  if (v18 == -1)
+  cardioFitnessLevel = [(HKOverlayRoomCardioFitnessViewController *)self _cardioFitnessLevelForPreferredOverlay:[(HKOverlayRoomCardioFitnessViewController *)self preferredOverlay]];
+  if (cardioFitnessLevel == -1)
   {
-    v19 = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
-    v18 = [v19 cardioFitnessLevel];
+    initialCardioFitnessLevelData2 = [(HKOverlayRoomCardioFitnessViewController *)self initialCardioFitnessLevelData];
+    cardioFitnessLevel = [initialCardioFitnessLevelData2 cardioFitnessLevel];
   }
 
   v20 = [_HKCardioFitnessLevelContext alloc];
-  v21 = [(HKOverlayRoomCardioFitnessViewController *)self representativeDisplayType];
-  v22 = [(_HKCardioFitnessLevelContext *)v20 initWithMode:a3 applicationItems:v9 overlayChartController:v10 baseDisplayType:v21 cardioFitnessLevel:v18];
+  representativeDisplayType = [(HKOverlayRoomCardioFitnessViewController *)self representativeDisplayType];
+  v22 = [(_HKCardioFitnessLevelContext *)v20 initWithMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy baseDisplayType:representativeDisplayType cardioFitnessLevel:cardioFitnessLevel];
 
 LABEL_12:
   v23 = [[HKOverlayContextLocation alloc] initWithContainerIndex:0 sectionIndex:0 itemIndex:0];
@@ -402,20 +402,20 @@ LABEL_12:
   return v27;
 }
 
-- (id)_configureContextSectionsForFullMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 trendModel:(id)a6
+- (id)_configureContextSectionsForFullMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller trendModel:(id)model
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v37 = a4;
-  v10 = a5;
-  v36 = a6;
+  itemsCopy = items;
+  controllerCopy = controller;
+  modelCopy = model;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = [(HKOverlayRoomCardioFitnessViewController *)self _cardioFitnessLevelForPreferredOverlay:[(HKOverlayRoomCardioFitnessViewController *)self preferredOverlay]];
   v13 = 0;
   for (i = 3; i != -1; --i)
   {
     v15 = [_HKCardioFitnessLevelContext alloc];
-    v16 = [(HKOverlayRoomCardioFitnessViewController *)self representativeDisplayType];
-    v17 = [(_HKCardioFitnessLevelContext *)v15 initWithMode:a3 applicationItems:v37 overlayChartController:v10 baseDisplayType:v16 cardioFitnessLevel:i];
+    representativeDisplayType = [(HKOverlayRoomCardioFitnessViewController *)self representativeDisplayType];
+    v17 = [(_HKCardioFitnessLevelContext *)v15 initWithMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy baseDisplayType:representativeDisplayType cardioFitnessLevel:i];
 
     [v11 addObject:v17];
     if (v12 == i)
@@ -426,9 +426,9 @@ LABEL_12:
     }
   }
 
-  if (v36)
+  if (modelCopy)
   {
-    v19 = [(HKOverlayRoomCardioFitnessViewController *)self _buildTrendContextFromApplicationItems:v37 overlayChartController:v10 overlayMode:a3];
+    v19 = [(HKOverlayRoomCardioFitnessViewController *)self _buildTrendContextFromApplicationItems:itemsCopy overlayChartController:controllerCopy overlayMode:mode];
     v20 = [HKOverlayContextSection alloc];
     v40[0] = v19;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
@@ -447,7 +447,7 @@ LABEL_12:
   v25 = [[HKOverlayContextSection alloc] initWithSectionTitle:v24 overlayContextItems:v11];
   if (v13)
   {
-    if (v36 && [v36 selectTrendInitially])
+    if (modelCopy && [modelCopy selectTrendInitially])
     {
       v26 = [HKOverlayContextLocation alloc];
       v27 = 0;
@@ -488,59 +488,59 @@ LABEL_12:
   return v34;
 }
 
-- (id)_buildTrendContextFromApplicationItems:(id)a3 overlayChartController:(id)a4 overlayMode:(int64_t)a5
+- (id)_buildTrendContextFromApplicationItems:(id)items overlayChartController:(id)controller overlayMode:(int64_t)mode
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HKOverlayRoomCardioFitnessViewController *)self primaryDisplayTypeWithApplicationItems:v9];
+  controllerCopy = controller;
+  itemsCopy = items;
+  v10 = [(HKOverlayRoomCardioFitnessViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   v11 = [HKOverlayRoomTrendContext alloc];
-  v12 = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
-  v13 = [(HKOverlayRoomTrendContext *)v11 initWithBaseDisplayType:v10 trendModel:v12 overlayChartController:v8 applicationItems:v9 overlayMode:a5];
+  trendModel = [(HKOverlayRoomCardioFitnessViewController *)self trendModel];
+  v13 = [(HKOverlayRoomTrendContext *)v11 initWithBaseDisplayType:v10 trendModel:trendModel overlayChartController:controllerCopy applicationItems:itemsCopy overlayMode:mode];
 
-  v14 = [(HKOverlayRoomViewController *)self chartController];
-  [v14 setTrendAccessibilityDelegate:v13];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  [chartController setTrendAccessibilityDelegate:v13];
 
   return v13;
 }
 
-- (id)_buildCardioFitnessLevelDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 cardioFitnessLevel:(int64_t)a6
+- (id)_buildCardioFitnessLevelDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store cardioFitnessLevel:(int64_t)level
 {
-  v7 = [a4 cardioFitnessDataSourceWithUnitController:a3 healthStore:a5];
+  v7 = [type cardioFitnessDataSourceWithUnitController:controller healthStore:store];
   v8 = [HKInteractiveChartOverlayNamedDataSource alloc];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKCardioFitnessLevel_%ld", a6];
+  level = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKCardioFitnessLevel_%ld", level];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __140__HKOverlayRoomCardioFitnessViewController__buildCardioFitnessLevelDataSourceWithUnitController_displayType_healthStore_cardioFitnessLevel___block_invoke;
   v12[3] = &__block_descriptor_40_e18___NSString_16__0q8l;
-  v12[4] = a6;
-  v10 = [(HKInteractiveChartOverlayNamedDataSource *)v8 initWithDataSource:v7 named:v9 withContextTitleForTimeScope:v12];
+  v12[4] = level;
+  v10 = [(HKInteractiveChartOverlayNamedDataSource *)v8 initWithDataSource:v7 named:level withContextTitleForTimeScope:v12];
 
   return v10;
 }
 
-- (int64_t)_cardioFitnessLevelForPreferredOverlay:(int64_t)a3
+- (int64_t)_cardioFitnessLevelForPreferredOverlay:(int64_t)overlay
 {
-  if ((a3 - 5) >= 4)
+  if ((overlay - 5) >= 4)
   {
     return -1;
   }
 
   else
   {
-    return 8 - a3;
+    return 8 - overlay;
   }
 }
 
-- (int64_t)_preferredOverlayForCardioFitnessLevel:(int64_t)a3
+- (int64_t)_preferredOverlayForCardioFitnessLevel:(int64_t)level
 {
-  if (a3 >= 4)
+  if (level >= 4)
   {
     return 0;
   }
 
   else
   {
-    return 8 - a3;
+    return 8 - level;
   }
 }
 

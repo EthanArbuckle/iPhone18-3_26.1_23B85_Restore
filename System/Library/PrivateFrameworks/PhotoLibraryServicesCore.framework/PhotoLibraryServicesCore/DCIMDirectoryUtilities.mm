@@ -8,24 +8,24 @@
 
 + (id)takingVideoIndicatorFilePath
 {
-  v2 = [a1 photoDataDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"takingvideo"];
+  photoDataDirectory = [self photoDataDirectory];
+  v3 = [photoDataDirectory stringByAppendingPathComponent:@"takingvideo"];
 
   return v3;
 }
 
 + (id)takingPhotoIndicatorFilePath
 {
-  v2 = [a1 photoDataDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"takingphoto"];
+  photoDataDirectory = [self photoDataDirectory];
+  v3 = [photoDataDirectory stringByAppendingPathComponent:@"takingphoto"];
 
   return v3;
 }
 
 + (id)nebuladkeepalivepath
 {
-  v2 = [a1 photoDCIMDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@".MISC"];
+  photoDCIMDirectory = [self photoDCIMDirectory];
+  v3 = [photoDCIMDirectory stringByAppendingPathComponent:@".MISC"];
   v4 = [v3 stringByAppendingPathComponent:@"nebuladkeepalive"];
 
   return v4;

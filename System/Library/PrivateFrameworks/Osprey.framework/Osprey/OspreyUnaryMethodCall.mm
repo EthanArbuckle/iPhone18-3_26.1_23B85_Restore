@@ -1,14 +1,14 @@
 @interface OspreyUnaryMethodCall
-- (OspreyUnaryMethodCall)callWithRequestBuilder:(id)a3 requestMessage:(id)a4 completion:(id)a5;
+- (OspreyUnaryMethodCall)callWithRequestBuilder:(id)builder requestMessage:(id)message completion:(id)completion;
 @end
 
 @implementation OspreyUnaryMethodCall
 
-- (OspreyUnaryMethodCall)callWithRequestBuilder:(id)a3 requestMessage:(id)a4 completion:(id)a5
+- (OspreyUnaryMethodCall)callWithRequestBuilder:(id)builder requestMessage:(id)message completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  builderCopy = builder;
+  messageCopy = message;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -24,11 +24,11 @@
   v14[1] = 3221225472;
   v14[2] = __74__OspreyUnaryMethodCall_callWithRequestBuilder_requestMessage_completion___block_invoke_2;
   v14[3] = &unk_2799F20C0;
-  v11 = v10;
+  v11 = completionCopy;
   v15 = v11;
   v16 = v18;
-  v12 = [(OspreyMethodCall *)self callWithRequestBuilder:v8 messageReceived:v17 completion:v14];
-  [v12 produceMessage:v9];
+  v12 = [(OspreyMethodCall *)self callWithRequestBuilder:builderCopy messageReceived:v17 completion:v14];
+  [v12 produceMessage:messageCopy];
   [v12 finishProducing];
 
   _Block_object_dispose(v18, 8);

@@ -240,15 +240,15 @@ void __46__MOPlatformInfo__createDefaultsManagerDaemon__block_invoke()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isSeedBuild
@@ -258,47 +258,47 @@ void __46__MOPlatformInfo__createDefaultsManagerDaemon__block_invoke()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isDNUEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isDiagnosticSubmissionAllowed = [mEMORY[0x277D262A0] isDiagnosticSubmissionAllowed];
 
   v4 = +[MOPlatformInfo _createDefaultsManagerDaemon];
   v5 = [v4 objectForKey:@"PlatformInfoOverrideIsDNUEnabled"];
   v6 = v5;
   if (v5)
   {
-    v3 = [v5 BOOLValue];
+    isDiagnosticSubmissionAllowed = [v5 BOOLValue];
   }
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 + (BOOL)isIHAEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
   v4 = +[MOPlatformInfo _createDefaultsManagerDaemon];
   v5 = [v4 objectForKey:@"PlatformInfoOverrideIsIHAEnabled"];
   v6 = v5;
   if (v5)
   {
-    v3 = [v5 BOOLValue];
+    isHealthDataSubmissionAllowed = [v5 BOOLValue];
   }
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 + (BOOL)wasBuildVersionUpdated
@@ -355,13 +355,13 @@ uint64_t __24__MOPlatformInfo_isIpad__block_invoke()
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [MEMORY[0x277D2A148] sharedInstance];
+  mEMORY[0x277D2A148] = [MEMORY[0x277D2A148] sharedInstance];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__MOPlatformInfo_generativeModelsAvailabilityStatus__block_invoke;
   v5[3] = &unk_279A1F380;
   v5[4] = &v6;
-  [v2 fetchGenerativeModelsAvailabilityWithReply:v5];
+  [mEMORY[0x277D2A148] fetchGenerativeModelsAvailabilityWithReply:v5];
   v3 = v7[3];
 
   _Block_object_dispose(&v6, 8);
@@ -398,7 +398,7 @@ void __52__MOPlatformInfo_generativeModelsAvailabilityStatus__block_invoke(uint6
 + (void)getDeviceClass
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4[0] = 67109120;
   v4[1] = v2;
   _os_log_error_impl(&dword_25E48F000, a2, OS_LOG_TYPE_ERROR, "Could not get device class (MGError=%d)", v4, 8u);

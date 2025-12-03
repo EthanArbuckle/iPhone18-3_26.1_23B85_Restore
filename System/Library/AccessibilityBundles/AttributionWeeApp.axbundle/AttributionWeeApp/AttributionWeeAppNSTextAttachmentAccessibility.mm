@@ -1,18 +1,18 @@
 @interface AttributionWeeAppNSTextAttachmentAccessibility
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation AttributionWeeAppNSTextAttachmentAccessibility
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5.receiver = self;
   v5.super_class = AttributionWeeAppNSTextAttachmentAccessibility;
-  [(AttributionWeeAppNSTextAttachmentAccessibility *)&v5 setImage:v4];
+  [(AttributionWeeAppNSTextAttachmentAccessibility *)&v5 setImage:imageCopy];
   if (AXCaptureImageAttachmentSetYahooLogo == 1)
   {
-    [v4 setAccessibilityLabel:@"Yahoo!"];
+    [imageCopy setAccessibilityLabel:@"Yahoo!"];
   }
 }
 

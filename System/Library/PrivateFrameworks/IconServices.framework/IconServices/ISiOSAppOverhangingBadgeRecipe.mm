@@ -1,7 +1,7 @@
 @interface ISiOSAppOverhangingBadgeRecipe
 - (id)hintedBadgeRect;
 - (id)hintedMainIconBadgeRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISiOSAppOverhangingBadgeRecipe
@@ -145,10 +145,10 @@ void __49__ISiOSAppOverhangingBadgeRecipe_hintedBadgeRect__block_invoke()
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"layer"];
@@ -159,8 +159,8 @@ void __49__ISiOSAppOverhangingBadgeRecipe_hintedBadgeRect__block_invoke()
   v9 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v9 setName:@"icon"];
   [(ISContentLayer *)v9 setContent:@"kISPrimaryResourceKey"];
-  v10 = [(ISiOSAppOverhangingBadgeRecipe *)self hintedMainIconBadgeRect];
-  [v10 hintedRectForSize:{width, height}];
+  hintedMainIconBadgeRect = [(ISiOSAppOverhangingBadgeRecipe *)self hintedMainIconBadgeRect];
+  [hintedMainIconBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v9 setFrame:?];
 
   v11 = objc_alloc_init(ISContentLayer);
@@ -174,8 +174,8 @@ void __49__ISiOSAppOverhangingBadgeRecipe_hintedBadgeRect__block_invoke()
   [(ISLayer *)v8 addSublayer:v9];
   v13 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v13 setName:@"badge layer"];
-  v14 = [(ISiOSAppOverhangingBadgeRecipe *)self hintedBadgeRect];
-  [v14 hintedRectForSize:{width, height}];
+  hintedBadgeRect = [(ISiOSAppOverhangingBadgeRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v13 setFrame:?];
 
   [(ISContentLayer *)v13 setContent:@"kISBadgeResourceKey"];

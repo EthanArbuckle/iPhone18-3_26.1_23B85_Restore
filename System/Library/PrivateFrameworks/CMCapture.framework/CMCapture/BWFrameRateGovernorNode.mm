@@ -1,11 +1,11 @@
 @interface BWFrameRateGovernorNode
 + (void)initialize;
 - (BWFrameRateGovernorNode)init;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWFrameRateGovernorNode
@@ -59,7 +59,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -75,7 +75,7 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   aeStabilityTuning = self->_aeStabilityTuning;
   if (aeStabilityTuning <= 2)
@@ -90,20 +90,20 @@
   v12 = v6;
   v10.receiver = self;
   v10.super_class = BWFrameRateGovernorNode;
-  [(BWNode *)&v10 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v10 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = [CMGetAttachment(a3 @"StillImageCaptureType"];
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = [CMGetAttachment(buffer @"StillImageCaptureType"];
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   memset(&v37, 0, sizeof(v37));
-  v8 = CMGetAttachment(a3, *off_1E798A420, 0);
+  v8 = CMGetAttachment(buffer, *off_1E798A420, 0);
   CMTimeMakeFromDictionary(&v37, v8);
   flags = v37.flags;
   if ((v37.flags & 1) == 0)
   {
-    CMSampleBufferGetPresentationTimeStamp(&time, a3);
+    CMSampleBufferGetPresentationTimeStamp(&time, buffer);
     v37 = time;
     flags = time.flags;
   }
@@ -216,8 +216,8 @@ LABEL_59:
 LABEL_60:
           *(&self->_preservesMotionDataFromDroppedFrames + 4) = v37;
 LABEL_61:
-          [*&self->_activeBracketSequenceRate prependPreservedMotionDataToSampleBuffer:a3];
-          [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+          [*&self->_activeBracketSequenceRate prependPreservedMotionDataToSampleBuffer:buffer];
+          [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
           return;
         }
 
@@ -230,7 +230,7 @@ LABEL_61:
       }
 
 LABEL_54:
-      [*&self->_activeBracketSequenceRate preserveMotionDataForSoonToBeDroppedSampleBuffer:a3];
+      [*&self->_activeBracketSequenceRate preserveMotionDataForSoonToBeDroppedSampleBuffer:buffer];
       return;
     }
 
@@ -349,16 +349,16 @@ LABEL_12:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (a3)
+  if (d)
   {
     [*&self->_activeBracketSequenceRate reset];
   }
 
   v7.receiver = self;
   v7.super_class = BWFrameRateGovernorNode;
-  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 @end

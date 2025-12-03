@@ -1,51 +1,51 @@
 @interface NCListDebugHUDModelBridge
-+ (void)plotRect:(CGRect)a3 label:(id)a4;
-+ (void)plotString:(id)a3 label:(id)a4 inListView:(id)a5;
-+ (void)trackListView:(id)a3;
++ (void)plotRect:(CGRect)rect label:(id)label;
++ (void)plotString:(id)string label:(id)label inListView:(id)view;
++ (void)trackListView:(id)view;
 - (NCListDebugHUDModelBridge)init;
 @end
 
 @implementation NCListDebugHUDModelBridge
 
-+ (void)trackListView:(id)a3
++ (void)trackListView:(id)view
 {
   v3 = qword_280D047F8;
-  v4 = a3;
+  viewCopy = view;
   if (v3 != -1)
   {
-    v7 = v4;
+    v7 = viewCopy;
     swift_once();
-    v4 = v7;
+    viewCopy = v7;
   }
 
   if (qword_280D04800)
   {
-    v6 = v4;
+    v6 = viewCopy;
     v5 = qword_280D04800;
     sub_21E90EC08();
     swift_unknownObjectWeakAssign();
     sub_21E8FDEF0();
 
-    v4 = v6;
+    viewCopy = v6;
   }
 }
 
-+ (void)plotString:(id)a3 label:(id)a4 inListView:(id)a5
++ (void)plotString:(id)string label:(id)label inListView:(id)view
 {
   v6 = sub_21E92A458();
   v8 = v7;
   v9 = sub_21E92A458();
   v11 = v10;
-  v12 = a5;
+  viewCopy = view;
   sub_21E7950DC(v6, v8, v9, v11);
 }
 
-+ (void)plotRect:(CGRect)a3 label:(id)a4
++ (void)plotRect:(CGRect)rect label:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = sub_21E92A458();
   sub_21E924ECC(v8, v9, x, y, width, height);
 }

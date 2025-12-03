@@ -6,34 +6,34 @@
 - (NSString)usageSource;
 - (STKImageGlyph)imageGlyph;
 - (STKStickerEffect)effect;
-- (STKStickerView)initWithCoder:(id)a3;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
-- (id)currentImageWithEffectFlipped:(BOOL)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
+- (STKStickerView)initWithCoder:(id)coder;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
+- (id)currentImageWithEffectFlipped:(BOOL)flipped;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
 - (id)dragPreviewLiftContainerProvider;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)animatedImageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)animatedImageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler;
 - (void)dealloc;
 - (void)didEndDisplaying;
 - (void)didMoveToWindow;
-- (void)displayLinkDidFire:(id)a3;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (void)displayLinkDidFire:(id)fire;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)layoutSubviews;
 - (void)playSettlingAnimation;
 - (void)prepareForReuse;
 - (void)removeFromSuperview;
-- (void)setBoundsIncludeStroke:(BOOL)a3;
-- (void)setDragPreviewLiftContainerProvider:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setImageGlyph:(id)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)setUsageSource:(id)a3;
-- (void)updateEffect:(id)a3;
+- (void)setBoundsIncludeStroke:(BOOL)stroke;
+- (void)setDragPreviewLiftContainerProvider:(id)provider;
+- (void)setEffect:(id)effect;
+- (void)setImageGlyph:(id)glyph;
+- (void)setIsPaused:(BOOL)paused;
+- (void)setUsageSource:(id)source;
+- (void)updateEffect:(id)effect;
 - (void)willDisplay;
 @end
 
@@ -57,9 +57,9 @@
   return v3;
 }
 
-- (void)setUsageSource:(id)a3
+- (void)setUsageSource:(id)source
 {
-  if (a3)
+  if (source)
   {
     v4 = sub_19A7AB014();
     v6 = v5;
@@ -84,10 +84,10 @@
   return *(self + v3);
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
-  v4 = self;
-  sub_19A6C18F0(a3);
+  selfCopy = self;
+  sub_19A6C18F0(paused);
 }
 
 - (BOOL)isDragInteractionEnabled
@@ -108,21 +108,21 @@
   return *(self + v3);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
   v5 = OBJC_IVAR___STKStickerView_effect;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = effect;
+  effectCopy = effect;
+  selfCopy = self;
 
-  sub_19A6C31C4(a3);
+  sub_19A6C31C4(effect);
 }
 
 - (CGRect)contentFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6C1F10();
   v4 = v3;
   v6 = v5;
@@ -164,9 +164,9 @@
   return v4;
 }
 
-- (void)setDragPreviewLiftContainerProvider:(id)a3
+- (void)setDragPreviewLiftContainerProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -184,7 +184,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_19A60126C(v7);
 }
 
@@ -195,15 +195,15 @@
   return *(self + v3);
 }
 
-- (void)setBoundsIncludeStroke:(BOOL)a3
+- (void)setBoundsIncludeStroke:(BOOL)stroke
 {
   v5 = OBJC_IVAR___STKStickerView_boundsIncludeStroke;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = stroke;
   v6 = *(self + OBJC_IVAR___STKStickerView_effectView);
   if (v6)
   {
-    *(v6 + OBJC_IVAR____SKIStickerEffectViewInternal_boundsIncludeStroke) = a3;
+    *(v6 + OBJC_IVAR____SKIStickerEffectViewInternal_boundsIncludeStroke) = stroke;
   }
 }
 
@@ -214,57 +214,57 @@
   return *(self + v3);
 }
 
-- (void)setImageGlyph:(id)a3
+- (void)setImageGlyph:(id)glyph
 {
   v5 = OBJC_IVAR___STKStickerView_imageGlyph;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = glyph;
+  glyphCopy = glyph;
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for StickerView();
   [(STKStickerView *)&v6 dealloc];
 }
 
-- (STKStickerView)initWithCoder:(id)a3
+- (STKStickerView)initWithCoder:(id)coder
 {
-  v3 = a3;
-  sub_19A6CC468(v3);
+  coderCopy = coder;
+  sub_19A6CC468(coderCopy);
   v5 = v4;
 
   return v5;
 }
 
-- (void)updateEffect:(id)a3
+- (void)updateEffect:(id)effect
 {
-  v5 = a3;
-  v6 = self;
-  sub_19A6C31C4(a3);
+  effectCopy = effect;
+  selfCopy = self;
+  sub_19A6C31C4(effect);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6C34E0();
 }
 
-- (void)animatedImageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)animatedImageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = glyph;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -279,8 +279,8 @@
   v14[3] = 0;
   v14[4] = &unk_19A7BE620;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  glyphCopy = glyph;
+  selfCopy = self;
   sub_19A78E8A0(0, 0, v9, &unk_19A7B6B20, v14);
 }
 
@@ -289,17 +289,17 @@
   v2 = *(self + OBJC_IVAR___STKStickerView_effectView);
   if (v2)
   {
-    v4 = self;
+    selfCopy = self;
     v3 = v2;
     *&v3[OBJC_IVAR____SKIStickerEffectViewInternal_settlingStartTime] = CACurrentMediaTime();
     sub_19A77EC24();
   }
 }
 
-- (id)currentImageWithEffectFlipped:(BOOL)a3
+- (id)currentImageWithEffectFlipped:(BOOL)flipped
 {
-  v4 = self;
-  v5 = sub_19A6C61B0(a3);
+  selfCopy = self;
+  v5 = sub_19A6C61B0(flipped);
 
   return v5;
 }
@@ -327,28 +327,28 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6C6810();
 }
 
 - (void)willDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6C5140();
 }
 
 - (void)didEndDisplaying
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A6C4E6C();
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = _s10StickerKit0A4ViewC15dragInteraction_17previewForLifting7sessionSo21UITargetedDragPreviewCSgSo06UIDragE0C_So0M4ItemCSo0M7Session_ptF_0();
 
   swift_unknownObjectRelease();
@@ -356,24 +356,24 @@
   return v10;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v5 = objc_opt_self();
-  v7 = self;
-  v6 = [v5 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v5 defaultCenter];
   if (qword_1EAFCAFF0 != -1)
   {
     swift_once();
   }
 
-  [v6 postNotificationName:qword_1EAFDD660 object:v7];
+  [defaultCenter postNotificationName:qword_1EAFDD660 object:selfCopy];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _s10StickerKit0A4ViewC15dragInteraction_17itemsForBeginningSaySo10UIDragItemCGSo0iE0C_So0I7Session_ptF_0();
 
   swift_unknownObjectRelease();
@@ -383,19 +383,19 @@
   return v7;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v7 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_19A6CE080(a4);
+  selfCopy = self;
+  sub_19A6CE080(animator);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
   v4 = [objc_allocWithZone(MEMORY[0x1E69DD480]) init];
   [v4 set:1 wantsElasticEffects:?];
@@ -407,44 +407,44 @@
   return v4;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v7 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_19A6CE1C4(a5);
+  selfCopy = self;
+  sub_19A6CE1C4(operation);
 
   swift_unknownObjectRelease();
 }
 
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items
 {
-  v4 = self;
+  selfCopy = self;
   sub_19A6CB4D0();
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_19A6CE6A4(a5);
+  selfCopy = self;
+  sub_19A6CE6A4(animator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   _s10StickerKit0A4ViewC44_dragInteractionDidCancelLiftWithoutDraggingyySo06UIDragE0CF_0();
 }
 
-- (void)displayLinkDidFire:(id)a3
+- (void)displayLinkDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = self;
+  fireCopy = fire;
+  selfCopy = self;
   sub_19A6CF31C();
 }
 

@@ -1,39 +1,39 @@
 @interface AXUIReachabilityAnimationBehaviorSettings
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
-- (AXUIReachabilityAnimationBehaviorSettings)initWithPayload:(id)a3;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
+- (AXUIReachabilityAnimationBehaviorSettings)initWithPayload:(id)payload;
 @end
 
 @implementation AXUIReachabilityAnimationBehaviorSettings
 
-- (AXUIReachabilityAnimationBehaviorSettings)initWithPayload:(id)a3
+- (AXUIReachabilityAnimationBehaviorSettings)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v19.receiver = self;
   v19.super_class = AXUIReachabilityAnimationBehaviorSettings;
   v5 = [(AXUIReachabilityAnimationBehaviorSettings *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trackingDampingRatio"];
+    v6 = [payloadCopy objectForKeyedSubscript:@"trackingDampingRatio"];
     [v6 doubleValue];
     v5->_trackingDampingRatio = v7;
 
-    v8 = [v4 objectForKeyedSubscript:@"dampingRatio"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"dampingRatio"];
     [v8 doubleValue];
     v5->_dampingRatio = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"trackingResponse"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"trackingResponse"];
     [v10 doubleValue];
     v5->_trackingResponse = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"response"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"response"];
     [v12 doubleValue];
     v5->_response = v13;
 
-    v14 = [v4 objectForKeyedSubscript:@"trackingRetargetImpulse"];
+    v14 = [payloadCopy objectForKeyedSubscript:@"trackingRetargetImpulse"];
     [v14 doubleValue];
     v5->_trackingRetargetImpulse = v15;
 
-    v16 = [v4 objectForKeyedSubscript:@"retargetImpulse"];
+    v16 = [payloadCopy objectForKeyedSubscript:@"retargetImpulse"];
     [v16 doubleValue];
     v5->_retargetImpulse = v17;
   }
@@ -41,7 +41,7 @@
   return v5;
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   retstr->var9 = 0.0;
   *&retstr->var5 = 0u;

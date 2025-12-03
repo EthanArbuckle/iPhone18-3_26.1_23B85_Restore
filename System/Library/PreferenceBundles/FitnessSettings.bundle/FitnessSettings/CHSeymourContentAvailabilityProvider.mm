@@ -1,6 +1,6 @@
 @interface CHSeymourContentAvailabilityProvider
 - (CHSeymourContentAvailabilityProvider)init;
-- (void)queryStorefrontContentAvailabilityWithCompletion:(id)a3;
+- (void)queryStorefrontContentAvailabilityWithCompletion:(id)completion;
 @end
 
 @implementation CHSeymourContentAvailabilityProvider
@@ -16,12 +16,12 @@
   return [(CHSeymourContentAvailabilityProvider *)&v4 init];
 }
 
-- (void)queryStorefrontContentAvailabilityWithCompletion:(id)a3
+- (void)queryStorefrontContentAvailabilityWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   SeymourContentAvailabilityProvider.queryStorefrontContentAvailability(completion:)(sub_13720, v5);
 }
 

@@ -25,7 +25,7 @@
   v16 = a8;
   if (a7 && [v15 length])
   {
-    v17 = [a1 queue];
+    queue = [self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__SKGProcessor_Embeddings__updateChunks_firstChunkLength_fromString_overlapSize_maxChunks_cancelBlock___block_invoke;
@@ -35,7 +35,7 @@
     v23 = a7;
     v24 = a6;
     v25 = a4;
-    dispatch_sync(v17, block);
+    dispatch_sync(queue, block);
 
     if (v16)
     {
@@ -63,7 +63,7 @@
   v86 = a4;
   v85 = a5;
   v13 = a9;
-  v88 = [MEMORY[0x277D65768] sharedInstance];
+  mEMORY[0x277D65768] = [MEMORY[0x277D65768] sharedInstance];
   context = objc_autoreleasePoolPush();
   v89 = v13;
   if ((a8 & 0x8000000000000000) == 0)
@@ -80,18 +80,18 @@
         v19 = SKGLogEmbedInit();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v12 bundleIdentifier];
+          bundleIdentifier = [v12 bundleIdentifier];
           *buf = 138412546;
-          v103 = v20;
+          v103 = bundleIdentifier;
           v104 = 2048;
           v105 = v17;
           _os_log_impl(&dword_231B25000, v19, OS_LOG_TYPE_DEFAULT, "[Document Embedding Generation] Start primary embedding generation for item bundleID %@. %llu retries left.", buf, 0x16u);
         }
       }
 
-      v21 = [v12 bundleIdentifier];
+      bundleIdentifier2 = [v12 bundleIdentifier];
       v99 = 0;
-      v22 = [v88 generateEmbeddingForTextInputs:v86 extendedContextLength:1 bundleID:v21 queryID:0x7FFFFFFFFFFFFFFFLL clientBundleID:@"com.apple.spotlightknowledged" timeout:10000 workCost:a7 error:&v99];
+      v22 = [mEMORY[0x277D65768] generateEmbeddingForTextInputs:v86 extendedContextLength:1 bundleID:bundleIdentifier2 queryID:0x7FFFFFFFFFFFFFFFLL clientBundleID:@"com.apple.spotlightknowledged" timeout:10000 workCost:a7 error:&v99];
       v23 = v99;
 
       if (v89)
@@ -107,16 +107,16 @@
         goto LABEL_22;
       }
 
-      v24 = [v23 domain];
-      if (([v24 isEqualToString:v15] & 1) == 0)
+      domain = [v23 domain];
+      if (([domain isEqualToString:v15] & 1) == 0)
       {
 
         goto LABEL_22;
       }
 
-      v25 = [v23 code];
+      code = [v23 code];
 
-      if (v25 != -8007)
+      if (code != -8007)
       {
         goto LABEL_22;
       }
@@ -126,9 +126,9 @@
         v26 = SKGLogEmbedInit();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v12 bundleIdentifier];
+          bundleIdentifier3 = [v12 bundleIdentifier];
           *buf = 138412546;
-          v103 = v28;
+          v103 = bundleIdentifier3;
           v104 = 2048;
           v105 = v17;
           _os_log_error_impl(&dword_231B25000, v26, OS_LOG_TYPE_ERROR, "[Document Embedding Generation] Embedding generation for primary embeddings timed out for bundleID %@. %llu retries left.", buf, 0x16u);
@@ -181,8 +181,8 @@ LABEL_22:
           }
 
           v34 = *(*(&v95 + 1) + 8 * i);
-          v35 = [v34 embeddingData];
-          [v12 addPrimaryEmbedding:v35];
+          embeddingData = [v34 embeddingData];
+          [v12 addPrimaryEmbedding:embeddingData];
 
           [v12 setEmbeddingSize:{objc_msgSend(v34, "elementCount")}];
           [v12 setEmbeddingFormat:objc_msgSend(v34, "elementType")];
@@ -196,9 +196,9 @@ LABEL_22:
     }
 
     v36 = +[SKGActivityJournal sharedJournal];
-    v37 = [v12 bundleIdentifier];
-    v38 = [v12 referenceIdentifier];
-    [v36 addEventForItem:6 bundleID:v37 identifier:v38];
+    bundleIdentifier4 = [v12 bundleIdentifier];
+    referenceIdentifier = [v12 referenceIdentifier];
+    [v36 addEventForItem:6 bundleID:bundleIdentifier4 identifier:referenceIdentifier];
 
     v18 = v85;
     if (SKGLogGetCurrentLoggingLevel() >= 6)
@@ -217,11 +217,11 @@ LABEL_22:
   {
     v54 = [v86 count];
     v55 = +[SKGActivityJournal sharedJournal];
-    v56 = [v12 bundleIdentifier];
-    v57 = [v12 referenceIdentifier];
+    bundleIdentifier5 = [v12 bundleIdentifier];
+    referenceIdentifier2 = [v12 referenceIdentifier];
     if (v54)
     {
-      [v55 addEventForItem:7 bundleID:v56 identifier:v57];
+      [v55 addEventForItem:7 bundleID:bundleIdentifier5 identifier:referenceIdentifier2];
 
       if (!v23)
       {
@@ -252,7 +252,7 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    [v55 addEventForItem:8 bundleID:v56 identifier:v57];
+    [v55 addEventForItem:8 bundleID:bundleIdentifier5 identifier:referenceIdentifier2];
   }
 
   objc_autoreleasePoolPop(context);
@@ -271,18 +271,18 @@ LABEL_66:
         v45 = SKGLogEmbedInit();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v12 bundleIdentifier];
+          bundleIdentifier6 = [v12 bundleIdentifier];
           *buf = 138412546;
-          v103 = v46;
+          v103 = bundleIdentifier6;
           v104 = 2048;
           v105 = a8;
           _os_log_impl(&dword_231B25000, v45, OS_LOG_TYPE_DEFAULT, "[Document Embedding Generation] Start secondary embedding generation for item bundleID %@. %llu retries left.", buf, 0x16u);
         }
       }
 
-      v47 = [v12 bundleIdentifier];
+      bundleIdentifier7 = [v12 bundleIdentifier];
       v94 = 0;
-      v48 = [v88 generateEmbeddingForTextInputs:v18 extendedContextLength:1 bundleID:v47 queryID:0x7FFFFFFFFFFFFFFFLL clientBundleID:@"com.apple.spotlightknowledged" timeout:10000 workCost:a7 error:&v94];
+      v48 = [mEMORY[0x277D65768] generateEmbeddingForTextInputs:v18 extendedContextLength:1 bundleID:bundleIdentifier7 queryID:0x7FFFFFFFFFFFFFFFLL clientBundleID:@"com.apple.spotlightknowledged" timeout:10000 workCost:a7 error:&v94];
       v49 = v94;
 
       if (v89)
@@ -298,16 +298,16 @@ LABEL_66:
         goto LABEL_68;
       }
 
-      v50 = [v49 domain];
-      if (([v50 isEqualToString:v43] & 1) == 0)
+      domain2 = [v49 domain];
+      if (([domain2 isEqualToString:v43] & 1) == 0)
       {
 
         goto LABEL_68;
       }
 
-      v51 = [v49 code];
+      code2 = [v49 code];
 
-      if (v51 != -8007)
+      if (code2 != -8007)
       {
         goto LABEL_68;
       }
@@ -317,9 +317,9 @@ LABEL_66:
         v52 = SKGLogEmbedInit();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
-          v53 = [v12 bundleIdentifier];
+          bundleIdentifier8 = [v12 bundleIdentifier];
           *buf = 138412546;
-          v103 = v53;
+          v103 = bundleIdentifier8;
           v104 = 2048;
           v105 = a8;
           _os_log_error_impl(&dword_231B25000, v52, OS_LOG_TYPE_ERROR, "[Document Embedding Generation] Embedding generation for secondary embeddings timed out for bundleID %@. %llu retries left.", buf, 0x16u);
@@ -374,8 +374,8 @@ LABEL_69:
           }
 
           v67 = *(*(&v90 + 1) + 8 * j);
-          v68 = [v67 embeddingData];
-          [v12 addSecondaryEmbedding:v68];
+          embeddingData2 = [v67 embeddingData];
+          [v12 addSecondaryEmbedding:embeddingData2];
 
           [v12 setEmbeddingSize:{objc_msgSend(v67, "elementCount")}];
           [v12 setEmbeddingFormat:objc_msgSend(v67, "elementType")];
@@ -389,9 +389,9 @@ LABEL_69:
     }
 
     v69 = +[SKGActivityJournal sharedJournal];
-    v70 = [v12 bundleIdentifier];
-    v71 = [v12 referenceIdentifier];
-    [v69 addEventForItem:9 bundleID:v70 identifier:v71];
+    bundleIdentifier9 = [v12 bundleIdentifier];
+    referenceIdentifier3 = [v12 referenceIdentifier];
+    [v69 addEventForItem:9 bundleID:bundleIdentifier9 identifier:referenceIdentifier3];
 
     v18 = v85;
     if (SKGLogGetCurrentLoggingLevel() < 6)
@@ -410,11 +410,11 @@ LABEL_69:
   {
     v73 = [v18 count];
     v72 = +[SKGActivityJournal sharedJournal];
-    v74 = [v12 bundleIdentifier];
-    v75 = [v12 referenceIdentifier];
+    bundleIdentifier10 = [v12 bundleIdentifier];
+    referenceIdentifier4 = [v12 referenceIdentifier];
     if (v73)
     {
-      [v72 addEventForItem:10 bundleID:v74 identifier:v75];
+      [v72 addEventForItem:10 bundleID:bundleIdentifier10 identifier:referenceIdentifier4];
 
       if (!v49)
       {
@@ -441,19 +441,19 @@ LABEL_95:
       goto LABEL_96;
     }
 
-    [v72 addEventForItem:11 bundleID:v74 identifier:v75];
+    [v72 addEventForItem:11 bundleID:bundleIdentifier10 identifier:referenceIdentifier4];
   }
 
 LABEL_89:
   objc_autoreleasePoolPop(v41);
   v59 = 1;
   [v12 setDidProcessEmbeddings:1];
-  v77 = [MEMORY[0x277D657A0] sharedContext];
-  v78 = [v77 enableCalendarEventClassification];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableCalendarEventClassification = [mEMORY[0x277D657A0] enableCalendarEventClassification];
 
-  if (v78 && [v12 isCalendar] && objc_msgSend(v12, "didProcessEmbeddings"))
+  if (enableCalendarEventClassification && [v12 isCalendar] && objc_msgSend(v12, "didProcessEmbeddings"))
   {
-    [v12 setDidProcessCalendarEvents:{objc_msgSend(a1, "generateCalendarEventTypesForProcessedItem:", v12)}];
+    [v12 setDidProcessCalendarEvents:{objc_msgSend(self, "generateCalendarEventTypesForProcessedItem:", v12)}];
   }
 
 LABEL_98:
@@ -466,9 +466,9 @@ LABEL_98:
 {
   v3 = a3;
   v4 = +[CalendarEventClassificationModelManager sharedInstance];
-  v5 = [v3 referenceIdentifier];
-  v6 = [v3 embedding];
-  v7 = [v4 predictForReferenceItemId:v5 withEmbedding:v6];
+  referenceIdentifier = [v3 referenceIdentifier];
+  embedding = [v3 embedding];
+  v7 = [v4 predictForReferenceItemId:referenceIdentifier withEmbedding:embedding];
 
   v8 = [v7 count];
   if (v8)
@@ -502,10 +502,10 @@ LABEL_98:
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__20;
   v38 = __Block_byref_object_dispose__20;
-  v16 = [v13 bundleIdentifier];
+  bundleIdentifier = [v13 bundleIdentifier];
   v17 = (v35 + 5);
   obj = v35[5];
-  v18 = [a1 extractContentFromRecord:v12 bundleID:v16 content:&obj maxChunkCountPtr:&v40 textLength:0];
+  v18 = [self extractContentFromRecord:v12 bundleID:bundleIdentifier content:&obj maxChunkCountPtr:&v40 textLength:0];
   objc_storeStrong(v17, obj);
 
   if (!v18)
@@ -521,7 +521,7 @@ LABEL_98:
   v25[3] = &unk_27893EE78;
   v29 = &v34;
   v26 = v13;
-  v27 = a1;
+  selfCopy = self;
   v30 = &v45;
   v31 = &v41;
   v32 = v40;
@@ -544,7 +544,7 @@ LABEL_6:
   objc_autoreleasePoolPop(v15);
   if (v22)
   {
-    v23 = [a1 addEmbeddingsToProcessedItem:v13 primaryTextInputs:v46[5] secondaryTextInputs:0 firstChunkLength:v42[3] workCost:a6 timeoutRetries:1 cancelBlock:v14];
+    v23 = [self addEmbeddingsToProcessedItem:v13 primaryTextInputs:v46[5] secondaryTextInputs:0 firstChunkLength:v42[3] workCost:a6 timeoutRetries:1 cancelBlock:v14];
   }
 
   else

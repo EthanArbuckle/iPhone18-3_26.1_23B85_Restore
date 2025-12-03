@@ -1,29 +1,29 @@
 @interface SYItemIndexingManager
 + (id)_coreSpotlightIndexBundleID;
-+ (id)_customKeyForKey:(id)a3;
-+ (id)_postFilteredItems:(id)a3 matchingUserActivityInfo:(id)a4;
-+ (id)_queryStringForMatchingUserActivityInfo:(id)a3;
-+ (id)searchableItemLinkingContentItem:(id)a3 toContainerIdentifier:(id)a4 uniqueIdentifier:(id)a5 relatedIdentifier:(id)a6 domainIdentifier:(id)a7;
-+ (void)_fetchIndexedActivitiesWithActivityType:(id)a3 completion:(id)a4;
-+ (void)_fetchIndexedItemsLinkedToUserActivity:(id)a3 extraFetchAttributes:(id)a4 completion:(id)a5;
-+ (void)fetchActivitiesWithActivityType:(id)a3 completion:(id)a4;
-+ (void)fetchIdentifiersLinkedToUserActivity:(id)a3 completion:(id)a4;
-+ (void)fetchLinkContextsDataForUserActivity:(id)a3 completion:(id)a4;
++ (id)_customKeyForKey:(id)key;
++ (id)_postFilteredItems:(id)items matchingUserActivityInfo:(id)info;
++ (id)_queryStringForMatchingUserActivityInfo:(id)info;
++ (id)searchableItemLinkingContentItem:(id)item toContainerIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier relatedIdentifier:(id)relatedIdentifier domainIdentifier:(id)domainIdentifier;
++ (void)_fetchIndexedActivitiesWithActivityType:(id)type completion:(id)completion;
++ (void)_fetchIndexedItemsLinkedToUserActivity:(id)activity extraFetchAttributes:(id)attributes completion:(id)completion;
++ (void)fetchActivitiesWithActivityType:(id)type completion:(id)completion;
++ (void)fetchIdentifiersLinkedToUserActivity:(id)activity completion:(id)completion;
++ (void)fetchLinkContextsDataForUserActivity:(id)activity completion:(id)completion;
 + (void)indexedContentItemsDidChange;
 @end
 
 @implementation SYItemIndexingManager
 
-+ (id)_customKeyForKey:(id)a3
++ (id)_customKeyForKey:(id)key
 {
   v3 = _customKeyForKey__onceTokenCustomAttributeKeys;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[SYItemIndexingManager _customKeyForKey:];
   }
 
-  v5 = [_customKeyForKey___customAttributeKeys objectForKeyedSubscript:v4];
+  v5 = [_customKeyForKey___customAttributeKeys objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -56,23 +56,23 @@ void __42__SYItemIndexingManager__customKeyForKey___block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)searchableItemLinkingContentItem:(id)a3 toContainerIdentifier:(id)a4 uniqueIdentifier:(id)a5 relatedIdentifier:(id)a6 domainIdentifier:(id)a7
++ (id)searchableItemLinkingContentItem:(id)item toContainerIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier relatedIdentifier:(id)relatedIdentifier domainIdentifier:(id)domainIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v11)
+  itemCopy = item;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  relatedIdentifierCopy = relatedIdentifier;
+  domainIdentifierCopy = domainIdentifier;
+  if (itemCopy)
   {
-    if (v12)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     +[SYItemIndexingManager searchableItemLinkingContentItem:toContainerIdentifier:uniqueIdentifier:relatedIdentifier:domainIdentifier:];
-    if (v13)
+    if (uniqueIdentifierCopy)
     {
       goto LABEL_4;
     }
@@ -81,44 +81,44 @@ LABEL_6:
   }
 
   +[SYItemIndexingManager searchableItemLinkingContentItem:toContainerIdentifier:uniqueIdentifier:relatedIdentifier:domainIdentifier:];
-  if (!v12)
+  if (!identifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (v13)
+  if (uniqueIdentifierCopy)
   {
 LABEL_4:
-    v16 = v13;
+    uUIDString = uniqueIdentifierCopy;
     goto LABEL_8;
   }
 
 LABEL_7:
-  v17 = [v11 itemIdentifier];
-  v16 = [v17 UUIDString];
+  itemIdentifier = [itemCopy itemIdentifier];
+  uUIDString = [itemIdentifier UUIDString];
 
 LABEL_8:
   v18 = objc_alloc(MEMORY[0x277CC34B8]);
   v19 = [v18 initWithContentType:*MEMORY[0x277CE1DB8]];
-  v20 = [v11 displayTitle];
-  [v19 setDisplayName:v20];
+  displayTitle = [itemCopy displayTitle];
+  [v19 setDisplayName:displayTitle];
 
-  [v19 setIdentifier:v16];
+  [v19 setIdentifier:uUIDString];
   v21 = [SYItemIndexingManager _customKeyForKey:@"sy_isLinkItem"];
   v22 = MEMORY[0x277CBEC38];
   [v19 setValue:MEMORY[0x277CBEC38] forCustomKey:v21];
 
   [v19 setTrashed:v22];
-  [v19 setContainerIdentifier:v12];
-  [v19 setRelatedUniqueIdentifier:v14];
+  [v19 setContainerIdentifier:identifierCopy];
+  [v19 setRelatedUniqueIdentifier:relatedIdentifierCopy];
   [v19 setDeletedWithRelatedUniqueIdentifier:v22];
-  v23 = [v11 activityType];
-  v24 = v23;
+  activityType = [itemCopy activityType];
+  v24 = activityType;
   v25 = &stru_2838DFF18;
-  if (v23)
+  if (activityType)
   {
-    v25 = v23;
+    v25 = activityType;
   }
 
   v26 = v25;
@@ -126,52 +126,52 @@ LABEL_8:
   v27 = [SYItemIndexingManager _customKeyForKey:@"sy_activityType"];
   [v19 setValue:v26 forCustomKey:v27];
 
-  v28 = [v11 itemURL];
-  [v19 setURL:v28];
+  itemURL = [itemCopy itemURL];
+  [v19 setURL:itemURL];
 
-  v29 = [v11 activityCanonicalURL];
+  activityCanonicalURL = [itemCopy activityCanonicalURL];
 
-  if (v29)
+  if (activityCanonicalURL)
   {
-    v30 = [v11 activityCanonicalURL];
-    v31 = [v30 absoluteString];
+    activityCanonicalURL2 = [itemCopy activityCanonicalURL];
+    absoluteString = [activityCanonicalURL2 absoluteString];
 
     v32 = [SYItemIndexingManager _customKeyForKey:@"sy_canonicalURL"];
-    [v19 setValue:v31 forCustomKey:v32];
+    [v19 setValue:absoluteString forCustomKey:v32];
   }
 
-  v33 = [v11 activityPersistentIdentifier];
-  v34 = [v33 length];
+  activityPersistentIdentifier = [itemCopy activityPersistentIdentifier];
+  v34 = [activityPersistentIdentifier length];
 
   if (v34)
   {
-    v35 = [v11 activityPersistentIdentifier];
+    activityPersistentIdentifier2 = [itemCopy activityPersistentIdentifier];
     v36 = [SYItemIndexingManager _customKeyForKey:@"sy_activityPersistentID"];
-    [v19 setValue:v35 forCustomKey:v36];
+    [v19 setValue:activityPersistentIdentifier2 forCustomKey:v36];
   }
 
-  v37 = [v11 activityTargetContentIdentifier];
-  v38 = [v37 length];
+  activityTargetContentIdentifier = [itemCopy activityTargetContentIdentifier];
+  v38 = [activityTargetContentIdentifier length];
 
   if (v38)
   {
-    v39 = [v11 activityTargetContentIdentifier];
+    activityTargetContentIdentifier2 = [itemCopy activityTargetContentIdentifier];
     v40 = [SYItemIndexingManager _customKeyForKey:@"sy_activityTargetContentID"];
-    [v19 setValue:v39 forCustomKey:v40];
+    [v19 setValue:activityTargetContentIdentifier2 forCustomKey:v40];
   }
 
-  v41 = [v11 userActivity];
-  v42 = [v41 _linkContextInfo];
+  userActivity = [itemCopy userActivity];
+  _linkContextInfo = [userActivity _linkContextInfo];
 
-  if (v42)
+  if (_linkContextInfo)
   {
-    v53 = v16;
+    v53 = uUIDString;
     v54 = 0;
-    v43 = v15;
-    v44 = v12;
-    v45 = v13;
-    v46 = v14;
-    v47 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v42 requiringSecureCoding:1 error:&v54];
+    v43 = domainIdentifierCopy;
+    v44 = identifierCopy;
+    v45 = uniqueIdentifierCopy;
+    v46 = relatedIdentifierCopy;
+    v47 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:_linkContextInfo requiringSecureCoding:1 error:&v54];
     v48 = v54;
     if (v47)
     {
@@ -184,20 +184,20 @@ LABEL_8:
       v49 = os_log_create("com.apple.synapse", "ItemIndexing");
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
-        [SYItemIndexingManager searchableItemLinkingContentItem:v11 toContainerIdentifier:v48 uniqueIdentifier:v49 relatedIdentifier:? domainIdentifier:?];
+        [SYItemIndexingManager searchableItemLinkingContentItem:itemCopy toContainerIdentifier:v48 uniqueIdentifier:v49 relatedIdentifier:? domainIdentifier:?];
       }
     }
 
-    v14 = v46;
-    v13 = v45;
-    v12 = v44;
-    v15 = v43;
-    v16 = v53;
+    relatedIdentifierCopy = v46;
+    uniqueIdentifierCopy = v45;
+    identifierCopy = v44;
+    domainIdentifierCopy = v43;
+    uUIDString = v53;
   }
 
-  v50 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:v16 domainIdentifier:v15 attributeSet:v19];
-  v51 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v50 setExpirationDate:v51];
+  v50 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:uUIDString domainIdentifier:domainIdentifierCopy attributeSet:v19];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [v50 setExpirationDate:distantFuture];
 
   return v50;
 }
@@ -215,16 +215,16 @@ LABEL_8:
   [v3 indexedContentItemsDidChange];
 }
 
-+ (void)_fetchIndexedItemsLinkedToUserActivity:(id)a3 extraFetchAttributes:(id)a4 completion:(id)a5
++ (void)_fetchIndexedItemsLinkedToUserActivity:(id)activity extraFetchAttributes:(id)attributes completion:(id)completion
 {
   v37[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  activityCopy = activity;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (activityCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -244,12 +244,12 @@ LABEL_3:
   v12 = os_log_create("com.apple.synapse", "ItemIndexing");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [SYItemIndexingManager _fetchIndexedItemsLinkedToUserActivity:v8 extraFetchAttributes:v9 completion:v12];
+    [SYItemIndexingManager _fetchIndexedItemsLinkedToUserActivity:activityCopy extraFetchAttributes:attributesCopy completion:v12];
   }
 
-  if (SYIsLinkableUserActivity(v8))
+  if (SYIsLinkableUserActivity(activityCopy))
   {
-    v13 = [a1 _queryStringForMatchingUserActivityInfo:v8];
+    v13 = [self _queryStringForMatchingUserActivityInfo:activityCopy];
     v14 = NSStringFromSelector(sel_URL);
     v37[0] = v14;
     v15 = NSStringFromSelector(sel_containerIdentifier);
@@ -262,9 +262,9 @@ LABEL_3:
     v37[6] = @"sy_activityTargetContentID";
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:7];
 
-    if (v9)
+    if (attributesCopy)
     {
-      v18 = [v17 arrayByAddingObjectsFromArray:v9];
+      v18 = [v17 arrayByAddingObjectsFromArray:attributesCopy];
 
       v17 = v18;
     }
@@ -274,23 +274,23 @@ LABEL_3:
     [v19 setReason:@"System Paper Backlinks"];
     [v19 setPrivateQuery:1];
     v20 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v13 queryContext:v19];
-    v21 = [a1 _coreSpotlightIndexBundleID];
-    v22 = v21;
-    if (v21)
+    _coreSpotlightIndexBundleID = [self _coreSpotlightIndexBundleID];
+    v22 = _coreSpotlightIndexBundleID;
+    if (_coreSpotlightIndexBundleID)
     {
-      v36 = v21;
+      v36 = _coreSpotlightIndexBundleID;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
       [v20 setBundleIDs:v23];
     }
 
-    v24 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __96__SYItemIndexingManager__fetchIndexedItemsLinkedToUserActivity_extraFetchAttributes_completion___block_invoke;
     v32[3] = &unk_27856C450;
-    v33 = v8;
-    v35 = a1;
-    v25 = v24;
+    v33 = activityCopy;
+    selfCopy = self;
+    v25 = array;
     v34 = v25;
     [v20 setFoundItemsHandler:v32];
     v29[0] = MEMORY[0x277D85DD0];
@@ -350,16 +350,16 @@ void __96__SYItemIndexingManager__fetchIndexedItemsLinkedToUserActivity_extraFet
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)fetchIdentifiersLinkedToUserActivity:(id)a3 completion:(id)a4
++ (void)fetchIdentifiersLinkedToUserActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SYItemIndexingManager_fetchIdentifiersLinkedToUserActivity_completion___block_invoke;
   v8[3] = &unk_27856B760;
-  v9 = v6;
-  v7 = v6;
-  [a1 _fetchIndexedItemsLinkedToUserActivity:a3 extraFetchAttributes:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self _fetchIndexedItemsLinkedToUserActivity:activity extraFetchAttributes:0 completion:v8];
 }
 
 void __73__SYItemIndexingManager_fetchIdentifiersLinkedToUserActivity_completion___block_invoke(uint64_t a1, void *a2)
@@ -444,15 +444,15 @@ void __73__SYItemIndexingManager_fetchIdentifiersLinkedToUserActivity_completion
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_fetchIndexedActivitiesWithActivityType:(id)a3 completion:(id)a4
++ (void)_fetchIndexedActivitiesWithActivityType:(id)type completion:(id)completion
 {
   v31[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  typeCopy = type;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (typeCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -470,9 +470,9 @@ void __73__SYItemIndexingManager_fetchIdentifiersLinkedToUserActivity_completion
   +[SYItemIndexingManager _fetchIndexedActivitiesWithActivityType:completion:];
 LABEL_3:
   v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@ == 1", @"sy_isLinkItem"];
-  if ([v6 length])
+  if ([typeCopy length])
   {
-    v10 = _escapedSearchString(v6);
+    v10 = _escapedSearchString(typeCopy);
     [v9 appendFormat:@" && (%@ == \"%@\", @"sy_activityType"", v10];
   }
 
@@ -493,21 +493,21 @@ LABEL_3:
   [v15 setReason:@"System Paper Backlinks"];
   [v15 setPrivateQuery:1];
   v16 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v9 queryContext:v15];
-  v17 = [a1 _coreSpotlightIndexBundleID];
-  v18 = v17;
-  if (v17)
+  _coreSpotlightIndexBundleID = [self _coreSpotlightIndexBundleID];
+  v18 = _coreSpotlightIndexBundleID;
+  if (_coreSpotlightIndexBundleID)
   {
-    v30 = v17;
+    v30 = _coreSpotlightIndexBundleID;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
     [v16 setBundleIDs:v19];
   }
 
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __76__SYItemIndexingManager__fetchIndexedActivitiesWithActivityType_completion___block_invoke;
   v28[3] = &unk_27856B640;
-  v21 = v20;
+  v21 = array;
   v29 = v21;
   [v16 setFoundItemsHandler:v28];
   v25[0] = MEMORY[0x277D85DD0];
@@ -582,33 +582,33 @@ void __76__SYItemIndexingManager__fetchIndexedActivitiesWithActivityType_complet
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)fetchActivitiesWithActivityType:(id)a3 completion:(id)a4
++ (void)fetchActivitiesWithActivityType:(id)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__SYItemIndexingManager_fetchActivitiesWithActivityType_completion___block_invoke;
   v8[3] = &unk_27856B760;
-  v9 = v6;
-  v7 = v6;
-  [a1 _fetchIndexedActivitiesWithActivityType:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self _fetchIndexedActivitiesWithActivityType:type completion:v8];
 }
 
-+ (void)fetchLinkContextsDataForUserActivity:(id)a3 completion:(id)a4
++ (void)fetchLinkContextsDataForUserActivity:(id)activity completion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v14[0] = @"sy_linkContextInfoData";
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  activityCopy = activity;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__SYItemIndexingManager_fetchLinkContextsDataForUserActivity_completion___block_invoke;
   v12[3] = &unk_27856B760;
-  v13 = v6;
-  v10 = v6;
-  [a1 _fetchIndexedItemsLinkedToUserActivity:v8 extraFetchAttributes:v9 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [self _fetchIndexedItemsLinkedToUserActivity:activityCopy extraFetchAttributes:v9 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -670,75 +670,75 @@ void __73__SYItemIndexingManager_fetchLinkContextsDataForUserActivity_completion
 {
   if (_SYUseLocalSearchIndex == 1)
   {
-    v2 = [MEMORY[0x277CCA8D8] mainBundle];
-    v3 = [v2 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
   else
   {
-    v3 = @"com.apple.mobilenotes";
+    bundleIdentifier = @"com.apple.mobilenotes";
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
-+ (id)_queryStringForMatchingUserActivityInfo:(id)a3
++ (id)_queryStringForMatchingUserActivityInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@ == 1", @"sy_isLinkItem"];
-  v5 = [v3 activityType];
-  v6 = [v5 length];
+  activityType = [infoCopy activityType];
+  v6 = [activityType length];
 
   if (v6)
   {
-    v7 = [v3 activityType];
-    v8 = _escapedSearchString(v7);
+    activityType2 = [infoCopy activityType];
+    v8 = _escapedSearchString(activityType2);
 
     [v4 appendFormat:@" && (%@ == \"%@\" || %@ == \"\", @"sy_activityType", v8, @"sy_activityType""];
   }
 
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-  v10 = [v3 webpageURL];
-  v11 = [v10 host];
-  v12 = [v11 length];
+  webpageURL = [infoCopy webpageURL];
+  host = [webpageURL host];
+  v12 = [host length];
 
   if (v12)
   {
-    v13 = _searchableDomainNameForURL(v10);
+    v13 = _searchableDomainNameForURL(webpageURL);
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"URL == *%@*", v13];
     [v9 addObject:v14];
   }
 
-  v15 = [v3 canonicalURL];
-  v16 = [v15 host];
-  v17 = [v16 length];
+  canonicalURL = [infoCopy canonicalURL];
+  host2 = [canonicalURL host];
+  v17 = [host2 length];
 
   if (v17)
   {
-    v18 = _searchableDomainNameForURL(v15);
+    v18 = _searchableDomainNameForURL(canonicalURL);
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == *%@*", @"sy_canonicalURL", v18];
     [v9 addObject:v19];
   }
 
-  v20 = [v3 persistentIdentifier];
-  v21 = [v20 length];
+  persistentIdentifier = [infoCopy persistentIdentifier];
+  v21 = [persistentIdentifier length];
 
   if (v21)
   {
-    v22 = [v3 persistentIdentifier];
-    v23 = _escapedSearchString(v22);
+    persistentIdentifier2 = [infoCopy persistentIdentifier];
+    v23 = _escapedSearchString(persistentIdentifier2);
 
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == %@", @"sy_activityPersistentID", v23];
     [v9 addObject:v24];
   }
 
-  v25 = [v3 targetContentIdentifier];
-  v26 = [v25 length];
+  targetContentIdentifier = [infoCopy targetContentIdentifier];
+  v26 = [targetContentIdentifier length];
 
   if (v26)
   {
-    v27 = [v3 targetContentIdentifier];
-    v28 = _escapedSearchString(v27);
+    targetContentIdentifier2 = [infoCopy targetContentIdentifier];
+    v28 = _escapedSearchString(targetContentIdentifier2);
 
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == %@", @"sy_activityTargetContentID", v28];
     [v9 addObject:v29];
@@ -752,17 +752,17 @@ void __73__SYItemIndexingManager_fetchLinkContextsDataForUserActivity_completion
   return v31;
 }
 
-+ (id)_postFilteredItems:(id)a3 matchingUserActivityInfo:(id)a4
++ (id)_postFilteredItems:(id)items matchingUserActivityInfo:(id)info
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  itemsCopy = items;
+  infoCopy = info;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -778,10 +778,10 @@ void __73__SYItemIndexingManager_fetchLinkContextsDataForUserActivity_completion
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 attributeSet];
-        v15 = [v14 URL];
+        attributeSet = [v13 attributeSet];
+        v15 = [attributeSet URL];
 
-        if (!v15 || (v16 = [SYAttributeSetActivityInfo alloc], [v13 attributeSet], v17 = objc_claimAutoreleasedReturnValue(), v18 = -[SYAttributeSetActivityInfo initWithAttributeSet:](v16, "initWithAttributeSet:", v17), v17, LODWORD(v17) = SYEquivalentUserActivities(v18, v6), v18, v17))
+        if (!v15 || (v16 = [SYAttributeSetActivityInfo alloc], [v13 attributeSet], v17 = objc_claimAutoreleasedReturnValue(), v18 = -[SYAttributeSetActivityInfo initWithAttributeSet:](v16, "initWithAttributeSet:", v17), v17, LODWORD(v17) = SYEquivalentUserActivities(v18, infoCopy), v18, v17))
         {
           [v7 addObject:v13];
         }

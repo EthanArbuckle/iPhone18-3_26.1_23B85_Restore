@@ -1,32 +1,32 @@
 @interface SHError
-+ (BOOL)annotateClientError:(id *)a3 code:(int64_t)a4 underlyingError:(id)a5 keyOverrides:(id)a6;
-+ (BOOL)remapErrorToClientErrorPointer:(id *)a3;
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4 keyOverrides:(id)a5;
-+ (id)messageForCode:(int64_t)a3;
-+ (id)normalizedError:(id)a3;
-+ (id)normalizedUserInfo:(id)a3;
-+ (id)privateErrorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)remapErrorToClientError:(id)a3;
++ (BOOL)annotateClientError:(id *)error code:(int64_t)code underlyingError:(id)underlyingError keyOverrides:(id)overrides;
++ (BOOL)remapErrorToClientErrorPointer:(id *)pointer;
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error keyOverrides:(id)overrides;
++ (id)messageForCode:(int64_t)code;
++ (id)normalizedError:(id)error;
++ (id)normalizedUserInfo:(id)info;
++ (id)privateErrorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)remapErrorToClientError:(id)error;
 @end
 
 @implementation SHError
 
-+ (id)privateErrorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)privateErrorWithCode:(int64_t)code underlyingError:(id)error
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = [v5 dictionary];
-  [v7 setValue:v6 forKey:*MEMORY[0x277CCA7E8]];
+  errorCopy = error;
+  dictionary = [v5 dictionary];
+  [dictionary setValue:errorCopy forKey:*MEMORY[0x277CCA7E8]];
 
-  if (a3 == 203)
+  if (code == 203)
   {
     v8 = *MEMORY[0x277CCA068];
-    [v7 setValue:@"The match attempt was cancelled" forKey:*MEMORY[0x277CCA068]];
+    [dictionary setValue:@"The match attempt was cancelled" forKey:*MEMORY[0x277CCA068]];
   }
 
   else
   {
-    if (a3 != 204)
+    if (code != 204)
     {
       goto LABEL_6;
     }
@@ -34,107 +34,107 @@
     v8 = *MEMORY[0x277CCA068];
   }
 
-  [v7 setValue:@"Matching cannot take place until a customer has acknowledged the privacy disclosure" forKey:v8];
+  [dictionary setValue:@"Matching cannot take place until a customer has acknowledged the privacy disclosure" forKey:v8];
 LABEL_6:
-  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ShazamKit" code:a3 userInfo:v7];
+  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ShazamKit" code:code userInfo:dictionary];
 
   return v9;
 }
 
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4 keyOverrides:(id)a5
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error keyOverrides:(id)overrides
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 dictionary];
-  [v11 setValue:v10 forKey:*MEMORY[0x277CCA7E8]];
+  overridesCopy = overrides;
+  errorCopy = error;
+  dictionary = [v8 dictionary];
+  [dictionary setValue:errorCopy forKey:*MEMORY[0x277CCA7E8]];
 
-  v12 = [a1 messageForCode:a3];
-  [v11 setValue:v12 forKey:*MEMORY[0x277CCA068]];
+  v12 = [self messageForCode:code];
+  [dictionary setValue:v12 forKey:*MEMORY[0x277CCA068]];
 
-  [v11 setValuesForKeysWithDictionary:v9];
-  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ShazamKit" code:a3 userInfo:v11];
+  [dictionary setValuesForKeysWithDictionary:overridesCopy];
+  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ShazamKit" code:code userInfo:dictionary];
 
   return v13;
 }
 
-+ (BOOL)annotateClientError:(id *)a3 code:(int64_t)a4 underlyingError:(id)a5 keyOverrides:(id)a6
++ (BOOL)annotateClientError:(id *)error code:(int64_t)code underlyingError:(id)underlyingError keyOverrides:(id)overrides
 {
-  v7 = [SHError errorWithCode:a4 underlyingError:a5 keyOverrides:a6];
-  if (a3)
+  v7 = [SHError errorWithCode:code underlyingError:underlyingError keyOverrides:overrides];
+  if (error)
   {
     v7 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
-  return a3 != 0;
+  return error != 0;
 }
 
-+ (id)messageForCode:(int64_t)a3
++ (id)messageForCode:(int64_t)code
 {
   v3 = @"The supplied audio is not contiguous. Flow contiguous audio.";
   v4 = @"There was an error syncing items to the library.";
   v5 = @"ShazamKit encountered an internal error.";
   v6 = @"Failed to fetch Media Item. Ensure shazamID is valid.";
-  if (a3 != 600)
+  if (code != 600)
   {
     v6 = @"The supplied audio is not contiguous. Flow contiguous audio.";
   }
 
-  if (a3 != 500)
+  if (code != 500)
   {
     v5 = v6;
   }
 
-  if (a3 != 400)
+  if (code != 400)
   {
     v4 = v5;
   }
 
   v7 = @"The Catalog URL is not a file path URL that points to a valid catalog.";
-  if (a3 != 301)
+  if (code != 301)
   {
     v7 = @"The supplied audio is not contiguous. Flow contiguous audio.";
   }
 
-  if (a3 == 300)
+  if (code == 300)
   {
     v7 = @"The Custom Catalog is invalid.";
   }
 
-  if (a3 <= 399)
+  if (code <= 399)
   {
     v4 = v7;
   }
 
   v8 = @"The provided signature duration is outside the valid range.";
   v9 = @"The match attempt failed.";
-  if (a3 != 202)
+  if (code != 202)
   {
     v9 = @"The supplied audio is not contiguous. Flow contiguous audio.";
   }
 
-  if (a3 != 201)
+  if (code != 201)
   {
     v8 = v9;
   }
 
-  if (a3 == 200)
+  if (code == 200)
   {
     v3 = @"The Signature was invalid (possibly no peaks). Ensure novel audio is playing.";
   }
 
-  if (a3 == 100)
+  if (code == 100)
   {
     v3 = @"The supplied audio format is not supported. Please choose a supported audio format.";
   }
 
-  if (a3 > 200)
+  if (code > 200)
   {
     v3 = v8;
   }
 
-  if (a3 <= 299)
+  if (code <= 299)
   {
     return v3;
   }
@@ -145,20 +145,20 @@ LABEL_6:
   }
 }
 
-+ (id)normalizedError:(id)a3
++ (id)normalizedError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v3 = a3;
+    errorCopy = error;
     v4 = objc_opt_class();
-    v5 = [v3 userInfo];
-    v6 = [v4 normalizedUserInfo:v5];
+    userInfo = [errorCopy userInfo];
+    v6 = [v4 normalizedUserInfo:userInfo];
 
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [v3 domain];
-    v9 = [v3 code];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v10 = [v7 errorWithDomain:v8 code:v9 userInfo:v6];
+    v10 = [v7 errorWithDomain:domain code:code userInfo:v6];
   }
 
   else
@@ -169,19 +169,19 @@ LABEL_6:
   return v10;
 }
 
-+ (id)normalizedUserInfo:(id)a3
++ (id)normalizedUserInfo:(id)info
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  infoCopy = info;
+  dictionary = [v4 dictionary];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __30__SHError_normalizedUserInfo___block_invoke;
   v13 = &unk_2788F7BE8;
-  v14 = v6;
-  v15 = a1;
-  v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  v14 = dictionary;
+  selfCopy = self;
+  v7 = dictionary;
+  [infoCopy enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -256,14 +256,14 @@ void __30__SHError_normalizedUserInfo___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-+ (id)remapErrorToClientError:(id)a3
++ (id)remapErrorToClientError:(id)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    if ([v3 sh_isPrivacyDisclosureAcknowledgementNeededError] || objc_msgSend(v4, "sh_isMatchAttemptCancelledError"))
+    if ([errorCopy sh_isPrivacyDisclosureAcknowledgementNeededError] || objc_msgSend(v4, "sh_isMatchAttemptCancelledError"))
     {
       goto LABEL_4;
     }
@@ -291,19 +291,19 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v10 = [v4 code];
+    code = [v4 code];
     v11 = 202;
-    if (v10 == 302)
+    if (code == 302)
     {
       v11 = 600;
     }
 
-    if ((v10 - 400) < 2)
+    if ((code - 400) < 2)
     {
       v11 = 500;
     }
 
-    if ((v10 - 300) >= 2)
+    if ((code - 300) >= 2)
     {
       v12 = v11;
     }
@@ -313,10 +313,10 @@ LABEL_6:
       v12 = 300;
     }
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [v4 userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
     v17 = *MEMORY[0x277CCA068];
-    v15 = [MEMORY[0x277D54E10] messageForCode:v10];
+    v15 = [MEMORY[0x277D54E10] messageForCode:code];
     v18[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v7 = [SHError errorWithCode:v12 underlyingError:v14 keyOverrides:v16];
@@ -334,11 +334,11 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)remapErrorToClientErrorPointer:(id *)a3
++ (BOOL)remapErrorToClientErrorPointer:(id *)pointer
 {
-  if (a3)
+  if (pointer)
   {
-    *a3 = [a1 remapErrorToClientError:*a3];
+    *pointer = [self remapErrorToClientError:*pointer];
   }
 
   return 1;

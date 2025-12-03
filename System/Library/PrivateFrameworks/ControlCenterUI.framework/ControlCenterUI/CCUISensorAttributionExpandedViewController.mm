@@ -1,27 +1,27 @@
 @interface CCUISensorAttributionExpandedViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)hasGameModeActivityOnly;
-- (CCUISensorAttributionExpandedViewController)initWithModuleInstanceManager:(id)a3;
-- (CCUISensorAttributionExpandedViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)a3;
-- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)a3;
-- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)a3;
+- (CCUISensorAttributionExpandedViewController)initWithModuleInstanceManager:(id)manager;
+- (CCUISensorAttributionExpandedViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)controller;
+- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)controller;
+- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)controller;
 - (NSString)audioVideoHeaderTrailingText;
 - (_TtC15ControlCenterUI32CCUIGameModeActivityDataProvider)gameModeActivityDataProvider;
-- (id)compactModeSourceViewForContentModuleContainerViewController:(id)a3;
+- (id)compactModeSourceViewForContentModuleContainerViewController:(id)controller;
 - (void)recognizedDismissTapGesture;
-- (void)sensorAttributionsChanged:(id)a3;
-- (void)setAudioControlsEnabled:(BOOL)a3 videoControlsEnabled:(BOOL)a4;
-- (void)setAudioVideoHeaderTrailingText:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setGameModeActivityDataProvider:(id)a3;
+- (void)sensorAttributionsChanged:(id)changed;
+- (void)setAudioControlsEnabled:(BOOL)enabled videoControlsEnabled:(BOOL)controlsEnabled;
+- (void)setAudioVideoHeaderTrailingText:(id)text;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setGameModeActivityDataProvider:(id)provider;
 - (void)viewDidLoad;
 @end
 
 @implementation CCUISensorAttributionExpandedViewController
 
-- (CCUISensorAttributionExpandedViewController)initWithModuleInstanceManager:(id)a3
+- (CCUISensorAttributionExpandedViewController)initWithModuleInstanceManager:(id)manager
 {
   swift_unknownObjectRetain();
   sub_21EAA9320();
@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA96D5C();
 }
 
@@ -43,10 +43,10 @@
   MEMORY[0x223D68630](v2);
 }
 
-- (void)setAudioControlsEnabled:(BOOL)a3 videoControlsEnabled:(BOOL)a4
+- (void)setAudioControlsEnabled:(BOOL)enabled videoControlsEnabled:(BOOL)controlsEnabled
 {
-  v6 = self;
-  sub_21EA99010(a3, a4);
+  selfCopy = self;
+  sub_21EA99010(enabled, controlsEnabled);
 }
 
 - (NSString)audioVideoHeaderTrailingText
@@ -67,9 +67,9 @@
   return v3;
 }
 
-- (void)setAudioVideoHeaderTrailingText:(id)a3
+- (void)setAudioVideoHeaderTrailingText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_21EAA8E00();
     v6 = v5;
@@ -94,65 +94,65 @@
   return *(self + v3);
 }
 
-- (void)setGameModeActivityDataProvider:(id)a3
+- (void)setGameModeActivityDataProvider:(id)provider
 {
   v5 = OBJC_IVAR___CCUISensorAttributionExpandedViewController_gameModeActivityDataProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = provider;
+  providerCopy = provider;
 }
 
 - (BOOL)hasGameModeActivityOnly
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21EA99A84();
 
   return v3 & 1;
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v6 = self;
-  sub_21EA99E7C(a3, a4);
+  selfCopy = self;
+  sub_21EA99E7C(expanded, animated);
 }
 
-- (void)sensorAttributionsChanged:(id)a3
+- (void)sensorAttributionsChanged:(id)changed
 {
   sub_21E9F8880(0, &qword_28125B790);
   sub_21E9F84D4();
   *(self + OBJC_IVAR___CCUISensorAttributionExpandedViewController_sensorActivityData) = sub_21EAA8F60();
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   sub_21EA9A9E8(top, left, bottom, right);
 }
 
-- (CCUISensorAttributionExpandedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUISensorAttributionExpandedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = self;
-  v7 = [v5 view];
-  if (v7)
+  touchCopy = touch;
+  selfCopy = self;
+  view = [touchCopy view];
+  if (view)
   {
-    v8 = v7;
-    v9 = *(v6 + OBJC_IVAR___CCUISensorAttributionExpandedViewController_stackView);
-    v10 = [v8 isDescendantOfView_];
+    v8 = view;
+    v9 = *(selfCopy + OBJC_IVAR___CCUISensorAttributionExpandedViewController_stackView);
+    isDescendantOfView_ = [v8 isDescendantOfView_];
 
-    return v10 ^ 1;
+    return isDescendantOfView_ ^ 1;
   }
 
   else
@@ -162,27 +162,14 @@
   }
 }
 
-- (id)compactModeSourceViewForContentModuleContainerViewController:(id)a3
+- (id)compactModeSourceViewForContentModuleContainerViewController:(id)controller
 {
-  v3 = [(CCUISensorAttributionExpandedViewController *)self view];
+  view = [(CCUISensorAttributionExpandedViewController *)self view];
 
-  return v3;
+  return view;
 }
 
-- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)a3
-{
-  v3 = 0.0;
-  v4 = 0.0;
-  v5 = 0.0;
-  v6 = 0.0;
-  result.size.height = v6;
-  result.size.width = v5;
-  result.origin.y = v4;
-  result.origin.x = v3;
-  return result;
-}
-
-- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)a3
+- (CGRect)compactModeFrameForContentModuleContainerViewController:(id)controller
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -195,7 +182,20 @@
   return result;
 }
 
-- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)a3
+- (CGRect)expandedModeFrameForContentModuleContainerViewController:(id)controller
+{
+  v3 = 0.0;
+  v4 = 0.0;
+  v5 = 0.0;
+  v6 = 0.0;
+  result.size.height = v6;
+  result.size.width = v5;
+  result.origin.y = v4;
+  result.origin.x = v3;
+  return result;
+}
+
+- (CGSize)controlCenterGridSizeForContentModuleContainerViewController:(id)controller
 {
   v3 = 0.0;
   v4 = 0.0;

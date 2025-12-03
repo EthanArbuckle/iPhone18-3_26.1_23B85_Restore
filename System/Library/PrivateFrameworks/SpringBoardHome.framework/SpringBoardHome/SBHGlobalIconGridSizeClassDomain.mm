@@ -1,17 +1,17 @@
 @interface SBHGlobalIconGridSizeClassDomain
-- (SBHGlobalIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5;
+- (SBHGlobalIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain;
 @end
 
 @implementation SBHGlobalIconGridSizeClassDomain
 
-- (SBHGlobalIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5
+- (SBHGlobalIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain
 {
-  v7 = a4;
-  v8 = a3;
+  orderCopy = order;
+  classesCopy = classes;
   v9 = +[SBHIconGridSizeClassDomain builtInDomain];
   v12.receiver = self;
   v12.super_class = SBHGlobalIconGridSizeClassDomain;
-  v10 = [(SBHMutableIconGridSizeClassDomain *)&v12 initWithGridSizeClasses:v8 order:v7 fallbackDomain:v9];
+  v10 = [(SBHMutableIconGridSizeClassDomain *)&v12 initWithGridSizeClasses:classesCopy order:orderCopy fallbackDomain:v9];
 
   return v10;
 }

@@ -1,33 +1,33 @@
 @interface _UIDocumentUnavailableTitlePageView
-- (_UIDocumentUnavailableTitlePageView)initWithFrame:(CGRect)a3;
+- (_UIDocumentUnavailableTitlePageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setPrimaryAction:(id *)a1;
-- (void)setPrimaryButtonTint:(id *)a1;
-- (void)setPrimaryMenu:(id *)a1;
-- (void)setSecondaryAction:(id *)a1;
-- (void)setSecondaryMenu:(id *)a1;
-- (void)setTitle:(id *)a1;
+- (void)setPrimaryAction:(id *)action;
+- (void)setPrimaryButtonTint:(id *)tint;
+- (void)setPrimaryMenu:(id *)menu;
+- (void)setSecondaryAction:(id *)action;
+- (void)setSecondaryMenu:(id *)menu;
+- (void)setTitle:(id *)title;
 @end
 
 @implementation _UIDocumentUnavailableTitlePageView
 
-- (_UIDocumentUnavailableTitlePageView)initWithFrame:(CGRect)a3
+- (_UIDocumentUnavailableTitlePageView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = _UIDocumentUnavailableTitlePageView;
-  v3 = [(_UIDocumentUnavailablePageView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIDocumentUnavailablePageView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
+    layer = [(UIView *)v3 layer];
     LODWORD(v6) = 1036831949;
-    [v5 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
 
-    v7 = [(UIView *)v4 layer];
-    [v7 setShadowRadius:40.0];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setShadowRadius:40.0];
 
-    v8 = [(UIView *)v4 layer];
-    [v8 setShadowOffset:{0.0, 8.0}];
+    layer3 = [(UIView *)v4 layer];
+    [layer3 setShadowOffset:{0.0, 8.0}];
 
     v9 = +[UIColor tertiarySystemBackgroundColor];
     [(UIView *)v4 setBackgroundColor:v9];
@@ -48,11 +48,11 @@
   return v4;
 }
 
-- (void)setTitle:(id *)a1
+- (void)setTitle:(id *)title
 {
-  if (a1)
+  if (title)
   {
-    v6 = a1[53];
+    v6 = title[53];
     v4 = a2;
     if (v6 == v4)
     {
@@ -74,18 +74,18 @@
       {
       }
 
-      objc_storeStrong(a1 + 53, a2);
+      objc_storeStrong(title + 53, a2);
 
-      [a1 setNeedsLayout];
+      [title setNeedsLayout];
     }
   }
 }
 
-- (void)setPrimaryButtonTint:(id *)a1
+- (void)setPrimaryButtonTint:(id *)tint
 {
-  if (a1)
+  if (tint)
   {
-    v6 = a1[54];
+    v6 = tint[54];
     v4 = a2;
     if (v6 == v4)
     {
@@ -107,18 +107,18 @@
       {
       }
 
-      objc_storeStrong(a1 + 54, a2);
+      objc_storeStrong(tint + 54, a2);
 
-      [a1 setNeedsLayout];
+      [tint setNeedsLayout];
     }
   }
 }
 
-- (void)setPrimaryAction:(id *)a1
+- (void)setPrimaryAction:(id *)action
 {
-  if (a1)
+  if (action)
   {
-    v6 = a1[55];
+    v6 = action[55];
     v4 = a2;
     if (v6 == v4)
     {
@@ -140,18 +140,18 @@
       {
       }
 
-      objc_storeStrong(a1 + 55, a2);
+      objc_storeStrong(action + 55, a2);
 
-      [a1 setNeedsLayout];
+      [action setNeedsLayout];
     }
   }
 }
 
-- (void)setPrimaryMenu:(id *)a1
+- (void)setPrimaryMenu:(id *)menu
 {
-  if (a1)
+  if (menu)
   {
-    v6 = a1[56];
+    v6 = menu[56];
     v4 = a2;
     if (v6 == v4)
     {
@@ -173,18 +173,18 @@
       {
       }
 
-      objc_storeStrong(a1 + 56, a2);
+      objc_storeStrong(menu + 56, a2);
 
-      [a1 setNeedsLayout];
+      [menu setNeedsLayout];
     }
   }
 }
 
-- (void)setSecondaryAction:(id *)a1
+- (void)setSecondaryAction:(id *)action
 {
-  if (a1)
+  if (action)
   {
-    v6 = a1[57];
+    v6 = action[57];
     v4 = a2;
     if (v6 == v4)
     {
@@ -206,18 +206,18 @@
       {
       }
 
-      objc_storeStrong(a1 + 57, a2);
+      objc_storeStrong(action + 57, a2);
 
-      [a1 setNeedsLayout];
+      [action setNeedsLayout];
     }
   }
 }
 
-- (void)setSecondaryMenu:(id *)a1
+- (void)setSecondaryMenu:(id *)menu
 {
-  if (a1)
+  if (menu)
   {
-    v6 = a1[58];
+    v6 = menu[58];
     v4 = a2;
     if (v6 == v4)
     {
@@ -239,9 +239,9 @@
       {
       }
 
-      objc_storeStrong(a1 + 58, a2);
+      objc_storeStrong(menu + 58, a2);
 
-      [a1 setNeedsLayout];
+      [menu setNeedsLayout];
     }
   }
 }
@@ -254,24 +254,24 @@
   if (self)
   {
     v3 = +[UIContentUnavailableConfiguration emptyConfiguration];
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 horizontalSizeClass];
+    traitCollection = [(UIView *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    v6 = [(UIView *)self traitCollection];
-    v7 = [v6 verticalSizeClass];
+    traitCollection2 = [(UIView *)self traitCollection];
+    verticalSizeClass = [traitCollection2 verticalSizeClass];
 
     actionsEnabled = self->_actionsEnabled;
-    if (v7 != 1)
+    if (verticalSizeClass != 1)
     {
       [v3 setText:self->_title];
-      v9 = [v3 textProperties];
-      [v9 setNumberOfLines:1];
+      textProperties = [v3 textProperties];
+      [textProperties setNumberOfLines:1];
 
-      v10 = [v3 textProperties];
-      [v10 setAdjustsFontSizeToFitWidth:1];
+      textProperties2 = [v3 textProperties];
+      [textProperties2 setAdjustsFontSizeToFitWidth:1];
 
       [v3 setTextToButtonPadding:36.0];
-      if (v5 == 1)
+      if (horizontalSizeClass == 1)
       {
         v11 = 64.0;
       }
@@ -289,8 +289,8 @@
       }
 
       v14 = [off_1E70ECC18 systemFontOfSize:v11 weight:*v13];
-      v15 = [v3 textProperties];
-      [v15 setFont:v14];
+      textProperties3 = [v3 textProperties];
+      [textProperties3 setFont:v14];
     }
 
     v30[0] = MEMORY[0x1E69E9820];

@@ -1,10 +1,10 @@
 @interface SharedAlbumsInvitationsViewModel
-- (void)feedSectionInfosManager:(id)a3 sectionInfosDidChange:(id)a4;
+- (void)feedSectionInfosManager:(id)manager sectionInfosDidChange:(id)change;
 @end
 
 @implementation SharedAlbumsInvitationsViewModel
 
-- (void)feedSectionInfosManager:(id)a3 sectionInfosDidChange:(id)a4
+- (void)feedSectionInfosManager:(id)manager sectionInfosDidChange:(id)change
 {
   v4 = *(self->super.isa + 35);
 

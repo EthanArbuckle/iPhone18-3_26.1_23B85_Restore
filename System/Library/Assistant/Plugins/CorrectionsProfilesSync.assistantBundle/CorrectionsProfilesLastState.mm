@@ -2,19 +2,19 @@
 - (BOOL)loadLastState;
 - (id)_path;
 - (id)correctionKeys;
-- (id)profileDataForKey:(id)a3;
-- (void)saveNewState:(id)a3;
+- (id)profileDataForKey:(id)key;
+- (void)saveNewState:(id)state;
 @end
 
 @implementation CorrectionsProfilesLastState
 
-- (void)saveNewState:(id)a3
+- (void)saveNewState:(id)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(CorrectionsProfilesLastState *)self _path];
-  if (v4)
+  stateCopy = state;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _path = [(CorrectionsProfilesLastState *)self _path];
+  if (stateCopy)
   {
     persistedState = self->_persistedState;
     if (!persistedState)
@@ -26,14 +26,14 @@
       persistedState = self->_persistedState;
     }
 
-    [(CorrectionsProfilesPersistedState *)persistedState setCorrectionsProfiles:v4];
+    [(CorrectionsProfilesPersistedState *)persistedState setCorrectionsProfiles:stateCopy];
     v10 = self->_persistedState;
-    v11 = CorrectionsProfilesDigest(v4);
+    v11 = CorrectionsProfilesDigest(stateCopy);
     [(CorrectionsProfilesPersistedState *)v10 setDigest:v11];
 
-    v12 = [(CorrectionsProfilesPersistedState *)self->_persistedState digest];
+    digest = [(CorrectionsProfilesPersistedState *)self->_persistedState digest];
 
-    if (!v12)
+    if (!digest)
     {
       [(CorrectionsProfilesPersistedState *)self->_persistedState setCorrectionsProfiles:0];
     }
@@ -43,7 +43,7 @@
     if (v13)
     {
       v23 = 0;
-      v15 = [v13 writeToFile:v6 options:1 error:&v23];
+      v15 = [v13 writeToFile:_path options:1 error:&v23];
       v16 = v23;
       if ((v15 & 1) == 0)
       {
@@ -53,7 +53,7 @@
           *buf = 136315394;
           v25 = "[CorrectionsProfilesLastState saveNewState:]";
           v26 = 2112;
-          v27 = v4;
+          v27 = stateCopy;
           _os_log_error_impl(&dword_2334CB000, v17, OS_LOG_TYPE_ERROR, "%s Could not save state: %@", buf, 0x16u);
         }
       }
@@ -67,7 +67,7 @@
         *buf = 136315394;
         v25 = "[CorrectionsProfilesLastState saveNewState:]";
         v26 = 2112;
-        v27 = v4;
+        v27 = stateCopy;
         _os_log_error_impl(&dword_2334CB000, v20, OS_LOG_TYPE_ERROR, "%s Could not archive state: %@", buf, 0x16u);
       }
 
@@ -79,7 +79,7 @@ LABEL_18:
   }
 
   v22 = 0;
-  v18 = [v5 removeItemAtPath:v6 error:&v22];
+  v18 = [defaultManager removeItemAtPath:_path error:&v22];
   v16 = v22;
   if (v16 || (v18 & 1) == 0)
   {
@@ -101,12 +101,12 @@ LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)profileDataForKey:(id)a3
+- (id)profileDataForKey:(id)key
 {
   persistedState = self->_persistedState;
-  v4 = a3;
-  v5 = [(CorrectionsProfilesPersistedState *)persistedState correctionsProfiles];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  correctionsProfiles = [(CorrectionsProfilesPersistedState *)persistedState correctionsProfiles];
+  v6 = [correctionsProfiles objectForKey:keyCopy];
 
   return v6;
 }
@@ -114,9 +114,9 @@ LABEL_19:
 - (id)correctionKeys
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(CorrectionsProfilesPersistedState *)self->_persistedState correctionsProfiles];
-  v5 = [v4 allKeys];
-  v6 = [v3 initWithArray:v5];
+  correctionsProfiles = [(CorrectionsProfilesPersistedState *)self->_persistedState correctionsProfiles];
+  allKeys = [correctionsProfiles allKeys];
+  v6 = [v3 initWithArray:allKeys];
 
   return v6;
 }
@@ -124,9 +124,9 @@ LABEL_19:
 - (BOOL)loadLastState
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(CorrectionsProfilesLastState *)self _path];
+  _path = [(CorrectionsProfilesLastState *)self _path];
   v21 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:2 error:&v21];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_path options:2 error:&v21];
   v5 = v21;
   v6 = v5;
   if (v4)
@@ -151,8 +151,8 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         objc_storeStrong(&self->_persistedState, v14);
-        v15 = [(CorrectionsProfilesPersistedState *)self->_persistedState correctionsProfiles];
-        self->_count = [v15 count];
+        correctionsProfiles = [(CorrectionsProfilesPersistedState *)self->_persistedState correctionsProfiles];
+        self->_count = [correctionsProfiles count];
 
         v16 = 1;
 LABEL_18:
@@ -194,8 +194,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:_path];
 
   v10 = *MEMORY[0x277CEF0D0];
   v11 = *MEMORY[0x277CEF0D0];

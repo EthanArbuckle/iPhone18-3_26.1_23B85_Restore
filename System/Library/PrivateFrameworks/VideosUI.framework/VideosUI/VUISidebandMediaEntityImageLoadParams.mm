@@ -1,14 +1,14 @@
 @interface VUISidebandMediaEntityImageLoadParams
-- (BOOL)isEqual:(id)a3;
-- (VUISidebandMediaEntityImageLoadParams)initWithVideoManagedObject:(id)a3 imageType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUISidebandMediaEntityImageLoadParams)initWithVideoManagedObject:(id)object imageType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUISidebandMediaEntityImageLoadParams
 
-- (VUISidebandMediaEntityImageLoadParams)initWithVideoManagedObject:(id)a3 imageType:(unint64_t)a4
+- (VUISidebandMediaEntityImageLoadParams)initWithVideoManagedObject:(id)object imageType:(unint64_t)type
 {
-  v6 = a3;
+  objectCopy = object;
   v30.receiver = self;
   v30.super_class = VUISidebandMediaEntityImageLoadParams;
   v7 = [(VUISidebandMediaEntityImageLoadParams *)&v30 init];
@@ -26,22 +26,22 @@
     v21 = __Block_byref_object_copy__8;
     v22 = __Block_byref_object_dispose__8;
     v23 = 0;
-    v8 = [v6 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __78__VUISidebandMediaEntityImageLoadParams_initWithVideoManagedObject_imageType___block_invoke;
     v13 = &unk_1E8731948;
-    v14 = v6;
+    v14 = objectCopy;
     v15 = &v24;
     v16 = &v18;
-    v17 = a4;
-    [v8 performBlockAndWait:&v10];
+    typeCopy = type;
+    [managedObjectContext performBlockAndWait:&v10];
 
     if (v25[5] && [v19[5] length])
     {
       objc_storeStrong(&v7->_imageInfo, v25[5]);
       objc_storeStrong(&v7->_imageIdentifierInternal, v19[5]);
-      v7->_imageTypeInternal = a4;
+      v7->_imageTypeInternal = type;
     }
 
     else
@@ -126,16 +126,16 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(VUISidebandMediaEntityImageLoadParams *)self imageIdentifierInternal];
-  v3 = [v2 hash];
+  imageIdentifierInternal = [(VUISidebandMediaEntityImageLoadParams *)self imageIdentifierInternal];
+  v3 = [imageIdentifierInternal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -145,9 +145,9 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VUISidebandMediaEntityImageLoadParams *)self imageIdentifierInternal];
-      v6 = [(VUISidebandMediaEntityImageLoadParams *)v4 imageIdentifierInternal];
-      v7 = [v5 isEqual:v6];
+      imageIdentifierInternal = [(VUISidebandMediaEntityImageLoadParams *)self imageIdentifierInternal];
+      imageIdentifierInternal2 = [(VUISidebandMediaEntityImageLoadParams *)equalCopy imageIdentifierInternal];
+      v7 = [imageIdentifierInternal isEqual:imageIdentifierInternal2];
     }
 
     else

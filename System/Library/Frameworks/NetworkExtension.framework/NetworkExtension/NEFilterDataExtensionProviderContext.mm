@@ -1,59 +1,59 @@
 @interface NEFilterDataExtensionProviderContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (id)findFlowWithFlow:(uint64_t)a1;
+- (id)findFlowWithFlow:(uint64_t)flow;
 - (id)socketExceptions;
-- (void)applySettings:(id)a3 completionHandler:(id)a4;
-- (void)closeBrowserFilterFlow:(uint64_t)a1;
-- (void)closeChannelFlow:(id *)a1;
-- (void)closeFlow:(id *)a1;
-- (void)closeSocketFlow:(uint64_t)a3 socketID:;
-- (void)fetchAppInfoForPID:(int)a3 UUID:(id)a4 bundleID:(id)a5 completionHandler:(id)a6;
-- (void)fetchCurrentRulesForFlow:(id)a3 completionHandler:(id)a4;
-- (void)fetchProviderConnectionWithCompletionHandler:(id)a3;
-- (void)handleChannelMessageFlowFinish:(void *)a3 filloutReply:(void *)a4 completionHandler:;
-- (void)handleClientMessage:(id)a3 filloutReply:(id)a4 completionHandler:(id)a5;
-- (void)handleData:(uint64_t)a3 offset:(void *)a4 forFlow:(uint64_t)a5 direction:(void *)a6 reply:(int)a7 controlSocket:(void *)a8 completionHandler:;
-- (void)handleDataCompleteForFlow:(uint64_t)a3 direction:(void *)a4 reply:(int)a5 controlSocket:(void *)a6 completionHandler:;
-- (void)handleNewFlow:(void *)a3 reply:(int)a4 controlSocket:(void *)a5 completionHandler:;
+- (void)applySettings:(id)settings completionHandler:(id)handler;
+- (void)closeBrowserFilterFlow:(uint64_t)flow;
+- (void)closeChannelFlow:(id *)flow;
+- (void)closeFlow:(id *)flow;
+- (void)closeSocketFlow:(uint64_t)flow socketID:;
+- (void)fetchAppInfoForPID:(int)d UUID:(id)iD bundleID:(id)bundleID completionHandler:(id)handler;
+- (void)fetchCurrentRulesForFlow:(id)flow completionHandler:(id)handler;
+- (void)fetchProviderConnectionWithCompletionHandler:(id)handler;
+- (void)handleChannelMessageFlowFinish:(void *)finish filloutReply:(void *)reply completionHandler:;
+- (void)handleClientMessage:(id)message filloutReply:(id)reply completionHandler:(id)handler;
+- (void)handleData:(uint64_t)data offset:(void *)offset forFlow:(uint64_t)flow direction:(void *)direction reply:(int)reply controlSocket:(void *)socket completionHandler:;
+- (void)handleDataCompleteForFlow:(uint64_t)flow direction:(void *)direction reply:(int)reply controlSocket:(void *)socket completionHandler:;
+- (void)handleNewFlow:(void *)flow reply:(int)reply controlSocket:(void *)socket completionHandler:;
 - (void)handleRulesChanged;
-- (void)provideRemediationMap:(id)a3;
-- (void)provideURLAppendStringMap:(id)a3;
-- (void)providerControlSocketFileHandle:(id)a3;
-- (void)report:(id)a3;
-- (void)reportFlow:(void *)a3 forVerdict:(uint64_t)a4 event:;
-- (void)reportFlow:(void *)a3 forVerdict:(void *)a4 absoluteVerdict:;
-- (void)reportFlowClosed:(void *)a1;
-- (void)reportFlowStats:(void *)a1;
-- (void)resumeFlow:(id)a3 withVerdict:(id)a4;
+- (void)provideRemediationMap:(id)map;
+- (void)provideURLAppendStringMap:(id)map;
+- (void)providerControlSocketFileHandle:(id)handle;
+- (void)report:(id)report;
+- (void)reportFlow:(void *)flow forVerdict:(uint64_t)verdict event:;
+- (void)reportFlow:(void *)flow forVerdict:(void *)verdict absoluteVerdict:;
+- (void)reportFlowClosed:(void *)closed;
+- (void)reportFlowStats:(void *)stats;
+- (void)resumeFlow:(id)flow withVerdict:(id)verdict;
 - (void)sendBrowserContentFilterServerRequest;
 - (void)sendSocketContentFilterRequest;
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)stopWithReason:(int)a3;
-- (void)updateFlow:(id)a3 withVerdict:(id)a4 forDirection:(int64_t)a5;
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler;
+- (void)stopWithReason:(int)reason;
+- (void)updateFlow:(id)flow withVerdict:(id)verdict forDirection:(int64_t)direction;
 @end
 
 @implementation NEFilterDataExtensionProviderContext
 
-- (void)fetchAppInfoForPID:(int)a3 UUID:(id)a4 bundleID:(id)a5 completionHandler:(id)a6
+- (void)fetchAppInfoForPID:(int)d UUID:(id)iD bundleID:(id)bundleID completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(NEFilterExtensionProviderContext *)self queue];
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  handlerCopy = handler;
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__NEFilterDataExtensionProviderContext_fetchAppInfoForPID_UUID_bundleID_completionHandler___block_invoke;
   block[3] = &unk_1E7F08BD0;
-  v21 = a3;
+  dCopy = d;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  dispatch_async(v13, block);
+  v18 = iDCopy;
+  v19 = bundleIDCopy;
+  v20 = handlerCopy;
+  v14 = bundleIDCopy;
+  v15 = iDCopy;
+  v16 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __91__NEFilterDataExtensionProviderContext_fetchAppInfoForPID_UUID_bundleID_completionHandler___block_invoke(uint64_t a1, const char *a2)
@@ -82,32 +82,32 @@ void __91__NEFilterDataExtensionProviderContext_fetchAppInfoForPID_UUID_bundleID
   }
 }
 
-- (void)report:(id)a3
+- (void)report:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   if (self && self->_controlProviderExists)
   {
-    v7 = v4;
-    v6 = [(NEExtensionProviderContext *)self hostContext];
-    [v6 report:v7];
+    v7 = reportCopy;
+    hostContext = [(NEExtensionProviderContext *)self hostContext];
+    [hostContext report:v7];
 
-    v4 = v7;
+    reportCopy = v7;
   }
 }
 
-- (void)fetchCurrentRulesForFlow:(id)a3 completionHandler:(id)a4
+- (void)fetchCurrentRulesForFlow:(id)flow completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NEExtensionProviderContext *)self hostContext];
+  handlerCopy = handler;
+  flowCopy = flow;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_completionHandler___block_invoke;
   v11[3] = &unk_1E7F07630;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 fetchCurrentRulesForFlow:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [hostContext fetchCurrentRulesForFlow:flowCopy completionHandler:v11];
 }
 
 void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -125,13 +125,13 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
   dispatch_async(v4, v7);
 }
 
-- (void)handleClientMessage:(id)a3 filloutReply:(id)a4 completionHandler:(id)a5
+- (void)handleClientMessage:(id)message filloutReply:(id)reply completionHandler:(id)handler
 {
   v238 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v8, "command");
+  messageCopy = message;
+  replyCopy = reply;
+  handlerCopy = handler;
+  int64 = xpc_dictionary_get_int64(messageCopy, "command");
   if (int64 <= 6)
   {
     if (int64 > 3)
@@ -140,7 +140,7 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
       {
         if (int64 != 5)
         {
-          if (!v9)
+          if (!replyCopy)
           {
             v12 = ne_log_obj();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -153,15 +153,15 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
             goto LABEL_150;
           }
 
-          v14 = v8;
-          v15 = v9;
-          v16 = v10;
+          v14 = messageCopy;
+          v15 = replyCopy;
+          v16 = handlerCopy;
           if (!self)
           {
             goto LABEL_258;
           }
 
-          v212 = v10;
+          v212 = handlerCopy;
           *v226 = 0u;
           v227 = 0u;
           uuid = xpc_dictionary_get_uuid(v14, "flow-uuid");
@@ -260,7 +260,7 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
             xpc_dictionary_set_int64(v202, "error", 1);
             xpc_dictionary_set_uuid(v202, "flow-uuid", v18);
             v196[2](v196);
-            v10 = v212;
+            handlerCopy = v212;
             goto LABEL_257;
           }
 
@@ -292,18 +292,18 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
           v34 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v226 length:32];
           [v27 setSourceAppAuditToken:v34];
 
-          v35 = [v27 sourceAppAuditToken];
-          [v27 setSourceProcessAuditToken:v35];
+          sourceAppAuditToken = [v27 sourceAppAuditToken];
+          [v27 setSourceProcessAuditToken:sourceAppAuditToken];
 
           v36 = xpc_dictionary_get_remote_connection(v14);
           objc_setProperty_atomic(v27, v37, v36, 144);
 
           string = xpc_dictionary_get_string(v14, "source-app-bundle-id");
-          v10 = v212;
+          handlerCopy = v212;
           if (string)
           {
-            v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@".%s", string];
-            [v27 setSourceAppIdentifier:v39];
+            string = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@".%s", string];
+            [v27 setSourceAppIdentifier:string];
 
             v27[13] = 1;
           }
@@ -332,9 +332,9 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
           channelFlows = self->_channelFlows;
           if (!channelFlows)
           {
-            v48 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v49 = self->_channelFlows;
-            self->_channelFlows = v48;
+            self->_channelFlows = dictionary;
 
             channelFlows = self->_channelFlows;
           }
@@ -352,7 +352,7 @@ void __83__NEFilterDataExtensionProviderContext_fetchCurrentRulesForFlow_complet
             }
 
 LABEL_255:
-            v10 = v212;
+            handlerCopy = v212;
             v16 = v196;
             v15 = v202;
             v27 = v194;
@@ -452,7 +452,7 @@ LABEL_258:
           goto LABEL_243;
         }
 
-        if (!v9)
+        if (!replyCopy)
         {
           v12 = ne_log_obj();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -465,9 +465,9 @@ LABEL_258:
           goto LABEL_150;
         }
 
-        v101 = v8;
-        v102 = v9;
-        v103 = v10;
+        v101 = messageCopy;
+        v102 = replyCopy;
+        v103 = handlerCopy;
         if (self)
         {
           if (self->_browserFlows)
@@ -485,7 +485,7 @@ LABEL_258:
               if (v107)
               {
                 v205 = v101;
-                v217 = v10;
+                v217 = handlerCopy;
                 if (v109)
                 {
                   LODWORD(aBlock[0]) = 138412290;
@@ -494,15 +494,15 @@ LABEL_258:
                 }
 
                 v107[10] = 1;
-                v110 = [(NEExtensionProviderContext *)self _principalObject];
+                _principalObject = [(NEExtensionProviderContext *)self _principalObject];
                 *out = MEMORY[0x1E69E9820];
                 *&out[8] = 3221225472;
                 *&out[16] = __96__NEFilterDataExtensionProviderContext_handleRemediationMessage_filloutReply_completionHandler___block_invoke;
                 *&out[24] = &unk_1E7F07540;
-                *&out[32] = v110;
+                *&out[32] = _principalObject;
                 v111 = v107;
                 v233 = v111;
-                v200 = v110;
+                v200 = _principalObject;
                 v112 = _Block_copy(out);
                 aBlock[0] = MEMORY[0x1E69E9820];
                 aBlock[1] = 3221225472;
@@ -517,7 +517,7 @@ LABEL_258:
                 v115 = [[NEFilterDataSavedMessageHandler alloc] initWithGetVerdictBlock:v112 handleVerdictBlock:v114];
                 [(NEFilterDataSavedMessageHandler *)v115 enqueueWithFlow:v113 context:self];
 
-                v10 = v217;
+                handlerCopy = v217;
                 v101 = v205;
               }
 
@@ -570,7 +570,7 @@ LABEL_187:
         goto LABEL_197;
       }
 
-      if (!v9)
+      if (!replyCopy)
       {
         v12 = ne_log_obj();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -583,9 +583,9 @@ LABEL_187:
         goto LABEL_150;
       }
 
-      v14 = v8;
-      v56 = v9;
-      v57 = v10;
+      v14 = messageCopy;
+      v56 = replyCopy;
+      v57 = handlerCopy;
       if (!self)
       {
         goto LABEL_194;
@@ -600,7 +600,7 @@ LABEL_187:
           v80 = [(NSMutableDictionary *)self->_browserFlows objectForKey:v78];
           if (v80)
           {
-            v215 = v10;
+            v215 = handlerCopy;
             v121 = xpc_dictionary_get_int64(v14, "direction");
             [v80 setInBytes:{xpc_dictionary_get_uint64(v14, "byte-count-inbound")}];
             [v80 setOutBytes:{xpc_dictionary_get_uint64(v14, "byte-count-outbound")}];
@@ -676,7 +676,7 @@ LABEL_251:
 
     if (int64 == 2)
     {
-      if (!v9)
+      if (!replyCopy)
       {
         v12 = ne_log_obj();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -689,13 +689,13 @@ LABEL_251:
         goto LABEL_150;
       }
 
-      v14 = v8;
-      v91 = v9;
-      v92 = v10;
+      v14 = messageCopy;
+      v91 = replyCopy;
+      v92 = handlerCopy;
       if (self)
       {
         newValuec = v91;
-        v216 = v10;
+        v216 = handlerCopy;
         v226[0] = 0;
         memset(aBlock, 0, sizeof(aBlock));
         v93 = xpc_dictionary_get_uuid(v14, "flow-uuid");
@@ -829,17 +829,17 @@ LABEL_251:
 
             if (*v195)
             {
-              v174 = [(NEFilterDataExtensionProviderContext *)self socketExceptions];
+              socketExceptions = [(NEFilterDataExtensionProviderContext *)self socketExceptions];
               v175 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*v195];
-              [v174 addObject:v175];
+              [socketExceptions addObject:v175];
             }
 
             browserFlows = self->_browserFlows;
             if (!browserFlows)
             {
-              v177 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary2 = [MEMORY[0x1E695DF90] dictionary];
               v178 = self->_browserFlows;
-              self->_browserFlows = v177;
+              self->_browserFlows = dictionary2;
 
               browserFlows = self->_browserFlows;
             }
@@ -883,7 +883,7 @@ LABEL_251:
           v92[2](v92);
         }
 
-        v10 = v216;
+        handlerCopy = v216;
       }
 
       goto LABEL_196;
@@ -894,7 +894,7 @@ LABEL_251:
       goto LABEL_197;
     }
 
-    if (!v9)
+    if (!replyCopy)
     {
       v12 = ne_log_obj();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -907,9 +907,9 @@ LABEL_251:
       goto LABEL_150;
     }
 
-    v14 = v8;
-    v56 = v9;
-    v57 = v10;
+    v14 = messageCopy;
+    v56 = replyCopy;
+    v57 = handlerCopy;
     if (!self)
     {
       goto LABEL_194;
@@ -978,10 +978,10 @@ LABEL_260:
             v197 = v64;
             v67 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v66 error:0];
             [v67 decodeObjectOfClass:objc_opt_class() forKey:@"URL_Request"];
-            v68 = v213 = v10;
+            v68 = v213 = handlerCopy;
             [v61 setRequest:v68];
 
-            v10 = v213;
+            handlerCopy = v213;
             [v67 finishDecoding];
 
             v64 = v197;
@@ -997,10 +997,10 @@ LABEL_260:
             v198 = v64;
             v71 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v70 error:0];
             [v71 decodeObjectOfClass:objc_opt_class() forKey:@"URL_Response"];
-            v72 = v214 = v10;
+            v72 = v214 = handlerCopy;
             [v61 setResponse:v72];
 
-            v10 = v214;
+            handlerCopy = v214;
             [v71 finishDecoding];
 
             v64 = v198;
@@ -1053,7 +1053,7 @@ LABEL_204:
     {
       if ((int64 - 9) < 2)
       {
-        if (!v9)
+        if (!replyCopy)
         {
           v12 = ne_log_obj();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1074,7 +1074,7 @@ LABEL_149:
       goto LABEL_197;
     }
 
-    if (!v9)
+    if (!replyCopy)
     {
       v12 = ne_log_obj();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1089,9 +1089,9 @@ LABEL_150:
       goto LABEL_197;
     }
 
-    v14 = v8;
-    v56 = v9;
-    v75 = v10;
+    v14 = messageCopy;
+    v56 = replyCopy;
+    v75 = handlerCopy;
     v57 = v75;
     if (!self)
     {
@@ -1143,7 +1143,7 @@ LABEL_150:
           }
 
           v204 = v79;
-          v215 = v10;
+          v215 = handlerCopy;
           v226[0] = 0;
           v226[1] = 0;
           DWORD2(v227) = 0;
@@ -1195,7 +1195,7 @@ LABEL_150:
           [(NEFilterDataExtensionProviderContext *)self handleData:v88 offset:v90 forFlow:v80 direction:v204 reply:newValueb controlSocket:-1 completionHandler:v57];
 
 LABEL_130:
-          v10 = v215;
+          handlerCopy = v215;
 LABEL_192:
 
 LABEL_193:
@@ -1244,10 +1244,10 @@ LABEL_193:
 
   if (int64 == 12)
   {
-    v14 = v10;
+    v14 = handlerCopy;
     if (self)
     {
-      v116 = xpc_dictionary_get_array(v8, "stats-report-statistics");
+      v116 = xpc_dictionary_get_array(messageCopy, "stats-report-statistics");
       v56 = v116;
       if (v116 && xpc_array_get_count(v116))
       {
@@ -1291,7 +1291,7 @@ LABEL_196:
   if (int64 == 11)
   {
 LABEL_77:
-    [(NEFilterDataExtensionProviderContext *)&self->super.super.super.super.isa handleChannelMessageFlowFinish:v8 filloutReply:v9 completionHandler:v10];
+    [(NEFilterDataExtensionProviderContext *)&self->super.super.super.super.isa handleChannelMessageFlowFinish:messageCopy filloutReply:replyCopy completionHandler:handlerCopy];
   }
 
 LABEL_197:
@@ -1299,13 +1299,13 @@ LABEL_197:
   v146 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleChannelMessageFlowFinish:(void *)a3 filloutReply:(void *)a4 completionHandler:
+- (void)handleChannelMessageFlowFinish:(void *)finish filloutReply:(void *)reply completionHandler:
 {
   v30 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  finishCopy = finish;
+  replyCopy = reply;
+  if (self)
   {
     int64 = xpc_dictionary_get_int64(v7, "command");
     uuid = xpc_dictionary_get_uuid(v7, "flow-uuid");
@@ -1319,16 +1319,16 @@ LABEL_197:
         _os_log_debug_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_DEBUG, "Finished data message rejected, invalid flow UUID", buf, 2u);
       }
 
-      if (v8)
+      if (finishCopy)
       {
-        xpc_dictionary_set_int64(v8, "error", 4);
+        xpc_dictionary_set_int64(finishCopy, "error", 4);
       }
 
-      v9[2](v9);
+      replyCopy[2](replyCopy);
       goto LABEL_29;
     }
 
-    v13 = [a1[20] objectForKey:v12];
+    v13 = [self[20] objectForKey:v12];
     if (v13)
     {
       if (int64 == 11)
@@ -1375,7 +1375,7 @@ LABEL_197:
           _os_log_debug_impl(&dword_1BA83C000, v22, OS_LOG_TYPE_DEBUG, "Received finished %sbound data for %@", buf, 0x16u);
         }
 
-        [(NEFilterDataExtensionProviderContext *)a1 handleDataCompleteForFlow:v13 direction:v21 reply:v8 controlSocket:-1 completionHandler:v9];
+        [(NEFilterDataExtensionProviderContext *)self handleDataCompleteForFlow:v13 direction:v21 reply:finishCopy controlSocket:-1 completionHandler:replyCopy];
         goto LABEL_28;
       }
 
@@ -1387,7 +1387,7 @@ LABEL_197:
         _os_log_debug_impl(&dword_1BA83C000, v18, OS_LOG_TYPE_DEBUG, "Finished flow for %@", buf, 0xCu);
       }
 
-      [(NEFilterDataExtensionProviderContext *)a1 closeChannelFlow:v13];
+      [(NEFilterDataExtensionProviderContext *)self closeChannelFlow:v13];
     }
 
     else
@@ -1400,14 +1400,14 @@ LABEL_197:
         _os_log_debug_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_DEBUG, "Finished data message rejected, no flow found for %@", buf, 0xCu);
       }
 
-      if (v8)
+      if (finishCopy)
       {
-        xpc_dictionary_set_uuid(v8, "flow-uuid", uuid);
-        xpc_dictionary_set_int64(v8, "error", 6);
+        xpc_dictionary_set_uuid(finishCopy, "flow-uuid", uuid);
+        xpc_dictionary_set_int64(finishCopy, "error", 6);
       }
     }
 
-    v9[2](v9);
+    replyCopy[2](replyCopy);
 LABEL_28:
 
 LABEL_29:
@@ -1488,11 +1488,11 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
   return 1;
 }
 
-- (void)reportFlowStats:(void *)a1
+- (void)reportFlowStats:(void *)stats
 {
   v3 = a2;
   v5 = v3;
-  if (a1)
+  if (stats)
   {
     if (v3)
     {
@@ -1510,7 +1510,7 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
     if (v8)
     {
       [v8 setShouldReport:1];
-      [(NEFilterDataExtensionProviderContext *)a1 reportFlow:v5 forVerdict:v8 event:4];
+      [(NEFilterDataExtensionProviderContext *)stats reportFlow:v5 forVerdict:v8 event:4];
     }
 
     else
@@ -1525,13 +1525,13 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
   }
 }
 
-- (void)reportFlow:(void *)a3 forVerdict:(uint64_t)a4 event:
+- (void)reportFlow:(void *)flow forVerdict:(uint64_t)verdict event:
 {
   v20 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1 && v8 && [v8 shouldReport])
+  flowCopy = flow;
+  v9 = flowCopy;
+  if (self && flowCopy && [flowCopy shouldReport])
   {
     if (v7)
     {
@@ -1540,15 +1540,15 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
 
     objc_opt_class();
     v10 = (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v9 statisticsReportFrequency] == 0;
-    v11 = [v9 filterAction];
-    if (!v10 || v11)
+    filterAction = [v9 filterAction];
+    if (!v10 || filterAction)
     {
-      v13 = [[NEFilterReport alloc] initWithFlow:v7 action:v11 event:a4];
-      [a1 report:v13];
-      if ((a4 - 3) <= 1 && ([v9 drop] & 1) == 0)
+      v13 = [[NEFilterReport alloc] initWithFlow:v7 action:filterAction event:verdict];
+      [self report:v13];
+      if ((verdict - 3) <= 1 && ([v9 drop] & 1) == 0)
       {
-        v14 = [a1 _principalObject];
-        [v14 handleReport:v13];
+        _principalObject = [self _principalObject];
+        [_principalObject handleReport:v13];
       }
     }
 
@@ -1560,7 +1560,7 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
         v16 = 138412546;
         v17 = v9;
         v18 = 2048;
-        v19 = a4;
+        verdictCopy = verdict;
         _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "Failed to get an action for verdict (%@), cannot generate flow report with type %ld", &v16, 0x16u);
       }
     }
@@ -1569,20 +1569,20 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)closeChannelFlow:(id *)a1
+- (void)closeChannelFlow:(id *)flow
 {
   v3 = a2;
-  [(NEFilterDataExtensionProviderContext *)a1 reportFlowClosed:v3];
+  [(NEFilterDataExtensionProviderContext *)flow reportFlowClosed:v3];
   if (v3)
   {
     objc_setProperty_atomic(v3, v4, 0, 144);
-    v5 = a1[20];
+    v5 = flow[20];
     Property = objc_getProperty(v3, v6, 128, 1);
   }
 
   else
   {
-    v5 = a1[20];
+    v5 = flow[20];
     Property = 0;
   }
 
@@ -1591,39 +1591,39 @@ uint64_t __103__NEFilterDataExtensionProviderContext_handleChannelMessageStatsRe
   [v5 removeObjectForKey:v8];
 }
 
-- (void)handleDataCompleteForFlow:(uint64_t)a3 direction:(void *)a4 reply:(int)a5 controlSocket:(void *)a6 completionHandler:
+- (void)handleDataCompleteForFlow:(uint64_t)flow direction:(void *)direction reply:(int)reply controlSocket:(void *)socket completionHandler:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  v14 = [a1 _principalObject];
+  directionCopy = direction;
+  socketCopy = socket;
+  _principalObject = [self _principalObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direction_reply_controlSocket_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7F07608;
-  v34 = a3;
+  flowCopy = flow;
   v15 = v11;
   v31 = v15;
-  v32 = a1;
-  v33 = v14;
-  v16 = v14;
+  selfCopy = self;
+  v33 = _principalObject;
+  v16 = _principalObject;
   v17 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direction_reply_controlSocket_completionHandler___block_invoke_135;
   v23[3] = &unk_1E7F075B8;
-  v28 = a3;
+  flowCopy2 = flow;
   v18 = v15;
   v24 = v18;
-  v19 = v12;
-  v29 = a5;
+  v19 = directionCopy;
+  replyCopy = reply;
   v25 = v19;
-  v26 = a1;
-  v20 = v13;
+  selfCopy2 = self;
+  v20 = socketCopy;
   v27 = v20;
   v21 = _Block_copy(v23);
   v22 = [[NEFilterDataSavedMessageHandler alloc] initWithGetVerdictBlock:v17 handleVerdictBlock:v21];
-  [(NEFilterDataSavedMessageHandler *)v22 enqueueWithFlow:v18 context:a1];
+  [(NEFilterDataSavedMessageHandler *)v22 enqueueWithFlow:v18 context:self];
 }
 
 id __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direction_reply_controlSocket_completionHandler___block_invoke(uint64_t a1, const char *a2)
@@ -1815,15 +1815,15 @@ void __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direc
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)closeFlow:(id *)a1
+- (void)closeFlow:(id *)flow
 {
   v6 = a2;
-  if (a1)
+  if (flow)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NEFilterDataExtensionProviderContext *)a1 closeBrowserFilterFlow:v6];
+      [(NEFilterDataExtensionProviderContext *)flow closeBrowserFilterFlow:v6];
       goto LABEL_10;
     }
 
@@ -1837,7 +1837,7 @@ void __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direc
         v5 = v3[25];
         if (v5 == -1)
         {
-          [(NEFilterDataExtensionProviderContext *)a1 closeChannelFlow:v3];
+          [(NEFilterDataExtensionProviderContext *)flow closeChannelFlow:v3];
           goto LABEL_9;
         }
       }
@@ -1847,7 +1847,7 @@ void __114__NEFilterDataExtensionProviderContext_handleDataCompleteForFlow_direc
         v5 = 0;
       }
 
-      [(NEFilterDataExtensionProviderContext *)a1 closeSocketFlow:v3 socketID:v5];
+      [(NEFilterDataExtensionProviderContext *)flow closeSocketFlow:v3 socketID:v5];
 LABEL_9:
     }
   }
@@ -1855,38 +1855,38 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)reportFlow:(void *)a3 forVerdict:(void *)a4 absoluteVerdict:
+- (void)reportFlow:(void *)flow forVerdict:(void *)verdict absoluteVerdict:
 {
   v10 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1 && v10 && v8 && [v7 shouldReport])
+  flowCopy = flow;
+  verdictCopy = verdict;
+  if (self && v10 && verdictCopy && [flowCopy shouldReport])
   {
-    v9 = [v8 copy];
+    v9 = [verdictCopy copy];
     if (([v9 drop] & 1) != 0 || objc_msgSend(v9, "inboundPassOffset") == -1 && objc_msgSend(v9, "outboundPassOffset") == -1)
     {
       [v9 setShouldReport:1];
-      [(NEFilterDataExtensionProviderContext *)a1 reportFlow:v10 forVerdict:v9 event:2];
+      [(NEFilterDataExtensionProviderContext *)self reportFlow:v10 forVerdict:v9 event:2];
     }
   }
 }
 
-- (void)closeBrowserFilterFlow:(uint64_t)a1
+- (void)closeBrowserFilterFlow:(uint64_t)flow
 {
-  if (a1)
+  if (flow)
   {
     v3 = a2;
     v5 = v3;
     if (v3)
     {
       objc_setProperty_atomic(v3, v4, 0, 144);
-      v6 = *(a1 + 144);
+      v6 = *(flow + 144);
       Property = objc_getProperty(v5, v7, 128, 1);
     }
 
     else
     {
-      v6 = *(a1 + 144);
+      v6 = *(flow + 144);
       Property = 0;
     }
 
@@ -1896,17 +1896,17 @@ LABEL_10:
   }
 }
 
-- (void)closeSocketFlow:(uint64_t)a3 socketID:
+- (void)closeSocketFlow:(uint64_t)flow socketID:
 {
-  [(NEFilterDataExtensionProviderContext *)a1 reportFlowClosed:a2];
-  v5 = a1[19];
+  [(NEFilterDataExtensionProviderContext *)self reportFlowClosed:a2];
+  v5 = self[19];
   v6 = MEMORY[0x1E696AD98];
   v7 = v5;
-  v8 = [v6 numberWithUnsignedLongLong:a3];
+  v8 = [v6 numberWithUnsignedLongLong:flow];
   [v7 removeObjectForKey:v8];
 }
 
-- (void)reportFlowClosed:(void *)a1
+- (void)reportFlowClosed:(void *)closed
 {
   v3 = a2;
   v5 = v3;
@@ -1918,7 +1918,7 @@ LABEL_10:
     if (v7)
     {
       [v7 setShouldReport:1];
-      [(NEFilterDataExtensionProviderContext *)a1 reportFlow:v5 forVerdict:v7 event:3];
+      [(NEFilterDataExtensionProviderContext *)closed reportFlow:v5 forVerdict:v7 event:3];
     }
 
     else
@@ -1933,30 +1933,30 @@ LABEL_10:
   }
 }
 
-- (void)handleData:(uint64_t)a3 offset:(void *)a4 forFlow:(uint64_t)a5 direction:(void *)a6 reply:(int)a7 controlSocket:(void *)a8 completionHandler:
+- (void)handleData:(uint64_t)data offset:(void *)offset forFlow:(uint64_t)flow direction:(void *)direction reply:(int)reply controlSocket:(void *)socket completionHandler:
 {
   v14 = a2;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = [a1 queue];
+  offsetCopy = offset;
+  directionCopy = direction;
+  socketCopy = socket;
+  queue = [self queue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __114__NEFilterDataExtensionProviderContext_handleData_offset_forFlow_direction_reply_controlSocket_completionHandler___block_invoke;
   v24[3] = &unk_1E7F075E0;
-  v24[4] = a1;
-  v29 = a3;
+  v24[4] = self;
+  dataCopy = data;
   v19 = v14;
   v25 = v19;
-  v20 = v15;
+  v20 = offsetCopy;
   v26 = v20;
-  v30 = a5;
-  v21 = v16;
+  flowCopy = flow;
+  v21 = directionCopy;
   v27 = v21;
-  v31 = a7;
-  v22 = v17;
+  replyCopy = reply;
+  v22 = socketCopy;
   v28 = v22;
-  [(NEFilterFlow *)v20 updateSourceAppInfoWithQueue:v18 completionHandler:v24];
+  [(NEFilterFlow *)v20 updateSourceAppInfoWithQueue:queue completionHandler:v24];
 }
 
 void __114__NEFilterDataExtensionProviderContext_handleData_offset_forFlow_direction_reply_controlSocket_completionHandler___block_invoke(uint64_t a1)
@@ -2164,25 +2164,25 @@ void __114__NEFilterDataExtensionProviderContext_handleData_offset_forFlow_direc
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNewFlow:(void *)a3 reply:(int)a4 controlSocket:(void *)a5 completionHandler:
+- (void)handleNewFlow:(void *)flow reply:(int)reply controlSocket:(void *)socket completionHandler:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  v12 = [a1 queue];
+  flowCopy = flow;
+  socketCopy = socket;
+  queue = [self queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__NEFilterDataExtensionProviderContext_handleNewFlow_reply_controlSocket_completionHandler___block_invoke;
   v16[3] = &unk_1E7F08BD0;
-  v16[4] = a1;
+  v16[4] = self;
   v13 = v9;
   v17 = v13;
-  v14 = v10;
+  v14 = flowCopy;
   v18 = v14;
-  v20 = a4;
-  v15 = v11;
+  replyCopy = reply;
+  v15 = socketCopy;
   v19 = v15;
-  [(NEFilterFlow *)v13 updateSourceAppInfoWithQueue:v12 completionHandler:v16];
+  [(NEFilterFlow *)v13 updateSourceAppInfoWithQueue:queue completionHandler:v16];
 }
 
 void __92__NEFilterDataExtensionProviderContext_handleNewFlow_reply_controlSocket_completionHandler___block_invoke(uint64_t a1)
@@ -2327,23 +2327,23 @@ void __96__NEFilterDataExtensionProviderContext_handleRemediationMessage_fillout
 
 - (id)socketExceptions
 {
-  v2 = *(a1 + 168);
+  v2 = *(self + 168);
   if (!v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = *(a1 + 168);
-    *(a1 + 168) = v3;
+    array = [MEMORY[0x1E695DF70] array];
+    v4 = *(self + 168);
+    *(self + 168) = array;
 
-    v2 = *(a1 + 168);
+    v2 = *(self + 168);
   }
 
   return v2;
 }
 
-- (void)updateFlow:(id)a3 withVerdict:(id)a4 forDirection:(int64_t)a5
+- (void)updateFlow:(id)flow withVerdict:(id)verdict forDirection:(int64_t)direction
 {
-  v8 = a3;
-  v9 = a4;
+  flowCopy = flow;
+  verdictCopy = verdict;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2353,7 +2353,7 @@ void __96__NEFilterDataExtensionProviderContext_handleRemediationMessage_fillout
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!verdictCopy)
   {
     if (([0 needRules] & 1) == 0)
     {
@@ -2363,7 +2363,7 @@ void __96__NEFilterDataExtensionProviderContext_handleRemediationMessage_fillout
     goto LABEL_9;
   }
 
-  if (v9[11] & 1) != 0 || ([v9 needRules] & 1) != 0 || (v9[13])
+  if (verdictCopy[11] & 1) != 0 || ([verdictCopy needRules] & 1) != 0 || (verdictCopy[13])
   {
 LABEL_9:
     v13 = MEMORY[0x1E695DF30];
@@ -2375,18 +2375,18 @@ LABEL_10:
   }
 
 LABEL_6:
-  v10 = [(NEFilterExtensionProviderContext *)self queue];
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __76__NEFilterDataExtensionProviderContext_updateFlow_withVerdict_forDirection___block_invoke;
   v17[3] = &unk_1E7F07518;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v17);
+  v18 = flowCopy;
+  v19 = verdictCopy;
+  directionCopy = direction;
+  v11 = verdictCopy;
+  v12 = flowCopy;
+  dispatch_async(queue, v17);
 }
 
 void __76__NEFilterDataExtensionProviderContext_updateFlow_withVerdict_forDirection___block_invoke(uint64_t a1)
@@ -2454,10 +2454,10 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)findFlowWithFlow:(uint64_t)a1
+- (id)findFlowWithFlow:(uint64_t)flow
 {
   v3 = a2;
-  if (!a1)
+  if (!flow)
   {
     goto LABEL_12;
   }
@@ -2469,13 +2469,13 @@ LABEL_9:
     v5 = v4;
     if (v4 && v4[25] == -1)
     {
-      v8 = *(a1 + 160);
+      v8 = *(flow + 160);
       v10 = objc_getProperty(v5, v15, 128, 1);
     }
 
     else
     {
-      v6 = *(a1 + 152);
+      v6 = *(flow + 152);
       v7 = MEMORY[0x1E696AD98];
       v8 = v6;
       if (v5)
@@ -2505,7 +2505,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v12 = *(a1 + 144);
+  v12 = *(flow + 144);
   if (v3)
   {
     Property = objc_getProperty(v3, v11, 128, 1);
@@ -2692,10 +2692,10 @@ LABEL_35:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeFlow:(id)a3 withVerdict:(id)a4
+- (void)resumeFlow:(id)flow withVerdict:(id)verdict
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  verdictCopy = verdict;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2711,7 +2711,7 @@ LABEL_8:
     }
   }
 
-  if (v7 && (v7[13] & 1) != 0)
+  if (verdictCopy && (verdictCopy[13] & 1) != 0)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -2719,17 +2719,17 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = [(NEFilterExtensionProviderContext *)self queue];
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__NEFilterDataExtensionProviderContext_resumeFlow_withVerdict___block_invoke;
   block[3] = &unk_1E7F0A7B0;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v16 = flowCopy;
+  v17 = verdictCopy;
+  v9 = verdictCopy;
+  v10 = flowCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__NEFilterDataExtensionProviderContext_resumeFlow_withVerdict___block_invoke(uint64_t a1)
@@ -2813,67 +2813,67 @@ LABEL_16:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applySettings:(id)a3 completionHandler:(id)a4
+- (void)applySettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NEExtensionProviderContext *)self hostContext];
-  [v9 applySettings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext applySettings:settingsCopy completionHandler:handlerCopy];
 }
 
 - (void)sendSocketContentFilterRequest
 {
-  v2 = [(NEExtensionProviderContext *)self hostContext];
-  [v2 sendSocketContentFilterRequest];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext sendSocketContentFilterRequest];
 }
 
 - (void)sendBrowserContentFilterServerRequest
 {
-  v2 = [(NEExtensionProviderContext *)self hostContext];
-  [v2 sendBrowserContentFilterServerRequest];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext sendBrowserContentFilterServerRequest];
 }
 
-- (void)provideURLAppendStringMap:(id)a3
+- (void)provideURLAppendStringMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEFilterExtensionProviderContext *)self queue];
+  mapCopy = map;
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__NEFilterDataExtensionProviderContext_provideURLAppendStringMap___block_invoke;
   v7[3] = &unk_1E7F0A0E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = mapCopy;
+  v6 = mapCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)provideRemediationMap:(id)a3
+- (void)provideRemediationMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEFilterExtensionProviderContext *)self queue];
+  mapCopy = map;
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__NEFilterDataExtensionProviderContext_provideRemediationMap___block_invoke;
   v7[3] = &unk_1E7F0A0E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = mapCopy;
+  v6 = mapCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)handleRulesChanged
 {
-  v2 = [(NEExtensionProviderContext *)self _principalObject];
-  [v2 handleRulesChanged];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject handleRulesChanged];
 }
 
-- (void)fetchProviderConnectionWithCompletionHandler:(id)a3
+- (void)fetchProviderConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self || !self->_clientListener)
   {
-    v5 = [(NEFilterExtensionProviderContext *)self queue];
-    v6 = xpc_connection_create(0, v5);
+    queue = [(NEFilterExtensionProviderContext *)self queue];
+    v6 = xpc_connection_create(0, queue);
     v7 = v6;
     if (self)
     {
@@ -2925,7 +2925,7 @@ LABEL_16:
 
   listenerEndpoint = self->_listenerEndpoint;
 LABEL_10:
-  v4[2](v4, listenerEndpoint);
+  handlerCopy[2](handlerCopy, listenerEndpoint);
 }
 
 void __85__NEFilterDataExtensionProviderContext_fetchProviderConnectionWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3110,10 +3110,10 @@ void __66__NEFilterDataExtensionProviderContext_acceptNewClientConnection___bloc
   }
 }
 
-- (void)providerControlSocketFileHandle:(id)a3
+- (void)providerControlSocketFileHandle:(id)handle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = dup([a3 fileDescriptor]);
+  v4 = dup([handle fileDescriptor]);
   if (self)
   {
     v5 = v4;
@@ -3130,12 +3130,12 @@ void __66__NEFilterDataExtensionProviderContext_acceptNewClientConnection___bloc
       goto LABEL_7;
     }
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     socketFlows = self->_socketFlows;
-    self->_socketFlows = v6;
+    self->_socketFlows = dictionary;
 
-    v8 = [(NEFilterExtensionProviderContext *)self queue];
-    v9 = dispatch_source_create(MEMORY[0x1E69E96F8], v5, 0, v8);
+    queue = [(NEFilterExtensionProviderContext *)self queue];
+    v9 = dispatch_source_create(MEMORY[0x1E69E96F8], v5, 0, queue);
 
     if (v9)
     {
@@ -3145,7 +3145,7 @@ void __66__NEFilterDataExtensionProviderContext_acceptNewClientConnection___bloc
       handler[3] = &unk_1E7F0A0E8;
       v10 = v9;
       v19 = v10;
-      v20 = self;
+      selfCopy = self;
       dispatch_source_set_cancel_handler(v10, handler);
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -3153,7 +3153,7 @@ void __66__NEFilterDataExtensionProviderContext_acceptNewClientConnection___bloc
       v15[3] = &unk_1E7F0A0E8;
       v11 = v10;
       v16 = v11;
-      v17 = self;
+      selfCopy2 = self;
       dispatch_source_set_event_handler(v11, v15);
       dispatch_resume(v11);
       source = self->_source;
@@ -3854,16 +3854,16 @@ LABEL_7:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopWithReason:(int)a3
+- (void)stopWithReason:(int)reason
 {
-  v5 = [(NEFilterExtensionProviderContext *)self queue];
+  queue = [(NEFilterExtensionProviderContext *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke;
   v6[3] = &unk_1E7F086C0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  reasonCopy = reason;
+  dispatch_async(queue, v6);
 }
 
 void __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke(uint64_t a1)
@@ -4067,16 +4067,16 @@ void __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke(ui
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (self)
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v8 = v6[11];
+      v8 = optionsCopy[11];
     }
 
     else
@@ -4087,22 +4087,22 @@ void __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke(ui
     self->_controlProviderExists = v8 & 1;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
-    objc_storeStrong(&self->_pendingConnections, v9);
+    objc_storeStrong(&self->_pendingConnections, array);
   }
 
-  v10 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
   if (self)
   {
-    objc_storeStrong(&self->_remediationMap, v10);
+    objc_storeStrong(&self->_remediationMap, dictionary);
   }
 
-  v11 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   if (self)
   {
-    objc_storeStrong(&self->_URLAppendStringMap, v11);
+    objc_storeStrong(&self->_URLAppendStringMap, dictionary2);
   }
 
   v12 = +[NEAppInfoCache sharedAppInfoCache];
@@ -4112,16 +4112,16 @@ void __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke(ui
     objc_storeWeak((v12 + 8), self);
   }
 
-  v14 = [(NEExtensionProviderContext *)self _principalObject];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v20.receiver = self;
   v20.super_class = NEFilterDataExtensionProviderContext;
-  [(NEFilterExtensionProviderContext *)&v20 startFilterWithOptions:v6 completionHandler:v7];
+  [(NEFilterExtensionProviderContext *)&v20 startFilterWithOptions:optionsCopy completionHandler:handlerCopy];
   objc_initWeak(&location, self);
   v15 = ne_log_obj();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_DEFAULT, "%@: Calling startFilterWithCompletionHandler", buf, 0xCu);
   }
 
@@ -4130,7 +4130,7 @@ void __55__NEFilterDataExtensionProviderContext_stopWithReason___block_invoke(ui
   v17[2] = __81__NEFilterDataExtensionProviderContext_startFilterWithOptions_completionHandler___block_invoke;
   v17[3] = &unk_1E7F0A2A0;
   objc_copyWeak(&v18, &location);
-  [v14 startFilterWithCompletionHandler:v17];
+  [_principalObject startFilterWithCompletionHandler:v17];
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 

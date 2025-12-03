@@ -1,18 +1,18 @@
 @interface PHAssistantHangUpRequest
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PHAssistantHangUpRequest
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_233521000, v5, OS_LOG_TYPE_DEFAULT, "Received Siri request to hang up: %@", buf, 0xCu);
   }
 
@@ -25,8 +25,8 @@
   block[2] = sub_2335227E4;
   block[3] = &unk_2789DD7C0;
   v13 = v8;
-  v14 = v4;
-  v9 = v4;
+  v14 = completionCopy;
+  v9 = completionCopy;
   v10 = v8;
   dispatch_sync(v7, block);
 

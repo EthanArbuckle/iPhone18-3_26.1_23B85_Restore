@@ -1,37 +1,37 @@
 @interface PHAWallpaperSettlingEffectGenerationTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAWallpaperSettlingEffectGenerationTask
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 workingContextForSuggestions];
-  v11 = [v10 loggingConnection];
-  v12 = [[PHASuggestionController alloc] initWithGraphManager:v8];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  workingContextForSuggestions = [managerCopy workingContextForSuggestions];
+  loggingConnection = [workingContextForSuggestions loggingConnection];
+  v12 = [[PHASuggestionController alloc] initWithGraphManager:managerCopy];
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [v8 photoLibrary];
+  photoLibrary = [managerCopy photoLibrary];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__PHAWallpaperSettlingEffectGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke;
   aBlock[3] = &unk_2788B3038;
-  v15 = v11;
+  v15 = loggingConnection;
   v68 = v15;
-  v69 = a5;
-  v55 = a5;
+  errorCopy = error;
+  errorCopy2 = error;
   v16 = _Block_copy(aBlock);
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __103__PHAWallpaperSettlingEffectGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke_306;
   v64[3] = &unk_2788B3060;
-  v17 = v9;
+  v17 = reporterCopy;
   v65 = v17;
   v18 = v15;
   v66 = v18;
@@ -44,20 +44,20 @@
 
   else
   {
-    v54 = v8;
+    v54 = managerCopy;
     v59 = v19;
     v60 = v16;
-    v21 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:v14];
+    v21 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:photoLibrary];
     v22 = MEMORY[0x277D3C810];
-    v23 = [v14 librarySpecificFetchOptions];
-    v61 = [v22 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:v23 excludeExistingWallpapers:1];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v61 = [v22 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:librarySpecificFetchOptions excludeExistingWallpapers:1];
 
     [v17 childProgressReporterFromStart:0.0 toEnd:0.9];
-    v57 = self;
+    selfCopy = self;
     v53 = v58 = v12;
     v52 = [PHAWallpaperSuggestionGenerationUtils generateSuggestionsWithOptionsDictionary:"generateSuggestionsWithOptionsDictionary:contentMode:suggestionController:progressReporter:shouldReload:" contentMode:self->_suggestionOptionsDictionary suggestionController:2 progressReporter:v12 shouldReload:?];
     [v13 addObjectsFromArray:?];
-    v24 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:v14];
+    v24 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsInPhotoLibrary:photoLibrary];
     v62 = v21;
     v56 = v13;
     if ([v21 count])
@@ -81,8 +81,8 @@
     }
 
     v27 = MEMORY[0x277D3C810];
-    v28 = [v14 librarySpecificFetchOptions];
-    v29 = [v27 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:v28 excludeExistingWallpapers:1];
+    librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+    v29 = [v27 fetchLivePhotoTabHighlightSettlingEffectAssetsWithOptions:librarySpecificFetchOptions2 excludeExistingWallpapers:1];
 
     v50 = v29;
     v30 = [v29 count];
@@ -103,7 +103,7 @@
 
     v19 = v59;
     (*(v59 + 2))(v59, v32);
-    v8 = v54;
+    managerCopy = v54;
     if ([v17 isCancelledWithProgress:0.9])
     {
       v60[2](v60);
@@ -154,9 +154,9 @@
             }
 
             v16 = v60;
-            if (v55)
+            if (errorCopy2)
             {
-              *v55 = v49;
+              *errorCopy2 = v49;
             }
           }
 
@@ -176,10 +176,10 @@
           }
 
           v16 = v60;
-          if (v55)
+          if (errorCopy2)
           {
             v39 = v35;
-            *v55 = v35;
+            *errorCopy2 = v35;
           }
 
           v40 = v35;
@@ -187,7 +187,7 @@
           v19 = v59;
         }
 
-        self = v57;
+        self = selfCopy;
       }
 
       else if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -204,11 +204,11 @@
 
       else
       {
-        v41 = [(PHAWallpaperSettlingEffectGenerationTask *)self suggestionOptionsDictionary];
-        v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277D3B068]];
-        v43 = [v42 BOOLValue];
+        suggestionOptionsDictionary = [(PHAWallpaperSettlingEffectGenerationTask *)self suggestionOptionsDictionary];
+        v42 = [suggestionOptionsDictionary objectForKeyedSubscript:*MEMORY[0x277D3B068]];
+        bOOLValue = [v42 BOOLValue];
 
-        if (v43)
+        if (bOOLValue)
         {
           v70 = *MEMORY[0x277D3B0D0];
           v71 = v13;
@@ -269,9 +269,9 @@ void __103__PHAWallpaperSettlingEffectGenerationTask_generateSuggestionsWithGrap
   }
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAWallpaperSettlingEffectGenerationTask timeoutFatal:]", "PHAWallpaperSettlingEffectGenerationTask.m", 82, "NO");
   }
@@ -283,40 +283,40 @@ void __103__PHAWallpaperSettlingEffectGenerationTask_generateSuggestionsWithGrap
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v5 = [(PHAWallpaperSettlingEffectGenerationTask *)self generateSuggestionsWithGraphManager:a3 progressReporter:a4 error:a5];
+  v5 = [(PHAWallpaperSettlingEffectGenerationTask *)self generateSuggestionsWithGraphManager:manager progressReporter:reporter error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 isSystemPhotoLibrary];
+  managerCopy = manager;
+  photoLibrary = [managerCopy photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if ((v6 & 1) == 0)
+  if ((isSystemPhotoLibrary & 1) == 0)
   {
-    v7 = [v4 workingContext];
-    v8 = [v7 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHAWallpaperSettlingEffectGenerationTask *)self name];
-      v10 = [v4 photoLibrary];
-      v11 = [v10 debugDescription];
+      name = [(PHAWallpaperSettlingEffectGenerationTask *)self name];
+      photoLibrary2 = [managerCopy photoLibrary];
+      v11 = [photoLibrary2 debugDescription];
       v13 = 138412546;
-      v14 = v9;
+      v14 = name;
       v15 = 2112;
       v16 = v11;
-      _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v13, 0x16u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v13, 0x16u);
     }
   }
 
-  return v6;
+  return isSystemPhotoLibrary;
 }
 
 - (id)taskClassDependencies

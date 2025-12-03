@@ -1,26 +1,26 @@
 @interface HKMostRecentValueQuantityTypeDataSource
-- (BOOL)_interval:(id)a3 isEqualToInterval:(id)a4;
-- (HKMostRecentValueQuantityTypeDataSource)initWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 currentCalendar:(id)a6 attenuated:(BOOL)a7;
-- (id)_dataSourceValueFromMostRecentQuantity:(id)a3 quantityDateInterval:(id)a4 statisticsInterval:(id)a5;
-- (id)_intervalFromZoomLevel:(int64_t)a3 resolution:(int64_t)a4;
-- (id)_middleDateFromInterval:(id)a3 endDate:(id)a4;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (BOOL)_interval:(id)_interval isEqualToInterval:(id)interval;
+- (HKMostRecentValueQuantityTypeDataSource)initWithUnitController:(id)controller displayType:(id)type healthStore:(id)store currentCalendar:(id)calendar attenuated:(BOOL)attenuated;
+- (id)_dataSourceValueFromMostRecentQuantity:(id)quantity quantityDateInterval:(id)interval statisticsInterval:(id)statisticsInterval;
+- (id)_intervalFromZoomLevel:(int64_t)level resolution:(int64_t)resolution;
+- (id)_middleDateFromInterval:(id)interval endDate:(id)date;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
 @implementation HKMostRecentValueQuantityTypeDataSource
 
-- (HKMostRecentValueQuantityTypeDataSource)initWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 currentCalendar:(id)a6 attenuated:(BOOL)a7
+- (HKMostRecentValueQuantityTypeDataSource)initWithUnitController:(id)controller displayType:(id)type healthStore:(id)store currentCalendar:(id)calendar attenuated:(BOOL)attenuated
 {
-  objc_storeStrong(&self->_currentCalendar, a6);
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  self->_attenuated = a7;
+  objc_storeStrong(&self->_currentCalendar, calendar);
+  calendarCopy = calendar;
+  storeCopy = store;
+  typeCopy = type;
+  controllerCopy = controller;
+  self->_attenuated = attenuated;
   v19.receiver = self;
   v19.super_class = HKMostRecentValueQuantityTypeDataSource;
-  v17 = [(HKQuantityTypeDataSource *)&v19 initWithUnitController:v16 options:32 displayType:v15 healthStore:v14];
+  v17 = [(HKQuantityTypeDataSource *)&v19 initWithUnitController:controllerCopy options:32 displayType:typeCopy healthStore:storeCopy];
 
   return v17;
 }
@@ -28,26 +28,26 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKQuantityTypeDataSource *)self quantityType];
-  v4 = [v3 hk_localizedName];
-  v5 = [v2 stringWithFormat:@"HKMostRecentValueQuantity(%@)", v4];
+  quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+  hk_localizedName = [quantityType hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKMostRecentValueQuantity(%@)", hk_localizedName];
 
   return v5;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__HKMostRecentValueQuantityTypeDataSource_queriesForRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_1E81B7AD8;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v21 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
   if (self->_attenuated && (-[HKQuantityTypeDataSource quantityType](self, "quantityType"), v11 = objc_claimAutoreleasedReturnValue(), [v11 identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = *MEMORY[0x1E696BD08], v12, v11, v12 == v13))
@@ -58,8 +58,8 @@
   else
   {
     v14 = MEMORY[0x1E696C1C0];
-    v15 = [(HKQuantityTypeDataSource *)self quantityType];
-    v16 = [v14 queryForMostRecentQuantityOfType:v15 healthStore:self->super.super._healthStore predicate:0 completion:v10];
+    quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+    v16 = [v14 queryForMostRecentQuantityOfType:quantityType healthStore:self->super.super._healthStore predicate:0 completion:v10];
   }
 
   [v16 setDebugIdentifier:@"charting (most recent)"];
@@ -145,19 +145,19 @@ LABEL_13:
 LABEL_18:
 }
 
-- (id)_dataSourceValueFromMostRecentQuantity:(id)a3 quantityDateInterval:(id)a4 statisticsInterval:(id)a5
+- (id)_dataSourceValueFromMostRecentQuantity:(id)quantity quantityDateInterval:(id)interval statisticsInterval:(id)statisticsInterval
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  quantityCopy = quantity;
+  intervalCopy = interval;
+  statisticsIntervalCopy = statisticsInterval;
   v11 = objc_alloc_init(HKQuantityTypeDataSourceValue);
-  v12 = [(HKQuantityTypeDataSource *)self quantityType];
-  [(HKQuantityTypeDataSourceValue *)v11 setQuantityType:v12];
+  quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+  [(HKQuantityTypeDataSourceValue *)v11 setQuantityType:quantityType];
 
-  if (v8)
+  if (quantityCopy)
   {
-    v13 = [v9 endDate];
-    v14 = [(HKMostRecentValueQuantityTypeDataSource *)self _middleDateFromInterval:v10 endDate:v13];
+    endDate = [intervalCopy endDate];
+    v14 = [(HKMostRecentValueQuantityTypeDataSource *)self _middleDateFromInterval:statisticsIntervalCopy endDate:endDate];
 
     if (v14)
     {
@@ -167,23 +167,23 @@ LABEL_18:
 
     else
     {
-      v15 = [v9 startDate];
-      [(HKQuantityTypeDataSourceValue *)v11 setStartDate:v15];
+      startDate = [intervalCopy startDate];
+      [(HKQuantityTypeDataSourceValue *)v11 setStartDate:startDate];
 
-      v16 = [v9 endDate];
-      [(HKQuantityTypeDataSourceValue *)v11 setEndDate:v16];
+      endDate2 = [intervalCopy endDate];
+      [(HKQuantityTypeDataSourceValue *)v11 setEndDate:endDate2];
     }
 
-    [(HKQuantityTypeDataSourceValue *)v11 setMostRecentQuantity:v8];
+    [(HKQuantityTypeDataSourceValue *)v11 setMostRecentQuantity:quantityCopy];
   }
 
   return v11;
 }
 
-- (id)_middleDateFromInterval:(id)a3 endDate:(id)a4
+- (id)_middleDateFromInterval:(id)interval endDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  dateCopy = date;
   v9 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:7];
   v54 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:6];
   v53 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:5 resolution:0];
@@ -192,31 +192,31 @@ LABEL_18:
   v52 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:3];
   v12 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:2];
   v13 = [(HKMostRecentValueQuantityTypeDataSource *)self _intervalFromZoomLevel:1];
-  v14 = [(HKMostRecentValueQuantityTypeDataSource *)self currentCalendar];
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v9])
+  currentCalendar = [(HKMostRecentValueQuantityTypeDataSource *)self currentCalendar];
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v9])
   {
-    [v14 hk_startOfMinuteForDate:v8 moduloMinutes:objc_msgSend(v9 addingModuloCount:{"minute"), 0}];
-    v50 = v7;
+    [currentCalendar hk_startOfMinuteForDate:dateCopy moduloMinutes:objc_msgSend(v9 addingModuloCount:{"minute"), 0}];
+    v50 = intervalCopy;
     v16 = v15 = v11;
-    v17 = [v14 hk_startOfMinuteForDate:v8 moduloMinutes:objc_msgSend(v9 addingModuloCount:{"minute"), 1}];
+    v17 = [currentCalendar hk_startOfMinuteForDate:dateCopy moduloMinutes:objc_msgSend(v9 addingModuloCount:{"minute"), 1}];
     v18 = HKUIMidDate(v16, v17);
 
     v11 = v15;
-    v7 = v50;
+    intervalCopy = v50;
 LABEL_3:
-    v19 = v14;
+    v19 = currentCalendar;
     goto LABEL_10;
   }
 
-  v51 = v14;
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v54])
+  v51 = currentCalendar;
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v54])
   {
-    v20 = v14;
-    [v14 hk_startOfHourForDate:v8 addingHours:0];
+    v20 = currentCalendar;
+    [currentCalendar hk_startOfHourForDate:dateCopy addingHours:0];
     v47 = v13;
-    v21 = v8;
+    v21 = dateCopy;
     v22 = v9;
-    v23 = v7;
+    v23 = intervalCopy;
     v24 = v10;
     v25 = v12;
     v27 = v26 = v11;
@@ -232,30 +232,30 @@ LABEL_8:
     v12 = v25;
     v10 = v24;
 LABEL_9:
-    v7 = v23;
+    intervalCopy = v23;
     v9 = v22;
-    v8 = v21;
+    dateCopy = v21;
     v13 = v47;
     goto LABEL_10;
   }
 
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v53])
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v53])
   {
     goto LABEL_7;
   }
 
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v10])
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v10])
   {
     v46 = v12;
     v48 = v11;
     v57 = 0uLL;
     v58 = 0;
-    HKGraphSeriesDataBlockPathContainingDate(v8, 5, 1, &v57);
+    HKGraphSeriesDataBlockPathContainingDate(dateCopy, 5, 1, &v57);
     v55 = v57;
     v56 = v58;
     v45 = HKGraphSeriesDataBlockPathMinimumX(&v55);
-    v32 = [v45 hk_dateBeforeDateForCalendar:v14 rangeUnit:16];
-    if (([v32 hk_isBeforeOrEqualToDate:v8] & 1) == 0)
+    v32 = [v45 hk_dateBeforeDateForCalendar:currentCalendar rangeUnit:16];
+    if (([v32 hk_isBeforeOrEqualToDate:dateCopy] & 1) == 0)
     {
       [HKMostRecentValueQuantityTypeDataSource _middleDateFromInterval:a2 endDate:self];
     }
@@ -263,7 +263,7 @@ LABEL_9:
     v33 = v32;
     v34 = v33;
     v35 = v33;
-    if ([v33 hk_isBeforeDate:v8])
+    if ([v33 hk_isBeforeDate:dateCopy])
     {
       v35 = v33;
       v36 = v33;
@@ -271,12 +271,12 @@ LABEL_9:
       {
         v34 = v35;
 
-        v35 = [v14 dateByAddingComponents:v10 toDate:v34 options:0];
+        v35 = [currentCalendar dateByAddingComponents:v10 toDate:v34 options:0];
 
         v36 = v34;
       }
 
-      while (([v35 hk_isBeforeDate:v8] & 1) != 0);
+      while (([v35 hk_isBeforeDate:dateCopy] & 1) != 0);
     }
 
     v18 = HKUIMidDate(v34, v35);
@@ -286,15 +286,15 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v11])
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v11])
   {
 LABEL_7:
-    v20 = v14;
-    [v14 hk_startOfDateByAddingDays:0 toDate:v8];
+    v20 = currentCalendar;
+    [currentCalendar hk_startOfDateByAddingDays:0 toDate:dateCopy];
     v47 = v13;
-    v21 = v8;
+    v21 = dateCopy;
     v22 = v9;
-    v23 = v7;
+    v23 = intervalCopy;
     v24 = v10;
     v25 = v12;
     v27 = v26 = v11;
@@ -302,50 +302,50 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = v14;
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v52])
+  v19 = currentCalendar;
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v52])
   {
-    [v14 hk_startOfWeekWithFirstWeekday:objc_msgSend(v14 beforeDate:"firstWeekday") addingWeeks:{v8, 0}];
+    [currentCalendar hk_startOfWeekWithFirstWeekday:objc_msgSend(currentCalendar beforeDate:"firstWeekday") addingWeeks:{dateCopy, 0}];
     v49 = v9;
-    v37 = v7;
+    v37 = intervalCopy;
     v39 = v38 = v11;
-    v40 = [v14 hk_startOfWeekWithFirstWeekday:objc_msgSend(v14 beforeDate:"firstWeekday") addingWeeks:{v8, 1}];
+    v40 = [currentCalendar hk_startOfWeekWithFirstWeekday:objc_msgSend(currentCalendar beforeDate:"firstWeekday") addingWeeks:{dateCopy, 1}];
     v18 = HKUIMidDate(v39, v40);
 
-    v19 = v14;
+    v19 = currentCalendar;
     v11 = v38;
-    v7 = v37;
+    intervalCopy = v37;
     v9 = v49;
     goto LABEL_10;
   }
 
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v12])
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v12])
   {
-    [v14 hk_startOfMonthForDate:v8];
+    [currentCalendar hk_startOfMonthForDate:dateCopy];
     v47 = v13;
-    v21 = v8;
+    v21 = dateCopy;
     v22 = v9;
-    v23 = v7;
+    v23 = intervalCopy;
     v42 = v41 = v11;
-    v43 = [v14 hk_startOfMonthForDate:v21 addingMonths:1];
+    v43 = [currentCalendar hk_startOfMonthForDate:v21 addingMonths:1];
 LABEL_27:
     v44 = v43;
     v18 = HKUIMidDate(v42, v43);
 
-    v19 = v14;
+    v19 = currentCalendar;
     v11 = v41;
     goto LABEL_9;
   }
 
-  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:v7 isEqualToInterval:v13])
+  if ([(HKMostRecentValueQuantityTypeDataSource *)self _interval:intervalCopy isEqualToInterval:v13])
   {
-    [v14 hk_startOfYearForDate:v8 addingYears:0];
+    [currentCalendar hk_startOfYearForDate:dateCopy addingYears:0];
     v47 = v13;
-    v21 = v8;
+    v21 = dateCopy;
     v22 = v9;
-    v23 = v7;
+    v23 = intervalCopy;
     v42 = v41 = v11;
-    v43 = [v14 hk_startOfYearForDate:v21 addingYears:1];
+    v43 = [currentCalendar hk_startOfYearForDate:v21 addingYears:1];
     goto LABEL_27;
   }
 
@@ -355,20 +355,20 @@ LABEL_10:
   return v18;
 }
 
-- (id)_intervalFromZoomLevel:(int64_t)a3 resolution:(int64_t)a4
+- (id)_intervalFromZoomLevel:(int64_t)level resolution:(int64_t)resolution
 {
-  v5 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:a3];
-  v6 = [v5 seriesPointIntervalComponentsAtResolution:a4];
+  v5 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:level];
+  v6 = [v5 seriesPointIntervalComponentsAtResolution:resolution];
 
   return v6;
 }
 
-- (BOOL)_interval:(id)a3 isEqualToInterval:(id)a4
+- (BOOL)_interval:(id)_interval isEqualToInterval:(id)interval
 {
-  v5 = a4;
-  [a3 hk_approximateDuration];
+  intervalCopy = interval;
+  [_interval hk_approximateDuration];
   v7 = v6;
-  [v5 hk_approximateDuration];
+  [intervalCopy hk_approximateDuration];
   v9 = v8;
 
   return v7 == v9;

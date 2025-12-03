@@ -1,60 +1,60 @@
 @interface TKSmartCard
-+ (BOOL)decodeResponse:(id)a3 sw:(unsigned __int16 *)a4 appendTo:(id)a5 error:(id *)a6;
-+ (id)_localizedString:(id)a3;
-- (BOOL)beginSessionWithError:(id *)a3;
-- (BOOL)checkAPDUResponse:(id)a3 error:(id *)a4;
++ (BOOL)decodeResponse:(id)response sw:(unsigned __int16 *)sw appendTo:(id)to error:(id *)error;
++ (id)_localizedString:(id)string;
+- (BOOL)beginSessionWithError:(id *)error;
+- (BOOL)checkAPDUResponse:(id)response error:(id *)error;
 - (BOOL)inSessionWithError:(NSError *)error executeBlock:(void *)block;
 - (BOOL)revalidate;
-- (BOOL)selectApplication:(id)a3 error:(id *)a4;
-- (TKSmartCard)initWithSlot:(id)a3;
+- (BOOL)selectApplication:(id)application error:(id *)error;
+- (TKSmartCard)initWithSlot:(id)slot;
 - (TKSmartCardUserInteractionForSecurePINChange)userInteractionForSecurePINChangeWithPINFormat:(TKSmartCardPINFormat *)PINFormat APDU:(NSData *)APDU currentPINByteOffset:(NSInteger)currentPINByteOffset newPINByteOffset:(NSInteger)newPINByteOffset;
 - (TKSmartCardUserInteractionForSecurePINVerification)userInteractionForSecurePINVerificationWithPINFormat:(TKSmartCardPINFormat *)PINFormat APDU:(NSData *)APDU PINByteOffset:(NSInteger)PINByteOffset;
-- (id)buildIns:(unsigned __int8)a3 p1:(unsigned __int8)a4 p2:(unsigned __int8)a5 data:(id)a6 range:(_NSRange)a7 le:(id)a8 protocol:(unint64_t)a9 chained:(BOOL)a10 extended:(BOOL *)a11 realLe:(unint64_t *)a12;
+- (id)buildIns:(unsigned __int8)ins p1:(unsigned __int8)p1 p2:(unsigned __int8)p2 data:(id)data range:(_NSRange)range le:(id)le protocol:(unint64_t)protocol chained:(BOOL)self0 extended:(BOOL *)self1 realLe:(unint64_t *)self2;
 - (id)context;
-- (id)remoteSessionWithErrorHandler:(id)a3;
+- (id)remoteSessionWithErrorHandler:(id)handler;
 - (void)beginSessionWithReply:(void *)reply;
 - (void)dealloc;
-- (void)encodeLength:(unint64_t)a3 into:(id)a4 sized:(int64_t)a5;
-- (void)endSessionWithReply:(id)a3;
-- (void)handleApduResponse:(id)a3 body:(id)a4 le:(unint64_t)a5 isCase4:(BOOL)a6 error:(id)a7 reply:(id)a8;
-- (void)inSlotQueueExecuteBlock:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)querySessionWithReply:(id)a3;
-- (void)releaseSessionWithReply:(id)a3;
+- (void)encodeLength:(unint64_t)length into:(id)into sized:(int64_t)sized;
+- (void)endSessionWithReply:(id)reply;
+- (void)handleApduResponse:(id)response body:(id)body le:(unint64_t)le isCase4:(BOOL)case4 error:(id)error reply:(id)reply;
+- (void)inSlotQueueExecuteBlock:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)querySessionWithReply:(id)reply;
+- (void)releaseSessionWithReply:(id)reply;
 - (void)sessionRequested;
-- (void)setContext:(id)a3 forKey:(id)a4;
 - (void)setContext:(id)context;
-- (void)setSessionEndPolicy:(int64_t)a3;
+- (void)setContext:(id)context forKey:(id)key;
+- (void)setSessionEndPolicy:(int64_t)policy;
 - (void)transmitRequest:(NSData *)request reply:(void *)reply;
 - (void)unreserve;
 @end
 
 @implementation TKSmartCard
 
-+ (id)_localizedString:(id)a3
++ (id)_localizedString:(id)string
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 bundleWithIdentifier:@"com.apple.CryptoTokenKit"];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_1F5A7A8A8 table:0];
+  v6 = [v5 localizedStringForKey:stringCopy value:&stru_1F5A7A8A8 table:0];
 
   return v6;
 }
 
-- (TKSmartCard)initWithSlot:(id)a3
+- (TKSmartCard)initWithSlot:(id)slot
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  slotCopy = slot;
   v28.receiver = self;
   v28.super_class = TKSmartCard;
   v6 = [(TKSmartCard *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_slot, a3);
+    objc_storeStrong(&v6->_slot, slot);
     v7->_valid = 1;
     v8 = NSStringFromSelector(sel_state);
-    [v5 addObserver:v7 forKeyPath:v8 options:1 context:0];
+    [slotCopy addObserver:v7 forKeyPath:v8 options:1 context:0];
 
     v9 = TK_LOG_smartcard();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -68,9 +68,9 @@
     v26 = 0u;
     v27 = 0u;
     v10 = [(TKSmartCardSlot *)v7->_slot ATR];
-    v11 = [v10 protocols];
+    protocols = [v10 protocols];
 
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v12 = [protocols countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -82,14 +82,14 @@
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(protocols);
           }
 
           v7->_allowedProtocols |= [*(*(&v24 + 1) + 8 * v15++) unsignedIntegerValue];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v13 = [protocols countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v13);
@@ -102,8 +102,8 @@
     v7->_beginSessionQueue = v16;
 
     v18 = v7->_beginSessionQueue;
-    v19 = [(TKSmartCardSlot *)v7->_slot queue];
-    dispatch_set_target_queue(v18, v19);
+    queue = [(TKSmartCardSlot *)v7->_slot queue];
+    dispatch_set_target_queue(v18, queue);
 
     v20 = objc_alloc_init(MEMORY[0x1E69E58C0]);
     syncObject = v7->_syncObject;
@@ -114,40 +114,40 @@
   return v7;
 }
 
-- (id)remoteSessionWithErrorHandler:(id)a3
+- (id)remoteSessionWithErrorHandler:(id)handler
 {
   synchronous = self->_synchronous;
   session = self->_session;
   if (synchronous)
   {
-    [session synchronousRemoteObjectProxyWithErrorHandler:a3];
+    [session synchronousRemoteObjectProxyWithErrorHandler:handler];
   }
 
   else
   {
-    [session remoteObjectProxyWithErrorHandler:a3];
+    [session remoteObjectProxyWithErrorHandler:handler];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self->_valid)
   {
     v12 = NSStringFromSelector(sel_state);
-    v13 = [v9 isEqualToString:v12];
+    v13 = [pathCopy isEqualToString:v12];
 
     if (v13)
     {
-      v14 = [v11 objectForKey:*MEMORY[0x1E696A4F0]];
-      v15 = [v14 integerValue];
+      v14 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+      integerValue = [v14 integerValue];
 
-      if (v15 != 2 && v15 != 4)
+      if (integerValue != 2 && integerValue != 4)
       {
         v17 = TK_LOG_smartcard();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -166,9 +166,9 @@
   }
 }
 
-- (void)releaseSessionWithReply:(id)a3
+- (void)releaseSessionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = TK_LOG_smartcard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -187,8 +187,8 @@
   v16[2] = __39__TKSmartCard_releaseSessionWithReply___block_invoke;
   v16[3] = &unk_1E86B72D8;
   v16[4] = self;
-  v17 = v4;
-  v6 = v4;
+  v17 = replyCopy;
+  v6 = replyCopy;
   v7 = MEMORY[0x1E12D5690](v16);
   dispatch_suspend(self->_beginSessionQueue);
   v14[0] = MEMORY[0x1E69E9820];
@@ -264,35 +264,35 @@ void __39__TKSmartCard_releaseSessionWithReply___block_invoke_3(uint64_t a1, voi
 - (void)sessionRequested
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 40);
+  v1 = *(self + 40);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x12u);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inSlotQueueExecuteBlock:(id)a3
+- (void)inSlotQueueExecuteBlock:(id)block
 {
   if (self->_synchronous)
   {
     slot = self->_slot;
-    v4 = a3;
-    v6 = [(TKSmartCardSlot *)slot queue];
-    dispatch_sync(v6, v4);
+    blockCopy = block;
+    blockCopy2 = [(TKSmartCardSlot *)slot queue];
+    dispatch_sync(blockCopy2, blockCopy);
   }
 
   else
   {
-    v5 = *(a3 + 2);
-    v6 = a3;
+    v5 = *(block + 2);
+    blockCopy2 = block;
     v5();
   }
 }
 
-- (void)querySessionWithReply:(id)a3
+- (void)querySessionWithReply:(id)reply
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   allowedProtocols = self->_allowedProtocols;
   self->_sessionEndPolicy = 0;
   self->_someoneWantsSession = 0;
@@ -326,7 +326,7 @@ void __39__TKSmartCard_releaseSessionWithReply___block_invoke_3(uint64_t a1, voi
   v19[2] = __37__TKSmartCard_querySessionWithReply___block_invoke_2;
   v19[3] = &unk_1E86B7100;
   v19[4] = self;
-  v13 = v4;
+  v13 = replyCopy;
   v20 = v13;
   v14 = [(TKSmartCardSlot *)slot synchronous:synchronous remoteSlotWithErrorHandler:v19];
   v17[0] = MEMORY[0x1E69E9820];
@@ -537,10 +537,10 @@ void __37__TKSmartCard_querySessionWithReply___block_invoke_2_320(uint64_t a1, v
     v7 = TK_LOG_smartcard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(TKSmartCard *)self slot];
-      v9 = [v8 name];
+      slot = [(TKSmartCard *)self slot];
+      name = [slot name];
       *buf = 138543362;
-      v15 = v9;
+      v15 = name;
       _os_log_impl(&dword_1DF413000, v7, OS_LOG_TYPE_INFO, "%{public}@: an attempt to begin session with invalidated (removed) card", buf, 0xCu);
     }
 
@@ -585,7 +585,7 @@ void __37__TKSmartCard_beginSessionWithReply___block_invoke_2(uint64_t a1, uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)beginSessionWithError:(id *)a3
+- (BOOL)beginSessionWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -601,9 +601,9 @@ void __37__TKSmartCard_beginSessionWithReply___block_invoke_2(uint64_t a1, uint6
   v5 = TK_LOG_smartcard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(TKSmartCard *)self slot];
-    v7 = [v6 name];
-    [(TKSmartCard *)v7 beginSessionWithError:v30, v5, v6];
+    slot = [(TKSmartCard *)self slot];
+    name = [slot name];
+    [(TKSmartCard *)name beginSessionWithError:v30, v5, slot];
   }
 
   if ([(TKSmartCard *)self valid])
@@ -635,9 +635,9 @@ void __37__TKSmartCard_beginSessionWithReply___block_invoke_2(uint64_t a1, uint6
     }
 
     v9 = *(v24 + 24);
-    if (a3 && (v24[3] & 1) == 0)
+    if (error && (v24[3] & 1) == 0)
     {
-      *a3 = v18[5];
+      *error = v18[5];
       v9 = *(v24 + 24);
     }
 
@@ -649,17 +649,17 @@ void __37__TKSmartCard_beginSessionWithReply___block_invoke_2(uint64_t a1, uint6
     v10 = TK_LOG_smartcard();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(TKSmartCard *)self slot];
-      v12 = [v11 name];
+      slot2 = [(TKSmartCard *)self slot];
+      name2 = [slot2 name];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v12;
+      *(&buf + 4) = name2;
       _os_log_impl(&dword_1DF413000, v10, OS_LOG_TYPE_INFO, "%{public}@: an attempt to begin session with invalidated (removed) card", &buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:0];
-      *a3 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -718,9 +718,9 @@ void __37__TKSmartCard_beginSessionWithError___block_invoke_2(void *a1, char a2,
   return v7;
 }
 
-- (void)setSessionEndPolicy:(int64_t)a3
+- (void)setSessionEndPolicy:(int64_t)policy
 {
-  self->_sessionEndPolicy = a3;
+  self->_sessionEndPolicy = policy;
   session = self->_session;
   if (session)
   {
@@ -728,9 +728,9 @@ void __37__TKSmartCard_beginSessionWithError___block_invoke_2(void *a1, char a2,
   }
 }
 
-- (void)endSessionWithReply:(id)a3
+- (void)endSessionWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v6 = TK_LOG_smartcard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -742,10 +742,10 @@ void __37__TKSmartCard_beginSessionWithError___block_invoke_2(void *a1, char a2,
   block[1] = 3221225472;
   block[2] = __35__TKSmartCard_endSessionWithReply___block_invoke;
   block[3] = &unk_1E86B7398;
-  v10 = v5;
+  v10 = replyCopy;
   v11 = a2;
   block[4] = self;
-  v8 = v5;
+  v8 = replyCopy;
   dispatch_async(beginSessionQueue, block);
 }
 
@@ -879,8 +879,8 @@ void __37__TKSmartCard_transmitRequest_reply___block_invoke_336(uint64_t a1, voi
 
 - (id)context
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v4 = [(TKSmartCard *)self contextForKey:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  v4 = [(TKSmartCard *)self contextForKey:null];
 
   return v4;
 }
@@ -889,15 +889,15 @@ void __37__TKSmartCard_transmitRequest_reply___block_invoke_336(uint64_t a1, voi
 {
   v4 = MEMORY[0x1E695DFB0];
   v5 = context;
-  v6 = [v4 null];
-  [(TKSmartCard *)self setContext:v5 forKey:v6];
+  null = [v4 null];
+  [(TKSmartCard *)self setContext:v5 forKey:null];
 }
 
-- (void)setContext:(id)a3 forKey:(id)a4
+- (void)setContext:(id)context forKey:(id)key
 {
-  v16 = a3;
-  v6 = a4;
-  if (!v6)
+  contextCopy = context;
+  keyCopy = key;
+  if (!keyCopy)
   {
     v13 = NSStringFromSelector(sel_context);
     [(TKSmartCard *)self willChangeValueForKey:v13];
@@ -908,8 +908,8 @@ void __37__TKSmartCard_transmitRequest_reply___block_invoke_336(uint64_t a1, voi
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [keyCopy isEqual:null];
 
   if (v8)
   {
@@ -918,20 +918,20 @@ void __37__TKSmartCard_transmitRequest_reply___block_invoke_336(uint64_t a1, voi
   }
 
   v10 = self->_contexts;
-  if (v16 && !v10)
+  if (contextCopy && !v10)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = self->_contexts;
-    self->_contexts = v11;
+    self->_contexts = dictionary;
 
     v10 = self->_contexts;
     goto LABEL_9;
   }
 
-  if (v16)
+  if (contextCopy)
   {
 LABEL_9:
-    [(NSMutableDictionary *)v10 setObject:v16 forKey:v6];
+    [(NSMutableDictionary *)v10 setObject:contextCopy forKey:keyCopy];
     if ((v8 & 1) == 0)
     {
       goto LABEL_11;
@@ -940,7 +940,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [(NSMutableDictionary *)v10 removeObjectForKey:v6];
+  [(NSMutableDictionary *)v10 removeObjectForKey:keyCopy];
   if (v8)
   {
 LABEL_10:
@@ -955,15 +955,15 @@ LABEL_11:
 {
   v8 = PINFormat;
   v9 = APDU;
-  v10 = [(TKSmartCard *)self slot];
-  v11 = [v10 slotParameters];
-  v12 = [v11 securePINVerificationSupported];
+  slot = [(TKSmartCard *)self slot];
+  slotParameters = [slot slotParameters];
+  securePINVerificationSupported = [slotParameters securePINVerificationSupported];
 
-  if (v12)
+  if (securePINVerificationSupported)
   {
     v13 = objc_alloc_init(TKSmartCardUserInteractionForSecurePINVerification);
-    v14 = [(TKSmartCard *)self slot];
-    [(TKSmartCardUserInteractionForSecurePINVerification *)v13 setSlot:v14 PINFormat:v8 APDU:v9 PINByteOffset:PINByteOffset];
+    slot2 = [(TKSmartCard *)self slot];
+    [(TKSmartCardUserInteractionForSecurePINVerification *)v13 setSlot:slot2 PINFormat:v8 APDU:v9 PINByteOffset:PINByteOffset];
   }
 
   else
@@ -978,15 +978,15 @@ LABEL_11:
 {
   v10 = PINFormat;
   v11 = APDU;
-  v12 = [(TKSmartCard *)self slot];
-  v13 = [v12 slotParameters];
-  v14 = [v13 securePINChangeSupported];
+  slot = [(TKSmartCard *)self slot];
+  slotParameters = [slot slotParameters];
+  securePINChangeSupported = [slotParameters securePINChangeSupported];
 
-  if (v14)
+  if (securePINChangeSupported)
   {
     v15 = objc_alloc_init(TKSmartCardUserInteractionForSecurePINChange);
-    v16 = [(TKSmartCard *)self slot];
-    [(TKSmartCardUserInteractionForSecurePINChange *)v15 setSlot:v16 PINFormat:v10 APDU:v11 currentPINByteOffset:currentPINByteOffset newPINByteOffset:newPINByteOffset];
+    slot2 = [(TKSmartCard *)self slot];
+    [(TKSmartCardUserInteractionForSecurePINChange *)v15 setSlot:slot2 PINFormat:v10 APDU:v11 currentPINByteOffset:currentPINByteOffset newPINByteOffset:newPINByteOffset];
   }
 
   else
@@ -1063,23 +1063,23 @@ void __38__TKSmartCard_reserveExclusive_reply___block_invoke_2(uint64_t a1, void
   return [(TKSmartCard *)self valid];
 }
 
-+ (BOOL)decodeResponse:(id)a3 sw:(unsigned __int16 *)a4 appendTo:(id)a5 error:(id *)a6
++ (BOOL)decodeResponse:(id)response sw:(unsigned __int16 *)sw appendTo:(id)to error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  *a4 = 0;
-  if (!v9)
+  responseCopy = response;
+  toCopy = to;
+  *sw = 0;
+  if (!responseCopy)
   {
     goto LABEL_5;
   }
 
-  if ([v9 length] <= 1)
+  if ([responseCopy length] <= 1)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-3 userInfo:0];
-      *a6 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_6;
     }
 
@@ -1088,11 +1088,11 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [v9 bytes];
-  v15 = [v9 length];
-  *a4 = bswap32(*(v14 + v15 - 2)) >> 16;
-  [v10 appendBytes:v14 length:v15 - 2];
-  v16 = *a4;
+  bytes = [responseCopy bytes];
+  v15 = [responseCopy length];
+  *sw = bswap32(*(bytes + v15 - 2)) >> 16;
+  [toCopy appendBytes:bytes length:v15 - 2];
+  v16 = *sw;
   v11 = 1;
   if (v16 != 36864 && (v16 & 0xFF00) != 0x6100)
   {
@@ -1124,18 +1124,18 @@ LABEL_5:
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [TKSmartCard decodeResponse:a4 sw:? appendTo:? error:?];
+        [TKSmartCard decodeResponse:sw sw:? appendTo:? error:?];
       }
 
-      if (a6)
+      if (error)
       {
-        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SmartCard returned error %04hx", *a4];
+        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SmartCard returned error %04hx", *sw];
         v31 = MEMORY[0x1E696ABC0];
         v33 = *MEMORY[0x1E696A578];
         v34 = v30;
         v11 = 1;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-        *a6 = [v31 errorWithDomain:@"CryptoTokenKit" code:-3 userInfo:v32];
+        *error = [v31 errorWithDomain:@"CryptoTokenKit" code:-3 userInfo:v32];
 
         goto LABEL_6;
       }
@@ -1145,7 +1145,7 @@ LABEL_5:
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v23 = *a4;
+        v23 = *sw;
         *buf = 67109376;
         v38 = v23;
         v39 = 1024;
@@ -1153,7 +1153,7 @@ LABEL_5:
         _os_log_impl(&dword_1DF413000, v22, OS_LOG_TYPE_INFO, "Failed to verify PIN. sw=0x%04hx, retries: %d", buf, 0xEu);
       }
 
-      if (a6)
+      if (error)
       {
         v24 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CryptoTokenKit"];
         v25 = [v24 localizedStringForKey:@"VERIFY_TRY_LEFT" value:&stru_1F5A7A8A8 table:0];
@@ -1166,7 +1166,7 @@ LABEL_5:
         v28 = [MEMORY[0x1E696AD98] numberWithInt:v20];
         v36[1] = v28;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-        *a6 = [v27 errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:v29];
+        *error = [v27 errorWithDomain:@"CryptoTokenKit" code:-5 userInfo:v29];
       }
     }
 
@@ -1179,11 +1179,11 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)checkAPDUResponse:(id)a3 error:(id *)a4
+- (BOOL)checkAPDUResponse:(id)response error:(id *)error
 {
   v8 = 0;
-  v5 = a3;
-  v6 = [objc_opt_class() decodeResponse:v5 sw:&v8 appendTo:0 error:a4];
+  responseCopy = response;
+  v6 = [objc_opt_class() decodeResponse:responseCopy sw:&v8 appendTo:0 error:error];
 
   if (v8 == 36864)
   {
@@ -1196,37 +1196,37 @@ LABEL_6:
   }
 }
 
-- (void)handleApduResponse:(id)a3 body:(id)a4 le:(unint64_t)a5 isCase4:(BOOL)a6 error:(id)a7 reply:(id)a8
+- (void)handleApduResponse:(id)response body:(id)body le:(unint64_t)le isCase4:(BOOL)case4 error:(id)error reply:(id)reply
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a8;
+  case4Copy = case4;
+  bodyCopy = body;
+  replyCopy = reply;
   v31 = 0;
-  v16 = a7;
-  v17 = a3;
-  v30 = v16;
-  LOBYTE(a3) = [objc_opt_class() decodeResponse:v17 sw:&v31 appendTo:v14 error:&v30];
+  errorCopy = error;
+  responseCopy = response;
+  v30 = errorCopy;
+  LOBYTE(response) = [objc_opt_class() decodeResponse:responseCopy sw:&v31 appendTo:bodyCopy error:&v30];
 
   v18 = v30;
-  if ((a3 & 1) == 0)
+  if ((response & 1) == 0)
   {
-    (*(v15 + 2))(v15, 0, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v18);
     goto LABEL_25;
   }
 
   v19 = v31;
-  if (v31 == 36864 && v10)
+  if (v31 == 36864 && case4Copy)
   {
     if (self->_currentProtocol != 1)
     {
       goto LABEL_13;
     }
 
-    if (![v14 length])
+    if (![bodyCopy length])
     {
       v31 = 24832;
 LABEL_11:
-      if ([v14 length] >= a5)
+      if ([bodyCopy length] >= le)
       {
         v31 = -28672;
 
@@ -1257,9 +1257,9 @@ LABEL_13:
       v20 = 256;
     }
 
-    if ([v14 length] + v20 > a5)
+    if ([bodyCopy length] + v20 > le)
     {
-      v20 = a5 - [v14 length];
+      v20 = le - [bodyCopy length];
     }
 
     if (v20 > [(TKSmartCardSlot *)self->_slot maxOutputLength]- 2)
@@ -1277,69 +1277,69 @@ LABEL_13:
     v22[2] = __62__TKSmartCard_handleApduResponse_body_le_isCase4_error_reply___block_invoke;
     v22[3] = &unk_1E86B7430;
     v22[4] = self;
-    v23 = v14;
-    v25 = a5;
-    v24 = v15;
+    v23 = bodyCopy;
+    leCopy = le;
+    v24 = replyCopy;
     [(TKSmartCard *)self transmitRequest:v21 reply:v22];
   }
 
   else
   {
-    if ([v14 length] > a5)
+    if ([bodyCopy length] > le)
     {
-      [v14 setLength:a5];
+      [bodyCopy setLength:le];
     }
 
-    (*(v15 + 2))(v15, v14, v31, v18);
+    (*(replyCopy + 2))(replyCopy, bodyCopy, v31, v18);
   }
 
 LABEL_25:
 }
 
-- (void)encodeLength:(unint64_t)a3 into:(id)a4 sized:(int64_t)a5
+- (void)encodeLength:(unint64_t)length into:(id)into sized:(int64_t)sized
 {
-  v7 = a4;
-  v8 = v7;
-  switch(a5)
+  intoCopy = into;
+  v8 = intoCopy;
+  switch(sized)
   {
     case 3:
       v12[0] = 0;
-      v12[1] = BYTE1(a3);
-      v12[2] = a3;
+      v12[1] = BYTE1(length);
+      v12[2] = length;
       v10 = v12;
       v11 = 3;
       goto LABEL_9;
     case 2:
-      v13 = bswap32(a3) >> 16;
+      v13 = bswap32(length) >> 16;
       v10 = &v13;
       v11 = 2;
 LABEL_9:
-      [v7 appendBytes:v10 length:v11];
+      [intoCopy appendBytes:v10 length:v11];
       break;
     case 1:
-      v9 = 0;
-      if (a3 < 0x100)
+      lengthCopy = 0;
+      if (length < 0x100)
       {
-        v9 = a3;
+        lengthCopy = length;
       }
 
-      v14 = v9;
+      v14 = lengthCopy;
       v10 = &v14;
       v11 = 1;
       goto LABEL_9;
   }
 }
 
-- (id)buildIns:(unsigned __int8)a3 p1:(unsigned __int8)a4 p2:(unsigned __int8)a5 data:(id)a6 range:(_NSRange)a7 le:(id)a8 protocol:(unint64_t)a9 chained:(BOOL)a10 extended:(BOOL *)a11 realLe:(unint64_t *)a12
+- (id)buildIns:(unsigned __int8)ins p1:(unsigned __int8)p1 p2:(unsigned __int8)p2 data:(id)data range:(_NSRange)range le:(id)le protocol:(unint64_t)protocol chained:(BOOL)self0 extended:(BOOL *)self1 realLe:(unint64_t *)self2
 {
-  length = a7.length;
-  location = a7.location;
-  v17 = a6;
-  v18 = a8;
+  length = range.length;
+  location = range.location;
+  dataCopy = data;
+  leCopy = le;
   v19 = MEMORY[0x1E695DF88];
-  if (v17)
+  if (dataCopy)
   {
-    v20 = [v17 length] + 10;
+    v20 = [dataCopy length] + 10;
   }
 
   else
@@ -1351,16 +1351,16 @@ LABEL_9:
   v22 = v21;
   cla = self->_cla;
   v38[0] = cla;
-  v38[1] = a3;
-  v38[2] = a4;
-  v38[3] = a5;
-  if (a10)
+  v38[1] = ins;
+  v38[2] = p1;
+  v38[3] = p2;
+  if (chained)
   {
     v38[0] = cla | 0x10;
   }
 
   [v21 appendBytes:v38 length:4];
-  if (v17)
+  if (dataCopy)
   {
     if (length >= 0x10000)
     {
@@ -1375,11 +1375,11 @@ LABEL_9:
     v24 = 0;
   }
 
-  *a12 = 0;
-  if (!v18)
+  *realLe = 0;
+  if (!leCopy)
   {
-    v27 = a11;
-    if (!v17)
+    extendedCopy2 = extended;
+    if (!dataCopy)
     {
       goto LABEL_23;
     }
@@ -1387,27 +1387,27 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if ([v18 unsignedIntegerValue] > 0x10000)
+  if ([leCopy unsignedIntegerValue] > 0x10000)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to send APDU with Le=%@", v18}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to send APDU with Le=%@", leCopy}];
   }
 
-  v25 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue = [leCopy unsignedIntegerValue];
   v26 = 0x10000;
-  if (v25)
+  if (unsignedIntegerValue)
   {
-    v26 = v25;
+    v26 = unsignedIntegerValue;
   }
 
-  *a12 = v26;
-  v27 = a11;
+  *realLe = v26;
+  extendedCopy2 = extended;
   v28 = v26 > 0x100 || v24;
-  if (*a11)
+  if (*extended)
   {
     v24 = v28;
   }
 
-  if (v17)
+  if (dataCopy)
   {
 LABEL_19:
     if (v24)
@@ -1421,16 +1421,16 @@ LABEL_19:
     }
 
     [(TKSmartCard *)self encodeLength:length into:v22 sized:v29];
-    [v22 appendBytes:objc_msgSend(v17 length:{"bytes") + location, length}];
+    [v22 appendBytes:objc_msgSend(dataCopy length:{"bytes") + location, length}];
   }
 
 LABEL_23:
-  if (v18)
+  if (leCopy)
   {
-    if (!v17 || a9 == 2)
+    if (!dataCopy || protocol == 2)
     {
       v30 = 2;
-      if (!v17)
+      if (!dataCopy)
       {
         v30 = 3;
       }
@@ -1445,25 +1445,25 @@ LABEL_23:
         v31 = 1;
       }
 
-      v32 = [v18 unsignedIntegerValue];
-      v33 = self;
+      unsignedIntegerValue2 = [leCopy unsignedIntegerValue];
+      selfCopy2 = self;
       v34 = v22;
       v35 = v31;
       goto LABEL_37;
     }
   }
 
-  else if (!v17 && a9 == 1)
+  else if (!dataCopy && protocol == 1)
   {
-    v33 = self;
-    v32 = 0;
+    selfCopy2 = self;
+    unsignedIntegerValue2 = 0;
     v34 = v22;
     v35 = 1;
 LABEL_37:
-    [(TKSmartCard *)v33 encodeLength:v32 into:v34 sized:v35];
+    [(TKSmartCard *)selfCopy2 encodeLength:unsignedIntegerValue2 into:v34 sized:v35];
   }
 
-  *v27 = v24;
+  *extendedCopy2 = v24;
 
   return v22;
 }
@@ -1584,12 +1584,12 @@ void __46__TKSmartCard_sendIns_p1_p2_data_le_sw_error___block_invoke(uint64_t a1
   *(v11 + 40) = v8;
 }
 
-- (BOOL)selectApplication:(id)a3 error:(id *)a4
+- (BOOL)selectApplication:(id)application error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  applicationCopy = application;
   v7 = [(TKSmartCard *)self contextForKey:@"AID"];
-  v8 = [v6 isEqual:v7];
+  v8 = [applicationCopy isEqual:v7];
 
   if (v8)
   {
@@ -1597,31 +1597,31 @@ void __46__TKSmartCard_sendIns_p1_p2_data_le_sw_error___block_invoke(uint64_t a1
   }
 
   v17 = 0;
-  v9 = [(TKSmartCard *)self sendIns:164 p1:4 p2:0 data:v6 le:0 sw:&v17 error:a4];
+  v9 = [(TKSmartCard *)self sendIns:164 p1:4 p2:0 data:applicationCopy le:0 sw:&v17 error:error];
   v10 = v17;
 
   if (v9 && v10 == 36864)
   {
-    [(TKSmartCard *)self setContext:v6 forKey:@"AID"];
+    [(TKSmartCard *)self setContext:applicationCopy forKey:@"AID"];
 LABEL_5:
     v11 = 1;
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
     v18 = *MEMORY[0x1E696A578];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to select card application AID %@", v6];
-    v19[0] = v12;
+    applicationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to select card application AID %@", applicationCopy];
+    v19[0] = applicationCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v14 = [v13 mutableCopy];
 
-    if (*a4)
+    if (*error)
     {
-      [v14 setObject:*a4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [v14 setObject:*error forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
 
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v14];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v14];
   }
 
   v11 = 0;

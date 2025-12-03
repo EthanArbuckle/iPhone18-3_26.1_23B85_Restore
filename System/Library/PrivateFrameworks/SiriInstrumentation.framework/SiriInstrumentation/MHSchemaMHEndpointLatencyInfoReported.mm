@@ -1,33 +1,33 @@
 @interface MHSchemaMHEndpointLatencyInfoReported
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHEndpointLatencyInfoReported)initWithDictionary:(id)a3;
-- (MHSchemaMHEndpointLatencyInfoReported)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHEndpointLatencyInfoReported)initWithDictionary:(id)dictionary;
+- (MHSchemaMHEndpointLatencyInfoReported)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHEndpointLatencyInfoReported
 
-- (MHSchemaMHEndpointLatencyInfoReported)initWithDictionary:(id)a3
+- (MHSchemaMHEndpointLatencyInfoReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = MHSchemaMHEndpointLatencyInfoReported;
   v5 = [(MHSchemaMHEndpointLatencyInfoReported *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstPacketLatencyInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstPacketLatencyInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointLatencyInfoReported setFirstPacketLatencyInNs:](v5, "setFirstPacketLatencyInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"trailingPacketLatencyInfo"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"trailingPacketLatencyInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(MHSchemaMHEndpointLatencyInfoReported *)v5 setTrailingPacketLatencyInfo:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(MHSchemaMHEndpointLatencyInfoReported *)v5 setCoreSpeechTrailingPacketLatencyInfo:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"trailingPacketLatency"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"trailingPacketLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(MHSchemaMHEndpointLatencyInfoReported *)v5 setTrailingPacketLatency:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (MHSchemaMHEndpointLatencyInfoReported)initWithJSON:(id)a3
+- (MHSchemaMHEndpointLatencyInfoReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHEndpointLatencyInfoReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHEndpointLatencyInfoReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHEndpointLatencyInfoReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,80 +101,80 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coreSpeechTrailingPacketLatency)
   {
-    v4 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    coreSpeechTrailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+    dictionaryRepresentation = [coreSpeechTrailingPacketLatency dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"coreSpeechTrailingPacketLatency"];
     }
   }
 
   if (self->_coreSpeechTrailingPacketLatencyInfo)
   {
-    v7 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    coreSpeechTrailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+    dictionaryRepresentation2 = [coreSpeechTrailingPacketLatencyInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"coreSpeechTrailingPacketLatencyInfo"];
     }
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointLatencyInfoReported firstPacketLatencyInNs](self, "firstPacketLatencyInNs")}];
-    [v3 setObject:v10 forKeyedSubscript:@"firstPacketLatencyInNs"];
+    [dictionary setObject:v10 forKeyedSubscript:@"firstPacketLatencyInNs"];
   }
 
   if (self->_trailingPacketLatency)
   {
-    v11 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    trailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+    dictionaryRepresentation3 = [trailingPacketLatency dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"trailingPacketLatency"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"trailingPacketLatency"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"trailingPacketLatency"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"trailingPacketLatency"];
     }
   }
 
   if (self->_trailingPacketLatencyInfo)
   {
-    v14 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+    dictionaryRepresentation4 = [trailingPacketLatencyInfo dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"trailingPacketLatencyInfo"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"trailingPacketLatencyInfo"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"trailingPacketLatencyInfo"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"trailingPacketLatencyInfo"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -195,15 +195,15 @@
   return v6 ^ [(MHSchemaMHStatisticDistributionInfo *)self->_coreSpeechTrailingPacketLatency hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -211,26 +211,26 @@
   if (*&self->_has)
   {
     firstPacketLatencyInNs = self->_firstPacketLatencyInNs;
-    if (firstPacketLatencyInNs != [v4 firstPacketLatencyInNs])
+    if (firstPacketLatencyInNs != [equalCopy firstPacketLatencyInNs])
     {
       goto LABEL_25;
     }
   }
 
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
-  v7 = [v4 trailingPacketLatencyInfo];
-  if ((v6 != 0) == (v7 == 0))
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+  trailingPacketLatencyInfo2 = [equalCopy trailingPacketLatencyInfo];
+  if ((trailingPacketLatencyInfo != 0) == (trailingPacketLatencyInfo2 == 0))
   {
     goto LABEL_24;
   }
 
-  v8 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
-  if (v8)
+  trailingPacketLatencyInfo3 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+  if (trailingPacketLatencyInfo3)
   {
-    v9 = v8;
-    v10 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
-    v11 = [v4 trailingPacketLatencyInfo];
-    v12 = [v10 isEqual:v11];
+    v9 = trailingPacketLatencyInfo3;
+    trailingPacketLatencyInfo4 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+    trailingPacketLatencyInfo5 = [equalCopy trailingPacketLatencyInfo];
+    v12 = [trailingPacketLatencyInfo4 isEqual:trailingPacketLatencyInfo5];
 
     if (!v12)
     {
@@ -242,20 +242,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
-  v7 = [v4 coreSpeechTrailingPacketLatencyInfo];
-  if ((v6 != 0) == (v7 == 0))
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+  trailingPacketLatencyInfo2 = [equalCopy coreSpeechTrailingPacketLatencyInfo];
+  if ((trailingPacketLatencyInfo != 0) == (trailingPacketLatencyInfo2 == 0))
   {
     goto LABEL_24;
   }
 
-  v13 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
-  if (v13)
+  coreSpeechTrailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+  if (coreSpeechTrailingPacketLatencyInfo)
   {
-    v14 = v13;
-    v15 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
-    v16 = [v4 coreSpeechTrailingPacketLatencyInfo];
-    v17 = [v15 isEqual:v16];
+    v14 = coreSpeechTrailingPacketLatencyInfo;
+    coreSpeechTrailingPacketLatencyInfo2 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+    coreSpeechTrailingPacketLatencyInfo3 = [equalCopy coreSpeechTrailingPacketLatencyInfo];
+    v17 = [coreSpeechTrailingPacketLatencyInfo2 isEqual:coreSpeechTrailingPacketLatencyInfo3];
 
     if (!v17)
     {
@@ -267,20 +267,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
-  v7 = [v4 trailingPacketLatency];
-  if ((v6 != 0) == (v7 == 0))
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+  trailingPacketLatencyInfo2 = [equalCopy trailingPacketLatency];
+  if ((trailingPacketLatencyInfo != 0) == (trailingPacketLatencyInfo2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
-  if (v18)
+  trailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+  if (trailingPacketLatency)
   {
-    v19 = v18;
-    v20 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
-    v21 = [v4 trailingPacketLatency];
-    v22 = [v20 isEqual:v21];
+    v19 = trailingPacketLatency;
+    trailingPacketLatency2 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+    trailingPacketLatency3 = [equalCopy trailingPacketLatency];
+    v22 = [trailingPacketLatency2 isEqual:trailingPacketLatency3];
 
     if (!v22)
     {
@@ -292,12 +292,12 @@
   {
   }
 
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
-  v7 = [v4 coreSpeechTrailingPacketLatency];
-  if ((v6 != 0) != (v7 == 0))
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+  trailingPacketLatencyInfo2 = [equalCopy coreSpeechTrailingPacketLatency];
+  if ((trailingPacketLatencyInfo != 0) != (trailingPacketLatencyInfo2 == 0))
   {
-    v23 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
-    if (!v23)
+    coreSpeechTrailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+    if (!coreSpeechTrailingPacketLatency)
     {
 
 LABEL_28:
@@ -305,10 +305,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
-    v26 = [v4 coreSpeechTrailingPacketLatency];
-    v27 = [v25 isEqual:v26];
+    v24 = coreSpeechTrailingPacketLatency;
+    coreSpeechTrailingPacketLatency2 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+    coreSpeechTrailingPacketLatency3 = [equalCopy coreSpeechTrailingPacketLatency];
+    v27 = [coreSpeechTrailingPacketLatency2 isEqual:coreSpeechTrailingPacketLatency3];
 
     if (v27)
     {
@@ -328,88 +328,88 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
   }
 
-  v4 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
 
-  if (v4)
+  if (trailingPacketLatencyInfo)
   {
-    v5 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+    trailingPacketLatencyInfo2 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+  coreSpeechTrailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
 
-  if (v6)
+  if (coreSpeechTrailingPacketLatencyInfo)
   {
-    v7 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+    coreSpeechTrailingPacketLatencyInfo2 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+  trailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
 
-  if (v8)
+  if (trailingPacketLatency)
   {
-    v9 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+    trailingPacketLatency2 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+  coreSpeechTrailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (coreSpeechTrailingPacketLatency)
   {
-    v12 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+    coreSpeechTrailingPacketLatency2 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = MHSchemaMHEndpointLatencyInfoReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  trailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatencyInfo];
+  v7 = [trailingPacketLatencyInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHEndpointLatencyInfoReported *)self deleteTrailingPacketLatencyInfo];
   }
 
-  v9 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  coreSpeechTrailingPacketLatencyInfo = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatencyInfo];
+  v10 = [coreSpeechTrailingPacketLatencyInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MHSchemaMHEndpointLatencyInfoReported *)self deleteCoreSpeechTrailingPacketLatencyInfo];
   }
 
-  v12 = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  trailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self trailingPacketLatency];
+  v13 = [trailingPacketLatency applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MHSchemaMHEndpointLatencyInfoReported *)self deleteTrailingPacketLatency];
   }
 
-  v15 = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  coreSpeechTrailingPacketLatency = [(MHSchemaMHEndpointLatencyInfoReported *)self coreSpeechTrailingPacketLatency];
+  v16 = [coreSpeechTrailingPacketLatency applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(MHSchemaMHEndpointLatencyInfoReported *)self deleteCoreSpeechTrailingPacketLatency];
   }

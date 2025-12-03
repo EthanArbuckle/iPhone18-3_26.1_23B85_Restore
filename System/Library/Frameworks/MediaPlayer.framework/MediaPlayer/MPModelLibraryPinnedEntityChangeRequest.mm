@@ -1,16 +1,16 @@
 @interface MPModelLibraryPinnedEntityChangeRequest
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)a3 position:(int64_t)a4;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)a3 position:(int64_t)a4 userIdentity:(id)a5;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)a3 defaultAction:(int64_t)a4;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)a3 defaultAction:(int64_t)a4 userIdentity:(id)a5;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)a3;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)a3 userIdentity:(id)a4;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)a3 defaultAction:(int64_t)a4;
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)a3 defaultAction:(int64_t)a4 userIdentity:(id)a5;
-- (id)_initWithEntity:(id)a3 defaultAction:(int64_t)a4 position:(int64_t)a5 operation:(int64_t)a6 userIdentity:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)move position:(int64_t)position;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)move position:(int64_t)position userIdentity:(id)identity;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)pin defaultAction:(int64_t)action;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)pin defaultAction:(int64_t)action userIdentity:(id)identity;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)pin;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)pin userIdentity:(id)identity;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)update defaultAction:(int64_t)action;
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)update defaultAction:(int64_t)action userIdentity:(id)identity;
+- (id)_initWithEntity:(id)entity defaultAction:(int64_t)action position:(int64_t)position operation:(int64_t)operation userIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryPinnedEntityChangeRequest
@@ -55,18 +55,18 @@
   return v13;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryPinnedEntityChangeOperation);
   [(MPAsyncOperation *)v5 setUserIdentity:self->_userIdentity];
   [(MPModelLibraryPinnedEntityChangeOperation *)v5 setRequest:self];
-  [(MPModelLibraryPinnedEntityChangeOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryPinnedEntityChangeOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -82,108 +82,108 @@
   return v5;
 }
 
-- (id)_initWithEntity:(id)a3 defaultAction:(int64_t)a4 position:(int64_t)a5 operation:(int64_t)a6 userIdentity:(id)a7
+- (id)_initWithEntity:(id)entity defaultAction:(int64_t)action position:(int64_t)position operation:(int64_t)operation userIdentity:(id)identity
 {
-  v13 = a3;
-  v14 = a7;
+  entityCopy = entity;
+  identityCopy = identity;
   v18.receiver = self;
   v18.super_class = MPModelLibraryPinnedEntityChangeRequest;
   v15 = [(MPModelLibraryPinnedEntityChangeRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_entity, a3);
-    v16->_operation = a6;
-    v16->_defaultAction = a4;
-    v16->_position = a5;
-    objc_storeStrong(&v16->_userIdentity, a7);
+    objc_storeStrong(&v15->_entity, entity);
+    v16->_operation = operation;
+    v16->_defaultAction = action;
+    v16->_position = position;
+    objc_storeStrong(&v16->_userIdentity, identity);
   }
 
   return v16;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)a3 defaultAction:(int64_t)a4 userIdentity:(id)a5
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)update defaultAction:(int64_t)action userIdentity:(id)identity
 {
-  v7 = a5;
-  v8 = a3;
+  identityCopy = identity;
+  updateCopy = update;
   v9 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v10 = [v8 anyObject];
+  anyObject = [updateCopy anyObject];
 
-  v11 = [(MPModelLibraryPinnedEntityChangeRequest *)v9 _initWithEntity:v10 defaultAction:a4 position:-1 operation:3 userIdentity:v7];
+  v11 = [(MPModelLibraryPinnedEntityChangeRequest *)v9 _initWithEntity:anyObject defaultAction:action position:-1 operation:3 userIdentity:identityCopy];
 
   return v11;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)a3 defaultAction:(int64_t)a4
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUpdate:(id)update defaultAction:(int64_t)action
 {
-  v5 = a3;
+  updateCopy = update;
   v6 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v7 = [v5 anyObject];
+  anyObject = [updateCopy anyObject];
 
-  v8 = [(MPModelLibraryPinnedEntityChangeRequest *)v6 _initWithEntity:v7 defaultAction:a4 position:-1 operation:3];
+  v8 = [(MPModelLibraryPinnedEntityChangeRequest *)v6 _initWithEntity:anyObject defaultAction:action position:-1 operation:3];
 
   return v8;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)a3 position:(int64_t)a4 userIdentity:(id)a5
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)move position:(int64_t)position userIdentity:(id)identity
 {
-  v7 = a5;
-  v8 = a3;
+  identityCopy = identity;
+  moveCopy = move;
   v9 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v10 = [v8 anyObject];
+  anyObject = [moveCopy anyObject];
 
-  v11 = [(MPModelLibraryPinnedEntityChangeRequest *)v9 _initWithEntity:v10 defaultAction:1 position:a4 operation:2 userIdentity:v7];
+  v11 = [(MPModelLibraryPinnedEntityChangeRequest *)v9 _initWithEntity:anyObject defaultAction:1 position:position operation:2 userIdentity:identityCopy];
 
   return v11;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)a3 position:(int64_t)a4
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToMove:(id)move position:(int64_t)position
 {
-  v5 = a3;
+  moveCopy = move;
   v6 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v7 = [v5 anyObject];
+  anyObject = [moveCopy anyObject];
 
-  v8 = [(MPModelLibraryPinnedEntityChangeRequest *)v6 _initWithEntity:v7 defaultAction:1 position:a4 operation:2];
+  v8 = [(MPModelLibraryPinnedEntityChangeRequest *)v6 _initWithEntity:anyObject defaultAction:1 position:position operation:2];
 
   return v8;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)a3 userIdentity:(id)a4
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)pin userIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
+  identityCopy = identity;
+  pinCopy = pin;
   v7 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v8 = [v6 anyObject];
+  anyObject = [pinCopy anyObject];
 
-  v9 = [(MPModelLibraryPinnedEntityChangeRequest *)v7 _initWithEntity:v8 defaultAction:1 position:-1 operation:1 userIdentity:v5];
+  v9 = [(MPModelLibraryPinnedEntityChangeRequest *)v7 _initWithEntity:anyObject defaultAction:1 position:-1 operation:1 userIdentity:identityCopy];
 
   return v9;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)a3
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToUnPin:(id)pin
 {
-  v3 = a3;
+  pinCopy = pin;
   v4 = [MPModelLibraryPinnedEntityChangeRequest alloc];
-  v5 = [v3 anyObject];
+  anyObject = [pinCopy anyObject];
 
-  v6 = [(MPModelLibraryPinnedEntityChangeRequest *)v4 _initWithEntity:v5 defaultAction:1 position:-1 operation:1];
+  v6 = [(MPModelLibraryPinnedEntityChangeRequest *)v4 _initWithEntity:anyObject defaultAction:1 position:-1 operation:1];
 
   return v6;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)a3 defaultAction:(int64_t)a4 userIdentity:(id)a5
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)pin defaultAction:(int64_t)action userIdentity:(id)identity
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[MPModelLibraryPinnedEntityChangeRequest alloc] _initWithEntity:v8 defaultAction:a4 position:-1 operation:0 userIdentity:v7];
+  identityCopy = identity;
+  pinCopy = pin;
+  v9 = [[MPModelLibraryPinnedEntityChangeRequest alloc] _initWithEntity:pinCopy defaultAction:action position:-1 operation:0 userIdentity:identityCopy];
 
   return v9;
 }
 
-+ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)a3 defaultAction:(int64_t)a4
++ (MPModelLibraryPinnedEntityChangeRequest)initWithEntityToPin:(id)pin defaultAction:(int64_t)action
 {
-  v5 = a3;
-  v6 = [[MPModelLibraryPinnedEntityChangeRequest alloc] _initWithEntity:v5 defaultAction:a4 position:-1 operation:0];
+  pinCopy = pin;
+  v6 = [[MPModelLibraryPinnedEntityChangeRequest alloc] _initWithEntity:pinCopy defaultAction:action position:-1 operation:0];
 
   return v6;
 }

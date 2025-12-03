@@ -6,7 +6,7 @@
 
 - (id)wfName
 {
-  v1 = [a1 spokenPhrase];
+  spokenPhrase = [self spokenPhrase];
   v2 = WFAbbreviatedNameFromText();
 
   return v2;

@@ -1,5 +1,5 @@
 @interface XpcSubscriptionServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC33iCloudSubscriptionOptimizerDaemon29XpcSubscriptionServerDelegate)init;
 - (void)dealloc;
 @end
@@ -25,7 +25,7 @@
 - (void)dealloc
 {
   v2 = qword_28140FA80;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -34,17 +34,17 @@
   v4 = sub_275B7A96C();
   __swift_project_value_buffer(v4, qword_28140FA90);
   sub_275B7A91C();
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for XpcSubscriptionServerDelegate();
   [(XpcSubscriptionServerDelegate *)&v5 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_275B78638(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_275B78638(connectionCopy);
 
   return v9 & 1;
 }

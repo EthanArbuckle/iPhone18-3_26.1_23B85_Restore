@@ -10,9 +10,9 @@
 - (BOOL)hasHomeButton
 {
   v2 = [(PDRDevice *)self valueForProperty:PDRDevicePropertyKeyHomeButtonType];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3 != &dword_0 + 2;
+  return integerValue != &dword_0 + 2;
 }
 
 - (BOOL)isRunningInternalBuild
@@ -28,9 +28,9 @@
 - (BOOL)isCellularSeries3
 {
   v2 = [(PDRDevice *)self valueForProperty:PDRDevicePropertyKeyProductType];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  v4 = ![v3 caseInsensitiveCompare:{@"watch3, 1"}] || !objc_msgSend(v3, "caseInsensitiveCompare:", @"watch3,2");
+  v4 = ![stringValue caseInsensitiveCompare:{@"watch3, 1"}] || !objc_msgSend(stringValue, "caseInsensitiveCompare:", @"watch3,2");
   return v4;
 }
 
@@ -38,9 +38,9 @@
 {
   v2 = +[PDRRegistry sharedInstance];
   v3 = [v2 getDevicesExcluding:4];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

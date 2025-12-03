@@ -1,10 +1,10 @@
 @interface VoicePreviewer
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation VoicePreviewer
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
   v6 = sub_1A937829C(&qword_1EB388000, &qword_1A9587710);
   v7 = *(*(v6 - 8) + 64);
@@ -16,8 +16,8 @@
   v12[2] = 0;
   v12[3] = 0;
   v12[4] = self;
-  v12[5] = a3;
-  v13 = a3;
+  v12[5] = playing;
+  playingCopy = playing;
 
   sub_1A938A404(0, 0, v10, &unk_1A9593200, v12);
 }

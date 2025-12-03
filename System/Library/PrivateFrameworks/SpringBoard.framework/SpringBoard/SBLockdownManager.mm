@@ -46,8 +46,8 @@ void __35__SBLockdownManager_sharedInstance__block_invoke()
 - (void)_resetActivationState
 {
   self->_state = 0;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBLockdownDeviceActivatedChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBLockdownDeviceActivatedChangedNotification" object:self];
 }
 
 - (void)_setupActivationState
@@ -55,7 +55,7 @@ void __35__SBLockdownManager_sharedInstance__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
   v3 = *a2;
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 1024;
   v7 = v3;
   _os_log_error_impl(&dword_21ED4E000, log, OS_LOG_TYPE_ERROR, "MobileActivation says the device is: [%{public}@], state is %d", &v4, 0x12u);

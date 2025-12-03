@@ -1,24 +1,24 @@
 @interface BKThumbnailScrubberTrack
-- (BKThumbnailScrubberTrack)initWithFrame:(CGRect)a3;
-- (CGRect)frameForSegmentAtIndex:(int64_t)a3;
+- (BKThumbnailScrubberTrack)initWithFrame:(CGRect)frame;
+- (CGRect)frameForSegmentAtIndex:(int64_t)index;
 - (CGSize)segmentSize;
-- (CGSize)sizeForThumbnailCount:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)cellAtIndex:(unint64_t)a3;
+- (CGSize)sizeForThumbnailCount:(unint64_t)count;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)cellAtIndex:(unint64_t)index;
 - (void)deleteAllCells;
 - (void)layoutSubviews;
-- (void)setCellClass:(Class)a3;
-- (void)setSegmentCount:(int64_t)a3;
-- (void)setSegmentSize:(CGSize)a3;
+- (void)setCellClass:(Class)class;
+- (void)setSegmentCount:(int64_t)count;
+- (void)setSegmentSize:(CGSize)size;
 @end
 
 @implementation BKThumbnailScrubberTrack
 
-- (BKThumbnailScrubberTrack)initWithFrame:(CGRect)a3
+- (BKThumbnailScrubberTrack)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = BKThumbnailScrubberTrack;
-  v3 = [(BKThumbnailScrubberTrack *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKThumbnailScrubberTrack *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(BKThumbnailScrubberTrack *)v3 setCellClass:objc_opt_class()];
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  if ([(BKThumbnailScrubberTrack *)self trackOrientation:a3.width])
+  width = fits.width;
+  if ([(BKThumbnailScrubberTrack *)self trackOrientation:fits.width])
   {
-    v5 = [(BKThumbnailScrubberTrack *)self segmentCount];
+    segmentCount = [(BKThumbnailScrubberTrack *)self segmentCount];
     [(BKThumbnailScrubberTrack *)self segmentSize];
-    v7 = v6 * v5;
+    v7 = v6 * segmentCount;
   }
 
   else
   {
-    v8 = [(BKThumbnailScrubberTrack *)self segmentCount];
+    segmentCount2 = [(BKThumbnailScrubberTrack *)self segmentCount];
     [(BKThumbnailScrubberTrack *)self segmentSize];
-    width = v8 * (v9 + 2.0) + -2.0;
+    width = segmentCount2 * (v9 + 2.0) + -2.0;
     [(BKThumbnailScrubberTrack *)self segmentSize];
   }
 
@@ -51,20 +51,20 @@
   return result;
 }
 
-- (CGSize)sizeForThumbnailCount:(unint64_t)a3
+- (CGSize)sizeForThumbnailCount:(unint64_t)count
 {
   if ([(BKThumbnailScrubberTrack *)self trackOrientation])
   {
     [(BKThumbnailScrubberTrack *)self segmentSize];
     v6 = v5;
     [(BKThumbnailScrubberTrack *)self segmentSize];
-    v8 = v7 * a3;
+    v8 = v7 * count;
   }
 
   else
   {
     [(BKThumbnailScrubberTrack *)self segmentSize];
-    v6 = a3 * (v9 + 2.0) + -2.0;
+    v6 = count * (v9 + 2.0) + -2.0;
     [(BKThumbnailScrubberTrack *)self segmentSize];
   }
 
@@ -79,30 +79,30 @@
   v10.receiver = self;
   v10.super_class = BKThumbnailScrubberTrack;
   [(BKThumbnailScrubberTrack *)&v10 layoutSubviews];
-  v3 = [(BKThumbnailScrubberTrack *)self subviews];
-  v4 = [v3 count];
+  subviews = [(BKThumbnailScrubberTrack *)self subviews];
+  v4 = [subviews count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(BKThumbnailScrubberTrack *)self subviews];
-      v7 = [v6 objectAtIndex:v5];
+      subviews2 = [(BKThumbnailScrubberTrack *)self subviews];
+      v7 = [subviews2 objectAtIndex:v5];
 
       [(BKThumbnailScrubberTrack *)self frameForSegmentAtIndex:v5];
       [v7 setFrame:?];
 
       ++v5;
-      v8 = [(BKThumbnailScrubberTrack *)self subviews];
-      v9 = [v8 count];
+      subviews3 = [(BKThumbnailScrubberTrack *)self subviews];
+      v9 = [subviews3 count];
     }
 
     while (v5 < v9);
   }
 }
 
-- (CGRect)frameForSegmentAtIndex:(int64_t)a3
+- (CGRect)frameForSegmentAtIndex:(int64_t)index
 {
   [(BKThumbnailScrubberTrack *)self bounds];
   v6 = v5;
@@ -117,7 +117,7 @@
   v27.size.width = v10;
   v27.size.height = v12;
   Width = CGRectGetWidth(v27);
-  v18 = [(BKThumbnailScrubberTrack *)self segmentCount];
+  segmentCount = [(BKThumbnailScrubberTrack *)self segmentCount];
   v19 = 0.0;
   if ([(BKThumbnailScrubberTrack *)self trackOrientation]!= 1)
   {
@@ -128,7 +128,7 @@
     v19 = round((CGRectGetHeight(v28) - v16) * 0.5);
   }
 
-  v20 = round((Width - v18 * (v14 + 2.0)) * 0.5);
+  v20 = round((Width - segmentCount * (v14 + 2.0)) * 0.5);
   if (v20 >= 0.0)
   {
     v21 = v20;
@@ -139,10 +139,10 @@
     v21 = 0.0;
   }
 
-  v22 = [(BKThumbnailScrubberTrack *)self trackOrientation];
-  v23 = v19 + a3 * v16;
-  v24 = v21 + a3 * (v14 + 2.0);
-  if (v22 == 1)
+  trackOrientation = [(BKThumbnailScrubberTrack *)self trackOrientation];
+  v23 = v19 + index * v16;
+  v24 = v21 + index * (v14 + 2.0);
+  if (trackOrientation == 1)
   {
     v24 = v21;
   }
@@ -161,20 +161,20 @@
   return result;
 }
 
-- (id)cellAtIndex:(unint64_t)a3
+- (id)cellAtIndex:(unint64_t)index
 {
-  v5 = [(BKThumbnailScrubberTrack *)self subviews];
-  v6 = [v5 count];
+  subviews = [(BKThumbnailScrubberTrack *)self subviews];
+  v6 = [subviews count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(BKThumbnailScrubberTrack *)self subviews];
-    v8 = [v7 objectAtIndex:a3];
+    subviews2 = [(BKThumbnailScrubberTrack *)self subviews];
+    v8 = [subviews2 objectAtIndex:index];
   }
 
   return v8;
@@ -186,8 +186,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BKThumbnailScrubberTrack *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subviews = [(BKThumbnailScrubberTrack *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -199,7 +199,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v7 + 1) + 8 * v6) removeFromSuperview];
@@ -207,50 +207,50 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setCellClass:(Class)a3
+- (void)setCellClass:(Class)class
 {
-  if (self->_cellClass != a3)
+  if (self->_cellClass != class)
   {
-    self->_cellClass = a3;
+    self->_cellClass = class;
     [(BKThumbnailScrubberTrack *)self deleteAllCells];
   }
 }
 
-- (void)setSegmentSize:(CGSize)a3
+- (void)setSegmentSize:(CGSize)size
 {
-  if (self->_segmentSize.width != a3.width || self->_segmentSize.height != a3.height)
+  if (self->_segmentSize.width != size.width || self->_segmentSize.height != size.height)
   {
-    self->_segmentSize = a3;
+    self->_segmentSize = size;
   }
 }
 
-- (void)setSegmentCount:(int64_t)a3
+- (void)setSegmentCount:(int64_t)count
 {
-  if (self->_segmentCount != a3 || (-[BKThumbnailScrubberTrack subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 != a3))
+  if (self->_segmentCount != count || (-[BKThumbnailScrubberTrack subviews](self, "subviews"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 != count))
   {
-    self->_segmentCount = a3;
+    self->_segmentCount = count;
     [(BKThumbnailScrubberTrack *)self segmentSize];
     v8 = v7;
     v10 = v9;
-    v11 = [(BKThumbnailScrubberTrack *)self subviews];
-    v12 = [v11 count];
+    subviews = [(BKThumbnailScrubberTrack *)self subviews];
+    v12 = [subviews count];
 
-    if (v12 > a3)
+    if (v12 > count)
     {
-      v13 = [(BKThumbnailScrubberTrack *)self subviews];
-      v14 = [v13 count];
+      subviews2 = [(BKThumbnailScrubberTrack *)self subviews];
+      v14 = [subviews2 count];
 
-      for (i = v14 - 1; i >= a3; --i)
+      for (i = v14 - 1; i >= count; --i)
       {
-        v16 = [(BKThumbnailScrubberTrack *)self subviews];
-        v17 = [v16 objectAtIndex:i];
+        subviews3 = [(BKThumbnailScrubberTrack *)self subviews];
+        v17 = [subviews3 objectAtIndex:i];
 
         [v17 removeFromSuperview];
       }
@@ -258,23 +258,23 @@
       [(BKThumbnailScrubberTrack *)self setNeedsLayout];
     }
 
-    v18 = [(BKThumbnailScrubberTrack *)self subviews];
-    v19 = [v18 count];
+    subviews4 = [(BKThumbnailScrubberTrack *)self subviews];
+    v19 = [subviews4 count];
 
-    if (v19 < a3)
+    if (v19 < count)
     {
-      v20 = [(BKThumbnailScrubberTrack *)self subviews];
-      v21 = [v20 count];
+      subviews5 = [(BKThumbnailScrubberTrack *)self subviews];
+      v21 = [subviews5 count];
 
-      v22 = __OFSUB__(a3, v21);
-      v23 = a3 - v21;
+      v22 = __OFSUB__(count, v21);
+      v23 = count - v21;
       if (!((v23 < 0) ^ v22 | (v23 == 0)))
       {
         do
         {
           v24 = [objc_alloc(-[BKThumbnailScrubberTrack cellClass](self "cellClass"))];
-          v25 = [(BKThumbnailScrubberTrack *)self segmentStrokeColor];
-          [v24 setStrokeColor:v25];
+          segmentStrokeColor = [(BKThumbnailScrubberTrack *)self segmentStrokeColor];
+          [v24 setStrokeColor:segmentStrokeColor];
 
           [(BKThumbnailScrubberTrack *)self addSubview:v24];
           --v23;

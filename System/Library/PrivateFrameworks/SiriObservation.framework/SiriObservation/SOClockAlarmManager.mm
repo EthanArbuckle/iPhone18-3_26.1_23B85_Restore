@@ -1,24 +1,24 @@
 @interface SOClockAlarmManager
 + (void)warmUp;
 - (SOClockAlarmManager)init;
-- (SOClockAlarmManager)initWithInstanceContext:(id)a3;
+- (SOClockAlarmManager)initWithInstanceContext:(id)context;
 - (id)_registeredObservations;
-- (id)addAlarm:(id)a3;
+- (id)addAlarm:(id)alarm;
 - (id)alarms;
-- (id)dismissAlarmWithIdentifier:(id)a3;
-- (id)removeAlarm:(id)a3;
-- (id)updateAlarm:(id)a3;
-- (void)addHandler:(id)a3 forEvent:(int64_t)a4;
+- (id)dismissAlarmWithIdentifier:(id)identifier;
+- (id)removeAlarm:(id)alarm;
+- (id)updateAlarm:(id)alarm;
+- (void)addHandler:(id)handler forEvent:(int64_t)event;
 - (void)checkIn;
-- (void)removeHandlerForEvent:(int64_t)a3;
+- (void)removeHandlerForEvent:(int64_t)event;
 @end
 
 @implementation SOClockAlarmManager
 
-- (id)dismissAlarmWithIdentifier:(id)a3
+- (id)dismissAlarmWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -34,7 +34,7 @@
 
   else
   {
-    v7 = [(MTAlarmManager *)mtAlarmManager dismissAlarmWithIdentifier:v4];
+    v7 = [(MTAlarmManager *)mtAlarmManager dismissAlarmWithIdentifier:identifierCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -42,10 +42,10 @@
   return v7;
 }
 
-- (id)removeAlarm:(id)a3
+- (id)removeAlarm:(id)alarm
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alarmCopy = alarm;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -61,7 +61,7 @@
 
   else
   {
-    v7 = [(MTAlarmManager *)mtAlarmManager removeAlarm:v4];
+    v7 = [(MTAlarmManager *)mtAlarmManager removeAlarm:alarmCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -69,10 +69,10 @@
   return v7;
 }
 
-- (id)updateAlarm:(id)a3
+- (id)updateAlarm:(id)alarm
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alarmCopy = alarm;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -88,7 +88,7 @@
 
   else
   {
-    v7 = [(MTAlarmManager *)mtAlarmManager updateAlarm:v4];
+    v7 = [(MTAlarmManager *)mtAlarmManager updateAlarm:alarmCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -96,10 +96,10 @@
   return v7;
 }
 
-- (id)addAlarm:(id)a3
+- (id)addAlarm:(id)alarm
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alarmCopy = alarm;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -115,7 +115,7 @@
 
   else
   {
-    v7 = [(MTAlarmManager *)mtAlarmManager addAlarm:v4];
+    v7 = [(MTAlarmManager *)mtAlarmManager addAlarm:alarmCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -153,7 +153,7 @@
   return mtAlarmManager;
 }
 
-- (void)removeHandlerForEvent:(int64_t)a3
+- (void)removeHandlerForEvent:(int64_t)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = AFClockAlarmManagerEventGetName();
@@ -169,26 +169,26 @@
 
   if (([MEMORY[0x277CEF2A8] isTimerAlarmCoordinationEnabled] & 1) == 0)
   {
-    v6 = [(SOClockAlarmManager *)self _registeredObservations];
-    v7 = [v6 objectForKey:v4];
+    _registeredObservations = [(SOClockAlarmManager *)self _registeredObservations];
+    v7 = [_registeredObservations objectForKey:v4];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = v8;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v9 = defaultCenter;
     if (v7)
     {
-      [v8 removeObserver:v7];
-      v10 = [(SOClockAlarmManager *)self _registeredObservations];
-      [v10 removeObjectForKey:v4];
+      [defaultCenter removeObserver:v7];
+      _registeredObservations2 = [(SOClockAlarmManager *)self _registeredObservations];
+      [_registeredObservations2 removeObjectForKey:v4];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHandler:(id)a3 forEvent:(int64_t)a4
+- (void)addHandler:(id)handler forEvent:(int64_t)event
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v7 = AFClockAlarmManagerEventGetName();
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -204,30 +204,30 @@
   v20[1] = 3221225472;
   v20[2] = __43__SOClockAlarmManager_addHandler_forEvent___block_invoke;
   v20[3] = &unk_279C3D690;
-  v9 = v6;
+  v9 = handlerCopy;
   v21 = v9;
   v10 = MEMORY[0x26D61D070](v20);
   if (([MEMORY[0x277CEF2A8] isTimerAlarmCoordinationEnabled] & 1) == 0)
   {
-    v11 = [(SOClockAlarmManager *)self _registeredObservations];
-    v12 = [v11 objectForKey:v7];
+    _registeredObservations = [(SOClockAlarmManager *)self _registeredObservations];
+    v12 = [_registeredObservations objectForKey:v7];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v14 = defaultCenter;
     if (v12)
     {
-      [v13 removeObserver:v12];
+      [defaultCenter removeObserver:v12];
     }
 
-    if ((a4 - 1) <= 7)
+    if ((event - 1) <= 7)
     {
-      v15 = (*off_279C3CF80[a4 - 1])();
+      v15 = (*off_279C3CF80[event - 1])();
       if (v15)
       {
         v16 = v15;
         v17 = [v14 addObserverForName:v15 object:self->_mtAlarmManager queue:0 usingBlock:v10];
-        v18 = [(SOClockAlarmManager *)self _registeredObservations];
-        [v18 setObject:v17 forKey:v7];
+        _registeredObservations2 = [(SOClockAlarmManager *)self _registeredObservations];
+        [_registeredObservations2 setObject:v17 forKey:v7];
       }
     }
   }
@@ -290,10 +290,10 @@ void __43__SOClockAlarmManager_addHandler_forEvent___block_invoke(uint64_t a1, v
   }
 }
 
-- (SOClockAlarmManager)initWithInstanceContext:(id)a3
+- (SOClockAlarmManager)initWithInstanceContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = SOClockAlarmManager;
   v5 = [(SOClockAlarmManager *)&v18 init];
@@ -302,18 +302,18 @@ void __43__SOClockAlarmManager_addHandler_forEvent___block_invoke(uint64_t a1, v
     goto LABEL_11;
   }
 
-  if (v4)
+  if (contextCopy)
   {
-    v6 = v4;
+    defaultContext = contextCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CEF2C8] defaultContext];
+    defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
   }
 
   instanceContext = v5->_instanceContext;
-  v5->_instanceContext = v6;
+  v5->_instanceContext = defaultContext;
 
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
@@ -322,7 +322,7 @@ void __43__SOClockAlarmManager_addHandler_forEvent___block_invoke(uint64_t a1, v
     *buf = 136315394;
     v20 = "[SOClockAlarmManager initWithInstanceContext:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = contextCopy;
     _os_log_impl(&dword_26858F000, v9, OS_LOG_TYPE_INFO, "%s instanceContext = %@", buf, 0x16u);
   }
 
@@ -370,8 +370,8 @@ LABEL_12:
 
 - (SOClockAlarmManager)init
 {
-  v3 = [MEMORY[0x277CEF2C8] defaultContext];
-  v4 = [(SOClockAlarmManager *)self initWithInstanceContext:v3];
+  defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
+  v4 = [(SOClockAlarmManager *)self initWithInstanceContext:defaultContext];
 
   return v4;
 }

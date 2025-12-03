@@ -1,5 +1,5 @@
 @interface AMSBagUnderlyingData
-- (AMSBagUnderlyingData)initWithFileKey:(id)a3 aliasKeys:(id)a4 bagDictionary:(id)a5 expirationDate:(id)a6;
+- (AMSBagUnderlyingData)initWithFileKey:(id)key aliasKeys:(id)keys bagDictionary:(id)dictionary expirationDate:(id)date;
 - (NSDate)expirationDate;
 - (NSDictionary)bagDictionary;
 - (NSSet)aliasKeys;
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (AMSBagUnderlyingData)initWithFileKey:(id)a3 aliasKeys:(id)a4 bagDictionary:(id)a5 expirationDate:(id)a6
+- (AMSBagUnderlyingData)initWithFileKey:(id)key aliasKeys:(id)keys bagDictionary:(id)dictionary expirationDate:(id)date
 {
   v7 = sub_192F95CFC();
   MEMORY[0x1EEE9AC00](v7 - 8, v8);
@@ -45,7 +45,7 @@
   v13 = v12;
   v14 = sub_192F96DAC();
   sub_192F95CAC();
-  return BagUnderlyingData.init(fileKey:aliasKeys:bagDictionary:expirationDate:)(v11, v13, v14, a5, v10);
+  return BagUnderlyingData.init(fileKey:aliasKeys:bagDictionary:expirationDate:)(v11, v13, v14, dictionary, v10);
 }
 
 - (NSString)fileKey

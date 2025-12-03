@@ -1,36 +1,36 @@
 @interface PKPassUpcomingPassInformationGroup
-+ (id)createFromEntries:(id)a3 identifier:(id)a4 name:(id)a5;
-- (PKPassUpcomingPassInformationGroup)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 name:(id)a4 entries:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)createFromEntries:(id)entries identifier:(id)identifier name:(id)name;
+- (PKPassUpcomingPassInformationGroup)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier name:(id)name entries:(id)entries;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationGroup
 
-+ (id)createFromEntries:(id)a3 identifier:(id)a4 name:(id)a5
++ (id)createFromEntries:(id)entries identifier:(id)identifier name:(id)name
 {
   v5 = 0;
-  if (a4 && a5)
+  if (identifier && name)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v5 = [[PKPassUpcomingPassInformationGroup alloc] _initWithIdentifier:v9 name:v8 entries:v10];
+    nameCopy = name;
+    identifierCopy = identifier;
+    entriesCopy = entries;
+    v5 = [[PKPassUpcomingPassInformationGroup alloc] _initWithIdentifier:identifierCopy name:nameCopy entries:entriesCopy];
   }
 
   return v5;
 }
 
-- (id)_initWithIdentifier:(id)a3 name:(id)a4 entries:(id)a5
+- (id)_initWithIdentifier:(id)identifier name:(id)name entries:(id)entries
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  v13 = 0;
-  if (v9 && v10)
+  identifierCopy = identifier;
+  nameCopy = name;
+  entriesCopy = entries;
+  v12 = entriesCopy;
+  selfCopy = 0;
+  if (identifierCopy && nameCopy)
   {
-    if ([v11 count])
+    if ([entriesCopy count])
     {
       v17.receiver = self;
       v17.super_class = PKPassUpcomingPassInformationGroup;
@@ -38,41 +38,41 @@
       p_isa = &v14->super.isa;
       if (v14)
       {
-        objc_storeStrong(&v14->_name, a4);
-        objc_storeStrong(p_isa + 1, a3);
-        objc_storeStrong(p_isa + 3, a5);
+        objc_storeStrong(&v14->_name, name);
+        objc_storeStrong(p_isa + 1, identifier);
+        objc_storeStrong(p_isa + 3, entries);
       }
 
       self = p_isa;
-      v13 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (PKPassUpcomingPassInformationGroup)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPassUpcomingPassInformationGroup;
   v5 = [(PKPassUpcomingPassInformationGroup *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"entries"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"entries"];
     entries = v5->_entries;
     v5->_entries = v10;
   }
@@ -80,13 +80,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_entries forKey:@"entries"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_entries forKey:@"entries"];
 }
 
 @end

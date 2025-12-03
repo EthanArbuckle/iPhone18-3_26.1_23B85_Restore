@@ -1,13 +1,13 @@
 @interface BWVideoPlaybackSupportMetadataNode
 - (BWVideoPlaybackSupportMetadataNode)init;
-- (uint64_t)_emitPlaybackSupportBoxedMetadataForSampleBuffer:(void *)a3 metadata:(CMTime *)a4 time:;
+- (uint64_t)_emitPlaybackSupportBoxedMetadataForSampleBuffer:(void *)buffer metadata:(CMTime *)metadata time:;
 - (uint64_t)_emptyMetadataBlockBuffer;
 - (uint64_t)init;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVideoPlaybackSupportMetadataNode
@@ -115,29 +115,29 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:a3];
+  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:d];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
   [(BWNodeOutput *)boxedMetadataOutput makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:d, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:d];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v12, 0, sizeof(v12));
-  CMSampleBufferGetPresentationTimeStamp(&v12, a3);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  CMSampleBufferGetPresentationTimeStamp(&v12, buffer);
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    v6 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    v6 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (v6)
     {
       v7 = v6;
@@ -149,7 +149,7 @@
     }
 
     sampleBufferOut = 0;
-    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], a3, &sampleBufferOut))
+    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], buffer, &sampleBufferOut))
     {
       v10 = v12;
       [(BWNodeOutput *)self->_boxedMetadataOutput emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219BFF0 pts:&v10]];
@@ -168,7 +168,7 @@
 
   else
   {
-    v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (!v8 || (v10 = v12, ([(BWVideoPlaybackSupportMetadataNode *)self _emitPlaybackSupportBoxedMetadataForSampleBuffer:v9 metadata:v8 time:&v10]& 1) == 0))
     {
       v10 = v12;
@@ -176,36 +176,36 @@
     }
   }
 
-  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:buffer];
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:sample, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:a3];
+  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:sample];
 }
 
-- (uint64_t)_emitPlaybackSupportBoxedMetadataForSampleBuffer:(void *)a3 metadata:(CMTime *)a4 time:
+- (uint64_t)_emitPlaybackSupportBoxedMetadataForSampleBuffer:(void *)buffer metadata:(CMTime *)metadata time:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v17 = 0;
   blockBufferOut = 0;
-  v6 = *(a1 + 168);
-  v7 = FigCaptureSceneIlluminationValueFromLuxLevel([a3 objectForKeyedSubscript:*off_1E798B4B8], *(a1 + 172));
+  v6 = *(self + 168);
+  v7 = FigCaptureSceneIlluminationValueFromLuxLevel([buffer objectForKeyedSubscript:*off_1E798B4B8], *(self + 172));
   v8 = v7;
   v9 = MEMORY[0x1E695E480];
   if (v7 != -1)
   {
-    *(a1 + 172) = v7;
+    *(self + 172) = v7;
     v11 = malloc_type_malloc(0xCuLL, 0x2F18F4DEuLL);
     *v11 = 201326592;
-    v11[1] = *(a1 + 152);
+    v11[1] = *(self + 152);
     v11[2] = bswap32(v8);
     if (CMBlockBufferCreateWithMemoryBlock(*v9, v11, 0xCuLL, *MEMORY[0x1E695E488], 0, 0, 0xCuLL, 0, &blockBufferOut))
     {
@@ -225,14 +225,14 @@ LABEL_12:
 
 LABEL_7:
     memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
-    __dst.presentationTimeStamp = *a4;
+    __dst.presentationTimeStamp = *metadata;
     sampleSizeArray = CMBlockBufferGetDataLength(v12);
-    if (!CMSampleBufferCreate(*v9, blockBufferOut, 1u, 0, 0, *(a1 + 144), 1, 1, &__dst, 1, &sampleSizeArray, &v17))
+    if (!CMSampleBufferCreate(*v9, blockBufferOut, 1u, 0, 0, *(self + 144), 1, 1, &__dst, 1, &sampleSizeArray, &v17))
     {
       if (v17)
       {
-        [*(a1 + 136) emitSampleBuffer:?];
-        *(a1 + 168) = v8 == -1;
+        [*(self + 136) emitSampleBuffer:?];
+        *(self + 168) = v8 == -1;
         v10 = 1;
         goto LABEL_18;
       }
@@ -262,10 +262,10 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v13 = [(BWVideoPlaybackSupportMetadataNode *)a1 _emptyMetadataBlockBuffer];
-  if (v13)
+  _emptyMetadataBlockBuffer = [(BWVideoPlaybackSupportMetadataNode *)self _emptyMetadataBlockBuffer];
+  if (_emptyMetadataBlockBuffer)
   {
-    v12 = CFRetain(v13);
+    v12 = CFRetain(_emptyMetadataBlockBuffer);
     blockBufferOut = v12;
     if (!v12)
     {

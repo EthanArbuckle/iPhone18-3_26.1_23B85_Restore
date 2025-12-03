@@ -1,10 +1,10 @@
 @interface IMRemoteObjectBroadcaster
 + (id)defaultBroadcaster;
 - (IMRemoteObjectBroadcaster)init;
-- (id)broadcastProxyForTargets:(id)a3 messageContext:(id)a4 protocol:(id)a5;
+- (id)broadcastProxyForTargets:(id)targets messageContext:(id)context protocol:(id)protocol;
 - (void)blockUntilSendQueueIsEmpty;
 - (void)dealloc;
-- (void)flushProxy:(id)a3;
+- (void)flushProxy:(id)proxy;
 @end
 
 @implementation IMRemoteObjectBroadcaster
@@ -96,13 +96,13 @@
   [(IMRemoteObjectBroadcaster *)&v4 dealloc];
 }
 
-- (id)broadcastProxyForTargets:(id)a3 messageContext:(id)a4 protocol:(id)a5
+- (id)broadcastProxyForTargets:(id)targets messageContext:(id)context protocol:(id)protocol
 {
-  result = objc_msgSend_count(a3, a2, a3);
+  result = objc_msgSend_count(targets, a2, targets);
   if (result)
   {
     v10 = [Broadcaster alloc];
-    v12 = objc_msgSend_initWithNotifier_messageContext_protocol_targets_(v10, v11, self, a4, a5, a3);
+    v12 = objc_msgSend_initWithNotifier_messageContext_protocol_targets_(v10, v11, self, context, protocol, targets);
 
     return v12;
   }
@@ -110,10 +110,10 @@
   return result;
 }
 
-- (void)flushProxy:(id)a3
+- (void)flushProxy:(id)proxy
 {
-  v3 = a3;
-  objc_msgSend__cleanupMachBitsCanPost_locked_(a3, v4, 1, 0);
+  proxyCopy = proxy;
+  objc_msgSend__cleanupMachBitsCanPost_locked_(proxy, v4, 1, 0);
 }
 
 @end

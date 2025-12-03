@@ -3,7 +3,7 @@
 - (UIView)topView;
 - (id)_newBottomView;
 - (id)_newTopView;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
 - (id)monochromeOtherViews;
 - (void)layoutSubviews;
@@ -11,7 +11,7 @@
 
 @implementation AltitudeRichDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v18.receiver = self;
   v18.super_class = AltitudeRichDialView;

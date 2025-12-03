@@ -1,10 +1,10 @@
 @interface DOCItemCollectionListCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (id)accessiblityStopDownloadView;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)didMoveToWindow;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)tintColorDidChange;
 @end
 
@@ -19,14 +19,14 @@
   [v2 setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   DOCItemCollectionListCell.updateConfiguration(using:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -41,20 +41,20 @@
   DOCItemCollectionListCell.updateLayoutMetrics()();
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DOCItemCollectionListCell.effectiveAppearanceDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DOCItemCollectionListCell.effectiveAppearanceDidChange(_:)(changeCopy);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x277D85000];
   v8 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.super.isa) + 0x208);
-  v9 = self;
+  selfCopy = self;
   v10 = v8();
   if (v10)
   {
@@ -72,28 +72,28 @@
 - (id)accessiblityStopDownloadView
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.super.super.isa) + 0x2A8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -105,18 +105,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -127,7 +127,7 @@ LABEL_4:
   v15 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 
 LABEL_8:
-  DOCItemCollectionListCell.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, a6);
+  DOCItemCollectionListCell.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, context);
 
   outlined destroy of CharacterSet?(v18, &_sypSgMd);
 }

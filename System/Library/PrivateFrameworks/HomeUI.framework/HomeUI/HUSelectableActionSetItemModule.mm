@@ -1,9 +1,9 @@
 @interface HUSelectableActionSetItemModule
-- (HUSelectableActionSetItemModule)initWithHome:(id)a3 itemUpdater:(id)a4;
+- (HUSelectableActionSetItemModule)initWithHome:(id)home itemUpdater:(id)updater;
 - (NSString)sceneSectionHeaderTitle;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (void)setSceneSectionHeaderTitle:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (void)setSceneSectionHeaderTitle:(id)title;
 @end
 
 @implementation HUSelectableActionSetItemModule
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setSceneSectionHeaderTitle:(id)a3
+- (void)setSceneSectionHeaderTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_20D567838();
     v6 = v5;
@@ -48,7 +48,7 @@
 
 - (id)buildItemProviders
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20CF3AD64();
 
   if (v3)
@@ -66,12 +66,12 @@
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   sub_20CECF940(0, &qword_281120AC0);
   sub_20CEF99B4();
   sub_20D567D08();
-  v4 = self;
+  selfCopy = self;
   sub_20CF3B044();
 
   sub_20CECF940(0, &unk_28111FFD0);
@@ -80,11 +80,11 @@
   return v5;
 }
 
-- (HUSelectableActionSetItemModule)initWithHome:(id)a3 itemUpdater:(id)a4
+- (HUSelectableActionSetItemModule)initWithHome:(id)home itemUpdater:(id)updater
 {
-  v5 = a3;
+  homeCopy = home;
   swift_unknownObjectRetain();
-  v6 = sub_20CF3B8B4(v5, a4);
+  v6 = sub_20CF3B8B4(homeCopy, updater);
 
   swift_unknownObjectRelease();
   return v6;

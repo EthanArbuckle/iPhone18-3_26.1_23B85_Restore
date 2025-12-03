@@ -1,25 +1,25 @@
 @interface SUUIRedeemIdTableViewCell
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SUUIRedeemIdTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SUUIRedeemIdTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SUUIRedeemIdTableViewCellDelegate)delegate;
 - (void)_initializeTextField;
 - (void)layoutSubviews;
-- (void)setAutoCapitalizationType:(int64_t)a3;
-- (void)setKeyboardType:(int64_t)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)setReturnKeyType:(int64_t)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)setAutoCapitalizationType:(int64_t)type;
+- (void)setKeyboardType:(int64_t)type;
+- (void)setPlaceholderText:(id)text;
+- (void)setReturnKeyType:(int64_t)type;
+- (void)textFieldDidChange:(id)change;
 @end
 
 @implementation SUUIRedeemIdTableViewCell
 
-- (SUUIRedeemIdTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUUIRedeemIdTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = SUUIRedeemIdTableViewCell;
-  v4 = [(SUUIRedeemIdTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUUIRedeemIdTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -32,8 +32,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SUUIRedeemIdTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIRedeemIdTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -50,8 +50,8 @@
   width = v21.size.width;
   height = v21.size.height;
 
-  v18 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v18 setFrame:{x, y, width, height}];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setFrame:{x, y, width, height}];
 
   v19.receiver = self;
   v19.super_class = SUUIRedeemIdTableViewCell;
@@ -60,68 +60,68 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v3 setUserInteractionEnabled:1];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setUserInteractionEnabled:1];
 
-  v4 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v4 becomeFirstResponder];
+  textField2 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField2 becomeFirstResponder];
 
   return 1;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v3 setUserInteractionEnabled:0];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setUserInteractionEnabled:0];
 
-  v4 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v4 resignFirstResponder];
+  textField2 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField2 resignFirstResponder];
 
   return 1;
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v4 = a3;
-  v5 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v5 setPlaceholder:v4];
+  textCopy = text;
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setPlaceholder:textCopy];
 }
 
-- (void)setKeyboardType:(int64_t)a3
+- (void)setKeyboardType:(int64_t)type
 {
-  v4 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v4 setKeyboardType:a3];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setKeyboardType:type];
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  v4 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v4 setReturnKeyType:a3];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setReturnKeyType:type];
 }
 
-- (void)setAutoCapitalizationType:(int64_t)a3
+- (void)setAutoCapitalizationType:(int64_t)type
 {
-  v4 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v4 setAutocapitalizationType:a3];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setAutocapitalizationType:type];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(SUUIRedeemIdTableViewCell *)self delegate];
-  v6 = [v4 text];
+  returnCopy = return;
+  delegate = [(SUUIRedeemIdTableViewCell *)self delegate];
+  text = [returnCopy text];
 
-  [v5 redeemIdCell:self didReturnWithText:v6];
+  [delegate redeemIdCell:self didReturnWithText:text];
   return 1;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [(SUUIRedeemIdTableViewCell *)self delegate];
-  v5 = [v4 text];
+  changeCopy = change;
+  delegate = [(SUUIRedeemIdTableViewCell *)self delegate];
+  text = [changeCopy text];
 
-  [v6 redeemIdCell:self didChangeToText:v5];
+  [delegate redeemIdCell:self didChangeToText:text];
 }
 
 - (void)_initializeTextField
@@ -130,25 +130,25 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(SUUIRedeemIdTableViewCell *)self setTextField:v4];
 
-  v5 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v5 setDelegate:self];
+  textField = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField setDelegate:self];
 
-  v6 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v6 setUserInteractionEnabled:0];
+  textField2 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField2 setUserInteractionEnabled:0];
 
-  v7 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v7 setClearButtonMode:1];
+  textField3 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField3 setClearButtonMode:1];
 
-  v8 = [(SUUIRedeemIdTableViewCell *)self textField];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v9];
+  textField4 = [(SUUIRedeemIdTableViewCell *)self textField];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [textField4 setBackgroundColor:clearColor];
 
-  v10 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v10 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
+  textField5 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [textField5 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
 
-  v12 = [(SUUIRedeemIdTableViewCell *)self contentView];
-  v11 = [(SUUIRedeemIdTableViewCell *)self textField];
-  [v12 addSubview:v11];
+  contentView = [(SUUIRedeemIdTableViewCell *)self contentView];
+  textField6 = [(SUUIRedeemIdTableViewCell *)self textField];
+  [contentView addSubview:textField6];
 }
 
 - (SUUIRedeemIdTableViewCellDelegate)delegate

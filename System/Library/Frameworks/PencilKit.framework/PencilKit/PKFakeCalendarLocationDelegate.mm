@@ -1,84 +1,84 @@
 @interface PKFakeCalendarLocationDelegate
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (PKFakeCalendarLocationDelegate)initWithCell:(id)a3 window:(id)a4;
-- (id)_searchBarInView:(id)a3;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (PKFakeCalendarLocationDelegate)initWithCell:(id)cell window:(id)window;
+- (id)_searchBarInView:(id)view;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
 @end
 
 @implementation PKFakeCalendarLocationDelegate
 
-- (PKFakeCalendarLocationDelegate)initWithCell:(id)a3 window:(id)a4
+- (PKFakeCalendarLocationDelegate)initWithCell:(id)cell window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  windowCopy = window;
   v15.receiver = self;
   v15.super_class = PKFakeCalendarLocationDelegate;
   v8 = [(PKFakeCalendarLocationDelegate *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_window, v7);
-    objc_storeWeak(&v9->_cell, v6);
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeWeak(&v8->_window, windowCopy);
+    objc_storeWeak(&v9->_cell, cellCopy);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     elementID = v9->_elementID;
-    v9->_elementID = v10;
+    v9->_elementID = uUID;
 
-    v12 = [v6 superview];
+    superview = [cellCopy superview];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v12Superview = superview;
     }
 
     else
     {
       do
       {
-        v13 = [v12 superview];
+        v12Superview = [superview superview];
 
         objc_opt_class();
-        v12 = v13;
+        superview = v12Superview;
       }
 
       while ((objc_opt_isKindOfClass() & 1) == 0);
     }
 
-    objc_storeWeak(&v9->_tableView, v13);
+    objc_storeWeak(&v9->_tableView, v12Superview);
   }
 
   return v9;
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_cell);
   if (WeakRetained)
   {
     v9[0] = self->_elementID;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    v6[2](v6, v8, 0x7FFFFFFFFFFFFFFFLL);
+    completionCopy[2](completionCopy, v8, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   v9 = objc_loadWeakRetained(&self->_window);
   v10 = v9;
   if (WeakRetained && v9)
   {
-    v11 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     v12 = [MEMORY[0x1E696AC88] indexPathForRow:1 inSection:0];
-    [v11 tableView:WeakRetained didSelectRowAtIndexPath:v12];
+    [delegate tableView:WeakRetained didSelectRowAtIndexPath:v12];
 
     v13 = dispatch_time(0, 800000000);
     block[0] = MEMORY[0x1E69E9820];
@@ -87,7 +87,7 @@
     block[3] = &unk_1E82D7930;
     block[4] = self;
     v15 = v10;
-    v16 = v7;
+    v16 = completionCopy;
     dispatch_after(v13, MEMORY[0x1E69E96A0], block);
   }
 }
@@ -112,7 +112,7 @@ void __115__PKFakeCalendarLocationDelegate__scribbleInteraction_focusElement_ini
   }
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
   v5 = WeakRetained;
@@ -144,14 +144,14 @@ void __115__PKFakeCalendarLocationDelegate__scribbleInteraction_focusElement_ini
   return result;
 }
 
-- (id)_searchBarInView:(id)a3
+- (id)_searchBarInView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -160,8 +160,8 @@ void __115__PKFakeCalendarLocationDelegate__scribbleInteraction_focusElement_ini
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -172,7 +172,7 @@ void __115__PKFakeCalendarLocationDelegate__scribbleInteraction_focusElement_ini
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(PKFakeCalendarLocationDelegate *)self _searchBarInView:*(*(&v13 + 1) + 8 * i)];
@@ -184,7 +184,7 @@ void __115__PKFakeCalendarLocationDelegate__scribbleInteraction_focusElement_ini
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;

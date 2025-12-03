@@ -1,7 +1,7 @@
 @interface PDAppProtectionManager
 - (PDAppProtectionManager)init;
-- (void)_enforceHideCardsWhileLocked:(BOOL)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)_enforceHideCardsWhileLocked:(BOOL)locked;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
 - (void)updateHideCardsWhileLockedEnforcement;
 @end
@@ -38,17 +38,17 @@
 
 - (void)updateHideCardsWhileLockedEnforcement
 {
-  v3 = [(APApplication *)self->_application isLocked];
+  isLocked = [(APApplication *)self->_application isLocked];
 
-  [(PDAppProtectionManager *)self _enforceHideCardsWhileLocked:v3];
+  [(PDAppProtectionManager *)self _enforceHideCardsWhileLocked:isLocked];
 }
 
-- (void)_enforceHideCardsWhileLocked:(BOOL)a3
+- (void)_enforceHideCardsWhileLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v4 = PKLogFacilityTypeGetObject();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (lockedCopy)
   {
     if (v5)
     {
@@ -88,14 +88,14 @@
   }
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  changedCopy = changed;
+  v6 = [changedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -106,7 +106,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changedCopy);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) isEqual:self->_application])
@@ -123,7 +123,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [changedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;

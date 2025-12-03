@@ -1,20 +1,20 @@
 @interface SUScriptAppleAccountStore
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)effectiveBundleID;
 - (SUScriptAppleAccount)activeStoreAccount;
 - (SUScriptAppleAccount)primaryAppleAccount;
 - (SUScriptAppleAccountStore)init;
 - (id)_accountStore;
-- (id)accountTypeWithIdentifier:(id)a3;
-- (id)accountsWithAccountType:(id)a3;
-- (id)makeClientAccessInfoWithAccountType:(id)a3;
+- (id)accountTypeWithIdentifier:(id)identifier;
+- (id)accountsWithAccountType:(id)type;
+- (id)makeClientAccessInfoWithAccountType:(id)type;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)renewCredentialsForAccount:(id)a3 completionHandler:(id)a4;
-- (void)requestAccessWithInfo:(id)a3 completionHandler:(id)a4;
-- (void)setEffectiveBundleID:(id)a3;
+- (void)renewCredentialsForAccount:(id)account completionHandler:(id)handler;
+- (void)requestAccessWithInfo:(id)info completionHandler:(id)handler;
+- (void)setEffectiveBundleID:(id)d;
 @end
 
 @implementation SUScriptAppleAccountStore
@@ -41,15 +41,15 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (id)accountsWithAccountType:(id)a3
+- (id)accountsWithAccountType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(SUScriptAppleAccountStore *)self _accountStore];
-    v7 = [v6 accountsWithAccountType:{objc_msgSend(a3, "nativeAccountType")}];
+    _accountStore = [(SUScriptAppleAccountStore *)self _accountStore];
+    v7 = [_accountStore accountsWithAccountType:{objc_msgSend(type, "nativeAccountType")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -69,8 +69,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [[SUScriptAppleAccount alloc] initWithACAccount:*(*(&v14 + 1) + 8 * v11) accountStore:v6];
-          [v5 addObject:v12];
+          v12 = [[SUScriptAppleAccount alloc] initWithACAccount:*(*(&v14 + 1) + 8 * v11) accountStore:_accountStore];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -82,7 +82,7 @@
       while (v9);
     }
 
-    [(SUScriptObject *)self checkInScriptObjects:v5];
+    [(SUScriptObject *)self checkInScriptObjects:array];
   }
 
   else
@@ -90,10 +90,10 @@
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)accountTypeWithIdentifier:(id)a3
+- (id)accountTypeWithIdentifier:(id)identifier
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -115,13 +115,13 @@
   return v5;
 }
 
-- (id)makeClientAccessInfoWithAccountType:(id)a3
+- (id)makeClientAccessInfoWithAccountType:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(SUScriptACClientAccessInfo);
-    [(SUScriptACClientAccessInfo *)v5 setAccountType:a3];
+    [(SUScriptACClientAccessInfo *)v5 setAccountType:type];
     [(SUScriptObject *)self checkInScriptObject:v5];
   }
 
@@ -134,30 +134,30 @@
   return v5;
 }
 
-- (void)renewCredentialsForAccount:(id)a3 completionHandler:(id)a4
+- (void)renewCredentialsForAccount:(id)account completionHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    handler = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!a4)
+    if (!handler)
     {
 LABEL_8:
-      [a4 setThisObject:self];
-      v7 = [(SUScriptAppleAccountStore *)self _accountStore];
-      v8 = [a3 nativeAccount];
+      [handler setThisObject:self];
+      _accountStore = [(SUScriptAppleAccountStore *)self _accountStore];
+      nativeAccount = [account nativeAccount];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __74__SUScriptAppleAccountStore_renewCredentialsForAccount_completionHandler___block_invoke;
       v10[3] = &unk_1E81670A0;
       v10[4] = self;
-      v10[5] = a4;
-      [v7 renewCredentialsForAccount:v8 completion:v10];
+      v10[5] = handler;
+      [_accountStore renewCredentialsForAccount:nativeAccount completion:v10];
 
       return;
     }
@@ -165,7 +165,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      handler = [[SUScriptFunction alloc] initWithScriptObject:handler];
       goto LABEL_8;
     }
 
@@ -230,32 +230,32 @@ void __74__SUScriptAppleAccountStore_renewCredentialsForAccount_completionHandle
   [*(a1 + 40) setThisObject:0];
 }
 
-- (void)requestAccessWithInfo:(id)a3 completionHandler:(id)a4
+- (void)requestAccessWithInfo:(id)info completionHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    handler = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!a4)
+    if (!handler)
     {
 LABEL_8:
-      [a4 setThisObject:self];
-      v7 = [a3 accountType];
-      v8 = [(SUScriptAppleAccountStore *)self _accountStore];
-      v9 = [v7 nativeAccountType];
-      v10 = [a3 accessInfoDictionary];
+      [handler setThisObject:self];
+      accountType = [info accountType];
+      _accountStore = [(SUScriptAppleAccountStore *)self _accountStore];
+      nativeAccountType = [accountType nativeAccountType];
+      accessInfoDictionary = [info accessInfoDictionary];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __69__SUScriptAppleAccountStore_requestAccessWithInfo_completionHandler___block_invoke;
       v12[3] = &unk_1E8166000;
       v12[4] = self;
-      v12[5] = a4;
-      [v8 requestAccessToAccountsWithType:v9 options:v10 completion:v12];
+      v12[5] = handler;
+      [_accountStore requestAccessToAccountsWithType:nativeAccountType options:accessInfoDictionary completion:v12];
 
       return;
     }
@@ -263,7 +263,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      handler = [[SUScriptFunction alloc] initWithScriptObject:handler];
       goto LABEL_8;
     }
 
@@ -335,11 +335,11 @@ void __69__SUScriptAppleAccountStore_requestAccessWithInfo_completionHandler___b
 
 - (SUScriptAppleAccount)activeStoreAccount
 {
-  v3 = [(SUScriptAppleAccountStore *)self _accountStore];
-  result = [v3 ams_activeiTunesAccount];
+  _accountStore = [(SUScriptAppleAccountStore *)self _accountStore];
+  result = [_accountStore ams_activeiTunesAccount];
   if (result)
   {
-    v5 = [[SUScriptAppleAccount alloc] initWithACAccount:result accountStore:v3];
+    v5 = [[SUScriptAppleAccount alloc] initWithACAccount:result accountStore:_accountStore];
     [(SUScriptObject *)self checkInScriptObject:v5];
 
     return v5;
@@ -350,11 +350,11 @@ void __69__SUScriptAppleAccountStore_requestAccessWithInfo_completionHandler___b
 
 - (SUScriptAppleAccount)primaryAppleAccount
 {
-  v2 = [(SUScriptAppleAccountStore *)self _accountStore];
-  result = [v2 aa_primaryAppleAccount];
+  _accountStore = [(SUScriptAppleAccountStore *)self _accountStore];
+  result = [_accountStore aa_primaryAppleAccount];
   if (result)
   {
-    v4 = [[SUScriptAppleAccount alloc] initWithACAccount:result accountStore:v2];
+    v4 = [[SUScriptAppleAccount alloc] initWithACAccount:result accountStore:_accountStore];
 
     return v4;
   }
@@ -370,19 +370,19 @@ void __69__SUScriptAppleAccountStore_requestAccessWithInfo_completionHandler___b
   return v3;
 }
 
-- (void)setEffectiveBundleID:(id)a3
+- (void)setEffectiveBundleID:(id)d
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    dCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     effectiveBundleID = self->_effectiveBundleID;
-    if (effectiveBundleID != v5 && ![(NSString *)effectiveBundleID isEqualToString:v5])
+    if (effectiveBundleID != dCopy && ![(NSString *)effectiveBundleID isEqualToString:dCopy])
     {
 
-      self->_effectiveBundleID = [(NSString *)v5 copy];
+      self->_effectiveBundleID = [(NSString *)dCopy copy];
       self->_accountStore = 0;
     }
 
@@ -392,8 +392,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  dCopy = 0;
+  if (!d)
   {
     goto LABEL_3;
   }
@@ -404,7 +404,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  dCopy = d;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -441,27 +441,27 @@ LABEL_3:
   return v6;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_66 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAppleAccountStore;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_50, 5);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_50, 5);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAppleAccountStore;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -471,14 +471,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptAppleAccountStore;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_66 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_66 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_50 = sel_accountsWithAccountType_;
     unk_1EBF3B710 = @"getAccountsWithAccountType";

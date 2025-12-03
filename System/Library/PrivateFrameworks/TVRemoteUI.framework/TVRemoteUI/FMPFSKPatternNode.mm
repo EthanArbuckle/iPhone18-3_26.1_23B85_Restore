@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMR1HapticsController.description.getter();
   v5 = v4;
 

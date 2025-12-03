@@ -1,12 +1,12 @@
 @interface GKDashboardShowMoreFooterView
 - (NSString)showMoreText;
 - (id)actionHandler;
-- (void)didTap:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didTap:(id)tap;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setActionHandler:(id)a3;
-- (void)setShowMoreText:(id)a3;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setActionHandler:(id)handler;
+- (void)setShowMoreText:(id)text;
 @end
 
 @implementation GKDashboardShowMoreFooterView
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -48,7 +48,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKDashboardShowMoreFooterView.actionHandler.setter(v4, v5);
 }
 
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (void)setShowMoreText:(id)a3
+- (void)setShowMoreText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -82,39 +82,39 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   GKDashboardShowMoreFooterView.showMoreText.setter(v4, v6);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  GKDashboardShowMoreFooterView.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  GKDashboardShowMoreFooterView.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKDashboardShowMoreFooterView.layoutSubviews()();
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_24E08A060();
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   sub_24DF88A8C(0, &qword_27F1E2858);
   sub_24E08A394();
   v6 = sub_24E348138();
-  v7 = a4;
-  v8 = self;
-  GKDashboardShowMoreFooterView.pressesEnded(_:with:)(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  GKDashboardShowMoreFooterView.pressesEnded(_:with:)(v6, event);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents
 - (MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -54,44 +54,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents);
-  v5 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self activeTimestampPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setActiveTimestampPresent:v5];
+  activeTimestampPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self activeTimestampPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setActiveTimestampPresent:activeTimestampPresent];
 
-  v6 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self pendingTimestampPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPendingTimestampPresent:v6];
+  pendingTimestampPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self pendingTimestampPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPendingTimestampPresent:pendingTimestampPresent];
 
-  v7 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self masterKeyPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setMasterKeyPresent:v7];
+  masterKeyPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self masterKeyPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setMasterKeyPresent:masterKeyPresent];
 
-  v8 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self networkNamePresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setNetworkNamePresent:v8];
+  networkNamePresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self networkNamePresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setNetworkNamePresent:networkNamePresent];
 
-  v9 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self extendedPanIdPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setExtendedPanIdPresent:v9];
+  extendedPanIdPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self extendedPanIdPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setExtendedPanIdPresent:extendedPanIdPresent];
 
-  v10 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self meshLocalPrefixPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setMeshLocalPrefixPresent:v10];
+  meshLocalPrefixPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self meshLocalPrefixPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setMeshLocalPrefixPresent:meshLocalPrefixPresent];
 
-  v11 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self delayPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setDelayPresent:v11];
+  delayPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self delayPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setDelayPresent:delayPresent];
 
-  v12 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self panIdPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPanIdPresent:v12];
+  panIdPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self panIdPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPanIdPresent:panIdPresent];
 
-  v13 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self channelPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setChannelPresent:v13];
+  channelPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self channelPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setChannelPresent:channelPresent];
 
-  v14 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self pskcPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPskcPresent:v14];
+  pskcPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self pskcPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setPskcPresent:pskcPresent];
 
-  v15 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self securityPolicyPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setSecurityPolicyPresent:v15];
+  securityPolicyPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self securityPolicyPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setSecurityPolicyPresent:securityPolicyPresent];
 
-  v16 = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self channelMaskPresent];
-  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setChannelMaskPresent:v16];
+  channelMaskPresent = [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)self channelMaskPresent];
+  [(MTRThreadNetworkDiagnosticsClusterOperationalDatasetComponents *)v4 setChannelMaskPresent:channelMaskPresent];
 
   return v4;
 }

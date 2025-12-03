@@ -1,5 +1,5 @@
 @interface SOSDictionaryUpdate
-- (BOOL)hasChanged:(__CFDictionary *)a3;
+- (BOOL)hasChanged:(__CFDictionary *)changed;
 - (SOSDictionaryUpdate)init;
 - (void)dealloc;
 - (void)onqueueFreeHashBuff;
@@ -10,23 +10,23 @@
 
 - (void)reset
 {
-  v3 = [(SOSDictionaryUpdate *)self queue];
+  queue = [(SOSDictionaryUpdate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10022B144;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (BOOL)hasChanged:(__CFDictionary *)a3
+- (BOOL)hasChanged:(__CFDictionary *)changed
 {
-  v4 = sub_10022B238(a3);
+  v4 = sub_10022B238(changed);
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(SOSDictionaryUpdate *)self queue];
+  queue = [(SOSDictionaryUpdate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10022B41C;
@@ -34,7 +34,7 @@
   block[5] = &v8;
   block[6] = v4;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -43,8 +43,8 @@
 
 - (void)onqueueFreeHashBuff
 {
-  v3 = [(SOSDictionaryUpdate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SOSDictionaryUpdate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   currentHashBuf = self->currentHashBuf;
   if (currentHashBuf)

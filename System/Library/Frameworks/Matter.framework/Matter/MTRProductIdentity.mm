@@ -1,8 +1,8 @@
 @interface MTRProductIdentity
-- (BOOL)isEqual:(id)a3;
-- (MTRProductIdentity)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTRProductIdentity)initWithCoder:(id)coder;
 - (MTRProductIdentity)initWithVendorID:(NSNumber *)vendorID productID:(NSNumber *)productID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRProductIdentity
@@ -25,30 +25,30 @@
   return v9;
 }
 
-- (MTRProductIdentity)initWithCoder:(id)a3
+- (MTRProductIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MTRProductIdentity;
   v5 = [(MTRProductIdentity *)&v7 init];
-  v5->_vendorID = [v4 decodeIntForKey:@"v"];
-  v5->_productID = [v4 decodeIntForKey:@"p"];
+  v5->_vendorID = [coderCopy decodeIntForKey:@"v"];
+  v5->_productID = [coderCopy decodeIntForKey:@"p"];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_vendorID forKey:@"v"];
-  [v4 encodeInt:self->_productID forKey:@"p"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_vendorID forKey:@"v"];
+  [coderCopy encodeInt:self->_productID forKey:@"p"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->_vendorID == v4[4] && self->_productID == v4[5];
+  v6 = v5 == objc_opt_class() && self->_vendorID == equalCopy[4] && self->_productID == equalCopy[5];
 
   return v6;
 }

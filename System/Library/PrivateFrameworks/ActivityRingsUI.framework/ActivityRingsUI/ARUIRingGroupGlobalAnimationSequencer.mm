@@ -1,19 +1,19 @@
 @interface ARUIRingGroupGlobalAnimationSequencer
 + (id)sharedInstance;
 - (id)_init;
-- (void)_displayLinkFired:(id)a3;
+- (void)_displayLinkFired:(id)fired;
 - (void)_updateDisplayLink;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ARUIRingGroupGlobalAnimationSequencer
 
 - (void)_updateDisplayLink
 {
-  v3 = [(ARUIRingGroupGlobalAnimationSequencer *)self _needsDisplayLink];
+  _needsDisplayLink = [(ARUIRingGroupGlobalAnimationSequencer *)self _needsDisplayLink];
   displayLink = self->_displayLink;
-  if (v3)
+  if (_needsDisplayLink)
   {
     if (!displayLink)
     {
@@ -22,8 +22,8 @@
       self->_displayLink = v5;
 
       v7 = self->_displayLink;
-      v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v7 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
     }
   }
 
@@ -75,23 +75,23 @@ uint64_t __55__ARUIRingGroupGlobalAnimationSequencer_sharedInstance__block_invok
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  [(ARUIObserverStore *)self->_observers addObserver:a3];
+  [(ARUIObserverStore *)self->_observers addObserver:observer];
 
   [(ARUIRingGroupGlobalAnimationSequencer *)self _updateDisplayLink];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(ARUIObserverStore *)self->_observers removeObserver:a3];
+  [(ARUIObserverStore *)self->_observers removeObserver:observer];
 
   [(ARUIRingGroupGlobalAnimationSequencer *)self _updateDisplayLink];
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  [a3 timestamp];
+  [fired timestamp];
   v5 = v4 - self->_lastUpdateTime;
   self->_lastUpdateTime = v4;
   observers = self->_observers;

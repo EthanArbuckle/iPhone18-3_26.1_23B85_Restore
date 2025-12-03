@@ -1,13 +1,13 @@
 @interface SBUIVibrantButton
 + (id)_labelFont;
 - (BOOL)_shouldUseVibrancy;
-- (CGRect)_glyphFrameForSize:(CGSize)a3 inRect:(CGRect)a4;
-- (CGRect)_labelFrameForSize:(CGSize)a3 baselineOffset:(double)a4 inRect:(CGRect)a5;
-- (CGSize)_sizeThatFitsForLabelView:(id)a3;
+- (CGRect)_glyphFrameForSize:(CGSize)size inRect:(CGRect)rect;
+- (CGRect)_labelFrameForSize:(CGSize)size baselineOffset:(double)offset inRect:(CGRect)rect;
+- (CGSize)_sizeThatFitsForLabelView:(id)view;
 - (CGSize)_sizeThatFitsWithVibrancy;
 - (CGSize)_sizeThatFitsWithoutVibrancy;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBUIVibrantButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBUIVibrantButton)initWithFrame:(CGRect)frame;
 - (double)_alphaForState;
 - (id)_lazyGlyphLegibilityView;
 - (void)_layoutNonVibrantSubviews;
@@ -15,29 +15,29 @@
 - (void)_setUpForCurrentVibrancy;
 - (void)_updateForState;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setLegibilitySettings:(id)a3 textStrength:(double)a4;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setMinimumTitleScaleFactor:(double)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setStrength:(double)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setVibrancyAllowed:(BOOL)a3;
-- (void)setVibrantSettings:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundView:(id)view;
+- (void)setGlyphImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setLegibilitySettings:(id)settings textStrength:(double)strength;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setMinimumTitleScaleFactor:(double)factor;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setStrength:(double)strength;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTitle:(id)title;
+- (void)setVibrancyAllowed:(BOOL)allowed;
+- (void)setVibrantSettings:(id)settings;
 @end
 
 @implementation SBUIVibrantButton
 
-- (SBUIVibrantButton)initWithFrame:(CGRect)a3
+- (SBUIVibrantButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBUIVibrantButton;
-  v3 = [(SBUIVibrantButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIVibrantButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DD5B8] sharedInstanceForStyle:2];
@@ -53,35 +53,35 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4 || (v5 = [(NSString *)self->_title isEqualToString:v4], v4 = v8, (v5 & 1) == 0))
+  titleCopy = title;
+  v8 = titleCopy;
+  if (!titleCopy || (v5 = [(NSString *)self->_title isEqualToString:titleCopy], titleCopy = v8, (v5 & 1) == 0))
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = self->_title;
     self->_title = v6;
 
     [(SBUILegibilityLabel *)self->_nonVibrantLegibilityLabel setString:self->_title];
     v5 = [(UILabel *)self->_vibrantMaskLabel setText:self->_title];
-    v4 = v8;
+    titleCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v4);
+  MEMORY[0x1EEE66BB8](v5, titleCopy);
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v5 = a3;
-  v9 = v5;
-  if (self->_glyphImage != v5)
+  imageCopy = image;
+  v9 = imageCopy;
+  if (self->_glyphImage != imageCopy)
   {
-    objc_storeStrong(&self->_glyphImage, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_glyphImage, image);
+    imageCopy = v9;
   }
 
-  if (v5 && !self->_nonVibrantGlyph)
+  if (imageCopy && !self->_nonVibrantGlyph)
   {
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
     v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -91,25 +91,25 @@
     [(UIView *)self->_nonVibrantGlyph setClipsToBounds:1];
     [(UIView *)self->_nonVibrantGlyph setUserInteractionEnabled:0];
     [(SBUIVibrantButton *)self addSubview:self->_nonVibrantGlyph];
-    v5 = v9;
+    imageCopy = v9;
   }
 
-  [(UIImageView *)self->_vibrantMaskGlyphView setImage:v5];
+  [(UIImageView *)self->_vibrantMaskGlyphView setImage:imageCopy];
   [(SBUIVibrantButton *)self setNeedsLayout];
 }
 
-- (void)setVibrancyAllowed:(BOOL)a3
+- (void)setVibrancyAllowed:(BOOL)allowed
 {
-  if (self->_vibrancyAllowed != a3)
+  if (self->_vibrancyAllowed != allowed)
   {
-    self->_vibrancyAllowed = a3;
+    self->_vibrancyAllowed = allowed;
     [(SBUIVibrantButton *)self _setUpForCurrentVibrancy];
   }
 }
 
-- (void)setMinimumTitleScaleFactor:(double)a3
+- (void)setMinimumTitleScaleFactor:(double)factor
 {
-  self->_minimumTitleScaleFactor = a3;
+  self->_minimumTitleScaleFactor = factor;
   [(UILabel *)self->_vibrantMaskLabel setMinimumScaleFactor:?];
   nonVibrantLegibilityLabel = self->_nonVibrantLegibilityLabel;
   minimumTitleScaleFactor = self->_minimumTitleScaleFactor;
@@ -117,9 +117,9 @@
   [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setMinimumScaleFactor:minimumTitleScaleFactor];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  self->_textAlignment = a3;
+  self->_textAlignment = alignment;
   [(UILabel *)self->_vibrantMaskLabel setTextAlignment:?];
   nonVibrantLegibilityLabel = self->_nonVibrantLegibilityLabel;
   textAlignment = self->_textAlignment;
@@ -127,9 +127,9 @@
   [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setTextAlignment:textAlignment];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  self->_numberOfLines = a3;
+  self->_numberOfLines = lines;
   [(UILabel *)self->_vibrantMaskLabel setNumberOfLines:?];
   nonVibrantLegibilityLabel = self->_nonVibrantLegibilityLabel;
   textAlignment = self->_textAlignment;
@@ -137,9 +137,9 @@
   [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setNumberOfLines:textAlignment];
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  self->_lineBreakMode = a3;
+  self->_lineBreakMode = mode;
   [(UILabel *)self->_vibrantMaskLabel setLineBreakMode:?];
   nonVibrantLegibilityLabel = self->_nonVibrantLegibilityLabel;
   lineBreakMode = self->_lineBreakMode;
@@ -147,9 +147,9 @@
   [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setLineBreakMode:lineBreakMode];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(SBUIVibrantButton *)self _shouldUseVibrancy:a3.width])
+  if ([(SBUIVibrantButton *)self _shouldUseVibrancy:fits.width])
   {
 
     [(SBUIVibrantButton *)self _sizeThatFitsWithVibrancy];
@@ -181,19 +181,19 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   nonVibrantGlyph = self->_nonVibrantGlyph;
-  v5 = a3;
-  [(UIView *)nonVibrantGlyph setBackgroundColor:v5];
-  [(UIView *)self->_vibrantGlyph setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIView *)nonVibrantGlyph setBackgroundColor:colorCopy];
+  [(UIView *)self->_vibrantGlyph setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SBUIVibrantButton;
-  [(SBUIVibrantButton *)&v4 setHighlighted:a3];
+  [(SBUIVibrantButton *)&v4 setHighlighted:highlighted];
   [(SBUIVibrantButton *)self _updateForState];
 }
 
@@ -204,8 +204,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 _graphicsQuality] == 100;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice _graphicsQuality] == 100;
 
   return v3;
 }
@@ -259,8 +259,8 @@
       [(UIView *)self->_vibrantMaskView addSubview:self->_vibrantMaskLabel];
       [(UILabel *)self->_vibrantMaskLabel setText:self->_title];
       v18 = self->_vibrantMaskLabel;
-      v19 = [objc_opt_class() _labelFont];
-      [(UILabel *)v18 setFont:v19];
+      _labelFont = [objc_opt_class() _labelFont];
+      [(UILabel *)v18 setFont:_labelFont];
 
       [(UILabel *)self->_vibrantMaskLabel setAdjustsFontSizeToFitWidth:1];
       [(UILabel *)self->_vibrantMaskLabel setMinimumScaleFactor:self->_minimumTitleScaleFactor];
@@ -328,8 +328,8 @@
         title = &stru_1F1D7ED48;
       }
 
-      v37 = [objc_opt_class() _labelFont];
-      v38 = [(SBUILegibilityLabel *)v33 initWithSettings:legibilitySettings strength:title string:v37 font:v35];
+      _labelFont2 = [objc_opt_class() _labelFont];
+      v38 = [(SBUILegibilityLabel *)v33 initWithSettings:legibilitySettings strength:title string:_labelFont2 font:v35];
       v39 = self->_nonVibrantLegibilityLabel;
       self->_nonVibrantLegibilityLabel = v38;
 
@@ -361,9 +361,9 @@
   return result;
 }
 
-- (CGSize)_sizeThatFitsForLabelView:(id)a3
+- (CGSize)_sizeThatFitsForLabelView:(id)view
 {
-  [a3 sizeThatFits:{100.0, 3.40282347e38}];
+  [view sizeThatFits:{100.0, 3.40282347e38}];
   v5 = v4;
   [(UIImage *)self->_glyphImage size];
   if (v5 >= v6)
@@ -377,14 +377,14 @@
   return result;
 }
 
-- (CGRect)_labelFrameForSize:(CGSize)a3 baselineOffset:(double)a4 inRect:(CGRect)a5
+- (CGRect)_labelFrameForSize:(CGSize)size baselineOffset:(double)offset inRect:(CGRect)rect
 {
   UIRectCenteredXInRect();
 
-  return CGRectOffset(*&v6, 0.0, a4);
+  return CGRectOffset(*&v6, 0.0, offset);
 }
 
-- (CGRect)_glyphFrameForSize:(CGSize)a3 inRect:(CGRect)a4
+- (CGRect)_glyphFrameForSize:(CGSize)size inRect:(CGRect)rect
 {
   UIRectInset();
   UIRectCenteredXInRectScale();
@@ -491,9 +491,9 @@
 
 - (double)_alphaForState
 {
-  v2 = [(SBUIVibrantButton *)self isHighlighted];
+  isHighlighted = [(SBUIVibrantButton *)self isHighlighted];
   result = 0.2;
-  if (!v2)
+  if (!isHighlighted)
   {
     return 1.0;
   }
@@ -508,12 +508,12 @@
   [(SBUIVibrantButton *)self setAlpha:?];
 }
 
-- (void)setVibrantSettings:(id)a3
+- (void)setVibrantSettings:(id)settings
 {
-  v9 = a3;
-  if ([(SBUIVibrantButton *)self _shouldUseVibrancy]&& ([(_SBFVibrantSettings *)self->_vibrantSettings isEqual:v9]& 1) == 0)
+  settingsCopy = settings;
+  if ([(SBUIVibrantButton *)self _shouldUseVibrancy]&& ([(_SBFVibrantSettings *)self->_vibrantSettings isEqual:settingsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_vibrantSettings, a3);
+    objc_storeStrong(&self->_vibrantSettings, settings);
     [(UIView *)self->_vibrantGlyphTintView removeFromSuperview];
     vibrantGlyphTintView = self->_vibrantGlyphTintView;
     self->_vibrantGlyphTintView = 0;
@@ -528,18 +528,18 @@
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v21 = a3;
-  v5 = [(SBUIVibrantButton *)self _shouldUseVibrancy];
-  v6 = v21;
-  if (v5)
+  viewCopy = view;
+  _shouldUseVibrancy = [(SBUIVibrantButton *)self _shouldUseVibrancy];
+  v6 = viewCopy;
+  if (_shouldUseVibrancy)
   {
     vibrantGlyphBackgroundView = self->_vibrantGlyphBackgroundView;
-    if (vibrantGlyphBackgroundView != v21)
+    if (vibrantGlyphBackgroundView != viewCopy)
     {
       [(UIView *)vibrantGlyphBackgroundView removeFromSuperview];
-      objc_storeStrong(&self->_vibrantGlyphBackgroundView, a3);
+      objc_storeStrong(&self->_vibrantGlyphBackgroundView, view);
       [(UIView *)self->_vibrantGlyph addSubview:self->_vibrantGlyphBackgroundView];
       [(UIView *)self->_vibrantGlyph sendSubviewToBack:self->_vibrantGlyphBackgroundView];
       vibrantGlyphBackgroundView = self->_vibrantGlyphBackgroundView;
@@ -559,46 +559,46 @@
     v23.origin.y = v11;
     v23.size.width = v13;
     v23.size.height = v15;
-    v5 = CGRectEqualToRect(v23, v24);
-    v6 = v21;
-    if ((v5 & 1) == 0)
+    _shouldUseVibrancy = CGRectEqualToRect(v23, v24);
+    v6 = viewCopy;
+    if ((_shouldUseVibrancy & 1) == 0)
     {
       v20 = self->_vibrantGlyphBackgroundView;
       [(UIView *)self->_vibrantGlyph bounds];
-      v5 = [(UIView *)v20 setFrame:?];
-      v6 = v21;
+      _shouldUseVibrancy = [(UIView *)v20 setFrame:?];
+      v6 = viewCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_shouldUseVibrancy, v6);
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  self->_strength = a3;
-  v5 = [(SBUIVibrantButton *)self _lazyGlyphLegibilityView];
-  [v5 setStrength:a3];
+  self->_strength = strength;
+  _lazyGlyphLegibilityView = [(SBUIVibrantButton *)self _lazyGlyphLegibilityView];
+  [_lazyGlyphLegibilityView setStrength:strength];
 
   nonVibrantLegibilityLabel = self->_nonVibrantLegibilityLabel;
 
-  [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setStrength:a3];
+  [(SBUILegibilityLabel *)nonVibrantLegibilityLabel setStrength:strength];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
-  v6 = a3;
-  v5 = [(SBUIVibrantButton *)self _lazyGlyphLegibilityView];
-  [v5 updateForChangedSettings:v6];
+  objc_storeStrong(&self->_legibilitySettings, settings);
+  settingsCopy = settings;
+  _lazyGlyphLegibilityView = [(SBUIVibrantButton *)self _lazyGlyphLegibilityView];
+  [_lazyGlyphLegibilityView updateForChangedSettings:settingsCopy];
 
-  [(SBUILegibilityLabel *)self->_nonVibrantLegibilityLabel setLegibilitySettings:v6];
+  [(SBUILegibilityLabel *)self->_nonVibrantLegibilityLabel setLegibilitySettings:settingsCopy];
 }
 
-- (void)setLegibilitySettings:(id)a3 textStrength:(double)a4
+- (void)setLegibilitySettings:(id)settings textStrength:(double)strength
 {
-  v6 = a3;
-  [(SBUIVibrantButton *)self setStrength:a4];
-  [(SBUIVibrantButton *)self setLegibilitySettings:v6];
+  settingsCopy = settings;
+  [(SBUIVibrantButton *)self setStrength:strength];
+  [(SBUIVibrantButton *)self setLegibilitySettings:settingsCopy];
 }
 
 @end

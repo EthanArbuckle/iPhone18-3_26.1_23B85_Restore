@@ -1,21 +1,21 @@
 @interface MapsSuggestionsSourceWrapper
-- (BOOL)attachSource:(id)a3;
-- (BOOL)detachSource:(id)a3;
+- (BOOL)attachSource:(id)source;
+- (BOOL)detachSource:(id)source;
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsSourceWrapper)initWithMemory:(id)a3 locationUpdater:(id)a4;
+- (MapsSuggestionsSourceWrapper)initWithMemory:(id)memory locationUpdater:(id)updater;
 - (NSString)description;
 - (NSString)uniqueName;
-- (unint64_t)addOrUpdateSuggestionEntries:(id)a3 source:(id)a4;
-- (void)addMonitoredXPCConnection:(id)a3;
+- (unint64_t)addOrUpdateSuggestionEntries:(id)entries source:(id)source;
+- (void)addMonitoredXPCConnection:(id)connection;
 - (void)dealloc;
 - (void)didLoseLocationPermission;
-- (void)didUpdateLocation:(id)a3;
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5;
-- (void)feedbackForEntryData:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5;
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5;
-- (void)forceEarlyUpdateForType:(int64_t)a3 forXPCConnection:(id)a4 handler:(id)a5;
-- (void)removeEntryData:(id)a3 behavior:(int64_t)a4 forXPCConnection:(id)a5 handler:(id)a6;
-- (void)removeMonitoredXPCConnection:(id)a3;
+- (void)didUpdateLocation:(id)location;
+- (void)feedbackForContact:(id)contact action:(int64_t)action forXPCConnection:(id)connection;
+- (void)feedbackForEntryData:(id)data action:(int64_t)action forXPCConnection:(id)connection;
+- (void)feedbackForMapItem:(id)item action:(int64_t)action forXPCConnection:(id)connection;
+- (void)forceEarlyUpdateForType:(int64_t)type forXPCConnection:(id)connection handler:(id)handler;
+- (void)removeEntryData:(id)data behavior:(int64_t)behavior forXPCConnection:(id)connection handler:(id)handler;
+- (void)removeMonitoredXPCConnection:(id)connection;
 @end
 
 @implementation MapsSuggestionsSourceWrapper
@@ -27,10 +27,10 @@
   return [v2 description];
 }
 
-- (MapsSuggestionsSourceWrapper)initWithMemory:(id)a3 locationUpdater:(id)a4
+- (MapsSuggestionsSourceWrapper)initWithMemory:(id)memory locationUpdater:(id)updater
 {
-  objc_initWeak(&location, a3);
-  objc_initWeak(&v25, a4);
+  objc_initWeak(&location, memory);
+  objc_initWeak(&v25, updater);
   v24.receiver = self;
   v24.super_class = MapsSuggestionsSourceWrapper;
   v6 = [(MapsSuggestionsSourceWrapper *)&v24 init];
@@ -45,14 +45,14 @@
     v11 = objc_loadWeakRetained(&v25);
     v12 = objc_storeWeak(&v6->_locationUpdater, v11);
 
-    v13 = [v10 resourceDepot];
-    [v13 setOneSourceDelegate:v6];
+    resourceDepot = [v10 resourceDepot];
+    [resourceDepot setOneSourceDelegate:v6];
 
     objc_storeWeak(&v6->_memory, v10);
     if (v12)
     {
-      v14 = [v10 resourceDepot];
-      [v14 setOneLocationUpdater:v12];
+      resourceDepot2 = [v10 resourceDepot];
+      [resourceDepot2 setOneLocationUpdater:v12];
     }
 
     v15 = [v12 startLocationUpdatesForDelegate:v6];
@@ -64,8 +64,8 @@
     connections = v6->_connections;
     v6->_connections = v18;
 
-    v20 = [v10 resourceDepot];
-    v21 = [MapsSuggestionsCompositeSourceBuilder buildCompositeSourceFromResourceDepot:v20];
+    resourceDepot3 = [v10 resourceDepot];
+    v21 = [MapsSuggestionsCompositeSourceBuilder buildCompositeSourceFromResourceDepot:resourceDepot3];
     source = v6->_source;
     v6->_source = v21;
   }
@@ -119,14 +119,14 @@
   return v2;
 }
 
-- (void)addMonitoredXPCConnection:(id)a3
+- (void)addMonitoredXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "addMonitoredXPCConnection:%@", buf, 0xCu);
   }
 
@@ -137,22 +137,22 @@
   v8[2] = sub_10003CBAC;
   v8[3] = &unk_100075060;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)removeMonitoredXPCConnection:(id)a3
+- (void)removeMonitoredXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "removeMonitoredXPCConnection:%@", buf, 0xCu);
   }
 
@@ -162,22 +162,22 @@
   v8[2] = sub_10003CE24;
   v8[3] = &unk_100075230;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_sync(queue, v8);
 }
 
-- (void)forceEarlyUpdateForType:(int64_t)a3 forXPCConnection:(id)a4 handler:(id)a5
+- (void)forceEarlyUpdateForType:(int64_t)type forXPCConnection:(id)connection handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 67109378;
-    HIDWORD(buf) = a3;
+    HIDWORD(buf) = type;
     v19 = 2112;
-    v20 = v8;
+    v20 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "forceEarlyUpdateForType:%d forXPCConnection:%@", &buf, 0x12u);
   }
 
@@ -188,27 +188,27 @@
   v14[2] = sub_10003CFE4;
   v14[3] = &unk_1000763A8;
   objc_copyWeak(v17, &buf);
-  v17[1] = a3;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v17[1] = type;
+  v15 = connectionCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = connectionCopy;
   dispatch_async(queue, v14);
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&buf);
 }
 
-- (void)removeEntryData:(id)a3 behavior:(int64_t)a4 forXPCConnection:(id)a5 handler:(id)a6
+- (void)removeEntryData:(id)data behavior:(int64_t)behavior forXPCConnection:(id)connection handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v24 = v11;
+    v24 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "removeEntryData:behavior:forXPCConnection:%@", buf, 0xCu);
   }
 
@@ -219,30 +219,30 @@
   block[2] = sub_10003D528;
   block[3] = &unk_1000763D0;
   objc_copyWeak(v22, buf);
-  v19 = v11;
-  v20 = v10;
-  v22[1] = a4;
-  v21 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
+  v19 = connectionCopy;
+  v20 = dataCopy;
+  v22[1] = behavior;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = dataCopy;
+  v17 = connectionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v22);
   objc_destroyWeak(buf);
 }
 
-- (void)feedbackForEntryData:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5
+- (void)feedbackForEntryData:(id)data action:(int64_t)action forXPCConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  connectionCopy = connection;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v19 = "[MapsSuggestionsSourceWrapper feedbackForEntryData:action:forXPCConnection:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -253,28 +253,28 @@
   v14[2] = sub_10003D87C;
   v14[3] = &unk_1000763F8;
   objc_copyWeak(v17, buf);
-  v15 = v9;
-  v16 = v8;
-  v17[1] = a4;
-  v12 = v8;
-  v13 = v9;
+  v15 = connectionCopy;
+  v16 = dataCopy;
+  v17[1] = action;
+  v12 = dataCopy;
+  v13 = connectionCopy;
   dispatch_async(queue, v14);
 
   objc_destroyWeak(v17);
   objc_destroyWeak(buf);
 }
 
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5
+- (void)feedbackForMapItem:(id)item action:(int64_t)action forXPCConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  connectionCopy = connection;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v19 = "[MapsSuggestionsSourceWrapper feedbackForMapItem:action:forXPCConnection:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -285,28 +285,28 @@
   v14[2] = sub_10003DBB8;
   v14[3] = &unk_1000763F8;
   objc_copyWeak(v17, buf);
-  v15 = v9;
-  v16 = v8;
-  v17[1] = a4;
-  v12 = v8;
-  v13 = v9;
+  v15 = connectionCopy;
+  v16 = itemCopy;
+  v17[1] = action;
+  v12 = itemCopy;
+  v13 = connectionCopy;
   dispatch_async(queue, v14);
 
   objc_destroyWeak(v17);
   objc_destroyWeak(buf);
 }
 
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4 forXPCConnection:(id)a5
+- (void)feedbackForContact:(id)contact action:(int64_t)action forXPCConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  connectionCopy = connection;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v19 = "[MapsSuggestionsSourceWrapper feedbackForContact:action:forXPCConnection:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -317,23 +317,23 @@
   v14[2] = sub_10003DEC0;
   v14[3] = &unk_1000763F8;
   objc_copyWeak(v17, buf);
-  v15 = v9;
-  v16 = v8;
-  v17[1] = a4;
-  v12 = v8;
-  v13 = v9;
+  v15 = connectionCopy;
+  v16 = contactCopy;
+  v17[1] = action;
+  v12 = contactCopy;
+  v13 = connectionCopy;
   dispatch_async(queue, v14);
 
   objc_destroyWeak(v17);
   objc_destroyWeak(buf);
 }
 
-- (unint64_t)addOrUpdateSuggestionEntries:(id)a3 source:(id)a4
+- (unint64_t)addOrUpdateSuggestionEntries:(id)entries source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  sourceCopy = source;
   objc_copyWeak(&to, &self->_memory);
-  v8 = [v6 copy];
+  v8 = [entriesCopy copy];
   objc_initWeak(&location, self);
   queue = self->_queue;
   v14 = _NSConcreteStackBlock;
@@ -344,7 +344,7 @@
   objc_copyWeak(&v21, &to);
   v10 = v8;
   v18 = v10;
-  v11 = v7;
+  v11 = sourceCopy;
   v19 = v11;
   dispatch_async(queue, &v14);
   v12 = [v10 count];
@@ -357,11 +357,11 @@
   return v12;
 }
 
-- (BOOL)attachSource:(id)a3
+- (BOOL)attachSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
     queue = self->_queue;
     v9[0] = _NSConcreteStackBlock;
@@ -369,7 +369,7 @@
     v9[2] = sub_10003E600;
     v9[3] = &unk_100075230;
     v9[4] = self;
-    v10 = v4;
+    v10 = sourceCopy;
     dispatch_sync(queue, v9);
   }
 
@@ -393,25 +393,25 @@
   return v5 != 0;
 }
 
-- (BOOL)detachSource:(id)a3
+- (BOOL)detachSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003E7A8;
   v8[3] = &unk_100075230;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   dispatch_sync(queue, v8);
 
   return 1;
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -419,8 +419,8 @@
   block[2] = sub_10003E9B0;
   block[3] = &unk_100075060;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);

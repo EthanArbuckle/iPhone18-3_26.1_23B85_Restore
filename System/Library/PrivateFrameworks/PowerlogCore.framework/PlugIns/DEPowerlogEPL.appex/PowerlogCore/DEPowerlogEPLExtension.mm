@@ -1,19 +1,19 @@
 @interface DEPowerlogEPLExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)generateBatteryUIPlistFile;
 - (id)getArchives;
 - (id)getBatteryUIPlists;
 - (id)getPowerlog;
 - (id)getQuarantinedPowerlogs;
-- (id)getTimestampString:(id)a3;
+- (id)getTimestampString:(id)string;
 - (id)getUpgradeLogs;
 @end
 
 @implementation DEPowerlogEPLExtension
 
-- (id)getTimestampString:(id)a3
+- (id)getTimestampString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setDateFormat:@"yyyy-MM-dd-HH-mm"];
@@ -24,7 +24,7 @@
   [v4 setCalendar:v7];
 
   [v4 setLocale:v5];
-  v8 = [v4 stringFromDate:v3];
+  v8 = [v4 stringFromDate:stringCopy];
 
   return v8;
 }
@@ -234,23 +234,23 @@
   return v13;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = +[NSMutableArray array];
-  v5 = [(DEPowerlogEPLExtension *)self getPowerlog];
+  getPowerlog = [(DEPowerlogEPLExtension *)self getPowerlog];
   v6 = PLLogDE();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100003018();
   }
 
-  if (v5)
+  if (getPowerlog)
   {
-    v7 = [v5 objectForKeyedSubscript:@"path"];
+    v7 = [getPowerlog objectForKeyedSubscript:@"path"];
 
     if (v7)
     {
-      v8 = [v5 objectForKeyedSubscript:@"path"];
+      v8 = [getPowerlog objectForKeyedSubscript:@"path"];
       v9 = [DEAttachmentItem attachmentWithPath:v8];
 
       [v9 setDeleteOnAttach:&__kCFBooleanTrue];
@@ -265,9 +265,9 @@
     sub_100003080();
   }
 
-  v55 = v5;
+  v55 = getPowerlog;
 
-  v11 = [(DEPowerlogEPLExtension *)self getQuarantinedPowerlogs];
+  getQuarantinedPowerlogs = [(DEPowerlogEPLExtension *)self getQuarantinedPowerlogs];
   v12 = PLLogDE();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -278,7 +278,7 @@
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v13 = v11;
+  v13 = getQuarantinedPowerlogs;
   v14 = [v13 countByEnumeratingWithState:&v68 objects:v79 count:16];
   if (v14)
   {
@@ -311,7 +311,7 @@
     sub_100003150();
   }
 
-  v20 = [(DEPowerlogEPLExtension *)self getArchives];
+  getArchives = [(DEPowerlogEPLExtension *)self getArchives];
   v21 = PLLogDE();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
@@ -322,7 +322,7 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v22 = v20;
+  v22 = getArchives;
   v23 = [v22 countByEnumeratingWithState:&v64 objects:v78 count:16];
   if (v23)
   {
@@ -355,16 +355,16 @@
     sub_100003220();
   }
 
-  v29 = [(DEPowerlogEPLExtension *)self generateBatteryUIPlistFile];
+  generateBatteryUIPlistFile = [(DEPowerlogEPLExtension *)self generateBatteryUIPlistFile];
   v30 = PLLogDE();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     sub_100003288();
   }
 
-  if (v29)
+  if (generateBatteryUIPlistFile)
   {
-    v31 = [DEAttachmentItem attachmentWithPath:v29];
+    v31 = [DEAttachmentItem attachmentWithPath:generateBatteryUIPlistFile];
     [v31 setDeleteOnAttach:&__kCFBooleanTrue];
     [v31 setShouldCompress:&__kCFBooleanTrue];
     [v4 addObject:v31];
@@ -376,9 +376,9 @@
     sub_1000032F0();
   }
 
-  v54 = v29;
+  v54 = generateBatteryUIPlistFile;
 
-  v33 = [(DEPowerlogEPLExtension *)self getBatteryUIPlists];
+  getBatteryUIPlists = [(DEPowerlogEPLExtension *)self getBatteryUIPlists];
   v34 = PLLogDE();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
@@ -389,7 +389,7 @@
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v35 = v33;
+  v35 = getBatteryUIPlists;
   v36 = [v35 countByEnumeratingWithState:&v60 objects:v77 count:16];
   if (v36)
   {
@@ -422,7 +422,7 @@
     sub_1000033C0();
   }
 
-  v42 = [(DEPowerlogEPLExtension *)self getUpgradeLogs];
+  getUpgradeLogs = [(DEPowerlogEPLExtension *)self getUpgradeLogs];
   v43 = PLLogDE();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
@@ -433,7 +433,7 @@
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v44 = v42;
+  v44 = getUpgradeLogs;
   v45 = [v44 countByEnumeratingWithState:&v56 objects:v76 count:16];
   if (v45)
   {

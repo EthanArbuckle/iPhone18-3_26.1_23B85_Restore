@@ -9,20 +9,20 @@
   v8 = a3;
   if (a4 < 0)
   {
-    v6 = [a1 superview];
+    superview = [self superview];
 
     v7 = v8;
-    if (v6 == v8)
+    if (superview == v8)
     {
       goto LABEL_6;
     }
 
-    [v8 addSubview:a1];
+    [v8 addSubview:self];
   }
 
   else
   {
-    [v8 insertSubview:a1 atIndex:a4];
+    [v8 insertSubview:self atIndex:a4];
   }
 
   v7 = v8;

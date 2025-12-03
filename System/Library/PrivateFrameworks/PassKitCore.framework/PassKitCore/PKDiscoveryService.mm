@@ -1,49 +1,49 @@
 @interface PKDiscoveryService
 + (PKDiscoveryService)sharedInstance;
 - (PKDiscoveryService)init;
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4;
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion;
 - (id)observers;
 - (int64_t)welcomeCardCount;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)beginReporingDiscoveryAnalytics;
-- (void)completedCTAForItem:(id)a3;
-- (void)completedDiscoveryItemCTAWithCompletion:(id)a3;
-- (void)deleteRuleWithIdentifier:(id)a3 completion:(id)a4;
-- (void)dialogRequestsChangedForPlacement:(id)a3;
-- (void)dialogRequestsForPlacement:(id)a3 completion:(id)a4;
-- (void)discoveryArticleLayoutForItemWithIdentifier:(id)a3 completion:(id)a4;
-- (void)discoveryArticleLayoutsUpdated:(id)a3;
-- (void)discoveryArticleLayoutsWithCompletion:(id)a3;
-- (void)discoveryEngagementMessagesForPassUniqueIdentifier:(id)a3 active:(unint64_t)a4 completion:(id)a5;
+- (void)completedCTAForItem:(id)item;
+- (void)completedDiscoveryItemCTAWithCompletion:(id)completion;
+- (void)deleteRuleWithIdentifier:(id)identifier completion:(id)completion;
+- (void)dialogRequestsChangedForPlacement:(id)placement;
+- (void)dialogRequestsForPlacement:(id)placement completion:(id)completion;
+- (void)discoveryArticleLayoutForItemWithIdentifier:(id)identifier completion:(id)completion;
+- (void)discoveryArticleLayoutsUpdated:(id)updated;
+- (void)discoveryArticleLayoutsWithCompletion:(id)completion;
+- (void)discoveryEngagementMessagesForPassUniqueIdentifier:(id)identifier active:(unint64_t)active completion:(id)completion;
 - (void)discoveryEngagementMessagesUpdated;
-- (void)discoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 isScrollable:(BOOL)a5;
-- (void)discoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 wasScrolledToTheBottom:(BOOL)a5;
-- (void)discoveryItemWithIdentifier:(id)a3 launchedWithReferralSource:(unint64_t)a4;
-- (void)discoveryItemsWithCompletion:(id)a3;
-- (void)dismissDialogRequestWithIdentifier:(id)a3 forPlacement:(id)a4 completion:(id)a5;
-- (void)dismissedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 cardSize:(int64_t)a5;
-- (void)dismissedDiscoveryItems:(id)a3;
-- (void)displayedDiscoveryEngagementMessageWithIdentifier:(id)a3;
-- (void)displayedDiscoveryItemWithIdentifier:(id)a3 isWelcomeCard:(BOOL)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 callToAction:(int64_t)a7 cardSize:(int64_t)a8;
+- (void)discoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action isScrollable:(BOOL)scrollable;
+- (void)discoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action wasScrolledToTheBottom:(BOOL)bottom;
+- (void)discoveryItemWithIdentifier:(id)identifier launchedWithReferralSource:(unint64_t)source;
+- (void)discoveryItemsWithCompletion:(id)completion;
+- (void)dismissDialogRequestWithIdentifier:(id)identifier forPlacement:(id)placement completion:(id)completion;
+- (void)dismissedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action cardSize:(int64_t)size;
+- (void)dismissedDiscoveryItems:(id)items;
+- (void)displayedDiscoveryEngagementMessageWithIdentifier:(id)identifier;
+- (void)displayedDiscoveryItemWithIdentifier:(id)identifier isWelcomeCard:(BOOL)card afterSwipingToCard:(BOOL)toCard multipleStoryCardsAvailable:(BOOL)available callToAction:(int64_t)action cardSize:(int64_t)size;
 - (void)endReporingDiscoveryAnalytics;
-- (void)evaluateRulesWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)expandedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 cardSize:(int64_t)a7;
-- (void)fetchUserProperties:(id)a3 withParameters:(id)a4 completion:(id)a5;
-- (void)fireEngagementEventNamed:(id)a3 completion:(id)a4;
-- (void)insertDiscoveryEngagementMessages:(id)a3 completion:(id)a4;
-- (void)insertDiscoveryItems:(id)a3 discoveryArticleLayouts:(id)a4 completion:(id)a5;
-- (void)insertRule:(id)a3 completion:(id)a4;
-- (void)manifestAllowsMiniCardsWithCompletion:(id)a3;
-- (void)processDiscoveryItemsAndMessagesWithCompletion:(id)a3;
-- (void)removeDiscoveryMessageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)removeDiscoveryUserNotificationsWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)evaluateRulesWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)expandedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action afterSwipingToCard:(BOOL)card multipleStoryCardsAvailable:(BOOL)available cardSize:(int64_t)size;
+- (void)fetchUserProperties:(id)properties withParameters:(id)parameters completion:(id)completion;
+- (void)fireEngagementEventNamed:(id)named completion:(id)completion;
+- (void)insertDiscoveryEngagementMessages:(id)messages completion:(id)completion;
+- (void)insertDiscoveryItems:(id)items discoveryArticleLayouts:(id)layouts completion:(id)completion;
+- (void)insertRule:(id)rule completion:(id)completion;
+- (void)manifestAllowsMiniCardsWithCompletion:(id)completion;
+- (void)processDiscoveryItemsAndMessagesWithCompletion:(id)completion;
+- (void)removeDiscoveryMessageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)removeDiscoveryUserNotificationsWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)removedAllDiscoveryItems;
-- (void)rulesWithCompletion:(id)a3;
-- (void)tappedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 cardSize:(int64_t)a5;
-- (void)updateDiscoveryEngagementMessageWithIdentifier:(id)a3 forAction:(int64_t)a4 completion:(id)a5;
-- (void)updateDiscoveryItemWithIdentifier:(id)a3 forAction:(int64_t)a4 completion:(id)a5;
-- (void)updateDiscoveryManifestWithCompletion:(id)a3;
+- (void)rulesWithCompletion:(id)completion;
+- (void)tappedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action cardSize:(int64_t)size;
+- (void)updateDiscoveryEngagementMessageWithIdentifier:(id)identifier forAction:(int64_t)action completion:(id)completion;
+- (void)updateDiscoveryItemWithIdentifier:(id)identifier forAction:(int64_t)action completion:(id)completion;
+- (void)updateDiscoveryManifestWithCompletion:(id)completion;
 @end
 
 @implementation PKDiscoveryService
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __36__PKDiscoveryService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_286 != -1)
   {
     dispatch_once(&_MergedGlobals_286, block);
@@ -97,9 +97,9 @@
     *(v3 + 1) = v9;
 
     *(v3 + 8) = 0;
-    v11 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     self = *(v3 + 3);
-    *(v3 + 3) = v11;
+    *(v3 + 3) = pk_weakObjectsHashTableUsingPointerPersonality;
 LABEL_7:
   }
 
@@ -170,8 +170,8 @@ void __53__PKDiscoveryService_beginReporingDiscoveryAnalytics__block_invoke_2(ui
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PKDiscoveryService *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  observers = [(PKDiscoveryService *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -183,7 +183,7 @@ void __53__PKDiscoveryService_beginReporingDiscoveryAnalytics__block_invoke_2(ui
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -196,7 +196,7 @@ void __53__PKDiscoveryService_beginReporingDiscoveryAnalytics__block_invoke_2(ui
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -206,24 +206,24 @@ void __53__PKDiscoveryService_beginReporingDiscoveryAnalytics__block_invoke_2(ui
 - (id)observers
 {
   os_unfair_lock_lock(&self->_observersLock);
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
-  v4 = [v3 copy];
+  v4 = [allObjects copy];
 
   return v4;
 }
 
-- (id)errorHandlerForMethod:(SEL)a3 completion:(id)a4
+- (id)errorHandlerForMethod:(SEL)method completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PKDiscoveryService_errorHandlerForMethod_completion___block_invoke;
   aBlock[3] = &unk_1E79C8E18;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  methodCopy = method;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v9 = _Block_copy(v8);
 
@@ -274,17 +274,17 @@ uint64_t __55__PKDiscoveryService_errorHandlerForMethod_completion___block_invok
   return result;
 }
 
-- (void)discoveryArticleLayoutsWithCompletion:(id)a3
+- (void)discoveryArticleLayoutsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__PKDiscoveryService_discoveryArticleLayoutsWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -346,19 +346,19 @@ uint64_t __60__PKDiscoveryService_discoveryArticleLayoutsWithCompletion___block_
   return result;
 }
 
-- (void)discoveryArticleLayoutForItemWithIdentifier:(id)a3 completion:(id)a4
+- (void)discoveryArticleLayoutForItemWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__PKDiscoveryService_discoveryArticleLayoutForItemWithIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -368,7 +368,7 @@ uint64_t __60__PKDiscoveryService_discoveryArticleLayoutsWithCompletion___block_
     v13[3] = &unk_1E79E4880;
     v13[4] = self;
     v14 = v9;
-    [v12 discoveryArticleLayoutForItemWithIdentifier:v10 completion:v13];
+    [v12 discoveryArticleLayoutForItemWithIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -419,17 +419,17 @@ uint64_t __77__PKDiscoveryService_discoveryArticleLayoutForItemWithIdentifier_co
   return result;
 }
 
-- (void)updateDiscoveryManifestWithCompletion:(id)a3
+- (void)updateDiscoveryManifestWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__PKDiscoveryService_updateDiscoveryManifestWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -489,17 +489,17 @@ uint64_t __60__PKDiscoveryService_updateDiscoveryManifestWithCompletion___block_
   return result;
 }
 
-- (void)manifestAllowsMiniCardsWithCompletion:(id)a3
+- (void)manifestAllowsMiniCardsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__PKDiscoveryService_manifestAllowsMiniCardsWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -524,19 +524,19 @@ uint64_t __60__PKDiscoveryService_manifestAllowsMiniCardsWithCompletion___block_
   return result;
 }
 
-- (void)updateDiscoveryItemWithIdentifier:(id)a3 forAction:(int64_t)a4 completion:(id)a5
+- (void)updateDiscoveryItemWithIdentifier:(id)identifier forAction:(int64_t)action completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__PKDiscoveryService_updateDiscoveryItemWithIdentifier_forAction_completion___block_invoke;
     v17[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v18 = v11;
-    v12 = a3;
+    identifierCopy = identifier;
     v13 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v17];
     v14 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -546,7 +546,7 @@ uint64_t __60__PKDiscoveryService_manifestAllowsMiniCardsWithCompletion___block_
     v15[3] = &unk_1E79C4C70;
     v15[4] = self;
     v16 = v11;
-    [v14 updateDiscoveryItemWithIdentifier:v12 forAction:a4 completion:v15];
+    [v14 updateDiscoveryItemWithIdentifier:identifierCopy forAction:action completion:v15];
   }
 }
 
@@ -595,17 +595,17 @@ uint64_t __77__PKDiscoveryService_updateDiscoveryItemWithIdentifier_forAction_co
   return result;
 }
 
-- (void)discoveryItemsWithCompletion:(id)a3
+- (void)discoveryItemsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__PKDiscoveryService_discoveryItemsWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -667,20 +667,20 @@ uint64_t __51__PKDiscoveryService_discoveryItemsWithCompletion___block_invoke_3(
   return result;
 }
 
-- (void)insertDiscoveryItems:(id)a3 discoveryArticleLayouts:(id)a4 completion:(id)a5
+- (void)insertDiscoveryItems:(id)items discoveryArticleLayouts:(id)layouts completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __78__PKDiscoveryService_insertDiscoveryItems_discoveryArticleLayouts_completion___block_invoke;
     v18[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v19 = v11;
-    v12 = a4;
-    v13 = a3;
+    layoutsCopy = layouts;
+    itemsCopy = items;
     v14 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v18];
     v15 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -690,7 +690,7 @@ uint64_t __51__PKDiscoveryService_discoveryItemsWithCompletion___block_invoke_3(
     v16[3] = &unk_1E79C4C70;
     v16[4] = self;
     v17 = v11;
-    [v15 insertDiscoveryItems:v13 discoveryArticleLayouts:v12 completion:v16];
+    [v15 insertDiscoveryItems:itemsCopy discoveryArticleLayouts:layoutsCopy completion:v16];
   }
 }
 
@@ -717,9 +717,9 @@ void __78__PKDiscoveryService_insertDiscoveryItems_discoveryArticleLayouts_compl
   dispatch_async(v4, block);
 }
 
-- (void)displayedDiscoveryEngagementMessageWithIdentifier:(id)a3
+- (void)displayedDiscoveryEngagementMessageWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v7 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v6];
 
@@ -728,7 +728,7 @@ void __78__PKDiscoveryService_insertDiscoveryItems_discoveryArticleLayouts_compl
   v8[2] = __72__PKDiscoveryService_displayedDiscoveryEngagementMessageWithIdentifier___block_invoke;
   v8[3] = &unk_1E79C7D08;
   v8[4] = self;
-  [v7 displayedDiscoveryEngagementMessageWithIdentifier:v5 completion:v8];
+  [v7 displayedDiscoveryEngagementMessageWithIdentifier:identifierCopy completion:v8];
 }
 
 void __72__PKDiscoveryService_displayedDiscoveryEngagementMessageWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -768,12 +768,12 @@ void __72__PKDiscoveryService_displayedDiscoveryEngagementMessageWithIdentifier_
   }
 }
 
-- (void)displayedDiscoveryItemWithIdentifier:(id)a3 isWelcomeCard:(BOOL)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 callToAction:(int64_t)a7 cardSize:(int64_t)a8
+- (void)displayedDiscoveryItemWithIdentifier:(id)identifier isWelcomeCard:(BOOL)card afterSwipingToCard:(BOOL)toCard multipleStoryCardsAvailable:(BOOL)available callToAction:(int64_t)action cardSize:(int64_t)size
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = a3;
+  availableCopy = available;
+  toCardCopy = toCard;
+  cardCopy = card;
+  identifierCopy = identifier;
   v16 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v17 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v16];
 
@@ -782,7 +782,7 @@ void __72__PKDiscoveryService_displayedDiscoveryEngagementMessageWithIdentifier_
   v18[2] = __142__PKDiscoveryService_displayedDiscoveryItemWithIdentifier_isWelcomeCard_afterSwipingToCard_multipleStoryCardsAvailable_callToAction_cardSize___block_invoke;
   v18[3] = &unk_1E79C7D08;
   v18[4] = self;
-  [v17 displayedDiscoveryItemWithIdentifier:v15 isWelcomeCard:v12 afterSwipingToCard:v11 multipleStoryCardsAvailable:v10 callToAction:a7 cardSize:a8 completion:v18];
+  [v17 displayedDiscoveryItemWithIdentifier:identifierCopy isWelcomeCard:cardCopy afterSwipingToCard:toCardCopy multipleStoryCardsAvailable:availableCopy callToAction:action cardSize:size completion:v18];
 }
 
 void __142__PKDiscoveryService_displayedDiscoveryItemWithIdentifier_isWelcomeCard_afterSwipingToCard_multipleStoryCardsAvailable_callToAction_cardSize___block_invoke(uint64_t a1, void *a2)
@@ -822,11 +822,11 @@ void __142__PKDiscoveryService_displayedDiscoveryItemWithIdentifier_isWelcomeCar
   }
 }
 
-- (void)expandedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 cardSize:(int64_t)a7
+- (void)expandedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action afterSwipingToCard:(BOOL)card multipleStoryCardsAvailable:(BOOL)available cardSize:(int64_t)size
 {
-  v8 = a6;
-  v9 = a5;
-  v13 = a3;
+  availableCopy = available;
+  cardCopy = card;
+  identifierCopy = identifier;
   v14 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v15 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -835,7 +835,7 @@ void __142__PKDiscoveryService_displayedDiscoveryItemWithIdentifier_isWelcomeCar
   v16[2] = __127__PKDiscoveryService_expandedDiscoveryItemWithIdentifier_callToAction_afterSwipingToCard_multipleStoryCardsAvailable_cardSize___block_invoke;
   v16[3] = &unk_1E79C7D08;
   v16[4] = self;
-  [v15 expandedDiscoveryItemWithIdentifier:v13 callToAction:a4 afterSwipingToCard:v9 multipleStoryCardsAvailable:v8 cardSize:a7 completion:v16];
+  [v15 expandedDiscoveryItemWithIdentifier:identifierCopy callToAction:action afterSwipingToCard:cardCopy multipleStoryCardsAvailable:availableCopy cardSize:size completion:v16];
 }
 
 void __127__PKDiscoveryService_expandedDiscoveryItemWithIdentifier_callToAction_afterSwipingToCard_multipleStoryCardsAvailable_cardSize___block_invoke(uint64_t a1, void *a2)
@@ -875,9 +875,9 @@ void __127__PKDiscoveryService_expandedDiscoveryItemWithIdentifier_callToAction_
   }
 }
 
-- (void)dismissedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 cardSize:(int64_t)a5
+- (void)dismissedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action cardSize:(int64_t)size
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v11 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -886,7 +886,7 @@ void __127__PKDiscoveryService_expandedDiscoveryItemWithIdentifier_callToAction_
   v12[2] = __81__PKDiscoveryService_dismissedDiscoveryItemWithIdentifier_callToAction_cardSize___block_invoke;
   v12[3] = &unk_1E79C7D08;
   v12[4] = self;
-  [v11 dismissedDiscoveryItemWithIdentifier:v9 callToAction:a4 cardSize:a5 completion:v12];
+  [v11 dismissedDiscoveryItemWithIdentifier:identifierCopy callToAction:action cardSize:size completion:v12];
 }
 
 void __81__PKDiscoveryService_dismissedDiscoveryItemWithIdentifier_callToAction_cardSize___block_invoke(uint64_t a1, void *a2)
@@ -976,9 +976,9 @@ void __46__PKDiscoveryService_removedAllDiscoveryItems__block_invoke_2(uint64_t 
   }
 }
 
-- (void)tappedDiscoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 cardSize:(int64_t)a5
+- (void)tappedDiscoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action cardSize:(int64_t)size
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v11 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -987,7 +987,7 @@ void __46__PKDiscoveryService_removedAllDiscoveryItems__block_invoke_2(uint64_t 
   v12[2] = __78__PKDiscoveryService_tappedDiscoveryItemWithIdentifier_callToAction_cardSize___block_invoke;
   v12[3] = &unk_1E79C7D08;
   v12[4] = self;
-  [v11 tappedDiscoveryItemCTA:a4 itemIdentifier:v9 cardSize:a5 completion:v12];
+  [v11 tappedDiscoveryItemCTA:action itemIdentifier:identifierCopy cardSize:size completion:v12];
 }
 
 void __78__PKDiscoveryService_tappedDiscoveryItemWithIdentifier_callToAction_cardSize___block_invoke(uint64_t a1, void *a2)
@@ -1027,9 +1027,9 @@ void __78__PKDiscoveryService_tappedDiscoveryItemWithIdentifier_callToAction_car
   }
 }
 
-- (void)completedDiscoveryItemCTAWithCompletion:(id)a3
+- (void)completedDiscoveryItemCTAWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v7 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v6];
 
@@ -1038,8 +1038,8 @@ void __78__PKDiscoveryService_tappedDiscoveryItemWithIdentifier_callToAction_car
   v9[2] = __62__PKDiscoveryService_completedDiscoveryItemCTAWithCompletion___block_invoke;
   v9[3] = &unk_1E79C4C70;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 completedDiscoveryItemCTAWithCompletion:v9];
 }
 
@@ -1089,9 +1089,9 @@ uint64_t __62__PKDiscoveryService_completedDiscoveryItemCTAWithCompletion___bloc
   return result;
 }
 
-- (void)discoveryItemWithIdentifier:(id)a3 launchedWithReferralSource:(unint64_t)a4
+- (void)discoveryItemWithIdentifier:(id)identifier launchedWithReferralSource:(unint64_t)source
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
 
@@ -1100,7 +1100,7 @@ uint64_t __62__PKDiscoveryService_completedDiscoveryItemCTAWithCompletion___bloc
   v10[2] = __77__PKDiscoveryService_discoveryItemWithIdentifier_launchedWithReferralSource___block_invoke;
   v10[3] = &unk_1E79C7D08;
   v10[4] = self;
-  [v9 discoveryItemWithIdentifier:v7 launchedWithReferralSource:a4 completion:v10];
+  [v9 discoveryItemWithIdentifier:identifierCopy launchedWithReferralSource:source completion:v10];
 }
 
 void __77__PKDiscoveryService_discoveryItemWithIdentifier_launchedWithReferralSource___block_invoke(uint64_t a1, void *a2)
@@ -1140,10 +1140,10 @@ void __77__PKDiscoveryService_discoveryItemWithIdentifier_launchedWithReferralSo
   }
 }
 
-- (void)discoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 isScrollable:(BOOL)a5
+- (void)discoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action isScrollable:(BOOL)scrollable
 {
-  v5 = a5;
-  v9 = a3;
+  scrollableCopy = scrollable;
+  identifierCopy = identifier;
   v10 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v11 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1152,7 +1152,7 @@ void __77__PKDiscoveryService_discoveryItemWithIdentifier_launchedWithReferralSo
   v12[2] = __76__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_isScrollable___block_invoke;
   v12[3] = &unk_1E79C7D08;
   v12[4] = self;
-  [v11 discoveryItemWithIdentifier:v9 callToAction:a4 isScrollable:v5 completion:v12];
+  [v11 discoveryItemWithIdentifier:identifierCopy callToAction:action isScrollable:scrollableCopy completion:v12];
 }
 
 void __76__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_isScrollable___block_invoke(uint64_t a1, void *a2)
@@ -1192,10 +1192,10 @@ void __76__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_isScrolla
   }
 }
 
-- (void)discoveryItemWithIdentifier:(id)a3 callToAction:(int64_t)a4 wasScrolledToTheBottom:(BOOL)a5
+- (void)discoveryItemWithIdentifier:(id)identifier callToAction:(int64_t)action wasScrolledToTheBottom:(BOOL)bottom
 {
-  v5 = a5;
-  v9 = a3;
+  bottomCopy = bottom;
+  identifierCopy = identifier;
   v10 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:0];
   v11 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v10];
 
@@ -1204,7 +1204,7 @@ void __76__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_isScrolla
   v12[2] = __86__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_wasScrolledToTheBottom___block_invoke;
   v12[3] = &unk_1E79C7D08;
   v12[4] = self;
-  [v11 discoveryItemWithIdentifier:v9 callToAction:a4 wasScrolledToTheBottom:v5 completion:v12];
+  [v11 discoveryItemWithIdentifier:identifierCopy callToAction:action wasScrolledToTheBottom:bottomCopy completion:v12];
 }
 
 void __86__PKDiscoveryService_discoveryItemWithIdentifier_callToAction_wasScrolledToTheBottom___block_invoke(uint64_t a1, void *a2)
@@ -1327,40 +1327,40 @@ LABEL_7:
   return v6 + v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)discoveryArticleLayoutsUpdated:(id)a3
+- (void)discoveryArticleLayoutsUpdated:(id)updated
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PKDiscoveryService *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(PKDiscoveryService *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1372,36 +1372,36 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 discoveryService:self receivedUpdatedDiscoveryArticleLayouts:v4];
+          [v10 discoveryService:self receivedUpdatedDiscoveryArticleLayouts:updatedCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)completedCTAForItem:(id)a3
+- (void)completedCTAForItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PKDiscoveryService *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(PKDiscoveryService *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1413,36 +1413,36 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 discoveryService:self completedCTAForItem:v4];
+          [v10 discoveryService:self completedCTAForItem:itemCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)dialogRequestsChangedForPlacement:(id)a3
+- (void)dialogRequestsChangedForPlacement:(id)placement
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  placementCopy = placement;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PKDiscoveryService *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(PKDiscoveryService *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1454,37 +1454,37 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 discoveryService:self dialogRequestsChangedForPlacement:v4];
+          [v10 discoveryService:self dialogRequestsChangedForPlacement:placementCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)processDiscoveryItemsAndMessagesWithCompletion:(id)a3
+- (void)processDiscoveryItemsAndMessagesWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PKDiscoveryService_processDiscoveryItemsAndMessagesWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -1522,19 +1522,19 @@ void __69__PKDiscoveryService_processDiscoveryItemsAndMessagesWithCompletion___b
   dispatch_async(v4, block);
 }
 
-- (void)discoveryEngagementMessagesForPassUniqueIdentifier:(id)a3 active:(unint64_t)a4 completion:(id)a5
+- (void)discoveryEngagementMessagesForPassUniqueIdentifier:(id)identifier active:(unint64_t)active completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __91__PKDiscoveryService_discoveryEngagementMessagesForPassUniqueIdentifier_active_completion___block_invoke;
     v17[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v18 = v11;
-    v12 = a3;
+    identifierCopy = identifier;
     v13 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v17];
     v14 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -1544,7 +1544,7 @@ void __69__PKDiscoveryService_processDiscoveryItemsAndMessagesWithCompletion___b
     v15[3] = &unk_1E79C4BD0;
     v15[4] = self;
     v16 = v11;
-    [v14 discoveryEngagementMessagesForPassUniqueIdentifier:v12 active:a4 completion:v15];
+    [v14 discoveryEngagementMessagesForPassUniqueIdentifier:identifierCopy active:active completion:v15];
   }
 }
 
@@ -1573,19 +1573,19 @@ void __91__PKDiscoveryService_discoveryEngagementMessagesForPassUniqueIdentifier
   dispatch_async(v7, block);
 }
 
-- (void)dialogRequestsForPlacement:(id)a3 completion:(id)a4
+- (void)dialogRequestsForPlacement:(id)placement completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__PKDiscoveryService_dialogRequestsForPlacement_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    placementCopy = placement;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -1595,7 +1595,7 @@ void __91__PKDiscoveryService_discoveryEngagementMessagesForPassUniqueIdentifier
     v13[3] = &unk_1E79C4BD0;
     v13[4] = self;
     v14 = v9;
-    [v12 dialogRequestsForPlacement:v10 completion:v13];
+    [v12 dialogRequestsForPlacement:placementCopy completion:v13];
   }
 }
 
@@ -1624,17 +1624,17 @@ void __60__PKDiscoveryService_dialogRequestsForPlacement_completion___block_invo
   dispatch_async(v7, block);
 }
 
-- (void)dismissDialogRequestWithIdentifier:(id)a3 forPlacement:(id)a4 completion:(id)a5
+- (void)dismissDialogRequestWithIdentifier:(id)identifier forPlacement:(id)placement completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PKDiscoveryService_dismissDialogRequestWithIdentifier_forPlacement_completion___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = a4;
-  v12 = a3;
+  placementCopy = placement;
+  identifierCopy = identifier;
   v13 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v18];
   v14 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -1645,7 +1645,7 @@ void __60__PKDiscoveryService_dialogRequestsForPlacement_completion___block_invo
   v16[4] = self;
   v17 = v10;
   v15 = v10;
-  [v14 dismissDialogRequestWithIdentifier:v12 forPlacement:v11 completion:v16];
+  [v14 dismissDialogRequestWithIdentifier:identifierCopy forPlacement:placementCopy completion:v16];
 }
 
 uint64_t __81__PKDiscoveryService_dismissDialogRequestWithIdentifier_forPlacement_completion___block_invoke(uint64_t a1)
@@ -1693,17 +1693,17 @@ uint64_t __81__PKDiscoveryService_dismissDialogRequestWithIdentifier_forPlacemen
   return result;
 }
 
-- (void)dismissedDiscoveryItems:(id)a3
+- (void)dismissedDiscoveryItems:(id)items
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (itemsCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __46__PKDiscoveryService_dismissedDiscoveryItems___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = itemsCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -1743,19 +1743,19 @@ void __46__PKDiscoveryService_dismissedDiscoveryItems___block_invoke_2(uint64_t 
   dispatch_async(v7, block);
 }
 
-- (void)updateDiscoveryEngagementMessageWithIdentifier:(id)a3 forAction:(int64_t)a4 completion:(id)a5
+- (void)updateDiscoveryEngagementMessageWithIdentifier:(id)identifier forAction:(int64_t)action completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __90__PKDiscoveryService_updateDiscoveryEngagementMessageWithIdentifier_forAction_completion___block_invoke;
     v17[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v18 = v11;
-    v12 = a3;
+    identifierCopy = identifier;
     v13 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v17];
     v14 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v13];
 
@@ -1765,7 +1765,7 @@ void __46__PKDiscoveryService_dismissedDiscoveryItems___block_invoke_2(uint64_t 
     v15[3] = &unk_1E79C4C70;
     v15[4] = self;
     v16 = v11;
-    [v14 updateDiscoveryEngagementMessageWithIdentifier:v12 forAction:a4 completion:v15];
+    [v14 updateDiscoveryEngagementMessageWithIdentifier:identifierCopy forAction:action completion:v15];
   }
 }
 
@@ -1792,19 +1792,19 @@ void __90__PKDiscoveryService_updateDiscoveryEngagementMessageWithIdentifier_for
   dispatch_async(v4, block);
 }
 
-- (void)insertDiscoveryEngagementMessages:(id)a3 completion:(id)a4
+- (void)insertDiscoveryEngagementMessages:(id)messages completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__PKDiscoveryService_insertDiscoveryEngagementMessages_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    messagesCopy = messages;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -1814,7 +1814,7 @@ void __90__PKDiscoveryService_updateDiscoveryEngagementMessageWithIdentifier_for
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
     v14 = v9;
-    [v12 insertDiscoveryEngagementMessages:v10 completion:v13];
+    [v12 insertDiscoveryEngagementMessages:messagesCopy completion:v13];
   }
 }
 
@@ -1841,19 +1841,19 @@ void __67__PKDiscoveryService_insertDiscoveryEngagementMessages_completion___blo
   dispatch_async(v4, block);
 }
 
-- (void)removeDiscoveryMessageWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeDiscoveryMessageWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __70__PKDiscoveryService_removeDiscoveryMessageWithIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -1863,7 +1863,7 @@ void __67__PKDiscoveryService_insertDiscoveryEngagementMessages_completion___blo
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
     v14 = v9;
-    [v12 removeDiscoveryMessageWithIdentifier:v10 completion:v13];
+    [v12 removeDiscoveryMessageWithIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -1890,17 +1890,17 @@ void __70__PKDiscoveryService_removeDiscoveryMessageWithIdentifier_completion___
   dispatch_async(v4, block);
 }
 
-- (void)rulesWithCompletion:(id)a3
+- (void)rulesWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __42__PKDiscoveryService_rulesWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -1939,19 +1939,19 @@ void __42__PKDiscoveryService_rulesWithCompletion___block_invoke_2(uint64_t a1, 
   dispatch_async(v7, block);
 }
 
-- (void)insertRule:(id)a3 completion:(id)a4
+- (void)insertRule:(id)rule completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __44__PKDiscoveryService_insertRule_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    ruleCopy = rule;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -1961,7 +1961,7 @@ void __42__PKDiscoveryService_rulesWithCompletion___block_invoke_2(uint64_t a1, 
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
     v14 = v9;
-    [v12 insertRule:v10 completion:v13];
+    [v12 insertRule:ruleCopy completion:v13];
   }
 }
 
@@ -1988,19 +1988,19 @@ void __44__PKDiscoveryService_insertRule_completion___block_invoke_2(uint64_t a1
   dispatch_async(v4, block);
 }
 
-- (void)deleteRuleWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteRuleWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__PKDiscoveryService_deleteRuleWithIdentifier_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifierCopy = identifier;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -2010,7 +2010,7 @@ void __44__PKDiscoveryService_insertRule_completion___block_invoke_2(uint64_t a1
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
     v14 = v9;
-    [v12 deleteRuleWithIdentifier:v10 completion:v13];
+    [v12 deleteRuleWithIdentifier:identifierCopy completion:v13];
   }
 }
 
@@ -2037,19 +2037,19 @@ void __58__PKDiscoveryService_deleteRuleWithIdentifier_completion___block_invoke
   dispatch_async(v4, block);
 }
 
-- (void)evaluateRulesWithIdentifiers:(id)a3 completion:(id)a4
+- (void)evaluateRulesWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__PKDiscoveryService_evaluateRulesWithIdentifiers_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    identifiersCopy = identifiers;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -2059,7 +2059,7 @@ void __58__PKDiscoveryService_deleteRuleWithIdentifier_completion___block_invoke
     v13[3] = &unk_1E79C4518;
     v13[4] = self;
     v14 = v9;
-    [v12 evaluateRulesWithIdentifiers:v10 completion:v13];
+    [v12 evaluateRulesWithIdentifiers:identifiersCopy completion:v13];
   }
 }
 
@@ -2087,17 +2087,17 @@ void __62__PKDiscoveryService_evaluateRulesWithIdentifiers_completion___block_in
   dispatch_async(v7, block);
 }
 
-- (void)removeDiscoveryUserNotificationsWithCompletion:(id)a3
+- (void)removeDiscoveryUserNotificationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PKDiscoveryService_removeDiscoveryUserNotificationsWithCompletion___block_invoke;
     v12[3] = &unk_1E79C4450;
-    v7 = v5;
+    v7 = completionCopy;
     v13 = v7;
     v8 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v12];
     v9 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v8];
@@ -2133,19 +2133,19 @@ void __69__PKDiscoveryService_removeDiscoveryUserNotificationsWithCompletion___b
   dispatch_async(v4, block);
 }
 
-- (void)fireEngagementEventNamed:(id)a3 completion:(id)a4
+- (void)fireEngagementEventNamed:(id)named completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__PKDiscoveryService_fireEngagementEventNamed_completion___block_invoke;
     v15[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v16 = v9;
-    v10 = a3;
+    namedCopy = named;
     v11 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v15];
     v12 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v11];
 
@@ -2155,7 +2155,7 @@ void __69__PKDiscoveryService_removeDiscoveryUserNotificationsWithCompletion___b
     v13[3] = &unk_1E79C4C70;
     v13[4] = self;
     v14 = v9;
-    [v12 fireEngagementEventNamed:v10 completion:v13];
+    [v12 fireEngagementEventNamed:namedCopy completion:v13];
   }
 }
 
@@ -2180,20 +2180,20 @@ void __58__PKDiscoveryService_fireEngagementEventNamed_completion___block_invoke
   dispatch_async(v4, block);
 }
 
-- (void)fetchUserProperties:(id)a3 withParameters:(id)a4 completion:(id)a5
+- (void)fetchUserProperties:(id)properties withParameters:(id)parameters completion:(id)completion
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __68__PKDiscoveryService_fetchUserProperties_withParameters_completion___block_invoke;
     v18[3] = &unk_1E79C4450;
-    v11 = v9;
+    v11 = completionCopy;
     v19 = v11;
-    v12 = a4;
-    v13 = a3;
+    parametersCopy = parameters;
+    propertiesCopy = properties;
     v14 = [(PKDiscoveryService *)self errorHandlerForMethod:a2 completion:v18];
     v15 = [(PKDiscoveryService *)self _remoteObjectProxyWithErrorHandler:v14];
 
@@ -2203,7 +2203,7 @@ void __58__PKDiscoveryService_fireEngagementEventNamed_completion___block_invoke
     v16[3] = &unk_1E79C4518;
     v16[4] = self;
     v17 = v11;
-    [v15 fetchUserProperties:v13 withParameters:v12 completion:v16];
+    [v15 fetchUserProperties:propertiesCopy withParameters:parametersCopy completion:v16];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface HDCloudSyncCreateZonesOperation
-- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 zones:(id)a5 container:(id)a6;
+- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state zones:(id)zones container:(id)container;
 - (void)main;
 @end
 
 @implementation HDCloudSyncCreateZonesOperation
 
-- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,18 +16,18 @@
   return 0;
 }
 
-- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 zones:(id)a5 container:(id)a6
+- (HDCloudSyncCreateZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state zones:(id)zones container:(id)container
 {
-  v10 = a5;
-  v11 = a6;
+  zonesCopy = zones;
+  containerCopy = container;
   v17.receiver = self;
   v17.super_class = HDCloudSyncCreateZonesOperation;
-  v12 = [(HDCloudSyncOperation *)&v17 initWithConfiguration:a3 cloudState:a4];
+  v12 = [(HDCloudSyncOperation *)&v17 initWithConfiguration:configuration cloudState:state];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_container, a6);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_container, container);
+    v14 = [zonesCopy copy];
     zones = v13->_zones;
     v13->_zones = v14;
   }
@@ -48,16 +48,16 @@
     v7 = [(NSArray *)zones hk_map:&__block_literal_global_51];
     v8 = [v7 componentsJoinedByString:{@", "}];
     *buf = 138543618;
-    v35 = self;
+    selfCopy5 = self;
     v36 = 2114;
     v37 = v8;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Verifying existence of zones: %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HDCloudSyncOperation *)self configuration];
-  v10 = [v9 cachedCloudState];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
   v33 = 0;
-  v11 = [v10 zonesByIdentifierWithError:&v33];
+  v11 = [cachedCloudState zonesByIdentifierWithError:&v33];
   v12 = v33;
 
   if (v11 || !v12)
@@ -69,7 +69,7 @@
       if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ No cached zones found while verifying existence of zones.", buf, 0xCu);
       }
     }
@@ -80,15 +80,15 @@
     v30[2] = __39__HDCloudSyncCreateZonesOperation_main__block_invoke_299;
     v30[3] = &unk_27861A4B0;
     v31 = v11;
-    v32 = self;
+    selfCopy3 = self;
     v16 = [(NSArray *)v15 hk_filter:v30];
     if ([v16 count])
     {
       container = self->_container;
-      v18 = [(HDCloudSyncOperation *)self configuration];
-      v19 = [v18 repository];
-      v20 = [v19 profileIdentifier];
-      v21 = HDDatabaseForContainer(container, v20);
+      configuration2 = [(HDCloudSyncOperation *)self configuration];
+      repository = [configuration2 repository];
+      profileIdentifier = [repository profileIdentifier];
+      v21 = HDDatabaseForContainer(container, profileIdentifier);
 
       if ([v21 databaseScope] == 2)
       {
@@ -100,15 +100,15 @@
           v24 = [v16 hk_map:&__block_literal_global_306];
           v25 = [v24 componentsJoinedByString:{@", "}];
           *buf = 138543618;
-          v35 = self;
+          selfCopy5 = self;
           v36 = 2114;
           v37 = v25;
           _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating zones: %{public}@", buf, 0x16u);
         }
 
         v26 = [HDCloudSyncModifyRecordZonesOperation alloc];
-        v27 = [(HDCloudSyncOperation *)self configuration];
-        v28 = [(HDCloudSyncModifyRecordZonesOperation *)v26 initWithConfiguration:v27 container:self->_container recordZonesToSave:v16 recordZoneIDsToDelete:0];
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        v28 = [(HDCloudSyncModifyRecordZonesOperation *)v26 initWithConfiguration:configuration3 container:self->_container recordZonesToSave:v16 recordZoneIDsToDelete:0];
 
         [(HDCloudSyncOperation *)self delegateToOperation:v28];
       }
@@ -133,7 +133,7 @@
     if (os_log_type_enabled(*v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v35 = self;
+      selfCopy5 = self;
       v36 = 2114;
       v37 = v12;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve cached zone identifiers while generating pull targets, %{public}@", buf, 0x16u);

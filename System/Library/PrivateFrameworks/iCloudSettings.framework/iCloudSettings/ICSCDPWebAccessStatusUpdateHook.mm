@@ -1,13 +1,13 @@
 @interface ICSCDPWebAccessStatusUpdateHook
-- (id)changeControllerForAction:(id)a3;
+- (id)changeControllerForAction:(id)action;
 @end
 
 @implementation ICSCDPWebAccessStatusUpdateHook
 
-- (id)changeControllerForAction:(id)a3
+- (id)changeControllerForAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"webaccess:enable"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"webaccess:enable"])
   {
     v4 = 1;
 LABEL_5:
@@ -15,7 +15,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"webaccess:disable"])
+  if ([actionCopy isEqualToString:@"webaccess:disable"])
   {
     v4 = 2;
     goto LABEL_5;

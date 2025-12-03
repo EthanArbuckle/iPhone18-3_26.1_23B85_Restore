@@ -1,21 +1,21 @@
 @interface CKDDeferredRelinquishPlaceholder
-- (CKDDeferredRelinquishPlaceholder)initWithExistingWaiter:(id)a3;
+- (CKDDeferredRelinquishPlaceholder)initWithExistingWaiter:(id)waiter;
 - (NSString)description;
 - (id)ckShortDescription;
 @end
 
 @implementation CKDDeferredRelinquishPlaceholder
 
-- (CKDDeferredRelinquishPlaceholder)initWithExistingWaiter:(id)a3
+- (CKDDeferredRelinquishPlaceholder)initWithExistingWaiter:(id)waiter
 {
-  v4 = a3;
+  waiterCopy = waiter;
   v13.receiver = self;
   v13.super_class = CKDDeferredRelinquishPlaceholder;
   v7 = [(CKDDeferredRelinquishPlaceholder *)&v13 init];
   if (v7)
   {
-    v7->_qualityOfService = objc_msgSend_qualityOfService(v4, v5, v6);
-    v10 = objc_msgSend_ckShortDescription(v4, v8, v9);
+    v7->_qualityOfService = objc_msgSend_qualityOfService(waiterCopy, v5, v6);
+    v10 = objc_msgSend_ckShortDescription(waiterCopy, v8, v9);
     underlyingCKShortDescription = v7->_underlyingCKShortDescription;
     v7->_underlyingCKShortDescription = v10;
   }

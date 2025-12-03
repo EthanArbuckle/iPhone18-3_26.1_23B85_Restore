@@ -6,10 +6,10 @@
 
 - (BOOL)hasPreviews
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 usesLinkPresentation];
+  attachment = [(ICAttachmentModel *)self attachment];
+  usesLinkPresentation = [attachment usesLinkPresentation];
 
-  return v3;
+  return usesLinkPresentation;
 }
 
 @end

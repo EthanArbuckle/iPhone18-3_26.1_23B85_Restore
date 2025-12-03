@@ -1,20 +1,20 @@
 @interface PKProtobufPaymentInstrumentThumbnailRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentInstrumentThumbnailRequest
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentInstrumentThumbnailRequest;
   v4 = [(PKProtobufPaymentInstrumentThumbnailRequest *)&v8 description];
-  v5 = [(PKProtobufPaymentInstrumentThumbnailRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentInstrumentThumbnailRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   passIdentifier = self->_passIdentifier;
   if (passIdentifier)
   {
-    [v3 setObject:passIdentifier forKey:@"passIdentifier"];
+    [dictionary setObject:passIdentifier forKey:@"passIdentifier"];
   }
 
   manifestHash = self->_manifestHash;
@@ -73,76 +73,76 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_passIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_manifestHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_passIdentifier)
   {
-    [v4 setPassIdentifier:?];
-    v4 = v6;
+    [toCopy setPassIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_manifestHash)
   {
     [v6 setManifestHash:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_width;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_width;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_height;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_height;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_manifestHash copyWithZone:a3];
+  v8 = [(NSString *)self->_manifestHash copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -163,16 +163,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   passIdentifier = self->_passIdentifier;
-  if (passIdentifier | *(v4 + 4))
+  if (passIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)passIdentifier isEqual:?])
     {
@@ -181,7 +181,7 @@
   }
 
   manifestHash = self->_manifestHash;
-  if (manifestHash | *(v4 + 3))
+  if (manifestHash | *(equalCopy + 3))
   {
     if (![(NSString *)manifestHash isEqual:?])
     {
@@ -191,23 +191,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_width != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_width != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 1) == 0;
+  v7 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_height != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_height != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
@@ -294,33 +294,33 @@ LABEL_16:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PKProtobufPaymentInstrumentThumbnailRequest *)self setPassIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufPaymentInstrumentThumbnailRequest *)self setManifestHash:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_width = v4[2];
+    self->_width = fromCopy[2];
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_height = v4[1];
+    self->_height = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

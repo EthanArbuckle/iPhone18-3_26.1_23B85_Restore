@@ -1,18 +1,18 @@
 @interface MKAppleLogoLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)initForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4;
-- (void)drawRect:(CGRect)a3;
-- (void)updateForMapType:(unint64_t)a3 darkMode:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)initForMapType:(unint64_t)type forDarkMode:(BOOL)mode;
+- (void)drawRect:(CGRect)rect;
+- (void)updateForMapType:(unint64_t)type darkMode:(BOOL)mode;
 @end
 
 @implementation MKAppleLogoLabel
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v6.receiver = self;
   v6.super_class = MKAppleLogoLabel;
-  [(MKAppleLogoLabel *)&v6 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKAppleLogoLabel *)&v6 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(MKAppleLogoLabel *)self bounds];
   v4 = CGRectGetMinY(v7) + 10.0;
   [(MKAppleLogoLabel *)self bounds];
@@ -29,10 +29,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NSAttributedString *)self->_strokeText boundingRectWithSize:0 options:0 context:?];
   v7 = v6;
   v9 = v8;
@@ -63,19 +63,19 @@
   return result;
 }
 
-- (void)updateForMapType:(unint64_t)a3 darkMode:(BOOL)a4
+- (void)updateForMapType:(unint64_t)type darkMode:(BOOL)mode
 {
   v42[1] = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0 weight:*MEMORY[0x1E69DB970]];
-  if (a3 - 1 < 4 || a3 == 107 || a4)
+  if (type - 1 < 4 || type == 107 || mode)
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     v34 = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.600000024];
+    whiteColor = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.600000024];
     v34 = 0;
   }
 
@@ -87,7 +87,7 @@
   v12 = [v10 _mapkit_imageWithSymbolConfiguration:?];
 
   v35 = v12;
-  v13 = [v12 imageWithTintColor:v8];
+  v13 = [v12 imageWithTintColor:whiteColor];
   [v9 setImage:v13];
 
   v14 = objc_opt_new();
@@ -100,9 +100,9 @@
   v18 = [v16 initWithString:v17];
   [v14 appendAttributedString:v18];
 
-  v19 = [MEMORY[0x1E695DF58] currentLocale];
-  v20 = [v19 languageCode];
-  v21 = [v20 isEqualToString:@"en"];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v21 = [languageCode isEqualToString:@"en"];
 
   if (v21)
   {
@@ -118,12 +118,12 @@
   v25 = *MEMORY[0x1E69DB650];
   v39[0] = v24;
   v39[1] = v25;
-  v26 = [MEMORY[0x1E69DC888] clearColor];
-  v40[1] = v26;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v40[1] = clearColor;
   v39[2] = *MEMORY[0x1E69DB6C0];
-  v27 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v39[3] = *MEMORY[0x1E69DB6C8];
-  v40[2] = v27;
+  v40[2] = blackColor;
   v40[3] = &unk_1F1611560;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:4];
   [v23 addAttributes:v28 range:{0, objc_msgSend(v23, "length")}];
@@ -146,7 +146,7 @@
   v37[0] = v24;
   v37[1] = v25;
   v38[0] = v7;
-  v38[1] = v8;
+  v38[1] = whiteColor;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
   [v14 addAttributes:v30 range:{0, objc_msgSend(v14, "length")}];
 
@@ -158,9 +158,9 @@
   [(MKAppleLogoLabel *)self sizeToFit];
 }
 
-- (id)initForMapType:(unint64_t)a3 forDarkMode:(BOOL)a4
+- (id)initForMapType:(unint64_t)type forDarkMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v11.receiver = self;
   v11.super_class = MKAppleLogoLabel;
   v6 = [(MKAppleLogoLabel *)&v11 init];
@@ -168,11 +168,11 @@
   if (v6)
   {
     [(MKAppleLogoLabel *)v6 setOpaque:0];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKAppleLogoLabel *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKAppleLogoLabel *)v7 setBackgroundColor:clearColor];
 
     [(MKAppleLogoLabel *)v7 setUserInteractionEnabled:0];
-    [(MKAppleLogoLabel *)v7 updateForMapType:a3 darkMode:v4];
+    [(MKAppleLogoLabel *)v7 updateForMapType:type darkMode:modeCopy];
     v9 = v7;
   }
 

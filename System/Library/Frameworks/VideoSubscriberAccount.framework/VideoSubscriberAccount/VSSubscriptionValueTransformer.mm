@@ -1,20 +1,20 @@
 @interface VSSubscriptionValueTransformer
-+ (BOOL)_subscriptionIsCoreSpotlight:(id)a3;
-+ (id)_legacySubscriptionInfoForUserAccount:(id)a3;
-+ (id)_subscriptionForUserAccount:(id)a3;
-+ (id)_userAccountWithLegacySubscriptionPrimitives:(id)a3;
-+ (void)_updateUserAccount:(id)a3 fromJSONWithSubscription:(id)a4;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
++ (BOOL)_subscriptionIsCoreSpotlight:(id)spotlight;
++ (id)_legacySubscriptionInfoForUserAccount:(id)account;
++ (id)_subscriptionForUserAccount:(id)account;
++ (id)_userAccountWithLegacySubscriptionPrimitives:(id)primitives;
++ (void)_updateUserAccount:(id)account fromJSONWithSubscription:(id)subscription;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSSubscriptionValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _userAccountWithLegacySubscriptionPrimitives:v3];
-  if ([objc_opt_class() _subscriptionIsCoreSpotlight:v3])
+  valueCopy = value;
+  v4 = [objc_opt_class() _userAccountWithLegacySubscriptionPrimitives:valueCopy];
+  if ([objc_opt_class() _subscriptionIsCoreSpotlight:valueCopy])
   {
     v5 = VSDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -23,24 +23,24 @@
       _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Subscription is legacy CoreSpotlight subscription, will update with JSON values.", v7, 2u);
     }
 
-    [objc_opt_class() _updateUserAccount:v4 fromJSONWithSubscription:v3];
+    [objc_opt_class() _updateUserAccount:v4 fromJSONWithSubscription:valueCopy];
   }
 
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v3)
+    if (!valueCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The valueOrNil parameter must not be nil."];
     }
 
-    v4 = v3;
+    v4 = valueCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -48,7 +48,7 @@
     {
       v6 = MEMORY[0x277CBEAD8];
       v7 = *MEMORY[0x277CBE660];
-      if (!v3)
+      if (!valueCopy)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The valueOrNil parameter must not be nil."];
       }
@@ -58,7 +58,7 @@
       [v6 raise:v7 format:{@"Unexpectedly, VSForceUnwrapNullable(valueOrNil) was %@, instead of VSUserAccount.", v9}];
     }
 
-    if (!v3)
+    if (!valueCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The valueOrNil parameter must not be nil."];
     }
@@ -75,19 +75,19 @@
   return v11;
 }
 
-+ (BOOL)_subscriptionIsCoreSpotlight:(id)a3
++ (BOOL)_subscriptionIsCoreSpotlight:(id)spotlight
 {
-  v3 = a3;
-  v4 = [v3 subscriptionInfo];
-  if (![v4 length])
+  spotlightCopy = spotlight;
+  subscriptionInfo = [spotlightCopy subscriptionInfo];
+  if (![subscriptionInfo length])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 accessLevel];
+  accessLevel = [spotlightCopy accessLevel];
 
-  if (v5)
+  if (accessLevel)
   {
 LABEL_5:
     v6 = 0;
@@ -100,10 +100,10 @@ LABEL_6:
   return v6;
 }
 
-+ (id)_legacySubscriptionInfoForUserAccount:(id)a3
++ (id)_legacySubscriptionInfoForUserAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 accountType] == 1)
+  accountCopy = account;
+  if ([accountCopy accountType] == 1)
   {
     v4 = @"Subscription";
   }
@@ -115,16 +115,16 @@ LABEL_6:
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v5 setObject:v4 forKeyedSubscript:@"availabilityType"];
-  v6 = [v3 billingIdentifier];
-  if (v6)
+  billingIdentifier = [accountCopy billingIdentifier];
+  if (billingIdentifier)
   {
-    [v5 setObject:v6 forKeyedSubscript:@"billingIdentifier"];
+    [v5 setObject:billingIdentifier forKeyedSubscript:@"billingIdentifier"];
   }
 
-  v7 = [v3 tierIdentifiers];
-  if ([v7 count])
+  tierIdentifiers = [accountCopy tierIdentifiers];
+  if ([tierIdentifiers count])
   {
-    [v5 setObject:v7 forKeyedSubscript:@"tiers"];
+    [v5 setObject:tierIdentifiers forKeyedSubscript:@"tiers"];
   }
 
   v14 = 0;
@@ -151,16 +151,16 @@ LABEL_6:
   return v12;
 }
 
-+ (id)_userAccountWithLegacySubscriptionPrimitives:(id)a3
++ (id)_userAccountWithLegacySubscriptionPrimitives:(id)primitives
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = [v4 kind];
+  primitivesCopy = primitives;
+  source = [primitivesCopy source];
+  kind = [source kind];
 
-  if ([v3 accessLevel] == 2)
+  if ([primitivesCopy accessLevel] == 2)
   {
-    v6 = [v3 expirationDate];
-    v7 = [v6 copy];
+    expirationDate = [primitivesCopy expirationDate];
+    v7 = [expirationDate copy];
 
     v8 = 1;
   }
@@ -172,22 +172,22 @@ LABEL_6:
   }
 
   v9 = [VSUserAccount alloc];
-  v10 = [v3 source];
-  v11 = [v10 identifier];
-  v12 = [v11 copy];
-  v13 = [(VSUserAccount *)v9 initWithAccountType:v8 updateURL:0 sourceType:v5 == 1 sourceIdentifier:v12];
+  source2 = [primitivesCopy source];
+  identifier = [source2 identifier];
+  v12 = [identifier copy];
+  v13 = [(VSUserAccount *)v9 initWithAccountType:v8 updateURL:0 sourceType:kind == 1 sourceIdentifier:v12];
 
   [(VSUserAccount *)v13 setSubscriptionBillingCycleEndDate:v7];
-  v14 = [v3 billingIdentifier];
-  v15 = [v14 copy];
+  billingIdentifier = [primitivesCopy billingIdentifier];
+  v15 = [billingIdentifier copy];
   [(VSUserAccount *)v13 setBillingIdentifier:v15];
 
-  v16 = [v3 tierIdentifiers];
-  v17 = [v16 copy];
+  tierIdentifiers = [primitivesCopy tierIdentifiers];
+  v17 = [tierIdentifiers copy];
   [(VSUserAccount *)v13 setTierIdentifiers:v17];
 
-  v18 = [v3 modifierIdentifier];
-  [(VSUserAccount *)v13 setModifierIdentifier:v18];
+  modifierIdentifier = [primitivesCopy modifierIdentifier];
+  [(VSUserAccount *)v13 setModifierIdentifier:modifierIdentifier];
 
   [(VSUserAccount *)v13 setModifierType:@"app"];
   [(VSUserAccount *)v13 setApi:@"subscription"];
@@ -195,15 +195,15 @@ LABEL_6:
   return v13;
 }
 
-+ (void)_updateUserAccount:(id)a3 fromJSONWithSubscription:(id)a4
++ (void)_updateUserAccount:(id)account fromJSONWithSubscription:(id)subscription
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 subscriptionInfo];
-  v8 = v7;
-  if (v7)
+  subscriptionCopy = subscription;
+  accountCopy = account;
+  subscriptionInfo = [subscriptionCopy subscriptionInfo];
+  v8 = subscriptionInfo;
+  if (subscriptionInfo)
   {
-    v9 = [v7 dataUsingEncoding:4];
+    v9 = [subscriptionInfo dataUsingEncoding:4];
     v10 = MEMORY[0x277CCAAA0];
     if (!v9)
     {
@@ -216,7 +216,7 @@ LABEL_6:
     v22 = v12;
     if (v11)
     {
-      v21 = v5;
+      v21 = subscriptionCopy;
       v13 = [v11 objectForKeyedSubscript:@"billingIdentifier"];
       v14 = [v11 objectForKeyedSubscript:@"tiers"];
       objc_opt_class();
@@ -233,17 +233,17 @@ LABEL_6:
       v20 = [v11 objectForKeyedSubscript:@"availabilityType"];
       if ([v20 length] && !objc_msgSend(v20, "caseInsensitiveCompare:", @"Subscription"))
       {
-        v16 = [v21 expirationDate];
+        expirationDate = [v21 expirationDate];
         v17 = 1;
       }
 
       else
       {
-        v16 = 0;
+        expirationDate = 0;
         v17 = 0;
       }
 
-      v5 = v21;
+      subscriptionCopy = v21;
     }
 
     else
@@ -255,7 +255,7 @@ LABEL_6:
         [VSSubscriptionValueTransformer _updateUserAccount:v18 fromJSONWithSubscription:v19];
       }
 
-      v16 = [v5 expirationDate];
+      expirationDate = [subscriptionCopy expirationDate];
       v15 = 0;
       v13 = 0;
       v17 = 1;
@@ -264,27 +264,27 @@ LABEL_6:
 
   else
   {
-    v16 = 0;
+    expirationDate = 0;
     v15 = 0;
     v13 = 0;
     v17 = 0;
   }
 
-  [v6 setAccountType:v17];
-  [v6 setBillingIdentifier:v13];
-  [v6 setTierIdentifiers:v15];
-  [v6 setSubscriptionBillingCycleEndDate:v16];
-  [v6 setApi:@"coreSpotlight"];
+  [accountCopy setAccountType:v17];
+  [accountCopy setBillingIdentifier:v13];
+  [accountCopy setTierIdentifiers:v15];
+  [accountCopy setSubscriptionBillingCycleEndDate:expirationDate];
+  [accountCopy setApi:@"coreSpotlight"];
 }
 
-+ (id)_subscriptionForUserAccount:(id)a3
++ (id)_subscriptionForUserAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 sourceIdentifier];
-  if (v4)
+  accountCopy = account;
+  sourceIdentifier = [accountCopy sourceIdentifier];
+  if (sourceIdentifier)
   {
     v5 = objc_alloc_init(VSSubscription);
-    if ([v3 accountType] == 1)
+    if ([accountCopy accountType] == 1)
     {
       v6 = 2;
     }
@@ -295,48 +295,48 @@ LABEL_6:
     }
 
     [(VSSubscription *)v5 setAccessLevel:v6];
-    v7 = [v3 tierIdentifiers];
-    v8 = [v7 copy];
+    tierIdentifiers = [accountCopy tierIdentifiers];
+    v8 = [tierIdentifiers copy];
     [(VSSubscription *)v5 setTierIdentifiers:v8];
 
-    v9 = [v3 billingIdentifier];
-    v10 = [v9 copy];
+    billingIdentifier = [accountCopy billingIdentifier];
+    v10 = [billingIdentifier copy];
     [(VSSubscription *)v5 setBillingIdentifier:v10];
 
-    v11 = [v3 modified];
-    v12 = [v11 copy];
+    modified = [accountCopy modified];
+    v12 = [modified copy];
     [(VSSubscription *)v5 setModificationDate:v12];
 
-    v13 = [v3 created];
-    v14 = [v13 copy];
+    created = [accountCopy created];
+    v14 = [created copy];
     [(VSSubscription *)v5 setCreationDate:v14];
 
-    if ([v3 isSignedOut])
+    if ([accountCopy isSignedOut])
     {
       [(VSSubscription *)v5 setAccessLevel:1];
     }
 
-    v15 = [v3 subscriptionBillingCycleEndDate];
-    v16 = [v15 copy];
+    subscriptionBillingCycleEndDate = [accountCopy subscriptionBillingCycleEndDate];
+    distantFuture = [subscriptionBillingCycleEndDate copy];
 
-    if (!v16)
+    if (!distantFuture)
     {
-      v16 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
-    [(VSSubscription *)v5 setExpirationDate:v16];
-    v17 = [objc_opt_class() _legacySubscriptionInfoForUserAccount:v3];
+    [(VSSubscription *)v5 setExpirationDate:distantFuture];
+    v17 = [objc_opt_class() _legacySubscriptionInfoForUserAccount:accountCopy];
     if (v17)
     {
       [(VSSubscription *)v5 setSubscriptionInfo:v17];
     }
 
     v18 = objc_alloc_init(VSSubscriptionSource);
-    v19 = [v4 copy];
+    v19 = [sourceIdentifier copy];
     [(VSSubscriptionSource *)v18 setIdentifier:v19];
 
-    v20 = [v3 sourceType];
-    if (v20 >= 2)
+    sourceType = [accountCopy sourceType];
+    if (sourceType >= 2)
     {
       v21 = VSErrorLogObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -344,10 +344,10 @@ LABEL_6:
         [VSSubscriptionValueTransformer _subscriptionForUserAccount:v21];
       }
 
-      v20 = 0;
+      sourceType = 0;
     }
 
-    [(VSSubscriptionSource *)v18 setKind:v20];
+    [(VSSubscriptionSource *)v18 setKind:sourceType];
     [(VSSubscription *)v5 setSource:v18];
   }
 

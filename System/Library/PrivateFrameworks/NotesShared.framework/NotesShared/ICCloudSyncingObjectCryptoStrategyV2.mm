@@ -1,33 +1,33 @@
 @interface ICCloudSyncingObjectCryptoStrategyV2
 + (NSMutableDictionary)accountKeyByIdentifier;
 - (BOOL)canAuthenticate;
-- (BOOL)canAuthenticateRecord:(id)a3;
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)hasSameKeyAsObject:(id)a3;
+- (BOOL)canAuthenticateRecord:(id)record;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
+- (BOOL)hasSameKeyAsObject:(id)object;
 - (BOOL)isAuthenticated;
 - (BOOL)isInICloudAccount;
-- (BOOL)isRecordAuthenticated:(id)a3;
+- (BOOL)isRecordAuthenticated:(id)authenticated;
 - (BOOL)loadDecryptedValuesIfNecessary;
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3;
+- (BOOL)mergeEncryptedDataFromRecord:(id)record;
 - (BOOL)saveEncryptedJSON;
-- (BOOL)serialize:(id)a3 toURL:(id)a4;
+- (BOOL)serialize:(id)serialize toURL:(id)l;
 - (ICEncryptionMetadata)primaryMetadata;
 - (ICEncryptionObject)primaryEncryptionObject;
 - (NSString)accountDsid;
 - (NSString)accountKeyIdentifier;
 - (NSString)currentAccountKeyIdentifier;
 - (id)accountIdentifier;
-- (id)accountKeyWithIdentifier:(id)a3 createIfNotExist:(BOOL)a4;
-- (id)decryptData:(id)a3;
-- (id)decryptObject:(id)a3;
-- (id)decryptSidecarData:(id)a3;
-- (id)decryptedDataFromFileURL:(id)a3;
-- (id)encryptData:(id)a3;
-- (id)encryptSidecarData:(id)a3;
-- (void)decryptAndMergeEncryptedJSON:(id)a3;
-- (void)fetchKeychainItemsForAccountKeyIdentifier:(id)a3 accountDsid:(id)a4;
+- (id)accountKeyWithIdentifier:(id)identifier createIfNotExist:(BOOL)exist;
+- (id)decryptData:(id)data;
+- (id)decryptObject:(id)object;
+- (id)decryptSidecarData:(id)data;
+- (id)decryptedDataFromFileURL:(id)l;
+- (id)encryptData:(id)data;
+- (id)encryptSidecarData:(id)data;
+- (void)decryptAndMergeEncryptedJSON:(id)n;
+- (void)fetchKeychainItemsForAccountKeyIdentifier:(id)identifier accountDsid:(id)dsid;
 - (void)saveEncryptedJSON;
-- (void)serializeToEncryptedValuesJSON:(id)a3;
+- (void)serializeToEncryptedValuesJSON:(id)n;
 @end
 
 @implementation ICCloudSyncingObjectCryptoStrategyV2
@@ -130,9 +130,9 @@ void __63__ICCloudSyncingObjectCryptoStrategyV2_primaryEncryptionObject__block_i
 LABEL_8:
 }
 
-- (BOOL)hasSameKeyAsObject:(id)a3
+- (BOOL)hasSameKeyAsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -141,9 +141,9 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = __59__ICCloudSyncingObjectCryptoStrategyV2_hasSameKeyAsObject___block_invoke;
   v7[3] = &unk_2781959B0;
-  v5 = v4;
+  v5 = objectCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
   LOBYTE(self) = *(v12 + 24);
@@ -265,11 +265,11 @@ void __59__ICCloudSyncingObjectCryptoStrategyV2_hasSameKeyAsObject___block_invok
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:*(v12 + 24)];
     *buf = 138413058;
-    v16 = v8;
+    v16 = shortLoggingDescription;
     v17 = 2112;
     v19 = 2080;
     v18 = v9;
@@ -325,10 +325,10 @@ void __57__ICCloudSyncingObjectCryptoStrategyV2_saveEncryptedJSON__block_invoke(
   }
 }
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -337,11 +337,11 @@ void __57__ICCloudSyncingObjectCryptoStrategyV2_saveEncryptedJSON__block_invoke(
   v11[1] = 3221225472;
   v11[2] = __65__ICCloudSyncingObjectCryptoStrategyV2_encryptFileFromURL_toURL___block_invoke;
   v11[3] = &unk_278195A00;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = rLCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v11];
   LOBYTE(self) = *(v17 + 24);
@@ -477,9 +477,9 @@ void __70__ICCloudSyncingObjectCryptoStrategyV2_loadDecryptedValuesIfNecessary__
   }
 }
 
-- (id)decryptData:(id)a3
+- (id)decryptData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -490,9 +490,9 @@ void __70__ICCloudSyncingObjectCryptoStrategyV2_loadDecryptedValuesIfNecessary__
   v8[1] = 3221225472;
   v8[2] = __52__ICCloudSyncingObjectCryptoStrategyV2_decryptData___block_invoke;
   v8[3] = &unk_2781959B0;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v13[5];
@@ -544,9 +544,9 @@ LABEL_11:
   }
 }
 
-- (id)decryptedDataFromFileURL:(id)a3
+- (id)decryptedDataFromFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -557,8 +557,8 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = __65__ICCloudSyncingObjectCryptoStrategyV2_decryptedDataFromFileURL___block_invoke;
   v8[3] = &unk_278195A28;
-  v5 = v4;
-  v10 = self;
+  v5 = lCopy;
+  selfCopy = self;
   v11 = &v12;
   v9 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -622,9 +622,9 @@ void __65__ICCloudSyncingObjectCryptoStrategyV2_decryptedDataFromFileURL___block
   }
 }
 
-- (id)encryptSidecarData:(id)a3
+- (id)encryptSidecarData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -636,7 +636,7 @@ void __65__ICCloudSyncingObjectCryptoStrategyV2_decryptedDataFromFileURL___block
   v8[2] = __59__ICCloudSyncingObjectCryptoStrategyV2_encryptSidecarData___block_invoke;
   v8[3] = &unk_2781959B0;
   v8[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
@@ -680,9 +680,9 @@ LABEL_9:
   }
 }
 
-- (id)decryptSidecarData:(id)a3
+- (id)decryptSidecarData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -695,7 +695,7 @@ LABEL_9:
   v8[3] = &unk_278195A28;
   v8[4] = self;
   v10 = &v11;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v12[5];
@@ -736,13 +736,13 @@ LABEL_7:
   }
 }
 
-- (BOOL)isRecordAuthenticated:(id)a3
+- (BOOL)isRecordAuthenticated:(id)authenticated
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v5 = +[ICAuthenticationState sharedState];
   if ([v5 isAuthenticatedWithDevicePassword])
   {
-    v6 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self canAuthenticateRecord:v4];
+    v6 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self canAuthenticateRecord:authenticatedCopy];
   }
 
   else
@@ -753,25 +753,25 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)canAuthenticateRecord:(id)a3
+- (BOOL)canAuthenticateRecord:(id)record
 {
-  v4 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self encryptedDataFromRecord:a3];
+  v4 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self encryptedDataFromRecord:record];
   if (v4)
   {
     v5 = [[ICEncryptionObject alloc] initWithSerializedData:v4];
     p_super = &v5->super;
     if (v5)
     {
-      v7 = [(ICEncryptionObject *)v5 metadata];
-      v8 = [v7 accountKeyIdentifier];
+      metadata = [(ICEncryptionObject *)v5 metadata];
+      accountKeyIdentifier = [metadata accountKeyIdentifier];
 
-      if (v8)
+      if (accountKeyIdentifier)
       {
 
-        v9 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountKeyWithIdentifier:v8 createIfNotExist:0];
+        v9 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountKeyWithIdentifier:accountKeyIdentifier createIfNotExist:0];
         v10 = v9 != 0;
 
-        p_super = v8;
+        p_super = accountKeyIdentifier;
         goto LABEL_12;
       }
 
@@ -808,9 +808,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3
+- (BOOL)mergeEncryptedDataFromRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -820,7 +820,7 @@ LABEL_12:
   v7[2] = __69__ICCloudSyncingObjectCryptoStrategyV2_mergeEncryptedDataFromRecord___block_invoke;
   v7[3] = &unk_2781959B0;
   v7[4] = self;
-  v5 = v4;
+  v5 = recordCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v7];
@@ -868,16 +868,16 @@ LABEL_6:
   }
 }
 
-- (void)decryptAndMergeEncryptedJSON:(id)a3
+- (void)decryptAndMergeEncryptedJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ICCloudSyncingObjectCryptoStrategyV2_decryptAndMergeEncryptedJSON___block_invoke;
   v6[3] = &unk_278195A50;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = nCopy;
+  selfCopy = self;
+  v5 = nCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v6];
 }
 
@@ -987,15 +987,15 @@ void __55__ICCloudSyncingObjectCryptoStrategyV2_canAuthenticate__block_invoke(ui
   v3 = +[ICAuthenticationState sharedState];
   if ([v3 isAuthenticatedWithDevicePassword])
   {
-    v4 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self canAuthenticate];
+    canAuthenticate = [(ICCloudSyncingObjectCryptoStrategyV2 *)self canAuthenticate];
   }
 
   else
   {
-    v4 = 0;
+    canAuthenticate = 0;
   }
 
-  return v4;
+  return canAuthenticate;
 }
 
 - (id)accountIdentifier
@@ -1165,10 +1165,10 @@ void __60__ICCloudSyncingObjectCryptoStrategyV2_accountKeyIdentifier__block_invo
 
   else
   {
-    v4 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountIdentifier];
-    v5 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountDsid];
-    v6 = v5;
-    if (v5)
+    accountIdentifier = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountIdentifier];
+    accountDsid = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountDsid];
+    v6 = accountDsid;
+    if (accountDsid)
     {
       v14 = 0;
       v15 = &v14;
@@ -1180,10 +1180,10 @@ void __60__ICCloudSyncingObjectCryptoStrategyV2_accountKeyIdentifier__block_invo
       v9[1] = 3221225472;
       v9[2] = __67__ICCloudSyncingObjectCryptoStrategyV2_currentAccountKeyIdentifier__block_invoke;
       v9[3] = &unk_278195A78;
-      v10 = v5;
+      v10 = accountDsid;
       v13 = &v14;
-      v11 = v4;
-      v12 = self;
+      v11 = accountIdentifier;
+      selfCopy = self;
       [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v9];
       v3 = v15[5];
 
@@ -1285,52 +1285,52 @@ void __67__ICCloudSyncingObjectCryptoStrategyV2_currentAccountKeyIdentifier__blo
 {
   if (accountKeyByIdentifier)
   {
-    v2 = accountKeyByIdentifier;
+    dictionary = accountKeyByIdentifier;
   }
 
   else
   {
-    v2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v3 = accountKeyByIdentifier;
-  accountKeyByIdentifier = v2;
+  accountKeyByIdentifier = dictionary;
 
   v4 = accountKeyByIdentifier;
 
   return v4;
 }
 
-- (id)accountKeyWithIdentifier:(id)a3 createIfNotExist:(BOOL)a4
+- (id)accountKeyWithIdentifier:(id)identifier createIfNotExist:(BOOL)exist
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(ICCloudSyncingObjectCryptoStrategyV2 *)self shouldSpoofAccountKey])
   {
     v7 = [MEMORY[0x277CBEA90] ic_dataFromHexString:@"5bc7dbbe cf8be96a aa12f008 4324368a bc99a2b2 35753242 b096322d 743799dc"];
   }
 
-  else if (v6)
+  else if (identifierCopy)
   {
-    v8 = [objc_opt_class() accountKeyByIdentifier];
-    objc_sync_enter(v8);
-    v9 = [objc_opt_class() accountKeyByIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    accountKeyByIdentifier = [objc_opt_class() accountKeyByIdentifier];
+    objc_sync_enter(accountKeyByIdentifier);
+    accountKeyByIdentifier2 = [objc_opt_class() accountKeyByIdentifier];
+    v10 = [accountKeyByIdentifier2 objectForKeyedSubscript:identifierCopy];
 
     if (v10)
     {
-      v11 = [objc_opt_class() accountKeyByIdentifier];
-      v7 = [v11 objectForKeyedSubscript:v6];
+      accountKeyByIdentifier3 = [objc_opt_class() accountKeyByIdentifier];
+      v7 = [accountKeyByIdentifier3 objectForKeyedSubscript:identifierCopy];
 
-      objc_sync_exit(v8);
+      objc_sync_exit(accountKeyByIdentifier);
     }
 
     else
     {
-      objc_sync_exit(v8);
+      objc_sync_exit(accountKeyByIdentifier);
 
-      v8 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountIdentifier];
-      v13 = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountDsid];
-      if (v13)
+      accountKeyByIdentifier = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountIdentifier];
+      accountDsid = [(ICCloudSyncingObjectCryptoStrategyV2 *)self accountDsid];
+      if (accountDsid)
       {
         v30 = 0;
         v31 = &v30;
@@ -1343,20 +1343,20 @@ void __67__ICCloudSyncingObjectCryptoStrategyV2_currentAccountKeyIdentifier__blo
         v22 = __82__ICCloudSyncingObjectCryptoStrategyV2_accountKeyWithIdentifier_createIfNotExist___block_invoke;
         v23 = &unk_278195AA0;
         v28 = &v30;
-        v14 = v6;
+        v14 = identifierCopy;
         v24 = v14;
-        v25 = v13;
-        v29 = a4;
-        v26 = v8;
-        v27 = self;
+        v25 = accountDsid;
+        existCopy = exist;
+        v26 = accountKeyByIdentifier;
+        selfCopy = self;
         [(ICCryptoStrategyBase *)self performBlockIfObjectExists:&v20];
-        v15 = [objc_opt_class() accountKeyByIdentifier];
-        objc_sync_enter(v15);
+        accountKeyByIdentifier4 = [objc_opt_class() accountKeyByIdentifier];
+        objc_sync_enter(accountKeyByIdentifier4);
         v16 = v31[5];
-        v17 = [objc_opt_class() accountKeyByIdentifier];
-        [v17 setObject:v16 forKeyedSubscript:v14];
+        accountKeyByIdentifier5 = [objc_opt_class() accountKeyByIdentifier];
+        [accountKeyByIdentifier5 setObject:v16 forKeyedSubscript:v14];
 
-        objc_sync_exit(v15);
+        objc_sync_exit(accountKeyByIdentifier4);
         v7 = v31[5];
 
         _Block_object_dispose(&v30, 8);
@@ -1530,19 +1530,19 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)fetchKeychainItemsForAccountKeyIdentifier:(id)a3 accountDsid:(id)a4
+- (void)fetchKeychainItemsForAccountKeyIdentifier:(id)identifier accountDsid:(id)dsid
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dsidCopy = dsid;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__ICCloudSyncingObjectCryptoStrategyV2_fetchKeychainItemsForAccountKeyIdentifier_accountDsid___block_invoke;
   v10[3] = &unk_278195B18;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = dsidCopy;
+  selfCopy = self;
+  v8 = dsidCopy;
+  v9 = identifierCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v10];
 }
 
@@ -1644,9 +1644,9 @@ void __94__ICCloudSyncingObjectCryptoStrategyV2_fetchKeychainItemsForAccountKeyI
   }
 }
 
-- (id)encryptData:(id)a3
+- (id)encryptData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1657,9 +1657,9 @@ void __94__ICCloudSyncingObjectCryptoStrategyV2_fetchKeychainItemsForAccountKeyI
   v8[1] = 3221225472;
   v8[2] = __52__ICCloudSyncingObjectCryptoStrategyV2_encryptData___block_invoke;
   v8[3] = &unk_2781959B0;
-  v5 = v4;
+  v5 = dataCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v13[5];
@@ -1799,9 +1799,9 @@ LABEL_34:
 LABEL_35:
 }
 
-- (id)decryptObject:(id)a3
+- (id)decryptObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1812,9 +1812,9 @@ LABEL_35:
   v8[1] = 3221225472;
   v8[2] = __54__ICCloudSyncingObjectCryptoStrategyV2_decryptObject___block_invoke;
   v8[3] = &unk_2781959B0;
-  v5 = v4;
+  v5 = objectCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v8];
   v6 = v13[5];
@@ -1938,15 +1938,15 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)serializeToEncryptedValuesJSON:(id)a3
+- (void)serializeToEncryptedValuesJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__ICCloudSyncingObjectCryptoStrategyV2_serializeToEncryptedValuesJSON___block_invoke;
   v6[3] = &unk_278195B40;
-  v7 = v4;
-  v5 = v4;
+  v7 = nCopy;
+  v5 = nCopy;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v6];
 }
 
@@ -1986,10 +1986,10 @@ void __71__ICCloudSyncingObjectCryptoStrategyV2_serializeToEncryptedValuesJSON__
   }
 }
 
-- (BOOL)serialize:(id)a3 toURL:(id)a4
+- (BOOL)serialize:(id)serialize toURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  serializeCopy = serialize;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1998,9 +1998,9 @@ void __71__ICCloudSyncingObjectCryptoStrategyV2_serializeToEncryptedValuesJSON__
   v11[1] = 3221225472;
   v11[2] = __56__ICCloudSyncingObjectCryptoStrategyV2_serialize_toURL___block_invoke;
   v11[3] = &unk_2781959B0;
-  v8 = v6;
+  v8 = serializeCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = lCopy;
   v13 = v9;
   v14 = &v15;
   [(ICCryptoStrategyBase *)self performBlockIfObjectExists:v11];
@@ -2099,7 +2099,7 @@ void __63__ICCloudSyncingObjectCryptoStrategyV2_primaryEncryptionObject__block_i
 
 - (void)saveEncryptedJSON
 {
-  v1 = [a1 object];
+  object = [self object];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x1Cu);

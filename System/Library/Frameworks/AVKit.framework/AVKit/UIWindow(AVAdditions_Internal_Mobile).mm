@@ -10,7 +10,7 @@
 
 - (uint64_t)avkit_supportsAutorotationForInterfaceOrientationMask:()AVAdditions_Internal_Mobile
 {
-  result = [a1 avkit_canAttemptRotation];
+  result = [self avkit_canAttemptRotation];
   if (result)
   {
     v6 = 1;
@@ -18,7 +18,7 @@
     {
       if (((1 << v6) & a3) != 0)
       {
-        result = [a1 _shouldAutorotateToInterfaceOrientation:v6];
+        result = [self _shouldAutorotateToInterfaceOrientation:v6];
         if (!result)
         {
           break;
@@ -37,22 +37,22 @@
 
 - (uint64_t)avkit_canAttemptSecondWindowForRotability
 {
-  v3 = [a1 _windowOwnsInterfaceOrientation];
-  if ((v3 & 1) == 0)
+  _windowOwnsInterfaceOrientation = [self _windowOwnsInterfaceOrientation];
+  if ((_windowOwnsInterfaceOrientation & 1) == 0)
   {
-    v1 = [a1 windowScene];
-    if (![v1 _canDynamicallySpecifySupportedInterfaceOrientations])
+    windowScene = [self windowScene];
+    if (![windowScene _canDynamicallySpecifySupportedInterfaceOrientations])
     {
       v4 = 0;
       goto LABEL_10;
     }
   }
 
-  if ([a1 _windowControlsStatusBarOrientation] && objc_msgSend(a1, "_shouldControlAutorotation"))
+  if ([self _windowControlsStatusBarOrientation] && objc_msgSend(self, "_shouldControlAutorotation"))
   {
-    v4 = [a1 avkit_isHostedInAnotherProcess] ^ 1;
+    v4 = [self avkit_isHostedInAnotherProcess] ^ 1;
     result = v4;
-    if (v3)
+    if (_windowOwnsInterfaceOrientation)
     {
       return result;
     }
@@ -64,7 +64,7 @@ LABEL_10:
 
   v4 = 0;
   result = 0;
-  if ((v3 & 1) == 0)
+  if ((_windowOwnsInterfaceOrientation & 1) == 0)
   {
     goto LABEL_10;
   }
@@ -74,11 +74,11 @@ LABEL_10:
 
 - (uint64_t)avkit_canAttemptRotation
 {
-  result = [a1 autorotates];
+  result = [self autorotates];
   if (result)
   {
 
-    return [a1 avkit_canAttemptSecondWindowForRotability];
+    return [self avkit_canAttemptSecondWindowForRotability];
   }
 
   return result;
@@ -86,41 +86,41 @@ LABEL_10:
 
 - (uint64_t)avkit_preferredInterfaceOrientationFromDeviceOrientation
 {
-  v2 = [a1 _windowInterfaceOrientation];
-  if ([a1 avkit_canAttemptRotation])
+  _windowInterfaceOrientation = [self _windowInterfaceOrientation];
+  if ([self avkit_canAttemptRotation])
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 orientation];
-    if ((v4 - 3) >= 2)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    orientation = [currentDevice orientation];
+    if ((orientation - 3) >= 2)
     {
-      if (v4 == 2)
+      if (orientation == 2)
       {
-        v6 = [MEMORY[0x1E69DC938] currentDevice];
-        v7 = [v6 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-        if (v7 != 1)
+        if (userInterfaceIdiom != 1)
         {
-          return v2;
+          return _windowInterfaceOrientation;
         }
 
         goto LABEL_6;
       }
 
-      if (v4 != 1)
+      if (orientation != 1)
       {
 LABEL_7:
 
-        return v2;
+        return _windowInterfaceOrientation;
       }
     }
 
 LABEL_6:
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v2 = [v3 orientation];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    _windowInterfaceOrientation = [currentDevice orientation];
     goto LABEL_7;
   }
 
-  return v2;
+  return _windowInterfaceOrientation;
 }
 
 - (uint64_t)avkit_isHostedInAnotherProcess
@@ -128,7 +128,7 @@ LABEL_6:
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 _isHostedInAnotherProcess];
+    return [self _isHostedInAnotherProcess];
   }
 
   else

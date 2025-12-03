@@ -16,9 +16,9 @@
 
   if (v11)
   {
-    v12 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v13 = [v8 safari_URLByNormalizingBlobURL];
-    [v11 _setIsContentManaged:{objc_msgSend(v12, "isURLManaged:", v13)}];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    safari_URLByNormalizingBlobURL = [v8 safari_URLByNormalizingBlobURL];
+    [v11 _setIsContentManaged:{objc_msgSend(mEMORY[0x1E69ADFB8], "isURLManaged:", safari_URLByNormalizingBlobURL)}];
 
     v14 = v11;
   }

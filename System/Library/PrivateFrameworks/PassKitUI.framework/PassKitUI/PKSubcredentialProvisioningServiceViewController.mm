@@ -1,9 +1,9 @@
 @interface PKSubcredentialProvisioningServiceViewController
 - (id)remoteDeviceWebService;
-- (void)didFinishWithPass:(id)a3 error:(id)a4;
+- (void)didFinishWithPass:(id)pass error:(id)error;
 - (void)loadView;
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation PKSubcredentialProvisioningServiceViewController
@@ -13,38 +13,38 @@
   v5.receiver = self;
   v5.super_class = PKSubcredentialProvisioningServiceViewController;
   [(PKSubcredentialProvisioningServiceViewController *)&v5 loadView];
-  v3 = [(PKSubcredentialProvisioningServiceViewController *)self view];
+  view = [(PKSubcredentialProvisioningServiceViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 - (id)remoteDeviceWebService
 {
-  v2 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
-  if ([v2 _hasRemoteLibrary])
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+  if ([mEMORY[0x1E69B8A58] _hasRemoteLibrary])
   {
     v3 = objc_alloc_init(getNPKCompanionAgentConnectionClass_4());
-    v4 = [v3 watchPaymentWebService];
+    watchPaymentWebService = [v3 watchPaymentWebService];
   }
 
   else
   {
-    v4 = 0;
+    watchPaymentWebService = 0;
   }
 
-  return v4;
+  return watchPaymentWebService;
 }
 
-- (void)didFinishWithPass:(id)a3 error:(id)a4
+- (void)didFinishWithPass:(id)pass error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  passCopy = pass;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v9 = [v7 domain];
-    v10 = [v9 isEqualToString:*MEMORY[0x1E69B9E70]];
+    domain = [errorCopy domain];
+    v10 = [domain isEqualToString:*MEMORY[0x1E69B9E70]];
 
     v11 = v8;
     if ((v10 & 1) == 0)
@@ -62,7 +62,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = v6;
+    v18 = passCopy;
     v19 = 2112;
     v20 = v11;
     v21 = 2112;
@@ -70,26 +70,26 @@
     _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Provisioning did finish with pass %@ and error %@ (original error: %@)", buf, 0x20u);
   }
 
-  [v6 sanitizePaymentApplications];
-  v13 = [(PKSubcredentialProvisioningServiceViewController *)self _remoteViewControllerProxy];
-  v14 = v13;
-  if (v6)
+  [passCopy sanitizePaymentApplications];
+  _remoteViewControllerProxy = [(PKSubcredentialProvisioningServiceViewController *)self _remoteViewControllerProxy];
+  v14 = _remoteViewControllerProxy;
+  if (passCopy)
   {
-    v16 = v6;
+    v16 = passCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     [v14 didFinishWithPasses:v15 error:v11];
   }
 
   else
   {
-    [v13 didFinishWithPasses:0 error:v11];
+    [_remoteViewControllerProxy didFinishWithPasses:0 error:v11];
   }
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -100,34 +100,34 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_error_impl(&dword_1BD026000, v7, OS_LOG_TYPE_ERROR, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = objc_alloc(MEMORY[0x1E69B8840]);
-  v9 = [(PKSubcredentialProvisioningServiceViewController *)self _hostProcessIdentifier];
+  _hostProcessIdentifier = [(PKSubcredentialProvisioningServiceViewController *)self _hostProcessIdentifier];
   [(PKSubcredentialProvisioningServiceViewController *)self _hostAuditToken];
-  v10 = [v8 initWithProcessIdentifier:v9 auditToken:buf];
+  v10 = [v8 initWithProcessIdentifier:_hostProcessIdentifier auditToken:buf];
   if ([v10 carKeyCredentialProvisioning])
   {
-    [v6 updateAllowManagedAppleIDWithEntitlements:v10];
-    if ([v6 configurationType] == 1)
+    [configurationCopy updateAllowManagedAppleIDWithEntitlements:v10];
+    if ([configurationCopy configurationType] == 1)
     {
-      v11 = [MEMORY[0x1E69B8A58] sharedInstance];
-      if ([v11 canAddSecureElementPassWithConfiguration:v6])
+      mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+      if ([mEMORY[0x1E69B8A58] canAddSecureElementPassWithConfiguration:configurationCopy])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v6;
+          v12 = configurationCopy;
           if (![v12 supportedRadioTechnologies])
           {
             v13 = PKLogFacilityTypeGetObject();
@@ -143,8 +143,8 @@
           [v12 supportedRadioTechnologies];
           [v12 setSupportedRadioTechnologies:PKRadioTechnologyForConfigurationTechnology()];
           v14 = objc_alloc(MEMORY[0x1E69B8D48]);
-          v15 = [MEMORY[0x1E69B8EF8] sharedService];
-          v16 = [v14 initWithWebService:v15];
+          mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+          v16 = [v14 initWithWebService:mEMORY[0x1E69B8EF8]];
 
           v17 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:7 provisioningController:v16 groupsController:0];
           v24[0] = MEMORY[0x1E69E9820];
@@ -153,9 +153,9 @@
           v24[3] = &unk_1E80197A0;
           v24[4] = self;
           [PKProvisioningFlowBridge startInAppFlowWithUnownedNavController:self context:v17 addCarKeyConfiguration:v12 completion:v24];
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7);
+            handlerCopy[2](handlerCopy);
           }
 
 LABEL_25:
@@ -169,16 +169,16 @@ LABEL_25:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v26 = v6;
+          v26 = configurationCopy;
           _os_log_impl(&dword_1BD026000, v23, OS_LOG_TYPE_DEFAULT, "Configuration is not supported by device: %@", buf, 0xCu);
         }
       }
 
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B9E70] code:3 userInfo:0];
       [(PKSubcredentialProvisioningServiceViewController *)self didFinishWithPass:0 error:v12];
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       goto LABEL_25;
@@ -210,11 +210,11 @@ LABEL_25:
     v21 = 2;
   }
 
-  v11 = [v19 errorWithDomain:v20 code:v21 userInfo:0];
-  [(PKSubcredentialProvisioningServiceViewController *)self didFinishWithPass:0 error:v11];
-  if (v7)
+  mEMORY[0x1E69B8A58] = [v19 errorWithDomain:v20 code:v21 userInfo:0];
+  [(PKSubcredentialProvisioningServiceViewController *)self didFinishWithPass:0 error:mEMORY[0x1E69B8A58]];
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_26:

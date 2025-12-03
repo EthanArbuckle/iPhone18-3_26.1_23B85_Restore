@@ -1,22 +1,22 @@
 @interface BMFindMyLocationChangeEvent_v1
-- (BMFindMyLocationChangeEvent_v1)initWithProto:(id)a3;
+- (BMFindMyLocationChangeEvent_v1)initWithProto:(id)proto;
 @end
 
 @implementation BMFindMyLocationChangeEvent_v1
 
-- (BMFindMyLocationChangeEvent_v1)initWithProto:(id)a3
+- (BMFindMyLocationChangeEvent_v1)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 idsHandle];
-      v7 = [v5 locationChangeType];
-      v8 = v7;
-      if (v7 >= 4)
+      v5 = protoCopy;
+      idsHandle = [v5 idsHandle];
+      locationChangeType = [v5 locationChangeType];
+      v8 = locationChangeType;
+      if (locationChangeType >= 4)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@
 
       else
       {
-        v9 = qword_184D27548[v7];
+        v9 = qword_184D27548[locationChangeType];
       }
 
       v12 = activityTypeWithState([v5 activityState]);
@@ -39,10 +39,10 @@
       v15 = MEMORY[0x1E696AD98];
       [v5 longitude];
       v16 = [v15 numberWithDouble:?];
-      v17 = [v5 name];
-      self = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:v6 locationChangeType:v9 motionActivityState:v12 latitude:v14 longitude:v16 name:v17];
+      name = [v5 name];
+      self = [(BMFindMyLocationChangeEvent *)self initWithIDSHandle:idsHandle locationChangeType:v9 motionActivityState:v12 latitude:v14 longitude:v16 name:name];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -53,16 +53,16 @@
         [BMFindMyLocationChangeEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface SFFillToolAppEntityParameterCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFFillToolAppEntityParameterCommand)initWithCoder:(id)a3;
-- (SFFillToolAppEntityParameterCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFFillToolAppEntityParameterCommand)initWithCoder:(id)coder;
+- (SFFillToolAppEntityParameterCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFFillToolAppEntityParameterCommand
 
-- (SFFillToolAppEntityParameterCommand)initWithProtobuf:(id)a3
+- (SFFillToolAppEntityParameterCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFFillToolAppEntityParameterCommand;
   v5 = [(SFFillToolAppEntityParameterCommand *)&v14 init];
   if (v5)
   {
-    v6 = [v4 encodedTypedValue];
+    encodedTypedValue = [protobufCopy encodedTypedValue];
 
-    if (v6)
+    if (encodedTypedValue)
     {
-      v7 = [v4 encodedTypedValue];
-      [(SFFillToolAppEntityParameterCommand *)v5 setEncodedTypedValue:v7];
+      encodedTypedValue2 = [protobufCopy encodedTypedValue];
+      [(SFFillToolAppEntityParameterCommand *)v5 setEncodedTypedValue:encodedTypedValue2];
     }
 
-    v8 = [v4 entity];
+    entity = [protobufCopy entity];
 
-    if (v8)
+    if (entity)
     {
       v9 = [SFAppEntityAnnotation alloc];
-      v10 = [v4 entity];
-      v11 = [(SFAppEntityAnnotation *)v9 initWithProtobuf:v10];
+      entity2 = [protobufCopy entity];
+      v11 = [(SFAppEntityAnnotation *)v9 initWithProtobuf:entity2];
       [(SFFillToolAppEntityParameterCommand *)v5 setEntity:v11];
     }
 
@@ -48,34 +48,34 @@
   v9.receiver = self;
   v9.super_class = SFFillToolAppEntityParameterCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
-  v5 = [v4 hash];
-  v6 = [(SFFillToolAppEntityParameterCommand *)self entity];
-  v7 = v5 ^ [v6 hash];
+  encodedTypedValue = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
+  v5 = [encodedTypedValue hash];
+  entity = [(SFFillToolAppEntityParameterCommand *)self entity];
+  v7 = v5 ^ [entity hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFFillToolAppEntityParameterCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFFillToolAppEntityParameterCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFFillToolAppEntityParameterCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
-        v8 = [(SFFillToolAppEntityParameterCommand *)v6 encodedTypedValue];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        encodedTypedValue = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
+        encodedTypedValue2 = [(SFFillToolAppEntityParameterCommand *)v6 encodedTypedValue];
+        if ((encodedTypedValue != 0) == (encodedTypedValue2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -83,12 +83,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
-        if (v9)
+        encodedTypedValue3 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
+        if (encodedTypedValue3)
         {
-          v3 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
-          v10 = [(SFFillToolAppEntityParameterCommand *)v6 encodedTypedValue];
-          if (![v3 isEqual:v10])
+          encodedTypedValue4 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
+          encodedTypedValue5 = [(SFFillToolAppEntityParameterCommand *)v6 encodedTypedValue];
+          if (![encodedTypedValue4 isEqual:encodedTypedValue5])
           {
             v11 = 0;
 LABEL_18:
@@ -97,13 +97,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = encodedTypedValue5;
         }
 
-        v12 = [(SFFillToolAppEntityParameterCommand *)self entity];
-        v13 = [(SFFillToolAppEntityParameterCommand *)v6 entity];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        entity = [(SFFillToolAppEntityParameterCommand *)self entity];
+        entity2 = [(SFFillToolAppEntityParameterCommand *)v6 entity];
+        v14 = entity2;
+        if ((entity != 0) == (entity2 == 0))
         {
 
           v11 = 0;
@@ -111,16 +111,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFFillToolAppEntityParameterCommand *)self entity];
-          if (v15)
+          entity3 = [(SFFillToolAppEntityParameterCommand *)self entity];
+          if (entity3)
           {
-            v16 = v15;
-            v19 = [(SFFillToolAppEntityParameterCommand *)self entity];
+            v16 = entity3;
+            entity4 = [(SFFillToolAppEntityParameterCommand *)self entity];
             [(SFFillToolAppEntityParameterCommand *)v6 entity];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = encodedTypedValue4;
+            v11 = [entity4 isEqual:v17];
 
-            v3 = v20;
+            encodedTypedValue4 = v20;
           }
 
           else
@@ -130,8 +130,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        encodedTypedValue5 = v21;
+        if (!encodedTypedValue3)
         {
           goto LABEL_19;
         }
@@ -148,17 +148,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFFillToolAppEntityParameterCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  encodedTypedValue = [(SFFillToolAppEntityParameterCommand *)self encodedTypedValue];
+  v6 = [encodedTypedValue copy];
   [v4 setEncodedTypedValue:v6];
 
-  v7 = [(SFFillToolAppEntityParameterCommand *)self entity];
-  v8 = [v7 copy];
+  entity = [(SFFillToolAppEntityParameterCommand *)self entity];
+  v8 = [entity copy];
   [v4 setEntity:v8];
 
   return v4;
@@ -167,54 +167,54 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBFillToolAppEntityParameterCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBFillToolAppEntityParameterCommand *)v2 jsonData];
+  jsonData = [(_SFPBFillToolAppEntityParameterCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBFillToolAppEntityParameterCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBFillToolAppEntityParameterCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBFillToolAppEntityParameterCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFFillToolAppEntityParameterCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFFillToolAppEntityParameterCommand)initWithCoder:(id)a3
+- (SFFillToolAppEntityParameterCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFFillToolAppEntityParameterCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 encodedTypedValue];
-    [(SFFillToolAppEntityParameterCommand *)v5 setEncodedTypedValue:v9];
+    encodedTypedValue = [(SFCommand *)v8 encodedTypedValue];
+    [(SFFillToolAppEntityParameterCommand *)v5 setEncodedTypedValue:encodedTypedValue];
 
-    v10 = [(SFCommand *)v8 entity];
-    [(SFFillToolAppEntityParameterCommand *)v5 setEntity:v10];
+    entity = [(SFCommand *)v8 entity];
+    [(SFFillToolAppEntityParameterCommand *)v5 setEntity:entity];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

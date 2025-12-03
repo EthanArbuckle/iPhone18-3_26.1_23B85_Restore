@@ -1,30 +1,30 @@
 @interface MUPagingScrollControlsView
 - (BOOL)shouldFlipPagingDirection;
-- (MUPagingScrollControlsView)initWithHorizontalScrollView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_adjustScrollIndexByOffset:(int64_t)a3;
+- (MUPagingScrollControlsView)initWithHorizontalScrollView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_adjustScrollIndexByOffset:(int64_t)offset;
 - (void)_scrollNext;
 - (void)_scrollPrevious;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateChevronVisibility;
-- (void)handleHover:(id)a3;
-- (void)setHoverActive:(BOOL)a3;
+- (void)handleHover:(id)hover;
+- (void)setHoverActive:(BOOL)active;
 @end
 
 @implementation MUPagingScrollControlsView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v12.receiver = self;
   v12.super_class = MUPagingScrollControlsView;
-  v7 = a4;
-  v8 = [(MUPagingScrollControlsView *)&v12 hitTest:v7 withEvent:x, y];
-  v9 = [v7 type];
+  eventCopy = event;
+  v8 = [(MUPagingScrollControlsView *)&v12 hitTest:eventCopy withEvent:x, y];
+  type = [eventCopy type];
 
-  if (v9 || v8 != self)
+  if (type || v8 != self)
   {
     v10 = v8;
   }
@@ -37,7 +37,7 @@
   return v10;
 }
 
-- (void)_adjustScrollIndexByOffset:(int64_t)a3
+- (void)_adjustScrollIndexByOffset:(int64_t)offset
 {
   [(MUScrollViewProtocol *)self->_scrollView frame];
   Width = CGRectGetWidth(v10);
@@ -49,7 +49,7 @@
   v9[2] = __57__MUPagingScrollControlsView__adjustScrollIndexByOffset___block_invoke;
   v9[3] = &unk_1E82191F8;
   v9[4] = self;
-  v9[5] = fmin(fmax(v7 + a3, 0.0) * Width, v8 - Width);
+  v9[5] = fmin(fmax(v7 + offset, 0.0) * Width, v8 - Width);
   [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:0.2];
 }
 
@@ -101,8 +101,8 @@ uint64_t __57__MUPagingScrollControlsView__adjustScrollIndexByOffset___block_inv
   v7 = v6 <= 0.0;
   [(MUScrollViewProtocol *)self->_scrollView contentOffset];
   v9 = v8 >= v5;
-  v10 = [(MUPagingScrollControlsView *)self shouldFlipPagingDirection];
-  if (v10)
+  shouldFlipPagingDirection = [(MUPagingScrollControlsView *)self shouldFlipPagingDirection];
+  if (shouldFlipPagingDirection)
   {
     v11 = v7;
   }
@@ -117,7 +117,7 @@ uint64_t __57__MUPagingScrollControlsView__adjustScrollIndexByOffset___block_inv
   v13[2] = __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke;
   v13[3] = &unk_1E82191D0;
   v13[4] = self;
-  if (v10)
+  if (shouldFlipPagingDirection)
   {
     v12 = v9;
   }
@@ -167,28 +167,28 @@ uint64_t __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke
 
 - (BOOL)shouldFlipPagingDirection
 {
-  v3 = [(UIView *)self _mapsui_isRTL];
-  if (v3)
+  _mapsui_isRTL = [(UIView *)self _mapsui_isRTL];
+  if (_mapsui_isRTL)
   {
 
-    LOBYTE(v3) = [(MUPagingScrollControlsView *)self automaticallyFlipsForRTL];
+    LOBYTE(_mapsui_isRTL) = [(MUPagingScrollControlsView *)self automaticallyFlipsForRTL];
   }
 
-  return v3;
+  return _mapsui_isRTL;
 }
 
-- (void)setHoverActive:(BOOL)a3
+- (void)setHoverActive:(BOOL)active
 {
-  if (self->_hoverActive != a3)
+  if (self->_hoverActive != active)
   {
-    self->_hoverActive = a3;
+    self->_hoverActive = active;
     [(MUPagingScrollControlsView *)self _updateChevronVisibility];
   }
 }
 
-- (void)handleHover:(id)a3
+- (void)handleHover:(id)hover
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([hover state] - 1) < 2;
 
   [(MUPagingScrollControlsView *)self setHoverActive:v4];
 }
@@ -197,21 +197,21 @@ uint64_t __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [(UIButton *)self->_previousPageButton centerYAnchor];
-  v18 = [(MUPagingScrollControlsView *)self centerYAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  centerYAnchor = [(UIButton *)self->_previousPageButton centerYAnchor];
+  centerYAnchor2 = [(MUPagingScrollControlsView *)self centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v20[0] = v17;
-  v16 = [(UIButton *)self->_nextPageButton centerYAnchor];
-  v4 = [(MUPagingScrollControlsView *)self centerYAnchor];
-  v5 = [v16 constraintEqualToAnchor:v4];
+  centerYAnchor3 = [(UIButton *)self->_nextPageButton centerYAnchor];
+  centerYAnchor4 = [(MUPagingScrollControlsView *)self centerYAnchor];
+  v5 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v20[1] = v5;
-  v6 = [(UIButton *)self->_previousPageButton leftAnchor];
-  v7 = [(MUPagingScrollControlsView *)self leftAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leftAnchor = [(UIButton *)self->_previousPageButton leftAnchor];
+  leftAnchor2 = [(MUPagingScrollControlsView *)self leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v20[2] = v8;
-  v9 = [(UIButton *)self->_nextPageButton rightAnchor];
-  v10 = [(MUPagingScrollControlsView *)self rightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  rightAnchor = [(UIButton *)self->_nextPageButton rightAnchor];
+  rightAnchor2 = [(MUPagingScrollControlsView *)self rightAnchor];
+  v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v20[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
   [v3 addObjectsFromArray:v12];
@@ -231,8 +231,8 @@ uint64_t __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke
   self->_previousPageButton = v3;
 
   [(UIButton *)self->_previousPageButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UIButton *)self->_previousPageButton setTintColor:v5];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UIButton *)self->_previousPageButton setTintColor:systemGrayColor];
 
   [(UIButton *)self->_previousPageButton setAlpha:0.0];
   [(UIButton *)self->_previousPageButton setImage:v15 forState:0];
@@ -248,8 +248,8 @@ uint64_t __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke
   self->_nextPageButton = v9;
 
   [(UIButton *)self->_nextPageButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UIButton *)self->_nextPageButton setTintColor:v11];
+  systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UIButton *)self->_nextPageButton setTintColor:systemGrayColor2];
 
   [(UIButton *)self->_nextPageButton setAlpha:0.0];
   [(UIButton *)self->_nextPageButton setImage:v8 forState:0];
@@ -263,16 +263,16 @@ uint64_t __54__MUPagingScrollControlsView__updateChevronVisibility__block_invoke
   [(MUPagingScrollControlsView *)self addGestureRecognizer:v14];
 }
 
-- (MUPagingScrollControlsView)initWithHorizontalScrollView:(id)a3
+- (MUPagingScrollControlsView)initWithHorizontalScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = MUPagingScrollControlsView;
   v6 = [(MUPagingScrollControlsView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollView, a3);
+    objc_storeStrong(&v6->_scrollView, view);
     [(MUPagingScrollControlsView *)v7 _setupSubviews];
     [(MUPagingScrollControlsView *)v7 _setupConstraints];
   }

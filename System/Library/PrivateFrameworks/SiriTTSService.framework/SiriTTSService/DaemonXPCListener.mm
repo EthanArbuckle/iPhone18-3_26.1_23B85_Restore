@@ -1,17 +1,17 @@
 @interface DaemonXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC13SiriTTSDaemon17DaemonXPCListener)init;
 - (void)dealloc;
 @end
 
 @implementation DaemonXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000017A8(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1000017A8(connectionCopy);
 
   return v9 & 1;
 }
@@ -36,10 +36,10 @@
 {
   v3 = OBJC_IVAR____TtC13SiriTTSDaemon17DaemonXPCListener_listener;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13SiriTTSDaemon17DaemonXPCListener_listener);
-  v5 = self;
+  selfCopy = self;
   [v4 setDelegate:0];
   [*(&self->super.isa + v3) invalidate];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for DaemonXPCListener();
   [(DaemonXPCListener *)&v6 dealloc];
 }

@@ -1,38 +1,38 @@
 @interface DESRecipe
-+ (BOOL)_hasValidClippingBounds:(id)a3 matchValidNumChunks:(id)a4;
-+ (BOOL)transportIsDedisco:(id)a3;
-+ (BOOL)useAdaptiveClipping:(id)a3;
-+ (BOOL)useAggregatableMetadata:(id)a3;
-+ (BOOL)useSparsification:(id)a3;
++ (BOOL)_hasValidClippingBounds:(id)bounds matchValidNumChunks:(id)chunks;
++ (BOOL)transportIsDedisco:(id)dedisco;
++ (BOOL)useAdaptiveClipping:(id)clipping;
++ (BOOL)useAggregatableMetadata:(id)metadata;
++ (BOOL)useSparsification:(id)sparsification;
 - (BOOL)isFederatedBufferStaled;
-- (BOOL)isFederatedBufferStaled:(id)a3;
+- (BOOL)isFederatedBufferStaled:(id)staled;
 - (BOOL)useFederatedBuffer;
-- (DESRecipe)initWithCoder:(id)a3;
+- (DESRecipe)initWithCoder:(id)coder;
 - (NSNumber)approximateStaleness;
 - (NSNumber)federatedBufferDownScalingFactor;
 - (NSNumber)maxNorm;
 - (NSString)privacyIdentifierExt;
-- (id)_initWithAssetURL:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (id)_initWithRecipeResponse:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)_initWithRecipeUserInfo:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 predicate:(id)a6 attachments:(id)a7;
-- (id)_inithWithContentsOfFile:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
+- (id)_initWithAssetURL:(id)l bundleIdentifier:(id)identifier error:(id *)error;
+- (id)_initWithRecipeResponse:(id)response recipeID:(id)d bundleIdentifier:(id)identifier error:(id *)error;
+- (id)_initWithRecipeUserInfo:(id)info recipeID:(id)d bundleIdentifier:(id)identifier predicate:(id)predicate attachments:(id)attachments;
+- (id)_inithWithContentsOfFile:(id)file recipeID:(id)d bundleIdentifier:(id)identifier error:(id *)error;
 - (id)description;
-- (id)haruspexKeyWithError:(id *)a3;
+- (id)haruspexKeyWithError:(id *)error;
 - (void)approximateStaleness;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)federatedBufferDownScalingFactor;
 @end
 
 @implementation DESRecipe
 
-- (id)_inithWithContentsOfFile:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)_inithWithContentsOfFile:(id)file recipeID:(id)d bundleIdentifier:(id)identifier error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  fileCopy = file;
+  dCopy = d;
+  identifierCopy = identifier;
   v25 = 0;
-  v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v10 options:0 error:&v25];
+  v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:fileCopy options:0 error:&v25];
   v14 = v25;
   if (v13)
   {
@@ -43,7 +43,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [(DESRecipe *)self _initWithRecipeUserInfo:v15 recipeID:v11 bundleIdentifier:v12];
+      v17 = [(DESRecipe *)self _initWithRecipeUserInfo:v15 recipeID:dCopy bundleIdentifier:identifierCopy];
     }
 
     else
@@ -52,17 +52,17 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v27 = v10;
+        v27 = fileCopy;
         v28 = 2112;
         v29 = v16;
         _os_log_impl(&dword_248FF7000, v20, OS_LOG_TYPE_INFO, "Unparsable record: %@, %@", buf, 0x16u);
       }
 
-      if (a6)
+      if (error)
       {
         v21 = v16;
         v17 = 0;
-        *a6 = v16;
+        *error = v16;
       }
 
       else
@@ -78,17 +78,17 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v27 = v10;
+      v27 = fileCopy;
       v28 = 2112;
       v29 = v14;
       _os_log_impl(&dword_248FF7000, v18, OS_LOG_TYPE_INFO, "Unreadable recipe %@: %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = v14;
       v17 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -104,31 +104,31 @@
   return v17;
 }
 
-- (id)_initWithRecipeUserInfo:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 predicate:(id)a6 attachments:(id)a7
+- (id)_initWithRecipeUserInfo:(id)info recipeID:(id)d bundleIdentifier:(id)identifier predicate:(id)predicate attachments:(id)attachments
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  infoCopy = info;
+  dCopy = d;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  attachmentsCopy = attachments;
   v32.receiver = self;
   v32.super_class = DESRecipe;
   v17 = [(DESRecipe *)&v32 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [dCopy copy];
     recipeID = v17->_recipeID;
     v17->_recipeID = v18;
 
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     bundleIdentifier = v17->_bundleIdentifier;
     v17->_bundleIdentifier = v20;
 
-    v22 = [v12 copy];
+    v22 = [infoCopy copy];
     recipeUserInfo = v17->_recipeUserInfo;
     v17->_recipeUserInfo = v22;
 
-    v24 = [v16 copy];
+    v24 = [attachmentsCopy copy];
     attachments = v17->_attachments;
     v17->_attachments = v24;
 
@@ -138,7 +138,7 @@
     certificate = v17->_certificate;
     v17->_certificate = 0;
 
-    v28 = [v15 copy];
+    v28 = [predicateCopy copy];
     predicate = v17->_predicate;
     v17->_predicate = v28;
 
@@ -148,21 +148,21 @@
   return v17;
 }
 
-- (id)_initWithAssetURL:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (id)_initWithAssetURL:(id)l bundleIdentifier:(id)identifier error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (lCopy)
   {
     v29 = 0;
-    v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8 options:8 error:&v29];
+    v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:8 error:&v29];
     v11 = v29;
     if (!v10)
     {
-      if (!a5)
+      if (!error)
       {
-        v18 = 0;
+        selfCopy = 0;
 LABEL_23:
 
         goto LABEL_24;
@@ -170,90 +170,90 @@ LABEL_23:
 
       v20 = MEMORY[0x277CCA9B8];
       v36[0] = *MEMORY[0x277CCA450];
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read URL=(%@)", v8];
+      lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read URL=(%@)", lCopy];
       v36[1] = *MEMORY[0x277CCA7E8];
-      v37[0] = v12;
+      v37[0] = lCopy;
       v37[1] = v11;
-      v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-      [v20 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5006 userInfo:v15];
-      *a5 = v18 = 0;
+      lCopy2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
+      [v20 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5006 userInfo:lCopy2];
+      *error = selfCopy = 0;
       v13 = v11;
       goto LABEL_21;
     }
 
     v28 = v11;
-    v12 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v28];
+    lCopy = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v28];
     v13 = v28;
 
-    if (!v12)
+    if (!lCopy)
     {
-      if (!a5)
+      if (!error)
       {
-        v18 = 0;
+        selfCopy = 0;
         goto LABEL_22;
       }
 
       v27 = MEMORY[0x277CCA9B8];
       v34[0] = *MEMORY[0x277CCA450];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode JSONObject from URL=(%@)", v8];
+      lCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode JSONObject from URL=(%@)", lCopy];
       v34[1] = *MEMORY[0x277CCA7E8];
-      v35[0] = v15;
+      v35[0] = lCopy2;
       v35[1] = v13;
-      v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-      [v27 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5006 userInfo:v16];
-      *a5 = v18 = 0;
+      lCopy4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
+      [v27 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5006 userInfo:lCopy4];
+      *error = selfCopy = 0;
       goto LABEL_20;
     }
 
-    v14 = [v12 objectForKeyedSubscript:@"recipe_blob"];
-    v15 = v14;
+    v14 = [lCopy objectForKeyedSubscript:@"recipe_blob"];
+    lCopy2 = v14;
     if (v14)
     {
-      v16 = [v14 objectForKeyedSubscript:@"id"];
-      if (v16)
+      lCopy4 = [v14 objectForKeyedSubscript:@"id"];
+      if (lCopy4)
       {
         v26 = v13;
-        v17 = [v12 objectForKeyedSubscript:@"recipe_predicate_client"];
-        self = [(DESRecipe *)self _initWithRecipeUserInfo:v15 recipeID:v16 bundleIdentifier:v9 predicate:v17];
-        v18 = self;
+        lCopy3 = [lCopy objectForKeyedSubscript:@"recipe_predicate_client"];
+        self = [(DESRecipe *)self _initWithRecipeUserInfo:lCopy2 recipeID:lCopy4 bundleIdentifier:identifierCopy predicate:lCopy3];
+        selfCopy = self;
       }
 
       else
       {
-        if (!a5)
+        if (!error)
         {
-          v18 = 0;
+          selfCopy = 0;
           goto LABEL_20;
         }
 
         v25 = MEMORY[0x277CCA9B8];
         v26 = v13;
         v30 = *MEMORY[0x277CCA450];
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing recipe ID for URL=(%@)", v8];
-        v31 = v17;
+        lCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing recipe ID for URL=(%@)", lCopy];
+        v31 = lCopy3;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-        *a5 = [v25 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1524 userInfo:v21];
+        *error = [v25 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1524 userInfo:v21];
 
-        v18 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      if (!a5)
+      if (!error)
       {
-        v18 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
 
       v24 = MEMORY[0x277CCA9B8];
       v26 = v13;
       v32 = *MEMORY[0x277CCA450];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing user info dictionary for URL=(%@)", v8];
-      v33 = v16;
-      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      [v24 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1524 userInfo:v17];
-      *a5 = v18 = 0;
+      lCopy4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing user info dictionary for URL=(%@)", lCopy];
+      v33 = lCopy4;
+      lCopy3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
+      [v24 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1524 userInfo:lCopy3];
+      *error = selfCopy = 0;
     }
 
     v13 = v26;
@@ -266,32 +266,32 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = MEMORY[0x277CCA9B8];
     v38 = *MEMORY[0x277CCA450];
     v39[0] = @"Nil recipe asset URL";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [v19 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5003 userInfo:v11];
-    *a5 = v18 = 0;
+    *error = selfCopy = 0;
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_25:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v18;
+  return selfCopy;
 }
 
-- (id)_initWithRecipeResponse:(id)a3 recipeID:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)_initWithRecipeResponse:(id)response recipeID:(id)d bundleIdentifier:(id)identifier error:(id *)error
 {
   v152[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  responseCopy = response;
+  dCopy = d;
+  identifierCopy = identifier;
   v118.receiver = self;
   v118.super_class = DESRecipe;
   v13 = [(DESRecipe *)&v118 init];
@@ -301,7 +301,7 @@ LABEL_25:
     goto LABEL_136;
   }
 
-  v14 = [v10 objectForKey:@"recipe_signing"];
+  v14 = [responseCopy objectForKey:@"recipe_signing"];
   if (!v14)
   {
     v26 = +[DESLogging coreChannel];
@@ -310,7 +310,7 @@ LABEL_25:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v27 = MEMORY[0x277CCA9B8];
       v151 = *MEMORY[0x277CCA470];
@@ -319,7 +319,7 @@ LABEL_25:
       v28 = [v27 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1521 userInfo:v15];
 LABEL_25:
       v25 = 0;
-      *a6 = v28;
+      *error = v28;
       goto LABEL_134;
     }
 
@@ -337,7 +337,7 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v30 = MEMORY[0x277CCA9B8];
       v149 = *MEMORY[0x277CCA470];
@@ -360,14 +360,14 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v32 = MEMORY[0x277CCA9B8];
       v147 = *MEMORY[0x277CCA470];
       v148 = @"Malformed recipe_signature";
       v111 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
       [v32 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1521 userInfo:v111];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -388,14 +388,14 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v34 = MEMORY[0x277CCA9B8];
       v145 = *MEMORY[0x277CCA470];
       v146 = @"Malformed recipe_content";
       v109 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
       [v34 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1521 userInfo:v109];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -416,14 +416,14 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v36 = MEMORY[0x277CCA9B8];
       v143 = *MEMORY[0x277CCA470];
       v144 = @"Malformed asset_signing_certificate";
       v107 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v144 forKeys:&v143 count:1];
       [v36 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1521 userInfo:v107];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -449,14 +449,14 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v38 = MEMORY[0x277CCA9B8];
       v141 = *MEMORY[0x277CCA470];
       v142 = @"Failed to validate recipe signature";
       v103 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
       [v38 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1504 userInfo:v103];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -476,14 +476,14 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v40 = MEMORY[0x277CCA9B8];
       v139 = *MEMORY[0x277CCA470];
       v140 = @"Failed to base64 decode recipe content";
       v101 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v140 forKeys:&v139 count:1];
       [v40 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1530 userInfo:v101];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -494,7 +494,7 @@ LABEL_26:
     goto LABEL_130;
   }
 
-  v100 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v102 options:0 error:a6];
+  v100 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v102 options:0 error:error];
   v18 = +[DESLogging coreChannel];
   v19 = v18;
   if (!v100)
@@ -504,13 +504,13 @@ LABEL_26:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v41 = MEMORY[0x277CCA9B8];
       v137 = *MEMORY[0x277CCA470];
       v138 = @"Failed to deserialize recipe content";
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v138 forKeys:&v137 count:1];
-      *a6 = [v41 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1522 userInfo:v42];
+      *error = [v41 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1522 userInfo:v42];
     }
 
     v25 = 0;
@@ -538,14 +538,14 @@ LABEL_26:
       [(DESRecipe *)v116 _initWithRecipeResponse:v43 recipeID:v44 bundleIdentifier:v45 error:v46, v47, v48, v49];
     }
 
-    if (a6)
+    if (error)
     {
       v50 = MEMORY[0x277CCA9B8];
       v135 = *MEMORY[0x277CCA470];
       v136 = @"Malformed recipe";
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v136 forKeys:&v135 count:1];
       [v50 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1524 userInfo:v51];
-      *a6 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -600,14 +600,14 @@ LABEL_26:
         [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v63 = MEMORY[0x277CCA9B8];
         v133 = *MEMORY[0x277CCA470];
         v134 = @"Malformed attached_files";
         v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v134 forKeys:&v133 count:1];
         [v63 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1523 userInfo:v64];
-        *a6 = v25 = 0;
+        *error = v25 = 0;
       }
 
       else
@@ -631,7 +631,7 @@ LABEL_26:
         [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v70 = MEMORY[0x277CCA9B8];
         v131 = *MEMORY[0x277CCA470];
@@ -657,7 +657,7 @@ LABEL_100:
       [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v66 = MEMORY[0x277CCA9B8];
       v129 = *MEMORY[0x277CCA470];
@@ -667,7 +667,7 @@ LABEL_100:
       v68 = v94 = v67;
 LABEL_99:
       v25 = 0;
-      *a6 = v68;
+      *error = v68;
       goto LABEL_125;
     }
 
@@ -692,7 +692,7 @@ LABEL_99:
         [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v80 = MEMORY[0x277CCA9B8];
         v125 = *MEMORY[0x277CCA470];
@@ -711,7 +711,7 @@ LABEL_99:
         [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v77 = MEMORY[0x277CCA9B8];
         v127 = *MEMORY[0x277CCA470];
@@ -720,7 +720,7 @@ LABEL_99:
         v78 = [v77 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1523 userInfo:obj];
 LABEL_111:
         v25 = 0;
-        *a6 = v78;
+        *error = v78;
         goto LABEL_124;
       }
     }
@@ -743,11 +743,11 @@ LABEL_70:
       objc_storeStrong(&v13->_attachments, obj);
       objc_storeStrong(&v13->_attachmentSignatures, v91);
       objc_storeStrong(&v13->_attachmentPaths, v90);
-      v72 = [v11 copy];
+      v72 = [dCopy copy];
       recipeID = v13->_recipeID;
       v13->_recipeID = v72;
 
-      v74 = [v12 copy];
+      v74 = [identifierCopy copy];
       bundleIdentifier = v13->_bundleIdentifier;
       v13->_bundleIdentifier = v74;
 
@@ -811,7 +811,7 @@ LABEL_77:
         [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v86 = MEMORY[0x277CCA9B8];
         v119 = *MEMORY[0x277CCA470];
@@ -843,7 +843,7 @@ LABEL_77:
     [DESRecipe _initWithRecipeResponse:recipeID:bundleIdentifier:error:];
   }
 
-  if (a6)
+  if (error)
   {
     v82 = MEMORY[0x277CCA9B8];
     v121 = *MEMORY[0x277CCA470];
@@ -851,7 +851,7 @@ LABEL_77:
     v83 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
     v84 = [v82 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1523 userInfo:v83];
 LABEL_121:
-    *a6 = v84;
+    *error = v84;
   }
 
 LABEL_122:
@@ -959,9 +959,9 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)transportIsDedisco:(id)a3
++ (BOOL)transportIsDedisco:(id)dedisco
 {
-  v3 = [a3 objectForKeyedSubscript:@"des_settings"];
+  v3 = [dedisco objectForKeyedSubscript:@"des_settings"];
   v4 = [v3 objectForKeyedSubscript:@"data_transport"];
   v5 = [v4 isEqualToString:@"dedisco"];
 
@@ -987,7 +987,7 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
   return v5;
 }
 
-- (id)haruspexKeyWithError:(id *)a3
+- (id)haruspexKeyWithError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = [(NSDictionary *)self->_recipeUserInfo objectForKeyedSubscript:@"iCloudAggServiceKey"];
@@ -1003,12 +1003,12 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
 
     else
     {
-      if (a3)
+      if (error)
       {
         v9 = MEMORY[0x277CCA9B8];
         v13 = *MEMORY[0x277CCA450];
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-        *a3 = [v9 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1501 userInfo:v10];
+        *error = [v9 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1501 userInfo:v10];
       }
 
       v7 = 0;
@@ -1017,13 +1017,13 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
     goto LABEL_9;
   }
 
-  if (a3)
+  if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA450];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     [v8 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1501 userInfo:v6];
-    *a3 = v7 = 0;
+    *error = v7 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -1037,13 +1037,13 @@ LABEL_10:
   return v7;
 }
 
-+ (BOOL)useSparsification:(id)a3
++ (BOOL)useSparsification:(id)sparsification
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sparsificationCopy = sparsification;
+  v4 = sparsificationCopy;
+  if (sparsificationCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"sparsification"];
+    v5 = [sparsificationCopy objectForKeyedSubscript:@"sparsification"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1105,13 +1105,13 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-+ (BOOL)_hasValidClippingBounds:(id)a3 matchValidNumChunks:(id)a4
++ (BOOL)_hasValidClippingBounds:(id)bounds matchValidNumChunks:(id)chunks
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  boundsCopy = bounds;
+  chunksCopy = chunks;
+  if ([boundsCopy count])
   {
-    v7 = [v5 objectAtIndexedSubscript:0];
+    v7 = [boundsCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1121,17 +1121,17 @@ LABEL_10:
     isKindOfClass = 0;
   }
 
-  v9 = [v6 intValue];
-  LOBYTE(v9) = [v5 count] == v9;
+  intValue = [chunksCopy intValue];
+  LOBYTE(intValue) = [boundsCopy count] == intValue;
 
-  return isKindOfClass & v9;
+  return isKindOfClass & intValue;
 }
 
-+ (BOOL)useAggregatableMetadata:(id)a3
++ (BOOL)useAggregatableMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    v3 = [a3 objectForKeyedSubscript:@"MetadataEncoding"];
+    v3 = [metadata objectForKeyedSubscript:@"MetadataEncoding"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1144,13 +1144,13 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-+ (BOOL)useAdaptiveClipping:(id)a3
++ (BOOL)useAdaptiveClipping:(id)clipping
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  clippingCopy = clipping;
+  v4 = clippingCopy;
+  if (clippingCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"ClippingIndicatorScale"];
+    v5 = [clippingCopy objectForKeyedSubscript:@"ClippingIndicatorScale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1255,10 +1255,10 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)isFederatedBufferStaled:(id)a3
+- (BOOL)isFederatedBufferStaled:(id)staled
 {
-  v4 = a3;
-  if (v4)
+  staledCopy = staled;
+  if (staledCopy)
   {
     if ([(DESRecipe *)self useFederatedBuffer])
     {
@@ -1273,7 +1273,7 @@ LABEL_15:
 
         if (isKindOfClass)
         {
-          [v4 doubleValue];
+          [staledCopy doubleValue];
           v10 = v9;
           v11 = [v5 objectForKeyedSubscript:@"maximumStaleness"];
           [v11 doubleValue];
@@ -1288,7 +1288,7 @@ LABEL_15:
           v6 = +[DESLogging coreChannel];
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
           {
-            [(DESRecipe *)v4 isFederatedBufferStaled:v5, v6];
+            [(DESRecipe *)staledCopy isFederatedBufferStaled:v5, v6];
           }
         }
 
@@ -1324,11 +1324,11 @@ LABEL_15:
 
 - (BOOL)isFederatedBufferStaled
 {
-  v2 = self;
-  v3 = [(DESRecipe *)self approximateStaleness];
-  LOBYTE(v2) = [(DESRecipe *)v2 isFederatedBufferStaled:v3];
+  selfCopy = self;
+  approximateStaleness = [(DESRecipe *)self approximateStaleness];
+  LOBYTE(selfCopy) = [(DESRecipe *)selfCopy isFederatedBufferStaled:approximateStaleness];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSNumber)federatedBufferDownScalingFactor
@@ -1339,8 +1339,8 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v3 = [(DESRecipe *)self approximateStaleness];
-  if (!v3)
+  approximateStaleness = [(DESRecipe *)self approximateStaleness];
+  if (!approximateStaleness)
   {
     v4 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1351,7 +1351,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([(DESRecipe *)self isFederatedBufferStaled:v3])
+  if ([(DESRecipe *)self isFederatedBufferStaled:approximateStaleness])
   {
     v4 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1385,7 +1385,7 @@ LABEL_16:
     }
 
     v9 = [v4 objectForKeyedSubscript:@"downScalingOrder"];
-    v5 = [DESFederatedBuffer computeDownScalingFactor:v9 approximateStaleness:v3];
+    v5 = [DESFederatedBuffer computeDownScalingFactor:v9 approximateStaleness:approximateStaleness];
   }
 
   else
@@ -1419,18 +1419,18 @@ LABEL_18:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   recipeID = self->_recipeID;
-  v11 = v4;
+  v11 = coderCopy;
   if (recipeID)
   {
-    [v4 encodeObject:recipeID forKey:@"recipeId"];
-    v4 = v11;
+    [coderCopy encodeObject:recipeID forKey:@"recipeId"];
+    coderCopy = v11;
   }
 
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
   recipeUserInfo = self->_recipeUserInfo;
   if (recipeUserInfo)
   {
@@ -1459,16 +1459,16 @@ LABEL_18:
   }
 }
 
-- (DESRecipe)initWithCoder:(id)a3
+- (DESRecipe)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = DESRecipe;
   v5 = [(DESRecipe *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipeId"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipeId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     if (v7)
     {
       objc_storeStrong(&v5->_recipeID, v6);
@@ -1479,28 +1479,28 @@ LABEL_18:
       v11 = objc_opt_class();
       v12 = objc_opt_class();
       v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"recipeUserInfo"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"recipeUserInfo"];
       recipeUserInfo = v5->_recipeUserInfo;
       v5->_recipeUserInfo = v14;
 
       v16 = MEMORY[0x277CBEB98];
       v17 = objc_opt_class();
       v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"attachments"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"attachments"];
       attachments = v5->_attachments;
       v5->_attachments = v19;
 
       v21 = MEMORY[0x277CBEB98];
       v22 = objc_opt_class();
       v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"attachmentSignatures"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"attachmentSignatures"];
       attachmentSignatures = v5->_attachmentSignatures;
       v5->_attachmentSignatures = v24;
 
       v26 = MEMORY[0x277CBEB98];
       v27 = objc_opt_class();
       v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-      v29 = [v4 decodeObjectOfClasses:v28 forKey:@"attachmentPaths"];
+      v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"attachmentPaths"];
       attachmentPaths = v5->_attachmentPaths;
       v5->_attachmentPaths = v29;
 
@@ -1695,9 +1695,9 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
 - (void)approximateStaleness
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [a1 objectForKeyedSubscript:@"iterationStartTime"];
-  v3 = [a1 objectForKeyedSubscript:@"stalenessScale"];
-  v10 = [a1 objectForKeyedSubscript:@"stalenessBias"];
+  v2 = [self objectForKeyedSubscript:@"iterationStartTime"];
+  v3 = [self objectForKeyedSubscript:@"stalenessScale"];
+  v10 = [self objectForKeyedSubscript:@"stalenessBias"];
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v4, v5, v6, v7, v8, 0x20u);
 
@@ -1731,7 +1731,7 @@ void __69__DESRecipe__initWithRecipeResponse_recipeID_bundleIdentifier_error___b
 - (void)federatedBufferDownScalingFactor
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 objectForKeyedSubscript:@"downScalingOrder"];
+  v1 = [self objectForKeyedSubscript:@"downScalingOrder"];
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

@@ -1,10 +1,10 @@
 @interface HSMomentumRequestEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (HSMomentumRequestEvent)init;
 - (NSString)description;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSMomentumRequestEvent
@@ -42,23 +42,23 @@
   return v6;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)113,(char)117,(char)101,(char)115,(char)116>::Key, self->request);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)98,(char)116,(char)121,(char)112,(char)101>::Key, self->subtype);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)102,(char)105,(char)114,(char)115,(char)116>::Key, self->delta.first);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)115,(char)101,(char)99,(char)111,(char)110,(char)100>::Key, self->delta.second);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)114,(char)97,(char)103,(char)66,(char)117,(char)116,(char)116,(char)111,(char)110,(char)115>::Key, self->dragButtons);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)113,(char)117,(char)101,(char)115,(char)116>::Key, self->request);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)98,(char)116,(char)121,(char)112,(char)101>::Key, self->subtype);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)102,(char)105,(char)114,(char)115,(char)116>::Key, self->delta.first);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)115,(char)101,(char)99,(char)111,(char)110,(char)100>::Key, self->delta.second);
+  HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)114,(char)97,(char)103,(char)66,(char)117,(char)116,(char)116,(char)111,(char)110,(char)115>::Key, self->dragButtons);
   v5 = HSUtil::CoderKey::Literal<(char)108,(char)97,(char)115,(char)116,(char)70,(char)114,(char)97,(char)109,(char)101,(char)73,(char)110,(char)116,(char)101,(char)114,(char)118,(char)97,(char)108>::Key;
   lastFrameInterval = self->lastFrameInterval;
 
-  HSUtil::Encoder::encodeUInt(a3, v5, lastFrameInterval);
+  HSUtil::Encoder::encodeUInt(map, v5, lastFrameInterval);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
-  self->request = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)113,(char)117,(char)101,(char)115,(char)116>::Key);
-  if (*a3)
+  self->request = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)113,(char)117,(char)101,(char)115,(char)116>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -70,8 +70,8 @@
     return 0;
   }
 
-  self->subtype = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)98,(char)116,(char)121,(char)112,(char)101>::Key);
-  if (*a3)
+  self->subtype = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)98,(char)116,(char)121,(char)112,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -83,8 +83,8 @@
     return 0;
   }
 
-  self->delta.first = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)102,(char)105,(char)114,(char)115,(char)116>::Key);
-  if (*a3)
+  self->delta.first = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)102,(char)105,(char)114,(char)115,(char)116>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -96,8 +96,8 @@
     return 0;
   }
 
-  self->delta.second = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)115,(char)101,(char)99,(char)111,(char)110,(char)100>::Key);
-  if (*a3)
+  self->delta.second = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)108,(char)116,(char)97,(char)46,(char)115,(char)101,(char)99,(char)111,(char)110,(char)100>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -109,8 +109,8 @@
     return 0;
   }
 
-  self->dragButtons = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)114,(char)97,(char)103,(char)66,(char)117,(char)116,(char)116,(char)111,(char)110,(char)115>::Key);
-  if (*a3)
+  self->dragButtons = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)100,(char)114,(char)97,(char)103,(char)66,(char)117,(char)116,(char)116,(char)111,(char)110,(char)115>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -122,8 +122,8 @@
     return 0;
   }
 
-  self->lastFrameInterval = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)108,(char)97,(char)115,(char)116,(char)70,(char)114,(char)97,(char)109,(char)101,(char)73,(char)110,(char)116,(char)101,(char)114,(char)118,(char)97,(char)108>::Key);
-  if (*a3)
+  self->lastFrameInterval = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)108,(char)97,(char)115,(char)116,(char)70,(char)114,(char)97,(char)109,(char)101,(char)73,(char)110,(char)116,(char)101,(char)114,(char)118,(char)97,(char)108>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -138,26 +138,26 @@
   return 1;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(HSMomentumRequestEvent *)self encodeToMap:a3];
-  if (!*a3)
+  [(HSMomentumRequestEvent *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -166,8 +166,8 @@
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);

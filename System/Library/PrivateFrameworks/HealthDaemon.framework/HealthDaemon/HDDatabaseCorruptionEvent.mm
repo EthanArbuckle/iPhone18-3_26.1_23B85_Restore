@@ -1,93 +1,93 @@
 @interface HDDatabaseCorruptionEvent
-+ (id)createForProfile:(id)a3 component:(int64_t)a4 error:(id)a5 failedObliterationReason:(id)a6;
-- (HDDatabaseCorruptionEvent)initWithCoder:(id)a3;
-- (HDDatabaseCorruptionEvent)initWithError:(id)a3 date:(id)a4 profileIdentifier:(id)a5 component:(int64_t)a6 build:(id)a7 failedObliterationReason:(id)a8;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForProfile:(id)profile component:(int64_t)component error:(id)error failedObliterationReason:(id)reason;
+- (HDDatabaseCorruptionEvent)initWithCoder:(id)coder;
+- (HDDatabaseCorruptionEvent)initWithError:(id)error date:(id)date profileIdentifier:(id)identifier component:(int64_t)component build:(id)build failedObliterationReason:(id)reason;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDDatabaseCorruptionEvent
 
-- (HDDatabaseCorruptionEvent)initWithError:(id)a3 date:(id)a4 profileIdentifier:(id)a5 component:(int64_t)a6 build:(id)a7 failedObliterationReason:(id)a8
+- (HDDatabaseCorruptionEvent)initWithError:(id)error date:(id)date profileIdentifier:(id)identifier component:(int64_t)component build:(id)build failedObliterationReason:(id)reason
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  errorCopy = error;
+  dateCopy = date;
+  identifierCopy = identifier;
+  buildCopy = build;
+  reasonCopy = reason;
   v27.receiver = self;
   v27.super_class = HDDatabaseCorruptionEvent;
   v19 = [(HDDatabaseCorruptionEvent *)&v27 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [errorCopy copy];
     error = v19->_error;
     v19->_error = v20;
 
-    v22 = [v15 copy];
+    v22 = [dateCopy copy];
     date = v19->_date;
     v19->_date = v22;
 
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     profileIdentifier = v19->_profileIdentifier;
     v19->_profileIdentifier = v24;
 
-    v19->_component = a6;
-    objc_storeStrong(&v19->_buildDescription, a7);
-    objc_storeStrong(&v19->_failedObliterationReason, a8);
+    v19->_component = component;
+    objc_storeStrong(&v19->_buildDescription, build);
+    objc_storeStrong(&v19->_failedObliterationReason, reason);
   }
 
   return v19;
 }
 
-+ (id)createForProfile:(id)a3 component:(int64_t)a4 error:(id)a5 failedObliterationReason:(id)a6
++ (id)createForProfile:(id)profile component:(int64_t)component error:(id)error failedObliterationReason:(id)reason
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a1 alloc];
+  reasonCopy = reason;
+  errorCopy = error;
+  profileCopy = profile;
+  v13 = [self alloc];
   v14 = [MEMORY[0x277CBEAA8] now];
-  v15 = [v12 profileIdentifier];
-  v16 = [v12 daemon];
+  profileIdentifier = [profileCopy profileIdentifier];
+  daemon = [profileCopy daemon];
 
-  v17 = [v16 behavior];
-  v18 = [v17 currentOSBuild];
-  v19 = [v13 initWithError:v11 date:v14 profileIdentifier:v15 component:a4 build:v18 failedObliterationReason:v10];
+  behavior = [daemon behavior];
+  currentOSBuild = [behavior currentOSBuild];
+  v19 = [v13 initWithError:errorCopy date:v14 profileIdentifier:profileIdentifier component:component build:currentOSBuild failedObliterationReason:reasonCopy];
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(HDDatabaseCorruptionEvent *)self profileIdentifier];
-  [v9 encodeObject:v4 forKey:@"profile"];
+  coderCopy = coder;
+  profileIdentifier = [(HDDatabaseCorruptionEvent *)self profileIdentifier];
+  [coderCopy encodeObject:profileIdentifier forKey:@"profile"];
 
-  [v9 encodeInt:-[HDDatabaseCorruptionEvent component](self forKey:{"component"), @"component"}];
-  v5 = [(HDDatabaseCorruptionEvent *)self buildDescription];
-  [v9 encodeObject:v5 forKey:@"build"];
+  [coderCopy encodeInt:-[HDDatabaseCorruptionEvent component](self forKey:{"component"), @"component"}];
+  buildDescription = [(HDDatabaseCorruptionEvent *)self buildDescription];
+  [coderCopy encodeObject:buildDescription forKey:@"build"];
 
-  v6 = [(HDDatabaseCorruptionEvent *)self date];
-  [v9 encodeObject:v6 forKey:@"date"];
+  date = [(HDDatabaseCorruptionEvent *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v7 = [(HDDatabaseCorruptionEvent *)self error];
-  [v9 encodeObject:v7 forKey:@"error"];
+  error = [(HDDatabaseCorruptionEvent *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
   failedObliterationReason = self->_failedObliterationReason;
   if (failedObliterationReason)
   {
-    [v9 encodeObject:failedObliterationReason forKey:@"obliteration_reason"];
+    [coderCopy encodeObject:failedObliterationReason forKey:@"obliteration_reason"];
   }
 }
 
-- (HDDatabaseCorruptionEvent)initWithCoder:(id)a3
+- (HDDatabaseCorruptionEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profile"];
-  v6 = [v4 decodeIntForKey:@"component"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliteration_reason"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profile"];
+  v6 = [coderCopy decodeIntForKey:@"component"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliteration_reason"];
 
   v11 = [(HDDatabaseCorruptionEvent *)self initWithError:v9 date:v8 profileIdentifier:v5 component:v6 build:v7 failedObliterationReason:v10];
   return v11;

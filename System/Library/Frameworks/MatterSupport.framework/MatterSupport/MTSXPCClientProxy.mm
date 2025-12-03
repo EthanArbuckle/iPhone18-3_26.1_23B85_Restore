@@ -1,18 +1,18 @@
 @interface MTSXPCClientProxy
-- (BOOL)hasEntitlement:(id)a3;
-- (MTSXPCClientProxy)initWithConnection:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (MTSXPCClientProxy)initWithConnection:(id)connection;
 - (MTSXPCClientProxyDelegate)delegate;
 - (id)attributeDescriptions;
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3;
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3;
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5;
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4;
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4;
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler;
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler;
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler;
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler;
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler;
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler;
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler;
 - (void)showRestrictedCharacteristicsAccessWarningAlert;
 @end
 
@@ -29,8 +29,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(MTSXPCClientProxy *)self connection];
-  v5 = [v3 initWithName:@"Connection" value:v4];
+  connection = [(MTSXPCClientProxy *)self connection];
+  v5 = [v3 initWithName:@"Connection" value:connection];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -41,94 +41,94 @@
 
 - (void)showRestrictedCharacteristicsAccessWarningAlert
 {
-  v3 = [(MTSXPCClientProxy *)self delegate];
-  [v3 showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:self];
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:self];
 }
 
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCClientProxy *)self delegate];
-  [v5 clientProxy:self checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:handlerCopy];
 }
 
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self retrievePreferredThreadCredentialsOrCreateWithDataset:v7 completionHandler:v6];
+  handlerCopy = handler;
+  datasetCopy = dataset;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self retrievePreferredThreadCredentialsOrCreateWithDataset:datasetCopy completionHandler:handlerCopy];
 }
 
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self removeSystemCommissionerPairingWithUUID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self removeSystemCommissionerPairingWithUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCClientProxy *)self delegate];
-  [v5 clientProxy:self fetchSystemCommissionerPairingsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self fetchSystemCommissionerPairingsWithCompletionHandler:handlerCopy];
 }
 
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self performDeviceSetupUsingRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self performDeviceSetupUsingRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self readCommissioningWindowStatusForSystemCommissionerPairingUUID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self readCommissioningWindowStatusForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MTSXPCClientProxy *)self delegate];
-  [v10 clientProxy:self openCommissioningWindowForSystemCommissionerPairingUUID:v9 duration:v8 completionHandler:a4];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self openCommissioningWindowForSystemCommissionerPairingUUID:dCopy duration:handlerCopy completionHandler:duration];
 }
 
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self removeAllDevicePairingsForSystemCommissionerPairingUUID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self removeAllDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTSXPCClientProxy *)self delegate];
-  [v11 clientProxy:self removeDevicePairingWithUUID:v10 forSystemCommissionerPairingUUID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  iDCopy = iD;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self removeDevicePairingWithUUID:dCopy forSystemCommissionerPairingUUID:iDCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCClientProxy *)self delegate];
-  [v8 clientProxy:self fetchDevicePairingsForSystemCommissionerPairingUUID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(MTSXPCClientProxy *)self delegate];
+  [delegate clientProxy:self fetchDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(MTSXPCClientProxy *)self connection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(MTSXPCClientProxy *)self connection];
+  v6 = [connection valueForEntitlement:entitlementCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -143,23 +143,23 @@
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  return v9;
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
 }
 
-- (MTSXPCClientProxy)initWithConnection:(id)a3
+- (MTSXPCClientProxy)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v6 = v5;
+    v6 = connectionCopy;
     v12.receiver = self;
     v12.super_class = MTSXPCClientProxy;
     v7 = [(MTSXPCClientProxy *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_connection, a3);
+      objc_storeStrong(&v7->_connection, connection);
     }
 
     return v8;

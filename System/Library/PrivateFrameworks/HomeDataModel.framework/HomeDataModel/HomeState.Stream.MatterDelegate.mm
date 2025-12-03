@@ -1,9 +1,9 @@
 @interface HomeState.Stream.MatterDelegate
 - (_TtCCV13HomeDataModel9HomeState6Stream14MatterDelegate)init;
-- (void)device:(id)a3 stateChanged:(unint64_t)a4;
-- (void)deviceBecameActive:(id)a3;
-- (void)deviceCachePrimed:(id)a3;
-- (void)deviceConfigurationChanged:(id)a3;
+- (void)device:(id)device stateChanged:(unint64_t)changed;
+- (void)deviceBecameActive:(id)active;
+- (void)deviceCachePrimed:(id)primed;
+- (void)deviceConfigurationChanged:(id)changed;
 @end
 
 @implementation HomeState.Stream.MatterDelegate
@@ -15,32 +15,32 @@
   return result;
 }
 
-- (void)device:(id)a3 stateChanged:(unint64_t)a4
+- (void)device:(id)device stateChanged:(unint64_t)changed
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D1AB1FE4(v6, a4);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_1D1AB1FE4(deviceCopy, changed);
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceBecameActive for device:%{public}@");
+  activeCopy = active;
+  selfCopy = self;
+  sub_1D1AB43C4(activeCopy, "Received MTRDevice delegate deviceBecameActive for device:%{public}@");
 }
 
-- (void)deviceCachePrimed:(id)a3
+- (void)deviceCachePrimed:(id)primed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceCachePrimed for device:%{public}@");
+  primedCopy = primed;
+  selfCopy = self;
+  sub_1D1AB43C4(primedCopy, "Received MTRDevice delegate deviceCachePrimed for device:%{public}@");
 }
 
-- (void)deviceConfigurationChanged:(id)a3
+- (void)deviceConfigurationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1AB43C4(v4, "Received MTRDevice delegate deviceConfigurationChanged for device:%{public}@");
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1D1AB43C4(changedCopy, "Received MTRDevice delegate deviceConfigurationChanged for device:%{public}@");
 }
 
 @end

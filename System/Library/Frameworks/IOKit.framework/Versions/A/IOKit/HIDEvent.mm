@@ -1,5 +1,5 @@
 @interface HIDEvent
-- (HIDEvent)initWithSize:(unint64_t)a3 type:(unsigned int)a4 timestamp:(unint64_t)a5 options:(unsigned int)a6;
+- (HIDEvent)initWithSize:(unint64_t)size type:(unsigned int)type timestamp:(unint64_t)timestamp options:(unsigned int)options;
 - (id)description;
 - (void)dealloc;
 @end
@@ -57,26 +57,26 @@
   [(HIDEvent *)&v12 dealloc];
 }
 
-- (HIDEvent)initWithSize:(unint64_t)a3 type:(unsigned int)a4 timestamp:(unint64_t)a5 options:(unsigned int)a6
+- (HIDEvent)initWithSize:(unint64_t)size type:(unsigned int)type timestamp:(unint64_t)timestamp options:(unsigned int)options
 {
   v13.receiver = self;
   v13.super_class = HIDEvent;
   v10 = [(HIDEvent *)&v13 init];
   result = 0;
-  if (a3 >= 0x10 && v10)
+  if (size >= 0x10 && v10)
   {
-    result = malloc_type_malloc(a3, 0x1000040451B5BE8uLL);
+    result = malloc_type_malloc(size, 0x1000040451B5BE8uLL);
     v10->_event.eventData = result;
     if (result)
     {
-      bzero(result, a3);
-      v10->_event.timeStamp = a5;
-      v10->_event.options = a6;
-      v10->_event.typeMask = 1 << a4;
+      bzero(result, size);
+      v10->_event.timeStamp = timestamp;
+      v10->_event.options = options;
+      v10->_event.typeMask = 1 << type;
       eventData = v10->_event.eventData;
-      *eventData = a3;
-      *(eventData + 1) = a4;
-      *(eventData + 2) = a6;
+      *eventData = size;
+      *(eventData + 1) = type;
+      *(eventData + 2) = options;
       return v10;
     }
   }

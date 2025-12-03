@@ -1,11 +1,11 @@
 @interface RAPTwoLinesMenuTableViewCell
-- (RAPTwoLinesMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RAPTwoLinesMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_contentSizeChanged;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateContent;
 - (void)prepareForReuse;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation RAPTwoLinesMenuTableViewCell
@@ -31,105 +31,105 @@
   v4 = +[UIFont system13Adaptive];
   [(UILabel *)self->_secondTitleLabel setFont:v4];
 
-  v5 = [(UILabel *)self->_mainTitleLabel font];
-  [v5 _mapkit_scaledValueForValue:29.0];
+  font = [(UILabel *)self->_mainTitleLabel font];
+  [font _mapkit_scaledValueForValue:29.0];
   [(NSLayoutConstraint *)self->_topToTitleConstraint setConstant:?];
 
-  v6 = [(UILabel *)self->_mainTitleLabel font];
-  [v6 _mapkit_scaledValueForValue:-19.0];
+  font2 = [(UILabel *)self->_mainTitleLabel font];
+  [font2 _mapkit_scaledValueForValue:-19.0];
   [(NSLayoutConstraint *)self->_titleToSubtitleConstraint setConstant:?];
 
-  v7 = [(UILabel *)self->_secondTitleLabel font];
-  [v7 _mapkit_scaledValueForValue:-16.0];
+  font3 = [(UILabel *)self->_secondTitleLabel font];
+  [font3 _mapkit_scaledValueForValue:-16.0];
   [(NSLayoutConstraint *)self->_subtitleToBottomConstraint setConstant:?];
 }
 
 - (void)_updateContent
 {
-  v3 = [(RAPTwoLinesViewModel *)self->_viewModel image];
-  [(UIImageView *)self->_leftImageView setImage:v3];
+  image = [(RAPTwoLinesViewModel *)self->_viewModel image];
+  [(UIImageView *)self->_leftImageView setImage:image];
 
-  v4 = [(RAPTwoLinesViewModel *)self->_viewModel title];
-  [(UILabel *)self->_mainTitleLabel setText:v4];
+  title = [(RAPTwoLinesViewModel *)self->_viewModel title];
+  [(UILabel *)self->_mainTitleLabel setText:title];
 
-  v5 = [(RAPTwoLinesViewModel *)self->_viewModel subtitle];
-  [(UILabel *)self->_secondTitleLabel setText:v5];
+  subtitle = [(RAPTwoLinesViewModel *)self->_viewModel subtitle];
+  [(UILabel *)self->_secondTitleLabel setText:subtitle];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(RAPTwoLinesMenuTableViewCell *)self _updateContent];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
-  v4 = [(UILabel *)self->_mainTitleLabel firstBaselineAnchor];
-  v5 = [v3 topAnchor];
-  v6 = [(UILabel *)self->_mainTitleLabel font];
-  [v6 _mapkit_scaledValueForValue:29.0];
-  v7 = [v4 constraintEqualToAnchor:v5 constant:?];
+  contentView = [(RAPTwoLinesMenuTableViewCell *)self contentView];
+  firstBaselineAnchor = [(UILabel *)self->_mainTitleLabel firstBaselineAnchor];
+  topAnchor = [contentView topAnchor];
+  font = [(UILabel *)self->_mainTitleLabel font];
+  [font _mapkit_scaledValueForValue:29.0];
+  v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   topToTitleConstraint = self->_topToTitleConstraint;
   self->_topToTitleConstraint = v7;
 
-  v9 = [(UILabel *)self->_mainTitleLabel lastBaselineAnchor];
-  v10 = [(UILabel *)self->_secondTitleLabel firstBaselineAnchor];
-  v11 = [(UILabel *)self->_mainTitleLabel font];
-  [v11 _mapkit_scaledValueForValue:-19.0];
-  v12 = [v9 constraintEqualToAnchor:v10 constant:?];
+  lastBaselineAnchor = [(UILabel *)self->_mainTitleLabel lastBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_secondTitleLabel firstBaselineAnchor];
+  font2 = [(UILabel *)self->_mainTitleLabel font];
+  [font2 _mapkit_scaledValueForValue:-19.0];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:?];
   titleToSubtitleConstraint = self->_titleToSubtitleConstraint;
   self->_titleToSubtitleConstraint = v12;
 
-  v14 = [(UILabel *)self->_secondTitleLabel lastBaselineAnchor];
-  v15 = [v3 bottomAnchor];
-  v16 = [(UILabel *)self->_secondTitleLabel font];
-  [v16 _mapkit_scaledValueForValue:-16.0];
-  v17 = [v14 constraintEqualToAnchor:v15 constant:?];
+  lastBaselineAnchor2 = [(UILabel *)self->_secondTitleLabel lastBaselineAnchor];
+  bottomAnchor = [contentView bottomAnchor];
+  font3 = [(UILabel *)self->_secondTitleLabel font];
+  [font3 _mapkit_scaledValueForValue:-16.0];
+  v17 = [lastBaselineAnchor2 constraintEqualToAnchor:bottomAnchor constant:?];
   subtitleToBottomConstraint = self->_subtitleToBottomConstraint;
   self->_subtitleToBottomConstraint = v17;
 
-  v46 = [(UIImageView *)self->_leftImageView widthAnchor];
-  v45 = [v46 constraintEqualToConstant:26.0];
+  widthAnchor = [(UIImageView *)self->_leftImageView widthAnchor];
+  v45 = [widthAnchor constraintEqualToConstant:26.0];
   v47[0] = v45;
-  v44 = [(UIImageView *)self->_leftImageView heightAnchor];
-  v43 = [(UIImageView *)self->_leftImageView widthAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  heightAnchor = [(UIImageView *)self->_leftImageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_leftImageView widthAnchor];
+  v42 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v47[1] = v42;
-  v41 = [(UIImageView *)self->_leftImageView centerYAnchor];
-  v40 = [v3 centerYAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerYAnchor = [(UIImageView *)self->_leftImageView centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[2] = v39;
-  v37 = [(UIImageView *)self->_leftImageView leadingAnchor];
-  v38 = v3;
-  v19 = v3;
-  v36 = [v3 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:15.0];
+  leadingAnchor = [(UIImageView *)self->_leftImageView leadingAnchor];
+  v38 = contentView;
+  v19 = contentView;
+  leadingAnchor2 = [contentView leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v47[3] = v35;
-  v34 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
-  v33 = [(UIImageView *)self->_leftImageView trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:15.0];
+  leadingAnchor3 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_leftImageView trailingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:15.0];
   v47[4] = v32;
-  v20 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
-  v21 = [v19 trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:-15.0];
+  trailingAnchor2 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
+  trailingAnchor3 = [v19 trailingAnchor];
+  v22 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-15.0];
   v23 = self->_topToTitleConstraint;
   v47[5] = v22;
   v47[6] = v23;
   v47[7] = self->_titleToSubtitleConstraint;
-  v24 = [(UILabel *)self->_secondTitleLabel leadingAnchor];
-  v25 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  leadingAnchor4 = [(UILabel *)self->_secondTitleLabel leadingAnchor];
+  leadingAnchor5 = [(UILabel *)self->_mainTitleLabel leadingAnchor];
+  v26 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v47[8] = v26;
-  v27 = [(UILabel *)self->_secondTitleLabel trailingAnchor];
-  v28 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  trailingAnchor4 = [(UILabel *)self->_secondTitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_mainTitleLabel trailingAnchor];
+  v29 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v30 = self->_subtitleToBottomConstraint;
   v47[9] = v29;
   v47[10] = v30;
@@ -182,21 +182,21 @@
   v18 = +[UIColor systemLightGrayColor];
   [(UIImageView *)self->_leftImageView setTintColor:v18];
 
-  v19 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
-  [v19 addSubview:self->_mainTitleLabel];
+  contentView = [(RAPTwoLinesMenuTableViewCell *)self contentView];
+  [contentView addSubview:self->_mainTitleLabel];
 
-  v20 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
-  [v20 addSubview:self->_secondTitleLabel];
+  contentView2 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_secondTitleLabel];
 
-  v21 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
-  [v21 addSubview:self->_leftImageView];
+  contentView3 = [(RAPTwoLinesMenuTableViewCell *)self contentView];
+  [contentView3 addSubview:self->_leftImageView];
 }
 
-- (RAPTwoLinesMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPTwoLinesMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = RAPTwoLinesMenuTableViewCell;
-  v4 = [(RAPTwoLinesMenuTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPTwoLinesMenuTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();

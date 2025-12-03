@@ -3,8 +3,8 @@
 - (id)groupIdentifier;
 - (id)userInfo;
 - (void)dealloc;
-- (void)setGroupIdentifier:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setGroupIdentifier:(id)identifier;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation _NSUndoBeginMark
@@ -18,10 +18,10 @@
   [(_NSUndoBeginMark *)&v3 dealloc];
 }
 
-- (void)setGroupIdentifier:(id)a3
+- (void)setGroupIdentifier:(id)identifier
 {
   groupIdentifier = self->_groupIdentifier;
-  self->_groupIdentifier = [a3 copyWithZone:{-[_NSUndoBeginMark zone](self, "zone")}];
+  self->_groupIdentifier = [identifier copyWithZone:{-[_NSUndoBeginMark zone](self, "zone")}];
 }
 
 - (id)groupIdentifier
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   userInfo = self->_userInfo;
-  self->_userInfo = [a3 mutableCopyWithZone:{-[_NSUndoBeginMark zone](self, "zone")}];
+  self->_userInfo = [info mutableCopyWithZone:{-[_NSUndoBeginMark zone](self, "zone")}];
 }
 
 - (id)userInfo

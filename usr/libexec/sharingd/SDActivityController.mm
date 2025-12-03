@@ -3,9 +3,9 @@
 - (NSArray)allPeerBTIdentifiers;
 - (NSString)appleID;
 - (SDActivityController)init;
-- (id)idsDeviceFromBTIdentifier:(id)a3;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (id)idsDeviceFromBTIdentifier:(id)identifier;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 @end
 
 @implementation SDActivityController
@@ -13,9 +13,9 @@
 - (BOOL)shouldStart
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isActivityContinuationAllowed];
+  isActivityContinuationAllowed = [v3 isActivityContinuationAllowed];
 
-  if ((v4 & 1) == 0)
+  if ((isActivityContinuationAllowed & 1) == 0)
   {
     v5 = handoff_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -33,8 +33,8 @@
   {
     if ([v5 alwaysSendPayload])
     {
-      v6 = handoff_log();
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      devices = handoff_log();
+      if (!os_log_type_enabled(devices, OS_LOG_TYPE_INFO))
       {
         goto LABEL_24;
       }
@@ -49,8 +49,8 @@
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = [(IDSService *)self->_activityService devices];
-      v9 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      devices = [(IDSService *)self->_activityService devices];
+      v9 = [devices countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -61,15 +61,15 @@
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(devices);
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
             if ([v13 supportsHandoff])
             {
-              v14 = [v13 nsuuid];
+              nsuuid = [v13 nsuuid];
 
-              if (v14)
+              if (nsuuid)
               {
                 v8 = 1;
                 goto LABEL_26;
@@ -77,7 +77,7 @@
             }
           }
 
-          v10 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v10 = [devices countByEnumeratingWithState:&v16 objects:v21 count:16];
           if (v10)
           {
             continue;
@@ -87,8 +87,8 @@
         }
       }
 
-      v6 = handoff_log();
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      devices = handoff_log();
+      if (!os_log_type_enabled(devices, OS_LOG_TYPE_INFO))
       {
         goto LABEL_24;
       }
@@ -100,8 +100,8 @@
 
   else
   {
-    v6 = handoff_log();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    devices = handoff_log();
+    if (!os_log_type_enabled(devices, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
     }
@@ -110,7 +110,7 @@
     v7 = "Handoff is disabled until first unlock has occurred";
   }
 
-  _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, v7, buf, 2u);
+  _os_log_impl(&_mh_execute_header, devices, OS_LOG_TYPE_INFO, v7, buf, 2u);
 LABEL_24:
   v8 = 0;
 LABEL_26:
@@ -136,15 +136,15 @@ LABEL_27:
   return v2;
 }
 
-- (id)idsDeviceFromBTIdentifier:(id)a3
+- (id)idsDeviceFromBTIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(IDSService *)self->_activityService devices];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  devices = [(IDSService *)self->_activityService devices];
+  v6 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -154,13 +154,13 @@ LABEL_27:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 nsuuid];
-        v11 = [v10 UUIDString];
-        v12 = [v11 isEqualToString:v4];
+        nsuuid = [v9 nsuuid];
+        uUIDString = [nsuuid UUIDString];
+        v12 = [uUIDString isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -169,7 +169,7 @@ LABEL_27:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -190,34 +190,34 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SDActivityController *)self activityService];
-  v3 = [v2 accounts];
+  activityService = [(SDActivityController *)self activityService];
+  accounts = [activityService accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v4)
+  loginID2 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (loginID2)
   {
     v5 = *v11;
     while (2)
     {
-      for (i = 0; i != v4; i = i + 1)
+      for (i = 0; i != loginID2; i = i + 1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
-        v8 = [v7 loginID];
+        loginID = [v7 loginID];
 
-        if (v8)
+        if (loginID)
         {
-          v4 = [v7 loginID];
+          loginID2 = [v7 loginID];
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v4)
+      loginID2 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (loginID2)
       {
         continue;
       }
@@ -228,7 +228,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v4;
+  return loginID2;
 }
 
 - (NSArray)allPeerBTIdentifiers
@@ -238,8 +238,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSService *)self->_activityService devices];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [(IDSService *)self->_activityService devices];
+  v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -250,14 +250,14 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 nsuuid];
+        nsuuid = [v9 nsuuid];
         if ([v9 supportsHandoff])
         {
-          v11 = v10 == 0;
+          v11 = nsuuid == 0;
         }
 
         else
@@ -267,11 +267,11 @@ LABEL_11:
 
         if (!v11)
         {
-          [v3 addObject:v10];
+          [v3 addObject:nsuuid];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -280,21 +280,21 @@ LABEL_11:
   return v3;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = handoff_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 valueForKeyPath:@"@unionOfObjects.uniqueIDOverride"];
+    v7 = [changedCopy valueForKeyPath:@"@unionOfObjects.uniqueIDOverride"];
     v8 = SFCompactStringFromCollection();
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "List of Activity Continuation devices changed %@", &v10, 0xCu);
   }
 
-  [(SDActivityController *)self activityServiceDevicesChanged:v5];
-  if ([v5 count])
+  [(SDActivityController *)self activityServiceDevicesChanged:changedCopy];
+  if ([changedCopy count])
   {
     [(SDActivityController *)self restart];
   }
@@ -306,19 +306,19 @@ LABEL_11:
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v6 = a4;
-  v7 = a3;
+  changedCopy = changed;
+  serviceCopy = service;
   v8 = handoff_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000D20E0(v6, v8);
+    sub_1000D20E0(changedCopy, v8);
   }
 
-  v9 = [v7 devices];
+  devices = [serviceCopy devices];
 
-  [(SDActivityController *)self nearbyServiceDevicesChanged:v9];
+  [(SDActivityController *)self nearbyServiceDevicesChanged:devices];
 }
 
 @end

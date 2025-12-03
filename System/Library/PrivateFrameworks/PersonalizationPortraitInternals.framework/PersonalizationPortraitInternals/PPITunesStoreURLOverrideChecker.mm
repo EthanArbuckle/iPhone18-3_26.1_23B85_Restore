@@ -1,9 +1,9 @@
 @interface PPITunesStoreURLOverrideChecker
 - (PPITunesStoreURLOverrideChecker)init;
-- (PPITunesStoreURLOverrideChecker)initWithPlistPaths:(id)a3 isAppAvailableToOpenURLBlock:(id)a4;
-- (PPITunesStoreURLOverrideChecker)initWithPropertyList:(id)a3 isAppAvailableToOpenURLBlock:(id)a4;
-- (id)_compiledPattern:(uint64_t)a1;
-- (id)overrideForURL:(id)a3;
+- (PPITunesStoreURLOverrideChecker)initWithPlistPaths:(id)paths isAppAvailableToOpenURLBlock:(id)block;
+- (PPITunesStoreURLOverrideChecker)initWithPropertyList:(id)list isAppAvailableToOpenURLBlock:(id)block;
+- (id)_compiledPattern:(uint64_t)pattern;
+- (id)overrideForURL:(id)l;
 @end
 
 @implementation PPITunesStoreURLOverrideChecker
@@ -30,11 +30,11 @@
   return v7;
 }
 
-- (id)overrideForURL:(id)a3
+- (id)overrideForURL:(id)l
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v4 resolvingAgainstBaseURL:1];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:1];
   v6 = v5;
   if (v5)
   {
@@ -49,8 +49,8 @@
   v8 = v7;
 
   failedHosts = self->_failedHosts;
-  v10 = [v8 host];
-  LOBYTE(failedHosts) = [(NSMutableSet *)failedHosts containsObject:v10];
+  host = [v8 host];
+  LOBYTE(failedHosts) = [(NSMutableSet *)failedHosts containsObject:host];
 
   if (failedHosts)
   {
@@ -71,11 +71,11 @@
   v87 = objc_opt_new();
   v77 = objc_opt_new();
   v80 = objc_opt_new();
-  v13 = [v8 scheme];
-  v14 = v13;
-  if (v13)
+  scheme = [v8 scheme];
+  v14 = scheme;
+  if (scheme)
   {
-    v15 = v13;
+    v15 = scheme;
   }
 
   else
@@ -85,11 +85,11 @@
 
   v88 = v15;
 
-  v16 = [v8 host];
-  v17 = v16;
-  if (v16)
+  host2 = [v8 host];
+  v17 = host2;
+  if (host2)
   {
-    v18 = v16;
+    v18 = host2;
   }
 
   else
@@ -106,23 +106,23 @@
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277CCA890] currentHandler];
-    v64 = self;
+    selfCopy = self;
     v65 = v19;
-    v67 = v66 = v4;
+    v67 = v66 = lCopy;
     v94.location = 0x7FFFFFFFFFFFFFFFLL;
     v94.length = length;
     v68 = NSStringFromRange(v94);
-    [v67 handleFailureInMethod:sel__pathAndQueryForURLComponents_ object:v64 file:@"PPITunesStoreURLOverrideChecker.m" lineNumber:122 description:{@"-[NSURLComponents pathRange] should never return an NSNotFound range, but got %@", v68}];
+    [v67 handleFailureInMethod:sel__pathAndQueryForURLComponents_ object:selfCopy file:@"PPITunesStoreURLOverrideChecker.m" lineNumber:122 description:{@"-[NSURLComponents pathRange] should never return an NSNotFound range, but got %@", v68}];
 
-    v4 = v66;
+    lCopy = v66;
     v19 = v65;
-    self = v64;
+    self = selfCopy;
   }
 
-  v23 = [v19 rangeOfQuery];
-  if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+  rangeOfQuery = [v19 rangeOfQuery];
+  if (rangeOfQuery != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v95.location = v23;
+    v95.location = rangeOfQuery;
     v95.length = v24;
     v93.location = location;
     v93.length = length;
@@ -131,8 +131,8 @@
     length = v25.length;
   }
 
-  v26 = [v19 string];
-  v27 = [v26 substringWithRange:{location, length}];
+  string = [v19 string];
+  v27 = [string substringWithRange:{location, length}];
 
   if (v27)
   {
@@ -155,7 +155,7 @@
 
   v31 = v30;
   v71 = v19;
-  v84 = self;
+  selfCopy2 = self;
   v32 = 0;
   v33 = 1;
   v34 = 0x277CBE000uLL;
@@ -216,7 +216,7 @@
       goto LABEL_36;
     }
 
-    if (([(NSMutableSet *)v84->_failedSchemes containsObject:v39]& 1) == 0)
+    if (([(NSMutableSet *)selfCopy2->_failedSchemes containsObject:v39]& 1) == 0)
     {
       break;
     }
@@ -236,7 +236,7 @@ LABEL_105:
         goto LABEL_106;
       }
 
-      self = v84;
+      self = selfCopy2;
 LABEL_102:
       if ([(NSMutableSet *)self->_failedHosts count]>= 0x40)
       {
@@ -276,7 +276,7 @@ LABEL_102:
   v44 = v42;
   v45 = v43;
   v46 = 0;
-  v72 = v4;
+  v72 = lCopy;
   while (2)
   {
     v47 = [v44 objectAtIndexedSubscript:v46];
@@ -309,7 +309,7 @@ LABEL_102:
       goto LABEL_63;
     }
 
-    v48 = [(PPITunesStoreURLOverrideChecker *)v84 _compiledPattern:v47];
+    v48 = [(PPITunesStoreURLOverrideChecker *)selfCopy2 _compiledPattern:v47];
     if (!v48)
     {
       v49 = pp_default_log_handle();
@@ -320,7 +320,7 @@ LABEL_102:
         _os_log_fault_impl(&dword_23224A000, v49, OS_LOG_TYPE_FAULT, "failed to compile pattern: %@", buf, 0xCu);
       }
 
-      v4 = v72;
+      lCopy = v72;
       goto LABEL_55;
     }
 
@@ -412,7 +412,7 @@ LABEL_70:
         goto LABEL_74;
       }
 
-      v55 = [(PPITunesStoreURLOverrideChecker *)v84 _compiledPattern:v54];
+      v55 = [(PPITunesStoreURLOverrideChecker *)selfCopy2 _compiledPattern:v54];
       if (v55)
       {
         v53 = v69;
@@ -434,7 +434,7 @@ LABEL_70:
           _os_log_fault_impl(&dword_23224A000, v56, OS_LOG_TYPE_FAULT, "failed to compile pattern: %@", buf, 0xCu);
         }
 
-        v4 = v72;
+        lCopy = v72;
       }
 
       [v80 addObject:v54];
@@ -456,21 +456,21 @@ LABEL_74:
   if (v70)
   {
     v58 = v78;
-    if (([(NSMutableSet *)v84->_supportedSchemes containsObject:v78]& 1) != 0)
+    if (([(NSMutableSet *)selfCopy2->_supportedSchemes containsObject:v78]& 1) != 0)
     {
       goto LABEL_90;
     }
 
     v57 = objc_opt_new();
     [v57 setScheme:v78];
-    isAppAvailableToOpenURLBlock = v84->_isAppAvailableToOpenURLBlock;
+    isAppAvailableToOpenURLBlock = selfCopy2->_isAppAvailableToOpenURLBlock;
     v60 = [v57 URL];
     LODWORD(isAppAvailableToOpenURLBlock) = isAppAvailableToOpenURLBlock[2](isAppAvailableToOpenURLBlock, v60);
 
     if (isAppAvailableToOpenURLBlock)
     {
       v58 = v78;
-      [(NSMutableSet *)v84->_supportedSchemes addObject:v78];
+      [(NSMutableSet *)selfCopy2->_supportedSchemes addObject:v78];
 
       v29 = v86;
 LABEL_90:
@@ -484,7 +484,7 @@ LABEL_90:
 
     else
     {
-      [(NSMutableSet *)v84->_failedSchemes addObject:v78];
+      [(NSMutableSet *)selfCopy2->_failedSchemes addObject:v78];
       v51 = 1;
       v29 = v86;
     }
@@ -526,13 +526,13 @@ LABEL_109:
   return v11;
 }
 
-- (id)_compiledPattern:(uint64_t)a1
+- (id)_compiledPattern:(uint64_t)pattern
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (pattern)
   {
-    v4 = [*(a1 + 24) objectForKeyedSubscript:v3];
+    v4 = [*(pattern + 24) objectForKeyedSubscript:v3];
     if (!v4)
     {
       v9 = 0;
@@ -540,12 +540,12 @@ LABEL_109:
       v5 = v9;
       if (v4)
       {
-        if ([*(a1 + 24) count] >= 0x10)
+        if ([*(pattern + 24) count] >= 0x10)
         {
-          [*(a1 + 24) removeAllObjects];
+          [*(pattern + 24) removeAllObjects];
         }
 
-        [*(a1 + 24) setObject:v4 forKeyedSubscript:v3];
+        [*(pattern + 24) setObject:v4 forKeyedSubscript:v3];
       }
 
       else
@@ -575,18 +575,18 @@ LABEL_109:
   return v4;
 }
 
-- (PPITunesStoreURLOverrideChecker)initWithPropertyList:(id)a3 isAppAvailableToOpenURLBlock:(id)a4
+- (PPITunesStoreURLOverrideChecker)initWithPropertyList:(id)list isAppAvailableToOpenURLBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = PPITunesStoreURLOverrideChecker;
   v9 = [(PPITunesStoreURLOverrideChecker *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_propertyList, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_propertyList, list);
+    v11 = [blockCopy copy];
     isAppAvailableToOpenURLBlock = v10->_isAppAvailableToOpenURLBlock;
     v10->_isAppAvailableToOpenURLBlock = v11;
 
@@ -610,16 +610,16 @@ LABEL_109:
   return v10;
 }
 
-- (PPITunesStoreURLOverrideChecker)initWithPlistPaths:(id)a3 isAppAvailableToOpenURLBlock:(id)a4
+- (PPITunesStoreURLOverrideChecker)initWithPlistPaths:(id)paths isAppAvailableToOpenURLBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  pathsCopy = paths;
+  blockCopy = block;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = pathsCopy;
   v6 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v6)
   {
@@ -638,10 +638,10 @@ LABEL_3:
 
       v11 = *(*(&v31 + 1) + 8 * v10);
       v12 = objc_autoreleasePoolPush();
-      v13 = [v11 stringByExpandingTildeInPath];
+      stringByExpandingTildeInPath = [v11 stringByExpandingTildeInPath];
       v14 = *(v9 + 1504);
       v30 = 0;
-      v15 = [v14 dictionaryWithPath:v13 error:&v30];
+      v15 = [v14 dictionaryWithPath:stringByExpandingTildeInPath error:&v30];
       v16 = v30;
       if (!v15)
       {
@@ -654,11 +654,11 @@ LABEL_3:
           *buf = 138412546;
           v36 = v16;
           v37 = 2112;
-          v38 = v13;
+          v38 = stringByExpandingTildeInPath;
           _os_log_error_impl(&dword_23224A000, v20, OS_LOG_TYPE_ERROR, "got error %@ while creating lazy plist context for path %@", buf, 0x16u);
         }
 
-        v15 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v13];
+        v15 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:stringByExpandingTildeInPath];
         if (!v15)
         {
           v21 = objc_autoreleasePoolPush();
@@ -666,7 +666,7 @@ LABEL_3:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v36 = v13;
+            v36 = stringByExpandingTildeInPath;
             _os_log_error_impl(&dword_23224A000, v22, OS_LOG_TYPE_ERROR, "failed to load plist at path %@ using Foundation fallback", buf, 0xCu);
           }
 
@@ -704,7 +704,7 @@ LABEL_17:
     v15 = MEMORY[0x277CBEC10];
   }
 
-  v23 = [(PPITunesStoreURLOverrideChecker *)self initWithPropertyList:v15 isAppAvailableToOpenURLBlock:v26];
+  v23 = [(PPITunesStoreURLOverrideChecker *)self initWithPropertyList:v15 isAppAvailableToOpenURLBlock:blockCopy];
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }

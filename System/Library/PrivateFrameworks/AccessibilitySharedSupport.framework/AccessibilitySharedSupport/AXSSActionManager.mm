@@ -28,9 +28,9 @@
 - (void)goHome;
 - (void)goToFirstElement;
 - (void)goToLastElement;
-- (void)goToNextElementOfType:(unint64_t)a3;
+- (void)goToNextElementOfType:(unint64_t)type;
 - (void)goToNextSection;
-- (void)goToPreviousElementOfType:(unint64_t)a3;
+- (void)goToPreviousElementOfType:(unint64_t)type;
 - (void)goToPreviousSection;
 - (void)lift;
 - (void)lockScreen;
@@ -81,21 +81,21 @@
 
 @implementation AXSSActionManager
 
-- (void)goToNextElementOfType:(unint64_t)a3
+- (void)goToNextElementOfType:(unint64_t)type
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSSActionManager *)a3 goToNextElementOfType:v4];
+    [(AXSSActionManager *)type goToNextElementOfType:v4];
   }
 }
 
-- (void)goToPreviousElementOfType:(unint64_t)a3
+- (void)goToPreviousElementOfType:(unint64_t)type
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSSActionManager *)a3 goToPreviousElementOfType:v4];
+    [(AXSSActionManager *)type goToPreviousElementOfType:v4];
   }
 }
 

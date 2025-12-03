@@ -24,12 +24,12 @@
   self->_taskGroup = v3;
 
   [(HDSynchronousTaskGroup *)self->_taskGroup setDelegate:self];
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 computedState];
-  v7 = [v6 pushTargets];
-  v8 = [v7 count];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  computedState = [configuration computedState];
+  pushTargets = [computedState pushTargets];
+  v8 = [pushTargets count];
 
-  v194 = self;
+  selfCopy = self;
   if (!v8)
   {
     v176 = *MEMORY[0x277D85DE8];
@@ -38,27 +38,27 @@
     return;
   }
 
-  v9 = [(HDCloudSyncOperation *)self configuration];
-  v10 = [v9 repository];
-  v11 = [v10 syncIdentityManager];
-  v12 = [v11 currentSyncIdentity];
-  v13 = [v12 identity];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  syncIdentityManager = [repository syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  identity = [currentSyncIdentity identity];
 
-  v14 = [(HDCloudSyncOperation *)self configuration];
-  v15 = [v14 computedState];
-  v16 = [v15 targets];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  computedState2 = [configuration3 computedState];
+  targets = [computedState2 targets];
   v229[0] = MEMORY[0x277D85DD0];
   v229[1] = 3221225472;
   v229[2] = __47__HDCloudSyncFinishOwnerTakeoverOperation_main__block_invoke;
   v229[3] = &unk_2786210A0;
   v229[4] = self;
-  v17 = v13;
+  v17 = identity;
   v230 = v17;
-  v18 = [v16 hk_filter:v229];
+  v18 = [targets hk_filter:v229];
 
-  v19 = [(HDCloudSyncOperation *)self configuration];
-  v20 = [v19 computedState];
-  v21 = [v20 targets];
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  computedState3 = [configuration4 computedState];
+  targets2 = [computedState3 targets];
   v227[0] = MEMORY[0x277D85DD0];
   v227[1] = 3221225472;
   v227[2] = __47__HDCloudSyncFinishOwnerTakeoverOperation_main__block_invoke_2;
@@ -66,7 +66,7 @@
   v227[4] = self;
   v183 = v17;
   v228 = v183;
-  v184 = [v21 hk_filter:v227];
+  v184 = [targets2 hk_filter:v227];
 
   if (![v18 count] && !objc_msgSend(v184, "count"))
   {
@@ -102,13 +102,13 @@
       }
 
       v29 = *(*(&v253 + 1) + 8 * i);
-      v30 = [v29 storeRecord];
-      v31 = [v30 syncIdentity];
-      v32 = [v23 objectForKeyedSubscript:v31];
+      storeRecord = [v29 storeRecord];
+      syncIdentity = [storeRecord syncIdentity];
+      v32 = [v23 objectForKeyedSubscript:syncIdentity];
 
-      v33 = [v29 storeRecord];
-      v34 = [v33 syncIdentity];
-      v35 = [v24 objectForKeyedSubscript:v34];
+      storeRecord2 = [v29 storeRecord];
+      syncIdentity2 = [storeRecord2 syncIdentity];
+      v35 = [v24 objectForKeyedSubscript:syncIdentity2];
 
       if (v32)
       {
@@ -121,9 +121,9 @@
       else
       {
         v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        v42 = [v29 storeRecord];
-        v43 = [v42 syncIdentity];
-        [v23 setObject:v32 forKeyedSubscript:v43];
+        storeRecord3 = [v29 storeRecord];
+        syncIdentity3 = [storeRecord3 syncIdentity];
+        [v23 setObject:v32 forKeyedSubscript:syncIdentity3];
 
         if (v35)
         {
@@ -132,45 +132,45 @@
       }
 
       v35 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v44 = [v29 storeRecord];
-      v45 = [v44 syncIdentity];
-      [v24 setObject:v35 forKeyedSubscript:v45];
+      storeRecord4 = [v29 storeRecord];
+      syncIdentity4 = [storeRecord4 syncIdentity];
+      [v24 setObject:v35 forKeyedSubscript:syncIdentity4];
 
 LABEL_11:
-      v36 = [v29 storeRecord];
-      v37 = [v36 activeSequenceHeaderRecord];
+      storeRecord5 = [v29 storeRecord];
+      activeSequenceHeaderRecord = [storeRecord5 activeSequenceHeaderRecord];
 
-      if (v37)
+      if (activeSequenceHeaderRecord)
       {
-        v38 = [v37 includedSyncIdentities];
-        v39 = [v38 allObjects];
-        [v32 addObjectsFromArray:v39];
+        includedSyncIdentities = [activeSequenceHeaderRecord includedSyncIdentities];
+        allObjects = [includedSyncIdentities allObjects];
+        [v32 addObjectsFromArray:allObjects];
 
-        v40 = [v37 includedIdentifiers];
-        v41 = [v40 allObjects];
-        [v35 addObjectsFromArray:v41];
+        includedIdentifiers = [activeSequenceHeaderRecord includedIdentifiers];
+        allObjects2 = [includedIdentifiers allObjects];
+        [v35 addObjectsFromArray:allObjects2];
       }
 
       else
       {
-        v46 = [v29 storeRecord];
-        v40 = [v46 currentSequenceHeaderRecord];
+        storeRecord6 = [v29 storeRecord];
+        includedIdentifiers = [storeRecord6 currentSequenceHeaderRecord];
 
-        if (!v40)
+        if (!includedIdentifiers)
         {
           goto LABEL_18;
         }
 
-        v47 = [v40 includedSyncIdentities];
-        [v47 allObjects];
+        includedSyncIdentities2 = [includedIdentifiers includedSyncIdentities];
+        [includedSyncIdentities2 allObjects];
         v48 = v26;
         v49 = v27;
         v51 = v50 = v23;
         [v32 addObjectsFromArray:v51];
 
-        v41 = [v40 includedIdentifiers];
-        v52 = [v41 allObjects];
-        [v35 addObjectsFromArray:v52];
+        allObjects2 = [includedIdentifiers includedIdentifiers];
+        v41AllObjects = [allObjects2 allObjects];
+        [v35 addObjectsFromArray:v41AllObjects];
 
         v23 = v50;
         v27 = v49;
@@ -213,37 +213,37 @@ LABEL_20:
       }
 
       v59 = *(*(&v253 + 1) + 8 * v58);
-      v60 = [v59 storeRecord];
-      v61 = [v60 ownerIdentifier];
-      v62 = [v54 objectForKeyedSubscript:v61];
+      storeRecord7 = [v59 storeRecord];
+      ownerIdentifier = [storeRecord7 ownerIdentifier];
+      v62 = [v54 objectForKeyedSubscript:ownerIdentifier];
 
       if (!v62)
       {
         v62 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        v63 = [v59 storeRecord];
-        v64 = [v63 ownerIdentifier];
-        [v54 setObject:v62 forKeyedSubscript:v64];
+        storeRecord8 = [v59 storeRecord];
+        ownerIdentifier2 = [storeRecord8 ownerIdentifier];
+        [v54 setObject:v62 forKeyedSubscript:ownerIdentifier2];
       }
 
-      v65 = [v59 storeRecord];
-      v66 = [v65 activeSequenceHeaderRecord];
+      storeRecord9 = [v59 storeRecord];
+      activeSequenceHeaderRecord2 = [storeRecord9 activeSequenceHeaderRecord];
 
-      if (v66)
+      if (activeSequenceHeaderRecord2)
       {
-        v67 = [v66 includedIdentifiers];
-        v68 = [v67 allObjects];
-        [v62 addObjectsFromArray:v68];
+        includedIdentifiers2 = [activeSequenceHeaderRecord2 includedIdentifiers];
+        allObjects3 = [includedIdentifiers2 allObjects];
+        [v62 addObjectsFromArray:allObjects3];
         goto LABEL_31;
       }
 
-      v69 = [v59 storeRecord];
-      v67 = [v69 currentSequenceHeaderRecord];
+      storeRecord10 = [v59 storeRecord];
+      includedIdentifiers2 = [storeRecord10 currentSequenceHeaderRecord];
 
-      if (v67)
+      if (includedIdentifiers2)
       {
-        v68 = [v67 includedIdentifiers];
-        v70 = [v68 allObjects];
-        [v62 addObjectsFromArray:v70];
+        allObjects3 = [includedIdentifiers2 includedIdentifiers];
+        v68AllObjects = [allObjects3 allObjects];
+        [v62 addObjectsFromArray:v68AllObjects];
 
 LABEL_31:
       }
@@ -275,7 +275,7 @@ LABEL_34:
     v73 = [v54 count];
     v74 = [v23 count];
     *buf = 138543874;
-    v258 = v194;
+    v258 = selfCopy;
     v259 = 2048;
     *v260 = v73;
     *&v260[8] = 2048;
@@ -312,10 +312,10 @@ LABEL_34:
         {
           v82 = v81;
           v83 = [v199 objectForKeyedSubscript:v80];
-          v84 = [v83 allObjects];
-          v85 = [v84 componentsJoinedByString:{@", "}];
+          allObjects4 = [v83 allObjects];
+          v85 = [allObjects4 componentsJoinedByString:{@", "}];
           *buf = 138544130;
-          v258 = v194;
+          v258 = selfCopy;
           v259 = 1024;
           *v260 = v77;
           *&v260[4] = 2112;
@@ -366,14 +366,14 @@ LABEL_34:
           v94 = v89 + 1;
           v95 = v93;
           v96 = [v86 objectForKeyedSubscript:v92];
-          v97 = [v96 allObjects];
-          v98 = [v97 componentsJoinedByString:{@", "}];
+          allObjects5 = [v96 allObjects];
+          v98 = [allObjects5 componentsJoinedByString:{@", "}];
           v99 = v89;
           v100 = v90;
           v101 = v86;
           v102 = v98;
           *buf = 138544130;
-          v258 = v194;
+          v258 = selfCopy;
           v259 = 1024;
           *v260 = v99;
           *&v260[4] = 2112;
@@ -395,25 +395,25 @@ LABEL_34:
     while (v88);
   }
 
-  v103 = [v199 allKeys];
+  allKeys = [v199 allKeys];
   v216[0] = MEMORY[0x277D85DD0];
   v216[1] = 3221225472;
   v216[2] = __47__HDCloudSyncFinishOwnerTakeoverOperation_main__block_invoke_297;
   v216[3] = &unk_2786210C8;
   v181 = v199;
   v217 = v181;
-  v218 = v194;
-  v104 = [v103 hk_mapToSet:v216];
+  v218 = selfCopy;
+  v104 = [allKeys hk_mapToSet:v216];
 
-  v105 = [v86 allKeys];
+  allKeys2 = [v86 allKeys];
   v213[0] = MEMORY[0x277D85DD0];
   v213[1] = 3221225472;
   v213[2] = __47__HDCloudSyncFinishOwnerTakeoverOperation_main__block_invoke_2_299;
   v213[3] = &unk_2786210F0;
   v106 = v86;
   v214 = v106;
-  v215 = v194;
-  v107 = [v105 hk_mapToSet:v213];
+  v215 = selfCopy;
+  v107 = [allKeys2 hk_mapToSet:v213];
 
   if ([v104 count] || objc_msgSend(v107, "count"))
   {
@@ -439,7 +439,7 @@ LABEL_34:
       v112 = [v108 count];
       v113 = [v109 count];
       *buf = 138543874;
-      v258 = v194;
+      v258 = selfCopy;
       v259 = 2048;
       *v260 = v112;
       *&v260[8] = 2048;
@@ -475,14 +475,14 @@ LABEL_34:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v121 = v120;
-            v122 = [v119 storeRecord];
-            v123 = [v122 syncIdentity];
+            storeRecord11 = [v119 storeRecord];
+            syncIdentity5 = [storeRecord11 syncIdentity];
             *buf = 138543874;
-            v258 = v194;
+            v258 = selfCopy;
             v259 = 1024;
             *v260 = v116;
             *&v260[4] = 2112;
-            *&v260[6] = v123;
+            *&v260[6] = syncIdentity5;
             _os_log_impl(&dword_228986000, v121, OS_LOG_TYPE_DEFAULT, "%{public}@: %d. %@", buf, 0x1Cu);
 
             ++v116;
@@ -521,14 +521,14 @@ LABEL_34:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v131 = v130;
-            v132 = [v129 storeRecord];
-            v133 = [v132 ownerIdentifier];
+            storeRecord12 = [v129 storeRecord];
+            ownerIdentifier3 = [storeRecord12 ownerIdentifier];
             *buf = 138543874;
-            v258 = v194;
+            v258 = selfCopy;
             v259 = 1024;
             *v260 = v126;
             *&v260[4] = 2112;
-            *&v260[6] = v133;
+            *&v260[6] = ownerIdentifier3;
             _os_log_impl(&dword_228986000, v131, OS_LOG_TYPE_DEFAULT, "%{public}@: %d. %@", buf, 0x1Cu);
 
             ++v126;
@@ -542,18 +542,18 @@ LABEL_34:
     }
 
     v189 = [v187 arrayByAddingObjectsFromArray:v186];
-    v134 = v194;
-    [(HDSynchronousTaskGroup *)v194->_taskGroup beginTask];
+    v134 = selfCopy;
+    [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
     v235 = 0u;
     v236 = 0u;
     v237 = 0u;
     v238 = 0u;
-    v135 = [(HDCloudSyncOperation *)v194 configuration];
-    v136 = [v135 repository];
-    v137 = [v136 allCKContainers];
+    configuration5 = [(HDCloudSyncOperation *)selfCopy configuration];
+    repository2 = [configuration5 repository];
+    allCKContainers = [repository2 allCKContainers];
 
-    v185 = v137;
-    v190 = [v137 countByEnumeratingWithState:&v235 objects:buf count:16];
+    v185 = allCKContainers;
+    v190 = [allCKContainers countByEnumeratingWithState:&v235 objects:buf count:16];
     if (v190)
     {
       v188 = *v236;
@@ -591,39 +591,39 @@ LABEL_34:
                 }
 
                 v145 = *(*(&v231 + 1) + 8 * n);
-                v146 = [v145 container];
-                v147 = [v146 containerIdentifier];
-                v148 = [v139 containerIdentifier];
-                v149 = [v147 isEqualToString:v148];
+                container = [v145 container];
+                containerIdentifier = [container containerIdentifier];
+                containerIdentifier2 = [v139 containerIdentifier];
+                v149 = [containerIdentifier isEqualToString:containerIdentifier2];
 
                 if (v149)
                 {
-                  v150 = [v145 zoneIdentifier];
-                  v151 = [v150 type];
+                  zoneIdentifier = [v145 zoneIdentifier];
+                  type = [zoneIdentifier type];
 
-                  v152 = [v145 zoneIdentifier];
-                  v153 = v152;
-                  if (v151 == 1)
+                  zoneIdentifier2 = [v145 zoneIdentifier];
+                  storeRecord13 = zoneIdentifier2;
+                  if (type == 1)
                   {
-                    v154 = [v152 zoneIdentifier];
+                    v152ZoneIdentifier = [zoneIdentifier2 zoneIdentifier];
                     v155 = v200;
                   }
 
                   else
                   {
-                    v156 = [v152 type];
+                    type2 = [zoneIdentifier2 type];
 
-                    if (v156 != 2)
+                    if (type2 != 2)
                     {
                       continue;
                     }
 
-                    v153 = [v145 storeRecord];
-                    v154 = [v153 recordID];
+                    storeRecord13 = [v145 storeRecord];
+                    v152ZoneIdentifier = [storeRecord13 recordID];
                     v155 = objb;
                   }
 
-                  [v155 addObject:v154];
+                  [v155 addObject:v152ZoneIdentifier];
                 }
               }
 
@@ -635,10 +635,10 @@ LABEL_34:
 
           v157 = v200;
           v158 = v139;
-          v134 = v194;
+          v134 = selfCopy;
           if ([v157 count])
           {
-            [(HDSynchronousTaskGroup *)v194->_taskGroup beginTask];
+            [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
             _HKInitializeLogging();
             v159 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -647,7 +647,7 @@ LABEL_34:
               v161 = [v157 count];
               v162 = [v157 componentsJoinedByString:{@", "}];
               *v261 = 138543874;
-              v262 = v194;
+              v262 = selfCopy;
               v263 = 2048;
               v264 = v161;
               v265 = 2114;
@@ -656,20 +656,20 @@ LABEL_34:
             }
 
             v163 = [HDCloudSyncModifyRecordZonesOperation alloc];
-            v164 = [(HDCloudSyncOperation *)v194 configuration];
-            v165 = [(HDCloudSyncModifyRecordZonesOperation *)v163 initWithConfiguration:v164 container:v158 recordZonesToSave:0 recordZoneIDsToDelete:v157];
+            configuration6 = [(HDCloudSyncOperation *)selfCopy configuration];
+            v165 = [(HDCloudSyncModifyRecordZonesOperation *)v163 initWithConfiguration:configuration6 container:v158 recordZonesToSave:0 recordZoneIDsToDelete:v157];
 
             v244 = MEMORY[0x277D85DD0];
             v245 = 3221225472;
             v246 = __66__HDCloudSyncFinishOwnerTakeoverOperation__deleteZones_container___block_invoke;
             v247 = &unk_278613060;
-            v248 = v194;
+            v248 = selfCopy;
             [(HDCloudSyncOperation *)v165 setOnSuccess:&v244];
             v239 = MEMORY[0x277D85DD0];
             v240 = 3221225472;
             v241 = __66__HDCloudSyncFinishOwnerTakeoverOperation__deleteZones_container___block_invoke_2;
             v242 = &unk_278613088;
-            v243 = v194;
+            v243 = selfCopy;
             [(HDCloudSyncOperation *)v165 setOnError:&v239];
             [(HDCloudSyncOperation *)v165 start];
           }
@@ -678,7 +678,7 @@ LABEL_34:
           v167 = v158;
           if ([v166 count])
           {
-            [(HDSynchronousTaskGroup *)v194->_taskGroup beginTask];
+            [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
             _HKInitializeLogging();
             v168 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -687,7 +687,7 @@ LABEL_34:
               v170 = [v166 count];
               v171 = [v166 componentsJoinedByString:{@", "}];
               *v261 = 138543874;
-              v262 = v194;
+              v262 = selfCopy;
               v263 = 2048;
               v264 = v170;
               v265 = 2114;
@@ -696,20 +696,20 @@ LABEL_34:
             }
 
             v172 = [HDCloudSyncModifyRecordsOperation alloc];
-            v173 = [(HDCloudSyncOperation *)v194 configuration];
-            v174 = [(HDCloudSyncModifyRecordsOperation *)v172 initWithConfiguration:v173 container:v167 recordsToSave:0 recordIDsToDelete:v166];
+            configuration7 = [(HDCloudSyncOperation *)selfCopy configuration];
+            v174 = [(HDCloudSyncModifyRecordsOperation *)v172 initWithConfiguration:configuration7 container:v167 recordsToSave:0 recordIDsToDelete:v166];
 
             v244 = MEMORY[0x277D85DD0];
             v245 = 3221225472;
             v246 = __68__HDCloudSyncFinishOwnerTakeoverOperation__deleteRecords_container___block_invoke;
             v247 = &unk_278613060;
-            v248 = v194;
+            v248 = selfCopy;
             [(HDCloudSyncOperation *)v174 setOnSuccess:&v244];
             v239 = MEMORY[0x277D85DD0];
             v240 = 3221225472;
             v241 = __68__HDCloudSyncFinishOwnerTakeoverOperation__deleteRecords_container___block_invoke_2;
             v242 = &unk_278613088;
-            v243 = v194;
+            v243 = selfCopy;
             [(HDCloudSyncOperation *)v174 setOnError:&v239];
             [(HDCloudSyncOperation *)v174 start];
           }
@@ -737,11 +737,11 @@ LABEL_34:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v258 = v194;
+      v258 = selfCopy;
       _os_log_impl(&dword_228986000, v177, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to finish takeover; we have not pushed all relevant sync identities or store identifiers.", buf, 0xCu);
     }
 
-    [(HDCloudSyncOperation *)v194 finishWithSuccess:1 error:0];
+    [(HDCloudSyncOperation *)selfCopy finishWithSuccess:1 error:0];
   }
 
   v18 = v182;

@@ -1,36 +1,36 @@
 @interface DIController2IO_XPCHandlerAttach
-- (BOOL)checkQuarantineWithFlags:(char *)a3 buffer:(id *)a4 error:(id *)a5;
-- (BOOL)createDeviceWithError:(id *)a3;
-- (BOOL)disconnectFromDriverWithError:(id *)a3;
-- (BOOL)setupDriverWithError:(id *)a3;
-- (BOOL)updateFileBackingInfoWithRootDeviceEntryID:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)updateQuarantineFlagWithHandlerArray:(id)a3 flags:(char *)a4 buffer:(id *)a5 error:(id *)a6;
-- (DIController2IO_XPCHandlerAttach)initWithParams:(id)a3;
-- (id)launchIODaemonWithError:(id *)a3;
-- (id)runWithError:(id *)a3;
+- (BOOL)checkQuarantineWithFlags:(char *)flags buffer:(id *)buffer error:(id *)error;
+- (BOOL)createDeviceWithError:(id *)error;
+- (BOOL)disconnectFromDriverWithError:(id *)error;
+- (BOOL)setupDriverWithError:(id *)error;
+- (BOOL)updateFileBackingInfoWithRootDeviceEntryID:(unint64_t *)d error:(id *)error;
+- (BOOL)updateQuarantineFlagWithHandlerArray:(id)array flags:(char *)flags buffer:(id *)buffer error:(id *)error;
+- (DIController2IO_XPCHandlerAttach)initWithParams:(id)params;
+- (id)launchIODaemonWithError:(id *)error;
+- (id)runWithError:(id *)error;
 - (unsigned)getInterconnectLocation;
 - (void)setConnectionMode;
 @end
 
 @implementation DIController2IO_XPCHandlerAttach
 
-- (DIController2IO_XPCHandlerAttach)initWithParams:(id)a3
+- (DIController2IO_XPCHandlerAttach)initWithParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v9.receiver = self;
   v9.super_class = DIController2IO_XPCHandlerAttach;
-  v6 = [(DIController2IO_XPCHandlerBase *)&v9 initWithParams:v5];
+  v6 = [(DIController2IO_XPCHandlerBase *)&v9 initWithParams:paramsCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachParams, a3);
+    objc_storeStrong(&v6->_attachParams, params);
     v7->_ucConnection = 0;
   }
 
   return v7;
 }
 
-- (id)launchIODaemonWithError:(id *)a3
+- (id)launchIODaemonWithError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -80,9 +80,9 @@
     }
 
     *__error() = v6;
-    v13 = [(DIBaseXPCHandler *)self remoteProxy];
-    v14 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-    [v13 attachToNewDeviceWithParams:v14 reply:v5];
+    remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
+    attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+    [remoteProxy attachToNewDeviceWithParams:attachParams reply:v5];
   }
 
   else
@@ -119,12 +119,12 @@
     }
 
     *__error() = v9;
-    v13 = [(DIBaseXPCHandler *)self remoteProxy];
-    v14 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-    [v13 attachToExistingDeviceWithParams:v14 reply:v5];
+    remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
+    attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+    [remoteProxy attachToExistingDeviceWithParams:attachParams reply:v5];
   }
 
-  if ([(DIBaseXPCHandler *)self completeCommandWithError:a3])
+  if ([(DIBaseXPCHandler *)self completeCommandWithError:error])
   {
     v16 = v22[5];
   }
@@ -141,18 +141,18 @@
   return v16;
 }
 
-- (BOOL)setupDriverWithError:(id *)a3
+- (BOOL)setupDriverWithError:(id *)error
 {
   v5 = [DIIOObject copyDiskImagesControllerWithError:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 ioObj];
-    v8 = IOServiceOpen(v7, mach_task_self_, 0, &self->_ucConnection);
+    ioObj = [v5 ioObj];
+    v8 = IOServiceOpen(ioObj, mach_task_self_, 0, &self->_ucConnection);
     if (v8)
     {
       v9 = [NSString stringWithFormat:@"IOServiceOpen failed. error=0x%x", v8];
-      v10 = [DIError failWithEnumValue:153 verboseInfo:v9 error:a3];
+      v10 = [DIError failWithEnumValue:153 verboseInfo:v9 error:error];
     }
 
     else
@@ -169,7 +169,7 @@
   return v10;
 }
 
-- (BOOL)disconnectFromDriverWithError:(id *)a3
+- (BOOL)disconnectFromDriverWithError:(id *)error
 {
   v5 = *__error();
   if (sub_1000E044C())
@@ -211,29 +211,29 @@
   }
 
   v10 = [NSString stringWithFormat:@"IOServiceClose failed. error=0x%x", v9];
-  v11 = [DIError failWithEnumValue:153 verboseInfo:v10 error:a3];
+  v11 = [DIError failWithEnumValue:153 verboseInfo:v10 error:error];
 
   return v11;
 }
 
-- (BOOL)updateFileBackingInfoWithRootDeviceEntryID:(unint64_t *)a3 error:(id *)a4
+- (BOOL)updateFileBackingInfoWithRootDeviceEntryID:(unint64_t *)d error:(id *)error
 {
-  v7 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v8 = [v7 inputStatFS];
-  if (!v8)
+  attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  inputStatFS = [attachParams inputStatFS];
+  if (!inputStatFS)
   {
 
     goto LABEL_11;
   }
 
-  v9 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v10 = [v9 inputStatFS];
-  v11 = [v10 mountedFrom];
+  attachParams2 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  inputStatFS2 = [attachParams2 inputStatFS];
+  mountedFrom = [inputStatFS2 mountedFrom];
 
-  if (!v11)
+  if (!mountedFrom)
   {
 LABEL_11:
-    *a3 = 0;
+    *d = 0;
     v26 = *__error();
     if (sub_1000E044C())
     {
@@ -270,23 +270,23 @@ LABEL_11:
   }
 
   v12 = [DIIOMedia alloc];
-  v13 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v14 = [v13 inputStatFS];
-  v15 = [v14 mountedFrom];
-  v16 = [(DIIOMedia *)v12 initWithDevName:v15 error:a4];
+  attachParams3 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  inputStatFS3 = [attachParams3 inputStatFS];
+  mountedFrom2 = [inputStatFS3 mountedFrom];
+  v16 = [(DIIOMedia *)v12 initWithDevName:mountedFrom2 error:error];
 
   if (v16)
   {
-    v17 = [(DIIOMedia *)v16 copyBlockDeviceWithError:a4];
+    v17 = [(DIIOMedia *)v16 copyBlockDeviceWithError:error];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 copyRootBlockDeviceWithError:a4];
+      v19 = [v17 copyRootBlockDeviceWithError:error];
       v20 = v19;
       if (v19)
       {
-        v21 = [v19 registryEntryIDWithError:a4];
-        *a3 = v21;
+        v21 = [v19 registryEntryIDWithError:error];
+        *d = v21;
         if (v21)
         {
           v22 = *__error();
@@ -294,7 +294,7 @@ LABEL_11:
           {
             v23 = sub_1000E03D8();
             os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-            v24 = *a3;
+            v24 = *d;
             *buf = 68158210;
             v34 = 85;
             v35 = 2080;
@@ -315,7 +315,7 @@ LABEL_11:
             v31 = sub_1000E03D8();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = *a3;
+              v32 = *d;
               *buf = 68158210;
               v34 = 85;
               v35 = 2080;
@@ -339,27 +339,27 @@ LABEL_11:
 
 - (unsigned)getInterconnectLocation
 {
-  v2 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v3 = [v2 inputURL];
-  v4 = [v3 scheme];
-  v5 = [v4 lowercaseString];
+  attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  inputURL = [attachParams inputURL];
+  scheme = [inputURL scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v5 isEqualToString:@"file"])
+  if ([lowercaseString isEqualToString:@"file"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"ram"])
+  else if ([lowercaseString isEqualToString:@"ram"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"http"])
+  else if ([lowercaseString isEqualToString:@"http"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"https"])
+  else if ([lowercaseString isEqualToString:@"https"])
   {
     v6 = 3;
   }
@@ -372,17 +372,17 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)updateQuarantineFlagWithHandlerArray:(id)a3 flags:(char *)a4 buffer:(id *)a5 error:(id *)a6
+- (BOOL)updateQuarantineFlagWithHandlerArray:(id)array flags:(char *)flags buffer:(id *)buffer error:(id *)error
 {
-  v9 = a3;
-  v10 = v9;
-  if (v9)
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (arrayCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = v9;
+    v11 = arrayCopy;
     v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v12)
     {
@@ -397,8 +397,8 @@ LABEL_11:
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 getFileInfoWithError:a6];
-          *a5 = v16;
+          v16 = [v15 getFileInfoWithError:error];
+          *buffer = v16;
           if (!v16 && ([v15 isQuarantined] & 1) != 0)
           {
             v17 = 0;
@@ -439,7 +439,7 @@ LABEL_11:
             }
 
             *__error() = v18;
-            *a4 |= 2u;
+            *flags |= 2u;
             goto LABEL_21;
           }
         }
@@ -467,15 +467,15 @@ LABEL_22:
   return v17;
 }
 
-- (BOOL)checkQuarantineWithFlags:(char *)a3 buffer:(id *)a4 error:(id *)a5
+- (BOOL)checkQuarantineWithFlags:(char *)flags buffer:(id *)buffer error:(id *)error
 {
   v6 = +[NSMutableArray array];
   v7 = [QuarantineFileHandler alloc];
-  v8 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v9 = v8;
-  if (v8)
+  attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  v9 = attachParams;
+  if (attachParams)
   {
-    [v8 backend];
+    [attachParams backend];
   }
 
   else
@@ -484,7 +484,7 @@ LABEL_22:
     v42 = 0;
   }
 
-  v10 = [(QuarantineFileHandler *)v7 initWithBackend:&v41 error:a5];
+  v10 = [(QuarantineFileHandler *)v7 initWithBackend:&v41 error:error];
   if (v42)
   {
     sub_10000367C(v42);
@@ -498,9 +498,9 @@ LABEL_34:
   }
 
   [v6 addObject:v10];
-  v11 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v12 = [v11 shadowChain];
-  if (v12)
+  attachParams2 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  shadowChain = [attachParams2 shadowChain];
+  if (shadowChain)
   {
 
 LABEL_10:
@@ -508,11 +508,11 @@ LABEL_10:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-    v17 = [v16 shadowChain];
-    v18 = [v17 nodes];
+    attachParams3 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+    shadowChain2 = [attachParams3 shadowChain];
+    nodes = [shadowChain2 nodes];
 
-    v19 = [v18 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    v19 = [nodes countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v19)
     {
       v20 = *v38;
@@ -524,14 +524,14 @@ LABEL_10:
         {
           if (*v38 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(nodes);
           }
 
-          v23 = [*(*(&v37 + 1) + 8 * v21) fileBackend];
-          v24 = v23;
-          if (v23)
+          fileBackend = [*(*(&v37 + 1) + 8 * v21) fileBackend];
+          v24 = fileBackend;
+          if (fileBackend)
           {
-            [v23 backend];
+            [fileBackend backend];
           }
 
           else
@@ -554,7 +554,7 @@ LABEL_10:
             atomic_fetch_add_explicit(&v36->__shared_owners_, 1uLL, memory_order_relaxed);
           }
 
-          v10 = [(QuarantineFileHandler *)v25 initWithBackend:&v31 error:a5];
+          v10 = [(QuarantineFileHandler *)v25 initWithBackend:&v31 error:error];
 
           if (v32)
           {
@@ -583,7 +583,7 @@ LABEL_10:
         }
 
         while (v19 != v21);
-        v19 = [v18 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v19 = [nodes countByEnumeratingWithState:&v37 objects:v43 count:16];
         if (v19)
         {
           continue;
@@ -596,32 +596,32 @@ LABEL_10:
     goto LABEL_30;
   }
 
-  v13 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v14 = [v13 shadowChain];
-  v15 = [v14 isEmpty];
+  attachParams4 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  shadowChain3 = [attachParams4 shadowChain];
+  isEmpty = [shadowChain3 isEmpty];
 
-  if ((v15 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_30:
-  v26 = [(DIController2IO_XPCHandlerAttach *)self updateQuarantineFlagWithHandlerArray:v6 flags:a3 buffer:a4 error:a5];
+  v26 = [(DIController2IO_XPCHandlerAttach *)self updateQuarantineFlagWithHandlerArray:v6 flags:flags buffer:buffer error:error];
 LABEL_35:
 
   return v26;
 }
 
-- (BOOL)createDeviceWithError:(id *)a3
+- (BOOL)createDeviceWithError:(id *)error
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, error);
   v129 = v4;
   v5 = v3;
   outputStructCnt = 12;
-  v6 = [v3 attachParams];
-  v7 = [v6 autoMount];
+  attachParams = [v3 attachParams];
+  autoMount = [attachParams autoMount];
 
-  v131 = v7 != 0;
+  v131 = autoMount != 0;
   v130 = 0;
   v8 = [v5 checkQuarantineWithFlags:&v131 buffer:&v130 error:v129];
   v128 = v130;
@@ -630,9 +630,9 @@ LABEL_35:
     goto LABEL_101;
   }
 
-  v9 = [v5 getInterconnectLocation];
-  v10 = [v5 attachParams];
-  if ([v10 emulateExternalDisk])
+  getInterconnectLocation = [v5 getInterconnectLocation];
+  attachParams2 = [v5 attachParams];
+  if ([attachParams2 emulateExternalDisk])
   {
     v11 = os_variant_allows_internal_security_policies();
 
@@ -673,7 +673,7 @@ LABEL_35:
       }
 
       *__error() = v12;
-      v9 = 4;
+      getInterconnectLocation = 4;
     }
   }
 
@@ -681,25 +681,25 @@ LABEL_35:
   {
   }
 
-  v16 = [v5 attachParams];
-  v17 = [v16 diskImageParamsXPC];
-  v18 = [v17 numBlocks];
+  attachParams3 = [v5 attachParams];
+  diskImageParamsXPC = [attachParams3 diskImageParamsXPC];
+  numBlocks = [diskImageParamsXPC numBlocks];
 
-  v19 = [v5 attachParams];
-  v20 = [v19 diskImageParamsXPC];
-  v21 = [v20 shadowChain];
-  v22 = [v21 isEmpty];
+  attachParams4 = [v5 attachParams];
+  diskImageParamsXPC2 = [attachParams4 diskImageParamsXPC];
+  shadowChain = [diskImageParamsXPC2 shadowChain];
+  isEmpty = [shadowChain isEmpty];
 
-  if ((v22 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
-    v23 = [v5 attachParams];
-    v24 = [v23 diskImageParamsXPC];
-    v25 = [v24 shadowChain];
-    v26 = [v25 topDiskImageNumBlocks];
+    attachParams5 = [v5 attachParams];
+    diskImageParamsXPC3 = [attachParams5 diskImageParamsXPC];
+    shadowChain2 = [diskImageParamsXPC3 shadowChain];
+    topDiskImageNumBlocks = [shadowChain2 topDiskImageNumBlocks];
 
-    if (v26 > 0)
+    if (topDiskImageNumBlocks > 0)
     {
-      v18 = v26;
+      numBlocks = topDiskImageNumBlocks;
     }
   }
 
@@ -708,43 +708,43 @@ LABEL_35:
   v143 = 0u;
   v142 = 0u;
   v140 = 9;
-  v141 = v18;
-  v27 = [v5 attachParams];
-  v126 = [v27 diskImageParamsXPC];
-  LODWORD(v142) = [v126 blockSize];
-  v123 = [v5 attachParams];
-  v125 = [v123 diskImageParamsXPC];
-  v127 = [v125 isWritableFormat];
-  if (v127)
+  v141 = numBlocks;
+  attachParams6 = [v5 attachParams];
+  diskImageParamsXPC4 = [attachParams6 diskImageParamsXPC];
+  LODWORD(v142) = [diskImageParamsXPC4 blockSize];
+  attachParams7 = [v5 attachParams];
+  diskImageParamsXPC5 = [attachParams7 diskImageParamsXPC];
+  isWritableFormat = [diskImageParamsXPC5 isWritableFormat];
+  if (isWritableFormat)
   {
     v28 = 0;
   }
 
   else
   {
-    v119 = [v5 attachParams];
-    v120 = [v119 shadowChain];
-    v121 = [v120 activeShadowURL];
-    v28 = v121 == 0;
+    attachParams8 = [v5 attachParams];
+    shadowChain3 = [attachParams8 shadowChain];
+    activeShadowURL = [shadowChain3 activeShadowURL];
+    v28 = activeShadowURL == 0;
   }
 
   BYTE4(v142) = v28;
-  v124 = [v5 attachParams];
-  *(&v142 + 5) = [v124 hasUnlockedBackend];
-  BYTE7(v142) = v9;
-  v29 = [v5 attachParams];
+  attachParams9 = [v5 attachParams];
+  *(&v142 + 5) = [attachParams9 hasUnlockedBackend];
+  BYTE7(v142) = getInterconnectLocation;
+  attachParams10 = [v5 attachParams];
   v122 = getuid();
   v30 = getgid();
-  v31 = [v29 hasUnlockedBackend];
+  hasUnlockedBackend = [attachParams10 hasUnlockedBackend];
   st_gid = v30;
-  if ((v9 & 0xFE) == 2)
+  if ((getInterconnectLocation & 0xFE) == 2)
   {
     v33 = 1;
   }
 
   else
   {
-    v33 = v31;
+    v33 = hasUnlockedBackend;
   }
 
   if (v33)
@@ -753,24 +753,24 @@ LABEL_35:
     goto LABEL_80;
   }
 
-  if (v9 != 1)
+  if (getInterconnectLocation != 1)
   {
     v34 = 416;
     goto LABEL_80;
   }
 
-  v118 = [v29 shadowChain];
-  v35 = [v118 activeShadowURL];
-  if (v35)
+  shadowChain4 = [attachParams10 shadowChain];
+  activeShadowURL2 = [shadowChain4 activeShadowURL];
+  if (activeShadowURL2)
   {
-    v36 = [v29 shadowChain];
-    v37 = [v36 nodes];
-    v38 = [v37 lastObject];
-    v39 = [v38 fileBackend];
-    v40 = v39;
-    if (v39)
+    shadowChain5 = [attachParams10 shadowChain];
+    nodes = [shadowChain5 nodes];
+    lastObject = [nodes lastObject];
+    fileBackend = [lastObject fileBackend];
+    v40 = fileBackend;
+    if (fileBackend)
     {
-      [v39 backend];
+      [fileBackend backend];
     }
 
     else
@@ -785,14 +785,14 @@ LABEL_35:
       sub_10000367C(buf[0].st_ino);
     }
 
-    v41 = v118;
+    v41 = shadowChain4;
   }
 
   else
   {
-    if (v29)
+    if (attachParams10)
     {
-      [v29 backend];
+      [attachParams10 backend];
     }
 
     else
@@ -807,7 +807,7 @@ LABEL_35:
       sub_10000367C(buf[0].st_ino);
     }
 
-    v41 = v118;
+    v41 = shadowChain4;
   }
 
   v42 = v136;
@@ -1003,13 +1003,13 @@ LABEL_80:
   *&v143 = st_gid;
   bzero(&v143 + 8, 0x818uLL);
 
-  if ((v127 & 1) == 0)
+  if ((isWritableFormat & 1) == 0)
   {
   }
 
-  v60 = [v5 attachParams];
-  v61 = [v60 instanceID];
-  [v61 getUUIDBytes:&v143 + 8];
+  attachParams11 = [v5 attachParams];
+  instanceID = [attachParams11 instanceID];
+  [instanceID getUUIDBytes:&v143 + 8];
 
   v62 = *__error();
   if (sub_1000E044C())
@@ -1068,24 +1068,24 @@ LABEL_80:
   }
 
   *__error() = v62;
-  v72 = [v5 attachParams];
-  v73 = [v72 inputURL];
-  v74 = [DIAttachParams copyWithURL:v73 outURLStr:v145 maxLen:1024 error:v129];
+  attachParams12 = [v5 attachParams];
+  inputURL = [attachParams12 inputURL];
+  v74 = [DIAttachParams copyWithURL:inputURL outURLStr:v145 maxLen:1024 error:v129];
 
   if ((v74 & 1) == 0)
   {
     goto LABEL_100;
   }
 
-  v75 = [v5 attachParams];
-  v76 = [v75 shadowChain];
-  v77 = [v76 activeShadowURL];
-  if (v77)
+  attachParams13 = [v5 attachParams];
+  shadowChain6 = [attachParams13 shadowChain];
+  activeShadowURL3 = [shadowChain6 activeShadowURL];
+  if (activeShadowURL3)
   {
-    v78 = [v5 attachParams];
-    v79 = [v78 shadowChain];
-    v80 = [v79 activeShadowURL];
-    v81 = [DIAttachParams copyWithURL:v80 outURLStr:&v146 maxLen:1024 error:v129];
+    attachParams14 = [v5 attachParams];
+    shadowChain7 = [attachParams14 shadowChain];
+    activeShadowURL4 = [shadowChain7 activeShadowURL];
+    v81 = [DIAttachParams copyWithURL:activeShadowURL4 outURLStr:&v146 maxLen:1024 error:v129];
 
     if ((v81 & 1) == 0)
     {
@@ -1097,19 +1097,19 @@ LABEL_80:
   {
   }
 
-  v82 = [v5 attachParams];
-  v83 = [v82 inputURL];
-  v84 = [v83 isFileURL];
+  attachParams15 = [v5 attachParams];
+  inputURL2 = [attachParams15 inputURL];
+  isFileURL = [inputURL2 isFileURL];
 
-  if (!v84 || ([v5 updateFileBackingInfoWithRootDeviceEntryID:&v144 + 8 error:v129] & 1) != 0)
+  if (!isFileURL || ([v5 updateFileBackingInfoWithRootDeviceEntryID:&v144 + 8 error:v129] & 1) != 0)
   {
-    v85 = [v5 attachParams];
-    v86 = [v85 suppressSsdFlags];
+    attachParams16 = [v5 attachParams];
+    suppressSsdFlags = [attachParams16 suppressSsdFlags];
 
-    if ((v86 & 1) == 0)
+    if ((suppressSsdFlags & 1) == 0)
     {
-      v87 = [v5 attachParams];
-      v88 = [v87 isDeviceSolidStateWithRegistryEntryID:*(&v144 + 1)];
+      attachParams17 = [v5 attachParams];
+      v88 = [attachParams17 isDeviceSolidStateWithRegistryEntryID:*(&v144 + 1)];
 
       if (v88)
       {
@@ -1151,8 +1151,8 @@ LABEL_80:
         *__error() = v89;
       }
 
-      v94 = [v5 attachParams];
-      v95 = [v94 isDeviceHighThroughputWithRegistryEntryID:*(&v144 + 1)];
+      attachParams18 = [v5 attachParams];
+      v95 = [attachParams18 isDeviceHighThroughputWithRegistryEntryID:*(&v144 + 1)];
 
       if (v95)
       {
@@ -1198,16 +1198,16 @@ LABEL_80:
     v100 = IOConnectCallStructMethod([v5 ucConnection], 0, &v140, 0x840uLL, &outputStruct, &outputStructCnt);
     if (v100)
     {
-      v101 = [NSString stringWithFormat:@"Create device call failed, error=0x%x", v100];
-      LOBYTE(v8) = [DIError failWithEnumValue:153 verboseInfo:v101 error:v129];
+      v100 = [NSString stringWithFormat:@"Create device call failed, error=0x%x", v100];
+      LOBYTE(v8) = [DIError failWithEnumValue:153 verboseInfo:v100 error:v129];
     }
 
     else
     {
       [v5 setIsNewDevice:v134 != 0];
       v102 = outputStruct;
-      v103 = [v5 attachParams];
-      [v103 setRegEntryID:v102];
+      attachParams19 = [v5 attachParams];
+      [attachParams19 setRegEntryID:v102];
 
       v104 = *__error();
       if (sub_1000E044C())
@@ -1246,10 +1246,10 @@ LABEL_80:
       }
 
       *__error() = v104;
-      v108 = [v5 isNewDevice];
+      isNewDevice = [v5 isNewDevice];
       if (v128)
       {
-        v109 = v108;
+        v109 = isNewDevice;
       }
 
       else
@@ -1259,8 +1259,8 @@ LABEL_80:
 
       if (v109 == 1 && [v128 length] && (bzero(buf, 0x1060uLL), v139 = objc_msgSend(v128, "length"), objc_msgSend(v128, "getBytes:length:", buf, objc_msgSend(v128, "length")), v110 = IOConnectCallStructMethod(objc_msgSend(v5, "ucConnection"), 1u, buf, 0x1062uLL, 0, 0), v110))
       {
-        v111 = [NSString stringWithFormat:@"Failed to quarantine device, error=0x%x", v110];
-        LOBYTE(v8) = [DIError failWithEnumValue:153 verboseInfo:v111 error:v129];
+        v110 = [NSString stringWithFormat:@"Failed to quarantine device, error=0x%x", v110];
+        LOBYTE(v8) = [DIError failWithEnumValue:153 verboseInfo:v110 error:v129];
       }
 
       else
@@ -1281,7 +1281,7 @@ LABEL_101:
   return v8;
 }
 
-- (id)runWithError:(id *)a3
+- (id)runWithError:(id *)error
 {
   if (![(DIController2IO_XPCHandlerAttach *)self setupDriverWithError:?])
   {
@@ -1291,16 +1291,16 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (![(DIController2IO_XPCHandlerAttach *)self createDeviceWithError:a3])
+  if (![(DIController2IO_XPCHandlerAttach *)self createDeviceWithError:error])
   {
     goto LABEL_12;
   }
 
   if ([(DIController2IO_XPCHandlerAttach *)self isNewDevice])
   {
-    v5 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-    v6 = [v5 diskImageParamsXPC];
-    v7 = [v6 lockWritableBackendsWithError:a3];
+    attachParams = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+    diskImageParamsXPC = [attachParams diskImageParamsXPC];
+    v7 = [diskImageParamsXPC lockWritableBackendsWithError:error];
 
     if ((v7 & 1) == 0)
     {
@@ -1308,7 +1308,7 @@ LABEL_11:
     }
   }
 
-  if (![(DIBaseXPCHandler *)self connectWithError:a3]|| (v8 = [(DIController2IO_XPCHandlerAttach *)self launchIODaemonWithError:a3]) == 0)
+  if (![(DIBaseXPCHandler *)self connectWithError:error]|| (v8 = [(DIController2IO_XPCHandlerAttach *)self launchIODaemonWithError:error]) == 0)
   {
 LABEL_12:
     [(DIController2IO_XPCHandlerAttach *)self disconnectFromDriverWithError:0];
@@ -1317,16 +1317,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
-  v10 = [v9 handleRefCount];
+  attachParams2 = [(DIController2IO_XPCHandlerAttach *)self attachParams];
+  handleRefCount = [attachParams2 handleRefCount];
 
-  if (!v10)
+  if (!handleRefCount)
   {
     [(DIController2IO_XPCHandlerAttach *)self disconnectFromDriverWithError:0];
     goto LABEL_15;
   }
 
-  if ([(DIController2IO_XPCHandlerAttach *)self disconnectFromDriverWithError:a3])
+  if ([(DIController2IO_XPCHandlerAttach *)self disconnectFromDriverWithError:error])
   {
 LABEL_15:
     v11 = v8;

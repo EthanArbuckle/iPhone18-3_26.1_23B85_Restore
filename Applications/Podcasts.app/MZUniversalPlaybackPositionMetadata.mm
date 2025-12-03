@@ -1,10 +1,10 @@
 @interface MZUniversalPlaybackPositionMetadata
-+ (id)keyValueStoreItemIdentifierForItem:(id)a3;
-+ (id)metadataWithValuesFromDataSourceItem:(id)a3;
-+ (id)metadataWithValuesItemIdentifier:(id)a3 keyValueStorePayload:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)keyValueStoreItemIdentifierForItem:(id)item;
++ (id)metadataWithValuesFromDataSourceItem:(id)item;
++ (id)metadataWithValuesItemIdentifier:(id)identifier keyValueStorePayload:(id)payload;
+- (BOOL)isEqual:(id)equal;
 - (MZUniversalPlaybackPositionMetadata)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)keyValueStorePayload;
 - (unint64_t)hash;
@@ -24,28 +24,28 @@
   v18.receiver = self;
   v18.super_class = MZUniversalPlaybackPositionMetadata;
   v3 = [(MZUniversalPlaybackPositionMetadata *)&v18 description];
-  v4 = [(MZUniversalPlaybackPositionMetadata *)self itemIdentifier];
+  itemIdentifier = [(MZUniversalPlaybackPositionMetadata *)self itemIdentifier];
   [(MZUniversalPlaybackPositionMetadata *)self bookmarkTime];
   v6 = [NSString stringWithFormat:@"%02lu:%02lu:%.2f", (v5 / 3600.0), ((v5 - (3600 * (v5 / 3600.0))) / 60.0), v5 - (3600 * (v5 / 3600.0)) - (60 * ((v5 - (3600 * (v5 / 3600.0))) / 60.0))];
-  v7 = [(MZUniversalPlaybackPositionMetadata *)self hasBeenPlayed];
-  v8 = [(MZUniversalPlaybackPositionMetadata *)self playCount];
+  hasBeenPlayed = [(MZUniversalPlaybackPositionMetadata *)self hasBeenPlayed];
+  playCount = [(MZUniversalPlaybackPositionMetadata *)self playCount];
   [(MZUniversalPlaybackPositionMetadata *)self timestamp];
   v10 = sub_10008FF7C(v9);
-  v11 = [(MZUniversalPlaybackPositionMetadata *)self isNew];
+  isNew = [(MZUniversalPlaybackPositionMetadata *)self isNew];
   [(MZUniversalPlaybackPositionMetadata *)self lastUserMarkedAsPlayedDate];
   v13 = sub_10008FF7C(v12);
   [(MZUniversalPlaybackPositionMetadata *)self lastDatePlayed];
   v15 = sub_10008FF7C(v14);
-  v16 = [NSString stringWithFormat:@"%@: id=%@, bktm=%@, hbpl=%d, plct=%lu, timestamp=%@, isNew=%d, lastUserMarkedAsPlayedDate=%@, lastDatePlayed=%@, playStateManuallySet=%d", v3, v4, v6, v7, v8, v10, v11, v13, v15, [(MZUniversalPlaybackPositionMetadata *)self playStateManuallySet]];
+  v16 = [NSString stringWithFormat:@"%@: id=%@, bktm=%@, hbpl=%d, plct=%lu, timestamp=%@, isNew=%d, lastUserMarkedAsPlayedDate=%@, lastDatePlayed=%@, playStateManuallySet=%d", v3, itemIdentifier, v6, hasBeenPlayed, playCount, v10, isNew, v13, v15, [(MZUniversalPlaybackPositionMetadata *)self playStateManuallySet]];
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MZUniversalPlaybackPositionMetadata);
-  v5 = [(MZUniversalPlaybackPositionMetadata *)self itemIdentifier];
-  [(MZUniversalPlaybackPositionMetadata *)v4 setItemIdentifier:v5];
+  itemIdentifier = [(MZUniversalPlaybackPositionMetadata *)self itemIdentifier];
+  [(MZUniversalPlaybackPositionMetadata *)v4 setItemIdentifier:itemIdentifier];
 
   [(MZUniversalPlaybackPositionMetadata *)self timestamp];
   [(MZUniversalPlaybackPositionMetadata *)v4 setTimestamp:?];
@@ -67,13 +67,13 @@
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSString *)self->_itemIdentifier isEqual:*(v5 + 2)]&& self->_timestamp == v5[3] && self->_bookmarkTime == v5[4] && self->_hasBeenPlayed == *(v5 + 8) && self->_playCount == *(v5 + 5);
   }
 
@@ -85,13 +85,13 @@
   return v6;
 }
 
-+ (id)keyValueStoreItemIdentifierForItem:(id)a3
++ (id)keyValueStoreItemIdentifierForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [NSArray arrayWithObjects:@"storeItemAdamID", @"mediaEntityType", 0];
-  v5 = sub_100090524(v3, v4);
+  v5 = sub_100090524(itemCopy, v4);
   v6 = [v5 objectForKey:@"mediaEntityType"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v8 = [v5 objectForKey:@"storeItemAdamID"];
   objc_opt_class();
@@ -100,19 +100,19 @@
   v11 = v10;
   if (isKindOfClass)
   {
-    v12 = [v10 longLongValue];
+    longLongValue = [v10 longLongValue];
   }
 
   else
   {
-    v12 = [v10 unsignedLongLongValue];
+    longLongValue = [v10 unsignedLongLongValue];
   }
 
-  v13 = v12;
+  v13 = longLongValue;
 
   if (v13)
   {
-    v14 = (v7 - 3) >= 2;
+    v14 = (integerValue - 3) >= 2;
   }
 
   else
@@ -130,7 +130,7 @@
   v22[1] = 3221225472;
   v22[2] = sub_100090628;
   v22[3] = &unk_1004D9F68;
-  v23 = v3;
+  v23 = itemCopy;
   v15 = objc_retainBlock(v22);
   v16 = [NSArray arrayWithObjects:@"podcastURL", @"podcastGUID", 0];
 
@@ -179,9 +179,9 @@ LABEL_14:
   return v18;
 }
 
-+ (id)metadataWithValuesFromDataSourceItem:(id)a3
++ (id)metadataWithValuesFromDataSourceItem:(id)item
 {
-  v30 = a3;
+  itemCopy = item;
   v28 = [NSMutableDictionary alloc];
   v27 = [NSNumber numberWithDouble:0.0];
   v29 = +[NSDate distantPast];
@@ -199,18 +199,18 @@ LABEL_14:
   v7 = [NSNumber numberWithBool:0];
   v8 = [v28 initWithObjectsAndKeys:{v27, @"bookmarkTime", v26, @"bookmarkMetadataTimestamp", v25, @"hasBeenPalyed", v23, @"playCount", v3, @"isNew", v4, @"lastUserMarkedAsPlayedDate", v6, @"lastDatePlayed", v7, @"playStateManuallySet", 0}];
 
-  v9 = [v8 allKeys];
-  v10 = [NSSet setWithArray:v9];
+  allKeys = [v8 allKeys];
+  v10 = [NSSet setWithArray:allKeys];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100090CCC;
   v31[3] = &unk_1004D9F90;
   v32 = v8;
   v11 = v8;
-  [v30 enumerateValuesForProperties:v10 usingBlock:v31];
+  [itemCopy enumerateValuesForProperties:v10 usingBlock:v31];
 
   v12 = objc_alloc_init(MZUniversalPlaybackPositionMetadata);
-  v13 = [MZUniversalPlaybackPositionMetadata keyValueStoreItemIdentifierForItem:v30];
+  v13 = [MZUniversalPlaybackPositionMetadata keyValueStoreItemIdentifierForItem:itemCopy];
 
   [(MZUniversalPlaybackPositionMetadata *)v12 setItemIdentifier:v13];
   v14 = [v11 valueForKey:@"bookmarkMetadataTimestamp"];
@@ -244,11 +244,11 @@ LABEL_14:
   return v12;
 }
 
-+ (id)metadataWithValuesItemIdentifier:(id)a3 keyValueStorePayload:(id)a4
++ (id)metadataWithValuesItemIdentifier:(id)identifier keyValueStorePayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = CFPropertyListCreateWithData(0, v7, 0, 0, 0);
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  v8 = CFPropertyListCreateWithData(0, payloadCopy, 0, 0, 0);
   if (!v8)
   {
     v32[0] = objc_opt_class();
@@ -262,7 +262,7 @@ LABEL_14:
     v9 = [NSSet setWithArray:v4];
 
     v31 = 0;
-    v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v9 fromData:v7 error:&v31];
+    v8 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v9 fromData:payloadCopy error:&v31];
 
     if (!v8)
     {
@@ -279,7 +279,7 @@ LABEL_14:
   if (!v10 || ([v8 objectForKey:@"pver"], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13 = [v8 objectForKey:@"pver"];
-    v12 = [v13 integerValue];
+    integerValue = [v13 integerValue];
 
     if (!v10)
     {
@@ -290,11 +290,11 @@ LABEL_14:
   else
   {
     v11 = [v8 objectForKey:@"pver"];
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
 LABEL_9:
-  if (v12)
+  if (integerValue)
   {
 LABEL_10:
     v14 = 0;
@@ -302,9 +302,9 @@ LABEL_10:
   }
 
   v14 = objc_alloc_init(MZUniversalPlaybackPositionMetadata);
-  [(MZUniversalPlaybackPositionMetadata *)v14 setItemIdentifier:v6];
+  [(MZUniversalPlaybackPositionMetadata *)v14 setItemIdentifier:identifierCopy];
   v16 = [v8 objectForKey:@"bktm"];
-  if (!v16 || ([v8 objectForKey:@"bktm"], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (!v16 || ([v8 objectForKey:@"bktm"], integerValue = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v18 = [v8 objectForKey:@"bktm"];
     [v18 doubleValue];

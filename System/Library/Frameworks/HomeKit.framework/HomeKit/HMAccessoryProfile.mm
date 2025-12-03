@@ -1,28 +1,28 @@
 @interface HMAccessoryProfile
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessory)accessory;
-- (HMAccessoryProfile)initWithAccessoryProfile:(id)a3;
+- (HMAccessoryProfile)initWithAccessoryProfile:(id)profile;
 - (NSArray)services;
 - (NSString)description;
 - (NSUUID)profileUniqueIdentifier;
 - (NSUUID)uniqueIdentifier;
 - (id)assistantIdentifier;
 - (unint64_t)hash;
-- (void)handleRuntimeStateUpdate:(id)a3;
-- (void)refreshStateWithCompletionHandler:(id)a3;
+- (void)handleRuntimeStateUpdate:(id)update;
+- (void)refreshStateWithCompletionHandler:(id)handler;
 @end
 
 @implementation HMAccessoryProfile
 
-- (void)refreshStateWithCompletionHandler:(id)a3
+- (void)refreshStateWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-  if (!v4)
+  if (!handlerCopy)
   {
     if (v8)
     {
@@ -47,46 +47,46 @@
 
   objc_autoreleasePoolPop(v5);
   v10 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48];
-  v4[2](v4, v10);
+  handlerCopy[2](handlerCopy, v10);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
 - (id)assistantIdentifier
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 assistantIdentifier];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  assistantIdentifier = [accessoryProfile assistantIdentifier];
 
-  return v3;
+  return assistantIdentifier;
 }
 
-- (void)handleRuntimeStateUpdate:(id)a3
+- (void)handleRuntimeStateUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HMAccessoryProfile *)self accessoryProfile];
-  [v5 handleRuntimeStateUpdate:v4];
+  updateCopy = update;
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  [accessoryProfile handleRuntimeStateUpdate:updateCopy];
 }
 
 - (NSUUID)profileUniqueIdentifier
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 profileUniqueIdentifier];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  profileUniqueIdentifier = [accessoryProfile profileUniqueIdentifier];
 
-  return v3;
+  return profileUniqueIdentifier;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 hash];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  v3 = [accessoryProfile hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -96,11 +96,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMAccessoryProfile *)self accessoryProfile];
-      v7 = [(HMAccessoryProfile *)v5 accessoryProfile];
+      v5 = equalCopy;
+      accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+      accessoryProfile2 = [(HMAccessoryProfile *)v5 accessoryProfile];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [accessoryProfile isEqual:accessoryProfile2];
     }
 
     else
@@ -114,47 +114,47 @@
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 uniqueIdentifier];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  uniqueIdentifier = [accessoryProfile uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HMAccessoryProfile *)self accessoryProfile];
-  v4 = [v2 stringWithFormat:@"Wrapping %@", v3];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  v4 = [v2 stringWithFormat:@"Wrapping %@", accessoryProfile];
 
   return v4;
 }
 
 - (HMAccessory)accessory
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 accessory];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  accessory = [accessoryProfile accessory];
 
-  return v3;
+  return accessory;
 }
 
 - (NSArray)services
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
-  v3 = [v2 services];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+  services = [accessoryProfile services];
 
-  return v3;
+  return services;
 }
 
-- (HMAccessoryProfile)initWithAccessoryProfile:(id)a3
+- (HMAccessoryProfile)initWithAccessoryProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = HMAccessoryProfile;
   v6 = [(HMAccessoryProfile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryProfile, a3);
+    objc_storeStrong(&v6->_accessoryProfile, profile);
   }
 
   return v7;

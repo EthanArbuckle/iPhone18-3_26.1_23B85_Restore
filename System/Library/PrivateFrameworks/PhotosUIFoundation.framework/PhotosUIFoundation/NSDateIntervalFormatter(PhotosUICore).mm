@@ -11,20 +11,20 @@
 
 - (uint64_t)_px_isChineseYearTemplate
 {
-  v2 = [a1 locale];
-  v3 = [v2 languageCode];
+  locale = [self locale];
+  languageCode = [locale languageCode];
 
-  v4 = [a1 dateTemplate];
-  if ([v4 isEqualToString:@"y"])
+  dateTemplate = [self dateTemplate];
+  if ([dateTemplate isEqualToString:@"y"])
   {
-    if ([v3 isEqualToString:@"yue"])
+    if ([languageCode isEqualToString:@"yue"])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v3 isEqualToString:@"zh"];
+      v5 = [languageCode isEqualToString:@"zh"];
     }
   }
 
@@ -42,23 +42,23 @@
   v11 = 3221225472;
   v12 = __58__NSDateIntervalFormatter_PhotosUICore___px_substitutions__block_invoke;
   v13 = &unk_1E7BB81A0;
-  v14 = a1;
+  selfCopy = self;
   v15 = a2;
   if (_px_substitutions_onceToken != -1)
   {
     dispatch_once(&_px_substitutions_onceToken, &v10);
   }
 
-  v3 = [a1 locale];
-  v4 = [v3 localeIdentifier];
+  locale = [self locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v5 = [_px_substitutions_substitutionsByLocaleIdentifier objectForKeyedSubscript:v4];
+  v5 = [_px_substitutions_substitutionsByLocaleIdentifier objectForKeyedSubscript:localeIdentifier];
   if (!v5)
   {
     v6 = _px_substitutions_substitutionsByLocaleIdentifier;
-    v7 = [v4 componentsSeparatedByString:@"_"];
-    v8 = [v7 firstObject];
-    v5 = [v6 objectForKeyedSubscript:v8];
+    v7 = [localeIdentifier componentsSeparatedByString:@"_"];
+    firstObject = [v7 firstObject];
+    v5 = [v6 objectForKeyedSubscript:firstObject];
   }
 
   return v5;
@@ -72,10 +72,10 @@
     dispatch_once(&_px_localizedCapitalizedString__onceToken, &__block_literal_global_149);
   }
 
-  v5 = [a1 locale];
+  locale = [self locale];
   v6 = _px_localizedCapitalizedString__languagesWithCustomCapitalization;
-  v7 = [v5 languageCode];
-  LOBYTE(v6) = [v6 containsObject:v7];
+  languageCode = [locale languageCode];
+  LOBYTE(v6) = [v6 containsObject:languageCode];
 
   if (v6)
   {
@@ -97,7 +97,7 @@
     v18 = v19;
     v10 = v8;
     v15 = v10;
-    v16 = v5;
+    v16 = locale;
     v17 = v4;
     [v17 enumerateSubstringsInRange:0 options:v9 usingBlock:{3, v14}];
     v11 = v17;
@@ -116,13 +116,13 @@
 
 - (uint64_t)px_customizesAttributedString
 {
-  if ([a1 _px_isChineseYearTemplate])
+  if ([self _px_isChineseYearTemplate])
   {
     return 1;
   }
 
-  v3 = [a1 _px_substitutions];
-  v2 = [v3 count] != 0;
+  _px_substitutions = [self _px_substitutions];
+  v2 = [_px_substitutions count] != 0;
 
   return v2;
 }
@@ -132,12 +132,12 @@
   v8 = a3;
   v65 = a4;
   v9 = a5;
-  v10 = [a1 dateTemplate];
-  v64 = [a1 locale];
-  v11 = [v64 languageCode];
-  if (![a1 _px_isChineseYearTemplate] || ((objc_msgSend(a1, "calendar"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "startDate"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "components:fromDate:", 4, v13), v14 = objc_claimAutoreleasedReturnValue(), v13, objc_msgSend(v8, "endDate"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "components:fromDate:", 4, v15), v16 = objc_claimAutoreleasedReturnValue(), v15, v17 = objc_msgSend(v14, "year"), v17 != objc_msgSend(v16, "year")) ? (objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%li至%li", objc_msgSend(v14, "year"), objc_msgSend(v16, "year")), v18 = objc_claimAutoreleasedReturnValue()) : (v18 = 0), v16, v14, v12, !v18))
+  dateTemplate = [self dateTemplate];
+  locale = [self locale];
+  languageCode = [locale languageCode];
+  if (![self _px_isChineseYearTemplate] || ((objc_msgSend(self, "calendar"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "startDate"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "components:fromDate:", 4, v13), v14 = objc_claimAutoreleasedReturnValue(), v13, objc_msgSend(v8, "endDate"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "components:fromDate:", 4, v15), v16 = objc_claimAutoreleasedReturnValue(), v15, v17 = objc_msgSend(v14, "year"), v17 != objc_msgSend(v16, "year")) ? (objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%li至%li", objc_msgSend(v14, "year"), objc_msgSend(v16, "year")), v18 = objc_claimAutoreleasedReturnValue()) : (v18 = 0), v16, v14, v12, !v18))
   {
-    v19 = [a1 stringFromDateInterval:v8];
+    v19 = [self stringFromDateInterval:v8];
     v20 = v19;
     v21 = &stru_1F2B87EE0;
     if (v19)
@@ -148,8 +148,8 @@
     v18 = v21;
   }
 
-  v22 = [a1 _px_substitutions];
-  if ([v22 count])
+  _px_substitutions = [self _px_substitutions];
+  if ([_px_substitutions count])
   {
     v23 = [(__CFString *)v18 mutableCopy];
     v90 = 0;
@@ -163,7 +163,7 @@
     v24 = v23;
     v88 = v24;
     v89 = &v90;
-    [v22 enumerateKeysAndObjectsUsingBlock:v87];
+    [_px_substitutions enumerateKeysAndObjectsUsingBlock:v87];
     if (*(v91 + 24) == 1)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -184,18 +184,18 @@
     v18 = v26;
   }
 
-  v27 = [a1 _px_localizedCapitalizedString:v18];
+  v27 = [self _px_localizedCapitalizedString:v18];
 
-  if ([v10 isEqualToString:@"MMMMy"])
+  if ([dateTemplate isEqualToString:@"MMMMy"])
   {
-    v62 = v10;
-    v60 = v22;
+    v62 = dateTemplate;
+    v60 = _px_substitutions;
     if (px_attributedStringFromDateInterval_defaultAttributes_emphasizedAttributes__onceToken != -1)
     {
       dispatch_once(&px_attributedStringFromDateInterval_defaultAttributes_emphasizedAttributes__onceToken, &__block_literal_global_15596);
     }
 
-    v28 = [px_attributedStringFromDateInterval_defaultAttributes_emphasizedAttributes__decorationWordsByLanguages objectForKeyedSubscript:v11];
+    v28 = [px_attributedStringFromDateInterval_defaultAttributes_emphasizedAttributes__decorationWordsByLanguages objectForKeyedSubscript:languageCode];
     v82[0] = MEMORY[0x1E69E9820];
     v82[1] = 3221225472;
     v82[2] = __116__NSDateIntervalFormatter_PhotosUICore__px_attributedStringFromDateInterval_defaultAttributes_emphasizedAttributes___block_invoke_4;
@@ -233,18 +233,18 @@
     v76 = v38;
     v39 = _Block_copy(v73);
     v40 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v41 = [a1 locale];
-    [v40 setLocale:v41];
+    locale2 = [self locale];
+    [v40 setLocale:locale2];
 
     [v40 setDateFormat:@"y"];
-    v42 = [v8 startDate];
-    [v40 stringFromDate:v42];
+    startDate = [v8 startDate];
+    [v40 stringFromDate:startDate];
     v44 = v43 = v8;
-    v61 = v11;
+    v61 = languageCode;
     v35[2](v35, v44);
 
-    v45 = [v43 endDate];
-    v46 = [v40 stringFromDate:v45];
+    endDate = [v43 endDate];
+    v46 = [v40 stringFromDate:endDate];
     v35[2](v35, v46);
 
     v39[2](v39, v57);
@@ -273,18 +273,18 @@
     v53 = v69;
     v54 = v50;
 
-    v11 = v61;
+    languageCode = v61;
     v27 = v59;
 
-    v10 = v62;
-    v55 = v64;
-    v22 = v60;
+    dateTemplate = v62;
+    v55 = locale;
+    _px_substitutions = v60;
   }
 
   else
   {
     v54 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v27 attributes:v9];
-    v55 = v64;
+    v55 = locale;
   }
 
   return v54;
@@ -323,8 +323,8 @@
     {
       if (a3 != 16)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:a1 file:@"NSDateIntervalFormatter+PhotosUIFoundation.m" lineNumber:49 description:{@"unsupported granularity %i", a3}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"NSDateIntervalFormatter+PhotosUIFoundation.m" lineNumber:49 description:{@"unsupported granularity %i", a3}];
 
         abort();
       }

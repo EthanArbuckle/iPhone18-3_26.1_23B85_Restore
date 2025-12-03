@@ -26,55 +26,55 @@
 
 - (id)px_fetchAncestorThatSupportsExplictlyRemovingAssets
 {
-  if ([a1 assetCollectionType] != 6)
+  if ([self assetCollectionType] != 6)
   {
-    v4 = 0;
+    firstObject = 0;
     goto LABEL_11;
   }
 
-  v2 = a1;
-  v3 = [v2 type];
+  selfCopy = self;
+  type = [selfCopy type];
   if (!MEMORY[0x1A590BA50]())
   {
-    if ((v3 - 5) <= 1u)
+    if ((type - 5) <= 1u)
     {
-      v5 = [MEMORY[0x1E69789F0] fetchParentDayGroupHighlightForHighlight:v2 options:0];
-      v4 = [v5 firstObject];
-      if (MEMORY[0x1A590BA50]([v4 type]))
+      v5 = [MEMORY[0x1E69789F0] fetchParentDayGroupHighlightForHighlight:selfCopy options:0];
+      firstObject = [v5 firstObject];
+      if (MEMORY[0x1A590BA50]([firstObject type]))
       {
 
         goto LABEL_10;
       }
     }
 
-    v4 = 0;
+    firstObject = 0;
     goto LABEL_10;
   }
 
-  v4 = v2;
+  firstObject = selfCopy;
 LABEL_10:
 
 LABEL_11:
 
-  return v4;
+  return firstObject;
 }
 
 - (id)px_fetchAncestorThatSupportsCustomKeyAssets
 {
-  if ([a1 canContainCustomKeyAssets])
+  if ([self canContainCustomKeyAssets])
   {
-    v2 = a1;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  if ([a1 assetCollectionType] == 6)
+  if ([self assetCollectionType] == 6)
   {
-    v3 = a1;
-    if ([v3 type] - 5 <= 1)
+    selfCopy2 = self;
+    if ([selfCopy2 type] - 5 <= 1)
     {
-      v4 = [MEMORY[0x1E69789F0] fetchParentDayGroupHighlightForHighlight:v3 options:0];
-      v2 = [v4 firstObject];
-      if ([v2 canContainCustomKeyAssets])
+      v4 = [MEMORY[0x1E69789F0] fetchParentDayGroupHighlightForHighlight:selfCopy2 options:0];
+      selfCopy = [v4 firstObject];
+      if ([selfCopy canContainCustomKeyAssets])
       {
 
         goto LABEL_10;
@@ -82,19 +82,19 @@ LABEL_11:
     }
   }
 
-  v2 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)px_isTransientCollectionWithIdentifier:()PhotosUICore
 {
   v4 = a3;
-  if ([a1 isTransient])
+  if ([self isTransient])
   {
-    v5 = [a1 transientIdentifier];
-    v6 = [v5 isEqual:v4];
+    transientIdentifier = [self transientIdentifier];
+    v6 = [transientIdentifier isEqual:v4];
   }
 
   else
@@ -107,11 +107,11 @@ LABEL_10:
 
 - (uint64_t)px_estimatedCuratedAssetsCount
 {
-  v4 = [a1 estimatedAssetCount];
-  if ([a1 assetCollectionType] == 6)
+  estimatedAssetCount = [self estimatedAssetCount];
+  if ([self assetCollectionType] == 6)
   {
-    v5 = a1;
-    if (v5)
+    selfCopy = self;
+    if (selfCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -119,73 +119,73 @@ LABEL_10:
         goto LABEL_4;
       }
 
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = objc_opt_class();
       v11 = NSStringFromClass(v12);
-      v13 = [v5 px_descriptionForAssertionMessage];
-      [v9 handleFailureInMethod:a2 object:v5 file:@"PHCollection+PhotosUICore.m" lineNumber:792 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self", v11, v13}];
+      px_descriptionForAssertionMessage = [selfCopy px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PHCollection+PhotosUICore.m" lineNumber:792 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self", v11, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      [v9 handleFailureInMethod:a2 object:0 file:@"PHCollection+PhotosUICore.m" lineNumber:792 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self", v11}];
+      [currentHandler handleFailureInMethod:a2 object:0 file:@"PHCollection+PhotosUICore.m" lineNumber:792 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self", v11}];
     }
 
 LABEL_4:
-    v6 = [v5 px_curationType];
-    if (v6 == 2)
+    px_curationType = [selfCopy px_curationType];
+    if (px_curationType == 2)
     {
-      v7 = [v5 extendedCount];
+      extendedCount = [selfCopy extendedCount];
     }
 
     else
     {
-      if (v6 != 1)
+      if (px_curationType != 1)
       {
 LABEL_9:
 
-        return v4;
+        return estimatedAssetCount;
       }
 
-      v7 = [v5 summaryCount];
+      extendedCount = [selfCopy summaryCount];
     }
 
-    v4 = v7;
+    estimatedAssetCount = extendedCount;
     goto LABEL_9;
   }
 
-  return v4;
+  return estimatedAssetCount;
 }
 
 - (id)px_debugDictionary
 {
   v33[8] = *MEMORY[0x1E69E9840];
-  v31.receiver = a1;
+  v31.receiver = self;
   v31.super_class = &off_1F1AD51D0;
   v2 = objc_msgSendSuper2(&v31, sel_px_debugDictionary);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 assetCollectionType];
-  if (v4 > 0xD)
+  assetCollectionType = [self assetCollectionType];
+  if (assetCollectionType > 0xD)
   {
     v5 = @"nil";
   }
 
   else
   {
-    v5 = off_1E7742BF0[v4];
+    v5 = off_1E7742BF0[assetCollectionType];
   }
 
-  v6 = [a1 assetCollectionSubtype];
+  assetCollectionSubtype = [self assetCollectionSubtype];
   v30 = v3;
-  if (v6 <= 1000000000)
+  if (assetCollectionSubtype <= 1000000000)
   {
-    if (v6 > 101)
+    if (assetCollectionSubtype > 101)
     {
-      switch(v6)
+      switch(assetCollectionSubtype)
       {
         case 200:
           v7 = @"Smart Album Generic";
@@ -254,14 +254,14 @@ LABEL_9:
           v7 = @"Smart Album Front Back";
           break;
         default:
-          if (v6 == 102)
+          if (assetCollectionSubtype == 102)
           {
             v7 = @"CollectionShare (Shared Stream)";
           }
 
           else
           {
-            if (v6 != 103)
+            if (assetCollectionSubtype != 103)
             {
               goto LABEL_71;
             }
@@ -275,9 +275,9 @@ LABEL_9:
       goto LABEL_94;
     }
 
-    if (v6 <= 4)
+    if (assetCollectionSubtype <= 4)
     {
-      switch(v6)
+      switch(assetCollectionSubtype)
       {
         case 2:
           v7 = @"Regular";
@@ -293,9 +293,9 @@ LABEL_9:
 
     else
     {
-      if (v6 > 99)
+      if (assetCollectionSubtype > 99)
       {
-        if (v6 == 100)
+        if (assetCollectionSubtype == 100)
         {
           v7 = @"My Photo Stream";
         }
@@ -308,13 +308,13 @@ LABEL_9:
         goto LABEL_94;
       }
 
-      if (v6 == 5)
+      if (assetCollectionSubtype == 5)
       {
         v7 = @"Synced Album";
         goto LABEL_94;
       }
 
-      if (v6 == 6)
+      if (assetCollectionSubtype == 6)
       {
         v7 = @"Imported";
         goto LABEL_94;
@@ -326,19 +326,19 @@ LABEL_71:
     goto LABEL_94;
   }
 
-  if (v6 > 1000000217)
+  if (assetCollectionSubtype > 1000000217)
   {
-    if (v6 > 1000000303)
+    if (assetCollectionSubtype > 1000000303)
     {
-      if (v6 <= 1000000500)
+      if (assetCollectionSubtype <= 1000000500)
       {
-        if (v6 == 1000000304)
+        if (assetCollectionSubtype == 1000000304)
         {
           v7 = @"Photos Highlight Day Group";
           goto LABEL_94;
         }
 
-        if (v6 == 1000000401)
+        if (assetCollectionSubtype == 1000000401)
         {
           v7 = @"Screen Saver Activity Collection";
           goto LABEL_94;
@@ -347,7 +347,7 @@ LABEL_71:
 
       else
       {
-        switch(v6)
+        switch(assetCollectionSubtype)
         {
           case 0x3B9ACBF5:
             v7 = @"Content Syndication";
@@ -364,14 +364,14 @@ LABEL_71:
 
     else
     {
-      if (v6 > 1000000300)
+      if (assetCollectionSubtype > 1000000300)
       {
-        if (v6 == 1000000301)
+        if (assetCollectionSubtype == 1000000301)
         {
           v7 = @"Photos Highlight Day";
         }
 
-        else if (v6 == 1000000302)
+        else if (assetCollectionSubtype == 1000000302)
         {
           v7 = @"Photos Highlight Month";
         }
@@ -384,13 +384,13 @@ LABEL_71:
         goto LABEL_94;
       }
 
-      if (v6 == 1000000218)
+      if (assetCollectionSubtype == 1000000218)
       {
         v7 = @"Saved";
         goto LABEL_94;
       }
 
-      if (v6 == 1000000219)
+      if (assetCollectionSubtype == 1000000219)
       {
         v7 = @"Recovered";
         goto LABEL_94;
@@ -400,16 +400,16 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  if (v6 <= 1000000205)
+  if (assetCollectionSubtype <= 1000000205)
   {
-    if (v6 > 1000000202)
+    if (assetCollectionSubtype > 1000000202)
     {
-      if (v6 == 1000000203)
+      if (assetCollectionSubtype == 1000000203)
       {
         v7 = @"Places";
       }
 
-      else if (v6 == 1000000204)
+      else if (assetCollectionSubtype == 1000000204)
       {
         v7 = @"User Smart Album";
       }
@@ -422,13 +422,13 @@ LABEL_71:
       goto LABEL_94;
     }
 
-    if (v6 == 1000000001)
+    if (assetCollectionSubtype == 1000000001)
     {
       v7 = @"Camera Roll";
       goto LABEL_94;
     }
 
-    if (v6 == 1000000201)
+    if (assetCollectionSubtype == 1000000201)
     {
       v7 = @"Trash Bin";
       goto LABEL_94;
@@ -437,15 +437,15 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  if (v6 <= 1000000211)
+  if (assetCollectionSubtype <= 1000000211)
   {
-    if (v6 == 1000000206)
+    if (assetCollectionSubtype == 1000000206)
     {
       v7 = @"Smart Album Recently Edited";
       goto LABEL_94;
     }
 
-    if (v6 == 1000000211)
+    if (assetCollectionSubtype == 1000000211)
     {
       v7 = @"Smart Album ProRes";
       goto LABEL_94;
@@ -454,12 +454,12 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  if (v6 == 1000000212)
+  if (assetCollectionSubtype == 1000000212)
   {
     v7 = @"All Library Duplicates";
   }
 
-  else if (v6 == 1000000214)
+  else if (assetCollectionSubtype == 1000000214)
   {
     v7 = @"Smart Album Shared Library Sharing Suggestions";
   }
@@ -467,7 +467,7 @@ LABEL_71:
   else
   {
     v7 = @"nil";
-    if (v6 == 1000000215)
+    if (assetCollectionSubtype == 1000000215)
     {
       v5 = @"Smart Album Action Cam";
       v7 = @"nil";
@@ -476,21 +476,21 @@ LABEL_71:
 
 LABEL_94:
   v32[0] = @"debugDescription";
-  v29 = [a1 debugDescription];
+  v29 = [self debugDescription];
   v33[0] = v29;
   v33[1] = v5;
   v32[1] = @"assetCollectionType";
   v32[2] = @"assetCollectionSubtype";
   v33[2] = v7;
   v32[3] = @"estimatedAssetCount";
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "estimatedAssetCount")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "estimatedAssetCount")}];
   v33[3] = v8;
   v32[4] = @"startDate";
-  v9 = [a1 startDate];
-  v10 = v9;
-  if (v9)
+  startDate = [self startDate];
+  v10 = startDate;
+  if (startDate)
   {
-    v11 = v9;
+    v11 = startDate;
   }
 
   else
@@ -501,11 +501,11 @@ LABEL_94:
   v33[4] = v11;
   v32[5] = @"endDate";
   v28 = v11;
-  v12 = [a1 endDate];
-  v13 = v12;
-  if (v12)
+  endDate = [self endDate];
+  v13 = endDate;
+  if (endDate)
   {
-    v14 = v12;
+    v14 = endDate;
   }
 
   else
@@ -516,8 +516,8 @@ LABEL_94:
   v33[5] = v14;
   v32[6] = @"approximateLocation";
   v15 = v14;
-  v16 = [a1 approximateLocation];
-  v17 = [v16 debugDescription];
+  approximateLocation = [self approximateLocation];
+  v17 = [approximateLocation debugDescription];
   v18 = v17;
   if (v17)
   {
@@ -532,11 +532,11 @@ LABEL_94:
   v33[6] = v19;
   v32[7] = @"localizedLocationNames";
   v20 = v19;
-  v21 = [a1 localizedLocationNames];
-  v22 = v21;
-  if (v21)
+  localizedLocationNames = [self localizedLocationNames];
+  v22 = localizedLocationNames;
+  if (localizedLocationNames)
   {
-    v23 = v21;
+    v23 = localizedLocationNames;
   }
 
   else
@@ -556,7 +556,7 @@ LABEL_94:
 
 - (id)px_navigationURLComponents
 {
-  if ([a1 px_isPlacesSmartAlbum])
+  if ([self px_isPlacesSmartAlbum])
   {
     v2 = @"places";
 LABEL_5:
@@ -567,11 +567,11 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([a1 isTransient])
+  if ([self isTransient])
   {
     v3 = MEMORY[0x1E6978650];
-    v4 = [a1 transientIdentifier];
-    v2 = [v3 px_albumNameForTransientIdentifier:v4];
+    transientIdentifier = [self transientIdentifier];
+    v2 = [v3 px_albumNameForTransientIdentifier:transientIdentifier];
 
     if (v2)
     {
@@ -579,7 +579,7 @@ LABEL_5:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_1F1AD51D0;
   v7 = objc_msgSendSuper2(&v9, sel_px_navigationURLComponents);
 LABEL_7:
@@ -589,80 +589,80 @@ LABEL_7:
 
 - (id)px_collectionListRepresentation
 {
-  if ([a1 px_isAllAlbumsVirtualCollection])
+  if ([self px_isAllAlbumsVirtualCollection])
   {
-    v2 = [a1 photoLibrary];
-    v3 = [v2 px_rootAlbumCollectionList];
+    photoLibrary = [self photoLibrary];
+    px_rootAlbumCollectionList = [photoLibrary px_rootAlbumCollectionList];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if ([a1 px_isAllProjectsVirtualCollection])
+  if ([self px_isAllProjectsVirtualCollection])
   {
-    v2 = [a1 photoLibrary];
-    v4 = [v2 px_virtualCollections];
-    v3 = [v4 rootProjectCollectionList];
+    photoLibrary = [self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    px_rootAlbumCollectionList = [px_virtualCollections rootProjectCollectionList];
 
     goto LABEL_5;
   }
 
-  v3 = 0;
+  px_rootAlbumCollectionList = 0;
 LABEL_7:
 
-  return v3;
+  return px_rootAlbumCollectionList;
 }
 
 - (uint64_t)px_navigationWellKnownName
 {
   v1 = MEMORY[0x1E6978650];
-  v2 = [a1 assetCollectionSubtype];
+  assetCollectionSubtype = [self assetCollectionSubtype];
 
-  return [v1 px_builtInAlbumNameForSubtype:v2];
+  return [v1 px_builtInAlbumNameForSubtype:assetCollectionSubtype];
 }
 
 - (uint64_t)px_assetsDropMode
 {
-  if ([a1 px_isAllPhotosSmartAlbum] & 1) != 0 || (objc_msgSend(a1, "px_isRecentsSmartAlbum") & 1) != 0 || (objc_msgSend(a1, "px_isLibraryVirtualCollection"))
+  if ([self px_isAllPhotosSmartAlbum] & 1) != 0 || (objc_msgSend(self, "px_isRecentsSmartAlbum") & 1) != 0 || (objc_msgSend(self, "px_isLibraryVirtualCollection"))
   {
     return 2;
   }
 
-  return ([a1 px_isFavoritesSmartAlbum] & 1) != 0 || (objc_msgSend(a1, "canPerformEditOperation:", 3) & 1) != 0 || objc_msgSend(a1, "px_isMemory");
+  return ([self px_isFavoritesSmartAlbum] & 1) != 0 || (objc_msgSend(self, "canPerformEditOperation:", 3) & 1) != 0 || objc_msgSend(self, "px_isMemory");
 }
 
 - (BOOL)px_fetchIsEmptyWithOptions:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 estimatedAssetCount];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  estimatedAssetCount = [self estimatedAssetCount];
+  if (estimatedAssetCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
+  v6 = estimatedAssetCount;
   if ([v4 sharingFilter] != 2)
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 predicate];
-  if (v7)
+  predicate = [v4 predicate];
+  if (predicate)
   {
 
 LABEL_6:
     v9 = [v4 copy];
     [v9 setWantsIncrementalChangeDetails:0];
     [v9 setFetchLimit:1];
-    v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:a1 options:v9];
+    v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self options:v9];
     v6 = [v10 count];
 
     goto LABEL_7;
   }
 
-  v8 = [v4 internalPredicate];
+  internalPredicate = [v4 internalPredicate];
 
-  if (v8)
+  if (internalPredicate)
   {
     goto LABEL_6;
   }
@@ -674,7 +674,7 @@ LABEL_7:
 
 + (void)px_fetchAssetCollectionsWithAlbumSubtypes:()PhotosUICore photoLibrary:
 {
-  v4 = [a1 px_fetchSmartAlbumCollectionsBySubtypeForAlbumSubtypes:a3 photoLibrary:a4];
+  v4 = [self px_fetchSmartAlbumCollectionsBySubtypeForAlbumSubtypes:a3 photoLibrary:a4];
   PXMap();
 }
 
@@ -682,19 +682,19 @@ LABEL_7:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [a4 px_standardLibrarySpecificFetchOptions];
-  [v6 setIncludePlacesSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7E0)}];
-  [v6 setIncludeDuplicatesAlbums:{objc_msgSend(v5, "containsObject:", &unk_1F190D7B0)}];
-  [v6 setIncludeAllPhotosSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7F8)}];
-  [v6 setIncludeRecentlyEditedSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7C8)}];
-  [v6 setIncludeScreenRecordingsSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D6C0)}];
-  [v6 setIncludeActionCamVideoSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D648)}];
-  [v6 setIncludeProResSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D720)}];
-  [v6 setIncludeSharedLibrarySharingSuggestionsSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D810)}];
-  [v6 setIncludeTrashBinAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D768)}];
+  px_standardLibrarySpecificFetchOptions = [a4 px_standardLibrarySpecificFetchOptions];
+  [px_standardLibrarySpecificFetchOptions setIncludePlacesSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7E0)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeDuplicatesAlbums:{objc_msgSend(v5, "containsObject:", &unk_1F190D7B0)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7F8)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeRecentlyEditedSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D7C8)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeScreenRecordingsSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D6C0)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeActionCamVideoSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D648)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeProResSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D720)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D810)}];
+  [px_standardLibrarySpecificFetchOptions setIncludeTrashBinAlbum:{objc_msgSend(v5, "containsObject:", &unk_1F190D768)}];
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"assetCollectionSubtype IN %@", v5];
-  [v6 setPredicate:?];
-  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:0x7FFFFFFFFFFFFFFFLL options:v6];
+  [px_standardLibrarySpecificFetchOptions setPredicate:?];
+  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:0x7FFFFFFFFFFFFFFFLL options:px_standardLibrarySpecificFetchOptions];
   v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
   v18 = 0u;
   v19 = 0u;
@@ -733,57 +733,57 @@ LABEL_7:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  photoLibrary = [v5 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   if (v6)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self != %@", v6];
-    [v8 setPredicate:v9];
+    [librarySpecificFetchOptions setPredicate:v9];
   }
 
-  v10 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:v5 withType:1 options:v8];
+  v10 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:v5 withType:1 options:librarySpecificFetchOptions];
 
   return v10;
 }
 
 + (id)px_fetchSmartAlbumWithSubtype:()PhotosUICore
 {
-  v5 = [MEMORY[0x1E6978830] px_standardFetchOptions];
-  [v5 setIncludePlacesSmartAlbum:a3 == 1000000203];
-  [v5 setIncludeAllPhotosSmartAlbum:a3 == 1000000205];
-  [v5 setIncludeRecentlyEditedSmartAlbum:a3 == 1000000206];
-  [v5 setIncludeScreenRecordingsSmartAlbum:a3 == 220];
-  [v5 setIncludeUserSmartAlbums:a3 == 1000000204];
-  [v5 setIncludeProResSmartAlbum:a3 == 1000000211];
-  [v5 setIncludeSharedLibrarySharingSuggestionsSmartAlbum:a3 == 1000000214];
-  [v5 setIncludeDuplicatesAlbums:a3 == 1000000212];
-  v6 = [a1 fetchAssetCollectionsWithType:2 subtype:a3 options:v5];
+  px_standardFetchOptions = [MEMORY[0x1E6978830] px_standardFetchOptions];
+  [px_standardFetchOptions setIncludePlacesSmartAlbum:a3 == 1000000203];
+  [px_standardFetchOptions setIncludeAllPhotosSmartAlbum:a3 == 1000000205];
+  [px_standardFetchOptions setIncludeRecentlyEditedSmartAlbum:a3 == 1000000206];
+  [px_standardFetchOptions setIncludeScreenRecordingsSmartAlbum:a3 == 220];
+  [px_standardFetchOptions setIncludeUserSmartAlbums:a3 == 1000000204];
+  [px_standardFetchOptions setIncludeProResSmartAlbum:a3 == 1000000211];
+  [px_standardFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:a3 == 1000000214];
+  [px_standardFetchOptions setIncludeDuplicatesAlbums:a3 == 1000000212];
+  v6 = [self fetchAssetCollectionsWithType:2 subtype:a3 options:px_standardFetchOptions];
 
   return v6;
 }
 
 + (id)px_smartAlbumWithSubtype:()PhotosUICore
 {
-  v1 = [a1 px_fetchSmartAlbumWithSubtype:?];
-  v2 = [v1 firstObject];
+  v1 = [self px_fetchSmartAlbumWithSubtype:?];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 + (id)px_regularAlbumWithTitle:()PhotosUICore
 {
   v3 = MEMORY[0x1E6978830];
   v4 = a3;
-  v5 = [v3 px_standardFetchOptions];
-  [v5 setFetchLimit:1];
+  px_standardFetchOptions = [v3 px_standardFetchOptions];
+  [px_standardFetchOptions setFetchLimit:1];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title == %@", v4];
 
-  [v5 setPredicate:v6];
-  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:1 subtype:2 options:v5];
-  v8 = [v7 firstObject];
+  [px_standardFetchOptions setPredicate:v6];
+  v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:1 subtype:2 options:px_standardFetchOptions];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 + (id)px_otherAlbumsSubtypes
@@ -792,7 +792,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __57__PHAssetCollection_PhotosUICore__px_otherAlbumsSubtypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (px_otherAlbumsSubtypes_onceToken != -1)
   {
     dispatch_once(&px_otherAlbumsSubtypes_onceToken, block);
@@ -809,7 +809,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __65__PHAssetCollection_PhotosUICore__px_mediaTypeSmartAlbumSubtypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (px_mediaTypeSmartAlbumSubtypes_onceToken != -1)
   {
     dispatch_once(&px_mediaTypeSmartAlbumSubtypes_onceToken, block);

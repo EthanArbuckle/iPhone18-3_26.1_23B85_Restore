@@ -1,9 +1,9 @@
 @interface UIRemoteInputViewControllerInterface
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)_handleInputViewControllerState:(id)a3;
-- (void)_openURL:(id)a3 completion:(id)a4;
-- (void)_performInputViewControllerOutput:(id)a3;
+- (void)_handleInputViewControllerState:(id)state;
+- (void)_openURL:(id)l completion:(id)completion;
+- (void)_performInputViewControllerOutput:(id)output;
 - (void)_tearDownRemoteService;
 - (void)dealloc;
 @end
@@ -66,33 +66,33 @@ void __73__UIRemoteInputViewControllerInterface__extensionAuxiliaryVendorProtoco
   [v2 setClasses:v3 forSelector:sel__handleInputViewControllerState_ argumentIndex:0 ofReply:0];
 }
 
-- (void)_performInputViewControllerOutput:(id)a3
+- (void)_performInputViewControllerOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(UIRemoteInputViewControllerInterface *)self responseDelegate];
-  [v5 _performInputViewControllerOutput:v4];
+  outputCopy = output;
+  responseDelegate = [(UIRemoteInputViewControllerInterface *)self responseDelegate];
+  [responseDelegate _performInputViewControllerOutput:outputCopy];
 }
 
 - (void)_tearDownRemoteService
 {
-  v3 = [(UIRemoteInputViewControllerInterface *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _tearDownRemoteService];
+  _auxiliaryConnection = [(UIRemoteInputViewControllerInterface *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _tearDownRemoteService];
 }
 
-- (void)_handleInputViewControllerState:(id)a3
+- (void)_handleInputViewControllerState:(id)state
 {
-  v4 = a3;
-  v6 = [(UIRemoteInputViewControllerInterface *)self _auxiliaryConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _handleInputViewControllerState:v4];
+  stateCopy = state;
+  _auxiliaryConnection = [(UIRemoteInputViewControllerInterface *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _handleInputViewControllerState:stateCopy];
 }
 
-- (void)_openURL:(id)a3 completion:(id)a4
+- (void)_openURL:(id)l completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 

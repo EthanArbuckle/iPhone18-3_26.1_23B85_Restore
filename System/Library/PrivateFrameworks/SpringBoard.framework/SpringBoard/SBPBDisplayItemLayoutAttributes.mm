@@ -1,6 +1,6 @@
 @interface SBPBDisplayItemLayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (__CFString)semanticSizeTypeForSizeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)semanticSizeTypeForSizeAsString:(__CFString *)string;
 - (double)centerX;
 - (double)centerY;
 - (double)referenceBoundsHeightBeforeOverlapping;
@@ -13,14 +13,14 @@
 - (double)tileConfigurationCustomSizeWidth;
 - (double)userSizeBeforeOverlappingInBoundsHeight;
 - (double)userSizeBeforeOverlappingInBoundsWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsSemanticSizeTypeForSize:(uint64_t)a1;
+- (uint64_t)StringAsSemanticSizeTypeForSize:(uint64_t)size;
 - (uint64_t)cascaded;
 - (uint64_t)contentOrientation;
 - (uint64_t)lastInteractionTime;
-- (uint64_t)mergeFrom:(uint64_t)a1;
+- (uint64_t)mergeFrom:(uint64_t)from;
 - (uint64_t)positionIsSystemManaged;
 - (uint64_t)preferredTileRole;
 - (uint64_t)semanticSizeTypeBeforeOverlapping;
@@ -50,9 +50,9 @@
 - (uint64_t)slideOverConfiguration;
 - (uint64_t)version;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)setSlideOverConfiguration:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)setSlideOverConfiguration:(uint64_t)configuration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBDisplayItemLayoutAttributes
@@ -63,47 +63,47 @@
   v8.receiver = self;
   v8.super_class = SBPBDisplayItemLayoutAttributes;
   v4 = [(SBPBDisplayItemLayoutAttributes *)&v8 description];
-  v5 = [(SBPBDisplayItemLayoutAttributes *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBDisplayItemLayoutAttributes *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sizeWidth];
-  [v3 setObject:v4 forKey:@"sizeWidth"];
+  [dictionary setObject:v4 forKey:@"sizeWidth"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sizeHeight];
-  [v3 setObject:v5 forKey:@"sizeHeight"];
+  [dictionary setObject:v5 forKey:@"sizeHeight"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_centerX];
-  [v3 setObject:v6 forKey:@"centerX"];
+  [dictionary setObject:v6 forKey:@"centerX"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_centerY];
-  [v3 setObject:v7 forKey:@"centerY"];
+  [dictionary setObject:v7 forKey:@"centerY"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_lastInteractionTime];
-  [v3 setObject:v8 forKey:@"lastInteractionTime"];
+  [dictionary setObject:v8 forKey:@"lastInteractionTime"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sizingPolicy];
-  [v3 setObject:v9 forKey:@"sizingPolicy"];
+  [dictionary setObject:v9 forKey:@"sizingPolicy"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_userSizeBeforeOverlappingInBoundsWidth];
-  [v3 setObject:v10 forKey:@"userSizeBeforeOverlappingInBoundsWidth"];
+  [dictionary setObject:v10 forKey:@"userSizeBeforeOverlappingInBoundsWidth"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_userSizeBeforeOverlappingInBoundsHeight];
-  [v3 setObject:v11 forKey:@"userSizeBeforeOverlappingInBoundsHeight"];
+  [dictionary setObject:v11 forKey:@"userSizeBeforeOverlappingInBoundsHeight"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_contentOrientation];
-  [v3 setObject:v12 forKey:@"contentOrientation"];
+  [dictionary setObject:v12 forKey:@"contentOrientation"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_referenceBoundsWidthForSize];
-  [v3 setObject:v13 forKey:@"referenceBoundsWidthForSize"];
+  [dictionary setObject:v13 forKey:@"referenceBoundsWidthForSize"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_referenceBoundsHeightForSize];
-  [v3 setObject:v14 forKey:@"referenceBoundsHeightForSize"];
+  [dictionary setObject:v14 forKey:@"referenceBoundsHeightForSize"];
 
   semanticSizeTypeForSize = self->_semanticSizeTypeForSize;
   if (semanticSizeTypeForSize >= 0xA)
@@ -116,13 +116,13 @@
     v16 = off_2783BD7A8[semanticSizeTypeForSize];
   }
 
-  [v3 setObject:v16 forKey:@"semanticSizeTypeForSize"];
+  [dictionary setObject:v16 forKey:@"semanticSizeTypeForSize"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_referenceBoundsWidthBeforeOverlapping];
-  [v3 setObject:v17 forKey:@"referenceBoundsWidthBeforeOverlapping"];
+  [dictionary setObject:v17 forKey:@"referenceBoundsWidthBeforeOverlapping"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_referenceBoundsHeightBeforeOverlapping];
-  [v3 setObject:v18 forKey:@"referenceBoundsHeightBeforeOverlapping"];
+  [dictionary setObject:v18 forKey:@"referenceBoundsHeightBeforeOverlapping"];
 
   semanticSizeTypeBeforeOverlapping = self->_semanticSizeTypeBeforeOverlapping;
   if (semanticSizeTypeBeforeOverlapping >= 0xA)
@@ -135,39 +135,39 @@
     v20 = off_2783BD7A8[semanticSizeTypeBeforeOverlapping];
   }
 
-  [v3 setObject:v20 forKey:@"semanticSizeTypeBeforeOverlapping"];
+  [dictionary setObject:v20 forKey:@"semanticSizeTypeBeforeOverlapping"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:self->_positionIsSystemManaged];
-  [v3 setObject:v21 forKey:@"positionIsSystemManaged"];
+  [dictionary setObject:v21 forKey:@"positionIsSystemManaged"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_preferredTileRole];
-  [v3 setObject:v22 forKey:@"preferredTileRole"];
+  [dictionary setObject:v22 forKey:@"preferredTileRole"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_version];
-  [v3 setObject:v23 forKey:@"version"];
+  [dictionary setObject:v23 forKey:@"version"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:self->_tileConfigurationCustomSizeHeight];
-  [v3 setObject:v24 forKey:@"tileConfigurationCustomSizeHeight"];
+  [dictionary setObject:v24 forKey:@"tileConfigurationCustomSizeHeight"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_tileConfigurationCustomSizeWidth];
-  [v3 setObject:v25 forKey:@"tileConfigurationCustomSizeWidth"];
+  [dictionary setObject:v25 forKey:@"tileConfigurationCustomSizeWidth"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:self->_cascaded];
-  [v3 setObject:v26 forKey:@"cascaded"];
+  [dictionary setObject:v26 forKey:@"cascaded"];
 
   slideOverConfiguration = self->_slideOverConfiguration;
   if (slideOverConfiguration)
   {
-    v28 = [(SBPBSlideOverConfiguration *)slideOverConfiguration dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"slideOverConfiguration"];
+    dictionaryRepresentation = [(SBPBSlideOverConfiguration *)slideOverConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"slideOverConfiguration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
@@ -197,9 +197,9 @@
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 88) = self->_sizeWidth;
   *(v5 + 80) = self->_sizeHeight;
   *(v5 + 8) = self->_centerX;
@@ -221,56 +221,56 @@
   *(v5 + 104) = self->_tileConfigurationCustomSizeHeight;
   *(v5 + 112) = self->_tileConfigurationCustomSizeWidth;
   *(v5 + 160) = self->_cascaded;
-  v6 = [(SBPBSlideOverConfiguration *)self->_slideOverConfiguration copyWithZone:a3];
+  v6 = [(SBPBSlideOverConfiguration *)self->_slideOverConfiguration copyWithZone:zone];
   v7 = *(v5 + 152);
   *(v5 + 152) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_sizeWidth != *(v4 + 11) || self->_sizeHeight != *(v4 + 10) || self->_centerX != *(v4 + 1) || self->_centerY != *(v4 + 2) || self->_lastInteractionTime != *(v4 + 4) || self->_sizingPolicy != *(v4 + 12) || self->_userSizeBeforeOverlappingInBoundsWidth != *(v4 + 16) || self->_userSizeBeforeOverlappingInBoundsHeight != *(v4 + 15) || self->_contentOrientation != *(v4 + 3) || self->_referenceBoundsWidthForSize != *(v4 + 9) || self->_referenceBoundsHeightForSize != *(v4 + 7) || self->_semanticSizeTypeForSize != *(v4 + 37) || self->_referenceBoundsWidthBeforeOverlapping != *(v4 + 8) || self->_referenceBoundsHeightBeforeOverlapping != *(v4 + 6) || self->_semanticSizeTypeBeforeOverlapping != *(v4 + 36))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_sizeWidth != *(equalCopy + 11) || self->_sizeHeight != *(equalCopy + 10) || self->_centerX != *(equalCopy + 1) || self->_centerY != *(equalCopy + 2) || self->_lastInteractionTime != *(equalCopy + 4) || self->_sizingPolicy != *(equalCopy + 12) || self->_userSizeBeforeOverlappingInBoundsWidth != *(equalCopy + 16) || self->_userSizeBeforeOverlappingInBoundsHeight != *(equalCopy + 15) || self->_contentOrientation != *(equalCopy + 3) || self->_referenceBoundsWidthForSize != *(equalCopy + 9) || self->_referenceBoundsHeightForSize != *(equalCopy + 7) || self->_semanticSizeTypeForSize != *(equalCopy + 37) || self->_referenceBoundsWidthBeforeOverlapping != *(equalCopy + 8) || self->_referenceBoundsHeightBeforeOverlapping != *(equalCopy + 6) || self->_semanticSizeTypeBeforeOverlapping != *(equalCopy + 36))
   {
     goto LABEL_27;
   }
 
   if (self->_positionIsSystemManaged)
   {
-    if ((*(v4 + 161) & 1) == 0)
+    if ((*(equalCopy + 161) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 161))
+  else if (*(equalCopy + 161))
   {
 LABEL_27:
     v5 = 0;
     goto LABEL_28;
   }
 
-  if (self->_preferredTileRole != *(v4 + 5) || self->_version != *(v4 + 17) || self->_tileConfigurationCustomSizeHeight != *(v4 + 13) || self->_tileConfigurationCustomSizeWidth != *(v4 + 14))
+  if (self->_preferredTileRole != *(equalCopy + 5) || self->_version != *(equalCopy + 17) || self->_tileConfigurationCustomSizeHeight != *(equalCopy + 13) || self->_tileConfigurationCustomSizeWidth != *(equalCopy + 14))
   {
     goto LABEL_27;
   }
 
   if (self->_cascaded)
   {
-    if ((*(v4 + 160) & 1) == 0)
+    if ((*(equalCopy + 160) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 160))
+  else if (*(equalCopy + 160))
   {
     goto LABEL_27;
   }
 
   slideOverConfiguration = self->_slideOverConfiguration;
-  if (slideOverConfiguration | *(v4 + 19))
+  if (slideOverConfiguration | *(equalCopy + 19))
   {
     v5 = [(SBPBSlideOverConfiguration *)slideOverConfiguration isEqual:?];
   }
@@ -605,31 +605,31 @@ LABEL_28:
   return v71 ^ v72 ^ [(SBPBSlideOverConfiguration *)self->_slideOverConfiguration hash:self->_positionIsSystemManaged];
 }
 
-- (__CFString)semanticSizeTypeForSizeAsString:(__CFString *)a1
+- (__CFString)semanticSizeTypeForSizeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0xA)
   {
-    a1 = off_2783BD7A8[a2];
+    string = off_2783BD7A8[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSemanticSizeTypeForSize:(uint64_t)a1
+- (uint64_t)StringAsSemanticSizeTypeForSize:(uint64_t)size
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (size)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"None"])
@@ -696,47 +696,47 @@ LABEL_4:
   return v6;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
-  if (a1)
+  if (to)
   {
-    *(a2 + 88) = *(a1 + 88);
-    *(a2 + 80) = *(a1 + 80);
-    *(a2 + 8) = *(a1 + 8);
-    *(a2 + 16) = *(a1 + 16);
-    *(a2 + 32) = *(a1 + 32);
-    *(a2 + 96) = *(a1 + 96);
-    *(a2 + 128) = *(a1 + 128);
-    *(a2 + 120) = *(a1 + 120);
-    *(a2 + 24) = *(a1 + 24);
-    *(a2 + 72) = *(a1 + 72);
-    *(a2 + 56) = *(a1 + 56);
-    *(a2 + 148) = *(a1 + 148);
-    *(a2 + 64) = *(a1 + 64);
-    *(a2 + 48) = *(a1 + 48);
-    *(a2 + 144) = *(a1 + 144);
-    *(a2 + 161) = *(a1 + 161);
-    *(a2 + 40) = *(a1 + 40);
-    *(a2 + 136) = *(a1 + 136);
-    *(a2 + 104) = *(a1 + 104);
-    *(a2 + 112) = *(a1 + 112);
-    *(a2 + 160) = *(a1 + 160);
+    *(a2 + 88) = *(to + 88);
+    *(a2 + 80) = *(to + 80);
+    *(a2 + 8) = *(to + 8);
+    *(a2 + 16) = *(to + 16);
+    *(a2 + 32) = *(to + 32);
+    *(a2 + 96) = *(to + 96);
+    *(a2 + 128) = *(to + 128);
+    *(a2 + 120) = *(to + 120);
+    *(a2 + 24) = *(to + 24);
+    *(a2 + 72) = *(to + 72);
+    *(a2 + 56) = *(to + 56);
+    *(a2 + 148) = *(to + 148);
+    *(a2 + 64) = *(to + 64);
+    *(a2 + 48) = *(to + 48);
+    *(a2 + 144) = *(to + 144);
+    *(a2 + 161) = *(to + 161);
+    *(a2 + 40) = *(to + 40);
+    *(a2 + 136) = *(to + 136);
+    *(a2 + 104) = *(to + 104);
+    *(a2 + 112) = *(to + 112);
+    *(a2 + 160) = *(to + 160);
     [(SBPBDisplayItemLayoutAttributes *)a2 setSlideOverConfiguration:?];
   }
 }
 
-- (void)setSlideOverConfiguration:(uint64_t)a1
+- (void)setSlideOverConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_storeStrong((a1 + 152), a2);
+    objc_storeStrong((configuration + 152), a2);
   }
 }
 
-- (uint64_t)mergeFrom:(uint64_t)a1
+- (uint64_t)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     OUTLINED_FUNCTION_2_27(v3, 88);
     OUTLINED_FUNCTION_2_27(v4, 80);
@@ -749,17 +749,17 @@ LABEL_4:
     OUTLINED_FUNCTION_3_25(v11, 24);
     OUTLINED_FUNCTION_2_27(v12, 72);
     OUTLINED_FUNCTION_2_27(v13, 56);
-    *(a1 + 148) = *(v14 + 148);
+    *(from + 148) = *(v14 + 148);
     OUTLINED_FUNCTION_2_27(v14, 64);
     OUTLINED_FUNCTION_2_27(v15, 48);
-    *(a1 + 144) = *(v16 + 144);
-    *(a1 + 161) = *(v16 + 161);
+    *(from + 144) = *(v16 + 144);
+    *(from + 161) = *(v16 + 161);
     OUTLINED_FUNCTION_3_25(v16, 40);
     OUTLINED_FUNCTION_3_25(v17, 136);
     OUTLINED_FUNCTION_2_27(v18, 104);
     OUTLINED_FUNCTION_2_27(v19, 112);
-    *(a1 + 160) = *(v20 + 160);
-    v3 = *(a1 + 152);
+    *(from + 160) = *(v20 + 160);
+    v3 = *(from + 152);
     v21 = *(v20 + 152);
     if (v3)
     {
@@ -771,7 +771,7 @@ LABEL_4:
 
     else if (v21)
     {
-      [(SBPBDisplayItemLayoutAttributes *)a1 setSlideOverConfiguration:v21];
+      [(SBPBDisplayItemLayoutAttributes *)from setSlideOverConfiguration:v21];
     }
   }
 
@@ -780,9 +780,9 @@ LABEL_4:
 
 - (double)sizeWidth
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 88);
+    return OUTLINED_FUNCTION_2_1(self, 88);
   }
 
   else
@@ -803,9 +803,9 @@ LABEL_4:
 
 - (double)sizeHeight
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 80);
+    return OUTLINED_FUNCTION_2_1(self, 80);
   }
 
   else
@@ -826,9 +826,9 @@ LABEL_4:
 
 - (double)centerX
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 8);
+    return OUTLINED_FUNCTION_2_1(self, 8);
   }
 
   else
@@ -849,9 +849,9 @@ LABEL_4:
 
 - (double)centerY
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 16);
+    return OUTLINED_FUNCTION_2_1(self, 16);
   }
 
   else
@@ -912,9 +912,9 @@ LABEL_4:
 
 - (double)userSizeBeforeOverlappingInBoundsWidth
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 128);
+    return OUTLINED_FUNCTION_2_1(self, 128);
   }
 
   else
@@ -935,9 +935,9 @@ LABEL_4:
 
 - (double)userSizeBeforeOverlappingInBoundsHeight
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 120);
+    return OUTLINED_FUNCTION_2_1(self, 120);
   }
 
   else
@@ -978,9 +978,9 @@ LABEL_4:
 
 - (double)referenceBoundsWidthForSize
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 72);
+    return OUTLINED_FUNCTION_2_1(self, 72);
   }
 
   else
@@ -1001,9 +1001,9 @@ LABEL_4:
 
 - (double)referenceBoundsHeightForSize
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 56);
+    return OUTLINED_FUNCTION_2_1(self, 56);
   }
 
   else
@@ -1044,9 +1044,9 @@ LABEL_4:
 
 - (double)referenceBoundsWidthBeforeOverlapping
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 64);
+    return OUTLINED_FUNCTION_2_1(self, 64);
   }
 
   else
@@ -1067,9 +1067,9 @@ LABEL_4:
 
 - (double)referenceBoundsHeightBeforeOverlapping
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 48);
+    return OUTLINED_FUNCTION_2_1(self, 48);
   }
 
   else
@@ -1110,9 +1110,9 @@ LABEL_4:
 
 - (uint64_t)positionIsSystemManaged
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 161);
+    v1 = *(self + 161);
   }
 
   else
@@ -1175,9 +1175,9 @@ LABEL_4:
 
 - (double)tileConfigurationCustomSizeHeight
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 104);
+    return OUTLINED_FUNCTION_2_1(self, 104);
   }
 
   else
@@ -1198,9 +1198,9 @@ LABEL_4:
 
 - (double)tileConfigurationCustomSizeWidth
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 112);
+    return OUTLINED_FUNCTION_2_1(self, 112);
   }
 
   else
@@ -1221,9 +1221,9 @@ LABEL_4:
 
 - (uint64_t)cascaded
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 160);
+    v1 = *(self + 160);
   }
 
   else

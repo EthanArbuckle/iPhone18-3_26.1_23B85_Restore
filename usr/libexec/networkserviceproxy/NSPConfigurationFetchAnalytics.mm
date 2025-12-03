@@ -7,12 +7,12 @@
 
 - (id)configFetchURLToIndex
 {
-  v3 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+  configFetchURL = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
 
-  if (v3)
+  if (configFetchURL)
   {
-    v4 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-    v5 = [v4 isEqual:@"https://mask-api.icloud.com/v1/fetchConfigFile"];
+    configFetchURL2 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+    v5 = [configFetchURL2 isEqual:@"https://mask-api.icloud.com/v1/fetchConfigFile"];
 
     if (v5)
     {
@@ -21,8 +21,8 @@
 
     else
     {
-      v7 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-      v8 = [v7 isEqual:@"https://mask-api.icloud.com/v1_1/fetchConfigFile"];
+      configFetchURL3 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+      v8 = [configFetchURL3 isEqual:@"https://mask-api.icloud.com/v1_1/fetchConfigFile"];
 
       if (v8)
       {
@@ -31,8 +31,8 @@
 
       else
       {
-        v9 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-        v10 = [v9 isEqual:@"https://mask-api.icloud.com/v1_2/fetchConfigFile"];
+        configFetchURL4 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+        v10 = [configFetchURL4 isEqual:@"https://mask-api.icloud.com/v1_2/fetchConfigFile"];
 
         if (v10)
         {
@@ -41,8 +41,8 @@
 
         else
         {
-          v11 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-          v12 = [v11 isEqual:@"https://mask-api.icloud.com/v1_3/fetchConfigFile"];
+          configFetchURL5 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+          v12 = [configFetchURL5 isEqual:@"https://mask-api.icloud.com/v1_3/fetchConfigFile"];
 
           if (v12)
           {
@@ -51,8 +51,8 @@
 
           else
           {
-            v13 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-            v14 = [v13 isEqual:@"https://mask-api.icloud.com/v1_4/fetchConfigFile"];
+            configFetchURL6 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+            v14 = [configFetchURL6 isEqual:@"https://mask-api.icloud.com/v1_4/fetchConfigFile"];
 
             if (v14)
             {
@@ -61,8 +61,8 @@
 
             else
             {
-              v15 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-              v16 = [v15 isEqual:@"https://mask-api.icloud.com/v1_5/fetchConfigFile"];
+              configFetchURL7 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+              v16 = [configFetchURL7 isEqual:@"https://mask-api.icloud.com/v1_5/fetchConfigFile"];
 
               if (v16)
               {
@@ -71,8 +71,8 @@
 
               else
               {
-                v17 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                v18 = [v17 isEqual:@"https://mask-api.icloud.com/v1_6/fetchConfigFile"];
+                configFetchURL8 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                v18 = [configFetchURL8 isEqual:@"https://mask-api.icloud.com/v1_6/fetchConfigFile"];
 
                 if (v18)
                 {
@@ -81,8 +81,8 @@
 
                 else
                 {
-                  v19 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                  v20 = [v19 isEqual:@"https://mask-api.icloud.com/v2_0/fetchConfigFile"];
+                  configFetchURL9 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                  v20 = [configFetchURL9 isEqual:@"https://mask-api.icloud.com/v2_0/fetchConfigFile"];
 
                   if (v20)
                   {
@@ -91,8 +91,8 @@
 
                   else
                   {
-                    v21 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                    v22 = [v21 isEqual:@"https://mask-api.icloud.com/v2_1/fetchConfigFile"];
+                    configFetchURL10 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                    v22 = [configFetchURL10 isEqual:@"https://mask-api.icloud.com/v2_1/fetchConfigFile"];
 
                     if (v22)
                     {
@@ -101,8 +101,8 @@
 
                     else
                     {
-                      v23 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                      v24 = [v23 isEqual:@"https://mask-api.icloud.com/v2_2/fetchConfigFile"];
+                      configFetchURL11 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                      v24 = [configFetchURL11 isEqual:@"https://mask-api.icloud.com/v2_2/fetchConfigFile"];
 
                       if (v24)
                       {
@@ -111,8 +111,8 @@
 
                       else
                       {
-                        v25 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                        v26 = [v25 isEqual:@"https://mask-api.icloud.com/v2_3/fetchConfigFile"];
+                        configFetchURL12 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                        v26 = [configFetchURL12 isEqual:@"https://mask-api.icloud.com/v2_3/fetchConfigFile"];
 
                         if (v26)
                         {
@@ -121,8 +121,8 @@
 
                         else
                         {
-                          v28 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                          v29 = [v28 isEqual:@"https://mask-api.icloud.com/v3_0/fetchConfigFile"];
+                          configFetchURL13 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                          v29 = [configFetchURL13 isEqual:@"https://mask-api.icloud.com/v3_0/fetchConfigFile"];
 
                           if (v29)
                           {
@@ -131,8 +131,8 @@
 
                           else
                           {
-                            v30 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                            v31 = [v30 isEqual:@"https://mask-api.icloud.com/v2_4/fetchConfigFile"];
+                            configFetchURL14 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                            v31 = [configFetchURL14 isEqual:@"https://mask-api.icloud.com/v2_4/fetchConfigFile"];
 
                             if (v31)
                             {
@@ -141,8 +141,8 @@
 
                             else
                             {
-                              v32 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                              v33 = [v32 isEqual:@"https://mask-api.icloud.com/v3_1/fetchConfigFile"];
+                              configFetchURL15 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                              v33 = [configFetchURL15 isEqual:@"https://mask-api.icloud.com/v3_1/fetchConfigFile"];
 
                               if (v33)
                               {
@@ -151,8 +151,8 @@
 
                               else
                               {
-                                v34 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                v35 = [v34 isEqual:@"https://mask-api.icloud.com/v3_2/fetchConfigFile"];
+                                configFetchURL16 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                v35 = [configFetchURL16 isEqual:@"https://mask-api.icloud.com/v3_2/fetchConfigFile"];
 
                                 if (v35)
                                 {
@@ -161,8 +161,8 @@
 
                                 else
                                 {
-                                  v36 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                  v37 = [v36 isEqual:@"https://mask-api.icloud.com/v3_3/fetchConfigFile"];
+                                  configFetchURL17 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                  v37 = [configFetchURL17 isEqual:@"https://mask-api.icloud.com/v3_3/fetchConfigFile"];
 
                                   if (v37)
                                   {
@@ -171,8 +171,8 @@
 
                                   else
                                   {
-                                    v38 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                    v39 = [v38 isEqual:@"https://mask-api.icloud.com/v3_4/fetchConfigFile"];
+                                    configFetchURL18 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                    v39 = [configFetchURL18 isEqual:@"https://mask-api.icloud.com/v3_4/fetchConfigFile"];
 
                                     if (v39)
                                     {
@@ -181,8 +181,8 @@
 
                                     else
                                     {
-                                      v40 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                      v41 = [v40 isEqual:@"https://mask-api.icloud.com/v3_5/fetchConfigFile"];
+                                      configFetchURL19 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                      v41 = [configFetchURL19 isEqual:@"https://mask-api.icloud.com/v3_5/fetchConfigFile"];
 
                                       if (v41)
                                       {
@@ -191,8 +191,8 @@
 
                                       else
                                       {
-                                        v42 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                        v43 = [v42 isEqual:@"https://mask-api.icloud.com/v3_6/fetchConfigFile"];
+                                        configFetchURL20 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                        v43 = [configFetchURL20 isEqual:@"https://mask-api.icloud.com/v3_6/fetchConfigFile"];
 
                                         if (v43)
                                         {
@@ -201,8 +201,8 @@
 
                                         else
                                         {
-                                          v44 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                          v45 = [v44 isEqual:@"https://mask-api.icloud.com/v4_0/fetchConfigFile"];
+                                          configFetchURL21 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                          v45 = [configFetchURL21 isEqual:@"https://mask-api.icloud.com/v4_0/fetchConfigFile"];
 
                                           if (v45)
                                           {
@@ -211,8 +211,8 @@
 
                                           else
                                           {
-                                            v46 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                            v47 = [v46 isEqual:@"https://mask-api.icloud.com/v4_1/fetchConfigFile"];
+                                            configFetchURL22 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                            v47 = [configFetchURL22 isEqual:@"https://mask-api.icloud.com/v4_1/fetchConfigFile"];
 
                                             if (v47)
                                             {
@@ -221,8 +221,8 @@
 
                                             else
                                             {
-                                              v48 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                              v49 = [v48 isEqual:@"https://mask-api.icloud.com/v4_2/fetchConfigFile"];
+                                              configFetchURL23 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                              v49 = [configFetchURL23 isEqual:@"https://mask-api.icloud.com/v4_2/fetchConfigFile"];
 
                                               if (v49)
                                               {
@@ -231,8 +231,8 @@
 
                                               else
                                               {
-                                                v50 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                                v51 = [v50 isEqual:@"https://mask-api.icloud.com/v4_3/fetchConfigFile"];
+                                                configFetchURL24 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                                v51 = [configFetchURL24 isEqual:@"https://mask-api.icloud.com/v4_3/fetchConfigFile"];
 
                                                 if (v51)
                                                 {
@@ -241,8 +241,8 @@
 
                                                 else
                                                 {
-                                                  v52 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                                  v53 = [v52 isEqual:@"https://mask-api.icloud.com/v4_4/fetchConfigFile"];
+                                                  configFetchURL25 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                                  v53 = [configFetchURL25 isEqual:@"https://mask-api.icloud.com/v4_4/fetchConfigFile"];
 
                                                   if (v53)
                                                   {
@@ -251,8 +251,8 @@
 
                                                   else
                                                   {
-                                                    v54 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                                    v55 = [v54 isEqual:@"https://mask-api.icloud.com/v4_5/fetchConfigFile"];
+                                                    configFetchURL26 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                                    v55 = [configFetchURL26 isEqual:@"https://mask-api.icloud.com/v4_5/fetchConfigFile"];
 
                                                     if (v55)
                                                     {
@@ -261,8 +261,8 @@
 
                                                     else
                                                     {
-                                                      v56 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                                      v57 = [v56 isEqual:@"https://mask-api.icloud.com/v5_0/fetchConfigFile"];
+                                                      configFetchURL27 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                                      v57 = [configFetchURL27 isEqual:@"https://mask-api.icloud.com/v5_0/fetchConfigFile"];
 
                                                       if (v57)
                                                       {
@@ -271,8 +271,8 @@
 
                                                       else
                                                       {
-                                                        v58 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
-                                                        v59 = [v58 isEqual:@"https://mask-api.icloud.com/v5_1/fetchConfigFile"];
+                                                        configFetchURL28 = [(NSPConfigurationFetchAnalytics *)self configFetchURL];
+                                                        v59 = [configFetchURL28 isEqual:@"https://mask-api.icloud.com/v5_1/fetchConfigFile"];
 
                                                         if (v59)
                                                         {
@@ -328,8 +328,8 @@
 - (id)analyticsDict
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(NSPConfigurationFetchAnalytics *)self configFetchURLToIndex];
-  [v3 setObject:v4 forKeyedSubscript:@"ConfigurationFetchPath"];
+  configFetchURLToIndex = [(NSPConfigurationFetchAnalytics *)self configFetchURLToIndex];
+  [v3 setObject:configFetchURLToIndex forKeyedSubscript:@"ConfigurationFetchPath"];
 
   v5 = [NSNumber numberWithInteger:[(NSPConfigurationFetchAnalytics *)self httpCode]];
   [v3 setObject:v5 forKeyedSubscript:@"HTTPCode"];
@@ -337,15 +337,15 @@
   v6 = [NSNumber numberWithInteger:[(NSPConfigurationFetchAnalytics *)self nsurlErrorCode]];
   [v3 setObject:v6 forKeyedSubscript:@"NSURLErrorCode"];
 
-  v7 = [(NSPConfigurationFetchAnalytics *)self requestedServerUUID];
-  [v3 setObject:v7 forKeyedSubscript:@"RequestedServerUUID"];
+  requestedServerUUID = [(NSPConfigurationFetchAnalytics *)self requestedServerUUID];
+  [v3 setObject:requestedServerUUID forKeyedSubscript:@"RequestedServerUUID"];
 
   [(NSPConfigurationFetchAnalytics *)self latency];
   v8 = [NSNumber numberWithDouble:?];
   [v3 setObject:v8 forKeyedSubscript:@"Latency"];
 
-  v9 = [(NSPConfigurationFetchAnalytics *)self reason];
-  [v3 setObject:v9 forKeyedSubscript:@"Reason"];
+  reason = [(NSPConfigurationFetchAnalytics *)self reason];
+  [v3 setObject:reason forKeyedSubscript:@"Reason"];
 
   return v3;
 }

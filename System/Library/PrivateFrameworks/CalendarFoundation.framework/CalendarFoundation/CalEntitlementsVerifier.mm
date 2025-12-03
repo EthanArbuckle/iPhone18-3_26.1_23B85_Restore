@@ -1,21 +1,21 @@
 @interface CalEntitlementsVerifier
 + (BOOL)currentProcessCanAccessProcedureOrEmailAlarms;
-+ (BOOL)currentProcessHasBooleanEntitlement:(id)a3;
++ (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement;
 + (BOOL)currentProcessIsAutomator;
 + (BOOL)currentProcessIsFirstPartyApp;
 + (BOOL)currentProcessIsPreferences;
 + (BOOL)currentProcessIsShortcuts;
-+ (id)_currentProcessValueForEntitlement:(id)a3 loadBlock:(id)a4;
++ (id)_currentProcessValueForEntitlement:(id)entitlement loadBlock:(id)block;
 @end
 
 @implementation CalEntitlementsVerifier
 
-+ (BOOL)currentProcessHasBooleanEntitlement:(id)a3
++ (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement
 {
-  v3 = [a1 _currentProcessValueForEntitlement:a3 loadBlock:&__block_literal_global_24];
-  v4 = [v3 BOOLValue];
+  v3 = [self _currentProcessValueForEntitlement:entitlement loadBlock:&__block_literal_global_24];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 uint64_t __63__CalEntitlementsVerifier_currentProcessHasBooleanEntitlement___block_invoke(int a1, CFTypeRef cf)
@@ -127,17 +127,17 @@ LABEL_16:
   return v12;
 }
 
-+ (id)_currentProcessValueForEntitlement:(id)a3 loadBlock:(id)a4
++ (id)_currentProcessValueForEntitlement:(id)entitlement loadBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  entitlementCopy = entitlement;
+  blockCopy = block;
   os_unfair_lock_lock(&_currentProcessValueForEntitlement_loadBlock__lock);
-  v7 = [_currentProcessValueForEntitlement_loadBlock__s_cache objectForKey:v5];
-  if (!v7)
+  null = [_currentProcessValueForEntitlement_loadBlock__s_cache objectForKey:entitlementCopy];
+  if (!null)
   {
     v8 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
     error = 0;
-    v9 = SecTaskCopyValueForEntitlement(v8, v5, &error);
+    v9 = SecTaskCopyValueForEntitlement(v8, entitlementCopy, &error);
     if (v9)
     {
       v10 = 1;
@@ -153,11 +153,11 @@ LABEL_16:
       v11 = +[CalFoundationLogSubsystem defaultCategory];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(CalEntitlementsVerifier *)v5 _currentProcessValueForEntitlement:v11 loadBlock:?];
+        [(CalEntitlementsVerifier *)entitlementCopy _currentProcessValueForEntitlement:v11 loadBlock:?];
       }
     }
 
-    v7 = v6[2](v6, v9);
+    null = blockCopy[2](blockCopy, v9);
     if (v9)
     {
       CFRelease(v9);
@@ -168,9 +168,9 @@ LABEL_16:
       CFRelease(v8);
     }
 
-    if (!v7)
+    if (!null)
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
     v12 = _currentProcessValueForEntitlement_loadBlock__s_cache;
@@ -183,19 +183,19 @@ LABEL_16:
       v12 = _currentProcessValueForEntitlement_loadBlock__s_cache;
     }
 
-    [v12 setObject:v7 forKey:v5];
+    [v12 setObject:null forKey:entitlementCopy];
   }
 
   os_unfair_lock_unlock(&_currentProcessValueForEntitlement_loadBlock__lock);
-  v15 = [MEMORY[0x1E695DFB0] null];
-  if (v7 == v15)
+  null2 = [MEMORY[0x1E695DFB0] null];
+  if (null == null2)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v7;
+    v16 = null;
   }
 
   v17 = v16;
@@ -205,7 +205,7 @@ LABEL_16:
 
 + (BOOL)currentProcessIsPreferences
 {
-  v2 = [a1 currentProcessGetStringEntitlement:@"application-identifier"];
+  v2 = [self currentProcessGetStringEntitlement:@"application-identifier"];
   v3 = [v2 isEqualToString:@"com.apple.Preferences"];
 
   return v3;
@@ -213,7 +213,7 @@ LABEL_16:
 
 + (BOOL)currentProcessIsAutomator
 {
-  v2 = [a1 currentProcessGetStringEntitlement:@"com.apple.application-identifier"];
+  v2 = [self currentProcessGetStringEntitlement:@"com.apple.application-identifier"];
   v3 = [v2 isEqualToString:@"com.apple.Automator"];
 
   return v3;
@@ -221,7 +221,7 @@ LABEL_16:
 
 + (BOOL)currentProcessIsShortcuts
 {
-  v2 = [a1 currentProcessGetStringEntitlement:@"com.apple.application-identifier"];
+  v2 = [self currentProcessGetStringEntitlement:@"com.apple.application-identifier"];
   v3 = [v2 isEqualToString:@"com.apple.shortcuts"];
 
   return v3;
@@ -229,17 +229,17 @@ LABEL_16:
 
 + (BOOL)currentProcessCanAccessProcedureOrEmailAlarms
 {
-  if ([a1 currentProcessIsAutomator] & 1) != 0 || (objc_msgSend(a1, "currentProcessIsShortcuts") & 1) != 0 || (objc_msgSend(a1, "currentProcessIsFirstPartyCalendarApp") & 1) != 0 || (objc_msgSend(a1, "currentProcessIsCalendarDaemon") & 1) != 0 || (objc_msgSend(a1, "currentProcessHasSyncClientEntitlement"))
+  if ([self currentProcessIsAutomator] & 1) != 0 || (objc_msgSend(self, "currentProcessIsShortcuts") & 1) != 0 || (objc_msgSend(self, "currentProcessIsFirstPartyCalendarApp") & 1) != 0 || (objc_msgSend(self, "currentProcessIsCalendarDaemon") & 1) != 0 || (objc_msgSend(self, "currentProcessHasSyncClientEntitlement"))
   {
     return 1;
   }
 
-  return [a1 currentProcessHasTestingEntitlement];
+  return [self currentProcessHasTestingEntitlement];
 }
 
 + (BOOL)currentProcessIsFirstPartyApp
 {
-  v3 = [a1 currentProcessGetArrayOfStringsEntitlement:@"com.apple.private.tcc.allow"];
+  v3 = [self currentProcessGetArrayOfStringsEntitlement:@"com.apple.private.tcc.allow"];
   if ([v3 containsObject:@"kTCCServiceCalendar"])
   {
     v4 = 1;
@@ -247,7 +247,7 @@ LABEL_16:
 
   else
   {
-    v5 = [a1 currentProcessGetArrayOfStringsEntitlement:@"com.apple.private.tcc.allow.overridable"];
+    v5 = [self currentProcessGetArrayOfStringsEntitlement:@"com.apple.private.tcc.allow.overridable"];
     if ([v5 containsObject:@"kTCCServiceCalendar"])
     {
       v4 = 1;
@@ -255,12 +255,12 @@ LABEL_16:
 
     else
     {
-      v6 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-      v7 = [v6 teamIdentifier];
-      v8 = v7;
-      if (v7)
+      bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+      teamIdentifier = [bundleRecordForCurrentProcess teamIdentifier];
+      v8 = teamIdentifier;
+      if (teamIdentifier)
       {
-        if ([v7 isEqualToString:@"0000000000"])
+        if ([teamIdentifier isEqualToString:@"0000000000"])
         {
           v4 = 1;
         }

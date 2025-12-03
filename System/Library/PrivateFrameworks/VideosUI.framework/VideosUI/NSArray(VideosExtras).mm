@@ -8,15 +8,15 @@
 - (uint64_t)ikAssetArraysEqual:()VideosExtras
 {
   v4 = a3;
-  if (v4 && (v5 = [a1 count], v5 == objc_msgSend(v4, "count")))
+  if (v4 && (v5 = [self count], v5 == objc_msgSend(v4, "count")))
   {
-    v6 = [a1 ikAssetAttributes];
-    if (v5 == [v6 count])
+    ikAssetAttributes = [self ikAssetAttributes];
+    if (v5 == [ikAssetAttributes count])
     {
-      v7 = [v4 ikAssetAttributes];
-      if (v5 == [v7 count])
+      ikAssetAttributes2 = [v4 ikAssetAttributes];
+      if (v5 == [ikAssetAttributes2 count])
       {
-        v8 = [v6 isEqualToArray:v7];
+        v8 = [ikAssetAttributes isEqualToArray:ikAssetAttributes2];
       }
 
       else
@@ -41,14 +41,14 @@
 
 - (id)ikAssetAttributes
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__NSArray_VideosExtras__ikAssetAttributes__block_invoke;
   v6[3] = &unk_1E8736FE8;
-  v7 = v2;
-  v3 = v2;
-  [a1 enumerateObjectsUsingBlock:v6];
+  v7 = array;
+  v3 = array;
+  [self enumerateObjectsUsingBlock:v6];
   v4 = [v3 copy];
 
   return v4;

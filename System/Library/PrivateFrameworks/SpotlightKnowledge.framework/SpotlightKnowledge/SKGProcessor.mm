@@ -1,87 +1,87 @@
 @interface SKGProcessor
-+ (BOOL)docContentExceedsMaxAllowedSize:(id)a3;
-+ (BOOL)docIsTrashOrJunkMail:(id)a3;
-+ (BOOL)recordHasHTMLContent:(id)a3;
-+ (BOOL)recordHasTextContent:(id)a3;
-+ (id)copyMailboxesFromRecord:(id)a3;
-+ (id)embeddingVersionDataWithVersion:(id)a3;
-+ (id)normalizeForEmbeddingGeneration:(id)a3 bundleID:(id)a4;
++ (BOOL)docContentExceedsMaxAllowedSize:(id)size;
++ (BOOL)docIsTrashOrJunkMail:(id)mail;
++ (BOOL)recordHasHTMLContent:(id)content;
++ (BOOL)recordHasTextContent:(id)content;
++ (id)copyMailboxesFromRecord:(id)record;
++ (id)embeddingVersionDataWithVersion:(id)version;
++ (id)normalizeForEmbeddingGeneration:(id)generation bundleID:(id)d;
 + (id)sharedProcessor;
-+ (unint64_t)getHTMLContentByteSizeForRecord:(id)a3;
-+ (unint64_t)getTextContentByteSizeForRecord:(id)a3;
-+ (unint64_t)textContentLengthForRecord:(id)a3;
-- (BOOL)canGenerateEmbeddingsForFPRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)canGenerateEmbeddingsForMailRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)docUnderstandingRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8;
-- (BOOL)extractContentFromRecord:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForCalendar:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForEvents:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForMail:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForMessages:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForReminders:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForSafari:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)extractContentFromRecordForWallet:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7;
-- (BOOL)isCJKLanguage:(id)a3;
-- (BOOL)isStringOnlyNumbersOrPunctuationSpaces:(id)a3;
-- (BOOL)isUpdateFromSpotlightknowledged:(id)a3;
-- (BOOL)itemForRecordHasTextContent:(id)a3;
-- (BOOL)keyphraseRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8;
-- (BOOL)needsDocumentUnderstandingForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)needsEmbeddingsForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)needsKeyphrasesForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)needsPriorityForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)needsSKGReindexerEmbeddingsForRecord:(id)a3 bundleID:(id)a4 itemHasText:(BOOL)a5;
-- (BOOL)needsSKGReindexerKeyphrasesForRecord:(id)a3 bundleID:(id)a4 itemHasText:(BOOL)a5;
-- (BOOL)needsSKGReindexingForRecord:(id)a3 bundleID:(id)a4 processorFlags:(unint64_t)a5;
-- (BOOL)needsSuggestedEventsForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)recordForItemHasTextContent:(id)a3;
-- (BOOL)recordForItemWillHaveTextContent:(id)a3;
-- (BOOL)recordIsCurrent:(id)a3 toCalendarUnit:(unint64_t)a4 maxOffset:(unint64_t)a5 checkFuture:(BOOL)a6 dateKeys:(id)a7;
-- (BOOL)recordIsRecent:(id)a3 toCalendarUnit:(unint64_t)a4 maxOffset:(unint64_t)a5 dateKeys:(id)a6;
-- (BOOL)shouldGenerateDocumentUnderstandingForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)shouldGenerateEmbeddingsForRecord:(id)a3 bundleID:(id)a4 skipFpRecordCheck:(BOOL)a5;
-- (BOOL)shouldGenerateKeyphrasesForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)shouldGenerateSuggestedEventsForRecord:(id)a3 bundleID:(id)a4;
-- (BOOL)suggestedEventsRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8;
-- (BOOL)updateSKGProcessorAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 isUpdate:(BOOL)a7 processorFlags:(unint64_t)a8;
-- (BOOL)updateSKGReindexerAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 processorFlags:(unint64_t)a6;
-- (BOOL)updateSKGReindexerDocUnderstandingAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 itemHasText:(BOOL)a6;
-- (BOOL)updateSKGReindexerEmbeddingAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 itemHasText:(BOOL)a6;
-- (SKGProcessor)initWithOptions:(id)a3;
-- (id)copyArrayFromRecord:(id)a3 key:(id)a4;
-- (id)copyBundleIdentifierFromRecord:(id)a3;
-- (id)copyContentTypeFromRecord:(id)a3;
-- (id)copyContentURLFromRecord:(id)a3;
-- (id)copyDateStringFromRecordWithFormat:(id)a3 key:(id)a4 formatString:(id)a5;
-- (id)copyDescriptionContentFromRecord:(id)a3;
-- (id)copyDocumentTypesFromRecord:(id)a3;
-- (id)copyDocumentUnderstandingVersionFromRecord:(id)a3;
-- (id)copyDoubleValueFromRecord:(id)a3 key:(id)a4;
-- (id)copyEmbeddingModelVersionFromRecord:(id)a3;
-- (id)copyEmbeddingVersionFromRecord:(id)a3;
-- (id)copyExtraDataFromWalletRecord:(id)a3;
-- (id)copyFilePathFromRecord:(id)a3;
-- (id)copyKeyphraseVersionFromRecord:(id)a3;
-- (id)copyLanguageFromRecord:(id)a3;
-- (id)copyNumberValueFromRecord:(id)a3 key:(id)a4;
-- (id)copyPeopleVersionFromRecord:(id)a3;
-- (id)copyProtectionClassFromRecord:(id)a3;
-- (id)copyReferenceIdentifierFromRecord:(id)a3;
-- (id)copySnippetFromRecord:(id)a3;
-- (id)copyStringArrayFromRecordAndConcatenate:(id)a3 key:(id)a4;
-- (id)copyStringValueFromRecord:(id)a3 key:(id)a4;
-- (id)copySuggestedEventsVersionFromRecord:(id)a3;
-- (id)copyTextContentFromRecord:(id)a3;
-- (id)copyTitleFromRecord:(id)a3;
-- (id)dateFromRecord:(id)a3 key:(id)a4;
-- (id)decorateTextContentWithDescription:(id)a3 isDescriptive:(BOOL)a4 delimiter:(id)a5;
-- (id)referenceDateForRecord:(id)a3;
-- (void)clearDocUnderstandingAttributes:(id)a3;
-- (void)clearKeyphrasesAttributes:(id)a3;
-- (void)clearSuggestedEventsAttributes:(id)a3;
-- (void)completeDocUnderstandingAttributes:(id)a3;
-- (void)completeKeyphrasesAttributes:(id)a3;
-- (void)completeSuggestedEventsAttributes:(id)a3;
++ (unint64_t)getHTMLContentByteSizeForRecord:(id)record;
++ (unint64_t)getTextContentByteSizeForRecord:(id)record;
++ (unint64_t)textContentLengthForRecord:(id)record;
+- (BOOL)canGenerateEmbeddingsForFPRecord:(id)record bundleID:(id)d;
+- (BOOL)canGenerateEmbeddingsForMailRecord:(id)record bundleID:(id)d;
+- (BOOL)docUnderstandingRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete;
+- (BOOL)extractContentFromRecord:(id)record bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForCalendar:(id)calendar bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForEvents:(id)events bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForMail:(id)mail bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForMessages:(id)messages bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForReminders:(id)reminders bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForSafari:(id)safari bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)extractContentFromRecordForWallet:(id)wallet bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length;
+- (BOOL)isCJKLanguage:(id)language;
+- (BOOL)isStringOnlyNumbersOrPunctuationSpaces:(id)spaces;
+- (BOOL)isUpdateFromSpotlightknowledged:(id)spotlightknowledged;
+- (BOOL)itemForRecordHasTextContent:(id)content;
+- (BOOL)keyphraseRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete;
+- (BOOL)needsDocumentUnderstandingForRecord:(id)record bundleID:(id)d;
+- (BOOL)needsEmbeddingsForRecord:(id)record bundleID:(id)d;
+- (BOOL)needsKeyphrasesForRecord:(id)record bundleID:(id)d;
+- (BOOL)needsPriorityForRecord:(id)record bundleID:(id)d;
+- (BOOL)needsSKGReindexerEmbeddingsForRecord:(id)record bundleID:(id)d itemHasText:(BOOL)text;
+- (BOOL)needsSKGReindexerKeyphrasesForRecord:(id)record bundleID:(id)d itemHasText:(BOOL)text;
+- (BOOL)needsSKGReindexingForRecord:(id)record bundleID:(id)d processorFlags:(unint64_t)flags;
+- (BOOL)needsSuggestedEventsForRecord:(id)record bundleID:(id)d;
+- (BOOL)recordForItemHasTextContent:(id)content;
+- (BOOL)recordForItemWillHaveTextContent:(id)content;
+- (BOOL)recordIsCurrent:(id)current toCalendarUnit:(unint64_t)unit maxOffset:(unint64_t)offset checkFuture:(BOOL)future dateKeys:(id)keys;
+- (BOOL)recordIsRecent:(id)recent toCalendarUnit:(unint64_t)unit maxOffset:(unint64_t)offset dateKeys:(id)keys;
+- (BOOL)shouldGenerateDocumentUnderstandingForRecord:(id)record bundleID:(id)d;
+- (BOOL)shouldGenerateEmbeddingsForRecord:(id)record bundleID:(id)d skipFpRecordCheck:(BOOL)check;
+- (BOOL)shouldGenerateKeyphrasesForRecord:(id)record bundleID:(id)d;
+- (BOOL)shouldGenerateSuggestedEventsForRecord:(id)record bundleID:(id)d;
+- (BOOL)suggestedEventsRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete;
+- (BOOL)updateSKGProcessorAttributes:(id)attributes record:(id)record bundleID:(id)d protectionClass:(id)class isUpdate:(BOOL)update processorFlags:(unint64_t)flags;
+- (BOOL)updateSKGReindexerAttributes:(id)attributes record:(id)record bundleID:(id)d processorFlags:(unint64_t)flags;
+- (BOOL)updateSKGReindexerDocUnderstandingAttributes:(id)attributes record:(id)record bundleID:(id)d itemHasText:(BOOL)text;
+- (BOOL)updateSKGReindexerEmbeddingAttributes:(id)attributes record:(id)record bundleID:(id)d itemHasText:(BOOL)text;
+- (SKGProcessor)initWithOptions:(id)options;
+- (id)copyArrayFromRecord:(id)record key:(id)key;
+- (id)copyBundleIdentifierFromRecord:(id)record;
+- (id)copyContentTypeFromRecord:(id)record;
+- (id)copyContentURLFromRecord:(id)record;
+- (id)copyDateStringFromRecordWithFormat:(id)format key:(id)key formatString:(id)string;
+- (id)copyDescriptionContentFromRecord:(id)record;
+- (id)copyDocumentTypesFromRecord:(id)record;
+- (id)copyDocumentUnderstandingVersionFromRecord:(id)record;
+- (id)copyDoubleValueFromRecord:(id)record key:(id)key;
+- (id)copyEmbeddingModelVersionFromRecord:(id)record;
+- (id)copyEmbeddingVersionFromRecord:(id)record;
+- (id)copyExtraDataFromWalletRecord:(id)record;
+- (id)copyFilePathFromRecord:(id)record;
+- (id)copyKeyphraseVersionFromRecord:(id)record;
+- (id)copyLanguageFromRecord:(id)record;
+- (id)copyNumberValueFromRecord:(id)record key:(id)key;
+- (id)copyPeopleVersionFromRecord:(id)record;
+- (id)copyProtectionClassFromRecord:(id)record;
+- (id)copyReferenceIdentifierFromRecord:(id)record;
+- (id)copySnippetFromRecord:(id)record;
+- (id)copyStringArrayFromRecordAndConcatenate:(id)concatenate key:(id)key;
+- (id)copyStringValueFromRecord:(id)record key:(id)key;
+- (id)copySuggestedEventsVersionFromRecord:(id)record;
+- (id)copyTextContentFromRecord:(id)record;
+- (id)copyTitleFromRecord:(id)record;
+- (id)dateFromRecord:(id)record key:(id)key;
+- (id)decorateTextContentWithDescription:(id)description isDescriptive:(BOOL)descriptive delimiter:(id)delimiter;
+- (id)referenceDateForRecord:(id)record;
+- (void)clearDocUnderstandingAttributes:(id)attributes;
+- (void)clearKeyphrasesAttributes:(id)attributes;
+- (void)clearSuggestedEventsAttributes:(id)attributes;
+- (void)completeDocUnderstandingAttributes:(id)attributes;
+- (void)completeKeyphrasesAttributes:(id)attributes;
+- (void)completeSuggestedEventsAttributes:(id)attributes;
 @end
 
 @implementation SKGProcessor
@@ -106,7 +106,7 @@ uint64_t __31__SKGProcessor_sharedProcessor__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (SKGProcessor)initWithOptions:(id)a3
+- (SKGProcessor)initWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = SKGProcessor;
@@ -121,17 +121,17 @@ uint64_t __31__SKGProcessor_sharedProcessor__block_invoke()
   return v3;
 }
 
-- (id)copyReferenceIdentifierFromRecord:(id)a3
+- (id)copyReferenceIdentifierFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_10;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemExternalID", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemExternalID", &value))
   {
     goto LABEL_10;
   }
@@ -168,17 +168,17 @@ LABEL_11:
   return v5;
 }
 
-- (id)copyBundleIdentifierFromRecord:(id)a3
+- (id)copyBundleIdentifierFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemBundleID", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemBundleID", &value))
   {
     goto LABEL_7;
   }
@@ -207,17 +207,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyEmbeddingVersionFromRecord:(id)a3
+- (id)copyEmbeddingVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemEmbeddingVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemEmbeddingVersion", &value))
   {
     goto LABEL_7;
   }
@@ -246,17 +246,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyEmbeddingModelVersionFromRecord:(id)a3
+- (id)copyEmbeddingModelVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemMediaEmbeddingVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemMediaEmbeddingVersion", &value))
   {
     goto LABEL_7;
   }
@@ -285,17 +285,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyKeyphraseVersionFromRecord:(id)a3
+- (id)copyKeyphraseVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemKeyphraseVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemKeyphraseVersion", &value))
   {
     goto LABEL_7;
   }
@@ -324,17 +324,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copySuggestedEventsVersionFromRecord:(id)a3
+- (id)copySuggestedEventsVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemSuggestedEventsVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemSuggestedEventsVersion", &value))
   {
     goto LABEL_7;
   }
@@ -363,17 +363,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyDocumentUnderstandingVersionFromRecord:(id)a3
+- (id)copyDocumentUnderstandingVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemDocumentUnderstandingVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemDocumentUnderstandingVersion", &value))
   {
     goto LABEL_7;
   }
@@ -402,11 +402,11 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyDocumentTypesFromRecord:(id)a3
+- (id)copyDocumentTypesFromRecord:(id)record
 {
-  if (a3)
+  if (record)
   {
-    return copyArrayValueForKey(a3, @"kMDItemPhotosSceneClassificationIdentifiers");
+    return copyArrayValueForKey(record, @"kMDItemPhotosSceneClassificationIdentifiers");
   }
 
   else
@@ -415,17 +415,17 @@ LABEL_8:
   }
 }
 
-- (id)copyPeopleVersionFromRecord:(id)a3
+- (id)copyPeopleVersionFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemKnowledgeIndexVersion", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemKnowledgeIndexVersion", &value))
   {
     goto LABEL_7;
   }
@@ -454,17 +454,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyProtectionClassFromRecord:(id)a3
+- (id)copyProtectionClassFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_8;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemProtectionClass", &value) || (v5 = value, value == *MEMORY[0x1E695E738]) || !value)
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemProtectionClass", &value) || (v5 = value, value == *MEMORY[0x1E695E738]) || !value)
   {
     v7 = @"Default";
     goto LABEL_9;
@@ -484,17 +484,17 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyLanguageFromRecord:(id)a3
+- (id)copyLanguageFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemTextContentLanguage", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemTextContentLanguage", &value))
   {
     goto LABEL_7;
   }
@@ -511,8 +511,8 @@ LABEL_9:
     if (v6 == CFStringGetTypeID())
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v5];
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v5 = [v7 stringByTrimmingCharactersInSet:v8];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v5 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       goto LABEL_8;
     }
@@ -526,17 +526,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyTextContentFromRecord:(id)a3
+- (id)copyTextContentFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemTextContent", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemTextContent", &value))
   {
     goto LABEL_7;
   }
@@ -553,8 +553,8 @@ LABEL_8:
     if (v6 == CFStringGetTypeID())
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v5];
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v5 = [v7 stringByTrimmingCharactersInSet:v8];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v5 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       goto LABEL_8;
     }
@@ -568,17 +568,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyDescriptionContentFromRecord:(id)a3
+- (id)copyDescriptionContentFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemDescription", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemDescription", &value))
   {
     goto LABEL_7;
   }
@@ -595,8 +595,8 @@ LABEL_8:
     if (v6 == CFStringGetTypeID())
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v5];
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v5 = [v7 stringByTrimmingCharactersInSet:v8];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v5 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       goto LABEL_8;
     }
@@ -610,17 +610,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyContentURLFromRecord:(id)a3
+- (id)copyContentURLFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_9;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemContentURL", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemContentURL", &value))
   {
     goto LABEL_9;
   }
@@ -657,17 +657,17 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyContentTypeFromRecord:(id)a3
+- (id)copyContentTypeFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemContentType", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemContentType", &value))
   {
     goto LABEL_7;
   }
@@ -696,17 +696,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)copySnippetFromRecord:(id)a3
+- (id)copySnippetFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"_kMDItemSnippet", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemSnippet", &value))
   {
     goto LABEL_7;
   }
@@ -735,16 +735,16 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyStringValueFromRecord:(id)a3 key:(id)a4
+- (id)copyStringValueFromRecord:(id)record key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  recordCopy = record;
+  keyCopy = key;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
-  ValueForKey = getValueForKey(v5, v6);
+  ValueForKey = getValueForKey(recordCopy, keyCopy);
   v8 = ValueForKey;
   if (ValueForKey)
   {
@@ -758,8 +758,8 @@ LABEL_8:
     if (v9 == CFURLGetTypeID())
     {
       v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v11 = [v8 absoluteString];
-      v8 = [v10 initWithString:v11];
+      absoluteString = [v8 absoluteString];
+      v8 = [v10 initWithString:absoluteString];
 
       goto LABEL_8;
     }
@@ -773,16 +773,16 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyDoubleValueFromRecord:(id)a3 key:(id)a4
+- (id)copyDoubleValueFromRecord:(id)record key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  recordCopy = record;
+  keyCopy = key;
+  if (!recordCopy)
   {
     goto LABEL_5;
   }
 
-  ValueForKey = getValueForKey(v5, v6);
+  ValueForKey = getValueForKey(recordCopy, keyCopy);
   v8 = ValueForKey;
   if (ValueForKey)
   {
@@ -804,16 +804,16 @@ LABEL_6:
   return v8;
 }
 
-- (id)copyNumberValueFromRecord:(id)a3 key:(id)a4
+- (id)copyNumberValueFromRecord:(id)record key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  recordCopy = record;
+  keyCopy = key;
+  if (!recordCopy)
   {
     goto LABEL_8;
   }
 
-  ValueForKey = getValueForKey(v5, v6);
+  ValueForKey = getValueForKey(recordCopy, keyCopy);
   v8 = ValueForKey;
   if (ValueForKey)
   {
@@ -841,17 +841,17 @@ LABEL_9:
   return v8;
 }
 
-- (id)copyTitleFromRecord:(id)a3
+- (id)copyTitleFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_13;
   }
 
   value = 0;
-  ValueIfPresent = CFDictionaryGetValueIfPresent(v3, @"kMDItemSubject", &value);
+  ValueIfPresent = CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemSubject", &value);
   v6 = MEMORY[0x1E695E738];
   if (ValueIfPresent)
   {
@@ -897,8 +897,8 @@ LABEL_11:
     if (v8 == CFStringGetTypeID())
     {
       v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v7];
-      v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v7 = [v9 stringByTrimmingCharactersInSet:v10];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v7 = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       goto LABEL_14;
     }
@@ -912,11 +912,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyArrayFromRecord:(id)a3 key:(id)a4
+- (id)copyArrayFromRecord:(id)record key:(id)key
 {
-  if (a3)
+  if (record)
   {
-    return copyArrayValueForKey(a3, a4);
+    return copyArrayValueForKey(record, key);
   }
 
   else
@@ -925,14 +925,14 @@ LABEL_14:
   }
 }
 
-- (id)copyStringArrayFromRecordAndConcatenate:(id)a3 key:(id)a4
+- (id)copyStringArrayFromRecordAndConcatenate:(id)concatenate key:(id)key
 {
-  if (!a3)
+  if (!concatenate)
   {
     return 0;
   }
 
-  v4 = copyArrayValueForKey(a3, a4);
+  v4 = copyArrayValueForKey(concatenate, key);
   if ([(__CFArray *)v4 count])
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -948,17 +948,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyExtraDataFromWalletRecord:(id)a3
+- (id)copyExtraDataFromWalletRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_9;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemExtraData", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemExtraData", &value))
   {
     goto LABEL_9;
   }
@@ -992,16 +992,16 @@ LABEL_10:
   return v5;
 }
 
-- (id)dateFromRecord:(id)a3 key:(id)a4
+- (id)dateFromRecord:(id)record key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  recordCopy = record;
+  keyCopy = key;
+  if (!recordCopy)
   {
     goto LABEL_5;
   }
 
-  ValueForKey = getValueForKey(v5, v6);
+  ValueForKey = getValueForKey(recordCopy, keyCopy);
   v8 = ValueForKey;
   if (!ValueForKey)
   {
@@ -1025,18 +1025,18 @@ LABEL_6:
   return v8;
 }
 
-- (id)referenceDateForRecord:(id)a3
+- (id)referenceDateForRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v5 = [(SKGProcessor *)self dateFromRecord:v4 key:@"com_apple_mail_dateReceived"];
+    v5 = [(SKGProcessor *)self dateFromRecord:recordCopy key:@"com_apple_mail_dateReceived"];
     if (v5)
     {
       goto LABEL_6;
     }
 
-    v6 = [(SKGProcessor *)self dateFromRecord:v4 key:@"kMDItemContentCreationDate"];
+    v6 = [(SKGProcessor *)self dateFromRecord:recordCopy key:@"kMDItemContentCreationDate"];
   }
 
   else
@@ -1050,43 +1050,43 @@ LABEL_6:
   return v5;
 }
 
-- (id)copyDateStringFromRecordWithFormat:(id)a3 key:(id)a4 formatString:(id)a5
+- (id)copyDateStringFromRecordWithFormat:(id)format key:(id)key formatString:(id)string
 {
-  v8 = a5;
-  if (a3)
+  stringCopy = string;
+  if (format)
   {
-    v9 = [(SKGProcessor *)self dateFromRecord:a3 key:a4];
+    v9 = [(SKGProcessor *)self dateFromRecord:format key:key];
     if (v9)
     {
       v10 = +[SKGSystemListener sharedProcessorListener];
-      v11 = [v10 currentTimezone];
+      currentTimezone = [v10 currentTimezone];
 
       v12 = objc_alloc_init(MEMORY[0x1E696AB78]);
-      [v12 setDateFormat:v8];
-      [v12 setTimeZone:v11];
-      a3 = [v12 stringFromDate:v9];
+      [v12 setDateFormat:stringCopy];
+      [v12 setTimeZone:currentTimezone];
+      format = [v12 stringFromDate:v9];
     }
 
     else
     {
-      a3 = 0;
+      format = 0;
     }
   }
 
-  return a3;
+  return format;
 }
 
-- (id)copyFilePathFromRecord:(id)a3
+- (id)copyFilePathFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemPath", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemPath", &value))
   {
     goto LABEL_7;
   }
@@ -1103,8 +1103,8 @@ LABEL_6:
     if (v6 == CFStringGetTypeID())
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v5];
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v5 = [v7 stringByTrimmingCharactersInSet:v8];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v5 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       goto LABEL_8;
     }
@@ -1118,11 +1118,11 @@ LABEL_8:
   return v5;
 }
 
-+ (id)copyMailboxesFromRecord:(id)a3
++ (id)copyMailboxesFromRecord:(id)record
 {
-  if (a3)
+  if (record)
   {
-    return copyArrayValueForKey(a3, @"kMDItemMailboxes");
+    return copyArrayValueForKey(record, @"kMDItemMailboxes");
   }
 
   else
@@ -1131,23 +1131,23 @@ LABEL_8:
   }
 }
 
-- (BOOL)recordIsRecent:(id)a3 toCalendarUnit:(unint64_t)a4 maxOffset:(unint64_t)a5 dateKeys:(id)a6
+- (BOOL)recordIsRecent:(id)recent toCalendarUnit:(unint64_t)unit maxOffset:(unint64_t)offset dateKeys:(id)keys
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  recentCopy = recent;
+  keysCopy = keys;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v12 = [keysCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v12)
   {
     goto LABEL_16;
   }
 
   v13 = v12;
-  v27 = a5;
+  offsetCopy = offset;
   v14 = 0;
   v15 = *v29;
   do
@@ -1156,10 +1156,10 @@ LABEL_8:
     {
       if (*v29 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(keysCopy);
       }
 
-      v17 = [(SKGProcessor *)self dateFromRecord:v10 key:*(*(&v28 + 1) + 8 * i)];
+      v17 = [(SKGProcessor *)self dateFromRecord:recentCopy key:*(*(&v28 + 1) + 8 * i)];
       if (!v14 || [v14 compare:v17] == -1)
       {
         v18 = v17;
@@ -1168,39 +1168,39 @@ LABEL_8:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v13 = [keysCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   }
 
   while (v13);
   if (v14)
   {
-    v19 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v20 = [MEMORY[0x1E695DF00] now];
-    v21 = [v19 components:a4 fromDate:v14 toDate:v20 options:0];
+    v21 = [currentCalendar components:unit fromDate:v14 toDate:v20 options:0];
 
     if (v21)
     {
-      if (a4 == 4)
+      if (unit == 4)
       {
-        v23 = [v21 year];
-        v22 = v27;
+        year = [v21 year];
+        v22 = offsetCopy;
       }
 
       else
       {
-        v22 = v27;
-        if (a4 == 16)
+        v22 = offsetCopy;
+        if (unit == 16)
         {
-          v23 = [v21 day];
+          year = [v21 day];
         }
 
         else
         {
-          v23 = [v21 month];
+          year = [v21 month];
         }
       }
 
-      v24 = v23 <= v22;
+      v24 = year <= v22;
     }
 
     else
@@ -1219,15 +1219,15 @@ LABEL_16:
   return v24;
 }
 
-- (BOOL)recordIsCurrent:(id)a3 toCalendarUnit:(unint64_t)a4 maxOffset:(unint64_t)a5 checkFuture:(BOOL)a6 dateKeys:(id)a7
+- (BOOL)recordIsCurrent:(id)current toCalendarUnit:(unint64_t)unit maxOffset:(unint64_t)offset checkFuture:(BOOL)future dateKeys:(id)keys
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  currentCopy = current;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a7;
+  obj = keys;
   v13 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v13)
   {
@@ -1237,9 +1237,9 @@ LABEL_16:
   }
 
   v14 = v13;
-  v38 = a6;
-  v39 = a4;
-  v37 = a5;
+  futureCopy = future;
+  unitCopy = unit;
+  offsetCopy = offset;
   v15 = 0;
   v16 = 0;
   v17 = *v42;
@@ -1253,17 +1253,17 @@ LABEL_16:
       }
 
       v19 = *(*(&v41 + 1) + 8 * i);
-      v20 = [(SKGProcessor *)self dateFromRecord:v12 key:v19, v37];
+      offsetCopy = [(SKGProcessor *)self dateFromRecord:currentCopy key:v19, offsetCopy];
       if ([&unk_1F0BDD078 containsObject:v19])
       {
-        v21 = v20;
+        v21 = offsetCopy;
 
         v16 = v21;
       }
 
-      if (!v15 || [v15 compare:v20] == -1)
+      if (!v15 || [v15 compare:offsetCopy] == -1)
       {
-        v22 = v20;
+        v22 = offsetCopy;
 
         v15 = v22;
       }
@@ -1275,17 +1275,17 @@ LABEL_16:
   while (v14);
   if (!v16)
   {
-    v26 = v39;
+    v26 = unitCopy;
     if (!v15)
     {
       v16 = 0;
       goto LABEL_29;
     }
 
-    v27 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v28 = [MEMORY[0x1E695DF00] now];
-    v29 = v27;
-    v30 = v39;
+    v29 = currentCalendar;
+    v30 = unitCopy;
     v31 = v15;
     v32 = v28;
     goto LABEL_23;
@@ -1293,14 +1293,14 @@ LABEL_16:
 
   v23 = MEMORY[0x19A8E69C0](v16);
   Current = CFAbsoluteTimeGetCurrent();
-  v25 = v23 < Current && !v38;
-  v26 = v39;
-  if (v38 && v23 >= Current)
+  v25 = v23 < Current && !futureCopy;
+  v26 = unitCopy;
+  if (futureCopy && v23 >= Current)
   {
-    v27 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v28 = [MEMORY[0x1E695DF00] now];
-    v29 = v27;
-    v30 = v39;
+    v29 = currentCalendar;
+    v30 = unitCopy;
     v31 = v28;
     v32 = v16;
 LABEL_23:
@@ -1311,20 +1311,20 @@ LABEL_23:
       switch(v26)
       {
         case 4uLL:
-          v34 = [v33 year];
+          year = [v33 year];
           break;
         case 0x2000uLL:
-          v34 = [v33 weekOfYear];
+          year = [v33 weekOfYear];
           break;
         case 0x10uLL:
-          v34 = [v33 day];
+          year = [v33 day];
           break;
         default:
-          v34 = [v33 month];
+          year = [v33 month];
           break;
       }
 
-      v25 = v34 <= v37;
+      v25 = year <= offsetCopy;
 
       goto LABEL_34;
     }
@@ -1339,11 +1339,11 @@ LABEL_34:
   return v25;
 }
 
-+ (BOOL)recordHasTextContent:(id)a3
++ (BOOL)recordHasTextContent:(id)content
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (value = 0, CFDictionaryGetValueIfPresent(v3, @"kMDItemTextContent", &value)) && value != *MEMORY[0x1E695E738] && value)
+  contentCopy = content;
+  v4 = contentCopy;
+  if (contentCopy && (value = 0, CFDictionaryGetValueIfPresent(contentCopy, @"kMDItemTextContent", &value)) && value != *MEMORY[0x1E695E738] && value)
   {
     v5 = CFGetTypeID(value);
     v6 = v5 == CFStringGetTypeID();
@@ -1357,11 +1357,11 @@ LABEL_34:
   return v6;
 }
 
-+ (BOOL)recordHasHTMLContent:(id)a3
++ (BOOL)recordHasHTMLContent:(id)content
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (value = 0, CFDictionaryGetValueIfPresent(v3, @"kMDItemHTMLContentData", &value)) && value != *MEMORY[0x1E695E738] && value)
+  contentCopy = content;
+  v4 = contentCopy;
+  if (contentCopy && (value = 0, CFDictionaryGetValueIfPresent(contentCopy, @"kMDItemHTMLContentData", &value)) && value != *MEMORY[0x1E695E738] && value)
   {
     v5 = CFGetTypeID(value);
     v6 = v5 == CFDataGetTypeID();
@@ -1375,17 +1375,17 @@ LABEL_34:
   return v6;
 }
 
-+ (unint64_t)getHTMLContentByteSizeForRecord:(id)a3
++ (unint64_t)getHTMLContentByteSizeForRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemHTMLContentData", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemHTMLContentData", &value))
   {
     goto LABEL_7;
   }
@@ -1414,17 +1414,17 @@ LABEL_8:
   return Length;
 }
 
-+ (unint64_t)getTextContentByteSizeForRecord:(id)a3
++ (unint64_t)getTextContentByteSizeForRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
   value = 0;
-  if (!CFDictionaryGetValueIfPresent(v3, @"kMDItemTextContent", &value))
+  if (!CFDictionaryGetValueIfPresent(recordCopy, @"kMDItemTextContent", &value))
   {
     goto LABEL_7;
   }
@@ -1453,35 +1453,35 @@ LABEL_8:
   return v5;
 }
 
-+ (unint64_t)textContentLengthForRecord:(id)a3
++ (unint64_t)textContentLengthForRecord:(id)record
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (value = 0, CFDictionaryGetValueIfPresent(v3, @"_kMDItemTextContentLength", &value)) && (v5 = value, value != *MEMORY[0x1E695E738]) && value && (v6 = CFGetTypeID(value), v6 == CFNumberGetTypeID()))
+  recordCopy = record;
+  v4 = recordCopy;
+  if (recordCopy && (value = 0, CFDictionaryGetValueIfPresent(recordCopy, @"_kMDItemTextContentLength", &value)) && (v5 = value, value != *MEMORY[0x1E695E738]) && value && (v6 = CFGetTypeID(value), v6 == CFNumberGetTypeID()))
   {
-    v7 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
-- (id)decorateTextContentWithDescription:(id)a3 isDescriptive:(BOOL)a4 delimiter:(id)a5
+- (id)decorateTextContentWithDescription:(id)description isDescriptive:(BOOL)descriptive delimiter:(id)delimiter
 {
-  v6 = a4;
+  descriptiveCopy = descriptive;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v21 = a5;
-  v8 = [MEMORY[0x1E695DF70] array];
+  descriptionCopy = description;
+  delimiterCopy = delimiter;
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v7;
+  v9 = descriptionCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -1503,15 +1503,15 @@ LABEL_8:
           v16 = [v14 objectAtIndexedSubscript:1];
           if ([v16 length])
           {
-            if (v6)
+            if (descriptiveCopy)
             {
               v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", v15, v16];
-              [v8 addObject:v17];
+              [array addObject:v17];
             }
 
             else
             {
-              [v8 addObject:v16];
+              [array addObject:v16];
             }
           }
         }
@@ -1523,91 +1523,91 @@ LABEL_8:
     while (v11);
   }
 
-  v18 = [v8 componentsJoinedByString:v21];
+  v18 = [array componentsJoinedByString:delimiterCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (void)clearDocUnderstandingAttributes:(id)a3
+- (void)clearDocUnderstandingAttributes:(id)attributes
 {
   v3 = *MEMORY[0x1E695E738];
-  v4 = a3;
-  [v4 setObject:v3 forKey:@"_kMDItemNeedsDocumentUnderstanding"];
-  [v4 setObject:v3 forKey:@"kMDItemDocumentUnderstandingVersion"];
+  attributesCopy = attributes;
+  [attributesCopy setObject:v3 forKey:@"_kMDItemNeedsDocumentUnderstanding"];
+  [attributesCopy setObject:v3 forKey:@"kMDItemDocumentUnderstandingVersion"];
 }
 
-- (void)completeDocUnderstandingAttributes:(id)a3
+- (void)completeDocUnderstandingAttributes:(id)attributes
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  attributesCopy = attributes;
   v6 = +[SKGProcessorContext sharedContext];
   v5 = [v3 numberWithInteger:{objc_msgSend(v6, "documentUnderstandingVersion")}];
-  [v4 setObject:v5 forKey:@"kMDItemDocumentUnderstandingVersion"];
+  [attributesCopy setObject:v5 forKey:@"kMDItemDocumentUnderstandingVersion"];
 }
 
-- (BOOL)docUnderstandingRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8
+- (BOOL)docUnderstandingRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete
 {
-  v10 = a3;
-  v11 = [(SKGProcessor *)self recordContainsValue:v10 key:@"_kMDItemOCRContentLevel1"];
+  processingCopy = processing;
+  v11 = [(SKGProcessor *)self recordContainsValue:processingCopy key:@"_kMDItemOCRContentLevel1"];
   v12 = v11;
-  if (a8 && v11)
+  if (complete && v11)
   {
-    v13 = [(SKGProcessor *)self copyStringValueFromRecord:v10 key:@"_kMDItemOCRContentLevel1"];
-    v14 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v15 = [v13 stringByTrimmingCharactersInSet:v14];
+    v13 = [(SKGProcessor *)self copyStringValueFromRecord:processingCopy key:@"_kMDItemOCRContentLevel1"];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v15 = [v13 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if (([v15 length] - 1501) <= 0xFFFFFFFFFFFFFA2CLL)
     {
-      *a8 = 1;
+      *complete = 1;
     }
   }
 
   return v12;
 }
 
-- (BOOL)updateSKGReindexerDocUnderstandingAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 itemHasText:(BOOL)a6
+- (BOOL)updateSKGReindexerDocUnderstandingAttributes:(id)attributes record:(id)record bundleID:(id)d itemHasText:(BOOL)text
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(SKGProcessor *)self recordContainsValue:v11 key:@"_kMDItemNeedsDocumentUnderstanding"])
+  textCopy = text;
+  attributesCopy = attributes;
+  recordCopy = record;
+  dCopy = d;
+  if ([(SKGProcessor *)self recordContainsValue:recordCopy key:@"_kMDItemNeedsDocumentUnderstanding"])
   {
     goto LABEL_21;
   }
 
-  if (v12)
+  if (dCopy)
   {
-    v13 = v12;
+    v13 = dCopy;
   }
 
   else
   {
-    v13 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v11];
+    v13 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
     if (!v13)
     {
-      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:v11];
+      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:recordCopy];
       if (v13)
       {
         v29 = +[SKGProcessorContext sharedContext];
-        v30 = [v29 docUnderstandingItemDomainIds];
-        v31 = [v30 containsObject:v13];
+        docUnderstandingItemDomainIds = [v29 docUnderstandingItemDomainIds];
+        v31 = [docUnderstandingItemDomainIds containsObject:v13];
 
         if (v31)
         {
 
           v13 = 0;
 LABEL_6:
-          v33 = v6;
-          v17 = [(SKGProcessor *)self copyDocumentUnderstandingVersionFromRecord:v11];
+          v33 = textCopy;
+          v17 = [(SKGProcessor *)self copyDocumentUnderstandingVersionFromRecord:recordCopy];
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 intValue];
+            intValue = [v17 intValue];
             v20 = +[SKGProcessorContext sharedContext];
-            v21 = [v20 documentUnderstandingVersion] == v19;
+            v21 = [v20 documentUnderstandingVersion] == intValue;
           }
 
           else
@@ -1615,13 +1615,13 @@ LABEL_6:
             v21 = 0;
           }
 
-          v22 = [(SKGProcessor *)self copyNumberValueFromRecord:v11 key:@"_kMDItemUpdaterVersion"];
+          v22 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemUpdaterVersion"];
           v23 = v22;
           if (v22)
           {
-            v24 = [v22 intValue];
+            intValue2 = [v22 intValue];
             v25 = +[SKGProcessorContext sharedContext];
-            v26 = [v25 textVersion] != v24;
+            v26 = [v25 textVersion] != intValue2;
           }
 
           else
@@ -1630,10 +1630,10 @@ LABEL_6:
           }
 
           v34 = 0;
-          v27 = [(SKGProcessor *)self docUnderstandingRecordNeedsProcessing:v11 bundleID:v13 isUpdate:0 hasTextContent:v33 shouldClear:&v34 + 1 shouldMarkComplete:&v34]&& (!v21 || v26);
+          v27 = [(SKGProcessor *)self docUnderstandingRecordNeedsProcessing:recordCopy bundleID:v13 isUpdate:0 hasTextContent:v33 shouldClear:&v34 + 1 shouldMarkComplete:&v34]&& (!v21 || v26);
           if (HIBYTE(v34) == 1)
           {
-            [(SKGProcessor *)self clearDocUnderstandingAttributes:v10];
+            [(SKGProcessor *)self clearDocUnderstandingAttributes:attributesCopy];
           }
 
           if (v27)
@@ -1646,7 +1646,7 @@ LABEL_24:
               goto LABEL_25;
             }
 
-            [(SKGProcessor *)self clearDocUnderstandingAttributes:v10];
+            [(SKGProcessor *)self clearDocUnderstandingAttributes:attributesCopy];
           }
 
           v28 = 0;
@@ -1659,8 +1659,8 @@ LABEL_24:
   }
 
   v14 = +[SKGProcessorContext sharedContext];
-  v15 = [v14 docUnderstandingIncludeBundles];
-  v16 = [v15 containsObject:v13];
+  docUnderstandingIncludeBundles = [v14 docUnderstandingIncludeBundles];
+  v16 = [docUnderstandingIncludeBundles containsObject:v13];
 
   if (v16)
   {
@@ -1668,7 +1668,7 @@ LABEL_24:
   }
 
 LABEL_20:
-  [(SKGProcessor *)self clearDocUnderstandingAttributes:v10];
+  [(SKGProcessor *)self clearDocUnderstandingAttributes:attributesCopy];
 
 LABEL_21:
   v28 = 0;
@@ -1677,26 +1677,26 @@ LABEL_25:
   return v28;
 }
 
-- (BOOL)needsDocumentUnderstandingForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)needsDocumentUnderstandingForRecord:(id)record bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  recordCopy = record;
+  dCopy = d;
+  if ([recordCopy count])
   {
     v8 = +[SKGProcessor sharedProcessor];
-    v9 = [v8 recordIsValid:v6];
+    v9 = [v8 recordIsValid:recordCopy];
 
     if (v9)
     {
-      v10 = [(SKGProcessor *)self copyDocumentUnderstandingVersionFromRecord:v6];
+      v10 = [(SKGProcessor *)self copyDocumentUnderstandingVersionFromRecord:recordCopy];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 intValue];
+        intValue = [v10 intValue];
         v13 = +[SKGProcessorContext sharedContext];
-        v14 = [v13 documentUnderstandingVersion];
+        documentUnderstandingVersion = [v13 documentUnderstandingVersion];
 
-        if (v14 == v12)
+        if (documentUnderstandingVersion == intValue)
         {
           LOBYTE(v15) = 0;
 LABEL_16:
@@ -1705,17 +1705,17 @@ LABEL_16:
         }
       }
 
-      if (v7)
+      if (dCopy)
       {
-        v16 = v7;
+        v16 = dCopy;
       }
 
       else
       {
-        v16 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+        v16 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
         if (!v16)
         {
-          v15 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:v6];
+          v15 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:recordCopy];
           if (!v15)
           {
             v16 = 0;
@@ -1723,8 +1723,8 @@ LABEL_16:
           }
 
           v20 = +[SKGProcessorContext sharedContext];
-          v21 = [v20 docUnderstandingItemDomainIds];
-          v22 = [v21 containsObject:v15];
+          docUnderstandingItemDomainIds = [v20 docUnderstandingItemDomainIds];
+          v22 = [docUnderstandingItemDomainIds containsObject:v15];
 
           v16 = 0;
           if (v22)
@@ -1737,8 +1737,8 @@ LABEL_16:
       }
 
       v17 = +[SKGProcessorContext sharedContext];
-      v18 = [v17 docUnderstandingIncludeBundles];
-      v19 = [v18 containsObject:v16];
+      docUnderstandingIncludeBundles = [v17 docUnderstandingIncludeBundles];
+      v19 = [docUnderstandingIncludeBundles containsObject:v16];
 
       if (v19)
       {
@@ -1761,11 +1761,11 @@ LABEL_17:
   return v15;
 }
 
-- (BOOL)shouldGenerateDocumentUnderstandingForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)shouldGenerateDocumentUnderstandingForRecord:(id)record bundleID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(SKGProcessor *)self copyStringValueFromRecord:v5 key:@"_kMDItemOCRContentLevel1"];
+  recordCopy = record;
+  v6 = [(SKGProcessor *)self copyStringValueFromRecord:recordCopy key:@"_kMDItemOCRContentLevel1"];
 
   if (v6)
   {
@@ -1774,7 +1774,7 @@ LABEL_17:
 
   else
   {
-    v8 = [(SKGProcessor *)self copyDocumentTypesFromRecord:v5];
+    v8 = [(SKGProcessor *)self copyDocumentTypesFromRecord:recordCopy];
     v9 = v8;
     if (v8)
     {
@@ -1800,10 +1800,10 @@ LABEL_17:
             v15 = *(*(&v20 + 1) + 8 * i);
             if (v15)
             {
-              v16 = [v15 intValue];
-              if (v16 > 11245)
+              intValue = [v15 intValue];
+              if (intValue > 11245)
               {
-                if (v16 == 11246 || v16 == 12539)
+                if (intValue == 11246 || intValue == 12539)
                 {
 LABEL_21:
                   v7 = 1;
@@ -1811,7 +1811,7 @@ LABEL_21:
                 }
               }
 
-              else if (v16 == 492 || v16 == 960)
+              else if (intValue == 492 || intValue == 960)
               {
                 goto LABEL_21;
               }
@@ -1847,9 +1847,9 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)isCJKLanguage:(id)a3
+- (BOOL)isCJKLanguage:(id)language
 {
-  if (!a3)
+  if (!language)
   {
     return 0;
   }
@@ -1868,17 +1868,17 @@ LABEL_24:
   return v4;
 }
 
-+ (id)embeddingVersionDataWithVersion:(id)a3
++ (id)embeddingVersionDataWithVersion:(id)version
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"SPOTLIGHT_CURRENT_MODEL_EMBEDDING_VERSION";
   v10[1] = @"SPOTLIGHT_CURRENT_EMBEDDING_VERSION";
-  v11[0] = a3;
+  v11[0] = version;
   v11[1] = &unk_1F0BDD018;
   v10[2] = @"SPOTLIGHT_CURRENT_RELEASE_VERSION";
   v11[2] = &unk_1F0BDD018;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  versionCopy = version;
   v5 = [v3 dictionaryWithObjects:v11 forKeys:v10 count:3];
   v9 = 0;
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
@@ -1888,30 +1888,30 @@ LABEL_24:
   return v6;
 }
 
-+ (id)normalizeForEmbeddingGeneration:(id)a3 bundleID:(id)a4
++ (id)normalizeForEmbeddingGeneration:(id)generation bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  generationCopy = generation;
+  dCopy = d;
+  if ([generationCopy length])
   {
     if (normalizeForEmbeddingGeneration_bundleID__onceToken != -1)
     {
       +[SKGProcessor(EmbeddingsUtils) normalizeForEmbeddingGeneration:bundleID:];
     }
 
-    if (SKGBundleIsCalendar(v6, v7))
+    if (SKGBundleIsCalendar(dCopy, v7))
     {
-      v8 = [normalizeForEmbeddingGeneration_bundleID__cRegex stringByReplacingMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), @" "}];
+      v8 = [normalizeForEmbeddingGeneration_bundleID__cRegex stringByReplacingMatchesInString:generationCopy options:0 range:0 withTemplate:{objc_msgSend(generationCopy, "length"), @" "}];
       v9 = [normalizeForEmbeddingGeneration_bundleID__cMultipleLineRegex stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v8, "length"), @"\n"}];
     }
 
     else
     {
-      v9 = [normalizeForEmbeddingGeneration_bundleID__sRegex stringByReplacingMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), @" "}];
+      v9 = [normalizeForEmbeddingGeneration_bundleID__sRegex stringByReplacingMatchesInString:generationCopy options:0 range:0 withTemplate:{objc_msgSend(generationCopy, "length"), @" "}];
     }
 
-    v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v10 = [v9 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v10 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   else
@@ -1937,43 +1937,43 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)extractContentFromRecordForMail:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForMail:(id)mail bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  mailCopy = mail;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:mailCopy];
   }
 
   v16 = v15;
   if ((SKGBundleIsMail(v15) & 1) != 0 || SKGBundleIsPommesCtl(v16, v17))
   {
-    v18 = [(SKGProcessor *)self copyNumberValueFromRecord:v12 key:@"_kMDItemTextContentLength"];
-    v19 = [v18 unsignedIntegerValue];
+    v18 = [(SKGProcessor *)self copyNumberValueFromRecord:mailCopy key:@"_kMDItemTextContentLength"];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-    if (a7)
+    if (length)
     {
-      *a7 = v19;
+      *length = unsignedIntegerValue;
     }
 
-    if (a5 || v19 <= 0x13)
+    if (content || unsignedIntegerValue <= 0x13)
     {
-      if (a5 || !v19)
+      if (content || !unsignedIntegerValue)
       {
-        v21 = [(SKGProcessor *)self copyTextContentFromRecord:v12];
+        v21 = [(SKGProcessor *)self copyTextContentFromRecord:mailCopy];
         if (!v21)
         {
-          v21 = [(SKGProcessor *)self copySnippetFromRecord:v12];
+          v21 = [(SKGProcessor *)self copySnippetFromRecord:mailCopy];
         }
 
-        v19 = stringComposedLengthForEmbeddingCheck(v21);
+        unsignedIntegerValue = stringComposedLengthForEmbeddingCheck(v21);
       }
 
       else
@@ -1981,19 +1981,19 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
         v21 = 0;
       }
 
-      v22 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-      v23 = stringComposedLengthForEmbeddingCheck(v22) + v19;
-      if (a7)
+      v22 = [(SKGProcessor *)self copyTitleFromRecord:mailCopy];
+      v23 = stringComposedLengthForEmbeddingCheck(v22) + unsignedIntegerValue;
+      if (length)
       {
-        *a7 = v23;
+        *length = v23;
       }
 
       v20 = v23 > 0x13;
       if (v23 >= 0x14)
       {
-        if (a5)
+        if (content)
         {
-          v24 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:v12 key:@"kMDItemAuthors"];
+          v24 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:mailCopy key:@"kMDItemAuthors"];
           v25 = &stru_1F0BD7AF0;
           if (v22)
           {
@@ -2020,12 +2020,12 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
             v25 = v21;
           }
 
-          *a5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v26, v27, v25];
+          *content = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v26, v27, v25];
         }
 
-        if (a6)
+        if (ptr)
         {
-          *a6 = 2;
+          *ptr = 2;
         }
       }
     }
@@ -2044,28 +2044,28 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
   return v20;
 }
 
-- (BOOL)extractContentFromRecordForSafari:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForSafari:(id)safari bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  safariCopy = safari;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:safariCopy];
   }
 
   v17 = v15;
   if (SKGBundleIsSafari(v15, v16))
   {
-    v18 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-    v19 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"redirectSourceTitle"];
+    v18 = [(SKGProcessor *)self copyTitleFromRecord:safariCopy];
+    v19 = [(SKGProcessor *)self copyStringValueFromRecord:safariCopy key:@"redirectSourceTitle"];
     v20 = v19;
-    v52 = a6;
+    ptrCopy = ptr;
     if (v19 && v18 && ([v19 isEqualToString:v18] & 1) == 0)
     {
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v20, v18];
@@ -2073,22 +2073,22 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
       v18 = v21;
     }
 
-    v49 = a5;
+    contentCopy = content;
     v51 = v20;
-    v22 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemContentURL"];
+    v22 = [(SKGProcessor *)self copyStringValueFromRecord:safariCopy key:@"kMDItemContentURL"];
     v50 = v22;
     if ([v22 length])
     {
       v23 = [MEMORY[0x1E696AF20] componentsWithString:v22];
-      v24 = [v23 percentEncodedPath];
-      v25 = [v24 stringByReplacingOccurrencesOfString:@"/" withString:@" "];
+      percentEncodedPath = [v23 percentEncodedPath];
+      v25 = [percentEncodedPath stringByReplacingOccurrencesOfString:@"/" withString:@" "];
 
       v26 = MEMORY[0x1E696AEC0];
       [v23 host];
-      v28 = v27 = a7;
+      v28 = v27 = length;
       v29 = [v26 stringWithFormat:@"%@%@", v28, v25];
 
-      a7 = v27;
+      length = v27;
     }
 
     else
@@ -2096,18 +2096,18 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
       v29 = 0;
     }
 
-    v31 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"redirectSourceURL"];
+    v31 = [(SKGProcessor *)self copyStringValueFromRecord:safariCopy key:@"redirectSourceURL"];
     if ([v31 length])
     {
-      v47 = a7;
+      lengthCopy = length;
       v48 = v17;
       v32 = [MEMORY[0x1E696AF20] componentsWithString:v31];
-      v33 = [v32 percentEncodedPath];
-      v34 = [v33 stringByReplacingOccurrencesOfString:@"/" withString:@" "];
+      percentEncodedPath2 = [v32 percentEncodedPath];
+      v34 = [percentEncodedPath2 stringByReplacingOccurrencesOfString:@"/" withString:@" "];
 
       v35 = MEMORY[0x1E696AEC0];
-      v36 = [v32 host];
-      v37 = [v35 stringWithFormat:@"%@ %@", v36, v34];
+      host = [v32 host];
+      v37 = [v35 stringWithFormat:@"%@ %@", host, v34];
 
       if (v37 && v29 && ([v37 isEqualToString:v29] & 1) == 0)
       {
@@ -2116,23 +2116,23 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
         v29 = v38;
       }
 
-      a7 = v47;
+      length = lengthCopy;
       v17 = v48;
     }
 
-    v39 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemDescription"];
+    v39 = [(SKGProcessor *)self copyStringValueFromRecord:safariCopy key:@"kMDItemDescription"];
     v40 = stringComposedLengthForEmbeddingCheck(v18);
     v41 = stringComposedLengthForEmbeddingCheck(v29) + v40;
     v42 = v41 + stringComposedLengthForEmbeddingCheck(v39);
-    if (a7)
+    if (length)
     {
-      *a7 = v42;
+      *length = v42;
     }
 
     v30 = v42 > 0x13;
     if (v42 >= 0x14)
     {
-      if (v49)
+      if (contentCopy)
       {
         v43 = &stru_1F0BD7AF0;
         if (v18)
@@ -2160,12 +2160,12 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
           v43 = v39;
         }
 
-        *v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v44, v45, v43];
+        *contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v44, v45, v43];
       }
 
-      if (v52)
+      if (ptrCopy)
       {
-        *v52 = 1;
+        *ptrCopy = 1;
       }
     }
   }
@@ -2178,40 +2178,40 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
   return v30;
 }
 
-- (BOOL)extractContentFromRecordForCalendar:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForCalendar:(id)calendar bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  calendarCopy = calendar;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:calendarCopy];
   }
 
   v17 = v15;
   if (SKGBundleIsCalendar(v15, v16))
   {
-    v34 = a5;
-    v35 = a6;
-    v18 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-    v36 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:v12 key:@"kMDItemAuthors"];
-    v19 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemNamedLocation"];
-    v20 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemComment"];
+    contentCopy = content;
+    ptrCopy = ptr;
+    v18 = [(SKGProcessor *)self copyTitleFromRecord:calendarCopy];
+    v36 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:calendarCopy key:@"kMDItemAuthors"];
+    v19 = [(SKGProcessor *)self copyStringValueFromRecord:calendarCopy key:@"kMDItemNamedLocation"];
+    v20 = [(SKGProcessor *)self copyStringValueFromRecord:calendarCopy key:@"kMDItemComment"];
     v21 = [v20 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
     v22 = stringComposedLengthForEmbeddingCheck(v18);
     v23 = stringComposedLengthForEmbeddingCheck(v19) + v22;
     v24 = v23 + stringComposedLengthForEmbeddingCheck(v21);
-    v25 = [(SKGProcessor *)self copyLanguageFromRecord:v12];
+    v25 = [(SKGProcessor *)self copyLanguageFromRecord:calendarCopy];
     v26 = [(SKGProcessor *)self isCJKLanguage:v25];
-    if (a7)
+    if (length)
     {
-      *a7 = v24;
+      *length = v24;
     }
 
     v27 = 15;
@@ -2223,7 +2223,7 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
     v28 = v24 >= v27;
     if (v24 >= v27)
     {
-      if (v34)
+      if (contentCopy)
       {
         v29 = &stru_1F0BD7AF0;
         if (v18)
@@ -2257,12 +2257,12 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
           v29 = v21;
         }
 
-        *v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@\n%@\n%@", v30, v31, v32, v29];
+        *contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@\n%@\n%@", v30, v31, v32, v29];
       }
 
-      if (v35)
+      if (ptrCopy)
       {
-        *v35 = 1;
+        *ptrCopy = 1;
       }
     }
   }
@@ -2275,39 +2275,39 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
   return v28;
 }
 
-- (BOOL)extractContentFromRecordForReminders:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForReminders:(id)reminders bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  remindersCopy = reminders;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:remindersCopy];
   }
 
   v17 = v15;
   if (SKGBundleIsReminders(v15, v16))
   {
-    v18 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-    v19 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemNamedLocation"];
-    v20 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemComment"];
+    v18 = [(SKGProcessor *)self copyTitleFromRecord:remindersCopy];
+    v19 = [(SKGProcessor *)self copyStringValueFromRecord:remindersCopy key:@"kMDItemNamedLocation"];
+    v20 = [(SKGProcessor *)self copyStringValueFromRecord:remindersCopy key:@"kMDItemComment"];
     v21 = stringComposedLengthForEmbeddingCheck(v18);
     v22 = stringComposedLengthForEmbeddingCheck(v19) + v21;
     v23 = v22 + stringComposedLengthForEmbeddingCheck(v20);
-    if (a7)
+    if (length)
     {
-      *a7 = v23;
+      *length = v23;
     }
 
     v24 = v23 > 0x13;
     if (v23 >= 0x14)
     {
-      if (a5)
+      if (content)
       {
         v25 = &stru_1F0BD7AF0;
         if (v18)
@@ -2335,12 +2335,12 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
           v25 = v20;
         }
 
-        *a5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v26, v27, v25];
+        *content = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v26, v27, v25];
       }
 
-      if (a6)
+      if (ptr)
       {
-        *a6 = 1;
+        *ptr = 1;
       }
     }
   }
@@ -2353,19 +2353,19 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
   return v24;
 }
 
-- (BOOL)extractContentFromRecordForWallet:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForWallet:(id)wallet bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  walletCopy = wallet;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:walletCopy];
   }
 
   v17 = v15;
@@ -2375,11 +2375,11 @@ uint64_t __74__SKGProcessor_EmbeddingsUtils__normalizeForEmbeddingGeneration_bun
     goto LABEL_39;
   }
 
-  v35 = a6;
-  v36 = a5;
-  v18 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-  v19 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemCreator"];
-  v20 = [(SKGProcessor *)self copyExtraDataFromWalletRecord:v12];
+  ptrCopy = ptr;
+  contentCopy = content;
+  v18 = [(SKGProcessor *)self copyTitleFromRecord:walletCopy];
+  v19 = [(SKGProcessor *)self copyStringValueFromRecord:walletCopy key:@"kMDItemCreator"];
+  v20 = [(SKGProcessor *)self copyExtraDataFromWalletRecord:walletCopy];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -2440,10 +2440,10 @@ LABEL_19:
   v25 = [SKGProcessor normalizeForEmbeddingGeneration:v40[5] bundleID:v14];
   if (![v25 length])
   {
-    v26 = [(SKGProcessor *)self copyTextContentFromRecord:v12];
+    v26 = [(SKGProcessor *)self copyTextContentFromRecord:walletCopy];
     if (!v26)
     {
-      v26 = [(SKGProcessor *)self copySnippetFromRecord:v12];
+      v26 = [(SKGProcessor *)self copySnippetFromRecord:walletCopy];
     }
 
     v25 = v26;
@@ -2452,15 +2452,15 @@ LABEL_19:
   v27 = stringComposedLengthForEmbeddingCheck(v18);
   v28 = stringComposedLengthForEmbeddingCheck(v19);
   v29 = v28 + v27 + stringComposedLengthForEmbeddingCheck(v25);
-  if (a7)
+  if (length)
   {
-    *a7 = v29;
+    *length = v29;
   }
 
   v24 = v29 > 0x13;
   if (v29 >= 0x14)
   {
-    if (v36)
+    if (contentCopy)
     {
       v30 = &stru_1F0BD7AF0;
       if (v18)
@@ -2488,12 +2488,12 @@ LABEL_19:
         v30 = v40[5];
       }
 
-      *v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v31, v32, v30];
+      *contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@", v31, v32, v30];
     }
 
-    if (v35)
+    if (ptrCopy)
     {
-      *v35 = 1;
+      *ptrCopy = 1;
     }
   }
 
@@ -2525,19 +2525,19 @@ uint64_t __112__SKGProcessor_EmbeddingsUtils__extractContentFromRecordForWallet_
   return [v3 appendFormat:@" %@ %@", v5, v4];
 }
 
-- (BOOL)extractContentFromRecordForEvents:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForEvents:(id)events bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  eventsCopy = events;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:eventsCopy];
   }
 
   v17 = v15;
@@ -2547,28 +2547,28 @@ uint64_t __112__SKGProcessor_EmbeddingsUtils__extractContentFromRecordForWallet_
     goto LABEL_78;
   }
 
-  v18 = [(SKGProcessor *)self copyNumberValueFromRecord:v12 key:@"_kMDItemTextContentLength"];
-  v19 = [v18 unsignedIntegerValue];
+  v18 = [(SKGProcessor *)self copyNumberValueFromRecord:eventsCopy key:@"_kMDItemTextContentLength"];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-  if (a7)
+  if (length)
   {
-    *a7 = v19;
+    *length = unsignedIntegerValue;
   }
 
-  if (!a5 && v19 > 0x13)
+  if (!content && unsignedIntegerValue > 0x13)
   {
     v20 = 1;
     goto LABEL_78;
   }
 
-  v21 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventType"];
-  v22 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemTitle"];
-  v59 = a6;
+  v21 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventType"];
+  v22 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemTitle"];
+  ptrCopy = ptr;
   v60 = v22;
   if ([(__CFString *)v21 isEqualToString:@"hotel"])
   {
-    v23 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventHotelUnderName"];
-    v24 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventHotelReservationForAddress"];
+    v23 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventHotelUnderName"];
+    v24 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventHotelReservationForAddress"];
     v25 = &stru_1F0BD7AF0;
     if (v21)
     {
@@ -2612,12 +2612,12 @@ uint64_t __112__SKGProcessor_EmbeddingsUtils__extractContentFromRecordForWallet_
   {
     if ([(__CFString *)v21 isEqualToString:@"flight"])
     {
-      v58 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:v12 key:@"kMDItemEventCustomerNames"];
-      v57 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventProvider"];
-      v56 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventFlightDepartureAirportCode"];
-      v55 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventFlightDepartureAirportLocality"];
-      v30 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventFlightArrivalAirportCode"];
-      v31 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventFlightArrivalAirportLocality"];
+      v58 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:eventsCopy key:@"kMDItemEventCustomerNames"];
+      v57 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventProvider"];
+      v56 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventFlightDepartureAirportCode"];
+      v55 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventFlightDepartureAirportLocality"];
+      v30 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventFlightArrivalAirportCode"];
+      v31 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventFlightArrivalAirportLocality"];
       v32 = &stru_1F0BD7AF0;
       if (v21)
       {
@@ -2705,9 +2705,9 @@ uint64_t __112__SKGProcessor_EmbeddingsUtils__extractContentFromRecordForWallet_
         goto LABEL_67;
       }
 
-      v58 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:v12 key:@"kMDItemEventCustomerNames"];
-      v40 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventProvider"];
-      v41 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEventStartLocationAddress"];
+      v58 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:eventsCopy key:@"kMDItemEventCustomerNames"];
+      v40 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventProvider"];
+      v41 = [(SKGProcessor *)self copyStringValueFromRecord:eventsCopy key:@"kMDItemEventStartLocationAddress"];
       v42 = &stru_1F0BD7AF0;
       if (v21)
       {
@@ -2755,8 +2755,8 @@ uint64_t __112__SKGProcessor_EmbeddingsUtils__extractContentFromRecordForWallet_
   }
 
 LABEL_67:
-  v49 = [(SKGProcessor *)self copyDateStringFromRecordWithFormat:v12 key:@"kMDItemStartDate" formatString:@"MMMM d, Y HH:mm"];
-  v50 = [(SKGProcessor *)self copyDateStringFromRecordWithFormat:v12 key:@"kMDItemEndDate" formatString:@"MMMM d, Y HH:mm"];
+  v49 = [(SKGProcessor *)self copyDateStringFromRecordWithFormat:eventsCopy key:@"kMDItemStartDate" formatString:@"MMMM d, Y HH:mm"];
+  v50 = [(SKGProcessor *)self copyDateStringFromRecordWithFormat:eventsCopy key:@"kMDItemEndDate" formatString:@"MMMM d, Y HH:mm"];
   v51 = v50;
   if (v49 && v50)
   {
@@ -2766,22 +2766,22 @@ LABEL_67:
   }
 
   v53 = stringComposedLengthForEmbeddingCheck(v29);
-  if (a7)
+  if (length)
   {
-    *a7 = v53;
+    *length = v53;
   }
 
   v20 = v53 > 0x13;
   if (v53 >= 0x14)
   {
-    if (a5)
+    if (content)
     {
-      *a5 = [v29 copy];
+      *content = [v29 copy];
     }
 
-    if (v59)
+    if (ptrCopy)
     {
-      *v59 = 1;
+      *ptrCopy = 1;
     }
   }
 
@@ -2789,30 +2789,30 @@ LABEL_78:
   return v20;
 }
 
-- (BOOL)extractContentFromRecordForMessages:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecordForMessages:(id)messages bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
   v73[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  messagesCopy = messages;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:messagesCopy];
   }
 
   v17 = v15;
   if (SKGBundleIsMessages(v15, v16))
   {
     v63 = v17;
-    v18 = [(SKGProcessor *)self copyNumberValueFromRecord:v12 key:@"_kMDItemTextContentLength"];
-    v19 = [v18 unsignedIntegerValue];
+    v18 = [(SKGProcessor *)self copyNumberValueFromRecord:messagesCopy key:@"_kMDItemTextContentLength"];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-    v20 = [(SKGProcessor *)self copyLanguageFromRecord:v12];
+    v20 = [(SKGProcessor *)self copyLanguageFromRecord:messagesCopy];
     if ([(SKGProcessor *)self isCJKLanguage:v20])
     {
       v21 = 8;
@@ -2823,14 +2823,14 @@ LABEL_78:
       v21 = 20;
     }
 
-    if (a7)
+    if (length)
     {
-      *a7 = v19;
+      *length = unsignedIntegerValue;
     }
 
-    if (v19)
+    if (unsignedIntegerValue)
     {
-      if (!a5 && v19 >= v21)
+      if (!content && unsignedIntegerValue >= v21)
       {
         v22 = 1;
         v17 = v63;
@@ -2839,8 +2839,8 @@ LABEL_72:
         goto LABEL_73;
       }
 
-      v61 = a6;
-      if (!a5)
+      ptrCopy2 = ptr;
+      if (!content)
       {
         v60 = 0;
         v64 = 0;
@@ -2852,18 +2852,18 @@ LABEL_72:
 
     else
     {
-      v61 = a6;
-      v23 = a5 != 0;
+      ptrCopy2 = ptr;
+      v23 = content != 0;
     }
 
     v60 = v23;
-    v64 = [(SKGProcessor *)self copyTextContentFromRecord:v12];
+    v64 = [(SKGProcessor *)self copyTextContentFromRecord:messagesCopy];
     if (!v64)
     {
-      v64 = [(SKGProcessor *)self copySnippetFromRecord:v12];
+      v64 = [(SKGProcessor *)self copySnippetFromRecord:messagesCopy];
       if (!v64)
       {
-        v64 = [(SKGProcessor *)self copyTitleFromRecord:v12];
+        v64 = [(SKGProcessor *)self copyTitleFromRecord:messagesCopy];
         if (v64)
         {
           LODWORD(v21) = 10;
@@ -2872,8 +2872,8 @@ LABEL_72:
     }
 
 LABEL_23:
-    v24 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:v12 key:@"kMDItemAuthors"];
-    v59 = a5;
+    v24 = [(SKGProcessor *)self copyStringArrayFromRecordAndConcatenate:messagesCopy key:@"kMDItemAuthors"];
+    contentCopy = content;
     v62 = v20;
     if ([(SKGProcessor *)self isStringOnlyNumbersOrPunctuationSpaces:v24])
     {
@@ -2882,13 +2882,13 @@ LABEL_23:
     }
 
     v25 = stringComposedLengthForEmbeddingCheck(v64);
-    v26 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemLinkType"];
-    v27 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemURL"];
+    v26 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemLinkType"];
+    v27 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemURL"];
     v28 = v26;
     if ([v26 length])
     {
       v29 = 0;
-      if (!a7)
+      if (!length)
       {
 LABEL_28:
         v30 = v25 < v21 && v29;
@@ -2914,20 +2914,20 @@ LABEL_28:
               v32 = v64;
             }
 
-            *v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v33, v32];
+            *contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v33, v32];
             if (!v29)
             {
-              v56 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemLinkSubType"];
-              v57 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemURLDescription"];
-              v34 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemLinkName"];
-              v55 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemArtist"];
-              v54 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemAlbum"];
-              v53 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemEpisode"];
-              v52 = [(SKGProcessor *)self copyStringValueFromRecord:v12 key:@"kMDItemPodcastName"];
+              v56 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemLinkSubType"];
+              v57 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemURLDescription"];
+              v34 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemLinkName"];
+              v55 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemArtist"];
+              v54 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemAlbum"];
+              v53 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemEpisode"];
+              v52 = [(SKGProcessor *)self copyStringValueFromRecord:messagesCopy key:@"kMDItemPodcastName"];
               v58 = v34;
               if ([v28 isEqualToString:*MEMORY[0x1E6963AF0]])
               {
-                v35 = [(SKGProcessor *)self copyArrayFromRecord:v12 key:@"kMDItemAddresses"];
+                v35 = [(SKGProcessor *)self copyArrayFromRecord:messagesCopy key:@"kMDItemAddresses"];
                 v51 = [v35 componentsJoinedByString:@" "];
 
                 v34 = v58;
@@ -2938,13 +2938,13 @@ LABEL_28:
                 v51 = 0;
               }
 
-              v36 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
               if (v28)
               {
                 v73[0] = @"link type";
                 v73[1] = v28;
                 v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:2];
-                [v36 addObject:v37];
+                [array addObject:v37];
 
                 v34 = v58;
               }
@@ -2954,7 +2954,7 @@ LABEL_28:
                 v72[0] = @"link subtype";
                 v72[1] = v56;
                 v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
-                [v36 addObject:v38];
+                [array addObject:v38];
 
                 v34 = v58;
               }
@@ -2964,7 +2964,7 @@ LABEL_28:
                 v71[0] = @"link description";
                 v71[1] = v57;
                 v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:2];
-                [v36 addObject:v39];
+                [array addObject:v39];
 
                 v34 = v58;
               }
@@ -2974,7 +2974,7 @@ LABEL_28:
                 v70[0] = @"link name";
                 v70[1] = v34;
                 v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
-                [v36 addObject:v40];
+                [array addObject:v40];
               }
 
               if (v55)
@@ -2982,7 +2982,7 @@ LABEL_28:
                 v69[0] = @"artist name";
                 v69[1] = v55;
                 v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:2];
-                [v36 addObject:v41];
+                [array addObject:v41];
               }
 
               if (v54)
@@ -2990,7 +2990,7 @@ LABEL_28:
                 v68[0] = @"album name";
                 v68[1] = v54;
                 v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
-                [v36 addObject:v42];
+                [array addObject:v42];
               }
 
               if (v53)
@@ -2998,7 +2998,7 @@ LABEL_28:
                 v67[0] = @"episode name";
                 v67[1] = v53;
                 v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
-                [v36 addObject:v43];
+                [array addObject:v43];
               }
 
               if (v52)
@@ -3006,7 +3006,7 @@ LABEL_28:
                 v66[0] = @"podcast name";
                 v66[1] = v52;
                 v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
-                [v36 addObject:v44];
+                [array addObject:v44];
               }
 
               if (v51)
@@ -3014,13 +3014,13 @@ LABEL_28:
                 v65[0] = @"address";
                 v65[1] = v51;
                 v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:2];
-                [v36 addObject:v45];
+                [array addObject:v45];
               }
 
-              v46 = [(SKGProcessor *)self decorateTextContentWithDescription:v36 isDescriptive:1 delimiter:@""];;
+              v46 = [(SKGProcessor *)self decorateTextContentWithDescription:array isDescriptive:1 delimiter:@""];;
               if ([v46 length])
               {
-                *v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", *v59, v46];;
+                *contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", *contentCopy, v46];;
               }
             }
 
@@ -3031,16 +3031,16 @@ LABEL_28:
               v48 = SKGLogEmbedInit();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                [SKGProcessor(EmbeddingsUtils) extractContentFromRecordForMessages:v59 bundleID:? content:? maxChunkCountPtr:? textLength:?];
+                [SKGProcessor(EmbeddingsUtils) extractContentFromRecordForMessages:contentCopy bundleID:? content:? maxChunkCountPtr:? textLength:?];
               }
 
               v31 = v27;
             }
           }
 
-          if (v61)
+          if (ptrCopy2)
           {
-            *v61 = 1;
+            *ptrCopy2 = 1;
           }
         }
 
@@ -3054,13 +3054,13 @@ LABEL_28:
     else
     {
       v29 = [v27 length] == 0;
-      if (!a7)
+      if (!length)
       {
         goto LABEL_28;
       }
     }
 
-    *a7 = v25;
+    *length = v25;
     goto LABEL_28;
   }
 
@@ -3071,25 +3071,25 @@ LABEL_73:
   return v22;
 }
 
-- (BOOL)extractContentFromRecord:(id)a3 bundleID:(id)a4 content:(id *)a5 maxChunkCountPtr:(unint64_t *)a6 textLength:(unint64_t *)a7
+- (BOOL)extractContentFromRecord:(id)record bundleID:(id)d content:(id *)content maxChunkCountPtr:(unint64_t *)ptr textLength:(unint64_t *)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  recordCopy = record;
+  dCopy = d;
+  v14 = dCopy;
+  if (dCopy)
   {
-    v15 = v13;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v12];
+    v15 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
   }
 
   v16 = v15;
   if ((SKGBundleIsMail(v15) & 1) != 0 || SKGBundleIsPommesCtl(v16, v17))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForMail:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForMail:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
 LABEL_7:
     v20 = v19;
     goto LABEL_8;
@@ -3097,53 +3097,53 @@ LABEL_7:
 
   if (SKGBundleIsSafari(v16, v18))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForSafari:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForSafari:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
   if (SKGBundleIsCalendar(v16, v22))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForCalendar:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForCalendar:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
   if (SKGBundleIsReminders(v16, v23))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForReminders:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForReminders:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
   if (SKGBundleIsWallet(v16, v24))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForWallet:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForWallet:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
   if (SKGBundleIsMessages(v16, v25))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForMessages:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForMessages:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
   if (SKGBundleIsEvent(v16, v26))
   {
-    v19 = [(SKGProcessor *)self extractContentFromRecordForEvents:v12 bundleID:v16 content:a5 maxChunkCountPtr:a6 textLength:a7];
+    v19 = [(SKGProcessor *)self extractContentFromRecordForEvents:recordCopy bundleID:v16 content:content maxChunkCountPtr:ptr textLength:length];
     goto LABEL_7;
   }
 
-  v27 = [(SKGProcessor *)self copyNumberValueFromRecord:v12 key:@"_kMDItemTextContentLength"];
-  v28 = [v27 unsignedIntegerValue];
+  v27 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemTextContentLength"];
+  unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-  if (a7)
+  if (length)
   {
-    *a7 = v28;
+    *length = unsignedIntegerValue;
   }
 
-  if (a5 || v28 <= 0x13)
+  if (content || unsignedIntegerValue <= 0x13)
   {
-    if (a5 || !v28)
+    if (content || !unsignedIntegerValue)
     {
-      v30 = [(SKGProcessor *)self copyTextContentFromRecord:v12];
+      v30 = [(SKGProcessor *)self copyTextContentFromRecord:recordCopy];
       if (v30)
       {
         v29 = v30;
@@ -3152,15 +3152,15 @@ LABEL_7:
 
       else
       {
-        v29 = [(SKGProcessor *)self copySnippetFromRecord:v12];
+        v29 = [(SKGProcessor *)self copySnippetFromRecord:recordCopy];
         v31 = [v16 containsString:@"com.apple"];
         if (!v29 && v31)
         {
-          v29 = [(SKGProcessor *)self copyDescriptionContentFromRecord:v12];
+          v29 = [(SKGProcessor *)self copyDescriptionContentFromRecord:recordCopy];
         }
       }
 
-      v28 = stringComposedLengthForEmbeddingCheck(v29);
+      unsignedIntegerValue = stringComposedLengthForEmbeddingCheck(v29);
     }
 
     else
@@ -3168,17 +3168,17 @@ LABEL_7:
       v29 = 0;
     }
 
-    v32 = [(SKGProcessor *)self copyTitleFromRecord:v12];
-    v33 = stringComposedLengthForEmbeddingCheck(v32) + v28;
-    if (a7)
+    v32 = [(SKGProcessor *)self copyTitleFromRecord:recordCopy];
+    v33 = stringComposedLengthForEmbeddingCheck(v32) + unsignedIntegerValue;
+    if (length)
     {
-      *a7 = v33;
+      *length = v33;
     }
 
     v20 = v33 > 0x13;
     if (v33 >= 0x14)
     {
-      if (a5)
+      if (content)
       {
         v34 = &stru_1F0BD7AF0;
         if (v32)
@@ -3196,12 +3196,12 @@ LABEL_7:
           v34 = v29;
         }
 
-        *a5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v35, v34];
+        *content = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v35, v34];
       }
 
-      if (a6)
+      if (ptr)
       {
-        *a6 = 2;
+        *ptr = 2;
       }
     }
   }
@@ -3216,23 +3216,23 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)updateSKGReindexerEmbeddingAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 itemHasText:(BOOL)a6
+- (BOOL)updateSKGReindexerEmbeddingAttributes:(id)attributes record:(id)record bundleID:(id)d itemHasText:(BOOL)text
 {
-  v7 = a4;
-  if ([(SKGProcessor *)self recordContainsValue:v7 key:@"_kMDItemNeedsEmbeddings"])
+  recordCopy = record;
+  if ([(SKGProcessor *)self recordContainsValue:recordCopy key:@"_kMDItemNeedsEmbeddings"])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:v7];
+    v9 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:recordCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 intValue];
+      intValue = [v9 intValue];
       v12 = +[SKGProcessorContext sharedContext];
-      v13 = [v12 embeddingVersion] == v11;
+      v13 = [v12 embeddingVersion] == intValue;
     }
 
     else
@@ -3240,13 +3240,13 @@ LABEL_8:
       v13 = 0;
     }
 
-    v14 = [(SKGProcessor *)self copyEmbeddingModelVersionFromRecord:v7];
+    v14 = [(SKGProcessor *)self copyEmbeddingModelVersionFromRecord:recordCopy];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 intValue];
+      intValue2 = [v14 intValue];
       v17 = +[SKGProcessorContext sharedContext];
-      v18 = [v17 embeddingModelVersion] != v16;
+      v18 = [v17 embeddingModelVersion] != intValue2;
     }
 
     else
@@ -3254,13 +3254,13 @@ LABEL_8:
       v18 = 0;
     }
 
-    v19 = [(SKGProcessor *)self copyNumberValueFromRecord:v7 key:@"_kMDItemUpdaterVersion"];
+    v19 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemUpdaterVersion"];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 intValue];
+      intValue3 = [v19 intValue];
       v22 = +[SKGProcessorContext sharedContext];
-      v23 = [v22 textVersion] != v21;
+      v23 = [v22 textVersion] != intValue3;
     }
 
     else
@@ -3274,23 +3274,23 @@ LABEL_8:
   return v8 & 1;
 }
 
-- (BOOL)needsSKGReindexerEmbeddingsForRecord:(id)a3 bundleID:(id)a4 itemHasText:(BOOL)a5
+- (BOOL)needsSKGReindexerEmbeddingsForRecord:(id)record bundleID:(id)d itemHasText:(BOOL)text
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  dCopy = d;
   v9 = +[SKGProcessorContext sharedContext];
-  v10 = [v9 enableEmbeddings];
+  enableEmbeddings = [v9 enableEmbeddings];
 
-  if (v10)
+  if (enableEmbeddings)
   {
-    if (v8)
+    if (dCopy)
     {
-      v11 = v8;
+      v11 = dCopy;
     }
 
     else
     {
-      v11 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v7];
+      v11 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
       if (!v11)
       {
         goto LABEL_8;
@@ -3298,8 +3298,8 @@ LABEL_8:
     }
 
     v13 = +[SKGProcessorContext sharedContext];
-    v14 = [v13 embeddingExcludeBundles];
-    v15 = [v14 containsObject:v11];
+    embeddingExcludeBundles = [v13 embeddingExcludeBundles];
+    v15 = [embeddingExcludeBundles containsObject:v11];
 
     if (v15)
     {
@@ -3310,13 +3310,13 @@ LABEL_17:
     }
 
 LABEL_8:
-    v16 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:v7];
+    v16 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:recordCopy];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 intValue];
+      intValue = [v16 intValue];
       v19 = +[SKGProcessorContext sharedContext];
-      v20 = [v19 embeddingVersion] != v18;
+      v20 = [v19 embeddingVersion] != intValue;
     }
 
     else
@@ -3324,13 +3324,13 @@ LABEL_8:
       v20 = 1;
     }
 
-    v21 = [(SKGProcessor *)self copyNumberValueFromRecord:v7 key:@"_kMDItemUpdaterVersion"];
+    v21 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemUpdaterVersion"];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 intValue];
+      intValue2 = [v21 intValue];
       v24 = +[SKGProcessorContext sharedContext];
-      v25 = [v24 textVersion] != v23;
+      v25 = [v24 textVersion] != intValue2;
     }
 
     else
@@ -3339,9 +3339,9 @@ LABEL_8:
     }
 
     v12 = v20 || v25;
-    if (![(SKGProcessor *)self needsEmbeddingsForRecord:v7 bundleID:v11])
+    if (![(SKGProcessor *)self needsEmbeddingsForRecord:recordCopy bundleID:v11])
     {
-      v12 &= [(SKGProcessor *)self shouldGenerateEmbeddingsForRecord:v7 bundleID:v11];
+      v12 &= [(SKGProcessor *)self shouldGenerateEmbeddingsForRecord:recordCopy bundleID:v11];
     }
 
     goto LABEL_17;
@@ -3353,32 +3353,32 @@ LABEL_18:
   return v12 & 1;
 }
 
-- (BOOL)needsEmbeddingsForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)needsEmbeddingsForRecord:(id)record bundleID:(id)d
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69D3DC8] sharedInstance];
-  v9 = [v8 deviceCanGenerateEmbeddings];
+  recordCopy = record;
+  dCopy = d;
+  mEMORY[0x1E69D3DC8] = [MEMORY[0x1E69D3DC8] sharedInstance];
+  deviceCanGenerateEmbeddings = [mEMORY[0x1E69D3DC8] deviceCanGenerateEmbeddings];
 
-  if (v9)
+  if (deviceCanGenerateEmbeddings)
   {
-    if (![(SKGProcessor *)self recordContainsValue:v6 key:@"_kMDItemNeedsEmbeddings"])
+    if (![(SKGProcessor *)self recordContainsValue:recordCopy key:@"_kMDItemNeedsEmbeddings"])
     {
-      if ([v6 count])
+      if ([recordCopy count])
       {
         v10 = +[SKGProcessor sharedProcessor];
-        v11 = [v10 recordIsValid:v6];
+        v11 = [v10 recordIsValid:recordCopy];
 
         if (v11)
         {
-          v12 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:v6];
-          v13 = [(SKGProcessor *)self copyEmbeddingModelVersionFromRecord:v6];
+          v12 = [(SKGProcessor *)self copyEmbeddingVersionFromRecord:recordCopy];
+          v13 = [(SKGProcessor *)self copyEmbeddingModelVersionFromRecord:recordCopy];
           if (v12)
           {
-            v14 = [v12 intValue];
+            intValue = [v12 intValue];
             v15 = +[SKGProcessorContext sharedContext];
-            if ([v15 embeddingVersion] == v14)
+            if ([v15 embeddingVersion] == intValue)
             {
               if (!v13)
               {
@@ -3402,11 +3402,11 @@ LABEL_70:
                 goto LABEL_52;
               }
 
-              v16 = [v13 intValue];
+              intValue2 = [v13 intValue];
               v17 = +[SKGProcessorContext sharedContext];
-              v18 = [v17 embeddingModelVersion];
+              embeddingModelVersion = [v17 embeddingModelVersion];
 
-              if (v18 == v16)
+              if (embeddingModelVersion == intValue2)
               {
                 goto LABEL_49;
               }
@@ -3417,14 +3417,14 @@ LABEL_70:
             }
           }
 
-          if (v7)
+          if (dCopy)
           {
-            v20 = v7;
+            v20 = dCopy;
           }
 
           else
           {
-            v20 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+            v20 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
             if (!v20)
             {
               goto LABEL_23;
@@ -3432,8 +3432,8 @@ LABEL_70:
           }
 
           v21 = +[SKGProcessorContext sharedContext];
-          v22 = [v21 embeddingExcludeBundles];
-          v23 = [v22 containsObject:v20];
+          embeddingExcludeBundles = [v21 embeddingExcludeBundles];
+          v23 = [embeddingExcludeBundles containsObject:v20];
 
           if (v23)
           {
@@ -3456,7 +3456,7 @@ LABEL_68:
           }
 
 LABEL_23:
-          v25 = [(SKGProcessor *)self copyContentTypeFromRecord:v6];
+          v25 = [(SKGProcessor *)self copyContentTypeFromRecord:recordCopy];
           v24 = v25;
           if (!v25)
           {
@@ -3491,9 +3491,9 @@ LABEL_66:
             v47 = 0u;
             v48 = 0u;
             v27 = +[SKGProcessorContext sharedContext];
-            v28 = [v27 embeddingExcludeContentTypes];
+            embeddingExcludeContentTypes = [v27 embeddingExcludeContentTypes];
 
-            v29 = [v28 countByEnumeratingWithState:&v47 objects:v52 count:16];
+            v29 = [embeddingExcludeContentTypes countByEnumeratingWithState:&v47 objects:v52 count:16];
             if (v29)
             {
               v30 = v29;
@@ -3504,7 +3504,7 @@ LABEL_27:
               {
                 if (*v48 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(embeddingExcludeContentTypes);
                 }
 
                 if ([v26 conformsToType:*(*(&v47 + 1) + 8 * v32)])
@@ -3514,7 +3514,7 @@ LABEL_27:
 
                 if (v30 == ++v32)
                 {
-                  v30 = [v28 countByEnumeratingWithState:&v47 objects:v52 count:16];
+                  v30 = [embeddingExcludeContentTypes countByEnumeratingWithState:&v47 objects:v52 count:16];
                   if (v30)
                   {
                     goto LABEL_27;
@@ -3547,9 +3547,9 @@ LABEL_33:
           v43 = 0u;
           v44 = 0u;
           v33 = +[SKGProcessorContext sharedContext];
-          v28 = [v33 embeddingExtractionAttributes];
+          embeddingExcludeContentTypes = [v33 embeddingExtractionAttributes];
 
-          v34 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+          v34 = [embeddingExcludeContentTypes countByEnumeratingWithState:&v43 objects:v51 count:16];
           if (!v34)
           {
 LABEL_58:
@@ -3569,17 +3569,17 @@ LABEL_36:
           {
             if (*v44 != v36)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(embeddingExcludeContentTypes);
             }
 
-            if ([(SKGProcessor *)self recordContainsValue:v6 key:*(*(&v43 + 1) + 8 * v37)])
+            if ([(SKGProcessor *)self recordContainsValue:recordCopy key:*(*(&v43 + 1) + 8 * v37)])
             {
               break;
             }
 
             if (v35 == ++v37)
             {
-              v35 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+              v35 = [embeddingExcludeContentTypes countByEnumeratingWithState:&v43 objects:v51 count:16];
               if (v35)
               {
                 goto LABEL_36;
@@ -3629,31 +3629,31 @@ LABEL_71:
   return v19;
 }
 
-- (BOOL)canGenerateEmbeddingsForMailRecord:(id)a3 bundleID:(id)a4
+- (BOOL)canGenerateEmbeddingsForMailRecord:(id)record bundleID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  recordCopy = record;
+  dCopy = d;
+  v8 = dCopy;
+  if (dCopy)
   {
-    v9 = v7;
+    v9 = dCopy;
   }
 
   else
   {
-    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
   }
 
   v10 = v9;
   if ((SKGBundleIsMail(v9) & 1) != 0 || SKGBundleIsPommesCtl(v10, v11))
   {
-    v12 = [SKGProcessor copyMailboxesFromRecord:v6];
+    v12 = [SKGProcessor copyMailboxesFromRecord:recordCopy];
     v13 = [v12 containsObject:@"mailbox.junk"];
-    v14 = [v6 objectForKeyedSubscript:@"kMDItemIsLikelyJunk"];
+    v14 = [recordCopy objectForKeyedSubscript:@"kMDItemIsLikelyJunk"];
     if (v14)
     {
-      v15 = [v6 objectForKeyedSubscript:@"kMDItemIsLikelyJunk"];
+      v15 = [recordCopy objectForKeyedSubscript:@"kMDItemIsLikelyJunk"];
       v16 = [v15 isEqualToNumber:&unk_1F0BDD030] ^ 1;
     }
 
@@ -3690,24 +3690,24 @@ LABEL_71:
   return v17 & 1;
 }
 
-- (BOOL)canGenerateEmbeddingsForFPRecord:(id)a3 bundleID:(id)a4
+- (BOOL)canGenerateEmbeddingsForFPRecord:(id)record bundleID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKGProcessor *)self copyFileProviderIDFromRecord:v6];
+  recordCopy = record;
+  dCopy = d;
+  v8 = [(SKGProcessor *)self copyFileProviderIDFromRecord:recordCopy];
   if (v8)
   {
-    v9 = [(SKGProcessor *)self copyNumberValueFromRecord:v6 key:@"_kMDItemRequiresImport"];
+    v9 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemRequiresImport"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     if (SKGLogGetCurrentLoggingLevel() >= 7)
@@ -3716,11 +3716,11 @@ LABEL_71:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v15 = 138413058;
-        v16 = v7;
+        v16 = dCopy;
         v17 = 2112;
         v18 = v8;
         v19 = 1024;
-        v20 = v11;
+        v20 = bOOLValue;
         v21 = 2112;
         v22 = v10;
         _os_log_debug_impl(&dword_1977A7000, v12, OS_LOG_TYPE_DEBUG, "SKGProcessor+EmbeddingsUtils#canGenerateEmbeddingsForFPRecord bundle=%@ fpId=%@ returning=%{BOOL}d requiresImport=%@", &v15, 0x26u);
@@ -3730,48 +3730,48 @@ LABEL_71:
 
   else
   {
-    LOBYTE(v11) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return bOOLValue;
 }
 
-- (BOOL)shouldGenerateEmbeddingsForRecord:(id)a3 bundleID:(id)a4 skipFpRecordCheck:(BOOL)a5
+- (BOOL)shouldGenerateEmbeddingsForRecord:(id)record bundleID:(id)d skipFpRecordCheck:(BOOL)check
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  recordCopy = record;
+  dCopy = d;
+  v10 = dCopy;
+  if (dCopy)
   {
-    v11 = v9;
+    v11 = dCopy;
   }
 
   else
   {
-    v11 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v8];
+    v11 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
   }
 
   v12 = v11;
   v13 = +[SKGProcessorContext sharedContext];
-  v14 = [v13 embeddingExcludeBundles];
-  v15 = [v14 containsObject:v12];
+  embeddingExcludeBundles = [v13 embeddingExcludeBundles];
+  v15 = [embeddingExcludeBundles containsObject:v12];
 
   if ((v15 & 1) == 0)
   {
-    v17 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:v8];
+    v17 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:recordCopy];
     v18 = +[SKGProcessorContext sharedContext];
-    v19 = [v18 embeddingExcludeDomainIdentifier];
-    v20 = [v19 containsObject:v17];
+    embeddingExcludeDomainIdentifier = [v18 embeddingExcludeDomainIdentifier];
+    v20 = [embeddingExcludeDomainIdentifier containsObject:v17];
 
-    if ((v20 & 1) != 0 || !a5 && ![(SKGProcessor *)self canGenerateEmbeddingsForFPRecord:v8 bundleID:v12]|| ![(SKGProcessor *)self canGenerateEmbeddingsForMailRecord:v8 bundleID:v12])
+    if ((v20 & 1) != 0 || !check && ![(SKGProcessor *)self canGenerateEmbeddingsForFPRecord:recordCopy bundleID:v12]|| ![(SKGProcessor *)self canGenerateEmbeddingsForMailRecord:recordCopy bundleID:v12])
     {
       goto LABEL_29;
     }
 
     if (SKGBundleIsCalendar(v12, v21))
     {
-      v22 = [(SKGProcessor *)self copyStringValueFromRecord:v8 key:@"kMDItemCalendarHolidayIdentifier"];
+      v22 = [(SKGProcessor *)self copyStringValueFromRecord:recordCopy key:@"kMDItemCalendarHolidayIdentifier"];
       v23 = v22;
       if (v22 && ([v22 isEqualToString:@"Y"] & 1) != 0)
       {
@@ -3783,21 +3783,21 @@ LABEL_29:
     }
 
     v33 = 0;
-    v24 = [(SKGProcessor *)self copyNumberValueFromRecord:v8 key:@"_kMDItemTextContentIndexExists"];
-    if (v24 || (v24 = [(SKGProcessor *)self copySnippetFromRecord:v8]) != 0 || (v24 = [(SKGProcessor *)self copyTextContentFromRecord:v8]) != 0)
+    v24 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemTextContentIndexExists"];
+    if (v24 || (v24 = [(SKGProcessor *)self copySnippetFromRecord:recordCopy]) != 0 || (v24 = [(SKGProcessor *)self copyTextContentFromRecord:recordCopy]) != 0)
     {
     }
 
     else
     {
-      v29 = [(SKGProcessor *)self copyFileProviderIDFromRecord:v8];
+      v29 = [(SKGProcessor *)self copyFileProviderIDFromRecord:recordCopy];
       if (v29)
       {
         v30 = v29;
-        v31 = [(SKGProcessor *)self copyContentURLFromRecord:v8];
-        v32 = [v31 isFileURL];
+        v31 = [(SKGProcessor *)self copyContentURLFromRecord:recordCopy];
+        isFileURL = [v31 isFileURL];
 
-        if (v32)
+        if (isFileURL)
         {
           if (SKGLogGetCurrentLoggingLevel() >= 7)
           {
@@ -3817,7 +3817,7 @@ LABEL_37:
       }
     }
 
-    v25 = [(SKGProcessor *)self extractContentFromRecord:v8 bundleID:v12 content:0 maxChunkCountPtr:0 textLength:&v33];
+    v25 = [(SKGProcessor *)self extractContentFromRecord:recordCopy bundleID:v12 content:0 maxChunkCountPtr:0 textLength:&v33];
     CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
     if (!v25)
     {
@@ -3861,65 +3861,65 @@ LABEL_31:
   return v16;
 }
 
-- (BOOL)isStringOnlyNumbersOrPunctuationSpaces:(id)a3
+- (BOOL)isStringOnlyNumbersOrPunctuationSpaces:(id)spaces
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  spacesCopy = spaces;
   v5 = [v3 predicateWithFormat:@"SELF MATCHES %@", @"^[0-9[:punct:]\\s+]+$"];
-  v6 = [v5 evaluateWithObject:v4];
+  v6 = [v5 evaluateWithObject:spacesCopy];
 
   return v6;
 }
 
-- (BOOL)recordForItemHasTextContent:(id)a3
+- (BOOL)recordForItemHasTextContent:(id)content
 {
-  v4 = a3;
-  v5 = [(SKGProcessor *)self recordContainsValue:v4 key:@"kMDItemTextContent"]|| [(SKGProcessor *)self recordContainsValue:v4 key:@"_kMDItemSnippet"];
+  contentCopy = content;
+  v5 = [(SKGProcessor *)self recordContainsValue:contentCopy key:@"kMDItemTextContent"]|| [(SKGProcessor *)self recordContainsValue:contentCopy key:@"_kMDItemSnippet"];
 
   return v5;
 }
 
-- (BOOL)recordForItemWillHaveTextContent:(id)a3
+- (BOOL)recordForItemWillHaveTextContent:(id)content
 {
-  v4 = a3;
-  v5 = [(SKGProcessor *)self recordContainsValue:v4 key:@"kMDItemTextContent"];
-  v6 = [(SKGProcessor *)self copyFileProviderIDFromRecord:v4];
+  contentCopy = content;
+  bOOLValue = [(SKGProcessor *)self recordContainsValue:contentCopy key:@"kMDItemTextContent"];
+  v6 = [(SKGProcessor *)self copyFileProviderIDFromRecord:contentCopy];
   v7 = v6;
-  if ((v5 & 1) == 0 && v6)
+  if ((bOOLValue & 1) == 0 && v6)
   {
-    v8 = [(SKGProcessor *)self copyNumberValueFromRecord:v4 key:@"_kMDItemRequiresImport"];
-    v9 = [(SKGProcessor *)self copyContentTypeFromRecord:v4];
+    v8 = [(SKGProcessor *)self copyNumberValueFromRecord:contentCopy key:@"_kMDItemRequiresImport"];
+    v9 = [(SKGProcessor *)self copyContentTypeFromRecord:contentCopy];
     v10 = v9;
-    v5 = 0;
+    bOOLValue = 0;
     if (v8 && v9)
     {
       if ([v8 BOOLValue] && (objc_msgSend(v10, "isEqualToString:", @"public.folder") & 1) == 0)
       {
-        v5 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
       }
 
       else
       {
-        v5 = 0;
+        bOOLValue = 0;
       }
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)itemForRecordHasTextContent:(id)a3
+- (BOOL)itemForRecordHasTextContent:(id)content
 {
-  v3 = [(SKGProcessor *)self copyNumberValueFromRecord:a3 key:@"_kMDItemTextContentIndexExists"];
-  v4 = [v3 BOOLValue];
+  v3 = [(SKGProcessor *)self copyNumberValueFromRecord:content key:@"_kMDItemTextContentIndexExists"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isUpdateFromSpotlightknowledged:(id)a3
+- (BOOL)isUpdateFromSpotlightknowledged:(id)spotlightknowledged
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"_kMDItemEmbeddingsSN"];
+  spotlightknowledgedCopy = spotlightknowledged;
+  v4 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemEmbeddingsSN"];
   if (v4)
   {
     v5 = 1;
@@ -3927,7 +3927,7 @@ LABEL_31:
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"_kMDItemNeedsEmbeddings"];
+    v6 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemNeedsEmbeddings"];
     if (v6)
     {
       v5 = 1;
@@ -3935,7 +3935,7 @@ LABEL_31:
 
     else
     {
-      v7 = [v3 objectForKeyedSubscript:@"kMDItemEmbeddingVersion"];
+      v7 = [spotlightknowledgedCopy objectForKeyedSubscript:@"kMDItemEmbeddingVersion"];
       if (v7)
       {
         v5 = 1;
@@ -3943,7 +3943,7 @@ LABEL_31:
 
       else
       {
-        v8 = [v3 objectForKeyedSubscript:@"_kMDItemPrioritySN"];
+        v8 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemPrioritySN"];
         if (v8)
         {
           v5 = 1;
@@ -3951,7 +3951,7 @@ LABEL_31:
 
         else
         {
-          v9 = [v3 objectForKeyedSubscript:@"_kMDItemNeedsPriority"];
+          v9 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemNeedsPriority"];
           if (v9)
           {
             v5 = 1;
@@ -3959,7 +3959,7 @@ LABEL_31:
 
           else
           {
-            v10 = [v3 objectForKeyedSubscript:@":INC:_kMDItemEmbeddingsError"];
+            v10 = [spotlightknowledgedCopy objectForKeyedSubscript:@":INC:_kMDItemEmbeddingsError"];
             if (v10)
             {
               v5 = 1;
@@ -3967,7 +3967,7 @@ LABEL_31:
 
             else
             {
-              v11 = [v3 objectForKeyedSubscript:@"_kMDItemKeyphrasesSN"];
+              v11 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemKeyphrasesSN"];
               if (v11)
               {
                 v5 = 1;
@@ -3975,7 +3975,7 @@ LABEL_31:
 
               else
               {
-                v12 = [v3 objectForKeyedSubscript:@"_kMDItemNeedsKeyphrases"];
+                v12 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemNeedsKeyphrases"];
                 if (v12)
                 {
                   v5 = 1;
@@ -3983,7 +3983,7 @@ LABEL_31:
 
                 else
                 {
-                  v13 = [v3 objectForKeyedSubscript:@"kMDItemKeyphraseVersion"];
+                  v13 = [spotlightknowledgedCopy objectForKeyedSubscript:@"kMDItemKeyphraseVersion"];
                   if (v13)
                   {
                     v5 = 1;
@@ -3991,7 +3991,7 @@ LABEL_31:
 
                   else
                   {
-                    v14 = [v3 objectForKeyedSubscript:@"kMDItemBreadcrumbsVersion"];
+                    v14 = [spotlightknowledgedCopy objectForKeyedSubscript:@"kMDItemBreadcrumbsVersion"];
                     if (v14)
                     {
                       v5 = 1;
@@ -3999,7 +3999,7 @@ LABEL_31:
 
                     else
                     {
-                      v22 = [v3 objectForKeyedSubscript:@":INC:_kMDItemKeyphrasesError"];
+                      v22 = [spotlightknowledgedCopy objectForKeyedSubscript:@":INC:_kMDItemKeyphrasesError"];
                       if (v22)
                       {
                         v5 = 1;
@@ -4007,7 +4007,7 @@ LABEL_31:
 
                       else
                       {
-                        v21 = [v3 objectForKeyedSubscript:@"_kMDItemSuggestedEventsSN"];
+                        v21 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemSuggestedEventsSN"];
                         if (v21)
                         {
                           v5 = 1;
@@ -4015,7 +4015,7 @@ LABEL_31:
 
                         else
                         {
-                          v20 = [v3 objectForKeyedSubscript:@"_kMDItemNeedsSuggestedEvents"];
+                          v20 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemNeedsSuggestedEvents"];
                           if (v20)
                           {
                             v5 = 1;
@@ -4023,7 +4023,7 @@ LABEL_31:
 
                           else
                           {
-                            v19 = [v3 objectForKeyedSubscript:@"kMDItemSuggestedEventsVersion"];
+                            v19 = [spotlightknowledgedCopy objectForKeyedSubscript:@"kMDItemSuggestedEventsVersion"];
                             if (v19)
                             {
                               v5 = 1;
@@ -4031,7 +4031,7 @@ LABEL_31:
 
                             else
                             {
-                              v18 = [v3 objectForKeyedSubscript:@"_kMDItemDocumentUnderstandingSN"];
+                              v18 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemDocumentUnderstandingSN"];
                               if (v18)
                               {
                                 v5 = 1;
@@ -4039,7 +4039,7 @@ LABEL_31:
 
                               else
                               {
-                                v17 = [v3 objectForKeyedSubscript:@"_kMDItemNeedsDocumentUnderstanding"];
+                                v17 = [spotlightknowledgedCopy objectForKeyedSubscript:@"_kMDItemNeedsDocumentUnderstanding"];
                                 if (v17)
                                 {
                                   v5 = 1;
@@ -4047,7 +4047,7 @@ LABEL_31:
 
                                 else
                                 {
-                                  v15 = [v3 objectForKeyedSubscript:{@"kMDItemDocumentUnderstandingVersion", 0, 0, 0, 0, 0, 0}];
+                                  v15 = [spotlightknowledgedCopy objectForKeyedSubscript:{@"kMDItemDocumentUnderstandingVersion", 0, 0, 0, 0, 0, 0}];
                                   v5 = v15 != 0;
                                 }
                               }
@@ -4073,32 +4073,32 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)updateSKGProcessorAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 isUpdate:(BOOL)a7 processorFlags:(unint64_t)a8
+- (BOOL)updateSKGProcessorAttributes:(id)attributes record:(id)record bundleID:(id)d protectionClass:(id)class isUpdate:(BOOL)update processorFlags:(unint64_t)flags
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (![v15 count] || (+[SKGProcessor sharedProcessor](SKGProcessor, "sharedProcessor"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "recordIsValid:", v15), v18, !v19))
+  flagsCopy = flags;
+  attributesCopy = attributes;
+  recordCopy = record;
+  dCopy = d;
+  classCopy = class;
+  if (![recordCopy count] || (+[SKGProcessor sharedProcessor](SKGProcessor, "sharedProcessor"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "recordIsValid:", recordCopy), v18, !v19))
   {
     LOBYTE(v22) = 0;
     goto LABEL_9;
   }
 
-  if ([(SKGProcessor *)self recordForItemHasTextContent:v15]|| [(SKGProcessor *)self recordForItemWillHaveTextContent:v15])
+  if ([(SKGProcessor *)self recordForItemHasTextContent:recordCopy]|| [(SKGProcessor *)self recordForItemWillHaveTextContent:recordCopy])
   {
     v20 = 1;
     v21 = 1;
-    if ((v8 & 4) == 0)
+    if ((flagsCopy & 4) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_11:
-    LOBYTE(v24) = a7;
-    v22 = [(SKGProcessor *)self updateSKGProcessorKeyphrasesAttributes:v14 record:v15 bundleID:v16 protectionClass:v17 recordHasText:v20 itemHasText:v21 isUpdate:v24];
-    if ((v8 & 0x20) == 0)
+    LOBYTE(v24) = update;
+    v22 = [(SKGProcessor *)self updateSKGProcessorKeyphrasesAttributes:attributesCopy record:recordCopy bundleID:dCopy protectionClass:classCopy recordHasText:v20 itemHasText:v21 isUpdate:v24];
+    if ((flagsCopy & 0x20) == 0)
     {
       goto LABEL_13;
     }
@@ -4106,27 +4106,27 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v21 = [(SKGProcessor *)self itemForRecordHasTextContent:v15];
+  v21 = [(SKGProcessor *)self itemForRecordHasTextContent:recordCopy];
   v20 = 0;
-  if ((v8 & 4) != 0)
+  if ((flagsCopy & 4) != 0)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
   v22 = 0;
-  if ((v8 & 0x20) != 0)
+  if ((flagsCopy & 0x20) != 0)
   {
 LABEL_12:
-    LOBYTE(v24) = a7;
-    v22 |= [(SKGProcessor *)self updateSKGProcessorDocUnderstandingAttributes:v14 record:v15 bundleID:v16 protectionClass:v17 recordHasText:v20 itemHasText:v21 isUpdate:v24];
+    LOBYTE(v24) = update;
+    v22 |= [(SKGProcessor *)self updateSKGProcessorDocUnderstandingAttributes:attributesCopy record:recordCopy bundleID:dCopy protectionClass:classCopy recordHasText:v20 itemHasText:v21 isUpdate:v24];
   }
 
 LABEL_13:
-  if ((v8 & 0x10) != 0)
+  if ((flagsCopy & 0x10) != 0)
   {
-    LOBYTE(v24) = a7;
-    LOBYTE(v22) = [(SKGProcessor *)self updateSKGProcessorSuggestedEventsAttributes:v14 record:v15 bundleID:v16 protectionClass:v17 recordHasText:v20 itemHasText:v21 isUpdate:v24]| v22;
+    LOBYTE(v24) = update;
+    LOBYTE(v22) = [(SKGProcessor *)self updateSKGProcessorSuggestedEventsAttributes:attributesCopy record:recordCopy bundleID:dCopy protectionClass:classCopy recordHasText:v20 itemHasText:v21 isUpdate:v24]| v22;
   }
 
 LABEL_9:
@@ -4134,23 +4134,23 @@ LABEL_9:
   return v22 & 1;
 }
 
-- (BOOL)updateSKGReindexerAttributes:(id)a3 record:(id)a4 bundleID:(id)a5 processorFlags:(unint64_t)a6
+- (BOOL)updateSKGReindexerAttributes:(id)attributes record:(id)record bundleID:(id)d processorFlags:(unint64_t)flags
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (![v11 count] || (+[SKGProcessor sharedProcessor](SKGProcessor, "sharedProcessor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "recordIsValid:", v11), v13, !v14))
+  flagsCopy = flags;
+  attributesCopy = attributes;
+  recordCopy = record;
+  dCopy = d;
+  if (![recordCopy count] || (+[SKGProcessor sharedProcessor](SKGProcessor, "sharedProcessor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "recordIsValid:", recordCopy), v13, !v14))
   {
     LOBYTE(v16) = 0;
     goto LABEL_7;
   }
 
-  v15 = [(SKGProcessor *)self itemForRecordHasTextContent:v11];
-  if ((v6 & 4) == 0)
+  v15 = [(SKGProcessor *)self itemForRecordHasTextContent:recordCopy];
+  if ((flagsCopy & 4) == 0)
   {
     v16 = 0;
-    if ((v6 & 0x20) == 0)
+    if ((flagsCopy & 0x20) == 0)
     {
       goto LABEL_10;
     }
@@ -4158,31 +4158,31 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v16 = [(SKGProcessor *)self updateSKGReindexerKeyphrasesAttributes:v10 record:v11 bundleID:v12 itemHasText:v15];
-  if ((v6 & 0x20) != 0)
+  v16 = [(SKGProcessor *)self updateSKGReindexerKeyphrasesAttributes:attributesCopy record:recordCopy bundleID:dCopy itemHasText:v15];
+  if ((flagsCopy & 0x20) != 0)
   {
 LABEL_9:
-    v16 |= [(SKGProcessor *)self updateSKGReindexerDocUnderstandingAttributes:v10 record:v11 bundleID:v12 itemHasText:v15];
+    v16 |= [(SKGProcessor *)self updateSKGReindexerDocUnderstandingAttributes:attributesCopy record:recordCopy bundleID:dCopy itemHasText:v15];
   }
 
 LABEL_10:
-  if ((v6 & 0x10) != 0)
+  if ((flagsCopy & 0x10) != 0)
   {
-    v16 |= [(SKGProcessor *)self updateSKGReindexerSuggestedEventsAttributes:v10 record:v11 bundleID:v12 itemHasText:v15];
-    if ((v6 & 2) == 0)
+    v16 |= [(SKGProcessor *)self updateSKGReindexerSuggestedEventsAttributes:attributesCopy record:recordCopy bundleID:dCopy itemHasText:v15];
+    if ((flagsCopy & 2) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((flagsCopy & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  if ([(SKGProcessor *)self needsEmbeddingsForRecord:v11 bundleID:v12]&& [(SKGProcessor *)self shouldGenerateEmbeddingsForRecord:v11 bundleID:v12])
+  if ([(SKGProcessor *)self needsEmbeddingsForRecord:recordCopy bundleID:dCopy]&& [(SKGProcessor *)self shouldGenerateEmbeddingsForRecord:recordCopy bundleID:dCopy])
   {
-    LOBYTE(v16) = [(SKGProcessor *)self updateSKGReindexerEmbeddingAttributes:v10 record:v11 bundleID:v12 itemHasText:v15]| v16;
+    LOBYTE(v16) = [(SKGProcessor *)self updateSKGReindexerEmbeddingAttributes:attributesCopy record:recordCopy bundleID:dCopy itemHasText:v15]| v16;
   }
 
 LABEL_7:
@@ -4190,25 +4190,25 @@ LABEL_7:
   return v16 & 1;
 }
 
-- (BOOL)needsSKGReindexingForRecord:(id)a3 bundleID:(id)a4 processorFlags:(unint64_t)a5
+- (BOOL)needsSKGReindexingForRecord:(id)record bundleID:(id)d processorFlags:(unint64_t)flags
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  flagsCopy = flags;
+  recordCopy = record;
+  dCopy = d;
+  if ([recordCopy count])
   {
     v10 = +[SKGProcessor sharedProcessor];
-    v11 = [v10 recordIsValid:v8];
+    v11 = [v10 recordIsValid:recordCopy];
 
     if (v11)
     {
-      if (![(SKGProcessor *)self isUpdateFromSpotlightknowledged:v8])
+      if (![(SKGProcessor *)self isUpdateFromSpotlightknowledged:recordCopy])
       {
-        v14 = [(SKGProcessor *)self itemForRecordHasTextContent:v8];
-        if ((v5 & 2) != 0)
+        v14 = [(SKGProcessor *)self itemForRecordHasTextContent:recordCopy];
+        if ((flagsCopy & 2) != 0)
         {
-          v12 = [(SKGProcessor *)self needsSKGReindexerEmbeddingsForRecord:v8 bundleID:v9 itemHasText:v14];
-          if ((v5 & 4) == 0)
+          v12 = [(SKGProcessor *)self needsSKGReindexerEmbeddingsForRecord:recordCopy bundleID:dCopy itemHasText:v14];
+          if ((flagsCopy & 4) == 0)
           {
             goto LABEL_11;
           }
@@ -4217,29 +4217,29 @@ LABEL_7:
         else
         {
           v12 = 0;
-          if ((v5 & 4) == 0)
+          if ((flagsCopy & 4) == 0)
           {
 LABEL_11:
-            if ((v5 & 0x20) != 0)
+            if ((flagsCopy & 0x20) != 0)
             {
-              v12 |= [(SKGProcessor *)self needsSKGReindexerDocUnderstandingForRecord:v8 bundleID:v9 itemHasText:v14];
-              if ((v5 & 0x10) == 0)
+              v12 |= [(SKGProcessor *)self needsSKGReindexerDocUnderstandingForRecord:recordCopy bundleID:dCopy itemHasText:v14];
+              if ((flagsCopy & 0x10) == 0)
               {
                 goto LABEL_5;
               }
             }
 
-            else if ((v5 & 0x10) == 0)
+            else if ((flagsCopy & 0x10) == 0)
             {
               goto LABEL_5;
             }
 
-            LOBYTE(v12) = [(SKGProcessor *)self needsSKGReindexerSuggestedEventsForRecord:v8 bundleID:v9 itemHasText:v14]| v12;
+            LOBYTE(v12) = [(SKGProcessor *)self needsSKGReindexerSuggestedEventsForRecord:recordCopy bundleID:dCopy itemHasText:v14]| v12;
             goto LABEL_5;
           }
         }
 
-        v12 |= [(SKGProcessor *)self needsSKGReindexerKeyphrasesForRecord:v8 bundleID:v9 itemHasText:v14];
+        v12 |= [(SKGProcessor *)self needsSKGReindexerKeyphrasesForRecord:recordCopy bundleID:dCopy itemHasText:v14];
         goto LABEL_11;
       }
     }
@@ -4251,19 +4251,19 @@ LABEL_5:
   return v12 & 1;
 }
 
-- (BOOL)needsPriorityForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)needsPriorityForRecord:(id)record bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  recordCopy = record;
+  dCopy = d;
+  v8 = dCopy;
+  if (dCopy)
   {
-    v9 = v7;
+    v9 = dCopy;
   }
 
   else
   {
-    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
   }
 
   v10 = v9;
@@ -4277,56 +4277,56 @@ LABEL_5:
     v11 = &unk_1F0BDD0A8;
   }
 
-  v12 = [(SKGProcessor *)self recordIsCurrent:v6 toCalendarUnit:16 maxOffset:3 checkFuture:0 dateKeys:v11];
-  v13 = v12 | [(SKGProcessor *)self recordIsCurrent:v6 toCalendarUnit:8 maxOffset:3 checkFuture:1 dateKeys:&unk_1F0BDD0C0];
+  v12 = [(SKGProcessor *)self recordIsCurrent:recordCopy toCalendarUnit:16 maxOffset:3 checkFuture:0 dateKeys:v11];
+  v13 = v12 | [(SKGProcessor *)self recordIsCurrent:recordCopy toCalendarUnit:8 maxOffset:3 checkFuture:1 dateKeys:&unk_1F0BDD0C0];
 
   return v13 & 1;
 }
 
-- (void)clearKeyphrasesAttributes:(id)a3
+- (void)clearKeyphrasesAttributes:(id)attributes
 {
   v3 = *MEMORY[0x1E695E738];
-  v4 = a3;
-  [v4 setObject:v3 forKey:@"_kMDItemNeedsKeyphrases"];
-  [v4 setObject:v3 forKey:@"kMDItemKeyphraseLabels"];
-  [v4 setObject:v3 forKey:@"kMDItemKeyphraseConfidences"];
-  [v4 setObject:v3 forKey:@"kMDItemKeyphraseVersion"];
+  attributesCopy = attributes;
+  [attributesCopy setObject:v3 forKey:@"_kMDItemNeedsKeyphrases"];
+  [attributesCopy setObject:v3 forKey:@"kMDItemKeyphraseLabels"];
+  [attributesCopy setObject:v3 forKey:@"kMDItemKeyphraseConfidences"];
+  [attributesCopy setObject:v3 forKey:@"kMDItemKeyphraseVersion"];
 }
 
-- (void)completeKeyphrasesAttributes:(id)a3
+- (void)completeKeyphrasesAttributes:(id)attributes
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  attributesCopy = attributes;
   v6 = +[SKGProcessorContext sharedContext];
   v5 = [v3 numberWithInteger:{objc_msgSend(v6, "keyphraseVersion")}];
-  [v4 setObject:v5 forKey:@"kMDItemKeyphraseVersion"];
+  [attributesCopy setObject:v5 forKey:@"kMDItemKeyphraseVersion"];
 }
 
-- (BOOL)keyphraseRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8
+- (BOOL)keyphraseRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete
 {
-  v10 = a6;
-  v11 = a5;
+  contentCopy = content;
+  updateCopy = update;
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
+  processingCopy = processing;
+  dCopy = d;
   v16 = +[SKGProcessorContext sharedContext];
-  v17 = [v16 enableExtractions];
+  enableExtractions = [v16 enableExtractions];
 
-  if (!v17)
+  if (!enableExtractions)
   {
     goto LABEL_15;
   }
 
-  v31 = v11;
-  v32 = a7;
+  v31 = updateCopy;
+  clearCopy = clear;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
   v18 = +[SKGProcessorContext sharedContext];
-  v19 = [v18 keyphraseOptionalExtractionAttributes];
+  keyphraseOptionalExtractionAttributes = [v18 keyphraseOptionalExtractionAttributes];
 
-  v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v20 = [keyphraseOptionalExtractionAttributes countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v20)
   {
     goto LABEL_14;
@@ -4340,30 +4340,30 @@ LABEL_5:
     {
       if (*v34 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(keyphraseOptionalExtractionAttributes);
       }
 
       v24 = *(*(&v33 + 1) + 8 * i);
       if ([(__CFString *)v24 isEqualToString:@"kMDItemTitle"])
       {
-        if (![v15 isEqualToString:@"com.apple.mobilecal"])
+        if (![dCopy isEqualToString:@"com.apple.mobilecal"])
         {
           continue;
         }
 
-        v25 = self;
-        v26 = v14;
+        selfCopy2 = self;
+        v26 = processingCopy;
         v27 = @"kMDItemTitle";
       }
 
       else
       {
-        v25 = self;
-        v26 = v14;
+        selfCopy2 = self;
+        v26 = processingCopy;
         v27 = v24;
       }
 
-      if ([(SKGProcessor *)v25 recordContainsValue:v26 key:v27])
+      if ([(SKGProcessor *)selfCopy2 recordContainsValue:v26 key:v27])
       {
 
         v28 = 1;
@@ -4371,7 +4371,7 @@ LABEL_5:
       }
     }
 
-    v21 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v21 = [keyphraseOptionalExtractionAttributes countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v21)
     {
       continue;
@@ -4382,30 +4382,30 @@ LABEL_5:
 
 LABEL_14:
 
-  a7 = v32;
-  v11 = v31;
+  clear = clearCopy;
+  updateCopy = v31;
 LABEL_15:
-  if (v10)
+  if (contentCopy)
   {
-    if (a8 && [SKGProcessor textContentLengthForRecord:v14]<= 0x13)
+    if (complete && [SKGProcessor textContentLengthForRecord:processingCopy]<= 0x13)
     {
-      *a8 = 1;
+      *complete = 1;
     }
 
     v28 = 1;
-    if (a7 && v11)
+    if (clear && updateCopy)
     {
-      *a7 = 1;
+      *clear = 1;
     }
   }
 
   else
   {
     v28 = 0;
-    if (a7 && !v11)
+    if (clear && !updateCopy)
     {
       v28 = 0;
-      *a7 = 1;
+      *clear = 1;
     }
   }
 
@@ -4415,26 +4415,26 @@ LABEL_26:
   return v28;
 }
 
-- (BOOL)needsSKGReindexerKeyphrasesForRecord:(id)a3 bundleID:(id)a4 itemHasText:(BOOL)a5
+- (BOOL)needsSKGReindexerKeyphrasesForRecord:(id)record bundleID:(id)d itemHasText:(BOOL)text
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  recordCopy = record;
+  dCopy = d;
   v10 = +[SKGProcessorContext sharedContext];
-  v11 = [v10 enableKeyphrases];
+  enableKeyphrases = [v10 enableKeyphrases];
 
-  if (v11)
+  if (enableKeyphrases)
   {
-    if (v9)
+    if (dCopy)
     {
-      v12 = v9;
-      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:v8];
+      v12 = dCopy;
+      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:recordCopy];
     }
 
     else
     {
-      v12 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v8];
-      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:v8];
+      v12 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
+      v13 = [(SKGProcessor *)self copyDomainIdentifierFromRecord:recordCopy];
       if (!v12)
       {
         goto LABEL_7;
@@ -4453,14 +4453,14 @@ LABEL_18:
     }
 
 LABEL_7:
-    v29 = v5;
-    v17 = [(SKGProcessor *)self copyKeyphraseVersionFromRecord:v8];
+    v29 = textCopy;
+    v17 = [(SKGProcessor *)self copyKeyphraseVersionFromRecord:recordCopy];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 intValue];
+      intValue = [v17 intValue];
       v20 = +[SKGProcessorContext sharedContext];
-      v21 = [v20 keyphraseVersion] == v19;
+      v21 = [v20 keyphraseVersion] == intValue;
     }
 
     else
@@ -4468,13 +4468,13 @@ LABEL_7:
       v21 = 0;
     }
 
-    v22 = [(SKGProcessor *)self copyNumberValueFromRecord:v8 key:@"_kMDItemUpdaterVersion"];
+    v22 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemUpdaterVersion"];
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 intValue];
+      intValue2 = [v22 intValue];
       v25 = +[SKGProcessorContext sharedContext];
-      v26 = [v25 textVersion] != v24;
+      v26 = [v25 textVersion] != intValue2;
     }
 
     else
@@ -4483,7 +4483,7 @@ LABEL_7:
     }
 
     v30 = 0;
-    v27 = [(SKGProcessor *)self keyphraseRecordNeedsProcessing:v8 bundleID:v12 isUpdate:0 hasTextContent:v29 shouldClear:&v30 + 1 shouldMarkComplete:&v30];
+    v27 = [(SKGProcessor *)self keyphraseRecordNeedsProcessing:recordCopy bundleID:v12 isUpdate:0 hasTextContent:v29 shouldClear:&v30 + 1 shouldMarkComplete:&v30];
     v14 = 0;
     if (v27 && (!v21 || v26))
     {
@@ -4499,17 +4499,17 @@ LABEL_19:
   return v14 & 1;
 }
 
-- (BOOL)needsKeyphrasesForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)needsKeyphrasesForRecord:(id)record bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  recordCopy = record;
+  dCopy = d;
+  if (![recordCopy count])
   {
     goto LABEL_8;
   }
 
   v8 = +[SKGProcessor sharedProcessor];
-  v9 = [v8 recordIsValid:v6];
+  v9 = [v8 recordIsValid:recordCopy];
 
   if (!v9)
   {
@@ -4517,22 +4517,22 @@ LABEL_19:
   }
 
   v10 = +[SKGProcessorContext sharedContext];
-  v11 = [v10 enableKeyphrases];
+  enableKeyphrases = [v10 enableKeyphrases];
 
-  if (!v11)
+  if (!enableKeyphrases)
   {
     goto LABEL_8;
   }
 
   v12 = +[SKGProcessorContext sharedContext];
-  v13 = [v12 enableExtractions];
+  enableExtractions = [v12 enableExtractions];
 
-  if (v13)
+  if (enableExtractions)
   {
     goto LABEL_10;
   }
 
-  v14 = [(SKGProcessor *)self copyProtectionClassFromRecord:v6];
+  v14 = [(SKGProcessor *)self copyProtectionClassFromRecord:recordCopy];
   if (!v14)
   {
     goto LABEL_10;
@@ -4553,28 +4553,28 @@ LABEL_22:
   if ((v16 & 1) == 0)
   {
 LABEL_10:
-    v19 = [(SKGProcessor *)self copyKeyphraseVersionFromRecord:v6];
+    v19 = [(SKGProcessor *)self copyKeyphraseVersionFromRecord:recordCopy];
     v15 = v19;
     if (v19)
     {
-      v20 = [v19 intValue];
+      intValue = [v19 intValue];
       v21 = +[SKGProcessorContext sharedContext];
-      v22 = [v21 keyphraseVersion];
+      keyphraseVersion = [v21 keyphraseVersion];
 
-      if (v22 == v20)
+      if (keyphraseVersion == intValue)
       {
         goto LABEL_12;
       }
     }
 
-    if (v7)
+    if (dCopy)
     {
-      v23 = v7;
+      v23 = dCopy;
     }
 
     else
     {
-      v23 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+      v23 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
       if (!v23)
       {
         goto LABEL_17;
@@ -4593,7 +4593,7 @@ LABEL_21:
     }
 
 LABEL_17:
-    v17 = [(SKGProcessor *)self recordContainsValue:v6 key:@"kMDItemTextContent"]|| [(SKGProcessor *)self recordContainsValue:v6 key:@"_kMDItemSnippet"];
+    v17 = [(SKGProcessor *)self recordContainsValue:recordCopy key:@"kMDItemTextContent"]|| [(SKGProcessor *)self recordContainsValue:recordCopy key:@"_kMDItemSnippet"];
     goto LABEL_21;
   }
 
@@ -4604,15 +4604,15 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)shouldGenerateKeyphrasesForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)shouldGenerateKeyphrasesForRecord:(id)record bundleID:(id)d
 {
-  v5 = a3;
-  v6 = [(SKGProcessor *)self copyFileProviderIDFromRecord:v5];
+  recordCopy = record;
+  v6 = [(SKGProcessor *)self copyFileProviderIDFromRecord:recordCopy];
 
   if (v6)
   {
-    v7 = [(SKGProcessor *)self copyNumberValueFromRecord:v5 key:@"_kMDItemRequiresImport"];
-    v8 = [(SKGProcessor *)self copyContentTypeFromRecord:v5];
+    v7 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemRequiresImport"];
+    v8 = [(SKGProcessor *)self copyContentTypeFromRecord:recordCopy];
     v9 = v8;
     v10 = v7 && v8 && [v7 BOOLValue] && !objc_msgSend(v9, "isEqualToString:", @"public.folder");
   }
@@ -4625,18 +4625,18 @@ LABEL_9:
   return v10;
 }
 
-+ (BOOL)docContentExceedsMaxAllowedSize:(id)a3
++ (BOOL)docContentExceedsMaxAllowedSize:(id)size
 {
-  v3 = a3;
-  v4 = [SKGProcessor getHTMLContentByteSizeForRecord:v3];
-  v5 = [SKGProcessor getTextContentByteSizeForRecord:v3];
+  sizeCopy = size;
+  v4 = [SKGProcessor getHTMLContentByteSizeForRecord:sizeCopy];
+  v5 = [SKGProcessor getTextContentByteSizeForRecord:sizeCopy];
 
   return v5 + v4 > 0x100000;
 }
 
-+ (BOOL)docIsTrashOrJunkMail:(id)a3
++ (BOOL)docIsTrashOrJunkMail:(id)mail
 {
-  v3 = [SKGProcessor copyMailboxesFromRecord:a3];
+  v3 = [SKGProcessor copyMailboxesFromRecord:mail];
   if ([v3 containsObject:*MEMORY[0x1E6963B68]])
   {
     v4 = 1;
@@ -4650,36 +4650,36 @@ LABEL_9:
   return v4;
 }
 
-- (void)clearSuggestedEventsAttributes:(id)a3
+- (void)clearSuggestedEventsAttributes:(id)attributes
 {
   v3 = *MEMORY[0x1E695E738];
-  v4 = a3;
-  [v4 setObject:v3 forKey:@"_kMDItemNeedsSuggestedEvents"];
-  [v4 setObject:v3 forKey:@"kMDItemSuggestedEventsVersion"];
+  attributesCopy = attributes;
+  [attributesCopy setObject:v3 forKey:@"_kMDItemNeedsSuggestedEvents"];
+  [attributesCopy setObject:v3 forKey:@"kMDItemSuggestedEventsVersion"];
 }
 
-- (void)completeSuggestedEventsAttributes:(id)a3
+- (void)completeSuggestedEventsAttributes:(id)attributes
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  attributesCopy = attributes;
   v6 = +[SKGProcessorContext sharedContext];
   v5 = [v3 numberWithInteger:{objc_msgSend(v6, "suggestedEventsVersion")}];
-  [v4 setObject:v5 forKey:@"kMDItemSuggestedEventsVersion"];
+  [attributesCopy setObject:v5 forKey:@"kMDItemSuggestedEventsVersion"];
 }
 
-- (BOOL)suggestedEventsRecordNeedsProcessing:(id)a3 bundleID:(id)a4 isUpdate:(BOOL)a5 hasTextContent:(BOOL)a6 shouldClear:(BOOL *)a7 shouldMarkComplete:(BOOL *)a8
+- (BOOL)suggestedEventsRecordNeedsProcessing:(id)processing bundleID:(id)d isUpdate:(BOOL)update hasTextContent:(BOOL)content shouldClear:(BOOL *)clear shouldMarkComplete:(BOOL *)complete
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [SKGProcessor recordHasHTMLContent:v10];
-  v12 = v9 || v11;
-  if (!a8 || !v9 && !v11)
+  contentCopy = content;
+  processingCopy = processing;
+  v11 = [SKGProcessor recordHasHTMLContent:processingCopy];
+  v12 = contentCopy || v11;
+  if (!complete || !contentCopy && !v11)
   {
     goto LABEL_14;
   }
 
   v13 = v11;
-  if (!v9)
+  if (!contentCopy)
   {
     if (!v11)
     {
@@ -4689,11 +4689,11 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v14 = [SKGProcessor textContentLengthForRecord:v10];
+  v14 = [SKGProcessor textContentLengthForRecord:processingCopy];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL || v13)
   {
 LABEL_8:
-    if (![SKGProcessor docContentExceedsMaxAllowedSize:v10])
+    if (![SKGProcessor docContentExceedsMaxAllowedSize:processingCopy])
     {
       goto LABEL_12;
     }
@@ -4710,13 +4710,13 @@ LABEL_8:
   if (v14 >= 0x989680)
   {
 LABEL_11:
-    *a8 = 1;
+    *complete = 1;
   }
 
 LABEL_12:
-  if ([SKGProcessor docIsTrashOrJunkMail:v10])
+  if ([SKGProcessor docIsTrashOrJunkMail:processingCopy])
   {
-    *a8 = 1;
+    *complete = 1;
   }
 
 LABEL_14:
@@ -4724,34 +4724,34 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)needsSuggestedEventsForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)needsSuggestedEventsForRecord:(id)record bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  recordCopy = record;
+  dCopy = d;
+  if ([recordCopy count])
   {
     v8 = +[SKGProcessor sharedProcessor];
-    v9 = [v8 recordIsValid:v6];
+    v9 = [v8 recordIsValid:recordCopy];
 
     if (v9)
     {
-      v10 = [(SKGProcessor *)self copySuggestedEventsVersionFromRecord:v6];
+      v10 = [(SKGProcessor *)self copySuggestedEventsVersionFromRecord:recordCopy];
       v11 = v10;
-      if (v10 && (v12 = [v10 intValue], +[SKGProcessorContext sharedContext](SKGProcessorContext, "sharedContext"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "suggestedEventsVersion"), v13, v14 == v12) || -[SKGProcessor recordContainsValue:key:](self, "recordContainsValue:key:", v6, @"_kMDItemNeedsSuggestedEvents"))
+      if (v10 && (v12 = [v10 intValue], +[SKGProcessorContext sharedContext](SKGProcessorContext, "sharedContext"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "suggestedEventsVersion"), v13, v14 == v12) || -[SKGProcessor recordContainsValue:key:](self, "recordContainsValue:key:", recordCopy, @"_kMDItemNeedsSuggestedEvents"))
       {
         v15 = 0;
       }
 
       else
       {
-        if (v7)
+        if (dCopy)
         {
-          v16 = v7;
+          v16 = dCopy;
         }
 
         else
         {
-          v16 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+          v16 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
           if (!v16)
           {
             v15 = 1;
@@ -4760,8 +4760,8 @@ LABEL_14:
         }
 
         v17 = +[SKGProcessorContext sharedContext];
-        v18 = [v17 suggestedEventsIncludeBundles];
-        v15 = [v18 containsObject:v16];
+        suggestedEventsIncludeBundles = [v17 suggestedEventsIncludeBundles];
+        v15 = [suggestedEventsIncludeBundles containsObject:v16];
       }
 
 LABEL_12:
@@ -4776,19 +4776,19 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)shouldGenerateSuggestedEventsForRecord:(id)a3 bundleID:(id)a4
+- (BOOL)shouldGenerateSuggestedEventsForRecord:(id)record bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  recordCopy = record;
+  dCopy = d;
+  v8 = dCopy;
+  if (dCopy)
   {
-    v9 = v7;
+    v9 = dCopy;
   }
 
   else
   {
-    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:v6];
+    v9 = [(SKGProcessor *)self copyBundleIdentifierFromRecord:recordCopy];
     if (!v9)
     {
       goto LABEL_5;
@@ -4796,8 +4796,8 @@ LABEL_13:
   }
 
   v10 = +[SKGProcessorContext sharedContext];
-  v11 = [v10 suggestedEventsIncludeBundles];
-  v12 = [v11 containsObject:v9];
+  suggestedEventsIncludeBundles = [v10 suggestedEventsIncludeBundles];
+  v12 = [suggestedEventsIncludeBundles containsObject:v9];
 
   if (!v12)
   {
@@ -4805,12 +4805,12 @@ LABEL_13:
   }
 
 LABEL_5:
-  if (![SKGProcessor recordHasTextContent:v6]&& ![SKGProcessor recordHasHTMLContent:v6])
+  if (![SKGProcessor recordHasTextContent:recordCopy]&& ![SKGProcessor recordHasHTMLContent:recordCopy])
   {
     goto LABEL_14;
   }
 
-  if ([SKGProcessor docContentExceedsMaxAllowedSize:v6])
+  if ([SKGProcessor docContentExceedsMaxAllowedSize:recordCopy])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -4826,14 +4826,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![SKGProcessor docIsTrashOrJunkMail:v6])
+  if (![SKGProcessor docIsTrashOrJunkMail:recordCopy])
   {
-    v18 = [(SKGProcessor *)self copyFileProviderIDFromRecord:v6];
+    v18 = [(SKGProcessor *)self copyFileProviderIDFromRecord:recordCopy];
 
     if (v18)
     {
-      v19 = [(SKGProcessor *)self copyNumberValueFromRecord:v6 key:@"_kMDItemRequiresImport"];
-      v20 = [(SKGProcessor *)self copyContentTypeFromRecord:v6];
+      v19 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemRequiresImport"];
+      v20 = [(SKGProcessor *)self copyContentTypeFromRecord:recordCopy];
       v21 = v20;
       if (!v19 || !v20 || ![v19 BOOLValue] || objc_msgSend(v21, "isEqualToString:", @"public.folder"))
       {
@@ -4846,7 +4846,7 @@ LABEL_28:
 
     else
     {
-      v22 = [(SKGProcessor *)self copyNumberValueFromRecord:v6 key:@"_kMDItemTextContentIndexExists"];
+      v22 = [(SKGProcessor *)self copyNumberValueFromRecord:recordCopy key:@"_kMDItemTextContentIndexExists"];
       v19 = v22;
       if (v22 && [v22 intValue])
       {
@@ -4856,10 +4856,10 @@ LABEL_29:
         goto LABEL_15;
       }
 
-      v21 = [(SKGProcessor *)self copySnippetFromRecord:v6];
+      v21 = [(SKGProcessor *)self copySnippetFromRecord:recordCopy];
       if (!v21)
       {
-        v23 = [(SKGProcessor *)self copyTextContentFromRecord:v6];
+        v23 = [(SKGProcessor *)self copyTextContentFromRecord:recordCopy];
         v16 = v23 != 0;
 
         goto LABEL_28;

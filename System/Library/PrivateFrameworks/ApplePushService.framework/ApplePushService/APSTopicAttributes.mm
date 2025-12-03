@@ -1,25 +1,25 @@
 @interface APSTopicAttributes
-- (APSTopicAttributes)initWithFilter:(int64_t)a3 darkWakeEnabled:(BOOL)a4 pushWakeEnabled:(BOOL)a5 criticalWakeEnabled:(BOOL)a6 ultraConstrainedEnabled:(BOOL)a7;
+- (APSTopicAttributes)initWithFilter:(int64_t)filter darkWakeEnabled:(BOOL)enabled pushWakeEnabled:(BOOL)wakeEnabled criticalWakeEnabled:(BOOL)criticalWakeEnabled ultraConstrainedEnabled:(BOOL)constrainedEnabled;
 - (id)description;
-- (void)setCriticalWakeEnabled:(BOOL)a3;
-- (void)setPushWakeEnabled:(BOOL)a3;
-- (void)setUltraConstrainedEnabled:(BOOL)a3;
+- (void)setCriticalWakeEnabled:(BOOL)enabled;
+- (void)setPushWakeEnabled:(BOOL)enabled;
+- (void)setUltraConstrainedEnabled:(BOOL)enabled;
 @end
 
 @implementation APSTopicAttributes
 
-- (APSTopicAttributes)initWithFilter:(int64_t)a3 darkWakeEnabled:(BOOL)a4 pushWakeEnabled:(BOOL)a5 criticalWakeEnabled:(BOOL)a6 ultraConstrainedEnabled:(BOOL)a7
+- (APSTopicAttributes)initWithFilter:(int64_t)filter darkWakeEnabled:(BOOL)enabled pushWakeEnabled:(BOOL)wakeEnabled criticalWakeEnabled:(BOOL)criticalWakeEnabled ultraConstrainedEnabled:(BOOL)constrainedEnabled
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  constrainedEnabledCopy = constrainedEnabled;
+  criticalWakeEnabledCopy = criticalWakeEnabled;
+  wakeEnabledCopy = wakeEnabled;
   v16.receiver = self;
   v16.super_class = APSTopicAttributes;
   result = [(APSTopicAttributes *)&v16 init];
   if (result)
   {
-    result->_filter = a3;
-    if (v9)
+    result->_filter = filter;
+    if (wakeEnabledCopy)
     {
       v13 = 2;
     }
@@ -29,7 +29,7 @@
       v13 = 0;
     }
 
-    if (v8)
+    if (criticalWakeEnabledCopy)
     {
       v14 = 4;
     }
@@ -39,7 +39,7 @@
       v14 = 0;
     }
 
-    if (v7)
+    if (constrainedEnabledCopy)
     {
       v15 = 8;
     }
@@ -49,7 +49,7 @@
       v15 = 0;
     }
 
-    *(result + 16) = v13 | a4 | v14 | v15 | *(result + 16) & 0xF0;
+    *(result + 16) = v13 | enabled | v14 | v15 | *(result + 16) & 0xF0;
   }
 
   return result;
@@ -107,9 +107,9 @@
   return v10;
 }
 
-- (void)setPushWakeEnabled:(BOOL)a3
+- (void)setPushWakeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -122,9 +122,9 @@
   *(self + 16) = *(self + 16) & 0xFD | v3;
 }
 
-- (void)setCriticalWakeEnabled:(BOOL)a3
+- (void)setCriticalWakeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -137,9 +137,9 @@
   *(self + 16) = *(self + 16) & 0xFB | v3;
 }
 
-- (void)setUltraConstrainedEnabled:(BOOL)a3
+- (void)setUltraConstrainedEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }

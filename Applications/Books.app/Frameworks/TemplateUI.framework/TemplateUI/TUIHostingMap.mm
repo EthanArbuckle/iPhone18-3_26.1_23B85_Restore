@@ -1,27 +1,27 @@
 @interface TUIHostingMap
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMap:(id)a3;
-- (TUIHostingMap)initWithMap:(id)a3 order:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMap:(id)map;
+- (TUIHostingMap)initWithMap:(id)map order:(id)order;
 - (id)description;
-- (id)reverseEnumeratorForGroup:(id)a3;
+- (id)reverseEnumeratorForGroup:(id)group;
 @end
 
 @implementation TUIHostingMap
 
-- (TUIHostingMap)initWithMap:(id)a3 order:(id)a4
+- (TUIHostingMap)initWithMap:(id)map order:(id)order
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  orderCopy = order;
   v37.receiver = self;
   v37.super_class = TUIHostingMap;
   v8 = [(TUIHostingMap *)&v37 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [mapCopy copy];
     map = v8->_map;
     v8->_map = v9;
 
-    v11 = [v7 copy];
+    v11 = [orderCopy copy];
     order = v8->_order;
     v8->_order = v11;
 
@@ -53,16 +53,16 @@
             }
 
             v21 = *(*(&v33 + 1) + 8 * i);
-            v22 = [v6 objectForKeyedSubscript:{v21, v29}];
-            v23 = [v22 groupIdentifier];
+            v22 = [mapCopy objectForKeyedSubscript:{v21, v29}];
+            groupIdentifier = [v22 groupIdentifier];
 
-            if (v23)
+            if (groupIdentifier)
             {
-              v24 = [v15 objectForKeyedSubscript:v23];
+              v24 = [v15 objectForKeyedSubscript:groupIdentifier];
               if (!v24)
               {
                 v24 = objc_opt_new();
-                [v15 setObject:v24 forKeyedSubscript:v23];
+                [v15 setObject:v24 forKeyedSubscript:groupIdentifier];
               }
 
               [v24 addObject:v21];
@@ -79,7 +79,7 @@
       v30[1] = 3221225472;
       v30[2] = sub_18FC0;
       v30[3] = &unk_25E038;
-      v31 = v6;
+      v31 = mapCopy;
       v8 = v29;
       v25 = v29;
       v32 = v25;
@@ -93,37 +93,37 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || v4 == 0)
+  if (v5 != objc_opt_class() || equalCopy == 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(TUIHostingMap *)self isEqualToMap:v4];
+    v7 = [(TUIHostingMap *)self isEqualToMap:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToMap:(id)a3
+- (BOOL)isEqualToMap:(id)map
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  mapCopy = map;
+  v6 = mapCopy;
+  if (mapCopy)
   {
     map = self->_map;
-    v8 = [v5 map];
+    v8 = [mapCopy map];
     if (map == v8 || (v9 = self->_map, [v6 map], v3 = objc_claimAutoreleasedReturnValue(), -[NSDictionary isEqualToDictionary:](v9, "isEqualToDictionary:", v3)))
     {
       order = self->_order;
-      v12 = [v6 order];
-      v13 = v12;
-      if (order == v12)
+      order = [v6 order];
+      v13 = order;
+      if (order == order)
       {
 
         v10 = 1;
@@ -132,8 +132,8 @@
       else
       {
         v14 = self->_order;
-        v15 = [v6 order];
-        v10 = [(NSArray *)v14 isEqualToArray:v15];
+        order2 = [v6 order];
+        v10 = [(NSArray *)v14 isEqualToArray:order2];
       }
 
       if (map == v8)
@@ -157,12 +157,12 @@ LABEL_12:
   return v10;
 }
 
-- (id)reverseEnumeratorForGroup:(id)a3
+- (id)reverseEnumeratorForGroup:(id)group
 {
-  v3 = [(NSDictionary *)self->_groupMap objectForKeyedSubscript:a3];
-  v4 = [v3 reverseObjectEnumerator];
+  v3 = [(NSDictionary *)self->_groupMap objectForKeyedSubscript:group];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
 
-  return v4;
+  return reverseObjectEnumerator;
 }
 
 - (id)description

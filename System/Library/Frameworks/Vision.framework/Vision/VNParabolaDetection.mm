@@ -1,10 +1,10 @@
 @interface VNParabolaDetection
-+ (BOOL)updateMinMaxXYOfParabola:(double *)a3 withPoint:;
-- (BOOL)isValidRadius:(float)a3 withPrecedingRadius:;
++ (BOOL)updateMinMaxXYOfParabola:(double *)parabola withPoint:;
+- (BOOL)isValidRadius:(float)radius withPrecedingRadius:;
 - (VNParabolaDetection)init;
-- (float)getRsquareOfEquation:(const double *)a3 yValues:(__n128)a4 equationConstants:;
+- (float)getRsquareOfEquation:(const double *)equation yValues:(__n128)values equationConstants:;
 - (id).cxx_construct;
-- (uint64_t)processContoursForParabolas:(uint64_t)a3 withPTS:(uint64_t)a4 objectMinimumPixelSize:(uint64_t)a5 bufferWidth:(uint64_t)a6 bufferHeight:;
+- (uint64_t)processContoursForParabolas:(uint64_t)parabolas withPTS:(uint64_t)s objectMinimumPixelSize:(uint64_t)size bufferWidth:(uint64_t)width bufferHeight:;
 @end
 
 @implementation VNParabolaDetection
@@ -63,7 +63,7 @@
   return v3;
 }
 
-- (uint64_t)processContoursForParabolas:(uint64_t)a3 withPTS:(uint64_t)a4 objectMinimumPixelSize:(uint64_t)a5 bufferWidth:(uint64_t)a6 bufferHeight:
+- (uint64_t)processContoursForParabolas:(uint64_t)parabolas withPTS:(uint64_t)s objectMinimumPixelSize:(uint64_t)size bufferWidth:(uint64_t)width bufferHeight:
 {
   v312 = *MEMORY[0x1E69E9840];
   v7 = *a2;
@@ -71,21 +71,21 @@
   v9 = a2->i64[0];
   if (v8 == a2->i64[0])
   {
-    return a1 + 184;
+    return self + 184;
   }
 
-  if (a4)
+  if (s)
   {
-    *(a1 + 236) = a4;
+    *(self + 236) = s;
   }
 
-  if (*(a1 + 124) != a5 || *(a1 + 128) != a6)
+  if (*(self + 124) != size || *(self + 128) != width)
   {
-    *(a1 + 124) = a5;
-    *(a1 + 128) = a6;
-    *v7.i8 = vcvt_f32_s32(__PAIR64__(a6, a5));
+    *(self + 124) = size;
+    *(self + 128) = width;
+    *v7.i8 = vcvt_f32_s32(__PAIR64__(width, size));
     v10 = 152;
-    if (a5 <= a6)
+    if (size <= width)
     {
       v11 = 152;
     }
@@ -95,24 +95,24 @@
       v11 = 148;
     }
 
-    if (a5 <= a6)
+    if (size <= width)
     {
       v10 = 148;
     }
 
-    v12.i32[0] = *(a1 + v11);
-    v12.i32[1] = *(a1 + v10);
+    v12.i32[0] = *(self + v11);
+    v12.i32[1] = *(self + v10);
     *v7.i8 = vdiv_f32(*v7.i8, v12);
-    *(a1 + 132) = v7.i64[0];
-    *(a1 + 216) = vcvtq_s32_f32(vmulq_f32(vzip1q_s32(v7, v7), vcvtq_f32_s32(*(a1 + 216))));
-    v13 = *(a1 + 104);
-    v14 = vmul_lane_f32(*(a1 + 112), *v7.i8, 1);
-    *(a1 + 120) = vmuls_lane_f32(*(a1 + 120), *v7.i8, 1);
+    *(self + 132) = v7.i64[0];
+    *(self + 216) = vcvtq_s32_f32(vmulq_f32(vzip1q_s32(v7, v7), vcvtq_f32_s32(*(self + 216))));
+    v13 = *(self + 104);
+    v14 = vmul_lane_f32(*(self + 112), *v7.i8, 1);
+    *(self + 120) = vmuls_lane_f32(*(self + 120), *v7.i8, 1);
     v15 = vcvt_s32_f32(vmul_f32(*v7.i8, vcvt_f32_s32(v13)));
-    *(a1 + 104) = v15;
-    *(a1 + 112) = v14;
-    *(a1 + 44) = v15;
-    *(a1 + 164) = fmaxf(*v7.i32, *&v7.i32[1]) * *(a1 + 164);
+    *(self + 104) = v15;
+    *(self + 112) = v14;
+    *(self + 44) = v15;
+    *(self + 164) = fmaxf(*v7.i32, *&v7.i32[1]) * *(self + 164);
   }
 
   v16 = 0;
@@ -123,8 +123,8 @@
     v17 = *v9;
     v18 = *(v9 + 8);
     v19 = *(v9 + 16);
-    *v268 = *a3;
-    *&v268[16] = *(a3 + 16);
+    *v268 = *parabolas;
+    *&v268[16] = *(parabolas + 16);
     CMTimeMake(&v281[16], 0, 30);
     *v281 = v17;
     *&v281[8] = v18;
@@ -194,19 +194,19 @@
   }
 
   while (v9 != v8);
-  v30 = *(a1 + 96);
+  v30 = *(self + 96);
   if (v30)
   {
-    v31 = *(a1 + 88);
-    v32 = *(a1 + 64);
+    v31 = *(self + 88);
+    v32 = *(self + 64);
     v33 = *(v32[(v30 + v31 - 1) / 0xAA] + 3 * v30 + 3 * v31 + -510 * ((v30 + v31 - 1) / 0xAA) - 3);
     v34 = MEMORY[0x1E695EFF8];
-    if ((*a3 / *(a3 + 8)) - (*(v33 + 16) / *(v33 + 24)) > *(a1 + 40))
+    if ((*parabolas / *(parabolas + 8)) - (*(v33 + 16) / *(v33 + 24)) > *(self + 40))
     {
-      v35 = *(a1 + 72);
+      v35 = *(self + 72);
       if (v35 == v32)
       {
-        v35 = *(a1 + 64);
+        v35 = *(self + 64);
       }
 
       else
@@ -238,21 +238,21 @@
           }
 
           while (v38 != v39);
-          v32 = *(a1 + 64);
-          v35 = *(a1 + 72);
+          v32 = *(self + 64);
+          v35 = *(self + 72);
         }
       }
 
-      *(a1 + 96) = 0;
+      *(self + 96) = 0;
       v48 = v35 - v32;
       if (v48 >= 3)
       {
         do
         {
           operator delete(*v32);
-          v49 = *(a1 + 72);
-          v32 = (*(a1 + 64) + 8);
-          *(a1 + 64) = v32;
+          v49 = *(self + 72);
+          v32 = (*(self + 64) + 8);
+          *(self + 64) = v32;
           v48 = (v49 - v32) >> 3;
         }
 
@@ -274,9 +274,9 @@
         v50 = 170;
       }
 
-      *(a1 + 88) = v50;
+      *(self + 88) = v50;
 LABEL_60:
-      sanitize(v281, &v310, *(a1 + 44), *(a1 + 48));
+      sanitize(v281, &v310, *(self + 44), *(self + 48));
       v42 = *v281;
       if (*&v281[8] == *v281)
       {
@@ -294,23 +294,23 @@ LABEL_60:
       {
         *(v43 + 8) = v44;
         operator delete(v44);
-        v31 = *(a1 + 88);
-        v30 = *(a1 + 96);
+        v31 = *(self + 88);
+        v30 = *(self + 96);
       }
 
-      *(a1 + 88) = v31 + 1;
-      *(a1 + 96) = v30 - 1;
+      *(self + 88) = v31 + 1;
+      *(self + 96) = v30 - 1;
       if (v31 + 1 >= 0x154)
       {
-        operator delete(**(a1 + 64));
-        *(a1 + 64) += 8;
-        *(a1 + 88) -= 170;
+        operator delete(**(self + 64));
+        *(self + 64) += 8;
+        *(self + 88) -= 170;
       }
 
       memset(v281, 0, 24);
-      sanitize(v268, &v310, *(a1 + 44), *(a1 + 48));
+      sanitize(v268, &v310, *(self + 44), *(self + 48));
       v45 = *v268;
-      sanitizeAllFrames(v268, (a1 + 56), *v268, *&v268[8], *(a1 + 44), *(a1 + 48));
+      sanitizeAllFrames(v268, (self + 56), *v268, *&v268[8], *(self + 44), *(self + 48));
       v46 = *v268;
       *v281 = *v268;
       *&v281[8] = *&v268[8];
@@ -328,9 +328,9 @@ LABEL_60:
       }
 
       memset(v281, 0, 24);
-      sanitize(v268, &v310, *(a1 + 44), *(a1 + 48));
+      sanitize(v268, &v310, *(self + 44), *(self + 48));
       v45 = *v268;
-      sanitizeAllFrames(v268, (a1 + 56), *v268, *&v268[8], *(a1 + 44), *(a1 + 48));
+      sanitizeAllFrames(v268, (self + 56), *v268, *&v268[8], *(self + 44), *(self + 48));
       v46 = *v268;
       *v281 = *v268;
       *&v281[8] = *&v268[8];
@@ -353,11 +353,11 @@ LABEL_48:
       }
     }
 
-    std::deque<std::vector<CGPointWithPts>>::push_back((a1 + 56), v281);
+    std::deque<std::vector<CGPointWithPts>>::push_back((self + 56), v281);
     goto LABEL_48;
   }
 
-  sanitize(v281, &v310, *(a1 + 44), *(a1 + 48));
+  sanitize(v281, &v310, *(self + 44), *(self + 48));
   v34 = MEMORY[0x1E695EFF8];
   v42 = *v281;
   if (*&v281[8] == *v281)
@@ -366,7 +366,7 @@ LABEL_48:
   }
 
 LABEL_61:
-  std::deque<std::vector<CGPointWithPts>>::push_back((a1 + 56), v281);
+  std::deque<std::vector<CGPointWithPts>>::push_back((self + 56), v281);
 LABEL_62:
   if (v42)
   {
@@ -381,22 +381,22 @@ LABEL_65:
     operator delete(*&v310.f64[0]);
   }
 
-  if (!*(a1 + 32))
+  if (!*(self + 32))
   {
     goto LABEL_320;
   }
 
-  v51 = *a3;
-  v52 = *(a3 + 8);
-  v279 = *(a3 + 12);
-  v280 = *(a3 + 20);
+  v51 = *parabolas;
+  v52 = *(parabolas + 8);
+  v279 = *(parabolas + 12);
+  v280 = *(parabolas + 20);
   v273 = 0;
   v274 = 0;
   v275 = 0;
-  v54 = (a1 + 16);
-  v53 = *(a1 + 16);
-  v55 = (a1 + 24);
-  if (v53 == (a1 + 24))
+  v54 = (self + 16);
+  v53 = *(self + 16);
+  v55 = (self + 24);
+  if (v53 == (self + 24))
   {
     goto LABEL_262;
   }
@@ -416,14 +416,14 @@ LABEL_65:
     }
 
     v259 = v53 + 7;
-    v59 = (v57 - v58) * *(a1 + 208);
-    if (v59 > *(a1 + 232))
+    v59 = (v57 - v58) * *(self + 208);
+    if (v59 > *(self + 232))
     {
       std::vector<int>::push_back[abi:ne200100](&v273, v53 + 8);
       goto LABEL_180;
     }
 
-    v60 = *(a1 + 144);
+    v60 = *(self + 144);
     v256 = *(v53 + 5);
     *v281 = *v34;
     CMTimeMake(&v281[16], 0, 30);
@@ -549,20 +549,20 @@ LABEL_90:
       {
         v83 = *v78;
         v84 = vabdd_f64(*v78, *(v67 + 18));
-        if (v84 >= *(a1 + 220))
+        if (v84 >= *(self + 220))
         {
           goto LABEL_133;
         }
 
         v85 = *(v78 + 8);
         v86 = vabdd_f64(v85, *(v67 + 19));
-        if (v86 >= *(a1 + 228) || v84 <= *(a1 + 216) && v86 <= *(a1 + 224))
+        if (v86 >= *(self + 228) || v84 <= *(self + 216) && v86 <= *(self + 224))
         {
           goto LABEL_133;
         }
 
         v87 = *(v78 + 16);
-        if (![(VNParabolaDetection *)a1 isValidRadius:v87 withPrecedingRadius:*(v53 + 200)])
+        if (![(VNParabolaDetection *)self isValidRadius:v87 withPrecedingRadius:*(v53 + 200)])
         {
           goto LABEL_133;
         }
@@ -581,7 +581,7 @@ LABEL_90:
           {
             v94 = vsubq_f64(*&v88[2 * v91], *v78);
             v95 = sqrt(vaddvq_f64(vmulq_f64(v94, v94)));
-            if (v95 < v80 && v95 < (2 * *(a1 + 236)))
+            if (v95 < v80 && v95 < (2 * *(self + 236)))
             {
               v310 = *v78;
               *&v311[24] = v87;
@@ -654,10 +654,10 @@ LABEL_133:
       while (v78 != v77);
     }
 
-    v100 = *(a1 + 120);
-    v55 = (a1 + 24);
+    v100 = *(self + 120);
+    v55 = (self + 24);
     v34 = MEMORY[0x1E695EFF8];
-    v54 = (a1 + 16);
+    v54 = (self + 16);
     v51 = v250;
     v52 = v251;
     v101 = v53 + 4;
@@ -684,8 +684,8 @@ LABEL_133:
       }
 
       v103 = *(v53 + 200) * 0.5;
-      v104 = fminf(v257, *(a1 + 168));
-      if (fmax((*(v53 + 192) + (v103 * v104)), *(a1 + 140)) >= v98 && v98 <= fmaxf(*(v53 + 201) * 4.0, v103 * v104))
+      v104 = fminf(v257, *(self + 168));
+      if (fmax((*(v53 + 192) + (v103 * v104)), *(self + 140)) >= v98 && v98 <= fmaxf(*(v53 + 201) * 4.0, v103 * v104))
       {
         *(v53 + 192) = v98;
         if (v80 >= v100 || v80 >= v98)
@@ -804,7 +804,7 @@ LABEL_159:
           v110 = -1431655765 * ((v53[14] - v53[13]) >> 4);
           v111 = *(v53 + 52);
           *(v53 + 201) = (v98 + (*(v53 + 201) * 3.0)) * 0.25;
-          if (v111 >= *(a1 + 236))
+          if (v111 >= *(self + 236))
           {
             v114 = (v98 + (v111 * v110)) / (v110 + 1);
           }
@@ -936,7 +936,7 @@ LABEL_176:
                 *(v144 + 2) = *(v144 + 3);
                 *(v144 + 3) = *&v281[40];
                 v145 = *(v53 + 200);
-                if (v145 < *(a1 + 164))
+                if (v145 < *(self + 164))
                 {
                   v145 = v145 * 2.5;
                 }
@@ -1054,7 +1054,7 @@ LABEL_253:
         *v54 = v169;
       }
 
-      --*(a1 + 32);
+      --*(self + 32);
       std::__tree_remove[abi:ne200100]<std::__tree_node_base<void *> *>(v163, v165);
       InternalObservedParabola::~InternalObservedParabola((v165 + 6));
       operator delete(v165);
@@ -1065,12 +1065,12 @@ LABEL_253:
   }
 
 LABEL_262:
-  std::__tree<std::__value_type<int,ObservedParabola>,std::__map_value_compare<int,std::__value_type<int,ObservedParabola>,std::less<int>,true>,std::allocator<std::__value_type<int,ObservedParabola>>>::destroy(*(a1 + 192));
-  *(a1 + 184) = a1 + 192;
-  v255 = (a1 + 192);
-  *(a1 + 192) = 0;
-  *(a1 + 200) = 0;
-  v170 = *(a1 + 16);
+  std::__tree<std::__value_type<int,ObservedParabola>,std::__map_value_compare<int,std::__value_type<int,ObservedParabola>,std::less<int>,true>,std::allocator<std::__value_type<int,ObservedParabola>>>::destroy(*(self + 192));
+  *(self + 184) = self + 192;
+  v255 = (self + 192);
+  *(self + 192) = 0;
+  *(self + 200) = 0;
+  v170 = *(self + 16);
   if (v170 != v55)
   {
     __asm { FMOV            V0.4S, #1.0 }
@@ -1117,7 +1117,7 @@ LABEL_262:
       v306 = 0;
       std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v306, v170[97], v170[98], (v170[98] - v170[97]) >> 2);
       v309 = v170[100];
-      if (0xAAAAAAAAAAAAAAABLL * ((v285 - v284) >> 4) >= *(a1 + 212))
+      if (0xAAAAAAAAAAAAAAABLL * ((v285 - v284) >> 4) >= *(self + 212))
       {
         v175 = *v255;
         if (!*v255)
@@ -1196,7 +1196,7 @@ LABEL_271:
         }
 
         std::vector<CGPoint>::__assign_with_size[abi:ne200100]<CGPoint*,CGPoint*>(v176 + 7, v184, v185, (v185 - v184) >> 4);
-        if (*(a1 + 124) && *(a1 + 128))
+        if (*(self + 124) && *(self + 128))
         {
           v310.f64[0] = 0.0;
           std::vector<double>::vector[abi:ne200100](v268, (v288 - v287) >> 3);
@@ -1208,7 +1208,7 @@ LABEL_271:
           if (v287 != v288)
           {
             v192 = *v268;
-            v193 = 1.0 / *(a1 + 124);
+            v193 = 1.0 / *(self + 124);
             do
             {
               v194 = *v189++;
@@ -1225,7 +1225,7 @@ LABEL_271:
           if (v290 != v291)
           {
             v199 = __p[0];
-            v200 = 1.0 / *(a1 + 128);
+            v200 = 1.0 / *(self + 128);
             do
             {
               v201 = *v196++;
@@ -1240,9 +1240,9 @@ LABEL_271:
         }
 
         *(v176 + 7) = 0uLL;
-        if (0xAAAAAAAAAAAAAAABLL * ((v285 - v284) >> 4) >= *(a1 + 212))
+        if (0xAAAAAAAAAAAAAAABLL * ((v285 - v284) >> 4) >= *(self + 212))
         {
-          v203 = *(a1 + 212);
+          v203 = *(self + 212);
         }
 
         else
@@ -1284,7 +1284,7 @@ LABEL_271:
         v211 = *(v209 - 2);
         *(v176 + 156) = *(v209 - 2);
         *(v176 + 172) = v211;
-        v55 = (a1 + 24);
+        v55 = (self + 24);
         if (v270)
         {
           operator delete(v270);
@@ -1370,7 +1370,7 @@ LABEL_271:
   }
 
 LABEL_320:
-  if (*(a1 + 96) >= 5uLL)
+  if (*(self + 96) >= 5uLL)
   {
     v276 = 0;
     v277 = 0;
@@ -1398,7 +1398,7 @@ LABEL_320:
           v243 = v216;
           do
           {
-            v218 = *(*(a1 + 64) + 8 * ((*(a1 + 88) + v242) / 0xAAuLL)) - 4080 * ((*(a1 + 88) + v242) / 0xAAuLL) + 24 * (*(a1 + 88) + v242);
+            v218 = *(*(self + 64) + 8 * ((*(self + 88) + v242) / 0xAAuLL)) - 4080 * ((*(self + 88) + v242) / 0xAAuLL) + 24 * (*(self + 88) + v242);
             v219 = *v218;
             v244 = *(v218 + 8);
             v249 = v217;
@@ -1410,7 +1410,7 @@ LABEL_320:
                 *v311 = v219[1];
                 v245 = v219;
                 *&v311[16] = v219[2];
-                v220 = *(*(a1 + 64) + 8 * ((*(a1 + 88) + v216) / 0xAA)) - 4080 * ((*(a1 + 88) + v216) / 0xAA) + 24 * (*(a1 + 88) + v216);
+                v220 = *(*(self + 64) + 8 * ((*(self + 88) + v216) / 0xAA)) - 4080 * ((*(self + 88) + v216) / 0xAA) + 24 * (*(self + 88) + v216);
                 v221 = *v220;
                 v246 = *(v220 + 8);
                 if (*v220 != v246)
@@ -1421,7 +1421,7 @@ LABEL_320:
                     *&v268[16] = v221[1];
                     v253 = v221;
                     v269 = v221[2];
-                    v222 = *(*(a1 + 64) + 8 * ((*(a1 + 88) + v217) / 0xAA)) - 4080 * ((*(a1 + 88) + v217) / 0xAA) + 24 * (*(a1 + 88) + v217);
+                    v222 = *(*(self + 64) + 8 * ((*(self + 88) + v217) / 0xAA)) - 4080 * ((*(self + 88) + v217) / 0xAA) + 24 * (*(self + 88) + v217);
                     v224 = *v222;
                     v223 = *(v222 + 8);
                     if (*v222 != v223)
@@ -1435,10 +1435,10 @@ LABEL_320:
                         *__p = *v224;
                         v266 = v224[1];
                         v267 = v224[2];
-                        v227 = *(a1 + 220);
+                        v227 = *(self + 220);
                         if (v226 < v227)
                         {
-                          v228 = *(a1 + 228);
+                          v228 = *(self + 228);
                           if (vabdd_f64(v310.f64[1], *&v268[8]) < v228 && vabdd_f64(v258, *__p) < v227 && vabdd_f64(*&v268[8], *&__p[1]) < v228)
                           {
                             v229 = v225 < v258;
@@ -1456,9 +1456,9 @@ LABEL_320:
                             if (v230 || v229 || (v310.f64[1] > *&v268[8] ? (v231 = *&v268[8] <= *&__p[1]) : (v231 = 1), !v231 || v310.f64[1] < *&v268[8] && *&v268[8] < *&__p[1]))
                             {
                               v232 = *(&v269 + 2);
-                              if ([(VNParabolaDetection *)a1 isValidRadius:*&v311[24] withPrecedingRadius:?])
+                              if ([(VNParabolaDetection *)self isValidRadius:*&v311[24] withPrecedingRadius:?])
                               {
-                                if ([(VNParabolaDetection *)a1 isValidRadius:v232 withPrecedingRadius:?])
+                                if ([(VNParabolaDetection *)self isValidRadius:v232 withPrecedingRadius:?])
                                 {
                                   v274 = v273;
                                   v271 = 0;
@@ -1534,20 +1534,20 @@ LABEL_320:
     }
   }
 
-  return a1 + 184;
+  return self + 184;
 }
 
-- (BOOL)isValidRadius:(float)a3 withPrecedingRadius:
+- (BOOL)isValidRadius:(float)radius withPrecedingRadius:
 {
-  v3 = a1[41];
-  v4 = fminf(a3, a2) > v3;
-  v5 = a1[39];
-  if (v3 >= a3)
+  v3 = self[41];
+  v4 = fminf(radius, a2) > v3;
+  v5 = self[39];
+  if (v3 >= radius)
   {
-    return fmaxf((v5 * 1.25) * a3, v3) >= a2 && a2 > 0.0;
+    return fmaxf((v5 * 1.25) * radius, v3) >= a2 && a2 > 0.0;
   }
 
-  else if ((v5 * a3) >= a2)
+  else if ((v5 * radius) >= a2)
   {
     v8 = 0.75;
     if (v4)
@@ -1555,7 +1555,7 @@ LABEL_320:
       v8 = 1.0;
     }
 
-    return ((v8 * a1[40]) * a3) <= a2;
+    return ((v8 * self[40]) * radius) <= a2;
   }
 
   else
@@ -1564,19 +1564,19 @@ LABEL_320:
   }
 }
 
-+ (BOOL)updateMinMaxXYOfParabola:(double *)a3 withPoint:
++ (BOOL)updateMinMaxXYOfParabola:(double *)parabola withPoint:
 {
   objc_opt_self();
   v5 = a2[32];
-  v6 = *a3;
-  result = *a3 < v5;
-  v8 = *a3;
-  if (*a3 < v5)
+  v6 = *parabola;
+  result = *parabola < v5;
+  v8 = *parabola;
+  if (*parabola < v5)
   {
     a2[32] = v8;
   }
 
-  v9 = a3[1];
+  v9 = parabola[1];
   v10 = v9;
   if (v9 < a2[34])
   {
@@ -1599,10 +1599,10 @@ LABEL_320:
   return result;
 }
 
-- (float)getRsquareOfEquation:(const double *)a3 yValues:(__n128)a4 equationConstants:
+- (float)getRsquareOfEquation:(const double *)equation yValues:(__n128)values equationConstants:
 {
-  v4 = a3 - a2;
-  if (a3 == a2)
+  v4 = equation - a2;
+  if (equation == a2)
   {
     v18 = NAN;
   }
@@ -1635,8 +1635,8 @@ LABEL_320:
     v12 = 0;
     do
     {
-      v13 = *a1++;
-      v14 = v13 * a4.n128_f32[1] + a4.n128_f32[0] * (v13 * v13) + a4.n128_f32[2];
+      v13 = *self++;
+      v14 = v13 * values.n128_f32[1] + values.n128_f32[0] * (v13 * v13) + values.n128_f32[2];
       v15 = vld1q_dup_f64(a2++);
       v16.f64[0] = v11;
       v16.f64[1] = v14;

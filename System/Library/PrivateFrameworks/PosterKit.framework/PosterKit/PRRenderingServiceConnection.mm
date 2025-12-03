@@ -1,32 +1,32 @@
 @interface PRRenderingServiceConnection
-- (BOOL)isEqual:(id)a3;
-- (PRRenderingServiceConnection)initWithConnection:(id)a3 pid:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (PRRenderingServiceConnection)initWithConnection:(id)connection pid:(int)pid;
 - (PRRenderingServiceServerToClientInterface)remoteTarget;
 - (unint64_t)hash;
 - (void)_updateSendingStateBasedOnAcks;
 - (void)acknowledgeMotionEvents;
 - (void)deviceMotionEventGenerationDidStop;
 - (void)deviceMotionEventGenerationWillStart;
-- (void)sendMotionEvent:(id)a3;
-- (void)updateMotionWithRotation:(_OWORD *)a3;
+- (void)sendMotionEvent:(id)event;
+- (void)updateMotionWithRotation:(_OWORD *)rotation;
 @end
 
 @implementation PRRenderingServiceConnection
 
-- (PRRenderingServiceConnection)initWithConnection:(id)a3 pid:(int)a4
+- (PRRenderingServiceConnection)initWithConnection:(id)connection pid:(int)pid
 {
-  v7 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = PRRenderingServiceConnection;
   v8 = [(PRRenderingServiceConnection *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    v9->_pid = a4;
-    v10 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_pid = pid;
+    date = [MEMORY[0x1E695DF00] date];
     lastAckTime = v9->_lastAckTime;
-    v9->_lastAckTime = v10;
+    v9->_lastAckTime = date;
 
     v9->_shouldStopSending = 0;
   }
@@ -34,10 +34,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -49,10 +49,10 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRRenderingServiceConnection *)self connection];
-      v9 = [(PRRenderingServiceConnection *)v7 connection];
-      v10 = [v8 isEqual:v9];
+      v7 = equalCopy;
+      connection = [(PRRenderingServiceConnection *)self connection];
+      connection2 = [(PRRenderingServiceConnection *)v7 connection];
+      v10 = [connection isEqual:connection2];
 
       if (v10)
       {
@@ -77,10 +77,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_connection];
-  v5 = [v3 appendInteger:self->_pid];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_connection];
+  v5 = [builder appendInteger:self->_pid];
+  v6 = [builder hash];
 
   return v6;
 }
@@ -90,9 +90,9 @@
   remoteTarget = self->_remoteTarget;
   if (!remoteTarget)
   {
-    v4 = [(BSServiceConnection *)self->_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
     v5 = self->_remoteTarget;
-    self->_remoteTarget = v4;
+    self->_remoteTarget = remoteTarget;
 
     remoteTarget = self->_remoteTarget;
   }
@@ -105,13 +105,13 @@
   if ([(BSServiceConnection *)self->_connection isValid])
   {
     self->_motionEventsSentSinceLastAck = 0;
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastAckTime = self->_lastAckTime;
-    self->_lastAckTime = v3;
+    self->_lastAckTime = date;
 
     self->_shouldStopSending = 0;
-    v5 = [(PRRenderingServiceConnection *)self remoteTarget];
-    [v5 deviceMotionEventGenerationWillStart];
+    remoteTarget = [(PRRenderingServiceConnection *)self remoteTarget];
+    [remoteTarget deviceMotionEventGenerationWillStart];
   }
 }
 
@@ -119,28 +119,28 @@
 {
   if ([(BSServiceConnection *)self->_connection isValid])
   {
-    v3 = [(PRRenderingServiceConnection *)self remoteTarget];
-    [v3 deviceMotionEventGenerationDidStop];
+    remoteTarget = [(PRRenderingServiceConnection *)self remoteTarget];
+    [remoteTarget deviceMotionEventGenerationDidStop];
 
     self->_motionEventsSentSinceLastAck = 0;
     self->_shouldStopSending = 0;
   }
 }
 
-- (void)updateMotionWithRotation:(_OWORD *)a3
+- (void)updateMotionWithRotation:(_OWORD *)rotation
 {
   v5 = objc_opt_new();
-  v6 = a3[1];
-  v7[0] = *a3;
+  v6 = rotation[1];
+  v7[0] = *rotation;
   v7[1] = v6;
   [v5 setRotation:v7];
-  [a1 sendMotionEvent:v5];
+  [self sendMotionEvent:v5];
 }
 
-- (void)sendMotionEvent:(id)a3
+- (void)sendMotionEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if ([(BSServiceConnection *)self->_connection isValid])
   {
     [(PRRenderingServiceConnection *)self _updateSendingStateBasedOnAcks];
@@ -155,8 +155,8 @@
 
     else
     {
-      v6 = [(PRRenderingServiceConnection *)self remoteTarget];
-      [v6 sendMotionEvent:v4];
+      remoteTarget = [(PRRenderingServiceConnection *)self remoteTarget];
+      [remoteTarget sendMotionEvent:eventCopy];
 
       ++self->_motionEventsSentSinceLastAck;
       v5 = PRLogRenderingService();

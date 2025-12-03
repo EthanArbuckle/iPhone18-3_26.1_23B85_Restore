@@ -7,13 +7,13 @@
 
 - (void)testNavigateToSocialGroupDetailView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A47CCF1C();
 }
 
 - (void)testNavigateToPeopleDetailView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A47CD310();
 }
 

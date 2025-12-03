@@ -1,43 +1,43 @@
 @interface LRSchemaLRWindow
-- (BOOL)isEqual:(id)a3;
-- (LRSchemaLRWindow)initWithDictionary:(id)a3;
-- (LRSchemaLRWindow)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LRSchemaLRWindow)initWithDictionary:(id)dictionary;
+- (LRSchemaLRWindow)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)activeRedactionPoliciesAtIndex:(unint64_t)a3;
+- (int)activeRedactionPoliciesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addActiveRedactionPolicies:(int)a3;
-- (void)setHasEndTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveRedactionPolicies:(int)policies;
+- (void)setHasEndTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRWindow
 
-- (LRSchemaLRWindow)initWithDictionary:(id)a3
+- (LRSchemaLRWindow)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = LRSchemaLRWindow;
   v5 = [(LRSchemaLRWindow *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startTimeInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRWindow setStartTimeInNs:](v5, "setStartTimeInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"endTimeInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"endTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRWindow setEndTimeInNs:](v5, "setEndTimeInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"activeRedactionPolicies"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"activeRedactionPolicies"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (LRSchemaLRWindow)initWithJSON:(id)a3
+- (LRSchemaLRWindow)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRWindow *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRWindow *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRWindow *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,19 +124,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activeRedactionPolicies count])
   {
-    v4 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"activeRedactionPolicies"];
+    activeRedactionPolicies = [(LRSchemaLRWindow *)self activeRedactionPolicies];
+    v5 = [activeRedactionPolicies copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"activeRedactionPolicies"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LRSchemaLRWindow endTimeInNs](self, "endTimeInNs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"endTimeInNs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"endTimeInNs"];
 
     has = self->_has;
   }
@@ -144,12 +144,12 @@
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LRSchemaLRWindow startTimeInNs](self, "startTimeInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"startTimeInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"startTimeInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -178,16 +178,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_activeRedactionPolicies hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -196,27 +196,27 @@ LABEL_3:
   if (*&has)
   {
     startTimeInNs = self->_startTimeInNs;
-    if (startTimeInNs != [v4 startTimeInNs])
+    if (startTimeInNs != [equalCopy startTimeInNs])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (endTimeInNs = self->_endTimeInNs, endTimeInNs == [v4 endTimeInNs]))
+    if (!v8 || (endTimeInNs = self->_endTimeInNs, endTimeInNs == [equalCopy endTimeInNs]))
     {
-      v10 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
-      v11 = [v4 activeRedactionPolicies];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      activeRedactionPolicies = [(LRSchemaLRWindow *)self activeRedactionPolicies];
+      activeRedactionPolicies2 = [equalCopy activeRedactionPolicies];
+      v12 = activeRedactionPolicies2;
+      if ((activeRedactionPolicies != 0) != (activeRedactionPolicies2 == 0))
       {
-        v13 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
-        if (!v13)
+        activeRedactionPolicies3 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
+        if (!activeRedactionPolicies3)
         {
 
 LABEL_17:
@@ -224,10 +224,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
-        v16 = [v4 activeRedactionPolicies];
-        v17 = [v15 isEqual:v16];
+        v14 = activeRedactionPolicies3;
+        activeRedactionPolicies4 = [(LRSchemaLRWindow *)self activeRedactionPolicies];
+        activeRedactionPolicies5 = [equalCopy activeRedactionPolicies];
+        v17 = [activeRedactionPolicies4 isEqual:activeRedactionPolicies5];
 
         if (v17)
         {
@@ -248,10 +248,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -294,23 +294,23 @@ LABEL_15:
   }
 }
 
-- (int)activeRedactionPoliciesAtIndex:(unint64_t)a3
+- (int)activeRedactionPoliciesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_activeRedactionPolicies objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_activeRedactionPolicies objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addActiveRedactionPolicies:(int)a3
+- (void)addActiveRedactionPolicies:(int)policies
 {
-  v3 = *&a3;
+  v3 = *&policies;
   activeRedactionPolicies = self->_activeRedactionPolicies;
   if (!activeRedactionPolicies)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeRedactionPolicies;
-    self->_activeRedactionPolicies = v6;
+    self->_activeRedactionPolicies = array;
 
     activeRedactionPolicies = self->_activeRedactionPolicies;
   }
@@ -319,9 +319,9 @@ LABEL_15:
   [(NSArray *)activeRedactionPolicies addObject:v8];
 }
 
-- (void)setHasEndTimeInNs:(BOOL)a3
+- (void)setHasEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

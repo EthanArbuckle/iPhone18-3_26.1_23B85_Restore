@@ -1,31 +1,31 @@
 @interface OADPointBulletSize
-- (BOOL)isEqual:(id)a3;
-- (OADPointBulletSize)initWithPoints:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADPointBulletSize)initWithPoints:(int)points;
 @end
 
 @implementation OADPointBulletSize
 
-- (OADPointBulletSize)initWithPoints:(int)a3
+- (OADPointBulletSize)initWithPoints:(int)points
 {
   v5.receiver = self;
   v5.super_class = OADPointBulletSize;
   result = [(OADPointBulletSize *)&v5 init];
   if (result)
   {
-    result->mPoints = a3;
+    result->mPoints = points;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mPoints = self->mPoints;
-    v6 = mPoints == [v4 points];
+    v6 = mPoints == [equalCopy points];
   }
 
   else

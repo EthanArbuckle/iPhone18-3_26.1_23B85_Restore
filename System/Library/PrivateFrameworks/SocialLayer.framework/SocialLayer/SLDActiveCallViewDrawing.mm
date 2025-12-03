@@ -1,43 +1,43 @@
 @interface SLDActiveCallViewDrawing
 - (CGSize)drawingSize;
-- (SLDActiveCallViewDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (SLDActiveCallViewDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation SLDActiveCallViewDrawing
 
-- (SLDActiveCallViewDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (SLDActiveCallViewDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v9 = a3;
-  v10 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = SLDActiveCallViewDrawing;
   v11 = [(SLDActiveCallViewDrawing *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_slotStyle, a3);
-    objc_storeStrong(&v12->_tag, a4);
-    v12->_forRemote = a5;
-    v12->_isRTL = [v9 layoutDirection] == 1;
+    objc_storeStrong(&v11->_slotStyle, style);
+    objc_storeStrong(&v12->_tag, tag);
+    v12->_forRemote = remote;
+    v12->_isRTL = [styleCopy layoutDirection] == 1;
   }
 
   return v12;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  if ([(SLDActiveCallViewDrawing *)self forRemote:a4.x])
+  if ([(SLDActiveCallViewDrawing *)self forRemote:point.x])
   {
     v6 = [SLDActiveCallViewRenderer alloc];
-    v7 = [(SLDActiveCallViewDrawing *)self slotStyle];
+    slotStyle = [(SLDActiveCallViewDrawing *)self slotStyle];
     v8 = [(SLDActiveCallViewDrawing *)self tag];
-    v10 = [(SLDActiveCallViewRenderer *)v6 initWithStyle:v7 tag:v8];
+    v10 = [(SLDActiveCallViewRenderer *)v6 initWithStyle:slotStyle tag:v8];
 
     v9 = v10;
     if (v10)
     {
-      [(SLDActiveCallViewRenderer *)v10 renderInContext:a3];
+      [(SLDActiveCallViewRenderer *)v10 renderInContext:context];
       v9 = v10;
     }
   }

@@ -14,7 +14,7 @@
   v6 = a3[1];
   v9 = *a3;
   v10 = v6;
-  return [a1 _intents_enumerateObjectsOfClass:v5 withBlock:v8];
+  return [self _intents_enumerateObjectsOfClass:v5 withBlock:v8];
 }
 
 @end

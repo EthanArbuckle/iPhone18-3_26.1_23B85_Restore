@@ -1,28 +1,28 @@
 @interface DNDSContactMonitorChangeCollector
-- (DNDSContactMonitorChangeCollector)initWithMonitoredContactIdentifiers:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (DNDSContactMonitorChangeCollector)initWithMonitoredContactIdentifiers:(id)identifiers;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation DNDSContactMonitorChangeCollector
 
-- (DNDSContactMonitorChangeCollector)initWithMonitoredContactIdentifiers:(id)a3
+- (DNDSContactMonitorChangeCollector)initWithMonitoredContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v13.receiver = self;
   v13.super_class = DNDSContactMonitorChangeCollector;
   v5 = [(DNDSContactMonitorChangeCollector *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updatedContacts = v5->_updatedContacts;
-    v5->_updatedContacts = v6;
+    v5->_updatedContacts = array;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     deletedContactIdentifiers = v5->_deletedContactIdentifiers;
-    v5->_deletedContactIdentifiers = v8;
+    v5->_deletedContactIdentifiers = array2;
 
-    v10 = [v4 copy];
+    v10 = [identifiersCopy copy];
     monitoredContactIdentifiers = v5->_monitoredContactIdentifiers;
     v5->_monitoredContactIdentifiers = v10;
   }
@@ -30,36 +30,36 @@
   return v5;
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   monitoredContactIdentifiers = self->_monitoredContactIdentifiers;
-  v10 = v4;
-  v6 = [v4 contact];
-  v7 = [v6 identifier];
-  LODWORD(monitoredContactIdentifiers) = [(NSSet *)monitoredContactIdentifiers containsObject:v7];
+  v10 = eventCopy;
+  contact = [eventCopy contact];
+  identifier = [contact identifier];
+  LODWORD(monitoredContactIdentifiers) = [(NSSet *)monitoredContactIdentifiers containsObject:identifier];
 
   if (monitoredContactIdentifiers)
   {
     updatedContacts = self->_updatedContacts;
-    v9 = [v10 contact];
-    [(NSMutableArray *)updatedContacts addObject:v9];
+    contact2 = [v10 contact];
+    [(NSMutableArray *)updatedContacts addObject:contact2];
   }
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   monitoredContactIdentifiers = self->_monitoredContactIdentifiers;
-  v9 = v4;
-  v6 = [v4 contactIdentifier];
-  LODWORD(monitoredContactIdentifiers) = [(NSSet *)monitoredContactIdentifiers containsObject:v6];
+  v9 = eventCopy;
+  contactIdentifier = [eventCopy contactIdentifier];
+  LODWORD(monitoredContactIdentifiers) = [(NSSet *)monitoredContactIdentifiers containsObject:contactIdentifier];
 
   if (monitoredContactIdentifiers)
   {
     deletedContactIdentifiers = self->_deletedContactIdentifiers;
-    v8 = [v9 contactIdentifier];
-    [(NSMutableArray *)deletedContactIdentifiers addObject:v8];
+    contactIdentifier2 = [v9 contactIdentifier];
+    [(NSMutableArray *)deletedContactIdentifiers addObject:contactIdentifier2];
   }
 }
 

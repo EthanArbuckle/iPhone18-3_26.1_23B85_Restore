@@ -1,24 +1,24 @@
 @interface HUTriggerTypePickerItemManager
-- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)a3;
-- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)a3;
-- (HUTriggerTypePickerItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_createCharacteristicItemForSource:(unint64_t)a3;
+- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)services;
+- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)services;
+- (HUTriggerTypePickerItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_createCharacteristicItemForSource:(unint64_t)source;
 - (id)_createCustomItem;
-- (id)_createLocationItemForType:(unint64_t)a3;
+- (id)_createLocationItemForType:(unint64_t)type;
 - (id)_createTimeItem;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
 @end
 
 @implementation HUTriggerTypePickerItemManager
 
-- (HUTriggerTypePickerItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUTriggerTypePickerItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = HUTriggerTypePickerItemManager;
-  result = [(HFItemManager *)&v5 initWithDelegate:a3 sourceItem:a4];
+  result = [(HFItemManager *)&v5 initWithDelegate:delegate sourceItem:item];
   if (result)
   {
     result->_showSuggestedAutomations = 0;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[HURecommendedTriggerItemModule alloc] initWithItemUpdater:self home:v4];
+  homeCopy = home;
+  v5 = [[HURecommendedTriggerItemModule alloc] initWithItemUpdater:self home:homeCopy];
 
   [(HURecommendedTriggerItemModule *)v5 setHideSectionHeaderTitle:1];
   [(HURecommendedTriggerItemModule *)v5 setMaximumNumberOfShownRecommendations:0x7FFFFFFFFFFFFFFFLL];
@@ -42,8 +42,8 @@
   self->_suggestedAutomationsModule = &v5->super;
   v7 = v5;
 
-  v8 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
-  v11[0] = v8;
+  suggestedAutomationsModule = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
+  v11[0] = suggestedAutomationsModule;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   return v9;
@@ -66,7 +66,7 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
   return v3;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v34[8] = *MEMORY[0x277D85DE8];
   v4 = [HUInstructionsItem alloc];
@@ -87,8 +87,8 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
   v13 = [(HUTriggerTypePickerItemManager *)self _createLocationItemForType:0];
   [(HUTriggerTypePickerItemManager *)self setArrivingAtLocationTriggerItem:v13];
 
-  v14 = [(HUTriggerTypePickerItemManager *)self _createTimeItem];
-  [(HUTriggerTypePickerItemManager *)self setTimerTriggerItem:v14];
+  _createTimeItem = [(HUTriggerTypePickerItemManager *)self _createTimeItem];
+  [(HUTriggerTypePickerItemManager *)self setTimerTriggerItem:_createTimeItem];
 
   v15 = [(HUTriggerTypePickerItemManager *)self _createCharacteristicItemForSource:1];
   [(HUTriggerTypePickerItemManager *)self setCharacteristicTriggerItem:v15];
@@ -96,27 +96,27 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
   v16 = [(HUTriggerTypePickerItemManager *)self _createCharacteristicItemForSource:0];
   [(HUTriggerTypePickerItemManager *)self setAlarmTriggerItem:v16];
 
-  v17 = [(HUTriggerTypePickerItemManager *)self _createCustomItem];
-  [(HUTriggerTypePickerItemManager *)self setCustomAutomationItem:v17];
+  _createCustomItem = [(HUTriggerTypePickerItemManager *)self _createCustomItem];
+  [(HUTriggerTypePickerItemManager *)self setCustomAutomationItem:_createCustomItem];
 
   v31 = objc_alloc(MEMORY[0x277D14B40]);
   v18 = MEMORY[0x277CBEB98];
-  v32 = [(HUTriggerTypePickerItemManager *)self eventsInstructionsItem];
-  v34[0] = v32;
-  v19 = [(HUTriggerTypePickerItemManager *)self leavingLocationTriggerItem];
-  v34[1] = v19;
-  v20 = [(HUTriggerTypePickerItemManager *)self arrivingAtLocationTriggerItem];
-  v34[2] = v20;
-  v21 = [(HUTriggerTypePickerItemManager *)self timerTriggerItem];
-  v34[3] = v21;
-  v22 = [(HUTriggerTypePickerItemManager *)self characteristicTriggerItem];
-  v34[4] = v22;
-  v23 = [(HUTriggerTypePickerItemManager *)self alarmTriggerItem];
-  v34[5] = v23;
-  v24 = [(HUTriggerTypePickerItemManager *)self customAutomationItem];
-  v34[6] = v24;
-  v25 = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
-  v34[7] = v25;
+  eventsInstructionsItem = [(HUTriggerTypePickerItemManager *)self eventsInstructionsItem];
+  v34[0] = eventsInstructionsItem;
+  leavingLocationTriggerItem = [(HUTriggerTypePickerItemManager *)self leavingLocationTriggerItem];
+  v34[1] = leavingLocationTriggerItem;
+  arrivingAtLocationTriggerItem = [(HUTriggerTypePickerItemManager *)self arrivingAtLocationTriggerItem];
+  v34[2] = arrivingAtLocationTriggerItem;
+  timerTriggerItem = [(HUTriggerTypePickerItemManager *)self timerTriggerItem];
+  v34[3] = timerTriggerItem;
+  characteristicTriggerItem = [(HUTriggerTypePickerItemManager *)self characteristicTriggerItem];
+  v34[4] = characteristicTriggerItem;
+  alarmTriggerItem = [(HUTriggerTypePickerItemManager *)self alarmTriggerItem];
+  v34[5] = alarmTriggerItem;
+  customAutomationItem = [(HUTriggerTypePickerItemManager *)self customAutomationItem];
+  v34[6] = customAutomationItem;
+  suggestionsInstructionsItem = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
+  v34[7] = suggestionsInstructionsItem;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:8];
   v27 = [v18 setWithArray:v26];
   v28 = [v31 initWithItems:v27];
@@ -127,20 +127,20 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
   return v29;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerTypePickerSectionIdentifierEventsInstructions"];
   v26 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerTypePickerSectionIdentifierTriggerTypes"];
   v25 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerTypePickerSectionIdentifierSuggestionsInstructions"];
-  v6 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
+  suggestedAutomationsModule = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
 
-  v24 = v4;
-  if (v6)
+  v24 = itemsCopy;
+  if (suggestedAutomationsModule)
   {
-    v7 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
-    v23 = [v7 buildSectionsWithDisplayedItems:v4];
+    suggestedAutomationsModule2 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
+    v23 = [suggestedAutomationsModule2 buildSectionsWithDisplayedItems:itemsCopy];
   }
 
   else
@@ -148,28 +148,28 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
     v23 = MEMORY[0x277CBEBF8];
   }
 
-  v8 = [(HUTriggerTypePickerItemManager *)self eventsInstructionsItem];
-  v30[0] = v8;
+  eventsInstructionsItem = [(HUTriggerTypePickerItemManager *)self eventsInstructionsItem];
+  v30[0] = eventsInstructionsItem;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   [v5 setItems:v9];
 
-  v10 = [(HUTriggerTypePickerItemManager *)self arrivingAtLocationTriggerItem];
-  v29[0] = v10;
-  v11 = [(HUTriggerTypePickerItemManager *)self leavingLocationTriggerItem];
-  v29[1] = v11;
-  v12 = [(HUTriggerTypePickerItemManager *)self timerTriggerItem];
-  v29[2] = v12;
-  v13 = [(HUTriggerTypePickerItemManager *)self characteristicTriggerItem];
-  v29[3] = v13;
-  v14 = [(HUTriggerTypePickerItemManager *)self alarmTriggerItem];
-  v29[4] = v14;
-  v15 = [(HUTriggerTypePickerItemManager *)self customAutomationItem];
-  v29[5] = v15;
+  arrivingAtLocationTriggerItem = [(HUTriggerTypePickerItemManager *)self arrivingAtLocationTriggerItem];
+  v29[0] = arrivingAtLocationTriggerItem;
+  leavingLocationTriggerItem = [(HUTriggerTypePickerItemManager *)self leavingLocationTriggerItem];
+  v29[1] = leavingLocationTriggerItem;
+  timerTriggerItem = [(HUTriggerTypePickerItemManager *)self timerTriggerItem];
+  v29[2] = timerTriggerItem;
+  characteristicTriggerItem = [(HUTriggerTypePickerItemManager *)self characteristicTriggerItem];
+  v29[3] = characteristicTriggerItem;
+  alarmTriggerItem = [(HUTriggerTypePickerItemManager *)self alarmTriggerItem];
+  v29[4] = alarmTriggerItem;
+  customAutomationItem = [(HUTriggerTypePickerItemManager *)self customAutomationItem];
+  v29[5] = customAutomationItem;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:6];
   [v26 setItems:v16];
 
-  v17 = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
-  v28 = v17;
+  suggestionsInstructionsItem = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
+  v28 = suggestionsInstructionsItem;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
   [v25 setItems:v18];
 
@@ -178,35 +178,35 @@ BOOL __59__HUTriggerTypePickerItemManager__buildItemModulesForHome___block_invok
   v27[2] = v25;
   v27[3] = v23;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:4];
-  v20 = [v19 na_arrayByFlattening];
+  na_arrayByFlattening = [v19 na_arrayByFlattening];
 
-  v21 = [MEMORY[0x277D14778] filterSections:v20 toDisplayedItems:v24];
+  v21 = [MEMORY[0x277D14778] filterSections:na_arrayByFlattening toDisplayedItems:v24];
 
   return v21;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v13.receiver = self;
   v13.super_class = HUTriggerTypePickerItemManager;
-  v4 = [(HFItemManager *)&v13 _itemsToHideInSet:a3];
+  v4 = [(HFItemManager *)&v13 _itemsToHideInSet:set];
   v5 = [v4 mutableCopy];
 
   if (![(HUTriggerTypePickerItemManager *)self showSuggestedAutomations])
   {
-    v6 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
-    v7 = [v6 allItems];
-    [v5 unionSet:v7];
+    suggestedAutomationsModule = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
+    allItems = [suggestedAutomationsModule allItems];
+    [v5 unionSet:allItems];
   }
 
-  v8 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
-  v9 = [v8 allItems];
-  v10 = [v9 na_setByRemovingObjectsFromSet:v5];
+  suggestedAutomationsModule2 = [(HUTriggerTypePickerItemManager *)self suggestedAutomationsModule];
+  allItems2 = [suggestedAutomationsModule2 allItems];
+  v10 = [allItems2 na_setByRemovingObjectsFromSet:v5];
 
   if (![v10 count])
   {
-    v11 = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
-    [v5 addObject:v11];
+    suggestionsInstructionsItem = [(HUTriggerTypePickerItemManager *)self suggestionsInstructionsItem];
+    [v5 addObject:suggestionsInstructionsItem];
   }
 
   return v5;
@@ -301,7 +301,7 @@ id __49__HUTriggerTypePickerItemManager__createTimeItem__block_invoke(uint64_t a
   return v9;
 }
 
-- (id)_createLocationItemForType:(unint64_t)a3
+- (id)_createLocationItemForType:(unint64_t)type
 {
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -310,7 +310,7 @@ id __49__HUTriggerTypePickerItemManager__createTimeItem__block_invoke(uint64_t a
   v7[2] = __61__HUTriggerTypePickerItemManager__createLocationItemForType___block_invoke;
   v7[3] = &unk_277DB8F60;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = type;
   v5 = [v4 initWithResultsBlock:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -436,7 +436,7 @@ uint64_t __61__HUTriggerTypePickerItemManager__createLocationItemForType___block
   return v8;
 }
 
-- (id)_createCharacteristicItemForSource:(unint64_t)a3
+- (id)_createCharacteristicItemForSource:(unint64_t)source
 {
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -445,7 +445,7 @@ uint64_t __61__HUTriggerTypePickerItemManager__createLocationItemForType___block
   v7[2] = __69__HUTriggerTypePickerItemManager__createCharacteristicItemForSource___block_invoke;
   v7[3] = &unk_277DB8F60;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = source;
   v5 = [v4 initWithResultsBlock:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -525,23 +525,23 @@ id __69__HUTriggerTypePickerItemManager__createCharacteristicItemForSource___blo
   return v21;
 }
 
-- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)a3
+- (BOOL)_hasMinimumRequiredTriggeringServices:(int64_t)services
 {
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 hf_allVisibleServices];
-  LOBYTE(a3) = [v5 count] >= a3;
+  home = [(HFItemManager *)self home];
+  hf_allVisibleServices = [home hf_allVisibleServices];
+  LOBYTE(services) = [hf_allVisibleServices count] >= services;
 
-  return a3;
+  return services;
 }
 
-- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)a3
+- (BOOL)_hasMinimumRequiredTriggerableServices:(unint64_t)services
 {
-  v5 = [(HFItemManager *)self home];
-  if ([v5 hf_enabledResidentsSupportsMediaActions])
+  home = [(HFItemManager *)self home];
+  if ([home hf_enabledResidentsSupportsMediaActions])
   {
-    v6 = [(HFItemManager *)self home];
-    v7 = [v6 hf_mediaAccessories];
-    v8 = [v7 count];
+    home2 = [(HFItemManager *)self home];
+    hf_mediaAccessories = [home2 hf_mediaAccessories];
+    v8 = [hf_mediaAccessories count];
   }
 
   else
@@ -549,10 +549,10 @@ id __69__HUTriggerTypePickerItemManager__createCharacteristicItemForSource___blo
     v8 = 0;
   }
 
-  v9 = [v5 hf_allVisibleServices];
-  v10 = [v9 count] + v8;
+  hf_allVisibleServices = [home hf_allVisibleServices];
+  v10 = [hf_allVisibleServices count] + v8;
 
-  return v10 >= a3;
+  return v10 >= services;
 }
 
 @end

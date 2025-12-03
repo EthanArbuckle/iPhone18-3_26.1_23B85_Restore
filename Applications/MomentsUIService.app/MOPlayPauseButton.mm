@@ -1,18 +1,18 @@
 @interface MOPlayPauseButton
-- (_TtC16MomentsUIService17MOPlayPauseButton)initWithFrame:(CGRect)a3;
-- (void)touchPlayPause:(id)a3;
+- (_TtC16MomentsUIService17MOPlayPauseButton)initWithFrame:(CGRect)frame;
+- (void)touchPlayPause:(id)pause;
 @end
 
 @implementation MOPlayPauseButton
 
-- (void)touchPlayPause:(id)a3
+- (void)touchPlayPause:(id)pause
 {
-  v4 = a3;
-  v5 = self;
+  pauseCopy = pause;
+  selfCopy = self;
   specialized MOPlayPauseButton.touchPlayPause(_:)();
 }
 
-- (_TtC16MomentsUIService17MOPlayPauseButton)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService17MOPlayPauseButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface PKUITextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (PKUITextField)init;
 @end
 
@@ -18,14 +18,14 @@
   return result;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_captureTextFromCamera_ == a3)
+  senderCopy = sender;
+  if (sel_captureTextFromCamera_ == action)
   {
     if (!self->_allowsTextFromCamera)
     {
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
@@ -35,15 +35,15 @@
 
   else
   {
-    v10 = self;
-    v7 = &v10;
+    selfCopy = self;
+    v7 = &selfCopy;
   }
 
   v7->super_class = PKUITextField;
-  v8 = [(objc_super *)v7 canPerformAction:a3 withSender:v6, v10];
+  selfCopy = [(objc_super *)v7 canPerformAction:action withSender:senderCopy, selfCopy];
 LABEL_6:
 
-  return v8;
+  return selfCopy;
 }
 
 @end

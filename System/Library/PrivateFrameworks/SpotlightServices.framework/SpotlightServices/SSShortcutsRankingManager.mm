@@ -1,19 +1,19 @@
 @interface SSShortcutsRankingManager
-+ (id)moveShortcutsToRelatedAppSectionsForAllSections:(id)a3 isAsYouTypeTopHitSearch:(BOOL)a4 sectionBuilderBlock:(id)a5;
++ (id)moveShortcutsToRelatedAppSectionsForAllSections:(id)sections isAsYouTypeTopHitSearch:(BOOL)search sectionBuilderBlock:(id)block;
 @end
 
 @implementation SSShortcutsRankingManager
 
-+ (id)moveShortcutsToRelatedAppSectionsForAllSections:(id)a3 isAsYouTypeTopHitSearch:(BOOL)a4 sectionBuilderBlock:(id)a5
++ (id)moveShortcutsToRelatedAppSectionsForAllSections:(id)sections isAsYouTypeTopHitSearch:(BOOL)search sectionBuilderBlock:(id)block
 {
-  v116 = a4;
+  searchCopy = search;
   v157 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v118 = a5;
-  v7 = [v6 mutableCopy];
+  sectionsCopy = sections;
+  blockCopy = block;
+  v7 = [sectionsCopy mutableCopy];
   v8 = objc_opt_new();
-  v113 = v6;
-  if (![v6 count])
+  v113 = sectionsCopy;
+  if (![sectionsCopy count])
   {
     goto LABEL_38;
   }
@@ -23,12 +23,12 @@
   v11 = -1;
   do
   {
-    v12 = [v6 objectAtIndexedSubscript:v9];
-    v13 = [v12 bundleIdentifier];
-    [v8 setObject:v12 forKeyedSubscript:v13];
+    v12 = [sectionsCopy objectAtIndexedSubscript:v9];
+    bundleIdentifier = [v12 bundleIdentifier];
+    [v8 setObject:v12 forKeyedSubscript:bundleIdentifier];
 
-    v14 = [v12 bundleIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.shortcuts"];
+    bundleIdentifier2 = [v12 bundleIdentifier];
+    v15 = [bundleIdentifier2 isEqualToString:@"com.apple.shortcuts"];
 
     if (v15)
     {
@@ -38,7 +38,7 @@
     ++v9;
   }
 
-  while (v9 < [v6 count]);
+  while (v9 < [sectionsCopy count]);
   if (v11 == -1)
   {
 LABEL_38:
@@ -48,23 +48,23 @@ LABEL_38:
 
   else
   {
-    v16 = [v6 objectAtIndexedSubscript:v11];
+    v16 = [sectionsCopy objectAtIndexedSubscript:v11];
     if (SSShortcutsAppSectionEnabled() && v16)
     {
       v129 = v8;
       v109 = v7;
       v123 = objc_opt_new();
       v125 = objc_opt_new();
-      v17 = [v16 results];
-      v133 = [v17 mutableCopy];
+      results = [v16 results];
+      v133 = [results mutableCopy];
 
       v152 = 0u;
       v153 = 0u;
       v150 = 0u;
       v151 = 0u;
       v111 = v16;
-      v18 = [v16 results];
-      v19 = [v18 countByEnumeratingWithState:&v150 objects:v156 count:16];
+      results2 = [v16 results];
+      v19 = [results2 countByEnumeratingWithState:&v150 objects:v156 count:16];
       if (!v19)
       {
         goto LABEL_42;
@@ -72,7 +72,7 @@ LABEL_38:
 
       v20 = v19;
       v21 = *v151;
-      v121 = v18;
+      v121 = results2;
       v138 = 1;
       v131 = *v151;
 LABEL_11:
@@ -81,24 +81,24 @@ LABEL_11:
 LABEL_12:
       if (*v151 != v21)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(results2);
       }
 
       v23 = *(*(&v150 + 1) + 8 * v22);
-      v24 = [v23 relatedAppIdentifier];
-      if (![v24 length] || (objc_msgSend(v24, "isEqualToString:", v10) & 1) != 0)
+      relatedAppIdentifier = [v23 relatedAppIdentifier];
+      if (![relatedAppIdentifier length] || (objc_msgSend(relatedAppIdentifier, "isEqualToString:", v10) & 1) != 0)
       {
         v138 = 0;
         goto LABEL_35;
       }
 
-      v25 = [v129 objectForKey:v24];
-      v140 = [v6 indexOfObject:v25];
+      v25 = [v129 objectForKey:relatedAppIdentifier];
+      v140 = [sectionsCopy indexOfObject:v25];
       if (v25)
       {
         v136 = v25;
-        v26 = [v25 results];
-        v27 = [v26 mutableCopy];
+        results3 = [v25 results];
+        v27 = [results3 mutableCopy];
 
         v28 = [v27 count];
         if (![v27 count])
@@ -112,16 +112,16 @@ LABEL_12:
         while (1)
         {
           v30 = [v27 objectAtIndexedSubscript:v28];
-          v31 = [v30 resultBundleId];
-          v32 = [v31 isEqualToString:v29];
+          resultBundleId = [v30 resultBundleId];
+          v32 = [resultBundleId isEqualToString:v29];
 
           if (v32)
           {
-            v33 = [v23 rankingItem];
-            [v33 likelihood];
+            rankingItem = [v23 rankingItem];
+            [rankingItem likelihood];
             v35 = v34;
-            v36 = [v30 rankingItem];
-            [v36 likelihood];
+            rankingItem2 = [v30 rankingItem];
+            [rankingItem2 likelihood];
             v38 = v37;
 
             if (v35 > v38)
@@ -135,9 +135,9 @@ LABEL_12:
 LABEL_31:
 
 LABEL_32:
-            v6 = v113;
+            sectionsCopy = v113;
             v10 = v29;
-            v18 = v121;
+            results2 = v121;
 LABEL_33:
             [v27 insertObject:v23 atIndex:v28];
             v25 = v136;
@@ -151,7 +151,7 @@ LABEL_35:
 
             if (++v22 == v20)
             {
-              v20 = [v18 countByEnumeratingWithState:&v150 objects:v156 count:16];
+              v20 = [results2 countByEnumeratingWithState:&v150 objects:v156 count:16];
               if (!v20)
               {
                 goto LABEL_42;
@@ -171,7 +171,7 @@ LABEL_35:
         }
       }
 
-      v39 = v118[2](v118, v24);
+      v39 = blockCopy[2](blockCopy, relatedAppIdentifier);
       if (v39)
       {
         v27 = v39;
@@ -187,7 +187,7 @@ LABEL_35:
         }
 
         [v40 addObject:v27];
-        [v129 setObject:v27 forKey:v24];
+        [v129 setObject:v27 forKey:relatedAppIdentifier];
         goto LABEL_34;
       }
 
@@ -244,39 +244,39 @@ LABEL_42:
   v46 = v45;
   if (v45)
   {
-    v47 = [v45 results];
-    v48 = [v47 firstObject];
-    v49 = [v48 sectionBundleIdentifier];
+    results4 = [v45 results];
+    firstObject = [results4 firstObject];
+    sectionBundleIdentifier = [firstObject sectionBundleIdentifier];
     v50 = v46;
-    v51 = [v49 isEqualToString:@"com.apple.application"];
+    v51 = [sectionBundleIdentifier isEqualToString:@"com.apple.application"];
 
     if (v51)
     {
-      v52 = [v50 results];
-      v53 = [v52 firstObject];
-      v119 = [v53 resultBundleId];
+      results5 = [v50 results];
+      firstObject2 = [results5 firstObject];
+      resultBundleId2 = [firstObject2 resultBundleId];
     }
 
     else
     {
-      v119 = 0;
+      resultBundleId2 = 0;
     }
 
-    v6 = v113;
+    sectionsCopy = v113;
     v46 = v50;
   }
 
   else
   {
-    v119 = 0;
+    resultBundleId2 = 0;
   }
 
   if (SSShortcutsAppSectionEnabled())
   {
-    v54 = v119;
-    if ([v119 length])
+    v54 = resultBundleId2;
+    if ([resultBundleId2 length])
     {
-      v55 = [v8 objectForKey:v119];
+      v55 = [v8 objectForKey:resultBundleId2];
     }
 
     else
@@ -288,7 +288,7 @@ LABEL_42:
   else
   {
     v55 = v112;
-    v54 = v119;
+    v54 = resultBundleId2;
   }
 
   v56 = isIpad();
@@ -299,12 +299,12 @@ LABEL_42:
   }
 
   v122 = v57;
-  if (v116 && SSAppTopHitWithShortcutsEnabled() && [v46 resultsCount] == 1 && objc_msgSend(v54, "length") && v55 && !+[SSTopHitAppWithEntitiesSectionBuilder supportsAppTopHitWithoutIndexFor:](SSTopHitAppWithEntitiesSectionBuilder, "supportsAppTopHitWithoutIndexFor:", v54))
+  if (searchCopy && SSAppTopHitWithShortcutsEnabled() && [v46 resultsCount] == 1 && objc_msgSend(v54, "length") && v55 && !+[SSTopHitAppWithEntitiesSectionBuilder supportsAppTopHitWithoutIndexFor:](SSTopHitAppWithEntitiesSectionBuilder, "supportsAppTopHitWithoutIndexFor:", v54))
   {
     v130 = v8;
     v110 = v7;
-    v58 = [v55 results];
-    v135 = [v58 mutableCopy];
+    results6 = [v55 results];
+    v135 = [results6 mutableCopy];
 
     v59 = objc_opt_new();
     v146 = 0u;
@@ -342,15 +342,15 @@ LABEL_42:
         }
 
         v65 = *(*(&v146 + 1) + 8 * v64);
-        v66 = [v65 resultBundleId];
-        if (![v66 isEqualToString:@"com.apple.shortcuts"])
+        resultBundleId3 = [v65 resultBundleId];
+        if (![resultBundleId3 isEqualToString:@"com.apple.shortcuts"])
         {
           goto LABEL_114;
         }
 
-        v67 = [v65 relatedAppIdentifier];
+        relatedAppIdentifier2 = [v65 relatedAppIdentifier];
         v68 = v65;
-        v69 = [v67 isEqualToString:v54];
+        v69 = [relatedAppIdentifier2 isEqualToString:v54];
 
         if (!v69)
         {
@@ -360,21 +360,21 @@ LABEL_42:
         }
 
         v70 = [v68 valueForAttribute:v117 withType:objc_opt_class()];
-        v71 = [v70 BOOLValue];
+        bOOLValue = [v70 BOOLValue];
 
         v72 = [v68 valueForAttribute:v115 withType:objc_opt_class()];
         v73 = [v72 isEqualToString:v114];
 
         v137 = v68;
-        v74 = [v68 displayOrder];
-        v75 = v74;
+        displayOrder = [v68 displayOrder];
+        v75 = displayOrder;
         v76 = &unk_1F55B4440;
-        if (v74)
+        if (displayOrder)
         {
-          v76 = v74;
+          v76 = displayOrder;
         }
 
-        v66 = v76;
+        resultBundleId3 = v76;
 
         v141 = v73;
         if (v73)
@@ -406,17 +406,17 @@ LABEL_83:
             v80 = [v59 objectAtIndexedSubscript:v77];
             if (v77 <= v62)
             {
-              v84 = [v78 title];
-              v85 = [v84 text];
-              v86 = [v80 title];
-              [v86 text];
+              title = [v78 title];
+              text = [title text];
+              title2 = [v80 title];
+              [title2 text];
               v87 = v64;
-              v88 = v66;
+              v88 = resultBundleId3;
               v90 = v89 = v62;
-              v91 = [v85 localizedCompare:v90];
+              v91 = [text localizedCompare:v90];
 
               v62 = v89;
-              v66 = v88;
+              resultBundleId3 = v88;
               v64 = v87;
               v78 = v137;
 
@@ -433,11 +433,11 @@ LABEL_105:
 
             else
             {
-              v81 = [v66 unsignedIntValue];
-              v82 = [v80 displayOrder];
-              v83 = [v82 unsignedIntValue];
+              unsignedIntValue = [resultBundleId3 unsignedIntValue];
+              displayOrder2 = [v80 displayOrder];
+              unsignedIntValue2 = [displayOrder2 unsignedIntValue];
 
-              if (v81 < v83)
+              if (unsignedIntValue < unsignedIntValue2)
               {
                 goto LABEL_105;
               }
@@ -456,7 +456,7 @@ LABEL_105:
           }
 
 LABEL_106:
-          v54 = v119;
+          v54 = resultBundleId2;
           if ([v59 count] > v122)
           {
             [v59 removeObjectsInRange:{v122, objc_msgSend(v59, "count") - v122}];
@@ -468,13 +468,13 @@ LABEL_106:
             v62 = v94 - 1;
           }
 
-          v95 = [v59 lastObject];
-          v96 = [v95 displayOrder];
-          v97 = v96;
+          lastObject = [v59 lastObject];
+          displayOrder3 = [lastObject displayOrder];
+          v97 = displayOrder3;
           v98 = &unk_1F55B4440;
-          if (v96)
+          if (displayOrder3)
           {
-            v98 = v96;
+            v98 = displayOrder3;
           }
 
           v99 = v98;
@@ -485,14 +485,14 @@ LABEL_106:
 
         if ([v59 count] >= v122)
         {
-          v93 = [v66 unsignedIntValue];
-          if (((v93 < [v120 unsignedIntValue]) & v71) != 0)
+          unsignedIntValue3 = [resultBundleId3 unsignedIntValue];
+          if (((unsignedIntValue3 < [v120 unsignedIntValue]) & bOOLValue) != 0)
           {
             goto LABEL_83;
           }
         }
 
-        else if ((v71 | v73))
+        else if ((bOOLValue | v73))
         {
           goto LABEL_83;
         }
@@ -545,7 +545,7 @@ LABEL_119:
         v55 = v107;
         [v107 setResults:v135];
 
-        v6 = v113;
+        sectionsCopy = v113;
         v46 = v108;
         break;
       }

@@ -1,25 +1,25 @@
 @interface AWDMETRICSKCellularPowerLogAcmPerfLevels
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLastSdmState:(id)a3;
+- (int)StringAsLastSdmState:(id)state;
 - (int)lastSdmState;
 - (unint64_t)hash;
-- (void)addBin:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastSdmState:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBin:(id)bin;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastSdmState:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogAcmPerfLevels
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -32,27 +32,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addBin:(id)a3
+- (void)addBin:(id)bin
 {
-  v4 = a3;
+  binCopy = bin;
   bins = self->_bins;
-  v8 = v4;
+  v8 = binCopy;
   if (!bins)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bins;
     self->_bins = v6;
 
-    v4 = v8;
+    binCopy = v8;
     bins = self->_bins;
   }
 
-  [(NSMutableArray *)bins addObject:v4];
+  [(NSMutableArray *)bins addObject:binCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)setHasLastSdmState:(BOOL)a3
+- (void)setHasLastSdmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -93,25 +93,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsLastSdmState:(id)a3
+- (int)StringAsLastSdmState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_STATE_DISABLED"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_ENABLED"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_ENABLED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_5G_ON"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED_5G_ON"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_LTE_ON"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED_LTE_ON"])
   {
     v4 = 3;
   }
@@ -130,8 +130,8 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogAcmPerfLevels;
   v4 = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -139,11 +139,11 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_bins count])
@@ -168,8 +168,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -178,7 +178,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"bin"];
+    [dictionary setObject:v5 forKey:@"bin"];
   }
 
   has = self->_has;
@@ -191,7 +191,7 @@
 
 LABEL_17:
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_durationMs];
-    [v3 setObject:v14 forKey:@"duration_ms"];
+    [dictionary setObject:v14 forKey:@"duration_ms"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -210,13 +210,13 @@ LABEL_18:
       v16 = off_279A100C0[lastSdmState];
     }
 
-    [v3 setObject:v16 forKey:@"last_sdm_state"];
+    [dictionary setObject:v16 forKey:@"last_sdm_state"];
 
     goto LABEL_22;
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v13 forKey:@"subs_id"];
+  [dictionary setObject:v13 forKey:@"subs_id"];
 
   has = self->_has;
   if (has)
@@ -233,13 +233,13 @@ LABEL_14:
 LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     timestamp = self->_timestamp;
@@ -315,23 +315,23 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 40) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self binsCount])
   {
     [v10 clearBins];
-    v5 = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self binsCount];
-    if (v5)
+    binsCount = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self binsCount];
+    if (binsCount)
     {
-      v6 = v5;
+      v6 = binsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDMETRICSKCellularPowerLogAcmPerfLevels *)self binAtIndex:i];
@@ -375,10 +375,10 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -405,7 +405,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addBin:v12];
       }
 
@@ -455,31 +455,31 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   bins = self->_bins;
-  if (bins | *(v4 + 3))
+  if (bins | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)bins isEqual:?])
     {
@@ -493,34 +493,34 @@ LABEL_24:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_subsId != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_subsId != *(equalCopy + 9))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_24;
   }
 
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_durationMs != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_durationMs != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_24;
   }
 
-  v8 = (*(v4 + 40) & 4) == 0;
+  v8 = (*(equalCopy + 40) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_lastSdmState != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_lastSdmState != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
@@ -584,14 +584,14 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 40) & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 40) & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -599,7 +599,7 @@ LABEL_7:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {

@@ -1,21 +1,21 @@
 @interface SlidingPaneViewState
-- (SlidingPaneViewState)initWithViewController:(id)a3 edge:(unint64_t)a4;
+- (SlidingPaneViewState)initWithViewController:(id)controller edge:(unint64_t)edge;
 - (void)dealloc;
 @end
 
 @implementation SlidingPaneViewState
 
-- (SlidingPaneViewState)initWithViewController:(id)a3 edge:(unint64_t)a4
+- (SlidingPaneViewState)initWithViewController:(id)controller edge:(unint64_t)edge
 {
-  v6 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SlidingPaneViewState;
   v7 = [(SlidingPaneViewState *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SlidingPaneViewState *)v7 setPaneViewController:v6];
-    [(SlidingPaneViewState *)v8 setEdge:a4];
+    [(SlidingPaneViewState *)v7 setPaneViewController:controllerCopy];
+    [(SlidingPaneViewState *)v8 setEdge:edge];
   }
 
   return v8;
@@ -23,8 +23,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SlidingPaneViewState *)self paneView];
-  [v3 removeFromSuperview];
+  paneView = [(SlidingPaneViewState *)self paneView];
+  [paneView removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = SlidingPaneViewState;

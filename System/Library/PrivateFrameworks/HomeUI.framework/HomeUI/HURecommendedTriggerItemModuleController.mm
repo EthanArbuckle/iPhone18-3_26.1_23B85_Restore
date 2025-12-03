@@ -1,34 +1,34 @@
 @interface HURecommendedTriggerItemModuleController
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (HURecommendedTriggerItemModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)didCommitTriggerBuilderForItem:(id)a3 withError:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)didCommitTriggerBuilderForItem:(id)item withError:(id)error;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HURecommendedTriggerItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 moreButtonItem];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  moreButtonItem = [module moreButtonItem];
 
   v7 = objc_opt_class();
 
   return v7;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v10 = v8;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -45,24 +45,24 @@
     HUDefaultSizeForIconSize();
     v14 = v13;
     v16 = v15;
-    v17 = [v12 contentMetrics];
-    [v17 setIconSize:{v14, v16}];
+    contentMetrics = [v12 contentMetrics];
+    [contentMetrics setIconSize:{v14, v16}];
 
-    v18 = [v12 contentMetrics];
-    [v18 setContentInset:{12.0, 0.0, 12.0, 0.0}];
+    contentMetrics2 = [v12 contentMetrics];
+    [contentMetrics2 setContentInset:{12.0, 0.0, 12.0, 0.0}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v9 latestResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v21 = [v20 BOOLValue];
+    latestResults = [itemCopy latestResults];
+    v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v20 BOOLValue];
 
-    v22 = v8;
-    [v22 setDisabled:v21];
-    [v22 setAccessoryType:v21 ^ 1];
-    if (v21)
+    v22 = cellCopy;
+    [v22 setDisabled:bOOLValue];
+    [v22 setAccessoryType:bOOLValue ^ 1];
+    if (bOOLValue)
     {
       v23 = 0.200000003;
     }
@@ -80,19 +80,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setAccessoryType:1];
+    [cellCopy setAccessoryType:1];
   }
 
   v24.receiver = self;
   v24.super_class = HURecommendedTriggerItemModuleController;
-  [(HUItemModuleController *)&v24 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v24 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -107,41 +107,41 @@
 
   if (v7)
   {
-    v8 = [v7 recommendation];
-    v9 = [v8 hu_triggerBuilderIfAny];
-    if (v9)
+    recommendation = [v7 recommendation];
+    hu_triggerBuilderIfAny = [recommendation hu_triggerBuilderIfAny];
+    if (hu_triggerBuilderIfAny)
     {
-      v10 = v9;
+      v10 = hu_triggerBuilderIfAny;
       v11 = [HUTriggerBuilderContext alloc];
-      v12 = [v10 context];
-      v13 = [(HUTriggerBuilderContext *)v11 initWithTriggerBuilderContext:v12];
+      context = [v10 context];
+      v13 = [(HUTriggerBuilderContext *)v11 initWithTriggerBuilderContext:context];
 
       [(HUTriggerBuilderContext *)v13 setSuggestionItem:v7];
       v14 = [v10 triggerBuilderWithContext:v13];
 
-      v15 = [(HURecommendedTriggerItemModuleController *)self delegate];
-      [v15 recommendedTriggerModuleController:self didSelectToOpenTriggerBuilder:v14];
+      delegate = [(HURecommendedTriggerItemModuleController *)self delegate];
+      [delegate recommendedTriggerModuleController:self didSelectToOpenTriggerBuilder:v14];
     }
   }
 
-  v16 = [(HUItemModuleController *)self module];
-  v17 = [v16 moreButtonItem];
+  module = [(HUItemModuleController *)self module];
+  moreButtonItem = [module moreButtonItem];
 
-  if (v17 == v5)
+  if (moreButtonItem == v5)
   {
-    v18 = [(HURecommendedTriggerItemModuleController *)self delegate];
-    [v18 recommendedTriggerModuleControllerDidSelectShowMore:self];
+    delegate2 = [(HURecommendedTriggerItemModuleController *)self delegate];
+    [delegate2 recommendedTriggerModuleControllerDidSelectShowMore:self];
   }
 
   return 0;
 }
 
-- (void)didCommitTriggerBuilderForItem:(id)a3 withError:(id)a4
+- (void)didCommitTriggerBuilderForItem:(id)item withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  errorCopy = error;
   objc_opt_class();
-  v17 = v6;
+  v17 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v17;
@@ -154,28 +154,28 @@
 
   v9 = v8;
 
-  v10 = [v9 recommendation];
-  v11 = v10;
-  if (v10)
+  recommendation = [v9 recommendation];
+  v11 = recommendation;
+  if (recommendation)
   {
-    v12 = [v10 analyticsData];
-    v13 = [v12 mutableCopy];
+    analyticsData = [recommendation analyticsData];
+    v13 = [analyticsData mutableCopy];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:v7 == 0];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:errorCopy == 0];
     [v13 setObject:v14 forKeyedSubscript:*MEMORY[0x277D13598]];
 
     [v13 setObject:&unk_2824926D8 forKeyedSubscript:*MEMORY[0x277D13508]];
-    if (v7)
+    if (errorCopy)
     {
-      [v13 setObject:v7 forKeyedSubscript:*MEMORY[0x277D13510]];
+      [v13 setObject:errorCopy forKeyedSubscript:*MEMORY[0x277D13510]];
     }
 
-    v15 = [(HURecommendedTriggerItemModuleController *)self analyticsPresentationContext];
+    analyticsPresentationContext = [(HURecommendedTriggerItemModuleController *)self analyticsPresentationContext];
 
-    if (v15)
+    if (analyticsPresentationContext)
     {
-      v16 = [(HURecommendedTriggerItemModuleController *)self analyticsPresentationContext];
-      [v13 setObject:v16 forKeyedSubscript:*MEMORY[0x277D13548]];
+      analyticsPresentationContext2 = [(HURecommendedTriggerItemModuleController *)self analyticsPresentationContext];
+      [v13 setObject:analyticsPresentationContext2 forKeyedSubscript:*MEMORY[0x277D13548]];
     }
 
     [MEMORY[0x277D143D8] sendEvent:14 withData:v13];

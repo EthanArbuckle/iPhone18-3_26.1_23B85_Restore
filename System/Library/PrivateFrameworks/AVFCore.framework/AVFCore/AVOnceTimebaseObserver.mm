@@ -1,5 +1,5 @@
 @interface AVOnceTimebaseObserver
-- (AVOnceTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 fireTime:(id *)a4 queue:(id)a5 block:(id)a6;
+- (AVOnceTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase fireTime:(id *)time queue:(id)queue block:(id)block;
 - (void)_fireBlock;
 - (void)_resetNextFireTime;
 - (void)dealloc;
@@ -8,15 +8,15 @@
 
 @implementation AVOnceTimebaseObserver
 
-- (AVOnceTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 fireTime:(id *)a4 queue:(id)a5 block:(id)a6
+- (AVOnceTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase fireTime:(id *)time queue:(id)queue block:(id)block
 {
   v23.receiver = self;
   v23.super_class = AVOnceTimebaseObserver;
-  v9 = [(AVTimebaseObserver *)&v23 initWithTimebase:a3 queue:a5];
+  v9 = [(AVTimebaseObserver *)&v23 initWithTimebase:timebase queue:queue];
   v10 = v9;
   if (v9)
   {
-    if (!a6)
+    if (!block)
     {
       v13 = *(v9 + 1);
       if (v13)
@@ -39,10 +39,10 @@
       objc_exception_throw(v20);
     }
 
-    var3 = a4->var3;
-    *(v9 + 68) = *&a4->var0;
+    var3 = time->var3;
+    *(v9 + 68) = *&time->var0;
     *(v9 + 84) = var3;
-    *(v9 + 12) = [a6 copy];
+    *(v9 + 12) = [block copy];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __64__AVOnceTimebaseObserver_initWithTimebase_fireTime_queue_block___block_invoke_2;

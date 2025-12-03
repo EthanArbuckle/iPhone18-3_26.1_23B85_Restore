@@ -26,59 +26,59 @@
 - (BOOL)groupedContainingIsGrouped
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 grouped];
+  grouped = [v2 grouped];
 
-  return v3;
+  return grouped;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 computeIntrinsicWidth];
-  return v5;
+  computeIntrinsicWidth = [firstObject computeIntrinsicWidth];
+  return computeIntrinsicWidth;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 computeIntrinsicHeight];
-  return v5;
+  computeIntrinsicHeight = [firstObject computeIntrinsicHeight];
+  return computeIntrinsicHeight;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 computedWidth];
-  return v5;
+  computedWidth = [firstObject computedWidth];
+  return computedWidth;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 computedHeight];
-  return v5;
+  computedHeight = [firstObject computedHeight];
+  return computedHeight;
 }
 
 - (void)computeLayout
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  [v4 setContainingWidth:NAN];
-  [v4 setContainingHeight:NAN];
-  [v4 setFlexedWidth:NAN];
-  [v4 setFlexedHeight:NAN];
-  [v4 validateLayout];
-  [v4 setComputedOrigin:{CGPointZero.x, CGPointZero.y}];
-  [v4 computedTransformedSize];
+  [firstObject setContainingWidth:NAN];
+  [firstObject setContainingHeight:NAN];
+  [firstObject setFlexedWidth:NAN];
+  [firstObject setFlexedHeight:NAN];
+  [firstObject validateLayout];
+  [firstObject setComputedOrigin:{CGPointZero.x, CGPointZero.y}];
+  [firstObject computedTransformedSize];
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 

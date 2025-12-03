@@ -12,7 +12,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [a1 enumeratorAtPath:v6];
+  v7 = [self enumeratorAtPath:v6];
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (!v8)
   {
@@ -38,7 +38,7 @@ LABEL_21:
 
       v13 = [v6 stringByAppendingPathComponent:*(*(&v26 + 1) + 8 * i)];
       v25 = 0;
-      v14 = [a1 removeItemAtPath:v13 error:&v25];
+      v14 = [self removeItemAtPath:v13 error:&v25];
       v15 = v25;
       v16 = v15;
       if ((v14 & 1) == 0)

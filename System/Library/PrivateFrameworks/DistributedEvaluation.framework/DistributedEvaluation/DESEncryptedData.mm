@@ -1,12 +1,12 @@
 @interface DESEncryptedData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DESEncryptedData
@@ -17,45 +17,45 @@
   v8.receiver = self;
   v8.super_class = DESEncryptedData;
   v4 = [(DESEncryptedData *)&v8 description];
-  v5 = [(DESEncryptedData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DESEncryptedData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   data = self->_data;
   if (data)
   {
-    [v3 setObject:data forKey:@"data"];
+    [dictionary setObject:data forKey:@"data"];
   }
 
   encryptedKey = self->_encryptedKey;
   if (encryptedKey)
   {
-    [v3 setObject:encryptedKey forKey:@"encryptedKey"];
+    [dictionary setObject:encryptedKey forKey:@"encryptedKey"];
   }
 
   algorithm = self->_algorithm;
   if (algorithm)
   {
-    [v3 setObject:algorithm forKey:@"algorithm"];
+    [dictionary setObject:algorithm forKey:@"algorithm"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -79,17 +79,17 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_version;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_version;
+    *(toCopy + 36) |= 1u;
   }
 
-  v5 = v4;
-  [v4 setData:self->_data];
+  v5 = toCopy;
+  [toCopy setData:self->_data];
   if (self->_encryptedKey)
   {
     [v5 setEncryptedKey:?];
@@ -101,9 +101,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -111,39 +111,39 @@
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(NSData *)self->_data copyWithZone:a3];
+  v7 = [(NSData *)self->_data copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSData *)self->_encryptedKey copyWithZone:a3];
+  v9 = [(NSData *)self->_encryptedKey copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(NSString *)self->_algorithm copyWithZone:a3];
+  v11 = [(NSString *)self->_algorithm copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_version != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_version != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -151,13 +151,13 @@ LABEL_13:
   }
 
   data = self->_data;
-  if (data | *(v4 + 2) && ![(NSData *)data isEqual:?])
+  if (data | *(equalCopy + 2) && ![(NSData *)data isEqual:?])
   {
     goto LABEL_13;
   }
 
   encryptedKey = self->_encryptedKey;
-  if (encryptedKey | *(v4 + 3))
+  if (encryptedKey | *(equalCopy + 3))
   {
     if (![(NSData *)encryptedKey isEqual:?])
     {
@@ -166,7 +166,7 @@ LABEL_13:
   }
 
   algorithm = self->_algorithm;
-  if (algorithm | *(v4 + 1))
+  if (algorithm | *(equalCopy + 1))
   {
     v9 = [(NSString *)algorithm isEqual:?];
   }
@@ -198,32 +198,32 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSString *)self->_algorithm hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
-    self->_version = v4[8];
+    self->_version = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(DESEncryptedData *)self setData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(DESEncryptedData *)self setEncryptedKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(DESEncryptedData *)self setAlgorithm:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

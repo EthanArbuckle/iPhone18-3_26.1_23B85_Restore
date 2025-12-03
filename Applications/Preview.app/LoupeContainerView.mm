@@ -1,14 +1,14 @@
 @interface LoupeContainerView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC7Preview18LoupeContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC7Preview18LoupeContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)didMoveToWindow;
-- (void)handlePan:(id)a3;
+- (void)handlePan:(id)pan;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation LoupeContainerView
@@ -25,9 +25,9 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for LoupeContainerView();
-  v3 = self;
+  selfCopy = self;
   [(LoupeContainerView *)&v4 layoutMarginsDidChange];
-  [(LoupeContainerView *)v3 setNeedsLayout:v4.receiver];
+  [(LoupeContainerView *)selfCopy setNeedsLayout:v4.receiver];
 }
 
 - (void)layoutSubviews
@@ -42,7 +42,7 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for LoupeContainerView();
-  v3 = self;
+  selfCopy = self;
   [(LoupeContainerView *)&v4 layoutSubviews];
   sub_1000362B4();
 }
@@ -57,11 +57,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_100035A00();
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -74,21 +74,21 @@
   sub_1000085D8(0, &qword_100208020);
   sub_10003A39C();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for LoupeContainerView();
-  [(LoupeContainerView *)&v9 touchesBegan:isa withEvent:v6];
+  [(LoupeContainerView *)&v9 touchesBegan:isa withEvent:eventCopy];
 
-  if ([(LoupeContainerView *)v7 isUserInteractionEnabled])
+  if ([(LoupeContainerView *)selfCopy isUserInteractionEnabled])
   {
     sub_100037F40(1u, 0.0, 0.0);
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -101,24 +101,24 @@
   sub_1000085D8(0, &qword_100208020);
   sub_10003A39C();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for LoupeContainerView();
-  [(LoupeContainerView *)&v9 touchesEnded:isa withEvent:v6];
+  [(LoupeContainerView *)&v9 touchesEnded:isa withEvent:eventCopy];
 
-  if ([(LoupeContainerView *)v7 isUserInteractionEnabled]&& *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC7Preview18LoupeContainerView_interactionPhase) != 2)
+  if ([(LoupeContainerView *)selfCopy isUserInteractionEnabled]&& *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC7Preview18LoupeContainerView_interactionPhase) != 2)
   {
     sub_100039008(0.0, 0.0);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -127,14 +127,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a4;
-  v9 = self;
+  eventCopy = event;
+  selfCopy = self;
   v10 = sub_10003A308(x, y);
 
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -144,14 +144,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_100037A58(v5);
+  beginCopy = begin;
+  selfCopy = self;
+  v7 = sub_100037A58(beginCopy);
 
   return v7 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -165,15 +165,15 @@
   if (v7)
   {
     sub_1000085D8(0, &qword_100207008);
-    v8 = a3;
-    v9 = a4;
-    v10 = self;
+    recognizerCopy = recognizer;
+    gestureRecognizerCopy = gestureRecognizer;
+    selfCopy = self;
     v11 = v7;
     v12 = static NSObject.== infix(_:_:)();
 
     if (v12)
     {
-      [v9 setState:5];
+      [gestureRecognizerCopy setState:5];
     }
   }
 
@@ -184,7 +184,7 @@
   return 0;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -194,12 +194,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_100037D28(v5);
+  panCopy = pan;
+  selfCopy = self;
+  sub_100037D28(panCopy);
 }
 
-- (_TtC7Preview18LoupeContainerView)initWithFrame:(CGRect)a3
+- (_TtC7Preview18LoupeContainerView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

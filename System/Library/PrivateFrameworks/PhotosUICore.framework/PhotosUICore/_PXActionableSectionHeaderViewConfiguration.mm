@@ -2,7 +2,7 @@
 - (PXActionableSectionHeaderLayout)weakLayout;
 - (PXSimpleIndexPath)sectionIndexPath;
 - (UIEdgeInsets)edgeInsets;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation _PXActionableSectionHeaderViewConfiguration
@@ -14,10 +14,10 @@
   return WeakRetained;
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_sectionIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_sectionIndexPath.item = v3;
 }
 

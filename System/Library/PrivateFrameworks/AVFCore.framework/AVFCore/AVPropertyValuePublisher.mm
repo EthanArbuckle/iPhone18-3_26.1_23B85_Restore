@@ -1,30 +1,30 @@
 @interface AVPropertyValuePublisher
-+ (id)propertyValuePublisherWithObject:(id)a3 key:(id)a4 notificationName:(id)a5;
-- (AVPropertyValuePublisher)initWithObject:(id)a3 key:(id)a4 notificationName:(id)a5;
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4;
++ (id)propertyValuePublisherWithObject:(id)object key:(id)key notificationName:(id)name;
+- (AVPropertyValuePublisher)initWithObject:(id)object key:(id)key notificationName:(id)name;
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation AVPropertyValuePublisher
 
-- (AVPropertyValuePublisher)initWithObject:(id)a3 key:(id)a4 notificationName:(id)a5
+- (AVPropertyValuePublisher)initWithObject:(id)object key:(id)key notificationName:(id)name
 {
   v10.receiver = self;
   v10.super_class = AVPropertyValuePublisher;
   v8 = [(AVPublisher *)&v10 init];
   if (v8)
   {
-    v8->_object = a3;
-    v8->_key = [a4 copy];
-    v8->_notificationName = [a5 copy];
+    v8->_object = object;
+    v8->_key = [key copy];
+    v8->_notificationName = [name copy];
   }
 
   return v8;
 }
 
-+ (id)propertyValuePublisherWithObject:(id)a3 key:(id)a4 notificationName:(id)a5
++ (id)propertyValuePublisherWithObject:(id)object key:(id)key notificationName:(id)name
 {
-  v5 = [[AVPropertyValuePublisher alloc] initWithObject:a3 key:a4 notificationName:a5];
+  v5 = [[AVPropertyValuePublisher alloc] initWithObject:object key:key notificationName:name];
 
   return v5;
 }
@@ -36,9 +36,9 @@
   [(AVPublisher *)&v3 dealloc];
 }
 
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block
 {
-  v5 = a3;
+  valueCopy = value;
   objc_initWeak(&location, self);
   key = self->_key;
   v8 = [AVNotificationSubscription alloc];
@@ -49,11 +49,11 @@
   v14[2] = __66__AVPropertyValuePublisher_subscribeRequestingInitialValue_block___block_invoke;
   v14[3] = &unk_1E7463590;
   v14[4] = key;
-  v14[5] = a4;
+  v14[5] = block;
   v11 = [(AVNotificationSubscription *)v8 initWithObject:object notificationName:notificationName callbackBlock:v14];
-  if (v5)
+  if (valueCopy)
   {
-    (*(a4 + 2))(a4, [self->_object valueForKey:key]);
+    (*(block + 2))(block, [self->_object valueForKey:key]);
   }
 
   v12 = v11;

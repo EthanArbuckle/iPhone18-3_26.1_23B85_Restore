@@ -1,7 +1,7 @@
 @interface TNUIState
 - (BOOL)hasPreviousVisibleRect;
 - (BOOL)hasVisibleRect;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)previousScrollPosition;
 - (CGPoint)scrollPosition;
 - (CGRect)desktopWindowFrame;
@@ -10,35 +10,35 @@
 - (CGSize)desktopScreenSize;
 - (NSString)description;
 - (TNUIState)init;
-- (TNUIState)initWithArchive:(const void *)a3 unarchiver:(id)a4;
+- (TNUIState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (TNUIStateDelegate)delegate;
 - (float)defaultViewScale;
-- (float)p_calculateViewScaleForVisibleRect:(CGRect)a3;
+- (float)p_calculateViewScaleForVisibleRect:(CGRect)rect;
 - (float)previousViewScale;
 - (float)viewScale;
-- (float)viewScaleForSheet:(id)a3;
-- (id)UIStateForChart:(id)a3;
-- (id)archivedUIStateInContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_fixedUpSelectionPathForRestoration:(id)a3 forcingUnpagination:(BOOL)a4;
+- (float)viewScaleForSheet:(id)sheet;
+- (id)UIStateForChart:(id)chart;
+- (id)archivedUIStateInContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_fixedUpSelectionPathForRestoration:(id)restoration forcingUnpagination:(BOOL)unpagination;
 - (id)p_uiStateForActiveSheet;
-- (id)uiStateForSheet:(id)a3;
+- (id)uiStateForSheet:(id)sheet;
 - (int64_t)inspectorPaneHiddenState;
 - (unint64_t)hash;
 - (void)clearPreviousVisibleRect;
 - (void)clearVisibleRect;
-- (void)enumerateSheetUIStatesWithBlock:(id)a3;
-- (void)fixupSelectionPathsForRestorationForcingUnpagination:(BOOL)a3;
+- (void)enumerateSheetUIStatesWithBlock:(id)block;
+- (void)fixupSelectionPathsForRestorationForcingUnpagination:(BOOL)unpagination;
 - (void)p_enterPaginatedMode;
 - (void)p_exitPaginatedMode;
 - (void)resetForInitialViewing;
-- (void)setInspectorPaneHiddenState:(int64_t)a3;
-- (void)setPreviousVisibleRect:(CGRect)a3;
-- (void)setPreviousVisibleRect:(CGRect)a3 forSheet:(id)a4;
-- (void)setSelectionPath:(id)a3;
-- (void)setUIState:(id)a3 forChart:(id)a4;
-- (void)setVisibleRect:(CGRect)a3;
-- (void)setVisibleRect:(CGRect)a3 forSheet:(id)a4;
+- (void)setInspectorPaneHiddenState:(int64_t)state;
+- (void)setPreviousVisibleRect:(CGRect)rect;
+- (void)setPreviousVisibleRect:(CGRect)rect forSheet:(id)sheet;
+- (void)setSelectionPath:(id)path;
+- (void)setUIState:(id)state forChart:(id)chart;
+- (void)setVisibleRect:(CGRect)rect;
+- (void)setVisibleRect:(CGRect)rect forSheet:(id)sheet;
 @end
 
 @implementation TNUIState
@@ -94,24 +94,24 @@
   return result;
 }
 
-- (void)setVisibleRect:(CGRect)a3 forSheet:(id)a4
+- (void)setVisibleRect:(CGRect)rect forSheet:(id)sheet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = objc_msgSend_uiStateForSheet_(self, a2, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = objc_msgSend_uiStateForSheet_(self, a2, sheet);
   objc_msgSend_setVisibleRect_(v15, v9, v10, x, y, width, height);
   objc_msgSend_p_calculateViewScaleForVisibleRect_(self, v11, v12, x, y, width, height);
   objc_msgSend_setViewScale_(v15, v13, v14);
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = objc_msgSend_selectionPath(self, a2, v3);
   v11 = objc_msgSend_sheetSelection(v16, v9, v10);
   v14 = objc_msgSend_sheet(v11, v12, v13);
@@ -160,24 +160,24 @@
   return result;
 }
 
-- (void)setPreviousVisibleRect:(CGRect)a3 forSheet:(id)a4
+- (void)setPreviousVisibleRect:(CGRect)rect forSheet:(id)sheet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = objc_msgSend_uiStateForSheet_(self, a2, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = objc_msgSend_uiStateForSheet_(self, a2, sheet);
   objc_msgSend_setPreviousVisibleRect_(v15, v9, v10, x, y, width, height);
   objc_msgSend_p_calculateViewScaleForVisibleRect_(self, v11, v12, x, y, width, height);
   objc_msgSend_setPreviousViewScale_(v15, v13, v14);
 }
 
-- (void)setPreviousVisibleRect:(CGRect)a3
+- (void)setPreviousVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = objc_msgSend_selectionPath(self, a2, v3);
   v11 = objc_msgSend_sheetSelection(v16, v9, v10);
   v14 = objc_msgSend_sheet(v11, v12, v13);
@@ -212,10 +212,10 @@
   objc_msgSend_clearPreviousVisibleRect(v5, v3, v4);
 }
 
-- (float)p_calculateViewScaleForVisibleRect:(CGRect)a3
+- (float)p_calculateViewScaleForVisibleRect:(CGRect)rect
 {
-  width = a3.size.width;
-  v6 = objc_msgSend_delegate(self, a2, v3, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  width = rect.size.width;
+  v6 = objc_msgSend_delegate(self, a2, v3, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   if (!v6)
   {
@@ -314,9 +314,9 @@
   return v13;
 }
 
-- (float)viewScaleForSheet:(id)a3
+- (float)viewScaleForSheet:(id)sheet
 {
-  v4 = objc_msgSend_uiStateForSheet_(self, a2, a3);
+  v4 = objc_msgSend_uiStateForSheet_(self, a2, sheet);
   objc_msgSend_defaultViewScale(self, v5, v6);
   objc_msgSend_updateForCurrentDeviceIdiomIfNecessaryWithDefaultViewScale_(v4, v7, v8);
   objc_msgSend_viewScale(v4, v9, v10);
@@ -358,9 +358,9 @@
   return v17;
 }
 
-- (id)uiStateForSheet:(id)a3
+- (id)uiStateForSheet:(id)sheet
 {
-  v3 = objc_msgSend_uiStateForSheet_createIfNeeded_(self, a2, a3, 1);
+  v3 = objc_msgSend_uiStateForSheet_createIfNeeded_(self, a2, sheet, 1);
 
   return v3;
 }
@@ -376,19 +376,19 @@
   return v12;
 }
 
-- (id)UIStateForChart:(id)a3
+- (id)UIStateForChart:(id)chart
 {
-  v4 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], a2, a3);
+  v4 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], a2, chart);
   v7 = objc_msgSend_chartUIState(self, v5, v6);
   v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
 
   return v9;
 }
 
-- (void)setUIState:(id)a3 forChart:(id)a4
+- (void)setUIState:(id)state forChart:(id)chart
 {
-  v20 = a3;
-  v6 = a4;
+  stateCopy = state;
+  chartCopy = chart;
   v10 = objc_msgSend_chartUIState(self, v7, v8);
   if (!v10)
   {
@@ -400,10 +400,10 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v19 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], v9, v6);
-  if (v20)
+  v19 = objc_msgSend_weakReferenceForObject_(MEMORY[0x277D80868], v9, chartCopy);
+  if (stateCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v10, v18, v20, v19);
+    objc_msgSend_setObject_forKeyedSubscript_(v10, v18, stateCopy, v19);
   }
 
   else
@@ -428,12 +428,12 @@
   return hasPreviousVisibleRect;
 }
 
-- (void)setSelectionPath:(id)a3
+- (void)setSelectionPath:(id)path
 {
-  v32 = a3;
-  v6 = objc_msgSend_copy(v32, v4, v5);
+  pathCopy = path;
+  v6 = objc_msgSend_copy(pathCopy, v4, v5);
   v9 = objc_msgSend_sheetSelection(self->_selectionPath, v7, v8);
-  v12 = objc_msgSend_sheetSelection(v32, v10, v11);
+  v12 = objc_msgSend_sheetSelection(pathCopy, v10, v11);
   if (objc_msgSend_isPaginated(v9, v13, v14))
   {
     isPaginated = 0;
@@ -454,7 +454,7 @@
     v20 = 0;
   }
 
-  v21 = objc_msgSend_selectionPathForUIState(v32, v18, v19);
+  v21 = objc_msgSend_selectionPathForUIState(pathCopy, v18, v19);
 
   v22 = self->_selectionPath;
   v23 = v21;
@@ -530,12 +530,12 @@
   self->_isInPaginatedMode = 0;
 }
 
-- (void)setInspectorPaneHiddenState:(int64_t)a3
+- (void)setInspectorPaneHiddenState:(int64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    v5 = 1u >> (a3 & 7);
-    objc_msgSend_setInspectorPaneIsAutoHidden_(self, a2, (4u >> (a3 & 7)) & 1);
+    v5 = 1u >> (state & 7);
+    objc_msgSend_setInspectorPaneIsAutoHidden_(self, a2, (4u >> (state & 7)) & 1);
 
     MEMORY[0x2821F9670](self, sel_setInspectorPaneIsVisible_, v5);
   }
@@ -554,11 +554,11 @@
   }
 }
 
-- (id)archivedUIStateInContext:(id)a3
+- (id)archivedUIStateInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [TNArchivedUIState alloc];
-  v7 = objc_msgSend_initWithUIState_context_(v5, v6, self, v4);
+  v7 = objc_msgSend_initWithUIState_context_(v5, v6, self, contextCopy);
 
   return v7;
 }
@@ -573,9 +573,9 @@
   return v10;
 }
 
-- (TNUIState)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TNUIState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v27.receiver = self;
   v27.super_class = TNUIState;
   v7 = [(TNUIState *)&v27 init];
@@ -587,13 +587,13 @@
     v11 = v8->_chartUIState;
     v8->_chartUIState = v10;
 
-    v12 = *(a3 + 30);
+    v12 = *(archive + 30);
     if (v12 >= 1)
     {
       v13 = 8;
       do
       {
-        v14 = *(*(a3 + 16) + v13);
+        v14 = *(*(archive + 16) + v13);
         v15 = objc_alloc(MEMORY[0x277D80038]);
         v17 = objc_msgSend_initWithArchive_(v15, v16, v14);
         v18 = *(v14 + 48);
@@ -604,7 +604,7 @@
         v25 = v8;
         v19 = v17;
         v26 = v19;
-        v20 = v6;
+        v20 = unarchiverCopy;
         v22 = objc_opt_class();
         if (v18)
         {
@@ -627,7 +627,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TNUIState);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -684,9 +684,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (!v10)
@@ -865,14 +865,14 @@ LABEL_28:
   return v36 | v46 | v48;
 }
 
-- (void)enumerateSheetUIStatesWithBlock:(id)a3
+- (void)enumerateSheetUIStatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_275F482E8;
   v15[3] = &unk_27A6A3618;
-  v5 = v4;
+  v5 = blockCopy;
   v16 = v5;
   v6 = MEMORY[0x277C91D00](v15);
   v9 = objc_msgSend_sheetUIStates(self, v7, v8);
@@ -882,12 +882,12 @@ LABEL_28:
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v13, v14, v6);
 }
 
-- (void)fixupSelectionPathsForRestorationForcingUnpagination:(BOOL)a3
+- (void)fixupSelectionPathsForRestorationForcingUnpagination:(BOOL)unpagination
 {
-  v3 = a3;
+  unpaginationCopy = unpagination;
   v31 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_selectionPath(self, a2, a3);
-  v7 = objc_msgSend_p_fixedUpSelectionPathForRestoration_forcingUnpagination_(self, v6, v5, v3);
+  v5 = objc_msgSend_selectionPath(self, a2, unpagination);
+  v7 = objc_msgSend_p_fixedUpSelectionPathForRestoration_forcingUnpagination_(self, v6, v5, unpaginationCopy);
   objc_msgSend_setSelectionPath_(self, v8, v7);
 
   v28 = 0u;
@@ -912,7 +912,7 @@ LABEL_28:
 
         v21 = *(*(&v26 + 1) + 8 * i);
         v22 = objc_msgSend_selectionPath(v21, v16, v17);
-        v24 = objc_msgSend_p_fixedUpSelectionPathForRestoration_forcingUnpagination_(self, v23, v22, v3);
+        v24 = objc_msgSend_p_fixedUpSelectionPathForRestoration_forcingUnpagination_(self, v23, v22, unpaginationCopy);
         objc_msgSend_setSelectionPath_(v21, v25, v24);
       }
 
@@ -923,45 +923,45 @@ LABEL_28:
   }
 }
 
-- (id)p_fixedUpSelectionPathForRestoration:(id)a3 forcingUnpagination:(BOOL)a4
+- (id)p_fixedUpSelectionPathForRestoration:(id)restoration forcingUnpagination:(BOOL)unpagination
 {
-  v4 = a4;
-  v5 = a3;
+  unpaginationCopy = unpagination;
+  restorationCopy = restoration;
   v8 = objc_msgSend_sharedTableConfiguration(MEMORY[0x277D80D00], v6, v7);
   v11 = objc_msgSend_controlCellUIAlwaysVisible(v8, v9, v10);
 
   if (v11)
   {
-    objc_msgSend_selectionPathByFixingUpControlCellSelection(v5, v12, v13);
-    v5 = v14 = v5;
+    objc_msgSend_selectionPathByFixingUpControlCellSelection(restorationCopy, v12, v13);
+    restorationCopy = v14 = restorationCopy;
   }
 
   else
   {
-    v14 = objc_msgSend_controlCellSelection(v5, v12, v13);
+    v14 = objc_msgSend_controlCellSelection(restorationCopy, v12, v13);
     if (v14)
     {
-      v16 = objc_msgSend_selectionPathPoppingOffSelection_(v5, v15, v14);
+      v16 = objc_msgSend_selectionPathPoppingOffSelection_(restorationCopy, v15, v14);
 
-      v5 = v16;
+      restorationCopy = v16;
     }
   }
 
-  if (v4)
+  if (unpaginationCopy)
   {
-    v19 = objc_msgSend_sheetSelection(v5, v17, v18);
+    v19 = objc_msgSend_sheetSelection(restorationCopy, v17, v18);
     if (objc_msgSend_isPaginated(v19, v20, v21))
     {
       v24 = objc_msgSend_sheet(v19, v22, v23);
       v26 = objc_msgSend_selectionForSheet_paginated_(TNSheetSelection, v25, v24, 0);
 
-      v28 = objc_msgSend_selectionPathReplacingMostSpecificLocationOfSelection_withSelection_(v5, v27, v19, v26);
+      v28 = objc_msgSend_selectionPathReplacingMostSpecificLocationOfSelection_withSelection_(restorationCopy, v27, v19, v26);
 
-      v5 = v28;
+      restorationCopy = v28;
     }
   }
 
-  return v5;
+  return restorationCopy;
 }
 
 - (void)resetForInitialViewing

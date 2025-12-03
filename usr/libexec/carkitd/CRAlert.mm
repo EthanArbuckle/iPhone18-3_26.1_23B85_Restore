@@ -1,18 +1,18 @@
 @interface CRAlert
 - (BOOL)dismissAlert;
-- (BOOL)presentAlertWithCompletion:(id)a3;
+- (BOOL)presentAlertWithCompletion:(id)completion;
 - (id)_alertContents;
 - (id)iconImagePath;
-- (void)_setAlert:(__CFUserNotification *)a3;
+- (void)_setAlert:(__CFUserNotification *)alert;
 @end
 
 @implementation CRAlert
 
-- (void)_setAlert:(__CFUserNotification *)a3
+- (void)_setAlert:(__CFUserNotification *)alert
 {
-  if (a3)
+  if (alert)
   {
-    CFRetain(a3);
+    CFRetain(alert);
   }
 
   alert = self->_alert;
@@ -21,15 +21,15 @@
     CFRelease(alert);
   }
 
-  self->_alert = a3;
+  self->_alert = alert;
 }
 
 - (id)iconImagePath
 {
   v2 = CRFrameworkBundle();
-  v3 = [v2 bundlePath];
+  bundlePath = [v2 bundlePath];
 
-  v4 = [v3 stringByAppendingPathComponent:@"CarPlayNotificationIcon.png"];
+  v4 = [bundlePath stringByAppendingPathComponent:@"CarPlayNotificationIcon.png"];
 
   return v4;
 }
@@ -44,54 +44,54 @@
   v5 = [NSNumber numberWithBool:[(CRAlert *)self allowInCar]];
   [v3 setObject:v5 forKeyedSubscript:SBUserNotificationAllowInCarKey];
 
-  v6 = [(CRAlert *)self alertTitle];
-  if (v6)
+  alertTitle = [(CRAlert *)self alertTitle];
+  if (alertTitle)
   {
-    [v3 setObject:v6 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
+    [v3 setObject:alertTitle forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
   }
 
-  v7 = [(CRAlert *)self alertMessage];
-  if (v7)
+  alertMessage = [(CRAlert *)self alertMessage];
+  if (alertMessage)
   {
-    [v3 setObject:v7 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
+    [v3 setObject:alertMessage forKeyedSubscript:kCFUserNotificationAlertMessageKey];
   }
 
-  v8 = [(CRAlert *)self alertAcceptButtonTitle];
-  if (v8)
+  alertAcceptButtonTitle = [(CRAlert *)self alertAcceptButtonTitle];
+  if (alertAcceptButtonTitle)
   {
-    [v3 setObject:v8 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
+    [v3 setObject:alertAcceptButtonTitle forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
   }
 
-  v9 = [(CRAlert *)self alertDeclineButtonTitle];
-  if (v9)
+  alertDeclineButtonTitle = [(CRAlert *)self alertDeclineButtonTitle];
+  if (alertDeclineButtonTitle)
   {
-    [v3 setObject:v9 forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
+    [v3 setObject:alertDeclineButtonTitle forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
   }
 
-  v10 = [(CRAlert *)self alertOtherButtonTitle];
-  if (v10)
+  alertOtherButtonTitle = [(CRAlert *)self alertOtherButtonTitle];
+  if (alertOtherButtonTitle)
   {
-    [v3 setObject:v10 forKeyedSubscript:kCFUserNotificationOtherButtonTitleKey];
+    [v3 setObject:alertOtherButtonTitle forKeyedSubscript:kCFUserNotificationOtherButtonTitleKey];
   }
 
-  v11 = [(CRAlert *)self lockscreenMessage];
-  v12 = v11 != 0;
-  if (v11)
+  lockscreenMessage = [(CRAlert *)self lockscreenMessage];
+  v12 = lockscreenMessage != 0;
+  if (lockscreenMessage)
   {
-    [v3 setObject:v11 forKeyedSubscript:SBUserNotificationLockScreenAlertMessageKey];
+    [v3 setObject:lockscreenMessage forKeyedSubscript:SBUserNotificationLockScreenAlertMessageKey];
   }
 
-  v13 = [(CRAlert *)self lockscreenTitle];
-  if (v13)
+  lockscreenTitle = [(CRAlert *)self lockscreenTitle];
+  if (lockscreenTitle)
   {
-    [v3 setObject:v13 forKeyedSubscript:SBUserNotificationLockScreenAlertHeaderKey];
+    [v3 setObject:lockscreenTitle forKeyedSubscript:SBUserNotificationLockScreenAlertHeaderKey];
     v12 = 1;
   }
 
-  v14 = [(CRAlert *)self iconImagePath];
-  if (v14)
+  iconImagePath = [(CRAlert *)self iconImagePath];
+  if (iconImagePath)
   {
-    [v3 setObject:v14 forKeyedSubscript:SBUserNotificationIconImagePath];
+    [v3 setObject:iconImagePath forKeyedSubscript:SBUserNotificationIconImagePath];
   }
 
   else if (!v12)
@@ -105,13 +105,13 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)presentAlertWithCompletion:(id)a3
+- (BOOL)presentAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   error = 0;
   [(CRAlert *)self setAlertAutoDismissed:0];
-  v5 = [(CRAlert *)self _alertContents];
-  if (v5 && (v6 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 3uLL, &error, v5)) != 0)
+  _alertContents = [(CRAlert *)self _alertContents];
+  if (_alertContents && (v6 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 3uLL, &error, _alertContents)) != 0)
   {
     v7 = v6;
     [(CRAlert *)self _setAlert:v6];
@@ -122,7 +122,7 @@ LABEL_19:
     block[3] = &unk_1000DD430;
     v18 = v7;
     block[4] = self;
-    v17 = v4;
+    v17 = completionCopy;
     dispatch_async(v8, block);
 
     [(CRAlert *)self alertDismissal];
@@ -133,7 +133,7 @@ LABEL_19:
       {
         [(CRAlert *)self alertDismissal];
         *buf = 138412546;
-        v21 = self;
+        selfCopy = self;
         v22 = 2048;
         v23 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Create dismiss timer for CRAlert: %@, dismissTime: %f", buf, 0x16u);

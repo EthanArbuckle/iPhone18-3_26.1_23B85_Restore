@@ -1,14 +1,14 @@
 @interface __MNDepartureTimeSpentCondition
-- (__MNDepartureTimeSpentCondition)initWithUpdater:(id)a3 timeThreshold:(double)a4;
-- (double)scoreForLocation:(id)a3;
+- (__MNDepartureTimeSpentCondition)initWithUpdater:(id)updater timeThreshold:(double)threshold;
+- (double)scoreForLocation:(id)location;
 @end
 
 @implementation __MNDepartureTimeSpentCondition
 
-- (double)scoreForLocation:(id)a3
+- (double)scoreForLocation:(id)location
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_updater);
 
   v6 = -1.0;
@@ -20,16 +20,16 @@
       [(NSDate *)initialDate timeIntervalSinceNow];
       v9 = v8;
       v10 = objc_loadWeakRetained(&self->_updater);
-      v11 = [v10 route];
-      v12 = [v4 routeMatch];
-      v13 = [v11 segmentIndexForPointIndex:{objc_msgSend(v12, "routeCoordinate")}];
+      route = [v10 route];
+      routeMatch = [locationCopy routeMatch];
+      v13 = [route segmentIndexForPointIndex:{objc_msgSend(routeMatch, "routeCoordinate")}];
 
-      if ([v4 state] == 1)
+      if ([locationCopy state] == 1)
       {
         v14 = objc_loadWeakRetained(&self->_updater);
-        v15 = [v14 arrivalWaypointLegIndex];
+        arrivalWaypointLegIndex = [v14 arrivalWaypointLegIndex];
 
-        if (v13 > v15)
+        if (v13 > arrivalWaypointLegIndex)
         {
           threshold = self->_threshold;
           if (threshold <= -v9)
@@ -38,10 +38,10 @@
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               v22 = objc_loadWeakRetained(&self->_updater);
-              v23 = [v22 arrivalWaypointLegIndex];
+              arrivalWaypointLegIndex2 = [v22 arrivalWaypointLegIndex];
               v24 = self->_threshold;
               v25[0] = 67109632;
-              v25[1] = v23;
+              v25[1] = arrivalWaypointLegIndex2;
               v26 = 2048;
               v27 = -v9;
               v28 = 2048;
@@ -72,17 +72,17 @@
   return v6;
 }
 
-- (__MNDepartureTimeSpentCondition)initWithUpdater:(id)a3 timeThreshold:(double)a4
+- (__MNDepartureTimeSpentCondition)initWithUpdater:(id)updater timeThreshold:(double)threshold
 {
-  v6 = a3;
+  updaterCopy = updater;
   v11.receiver = self;
   v11.super_class = __MNDepartureTimeSpentCondition;
   v7 = [(__MNDepartureTimeSpentCondition *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_updater, v6);
-    v8->_threshold = fmin(a4, 1.0);
+    objc_storeWeak(&v7->_updater, updaterCopy);
+    v8->_threshold = fmin(threshold, 1.0);
     v9 = v8;
   }
 

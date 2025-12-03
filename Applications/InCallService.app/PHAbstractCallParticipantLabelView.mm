@@ -1,9 +1,9 @@
 @interface PHAbstractCallParticipantLabelView
-- (PHAbstractCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3 delegate:(id)a4;
+- (PHAbstractCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager delegate:(id)delegate;
 - (PHCallParticipantLabelDelegate)delegate;
-- (void)setParticipantName:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setParticipantName:(id)name;
+- (void)setTextColor:(id)color;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PHAbstractCallParticipantLabelView
@@ -15,20 +15,20 @@
   return WeakRetained;
 }
 
-- (PHAbstractCallParticipantLabelView)initWithCallDisplayStyleManager:(id)a3 delegate:(id)a4
+- (PHAbstractCallParticipantLabelView)initWithCallDisplayStyleManager:(id)manager delegate:(id)delegate
 {
-  v5 = a4;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PHAbstractCallParticipantLabelView;
   v6 = [(PHAbstractCallParticipantLabelView *)&v13 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    v8 = [(PHAbstractCallParticipantLabelView *)v6 layer];
-    [v8 setHitTestsAsOpaque:1];
+    layer = [(PHAbstractCallParticipantLabelView *)v6 layer];
+    [layer setHitTestsAsOpaque:1];
 
     v7->_activityState = -1;
-    objc_storeWeak(&v7->_delegate, v5);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_alloc_init(UILabel);
     participantMarqueeLabel = v7->_participantMarqueeLabel;
     v7->_participantMarqueeLabel = v9;
@@ -46,23 +46,23 @@
   return v7;
 }
 
-- (void)setParticipantName:(id)a3
+- (void)setParticipantName:(id)name
 {
-  v4 = a3;
-  if (![(NSString *)self->_participantName isEqualToString:v4])
+  nameCopy = name;
+  if (![(NSString *)self->_participantName isEqualToString:nameCopy])
   {
-    v5 = [v4 copy];
+    v5 = [nameCopy copy];
     participantName = self->_participantName;
     self->_participantName = v5;
 
-    v7 = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
-    [v7 setText:v4];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self participantMarqueeLabel];
+    [participantMarqueeLabel setText:nameCopy];
 
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updated participant label with name %@", &v9, 0xCu);
     }
 
@@ -70,14 +70,14 @@
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = PHAbstractCallParticipantLabelView;
   [(PHAbstractCallParticipantLabelView *)&v6 setUserInteractionEnabled:?];
   v5 = 0.5;
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 1.0;
   }
@@ -85,15 +85,15 @@
   [(PHAbstractCallParticipantLabelView *)self setAlpha:v5];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_participantMarqueeLabel setTextColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 

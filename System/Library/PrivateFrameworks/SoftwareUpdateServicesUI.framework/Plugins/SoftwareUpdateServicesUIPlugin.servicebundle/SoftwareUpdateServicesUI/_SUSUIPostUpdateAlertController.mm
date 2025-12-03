@@ -1,53 +1,53 @@
 @interface _SUSUIPostUpdateAlertController
 - (BOOL)_otaFailed;
 - (BOOL)_shouldShowPostUpdateAlert;
-- (_SUSUIPostUpdateAlertController)initWithLayoutStateMonitor:(id)a3 alertPresentationManager:(id)a4;
-- (void)_dismissAlertForReason:(id)a3;
-- (void)_noteAlertAcknowledgedWithReason:(id)a3;
+- (_SUSUIPostUpdateAlertController)initWithLayoutStateMonitor:(id)monitor alertPresentationManager:(id)manager;
+- (void)_dismissAlertForReason:(id)reason;
+- (void)_noteAlertAcknowledgedWithReason:(id)reason;
 - (void)_registerForBuddyNotifications;
 - (void)_setupAssistantFinished;
 - (void)_setupAssistantLaunched;
-- (void)_showStartupAlertItemForReason:(id)a3;
-- (void)_uiLockStateChanged:(BOOL)a3;
-- (void)layoutStateMonitorStateDidChange:(id)a3;
-- (void)layoutStateMonitorUILockStateDidChange:(id)a3;
+- (void)_showStartupAlertItemForReason:(id)reason;
+- (void)_uiLockStateChanged:(BOOL)changed;
+- (void)layoutStateMonitorStateDidChange:(id)change;
+- (void)layoutStateMonitorUILockStateDidChange:(id)change;
 - (void)startRunning;
 @end
 
 @implementation _SUSUIPostUpdateAlertController
 
-- (_SUSUIPostUpdateAlertController)initWithLayoutStateMonitor:(id)a3 alertPresentationManager:(id)a4
+- (_SUSUIPostUpdateAlertController)initWithLayoutStateMonitor:(id)monitor alertPresentationManager:(id)manager
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, monitor);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v4 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, manager);
+  v4 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v4;
   v12.super_class = _SUSUIPostUpdateAlertController;
   v11 = [(_SUSUIPostUpdateAlertController *)&v12 init];
-  v15 = v11;
-  objc_storeStrong(&v15, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.softwareupdateservices._SUSUIPostUpdateAlertController", v9);
-    controllerQueue = v15->_controllerQueue;
-    v15->_controllerQueue = v5;
+    controllerQueue = selfCopy->_controllerQueue;
+    selfCopy->_controllerQueue = v5;
 
-    objc_storeStrong(&v15->_alertPresentationManager, v13);
-    objc_storeStrong(&v15->_layoutStateMonitor, location[0]);
-    v15->_showingAlert = 0;
-    v15->_dismissed = 0;
+    objc_storeStrong(&selfCopy->_alertPresentationManager, v13);
+    objc_storeStrong(&selfCopy->_layoutStateMonitor, location[0]);
+    selfCopy->_showingAlert = 0;
+    selfCopy->_dismissed = 0;
   }
 
-  v8 = v15;
+  v8 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
@@ -74,41 +74,41 @@
   CFNotificationCenterAddObserver(v3, self, sub_3D714, BYSetupAssistantLaunchedDarwinNotification, 0, CFNotificationSuspensionBehaviorDrop);
 }
 
-- (void)_noteAlertAcknowledgedWithReason:(id)a3
+- (void)_noteAlertAcknowledgedWithReason:(id)reason
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_controllerQueue;
+  objc_storeStrong(location, reason);
+  queue = selfCopy->_controllerQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_3D894;
   v8 = &unk_5D008;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_uiLockStateChanged:(BOOL)a3
+- (void)_uiLockStateChanged:(BOOL)changed
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  changedCopy = changed;
   queue = self->_controllerQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_3DAD4;
   v8 = &unk_5F568;
-  v9 = self;
-  v10 = v11;
+  selfCopy2 = self;
+  v10 = changedCopy;
   dispatch_async(queue, &v4);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy2, 0);
 }
 
 - (void)_setupAssistantFinished
@@ -141,23 +141,23 @@
   objc_storeStrong(v8, 0);
 }
 
-- (void)layoutStateMonitorStateDidChange:(id)a3
+- (void)layoutStateMonitorStateDidChange:(id)change
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   objc_storeStrong(location, 0);
 }
 
-- (void)layoutStateMonitorUILockStateDidChange:(id)a3
+- (void)layoutStateMonitorUILockStateDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] isUILocked];
-  [(_SUSUIPostUpdateAlertController *)v5 _uiLockStateChanged:v3 & 1];
+  objc_storeStrong(location, change);
+  isUILocked = [location[0] isUILocked];
+  [(_SUSUIPostUpdateAlertController *)selfCopy _uiLockStateChanged:isUILocked & 1];
   objc_storeStrong(location, 0);
 }
 
@@ -182,24 +182,24 @@
 
 - (BOOL)_otaFailed
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v5 = +[SUPreferences sharedInstance];
   v12 = 0;
-  v6 = 1;
+  skipApply = 1;
   if (([(SUPreferences *)v5 skipDownload]& 1) == 0)
   {
     v13 = +[SUPreferences sharedInstance];
     v12 = 1;
-    v6 = [(SUPreferences *)v13 skipApply];
+    skipApply = [(SUPreferences *)v13 skipApply];
   }
 
   if (v12)
   {
   }
 
-  v14 = v6 & 1;
-  if (v6)
+  v14 = skipApply & 1;
+  if (skipApply)
   {
     location = SUSUILogPostUpdateAlert();
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -238,13 +238,13 @@
   }
 }
 
-- (void)_showStartupAlertItemForReason:(id)a3
+- (void)_showStartupAlertItemForReason:(id)reason
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(_SUSUIPostUpdateAlertController *)v30 dismissed])
+  objc_storeStrong(location, reason);
+  if ([(_SUSUIPostUpdateAlertController *)selfCopy dismissed])
   {
     v28 = SUSUILogPostUpdateAlert();
     v27 = OS_LOG_TYPE_DEFAULT;
@@ -258,7 +258,7 @@
     v26 = 1;
   }
 
-  else if ([(_SUSUIPostUpdateAlertController *)v30 showingAlert])
+  else if ([(_SUSUIPostUpdateAlertController *)selfCopy showingAlert])
   {
     v25 = SUSUILogPostUpdateAlert();
     v24 = OS_LOG_TYPE_DEFAULT;
@@ -272,7 +272,7 @@
     v26 = 1;
   }
 
-  else if ([(_SUSUIPostUpdateAlertController *)v30 _shouldShowPostUpdateAlert])
+  else if ([(_SUSUIPostUpdateAlertController *)selfCopy _shouldShowPostUpdateAlert])
   {
     v21 = SUSUILogPostUpdateAlert();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -283,7 +283,7 @@
     }
 
     objc_storeStrong(&v21, 0);
-    objc_initWeak(&from, v30);
+    objc_initWeak(&from, selfCopy);
     v4 = [SUSUISetupUpgradeAlertItem alloc];
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
@@ -292,14 +292,14 @@
     v16 = &unk_616D8;
     objc_copyWeak(v17, &from);
     v18 = [(SUSUISetupUpgradeAlertItem *)v4 initWithAcknowledgementBlock:&v12];
-    [(_SUSUIPostUpdateAlertController *)v30 setShowingAlert:1];
-    queue = [(SUSUIAlertPresentationManager *)v30->_alertPresentationManager queue];
+    [(_SUSUIPostUpdateAlertController *)selfCopy setShowingAlert:1];
+    queue = [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager queue];
     v5 = _NSConcreteStackBlock;
     v6 = -1073741824;
     v7 = 0;
     v8 = sub_3EC00;
     v9 = &unk_5D008;
-    v10 = v30;
+    v10 = selfCopy;
     v11 = v18;
     dispatch_async(queue, &v5);
 
@@ -328,12 +328,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissAlertForReason:(id)a3
+- (void)_dismissAlertForReason:(id)reason
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v11 = SUSUILogPostUpdateAlert();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -343,15 +343,15 @@
   }
 
   objc_storeStrong(&v11, 0);
-  [(_SUSUIPostUpdateAlertController *)v13 setDismissed:1];
-  [(_SUSUIPostUpdateAlertController *)v13 _noteAlertAcknowledgedWithReason:location[0]];
-  queue = [(SUSUIAlertPresentationManager *)v13->_alertPresentationManager queue];
+  [(_SUSUIPostUpdateAlertController *)selfCopy setDismissed:1];
+  [(_SUSUIPostUpdateAlertController *)selfCopy _noteAlertAcknowledgedWithReason:location[0]];
+  queue = [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager queue];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_3EEFC;
   v8 = &unk_5CCB0;
-  v9 = v13;
+  v9 = selfCopy;
   dispatch_async(queue, &v4);
 
   objc_storeStrong(&v9, 0);

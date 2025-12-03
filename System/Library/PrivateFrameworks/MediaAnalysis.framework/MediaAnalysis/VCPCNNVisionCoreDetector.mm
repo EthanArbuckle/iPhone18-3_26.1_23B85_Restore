@@ -1,23 +1,23 @@
 @interface VCPCNNVisionCoreDetector
-- (VCPCNNVisionCoreDetector)initWithOptions:(id)a3;
+- (VCPCNNVisionCoreDetector)initWithOptions:(id)options;
 - (id).cxx_construct;
-- (id)allocatePostProcessingBuffers:(id)a3 error:(id *)a4;
-- (id)planExecutionandOutput:()vector<espresso_buffer_t descriptor:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3;
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 Error:(id *)a5;
-- (int)UpdateInputBuffersAndBindPixelBuffer:(__CVBuffer *)a3;
-- (int)downscaleBuffer:(__CVBuffer *)a3 scaledImage:(__CVBuffer *)a4;
-- (int)getBodyRegions:(id)a3 fromVisionCorePostProcessingOutput:(id)a4 imageWidth:(int)a5 imageHeight:(int)a6 extendRatio:(float)a7 portrait_mode:(BOOL)a8;
-- (int)getHandsRegions:(id)a3 fromVisionCorePostProcessingOutput:(id)a4 imageWidth:(int)a5 imageHeight:(int)a6 extendRatio:(float)a7 portrait_mode:(BOOL)a8;
-- (int)loadModel:(id)a3 withOptions:(id)a4;
+- (id)allocatePostProcessingBuffers:(id)buffers error:(id *)error;
+- (id)planExecutionandOutput:()vector<espresso_buffer_t descriptor:(std:(id)descriptor :allocator<espresso_buffer_t>> *)a3;
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation Error:(id *)error;
+- (int)UpdateInputBuffersAndBindPixelBuffer:(__CVBuffer *)buffer;
+- (int)downscaleBuffer:(__CVBuffer *)buffer scaledImage:(__CVBuffer *)image;
+- (int)getBodyRegions:(id)regions fromVisionCorePostProcessingOutput:(id)output imageWidth:(int)width imageHeight:(int)height extendRatio:(float)ratio portrait_mode:(BOOL)portrait_mode;
+- (int)getHandsRegions:(id)regions fromVisionCorePostProcessingOutput:(id)output imageWidth:(int)width imageHeight:(int)height extendRatio:(float)ratio portrait_mode:(BOOL)portrait_mode;
+- (int)loadModel:(id)model withOptions:(id)options;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNVisionCoreDetector
 
-- (VCPCNNVisionCoreDetector)initWithOptions:(id)a3
+- (VCPCNNVisionCoreDetector)initWithOptions:(id)options
 {
   v116 = *MEMORY[0x1E69E9840];
-  v81 = a3;
+  optionsCopy = options;
   v101.receiver = self;
   v101.super_class = VCPCNNVisionCoreDetector;
   v4 = [(VCPCNNVisionCoreDetector *)&v101 init];
@@ -36,22 +36,22 @@
 
   v5->_espressoNetwork.plan = 0;
   v5->_espressoNetwork.network_index = 0;
-  if ([(VCPCNNVisionCoreDetector *)v5 loadModel:v5->_descriptor withOptions:v81])
+  if ([(VCPCNNVisionCoreDetector *)v5 loadModel:v5->_descriptor withOptions:optionsCopy])
   {
     v8 = 0;
     goto LABEL_77;
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   outputBufferMapping = v5->_outputBufferMapping;
-  v5->_outputBufferMapping = v9;
+  v5->_outputBufferMapping = dictionary;
 
-  v77 = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor allOutputNames];
-  v11 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(v77, "count")}];
+  allOutputNames = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor allOutputNames];
+  v11 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(allOutputNames, "count")}];
   inferenceOutputNamedObjects = v5->_inferenceOutputNamedObjects;
   v5->_inferenceOutputNamedObjects = v11;
 
-  if ((![v77 count] || !v77) && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ((![allOutputNames count] || !allOutputNames) && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - outputNames nil or empty", buf, 2u);
@@ -61,7 +61,7 @@
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  obj = v77;
+  obj = allOutputNames;
   v13 = [(NSArray *)obj countByEnumeratingWithState:&v97 objects:v115 count:16];
   if (v13)
   {
@@ -100,10 +100,10 @@
         v89 = 0u;
         *buf = 0u;
         v87 = 0u;
-        v18 = [v16 shape];
-        [v18 rank];
-        v19 = v18;
-        [v18 sizes];
+        shape = [v16 shape];
+        [shape rank];
+        v19 = shape;
+        [shape sizes];
         v20 = espresso_buffer_pack_tensor_shape();
         if (v20)
         {
@@ -135,7 +135,7 @@ LABEL_58:
 
 LABEL_59:
           v8 = 0;
-          v58 = obj;
+          postProcessingOutputDescriptors = obj;
           goto LABEL_76;
         }
 
@@ -292,8 +292,8 @@ LABEL_64:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v58 = v5->_inputMasksNames;
-  v59 = [(NSArray *)v58 countByEnumeratingWithState:&v82 objects:v102 count:16];
+  postProcessingOutputDescriptors = v5->_inputMasksNames;
+  v59 = [(NSArray *)postProcessingOutputDescriptors countByEnumeratingWithState:&v82 objects:v102 count:16];
   if (!v59)
   {
     goto LABEL_48;
@@ -306,7 +306,7 @@ LABEL_64:
     {
       if (*v83 != v60)
       {
-        objc_enumerationMutation(v58);
+        objc_enumerationMutation(postProcessingOutputDescriptors);
       }
 
       v62 = *(*(&v82 + 1) + 8 * j);
@@ -334,10 +334,10 @@ LABEL_64:
       v89 = 0u;
       *buf = 0u;
       v87 = 0u;
-      v65 = [v63 shape];
-      [v65 rank];
-      v66 = v65;
-      [v65 sizes];
+      shape2 = [v63 shape];
+      [shape2 rank];
+      v66 = shape2;
+      [shape2 sizes];
       if (espresso_buffer_pack_tensor_shape())
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -388,7 +388,7 @@ LABEL_75:
       [(NSMutableDictionary *)v5->_inputBufferMapping setObject:v69 forKeyedSubscript:v62];
     }
 
-    v59 = [(NSArray *)v58 countByEnumeratingWithState:&v82 objects:v102 count:16];
+    v59 = [(NSArray *)postProcessingOutputDescriptors countByEnumeratingWithState:&v82 objects:v102 count:16];
     if (v59)
     {
       continue;
@@ -399,8 +399,8 @@ LABEL_75:
 
 LABEL_48:
 
-  v58 = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor postProcessingOutputDescriptors];
-  v70 = [(VCPCNNVisionCoreDetector *)v5 allocatePostProcessingBuffers:v58 error:0];
+  postProcessingOutputDescriptors = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor postProcessingOutputDescriptors];
+  v70 = [(VCPCNNVisionCoreDetector *)v5 allocatePostProcessingBuffers:postProcessingOutputDescriptors error:0];
   postProcessingObjects = v5->_postProcessingObjects;
   v5->_postProcessingObjects = v70;
 
@@ -409,8 +409,8 @@ LABEL_48:
   v5->_skinBuffer = [(VisionCoreMutableNamedObjects *)v5->_postProcessingObjects pixelBufferForName:@"$postprocessed$Skin" error:0];
   v5->_hairBuffer = [(VisionCoreMutableNamedObjects *)v5->_postProcessingObjects pixelBufferForName:@"$postprocessed$Hair" error:0];
   v5->_skyBuffer = [(VisionCoreMutableNamedObjects *)v5->_postProcessingObjects pixelBufferForName:@"$postprocessed$Sky" error:0];
-  v72 = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor allOutputNames];
-  [v72 count];
+  allOutputNames2 = [(VisionCoreISPInferenceNetworkDescriptor *)v5->_descriptor allOutputNames];
+  [allOutputNames2 count];
 
   v8 = v5;
 LABEL_76:
@@ -423,22 +423,22 @@ LABEL_79:
   return v74;
 }
 
-- (int)downscaleBuffer:(__CVBuffer *)a3 scaledImage:(__CVBuffer *)a4
+- (int)downscaleBuffer:(__CVBuffer *)buffer scaledImage:(__CVBuffer *)image
 {
   v4 = -50;
-  if (a3)
+  if (buffer)
   {
-    if (a4)
+    if (image)
     {
-      *a4 = 0;
-      Scaler::Scale(&self->_scaler, a3, a4, 512, 384, 1111970369);
+      *image = 0;
+      Scaler::Scale(&self->_scaler, buffer, image, 512, 384, 1111970369);
       v4 = v6;
       if (v6)
       {
-        if (*a4)
+        if (*image)
         {
-          CFRelease(*a4);
-          *a4 = 0;
+          CFRelease(*image);
+          *image = 0;
         }
       }
     }
@@ -447,11 +447,11 @@ LABEL_79:
   return v4;
 }
 
-- (int)loadModel:(id)a3 withOptions:(id)a4
+- (int)loadModel:(id)model withOptions:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  optionsCopy = options;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     LOWORD(v26) = 0;
@@ -475,23 +475,23 @@ LABEL_79:
     }
 
     plan = espresso_create_plan();
-    v11 = [v7 objectForKeyedSubscript:@"planPriority"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"planPriority"];
     v12 = v11 == 0;
 
     if (!v12)
     {
-      v13 = [v7 objectForKeyedSubscript:@"planPriority"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"planPriority"];
       if ([v13 intValue] == 1)
       {
 
 LABEL_17:
-        v16 = [v7 objectForKeyedSubscript:@"planPriority"];
-        v17 = [v16 intValue];
+        v16 = [optionsCopy objectForKeyedSubscript:@"planPriority"];
+        intValue = [v16 intValue];
 
         espresso_plan_set_priority();
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v17];
+          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:intValue];
           v26 = 138412290;
           v27 = v18;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPCNNVisionCoreDetector - espresso plan priority is set to %@", &v26, 0xCu);
@@ -500,7 +500,7 @@ LABEL_17:
         goto LABEL_23;
       }
 
-      v14 = [v7 objectForKeyedSubscript:@"planPriority"];
+      v14 = [optionsCopy objectForKeyedSubscript:@"planPriority"];
       v15 = [v14 intValue] == 0x2000;
 
       if (v15)
@@ -510,24 +510,24 @@ LABEL_17:
 
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v7 objectForKeyedSubscript:@"planPriority"];
-        v20 = [v19 intValue];
+        v19 = [optionsCopy objectForKeyedSubscript:@"planPriority"];
+        intValue2 = [v19 intValue];
         v26 = 67109120;
-        LODWORD(v27) = v20;
+        LODWORD(v27) = intValue2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "VCPCNNVisionCoreDetector - invalid input espresso plan priority %d", &v26, 8u);
       }
     }
 
 LABEL_23:
-    v21 = [v6 URL];
-    v22 = [v21 absoluteString];
+    v21 = [modelCopy URL];
+    absoluteString = [v21 absoluteString];
 
-    if (!v22)
+    if (!absoluteString)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v26 = 138412546;
-        v27 = v6;
+        v27 = modelCopy;
         v28 = 2112;
         v29 = 0;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - could not obtain model file path for %@ - %@", &v26, 0x16u);
@@ -537,8 +537,8 @@ LABEL_23:
       goto LABEL_32;
     }
 
-    v23 = v22;
-    [v22 UTF8String];
+    v23 = absoluteString;
+    [absoluteString UTF8String];
     v9 = espresso_plan_add_network();
     if (v9)
     {
@@ -578,11 +578,11 @@ LABEL_33:
   return v9;
 }
 
-- (int)UpdateInputBuffersAndBindPixelBuffer:(__CVBuffer *)a3
+- (int)UpdateInputBuffersAndBindPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor allInputNames];
-  v6 = [v5 count];
-  if (v5)
+  allInputNames = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor allInputNames];
+  v6 = [allInputNames count];
+  if (allInputNames)
   {
     v7 = v6 == 0;
   }
@@ -605,17 +605,17 @@ LABEL_33:
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(allInputNames, "count")}];
     v10 = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor inputNamed:@"input_image" error:0];
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v11 = [v10 name];
-    v12 = [v9 assignPixelBuffer:a3 toName:v11 error:0];
+    name = [v10 name];
+    v12 = [v9 assignPixelBuffer:buffer toName:name error:0];
 
     if (v12)
     {
-      v13 = [v10 name];
-      [v13 UTF8String];
+      name2 = [v10 name];
+      [name2 UTF8String];
       v8 = espresso_network_bind_cvpixelbuffer();
 
       if (v8)
@@ -928,16 +928,16 @@ LABEL_33:
   [(VCPCNNVisionCoreDetector *)&v24 dealloc];
 }
 
-- (id)allocatePostProcessingBuffers:(id)a3 error:(id *)a4
+- (id)allocatePostProcessingBuffers:(id)buffers error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(v24, "count")}];
+  buffersCopy = buffers;
+  v5 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:{objc_msgSend(buffersCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v24;
+  obj = buffersCopy;
   v6 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v6)
   {
@@ -966,8 +966,8 @@ LABEL_3:
         pixelBufferOut[0] = 0;
         CVPixelBufferCreate(0, [v11 pixelWidth], objc_msgSend(v11, "pixelHeight"), objc_msgSend(v11, "pixelFormatType"), v12, pixelBufferOut);
         v13 = pixelBufferOut[0];
-        v14 = [v11 name];
-        LOBYTE(v13) = [v5 assignPixelBuffer:v13 toName:v14 error:a4];
+        name = [v11 name];
+        LOBYTE(v13) = [v5 assignPixelBuffer:v13 toName:name error:error];
 
         if ((v13 & 1) == 0)
         {
@@ -988,10 +988,10 @@ LABEL_3:
         v30 = 0u;
         *pixelBufferOut = 0u;
         v28 = 0u;
-        v15 = [v10 shape];
-        [v15 rank];
-        v16 = v15;
-        [v15 sizes];
+        shape = [v10 shape];
+        [shape rank];
+        v16 = shape;
+        [shape sizes];
         v17 = espresso_buffer_pack_tensor_shape();
         [v10 dataType];
         LODWORD(v37) = VisionCoreEspressoStorageTypeForTensorDataType();
@@ -1025,8 +1025,8 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v20 = [v10 name];
-        v21 = [v5 assignData:v19 toName:v20 error:a4];
+        name2 = [v10 name];
+        v21 = [v5 assignData:v19 toName:name2 error:error];
 
         if ((v21 & 1) == 0)
         {
@@ -1053,7 +1053,7 @@ LABEL_24:
   return v22;
 }
 
-- (id)planExecutionandOutput:()vector<espresso_buffer_t descriptor:(std:(id)a4 :allocator<espresso_buffer_t>> *)a3
+- (id)planExecutionandOutput:()vector<espresso_buffer_t descriptor:(std:(id)descriptor :allocator<espresso_buffer_t>> *)a3
 {
   if (espresso_plan_execute_sync())
   {
@@ -1074,9 +1074,9 @@ LABEL_24:
   return v5;
 }
 
-- (id)resultForPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 Error:(id *)a5
+- (id)resultForPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation Error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&orientation;
   v60[1] = *MEMORY[0x1E69E9840];
   v9 = mach_absolute_time();
   v10 = VCPSignPostLog();
@@ -1091,7 +1091,7 @@ LABEL_24:
   }
 
   *buf = 0;
-  if ([(VCPCNNVisionCoreDetector *)self downscaleBuffer:a3 scaledImage:buf])
+  if ([(VCPCNNVisionCoreDetector *)self downscaleBuffer:buffer scaledImage:buf])
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1099,17 +1099,17 @@ LABEL_24:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - downscaling pixelBuffer failed", v51, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v59 = *MEMORY[0x1E696A578];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPCNNVisionCoreDetector - downscaling buffer failed"];
       v60[0] = v15;
-      v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-      v17 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
+      postProcessingOutputDescriptors = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
+      v17 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:postProcessingOutputDescriptors];
 LABEL_21:
       v21 = 0;
-      *a5 = v17;
+      *error = v17;
       goto LABEL_22;
     }
   }
@@ -1181,16 +1181,16 @@ LABEL_21:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v34, OS_SIGNPOST_INTERVAL_BEGIN, v32, "VCPCNNVisionCoreDetectorPostProcessing", "", v51, 2u);
       }
 
-      v16 = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor postProcessingOutputDescriptors];
-      v35 = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor requiresPostProcessing];
-      if (v16)
+      postProcessingOutputDescriptors = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor postProcessingOutputDescriptors];
+      requiresPostProcessing = [(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor requiresPostProcessing];
+      if (postProcessingOutputDescriptors)
       {
         v36 = 0;
       }
 
       else
       {
-        v36 = v35;
+        v36 = requiresPostProcessing;
       }
 
       if (v36 == 1)
@@ -1201,7 +1201,7 @@ LABEL_21:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - Descriptor requires post processing - but no postProcessingDescriptors returned", v51, 2u);
         }
 
-        if (!a5)
+        if (!error)
         {
           v21 = 0;
           goto LABEL_22;
@@ -1213,7 +1213,7 @@ LABEL_21:
         v56 = v38;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
         [v37 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v39];
-        *a5 = v21 = 0;
+        *error = v21 = 0;
       }
 
       else
@@ -1223,7 +1223,7 @@ LABEL_21:
         LODWORD(v47) = v6;
         LODWORD(v46) = v6;
         v39 = [objc_alloc(MEMORY[0x1E69DF928]) initWithPostProcessedPersonImageBuffer:self->_personBuffer personImageOrientation:v6 salientPersonImageBuffer:self->_salientBuffer salientPersonImageBufferOrientation:v6 skinImageBuffer:self->_skinBuffer skinImageBufferOrientation:v6 hairImageBuffer:self->_hairBuffer hairImageBufferOrientation:v46 skyImageBuffer:self->_skyBuffer skyImageBufferOrientation:v47];
-        if (([(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor performPostProcessingForInput:v38 postProcessingOutput:v39 error:a5]& 1) != 0)
+        if (([(VisionCoreISPInferenceNetworkDescriptor *)self->_descriptor performPostProcessingForInput:v38 postProcessingOutput:v39 error:error]& 1) != 0)
         {
           v41 = VCPSignPostLog();
           v42 = v41;
@@ -1251,14 +1251,14 @@ LABEL_21:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - ISP post processing failure", v51, 2u);
           }
 
-          if (a5)
+          if (error)
           {
             v43 = MEMORY[0x1E696ABC0];
             v53 = *MEMORY[0x1E696A578];
             v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPCNNVisionCoreDetector - ISP post processing failure"];
             v54 = v44;
             v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-            *a5 = [v43 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v45];
+            *error = [v43 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v45];
           }
 
           v21 = 0;
@@ -1275,14 +1275,14 @@ LABEL_22:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPCNNVisionCoreDetector - update input buffers and binding buffer failed", v51, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
       v57 = *MEMORY[0x1E696A578];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPCNNVisionCoreDetector - update input buffers and binding buffer failed"];
       v58 = v15;
-      v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      v17 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
+      postProcessingOutputDescriptors = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
+      v17 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:postProcessingOutputDescriptors];
       goto LABEL_21;
     }
   }
@@ -1294,12 +1294,12 @@ LABEL_24:
   return v21;
 }
 
-- (int)getHandsRegions:(id)a3 fromVisionCorePostProcessingOutput:(id)a4 imageWidth:(int)a5 imageHeight:(int)a6 extendRatio:(float)a7 portrait_mode:(BOOL)a8
+- (int)getHandsRegions:(id)regions fromVisionCorePostProcessingOutput:(id)output imageWidth:(int)width imageHeight:(int)height extendRatio:(float)ratio portrait_mode:(BOOL)portrait_mode
 {
-  v8 = a8;
+  portrait_modeCopy = portrait_mode;
   v85 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  [a4 hands];
+  regionsCopy = regions;
+  [output hands];
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
@@ -1307,12 +1307,12 @@ LABEL_24:
   v14 = [obj countByEnumeratingWithState:&v68 objects:v84 count:16];
   if (v14)
   {
-    v15 = a5;
-    v16 = a6;
+    widthCopy = width;
+    heightCopy = height;
     v17 = *v69;
-    v18 = vcvts_n_f32_s32(a5, 9uLL);
-    v19 = (a6 / 384.0);
-    v67 = a7 + 1.0;
+    v18 = vcvts_n_f32_s32(width, 9uLL);
+    v19 = (height / 384.0);
+    v67 = ratio + 1.0;
     v65 = 134219264;
     do
     {
@@ -1324,24 +1324,24 @@ LABEL_24:
         }
 
         v21 = *(*(&v68 + 1) + 8 * i);
-        v22 = [v21 groupID];
+        groupID = [v21 groupID];
         [v21 boundingBox];
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [v21 chirality];
-        if (v31 == 1)
+        chirality = [v21 chirality];
+        if (chirality == 1)
         {
           v32 = 0xFFFFFFFFLL;
         }
 
         else
         {
-          v32 = v31 == 2;
+          v32 = chirality == 2;
         }
 
-        v33 = [v21 confidence];
+        confidence = [v21 confidence];
         v34 = v28 * v18 * 0.5;
         v35 = v30 * v19 * 0.5;
         v36 = v34 + v24 * v18;
@@ -1365,26 +1365,26 @@ LABEL_24:
         }
 
         v41 = v38 + v36;
-        if (v41 > v15)
+        if (v41 > widthCopy)
         {
-          v41 = v15;
+          v41 = widthCopy;
         }
 
-        v42 = v38 + v37;
-        v43 = v39 / v15;
-        if (v42 > v16)
+        heightCopy2 = v38 + v37;
+        v43 = v39 / widthCopy;
+        if (heightCopy2 > heightCopy)
         {
-          v42 = a6;
+          heightCopy2 = height;
         }
 
         v44 = v41 - v39;
-        v45 = v40 / v16;
-        v46 = v44 / v15;
-        v47 = (v42 - v40) / v16;
-        if (v8)
+        v45 = v40 / heightCopy;
+        v46 = v44 / widthCopy;
+        v47 = (heightCopy2 - v40) / heightCopy;
+        if (portrait_modeCopy)
         {
           v48 = (1.0 - v43) - v46;
-          v43 = v40 / v16;
+          v43 = v40 / heightCopy;
           if (v48 >= 0.0)
           {
             v45 = v48;
@@ -1400,12 +1400,12 @@ LABEL_24:
 
         else
         {
-          v49 = v44 / v15;
+          v49 = v44 / widthCopy;
           v46 = v47;
         }
 
         v50 = [VCPBoundingBox alloc];
-        *&v51 = v33;
+        *&v51 = confidence;
         *&v52 = v43;
         *&v53 = v45;
         *&v54 = v49;
@@ -1432,12 +1432,12 @@ LABEL_24:
           v80 = 1024;
           v81 = v32;
           v82 = 2048;
-          v83 = v22;
+          v83 = groupID;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPCNNVisionCoreDetector: using VisionCore box (xyxy, chirality) = [%f, %f, %f, %f, %d], groupID = %lu", buf, 0x3Au);
         }
 
-        [(VCPBoundingBox *)v56 setGroupID:v22];
-        [v13 addObject:v56];
+        [(VCPBoundingBox *)v56 setGroupID:groupID];
+        [regionsCopy addObject:v56];
       }
 
       v14 = [obj countByEnumeratingWithState:&v68 objects:v84 count:16];
@@ -1449,47 +1449,47 @@ LABEL_24:
   return 0;
 }
 
-- (int)getBodyRegions:(id)a3 fromVisionCorePostProcessingOutput:(id)a4 imageWidth:(int)a5 imageHeight:(int)a6 extendRatio:(float)a7 portrait_mode:(BOOL)a8
+- (int)getBodyRegions:(id)regions fromVisionCorePostProcessingOutput:(id)output imageWidth:(int)width imageHeight:(int)height extendRatio:(float)ratio portrait_mode:(BOOL)portrait_mode
 {
-  v8 = a8;
+  portrait_modeCopy = portrait_mode;
   v81 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = [a4 fullBodyResults];
-  if (v8)
+  regionsCopy = regions;
+  fullBodyResults = [output fullBodyResults];
+  if (portrait_modeCopy)
   {
-    v15 = a5;
+    heightCopy = width;
   }
 
   else
   {
-    v15 = a6;
+    heightCopy = height;
   }
 
   v68 = 0u;
   v69 = 0u;
-  if (v8)
+  if (portrait_modeCopy)
   {
-    v16 = a6;
+    widthCopy2 = height;
   }
 
   else
   {
-    v16 = a5;
+    widthCopy2 = width;
   }
 
   v66 = 0uLL;
   v67 = 0uLL;
-  obj = v14;
+  obj = fullBodyResults;
   v17 = [obj countByEnumeratingWithState:&v66 objects:v80 count:16];
   if (v17)
   {
-    v18 = vcvts_n_f32_s32(v16, 9uLL);
+    v18 = vcvts_n_f32_s32(widthCopy2, 9uLL);
     v19 = *v67;
     v65 = v18;
-    v20 = (v15 / 384.0);
-    v21 = a6;
-    v22 = a7 + 1.0;
-    v23 = a5;
+    v20 = (heightCopy / 384.0);
+    heightCopy3 = height;
+    v22 = ratio + 1.0;
+    widthCopy3 = width;
     v63 = 134219008;
     do
     {
@@ -1501,20 +1501,20 @@ LABEL_24:
         }
 
         v25 = *(*(&v66 + 1) + 8 * i);
-        v26 = [v25 groupID];
+        groupID = [v25 groupID];
         [v25 boundingBox];
         v28 = v27;
         v30 = v29;
         v32 = v31;
         v34 = v33;
-        v35 = [v25 confidence];
+        confidence = [v25 confidence];
         v36 = v32 * v65;
         v37 = v34 * v20;
         v38 = v28 * v65;
         v39 = v30 * v20;
-        if (v8)
+        if (portrait_modeCopy)
         {
-          v40 = v21 - v38;
+          v40 = heightCopy3 - v38;
           v38 = v30 * v20;
           v39 = v40 - v36;
           v41 = v37;
@@ -1530,9 +1530,9 @@ LABEL_24:
         *&v45 = (v36 * 0.5) + v39;
         *&v46 = v22 * (v36 * 0.5);
         *&v47 = *&v46 + *&v45;
-        if ((*&v46 + *&v45) > v21)
+        if ((*&v46 + *&v45) > heightCopy3)
         {
-          *&v47 = a6;
+          *&v47 = height;
         }
 
         v48 = *&v45 - *&v46;
@@ -1549,10 +1549,10 @@ LABEL_24:
 
         v50 = (v41 * 0.5) + v38;
         v51 = v22 * (v41 * 0.5);
-        v52 = v51 + v50;
-        if ((v51 + v50) > v23)
+        widthCopy4 = v51 + v50;
+        if ((v51 + v50) > widthCopy3)
         {
-          v52 = a5;
+          widthCopy4 = width;
         }
 
         v53 = v50 - v51;
@@ -1561,13 +1561,13 @@ LABEL_24:
           v49 = v53;
         }
 
-        *&v45 = *&v43 / v21;
-        *&v46 = v49 / v23;
-        *&v43 = (*&v47 - *&v43) / v21;
-        *&v47 = (v52 - v49) / v23;
-        *&v44 = v35;
+        *&v45 = *&v43 / heightCopy3;
+        *&v46 = v49 / widthCopy3;
+        *&v43 = (*&v47 - *&v43) / heightCopy3;
+        *&v47 = (widthCopy4 - v49) / widthCopy3;
+        *&v44 = confidence;
         v54 = [(VCPBoundingBox *)v42 initWithXYAndSize:v46 y:v45 width:v47 height:v43 confidence:v44];
-        [(VCPBoundingBox *)v54 setGroupID:v26];
+        [(VCPBoundingBox *)v54 setGroupID:groupID];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
           [(VCPBoundingBox *)v54 minX];
@@ -1586,11 +1586,11 @@ LABEL_24:
           v76 = 2048;
           v77 = v61;
           v78 = 2048;
-          v79 = v26;
+          v79 = groupID;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPCNNVisionCoreDetector: person fullbody box (xyxy) = [%f, %f, %f, %f], groupID = %lu", buf, 0x34u);
         }
 
-        [v13 addObject:v54];
+        [regionsCopy addObject:v54];
       }
 
       v17 = [obj countByEnumeratingWithState:&v66 objects:v80 count:16];

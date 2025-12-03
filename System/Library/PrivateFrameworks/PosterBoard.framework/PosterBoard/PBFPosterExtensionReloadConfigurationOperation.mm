@@ -1,18 +1,18 @@
 @interface PBFPosterExtensionReloadConfigurationOperation
 - (BOOL)hasUniqueSessionInfo;
 - (NSString)description;
-- (PBFPosterExtensionReloadConfigurationOperation)initWithUpdatingService:(id)a3 sessionInfo:(id)a4 existingConfigurationPath:(id)a5 locationInUse:(BOOL)a6 runtimeAssertionProvider:(id)a7 timeout:(double)a8 powerLogReason:(int64_t)a9;
+- (PBFPosterExtensionReloadConfigurationOperation)initWithUpdatingService:(id)service sessionInfo:(id)info existingConfigurationPath:(id)path locationInUse:(BOOL)use runtimeAssertionProvider:(id)provider timeout:(double)timeout powerLogReason:(int64_t)reason;
 - (PFPosterPath)postRefreshPosterConfiguration;
 - (double)_lock_executionTime;
 - (double)executionTime;
 - (id)_userInfoForErrors;
-- (void)_finishWithError:(id)a3 postRefreshPosterPathsAssertion:(id)a4;
-- (void)_fireCompletionObservers:(id)a3 instance:(id)a4 error:(id)a5;
+- (void)_finishWithError:(id)error postRefreshPosterPathsAssertion:(id)assertion;
+- (void)_fireCompletionObservers:(id)observers instance:(id)instance error:(id)error;
 - (void)_setup;
-- (void)addCompletionObserver:(id)a3;
-- (void)cancelWithError:(id)a3;
+- (void)addCompletionObserver:(id)observer;
+- (void)cancelWithError:(id)error;
 - (void)dealloc;
-- (void)invalidateAssertionsWithCompletion:(id)a3;
+- (void)invalidateAssertionsWithCompletion:(id)completion;
 @end
 
 @implementation PBFPosterExtensionReloadConfigurationOperation
@@ -31,21 +31,21 @@
 - (PFPosterPath)postRefreshPosterConfiguration
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(PFPosterPathsAssertion *)self->_lock_postRefreshPosterPathsAssertion paths];
-  v4 = [v3 firstObject];
+  paths = [(PFPosterPathsAssertion *)self->_lock_postRefreshPosterPathsAssertion paths];
+  firstObject = [paths firstObject];
 
   os_unfair_recursive_lock_unlock();
 
-  return v4;
+  return firstObject;
 }
 
-- (PBFPosterExtensionReloadConfigurationOperation)initWithUpdatingService:(id)a3 sessionInfo:(id)a4 existingConfigurationPath:(id)a5 locationInUse:(BOOL)a6 runtimeAssertionProvider:(id)a7 timeout:(double)a8 powerLogReason:(int64_t)a9
+- (PBFPosterExtensionReloadConfigurationOperation)initWithUpdatingService:(id)service sessionInfo:(id)info existingConfigurationPath:(id)path locationInUse:(BOOL)use runtimeAssertionProvider:(id)provider timeout:(double)timeout powerLogReason:(int64_t)reason
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = v17;
+  serviceCopy = service;
+  infoCopy = info;
+  pathCopy = path;
+  providerCopy = provider;
+  v20 = infoCopy;
   if (v20)
   {
     NSClassFromString(&cfstr_Prsposterupdat_0.isa);
@@ -55,7 +55,7 @@
     }
   }
 
-  v21 = v18;
+  v21 = pathCopy;
   NSClassFromString(&cfstr_Pfposterpath.isa);
   if (!v21)
   {
@@ -67,7 +67,7 @@
     [PBFPosterExtensionReloadConfigurationOperation initWithUpdatingService:a2 sessionInfo:? existingConfigurationPath:? locationInUse:? runtimeAssertionProvider:? timeout:? powerLogReason:?];
   }
 
-  v22 = v16;
+  v22 = serviceCopy;
   NSClassFromString(&cfstr_Prupdatingserv.isa);
   if (!v22)
   {
@@ -79,7 +79,7 @@
     [PBFPosterExtensionReloadConfigurationOperation initWithUpdatingService:a2 sessionInfo:? existingConfigurationPath:? locationInUse:? runtimeAssertionProvider:? timeout:? powerLogReason:?];
   }
 
-  v23 = v19;
+  v23 = providerCopy;
   if (!v23)
   {
     [PBFPosterExtensionReloadConfigurationOperation initWithUpdatingService:a2 sessionInfo:? existingConfigurationPath:? locationInUse:? runtimeAssertionProvider:? timeout:? powerLogReason:?];
@@ -102,17 +102,17 @@
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_updatingService, a3);
-    v27 = [v22 bundleIdentifier];
+    objc_storeStrong(&v25->_updatingService, service);
+    bundleIdentifier = [v22 bundleIdentifier];
     extensionBundleIdentifier = v26->_extensionBundleIdentifier;
-    v26->_extensionBundleIdentifier = v27;
+    v26->_extensionBundleIdentifier = bundleIdentifier;
 
-    objc_storeStrong(&v26->_sessionInfo, a4);
-    objc_storeStrong(&v26->_runtimeAssertionProvider, a7);
+    objc_storeStrong(&v26->_sessionInfo, info);
+    objc_storeStrong(&v26->_runtimeAssertionProvider, provider);
     [(PBFPosterExtensionReloadConfigurationOperation *)v26 setPreRefreshPosterConfiguration:v21];
-    v26->_timeoutInterval = a8;
-    v26->_locationInUse = a6;
-    v26->_reason = a9;
+    v26->_timeoutInterval = timeout;
+    v26->_locationInUse = use;
+    v26->_reason = reason;
     v26->_lock = 0;
     [(PBFPosterExtensionReloadConfigurationOperation *)v26 _setup];
   }
@@ -120,10 +120,10 @@
   return v26;
 }
 
-- (void)invalidateAssertionsWithCompletion:(id)a3
+- (void)invalidateAssertionsWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_recursive_lock_lock_with_options();
   [(RBSAssertion *)self->_lock_posterBoardPosterUpdateRuntimeAssertion invalidate];
   lock_posterBoardPosterUpdateRuntimeAssertion = self->_lock_posterBoardPosterUpdateRuntimeAssertion;
@@ -157,7 +157,7 @@
       v26[3] = &unk_2782C7BB0;
       v27 = v8;
       v28 = v10;
-      v29 = v4;
+      v29 = completionCopy;
       v15 = [v14 responderWithHandler:v26];
       [v15 setTimeout:{dispatch_time(0, 120000000000)}];
       v16 = dispatch_get_global_queue(25, 0);
@@ -166,10 +166,10 @@
 
     else
     {
-      if (v4)
+      if (completionCopy)
       {
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFPosterExtensionReloadConfigurationOperation invalidateAssertionsWithCompletion:]"];
-        PBFDispatchAsyncWithString(v22, QOS_CLASS_USER_INITIATED, v4);
+        PBFDispatchAsyncWithString(v22, QOS_CLASS_USER_INITIATED, completionCopy);
       }
 
       v15 = 0;
@@ -224,20 +224,20 @@ LABEL_19:
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFPosterExtensionReloadConfigurationOperation invalidateAssertionsWithCompletion:]"];
-      PBFDispatchAsyncWithString(v21, QOS_CLASS_USER_INITIATED, v4);
+      PBFDispatchAsyncWithString(v21, QOS_CLASS_USER_INITIATED, completionCopy);
     }
 
     goto LABEL_19;
   }
 
   os_unfair_recursive_lock_unlock();
-  if (v4)
+  if (completionCopy)
   {
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFPosterExtensionReloadConfigurationOperation invalidateAssertionsWithCompletion:]"];
-    PBFDispatchAsyncWithString(v25, QOS_CLASS_USER_INITIATED, v4);
+    PBFDispatchAsyncWithString(v25, QOS_CLASS_USER_INITIATED, completionCopy);
   }
 
 LABEL_20:
@@ -289,8 +289,8 @@ uint64_t __85__PBFPosterExtensionReloadConfigurationOperation_invalidateAssertio
 
   if ([(NSMutableArray *)self->_lock_completionObservers count])
   {
-    v9 = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
-    if (v9)
+    error = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
+    if (error)
     {
     }
 
@@ -322,8 +322,8 @@ uint64_t __85__PBFPosterExtensionReloadConfigurationOperation_invalidateAssertio
     }
 
     v17 = [(NSMutableArray *)self->_lock_completionObservers copy];
-    v18 = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
-    [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v17 instance:0 error:v18];
+    error2 = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
+    [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v17 instance:0 error:error2];
 
     [(NSMutableArray *)self->_lock_completionObservers removeAllObjects];
     lock_completionObservers = self->_lock_completionObservers;
@@ -586,30 +586,30 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   [WeakRetained _finishWithError:v6 postRefreshPosterPathsAssertion:v5];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = PBFLogReloadConfiguration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = errorCopy;
     _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@)  Cancel with error: %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    [(PBFPosterExtensionReloadConfigurationOperation *)self _finishWithError:v4 postRefreshPosterPathsAssertion:0];
+    [(PBFPosterExtensionReloadConfigurationOperation *)self _finishWithError:errorCopy postRefreshPosterPathsAssertion:0];
   }
 
   else
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = [(PBFPosterExtensionReloadConfigurationOperation *)self _userInfoForErrors];
-    v8 = [v6 pbf_generalErrorWithCode:4 userInfo:v7];
+    _userInfoForErrors = [(PBFPosterExtensionReloadConfigurationOperation *)self _userInfoForErrors];
+    v8 = [v6 pbf_generalErrorWithCode:4 userInfo:_userInfoForErrors];
     [(PBFPosterExtensionReloadConfigurationOperation *)self _finishWithError:v8 postRefreshPosterPathsAssertion:0];
   }
 
@@ -638,21 +638,21 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   return lock_executionFinishDate - self->_lock_executionStateDate;
 }
 
-- (void)addCompletionObserver:(id)a3
+- (void)addCompletionObserver:(id)observer
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
     if (self->_lock_isFinished)
     {
       os_unfair_recursive_lock_unlock();
-      v5 = _Block_copy(v4);
+      v5 = _Block_copy(observerCopy);
       v12[0] = v5;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-      v7 = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
-      [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v6 instance:self error:v7];
+      error = [(PBFPosterExtensionReloadConfigurationOperation *)self error];
+      [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v6 instance:self error:error];
     }
 
     else
@@ -667,7 +667,7 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
         lock_completionObservers = self->_lock_completionObservers;
       }
 
-      v11 = [v4 copy];
+      v11 = [observerCopy copy];
       [(NSMutableArray *)lock_completionObservers addObject:v11];
 
       os_unfair_recursive_lock_unlock();
@@ -675,11 +675,11 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   }
 }
 
-- (void)_finishWithError:(id)a3 postRefreshPosterPathsAssertion:(id)a4
+- (void)_finishWithError:(id)error postRefreshPosterPathsAssertion:(id)assertion
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  assertionCopy = assertion;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_lock_isFinished)
   {
@@ -699,18 +699,18 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
     self->_lock_isFinished = 1;
     BSAbsoluteMachTimeNow();
     self->_lock_executionFinishDate = v11;
-    v12 = [(PBFPosterExtensionReloadConfigurationOperation *)self updatingService];
-    [v12 removeUpdatingServiceObserver:self];
+    updatingService = [(PBFPosterExtensionReloadConfigurationOperation *)self updatingService];
+    [updatingService removeUpdatingServiceObserver:self];
 
-    if (v6 || ([v7 paths], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15 != 1) && (v16 = MEMORY[0x277CCA9B8], v34 = *MEMORY[0x277CCA470], objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Extension did not return appropriate path data : %@", v7), v17 = objc_claimAutoreleasedReturnValue(), v35[0] = v17, objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v35, &v34, 1), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "pbf_dataStoreErrorWithCode:userInfo:", -2214, v18), v6 = objc_claimAutoreleasedReturnValue(), v18, v17, v6))
+    if (errorCopy || ([assertionCopy paths], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15 != 1) && (v16 = MEMORY[0x277CCA9B8], v34 = *MEMORY[0x277CCA470], objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Extension did not return appropriate path data : %@", assertionCopy), v17 = objc_claimAutoreleasedReturnValue(), v35[0] = v17, objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v35, &v34, 1), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "pbf_dataStoreErrorWithCode:userInfo:", -2214, v18), errorCopy = objc_claimAutoreleasedReturnValue(), v18, v17, errorCopy))
     {
       v13 = PBFLogReloadConfiguration();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(PBFPosterExtensionReloadDescriptorsOperation *)self _finishWithError:v6 postRefreshPosterPathsAssertion:v13];
+        [(PBFPosterExtensionReloadDescriptorsOperation *)self _finishWithError:errorCopy postRefreshPosterPathsAssertion:v13];
       }
 
-      [(PBFPosterExtensionReloadConfigurationOperation *)self setError:v6];
+      [(PBFPosterExtensionReloadConfigurationOperation *)self setError:errorCopy];
       [(PBFPosterExtensionReloadConfigurationOperation *)self invalidateAssertionsWithCompletion:0];
     }
 
@@ -719,25 +719,25 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
       v19 = PBFLogReloadConfiguration();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v7 paths];
-        v21 = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
-        v25 = v21;
+        paths = [assertionCopy paths];
+        preRefreshPosterConfiguration = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
+        v25 = preRefreshPosterConfiguration;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-        v23 = [v20 isEqual:v22] ^ 1;
+        v23 = [paths isEqual:v22] ^ 1;
         [(PBFPosterExtensionReloadConfigurationOperation *)self executionTime];
         *buf = 138544130;
-        v27 = self;
+        selfCopy = self;
         v28 = 1024;
         v29 = v23;
         v30 = 2114;
-        v31 = v7;
+        v31 = assertionCopy;
         v32 = 2048;
         v33 = v24;
         _os_log_impl(&dword_21B526000, v19, OS_LOG_TYPE_DEFAULT, "(%{public}@)  Finished SUCCESSFULLY; Has modified paths? %{BOOL}d -- '%{public}@' -- execution time: %f", buf, 0x26u);
       }
 
-      objc_storeStrong(&self->_lock_postRefreshPosterPathsAssertion, a4);
-      v6 = 0;
+      objc_storeStrong(&self->_lock_postRefreshPosterPathsAssertion, assertion);
+      errorCopy = 0;
     }
 
     v8 = [(NSMutableArray *)self->_lock_completionObservers copy];
@@ -745,7 +745,7 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   }
 
   os_unfair_recursive_lock_unlock();
-  [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v8 instance:self error:v6];
+  [(PBFPosterExtensionReloadConfigurationOperation *)self _fireCompletionObservers:v8 instance:self error:errorCopy];
 }
 
 - (id)_userInfoForErrors
@@ -753,14 +753,14 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   v16[3] = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
   v15[0] = @"extensionBundleIdentifier";
-  v3 = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
-  v4 = [v3 serverIdentity];
-  v5 = [v4 provider];
-  v6 = v5;
+  preRefreshPosterConfiguration = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
+  serverIdentity = [preRefreshPosterConfiguration serverIdentity];
+  provider = [serverIdentity provider];
+  v6 = provider;
   v7 = @"(null)";
-  if (v5)
+  if (provider)
   {
-    v7 = v5;
+    v7 = provider;
   }
 
   v16[0] = v7;
@@ -768,8 +768,8 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeoutInterval];
   v16[1] = v8;
   v15[2] = @"preRefreshPosterConfiguration";
-  v9 = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
-  v10 = [v9 description];
+  preRefreshPosterConfiguration2 = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
+  v10 = [preRefreshPosterConfiguration2 description];
   v11 = v10;
   v12 = @"null";
   if (v10)
@@ -790,25 +790,25 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
-  v7 = [v6 serverIdentity];
-  v8 = [v7 provider];
-  v9 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v8];
+  preRefreshPosterConfiguration = [(PBFPosterExtensionReloadConfigurationOperation *)self preRefreshPosterConfiguration];
+  serverIdentity = [preRefreshPosterConfiguration serverIdentity];
+  provider = [serverIdentity provider];
+  v9 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, provider];
 
   return v9;
 }
 
-- (void)_fireCompletionObservers:(id)a3 instance:(id)a4 error:(id)a5
+- (void)_fireCompletionObservers:(id)observers instance:(id)instance error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  observersCopy = observers;
+  instanceCopy = instance;
+  errorCopy = error;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [observersCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -819,7 +819,7 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observersCopy);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -829,12 +829,12 @@ void __56__PBFPosterExtensionReloadConfigurationOperation__setup__block_invoke_1
         v16[2] = __90__PBFPosterExtensionReloadConfigurationOperation__fireCompletionObservers_instance_error___block_invoke;
         v16[3] = &unk_2782C6180;
         v19 = v14;
-        v17 = v8;
-        v18 = v9;
+        v17 = instanceCopy;
+        v18 = errorCopy;
         PBFDispatchAsyncWithString(v15, QOS_CLASS_DEFAULT, v16);
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [observersCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);

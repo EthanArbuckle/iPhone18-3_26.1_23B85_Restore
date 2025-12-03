@@ -1,21 +1,21 @@
 @interface DRApplication
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6;
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion;
 @end
 
 @implementation DRApplication
 
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion
 {
-  v10 = a4;
+  sceneCopy = scene;
   v13.receiver = self;
   v13.super_class = DRApplication;
-  [(DRApplication *)&v13 workspace:a3 didCreateScene:v10 withTransitionContext:a5 completion:a6];
-  v11 = [v10 delegate];
+  [(DRApplication *)&v13 workspace:workspace didCreateScene:sceneCopy withTransitionContext:context completion:completion];
+  delegate = [sceneCopy delegate];
 
-  if (!v11)
+  if (!delegate)
   {
-    v12 = [(DRApplication *)self delegate];
-    [v10 setDelegate:v12];
+    delegate2 = [(DRApplication *)self delegate];
+    [sceneCopy setDelegate:delegate2];
   }
 }
 

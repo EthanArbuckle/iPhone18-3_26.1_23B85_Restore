@@ -12,7 +12,7 @@
 
 - (uint64_t)usesSceneTimeBase
 {
-  v1 = [a1 valueForKey:@"SCNAnimationAnimatesUsingSceneTimeKey"];
+  v1 = [self valueForKey:@"SCNAnimationAnimatesUsingSceneTimeKey"];
 
   return [v1 BOOLValue];
 }
@@ -21,7 +21,7 @@
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
 
-  return [a1 setValue:v2 forKey:@"SCNAnimationAnimatesUsingSceneTimeKey"];
+  return [self setValue:v2 forKey:@"SCNAnimationAnimatesUsingSceneTimeKey"];
 }
 
 - (uint64_t)setFadeInDuration:()SceneKitAdditions
@@ -29,7 +29,7 @@
   *&a2 = a2;
   v3 = [MEMORY[0x277CCABB0] numberWithFloat:a2];
 
-  return [a1 setValue:v3 forKey:@"SCNAnimationFadeInDurationKey"];
+  return [self setValue:v3 forKey:@"SCNAnimationFadeInDurationKey"];
 }
 
 - (uint64_t)setFadeOutDuration:()SceneKitAdditions
@@ -37,12 +37,12 @@
   *&a2 = a2;
   v3 = [MEMORY[0x277CCABB0] numberWithFloat:a2];
 
-  return [a1 setValue:v3 forKey:@"SCNAnimationFadeOutDurationKey"];
+  return [self setValue:v3 forKey:@"SCNAnimationFadeOutDurationKey"];
 }
 
 - (uint64_t)commitsOnCompletion
 {
-  v1 = [a1 valueForKey:@"SCNAnimationCommitOnCompletion"];
+  v1 = [self valueForKey:@"SCNAnimationCommitOnCompletion"];
 
   return [v1 BOOLValue];
 }
@@ -51,13 +51,13 @@
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
 
-  return [a1 setValue:v2 forKey:@"SCNAnimationCommitOnCompletion"];
+  return [self setValue:v2 forKey:@"SCNAnimationCommitOnCompletion"];
 }
 
 - (void)setAnimationEvents:()SceneKitAdditions
 {
   v4 = [a3 copy];
-  [a1 setValue:v4 forKey:@"SCNAnimationEventsKey"];
+  [self setValue:v4 forKey:@"SCNAnimationEventsKey"];
 }
 
 @end

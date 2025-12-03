@@ -1,22 +1,22 @@
 @interface CKProgressView
-- (CKProgressView)initWithFrame:(CGRect)a3;
+- (CKProgressView)initWithFrame:(CGRect)frame;
 - (void)_createInternalProgressBar;
 - (void)_createInternalTrackView;
 - (void)_prepareSubviewsIfNeeded;
 - (void)layoutSubviews;
-- (void)setCapStyle:(unint64_t)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
-- (void)setProgressTintColor:(id)a3;
-- (void)setTrackTintColor:(id)a3;
+- (void)setCapStyle:(unint64_t)style;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
+- (void)setProgressTintColor:(id)color;
+- (void)setTrackTintColor:(id)color;
 @end
 
 @implementation CKProgressView
 
-- (CKProgressView)initWithFrame:(CGRect)a3
+- (CKProgressView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CKProgressView;
-  result = [(CKProgressView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CKProgressView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_progress = 0.0;
@@ -38,8 +38,8 @@
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [v5 setBackgroundColor:v4];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [v5 setBackgroundColor:systemGrayColor];
   }
 
   [(CKProgressView *)self addSubview:v5];
@@ -50,13 +50,13 @@
 {
   v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 appTintColor];
-  [v8 setBackgroundColor:v5];
+  theme = [v3 theme];
+  appTintColor = [theme appTintColor];
+  [v8 setBackgroundColor:appTintColor];
 
   v6 = *MEMORY[0x1E69796E8];
-  v7 = [v8 layer];
-  [v7 setCornerCurve:v6];
+  layer = [v8 layer];
+  [layer setCornerCurve:v6];
 
   [(CKProgressView *)self addSubview:v8];
   [(CKProgressView *)self setProgressSegmentView:v8];
@@ -78,12 +78,12 @@
   v30.super_class = CKProgressView;
   [(CKProgressView *)&v30 layoutSubviews];
   [(CKProgressView *)self _prepareSubviewsIfNeeded];
-  v3 = [(CKProgressView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CKProgressView *)self _shouldReverseLayoutDirection];
   [(CKProgressView *)self bounds];
   v5 = v4;
   [(CKProgressView *)self bounds];
   v10 = 0.0;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v6);
     [(CKProgressView *)self bounds];
@@ -100,14 +100,14 @@
   [(CKProgressView *)self bounds];
   v15 = v14 * CGRectGetWidth(v31);
   v16 = Height - v5;
-  v17 = [(CKProgressView *)self trackView];
-  [v17 setFrame:{MaxX, v16, v15, v5}];
+  trackView = [(CKProgressView *)self trackView];
+  [trackView setFrame:{MaxX, v16, v15, v5}];
 
   [(CKProgressView *)self progress];
   v19 = v18;
   [(CKProgressView *)self bounds];
   v20 = v19 * CGRectGetWidth(v32);
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     [(CKProgressView *)self progress];
     v22 = 1.0 - v21;
@@ -115,18 +115,18 @@
     v10 = v22 * CGRectGetWidth(v33);
   }
 
-  v23 = [(CKProgressView *)self progressSegmentView];
-  [v23 setFrame:{v10, v16, v20, v5}];
+  progressSegmentView = [(CKProgressView *)self progressSegmentView];
+  [progressSegmentView setFrame:{v10, v16, v20, v5}];
 
-  v24 = [(CKProgressView *)self capStyle];
-  if (v24 == 1)
+  capStyle = [(CKProgressView *)self capStyle];
+  if (capStyle == 1)
   {
     v25 = 0.0;
   }
 
   else
   {
-    if (v24)
+    if (capStyle)
     {
       return;
     }
@@ -134,25 +134,25 @@
     v25 = v5 * 0.5;
   }
 
-  v26 = [(CKProgressView *)self progressSegmentView];
-  v27 = [v26 layer];
-  [v27 setCornerRadius:v25];
+  progressSegmentView2 = [(CKProgressView *)self progressSegmentView];
+  layer = [progressSegmentView2 layer];
+  [layer setCornerRadius:v25];
 
-  v28 = [(CKProgressView *)self trackView];
-  v29 = [v28 layer];
-  [v29 setCornerRadius:v25];
+  trackView2 = [(CKProgressView *)self trackView];
+  layer2 = [trackView2 layer];
+  [layer2 setCornerRadius:v25];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = fmax(fmin(a3, 1.0), 0.0);
+  animatedCopy = animated;
+  v6 = fmax(fmin(progress, 1.0), 0.0);
   if (!CKFloatApproximatelyEqualToFloatWithTolerance(self->_progress, v6, 0.001))
   {
     progress = self->_progress;
     self->_progress = v6;
     [(CKProgressView *)self setNeedsLayout];
-    if (v4)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -164,39 +164,39 @@
   }
 }
 
-- (void)setProgressTintColor:(id)a3
+- (void)setProgressTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_progressTintColor != v5)
+  colorCopy = color;
+  if (self->_progressTintColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_progressTintColor, a3);
-    v6 = [(CKProgressView *)self progressSegmentView];
-    [v6 setBackgroundColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_progressTintColor, color);
+    progressSegmentView = [(CKProgressView *)self progressSegmentView];
+    [progressSegmentView setBackgroundColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setTrackTintColor:(id)a3
+- (void)setTrackTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_trackTintColor != v5)
+  colorCopy = color;
+  if (self->_trackTintColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_trackTintColor, a3);
-    v6 = [(CKProgressView *)self trackView];
-    [v6 setBackgroundColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_trackTintColor, color);
+    trackView = [(CKProgressView *)self trackView];
+    [trackView setBackgroundColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setCapStyle:(unint64_t)a3
+- (void)setCapStyle:(unint64_t)style
 {
-  if (self->_capStyle != a3)
+  if (self->_capStyle != style)
   {
-    self->_capStyle = a3;
+    self->_capStyle = style;
     [(CKProgressView *)self setNeedsLayout];
   }
 }

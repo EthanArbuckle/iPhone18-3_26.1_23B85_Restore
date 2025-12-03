@@ -1,7 +1,7 @@
 @interface FAFamilyNotificationObserver
-+ (id)familyNotificationObserverWithNotificationHandler:(id)a3;
++ (id)familyNotificationObserverWithNotificationHandler:(id)handler;
 + (void)initialize;
-- (id)_initWithNotificationHandler:(id)a3;
+- (id)_initWithNotificationHandler:(id)handler;
 - (void)_startObserving;
 - (void)dealloc;
 - (void)stopObserving;
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___FAFamilyNotificationObserver;
   objc_msgSendSuper2(&v2, sel_initialize);
   if (initialize_onceToken != -1)
@@ -27,25 +27,25 @@ CFMutableArrayRef __42__FAFamilyNotificationObserver_initialize__block_invoke()
   return result;
 }
 
-+ (id)familyNotificationObserverWithNotificationHandler:(id)a3
++ (id)familyNotificationObserverWithNotificationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithNotificationHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] _initWithNotificationHandler:handlerCopy];
 
   [v5 _startObserving];
 
   return v5;
 }
 
-- (id)_initWithNotificationHandler:(id)a3
+- (id)_initWithNotificationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = FAFamilyNotificationObserver;
   v5 = [(FAFamilyNotificationObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     notificationHandler = v5->_notificationHandler;
     v5->_notificationHandler = v6;
   }

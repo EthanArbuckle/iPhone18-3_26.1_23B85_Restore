@@ -1,18 +1,18 @@
 @interface SXPlaceholderArticleThumbnailComponentViewFactory
-- (id)componentViewForComponent:(id)a3;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXPlaceholderArticleThumbnailComponentViewFactory
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
   v4 = [SXPlaceholderArticleThumbnailComponentView alloc];
-  v5 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v6 = [(SXComponentViewFactory *)self viewport];
-  v7 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v8 = [v7 presentationDelegate];
-  v9 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v10 = [(SXPlaceholderArticleThumbnailComponentView *)v4 initWithDOMObjectProvider:v5 viewport:v6 presentationDelegate:v8 componentStyleRendererFactory:v9];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewport = [(SXComponentViewFactory *)self viewport];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  v10 = [(SXPlaceholderArticleThumbnailComponentView *)v4 initWithDOMObjectProvider:dOMObjectProvider viewport:viewport presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory];
 
   return v10;
 }

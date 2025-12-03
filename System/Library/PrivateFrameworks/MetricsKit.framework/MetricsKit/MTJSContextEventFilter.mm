@@ -1,46 +1,46 @@
 @interface MTJSContextEventFilter
 - (JSContext)jsContext;
-- (MTJSContextEventFilter)initWithJSContext:(id)a3 functionName:(id)a4 operationQueue:(id)a5;
-- (MTJSContextEventFilter)initWithScript:(id)a3 functionName:(id)a4 operationQueue:(id)a5;
-- (id)apply:(id)a3;
-- (void)_applyFilter:(id)a3 promise:(id)a4;
+- (MTJSContextEventFilter)initWithJSContext:(id)context functionName:(id)name operationQueue:(id)queue;
+- (MTJSContextEventFilter)initWithScript:(id)script functionName:(id)name operationQueue:(id)queue;
+- (id)apply:(id)apply;
+- (void)_applyFilter:(id)filter promise:(id)promise;
 @end
 
 @implementation MTJSContextEventFilter
 
-- (MTJSContextEventFilter)initWithScript:(id)a3 functionName:(id)a4 operationQueue:(id)a5
+- (MTJSContextEventFilter)initWithScript:(id)script functionName:(id)name operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scriptCopy = script;
+  nameCopy = name;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = MTJSContextEventFilter;
   v11 = [(MTJSContextEventFilter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MTJSContextEventFilter *)v11 setScript:v8];
-    [(MTJSContextEventFilter *)v12 setFunctionName:v9];
-    [(MTJSContextEventFilter *)v12 setOperationQueue:v10];
+    [(MTJSContextEventFilter *)v11 setScript:scriptCopy];
+    [(MTJSContextEventFilter *)v12 setFunctionName:nameCopy];
+    [(MTJSContextEventFilter *)v12 setOperationQueue:queueCopy];
   }
 
   return v12;
 }
 
-- (MTJSContextEventFilter)initWithJSContext:(id)a3 functionName:(id)a4 operationQueue:(id)a5
+- (MTJSContextEventFilter)initWithJSContext:(id)context functionName:(id)name operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  nameCopy = name;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = MTJSContextEventFilter;
   v11 = [(MTJSContextEventFilter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MTJSContextEventFilter *)v11 setJsContext:v8];
-    [(MTJSContextEventFilter *)v12 setFunctionName:v9];
-    [(MTJSContextEventFilter *)v12 setOperationQueue:v10];
+    [(MTJSContextEventFilter *)v11 setJsContext:contextCopy];
+    [(MTJSContextEventFilter *)v12 setFunctionName:nameCopy];
+    [(MTJSContextEventFilter *)v12 setOperationQueue:queueCopy];
   }
 
   return v12;
@@ -72,8 +72,8 @@
     [v10 setObject:&__block_literal_global_24 forKeyedSubscript:@"log"];
 
     v11 = self->_jsContext;
-    v12 = [(MTJSContextEventFilter *)self script];
-    v13 = [(JSContext *)v11 evaluateScript:v12];
+    script = [(MTJSContextEventFilter *)self script];
+    v13 = [(JSContext *)v11 evaluateScript:script];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -117,88 +117,88 @@ void __35__MTJSContextEventFilter_jsContext__block_invoke_5(uint64_t a1, void *a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applyFilter:(id)a3 promise:(id)a4
+- (void)_applyFilter:(id)filter promise:(id)promise
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTJSContextEventFilter *)self jsContext];
-  v9 = [(MTJSContextEventFilter *)self functionName];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  filterCopy = filter;
+  promiseCopy = promise;
+  jsContext = [(MTJSContextEventFilter *)self jsContext];
+  functionName = [(MTJSContextEventFilter *)self functionName];
+  v10 = [jsContext objectForKeyedSubscript:functionName];
 
   if ([v10 isObject])
   {
-    v49[0] = v6;
+    v49[0] = filterCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:1];
     v12 = [v10 callWithArguments:v11];
 
     if ([v12 isNull])
     {
-      v13 = [(MTJSContextEventFilter *)self functionName];
-      v20 = MTError(301, @"The JS function %@ returned a null value.", v14, v15, v16, v17, v18, v19, v13);
+      functionName2 = [(MTJSContextEventFilter *)self functionName];
+      v20 = MTError(301, @"The JS function %@ returned a null value.", v14, v15, v16, v17, v18, v19, functionName2);
 
-      [v7 finishWithError:v20];
+      [promiseCopy finishWithError:v20];
     }
 
     else
     {
-      v29 = [v12 toDictionary];
-      v20 = v29;
-      if (v29)
+      toDictionary = [v12 toDictionary];
+      v20 = toDictionary;
+      if (toDictionary)
       {
-        if ([v29 count])
+        if ([toDictionary count])
         {
-          [v7 finishWithResult:v20];
+          [promiseCopy finishWithResult:v20];
         }
 
         else
         {
-          v33 = [(MTJSContextEventFilter *)self functionName];
-          v40 = MTError(301, @"The JS function %@ returned an empty object.", v34, v35, v36, v37, v38, v39, v33);
+          functionName3 = [(MTJSContextEventFilter *)self functionName];
+          v40 = MTError(301, @"The JS function %@ returned an empty object.", v34, v35, v36, v37, v38, v39, functionName3);
 
-          [v7 finishWithError:v40];
+          [promiseCopy finishWithError:v40];
         }
       }
 
       else
       {
-        v30 = [(MTJSContextEventFilter *)self lastError];
-        v31 = v30;
-        if (v30)
+        lastError = [(MTJSContextEventFilter *)self lastError];
+        v31 = lastError;
+        if (lastError)
         {
-          v32 = v30;
+          v32 = lastError;
         }
 
         else
         {
-          v41 = [(MTJSContextEventFilter *)self functionName];
-          v32 = MTError(200, @"The JS context failed in function named %@.", v42, v43, v44, v45, v46, v47, v41);
+          functionName4 = [(MTJSContextEventFilter *)self functionName];
+          v32 = MTError(200, @"The JS context failed in function named %@.", v42, v43, v44, v45, v46, v47, functionName4);
         }
 
-        [v7 finishWithError:v32];
+        [promiseCopy finishWithError:v32];
       }
     }
   }
 
   else
   {
-    v21 = [(MTJSContextEventFilter *)self functionName];
-    v28 = MTError(200, @"The JS context doesn't have any global function named %@.", v22, v23, v24, v25, v26, v27, v21);
+    functionName5 = [(MTJSContextEventFilter *)self functionName];
+    v28 = MTError(200, @"The JS context doesn't have any global function named %@.", v22, v23, v24, v25, v26, v27, functionName5);
 
-    [v7 finishWithError:v28];
+    [promiseCopy finishWithError:v28];
   }
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (id)apply:(id)a3
+- (id)apply:(id)apply
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__MTJSContextEventFilter_apply___block_invoke;
   v5[3] = &unk_2798CD570;
   v5[4] = self;
-  v3 = [a3 thenWithBlock:v5];
+  v3 = [apply thenWithBlock:v5];
 
   return v3;
 }

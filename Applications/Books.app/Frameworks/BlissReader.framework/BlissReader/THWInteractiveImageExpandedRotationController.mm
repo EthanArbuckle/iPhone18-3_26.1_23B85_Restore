@@ -1,24 +1,24 @@
 @interface THWInteractiveImageExpandedRotationController
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (THWInteractiveImageExpandedRotationController)initWithRep:(id)a3 canvas:(id)a4 stageCanvasController:(id)a5;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (THWInteractiveImageExpandedRotationController)initWithRep:(id)rep canvas:(id)canvas stageCanvasController:(id)controller;
 - (void)dealloc;
-- (void)expandedDidTransitionToSize:(CGSize)a3;
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5;
+- (void)expandedDidTransitionToSize:(CGSize)size;
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration;
 @end
 
 @implementation THWInteractiveImageExpandedRotationController
 
-- (THWInteractiveImageExpandedRotationController)initWithRep:(id)a3 canvas:(id)a4 stageCanvasController:(id)a5
+- (THWInteractiveImageExpandedRotationController)initWithRep:(id)rep canvas:(id)canvas stageCanvasController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = THWInteractiveImageExpandedRotationController;
-  v7 = [(THWInteractiveImageExpandedRotationController *)&v10 init:a3];
+  v7 = [(THWInteractiveImageExpandedRotationController *)&v10 init:rep];
   if (v7)
   {
-    v7->_rep = a3;
-    v8 = a5;
+    v7->_rep = rep;
+    controllerCopy = controller;
     v7->_duration = 5.0;
-    v7->_stageCanvasController = v8;
+    v7->_stageCanvasController = controllerCopy;
   }
 
   return v7;
@@ -31,7 +31,7 @@
   [(THWInteractiveImageExpandedRotationController *)&v3 dealloc];
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -40,44 +40,44 @@
   return result;
 }
 
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration
 {
-  [(THWInteractiveImageExpandedRotationController *)self setDuration:a5, a3.height, a4.width, a4.height];
-  [(THWInteractiveImageWidgetRep *)self->_rep setRotationDuration:a5];
+  [(THWInteractiveImageExpandedRotationController *)self setDuration:duration, size.height, toSize.width, toSize.height];
+  [(THWInteractiveImageWidgetRep *)self->_rep setRotationDuration:duration];
   [-[THWInteractiveImageWidgetRep layout](self->_rep "layout")];
   [-[THWInteractiveImageWidgetRep interactiveCanvasController](self->_rep "interactiveCanvasController")];
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)[(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController] scrollContainerICC] layoutIfNeeded];
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)[(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController] scrollContentICC] layoutIfNeeded];
-  v7 = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
-  v8 = [(THWInteractiveImageWidgetRep *)self->_rep layout];
+  stageCanvasController = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
+  layout = [(THWInteractiveImageWidgetRep *)self->_rep layout];
   [-[THWInteractiveImageWidgetRep layout](self->_rep "layout")];
-  [v8 rectInRoot:?];
-  [THWOverlayableZoomableCanvasController setNaturalFrame:v7 scale:"setNaturalFrame:scale:"];
+  [layout rectInRoot:?];
+  [THWOverlayableZoomableCanvasController setNaturalFrame:stageCanvasController scale:"setNaturalFrame:scale:"];
   [(THWInteractiveImageWidgetRep *)self->_rep updateDiagramAnimated:1];
   rep = self->_rep;
 
   [(THWInteractiveImageWidgetRep *)rep setRotationDuration:0.0];
 }
 
-- (void)expandedDidTransitionToSize:(CGSize)a3
+- (void)expandedDidTransitionToSize:(CGSize)size
 {
   [-[THWInteractiveImageWidgetRep layout](self->_rep layout];
   [-[THWInteractiveImageWidgetRep layout](self->_rep "layout")];
   [-[THWInteractiveImageWidgetRep interactiveCanvasController](self->_rep "interactiveCanvasController")];
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)[(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController] scrollContainerICC] layoutIfNeeded];
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)[(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController] scrollContentICC] layoutIfNeeded];
-  v4 = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
-  v5 = [(THWInteractiveImageWidgetRep *)self->_rep layout];
+  stageCanvasController = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
+  layout = [(THWInteractiveImageWidgetRep *)self->_rep layout];
   [-[THWInteractiveImageWidgetRep layout](self->_rep "layout")];
-  [v5 rectInRoot:?];
-  [THWOverlayableZoomableCanvasController setNaturalFrame:v4 scale:"setNaturalFrame:scale:"];
+  [layout rectInRoot:?];
+  [THWOverlayableZoomableCanvasController setNaturalFrame:stageCanvasController scale:"setNaturalFrame:scale:"];
   [(THWInteractiveImageWidgetRep *)self->_rep updateDiagramAnimated:0];
   [(THWExpandedRepController *)[(THWInteractiveImageWidgetRep *)self->_rep expandedRepController] expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
   [(THWExpandedRepController *)[(THWInteractiveImageWidgetRep *)self->_rep expandedRepController] expandedRepControllerInvalidateChildrenInPanel:2 invalidateWPAuto:0];
   [(THWExpandedRepController *)[(THWInteractiveImageWidgetRep *)self->_rep expandedRepController] expandedRepControllerUpdatePanelVisibility];
-  v6 = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
+  stageCanvasController2 = [(THWInteractiveImageWidgetRep *)self->_rep stageCanvasController];
 
-  [(THWOverlayableZoomableCanvasController *)v6 updateContainerInfosToDisplay];
+  [(THWOverlayableZoomableCanvasController *)stageCanvasController2 updateContainerInfosToDisplay];
 }
 
 @end

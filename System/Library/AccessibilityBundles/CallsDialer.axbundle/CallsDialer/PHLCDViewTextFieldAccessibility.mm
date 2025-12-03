@@ -11,8 +11,8 @@
   v2 = MEMORY[0x29EDBD7E8];
   v6.receiver = self;
   v6.super_class = PHLCDViewTextFieldAccessibility;
-  v3 = [(PHLCDViewTextFieldAccessibility *)&v6 accessibilityValue];
-  v4 = [v2 axAttributedStringWithString:v3];
+  accessibilityValue = [(PHLCDViewTextFieldAccessibility *)&v6 accessibilityValue];
+  v4 = [v2 axAttributedStringWithString:accessibilityValue];
 
   [v4 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD9D0]];
 
@@ -26,10 +26,10 @@
   v3 = __UIAccessibilityCastAsClass();
   v9.receiver = self;
   v9.super_class = PHLCDViewTextFieldAccessibility;
-  v4 = [(PHLCDViewTextFieldAccessibility *)&v9 accessibilityTraits];
-  v5 = [v3 isEditing];
+  accessibilityTraits = [(PHLCDViewTextFieldAccessibility *)&v9 accessibilityTraits];
+  isEditing = [v3 isEditing];
   v6 = *MEMORY[0x29EDC7528];
-  if (v5)
+  if (isEditing)
   {
     v7 = *MEMORY[0x29EDC7528] | *MEMORY[0x29EDC7598];
   }
@@ -39,17 +39,17 @@
     v7 = 0;
   }
 
-  return v7 | v4;
+  return v7 | accessibilityTraits;
 }
 
 - (void)_accessibilityPaste
 {
-  v2 = [MEMORY[0x29EDC7DD0] keyWindow];
-  v3 = [v2 firstResponder];
+  keyWindow = [MEMORY[0x29EDC7DD0] keyWindow];
+  firstResponder = [keyWindow firstResponder];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 canPerformAction:sel_paste_ withSender:0])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [firstResponder canPerformAction:sel_paste_ withSender:0])
   {
-    [v3 paste:0];
+    [firstResponder paste:0];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface TRIPruningFactorLevelCache
-- (TRIPruningFactorLevelCache)initWithPruningDelaySeconds:(double)a3 loadFactorLevels:(id)a4;
-- (id)factorLevelCurrentlyCachedForFactorName:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)_populateCacheForRequiredKey:(id)a3 guardedData:(id)a4;
-- (void)enumerateFactorLevelsUsingBlock:(id)a3;
+- (TRIPruningFactorLevelCache)initWithPruningDelaySeconds:(double)seconds loadFactorLevels:(id)levels;
+- (id)factorLevelCurrentlyCachedForFactorName:(id)name;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)_populateCacheForRequiredKey:(id)key guardedData:(id)data;
+- (void)enumerateFactorLevelsUsingBlock:(id)block;
 - (void)pruneSynchronously;
 @end
 
@@ -48,16 +48,16 @@ void __48__TRIPruningFactorLevelCache_pruneSynchronously__block_invoke(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (TRIPruningFactorLevelCache)initWithPruningDelaySeconds:(double)a3 loadFactorLevels:(id)a4
+- (TRIPruningFactorLevelCache)initWithPruningDelaySeconds:(double)seconds loadFactorLevels:(id)levels
 {
-  v6 = a4;
+  levelsCopy = levels;
   v28.receiver = self;
   v28.super_class = TRIPruningFactorLevelCache;
   v7 = [(TRIPruningFactorLevelCache *)&v28 init];
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = MEMORY[0x2318F2490](v6);
+    v9 = MEMORY[0x2318F2490](levelsCopy);
     v10 = v8[1];
     v8[1] = v9;
 
@@ -82,13 +82,13 @@ void __48__TRIPruningFactorLevelCache_pruneSynchronously__block_invoke(uint64_t 
     pruningTimer = v7->_pruningTimer;
     v7->_pruningTimer = v18;
 
-    v20 = 0.0;
-    if (a3 >= 0.0)
+    secondsCopy = 0.0;
+    if (seconds >= 0.0)
     {
-      v20 = a3;
+      secondsCopy = seconds;
     }
 
-    v7->_pruningDelaySeconds = v20;
+    v7->_pruningDelaySeconds = secondsCopy;
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
@@ -103,9 +103,9 @@ void __75__TRIPruningFactorLevelCache_initWithPruningDelaySeconds_loadFactorLeve
   [WeakRetained pruneSynchronously];
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v5 = a3;
+  subscriptCopy = subscript;
   v6 = objc_autoreleasePoolPush();
   v15 = 0;
   v16 = &v15;
@@ -121,7 +121,7 @@ void __75__TRIPruningFactorLevelCache_initWithPruningDelaySeconds_loadFactorLeve
   v13 = &v15;
   v14 = a2;
   v11[4] = self;
-  v8 = v5;
+  v8 = subscriptCopy;
   v12 = v8;
   [(_PASLock *)lock runWithLockAcquired:v11];
   v9 = v16[5];
@@ -215,9 +215,9 @@ void __54__TRIPruningFactorLevelCache_objectForKeyedSubscript___block_invoke(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateFactorLevelsUsingBlock:(id)a3
+- (void)enumerateFactorLevelsUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -238,7 +238,7 @@ void __54__TRIPruningFactorLevelCache_objectForKeyedSubscript___block_invoke(uin
   v9[1] = 3221225472;
   v9[2] = __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_invoke_49;
   v9[3] = &unk_27885E418;
-  v8 = v5;
+  v8 = blockCopy;
   v10 = v8;
   [v7 enumerateObjectsUsingBlock:v9];
 
@@ -309,19 +309,19 @@ void __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_in
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_populateCacheForRequiredKey:(id)a3 guardedData:(id)a4
+- (void)_populateCacheForRequiredKey:(id)key guardedData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v8 = objc_opt_new();
-  v9 = *(v7 + 3);
-  *(v7 + 3) = v8;
+  v9 = *(dataCopy + 3);
+  *(dataCopy + 3) = v8;
 
-  if (*(v7 + 1))
+  if (*(dataCopy + 1))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = (*(*(v7 + 1) + 16))();
+    v11 = (*(*(dataCopy + 1) + 16))();
     objc_autoreleasePoolPop(v10);
     if (v11)
     {
@@ -329,8 +329,8 @@ void __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_in
       v22[1] = 3221225472;
       v22[2] = __71__TRIPruningFactorLevelCache__populateCacheForRequiredKey_guardedData___block_invoke;
       v22[3] = &unk_27885E440;
-      v23 = v6;
-      v24 = v7;
+      v23 = keyCopy;
+      v24 = dataCopy;
       [v11 enumerateObjectsUsingBlock:v22];
 
       v12 = v23;
@@ -348,8 +348,8 @@ void __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_in
         _os_log_impl(&dword_22EA6B000, v13, OS_LOG_TYPE_INFO, "%@: dropping loadFactorLevels because it failed", buf, 0xCu);
       }
 
-      v12 = *(v7 + 1);
-      *(v7 + 1) = 0;
+      v12 = *(dataCopy + 1);
+      *(dataCopy + 1) = 0;
     }
   }
 
@@ -364,7 +364,7 @@ void __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_in
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [v11 count];
-    v20 = [*(v7 + 3) count];
+    v20 = [*(dataCopy + 3) count];
     *buf = 138412802;
     v26 = v18;
     v27 = 2048;
@@ -374,7 +374,7 @@ void __62__TRIPruningFactorLevelCache_enumerateFactorLevelsUsingBlock___block_in
     _os_log_impl(&dword_22EA6B000, v16, OS_LOG_TYPE_INFO, "%@: reloaded %tu factor levels (%tu prefetched)", buf, 0x20u);
   }
 
-  if ([*(v7 + 3) count])
+  if ([*(dataCopy + 3) count])
   {
     [(_PASSimpleCoalescingTimer *)self->_pruningTimer runAfterDelaySeconds:1 coalescingBehavior:self->_pruningDelaySeconds];
   }
@@ -415,9 +415,9 @@ void __71__TRIPruningFactorLevelCache__populateCacheForRequiredKey_guardedData__
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)factorLevelCurrentlyCachedForFactorName:(id)a3
+- (id)factorLevelCurrentlyCachedForFactorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -430,7 +430,7 @@ void __71__TRIPruningFactorLevelCache__populateCacheForRequiredKey_guardedData__
   v9[2] = __70__TRIPruningFactorLevelCache_factorLevelCurrentlyCachedForFactorName___block_invoke;
   v9[3] = &unk_27885E490;
   v11 = &v12;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[5];

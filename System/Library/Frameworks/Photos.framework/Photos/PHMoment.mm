@@ -1,18 +1,18 @@
 @interface PHMoment
-+ (id)_fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4;
++ (id)_fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library;
 + (id)entityKeyMap;
-+ (id)fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchMomentUUIDByAssetUUIDForAssets:(id)a3 options:(id)a4;
-+ (id)fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:(id)a3 photoLibrary:(id)a4;
-+ (id)fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchPredicateForSharingFilter:(unsigned __int16)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
++ (id)fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options;
++ (id)fetchMomentUUIDByAssetUUIDForAssets:(id)assets options:(id)options;
++ (id)fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:(id)ds photoLibrary:(id)library;
++ (id)fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)ds options:(id)options;
++ (id)fetchPredicateForSharingFilter:(unsigned __int16)filter;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
 - (BOOL)hasNoThemesPlaceholder;
 - (NSArray)themeAssignments;
-- (PHMoment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHMoment)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
-- (void)_cacheLocationWithCoordinate:(CLLocationCoordinate2D)a3;
+- (void)_cacheLocationWithCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation PHMoment
@@ -22,17 +22,17 @@
   v8.receiver = self;
   v8.super_class = PHMoment;
   v3 = [(PHAssetCollection *)&v8 description];
-  v4 = [(PHAssetCollection *)self startDate];
-  v5 = [(PHAssetCollection *)self endDate];
-  v6 = [v3 stringByAppendingFormat:@" [%@ - %@]", v4, v5];
+  startDate = [(PHAssetCollection *)self startDate];
+  endDate = [(PHAssetCollection *)self endDate];
+  v6 = [v3 stringByAppendingFormat:@" [%@ - %@]", startDate, endDate];
 
   return v6;
 }
 
-- (void)_cacheLocationWithCoordinate:(CLLocationCoordinate2D)a3
+- (void)_cacheLocationWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if ([MEMORY[0x1E69BE520] canUseCoordinate:?])
   {
     v6 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:latitude longitude:longitude];
@@ -50,27 +50,27 @@
 
 - (BOOL)hasNoThemesPlaceholder
 {
-  v2 = self;
+  selfCopy = self;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 objectFetchingContextForCurrentQueueQoS];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  objectFetchingContextForCurrentQueueQoS = [photoLibrary objectFetchingContextForCurrentQueueQoS];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__PHMoment_hasNoThemesPlaceholder__block_invoke;
   v7[3] = &unk_1E75AA3F8;
-  v5 = v4;
+  v5 = objectFetchingContextForCurrentQueueQoS;
   v8 = v5;
-  v9 = v2;
+  v9 = selfCopy;
   v10 = &v11;
   [v5 performBlockAndWait:v7];
-  LOBYTE(v2) = *(v12 + 24);
+  LOBYTE(selfCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __34__PHMoment_hasNoThemesPlaceholder__block_invoke(uint64_t a1)
@@ -95,16 +95,16 @@ void __34__PHMoment_hasNoThemesPlaceholder__block_invoke(uint64_t a1)
   v15 = __Block_byref_object_copy__13624;
   v16 = __Block_byref_object_dispose__13625;
   v17 = 0;
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 objectFetchingContextForCurrentQueueQoS];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  objectFetchingContextForCurrentQueueQoS = [photoLibrary objectFetchingContextForCurrentQueueQoS];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__PHMoment_themeAssignments__block_invoke;
   v8[3] = &unk_1E75AA3F8;
-  v5 = v4;
+  v5 = objectFetchingContextForCurrentQueueQoS;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [v5 performBlockAndWait:v8];
   v6 = v13[5];
@@ -146,66 +146,66 @@ PHMomentThemeAssignment *__28__PHMoment_themeAssignments__block_invoke_2(uint64_
   return v8;
 }
 
-- (PHMoment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHMoment)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = PHMoment;
-  v9 = [(PHAssetCollection *)&v36 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v36 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"timeZoneOffset"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"timeZoneOffset"];
     v9->_timeZoneOffset = [v10 intValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"representativeDate"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"representativeDate"];
     representativeDate = v9->_representativeDate;
     v9->_representativeDate = v11;
 
-    v13 = [v8 objectForKeyedSubscript:@"approximateLatitude"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"approximateLatitude"];
     [v13 doubleValue];
     v9->_approximateLatitude = v14;
 
-    v15 = [v8 objectForKeyedSubscript:@"approximateLongitude"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"approximateLongitude"];
     [v15 doubleValue];
     v9->_approximateLongitude = v16;
 
     v17 = CLLocationCoordinate2DMake(v9->_approximateLatitude, v9->_approximateLongitude);
     [(PHMoment *)v9 _cacheLocationWithCoordinate:v17.latitude, v17.longitude];
     v9->super._assetCollectionType = 3;
-    v18 = [v8 objectForKeyedSubscript:@"modificationDate"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
     modificationDate = v9->_modificationDate;
     v9->_modificationDate = v18;
 
-    v20 = [v8 objectForKeyedSubscript:@"aggregationScore"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"aggregationScore"];
     [v20 floatValue];
     v9->_aggregationScore = v21;
 
-    v22 = [v8 objectForKeyedSubscript:@"processedLocation"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"processedLocation"];
     v9->_processedLocation = [v22 unsignedShortValue];
 
-    v23 = [v8 objectForKeyedSubscript:@"originatorState"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"originatorState"];
     v9->_originatorState = [v23 shortValue];
 
-    v24 = [v8 objectForKeyedSubscript:@"subtitle"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     subtitle = v9->_subtitle;
     v9->_subtitle = v24;
 
-    v26 = [v8 objectForKeyedSubscript:@"localizedLocationNames"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"localizedLocationNames"];
     localizedLocationNames = v9->super._localizedLocationNames;
     v9->super._localizedLocationNames = v26;
 
-    v28 = [v8 objectForKeyedSubscript:@"gpsHorizontalAccuracy"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"gpsHorizontalAccuracy"];
     [v28 doubleValue];
     v9->_gpsHorizontalAccuracy = v29;
 
-    v30 = [v8 objectForKeyedSubscript:@"sharingComposition"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"sharingComposition"];
     v9->_sharingComposition = [v30 integerValue];
 
-    v31 = [v8 objectForKeyedSubscript:@"startDate"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v9->super._startDate;
     v9->super._startDate = v31;
 
-    v33 = [v8 objectForKeyedSubscript:@"endDate"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v9->super._endDate;
     v9->super._endDate = v33;
   }
@@ -213,13 +213,13 @@ PHMomentThemeAssignment *__28__PHMoment_themeAssignments__block_invoke_2(uint64_
   return v9;
 }
 
-+ (id)fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)a3 options:(id)a4
++ (id)fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 photoLibrary];
-  v8 = v7;
-  if (v7)
+  dsCopy = ds;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  v8 = photoLibrary;
+  if (photoLibrary)
   {
     *buf = 0;
     v18 = buf;
@@ -227,15 +227,15 @@ PHMomentThemeAssignment *__28__PHMoment_themeAssignments__block_invoke_2(uint64_
     v20 = __Block_byref_object_copy__13624;
     v21 = __Block_byref_object_dispose__13625;
     v22 = 0;
-    v9 = [v7 photoLibraryForCurrentQueueQoS];
+    photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__PHMoment_fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs_options___block_invoke;
     v13[3] = &unk_1E75AA3F8;
-    v14 = v5;
+    v14 = dsCopy;
     v15 = v8;
     v16 = buf;
-    [v9 performBlockAndWait:v13];
+    [photoLibraryForCurrentQueueQoS performBlockAndWait:v13];
     v10 = *(v18 + 5);
 
     _Block_object_dispose(buf, 8);
@@ -286,12 +286,12 @@ void __81__PHMoment_fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs
   }
 }
 
-+ (id)fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:(id)a3 photoLibrary:(id)a4
++ (id)fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:(id)ds photoLibrary:(id)library
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69BE3D0] fetchRequest];
+  dsCopy = ds;
+  libraryCopy = library;
+  fetchRequest = [MEMORY[0x1E69BE3D0] fetchRequest];
   v8 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   v9 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"assetForFace.moment.uuid"];
   [v8 setName:@"momentUUID"];
@@ -305,35 +305,35 @@ void __81__PHMoment_fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs
   v33[0] = v8;
   v33[1] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
-  [v7 setPropertiesToFetch:v12];
+  [fetchRequest setPropertiesToFetch:v12];
 
   v32[0] = v8;
   v32[1] = v10;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
-  [v7 setPropertiesToFetch:v13];
+  [fetchRequest setPropertiesToFetch:v13];
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personForFace.personUUID", v5];
-  [v7 setPredicate:v14];
-  [v7 setResultType:2];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personForFace.personUUID", dsCopy];
+  [fetchRequest setPredicate:dsCopy];
+  [fetchRequest setResultType:2];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__13624;
   v30 = __Block_byref_object_dispose__13625;
   v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v15 = [v6 photoLibrary];
+  photoLibrary = [libraryCopy photoLibrary];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__PHMoment_fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs_photoLibrary___block_invoke;
   v20[3] = &unk_1E75AAE68;
-  v16 = v6;
+  v16 = libraryCopy;
   v21 = v16;
-  v17 = v7;
+  v17 = fetchRequest;
   v22 = v17;
   v23 = @"personUUID";
   v24 = @"momentUUID";
   v25 = &v26;
-  [v15 performBlockAndWait:v20];
+  [photoLibrary performBlockAndWait:v20];
 
   v18 = v27[5];
   _Block_object_dispose(&v26, 8);
@@ -416,12 +416,12 @@ void __73__PHMoment_fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs_photoLibrary
   }
 }
 
-+ (id)_fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)a3 photoLibrary:(id)a4
++ (id)_fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)ds photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dsCopy = ds;
+  libraryCopy = library;
+  v7 = libraryCopy;
+  if (libraryCopy)
   {
     *buf = 0;
     v17 = buf;
@@ -429,15 +429,15 @@ void __73__PHMoment_fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs_photoLibrary
     v19 = __Block_byref_object_copy__13624;
     v20 = __Block_byref_object_dispose__13625;
     v21 = 0;
-    v8 = [v6 photoLibraryForCurrentQueueQoS];
+    photoLibraryForCurrentQueueQoS = [libraryCopy photoLibraryForCurrentQueueQoS];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__PHMoment__fetchMomentUUIDByAssetUUIDForAssetUUIDs_photoLibrary___block_invoke;
     v12[3] = &unk_1E75AA3F8;
-    v13 = v5;
+    v13 = dsCopy;
     v14 = v7;
     v15 = buf;
-    [v8 performBlockAndWait:v12];
+    [photoLibraryForCurrentQueueQoS performBlockAndWait:v12];
     v9 = *(v17 + 5);
 
     _Block_object_dispose(buf, 8);
@@ -493,27 +493,27 @@ void __66__PHMoment__fetchMomentUUIDByAssetUUIDForAssetUUIDs_photoLibrary___bloc
   }
 }
 
-+ (id)fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)a3 options:(id)a4
++ (id)fetchMomentUUIDByAssetUUIDForAssetUUIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 photoLibrary];
-  v8 = [a1 _fetchMomentUUIDByAssetUUIDForAssetUUIDs:v6 photoLibrary:v7];
+  dsCopy = ds;
+  photoLibrary = [options photoLibrary];
+  v8 = [self _fetchMomentUUIDByAssetUUIDForAssetUUIDs:dsCopy photoLibrary:photoLibrary];
 
   return v8;
 }
 
-+ (id)fetchMomentUUIDByAssetUUIDForAssets:(id)a3 options:(id)a4
++ (id)fetchMomentUUIDByAssetUUIDForAssets:(id)assets options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 photoLibrary];
-  v9 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -529,12 +529,12 @@ void __66__PHMoment__fetchMomentUUIDByAssetUUIDForAssetUUIDs_photoLibrary___bloc
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        [v9 addObject:v16];
+        uuid = [v15 uuid];
+        [array addObject:uuid];
 
-        if (!v8)
+        if (!photoLibrary)
         {
-          v8 = [v15 photoLibrary];
+          photoLibrary = [v15 photoLibrary];
         }
       }
 
@@ -544,28 +544,28 @@ void __66__PHMoment__fetchMomentUUIDByAssetUUIDForAssetUUIDs_photoLibrary___bloc
     while (v12);
   }
 
-  v17 = [a1 _fetchMomentUUIDByAssetUUIDForAssetUUIDs:v9 photoLibrary:v8];
+  v17 = [self _fetchMomentUUIDByAssetUUIDForAssetUUIDs:array photoLibrary:photoLibrary];
 
   return v17;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PHMoment_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_13718 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_13718, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_13719 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_13719 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -686,19 +686,19 @@ void __24__PHMoment_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_13734 = v10;
 }
 
-+ (id)fetchPredicateForSharingFilter:(unsigned __int16)a3
++ (id)fetchPredicateForSharingFilter:(unsigned __int16)filter
 {
-  if (!a3)
+  if (!filter)
   {
 LABEL_4:
-    v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"sharingComposition", a3, v3];
+    v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"sharingComposition", filter, v3];
 
     return v5;
   }
 
-  if (a3 == 1)
+  if (filter == 1)
   {
-    *&a3 = 1;
+    *&filter = 1;
     goto LABEL_4;
   }
 
@@ -707,13 +707,13 @@ LABEL_4:
   return v5;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__PHMoment_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToFetchWithHint__onceToken_13755 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_13755, block);

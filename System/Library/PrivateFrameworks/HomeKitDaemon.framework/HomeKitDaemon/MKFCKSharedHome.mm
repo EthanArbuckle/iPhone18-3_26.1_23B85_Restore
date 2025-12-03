@@ -1,21 +1,21 @@
 @interface MKFCKSharedHome
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (id)createWithModelID:(id)a3 persistentStore:(id)a4 context:(id)a5;
-- (id)createLocalModelWithContext:(id)a3;
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (id)createWithModelID:(id)d persistentStore:(id)store context:(id)context;
+- (id)createLocalModelWithContext:(id)context;
 @end
 
 @implementation MKFCKSharedHome
 
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -27,12 +27,12 @@
   objc_exception_throw(v19);
 }
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -44,11 +44,11 @@
   objc_exception_throw(v19);
 }
 
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -60,16 +60,16 @@
   objc_exception_throw(v16);
 }
 
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a6;
-  v8 = [v7 objectWithID:a3];
-  v9 = v7;
+  contextCopy = context;
+  v8 = [contextCopy objectWithID:d];
+  v9 = contextCopy;
   if (v8)
   {
-    v10 = [v8 modelID];
-    v11 = [(_MKFModel *)_MKFHome modelWithModelID:v10 context:v9];
+    modelID = [v8 modelID];
+    v11 = [(_MKFModel *)_MKFHome modelWithModelID:modelID context:v9];
 
     v12 = objc_autoreleasePoolPush();
     v13 = v8;
@@ -80,13 +80,13 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v13 modelID];
+        modelID2 = [v13 modelID];
         v43 = 138543874;
         v44 = v28;
         v45 = 2160;
         v46 = 1752392040;
         v47 = 2112;
-        v48 = v29;
+        v48 = modelID2;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_FAULT, "%{public}@No existing local model for shared home with modelID %{mask.hash}@, skipping update", &v43, 0x20u);
       }
 
@@ -97,26 +97,26 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v13 modelID];
+      modelID3 = [v13 modelID];
       v43 = 138543874;
       v44 = v16;
       v45 = 2160;
       v46 = 1752392040;
       v47 = 2112;
-      v48 = v17;
+      v48 = modelID3;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Found existing local model for shared home with modelID %{mask.hash}@", &v43, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
     v18 = +[HMDAccountHandleFormatter defaultFormatter];
-    v19 = [v13 ownerAccountHandle];
-    v20 = [v18 accountHandleFromString:v19];
+    ownerAccountHandle = [v13 ownerAccountHandle];
+    v20 = [v18 accountHandleFromString:ownerAccountHandle];
 
     if (v20)
     {
-      v21 = [v11 owner];
+      owner = [v11 owner];
 
-      if (!v21)
+      if (!owner)
       {
         v36 = objc_autoreleasePoolPush();
         v37 = v13;
@@ -124,13 +124,13 @@
         if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
         {
           v39 = HMFGetLogIdentifier();
-          v40 = [v37 modelID];
+          modelID4 = [v37 modelID];
           v43 = 138543874;
           v44 = v39;
           v45 = 2160;
           v46 = 1752392040;
           v47 = 2112;
-          v48 = v40;
+          v48 = modelID4;
           _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_FAULT, "%{public}@Local home model with modelID %{mask.hash}@ does not have an owner user", &v43, 0x20u);
         }
 
@@ -138,9 +138,9 @@
         goto LABEL_19;
       }
 
-      v22 = [v11 owner];
-      v23 = [v22 accountHandle];
-      v24 = [v23 isEqual:v20];
+      owner2 = [v11 owner];
+      accountHandle = [owner2 accountHandle];
+      v24 = [accountHandle isEqual:v20];
 
       if (v24)
       {
@@ -150,8 +150,8 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v25 = [v11 owner];
-      v26 = v25;
+      owner3 = [v11 owner];
+      v26 = owner3;
       v27 = v20;
     }
 
@@ -163,28 +163,28 @@ LABEL_20:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v33 = HMFGetLogIdentifier();
-        v34 = [v31 ownerAccountHandle];
-        v35 = [v31 modelID];
+        ownerAccountHandle2 = [v31 ownerAccountHandle];
+        modelID5 = [v31 modelID];
         v43 = 138544386;
         v44 = v33;
         v45 = 2160;
         v46 = 1752392040;
         v47 = 2112;
-        v48 = v34;
+        v48 = ownerAccountHandle2;
         v49 = 2160;
         v50 = 1752392040;
         v51 = 2112;
-        v52 = v35;
+        v52 = modelID5;
         _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, "%{public}@Invalid account handle %{mask.hash}@ found on shared home with model ID %{mask.hash}@", &v43, 0x34u);
       }
 
       objc_autoreleasePoolPop(v30);
-      v25 = [v11 owner];
-      v26 = v25;
+      owner3 = [v11 owner];
+      v26 = owner3;
       v27 = 0;
     }
 
-    [v25 setAccountHandle:v27];
+    [owner3 setAccountHandle:v27];
 
     goto LABEL_19;
   }
@@ -195,20 +195,20 @@ LABEL_21:
   return v8 != 0;
 }
 
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v88 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [v6 objectWithID:a3];
-  v8 = v6;
+  contextCopy = context;
+  v7 = [contextCopy objectWithID:d];
+  v8 = contextCopy;
   if (!v7)
   {
     v68 = 0;
     goto LABEL_34;
   }
 
-  v9 = [v7 modelID];
-  v10 = [(_MKFModel *)_MKFHome modelWithModelID:v9 context:v8];
+  modelID = [v7 modelID];
+  v10 = [(_MKFModel *)_MKFHome modelWithModelID:modelID context:v8];
 
   if (v10)
   {
@@ -218,13 +218,13 @@ LABEL_21:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v12 modelID];
+      modelID2 = [v12 modelID];
       *buf = 138543874;
       *&buf[4] = v14;
       *&buf[12] = 2160;
       *&buf[14] = 1752392040;
       *&buf[22] = 2112;
-      v84 = v15;
+      v84 = modelID2;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Found existing local home with modelID %{mask.hash}@, skipping insert", buf, 0x20u);
     }
   }
@@ -233,13 +233,13 @@ LABEL_21:
   {
     v16 = [v7 createLocalModelWithContext:v8];
     v17 = v8;
-    v18 = [v7 name];
-    [v16 setName:v18];
+    name = [v7 name];
+    [v16 setName:name];
 
     v19 = v16;
     v20 = v17;
-    v21 = [v7 defaultRoomModelID];
-    v22 = [(_MKFModel *)_MKFRoom modelWithModelID:v21 context:v20];
+    defaultRoomModelID = [v7 defaultRoomModelID];
+    v22 = [(_MKFModel *)_MKFRoom modelWithModelID:defaultRoomModelID context:v20];
 
     if (v22)
     {
@@ -249,13 +249,13 @@ LABEL_21:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v24 modelID];
+        modelID3 = [v24 modelID];
         *buf = 138543874;
         *&buf[4] = v26;
         *&buf[12] = 2160;
         *&buf[14] = 1752392040;
         *&buf[22] = 2112;
-        v84 = v27;
+        v84 = modelID3;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Found existing local room with modelID %{mask.hash}@, skipping insert", buf, 0x20u);
       }
 
@@ -265,28 +265,28 @@ LABEL_21:
     else
     {
       v22 = [[_MKFRoom alloc] initWithContext:v20];
-      v28 = [v7 defaultRoomModelID];
-      [(_MKFRoom *)v22 setModelID:v28];
+      defaultRoomModelID2 = [v7 defaultRoomModelID];
+      [(_MKFRoom *)v22 setModelID:defaultRoomModelID2];
 
       v29 = HMDDefaultRoomName();
       [(_MKFRoom *)v22 setName:v29];
 
       [(_MKFRoom *)v22 setHome:v19];
-      v30 = [v7 writerTimestamp];
-      [(_MKFRoom *)v22 setWriterTimestamp:v30];
+      writerTimestamp = [v7 writerTimestamp];
+      [(_MKFRoom *)v22 setWriterTimestamp:writerTimestamp];
     }
 
-    v31 = [v19 defaultRoom];
+    defaultRoom = [v19 defaultRoom];
     v32 = HMFEqualObjects();
 
     if ((v32 & 1) == 0)
     {
-      v33 = [v19 defaultRoom];
+      defaultRoom2 = [v19 defaultRoom];
 
-      if (v33)
+      if (defaultRoom2)
       {
-        v34 = [v19 defaultRoom];
-        [v20 deleteObject:v34];
+        defaultRoom3 = [v19 defaultRoom];
+        [v20 deleteObject:defaultRoom3];
       }
 
       [v19 setDefaultRoom:v22];
@@ -294,18 +294,18 @@ LABEL_21:
 
     v10 = v19;
     v35 = v20;
-    v36 = [v7 ownerModelID];
-    v37 = [(_MKFModel *)_MKFUser modelWithModelID:v36 context:v35];
+    ownerModelID = [v7 ownerModelID];
+    v37 = [(_MKFModel *)_MKFUser modelWithModelID:ownerModelID context:v35];
 
     if (!v37)
     {
       v37 = [[_MKFUser alloc] initWithContext:v35];
-      v38 = [v7 ownerModelID];
-      [(_MKFUser *)v37 setModelID:v38];
+      ownerModelID2 = [v7 ownerModelID];
+      [(_MKFUser *)v37 setModelID:ownerModelID2];
 
       v39 = +[HMDAccountHandleFormatter defaultFormatter];
-      v40 = [v7 ownerAccountHandle];
-      v41 = [v39 accountHandleFromString:v40];
+      ownerAccountHandle = [v7 ownerAccountHandle];
+      v41 = [v39 accountHandleFromString:ownerAccountHandle];
       [(_MKFUser *)v37 setAccountHandle:v41];
 
       [(_MKFUser *)v37 setAnnounceAccessLevel:&unk_283E73220];
@@ -313,11 +313,11 @@ LABEL_21:
       [(_MKFUser *)v37 setRemoteAccessAllowed:MEMORY[0x277CBEC38]];
       [(_MKFUser *)v37 setPrivilege:&unk_283E73238];
       [(_MKFUser *)v37 setHome:v10];
-      v42 = [v7 writerTimestamp];
-      [(_MKFUser *)v37 setWriterTimestamp:v42];
+      writerTimestamp2 = [v7 writerTimestamp];
+      [(_MKFUser *)v37 setWriterTimestamp:writerTimestamp2];
     }
 
-    v43 = [v10 owner];
+    owner = [v10 owner];
     v44 = HMFEqualObjects();
 
     if ((v44 & 1) == 0)
@@ -342,14 +342,14 @@ LABEL_21:
       v73 = &v72;
       v74 = 0x2020000000;
       v75 = 1;
-      v49 = [v48 homes];
+      homes = [v48 homes];
       v71[0] = MEMORY[0x277D85DD0];
       v71[1] = 3221225472;
       v71[2] = __49__MKFCKSharedHome__importHomeManagerWithContext___block_invoke;
       v71[3] = &unk_27867B6F0;
       v71[4] = v7;
       v71[5] = &v72;
-      [v49 hmf_enumerateWithAutoreleasePoolUsingBlock:v71];
+      [homes hmf_enumerateWithAutoreleasePoolUsingBlock:v71];
 
       if (*(v73 + 24) == 1)
       {
@@ -499,23 +499,23 @@ void __49__MKFCKSharedHome__importHomeManagerWithContext___block_invoke_2(uint64
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createWithModelID:(id)a3 persistentStore:(id)a4 context:(id)a5
++ (id)createWithModelID:(id)d persistentStore:(id)store context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContext:v8];
-  [v8 assignObject:v11 toPersistentStore:v9];
+  contextCopy = context;
+  storeCopy = store;
+  dCopy = d;
+  v11 = [[self alloc] initWithContext:contextCopy];
+  [contextCopy assignObject:v11 toPersistentStore:storeCopy];
 
-  [v11 setModelID:v10];
+  [v11 setModelID:dCopy];
 
   return v11;
 }
 
-- (id)createLocalModelWithContext:(id)a3
+- (id)createLocalModelWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[_MKFHome alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[_MKFHome alloc] initWithContext:contextCopy];
 
   [(_MKFHome *)v5 setOwned:MEMORY[0x277CBEC28]];
   v6 = v5;
@@ -532,11 +532,11 @@ void __49__MKFCKSharedHome__importHomeManagerWithContext___block_invoke_2(uint64
 
   v8 = v7;
 
-  v9 = [(MKFCKSharedHome *)self modelID];
-  [(_MKFHome *)v8 setModelID:v9];
+  modelID = [(MKFCKSharedHome *)self modelID];
+  [(_MKFHome *)v8 setModelID:modelID];
 
-  v10 = [(MKFCKSharedHome *)self writerTimestamp];
-  [(_MKFHome *)v8 setWriterTimestamp:v10];
+  writerTimestamp = [(MKFCKSharedHome *)self writerTimestamp];
+  [(_MKFHome *)v8 setWriterTimestamp:writerTimestamp];
 
   v11 = v8;
   objc_opt_class();

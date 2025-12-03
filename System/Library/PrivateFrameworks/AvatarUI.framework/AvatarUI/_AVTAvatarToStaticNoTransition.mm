@@ -1,21 +1,21 @@
 @interface _AVTAvatarToStaticNoTransition
-- (_AVTAvatarToStaticNoTransition)initWithModel:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5 logger:(id)a6;
+- (_AVTAvatarToStaticNoTransition)initWithModel:(id)model animated:(BOOL)animated completionHandler:(id)handler logger:(id)logger;
 - (void)performTransition;
 @end
 
 @implementation _AVTAvatarToStaticNoTransition
 
-- (_AVTAvatarToStaticNoTransition)initWithModel:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5 logger:(id)a6
+- (_AVTAvatarToStaticNoTransition)initWithModel:(id)model animated:(BOOL)animated completionHandler:(id)handler logger:(id)logger
 {
-  v8 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = _AVTAvatarToStaticNoTransition;
-  v12 = [(AVTTransition *)&v15 initWithModel:v11 animated:v8 setupHandler:0 completionHandler:a5 logger:a6];
+  v12 = [(AVTTransition *)&v15 initWithModel:modelCopy animated:animatedCopy setupHandler:0 completionHandler:handler logger:logger];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarTransitionModel, a3);
+    objc_storeStrong(&v12->_avatarTransitionModel, model);
   }
 
   return v13;
@@ -23,14 +23,14 @@
 
 - (void)performTransition
 {
-  v3 = [(_AVTAvatarToStaticNoTransition *)self avatarTransitionModel];
-  [v3 transitionStaticViewToFront];
+  avatarTransitionModel = [(_AVTAvatarToStaticNoTransition *)self avatarTransitionModel];
+  [avatarTransitionModel transitionStaticViewToFront];
 
-  v4 = [(_AVTAvatarToStaticNoTransition *)self avatarTransitionModel];
-  [v4 applyBaseAlpha];
+  avatarTransitionModel2 = [(_AVTAvatarToStaticNoTransition *)self avatarTransitionModel];
+  [avatarTransitionModel2 applyBaseAlpha];
 
-  v5 = [(AVTTransition *)self completionHandler];
-  v5[2](v5, 1);
+  completionHandler = [(AVTTransition *)self completionHandler];
+  completionHandler[2](completionHandler, 1);
 }
 
 @end

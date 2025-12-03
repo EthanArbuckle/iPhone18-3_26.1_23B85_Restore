@@ -1,10 +1,10 @@
 @interface PXSearchActiveSearch
 - (BOOL)hasSearchText;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)searchTermsString;
-- (PXSearchActiveSearch)initWithSearchText:(id)a3 searchTokens:(id)a4 libraryScope:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXSearchActiveSearch)initWithSearchText:(id)text searchTokens:(id)tokens libraryScope:(unint64_t)scope;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)searchTokenCount;
 - (void)_generateRelatedSearchObjects;
 @end
@@ -14,13 +14,13 @@
 - (NSString)searchTermsString
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSearchActiveSearch *)self searchTokens];
+  searchTokens = [(PXSearchActiveSearch *)self searchTokens];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = searchTokens;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -35,10 +35,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) text];
-        if ([v10 length])
+        text = [*(*(&v14 + 1) + 8 * i) text];
+        if ([text length])
         {
-          [v4 addObject:v10];
+          [v4 addObject:text];
         }
       }
 
@@ -50,8 +50,8 @@
 
   if ([(PXSearchActiveSearch *)self hasSearchText])
   {
-    v11 = [(PXSearchActiveSearch *)self searchText];
-    [v4 addObject:v11];
+    searchText = [(PXSearchActiveSearch *)self searchText];
+    [v4 addObject:searchText];
   }
 
   v12 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:{v4, v14}];
@@ -65,12 +65,12 @@
   if ([(PXSearchActiveSearch *)self searchTokenCount])
   {
     v3 = objc_opt_new();
-    v4 = [(PXSearchActiveSearch *)self searchTokens];
+    searchTokens = [(PXSearchActiveSearch *)self searchTokens];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v5 = [searchTokens countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -81,30 +81,30 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(searchTokens);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) representedObject];
-          v10 = [v9 queryToken];
-          if (!v10)
+          representedObject = [*(*(&v14 + 1) + 8 * i) representedObject];
+          queryToken = [representedObject queryToken];
+          if (!queryToken)
           {
             PXAssertGetLog();
           }
 
-          [v3 addObject:v10];
-          if (!v9)
+          [v3 addObject:queryToken];
+          if (!representedObject)
           {
             PXAssertGetLog();
           }
 
-          if (!-[PXSearchActiveSearch hasSearchText](self, "hasSearchText") && [v4 count] == 1)
+          if (!-[PXSearchActiveSearch hasSearchText](self, "hasSearchText") && [searchTokens count] == 1)
           {
-            v11 = [v9 priorityAssetUUID];
-            [(PXSearchActiveSearch *)self setPriorityAssetUUID:v11];
+            priorityAssetUUID = [representedObject priorityAssetUUID];
+            [(PXSearchActiveSearch *)self setPriorityAssetUUID:priorityAssetUUID];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [searchTokens countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -122,12 +122,12 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = PXSearchActiveSearch;
-  if ([(PXSearchActiveSearch *)&v14 isEqual:v4])
+  if ([(PXSearchActiveSearch *)&v14 isEqual:equalCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -137,19 +137,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [(PXSearchActiveSearch *)self searchTokenCount];
-      if (v7 == [v6 searchTokenCount] && (v8 = -[PXSearchActiveSearch libraryScope](self, "libraryScope"), v8 == objc_msgSend(v6, "libraryScope")))
+      v6 = equalCopy;
+      searchTokenCount = [(PXSearchActiveSearch *)self searchTokenCount];
+      if (searchTokenCount == [v6 searchTokenCount] && (v8 = -[PXSearchActiveSearch libraryScope](self, "libraryScope"), v8 == objc_msgSend(v6, "libraryScope")))
       {
-        v9 = [(PXSearchActiveSearch *)self representedObjects];
-        v10 = [v6 representedObjects];
-        v5 = [v9 isEqualToArray:v10];
+        representedObjects = [(PXSearchActiveSearch *)self representedObjects];
+        representedObjects2 = [v6 representedObjects];
+        v5 = [representedObjects isEqualToArray:representedObjects2];
 
         if (-[PXSearchActiveSearch hasSearchText](self, "hasSearchText") || [v6 hasSearchText])
         {
-          v11 = [(PXSearchActiveSearch *)self searchText];
-          v12 = [v6 searchText];
-          v5 &= [v11 isEqualToString:v12];
+          searchText = [(PXSearchActiveSearch *)self searchText];
+          searchText2 = [v6 searchText];
+          v5 &= [searchText isEqualToString:searchText2];
         }
       }
 
@@ -168,13 +168,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PXSearchActiveSearch alloc];
-  v6 = [(PXSearchActiveSearch *)self searchText];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(PXSearchActiveSearch *)self searchTokens];
-  v9 = [v8 copyWithZone:a3];
+  searchText = [(PXSearchActiveSearch *)self searchText];
+  v7 = [searchText copyWithZone:zone];
+  searchTokens = [(PXSearchActiveSearch *)self searchTokens];
+  v9 = [searchTokens copyWithZone:zone];
   v10 = [(PXSearchActiveSearch *)v5 initWithSearchText:v7 searchTokens:v9 libraryScope:[(PXSearchActiveSearch *)self libraryScope]];
 
   return v10;
@@ -182,8 +182,8 @@
 
 - (unint64_t)searchTokenCount
 {
-  v2 = [(PXSearchActiveSearch *)self searchTokens];
-  v3 = [v2 count];
+  searchTokens = [(PXSearchActiveSearch *)self searchTokens];
+  v3 = [searchTokens count];
 
   return v3;
 }
@@ -203,28 +203,28 @@
 
 - (BOOL)hasSearchText
 {
-  v2 = [(PXSearchActiveSearch *)self searchText];
-  v3 = [v2 length] != 0;
+  searchText = [(PXSearchActiveSearch *)self searchText];
+  v3 = [searchText length] != 0;
 
   return v3;
 }
 
-- (PXSearchActiveSearch)initWithSearchText:(id)a3 searchTokens:(id)a4 libraryScope:(unint64_t)a5
+- (PXSearchActiveSearch)initWithSearchText:(id)text searchTokens:(id)tokens libraryScope:(unint64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  tokensCopy = tokens;
   v17.receiver = self;
   v17.super_class = PXSearchActiveSearch;
   v10 = [(PXSearchActiveSearch *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_libraryScope = a5;
-    v12 = [v8 copy];
+    v10->_libraryScope = scope;
+    v12 = [textCopy copy];
     searchText = v11->_searchText;
     v11->_searchText = v12;
 
-    v14 = [v9 copy];
+    v14 = [tokensCopy copy];
     searchTokens = v11->_searchTokens;
     v11->_searchTokens = v14;
 

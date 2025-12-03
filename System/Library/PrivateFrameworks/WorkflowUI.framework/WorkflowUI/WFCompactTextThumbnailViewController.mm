@@ -1,9 +1,9 @@
 @interface WFCompactTextThumbnailViewController
 - (UILabel)label;
-- (WFCompactTextThumbnailViewController)initWithString:(id)a3;
-- (double)contentHeightForWidth:(double)a3;
+- (WFCompactTextThumbnailViewController)initWithString:(id)string;
+- (double)contentHeightForWidth:(double)width;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFCompactTextThumbnailViewController
@@ -15,27 +15,27 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WFCompactTextThumbnailViewController;
-  v4 = a3;
-  [(WFCompactTextThumbnailViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFCompactTextThumbnailViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(WFCompactTextThumbnailViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(WFCompactThumbnailViewController *)self invalidateContentSize];
   }
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
   [(WFCompactTextThumbnailViewController *)self loadViewIfNeeded];
-  v5 = [(WFCompactTextThumbnailViewController *)self label];
-  [v5 sizeThatFits:{a3, 1.79769313e308}];
+  label = [(WFCompactTextThumbnailViewController *)self label];
+  [label sizeThatFits:{width, 1.79769313e308}];
   v7 = v6 + 10.0;
 
   return v7;
@@ -47,22 +47,22 @@
   v11.super_class = WFCompactTextThumbnailViewController;
   [(WFCompactTextThumbnailViewController *)&v11 loadView];
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(WFCompactTextThumbnailViewController *)self view];
-  [v4 bounds];
+  view = [(WFCompactTextThumbnailViewController *)self view];
+  [view bounds];
   v13 = CGRectInset(v12, 22.0, 0.0);
   [v3 setFrame:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
 
   [v3 setAutoresizingMask:18];
   [v3 setNumberOfLines:0];
-  v5 = [(WFCompactTextThumbnailViewController *)self string];
-  [v3 setText:v5];
+  string = [(WFCompactTextThumbnailViewController *)self string];
+  [v3 setText:string];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  [v3 setTextColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v3 setTextColor:labelColor];
 
-  v7 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+  universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
   v8 = MEMORY[0x277D76A28];
-  if (!v7)
+  if (!universalPreviewsEnabled)
   {
     v8 = MEMORY[0x277D76918];
   }
@@ -71,21 +71,21 @@
   [v3 setFont:v9];
 
   [v3 setAdjustsFontForContentSizeCategory:1];
-  v10 = [(WFCompactTextThumbnailViewController *)self view];
-  [v10 addSubview:v3];
+  view2 = [(WFCompactTextThumbnailViewController *)self view];
+  [view2 addSubview:v3];
 
   [(WFCompactTextThumbnailViewController *)self setLabel:v3];
 }
 
-- (WFCompactTextThumbnailViewController)initWithString:(id)a3
+- (WFCompactTextThumbnailViewController)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WFCompactTextThumbnailViewController;
   v5 = [(WFCompactTextThumbnailViewController *)&v10 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     string = v5->_string;
     v5->_string = v6;
 

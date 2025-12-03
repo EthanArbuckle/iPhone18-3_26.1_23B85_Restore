@@ -1,51 +1,51 @@
 @interface CPSFullScreenAlertViewController
 - (CPAlertTemplate)alert;
-- (CPSFullScreenAlertViewController)initWithAlert:(id)a3 alertDelegate:(id)a4 templateEnvironment:(id)a5;
+- (CPSFullScreenAlertViewController)initWithAlert:(id)alert alertDelegate:(id)delegate templateEnvironment:(id)environment;
 - (id)_titleFont;
 - (void)_viewDidLoad;
-- (void)didSelectButton:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)didSelectButton:(id)button;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CPSFullScreenAlertViewController
 
-- (CPSFullScreenAlertViewController)initWithAlert:(id)a3 alertDelegate:(id)a4 templateEnvironment:(id)a5
+- (CPSFullScreenAlertViewController)initWithAlert:(id)alert alertDelegate:(id)delegate templateEnvironment:(id)environment
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, delegate);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, environment);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = CPSFullScreenAlertViewController;
   v10 = [(CPSBaseTemplateViewController *)&v11 initWithTemplate:location[0] templateDelegate:v13 templateEnvironment:v12];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(&v15->_alertButtons, MEMORY[0x277CBEBF8]);
+    objc_storeStrong(&selfCopy->_alertButtons, MEMORY[0x277CBEBF8]);
   }
 
-  v7 = MEMORY[0x277D82BE0](v15);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (CPAlertTemplate)alert
 {
   v3 = objc_opt_class();
-  v4 = [(CPSBaseTemplateViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_21(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSBaseTemplateViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_21(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
@@ -53,154 +53,154 @@
 - (void)_viewDidLoad
 {
   v73[9] = *MEMORY[0x277D85DE8];
-  v72 = self;
+  selfCopy = self;
   v71 = a2;
   v70.receiver = self;
   v70.super_class = CPSFullScreenAlertViewController;
   [(CPSBaseTemplateViewController *)&v70 _viewDidLoad];
-  v69 = [(CPSFullScreenAlertViewController *)v72 view];
-  v8 = v69;
-  v9 = [MEMORY[0x277D75348] tableBackgroundColor];
+  view = [(CPSFullScreenAlertViewController *)selfCopy view];
+  v8 = view;
+  tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
   [v8 setBackgroundColor:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](tableBackgroundColor);
   v68[1] = 1;
   v2 = [CPSAbridgableLabel alloc];
   v68[0] = [(CPSAbridgableLabel *)v2 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [v68[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   v10 = v68[0];
-  v11 = [(CPSFullScreenAlertViewController *)v72 _titleFont];
+  _titleFont = [(CPSFullScreenAlertViewController *)selfCopy _titleFont];
   [v10 setFont:?];
-  *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](_titleFont).n128_u64[0];
   [v68[0] setTextAlignment:{1, v3}];
   v12 = v68[0];
-  v13 = [MEMORY[0x277D75348] labelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
   [v12 setTextColor:?];
-  *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](labelColor).n128_u64[0];
   [v68[0] setNumberOfLines:{4, v4}];
   v14 = v68[0];
-  v16 = [(CPSFullScreenAlertViewController *)v72 alert];
-  v15 = [(CPAlertTemplate *)v16 titleVariants];
+  alert = [(CPSFullScreenAlertViewController *)selfCopy alert];
+  titleVariants = [(CPAlertTemplate *)alert titleVariants];
   [v14 setTextVariants:?];
-  MEMORY[0x277D82BD8](v15);
-  *&v5 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  [v69 addSubview:{v68[0], v5}];
+  MEMORY[0x277D82BD8](titleVariants);
+  *&v5 = MEMORY[0x277D82BD8](alert).n128_u64[0];
+  [view addSubview:{v68[0], v5}];
   v67 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v67 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v67 setDistribution:1];
   [v67 setAxis:0];
   [v67 setSpacing:20.0];
-  [v69 addSubview:v67];
-  v18 = [(CPSFullScreenAlertViewController *)v72 alert];
-  v17 = [(CPAlertTemplate *)v18 actions];
+  [view addSubview:v67];
+  alert2 = [(CPSFullScreenAlertViewController *)selfCopy alert];
+  actions = [(CPAlertTemplate *)alert2 actions];
   v64[1] = MEMORY[0x277D85DD0];
   v64[2] = 3221225472;
   v64[3] = __48__CPSFullScreenAlertViewController__viewDidLoad__block_invoke;
   v64[4] = &unk_278D92050;
-  v65 = MEMORY[0x277D82BE0](v72);
+  v65 = MEMORY[0x277D82BE0](selfCopy);
   v66 = MEMORY[0x277D82BE0](v67);
-  [(NSArray *)v17 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  [(NSArray *)actions enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](actions);
+  MEMORY[0x277D82BD8](alert2);
   v64[0] = objc_alloc_init(MEMORY[0x277D756D0]);
-  v19 = [(CPSFullScreenAlertViewController *)v72 view];
-  [v19 addLayoutGuide:v64[0]];
-  *&v6 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  v62 = [v64[0] heightAnchor];
-  v61 = [(CPSFullScreenAlertViewController *)v72 view];
-  v60 = [v61 safeAreaLayoutGuide];
-  v59 = [v60 heightAnchor];
-  v58 = [v62 constraintEqualToAnchor:0.15 multiplier:?];
+  view2 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  [view2 addLayoutGuide:v64[0]];
+  *&v6 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+  heightAnchor = [v64[0] heightAnchor];
+  view3 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  heightAnchor2 = [safeAreaLayoutGuide heightAnchor];
+  v58 = [heightAnchor constraintEqualToAnchor:0.15 multiplier:?];
   v73[0] = v58;
-  v57 = [v64[0] topAnchor];
-  v56 = [(CPSFullScreenAlertViewController *)v72 view];
-  v55 = [v56 safeAreaLayoutGuide];
-  v54 = [v55 topAnchor];
-  v53 = [v57 constraintEqualToAnchor:?];
+  topAnchor = [v64[0] topAnchor];
+  view4 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:?];
   v73[1] = v53;
-  v52 = [v68[0] topAnchor];
-  v51 = [v64[0] bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:?];
+  topAnchor3 = [v68[0] topAnchor];
+  bottomAnchor = [v64[0] bottomAnchor];
+  v50 = [topAnchor3 constraintEqualToAnchor:?];
   v73[2] = v50;
-  v49 = [v68[0] leftAnchor];
-  v48 = [(CPSFullScreenAlertViewController *)v72 view];
-  v47 = [v48 safeAreaLayoutGuide];
-  v46 = [v47 leftAnchor];
-  v45 = [v49 constraintEqualToAnchor:12.0 constant:?];
+  leftAnchor = [v68[0] leftAnchor];
+  view5 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide3 leftAnchor];
+  v45 = [leftAnchor constraintEqualToAnchor:12.0 constant:?];
   v73[3] = v45;
-  v44 = [v68[0] rightAnchor];
-  v43 = [(CPSFullScreenAlertViewController *)v72 view];
-  v42 = [v43 safeAreaLayoutGuide];
-  v41 = [v42 rightAnchor];
-  v40 = [v44 constraintEqualToAnchor:-12.0 constant:?];
+  rightAnchor = [v68[0] rightAnchor];
+  view6 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide4 rightAnchor];
+  v40 = [rightAnchor constraintEqualToAnchor:-12.0 constant:?];
   v73[4] = v40;
-  v39 = [v67 bottomAnchor];
-  v38 = [(CPSFullScreenAlertViewController *)v72 view];
-  v37 = [v38 safeAreaLayoutGuide];
-  v36 = [v37 bottomAnchor];
-  v35 = [v39 constraintEqualToAnchor:-24.0 constant:?];
+  bottomAnchor2 = [v67 bottomAnchor];
+  view7 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide5 = [view7 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide5 bottomAnchor];
+  v35 = [bottomAnchor2 constraintEqualToAnchor:-24.0 constant:?];
   v73[5] = v35;
-  v34 = [v67 centerXAnchor];
-  v33 = [(CPSFullScreenAlertViewController *)v72 view];
-  v32 = [v33 safeAreaLayoutGuide];
-  v31 = [v32 centerXAnchor];
-  v30 = [v34 constraintEqualToAnchor:?];
+  centerXAnchor = [v67 centerXAnchor];
+  view8 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide6 = [view8 safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide6 centerXAnchor];
+  v30 = [centerXAnchor constraintEqualToAnchor:?];
   v73[6] = v30;
-  v29 = [v67 leftAnchor];
-  v28 = [(CPSFullScreenAlertViewController *)v72 view];
-  v27 = [v28 safeAreaLayoutGuide];
-  v26 = [v27 leftAnchor];
-  v25 = [v29 constraintGreaterThanOrEqualToAnchor:12.0 constant:?];
+  leftAnchor3 = [v67 leftAnchor];
+  view9 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide7 = [view9 safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide7 leftAnchor];
+  v25 = [leftAnchor3 constraintGreaterThanOrEqualToAnchor:12.0 constant:?];
   v73[7] = v25;
-  v24 = [v67 rightAnchor];
-  v23 = [(CPSFullScreenAlertViewController *)v72 view];
-  v22 = [v23 safeAreaLayoutGuide];
-  v21 = [v22 rightAnchor];
-  v20 = [v24 constraintLessThanOrEqualToAnchor:-12.0 constant:?];
+  rightAnchor3 = [v67 rightAnchor];
+  view10 = [(CPSFullScreenAlertViewController *)selfCopy view];
+  safeAreaLayoutGuide8 = [view10 safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide8 rightAnchor];
+  v20 = [rightAnchor3 constraintLessThanOrEqualToAnchor:-12.0 constant:?];
   v73[8] = v20;
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:9];
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
+  MEMORY[0x277D82BD8](rightAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide8);
+  MEMORY[0x277D82BD8](view10);
+  MEMORY[0x277D82BD8](rightAnchor3);
   MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
-  MEMORY[0x277D82BD8](v29);
+  MEMORY[0x277D82BD8](leftAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide7);
+  MEMORY[0x277D82BD8](view9);
+  MEMORY[0x277D82BD8](leftAnchor3);
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
+  MEMORY[0x277D82BD8](centerXAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+  MEMORY[0x277D82BD8](view8);
+  MEMORY[0x277D82BD8](centerXAnchor);
   MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+  MEMORY[0x277D82BD8](view7);
+  MEMORY[0x277D82BD8](bottomAnchor2);
   MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](view6);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
-  MEMORY[0x277D82BD8](v48);
-  MEMORY[0x277D82BD8](v49);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](leftAnchor);
   MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  MEMORY[0x277D82BD8](v52);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](topAnchor3);
   MEMORY[0x277D82BD8](v53);
-  MEMORY[0x277D82BD8](v54);
-  MEMORY[0x277D82BD8](v55);
-  MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v58);
-  MEMORY[0x277D82BD8](v59);
-  MEMORY[0x277D82BD8](v60);
-  MEMORY[0x277D82BD8](v61);
-  *&v7 = MEMORY[0x277D82BD8](v62).n128_u64[0];
+  MEMORY[0x277D82BD8](heightAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view3);
+  *&v7 = MEMORY[0x277D82BD8](heightAnchor).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v63, v7}];
   objc_storeStrong(&v63, 0);
   objc_storeStrong(v64, 0);
@@ -208,7 +208,7 @@
   objc_storeStrong(&v65, 0);
   objc_storeStrong(&v67, 0);
   objc_storeStrong(v68, 0);
-  objc_storeStrong(&v69, 0);
+  objc_storeStrong(&view, 0);
 }
 
 void __48__CPSFullScreenAlertViewController__viewDidLoad__block_invoke(id *a1, void *a2, void *a3, void *a4)
@@ -249,30 +249,30 @@ void __48__CPSFullScreenAlertViewController__viewDidLoad__block_invoke(id *a1, v
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = CPSFullScreenAlertViewController;
-  [(CPSBaseTemplateViewController *)&v4 viewWillAppear:a3];
-  v3 = [(CPSFullScreenAlertViewController *)v7 navigationController];
-  [v3 setNavigationBarHidden:1];
-  MEMORY[0x277D82BD8](v3);
+  [(CPSBaseTemplateViewController *)&v4 viewWillAppear:appear];
+  navigationController = [(CPSFullScreenAlertViewController *)selfCopy navigationController];
+  [navigationController setNavigationBarHidden:1];
+  MEMORY[0x277D82BD8](navigationController);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = CPSFullScreenAlertViewController;
-  [(CPSBaseTemplateViewController *)&v4 viewWillDisappear:a3];
-  v3 = [(CPSFullScreenAlertViewController *)v7 navigationController];
-  [v3 setNavigationBarHidden:0];
-  MEMORY[0x277D82BD8](v3);
+  [(CPSBaseTemplateViewController *)&v4 viewWillDisappear:disappear];
+  navigationController = [(CPSFullScreenAlertViewController *)selfCopy navigationController];
+  [navigationController setNavigationBarHidden:0];
+  MEMORY[0x277D82BD8](navigationController);
 }
 
 - (id)_titleFont
@@ -282,9 +282,9 @@ void __48__CPSFullScreenAlertViewController__viewDidLoad__block_invoke(id *a1, v
   v14[1] = a2;
   v7 = MEMORY[0x277D74310];
   v6 = *MEMORY[0x277D76A20];
-  v8 = [(CPSFullScreenAlertViewController *)self traitCollection];
+  traitCollection = [(CPSFullScreenAlertViewController *)self traitCollection];
   v14[0] = [v7 preferredFontDescriptorWithTextStyle:v6 compatibleWithTraitCollection:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](traitCollection);
   v17 = *MEMORY[0x277D74430];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
   v18[0] = v9;
@@ -306,26 +306,26 @@ void __48__CPSFullScreenAlertViewController__viewDidLoad__block_invoke(id *a1, v
   return v12;
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v3 = objc_opt_class();
   v9 = CPSSafeCast_21(v3, location[0]);
-  v8 = [v9 identifier];
-  v6 = [(CPSBaseTemplateViewController *)v11 templateDelegate];
-  v7 = [(CPTemplateDelegate *)v6 conformsToProtocol:&unk_28562C040];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  identifier = [v9 identifier];
+  templateDelegate = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+  v7 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v4 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v7)
   {
-    v5 = [(CPSBaseTemplateViewController *)v11 templateDelegate];
-    [(CPTemplateDelegate *)v5 handleAlertActionForIdentifier:v8];
-    MEMORY[0x277D82BD8](v5);
+    templateDelegate2 = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+    [(CPTemplateDelegate *)templateDelegate2 handleAlertActionForIdentifier:identifier];
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }

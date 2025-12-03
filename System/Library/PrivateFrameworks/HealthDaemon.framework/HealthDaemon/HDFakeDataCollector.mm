@@ -1,32 +1,32 @@
 @interface HDFakeDataCollector
 + (id)collectedTypes;
-- (HDFakeDataCollector)initWithProfile:(id)a3;
-- (id)identifierForDataAggregator:(id)a3;
+- (HDFakeDataCollector)initWithProfile:(id)profile;
+- (id)identifierForDataAggregator:(id)aggregator;
 - (int64_t)datumCount;
-- (void)_lock_addGenerator:(uint64_t)a1;
+- (void)_lock_addGenerator:(uint64_t)generator;
 - (void)_lock_endFaking;
-- (void)_lock_generateThrough:(uint64_t)a1;
-- (void)_lock_setupFakeGeneratorForQuantityType:(void *)a3 interval:(void *)a4 time:(double)a5 metadata:(double)a6 quantity:;
-- (void)_lock_setupGeneratorsForStartTime:(uint64_t)a1;
+- (void)_lock_generateThrough:(uint64_t)through;
+- (void)_lock_setupFakeGeneratorForQuantityType:(void *)type interval:(void *)interval time:(double)time metadata:(double)metadata quantity:;
+- (void)_lock_setupGeneratorsForStartTime:(uint64_t)time;
 - (void)dealloc;
-- (void)generateForConfiguration:(id)a3 from:(id)a4 to:(id)a5;
+- (void)generateForConfiguration:(id)configuration from:(id)from to:(id)to;
 - (void)registerWithAggregators;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 - (void)unregisterFromAggregators;
 @end
 
 @implementation HDFakeDataCollector
 
-- (HDFakeDataCollector)initWithProfile:(id)a3
+- (HDFakeDataCollector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDFakeDataCollector;
   v5 = [(HDFakeDataCollector *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc_init(MEMORY[0x277CCD2A0]);
     state = v6->_state;
@@ -52,30 +52,30 @@
 
 - (void)_lock_endFaking
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    v2 = *(a1 + 48);
+    os_unfair_lock_assert_owner((self + 16));
+    v2 = *(self + 48);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v3 = *(self + 48);
+      *(self + 48) = 0;
     }
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v11 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock);
   configuration = self->_configuration;
-  v6 = v11;
-  if (configuration != v11)
+  v6 = configurationCopy;
+  if (configuration != configurationCopy)
   {
-    if (!v11 || ![(HDFakeDataCollectorConfiguration *)configuration isEqual:v11])
+    if (!configurationCopy || ![(HDFakeDataCollectorConfiguration *)configuration isEqual:configurationCopy])
     {
-      objc_storeStrong(&self->_configuration, a3);
+      objc_storeStrong(&self->_configuration, configuration);
       Current = CFAbsoluteTimeGetCurrent();
       [(HDFakeDataCollector *)self _lock_setupGeneratorsForStartTime:?];
     }
@@ -115,40 +115,40 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setupGeneratorsForStartTime:(uint64_t)a1
+- (void)_lock_setupGeneratorsForStartTime:(uint64_t)time
 {
   v184 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!time)
   {
     goto LABEL_30;
   }
 
-  os_unfair_lock_assert_owner((a1 + 16));
+  os_unfair_lock_assert_owner((time + 16));
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = *(a1 + 56);
-  *(a1 + 56) = v4;
+  v5 = *(time + 56);
+  *(time + 56) = v4;
 
-  v6 = [*(a1 + 72) activityType];
+  activityType = [*(time + 72) activityType];
   v7 = [_HDFakeDataGenerator alloc];
   v8 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
   v127[0] = MEMORY[0x277D85DD0];
   v127[1] = 3221225472;
   v127[2] = __57__HDFakeDataCollector__lock_setupGeneratorsForStartTime___block_invoke;
   v127[3] = &__block_descriptor_40_e56____HDCollectedSensorDatum__32__0__HKQuantityType_8d16d24l;
-  v127[4] = v6;
+  v127[4] = activityType;
   v9 = [(_HDFakeDataGenerator *)v7 initWithType:v8 interval:v127 startTime:5.0 generator:a2];
-  [(HDFakeDataCollector *)a1 _lock_addGenerator:v9];
+  [(HDFakeDataCollector *)time _lock_addGenerator:v9];
 
-  os_unfair_lock_assert_owner((a1 + 16));
+  os_unfair_lock_assert_owner((time + 16));
   v10 = [_HDFakeDataGenerator alloc];
   v11 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC918]];
   aBlock = MEMORY[0x277D85DD0];
   v129 = 3221225472;
   v130 = __68__HDFakeDataCollector__lock_setupCalorieGeneratorsForActivity_time___block_invoke;
   v131 = &__block_descriptor_40_e56____HDCollectedSensorDatum__32__0__HKQuantityType_8d16d24l;
-  v132 = v6;
+  v132 = activityType;
   v12 = [(_HDFakeDataGenerator *)v10 initWithType:v11 interval:&aBlock startTime:2.56 generator:a2];
-  [(HDFakeDataCollector *)a1 _lock_addGenerator:v12];
+  [(HDFakeDataCollector *)time _lock_addGenerator:v12];
 
   v13 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC960]];
   v157 = @"HKFakedData";
@@ -160,18 +160,18 @@
   v181 = &unk_2786216E8;
   v182 = v13;
   v15 = v13;
-  [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v15 interval:v14 time:&v178 metadata:2.56 quantity:a2];
+  [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v15 interval:v14 time:&v178 metadata:2.56 quantity:a2];
 
-  if (v6 > 7)
+  if (activityType > 7)
   {
-    if (v6 <= 9)
+    if (activityType <= 9)
     {
-      v93 = [*(a1 + 72) speed];
+      speed = [*(time + 72) speed];
       v94 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-      [v93 doubleValueForUnit:v94];
+      [speed doubleValueForUnit:v94];
       v96 = v95;
 
-      if (v6 == 8)
+      if (activityType == 8)
       {
         v100 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB20]];
         v157 = @"HKFakedData";
@@ -184,7 +184,7 @@
         v132 = v100;
         v133 = v96;
         v102 = v100;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v102 interval:v101 time:&aBlock metadata:3.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v102 interval:v101 time:&aBlock metadata:3.0 quantity:a2];
 
         v103 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCBF0]];
 
@@ -198,7 +198,7 @@
         v182 = v103;
         v183 = *&v96;
         v105 = v103;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v105 interval:v104 time:&v178 metadata:3.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v105 interval:v104 time:&v178 metadata:3.0 quantity:a2];
       }
 
       else
@@ -214,18 +214,18 @@
         v132 = v97;
         v133 = v96;
         v99 = v97;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v99 interval:v98 time:&aBlock metadata:3.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v99 interval:v98 time:&aBlock metadata:3.0 quantity:a2];
       }
     }
 
     else
     {
-      switch(v6)
+      switch(activityType)
       {
         case 10:
-          v106 = [*(a1 + 72) speed];
+          speed2 = [*(time + 72) speed];
           v107 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-          [v106 doubleValueForUnit:v107];
+          [speed2 doubleValueForUnit:v107];
           v109 = v108;
 
           v110 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB28]];
@@ -239,7 +239,7 @@
           v132 = v110;
           v133 = v109;
           v112 = v110;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v112 interval:v111 time:&aBlock metadata:3.0 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v112 interval:v111 time:&aBlock metadata:3.0 quantity:a2];
 
           v113 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC28]];
 
@@ -253,13 +253,13 @@
           v182 = v113;
           v183 = *&v109;
           v115 = v113;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v115 interval:v114 time:&v178 metadata:3.0 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v115 interval:v114 time:&v178 metadata:3.0 quantity:a2];
 
           break;
         case 11:
-          v116 = [*(a1 + 72) speed];
+          speed3 = [*(time + 72) speed];
           v117 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-          [v116 doubleValueForUnit:v117];
+          [speed3 doubleValueForUnit:v117];
           v119 = v118;
 
           v120 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB08]];
@@ -273,7 +273,7 @@
           v132 = v120;
           v133 = v119;
           v122 = v120;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v122 interval:v121 time:&aBlock metadata:3.0 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v122 interval:v121 time:&aBlock metadata:3.0 quantity:a2];
 
           v123 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9A8]];
 
@@ -287,7 +287,7 @@
           v182 = v123;
           v183 = *&v119;
           v125 = v123;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v125 interval:v124 time:&v178 metadata:3.0 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v125 interval:v124 time:&v178 metadata:3.0 quantity:a2];
 
           break;
         case 12:
@@ -301,7 +301,7 @@
           v131 = &unk_2786216E8;
           v132 = v35;
           v37 = v35;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v37 interval:v36 time:&aBlock metadata:5.0 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v37 interval:v36 time:&aBlock metadata:5.0 quantity:a2];
 
           break;
       }
@@ -310,15 +310,15 @@
 
   else
   {
-    if (v6 <= 3)
+    if (activityType <= 3)
     {
-      if ((v6 - 1) >= 2)
+      if ((activityType - 1) >= 2)
       {
-        if (v6 == 3)
+        if (activityType == 3)
         {
-          v16 = [*(a1 + 72) speed];
+          speed4 = [*(time + 72) speed];
           v17 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-          [v16 doubleValueForUnit:v17];
+          [speed4 doubleValueForUnit:v17];
           v19 = v18;
 
           v20 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB10]];
@@ -332,7 +332,7 @@
           v132 = v20;
           v133 = v19;
           v22 = v20;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v22 interval:v21 time:&aBlock metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v22 interval:v21 time:&aBlock metadata:2.56 quantity:a2];
 
           v23 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9C8]];
 
@@ -346,14 +346,14 @@
           v25 = v23;
           v182 = v25;
           v183 = *&v19;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v25 interval:v24 time:&v178 metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v25 interval:v24 time:&v178 metadata:2.56 quantity:a2];
 
-          WeakRetained = objc_loadWeakRetained((a1 + 8));
-          v27 = [WeakRetained daemon];
-          v28 = [v27 behavior];
-          v29 = [v28 isAppleWatch];
+          WeakRetained = objc_loadWeakRetained((time + 8));
+          daemon = [WeakRetained daemon];
+          behavior = [daemon behavior];
+          isAppleWatch = [behavior isAppleWatch];
 
-          if (v29)
+          if (isAppleWatch)
           {
             v30 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9C0]];
 
@@ -367,7 +367,7 @@
             v169 = v30;
             v170 = 200.0;
             v32 = v30;
-            [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v32 interval:v31 time:&v165 metadata:2.56 quantity:a2];
+            [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v32 interval:v31 time:&v165 metadata:2.56 quantity:a2];
 
             v33 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9B0]];
 
@@ -381,7 +381,7 @@
             v25 = v33;
             v161 = v25;
             v162 = 0x4054000000000000;
-            [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v25 interval:v34 time:&v157 metadata:2.56 quantity:a2];
+            [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v25 interval:v34 time:&v157 metadata:2.56 quantity:a2];
           }
         }
 
@@ -391,24 +391,24 @@
       goto LABEL_18;
     }
 
-    if (v6 == 4)
+    if (activityType == 4)
     {
 LABEL_18:
-      os_unfair_lock_assert_owner((a1 + 16));
-      v52 = [*(a1 + 72) speed];
+      os_unfair_lock_assert_owner((time + 16));
+      speed5 = [*(time + 72) speed];
       v53 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-      [v52 doubleValueForUnit:v53];
+      [speed5 doubleValueForUnit:v53];
       v55 = v54;
 
       v56 = 1.0;
-      if ((v6 - 1) <= 3)
+      if ((activityType - 1) <= 3)
       {
-        v56 = dbl_22916D008[v6 - 1];
+        v56 = dbl_22916D008[activityType - 1];
       }
 
-      v57 = [*(a1 + 72) speed];
+      speed6 = [*(time + 72) speed];
       v58 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-      [v57 doubleValueForUnit:v58];
+      [speed6 doubleValueForUnit:v58];
       v60 = v59;
 
       v177[0] = 0;
@@ -451,7 +451,7 @@ LABEL_18:
       v182 = v69;
       v183 = v68;
       v70 = [(_HDFakeDataGenerator *)v66 initWithType:v67 interval:&v178 startTime:2.56 generator:a2];
-      [(HDFakeDataCollector *)a1 _lock_addGenerator:v70];
+      [(HDFakeDataCollector *)time _lock_addGenerator:v70];
 
       v71 = [_HDFakeDataGenerator alloc];
       v72 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC70]];
@@ -463,9 +463,9 @@ LABEL_18:
       v169 = v73;
       v170 = v68 / v56;
       v74 = [(_HDFakeDataGenerator *)v71 initWithType:v72 interval:&v165 startTime:2.56 generator:a2];
-      [(HDFakeDataCollector *)a1 _lock_addGenerator:v74];
+      [(HDFakeDataCollector *)time _lock_addGenerator:v74];
 
-      if (v6 == 2)
+      if (activityType == 2)
       {
         v75 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC40]];
         v163 = @"HKFakedData";
@@ -478,14 +478,14 @@ LABEL_18:
         v77 = v75;
         v161 = v77;
         v162 = v60;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v77 interval:v76 time:&v157 metadata:2.56 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v77 interval:v76 time:&v157 metadata:2.56 quantity:a2];
 
-        v78 = objc_loadWeakRetained((a1 + 8));
-        v79 = [v78 daemon];
-        v80 = [v79 behavior];
-        v81 = [v80 isAppleWatch];
+        v78 = objc_loadWeakRetained((time + 8));
+        daemon2 = [v78 daemon];
+        behavior2 = [daemon2 behavior];
+        isAppleWatch2 = [behavior2 isAppleWatch];
 
-        if (v81)
+        if (isAppleWatch2)
         {
           v82 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC38]];
 
@@ -499,7 +499,7 @@ LABEL_18:
           v84 = v82;
           v153 = v84;
           v154 = 0x4069000000000000;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v84 interval:v83 time:&v149 metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v84 interval:v83 time:&v149 metadata:2.56 quantity:a2];
 
           v85 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC48]];
 
@@ -513,7 +513,7 @@ LABEL_18:
           v87 = v85;
           v145 = v87;
           v146 = 0x4052800000000000;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v87 interval:v86 time:v144 metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v87 interval:v86 time:v144 metadata:2.56 quantity:a2];
 
           v88 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC30]];
 
@@ -527,7 +527,7 @@ LABEL_18:
           v90 = v88;
           v140 = v90;
           v141 = 0x4069000000000000;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v90 interval:v89 time:v139 metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v90 interval:v89 time:v139 metadata:2.56 quantity:a2];
 
           v91 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC50]];
 
@@ -541,7 +541,7 @@ LABEL_18:
           v77 = v91;
           v135 = v77;
           v136 = 0x4026000000000000;
-          [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v77 interval:v92 time:v134 metadata:2.56 quantity:a2];
+          [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v77 interval:v92 time:v134 metadata:2.56 quantity:a2];
         }
       }
 
@@ -550,14 +550,14 @@ LABEL_18:
       goto LABEL_30;
     }
 
-    if (v6 == 6)
+    if (activityType == 6)
     {
-      v38 = objc_loadWeakRetained((a1 + 8));
-      v39 = [v38 daemon];
-      v40 = [v39 behavior];
-      v41 = [v40 isAppleWatch];
+      v38 = objc_loadWeakRetained((time + 8));
+      daemon3 = [v38 daemon];
+      behavior3 = [daemon3 behavior];
+      isAppleWatch3 = [behavior3 isAppleWatch];
 
-      if (v41)
+      if (isAppleWatch3)
       {
         v42 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB38]];
         v139[0] = @"HKFakedData";
@@ -569,7 +569,7 @@ LABEL_18:
         v131 = &unk_2786216E8;
         v132 = v42;
         v44 = v42;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v44 interval:v43 time:&aBlock metadata:5.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v44 interval:v43 time:&aBlock metadata:5.0 quantity:a2];
 
         v45 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC78]];
 
@@ -585,7 +585,7 @@ LABEL_18:
         v181 = &unk_2786216E8;
         v182 = v45;
         v48 = v45;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v48 interval:v47 time:&v178 metadata:5.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v48 interval:v47 time:&v178 metadata:5.0 quantity:a2];
 
         v49 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCCD0]];
 
@@ -598,7 +598,7 @@ LABEL_18:
         v168 = &unk_2786216E8;
         v169 = v49;
         v51 = v49;
-        [(HDFakeDataCollector *)a1 _lock_setupFakeGeneratorForQuantityType:v51 interval:v50 time:&v165 metadata:60.0 quantity:a2];
+        [(HDFakeDataCollector *)time _lock_setupFakeGeneratorForQuantityType:v51 interval:v50 time:&v165 metadata:60.0 quantity:a2];
       }
     }
   }
@@ -628,22 +628,22 @@ void __40__HDFakeDataCollector__lock_beginFaking__block_invoke(uint64_t a1)
   }
 }
 
-- (void)generateForConfiguration:(id)a3 from:(id)a4 to:(id)a5
+- (void)generateForConfiguration:(id)configuration from:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  configurationCopy = configuration;
+  toCopy = to;
+  fromCopy = from;
   os_unfair_lock_lock(&self->_lock);
   [(HDFakeDataCollector *)self _lock_endFaking];
   configuration = self->_configuration;
-  self->_configuration = v8;
-  v12 = v8;
+  self->_configuration = configurationCopy;
+  v12 = configurationCopy;
 
-  [v10 timeIntervalSinceReferenceDate];
+  [fromCopy timeIntervalSinceReferenceDate];
   v14 = v13;
 
   [(HDFakeDataCollector *)self _lock_setupGeneratorsForStartTime:v14];
-  [v9 timeIntervalSinceReferenceDate];
+  [toCopy timeIntervalSinceReferenceDate];
   v16 = v15;
 
   [(HDFakeDataCollector *)self _lock_generateThrough:v16];
@@ -653,19 +653,19 @@ void __40__HDFakeDataCollector__lock_beginFaking__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_generateThrough:(uint64_t)a1
+- (void)_lock_generateThrough:(uint64_t)through
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (through)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
+    os_unfair_lock_assert_owner((through + 16));
     while (1)
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v4 = *(a1 + 56);
+      v4 = *(through + 56);
       v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (!v5)
       {
@@ -685,7 +685,7 @@ void __40__HDFakeDataCollector__lock_beginFaking__block_invoke(uint64_t a1)
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          v11 = [*(a1 + 56) objectForKeyedSubscript:v10];
+          v11 = [*(through + 56) objectForKeyedSubscript:v10];
           v12 = v11;
           if (v11 && *(v11 + 32) <= a2)
           {
@@ -698,14 +698,14 @@ void __40__HDFakeDataCollector__lock_beginFaking__block_invoke(uint64_t a1)
 
             if (v13)
             {
-              v17 = [*(a1 + 24) aggregatorForType:v10];
+              v17 = [*(through + 24) aggregatorForType:v10];
               v25 = v13;
               v7 = 1;
               v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-              v19 = [MEMORY[0x277CCD2E8] localDevice];
-              [v17 dataCollector:a1 didCollectSensorData:v18 device:v19 options:0];
+              localDevice = [MEMORY[0x277CCD2E8] localDevice];
+              [v17 dataCollector:through didCollectSensorData:v18 device:localDevice options:0];
 
-              ++*(a1 + 64);
+              ++*(through + 64);
             }
           }
 
@@ -732,10 +732,10 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_addGenerator:(uint64_t)a1
+- (void)_lock_addGenerator:(uint64_t)generator
 {
   v4 = a2;
-  os_unfair_lock_assert_owner((a1 + 16));
+  os_unfair_lock_assert_owner((generator + 16));
   if (v4)
   {
     v3 = v4[2];
@@ -746,7 +746,7 @@ LABEL_18:
     v3 = 0;
   }
 
-  [*(a1 + 56) setObject:v4 forKeyedSubscript:v3];
+  [*(generator + 56) setObject:v4 forKeyedSubscript:v3];
 }
 
 HDQuantityDatum *__57__HDFakeDataCollector__lock_setupGeneratorsForStartTime___block_invoke(uint64_t a1, void *a2, double a3, double a4)
@@ -828,23 +828,23 @@ id __68__HDFakeDataCollector__lock_setupCalorieGeneratorsForActivity_time___bloc
   return v3;
 }
 
-- (void)_lock_setupFakeGeneratorForQuantityType:(void *)a3 interval:(void *)a4 time:(double)a5 metadata:(double)a6 quantity:
+- (void)_lock_setupFakeGeneratorForQuantityType:(void *)type interval:(void *)interval time:(double)time metadata:(double)metadata quantity:
 {
-  v11 = a3;
-  v12 = a4;
+  typeCopy = type;
+  intervalCopy = interval;
   v13 = a2;
   v14 = [_HDFakeDataGenerator alloc];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __95__HDFakeDataCollector__lock_setupFakeGeneratorForQuantityType_interval_time_metadata_quantity___block_invoke;
   v18[3] = &unk_2786217D8;
-  v15 = v12;
+  v15 = intervalCopy;
   v20 = v15;
-  v16 = v11;
+  v16 = typeCopy;
   v19 = v16;
-  v17 = [(_HDFakeDataGenerator *)v14 initWithType:v13 interval:v18 startTime:a5 generator:a6];
+  v17 = [(_HDFakeDataGenerator *)v14 initWithType:v13 interval:v18 startTime:time generator:metadata];
 
-  [(HDFakeDataCollector *)a1 _lock_addGenerator:v17];
+  [(HDFakeDataCollector *)self _lock_addGenerator:v17];
 }
 
 uint64_t __70__HDFakeDataCollector__lock_setupPedometerGeneratorsForActivity_time___block_invoke(uint64_t a1, double a2)
@@ -1157,7 +1157,7 @@ HDQuantityDatum *__95__HDFakeDataCollector__lock_setupFakeGeneratorForQuantityTy
   return v10;
 }
 
-- (id)identifierForDataAggregator:(id)a3
+- (id)identifierForDataAggregator:(id)aggregator
 {
   v3 = objc_opt_class();
 

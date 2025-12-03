@@ -1,15 +1,15 @@
 @interface PHOrientationMonitor_OBJC
 - (BOOL)orientationEventsEnabled;
 - (_TtC8FaceTime25PHOrientationMonitor_OBJC)init;
-- (int64_t)makeInterfaceOrientationFrom:(int64_t)a3 whenFailing:(int64_t)a4;
-- (void)setOrientationEventsEnabled:(BOOL)a3;
+- (int64_t)makeInterfaceOrientationFrom:(int64_t)from whenFailing:(int64_t)failing;
+- (void)setOrientationEventsEnabled:(BOOL)enabled;
 @end
 
 @implementation PHOrientationMonitor_OBJC
 
-- (void)setOrientationEventsEnabled:(BOOL)a3
+- (void)setOrientationEventsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -18,7 +18,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime25PHOrientationMonitor_OBJC_wrapped) setOrientationEventsEnabled:v3];
+  [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime25PHOrientationMonitor_OBJC_wrapped) setOrientationEventsEnabled:enabledCopy];
 }
 
 - (BOOL)orientationEventsEnabled
@@ -31,12 +31,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime25PHOrientationMonitor_OBJC_wrapped) orientationEventsEnabled];
+  orientationEventsEnabled = [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime25PHOrientationMonitor_OBJC_wrapped) orientationEventsEnabled];
 
-  return v3;
+  return orientationEventsEnabled;
 }
 
-- (int64_t)makeInterfaceOrientationFrom:(int64_t)a3 whenFailing:(int64_t)a4
+- (int64_t)makeInterfaceOrientationFrom:(int64_t)from whenFailing:(int64_t)failing
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -46,12 +46,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (sub_100084F1C(a3) && a3 <= 4 && (a3 - 1) < 4)
+  if (sub_100084F1C(from) && from <= 4 && (from - 1) < 4)
   {
-    return a3;
+    return from;
   }
 
-  return a4;
+  return failing;
 }
 
 - (_TtC8FaceTime25PHOrientationMonitor_OBJC)init

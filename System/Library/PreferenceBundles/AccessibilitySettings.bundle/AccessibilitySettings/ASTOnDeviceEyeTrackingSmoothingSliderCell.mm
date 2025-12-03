@@ -1,45 +1,45 @@
 @interface ASTOnDeviceEyeTrackingSmoothingSliderCell
-- (ASTOnDeviceEyeTrackingSmoothingSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ASTOnDeviceEyeTrackingSmoothingSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (double)initialValue;
-- (void)_updateRightLabelWithValue:(double)a3;
-- (void)handleSliderBeingDragged:(id)a3;
-- (void)handleSliderDidFinishDrag:(id)a3;
+- (void)_updateRightLabelWithValue:(double)value;
+- (void)handleSliderBeingDragged:(id)dragged;
+- (void)handleSliderDidFinishDrag:(id)drag;
 @end
 
 @implementation ASTOnDeviceEyeTrackingSmoothingSliderCell
 
-- (ASTOnDeviceEyeTrackingSmoothingSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASTOnDeviceEyeTrackingSmoothingSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v25.receiver = self;
   v25.super_class = ASTOnDeviceEyeTrackingSmoothingSliderCell;
-  v9 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)&v25 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)&v25 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 propertyForKey:@"ASTOnDeviceEyeTrackerKey"];
+    v10 = [specifierCopy propertyForKey:@"ASTOnDeviceEyeTrackerKey"];
 
     if (v10)
     {
-      v11 = [v8 propertyForKey:@"ASTOnDeviceEyeTrackerKey"];
+      v11 = [specifierCopy propertyForKey:@"ASTOnDeviceEyeTrackerKey"];
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 setEyeTracker:v11];
 
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 minimumValue];
       v13 = v12;
-      v14 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
+      slider = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
       *&v15 = v13;
-      [v14 setMinimumValue:v15];
+      [slider setMinimumValue:v15];
 
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 maximumValue];
       v17 = v16;
-      v18 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
+      slider2 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
       *&v19 = v17;
-      [v18 setMaximumValue:v19];
+      [slider2 setMaximumValue:v19];
 
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 initialValue];
       v21 = v20;
-      v22 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
+      slider3 = [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 slider];
       *&v23 = v21;
-      [v22 setValue:v23];
+      [slider3 setValue:v23];
 
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 initialValue];
       [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)v9 _updateRightLabelWithValue:?];
@@ -49,17 +49,17 @@
   return v9;
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
-  [v4 value];
-  [v4 setValue:0 animated:?];
-  [v4 value];
+  draggedCopy = dragged;
+  [draggedCopy value];
+  [draggedCopy setValue:0 animated:?];
+  [draggedCopy value];
   v6 = vcvtas_u32_f32(v5);
   v7 = +[AXSettings sharedInstance];
   [v7 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:v6];
 
-  [v4 value];
+  [draggedCopy value];
   v9 = v8;
 
   v10 = roundf(v9);
@@ -67,15 +67,15 @@
   [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)self _updateRightLabelWithValue:v10];
 }
 
-- (void)_updateRightLabelWithValue:(double)a3
+- (void)_updateRightLabelWithValue:(double)value
 {
   v4 = AXFormatFloatWithPercentage();
   [(ASTOnDeviceEyeTrackingSmoothingSliderCell *)self setLabelText:v4];
 }
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  [a3 value];
+  [drag value];
   v4 = vcvtas_u32_f32(v3);
   v5 = +[AXSettings sharedInstance];
   [v5 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:v4];
@@ -84,11 +84,11 @@
 - (double)initialValue
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize];
+  assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize = [v2 assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize];
 
-  if (v3 >= kAXSAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSizeMinUserPreference)
+  if (assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize >= kAXSAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSizeMinUserPreference)
   {
-    return *&v3;
+    return *&assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize;
   }
 
   else

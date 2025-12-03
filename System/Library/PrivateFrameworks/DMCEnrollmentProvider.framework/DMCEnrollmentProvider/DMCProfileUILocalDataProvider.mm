@@ -1,87 +1,87 @@
 @interface DMCProfileUILocalDataProvider
-+ (id)_declarationsPayloadIdentifiersForProfileIdentifier:(id)a3;
-+ (id)localRMUIConfigurationInterfaceForProfileIdentifier:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5;
++ (id)_declarationsPayloadIdentifiersForProfileIdentifier:(id)identifier;
++ (id)localRMUIConfigurationInterfaceForProfileIdentifier:(id)identifier scope:(int64_t)scope initialLoad:(BOOL)load;
 - (BOOL)isPasscodeSet;
 - (BOOL)isProvisionallyEnrolled;
 - (id)installedMDMProfileIdentifier;
-- (id)installedProfileWithIdentifier:(id)a3;
+- (id)installedProfileWithIdentifier:(id)identifier;
 - (id)rmAccount;
-- (id)rmSpecifierProviderForProfileIdentifier:(id)a3 scope:(int64_t)a4;
-- (void)unenrollWithCompletionBlock:(id)a3;
-- (void)updateProfileWithIdentifier:(id)a3 interactionDelegate:(id)a4;
+- (id)rmSpecifierProviderForProfileIdentifier:(id)identifier scope:(int64_t)scope;
+- (void)unenrollWithCompletionBlock:(id)block;
+- (void)updateProfileWithIdentifier:(id)identifier interactionDelegate:(id)delegate;
 @end
 
 @implementation DMCProfileUILocalDataProvider
 
 - (BOOL)isProvisionallyEnrolled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isProvisionallyEnrolled];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isProvisionallyEnrolled = [mEMORY[0x277D262A0] isProvisionallyEnrolled];
 
-  return v3;
+  return isProvisionallyEnrolled;
 }
 
 - (BOOL)isPasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (id)installedMDMProfileIdentifier
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedMDMProfileIdentifier];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  installedMDMProfileIdentifier = [mEMORY[0x277D262A0] installedMDMProfileIdentifier];
 
-  return v3;
+  return installedMDMProfileIdentifier;
 }
 
-- (id)installedProfileWithIdentifier:(id)a3
+- (id)installedProfileWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  v6 = [v5 installedProfileWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedConnection = [v3 sharedConnection];
+  v6 = [sharedConnection installedProfileWithIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (id)rmAccount
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 dmc_visibleRemoteManagementAccounts];
-  v4 = [v3 firstObject];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  dmc_visibleRemoteManagementAccounts = [defaultStore dmc_visibleRemoteManagementAccounts];
+  firstObject = [dmc_visibleRemoteManagementAccounts firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)updateProfileWithIdentifier:(id)a3 interactionDelegate:(id)a4
+- (void)updateProfileWithIdentifier:(id)identifier interactionDelegate:(id)delegate
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  [v8 updateProfileWithIdentifier:v7 interactionDelegate:v6];
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  sharedConnection = [v5 sharedConnection];
+  [sharedConnection updateProfileWithIdentifier:identifierCopy interactionDelegate:delegateCopy];
 }
 
-- (void)unenrollWithCompletionBlock:(id)a3
+- (void)unenrollWithCompletionBlock:(id)block
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  [v5 unenrollWithCompletionBlock:v4];
+  blockCopy = block;
+  sharedConnection = [v3 sharedConnection];
+  [sharedConnection unenrollWithCompletionBlock:blockCopy];
 }
 
-- (id)rmSpecifierProviderForProfileIdentifier:(id)a3 scope:(int64_t)a4
+- (id)rmSpecifierProviderForProfileIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v4 = [DMCProfileUILocalDataProvider localRMUIConfigurationInterfaceForProfileIdentifier:a3 scope:a4 initialLoad:1];
+  v4 = [DMCProfileUILocalDataProvider localRMUIConfigurationInterfaceForProfileIdentifier:identifier scope:scope initialLoad:1];
   if (v4)
   {
     v5 = [[RMConfigurationsLocalDataProvider alloc] initWithRMUIConfigurationInterface:v4];
     v6 = [RMConfigurationsSpecifierProvider alloc];
-    v7 = [v4 rmAccount];
-    v8 = [(RMConfigurationsSpecifierProvider *)v6 initWithAccount:v7 rmDataProvider:v5];
+    rmAccount = [v4 rmAccount];
+    v8 = [(RMConfigurationsSpecifierProvider *)v6 initWithAccount:rmAccount rmDataProvider:v5];
   }
 
   else
@@ -92,37 +92,37 @@
   return v8;
 }
 
-+ (id)localRMUIConfigurationInterfaceForProfileIdentifier:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5
++ (id)localRMUIConfigurationInterfaceForProfileIdentifier:(id)identifier scope:(int64_t)scope initialLoad:(BOOL)load
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
-  v10 = [v9 unverifiedInstalledMDMProfileIdentifier];
+  loadCopy = load;
+  identifierCopy = identifier;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  unverifiedInstalledMDMProfileIdentifier = [mEMORY[0x277D262A0] unverifiedInstalledMDMProfileIdentifier];
 
-  if ([v8 isEqualToString:v10])
+  if ([identifierCopy isEqualToString:unverifiedInstalledMDMProfileIdentifier])
   {
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 dmc_visibleRemoteManagementAccounts];
-    v13 = [v12 firstObject];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    dmc_visibleRemoteManagementAccounts = [defaultStore dmc_visibleRemoteManagementAccounts];
+    firstObject = [dmc_visibleRemoteManagementAccounts firstObject];
 
     v14 = objc_alloc(MEMORY[0x277D460E8]);
-    if (v13)
+    if (firstObject)
     {
-      v15 = [v14 initWithAccount:v13 scope:a4 initialLoad:v5];
+      v15 = [v14 initWithAccount:firstObject scope:scope initialLoad:loadCopy];
     }
 
     else
     {
-      v15 = [v14 initWithMDMProfileIdentifier:v10 scope:a4 initialLoad:v5];
+      v15 = [v14 initWithMDMProfileIdentifier:unverifiedInstalledMDMProfileIdentifier scope:scope initialLoad:loadCopy];
     }
 
     goto LABEL_7;
   }
 
-  v13 = [a1 _declarationsPayloadIdentifiersForProfileIdentifier:v8];
-  if (v13)
+  firstObject = [self _declarationsPayloadIdentifiersForProfileIdentifier:identifierCopy];
+  if (firstObject)
   {
-    v15 = [objc_alloc(MEMORY[0x277D460E8]) initWithDeclarationsPayloadIdentifiers:v13 scope:a4 initialLoad:v5];
+    v15 = [objc_alloc(MEMORY[0x277D460E8]) initWithDeclarationsPayloadIdentifiers:firstObject scope:scope initialLoad:loadCopy];
 LABEL_7:
     v16 = v15;
     goto LABEL_8;
@@ -134,12 +134,12 @@ LABEL_8:
   return v16;
 }
 
-+ (id)_declarationsPayloadIdentifiersForProfileIdentifier:(id)a3
++ (id)_declarationsPayloadIdentifiersForProfileIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 installedProfileWithIdentifier:v3];
+  identifierCopy = identifier;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] installedProfileWithIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -148,8 +148,8 @@ LABEL_8:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v5 payloads];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    payloads = [v5 payloads];
+    v8 = [payloads countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -160,19 +160,19 @@ LABEL_8:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(payloads);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 identifier];
-            [v6 addObject:v13];
+            identifier = [v12 identifier];
+            [v6 addObject:identifier];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [payloads countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);

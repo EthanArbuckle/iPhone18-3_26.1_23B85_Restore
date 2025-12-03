@@ -2,10 +2,10 @@
 + (double)timeout;
 + (id)logCategory;
 - (HMDHome)home;
-- (HMDHomeAdministratorConfigurationOperation)initWithMessage:(id)a3 home:(id)a4 dispatcher:(id)a5;
+- (HMDHomeAdministratorConfigurationOperation)initWithMessage:(id)message home:(id)home dispatcher:(id)dispatcher;
 - (id)logIdentifier;
-- (void)_respondWithError:(id)a3 payload:(id)a4;
-- (void)cancelWithError:(id)a3;
+- (void)_respondWithError:(id)error payload:(id)payload;
+- (void)cancelWithError:(id)error;
 - (void)main;
 @end
 
@@ -20,48 +20,48 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeAdministratorConfigurationOperation *)self message];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  message = [(HMDHomeAdministratorConfigurationOperation *)self message];
+  identifier = [message identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  [(HMDHomeAdministratorConfigurationOperation *)self _respondWithError:v4 payload:0];
+  errorCopy = error;
+  [(HMDHomeAdministratorConfigurationOperation *)self _respondWithError:errorCopy payload:0];
   v5.receiver = self;
   v5.super_class = HMDHomeAdministratorConfigurationOperation;
-  [(HMFOperation *)&v5 cancelWithError:v4];
+  [(HMFOperation *)&v5 cancelWithError:errorCopy];
 }
 
-- (void)_respondWithError:(id)a3 payload:(id)a4
+- (void)_respondWithError:(id)error payload:(id)payload
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   os_unfair_lock_lock_with_options();
   if ([(HMDHomeAdministratorConfigurationOperation *)self isMessageResponseHandled])
   {
-    v7 = 0;
+    message = 0;
   }
 
   else
   {
     [(HMDHomeAdministratorConfigurationOperation *)self setMessageResponseHandled:1];
-    v7 = [(HMDHomeAdministratorConfigurationOperation *)self message];
+    message = [(HMDHomeAdministratorConfigurationOperation *)self message];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [v7 respondWithPayload:v6 error:v8];
+  [message respondWithPayload:payloadCopy error:errorCopy];
 }
 
 - (void)main
 {
   v31 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_home);
-  v4 = [WeakRetained primaryResident];
-  if (v4)
+  primaryResident = [WeakRetained primaryResident];
+  if (primaryResident)
   {
     v5 = [(HMFMessage *)self->_message copy];
     v6 = [v5 mutableCopy];
@@ -69,10 +69,10 @@
     [v6 setRemote:1];
     [v6 setSecureRemote:1];
     v7 = [HMDRemoteDeviceMessageDestination alloc];
-    v8 = [(HMFMessage *)self->_message destination];
-    v9 = [v8 target];
-    v10 = [v4 device];
-    v11 = [(HMDRemoteDeviceMessageDestination *)v7 initWithTarget:v9 device:v10];
+    destination = [(HMFMessage *)self->_message destination];
+    target = [destination target];
+    device = [primaryResident device];
+    v11 = [(HMDRemoteDeviceMessageDestination *)v7 initWithTarget:target device:device];
     [v6 setDestination:v11];
 
     objc_initWeak(&location, self);
@@ -83,7 +83,7 @@
     objc_copyWeak(&v25, &location);
     [v6 setResponseHandler:v24];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -96,13 +96,13 @@
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMDHomeAdministratorConfigurationOperation *)v13 dispatcher];
+    dispatcher = [(HMDHomeAdministratorConfigurationOperation *)selfCopy dispatcher];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __50__HMDHomeAdministratorConfigurationOperation_main__block_invoke_8;
     v22[3] = &unk_279734708;
     objc_copyWeak(&v23, &location);
-    [v16 sendMessage:v6 completionHandler:v22];
+    [dispatcher sendMessage:v6 completionHandler:v22];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v25);
@@ -112,7 +112,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -124,7 +124,7 @@
 
     objc_autoreleasePoolPop(v17);
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48 description:0 reason:@"A home hub is required." suggestion:0];
-    [(HMDHomeAdministratorConfigurationOperation *)v18 cancelWithError:v6];
+    [(HMDHomeAdministratorConfigurationOperation *)selfCopy2 cancelWithError:v6];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -204,14 +204,14 @@ void __50__HMDHomeAdministratorConfigurationOperation_main__block_invoke_8(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeAdministratorConfigurationOperation)initWithMessage:(id)a3 home:(id)a4 dispatcher:(id)a5
+- (HMDHomeAdministratorConfigurationOperation)initWithMessage:(id)message home:(id)home dispatcher:(id)dispatcher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  v13 = 0;
-  if (v9 && v10 && v11)
+  messageCopy = message;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  v12 = dispatcherCopy;
+  selfCopy = 0;
+  if (messageCopy && homeCopy && dispatcherCopy)
   {
     [objc_opt_class() timeout];
     v19.receiver = self;
@@ -220,21 +220,21 @@ void __50__HMDHomeAdministratorConfigurationOperation_main__block_invoke_8(uint6
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_message, a3);
-      objc_storeWeak(&v15->_home, v10);
-      objc_storeStrong(&v15->_dispatcher, a5);
-      v16 = [v9 responseHandler];
+      objc_storeStrong(&v14->_message, message);
+      objc_storeWeak(&v15->_home, homeCopy);
+      objc_storeStrong(&v15->_dispatcher, dispatcher);
+      responseHandler = [messageCopy responseHandler];
       responseHandler = v15->_responseHandler;
-      v15->_responseHandler = v16;
+      v15->_responseHandler = responseHandler;
 
-      -[HMFOperation setQualityOfService:](v15, "setQualityOfService:", [v9 qualityOfService]);
+      -[HMFOperation setQualityOfService:](v15, "setQualityOfService:", [messageCopy qualityOfService]);
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 + (id)logCategory
@@ -261,15 +261,15 @@ uint64_t __57__HMDHomeAdministratorConfigurationOperation_logCategory__block_inv
 
 + (double)timeout
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"adminConfigurationOperationTimeout"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"adminConfigurationOperationTimeout"];
 
-  v4 = [v3 numberValue];
+  numberValue = [v3 numberValue];
 
-  if (v4)
+  if (numberValue)
   {
-    v5 = [v3 numberValue];
-    [v5 doubleValue];
+    numberValue2 = [v3 numberValue];
+    [numberValue2 doubleValue];
     v7 = v6;
   }
 

@@ -1,18 +1,18 @@
 @interface WFWebPageDecorator
-+ (id)_plainTextWithSelector:(SEL)a3 object:(id)a4;
-+ (id)plainTextWithWebPageData:(id)a3;
-+ (id)plainTextWithWebPageString:(id)a3;
-+ (id)webPageWithData:(id)a3;
-+ (id)webPageWithData:(id)a3 URLString:(id)a4;
-+ (id)webPageWithString:(id)a3;
-+ (id)webPageWithString:(id)a3 URLString:(id)a4;
-- (WFWebPageDecorator)initWithWebPageData:(id)a3;
-- (WFWebPageDecorator)initWithWebPageString:(id)a3;
-- (WFWebPageDecorator)initWithWebPageStripper:(id)a3;
++ (id)_plainTextWithSelector:(SEL)selector object:(id)object;
++ (id)plainTextWithWebPageData:(id)data;
++ (id)plainTextWithWebPageString:(id)string;
++ (id)webPageWithData:(id)data;
++ (id)webPageWithData:(id)data URLString:(id)string;
++ (id)webPageWithString:(id)string;
++ (id)webPageWithString:(id)string URLString:(id)lString;
+- (WFWebPageDecorator)initWithWebPageData:(id)data;
+- (WFWebPageDecorator)initWithWebPageString:(id)string;
+- (WFWebPageDecorator)initWithWebPageStripper:(id)stripper;
 - (id)imageAltsText;
 - (id)linkTitlesText;
 - (id)plainText;
-- (id)plainTextAttributeWithSelector:(SEL)a3 title:(id)a4 weight:(int)a5;
+- (id)plainTextAttributeWithSelector:(SEL)selector title:(id)title weight:(int)weight;
 - (id)rawPlainText;
 - (int64_t)numberOfImages;
 - (int64_t)numberOfKnownImagePixels;
@@ -23,92 +23,92 @@
 
 @implementation WFWebPageDecorator
 
-+ (id)_plainTextWithSelector:(SEL)a3 object:(id)a4
++ (id)_plainTextWithSelector:(SEL)selector object:(id)object
 {
   v6 = objc_alloc(objc_opt_class());
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 performSelector:a3 withObject:a4];
-    v8 = [v7 plainText];
+    v7 = [v6 performSelector:selector withObject:object];
+    plainText = [v7 plainText];
 
-    return v8;
+    return plainText;
   }
 
   else
   {
     v10 = [objc_opt_class() description];
-    v11 = NSStringFromSelector(a3);
+    v11 = NSStringFromSelector(selector);
     NSLog(&cfstr_DoesnTAsnwerTo.isa, v10, v11);
     return &stru_28826CB10;
   }
 }
 
-+ (id)plainTextWithWebPageData:(id)a3
++ (id)plainTextWithWebPageData:(id)data
 {
   v4 = objc_opt_class();
 
-  return [v4 _plainTextWithSelector:sel_initWithWebPageData_ object:a3];
+  return [v4 _plainTextWithSelector:sel_initWithWebPageData_ object:data];
 }
 
-+ (id)plainTextWithWebPageString:(id)a3
++ (id)plainTextWithWebPageString:(id)string
 {
   v4 = objc_opt_class();
 
-  return [v4 _plainTextWithSelector:sel_initWithWebPageString_ object:a3];
+  return [v4 _plainTextWithSelector:sel_initWithWebPageString_ object:string];
 }
 
-+ (id)webPageWithData:(id)a3
++ (id)webPageWithData:(id)data
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithWebPageData:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithWebPageData:data];
 
   return v3;
 }
 
-+ (id)webPageWithData:(id)a3 URLString:(id)a4
++ (id)webPageWithData:(id)data URLString:(id)string
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithWebPageData:a3];
-  [v5 setURLString:a4];
+  v5 = [objc_alloc(objc_opt_class()) initWithWebPageData:data];
+  [v5 setURLString:string];
 
   return v5;
 }
 
-+ (id)webPageWithString:(id)a3
++ (id)webPageWithString:(id)string
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithWebPageString:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithWebPageString:string];
 
   return v3;
 }
 
-+ (id)webPageWithString:(id)a3 URLString:(id)a4
++ (id)webPageWithString:(id)string URLString:(id)lString
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithWebPageString:a3];
-  [v5 setURLString:a4];
+  v5 = [objc_alloc(objc_opt_class()) initWithWebPageString:string];
+  [v5 setURLString:lString];
 
   return v5;
 }
 
-- (WFWebPageDecorator)initWithWebPageData:(id)a3
+- (WFWebPageDecorator)initWithWebPageData:(id)data
 {
-  v4 = [WFTreeHTMLStripper treeStripperWithData:a3];
+  v4 = [WFTreeHTMLStripper treeStripperWithData:data];
 
   return [(WFWebPageDecorator *)self initWithWebPageStripper:v4];
 }
 
-- (WFWebPageDecorator)initWithWebPageString:(id)a3
+- (WFWebPageDecorator)initWithWebPageString:(id)string
 {
-  v4 = [WFTreeHTMLStripper treeStripperWithString:a3];
+  v4 = [WFTreeHTMLStripper treeStripperWithString:string];
 
   return [(WFWebPageDecorator *)self initWithWebPageStripper:v4];
 }
 
-- (WFWebPageDecorator)initWithWebPageStripper:(id)a3
+- (WFWebPageDecorator)initWithWebPageStripper:(id)stripper
 {
   v6.receiver = self;
   v6.super_class = WFWebPageDecorator;
   v4 = [(WFWebPageDecorator *)&v6 init];
   if (v4)
   {
-    v4->webPageStripper = a3;
+    v4->webPageStripper = stripper;
   }
 
   return v4;
@@ -124,9 +124,9 @@
 
 - (int64_t)numberOfImages
 {
-  v2 = [(WFWebPageDecorator *)self images];
+  images = [(WFWebPageDecorator *)self images];
 
-  return [v2 count];
+  return [images count];
 }
 
 - (id)imageAltsText
@@ -156,13 +156,13 @@
 - (id)linkTitlesText
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(WFWebPageDecorator *)self links];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  links = [(WFWebPageDecorator *)self links];
+  v5 = [links countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -174,33 +174,33 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(links);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) title];
-        if (v9)
+        title = [*(*(&v12 + 1) + 8 * v8) title];
+        if (title)
         {
-          [v3 appendFormat:@"%@\n", v9];
+          [string appendFormat:@"%@\n", title];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [links countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return string;
 }
 
-- (id)plainTextAttributeWithSelector:(SEL)a3 title:(id)a4 weight:(int)a5
+- (id)plainTextAttributeWithSelector:(SEL)selector title:(id)title weight:(int)weight
 {
   v9 = objc_opt_new();
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (v10 = [(WFWebPageDecorator *)self performSelector:a3]) != 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (v10 = [(WFWebPageDecorator *)self performSelector:selector]) != 0)
   {
     v11 = v10;
     objc_opt_class();
@@ -215,18 +215,18 @@
     v11 = &stru_28826CB10;
   }
 
-  [v9 appendString:a4];
+  [v9 appendString:title];
   [v9 appendString:@"\n"];
-  if (a5 >= 1)
+  if (weight >= 1)
   {
     do
     {
       [v9 appendString:v11];
       [v9 appendString:@"\n"];
-      --a5;
+      --weight;
     }
 
-    while (a5);
+    while (weight);
   }
 
   return v9;
@@ -251,9 +251,9 @@
 
 - (id)plainText
 {
-  v2 = [(WFWebPageDecorator *)self rawPlainText];
+  rawPlainText = [(WFWebPageDecorator *)self rawPlainText];
 
-  return [WFPostprocessor postprocessPlainTextWebPage:v2];
+  return [WFPostprocessor postprocessPlainTextWebPage:rawPlainText];
 }
 
 - (void)dealloc

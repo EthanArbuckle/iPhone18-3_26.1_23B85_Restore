@@ -1,21 +1,21 @@
 @interface PhotosSeparationCollectionShareParticipant
-- (PhotosSeparationCollectionShareParticipant)initWithParticipant:(id)a3 isOwner:(BOOL)a4 readwrite:(BOOL)a5;
+- (PhotosSeparationCollectionShareParticipant)initWithParticipant:(id)participant isOwner:(BOOL)owner readwrite:(BOOL)readwrite;
 @end
 
 @implementation PhotosSeparationCollectionShareParticipant
 
-- (PhotosSeparationCollectionShareParticipant)initWithParticipant:(id)a3 isOwner:(BOOL)a4 readwrite:(BOOL)a5
+- (PhotosSeparationCollectionShareParticipant)initWithParticipant:(id)participant isOwner:(BOOL)owner readwrite:(BOOL)readwrite
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v9 = a3;
-  v10 = [v9 emailAddress];
-  v11 = [v9 phoneNumber];
-  if (!v10 || ([ECEmailAddressParser parseEmailAddressString:v10 displayName:0 localPart:0 domain:0 groupList:0]& 1) != 0 || v11)
+  readwriteCopy = readwrite;
+  ownerCopy = owner;
+  participantCopy = participant;
+  participantCopy2 = participant;
+  emailAddress = [participantCopy2 emailAddress];
+  phoneNumber = [participantCopy2 phoneNumber];
+  if (!emailAddress || ([ECEmailAddressParser parseEmailAddressString:emailAddress displayName:0 localPart:0 domain:0 groupList:0]& 1) != 0 || phoneNumber)
   {
-    v12 = v10;
-    if (!v11)
+    v12 = emailAddress;
+    if (!phoneNumber)
     {
       goto LABEL_20;
     }
@@ -24,7 +24,7 @@
   else
   {
     v12 = 0;
-    v11 = v10;
+    phoneNumber = emailAddress;
   }
 
   v36 = 0;
@@ -32,11 +32,11 @@
   v14 = v36;
   if (v13)
   {
-    v27 = v6;
-    v28 = v5;
-    v29 = self;
-    v30 = v7;
-    v15 = [v13 matchesInString:v11 options:0 range:{0, objc_msgSend(v11, "length")}];
+    v27 = ownerCopy;
+    v28 = readwriteCopy;
+    selfCopy = self;
+    v30 = participantCopy;
+    v15 = [v13 matchesInString:phoneNumber options:0 range:{0, objc_msgSend(phoneNumber, "length")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -58,9 +58,9 @@
           v20 = *(*(&v32 + 1) + 8 * i);
           if ([v20 resultType] == &stru_7D8.size)
           {
-            v21 = [v20 phoneNumber];
+            phoneNumber2 = [v20 phoneNumber];
 
-            v11 = v21;
+            phoneNumber = phoneNumber2;
           }
         }
 
@@ -70,10 +70,10 @@
       while (v17);
     }
 
-    self = v29;
-    v7 = v30;
-    v6 = v27;
-    v5 = v28;
+    self = selfCopy;
+    participantCopy = v30;
+    ownerCopy = v27;
+    readwriteCopy = v28;
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -84,7 +84,7 @@
   }
 
 LABEL_20:
-  if (v6)
+  if (ownerCopy)
   {
     v22 = 1;
   }
@@ -94,7 +94,7 @@ LABEL_20:
     v22 = 2;
   }
 
-  if (v5)
+  if (readwriteCopy)
   {
     v23 = 2;
   }
@@ -106,11 +106,11 @@ LABEL_20:
 
   v31.receiver = self;
   v31.super_class = PhotosSeparationCollectionShareParticipant;
-  v24 = [(PhotosSeparationParticipant *)&v31 initWithRole:v22 permission:v23 emailAddress:v12 phoneNumber:v11];
+  v24 = [(PhotosSeparationParticipant *)&v31 initWithRole:v22 permission:v23 emailAddress:v12 phoneNumber:phoneNumber];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_participant, v7);
+    objc_storeStrong(&v24->_participant, participantCopy);
   }
 
   return v25;

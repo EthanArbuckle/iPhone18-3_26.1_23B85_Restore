@@ -1,13 +1,13 @@
 @interface CountBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension14CountBadgeView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension14CountBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension14CountBadgeView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension14CountBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CountBadgeView
 
-- (_TtC22SubscribePageExtension14CountBadgeView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension14CountBadgeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension14CountBadgeView_size) = 1;
   result = sub_100754644();
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_10011C21C();
   v5 = v4;
   v7 = v6;
@@ -47,7 +47,7 @@
   [v3 setFrame:{v11, CGRectGetMidY(v14) - v10, v7, v9}];
 }
 
-- (_TtC22SubscribePageExtension14CountBadgeView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension14CountBadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

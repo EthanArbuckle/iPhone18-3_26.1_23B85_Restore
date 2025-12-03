@@ -1,6 +1,6 @@
 @interface HDCloudSyncSeizeAbandonedStoresOperation
 + (id)operationTagDependencies;
-- (id)anchorMapForTakeoverForTarget:(void *)a1;
+- (id)anchorMapForTakeoverForTarget:(void *)target;
 - (void)main;
 @end
 
@@ -20,8 +20,8 @@
 - (void)main
 {
   v227 = *MEMORY[0x277D85DE8];
-  v2 = [(HDCloudSyncOperation *)self configuration];
-  if ([v2 rebaseProhibited])
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  if ([configuration rebaseProhibited])
   {
 
 LABEL_33:
@@ -31,12 +31,12 @@ LABEL_33:
     return;
   }
 
-  v3 = [(HDCloudSyncOperation *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 canPerformOwnershipTakeover];
+  profile = [(HDCloudSyncOperation *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  canPerformOwnershipTakeover = [behavior canPerformOwnershipTakeover];
 
-  if ((v6 & 1) == 0)
+  if ((canPerformOwnershipTakeover & 1) == 0)
   {
     goto LABEL_33;
   }
@@ -47,8 +47,8 @@ LABEL_33:
 
   [(HDSynchronousTaskGroup *)self->_taskGroup setDelegate:self];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 objectForKey:*MEMORY[0x277CCB770]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults objectForKey:*MEMORY[0x277CCB770]];
   v11 = v10;
   v12 = *MEMORY[0x277CCB750];
   if (v10)
@@ -60,31 +60,31 @@ LABEL_33:
     }
   }
 
-  v14 = [(HDCloudSyncOperation *)self configuration];
-  v15 = [v14 computedState];
-  v16 = [v15 targets];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  computedState = [configuration2 computedState];
+  targets = [computedState targets];
   *v223 = MEMORY[0x277D85DD0];
   *&v223[8] = 3221225472;
   *&v223[16] = __69__HDCloudSyncSeizeAbandonedStoresOperation__computeTargetsForSeizure__block_invoke;
   v224 = &unk_278630098;
-  v225 = self;
+  selfCopy = self;
   v226 = v12;
-  v17 = [v16 hk_map:v223];
+  v17 = [targets hk_map:v223];
 
   v193 = 0;
   v18 = v17;
   v184 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v19 = v18;
-  v20 = [(HDCloudSyncOperation *)self configuration];
-  v21 = [v20 computedState];
-  v22 = [v21 targets];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  computedState2 = [configuration3 computedState];
+  targets2 = [computedState2 targets];
   *&v204 = MEMORY[0x277D85DD0];
   *(&v204 + 1) = 3221225472;
   *&v205 = __76__HDCloudSyncSeizeAbandonedStoresOperation__computeAllActiveTargetsByChild___block_invoke;
   *(&v205 + 1) = &unk_278614BF0;
   v175 = v19;
   *&v206 = v175;
-  v23 = [v22 hk_filter:&v204];
+  v23 = [targets2 hk_filter:&v204];
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v214 = 0u;
@@ -110,13 +110,13 @@ LABEL_33:
 
         v186 = v25;
         v27 = *(*(&v212 + 1) + 8 * v25);
-        v28 = [v27 storeRecord];
-        if (([v28 isChild] & 1) == 0)
+        storeRecord = [v27 storeRecord];
+        if (([storeRecord isChild] & 1) == 0)
         {
-          v29 = [v27 storeRecord];
-          v30 = [v29 sequenceRecord];
-          v31 = [v30 includedChildSyncIdentities];
-          v32 = [v31 count] == 0;
+          storeRecord2 = [v27 storeRecord];
+          sequenceRecord = [storeRecord2 sequenceRecord];
+          includedChildSyncIdentities = [sequenceRecord includedChildSyncIdentities];
+          v32 = [includedChildSyncIdentities count] == 0;
 
           if (v32)
           {
@@ -127,11 +127,11 @@ LABEL_33:
           v211 = 0u;
           v208 = 0u;
           v209 = 0u;
-          v33 = [v27 storeRecord];
-          v34 = [v33 sequenceRecord];
-          v28 = [v34 includedChildSyncIdentities];
+          storeRecord3 = [v27 storeRecord];
+          sequenceRecord2 = [storeRecord3 sequenceRecord];
+          storeRecord = [sequenceRecord2 includedChildSyncIdentities];
 
-          v35 = [v28 countByEnumeratingWithState:&v208 objects:&v219 count:16];
+          v35 = [storeRecord countByEnumeratingWithState:&v208 objects:&v219 count:16];
           if (v35)
           {
             v36 = *v209;
@@ -141,7 +141,7 @@ LABEL_33:
               {
                 if (*v209 != v36)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(storeRecord);
                 }
 
                 v38 = *(*(&v208 + 1) + 8 * i);
@@ -159,9 +159,9 @@ LABEL_33:
 
                 v42 = v41;
 
-                v43 = [v27 storeRecord];
-                v44 = [v43 syncIdentity];
-                v45 = v44 == 0;
+                storeRecord4 = [v27 storeRecord];
+                syncIdentity = [storeRecord4 syncIdentity];
+                v45 = syncIdentity == 0;
 
                 if (v45)
                 {
@@ -170,26 +170,26 @@ LABEL_33:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                   {
                     v49 = v48;
-                    v50 = [v27 storeRecord];
+                    storeRecord5 = [v27 storeRecord];
                     *buf = 138543618;
                     *&buf[4] = self;
                     *&buf[12] = 2114;
-                    *&buf[14] = v50;
+                    *&buf[14] = storeRecord5;
                     _os_log_error_impl(&dword_228986000, v49, OS_LOG_TYPE_ERROR, "%{public}@: StoreRecord has a nil sync identity %{public}@", buf, 0x16u);
                   }
                 }
 
                 else
                 {
-                  v46 = [v27 storeRecord];
-                  v47 = [v46 syncIdentity];
-                  [v42 addObject:v47];
+                  storeRecord6 = [v27 storeRecord];
+                  syncIdentity2 = [storeRecord6 syncIdentity];
+                  [v42 addObject:syncIdentity2];
 
                   [v24 setObject:v42 forKeyedSubscript:v38];
                 }
               }
 
-              v35 = [v28 countByEnumeratingWithState:&v208 objects:&v219 count:16];
+              v35 = [storeRecord countByEnumeratingWithState:&v208 objects:&v219 count:16];
             }
 
             while (v35);
@@ -211,24 +211,24 @@ LABEL_29:
   *&v223[8] = v223;
   *&v223[16] = 0x3032000000;
   v224 = __Block_byref_object_copy__210;
-  v225 = __Block_byref_object_dispose__210;
+  selfCopy = __Block_byref_object_dispose__210;
   v226 = 0.0;
   v51 = +[HDMutableDatabaseTransactionContext contextForReading];
-  v52 = [(HDCloudSyncOperation *)self configuration];
-  v53 = [v52 accessibilityAssertion];
-  v54 = [v51 contextWithAccessibilityAssertion:v53];
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  accessibilityAssertion = [configuration4 accessibilityAssertion];
+  v54 = [v51 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-  v55 = [(HDCloudSyncOperation *)self profile];
-  v56 = [v55 database];
+  profile2 = [(HDCloudSyncOperation *)self profile];
+  database = [profile2 database];
   *&v219 = MEMORY[0x277D85DD0];
   *(&v219 + 1) = 3221225472;
   *&v220 = __74__HDCloudSyncSeizeAbandonedStoresOperation__childSyncIdentitiesWithError___block_invoke;
   *(&v220 + 1) = &unk_278619398;
   *(&v221 + 1) = v223;
   *&v221 = self;
-  LOBYTE(v53) = [v56 performTransactionWithContext:v54 error:&v193 block:&v219 inaccessibilityHandler:0];
+  LOBYTE(accessibilityAssertion) = [database performTransactionWithContext:v54 error:&v193 block:&v219 inaccessibilityHandler:0];
 
-  if (v53)
+  if (accessibilityAssertion)
   {
     v177 = *(*&v223[8] + 40);
   }
@@ -269,19 +269,19 @@ LABEL_29:
 
       obja = v58;
       v60 = *(*&buf[8] + 8 * v58);
-      v61 = [v60 storeRecord];
-      v62 = [v61 isChild];
+      storeRecord7 = [v60 storeRecord];
+      isChild = [storeRecord7 isChild];
 
-      v63 = [v60 storeRecord];
-      v64 = [v63 syncIdentity];
-      v65 = [v177 containsObject:v64];
+      storeRecord8 = [v60 storeRecord];
+      syncIdentity3 = [storeRecord8 syncIdentity];
+      v65 = [v177 containsObject:syncIdentity3];
 
-      v66 = [v60 storeRecord];
-      v67 = [v66 sequenceRecord];
-      v68 = [v67 includedChildSyncIdentities];
-      v69 = [v68 count];
+      storeRecord9 = [v60 storeRecord];
+      sequenceRecord3 = [storeRecord9 sequenceRecord];
+      includedChildSyncIdentities2 = [sequenceRecord3 includedChildSyncIdentities];
+      v69 = [includedChildSyncIdentities2 count];
 
-      if (!v62)
+      if (!isChild)
       {
         if (!v69)
         {
@@ -289,26 +289,26 @@ LABEL_29:
         }
 
         v76 = v60;
-        v77 = [(HDCloudSyncOperation *)self configuration];
-        v78 = [v77 computedState];
-        v79 = [v78 targets];
+        configuration5 = [(HDCloudSyncOperation *)self configuration];
+        computedState3 = [configuration5 computedState];
+        targets3 = [computedState3 targets];
         *v223 = MEMORY[0x277D85DD0];
         *&v223[8] = 3221225472;
         *&v223[16] = __80__HDCloudSyncSeizeAbandonedStoresOperation__childTargetBySyncIdentityForParent___block_invoke;
         v224 = &unk_2786300C0;
         v189 = v76;
-        v225 = v189;
-        v70 = [v79 hk_mapToDictionary:v223];
+        selfCopy = v189;
+        v70 = [targets3 hk_mapToDictionary:v223];
 
         v198 = 0u;
         v199 = 0u;
         v200 = 0u;
         v201 = 0u;
-        v80 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 storeRecord];
-        v81 = [v80 sequenceRecord];
-        v71 = [v81 includedChildSyncIdentities];
+        storeRecord10 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 storeRecord];
+        sequenceRecord4 = [storeRecord10 sequenceRecord];
+        includedChildSyncIdentities3 = [sequenceRecord4 includedChildSyncIdentities];
 
-        v82 = [v71 countByEnumeratingWithState:&v198 objects:&v212 count:16];
+        v82 = [includedChildSyncIdentities3 countByEnumeratingWithState:&v198 objects:&v212 count:16];
         if (v82)
         {
           v83 = *v199;
@@ -318,7 +318,7 @@ LABEL_29:
             {
               if (*v199 != v83)
               {
-                objc_enumerationMutation(v71);
+                objc_enumerationMutation(includedChildSyncIdentities3);
               }
 
               v85 = *(*(&v198 + 1) + 8 * j);
@@ -335,12 +335,12 @@ LABEL_29:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     v104 = v103;
-                    v105 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
-                    v106 = [v105 syncIdentity];
+                    store = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
+                    syncIdentity4 = [store syncIdentity];
                     *v223 = 138543874;
                     *&v223[4] = self;
                     *&v223[12] = 2114;
-                    *&v223[14] = v106;
+                    *&v223[14] = syncIdentity4;
                     *&v223[22] = 2114;
                     v224 = v85;
                     _os_log_impl(&dword_228986000, v104, OS_LOG_TYPE_DEFAULT, "%{public}@: TargetHasChildren: Child does not exist as store, seize both candidate target (%{public}@) & child (%{public}@) ", v223, 0x20u);
@@ -360,19 +360,19 @@ LABEL_29:
                     if (v98)
                     {
                       v116 = v97;
-                      v117 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
-                      v118 = [v117 syncIdentity];
+                      store2 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
+                      syncIdentity5 = [store2 syncIdentity];
                       *v223 = 138543874;
                       *&v223[4] = self;
                       *&v223[12] = 2114;
                       *&v223[14] = v85;
                       *&v223[22] = 2114;
-                      v224 = v118;
+                      v224 = syncIdentity5;
                       _os_log_impl(&dword_228986000, v116, OS_LOG_TYPE_DEFAULT, "%{public}@: TargetHasChildren: Child (%{public}@) is not ready to be seized and not owned by another active target, cannot seize candidate target (%{public}@) or any if itschildren.", v223, 0x20u);
                     }
 
-                    v119 = [v70 allValues];
-                    [v184 addObjectsFromArray:v119];
+                    allValues = [v70 allValues];
+                    [v184 addObjectsFromArray:allValues];
 
                     [v184 addObject:v189];
                     goto LABEL_77;
@@ -381,12 +381,12 @@ LABEL_29:
                   if (v98)
                   {
                     v99 = v97;
-                    v100 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
-                    v101 = [v100 syncIdentity];
+                    store3 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
+                    syncIdentity6 = [store3 syncIdentity];
                     *v223 = 138543874;
                     *&v223[4] = self;
                     *&v223[12] = 2114;
-                    *&v223[14] = v101;
+                    *&v223[14] = syncIdentity6;
                     *&v223[22] = 2114;
                     v224 = v85;
                     _os_log_impl(&dword_228986000, v99, OS_LOG_TYPE_DEFAULT, "%{public}@: TargetHasChildren: Child is also in seized targets, seize both candidate target (%{public}@) & child (%{public}@)", v223, 0x20u);
@@ -404,18 +404,18 @@ LABEL_29:
                 if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                 {
                   v90 = v89;
-                  v91 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
-                  v92 = [v91 syncIdentity];
+                  store4 = [(HDCloudSyncSeizeAbandonedStoresOperation *)v189 store];
+                  syncIdentity7 = [store4 syncIdentity];
                   *v223 = 138543618;
                   *&v223[4] = self;
                   *&v223[12] = 2114;
-                  *&v223[14] = v92;
+                  *&v223[14] = syncIdentity7;
                   _os_log_impl(&dword_228986000, v90, OS_LOG_TYPE_DEFAULT, "%{public}@: TargetHasChildren: An active target also owns this child, candidate target (%{public}@) can continue being seized", v223, 0x16u);
                 }
               }
             }
 
-            v82 = [v71 countByEnumeratingWithState:&v198 objects:&v212 count:16];
+            v82 = [includedChildSyncIdentities3 countByEnumeratingWithState:&v198 objects:&v212 count:16];
             if (v82)
             {
               continue;
@@ -429,7 +429,7 @@ LABEL_29:
       }
 
       v70 = v60;
-      v71 = v24;
+      includedChildSyncIdentities3 = v24;
       if (v65)
       {
         _HKInitializeLogging();
@@ -437,12 +437,12 @@ LABEL_29:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           v73 = v72;
-          v74 = [v70 store];
-          v75 = [v74 syncIdentity];
+          store5 = [v70 store];
+          syncIdentity8 = [store5 syncIdentity];
           *v223 = 138543618;
           *&v223[4] = self;
           *&v223[12] = 2114;
-          *&v223[14] = v75;
+          *&v223[14] = syncIdentity8;
           _os_log_impl(&dword_228986000, v73, OS_LOG_TYPE_DEFAULT, "%{public}@: targetIsAChild: Candidate target is ownChild (%{public}@), continue seizing", v223, 0x16u);
         }
 
@@ -451,9 +451,9 @@ LABEL_77:
         goto LABEL_78;
       }
 
-      v107 = [v70 storeRecord];
-      v108 = [v107 syncIdentity];
-      v109 = [v71 objectForKeyedSubscript:v108];
+      storeRecord11 = [v70 storeRecord];
+      syncIdentity9 = [storeRecord11 syncIdentity];
+      v109 = [includedChildSyncIdentities3 objectForKeyedSubscript:syncIdentity9];
       v110 = [v109 count] == 0;
 
       _HKInitializeLogging();
@@ -464,12 +464,12 @@ LABEL_77:
         if (v112)
         {
           v120 = v111;
-          v121 = [v70 store];
-          v122 = [v121 syncIdentity];
+          store6 = [v70 store];
+          syncIdentity10 = [store6 syncIdentity];
           *v223 = 138543618;
           *&v223[4] = self;
           *&v223[12] = 2114;
-          *&v223[14] = v122;
+          *&v223[14] = syncIdentity10;
           _os_log_impl(&dword_228986000, v120, OS_LOG_TYPE_DEFAULT, "%{public}@: targetIsAChild: Candidate target is not ownChild nor another active target's child, continue seizing (%{public}@)", v223, 0x16u);
         }
 
@@ -479,12 +479,12 @@ LABEL_77:
       if (v112)
       {
         v113 = v111;
-        v114 = [v70 store];
-        v115 = [v114 syncIdentity];
+        store7 = [v70 store];
+        syncIdentity11 = [store7 syncIdentity];
         *v223 = 138543618;
         *&v223[4] = self;
         *&v223[12] = 2114;
-        *&v223[14] = v115;
+        *&v223[14] = syncIdentity11;
         _os_log_impl(&dword_228986000, v113, OS_LOG_TYPE_DEFAULT, "%{public}@: targetIsAChild: Candidate target is another active target's child, do not seize target (%{public}@)", v223, 0x16u);
       }
 
@@ -530,10 +530,10 @@ LABEL_80:
 
   v128 = v123;
   v129 = MEMORY[0x277CBEB98];
-  v130 = [(HDCloudSyncOperation *)self configuration];
-  v131 = [v130 computedState];
-  v132 = [v131 targets];
-  v190 = [v129 setWithArray:v132];
+  configuration6 = [(HDCloudSyncOperation *)self configuration];
+  computedState4 = [configuration6 computedState];
+  targets4 = [computedState4 targets];
+  v190 = [v129 setWithArray:targets4];
 
   v133 = [MEMORY[0x277CBEB98] setWithArray:v128];
   v134 = [v190 hk_minus:v133];
@@ -558,15 +558,15 @@ LABEL_80:
         }
 
         v140 = *(*(&v204 + 1) + 8 * m);
-        v141 = [v140 storeRecord];
-        v142 = [v141 syncIdentity];
-        v143 = v142 == 0;
+        storeRecord12 = [v140 storeRecord];
+        syncIdentity12 = [storeRecord12 syncIdentity];
+        v143 = syncIdentity12 == 0;
 
         if (!v143)
         {
-          v144 = [v140 storeRecord];
-          v145 = [v144 syncIdentity];
-          [v135 addObject:v145];
+          storeRecord13 = [v140 storeRecord];
+          syncIdentity13 = [storeRecord13 syncIdentity];
+          [v135 addObject:syncIdentity13];
         }
       }
 
@@ -584,9 +584,9 @@ LABEL_80:
   v146 = v135;
   v147 = [v128 hk_filter:v202];
 
-  v148 = [(HDCloudSyncOperation *)self configuration];
-  v149 = [v148 computedState];
-  [v149 replaceTargets:v147];
+  configuration7 = [(HDCloudSyncOperation *)self configuration];
+  computedState5 = [configuration7 computedState];
+  [computedState5 replaceTargets:v147];
 
 LABEL_97:
   v150 = v193;
@@ -597,11 +597,11 @@ LABEL_97:
     v220 = 0u;
     v221 = 0u;
     v222 = 0u;
-    v151 = [(HDCloudSyncOperation *)self configuration];
-    v152 = [v151 repository];
-    v185 = [v152 allCKContainers];
+    configuration8 = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration8 repository];
+    allCKContainers = [repository allCKContainers];
 
-    v191 = [v185 countByEnumeratingWithState:&v219 objects:v223 count:16];
+    v191 = [allCKContainers countByEnumeratingWithState:&v219 objects:v223 count:16];
     if (v191)
     {
       v188 = *v220;
@@ -611,42 +611,42 @@ LABEL_97:
         {
           if (*v220 != v188)
           {
-            objc_enumerationMutation(v185);
+            objc_enumerationMutation(allCKContainers);
           }
 
           v154 = *(*(&v219 + 1) + 8 * n);
-          v155 = [(HDCloudSyncOperation *)self configuration];
-          v156 = [v155 repository];
-          v157 = [v156 cachedOwnerIdentifierForContainer:v154];
-          v158 = [v157 string];
+          configuration9 = [(HDCloudSyncOperation *)self configuration];
+          repository2 = [configuration9 repository];
+          v157 = [repository2 cachedOwnerIdentifierForContainer:v154];
+          string = [v157 string];
 
-          v159 = [(HDCloudSyncOperation *)self configuration];
-          v160 = [v159 repository];
-          v161 = [v160 syncIdentityManager];
-          v162 = [v161 currentSyncIdentity];
-          v163 = [v162 identity];
+          configuration10 = [(HDCloudSyncOperation *)self configuration];
+          repository3 = [configuration10 repository];
+          syncIdentityManager = [repository3 syncIdentityManager];
+          currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+          identity = [currentSyncIdentity identity];
 
-          v164 = [(HDCloudSyncOperation *)self configuration];
-          v165 = [v164 computedState];
-          v166 = [v165 targets];
+          configuration11 = [(HDCloudSyncOperation *)self configuration];
+          computedState6 = [configuration11 computedState];
+          targets5 = [computedState6 targets];
           *&v212 = MEMORY[0x277D85DD0];
           *(&v212 + 1) = 3221225472;
           *&v213 = __77__HDCloudSyncSeizeAbandonedStoresOperation__updatedStoreRecordsForContainer___block_invoke;
           *(&v213 + 1) = &unk_2786300E8;
           v167 = v154;
           *&v214 = v167;
-          *(&v214 + 1) = v158;
-          *&v215 = v163;
-          v168 = v163;
-          v169 = v158;
-          v170 = [v166 hk_map:&v212];
+          *(&v214 + 1) = string;
+          *&v215 = identity;
+          v168 = identity;
+          v169 = string;
+          v170 = [targets5 hk_map:&v212];
 
           if ([v170 count])
           {
             [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
             v171 = [HDCloudSyncModifyRecordsOperation alloc];
-            v172 = [(HDCloudSyncOperation *)self configuration];
-            v173 = [(HDCloudSyncModifyRecordsOperation *)v171 initWithConfiguration:v172 container:v167 recordsToSave:v170 recordIDsToDelete:0];
+            configuration12 = [(HDCloudSyncOperation *)self configuration];
+            v173 = [(HDCloudSyncModifyRecordsOperation *)v171 initWithConfiguration:configuration12 container:v167 recordsToSave:v170 recordIDsToDelete:0];
 
             *&v204 = MEMORY[0x277D85DD0];
             *(&v204 + 1) = 3221225472;
@@ -665,7 +665,7 @@ LABEL_97:
           }
         }
 
-        v191 = [v185 countByEnumeratingWithState:&v219 objects:v223 count:16];
+        v191 = [allCKContainers countByEnumeratingWithState:&v219 objects:v223 count:16];
       }
 
       while (v191);
@@ -1040,25 +1040,25 @@ LABEL_10:
   return v17;
 }
 
-- (id)anchorMapForTakeoverForTarget:(void *)a1
+- (id)anchorMapForTakeoverForTarget:(void *)target
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (target)
   {
-    v5 = [v3 storeRecord];
-    v6 = [v5 shardPredicate];
-    v7 = [v6 type];
+    storeRecord = [v3 storeRecord];
+    shardPredicate = [storeRecord shardPredicate];
+    type = [shardPredicate type];
 
-    if (v7 == 2)
+    if (type == 2)
     {
       v8 = [HDCloudSyncCachedZone alloc];
-      v9 = [v4 zoneIdentifier];
-      v10 = [a1 configuration];
-      v11 = [v10 repository];
-      v12 = [a1 configuration];
-      v13 = [v12 accessibilityAssertion];
-      v14 = [(HDCloudSyncCachedZone *)v8 initForZoneIdentifier:v9 repository:v11 accessibilityAssertion:v13];
+      zoneIdentifier = [v4 zoneIdentifier];
+      configuration = [target configuration];
+      repository = [configuration repository];
+      configuration2 = [target configuration];
+      accessibilityAssertion = [configuration2 accessibilityAssertion];
+      storeRecord2 = [(HDCloudSyncCachedZone *)v8 initForZoneIdentifier:zoneIdentifier repository:repository accessibilityAssertion:accessibilityAssertion];
 
       v24 = 0;
       v25 = &v24;
@@ -1074,27 +1074,27 @@ LABEL_10:
       v20[3] = &unk_278615E08;
       v21 = v4;
       v22 = &v24;
-      [v14 recordsForClass:v15 epoch:0 error:&v23 enumerationHandler:v20];
+      [storeRecord2 recordsForClass:v15 epoch:0 error:&v23 enumerationHandler:v20];
       v16 = v23;
-      v17 = [HDSyncAnchorMap syncAnchorMapWithDictionary:v25[5]];
+      syncAnchorMap = [HDSyncAnchorMap syncAnchorMapWithDictionary:v25[5]];
 
       _Block_object_dispose(&v24, 8);
     }
 
     else
     {
-      v14 = [v4 storeRecord];
-      v18 = [v14 sequenceRecord];
-      v17 = [v18 syncAnchorMap];
+      storeRecord2 = [v4 storeRecord];
+      sequenceRecord = [storeRecord2 sequenceRecord];
+      syncAnchorMap = [sequenceRecord syncAnchorMap];
     }
   }
 
   else
   {
-    v17 = 0;
+    syncAnchorMap = 0;
   }
 
-  return v17;
+  return syncAnchorMap;
 }
 
 uint64_t __74__HDCloudSyncSeizeAbandonedStoresOperation_anchorMapForTakeoverForTarget___block_invoke(uint64_t a1, void *a2)

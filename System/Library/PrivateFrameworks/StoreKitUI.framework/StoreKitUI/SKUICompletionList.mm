@@ -1,15 +1,15 @@
 @interface SKUICompletionList
 - (NSMutableDictionary)cacheRepresentation;
-- (SKUICompletionList)initWithCacheRepresentation:(id)a3;
-- (SKUICompletionList)initWithCompletionListDictionary:(id)a3;
+- (SKUICompletionList)initWithCacheRepresentation:(id)representation;
+- (SKUICompletionList)initWithCompletionListDictionary:(id)dictionary;
 @end
 
 @implementation SKUICompletionList
 
-- (SKUICompletionList)initWithCompletionListDictionary:(id)a3
+- (SKUICompletionList)initWithCompletionListDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -27,19 +27,19 @@
   v13 = [(SKUICompletionList *)&v31 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"item"];
+    v14 = [dictionaryCopy objectForKey:@"item"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v13->_title, v14);
     }
 
-    v15 = [v4 objectForKey:@"hints"];
+    v15 = [dictionaryCopy objectForKey:@"hints"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = v4;
+      v26 = dictionaryCopy;
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v27 = 0u;
       v28 = 0u;
@@ -82,16 +82,16 @@
       completions = v13->_completions;
       v13->_completions = v16;
 
-      v4 = v26;
+      dictionaryCopy = v26;
     }
   }
 
   return v13;
 }
 
-- (SKUICompletionList)initWithCacheRepresentation:(id)a3
+- (SKUICompletionList)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -118,7 +118,7 @@ LABEL_12:
   v13 = [(SKUICompletionList *)&v21 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"title"];
+    v14 = [representationCopy objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@ LABEL_12:
       v13->_title = v15;
     }
 
-    self = [v4 objectForKey:@"completions"];
+    self = [representationCopy objectForKey:@"completions"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -148,21 +148,21 @@ LABEL_13:
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   completions = self->_completions;
   if (completions)
   {
     v5 = SKUICacheCodingEncodeArray(completions);
-    [v3 setObject:v5 forKey:@"completions"];
+    [dictionary setObject:v5 forKey:@"completions"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

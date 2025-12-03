@@ -1,45 +1,45 @@
 @interface MPSGraphStitchedOp
-- (MPSGraphStitchedOp)initWithGraph:(id)a3 withBlock:(id)a4 inputTensors:(id)a5 controlDependencies:(id)a6 name:(id)a7;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
-- (void)recurseOperation:(id)a3 builder:(void *)a4 symbolTable:(void *)a5 tensorToValueMap:(void *)a6 operationsRecursed:(id)a7;
+- (MPSGraphStitchedOp)initWithGraph:(id)graph withBlock:(id)block inputTensors:(id)tensors controlDependencies:(id)dependencies name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
+- (void)recurseOperation:(id)operation builder:(void *)builder symbolTable:(void *)table tensorToValueMap:(void *)map operationsRecursed:(id)recursed;
 @end
 
 @implementation MPSGraphStitchedOp
 
-- (MPSGraphStitchedOp)initWithGraph:(id)a3 withBlock:(id)a4 inputTensors:(id)a5 controlDependencies:(id)a6 name:(id)a7
+- (MPSGraphStitchedOp)initWithGraph:(id)graph withBlock:(id)block inputTensors:(id)tensors controlDependencies:(id)dependencies name:(id)name
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = MEMORY[0x1E12E6580](a4);
+  nameCopy = name;
+  dependenciesCopy = dependencies;
+  tensorsCopy = tensors;
+  graphCopy = graph;
+  v16 = MEMORY[0x1E12E6580](block);
   stitchingBlock = self->_stitchingBlock;
   self->_stitchingBlock = v16;
 
   v20.receiver = self;
   v20.super_class = MPSGraphStitchedOp;
-  v18 = [(MPSGraphOperation *)&v20 initWithGraph:v15 inputTensors:v14 controlDependencies:v13 name:v12];
+  v18 = [(MPSGraphOperation *)&v20 initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
 
   return v18;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v7 = a6;
+  initializationCopy = initialization;
   v102 = *MEMORY[0x1E69E9840];
-  v69 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphStitchedOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphStitchedOps.mm", __p);
-  v74 = v69;
-  v75 = a3;
+  v74 = nameCopy;
+  builderCopy = builder;
   v101 = 260;
   p_data = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, &p_data);
+  StringAttr = mlir::Builder::getStringAttr(builder, &p_data);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x33u, 0);
   if (v74)
   {
     v14 = v74;
-    v15 = [v74 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v74 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -54,7 +54,7 @@
     HIBYTE(v78) = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     v18 = &__dst + v17;
@@ -68,7 +68,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v12, &v98);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v12, &v98);
   v19 = v98.__r_.__value_.__r.__words[0];
   if ((v98.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -84,7 +84,7 @@
   }
 
   LOBYTE(v101) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, &p_data);
+  v21 = mlir::Builder::getStringAttr(builder, &p_data);
   v71 = mlir::NameLoc::get(v21, v13);
   if (SHIBYTE(v98.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -109,9 +109,9 @@ LABEL_16:
   }
 
   v90 = 0;
-  F32Type = mlir::Builder::getF32Type(a3, v22);
+  F32Type = mlir::Builder::getF32Type(builder, v22);
   v89 = mlir::UnrankedTensorType::get(F32Type);
-  v90 = mlir::OpBuilder::create<mlir::mpsx::StitchedOp,mlir::UnrankedTensorType &>(a3, v71, &v89) - 16;
+  v90 = mlir::OpBuilder::create<mlir::mpsx::StitchedOp,mlir::UnrankedTensorType &>(builder, v71, &v89) - 16;
   DefiningOp = mlir::Value::getDefiningOp(&v90);
   if (self->super._name)
   {
@@ -123,7 +123,7 @@ LABEL_16:
     name = v74;
   }
 
-  MPSSymbolTable::insertOp(a4, DefiningOp, name, &v87);
+  MPSSymbolTable::insertOp(table, DefiningOp, name, &v87);
   v26 = mlir::Value::getDefiningOp(&v90);
   if (*(*(v26 + 48) + 16) == &mlir::detail::TypeIDResolver<mlir::mpsx::StitchedOp,void>::id)
   {
@@ -138,13 +138,13 @@ LABEL_16:
   v28 = *(v27 + 40);
   v29 = *(v27 + 44);
   mlir::ValueRange::ValueRange(&p_data, 0, 0);
-  Block = mlir::OpBuilder::createBlock(v75, ((v27 + 16 * ((v29 >> 23) & 1) + ((v29 >> 21) & 0x7F8) + 71) & 0xFFFFFFFFFFFFFFF8) + 32 * v28, 0, p_data, v100[0], 0, 0);
-  *(v75 + 2) = Block;
-  *(v75 + 3) = Block + 2;
-  if (v7)
+  Block = mlir::OpBuilder::createBlock(builderCopy, ((v27 + 16 * ((v29 >> 23) & 1) + ((v29 >> 21) & 0x7F8) + 71) & 0xFFFFFFFFFFFFFFF8) + 32 * v28, 0, p_data, v100[0], 0, 0);
+  *(builderCopy + 2) = Block;
+  *(builderCopy + 3) = Block + 2;
+  if (initializationCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._graph);
-    v70 = [WeakRetained[10] copyWithZone:0];
+    dictionary = [WeakRetained[10] copyWithZone:0];
 
     v32 = (*(self->_stitchingBlock + 2))();
     finalOutputTensorForStitchedRegion = self->_finalOutputTensorForStitchedRegion;
@@ -154,7 +154,7 @@ LABEL_16:
     v73 = v34[10];
 
     v68 = [MEMORY[0x1E695DF70] arrayWithArray:v73];
-    [v68 removeObjectsInArray:v70];
+    [v68 removeObjectsInArray:dictionary];
     v35 = [MEMORY[0x1E695DEC8] arrayWithArray:v68];
     opsAddedInStitchedRegion = self->_opsAddedInStitchedRegion;
     self->_opsAddedInStitchedRegion = v35;
@@ -163,19 +163,19 @@ LABEL_16:
     for (i = 0; i < [(NSArray *)self->_opsAddedInStitchedRegion count]; ++i)
     {
       v39 = [(NSArray *)self->_opsAddedInStitchedRegion objectAtIndexedSubscript:i];
-      v40 = [v39 inputTensors];
+      inputTensors = [v39 inputTensors];
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
       v85[2] = __90__MPSGraphStitchedOp_makeMLIROpWithBuilder_symbolTable_inputValues_opInitialization_name___block_invoke;
       v85[3] = &unk_1E86D4E20;
       v85[4] = self;
       v86 = v37;
-      [v40 enumerateObjectsUsingBlock:v85];
+      [inputTensors enumerateObjectsUsingBlock:v85];
     }
 
-    v55 = [v37 allObjects];
+    allObjects = [v37 allObjects];
     inputTensors = self->super._inputTensors;
-    self->super._inputTensors = v55;
+    self->super._inputTensors = allObjects;
 
     *&__dst = 0;
     *(&__dst + 1) = &__dst;
@@ -207,8 +207,8 @@ LABEL_16:
     }
 
     mlir::OperationState::OperationState(&p_data, v71, v59);
-    mlir::memref::DeallocOp::build(v75, &p_data, v57.impl);
-    mlir::OpBuilder::create(v75, &p_data);
+    mlir::memref::DeallocOp::build(builderCopy, &p_data, v57.impl);
+    mlir::OpBuilder::create(builderCopy, &p_data);
     mlir::OperationState::~OperationState(&p_data);
     v61.impl = [(MPSGraphTensor *)self->_finalOutputTensorForStitchedRegion value];
     *(v90 + 8) = *(v61.impl + 1) & 0xFFFFFFFFFFFFFFF8 | *(v90 + 8) & 7;
@@ -222,7 +222,7 @@ LABEL_16:
 
   else
   {
-    v70 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v41 = 0;
     v100[0] = 0;
     v100[1] = 0;
@@ -230,7 +230,7 @@ LABEL_16:
     while (v41 < [(NSArray *)self->super._inputTensors count])
     {
       v42 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:v41];
-      if (v41 >= (*(a5 + 1) - *a5) >> 3)
+      if (v41 >= (*(values + 1) - *values) >> 3)
       {
         std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
       }
@@ -275,12 +275,12 @@ LABEL_37:
       ++v41;
     }
 
-    v46 = [(MPSGraphTensor *)self->_finalOutputTensorForStitchedRegion operation];
-    [(MPSGraphStitchedOp *)self recurseOperation:v46 builder:v75 symbolTable:a4 tensorToValueMap:&p_data operationsRecursed:v70];
+    operation = [(MPSGraphTensor *)self->_finalOutputTensorForStitchedRegion operation];
+    [(MPSGraphStitchedOp *)self recurseOperation:operation builder:builderCopy symbolTable:table tensorToValueMap:&p_data operationsRecursed:dictionary];
 
-    v47 = [(MPSGraphTensor *)self->_finalOutputTensorForStitchedRegion operation];
-    v48 = [v47 outputTensors];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    operation2 = [(MPSGraphTensor *)self->_finalOutputTensorForStitchedRegion operation];
+    outputTensors = [operation2 outputTensors];
+    v49 = [outputTensors objectAtIndexedSubscript:0];
     v50 = v100[0];
     if (!v100[0])
     {
@@ -310,15 +310,15 @@ LABEL_47:
 
     *&__dst = v51[5];
 
-    mlir::OpBuilder::create<mlir::mpsx::ReturnStitchedOp,mlir::Value &>(v75, v71, &__dst);
+    mlir::OpBuilder::create<mlir::mpsx::ReturnStitchedOp,mlir::Value &>(builderCopy, v71, &__dst);
     std::__tree<MPSGraphTensor * {__strong}>::destroy(&p_data, v100[0]);
   }
 
   v62 = mlir::Value::getDefiningOp(&v90);
   v63 = *(v62 + 16);
   v65 = *(MPSGraphDelegateCompiler.precompilationDescriptor.modify(v62, v64) + 8);
-  *(v75 + 2) = v63;
-  *(v75 + 3) = v65;
+  *(builderCopy + 2) = v63;
+  *(builderCopy + 3) = v65;
   v66 = mlir::Value::getDefiningOp(&v90);
   if (v88 < 0)
   {
@@ -350,50 +350,50 @@ void __90__MPSGraphStitchedOp_makeMLIROpWithBuilder_symbolTable_inputValues_opIn
   std::vector<mlir::Value>::push_back[abi:ne200100](v4 + 48, &v5);
 }
 
-- (void)recurseOperation:(id)a3 builder:(void *)a4 symbolTable:(void *)a5 tensorToValueMap:(void *)a6 operationsRecursed:(id)a7
+- (void)recurseOperation:(id)operation builder:(void *)builder symbolTable:(void *)table tensorToValueMap:(void *)map operationsRecursed:(id)recursed
 {
-  v11 = a3;
-  v59 = a7;
-  if (v11)
+  operationCopy = operation;
+  recursedCopy = recursed;
+  if (operationCopy)
   {
-    v58 = v11;
-    if ([(NSArray *)self->_opsAddedInStitchedRegion containsObject:v11])
+    v58 = operationCopy;
+    if ([(NSArray *)self->_opsAddedInStitchedRegion containsObject:operationCopy])
     {
-      v12 = [v59 objectForKeyedSubscript:v11];
+      v12 = [recursedCopy objectForKeyedSubscript:operationCopy];
 
       if (!v12)
       {
-        [v59 setObject:v11 forKey:v11];
+        [recursedCopy setObject:operationCopy forKey:operationCopy];
         for (i = 0; ; ++i)
         {
-          v14 = [v11 controlDependencies];
-          v15 = [v14 count];
+          controlDependencies = [operationCopy controlDependencies];
+          v15 = [controlDependencies count];
 
           if (i >= v15)
           {
             break;
           }
 
-          v16 = [v11 controlDependencies];
-          v17 = [v16 objectAtIndexedSubscript:i];
+          controlDependencies2 = [operationCopy controlDependencies];
+          v17 = [controlDependencies2 objectAtIndexedSubscript:i];
 
-          [(MPSGraphStitchedOp *)self recurseOperation:v17 builder:a4 symbolTable:a5 tensorToValueMap:a6 operationsRecursed:v59];
+          [(MPSGraphStitchedOp *)self recurseOperation:v17 builder:builder symbolTable:table tensorToValueMap:map operationsRecursed:recursedCopy];
         }
 
-        v18 = [v11 inputTensors];
+        inputTensors = [operationCopy inputTensors];
         v19 = 0;
-        v20 = a6 + 8;
-        for (j = [v18 count]; v19 < j; j = objc_msgSend(v18, "count", v56))
+        v20 = map + 8;
+        for (j = [inputTensors count]; v19 < j; j = objc_msgSend(inputTensors, "count", v56))
         {
-          v22 = [v18 objectAtIndexedSubscript:v19];
-          v23 = v22;
+          v22 = [inputTensors objectAtIndexedSubscript:v19];
+          operation = v22;
           v24 = *v20;
           if (!*v20)
           {
             goto LABEL_18;
           }
 
-          v25 = a6 + 8;
+          v25 = map + 8;
           do
           {
             v26 = *(v24 + 4);
@@ -412,10 +412,10 @@ void __90__MPSGraphStitchedOp_makeMLIROpWithBuilder_symbolTable_inputValues_opIn
           {
 LABEL_18:
 
-            v29 = [v18 objectAtIndexedSubscript:v19];
-            v23 = [v29 operation];
+            v29 = [inputTensors objectAtIndexedSubscript:v19];
+            operation = [v29 operation];
 
-            [(MPSGraphStitchedOp *)self recurseOperation:v23 builder:a4 symbolTable:a5 tensorToValueMap:a6 operationsRecursed:v59];
+            [(MPSGraphStitchedOp *)self recurseOperation:operation builder:builder symbolTable:table tensorToValueMap:map operationsRecursed:recursedCopy];
           }
 
           ++v19;
@@ -425,16 +425,16 @@ LABEL_18:
         __p = 0;
         v61 = 0;
         v62 = 0;
-        while (v30 < [v18 count])
+        while (v30 < [inputTensors count])
         {
-          v32 = [v18 objectAtIndexedSubscript:v30];
+          v32 = [inputTensors objectAtIndexedSubscript:v30];
           v33 = *v20;
           if (!*v20)
           {
             goto LABEL_31;
           }
 
-          v34 = a6 + 8;
+          v34 = map + 8;
           do
           {
             v35 = *(v33 + 4);
@@ -452,7 +452,7 @@ LABEL_18:
           if (v34 == v20 || v32 < *(v34 + 4))
           {
 LABEL_31:
-            v34 = a6 + 8;
+            v34 = map + 8;
           }
 
           v37 = *(v34 + 5);
@@ -475,8 +475,8 @@ LABEL_31:
               std::vector<long>::__throw_length_error[abi:ne200100]();
             }
 
-            v43 = a4;
-            v44 = a5;
+            builderCopy = builder;
+            tableCopy = table;
             v45 = v62 - __p;
             if ((v62 - __p) >> 2 > v42)
             {
@@ -508,26 +508,26 @@ LABEL_31:
             memcpy(0, v39, v40);
             __p = 0;
             v62 = 0;
-            v11 = v58;
-            a5 = v44;
-            a4 = v43;
-            v18 = v56;
+            operationCopy = v58;
+            table = tableCopy;
+            builder = builderCopy;
+            inputTensors = v56;
           }
 
           v61 = v31;
           ++v30;
         }
 
-        v47 = [v11 name];
-        v48 = [v11 makeMLIROpWithBuilder:a4 symbolTable:a5 inputValues:&__p opInitialization:0 name:v47];
+        name = [operationCopy name];
+        v48 = [operationCopy makeMLIROpWithBuilder:builder symbolTable:table inputValues:&__p opInitialization:0 name:name];
 
         v49 = *(v48 + 36);
         if (v49 >= 1)
         {
           for (k = 0; k != v49; ++k)
           {
-            v51 = [v11 outputTensors];
-            v52 = [v51 objectAtIndexedSubscript:k];
+            outputTensors = [operationCopy outputTensors];
+            v52 = [outputTensors objectAtIndexedSubscript:k];
             v53 = *v20;
             if (!*v20)
             {
@@ -565,7 +565,7 @@ LABEL_52:
               }
             }
 
-            v11 = v58;
+            operationCopy = v58;
           }
         }
 

@@ -1,21 +1,21 @@
 @interface TRILimitedCarryProfileManager
-- ($A5A652246548B43F8BC05201A1C72A70)_enqueueTask:(id)a3;
-- (BOOL)_setStoredLimitedCarryExperimentsWithError:(id *)a3;
-- (TRILimitedCarryProfileManager)initWithTaskQueue:(id)a3 context:(id)a4;
-- (id)_getStoredLimitedCarryExperimentsWithError:(id *)a3;
+- ($A5A652246548B43F8BC05201A1C72A70)_enqueueTask:(id)task;
+- (BOOL)_setStoredLimitedCarryExperimentsWithError:(id *)error;
+- (TRILimitedCarryProfileManager)initWithTaskQueue:(id)queue context:(id)context;
+- (id)_getStoredLimitedCarryExperimentsWithError:(id *)error;
 - (id)_limitedCarryExperiments;
 - (void)_gatherProfileUpdatesAndScheduleRelatedTasks;
 - (void)processLaunchEvent;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeProfileForExperiment:(id)a3;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeProfileForExperiment:(id)experiment;
 @end
 
 @implementation TRILimitedCarryProfileManager
 
-- (TRILimitedCarryProfileManager)initWithTaskQueue:(id)a3 context:(id)a4
+- (TRILimitedCarryProfileManager)initWithTaskQueue:(id)queue context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = TRILimitedCarryProfileManager;
   v9 = [(TRILimitedCarryProfileManager *)&v22 init];
@@ -28,14 +28,14 @@
       _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "Initializing profile connection observer", buf, 2u);
     }
 
-    if (!v7)
+    if (!queueCopy)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v9 file:@"TRILimitedCarryProfileManager.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"TRILimitedCarryProfileManager.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
     }
 
-    objc_storeWeak(&v9->_taskQueue, v7);
-    objc_storeWeak(&v9->_context, v8);
+    objc_storeWeak(&v9->_taskQueue, queueCopy);
+    objc_storeWeak(&v9->_context, contextCopy);
     v11 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"com.apple.trial.profile-updates-timeout-coalesce" qosClass:17];
     profileProcessingQueue = v9->_profileProcessingQueue;
     v9->_profileProcessingQueue = v11;
@@ -56,8 +56,8 @@
     checkForUpdates = v13->_checkForUpdates;
     v13->_checkForUpdates = v14;
 
-    v16 = [MEMORY[0x277D262A0] sharedConnection];
-    [v16 registerObserver:v13];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v13];
   }
 
   return v9;
@@ -113,31 +113,31 @@ uint64_t __59__TRILimitedCarryProfileManager_initWithTaskQueue_context___block_i
 - (id)_limitedCarryExperiments
 {
   v71 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 enumeratorAtPath:@"/private/var/Managed Preferences/mobile/"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager enumeratorAtPath:@"/private/var/Managed Preferences/mobile/"];
 
   v54 = objc_opt_new();
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 nextObject];
-  if (v5)
+  nextObject = [v3 nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     v7 = 0x277CBE000uLL;
-    while (![v6 containsString:@"com.apple.internal.trial.limitedcarry"])
+    while (![nextObject2 containsString:@"com.apple.internal.trial.limitedcarry"])
     {
 LABEL_36:
 
       objc_autoreleasePoolPop(v4);
       v4 = objc_autoreleasePoolPush();
-      v6 = [v3 nextObject];
-      if (!v6)
+      nextObject2 = [v3 nextObject];
+      if (!nextObject2)
       {
         goto LABEL_57;
       }
     }
 
     v8 = *(v7 + 3008);
-    v9 = [@"/private/var/Managed Preferences/mobile/" stringByAppendingPathComponent:v6];
+    v9 = [@"/private/var/Managed Preferences/mobile/" stringByAppendingPathComponent:nextObject2];
     v10 = [v8 fileURLWithPath:v9];
 
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -162,7 +162,7 @@ LABEL_36:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v66 = v6;
+        v66 = nextObject2;
         _os_log_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEFAULT, "Found relevant managed preferences file: %@", buf, 0xCu);
       }
 
@@ -183,7 +183,7 @@ LABEL_36:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v66 = v6;
+          v66 = nextObject2;
           v67 = 2112;
           v68 = v19;
           _os_log_error_impl(&dword_26F567000, v29, OS_LOG_TYPE_ERROR, "Limited carry profile %@ doesn't provide a valid experiment identifier, found: %@", buf, 0x16u);
@@ -216,7 +216,7 @@ LABEL_36:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v66 = v6;
+            v66 = nextObject2;
             _os_log_error_impl(&dword_26F567000, v28, OS_LOG_TYPE_ERROR, "Limited Carry Profile %@ is malformed. It is providing NamespaceName and NamespaceName array.", buf, 0xCu);
           }
 
@@ -272,9 +272,9 @@ LABEL_36:
                     if (v38 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
                       v39 = MEMORY[0x277D73750];
-                      v40 = [MEMORY[0x277D737E0] sharedPaths];
-                      v41 = [v40 namespaceDescriptorsDefaultDir];
-                      v42 = [v39 loadWithNamespaceName:v38 fromDirectory:v41];
+                      mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+                      namespaceDescriptorsDefaultDir = [mEMORY[0x277D737E0] namespaceDescriptorsDefaultDir];
+                      v42 = [v39 loadWithNamespaceName:v38 fromDirectory:namespaceDescriptorsDefaultDir];
 
                       v12 = v55;
                       if (!v42)
@@ -285,7 +285,7 @@ LABEL_36:
                           *buf = 138412802;
                           v66 = log;
                           v67 = 2112;
-                          v68 = v6;
+                          v68 = nextObject2;
                           v69 = 2114;
                           v70 = v38;
                           _os_log_error_impl(&dword_26F567000, v43, OS_LOG_TYPE_ERROR, "Found experiment %@ for installed profile %@ specifies namespace %{public}@, which is not registered with Trial", buf, 0x20u);
@@ -301,7 +301,7 @@ LABEL_36:
                       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138412546;
-                        v66 = v6;
+                        v66 = nextObject2;
                         v67 = 2112;
                         v68 = v53;
                         _os_log_error_impl(&dword_26F567000, v42, OS_LOG_TYPE_ERROR, "Limited carry profile %@ doesn't provide a valid namespace name, found: %@", buf, 0x16u);
@@ -322,7 +322,7 @@ LABEL_36:
             }
 
             v44 = [v12 objectForKeyedSubscript:{@"Experiment", v47, v48}];
-            [v32 setObject:v44 forKeyedSubscript:v6];
+            [v32 setObject:v44 forKeyedSubscript:nextObject2];
 
             v7 = 0x277CBE000;
             v13 = v51;
@@ -335,7 +335,7 @@ LABEL_36:
           if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v66 = v6;
+            v66 = nextObject2;
             _os_log_error_impl(&dword_26F567000, v49, OS_LOG_TYPE_ERROR, "Limited Carry Profile %@ is malformed. NamespaceName and NamespaceName array are both missing.", buf, 0xCu);
           }
         }
@@ -347,7 +347,7 @@ LABEL_36:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v66 = v6;
+          v66 = nextObject2;
           v67 = 2112;
           v68 = v21;
           _os_log_error_impl(&dword_26F567000, v27, OS_LOG_TYPE_ERROR, "Limited carry profile %@ doesn't provide a valid deployment identifier, found: %@", buf, 0x16u);
@@ -361,7 +361,7 @@ LABEL_36:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v66 = v6;
+        v66 = nextObject2;
         v67 = 2112;
         v68 = v10;
         v69 = 2112;
@@ -384,10 +384,10 @@ LABEL_57:
   return v54;
 }
 
-- (void)removeProfileForExperiment:(id)a3
+- (void)removeProfileForExperiment:(id)experiment
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  experimentCopy = experiment;
   [(TRILimitedCarryProfileManager *)self _limitedCarryExperiments];
   v22 = 0u;
   v23 = 0u;
@@ -411,8 +411,8 @@ LABEL_57:
         v11 = [v5 objectForKeyedSubscript:{v10, v22}];
         v12 = [v11 objectForKeyedSubscript:@"ExperimentID"];
 
-        v13 = [v4 experimentId];
-        v14 = [v12 isEqualToString:v13];
+        experimentId = [experimentCopy experimentId];
+        v14 = [v12 isEqualToString:experimentId];
 
         if (v14)
         {
@@ -421,19 +421,19 @@ LABEL_57:
 
           if (v16)
           {
-            v17 = [v16 longLongValue];
-            if ([v4 deploymentId] != v17)
+            longLongValue = [v16 longLongValue];
+            if ([experimentCopy deploymentId] != longLongValue)
             {
               v19 = TRILogCategory_Server();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
-                v21 = [v4 deploymentId];
+                deploymentId = [experimentCopy deploymentId];
                 *buf = 138412802;
                 v27 = v16;
                 v28 = 2112;
                 v29 = v12;
                 v30 = 1024;
-                v31 = v21;
+                v31 = deploymentId;
                 _os_log_error_impl(&dword_26F567000, v19, OS_LOG_TYPE_ERROR, "Found deployment %@ for experiment %@ from profile does not match deployment identifier for experiment record: %d", buf, 0x1Cu);
               }
 
@@ -441,8 +441,8 @@ LABEL_57:
             }
           }
 
-          v18 = [MEMORY[0x277D262A0] sharedConnection];
-          [v18 removeProfileWithIdentifier:v10];
+          mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+          [mEMORY[0x277D262A0] removeProfileWithIdentifier:v10];
         }
       }
 
@@ -461,7 +461,7 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = TRILogCategory_Server();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -476,7 +476,7 @@ LABEL_16:
 - (void)_gatherProfileUpdatesAndScheduleRelatedTasks
 {
   v61 = *MEMORY[0x277D85DE8];
-  v44 = [(TRILimitedCarryProfileManager *)self _limitedCarryExperiments];
+  _limitedCarryExperiments = [(TRILimitedCarryProfileManager *)self _limitedCarryExperiments];
   v54 = 0;
   v3 = [(TRILimitedCarryProfileManager *)self _getStoredLimitedCarryExperimentsWithError:&v54];
   if (v54)
@@ -492,7 +492,7 @@ LABEL_16:
     }
   }
 
-  v42 = self;
+  selfCopy = self;
   v43 = +[TRISequenceTask task];
   v50 = 0u;
   v51 = 0u;
@@ -524,7 +524,7 @@ LABEL_28:
       }
 
       v12 = *(*(&v50 + 1) + 8 * i);
-      v13 = [v44 objectForKeyedSubscript:v12];
+      v13 = [_limitedCarryExperiments objectForKeyedSubscript:v12];
       v14 = [v5 objectForKeyedSubscript:v12];
       v15 = v14;
       if (!v13)
@@ -539,7 +539,7 @@ LABEL_28:
 
         v17 = [(__CFString *)v15 objectForKeyedSubscript:@"ExperimentID"];
         v18 = [(__CFString *)v15 objectForKeyedSubscript:@"DeploymentID"];
-        v19 = [v18 longLongValue];
+        longLongValue = [v18 longLongValue];
         v20 = v17;
         v21 = 4;
         goto LABEL_19;
@@ -573,12 +573,12 @@ LABEL_28:
 
         v17 = [(__CFString *)v15 objectForKeyedSubscript:@"ExperimentID"];
         v18 = [(__CFString *)v15 objectForKeyedSubscript:@"DeploymentID"];
-        v19 = [v18 longLongValue];
+        longLongValue = [v18 longLongValue];
         v9 = 1;
         v20 = v17;
         v21 = 11;
 LABEL_19:
-        v23 = [TRIDeactivateTreatmentTask taskWithExperimentId:v20 deploymentId:v19 failOnUnrecognizedExperiment:1 triggerEvent:v21 taskAttribution:0];
+        v23 = [TRIDeactivateTreatmentTask taskWithExperimentId:v20 deploymentId:longLongValue failOnUnrecognizedExperiment:1 triggerEvent:v21 taskAttribution:0];
         [v43 addTaskToEndOfSequence:v23];
 
         v8 = 1;
@@ -607,7 +607,7 @@ LABEL_29:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v27 = v44;
+  v27 = _limitedCarryExperiments;
   v28 = [v27 countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v28)
   {
@@ -646,7 +646,7 @@ LABEL_29:
     while (v29);
   }
 
-  [(TRILimitedCarryProfileManager *)v42 setLcExperiments:v27];
+  [(TRILimitedCarryProfileManager *)selfCopy setLcExperiments:v27];
   if (v9)
   {
     v36 = [objc_alloc(MEMORY[0x277D736A0]) initWithAllowsCellular:1 discretionaryBehavior:0];
@@ -660,9 +660,9 @@ LABEL_29:
   if (v41)
   {
 LABEL_43:
-    [(TRILimitedCarryProfileManager *)v42 _enqueueTask:v43];
+    [(TRILimitedCarryProfileManager *)selfCopy _enqueueTask:v43];
     v45 = 0;
-    if (![(TRILimitedCarryProfileManager *)v42 _setStoredLimitedCarryExperimentsWithError:&v45])
+    if (![(TRILimitedCarryProfileManager *)selfCopy _setStoredLimitedCarryExperimentsWithError:&v45])
     {
       v39 = TRILogCategory_Server();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -676,16 +676,16 @@ LABEL_43:
     }
   }
 
-  txn = v42->_txn;
-  v42->_txn = 0;
+  txn = selfCopy->_txn;
+  selfCopy->_txn = 0;
 LABEL_49:
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_enqueueTask:(id)a3
+- ($A5A652246548B43F8BC05201A1C72A70)_enqueueTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   WeakRetained = objc_loadWeakRetained(&self->_taskQueue);
   if (!WeakRetained)
   {
@@ -698,7 +698,7 @@ LABEL_49:
   }
 
   v7 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
-  v8.var0 = [WeakRetained addTask:v4 options:v7];
+  v8.var0 = [WeakRetained addTask:taskCopy options:v7];
 
   v9 = [[TRIRunningXPCActivityDescriptor alloc] initForImmediateWorkWithCapabilities:7];
   [WeakRetained resumeWithXPCActivityDescriptor:v9 executeWhenSuspended:0];
@@ -716,30 +716,30 @@ LABEL_49:
   return v8;
 }
 
-- (BOOL)_setStoredLimitedCarryExperimentsWithError:(id *)a3
+- (BOOL)_setStoredLimitedCarryExperimentsWithError:(id *)error
 {
-  v6 = [(TRILimitedCarryProfileManager *)self lcExperiments];
+  lcExperiments = [(TRILimitedCarryProfileManager *)self lcExperiments];
 
-  if (!v6)
+  if (!lcExperiments)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRILimitedCarryProfileManager.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"self.lcExperiments != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILimitedCarryProfileManager.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"self.lcExperiments != nil"}];
   }
 
   v7 = MEMORY[0x277CCAAB0];
-  v8 = [(TRILimitedCarryProfileManager *)self lcExperiments];
+  lcExperiments2 = [(TRILimitedCarryProfileManager *)self lcExperiments];
   v19 = 0;
-  v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v19];
+  v9 = [v7 archivedDataWithRootObject:lcExperiments2 requiringSecureCoding:1 error:&v19];
   v10 = v19;
 
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v12 = [WeakRetained keyValueStore];
+    keyValueStore = [WeakRetained keyValueStore];
 
-    if (v12)
+    if (keyValueStore)
     {
-      [v12 setBlob:v9 forKey:@"com.apple.internal.trial.limitedcarry.db" usingTransaction:0];
+      [keyValueStore setBlob:v9 forKey:@"com.apple.internal.trial.limitedcarry.db" usingTransaction:0];
       v13 = 1;
     }
 
@@ -752,14 +752,14 @@ LABEL_49:
         _os_log_error_impl(&dword_26F567000, v15, OS_LOG_TYPE_ERROR, "Setting persisted Limited Carry profile information failed, key-value store was nil", buf, 2u);
       }
 
-      v12 = 0;
+      keyValueStore = 0;
       v13 = 0;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_12;
@@ -767,21 +767,21 @@ LABEL_49:
 
     v14 = v10;
     v13 = 0;
-    v12 = *a3;
-    *a3 = v14;
+    keyValueStore = *error;
+    *error = v14;
   }
 
 LABEL_12:
   return v13;
 }
 
-- (id)_getStoredLimitedCarryExperimentsWithError:(id *)a3
+- (id)_getStoredLimitedCarryExperimentsWithError:(id *)error
 {
   v20[3] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v5 = [WeakRetained keyValueStore];
+  keyValueStore = [WeakRetained keyValueStore];
 
-  if (!v5)
+  if (!keyValueStore)
   {
     v7 = TRILogCategory_Server();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -793,13 +793,13 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v6 = [v5 blobForKey:@"com.apple.internal.trial.limitedcarry.db" usingTransaction:0];
+  v6 = [keyValueStore blobForKey:@"com.apple.internal.trial.limitedcarry.db" usingTransaction:0];
   if (!v6)
   {
-    if (a3)
+    if (error)
     {
-      v15 = *a3;
-      *a3 = 0;
+      v15 = *error;
+      *error = 0;
     }
 
     v7 = 0;
@@ -825,9 +825,9 @@ LABEL_10:
     v14 = v11;
   }
 
-  else if (a3)
+  else if (error)
   {
-    objc_storeStrong(a3, v12);
+    objc_storeStrong(error, v12);
   }
 
 LABEL_14:

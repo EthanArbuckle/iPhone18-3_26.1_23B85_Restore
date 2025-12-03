@@ -12,12 +12,12 @@
   v2 = [(MKDevice *)&v33 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_286AAD350];
-    v5 = [v3 userInterfaceIdiom];
-    if (v5)
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    if (userInterfaceIdiom)
     {
-      if (v5 != 1)
+      if (userInterfaceIdiom != 1)
       {
         goto LABEL_13;
       }
@@ -56,19 +56,19 @@
     [(MKDevice *)v2 setIconSize:v7];
 
 LABEL_13:
-    v8 = [v3 systemName];
-    [(MKDevice *)v2 setSystemName:v8];
+    systemName = [currentDevice systemName];
+    [(MKDevice *)v2 setSystemName:systemName];
 
-    v9 = [v3 systemVersion];
-    [(MKDevice *)v2 setSystemVersion:v9];
+    systemVersion = [currentDevice systemVersion];
+    [(MKDevice *)v2 setSystemVersion:systemVersion];
 
-    v10 = [v3 name];
-    [(MKDevice *)v2 setDeviceName:v10];
+    name = [currentDevice name];
+    [(MKDevice *)v2 setDeviceName:name];
 
     v11 = +[_TtC12MigrationKit5Model humanReadableName];
     [(MKDevice *)v2 setDeviceModel:v11];
 
-    v12 = [v3 model];
+    model = [currentDevice model];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -90,7 +90,7 @@ LABEL_13:
           }
 
           v18 = *(*(&v29 + 1) + 8 * i);
-          if ([v12 rangeOfString:v18] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([model rangeOfString:v18] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v16 = v18;
             goto LABEL_23;

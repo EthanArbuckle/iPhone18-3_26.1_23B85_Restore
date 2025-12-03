@@ -1,19 +1,19 @@
 @interface OUKeyframeExtended
-- (OUKeyframeExtended)initWithDictionary:(id)a3 withGroupId:(unsigned int)a4;
-- (OUKeyframeExtended)initWithKeyframe:(id)a3 voxelize:(BOOL)a4 resample:(BOOL)a5 outlierRemove:(BOOL)a6;
+- (OUKeyframeExtended)initWithDictionary:(id)dictionary withGroupId:(unsigned int)id;
+- (OUKeyframeExtended)initWithKeyframe:(id)keyframe voxelize:(BOOL)voxelize resample:(BOOL)resample outlierRemove:(BOOL)remove;
 - (__n128)cameraPose;
-- (__n128)setCameraPose:(__n128)a3;
+- (__n128)setCameraPose:(__n128)pose;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)filterOutPointsBeyondDistance:(float)a3;
-- (void)rotateAlongZAxis:(float)a3;
-- (void)select:(unint64_t)a3 indices:(const unint64_t *)a4 from:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)filterOutPointsBeyondDistance:(float)distance;
+- (void)rotateAlongZAxis:(float)axis;
+- (void)select:(unint64_t)select indices:(const unint64_t *)indices from:(id)from;
 - (void)translateBy:(OUKeyframeExtended *)self;
 @end
 
 @implementation OUKeyframeExtended
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(OUKeyframeExtended);
   [(OUKeyframeExtended *)v4 setIdentifier:self->identifier];
@@ -31,18 +31,18 @@
   return v4;
 }
 
-- (OUKeyframeExtended)initWithDictionary:(id)a3 withGroupId:(unsigned int)a4
+- (OUKeyframeExtended)initWithDictionary:(id)dictionary withGroupId:(unsigned int)id
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v93.receiver = self;
   v93.super_class = OUKeyframeExtended;
   v7 = [(OUKeyframeExtended *)&v93 init];
-  v86 = [v6 objectForKeyedSubscript:@"identifier"];
+  v86 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v86];
   v9 = *(v7 + 17);
   *(v7 + 17) = v8;
 
-  v10 = [v6 objectForKeyedSubscript:@"cameraPose"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"cameraPose"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,20 +55,20 @@
   }
 
   v85 = v11;
-  v12 = [v11 bytes];
-  v13 = *v12;
-  v14 = v12[1];
-  v15 = v12[3];
-  *(v7 + 12) = v12[2];
+  bytes = [v11 bytes];
+  v13 = *bytes;
+  v14 = bytes[1];
+  v15 = bytes[3];
+  *(v7 + 12) = bytes[2];
   *(v7 + 13) = v15;
   *(v7 + 10) = v13;
   *(v7 + 11) = v14;
-  v16 = [v6 objectForKeyedSubscript:@"count"];
-  v17 = [v16 integerValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"count"];
+  integerValue = [v16 integerValue];
 
-  v18 = [v6 objectForKeyedSubscript:@"points"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"points"];
   objc_opt_class();
-  v84 = a4;
+  idCopy = id;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -80,12 +80,12 @@
   }
 
   v20 = v19;
-  v21 = [v20 bytes];
+  bytes2 = [v20 bytes];
   v22 = [v20 length];
   __p = 0;
   v88 = 0;
   v89 = 0;
-  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, v21, &v21[v22 & 0xFFFFFFFFFFFFFFFCLL], v22 >> 2);
+  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, bytes2, &bytes2[v22 & 0xFFFFFFFFFFFFFFFCLL], v22 >> 2);
 
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v90, ((v88 - __p) >> 2) / 3uLL);
   v23 = v90;
@@ -135,7 +135,7 @@
     operator delete(__p);
   }
 
-  v31 = [v6 objectForKeyedSubscript:@"pointsToWorld"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"pointsToWorld"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -150,12 +150,12 @@
   if (v32)
   {
     v33 = v32;
-    v34 = [v33 bytes];
+    bytes3 = [v33 bytes];
     v35 = [v33 length];
     __p = 0;
     v88 = 0;
     v89 = 0;
-    std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, v34, &v34[v35 & 0xFFFFFFFFFFFFFFFCLL], v35 >> 2);
+    std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, bytes3, &bytes3[v35 & 0xFFFFFFFFFFFFFFFCLL], v35 >> 2);
 
     _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v90, ((v88 - __p) >> 2) / 3uLL);
     v36 = v90;
@@ -224,7 +224,7 @@
     }
   }
 
-  v48 = [v6 objectForKeyedSubscript:@"semanticLabels"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"semanticLabels"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -237,12 +237,12 @@
   }
 
   v50 = v49;
-  v51 = [v50 bytes];
+  bytes4 = [v50 bytes];
   v52 = [v50 length];
   __p = 0;
   v88 = 0;
   v89 = 0;
-  std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, v51, &v51[v52], v52);
+  std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, bytes4, &bytes4[v52], v52);
 
   _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEEC2B8ne200100Em(&v90, (v88 - __p) >> 2);
   v53 = v90;
@@ -285,7 +285,7 @@
     operator delete(__p);
   }
 
-  v57 = [v6 objectForKeyedSubscript:@"semanticVotes"];
+  v57 = [dictionaryCopy objectForKeyedSubscript:@"semanticVotes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -298,12 +298,12 @@
   }
 
   v59 = v58;
-  v60 = [v59 bytes];
+  bytes5 = [v59 bytes];
   v61 = [v59 length];
   __p = 0;
   v88 = 0;
   v89 = 0;
-  std::vector<unsigned short>::__assign_with_size[abi:ne200100]<unsigned short const*,unsigned short const*>(&__p, v60, &v60[v61 & 0xFFFFFFFFFFFFFFFELL], v61 >> 1);
+  std::vector<unsigned short>::__assign_with_size[abi:ne200100]<unsigned short const*,unsigned short const*>(&__p, bytes5, &bytes5[v61 & 0xFFFFFFFFFFFFFFFELL], v61 >> 1);
 
   _ZNSt3__16vectorIDv4_tNS_9allocatorIS1_EEEC2B8ne200100Em(&v90, ((v88 - __p) >> 1) >> 2);
   v62 = v90;
@@ -346,7 +346,7 @@
     operator delete(__p);
   }
 
-  v66 = [v6 objectForKeyedSubscript:@"colors"];
+  v66 = [dictionaryCopy objectForKeyedSubscript:@"colors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -359,12 +359,12 @@
   }
 
   v68 = v67;
-  v69 = [v68 bytes];
+  bytes6 = [v68 bytes];
   v70 = [v68 length];
   __p = 0;
   v88 = 0;
   v89 = 0;
-  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, v69, &v69[v70 & 0xFFFFFFFFFFFFFFFCLL], v70 >> 2);
+  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, bytes6, &bytes6[v70 & 0xFFFFFFFFFFFFFFFCLL], v70 >> 2);
 
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v90, ((v88 - __p) >> 2) / 3uLL);
   v71 = v90;
@@ -414,17 +414,17 @@
     operator delete(__p);
   }
 
-  v79 = [v6 objectForKeyedSubscript:@"timestamp"];
+  v79 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
 
   if (v79)
   {
-    v80 = [v6 objectForKeyedSubscript:@"timestamp"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     [v80 doubleValue];
     *(v7 + 18) = v81;
   }
 
-  *(v7 + 32) = v84;
-  if (v17 == (*(v7 + 2) - *(v7 + 1)) >> 4 && v17 == (*(v7 + 5) - *(v7 + 4)) >> 4 && v17 == (*(v7 + 11) - *(v7 + 10)) >> 3 && v17 == (*(v7 + 8) - *(v7 + 7)) >> 2 && v17 == (*(v7 + 14) - *(v7 + 13)) >> 4)
+  *(v7 + 32) = idCopy;
+  if (integerValue == (*(v7 + 2) - *(v7 + 1)) >> 4 && integerValue == (*(v7 + 5) - *(v7 + 4)) >> 4 && integerValue == (*(v7 + 11) - *(v7 + 10)) >> 3 && integerValue == (*(v7 + 8) - *(v7 + 7)) >> 2 && integerValue == (*(v7 + 14) - *(v7 + 13)) >> 4)
   {
     v82 = v7;
   }
@@ -437,9 +437,9 @@
   return v82;
 }
 
-- (void)rotateAlongZAxis:(float)a3
+- (void)rotateAlongZAxis:(float)axis
 {
-  v6 = __sincosf_stret(a3);
+  v6 = __sincosf_stret(axis);
   *v5.i32 = v6.__cosval;
   *v4.i8 = v6;
   v7 = 0;
@@ -478,7 +478,7 @@
   *&self[1]._anon_20[16] = v3;
 }
 
-- (void)filterOutPointsBeyondDistance:(float)a3
+- (void)filterOutPointsBeyondDistance:(float)distance
 {
   v46 = 0uLL;
   v47 = 0;
@@ -501,7 +501,7 @@
   {
     v9 = 0;
     v10 = 0;
-    v11 = a3 * a3;
+    v11 = distance * distance;
     v12 = v8 >> 4;
     if (v12 <= 1)
     {
@@ -736,11 +736,11 @@
   }
 }
 
-- (void)select:(unint64_t)a3 indices:(const unint64_t *)a4 from:(id)a5
+- (void)select:(unint64_t)select indices:(const unint64_t *)indices from:(id)from
 {
-  v8 = a5;
-  v37 = v8;
-  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([v8 points], a3, a4, &v39.__begin_);
+  fromCopy = from;
+  v37 = fromCopy;
+  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([fromCopy points], select, indices, &v39.__begin_);
   v9 = *self->_anon_8;
   if (v9)
   {
@@ -752,7 +752,7 @@
   }
 
   *self->_anon_8 = v39;
-  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([v8 pointsToWorld], a3, a4, &v39.__begin_);
+  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([fromCopy pointsToWorld], select, indices, &v39.__begin_);
   v10 = *self->_anon_20;
   if (v10)
   {
@@ -764,19 +764,19 @@
   }
 
   *self->_anon_20 = v39;
-  v11 = [v8 semanticLabels];
+  semanticLabels = [fromCopy semanticLabels];
   memset(&v39, 0, sizeof(v39));
-  std::vector<int>::reserve(&v39, a3);
-  v13 = 8 * a3;
-  v38 = a3;
-  if (a3)
+  std::vector<int>::reserve(&v39, select);
+  v13 = 8 * select;
+  selectCopy = select;
+  if (select)
   {
     end = v39.__end_;
-    v15 = 8 * a3;
-    v16 = a4;
+    v15 = 8 * select;
+    indicesCopy = indices;
     do
     {
-      v12.i32[0] = *(v11 + 4 * *v16);
+      v12.i32[0] = *(semanticLabels + 4 * *indicesCopy);
       v17 = vmovl_u8(v12).u64[0];
       if (end >= v39.__end_cap_.__value_)
       {
@@ -829,7 +829,7 @@
       }
 
       v39.__end_ = end;
-      ++v16;
+      ++indicesCopy;
       v15 -= 8;
     }
 
@@ -847,16 +847,16 @@
   }
 
   *self->_anon_38 = v39;
-  v25 = [v37 semanticVotes];
+  semanticVotes = [v37 semanticVotes];
   memset(&v39, 0, sizeof(v39));
-  std::vector<unsigned long>::reserve(&v39, v38);
-  if (v38)
+  std::vector<unsigned long>::reserve(&v39, selectCopy);
+  if (selectCopy)
   {
     v26 = v39.__end_;
-    v27 = a4;
+    indicesCopy2 = indices;
     do
     {
-      v28 = *(v25 + 8 * *v27);
+      v28 = *(semanticVotes + 8 * *indicesCopy2);
       if (v26 >= v39.__end_cap_.__value_)
       {
         v29 = (v26 - v39.__begin_) >> 3;
@@ -908,7 +908,7 @@
       }
 
       v39.__end_ = v26;
-      ++v27;
+      ++indicesCopy2;
       v13 -= 8;
     }
 
@@ -926,7 +926,7 @@
   }
 
   *self->_anon_50 = v39;
-  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([v37 colors], v38, a4, &v39.__begin_);
+  _ZL6selectIDv3_fENSt3__16vectorIT_NS1_9allocatorIS3_EEEEPKS3_mPKm([v37 colors], selectCopy, indices, &v39.__begin_);
   v36 = *self->_anon_68;
   if (v36)
   {
@@ -940,18 +940,18 @@
   *self->_anon_68 = v39;
 }
 
-- (OUKeyframeExtended)initWithKeyframe:(id)a3 voxelize:(BOOL)a4 resample:(BOOL)a5 outlierRemove:(BOOL)a6
+- (OUKeyframeExtended)initWithKeyframe:(id)keyframe voxelize:(BOOL)voxelize resample:(BOOL)resample outlierRemove:(BOOL)remove
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  removeCopy = remove;
+  resampleCopy = resample;
+  voxelizeCopy = voxelize;
+  keyframeCopy = keyframe;
   v69.receiver = self;
   v69.super_class = OUKeyframeExtended;
   v11 = [(OUKeyframeExtended *)&v69 init];
-  if ([v10 count])
+  if ([keyframeCopy count])
   {
-    std::vector<unsigned long>::vector[abi:ne200100](__p, [v10 count]);
+    std::vector<unsigned long>::vector[abi:ne200100](__p, [keyframeCopy count]);
     v12 = __p[0];
     if (__p[0] != __p[1])
     {
@@ -981,10 +981,10 @@
       while (v16 != v13);
     }
 
-    if (v8)
+    if (voxelizeCopy)
     {
-      v20 = [v10 points];
-      if (!v20 || (v21 = __p[0], v22 = __p[1], __p[0] == __p[1]))
+      points = [keyframeCopy points];
+      if (!points || (v21 = __p[0], v22 = __p[1], __p[0] == __p[1]))
       {
         v65 = 0uLL;
         v66 = 0;
@@ -1000,7 +1000,7 @@
         v64 = vdupq_n_s32(0x3C23D70Au);
         do
         {
-          v23 = vdivq_f32(*(v20 + 16 * *v21), v64);
+          v23 = vdivq_f32(*(points + 16 * *v21), v64);
           v23.i32[3] = 0;
           v24 = _simd_round_f4(v23);
           *v24.f32 = vcvt_s32_f32(*v24.f32);
@@ -1032,7 +1032,7 @@
       v68 = v66;
     }
 
-    if (v7)
+    if (resampleCopy)
     {
       *&v72 = 0;
       v27 = 0uLL;
@@ -1069,11 +1069,11 @@
       }
     }
 
-    if (v6)
+    if (removeCopy)
     {
-      v31 = [v10 points];
-      v32 = v31;
-      if (v31)
+      points2 = [keyframeCopy points];
+      v32 = points2;
+      if (points2)
       {
         v33 = __p[0];
         v34 = __p[1];
@@ -1086,7 +1086,7 @@
           do
           {
             v37 = *v36++;
-            v38 = *(v31 + 16 * v37);
+            v38 = *(points2 + 16 * v37);
             v35 = vadd_f32(v35, v38);
           }
 
@@ -1099,7 +1099,7 @@
           do
           {
             v43 = *v42++;
-            v44 = vsub_f32(*(v31 + 16 * v43), v40);
+            v44 = vsub_f32(*(points2 + 16 * v43), v40);
             v41 = vmla_f32(v41, v44, v44);
           }
 
@@ -1136,16 +1136,16 @@
     }
 
     [(OUKeyframeExtended *)v11 select:(__p[1] - __p[0]) >> 3 indices:*&v64 from:?];
-    v55 = [v10 identifier];
+    identifier = [keyframeCopy identifier];
     identifier = v11->identifier;
-    v11->identifier = v55;
+    v11->identifier = identifier;
 
-    [v10 cameraPose];
+    [keyframeCopy cameraPose];
     *&v11[1].super.isa = v57;
     *&v11[1]._anon_8[8] = v58;
     *v11[1]._anon_20 = v59;
     *&v11[1]._anon_20[16] = v60;
-    [v10 timestamp];
+    [keyframeCopy timestamp];
     v11->timestamp = v61;
     v11->groupId = 0;
     v62 = v11;
@@ -1166,17 +1166,17 @@
 
 - (__n128)cameraPose
 {
-  result = *(a1 + 160);
-  v2 = *(a1 + 176);
-  v3 = *(a1 + 192);
-  v4 = *(a1 + 208);
+  result = *(self + 160);
+  v2 = *(self + 176);
+  v3 = *(self + 192);
+  v4 = *(self + 208);
   return result;
 }
 
-- (__n128)setCameraPose:(__n128)a3
+- (__n128)setCameraPose:(__n128)pose
 {
   result[10] = a2;
-  result[11] = a3;
+  result[11] = pose;
   result[12] = a4;
   result[13] = a5;
   return result;

@@ -1,20 +1,20 @@
 @interface FontProviderLoader
-- (BOOL)confirm:(id)a3 sceneID:(id)a4;
-- (BOOL)currentConnectionHasFontProviderEntitlement:(id *)a3 withSuppressDialogEntitlement:(BOOL *)a4 forUnitTest:(BOOL *)a5;
+- (BOOL)confirm:(id)confirm sceneID:(id)d;
+- (BOOL)currentConnectionHasFontProviderEntitlement:(id *)entitlement withSuppressDialogEntitlement:(BOOL *)dialogEntitlement forUnitTest:(BOOL *)test;
 - (BOOL)isDeviceInEduMode;
-- (BOOL)isFileURL:(id)a3 forApplicationBundlePath:(id)a4;
-- (BOOL)isOnDemandResourceFile:(id)a3;
+- (BOOL)isFileURL:(id)l forApplicationBundlePath:(id)path;
+- (BOOL)isOnDemandResourceFile:(id)file;
 - (id)basePathForODRContentAssetPack;
-- (id)fontDescriptorAttributesArrayFromFontInfoDictionary:(id)a3;
+- (id)fontDescriptorAttributesArrayFromFontInfoDictionary:(id)dictionary;
 - (id)systemContainerURL;
-- (void)doneWithInstallFonts:(BOOL)a3;
-- (void)unregisterFonts:(id)a3 appInfo:(id)a4 completionHandler:(id)a5;
-- (void)updateAppInfo:(id)a3;
+- (void)doneWithInstallFonts:(BOOL)fonts;
+- (void)unregisterFonts:(id)fonts appInfo:(id)info completionHandler:(id)handler;
+- (void)updateAppInfo:(id)info;
 @end
 
 @implementation FontProviderLoader
 
-- (BOOL)currentConnectionHasFontProviderEntitlement:(id *)a3 withSuppressDialogEntitlement:(BOOL *)a4 forUnitTest:(BOOL *)a5
+- (BOOL)currentConnectionHasFontProviderEntitlement:(id *)entitlement withSuppressDialogEntitlement:(BOOL *)dialogEntitlement forUnitTest:(BOOL *)test
 {
   v8 = +[NSXPCConnection currentConnection];
   v9 = v8;
@@ -65,13 +65,13 @@
       v14 = 1;
     }
 
-    if (a3 && v14)
+    if (entitlement && v14)
     {
       v18 = v17;
-      *a3 = v17;
+      *entitlement = v17;
     }
 
-    if (a4)
+    if (dialogEntitlement)
     {
       v19 = v15;
     }
@@ -101,7 +101,7 @@
 
     CFRelease(v10);
 
-    if (a4)
+    if (dialogEntitlement)
     {
       goto LABEL_29;
     }
@@ -112,24 +112,24 @@
     LOBYTE(v15) = 0;
     v16 = 0;
     LOBYTE(v14) = 0;
-    if (a4)
+    if (dialogEntitlement)
     {
 LABEL_29:
-      *a4 = v16;
+      *dialogEntitlement = v16;
     }
   }
 
-  if (a5)
+  if (test)
   {
-    *a5 = v15;
+    *test = v15;
   }
 
   return v14;
 }
 
-- (BOOL)confirm:(id)a3 sceneID:(id)a4
+- (BOOL)confirm:(id)confirm sceneID:(id)d
 {
-  v5 = a3;
+  confirmCopy = confirm;
   if (objc_opt_class())
   {
     v6 = +[NSUserDefaults standardUserDefaults];
@@ -148,7 +148,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 objectForKey:v5];
+      v10 = [v9 objectForKey:confirmCopy];
       if (v10)
       {
         v11 = v10;
@@ -172,7 +172,7 @@ LABEL_19:
 
           v39 = v38;
           v40 = +[NSDate now];
-          [v39 setObject:v40 forKey:v5];
+          [v39 setObject:v40 forKey:confirmCopy];
 
           [v6 setObject:v39 forKey:@"InstallDialogLastTime"];
           CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
@@ -190,7 +190,7 @@ LABEL_26:
       v9 = 0;
     }
 
-    v16 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v5];
+    v16 = [RBSProcessPredicate predicateMatchingBundleIdentifier:confirmCopy];
     v45 = 0;
     v17 = [RBSProcessHandle handleForPredicate:v16 error:&v45];
     v18 = v45;
@@ -203,9 +203,9 @@ LABEL_26:
     else
     {
       v44 = v6;
-      v20 = [v17 currentState];
-      v21 = [v20 endowmentNamespaces];
-      v22 = [v21 containsObject:@"com.apple.frontboard.visibility"];
+      currentState = [v17 currentState];
+      endowmentNamespaces = [currentState endowmentNamespaces];
+      v22 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
       if (v22)
       {
@@ -229,16 +229,16 @@ LABEL_26:
         }
 
         [v25 setDelegate:serviceDelegate];
-        v43 = [v25 endpoint];
-        v29 = [v43 _endpoint];
-        [v24 setXpcEndpoint:v29];
+        endpoint = [v25 endpoint];
+        _endpoint = [endpoint _endpoint];
+        [v24 setXpcEndpoint:_endpoint];
 
         v30 = [SBSRemoteAlertHandle newHandleWithDefinition:v23 configurationContext:v24];
         v42 = v23;
         v31 = v24;
         v32 = objc_alloc_init(SBSRemoteAlertActivationContext);
         v46 = @"identifier";
-        v47 = v5;
+        v47 = confirmCopy;
         v33 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         [v32 setUserInfo:v33];
         v34 = dispatch_semaphore_create(0);
@@ -282,10 +282,10 @@ LABEL_28:
   return v15;
 }
 
-- (void)doneWithInstallFonts:(BOOL)a3
+- (void)doneWithInstallFonts:(BOOL)fonts
 {
-  NSLog(@"FontProviderLoader - done:%d", a2, a3);
-  self->_result = a3;
+  NSLog(@"FontProviderLoader - done:%d", a2, fonts);
+  self->_result = fonts;
   alertSemaphore = self->_alertSemaphore;
   if (alertSemaphore)
   {
@@ -331,29 +331,29 @@ LABEL_28:
   return qword_10000CCE8;
 }
 
-- (BOOL)isOnDemandResourceFile:(id)a3
+- (BOOL)isOnDemandResourceFile:(id)file
 {
-  v4 = [a3 path];
-  v5 = [(FontProviderLoader *)self basePathForODRContentAssetPack];
-  v6 = [v4 hasPrefix:v5];
+  path = [file path];
+  basePathForODRContentAssetPack = [(FontProviderLoader *)self basePathForODRContentAssetPack];
+  v6 = [path hasPrefix:basePathForODRContentAssetPack];
 
   return v6;
 }
 
-- (BOOL)isFileURL:(id)a3 forApplicationBundlePath:(id)a4
+- (BOOL)isFileURL:(id)l forApplicationBundlePath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 path];
-  v7 = [v6 hasPrefix:v5];
+  pathCopy = path;
+  path = [l path];
+  v7 = [path hasPrefix:pathCopy];
 
   return v7;
 }
 
-- (void)unregisterFonts:(id)a3 appInfo:(id)a4 completionHandler:(id)a5
+- (void)unregisterFonts:(id)fonts appInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fontsCopy = fonts;
+  infoCopy = info;
+  handlerCopy = handler;
   v31 = 0;
   v30 = 0;
   v11 = [(FontProviderLoader *)self currentConnectionHasFontProviderEntitlement:&v30 withSuppressDialogEntitlement:0 forUnitTest:&v31];
@@ -363,9 +363,9 @@ LABEL_28:
   {
     v14 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v12 allowPlaceholder:0 error:0];
     v15 = [v14 URL];
-    v16 = [v15 path];
+    path = [v15 path];
 
-    v13 = v16 != 0;
+    v13 = path != 0;
   }
 
   if ((v31 & 1) != 0 || v13)
@@ -377,22 +377,22 @@ LABEL_28:
     v28[2] = sub_100002C24;
     v29 = v28[3] = &unk_100008450;
     v18 = v29;
-    [v8 enumerateObjectsUsingBlock:v28];
+    [fontsCopy enumerateObjectsUsingBlock:v28];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100002CF8;
     v25[3] = &unk_100008428;
     v26 = v24;
-    v27 = v10;
+    v27 = handlerCopy;
     v22 = v24;
-    [FSUserFontManager uninstallFonts:v18 forIdentifier:v12 appInfo:v9 completionHandler:v25];
+    [FSUserFontManager uninstallFonts:v18 forIdentifier:v12 appInfo:infoCopy completionHandler:v25];
 
     v23 = v29;
   }
 
   else
   {
-    v17 = [v8 count];
+    v17 = [fontsCopy count];
     v18 = [NSMutableArray arrayWithCapacity:v17];
     if (v17)
     {
@@ -410,17 +410,17 @@ LABEL_28:
 
     v32 = v22;
     v23 = [NSArray arrayWithObjects:&v32 count:1];
-    (*(v10 + 2))(v10, v23, 0);
+    (*(handlerCopy + 2))(handlerCopy, v23, 0);
   }
 }
 
-- (id)fontDescriptorAttributesArrayFromFontInfoDictionary:(id)a3
+- (id)fontDescriptorAttributesArrayFromFontInfoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"providedInfo"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"providedInfo"];
   v5 = [v4 objectForKey:@"CTFontRegistrationUserInfoAttribute"];
   v6 = [v4 objectForKey:@"NSCTFontFileURLAttribute"];
-  v7 = [v3 objectForKey:@"familyName"];
+  v7 = [dictionaryCopy objectForKey:@"familyName"];
 
   if (v7)
   {
@@ -446,16 +446,16 @@ LABEL_28:
   return v11;
 }
 
-- (void)updateAppInfo:(id)a3
+- (void)updateAppInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8 = 0;
   v7 = 0;
   v5 = [(FontProviderLoader *)self currentConnectionHasFontProviderEntitlement:&v7 withSuppressDialogEntitlement:0 forUnitTest:&v8];
   v6 = v7;
   if (v5)
   {
-    [FSUserFontManager updateAppInfo:v4 forIdentifier:v6];
+    [FSUserFontManager updateAppInfo:infoCopy forIdentifier:v6];
   }
 }
 

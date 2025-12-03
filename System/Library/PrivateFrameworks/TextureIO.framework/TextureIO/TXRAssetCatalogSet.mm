@@ -1,7 +1,7 @@
 @interface TXRAssetCatalogSet
-- (BOOL)addConfig:(id)a3 error:(id *)a4;
+- (BOOL)addConfig:(id)config error:(id *)error;
 - (TXRAssetCatalogSet)init;
-- (TXRAssetCatalogSet)initWithName:(id)a3;
+- (TXRAssetCatalogSet)initWithName:(id)name;
 @end
 
 @implementation TXRAssetCatalogSet
@@ -27,13 +27,13 @@
   return v3;
 }
 
-- (TXRAssetCatalogSet)initWithName:(id)a3
+- (TXRAssetCatalogSet)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(TXRAssetCatalogSet *)self init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [nameCopy copyWithZone:0];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -41,32 +41,32 @@
   return v5;
 }
 
-- (BOOL)addConfig:(id)a3 error:(id *)a4
+- (BOOL)addConfig:(id)config error:(id *)error
 {
-  v6 = a3;
+  configCopy = config;
   v7 = [(NSMutableArray *)self->_configs count];
-  v8 = [v6 texture];
-  v9 = [v8 cubemap];
+  texture = [configCopy texture];
+  cubemap = [texture cubemap];
   if (!v7)
   {
-    self->_cubemap = v9;
+    self->_cubemap = cubemap;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (v9)
+  if (cubemap)
   {
     cubemap = self->_cubemap;
 
     if (!cubemap)
     {
-      if (a4)
+      if (error)
       {
         v11 = @"The config being added is a cubemap but configs already in set are not.  The two types cannot be mixed";
 LABEL_15:
         _newTXRErrorWithCodeAndErrorString(12, v11);
-        *a4 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_11;
       }
 
@@ -78,8 +78,8 @@ LABEL_15:
   {
   }
 
-  v8 = [v6 texture];
-  if ([v8 cubemap])
+  texture = [configCopy texture];
+  if ([texture cubemap])
   {
     goto LABEL_9;
   }
@@ -88,7 +88,7 @@ LABEL_15:
 
   if (v14)
   {
-    if (a4)
+    if (error)
     {
       v11 = @"The config being added is a not a cubemap but configs already in set are.  The two types cannot be mixed";
       goto LABEL_15;
@@ -100,7 +100,7 @@ LABEL_16:
   }
 
 LABEL_10:
-  [(NSMutableArray *)self->_configs addObject:v6];
+  [(NSMutableArray *)self->_configs addObject:configCopy];
   v12 = 1;
 LABEL_11:
 

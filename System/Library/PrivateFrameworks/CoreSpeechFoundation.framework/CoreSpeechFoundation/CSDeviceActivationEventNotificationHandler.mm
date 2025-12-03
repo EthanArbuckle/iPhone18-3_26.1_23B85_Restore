@@ -1,26 +1,26 @@
 @interface CSDeviceActivationEventNotificationHandler
 + (id)sharedInstance;
-- (BOOL)_hasPendingActivationForType:(unint64_t)a3;
-- (BOOL)_isVoiceTriggerEvent:(id)a3;
+- (BOOL)_hasPendingActivationForType:(unint64_t)type;
+- (BOOL)_isVoiceTriggerEvent:(id)event;
 - (CSDeviceActivationEventNotificationHandler)init;
-- (void)_notifyActivationEvent:(id)a3 completion:(id)a4;
+- (void)_notifyActivationEvent:(id)event completion:(id)completion;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3 forType:(unint64_t)a4;
+- (void)notifyActivationEvent:(id)event completion:(id)completion;
+- (void)setDelegate:(id)delegate forType:(unint64_t)type;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CSDeviceActivationEventNotificationHandler
 
-- (BOOL)_hasPendingActivationForType:(unint64_t)a3
+- (BOOL)_hasPendingActivationForType:(unint64_t)type
 {
   pendingActivationEvent = self->_pendingActivationEvent;
   if (pendingActivationEvent)
   {
-    if ([(CSDeviceActivationEvent *)pendingActivationEvent type]== a3)
+    if ([(CSDeviceActivationEvent *)pendingActivationEvent type]== type)
     {
       v5 = mach_absolute_time();
       v6 = v5 - [(CSDeviceActivationEvent *)self->_pendingActivationEvent hosttime];
@@ -65,32 +65,32 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isVoiceTriggerEvent:(id)a3
+- (BOOL)_isVoiceTriggerEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = v4 == 1;
-  if ([v3 type] == 2)
+  eventCopy = event;
+  type = [eventCopy type];
+  v5 = type == 1;
+  if ([eventCopy type] == 2)
   {
-    v6 = [v3 deviceId];
+    deviceId = [eventCopy deviceId];
 
-    if (v6)
+    if (deviceId)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v4 == 1;
+      v7 = type == 1;
     }
 
     v5 = v7;
   }
 
-  if ([v3 type] == 6)
+  if ([eventCopy type] == 6)
   {
-    v8 = [v3 deviceId];
-    v9 = v8 != 0;
+    deviceId2 = [eventCopy deviceId];
+    v9 = deviceId2 != 0;
   }
 
   else
@@ -98,10 +98,10 @@
     v9 = 0;
   }
 
-  if ([v3 type] == 8)
+  if ([eventCopy type] == 8)
   {
-    v10 = [v3 deviceId];
-    v11 = v10 != 0;
+    deviceId3 = [eventCopy deviceId];
+    v11 = deviceId3 != 0;
 
     v9 |= v11;
   }
@@ -109,15 +109,15 @@
   return (v9 | v5) & 1;
 }
 
-- (void)_notifyActivationEvent:(id)a3 completion:(id)a4
+- (void)_notifyActivationEvent:(id)event completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([(CSDeviceActivationEventNotificationHandler *)self _isVoiceTriggerEvent:v7])
+  eventCopy = event;
+  completionCopy = completion;
+  if ([(CSDeviceActivationEventNotificationHandler *)self _isVoiceTriggerEvent:eventCopy])
   {
     delegates = self->_delegates;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "type")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(eventCopy, "type")}];
     v11 = [(NSMapTable *)delegates objectForKey:v10];
 
     if (!v11)
@@ -129,11 +129,11 @@
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [(CSDeviceActivationEvent *)pendingActivationEvent localizedDescription];
+          localizedDescription = [(CSDeviceActivationEvent *)pendingActivationEvent localizedDescription];
           *buf = 136315394;
           v34 = "[CSDeviceActivationEventNotificationHandler _notifyActivationEvent:completion:]";
           v35 = 2114;
-          v36 = v15;
+          v36 = localizedDescription;
           _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Returning error for already existing pending activation event : %{public}@", buf, 0x16u);
         }
 
@@ -156,12 +156,12 @@
         _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s No delegate registered : Postpone activation event handling until we have delegate registered", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_pendingActivationEvent, a3);
-      v20 = MEMORY[0x1E12BA300](v8);
+      objc_storeStrong(&self->_pendingActivationEvent, event);
+      v20 = MEMORY[0x1E12BA300](completionCopy);
       v21 = self->_pendingCompletion;
       self->_pendingCompletion = v20;
 
-      v22 = [(CSDeviceActivationEvent *)self->_pendingActivationEvent UUID];
+      uUID = [(CSDeviceActivationEvent *)self->_pendingActivationEvent UUID];
       v23 = dispatch_time(0, 5000000000);
       queue = self->_queue;
       v31[0] = MEMORY[0x1E69E9820];
@@ -169,30 +169,30 @@
       v31[2] = __80__CSDeviceActivationEventNotificationHandler__notifyActivationEvent_completion___block_invoke;
       v31[3] = &unk_1E865C970;
       v31[4] = self;
-      v32 = v22;
-      v25 = v22;
+      v32 = uUID;
+      v25 = uUID;
       dispatch_after(v23, queue, v31);
 
       goto LABEL_14;
     }
 
 LABEL_13:
-    [v11 activationEventNotificationHandler:self event:v7 completion:v8];
+    [v11 activationEventNotificationHandler:self event:eventCopy completion:completionCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if ([v7 type] == 3)
+  if ([eventCopy type] == 3)
   {
     v26 = self->_delegates;
-    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "type")}];
+    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(eventCopy, "type")}];
     v11 = [(NSMapTable *)v26 objectForKey:v27];
 
     goto LABEL_13;
   }
 
-  if ([v7 type] == 7)
+  if ([eventCopy type] == 7)
   {
     v29 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -202,16 +202,16 @@ LABEL_14:
       _os_log_impl(&dword_1DDA4B000, v29, OS_LOG_TYPE_DEFAULT, "%s corespeechd received mediaserverd launched event", buf, 0xCu);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:114 userInfo:0];
-    (v8)[2](v8, 0, v30);
+    (completionCopy)[2](completionCopy, 0, v30);
   }
 
 LABEL_15:
@@ -267,20 +267,20 @@ void __80__CSDeviceActivationEventNotificationHandler__notifyActivationEvent_com
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4
+- (void)notifyActivationEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CSDeviceActivationEventNotificationHandler_notifyActivationEvent_completion___block_invoke;
   block[3] = &unk_1E865C678;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
@@ -305,18 +305,18 @@ uint64_t __79__CSDeviceActivationEventNotificationHandler_notifyActivationEvent_
   return result;
 }
 
-- (void)setDelegate:(id)a3 forType:(unint64_t)a4
+- (void)setDelegate:(id)delegate forType:(unint64_t)type
 {
-  v6 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__CSDeviceActivationEventNotificationHandler_setDelegate_forType___block_invoke;
   block[3] = &unk_1E865C350;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = delegateCopy;
+  typeCopy = type;
+  v8 = delegateCopy;
   dispatch_async(queue, block);
 }
 
@@ -413,9 +413,9 @@ void __66__CSDeviceActivationEventNotificationHandler_setDelegate_forType___bloc
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     delegates = v2->_delegates;
-    v2->_delegates = v5;
+    v2->_delegates = strongToWeakObjectsMapTable;
 
     pendingActivationEvent = v2->_pendingActivationEvent;
     v2->_pendingActivationEvent = 0;

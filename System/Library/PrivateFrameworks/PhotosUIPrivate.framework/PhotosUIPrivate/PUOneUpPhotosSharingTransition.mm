@@ -31,60 +31,60 @@
 
 - (void)animateDismissTransition
 {
-  v30 = [(PUViewControllerTransition *)self toViewController];
-  v3 = [v30 view];
-  v4 = [(PUOneUpPhotosSharingTransition *)self sharingTransitionViewController];
-  v5 = [v4 view];
-  v29 = [(PUViewControllerTransition *)self fromViewController];
-  v6 = [v29 view];
-  v28 = [(PUViewControllerTransition *)self containerView];
-  v7 = [(PUOneUpPhotosSharingTransition *)self presentingViewController];
-  [v3 layoutIfNeeded];
+  toViewController = [(PUViewControllerTransition *)self toViewController];
+  view = [toViewController view];
+  sharingTransitionViewController = [(PUOneUpPhotosSharingTransition *)self sharingTransitionViewController];
+  view2 = [sharingTransitionViewController view];
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  view3 = [fromViewController view];
+  containerView = [(PUViewControllerTransition *)self containerView];
+  presentingViewController = [(PUOneUpPhotosSharingTransition *)self presentingViewController];
+  [view layoutIfNeeded];
   [(PUViewControllerTransition *)self finalToViewFrame];
-  [v3 setFrame:?];
-  [v28 insertSubview:v3 aboveSubview:v6];
-  v8 = [v6 backgroundColor];
-  [v28 setBackgroundColor:v8];
+  [view setFrame:?];
+  [containerView insertSubview:view aboveSubview:view3];
+  backgroundColor = [view3 backgroundColor];
+  [containerView setBackgroundColor:backgroundColor];
 
-  v9 = [(PUOneUpPhotosSharingTransition *)self oneUpPhotosSharingTransitionContext];
-  v10 = [v9 currentAssetReference];
-  v11 = [v4 transitionCollectionView];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [v11 setBackgroundColor:v12];
+  oneUpPhotosSharingTransitionContext = [(PUOneUpPhotosSharingTransition *)self oneUpPhotosSharingTransitionContext];
+  currentAssetReference = [oneUpPhotosSharingTransitionContext currentAssetReference];
+  transitionCollectionView = [sharingTransitionViewController transitionCollectionView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [transitionCollectionView setBackgroundColor:clearColor];
 
-  v13 = [v6 layer];
-  [v13 setAllowsGroupOpacity:0];
+  layer = [view3 layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v14 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  v15 = [v14 photosSharingTransition:self layoutForAssetReference:v10];
+  delegate = [(PUOneUpPhotosSharingTransition *)self delegate];
+  v15 = [delegate photosSharingTransition:self layoutForAssetReference:currentAssetReference];
 
   [(PUOneUpPhotosSharingTransition *)self _setTransitionLayout:v15];
-  [v4 setOneUpPhotosSharingTransitionContext:v9];
-  v16 = [v4 embeddedActivityView];
-  [v4 embeddedActivityViewFrameWhenShowing:0];
+  [sharingTransitionViewController setOneUpPhotosSharingTransitionContext:oneUpPhotosSharingTransitionContext];
+  embeddedActivityView = [sharingTransitionViewController embeddedActivityView];
+  [sharingTransitionViewController embeddedActivityViewFrameWhenShowing:0];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __58__PUOneUpPhotosSharingTransition_animateDismissTransition__block_invoke;
   v31[3] = &unk_1E7B79C90;
   v31[4] = self;
-  v32 = v16;
+  v32 = embeddedActivityView;
   v39 = v17;
   v40 = v18;
   v41 = v19;
   v42 = v20;
-  v33 = v4;
+  v33 = sharingTransitionViewController;
   v34 = v15;
-  v35 = v10;
-  v36 = v6;
-  v37 = v7;
-  v38 = v5;
-  v21 = v5;
-  v22 = v7;
-  v23 = v6;
-  v24 = v10;
+  v35 = currentAssetReference;
+  v36 = view3;
+  v37 = presentingViewController;
+  v38 = view2;
+  v21 = view2;
+  v22 = presentingViewController;
+  v23 = view3;
+  v24 = currentAssetReference;
   v25 = v15;
-  v26 = v4;
-  v27 = v16;
+  v26 = sharingTransitionViewController;
+  v27 = embeddedActivityView;
   [v26 oneUpAssetTransition:self requestTransitionContextWithCompletion:v31];
 }
 
@@ -168,97 +168,97 @@ uint64_t __58__PUOneUpPhotosSharingTransition_animateDismissTransition__block_in
 
 - (void)animatePresentTransition
 {
-  v4 = [(PUOneUpPhotosSharingTransition *)self presentingViewController];
-  v5 = [(PUViewControllerTransition *)self fromViewController];
-  v6 = [(PUOneUpPhotosSharingTransition *)self sharingTransitionViewController];
-  v7 = [(PUViewControllerTransition *)self toViewController];
-  if (([v4 conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
+  presentingViewController = [(PUOneUpPhotosSharingTransition *)self presentingViewController];
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  sharingTransitionViewController = [(PUOneUpPhotosSharingTransition *)self sharingTransitionViewController];
+  toViewController = [(PUViewControllerTransition *)self toViewController];
+  if (([presentingViewController conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"PUOneUpPhotosSharingTransition.m" lineNumber:51 description:{@"%@ (fromViewController) isn't conforming to PUOneUpAssetTransitionViewController", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPhotosSharingTransition.m" lineNumber:51 description:{@"%@ (fromViewController) isn't conforming to PUOneUpAssetTransitionViewController", fromViewController}];
   }
 
-  if (([v6 conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
+  if (([sharingTransitionViewController conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"PUOneUpPhotosSharingTransition.m" lineNumber:52 description:{@"%@ (toViewController) isn't conforming to PUOneUpAssetTransitionViewController", v7}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpPhotosSharingTransition.m" lineNumber:52 description:{@"%@ (toViewController) isn't conforming to PUOneUpAssetTransitionViewController", toViewController}];
   }
 
-  v74 = v7;
-  v8 = [v7 view];
-  v9 = [v6 view];
-  v10 = [v5 view];
-  v75 = [(PUViewControllerTransition *)self containerView];
-  v76 = v5;
+  v74 = toViewController;
+  view = [toViewController view];
+  view2 = [sharingTransitionViewController view];
+  view3 = [fromViewController view];
+  containerView = [(PUViewControllerTransition *)self containerView];
+  v76 = fromViewController;
   [(PUViewControllerTransition *)self finalToViewFrame];
-  [v8 setFrame:?];
-  v67 = v10;
-  [v75 insertSubview:v8 aboveSubview:v10];
-  v11 = [v8 layer];
-  v63 = [v11 allowsGroupOpacity];
+  [view setFrame:?];
+  v67 = view3;
+  [containerView insertSubview:view aboveSubview:view3];
+  layer = [view layer];
+  allowsGroupOpacity = [layer allowsGroupOpacity];
 
-  v12 = [v8 layer];
-  [v12 setAllowsGroupOpacity:0];
+  layer2 = [view layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  [v8 setAlpha:0.0];
-  v13 = [(PUOneUpPhotosSharingTransition *)self oneUpPhotosSharingTransitionContext];
-  v14 = [v13 currentAssetReference];
-  v15 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  v16 = [v15 photosSharingTransition:self layoutForAssetReference:v14];
+  [view setAlpha:0.0];
+  oneUpPhotosSharingTransitionContext = [(PUOneUpPhotosSharingTransition *)self oneUpPhotosSharingTransitionContext];
+  currentAssetReference = [oneUpPhotosSharingTransitionContext currentAssetReference];
+  delegate = [(PUOneUpPhotosSharingTransition *)self delegate];
+  v16 = [delegate photosSharingTransition:self layoutForAssetReference:currentAssetReference];
 
   [(PUOneUpPhotosSharingTransition *)self _setTransitionLayout:v16];
-  v73 = v13;
-  [v6 setOneUpPhotosSharingTransitionContext:v13];
+  v73 = oneUpPhotosSharingTransitionContext;
+  [sharingTransitionViewController setOneUpPhotosSharingTransitionContext:oneUpPhotosSharingTransitionContext];
   v72 = v16;
-  [v6 setPhotosSharingTransitionLayout:v16 animated:0];
-  v17 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  [v17 photosSharingTransition:self contentOffsetForAssetReference:v14];
+  [sharingTransitionViewController setPhotosSharingTransitionLayout:v16 animated:0];
+  delegate2 = [(PUOneUpPhotosSharingTransition *)self delegate];
+  [delegate2 photosSharingTransition:self contentOffsetForAssetReference:currentAssetReference];
   v19 = v18;
   v21 = v20;
 
-  v22 = [v6 transitionCollectionView];
-  [v22 setContentOffset:{v19, v21}];
+  transitionCollectionView = [sharingTransitionViewController transitionCollectionView];
+  [transitionCollectionView setContentOffset:{v19, v21}];
 
-  v77 = v4;
-  v71 = [v4 createAssetTransitionInfo];
-  [v6 setOneUpPhotosSharingTransitionInfo:?];
-  [v8 layoutIfNeeded];
-  v23 = [v9 superview];
+  v77 = presentingViewController;
+  createAssetTransitionInfo = [presentingViewController createAssetTransitionInfo];
+  [sharingTransitionViewController setOneUpPhotosSharingTransitionInfo:?];
+  [view layoutIfNeeded];
+  superview = [view2 superview];
   v24 = objc_alloc(MEMORY[0x1E69DD250]);
   v59 = [v24 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v61 = v23;
-  [v23 insertSubview:? aboveSubview:?];
-  v25 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  v26 = [v25 photosSharingTransitionTransitioningView:self];
+  v61 = superview;
+  [superview insertSubview:? aboveSubview:?];
+  delegate3 = [(PUOneUpPhotosSharingTransition *)self delegate];
+  v26 = [delegate3 photosSharingTransitionTransitioningView:self];
 
   v69 = v26;
-  v70 = v9;
-  [v26 addSubview:v9];
-  v27 = [v6 transitionCollectionView];
-  v58 = [v27 backgroundColor];
+  v70 = view2;
+  [v26 addSubview:view2];
+  transitionCollectionView2 = [sharingTransitionViewController transitionCollectionView];
+  backgroundColor = [transitionCollectionView2 backgroundColor];
 
-  v28 = [v6 transitionCollectionView];
-  v29 = [MEMORY[0x1E69DC888] clearColor];
-  [v28 setBackgroundColor:v29];
+  transitionCollectionView3 = [sharingTransitionViewController transitionCollectionView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [transitionCollectionView3 setBackgroundColor:clearColor];
 
-  v30 = [v6 embeddedActivityView];
-  [v6 embeddedActivityViewFrameWhenShowing:0];
-  [v30 setFrame:?];
-  [v6 embeddedActivityViewFrameWhenShowing:1];
+  embeddedActivityView = [sharingTransitionViewController embeddedActivityView];
+  [sharingTransitionViewController embeddedActivityViewFrameWhenShowing:0];
+  [embeddedActivityView setFrame:?];
+  [sharingTransitionViewController embeddedActivityViewFrameWhenShowing:1];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  [v75 addSubview:v30];
-  v39 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  [v39 photosSharingTransition:self setVisibility:0 forAssetReference:v14];
+  [containerView addSubview:embeddedActivityView];
+  delegate4 = [(PUOneUpPhotosSharingTransition *)self delegate];
+  [delegate4 photosSharingTransition:self setVisibility:0 forAssetReference:currentAssetReference];
 
-  v65 = v14;
-  v40 = _PhotoLibraryForAssetReference(v14);
+  v65 = currentAssetReference;
+  v40 = _PhotoLibraryForAssetReference(currentAssetReference);
   v56 = [v40 px_beginPausingChangesWithTimeout:@"PUOneUpPhotosSharingTransition-Present" identifier:*MEMORY[0x1E69C4138]];
-  [v6 setPhotosSharingTransitionLayout:0 animated:1];
-  v41 = [(PUOneUpPhotosSharingTransition *)self delegate];
-  v42 = [v41 viewToHideWhilePresentingWithTransition:self];
+  [sharingTransitionViewController setPhotosSharingTransitionLayout:0 animated:1];
+  delegate5 = [(PUOneUpPhotosSharingTransition *)self delegate];
+  v42 = [delegate5 viewToHideWhilePresentingWithTransition:self];
 
   objc_opt_class();
   v43 = 0;
@@ -271,43 +271,43 @@ uint64_t __58__PUOneUpPhotosSharingTransition_animateDismissTransition__block_in
   v78[1] = 3221225472;
   v78[2] = __58__PUOneUpPhotosSharingTransition_animatePresentTransition__block_invoke;
   v78[3] = &unk_1E7B79C40;
-  v79 = v75;
+  v79 = containerView;
   v80 = v77;
-  v81 = v6;
-  v82 = self;
-  v83 = v8;
+  v81 = sharingTransitionViewController;
+  selfCopy = self;
+  v83 = view;
   v84 = v70;
   v85 = v42;
   v86 = v43;
-  v87 = v30;
+  v87 = embeddedActivityView;
   v95 = v32;
   v96 = v34;
   v97 = v36;
   v98 = v38;
   v55 = v42;
-  v99 = v63;
-  v88 = v14;
+  v99 = allowsGroupOpacity;
+  v88 = currentAssetReference;
   v89 = v61;
   v90 = v59;
-  v91 = v58;
+  v91 = backgroundColor;
   v92 = v67;
   v93 = v40;
   v94 = v56;
   v64 = v56;
   v57 = v40;
   v44 = v67;
-  v68 = v58;
+  v68 = backgroundColor;
   v45 = v59;
   v62 = v61;
   v66 = v65;
-  v60 = v30;
+  v60 = embeddedActivityView;
   v46 = v43;
   v47 = v55;
   v48 = v70;
-  v49 = v8;
-  v50 = v6;
+  v49 = view;
+  v50 = sharingTransitionViewController;
   v51 = v77;
-  v52 = v75;
+  v52 = containerView;
   [v51 oneUpAssetTransition:self requestTransitionContextWithCompletion:v78];
 }
 

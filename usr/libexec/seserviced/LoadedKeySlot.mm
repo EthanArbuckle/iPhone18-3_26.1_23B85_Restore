@@ -1,19 +1,19 @@
 @interface LoadedKeySlot
-+ (id)withKeySlot:(id)a3 key:(id)a4;
++ (id)withKeySlot:(id)slot key:(id)key;
 - (void)dealloc;
 @end
 
 @implementation LoadedKeySlot
 
-+ (id)withKeySlot:(id)a3 key:(id)a4
++ (id)withKeySlot:(id)slot key:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  slotCopy = slot;
   v7 = objc_opt_new();
-  [v7 setSlot:v6];
-  [v7 setKey:v5];
+  [v7 setSlot:slotCopy];
+  [v7 setKey:keyCopy];
 
-  [v6 setState:3];
+  [slotCopy setState:3];
 
   return v7;
 }

@@ -9,8 +9,8 @@
   if (a3)
   {
     v3 = a3;
-    v4 = [a1 results];
-    v5 = [v4 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_6];
+    results = [self results];
+    v5 = [results safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_6];
 
     if ([v5 count])
     {

@@ -1,52 +1,52 @@
 @interface SBIconListPageControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityGoToNextPage;
 - (BOOL)_accessibilityViewIsVisible;
 - (BOOL)_axHasOpenFolder;
 - (BOOL)_axIsControlCenter;
 - (BOOL)_axIsLastPage;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)canBecomeFocused;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityScrollAncestor;
 - (id)_axDelegate;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityCurrentPageIndex;
-- (void)_axSetNewPage:(int64_t)a3;
+- (void)_axSetNewPage:(int64_t)page;
 - (void)accessibilityDecrement;
 @end
 
 @implementation SBIconListPageControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconListPageControl"];
-  [v3 validateClass:@"SBIconListPageControl" isKindOfClass:@"UIPageControl"];
-  [v3 validateClass:@"SBIconListPageControl" hasInstanceVariable:@"_delegate" withType:"<SBIconListPageControlDelegate>"];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListPageControl" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFolderView"];
-  [v3 validateClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
-  [v3 validateClass:@"SBIconListPageControl" hasInstanceMethod:@"actsAsButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconListPageControl"];
+  [validationsCopy validateClass:@"SBIconListPageControl" isKindOfClass:@"UIPageControl"];
+  [validationsCopy validateClass:@"SBIconListPageControl" hasInstanceVariable:@"_delegate" withType:"<SBIconListPageControlDelegate>"];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListPageControl" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFolderView"];
+  [validationsCopy validateClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
+  [validationsCopy validateClass:@"SBIconListPageControl" hasInstanceMethod:@"actsAsButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     v11.receiver = self;
     v11.super_class = SBIconListPageControlAccessibility;
-    v8 = [(SBIconListPageControlAccessibility *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    selfCopy = [(SBIconListPageControlAccessibility *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
     goto LABEL_5;
   }
 
@@ -56,9 +56,9 @@
   v13.y = y;
   if (CGRectContainsPoint(v15, v13))
   {
-    v8 = self;
+    selfCopy = self;
 LABEL_5:
-    v9 = v8;
+    v9 = selfCopy;
     goto LABEL_7;
   }
 
@@ -80,23 +80,23 @@ LABEL_7:
 {
   if ([(SBIconListPageControlAccessibility *)self _axIsControlCenter])
   {
-    v3 = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
+    _accessibilityCurrentPageIndex = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 numberOfPages];
+    numberOfPages = [v4 numberOfPages];
   }
 
   else
   {
     v4 = AXSBIconControllerSharedInstance();
     v6 = [v4 safeValueForKey:@"_accessibilityIconListIndex"];
-    v3 = [v6 integerValue];
+    _accessibilityCurrentPageIndex = [v6 integerValue];
 
     v7 = [v4 safeValueForKey:@"_accessibilityIconListCount"];
-    v5 = [v7 integerValue];
+    numberOfPages = [v7 integerValue];
   }
 
-  return v3 + 1 >= v5;
+  return _accessibilityCurrentPageIndex + 1 >= numberOfPages;
 }
 
 - (id)_axDelegate
@@ -143,26 +143,26 @@ LABEL_7:
 {
   if (![(SBIconListPageControlAccessibility *)self _axIsLastPage])
   {
-    v4 = [(SBIconListPageControlAccessibility *)self _axDelegate];
-    if (-[SBIconListPageControlAccessibility _axIsControlCenter](self, "_axIsControlCenter") || -[SBIconListPageControlAccessibility _axHasOpenFolder](self, "_axHasOpenFolder") || ([v4 _axNeedsToDismissHomeScreenTodayView] & 1) == 0)
+    _axDelegate = [(SBIconListPageControlAccessibility *)self _axDelegate];
+    if (-[SBIconListPageControlAccessibility _axIsControlCenter](self, "_axIsControlCenter") || -[SBIconListPageControlAccessibility _axHasOpenFolder](self, "_axHasOpenFolder") || ([_axDelegate _axNeedsToDismissHomeScreenTodayView] & 1) == 0)
     {
-      v5 = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
+      _accessibilityCurrentPageIndex = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
       objc_opt_class();
       v6 = __UIAccessibilityCastAsClass();
-      v7 = [v6 numberOfPages];
+      numberOfPages = [v6 numberOfPages];
 
-      if (v5 >= v7)
+      if (_accessibilityCurrentPageIndex >= numberOfPages)
       {
 
         return 0;
       }
 
-      [(SBIconListPageControlAccessibility *)self _axSetNewPage:v5 + 1];
+      [(SBIconListPageControlAccessibility *)self _axSetNewPage:_accessibilityCurrentPageIndex + 1];
     }
 
     else
     {
-      [v4 _axHideTodayView];
+      [_axDelegate _axHideTodayView];
     }
 
     return 1;
@@ -184,15 +184,15 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 1)
+  if (scroll == 1)
   {
     [(SBIconListPageControlAccessibility *)self accessibilityDecrement];
     return 1;
   }
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
     [(SBIconListPageControlAccessibility *)self accessibilityIncrement];
     return 1;
@@ -215,9 +215,9 @@ LABEL_7:
 
 - (void)accessibilityDecrement
 {
-  v3 = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
-  v4 = v3 - 1;
-  if (v3 < 1)
+  _accessibilityCurrentPageIndex = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
+  v4 = _accessibilityCurrentPageIndex - 1;
+  if (_accessibilityCurrentPageIndex < 1)
   {
     if (![(SBIconListPageControlAccessibility *)self _axIsControlCenter]&& ![(SBIconListPageControlAccessibility *)self _axHasOpenFolder])
     {
@@ -307,13 +307,13 @@ LABEL_5:
 
 - (id)accessibilityValue
 {
-  v3 = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
+  _accessibilityCurrentPageIndex = [(SBIconListPageControlAccessibility *)self _accessibilityCurrentPageIndex];
   LOBYTE(v12) = 0;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 numberOfPages];
+  numberOfPages = [v4 numberOfPages];
 
-  v6 = v5 & ~(v5 >> 63);
+  v6 = numberOfPages & ~(numberOfPages >> 63);
   if ([(SBIconListPageControlAccessibility *)self _axIsControlCenter])
   {
     v12 = 0;
@@ -326,19 +326,19 @@ LABEL_5:
     v7 = v13[5];
     _Block_object_dispose(&v12, 8);
 
-    v8 = AXControlCenterPageStatus(v3, v5 & ~(v5 >> 63), v7);
+    v8 = AXControlCenterPageStatus(_accessibilityCurrentPageIndex, numberOfPages & ~(numberOfPages >> 63), v7);
   }
 
   else
   {
     if ([(SBIconListPageControlAccessibility *)self _axHasOpenFolder]|| AXDeviceIsPad())
     {
-      ++v3;
+      ++_accessibilityCurrentPageIndex;
     }
 
     v9 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"springboard.page.status");
-    v8 = [v9 localizedStringWithFormat:v7, v3, v6];
+    v8 = [v9 localizedStringWithFormat:v7, _accessibilityCurrentPageIndex, v6];
   }
 
   v10 = v8;
@@ -355,7 +355,7 @@ void __56__SBIconListPageControlAccessibility_accessibilityValue__block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (void)_axSetNewPage:(int64_t)a3
+- (void)_axSetNewPage:(int64_t)page
 {
   v4[0] = 0;
   v4[1] = v4;

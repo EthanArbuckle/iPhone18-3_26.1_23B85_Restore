@@ -1,52 +1,52 @@
 @interface HDCloudSyncCodableSharedSummaryRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAuthorizationCategories:(id)a3;
-- (void)addObjectTypeIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuthorizationCategories:(id)categories;
+- (void)addObjectTypeIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableSharedSummaryRecord
 
-- (void)addObjectTypeIdentifiers:(id)a3
+- (void)addObjectTypeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   objectTypeIdentifiers = self->_objectTypeIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!objectTypeIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_objectTypeIdentifiers;
     self->_objectTypeIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     objectTypeIdentifiers = self->_objectTypeIdentifiers;
   }
 
-  [(NSMutableArray *)objectTypeIdentifiers addObject:v4];
+  [(NSMutableArray *)objectTypeIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addAuthorizationCategories:(id)a3
+- (void)addAuthorizationCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   authorizationCategories = self->_authorizationCategories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!authorizationCategories)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_authorizationCategories;
     self->_authorizationCategories = v6;
 
-    v4 = v8;
+    categoriesCopy = v8;
     authorizationCategories = self->_authorizationCategories;
   }
 
-  [(NSMutableArray *)authorizationCategories addObject:v4];
+  [(NSMutableArray *)authorizationCategories addObject:categoriesCopy];
 }
 
 - (id)description
@@ -55,20 +55,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableSharedSummaryRecord;
   v4 = [(HDCloudSyncCodableSharedSummaryRecord *)&v8 description];
-  v5 = [(HDCloudSyncCodableSharedSummaryRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableSharedSummaryRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   package = self->_package;
@@ -116,10 +116,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
@@ -217,91 +217,91 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    [v12 setUuid:?];
+    [toCopy setUuid:?];
   }
 
   if (self->_package)
   {
-    [v12 setPackage:?];
+    [toCopy setPackage:?];
   }
 
   if (self->_name)
   {
-    [v12 setName:?];
+    [toCopy setName:?];
   }
 
   if (self->_version)
   {
-    [v12 setVersion:?];
+    [toCopy setVersion:?];
   }
 
   if (self->_compatibilityVersion)
   {
-    [v12 setCompatibilityVersion:?];
+    [toCopy setCompatibilityVersion:?];
   }
 
   if ([(HDCloudSyncCodableSharedSummaryRecord *)self objectTypeIdentifiersCount])
   {
-    [v12 clearObjectTypeIdentifiers];
-    v4 = [(HDCloudSyncCodableSharedSummaryRecord *)self objectTypeIdentifiersCount];
-    if (v4)
+    [toCopy clearObjectTypeIdentifiers];
+    objectTypeIdentifiersCount = [(HDCloudSyncCodableSharedSummaryRecord *)self objectTypeIdentifiersCount];
+    if (objectTypeIdentifiersCount)
     {
-      v5 = v4;
+      v5 = objectTypeIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCloudSyncCodableSharedSummaryRecord *)self objectTypeIdentifiersAtIndex:i];
-        [v12 addObjectTypeIdentifiers:v7];
+        [toCopy addObjectTypeIdentifiers:v7];
       }
     }
   }
 
   if ([(HDCloudSyncCodableSharedSummaryRecord *)self authorizationCategoriesCount])
   {
-    [v12 clearAuthorizationCategories];
-    v8 = [(HDCloudSyncCodableSharedSummaryRecord *)self authorizationCategoriesCount];
-    if (v8)
+    [toCopy clearAuthorizationCategories];
+    authorizationCategoriesCount = [(HDCloudSyncCodableSharedSummaryRecord *)self authorizationCategoriesCount];
+    if (authorizationCategoriesCount)
     {
-      v9 = v8;
+      v9 = authorizationCategoriesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HDCloudSyncCodableSharedSummaryRecord *)self authorizationCategoriesAtIndex:j];
-        [v12 addAuthorizationCategories:v11];
+        [toCopy addAuthorizationCategories:v11];
       }
     }
   }
 
   if (self->_summaryData)
   {
-    [v12 setSummaryData:?];
+    [toCopy setSummaryData:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_package copyWithZone:a3];
+  v8 = [(NSString *)self->_package copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSString *)self->_name copyWithZone:a3];
+  v10 = [(NSString *)self->_name copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_version copyWithZone:a3];
+  v12 = [(NSString *)self->_version copyWithZone:zone];
   v13 = v5[8];
   v5[8] = v12;
 
-  v14 = [(NSString *)self->_compatibilityVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_compatibilityVersion copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -325,7 +325,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v36 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v36 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addObjectTypeIdentifiers:v21];
 
         ++v20;
@@ -358,7 +358,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v32 + 1) + 8 * v26) copyWithZone:{a3, v32}];
+        v27 = [*(*(&v32 + 1) + 8 * v26) copyWithZone:{zone, v32}];
         [v5 addAuthorizationCategories:v27];
 
         ++v26;
@@ -371,7 +371,7 @@
     while (v24);
   }
 
-  v28 = [(NSData *)self->_summaryData copyWithZone:a3];
+  v28 = [(NSData *)self->_summaryData copyWithZone:zone];
   v29 = v5[6];
   v5[6] = v28;
 
@@ -379,13 +379,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | v4[7])) || -[NSString isEqual:](uuid, "isEqual:")) && ((package = self->_package, !(package | v4[5])) || -[NSString isEqual:](package, "isEqual:")) && ((name = self->_name, !(name | v4[3])) || -[NSString isEqual:](name, "isEqual:")) && ((version = self->_version, !(version | v4[8])) || -[NSString isEqual:](version, "isEqual:")) && ((compatibilityVersion = self->_compatibilityVersion, !(compatibilityVersion | v4[2])) || -[NSString isEqual:](compatibilityVersion, "isEqual:")) && ((objectTypeIdentifiers = self->_objectTypeIdentifiers, !(objectTypeIdentifiers | v4[4])) || -[NSMutableArray isEqual:](objectTypeIdentifiers, "isEqual:")) && ((authorizationCategories = self->_authorizationCategories, !(authorizationCategories | v4[1])) || -[NSMutableArray isEqual:](authorizationCategories, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | equalCopy[7])) || -[NSString isEqual:](uuid, "isEqual:")) && ((package = self->_package, !(package | equalCopy[5])) || -[NSString isEqual:](package, "isEqual:")) && ((name = self->_name, !(name | equalCopy[3])) || -[NSString isEqual:](name, "isEqual:")) && ((version = self->_version, !(version | equalCopy[8])) || -[NSString isEqual:](version, "isEqual:")) && ((compatibilityVersion = self->_compatibilityVersion, !(compatibilityVersion | equalCopy[2])) || -[NSString isEqual:](compatibilityVersion, "isEqual:")) && ((objectTypeIdentifiers = self->_objectTypeIdentifiers, !(objectTypeIdentifiers | equalCopy[4])) || -[NSMutableArray isEqual:](objectTypeIdentifiers, "isEqual:")) && ((authorizationCategories = self->_authorizationCategories, !(authorizationCategories | equalCopy[1])) || -[NSMutableArray isEqual:](authorizationCategories, "isEqual:")))
   {
     summaryData = self->_summaryData;
-    if (summaryData | v4[6])
+    if (summaryData | equalCopy[6])
     {
       v13 = [(NSData *)summaryData isEqual:?];
     }
@@ -416,31 +416,31 @@
   return v9 ^ [(NSData *)self->_summaryData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setUuid:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setPackage:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setName:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setVersion:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setCompatibilityVersion:?];
   }
@@ -449,7 +449,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -477,7 +477,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -501,7 +501,7 @@
     while (v12);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCloudSyncCodableSharedSummaryRecord *)self setSummaryData:?];
   }

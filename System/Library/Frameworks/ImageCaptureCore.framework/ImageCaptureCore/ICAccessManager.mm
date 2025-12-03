@@ -1,20 +1,20 @@
 @interface ICAccessManager
-+ (BOOL)captureUserIntentForBundleIdentifier:(id)a3 withNotification:(id)a4;
++ (BOOL)captureUserIntentForBundleIdentifier:(id)identifier withNotification:(id)notification;
 + (id)bundleIdentifiersAccessingExternalMediaDevices;
 + (id)bundleIdentifiersAccessingExternalMediaDevicesWithStatus;
-+ (id)connection:(id)a3 stateForAccessType:(id)a4;
-+ (id)internalAccessType:(unint64_t)a3;
-+ (unint64_t)bundleIdentifier:(id)a3 stateForAccessType:(unint64_t)a4;
-+ (void)addBundleIdentifier:(id)a3;
-+ (void)revokeBundleIdentifier:(id)a3;
-+ (void)updateBundleIdentifier:(id)a3 accessType:(unint64_t)a4 withState:(unint64_t)a5;
++ (id)connection:(id)connection stateForAccessType:(id)type;
++ (id)internalAccessType:(unint64_t)type;
++ (unint64_t)bundleIdentifier:(id)identifier stateForAccessType:(unint64_t)type;
++ (void)addBundleIdentifier:(id)identifier;
++ (void)revokeBundleIdentifier:(id)identifier;
++ (void)updateBundleIdentifier:(id)identifier accessType:(unint64_t)type withState:(unint64_t)state;
 @end
 
 @implementation ICAccessManager
 
-+ (id)internalAccessType:(unint64_t)a3
++ (id)internalAccessType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = MEMORY[0x1E69A8AC0];
 LABEL_5:
@@ -23,7 +23,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = MEMORY[0x1E69A8AC8];
     goto LABEL_5;
@@ -36,36 +36,36 @@ LABEL_5:
 
 + (id)bundleIdentifiersAccessingExternalMediaDevices
 {
-  v2 = [MEMORY[0x1E69A8AE8] sharedAccessManager];
-  v3 = [v2 bundleIdentifiersAccessingExternalCameras];
+  mEMORY[0x1E69A8AE8] = [MEMORY[0x1E69A8AE8] sharedAccessManager];
+  bundleIdentifiersAccessingExternalCameras = [mEMORY[0x1E69A8AE8] bundleIdentifiersAccessingExternalCameras];
 
-  return v3;
+  return bundleIdentifiersAccessingExternalCameras;
 }
 
 + (id)bundleIdentifiersAccessingExternalMediaDevicesWithStatus
 {
-  v2 = [MEMORY[0x1E69A8AE8] sharedAccessManager];
-  v3 = [v2 bundleIdentifiersAccessingExternalCamerasWithStatus];
+  mEMORY[0x1E69A8AE8] = [MEMORY[0x1E69A8AE8] sharedAccessManager];
+  bundleIdentifiersAccessingExternalCamerasWithStatus = [mEMORY[0x1E69A8AE8] bundleIdentifiersAccessingExternalCamerasWithStatus];
 
-  return v3;
+  return bundleIdentifiersAccessingExternalCamerasWithStatus;
 }
 
-+ (void)addBundleIdentifier:(id)a3
++ (void)addBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69A8AE8];
-  v4 = a3;
-  v5 = [v3 sharedAccessManager];
-  [v5 addBundleIdentifier:v4];
+  identifierCopy = identifier;
+  sharedAccessManager = [v3 sharedAccessManager];
+  [sharedAccessManager addBundleIdentifier:identifierCopy];
 }
 
-+ (unint64_t)bundleIdentifier:(id)a3 stateForAccessType:(unint64_t)a4
++ (unint64_t)bundleIdentifier:(id)identifier stateForAccessType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [ICAccessManager internalAccessType:a4];
+  identifierCopy = identifier;
+  v6 = [ICAccessManager internalAccessType:type];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69A8AE8] sharedAccessManager];
-    v8 = [v7 bundleIdentifier:v5 stateForAccessType:v6];
+    mEMORY[0x1E69A8AE8] = [MEMORY[0x1E69A8AE8] sharedAccessManager];
+    v8 = [mEMORY[0x1E69A8AE8] bundleIdentifier:identifierCopy stateForAccessType:v6];
   }
 
   else
@@ -76,14 +76,14 @@ LABEL_5:
   return v8;
 }
 
-+ (id)connection:(id)a3 stateForAccessType:(id)a4
++ (id)connection:(id)connection stateForAccessType:(id)type
 {
-  v5 = a3;
-  v6 = +[ICAccessManager internalAccessType:](ICAccessManager, "internalAccessType:", [a4 unsignedIntegerValue]);
+  connectionCopy = connection;
+  v6 = +[ICAccessManager internalAccessType:](ICAccessManager, "internalAccessType:", [type unsignedIntegerValue]);
   if (v6)
   {
-    v7 = [MEMORY[0x1E69A8AE8] sharedAccessManager];
-    v8 = [v7 connection:v5 stateForAccessType:v6];
+    mEMORY[0x1E69A8AE8] = [MEMORY[0x1E69A8AE8] sharedAccessManager];
+    v8 = [mEMORY[0x1E69A8AE8] connection:connectionCopy stateForAccessType:v6];
   }
 
   else
@@ -96,32 +96,32 @@ LABEL_5:
   return v9;
 }
 
-+ (void)updateBundleIdentifier:(id)a3 accessType:(unint64_t)a4 withState:(unint64_t)a5
++ (void)updateBundleIdentifier:(id)identifier accessType:(unint64_t)type withState:(unint64_t)state
 {
-  v9 = a3;
-  v7 = [ICAccessManager internalAccessType:a4];
+  identifierCopy = identifier;
+  v7 = [ICAccessManager internalAccessType:type];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69A8AE8] sharedAccessManager];
-    [v8 updateBundleIdentifier:v9 accessType:v7 withState:a5];
+    mEMORY[0x1E69A8AE8] = [MEMORY[0x1E69A8AE8] sharedAccessManager];
+    [mEMORY[0x1E69A8AE8] updateBundleIdentifier:identifierCopy accessType:v7 withState:state];
   }
 }
 
-+ (void)revokeBundleIdentifier:(id)a3
++ (void)revokeBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69A8AE8];
-  v4 = a3;
-  v5 = [v3 sharedAccessManager];
-  [v5 revokeBundleIdentifier:v4];
+  identifierCopy = identifier;
+  sharedAccessManager = [v3 sharedAccessManager];
+  [sharedAccessManager revokeBundleIdentifier:identifierCopy];
 }
 
-+ (BOOL)captureUserIntentForBundleIdentifier:(id)a3 withNotification:(id)a4
++ (BOOL)captureUserIntentForBundleIdentifier:(id)identifier withNotification:(id)notification
 {
   v5 = MEMORY[0x1E69A8AE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedAccessManager];
-  v9 = [v8 captureUserIntentForBundleIdentifier:v7 withNotification:v6];
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  sharedAccessManager = [v5 sharedAccessManager];
+  v9 = [sharedAccessManager captureUserIntentForBundleIdentifier:identifierCopy withNotification:notificationCopy];
 
   return v9;
 }

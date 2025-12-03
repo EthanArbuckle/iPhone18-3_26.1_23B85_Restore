@@ -1,34 +1,34 @@
 @interface AKTokenRequestContext
-- (AKTokenRequestContext)initWithIdentifier:(id)a3 altDSID:(id)a4;
+- (AKTokenRequestContext)initWithIdentifier:(id)identifier altDSID:(id)d;
 @end
 
 @implementation AKTokenRequestContext
 
-- (AKTokenRequestContext)initWithIdentifier:(id)a3 altDSID:(id)a4
+- (AKTokenRequestContext)initWithIdentifier:(id)identifier altDSID:(id)d
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, d);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKTokenRequestContext;
   v8 = [(AKTokenRequestContext *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_tokenIdentifier, location[0]);
-    objc_storeStrong(&v12->_altDSID, v10);
+    objc_storeStrong(&selfCopy->_tokenIdentifier, location[0]);
+    objc_storeStrong(&selfCopy->_altDSID, v10);
   }
 
-  v6 = _objc_retain(v12);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 

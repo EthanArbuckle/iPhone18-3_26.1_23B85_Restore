@@ -1,12 +1,12 @@
 @interface PNPWizardScratchpadCanvasView
 - (PKCanvasViewDelegate)delegate;
-- (PNPWizardScratchpadCanvasView)initWithFrame:(CGRect)a3;
-- (void)_playClearAnimationWithImage:(id)a3;
+- (PNPWizardScratchpadCanvasView)initWithFrame:(CGRect)frame;
+- (void)_playClearAnimationWithImage:(id)image;
 - (void)clearDrawingAnimated;
 - (void)layoutSubviews;
 - (void)prepareCanvasView;
-- (void)setDelegate:(id)a3;
-- (void)setInk:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setInk:(id)ink;
 @end
 
 @implementation PNPWizardScratchpadCanvasView
@@ -77,11 +77,11 @@
   }
 }
 
-- (void)_playClearAnimationWithImage:(id)a3
+- (void)_playClearAnimationWithImage:(id)image
 {
   v4 = MEMORY[0x277D755E8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithImage:v5];
+  imageCopy = image;
+  v6 = [[v4 alloc] initWithImage:imageCopy];
 
   [(NSMutableArray *)self->_snapshotImageViews addObject:v6];
   [(PNPWizardScratchpadCanvasView *)self addSubview:v6];
@@ -102,7 +102,7 @@
   v11[2] = __62__PNPWizardScratchpadCanvasView__playClearAnimationWithImage___block_invoke_2;
   v11[3] = &unk_279A0A218;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v10 = v6;
   [v9 _animateUsingDefaultTimingWithOptions:0 animations:v14 completion:v11];
 }
@@ -129,21 +129,21 @@ uint64_t __62__PNPWizardScratchpadCanvasView__playClearAnimationWithImage___bloc
   [(PNPWizardScratchpadCanvasView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PNPWizardScratchpadCanvasView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(PNPWizardScratchpadCanvasView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   v10 = [objc_alloc(MEMORY[0x277CD9630]) initWithSize:v4 scale:{v6, v9}];
-  v11 = [(PNPWizardScratchpadCanvasView *)self traitCollection];
-  [v10 setInvertColors:{objc_msgSend(v11, "userInterfaceStyle") == 2}];
+  traitCollection2 = [(PNPWizardScratchpadCanvasView *)self traitCollection];
+  [v10 setInvertColors:{objc_msgSend(traitCollection2, "userInterfaceStyle") == 2}];
 
-  v12 = [(PKCanvasView *)self->_canvasView drawing];
+  drawing = [(PKCanvasView *)self->_canvasView drawing];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__PNPWizardScratchpadCanvasView_clearDrawingAnimated__block_invoke;
   v13[3] = &unk_279A0A240;
   v13[4] = self;
-  [v10 renderDrawing:v12 completion:v13];
+  [v10 renderDrawing:drawing completion:v13];
 }
 
 void __53__PNPWizardScratchpadCanvasView_clearDrawingAnimated__block_invoke(uint64_t a1, void *a2)
@@ -159,18 +159,18 @@ void __53__PNPWizardScratchpadCanvasView_clearDrawingAnimated__block_invoke(uint
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
-  objc_storeStrong(&self->_ink, a3);
-  v5 = a3;
-  [(PKCanvasView *)self->_canvasView setInk:v5];
+  objc_storeStrong(&self->_ink, ink);
+  inkCopy = ink;
+  [(PKCanvasView *)self->_canvasView setInk:inkCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_canvasViewDelegate, v4);
-  [(PKCanvasView *)self->_canvasView setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_canvasViewDelegate, delegateCopy);
+  [(PKCanvasView *)self->_canvasView setDelegate:delegateCopy];
 }
 
 - (PKCanvasViewDelegate)delegate
@@ -180,14 +180,14 @@ void __53__PNPWizardScratchpadCanvasView_clearDrawingAnimated__block_invoke(uint
   return WeakRetained;
 }
 
-- (PNPWizardScratchpadCanvasView)initWithFrame:(CGRect)a3
+- (PNPWizardScratchpadCanvasView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PNPWizardScratchpadCanvasView;
-  v3 = [(PNPWizardScratchpadCanvasView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v3 = [(PNPWizardScratchpadCanvasView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  array = [MEMORY[0x277CBEB18] array];
   snapshotImageViews = v3->_snapshotImageViews;
-  v3->_snapshotImageViews = v4;
+  v3->_snapshotImageViews = array;
 
   return v3;
 }

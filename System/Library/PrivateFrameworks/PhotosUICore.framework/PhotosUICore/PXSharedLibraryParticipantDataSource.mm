@@ -4,13 +4,13 @@
 - (NSSet)emailAddresses;
 - (NSSet)participantAddresses;
 - (NSSet)phoneNumbers;
-- (id)_initWithParticipants:(id)a3;
-- (id)itemAtIndex:(int64_t)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)_initWithParticipants:(id)participants;
+- (id)itemAtIndex:(int64_t)index;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfParticipants;
-- (int64_t)numberOfSubitemsInItem:(int64_t)a3 section:(int64_t)a4;
+- (int64_t)numberOfSubitemsInItem:(int64_t)item section:(int64_t)section;
 @end
 
 @implementation PXSharedLibraryParticipantDataSource
@@ -18,14 +18,14 @@
 - (NSSet)participantAddresses
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__PXSharedLibraryParticipantDataSource_participantAddresses__block_invoke;
   v7[3] = &unk_1E7740D68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [participants enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -47,14 +47,14 @@ void __60__PXSharedLibraryParticipantDataSource_participantAddresses__block_invo
 - (NSSet)phoneNumbers
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PXSharedLibraryParticipantDataSource_phoneNumbers__block_invoke;
   v7[3] = &unk_1E7740D68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [participants enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -79,14 +79,14 @@ void __52__PXSharedLibraryParticipantDataSource_phoneNumbers__block_invoke(uint6
 - (NSSet)emailAddresses
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PXSharedLibraryParticipantDataSource_emailAddresses__block_invoke;
   v7[3] = &unk_1E7740D68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [participants enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -111,14 +111,14 @@ void __54__PXSharedLibraryParticipantDataSource_emailAddresses__block_invoke(uin
 - (NSArray)names
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PXSharedLibraryParticipantDataSource_names__block_invoke;
   v7[3] = &unk_1E7740D68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [participants enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -156,107 +156,107 @@ void __45__PXSharedLibraryParticipantDataSource_names__block_invoke(uint64_t a1,
 
 - (NSArray)participantImageCombinerItems
 {
-  v2 = [(PXSharedLibraryParticipantDataSource *)self participants];
-  v3 = [v2 copy];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
+  v3 = [participants copy];
 
   return v3;
 }
 
 - (int64_t)numberOfParticipants
 {
-  v2 = [(PXSharedLibraryParticipantDataSource *)self participants];
-  v3 = [v2 count];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
+  v3 = [participants count];
 
   return v3;
 }
 
-- (id)itemAtIndex:(int64_t)a3
+- (id)itemAtIndex:(int64_t)index
 {
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
-  v5 = [v4 objectAtIndex:a3];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
+  v5 = [participants objectAtIndex:index];
 
   return v5;
 }
 
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXSharedLibraryParticipantDataSource *)self identifier])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->section == 0x7FFFFFFFFFFFFFFFLL || a3->item != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->section == 0x7FFFFFFFFFFFFFFFLL || path->item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
   }
 
   return [(PXSharedLibraryParticipantDataSource *)self participants];
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXSharedLibraryParticipantDataSource *)self identifier])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->section)
+  if (path->section)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"indexPath.section == 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"indexPath.section == 0"}];
   }
 
-  if (a3->subitem)
+  if (path->subitem)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"indexPath.subitem == 0"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"indexPath.subitem == 0"}];
   }
 
-  v7 = [(PXSharedLibraryParticipantDataSource *)self participants];
-  v8 = [v7 objectAtIndex:a3->item];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
+  v8 = [participants objectAtIndex:path->item];
 
   return v8;
 }
 
-- (int64_t)numberOfSubitemsInItem:(int64_t)a3 section:(int64_t)a4
+- (int64_t)numberOfSubitemsInItem:(int64_t)item section:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"section == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"section == 0"}];
   }
 
   return 0;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"section == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantDataSource.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"section == 0"}];
   }
 
-  v4 = [(PXSharedLibraryParticipantDataSource *)self participants];
-  v5 = [v4 count];
+  participants = [(PXSharedLibraryParticipantDataSource *)self participants];
+  v5 = [participants count];
 
   return v5;
 }
 
-- (id)_initWithParticipants:(id)a3
+- (id)_initWithParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   v9.receiver = self;
   v9.super_class = PXSharedLibraryParticipantDataSource;
   v5 = [(PXSharedLibraryParticipantDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [participantsCopy copy];
     participants = v5->_participants;
     v5->_participants = v6;
   }

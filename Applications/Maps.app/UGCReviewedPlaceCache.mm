@@ -1,16 +1,16 @@
 @interface UGCReviewedPlaceCache
-+ (id)baseFilePath:(id *)a3;
-+ (id)oldFilePath:(id *)a3;
++ (id)baseFilePath:(id *)path;
++ (id)oldFilePath:(id *)path;
 - (UGCReviewedPlaceCache)init;
-- (UGCReviewedPlaceCache)initWithURL:(id)a3;
-- (id)locallyCachedReviewedPlaceForMUID:(unint64_t)a3;
-- (void)_commonInitWithURL:(id)a3;
-- (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4;
+- (UGCReviewedPlaceCache)initWithURL:(id)l;
+- (id)locallyCachedReviewedPlaceForMUID:(unint64_t)d;
+- (void)_commonInitWithURL:(id)l;
+- (void)addOrEditReviewedPlace:(id)place completion:(id)completion;
 - (void)clearAllUserData;
-- (void)fetchReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4;
-- (void)fetchWithMUID:(unint64_t)a3 andReplaceIfNeededWithNewMUID:(unint64_t)a4 completion:(id)a5;
+- (void)fetchReviewedPlaceForMUID:(unint64_t)d completion:(id)completion;
+- (void)fetchWithMUID:(unint64_t)d andReplaceIfNeededWithNewMUID:(unint64_t)iD completion:(id)completion;
 - (void)moveCacheIfNeeded;
-- (void)removeReviewedPlaceWithMUID:(unint64_t)a3 completion:(id)a4;
+- (void)removeReviewedPlaceWithMUID:(unint64_t)d completion:(id)completion;
 @end
 
 @implementation UGCReviewedPlaceCache
@@ -26,39 +26,39 @@
   [(GEOSQLiteDB *)db executeSync:v3];
 }
 
-- (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4
+- (void)addOrEditReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  placeCopy = place;
+  completionCopy = completion;
   db = self->_db;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1006F0570;
   v11[3] = &unk_1016605F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = placeCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = placeCopy;
   [(GEOSQLiteDB *)db executeAsync:v11];
 }
 
-- (void)removeReviewedPlaceWithMUID:(unint64_t)a3 completion:(id)a4
+- (void)removeReviewedPlaceWithMUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   db = self->_db;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006F09AC;
   v9[3] = &unk_1016589F8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  dCopy = d;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   [(GEOSQLiteDB *)db executeAsync:v9];
 }
 
-- (id)locallyCachedReviewedPlaceForMUID:(unint64_t)a3
+- (id)locallyCachedReviewedPlaceForMUID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -72,7 +72,7 @@
   v6[2] = sub_1006F0D4C;
   v6[3] = &unk_10165E540;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = d;
   v6[4] = self;
   [(GEOSQLiteDB *)db executeSync:v6];
   v4 = v8[5];
@@ -81,35 +81,35 @@
   return v4;
 }
 
-- (void)fetchReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4
+- (void)fetchReviewedPlaceForMUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   db = self->_db;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006F130C;
   v9[3] = &unk_1016589F8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  dCopy = d;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   [(GEOSQLiteDB *)db executeAsync:v9];
 }
 
-- (void)fetchWithMUID:(unint64_t)a3 andReplaceIfNeededWithNewMUID:(unint64_t)a4 completion:(id)a5
+- (void)fetchWithMUID:(unint64_t)d andReplaceIfNeededWithNewMUID:(unint64_t)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1006F1720;
   v10[3] = &unk_101626F38;
-  v9 = v8;
+  v9 = completionCopy;
   v11 = v9;
-  v12[1] = a3;
-  v12[2] = a4;
+  v12[1] = d;
+  v12[2] = iD;
   objc_copyWeak(v12, &location);
-  [(UGCReviewedPlaceCache *)self fetchReviewedPlaceForMUID:a3 completion:v10];
+  [(UGCReviewedPlaceCache *)self fetchReviewedPlaceForMUID:d completion:v10];
   objc_destroyWeak(v12);
 
   objc_destroyWeak(&location);
@@ -119,8 +119,8 @@
 {
   v2 = [objc_opt_class() oldFilePath:0];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [v2 path];
+  v5 = [v3 fileExistsAtPath:path];
 
   if (v5)
   {
@@ -128,18 +128,18 @@
     v7 = sub_100799818();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v2 path];
-      v9 = [v6 path];
+      path2 = [v2 path];
+      path3 = [v6 path];
       v12 = 138412546;
-      v13 = v8;
+      v13 = path2;
       v14 = 2112;
-      v15 = v9;
+      v15 = path3;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Migrate DB files from: %@ to %@", &v12, 0x16u);
     }
 
-    v10 = [v2 path];
-    v11 = [v6 path];
-    [GEOSQLiteDB migrateAllDBFilesFrom:v10 to:v11];
+    path4 = [v2 path];
+    path5 = [v6 path];
+    [GEOSQLiteDB migrateAllDBFilesFrom:path4 to:path5];
   }
 
   else
@@ -153,9 +153,9 @@
   }
 }
 
-- (void)_commonInitWithURL:(id)a3
+- (void)_commonInitWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [GEOSQLiteDB alloc];
   v6 = sub_100799818();
   v9[0] = _NSConcreteStackBlock;
@@ -163,22 +163,22 @@
   v9[2] = sub_1006F1C5C;
   v9[3] = &unk_101626EE8;
   v9[4] = self;
-  v7 = [v5 initWithQueueName:"com.apple.maps.cachedreviewedplace.db" log:v6 databaseFileURL:v4 sqliteFlags:0x100000 pragmas:0 setupBlock:v9];
+  v7 = [v5 initWithQueueName:"com.apple.maps.cachedreviewedplace.db" log:v6 databaseFileURL:lCopy sqliteFlags:0x100000 pragmas:0 setupBlock:v9];
 
   db = self->_db;
   self->_db = v7;
 }
 
-- (UGCReviewedPlaceCache)initWithURL:(id)a3
+- (UGCReviewedPlaceCache)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = UGCReviewedPlaceCache;
   v5 = [(UGCReviewedPlaceCache *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UGCReviewedPlaceCache *)v5 _commonInitWithURL:v4];
+    [(UGCReviewedPlaceCache *)v5 _commonInitWithURL:lCopy];
   }
 
   return v6;
@@ -198,21 +198,21 @@
   return v2;
 }
 
-+ (id)baseFilePath:(id *)a3
++ (id)baseFilePath:(id *)path
 {
   v4 = objc_opt_class();
 
-  return [v4 oldFilePath:a3];
+  return [v4 oldFilePath:path];
 }
 
-+ (id)oldFilePath:(id *)a3
++ (id)oldFilePath:(id *)path
 {
   v4 = +[NSFileManager defaultManager];
   v11 = 0;
   v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v11];
   v6 = v11;
 
-  if (!a3 || v5)
+  if (!path || v5)
   {
     if (v5)
     {
@@ -230,7 +230,7 @@
   {
     v7 = v6;
     v8 = 0;
-    *a3 = v6;
+    *path = v6;
   }
 
   return v8;

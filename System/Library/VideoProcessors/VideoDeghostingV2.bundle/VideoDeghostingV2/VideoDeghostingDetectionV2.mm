@@ -1,36 +1,36 @@
 @interface VideoDeghostingDetectionV2
 - ($BEDB99FD0828BB334BE1A07B64442EB9)configuration;
-- (BOOL)_mergeBboxesWithTrackingForMitigation:(id)a3 prevFrameGhostList:(id)a4;
-- (BOOL)_shouldRunGGDetectionClippedPixelBased:(float)a3;
-- (BOOL)_shouldRunGGDetectionLSBased:(int)a3;
-- (BOOL)_shouldRunGGDetectionLuxLevelBased:(int)a3;
-- (ROI)matchPrevLS:(double)a3 prevToCurrentHomography:(double)a4 againstCurrentLSList:(float)a5 avoidList:(uint64_t)a6 searchRadius:(void *)a7;
-- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)a3 config:(id *)a4 tuningParamDict:(id)a5 imageDimensions:(id)a6;
-- (id)_ghostCandidateGenerationViaKeypointBuffer:(__CVBuffer *)a3 opticalCenterFromMetaData:(_simParamsStruct *)a4 mappingInfo:(id *)a5 GGList:(id *)a6 LSList:(int)a7 kpCntHardGatingTh:(int)a8 kpCntSoftGatingTh:;
-- (id)deepCopyROIList:(id)a3 copyReferencedROI:(BOOL)a4;
-- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV2 *)self BoxCount:(SEL)a2;
-- (id)predictPastReflectedLSInCurrentFrame:(id)a3 currentFrameLSList:(id)a4;
-- (id)process:(__CVBuffer *)a3 metaData:(id)a4 ispTimeStamp:(id *)a5 keypoints:(__CVBuffer *)a6 lightSourceMask:(__CVBuffer *)a7 futureFrames:(id *)a8;
+- (BOOL)_mergeBboxesWithTrackingForMitigation:(id)mitigation prevFrameGhostList:(id)list;
+- (BOOL)_shouldRunGGDetectionClippedPixelBased:(float)based;
+- (BOOL)_shouldRunGGDetectionLSBased:(int)based;
+- (BOOL)_shouldRunGGDetectionLuxLevelBased:(int)based;
+- (ROI)matchPrevLS:(double)s prevToCurrentHomography:(double)homography againstCurrentLSList:(float)list avoidList:(uint64_t)avoidList searchRadius:(void *)radius;
+- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)box config:(id *)config tuningParamDict:(id)dict imageDimensions:(id)dimensions;
+- (id)_ghostCandidateGenerationViaKeypointBuffer:(__CVBuffer *)buffer opticalCenterFromMetaData:(_simParamsStruct *)data mappingInfo:(id *)info GGList:(id *)list LSList:(int)sList kpCntHardGatingTh:(int)th kpCntSoftGatingTh:;
+- (id)deepCopyROIList:(id)list copyReferencedROI:(BOOL)i;
+- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV2 *)self BoxCount:(SEL)count;
+- (id)predictPastReflectedLSInCurrentFrame:(id)frame currentFrameLSList:(id)list;
+- (id)process:(__CVBuffer *)process metaData:(id)data ispTimeStamp:(id *)stamp keypoints:(__CVBuffer *)keypoints lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames;
 - (int64_t)_allocateMetalBuffers;
-- (int64_t)_detectionInit:(__CVBuffer *)a3 metaData:(id)a4 futureFrames:(id *)a5;
-- (void)_allocateLightSourceBuffers:(int64_t)a3;
-- (void)_findGhostsAndGenerateDescriptors:(VideoDeghostingDetectionV2 *)self LSList:(SEL)a2 LSDilation:(id *)a3 LSReflectCenter:(id)a4 desGenKeypointBuf:(float)a5 desGenMappingInfo:(__CVBuffer *)a6;
-- (void)_ghostDetectionWithInputPixelBuffer:(__CVBuffer *)a3 reflectedLSMaskOri:(__CVBuffer *)a4 lowLight:(BOOL)a5 opticalCenterFromMetaData:(__CVBuffer *)a6 simKeyPoint:(__CVBuffer *)a7 simLightSourceMask:(id)a8 metaData:(id *)a9 futureFrames:;
-- (void)_initParamsWithTuningParamsDict:(id)a3 isLowLight:(BOOL)a4;
-- (void)_pruneUsingMatchedLSInfo:(id *)a3 dilation:(int)a4;
+- (int64_t)_detectionInit:(__CVBuffer *)init metaData:(id)data futureFrames:(id *)frames;
+- (void)_allocateLightSourceBuffers:(int64_t)buffers;
+- (void)_findGhostsAndGenerateDescriptors:(VideoDeghostingDetectionV2 *)self LSList:(SEL)list LSDilation:(id *)dilation LSReflectCenter:(id)center desGenKeypointBuf:(float)buf desGenMappingInfo:(__CVBuffer *)info;
+- (void)_ghostDetectionWithInputPixelBuffer:(__CVBuffer *)buffer reflectedLSMaskOri:(__CVBuffer *)ori lowLight:(BOOL)light opticalCenterFromMetaData:(__CVBuffer *)data simKeyPoint:(__CVBuffer *)point simLightSourceMask:(id)mask metaData:(id *)metaData futureFrames:;
+- (void)_initParamsWithTuningParamsDict:(id)dict isLowLight:(BOOL)light;
+- (void)_pruneUsingMatchedLSInfo:(id *)info dilation:(int)dilation;
 - (void)_resetDetectionResults;
 - (void)_resetIntermediateVariables;
-- (void)_setLightSourceMotionForKeypoints:(id *)a3;
-- (void)_trackCurrentLSList:(id *)a3;
-- (void)_trackGhosts:(id *)a3 ghostCandidates:(id *)a4 LSList:(id)a5;
-- (void)_trackLightSources:(id *)a3;
-- (void)_updateEstOpticalCenterUsingPrevDetectedGhosts:(id)a3 currentDefaultOpticalCenter:;
+- (void)_setLightSourceMotionForKeypoints:(id *)keypoints;
+- (void)_trackCurrentLSList:(id *)list;
+- (void)_trackGhosts:(id *)ghosts ghostCandidates:(id *)candidates LSList:(id)list;
+- (void)_trackLightSources:(id *)sources;
+- (void)_updateEstOpticalCenterUsingPrevDetectedGhosts:(id)ghosts currentDefaultOpticalCenter:;
 - (void)dealloc;
-- (void)getDilationCoefsAndReflectedDilatedLsList:(id)a3;
-- (void)pruneUsingLSRisk:(id)a3;
+- (void)getDilationCoefsAndReflectedDilatedLsList:(id)list;
+- (void)pruneUsingLSRisk:(id)risk;
 - (void)reset;
-- (void)setConfiguration:(id *)a3;
-- (void)temporalDetectionCoreCurrentGGList:(id *)a3 ghostCandidates:(id *)a4 LSList:(id)a5;
+- (void)setConfiguration:(id *)configuration;
+- (void)temporalDetectionCoreCurrentGGList:(id *)list ghostCandidates:(id *)candidates LSList:(id)sList;
 @end
 
 @implementation VideoDeghostingDetectionV2
@@ -192,25 +192,25 @@
   _objc_release_x1();
 }
 
-- (void)_initParamsWithTuningParamsDict:(id)a3 isLowLight:(BOOL)a4
+- (void)_initParamsWithTuningParamsDict:(id)dict isLowLight:(BOOL)light
 {
-  v4 = a4;
+  lightCopy = light;
   p_colorContrastDiffThreshold = &self->_params.tempDetect.colorContrastDiffThreshold;
-  v37 = a3;
-  v7 = [v37 objectForKeyedSubscript:@"DetectionAndTracking"];
+  dictCopy = dict;
+  v7 = [dictCopy objectForKeyedSubscript:@"DetectionAndTracking"];
   if (!v7)
   {
     goto LABEL_19;
   }
 
-  v8 = [v37 objectForKeyedSubscript:@"DetectionAndTracking"];
+  v8 = [dictCopy objectForKeyedSubscript:@"DetectionAndTracking"];
   if (!v8)
   {
     goto LABEL_19;
   }
 
   v9 = v8;
-  v10 = [v37 objectForKeyedSubscript:@"LuxLevelThresholdON"];
+  v10 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdON"];
   if (!v10)
   {
     goto LABEL_18;
@@ -275,10 +275,10 @@ LABEL_13:
 
   if (v35)
   {
-    v22 = [v37 objectForKeyedSubscript:@"LuxLevelThresholdON"];
+    v22 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdON"];
     LODWORD(self->_params.searchRangeBaseForPreprocessing) = [v22 intValue];
 
-    v23 = [v37 objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
+    v23 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
     self->_params.maxAllowedSizeBBox = [v23 intValue];
 
     v24 = [v7 objectForKeyedSubscript:@"LSGatingThresholdON"];
@@ -317,12 +317,12 @@ LABEL_19:
   *&self->_params.luxLevelGatingThresholdON = xmmword_2DD60;
   *&self->_params.colorScore.hueLowerRange = xmmword_2DD70;
 LABEL_20:
-  [(GGMMetalToolBox *)self->_metalToolBox setRepairTuningParams:&self[1] withDict:v37];
+  [(GGMMetalToolBox *)self->_metalToolBox setRepairTuningParams:&self[1] withDict:dictCopy];
   *&self->_params.costRescaleWhenOpticalCenterIsAvailable = 0x4234000042340000;
   *&self->_params.tempDetect.minVote = 1036831949;
   self->_params.tempDetect.searchRadiusMin = 1.0;
   *&self->_params.colorScore.saturationUpperThreshold = xmmword_2DD80;
-  if (v4)
+  if (lightCopy)
   {
     v33 = 128;
   }
@@ -344,9 +344,9 @@ LABEL_20:
 - (int64_t)_allocateMetalBuffers
 {
   v3 = 16 * LODWORD(self->_metalBuffers.desGenMappingInfoBuf);
-  v4 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v5 = [v4 device];
-  v6 = [v5 newBufferWithLength:v3 options:0];
+  metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device = [metalContext device];
+  v6 = [device newBufferWithLength:v3 options:0];
   desGenGhostIdxBuf = self->_metalBuffers.desGenGhostIdxBuf;
   self->_metalBuffers.desGenGhostIdxBuf = v6;
 
@@ -360,9 +360,9 @@ LABEL_20:
   v71[0] = 0;
   v71[1] = 0;
   v70 = 0;
-  v8 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v9 = [v8 device];
-  v10 = [v9 newBufferWithBytes:v71 length:16 options:0];
+  metalContext2 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device2 = [metalContext2 device];
+  v10 = [device2 newBufferWithBytes:v71 length:16 options:0];
   desGenGhostsBuf = self->_metalBuffers.desGenGhostsBuf;
   self->_metalBuffers.desGenGhostsBuf = v10;
 
@@ -372,9 +372,9 @@ LABEL_20:
     return v71[3];
   }
 
-  v12 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v13 = [v12 device];
-  v14 = [v13 newBufferWithBytes:&v70 length:4 options:0];
+  metalContext3 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device3 = [metalContext3 device];
+  v14 = [device3 newBufferWithBytes:&v70 length:4 options:0];
   tinyGhostIdxBuf = self->_metalBuffers.tinyGhostIdxBuf;
   self->_metalBuffers.tinyGhostIdxBuf = v14;
 
@@ -384,9 +384,9 @@ LABEL_20:
     return v71[3];
   }
 
-  v16 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v17 = [v16 device];
-  v18 = [v17 newBufferWithLength:901120 options:0];
+  metalContext4 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device4 = [metalContext4 device];
+  v18 = [device4 newBufferWithLength:901120 options:0];
   tinyGhostInputLocationsBuf = self->_metalBuffers.tinyGhostInputLocationsBuf;
   self->_metalBuffers.tinyGhostInputLocationsBuf = v18;
 
@@ -399,9 +399,9 @@ LABEL_20:
   self->_metalBuffers.DoGAndLumaInputBoxesBufLenForPrevLS = 5120;
   HIDWORD(v68) = 0;
   v69 = 0;
-  v20 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v21 = [v20 device];
-  v22 = [v21 newBufferWithBytes:&v69 length:4 options:0];
+  metalContext5 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device5 = [metalContext5 device];
+  v22 = [device5 newBufferWithBytes:&v69 length:4 options:0];
   tinyGhostsBuf = self->_metalBuffers.tinyGhostsBuf;
   self->_metalBuffers.tinyGhostsBuf = v22;
 
@@ -411,9 +411,9 @@ LABEL_20:
     return v71[3];
   }
 
-  v24 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v25 = [v24 device];
-  v26 = [v25 newBufferWithBytes:&v68 + 4 length:4 options:0];
+  metalContext6 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device6 = [metalContext6 device];
+  v26 = [device6 newBufferWithBytes:&v68 + 4 length:4 options:0];
   DoGAndLumaInputBoxesBufForPrevLS = self->_metalBuffers.DoGAndLumaInputBoxesBufForPrevLS;
   self->_metalBuffers.DoGAndLumaInputBoxesBufForPrevLS = v26;
 
@@ -424,9 +424,9 @@ LABEL_20:
   }
 
   v28 = 8 * HIDWORD(self->_metalBuffers.reflectedLsBboxListBuf);
-  v29 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v30 = [v29 device];
-  v31 = [v30 newBufferWithLength:v28 options:0];
+  metalContext7 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device7 = [metalContext7 device];
+  v31 = [device7 newBufferWithLength:v28 options:0];
   tinyGhostInputLocationsSize = self->_metalBuffers.tinyGhostInputLocationsSize;
   self->_metalBuffers.tinyGhostInputLocationsSize = v31;
 
@@ -439,9 +439,9 @@ LABEL_20:
   reflectedLsBboxListBuf_high = HIDWORD(self->_metalBuffers.reflectedLsBboxListBuf);
   self->_metalBuffers.DoGAndLumaFeaturesBufLen = reflectedLsBboxListBuf_high;
   v34 = 176 * reflectedLsBboxListBuf_high;
-  v35 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v36 = [v35 device];
-  v37 = [v36 newBufferWithLength:v34 options:0];
+  metalContext8 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device8 = [metalContext8 device];
+  v37 = [device8 newBufferWithLength:v34 options:0];
   DoGAndLumaInputBoxesBuf = self->_metalBuffers.DoGAndLumaInputBoxesBuf;
   self->_metalBuffers.DoGAndLumaInputBoxesBuf = v37;
 
@@ -454,9 +454,9 @@ LABEL_20:
   self->_metalBuffers.DoGAndLumaFeaturesBufLenForPrevLS = HIDWORD(self->_metalBuffers.reflectedLsBboxListBuf);
   LODWORD(v68) = 0;
   v39 = 16 * LODWORD(self->_metalBuffers.reflectedLsBboxListBuf);
-  v40 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v41 = [v40 device];
-  v42 = [v41 newBufferWithLength:v39 options:0];
+  metalContext9 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device9 = [metalContext9 device];
+  v42 = [device9 newBufferWithLength:v39 options:0];
   DoGAndLumaFeaturesBuf = self->_metalBuffers.DoGAndLumaFeaturesBuf;
   self->_metalBuffers.DoGAndLumaFeaturesBuf = v42;
 
@@ -468,9 +468,9 @@ LABEL_20:
 
   LODWORD(self->_prevGhostTrackIDs) = self->_metalBuffers.reflectedLsBboxListBuf;
   v44 = 16 * LODWORD(self->_metalBuffers.desGenMappingInfoBuf);
-  v45 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v46 = [v45 device];
-  v47 = [v46 newBufferWithLength:v44 options:0];
+  metalContext10 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device10 = [metalContext10 device];
+  v47 = [device10 newBufferWithLength:v44 options:0];
   DoGAndLumaFeaturesBufForPrevLS = self->_metalBuffers.DoGAndLumaFeaturesBufForPrevLS;
   self->_metalBuffers.DoGAndLumaFeaturesBufForPrevLS = v47;
 
@@ -482,9 +482,9 @@ LABEL_20:
 
   HIDWORD(self->_prevGhostTrackIDs) = self->_metalBuffers.desGenMappingInfoBuf;
   v49 = 136 * LODWORD(self->_metalBuffers.reflectedLsBboxListBuf);
-  v50 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v51 = [v50 device];
-  v52 = [v51 newBufferWithLength:v49 options:0];
+  metalContext11 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device11 = [metalContext11 device];
+  v52 = [device11 newBufferWithLength:v49 options:0];
   DoGAndLumaTotalBoxes = self->_metalBuffers.DoGAndLumaTotalBoxes;
   self->_metalBuffers.DoGAndLumaTotalBoxes = v52;
 
@@ -496,9 +496,9 @@ LABEL_20:
 
   LODWORD(self->_prevGhostTrackIDCnt) = self->_metalBuffers.reflectedLsBboxListBuf;
   v54 = 136 * LODWORD(self->_metalBuffers.desGenMappingInfoBuf);
-  v55 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v56 = [v55 device];
-  v57 = [v56 newBufferWithLength:v54 options:0];
+  metalContext12 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device12 = [metalContext12 device];
+  v57 = [device12 newBufferWithLength:v54 options:0];
   DoGAndLumaTotalBoxesForPrevLS = self->_metalBuffers.DoGAndLumaTotalBoxesForPrevLS;
   self->_metalBuffers.DoGAndLumaTotalBoxesForPrevLS = v57;
 
@@ -509,9 +509,9 @@ LABEL_20:
   }
 
   HIDWORD(self->_prevGhostTrackIDCnt) = self->_metalBuffers.desGenMappingInfoBuf;
-  v59 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v60 = [v59 device];
-  v61 = [v60 newBufferWithBytes:&v68 length:4 options:0];
+  metalContext13 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device13 = [metalContext13 device];
+  v61 = [device13 newBufferWithBytes:&v68 length:4 options:0];
   v62 = *&self->_metalBuffers.reflectedLsBboxListBufLen;
   *&self->_metalBuffers.reflectedLsBboxListBufLen = v61;
 
@@ -521,9 +521,9 @@ LABEL_20:
     return v71[3];
   }
 
-  v63 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v64 = [v63 device];
-  v65 = [v64 newBufferWithBytes:&v68 length:4 options:0];
+  metalContext14 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  device14 = [metalContext14 device];
+  v65 = [device14 newBufferWithBytes:&v68 length:4 options:0];
   v66 = *&self->_metalBuffers.tinyGhostInputLocationsBufLen;
   *&self->_metalBuffers.tinyGhostInputLocationsBufLen = v65;
 
@@ -537,24 +537,24 @@ LABEL_20:
   return result;
 }
 
-- (id)process:(__CVBuffer *)a3 metaData:(id)a4 ispTimeStamp:(id *)a5 keypoints:(__CVBuffer *)a6 lightSourceMask:(__CVBuffer *)a7 futureFrames:(id *)a8
+- (id)process:(__CVBuffer *)process metaData:(id)data ispTimeStamp:(id *)stamp keypoints:(__CVBuffer *)keypoints lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames
 {
-  v14 = a4;
+  dataCopy = data;
   kdebug_trace();
-  v15 = sub_129BC(self->_configuration.externalCfg.frameDelay, v14);
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils calcOpticalCenterFromMetaData:v14];
+  v15 = sub_129BC(self->_configuration.externalCfg.frameDelay, dataCopy);
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils calcOpticalCenterFromMetaData:dataCopy];
   v42 = v16.f64[0];
   v43 = v17;
   v16.f64[1] = v17;
-  [(VideoDeghostingDetectionV2 *)self _ghostDetectionWithInputPixelBuffer:a3 reflectedLSMaskOri:0 lowLight:v15 opticalCenterFromMetaData:a6 simKeyPoint:a7 simLightSourceMask:v14 metaData:COERCE_DOUBLE(vcvt_f32_f64(v16)) futureFrames:a8];
+  [(VideoDeghostingDetectionV2 *)self _ghostDetectionWithInputPixelBuffer:process reflectedLSMaskOri:0 lowLight:v15 opticalCenterFromMetaData:keypoints simKeyPoint:mask simLightSourceMask:dataCopy metaData:COERCE_DOUBLE(vcvt_f32_f64(v16)) futureFrames:frames];
   if (sub_13280(self->_reflectedLSROIs, *&self[1]._detectionUtils, *&self[1].super.isa))
   {
     [(NSMutableArray *)self->_reflectedLSROIs removeAllObjects];
-    v18 = [(MTLTexture *)self->_inputTexture lastObject];
-    [v18 removeAllObjects];
+    lastObject = [(MTLTexture *)self->_inputTexture lastObject];
+    [lastObject removeAllObjects];
 
-    v19 = [(NSMutableArray *)self->_prevLSLists lastObject];
-    [v19 removeAllObjects];
+    lastObject2 = [(NSMutableArray *)self->_prevLSLists lastObject];
+    [lastObject2 removeAllObjects];
   }
 
   kdebug_trace();
@@ -566,7 +566,7 @@ LABEL_20:
   v24 = v22[65];
   bzero([v23 mutableBytes], 0x2548uLL);
   [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:v24 WithDetectedROI:v20 isLowLight:v15];
-  [*&self->_runningAverageLSNumberCount process:a3 info:v14 metaContainerBuffer:v24 computeBlendingWeights:objc_msgSend(v20 futureFrames:{"count") != 0, a8}];
+  [*&self->_runningAverageLSNumberCount process:process info:dataCopy metaContainerBuffer:v24 computeBlendingWeights:objc_msgSend(v20 futureFrames:{"count") != 0, frames}];
   [*&self->_runningAverageLSNumberCount roiClusterCnt];
   kdebug_trace();
   v25 = *&self->_configuration.internalCfg.antiFlareSize;
@@ -577,12 +577,12 @@ LABEL_20:
   v30 = BYTE1(self->_trackID);
   v31 = LOBYTE(self->_params.lightSourceSelectionCntLimitNew) != 0;
   v32 = BYTE2(self->_trackID);
-  v44 = *a5;
+  v44 = *stamp;
   BYTE3(v41) = v32;
   BYTE2(v41) = v31;
   BYTE1(v41) = v30;
   LOBYTE(v41) = v29;
-  v33 = sub_12A8C(v23, v20, v42, v43, v25, rawLSList, v27, v28, v14, &v44);
+  v33 = sub_12A8C(v23, v20, v42, v43, v25, rawLSList, v27, v28, dataCopy, &v44);
   v34 = *self->_estOpticalCenter + [*&self->_configuration.internalCfg.antiFlareSize count];
   *self->_estOpticalCenter = v34;
   LSTrackID = self->_LSTrackID;
@@ -603,13 +603,13 @@ LABEL_20:
   return v33;
 }
 
-- (id)_ghostCandidateGenerationViaKeypointBuffer:(__CVBuffer *)a3 opticalCenterFromMetaData:(_simParamsStruct *)a4 mappingInfo:(id *)a5 GGList:(id *)a6 LSList:(int)a7 kpCntHardGatingTh:(int)a8 kpCntSoftGatingTh:
+- (id)_ghostCandidateGenerationViaKeypointBuffer:(__CVBuffer *)buffer opticalCenterFromMetaData:(_simParamsStruct *)data mappingInfo:(id *)info GGList:(id *)list LSList:(int)sList kpCntHardGatingTh:(int)th kpCntSoftGatingTh:
 {
   v13 = v8;
   kdebug_trace();
   kdebug_trace();
   detectionUtils = self->_detectionUtils;
-  v17 = *a6;
+  v17 = *list;
   frameTMinus1Texture = self->_frameTMinus1Texture;
   lsDilation = self->_lsDilation;
   [(VideoDeghostingDetectionV2 *)self estOpticalCenter];
@@ -620,15 +620,15 @@ LABEL_20:
   kdebug_trace();
   kdebug_trace();
   v43[0] = +[NSMutableArray array];
-  v23 = *a6;
+  v23 = *list;
   v24 = self->_lsDilation;
   [(VideoDeghostingDetectionV2 *)self estOpticalCenter];
   v26 = v25;
   *&v25 = v24;
-  [(VideoDeghostingDetectionV2 *)self _findGhostsAndGenerateDescriptors:v43 LSList:v23 LSDilation:a3 LSReflectCenter:v25 desGenKeypointBuf:v26 desGenMappingInfo:*a4->var1];
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneGGList:v43 LSBBoxList:a6 reflectedLSBBoxList:*&self->_reflectedDilatedLsForTracking[4] getMatchedLS:1 pruneLS:0 pruneGG:1];
+  [(VideoDeghostingDetectionV2 *)self _findGhostsAndGenerateDescriptors:v43 LSList:v23 LSDilation:buffer LSReflectCenter:v25 desGenKeypointBuf:v26 desGenMappingInfo:*data->var1];
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneGGList:v43 LSBBoxList:list reflectedLSBBoxList:*&self->_reflectedDilatedLsForTracking[4] getMatchedLS:1 pruneLS:0 pruneGG:1];
   [(VideoDeghostingDetectionV2 *)self _setLightSourceMotionForKeypoints:v43];
-  if ([v43[0] count] > a7)
+  if ([v43[0] count] > sList)
   {
     [v43[0] removeAllObjects];
   }
@@ -667,27 +667,27 @@ LABEL_20:
 
   [(VideoDeghostingDetectionV2 *)self _pruneUsingMatchedLSInfo:v43 dilation:self->_lsDilation];
   v34 = [v43[0] count];
-  if (v34 > a8)
+  if (v34 > th)
   {
-    [v43[0] removeObjectsInRange:{a8, &v34[-a8]}];
+    [v43[0] removeObjectsInRange:{th, &v34[-th]}];
   }
 
   [(VDGDetectionUtilsV2 *)self->_detectionUtils removeDuplicateRois:v43[0]];
   [(VDGDetectionUtilsV2 *)self->_detectionUtils setDefaultOpticalCenterForList:v43[0] opticalCenter:v13];
   kdebug_trace();
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils getGGCandidatesFromROIList:v43[0] GGList:a5];
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils getGGCandidatesFromROIList:v43[0] GGList:info];
   kdebug_trace();
   v35 = v43[0];
 
   return v35;
 }
 
-- (void)_updateEstOpticalCenterUsingPrevDetectedGhosts:(id)a3 currentDefaultOpticalCenter:
+- (void)_updateEstOpticalCenterUsingPrevDetectedGhosts:(id)ghosts currentDefaultOpticalCenter:
 {
   v6 = v3;
-  v8 = a3;
+  ghostsCopy = ghosts;
   prevFrameAllLSCnt = self->_prevFrameAllLSCnt;
-  if ([v8 count])
+  if ([ghostsCopy count])
   {
     v4.i32[0] = 0;
     v10 = 0;
@@ -695,15 +695,15 @@ LABEL_20:
     v5.i32[0] = 1;
     do
     {
-      v12 = [v8 objectAtIndexedSubscript:v10];
+      v12 = [ghostsCopy objectAtIndexedSubscript:v10];
       v13 = self->_prevFrameAllLSCnt;
       [v12 bbox];
       v39 = v14;
       [v12 bbox];
       v38 = v15;
       [v12 isTrajectoryPruningPassed];
-      v16 = [v12 matchedLS];
-      v17 = [v16 count];
+      matchedLS = [v12 matchedLS];
+      v17 = [matchedLS count];
 
       if (v17)
       {
@@ -712,8 +712,8 @@ LABEL_20:
         v20 = 1;
         do
         {
-          v21 = [v12 matchedLS];
-          v22 = [v21 objectAtIndexedSubscript:v18];
+          matchedLS2 = [v12 matchedLS];
+          v22 = [matchedLS2 objectAtIndexedSubscript:v18];
 
           [v22 bbox];
           v40 = v23;
@@ -722,20 +722,20 @@ LABEL_20:
           v13 = vbsl_s8(vdup_lane_s32(vceq_s32(__PAIR64__(v40.u32[1], v20), v5), 0), *v24.i8, vadd_f32(v13, *v24.i8));
 
           v18 = v20;
-          v25 = [v12 matchedLS];
-          v26 = [v25 count];
+          matchedLS3 = [v12 matchedLS];
+          v26 = [matchedLS3 count];
         }
 
         while (v26 > v20++);
       }
 
-      v28 = [v12 matchedLS];
-      v29 = [v28 count];
+      matchedLS4 = [v12 matchedLS];
+      v29 = [matchedLS4 count];
 
       if (v29)
       {
-        v31 = [v12 matchedLS];
-        *v32.i32 = [v31 count];
+        matchedLS5 = [v12 matchedLS];
+        *v32.i32 = [matchedLS5 count];
         v13 = vdiv_f32(v13, vdup_lane_s32(v32, 0));
       }
 
@@ -745,26 +745,26 @@ LABEL_20:
       v10 = ++v11;
     }
 
-    while ([v8 count] > v11);
+    while ([ghostsCopy count] > v11);
   }
 
   if ([(VideoDeghostingDetectionV2 *)self prevFrameAllLSCnt])
   {
-    v33 = [(VideoDeghostingDetectionV2 *)self prevFrameMatchedLSCnt];
-    if ((v33 / [(VideoDeghostingDetectionV2 *)self prevFrameAllLSCnt]) < 0.05)
+    prevFrameMatchedLSCnt = [(VideoDeghostingDetectionV2 *)self prevFrameMatchedLSCnt];
+    if ((prevFrameMatchedLSCnt / [(VideoDeghostingDetectionV2 *)self prevFrameAllLSCnt]) < 0.05)
     {
       LOBYTE(self->_trackID) = 0;
       self->_trackIDAfterMerge = 0;
       if (![(VideoDeghostingDetectionV2 *)self prevFrameMatchedLSCnt])
       {
-        prevFrameAllLSCnt = vmul_n_f32(self->_prevFrameAllLSCnt, [v8 count]);
+        prevFrameAllLSCnt = vmul_n_f32(self->_prevFrameAllLSCnt, [ghostsCopy count]);
       }
     }
   }
 
-  if ([v8 count])
+  if ([ghostsCopy count])
   {
-    *v34.i32 = [v8 count];
+    *v34.i32 = [ghostsCopy count];
     v35 = vdiv_f32(prevFrameAllLSCnt, vdup_lane_s32(v34, 0));
     v36 = vsub_f32(v35, v6);
     v37 = sqrtf(vaddv_f32(vmul_f32(v36, v36)));
@@ -782,21 +782,21 @@ LABEL_20:
   *&self->_prevDefaultOpticalCenter[4] = vadd_f32(self->_prevFrameMergedGhosts, v6);
 }
 
-- (void)_pruneUsingMatchedLSInfo:(id *)a3 dilation:(int)a4
+- (void)_pruneUsingMatchedLSInfo:(id *)info dilation:(int)dilation
 {
   v48 = +[NSMutableArray array];
-  v49 = self;
+  selfCopy = self;
   v7 = *&self->_prevDefaultOpticalCenter[4];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v46 = a3;
-  obj = *a3;
+  infoCopy = info;
+  obj = *info;
   v51 = [obj countByEnumeratingWithState:&v56 objects:v55 count:16];
   if (v51)
   {
-    *v8.i32 = a4;
+    *v8.i32 = dilation;
     v9 = vdup_lane_s32(v8, 0);
     v50 = *v57;
     do
@@ -812,8 +812,8 @@ LABEL_20:
         [v11 bbox];
         v53 = *v12.i8;
         v52 = vextq_s8(v12, v12, 8uLL).u64[0];
-        v13 = [v11 matchedLS];
-        v14 = [v13 count];
+        matchedLS = [v11 matchedLS];
+        v14 = [matchedLS count];
         v15 = v14;
         if (v14 < 1)
         {
@@ -838,7 +838,7 @@ LABEL_20:
           v23 = INFINITY;
           do
           {
-            v24 = [v13 objectAtIndexedSubscript:v16];
+            v24 = [matchedLS objectAtIndexedSubscript:v16];
             [v24 bbox];
             v26 = vextq_s8(v25, v25, 8uLL).u64[0];
             v27 = vadd_f32(*v25.i8, v26);
@@ -922,11 +922,11 @@ LABEL_32:
           v43 = COERCE_DOUBLE(vdiv_f32(v22, vdup_lane_s32(*&v43, 0)));
         }
 
-        if ((v49->_trackID & 1) == 0)
+        if ((selfCopy->_trackID & 1) == 0)
         {
           v45 = vsub_f32(*&v43, v7);
           v43 = sqrtf(vaddv_f32(vmul_f32(v45, v45)));
-          if (v49->_params.kpCntSoftGatingTh + v49->_params.kpCntSoftGatingTh < v43)
+          if (selfCopy->_params.kpCntSoftGatingTh + selfCopy->_params.kpCntSoftGatingTh < v43)
           {
             goto LABEL_32;
           }
@@ -941,30 +941,30 @@ LABEL_33:
     while (v51);
   }
 
-  [*v46 removeObjectsInArray:v48];
+  [*infoCopy removeObjectsInArray:v48];
 }
 
-- (BOOL)_mergeBboxesWithTrackingForMitigation:(id)a3 prevFrameGhostList:(id)a4
+- (BOOL)_mergeBboxesWithTrackingForMitigation:(id)mitigation prevFrameGhostList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  sub_12EEC(v6);
-  if (!v7)
+  mitigationCopy = mitigation;
+  listCopy = list;
+  sub_12EEC(mitigationCopy);
+  if (!listCopy)
   {
 LABEL_62:
     v10 = 1;
     goto LABEL_66;
   }
 
-  v8 = [v7 count];
-  v9 = [v6 count];
+  v8 = [listCopy count];
+  v9 = [mitigationCopy count];
   v10 = 0;
   v11 = *&self->_estOpticalCenterIsAvailable;
   if (v8 <= v11 && v9 <= v11)
   {
     v68 = v9;
-    v69 = v6;
-    v80 = self;
+    v69 = mitigationCopy;
+    selfCopy = self;
     v81 = v8;
     if (v8)
     {
@@ -972,12 +972,12 @@ LABEL_62:
       v13 = 0;
       while (1)
       {
-        v14 = [v7 objectAtIndexedSubscript:v13];
-        v15 = [v14 trackIDsAfterMerge];
-        v16 = [v15 count];
+        v14 = [listCopy objectAtIndexedSubscript:v13];
+        trackIDsAfterMerge = [v14 trackIDsAfterMerge];
+        v16 = [trackIDsAfterMerge count];
 
-        v17 = v80;
-        if (v16 > *&v80->_estOpticalCenterIsAvailable)
+        v17 = selfCopy;
+        if (v16 > *&selfCopy->_estOpticalCenterIsAvailable)
         {
           break;
         }
@@ -986,8 +986,8 @@ LABEL_62:
         {
           for (i = 0; i != v16; i = i + 1)
           {
-            v19 = [v14 trackIDsAfterMerge];
-            v20 = [v19 objectAtIndex:i];
+            trackIDsAfterMerge2 = [v14 trackIDsAfterMerge];
+            v20 = [trackIDsAfterMerge2 objectAtIndex:i];
             *(&v17->_repairWeightsGenerator->super.isa + 4 * i + v12 * *&v17->_estOpticalCenterIsAvailable) = [v20 intValue];
           }
         }
@@ -1010,7 +1010,7 @@ LABEL_11:
     {
       v10 = 1;
 LABEL_65:
-      v6 = v69;
+      mitigationCopy = v69;
       goto LABEL_66;
     }
 
@@ -1022,12 +1022,12 @@ LABEL_65:
     v74 = v8 & 0x7FFFFFFF;
     v66 = (4 * v22 + 15) & 0x7FFFFFFF0;
     v67 = 4 * v22;
-    v6 = v69;
+    mitigationCopy = v69;
     do
     {
-      v23 = v7;
+      v23 = listCopy;
       v72 = v21;
-      v24 = [v6 objectAtIndexedSubscript:?];
+      v24 = [mitigationCopy objectAtIndexedSubscript:?];
       v25 = v24;
       v91 = 0u;
       v92 = 0u;
@@ -1068,16 +1068,16 @@ LABEL_65:
       *&v79 = &v65 - v66;
       bzero(&v65 - v66, v67);
       v71 = v25;
-      v78 = [v25 trackIDsAfterMerge];
-      v28 = [v78 count];
+      trackIDsAfterMerge3 = [v25 trackIDsAfterMerge];
+      v28 = [trackIDsAfterMerge3 count];
       if (v28 >= 1)
       {
         v29 = 0;
         v77 = v28 & 0x7FFFFFFF;
         do
         {
-          v30 = [v78 objectAtIndexedSubscript:v29];
-          v31 = [v30 intValue];
+          v30 = [trackIDsAfterMerge3 objectAtIndexedSubscript:v29];
+          intValue = [v30 intValue];
 
           if (v8)
           {
@@ -1089,8 +1089,8 @@ LABEL_65:
               while (1)
               {
                 v35 = [v23 objectAtIndexedSubscript:v33];
-                v36 = [v35 trackIDsAfterMerge];
-                v37 = [v36 count];
+                trackIDsAfterMerge4 = [v35 trackIDsAfterMerge];
+                v37 = [trackIDsAfterMerge4 count];
 
                 if (v37)
                 {
@@ -1113,11 +1113,11 @@ LABEL_24:
                 }
               }
 
-              v38 = (v80->_repairWeightsGenerator + *&v80->_estOpticalCenterIsAvailable * v34);
+              v38 = (selfCopy->_repairWeightsGenerator + *&selfCopy->_estOpticalCenterIsAvailable * v34);
               while (1)
               {
                 v39 = *v38++;
-                if (v39 == v31)
+                if (v39 == intValue)
                 {
                   break;
                 }
@@ -1158,7 +1158,7 @@ LABEL_30:
       if (v8 < 1)
       {
         v40 = 0;
-        v7 = v23;
+        listCopy = v23;
         v43 = v68;
       }
 
@@ -1167,7 +1167,7 @@ LABEL_30:
         v40 = 0;
         v41 = *v79;
         v42 = 1;
-        v7 = v23;
+        listCopy = v23;
         v43 = v68;
         v44 = v73;
         do
@@ -1179,8 +1179,8 @@ LABEL_30:
             {
               v46 = [v23 objectAtIndexedSubscript:v40];
               v47 = [v23 objectAtIndexedSubscript:v42];
-              v48 = [v47 trackID];
-              if (v48 < [v46 trackID])
+              trackID = [v47 trackID];
+              if (trackID < [v46 trackID])
               {
                 v41 = *(v79 + 4 * v42);
                 v40 = v42;
@@ -1224,8 +1224,8 @@ LABEL_30:
               {
                 v53 = [v23 objectAtIndexedSubscript:v50];
                 v54 = [v23 objectAtIndexedSubscript:v51];
-                v55 = [v54 trackID];
-                if (v55 < [v53 trackID])
+                trackID2 = [v54 trackID];
+                if (trackID2 < [v53 trackID])
                 {
                   v49 = *(v79 + 4 * v51);
                   v50 = v51;
@@ -1244,23 +1244,23 @@ LABEL_30:
 
           while (v74 != v51);
           v56 = v50;
-          v7 = v23;
+          listCopy = v23;
         }
 
-        v60 = v80;
+        v60 = selfCopy;
         if (v8 && v49)
         {
-          v61 = [v7 objectAtIndexedSubscript:v56];
-          v62 = [v61 trackID];
+          v61 = [listCopy objectAtIndexedSubscript:v56];
+          trackID3 = [v61 trackID];
           v59 = v71;
-          [v71 setTrackID:v62];
+          [v71 setTrackID:trackID3];
           [v59 setTrackedCnt:{objc_msgSend(v61, "trackedCnt") + 1}];
         }
 
         else
         {
           v59 = v71;
-          [v71 setTrackID:*v80->_estOpticalCenterOffset];
+          [v71 setTrackID:*selfCopy->_estOpticalCenterOffset];
           [v59 setTrackedCnt:0];
           ++*v60->_estOpticalCenterOffset;
         }
@@ -1268,16 +1268,16 @@ LABEL_30:
 
       else
       {
-        v57 = [v7 objectAtIndexedSubscript:v40];
-        v58 = [v57 trackID];
+        v57 = [listCopy objectAtIndexedSubscript:v40];
+        trackID4 = [v57 trackID];
         v59 = v71;
-        [v71 setTrackID:v58];
+        [v71 setTrackID:trackID4];
         [v59 setTrackedCnt:{objc_msgSend(v57, "trackedCnt") + 1}];
       }
 
       v21 = v72 + 1;
       v63 = v72 + 1 == v43;
-      v6 = v69;
+      mitigationCopy = v69;
     }
 
     while (!v63);
@@ -1289,11 +1289,11 @@ LABEL_66:
   return v10;
 }
 
-- (void)_findGhostsAndGenerateDescriptors:(VideoDeghostingDetectionV2 *)self LSList:(SEL)a2 LSDilation:(id *)a3 LSReflectCenter:(id)a4 desGenKeypointBuf:(float)a5 desGenMappingInfo:(__CVBuffer *)a6
+- (void)_findGhostsAndGenerateDescriptors:(VideoDeghostingDetectionV2 *)self LSList:(SEL)list LSDilation:(id *)dilation LSReflectCenter:(id)center desGenKeypointBuf:(float)buf desGenMappingInfo:(__CVBuffer *)info
 {
   v30 = v7;
   v9 = v6;
-  v13 = a4;
+  centerCopy = center;
   *[(MTLBuffer *)self->_metalBuffers.desGenGhostsBuf contents]= v30;
   *[(MTLBuffer *)self->_metalBuffers.tinyGhostIdxBuf contents]= 0;
   metalToolBox = self->_metalToolBox;
@@ -1307,16 +1307,16 @@ LABEL_66:
   HIDWORD(v28) = self->_metalBuffers.desGenMappingInfoBuf;
   LODWORD(v29) = 5120;
   LOBYTE(v28) = self->_isLocalMotionCueEnabled;
-  *&v18 = a5;
-  v19 = [(GGMMetalToolBox *)metalToolBox findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:frameTMinus1Texture ref4LocalMotionTexture:imageDimensions inputTPlus1Texture:localMotionReferenceTexture LSList:v13 desGenKeypoints:a6 homography:&v31 colorParams:*&self->_localMotionRefHomography.confidence computeLocalMotion:*&self->_anon_124[12] LSDilation:*&self->_anon_124[28] LSReflectCenter:v18 maxLightSourceCount:v9 maxDesGenKeypoints:v28 maxTinyKeypoints:v29 metalBuffers:&self->_metalBuffers.desGenGhostIdxBuf isPrevLSFeaturesAvailable:&self->_isPrevLSFeaturesAvailable];
-  v20 = *a3;
-  *a3 = v19;
+  *&v18 = buf;
+  v19 = [(GGMMetalToolBox *)metalToolBox findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:frameTMinus1Texture ref4LocalMotionTexture:imageDimensions inputTPlus1Texture:localMotionReferenceTexture LSList:centerCopy desGenKeypoints:info homography:&v31 colorParams:*&self->_localMotionRefHomography.confidence computeLocalMotion:*&self->_anon_124[12] LSDilation:*&self->_anon_124[28] LSReflectCenter:v18 maxLightSourceCount:v9 maxDesGenKeypoints:v28 maxTinyKeypoints:v29 metalBuffers:&self->_metalBuffers.desGenGhostIdxBuf isPrevLSFeaturesAvailable:&self->_isPrevLSFeaturesAvailable];
+  v20 = *dilation;
+  *dilation = v19;
 
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v21 = *a3;
+  v21 = *dilation;
   v22 = [v21 countByEnumeratingWithState:&v42 objects:v41 count:16];
   if (v22)
   {
@@ -1375,13 +1375,13 @@ LABEL_66:
   }
 }
 
-- (void)_setLightSourceMotionForKeypoints:(id *)a3
+- (void)_setLightSourceMotionForKeypoints:(id *)keypoints
 {
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = *a3;
+  obj = *keypoints;
   v3 = [obj countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v3)
   {
@@ -1426,8 +1426,8 @@ LABEL_66:
         v28 = v10;
         v25 = v10;
         v26 = v10;
-        v11 = [v8 matchedLS];
-        v12 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        matchedLS = [v8 matchedLS];
+        v12 = [matchedLS countByEnumeratingWithState:&v25 objects:v24 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1440,7 +1440,7 @@ LABEL_66:
             {
               if (*v26 != v15)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(matchedLS);
               }
 
               v18 = *(*(&v25 + 1) + 8 * j);
@@ -1460,7 +1460,7 @@ LABEL_66:
             }
 
             v14 += v13;
-            v13 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+            v13 = [matchedLS countByEnumeratingWithState:&v25 objects:v24 count:16];
           }
 
           while (v13);
@@ -1498,16 +1498,16 @@ LABEL_66:
   }
 }
 
-- (id)deepCopyROIList:(id)a3 copyReferencedROI:(BOOL)a4
+- (id)deepCopyROIList:(id)list copyReferencedROI:(BOOL)i
 {
-  v4 = a4;
-  v5 = a3;
+  iCopy = i;
+  listCopy = list;
   v6 = +[NSMutableArray array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v7 = v5;
+  v7 = listCopy;
   v8 = [v7 countByEnumeratingWithState:&v42 objects:v41 count:16];
   if (v8)
   {
@@ -1548,8 +1548,8 @@ LABEL_66:
 
         v15 = [(ROI *)v13 initWithBbox:&v31 descriptor:v14];
         -[ROI setTrackID:](v15, "setTrackID:", [v12 trackID]);
-        v16 = [v12 LSTrackID];
-        [(ROI *)v15 setLSTrackID:v16];
+        lSTrackID = [v12 LSTrackID];
+        [(ROI *)v15 setLSTrackID:lSTrackID];
 
         -[ROI setIsTracked:](v15, "setIsTracked:", [v12 isTracked]);
         -[ROI setLSIsHighRisk:](v15, "setLSIsHighRisk:", [v12 LSIsHighRisk]);
@@ -1586,13 +1586,13 @@ LABEL_66:
         v32 = v22;
         [(ROI *)v15 setDescriptor:&v31];
         -[ROI setIsReflectedLS:](v15, "setIsReflectedLS:", [v12 isReflectedLS]);
-        if (v4)
+        if (iCopy)
         {
-          v17 = [v12 LSTrackingMatched];
-          [(ROI *)v15 setLSTrackingMatched:v17];
+          lSTrackingMatched = [v12 LSTrackingMatched];
+          [(ROI *)v15 setLSTrackingMatched:lSTrackingMatched];
 
-          v18 = [v12 temporalDetectionMatched];
-          [(ROI *)v15 setTemporalDetectionMatched:v18];
+          temporalDetectionMatched = [v12 temporalDetectionMatched];
+          [(ROI *)v15 setTemporalDetectionMatched:temporalDetectionMatched];
         }
 
         [v6 addObject:v15];
@@ -1607,9 +1607,9 @@ LABEL_66:
   return v6;
 }
 
-- (int64_t)_detectionInit:(__CVBuffer *)a3 metaData:(id)a4 futureFrames:(id *)a5
+- (int64_t)_detectionInit:(__CVBuffer *)init metaData:(id)data futureFrames:(id *)frames
 {
-  v8 = a4;
+  dataCopy = data;
   kdebug_trace();
   v65 = 0;
   v64 = 0;
@@ -1619,11 +1619,11 @@ LABEL_66:
   objc_storeStrong(&self->_frameTPlus1Texture, self->_frameTMinus2Texture);
   self->_frameTMinus1 = self->_frameT;
   objc_storeStrong(&self->_frameTMinus2Texture, self->_frameTMinus1Texture);
-  CVPixelBufferRetain(a3);
-  self->_frameT = a3;
-  v9 = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
-  v10 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v11 = sub_22594(a3, v9, v10, 0, 1);
+  CVPixelBufferRetain(init);
+  self->_frameT = init;
+  cvMetalTextureCacheRef = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
+  metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  v11 = sub_22594(init, cvMetalTextureCacheRef, metalContext, 0, 1);
   frameTMinus1Texture = self->_frameTMinus1Texture;
   self->_frameTMinus1Texture = v11;
 
@@ -1636,7 +1636,7 @@ LABEL_66:
   v60 = matrix_identity_float3x3.columns[1];
   v61 = matrix_identity_float3x3.columns[0];
   v58 = matrix_identity_float3x3.columns[2];
-  if (a5->var2 < 2)
+  if (frames->var2 < 2)
   {
     localMotionReferenceTexture = self->_localMotionReferenceTexture;
     self->_localMotionReferenceTexture = 0;
@@ -1644,12 +1644,12 @@ LABEL_66:
 
   else
   {
-    v13 = *a5->var0;
-    v14 = *(a5->var0 + 1);
+    v13 = *frames->var0;
+    v14 = *(frames->var0 + 1);
     self->_frameTPlus1Buf = v13;
-    v15 = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
-    v16 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v17 = sub_22594(v13, v15, v16, 0, 1);
+    cvMetalTextureCacheRef2 = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
+    metalContext2 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    v17 = sub_22594(v13, cvMetalTextureCacheRef2, metalContext2, 0, 1);
     v18 = self->_localMotionReferenceTexture;
     self->_localMotionReferenceTexture = v17;
 
@@ -1709,7 +1709,7 @@ LABEL_66:
       v26 = self->_calcTransform;
       if (v26)
       {
-        [(CalcHomography *)v26 ispHomographyFromMetaInfo:v8];
+        [(CalcHomography *)v26 ispHomographyFromMetaInfo:dataCopy];
       }
 
       else
@@ -1766,11 +1766,11 @@ LABEL_66:
 
   else
   {
-    if (a5->var2 >= 2)
+    if (frames->var2 >= 2)
     {
-      v39 = *(a5->var0 + 1);
-      v40 = *(a5->var0 + 2);
-      v41 = *(a5->var0 + 3);
+      v39 = *(frames->var0 + 1);
+      v40 = *(frames->var0 + 2);
+      v41 = *(frames->var0 + 3);
       self->_frameTPlus2Buf = v40;
       v42 = v39;
       v43 = v41;
@@ -1815,8 +1815,8 @@ LABEL_33:
           while (v51 != 12);
           v59 = __invert_f3(v62);
           frameTPlus2Buf = self->_frameTPlus2Buf;
-          v53 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-          v54 = sub_C6CC(frameTPlus2Buf, v53, 0, 1);
+          metalContext3 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+          v54 = sub_C6CC(frameTPlus2Buf, metalContext3, 0, 1);
           imageDimensions = self->_imageDimensions;
           self->_imageDimensions = v54;
 
@@ -1868,18 +1868,18 @@ LABEL_37:
   return v56;
 }
 
-- (BOOL)_shouldRunGGDetectionLSBased:(int)a3
+- (BOOL)_shouldRunGGDetectionLSBased:(int)based
 {
   if (HIBYTE(self->_params.lightSourceGatingThresholdOFF))
   {
-    if (self->_params.luxLevelGatingThresholdOFF < a3 && (self->_trackID & 0x100) != 0)
+    if (self->_params.luxLevelGatingThresholdOFF < based && (self->_trackID & 0x100) != 0)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = (self->_params.luxLevelGatingThresholdON > a3) | BYTE1(self->_trackID);
+      v3 = (self->_params.luxLevelGatingThresholdON > based) | BYTE1(self->_trackID);
     }
   }
 
@@ -1891,18 +1891,18 @@ LABEL_37:
   return v3 & 1;
 }
 
-- (BOOL)_shouldRunGGDetectionLuxLevelBased:(int)a3
+- (BOOL)_shouldRunGGDetectionLuxLevelBased:(int)based
 {
   if (LOBYTE(self->_params.lightSourceSelectionCntLimitNew))
   {
-    if (self->_params.maxAllowedSizeBBox < a3 && (self->_trackID & 0x10000) != 0)
+    if (self->_params.maxAllowedSizeBBox < based && (self->_trackID & 0x10000) != 0)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = (SLODWORD(self->_params.searchRangeBaseForPreprocessing) > a3) | BYTE2(self->_trackID);
+      v3 = (SLODWORD(self->_params.searchRangeBaseForPreprocessing) > based) | BYTE2(self->_trackID);
     }
   }
 
@@ -1914,7 +1914,7 @@ LABEL_37:
   return v3 & 1;
 }
 
-- (BOOL)_shouldRunGGDetectionClippedPixelBased:(float)a3
+- (BOOL)_shouldRunGGDetectionClippedPixelBased:(float)based
 {
   if (!BYTE1(self->_params.lightSourceSelectionCntLimitNew))
   {
@@ -1923,12 +1923,12 @@ LABEL_37:
 
   result = HIBYTE(self->_trackID);
   maxAllowedOpticalCenterOffset = self->_params.maxAllowedOpticalCenterOffset;
-  if (*&maxAllowedOpticalCenterOffset > a3 && result)
+  if (*&maxAllowedOpticalCenterOffset > based && result)
   {
     return 0;
   }
 
-  if ((*&maxAllowedOpticalCenterOffset + 4.0) < a3)
+  if ((*&maxAllowedOpticalCenterOffset + 4.0) < based)
   {
     return 1;
   }
@@ -1936,16 +1936,16 @@ LABEL_37:
   return result;
 }
 
-- (id)predictPastReflectedLSInCurrentFrame:(id)a3 currentFrameLSList:(id)a4
+- (id)predictPastReflectedLSInCurrentFrame:(id)frame currentFrameLSList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 LSTrackID];
+  frameCopy = frame;
+  listCopy = list;
+  lSTrackID = [frameCopy LSTrackID];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v9 = v7;
+  v9 = listCopy;
   v10 = [v9 countByEnumeratingWithState:&v74 objects:v73 count:16];
   if (v10)
   {
@@ -1961,9 +1961,9 @@ LABEL_3:
       }
 
       v14 = *(*(&v74 + 1) + 8 * v13);
-      v15 = [v14 LSTrackID];
+      lSTrackID2 = [v14 LSTrackID];
 
-      if (v15 == v8)
+      if (lSTrackID2 == lSTrackID)
       {
         break;
       }
@@ -1988,11 +1988,11 @@ LABEL_3:
       goto LABEL_38;
     }
 
-    if ([v6 lowSaliencyCnt] > 9)
+    if ([frameCopy lowSaliencyCnt] > 9)
     {
       [v17 setLsHasBeenUsedForTrackingGhost:0];
-      v30 = [v17 LSTrackingMatched];
-      [v30 setLsHasBeenUsedForTrackingGhost:0];
+      lSTrackingMatched = [v17 LSTrackingMatched];
+      [lSTrackingMatched setLsHasBeenUsedForTrackingGhost:0];
 
       v16 = 0;
       goto LABEL_37;
@@ -2034,7 +2034,7 @@ LABEL_3:
     v49 = v63;
     v50 = v64;
     [(ROI *)v16 setDescriptor:&v49];
-    [v6 getPixelFeatureMatchCostWith:v16];
+    [frameCopy getPixelFeatureMatchCostWith:v16];
     v20 = v19;
     [v17 differenceOfGaussianAndLumaFeatureReflection];
     v22 = 0;
@@ -2082,9 +2082,9 @@ LABEL_3:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        if (v6)
+        if (frameCopy)
         {
-          [v6 descriptor];
+          [frameCopy descriptor];
         }
 
         if (v16)
@@ -2128,7 +2128,7 @@ LABEL_3:
 
     else
     {
-      -[ROI setLowSaliencyCnt:](v16, "setLowSaliencyCnt:", [v6 lowSaliencyCnt] + 1);
+      -[ROI setLowSaliencyCnt:](v16, "setLowSaliencyCnt:", [frameCopy lowSaliencyCnt] + 1);
     }
 
     if (!v16)
@@ -2177,19 +2177,19 @@ LABEL_36:
     [(ROI *)v16 setDescriptor:&v49];
     [(ROI *)v16 setIsReflectedLS:1];
     [(ROI *)v16 setIsTracked:1];
-    -[ROI setTrackedCnt:](v16, "setTrackedCnt:", [v6 trackedCnt] + 1);
-    -[ROI setTrackID:](v16, "setTrackID:", [v6 trackID]);
-    [(ROI *)v16 setTemporalDetectionMatched:v6];
+    -[ROI setTrackedCnt:](v16, "setTrackedCnt:", [frameCopy trackedCnt] + 1);
+    -[ROI setTrackID:](v16, "setTrackID:", [frameCopy trackID]);
+    [(ROI *)v16 setTemporalDetectionMatched:frameCopy];
     [(ROI *)v16 setIsPredictedFromPast:1];
-    -[ROI setPredictedFromPastCnt:](v16, "setPredictedFromPastCnt:", [v6 predictedFromPastCnt] + 1);
-    -[ROI setIsTrajectoryPruningPassed:](v16, "setIsTrajectoryPruningPassed:", [v6 isTrajectoryPruningPassed]);
-    v33 = [v6 LSTrackID];
-    [(ROI *)v16 setLSTrackID:v33];
+    -[ROI setPredictedFromPastCnt:](v16, "setPredictedFromPastCnt:", [frameCopy predictedFromPastCnt] + 1);
+    -[ROI setIsTrajectoryPruningPassed:](v16, "setIsTrajectoryPruningPassed:", [frameCopy isTrajectoryPruningPassed]);
+    lSTrackID3 = [frameCopy LSTrackID];
+    [(ROI *)v16 setLSTrackID:lSTrackID3];
 
     [(ROI *)v16 setLsHasBeenUsedForTrackingGhost:1];
     [v17 setLsHasBeenUsedForTrackingGhost:1];
-    v34 = [v17 LSTrackingMatched];
-    [v34 setLsHasBeenUsedForTrackingGhost:1];
+    lSTrackingMatched2 = [v17 LSTrackingMatched];
+    [lSTrackingMatched2 setLsHasBeenUsedForTrackingGhost:1];
 
     goto LABEL_37;
   }
@@ -2204,15 +2204,15 @@ LABEL_38:
   return v16;
 }
 
-- (void)_allocateLightSourceBuffers:(int64_t)a3
+- (void)_allocateLightSourceBuffers:(int64_t)buffers
 {
-  if (*&self->_lsDilation4Preprocessing < a3)
+  if (*&self->_lsDilation4Preprocessing < buffers)
   {
-    *&self->_lsDilation4Preprocessing = a3;
+    *&self->_lsDilation4Preprocessing = buffers;
     free(*&self->_arrayOfLightSourceBBox[4]);
     free(*&self->_reflectedDilatedLsForTracking[4]);
     free(*&self->_reflectedDilatedLs[4]);
-    v5 = 16 * a3;
+    v5 = 16 * buffers;
     v6 = malloc_type_malloc(v5, 0x1000040451B5BE8uLL);
     *&self->_arrayOfLightSourceBBox[4] = v6;
     if (v6)
@@ -2242,15 +2242,15 @@ LABEL_38:
   }
 }
 
-- (void)getDilationCoefsAndReflectedDilatedLsList:(id)a3
+- (void)getDilationCoefsAndReflectedDilatedLsList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   [(VideoDeghostingDetectionV2 *)self params];
   v5 = v26 * *&self->_estimatedOpticalCenter.x;
-  v6 = [(VideoDeghostingDetectionV2 *)self estOpticalCenterIsAvailable];
+  estOpticalCenterIsAvailable = [(VideoDeghostingDetectionV2 *)self estOpticalCenterIsAvailable];
   v7 = 1.0;
   LODWORD(v8) = 1.0;
-  if (v6)
+  if (estOpticalCenterIsAvailable)
   {
     [(VideoDeghostingDetectionV2 *)self params];
     LODWORD(v8) = v25;
@@ -2268,14 +2268,14 @@ LABEL_38:
   }
 
   *&self->_reflectedDilatedLsForPreprocessing[4] = v10 * v7;
-  -[VideoDeghostingDetectionV2 _allocateLightSourceBuffers:](self, "_allocateLightSourceBuffers:", [v4 count]);
-  if ([v4 count])
+  -[VideoDeghostingDetectionV2 _allocateLightSourceBuffers:](self, "_allocateLightSourceBuffers:", [listCopy count]);
+  if ([listCopy count])
   {
     v11 = 0;
     v12 = 1;
     do
     {
-      v13 = [v4 objectAtIndexedSubscript:v11];
+      v13 = [listCopy objectAtIndexedSubscript:v11];
       [v13 getReflectedBboxAroundCenter:*&self->_prevDefaultOpticalCenter[4]];
       v15 = vadd_f32(*v14.i8, *&vextq_s8(v14, v14, 8uLL));
       v16 = &self->_reflectedDilatedLsForPreprocessing[4];
@@ -2296,27 +2296,27 @@ LABEL_38:
       v11 = v12;
     }
 
-    while ([v4 count] > v12++);
+    while ([listCopy count] > v12++);
   }
 }
 
-- (void)pruneUsingLSRisk:(id)a3
+- (void)pruneUsingLSRisk:(id)risk
 {
-  v4 = a3;
+  riskCopy = risk;
   v5 = +[NSMutableArray array];
-  if ([v4 count])
+  if ([riskCopy count])
   {
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = [v4 objectAtIndexedSubscript:{v6, v21, v22, v23}];
+      v8 = [riskCopy objectAtIndexedSubscript:{v6, v21, v22, v23}];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v9 = [v8 matchedLS];
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      matchedLS = [v8 matchedLS];
+      v10 = [matchedLS countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v10)
       {
         break;
@@ -2326,7 +2326,7 @@ LABEL_11:
 
 LABEL_30:
       v6 = ++v7;
-      if ([v4 count] <= v7)
+      if ([riskCopy count] <= v7)
       {
         goto LABEL_31;
       }
@@ -2340,7 +2340,7 @@ LABEL_5:
     {
       if (*v29 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(matchedLS);
       }
 
       if ([*(*(&v28 + 1) + 8 * v13) LSIsHighRisk])
@@ -2350,7 +2350,7 @@ LABEL_5:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v27 count:16];
+        v11 = [matchedLS countByEnumeratingWithState:&v28 objects:v27 count:16];
         if (v11)
         {
           goto LABEL_5;
@@ -2402,10 +2402,10 @@ LABEL_29:
   }
 
 LABEL_31:
-  [v4 removeObjectsInArray:{v5, v21, v22, v23}];
+  [riskCopy removeObjectsInArray:{v5, v21, v22, v23}];
 }
 
-- (void)_trackLightSources:(id *)a3
+- (void)_trackLightSources:(id *)sources
 {
   prevLSLists = self->_prevLSLists;
   if (!prevLSLists)
@@ -2419,7 +2419,7 @@ LABEL_31:
 
   if ([(NSMutableArray *)prevLSLists count]== &dword_0 + 1)
   {
-    [(VideoDeghostingDetectionV2 *)self _trackCurrentLSList:a3];
+    [(VideoDeghostingDetectionV2 *)self _trackCurrentLSList:sources];
     [(NSMutableArray *)self->_prevLSLists removeObjectAtIndex:0];
   }
 
@@ -2429,7 +2429,7 @@ LABEL_31:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = *a3;
+    v8 = *sources;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v9)
     {
@@ -2461,17 +2461,17 @@ LABEL_31:
     }
   }
 
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils generateTrajectoryForROIList:*a3 isGG:0];
-  [(NSMutableArray *)self->_prevLSLists addObject:*a3];
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils generateTrajectoryForROIList:*sources isGG:0];
+  [(NSMutableArray *)self->_prevLSLists addObject:*sources];
   self->_isPrevLSFeaturesAvailable = 0;
 }
 
-- (ROI)matchPrevLS:(double)a3 prevToCurrentHomography:(double)a4 againstCurrentLSList:(float)a5 avoidList:(uint64_t)a6 searchRadius:(void *)a7
+- (ROI)matchPrevLS:(double)s prevToCurrentHomography:(double)homography againstCurrentLSList:(float)list avoidList:(uint64_t)avoidList searchRadius:(void *)radius
 {
-  v13 = a7;
+  radiusCopy = radius;
   v14 = a8;
   v15 = a9;
-  [*(a1 + 8) predictPrevLSLocation:v13 usingPrevToCurrentHomography:{a2, a3, a4}];
+  [*(self + 8) predictPrevLSLocation:radiusCopy usingPrevToCurrentHomography:{a2, s, homography}];
   v17 = v16;
   v102 = 0u;
   v103 = 0u;
@@ -2483,7 +2483,7 @@ LABEL_31:
   {
 
 LABEL_19:
-    [v13 bbox];
+    [radiusCopy bbox];
     v48 = [[ROI alloc] initWithBbox:COERCE_DOUBLE(vadd_f32(v17, vmul_f32(*&vextq_s8(v47, v47, 8uLL), 0xBF000000BF000000)))];
     [(ROI *)v48 setDoneKPToBBoxViaGraphTraversal:1];
     v49 = 0uLL;
@@ -2503,9 +2503,9 @@ LABEL_19:
       v49 = 0uLL;
     }
 
-    if (v13)
+    if (radiusCopy)
     {
-      [v13 lumaFeatureVectorPredictedLocation];
+      [radiusCopy lumaFeatureVectorPredictedLocation];
       v51 = v79;
       v50 = v80;
       v49 = v77;
@@ -2535,7 +2535,7 @@ LABEL_19:
     v67 = v81;
     v68 = v82;
     [(ROI *)v48 setDescriptor:&v67];
-    [v13 getPixelFeatureMatchCostWith:v48];
+    [radiusCopy getPixelFeatureMatchCostWith:v48];
     if (v53 <= 0.01)
     {
       if (v48)
@@ -2582,8 +2582,8 @@ LABEL_19:
       v67 = v81;
       v68 = v82;
       [(ROI *)v48 setDescriptor:&v67];
-      v56 = [v18 firstObject];
-      [v56 defaultOpticalCenter];
+      firstObject = [v18 firstObject];
+      [firstObject defaultOpticalCenter];
       [(ROI *)v48 setDefaultOpticalCenter:?];
 
       v21 = v48;
@@ -2641,16 +2641,16 @@ LABEL_19:
         v34 = sqrtf(vaddv_f32(vmul_f32(v33, v33)));
         [v31 bbox];
         v65 = v35;
-        [v13 bbox];
+        [radiusCopy bbox];
         v63 = v36;
         [v31 bbox];
         v61 = v37;
-        [v13 bbox];
+        [radiusCopy bbox];
         v59 = v38;
         [v31 bbox];
         v58 = v39;
-        [v13 bbox];
-        if (v34 <= a5)
+        [radiusCopy bbox];
+        if (v34 <= list)
         {
           v41 = vabd_f32(*&vextq_s8(v65, v65, 8uLL), *&vextq_s8(v63, v63, 8uLL));
           v42 = vcgtq_f32(v59, v61);
@@ -2686,7 +2686,7 @@ LABEL_31:
   return v21;
 }
 
-- (void)_trackCurrentLSList:(id *)a3
+- (void)_trackCurrentLSList:(id *)list
 {
   v87 = +[NSMutableArray array];
   v5 = [(NSMutableArray *)self->_prevLSLists count];
@@ -2731,13 +2731,13 @@ LABEL_31:
             v125.columns[1].i32[3] = v94;
             v125.columns[2].i32[3] = obj_12;
             *obj = v125;
-            v18 = [VideoDeghostingDetectionV2 matchPrevLS:"matchPrevLS:prevToCurrentHomography:againstCurrentLSList:avoidList:searchRadius:" prevToCurrentHomography:v17 againstCurrentLSList:*a3 avoidList:v8 searchRadius:?];
+            v18 = [VideoDeghostingDetectionV2 matchPrevLS:"matchPrevLS:prevToCurrentHomography:againstCurrentLSList:avoidList:searchRadius:" prevToCurrentHomography:v17 againstCurrentLSList:*list avoidList:v8 searchRadius:?];
             v19 = v18;
             if (v18)
             {
               [v18 setLSTrackingVote:{objc_msgSend(v18, "LSTrackingVote") + 1}];
               [v8 addObject:v19];
-              if (([*a3 containsObject:v19] & 1) == 0)
+              if (([*list containsObject:v19] & 1) == 0)
               {
                 [v87 addObject:v19];
               }
@@ -2764,17 +2764,17 @@ LABEL_31:
     while (v84 > 1);
   }
 
-  [*a3 addObjectsFromArray:v87];
+  [*list addObjectsFromArray:v87];
   v81 = +[NSMutableArray array];
-  if ([*a3 count])
+  if ([*list count])
   {
     v20 = 0;
     do
     {
-      v21 = [*a3 objectAtIndexedSubscript:v20];
-      v22 = [v21 LSTrackingVote];
+      v21 = [*list objectAtIndexedSubscript:v20];
+      lSTrackingVote = [v21 LSTrackingVote];
       [(VideoDeghostingDetectionV2 *)self params];
-      if (v22 < v119)
+      if (lSTrackingVote < v119)
       {
         [v21 bbox];
         v95 = v23;
@@ -2788,7 +2788,7 @@ LABEL_31:
         v116 = 0u;
         v117 = 0u;
         v118 = 0u;
-        v27 = *a3;
+        v27 = *list;
         v28 = [v27 countByEnumeratingWithState:&v115 objects:v114 count:16];
         if (v28)
         {
@@ -2808,9 +2808,9 @@ LABEL_31:
               }
 
               v34 = *(*(&v115 + 1) + 8 * i);
-              v35 = [v34 LSTrackingVote];
+              lSTrackingVote2 = [v34 LSTrackingVote];
               [(VideoDeghostingDetectionV2 *)self params];
-              if (v35 >= v113)
+              if (lSTrackingVote2 >= v113)
               {
                 [v34 bbox];
                 v37 = v36;
@@ -2861,7 +2861,7 @@ LABEL_31:
       ++v20;
     }
 
-    while ([*a3 count] > v20);
+    while ([*list count] > v20);
   }
 
   v46 = +[NSMutableArray array];
@@ -2869,7 +2869,7 @@ LABEL_31:
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v47 = *a3;
+  v47 = *list;
   v48 = [v47 countByEnumeratingWithState:&v109 objects:v108 count:16];
   if (v48)
   {
@@ -2885,9 +2885,9 @@ LABEL_31:
         }
 
         v52 = *(*(&v109 + 1) + 8 * j);
-        v53 = [v52 LSTrackingVote];
+        lSTrackingVote3 = [v52 LSTrackingVote];
         [(VideoDeghostingDetectionV2 *)self params];
-        if (v53 >= v107)
+        if (lSTrackingVote3 >= v107)
         {
           [v46 addObject:v52];
         }
@@ -2900,15 +2900,15 @@ LABEL_31:
   }
 
   [(VDGDetectionUtilsV2 *)self->_detectionUtils removeRedundantLS:v46];
-  if ([*a3 count])
+  if ([*list count])
   {
     v54 = 0;
     do
     {
-      v55 = [*a3 objectAtIndexedSubscript:v54];
-      v56 = [v55 LSTrackingVote];
+      v55 = [*list objectAtIndexedSubscript:v54];
+      lSTrackingVote4 = [v55 LSTrackingVote];
       [(VideoDeghostingDetectionV2 *)self params];
-      if (v56 >= v106 && ([v46 containsObject:v55] & 1) == 0)
+      if (lSTrackingVote4 >= v106 && ([v46 containsObject:v55] & 1) == 0)
       {
         [v81 addObject:v55];
       }
@@ -2916,17 +2916,17 @@ LABEL_31:
       ++v54;
     }
 
-    while ([*a3 count] > v54);
+    while ([*list count] > v54);
   }
 
   v86 = v46;
-  [*a3 removeObjectsInArray:v81];
+  [*list removeObjectsInArray:v81];
   v57 = +[NSMutableArray array];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obja = *a3;
+  obja = *list;
   v58 = [obja countByEnumeratingWithState:&v102 objects:v101 count:16];
   if (v58)
   {
@@ -2946,21 +2946,21 @@ LABEL_31:
         }
 
         v69 = *(*(&v102 + 1) + 8 * k);
-        v70 = [v69 LSTrackingVote];
+        lSTrackingVote5 = [v69 LSTrackingVote];
         [(VideoDeghostingDetectionV2 *)self params];
-        if (v70 >= v100)
+        if (lSTrackingVote5 >= v100)
         {
           [v57 addObject:v69];
-          v73 = [v69 LSTrackingMatched];
-          if (v73)
+          lSTrackingMatched = [v69 LSTrackingMatched];
+          if (lSTrackingMatched)
           {
             [v69 setIsTracked:1];
-            v74 = [v73 LSTrackID];
-            [v69 setLSTrackID:v74];
+            lSTrackID = [lSTrackingMatched LSTrackID];
+            [v69 setLSTrackID:lSTrackID];
 
             [v69 bbox];
             v97 = vextq_s8(v75, v75, 8uLL).u64[0];
-            [v73 bbox];
+            [lSTrackingMatched bbox];
             v98 = vmla_f32(vmul_f32(*&vextq_s8(v76, v76, 8uLL), v66), v67, v97);
             [v69 bbox];
             v92 = v77;
@@ -3000,28 +3000,28 @@ LABEL_31:
     while (v59);
   }
 
-  v80 = *a3;
-  *a3 = v57;
+  v80 = *list;
+  *list = v57;
 }
 
-- (void)_trackGhosts:(id *)a3 ghostCandidates:(id *)a4 LSList:(id)a5
+- (void)_trackGhosts:(id *)ghosts ghostCandidates:(id *)candidates LSList:(id)list
 {
-  v8 = a5;
+  listCopy = list;
   kdebug_trace();
   if ([(MTLTexture *)self->_inputTexture count]== &dword_0 + 1)
   {
-    [(VideoDeghostingDetectionV2 *)self _temporalDetectionCurrentGGList:a3 rawKeyPointList:a4 LSList:v8];
+    [(VideoDeghostingDetectionV2 *)self _temporalDetectionCurrentGGList:ghosts rawKeyPointList:candidates LSList:listCopy];
     [(MTLTexture *)self->_inputTexture removeObjectAtIndex:0];
   }
 
   else
   {
-    [(VideoDeghostingDetectionV2 *)self pruneUsingLSRisk:*a3];
+    [(VideoDeghostingDetectionV2 *)self pruneUsingLSRisk:*ghosts];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = *a3;
+    v9 = *ghosts;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v10)
     {
@@ -3049,19 +3049,19 @@ LABEL_31:
     }
   }
 
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils generateTrajectoryForROIList:*a3 isGG:1];
-  [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneUsingTrajectoryGGList:*a3];
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils generateTrajectoryForROIList:*ghosts isGG:1];
+  [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneUsingTrajectoryGGList:*ghosts];
   if (self->_isLocalMotionCueEnabled)
   {
-    [(MTLTexture *)self->_inputTexture addObject:*a3];
+    [(MTLTexture *)self->_inputTexture addObject:*ghosts];
   }
 
   kdebug_trace();
 }
 
-- (void)temporalDetectionCoreCurrentGGList:(id *)a3 ghostCandidates:(id *)a4 LSList:(id)a5
+- (void)temporalDetectionCoreCurrentGGList:(id *)list ghostCandidates:(id *)candidates LSList:(id)sList
 {
-  v146[0] = a5;
+  v146[0] = sList;
   v101 = +[NSMutableArray array];
   v145 = +[NSMutableArray array];
   v7 = [(MTLTexture *)self->_inputTexture count];
@@ -3112,8 +3112,8 @@ LABEL_31:
           v26 = *(*(&v139 + 1) + 8 * i);
           if (![v26 isReflectedLS])
           {
-            v28 = *a4;
-            v29 = *a3;
+            v28 = *candidates;
+            v29 = *list;
             [(VideoDeghostingDetectionV2 *)self params];
             [(VideoDeghostingDetectionV2 *)self params];
             [(VideoDeghostingDetectionV2 *)self params];
@@ -3131,7 +3131,7 @@ LABEL_31:
               [v36 setTemporalDetectionVote:{objc_msgSend(v36, "temporalDetectionVote") + 1}];
               [v19 addObject:v36];
               [v36 setTemporalDetectionMatched:v26];
-              if ([*a4 containsObject:v36])
+              if ([*candidates containsObject:v36])
               {
                 [(VDGDetectionUtilsV2 *)self->_detectionUtils generateTrajectoryForROI:v36 isGG:1];
                 [(VDGDetectionUtilsV2 *)self->_detectionUtils getTrajectoryMatchingCostGG:v36];
@@ -3185,7 +3185,7 @@ LABEL_26:
     while (v102 > 1);
   }
 
-  v133 = [(VideoDeghostingDetectionV2 *)self predictPastROIsInCurrentFrame:v101 currentGGList:*a3];
+  v133 = [(VideoDeghostingDetectionV2 *)self predictPastROIsInCurrentFrame:v101 currentGGList:*list];
   [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneGGList:&v133 LSBBoxList:v146 reflectedLSBBoxList:*&self->_reflectedDilatedLs[4] getMatchedLS:1 pruneLS:0 pruneGG:1];
   [(VDGDetectionUtilsV2 *)self->_detectionUtils pruneGGList:&v145 LSBBoxList:v146 reflectedLSBBoxList:*&self->_reflectedDilatedLs[4] getMatchedLS:1 pruneLS:0 pruneGG:1];
   v41 = +[NSMutableArray array];
@@ -3194,7 +3194,7 @@ LABEL_26:
   v131 = 0u;
   v130 = 0u;
   v129 = 0u;
-  v42 = *a4;
+  v42 = *candidates;
   v43 = [v42 countByEnumeratingWithState:&v129 objects:v128 count:16];
   if (v43)
   {
@@ -3210,18 +3210,18 @@ LABEL_26:
         }
 
         v47 = *(*(&v129 + 1) + 8 * j);
-        v48 = [v47 temporalDetectionVote];
+        temporalDetectionVote = [v47 temporalDetectionVote];
         [(VideoDeghostingDetectionV2 *)self params];
-        if (v48 >= v127)
+        if (temporalDetectionVote >= v127)
         {
           [v41 addObject:v47];
-          v49 = [v47 temporalDetectionMatched];
-          if (v49)
+          temporalDetectionMatched = [v47 temporalDetectionMatched];
+          if (temporalDetectionMatched)
           {
             [v47 setIsTracked:1];
-            [v47 setTrackID:{objc_msgSend(v49, "trackID")}];
-            [v47 setIsTrajectoryPruningPassed:{objc_msgSend(v49, "isTrajectoryPruningPassed")}];
-            [v47 setTrackedCnt:{objc_msgSend(v49, "trackedCnt") + 1}];
+            [v47 setTrackID:{objc_msgSend(temporalDetectionMatched, "trackID")}];
+            [v47 setIsTrajectoryPruningPassed:{objc_msgSend(temporalDetectionMatched, "isTrajectoryPruningPassed")}];
+            [v47 setTrackedCnt:{objc_msgSend(temporalDetectionMatched, "trackedCnt") + 1}];
           }
 
           else
@@ -3349,7 +3349,7 @@ LABEL_60:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  obja = *a3;
+  obja = *list;
   v72 = [obja countByEnumeratingWithState:&v113 objects:v112 count:16];
   if (v72)
   {
@@ -3366,9 +3366,9 @@ LABEL_60:
         }
 
         v76 = *(*(&v113 + 1) + 8 * n);
-        v77 = [v76 temporalDetectionVote];
+        temporalDetectionVote2 = [v76 temporalDetectionVote];
         [(VideoDeghostingDetectionV2 *)self params];
-        if (v77 < v111)
+        if (temporalDetectionVote2 < v111)
         {
           [v76 bbox];
           v104 = v78;
@@ -3451,11 +3451,11 @@ LABEL_83:
   }
 
   [(VDGDetectionUtilsV2 *)self->_detectionUtils removeDuplicateRois:v50];
-  v94 = *a3;
-  *a3 = v50;
+  v94 = *list;
+  *list = v50;
 }
 
-- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV2 *)self BoxCount:(SEL)a2
+- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV2 *)self BoxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3497,34 +3497,34 @@ LABEL_83:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var0;
-  *&self->_params.lightSourceGatingThresholdON = *&a3->var1.var4;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var0;
+  *&self->_params.lightSourceGatingThresholdON = *&configuration->var1.var4;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.externalCfg.lightMode = v4;
   *&self->_configuration.internalCfg.enableColorMask = v3;
 }
 
-- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)a3 config:(id *)a4 tuningParamDict:(id)a5 imageDimensions:(id)a6
+- (VideoDeghostingDetectionV2)initWithMetalToolBox:(id)box config:(id *)config tuningParamDict:(id)dict imageDimensions:(id)dimensions
 {
-  v10 = a3;
-  v11 = a5;
+  boxCopy = box;
+  dictCopy = dict;
   v42.receiver = self;
   v42.super_class = VideoDeghostingDetectionV2;
   v12 = [(VideoDeghostingDetectionV2 *)&v42 init];
   if (v12)
   {
-    v13 = v10 ? v10 : objc_alloc_init(GGMMetalToolBox);
+    v13 = boxCopy ? boxCopy : objc_alloc_init(GGMMetalToolBox);
     v14 = *(v12 + 2);
     *(v12 + 2) = v13;
 
-    v15 = *&a4->var0.var0;
-    v16 = *&a4->var0.var7;
-    v17 = *&a4->var1.var0;
-    *(v12 + 159) = *&a4->var1.var4;
+    v15 = *&config->var0.var0;
+    v16 = *&config->var0.var7;
+    v17 = *&config->var1.var0;
+    *(v12 + 159) = *&config->var1.var4;
     *(v12 + 158) = v17;
     *(v12 + 157) = v16;
     *(v12 + 156) = v15;
@@ -3532,8 +3532,8 @@ LABEL_83:
     v19 = *(v12 + 4);
     *(v12 + 4) = v18;
 
-    [v12 _initParamsWithTuningParamsDict:v11 isLowLight:a4->var1.var0 == 1];
-    *(v12 + 64) = a6;
+    [v12 _initParamsWithTuningParamsDict:dictCopy isLowLight:config->var1.var0 == 1];
+    *(v12 + 64) = dimensions;
     *(v12 + 298) = 0x100000001;
     *(v12 + 598) = 1;
     v12[2368] = 0;
@@ -3544,9 +3544,9 @@ LABEL_83:
     v21 = *(v12 + 5);
     *(v12 + 5) = v20;
 
-    v22 = [[VDGDetectionUtilsV2 alloc] initWithMetalToolBox:*(v12 + 2) configuration:a4 tuningParams:v12 + 2560];
+    2560 = [[VDGDetectionUtilsV2 alloc] initWithMetalToolBox:*(v12 + 2) configuration:config tuningParams:v12 + 2560];
     v23 = *(v12 + 1);
-    *(v12 + 1) = v22;
+    *(v12 + 1) = 2560;
 
     v24 = +[NSMutableArray array];
     v25 = *(v12 + 58);
@@ -3558,7 +3558,7 @@ LABEL_83:
     *(v12 + 272) = v26;
     if (v26)
     {
-      v27 = [[RepairWeightsGenerator alloc] initWithConfiguration:a4 withToolBox:*(v12 + 2) homographyHandle:*(v12 + 4) imageDimensions:a6];
+      v27 = [[RepairWeightsGenerator alloc] initWithConfiguration:config withToolBox:*(v12 + 2) homographyHandle:*(v12 + 4) imageDimensions:dimensions];
       v28 = *(v12 + 295);
       *(v12 + 295) = v27;
 
@@ -3611,8 +3611,8 @@ LABEL_83:
           break;
         }
 
-        v35 = [*(v12 + 2) getDevice];
-        v36 = [v35 newBufferWithBytesNoCopy:objc_msgSend(*&v12[v32 + 800] length:"mutableBytes") options:9544 deallocator:{0, 0}];
+        getDevice = [*(v12 + 2) getDevice];
+        v36 = [getDevice newBufferWithBytesNoCopy:objc_msgSend(*&v12[v32 + 800] length:"mutableBytes") options:9544 deallocator:{0, 0}];
         v37 = *&v12[v32];
         *&v12[v32] = v36;
 
@@ -3651,10 +3651,10 @@ LABEL_22:
   return v40;
 }
 
-- (void)_ghostDetectionWithInputPixelBuffer:(__CVBuffer *)a3 reflectedLSMaskOri:(__CVBuffer *)a4 lowLight:(BOOL)a5 opticalCenterFromMetaData:(__CVBuffer *)a6 simKeyPoint:(__CVBuffer *)a7 simLightSourceMask:(id)a8 metaData:(id *)a9 futureFrames:
+- (void)_ghostDetectionWithInputPixelBuffer:(__CVBuffer *)buffer reflectedLSMaskOri:(__CVBuffer *)ori lowLight:(BOOL)light opticalCenterFromMetaData:(__CVBuffer *)data simKeyPoint:(__CVBuffer *)point simLightSourceMask:(id)mask metaData:(id *)metaData futureFrames:
 {
   v11 = v9;
-  v14 = a8;
+  maskCopy = mask;
   v177 = 0;
   v178[0] = 0;
   v15 = +[NSMutableArray array];
@@ -3662,17 +3662,17 @@ LABEL_22:
   +[NSMutableArray array];
   v175 = v174 = 0;
   bzero(v172, 0x200uLL);
-  if ([(VideoDeghostingDetectionV2 *)self _detectionInit:a3 metaData:v14 futureFrames:a9])
+  if ([(VideoDeghostingDetectionV2 *)self _detectionInit:buffer metaData:maskCopy futureFrames:metaData])
   {
     goto LABEL_105;
   }
 
-  v16 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v17 = [v16 commandQueue];
-  v18 = [v17 commandBuffer];
+  metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  commandQueue = [metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  v127 = v18;
-  if (!v18)
+  v127 = commandBuffer;
+  if (!commandBuffer)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -3686,21 +3686,21 @@ LABEL_105:
 
   v19 = BYTE1(self->_trackID);
   trackID_high = HIBYTE(self->_trackID);
-  v21 = [v14 objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
-  v22 = [v21 intValue];
+  v21 = [maskCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
+  intValue = [v21 intValue];
 
-  v23 = [(VideoDeghostingDetectionV2 *)self _shouldRunGGDetectionLuxLevelBased:v22];
+  v23 = [(VideoDeghostingDetectionV2 *)self _shouldRunGGDetectionLuxLevelBased:intValue];
   v24 = v23;
   v25 = 0;
-  if (a6 && a7)
+  if (data && point)
   {
-    v126 = a6;
+    dataCopy = data;
     v26 = 0;
     v27 = 0;
     obj = 0;
     if (v23)
     {
-      v28 = [v14 objectForKeyedSubscript:@"IspScalerInfo"];
+      v28 = [maskCopy objectForKeyedSubscript:@"IspScalerInfo"];
       v25 = v28;
       if (v28 && [v28 length] == &stru_1F8.reserved2)
       {
@@ -3708,7 +3708,7 @@ LABEL_105:
         v171 = 0u;
         v170 = 0u;
         v169 = 0u;
-        [(VDGDetectionUtilsV2 *)self->_detectionUtils setSimParams:&v169 withMetaData:v14];
+        [(VDGDetectionUtilsV2 *)self->_detectionUtils setSimParams:&v169 withMetaData:maskCopy];
         *&v29 = (*&v169 * v173) * *(&v169 + 1);
         if ([(VideoDeghostingDetectionV2 *)self _shouldRunGGDetectionClippedPixelBased:v29])
         {
@@ -3723,16 +3723,16 @@ LABEL_105:
           v31 = [(NSMutableArray *)self->_prevLSLists count];
           if (v31)
           {
-            v32 = [(NSMutableArray *)self->_prevLSLists lastObject];
+            lastObject = [(NSMutableArray *)self->_prevLSLists lastObject];
           }
 
           else
           {
-            v32 = &__NSArray0__struct;
+            lastObject = &__NSArray0__struct;
           }
 
           v179 = __invert_f3(*&self->_hmgrphyTMinus1ToT.confidence);
-          [(VDGDetectionUtilsV2 *)detectionUtils generateBoxesForDoGAndLumaAndForPrevLSROIs:v32 homography:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.reflectedLsBboxListBuf) maxBufferLength:*v179.columns[0].i64, *v179.columns[1].i64, *v179.columns[2].i64];
+          [(VDGDetectionUtilsV2 *)detectionUtils generateBoxesForDoGAndLumaAndForPrevLSROIs:lastObject homography:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.reflectedLsBboxListBuf) maxBufferLength:*v179.columns[0].i64, *v179.columns[1].i64, *v179.columns[2].i64];
           if (v31)
           {
           }
@@ -3792,7 +3792,7 @@ LABEL_21:
           [(VideoDeghostingDetectionV2 *)self setPrevDefaultOpticalCenter:v11];
           sub_B578();
           LODWORD(v41) = self->_params.maxAllowedOpticalCenterOffset;
-          v42 = [(MaskToRoi *)self->_maskToRoi extractRoiByGraphTraversalInput:a7 bboxSizeThreshold:&v169 scaleFactorInv:DWORD2(v171) validWidth:HIDWORD(v171) validHeight:*&self->_tinyKeypointLocationCountMax lightSourceBBox:v41];
+          v42 = [(MaskToRoi *)self->_maskToRoi extractRoiByGraphTraversalInput:point bboxSizeThreshold:&v169 scaleFactorInv:DWORD2(v171) validWidth:HIDWORD(v171) validHeight:*&self->_tinyKeypointLocationCountMax lightSourceBBox:v41];
           self->_LSROIs = v42;
           sub_B578();
           v43 = [(VideoDeghostingDetectionV2 *)self _shouldRunGGDetectionLSBased:v42];
@@ -3806,7 +3806,7 @@ LABEL_21:
           {
             v120 = v33;
             v121 = v15;
-            v122 = v14;
+            v122 = maskCopy;
             v44 = [(VideoDeghostingDetectionV2 *)self extractLightSourceBBoxFromBuffer:*&self->_tinyKeypointLocationCountMax BoxCount:v42];
             v45 = v175;
             v175 = v44;
@@ -3869,8 +3869,8 @@ LABEL_21:
                   v154 = 0u;
                   v151 = 0u;
                   v152 = 0u;
-                  v59 = [(MTLTexture *)self->_inputTexture lastObject];
-                  v60 = [v59 countByEnumeratingWithState:&v151 objects:v150 count:16];
+                  lastObject2 = [(MTLTexture *)self->_inputTexture lastObject];
+                  v60 = [lastObject2 countByEnumeratingWithState:&v151 objects:v150 count:16];
                   if (v60)
                   {
                     v61 = v60;
@@ -3882,7 +3882,7 @@ LABEL_21:
                         sub_B5E4(v152);
                         if (!v39)
                         {
-                          objc_enumerationMutation(v59);
+                          objc_enumerationMutation(lastObject2);
                         }
 
                         [*(*(&v151 + 1) + 8 * k) getReflectedBboxCenterAroundCenter:*&self->_prevDefaultOpticalCenter[4]];
@@ -3897,7 +3897,7 @@ LABEL_21:
                         [v52 setDist2ghost:?];
                       }
 
-                      v61 = [v59 countByEnumeratingWithState:&v151 objects:v150 count:16];
+                      v61 = [lastObject2 countByEnumeratingWithState:&v151 objects:v150 count:16];
                     }
 
                     while (v61);
@@ -3934,16 +3934,16 @@ LABEL_21:
               v73 = [(NSMutableArray *)self->_prevLSLists count];
               if (v73)
               {
-                v74 = [(NSMutableArray *)self->_prevLSLists lastObject];
+                lastObject3 = [(NSMutableArray *)self->_prevLSLists lastObject];
               }
 
               else
               {
-                v74 = &__NSArray0__struct;
+                lastObject3 = &__NSArray0__struct;
               }
 
               v180 = __invert_f3(*&self->_hmgrphyTToTPlus1.confidence);
-              [(VDGDetectionUtilsV2 *)v72 generateBoxesForDoGAndLumaAndForPrevLSROIs:v74 homography:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.desGenMappingInfoBuf) maxBufferLength:*v180.columns[0].i64, *v180.columns[1].i64, *v180.columns[2].i64];
+              [(VDGDetectionUtilsV2 *)v72 generateBoxesForDoGAndLumaAndForPrevLSROIs:lastObject3 homography:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.desGenMappingInfoBuf) maxBufferLength:*v180.columns[0].i64, *v180.columns[1].i64, *v180.columns[2].i64];
               if (v73)
               {
               }
@@ -3954,15 +3954,15 @@ LABEL_21:
             v77 = [(MTLTexture *)self->_inputTexture count];
             if (v77)
             {
-              v78 = [(MTLTexture *)self->_inputTexture lastObject];
+              lastObject4 = [(MTLTexture *)self->_inputTexture lastObject];
             }
 
             else
             {
-              v78 = &__NSArray0__struct;
+              lastObject4 = &__NSArray0__struct;
             }
 
-            [(VDGDetectionUtilsV2 *)v75 generateBoxesForDoGAndLumaAndForLSROIs:v76 prevGGROIs:v78 inputTexture:self->_frameTMinus1Texture opticalCenter:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.reflectedLsBboxListBuf) maxBufferLength:*&self->_prevDefaultOpticalCenter[4]];
+            [(VDGDetectionUtilsV2 *)v75 generateBoxesForDoGAndLumaAndForLSROIs:v76 prevGGROIs:lastObject4 inputTexture:self->_frameTMinus1Texture opticalCenter:&self->_metalBuffers.desGenGhostIdxBuf metalBuffers:LODWORD(self->_metalBuffers.reflectedLsBboxListBuf) maxBufferLength:*&self->_prevDefaultOpticalCenter[4]];
             if (v77)
             {
             }
@@ -3972,7 +3972,7 @@ LABEL_21:
             __src[0] = v169;
             __src[1] = v170;
             __src[2] = v171;
-            v81 = [(VideoDeghostingDetectionV2 *)self _ghostCandidateGenerationViaKeypointBuffer:v126 opticalCenterFromMetaData:__src mappingInfo:&v176 GGList:&v175 LSList:saturationLowerThreshold_low kpCntHardGatingTh:hueThreshold_low kpCntSoftGatingTh:v11];
+            v81 = [(VideoDeghostingDetectionV2 *)self _ghostCandidateGenerationViaKeypointBuffer:dataCopy opticalCenterFromMetaData:__src mappingInfo:&v176 GGList:&v175 LSList:saturationLowerThreshold_low kpCntHardGatingTh:hueThreshold_low kpCntSoftGatingTh:v11];
             v82 = v174;
             v174 = v81;
 
@@ -3984,15 +3984,15 @@ LABEL_21:
             [(VDGDetectionUtilsV2 *)self->_detectionUtils clearReferencedROIsForROIList:v176];
             sub_B578();
             v83 = [(VideoDeghostingDetectionV2 *)self deepCopyROIList:v176 copyReferencedROI:0];
-            v84 = [(VideoDeghostingDetectionV2 *)self prevFrameMergedGhosts];
-            v85 = [(VideoDeghostingDetectionV2 *)self _mergeBboxesWithTrackingForMitigation:v83 prevFrameGhostList:v84];
+            prevFrameMergedGhosts = [(VideoDeghostingDetectionV2 *)self prevFrameMergedGhosts];
+            v85 = [(VideoDeghostingDetectionV2 *)self _mergeBboxesWithTrackingForMitigation:v83 prevFrameGhostList:prevFrameMergedGhosts];
 
             if ((v85 & 1) == 0)
             {
               [v83 removeAllObjects];
               [v176 removeAllObjects];
-              v86 = [(VideoDeghostingDetectionV2 *)self prevFrameMergedGhosts];
-              [v86 removeAllObjects];
+              prevFrameMergedGhosts2 = [(VideoDeghostingDetectionV2 *)self prevFrameMergedGhosts];
+              [prevFrameMergedGhosts2 removeAllObjects];
             }
 
             if (self->_isLocalMotionCueEnabled)
@@ -4100,7 +4100,7 @@ LABEL_21:
             v113 = v111;
             v114 = [v113 countByEnumeratingWithState:&v136 objects:v135 count:16];
             v15 = v121;
-            v14 = v122;
+            maskCopy = v122;
             if (v114)
             {
               v115 = v114;

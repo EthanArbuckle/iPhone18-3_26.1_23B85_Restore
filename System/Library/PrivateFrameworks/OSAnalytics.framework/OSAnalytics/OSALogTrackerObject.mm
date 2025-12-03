@@ -42,9 +42,9 @@ uint64_t __37__OSALogTrackerObject_sharedTrackers__block_invoke()
     signatures = v3->_signatures;
     v3->_signatures = v4;
 
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     oldestDate = v3->_oldestDate;
-    v3->_oldestDate = v6;
+    v3->_oldestDate = date;
 
     oldestLogPath = v3->_oldestLogPath;
     v3->_oldestLogPath = 0;
@@ -55,7 +55,7 @@ uint64_t __37__OSALogTrackerObject_sharedTrackers__block_invoke()
 
 + (id)tracker
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

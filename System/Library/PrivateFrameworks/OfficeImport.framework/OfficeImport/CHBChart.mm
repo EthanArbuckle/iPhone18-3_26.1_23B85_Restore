@@ -1,28 +1,28 @@
 @interface CHBChart
-+ (int)emptyCellsPlottedEnumsFrom:(int)a3;
-+ (int)readCHDDisplayBlanksAsEnumFrom:(int)a3;
-+ (void)readWithState:(id)a3;
++ (int)emptyCellsPlottedEnumsFrom:(int)from;
++ (int)readCHDDisplayBlanksAsEnumFrom:(int)from;
++ (void)readWithState:(id)state;
 @end
 
 @implementation CHBChart
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 chart];
-  [v5 setStyleId:0];
-  [v5 setLogicalBounds:{0.0, 0.0, 4000.0, 4000.0}];
-  v6 = [v4 xlReader];
-  if (*(v6 + 50) >= 1)
+  stateCopy = state;
+  chart = [stateCopy chart];
+  [chart setStyleId:0];
+  [chart setLogicalBounds:{0.0, 0.0, 4000.0, 4000.0}];
+  xlReader = [stateCopy xlReader];
+  if (*(xlReader + 50) >= 1)
   {
-    v7 = [v4 ebReaderSheetState];
-    [EBGraphic readGraphicsInChart:v5 state:v7];
+    ebReaderSheetState = [stateCopy ebReaderSheetState];
+    [EBGraphic readGraphicsInChart:chart state:ebReaderSheetState];
   }
 
-  if (*(v6 + 1344) == 1)
+  if (*(xlReader + 1344) == 1)
   {
-    [v5 setMSGraph:1];
-    if (*(v6 + 1997))
+    [chart setMSGraph:1];
+    if (*(xlReader + 1997))
     {
       v8 = 1;
     }
@@ -32,46 +32,46 @@
       v8 = 2;
     }
 
-    [v5 setDirection:v8];
+    [chart setDirection:v8];
   }
 
   XlChartParent::XlChartParent(v22);
-  (*(*v6 + 696))(v6, v22);
-  v9 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartFrameType:v22 state:v4];
-  v10 = [v4 autoStyling];
-  [v10 resolveChartAreaGraphicProperties:v9];
+  (*(*xlReader + 696))(xlReader, v22);
+  v9 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartFrameType:v22 state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveChartAreaGraphicProperties:v9];
 
-  [v5 setChartAreaGraphicProperties:v9];
-  [v5 setPlotVisibleCellsOnly:XlChartArea::isCategoryPercentage(v23)];
-  [v5 setDisplayBlankAs:{objc_msgSend(a1, "readCHDDisplayBlanksAsEnumFrom:", v23[5])}];
-  [v4 readAndCacheXlChartDataSeries];
-  [CHBDefaultTextProperties readWithState:v4];
-  v11 = [CHBPlotArea readWithState:v4];
-  [v5 setPlotArea:v11];
+  [chart setChartAreaGraphicProperties:v9];
+  [chart setPlotVisibleCellsOnly:XlChartArea::isCategoryPercentage(v23)];
+  [chart setDisplayBlankAs:{objc_msgSend(self, "readCHDDisplayBlanksAsEnumFrom:", v23[5])}];
+  [stateCopy readAndCacheXlChartDataSeries];
+  [CHBDefaultTextProperties readWithState:stateCopy];
+  v11 = [CHBPlotArea readWithState:stateCopy];
+  [chart setPlotArea:v11];
 
-  if (XlChartBinaryReader::hasTitle(v6))
+  if (XlChartBinaryReader::hasTitle(xlReader))
   {
     XlChartTextFrame::XlChartTextFrame(v20);
     v20[0] = &unk_286EC99A8;
-    (*(*v6 + 760))(v6, v20);
-    v12 = [CHBTitle readFrom:v20 state:v4];
+    (*(*xlReader + 760))(xlReader, v20);
+    v12 = [CHBTitle readFrom:v20 state:stateCopy];
     v13 = v12;
     if (v12)
     {
       if ([v12 isCachedTitleEmpty])
       {
-        v14 = [v5 mainType];
-        v15 = [v4 resources];
-        v16 = [v14 defaultTitleWithResources:v15];
+        mainType = [chart mainType];
+        resources = [stateCopy resources];
+        v16 = [mainType defaultTitleWithResources:resources];
 
         if (v16)
         {
-          v17 = [v13 lastCachedName];
-          v18 = v17;
-          if (v17 && [v17 areThereRuns])
+          lastCachedName = [v13 lastCachedName];
+          v18 = lastCachedName;
+          if (lastCachedName && [lastCachedName areThereRuns])
           {
-            v19 = [v16 string];
-            [v18 setString:v19];
+            string = [v16 string];
+            [v18 setString:string];
           }
 
           else
@@ -81,10 +81,10 @@
         }
       }
 
-      [v5 setTitle:v13];
+      [chart setTitle:v13];
     }
 
-    [v5 setAutoTitleDeleted:v21];
+    [chart setAutoTitleDeleted:v21];
 
     XlChartTextFrame::~XlChartTextFrame(v20);
   }
@@ -92,29 +92,29 @@
   XlChartParent::~XlChartParent(v22);
 }
 
-+ (int)readCHDDisplayBlanksAsEnumFrom:(int)a3
++ (int)readCHDDisplayBlanksAsEnumFrom:(int)from
 {
-  if (a3 > 2)
+  if (from > 2)
   {
     return 2;
   }
 
   else
   {
-    return dword_25D6FE454[a3];
+    return dword_25D6FE454[from];
   }
 }
 
-+ (int)emptyCellsPlottedEnumsFrom:(int)a3
++ (int)emptyCellsPlottedEnumsFrom:(int)from
 {
-  if (a3 > 2)
+  if (from > 2)
   {
     return 1;
   }
 
   else
   {
-    return dword_25D6FE454[a3];
+    return dword_25D6FE454[from];
   }
 }
 

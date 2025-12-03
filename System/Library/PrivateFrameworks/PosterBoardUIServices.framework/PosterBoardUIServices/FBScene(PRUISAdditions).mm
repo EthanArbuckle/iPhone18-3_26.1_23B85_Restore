@@ -16,13 +16,13 @@
   v8 = a4;
   if (!v7)
   {
-    [FBScene(PRUISAdditions) pruis_updateWithoutActivating:a2 withCompletion:a1];
+    [FBScene(PRUISAdditions) pruis_updateWithoutActivating:a2 withCompletion:self];
   }
 
   v9 = v8;
-  if ([a1 isActive])
+  if ([self isActive])
   {
-    [a1 performUpdate:v7 withCompletion:v9];
+    [self performUpdate:v7 withCompletion:v9];
   }
 
   else
@@ -32,7 +32,7 @@
     v12[2] = __72__FBScene_PRUISAdditions__pruis_updateWithoutActivating_withCompletion___block_invoke;
     v12[3] = &unk_1E83A7400;
     v13 = v7;
-    [a1 updateSettingsWithBlock:v12];
+    [self updateSettingsWithBlock:v12];
     if (v9)
     {
       v10[0] = MEMORY[0x1E69E9820];
@@ -51,7 +51,7 @@
   v11 = a5;
   v12 = a6;
   IsFloatingLayerOnly = PRSPosterSnapshotOptionsIsFloatingLayerOnly();
-  v14 = [a1 _renderingContentForOptions:a3];
+  v14 = [self _renderingContentForOptions:a3];
   if ((a3 & 0x40) != 0)
   {
     v15 = 1.0;
@@ -62,7 +62,7 @@
     v15 = 0.0;
   }
 
-  v16 = [v10 userInterfaceStyle];
+  userInterfaceStyle = [v10 userInterfaceStyle];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __105__FBScene_PRUISAdditions__pruis_setupSceneForSnapshottingWithOptions_traitCollection_updater_completion___block_invoke;
@@ -71,13 +71,13 @@
   v21 = v11;
   v22 = v14;
   v23 = v15;
-  v24 = v16;
+  v24 = userInterfaceStyle;
   v26 = (a3 & 2) != 0;
   v27 = (a3 & 4) != 0;
   v20 = v10;
   v17 = v11;
   v18 = v10;
-  [a1 performUpdate:v19 withCompletion:v12];
+  [self performUpdate:v19 withCompletion:v12];
 }
 
 - (void)pruis_restoreSceneAfterSnapshottingWithUpdater:()PRUISAdditions completion:
@@ -89,7 +89,7 @@
   v8[3] = &unk_1E83A7740;
   v9 = v6;
   v7 = v6;
-  [a1 performUpdate:v8 withCompletion:a4];
+  [self performUpdate:v8 withCompletion:a4];
 }
 
 - (void)pruis_snapshotSceneWithOptions:()PRUISAdditions traitCollection:completion:
@@ -99,44 +99,44 @@
   v10[1] = 3221225472;
   v10[2] = __85__FBScene_PRUISAdditions__pruis_snapshotSceneWithOptions_traitCollection_completion___block_invoke;
   v10[3] = &unk_1E83A7768;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v8;
   v12 = a3;
   v9 = v8;
-  [a1 pruis_setupSceneForSnapshottingWithOptions:a3 traitCollection:a4 completion:v10];
+  [self pruis_setupSceneForSnapshottingWithOptions:a3 traitCollection:a4 completion:v10];
 }
 
 - (id)pruis_createSnapshotWithContext:()PRUISAdditions
 {
-  v2 = [a1 createSnapshotWithContext:?];
+  v2 = [self createSnapshotWithContext:?];
   if ([v2 capture])
   {
-    v3 = [v2 IOSurface];
+    iOSurface = [v2 IOSurface];
     v4 = MEMORY[0x1E696AD98];
-    v5 = [a1 settings];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "interfaceOrientation")}];
-    [v3 setAttachment:v6 forKey:*MEMORY[0x1E69C5690]];
+    settings = [self settings];
+    v6 = [v4 numberWithInteger:{objc_msgSend(settings, "interfaceOrientation")}];
+    [iOSurface setAttachment:v6 forKey:*MEMORY[0x1E69C5690]];
 
     v7 = MEMORY[0x1E696AD98];
-    v8 = [a1 settings];
-    v9 = [v7 numberWithInteger:{objc_msgSend(v8, "pui_deviceOrientation")}];
-    [v3 setAttachment:v9 forKey:*MEMORY[0x1E69C5680]];
+    settings2 = [self settings];
+    v9 = [v7 numberWithInteger:{objc_msgSend(settings2, "pui_deviceOrientation")}];
+    [iOSurface setAttachment:v9 forKey:*MEMORY[0x1E69C5680]];
 
     v10 = MEMORY[0x1E696AD98];
-    v11 = [v2 context];
-    [v11 scale];
+    context = [v2 context];
+    [context scale];
     v12 = [v10 numberWithDouble:?];
-    [v3 setAttachment:v12 forKey:*MEMORY[0x1E69C5688]];
+    [iOSurface setAttachment:v12 forKey:*MEMORY[0x1E69C5688]];
 
-    v13 = [a1 settings];
-    [v13 pui_salientContentRectangle];
+    settings3 = [self settings];
+    [settings3 pui_salientContentRectangle];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [a1 clientSettings];
-    if ([v22 pui_adaptiveTimeMode] == 2)
+    clientSettings = [self clientSettings];
+    if ([clientSettings pui_adaptiveTimeMode] == 2)
     {
       IsValidSalientContentRectangle = PUICGRectIsValidSalientContentRectangle();
 
@@ -151,8 +151,8 @@ LABEL_6:
       v26.origin.y = v17;
       v26.size.width = v19;
       v26.size.height = v21;
-      v22 = NSStringFromCGRect(v26);
-      [v3 setAttachment:v22 forKey:*MEMORY[0x1E69C5698]];
+      clientSettings = NSStringFromCGRect(v26);
+      [iOSurface setAttachment:clientSettings forKey:*MEMORY[0x1E69C5698]];
     }
 
     goto LABEL_6;
@@ -165,25 +165,25 @@ LABEL_7:
 
 - (id)pruis_snapshotContextConfiguredWithOptions:()PRUISAdditions
 {
-  v5 = [a1 snapshotContext];
-  [v5 setOpaque:PRSPosterSnapshotOptionsAllowTransparency() ^ 1];
-  v6 = [a1 _layersToExcludeForOptions:a3];
-  [v5 setLayersToExclude:v6];
+  snapshotContext = [self snapshotContext];
+  [snapshotContext setOpaque:PRSPosterSnapshotOptionsAllowTransparency() ^ 1];
+  v6 = [self _layersToExcludeForOptions:a3];
+  [snapshotContext setLayersToExclude:v6];
 
-  return v5;
+  return snapshotContext;
 }
 
 - (id)_layersToExcludeForOptions:()PRUISAdditions
 {
-  v4 = [a1 layerManager];
-  v5 = [v4 layers];
+  layerManager = [self layerManager];
+  layers = [layerManager layers];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__FBScene_PRUISAdditions___layersToExcludeForOptions___block_invoke;
   v9[3] = &__block_descriptor_40_e22_B16__0__FBSceneLayer_8l;
   v9[4] = a3;
-  v6 = [v5 bs_filter:v9];
+  v6 = [layers bs_filter:v9];
   v7 = [v6 set];
 
   return v7;

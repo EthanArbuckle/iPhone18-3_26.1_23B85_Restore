@@ -1,16 +1,16 @@
 @interface AAResponseBodyRedactor
-+ (id)redactedCopyForObject:(id)a3 forKeys:(id)a4;
-+ (id)redactedCopyForResponse:(id)a3 forKeys:(id)a4;
++ (id)redactedCopyForObject:(id)object forKeys:(id)keys;
++ (id)redactedCopyForResponse:(id)response forKeys:(id)keys;
 @end
 
 @implementation AAResponseBodyRedactor
 
-+ (id)redactedCopyForResponse:(id)a3 forKeys:(id)a4
++ (id)redactedCopyForResponse:(id)response forKeys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
+  keysCopy = keys;
+  responseCopy = response;
   objc_opt_class();
-  v8 = [a1 redactedCopyForObject:v7 forKeys:v6];
+  v8 = [self redactedCopyForObject:responseCopy forKeys:keysCopy];
 
   v9 = v8;
   if (objc_opt_isKindOfClass())
@@ -26,21 +26,21 @@
   return v10;
 }
 
-+ (id)redactedCopyForObject:(id)a3 forKeys:(id)a4
++ (id)redactedCopyForObject:(id)object forKeys:(id)keys
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keysCopy = keys;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(objectCopy, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v26 = v6;
-    v9 = v6;
+    v26 = objectCopy;
+    v9 = objectCopy;
     v10 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v10)
     {
@@ -57,14 +57,14 @@
 
           v14 = *(*(&v31 + 1) + 8 * i);
           v15 = [v9 objectForKeyedSubscript:v14];
-          if ([v7 containsObject:v14])
+          if ([keysCopy containsObject:v14])
           {
             [v8 setObject:@"<PRIVACY SENSITIVE>" forKeyedSubscript:v14];
           }
 
           else
           {
-            v16 = [a1 redactedCopyForObject:v15 forKeys:v7];
+            v16 = [self redactedCopyForObject:v15 forKeys:keysCopy];
             [v8 setObject:v16 forKeyedSubscript:v14];
           }
         }
@@ -75,7 +75,7 @@
       while (v11);
     }
 
-    v6 = v26;
+    objectCopy = v26;
   }
 
   else
@@ -83,13 +83,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectCopy, "count")}];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v17 = v6;
-      v18 = v6;
+      v17 = objectCopy;
+      v18 = objectCopy;
       v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v19)
       {
@@ -104,7 +104,7 @@
               objc_enumerationMutation(v18);
             }
 
-            v23 = [a1 redactedCopyForObject:*(*(&v27 + 1) + 8 * j) forKeys:v7];
+            v23 = [self redactedCopyForObject:*(*(&v27 + 1) + 8 * j) forKeys:keysCopy];
             [v8 addObject:v23];
           }
 
@@ -114,12 +114,12 @@
         while (v20);
       }
 
-      v6 = v17;
+      objectCopy = v17;
     }
 
     else
     {
-      v8 = v6;
+      v8 = objectCopy;
     }
   }
 

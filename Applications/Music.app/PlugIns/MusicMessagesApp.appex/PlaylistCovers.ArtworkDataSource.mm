@@ -1,29 +1,29 @@
 @interface PlaylistCovers.ArtworkDataSource
 - (_TtCO9MusicCore14PlaylistCovers17ArtworkDataSource)init;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler;
 @end
 
 @implementation PlaylistCovers.ArtworkDataSource
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PlaylistCovers.ArtworkDataSource.existingRepresentation(for:)(v4);
+  catalogCopy = catalog;
+  selfCopy = self;
+  v6 = PlaylistCovers.ArtworkDataSource.existingRepresentation(for:)(catalogCopy);
 
   return v6;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler
 {
   v7 = sub_100004CB8(&qword_100635240);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = catalog;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1004DDA8C();
@@ -38,15 +38,15 @@
   v14[3] = 0;
   v14[4] = &unk_100522C08;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  catalogCopy = catalog;
+  selfCopy = self;
   sub_100243DBC(0, 0, v9, &unk_100522C18, v14);
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = a3;
-  v4 = [v3 token];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
   sub_1004DE8DC();
   swift_unknownObjectRelease();
 

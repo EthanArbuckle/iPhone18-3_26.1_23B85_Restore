@@ -2,9 +2,9 @@
 - (BOOL)aidaAccountAvailable;
 - (BOOL)aidaAccountRequiresAuthentication;
 - (NSString)authorizationHeader;
-- (PKAppleAccountInformation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAppleAccountInformation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleAccountInformation
@@ -47,54 +47,54 @@
   return authorizationHeader;
 }
 
-- (PKAppleAccountInformation)initWithCoder:(id)a3
+- (PKAppleAccountInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKAppleAccountInformation;
   v5 = [(PKAppleAccountInformation *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aidaAlternateDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aidaAlternateDSID"];
     aidaAlternateDSID = v5->_aidaAlternateDSID;
     v5->_aidaAlternateDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aidaToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aidaToken"];
     aidaToken = v5->_aidaToken;
     v5->_aidaToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aaDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aaDSID"];
     aaDSID = v5->_aaDSID;
     v5->_aaDSID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aaAlternateDSID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aaAlternateDSID"];
     aaAlternateDSID = v5->_aaAlternateDSID;
     v5->_aaAlternateDSID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v14;
 
-    v5->_isSandboxAccount = [v4 decodeBoolForKey:@"isSandboxAccount"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v5->_isSandboxAccount = [coderCopy decodeBoolForKey:@"isSandboxAccount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     primaryEmailAddress = v5->_primaryEmailAddress;
     v5->_primaryEmailAddress = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v22;
 
-    v5->_isManagedAppleAccount = [v4 decodeBoolForKey:@"isManagedAppleAccount"];
-    v5->_isWalletEnabledOnManagedAppleAccount = [v4 decodeBoolForKey:@"isWalletEnabledOnManagedAppleAccount"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageCategory"];
+    v5->_isManagedAppleAccount = [coderCopy decodeBoolForKey:@"isManagedAppleAccount"];
+    v5->_isWalletEnabledOnManagedAppleAccount = [coderCopy decodeBoolForKey:@"isWalletEnabledOnManagedAppleAccount"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageCategory"];
     if ([@"under13" isEqualToString:v24])
     {
       v25 = 1;
@@ -126,22 +126,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   aidaAlternateDSID = self->_aidaAlternateDSID;
-  v7 = a3;
-  [v7 encodeObject:aidaAlternateDSID forKey:@"aidaAlternateDSID"];
-  [v7 encodeObject:self->_aidaToken forKey:@"aidaToken"];
-  [v7 encodeObject:self->_aaDSID forKey:@"aaDSID"];
-  [v7 encodeObject:self->_aaAlternateDSID forKey:@"aaAlternateDSID"];
-  [v7 encodeObject:self->_appleID forKey:@"appleID"];
-  [v7 encodeBool:self->_isSandboxAccount forKey:@"isSandboxAccount"];
-  [v7 encodeObject:self->_firstName forKey:@"firstName"];
-  [v7 encodeObject:self->_lastName forKey:@"lastName"];
-  [v7 encodeObject:self->_primaryEmailAddress forKey:@"email"];
-  [v7 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v7 encodeBool:self->_isManagedAppleAccount forKey:@"isManagedAppleAccount"];
-  [v7 encodeBool:self->_isWalletEnabledOnManagedAppleAccount forKey:@"isWalletEnabledOnManagedAppleAccount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:aidaAlternateDSID forKey:@"aidaAlternateDSID"];
+  [coderCopy encodeObject:self->_aidaToken forKey:@"aidaToken"];
+  [coderCopy encodeObject:self->_aaDSID forKey:@"aaDSID"];
+  [coderCopy encodeObject:self->_aaAlternateDSID forKey:@"aaAlternateDSID"];
+  [coderCopy encodeObject:self->_appleID forKey:@"appleID"];
+  [coderCopy encodeBool:self->_isSandboxAccount forKey:@"isSandboxAccount"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeObject:self->_primaryEmailAddress forKey:@"email"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeBool:self->_isManagedAppleAccount forKey:@"isManagedAppleAccount"];
+  [coderCopy encodeBool:self->_isWalletEnabledOnManagedAppleAccount forKey:@"isWalletEnabledOnManagedAppleAccount"];
   v5 = self->_ageCategory - 1;
   if (v5 > 3)
   {
@@ -153,10 +153,10 @@
     v6 = off_1E79D1B60[v5];
   }
 
-  [v7 encodeObject:v6 forKey:@"ageCategory"];
+  [coderCopy encodeObject:v6 forKey:@"ageCategory"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKAppleAccountInformation allocWithZone:?]];
   objc_storeStrong(&v4->_aidaAlternateDSID, self->_aidaAlternateDSID);

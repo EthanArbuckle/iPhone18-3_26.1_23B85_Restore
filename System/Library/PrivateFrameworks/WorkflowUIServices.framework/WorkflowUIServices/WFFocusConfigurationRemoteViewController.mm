@@ -1,10 +1,10 @@
 @interface WFFocusConfigurationRemoteViewController
 - (WFFocusConfigurationRemoteViewControllerDelegate)delegate;
-- (void)notifyDelegateWithConfigurationUIState:(id)a3;
-- (void)notifyDelegateWithPressedButtonIdentifier:(id)a3 cellFrame:(CGRect)a4;
-- (void)setServiceContext:(id)a3;
-- (void)startConfigurationWithRequest:(id)a3 completion:(id)a4;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)notifyDelegateWithConfigurationUIState:(id)state;
+- (void)notifyDelegateWithPressedButtonIdentifier:(id)identifier cellFrame:(CGRect)frame;
+- (void)setServiceContext:(id)context;
+- (void)startConfigurationWithRequest:(id)request completion:(id)completion;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation WFFocusConfigurationRemoteViewController
@@ -16,65 +16,65 @@
   return WeakRetained;
 }
 
-- (void)notifyDelegateWithPressedButtonIdentifier:(id)a3 cellFrame:(CGRect)a4
+- (void)notifyDelegateWithPressedButtonIdentifier:(id)identifier cellFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v9 = [(WFFocusConfigurationRemoteViewController *)self delegate];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  delegate = [(WFFocusConfigurationRemoteViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WFFocusConfigurationRemoteViewController *)self delegate];
-    [v11 focusConfigurationRemoteViewController:self didPressButtonWithIdentifier:v12 cellFrame:{x, y, width, height}];
+    delegate2 = [(WFFocusConfigurationRemoteViewController *)self delegate];
+    [delegate2 focusConfigurationRemoteViewController:self didPressButtonWithIdentifier:identifierCopy cellFrame:{x, y, width, height}];
   }
 }
 
-- (void)notifyDelegateWithConfigurationUIState:(id)a3
+- (void)notifyDelegateWithConfigurationUIState:(id)state
 {
-  v7 = a3;
-  v4 = [(WFFocusConfigurationRemoteViewController *)self delegate];
+  stateCopy = state;
+  delegate = [(WFFocusConfigurationRemoteViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFFocusConfigurationRemoteViewController *)self delegate];
-    [v6 focusConfigurationRemoteViewController:self configurationUIStateDidChange:v7];
+    delegate2 = [(WFFocusConfigurationRemoteViewController *)self delegate];
+    [delegate2 focusConfigurationRemoteViewController:self configurationUIStateDidChange:stateCopy];
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = getWFFocusConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v8 = "[WFFocusConfigurationRemoteViewController viewServiceDidTerminateWithError:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_ERROR, "%s viewServiceDidTerminateWithError, error = %@", buf, 0x16u);
   }
 
   v6.receiver = self;
   v6.super_class = WFFocusConfigurationRemoteViewController;
-  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:errorCopy];
 }
 
-- (void)startConfigurationWithRequest:(id)a3 completion:(id)a4
+- (void)startConfigurationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__WFFocusConfigurationRemoteViewController_startConfigurationWithRequest_completion___block_invoke;
   v13[3] = &unk_1E8308720;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(_UIRemoteViewController *)self serviceViewControllerProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -82,7 +82,7 @@
   v11[3] = &unk_1E8308720;
   v12 = v7;
   v10 = v7;
-  [v9 startConfigurationWithRequest:v8 completion:v11];
+  [v9 startConfigurationWithRequest:requestCopy completion:v11];
 }
 
 void __85__WFFocusConfigurationRemoteViewController_startConfigurationWithRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -139,13 +139,13 @@ LABEL_6:
   (*(*(a1 + 32) + 16))(*(a1 + 32), v3, v10, v11);
 }
 
-- (void)setServiceContext:(id)a3
+- (void)setServiceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(WFFocusConfigurationHostContext *)self->_serviceContext setFocusConfigurationDelegate:0];
   serviceContext = self->_serviceContext;
-  self->_serviceContext = v4;
-  v6 = v4;
+  self->_serviceContext = contextCopy;
+  v6 = contextCopy;
 
   [(WFFocusConfigurationHostContext *)self->_serviceContext setFocusConfigurationDelegate:self];
 }

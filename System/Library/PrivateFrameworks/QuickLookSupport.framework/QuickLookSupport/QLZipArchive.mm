@@ -1,12 +1,12 @@
 @interface QLZipArchive
-- (BOOL)_reopenWithError:(id *)a3;
-- (QLZipArchive)initWithData:(id)a3 error:(id *)a4;
-- (QLZipArchive)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)_reopenWithError:(id *)error;
+- (QLZipArchive)initWithData:(id)data error:(id *)error;
+- (QLZipArchive)initWithURL:(id)l error:(id *)error;
 - (id)fileWrapper;
 - (id)libarchiveError;
-- (id)readCurrentDataWithEntry:(archive_entry *)a3 error:(id *)a4;
+- (id)readCurrentDataWithEntry:(archive_entry *)entry error:(id *)error;
 - (void)dealloc;
-- (void)enumerateEntriesWithHandler:(id)a3;
+- (void)enumerateEntriesWithHandler:(id)handler;
 @end
 
 @implementation QLZipArchive
@@ -41,14 +41,14 @@
   return v5;
 }
 
-- (QLZipArchive)initWithURL:(id)a3 error:(id *)a4
+- (QLZipArchive)initWithURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = QLZipArchive;
   v8 = [(QLZipArchive *)&v12 init];
   v9 = v8;
-  if (v8 && (objc_storeStrong(&v8->_url, a3), ![(QLZipArchive *)v9 _reopenWithError:a4]))
+  if (v8 && (objc_storeStrong(&v8->_url, l), ![(QLZipArchive *)v9 _reopenWithError:error]))
   {
     v10 = 0;
   }
@@ -61,14 +61,14 @@
   return v10;
 }
 
-- (QLZipArchive)initWithData:(id)a3 error:(id *)a4
+- (QLZipArchive)initWithData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = QLZipArchive;
   v8 = [(QLZipArchive *)&v12 init];
   v9 = v8;
-  if (v8 && (objc_storeStrong(&v8->_data, a3), ![(QLZipArchive *)v9 _reopenWithError:a4]))
+  if (v8 && (objc_storeStrong(&v8->_data, data), ![(QLZipArchive *)v9 _reopenWithError:error]))
   {
     v10 = 0;
   }
@@ -81,7 +81,7 @@
   return v10;
 }
 
-- (BOOL)_reopenWithError:(id *)a3
+- (BOOL)_reopenWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = archive_read_new();
@@ -167,9 +167,9 @@
 
     _os_log_impl(&dword_2615AE000, v6, OS_LOG_TYPE_DEFAULT, v8, &v18, 0xCu);
 LABEL_9:
-    if (a3)
+    if (error)
     {
-      *a3 = [(QLZipArchive *)self libarchiveError];
+      *error = [(QLZipArchive *)self libarchiveError];
     }
 
     archive_read_free();
@@ -193,21 +193,21 @@ LABEL_9:
     _os_log_impl(&dword_2615AE000, v10, OS_LOG_TYPE_DEFAULT, "Could not create archive struct to unzip %@ #Conversion", &v18, 0xCu);
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v12 = [(QLZipArchive *)self libarchiveError];
-  v13 = v12;
+  libarchiveError = [(QLZipArchive *)self libarchiveError];
+  v13 = libarchiveError;
   result = 0;
-  *a3 = v12;
+  *error = libarchiveError;
   return result;
 }
 
-- (id)readCurrentDataWithEntry:(archive_entry *)a3 error:(id *)a4
+- (id)readCurrentDataWithEntry:(archive_entry *)entry error:(id *)error
 {
-  v4 = MEMORY[0x28223BE20](self, a2, a3, a4);
+  v4 = MEMORY[0x28223BE20](self, a2, entry, error);
   v6 = v5;
   v7 = v4;
   v18 = *MEMORY[0x277D85DE8];
@@ -272,9 +272,9 @@ LABEL_9:
   return v10;
 }
 
-- (void)enumerateEntriesWithHandler:(id)a3
+- (void)enumerateEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   if (self->_archive)
   {
@@ -290,7 +290,7 @@ LABEL_4:
       v9 = objc_alloc_init(QLZipArchiveEntry);
       [(QLZipArchiveEntry *)v9 setArchive:self];
       [(QLZipArchiveEntry *)v9 setEntry:0];
-      v4[2](v4, v9, 0, &v13);
+      handlerCopy[2](handlerCopy, v9, 0, &v13);
       archive_read_data_skip();
       v10 = v13;
 
@@ -302,8 +302,8 @@ LABEL_4:
 
     if (next_header != 1)
     {
-      v11 = [(QLZipArchive *)self libarchiveError];
-      (v4)[2](v4, 0, v11, &v13);
+      libarchiveError = [(QLZipArchive *)self libarchiveError];
+      (handlerCopy)[2](handlerCopy, 0, libarchiveError, &v13);
     }
 
 LABEL_9:
@@ -323,7 +323,7 @@ LABEL_9:
       goto LABEL_4;
     }
 
-    (v4)[2](v4, 0, v6, &v13);
+    (handlerCopy)[2](handlerCopy, 0, v6, &v13);
   }
 }
 

@@ -8,13 +8,13 @@
 
 - (void)_bindAndRegisterDefaults
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  v4 = [v3 bs_defaultExists:@"SBButtonForceFeel"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v4 = [_store bs_defaultExists:@"SBButtonForceFeel"];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(BSAbstractDefaultDomain *)self _store];
-    [v5 setObject:&unk_1F3D3EB50 forKey:@"SBButtonForceFeel"];
+    _store2 = [(BSAbstractDefaultDomain *)self _store];
+    [_store2 setObject:&unk_1F3D3EB50 forKey:@"SBButtonForceFeel"];
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"hasSeenACaseLatchCoverOnce"];

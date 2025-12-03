@@ -17,8 +17,8 @@
 + (id)sirisharedui_serverUtteranceFont
 {
   v0 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
-  v1 = [v0 fontDescriptor];
-  v2 = [v1 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v0 fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v3 = [MEMORY[0x277D74300] fontWithDescriptor:v2 size:0.0];
 
@@ -28,8 +28,8 @@
 + (id)sirisharedui_serverTipPrefixFont
 {
   v0 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
-  v1 = [v0 fontDescriptor];
-  v2 = [v1 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v0 fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v3 = [MEMORY[0x277D74300] fontWithDescriptor:v2 size:0.0];
 
@@ -66,50 +66,50 @@
 
 + (uint64_t)sirisharedui_dynamicLightWeightBodySizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySize];
+  [self sirisharedui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 sirisharedui_lightWeightFontWithSize:v3];
+  return [self sirisharedui_lightWeightFontWithSize:v3];
 }
 
 + (uint64_t)sirisharedui_dynamicThinWeightBodySizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySize];
+  [self sirisharedui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 sirisharedui_thinWeightFontWithSize:v3];
+  return [self sirisharedui_thinWeightFontWithSize:v3];
 }
 
 + (uint64_t)sirisharedui_dynamicMediumWeightBodySizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySize];
+  [self sirisharedui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 sirisharedui_mediumWeightFontWithSize:v3];
+  return [self sirisharedui_mediumWeightFontWithSize:v3];
 }
 
 + (uint64_t)sirisharedui_dynamicLightWeightBodySubtextSizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySubtextSize];
+  [self sirisharedui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 sirisharedui_lightWeightFontWithSize:v3];
+  return [self sirisharedui_lightWeightFontWithSize:v3];
 }
 
 + (uint64_t)sirisharedui_dynamicThinWeightBodySubtextSizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySubtextSize];
+  [self sirisharedui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 sirisharedui_thinWeightFontWithSize:v3];
+  return [self sirisharedui_thinWeightFontWithSize:v3];
 }
 
 + (uint64_t)sirisharedui_dynamicMediumWeightBodySubtextSizeFont
 {
-  [a1 sirisharedui_preferredDynamicBodySubtextSize];
+  [self sirisharedui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 sirisharedui_mediumWeightFontWithSize:v3];
+  return [self sirisharedui_mediumWeightFontWithSize:v3];
 }
 
 @end

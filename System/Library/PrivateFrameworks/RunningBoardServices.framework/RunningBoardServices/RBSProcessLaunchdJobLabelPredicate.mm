@@ -1,25 +1,25 @@
 @interface RBSProcessLaunchdJobLabelPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessLaunchdJobLabelPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = [a3 identity];
-  v5 = [v4 hasConsistentLaunchdJob];
-  v6 = [(RBSProcessStringPredicate *)self identifier];
-  if (v5)
+  identity = [process identity];
+  hasConsistentLaunchdJob = [identity hasConsistentLaunchdJob];
+  identifier = [(RBSProcessStringPredicate *)self identifier];
+  if (hasConsistentLaunchdJob)
   {
-    [v4 consistentLaunchdJobLabel];
+    [identity consistentLaunchdJobLabel];
   }
 
   else
   {
-    [v4 applicationJobLabel];
+    [identity applicationJobLabel];
   }
   v7 = ;
-  v8 = [v6 isEqualToString:v7];
+  v8 = [identifier isEqualToString:v7];
 
   return v8;
 }

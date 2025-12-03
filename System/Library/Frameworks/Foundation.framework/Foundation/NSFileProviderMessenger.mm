@@ -1,6 +1,6 @@
 @interface NSFileProviderMessenger
-- (NSFileProviderMessenger)initWithInterface:(id)a3 protocol:(id)a4;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (NSFileProviderMessenger)initWithInterface:(id)interface protocol:(id)protocol;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   [(NSFileProviderMessenger *)&v3 dealloc];
 }
 
-- (NSFileProviderMessenger)initWithInterface:(id)a3 protocol:(id)a4
+- (NSFileProviderMessenger)initWithInterface:(id)interface protocol:(id)protocol
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -23,15 +23,15 @@
   v6 = [(NSFileProviderMessenger *)&v8 init];
   if (v6)
   {
-    v6->_interface = a3;
-    v6->_protocol = a4;
+    v6->_interface = interface;
+    v6->_protocol = protocol;
     v6->_lock = objc_opt_new();
   }
 
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
   if (qword_1ED43F3C0 != -1)
@@ -79,14 +79,14 @@
     [(NSLock *)self->_lock unlock];
   }
 
-  if (!self->_conn || (v21 = 0, v22 = &v21, v23 = 0x3052000000, v24 = __Block_byref_object_copy__4, v25 = __Block_byref_object_dispose__4, v26 = 0, v10 = dispatch_semaphore_create(0), conn = self->_conn, v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v19[2] = __61__NSFileProviderMessenger_remoteObjectProxyWithErrorHandler___block_invoke_623, v19[3] = &unk_1E69F3A28, v19[4] = v10, v12 = -[NSXPCConnection remoteObjectProxyWithErrorHandler:](conn, "remoteObjectProxyWithErrorHandler:", v19), v13 = -[NSFileProviderMessageInterface itemIdentifier](self->_interface, "itemIdentifier"), v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v18[2] = __61__NSFileProviderMessenger_remoteObjectProxyWithErrorHandler___block_invoke_624, v18[3] = &unk_1E69F3A50, v18[4] = v10, v18[5] = &v21, [v12 fetchProxyForItemIdentifier:v13 completionHandler:v18], dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL), dispatch_release(v10), v14 = objc_msgSend(v22[5], "remoteObjectProxyWithErrorHandler:", a3), _Block_object_dispose(&v21, 8), !v14))
+  if (!self->_conn || (v21 = 0, v22 = &v21, v23 = 0x3052000000, v24 = __Block_byref_object_copy__4, v25 = __Block_byref_object_dispose__4, v26 = 0, v10 = dispatch_semaphore_create(0), conn = self->_conn, v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v19[2] = __61__NSFileProviderMessenger_remoteObjectProxyWithErrorHandler___block_invoke_623, v19[3] = &unk_1E69F3A28, v19[4] = v10, v12 = -[NSXPCConnection remoteObjectProxyWithErrorHandler:](conn, "remoteObjectProxyWithErrorHandler:", v19), v13 = -[NSFileProviderMessageInterface itemIdentifier](self->_interface, "itemIdentifier"), v18[0] = MEMORY[0x1E69E9820], v18[1] = 3221225472, v18[2] = __61__NSFileProviderMessenger_remoteObjectProxyWithErrorHandler___block_invoke_624, v18[3] = &unk_1E69F3A50, v18[4] = v10, v18[5] = &v21, [v12 fetchProxyForItemIdentifier:v13 completionHandler:v18], dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL), dispatch_release(v10), v14 = objc_msgSend(v22[5], "remoteObjectProxyWithErrorHandler:", handler), _Block_object_dispose(&v21, 8), !v14))
   {
     v15 = +[NSXPCListener anonymousListener];
     [(NSXPCListener *)v15 resume];
     v16 = [[NSXPCConnection alloc] initWithListenerEndpoint:[(NSXPCListener *)v15 endpoint]];
     [(NSXPCConnection *)v16 setRemoteObjectInterface:[NSXPCInterface interfaceWithProtocol:self->_protocol]];
     [(NSXPCConnection *)v16 resume];
-    v14 = [(NSXPCConnection *)v16 remoteObjectProxyWithErrorHandler:a3];
+    v14 = [(NSXPCConnection *)v16 remoteObjectProxyWithErrorHandler:handler];
     [(NSXPCListener *)v15 invalidate];
   }
 

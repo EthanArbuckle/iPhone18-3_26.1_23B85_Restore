@@ -1,48 +1,48 @@
 @interface PXTCCPhotoGridView
-+ (id)photoGridViewForAlertPromptWithWidth:(double)a3;
++ (id)photoGridViewForAlertPromptWithWidth:(double)width;
 + (id)photoGridViewForSettings;
-- (CGSize)_layoutItemsAndCalculateTotalSizeForTargetWidth:(double)a3;
-- (PXTCCPhotoGridView)initWithColumns:(int64_t)a3 proposedRows:(int64_t)a4 width:(double)a5;
-- (void)_setUpViewsWithImages:(id)a3 maximumItemCount:(int64_t)a4;
+- (CGSize)_layoutItemsAndCalculateTotalSizeForTargetWidth:(double)width;
+- (PXTCCPhotoGridView)initWithColumns:(int64_t)columns proposedRows:(int64_t)rows width:(double)width;
+- (void)_setUpViewsWithImages:(id)images maximumItemCount:(int64_t)count;
 - (void)layoutSubviews;
 @end
 
 @implementation PXTCCPhotoGridView
 
-- (CGSize)_layoutItemsAndCalculateTotalSizeForTargetWidth:(double)a3
+- (CGSize)_layoutItemsAndCalculateTotalSizeForTargetWidth:(double)width
 {
-  v5 = [(PXTCCPhotoGridView *)self totalColumns];
-  v6 = [(PXTCCPhotoGridView *)self totalRows];
-  v7 = (a3 - (v5 - 1) * 2.0) / v5;
-  if (v6 * v5 >= 1)
+  totalColumns = [(PXTCCPhotoGridView *)self totalColumns];
+  totalRows = [(PXTCCPhotoGridView *)self totalRows];
+  v7 = (width - (totalColumns - 1) * 2.0) / totalColumns;
+  if (totalRows * totalColumns >= 1)
   {
     v8 = 0;
     do
     {
       v9 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:v8];
-      [v9 setFrame:{(v7 + 2.0) * (v8 + -v5 * (v8 / v5)), (v7 + 2.0) * (v8 / v5), v7, v7}];
+      [v9 setFrame:{(v7 + 2.0) * (v8 + -totalColumns * (v8 / totalColumns)), (v7 + 2.0) * (v8 / totalColumns), v7, v7}];
 
       ++v8;
     }
 
-    while (v6 * v5 != v8);
+    while (totalRows * totalColumns != v8);
   }
 
-  v10 = (v6 - 1) + (v6 - 1) + v6 * v7;
-  v11 = a3;
+  v10 = (totalRows - 1) + (totalRows - 1) + totalRows * v7;
+  widthCopy = width;
   result.height = v10;
-  result.width = v11;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)_setUpViewsWithImages:(id)a3 maximumItemCount:(int64_t)a4
+- (void)_setUpViewsWithImages:(id)images maximumItemCount:(int64_t)count
 {
-  v11 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  imagesCopy = images;
+  array = [MEMORY[0x1E695DF70] array];
   imageViews = self->_imageViews;
-  self->_imageViews = v6;
+  self->_imageViews = array;
 
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v8 = 0;
     do
@@ -50,7 +50,7 @@
       v9 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [v9 setContentMode:2];
       [v9 setClipsToBounds:1];
-      v10 = [v11 objectAtIndexedSubscript:v8];
+      v10 = [imagesCopy objectAtIndexedSubscript:v8];
       [v9 setImage:v10];
 
       [(PXTCCPhotoGridView *)self addSubview:v9];
@@ -59,7 +59,7 @@
       ++v8;
     }
 
-    while (a4 != v8);
+    while (count != v8);
   }
 }
 
@@ -72,7 +72,7 @@
   [(PXTCCPhotoGridView *)self _layoutItemsAndCalculateTotalSizeForTargetWidth:v3];
 }
 
-- (PXTCCPhotoGridView)initWithColumns:(int64_t)a3 proposedRows:(int64_t)a4 width:(double)a5
+- (PXTCCPhotoGridView)initWithColumns:(int64_t)columns proposedRows:(int64_t)rows width:(double)width
 {
   v41 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -83,12 +83,12 @@
     goto LABEL_11;
   }
 
-  v8 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
-  v9 = [MEMORY[0x1E69C15B8] fetchCuratedAssetsForTCCWithLimit:a4 * a3 seed:0 library:v8];
+  px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+  v9 = [MEMORY[0x1E69C15B8] fetchCuratedAssetsForTCCWithLimit:rows * columns seed:0 library:px_systemPhotoLibrary];
 
   v10 = _SynchronousThumbnailImagesForAssets(v9);
   v11 = [v10 count];
-  if (v11 < a3)
+  if (v11 < columns)
   {
     v12 = PLUIGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -107,15 +107,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7->_totalColumns = a3;
-  v7->_totalRows = v11 / a3;
-  v17 = v11 / a3 * a3;
+  v7->_totalColumns = columns;
+  v7->_totalRows = v11 / columns;
+  v17 = v11 / columns * columns;
   if ([v10 count] >= v17)
   {
     Helper_x8__OBJC_CLASS___APApplication = gotLoadHelper_x8__OBJC_CLASS___APApplication(v18);
     v23 = [*(v22 + 208) applicationWithBundleIdentifier:{*MEMORY[0x1E69BFF18], Helper_x8__OBJC_CLASS___APApplication}];
     Helper_x8__OBJC_CLASS___APGuard = gotLoadHelper_x8__OBJC_CLASS___APGuard(v24);
-    v27 = [*(v26 + 216) sharedGuard];
+    sharedGuard = [*(v26 + 216) sharedGuard];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __57__PXTCCPhotoGridView_initWithColumns_proposedRows_width___block_invoke;
@@ -124,7 +124,7 @@ LABEL_8:
     v32 = v10;
     v33 = v17;
     v28 = v10;
-    [v27 initiateAuthenticationWithShieldingForSubject:v23 completion:v30];
+    [sharedGuard initiateAuthenticationWithShieldingForSubject:v23 completion:v30];
 
 LABEL_11:
     v20 = v7;
@@ -190,23 +190,23 @@ void __57__PXTCCPhotoGridView_initWithColumns_proposedRows_width___block_invoke(
 
 + (id)photoGridViewForSettings
 {
-  v2 = [[a1 alloc] initWithColumns:4 proposedRows:2 width:0.0];
+  v2 = [[self alloc] initWithColumns:4 proposedRows:2 width:0.0];
   [v2 _layoutItemsAndCalculateTotalSizeForTargetWidth:300.0];
   v4 = v3;
   v6 = v5;
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v2 heightAnchor];
-  v8 = [v2 widthAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 multiplier:v6 / v4];
+  heightAnchor = [v2 heightAnchor];
+  widthAnchor = [v2 widthAnchor];
+  v9 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v6 / v4];
   [v9 setActive:1];
 
   return v2;
 }
 
-+ (id)photoGridViewForAlertPromptWithWidth:(double)a3
++ (id)photoGridViewForAlertPromptWithWidth:(double)width
 {
-  v4 = [[a1 alloc] initWithColumns:4 proposedRows:2 width:a3];
-  [v4 _layoutItemsAndCalculateTotalSizeForTargetWidth:a3];
+  v4 = [[self alloc] initWithColumns:4 proposedRows:2 width:width];
+  [v4 _layoutItemsAndCalculateTotalSizeForTargetWidth:width];
   [v4 setBounds:{0.0, 0.0, v5, v6}];
 
   return v4;

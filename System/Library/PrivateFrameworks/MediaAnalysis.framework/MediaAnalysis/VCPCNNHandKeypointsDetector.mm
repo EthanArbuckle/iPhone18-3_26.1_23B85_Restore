@@ -1,27 +1,27 @@
 @interface VCPCNNHandKeypointsDetector
-+ (id)detector:(BOOL)a3 sharedModel:(BOOL)a4 modelName:(id)a5 enableHandObject:(BOOL)a6 options:(id)a7;
++ (id)detector:(BOOL)detector sharedModel:(BOOL)model modelName:(id)name enableHandObject:(BOOL)object options:(id)options;
 - (id).cxx_construct;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7;
-- (int)cvtHeatmaps2Keypoints:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 inHeight:(int)a6 inWidth:(int)a7 outChannel:(int)a8 keypoints:(CGPoint *)a9 keypointConfidence:(float *)a10 offset:(float)a11;
-- (int)handKeypointsDetection:(__CVBuffer *)a3 box:(id)a4 keypoints:(CGPoint)a5[21] keypointConfidence:(float)a6[21] handHoldsObjectConfidence:(float *)a7;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box;
+- (int)cvtHeatmaps2Keypoints:(float *)keypoints outHeight:(int)height outWidth:(int)width inHeight:(int)inHeight inWidth:(int)inWidth outChannel:(int)channel keypoints:(CGPoint *)a9 keypointConfidence:(float *)self0 offset:(float)self1;
+- (int)handKeypointsDetection:(__CVBuffer *)detection box:(id)box keypoints:(CGPoint)keypoints[21] keypointConfidence:(float)confidence[21] handHoldsObjectConfidence:(float *)objectConfidence;
 @end
 
 @implementation VCPCNNHandKeypointsDetector
 
-+ (id)detector:(BOOL)a3 sharedModel:(BOOL)a4 modelName:(id)a5 enableHandObject:(BOOL)a6 options:(id)a7
++ (id)detector:(BOOL)detector sharedModel:(BOOL)model modelName:(id)name enableHandObject:(BOOL)object options:(id)options
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  v13 = [[VCPCNNHandKeypointsDetectorEspresso alloc] init:v10 sharedModel:v9 modelName:v11 enableHandObject:v8 options:v12];
+  objectCopy = object;
+  modelCopy = model;
+  detectorCopy = detector;
+  nameCopy = name;
+  optionsCopy = options;
+  v13 = [[VCPCNNHandKeypointsDetectorEspresso alloc] init:detectorCopy sharedModel:modelCopy modelName:nameCopy enableHandObject:objectCopy options:optionsCopy];
 
   return v13;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
   v7 = VCPSignPostLog();
   v8 = os_signpost_id_generate(v7);
@@ -34,19 +34,19 @@
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "copyImageToBGRHandKeypointCallFromSPI", "", buf, 2u);
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (a3)
+  if (image)
   {
     v13 = Height;
-    v14 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v14 = CVPixelBufferLockBaseAddress(image, 1uLL);
     *buf = v14;
     if (v14)
     {
@@ -59,14 +59,14 @@
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      bzero(a4, 3 * 4 * Width * v13);
+      BaseAddress = CVPixelBufferGetBaseAddress(image);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+      bzero(data, 3 * 4 * Width * v13);
       if (v13 >= 1)
       {
         v19 = 0;
-        v20 = &a4[2 * v13 * Width];
-        v21 = &a4[v13 * Width];
+        v20 = &data[2 * v13 * Width];
+        v21 = &data[v13 * Width];
         v22 = 4 * Width;
         do
         {
@@ -78,7 +78,7 @@
             {
               LOBYTE(v18) = BaseAddress[(v23 * 4)];
               *&v25 = (LODWORD(v18) / self->_std) - self->_mean;
-              a4[v23] = *&v25;
+              data[v23] = *&v25;
               LOBYTE(v25) = BaseAddress[(v23 * 4) + 1];
               *&v26 = (v25 / self->_std) - self->_mean;
               v21[v23] = *&v26;
@@ -95,7 +95,7 @@
           ++v19;
           v20 = (v20 + v22);
           v21 = (v21 + v22);
-          a4 = (a4 + v22);
+          data = (data + v22);
         }
 
         while (v19 != v13);
@@ -136,16 +136,16 @@
   return v15;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box
 {
-  v7 = *&a6;
-  v8 = *&a5;
-  v12 = a7;
-  v13 = v12;
-  if (a3)
+  v7 = *&width;
+  v8 = *&height;
+  boxCopy = box;
+  v13 = boxCopy;
+  if (input)
   {
     cf = 0;
-    [v12 minX];
+    [boxCopy minX];
     v15 = v14;
     [v13 minY];
     v17 = v16;
@@ -175,7 +175,7 @@
     v40.origin.y = v31;
     v40.size.width = v32;
     v40.size.height = (v23 - v25);
-    v33 = Scaler::ScaleCropped(&self->_scaler, v40, a4, &cf, v7, v8, 1111970369);
+    v33 = Scaler::ScaleCropped(&self->_scaler, v40, buffer, &cf, v7, v8, 1111970369);
     if (!v33)
     {
       v34 = VCPSignPostLog();
@@ -186,7 +186,7 @@
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v35, OS_SIGNPOST_INTERVAL_END, v27, "preProcessingHandKeypointCallFromSPI", "", v37, 2u);
       }
 
-      v33 = [(VCPCNNHandKeypointsDetector *)self copyImage:cf toData:a3];
+      v33 = [(VCPCNNHandKeypointsDetector *)self copyImage:cf toData:input];
     }
 
     if (cf)
@@ -203,7 +203,7 @@
   return v33;
 }
 
-- (int)cvtHeatmaps2Keypoints:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 inHeight:(int)a6 inWidth:(int)a7 outChannel:(int)a8 keypoints:(CGPoint *)a9 keypointConfidence:(float *)a10 offset:(float)a11
+- (int)cvtHeatmaps2Keypoints:(float *)keypoints outHeight:(int)height outWidth:(int)width inHeight:(int)inHeight inWidth:(int)inWidth outChannel:(int)channel keypoints:(CGPoint *)a9 keypointConfidence:(float *)self0 offset:(float)self1
 {
   v18 = VCPSignPostLog();
   v19 = os_signpost_id_generate(v18);
@@ -217,15 +217,15 @@
   }
 
   result = -50;
-  if (a4 && a5)
+  if (height && width)
   {
-    if (a8 >= 1)
+    if (channel >= 1)
     {
       v23 = 0;
       v24 = 0;
       do
       {
-        if (a4 < 1)
+        if (height < 1)
         {
           v30 = 0.0;
           v27 = 1.1755e-38;
@@ -243,17 +243,17 @@
           v30 = 0.0;
           do
           {
-            if (a5 >= 1)
+            if (width >= 1)
             {
               v31 = 0;
               do
               {
-                v32 = a3[v28 + v31];
+                v32 = keypoints[v28 + v31];
                 if (v32 > 0.1)
                 {
                   if (v26 <= v32)
                   {
-                    v26 = a3[v28 + v31];
+                    v26 = keypoints[v28 + v31];
                   }
 
                   v30 = v30 + (v31 * v32);
@@ -264,24 +264,24 @@
                 ++v31;
               }
 
-              while (a5 != v31);
+              while (width != v31);
             }
 
             ++v25;
-            v28 += a5;
+            v28 += width;
           }
 
-          while (v25 != a4);
+          while (v25 != height);
         }
 
         v33 = &a9[v24];
-        v33->x = (((v30 / v27) + a11) * (a6 / a4));
-        v33->y = (((v29 / v27) + a11) * (a7 / a5));
-        a10[v24++] = v26;
-        v23 += a5 * a4;
+        v33->x = (((v30 / v27) + offset) * (inHeight / height));
+        v33->y = (((v29 / v27) + offset) * (inWidth / width));
+        confidence[v24++] = v26;
+        v23 += width * height;
       }
 
-      while (v24 != a8);
+      while (v24 != channel);
     }
 
     v34 = VCPSignPostLog();
@@ -298,16 +298,16 @@
   return result;
 }
 
-- (int)handKeypointsDetection:(__CVBuffer *)a3 box:(id)a4 keypoints:(CGPoint)a5[21] keypointConfidence:(float)a6[21] handHoldsObjectConfidence:(float *)a7
+- (int)handKeypointsDetection:(__CVBuffer *)detection box:(id)box keypoints:(CGPoint)keypoints[21] keypointConfidence:(float)confidence[21] handHoldsObjectConfidence:(float *)objectConfidence
 {
-  v12 = a4;
+  boxCopy = box;
   v13 = objc_autoreleasePoolPush();
   *&self->_std = 1065353216;
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(detection);
   v22 = 0;
   v21 = 0;
-  v15 = [(VCPCNNHandKeypointsDetector *)self getInputBuffer:CVPixelBufferGetHeight(a3) srcWidth:Width cnnInputHeight:&v22 cnnInputWidth:&v22 + 4 offset:&v21];
-  v16 = [(VCPCNNHandKeypointsDetector *)self createInput:v15 withBuffer:a3 cnnInputHeight:v22 cnnInputWidth:HIDWORD(v22) box:v12];
+  v15 = [(VCPCNNHandKeypointsDetector *)self getInputBuffer:CVPixelBufferGetHeight(detection) srcWidth:Width cnnInputHeight:&v22 cnnInputWidth:&v22 + 4 offset:&v21];
+  v16 = [(VCPCNNHandKeypointsDetector *)self createInput:v15 withBuffer:detection cnnInputHeight:v22 cnnInputWidth:HIDWORD(v22) box:boxCopy];
   if (v16)
   {
     v18 = 4;
@@ -316,22 +316,22 @@
   else
   {
     LODWORD(v17) = v21;
-    LODWORD(a7) = [(VCPCNNHandKeypointsDetector *)self generateHandKeypoints:a5 keypointConfidence:a6 offset:a7 handHoldsObjectConfidence:v17];
-    v18 = a7 != 0;
+    LODWORD(objectConfidence) = [(VCPCNNHandKeypointsDetector *)self generateHandKeypoints:keypoints keypointConfidence:confidence offset:objectConfidence handHoldsObjectConfidence:v17];
+    v18 = objectConfidence != 0;
   }
 
   objc_autoreleasePoolPop(v13);
   if ((v18 | 4) == 4)
   {
-    v19 = v16;
+    objectConfidenceCopy = v16;
   }
 
   else
   {
-    v19 = a7;
+    objectConfidenceCopy = objectConfidence;
   }
 
-  return v19;
+  return objectConfidenceCopy;
 }
 
 - (id).cxx_construct

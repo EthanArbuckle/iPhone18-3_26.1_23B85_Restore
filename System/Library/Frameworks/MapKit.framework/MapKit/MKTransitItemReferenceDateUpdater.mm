@@ -4,16 +4,16 @@
 + (double)referenceDateAsTimeInterval;
 + (id)_currentTimeWithRoundedSeconds;
 + (unint64_t)_updaterCount;
-+ (void)_addUpdater:(id)a3;
++ (void)_addUpdater:(id)updater;
 + (void)_cancelReferenceDateUpdate;
 + (void)_referenceDateUpdateTimerFired;
-+ (void)_removeUpdater:(id)a3;
++ (void)_removeUpdater:(id)updater;
 + (void)_scheduleReferenceDateUpdate;
 + (void)_updateReferenceDate;
 + (void)initialize;
-- (MKTransitItemReferenceDateUpdater)initWithDelegate:(id)a3;
+- (MKTransitItemReferenceDateUpdater)initWithDelegate:(id)delegate;
 - (MKTransitItemReferenceDateUpdaterDelegate)delegate;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MKTransitItemReferenceDateUpdater
@@ -22,8 +22,8 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&_lock);
-  v3 = [a1 _currentTimeWithRoundedSeconds];
-  if (([_referenceDate isEqualToDate:v3] & 1) == 0)
+  _currentTimeWithRoundedSeconds = [self _currentTimeWithRoundedSeconds];
+  if (([_referenceDate isEqualToDate:_currentTimeWithRoundedSeconds] & 1) == 0)
   {
     v4 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -31,33 +31,33 @@
       *buf = 138412546;
       v14 = _referenceDate;
       v15 = 2112;
-      v16 = v3;
+      v16 = _currentTimeWithRoundedSeconds;
       _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Updating current reference date %@ to date: %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&_referenceDate, v3);
-    [v3 timeIntervalSinceReferenceDate];
+    objc_storeStrong(&_referenceDate, _currentTimeWithRoundedSeconds);
+    [_currentTimeWithRoundedSeconds timeIntervalSinceReferenceDate];
     _referenceDateAsTimeInterval = v5;
-    v6 = [_referenceDateUpdaters allObjects];
+    allObjects = [_referenceDateUpdaters allObjects];
     v7 = _referenceDate;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke;
     v10[3] = &unk_1E76CD810;
-    v11 = v6;
+    v11 = allObjects;
     v12 = v7;
     v8 = v7;
-    v9 = v6;
+    v9 = allObjects;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
   }
 }
 
 + (id)_currentTimeWithRoundedSeconds
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [v3 components:224 fromDate:v2];
-  v5 = [v3 dateBySettingHour:objc_msgSend(v4 minute:"hour") second:objc_msgSend(v4 ofDate:"minute") options:{30 * (objc_msgSend(v4, "second") / 30), v2, 2}];
+  date = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v4 = [currentCalendar components:224 fromDate:date];
+  v5 = [currentCalendar dateBySettingHour:objc_msgSend(v4 minute:"hour") second:objc_msgSend(v4 ofDate:"minute") options:{30 * (objc_msgSend(v4, "second") / 30), date, 2}];
 
   return v5;
 }
@@ -113,9 +113,9 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
 + (double)referenceDateAsTimeInterval
 {
   os_unfair_lock_lock(&_lock);
-  if ([a1 _needsUpdateReferenceDate])
+  if ([self _needsUpdateReferenceDate])
   {
-    [a1 _updateReferenceDate];
+    [self _updateReferenceDate];
   }
 
   v3 = *&_referenceDateAsTimeInterval;
@@ -137,12 +137,12 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
   }
 
   v3 = _referenceDate;
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  [v3 timeIntervalSinceDate:date];
   v6 = v5;
   v7 = _referenceDate;
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v7 timeIntervalSinceDate:v8];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [v7 timeIntervalSinceDate:date2];
   v10 = v9;
 
   if (v6 >= 0.0)
@@ -165,11 +165,11 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
   return WeakRetained;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   os_unfair_lock_lock_with_options();
-  if (self->_active == v3)
+  if (self->_active == activeCopy)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -177,10 +177,10 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
 
   else
   {
-    self->_active = v3;
+    self->_active = activeCopy;
     os_unfair_lock_unlock(&self->_lock);
     v5 = objc_opt_class();
-    if (v3)
+    if (activeCopy)
     {
 
       [v5 _addUpdater:self];
@@ -194,16 +194,16 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
   }
 }
 
-- (MKTransitItemReferenceDateUpdater)initWithDelegate:(id)a3
+- (MKTransitItemReferenceDateUpdater)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MKTransitItemReferenceDateUpdater;
   v5 = [(MKTransitItemReferenceDateUpdater *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -213,51 +213,51 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
 + (unint64_t)_updaterCount
 {
   os_unfair_lock_assert_owner(&_lock);
-  v2 = [_referenceDateUpdaters allObjects];
-  v3 = [v2 count];
+  allObjects = [_referenceDateUpdaters allObjects];
+  v3 = [allObjects count];
 
   return v3;
 }
 
-+ (void)_removeUpdater:(id)a3
++ (void)_removeUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   os_unfair_lock_lock(&_lock);
   if (_referenceDateUpdaters)
   {
-    [_referenceDateUpdaters removeObject:v4];
-    if (![a1 _updaterCount])
+    [_referenceDateUpdaters removeObject:updaterCopy];
+    if (![self _updaterCount])
     {
-      [a1 _cancelReferenceDateUpdate];
+      [self _cancelReferenceDateUpdate];
     }
   }
 
   os_unfair_lock_unlock(&_lock);
 }
 
-+ (void)_addUpdater:(id)a3
++ (void)_addUpdater:(id)updater
 {
-  v7 = a3;
+  updaterCopy = updater;
   os_unfair_lock_lock(&_lock);
   v4 = _referenceDateUpdaters;
   if (!_referenceDateUpdaters)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = _referenceDateUpdaters;
-    _referenceDateUpdaters = v5;
+    _referenceDateUpdaters = weakObjectsHashTable;
 
     v4 = _referenceDateUpdaters;
   }
 
-  [v4 addObject:v7];
-  if ([a1 _updaterCount])
+  [v4 addObject:updaterCopy];
+  if ([self _updaterCount])
   {
-    if ([a1 _needsUpdateReferenceDate])
+    if ([self _needsUpdateReferenceDate])
     {
-      [a1 _updateReferenceDate];
+      [self _updateReferenceDate];
     }
 
-    [a1 _scheduleReferenceDateUpdate];
+    [self _scheduleReferenceDateUpdate];
   }
 
   os_unfair_lock_unlock(&_lock);
@@ -274,8 +274,8 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
   }
 
   [_referenceDateUpdateTimer invalidate];
-  [a1 _updateReferenceDate];
-  [a1 _scheduleReferenceDateUpdate];
+  [self _updateReferenceDate];
+  [self _scheduleReferenceDateUpdate];
   os_unfair_lock_unlock(&_lock);
 }
 
@@ -313,16 +313,16 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
   else
   {
     os_unfair_lock_assert_owner(&_lock);
-    if ([a1 _updaterCount])
+    if ([self _updaterCount])
     {
       [_referenceDateUpdateTimer invalidate];
-      v4 = [MEMORY[0x1E695DF00] date];
-      v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v6 = [v5 components:224 fromDate:v4];
-      v7 = [v6 second];
-      if (30 * (v7 / 30) + 30 <= 59)
+      date = [MEMORY[0x1E695DF00] date];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v6 = [currentCalendar components:224 fromDate:date];
+      second = [v6 second];
+      if (30 * (second / 30) + 30 <= 59)
       {
-        v8 = 30 * (v7 / 30) + 30;
+        v8 = 30 * (second / 30) + 30;
       }
 
       else
@@ -330,8 +330,8 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
         v8 = 0;
       }
 
-      v9 = [v5 nextDateAfterDate:v4 matchingUnit:128 value:v8 options:2];
-      [v9 timeIntervalSinceDate:v4];
+      v9 = [currentCalendar nextDateAfterDate:date matchingUnit:128 value:v8 options:2];
+      [v9 timeIntervalSinceDate:date];
       v11 = ceil(v10);
       v12 = MKGetTransitItemUpdaterLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -341,7 +341,7 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
         _os_log_impl(&dword_1A2EA0000, v12, OS_LOG_TYPE_DEBUG, "Scheduling reference date update in %#.1lfs", &v16, 0xCu);
       }
 
-      v13 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:a1 target:sel__referenceDateUpdateTimerFired selector:0 userInfo:0 repeats:v11];
+      v13 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__referenceDateUpdateTimerFired selector:0 userInfo:0 repeats:v11];
       v14 = _referenceDateUpdateTimer;
       _referenceDateUpdateTimer = v13;
     }
@@ -355,7 +355,7 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
         _os_log_impl(&dword_1A2EA0000, v15, OS_LOG_TYPE_DEBUG, "Reference date was scheduled but there are no subscribers. Abandoning scheduling the update (cancel if needed)", &v16, 2u);
       }
 
-      [a1 _cancelReferenceDateUpdate];
+      [self _cancelReferenceDateUpdate];
     }
   }
 }
@@ -363,9 +363,9 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
 + (NSDate)referenceDate
 {
   os_unfair_lock_lock(&_lock);
-  if ([a1 _needsUpdateReferenceDate])
+  if ([self _needsUpdateReferenceDate])
   {
-    [a1 _updateReferenceDate];
+    [self _updateReferenceDate];
   }
 
   v3 = _referenceDate;
@@ -376,7 +376,7 @@ void __57__MKTransitItemReferenceDateUpdater__updateReferenceDate__block_invoke(
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _lock = 0;
   }

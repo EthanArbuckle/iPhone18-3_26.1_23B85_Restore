@@ -1,5 +1,5 @@
 @interface _MNArrivalUpdaterState_ApproachingWaypoint
-- (void)onEnterState:(id)a3;
+- (void)onEnterState:(id)state;
 - (void)updateForLocation;
 @end
 
@@ -15,14 +15,14 @@
   }
 }
 
-- (void)onEnterState:(id)a3
+- (void)onEnterState:(id)state
 {
-  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:a3];
-  v7 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  v4 = [v7 safeDelegate];
-  v5 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  v6 = [(_MNArrivalUpdaterState *)self targetLeg];
-  [v4 arrivalUpdater:v5 isApproachingEndOfLeg:{objc_msgSend(v6, "legIndex")}];
+  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:state];
+  arrivalUpdater = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  safeDelegate = [arrivalUpdater safeDelegate];
+  arrivalUpdater2 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  targetLeg = [(_MNArrivalUpdaterState *)self targetLeg];
+  [safeDelegate arrivalUpdater:arrivalUpdater2 isApproachingEndOfLeg:{objc_msgSend(targetLeg, "legIndex")}];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface MapsSuggestionsNearbyFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsNearbyFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  entryCopy = entry;
+  if (entryCopy)
   {
     v4 = MapsSuggestionsCurrentBestLocation();
     if (v4)
     {
-      v5 = MapsSuggestionsLocationForEntry(v3);
+      v5 = MapsSuggestionsLocationForEntry(entryCopy);
       if (v5)
       {
         [v4 distanceFromLocation:v5];
         v7 = v6;
-        [v3 type];
+        [entryCopy type];
         GEOConfigGetDouble();
         v9 = v8;
         [v4 horizontalAccuracy];

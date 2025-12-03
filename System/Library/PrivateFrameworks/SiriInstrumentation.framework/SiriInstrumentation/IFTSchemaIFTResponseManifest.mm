@@ -1,28 +1,28 @@
 @interface IFTSchemaIFTResponseManifest
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTResponseManifest)initWithDictionary:(id)a3;
-- (IFTSchemaIFTResponseManifest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTResponseManifest)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTResponseManifest)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTResponseManifest
 
-- (IFTSchemaIFTResponseManifest)initWithDictionary:(id)a3
+- (IFTSchemaIFTResponseManifest)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = IFTSchemaIFTResponseManifest;
   v5 = [(IFTSchemaIFTResponseManifest *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parameters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"useTemplateAsFallback", v18}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"useTemplateAsFallback", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTResponseManifest)initWithJSON:(id)a3
+- (IFTSchemaIFTResponseManifest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTResponseManifest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTResponseManifest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTResponseManifest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,10 +116,10 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_parameters count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -139,16 +139,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -158,18 +158,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"parameters"];
+    [dictionary setObject:array forKeyedSubscript:@"parameters"];
   }
 
   if (*(&self->_useTemplateAsFallback + 1))
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTResponseManifest useTemplateAsFallback](self, "useTemplateAsFallback")}];
-    [v3 setObject:v12 forKeyedSubscript:@"useTemplateAsFallback"];
+    [dictionary setObject:v12 forKeyedSubscript:@"useTemplateAsFallback"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v14];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v14];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,18 +188,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTResponseManifest *)self parameters];
-  v6 = [v4 parameters];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  parameters = [(IFTSchemaIFTResponseManifest *)self parameters];
+  parameters2 = [equalCopy parameters];
+  v7 = parameters2;
+  if ((parameters != 0) == (parameters2 == 0))
   {
 
 LABEL_12:
@@ -207,13 +207,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(IFTSchemaIFTResponseManifest *)self parameters];
-  if (v8)
+  parameters3 = [(IFTSchemaIFTResponseManifest *)self parameters];
+  if (parameters3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTResponseManifest *)self parameters];
-    v11 = [v4 parameters];
-    v12 = [v10 isEqual:v11];
+    v9 = parameters3;
+    parameters4 = [(IFTSchemaIFTResponseManifest *)self parameters];
+    parameters5 = [equalCopy parameters];
+    v12 = [parameters4 isEqual:parameters5];
 
     if (!v12)
     {
@@ -225,7 +225,7 @@ LABEL_12:
   {
   }
 
-  if (*(&self->_useTemplateAsFallback + 1) != (v4[17] & 1))
+  if (*(&self->_useTemplateAsFallback + 1) != (equalCopy[17] & 1))
   {
     goto LABEL_12;
   }
@@ -233,7 +233,7 @@ LABEL_12:
   if (*(&self->_useTemplateAsFallback + 1))
   {
     useTemplateAsFallback = self->_useTemplateAsFallback;
-    if (useTemplateAsFallback != [v4 useTemplateAsFallback])
+    if (useTemplateAsFallback != [equalCopy useTemplateAsFallback])
     {
       goto LABEL_12;
     }
@@ -245,10 +245,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -286,32 +286,32 @@ LABEL_13:
   }
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameters;
-    self->_parameters = v6;
+    self->_parameters = array;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTResponseManifest;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTResponseManifest *)self parameters:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(IFTSchemaIFTResponseManifest *)self setParameters:v7];
 

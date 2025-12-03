@@ -1,26 +1,26 @@
 @interface _GCIPCRemoteProcess
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProcess:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProcess:(id)process;
 - (_GCIPCRemoteProcess)init;
-- (_GCIPCRemoteProcess)initWithConnection:(id)a3;
+- (_GCIPCRemoteProcess)initWithConnection:(id)connection;
 - (id)debugDescription;
-- (void)addConnection:(id)a3;
-- (void)populateBundleIdentifierForConnection:(id)a3;
+- (void)addConnection:(id)connection;
+- (void)populateBundleIdentifierForConnection:(id)connection;
 @end
 
 @implementation _GCIPCRemoteProcess
 
-- (_GCIPCRemoteProcess)initWithConnection:(id)a3
+- (_GCIPCRemoteProcess)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = _GCIPCRemoteProcess;
   v5 = [(_GCIPCRemoteProcess *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -31,10 +31,10 @@
 
     *v5->_auditToken.val = v11;
     *&v5->_auditToken.val[4] = v12;
-    v5->_auditSessionIdentifier = [v4 auditSessionIdentifier];
-    v5->_processIdentifier = [v4 processIdentifier];
-    v5->_effectiveUserIdentifier = [v4 effectiveUserIdentifier];
-    v5->_effectiveGroupIdentifier = [v4 effectiveGroupIdentifier];
+    v5->_auditSessionIdentifier = [connectionCopy auditSessionIdentifier];
+    v5->_processIdentifier = [connectionCopy processIdentifier];
+    v5->_effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
+    v5->_effectiveGroupIdentifier = [connectionCopy effectiveGroupIdentifier];
     v6 = objc_opt_new();
     connections = v5->_connections;
     v5->_connections = v6;
@@ -43,7 +43,7 @@
     connectionInvalidationRegistrations = v5->_connectionInvalidationRegistrations;
     v5->_connectionInvalidationRegistrations = v8;
 
-    [(_GCIPCRemoteProcess *)v5 populateBundleIdentifierForConnection:v4];
+    [(_GCIPCRemoteProcess *)v5 populateBundleIdentifierForConnection:connectionCopy];
   }
 
   return v5;
@@ -56,24 +56,24 @@
   return 0;
 }
 
-- (void)populateBundleIdentifierForConnection:(id)a3
+- (void)populateBundleIdentifierForConnection:(id)connection
 {
-  [a3 processIdentifier];
+  [connection processIdentifier];
   v6 = GCBundleWithPID();
-  v4 = [v6 bundleIdentifier];
+  bundleIdentifier = [v6 bundleIdentifier];
   bundleIdentifier = self->_bundleIdentifier;
-  self->_bundleIdentifier = v4;
+  self->_bundleIdentifier = bundleIdentifier;
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [v5 process];
+  connectionCopy = connection;
+  process = [connectionCopy process];
 
-  if (v6 == self)
+  if (process == self)
   {
-    v8 = self;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v16 = 0;
     v17 = &v16;
     v18 = 0x2050000000;
@@ -82,11 +82,11 @@
     v15[1] = 3221225472;
     v15[2] = __37___GCIPCRemoteProcess_addConnection___block_invoke;
     v15[3] = &unk_1E8419AF8;
-    v15[4] = v8;
+    v15[4] = selfCopy;
     v15[5] = &v16;
-    v15[6] = v5;
+    v15[6] = connectionCopy;
     v15[7] = a2;
-    v9 = [v5 addInvalidationHandler:v15];
+    v9 = [connectionCopy addInvalidationHandler:v15];
     v10 = v9;
     if (v9)
     {
@@ -97,32 +97,32 @@
         [_GCIPCRemoteProcess addConnection:v14];
       }
 
-      v11 = [(_GCIPCRemoteProcess *)v8 connections];
-      v12 = [v11 arrayByAddingObject:v5];
-      [(_GCIPCRemoteProcess *)v8 setConnections:v12];
+      connections = [(_GCIPCRemoteProcess *)selfCopy connections];
+      v12 = [connections arrayByAddingObject:connectionCopy];
+      [(_GCIPCRemoteProcess *)selfCopy setConnections:v12];
 
-      v13 = [(_GCIPCRemoteProcess *)v8 connectionInvalidationRegistrations];
-      [v13 addObject:v10];
+      connectionInvalidationRegistrations = [(_GCIPCRemoteProcess *)selfCopy connectionInvalidationRegistrations];
+      [connectionInvalidationRegistrations addObject:v10];
     }
 
     _Block_object_dispose(&v16, 8);
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"GCIPCProcess.m" lineNumber:67 description:{@"Connection %@ is not from process %@", v5, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCIPCProcess.m" lineNumber:67 description:{@"Connection %@ is not from process %@", connectionCopy, self}];
   }
 }
 
-- (BOOL)isEqualToProcess:(id)a3
+- (BOOL)isEqualToProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   [(_GCIPCRemoteProcess *)self auditToken];
-  if (v4)
+  if (processCopy)
   {
-    [v4 auditToken];
+    [processCopy auditToken];
   }
 
   else
@@ -136,11 +136,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_GCIPCRemoteProcess *)self isEqualToProcess:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_GCIPCRemoteProcess *)self isEqualToProcess:equalCopy];
 
   return v5;
 }

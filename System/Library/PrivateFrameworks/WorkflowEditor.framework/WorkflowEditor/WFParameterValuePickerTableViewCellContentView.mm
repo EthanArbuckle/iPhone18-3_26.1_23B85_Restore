@@ -1,21 +1,21 @@
 @interface WFParameterValuePickerTableViewCellContentView
-- (WFParameterValuePickerTableViewCellContentView)initWithConfiguration:(id)a3;
-- (void)applyConfiguration:(id)a3;
-- (void)selectedSwitchDidToggle:(id)a3;
-- (void)setConfiguration:(id)a3;
+- (WFParameterValuePickerTableViewCellContentView)initWithConfiguration:(id)configuration;
+- (void)applyConfiguration:(id)configuration;
+- (void)selectedSwitchDidToggle:(id)toggle;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation WFParameterValuePickerTableViewCellContentView
 
-- (void)selectedSwitchDidToggle:(id)a3
+- (void)selectedSwitchDidToggle:(id)toggle
 {
-  v4 = [(WFParameterValuePickerTableViewCellContentView *)self superview];
-  if (v4)
+  superview = [(WFParameterValuePickerTableViewCellContentView *)self superview];
+  if (superview)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = superview;
     }
 
     else
@@ -31,19 +31,19 @@
 
   v6 = v5;
 
-  v9 = [(WFParameterValuePickerTableViewCellContentView *)self configuration];
-  v7 = [v9 delegate];
-  v8 = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
-  [v7 parameterValuePickerTableViewCell:v6 didToggleSelection:{objc_msgSend(v8, "isOn")}];
+  configuration = [(WFParameterValuePickerTableViewCellContentView *)self configuration];
+  delegate = [configuration delegate];
+  selectedSwitch = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
+  [delegate parameterValuePickerTableViewCell:v6 didToggleSelection:{objc_msgSend(selectedSwitch, "isOn")}];
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [(WFParameterValuePickerTableViewCellContentView *)self configuration];
-  v8 = v6;
+  configurationCopy = configuration;
+  configuration = [(WFParameterValuePickerTableViewCellContentView *)self configuration];
+  v8 = configurationCopy;
   v52 = v8;
-  if (v7 == v8)
+  if (configuration == v8)
   {
 
 LABEL_26:
@@ -51,71 +51,71 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !configuration)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v7 isEqual:v8];
+  v9 = [configuration isEqual:v8];
 
   v10 = v52;
   if ((v9 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_configuration, a3);
-    v11 = [v52 text];
-    v12 = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
-    [v12 setText:v11];
+    objc_storeStrong(&self->_configuration, configuration);
+    text = [v52 text];
+    titleLabel = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
+    [titleLabel setText:text];
 
-    v13 = [v52 textColor];
-    v14 = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
-    [v14 setTextColor:v13];
+    textColor = [v52 textColor];
+    titleLabel2 = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
+    [titleLabel2 setTextColor:textColor];
 
-    v15 = [v52 textFont];
-    v16 = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
-    [v16 setFont:v15];
+    textFont = [v52 textFont];
+    titleLabel3 = [(WFParameterValuePickerTableViewCellContentView *)self titleLabel];
+    [titleLabel3 setFont:textFont];
 
-    v17 = [v52 secondaryText];
-    v18 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
-    [v18 setText:v17];
+    secondaryText = [v52 secondaryText];
+    subtitleLabel = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
+    [subtitleLabel setText:secondaryText];
 
-    v19 = [v52 secondaryTextColor];
-    v20 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
-    [v20 setTextColor:v19];
+    secondaryTextColor = [v52 secondaryTextColor];
+    subtitleLabel2 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
+    [subtitleLabel2 setTextColor:secondaryTextColor];
 
-    v21 = [v52 secondaryTextFont];
-    v22 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
-    [v22 setFont:v21];
+    secondaryTextFont = [v52 secondaryTextFont];
+    subtitleLabel3 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
+    [subtitleLabel3 setFont:secondaryTextFont];
 
-    v23 = [v52 secondaryText];
-    v24 = [v23 length] == 0;
-    v25 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
-    [v25 setHidden:v24];
+    secondaryText2 = [v52 secondaryText];
+    v24 = [secondaryText2 length] == 0;
+    subtitleLabel4 = [(WFParameterValuePickerTableViewCellContentView *)self subtitleLabel];
+    [subtitleLabel4 setHidden:v24];
 
-    v26 = [v52 image];
-    v27 = [v26 untintedUIImage];
-    v28 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
-    [v28 setImage:v27];
+    image = [v52 image];
+    untintedUIImage = [image untintedUIImage];
+    iconImageView = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
+    [iconImageView setImage:untintedUIImage];
 
-    v29 = [v52 image];
-    v30 = [v29 tintColor];
-    v31 = [v30 platformColor];
-    v32 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
-    [v32 setTintColor:v31];
+    image2 = [v52 image];
+    tintColor = [image2 tintColor];
+    platformColor = [tintColor platformColor];
+    iconImageView2 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
+    [iconImageView2 setTintColor:platformColor];
 
     [v52 cornerRadius];
     v34 = v33;
-    v35 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
-    [v35 _setContinuousCornerRadius:v34];
+    iconImageView3 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
+    [iconImageView3 _setContinuousCornerRadius:v34];
 
-    v36 = [v52 image];
-    v37 = v36 == 0;
-    v38 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
-    [v38 setHidden:v37];
+    image3 = [v52 image];
+    image4 = image3 == 0;
+    iconImageView4 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
+    [iconImageView4 setHidden:image4];
 
-    v39 = [v52 forceImageScaling];
-    if (v39)
+    forceImageScaling = [v52 forceImageScaling];
+    if (forceImageScaling)
     {
       v40 = 0;
       v41 = 1;
@@ -123,14 +123,14 @@ LABEL_8:
 
     else
     {
-      v37 = [v52 image];
-      v38 = [v37 platformImage];
-      [v38 size];
+      image4 = [v52 image];
+      iconImageView4 = [image4 platformImage];
+      [iconImageView4 size];
       if (v42 <= 29.0)
       {
-        v32 = [v52 image];
-        v3 = [v32 platformImage];
-        [v3 size];
+        iconImageView2 = [v52 image];
+        platformImage = [iconImageView2 platformImage];
+        [platformImage size];
         if (v43 > 29.0)
         {
           v41 = 1;
@@ -151,57 +151,57 @@ LABEL_8:
       }
     }
 
-    v44 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
-    [v44 setContentMode:v41];
+    iconImageView5 = [(WFParameterValuePickerTableViewCellContentView *)self iconImageView];
+    [iconImageView5 setContentMode:v41];
 
     if (v40)
     {
     }
 
-    if ((v39 & 1) == 0)
+    if ((forceImageScaling & 1) == 0)
     {
     }
 
-    v45 = [v52 icon];
-    v46 = [(WFParameterValuePickerTableViewCellContentView *)self iconView];
-    [v46 setIcon:v45];
+    icon = [v52 icon];
+    iconView = [(WFParameterValuePickerTableViewCellContentView *)self iconView];
+    [iconView setIcon:icon];
 
-    v47 = [v52 image];
-    if (v47)
+    image5 = [v52 image];
+    if (image5)
     {
       v48 = 1;
     }
 
     else
     {
-      v46 = [v52 icon];
-      v48 = v46 == 0;
+      iconView = [v52 icon];
+      v48 = iconView == 0;
     }
 
-    v49 = [(WFParameterValuePickerTableViewCellContentView *)self iconView];
-    [v49 setHidden:v48];
+    iconView2 = [(WFParameterValuePickerTableViewCellContentView *)self iconView];
+    [iconView2 setHidden:v48];
 
-    if (!v47)
+    if (!image5)
     {
     }
 
-    v50 = [v52 isContainedInState];
-    v51 = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
-    [v51 setOn:v50];
+    isContainedInState = [v52 isContainedInState];
+    selectedSwitch = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
+    [selectedSwitch setOn:isContainedInState];
 
-    LODWORD(v50) = [v52 usesToggleForSelection];
-    v7 = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
-    [v7 setHidden:v50 ^ 1];
+    LODWORD(isContainedInState) = [v52 usesToggleForSelection];
+    configuration = [(WFParameterValuePickerTableViewCellContentView *)self selectedSwitch];
+    [configuration setHidden:isContainedInState ^ 1];
     goto LABEL_26;
   }
 
 LABEL_27:
 }
 
-- (WFParameterValuePickerTableViewCellContentView)initWithConfiguration:(id)a3
+- (WFParameterValuePickerTableViewCellContentView)initWithConfiguration:(id)configuration
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v69.receiver = self;
   v69.super_class = WFParameterValuePickerTableViewCellContentView;
   v5 = [(WFParameterValuePickerTableViewCellContentView *)&v69 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -231,8 +231,8 @@ LABEL_27:
     v64 = v11;
 
     v13 = objc_alloc(MEMORY[0x277D7D520]);
-    v14 = [v4 icon];
-    v15 = [v13 initWithIcon:v14 size:{29.0, 29.0}];
+    icon = [configurationCopy icon];
+    v15 = [v13 initWithIcon:icon size:{29.0, 29.0}];
 
     [v15 setUseAccentColor:1];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -253,7 +253,7 @@ LABEL_27:
     v72[1] = v66;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
     v22 = [v20 initWithArrangedSubviews:v21];
-    v68 = v4;
+    v68 = configurationCopy;
     labelsStackView = v6->_labelsStackView;
     v6->_labelsStackView = v22;
 
@@ -279,78 +279,78 @@ LABEL_27:
     [(UIStackView *)v6->_contentStackView setAxis:0];
     [(UIStackView *)v6->_contentStackView setDistribution:0];
     [(UIStackView *)v6->_contentStackView setAlignment:3];
-    v29 = [v4 usesInsetGroupedTableStyle];
+    usesInsetGroupedTableStyle = [configurationCopy usesInsetGroupedTableStyle];
     v30 = 12.0;
-    if (v29)
+    if (usesInsetGroupedTableStyle)
     {
       v30 = 8.0;
     }
 
     [(UIStackView *)v6->_contentStackView setSpacing:v30];
     [(UIStackView *)v6->_contentStackView setDirectionalLayoutMargins:8.0, 0.0, 8.0, 0.0];
-    v31 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
-    [(WFParameterValuePickerTableViewCellContentView *)v6 addSubview:v31];
+    contentStackView = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
+    [(WFParameterValuePickerTableViewCellContentView *)v6 addSubview:contentStackView];
 
-    if ([v4 usesInsetGroupedTableStyle])
+    if ([configurationCopy usesInsetGroupedTableStyle])
     {
       v24 = -4.0;
     }
 
     v48 = MEMORY[0x277CCAAD0];
-    v65 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
-    v60 = [v65 leadingAnchor];
-    v61 = [(WFParameterValuePickerTableViewCellContentView *)v6 layoutMarginsGuide];
-    v59 = [v61 leadingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:v24];
+    contentStackView2 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
+    leadingAnchor = [contentStackView2 leadingAnchor];
+    layoutMarginsGuide = [(WFParameterValuePickerTableViewCellContentView *)v6 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v24];
     v70[0] = v58;
-    v57 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
-    v55 = [v57 trailingAnchor];
-    v56 = [(WFParameterValuePickerTableViewCellContentView *)v6 layoutMarginsGuide];
-    v54 = [v56 trailingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    contentStackView3 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
+    trailingAnchor = [contentStackView3 trailingAnchor];
+    layoutMarginsGuide2 = [(WFParameterValuePickerTableViewCellContentView *)v6 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v70[1] = v53;
-    v52 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
-    v51 = [v52 topAnchor];
-    v50 = [(WFParameterValuePickerTableViewCellContentView *)v6 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    contentStackView4 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
+    topAnchor = [contentStackView4 topAnchor];
+    topAnchor2 = [(WFParameterValuePickerTableViewCellContentView *)v6 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v70[2] = v49;
-    v47 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
-    v46 = [v47 bottomAnchor];
-    v45 = [(WFParameterValuePickerTableViewCellContentView *)v6 bottomAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    contentStackView5 = [(WFParameterValuePickerTableViewCellContentView *)v6 contentStackView];
+    bottomAnchor = [contentStackView5 bottomAnchor];
+    bottomAnchor2 = [(WFParameterValuePickerTableViewCellContentView *)v6 bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v70[3] = v44;
-    v32 = [(WFParameterValuePickerTableViewCellContentView *)v6 heightAnchor];
-    v33 = [v32 constraintGreaterThanOrEqualToConstant:44.0];
+    heightAnchor = [(WFParameterValuePickerTableViewCellContentView *)v6 heightAnchor];
+    v33 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
     v70[4] = v33;
-    v34 = [(UIImageView *)v6->_iconImageView widthAnchor];
-    v35 = [v34 constraintEqualToConstant:29.0];
+    widthAnchor = [(UIImageView *)v6->_iconImageView widthAnchor];
+    v35 = [widthAnchor constraintEqualToConstant:29.0];
     LODWORD(v36) = 1148026880;
     v37 = [v35 wf_withPriority:v36];
     v70[5] = v37;
-    v38 = [(UIImageView *)v6->_iconImageView heightAnchor];
-    v39 = [v38 constraintEqualToConstant:29.0];
+    heightAnchor2 = [(UIImageView *)v6->_iconImageView heightAnchor];
+    v39 = [heightAnchor2 constraintEqualToConstant:29.0];
     LODWORD(v40) = 1148026880;
     v41 = [v39 wf_withPriority:v40];
     v70[6] = v41;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:7];
     [v48 activateConstraints:v42];
 
-    v4 = v68;
+    configurationCopy = v68;
     [(WFParameterValuePickerTableViewCellContentView *)v6 applyConfiguration:v68];
   }
 
   return v6;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(WFParameterValuePickerTableViewCellContentView *)self applyConfiguration:v4];
+      [(WFParameterValuePickerTableViewCellContentView *)self applyConfiguration:configurationCopy];
     }
   }
 }

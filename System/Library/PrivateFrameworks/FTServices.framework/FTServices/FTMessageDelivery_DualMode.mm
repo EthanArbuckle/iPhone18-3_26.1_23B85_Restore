@@ -1,39 +1,39 @@
 @interface FTMessageDelivery_DualMode
 - (BOOL)_isInBackoffMode;
-- (BOOL)_shouldUseDualDeliveryForMessage:(id)a3;
-- (FTMessageDelivery_DualMode)initWithPreferedType:(int64_t)a3;
-- (void)_deliverOnHTTP:(id)a3;
+- (BOOL)_shouldUseDualDeliveryForMessage:(id)message;
+- (FTMessageDelivery_DualMode)initWithPreferedType:(int64_t)type;
+- (void)_deliverOnHTTP:(id)p;
 - (void)_enterBackOffMode;
-- (void)_handleWebTunnelResponse:(id)a3 error:(id)a4 resultCode:(int64_t)a5 resultDictionary:(id)a6 originalMessage:(id)a7;
-- (void)addRequestObserver:(id)a3;
-- (void)cancelMessage:(id)a3;
+- (void)_handleWebTunnelResponse:(id)response error:(id)error resultCode:(int64_t)code resultDictionary:(id)dictionary originalMessage:(id)message;
+- (void)addRequestObserver:(id)observer;
+- (void)cancelMessage:(id)message;
 - (void)dequeueMessageIfNeeded;
-- (void)handleTranslationAndDeliveryOnAPS:(id)a3;
+- (void)handleTranslationAndDeliveryOnAPS:(id)s;
 - (void)invalidate;
-- (void)queue:(id)a3 hitTimeoutForMessage:(id)a4;
-- (void)sendMessage:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)queue:(id)queue hitTimeoutForMessage:(id)message;
+- (void)sendMessage:(id)message;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation FTMessageDelivery_DualMode
 
-- (BOOL)_shouldUseDualDeliveryForMessage:(id)a3
+- (BOOL)_shouldUseDualDeliveryForMessage:(id)message
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   if ((IMGetDomainBoolForKey() & 1) == 0)
   {
-    v6 = [v4 topic];
-    v7 = [MEMORY[0x1E69A53F0] sharedInstance];
-    v8 = [v7 objectForKey:@"apns-webtunnel-blacklisted-topics"];
+    topic = [messageCopy topic];
+    mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+    v8 = [mEMORY[0x1E69A53F0] objectForKey:@"apns-webtunnel-blacklisted-topics"];
 
-    if ([v8 containsObject:v6])
+    if ([v8 containsObject:topic])
     {
       v9 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v37 = v6;
+        v37 = topic;
         v38 = 2112;
         v39 = v8;
         _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "Message topic (%@) is in the list of blocklisted topics (%@)", buf, 0x16u);
@@ -47,28 +47,28 @@
       goto LABEL_77;
     }
 
-    v10 = [MEMORY[0x1E69A53F0] sharedInstance];
-    v11 = [v10 objectForKey:@"apns-ids-query-min-version"];
+    mEMORY[0x1E69A53F0]2 = [MEMORY[0x1E69A53F0] sharedInstance];
+    v11 = [mEMORY[0x1E69A53F0]2 objectForKey:@"apns-ids-query-min-version"];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = v11;
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v37) = v13;
+        LODWORD(v37) = intValue;
         _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_DEFAULT, "Server Bag provided us with %d Web Tunnel Version", buf, 8u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v35 = v13;
+        v35 = intValue;
         _IDSLogV();
       }
 
-      v13 = v13;
+      intValue = intValue;
     }
 
     else
@@ -87,13 +87,13 @@
         _IDSLogV();
       }
 
-      v13 = 2;
+      intValue = 2;
     }
 
     v16 = _IDSWebTunnelServiceVersionNumber();
-    v17 = [v16 integerValue];
+    integerValue = [v16 integerValue];
 
-    if (v17 < v13)
+    if (integerValue < intValue)
     {
       v18 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -110,7 +110,7 @@
       goto LABEL_77;
     }
 
-    if ([v4 importanceLevel] == 2)
+    if ([messageCopy importanceLevel] == 2)
     {
       if ([(FTMessageDelivery_DualMode *)self _isInBackoffMode])
       {
@@ -129,28 +129,28 @@
         goto LABEL_77;
       }
 
-      v21 = [MEMORY[0x1E69A53F0] sharedInstance];
-      v22 = [v21 objectForKey:@"apns-ids-query-percentage-2"];
+      mEMORY[0x1E69A53F0]3 = [MEMORY[0x1E69A53F0] sharedInstance];
+      v22 = [mEMORY[0x1E69A53F0]3 objectForKey:@"apns-ids-query-percentage-2"];
 
       if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v23 = v22;
-        v24 = [v23 intValue];
+        intValue2 = [v23 intValue];
         v25 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          LODWORD(v37) = v24;
+          LODWORD(v37) = intValue2;
           _os_log_impl(&dword_195925000, v25, OS_LOG_TYPE_DEFAULT, "Server Bag provided us with %d Web Tunnel Percentage", buf, 8u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v35 = v24;
+          v35 = intValue2;
           _IDSLogV();
         }
 
-        if (!v24)
+        if (!intValue2)
         {
           v32 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -167,7 +167,7 @@
           goto LABEL_77;
         }
 
-        v26 = v24;
+        v26 = intValue2;
       }
 
       else
@@ -189,12 +189,12 @@
         v26 = 100;
       }
 
-      v28 = [(FTMessageDelivery_DualMode *)self _randomPercentageChanceForDualDelivery];
+      _randomPercentageChanceForDualDelivery = [(FTMessageDelivery_DualMode *)self _randomPercentageChanceForDualDelivery];
       v29 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v37 = v28;
+        v37 = _randomPercentageChanceForDualDelivery;
         _os_log_impl(&dword_195925000, v29, OS_LOG_TYPE_DEFAULT, "Diceroll Was %ld", buf, 0xCu);
       }
 
@@ -203,7 +203,7 @@
         _IDSLogV();
       }
 
-      if (v28 <= v26)
+      if (_randomPercentageChanceForDualDelivery <= v26)
       {
         v31 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -289,7 +289,7 @@ LABEL_80:
       _IDSLogV();
     }
 
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v3];
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -305,7 +305,7 @@ LABEL_80:
       _IDSLogV();
     }
 
-    v8 = [v5 dateByAddingTimeInterval:{3600.0, v16}];
+    v8 = [date dateByAddingTimeInterval:{3600.0, v16}];
     v9 = [v6 earlierDate:v8];
 
     [v9 timeIntervalSinceNow];
@@ -349,15 +349,15 @@ LABEL_80:
 
 - (void)_enterBackOffMode
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v2 = [v5 dateByAddingTimeInterval:3600.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v2 = [date dateByAddingTimeInterval:3600.0];
   v3 = MEMORY[0x1E696AD98];
   [v2 timeIntervalSinceReferenceDate];
   v4 = [v3 numberWithDouble:?];
   IMSetAppValueForKey();
 }
 
-- (FTMessageDelivery_DualMode)initWithPreferedType:(int64_t)a3
+- (FTMessageDelivery_DualMode)initWithPreferedType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = FTMessageDelivery_DualMode;
@@ -369,8 +369,8 @@ LABEL_80:
     v3->_apsDelivery = v4;
 
     v6 = objc_alloc(+[FTMessageDelivery HTTPMessageDeliveryClass]);
-    v7 = [(FTMessageDelivery *)v3->_apsDelivery connection];
-    v8 = [v6 initWithAPSConnection:v7];
+    connection = [(FTMessageDelivery *)v3->_apsDelivery connection];
+    v8 = [v6 initWithAPSConnection:connection];
     httpDelivery = v3->_httpDelivery;
     v3->_httpDelivery = v8;
 
@@ -386,52 +386,52 @@ LABEL_80:
   return v3;
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  objc_storeStrong(&self->_userAgentString, a3);
-  v5 = a3;
-  [(FTMessageDelivery *)self->_httpDelivery setUserAgent:v5];
-  [(FTMessageDelivery *)self->_apsDelivery setUserAgent:v5];
+  objc_storeStrong(&self->_userAgentString, agent);
+  agentCopy = agent;
+  [(FTMessageDelivery *)self->_httpDelivery setUserAgent:agentCopy];
+  [(FTMessageDelivery *)self->_apsDelivery setUserAgent:agentCopy];
 }
 
-- (void)addRequestObserver:(id)a3
+- (void)addRequestObserver:(id)observer
 {
   httpDelivery = self->_httpDelivery;
-  v5 = a3;
-  [(FTMessageDelivery *)httpDelivery addRequestObserver:v5];
-  [(FTMessageDelivery *)self->_apsDelivery addRequestObserver:v5];
+  observerCopy = observer;
+  [(FTMessageDelivery *)httpDelivery addRequestObserver:observerCopy];
+  [(FTMessageDelivery *)self->_apsDelivery addRequestObserver:observerCopy];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = messageCopy;
     _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "Incoming request to send a dualMode message %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v7 = v4;
+    v7 = messageCopy;
     _IDSLogV();
   }
 
-  [(FTMessageQueue *)self->_dualModeQueue addMessage:v4, v7];
+  [(FTMessageQueue *)self->_dualModeQueue addMessage:messageCopy, v7];
   [(FTMessageDelivery_DualMode *)self dequeueMessageIfNeeded];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelMessage:(id)a3
+- (void)cancelMessage:(id)message
 {
   apsDelivery = self->_apsDelivery;
-  v5 = a3;
-  [(FTMessageDelivery *)apsDelivery cancelMessage:v5];
-  [(FTMessageDelivery *)self->_httpDelivery cancelMessage:v5];
+  messageCopy = message;
+  [(FTMessageDelivery *)apsDelivery cancelMessage:messageCopy];
+  [(FTMessageDelivery *)self->_httpDelivery cancelMessage:messageCopy];
 }
 
 - (void)dequeueMessageIfNeeded
@@ -450,8 +450,8 @@ LABEL_80:
 
   if ([(FTMessageQueue *)self->_dualModeQueue count]>= 1)
   {
-    v4 = [(FTMessageQueue *)self->_dualModeQueue dequeueTopMessage];
-    if ([v4 dualModeConfig])
+    dequeueTopMessage = [(FTMessageQueue *)self->_dualModeQueue dequeueTopMessage];
+    if ([dequeueTopMessage dualModeConfig])
     {
       v5 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -465,7 +465,7 @@ LABEL_80:
         _IDSLogV();
       }
 
-      if ([(FTMessageDelivery_DualMode *)self _shouldUseDualDeliveryForMessage:v4])
+      if ([(FTMessageDelivery_DualMode *)self _shouldUseDualDeliveryForMessage:dequeueTopMessage])
       {
         v6 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -482,8 +482,8 @@ LABEL_80:
           }
         }
 
-        [v4 setHasAttemptedAPSDelivery:1];
-        [(FTMessageDelivery_DualMode *)self handleTranslationAndDeliveryOnAPS:v4];
+        [dequeueTopMessage setHasAttemptedAPSDelivery:1];
+        [(FTMessageDelivery_DualMode *)self handleTranslationAndDeliveryOnAPS:dequeueTopMessage];
 LABEL_29:
 
         return;
@@ -499,7 +499,7 @@ LABEL_25:
           _IDSLogV();
         }
 
-        [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:v4, v9];
+        [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:dequeueTopMessage, v9];
         goto LABEL_29;
       }
 
@@ -524,13 +524,13 @@ LABEL_25:
   }
 }
 
-- (void)handleTranslationAndDeliveryOnAPS:(id)a3
+- (void)handleTranslationAndDeliveryOnAPS:(id)s
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[IDSWebTunnelRequestMessage alloc] initWithMessage:v4];
-  v6 = [MEMORY[0x1E69A53F0] sharedInstance];
-  v7 = [v6 objectForKey:@"apns-ids-query-wait-time"];
+  sCopy = s;
+  v5 = [[IDSWebTunnelRequestMessage alloc] initWithMessage:sCopy];
+  mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+  v7 = [mEMORY[0x1E69A53F0] objectForKey:@"apns-ids-query-wait-time"];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -571,58 +571,58 @@ LABEL_25:
   }
 
   [(IDSBaseMessage *)v5 setTimeout:v10];
-  -[IDSWebTunnelRequestMessage setDisableIDSTranslation:](v5, "setDisableIDSTranslation:", [v4 wantsIDSServer] ^ 1);
-  v13 = [v4 messageBodyDataOverride];
+  -[IDSWebTunnelRequestMessage setDisableIDSTranslation:](v5, "setDisableIDSTranslation:", [sCopy wantsIDSServer] ^ 1);
+  messageBodyDataOverride = [sCopy messageBodyDataOverride];
 
-  if (v13)
+  if (messageBodyDataOverride)
   {
-    v14 = [v4 messageBodyDataOverride];
-    [(IDSWebTunnelRequestMessage *)v5 setMessageRequestBodyData:v14];
-    v15 = 0;
+    messageBodyDataOverride2 = [sCopy messageBodyDataOverride];
+    [(IDSWebTunnelRequestMessage *)v5 setMessageRequestBodyData:messageBodyDataOverride2];
+    _FTCopyGzippedData = 0;
   }
 
   else
   {
-    v14 = [v4 messageBodyUsingCache];
+    messageBodyDataOverride2 = [sCopy messageBodyUsingCache];
     v47 = 0;
-    v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v14 format:100 options:0 error:&v47];
+    v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:messageBodyDataOverride2 format:100 options:0 error:&v47];
     v17 = v47;
-    v15 = [v16 _FTCopyGzippedData];
-    [(IDSWebTunnelRequestMessage *)v5 setMessageRequestBodyData:v15];
+    _FTCopyGzippedData = [v16 _FTCopyGzippedData];
+    [(IDSWebTunnelRequestMessage *)v5 setMessageRequestBodyData:_FTCopyGzippedData];
   }
 
-  v18 = [MEMORY[0x1E69A53F0] sharedInstance];
-  v19 = [v4 bagKey];
-  v20 = [v18 urlWithKey:v19];
+  mEMORY[0x1E69A53F0]2 = [MEMORY[0x1E69A53F0] sharedInstance];
+  bagKey = [sCopy bagKey];
+  v20 = [mEMORY[0x1E69A53F0]2 urlWithKey:bagKey];
 
-  v21 = [v4 URLOverride];
+  uRLOverride = [sCopy URLOverride];
 
-  if (v21)
+  if (uRLOverride)
   {
-    v22 = [v4 URLOverride];
+    uRLOverride2 = [sCopy URLOverride];
 
-    v20 = v22;
+    v20 = uRLOverride2;
   }
 
   v23 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v24 = [v4 additionalQueryStringParameters];
-  v25 = [v24 count] == 0;
+  additionalQueryStringParameters = [sCopy additionalQueryStringParameters];
+  v25 = [additionalQueryStringParameters count] == 0;
 
   if (!v25)
   {
-    v26 = [v4 additionalQueryStringParameters];
+    additionalQueryStringParameters2 = [sCopy additionalQueryStringParameters];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = sub_1959332A8;
     v45[3] = &unk_1E7435060;
     v27 = v23;
     v46 = v27;
-    [v26 enumerateKeysAndObjectsUsingBlock:v45];
+    [additionalQueryStringParameters2 enumerateKeysAndObjectsUsingBlock:v45];
 
     if ([v27 length])
     {
-      v28 = [v20 absoluteString];
-      v29 = [v28 stringByAppendingFormat:@"?%@", v27];
+      absoluteString = [v20 absoluteString];
+      v29 = [absoluteString stringByAppendingFormat:@"?%@", v27];
 
       v30 = [MEMORY[0x1E695DFF8] URLWithString:v29];
 
@@ -630,14 +630,14 @@ LABEL_25:
     }
   }
 
-  v31 = [v20 absoluteString];
-  [(IDSWebTunnelRequestMessage *)v5 setMessageURL:v31];
+  absoluteString2 = [v20 absoluteString];
+  [(IDSWebTunnelRequestMessage *)v5 setMessageURL:absoluteString2];
 
-  v32 = [v4 underlyingService];
-  [(IDSBaseMessage *)v5 setTopic:v32];
+  underlyingService = [sCopy underlyingService];
+  [(IDSBaseMessage *)v5 setTopic:underlyingService];
 
-  v33 = [(IDSBaseMessage *)v5 overallEventTracingOperation];
-  [v4 addSubEventTracingOperation:v33];
+  overallEventTracingOperation = [(IDSBaseMessage *)v5 overallEventTracingOperation];
+  [sCopy addSubEventTracingOperation:overallEventTracingOperation];
 
   if ([(NSString *)self->_userAgentString length])
   {
@@ -648,18 +648,18 @@ LABEL_25:
   v41[1] = 3221225472;
   v41[2] = sub_195933358;
   v41[3] = &unk_1E74350D8;
-  v34 = v4;
+  v34 = sCopy;
   v42 = v34;
   v35 = v5;
   v43 = v35;
-  v44 = self;
+  selfCopy = self;
   v36 = MEMORY[0x19A8B8CC0](v41);
   if ([v34 wantsIDSSignatures])
   {
     apsDelivery = self->_apsDelivery;
     if ([v34 wantsBodySignature])
     {
-      v38 = v15;
+      v38 = _FTCopyGzippedData;
     }
 
     else
@@ -678,67 +678,67 @@ LABEL_25:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleWebTunnelResponse:(id)a3 error:(id)a4 resultCode:(int64_t)a5 resultDictionary:(id)a6 originalMessage:(id)a7
+- (void)_handleWebTunnelResponse:(id)response error:(id)error resultCode:(int64_t)code resultDictionary:(id)dictionary originalMessage:(id)message
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  responseCopy = response;
+  errorCopy = error;
+  dictionaryCopy = dictionary;
+  messageCopy = message;
   v16 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = a5;
+    codeCopy = code;
     _os_log_impl(&dword_195925000, v16, OS_LOG_TYPE_DEFAULT, "Web Tunnel Response got %ld", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v29 = a5;
+    codeCopy2 = code;
     _IDSLogV();
   }
 
-  v17 = v12;
-  [v17 stopCurrentEventTracingOperationWithError:v13];
-  if (a5 > 5202)
+  v17 = responseCopy;
+  [v17 stopCurrentEventTracingOperationWithError:errorCopy];
+  if (code > 5202)
   {
-    if ((a5 - 5203) < 4)
+    if ((code - 5203) < 4)
     {
-      [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:v15];
+      [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:messageCopy];
       goto LABEL_30;
     }
 
-    if (a5 != 5207)
+    if (code != 5207)
     {
-      if (a5 == 20001)
+      if (code == 20001)
       {
-        [v15 setHasAttemptedAPSDelivery:0];
+        [messageCopy setHasAttemptedAPSDelivery:0];
       }
 
       goto LABEL_21;
     }
 
-    if ([v15 dualModeConfig] == 2)
+    if ([messageCopy dualModeConfig] == 2)
     {
-      v27 = [v15 completionBlock];
-      (v27)[2](v27, v15, 0, 5207, 0);
+      completionBlock = [messageCopy completionBlock];
+      (completionBlock)[2](completionBlock, messageCopy, 0, 5207, 0);
 
       goto LABEL_30;
     }
 
 LABEL_29:
     [(FTMessageDelivery_DualMode *)self _enterBackOffMode];
-    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:v15];
+    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:messageCopy];
     goto LABEL_30;
   }
 
-  if ((a5 - 5200) < 3)
+  if ((code - 5200) < 3)
   {
     goto LABEL_29;
   }
 
-  if (a5)
+  if (code)
   {
 LABEL_21:
     v26 = OSLogHandleForIDSCategory();
@@ -753,7 +753,7 @@ LABEL_21:
       _IDSLogV();
     }
 
-    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:v15, v29];
+    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:messageCopy, codeCopy2];
     goto LABEL_30;
   }
 
@@ -769,57 +769,57 @@ LABEL_21:
     _IDSLogV();
   }
 
-  [v15 handleResponseDictionary:{v14, v29}];
-  v19 = [v17 responseBodyData];
-  [v15 handleResponseBody:v19];
+  [messageCopy handleResponseDictionary:{dictionaryCopy, codeCopy2}];
+  responseBodyData = [v17 responseBodyData];
+  [messageCopy handleResponseBody:responseBodyData];
 
-  v20 = [v17 responseHeaders];
-  [v15 handleResponseHeaders:v20];
+  responseHeaders = [v17 responseHeaders];
+  [messageCopy handleResponseHeaders:responseHeaders];
 
-  v21 = [v17 responseCode];
-  [v15 handleResponseStatus:{objc_msgSend(v21, "unsignedIntegerValue")}];
+  responseCode = [v17 responseCode];
+  [messageCopy handleResponseStatus:{objc_msgSend(responseCode, "unsignedIntegerValue")}];
 
-  v22 = [v15 completionBlock];
-  [v15 setDeliveryMechanism:1];
-  [v15 setSentByteCount:{objc_msgSend(v17, "sentByteCount")}];
-  [v15 setReceivedByteCount:{objc_msgSend(v17, "receivedByteCount")}];
-  v23 = [v17 requestStart];
-  [v15 setRequestStart:v23];
+  completionBlock2 = [messageCopy completionBlock];
+  [messageCopy setDeliveryMechanism:1];
+  [messageCopy setSentByteCount:{objc_msgSend(v17, "sentByteCount")}];
+  [messageCopy setReceivedByteCount:{objc_msgSend(v17, "receivedByteCount")}];
+  requestStart = [v17 requestStart];
+  [messageCopy setRequestStart:requestStart];
 
-  v24 = [v17 requestEnd];
-  [v15 setRequestEnd:v24];
+  requestEnd = [v17 requestEnd];
+  [messageCopy setRequestEnd:requestEnd];
 
-  v25 = [v17 responseReceived];
-  [v15 setResponseReceived:v25];
+  responseReceived = [v17 responseReceived];
+  [messageCopy setResponseReceived:responseReceived];
 
-  [v15 stopEventTracingWithError:0];
-  (v22)[2](v22, v15, v13, 0, v14);
+  [messageCopy stopEventTracingWithError:0];
+  (completionBlock2)[2](completionBlock2, messageCopy, errorCopy, 0, dictionaryCopy);
 
 LABEL_30:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deliverOnHTTP:(id)a3
+- (void)_deliverOnHTTP:(id)p
 {
-  v5 = a3;
-  if ([v5 dualModeConfig] == 2)
+  pCopy = p;
+  if ([pCopy dualModeConfig] == 2)
   {
-    v4 = [v5 completionBlock];
-    (v4)[2](v4, v5, 0, 5208, 0);
+    completionBlock = [pCopy completionBlock];
+    (completionBlock)[2](completionBlock, pCopy, 0, 5208, 0);
   }
 
   else
   {
-    [(FTMessageDelivery *)self->_httpDelivery sendMessage:v5];
+    [(FTMessageDelivery *)self->_httpDelivery sendMessage:pCopy];
   }
 }
 
-- (void)queue:(id)a3 hitTimeoutForMessage:(id)a4
+- (void)queue:(id)queue hitTimeoutForMessage:(id)message
 {
-  v5 = a4;
-  if ([v5 hasAttemptedAPSDelivery])
+  messageCopy = message;
+  if ([messageCopy hasAttemptedAPSDelivery])
   {
-    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:v5];
+    [(FTMessageDelivery_DualMode *)self _deliverOnHTTP:messageCopy];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface _UISwipeDismissalGestureRecognizer
 - (CGPoint)originalTouchPoint;
-- (_UISwipeDismissalGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UISwipeDismissalGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UISwipeDismissalGestureRecognizer
 
-- (_UISwipeDismissalGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UISwipeDismissalGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UISwipeDismissalGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -25,25 +25,25 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = [a3 anyObject];
-  v5 = [(UIGestureRecognizer *)self view];
-  [v7 locationInView:v5];
+  anyObject = [began anyObject];
+  view = [(UIGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   [(_UISwipeDismissalGestureRecognizer *)self setOriginalTouchPoint:?];
 
-  v6 = [(UIGestureRecognizer *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 gestureRecognizerShouldDismissForTouchDown:self])
+  delegate = [(UIGestureRecognizer *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate gestureRecognizerShouldDismissForTouchDown:self])
   {
     [(UIGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v18 = [a3 anyObject];
-  v5 = [(UIGestureRecognizer *)self view];
-  [v18 locationInView:v5];
+  anyObject = [moved anyObject];
+  view = [(UIGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [(UIGestureRecognizer *)self delegate:a3];
+  v6 = [(UIGestureRecognizer *)self delegate:ended];
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 gestureRecognizerShouldDismissForTouchUp:self])
   {
     v5 = 3;

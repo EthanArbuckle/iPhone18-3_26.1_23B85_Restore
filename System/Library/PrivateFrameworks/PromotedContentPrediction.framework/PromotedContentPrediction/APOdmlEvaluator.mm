@@ -1,33 +1,33 @@
 @interface APOdmlEvaluator
-- (APOdmlEvaluator)initWithTrainingRowBuilder:(id)a3 recipe:(id)a4 modelURL:(id)a5;
-- (BOOL)_setError:(id *)a3 errorCode:(int64_t)a4;
-- (id)_generateMetricsForBatch:(id)a3 preTraining:(id)a4 postTraining:(id)a5 tapAndImpressions:(id)a6 pttrDeltas:(id)a7;
-- (id)evaluate:(id *)a3;
+- (APOdmlEvaluator)initWithTrainingRowBuilder:(id)builder recipe:(id)recipe modelURL:(id)l;
+- (BOOL)_setError:(id *)error errorCode:(int64_t)code;
+- (id)_generateMetricsForBatch:(id)batch preTraining:(id)training postTraining:(id)postTraining tapAndImpressions:(id)impressions pttrDeltas:(id)deltas;
+- (id)evaluate:(id *)evaluate;
 @end
 
 @implementation APOdmlEvaluator
 
-- (APOdmlEvaluator)initWithTrainingRowBuilder:(id)a3 recipe:(id)a4 modelURL:(id)a5
+- (APOdmlEvaluator)initWithTrainingRowBuilder:(id)builder recipe:(id)recipe modelURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  builderCopy = builder;
+  recipeCopy = recipe;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = APOdmlEvaluator;
   v12 = [(APOdmlEvaluator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_builder, a3);
-    objc_storeStrong(&v13->_recipe, a4);
-    objc_storeStrong(&v13->_modelURL, a5);
+    objc_storeStrong(&v12->_builder, builder);
+    objc_storeStrong(&v13->_recipe, recipe);
+    objc_storeStrong(&v13->_modelURL, l);
     v13->_trainingSetSize = 0;
   }
 
   return v13;
 }
 
-- (id)evaluate:(id *)a3
+- (id)evaluate:(id *)evaluate
 {
   v267[1] = *MEMORY[0x277D85DE8];
   v5 = OdmlLogForCategory(0xBuLL);
@@ -71,7 +71,7 @@
   objc_msgSend_addRequiredFeatures_(v47, v48, v44);
 
   v51 = objc_msgSend_builder(self, v49, v50);
-  v53 = objc_msgSend_generateTrainingSet_(v51, v52, a3);
+  v53 = objc_msgSend_generateTrainingSet_(v51, v52, evaluate);
 
   if (!v53 || !objc_msgSend_count(v53, v54, v55))
   {
@@ -82,14 +82,14 @@
       _os_log_impl(&dword_260ECB000, v98, OS_LOG_TYPE_ERROR, "Failed to find any training rows.", buf, 2u);
     }
 
-    if (!a3 || *a3)
+    if (!evaluate || *evaluate)
     {
       goto LABEL_27;
     }
 
     v100 = &kAPODMLDESPluginNoDataToEvaluate;
 LABEL_26:
-    objc_msgSend__setError_errorCode_(self, v99, a3, *v100);
+    objc_msgSend__setError_errorCode_(self, v99, evaluate, *v100);
 LABEL_27:
     v96 = 0;
     goto LABEL_85;
@@ -382,9 +382,9 @@ LABEL_46:
     }
 
     objc_msgSend_setValue_forKey_(v96, v216, v158, @"Deltas");
-    v222 = self;
+    selfCopy = self;
     v95 = v239;
-    v224 = objc_msgSend__generateMetricsForBatch_preTraining_postTraining_tapAndImpressions_pttrDeltas_(v222, v223, v246, v239, v236, obj, v243);
+    v224 = objc_msgSend__generateMetricsForBatch_preTraining_postTraining_tapAndImpressions_pttrDeltas_(selfCopy, v223, v246, v239, v236, obj, v243);
     v18 = v237;
     v227 = objc_msgSend_weightNames(v237, v225, v226);
     objc_msgSend_setValue_forKey_(v224, v228, v227, @"UpdatedModelIndices");
@@ -489,42 +489,42 @@ LABEL_85:
   return v96;
 }
 
-- (id)_generateMetricsForBatch:(id)a3 preTraining:(id)a4 postTraining:(id)a5 tapAndImpressions:(id)a6 pttrDeltas:(id)a7
+- (id)_generateMetricsForBatch:(id)batch preTraining:(id)training postTraining:(id)postTraining tapAndImpressions:(id)impressions pttrDeltas:(id)deltas
 {
   v11 = MEMORY[0x277CBEB38];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  deltasCopy = deltas;
+  impressionsCopy = impressions;
+  postTrainingCopy = postTraining;
+  trainingCopy = training;
+  batchCopy = batch;
   v19 = objc_msgSend_dictionary(v11, v17, v18);
-  v22 = objc_msgSend_averageLoss(v15, v20, v21);
+  v22 = objc_msgSend_averageLoss(trainingCopy, v20, v21);
   objc_msgSend_setValue_forKey_(v19, v23, v22, @"PreTrainingLoss");
 
-  v25 = objc_msgSend_averageAccuracy_(v15, v24, v16);
+  v25 = objc_msgSend_averageAccuracy_(trainingCopy, v24, batchCopy);
 
   objc_msgSend_setValue_forKey_(v19, v26, v25, @"PreTrainingAccuracy");
-  v29 = objc_msgSend_averageLoss(v14, v27, v28);
+  v29 = objc_msgSend_averageLoss(postTrainingCopy, v27, v28);
   objc_msgSend_setValue_forKey_(v19, v30, v29, @"PostTrainingLoss");
 
-  v32 = objc_msgSend_averageAccuracy_(v14, v31, v16);
+  v32 = objc_msgSend_averageAccuracy_(postTrainingCopy, v31, batchCopy);
 
   objc_msgSend_setValue_forKey_(v19, v33, v32, @"PostTrainingAccuracy");
-  objc_msgSend_setValue_forKey_(v19, v34, v13, @"AdditionalMetrics");
+  objc_msgSend_setValue_forKey_(v19, v34, impressionsCopy, @"AdditionalMetrics");
 
-  objc_msgSend_setValue_forKey_(v19, v35, v12, @"delta_pTTR");
+  objc_msgSend_setValue_forKey_(v19, v35, deltasCopy, @"delta_pTTR");
 
   return v19;
 }
 
-- (BOOL)_setError:(id *)a3 errorCode:(int64_t)a4
+- (BOOL)_setError:(id *)error errorCode:(int64_t)code
 {
-  if (a3)
+  if (error)
   {
-    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], a2, @"APODMLDESPluginErrorDomain", a4, 0);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], a2, @"APODMLDESPluginErrorDomain", code, 0);
   }
 
-  return a3 != 0;
+  return error != 0;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CANBandEQGraphView
-- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithCoder:(id)a3;
-- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithFrame:(CGRect)a3;
-- (void)doubleTapped:(id)a3;
+- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithCoder:(id)coder;
+- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithFrame:(CGRect)frame;
+- (void)doubleTapped:(id)tapped;
 - (void)tintColorDidChange;
 @end
 
@@ -9,23 +9,23 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371430E0();
 }
 
-- (void)doubleTapped:(id)a3
+- (void)doubleTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_2371432A8(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_2371432A8(tappedCopy);
 }
 
-- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CANBandEQGraphView();
-  v4 = a3;
-  v5 = [(CAAUEQGraphView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CAAUEQGraphView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -34,12 +34,12 @@
   return v5;
 }
 
-- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit18CANBandEQGraphView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CANBandEQGraphView();
   return [(CAAUEQGraphView *)&v8 initWithFrame:x, y, width, height];

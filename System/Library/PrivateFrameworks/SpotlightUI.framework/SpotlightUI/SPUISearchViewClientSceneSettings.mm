@@ -6,9 +6,9 @@
 - (double)keyboardHeight;
 - (double)keyboardProtectorHeight;
 - (double)searchBarCornerRadius;
-- (id)keyDescriptionForSetting:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(int64_t)a5;
+- (id)keyDescriptionForSetting:(int64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(int64_t)setting;
 - (unint64_t)searchHeaderBackgroundLayerRenderID;
 - (unint64_t)searchHeaderBlurLayerRenderID;
 - (unint64_t)searchHeaderLayerRenderID;
@@ -21,8 +21,8 @@
 
 - (double)distanceToTopOfIcons
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1000];
 
   objc_opt_class();
   v4 = 0.0;
@@ -37,84 +37,84 @@
 
 - (unint64_t)searchHeaderLayerRenderID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1001];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1001];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)searchHeaderContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1002];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)searchHeaderBackgroundContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1004];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1004];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)searchHeaderBackgroundLayerRenderID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1003];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (double)keyboardProtectorHeight
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1006];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1006];
 
   objc_opt_class();
   v4 = 0.0;
@@ -129,8 +129,8 @@
 
 - (CGSize)searchBarSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1008];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1008];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -155,8 +155,8 @@
 
 - (CGSize)dockedSearchBarSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1009];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1009];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -181,8 +181,8 @@
 
 - (double)searchBarCornerRadius
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1010];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1010];
 
   objc_opt_class();
   v4 = 0.0;
@@ -197,8 +197,8 @@
 
 - (double)keyboardHeight
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1005];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1005];
 
   objc_opt_class();
   v4 = 0.0;
@@ -213,61 +213,61 @@
 
 - (unsigned)searchHeaderBlurContextID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1012];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1012];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)searchHeaderBlurLayerRenderID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1011];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1011];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)isKeyboardPresented
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1007];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1007];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SPUISearchViewMutableClientSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(int64_t)a3
+- (id)keyDescriptionForSetting:(int64_t)setting
 {
-  if ((a3 - 1000) > 0xC)
+  if ((setting - 1000) > 0xC)
   {
     v5.receiver = self;
     v5.super_class = SPUISearchViewClientSceneSettings;
@@ -276,24 +276,24 @@
 
   else
   {
-    v3 = SPUISearchViewSceneClientSettingsKeyDescription(a3);
+    v3 = SPUISearchViewSceneClientSettingsKeyDescription(setting);
   }
 
   return v3;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(int64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(int64_t)setting
 {
-  if ((a5 - 1000) > 0xC)
+  if ((setting - 1000) > 0xC)
   {
     v7.receiver = self;
     v7.super_class = SPUISearchViewClientSceneSettings;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   else
   {
-    v5 = SPUISearchViewClientSceneSettingsValueDescription(a5, a3, a4);
+    v5 = SPUISearchViewClientSceneSettingsValueDescription(setting, flag, object);
   }
 
   return v5;

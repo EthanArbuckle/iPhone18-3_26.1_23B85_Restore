@@ -1,45 +1,45 @@
 @interface HKHeartbeatSeriesFeatureStatusManager
 + (id)taskIdentifier;
-- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)a3;
-- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)a3 heartNotificationsUserDefaults:(id)a4;
-- (id)_synchronouslyStartObservingWithError:(id *)a3;
+- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)store;
+- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)store heartNotificationsUserDefaults:(id)defaults;
+- (id)_synchronouslyStartObservingWithError:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_notifyObserversForFailureToUpdateWithError:(id)a3;
-- (void)_notifyObserversForPredominantFeatureUpdate:(int64_t)a3;
-- (void)_startObservingWithActivationHandler:(id)a3;
+- (void)_notifyObserversForFailureToUpdateWithError:(id)error;
+- (void)_notifyObserversForPredominantFeatureUpdate:(int64_t)update;
+- (void)_startObservingWithActivationHandler:(id)handler;
 - (void)_updateAndNotifyAllObservers;
-- (void)client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:(id)a3;
-- (void)client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:(int64_t)a3;
+- (void)client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:(id)error;
+- (void)client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:(int64_t)feature;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKHeartbeatSeriesFeatureStatusManager
 
-- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)a3
+- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)store
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 alloc];
   v7 = [v6 initWithSuiteName:*MEMORY[0x277CCE458]];
-  v8 = [(HKHeartbeatSeriesFeatureStatusManager *)self initWithHealthStore:v5 heartNotificationsUserDefaults:v7];
+  v8 = [(HKHeartbeatSeriesFeatureStatusManager *)self initWithHealthStore:storeCopy heartNotificationsUserDefaults:v7];
 
   return v8;
 }
 
-- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)a3 heartNotificationsUserDefaults:(id)a4
+- (HKHeartbeatSeriesFeatureStatusManager)initWithHealthStore:(id)store heartNotificationsUserDefaults:(id)defaults
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v23.receiver = self;
   v23.super_class = HKHeartbeatSeriesFeatureStatusManager;
   v9 = [(HKHeartbeatSeriesFeatureStatusManager *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
+    objc_storeStrong(&v9->_healthStore, store);
     v11 = objc_alloc(MEMORY[0x277CCD738]);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -48,9 +48,9 @@
     v10->_observers = v14;
 
     v16 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v17 = [objc_opt_class() taskIdentifier];
-    v18 = [MEMORY[0x277CCAD78] UUID];
-    v19 = [v16 initWithHealthStore:v7 taskIdentifier:v17 exportedObject:v10 taskUUID:v18];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v19 = [v16 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v10 taskUUID:uUID];
     proxyProvider = v10->_proxyProvider;
     v10->_proxyProvider = v19;
 
@@ -58,7 +58,7 @@
     v21 = objc_alloc_init(MEMORY[0x277CCDA98]);
     [(HKTaskServerProxyProvider *)v10->_proxyProvider setTaskConfiguration:v21];
 
-    objc_storeStrong(&v10->_heartNotificationsUserDefaults, a4);
+    objc_storeStrong(&v10->_heartNotificationsUserDefaults, defaults);
     [(HKHeartbeatSeriesFeatureStatusManager *)v10 _startObservingHeartNotificationsUserDefaults];
   }
 
@@ -80,12 +80,12 @@
   return NSStringFromClass(v2);
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
+  queueCopy = queue;
   _HKInitializeLogging();
   v11 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -93,9 +93,9 @@
     *buf = 138543874;
     v23 = objc_opt_class();
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v8;
+    v27 = observerCopy;
     v12 = v23;
     _os_log_impl(&dword_228942000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Registering observer %@", buf, 0x20u);
   }
@@ -106,19 +106,19 @@
   v21[2] = __82__HKHeartbeatSeriesFeatureStatusManager_registerObserver_queue_activationHandler___block_invoke;
   v21[3] = &unk_27860AE60;
   v21[4] = self;
-  [(HKObserverSet *)observers registerObserver:v8 queue:v10 runIfFirstObserver:v21];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queueCopy runIfFirstObserver:v21];
 
-  v14 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v9];
+  v14 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:handlerCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__HKHeartbeatSeriesFeatureStatusManager_registerObserver_queue_activationHandler___block_invoke_3;
   v18[3] = &unk_27860B480;
   v18[4] = self;
-  v19 = v8;
+  v19 = observerCopy;
   v20 = v14;
   v15 = v14;
-  v16 = v8;
+  v16 = observerCopy;
   [(HKHeartbeatSeriesFeatureStatusManager *)self _startObservingWithActivationHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -187,10 +187,10 @@ void __82__HKHeartbeatSeriesFeatureStatusManager_registerObserver_queue_activati
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -198,9 +198,9 @@ void __82__HKHeartbeatSeriesFeatureStatusManager_registerObserver_queue_activati
     *buf = 138543874;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = observerCopy;
     v6 = v11;
     _os_log_impl(&dword_228942000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Unregistering observer %@", buf, 0x20u);
   }
@@ -211,7 +211,7 @@ void __82__HKHeartbeatSeriesFeatureStatusManager_registerObserver_queue_activati
   v9[2] = __60__HKHeartbeatSeriesFeatureStatusManager_unregisterObserver___block_invoke;
   v9[3] = &unk_27860AE60;
   v9[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:v4 runIfLastObserver:v9];
+  [(HKObserverSet *)observers unregisterObserver:observerCopy runIfLastObserver:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -240,15 +240,15 @@ void __60__HKHeartbeatSeriesFeatureStatusManager_unregisterObserver___block_invo
   }
 }
 
-- (void)_startObservingWithActivationHandler:(id)a3
+- (void)_startObservingWithActivationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__HKHeartbeatSeriesFeatureStatusManager__startObservingWithActivationHandler___block_invoke;
   v9[3] = &unk_27860B4C8;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HKHeartbeatSeriesFeatureStatusManager__startObservingWithActivationHandler___block_invoke_2;
@@ -272,7 +272,7 @@ void __78__HKHeartbeatSeriesFeatureStatusManager__startObservingWithActivationHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_synchronouslyStartObservingWithError:(id *)a3
+- (id)_synchronouslyStartObservingWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -304,10 +304,10 @@ void __78__HKHeartbeatSeriesFeatureStatusManager__startObservingWithActivationHa
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -373,10 +373,10 @@ void __79__HKHeartbeatSeriesFeatureStatusManager__synchronouslyStartObservingWit
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (HeartNotificationsUserDefaultsContext == a6)
+  if (HeartNotificationsUserDefaultsContext == context)
   {
     _HKInitializeLogging();
     v7 = HKLogHeartRateCategory();
@@ -385,7 +385,7 @@ void __79__HKHeartbeatSeriesFeatureStatusManager__synchronouslyStartObservingWit
       *buf = 138543618;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v8 = v12;
       _os_log_impl(&dword_228942000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Received KVO notification of notification settings change", buf, 0x16u);
     }
@@ -397,7 +397,7 @@ void __79__HKHeartbeatSeriesFeatureStatusManager__synchronouslyStartObservingWit
   {
     v10.receiver = self;
     v10.super_class = HKHeartbeatSeriesFeatureStatusManager;
-    [(HKHeartbeatSeriesFeatureStatusManager *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(HKHeartbeatSeriesFeatureStatusManager *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -444,7 +444,7 @@ void __69__HKHeartbeatSeriesFeatureStatusManager__updateAndNotifyAllObservers__b
   }
 }
 
-- (void)client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:(int64_t)a3
+- (void)client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:(int64_t)feature
 {
   v17 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -453,25 +453,25 @@ void __69__HKHeartbeatSeriesFeatureStatusManager__updateAndNotifyAllObservers__b
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = NSStringFromHKHeartbeatSeriesFeature(a3);
+    v8 = NSStringFromHKHeartbeatSeriesFeature(feature);
     v9 = HKSensitiveLogItem();
     v11 = 138543874;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = v9;
     _os_log_impl(&dword_228942000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Received server notification of predominant feature update: %{public}@", &v11, 0x20u);
   }
 
-  [(HKHeartbeatSeriesFeatureStatusManager *)self _notifyObserversForPredominantFeatureUpdate:a3];
+  [(HKHeartbeatSeriesFeatureStatusManager *)self _notifyObserversForPredominantFeatureUpdate:feature];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:(id)a3
+- (void)client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -479,18 +479,18 @@ void __69__HKHeartbeatSeriesFeatureStatusManager__updateAndNotifyAllObservers__b
     v8 = 138543874;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = errorCopy;
     v6 = v9;
     _os_log_impl(&dword_228942000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Received server notification of update error: %{public}@", &v8, 0x20u);
   }
 
-  [(HKHeartbeatSeriesFeatureStatusManager *)self _notifyObserversForFailureToUpdateWithError:v4];
+  [(HKHeartbeatSeriesFeatureStatusManager *)self _notifyObserversForFailureToUpdateWithError:errorCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversForPredominantFeatureUpdate:(int64_t)a3
+- (void)_notifyObserversForPredominantFeatureUpdate:(int64_t)update
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -498,21 +498,21 @@ void __69__HKHeartbeatSeriesFeatureStatusManager__updateAndNotifyAllObservers__b
   v4[2] = __85__HKHeartbeatSeriesFeatureStatusManager__notifyObserversForPredominantFeatureUpdate___block_invoke;
   v4[3] = &unk_27860B518;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = update;
   [(HKObserverSet *)observers notifyObservers:v4];
 }
 
-- (void)_notifyObserversForFailureToUpdateWithError:(id)a3
+- (void)_notifyObserversForFailureToUpdateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__HKHeartbeatSeriesFeatureStatusManager__notifyObserversForFailureToUpdateWithError___block_invoke;
   v7[3] = &unk_27860B540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 

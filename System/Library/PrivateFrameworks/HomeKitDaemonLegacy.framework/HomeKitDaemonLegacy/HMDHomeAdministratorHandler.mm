@@ -2,17 +2,17 @@
 + (id)logCategory;
 - (BOOL)shouldRelayMessages;
 - (HMDHome)home;
-- (HMDHomeAdministratorHandler)initWithHome:(id)a3;
-- (HMDHomeAdministratorHandler)initWithHome:(id)a3 dispatcher:(id)a4;
-- (HMDHomeAdministratorHandler)initWithTransport:(id)a3;
+- (HMDHomeAdministratorHandler)initWithHome:(id)home;
+- (HMDHomeAdministratorHandler)initWithHome:(id)home dispatcher:(id)dispatcher;
+- (HMDHomeAdministratorHandler)initWithTransport:(id)transport;
 - (id)logIdentifier;
-- (id)operationForMessage:(id)a3 error:(id *)a4;
+- (id)operationForMessage:(id)message error:(id *)error;
 - (id)syncOperationManager;
-- (void)addOperation:(id)a3;
-- (void)deregisterReceiver:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerForMessage:(id)a3 receiver:(id)a4 policies:(id)a5 selector:(SEL)a6;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)addOperation:(id)operation;
+- (void)deregisterReceiver:(id)receiver;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerForMessage:(id)message receiver:(id)receiver policies:(id)policies selector:(SEL)selector;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation HMDHomeAdministratorHandler
@@ -26,20 +26,20 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeAdministratorHandler *)self home];
-  v3 = [v2 name];
+  home = [(HMDHomeAdministratorHandler *)self home];
+  name = [home name];
 
-  return v3;
+  return name;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HMDHomeAdministratorHandler *)self syncOperationManager];
-  v13 = v10;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  syncOperationManager = [(HMDHomeAdministratorHandler *)self syncOperationManager];
+  v13 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -56,7 +56,7 @@
   if (v15)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -66,17 +66,17 @@
       v36 = 2112;
       v37 = v15;
       v38 = 2112;
-      v39 = v9;
+      v39 = pathCopy;
       v40 = 2112;
-      v41 = v11;
+      v41 = changeCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_DEBUG, "%{public}@Received notification operation '%@' property '%@' updated to: %@", &v34, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v16);
-    if ([v9 isEqualToString:@"isExecuting"])
+    if ([pathCopy isEqualToString:@"isExecuting"])
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v17;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -87,17 +87,17 @@
       }
 
       objc_autoreleasePoolPop(v20);
-      [v12 pauseCloudPush];
-      [v15 removeObserver:v21 forKeyPath:v9];
+      [syncOperationManager pauseCloudPush];
+      [v15 removeObserver:v21 forKeyPath:pathCopy];
     }
 
-    else if ([v9 isEqualToString:@"isFinished"] && objc_msgSend(v15, "isFinished"))
+    else if ([pathCopy isEqualToString:@"isFinished"] && objc_msgSend(v15, "isFinished"))
     {
-      v24 = [v15 error];
+      error = [v15 error];
 
-      v25 = v24 == 0;
+      v25 = error == 0;
       v26 = objc_autoreleasePoolPush();
-      v27 = v17;
+      v27 = selfCopy;
       v28 = HMFGetOSLogHandle();
       v29 = v28;
       if (v25)
@@ -111,7 +111,7 @@
         }
 
         objc_autoreleasePoolPop(v26);
-        [v12 resumeCloudPush];
+        [syncOperationManager resumeCloudPush];
       }
 
       else
@@ -119,35 +119,35 @@
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           v30 = HMFGetLogIdentifier();
-          v31 = [v15 error];
+          error2 = [v15 error];
           v34 = 138543874;
           v35 = v30;
           v36 = 2112;
           v37 = v15;
           v38 = 2112;
-          v39 = v31;
+          v39 = error2;
           _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Operation '%@' failed, resetting syncing: %@", &v34, 0x20u);
         }
 
         objc_autoreleasePoolPop(v26);
-        [v12 killCloudPushAndResume];
+        [syncOperationManager killCloudPushAndResume];
       }
 
-      [v15 removeObserver:v27 forKeyPath:v9];
+      [v15 removeObserver:v27 forKeyPath:pathCopy];
     }
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -155,15 +155,15 @@
       v14 = 138543618;
       v15 = v8;
       v16 = 2112;
-      v17 = v4;
+      v17 = operationCopy;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Adding operation: %@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
-    if ([v4 shouldSuspendSyncing])
+    if ([operationCopy shouldSuspendSyncing])
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = v6;
+      v10 = selfCopy;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -174,37 +174,37 @@
       }
 
       objc_autoreleasePoolPop(v9);
-      [v4 addObserver:v10 forKeyPath:@"isExecuting" options:0 context:0];
-      [v4 addObserver:v10 forKeyPath:@"isFinished" options:0 context:0];
+      [operationCopy addObserver:v10 forKeyPath:@"isExecuting" options:0 context:0];
+      [operationCopy addObserver:v10 forKeyPath:@"isFinished" options:0 context:0];
     }
 
-    [(NSOperationQueue *)v6->_queue addOperation:v4];
+    [(NSOperationQueue *)selfCopy->_queue addOperation:operationCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)operationForMessage:(id)a3 error:(id *)a4
+- (id)operationForMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  messageCopy = message;
+  if (messageCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_home);
     if (WeakRetained)
     {
-      v8 = [(HMDHomeAdministratorHandler *)self dispatcher];
+      dispatcher = [(HMDHomeAdministratorHandler *)self dispatcher];
 
-      if (v8)
+      if (dispatcher)
       {
         v9 = [HMDHomeAdministratorConfigurationOperation alloc];
-        v10 = [(HMDHomeAdministratorHandler *)self dispatcher];
-        v11 = [(HMDHomeAdministratorConfigurationOperation *)v9 initWithMessage:v6 home:WeakRetained dispatcher:v10];
+        dispatcher2 = [(HMDHomeAdministratorHandler *)self dispatcher];
+        v11 = [(HMDHomeAdministratorConfigurationOperation *)v9 initWithMessage:messageCopy home:WeakRetained dispatcher:dispatcher2];
 
 LABEL_13:
         goto LABEL_14;
       }
 
-      if (a4)
+      if (error)
       {
         v12 = MEMORY[0x277CCA9B8];
         v13 = @"Dispatcher is nil.";
@@ -213,14 +213,14 @@ LABEL_13:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = @"The home is no longer valid.";
       v14 = 2;
 LABEL_11:
       [v12 hmErrorWithCode:v14 description:0 reason:v13 suggestion:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_13;
     }
 
@@ -228,10 +228,10 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -244,15 +244,15 @@ LABEL_14:
   return v11;
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if ([(HMDHomeAdministratorHandler *)self shouldRelayMessages])
   {
     v19 = 0;
-    v8 = [(HMDHomeAdministratorHandler *)self operationForMessage:v6 error:&v19];
+    v8 = [(HMDHomeAdministratorHandler *)self operationForMessage:messageCopy error:&v19];
     v9 = v19;
     if (v8)
     {
@@ -262,7 +262,7 @@ LABEL_14:
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -275,10 +275,10 @@ LABEL_14:
       }
 
       objc_autoreleasePoolPop(v12);
-      [v6 respondWithError:v9];
+      [messageCopy respondWithError:v9];
     }
 
-    v16 = _Block_copy(v7);
+    v16 = _Block_copy(handlerCopy);
     v17 = v16;
     if (v16)
     {
@@ -288,8 +288,8 @@ LABEL_14:
 
   else
   {
-    [(HMDHomeAdministratorHandler *)self dispatchMessage:v6];
-    v10 = _Block_copy(v7);
+    [(HMDHomeAdministratorHandler *)self dispatchMessage:messageCopy];
+    v10 = _Block_copy(handlerCopy);
     v11 = v10;
     if (v10)
     {
@@ -306,58 +306,58 @@ LABEL_14:
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained isSharedAdmin];
+    isSharedAdmin = [WeakRetained isSharedAdmin];
   }
 
   else
   {
-    v4 = 1;
+    isSharedAdmin = 1;
   }
 
-  return v4;
+  return isSharedAdmin;
 }
 
-- (void)deregisterReceiver:(id)a3
+- (void)deregisterReceiver:(id)receiver
 {
-  v4 = a3;
-  if (v4)
+  receiverCopy = receiver;
+  if (receiverCopy)
   {
     v6.receiver = self;
     v6.super_class = HMDHomeAdministratorHandler;
-    [(HMDHomeAdministratorHandler *)&v6 deregisterReceiver:v4];
+    [(HMDHomeAdministratorHandler *)&v6 deregisterReceiver:receiverCopy];
     os_unfair_lock_lock_with_options();
-    v5 = [(NSMapTable *)self->_receivers objectForKey:v4];
-    [(NSMapTable *)self->_receivers removeObjectForKey:v4];
+    v5 = [(NSMapTable *)self->_receivers objectForKey:receiverCopy];
+    [(NSMapTable *)self->_receivers removeObjectForKey:receiverCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)registerForMessage:(id)a3 receiver:(id)a4 policies:(id)a5 selector:(SEL)a6
+- (void)registerForMessage:(id)message receiver:(id)receiver policies:(id)policies selector:(SEL)selector
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
+  messageCopy = message;
+  receiverCopy = receiver;
+  policiesCopy = policies;
+  selfCopy = self;
+  v14 = messageCopy;
+  v15 = receiverCopy;
+  v16 = policiesCopy;
   v17 = objc_autoreleasePoolPush();
   v18 = 0;
-  if (!v13 || !v14 || !v15 || !v16)
+  if (!selfCopy || !v14 || !v15 || !v16)
   {
 LABEL_10:
     objc_autoreleasePoolPop(v17);
 
-    v37.receiver = v13;
+    v37.receiver = selfCopy;
     v37.super_class = HMDHomeAdministratorHandler;
-    [(HMDHomeAdministratorHandler *)&v37 registerForMessage:v14 receiver:v15 policies:v18 selector:a6];
+    [(HMDHomeAdministratorHandler *)&v37 registerForMessage:v14 receiver:v15 policies:v18 selector:selector];
 
     return;
   }
 
-  v19 = [(HMDHomeAdministratorHandler *)v13 home];
+  home = [(HMDHomeAdministratorHandler *)selfCopy home];
   v20 = v16;
-  v21 = v19;
+  v21 = home;
   v22 = objc_autoreleasePoolPush();
   v23 = [v20 hmf_objectPassingTest:&__block_literal_global_197_169666];
   if (v23)
@@ -377,7 +377,7 @@ LABEL_10:
     {
       v27 = v25;
       [v24 objectAtIndex:v25];
-      v28 = v33 = a6;
+      v28 = v33 = selector;
       v26 = [v28 mutableCopy];
 
       [v26 setUserPrivilege:4];
@@ -385,13 +385,13 @@ LABEL_10:
       v29 = [v26 copy];
       [v24 replaceObjectAtIndex:v27 withObject:v29];
 
-      a6 = v33;
+      selector = v33;
     }
 
     v18 = [v24 copy];
     objc_autoreleasePoolPop(context);
 
-    v30 = __HMDHomeAdministratorHandlerGetOrCreateReceiver(v13, v15);
+    v30 = __HMDHomeAdministratorHandlerGetOrCreateReceiver(selfCopy, v15);
     [v30 registerForMessage:v14 policies:v18];
 
     v17 = v36;
@@ -404,20 +404,20 @@ LABEL_10:
 
 - (id)syncOperationManager
 {
-  v2 = [(HMDHomeAdministratorHandler *)self home];
-  v3 = [v2 homeManager];
-  v4 = [v3 syncManager];
+  home = [(HMDHomeAdministratorHandler *)self home];
+  homeManager = [home homeManager];
+  syncManager = [homeManager syncManager];
 
-  return v4;
+  return syncManager;
 }
 
-- (HMDHomeAdministratorHandler)initWithHome:(id)a3 dispatcher:(id)a4
+- (HMDHomeAdministratorHandler)initWithHome:(id)home dispatcher:(id)dispatcher
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  v8 = dispatcherCopy;
+  selfCopy = 0;
+  if (homeCopy && dispatcherCopy)
   {
     v21.receiver = self;
     v21.super_class = HMDHomeAdministratorHandler;
@@ -425,14 +425,14 @@ LABEL_10:
     v11 = v10;
     if (v10)
     {
-      objc_storeWeak(&v10->_home, v6);
-      objc_storeStrong(&v11->_dispatcher, a4);
+      objc_storeWeak(&v10->_home, homeCopy);
+      objc_storeStrong(&v11->_dispatcher, dispatcher);
       v12 = objc_alloc_init(MEMORY[0x277CCABD8]);
       queue = v11->_queue;
       v11->_queue = v12;
 
-      v14 = [v6 uuid];
-      v15 = [v14 UUIDString];
+      uuid = [homeCopy uuid];
+      uUIDString = [uuid UUIDString];
       v16 = HMDispatchQueueNameString();
       [(NSOperationQueue *)v11->_queue setName:v16];
 
@@ -442,29 +442,29 @@ LABEL_10:
       receivers = v11->_receivers;
       v11->_receivers = v17;
 
-      v19 = [v8 resolveHook];
-      [(HMDHomeAdministratorHandler *)v11 setResolveHook:v19];
+      resolveHook = [v8 resolveHook];
+      [(HMDHomeAdministratorHandler *)v11 setResolveHook:resolveHook];
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (HMDHomeAdministratorHandler)initWithHome:(id)a3
+- (HMDHomeAdministratorHandler)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = +[HMDMessageDispatcher defaultDispatcher];
-  v6 = [(HMDHomeAdministratorHandler *)self initWithHome:v4 dispatcher:v5];
+  v6 = [(HMDHomeAdministratorHandler *)self initWithHome:homeCopy dispatcher:v5];
 
   return v6;
 }
 
-- (HMDHomeAdministratorHandler)initWithTransport:(id)a3
+- (HMDHomeAdministratorHandler)initWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

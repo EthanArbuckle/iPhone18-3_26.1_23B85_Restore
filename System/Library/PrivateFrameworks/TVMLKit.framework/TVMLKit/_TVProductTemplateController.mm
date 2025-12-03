@@ -1,71 +1,71 @@
 @interface _TVProductTemplateController
 - (BOOL)_shouldShowTopHeroImage;
 - (BOOL)_sportsLandscapePhone;
-- (BOOL)_sportsLandscapePhoneIsOverlaySection:(id)a3;
+- (BOOL)_sportsLandscapePhoneIsOverlaySection:(id)section;
 - (CGSize)_backgroundImageProxySize;
 - (CGSize)_maxContentSize;
 - (CGSize)_topHeroImageViewSize;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)_cellMarginForIndex:(int64_t)a3 partialMargins:(UIEdgeInsets *)a4;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)_cellMarginForIndex:(int64_t)index partialMargins:(UIEdgeInsets *)margins;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)_largeTitleHeight;
-- (id)_adamIDForElement:(id)a3;
+- (id)_adamIDForElement:(id)element;
 - (id)_backgroundImageProxy;
-- (id)_canonicalIDForElement:(id)a3;
+- (id)_canonicalIDForElement:(id)element;
 - (id)_relatedSectionHeaderView;
-- (id)_spacingMetricsForViewControllers:(id)a3 contentSize:(CGSize *)a4;
-- (id)_yOffsetForView:(id)a3 withScrollView:(id)a4 targetYOffset:(double)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)impressionableElementsContainedInDocument:(id)a3;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (id)_spacingMetricsForViewControllers:(id)controllers contentSize:(CGSize *)size;
+- (id)_yOffsetForView:(id)view withScrollView:(id)scrollView targetYOffset:(double)offset;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)impressionableElementsContainedInDocument:(id)document;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (id)preferredFocusEnvironments;
 - (int64_t)_overrideLargeTitleDisplayMode;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)_lastFocusableCellIndex;
 - (void)_configureBackgroundTintView;
-- (void)_configureTopHeroImage:(id)a3;
-- (void)_configureWithBannerElement:(id)a3;
-- (void)_configureWithBgElement:(id)a3;
+- (void)_configureTopHeroImage:(id)image;
+- (void)_configureWithBannerElement:(id)element;
+- (void)_configureWithBgElement:(id)element;
 - (void)_recordImpressionsForVisibleView;
 - (void)_updateBackgroundTintView;
 - (void)_updateBackgroundTintViewEffects;
 - (void)_updateImpressions;
 - (void)_updateTopHeroImageOverlay;
-- (void)_updateTopHeroImageVisibility:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_updateTopHeroImageVisibility:(id)visibility;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)configureAppearanceTransition;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateWithViewElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateWithViewElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _TVProductTemplateController
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v96 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  elementCopy = element;
   v92.receiver = self;
   v92.super_class = _TVProductTemplateController;
-  [(_TVBgImageLoadingViewController *)&v92 updateWithViewElement:v5];
-  objc_storeStrong(&self->_templateElement, a3);
-  v6 = [(IKViewElement *)self->_templateElement elementName];
-  self->_sportsProductTemplate = [v6 isEqualToString:@"productSportsBundleTemplate"];
+  [(_TVBgImageLoadingViewController *)&v92 updateWithViewElement:elementCopy];
+  objc_storeStrong(&self->_templateElement, element);
+  elementName = [(IKViewElement *)self->_templateElement elementName];
+  self->_sportsProductTemplate = [elementName isEqualToString:@"productSportsBundleTemplate"];
 
-  v7 = [v5 appDocument];
-  [v7 impressionThreshold];
+  appDocument = [elementCopy appDocument];
+  [appDocument impressionThreshold];
   self->_impressionThreshold = v8;
 
   v72 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -83,8 +83,8 @@
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v69 = v5;
-  obj = [v5 children];
+  v69 = elementCopy;
+  obj = [elementCopy children];
   v13 = [obj countByEnumeratingWithState:&v88 objects:v95 count:16];
   if (!v13)
   {
@@ -99,7 +99,7 @@
   v75 = 0;
   v15 = 0;
   v16 = *v89;
-  v71 = self;
+  selfCopy = self;
   v76 = *v89;
   v70 = v9;
   do
@@ -114,8 +114,8 @@
       }
 
       v18 = *(*(&v88 + 1) + 8 * v17);
-      v19 = [v18 tv_elementType];
-      switch(v19)
+      tv_elementType = [v18 tv_elementType];
+      switch(tv_elementType)
       {
         case 16:
           [(_TVProductTemplateController *)self _configureTopHeroImage:v18];
@@ -127,8 +127,8 @@
           }
 
           v15 = v18;
-          v20 = [v15 autoHighlightIdentifier];
-          v21 = [v20 length];
+          autoHighlightIdentifier = [v15 autoHighlightIdentifier];
+          v21 = [autoHighlightIdentifier length];
 
           if (v21)
           {
@@ -167,8 +167,8 @@
                   }
 
                   v26 = *(*(&v84 + 1) + 8 * i);
-                  v27 = [v26 tv_associatedIKViewElement];
-                  v28 = [[_TVShadowViewElementID alloc] initWithViewElement:v27];
+                  tv_associatedIKViewElement = [v26 tv_associatedIKViewElement];
+                  v28 = [[_TVShadowViewElementID alloc] initWithViewElement:tv_associatedIKViewElement];
                   v29 = [[_TVShadowViewElementID alloc] initWithViewElement:v18];
                   if ([(_TVShadowViewElementID *)v28 isEqual:v29])
                   {
@@ -189,7 +189,7 @@
 
 LABEL_28:
               v9 = v70;
-              self = v71;
+              self = selfCopy;
               v15 = v73;
             }
 
@@ -213,8 +213,8 @@ LABEL_30:
 
       v38 = v15;
       v39 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v40 = [(UIViewController *)v23 view];
-      v41 = [v39 _viewFromElement:v18 existingView:v40];
+      view = [(UIViewController *)v23 view];
+      v41 = [v39 _viewFromElement:v18 existingView:view];
 
       if (!v41)
       {
@@ -235,18 +235,18 @@ LABEL_30:
 LABEL_31:
         if (!v30)
         {
-          v33 = [v18 attributes];
-          v34 = [v33 objectForKeyedSubscript:@"markBackgroundSegment"];
-          v35 = [v34 BOOLValue];
+          attributes = [v18 attributes];
+          v34 = [attributes objectForKeyedSubscript:@"markBackgroundSegment"];
+          bOOLValue = [v34 BOOLValue];
 
-          if (v35)
+          if (bOOLValue)
           {
             objc_storeStrong(&self->_backdropTintElement, v18);
             objc_storeStrong(&self->_backdropTintViewController, v32);
           }
 
-          v36 = [v18 autoHighlightIdentifier];
-          v37 = [v36 length];
+          autoHighlightIdentifier2 = [v18 autoHighlightIdentifier];
+          v37 = [autoHighlightIdentifier2 length];
 
           if (v37)
           {
@@ -328,8 +328,8 @@ LABEL_55:
 
           v49 = *(*(&v80 + 1) + 8 * j);
           [v49 willMoveToParentViewController:0];
-          v50 = [v49 view];
-          [v50 removeFromSuperview];
+          view2 = [v49 view];
+          [view2 removeFromSuperview];
 
           [v49 removeFromParentViewController];
         }
@@ -392,14 +392,14 @@ LABEL_55:
 
     else
     {
-      v60 = [(UICollectionView *)collectionView collectionViewLayout];
-      [v60 invalidateLayout];
+      collectionViewLayout = [(UICollectionView *)collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
 
     [v69 updateType];
   }
 
-  v61 = [(_TVProductTemplateController *)self view];
+  view3 = [(_TVProductTemplateController *)self view];
   [(UICollectionView *)self->_collectionView setSemanticContentAttribute:[(IKViewElement *)self->_templateElement tv_semanticContentAttribute]];
   v62 = [(_TVProductTemplateController *)self _adamIDForElement:self->_templateElement];
   if (v62)
@@ -421,19 +421,19 @@ LABEL_55:
   }
 
   [(_TVProductTemplateController *)self _configureBackgroundTintView];
-  v65 = [v69 style];
-  v66 = [v65 tv_backgroundColor];
-  v67 = [v66 color];
+  style = [v69 style];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color = [tv_backgroundColor color];
 
-  v68 = [(_TVProductTemplateController *)self view];
-  [v68 setBackgroundColor:v67];
+  view4 = [(_TVProductTemplateController *)self view];
+  [view4 setBackgroundColor:color];
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v13 = [v3 initWithFrame:?];
 
   [(_TVProductTemplateController *)self setView:v13];
@@ -441,12 +441,12 @@ LABEL_55:
   [(UICollectionViewFlowLayout *)v5 setMinimumLineSpacing:0.0];
   [(UICollectionViewFlowLayout *)v5 setMinimumInteritemSpacing:0.0];
   v6 = [_TVStackCollectionView alloc];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v8 = [(_TVStackCollectionView *)v6 initWithFrame:v5 collectionViewLayout:?];
 
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)v8 setBackgroundColor:clearColor];
 
   [(UICollectionView *)v8 setDelegate:self];
   [(UICollectionView *)v8 setDataSource:self];
@@ -454,8 +454,8 @@ LABEL_55:
   [(UICollectionView *)v8 setAutoresizingMask:18];
   [(UICollectionView *)v8 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"TVProductHeaderCellIdentifier"];
   [(UICollectionView *)v8 setShowsVerticalScrollIndicator:0];
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [(UICollectionView *)v8 setBackgroundColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UICollectionView *)v8 setBackgroundColor:whiteColor];
 
   [(UICollectionView *)v8 setAlwaysBounceVertical:1];
   [(UICollectionView *)v8 _setContentInsetAdjustmentBehavior:0];
@@ -466,11 +466,11 @@ LABEL_55:
   [v13 addSubview:self->_collectionView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _TVProductTemplateController;
-  [(_TVBgImageLoadingViewController *)&v6 viewDidAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v6 viewDidAppear:appear];
   if (self->_bgImageElement && !self->_fadedIn)
   {
     self->_fadedIn = 1;
@@ -490,21 +490,21 @@ LABEL_55:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(CALayer *)self->_bgBlurSublayer setFilters:0, a4];
+  [(CALayer *)self->_bgBlurSublayer setFilters:0, finished];
   [(CALayer *)self->_bgBlurSublayer removeAnimationForKey:@"blurRadiusAnimation"];
   bgBlurSublayer = self->_bgBlurSublayer;
 
   [(CALayer *)bgBlurSublayer removeFromSuperlayer];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = _TVProductTemplateController;
-  [(_TVBgImageLoadingViewController *)&v16 viewWillAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v16 viewWillAppear:appear];
   if (self->_autoHighlightIndexPath)
   {
     v4 = *MEMORY[0x277CBF348];
@@ -522,9 +522,9 @@ LABEL_55:
     [v7 setValue:@"low" forKey:@"inputQuality"];
     [v7 setValue:&unk_287E47F10 forKey:@"inputHardEdges"];
     [v7 setName:@"blurFilter"];
-    v8 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     bgBlurSublayer = self->_bgBlurSublayer;
-    self->_bgBlurSublayer = v8;
+    self->_bgBlurSublayer = layer;
 
     [(CALayer *)self->_bgBlurSublayer setContents:[(UIImage *)self->_bgImage CGImage]];
     v10 = self->_bgBlurSublayer;
@@ -533,34 +533,34 @@ LABEL_55:
     [(CALayer *)v10 setFilters:v11];
 
     v12 = self->_bgBlurSublayer;
-    v13 = [(UIImageView *)self->_bgImageView layer];
-    [v13 frame];
+    layer2 = [(UIImageView *)self->_bgImageView layer];
+    [layer2 frame];
     [(CALayer *)v12 setFrame:?];
 
-    v14 = [(UIImageView *)self->_bgImageView layer];
-    [v14 addSublayer:self->_bgBlurSublayer];
+    layer3 = [(UIImageView *)self->_bgImageView layer];
+    [layer3 addSublayer:self->_bgBlurSublayer];
   }
 
-  v15 = [(_TVProductTemplateController *)self userActivity];
-  [v15 becomeCurrent];
+  userActivity = [(_TVProductTemplateController *)self userActivity];
+  [userActivity becomeCurrent];
 }
 
 - (void)configureAppearanceTransition
 {
   v40[1] = *MEMORY[0x277D85DE8];
   v3 = self->_topHeroImageVisible && [(_TVProductTemplateController *)self _shouldShowTopHeroImage];
-  v4 = [(_TVProductTemplateController *)self parentViewController];
-  v5 = [v4 navigationItem];
+  parentViewController = [(_TVProductTemplateController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
 
-  v6 = [(_TVProductTemplateController *)self navigationController];
-  v7 = [v6 visibleViewController];
+  navigationController = [(_TVProductTemplateController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(_TVProductTemplateController *)self navigationController];
-    v9 = [v8 visibleViewController];
-    v10 = [v9 templateViewController];
-    v11 = [v10 isEqual:self];
+    navigationController2 = [(_TVProductTemplateController *)self navigationController];
+    visibleViewController2 = [navigationController2 visibleViewController];
+    templateViewController = [visibleViewController2 templateViewController];
+    v11 = [templateViewController isEqual:self];
   }
 
   else
@@ -568,12 +568,12 @@ LABEL_55:
     v11 = 0;
   }
 
-  v12 = [(_TVProductTemplateController *)self transitionCoordinator];
-  if (v12 && (topHeroImageView = self->_topHeroImageView, v12, topHeroImageView))
+  transitionCoordinator = [(_TVProductTemplateController *)self transitionCoordinator];
+  if (transitionCoordinator && (topHeroImageView = self->_topHeroImageView, transitionCoordinator, topHeroImageView))
   {
     self->_lightStatusBar = v3;
     objc_initWeak(location, self);
-    v14 = [(_TVProductTemplateController *)self transitionCoordinator];
+    transitionCoordinator2 = [(_TVProductTemplateController *)self transitionCoordinator];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __61___TVProductTemplateController_configureAppearanceTransition__block_invoke;
@@ -581,7 +581,7 @@ LABEL_55:
     v38 = v11;
     objc_copyWeak(&v37, location);
     v39 = v3;
-    v15 = v5;
+    v15 = navigationItem;
     v36 = v15;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
@@ -591,7 +591,7 @@ LABEL_55:
     objc_copyWeak(&v32, location);
     v34 = v3;
     v31 = v15;
-    [v14 animateAlongsideTransition:v35 completion:v30];
+    [transitionCoordinator2 animateAlongsideTransition:v35 completion:v30];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v37);
@@ -602,13 +602,13 @@ LABEL_55:
   {
     if (v11)
     {
-      v16 = [(_TVProductTemplateController *)self navigationController];
-      v17 = [v16 navigationBar];
+      navigationController3 = [(_TVProductTemplateController *)self navigationController];
+      navigationBar = [navigationController3 navigationBar];
     }
 
     else
     {
-      v17 = 0;
+      navigationBar = 0;
     }
 
     if (v3)
@@ -621,24 +621,24 @@ LABEL_55:
       v18 = 1.0;
     }
 
-    [v17 _setBackgroundOpacity:v18];
-    [v17 _setTitleOpacity:v18];
+    [navigationBar _setBackgroundOpacity:v18];
+    [navigationBar _setTitleOpacity:v18];
     if (v3)
     {
-      [v5 setTitle:0];
+      [navigationItem setTitle:0];
       [MEMORY[0x277D75348] whiteColor];
     }
 
     else
     {
-      v19 = [(_TVProductTemplateController *)self navigationItem];
-      v20 = [v19 title];
-      [v5 setTitle:v20];
+      navigationItem2 = [(_TVProductTemplateController *)self navigationItem];
+      title = [navigationItem2 title];
+      [navigationItem setTitle:title];
 
       [MEMORY[0x277D75348] tvmlkit_keyColor];
     }
     v21 = ;
-    [v17 setTintColor:v21];
+    [navigationBar setTintColor:v21];
 
     self->_lightStatusBar = v3;
     [(_TVProductTemplateController *)self setNeedsStatusBarAppearanceUpdate];
@@ -647,9 +647,9 @@ LABEL_55:
       if ([(_TVProductTemplateController *)self _sportsLandscapePhone])
       {
         v22 = [(UICollectionView *)self->_collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
-        v23 = [v22 firstObject];
-        v24 = [(UIViewController *)self->_bannerViewController view];
-        [v23 addSubview:v24];
+        firstObject = [v22 firstObject];
+        view = [(UIViewController *)self->_bannerViewController view];
+        [firstObject addSubview:view];
 
         [(_TVProductTemplateController *)self _updateTopHeroImageOverlay];
       }
@@ -674,20 +674,20 @@ LABEL_55:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _TVProductTemplateController;
-  [(_TVProductTemplateController *)&v5 viewWillDisappear:a3];
-  v4 = [(_TVProductTemplateController *)self userActivity];
-  [v4 resignCurrent];
+  [(_TVProductTemplateController *)&v5 viewWillDisappear:disappear];
+  userActivity = [(_TVProductTemplateController *)self userActivity];
+  [userActivity resignCurrent];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _TVProductTemplateController;
-  [(_TVBgImageLoadingViewController *)&v4 viewDidDisappear:a3];
+  [(_TVBgImageLoadingViewController *)&v4 viewDidDisappear:disappear];
   [(_TVProductTemplateController *)self _cancelImpressionsUpdate];
 }
 
@@ -704,8 +704,8 @@ LABEL_55:
       [(UICollectionView *)self->_collectionView _ensureViewsAreLoadedInRect:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     }
 
-    v3 = [(_TVProductTemplateController *)self view];
-    [v3 bounds];
+    view = [(_TVProductTemplateController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -725,16 +725,16 @@ LABEL_55:
     v66.size.width = v9;
     v66.size.height = v11;
     [(UIView *)self->_backdropView setFrame:0.0, v16, CGRectGetWidth(v66), v15];
-    v17 = [(UIImageView *)self->_vignetteView image];
-    [v17 size];
+    image = [(UIImageView *)self->_vignetteView image];
+    [image size];
     v19 = v18;
     v21 = v20;
 
     [(UIImageView *)self->_vignetteView setFrame:0.0, v16 - v21, v19, v21];
   }
 
-  v22 = [(IKViewElement *)self->_templateElement style];
-  [v22 tv_margin];
+  style = [(IKViewElement *)self->_templateElement style];
+  [style tv_margin];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -758,8 +758,8 @@ LABEL_18:
   }
 
   [(UICollectionView *)self->_collectionView _setContentInsetAdjustmentBehavior:2];
-  v31 = [(_TVProductTemplateController *)self view];
-  [v31 safeAreaInsets];
+  view2 = [(_TVProductTemplateController *)self view];
+  [view2 safeAreaInsets];
   v33 = v32;
 
   if (([(UICollectionView *)self->_collectionView isDragging]& 1) == 0 && ([(UICollectionView *)self->_collectionView isDecelerating]& 1) == 0)
@@ -767,24 +767,24 @@ LABEL_18:
     [(_TVProductTemplateController *)self _topHeroImageViewSize];
     v35 = v34;
     rect = v34;
-    v36 = [(_TVProductTemplateController *)self view];
-    [v36 bounds];
+    view3 = [(_TVProductTemplateController *)self view];
+    [view3 bounds];
     Width = CGRectGetWidth(v67);
 
     [(UIImageView *)self->_topHeroImageView setFrame:0.0, 0.0, Width, v35];
     [(UIImageView *)self->_topHeroGradientView frame];
     v61 = v39;
     v62 = v38;
-    v40 = [(_TVProductTemplateController *)self view];
-    [v40 bounds];
+    view4 = [(_TVProductTemplateController *)self view];
+    [view4 bounds];
     v41 = CGRectGetWidth(v68);
 
-    v42 = [(UIImageView *)self->_topHeroGradientView image];
-    [v42 size];
+    image2 = [(UIImageView *)self->_topHeroGradientView image];
+    [image2 size];
     v44 = v43;
 
-    v45 = [(_TVProductTemplateController *)self view];
-    [v45 safeAreaInsets];
+    view5 = [(_TVProductTemplateController *)self view];
+    [view5 safeAreaInsets];
     v47 = v46 + 30.0;
 
     if (v44 >= v47)
@@ -808,11 +808,11 @@ LABEL_18:
     v70.size.width = Width;
     v70.size.height = rect;
     MaxY = CGRectGetMaxY(v70);
-    v54 = [(_TVProductTemplateController *)self view];
-    [v54 bounds];
+    view6 = [(_TVProductTemplateController *)self view];
+    [view6 bounds];
     v55 = CGRectGetWidth(v71);
-    v56 = [MEMORY[0x277D759A0] mainScreen];
-    [v56 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v58 = 1.0 / v57;
 
     [(UIView *)self->_topHeroSeparatorView setFrame:0.0, MaxY, v55, v58];
@@ -852,41 +852,41 @@ LABEL_21:
   return [(_TVBgImageLoadingViewController *)&v5 _overrideLargeTitleDisplayMode];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = _TVProductTemplateController;
-  v7 = a4;
-  [(_TVProductTemplateController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(_TVProductTemplateController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83___TVProductTemplateController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_279D6EA18;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"TVProductCellIdentifier" forIndexPath:v5];
-  if ([v5 section])
+  pathCopy = path;
+  v6 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"TVProductCellIdentifier" forIndexPath:pathCopy];
+  if ([pathCopy section])
   {
-    v7 = [v5 item];
-    v8 = [(NSArray *)self->_viewControllers objectAtIndex:v7];
+    item = [pathCopy item];
+    v8 = [(NSArray *)self->_viewControllers objectAtIndex:item];
     v9 = *(MEMORY[0x277D768C8] + 16);
     v21 = *MEMORY[0x277D768C8];
     v22 = v9;
-    [(_TVProductTemplateController *)self _cellMarginForIndex:v7 partialMargins:&v21];
+    [(_TVProductTemplateController *)self _cellMarginForIndex:item partialMargins:&v21];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
     [v6 setPartialMargins:{v21, v22}];
     [v6 setMargins:{v11, v13, v15, v17}];
-    if (!v7)
+    if (!item)
     {
       [v6 enableWithMargins:{v11, v13, v15, v17}];
     }
@@ -899,7 +899,7 @@ LABEL_21:
     objc_storeStrong(&self->_bannerCell, v6);
   }
 
-  if ([(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:v5])
+  if ([(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:pathCopy])
   {
     [v6 setViewController:0];
   }
@@ -907,28 +907,28 @@ LABEL_21:
   else
   {
     [v6 setViewController:v8];
-    v18 = [v6 contentView];
-    v19 = [(UIViewController *)v8 view];
-    [v18 addSubview:v19];
+    contentView = [v6 contentView];
+    view = [(UIViewController *)v8 view];
+    [contentView addSubview:view];
   }
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   collectionView = self->_collectionView;
   v7 = *MEMORY[0x277D767D8];
-  v8 = a5;
-  v9 = [(UICollectionView *)collectionView dequeueReusableSupplementaryViewOfKind:v7 withReuseIdentifier:@"TVProductHeaderCellIdentifier" forIndexPath:v8];
+  pathCopy = path;
+  v9 = [(UICollectionView *)collectionView dequeueReusableSupplementaryViewOfKind:v7 withReuseIdentifier:@"TVProductHeaderCellIdentifier" forIndexPath:pathCopy];
   [v9 addSubview:self->_topHeroImageView];
   [v9 addSubview:self->_topHeroSeparatorView];
-  LODWORD(v7) = [(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:v8];
+  LODWORD(v7) = [(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:pathCopy];
 
   if (v7)
   {
-    v10 = [(UIViewController *)self->_bannerViewController view];
-    [v9 addSubview:v10];
+    view = [(UIViewController *)self->_bannerViewController view];
+    [v9 addSubview:view];
 
     [(_TVProductTemplateController *)self _updateTopHeroImageOverlay];
   }
@@ -936,9 +936,9 @@ LABEL_21:
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return [(NSArray *)self->_viewControllers count];
   }
@@ -949,7 +949,7 @@ LABEL_21:
   }
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   autoHighlightIndexPath = self->_autoHighlightIndexPath;
   if (!autoHighlightIndexPath)
@@ -960,49 +960,49 @@ LABEL_21:
   return autoHighlightIndexPath;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = [a4 viewController];
-  v7 = v6;
-  if (v6)
+  viewController = [cell viewController];
+  v7 = viewController;
+  if (viewController)
   {
-    v10 = v6;
-    v8 = [(_TVProductTemplateController *)self childViewControllers];
-    v9 = [v8 containsObject:v10];
+    v10 = viewController;
+    childViewControllers = [(_TVProductTemplateController *)self childViewControllers];
+    v9 = [childViewControllers containsObject:v10];
 
     v7 = v10;
     if ((v9 & 1) == 0)
     {
       [(_TVProductTemplateController *)self addChildViewController:v10];
-      v6 = [(UIViewController *)v10 didMoveToParentViewController:self];
+      viewController = [(UIViewController *)v10 didMoveToParentViewController:self];
       v7 = v10;
       if (v10 == self->_backdropTintViewController)
       {
-        v6 = [(_TVProductTemplateController *)self _updateBackgroundTintView];
+        viewController = [(_TVProductTemplateController *)self _updateBackgroundTintView];
         v7 = v10;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](viewController, v7);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v6 = [v10 viewController];
-  if (v6)
+  cellCopy = cell;
+  viewController = [cellCopy viewController];
+  if (viewController)
   {
-    v7 = [(_TVProductTemplateController *)self childViewControllers];
-    if ([v7 containsObject:v6])
+    childViewControllers = [(_TVProductTemplateController *)self childViewControllers];
+    if ([childViewControllers containsObject:viewController])
     {
-      v8 = [v6 view];
-      v9 = [v8 isDescendantOfView:v10];
+      view = [viewController view];
+      v9 = [view isDescendantOfView:cellCopy];
 
       if (v9)
       {
-        [v6 willMoveToParentViewController:0];
-        [v6 removeFromParentViewController];
+        [viewController willMoveToParentViewController:0];
+        [viewController removeFromParentViewController];
       }
     }
 
@@ -1012,14 +1012,14 @@ LABEL_21:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v9 = MEMORY[0x277CBF3A8];
-  if ([v8 section])
+  if ([pathCopy section])
   {
-    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [v8 item]);
+    v10 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [pathCopy item]);
   }
 
   else
@@ -1032,29 +1032,29 @@ LABEL_21:
   v13 = v9[1];
   if (v10)
   {
-    v14 = [(UIViewController *)v10 view];
-    [v7 bounds];
+    view = [(UIViewController *)v10 view];
+    [viewCopy bounds];
     Width = CGRectGetWidth(v24);
     v16 = Width;
-    if (v14)
+    if (view)
     {
-      [v14 tv_sizeThatFits:{Width, 0.0}];
+      [view tv_sizeThatFits:{Width, 0.0}];
       v12 = v17;
       v13 = v18;
     }
 
-    if (!-[_TVProductTemplateController _shouldUsePartialScrollingTemplate](self, "_shouldUsePartialScrollingTemplate") && [v8 section] == 1 && !objc_msgSend(v8, "item"))
+    if (!-[_TVProductTemplateController _shouldUsePartialScrollingTemplate](self, "_shouldUsePartialScrollingTemplate") && [pathCopy section] == 1 && !objc_msgSend(pathCopy, "item"))
     {
       v13 = v13 + 70.0 + 89.0;
     }
 
-    if ([v8 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      -[_TVProductTemplateController _cellMarginForIndex:partialMargins:](self, "_cellMarginForIndex:partialMargins:", [v8 item], 0);
+      -[_TVProductTemplateController _cellMarginForIndex:partialMargins:](self, "_cellMarginForIndex:partialMargins:", [pathCopy item], 0);
       v13 = v13 + v19 + v20;
     }
 
-    if ([(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:v8])
+    if ([(_TVProductTemplateController *)self _sportsLandscapePhoneIsOverlaySection:pathCopy])
     {
       v13 = 1.0;
       v12 = v16;
@@ -1068,9 +1068,9 @@ LABEL_21:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  if (a5)
+  if (index)
   {
     v5 = *MEMORY[0x277D768C8];
     v6 = *(MEMORY[0x277D768C8] + 8);
@@ -1080,7 +1080,7 @@ LABEL_21:
 
   else
   {
-    v9 = [(IKViewElement *)self->_productBannerElement style:a3];
+    v9 = [(IKViewElement *)self->_productBannerElement style:view];
     [v9 tv_margin];
     v5 = v10;
     v6 = v11;
@@ -1106,11 +1106,11 @@ LABEL_21:
   v6 = v5;
   if ([(_TVProductTemplateController *)self _sportsLandscapePhone])
   {
-    v7 = [(_TVProductTemplateController *)self view];
-    [v7 frame];
+    view = [(_TVProductTemplateController *)self view];
+    [view frame];
     v9 = v8;
-    v10 = [(_TVProductTemplateController *)self view];
-    [v10 safeAreaInsets];
+    view2 = [(_TVProductTemplateController *)self view];
+    [view2 safeAreaInsets];
     v6 = v9 - v11;
   }
 
@@ -1121,15 +1121,15 @@ LABEL_21:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  if (a5)
+  if (section)
   {
     v5 = *MEMORY[0x277CBF3A8];
     v6 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  else if ([(_TVProductTemplateController *)self _shouldShowTopHeroImage:a3])
+  else if ([(_TVProductTemplateController *)self _shouldShowTopHeroImage:view])
   {
     [(_TVProductTemplateController *)self _topHeroImageViewSize];
   }
@@ -1145,46 +1145,46 @@ LABEL_21:
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = v7;
+  draggingCopy = dragging;
+  v8 = draggingCopy;
   if (self->_topHeroImageView)
   {
-    v18 = v7;
-    v7 = [(_TVProductTemplateController *)self _shouldShowTopHeroImage];
+    v18 = draggingCopy;
+    draggingCopy = [(_TVProductTemplateController *)self _shouldShowTopHeroImage];
     v8 = v18;
-    if (v7)
+    if (draggingCopy)
     {
       [(_TVProductTemplateController *)self _topHeroImageViewSize];
       v10 = v9;
       [(_TVProductTemplateController *)self _largeTitleHeight];
       v12 = v10 + v11;
-      v7 = [(UICollectionView *)self->_collectionView safeAreaInsets];
+      draggingCopy = [(UICollectionView *)self->_collectionView safeAreaInsets];
       v8 = v18;
       v14 = v12 - v13;
-      y = a5->y;
+      y = offset->y;
       v16 = y >= v10 * 0.5 && y < v14;
       if (v16 || ((v14 = 0.0, y >= 0.0) ? (v17 = y < v10 * 0.5) : (v17 = 0), v17))
       {
-        a5->y = v14;
+        offset->y = v14;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](draggingCopy, v8);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(_TVProductTemplateController *)self _updateImpressions];
   if (self->_impressionThreshold > 0.0)
   {
     [(NSArray *)self->_viewControllers enumerateObjectsUsingBlock:&__block_literal_global_24];
   }
 
-  [(_TVProductTemplateController *)self _updateTopHeroImageVisibility:v4];
+  [(_TVProductTemplateController *)self _updateTopHeroImageVisibility:scrollCopy];
   [(_TVProductTemplateController *)self _updateBackgroundTintViewEffects];
 }
 
@@ -1200,8 +1200,8 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 viewController];
-      v7 = [v6 view];
+      viewController = [v5 viewController];
+      view = [viewController view];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1210,12 +1210,12 @@ LABEL_21:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v7 components];
-        v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        components = [view components];
+        v9 = [components countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v9)
         {
           v10 = v9;
-          v21 = v7;
+          v21 = view;
           v22 = v5;
           v11 = 0;
           v12 = *v24;
@@ -1225,7 +1225,7 @@ LABEL_21:
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(components);
               }
 
               v14 = *(*(&v23 + 1) + 8 * i);
@@ -1262,7 +1262,7 @@ LABEL_21:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+            v10 = [components countByEnumeratingWithState:&v23 objects:v27 count:16];
             if (v10)
             {
               continue;
@@ -1293,9 +1293,9 @@ LABEL_21:
 LABEL_27:
   }
 
-  v19 = [(_TVProductTemplateController *)self _sportsLandscapePhone];
+  _sportsLandscapePhone = [(_TVProductTemplateController *)self _sportsLandscapePhone];
   result = 10.0;
-  if (!v19)
+  if (!_sportsLandscapePhone)
   {
     result = self->_largeTitleHeight;
     if (result == 0.0)
@@ -1311,16 +1311,16 @@ LABEL_27:
 {
   if ([(_TVProductTemplateController *)self _sportsLandscapePhone])
   {
-    v3 = [(UIViewController *)self->_bannerViewController view];
-    [v3 frame];
+    view = [(UIViewController *)self->_bannerViewController view];
+    [view frame];
 
-    v4 = [(UIViewController *)self->_bannerViewController view];
-    v5 = [(_TVProductTemplateController *)self view];
-    [v5 frame];
-    [v4 sizeThatFits:{v6, 0.0}];
+    view2 = [(UIViewController *)self->_bannerViewController view];
+    view3 = [(_TVProductTemplateController *)self view];
+    [view3 frame];
+    [view2 sizeThatFits:{v6, 0.0}];
 
-    v7 = [(_TVProductTemplateController *)self view];
-    [v7 frame];
+    view4 = [(_TVProductTemplateController *)self view];
+    [view4 frame];
 
     [(_TVProductTemplateController *)self _topHeroImageViewSize];
     UIRectCenteredYInRect();
@@ -1328,8 +1328,8 @@ LABEL_27:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(_TVProductTemplateController *)self view];
-    [v16 frame];
+    view5 = [(_TVProductTemplateController *)self view];
+    [view5 frame];
     MaxX = CGRectGetMaxX(v21);
     v22.origin.x = v9;
     v22.origin.y = v11;
@@ -1337,22 +1337,22 @@ LABEL_27:
     v22.size.height = v15;
     v18 = MaxX - CGRectGetWidth(v22);
 
-    v19 = [(UIViewController *)self->_bannerViewController view];
+    view6 = [(UIViewController *)self->_bannerViewController view];
     v23.origin.x = v18;
     v23.origin.y = v11;
     v23.size.width = v13;
     v23.size.height = v15;
     v24 = CGRectIntegral(v23);
-    [v19 setFrame:{v24.origin.x, v24.origin.y, v24.size.width, v24.size.height}];
+    [view6 setFrame:{v24.origin.x, v24.origin.y, v24.size.width, v24.size.height}];
   }
 }
 
-- (void)_updateTopHeroImageVisibility:(id)a3
+- (void)_updateTopHeroImageVisibility:(id)visibility
 {
-  [a3 contentOffset];
+  [visibility contentOffset];
   v5 = v4;
-  v6 = [(_TVProductTemplateController *)self navigationController];
-  v7 = [v6 navigationBar];
+  navigationController = [(_TVProductTemplateController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   [(_TVProductTemplateController *)self _topHeroImageViewSize];
   v9 = v8;
@@ -1360,8 +1360,8 @@ LABEL_27:
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   if (v5 <= 0.0 && ![(_TVProductTemplateController *)self _sportsLandscapePhone])
   {
-    v13 = [(_TVProductTemplateController *)self view];
-    [v13 bounds];
+    view = [(_TVProductTemplateController *)self view];
+    [view bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1404,8 +1404,8 @@ LABEL_27:
     v91.size.width = v78;
     v91.size.height = v79;
     v28 = CGRectGetWidth(v91);
-    v29 = [MEMORY[0x277D759A0] mainScreen];
-    [v29 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v31 = 1.0 / v30;
 
     [(UIView *)self->_topHeroSeparatorView setFrame:0.0, MaxY, v28, v31];
@@ -1418,7 +1418,7 @@ LABEL_27:
 
   if (self->_topHeroImageView)
   {
-    v32 = [(_TVProductTemplateController *)self _shouldShowTopHeroImage];
+    _shouldShowTopHeroImage = [(_TVProductTemplateController *)self _shouldShowTopHeroImage];
     [(UICollectionView *)self->_collectionView safeAreaInsets];
     v34 = v11 - v33;
     [(_TVProductTemplateController *)self _largeTitleHeight];
@@ -1433,21 +1433,21 @@ LABEL_27:
       v37 = 0.0;
     }
 
-    if (v32)
+    if (_shouldShowTopHeroImage)
     {
       v38 = fmin(v37 / (v35 * 0.5), 1.0);
       [(UIImageView *)self->_topHeroGradientView setAlpha:1.0 - v38];
-      [v7 _setBackgroundOpacity:v38];
-      v39 = [MEMORY[0x277D75348] whiteColor];
-      v40 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-      v41 = [v39 blendWithColor:v40 percentage:v38];
-      [v7 setTintColor:v41];
+      [navigationBar _setBackgroundOpacity:v38];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+      v41 = [whiteColor blendWithColor:tvmlkit_keyColor percentage:v38];
+      [navigationBar setTintColor:v41];
 
-      v42 = [(_TVProductTemplateController *)self _sportsLandscapePhone];
-      if (v5 <= 0.0 && v42)
+      _sportsLandscapePhone = [(_TVProductTemplateController *)self _sportsLandscapePhone];
+      if (v5 <= 0.0 && _sportsLandscapePhone)
       {
-        v43 = [(_TVProductTemplateController *)self view];
-        [v43 safeAreaInsets];
+        view2 = [(_TVProductTemplateController *)self view];
+        [view2 safeAreaInsets];
         v45 = v5 + v44;
 
         if (v45 < 0.0)
@@ -1455,25 +1455,25 @@ LABEL_27:
           v45 = 0.0;
         }
 
-        v46 = [(_TVProductTemplateController *)self view];
-        [v46 safeAreaInsets];
+        view3 = [(_TVProductTemplateController *)self view];
+        [view3 safeAreaInsets];
         v48 = v45 / (v47 * 0.5);
 
-        v49 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-        v50 = [MEMORY[0x277D75348] whiteColor];
-        v51 = [v49 blendWithColor:v50 percentage:{fmin(v48, 1.0)}];
-        [v7 setTintColor:v51];
+        tvmlkit_keyColor2 = [MEMORY[0x277D75348] tvmlkit_keyColor];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        v51 = [tvmlkit_keyColor2 blendWithColor:whiteColor2 percentage:{fmin(v48, 1.0)}];
+        [navigationBar setTintColor:v51];
       }
 
       self->_lightStatusBar = v38 <= 0.3;
       [(_TVProductTemplateController *)self setNeedsStatusBarAppearanceUpdate];
     }
 
-    v52 = [(_TVProductTemplateController *)self navigationItem];
-    v53 = [v52 title];
+    navigationItem = [(_TVProductTemplateController *)self navigationItem];
+    title = [navigationItem title];
 
-    v54 = [(_TVProductTemplateController *)self parentViewController];
-    v55 = [v54 navigationItem];
+    parentViewController = [(_TVProductTemplateController *)self parentViewController];
+    navigationItem2 = [parentViewController navigationItem];
 
     if (v37 / v36 < 1.0)
     {
@@ -1482,13 +1482,13 @@ LABEL_27:
         goto LABEL_30;
       }
 
-      if (!v7)
+      if (!navigationBar)
       {
         goto LABEL_30;
       }
 
       self->_topHeroImageVisible = 1;
-      if (!v32)
+      if (!_shouldShowTopHeroImage)
       {
         goto LABEL_30;
       }
@@ -1499,9 +1499,9 @@ LABEL_27:
       v80[2] = __62___TVProductTemplateController__updateTopHeroImageVisibility___block_invoke_2;
       v80[3] = &unk_279D6E2F8;
       v57 = &v81;
-      v81 = v7;
+      v81 = navigationBar;
       v58 = &v82;
-      v82 = v55;
+      v82 = navigationItem2;
       [v59 animateWithDuration:7 delay:v80 options:0 animations:0.15 completion:0.0];
     }
 
@@ -1512,13 +1512,13 @@ LABEL_27:
         goto LABEL_30;
       }
 
-      if (!v7)
+      if (!navigationBar)
       {
         goto LABEL_30;
       }
 
       self->_topHeroImageVisible = 0;
-      if (!v32)
+      if (!_shouldShowTopHeroImage)
       {
         goto LABEL_30;
       }
@@ -1529,10 +1529,10 @@ LABEL_27:
       v83[2] = __62___TVProductTemplateController__updateTopHeroImageVisibility___block_invoke;
       v83[3] = &unk_279D6F5D0;
       v57 = &v84;
-      v84 = v7;
+      v84 = navigationBar;
       v58 = &v85;
-      v85 = v55;
-      v86 = v53;
+      v85 = navigationItem2;
+      v86 = title;
       [v56 animateWithDuration:7 delay:v83 options:0 animations:0.15 completion:0.0];
     }
 
@@ -1547,11 +1547,11 @@ LABEL_30:
       v64 = v63;
       v66 = v65;
       v68 = v67;
-      v69 = [(_TVProductTemplateController *)self view];
-      [v69 safeAreaInsets];
+      view4 = [(_TVProductTemplateController *)self view];
+      [view4 safeAreaInsets];
       v71 = v70;
-      v72 = [(IKViewElement *)self->_templateElement style];
-      [v72 tv_margin];
+      style = [(IKViewElement *)self->_templateElement style];
+      [style tv_margin];
       v74 = v71 + v73;
 
       [(UICollectionView *)self->_collectionView frame];
@@ -1597,39 +1597,39 @@ LABEL_30:
 
 - (void)_recordImpressionsForVisibleView
 {
-  v3 = [(_TVProductTemplateController *)self view];
-  v4 = [v3 window];
+  view = [(_TVProductTemplateController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v6 = [(IKViewElement *)self->_templateElement appDocument];
+    appDocument = [(IKViewElement *)self->_templateElement appDocument];
     v5 = [(_TVProductTemplateController *)self impressionableElementsContainedInDocument:?];
     if ([v5 count])
     {
-      [v6 recordImpressionsForViewElements:v5];
+      [appDocument recordImpressionsForViewElements:v5];
     }
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IKViewElement *)self->_templateElement appDocument];
-  v6 = [v5 isEqual:v4];
+  documentCopy = document;
+  appDocument = [(IKViewElement *)self->_templateElement appDocument];
+  v6 = [appDocument isEqual:documentCopy];
 
   if (v6)
   {
-    v7 = [(UICollectionView *)self->_collectionView visibleCells];
-    v8 = [MEMORY[0x277CBEB18] array];
+    visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(_TVProductTemplateController *)self isViewLoaded])
     {
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v24 = v7;
-      v9 = v7;
+      v24 = visibleCells;
+      v9 = visibleCells;
       v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
@@ -1645,21 +1645,21 @@ LABEL_30:
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
-            v15 = [v14 viewController];
-            v16 = [v15 tv_impressionableElementsForDocument:v4];
-            [v8 addObjectsFromArray:v16];
+            viewController = [v14 viewController];
+            v16 = [viewController tv_impressionableElementsForDocument:documentCopy];
+            [array addObjectsFromArray:v16];
 
-            v17 = [v14 titleView];
-            if (v17)
+            titleView = [v14 titleView];
+            if (titleView)
             {
-              v18 = v17;
-              v19 = [v14 isShowingTitleView];
+              v18 = titleView;
+              isShowingTitleView = [v14 isShowingTitleView];
 
-              if (v19)
+              if (isShowingTitleView)
               {
-                v20 = [v14 titleView];
-                v21 = [v20 tv_impressionableElementsForDocument:v4];
-                [v8 addObjectsFromArray:v21];
+                titleView2 = [v14 titleView];
+                v21 = [titleView2 tv_impressionableElementsForDocument:documentCopy];
+                [array addObjectsFromArray:v21];
               }
             }
           }
@@ -1670,12 +1670,12 @@ LABEL_30:
         while (v11);
       }
 
-      v7 = v24;
+      visibleCells = v24;
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v22 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v22 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else
@@ -1709,17 +1709,17 @@ LABEL_30:
   return v2;
 }
 
-- (id)_adamIDForElement:(id)a3
+- (id)_adamIDForElement:(id)element
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 tv_stringForKey:@"data-siri"];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v5 = [attributes tv_stringForKey:@"data-siri"];
 
   if (v5)
   {
     v16 = v5;
-    v17 = v3;
+    v17 = elementCopy;
     v6 = [v5 componentsSeparatedByString:{@", "}];
     v18 = 0u;
     v19 = 0u;
@@ -1765,7 +1765,7 @@ LABEL_30:
     }
 
     v5 = v16;
-    v3 = v17;
+    elementCopy = v17;
   }
 
   else
@@ -1776,17 +1776,17 @@ LABEL_30:
   return v9;
 }
 
-- (id)_canonicalIDForElement:(id)a3
+- (id)_canonicalIDForElement:(id)element
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 tv_stringForKey:@"data-siri"];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v5 = [attributes tv_stringForKey:@"data-siri"];
 
   if (v5)
   {
     v16 = v5;
-    v17 = v3;
+    v17 = elementCopy;
     v6 = [v5 componentsSeparatedByString:{@", "}];
     v18 = 0u;
     v19 = 0u;
@@ -1832,7 +1832,7 @@ LABEL_30:
     }
 
     v5 = v16;
-    v3 = v17;
+    elementCopy = v17;
   }
 
   else
@@ -1843,11 +1843,11 @@ LABEL_30:
   return v9;
 }
 
-- (id)_yOffsetForView:(id)a3 withScrollView:(id)a4 targetYOffset:(double)a5
+- (id)_yOffsetForView:(id)view withScrollView:(id)scrollView targetYOffset:(double)offset
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
   if (!self->_bannerViewController || ![(NSArray *)self->_viewControllers count])
   {
     v23 = 0;
@@ -1867,8 +1867,8 @@ LABEL_30:
   v63 = [(UICollectionView *)v16 cellForItemAtIndexPath:v17];
 
   productBannerHeight = self->_productBannerHeight;
-  v19 = [(_TVProductTemplateController *)self _lastFocusableCellIndex];
-  if (v19 < 1)
+  _lastFocusableCellIndex = [(_TVProductTemplateController *)self _lastFocusableCellIndex];
+  if (_lastFocusableCellIndex < 1)
   {
     v22 = 0;
   }
@@ -1876,23 +1876,23 @@ LABEL_30:
   else
   {
     v20 = self->_collectionView;
-    v21 = [MEMORY[0x277CCAA70] indexPathForItem:v19 inSection:1];
+    v21 = [MEMORY[0x277CCAA70] indexPathForItem:_lastFocusableCellIndex inSection:1];
     v22 = [(UICollectionView *)v20 cellForItemAtIndexPath:v21];
   }
 
-  v24 = v19 > 0 && self->_isPartialScrollingTemplate;
-  v25 = [(IKViewElement *)self->_templateElement attributes];
-  v26 = [v25 objectForKey:@"partialScrollingEnabled"];
+  v24 = _lastFocusableCellIndex > 0 && self->_isPartialScrollingTemplate;
+  attributes = [(IKViewElement *)self->_templateElement attributes];
+  v26 = [attributes objectForKey:@"partialScrollingEnabled"];
 
-  v27 = v26 == 0 && v24;
+  bOOLValue = v26 == 0 && v24;
   if (v26 && v24)
   {
-    v28 = [(IKViewElement *)self->_templateElement attributes];
-    v29 = [v28 objectForKey:@"partialScrollingEnabled"];
-    v27 = [v29 BOOLValue];
+    attributes2 = [(IKViewElement *)self->_templateElement attributes];
+    v29 = [attributes2 objectForKey:@"partialScrollingEnabled"];
+    bOOLValue = [v29 BOOLValue];
   }
 
-  if ([v8 isDescendantOfView:v12])
+  if ([viewCopy isDescendantOfView:v12])
   {
     v30 = MEMORY[0x277CCABB0];
     [v12 frame];
@@ -1902,15 +1902,15 @@ LABEL_30:
   }
 
   v34 = v15;
-  if (v22 && [v8 isDescendantOfView:v22])
+  if (v22 && [viewCopy isDescendantOfView:v22])
   {
-    [v9 contentInset];
+    [scrollViewCopy contentInset];
     v36 = v35;
     [v22 frame];
     v37 = CGRectGetMinY(v77);
-    [v9 contentSize];
+    [scrollViewCopy contentSize];
     v39 = v38;
-    [v9 frame];
+    [scrollViewCopy frame];
     v40 = v36 + v39 - CGRectGetHeight(v78);
     if (v37 < v40)
     {
@@ -1930,9 +1930,9 @@ LABEL_30:
     goto LABEL_40;
   }
 
-  if (productBannerHeight > a5)
+  if (productBannerHeight > offset)
   {
-    v43 = v27;
+    v43 = bOOLValue;
   }
 
   else
@@ -1946,9 +1946,9 @@ LABEL_30:
     goto LABEL_37;
   }
 
-  if (![v8 isDescendantOfView:v15] || (objc_msgSend(v9, "contentOffset"), v45 = v44, objc_msgSend(v12, "frame"), v45 >= CGRectGetHeight(v79) * 0.5))
+  if (![viewCopy isDescendantOfView:v15] || (objc_msgSend(scrollViewCopy, "contentOffset"), v45 = v44, objc_msgSend(v12, "frame"), v45 >= CGRectGetHeight(v79) * 0.5))
   {
-    if ([v8 isDescendantOfView:v63])
+    if ([viewCopy isDescendantOfView:v63])
     {
 LABEL_39:
       v23 = [MEMORY[0x277CCABB0] numberWithDouble:productBannerHeight];
@@ -1956,7 +1956,7 @@ LABEL_39:
     }
 
 LABEL_37:
-    if (productBannerHeight <= a5 && ![v8 isDescendantOfView:v15])
+    if (productBannerHeight <= offset && ![viewCopy isDescendantOfView:v15])
     {
       v23 = 0;
       goto LABEL_40;
@@ -1969,8 +1969,8 @@ LABEL_37:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v46 = [(IKViewElement *)self->_templateElement children];
-  v47 = [v46 countByEnumeratingWithState:&v68 objects:v73 count:16];
+  children = [(IKViewElement *)self->_templateElement children];
+  v47 = [children countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (!v47)
   {
 LABEL_35:
@@ -1988,7 +1988,7 @@ LABEL_29:
   {
     if (*v69 != v49)
     {
-      objc_enumerationMutation(v46);
+      objc_enumerationMutation(children);
     }
 
     v51 = *(*(&v68 + 1) + 8 * v50);
@@ -1999,7 +1999,7 @@ LABEL_29:
 
     if (v48 == ++v50)
     {
-      v48 = [v46 countByEnumeratingWithState:&v68 objects:v73 count:16];
+      v48 = [children countByEnumeratingWithState:&v68 objects:v73 count:16];
       if (v48)
       {
         goto LABEL_29;
@@ -2009,13 +2009,13 @@ LABEL_29:
     }
   }
 
-  v62 = v46;
+  v62 = children;
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v53 = [v51 children];
-  v54 = [v53 countByEnumeratingWithState:&v64 objects:v72 count:16];
+  children2 = [v51 children];
+  v54 = [children2 countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (!v54)
   {
 LABEL_53:
@@ -2031,7 +2031,7 @@ LABEL_47:
   {
     if (*v65 != v56)
     {
-      objc_enumerationMutation(v53);
+      objc_enumerationMutation(children2);
     }
 
     v58 = *(*(&v64 + 1) + 8 * v57);
@@ -2042,7 +2042,7 @@ LABEL_47:
 
     if (v55 == ++v57)
     {
-      v55 = [v53 countByEnumeratingWithState:&v64 objects:v72 count:16];
+      v55 = [children2 countByEnumeratingWithState:&v64 objects:v72 count:16];
       if (v55)
       {
         goto LABEL_47;
@@ -2052,8 +2052,8 @@ LABEL_47:
     }
   }
 
-  v59 = [v58 style];
-  [v59 tv_margin];
+  style = [v58 style];
+  [style tv_margin];
   v61 = v60 + 144.0;
 
   if (v61 == 0.0)
@@ -2087,8 +2087,8 @@ LABEL_41:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSArray *)self->_viewControllers reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_viewControllers reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2099,12 +2099,12 @@ LABEL_41:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 tv_associatedIKViewElement];
-        if ([v9 tv_elementType] != 52 && objc_msgSend(v9, "tv_elementType") != 38)
+        tv_associatedIKViewElement = [v8 tv_associatedIKViewElement];
+        if ([tv_associatedIKViewElement tv_elementType] != 52 && objc_msgSend(tv_associatedIKViewElement, "tv_elementType") != 38)
         {
           v10 = [(NSArray *)self->_viewControllers indexOfObject:v8];
 
@@ -2112,7 +2112,7 @@ LABEL_41:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -2134,41 +2134,41 @@ LABEL_14:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) == 0 || ([(NSArray *)self->_viewControllers objectAtIndex:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((isKindOfClass & 1) == 0 || ([(NSArray *)self->_viewControllers objectAtIndex:0], (shelfViewController = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = [(NSArray *)self->_viewControllers objectAtIndex:0];
     objc_opt_class();
     v7 = objc_opt_isKindOfClass();
 
-    v5 = 0;
+    shelfViewController = 0;
     if (v7)
     {
       v8 = [(NSArray *)self->_viewControllers objectAtIndex:0];
-      v5 = [v8 shelfViewController];
+      shelfViewController = [v8 shelfViewController];
     }
   }
 
-  v9 = [v5 collectionWrappingView];
-  v10 = [v9 headerView];
+  collectionWrappingView = [shelfViewController collectionWrappingView];
+  headerView = [collectionWrappingView headerView];
 
-  return v10;
+  return headerView;
 }
 
-- (void)_configureTopHeroImage:(id)a3
+- (void)_configureTopHeroImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (!self->_topHeroImageElement)
   {
-    v26 = v5;
-    v6 = [v5 tv_elementType] == 16;
-    v5 = v26;
+    v26 = imageCopy;
+    v6 = [imageCopy tv_elementType] == 16;
+    imageCopy = v26;
     if (v6)
     {
       v6 = [v26 tv_imageType] == 3;
-      v5 = v26;
+      imageCopy = v26;
       if (v6)
       {
-        objc_storeStrong(&self->_topHeroImageElement, a3);
+        objc_storeStrong(&self->_topHeroImageElement, image);
         v7 = +[TVInterfaceFactory sharedInterfaceFactory];
         v8 = [v7 _viewFromElement:v26 existingView:self->_topHeroImageView];
         topHeroImageView = self->_topHeroImageView;
@@ -2198,8 +2198,8 @@ LABEL_14:
           v17 = self->_topHeroGradientView;
           [v12 size];
           [(UIImageView *)v17 setFrame:0.0, 0.0, 1.0, v18];
-          v19 = [(_TVProductTemplateController *)self view];
-          [v19 addSubview:self->_topHeroGradientView];
+          view = [(_TVProductTemplateController *)self view];
+          [view addSubview:self->_topHeroGradientView];
         }
 
         if (!self->_topHeroSeparatorView)
@@ -2209,34 +2209,34 @@ LABEL_14:
           self->_topHeroSeparatorView = v20;
 
           v22 = self->_topHeroSeparatorView;
-          v23 = [MEMORY[0x277D75348] systemMidGrayColor];
-          [(UIView *)v22 setBackgroundColor:v23];
+          systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+          [(UIView *)v22 setBackgroundColor:systemMidGrayColor];
         }
 
-        v24 = [(_TVProductTemplateController *)self navigationItem];
-        [v24 setLargeTitleDisplayMode:2];
+        navigationItem = [(_TVProductTemplateController *)self navigationItem];
+        [navigationItem setLargeTitleDisplayMode:2];
 
         self->_lightStatusBar = 1;
         [(_TVProductTemplateController *)self setNeedsStatusBarAppearanceUpdate];
-        v25 = [(_TVProductTemplateController *)self view];
-        [v25 setNeedsLayout];
+        view2 = [(_TVProductTemplateController *)self view];
+        [view2 setNeedsLayout];
 
         [(_TVProductTemplateController *)self _updateTopHeroImageVisibility:self->_collectionView];
-        v5 = v26;
+        imageCopy = v26;
       }
     }
   }
 }
 
-- (void)_configureWithBgElement:(id)a3
+- (void)_configureWithBgElement:(id)element
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 children];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [element children];
+  v5 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2248,7 +2248,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -2273,34 +2273,34 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_configureWithBannerElement:(id)a3
+- (void)_configureWithBannerElement:(id)element
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_productBannerElement, a3);
-  v6 = [(IKViewElement *)self->_productBannerElement style];
-  [v6 tv_height];
+  elementCopy = element;
+  objc_storeStrong(&self->_productBannerElement, element);
+  style = [(IKViewElement *)self->_productBannerElement style];
+  [style tv_height];
   self->_productBannerHeight = v7;
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = v5;
-  v8 = [v5 children];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v27 = elementCopy;
+  children = [elementCopy children];
+  v9 = [children countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v35;
-    v28 = v8;
+    v28 = children;
     v29 = *v35;
     do
     {
@@ -2308,21 +2308,21 @@ LABEL_15:
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 tv_elementType];
-        if (v14 > 23)
+        tv_elementType = [v13 tv_elementType];
+        if (tv_elementType > 23)
         {
-          if (v14 == 24)
+          if (tv_elementType == 24)
           {
             v32 = 0u;
             v33 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v17 = [v13 children];
-            v20 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            children2 = [v13 children];
+            v20 = [children2 countByEnumeratingWithState:&v30 objects:v38 count:16];
             if (v20)
             {
               v21 = v20;
@@ -2333,7 +2333,7 @@ LABEL_15:
                 {
                   if (*v31 != v22)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(children2);
                   }
 
                   if (!self->_heroImageElement)
@@ -2347,7 +2347,7 @@ LABEL_15:
                   }
                 }
 
-                v21 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+                v21 = [children2 countByEnumeratingWithState:&v30 objects:v38 count:16];
                 if (v21)
                 {
                   continue;
@@ -2357,36 +2357,36 @@ LABEL_15:
               }
 
 LABEL_30:
-              v8 = v28;
+              children = v28;
               v11 = v29;
             }
           }
 
           else
           {
-            if (v14 != 54)
+            if (tv_elementType != 54)
             {
               continue;
             }
 
-            v18 = [v13 children];
-            v17 = [v18 firstObject];
+            children3 = [v13 children];
+            children2 = [children3 firstObject];
 
-            v19 = [v17 style];
-            if ([v19 tv_position] == 2)
+            style2 = [children2 style];
+            if ([style2 tv_position] == 2)
             {
 
               goto LABEL_32;
             }
 
-            v25 = [v17 style];
-            v26 = [v25 tv_position];
+            style3 = [children2 style];
+            tv_position = [style3 tv_position];
 
             v11 = v29;
-            if (v26 == 3)
+            if (tv_position == 3)
             {
 LABEL_32:
-              objc_storeStrong(&self->_titleElement, v17);
+              objc_storeStrong(&self->_titleElement, children2);
             }
           }
 
@@ -2395,9 +2395,9 @@ LABEL_33:
           continue;
         }
 
-        if (v14 != 16)
+        if (tv_elementType != 16)
         {
-          if (v14 != 19)
+          if (tv_elementType != 19)
           {
             continue;
           }
@@ -2405,7 +2405,7 @@ LABEL_33:
           v15 = 1152;
 LABEL_10:
           v16 = v13;
-          v17 = *(&self->super.super.super.super.isa + v15);
+          children2 = *(&self->super.super.super.super.isa + v15);
           *(&self->super.super.super.super.isa + v15) = v16;
           goto LABEL_33;
         }
@@ -2417,7 +2417,7 @@ LABEL_10:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v10 = [children countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v10);
@@ -2455,18 +2455,18 @@ LABEL_10:
 
 - (id)_backgroundImageProxy
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 _graphicsQuality];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v4 == 10)
+  if (_graphicsQuality == 10)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(IKViewElement *)self->_templateElement attributes];
-    v7 = [v6 objectForKeyedSubscript:@"backgroundBlurDisabled"];
+    attributes = [(IKViewElement *)self->_templateElement attributes];
+    v7 = [attributes objectForKeyedSubscript:@"backgroundBlurDisabled"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -2475,8 +2475,8 @@ LABEL_10:
 
     if (self->_bgImageElement)
     {
-      v8 = [(IKViewElement *)self->_templateElement appDocument];
-      [v8 tv_adjustedWindowSize];
+      appDocument = [(IKViewElement *)self->_templateElement appDocument];
+      [appDocument tv_adjustedWindowSize];
       v10 = v9;
       v12 = v11;
 
@@ -2484,9 +2484,9 @@ LABEL_10:
       [v13 setImageSize:{v10, v12}];
       v14 = [TVImageLayout layoutWithLayout:v13 element:self->_bgImageElement];
       v5 = [(IKImageElement *)self->_bgImageElement tv_imageProxyWithLayout:v13];
-      v15 = [(IKImageElement *)self->_bgImageElement style];
-      v16 = [v15 tv_imageTreatment];
-      v17 = [v16 isEqualToString:@"uber"];
+      style = [(IKImageElement *)self->_bgImageElement style];
+      tv_imageTreatment = [style tv_imageTreatment];
+      v17 = [tv_imageTreatment isEqualToString:@"uber"];
 
       if (v17)
       {
@@ -2506,12 +2506,12 @@ LABEL_10:
   return v5;
 }
 
-- (id)_spacingMetricsForViewControllers:(id)a3 contentSize:(CGSize *)a4
+- (id)_spacingMetricsForViewControllers:(id)controllers contentSize:(CGSize *)size
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(IKViewElement *)self->_templateElement appDocument];
-  [v7 tv_adjustedWindowSize];
+  controllersCopy = controllers;
+  appDocument = [(IKViewElement *)self->_templateElement appDocument];
+  [appDocument tv_adjustedWindowSize];
   v9 = v8;
 
   v29 = 0;
@@ -2520,7 +2520,7 @@ LABEL_10:
   v32 = &unk_26CE937F5;
   v33 = v9;
   v34 = 0;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(controllersCopy, "count")}];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __78___TVProductTemplateController__spacingMetricsForViewControllers_contentSize___block_invoke;
@@ -2529,8 +2529,8 @@ LABEL_10:
   v27 = &v29;
   v11 = v10;
   v26 = v11;
-  [v6 enumerateObjectsUsingBlock:v25];
-  if ([v6 count] < 2)
+  [controllersCopy enumerateObjectsUsingBlock:v25];
+  if ([controllersCopy count] < 2)
   {
     v12 = 0;
   }
@@ -2580,9 +2580,9 @@ LABEL_10:
     while (v14);
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = v30[2];
+    *size = v30[2];
   }
 
   _Block_object_dispose(&v29, 8);
@@ -2590,22 +2590,22 @@ LABEL_10:
   return v13;
 }
 
-- (UIEdgeInsets)_cellMarginForIndex:(int64_t)a3 partialMargins:(UIEdgeInsets *)a4
+- (UIEdgeInsets)_cellMarginForIndex:(int64_t)index partialMargins:(UIEdgeInsets *)margins
 {
   v7 = [(NSArray *)self->_viewControllers objectAtIndex:?];
-  v8 = [v7 tv_associatedIKViewElement];
-  v9 = [v8 style];
-  [v9 tv_margin];
+  tv_associatedIKViewElement = [v7 tv_associatedIKViewElement];
+  style = [tv_associatedIKViewElement style];
+  [style tv_margin];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
   v18 = *(MEMORY[0x277D768C8] + 16);
-  if (a3)
+  if (index)
   {
     v11 = *MEMORY[0x277D768C8];
-    if ([(NSArray *)self->_viewControllers count]- 1 == a3)
+    if ([(NSArray *)self->_viewControllers count]- 1 == index)
     {
       v18 = v15;
     }
@@ -2616,29 +2616,29 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v7 headerElement];
+      headerElement = [v7 headerElement];
 
-      if (v19)
+      if (headerElement)
       {
         v11 = 0.0;
-        if (a4)
+        if (margins)
         {
-          a4->left = v13;
-          a4->bottom = v18;
-          a4->right = v17;
-          a4->top = 0.0;
+          margins->left = v13;
+          margins->bottom = v18;
+          margins->right = v17;
+          margins->top = 0.0;
         }
       }
     }
   }
 
-  if ([(NSArray *)self->_viewControllers count]- 1 > a3)
+  if ([(NSArray *)self->_viewControllers count]- 1 > index)
   {
-    v20 = [(NSArray *)self->_viewControllers objectAtIndex:a3 + 1];
-    v21 = [v20 tv_associatedIKViewElement];
+    v20 = [(NSArray *)self->_viewControllers objectAtIndex:index + 1];
+    tv_associatedIKViewElement2 = [v20 tv_associatedIKViewElement];
 
-    v22 = [v21 style];
-    [v22 tv_margin];
+    style2 = [tv_associatedIKViewElement2 style];
+    [style2 tv_margin];
     v24 = v23;
 
     if (v15 > 0.0 || v24 > 0.0)
@@ -2648,7 +2648,7 @@ LABEL_10:
 
     else
     {
-      v25 = [(NSArray *)self->_rowSpacingMetricsList objectAtIndex:a3];
+      v25 = [(NSArray *)self->_rowSpacingMetricsList objectAtIndex:index];
       v26 = v25;
       if (v25)
       {
@@ -2676,8 +2676,8 @@ LABEL_10:
 
 - (BOOL)_shouldShowTopHeroImage
 {
-  v3 = [(_TVProductTemplateController *)self traitCollection];
-  v4 = [v3 verticalSizeClass] != 1 || self->_sportsProductTemplate;
+  traitCollection = [(_TVProductTemplateController *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] != 1 || self->_sportsProductTemplate;
 
   return v4;
 }
@@ -2689,18 +2689,18 @@ LABEL_10:
     return 0;
   }
 
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
 
-- (BOOL)_sportsLandscapePhoneIsOverlaySection:(id)a3
+- (BOOL)_sportsLandscapePhoneIsOverlaySection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   if ([(_TVProductTemplateController *)self _sportsLandscapePhone])
   {
-    v5 = [v4 section] == 0;
+    v5 = [sectionCopy section] == 0;
   }
 
   else
@@ -2735,12 +2735,12 @@ LABEL_10:
       }
 
       v6 = self->_backdropTintView;
-      v7 = [(IKViewElement *)self->_backdropTintElement style];
-      v8 = [v7 tv_backgroundColor];
-      v10 = [v8 color];
+      style = [(IKViewElement *)self->_backdropTintElement style];
+      tv_backgroundColor = [style tv_backgroundColor];
+      color = [tv_backgroundColor color];
 
-      v9 = v10;
-      if (!v10)
+      v9 = color;
+      if (!color)
       {
         v9 = [MEMORY[0x277D75348] colorWithRed:0.937254902 green:0.937254902 blue:0.956862745 alpha:1.0];
       }
@@ -2837,8 +2837,8 @@ LABEL_10:
 {
   [(UICollectionView *)self->_collectionView contentSize];
   v4 = v3;
-  v5 = [(_TVProductTemplateController *)self view];
-  [v5 bounds];
+  view = [(_TVProductTemplateController *)self view];
+  [view bounds];
   v7 = v6;
 
   if (v4 < v7)
@@ -2848,8 +2848,8 @@ LABEL_10:
 
   [(UICollectionView *)self->_collectionView contentSize];
   v9 = v8;
-  v10 = [(_TVProductTemplateController *)self view];
-  [v10 bounds];
+  view2 = [(_TVProductTemplateController *)self view];
+  [view2 bounds];
   v12 = v11;
 
   if (v9 >= v12)

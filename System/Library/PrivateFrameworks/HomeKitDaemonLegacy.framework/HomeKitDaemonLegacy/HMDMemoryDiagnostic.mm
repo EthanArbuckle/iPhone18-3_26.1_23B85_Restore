@@ -1,31 +1,31 @@
 @interface HMDMemoryDiagnostic
-+ (id)_configureCurrentProcessLevel:(id)a3;
-+ (id)_nextLevelFromPreviousLevel:(id)a3;
-+ (id)_previousLevelForBuild:(id)a3;
-+ (void)_recordLevel:(id)a3 forBuild:(id)a4;
++ (id)_configureCurrentProcessLevel:(id)level;
++ (id)_nextLevelFromPreviousLevel:(id)level;
++ (id)_previousLevelForBuild:(id)build;
++ (void)_recordLevel:(id)level forBuild:(id)build;
 + (void)configureMemoryDiagnostic;
 @end
 
 @implementation HMDMemoryDiagnostic
 
-+ (id)_nextLevelFromPreviousLevel:(id)a3
++ (id)_nextLevelFromPreviousLevel:(id)level
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__186484;
   v16 = __Block_byref_object_dispose__186485;
-  v4 = a3;
-  v17 = v4;
-  v5 = [a1 memoryLevelsMB];
+  levelCopy = level;
+  v17 = levelCopy;
+  memoryLevelsMB = [self memoryLevelsMB];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke;
   v9[3] = &unk_2797348E8;
-  v6 = v4;
+  v6 = levelCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [memoryLevelsMB hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -44,21 +44,21 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
   }
 }
 
-+ (id)_previousLevelForBuild:(id)a3
++ (id)_previousLevelForBuild:(id)build
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 dictionaryForKey:@"com.apple.homekit.MemoryDiagnosticLimit"];
+  buildCopy = build;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults dictionaryForKey:@"com.apple.homekit.MemoryDiagnosticLimit"];
 
   if (v6)
   {
     v7 = [v6 valueForKey:@"buildVersion"];
-    if (v7 && [v4 isEqualToString:v7])
+    if (v7 && [buildCopy isEqualToString:v7])
     {
       v8 = [v6 valueForKey:@"memoryLevelMB"];
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -91,26 +91,26 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
   return v8;
 }
 
-+ (void)_recordLevel:(id)a3 forBuild:(id)a4
++ (void)_recordLevel:(id)level forBuild:(id)build
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"buildVersion";
   v11[1] = @"memoryLevelMB";
-  v12[0] = a4;
-  v12[1] = a3;
+  v12[0] = build;
+  v12[1] = level;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a4;
-  v7 = a3;
+  buildCopy = build;
+  levelCopy = level;
   v8 = [v5 dictionaryWithObjects:v12 forKeys:v11 count:2];
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v9 setObject:v8 forKey:@"com.apple.homekit.MemoryDiagnosticLimit"];
+  [standardUserDefaults setObject:v8 forKey:@"com.apple.homekit.MemoryDiagnosticLimit"];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_configureCurrentProcessLevel:(id)a3
++ (id)_configureCurrentProcessLevel:(id)level
 {
-  [a3 intValue];
+  [level intValue];
   getpid();
   v3 = memorystatus_control();
   if (v3)
@@ -131,13 +131,13 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
 + (void)configureMemoryDiagnostic
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v4 = [v3 preferenceForKey:@"MemoryDiagnosticLimitOverride"];
-  v5 = [v4 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v4 = [mEMORY[0x277D0F8D0] preferenceForKey:@"MemoryDiagnosticLimitOverride"];
+  numberValue = [v4 numberValue];
 
-  if (v5 && [v5 intValue] >= 1)
+  if (numberValue && [numberValue intValue] >= 1)
   {
-    v6 = [a1 _configureCurrentProcessLevel:v5];
+    v6 = [self _configureCurrentProcessLevel:numberValue];
     if (!v6)
     {
       goto LABEL_24;
@@ -145,7 +145,7 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
 
     v7 = v6;
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -161,13 +161,13 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277D0F8E8] productInfo];
-  v14 = [v13 softwareVersion];
-  v15 = [v14 buildVersion];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  softwareVersion = [productInfo softwareVersion];
+  buildVersion = [softwareVersion buildVersion];
 
-  if (v15)
+  if (buildVersion)
   {
-    v16 = [a1 _previousLevelForBuild:v15];
+    v16 = [self _previousLevelForBuild:buildVersion];
     if (v16)
     {
       v17 = v16;
@@ -178,9 +178,9 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
       v17 = &unk_28662A4D8;
     }
 
-    v18 = [a1 _nextLevelFromPreviousLevel:v17];
+    v18 = [self _nextLevelFromPreviousLevel:v17];
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -188,18 +188,18 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
       v33 = 138543874;
       v34 = v22;
       v35 = 2112;
-      v36 = v15;
+      v36 = buildVersion;
       v37 = 2112;
       v38 = v18;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Setting diagnostic memory limit for build %@ to %@MB", &v33, 0x20u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v23 = [v20 _configureCurrentProcessLevel:v18];
+    v23 = [selfCopy2 _configureCurrentProcessLevel:v18];
     if (v23)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v20;
+      v25 = selfCopy2;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -216,14 +216,14 @@ void __51__HMDMemoryDiagnostic__nextLevelFromPreviousLevel___block_invoke(uint64
 
     else if (([v18 isEqualToNumber:v17] & 1) == 0)
     {
-      [v20 _recordLevel:v18 forBuild:v15];
+      [selfCopy2 _recordLevel:v18 forBuild:buildVersion];
     }
   }
 
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = a1;
+    selfCopy3 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {

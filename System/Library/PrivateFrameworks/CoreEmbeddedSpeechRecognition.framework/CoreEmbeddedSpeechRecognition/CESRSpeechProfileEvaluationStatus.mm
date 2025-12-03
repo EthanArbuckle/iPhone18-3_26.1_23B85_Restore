@@ -1,16 +1,16 @@
 @interface CESRSpeechProfileEvaluationStatus
 + (id)sharedStatus;
 - (BOOL)isEvaluationEnabled;
-- (void)setEvaluationEnabled:(BOOL)a3;
+- (void)setEvaluationEnabled:(BOOL)enabled;
 @end
 
 @implementation CESRSpeechProfileEvaluationStatus
 
-- (void)setEvaluationEnabled:(BOOL)a3
+- (void)setEvaluationEnabled:(BOOL)enabled
 {
   if (!+[CESRUtilities isCustomerInstall])
   {
-    atomic_store(a3, &self->_isEvaluationEnabled);
+    atomic_store(enabled, &self->_isEvaluationEnabled);
   }
 }
 

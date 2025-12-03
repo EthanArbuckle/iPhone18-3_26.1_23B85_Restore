@@ -1,35 +1,35 @@
 @interface TransitNavigationTrayViewController
-- (BOOL)_updateListContentInsetWithHeight:(double)a3;
+- (BOOL)_updateListContentInsetWithHeight:(double)height;
 - (BOOL)pptTestHasNextStep;
 - (BOOL)pptTestMoveToBoardStep;
 - (BOOL)pptTestSupportStepping;
 - (CGRect)_rectOfRowToKeepVisible;
 - (NSNumber)displayedItemIndexForAnalytics;
 - (TransitNavigationTrayDelegate)trayDelegate;
-- (TransitNavigationTrayViewController)initWithRoute:(id)a3 stepsListDelegate:(id)a4;
+- (TransitNavigationTrayViewController)initWithRoute:(id)route stepsListDelegate:(id)delegate;
 - (double)_maximumMediumCardHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (id)transitionContextForTransitionController:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (id)transitionContextForTransitionController:(id)controller;
 - (int64_t)pptTestCurrentStepIndex;
 - (void)_endButtonPressed;
-- (void)_recordChangeToLayout:(unint64_t)a3;
-- (void)_updateHeaderViewForCurrentCardHeight:(double)a3;
-- (void)_updateTransitionControllerForTransitionProgressSmallToMedium:(double)a3 mediumToFull:(double)a4;
+- (void)_recordChangeToLayout:(unint64_t)layout;
+- (void)_updateHeaderViewForCurrentCardHeight:(double)height;
+- (void)_updateTransitionControllerForTransitionProgressSmallToMedium:(double)medium mediumToFull:(double)full;
 - (void)_updateTransitionProgressForCurrentCard;
-- (void)didChangeContainerStyle:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)headerViewTapped:(id)a3;
+- (void)didChangeContainerStyle:(unint64_t)style;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)headerViewTapped:(id)tapped;
 - (void)pptTestMoveToNextStep;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBacklightSceneEnvironment;
 - (void)updateForClusteredLegSelectedRideIndexChange;
-- (void)updateForCurrentDisplayedStepAnimated:(BOOL)a3;
+- (void)updateForCurrentDisplayedStepAnimated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation TransitNavigationTrayViewController
@@ -43,20 +43,20 @@
 
 - (NSNumber)displayedItemIndexForAnalytics
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v3 = [v2 displayedItemIndexForAnalytics];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  displayedItemIndexForAnalytics = [dataSource displayedItemIndexForAnalytics];
 
-  return v3;
+  return displayedItemIndexForAnalytics;
 }
 
-- (void)_recordChangeToLayout:(unint64_t)a3
+- (void)_recordChangeToLayout:(unint64_t)layout
 {
   previousLayoutForTransition = self->_previousLayoutForTransition;
   if (previousLayoutForTransition)
   {
-    if (previousLayoutForTransition >= a3)
+    if (previousLayoutForTransition >= layout)
     {
-      if (previousLayoutForTransition <= a3)
+      if (previousLayoutForTransition <= layout)
       {
         return;
       }
@@ -70,48 +70,48 @@
     }
 
     v8 = +[MKMapService sharedService];
-    v6 = [(TransitNavigationTrayViewController *)self currentUITargetForAnalytics];
-    v7 = [(TransitNavigationTrayViewController *)self displayedItemIndexForAnalytics];
-    [v8 captureUserAction:v5 onTarget:v6 eventValue:0 transitStep:v7];
+    currentUITargetForAnalytics = [(TransitNavigationTrayViewController *)self currentUITargetForAnalytics];
+    displayedItemIndexForAnalytics = [(TransitNavigationTrayViewController *)self displayedItemIndexForAnalytics];
+    [v8 captureUserAction:v5 onTarget:currentUITargetForAnalytics eventValue:0 transitStep:displayedItemIndexForAnalytics];
   }
 }
 
 - (BOOL)pptTestMoveToBoardStep
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v3 = [v2 pptTestMoveToBoardStep];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  pptTestMoveToBoardStep = [dataSource pptTestMoveToBoardStep];
 
-  return v3;
+  return pptTestMoveToBoardStep;
 }
 
 - (void)pptTestMoveToNextStep
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  [v2 pptTestMoveToNextStep];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  [dataSource pptTestMoveToNextStep];
 }
 
 - (BOOL)pptTestHasNextStep
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v3 = [v2 pptTestHasNextStep];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  pptTestHasNextStep = [dataSource pptTestHasNextStep];
 
-  return v3;
+  return pptTestHasNextStep;
 }
 
 - (int64_t)pptTestCurrentStepIndex
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v3 = [v2 pptTestCurrentStepIndex];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  pptTestCurrentStepIndex = [dataSource pptTestCurrentStepIndex];
 
-  return v3;
+  return pptTestCurrentStepIndex;
 }
 
 - (BOOL)pptTestSupportStepping
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v3 = [v2 pptTestSupportStepping];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  pptTestSupportStepping = [dataSource pptTestSupportStepping];
 
-  return v3;
+  return pptTestSupportStepping;
 }
 
 - (void)_endButtonPressed
@@ -123,34 +123,34 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "User pressed end button", v5, 2u);
   }
 
-  v4 = [(TransitNavigationTrayViewController *)self trayDelegate];
-  [v4 transitNavigationTrayDidTapClose:self];
+  trayDelegate = [(TransitNavigationTrayViewController *)self trayDelegate];
+  [trayDelegate transitNavigationTrayDidTapClose:self];
 }
 
 - (double)_maximumMediumCardHeight
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
 
-  if (!v3)
+  if (!cardPresentationController)
   {
     return 1.79769313e308;
   }
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containerStyle];
-  if (v5 <= 7 && ((1 << v5) & 0xA3) != 0)
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController2 containerStyle];
+  if (containerStyle <= 7 && ((1 << containerStyle) & 0xA3) != 0)
   {
 
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 availableHeight];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 availableHeight];
     v8 = v7 * 0.5;
   }
 
   else
   {
 
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 availableHeight];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 availableHeight];
     v8 = v10;
   }
 
@@ -159,8 +159,8 @@
 
 - (CGRect)_rectOfRowToKeepVisible
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  [v2 frameOfDisplayedComposedRouteStepCell];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  [dataSource frameOfDisplayedComposedRouteStepCell];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -177,13 +177,13 @@
   return result;
 }
 
-- (id)transitionContextForTransitionController:(id)a3
+- (id)transitionContextForTransitionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(TransitNavigationTrayViewController *)self _rectOfRowToKeepVisible];
   Height = CGRectGetHeight(v26);
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 bottomSafeOffset];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController bottomSafeOffset];
   v8 = v7 + Height;
 
   [(TransitNavigationTrayViewController *)self _maximumMediumCardHeight];
@@ -193,8 +193,8 @@
     v8 = v10;
   }
 
-  v11 = [(ContaineeViewController *)self cardPresentationController];
-  [v11 availableHeight];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 availableHeight];
   v13 = v12;
   [(ContaineeViewController *)self headerHeight];
   v15 = v14;
@@ -216,94 +216,94 @@
   return v20;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = TransitNavigationTrayViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v11 traitCollectionDidChange:v4];
-  v5 = [(TransitNavigationTrayViewController *)self traitCollection];
-  v6 = sub_100017FE8(v4, v5);
+  changeCopy = change;
+  [(MapsThemeViewController *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TransitNavigationTrayViewController *)self traitCollection];
+  v6 = sub_100017FE8(changeCopy, traitCollection);
 
   if (v6)
   {
-    v7 = [(TransitNavigationTrayViewController *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection2 = [(TransitNavigationTrayViewController *)self traitCollection];
+    isLuminanceReduced = [traitCollection2 isLuminanceReduced];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1006E84D0;
     v9[3] = &unk_101661AE0;
-    v10 = v8;
+    v10 = isLuminanceReduced;
     v9[4] = self;
-    [UIView _maps_animateForAndromeda:v8 animations:v9];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v9];
   }
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v5 == 3)
+  if (containeeLayout == 3)
   {
-    v6 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-    [v6 stopScrollingAndZooming];
+    scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+    [scrollView stopScrollingAndZooming];
 
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 wantsMinimizeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsMinimizeLayout];
   }
 
   else
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 wantsExpandLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsExpandLayout];
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 3 < 2)
+  if (layout - 3 < 2)
   {
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v4 = v14;
 LABEL_9:
 
     return v4;
   }
 
-  if (a3 == 1)
+  if (layout == 1)
   {
     [(ContaineeViewController *)self headerHeight];
     v16 = v15 + 8.0;
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v16 + v17;
     goto LABEL_9;
   }
 
   v4 = 0.0;
-  if (a3 == 2)
+  if (layout == 2)
   {
-    v5 = [(TransitNavigationTrayViewController *)self traitCollection];
-    v6 = [v5 verticalSizeClass];
+    traitCollection = [(TransitNavigationTrayViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
     v4 = -1.0;
-    if (v6 != 1)
+    if (verticalSizeClass != 1)
     {
       [(TransitNavigationTrayViewController *)self _maximumMediumCardHeight];
       v8 = v7;
       [(TransitNavigationTrayViewController *)self _rectOfRowToKeepVisible];
       v9 = CGRectGetHeight(v25) + 8.0;
-      v10 = [(ContaineeViewController *)self cardPresentationController];
-      [v10 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v12 = v11;
       v13 = 48.0;
       if (v12 >= 48.0)
       {
-        v6 = [(ContaineeViewController *)self cardPresentationController];
-        [v6 bottomSafeOffset];
+        verticalSizeClass = [(ContaineeViewController *)self cardPresentationController];
+        [verticalSizeClass bottomSafeOffset];
       }
 
       if (v8 < v9 + v13)
@@ -316,8 +316,8 @@ LABEL_9:
       {
         [(TransitNavigationTrayViewController *)self _rectOfRowToKeepVisible];
         Height = CGRectGetHeight(v26);
-        v20 = [(ContaineeViewController *)self cardPresentationController];
-        [v20 bottomSafeOffset];
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController2 bottomSafeOffset];
         if (v21 < 48.0)
         {
           v4 = Height + 56.0;
@@ -325,8 +325,8 @@ LABEL_9:
 
         else
         {
-          v22 = [(ContaineeViewController *)self cardPresentationController];
-          [v22 bottomSafeOffset];
+          cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+          [cardPresentationController3 bottomSafeOffset];
           v4 = Height + 8.0 + v23;
         }
       }
@@ -342,15 +342,15 @@ LABEL_9:
   return v4;
 }
 
-- (void)didChangeContainerStyle:(unint64_t)a3
+- (void)didChangeContainerStyle:(unint64_t)style
 {
   v11.receiver = self;
   v11.super_class = TransitNavigationTrayViewController;
   [(ContaineeViewController *)&v11 didChangeContainerStyle:?];
-  v5 = (a3 > 7) | (0x5Cu >> a3);
-  [(RoutePlanningTransitionController *)self->_transitionController setCardDragEnabled:((a3 > 7) | (0x5Cu >> a3) & 1) == 0];
-  v6 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  v7 = v6;
+  v5 = (style > 7) | (0x5Cu >> style);
+  [(RoutePlanningTransitionController *)self->_transitionController setCardDragEnabled:((style > 7) | (0x5Cu >> style) & 1) == 0];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  v7 = dataSource;
   v8 = v5 & 1;
   if (v5)
   {
@@ -362,15 +362,15 @@ LABEL_9:
     v9 = 2;
   }
 
-  [v6 setAutomaticallyScrollToDisplayedStep:v8];
+  [dataSource setAutomaticallyScrollToDisplayedStep:v8];
 
-  v10 = [(ContaineeViewController *)self cardPresentationController];
-  [v10 wantsLayout:v9];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:v9];
 
   [(TransitNavigationTrayViewController *)self _updateTransitionProgressForCurrentCard];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v7.receiver = self;
   v7.super_class = TransitNavigationTrayViewController;
@@ -382,54 +382,54 @@ LABEL_9:
 
   if (byte_10195DF08)
   {
-    v5 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-    [v5 setScrollEnabled:a3 == 3];
+    scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+    [scrollView setScrollEnabled:layout == 3];
   }
 
-  v6 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  [v6 setUseCollapsedDisplayStyle:a3 != 3];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  [dataSource setUseCollapsedDisplayStyle:layout != 3];
 
-  [(TransitNavigationTrayViewController *)self _recordChangeToLayout:a3];
+  [(TransitNavigationTrayViewController *)self _recordChangeToLayout:layout];
   [(TransitNavigationTrayViewController *)self _updateTransitionProgressForCurrentCard];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = TransitNavigationTrayViewController;
   [(ContaineeViewController *)&v6 willChangeLayout:?];
-  if (a3 <= 2)
+  if (layout <= 2)
   {
-    v5 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-    [v5 collapseAllItems];
+    dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+    [dataSource collapseAllItems];
   }
 }
 
 - (void)updateBacklightSceneEnvironment
 {
-  v3 = [(TransitNavigationTrayViewController *)self traitCollection];
-  v4 = [v3 isLuminanceReduced];
+  traitCollection = [(TransitNavigationTrayViewController *)self traitCollection];
+  isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-  if (v4)
+  if (isLuminanceReduced)
   {
-    v8 = [(TransitNavigationTrayViewController *)self view];
-    v5 = [v8 window];
-    v6 = [v5 windowScene];
-    v7 = [v6 _backlightSceneEnvironment];
-    [v7 invalidateAllTimelinesForReason:@"TransitNavigationTray didReceiveUpdate"];
+    view = [(TransitNavigationTrayViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _backlightSceneEnvironment = [windowScene _backlightSceneEnvironment];
+    [_backlightSceneEnvironment invalidateAllTimelinesForReason:@"TransitNavigationTray didReceiveUpdate"];
   }
 }
 
-- (void)updateForCurrentDisplayedStepAnimated:(BOOL)a3
+- (void)updateForCurrentDisplayedStepAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  animatedCopy = animated;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v6 == 2)
+  if (containeeLayout == 2)
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 cardHeight];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 cardHeight];
     v9 = v8;
 
     [(TransitNavigationTrayViewController *)self heightForLayout:2];
@@ -447,8 +447,8 @@ LABEL_9:
       [(TransitNavigationTrayViewController *)self _rectOfRowToKeepVisible];
       v17 = v16;
       v19 = v18;
-      v15 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-      [v15 setContentOffset:v3 animated:{v17, v19}];
+      scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+      [scrollView setContentOffset:animatedCopy animated:{v17, v19}];
     }
 
     else
@@ -459,7 +459,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "updateForCurrentDisplayedStep: need to reload current tray height", buf, 2u);
       }
 
-      if (v3)
+      if (animatedCopy)
       {
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
@@ -470,8 +470,8 @@ LABEL_9:
         return;
       }
 
-      v15 = [(ContaineeViewController *)self cardPresentationController];
-      [v15 updateHeightForCurrentLayout];
+      scrollView = [(ContaineeViewController *)self cardPresentationController];
+      [scrollView updateHeightForCurrentLayout];
     }
   }
 
@@ -484,35 +484,35 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "updateForCurrentDisplayedStep: need to switch to Medium layout", buf, 2u);
     }
 
-    v15 = [(ContaineeViewController *)self cardPresentationController];
-    [v15 wantsLayout:2 animated:v3];
+    scrollView = [(ContaineeViewController *)self cardPresentationController];
+    [scrollView wantsLayout:2 animated:animatedCopy];
   }
 }
 
 - (void)updateForClusteredLegSelectedRideIndexChange
 {
-  v2 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  [v2 updateForClusteredLegSelectedRideIndexChange];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  [dataSource updateForClusteredLegSelectedRideIndexChange];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = TransitNavigationTrayViewController;
-  [(ContaineeViewController *)&v8 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containerStyle];
-  v6 = (v5 > 7) | (0x5Cu >> v5);
+  [(ContaineeViewController *)&v8 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  v6 = (containerStyle > 7) | (0x5Cu >> containerStyle);
 
   [(RoutePlanningTransitionController *)self->_transitionController setCardDragEnabled:(v6 & 1) == 0];
-  v7 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-  [v7 setAutomaticallyScrollToDisplayedStep:v6 & 1];
+  dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+  [dataSource setAutomaticallyScrollToDisplayedStep:v6 & 1];
 }
 
-- (void)_updateHeaderViewForCurrentCardHeight:(double)a3
+- (void)_updateHeaderViewForCurrentCardHeight:(double)height
 {
-  v5 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  if ([v5 isDragging])
+  scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  if ([scrollView isDragging])
   {
     previousLayoutForTransition = self->_previousLayoutForTransition;
 
@@ -528,7 +528,7 @@ LABEL_9:
 
   [(ContainerHeaderView *)self->_containerHeaderView bounds];
   CGRectGetHeight(v13);
-  v7 = [(TransitNavigationTrayViewController *)self view];
+  view = [(TransitNavigationTrayViewController *)self view];
   UIRoundToViewScale();
   v9 = v8;
 
@@ -538,46 +538,46 @@ LABEL_9:
     [(NSLayoutConstraint *)self->_headerBottomConstraint setConstant:v9];
     containerHeaderView = self->_containerHeaderView;
 
-    [(ContainerHeaderView *)containerHeaderView setAlpha:a3];
+    [(ContainerHeaderView *)containerHeaderView setAlpha:height];
   }
 }
 
-- (void)_updateTransitionControllerForTransitionProgressSmallToMedium:(double)a3 mediumToFull:(double)a4
+- (void)_updateTransitionControllerForTransitionProgressSmallToMedium:(double)medium mediumToFull:(double)full
 {
-  v7 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  v8 = [v7 isDragging];
+  scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  isDragging = [scrollView isDragging];
 
-  if (v8)
+  if (isDragging)
   {
     return;
   }
 
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  v32 = [v9 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  v10 = [(ContaineeViewController *)self cardPresentationController];
-  v31 = [v10 containerStyle];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController2 containerStyle];
 
-  if (fabs(a4) <= 2.22044605e-16)
+  if (fabs(full) <= 2.22044605e-16)
   {
-    v30 = v32 == 2;
+    v30 = containeeLayout == 2;
 LABEL_6:
-    if ((v32 - 1) > 1)
+    if ((containeeLayout - 1) > 1)
     {
       v11 = 0;
     }
 
     else
     {
-      v12 = fabs(a3 + -1.0) > 2.22044605e-16;
-      v11 = fabs(a3) > 2.22044605e-16 && v12;
+      v12 = fabs(medium + -1.0) > 2.22044605e-16;
+      v11 = fabs(medium) > 2.22044605e-16 && v12;
     }
 
     goto LABEL_11;
   }
 
-  v30 = v32 == 2;
-  if (fabs(a4 + -1.0) <= 2.22044605e-16)
+  v30 = containeeLayout == 2;
+  if (fabs(full + -1.0) <= 2.22044605e-16)
   {
     goto LABEL_6;
   }
@@ -586,8 +586,8 @@ LABEL_6:
 LABEL_11:
   previousLayoutForTransition = self->_previousLayoutForTransition;
   previousStyleForTransition = self->_previousStyleForTransition;
-  v15 = [(ContaineeViewController *)self cardPresentationController];
-  [v15 cardHeight];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 cardHeight];
   v17 = v16;
 
   v18 = 0;
@@ -610,7 +610,7 @@ LABEL_11:
     }
 
     v21 = v20;
-    if (previousLayoutForTransition == v32)
+    if (previousLayoutForTransition == containeeLayout)
     {
       v22 = @"NO";
     }
@@ -621,7 +621,7 @@ LABEL_11:
     }
 
     v23 = v22;
-    if (previousStyleForTransition == v31)
+    if (previousStyleForTransition == containerStyle)
     {
       v24 = @"NO";
     }
@@ -644,9 +644,9 @@ LABEL_11:
 
     v26 = v25;
     *buf = 134219522;
-    v34 = a4;
+    fullCopy = full;
     v35 = 2048;
-    v36 = a3;
+    mediumCopy = medium;
     v37 = 2048;
     v38 = v17;
     v39 = 2112;
@@ -660,7 +660,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Updating transition controller (progressM-F: %#.5lf, progressS-M: %#.5lf, cardHeight: %lf, transitioning: %@, layoutChanged: %@, styleChanged: %@, currentMediumChangedInPlace: %@)", buf, 0x48u);
   }
 
-  if (previousLayoutForTransition == v32)
+  if (previousLayoutForTransition == containeeLayout)
   {
     v27 = v11;
   }
@@ -670,7 +670,7 @@ LABEL_11:
     v27 = 1;
   }
 
-  if (previousStyleForTransition != v31)
+  if (previousStyleForTransition != containerStyle)
   {
     v27 = 1;
   }
@@ -682,8 +682,8 @@ LABEL_11:
 
   if (!(v11 & 1 | ![(RoutePlanningTransitionController *)self->_transitionController isTransitioning]))
   {
-    v28 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-    [v28 setUseCollapsedDisplayStyle:v32 != 3];
+    dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+    [dataSource setUseCollapsedDisplayStyle:containeeLayout != 3];
   }
 
   if ([(RoutePlanningTransitionController *)self->_transitionController isTransitioning])
@@ -693,8 +693,8 @@ LABEL_11:
 
   if ((v11 & 1) == 0)
   {
-    self->_previousLayoutForTransition = v32;
-    self->_previousStyleForTransition = v31;
+    self->_previousLayoutForTransition = containeeLayout;
+    self->_previousStyleForTransition = containerStyle;
     if (v30 && vabdd_f64(v17, self->_previousMediumTransitionHeight) > 2.22044605e-16)
     {
       self->_previousMediumTransitionHeight = v17;
@@ -704,24 +704,24 @@ LABEL_11:
   }
 }
 
-- (BOOL)_updateListContentInsetWithHeight:(double)a3
+- (BOOL)_updateListContentInsetWithHeight:(double)height
 {
-  v4 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  v5 = [v4 isDragging];
+  scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  isDragging = [scrollView isDragging];
 
-  if (v5)
+  if (isDragging)
   {
     return 0;
   }
 
   [(NSLayoutConstraint *)self->_headerBottomConstraint constant];
   [(TransitDirectionsListViewController *)self->_listViewController _heightOfFinalRow];
-  v6 = [(TransitNavigationTrayViewController *)self view];
+  view = [(TransitNavigationTrayViewController *)self view];
   UIRoundToViewScale();
   v8 = v7;
 
-  v9 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  [v9 contentInset];
+  scrollView2 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  [scrollView2 contentInset];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -742,17 +742,17 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Updating contentInset.bottom (prev: %#.5lf, new: %#.5lf)", &v21, 0x16u);
   }
 
-  v19 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  [v19 setContentInset:{v11, v13, v8, v17}];
+  scrollView3 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  [scrollView3 setContentInset:{v11, v13, v8, v17}];
 
   return 1;
 }
 
 - (void)_updateTransitionProgressForCurrentCard
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerStyle];
-  if (v4 > 7 || ((1 << v4) & 0xA3) == 0)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  if (containerStyle > 7 || ((1 << containerStyle) & 0xA3) == 0)
   {
     v8 = 1.0;
     v10 = 1.0;
@@ -761,17 +761,17 @@ LABEL_11:
   else
   {
 
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 transitionProgressToAscendingLayoutFromLayout:1];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 transitionProgressToAscendingLayoutFromLayout:1];
     v8 = v7;
 
-    v3 = [(ContaineeViewController *)self cardPresentationController];
-    [v3 transitionProgressToAscendingLayoutFromLayout:2];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController transitionProgressToAscendingLayoutFromLayout:2];
     v10 = v9;
   }
 
-  v11 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  [v11 contentOffset];
+  scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  [scrollView contentOffset];
   if (v12 <= 0.0)
   {
     self->_preTransitionContentOffsetY = 0.0;
@@ -779,14 +779,14 @@ LABEL_11:
 
   else
   {
-    v13 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-    [v13 contentOffset];
+    scrollView2 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+    [scrollView2 contentOffset];
     self->_preTransitionContentOffsetY = v14;
   }
 
   [(TransitNavigationTrayViewController *)self _updateHeaderViewForCurrentCardHeight:v10];
-  v15 = [(ContaineeViewController *)self cardPresentationController];
-  [v15 cardHeight];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 cardHeight];
   [(TransitNavigationTrayViewController *)self _updateListContentInsetWithHeight:?];
 
   [(TransitNavigationTrayViewController *)self _updateTransitionControllerForTransitionProgressSmallToMedium:v8 mediumToFull:v10];
@@ -799,8 +799,8 @@ LABEL_11:
   v6.receiver = self;
   v6.super_class = TransitNavigationTrayViewController;
   [(ContaineeViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  if ([v3 containeeLayout] != 2)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  if ([cardPresentationController containeeLayout] != 2)
   {
     goto LABEL_4;
   }
@@ -809,8 +809,8 @@ LABEL_11:
 
   if (v4 <= 2.22044605e-16)
   {
-    v3 = [(ContaineeViewController *)self cardPresentationController];
-    [v3 cardHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController cardHeight];
     self->_previousMediumTransitionHeight = v5;
 LABEL_4:
   }
@@ -825,15 +825,15 @@ LABEL_4:
   [(TransitNavigationTrayViewController *)&v11 viewWillLayoutSubviews];
   if (!self->_hasForcedInitialContaineeHeight)
   {
-    v3 = [(ContaineeViewController *)self cardPresentationController];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
 
-    if (v3)
+    if (cardPresentationController)
     {
-      v4 = [(ContaineeViewController *)self cardPresentationController];
-      self->_previousLayoutForTransition = [v4 containeeLayout];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      self->_previousLayoutForTransition = [cardPresentationController2 containeeLayout];
 
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      self->_previousStyleForTransition = [v5 containerStyle];
+      cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+      self->_previousStyleForTransition = [cardPresentationController3 containerStyle];
 
       if (qword_10195DF00 != -1)
       {
@@ -843,20 +843,20 @@ LABEL_4:
       if (byte_10195DF08)
       {
         v6 = self->_previousLayoutForTransition == 3;
-        v7 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-        [v7 setScrollEnabled:v6];
+        scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+        [scrollView setScrollEnabled:v6];
       }
 
       v8 = self->_previousLayoutForTransition != 3;
-      v9 = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
-      [v9 setUseCollapsedDisplayStyle:v8];
+      dataSource = [(TransitDirectionsListViewController *)self->_listViewController dataSource];
+      [dataSource setUseCollapsedDisplayStyle:v8];
 
       [(TransitNavigationTrayViewController *)self _rectOfRowToKeepVisible];
       if (CGRectGetHeight(v12) > 0.0)
       {
         self->_hasForcedInitialContaineeHeight = 1;
-        v10 = [(ContaineeViewController *)self cardPresentationController];
-        [v10 updateHeightForCurrentLayout];
+        cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController4 updateHeightForCurrentLayout];
       }
     }
   }
@@ -867,21 +867,21 @@ LABEL_4:
   v79.receiver = self;
   v79.super_class = TransitNavigationTrayViewController;
   [(ContaineeViewController *)&v79 viewDidLoad];
-  v3 = [(TransitNavigationTrayViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"TransitNavigationTray"];
+  view = [(TransitNavigationTrayViewController *)self view];
+  [view setAccessibilityIdentifier:@"TransitNavigationTray"];
 
-  v4 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  [v4 setContentInsetAdjustmentBehavior:2];
+  scrollView = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  [scrollView setContentInsetAdjustmentBehavior:2];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setFirstCard:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setFirstCard:1];
 
   [(TransitNavigationTrayViewController *)self addChildViewController:self->_listViewController];
-  v6 = [(TransitDirectionsListViewController *)self->_listViewController view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setClipsToBounds:1];
-  v7 = [(TransitNavigationTrayViewController *)self view];
-  [v7 addSubview:v6];
+  view2 = [(TransitDirectionsListViewController *)self->_listViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setClipsToBounds:1];
+  view3 = [(TransitNavigationTrayViewController *)self view];
+  [view3 addSubview:view2];
 
   [(TransitDirectionsListViewController *)self->_listViewController didMoveToParentViewController:self];
   v8 = [[ContainerHeaderView alloc] initWithCardButtonType:1];
@@ -890,8 +890,8 @@ LABEL_4:
 
   [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_containerHeaderView setButtonHidden:1];
-  v10 = [(TransitNavigationTrayViewController *)self title];
-  [(ContainerHeaderView *)self->_containerHeaderView setTitle:v10];
+  title = [(TransitNavigationTrayViewController *)self title];
+  [(ContainerHeaderView *)self->_containerHeaderView setTitle:title];
 
   v11 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleTitle2 weight:UIFontWeightBold];
   [(ContainerHeaderView *)self->_containerHeaderView setCustomTitleFont:v11];
@@ -899,8 +899,8 @@ LABEL_4:
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
   LODWORD(v12) = 1148846080;
   [(ContainerHeaderView *)self->_containerHeaderView setContentHuggingPriority:1 forAxis:v12];
-  v13 = [(TransitNavigationTrayViewController *)self view];
-  [v13 addSubview:self->_containerHeaderView];
+  view4 = [(TransitNavigationTrayViewController *)self view];
+  [view4 addSubview:self->_containerHeaderView];
 
   v14 = +[UIButton _maps_cardButtonCloseButton];
   endButton = self->_endButton;
@@ -910,14 +910,14 @@ LABEL_4:
   [(UIButton *)self->_endButton setAccessibilityIdentifier:@"TransitNavigationEndButton"];
   [(UIButton *)self->_endButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_endButton addTarget:self action:"_endButtonPressed" forControlEvents:64];
-  v16 = [(TransitNavigationTrayViewController *)self view];
-  [v16 addSubview:self->_endButton];
+  view5 = [(TransitNavigationTrayViewController *)self view];
+  [view5 addSubview:self->_endButton];
 
   v78 = objc_alloc_init(NSMutableArray);
-  v17 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-  v18 = [(TransitNavigationTrayViewController *)self view];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  bottomAnchor = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+  view6 = [(TransitNavigationTrayViewController *)self view];
+  topAnchor = [view6 topAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:topAnchor];
   headerBottomConstraint = self->_headerBottomConstraint;
   self->_headerBottomConstraint = v20;
 
@@ -932,65 +932,65 @@ LABEL_4:
   }
 
   v80[0] = self->_headerBottomConstraint;
-  v76 = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
+  heightAnchor = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
   LODWORD(v23) = 1132068864;
-  v75 = [v76 constraintEqualToConstant:v22 priority:v23];
+  v75 = [heightAnchor constraintEqualToConstant:v22 priority:v23];
   v80[1] = v75;
-  v74 = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
-  v73 = [v74 constraintGreaterThanOrEqualToConstant:v22];
+  heightAnchor2 = [(ContainerHeaderView *)self->_containerHeaderView heightAnchor];
+  v73 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v22];
   v80[2] = v73;
-  v71 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
-  v72 = [(TransitNavigationTrayViewController *)self view];
-  v70 = [v72 leadingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  leadingAnchor = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
+  view7 = [(TransitNavigationTrayViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v69 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v80[3] = v69;
-  v68 = [(TransitNavigationTrayViewController *)self view];
-  v67 = [v68 trailingAnchor];
-  v66 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  view8 = [(TransitNavigationTrayViewController *)self view];
+  trailingAnchor = [view8 trailingAnchor];
+  trailingAnchor2 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
+  v65 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v80[4] = v65;
-  v64 = [v6 topAnchor];
-  v63 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  topAnchor2 = [view2 topAnchor];
+  bottomAnchor2 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+  v62 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
   v80[5] = v62;
-  v60 = [v6 leadingAnchor];
-  v61 = [(TransitNavigationTrayViewController *)self view];
-  v59 = [v61 leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  leadingAnchor3 = [view2 leadingAnchor];
+  view9 = [(TransitNavigationTrayViewController *)self view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v80[6] = v58;
-  v57 = [(TransitNavigationTrayViewController *)self view];
-  v56 = [v57 trailingAnchor];
-  v77 = v6;
-  v55 = [v6 trailingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  view10 = [(TransitNavigationTrayViewController *)self view];
+  trailingAnchor3 = [view10 trailingAnchor];
+  v77 = view2;
+  trailingAnchor4 = [view2 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v80[7] = v54;
-  v53 = [(TransitNavigationTrayViewController *)self view];
-  v52 = [v53 bottomAnchor];
-  v51 = [v6 bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  view11 = [(TransitNavigationTrayViewController *)self view];
+  bottomAnchor3 = [view11 bottomAnchor];
+  bottomAnchor4 = [view2 bottomAnchor];
+  v50 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v80[8] = v50;
-  v48 = [(UIButton *)self->_endButton topAnchor];
-  v49 = [(TransitNavigationTrayViewController *)self view];
-  v47 = [v49 topAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:16.0];
+  topAnchor3 = [(UIButton *)self->_endButton topAnchor];
+  view12 = [(TransitNavigationTrayViewController *)self view];
+  topAnchor4 = [view12 topAnchor];
+  v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
   v80[9] = v46;
-  v24 = [(UIButton *)self->_endButton trailingAnchor];
-  v25 = [(TransitNavigationTrayViewController *)self view];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-16.0];
+  trailingAnchor5 = [(UIButton *)self->_endButton trailingAnchor];
+  view13 = [(TransitNavigationTrayViewController *)self view];
+  trailingAnchor6 = [view13 trailingAnchor];
+  v27 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v80[10] = v27;
-  v28 = [(TransitNavigationTrayViewController *)self view];
-  v29 = [v28 bottomAnchor];
-  v30 = [(UIButton *)self->_endButton bottomAnchor];
-  v31 = [v29 constraintGreaterThanOrEqualToAnchor:v30];
+  view14 = [(TransitNavigationTrayViewController *)self view];
+  bottomAnchor5 = [view14 bottomAnchor];
+  bottomAnchor6 = [(UIButton *)self->_endButton bottomAnchor];
+  v31 = [bottomAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor6];
   v80[11] = v31;
   v32 = [NSArray arrayWithObjects:v80 count:12];
   [v78 addObjectsFromArray:v32];
 
   [NSLayoutConstraint activateConstraints:v78];
   v33 = [RoutePlanningTransitionController alloc];
-  v34 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
-  v35 = [(RoutePlanningTransitionController *)v33 initWithScrollView:v34];
+  scrollView2 = [(TransitDirectionsListViewController *)self->_listViewController scrollView];
+  v35 = [(RoutePlanningTransitionController *)v33 initWithScrollView:scrollView2];
   transitionController = self->_transitionController;
   self->_transitionController = v35;
 
@@ -998,13 +998,13 @@ LABEL_4:
   [(RoutePlanningTransitionController *)self->_transitionController setShowMaximumContentWhenExpanding:0];
   [(TransitDirectionsListViewController *)self->_listViewController setScrollViewDelegate:self->_transitionController];
   [(TransitNavigationTrayViewController *)self _updateHeaderViewForCurrentCardHeight:0.0];
-  v37 = [(ContaineeViewController *)self cardPresentationController];
-  [v37 cardHeight];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 cardHeight];
   [(TransitNavigationTrayViewController *)self _updateListContentInsetWithHeight:?];
 
   v38 = [UIView alloc];
-  v39 = [(TransitNavigationTrayViewController *)self view];
-  [v39 bounds];
+  view15 = [(TransitNavigationTrayViewController *)self view];
+  [view15 bounds];
   v40 = [v38 initWithFrame:?];
   lowLuminanceBackgroundView = self->_lowLuminanceBackgroundView;
   self->_lowLuminanceBackgroundView = v40;
@@ -1014,46 +1014,46 @@ LABEL_4:
   [(UIView *)self->_lowLuminanceBackgroundView setBackgroundColor:v42];
 
   [(UIView *)self->_lowLuminanceBackgroundView setAutoresizingMask:18];
-  v43 = [(TransitNavigationTrayViewController *)self view];
+  view16 = [(TransitNavigationTrayViewController *)self view];
   v44 = self->_lowLuminanceBackgroundView;
-  v45 = [(TransitDirectionsListViewController *)self->_listViewController view];
-  [v43 insertSubview:v44 belowSubview:v45];
+  view17 = [(TransitDirectionsListViewController *)self->_listViewController view];
+  [view16 insertSubview:v44 belowSubview:view17];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = TransitNavigationTrayViewController;
-  v4 = a3;
-  [(TransitNavigationTrayViewController *)&v5 setTitle:v4];
-  [(ContainerHeaderView *)self->_containerHeaderView setTitle:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(TransitNavigationTrayViewController *)&v5 setTitle:titleCopy];
+  [(ContainerHeaderView *)self->_containerHeaderView setTitle:titleCopy, v5.receiver, v5.super_class];
 }
 
-- (TransitNavigationTrayViewController)initWithRoute:(id)a3 stepsListDelegate:(id)a4
+- (TransitNavigationTrayViewController)initWithRoute:(id)route stepsListDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = TransitNavigationTrayViewController;
   v8 = [(TransitNavigationTrayViewController *)&v17 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 destination];
-    v10 = [v9 navDisplayName];
-    [(TransitNavigationTrayViewController *)v8 setTitle:v10];
+    destination = [routeCopy destination];
+    navDisplayName = [destination navDisplayName];
+    [(TransitNavigationTrayViewController *)v8 setTitle:navDisplayName];
 
-    v11 = [(ContaineeViewController *)v8 cardPresentationController];
-    [v11 setHideContentInSmallLayout:0];
+    cardPresentationController = [(ContaineeViewController *)v8 cardPresentationController];
+    [cardPresentationController setHideContentInSmallLayout:0];
 
-    v12 = [[TransitDirectionsListViewController alloc] initWithRoute:v6 forNavigation:1];
+    v12 = [[TransitDirectionsListViewController alloc] initWithRoute:routeCopy forNavigation:1];
     listViewController = v8->_listViewController;
     v8->_listViewController = v12;
 
-    v14 = [(TransitDirectionsListViewController *)v8->_listViewController dataSource];
-    [v14 setDelegate:v7];
+    dataSource = [(TransitDirectionsListViewController *)v8->_listViewController dataSource];
+    [dataSource setDelegate:delegateCopy];
 
-    v15 = [(TransitDirectionsListViewController *)v8->_listViewController dataSource];
-    [v15 setAutomaticallyScrollToDisplayedStep:0];
+    dataSource2 = [(TransitDirectionsListViewController *)v8->_listViewController dataSource];
+    [dataSource2 setAutomaticallyScrollToDisplayedStep:0];
   }
 
   return v8;

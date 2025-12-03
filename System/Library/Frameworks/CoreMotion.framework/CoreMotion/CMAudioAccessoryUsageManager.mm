@@ -3,10 +3,10 @@
 - (CMAudioAccessoryUsageManager)init;
 - (void)_connect;
 - (void)_disconnect;
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3;
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message;
 - (void)dealloc;
-- (void)requestAudioAccessoryUsageUpdatesWithHandler:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)requestAudioAccessoryUsageUpdatesWithHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CMAudioAccessoryUsageManager
@@ -122,7 +122,7 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C7B8 != -1)
@@ -161,7 +161,7 @@
   block[2] = sub_19B5B816C;
   block[3] = &unk_1E7532A00;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_async(dispatchQueue, block);
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -236,9 +236,9 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v48 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C7B8 != -1)
   {
@@ -497,7 +497,7 @@ LABEL_45:
   sub_19B5B9C88();
 }
 
-- (void)requestAudioAccessoryUsageUpdatesWithHandler:(id)a3
+- (void)requestAudioAccessoryUsageUpdatesWithHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_class();
@@ -508,7 +508,7 @@ LABEL_45:
     v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v23, &v22, 1);
     v16 = objc_msgSend_CMErrorWithCode_userInfo_(CMErrorUtils, v15, 109, v14);
 LABEL_8:
-    (*(a3 + 2))(a3, v16);
+    (*(handler + 2))(handler, v16);
     v19 = *MEMORY[0x1E69E9840];
     return;
   }
@@ -523,10 +523,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = *(a3 + 2);
+  v12 = *(handler + 2);
   v13 = *MEMORY[0x1E69E9840];
 
-  v12(a3, 0);
+  v12(handler, 0);
 }
 
 @end

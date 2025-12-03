@@ -1,17 +1,17 @@
 @interface GDXPCGraphSimulationService
-- (BOOL)mockTripleEntityTaggingWithContactId:(id)a3 inferredRelationshipLabel:(id)a4 error:(id *)a5;
+- (BOOL)mockTripleEntityTaggingWithContactId:(id)id inferredRelationshipLabel:(id)label error:(id *)error;
 - (GDXPCGraphSimulationService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCGraphSimulationService
 
-- (BOOL)mockTripleEntityTaggingWithContactId:(id)a3 inferredRelationshipLabel:(id)a4 error:(id *)a5
+- (BOOL)mockTripleEntityTaggingWithContactId:(id)id inferredRelationshipLabel:(id)label error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  labelCopy = label;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -42,12 +42,12 @@
   v14[3] = &unk_1E79628A0;
   v14[4] = &v17;
   v14[5] = &v21;
-  [v11 mockTripleEntityTaggingWithContactId:v8 inferredRelationshipLabel:v9 completion:v14];
+  [v11 mockTripleEntityTaggingWithContactId:idCopy inferredRelationshipLabel:labelCopy completion:v14];
 
   v12 = *(v18 + 24);
-  if (a5 && (v18[3] & 1) == 0)
+  if (error && (v18[3] & 1) == 0)
   {
-    *a5 = v22[5];
+    *error = v22[5];
     v12 = *(v18 + 24);
   }
 
@@ -57,14 +57,14 @@
   return v12 & 1;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCGraphSimulationService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCGraphSimulationService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

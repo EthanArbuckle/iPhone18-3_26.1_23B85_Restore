@@ -1,25 +1,25 @@
 @interface SBHomeToFullScreenCenterZoomSwitcherModifier
-- (BOOL)_isToAppLayoutAtIndex:(unint64_t)a3;
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3;
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBHomeToFullScreenCenterZoomSwitcherModifier)initWithTransitionID:(id)a3 toAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)_isToAppLayoutAtIndex:(unint64_t)index;
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBHomeToFullScreenCenterZoomSwitcherModifier)initWithTransitionID:(id)d toAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenScale;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_layoutSettings;
 - (id)_opacitySettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleResizeProgressEvent:(id)a3;
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleResizeProgressEvent:(id)event;
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
@@ -30,39 +30,39 @@
 
 @implementation SBHomeToFullScreenCenterZoomSwitcherModifier
 
-- (SBHomeToFullScreenCenterZoomSwitcherModifier)initWithTransitionID:(id)a3 toAppLayout:(id)a4
+- (SBHomeToFullScreenCenterZoomSwitcherModifier)initWithTransitionID:(id)d toAppLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBHomeToFullScreenCenterZoomSwitcherModifier initWithTransitionID:a2 toAppLayout:self];
   }
 
   v12.receiver = self;
   v12.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v9 = [(SBTransitionSwitcherModifier *)&v12 initWithTransitionID:v7];
+  v9 = [(SBTransitionSwitcherModifier *)&v12 initWithTransitionID:dCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_toAppLayout, a4);
+    objc_storeStrong(&v9->_toAppLayout, layout);
   }
 
   return v10;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
-  [v6 disableAsyncRenderingTransitionPercentage];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings disableAsyncRenderingTransitionPercentage];
   v8 = v7;
 
-  v9 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _layoutSettings];
-  [v9 settlingDuration];
+  _layoutSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v11 = v8 * v10;
   UIAnimationDragCoefficient();
-  *a3 = v11 * v12;
+  *delay = v11 * v12;
 
   return 1;
 }
@@ -71,22 +71,22 @@
 {
   v20.receiver = self;
   v20.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:2];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   v6 = +[SBBlurItemContainerParameters defaultCrossblurBlurParameters];
-  v7 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v8 = [v7 animationSettings];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v9 = [SBBlurItemContainerParameters alloc];
-  [v8 homeScreenCenterZoomInitialBlur];
+  [animationSettings homeScreenCenterZoomInitialBlur];
   v11 = v10;
-  v12 = [v6 shouldRasterize];
+  shouldRasterize = [v6 shouldRasterize];
   [v6 rasterizationScale];
   v14 = v13;
-  v15 = [v6 blurAnimationSettings];
-  v16 = [(SBBlurItemContainerParameters *)v9 initWithBlurRadius:v12 shouldRasterize:1 rasterizationScale:1 inputQuality:v15 inputIntermediateBitDepth:v11 blurAnimationSettings:v14];
+  blurAnimationSettings = [v6 blurAnimationSettings];
+  v16 = [(SBBlurItemContainerParameters *)v9 initWithBlurRadius:shouldRasterize shouldRasterize:1 rasterizationScale:1 inputQuality:blurAnimationSettings inputIntermediateBitDepth:v11 blurAnimationSettings:v14];
 
   v17 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_toAppLayout shouldBlur:1 blurParameters:v16 animationUpdateMode:2];
   v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v17 toResponse:v5];
@@ -98,24 +98,24 @@
 {
   v20.receiver = self;
   v20.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v20 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v20 transitionWillUpdate];
   v4 = +[SBBlurItemContainerParameters defaultCrossblurBlurParameters];
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  [v6 homeScreenCenterZoomInitialBlur];
+  [animationSettings homeScreenCenterZoomInitialBlur];
   v8 = v7;
-  [v6 homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
+  [animationSettings homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
   v10 = v8 * (v9 + -1.0) / v9;
   v11 = [SBBlurItemContainerParameters alloc];
-  v12 = [v4 shouldRasterize];
+  shouldRasterize = [v4 shouldRasterize];
   [v4 rasterizationScale];
   v14 = v13;
-  v15 = [v4 blurAnimationSettings];
-  v16 = [(SBBlurItemContainerParameters *)v11 initWithBlurRadius:v12 shouldRasterize:1 rasterizationScale:1 inputQuality:v15 inputIntermediateBitDepth:v10 blurAnimationSettings:v14];
+  blurAnimationSettings = [v4 blurAnimationSettings];
+  v16 = [(SBBlurItemContainerParameters *)v11 initWithBlurRadius:shouldRasterize shouldRasterize:1 rasterizationScale:1 inputQuality:blurAnimationSettings inputIntermediateBitDepth:v10 blurAnimationSettings:v14];
 
   v17 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_toAppLayout shouldBlur:1 blurParameters:v16 animationUpdateMode:3];
-  v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v17 toResponse:v3];
+  v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v17 toResponse:transitionWillUpdate];
 
   return v18;
 }
@@ -124,25 +124,25 @@
 {
   v7.receiver = self;
   v7.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   v4 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_toAppLayout shouldBlur:0 animationUpdateMode:2];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
   return v5;
 }
 
-- (id)handleResizeProgressEvent:(id)a3
+- (id)handleResizeProgressEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v11 handleResizeProgressEvent:v4];
-  [v4 progress];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v11 handleResizeProgressEvent:eventCopy];
+  [eventCopy progress];
 
-  v6 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  [v7 homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
+  [animationSettings homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
   if (BSFloatGreaterThanOrEqualToFloat())
   {
     v8 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_toAppLayout shouldBlur:0 animationUpdateMode:2];
@@ -154,13 +154,13 @@
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   if (![(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:?])
   {
     v26.receiver = self;
     v26.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v26 frameForIndex:a3];
+    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v26 frameForIndex:index];
 LABEL_6:
     v11 = v18;
     v13 = v19;
@@ -169,17 +169,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self windowManagementContext];
-  v6 = [v5 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (!v6)
+  if (!isFlexibleWindowingEnabled)
   {
     [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self containerViewBounds];
     goto LABEL_6;
   }
 
-  v7 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   v9 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v8];
   [v9 boundingBox];
@@ -200,24 +200,24 @@ LABEL_7:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBTransitionSwitcherModifier *)self transitionPhase];
-  v6 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  transitionPhase = [(SBTransitionSwitcherModifier *)self transitionPhase];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  if (![(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:a3])
+  if (![(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:index])
   {
     v11.receiver = self;
     v11.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v11 scaleForIndex:a3];
+    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v11 scaleForIndex:index];
     goto LABEL_5;
   }
 
   v8 = 1.0;
-  if (v5 <= 1)
+  if (transitionPhase <= 1)
   {
-    [v7 homeScreenCenterZoomInitialScale];
+    [animationSettings homeScreenCenterZoomInitialScale];
 LABEL_5:
     v8 = v9;
   }
@@ -225,13 +225,13 @@ LABEL_5:
   return v8;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:a3], v3 = 0.5, v4 = 0.5, !v7))
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:index], v3 = 0.5, v4 = 0.5, !v7))
   {
     v8.receiver = self;
     v8.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v8 anchorPointForIndex:a3, v3, v4];
+    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v8 anchorPointForIndex:index, v3, v4];
   }
 
   result.y = v4;
@@ -239,34 +239,34 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  return [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _isToAppLayoutAtIndex:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  return [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_shouldForceDefaultAnchorPointForTransition && [v6 isEqual:self->_toAppLayout])
   {
@@ -278,7 +278,7 @@ LABEL_5:
   {
     v13.receiver = self;
     v13.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -290,18 +290,18 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (self->_shouldForceDefaultAnchorPointForTransition && [v9 isEqual:self->_toAppLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
+  if (self->_shouldForceDefaultAnchorPointForTransition && [layoutCopy isEqual:self->_toAppLayout])
   {
-    v11 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
-    -[SBHomeToFullScreenCenterZoomSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:self->_toAppLayout]);
+    appLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
+    -[SBHomeToFullScreenCenterZoomSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_toAppLayout]);
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -330,13 +330,13 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([v7 isEqual:self->_toAppLayout] & 1) == 0))
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([layoutCopy isEqual:self->_toAppLayout] & 1) == 0))
   {
     v15.receiver = self;
     v15.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
@@ -356,58 +356,58 @@ LABEL_5:
 {
   v6.receiver = self;
   v6.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v3 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_toAppLayout];
+  visibleAppLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_toAppLayout];
 
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
-  v7 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _opacitySettings];
-  [v5 setOpacitySettings:v7];
+  _opacitySettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self _opacitySettings];
+  [v5 setOpacitySettings:_opacitySettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 crossblurDosidoSettings];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  crossblurDosidoSettings = [animationSettings crossblurDosidoSettings];
 
-  return v4;
+  return crossblurDosidoSettings;
 }
 
 - (id)_opacitySettings
 {
-  v2 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 crossblurDosidoSettings];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  crossblurDosidoSettings = [animationSettings crossblurDosidoSettings];
 
-  return v4;
+  return crossblurDosidoSettings;
 }
 
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v15 resizeProgressNotificationsForLayoutRole:a3 inAppLayout:a4];
-  v6 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v15 resizeProgressNotificationsForLayoutRole:role inAppLayout:layout];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  [v7 homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
+  [animationSettings homeScreenCenterZoomTargetScaleWhenUnblurringIsComplete];
   v9 = v8;
-  [v7 homeScreenCenterZoomInitialScale];
+  [animationSettings homeScreenCenterZoomInitialScale];
   v16[0] = &unk_28336F1E0;
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:(v9 - v10) / (1.0 - v10)];
   v16[1] = v11;
@@ -418,25 +418,25 @@ LABEL_5:
   return v13;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v10 = [v9 animationSettings];
+  layoutCopy = layout;
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  v11 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
-  if ([v11 indexOfObject:self->_toAppLayout] != a5)
+  appLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
+  if ([appLayouts indexOfObject:self->_toAppLayout] != index)
   {
     v15.receiver = self;
     v15.super_class = SBHomeToFullScreenCenterZoomSwitcherModifier;
-    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBHomeToFullScreenCenterZoomSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     goto LABEL_5;
   }
 
   v12 = 1.0;
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]<= 1)
   {
-    [v10 homeScreenCenterZoomInitialOpacity];
+    [animationSettings homeScreenCenterZoomInitialOpacity];
 LABEL_5:
     v12 = v13;
   }
@@ -444,18 +444,18 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout
 {
-  v4 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self isShowingSpotlightOrTodayView];
-  if (v4)
+  isShowingSpotlightOrTodayView = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self isShowingSpotlightOrTodayView];
+  if (isShowingSpotlightOrTodayView)
   {
-    LOBYTE(v4) = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self isDevicePad]^ 1;
+    LOBYTE(isShowingSpotlightOrTodayView) = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self isDevicePad]^ 1;
   }
 
-  return v4;
+  return isShowingSpotlightOrTodayView;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self displayCornerRadius];
 
@@ -489,9 +489,9 @@ LABEL_5:
     return 0.0;
   }
 
-  v3 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
-  [v4 homeScreenBlurProgressForMode:3];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings homeScreenBlurProgressForMode:3];
   v6 = v5;
 
   return v6;
@@ -499,14 +499,14 @@ LABEL_5:
 
 - (double)homeScreenScale
 {
-  v3 = [(SBTransitionSwitcherModifier *)self transitionPhase];
-  v4 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
-  v5 = [v4 animationSettings];
+  transitionPhase = [(SBTransitionSwitcherModifier *)self transitionPhase];
+  switcherSettings = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v6 = 1.0;
-  if (v3 >= 2)
+  if (transitionPhase >= 2)
   {
-    [v5 crossblurDosidoSmallScale];
+    [animationSettings crossblurDosidoSmallScale];
     v6 = v7;
   }
 
@@ -522,14 +522,14 @@ LABEL_5:
   return v2;
 }
 
-- (BOOL)_isToAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isToAppLayoutAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBHomeToFullScreenCenterZoomSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_toAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_toAppLayout];
+  return selfCopy;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 toAppLayout:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

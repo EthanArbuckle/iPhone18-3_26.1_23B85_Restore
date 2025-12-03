@@ -1,24 +1,24 @@
 @interface SBHLibraryPodCategoryFolderController
 - (id)contentScrollView;
 - (id)currentIconListView;
-- (void)_logCategoryVisibilityChangedTo:(BOOL)a3;
-- (void)handleTapGesture:(id)a3;
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_logCategoryVisibilityChangedTo:(BOOL)to;
+- (void)handleTapGesture:(id)gesture;
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBHLibraryPodCategoryFolderController
 
 - (id)contentScrollView
 {
-  v2 = [(SBHLibraryPodFolderController *)self podFolderView];
-  v3 = [v2 podScrollView];
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+  podScrollView = [podFolderView podScrollView];
 
-  return v3;
+  return podScrollView;
 }
 
 - (void)viewDidLoad
@@ -26,51 +26,51 @@
   v9.receiver = self;
   v9.super_class = SBHLibraryPodCategoryFolderController;
   [(SBHLibraryPodFolderController *)&v9 viewDidLoad];
-  v3 = [(SBFolderController *)self folder];
-  v4 = [(SBHLibraryPodCategoryFolderController *)self navigationItem];
-  v5 = [v3 displayName];
-  [v4 setTitle:v5];
+  folder = [(SBFolderController *)self folder];
+  navigationItem = [(SBHLibraryPodCategoryFolderController *)self navigationItem];
+  displayName = [folder displayName];
+  [navigationItem setTitle:displayName];
 
-  [v4 _setLargeTitleTwoLineMode:1];
-  v6 = [(SBHLibraryPodFolderController *)self podFolderView];
-  v7 = [v6 navigationBar];
-  [v7 pushNavigationItem:v4 animated:0];
+  [navigationItem _setLargeTitleTwoLineMode:1];
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+  navigationBar = [podFolderView navigationBar];
+  [navigationBar pushNavigationItem:navigationItem animated:0];
 
-  [v6 setCentersContentIfPossible:1];
-  v8 = [(SBHLibraryPodCategoryFolderController *)self view];
-  [v8 setAutoresizingMask:18];
+  [podFolderView setCentersContentIfPossible:1];
+  view = [(SBHLibraryPodCategoryFolderController *)self view];
+  [view setAutoresizingMask:18];
 }
 
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView
 {
   v8.receiver = self;
   v8.super_class = SBHLibraryPodCategoryFolderController;
-  [(SBHLibraryPodFolderController *)&v8 iconListView:a3 didRemoveIconView:a4];
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 icons];
-  if ([v6 count])
+  [(SBHLibraryPodFolderController *)&v8 iconListView:view didRemoveIconView:iconView];
+  folder = [(SBFolderController *)self folder];
+  icons = [folder icons];
+  if ([icons count])
   {
   }
 
   else
   {
-    v7 = [(SBHLibraryPodCategoryFolderController *)self bs_isAppearingOrAppeared];
+    bs_isAppearingOrAppeared = [(SBHLibraryPodCategoryFolderController *)self bs_isAppearingOrAppeared];
 
-    if (!v7)
+    if (!bs_isAppearingOrAppeared)
     {
       return;
     }
 
-    v5 = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
-    [v5 libraryPodFolderControllerRequestsDismissal:self];
+    folder = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
+    [folder libraryPodFolderControllerRequestsDismissal:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBHLibraryPodCategoryFolderController;
-  [(SBHLibraryPodFolderController *)&v5 viewWillAppear:a3];
+  [(SBHLibraryPodFolderController *)&v5 viewWillAppear:appear];
   v3 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v3))
   {
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBHLibraryPodCategoryFolderController;
-  [(SBFolderController *)&v6 viewDidAppear:a3];
+  [(SBFolderController *)&v6 viewDidAppear:appear];
   v4 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v4))
   {
@@ -94,11 +94,11 @@
   [(SBHLibraryPodCategoryFolderController *)self _logCategoryVisibilityChangedTo:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBHLibraryPodCategoryFolderController;
-  [(SBFolderController *)&v6 viewWillDisappear:a3];
+  [(SBFolderController *)&v6 viewWillDisappear:disappear];
   v4 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v4))
   {
@@ -109,11 +109,11 @@
   [(SBHLibraryPodFolderController *)self dismissDisplayedContextMenu];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBHLibraryPodCategoryFolderController;
-  [(SBFolderController *)&v6 viewDidDisappear:a3];
+  [(SBFolderController *)&v6 viewDidDisappear:disappear];
   v4 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v4))
   {
@@ -124,57 +124,57 @@
   [(SBHLibraryPodCategoryFolderController *)self _logCategoryVisibilityChangedTo:0];
 }
 
-- (void)_logCategoryVisibilityChangedTo:(BOOL)a3
+- (void)_logCategoryVisibilityChangedTo:(BOOL)to
 {
-  v3 = a3;
-  v10 = [(SBFolderController *)self folder];
-  if ([v10 isLibraryCategoryFolder])
+  toCopy = to;
+  folder = [(SBFolderController *)self folder];
+  if ([folder isLibraryCategoryFolder])
   {
-    v5 = [(SBHLibraryPodFolderController *)self loggingClient];
-    v6 = [v10 libraryCategoryIdentifier];
-    v7 = [v6 predictionCategoryID];
-    v8 = [v6 predictionCategoryIndex];
-    v9 = [MEMORY[0x1E695DF00] date];
-    if (v3)
+    loggingClient = [(SBHLibraryPodFolderController *)self loggingClient];
+    libraryCategoryIdentifier = [folder libraryCategoryIdentifier];
+    predictionCategoryID = [libraryCategoryIdentifier predictionCategoryID];
+    predictionCategoryIndex = [libraryCategoryIdentifier predictionCategoryIndex];
+    date = [MEMORY[0x1E695DF00] date];
+    if (toCopy)
     {
-      [v5 logCategoryExpansionWithDate:v9 categoryID:v7 categoryIndex:v8];
+      [loggingClient logCategoryExpansionWithDate:date categoryID:predictionCategoryID categoryIndex:predictionCategoryIndex];
     }
 
     else
     {
-      [v5 logCategoryExitWithDate:v9 categoryID:v7 categoryIndex:v8];
+      [loggingClient logCategoryExitWithDate:date categoryID:predictionCategoryID categoryIndex:predictionCategoryIndex];
     }
   }
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
+  gestureCopy = gesture;
+  tapToDismissRecognizer = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
 
-  if (v5 == v4)
+  if (tapToDismissRecognizer == gestureCopy)
   {
-    if ([v4 state] == 3)
+    if ([gestureCopy state] == 3)
     {
-      v6 = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
-      [v6 popNestedViewControllerAnimated:1 withCompletion:0];
+      _nestingViewControllerForPushing = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
+      [_nestingViewControllerForPushing popNestedViewControllerAnimated:1 withCompletion:0];
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = SBHLibraryPodCategoryFolderController;
-      [(SBHLibraryPodFolderController *)&v7 handleTapGesture:v4];
+      [(SBHLibraryPodFolderController *)&v7 handleTapGesture:gestureCopy];
     }
   }
 }
 
 - (id)currentIconListView
 {
-  v2 = [(SBFolderController *)self folderView];
-  v3 = [v2 currentIconListView];
+  folderView = [(SBFolderController *)self folderView];
+  currentIconListView = [folderView currentIconListView];
 
-  return v3;
+  return currentIconListView;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface SBSystemApertureViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_collapseExpandedElementIfPossible;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityContainerView;
@@ -9,14 +9,14 @@
 
 @implementation SBSystemApertureViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSystemApertureViewController" hasInstanceVariable:@"_systemApertureContainsAnyContent" withType:"BOOL"];
-  [v3 validateClass:@"SBSystemApertureViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBSystemApertureViewController" hasInstanceMethod:@"_collapseExpandedElementIfPossible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBSystemApertureContainerView"];
-  [v3 validateClass:@"SBLockElementViewProvider"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSystemApertureViewController" hasInstanceVariable:@"_systemApertureContainsAnyContent" withType:"BOOL"];
+  [validationsCopy validateClass:@"SBSystemApertureViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBSystemApertureViewController" hasInstanceMethod:@"_collapseExpandedElementIfPossible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBSystemApertureContainerView"];
+  [validationsCopy validateClass:@"SBLockElementViewProvider"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -38,11 +38,11 @@
 
 - (id)accessibilityPath
 {
-  v3 = [(SBSystemApertureViewControllerAccessibility *)self _accessibilityContainerView];
-  v4 = v3;
-  if (v3)
+  _accessibilityContainerView = [(SBSystemApertureViewControllerAccessibility *)self _accessibilityContainerView];
+  v4 = _accessibilityContainerView;
+  if (_accessibilityContainerView)
   {
-    [v3 accessibilityFrame];
+    [_accessibilityContainerView accessibilityFrame];
     x = v26.origin.x;
     y = v26.origin.y;
     width = v26.size.width;
@@ -69,32 +69,32 @@
     v30.size.width = width;
     v30.size.height = height;
     v14 = v13 / CGRectGetHeight(v30);
-    v15 = [v4 layer];
-    [v15 cornerRadius];
+    layer = [v4 layer];
+    [layer cornerRadius];
     v17 = fmax(v22, v14) * v16;
 
-    v18 = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
+    accessibilityPath = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = SBSystemApertureViewControllerAccessibility;
-    v18 = [(SBSystemApertureViewControllerAccessibility *)&v24 accessibilityPath];
+    accessibilityPath = [(SBSystemApertureViewControllerAccessibility *)&v24 accessibilityPath];
   }
 
-  v19 = v18;
+  v19 = accessibilityPath;
 
   return v19;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(SBSystemApertureViewControllerAccessibility *)self _accessibilityContainerView];
-  v4 = v3;
-  if (v3)
+  _accessibilityContainerView = [(SBSystemApertureViewControllerAccessibility *)self _accessibilityContainerView];
+  v4 = _accessibilityContainerView;
+  if (_accessibilityContainerView)
   {
-    [v3 accessibilityFrame];
+    [_accessibilityContainerView accessibilityFrame];
   }
 
   else
@@ -125,29 +125,29 @@
   v2 = [(SBSystemApertureViewControllerAccessibility *)self safeArrayForKey:@"_orderedContainerViews"];
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (BOOL)_collapseExpandedElementIfPossible
 {
   v8.receiver = self;
   v8.super_class = SBSystemApertureViewControllerAccessibility;
-  v3 = [(SBSystemApertureViewControllerAccessibility *)&v8 _collapseExpandedElementIfPossible];
+  _collapseExpandedElementIfPossible = [(SBSystemApertureViewControllerAccessibility *)&v8 _collapseExpandedElementIfPossible];
   objc_initWeak(&location, self);
   objc_copyWeak(&v5, &location);
-  v6 = v3;
+  v6 = _collapseExpandedElementIfPossible;
   AXPerformBlockOnMainThreadAfterDelay();
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
-  return v3;
+  return _collapseExpandedElementIfPossible;
 }
 
 void __81__SBSystemApertureViewControllerAccessibility__collapseExpandedElementIfPossible__block_invoke(uint64_t a1)

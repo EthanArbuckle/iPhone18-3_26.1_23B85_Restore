@@ -1,14 +1,14 @@
 @interface TimedMetadataViewController
-- (_TtC8VideosUI27TimedMetadataViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI27TimedMetadataViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)nowPlayingTabHeight;
-- (void)setNowPlayingTabContextData:(id)a3;
-- (void)setNowPlayingTabDelegate:(id)a3;
-- (void)setPlayerViewSize:(CGSize)a3;
-- (void)updatePlaybackInfo:(id)a3;
-- (void)updatePlaybackRate:(double)a3 elapsedTime:(id)a4 elapsedTimeTimestamp:(id)a5;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setNowPlayingTabContextData:(id)data;
+- (void)setNowPlayingTabDelegate:(id)delegate;
+- (void)setPlayerViewSize:(CGSize)size;
+- (void)updatePlaybackInfo:(id)info;
+- (void)updatePlaybackRate:(double)rate elapsedTime:(id)time elapsedTimeTimestamp:(id)timestamp;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)vui_viewDidLayoutSubviews;
 @end
 
@@ -16,80 +16,80 @@
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AEF200();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AEF8A8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3AEFE28(a3);
+  sub_1E3AEFE28(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3AF0104(a3);
+  sub_1E3AF0104(disappear);
 }
 
-- (_TtC8VideosUI27TimedMetadataViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI27TimedMetadataViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3AF1810();
 }
 
-- (void)setPlayerViewSize:(CGSize)a3
+- (void)setPlayerViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1E3AF2EF0(width, height);
 }
 
-- (void)setNowPlayingTabDelegate:(id)a3
+- (void)setNowPlayingTabDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3AF30E4();
   swift_unknownObjectRelease();
 }
 
-- (void)setNowPlayingTabContextData:(id)a3
+- (void)setNowPlayingTabContextData:(id)data
 {
   sub_1E4205C64();
 }
 
 - (double)nowPlayingTabHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AF3260();
   v4 = v3;
 
   return v4;
 }
 
-- (void)updatePlaybackRate:(double)a3 elapsedTime:(id)a4 elapsedTimeTimestamp:(id)a5
+- (void)updatePlaybackRate:(double)rate elapsedTime:(id)time elapsedTimeTimestamp:(id)timestamp
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF28E20);
   OUTLINED_FUNCTION_17_2(v9);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v10);
   OUTLINED_FUNCTION_19_2();
-  if (a5)
+  if (timestamp)
   {
     sub_1E41FE584();
     v11 = sub_1E41FE5D4();
@@ -103,18 +103,18 @@
   }
 
   __swift_storeEnumTagSinglePayload(v5, v12, 1, v11);
-  v13 = a4;
-  v14 = self;
+  timeCopy = time;
+  selfCopy = self;
   OUTLINED_FUNCTION_27_0();
   sub_1E3AF3354();
 
   sub_1E325F6F0(v5, &unk_1ECF28E20);
 }
 
-- (void)updatePlaybackInfo:(id)a3
+- (void)updatePlaybackInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
+  infoCopy = info;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3AF379C();
 }

@@ -8,10 +8,10 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  objc_sync_enter(v8);
-  v9 = CalCachedObjectForKeyWithCalculateBlock(v8, v6, v7);
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = CalCachedObjectForKeyWithCalculateBlock(selfCopy, v6, v7);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }

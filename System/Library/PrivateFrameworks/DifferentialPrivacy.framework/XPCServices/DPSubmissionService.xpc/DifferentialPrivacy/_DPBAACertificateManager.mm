@@ -1,13 +1,13 @@
 @interface _DPBAACertificateManager
-+ (id)signWithDeviceIdentity:(id)a3;
-+ (id)signWithDeviceIdentity:(id)a3 canRecover:(BOOL *)a4;
++ (id)signWithDeviceIdentity:(id)identity;
++ (id)signWithDeviceIdentity:(id)identity canRecover:(BOOL *)recover;
 @end
 
 @implementation _DPBAACertificateManager
 
-+ (id)signWithDeviceIdentity:(id)a3
++ (id)signWithDeviceIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[_DPSubmissionServiceUserDefaults baaCertificateBackoffDate];
   if (v5)
   {
@@ -31,7 +31,7 @@
   }
 
   v21 = 0;
-  v10 = [a1 signWithDeviceIdentity:v4 canRecover:&v21];
+  v10 = [self signWithDeviceIdentity:identityCopy canRecover:&v21];
   if (!v10)
   {
     v16 = 10;
@@ -49,9 +49,9 @@
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Waiting for %u seconds until trying again to obtain BAA signature.", buf, 8u);
         }
 
-        [a1 sleepForSeconds:v18];
+        [self sleepForSeconds:v18];
         v16 *= 2;
-        v10 = [a1 signWithDeviceIdentity:v4 canRecover:&v21];
+        v10 = [self signWithDeviceIdentity:identityCopy canRecover:&v21];
         if (!v10)
         {
           continue;
@@ -87,9 +87,9 @@ LABEL_15:
   return v10;
 }
 
-+ (id)signWithDeviceIdentity:(id)a3 canRecover:(BOOL *)a4
++ (id)signWithDeviceIdentity:(id)identity canRecover:(BOOL *)recover
 {
-  v5 = a3;
+  identityCopy = identity;
   if (DeviceIdentityIsSupported())
   {
     v6 = DeviceIdentityUCRTAttestationSupported();
@@ -131,7 +131,7 @@ LABEL_15:
     v31 = 0x2020000000;
     v32 = 0;
     v10 = dispatch_semaphore_create(0);
-    v27 = v5;
+    v27 = identityCopy;
     DeviceIdentityIssueClientCertificateWithCompletion();
     v11 = dispatch_time(0, 30000000000);
     if (dispatch_semaphore_wait(v10, v11))
@@ -143,12 +143,12 @@ LABEL_15:
       }
 
       v20 = 0;
-      *a4 = 0;
+      *recover = 0;
     }
 
     else
     {
-      *a4 = *(v30 + 24);
+      *recover = *(v30 + 24);
       if (v34[5] && *(v46 + 5) && v40[5])
       {
         v20 = [_DPBAASignature signatureWithDeviceSignature:_NSConcreteStackBlock leafCertificate:3221225472 intermediateCertificate:sub_10000B518, &unk_100071170, v10, v27, &v29, buf, &v39, &v33];

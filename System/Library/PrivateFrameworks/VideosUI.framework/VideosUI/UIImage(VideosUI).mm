@@ -14,8 +14,8 @@
 {
   v3 = MEMORY[0x1E696AAE8];
   v4 = a3;
-  v5 = [v3 vui_videosUIBundle];
-  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:v5];
+  vui_videosUIBundle = [v3 vui_videosUIBundle];
+  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:vui_videosUIBundle];
 
   return v6;
 }
@@ -43,19 +43,19 @@
 {
   [VUIAppIconImageService iconCornerRadiusForSize:?];
 
-  return [a1 vui_iconImageOfSize:a2 radius:{a3, v6}];
+  return [self vui_iconImageOfSize:a2 radius:{a3, v6}];
 }
 
 - (uint64_t)vui_iconImageOfSize:()VideosUI radius:
 {
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v10 = 1.0 / v9;
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 == 2)
+  if (userInterfaceIdiom == 2)
   {
     v13 = 0.0;
   }
@@ -65,13 +65,13 @@
     v13 = v10;
   }
 
-  return [a1 vui_iconImageOfSize:a2 radius:a3 stroke:{a4, v13}];
+  return [self vui_iconImageOfSize:a2 radius:a3 stroke:{a4, v13}];
 }
 
 - (id)vui_iconImageOfSize:()VideosUI radius:stroke:
 {
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
 
   v13 = *MEMORY[0x1E695EFF8];
@@ -84,7 +84,7 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetInterpolationQuality(CurrentContext, kCGInterpolationHigh);
   [v15 addClip];
-  v17 = [a1 copy];
+  v17 = [self copy];
   [v17 drawInRect:17 blendMode:v13 alpha:{v14, a2, a3, 1.0}];
   if (a5 != 0.0)
   {
@@ -103,7 +103,7 @@
 
 - (id)vui_aspectFitImageOfSize:()VideosUI
 {
-  v5 = [a1 copy];
+  v5 = [self copy];
   [v5 size];
   v8 = a2 / v6;
   if (a2 / v6 < a3 / v7)
@@ -131,15 +131,15 @@
 
 - (id)vui_croppedImageOfSize:()VideosUI
 {
-  v5 = [a1 copy];
+  v5 = [self copy];
   Width = CGImageGetWidth([v5 CGImage]);
   v7 = floor((CGImageGetHeight([v5 CGImage]) - a3) * 0.5);
-  v8 = [v5 CGImage];
+  cGImage = [v5 CGImage];
   v15.origin.x = floor((Width - a2) * 0.5);
   v15.origin.y = v7;
   v15.size.width = a3;
   v15.size.height = a2;
-  v9 = CGImageCreateWithImageInRect(v8, v15);
+  v9 = CGImageCreateWithImageInRect(cGImage, v15);
   if (v9)
   {
     v10 = v9;

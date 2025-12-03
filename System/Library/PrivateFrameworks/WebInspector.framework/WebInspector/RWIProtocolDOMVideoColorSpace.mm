@@ -3,9 +3,9 @@
 - (NSString)matrix;
 - (NSString)primaries;
 - (NSString)transfer;
-- (void)setMatrix:(id)a3;
-- (void)setPrimaries:(id)a3;
-- (void)setTransfer:(id)a3;
+- (void)setMatrix:(id)matrix;
+- (void)setPrimaries:(id)primaries;
+- (void)setTransfer:(id)transfer;
 @end
 
 @implementation RWIProtocolDOMVideoColorSpace
@@ -17,11 +17,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"fullRange"];
 }
 
-- (void)setMatrix:(id)a3
+- (void)setMatrix:(id)matrix
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoColorSpace;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"matrix"];
+  [(RWIProtocolJSONObject *)&v3 setString:matrix forKey:@"matrix"];
 }
 
 - (NSString)matrix
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)setPrimaries:(id)a3
+- (void)setPrimaries:(id)primaries
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoColorSpace;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"primaries"];
+  [(RWIProtocolJSONObject *)&v3 setString:primaries forKey:@"primaries"];
 }
 
 - (NSString)primaries
@@ -49,11 +49,11 @@
   return v2;
 }
 
-- (void)setTransfer:(id)a3
+- (void)setTransfer:(id)transfer
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoColorSpace;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"transfer"];
+  [(RWIProtocolJSONObject *)&v3 setString:transfer forKey:@"transfer"];
 }
 
 - (NSString)transfer

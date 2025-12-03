@@ -1,10 +1,10 @@
 @interface RMModelUserNameAndPasswordCredentialDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithUserName:(id)a3;
-+ (id)buildWithUserName:(id)a3 password:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithUserName:(id)name;
++ (id)buildWithUserName:(id)name password:(id)password;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelUserNameAndPasswordCredentialDeclaration
@@ -23,33 +23,33 @@
   return v4;
 }
 
-+ (id)buildWithUserName:(id)a3 password:(id)a4
++ (id)buildWithUserName:(id)name password:(id)password
 {
-  v5 = a4;
-  v6 = a3;
+  passwordCopy = password;
+  nameCopy = name;
   v7 = objc_opt_new();
-  [v7 setPayloadUserName:v6];
+  [v7 setPayloadUserName:nameCopy];
 
-  [v7 setPayloadPassword:v5];
+  [v7 setPayloadPassword:passwordCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithUserName:(id)a3
++ (id)buildRequiredOnlyWithUserName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
-  [v4 setPayloadUserName:v3];
+  [v4 setPayloadUserName:nameCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelUserNameAndPasswordCredentialDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -57,9 +57,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"UserName" forKeyPath:@"payloadUserName" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"UserName" forKeyPath:@"payloadUserName" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Password" forKeyPath:@"payloadPassword" isRequired:0 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Password" forKeyPath:@"payloadPassword" isRequired:0 defaultValue:0 error:error];
   }
 
   else
@@ -70,25 +70,25 @@
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelUserNameAndPasswordCredentialDeclaration *)self payloadUserName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"UserName" value:v5 isRequired:1 defaultValue:0];
+  payloadUserName = [(RMModelUserNameAndPasswordCredentialDeclaration *)self payloadUserName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"UserName" value:payloadUserName isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelUserNameAndPasswordCredentialDeclaration *)self payloadPassword];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Password" value:v6 isRequired:0 defaultValue:0];
+  payloadPassword = [(RMModelUserNameAndPasswordCredentialDeclaration *)self payloadPassword];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Password" value:payloadPassword isRequired:0 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelUserNameAndPasswordCredentialDeclaration;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadUserName copy];
   v6 = v4[2];
   v4[2] = v5;

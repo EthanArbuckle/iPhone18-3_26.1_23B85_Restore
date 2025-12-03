@@ -1,10 +1,10 @@
 @interface PLActivityCriterion
 - (PLActivityCriterion)init;
 - (PLActivityCriterionDelegate)delegate;
-- (void)didCompleteActivity:(id)a3;
-- (void)didDisableActivity:(id)a3;
-- (void)didEnableActivity:(id)a3;
-- (void)didInterruptActivity:(id)a3;
+- (void)didCompleteActivity:(id)activity;
+- (void)didDisableActivity:(id)activity;
+- (void)didEnableActivity:(id)activity;
+- (void)didInterruptActivity:(id)activity;
 @end
 
 @implementation PLActivityCriterion
@@ -29,9 +29,9 @@
   return result;
 }
 
-- (void)didEnableActivity:(id)a3
+- (void)didEnableActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -47,11 +47,11 @@
 
     if (didEnableActivity__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didEnableActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didEnableActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterion.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterion didEnableActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:28];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:28];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -61,7 +61,7 @@
     }
   }
 
-  [(PLActivityCriterion *)self setDelegate:v4];
+  [(PLActivityCriterion *)self setDelegate:activityCopy];
 }
 
 BOOL __41__PLActivityCriterion_didEnableActivity___block_invoke(uint64_t a1)
@@ -71,9 +71,9 @@ BOOL __41__PLActivityCriterion_didEnableActivity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didCompleteActivity:(id)a3
+- (void)didCompleteActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -89,11 +89,11 @@ BOOL __41__PLActivityCriterion_didEnableActivity___block_invoke(uint64_t a1)
 
     if (didCompleteActivity__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didCompleteActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didCompleteActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterion.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterion didCompleteActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:33];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:33];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -111,9 +111,9 @@ BOOL __43__PLActivityCriterion_didCompleteActivity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didInterruptActivity:(id)a3
+- (void)didInterruptActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -129,11 +129,11 @@ BOOL __43__PLActivityCriterion_didCompleteActivity___block_invoke(uint64_t a1)
 
     if (didInterruptActivity__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didInterruptActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didInterruptActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterion.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterion didInterruptActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:37];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:37];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -151,9 +151,9 @@ BOOL __44__PLActivityCriterion_didInterruptActivity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didDisableActivity:(id)a3
+- (void)didDisableActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -169,11 +169,11 @@ BOOL __44__PLActivityCriterion_didInterruptActivity___block_invoke(uint64_t a1)
 
     if (didDisableActivity__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didDisableActivity:%@ for criterion=%@", v4, self];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLActivityCriterion::didDisableActivity:%@ for criterion=%@", activityCopy, self];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/Activity/PLActivityCriterion.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLActivityCriterion didDisableActivity:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:41];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:41];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))

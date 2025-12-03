@@ -1,8 +1,8 @@
 @interface BloodPressureJournalInputSignal
 - (_TtC5Heart31BloodPressureJournalInputSignal)init;
 - (void)dayChanged;
-- (void)didUpdatePreferredClassificationGuidelines:(id)a3;
-- (void)journalControl:(id)a3 didAddOrModifyJournals:(id)a4;
+- (void)didUpdatePreferredClassificationGuidelines:(id)guidelines;
+- (void)journalControl:(id)control didAddOrModifyJournals:(id)journals;
 @end
 
 @implementation BloodPressureJournalInputSignal
@@ -17,24 +17,24 @@
   v6[3] = v4;
   v6[4] = self;
   v6[5] = ObjectType;
-  v7 = self;
+  selfCopy = self;
 
   sub_29D83D444(sub_29D8414E0, v6);
 }
 
-- (void)journalControl:(id)a3 didAddOrModifyJournals:(id)a4
+- (void)journalControl:(id)control didAddOrModifyJournals:(id)journals
 {
   sub_29D69567C(0, &qword_2A1A221D0, 0x29EDC51F0);
   v6 = sub_29D939F38();
-  v7 = a3;
-  v8 = self;
+  controlCopy = control;
+  selfCopy = self;
   sub_29D840F64(v6);
 }
 
-- (void)didUpdatePreferredClassificationGuidelines:(id)a3
+- (void)didUpdatePreferredClassificationGuidelines:(id)guidelines
 {
-  v4 = a3;
-  v5 = self;
+  guidelinesCopy = guidelines;
+  selfCopy = self;
   sub_29D841210();
 }
 

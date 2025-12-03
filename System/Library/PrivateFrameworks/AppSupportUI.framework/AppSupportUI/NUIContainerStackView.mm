@@ -1,30 +1,30 @@
 @interface NUIContainerStackView
-+ (id)containerStackViewWithAxis:(int64_t)a3 arrangedSubviews:(id)a4;
-- (BOOL)needsBaselineDebugBoundingBoxesForArrangedSubview:(id)a3;
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3;
-- (NUIContainerStackView)initWithArrangedSubviews:(id)a3;
-- (NUIContainerStackView)initWithFrame:(CGRect)a3;
-- (_BYTE)_baselineViewVendForFirstBaseline:(_BYTE *)a1;
++ (id)containerStackViewWithAxis:(int64_t)axis arrangedSubviews:(id)subviews;
+- (BOOL)needsBaselineDebugBoundingBoxesForArrangedSubview:(id)subview;
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size;
+- (NUIContainerStackView)initWithArrangedSubviews:(id)subviews;
+- (NUIContainerStackView)initWithFrame:(CGRect)frame;
+- (_BYTE)_baselineViewVendForFirstBaseline:(_BYTE *)baseline;
 - (_DWORD)_effectiveAlignmentForArrangedSubview:(_DWORD *)result;
-- (double)_calculateArrangedSizeFittingSize:(CGFloat)a3 forLayout:(CGFloat)a4;
-- (double)customSpacingAfterView:(id)a3;
+- (double)_calculateArrangedSizeFittingSize:(CGFloat)size forLayout:(CGFloat)layout;
+- (double)customSpacingAfterView:(id)view;
 - (id).cxx_construct;
 - (id)arrangedDebugDescription;
 - (id)calculateViewForFirstBaselineLayout;
 - (id)calculateViewForLastBaselineLayout;
 - (id)debugDictionary;
 - (void)dealloc;
-- (void)didRemoveArrangedSubview:(id)a3 atIndex:(int64_t)a4;
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3;
-- (void)populateGridArrangementCells:(void *)a3;
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5;
-- (void)setAlignment:(int64_t)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setBaselineRelativeArrangement:(BOOL)a3;
-- (void)setCustomSpacing:(double)a3 afterView:(id)a4;
-- (void)setDistribution:(int64_t)a3;
-- (void)setSpacing:(double)a3;
-- (void)setSpacing:(double)a3 afterArrangedSubviewAtIndex:(int64_t)a4;
+- (void)didRemoveArrangedSubview:(id)subview atIndex:(int64_t)index;
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds;
+- (void)populateGridArrangementCells:(void *)cells;
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setAxis:(int64_t)axis;
+- (void)setBaselineRelativeArrangement:(BOOL)arrangement;
+- (void)setCustomSpacing:(double)spacing afterView:(id)view;
+- (void)setDistribution:(int64_t)distribution;
+- (void)setSpacing:(double)spacing;
+- (void)setSpacing:(double)spacing afterArrangedSubviewAtIndex:(int64_t)index;
 @end
 
 @implementation NUIContainerStackView
@@ -68,15 +68,15 @@
   return result;
 }
 
-+ (id)containerStackViewWithAxis:(int64_t)a3 arrangedSubviews:(id)a4
++ (id)containerStackViewWithAxis:(int64_t)axis arrangedSubviews:(id)subviews
 {
-  v5 = [[a1 alloc] initWithArrangedSubviews:a4];
+  v5 = [[self alloc] initWithArrangedSubviews:subviews];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews___block_invoke;
   v7[3] = &unk_2783296A8;
   v7[4] = v5;
-  v7[5] = a3;
+  v7[5] = axis;
   [v5 performBatchUpdates:v7];
   return v5;
 }
@@ -92,7 +92,7 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   return [v2 setAlignment:v3];
 }
 
-- (BOOL)needsBaselineDebugBoundingBoxesForArrangedSubview:(id)a3
+- (BOOL)needsBaselineDebugBoundingBoxesForArrangedSubview:(id)subview
 {
   v8.receiver = self;
   v8.super_class = NUIContainerStackView;
@@ -107,7 +107,7 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
     return (*&stackViewFlags & 0xF0000) == 0x10000 && [(NUIContainerView *)self isBaselineRelativeArrangement];
   }
 
-  v7 = [(NUIContainerStackView *)self _effectiveAlignmentForArrangedSubview:a3];
+  v7 = [(NUIContainerStackView *)self _effectiveAlignmentForArrangedSubview:subview];
   result = 1;
   if (v7 != 2 && v7 != 5)
   {
@@ -118,11 +118,11 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   return result;
 }
 
-- (NUIContainerStackView)initWithFrame:(CGRect)a3
+- (NUIContainerStackView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NUIContainerStackView;
-  result = [(NUIContainerView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NUIContainerView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_arrangement.container = result;
@@ -131,11 +131,11 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   return result;
 }
 
-- (NUIContainerStackView)initWithArrangedSubviews:(id)a3
+- (NUIContainerStackView)initWithArrangedSubviews:(id)subviews
 {
   v4.receiver = self;
   v4.super_class = NUIContainerStackView;
-  result = [(NUIContainerView *)&v4 initWithArrangedSubviews:a3];
+  result = [(NUIContainerView *)&v4 initWithArrangedSubviews:subviews];
   if (result)
   {
     result->_arrangement.container = result;
@@ -144,44 +144,44 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   return result;
 }
 
-- (void)setBaselineRelativeArrangement:(BOOL)a3
+- (void)setBaselineRelativeArrangement:(BOOL)arrangement
 {
   v5.receiver = self;
   v5.super_class = NUIContainerStackView;
   [(NUIContainerView *)&v5 setBaselineRelativeArrangement:?];
-  self->_arrangement.baselineRelative = a3;
+  self->_arrangement.baselineRelative = arrangement;
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
   [NUIContainerView _assertNotInLayoutPass:?];
   stackViewFlags = self->_stackViewFlags;
-  if ((*&stackViewFlags << 12) >> 28 != a3)
+  if ((*&stackViewFlags << 12) >> 28 != axis)
   {
-    self->_stackViewFlags = (*&stackViewFlags & 0xFFF0FFFF | ((a3 & 0xF) << 16));
+    self->_stackViewFlags = (*&stackViewFlags & 0xFFF0FFFF | ((axis & 0xF) << 16));
 
     [(NUIContainerView *)self setNeedsInvalidation:4];
   }
 }
 
-- (void)setDistribution:(int64_t)a3
+- (void)setDistribution:(int64_t)distribution
 {
   [NUIContainerView _assertNotInLayoutPass:?];
-  if (a3 == -1)
+  if (distribution == -1)
   {
-    v5 = 0;
+    distributionCopy = 0;
   }
 
   else
   {
-    v5 = a3;
+    distributionCopy = distribution;
   }
 
   stackViewFlags = self->_stackViewFlags;
   v7 = *&stackViewFlags >> 8;
-  if (v5 != v7)
+  if (distributionCopy != v7)
   {
-    if (v7 == 1 || v5 == 1)
+    if (v7 == 1 || distributionCopy == 1)
     {
       v9 = 3;
     }
@@ -191,9 +191,9 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
       v9 = 1;
     }
 
-    v10 = v5 << 8;
-    self->_stackViewFlags = (*&stackViewFlags & 0xFFFF00FF | (v5 << 8));
-    LOWORD(v5) = v5;
+    v10 = distributionCopy << 8;
+    self->_stackViewFlags = (*&stackViewFlags & 0xFFFF00FF | (distributionCopy << 8));
+    LOWORD(distributionCopy) = distributionCopy;
     if ((*&stackViewFlags & 0xF0000) != 0)
     {
       v11 = 255;
@@ -206,49 +206,49 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
 
     if ((*&stackViewFlags & 0xF0000) != 0)
     {
-      LOWORD(v5) = v10;
+      LOWORD(distributionCopy) = v10;
     }
 
-    *(&self->_arrangement + 4) = *(&self->_arrangement + 4) & v11 | v5;
+    *(&self->_arrangement + 4) = *(&self->_arrangement + 4) & v11 | distributionCopy;
 
     [(NUIContainerView *)self setNeedsInvalidation:v9];
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
   [NUIContainerView _assertNotInLayoutPass:?];
-  if (a3 == -1)
+  if (alignment == -1)
   {
-    v5 = 0;
+    alignmentCopy = 0;
   }
 
   else
   {
-    v5 = a3;
+    alignmentCopy = alignment;
   }
 
   stackViewFlags = self->_stackViewFlags;
-  if (v5 != stackViewFlags)
+  if (alignmentCopy != stackViewFlags)
   {
-    self->_stackViewFlags = (*&stackViewFlags & 0xFFFFFF00 | v5);
+    self->_stackViewFlags = (*&stackViewFlags & 0xFFFFFF00 | alignmentCopy);
 
     [(NUIContainerView *)self setNeedsInvalidation:4];
   }
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
   [NUIContainerView _assertNotInLayoutPass:?];
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
+    self->_spacing = spacing;
 
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
 
-- (double)customSpacingAfterView:(id)a3
+- (double)customSpacingAfterView:(id)view
 {
   left = self->_customSpacings.__tree_.__end_node_.__left_;
   if (left)
@@ -257,8 +257,8 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
     do
     {
       v5 = *(left + 4);
-      v6 = v5 >= a3;
-      v7 = v5 < a3;
+      v6 = v5 >= view;
+      v7 = v5 < view;
       if (v6)
       {
         p_end_node = left;
@@ -273,7 +273,7 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
     {
       swiftAnimationInfo = p_end_node->super.super._swiftAnimationInfo;
       p_traitChangeRegistry = &p_end_node->super.super._traitChangeRegistry;
-      if (swiftAnimationInfo <= a3)
+      if (swiftAnimationInfo <= view)
       {
         v8 = p_traitChangeRegistry;
       }
@@ -288,10 +288,10 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   return *v8;
 }
 
-- (void)setCustomSpacing:(double)a3 afterView:(id)a4
+- (void)setCustomSpacing:(double)spacing afterView:(id)view
 {
-  v6[0] = a4;
-  if (NUIContainerViewLengthIsDefault(a3))
+  v6[0] = view;
+  if (NUIContainerViewLengthIsDefault(spacing))
   {
     std::__tree<UIView *>::__erase_unique<UIView *>(&self->_customSpacings, v6);
   }
@@ -299,33 +299,33 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   else
   {
     v6[2] = v6;
-    *(std::__tree<std::__value_type<UIView *,double>,std::__map_value_compare<UIView *,std::__value_type<UIView *,double>,std::less<UIView *>,true>,std::allocator<std::__value_type<UIView *,double>>>::__emplace_unique_key_args<UIView *,std::piecewise_construct_t const&,std::tuple<UIView * const&>,std::tuple<>>(&self->_customSpacings, v6) + 5) = a3;
+    *(std::__tree<std::__value_type<UIView *,double>,std::__map_value_compare<UIView *,std::__value_type<UIView *,double>,std::less<UIView *>,true>,std::allocator<std::__value_type<UIView *,double>>>::__emplace_unique_key_args<UIView *,std::piecewise_construct_t const&,std::tuple<UIView * const&>,std::tuple<>>(&self->_customSpacings, v6) + 5) = spacing;
   }
 
   [(NUIContainerView *)self setNeedsInvalidation:2];
 }
 
-- (void)setSpacing:(double)a3 afterArrangedSubviewAtIndex:(int64_t)a4
+- (void)setSpacing:(double)spacing afterArrangedSubviewAtIndex:(int64_t)index
 {
-  v6 = [(NSArray *)[(NUIContainerView *)self arrangedSubviews] objectAtIndex:a4];
+  v6 = [(NSArray *)[(NUIContainerView *)self arrangedSubviews] objectAtIndex:index];
 
-  [(NUIContainerStackView *)self setCustomSpacing:v6 afterView:a3];
+  [(NUIContainerStackView *)self setCustomSpacing:v6 afterView:spacing];
 }
 
-- (void)didRemoveArrangedSubview:(id)a3 atIndex:(int64_t)a4
+- (void)didRemoveArrangedSubview:(id)subview atIndex:(int64_t)index
 {
-  v8 = a3;
-  std::__tree<UIView *>::__erase_unique<UIView *>(&self->_customSpacings, &v8);
+  subviewCopy = subview;
+  std::__tree<UIView *>::__erase_unique<UIView *>(&self->_customSpacings, &subviewCopy);
   v7.receiver = self;
   v7.super_class = NUIContainerStackView;
-  [(NUIContainerView *)&v7 didRemoveArrangedSubview:a3 atIndex:a4];
+  [(NUIContainerView *)&v7 didRemoveArrangedSubview:subview atIndex:index];
 }
 
-- (void)populateGridArrangementCells:(void *)a3
+- (void)populateGridArrangementCells:(void *)cells
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(NUIContainerView *)self visibleArrangedSubviews];
-  v6 = v5;
+  visibleArrangedSubviews = [(NUIContainerView *)self visibleArrangedSubviews];
+  v6 = visibleArrangedSubviews;
   stackViewFlags = self->_stackViewFlags;
   v9 = *&stackViewFlags & 0xF0000;
   v8 = (*&stackViewFlags & 0xF0000) == 0;
@@ -347,14 +347,14 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   }
 
   *(&self->_arrangement + 4) = v11 | v10;
-  *(a3 + 1) = *a3;
+  *(cells + 1) = *cells;
   v29 = xmmword_21D0BFB40;
   v30 = xmmword_21D0BFB40;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [(NSArray *)v5 countByEnumeratingWithState:&v24 objects:v31 count:16];
+  v12 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v24 objects:v31 count:16];
   if (v12)
   {
     v13 = *v25;
@@ -374,40 +374,40 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
         if (v9)
         {
           v22 = 0;
-          v16 = *(a3 + 1);
-          if (v16 >= *(a3 + 2))
+          v16 = *(cells + 1);
+          if (v16 >= *(cells + 2))
           {
-            v18 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<UIView *&,_NSRange &,_NSRange &,NUIContainerAlignment &,NUIContainerAlignment>(a3, &v28, &v30, &v29, &v23, &v22);
+            v18 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<UIView *&,_NSRange &,_NSRange &,NUIContainerAlignment &,NUIContainerAlignment>(cells, &v28, &v30, &v29, &v23, &v22);
           }
 
           else
           {
-            v17 = _NUIGridArrangementCell::_NUIGridArrangementCell(*(a3 + 1), v28, v30, *(&v30 + 1), v29, *(&v29 + 1), v15, 0).n128_u64[0];
+            v17 = _NUIGridArrangementCell::_NUIGridArrangementCell(*(cells + 1), v28, v30, *(&v30 + 1), v29, *(&v29 + 1), v15, 0).n128_u64[0];
             v18 = v16 + 112;
-            *(a3 + 1) = v16 + 112;
+            *(cells + 1) = v16 + 112;
           }
 
-          *(a3 + 1) = v18;
+          *(cells + 1) = v18;
           *&v29 = v29 + 1;
         }
 
         else
         {
           v22 = 0;
-          v19 = *(a3 + 1);
-          if (v19 >= *(a3 + 2))
+          v19 = *(cells + 1);
+          if (v19 >= *(cells + 2))
           {
-            v20 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<UIView *&,_NSRange &,_NSRange &,NUIContainerAlignment,NUIContainerAlignment&>(a3, &v28, &v30, &v29, &v22, &v23);
+            v20 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<UIView *&,_NSRange &,_NSRange &,NUIContainerAlignment,NUIContainerAlignment&>(cells, &v28, &v30, &v29, &v22, &v23);
           }
 
           else
           {
-            v17 = _NUIGridArrangementCell::_NUIGridArrangementCell(*(a3 + 1), v28, v30, *(&v30 + 1), v29, *(&v29 + 1), 0, v15).n128_u64[0];
+            v17 = _NUIGridArrangementCell::_NUIGridArrangementCell(*(cells + 1), v28, v30, *(&v30 + 1), v29, *(&v29 + 1), 0, v15).n128_u64[0];
             v20 = v19 + 112;
-            *(a3 + 1) = v19 + 112;
+            *(cells + 1) = v19 + 112;
           }
 
-          *(a3 + 1) = v20;
+          *(cells + 1) = v20;
           *&v30 = v30 + 1;
         }
       }
@@ -427,23 +427,23 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   self->_visibleCount = v21;
 }
 
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis
 {
-  v89 = a4;
-  v90 = a5;
+  cellsCopy = cells;
+  axisCopy = axis;
   v108[16] = *MEMORY[0x277D85DE8];
-  v93 = self;
-  v6 = [(NUIContainerView *)self arrangedSubviews];
-  v7 = [(NSArray *)v6 count];
-  [(NSArray *)v6 count];
+  selfCopy = self;
+  arrangedSubviews = [(NUIContainerView *)self arrangedSubviews];
+  v7 = [(NSArray *)arrangedSubviews count];
+  [(NSArray *)arrangedSubviews count];
   MEMORY[0x28223BE20](v8);
   v10 = &v88 - v9;
   bzero(&v88 - v9, v11);
   v106 = v7;
   v107 = v10;
   bzero(v10, (8 * v7 + 504) >> 6);
-  v96 = v6;
-  v12 = [(NSArray *)v6 count];
+  v96 = arrangedSubviews;
+  v12 = [(NSArray *)arrangedSubviews count];
   [(NSArray *)v96 count];
   MEMORY[0x28223BE20](v13);
   v15 = &v88 - ((v14 + 15) & 0x7FFFFFFFFFFFFF0);
@@ -451,21 +451,21 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
   v104 = v12;
   v105 = v15;
   bzero(v15, (8 * v12 + 504) >> 6);
-  if ((*&v93->_stackViewFlags << 12) >> 28 == v90)
+  if ((*&selfCopy->_stackViewFlags << 12) >> 28 == axisCopy)
   {
     v95 = [(NSArray *)v96 count];
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v92 = [(NUIContainerView *)v93 visibleArrangedSubviews];
-    v16 = [(NSArray *)v92 countByEnumeratingWithState:&v100 objects:v108 count:16];
+    visibleArrangedSubviews = [(NUIContainerView *)selfCopy visibleArrangedSubviews];
+    v16 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v100 objects:v108 count:16];
     if (v16)
     {
       v17 = 0;
       v94 = *v101;
-      p_responderFlags = &v93->super.super.super._responderFlags;
-      v91 = &v93->super.super.super._responderFlags;
+      p_responderFlags = &selfCopy->super.super.super._responderFlags;
+      v91 = &selfCopy->super.super.super._responderFlags;
       do
       {
         v19 = 0;
@@ -473,22 +473,22 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
         {
           if (*v101 != v94)
           {
-            objc_enumerationMutation(v92);
+            objc_enumerationMutation(visibleArrangedSubviews);
           }
 
           v20 = *(*(&v100 + 1) + 8 * v19);
           v21 = [(NSArray *)v96 indexOfObject:v20 inRange:v17, v95 - v17];
-          v23 = *(a3 + 1);
-          v22 = *(a3 + 2);
+          v23 = *(dimension + 1);
+          v22 = *(dimension + 2);
           if (v23 >= v22)
           {
-            v25 = 0x6DB6DB6DB6DB6DB7 * ((v23 - *a3) >> 3) + 1;
+            v25 = 0x6DB6DB6DB6DB6DB7 * ((v23 - *dimension) >> 3) + 1;
             if (v25 > 0x492492492492492)
             {
               goto LABEL_95;
             }
 
-            v26 = 0x6DB6DB6DB6DB6DB7 * ((v22 - *a3) >> 3);
+            v26 = 0x6DB6DB6DB6DB6DB7 * ((v22 - *dimension) >> 3);
             if (2 * v26 > v25)
             {
               v25 = 2 * v26;
@@ -506,18 +506,18 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
 
             if (v27)
             {
-              std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(a3, v27);
+              std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(dimension, v27);
             }
 
-            _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v23 - *a3) >> 3)), v21, 1.79769313e308);
+            _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v23 - *dimension) >> 3)), v21, 1.79769313e308);
             v24 = v28 + 56;
-            v29 = *(a3 + 1) - *a3;
+            v29 = *(dimension + 1) - *dimension;
             v30 = v28 - v29;
-            memcpy((v28 - v29), *a3, v29);
-            v31 = *a3;
-            *a3 = v30;
-            *(a3 + 1) = v24;
-            *(a3 + 2) = 0;
+            memcpy((v28 - v29), *dimension, v29);
+            v31 = *dimension;
+            *dimension = v30;
+            *(dimension + 1) = v24;
+            *(dimension + 2) = 0;
             if (v31)
             {
               operator delete(v31);
@@ -528,12 +528,12 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
 
           else
           {
-            _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(a3 + 1), v21, 1.79769313e308);
+            _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(dimension + 1), v21, 1.79769313e308);
             v24 = v23 + 56;
-            *(a3 + 1) = v23 + 56;
+            *(dimension + 1) = v23 + 56;
           }
 
-          *(a3 + 1) = v24;
+          *(dimension + 1) = v24;
           v32 = *&p_responderFlags[166];
           if (!v32)
           {
@@ -563,7 +563,7 @@ uint64_t __69__NUIContainerStackView_containerStackViewWithAxis_arrangedSubviews
           else
           {
 LABEL_28:
-            p_spacing = &v93->_spacing;
+            p_spacing = &selfCopy->_spacing;
           }
 
           v38 = *p_spacing;
@@ -578,7 +578,7 @@ LABEL_28:
         }
 
         while (v19 != v16);
-        v39 = [(NSArray *)v92 countByEnumeratingWithState:&v100 objects:v108 count:16];
+        v39 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v100 objects:v108 count:16];
         v16 = v39;
       }
 
@@ -586,22 +586,22 @@ LABEL_28:
       v10 = v107;
     }
 
-    v40 = 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 1) - *a3) >> 3) - 1;
-    *(*a3 + 56 * v40) = 0;
+    v40 = 0x6DB6DB6DB6DB6DB7 * ((*(dimension + 1) - *dimension) >> 3) - 1;
+    *(*dimension + 56 * v40) = 0;
     *&v10[(v40 >> 3) & 0x1FFFFFFFFFFFFFF8] &= ~(1 << v40);
-    v41 = *v89;
-    v42 = v89[1];
-    if (*v89 != v42)
+    v41 = *cellsCopy;
+    v42 = cellsCopy[1];
+    if (*cellsCopy != v42)
     {
-      v43 = &v93->super.super.super.super.isa + 2;
+      v43 = &selfCopy->super.super.super.super.isa + 2;
       do
       {
         v44 = *v41;
-        if (v90)
+        if (axisCopy)
         {
           v45 = v41[9];
           v46 = v41[10];
-          [(NUIContainerView *)v93 minimumSpacingAdjacentToView:v44];
+          [(NUIContainerView *)selfCopy minimumSpacingAdjacentToView:v44];
           v49 = v48;
           if (v45)
           {
@@ -618,13 +618,13 @@ LABEL_28:
 
               else
               {
-                v60 = *(*a3 + 56 * (v45 - 1));
+                v60 = *(*dimension + 56 * (v45 - 1));
                 if (v60 <= v50)
                 {
                   v60 = v50;
                 }
 
-                *(*a3 + 56 * (v45 - 1)) = v60;
+                *(*dimension + 56 * (v45 - 1)) = v60;
               }
             }
           }
@@ -640,7 +640,7 @@ LABEL_28:
         {
           v53 = v41[7];
           v54 = v41[8];
-          [(NUIContainerView *)v93 minimumSpacingAdjacentToView:v44];
+          [(NUIContainerView *)selfCopy minimumSpacingAdjacentToView:v44];
           v49 = v56;
           if (v53)
           {
@@ -657,19 +657,19 @@ LABEL_28:
 
               else
               {
-                v62 = *(*a3 + 56 * (v53 - 1));
+                v62 = *(*dimension + 56 * (v53 - 1));
                 if (v62 <= v57)
                 {
                   v62 = v57;
                 }
 
-                *(*a3 + 56 * (v53 - 1)) = v62;
+                *(*dimension + 56 * (v53 - 1)) = v62;
               }
             }
           }
 
           v61 = v54 + v53;
-          if (v61 >= v93->_visibleCount.width || NUIContainerViewLengthIsDefault(v49))
+          if (v61 >= selfCopy->_visibleCount.width || NUIContainerViewLengthIsDefault(v49))
           {
             goto LABEL_63;
           }
@@ -685,13 +685,13 @@ LABEL_28:
 
         else
         {
-          v65 = *(*a3 + 56 * (v61 - 1));
+          v65 = *(*dimension + 56 * (v61 - 1));
           if (v65 <= v49)
           {
             v65 = v49;
           }
 
-          *(*a3 + 56 * (v61 - 1)) = v65;
+          *(*dimension + 56 * (v61 - 1)) = v65;
         }
 
 LABEL_63:
@@ -701,7 +701,7 @@ LABEL_63:
       while (v41 != v42);
     }
 
-    v66 = [(NUIContainerView *)v93 isBaselineRelativeArrangement];
+    isBaselineRelativeArrangement = [(NUIContainerView *)selfCopy isBaselineRelativeArrangement];
     nui::stack_bitset::begin(&v106);
     v68 = v67;
     v98 = &v106;
@@ -712,16 +712,16 @@ LABEL_63:
       v70 = *MEMORY[0x277CBE658];
       do
       {
-        if (v68 < 0x6DB6DB6DB6DB6DB7 * ((v89[1] - *v89) >> 4) - 1)
+        if (v68 < 0x6DB6DB6DB6DB6DB7 * ((cellsCopy[1] - *cellsCopy) >> 4) - 1)
         {
           v97 = 0.0;
-          if (!NUIContainerViewLengthIsSystem(&v97, *(*a3 + 56 * v68)))
+          if (!NUIContainerViewLengthIsSystem(&v97, *(*dimension + 56 * v68)))
           {
             [MEMORY[0x277CBEAD8] raise:v70 format:@"Invalid system spacing"];
           }
 
-          [(*v89)[14 * v68] systemSpacingToAdjecentSiblingView:(*v89)[14 * v68 + 14] axis:v90 baselineRelative:v66 multiplier:v97];
-          *(*a3 + 56 * v68) = v71;
+          [(*cellsCopy)[14 * v68] systemSpacingToAdjecentSiblingView:(*cellsCopy)[14 * v68 + 14] axis:axisCopy baselineRelative:isBaselineRelativeArrangement multiplier:v97];
+          *(*dimension + 56 * v68) = v71;
         }
 
         nui::stack_bitset::iterator::operator++(&v98);
@@ -742,18 +742,18 @@ LABEL_63:
       do
       {
         v97 = 0.0;
-        if (!NUIContainerViewLengthIsSystem(&v97, *(*a3 + 56 * v73)))
+        if (!NUIContainerViewLengthIsSystem(&v97, *(*dimension + 56 * v73)))
         {
           [MEMORY[0x277CBEAD8] raise:v75 format:@"Invalid system spacing"];
         }
 
-        [(*v89)[14 * v73] systemSpacingToAdjecentSiblingView:(*v89)[14 * v73 + 14] axis:v90 baselineRelative:v66 multiplier:v97];
-        if (*(*a3 + 56 * v73) > v76)
+        [(*cellsCopy)[14 * v73] systemSpacingToAdjecentSiblingView:(*cellsCopy)[14 * v73 + 14] axis:axisCopy baselineRelative:isBaselineRelativeArrangement multiplier:v97];
+        if (*(*dimension + 56 * v73) > v76)
         {
-          v76 = *(*a3 + 56 * v73);
+          v76 = *(*dimension + 56 * v73);
         }
 
-        *(*a3 + 56 * v73) = v76;
+        *(*dimension + 56 * v73) = v76;
         nui::stack_bitset::iterator::operator++(&v98);
         v73 = v99;
       }
@@ -764,18 +764,18 @@ LABEL_63:
 
   else
   {
-    v78 = *(a3 + 1);
-    v77 = *(a3 + 2);
+    v78 = *(dimension + 1);
+    v77 = *(dimension + 2);
     if (v78 >= v77)
     {
-      v80 = 0x6DB6DB6DB6DB6DB7 * ((v78 - *a3) >> 3);
+      v80 = 0x6DB6DB6DB6DB6DB7 * ((v78 - *dimension) >> 3);
       if ((v80 + 1) > 0x492492492492492)
       {
 LABEL_95:
         std::vector<std::pair<CGSize,CGSize>>::__throw_length_error[abi:nn200100]();
       }
 
-      v81 = 0x6DB6DB6DB6DB6DB7 * ((v77 - *a3) >> 3);
+      v81 = 0x6DB6DB6DB6DB6DB7 * ((v77 - *dimension) >> 3);
       v82 = 2 * v81;
       if (2 * v81 <= v80 + 1)
       {
@@ -794,18 +794,18 @@ LABEL_95:
 
       if (v83)
       {
-        std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(a3, v83);
+        std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(dimension, v83);
       }
 
-      _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v78 - *a3) >> 3)), 0, 1.79769313e308);
+      _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v78 - *dimension) >> 3)), 0, 1.79769313e308);
       v79 = v84 + 56;
-      v85 = *(a3 + 1) - *a3;
+      v85 = *(dimension + 1) - *dimension;
       v86 = v84 - v85;
-      memcpy((v84 - v85), *a3, v85);
-      v87 = *a3;
-      *a3 = v86;
-      *(a3 + 1) = v79;
-      *(a3 + 2) = 0;
+      memcpy((v84 - v85), *dimension, v85);
+      v87 = *dimension;
+      *dimension = v86;
+      *(dimension + 1) = v79;
+      *(dimension + 2) = 0;
       if (v87)
       {
         operator delete(v87);
@@ -814,12 +814,12 @@ LABEL_95:
 
     else
     {
-      _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(a3 + 1), 0, 1.79769313e308);
+      _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(dimension + 1), 0, 1.79769313e308);
       v79 = v78 + 56;
-      *(a3 + 1) = v79;
+      *(dimension + 1) = v79;
     }
 
-    *(a3 + 1) = v79;
+    *(dimension + 1) = v79;
     *(v79 - 56) = 0;
   }
 }
@@ -858,8 +858,8 @@ LABEL_95:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(NUIContainerView *)self visibleArrangedSubviews];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  visibleArrangedSubviews = [(NUIContainerView *)self visibleArrangedSubviews];
+  v10 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -871,7 +871,7 @@ LABEL_95:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(visibleArrangedSubviews);
         }
 
         v14 = [(NUIContainerStackView *)self _effectiveAlignmentForArrangedSubview:?];
@@ -891,7 +891,7 @@ LABEL_95:
       }
 
       while (v11 != v13);
-      v11 = [(NSArray *)v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v11 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v11);
@@ -916,29 +916,29 @@ LABEL_95:
   }
 
   [v3 setObject:v4 forKeyedSubscript:@"axis"];
-  v5 = [(NUIContainerStackView *)self alignment];
+  alignment = [(NUIContainerStackView *)self alignment];
   if (NUIStringFromAlignment(NUIContainerAlignment)::onceToken != -1)
   {
     [NUIContainerStackView arrangedDebugDescription];
   }
 
-  v6 = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v5)}];
+  v6 = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", alignment)}];
   if (!v6)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", alignment];
   }
 
   [v3 setObject:v6 forKeyedSubscript:@"alignment"];
-  v7 = [(NUIContainerStackView *)self distribution];
+  distribution = [(NUIContainerStackView *)self distribution];
   if (NUIStringFromDistribution(NUIContainerDistribution)::onceToken != -1)
   {
     [NUIContainerStackView debugDictionary];
   }
 
-  v8 = [NUIStringFromDistribution(NUIContainerDistribution)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v7)}];
+  v8 = [NUIStringFromDistribution(NUIContainerDistribution)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", distribution)}];
   if (!v8)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", distribution];
   }
 
   [v3 setObject:v8 forKeyedSubscript:@"distribution"];
@@ -964,25 +964,25 @@ LABEL_95:
   return result;
 }
 
-- (_BYTE)_baselineViewVendForFirstBaseline:(_BYTE *)a1
+- (_BYTE)_baselineViewVendForFirstBaseline:(_BYTE *)baseline
 {
-  v2 = a1;
-  if (a1)
+  baselineCopy = baseline;
+  if (baseline)
   {
-    v4 = [a1 visibleArrangedSubviews];
-    v12 = v4;
-    if ((v2[690] & 0xF) != 0)
+    visibleArrangedSubviews = [baseline visibleArrangedSubviews];
+    v12 = visibleArrangedSubviews;
+    if ((baselineCopy[690] & 0xF) != 0)
     {
       if (a2)
       {
-        v2 = [v4 firstObject];
-        [v2 effectiveFirstBaselineOffsetFromTop];
+        baselineCopy = [visibleArrangedSubviews firstObject];
+        [baselineCopy effectiveFirstBaselineOffsetFromTop];
       }
 
       else
       {
-        v2 = [v4 lastObject];
-        [v2 effectiveBaselineOffsetFromBottom];
+        baselineCopy = [visibleArrangedSubviews lastObject];
+        [baselineCopy effectiveBaselineOffsetFromBottom];
       }
 
       if (v13 <= 0.0)
@@ -993,14 +993,14 @@ LABEL_95:
 
     else
     {
-      v14 = OUTLINED_FUNCTION_21(v4, v5, v6, v7, v8, v9, v10, v11, 0, 0, 0, 0, 0, 0, 0, 0, v38, v40);
+      v14 = OUTLINED_FUNCTION_21(visibleArrangedSubviews, v5, v6, v7, v8, v9, v10, v11, 0, 0, 0, 0, 0, 0, 0, 0, v38, v40);
       if (!v14)
       {
         return 0;
       }
 
       v15 = v14;
-      v2 = 0;
+      baselineCopy = 0;
       v16 = *v32;
       v17 = 0.0;
       do
@@ -1015,66 +1015,66 @@ LABEL_95:
           v19 = *(v31 + 8 * i);
           if (a2)
           {
-            v20 = [v19 effectiveFirstBaselineOffsetFromTop];
+            effectiveFirstBaselineOffsetFromTop = [v19 effectiveFirstBaselineOffsetFromTop];
           }
 
           else
           {
-            v20 = [v19 effectiveBaselineOffsetFromBottom];
+            effectiveFirstBaselineOffsetFromTop = [v19 effectiveBaselineOffsetFromBottom];
           }
 
           if (v28 > v17)
           {
             v17 = v28;
-            v2 = v19;
+            baselineCopy = v19;
           }
         }
 
-        v15 = OUTLINED_FUNCTION_21(v20, v21, v22, v23, v24, v25, v26, v27, v30, v31, v32, v33, v34, v35, v36, v37, v39, v41);
+        v15 = OUTLINED_FUNCTION_21(effectiveFirstBaselineOffsetFromTop, v21, v22, v23, v24, v25, v26, v27, v30, v31, v32, v33, v34, v35, v36, v37, v39, v41);
       }
 
       while (v15);
     }
   }
 
-  return v2;
+  return baselineCopy;
 }
 
-- (double)_calculateArrangedSizeFittingSize:(CGFloat)a3 forLayout:(CGFloat)a4
+- (double)_calculateArrangedSizeFittingSize:(CGFloat)size forLayout:(CGFloat)layout
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   do
   {
-    _NUIGridArrangement::resetForInvalidation((a1 + 544), 0);
-    v11.width = a3;
-    v11.height = a4;
-    _NUIGridArrangement::measureCells((a1 + 544), a2, v11);
+    _NUIGridArrangement::resetForInvalidation((self + 544), 0);
+    v11.width = size;
+    v11.height = layout;
+    _NUIGridArrangement::measureCells((self + 544), a2, v11);
     v9 = v8;
   }
 
-  while (([a1 mustRestartMeasurement] & 1) != 0);
+  while (([self mustRestartMeasurement] & 1) != 0);
   return v9;
 }
 
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size
 {
-  v3 = [(NUIContainerStackView *)self _calculateArrangedSizeFittingSize:a3.width forLayout:a3.height];
+  v3 = [(NUIContainerStackView *)self _calculateArrangedSizeFittingSize:size.width forLayout:size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(NUIContainerStackView *)self _calculateArrangedSizeFittingSize:a3.size.width forLayout:a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(NUIContainerStackView *)self _calculateArrangedSizeFittingSize:bounds.size.width forLayout:bounds.size.height];
 
   _NUIGridArrangement::positionCells(&self->_arrangement, &__block_literal_global_3, x, y, width, height);
 }

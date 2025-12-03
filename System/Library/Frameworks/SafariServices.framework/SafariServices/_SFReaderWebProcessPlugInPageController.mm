@@ -1,48 +1,48 @@
 @interface _SFReaderWebProcessPlugInPageController
-+ (id)readerPageControllerForContextHandle:(id)a3;
++ (id)readerPageControllerForContextHandle:(id)handle;
 - (OpaqueJSValue)originalArticleFinder;
-- (_SFReaderWebProcessPlugInPageController)initWithPlugIn:(id)a3 contextController:(id)a4;
+- (_SFReaderWebProcessPlugInPageController)initWithPlugIn:(id)in contextController:(id)controller;
 - (_SFWebProcessPlugInReaderEnabledPageController)originalPageController;
 - (id)collectReaderContentFromPrintAndMailingFrame;
 - (id)isolatedWorldForNextPageDetection;
 - (id)printingMailingFrame;
-- (void)_initializeReaderJSControllerForFrame:(id)a3;
+- (void)_initializeReaderJSControllerForFrame:(id)frame;
 - (void)insertSummaryTextPlaceholder;
 - (void)loadNewArticle;
 - (void)reloadArticle;
-- (void)setArticleLocale:(id)a3;
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11;
-- (void)setConfiguration:(id)a3;
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3;
-- (void)setReaderIsActive:(BOOL)a3;
-- (void)updateSummaryTextVisibility:(BOOL)a3;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
-- (void)willDestroyBrowserContextController:(id)a3;
+- (void)setArticleLocale:(id)locale;
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1;
+- (void)setConfiguration:(id)configuration;
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title;
+- (void)setReaderIsActive:(BOOL)active;
+- (void)updateSummaryTextVisibility:(BOOL)visibility;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
+- (void)willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation _SFReaderWebProcessPlugInPageController
 
-- (_SFReaderWebProcessPlugInPageController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (_SFReaderWebProcessPlugInPageController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = _SFReaderWebProcessPlugInPageController;
-  v8 = [(WBSWebProcessPlugInPageController *)&v15 initWithPlugIn:v6 contextController:v7];
+  v8 = [(WBSWebProcessPlugInPageController *)&v15 initWithPlugIn:inCopy contextController:controllerCopy];
   if (v8)
   {
     v9 = contextHandleToReaderPageController;
     if (!contextHandleToReaderPageController)
     {
-      v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
       v11 = contextHandleToReaderPageController;
-      contextHandleToReaderPageController = v10;
+      contextHandleToReaderPageController = strongToWeakObjectsMapTable;
 
       v9 = contextHandleToReaderPageController;
     }
 
-    v12 = [v7 handle];
-    [v9 setObject:v8 forKey:v12];
+    handle = [controllerCopy handle];
+    [v9 setObject:v8 forKey:handle];
 
     v13 = v8;
   }
@@ -50,9 +50,9 @@
   return v8;
 }
 
-- (void)willDestroyBrowserContextController:(id)a3
+- (void)willDestroyBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_originalPageController);
   [WeakRetained setReaderPageController:0];
 
@@ -66,12 +66,12 @@
 
   v7.receiver = self;
   v7.super_class = _SFReaderWebProcessPlugInPageController;
-  [(WBSWebProcessPlugInPageController *)&v7 willDestroyBrowserContextController:v4];
+  [(WBSWebProcessPlugInPageController *)&v7 willDestroyBrowserContextController:controllerCopy];
 }
 
-+ (id)readerPageControllerForContextHandle:(id)a3
++ (id)readerPageControllerForContextHandle:(id)handle
 {
-  v3 = [contextHandleToReaderPageController objectForKey:a3];
+  v3 = [contextHandleToReaderPageController objectForKey:handle];
 
   return v3;
 }
@@ -79,14 +79,14 @@
 - (OpaqueJSValue)originalArticleFinder
 {
   WeakRetained = objc_loadWeakRetained(&self->_originalPageController);
-  v3 = [WeakRetained originalArticleFinder];
+  originalArticleFinder = [WeakRetained originalArticleFinder];
 
-  return v3;
+  return originalArticleFinder;
 }
 
-- (void)_initializeReaderJSControllerForFrame:(id)a3
+- (void)_initializeReaderJSControllerForFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if (!self->_readerJSController.__ptr_)
   {
     operator new();
@@ -111,17 +111,17 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   ptr = self->_readerJSController.__ptr_;
   if (ptr)
   {
-    SafariShared::ReaderJSController::setConfiguration(ptr, v5);
+    SafariShared::ReaderJSController::setConfiguration(ptr, configurationCopy);
   }
 }
 
-- (void)setReaderIsActive:(BOOL)a3
+- (void)setReaderIsActive:(BOOL)active
 {
   if (self->_readerJSController.__ptr_)
   {
@@ -129,43 +129,43 @@
   }
 }
 
-- (void)setArticleLocale:(id)a3
+- (void)setArticleLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   ptr = self->_readerJSController.__ptr_;
   if (ptr)
   {
-    SafariShared::ReaderJSController::setArticleLocale(ptr, v5);
+    SafariShared::ReaderJSController::setArticleLocale(ptr, localeCopy);
   }
 }
 
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1
 {
-  v24 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
+  summaryCopy = summary;
+  headerCopy = header;
+  contentsHeaderCopy = contentsHeader;
+  stringCopy = string;
+  titlesCopy = titles;
+  pathsCopy = paths;
+  textCopy = text;
+  attributionCopy = attribution;
   if (self->_readerJSController.__ptr_)
   {
     SafariShared::ReaderJSController::setArticleSummary();
   }
 }
 
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   ptr = self->_readerJSController.__ptr_;
   if (ptr)
   {
-    SafariShared::ReaderJSController::setOnDeviceSummaryButtonWithTitle(ptr, v5);
+    SafariShared::ReaderJSController::setOnDeviceSummaryButtonWithTitle(ptr, titleCopy);
   }
 }
 
-- (void)updateSummaryTextVisibility:(BOOL)a3
+- (void)updateSummaryTextVisibility:(BOOL)visibility
 {
   if (self->_readerJSController.__ptr_)
   {
@@ -187,9 +187,9 @@
   isolatedWorldForNextPageDetection = self->_isolatedWorldForNextPageDetection;
   if (!isolatedWorldForNextPageDetection)
   {
-    v4 = [MEMORY[0x1E6985398] world];
+    world = [MEMORY[0x1E6985398] world];
     v5 = self->_isolatedWorldForNextPageDetection;
-    self->_isolatedWorldForNextPageDetection = v4;
+    self->_isolatedWorldForNextPageDetection = world;
 
     [(WKWebProcessPlugInScriptWorld *)self->_isolatedWorldForNextPageDetection makeAllShadowRootsOpen];
     [(WKWebProcessPlugInScriptWorld *)self->_isolatedWorldForNextPageDetection disableOverrideBuiltinsBehavior];
@@ -223,14 +223,14 @@
   return ptr;
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
-  v7 = a4;
-  v6 = [(WBSWebProcessPlugInPageController *)self mainFrame];
+  frameCopy = frame;
+  mainFrame = [(WBSWebProcessPlugInPageController *)self mainFrame];
 
-  if (v6 == v7)
+  if (mainFrame == frameCopy)
   {
-    [(_SFReaderWebProcessPlugInPageController *)self _initializeReaderJSControllerForFrame:v7];
+    [(_SFReaderWebProcessPlugInPageController *)self _initializeReaderJSControllerForFrame:frameCopy];
   }
 }
 

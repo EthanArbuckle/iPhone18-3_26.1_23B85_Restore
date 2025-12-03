@@ -4,7 +4,7 @@
 - (BCSceneControlling)targetSceneController;
 - (BCTransactionQueue)queue;
 - (BOOL)sq_isFinal;
-- (BOOL)waitForCompletionWithTimeout:(double)a3;
+- (BOOL)waitForCompletionWithTimeout:(double)timeout;
 - (NSString)debugDescription;
 - (NSString)description;
 - (_BCTransaction)init;
@@ -12,12 +12,12 @@
 - (id)sq_rollbacksToProcess;
 - (id)sq_whenCancelledBlocks;
 - (id)sq_whenCompletedBlocks;
-- (void)commit:(id)a3 rollback:(id)a4;
+- (void)commit:(id)commit rollback:(id)rollback;
 - (void)finalize;
-- (void)requireTargetSceneController:(id)a3;
-- (void)setContext:(id)a3;
-- (void)whenCancelled:(id)a3;
-- (void)whenCompleted:(id)a3;
+- (void)requireTargetSceneController:(id)controller;
+- (void)setContext:(id)context;
+- (void)whenCancelled:(id)cancelled;
+- (void)whenCompleted:(id)completed;
 @end
 
 @implementation _BCTransaction
@@ -34,9 +34,9 @@
     v2->_context = v3;
 
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
     guid = v2->_guid;
-    v2->_guid = v6;
+    v2->_guid = uUIDString;
 
     v8 = objc_opt_new();
     pending = v2->_pending;
@@ -50,27 +50,27 @@
   return v2;
 }
 
-- (void)commit:(id)a3 rollback:(id)a4
+- (void)commit:(id)commit rollback:(id)rollback
 {
-  v6 = a3;
-  v7 = a4;
+  commitCopy = commit;
+  rollbackCopy = rollback;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_queue);
-  v9 = [WeakRetained sync];
+  sync = [WeakRetained sync];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_133D9C;
   v17 = &unk_2CDD30;
   v21 = &v22;
-  v18 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = commitCopy;
   v19 = v10;
-  v11 = v7;
+  v11 = rollbackCopy;
   v20 = v11;
-  dispatch_sync(v9, &v14);
+  dispatch_sync(sync, &v14);
 
   if (*(v23 + 24) == 1)
   {
@@ -89,20 +89,20 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)whenCancelled:(id)a3
+- (void)whenCancelled:(id)cancelled
 {
-  v4 = a3;
-  if (v4)
+  cancelledCopy = cancelled;
+  if (cancelledCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_queue);
-    v6 = [WeakRetained sync];
+    sync = [WeakRetained sync];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_133FBC;
     v12 = &unk_2C8488;
-    v13 = self;
-    v14 = v4;
-    dispatch_sync(v6, &v9);
+    selfCopy = self;
+    v14 = cancelledCopy;
+    dispatch_sync(sync, &v9);
 
     v7 = BCTransactionLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -117,20 +117,20 @@
   }
 }
 
-- (void)whenCompleted:(id)a3
+- (void)whenCompleted:(id)completed
 {
-  v4 = a3;
-  if (v4)
+  completedCopy = completed;
+  if (completedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_queue);
-    v6 = [WeakRetained sync];
+    sync = [WeakRetained sync];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
     v11 = sub_1341B4;
     v12 = &unk_2C8488;
-    v13 = self;
-    v14 = v4;
-    dispatch_sync(v6, &v9);
+    selfCopy = self;
+    v14 = completedCopy;
+    dispatch_sync(sync, &v9);
 
     v7 = BCTransactionLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -152,14 +152,14 @@
   v10 = 0x2020000000;
   v11 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_queue);
-  v4 = [WeakRetained sync];
+  sync = [WeakRetained sync];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_134450;
   v7[3] = &unk_2CA7A8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(sync, v7);
 
   if (*(v9 + 24) == 1)
   {
@@ -201,23 +201,23 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 commit];
+        commit = [v9 commit];
 
-        if (v10)
+        if (commit)
         {
-          v11 = [v9 commit];
-          v12 = objc_retainBlock(v11);
+          commit2 = [v9 commit];
+          v12 = objc_retainBlock(commit2);
           [v3 addObject:v12];
         }
 
-        v13 = [v9 rollback];
+        rollback = [v9 rollback];
 
-        if (v13)
+        if (rollback)
         {
-          v14 = [(_BCTransaction *)self rollbacks];
-          v15 = [v9 rollback];
-          v16 = objc_retainBlock(v15);
-          [v14 addObject:v16];
+          rollbacks = [(_BCTransaction *)self rollbacks];
+          rollback2 = [v9 rollback];
+          v16 = objc_retainBlock(rollback2);
+          [rollbacks addObject:v16];
         }
       }
 
@@ -239,14 +239,14 @@
 
 - (id)sq_rollbacksToProcess
 {
-  v3 = [(_BCTransaction *)self rollbacks];
-  v4 = [v3 copy];
-  v5 = [v4 bu_reversedArray];
+  rollbacks = [(_BCTransaction *)self rollbacks];
+  v4 = [rollbacks copy];
+  bu_reversedArray = [v4 bu_reversedArray];
 
-  v6 = [(_BCTransaction *)self rollbacks];
-  [v6 removeAllObjects];
+  rollbacks2 = [(_BCTransaction *)self rollbacks];
+  [rollbacks2 removeAllObjects];
 
-  return v5;
+  return bu_reversedArray;
 }
 
 - (BOOL)sq_isFinal
@@ -256,16 +256,16 @@
     return 0;
   }
 
-  v4 = [(_BCTransaction *)self pending];
-  if ([v4 count])
+  pending = [(_BCTransaction *)self pending];
+  if ([pending count])
   {
     v2 = 0;
   }
 
   else
   {
-    v5 = [(_BCTransaction *)self whenCompletedBlocks];
-    v2 = [v5 count] == 0;
+    whenCompletedBlocks = [(_BCTransaction *)self whenCompletedBlocks];
+    v2 = [whenCompletedBlocks count] == 0;
   }
 
   return v2;
@@ -303,7 +303,7 @@
   return v5;
 }
 
-- (BOOL)waitForCompletionWithTimeout:(double)a3
+- (BOOL)waitForCompletionWithTimeout:(double)timeout
 {
   v5 = +[NSThread isMainThread];
   if ((v5 & 1) == 0)
@@ -311,28 +311,28 @@
     sub_1EAE70(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_queue);
   v14 = 0;
-  v15 = CFAbsoluteTimeGetCurrent() + a3;
+  v15 = CFAbsoluteTimeGetCurrent() + timeout;
   do
   {
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
     v26 = 0;
-    v16 = [WeakRetained sync];
+    sync = [WeakRetained sync];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_134A54;
     v22[3] = &unk_2CA7A8;
     v22[4] = self;
     v22[5] = &v23;
-    dispatch_sync(v16, v22);
+    dispatch_sync(sync, v22);
 
     if (v24[3])
     {
@@ -371,13 +371,13 @@ LABEL_14:
   return v14;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   p_context = &self->_context;
-  if (self->_context != v5)
+  if (self->_context != contextCopy)
   {
-    objc_storeStrong(p_context, a3);
+    objc_storeStrong(p_context, context);
     WeakRetained = objc_loadWeakRetained(&self->_queue);
     [WeakRetained _cancelTransactionsConflictedByTransaction:self];
 
@@ -390,20 +390,20 @@ LABEL_14:
 
 - (BCSceneControlling)targetSceneController
 {
-  v2 = [(_BCTransaction *)self targetSceneDescriptor];
+  targetSceneDescriptor = [(_BCTransaction *)self targetSceneDescriptor];
   v3 = BUProtocolCast();
 
   return v3;
 }
 
-- (void)requireTargetSceneController:(id)a3
+- (void)requireTargetSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_BCTransaction *)self targetSceneController];
+  controllerCopy = controller;
+  targetSceneController = [(_BCTransaction *)self targetSceneController];
 
-  if (!v5)
+  if (!targetSceneController)
   {
-    v8 = [(_BCTransaction *)self targetSceneDescriptor];
+    targetSceneDescriptor = [(_BCTransaction *)self targetSceneDescriptor];
     v6 = BUProtocolCast();
 
     if (v6)
@@ -413,14 +413,14 @@ LABEL_14:
       v10[2] = sub_134D14;
       v10[3] = &unk_2CDD58;
       v10[4] = self;
-      v11 = v4;
+      v11 = controllerCopy;
       [v6 provideSceneController:v10];
 
       goto LABEL_7;
     }
 
-    v9 = objc_retainBlock(v4);
-    v7 = v9;
+    v9 = objc_retainBlock(controllerCopy);
+    targetSceneController2 = v9;
     if (v9)
     {
       (*(v9 + 2))(v9, 0);
@@ -429,11 +429,11 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(controllerCopy);
   if (v6)
   {
-    v7 = [(_BCTransaction *)self targetSceneController];
-    (v6)[2](v6, v7);
+    targetSceneController2 = [(_BCTransaction *)self targetSceneController];
+    (v6)[2](v6, targetSceneController2);
 LABEL_4:
   }
 
@@ -442,19 +442,19 @@ LABEL_7:
 
 - (BCSceneControlling)destinationSceneController
 {
-  v3 = [(_BCTransaction *)self targetSceneController];
-  v4 = v3;
-  if (v3)
+  targetSceneController = [(_BCTransaction *)self targetSceneController];
+  v4 = targetSceneController;
+  if (targetSceneController)
   {
-    v5 = v3;
+    originatingSceneController = targetSceneController;
   }
 
   else
   {
-    v5 = [(_BCTransaction *)self originatingSceneController];
+    originatingSceneController = [(_BCTransaction *)self originatingSceneController];
   }
 
-  v6 = v5;
+  v6 = originatingSceneController;
 
   return v6;
 }
@@ -462,18 +462,18 @@ LABEL_7:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(_BCTransaction *)self guid];
-  v5 = [(_BCTransaction *)self name];
-  v6 = [NSString stringWithFormat:@"<%@: %p guid:%@ name:%@>", v3, self, v4, v5];
+  guid = [(_BCTransaction *)self guid];
+  name = [(_BCTransaction *)self name];
+  v6 = [NSString stringWithFormat:@"<%@: %p guid:%@ name:%@>", v3, self, guid, name];
 
   return v6;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(_BCTransaction *)self guid];
-  v4 = [(_BCTransaction *)self name];
-  v5 = [NSString stringWithFormat:@"tx:%@, name:%@", v3, v4];
+  guid = [(_BCTransaction *)self guid];
+  name = [(_BCTransaction *)self name];
+  v5 = [NSString stringWithFormat:@"tx:%@, name:%@", guid, name];
 
   return v5;
 }

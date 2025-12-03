@@ -6,26 +6,26 @@
 - (CGRect)weekDayInitialsDay;
 - (CGRect)weekDayInitialsMonth;
 - (CGSize)dayCellSize;
-- (MonthDayTransitionView)initWithFrame:(CGRect)a3;
-- (id)_animateView:(id)a3 toPosition:(CGPoint)a4 setDelegate:(BOOL)a5;
-- (void)_animateView:(id)a3 toAlpha:(double)a4 delay:(double)a5;
-- (void)_basicAnimateView:(id)a3 toAlpha:(double)a4 duration:(double)a5;
+- (MonthDayTransitionView)initWithFrame:(CGRect)frame;
+- (id)_animateView:(id)view toPosition:(CGPoint)position setDelegate:(BOOL)delegate;
+- (void)_animateView:(id)view toAlpha:(double)alpha delay:(double)delay;
+- (void)_basicAnimateView:(id)view toAlpha:(double)alpha duration:(double)duration;
 - (void)_createViews;
 - (void)_haltAnimations;
-- (void)animateToDayWithCompletion:(id)a3;
-- (void)animateToMonthWithCompletion:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)prepareTransitionScrubberWithSelectedDate:(id)a3 todayDate:(id)a4 dayViewController:(id)a5 monthViewController:(id)a6 paletteView:(id)a7 reverse:(BOOL)a8;
-- (void)prepareTransitionWithTopView:(id)a3 bottomView:(id)a4 allDayView:(id)a5 topLabelsContainer:(id)a6;
+- (void)animateToDayWithCompletion:(id)completion;
+- (void)animateToMonthWithCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)prepareTransitionScrubberWithSelectedDate:(id)date todayDate:(id)todayDate dayViewController:(id)controller monthViewController:(id)viewController paletteView:(id)view reverse:(BOOL)reverse;
+- (void)prepareTransitionWithTopView:(id)view bottomView:(id)bottomView allDayView:(id)dayView topLabelsContainer:(id)container;
 @end
 
 @implementation MonthDayTransitionView
 
-- (MonthDayTransitionView)initWithFrame:(CGRect)a3
+- (MonthDayTransitionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MonthDayTransitionView;
-  v3 = [(MonthDayTransitionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MonthDayTransitionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
 
   UIAnimationDragCoefficient();
   v6 = v5 > 1.5;
-  v7 = [(MonthDayTransitionView *)self scrubber];
-  [v7 setDebug:v6];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setDebug:v6];
 
-  v8 = [(MonthDayTransitionView *)self scrubber];
-  [v8 setHidden:1];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 setHidden:1];
 }
 
 - (CGRect)weekDayInitialsDay
@@ -78,66 +78,66 @@
   return result;
 }
 
-- (void)prepareTransitionWithTopView:(id)a3 bottomView:(id)a4 allDayView:(id)a5 topLabelsContainer:(id)a6
+- (void)prepareTransitionWithTopView:(id)view bottomView:(id)bottomView allDayView:(id)dayView topLabelsContainer:(id)container
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  [(MonthDayTransitionView *)self setTopView:a3];
-  [(MonthDayTransitionView *)self setBottomView:v12];
+  dayViewCopy = dayView;
+  containerCopy = container;
+  bottomViewCopy = bottomView;
+  [(MonthDayTransitionView *)self setTopView:view];
+  [(MonthDayTransitionView *)self setBottomView:bottomViewCopy];
 
   allDayView = self->_allDayView;
-  self->_allDayView = v10;
-  v15 = v10;
+  self->_allDayView = dayViewCopy;
+  v15 = dayViewCopy;
 
   topLabelsContainer = self->_topLabelsContainer;
-  self->_topLabelsContainer = v11;
+  self->_topLabelsContainer = containerCopy;
 }
 
-- (void)prepareTransitionScrubberWithSelectedDate:(id)a3 todayDate:(id)a4 dayViewController:(id)a5 monthViewController:(id)a6 paletteView:(id)a7 reverse:(BOOL)a8
+- (void)prepareTransitionScrubberWithSelectedDate:(id)date todayDate:(id)todayDate dayViewController:(id)controller monthViewController:(id)viewController paletteView:(id)view reverse:(BOOL)reverse
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v259 = a7;
-  v18 = a7;
-  [(MonthDayTransitionView *)self setSelectedDate:v14];
-  objc_storeStrong(&self->_monthViewController, a6);
-  v19 = [v16 dayScrubberController];
-  v20 = [v19 view];
-  [v20 layoutIfNeeded];
+  reverseCopy = reverse;
+  dateCopy = date;
+  todayDateCopy = todayDate;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  viewCopy = view;
+  viewCopy2 = view;
+  [(MonthDayTransitionView *)self setSelectedDate:dateCopy];
+  objc_storeStrong(&self->_monthViewController, viewController);
+  dayScrubberController = [controllerCopy dayScrubberController];
+  view = [dayScrubberController view];
+  [view layoutIfNeeded];
 
-  v21 = [v16 dayScrubberController];
-  v22 = [v21 weekScrollView];
-  [v22 frame];
+  dayScrubberController2 = [controllerCopy dayScrubberController];
+  weekScrollView = [dayScrubberController2 weekScrollView];
+  [weekScrollView frame];
   v266 = v23;
 
-  v24 = [v16 dayScrubberController];
-  v25 = [v24 weekScrollView];
-  [v25 cellSize];
+  dayScrubberController3 = [controllerCopy dayScrubberController];
+  weekScrollView2 = [dayScrubberController3 weekScrollView];
+  [weekScrollView2 cellSize];
   v27 = v26;
   v29 = v28;
 
-  v30 = [v16 dayScrubberController];
-  v31 = [v30 view];
-  [v31 frame];
+  dayScrubberController4 = [controllerCopy dayScrubberController];
+  view2 = [dayScrubberController4 view];
+  [view2 frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
 
-  v40 = [v16 view];
-  v273 = v18;
-  [v40 convertRect:v18 fromView:{v33, v35, v37, v39}];
+  view3 = [controllerCopy view];
+  v273 = viewCopy2;
+  [view3 convertRect:viewCopy2 fromView:{v33, v35, v37, v39}];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
 
-  v49 = [v16 view];
-  [(MonthDayTransitionView *)self convertRect:v49 fromView:v42, v44, v46, v48];
+  view4 = [controllerCopy view];
+  [(MonthDayTransitionView *)self convertRect:view4 fromView:v42, v44, v46, v48];
   v51 = v50;
   v53 = v52;
   v55 = v54;
@@ -145,70 +145,70 @@
 
   v57 = CalSystemSolariumEnabled();
   v58 = v53 + -58.0;
-  v271 = v8;
-  if ((v57 & v8) == 0)
+  v271 = reverseCopy;
+  if ((v57 & reverseCopy) == 0)
   {
     v58 = v53;
   }
 
   v263 = v58;
-  v272 = [v17 cellFramesForWeekContainingDate:v14];
-  [v17 frameForWeekContainingDate:v14];
+  v272 = [viewControllerCopy cellFramesForWeekContainingDate:dateCopy];
+  [viewControllerCopy frameForWeekContainingDate:dateCopy];
   v60 = v59;
   v62 = v61;
   v64 = v63;
   v66 = v65;
-  v283 = v17;
-  v67 = [v17 view];
-  v287 = self;
-  [(MonthDayTransitionView *)self convertRect:v67 fromView:v60, v62, v64, v66];
+  v283 = viewControllerCopy;
+  view5 = [viewControllerCopy view];
+  selfCopy = self;
+  [(MonthDayTransitionView *)self convertRect:view5 fromView:v60, v62, v64, v66];
   v261 = v68;
   v262 = v69;
   v71 = v70;
   v284 = v72;
 
-  v276 = v16;
-  v73 = [v16 dayScrubberController];
-  v74 = [v73 weekScrollView];
-  v75 = [v74 firstVisibleDayOffsetFromSelectedDay];
+  v276 = controllerCopy;
+  dayScrubberController5 = [controllerCopy dayScrubberController];
+  weekScrollView3 = [dayScrubberController5 weekScrollView];
+  firstVisibleDayOffsetFromSelectedDay = [weekScrollView3 firstVisibleDayOffsetFromSelectedDay];
 
-  v76 = v75 + 6;
+  v76 = firstVisibleDayOffsetFromSelectedDay + 6;
   v77 = CUIKCalendar();
   v78 = objc_alloc_init(NSDateComponents);
   [v78 setHour:1];
-  v270 = [v77 dateByAddingComponents:v78 toDate:v14 options:0];
+  v270 = [v77 dateByAddingComponents:v78 toDate:dateCopy options:0];
   v269 = [v77 components:512 fromDate:?];
-  v79 = [v269 weekday];
+  weekday = [v269 weekday];
   v80 = CUIKZeroIndexedWeekStart();
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
-  v82 = v80 - v79 - 6;
+  v82 = v80 - weekday - 6;
   if (!IsLeftToRight)
   {
-    v82 = v79 - v80 + 6;
+    v82 = weekday - v80 + 6;
   }
 
   v83 = v82 % 7;
-  v84 = (7 - v79) % 7;
-  v86 = &v75[-v83];
-  v85 = v75 < v83;
-  if (v75 >= v83)
+  v84 = (7 - weekday) % 7;
+  v86 = &firstVisibleDayOffsetFromSelectedDay[-v83];
+  v85 = firstVisibleDayOffsetFromSelectedDay < v83;
+  if (firstVisibleDayOffsetFromSelectedDay >= v83)
   {
     v87 = v83;
   }
 
   else
   {
-    v87 = v75;
+    v87 = firstVisibleDayOffsetFromSelectedDay;
   }
 
-  if (v75 >= v83)
+  if (firstVisibleDayOffsetFromSelectedDay >= v83)
   {
     v88 = 0;
   }
 
   else
   {
-    v88 = v83 - v75;
+    v88 = v83 - firstVisibleDayOffsetFromSelectedDay;
   }
 
   v292 = v88;
@@ -230,7 +230,7 @@
 
   else
   {
-    v90 = (v75 + 6);
+    v90 = (firstVisibleDayOffsetFromSelectedDay + 6);
   }
 
   v91 = objc_alloc_init(NSDateComponents);
@@ -246,8 +246,8 @@
 
   [v91 setDay:v92];
   v268 = v91;
-  v285 = v14;
-  v93 = [v77 dateByAddingComponents:v91 toDate:v14 options:0];
+  v285 = dateCopy;
+  v93 = [v77 dateByAddingComponents:v91 toDate:dateCopy options:0];
   v291 = v77;
   v280 = v78;
   v94 = [v77 dateByAddingComponents:v78 toDate:v93 options:0];
@@ -287,13 +287,13 @@
   v295 = [v77 dateFromComponents:?];
   v100 = v55;
   v101 = v51;
-  v274 = v15;
+  v274 = todayDateCopy;
   v267 = v94;
   v278 = v29;
   v279 = v27;
-  if (v15)
+  if (todayDateCopy)
   {
-    v277 = [v77 components:542 fromDate:v15];
+    v277 = [v77 components:542 fromDate:todayDateCopy];
     v294 = [v77 dateFromComponents:?];
   }
 
@@ -379,7 +379,7 @@
       {
         if ([v119 month] == 1 && (objc_msgSend(v119, "isLeapMonth") & 1) == 0)
         {
-          v123 = [(MonthDayTransitionView *)v287 traitCollection];
+          traitCollection = [(MonthDayTransitionView *)selfCopy traitCollection];
           v124 = EKUIUsesLargeTextLayout();
 
           if (v124)
@@ -395,7 +395,7 @@
 
         else
         {
-          v121 = [(MonthDayTransitionView *)v287 traitCollection];
+          traitCollection2 = [(MonthDayTransitionView *)selfCopy traitCollection];
           v122 = EKUIUsesLargeTextLayout();
 
           if (v122)
@@ -429,10 +429,10 @@
 
     if (v114)
     {
-      v126 = [v109 month];
-      v127 = [v114 month];
+      month = [v109 month];
+      month2 = [v114 month];
       v128 = v299;
-      if (v126 != v127)
+      if (month != month2)
       {
         v128 = v106 - 1;
       }
@@ -465,9 +465,9 @@
     {
       v134 = v109;
       v135 = +[CUIKPreferences sharedPreferences];
-      v136 = [v135 showWeekNumbers];
+      showWeekNumbers = [v135 showWeekNumbers];
 
-      if (v136)
+      if (showWeekNumbers)
       {
         v77 = v291;
         [v291 component:0x2000 fromDate:v115];
@@ -491,8 +491,8 @@
 
   while (v111 != v106);
   v258 = v108;
-  v138 = [v77 timeZone];
-  v139 = [EKCalendarDate calendarDateWithDate:v285 timeZone:v138];
+  timeZone = [v77 timeZone];
+  v139 = [EKCalendarDate calendarDateWithDate:v285 timeZone:timeZone];
 
   v257 = v139;
   v140 = [v283 subviewForDate:v139];
@@ -509,19 +509,19 @@
   }
 
   v142 = v141;
-  v143 = [v142 visibleDaySummaryViews];
+  visibleDaySummaryViews = [v142 visibleDaySummaryViews];
   v145 = v275;
   v144 = v276;
-  p_isa = &v287->super.super.super.isa;
+  p_isa = &selfCopy->super.super.super.isa;
   v303 = v142;
-  v255 = v143;
+  v255 = visibleDaySummaryViews;
   if (v142)
   {
-    v147 = v143;
+    v147 = visibleDaySummaryViews;
     v281 = v109;
-    if (v143)
+    if (visibleDaySummaryViews)
     {
-      v148 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v143 count]);
+      v148 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [visibleDaySummaryViews count]);
       v149 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v147 count]);
       v304 = 0u;
       v305 = 0u;
@@ -559,8 +559,8 @@
             }
 
             [v148 addObject:v156];
-            v166 = [NSValue valueWithCGRect:v158, v160, v162, v164];
-            [v149 addObject:v166];
+            v164 = [NSValue valueWithCGRect:v158, v160, v162, v164];
+            [v149 addObject:v164];
           }
 
           v151 = [obj countByEnumeratingWithState:&v304 objects:v308 count:16];
@@ -569,12 +569,12 @@
         while (v151);
       }
 
-      p_isa = &v287->super.super.super.isa;
-      v167 = [(MonthDayTransitionView *)v287 scrubber];
-      [v167 setMonthSummarySnapshots:v148];
+      p_isa = &selfCopy->super.super.super.isa;
+      scrubber = [(MonthDayTransitionView *)selfCopy scrubber];
+      [scrubber setMonthSummarySnapshots:v148];
 
-      v168 = [(MonthDayTransitionView *)v287 scrubber];
-      [v168 setMonthSummaryFrames:v149];
+      scrubber2 = [(MonthDayTransitionView *)selfCopy scrubber];
+      [scrubber2 setMonthSummaryFrames:v149];
 
       v145 = v275;
       v144 = v276;
@@ -583,18 +583,18 @@
 
     else
     {
-      v169 = [v142 occurrencesView];
+      occurrencesView = [v142 occurrencesView];
       v170 = captureImageFromView();
 
       v171 = [[UIImageView alloc] initWithImage:v170];
-      v172 = [v303 occurrencesView];
-      [v172 bounds];
+      occurrencesView2 = [v303 occurrencesView];
+      [occurrencesView2 bounds];
       v174 = v173;
       v176 = v175;
       v178 = v177;
       v180 = v179;
-      v181 = [v303 occurrencesView];
-      [v303 convertRect:v181 fromView:{v174, v176, v178, v180}];
+      occurrencesView3 = [v303 occurrencesView];
+      [v303 convertRect:occurrencesView3 fromView:{v174, v176, v178, v180}];
       v183 = v182;
       v185 = v184;
       v187 = v186;
@@ -608,15 +608,15 @@
       }
 
       v109 = v281;
-      v191 = [(MonthDayTransitionView *)v287 scrubber];
-      [v191 setMonthOccurrencesSnapshot:v171];
+      scrubber3 = [(MonthDayTransitionView *)selfCopy scrubber];
+      [scrubber3 setMonthOccurrencesSnapshot:v171];
 
-      v192 = [(MonthDayTransitionView *)v287 scrubber];
-      [v192 setMonthOccurrencesFrame:{v183, v185, v187, v189}];
+      scrubber4 = [(MonthDayTransitionView *)selfCopy scrubber];
+      [scrubber4 setMonthOccurrencesFrame:{v183, v185, v187, v189}];
     }
   }
 
-  objc_storeStrong(p_isa + 15, v259);
+  objc_storeStrong(p_isa + 15, viewCopy);
   v194 = v263;
   v193 = v264;
   [p_isa setDayScrubberFrame:{v101, v263, v100, v264}];
@@ -637,13 +637,13 @@
     v284 = v204;
   }
 
-  v205 = [p_isa[15] window];
+  window = [p_isa[15] window];
 
-  if (!v205)
+  if (!window)
   {
-    v206 = [v283 navigationController];
-    v207 = [v206 navigationBar];
-    [v207 frame];
+    navigationController = [v283 navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     obja = v112;
     v208 = v195;
     v209 = v194;
@@ -665,104 +665,104 @@
 
   if (CalSystemSolariumEnabled())
   {
-    v216 = [p_isa scrubber];
+    scrubber5 = [p_isa scrubber];
     v217 = p_isa;
   }
 
   else
   {
     v218 = p_isa[15];
-    v216 = [p_isa scrubber];
+    scrubber5 = [p_isa scrubber];
     v217 = v218;
   }
 
-  [v217 addSubview:v216];
+  [v217 addSubview:scrubber5];
   v282 = v109;
 
-  v219 = [p_isa scrubber];
-  [v219 setDayCellSize:{v279, v278}];
+  scrubber6 = [p_isa scrubber];
+  [scrubber6 setDayCellSize:{v279, v278}];
 
-  v220 = [p_isa scrubber];
-  [v220 setSelectedIndex:v300];
+  scrubber7 = [p_isa scrubber];
+  [scrubber7 setSelectedIndex:v300];
 
-  v221 = [p_isa scrubber];
-  [v221 setTodayIndex:v298];
+  scrubber8 = [p_isa scrubber];
+  [scrubber8 setTodayIndex:v298];
 
-  v222 = [v277 month];
+  month3 = [v277 month];
   v223 = v145;
-  v225 = v222 == [v145 month] && v298 >= 0;
-  v226 = [p_isa scrubber];
-  [v226 setStrings:v297 overlayStrings:v296 weekNumberString:v288 todayInWeek:v225];
+  v225 = month3 == [v145 month] && v298 >= 0;
+  scrubber9 = [p_isa scrubber];
+  [scrubber9 setStrings:v297 overlayStrings:v296 weekNumberString:v288 todayInWeek:v225];
 
   if ((v286 & 0x8000000000000000) == 0)
   {
-    v227 = [p_isa scrubber];
-    [v227 setUnderlineThickness:v286 forOverlayStringAtIndex:v113];
+    scrubber10 = [p_isa scrubber];
+    [scrubber10 setUnderlineThickness:v286 forOverlayStringAtIndex:v113];
   }
 
-  v228 = [p_isa scrubber];
-  [v228 setWeekendIndices:v290];
+  scrubber11 = [p_isa scrubber];
+  [scrubber11 setWeekendIndices:v290];
 
-  v229 = [p_isa scrubber];
-  v230 = [v144 dayScrubberController];
-  v231 = [v230 visibleCellDayTypes];
-  v232 = [v144 dayScrubberController];
-  v233 = [v232 visibleCellBadgeColors];
-  v234 = [v144 dayScrubberController];
-  v235 = [v234 visibleCellBadgeLocales];
-  [v229 setDayTypes:v231 badgeColors:v233 badgeLocales:v235];
+  scrubber12 = [p_isa scrubber];
+  dayScrubberController6 = [v144 dayScrubberController];
+  visibleCellDayTypes = [dayScrubberController6 visibleCellDayTypes];
+  dayScrubberController7 = [v144 dayScrubberController];
+  visibleCellBadgeColors = [dayScrubberController7 visibleCellBadgeColors];
+  dayScrubberController8 = [v144 dayScrubberController];
+  visibleCellBadgeLocales = [dayScrubberController8 visibleCellBadgeLocales];
+  [scrubber12 setDayTypes:visibleCellDayTypes badgeColors:visibleCellBadgeColors badgeLocales:visibleCellBadgeLocales];
 
-  v236 = [(MonthDayTransitionView *)v287 scrubber];
-  [v236 setDayFrame:{v101, v194, v100, v193}];
+  scrubber13 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber13 setDayFrame:{v101, v194, v100, v193}];
 
-  v237 = [(MonthDayTransitionView *)v287 scrubber];
-  [v237 setMonthFrame:{v195, v196, v112, v284}];
+  scrubber14 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber14 setMonthFrame:{v195, v196, v112, v284}];
 
-  v238 = [(MonthDayTransitionView *)v287 scrubber];
-  [v238 setFirstDayCellInset:v266];
+  scrubber15 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber15 setFirstDayCellInset:v266];
 
-  v239 = [(MonthDayTransitionView *)v287 scrubber];
-  [v239 setFirstDayCellIndex:v260];
+  scrubber16 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber16 setFirstDayCellIndex:v260];
 
-  v240 = [(MonthDayTransitionView *)v287 scrubber];
-  [v240 setFirstMonthCellIndex:v292];
+  scrubber17 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber17 setFirstMonthCellIndex:v292];
 
-  v241 = [(MonthDayTransitionView *)v287 scrubber];
-  [v241 setMonthCellFrames:v272];
+  scrubber18 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber18 setMonthCellFrames:v272];
 
-  v242 = [(MonthDayTransitionView *)v287 scrubber];
-  [v242 setMonthRowHeight:v284];
+  scrubber19 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber19 setMonthRowHeight:v284];
 
-  v243 = [(MonthDayTransitionView *)v287 scrubber];
-  [v243 setMonthBreakIndex:v299];
+  scrubber20 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber20 setMonthBreakIndex:v299];
 
-  [(MonthDayTransitionView *)v287 setDayCellSize:v279, v278];
-  v244 = [(MonthDayTransitionView *)v287 scrubber];
-  [v244 completeSetup];
+  [(MonthDayTransitionView *)selfCopy setDayCellSize:v279, v278];
+  scrubber21 = [(MonthDayTransitionView *)selfCopy scrubber];
+  [scrubber21 completeSetup];
 
-  v245 = [(MonthDayTransitionView *)v287 bottomView];
-  [v245 frame];
-  v287->_dayViewDayLocation.x = v246;
-  v287->_dayViewDayLocation.y = v247;
+  bottomView = [(MonthDayTransitionView *)selfCopy bottomView];
+  [bottomView frame];
+  selfCopy->_dayViewDayLocation.x = v246;
+  selfCopy->_dayViewDayLocation.y = v247;
 
-  [(MonthDayTransitionView *)v287 monthScrubberFrame];
-  v287->_dayViewMonthLocation.x = v249;
-  v287->_dayViewMonthLocation.y = v284 + v248;
+  [(MonthDayTransitionView *)selfCopy monthScrubberFrame];
+  selfCopy->_dayViewMonthLocation.x = v249;
+  selfCopy->_dayViewMonthLocation.y = v284 + v248;
   if (v271)
   {
     v250 = v283;
     v251 = v273;
     [v283 updatePalette:v273];
     [v273 layoutSubviews];
-    v252 = [v273 dayInitialsHeaderView];
-    [v252 frame];
-    [(MonthDayTransitionView *)v287 setWeekDayInitialsMonth:?];
+    dayInitialsHeaderView = [v273 dayInitialsHeaderView];
+    [dayInitialsHeaderView frame];
+    [(MonthDayTransitionView *)selfCopy setWeekDayInitialsMonth:?];
 
     [v144 updatePalette:v273];
     [v273 layoutSubviews];
-    v253 = [v273 dayInitialsHeaderView];
-    [v253 frame];
-    [(MonthDayTransitionView *)v287 setWeekDayInitialsDay:?];
+    dayInitialsHeaderView2 = [v273 dayInitialsHeaderView];
+    [dayInitialsHeaderView2 frame];
+    [(MonthDayTransitionView *)selfCopy setWeekDayInitialsDay:?];
   }
 
   else
@@ -770,22 +770,22 @@
     v251 = v273;
     [v144 updatePalette:v273];
     [v273 layoutSubviews];
-    v254 = [v273 dayInitialsHeaderView];
-    [v254 frame];
-    [(MonthDayTransitionView *)v287 setWeekDayInitialsDay:?];
+    dayInitialsHeaderView3 = [v273 dayInitialsHeaderView];
+    [dayInitialsHeaderView3 frame];
+    [(MonthDayTransitionView *)selfCopy setWeekDayInitialsDay:?];
 
     v250 = v283;
     [v283 updatePalette:v273];
     [v273 layoutSubviews];
-    v253 = [v273 dayInitialsHeaderView];
-    [v253 frame];
-    [(MonthDayTransitionView *)v287 setWeekDayInitialsMonth:?];
+    dayInitialsHeaderView2 = [v273 dayInitialsHeaderView];
+    [dayInitialsHeaderView2 frame];
+    [(MonthDayTransitionView *)selfCopy setWeekDayInitialsMonth:?];
   }
 }
 
-- (void)animateToDayWithCompletion:(id)a3
+- (void)animateToDayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_animating)
   {
     [(MonthDayTransitionView *)self _haltAnimations];
@@ -796,82 +796,82 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  dayInitialsHeaderView = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v14 setAlpha:1.0];
+  dayInitialsHeaderView2 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView2 setAlpha:1.0];
 
-  v15 = [(PaletteView *)self->_paletteView dateLabel];
-  [v15 setAlpha:1.0];
+  dateLabel = [(PaletteView *)self->_paletteView dateLabel];
+  [dateLabel setAlpha:1.0];
 
-  v16 = [(PaletteView *)self->_paletteView animatableDateLabel];
-  [v16 setAlpha:1.0];
+  animatableDateLabel = [(PaletteView *)self->_paletteView animatableDateLabel];
+  [animatableDateLabel setAlpha:1.0];
 
-  v17 = [(MonthDayTransitionView *)self topView];
-  [v17 bounds];
+  topView = [(MonthDayTransitionView *)self topView];
+  [topView bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(MonthDayTransitionView *)self topView];
-  [(MonthDayTransitionView *)self convertRect:v26 fromView:v19, v21, v23, v25];
+  topView2 = [(MonthDayTransitionView *)self topView];
+  [(MonthDayTransitionView *)self convertRect:topView2 fromView:v19, v21, v23, v25];
 
   [(MonthDayTransitionView *)self monthScrubberFrame];
   [(MonthDayTransitionView *)self _topExtensionHeight];
-  v27 = [(MonthDayTransitionView *)self topView];
-  [v27 bounds];
+  topView3 = [(MonthDayTransitionView *)self topView];
+  [topView3 bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(MonthDayTransitionView *)self topView];
-  [(MonthDayTransitionView *)self convertRect:v36 fromView:v29, v31, v33, v35];
+  topView4 = [(MonthDayTransitionView *)self topView];
+  [(MonthDayTransitionView *)self convertRect:topView4 fromView:v29, v31, v33, v35];
 
   [(MonthDayTransitionView *)self monthScrubberFrame];
   [(MonthDayTransitionView *)self monthScrubberFrame];
-  v37 = [(MonthDayTransitionView *)self topView];
-  [v37 bounds];
+  topView5 = [(MonthDayTransitionView *)self topView];
+  [topView5 bounds];
 
-  v38 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  view = [(CompactWidthMonthViewController *)self->_monthViewController view];
   [(MonthDayTransitionView *)self monthScrubberFrame];
-  [v38 convertRect:self fromView:?];
+  [view convertRect:self fromView:?];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
 
-  v47 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  view2 = [(CompactWidthMonthViewController *)self->_monthViewController view];
   [(MonthDayTransitionView *)self dayScrubberFrame];
-  [v47 convertPoint:self fromView:?];
+  [view2 convertPoint:self fromView:?];
   v49 = v48;
 
   [(CompactWidthMonthViewController *)self->_monthViewController enterAnimationSplitStateWithCutOutArea:v40 topBoundary:v42, v44, v46, v49];
   [(CompactWidthMonthViewController *)self->_monthViewController setSplitStateOpen:0];
-  v50 = [(MonthDayTransitionView *)self topView];
-  [v50 setAlpha:1.0];
+  topView6 = [(MonthDayTransitionView *)self topView];
+  [topView6 setAlpha:1.0];
 
-  v51 = [(MonthDayTransitionView *)self bottomView];
-  [v51 frame];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  [bottomView frame];
   v53 = v52;
   v55 = v54;
 
   x = self->_dayViewMonthLocation.x;
   y = self->_dayViewMonthLocation.y;
-  v58 = [(MonthDayTransitionView *)self bottomView];
-  [v58 setFrame:{x, y, v53, v55}];
+  bottomView2 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView2 setFrame:{x, y, v53, v55}];
 
   [(UIView *)self->_allDayView setAlpha:0.0];
   [(UIView *)self->_topLabelsContainer setAlpha:0.0];
-  v59 = [(PaletteView *)self->_paletteView dayScrubberController];
-  v60 = [v59 view];
-  [v60 setHidden:1];
+  dayScrubberController = [(PaletteView *)self->_paletteView dayScrubberController];
+  view3 = [dayScrubberController view];
+  [view3 setHidden:1];
 
-  v61 = [(MonthDayTransitionView *)self scrubber];
-  [v61 setHidden:0];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setHidden:0];
 
-  v62 = [(MonthDayTransitionView *)self scrubber];
-  [v62 animateToDayLayout];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 animateToDayLayout];
 
   springAnimationDuration();
   v64 = v63;
@@ -885,7 +885,7 @@
   [UIView _animateWithDuration:393216 delay:v65 options:v66 factory:0 animations:v64 completion:0.0];
 
   self->_animating = 1;
-  [(MonthDayTransitionView *)self setCompletion:v4];
+  [(MonthDayTransitionView *)self setCompletion:completionCopy];
   springAnimationDuration();
   v68 = v67;
   v69 = +[SpringFactory sharedFactory];
@@ -897,8 +897,8 @@
   v70 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v69 options:v70 factory:0 animations:v68 completion:0.0];
 
-  v71 = [(MonthDayTransitionView *)self bottomView];
-  v72 = [(MonthDayTransitionView *)self _animateView:v71 toPosition:1 setDelegate:self->_dayViewDayLocation.x, self->_dayViewDayLocation.y];
+  bottomView3 = [(MonthDayTransitionView *)self bottomView];
+  v72 = [(MonthDayTransitionView *)self _animateView:bottomView3 toPosition:1 setDelegate:self->_dayViewDayLocation.x, self->_dayViewDayLocation.y];
 
   block[5] = _NSConcreteStackBlock;
   block[6] = 3221225472;
@@ -929,89 +929,89 @@
   dispatch_after(v77, &_dispatch_main_q, block);
 }
 
-- (void)animateToMonthWithCompletion:(id)a3
+- (void)animateToMonthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_animating)
   {
     [(MonthDayTransitionView *)self _haltAnimations];
   }
 
-  v5 = [(PaletteView *)self->_paletteView dateLabel];
-  [v5 setHidden:1];
+  dateLabel = [(PaletteView *)self->_paletteView dateLabel];
+  [dateLabel setHidden:1];
 
-  v6 = [(PaletteView *)self->_paletteView animatableDateLabel];
-  [v6 setAlpha:0.0];
+  animatableDateLabel = [(PaletteView *)self->_paletteView animatableDateLabel];
+  [animatableDateLabel setAlpha:0.0];
 
   [(MonthDayTransitionView *)self weekDayInitialsDay];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  dayInitialsHeaderView = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v16 setAlpha:1.0];
+  dayInitialsHeaderView2 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView2 setAlpha:1.0];
 
-  v17 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  view = [(CompactWidthMonthViewController *)self->_monthViewController view];
   [(MonthDayTransitionView *)self monthScrubberFrame];
-  [v17 convertRect:self fromView:?];
+  [view convertRect:self fromView:?];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  view2 = [(CompactWidthMonthViewController *)self->_monthViewController view];
   [(MonthDayTransitionView *)self dayScrubberFrame];
-  [v26 convertPoint:self fromView:?];
+  [view2 convertPoint:self fromView:?];
   v28 = v27;
 
   [(CompactWidthMonthViewController *)self->_monthViewController enterAnimationSplitStateWithCutOutArea:v19 topBoundary:v21, v23, v25, v28];
   [(CompactWidthMonthViewController *)self->_monthViewController setSplitStateOpen:1];
-  v29 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-  [v29 setAlpha:0.0];
+  view3 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  [view3 setAlpha:0.0];
 
-  v30 = [(MonthDayTransitionView *)self topView];
-  [v30 bounds];
+  topView = [(MonthDayTransitionView *)self topView];
+  [topView bounds];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [(MonthDayTransitionView *)self topView];
-  [(MonthDayTransitionView *)self convertRect:v39 fromView:v32, v34, v36, v38];
+  topView2 = [(MonthDayTransitionView *)self topView];
+  [(MonthDayTransitionView *)self convertRect:topView2 fromView:v32, v34, v36, v38];
 
   [(MonthDayTransitionView *)self monthScrubberFrame];
   [(MonthDayTransitionView *)self _topExtensionHeight];
-  v40 = [(MonthDayTransitionView *)self topView];
-  [v40 setAlpha:1.0];
+  topView3 = [(MonthDayTransitionView *)self topView];
+  [topView3 setAlpha:1.0];
 
-  v41 = [(MonthDayTransitionView *)self bottomView];
-  [v41 setAlpha:1.0];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  [bottomView setAlpha:1.0];
 
   [(MonthDayTransitionView *)self dayScrubberFrame];
   [(MonthDayTransitionView *)self _topExtensionHeight];
-  v42 = [(MonthDayTransitionView *)self bottomView];
-  [v42 frame];
+  bottomView2 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView2 frame];
   v44 = v43;
   v46 = v45;
 
   x = self->_dayViewDayLocation.x;
   y = self->_dayViewDayLocation.y;
-  v49 = [(MonthDayTransitionView *)self bottomView];
-  [v49 setFrame:{x, y, v44, v46}];
+  bottomView3 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView3 setFrame:{x, y, v44, v46}];
 
   [(UIView *)self->_allDayView setAlpha:1.0];
   [(UIView *)self->_topLabelsContainer setAlpha:1.0];
-  v50 = [(MonthDayTransitionView *)self scrubber];
-  [v50 setHidden:0];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setHidden:0];
 
-  v51 = [(MonthDayTransitionView *)self scrubber];
-  [v51 animateToMonthLayout];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 animateToMonthLayout];
 
-  v52 = [(PaletteView *)self->_paletteView dayScrubberController];
-  v53 = [v52 view];
-  [v53 setHidden:1];
+  dayScrubberController = [(PaletteView *)self->_paletteView dayScrubberController];
+  view4 = [dayScrubberController view];
+  [view4 setHidden:1];
 
   springAnimationDuration();
   v55 = v54;
@@ -1025,7 +1025,7 @@
   [UIView _animateWithDuration:393216 delay:v56 options:v57 factory:0 animations:v55 completion:0.0];
 
   self->_animating = 1;
-  [(MonthDayTransitionView *)self setCompletion:v4];
+  [(MonthDayTransitionView *)self setCompletion:completionCopy];
   springAnimationDuration();
   v59 = v58;
   v60 = +[SpringFactory sharedFactory];
@@ -1042,8 +1042,8 @@
   v70[4] = self;
   [UIView _animateWithDuration:393216 delay:v60 options:v61 factory:v70 animations:v59 completion:0.0];
 
-  v62 = [(MonthDayTransitionView *)self bottomView];
-  v63 = [(MonthDayTransitionView *)self _animateView:v62 toPosition:1 setDelegate:self->_dayViewMonthLocation.x, self->_dayViewMonthLocation.y];
+  bottomView4 = [(MonthDayTransitionView *)self bottomView];
+  v63 = [(MonthDayTransitionView *)self _animateView:bottomView4 toPosition:1 setDelegate:self->_dayViewMonthLocation.x, self->_dayViewMonthLocation.y];
 
   v69[5] = _NSConcreteStackBlock;
   v69[6] = 3221225472;
@@ -1077,14 +1077,14 @@
 - (void)_haltAnimations
 {
   v3 = CalSystemSolariumEnabled();
-  v9 = [(MonthDayTransitionView *)self window];
-  v4 = [v9 layer];
+  window = [(MonthDayTransitionView *)self window];
+  layer = [window layer];
   if (v3)
   {
-    v5 = [(MonthDayTransitionView *)self monthViewController];
-    v6 = [v5 navigationController];
-    v7 = [v6 navigationBar];
-    v8 = [v7 layer];
+    monthViewController = [(MonthDayTransitionView *)self monthViewController];
+    navigationController = [monthViewController navigationController];
+    navigationBar = [navigationController navigationBar];
+    layer2 = [navigationBar layer];
     recursiveAnimationRemoveWithExclusion();
   }
 
@@ -1094,7 +1094,7 @@
   }
 }
 
-- (id)_animateView:(id)a3 toPosition:(CGPoint)a4 setDelegate:(BOOL)a5
+- (id)_animateView:(id)view toPosition:(CGPoint)position setDelegate:(BOOL)delegate
 {
   v5 = springAnimateViewPosition();
   preferredNavigationAnimationFrameRateRange();
@@ -1103,83 +1103,83 @@
   return v5;
 }
 
-- (void)_animateView:(id)a3 toAlpha:(double)a4 delay:(double)a5
+- (void)_animateView:(id)view toAlpha:(double)alpha delay:(double)delay
 {
-  v7 = a3;
+  viewCopy = view;
   UIAnimationDragCoefficient();
-  v9 = dispatch_time(0, (v8 * a5 * 1000000000.0));
+  v9 = dispatch_time(0, (v8 * delay * 1000000000.0));
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000AA6EC;
   v11[3] = &unk_10020EE00;
-  v12 = v7;
-  v13 = a4;
-  v10 = v7;
+  v12 = viewCopy;
+  alphaCopy = alpha;
+  v10 = viewCopy;
   dispatch_after(v9, &_dispatch_main_q, v11);
 }
 
-- (void)_basicAnimateView:(id)a3 toAlpha:(double)a4 duration:(double)a5
+- (void)_basicAnimateView:(id)view toAlpha:(double)alpha duration:(double)duration
 {
-  v7 = a3;
+  viewCopy = view;
   v12 = objc_alloc_init(CABasicAnimation);
   [v12 setKeyPath:@"opacity"];
-  [v7 alpha];
+  [viewCopy alpha];
   v8 = [NSNumber numberWithDouble:?];
   [v12 setFromValue:v8];
 
-  v9 = [NSNumber numberWithDouble:a4];
+  v9 = [NSNumber numberWithDouble:alpha];
   [v12 setToValue:v9];
 
   UIAnimationDragCoefficient();
-  [v12 setDuration:v10 * a5];
-  v11 = [v7 layer];
-  [v11 addAnimation:v12 forKey:@"opacity"];
+  [v12 setDuration:v10 * duration];
+  layer = [viewCopy layer];
+  [layer addAnimation:v12 forKey:@"opacity"];
 
   preferredNavigationAnimationFrameRateRange();
   [v12 setPreferredFrameRateRange:?];
-  [v7 setAlpha:a4];
+  [viewCopy setAlpha:alpha];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(CompactWidthMonthViewController *)self->_monthViewController endAnimationSplitState:a3];
-  v5 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-  [v5 setAlpha:1.0];
+  [(CompactWidthMonthViewController *)self->_monthViewController endAnimationSplitState:stop];
+  view = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  [view setAlpha:1.0];
 
-  v6 = [(MonthDayTransitionView *)self scrubber];
-  [v6 setHidden:1];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setHidden:1];
 
-  v7 = [(MonthDayTransitionView *)self scrubber];
-  [v7 setAlpha:1.0];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 setAlpha:1.0];
 
-  v8 = [(MonthDayTransitionView *)self scrubber];
-  [v8 removeFromSuperview];
+  scrubber3 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber3 removeFromSuperview];
 
-  v9 = [(PaletteView *)self->_paletteView dayScrubberController];
-  v10 = [v9 view];
-  [v10 setHidden:0];
+  dayScrubberController = [(PaletteView *)self->_paletteView dayScrubberController];
+  view2 = [dayScrubberController view];
+  [view2 setHidden:0];
 
-  v11 = [(MonthDayTransitionView *)self bottomView];
-  [v11 frame];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  [bottomView frame];
   v13 = v12;
   v15 = v14;
 
   x = self->_dayViewDayLocation.x;
   y = self->_dayViewDayLocation.y;
-  v18 = [(MonthDayTransitionView *)self bottomView];
-  [v18 setFrame:{x, y, v13, v15}];
+  bottomView2 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView2 setFrame:{x, y, v13, v15}];
 
   [(UIView *)self->_allDayView setAlpha:1.0];
   [(UIView *)self->_topLabelsContainer setAlpha:1.0];
   [(MonthDayTransitionView *)self setAlpha:1.0];
   self->_animating = 0;
-  v20 = [(MonthDayTransitionView *)self completion];
+  completion = [(MonthDayTransitionView *)self completion];
   [(MonthDayTransitionView *)self setCompletion:0];
-  v19 = v20;
-  if (v20)
+  v19 = completion;
+  if (completion)
   {
-    (*(v20 + 16))(v20);
-    v19 = v20;
+    (*(completion + 16))(completion);
+    v19 = completion;
   }
 }
 

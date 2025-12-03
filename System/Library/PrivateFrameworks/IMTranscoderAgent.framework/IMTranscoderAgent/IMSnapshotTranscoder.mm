@@ -1,15 +1,15 @@
 @interface IMSnapshotTranscoder
-+ (void)generateSnapshotForMessageGUID:(id)a3 payloadURL:(id)a4 balloonBundleID:(id)a5 senderContext:(id)a6 completionBlock:(id)a7;
++ (void)generateSnapshotForMessageGUID:(id)d payloadURL:(id)l balloonBundleID:(id)iD senderContext:(id)context completionBlock:(id)block;
 @end
 
 @implementation IMSnapshotTranscoder
 
-+ (void)generateSnapshotForMessageGUID:(id)a3 payloadURL:(id)a4 balloonBundleID:(id)a5 senderContext:(id)a6 completionBlock:(id)a7
++ (void)generateSnapshotForMessageGUID:(id)d payloadURL:(id)l balloonBundleID:(id)iD senderContext:(id)context completionBlock:(id)block
 {
   v83 = *MEMORY[0x277D85DE8];
   v12 = *MEMORY[0x277D19738];
   v13 = IMBalloonExtensionIDWithSuffix();
-  if (objc_msgSend_isEqualToString_(a5, v14, v13, v15, v16, v17, v18))
+  if (objc_msgSend_isEqualToString_(iD, v14, v13, v15, v16, v17, v18))
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -21,8 +21,8 @@
     block[1] = 3221225472;
     block[2] = sub_254829078;
     block[3] = &unk_27978AC08;
-    block[4] = a6;
-    block[5] = a4;
+    block[4] = context;
+    block[5] = l;
     block[6] = &buf;
     dispatch_sync(MEMORY[0x277D85CD0], block);
     if (objc_msgSend_length(*(*(&buf + 1) + 40), v19, v20, v21, v22, v23, v24))
@@ -50,7 +50,7 @@
               if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
               {
                 *v72 = 138412546;
-                v73 = a3;
+                dCopy4 = d;
                 v74 = 2112;
                 v75 = v69;
                 _os_log_impl(&dword_254811000, v68, OS_LOG_TYPE_INFO, "Failed to write snapshot for message %@ Error: %@", v72, 0x16u);
@@ -70,7 +70,7 @@
         if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
         {
           *v72 = 138412802;
-          v73 = a3;
+          dCopy4 = d;
           v74 = 2112;
           v75 = PathComponent;
           v76 = 2112;
@@ -91,7 +91,7 @@
         {
           v61 = *(*(&buf + 1) + 40);
           *v72 = 138412546;
-          v73 = a3;
+          dCopy4 = d;
           v74 = 2112;
           v75 = v61;
           _os_log_impl(&dword_254811000, v60, OS_LOG_TYPE_INFO, "Failed to generate snapshot for message %@ %@", v72, 0x16u);
@@ -111,14 +111,14 @@ LABEL_20:
       {
         v63 = *(*(&buf + 1) + 40);
         *v72 = 138412546;
-        v73 = a3;
+        dCopy4 = d;
         v74 = 2112;
         v75 = v63;
         _os_log_impl(&dword_254811000, v62, OS_LOG_TYPE_INFO, "Generated snapshot for message %@ %@", v72, 0x16u);
       }
     }
 
-    (*(a7 + 2))(a7, v45, v46);
+    (*(block + 2))(block, v45, v46);
     _Block_object_dispose(&buf, 8);
     goto LABEL_24;
   }
@@ -129,13 +129,13 @@ LABEL_20:
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = a5;
+      *(&buf + 4) = iD;
       _os_log_impl(&dword_254811000, v50, OS_LOG_TYPE_INFO, "Transcoder snapshot request for an unsupported plugin bundle: %@", &buf, 0xCu);
     }
   }
 
   v51 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v47, @"__kIMTranscodeErrorDomain", -1, 0, v48, v49);
-  (*(a7 + 2))(a7, 0, v51);
+  (*(block + 2))(block, 0, v51);
 LABEL_24:
   v64 = *MEMORY[0x277D85DE8];
 }

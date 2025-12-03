@@ -1,38 +1,38 @@
 @interface HUCameraRecordAudioSettingsItem
 - (BOOL)_canReadWriteCameraRecordingSettings;
 - (HUCameraRecordAudioSettingsItem)init;
-- (HUCameraRecordAudioSettingsItem)initWithCameraProfile:(id)a3;
+- (HUCameraRecordAudioSettingsItem)initWithCameraProfile:(id)profile;
 - (HUServiceDetailsCameraSettingsReaderWriter)settingsReaderWriter;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)cameraSettings;
 - (id)characteristicValueManager;
 - (id)itemTitle;
-- (id)updateRecordAudioSettingWithValue:(BOOL)a3;
+- (id)updateRecordAudioSettingWithValue:(BOOL)value;
 @end
 
 @implementation HUCameraRecordAudioSettingsItem
 
 - (HUCameraRecordAudioSettingsItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraRecordAudioSettingsItem.m" lineNumber:23 description:@"Use -initWithSourceServiceItem:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraRecordAudioSettingsItem.m" lineNumber:23 description:@"Use -initWithSourceServiceItem:"];
 
   return 0;
 }
 
-- (HUCameraRecordAudioSettingsItem)initWithCameraProfile:(id)a3
+- (HUCameraRecordAudioSettingsItem)initWithCameraProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HUCameraRecordAudioSettingsItem;
   v5 = [(HUCameraRecordAudioSettingsItem *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(HUCameraRecordAudioSettingsItem *)v5 setCameraProfile:v4];
-    v7 = [v4 accessory];
-    v8 = [v7 home];
-    [(HUCameraRecordAudioSettingsItem *)v6 setHome:v8];
+    [(HUCameraRecordAudioSettingsItem *)v5 setCameraProfile:profileCopy];
+    accessory = [profileCopy accessory];
+    home = [accessory home];
+    [(HUCameraRecordAudioSettingsItem *)v6 setHome:home];
   }
 
   return v6;
@@ -55,14 +55,14 @@
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(HUCameraRecordAudioSettingsItem *)self _canReadWriteCameraRecordingSettings])
   {
-    v5 = [(HUCameraRecordAudioSettingsItem *)self settingsReaderWriter];
-    v6 = [v5 readWithOptions:v4];
+    settingsReaderWriter = [(HUCameraRecordAudioSettingsItem *)self settingsReaderWriter];
+    v6 = [settingsReaderWriter readWithOptions:optionsCopy];
   }
 
   else
@@ -79,54 +79,54 @@
   return v6;
 }
 
-- (id)updateRecordAudioSettingWithValue:(BOOL)a3
+- (id)updateRecordAudioSettingWithValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(HUCameraRecordAudioSettingsItem *)self _canReadWriteCameraRecordingSettings])
   {
-    v5 = [(HUCameraRecordAudioSettingsItem *)self settingsReaderWriter];
-    v6 = [v5 updateUserSettingsWithValue:v3];
+    settingsReaderWriter = [(HUCameraRecordAudioSettingsItem *)self settingsReaderWriter];
+    futureWithNoResult = [settingsReaderWriter updateUserSettingsWithValue:valueCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 - (BOOL)_canReadWriteCameraRecordingSettings
 {
-  v2 = [(HUCameraRecordAudioSettingsItem *)self cameraProfile];
-  v3 = [v2 userSettings];
-  v4 = ([v3 supportedFeatures] >> 1) & 1;
+  cameraProfile = [(HUCameraRecordAudioSettingsItem *)self cameraProfile];
+  userSettings = [cameraProfile userSettings];
+  v4 = ([userSettings supportedFeatures] >> 1) & 1;
 
   return v4;
 }
 
 - (id)cameraSettings
 {
-  v2 = [(HUCameraRecordAudioSettingsItem *)self cameraProfile];
-  v3 = [v2 userSettings];
+  cameraProfile = [(HUCameraRecordAudioSettingsItem *)self cameraProfile];
+  userSettings = [cameraProfile userSettings];
 
-  return v3;
+  return userSettings;
 }
 
 - (id)itemTitle
 {
-  v2 = [(HUCameraRecordAudioSettingsItem *)self itemTitleLocalizationKey];
-  v3 = _HULocalizedStringWithDefaultValue(v2, v2, 1);
+  itemTitleLocalizationKey = [(HUCameraRecordAudioSettingsItem *)self itemTitleLocalizationKey];
+  v3 = _HULocalizedStringWithDefaultValue(itemTitleLocalizationKey, itemTitleLocalizationKey, 1);
 
   return v3;
 }
 
 - (id)characteristicValueManager
 {
-  v2 = [(HUCameraRecordAudioSettingsItem *)self home];
-  v3 = [v2 hf_characteristicValueManager];
+  home = [(HUCameraRecordAudioSettingsItem *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  return v3;
+  return hf_characteristicValueManager;
 }
 
 @end

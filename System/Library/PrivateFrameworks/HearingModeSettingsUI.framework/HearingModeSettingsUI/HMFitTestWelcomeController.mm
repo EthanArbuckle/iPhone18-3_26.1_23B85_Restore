@@ -1,6 +1,6 @@
 @interface HMFitTestWelcomeController
 - (BOOL)isProductOfDifferentColors;
-- (HMFitTestWelcomeController)initWithHeadphoneDevice:(id)a3;
+- (HMFitTestWelcomeController)initWithHeadphoneDevice:(id)device;
 - (HPMHeadphoneDevice)headphoneDevice;
 - (id)getAssetsDictionary;
 - (id)marketingName;
@@ -9,14 +9,14 @@
 - (unsigned)defaultFiltersID;
 - (unsigned)deviceColor;
 - (void)continueToFitTest;
-- (void)deviceDisconnectedHandler:(id)a3;
+- (void)deviceDisconnectedHandler:(id)handler;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation HMFitTestWelcomeController
 
-- (HMFitTestWelcomeController)initWithHeadphoneDevice:(id)a3
+- (HMFitTestWelcomeController)initWithHeadphoneDevice:(id)device
 {
   if (!self)
   {
@@ -25,15 +25,15 @@
 
   v8.receiver = self;
   v8.super_class = HMFitTestWelcomeController;
-  v3 = a3;
+  deviceCopy = device;
   v4 = [(HMFitTestWelcomeController *)&v8 init];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:v4 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:v4 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v4 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
 
-  objc_storeWeak(&v4->_headphoneDevice, v3);
+  objc_storeWeak(&v4->_headphoneDevice, deviceCopy);
   return v4;
 }
 
@@ -42,9 +42,9 @@
   v5.receiver = self;
   v5.super_class = HMFitTestWelcomeController;
   [(HMFitTestWelcomeController *)&v5 viewDidLoad];
-  v3 = [(HMFitTestWelcomeController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(HMFitTestWelcomeController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)loadView
@@ -53,50 +53,50 @@
   v53.super_class = HMFitTestWelcomeController;
   [(HMFitTestWelcomeController *)&v53 loadView];
   v3 = [_TtC21HearingModeSettingsUI32AnyHearingFeatureContentProvider alloc];
-  v4 = [(HMFitTestWelcomeController *)self headphoneDevice];
-  v5 = [(AnyHearingFeatureContentProvider *)v3 initWithDevice:v4];
+  headphoneDevice = [(HMFitTestWelcomeController *)self headphoneDevice];
+  v5 = [(AnyHearingFeatureContentProvider *)v3 initWithDevice:headphoneDevice];
   [(HMFitTestWelcomeController *)self setProvider:v5];
 
-  v6 = [(HMFitTestWelcomeController *)self provider];
-  if ([v6 featureFlag])
+  provider = [(HMFitTestWelcomeController *)self provider];
+  if ([provider featureFlag])
   {
-    v7 = [(HMFitTestWelcomeController *)self provider];
-    v8 = [v7 devicePlatformName];
+    provider2 = [(HMFitTestWelcomeController *)self provider];
+    devicePlatformName = [provider2 devicePlatformName];
   }
 
   else
   {
-    v8 = @"AirPods";
+    devicePlatformName = @"AirPods";
   }
 
-  v50 = v8;
+  v50 = devicePlatformName;
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"For the best acoustic performance value:%@ ear tips should create a complete seal when placed in your ears." table:{&stru_28643BDD8, 0}];
 
-  v52 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v10, v8];
+  v52 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v10, devicePlatformName];
 
   v11 = objc_alloc(MEMORY[0x277D37698]);
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"Test the Fit of Your Ear Tips" value:&stru_28643BDD8 table:0];
   v14 = [v11 initWithTitle:v13 detailText:v52 icon:0];
 
-  v15 = [(HMFitTestWelcomeController *)self view];
-  [v15 bounds];
+  view = [(HMFitTestWelcomeController *)self view];
+  [view bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [v14 view];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  view2 = [v14 view];
+  [view2 setFrame:{v17, v19, v21, v23}];
 
-  v25 = [v14 view];
-  [v25 setAutoresizingMask:18];
+  view3 = [v14 view];
+  [view3 setAutoresizingMask:18];
 
-  v26 = [(HMFitTestWelcomeController *)self traitCollection];
-  v27 = [v26 userInterfaceStyle];
+  traitCollection = [(HMFitTestWelcomeController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v27 == 2)
+  if (userInterfaceStyle == 2)
   {
     v28 = "dark";
   }
@@ -128,46 +128,46 @@
   v42 = [v41 localizedStringForKey:@"A good seal will keep noise from leaking in or out and results in better noise cancellation." value:&stru_28643BDD8 table:0];
   [v14 addBulletedListItemWithTitle:v40 description:v42 image:v38];
 
-  v43 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v45 = [v44 localizedStringForKey:@"Continue" value:&stru_28643BDD8 table:0];
-  [v43 setTitle:v45 forState:0];
+  [boldButton setTitle:v45 forState:0];
 
-  [v43 addTarget:self action:sel_continueToFitTest forControlEvents:64];
-  v46 = [v14 buttonTray];
-  [v46 addButton:v43];
+  [boldButton addTarget:self action:sel_continueToFitTest forControlEvents:64];
+  buttonTray = [v14 buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(HMFitTestWelcomeController *)self addChildViewController:v14];
-  v47 = [(HMFitTestWelcomeController *)self view];
-  v48 = [v14 view];
-  [v47 addSubview:v48];
+  view4 = [(HMFitTestWelcomeController *)self view];
+  view5 = [v14 view];
+  [view4 addSubview:view5];
 }
 
 - (void)continueToFitTest
 {
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelFitTest];
   v3 = objc_alloc(MEMORY[0x277D0FB68]);
-  v4 = [(HMFitTestWelcomeController *)self currentDevice];
-  v5 = [v3 initWithDevice:v4 provider:self];
+  currentDevice = [(HMFitTestWelcomeController *)self currentDevice];
+  v5 = [v3 initWithDevice:currentDevice provider:self];
 
-  v6 = [v5 navigationItem];
-  [v6 setLeftBarButtonItem:v10];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setLeftBarButtonItem:v10];
 
-  v7 = [v5 navigationController];
-  v8 = [v7 navigationItem];
-  [v8 setHidesBackButton:1];
+  navigationController = [v5 navigationController];
+  navigationItem2 = [navigationController navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
-  v9 = [(HMFitTestWelcomeController *)self navigationController];
-  [v9 pushViewController:v5 animated:1];
+  navigationController2 = [(HMFitTestWelcomeController *)self navigationController];
+  [navigationController2 pushViewController:v5 animated:1];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v6 = [a3 object];
-  v4 = [v6 address];
-  v5 = [(BluetoothDevice *)self->_currentDevice address];
+  object = [handler object];
+  address = [object address];
+  address2 = [(BluetoothDevice *)self->_currentDevice address];
 
-  if (v4 == v5)
+  if (address == address2)
   {
     [(HMFitTestWelcomeController *)self cancelFitTest];
   }
@@ -175,58 +175,58 @@
 
 - (unsigned)defaultFiltersID
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 defaultFiltersID];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  defaultFiltersID = [provider defaultFiltersID];
 
-  return v3;
+  return defaultFiltersID;
 }
 
 - (unsigned)deviceColor
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 deviceColor];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  deviceColor = [provider deviceColor];
 
-  return v3;
+  return deviceColor;
 }
 
 - (id)getAssetsDictionary
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 getAssetsDictionary];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  getAssetsDictionary = [provider getAssetsDictionary];
 
-  return v3;
+  return getAssetsDictionary;
 }
 
 - (BOOL)isProductOfDifferentColors
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 isProductOfDifferentColors];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  isProductOfDifferentColors = [provider isProductOfDifferentColors];
 
-  return v3;
+  return isProductOfDifferentColors;
 }
 
 - (id)marketingName
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 deviceMarketingName];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  deviceMarketingName = [provider deviceMarketingName];
 
-  return v3;
+  return deviceMarketingName;
 }
 
 - (id)platformName
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 devicePlatformName];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  devicePlatformName = [provider devicePlatformName];
 
-  return v3;
+  return devicePlatformName;
 }
 
 - (id)singularName
 {
-  v2 = [(HMFitTestWelcomeController *)self provider];
-  v3 = [v2 singleDeviceName];
+  provider = [(HMFitTestWelcomeController *)self provider];
+  singleDeviceName = [provider singleDeviceName];
 
-  return v3;
+  return singleDeviceName;
 }
 
 - (HPMHeadphoneDevice)headphoneDevice

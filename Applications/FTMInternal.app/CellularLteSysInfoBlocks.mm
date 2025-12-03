@@ -1,30 +1,30 @@
 @interface CellularLteSysInfoBlocks
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSib:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasFreq:(BOOL)a3;
-- (void)setHasFreqBandInd:(BOOL)a3;
-- (void)setHasNumMncDigits:(BOOL)a3;
-- (void)setHasPhyCellId:(BOOL)a3;
-- (void)setHasSelPlmnMcc:(BOOL)a3;
-- (void)setHasSelPlmnMnc:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTrackingAreaCode:(BOOL)a3;
-- (void)setHasValueTag:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSib:(id)sib;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasFreq:(BOOL)freq;
+- (void)setHasFreqBandInd:(BOOL)ind;
+- (void)setHasNumMncDigits:(BOOL)digits;
+- (void)setHasPhyCellId:(BOOL)id;
+- (void)setHasSelPlmnMcc:(BOOL)mcc;
+- (void)setHasSelPlmnMnc:(BOOL)mnc;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTrackingAreaCode:(BOOL)code;
+- (void)setHasValueTag:(BOOL)tag;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteSysInfoBlocks
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasFreq:(BOOL)a3
+- (void)setHasFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 4;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPhyCellId:(BOOL)a3
+- (void)setHasPhyCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasValueTag:(BOOL)a3
+- (void)setHasValueTag:(BOOL)tag
 {
-  if (a3)
+  if (tag)
   {
     v3 = 1024;
   }
@@ -82,27 +82,27 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addSib:(id)a3
+- (void)addSib:(id)sib
 {
-  v4 = a3;
+  sibCopy = sib;
   sibs = self->_sibs;
-  v8 = v4;
+  v8 = sibCopy;
   if (!sibs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_sibs;
     self->_sibs = v6;
 
-    v4 = v8;
+    sibCopy = v8;
     sibs = self->_sibs;
   }
 
-  [(NSMutableArray *)sibs addObject:v4];
+  [(NSMutableArray *)sibs addObject:sibCopy];
 }
 
-- (void)setHasFreqBandInd:(BOOL)a3
+- (void)setHasFreqBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 8;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTrackingAreaCode:(BOOL)a3
+- (void)setHasTrackingAreaCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 512;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSelPlmnMcc:(BOOL)a3
+- (void)setHasSelPlmnMcc:(BOOL)mcc
 {
-  if (a3)
+  if (mcc)
   {
     v3 = 64;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSelPlmnMnc:(BOOL)a3
+- (void)setHasSelPlmnMnc:(BOOL)mnc
 {
-  if (a3)
+  if (mnc)
   {
     v3 = 128;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumMncDigits:(BOOL)a3
+- (void)setHasNumMncDigits:(BOOL)digits
 {
-  if (a3)
+  if (digits)
   {
     v3 = 16;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 256;
   }
@@ -195,8 +195,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteSysInfoBlocks;
   v3 = [(CellularLteSysInfoBlocks *)&v7 description];
-  v4 = [(CellularLteSysInfoBlocks *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteSysInfoBlocks *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -274,8 +274,8 @@ LABEL_7:
   mib = self->_mib;
   if (mib)
   {
-    v7 = [(Mib *)mib dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"mib"];
+    dictionaryRepresentation = [(Mib *)mib dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"mib"];
   }
 
   if ([(NSMutableArray *)self->_sibs count])
@@ -300,8 +300,8 @@ LABEL_7:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -400,9 +400,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -580,14 +580,14 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 38) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 38) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -606,8 +606,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_cellId;
-  *(v4 + 38) |= 2u;
+  *(toCopy + 4) = self->_cellId;
+  *(toCopy + 38) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -621,8 +621,8 @@ LABEL_4:
   }
 
 LABEL_25:
-  *(v4 + 5) = self->_freq;
-  *(v4 + 38) |= 4u;
+  *(toCopy + 5) = self->_freq;
+  *(toCopy + 38) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -636,29 +636,29 @@ LABEL_5:
   }
 
 LABEL_26:
-  *(v4 + 11) = self->_phyCellId;
-  *(v4 + 38) |= 0x20u;
+  *(toCopy + 11) = self->_phyCellId;
+  *(toCopy + 38) |= 0x20u;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_6:
-    *(v4 + 18) = self->_valueTag;
-    *(v4 + 38) |= 0x400u;
+    *(toCopy + 18) = self->_valueTag;
+    *(toCopy + 38) |= 0x400u;
   }
 
 LABEL_7:
-  v11 = v4;
+  v11 = toCopy;
   if (self->_mib)
   {
-    [v4 setMib:?];
+    [toCopy setMib:?];
   }
 
   if ([(CellularLteSysInfoBlocks *)self sibsCount])
   {
     [v11 clearSibs];
-    v6 = [(CellularLteSysInfoBlocks *)self sibsCount];
-    if (v6)
+    sibsCount = [(CellularLteSysInfoBlocks *)self sibsCount];
+    if (sibsCount)
     {
-      v7 = v6;
+      v7 = sibsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularLteSysInfoBlocks *)self sibAtIndex:i];
@@ -747,9 +747,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -814,7 +814,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(Mib *)self->_mib copyWithZone:a3];
+  v8 = [(Mib *)self->_mib copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
@@ -837,7 +837,7 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addSib:v15];
       }
 
@@ -927,19 +927,19 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   has = self->_has;
-  v6 = *(v4 + 38);
+  v6 = *(equalCopy + 38);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
@@ -954,7 +954,7 @@ LABEL_61:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_cellId != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_cellId != *(equalCopy + 4))
     {
       goto LABEL_61;
     }
@@ -967,7 +967,7 @@ LABEL_61:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_freq != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_freq != *(equalCopy + 5))
     {
       goto LABEL_61;
     }
@@ -980,7 +980,7 @@ LABEL_61:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_phyCellId != *(v4 + 11))
+    if ((v6 & 0x20) == 0 || self->_phyCellId != *(equalCopy + 11))
     {
       goto LABEL_61;
     }
@@ -993,25 +993,25 @@ LABEL_61:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 38) & 0x400) == 0 || self->_valueTag != *(v4 + 18))
+    if ((*(equalCopy + 38) & 0x400) == 0 || self->_valueTag != *(equalCopy + 18))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 38) & 0x400) != 0)
+  else if ((*(equalCopy + 38) & 0x400) != 0)
   {
     goto LABEL_61;
   }
 
   mib = self->_mib;
-  if (mib | *(v4 + 4) && ![(Mib *)mib isEqual:?])
+  if (mib | *(equalCopy + 4) && ![(Mib *)mib isEqual:?])
   {
     goto LABEL_61;
   }
 
   sibs = self->_sibs;
-  if (sibs | *(v4 + 7))
+  if (sibs | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)sibs isEqual:?])
     {
@@ -1020,23 +1020,23 @@ LABEL_61:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 38);
+  v10 = *(equalCopy + 38);
   if ((v9 & 0x100) != 0)
   {
-    if ((*(v4 + 38) & 0x100) == 0 || self->_subsId != *(v4 + 16))
+    if ((*(equalCopy + 38) & 0x100) == 0 || self->_subsId != *(equalCopy + 16))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 38) & 0x100) != 0)
+  else if ((*(equalCopy + 38) & 0x100) != 0)
   {
     goto LABEL_61;
   }
 
   if ((v9 & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_freqBandInd != *(v4 + 6))
+    if ((v10 & 8) == 0 || self->_freqBandInd != *(equalCopy + 6))
     {
       goto LABEL_61;
     }
@@ -1049,20 +1049,20 @@ LABEL_61:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 38) & 0x200) == 0 || self->_trackingAreaCode != *(v4 + 17))
+    if ((*(equalCopy + 38) & 0x200) == 0 || self->_trackingAreaCode != *(equalCopy + 17))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 38) & 0x200) != 0)
+  else if ((*(equalCopy + 38) & 0x200) != 0)
   {
     goto LABEL_61;
   }
 
   if ((v9 & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_selPlmnMcc != *(v4 + 12))
+    if ((v10 & 0x40) == 0 || self->_selPlmnMcc != *(equalCopy + 12))
     {
       goto LABEL_61;
     }
@@ -1075,7 +1075,7 @@ LABEL_61:
 
   if ((v9 & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_selPlmnMnc != *(v4 + 13))
+    if ((v10 & 0x80) == 0 || self->_selPlmnMnc != *(equalCopy + 13))
     {
       goto LABEL_61;
     }
@@ -1088,7 +1088,7 @@ LABEL_61:
 
   if ((v9 & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_numMncDigits != *(v4 + 10))
+    if ((v10 & 0x10) == 0 || self->_numMncDigits != *(equalCopy + 10))
     {
       goto LABEL_61;
     }
@@ -1256,16 +1256,16 @@ LABEL_18:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 38);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 38);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 38);
+    v6 = *(fromCopy + 38);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -1283,9 +1283,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_cellId = *(v4 + 4);
+  self->_cellId = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 4) == 0)
   {
 LABEL_4:
@@ -1298,9 +1298,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_freq = *(v4 + 5);
+  self->_freq = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 0x20) == 0)
   {
 LABEL_5:
@@ -1313,12 +1313,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_phyCellId = *(v4 + 11);
+  self->_phyCellId = *(fromCopy + 11);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 38) & 0x400) != 0)
+  if ((*(fromCopy + 38) & 0x400) != 0)
   {
 LABEL_6:
-    self->_valueTag = *(v4 + 18);
+    self->_valueTag = *(fromCopy + 18);
     *&self->_has |= 0x400u;
   }
 

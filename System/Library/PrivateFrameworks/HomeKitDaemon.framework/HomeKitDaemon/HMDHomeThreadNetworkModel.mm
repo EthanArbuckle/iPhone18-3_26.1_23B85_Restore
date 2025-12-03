@@ -1,31 +1,31 @@
 @interface HMDHomeThreadNetworkModel
-+ (id)defaultModelForHome:(id)a3;
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHome:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHome:(id)home;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHome:(id)home;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)properties;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDHomeThreadNetworkModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"home"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"home"])
   {
     v11 = objc_opt_class();
-    v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-    v13 = [v11 cd_getHomeFromUUID:v12];
+    parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+    v13 = [v11 cd_getHomeFromUUID:parentUUID];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = HMDHomeThreadNetworkModel;
-    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v13 = [(HMDBackingStoreModelObject *)&v15 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v13;
@@ -56,43 +56,43 @@ void __39__HMDHomeThreadNetworkModel_properties__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeThreadNetworkModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   return v7;
 }
 
-+ (id)defaultModelForHome:(id)a3
++ (id)defaultModelForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = objc_opt_class();
-  v5 = [v3 uuid];
+  uuid = [homeCopy uuid];
 
-  v6 = [v4 defaultModelForHomeUUID:v5];
+  v6 = [v4 defaultModelForHomeUUID:uuid];
 
   return v6;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [@"HMDHomeThreadNetworkModel" dataUsingEncoding:4];
-  v5 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v3 data:v4];
+  v5 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:dCopy data:v4];
 
   return v5;
 }
 
-+ (id)modelIDForHome:(id)a3
++ (id)modelIDForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = objc_opt_class();
-  v5 = [v3 uuid];
+  uuid = [homeCopy uuid];
 
-  v6 = [v4 modelIDForHomeUUID:v5];
+  v6 = [v4 modelIDForHomeUUID:uuid];
 
   return v6;
 }

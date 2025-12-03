@@ -1,25 +1,25 @@
 @interface VCPMADSceneLibraryProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (BOOL)run:(id *)a3;
-- (VCPMADSceneLibraryProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5;
-- (int)_dataMigrationIfNeededForPhotoLibrary:(id)a3 withAnalysisDatabase:(id)a4 andProgress:(id)a5;
-- (int)_dataMigrationWithAssets:(id)a3;
-- (int)processAllAssetsInPhotoLibrary:(id)a3 withAnalysisDatabase:(id)a4 andProgress:(id)a5;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (VCPMADSceneLibraryProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block;
+- (int)_dataMigrationIfNeededForPhotoLibrary:(id)library withAnalysisDatabase:(id)database andProgress:(id)progress;
+- (int)_dataMigrationWithAssets:(id)assets;
+- (int)processAllAssetsInPhotoLibrary:(id)library withAnalysisDatabase:(id)database andProgress:(id)progress;
 - (void)dealloc;
 @end
 
 @implementation VCPMADSceneLibraryProcessingTask
 
-- (VCPMADSceneLibraryProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (VCPMADSceneLibraryProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21.receiver = self;
   v21.super_class = VCPMADSceneLibraryProcessingTask;
-  v14 = [(VCPMADPhotosLibraryProcessingTask *)&v21 initWithPhotoLibraries:v10 cancelBlock:v11 progressHandler:v12 andCompletionHandler:v13];
+  v14 = [(VCPMADPhotosLibraryProcessingTask *)&v21 initWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   if (v14 && (+[VCPPreAnalysisRequests asyncCacheRequestIdealDimension](VCPPreAnalysisRequests, "asyncCacheRequestIdealDimension"), +[VCPPreAnalysisRequests asyncLoadSharedPhotoFormatsObjects], v15 = objc_alloc_init(MADSceneResources), v16 = *(v14 + 44), *(v14 + 44) = v15, v16, !*(v14 + 44)))
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -45,13 +45,13 @@
   return v17;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 cancelBlock:v10 progressHandler:v11 andCompletionHandler:v12];
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v13;
 }
@@ -67,23 +67,23 @@
   [(VCPMADSceneLibraryProcessingTask *)&v4 dealloc];
 }
 
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block
 {
-  v5 = [VCPMADSceneAssetBatch batchWithAnalysisDatabase:a3 allowDownload:a4 cancelBlock:a5 resources:*(&self->super._progressHandler + 4)];
+  v5 = [VCPMADSceneAssetBatch batchWithAnalysisDatabase:database allowDownload:download cancelBlock:block resources:*(&self->super._progressHandler + 4)];
 
   return v5;
 }
 
-- (int)_dataMigrationWithAssets:(id)a3
+- (int)_dataMigrationWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [objc_opt_class() name];
-  v6 = [NSString stringWithFormat:@"[%@][Embedding][Migration]", v5];
+  assetsCopy = assets;
+  name = [objc_opt_class() name];
+  v6 = [NSString stringWithFormat:@"[%@][Embedding][Migration]", name];
 
   v29.receiver = self;
   v29.super_class = VCPMADSceneLibraryProcessingTask;
-  v7 = [(VCPMADSceneLibraryProcessingTask *)&v29 cancelBlock];
-  if (v7 && (v28.receiver = self, v28.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v28 cancelBlock], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8[2](), v8, v7, v9))
+  cancelBlock = [(VCPMADSceneLibraryProcessingTask *)&v29 cancelBlock];
+  if (cancelBlock && (v28.receiver = self, v28.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v28 cancelBlock], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8[2](), v8, cancelBlock, v9))
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -115,16 +115,16 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "VCPMADPhotosLibraryProcessingTask_Migration_ProcessingBatch", "", buf, 2u);
     }
 
-    v17 = [v4 firstObject];
-    v18 = [v17 photoLibrary];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10011E10C;
     v26[3] = &unk_100283210;
-    v27 = v4;
+    v27 = assetsCopy;
     v25 = 0;
-    v19 = [v18 performChangesAndWait:v26 error:&v25];
+    v19 = [photoLibrary performChangesAndWait:v26 error:&v25];
     v20 = v25;
     if (v19)
     {
@@ -161,18 +161,18 @@
   return v11;
 }
 
-- (int)_dataMigrationIfNeededForPhotoLibrary:(id)a3 withAnalysisDatabase:(id)a4 andProgress:(id)a5
+- (int)_dataMigrationIfNeededForPhotoLibrary:(id)library withAnalysisDatabase:(id)database andProgress:(id)progress
 {
-  v68 = a3;
-  v66 = a4;
-  v64 = a5;
-  v8 = [objc_opt_class() name];
-  v67 = [NSString stringWithFormat:@"[%@][Embedding][Migration]", v8];
+  libraryCopy = library;
+  databaseCopy = database;
+  progressCopy = progress;
+  name = [objc_opt_class() name];
+  v67 = [NSString stringWithFormat:@"[%@][Embedding][Migration]", name];
 
   if (!+[MADManagedKeyValueStore isMACDReadEnabled])
   {
     v62 = VCPKeyValueSceneImageEmbeddingMigrationTimestamp;
-    v10 = [v66 valueForKey:?];
+    v10 = [databaseCopy valueForKey:?];
     if (!v10)
     {
       goto LABEL_3;
@@ -199,9 +199,9 @@ LABEL_10:
     goto LABEL_68;
   }
 
-  v9 = [v68 mad_fetchRequest];
+  mad_fetchRequest = [libraryCopy mad_fetchRequest];
   v62 = VCPKeyValueSceneImageEmbeddingMigrationTimestamp;
-  v10 = [v9 dataStoreValueForKey:?];
+  v10 = [mad_fetchRequest dataStoreValueForKey:?];
 
   if (v10)
   {
@@ -211,8 +211,8 @@ LABEL_10:
 LABEL_3:
   v76.receiver = self;
   v76.super_class = VCPMADSceneLibraryProcessingTask;
-  v11 = [(VCPMADSceneLibraryProcessingTask *)&v76 cancelBlock];
-  if (v11 && (v75.receiver = self, v75.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v75 cancelBlock], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12[2](), v12, v11, v13))
+  cancelBlock = [(VCPMADSceneLibraryProcessingTask *)&v76 cancelBlock];
+  if (cancelBlock && (v75.receiver = self, v75.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v75 cancelBlock], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12[2](), v12, cancelBlock, v13))
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -233,7 +233,7 @@ LABEL_3:
     v20 = +[VCPWatchdog sharedWatchdog];
     [v20 pet];
 
-    v60 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:v68];
+    v60 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
     v21 = VCPSignPostLog();
     v22 = os_signpost_id_generate(v21);
 
@@ -249,7 +249,7 @@ LABEL_3:
     [v25 addBreadcrumb:{@"%@ Fetching for Scene Embedding migration", v67}];
 
     v74 = 0;
-    v65 = [v68 fetchAssetsForMediaProcessingTaskID:objc_msgSend(objc_opt_class() priority:"taskID") algorithmVersion:0 sceneConfidenceThreshold:v60 error:{&v74, 0.0}];
+    v65 = [libraryCopy fetchAssetsForMediaProcessingTaskID:objc_msgSend(objc_opt_class() priority:"taskID") algorithmVersion:0 sceneConfidenceThreshold:v60 error:{&v74, 0.0}];
     v61 = v74;
     v26 = VCPSignPostLog();
     v27 = v26;
@@ -298,8 +298,8 @@ LABEL_3:
 
       v73.receiver = self;
       v73.super_class = VCPMADSceneLibraryProcessingTask;
-      v32 = [(VCPMADSceneLibraryProcessingTask *)&v73 cancelBlock];
-      if (v32 && (v72.receiver = self, v72.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v72 cancelBlock], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33[2](), v33, v32, v34))
+      cancelBlock2 = [(VCPMADSceneLibraryProcessingTask *)&v73 cancelBlock];
+      if (cancelBlock2 && (v72.receiver = self, v72.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v72 cancelBlock], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33[2](), v33, cancelBlock2, v34))
       {
         if (MediaAnalysisLogLevel() >= 5)
         {
@@ -332,7 +332,7 @@ LABEL_3:
         }
 
         v63 = +[NSMutableArray array];
-        [v64 setTotalUnitCount:{objc_msgSend(v65, "count")}];
+        [progressCopy setTotalUnitCount:{objc_msgSend(v65, "count")}];
         v39 = 0;
         type = VCPLogToOSLogType[5];
         v40 = MediaAnalysisChangedVersion70;
@@ -341,8 +341,8 @@ LABEL_3:
           v41 = objc_autoreleasePoolPush();
           v71.receiver = self;
           v71.super_class = VCPMADSceneLibraryProcessingTask;
-          v42 = [(VCPMADSceneLibraryProcessingTask *)&v71 cancelBlock];
-          if (v42 && (v70.receiver = self, v70.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v70 cancelBlock], v43 = objc_claimAutoreleasedReturnValue(), v44 = v43[2](), v43, v42, v44))
+          cancelBlock3 = [(VCPMADSceneLibraryProcessingTask *)&v71 cancelBlock];
+          if (cancelBlock3 && (v70.receiver = self, v70.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v70 cancelBlock], v43 = objc_claimAutoreleasedReturnValue(), v44 = v43[2](), v43, cancelBlock3, v44))
           {
             if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
             {
@@ -361,8 +361,8 @@ LABEL_3:
             [v46 pet];
 
             v47 = [v65 objectAtIndexedSubscript:v39];
-            v48 = [v47 mediaAnalysisProperties];
-            v49 = v40 == [v48 mediaAnalysisImageVersion];
+            mediaAnalysisProperties = [v47 mediaAnalysisProperties];
+            v49 = v40 == [mediaAnalysisProperties mediaAnalysisImageVersion];
 
             if (!v49)
             {
@@ -380,7 +380,7 @@ LABEL_3:
             if (!v51)
             {
               [v63 removeAllObjects];
-              [v64 setCompletedUnitCount:{objc_msgSend(v63, "count") + objc_msgSend(v64, "completedUnitCount")}];
+              [progressCopy setCompletedUnitCount:{objc_msgSend(v63, "count") + objc_msgSend(progressCopy, "completedUnitCount")}];
             }
 
             objc_autoreleasePoolPop(v50);
@@ -415,7 +415,7 @@ LABEL_51:
         if (!v15)
         {
           [v63 removeAllObjects];
-          [v64 setCompletedUnitCount:{objc_msgSend(v63, "count") + objc_msgSend(v64, "completedUnitCount")}];
+          [progressCopy setCompletedUnitCount:{objc_msgSend(v63, "count") + objc_msgSend(progressCopy, "completedUnitCount")}];
         }
 
         objc_autoreleasePoolPop(v52);
@@ -433,13 +433,13 @@ LABEL_59:
             v69[2] = sub_10011EE84;
             v69[3] = &unk_100282F90;
             v69[4] = v55;
-            [v68 mad_performAnalysisDataStoreChanges:v69 error:0];
+            [libraryCopy mad_performAnalysisDataStoreChanges:v69 error:0];
           }
 
           else
           {
-            [v66 setValue:v55 forKey:v62];
-            [v66 commit];
+            [databaseCopy setValue:v55 forKey:v62];
+            [databaseCopy commit];
           }
 
           v56 = VCPSignPostLog();
@@ -463,11 +463,11 @@ LABEL_68:
   return v15;
 }
 
-- (int)processAllAssetsInPhotoLibrary:(id)a3 withAnalysisDatabase:(id)a4 andProgress:(id)a5
+- (int)processAllAssetsInPhotoLibrary:(id)library withAnalysisDatabase:(id)database andProgress:(id)progress
 {
-  v51 = a3;
-  v50 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  databaseCopy = database;
+  progressCopy = progress;
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
     v9 = 3;
@@ -478,25 +478,25 @@ LABEL_68:
     v9 = 1;
   }
 
-  [v8 setTotalUnitCount:v9];
-  v10 = [v8 vcp_childWithPendingUnitCount:1];
+  [progressCopy setTotalUnitCount:v9];
+  v10 = [progressCopy vcp_childWithPendingUnitCount:1];
   v55.receiver = self;
   v55.super_class = VCPMADSceneLibraryProcessingTask;
-  v11 = [(VCPMADPhotosLibraryProcessingTask *)&v55 processAllAssetsInPhotoLibrary:v51 withAnalysisDatabase:v50 andProgress:v10];
+  waitForPublishing = [(VCPMADPhotosLibraryProcessingTask *)&v55 processAllAssetsInPhotoLibrary:libraryCopy withAnalysisDatabase:databaseCopy andProgress:v10];
 
-  if (!v11)
+  if (!waitForPublishing)
   {
     if (!+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
       v16 = 0;
 LABEL_43:
-      v11 = v16;
+      waitForPublishing = v16;
       goto LABEL_44;
     }
 
     context = objc_autoreleasePoolPush();
-    v12 = [objc_opt_class() name];
-    v49 = [NSString stringWithFormat:@"[%@][Embedding]", v12];
+    name = [objc_opt_class() name];
+    v49 = [NSString stringWithFormat:@"[%@][Embedding]", name];
 
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -509,10 +509,10 @@ LABEL_43:
       }
     }
 
-    v14 = [v8 vcp_childWithPendingUnitCount:1];
-    v11 = [(VCPMADSceneLibraryProcessingTask *)self _dataMigrationIfNeededForPhotoLibrary:v51 withAnalysisDatabase:v50 andProgress:v14];
+    v14 = [progressCopy vcp_childWithPendingUnitCount:1];
+    waitForPublishing = [(VCPMADSceneLibraryProcessingTask *)self _dataMigrationIfNeededForPhotoLibrary:libraryCopy withAnalysisDatabase:databaseCopy andProgress:v14];
 
-    if (v11)
+    if (waitForPublishing)
     {
       v15 = 0;
       v16 = 0;
@@ -520,9 +520,9 @@ LABEL_43:
 
     else
     {
-      v48 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:v51];
-      v17 = [(VCPMADSceneLibraryProcessingTask *)self assetPriorities];
-      v46 = [v8 vcp_childWithPendingUnitCount:{objc_msgSend(v17, "count")}];
+      v48 = [PHMediaProcessingAlgorithmVersionProvider mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:libraryCopy];
+      assetPriorities = [(VCPMADSceneLibraryProcessingTask *)self assetPriorities];
+      v46 = [progressCopy vcp_childWithPendingUnitCount:{objc_msgSend(assetPriorities, "count")}];
       v16 = 0;
       v18 = 1;
       type = VCPLogToOSLogType[5];
@@ -530,7 +530,7 @@ LABEL_43:
       v44 = VCPLogToOSLogType[3];
       do
       {
-        if (v18 - 1 >= [v17 count])
+        if (v18 - 1 >= [assetPriorities count])
         {
           break;
         }
@@ -538,8 +538,8 @@ LABEL_43:
         v19 = objc_autoreleasePoolPush();
         v54.receiver = self;
         v54.super_class = VCPMADSceneLibraryProcessingTask;
-        v20 = [(VCPMADSceneLibraryProcessingTask *)&v54 cancelBlock];
-        if (v20 && (v53.receiver = self, v53.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v53 cancelBlock], v21 = objc_claimAutoreleasedReturnValue(), v22 = v21[2](), v21, v20, v22))
+        cancelBlock = [(VCPMADSceneLibraryProcessingTask *)&v54 cancelBlock];
+        if (cancelBlock && (v53.receiver = self, v53.super_class = VCPMADSceneLibraryProcessingTask, [(VCPMADSceneLibraryProcessingTask *)&v53 cancelBlock], v21 = objc_claimAutoreleasedReturnValue(), v22 = v21[2](), v21, cancelBlock, v22))
         {
           if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
           {
@@ -557,7 +557,7 @@ LABEL_43:
           v24 = +[VCPWatchdog sharedWatchdog];
           [v24 pet];
 
-          if ([v17 count] >= 2 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
+          if ([assetPriorities count] >= 2 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
           {
             *buf = 138412546;
             v57 = v49;
@@ -566,8 +566,8 @@ LABEL_43:
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Evaluating P%lu assets", buf, 0x16u);
           }
 
-          v25 = [v17 objectAtIndexedSubscript:v18 - 1];
-          v26 = [v25 unsignedIntegerValue];
+          v25 = [assetPriorities objectAtIndexedSubscript:v18 - 1];
+          unsignedIntegerValue = [v25 unsignedIntegerValue];
 
           +[PHAsset mad_sceneConfidenceThresholdForTask:](PHAsset, "mad_sceneConfidenceThresholdForTask:", [objc_opt_class() taskID]);
           v28 = v27;
@@ -585,10 +585,10 @@ LABEL_43:
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "VCPMADPhotosLibraryProcessingTask_FetchAssets_ImageEmbedding", "", buf, 2u);
           }
 
-          v34 = [objc_opt_class() taskID];
+          taskID = [objc_opt_class() taskID];
           v52 = 0;
           LODWORD(v35) = v28;
-          v36 = [v51 fetchAssetsForMediaProcessingTaskID:v34 priority:v26 algorithmVersion:v48 sceneConfidenceThreshold:&v52 error:v35];
+          v36 = [libraryCopy fetchAssetsForMediaProcessingTaskID:taskID priority:unsignedIntegerValue algorithmVersion:v48 sceneConfidenceThreshold:&v52 error:v35];
           v37 = v52;
           v38 = VCPSignPostLog();
           v39 = v38;
@@ -628,7 +628,7 @@ LABEL_43:
             v41 = +[MADStateHandler sharedStateHandler];
             [v41 addBreadcrumb:{@"%@ Fetched %d Priority%lu assets", v49, objc_msgSend(v36, "count"), v18}];
 
-            v16 = [(VCPMADPhotosProcessingTask *)self processAssetsInFetchResult:v36 initialScan:1 analysisDatabase:v50 allowDownload:0 progress:v46];
+            v16 = [(VCPMADPhotosProcessingTask *)self processAssetsInFetchResult:v36 initialScan:1 analysisDatabase:databaseCopy allowDownload:0 progress:v46];
             v23 = v16 == 0;
           }
         }
@@ -638,8 +638,8 @@ LABEL_43:
       }
 
       while (v23);
-      v11 = [(VCPMADPhotosProcessingTask *)self waitForPublishing];
-      v15 = v11 == 0;
+      waitForPublishing = [(VCPMADPhotosProcessingTask *)self waitForPublishing];
+      v15 = waitForPublishing == 0;
     }
 
     objc_autoreleasePoolPop(context);
@@ -651,16 +651,16 @@ LABEL_43:
 
 LABEL_44:
 
-  return v11;
+  return waitForPublishing;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if ((+[PFSceneTaxonomy mad_isExpectedTaxonomy]& 1) != 0)
   {
     v11.receiver = self;
     v11.super_class = VCPMADSceneLibraryProcessingTask;
-    return [(VCPMADPhotosLibraryProcessingTask *)&v11 run:a3];
+    return [(VCPMADPhotosLibraryProcessingTask *)&v11 run:run];
   }
 
   else
@@ -670,11 +670,11 @@ LABEL_44:
     v13 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v7];
-    v9 = *a3;
-    *a3 = v8;
+    v9 = *run;
+    *run = v8;
 
-    v10 = [(VCPMADSceneLibraryProcessingTask *)self completionHandler];
-    (v10)[2](v10, 0, *a3);
+    completionHandler = [(VCPMADSceneLibraryProcessingTask *)self completionHandler];
+    (completionHandler)[2](completionHandler, 0, *run);
 
     return 0;
   }

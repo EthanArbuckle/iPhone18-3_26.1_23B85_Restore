@@ -1,23 +1,23 @@
 @interface BKUICurvesView
-- (CGPath)newQuartzPath:(id)a3 transform:(CGAffineTransform *)a4;
-- (CGPoint)_getPoint:(id)a3;
+- (CGPath)newQuartzPath:(id)path transform:(CGAffineTransform *)transform;
+- (CGPoint)_getPoint:(id)point;
 - (CGSize)sublayerSize;
-- (unint64_t)_animateFromLayer:(unint64_t)a3 toProgress:(float)a4 withColor:(id)a5;
+- (unint64_t)_animateFromLayer:(unint64_t)layer toProgress:(float)progress withColor:(id)color;
 - (void)_addEstimateWatchDog;
-- (void)_animateFromLayer:(unint64_t)a3 toLayer:(unint64_t)a4 withColor:(id)a5;
-- (void)_checkEstimateFailedAfterAnimation:(id)a3;
+- (void)_animateFromLayer:(unint64_t)layer toLayer:(unint64_t)toLayer withColor:(id)color;
+- (void)_checkEstimateFailedAfterAnimation:(id)animation;
 - (void)_removeEstimateWatchDog;
-- (void)_resetEstimate:(id)a3;
+- (void)_resetEstimate:(id)estimate;
 - (void)_resetLayers;
-- (void)_startAnimation:(unint64_t)a3 withColor:(id)a4 isLast:(BOOL)a5;
+- (void)_startAnimation:(unint64_t)animation withColor:(id)color isLast:(BOOL)last;
 - (void)_waitForInit;
 - (void)dealloc;
 - (void)estimateFailed;
-- (void)estimateProgress:(float)a3;
-- (void)loadDataFromXML:(id)a3 name:(id)a4 color:(id)a5;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)setProgress:(float)a3;
-- (void)setSublayersSize:(CGSize)a3;
+- (void)estimateProgress:(float)progress;
+- (void)loadDataFromXML:(id)l name:(id)name color:(id)color;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)setProgress:(float)progress;
+- (void)setSublayersSize:(CGSize)size;
 @end
 
 @implementation BKUICurvesView
@@ -74,39 +74,39 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_animateFromLayer:(unint64_t)a3 toLayer:(unint64_t)a4 withColor:(id)a5
+- (void)_animateFromLayer:(unint64_t)layer toLayer:(unint64_t)toLayer withColor:(id)color
 {
-  if (a3 < a4)
+  if (layer < toLayer)
   {
-    v8 = a4 - 1;
+    v8 = toLayer - 1;
     do
     {
-      v9 = a3 + 1;
-      [(BKUICurvesView *)self _startAnimation:a3 withColor:a5 isLast:v8 == a3];
-      a3 = v9;
+      v9 = layer + 1;
+      [(BKUICurvesView *)self _startAnimation:layer withColor:color isLast:v8 == layer];
+      layer = v9;
     }
 
-    while (a4 != v9);
+    while (toLayer != v9);
   }
 }
 
-- (unint64_t)_animateFromLayer:(unint64_t)a3 toProgress:(float)a4 withColor:(id)a5
+- (unint64_t)_animateFromLayer:(unint64_t)layer toProgress:(float)progress withColor:(id)color
 {
   paths = self->_paths;
-  v9 = a5;
-  v10 = ([(NSMutableArray *)paths count]* a4);
-  [(BKUICurvesView *)self _animateFromLayer:a3 toLayer:v10 withColor:v9];
+  colorCopy = color;
+  v10 = ([(NSMutableArray *)paths count]* progress);
+  [(BKUICurvesView *)self _animateFromLayer:layer toLayer:v10 withColor:colorCopy];
 
   return v10;
 }
 
-- (void)_checkEstimateFailedAfterAnimation:(id)a3
+- (void)_checkEstimateFailedAfterAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   lastAnimation = self->_lastAnimation;
-  if (lastAnimation == v4)
+  if (lastAnimation == animationCopy)
   {
-    v6 = v4;
+    v6 = animationCopy;
     if (self->_estimateFailed)
     {
       if (self->_progress < 1.0)
@@ -121,22 +121,22 @@
     self->_lastAnimation = 0;
 
     self->_estimating = 0;
-    v4 = v6;
+    animationCopy = v6;
   }
 }
 
-- (void)_resetEstimate:(id)a3
+- (void)_resetEstimate:(id)estimate
 {
   if (self->_progress < 1.0)
   {
-    self->_preEstimateLayer = [a3 unsignedIntegerValue];
+    self->_preEstimateLayer = [estimate unsignedIntegerValue];
     self->_estimateFailed = 1;
 
     [(BKUICurvesView *)self estimateFailed];
   }
 }
 
-- (void)estimateProgress:(float)a3
+- (void)estimateProgress:(float)progress
 {
   if (os_log_type_enabled(self->bkui_curves_view_log, OS_LOG_TYPE_DEBUG))
   {
@@ -146,7 +146,7 @@
   if (!self->_estimating)
   {
     self->_estimating = 1;
-    v5 = self->_progress + a3;
+    v5 = self->_progress + progress;
     v6 = (self->_currentLayer + 1);
     v7 = v6 / [(NSMutableArray *)self->_paths count];
     if (v5 >= v7)
@@ -157,9 +157,9 @@
     v8 = fminf(v7, 1.0);
     currentLayer = self->_currentLayer;
     self->_preEstimateLayer = currentLayer;
-    v10 = [MEMORY[0x277D75348] systemPinkColor];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
     *&v11 = v8;
-    self->_currentLayer = [(BKUICurvesView *)self _animateFromLayer:currentLayer toProgress:v10 withColor:v11];
+    self->_currentLayer = [(BKUICurvesView *)self _animateFromLayer:currentLayer toProgress:systemPinkColor withColor:v11];
 
     [(BKUICurvesView *)self _addEstimateWatchDog];
   }
@@ -183,7 +183,7 @@
   }
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
   if (os_log_type_enabled(self->bkui_curves_view_log, OS_LOG_TYPE_DEBUG))
   {
@@ -191,17 +191,17 @@
   }
 
   [(BKUICurvesView *)self _removeEstimateWatchDog];
-  if (a3 <= 1.0)
+  if (progress <= 1.0)
   {
-    v5 = a3;
+    progressCopy = progress;
   }
 
   else
   {
-    v5 = 1.0;
+    progressCopy = 1.0;
   }
 
-  v6 = fmaxf(v5, 0.0);
+  v6 = fmaxf(progressCopy, 0.0);
   if (v6 == 0.0)
   {
     [(BKUICurvesView *)self _resetLayers];
@@ -213,8 +213,8 @@
   currentLayer = self->_currentLayer;
   if (v6 == 1.0 && currentLayer < v7)
   {
-    v9 = [MEMORY[0x277D75348] redColor];
-    [(BKUICurvesView *)self _animateFromLayer:currentLayer toLayer:v7 withColor:v9];
+    redColor = [MEMORY[0x277D75348] redColor];
+    [(BKUICurvesView *)self _animateFromLayer:currentLayer toLayer:v7 withColor:redColor];
 
 LABEL_17:
     self->_currentLayer = v7;
@@ -233,9 +233,9 @@ LABEL_18:
   self->_estimating = 0;
 }
 
-- (CGPoint)_getPoint:(id)a3
+- (CGPoint)_getPoint:(id)point
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [point componentsSeparatedByString:{@", "}];
   v4 = [v3 objectAtIndexedSubscript:0];
   [v4 floatValue];
   v6 = v5;
@@ -263,13 +263,13 @@ LABEL_18:
   [(NSCondition *)initCondition unlock];
 }
 
-- (void)_startAnimation:(unint64_t)a3 withColor:(id)a4 isLast:(BOOL)a5
+- (void)_startAnimation:(unint64_t)animation withColor:(id)color isLast:(BOOL)last
 {
-  v5 = a5;
-  v8 = a4;
-  if ([(NSMutableArray *)self->_paths count]> a3)
+  lastCopy = last;
+  colorCopy = color;
+  if ([(NSMutableArray *)self->_paths count]> animation)
   {
-    v9 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     [(BKUICurvesView *)self bounds];
     v11 = v10;
     [(UIBezierPath *)self->_wholePath bounds];
@@ -290,29 +290,29 @@ LABEL_18:
     v20 = -v19;
     [(UIBezierPath *)self->_wholePath bounds];
     CGAffineTransformTranslate(&v33, &v32, v20, -v21);
-    v22 = [(NSMutableArray *)self->_paths objectAtIndexedSubscript:a3];
+    v22 = [(NSMutableArray *)self->_paths objectAtIndexedSubscript:animation];
     v23 = [(BKUICurvesView *)self newQuartzPath:v22 transform:&v33];
 
-    [v9 setPath:v23];
+    [layer setPath:v23];
     CFRelease(v23);
-    [v9 setStrokeColor:{objc_msgSend(v8, "CGColor")}];
-    [v9 setFillColor:0];
-    [v9 setLineWidth:1.5];
-    [v9 setLineJoin:*MEMORY[0x277CDA790]];
+    [layer setStrokeColor:{objc_msgSend(colorCopy, "CGColor")}];
+    [layer setFillColor:0];
+    [layer setLineWidth:1.5];
+    [layer setLineJoin:*MEMORY[0x277CDA790]];
     v24 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
     [v24 setFromValue:&unk_2853CC8F8];
     [v24 setToValue:&unk_2853CC908];
     [(NSNumber *)self->_speed floatValue];
     [v24 setDuration:v25];
     objc_storeStrong(&self->_lastAnimation, v24);
-    if (v5)
+    if (lastCopy)
     {
       [v24 duration];
       [(BKUICurvesView *)self performSelector:sel__checkEstimateFailedAfterAnimation_ withObject:v24 afterDelay:v26 + 0.0500000007];
     }
 
-    [v9 addAnimation:v24 forKey:@"strokeEnd"];
-    if ([(NSMutableArray *)self->_pathLayers count]> a3 && ([(NSMutableArray *)self->_pathLayers objectAtIndexedSubscript:a3], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    [layer addAnimation:v24 forKey:@"strokeEnd"];
+    if ([(NSMutableArray *)self->_pathLayers count]> animation && ([(NSMutableArray *)self->_pathLayers objectAtIndexedSubscript:animation], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v28 = v27;
       v29 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
@@ -323,34 +323,34 @@ LABEL_18:
       [v29 setDelegate:self];
       [v29 setValue:v28 forKey:@"oldLayer"];
       [v28 addAnimation:v29 forKey:@"opacity"];
-      [(NSMutableArray *)self->_pathLayers replaceObjectAtIndex:a3 withObject:v9];
+      [(NSMutableArray *)self->_pathLayers replaceObjectAtIndex:animation withObject:layer];
     }
 
     else
     {
-      [(NSMutableArray *)self->_pathLayers addObject:v9];
+      [(NSMutableArray *)self->_pathLayers addObject:layer];
     }
 
-    v31 = [(BKUICurvesView *)self layer];
-    [v31 addSublayer:v9];
+    layer2 = [(BKUICurvesView *)self layer];
+    [layer2 addSublayer:layer];
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v13 isEqualToString:@"path"])
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
+  if ([elementCopy isEqualToString:@"path"])
   {
-    v92 = v15;
-    v93 = v14;
-    v94 = v13;
-    v95 = v12;
-    v91 = v16;
-    v17 = [v16 valueForKey:@"d"];
+    v92 = nameCopy;
+    v93 = iCopy;
+    v94 = elementCopy;
+    v95 = parserCopy;
+    v91 = attributesCopy;
+    v17 = [attributesCopy valueForKey:@"d"];
     v18 = objc_alloc_init(MEMORY[0x277D75208]);
     v90 = v17;
     v19 = [v17 componentsSeparatedByString:@" "];
@@ -497,25 +497,25 @@ LABEL_4:
     [(UIBezierPath *)self->_wholePath appendPath:v18];
     [(NSMutableArray *)self->_paths addObject:v18];
 
-    v13 = v94;
-    v12 = v95;
-    v15 = v92;
-    v14 = v93;
-    v16 = v91;
+    elementCopy = v94;
+    parserCopy = v95;
+    nameCopy = v92;
+    iCopy = v93;
+    attributesCopy = v91;
   }
 }
 
-- (void)loadDataFromXML:(id)a3 name:(id)a4 color:(id)a5
+- (void)loadDataFromXML:(id)l name:(id)name color:(id)color
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  nameCopy = name;
+  colorCopy = color;
   v11 = os_log_create("com.apple.biometrickitui", "CurvesView");
   bkui_curves_view_log = self->bkui_curves_view_log;
   self->bkui_curves_view_log = v11;
 
-  objc_storeStrong(&self->_color, a5);
+  objc_storeStrong(&self->_color, color);
   v13 = objc_alloc_init(MEMORY[0x277D75208]);
   wholePath = self->_wholePath;
   self->_wholePath = v13;
@@ -550,11 +550,11 @@ LABEL_4:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v35 = v8;
+    v35 = lCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = nameCopy;
     v38 = 2112;
-    v39 = v10;
+    v39 = colorCopy;
     _os_log_impl(&dword_241B0A000, v26, OS_LOG_TYPE_INFO, "BiometricKitUI: Loading bundle: %@ with name: %@, and color: %@", buf, 0x20u);
   }
 
@@ -564,10 +564,10 @@ LABEL_4:
   block[2] = __45__BKUICurvesView_loadDataFromXML_name_color___block_invoke;
   block[3] = &unk_278D09A60;
   block[4] = self;
-  v32 = v8;
-  v33 = v9;
-  v28 = v9;
-  v29 = v8;
+  v32 = lCopy;
+  v33 = nameCopy;
+  v28 = nameCopy;
+  v29 = lCopy;
   dispatch_async(v27, block);
 
   v30 = *MEMORY[0x277D85DE8];
@@ -680,17 +680,17 @@ uint64_t __45__BKUICurvesView_loadDataFromXML_name_color___block_invoke_38(uint6
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel__resetEstimate_ object:v4];
 }
 
-- (CGPath)newQuartzPath:(id)a3 transform:(CGAffineTransform *)a4
+- (CGPath)newQuartzPath:(id)path transform:(CGAffineTransform *)transform
 {
-  [a3 CGPath];
+  [path CGPath];
 
   JUMPOUT(0x245CF7F80);
 }
 
-- (void)setSublayersSize:(CGSize)a3
+- (void)setSublayersSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v29 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(self->bkui_curves_view_log, OS_LOG_TYPE_DEBUG))
   {
@@ -738,9 +738,9 @@ uint64_t __45__BKUICurvesView_loadDataFromXML_name_color___block_invoke_38(uint6
       v15 = [(BKUICurvesView *)self newQuartzPath:self->_wholePath transform:&buf];
       [(CAShapeLayer *)self->_fingerLayer setPath:v15];
       CFRelease(v15);
-      v16 = [(BKUICurvesView *)self layer];
-      v17 = [v16 sublayers];
-      v18 = [v17 count];
+      layer = [(BKUICurvesView *)self layer];
+      sublayers = [layer sublayers];
+      v18 = [sublayers count];
 
       if (v18 >= 2)
       {
@@ -748,9 +748,9 @@ uint64_t __45__BKUICurvesView_loadDataFromXML_name_color___block_invoke_38(uint6
         {
           if ([(NSMutableArray *)self->_paths count]> (i - 1))
           {
-            v20 = [(BKUICurvesView *)self layer];
-            v21 = [v20 sublayers];
-            v22 = [v21 objectAtIndex:i];
+            layer2 = [(BKUICurvesView *)self layer];
+            sublayers2 = [layer2 sublayers];
+            v22 = [sublayers2 objectAtIndex:i];
 
             v23 = [(NSMutableArray *)self->_paths objectAtIndexedSubscript:i - 1];
             v24 = [(BKUICurvesView *)self newQuartzPath:v23 transform:&buf];

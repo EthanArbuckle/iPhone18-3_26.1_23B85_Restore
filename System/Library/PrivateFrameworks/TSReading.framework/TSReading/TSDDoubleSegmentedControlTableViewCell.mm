@@ -1,20 +1,20 @@
 @interface TSDDoubleSegmentedControlTableViewCell
-- (TSDDoubleSegmentedControlTableViewCell)initWithLeftSegmentedControl:(id)a3 rightSegmentedControl:(id)a4;
+- (TSDDoubleSegmentedControlTableViewCell)initWithLeftSegmentedControl:(id)control rightSegmentedControl:(id)segmentedControl;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation TSDDoubleSegmentedControlTableViewCell
 
-- (TSDDoubleSegmentedControlTableViewCell)initWithLeftSegmentedControl:(id)a3 rightSegmentedControl:(id)a4
+- (TSDDoubleSegmentedControlTableViewCell)initWithLeftSegmentedControl:(id)control rightSegmentedControl:(id)segmentedControl
 {
   v10.receiver = self;
   v10.super_class = TSDDoubleSegmentedControlTableViewCell;
   v6 = [(TSDDoubleSegmentedControlTableViewCell *)&v10 initWithStyle:0 reuseIdentifier:0];
   if (v6)
   {
-    v6->mLeftSegmentedControl = a3;
-    v6->mRightSegmentedControl = a4;
+    v6->mLeftSegmentedControl = control;
+    v6->mRightSegmentedControl = segmentedControl;
     if (TSUPhoneUI() && TSUStatusBarIsLandscape())
     {
       LODWORD(v7) = 1132134400;

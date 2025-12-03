@@ -1,24 +1,24 @@
 @interface PXStatusViewModel
 - (id)description;
-- (void)performChanges:(id)a3;
-- (void)setAction:(id)a3;
-- (void)setActionConfirmationAlertButtonTitle:(id)a3;
-- (void)setActionConfirmationAlertSubtitle:(id)a3;
-- (void)setActionConfirmationAlertTitle:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setAttributedMessage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setSymbolName:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAction:(id)action;
+- (void)setActionConfirmationAlertButtonTitle:(id)title;
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle;
+- (void)setActionConfirmationAlertTitle:(id)title;
+- (void)setActionTitle:(id)title;
+- (void)setAttributedMessage:(id)message;
+- (void)setMessage:(id)message;
+- (void)setSymbolName:(id)name;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXStatusViewModel
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    v4 = [a3 copy];
+    v4 = [action copy];
     action = self->_action;
     self->_action = v4;
 
@@ -26,15 +26,15 @@
   }
 }
 
-- (void)setActionConfirmationAlertButtonTitle:(id)a3
+- (void)setActionConfirmationAlertButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionConfirmationAlertButtonTitle = self->_actionConfirmationAlertButtonTitle;
-  if (actionConfirmationAlertButtonTitle != v4)
+  if (actionConfirmationAlertButtonTitle != titleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertButtonTitle = [actionConfirmationAlertButtonTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionConfirmationAlertButtonTitle = [actionConfirmationAlertButtonTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionConfirmationAlertButtonTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -42,22 +42,22 @@
       self->_actionConfirmationAlertButtonTitle = v6;
 
       actionConfirmationAlertButtonTitle = [(PXObservable *)self signalChange:128];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertButtonTitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertButtonTitle, titleCopy);
 }
 
-- (void)setActionConfirmationAlertSubtitle:(id)a3
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   actionConfirmationAlertSubtitle = self->_actionConfirmationAlertSubtitle;
-  if (actionConfirmationAlertSubtitle != v4)
+  if (actionConfirmationAlertSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertSubtitle = [actionConfirmationAlertSubtitle isEqualToString:v4];
-    v4 = v8;
+    v8 = subtitleCopy;
+    actionConfirmationAlertSubtitle = [actionConfirmationAlertSubtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v8;
     if ((actionConfirmationAlertSubtitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -65,22 +65,22 @@
       self->_actionConfirmationAlertSubtitle = v6;
 
       actionConfirmationAlertSubtitle = [(PXObservable *)self signalChange:64];
-      v4 = v8;
+      subtitleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertSubtitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertSubtitle, subtitleCopy);
 }
 
-- (void)setActionConfirmationAlertTitle:(id)a3
+- (void)setActionConfirmationAlertTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionConfirmationAlertTitle = self->_actionConfirmationAlertTitle;
-  if (actionConfirmationAlertTitle != v4)
+  if (actionConfirmationAlertTitle != titleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertTitle = [actionConfirmationAlertTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionConfirmationAlertTitle = [actionConfirmationAlertTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionConfirmationAlertTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -88,22 +88,22 @@
       self->_actionConfirmationAlertTitle = v6;
 
       actionConfirmationAlertTitle = [(PXObservable *)self signalChange:32];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertTitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertTitle, titleCopy);
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionTitle = self->_actionTitle;
-  if (actionTitle != v4)
+  if (actionTitle != titleCopy)
   {
-    v8 = v4;
-    actionTitle = [actionTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionTitle = [actionTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -111,22 +111,22 @@
       self->_actionTitle = v6;
 
       actionTitle = [(PXObservable *)self signalChange:16];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionTitle, v4);
+  MEMORY[0x1EEE66BB8](actionTitle, titleCopy);
 }
 
-- (void)setAttributedMessage:(id)a3
+- (void)setAttributedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   attributedMessage = self->_attributedMessage;
-  if (attributedMessage != v4)
+  if (attributedMessage != messageCopy)
   {
-    v8 = v4;
-    attributedMessage = [attributedMessage isEqual:v4];
-    v4 = v8;
+    v8 = messageCopy;
+    attributedMessage = [attributedMessage isEqual:messageCopy];
+    messageCopy = v8;
     if ((attributedMessage & 1) == 0)
     {
       v6 = [v8 copy];
@@ -134,22 +134,22 @@
       self->_attributedMessage = v6;
 
       attributedMessage = [(PXObservable *)self signalChange:8];
-      v4 = v8;
+      messageCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](attributedMessage, v4);
+  MEMORY[0x1EEE66BB8](attributedMessage, messageCopy);
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   message = self->_message;
-  if (message != v4)
+  if (message != messageCopy)
   {
-    v8 = v4;
-    message = [message isEqualToString:v4];
-    v4 = v8;
+    v8 = messageCopy;
+    message = [message isEqualToString:messageCopy];
+    messageCopy = v8;
     if ((message & 1) == 0)
     {
       v6 = [v8 copy];
@@ -157,22 +157,22 @@
       self->_message = v6;
 
       message = [(PXObservable *)self signalChange:4];
-      v4 = v8;
+      messageCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](message, v4);
+  MEMORY[0x1EEE66BB8](message, messageCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  if (title != v4)
+  if (title != titleCopy)
   {
-    v8 = v4;
-    title = [title isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    title = [title isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((title & 1) == 0)
     {
       v6 = [v8 copy];
@@ -180,22 +180,22 @@
       self->_title = v6;
 
       title = [(PXObservable *)self signalChange:2];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](title, v4);
+  MEMORY[0x1EEE66BB8](title, titleCopy);
 }
 
-- (void)setSymbolName:(id)a3
+- (void)setSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   symbolName = self->_symbolName;
-  if (symbolName != v4)
+  if (symbolName != nameCopy)
   {
-    v8 = v4;
-    symbolName = [symbolName isEqualToString:v4];
-    v4 = v8;
+    v8 = nameCopy;
+    symbolName = [symbolName isEqualToString:nameCopy];
+    nameCopy = v8;
     if ((symbolName & 1) == 0)
     {
       v6 = [v8 copy];
@@ -203,18 +203,18 @@
       self->_symbolName = v6;
 
       symbolName = [(PXObservable *)self signalChange:1];
-      v4 = v8;
+      nameCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](symbolName, v4);
+  MEMORY[0x1EEE66BB8](symbolName, nameCopy);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStatusViewModel;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
 - (id)description
@@ -222,7 +222,7 @@
   attributedMessage = self->_attributedMessage;
   if (attributedMessage)
   {
-    v4 = [(NSAttributedString *)attributedMessage string];
+    string = [(NSAttributedString *)attributedMessage string];
   }
 
   else
@@ -233,10 +233,10 @@
       message = @"-";
     }
 
-    v4 = message;
+    string = message;
   }
 
-  v6 = v4;
+  v6 = string;
   symbolName = self->_symbolName;
   if (!symbolName)
   {
@@ -273,9 +273,9 @@
     actionConfirmationAlertButtonTitle = @"-";
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<symbolName:%@, title:%@, message:%@, action:%@, alert:%@/%@/%@>", symbolName, title, v4, actionTitle, actionConfirmationAlertTitle, actionConfirmationAlertSubtitle, actionConfirmationAlertButtonTitle];
+  actionConfirmationAlertButtonTitle = [MEMORY[0x1E696AEC0] stringWithFormat:@"<symbolName:%@, title:%@, message:%@, action:%@, alert:%@/%@/%@>", symbolName, title, string, actionTitle, actionConfirmationAlertTitle, actionConfirmationAlertSubtitle, actionConfirmationAlertButtonTitle];
 
-  return v13;
+  return actionConfirmationAlertButtonTitle;
 }
 
 @end

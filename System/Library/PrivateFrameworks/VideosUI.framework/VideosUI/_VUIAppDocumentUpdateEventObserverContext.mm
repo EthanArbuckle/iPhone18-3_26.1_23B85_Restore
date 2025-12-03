@@ -1,13 +1,13 @@
 @interface _VUIAppDocumentUpdateEventObserverContext
-- (id)_refreshTimerWithRefreshTimeEventDescriptor:(id)a3;
+- (id)_refreshTimerWithRefreshTimeEventDescriptor:(id)descriptor;
 - (void)_cancelAllRefreshTimers;
-- (void)_cancelRefreshTimer:(id)a3;
-- (void)_cancelRefreshTimers:(id)a3;
-- (void)_startRefreshTimer:(id)a3;
+- (void)_cancelRefreshTimer:(id)timer;
+- (void)_cancelRefreshTimers:(id)timers;
+- (void)_startRefreshTimer:(id)timer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setEventDescriptors:(id)a3;
-- (void)updateDescriptorsWithDescriptors:(id)a3;
+- (void)setEventDescriptors:(id)descriptors;
+- (void)updateDescriptorsWithDescriptors:(id)descriptors;
 @end
 
 @implementation _VUIAppDocumentUpdateEventObserverContext
@@ -28,14 +28,14 @@
   [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelAllRefreshTimers];
 }
 
-- (void)setEventDescriptors:(id)a3
+- (void)setEventDescriptors:(id)descriptors
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [descriptors copy];
   eventDescriptors = self->_eventDescriptors;
   self->_eventDescriptors = v4;
 
-  v6 = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
+  refreshTimerByEventDescriptor = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
@@ -62,11 +62,11 @@
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v6 objectForKey:{v14, v18}];
+          v15 = [refreshTimerByEventDescriptor objectForKey:{v14, v18}];
           if (v15)
           {
             v16 = v15;
-            [v6 removeObjectForKey:v14];
+            [refreshTimerByEventDescriptor removeObjectForKey:v14];
             goto LABEL_10;
           }
 
@@ -89,29 +89,29 @@ LABEL_10:
     while (v10);
   }
 
-  v17 = [v6 allValues];
-  [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelRefreshTimers:v17];
+  allValues = [refreshTimerByEventDescriptor allValues];
+  [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelRefreshTimers:allValues];
 
   [(_VUIAppDocumentUpdateEventObserverContext *)self setRefreshTimerByEventDescriptor:v7];
 }
 
-- (void)updateDescriptorsWithDescriptors:(id)a3
+- (void)updateDescriptorsWithDescriptors:(id)descriptors
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_VUIAppDocumentUpdateEventObserverContext *)self eventDescriptors];
-  v6 = [v5 setByAddingObjectsFromSet:v4];
+  descriptorsCopy = descriptors;
+  eventDescriptors = [(_VUIAppDocumentUpdateEventObserverContext *)self eventDescriptors];
+  v6 = [eventDescriptors setByAddingObjectsFromSet:descriptorsCopy];
   eventDescriptors = self->_eventDescriptors;
   self->_eventDescriptors = v6;
 
-  v8 = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
-  v9 = [v8 mutableCopy];
+  refreshTimerByEventDescriptor = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
+  v9 = [refreshTimerByEventDescriptor mutableCopy];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v4;
+  v10 = descriptorsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -161,13 +161,13 @@ LABEL_10:
   [(_VUIAppDocumentUpdateEventObserverContext *)self setRefreshTimerByEventDescriptor:v9];
 }
 
-- (id)_refreshTimerWithRefreshTimeEventDescriptor:(id)a3
+- (id)_refreshTimerWithRefreshTimeEventDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 delayInSeconds];
-  if (v5)
+  descriptorCopy = descriptor;
+  delayInSeconds = [descriptorCopy delayInSeconds];
+  if (delayInSeconds)
   {
-    v6 = v5;
+    v6 = delayInSeconds;
     v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     objc_initWeak(&location, self);
     handler[0] = MEMORY[0x1E69E9820];
@@ -175,7 +175,7 @@ LABEL_10:
     handler[2] = __89___VUIAppDocumentUpdateEventObserverContext__refreshTimerWithRefreshTimeEventDescriptor___block_invoke;
     handler[3] = &unk_1E872F038;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = descriptorCopy;
     dispatch_source_set_event_handler(v7, handler);
     v8 = dispatch_time(0, 1000000000 * v6);
     dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -192,31 +192,31 @@ LABEL_10:
   return v7;
 }
 
-- (void)_startRefreshTimer:(id)a3
+- (void)_startRefreshTimer:(id)timer
 {
-  if (a3)
+  if (timer)
   {
-    dispatch_resume(a3);
+    dispatch_resume(timer);
   }
 }
 
-- (void)_cancelRefreshTimer:(id)a3
+- (void)_cancelRefreshTimer:(id)timer
 {
-  if (a3)
+  if (timer)
   {
-    dispatch_source_cancel(a3);
+    dispatch_source_cancel(timer);
   }
 }
 
-- (void)_cancelRefreshTimers:(id)a3
+- (void)_cancelRefreshTimers:(id)timers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timersCopy = timers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [timersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -228,14 +228,14 @@ LABEL_10:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timersCopy);
         }
 
         [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelRefreshTimer:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [timersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -244,11 +244,11 @@ LABEL_10:
 
 - (void)_cancelAllRefreshTimers
 {
-  v3 = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
-  v4 = [v3 allValues];
+  refreshTimerByEventDescriptor = [(_VUIAppDocumentUpdateEventObserverContext *)self refreshTimerByEventDescriptor];
+  allValues = [refreshTimerByEventDescriptor allValues];
 
   [(_VUIAppDocumentUpdateEventObserverContext *)self setRefreshTimerByEventDescriptor:0];
-  [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelRefreshTimers:v4];
+  [(_VUIAppDocumentUpdateEventObserverContext *)self _cancelRefreshTimers:allValues];
 }
 
 @end

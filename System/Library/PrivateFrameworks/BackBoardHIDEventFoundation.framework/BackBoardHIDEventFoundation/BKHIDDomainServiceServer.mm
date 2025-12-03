@@ -1,23 +1,23 @@
 @interface BKHIDDomainServiceServer
-- (BKHIDDomainServiceServer)initWithDelegate:(id)a3 incomingServiceConnectionHandler:(id)a4 serverTarget:(id)a5 serverProtocol:(id)a6 clientProtocol:(id)a7 serviceName:(id)a8 queue:(id)a9 log:(id)a10 entitlement:(id)a11;
-- (BOOL)responsePendingForConnection:(id)a3;
-- (id)connectionForPID:(int)a3;
-- (id)didRespondBlockForConnection:(id)a3;
-- (id)userInfoForConnection:(id)a3;
-- (void)acceptIncomingServiceConnection:(id)a3;
-- (void)enumerateUserInfoWithBlock:(id)a3;
+- (BKHIDDomainServiceServer)initWithDelegate:(id)delegate incomingServiceConnectionHandler:(id)handler serverTarget:(id)target serverProtocol:(id)protocol clientProtocol:(id)clientProtocol serviceName:(id)name queue:(id)queue log:(id)self0 entitlement:(id)self1;
+- (BOOL)responsePendingForConnection:(id)connection;
+- (id)connectionForPID:(int)d;
+- (id)didRespondBlockForConnection:(id)connection;
+- (id)userInfoForConnection:(id)connection;
+- (void)acceptIncomingServiceConnection:(id)connection;
+- (void)enumerateUserInfoWithBlock:(id)block;
 - (void)invalidate;
-- (void)rejectIncomingServiceConnection:(id)a3;
-- (void)setUserInfo:(id)a3 forConnection:(id)a4;
+- (void)rejectIncomingServiceConnection:(id)connection;
+- (void)setUserInfo:(id)info forConnection:(id)connection;
 @end
 
 @implementation BKHIDDomainServiceServer
 
-- (void)rejectIncomingServiceConnection:(id)a3
+- (void)rejectIncomingServiceConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 connection];
+  connectionCopy = connection;
+  connection = [connectionCopy connection];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -25,22 +25,22 @@
     v9 = 138543618;
     v10 = serviceName;
     v11 = 2114;
-    v12 = v4;
+    v12 = connectionCopy;
     _os_log_debug_impl(&dword_223CBE000, log, OS_LOG_TYPE_DEBUG, "invalidating connection (%{public}@) - %{public}@", &v9, 0x16u);
   }
 
-  [v5 invalidate];
+  [connection invalidate];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptIncomingServiceConnection:(id)a3
+- (void)acceptIncomingServiceConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v5 remoteToken];
-  v7 = [v6 pid];
+  connectionCopy = connection;
+  connection = [connectionCopy connection];
+  remoteToken = [connection remoteToken];
+  v7 = [remoteToken pid];
 
   os_unfair_lock_lock(&self->_lock);
   lock_activeConnectionsByPID = self->_lock_activeConnectionsByPID;
@@ -53,7 +53,7 @@
     lock_activeConnectionsByPID = self->_lock_activeConnectionsByPID;
   }
 
-  [(BSMutableIntegerMap *)lock_activeConnectionsByPID setObject:v5 forKey:v7];
+  [(BSMutableIntegerMap *)lock_activeConnectionsByPID setObject:connection forKey:v7];
   os_unfair_lock_unlock(&self->_lock);
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -63,8 +63,8 @@
     v17 = 3221225472;
     v18 = __60__BKHIDDomainServiceServer_acceptIncomingServiceConnection___block_invoke;
     v19 = &unk_2784F7270;
-    v20 = self;
-    v21 = v5;
+    selfCopy = self;
+    v21 = connection;
     [(BSServiceDispatchQueue *)queue performAsyncAndWait:&v16];
   }
 
@@ -75,20 +75,20 @@
     *buf = 138543618;
     v23 = serviceName;
     v24 = 2114;
-    v25 = v4;
+    v25 = connectionCopy;
     _os_log_debug_impl(&dword_223CBE000, log, OS_LOG_TYPE_DEBUG, "activating connection (%{public}@) - %{public}@", buf, 0x16u);
   }
 
-  [v5 activate];
+  [connection activate];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)didRespondBlockForConnection:(id)a3
+- (id)didRespondBlockForConnection:(id)connection
 {
-  v3 = [a3 userInfo];
+  userInfo = [connection userInfo];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = userInfo;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -137,11 +137,11 @@ uint64_t __57__BKHIDDomainServiceServer_didRespondBlockForConnection___block_inv
   return result;
 }
 
-- (BOOL)responsePendingForConnection:(id)a3
+- (BOOL)responsePendingForConnection:(id)connection
 {
-  v3 = [a3 userInfo];
+  userInfo = [connection userInfo];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = userInfo;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -175,15 +175,15 @@ uint64_t __57__BKHIDDomainServiceServer_didRespondBlockForConnection___block_inv
   return v8 & 1;
 }
 
-- (void)enumerateUserInfoWithBlock:(id)a3
+- (void)enumerateUserInfoWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(BSMutableIntegerMap *)self->_lock_activeConnectionsByPID copy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v6 = v4;
+    v6 = blockCopy;
     BSIntegerMapEnumerateWithBlock();
   }
 }
@@ -221,15 +221,15 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
   }
 }
 
-- (void)setUserInfo:(id)a3 forConnection:(id)a4
+- (void)setUserInfo:(id)info forConnection:(id)connection
 {
-  v13 = a3;
-  v7 = a4;
+  infoCopy = info;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v7 userInfo];
+  userInfo = [connectionCopy userInfo];
 
   v9 = objc_opt_class();
-  v10 = v8;
+  v10 = userInfo;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -252,20 +252,20 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
 
   if (v12)
   {
-    objc_storeStrong(v12 + 2, a3);
+    objc_storeStrong(v12 + 2, info);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)userInfoForConnection:(id)a3
+- (id)userInfoForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 userInfo];
+  userInfo = [connectionCopy userInfo];
 
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = userInfo;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -302,10 +302,10 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
   return v11;
 }
 
-- (id)connectionForPID:(int)a3
+- (id)connectionForPID:(int)d
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BSMutableIntegerMap *)self->_lock_activeConnectionsByPID objectForKey:a3];
+  v5 = [(BSMutableIntegerMap *)self->_lock_activeConnectionsByPID objectForKey:d];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
@@ -333,21 +333,21 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
   }
 }
 
-- (BKHIDDomainServiceServer)initWithDelegate:(id)a3 incomingServiceConnectionHandler:(id)a4 serverTarget:(id)a5 serverProtocol:(id)a6 clientProtocol:(id)a7 serviceName:(id)a8 queue:(id)a9 log:(id)a10 entitlement:(id)a11
+- (BKHIDDomainServiceServer)initWithDelegate:(id)delegate incomingServiceConnectionHandler:(id)handler serverTarget:(id)target serverProtocol:(id)protocol clientProtocol:(id)clientProtocol serviceName:(id)name queue:(id)queue log:(id)self0 entitlement:(id)self1
 {
-  v45 = a3;
-  v44 = a4;
-  v43 = a5;
-  v47 = a6;
-  v46 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  if (!v20)
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  targetCopy = target;
+  protocolCopy = protocol;
+  clientProtocolCopy = clientProtocol;
+  nameCopy = name;
+  queueCopy = queue;
+  logCopy = log;
+  entitlementCopy = entitlement;
+  if (!logCopy)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"BKHIDDomainServiceServer.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"logCategory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDDomainServiceServer.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"logCategory"}];
   }
 
   v51.receiver = self;
@@ -357,43 +357,43 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
   if (v22)
   {
     v22->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v22->_delegate, a3);
-    objc_storeStrong(&v23->_incomingConnectionHandler, a4);
-    objc_storeStrong(&v23->_serviceTarget, a5);
+    objc_storeStrong(&v22->_delegate, delegate);
+    objc_storeStrong(&v23->_incomingConnectionHandler, handler);
+    objc_storeStrong(&v23->_serviceTarget, target);
     v24 = objc_alloc_init(MEMORY[0x277CF0B80]);
     invalidSignal = v23->_invalidSignal;
     v23->_invalidSignal = v24;
 
-    if (v19)
+    if (queueCopy)
     {
-      v26 = v19;
+      v26 = queueCopy;
     }
 
     else
     {
-      v26 = [MEMORY[0x277CF32B0] queueWithName:v18];
+      v26 = [MEMORY[0x277CF32B0] queueWithName:nameCopy];
     }
 
     queue = v23->_queue;
     v23->_queue = v26;
 
-    v28 = [v18 copy];
+    v28 = [nameCopy copy];
     serviceName = v23->_serviceName;
     v23->_serviceName = v28;
 
-    objc_storeStrong(&v23->_log, a10);
-    v42 = v21;
-    v30 = [v21 copy];
+    objc_storeStrong(&v23->_log, log);
+    v42 = entitlementCopy;
+    v30 = [entitlementCopy copy];
     entitlement = v23->_entitlement;
     v23->_entitlement = v30;
 
-    v32 = [MEMORY[0x277CF0C90] protocolForProtocol:v47];
-    v33 = [MEMORY[0x277CF0C90] protocolForProtocol:v46];
-    v34 = [MEMORY[0x277CF3278] interfaceWithIdentifier:v18];
+    v32 = [MEMORY[0x277CF0C90] protocolForProtocol:protocolCopy];
+    v33 = [MEMORY[0x277CF0C90] protocolForProtocol:clientProtocolCopy];
+    v34 = [MEMORY[0x277CF3278] interfaceWithIdentifier:nameCopy];
     [v34 setServer:v32];
     [v34 setClient:v33];
     objc_storeStrong(&v23->_interface, v34);
-    v35 = [MEMORY[0x277CF32A8] configurationWithDomain:*MEMORY[0x277CF05A0] service:v18];
+    v35 = [MEMORY[0x277CF32A8] configurationWithDomain:*MEMORY[0x277CF05A0] service:nameCopy];
     objc_initWeak(&location, v23);
     v36 = MEMORY[0x277CF32A0];
     v48[0] = MEMORY[0x277D85DD0];
@@ -408,7 +408,7 @@ void __55__BKHIDDomainServiceServer_enumerateUserInfoWithBlock___block_invoke(ui
     objc_destroyWeak(&v49);
     objc_destroyWeak(&location);
 
-    v21 = v42;
+    entitlementCopy = v42;
   }
 
   return v23;

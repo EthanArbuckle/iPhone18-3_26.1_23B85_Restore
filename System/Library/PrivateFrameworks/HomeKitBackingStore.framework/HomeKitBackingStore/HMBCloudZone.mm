@@ -1,17 +1,17 @@
 @interface HMBCloudZone
 + (id)logCategory;
-- (BOOL)handleUpdatedShare:(id)a3 error:(id *)a4;
-- (BOOL)handleUpdatedShareParticipantRecord:(id)a3 error:(id *)a4;
+- (BOOL)handleUpdatedShare:(id)share error:(id *)error;
+- (BOOL)handleUpdatedShareParticipantRecord:(id)record error:(id *)error;
 - (BOOL)hasPerformedInitialFetch;
-- (BOOL)isInternalModel:(id)a3;
+- (BOOL)isInternalModel:(id)model;
 - (BOOL)isZoneRebuildInProgress;
-- (BOOL)populateManateeCloudRecord:(id)a3 withModel:(id)a4 encodingContext:(id)a5 error:(id *)a6;
-- (BOOL)populateV4CloudRecord:(id)a3 withModel:(id)a4 metadataFieldData:(id)a5 startEncoding:(unint64_t)a6 endEncoding:(unint64_t)a7 encodingContext:(id)a8 error:(id *)a9;
-- (BOOL)resolveConflicts:(id)a3 options:(id)a4;
-- (BOOL)retryCloudKitOperation:(id)a3 afterError:(id)a4 retryBlock:(id)a5;
-- (BOOL)retryStartupWithCloudDatabase:(id)a3 afterError:(id)a4 retryBlock:(id)a5;
+- (BOOL)populateManateeCloudRecord:(id)record withModel:(id)model encodingContext:(id)context error:(id *)error;
+- (BOOL)populateV4CloudRecord:(id)record withModel:(id)model metadataFieldData:(id)data startEncoding:(unint64_t)encoding endEncoding:(unint64_t)endEncoding encodingContext:(id)context error:(id *)error;
+- (BOOL)resolveConflicts:(id)conflicts options:(id)options;
+- (BOOL)retryCloudKitOperation:(id)operation afterError:(id)error retryBlock:(id)block;
+- (BOOL)retryStartupWithCloudDatabase:(id)database afterError:(id)error retryBlock:(id)block;
 - (HMBCloudDatabase)cloudDatabase;
-- (HMBCloudZone)initWithCloudDatabase:(id)a3 configuration:(id)a4 state:(id)a5;
+- (HMBCloudZone)initWithCloudDatabase:(id)database configuration:(id)configuration state:(id)state;
 - (HMBCloudZoneDelegate)delegate;
 - (HMBLocalZone)localZone;
 - (HMBLocalZone)stateZone;
@@ -19,88 +19,88 @@
 - (NAFuture)waitForPendingRebuild;
 - (NSSet)participants;
 - (NSSet)subscriptions;
-- (id)_addShareOperationAfterStartupWithName:(id)a3 block:(id)a4;
-- (id)_addShareOperationWithName:(id)a3 block:(id)a4;
+- (id)_addShareOperationAfterStartupWithName:(id)name block:(id)block;
+- (id)_addShareOperationWithName:(id)name block:(id)block;
 - (id)_createShareModel;
-- (id)_fetchInvitationWithContext:(id)a3 usingShare:(id)a4;
-- (id)_fetchRecordsWithRecordIDs:(id)a3 canRetry:(BOOL)a4;
-- (id)_performCloudPullWithOptions:(id)a3 useCachedServerToken:(BOOL)a4;
-- (id)_performImmediateCloudPullWithOptions:(id)a3 useCachedServerToken:(BOOL)a4;
-- (id)_pushDeletedParticipantRecordIDs:(id)a3;
-- (id)_pushUpdatedShare:(id)a3;
-- (id)_pushUpdatedShare:(id)a3 participantRecord:(id)a4;
-- (id)_revokeShareAccessForParticipant:(id)a3 usingShare:(id)a4;
-- (id)_setWriteAccessEnabled:(BOOL)a3 forParticipant:(id)a4 usingShare:(id)a5;
+- (id)_fetchInvitationWithContext:(id)context usingShare:(id)share;
+- (id)_fetchRecordsWithRecordIDs:(id)ds canRetry:(BOOL)retry;
+- (id)_performCloudPullWithOptions:(id)options useCachedServerToken:(BOOL)token;
+- (id)_performImmediateCloudPullWithOptions:(id)options useCachedServerToken:(BOOL)token;
+- (id)_pushDeletedParticipantRecordIDs:(id)ds;
+- (id)_pushUpdatedShare:(id)share;
+- (id)_pushUpdatedShare:(id)share participantRecord:(id)record;
+- (id)_revokeShareAccessForParticipant:(id)participant usingShare:(id)share;
+- (id)_setWriteAccessEnabled:(BOOL)enabled forParticipant:(id)participant usingShare:(id)share;
 - (id)_syncInternalModels;
-- (id)_triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4;
+- (id)_triggerOutputForOutputRow:(unint64_t)row options:(id)options;
 - (id)attributeDescriptions;
-- (id)cloudMetadataForModel:(id)a3 usingEncoding:(unint64_t)a4;
+- (id)cloudMetadataForModel:(id)model usingEncoding:(unint64_t)encoding;
 - (id)createShareModel;
 - (id)createZoneState;
-- (id)decodeManateeCloudFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6;
-- (id)decodeModelFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6;
-- (id)decodeShareModelFromShare:(id)a3;
+- (id)decodeManateeCloudFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error;
+- (id)decodeModelFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error;
+- (id)decodeShareModelFromShare:(id)share;
 - (id)destroy;
-- (id)encodeManateeCloudModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6;
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6;
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 error:(id *)a5;
-- (id)encodeShareModel:(id)a3;
-- (id)fetchChangesWithToken:(id)a3 options:(id)a4;
-- (id)fetchCloudShareIDForShareParticipantClientIdentifier:(id)a3;
-- (id)fetchCompleteModel:(id)a3;
-- (id)fetchCompleteModelForRecordID:(id)a3;
-- (id)fetchCompleteModelWithID:(id)a3;
-- (id)fetchCompleteModels:(id)a3;
-- (id)fetchCompleteModelsForRecordIDs:(id)a3;
-- (id)fetchCompleteModelsWithIDs:(id)a3;
+- (id)encodeManateeCloudModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error;
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error;
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record error:(id *)error;
+- (id)encodeShareModel:(id)model;
+- (id)fetchChangesWithToken:(id)token options:(id)options;
+- (id)fetchCloudShareIDForShareParticipantClientIdentifier:(id)identifier;
+- (id)fetchCompleteModel:(id)model;
+- (id)fetchCompleteModelForRecordID:(id)d;
+- (id)fetchCompleteModelWithID:(id)d;
+- (id)fetchCompleteModels:(id)models;
+- (id)fetchCompleteModelsForRecordIDs:(id)ds;
+- (id)fetchCompleteModelsWithIDs:(id)ds;
 - (id)fetchCurrentParticipantCloudShareID;
-- (id)fetchInvitationWithContext:(id)a3;
+- (id)fetchInvitationWithContext:(id)context;
 - (id)fetchOwnerParticipantCloudShareID;
-- (id)fetchRecordsWithRecordIDs:(id)a3;
+- (id)fetchRecordsWithRecordIDs:(id)ds;
 - (id)flush;
-- (id)leaveCloudShareRequestingNewInvitationToken:(BOOL)a3;
+- (id)leaveCloudShareRequestingNewInvitationToken:(BOOL)token;
 - (id)logIdentifier;
-- (id)participantWithClientIdentifier:(id)a3;
-- (id)pushRecordsToUpdate:(id)a3 recordIDsToRemove:(id)a4 configuration:(id)a5 rollbackEnabled:(BOOL)a6 needsNewInvitationToken:(BOOL)a7;
-- (id)queryRecordsWithType:(id)a3;
-- (id)recordIDForModel:(id)a3;
-- (id)registerSubscriptionForExternalRecordType:(id)a3;
-- (id)revokeShareAccessForParticipant:(id)a3;
-- (id)setWriteAccessEnabled:(BOOL)a3 forParticipant:(id)a4;
+- (id)participantWithClientIdentifier:(id)identifier;
+- (id)pushRecordsToUpdate:(id)update recordIDsToRemove:(id)remove configuration:(id)configuration rollbackEnabled:(BOOL)enabled needsNewInvitationToken:(BOOL)token;
+- (id)queryRecordsWithType:(id)type;
+- (id)recordIDForModel:(id)model;
+- (id)registerSubscriptionForExternalRecordType:(id)type;
+- (id)revokeShareAccessForParticipant:(id)participant;
+- (id)setWriteAccessEnabled:(BOOL)enabled forParticipant:(id)participant;
 - (id)shutdown;
 - (id)startUpRebuilderIfNeeded;
-- (id)triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4;
-- (id)unregisterSubscriptionForExternalRecordType:(id)a3;
+- (id)triggerOutputForOutputRow:(unint64_t)row options:(id)options;
+- (id)unregisterSubscriptionForExternalRecordType:(id)type;
 - (int64_t)keyStatus;
-- (void)_fetchRecordsForContexts:(id)a3;
-- (void)_startUpWithLocalZone:(id)a3;
-- (void)_startUpWithPublicLocalZone:(id)a3;
+- (void)_fetchRecordsForContexts:(id)contexts;
+- (void)_startUpWithLocalZone:(id)zone;
+- (void)_startUpWithPublicLocalZone:(id)zone;
 - (void)dealloc;
 - (void)handleDeletion;
 - (void)handleLostKeys;
-- (void)handleUpdatedInternalModels:(id)a3;
-- (void)handleUpdatedRebuilderModel:(id)a3;
-- (void)handleUpdatedShareModel:(id)a3;
-- (void)handleUpdatedShareParticipantModels:(id)a3;
+- (void)handleUpdatedInternalModels:(id)models;
+- (void)handleUpdatedRebuilderModel:(id)model;
+- (void)handleUpdatedShareModel:(id)model;
+- (void)handleUpdatedShareParticipantModels:(id)models;
 - (void)handleZoneChangedNotification;
 - (void)initializeShareModels;
-- (void)notifyDelegateOfError:(id)a3 forOperation:(id)a4;
-- (void)pushGroupWithBlockRow:(unint64_t)a3 tuples:(id)a4 options:(id)a5 activity:(id)a6 completionPromise:(id)a7;
+- (void)notifyDelegateOfError:(id)error forOperation:(id)operation;
+- (void)pushGroupWithBlockRow:(unint64_t)row tuples:(id)tuples options:(id)options activity:(id)activity completionPromise:(id)promise;
 - (void)rebuild;
-- (void)startUpWithLocalZone:(id)a3;
+- (void)startUpWithLocalZone:(id)zone;
 @end
 
 @implementation HMBCloudZone
 
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 modelContainer];
-  [v10 hmbAssociateWithContainer:v13];
+  modelCopy = model;
+  recordCopy = record;
+  contextCopy = context;
+  modelContainer = [contextCopy modelContainer];
+  [modelCopy hmbAssociateWithContainer:modelContainer];
 
-  v14 = v10;
+  v14 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -121,46 +121,46 @@
 
   else
   {
-    [(HMBCloudZone *)self encodeManateeCloudModel:v14 existingRecord:v11 encodingContext:v12 error:a6];
+    [(HMBCloudZone *)self encodeManateeCloudModel:v14 existingRecord:recordCopy encodingContext:contextCopy error:error];
   }
   v17 = ;
 
   return v17;
 }
 
-- (id)encodeRecordFromModel:(id)a3 existingRecord:(id)a4 error:(id *)a5
+- (id)encodeRecordFromModel:(id)model existingRecord:(id)record error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMBCloudZone *)self modelContainer];
-  if (v10)
+  modelCopy = model;
+  recordCopy = record;
+  modelContainer = [(HMBCloudZone *)self modelContainer];
+  if (modelContainer)
   {
-    v11 = [[HMBCloudZoneEncodingContext alloc] initWithModelContainer:v10];
-    v12 = [(HMBCloudZone *)self encodeRecordFromModel:v8 existingRecord:v9 encodingContext:v11 error:a5];
+    v11 = [[HMBCloudZoneEncodingContext alloc] initWithModelContainer:modelContainer];
+    v12 = [(HMBCloudZone *)self encodeRecordFromModel:modelCopy existingRecord:recordCopy encodingContext:v11 error:error];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v8 hmbDescription];
+      hmbDescription = [modelCopy hmbDescription];
       v20 = 138543618;
       v21 = v16;
       v22 = 2114;
-      v23 = v17;
+      v23 = hmbDescription;
       _os_log_impl(&dword_22AD27000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode record from model %{public}@: Model container is nil", &v20, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:8 reason:@"Model container is nil"];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -174,14 +174,14 @@
   return v12;
 }
 
-- (id)decodeModelFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6
+- (id)decodeModelFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  recordCopy = record;
+  fieldsCopy = fields;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v10;
+    v12 = recordCopy;
   }
 
   else
@@ -197,7 +197,7 @@
 
   else
   {
-    [(HMBCloudZone *)self decodeManateeCloudFromRecord:v10 externalRecordFields:v11 source:a5 error:a6];
+    [(HMBCloudZone *)self decodeManateeCloudFromRecord:recordCopy externalRecordFields:fieldsCopy source:source error:error];
   }
   v14 = ;
 
@@ -217,7 +217,7 @@
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -233,12 +233,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedRebuilderModel:(id)a3
+- (void)handleUpdatedRebuilderModel:(id)model
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -246,20 +246,20 @@
     *buf = 138543618;
     v19 = v8;
     v20 = 2112;
-    v21 = v4;
+    v21 = modelCopy;
     _os_log_impl(&dword_22AD27000, v7, OS_LOG_TYPE_INFO, "%{public}@Saving updated rebuilder model: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMBCloudZone *)v6 localZone];
-  v17 = v4;
+  localZone = [(HMBCloudZone *)selfCopy localZone];
+  v17 = modelCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  v11 = [v9 update:v10];
+  v11 = [localZone update:v10];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -290,7 +290,7 @@
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -312,15 +312,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isZoneRebuildInProgress];
+    isZoneRebuildInProgress = [v2 isZoneRebuildInProgress];
   }
 
   else
   {
-    v4 = 0;
+    isZoneRebuildInProgress = 0;
   }
 
-  return v4;
+  return isZoneRebuildInProgress;
 }
 
 - (void)handleLostKeys
@@ -330,13 +330,13 @@
   if (v3)
   {
     [v3 handleIdentityLost];
-    v5 = [v4 rebuildCompleteFuture];
+    rebuildCompleteFuture = [v4 rebuildCompleteFuture];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__HMBCloudZone_Rebuild_Internal__handleLostKeys__block_invoke;
     v7[3] = &unk_2786E1E10;
     v7[4] = self;
-    v6 = [v5 addSuccessBlock:v7];
+    v6 = [rebuildCompleteFuture addSuccessBlock:v7];
   }
 }
 
@@ -346,22 +346,22 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 zoneStartUp];
-    v6 = [v4 rebuildCompleteFuture];
+    zoneStartUp = [v3 zoneStartUp];
+    rebuildCompleteFuture = [v4 rebuildCompleteFuture];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__HMBCloudZone_Rebuild_Internal__startUpRebuilderIfNeeded__block_invoke;
     v9[3] = &unk_2786E1E10;
     v9[4] = self;
-    v7 = [v6 addSuccessBlock:v9];
+    v7 = [rebuildCompleteFuture addSuccessBlock:v9];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    zoneStartUp = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v5;
+  return zoneStartUp;
 }
 
 - (NAFuture)waitForPendingRebuild
@@ -388,62 +388,62 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 rebuilderStatus];
-    v5 = [v4 keyStatus];
+    rebuilderStatus = [v2 rebuilderStatus];
+    keyStatus = [rebuilderStatus keyStatus];
   }
 
   else
   {
-    v5 = 0;
+    keyStatus = 0;
   }
 
-  return v5;
+  return keyStatus;
 }
 
-- (id)decodeShareModelFromShare:(id)a3
+- (id)decodeShareModelFromShare:(id)share
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CBC020]];
+  shareCopy = share;
+  recordID = [shareCopy recordID];
+  recordName = [recordID recordName];
+  v7 = [recordName isEqualToString:*MEMORY[0x277CBC020]];
 
   if (!v7)
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v4 recordID];
-    v11 = [v8 recordName];
-    v10 = [v12 initWithUUIDString:v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    recordID2 = [shareCopy recordID];
+    recordName2 = [recordID2 recordName];
+    v10 = [uUID initWithUUIDString:recordName2];
     goto LABEL_5;
   }
 
-  v8 = [(HMBCloudZone *)self shareModel];
-  v9 = [v8 hmbModelID];
-  if (v9)
+  recordID2 = [(HMBCloudZone *)self shareModel];
+  hmbModelID = [recordID2 hmbModelID];
+  if (hmbModelID)
   {
-    v10 = v9;
-    v11 = v10;
+    v10 = hmbModelID;
+    recordName2 = v10;
 LABEL_5:
-    v13 = v10;
+    uUID2 = v10;
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v11 = 0;
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  recordName2 = 0;
 LABEL_6:
 
   v14 = [HMBCloudZoneShareModel alloc];
-  v15 = [(HMBCloudZone *)self stateModelID];
-  v16 = [(HMBModel *)v14 initWithModelID:v13 parentModelID:v15];
+  stateModelID = [(HMBCloudZone *)self stateModelID];
+  v16 = [(HMBModel *)v14 initWithModelID:uUID2 parentModelID:stateModelID];
 
-  [(HMBCloudZoneShareModel *)v16 setShare:v4];
+  [(HMBCloudZoneShareModel *)v16 setShare:shareCopy];
 
   return v16;
 }
 
-- (id)encodeShareModel:(id)a3
+- (id)encodeShareModel:(id)model
 {
-  v3 = [a3 share];
-  v4 = [v3 copy];
+  share = [model share];
+  v4 = [share copy];
 
   return v4;
 }
@@ -480,8 +480,8 @@ LABEL_6:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBCloudZone *)self zoneID];
-  v5 = [v3 initWithName:@"Zone ID" value:v4];
+  zoneID = [(HMBCloudZone *)self zoneID];
+  v5 = [v3 initWithName:@"Zone ID" value:zoneID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -492,19 +492,19 @@ LABEL_6:
 
 - (id)logIdentifier
 {
-  v2 = [(HMBCloudZone *)self cloudZoneID];
-  v3 = [v2 zoneID];
-  v4 = [v3 hmbDescription];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  zoneID = [cloudZoneID zoneID];
+  hmbDescription = [zoneID hmbDescription];
 
-  return v4;
+  return hmbDescription;
 }
 
 - (id)createZoneState
 {
-  v3 = [(HMBCloudZone *)self cloudZoneID];
-  v4 = [v3 scope];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  scope = [cloudZoneID scope];
 
-  if (v4 == 2)
+  if (scope == 2)
   {
     v5 = MEMORY[0x277D2C900];
     v11[0] = MEMORY[0x277D85DD0];
@@ -512,8 +512,8 @@ LABEL_6:
     v11[2] = __31__HMBCloudZone_createZoneState__block_invoke;
     v11[3] = &unk_2786E10F8;
     v11[4] = self;
-    v6 = [MEMORY[0x277D2C938] immediateScheduler];
-    v7 = [v5 lazyFutureWithBlock:v11 scheduler:v6];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v7 = [v5 lazyFutureWithBlock:v11 scheduler:immediateScheduler];
 
     return v7;
   }
@@ -624,32 +624,32 @@ LABEL_17:
 - (void)handleDeletion
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMBCloudZone *)self cloudDatabase];
-  v4 = [(HMBCloudZone *)self cloudZoneID];
-  v7[0] = v4;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  v7[0] = cloudZoneID;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 handleRemovedZoneIDs:v5 userInitiated:1];
+  [cloudDatabase handleRemovedZoneIDs:v5 userInitiated:1];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedInternalModels:(id)a3
+- (void)handleUpdatedInternalModels:(id)models
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelsCopy = models;
   v5 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = modelsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     v10 = *v32;
-    v28 = self;
+    selfCopy = self;
     v29 = v6;
     v30 = v5;
     do
@@ -727,7 +727,7 @@ LABEL_17:
             else
             {
               v22 = objc_autoreleasePoolPush();
-              v23 = self;
+              selfCopy2 = self;
               v24 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
@@ -743,7 +743,7 @@ LABEL_17:
               }
 
               objc_autoreleasePoolPop(v22);
-              self = v28;
+              self = selfCopy;
             }
 
             v16 = 0;
@@ -777,27 +777,27 @@ LABEL_17:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isInternalModel:(id)a3
+- (BOOL)isInternalModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 hmbType];
-  if ([v4 isEqualToString:@"HMBCloudZoneShareModel"])
+  modelCopy = model;
+  hmbType = [modelCopy hmbType];
+  if ([hmbType isEqualToString:@"HMBCloudZoneShareModel"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 hmbType];
-    if ([v6 isEqualToString:@"HMBCloudZoneShareParticipantModel"])
+    hmbType2 = [modelCopy hmbType];
+    if ([hmbType2 isEqualToString:@"HMBCloudZoneShareParticipantModel"])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 hmbType];
-      v5 = [v7 isEqualToString:@"HMBCloudZoneRebuilderModel"];
+      hmbType3 = [modelCopy hmbType];
+      v5 = [hmbType3 isEqualToString:@"HMBCloudZoneRebuilderModel"];
     }
   }
 
@@ -812,8 +812,8 @@ LABEL_17:
   v6[2] = __21__HMBCloudZone_flush__block_invoke;
   v6[3] = &unk_2786E10F8;
   v6[4] = self;
-  v3 = [(HMBCloudZone *)self operationScheduler];
-  v4 = [v2 futureWithBlock:v6 scheduler:v3];
+  operationScheduler = [(HMBCloudZone *)self operationScheduler];
+  v4 = [v2 futureWithBlock:v6 scheduler:operationScheduler];
 
   return v4;
 }
@@ -831,22 +831,22 @@ void __21__HMBCloudZone_flush__block_invoke(uint64_t a1, void *a2)
 
 - (HMBModelContainer)modelContainer
 {
-  v2 = [(HMBCloudZone *)self localZone];
-  v3 = [v2 modelContainer];
+  localZone = [(HMBCloudZone *)self localZone];
+  modelContainer = [localZone modelContainer];
 
-  return v3;
+  return modelContainer;
 }
 
-- (void)_startUpWithPublicLocalZone:(id)a3
+- (void)_startUpWithPublicLocalZone:(id)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMBCloudZone *)self cloudDatabase];
-  if (v5)
+  zoneCopy = zone;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  if (cloudDatabase)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [(HMBCloudZone *)self startUpRebuilderIfNeeded];
-    [v6 addObject:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    startUpRebuilderIfNeeded = [(HMBCloudZone *)self startUpRebuilderIfNeeded];
+    [array addObject:startUpRebuilderIfNeeded];
 
     if (![(HMBCloudZone *)self hasPerformedInitialFetch])
     {
@@ -856,12 +856,12 @@ void __21__HMBCloudZone_flush__block_invoke(uint64_t a1, void *a2)
       v23[2] = __44__HMBCloudZone__startUpWithPublicLocalZone___block_invoke;
       v23[3] = &unk_2786E10F8;
       v23[4] = self;
-      v9 = [(HMBCloudZone *)self operationScheduler];
-      v10 = [v8 lazyFutureWithBlock:v23 scheduler:v9];
-      [v6 addObject:v10];
+      operationScheduler = [(HMBCloudZone *)self operationScheduler];
+      v10 = [v8 lazyFutureWithBlock:v23 scheduler:operationScheduler];
+      [array addObject:v10];
     }
 
-    v11 = [MEMORY[0x277D2C900] chainFutures:v6];
+    v11 = [MEMORY[0x277D2C900] chainFutures:array];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __44__HMBCloudZone__startUpWithPublicLocalZone___block_invoke_2;
@@ -873,15 +873,15 @@ void __21__HMBCloudZone_flush__block_invoke(uint64_t a1, void *a2)
     v19[2] = __44__HMBCloudZone__startUpWithPublicLocalZone___block_invoke_63;
     v19[3] = &unk_2786E0578;
     v19[4] = self;
-    v20 = v5;
-    v21 = v4;
+    v20 = cloudDatabase;
+    v21 = zoneCopy;
     v13 = [v12 addFailureBlock:v19];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -979,18 +979,18 @@ uint64_t __44__HMBCloudZone__startUpWithPublicLocalZone___block_invoke_64(uint64
   return result;
 }
 
-- (void)_startUpWithLocalZone:(id)a3
+- (void)_startUpWithLocalZone:(id)zone
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMBCloudZone *)self cloudDatabase];
-  if (v5)
+  zoneCopy = zone;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  if (cloudDatabase)
   {
     [(HMBCloudZone *)self initializeShareModels];
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v5 performInitialCloudSync];
+    array = [MEMORY[0x277CBEB18] array];
+    performInitialCloudSync = [cloudDatabase performInitialCloudSync];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -998,65 +998,65 @@ uint64_t __44__HMBCloudZone__startUpWithPublicLocalZone___block_invoke_64(uint64
       *buf = 138543618;
       v37 = v11;
       v38 = 2112;
-      v39 = v7;
+      v39 = performInitialCloudSync;
       _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Zone startup steps will begin after initial cloud sync future: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [v6 addObject:v7];
-    v12 = [(HMBCloudZone *)v9 cloudZoneID];
-    v13 = [v12 scope];
+    [array addObject:performInitialCloudSync];
+    cloudZoneID = [(HMBCloudZone *)selfCopy cloudZoneID];
+    scope = [cloudZoneID scope];
 
-    if (v13 == 2)
+    if (scope == 2)
     {
-      v14 = [(HMBCloudZone *)v9 createZoneState];
-      [v6 addObject:v14];
+      createZoneState = [(HMBCloudZone *)selfCopy createZoneState];
+      [array addObject:createZoneState];
     }
 
-    v15 = [(HMBCloudZone *)v9 startUpRebuilderIfNeeded];
-    [v6 addObject:v15];
+    startUpRebuilderIfNeeded = [(HMBCloudZone *)selfCopy startUpRebuilderIfNeeded];
+    [array addObject:startUpRebuilderIfNeeded];
 
     v16 = MEMORY[0x277D2C900];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __38__HMBCloudZone__startUpWithLocalZone___block_invoke;
     v35[3] = &unk_2786E10F8;
-    v35[4] = v9;
-    v17 = [(HMBCloudZone *)v9 operationScheduler];
-    v18 = [v16 lazyFutureWithBlock:v35 scheduler:v17];
-    [v6 addObject:v18];
+    v35[4] = selfCopy;
+    operationScheduler = [(HMBCloudZone *)selfCopy operationScheduler];
+    v18 = [v16 lazyFutureWithBlock:v35 scheduler:operationScheduler];
+    [array addObject:v18];
 
     v19 = MEMORY[0x277D2C900];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2;
     v34[3] = &unk_2786E10F8;
-    v34[4] = v9;
-    v20 = [(HMBCloudZone *)v9 operationScheduler];
-    v21 = [v19 lazyFutureWithBlock:v34 scheduler:v20];
-    [v6 addObject:v21];
+    v34[4] = selfCopy;
+    operationScheduler2 = [(HMBCloudZone *)selfCopy operationScheduler];
+    v21 = [v19 lazyFutureWithBlock:v34 scheduler:operationScheduler2];
+    [array addObject:v21];
 
-    v22 = [MEMORY[0x277D2C900] chainFutures:v6];
+    v22 = [MEMORY[0x277D2C900] chainFutures:array];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __38__HMBCloudZone__startUpWithLocalZone___block_invoke_55;
     v33[3] = &unk_2786E1E10;
-    v33[4] = v9;
+    v33[4] = selfCopy;
     v23 = [v22 addSuccessBlock:v33];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __38__HMBCloudZone__startUpWithLocalZone___block_invoke_56;
     v30[3] = &unk_2786E0578;
-    v30[4] = v9;
-    v31 = v5;
-    v32 = v4;
+    v30[4] = selfCopy;
+    v31 = cloudDatabase;
+    v32 = zoneCopy;
     v24 = [v23 addFailureBlock:v30];
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -1247,19 +1247,19 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
   return result;
 }
 
-- (void)startUpWithLocalZone:(id)a3
+- (void)startUpWithLocalZone:(id)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMBCloudZone *)self hasStartedUp];
+  hasStartedUp = [(HMBCloudZone *)self hasStartedUp];
   [(HMBCloudZone *)self setHasStartedUp:1];
   os_unfair_lock_unlock(&self->_propertyLock);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (hasStartedUp)
   {
     if (v9)
     {
@@ -1277,46 +1277,46 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
     if (v9)
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMBCloudZone *)v7 configuration];
+      configuration = [(HMBCloudZone *)selfCopy configuration];
       v16 = 138543874;
       v17 = v11;
       v18 = 2112;
-      v19 = v4;
+      v19 = zoneCopy;
       v20 = 2112;
-      v21 = v12;
+      v21 = configuration;
       _os_log_impl(&dword_22AD27000, v8, OS_LOG_TYPE_INFO, "%{public}@Starting up with local zone: %@ configuration: %@", &v16, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMBCloudZone *)v7 setLocalZone:v4];
-    v13 = [(HMBCloudZone *)v7 cloudZoneID];
-    v14 = [v13 scope] == 1;
+    [(HMBCloudZone *)selfCopy setLocalZone:zoneCopy];
+    cloudZoneID = [(HMBCloudZone *)selfCopy cloudZoneID];
+    v14 = [cloudZoneID scope] == 1;
 
     if (v14)
     {
-      [(HMBCloudZone *)v7 _startUpWithPublicLocalZone:v4];
+      [(HMBCloudZone *)selfCopy _startUpWithPublicLocalZone:zoneCopy];
     }
 
     else
     {
-      [(HMBCloudZone *)v7 _startUpWithLocalZone:v4];
+      [(HMBCloudZone *)selfCopy _startUpWithLocalZone:zoneCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateOfError:(id)a3 forOperation:(id)a4
+- (void)notifyDelegateOfError:(id)error forOperation:(id)operation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMBCloudZone *)self cloudDatabase];
-  v9 = [v8 delegate];
+  errorCopy = error;
+  operationCopy = operation;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  delegate = [cloudDatabase delegate];
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -1324,33 +1324,33 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
       v16 = 138544130;
       v17 = v13;
       v18 = 2112;
-      v19 = v9;
+      v19 = delegate;
       v20 = 2112;
-      v21 = v7;
+      v21 = operationCopy;
       v22 = 2112;
-      v23 = v6;
+      v23 = errorCopy;
       _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Notifying delegate %@ for error on operation %@: %@", &v16, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMBCloudZone *)v11 cloudZoneID];
-    [v9 cloudDatabase:v8 encounteredError:v6 withOperation:v7 onZone:v14];
+    cloudZoneID = [(HMBCloudZone *)selfCopy cloudZoneID];
+    [delegate cloudDatabase:cloudDatabase encounteredError:errorCopy withOperation:operationCopy onZone:cloudZoneID];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)retryCloudKitOperation:(id)a3 afterError:(id)a4 retryBlock:(id)a5
+- (BOOL)retryCloudKitOperation:(id)operation afterError:(id)error retryBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HMBCloudZone *)self notifyDelegateOfError:v9 forOperation:v8];
-  if ([v9 hmbIsCKMissingManateeIdentityError])
+  operationCopy = operation;
+  errorCopy = error;
+  blockCopy = block;
+  [(HMBCloudZone *)self notifyDelegateOfError:errorCopy forOperation:operationCopy];
+  if ([errorCopy hmbIsCKMissingManateeIdentityError])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1358,35 +1358,35 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
       *buf = 138543618;
       v31 = v14;
       v32 = 2112;
-      v33 = v9;
+      v33 = errorCopy;
       _os_log_impl(&dword_22AD27000, v13, OS_LOG_TYPE_ERROR, "%{public}@Received missing Manatee identity error on zone specific operation: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMBCloudZone *)v12 handleLostKeys];
-    v15 = [(HMBCloudZone *)v12 waitForPendingRebuild];
+    [(HMBCloudZone *)selfCopy handleLostKeys];
+    waitForPendingRebuild = [(HMBCloudZone *)selfCopy waitForPendingRebuild];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __61__HMBCloudZone_retryCloudKitOperation_afterError_retryBlock___block_invoke;
     v28[3] = &unk_2786E0550;
-    v29 = v10;
-    v16 = [v15 addSuccessBlock:v28];
+    v29 = blockCopy;
+    v16 = [waitForPendingRebuild addSuccessBlock:v28];
 
-    v17 = [(HMBCloudZone *)v12 configuration];
-    v18 = [v17 shouldRebuildOnManateeKeyLoss];
+    configuration = [(HMBCloudZone *)selfCopy configuration];
+    shouldRebuildOnManateeKeyLoss = [configuration shouldRebuildOnManateeKeyLoss];
 
-    if (v18)
+    if (shouldRebuildOnManateeKeyLoss)
     {
-      [(HMBCloudZone *)v12 rebuild];
+      [(HMBCloudZone *)selfCopy rebuild];
     }
 
     v19 = 1;
   }
 
-  else if ([v9 hmbIsCKZoneDisabledError])
+  else if ([errorCopy hmbIsCKZoneDisabledError])
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1394,15 +1394,15 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
       *buf = 138543618;
       v31 = v23;
       v32 = 2112;
-      v33 = v9;
+      v33 = errorCopy;
       _os_log_impl(&dword_22AD27000, v22, OS_LOG_TYPE_ERROR, "%{public}@Received zone disabled error: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v24 = [(HMBCloudZone *)v21 delegate];
+    delegate = [(HMBCloudZone *)selfCopy2 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v24 cloudZone:v21 didEncounterZoneDisabledError:v9];
+      [delegate cloudZone:selfCopy2 didEncounterZoneDisabledError:errorCopy];
     }
 
     v19 = 0;
@@ -1410,39 +1410,39 @@ uint64_t __38__HMBCloudZone__startUpWithLocalZone___block_invoke_2_57(uint64_t a
 
   else
   {
-    v25 = [(HMBCloudZone *)self cloudDatabase];
-    v19 = [v25 _retryCloudKitOperationAfterError:v9 retryBlock:v10];
+    cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+    v19 = [cloudDatabase _retryCloudKitOperationAfterError:errorCopy retryBlock:blockCopy];
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (BOOL)retryStartupWithCloudDatabase:(id)a3 afterError:(id)a4 retryBlock:(id)a5
+- (BOOL)retryStartupWithCloudDatabase:(id)database afterError:(id)error retryBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMBCloudZone *)self cloudZoneID];
-  if ([v11 scope] != 3)
+  databaseCopy = database;
+  errorCopy = error;
+  blockCopy = block;
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  if ([cloudZoneID scope] != 3)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [v9 hmbIsCKZoneDeletedError];
+  hmbIsCKZoneDeletedError = [errorCopy hmbIsCKZoneDeletedError];
 
-  if (!v12)
+  if (!hmbIsCKZoneDeletedError)
   {
 LABEL_7:
-    [v8 retryStartupBlock:v10];
+    [databaseCopy retryStartupBlock:blockCopy];
     v17 = 1;
     goto LABEL_8;
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
@@ -1450,7 +1450,7 @@ LABEL_7:
     v20 = 138543618;
     v21 = v16;
     v22 = 2112;
-    v23 = v9;
+    v23 = errorCopy;
     _os_log_impl(&dword_22AD27000, v15, OS_LOG_TYPE_ERROR, "%{public}@Not retrying startup for shared zone encountering zone deleted error: %@", &v20, 0x16u);
   }
 
@@ -1462,19 +1462,19 @@ LABEL_8:
   return v17;
 }
 
-- (id)triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4
+- (id)triggerOutputForOutputRow:(unint64_t)row options:(id)options
 {
-  v6 = a4;
-  v7 = [(HMBCloudZone *)self startUp];
+  optionsCopy = options;
+  startUp = [(HMBCloudZone *)self startUp];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__HMBCloudZone_triggerOutputForOutputRow_options___block_invoke;
   v11[3] = &unk_2786E0528;
-  v12 = v6;
-  v13 = a3;
+  v12 = optionsCopy;
+  rowCopy = row;
   v11[4] = self;
-  v8 = v6;
-  v9 = [v7 flatMap:v11];
+  v8 = optionsCopy;
+  v9 = [startUp flatMap:v11];
 
   return v9;
 }
@@ -1482,23 +1482,23 @@ LABEL_8:
 - (id)destroy
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBCloudZone *)v2 destroyFuture];
+  destroyFuture = [(HMBCloudZone *)selfCopy destroyFuture];
 
-  if (v3)
+  if (destroyFuture)
   {
-    os_unfair_lock_unlock(&v2->_propertyLock);
+    os_unfair_lock_unlock(&selfCopy->_propertyLock);
   }
 
   else
   {
     v4 = objc_alloc_init(MEMORY[0x277D2C900]);
-    [(HMBCloudZone *)v2 setDestroyFuture:v4];
+    [(HMBCloudZone *)selfCopy setDestroyFuture:v4];
 
-    os_unfair_lock_unlock(&v2->_propertyLock);
+    os_unfair_lock_unlock(&selfCopy->_propertyLock);
     v5 = objc_autoreleasePoolPush();
-    v6 = v2;
+    v6 = selfCopy;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -1511,30 +1511,30 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMBCloudZone *)v6 cloudDatabase];
-    v10 = [(HMBCloudZone *)v6 cloudZoneID];
-    v11 = [v9 removeZoneWithID:v10];
-    v12 = [(HMBCloudZone *)v6 destroyFuture];
-    v13 = [v12 completionHandlerAdapter];
-    v14 = [v11 addCompletionBlock:v13];
+    cloudDatabase = [(HMBCloudZone *)v6 cloudDatabase];
+    cloudZoneID = [(HMBCloudZone *)v6 cloudZoneID];
+    v11 = [cloudDatabase removeZoneWithID:cloudZoneID];
+    destroyFuture2 = [(HMBCloudZone *)v6 destroyFuture];
+    completionHandlerAdapter = [destroyFuture2 completionHandlerAdapter];
+    v14 = [v11 addCompletionBlock:completionHandlerAdapter];
   }
 
-  v15 = [(HMBCloudZone *)v2 destroyFuture];
+  destroyFuture3 = [(HMBCloudZone *)selfCopy destroyFuture];
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return destroyFuture3;
 }
 
 - (id)shutdown
 {
-  v3 = [(HMBCloudZone *)self startUp];
-  v4 = [v3 recoverIgnoringError];
+  startUp = [(HMBCloudZone *)self startUp];
+  recoverIgnoringError = [startUp recoverIgnoringError];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __24__HMBCloudZone_shutdown__block_invoke;
   v7[3] = &unk_2786E0500;
   v7[4] = self;
-  v5 = [v4 flatMap:v7];
+  v5 = [recoverIgnoringError flatMap:v7];
 
   return v5;
 }
@@ -1582,7 +1582,7 @@ LABEL_5:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1593,25 +1593,25 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMBCloudZone;
   [(HMBCloudZone *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBCloudZone)initWithCloudDatabase:(id)a3 configuration:(id)a4 state:(id)a5
+- (HMBCloudZone)initWithCloudDatabase:(id)database configuration:(id)configuration state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  databaseCopy = database;
+  configurationCopy = configuration;
+  stateCopy = state;
+  if (!databaseCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = stateCopy;
+  if (!stateCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
@@ -1629,27 +1629,27 @@ LABEL_13:
     return v13;
   }
 
-  objc_storeWeak(&v12->_cloudDatabase, v8);
-  v14 = [v11 zoneID];
-  v15 = [v14 scope];
+  objc_storeWeak(&v12->_cloudDatabase, databaseCopy);
+  zoneID = [v11 zoneID];
+  scope = [zoneID scope];
 
-  switch(v15)
+  switch(scope)
   {
     case 1:
-      v16 = [v8 publicDatabase];
+      publicDatabase = [databaseCopy publicDatabase];
       break;
     case 2:
-      v16 = [v8 privateDatabase];
+      publicDatabase = [databaseCopy privateDatabase];
       break;
     case 3:
-      v16 = [v8 sharedDatabase];
+      publicDatabase = [databaseCopy sharedDatabase];
       break;
     default:
       goto LABEL_11;
   }
 
   database = v13->_database;
-  v13->_database = v16;
+  v13->_database = publicDatabase;
 
 LABEL_11:
   if (v13->_database)
@@ -1658,45 +1658,45 @@ LABEL_11:
     startUp = v13->_startUp;
     v13->_startUp = v18;
 
-    v20 = [v8 stateZone];
-    objc_storeWeak(&v13->_stateZone, v20);
+    stateZone = [databaseCopy stateZone];
+    objc_storeWeak(&v13->_stateZone, stateZone);
 
-    v21 = [v11 zoneID];
+    zoneID2 = [v11 zoneID];
     cloudZoneID = v13->_cloudZoneID;
-    v13->_cloudZoneID = v21;
+    v13->_cloudZoneID = zoneID2;
 
-    v23 = [v11 hmbModelID];
+    hmbModelID = [v11 hmbModelID];
     stateModelID = v13->_stateModelID;
-    v13->_stateModelID = v23;
+    v13->_stateModelID = hmbModelID;
 
-    v25 = [(HMBCloudZone *)v13 operationScheduler];
+    operationScheduler = [(HMBCloudZone *)v13 operationScheduler];
     operationScheduler = v13->_operationScheduler;
-    v13->_operationScheduler = v25;
+    v13->_operationScheduler = operationScheduler;
 
-    v27 = [MEMORY[0x277CCAD78] UUID];
-    v28 = [v27 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     deviceIdentifier = v13->_deviceIdentifier;
-    v13->_deviceIdentifier = v28;
+    v13->_deviceIdentifier = uUIDString;
 
-    v30 = [v9 copy];
+    v30 = [configurationCopy copy];
     configuration = v13->_configuration;
     v13->_configuration = v30;
 
-    v32 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     modelClassToRequiresPostProcessingMap = v13->_modelClassToRequiresPostProcessingMap;
-    v13->_modelClassToRequiresPostProcessingMap = v32;
+    v13->_modelClassToRequiresPostProcessingMap = strongToStrongObjectsMapTable;
 
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     shareParticipantModelsByClientIdentifier = v13->_shareParticipantModelsByClientIdentifier;
-    v13->_shareParticipantModelsByClientIdentifier = v34;
+    v13->_shareParticipantModelsByClientIdentifier = dictionary;
 
-    v36 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     inProgressPushFuturesByOutputBlockRow = v13->_inProgressPushFuturesByOutputBlockRow;
-    v13->_inProgressPushFuturesByOutputBlockRow = v36;
+    v13->_inProgressPushFuturesByOutputBlockRow = dictionary2;
 
-    v38 = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
     v39 = v13->_operationScheduler;
-    v13->_operationScheduler = v38;
+    v13->_operationScheduler = globalAsyncScheduler;
 
     v40 = objc_alloc_init(MEMORY[0x277CCABD8]);
     recordOperationQueue = v13->_recordOperationQueue;
@@ -1743,14 +1743,14 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (id)pushRecordsToUpdate:(id)a3 recordIDsToRemove:(id)a4 configuration:(id)a5 rollbackEnabled:(BOOL)a6 needsNewInvitationToken:(BOOL)a7
+- (id)pushRecordsToUpdate:(id)update recordIDsToRemove:(id)remove configuration:(id)configuration rollbackEnabled:(BOOL)enabled needsNewInvitationToken:(BOOL)token
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  updateCopy = update;
+  removeCopy = remove;
+  configurationCopy = configuration;
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -1758,29 +1758,29 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
     *buf = 138543874;
     v37 = v18;
     v38 = 2112;
-    v39 = v12;
+    v39 = updateCopy;
     v40 = 2112;
-    v41 = v13;
+    v41 = removeCopy;
     _os_log_impl(&dword_22AD27000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Pushing with updates: %@ removes: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  if (!v12)
+  if (!updateCopy)
   {
-    v12 = MEMORY[0x277CBEBF8];
+    updateCopy = MEMORY[0x277CBEBF8];
   }
 
-  if (!v13)
+  if (!removeCopy)
   {
-    v13 = MEMORY[0x277CBEBF8];
+    removeCopy = MEMORY[0x277CBEBF8];
   }
 
-  if ([v12 count] || objc_msgSend(v13, "count"))
+  if ([updateCopy count] || objc_msgSend(removeCopy, "count"))
   {
-    if (!v14)
+    if (!configurationCopy)
     {
-      v19 = [(HMBCloudZone *)v16 cloudDatabase];
-      v14 = [v19 operationConfigurationWithProcessingOptions:0];
+      cloudDatabase = [(HMBCloudZone *)selfCopy cloudDatabase];
+      configurationCopy = [cloudDatabase operationConfigurationWithProcessingOptions:0];
     }
 
     v20 = MEMORY[0x277D2C900];
@@ -1788,15 +1788,15 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
     v30[1] = 3221225472;
     v30[2] = __130__HMBCloudZone_CloudRecord_Internal__pushRecordsToUpdate_recordIDsToRemove_configuration_rollbackEnabled_needsNewInvitationToken___block_invoke;
     v30[3] = &unk_2786E05A0;
-    v30[4] = v16;
-    v31 = v12;
-    v32 = v13;
-    v14 = v14;
-    v33 = v14;
-    v34 = a6;
-    v35 = a7;
-    v21 = [(HMBCloudZone *)v16 operationScheduler];
-    v22 = [v20 futureWithBlock:v30 scheduler:v21];
+    v30[4] = selfCopy;
+    v31 = updateCopy;
+    v32 = removeCopy;
+    configurationCopy = configurationCopy;
+    v33 = configurationCopy;
+    enabledCopy = enabled;
+    tokenCopy = token;
+    operationScheduler = [(HMBCloudZone *)selfCopy operationScheduler];
+    v22 = [v20 futureWithBlock:v30 scheduler:operationScheduler];
   }
 
   else
@@ -1814,14 +1814,14 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
   return v22;
 }
 
-- (id)decodeManateeCloudFromRecord:(id)a3 externalRecordFields:(id)a4 source:(unint64_t)a5 error:(id *)a6
+- (id)decodeManateeCloudFromRecord:(id)record externalRecordFields:(id)fields source:(unint64_t)source error:(id *)error
 {
   v123 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v105 = [(HMBCloudZone *)self cloudDatabase];
-  v12 = [v105 configuration];
-  v13 = [v10 hmbObjectForKey:@"k00" encrypted:{objc_msgSend(v12, "isManateeContainer")}];
+  recordCopy = record;
+  fieldsCopy = fields;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  configuration = [cloudDatabase configuration];
+  v13 = [recordCopy hmbObjectForKey:@"k00" encrypted:{objc_msgSend(configuration, "isManateeContainer")}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1843,7 +1843,7 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
     v17 = v16;
     if (v16)
     {
-      v102 = a5;
+      sourceCopy = source;
       v18 = v16;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1860,18 +1860,18 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
 
       v104 = v20;
       v21 = [v20 hmf_numberForKey:@"HM.encoding"];
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-      if (!v22)
+      if (!unsignedIntegerValue)
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           HMFGetLogIdentifier();
           v98 = v17;
-          v27 = v26 = v11;
+          v27 = v26 = fieldsCopy;
           *buf = 138543874;
           v116 = v27;
           v117 = 2112;
@@ -1880,18 +1880,18 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
           v120 = 2;
           _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Unable to determine encoding from version metadata: %@. Defaulting to %lu encoding", buf, 0x20u);
 
-          v11 = v26;
+          fieldsCopy = v26;
           v17 = v98;
         }
 
         objc_autoreleasePoolPop(v23);
-        v22 = 2;
+        unsignedIntegerValue = 2;
       }
 
-      v103 = v11;
-      v28 = [(HMBCloudZone *)self cloudFieldForEncoding:v22];
-      v29 = [v105 configuration];
-      v30 = [v10 hmbObjectForKey:v28 encrypted:{objc_msgSend(v29, "isManateeContainer")}];
+      v103 = fieldsCopy;
+      v28 = [(HMBCloudZone *)self cloudFieldForEncoding:unsignedIntegerValue];
+      configuration2 = [cloudDatabase configuration];
+      v30 = [recordCopy hmbObjectForKey:v28 encrypted:{objc_msgSend(configuration2, "isManateeContainer")}];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1908,73 +1908,73 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
 
       if (v32)
       {
-        v33 = [v32 hmbUncompress];
-        if (v33)
+        hmbUncompress = [v32 hmbUncompress];
+        if (hmbUncompress)
         {
-          v34 = [(HMBCloudZone *)self modelContainer];
-          v97 = v34;
-          if (v34)
+          modelContainer = [(HMBCloudZone *)self modelContainer];
+          v97 = modelContainer;
+          if (modelContainer)
           {
             v113 = 0;
-            v35 = [v34 modelFromData:v33 encoding:v22 storageLocation:1 error:&v113];
+            v35 = [modelContainer modelFromData:hmbUncompress encoding:unsignedIntegerValue storageLocation:1 error:&v113];
             v93 = v113;
-            v11 = v103;
+            fieldsCopy = v103;
             if (v35)
             {
               v99 = v17;
-              v36 = [objc_opt_class() hmbExternalRecordType];
-              v37 = [v10 recordType];
-              v38 = [v36 isEqualToString:v37];
+              hmbExternalRecordType = [objc_opt_class() hmbExternalRecordType];
+              recordType = [recordCopy recordType];
+              v38 = [hmbExternalRecordType isEqualToString:recordType];
 
               if ((v38 & 1) == 0)
               {
                 v39 = objc_autoreleasePoolPush();
-                v40 = self;
+                selfCopy2 = self;
                 v41 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
                 {
                   v92 = HMFGetLogIdentifier();
-                  v90 = [v35 hmbCanonicalType];
-                  v91 = [objc_opt_class() hmbExternalRecordType];
-                  [v10 recordType];
-                  v94 = v33;
+                  hmbCanonicalType = [v35 hmbCanonicalType];
+                  hmbExternalRecordType2 = [objc_opt_class() hmbExternalRecordType];
+                  [recordCopy recordType];
+                  v94 = hmbUncompress;
                   v43 = v42 = v32;
                   *buf = 138544130;
                   v116 = v92;
                   v117 = 2112;
-                  v118 = v90;
+                  v118 = hmbCanonicalType;
                   v119 = 2112;
-                  v120 = v91;
+                  v120 = hmbExternalRecordType2;
                   v121 = 2112;
                   v122 = v43;
                   _os_log_impl(&dword_22AD27000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@Model of type %@ expected external record type %@ but cloud record has type %@", buf, 0x2Au);
 
                   v32 = v42;
-                  v33 = v94;
+                  hmbUncompress = v94;
                 }
 
                 objc_autoreleasePoolPop(v39);
               }
 
-              v44 = [v10 recordType];
+              recordType2 = [recordCopy recordType];
               v45 = +[HMBModel hmbExternalRecordType];
-              v46 = [v44 isEqualToString:v45];
+              v46 = [recordType2 isEqualToString:v45];
 
               v47 = v97;
               if ((v46 & 1) == 0)
               {
-                v48 = [objc_opt_class() hmbProperties];
+                hmbProperties = [objc_opt_class() hmbProperties];
                 v106[0] = MEMORY[0x277D85DD0];
                 v106[1] = 3221225472;
                 v106[2] = __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFields_source_error___block_invoke;
                 v106[3] = &unk_2786E0890;
                 v107 = v103;
-                v108 = v105;
-                v109 = v10;
-                v112 = v102;
+                v108 = cloudDatabase;
+                v109 = recordCopy;
+                v112 = sourceCopy;
                 v110 = v97;
                 v111 = v35;
-                [v48 enumerateKeysAndObjectsUsingBlock:v106];
+                [hmbProperties enumerateKeysAndObjectsUsingBlock:v106];
               }
 
               v49 = v35;
@@ -1985,14 +1985,14 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
             else
             {
               v81 = objc_autoreleasePoolPush();
-              v82 = self;
+              selfCopy3 = self;
               v83 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
               {
                 HMFGetLogIdentifier();
                 v84 = v101 = v17;
-                [v10 hmbDescription];
-                v96 = v33;
+                [recordCopy hmbDescription];
+                v96 = hmbUncompress;
                 v86 = v85 = v32;
                 *buf = 138543874;
                 v116 = v84;
@@ -2003,19 +2003,19 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
                 _os_log_impl(&dword_22AD27000, v83, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data for record %{public}@: %@", buf, 0x20u);
 
                 v32 = v85;
-                v33 = v96;
+                hmbUncompress = v96;
 
                 v17 = v101;
               }
 
               objc_autoreleasePoolPop(v81);
-              v11 = v103;
+              fieldsCopy = v103;
               v47 = v97;
               v50 = v93;
-              if (a6)
+              if (error)
               {
                 v87 = v93;
-                *a6 = v93;
+                *error = v93;
               }
             }
           }
@@ -2023,15 +2023,15 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
           else
           {
             v75 = objc_autoreleasePoolPush();
-            v76 = self;
+            selfCopy4 = self;
             v77 = HMFGetOSLogHandle();
-            v11 = v103;
+            fieldsCopy = v103;
             if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
             {
               HMFGetLogIdentifier();
               v78 = v100 = v17;
-              [v10 hmbDescription];
-              v95 = v33;
+              [recordCopy hmbDescription];
+              v95 = hmbUncompress;
               v80 = v79 = v32;
               *buf = 138543618;
               v116 = v78;
@@ -2040,16 +2040,16 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
               _os_log_impl(&dword_22AD27000, v77, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data for record %{public}@: Model container is nil", buf, 0x16u);
 
               v32 = v79;
-              v33 = v95;
+              hmbUncompress = v95;
 
               v17 = v100;
             }
 
             objc_autoreleasePoolPop(v75);
-            if (a6)
+            if (error)
             {
               [MEMORY[0x277CCA9B8] hmfErrorWithCode:8 reason:@"Model container is nil"];
-              *a6 = v35 = 0;
+              *error = v35 = 0;
             }
 
             else
@@ -2064,13 +2064,13 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
         else
         {
           v68 = objc_autoreleasePoolPush();
-          v69 = self;
+          selfCopy5 = self;
           v70 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             v72 = v71 = v17;
-            [v10 hmbDescription];
+            [recordCopy hmbDescription];
             v74 = v73 = v32;
             *buf = 138543618;
             v116 = v72;
@@ -2080,15 +2080,15 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
 
             v32 = v73;
             v17 = v71;
-            v33 = 0;
+            hmbUncompress = 0;
           }
 
           objc_autoreleasePoolPop(v68);
-          v11 = v103;
-          if (a6)
+          fieldsCopy = v103;
+          if (error)
           {
             [MEMORY[0x277CCA9B8] hmfErrorWithCode:15 reason:@"Model data failed to uncompress"];
-            *a6 = v35 = 0;
+            *error = v35 = 0;
           }
 
           else
@@ -2101,19 +2101,19 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
       else
       {
         v62 = objc_autoreleasePoolPush();
-        v63 = self;
+        selfCopy6 = self;
         v64 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
           v65 = HMFGetLogIdentifier();
-          [v10 hmbDescription];
+          [recordCopy hmbDescription];
           v67 = v66 = v17;
           *buf = 138544130;
           v116 = v65;
           v117 = 2114;
           v118 = v67;
           v119 = 2048;
-          v120 = v22;
+          v120 = unsignedIntegerValue;
           v121 = 2112;
           v122 = v104;
           _os_log_impl(&dword_22AD27000, v64, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data for record %{public}@: Could not find data for encoding type %lu in metadata: %@", buf, 0x2Au);
@@ -2123,10 +2123,10 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
         }
 
         objc_autoreleasePoolPop(v62);
-        if (a6)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] hmfErrorWithCode:15 reason:@"No model data for encoding type"];
-          *a6 = v35 = 0;
+          *error = v35 = 0;
         }
 
         else
@@ -2134,20 +2134,20 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
           v35 = 0;
         }
 
-        v11 = v103;
+        fieldsCopy = v103;
       }
     }
 
     else
     {
       v56 = objc_autoreleasePoolPush();
-      v57 = self;
+      selfCopy7 = self;
       v58 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
         v59 = HMFGetLogIdentifier();
-        [v10 hmbDescription];
-        v61 = v60 = v11;
+        [recordCopy hmbDescription];
+        v61 = v60 = fieldsCopy;
         *buf = 138543874;
         v116 = v59;
         v117 = 2114;
@@ -2156,14 +2156,14 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
         LODWORD(v120) = v114;
         _os_log_impl(&dword_22AD27000, v58, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data for record %{public}@: Unable to decode version metadata: %d", buf, 0x1Cu);
 
-        v11 = v60;
+        fieldsCopy = v60;
       }
 
       objc_autoreleasePoolPop(v56);
-      if (a6)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] hmfErrorWithCode:15 reason:@"Unable to decode version metadata"];
-        *a6 = v35 = 0;
+        *error = v35 = 0;
       }
 
       else
@@ -2176,24 +2176,24 @@ uint64_t __27__HMBCloudZone_logCategory__block_invoke()
   else
   {
     v51 = objc_autoreleasePoolPush();
-    v52 = self;
+    selfCopy8 = self;
     v53 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
       v54 = HMFGetLogIdentifier();
-      v55 = [v10 hmbDescription];
+      hmbDescription = [recordCopy hmbDescription];
       *buf = 138543618;
       v116 = v54;
       v117 = 2114;
-      v118 = v55;
+      v118 = hmbDescription;
       _os_log_impl(&dword_22AD27000, v53, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data for record %{public}@: Cannot find metadata", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v51);
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:15 reason:@"Cannot find metadata"];
-      *a6 = v35 = 0;
+      *error = v35 = 0;
     }
 
     else
@@ -2245,29 +2245,29 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
   }
 }
 
-- (id)encodeManateeCloudModel:(id)a3 existingRecord:(id)a4 encodingContext:(id)a5 error:(id *)a6
+- (id)encodeManateeCloudModel:(id)model existingRecord:(id)record encodingContext:(id)context error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 modelContainer];
-  [v10 hmbAssociateWithContainer:v13];
+  modelCopy = model;
+  recordCopy = record;
+  contextCopy = context;
+  modelContainer = [contextCopy modelContainer];
+  [modelCopy hmbAssociateWithContainer:modelContainer];
 
-  v14 = v11;
+  v14 = recordCopy;
   if (v14)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v10 hmbModelID];
+      hmbModelID = [modelCopy hmbModelID];
       *buf = 138543618;
       v35 = v18;
       v36 = 2112;
-      v37 = v19;
+      v37 = hmbModelID;
       _os_log_impl(&dword_22AD27000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Updating existing cloud record to store model with UUID: %@", buf, 0x16u);
     }
 
@@ -2277,18 +2277,18 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
 
   else
   {
-    v33 = a6;
-    v21 = [(HMBCloudZone *)self recordIDForModel:v10];
-    v22 = [objc_opt_class() hmbExternalRecordType];
-    v20 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:v22 recordID:v21];
+    errorCopy = error;
+    v21 = [(HMBCloudZone *)self recordIDForModel:modelCopy];
+    hmbExternalRecordType = [objc_opt_class() hmbExternalRecordType];
+    v20 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:hmbExternalRecordType recordID:v21];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
       v26 = v31 = v23;
-      [v10 hmbModelID];
+      [modelCopy hmbModelID];
       v27 = v32 = v21;
       *buf = 138543618;
       v35 = v26;
@@ -2301,10 +2301,10 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
     }
 
     objc_autoreleasePoolPop(v23);
-    a6 = v33;
+    error = errorCopy;
   }
 
-  if ([(HMBCloudZone *)self populateManateeCloudRecord:v20 withModel:v10 encodingContext:v12 error:a6])
+  if ([(HMBCloudZone *)self populateManateeCloudRecord:v20 withModel:modelCopy encodingContext:contextCopy error:error])
   {
     v28 = v20;
   }
@@ -2319,15 +2319,15 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
   return v28;
 }
 
-- (BOOL)populateManateeCloudRecord:(id)a3 withModel:(id)a4 encodingContext:(id)a5 error:(id *)a6
+- (BOOL)populateManateeCloudRecord:(id)record withModel:(id)model encodingContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 modelContainer];
-  [v11 hmbAssociateWithContainer:v13];
+  recordCopy = record;
+  modelCopy = model;
+  contextCopy = context;
+  modelContainer = [contextCopy modelContainer];
+  [modelCopy hmbAssociateWithContainer:modelContainer];
 
-  v14 = [objc_opt_class() hmbProperties];
+  hmbProperties = [objc_opt_class() hmbProperties];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2338,22 +2338,22 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
   v24[1] = 3221225472;
   v24[2] = __84__HMBCloudZone_Manatee__populateManateeCloudRecord_withModel_encodingContext_error___block_invoke;
   v24[3] = &unk_2786E0868;
-  v15 = v11;
+  v15 = modelCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = recordCopy;
   v26 = v16;
-  v27 = self;
-  v17 = v12;
+  selfCopy = self;
+  v17 = contextCopy;
   v28 = v17;
   v29 = &v30;
-  [v14 enumerateKeysAndObjectsUsingBlock:v24];
+  [hmbProperties enumerateKeysAndObjectsUsingBlock:v24];
   v18 = v31[5];
   if (v18)
   {
     v19 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -2364,13 +2364,13 @@ void __88__HMBCloudZone_Manatee__decodeManateeCloudFromRecord_externalRecordFiel
     v21 = MEMORY[0x231885660](v20, 12, &v23);
     if (v21)
     {
-      v19 = [(HMBCloudZone *)self populateV4CloudRecord:v16 withModel:v15 metadataFieldData:v21 startEncoding:2 endEncoding:3 encodingContext:v17 error:a6];
+      v19 = [(HMBCloudZone *)self populateV4CloudRecord:v16 withModel:v15 metadataFieldData:v21 startEncoding:2 endEncoding:3 encodingContext:v17 error:error];
     }
 
-    else if (a6)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v23 userInfo:0];
-      *a6 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -2506,28 +2506,28 @@ LABEL_22:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordIDForModel:(id)a3
+- (id)recordIDForModel:(id)model
 {
   v4 = MEMORY[0x277CBC5D0];
-  v5 = a3;
+  modelCopy = model;
   v6 = [v4 alloc];
-  v7 = [v5 hmbModelID];
+  hmbModelID = [modelCopy hmbModelID];
 
-  v8 = [v7 UUIDString];
-  v9 = [(HMBCloudZone *)self cloudZoneID];
-  v10 = [v9 zoneID];
-  v11 = [v6 initWithRecordName:v8 zoneID:v10];
+  uUIDString = [hmbModelID UUIDString];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  zoneID = [cloudZoneID zoneID];
+  v11 = [v6 initWithRecordName:uUIDString zoneID:zoneID];
 
   return v11;
 }
 
-- (id)fetchChangesWithToken:(id)a3 options:(id)a4
+- (id)fetchChangesWithToken:(id)token options:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  optionsCopy = options;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2535,9 +2535,9 @@ LABEL_22:
     *buf = 138543874;
     v25 = v11;
     v26 = 2112;
-    v27 = v6;
+    v27 = tokenCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = optionsCopy;
     _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Fetching cloud zone changes with token: %@ options: %@", buf, 0x20u);
   }
 
@@ -2547,13 +2547,13 @@ LABEL_22:
   v21[1] = 3221225472;
   v21[2] = __55__HMBCloudZone_Changes__fetchChangesWithToken_options___block_invoke;
   v21[3] = &unk_2786E1258;
-  v21[4] = v9;
-  v22 = v6;
-  v23 = v7;
-  v13 = v7;
-  v14 = v6;
-  v15 = [(HMBCloudZone *)v9 operationScheduler];
-  v16 = [v12 futureWithBlock:v21 scheduler:v15];
+  v21[4] = selfCopy;
+  v22 = tokenCopy;
+  v23 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = tokenCopy;
+  operationScheduler = [(HMBCloudZone *)selfCopy operationScheduler];
+  v16 = [v12 futureWithBlock:v21 scheduler:operationScheduler];
 
   v17 = [v16 flatMap:&__block_literal_global_2237];
   v18 = [v17 flatMap:&__block_literal_global_4];
@@ -2563,35 +2563,35 @@ LABEL_22:
   return v18;
 }
 
-- (BOOL)resolveConflicts:(id)a3 options:(id)a4
+- (BOOL)resolveConflicts:(id)conflicts options:(id)options
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMBCloudZone *)self localZone];
+  conflictsCopy = conflicts;
+  optionsCopy = options;
+  localZone = [(HMBCloudZone *)self localZone];
   v99 = 0;
-  v9 = [v8 createMirrorInputWithError:&v99];
+  v9 = [localZone createMirrorInputWithError:&v99];
   v10 = v99;
 
   v79 = v9;
   if (v9)
   {
     v74 = v10;
-    v75 = v7;
+    v75 = optionsCopy;
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v76 = v6;
-    obj = v6;
-    v78 = self;
+    v76 = conflictsCopy;
+    obj = conflictsCopy;
+    selfCopy = self;
     v87 = [obj countByEnumeratingWithState:&v95 objects:v106 count:16];
     if (!v87)
     {
       goto LABEL_43;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = *v96;
     v81 = *v96;
     while (1)
@@ -2604,17 +2604,17 @@ LABEL_22:
         }
 
         v14 = *(*(&v95 + 1) + 8 * i);
-        v15 = [v14 serverRecord];
-        if (v15)
+        serverRecord = [v14 serverRecord];
+        if (serverRecord)
         {
           v92 = 0;
-          v16 = [(HMBCloudZone *)v11 decodeModelFromRecord:v15 externalRecordFields:0 source:4 error:&v92];
+          v16 = [(HMBCloudZone *)selfCopy2 decodeModelFromRecord:serverRecord externalRecordFields:0 source:4 error:&v92];
           v17 = v92;
           v18 = v17;
           if (!v16)
           {
             v50 = objc_autoreleasePoolPush();
-            v51 = v11;
+            v51 = selfCopy2;
             v52 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
             {
@@ -2637,16 +2637,16 @@ LABEL_35:
 
           v85 = v17;
           v91 = 0;
-          v19 = [v15 externalID:&v91];
+          v19 = [serverRecord externalID:&v91];
           v20 = v91;
           v21 = v20;
           if (v19)
           {
             v90 = 0;
-            v22 = [v15 externalData:&v90];
+            v22 = [serverRecord externalData:&v90];
             v82 = v90;
             context = objc_autoreleasePoolPush();
-            v23 = v11;
+            v23 = selfCopy2;
             v24 = HMFGetOSLogHandle();
             v25 = v24;
             if (v22)
@@ -2655,14 +2655,14 @@ LABEL_35:
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 v26 = HMFGetLogIdentifier();
-                v27 = [v15 hmbDescription];
-                v28 = [v16 hmbDescription];
+                hmbDescription = [serverRecord hmbDescription];
+                hmbDescription2 = [v16 hmbDescription];
                 *buf = 138543874;
                 v101 = v26;
                 v102 = 2112;
-                v103 = v27;
+                v103 = hmbDescription;
                 v104 = 2112;
-                v105 = v28;
+                v105 = hmbDescription2;
                 _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Staging server version of conflicted record %@ / %@ due to conflict", buf, 0x20u);
               }
 
@@ -2691,7 +2691,7 @@ LABEL_35:
               }
 
               v21 = v77;
-              v11 = v78;
+              selfCopy2 = selfCopy;
             }
 
             else
@@ -2707,7 +2707,7 @@ LABEL_35:
                 v105 = v82;
                 _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_ERROR, "%{public}@Unable to generate server externalData for conflict %@: %@", buf, 0x20u);
 
-                v11 = v78;
+                selfCopy2 = selfCopy;
               }
 
               objc_autoreleasePoolPop(context);
@@ -2721,7 +2721,7 @@ LABEL_35:
           {
             v55 = v20;
             v83 = objc_autoreleasePoolPush();
-            v56 = v11;
+            v56 = selfCopy2;
             v57 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
             {
@@ -2745,13 +2745,13 @@ LABEL_35:
 
         else
         {
-          v35 = [v14 recordID];
+          recordID = [v14 recordID];
           v94 = 0;
-          v16 = [v35 externalID:&v94];
+          v16 = [recordID externalID:&v94];
           v18 = v94;
 
           v36 = objc_autoreleasePoolPush();
-          v37 = v11;
+          v37 = selfCopy2;
           v38 = HMFGetOSLogHandle();
           v39 = v38;
           if (!v16)
@@ -2776,16 +2776,16 @@ LABEL_35:
           {
             HMFGetLogIdentifier();
             v41 = v40 = v18;
-            v42 = [v14 recordID];
+            recordID2 = [v14 recordID];
             *buf = 138543618;
             v101 = v41;
             v102 = 2112;
-            v103 = v42;
+            v103 = recordID2;
             _os_log_impl(&dword_22AD27000, v39, OS_LOG_TYPE_INFO, "%{public}@Staging removal for record ID without a server version: %@", buf, 0x16u);
 
             v12 = v81;
             v18 = v40;
-            v11 = v78;
+            selfCopy2 = selfCopy;
           }
 
           objc_autoreleasePoolPop(v36);
@@ -2801,16 +2801,16 @@ LABEL_35:
             if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
             {
               v48 = HMFGetLogIdentifier();
-              v49 = [v14 recordID];
+              recordID3 = [v14 recordID];
               *buf = 138543874;
               v101 = v48;
               v102 = 2112;
-              v103 = v49;
+              v103 = recordID3;
               v104 = 2112;
               v105 = v44;
               _os_log_impl(&dword_22AD27000, v47, OS_LOG_TYPE_ERROR, "%{public}@Failed to stage removal for record ID %@: %@", buf, 0x20u);
 
-              v11 = v78;
+              selfCopy2 = selfCopy;
               v12 = v81;
             }
 
@@ -2833,11 +2833,11 @@ LABEL_43:
         v63 = v88;
 
         v10 = v74;
-        v7 = v75;
+        optionsCopy = v75;
         if (!v62)
         {
           v64 = objc_autoreleasePoolPush();
-          v65 = v78;
+          v65 = selfCopy;
           v66 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
           {
@@ -2852,14 +2852,14 @@ LABEL_43:
           objc_autoreleasePoolPop(v64);
         }
 
-        v6 = v76;
+        conflictsCopy = v76;
         goto LABEL_51;
       }
     }
   }
 
   v68 = objc_autoreleasePoolPush();
-  v69 = self;
+  selfCopy3 = self;
   v70 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
   {
@@ -2883,43 +2883,43 @@ LABEL_51:
   v42 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F770]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMBCloudZone *)self zoneID];
-  v6 = [v5 name];
-  v7 = [v4 stringWithFormat:@"%s (%@)", "-[HMBCloudZone(Pull_Internal) _syncInternalModels]", v6];
+  zoneID = [(HMBCloudZone *)self zoneID];
+  name = [zoneID name];
+  v7 = [v4 stringWithFormat:@"%s (%@)", "-[HMBCloudZone(Pull_Internal) _syncInternalModels]", name];
   v8 = [v3 initWithName:v7 options:1];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v39 = v12;
     v40 = 2114;
-    v41 = v14;
+    v41 = shortDescription;
     _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Syncing internal models", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc_init(MEMORY[0x277D2C900]);
   v16 = +[(HMBModel *)HMBCloudZoneShareParticipantModel];
-  v17 = [(HMBCloudZone *)v10 queryRecordsWithType:v16];
+  v17 = [(HMBCloudZone *)selfCopy queryRecordsWithType:v16];
 
-  v18 = [(HMBCloudZone *)v10 queryRecordsWithType:*MEMORY[0x277CBC050]];
+  v18 = [(HMBCloudZone *)selfCopy queryRecordsWithType:*MEMORY[0x277CBC050]];
   v19 = MEMORY[0x277D2C900];
   v37[0] = v17;
   v37[1] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
-  v21 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v22 = [v19 combineAllFutures:v20 scheduler:v21];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v22 = [v19 combineAllFutures:v20 scheduler:globalAsyncScheduler];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke;
   v34[3] = &unk_2786E0F00;
-  v34[4] = v10;
+  v34[4] = selfCopy;
   v35 = v8;
   v23 = v15;
   v36 = v23;
@@ -2929,7 +2929,7 @@ LABEL_51:
   v32[1] = 3221225472;
   v32[2] = __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11;
   v32[3] = &unk_2786E1948;
-  v32[4] = v10;
+  v32[4] = selfCopy;
   v26 = v23;
   v33 = v26;
   v27 = [v25 addFailureBlock:v32];
@@ -3129,25 +3129,25 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_performImmediateCloudPullWithOptions:(id)a3 useCachedServerToken:(BOOL)a4
+- (id)_performImmediateCloudPullWithOptions:(id)options useCachedServerToken:(BOOL)token
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HMBCloudZone *)self configuration];
-  v8 = [v7 shouldSkipCloudPulls];
+  tokenCopy = token;
+  optionsCopy = options;
+  configuration = [(HMBCloudZone *)self configuration];
+  shouldSkipCloudPulls = [configuration shouldSkipCloudPulls];
 
-  if (v8)
+  if (shouldSkipCloudPulls)
   {
-    v9 = [(HMBCloudZone *)self _syncInternalModels];
+    _syncInternalModels = [(HMBCloudZone *)self _syncInternalModels];
   }
 
   else
   {
-    if (v4)
+    if (tokenCopy)
     {
-      v10 = [(HMBCloudZone *)self cloudDatabase];
-      v11 = [(HMBCloudZone *)self cloudZoneID];
-      v12 = [v10 serverChangeTokenForZoneWithID:v11];
+      cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+      cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+      v12 = [cloudDatabase serverChangeTokenForZoneWithID:cloudZoneID];
     }
 
     else
@@ -3155,27 +3155,27 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
       v12 = 0;
     }
 
-    v9 = [(HMBCloudZone *)self fetchChangesWithToken:v12 options:v6];
+    _syncInternalModels = [(HMBCloudZone *)self fetchChangesWithToken:v12 options:optionsCopy];
   }
 
-  return v9;
+  return _syncInternalModels;
 }
 
-- (id)_performCloudPullWithOptions:(id)a3 useCachedServerToken:(BOOL)a4
+- (id)_performCloudPullWithOptions:(id)options useCachedServerToken:(BOOL)token
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
   os_unfair_lock_lock_with_options();
-  v8 = [(HMBCloudZone *)self queuedCloudPullFuture];
-  if (v8)
+  queuedCloudPullFuture = [(HMBCloudZone *)self queuedCloudPullFuture];
+  if (queuedCloudPullFuture)
   {
-    v9 = [v7 completionHandlerAdapter];
-    v10 = [v8 addCompletionBlock:v9];
+    completionHandlerAdapter = [v7 completionHandlerAdapter];
+    v10 = [queuedCloudPullFuture addCompletionBlock:completionHandlerAdapter];
 
     os_unfair_lock_unlock(&self->_propertyLock);
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -3183,7 +3183,7 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
       *buf = 138543618;
       v31 = v14;
       v32 = 2112;
-      v33 = v6;
+      v33 = optionsCopy;
       _os_log_impl(&dword_22AD27000, v13, OS_LOG_TYPE_INFO, "%{public}@Coalescing cloud pull with options: %@", buf, 0x16u);
     }
 
@@ -3195,7 +3195,7 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
     [(HMBCloudZone *)self setQueuedCloudPullFuture:v7];
     os_unfair_lock_unlock(&self->_propertyLock);
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -3203,7 +3203,7 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
       *buf = 138543618;
       v31 = v18;
       v32 = 2112;
-      v33 = v6;
+      v33 = optionsCopy;
       _os_log_impl(&dword_22AD27000, v17, OS_LOG_TYPE_INFO, "%{public}@Queueing up cloud pull with options: %@", buf, 0x16u);
     }
 
@@ -3213,16 +3213,16 @@ void __50__HMBCloudZone_Pull_Internal___syncInternalModels__block_invoke_11(uint
     v27[1] = 3221225472;
     v27[2] = __81__HMBCloudZone_Pull_Internal___performCloudPullWithOptions_useCachedServerToken___block_invoke;
     v27[3] = &unk_2786E1DC0;
-    v27[4] = v16;
-    v28 = v6;
-    v29 = a4;
+    v27[4] = selfCopy2;
+    v28 = optionsCopy;
+    tokenCopy = token;
     v20 = [(HMBFutureOperation *)v19 initWithBlock:v27];
-    v21 = [(HMBCloudZone *)v16 recordOperationQueue];
-    [v21 addOperation:v20];
+    recordOperationQueue = [(HMBCloudZone *)selfCopy2 recordOperationQueue];
+    [recordOperationQueue addOperation:v20];
 
-    v22 = [(HMBFutureOperation *)v20 future];
-    v23 = [v7 completionHandlerAdapter];
-    v24 = [v22 addCompletionBlock:v23];
+    future = [(HMBFutureOperation *)v20 future];
+    completionHandlerAdapter2 = [v7 completionHandlerAdapter];
+    v24 = [future addCompletionBlock:completionHandlerAdapter2];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -3252,20 +3252,20 @@ id __81__HMBCloudZone_Pull_Internal___performCloudPullWithOptions_useCachedServe
 
 - (BOOL)hasPerformedInitialFetch
 {
-  v3 = [(HMBCloudZone *)self cloudDatabase];
-  v4 = [(HMBCloudZone *)self cloudZoneID];
-  v5 = [v3 serverChangeTokenForZoneWithID:v4];
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  v5 = [cloudDatabase serverChangeTokenForZoneWithID:cloudZoneID];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)unregisterSubscriptionForExternalRecordType:(id)a3
+- (id)unregisterSubscriptionForExternalRecordType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3273,20 +3273,20 @@ id __81__HMBCloudZone_Pull_Internal___performCloudPullWithOptions_useCachedServe
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v4;
+    v19 = typeCopy;
     _os_log_impl(&dword_22AD27000, v7, OS_LOG_TYPE_INFO, "%{public}@Unregistering subscription for external record type %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMBCloudZone *)v6 startUp];
+  startUp = [(HMBCloudZone *)selfCopy startUp];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HMBCloudZone_Subscription__unregisterSubscriptionForExternalRecordType___block_invoke;
   v14[3] = &unk_2786E2C20;
-  v14[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  v11 = [v9 flatMap:v14];
+  v14[4] = selfCopy;
+  v15 = typeCopy;
+  v10 = typeCopy;
+  v11 = [startUp flatMap:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -3311,12 +3311,12 @@ id __74__HMBCloudZone_Subscription__unregisterSubscriptionForExternalRecordType_
   return v10;
 }
 
-- (id)registerSubscriptionForExternalRecordType:(id)a3
+- (id)registerSubscriptionForExternalRecordType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3324,20 +3324,20 @@ id __74__HMBCloudZone_Subscription__unregisterSubscriptionForExternalRecordType_
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v4;
+    v19 = typeCopy;
     _os_log_impl(&dword_22AD27000, v7, OS_LOG_TYPE_INFO, "%{public}@Registering subscription for external record type %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMBCloudZone *)v6 startUp];
+  startUp = [(HMBCloudZone *)selfCopy startUp];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__HMBCloudZone_Subscription__registerSubscriptionForExternalRecordType___block_invoke;
   v14[3] = &unk_2786E2C20;
-  v14[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  v11 = [v9 flatMap:v14];
+  v14[4] = selfCopy;
+  v15 = typeCopy;
+  v10 = typeCopy;
+  v11 = [startUp flatMap:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -3364,24 +3364,24 @@ id __72__HMBCloudZone_Subscription__registerSubscriptionForExternalRecordType___
 
 - (NSSet)subscriptions
 {
-  v3 = [(HMBCloudZone *)self cloudDatabase];
-  v4 = [(HMBCloudZone *)self cloudZoneID];
-  v5 = [v3 subscriptionsForZoneWithID:v4];
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  v5 = [cloudDatabase subscriptionsForZoneWithID:cloudZoneID];
 
   return v5;
 }
 
-- (id)fetchCompleteModelsForRecordIDs:(id)a3
+- (id)fetchCompleteModelsForRecordIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  if ([v4 count])
+  v5 = dsCopy;
+  if ([dsCopy count])
   {
     v6 = [v5 mutableCopy];
     v7 = [(HMBCloudZone *)self fetchRecordsWithRecordIDs:v5];
@@ -3398,7 +3398,7 @@ id __72__HMBCloudZone_Subscription__registerSubscriptionForExternalRecordType___
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -3626,13 +3626,13 @@ LABEL_35:
   return v19;
 }
 
-- (id)fetchCompleteModelForRecordID:(id)a3
+- (id)fetchCompleteModelForRecordID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v5 = dCopy;
+    v6 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
     v7 = [(HMBCloudZone *)self fetchCompleteModelsForRecordIDs:v6];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -3705,32 +3705,32 @@ id __65__HMBCloudZone_Fetch_Internal__fetchRecordWithRecordID_canRetry___block_i
   return v5;
 }
 
-- (id)fetchRecordsWithRecordIDs:(id)a3
+- (id)fetchRecordsWithRecordIDs:(id)ds
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [HMBCloudZoneFetchRecordsContext alloc];
   v6 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v7 = [(HMBCloudZoneFetchRecordsContext *)v5 initWithRecordIDs:v4 future:v6];
+  v7 = [(HMBCloudZoneFetchRecordsContext *)v5 initWithRecordIDs:dsCopy future:v6];
 
   os_unfair_lock_lock_with_options();
-  v8 = [(HMBCloudZone *)self queuedFetchRecordsContexts];
-  v9 = v8;
-  if (v8)
+  queuedFetchRecordsContexts = [(HMBCloudZone *)self queuedFetchRecordsContexts];
+  v9 = queuedFetchRecordsContexts;
+  if (queuedFetchRecordsContexts)
   {
-    [v8 addObject:v7];
+    [queuedFetchRecordsContexts addObject:v7];
     os_unfair_lock_unlock(&self->_propertyLock);
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v4 hmbDescription];
+      hmbDescription = [dsCopy hmbDescription];
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v14;
+      v23 = hmbDescription;
       _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_INFO, "%{public}@Queueing fetch for records with record IDs: %@", &v20, 0x16u);
     }
 
@@ -3747,41 +3747,41 @@ id __65__HMBCloudZone_Fetch_Internal__fetchRecordWithRecordID_canRetry___block_i
     [(HMBCloudZone *)self _fetchRecordsForContexts:v16];
   }
 
-  v17 = [(HMBCloudZoneFetchRecordsContext *)v7 future];
+  future = [(HMBCloudZoneFetchRecordsContext *)v7 future];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return future;
 }
 
-- (void)_fetchRecordsForContexts:(id)a3
+- (void)_fetchRecordsForContexts:(id)contexts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 na_flatMap:&__block_literal_global_5116];
+  contextsCopy = contexts;
+  v5 = [contextsCopy na_flatMap:&__block_literal_global_5116];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 hmbDescription];
+    hmbDescription = [v5 hmbDescription];
     *buf = 138543618;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = hmbDescription;
     _os_log_impl(&dword_22AD27000, v8, OS_LOG_TYPE_INFO, "%{public}@Performing fetch for records with record IDs: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMBCloudZone *)v7 _fetchRecordsWithRecordIDs:v5 canRetry:1];
+  v11 = [(HMBCloudZone *)selfCopy _fetchRecordsWithRecordIDs:v5 canRetry:1];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__HMBCloudZone_Fetch_Internal___fetchRecordsForContexts___block_invoke_3;
   v15[3] = &unk_2786E15C8;
-  v16 = v4;
-  v17 = v7;
-  v12 = v4;
+  v16 = contextsCopy;
+  v17 = selfCopy;
+  v12 = contextsCopy;
   v13 = [v11 addCompletionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3868,54 +3868,54 @@ void __57__HMBCloudZone_Fetch_Internal___fetchRecordsForContexts___block_invoke_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchRecordsWithRecordIDs:(id)a3 canRetry:(BOOL)a4
+- (id)_fetchRecordsWithRecordIDs:(id)ds canRetry:(BOOL)retry
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = MEMORY[0x277D2C900];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__HMBCloudZone_Fetch_Internal___fetchRecordsWithRecordIDs_canRetry___block_invoke;
   v13[3] = &unk_2786E1558;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
+  v14 = dsCopy;
+  retryCopy = retry;
   v8 = MEMORY[0x277D2C938];
-  v9 = v6;
-  v10 = [v8 globalAsyncScheduler];
-  v11 = [v7 futureWithBlock:v13 scheduler:v10];
+  v9 = dsCopy;
+  globalAsyncScheduler = [v8 globalAsyncScheduler];
+  v11 = [v7 futureWithBlock:v13 scheduler:globalAsyncScheduler];
 
   return v11;
 }
 
-- (id)fetchCompleteModelsWithIDs:(id)a3
+- (id)fetchCompleteModelsWithIDs:(id)ds
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = dsCopy;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 hmbDescription];
+    hmbDescription = [v5 hmbDescription];
     *buf = 138543618;
     v35 = v9;
     v36 = 2112;
-    v37 = v10;
+    v37 = hmbDescription;
     _os_log_impl(&dword_22AD27000, v8, OS_LOG_TYPE_INFO, "%{public}@Fetching complete models with IDs: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMBCloudZone *)v7 localZone];
-  v12 = [v5 allObjects];
+  localZone = [(HMBCloudZone *)selfCopy localZone];
+  allObjects = [v5 allObjects];
   v33 = 0;
-  v13 = [v11 fetchExternalIDsForModelIDs:v12 error:&v33];
+  v13 = [localZone fetchExternalIDsForModelIDs:allObjects error:&v33];
   v14 = v33;
 
   if (v13)
@@ -3927,15 +3927,15 @@ void __57__HMBCloudZone_Fetch_Internal___fetchRecordsForContexts___block_invoke_
       v32[1] = 3221225472;
       v32[2] = __50__HMBCloudZone_Fetch__fetchCompleteModelsWithIDs___block_invoke;
       v32[3] = &unk_2786E1680;
-      v32[4] = v7;
+      v32[4] = selfCopy;
       v16 = [v13 na_map:v32];
-      v17 = [(HMBCloudZone *)v7 fetchCompleteModelsForRecordIDs:v16];
+      v17 = [(HMBCloudZone *)selfCopy fetchCompleteModelsForRecordIDs:v16];
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v7;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -3963,7 +3963,7 @@ void __57__HMBCloudZone_Fetch_Internal___fetchRecordsForContexts___block_invoke_
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -4023,13 +4023,13 @@ id __50__HMBCloudZone_Fetch__fetchCompleteModelsWithIDs___block_invoke(uint64_t 
   return v4;
 }
 
-- (id)fetchCompleteModelWithID:(id)a3
+- (id)fetchCompleteModelWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v5 = dCopy;
+    v6 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
     v7 = [(HMBCloudZone *)self fetchCompleteModelsWithIDs:v6];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -4082,13 +4082,13 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)fetchCompleteModels:(id)a3
+- (id)fetchCompleteModels:(id)models
 {
-  v4 = a3;
-  if (v4)
+  modelsCopy = models;
+  if (modelsCopy)
   {
-    v5 = v4;
-    v6 = [v4 na_map:&__block_literal_global_33_5150];
+    v5 = modelsCopy;
+    v6 = [modelsCopy na_map:&__block_literal_global_33_5150];
     v7 = [(HMBCloudZone *)self fetchCompleteModelsWithIDs:v6];
 
     return v7;
@@ -4101,14 +4101,14 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
   }
 }
 
-- (id)fetchCompleteModel:(id)a3
+- (id)fetchCompleteModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = v4;
-    v6 = [v4 hmbModelID];
-    v7 = [(HMBCloudZone *)self fetchCompleteModelWithID:v6];
+    v5 = modelCopy;
+    hmbModelID = [modelCopy hmbModelID];
+    v7 = [(HMBCloudZone *)self fetchCompleteModelWithID:hmbModelID];
 
     return v7;
   }
@@ -4122,35 +4122,35 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)queryRecordsWithType:(id)a3
+- (id)queryRecordsWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x277D2C900];
   v11 = MEMORY[0x277D85DD0];
-  v12 = self;
-  v13 = v4;
+  selfCopy = self;
+  v13 = typeCopy;
   v6 = MEMORY[0x277D2C938];
-  v7 = v4;
-  v8 = [v6 globalAsyncScheduler];
-  v9 = [v5 futureWithBlock:&v11 scheduler:v8];
+  v7 = typeCopy;
+  globalAsyncScheduler = [v6 globalAsyncScheduler];
+  v9 = [v5 futureWithBlock:&v11 scheduler:globalAsyncScheduler];
 
   return v9;
 }
 
-- (id)_triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4
+- (id)_triggerOutputForOutputRow:(unint64_t)row options:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  optionsCopy = options;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMBCloudZone *)self inProgressPushFuturesByOutputBlockRow];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  inProgressPushFuturesByOutputBlockRow = [(HMBCloudZone *)self inProgressPushFuturesByOutputBlockRow];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:row];
+  v9 = [inProgressPushFuturesByOutputBlockRow objectForKeyedSubscript:v8];
 
   if (v9)
   {
     os_unfair_lock_unlock(&self->_propertyLock);
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -4158,7 +4158,7 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
       *buf = 138543618;
       v28 = v13;
       v29 = 2048;
-      v30 = a3;
+      rowCopy = row;
       _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Ignoring push request for block row %lu. Appears to be in-progress.", buf, 0x16u);
     }
 
@@ -4168,9 +4168,9 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
   else
   {
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v14 = [(HMBCloudZone *)self inProgressPushFuturesByOutputBlockRow];
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v14 setObject:v9 forKeyedSubscript:v15];
+    inProgressPushFuturesByOutputBlockRow2 = [(HMBCloudZone *)self inProgressPushFuturesByOutputBlockRow];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:row];
+    [inProgressPushFuturesByOutputBlockRow2 setObject:v9 forKeyedSubscript:v15];
 
     os_unfair_lock_unlock(&self->_propertyLock);
     v16 = [HMBFutureOperation alloc];
@@ -4179,15 +4179,15 @@ id __48__HMBCloudZone_Fetch__fetchCompleteModelWithID___block_invoke(uint64_t a1
     v24[2] = __57__HMBCloudZone_Push___triggerOutputForOutputRow_options___block_invoke;
     v24[3] = &unk_2786E1920;
     v24[4] = self;
-    v26 = a3;
-    v25 = v6;
+    rowCopy2 = row;
+    v25 = optionsCopy;
     v17 = [(HMBFutureOperation *)v16 initWithBlock:v24];
-    v18 = [(HMBCloudZone *)self recordOperationQueue];
-    [v18 addOperation:v17];
+    recordOperationQueue = [(HMBCloudZone *)self recordOperationQueue];
+    [recordOperationQueue addOperation:v17];
 
-    v19 = [(HMBFutureOperation *)v17 future];
-    v20 = [v9 completionHandlerAdapter];
-    v21 = [v19 addCompletionBlock:v20];
+    future = [(HMBFutureOperation *)v17 future];
+    completionHandlerAdapter = [v9 completionHandlerAdapter];
+    v21 = [future addCompletionBlock:completionHandlerAdapter];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -4407,26 +4407,26 @@ LABEL_21:
   return v44;
 }
 
-- (void)pushGroupWithBlockRow:(unint64_t)a3 tuples:(id)a4 options:(id)a5 activity:(id)a6 completionPromise:(id)a7
+- (void)pushGroupWithBlockRow:(unint64_t)row tuples:(id)tuples options:(id)options activity:(id)activity completionPromise:(id)promise
 {
   v162 = *MEMORY[0x277D85DE8];
-  v107 = a4;
-  v105 = a5;
-  v112 = a6;
-  v108 = a7;
-  v111 = [MEMORY[0x277CBEB38] dictionary];
-  v110 = [MEMORY[0x277CBEB18] array];
-  v104 = [MEMORY[0x277CBEB18] array];
-  v115 = [MEMORY[0x277CBEB38] dictionary];
-  v109 = [(HMBCloudZone *)self modelContainer];
-  if (v109)
+  tuplesCopy = tuples;
+  optionsCopy = options;
+  activityCopy = activity;
+  promiseCopy = promise;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  modelContainer = [(HMBCloudZone *)self modelContainer];
+  if (modelContainer)
   {
-    v122 = [[HMBCloudZoneEncodingContext alloc] initWithModelContainer:v109];
+    v122 = [[HMBCloudZoneEncodingContext alloc] initWithModelContainer:modelContainer];
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
-    v10 = v107;
+    v10 = tuplesCopy;
     v11 = [v10 countByEnumeratingWithState:&v148 objects:v161 count:16];
     if (v11)
     {
@@ -4440,13 +4440,13 @@ LABEL_21:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v148 + 1) + 8 * i) model];
-          if (v14)
+          model = [*(*(&v148 + 1) + 8 * i) model];
+          if (model)
           {
-            v15 = [(HMBCloudZone *)self recordIDForModel:v14];
-            v16 = [(HMBCloudZoneEncodingContext *)v122 createdRecords];
-            v17 = [v14 hmbModelID];
-            [v16 setObject:v15 forKeyedSubscript:v17];
+            v15 = [(HMBCloudZone *)self recordIDForModel:model];
+            createdRecords = [(HMBCloudZoneEncodingContext *)v122 createdRecords];
+            hmbModelID = [model hmbModelID];
+            [createdRecords setObject:v15 forKeyedSubscript:hmbModelID];
           }
         }
 
@@ -4482,82 +4482,82 @@ LABEL_21:
 
         v20 = *(*(&v144 + 1) + 8 * v19);
         v124 = objc_autoreleasePoolPush();
-        v127 = [v20 model];
-        if (v127)
+        model2 = [v20 model];
+        if (model2)
         {
-          v21 = [v20 externalData];
-          if (!v21)
+          externalData = [v20 externalData];
+          if (!externalData)
           {
             v24 = 0;
 LABEL_24:
             v141 = v18;
             v119 = v24;
-            v125 = [HMBCloudZone encodeRecordFromModel:"encodeRecordFromModel:existingRecord:encodingContext:error:" existingRecord:v127 encodingContext:? error:?];
+            v125 = [HMBCloudZone encodeRecordFromModel:"encodeRecordFromModel:existingRecord:encodingContext:error:" existingRecord:model2 encodingContext:? error:?];
             v27 = v141;
 
             if (v125)
             {
-              v28 = [v20 externalID];
-              if (v28)
+              externalID = [v20 externalID];
+              if (externalID)
               {
                 v118 = v27;
                 goto LABEL_38;
               }
 
               v140 = v27;
-              v28 = [v125 externalID:&v140];
+              externalID = [v125 externalID:&v140];
               v118 = v140;
 
-              if (v28)
+              if (externalID)
               {
-                [v20 setExternalID:v28];
+                [v20 setExternalID:externalID];
 LABEL_38:
                 context = objc_autoreleasePoolPush();
-                v46 = self;
+                selfCopy = self;
                 v47 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                 {
                   v113 = HMFGetLogIdentifier();
-                  v114 = [v112 identifier];
-                  v48 = [v114 shortDescription];
-                  v49 = [v20 model];
-                  v50 = [v49 hmbDescription];
-                  v51 = [v125 hmbDescription];
+                  identifier = [activityCopy identifier];
+                  shortDescription = [identifier shortDescription];
+                  model3 = [v20 model];
+                  hmbDescription = [model3 hmbDescription];
+                  hmbDescription2 = [v125 hmbDescription];
                   *buf = 138544130;
                   v153 = v113;
                   v154 = 2114;
-                  v155 = v48;
+                  rowCopy5 = shortDescription;
                   v156 = 2112;
-                  v157 = v50;
+                  rowCopy4 = hmbDescription;
                   v158 = 2112;
-                  v159 = v51;
+                  v159 = hmbDescription2;
                   _os_log_impl(&dword_22AD27000, v47, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Preparing to update: %@ / %@", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(context);
-                v52 = [v125 recordID];
-                [v111 setObject:v125 forKey:v52];
+                recordID = [v125 recordID];
+                [dictionary setObject:v125 forKey:recordID];
 
-                v53 = [v125 recordID];
-                [v115 setObject:v20 forKey:v53];
+                recordID2 = [v125 recordID];
+                [dictionary2 setObject:v20 forKey:recordID2];
               }
 
               else
               {
                 v60 = objc_autoreleasePoolPush();
-                v61 = self;
+                selfCopy2 = self;
                 v62 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
                 {
                   v63 = HMFGetLogIdentifier();
-                  v64 = [v112 identifier];
-                  v65 = [v64 shortDescription];
+                  identifier2 = [activityCopy identifier];
+                  shortDescription2 = [identifier2 shortDescription];
                   *buf = 138543874;
                   v153 = v63;
                   v154 = 2114;
-                  v155 = v65;
+                  rowCopy5 = shortDescription2;
                   v156 = 2112;
-                  v157 = v118;
+                  rowCopy4 = v118;
                   _os_log_impl(&dword_22AD27000, v62, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to encode recordID for update: %@", buf, 0x20u);
                 }
 
@@ -4570,19 +4570,19 @@ LABEL_38:
             else
             {
               v29 = objc_autoreleasePoolPush();
-              v30 = self;
+              selfCopy3 = self;
               v31 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
                 v32 = HMFGetLogIdentifier();
-                v33 = [v112 identifier];
-                v34 = [v33 shortDescription];
+                identifier3 = [activityCopy identifier];
+                shortDescription3 = [identifier3 shortDescription];
                 *buf = 138543874;
                 v153 = v32;
                 v154 = 2114;
-                v155 = v34;
+                rowCopy5 = shortDescription3;
                 v156 = 2112;
-                v157 = v27;
+                rowCopy4 = v27;
                 _os_log_impl(&dword_22AD27000, v31, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to encode record for update: %@", buf, 0x20u);
               }
 
@@ -4594,7 +4594,7 @@ LABEL_38:
           }
 
           v142 = v18;
-          v22 = [MEMORY[0x277CBC5A0] recordFromExternalData:v21 error:&v142];
+          v22 = [MEMORY[0x277CBC5A0] recordFromExternalData:externalData error:&v142];
           v23 = v142;
 
           if (v22)
@@ -4605,18 +4605,18 @@ LABEL_38:
           }
 
           v35 = objc_autoreleasePoolPush();
-          v36 = self;
+          selfCopy4 = self;
           v37 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
             v38 = HMFGetLogIdentifier();
-            v39 = [v21 hmbDescription];
+            hmbDescription3 = [externalData hmbDescription];
             *buf = 138543874;
             v153 = v38;
             v154 = 2112;
-            v155 = v39;
+            rowCopy5 = hmbDescription3;
             v156 = 2112;
-            v157 = v23;
+            rowCopy4 = v23;
             _os_log_impl(&dword_22AD27000, v37, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode record from external data %@: %@", buf, 0x20u);
           }
 
@@ -4626,36 +4626,36 @@ LABEL_38:
 
         else
         {
-          v21 = [v20 externalID];
-          if (v21)
+          externalData = [v20 externalID];
+          if (externalData)
           {
             v143 = v18;
-            v25 = [MEMORY[0x277CBC5D0] recordIDFromExternalID:v21 error:&v143];
+            v25 = [MEMORY[0x277CBC5D0] recordIDFromExternalID:externalData error:&v143];
             v26 = v143;
 
             if (v25)
             {
-              [v110 addObject:v25];
-              [v115 setObject:v20 forKey:v25];
+              [array addObject:v25];
+              [dictionary2 setObject:v20 forKey:v25];
             }
 
             else
             {
               v54 = objc_autoreleasePoolPush();
-              v55 = self;
+              selfCopy5 = self;
               v56 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
               {
                 v126 = HMFGetLogIdentifier();
-                v57 = [v112 identifier];
-                v58 = [v57 shortDescription];
-                v59 = [v20 externalID];
+                identifier4 = [activityCopy identifier];
+                shortDescription4 = [identifier4 shortDescription];
+                externalID2 = [v20 externalID];
                 *buf = 138544130;
                 v153 = v126;
                 v154 = 2114;
-                v155 = v58;
+                rowCopy5 = shortDescription4;
                 v156 = 2112;
-                v157 = v59;
+                rowCopy4 = externalID2;
                 v158 = 2112;
                 v159 = v26;
                 _os_log_impl(&dword_22AD27000, v56, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to decode encoded record ID %@: %@", buf, 0x2Au);
@@ -4670,22 +4670,22 @@ LABEL_38:
           else
           {
             v40 = objc_autoreleasePoolPush();
-            v41 = self;
+            selfCopy6 = self;
             v42 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
             {
               v43 = HMFGetLogIdentifier();
-              v44 = [v112 identifier];
-              v45 = [v44 shortDescription];
+              identifier5 = [activityCopy identifier];
+              shortDescription5 = [identifier5 shortDescription];
               *buf = 138543618;
               v153 = v43;
               v154 = 2114;
-              v155 = v45;
+              rowCopy5 = shortDescription5;
               _os_log_impl(&dword_22AD27000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Deletion was staged for record without an external ID", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v40);
-            v21 = 0;
+            externalData = 0;
           }
         }
 
@@ -4702,46 +4702,46 @@ LABEL_47:
       {
 LABEL_58:
 
-        v71 = [(HMBCloudZone *)self localZone];
+        localZone = [(HMBCloudZone *)self localZone];
         if (v18)
         {
           v72 = objc_autoreleasePoolPush();
-          v73 = self;
+          selfCopy7 = self;
           v74 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
           {
             v75 = HMFGetLogIdentifier();
-            v76 = [v112 identifier];
-            v77 = [v76 shortDescription];
+            identifier6 = [activityCopy identifier];
+            shortDescription6 = [identifier6 shortDescription];
             *buf = 138544130;
             v153 = v75;
             v154 = 2114;
-            v155 = v77;
+            rowCopy5 = shortDescription6;
             v156 = 2048;
-            v157 = a3;
+            rowCopy4 = row;
             v158 = 2112;
             v159 = v18;
             _os_log_impl(&dword_22AD27000, v74, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Aborting block %lu due to encoding error: %@.", buf, 0x2Au);
           }
 
           objc_autoreleasePoolPop(v72);
-          v78 = [v71 markGroupAsSentWithOutputBlock:a3 tuples:obj];
+          v78 = [localZone markGroupAsSentWithOutputBlock:row tuples:obj];
           if (v78)
           {
             v79 = objc_autoreleasePoolPush();
-            v80 = v73;
+            v80 = selfCopy7;
             v81 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
             {
               v82 = HMFGetLogIdentifier();
-              v83 = [v112 identifier];
-              v84 = [v83 shortDescription];
+              identifier7 = [activityCopy identifier];
+              shortDescription7 = [identifier7 shortDescription];
               *buf = 138544130;
               v153 = v82;
               v154 = 2114;
-              v155 = v84;
+              rowCopy5 = shortDescription7;
               v156 = 2048;
-              v157 = a3;
+              rowCopy4 = row;
               v158 = 2112;
               v159 = v78;
               _os_log_impl(&dword_22AD27000, v81, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Abort update for block %lu failed with error: %@", buf, 0x2Au);
@@ -4750,41 +4750,41 @@ LABEL_58:
             objc_autoreleasePoolPop(v79);
           }
 
-          [v108 finishWithError:v18];
+          [promiseCopy finishWithError:v18];
         }
 
-        else if ([v111 count] || objc_msgSend(v110, "count"))
+        else if ([dictionary count] || objc_msgSend(array, "count"))
         {
           v78 = objc_alloc_init(MEMORY[0x277D2C918]);
-          __pushWithRecovery(self, a3, v115, v111, v110, v105, v78);
+          __pushWithRecovery(self, row, dictionary2, dictionary, array, optionsCopy, v78);
           objc_initWeak(buf, self);
-          v85 = [v78 future];
+          future = [v78 future];
           v136[0] = MEMORY[0x277D85DD0];
           v136[1] = 3221225472;
           v136[2] = __86__HMBCloudZone_Push__pushGroupWithBlockRow_tuples_options_activity_completionPromise___block_invoke;
           v136[3] = &unk_2786E1880;
           objc_copyWeak(v139, buf);
-          v86 = v112;
+          v86 = activityCopy;
           v137 = v86;
-          v139[1] = a3;
-          v87 = v108;
+          v139[1] = row;
+          v87 = promiseCopy;
           v138 = v87;
-          v88 = [v85 addFailureBlock:v136];
+          v88 = [future addFailureBlock:v136];
 
-          v89 = [v78 future];
+          future2 = [v78 future];
           v128[0] = MEMORY[0x277D85DD0];
           v128[1] = 3221225472;
           v128[2] = __86__HMBCloudZone_Push__pushGroupWithBlockRow_tuples_options_activity_completionPromise___block_invoke_11;
           v128[3] = &unk_2786E18F8;
           objc_copyWeak(v135, buf);
           v129 = v86;
-          v130 = v115;
-          v131 = v104;
-          v132 = v71;
-          v135[1] = a3;
-          v133 = v105;
+          v130 = dictionary2;
+          v131 = array2;
+          v132 = localZone;
+          v135[1] = row;
+          v133 = optionsCopy;
           v134 = v87;
-          v90 = [v89 addSuccessBlock:v128];
+          v90 = [future2 addSuccessBlock:v128];
 
           objc_destroyWeak(v135);
           objc_destroyWeak(v139);
@@ -4794,40 +4794,40 @@ LABEL_58:
         else
         {
           v92 = objc_autoreleasePoolPush();
-          v93 = self;
+          selfCopy8 = self;
           v94 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
           {
             v95 = HMFGetLogIdentifier();
-            v96 = [v112 identifier];
-            v97 = [v96 shortDescription];
+            identifier8 = [activityCopy identifier];
+            shortDescription8 = [identifier8 shortDescription];
             *buf = 138543874;
             v153 = v95;
             v154 = 2114;
-            v155 = v97;
+            rowCopy5 = shortDescription8;
             v156 = 2048;
-            v157 = a3;
+            rowCopy4 = row;
             _os_log_impl(&dword_22AD27000, v94, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Aborting block %lu because there are no records to push", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v92);
-          v78 = [v71 markGroupAsSentWithOutputBlock:a3 tuples:obj];
+          v78 = [localZone markGroupAsSentWithOutputBlock:row tuples:obj];
           if (v78)
           {
             v98 = objc_autoreleasePoolPush();
-            v99 = v93;
+            v99 = selfCopy8;
             v100 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
             {
               v101 = HMFGetLogIdentifier();
-              v102 = [v112 identifier];
-              v103 = [v102 shortDescription];
+              identifier9 = [activityCopy identifier];
+              shortDescription9 = [identifier9 shortDescription];
               *buf = 138544130;
               v153 = v101;
               v154 = 2114;
-              v155 = v103;
+              rowCopy5 = shortDescription9;
               v156 = 2048;
-              v157 = a3;
+              rowCopy4 = row;
               v158 = 2112;
               v159 = v78;
               _os_log_impl(&dword_22AD27000, v100, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to abort block %lu: %@", buf, 0x2Au);
@@ -4836,7 +4836,7 @@ LABEL_58:
             objc_autoreleasePoolPop(v98);
           }
 
-          [v108 finishWithNoResult];
+          [promiseCopy finishWithNoResult];
         }
 
         goto LABEL_70;
@@ -4845,7 +4845,7 @@ LABEL_58:
   }
 
   v67 = objc_autoreleasePoolPush();
-  v68 = self;
+  selfCopy9 = self;
   v69 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
@@ -4853,13 +4853,13 @@ LABEL_58:
     *buf = 138543618;
     v153 = v70;
     v154 = 2048;
-    v155 = a3;
+    rowCopy5 = row;
     _os_log_impl(&dword_22AD27000, v69, OS_LOG_TYPE_ERROR, "%{public}@Failed to push group with output block row %lu: Model container is nil", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v67);
   v122 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8 reason:@"Model container is nil"];
-  [v108 finishWithError:v122];
+  [promiseCopy finishWithError:v122];
 LABEL_70:
 
   v91 = *MEMORY[0x277D85DE8];
@@ -5415,18 +5415,18 @@ void __86__HMBCloudZone_Push__pushGroupWithBlockRow_tuples_options_activity_comp
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pushDeletedParticipantRecordIDs:(id)a3
+- (id)_pushDeletedParticipantRecordIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [v4 allObjects];
-  v6 = [(HMBCloudZone *)self pushRecordsToUpdate:MEMORY[0x277CBEBF8] recordIDsToRemove:v5 configuration:0 rollbackEnabled:0];
+  dsCopy = ds;
+  allObjects = [dsCopy allObjects];
+  v6 = [(HMBCloudZone *)self pushRecordsToUpdate:MEMORY[0x277CBEBF8] recordIDsToRemove:allObjects configuration:0 rollbackEnabled:0];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__HMBCloudZone_Share_Internal___pushDeletedParticipantRecordIDs___block_invoke;
   v10[3] = &unk_2786E1C80;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = dsCopy;
+  selfCopy = self;
+  v7 = dsCopy;
   v8 = [v6 flatMap:v10];
 
   return v8;
@@ -5480,24 +5480,24 @@ id __65__HMBCloudZone_Share_Internal___pushDeletedParticipantRecordIDs___block_i
   return v7;
 }
 
-- (id)_pushUpdatedShare:(id)a3 participantRecord:(id)a4
+- (id)_pushUpdatedShare:(id)share participantRecord:(id)record
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v19[0] = v6;
-  v19[1] = v7;
+  shareCopy = share;
+  recordCopy = record;
+  v19[0] = shareCopy;
+  v19[1] = recordCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   v9 = [(HMBCloudZone *)self pushRecordsToUpdate:v8 recordIDsToRemove:MEMORY[0x277CBEBF8] configuration:0 rollbackEnabled:0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__HMBCloudZone_Share_Internal___pushUpdatedShare_participantRecord___block_invoke;
   v15[3] = &unk_2786E1C58;
-  v16 = v6;
-  v17 = v7;
-  v18 = self;
-  v10 = v7;
-  v11 = v6;
+  v16 = shareCopy;
+  v17 = recordCopy;
+  selfCopy = self;
+  v10 = recordCopy;
+  v11 = shareCopy;
   v12 = [v9 flatMap:v15];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -5641,12 +5641,12 @@ uint64_t __68__HMBCloudZone_Share_Internal___pushUpdatedShare_participantRecord_
   return v5;
 }
 
-- (id)_pushUpdatedShare:(id)a3
+- (id)_pushUpdatedShare:(id)share
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v12[0] = a3;
+  v12[0] = share;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  shareCopy = share;
   v6 = [v4 arrayWithObjects:v12 count:1];
   v7 = [(HMBCloudZone *)self pushRecordsToUpdate:v6 recordIDsToRemove:0 configuration:0 rollbackEnabled:0];
   v11[0] = MEMORY[0x277D85DD0];
@@ -5750,34 +5750,34 @@ LABEL_16:
   return v24;
 }
 
-- (id)_addShareOperationAfterStartupWithName:(id)a3 block:(id)a4
+- (id)_addShareOperationAfterStartupWithName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMBCloudZone *)self startUp];
+  nameCopy = name;
+  blockCopy = block;
+  startUp = [(HMBCloudZone *)self startUp];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__HMBCloudZone_Share_Internal___addShareOperationAfterStartupWithName_block___block_invoke;
   v13[3] = &unk_2786E1C08;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 flatMap:v13];
+  v14 = nameCopy;
+  v15 = blockCopy;
+  v9 = blockCopy;
+  v10 = nameCopy;
+  v11 = [startUp flatMap:v13];
 
   return v11;
 }
 
-- (id)_addShareOperationWithName:(id)a3 block:(id)a4
+- (id)_addShareOperationWithName:(id)name block:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HMBShareOperation alloc] initWithCloudZone:self block:v7];
-  [(HMBShareOperation *)v8 setName:v6];
+  nameCopy = name;
+  blockCopy = block;
+  v8 = [[HMBShareOperation alloc] initWithCloudZone:self block:blockCopy];
+  [(HMBShareOperation *)v8 setName:nameCopy];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -5785,21 +5785,21 @@ LABEL_16:
     v17 = 138543874;
     v18 = v12;
     v19 = 2112;
-    v20 = v6;
+    v20 = nameCopy;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_INFO, "%{public}@Adding %@ share operation: %@", &v17, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMBCloudZone *)v10 shareOperationQueue];
-  [v13 addOperation:v8];
+  shareOperationQueue = [(HMBCloudZone *)selfCopy shareOperationQueue];
+  [shareOperationQueue addOperation:v8];
 
-  v14 = [(HMBFutureOperation *)v8 future];
+  future = [(HMBFutureOperation *)v8 future];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return future;
 }
 
 id __92__HMBCloudZone_Share_Internal___leaveCloudShareRequestingNewInvitationToken_allowCloudPull___block_invoke_2(uint64_t a1, void *a2)
@@ -5877,14 +5877,14 @@ LABEL_12:
   return v17;
 }
 
-- (id)leaveCloudShareRequestingNewInvitationToken:(BOOL)a3
+- (id)leaveCloudShareRequestingNewInvitationToken:(BOOL)token
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76__HMBCloudZone_Share_Internal__leaveCloudShareRequestingNewInvitationToken___block_invoke;
   v5[3] = &unk_2786E1B90;
   v5[4] = self;
-  v6 = a3;
+  tokenCopy = token;
   v3 = [(HMBCloudZone *)self _addShareOperationAfterStartupWithName:@"Leave Cloud Share" block:v5];
 
   return v3;
@@ -5893,12 +5893,12 @@ LABEL_12:
 - (id)_createShareModel
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMBCloudZone *)self shareModel];
+  shareModel = [(HMBCloudZone *)self shareModel];
 
-  if (v3)
+  if (shareModel)
   {
-    v4 = [(HMBCloudZone *)self shareModel];
-    v5 = [(HMBCloudZone *)self encodeShareModel:v4];
+    shareModel2 = [(HMBCloudZone *)self shareModel];
+    v5 = [(HMBCloudZone *)self encodeShareModel:shareModel2];
 
     v6 = [MEMORY[0x277D2C900] futureWithResult:v5];
   }
@@ -5906,7 +5906,7 @@ LABEL_12:
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -5918,21 +5918,21 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v7);
     v11 = [HMBCloudZoneShareModel alloc];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [(HMBCloudZone *)v8 stateModelID];
-    v14 = [(HMBModel *)v11 initWithModelID:v12 parentModelID:v13];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    stateModelID = [(HMBCloudZone *)selfCopy stateModelID];
+    v14 = [(HMBModel *)v11 initWithModelID:uUID parentModelID:stateModelID];
 
     v15 = objc_alloc(MEMORY[0x277CBC680]);
-    v16 = [(HMBCloudZone *)v8 cloudZoneID];
-    v17 = [v16 zoneID];
-    v18 = [v15 initWithRecordZoneID:v17];
+    cloudZoneID = [(HMBCloudZone *)selfCopy cloudZoneID];
+    zoneID = [cloudZoneID zoneID];
+    v18 = [v15 initWithRecordZoneID:zoneID];
     [(HMBCloudZoneShareModel *)v14 setShare:v18];
 
-    v19 = [(HMBCloudZoneShareModel *)v14 share];
-    [v19 setParticipantVisibility:2];
+    share = [(HMBCloudZoneShareModel *)v14 share];
+    [share setParticipantVisibility:2];
 
-    v20 = [(HMBCloudZone *)v8 encodeShareModel:v14];
-    v6 = [(HMBCloudZone *)v8 _pushUpdatedShare:v20];
+    v20 = [(HMBCloudZone *)selfCopy encodeShareModel:v14];
+    v6 = [(HMBCloudZone *)selfCopy _pushUpdatedShare:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -5960,18 +5960,18 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)handleUpdatedShareParticipantModels:(id)a3
+- (void)handleUpdatedShareParticipantModels:(id)models
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelsCopy = models;
   os_unfair_lock_lock_with_options();
-  v45 = self;
-  v42 = [(HMBCloudZone *)self localZone];
+  selfCopy = self;
+  localZone = [(HMBCloudZone *)self localZone];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v4;
+  obj = modelsCopy;
   v5 = [obj countByEnumeratingWithState:&v47 objects:v58 count:16];
   if (v5)
   {
@@ -5988,31 +5988,31 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
 
         v7 = *(*(&v47 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = v45;
+        v9 = selfCopy;
         v10 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v11 = HMFGetLogIdentifier();
-          v12 = [v7 participant];
+          participant = [v7 participant];
           *buf = 138543618;
           v53 = v11;
           v54 = 2112;
-          v55 = v12;
+          v55 = participant;
           _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling updated share participant: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v8);
-        v13 = [v7 participant];
-        v14 = [v13 clientIdentifier];
+        participant2 = [v7 participant];
+        clientIdentifier = [participant2 clientIdentifier];
 
-        v15 = [(HMBCloudZone *)v9 shareParticipantModelsByClientIdentifier];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        shareParticipantModelsByClientIdentifier = [(HMBCloudZone *)v9 shareParticipantModelsByClientIdentifier];
+        v16 = [shareParticipantModelsByClientIdentifier objectForKeyedSubscript:clientIdentifier];
 
         if (v16)
         {
-          v17 = [v16 hmbModelID];
-          v18 = [v7 hmbModelID];
-          v19 = [v17 isEqual:v18];
+          hmbModelID = [v16 hmbModelID];
+          hmbModelID2 = [v7 hmbModelID];
+          v19 = [hmbModelID isEqual:hmbModelID2];
 
           if ((v19 & 1) == 0)
           {
@@ -6022,21 +6022,21 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               v23 = HMFGetLogIdentifier();
-              v24 = [v14 UUIDString];
+              uUIDString = [clientIdentifier UUIDString];
               *buf = 138543874;
               v53 = v23;
               v54 = 2112;
-              v55 = v24;
+              v55 = uUIDString;
               v56 = 2112;
               v57 = v16;
               _os_log_impl(&dword_22AD27000, v22, OS_LOG_TYPE_INFO, "%{public}@Removing existing share participant model with client identifier %@ because it has a different model ID: %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v20);
-            v25 = [v16 hmbModelID];
-            v51 = v25;
+            hmbModelID3 = [v16 hmbModelID];
+            v51 = hmbModelID3;
             v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
-            v27 = [v42 remove:v26];
+            v27 = [localZone remove:v26];
 
             if (v27)
             {
@@ -6058,10 +6058,10 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
           }
         }
 
-        v32 = [(HMBCloudZone *)v9 shareParticipantModelsByClientIdentifier];
-        v33 = [v7 participant];
-        v34 = [v33 clientIdentifier];
-        [v32 setObject:v7 forKeyedSubscript:v34];
+        shareParticipantModelsByClientIdentifier2 = [(HMBCloudZone *)v9 shareParticipantModelsByClientIdentifier];
+        participant3 = [v7 participant];
+        clientIdentifier2 = [participant3 clientIdentifier];
+        [shareParticipantModelsByClientIdentifier2 setObject:v7 forKeyedSubscript:clientIdentifier2];
       }
 
       v5 = [obj countByEnumeratingWithState:&v47 objects:v58 count:16];
@@ -6070,13 +6070,13 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     while (v5);
   }
 
-  v35 = [obj allObjects];
-  v36 = [v42 update:v35];
+  allObjects = [obj allObjects];
+  v36 = [localZone update:allObjects];
 
   if (v36)
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = v45;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -6091,25 +6091,25 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     objc_autoreleasePoolPop(v37);
   }
 
-  os_unfair_lock_unlock(&v45->_propertyLock);
+  os_unfair_lock_unlock(&selfCopy->_propertyLock);
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedShareModel:(id)a3
+- (void)handleUpdatedShareModel:(id)model
 {
   v89 = *MEMORY[0x277D85DE8];
-  v60 = a3;
+  modelCopy = model;
   v4 = objc_autoreleasePoolPush();
-  v67 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [v60 share];
+    share = [modelCopy share];
     *buf = 138543618;
     v83 = v6;
     v84 = 2112;
-    v85 = v7;
+    v85 = share;
     _os_log_impl(&dword_22AD27000, v5, OS_LOG_TYPE_INFO, "%{public}@Handling updated share: %@", buf, 0x16u);
   }
 
@@ -6118,18 +6118,18 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   v63 = [MEMORY[0x277CBEB58] set];
   v59 = 8;
   os_unfair_lock_lock_with_options();
-  v62 = [MEMORY[0x277CBEB18] arrayWithObject:v60];
-  v64 = [MEMORY[0x277CBEB18] array];
-  v8 = [v60 share];
-  v9 = [v8 participants];
-  v66 = [v9 na_dictionaryWithKeyGenerator:&__block_literal_global_6320];
+  v62 = [MEMORY[0x277CBEB18] arrayWithObject:modelCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  share2 = [modelCopy share];
+  participants = [share2 participants];
+  v66 = [participants na_dictionaryWithKeyGenerator:&__block_literal_global_6320];
 
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v10 = [(HMBCloudZone *)v67 shareParticipantModelsByClientIdentifier];
-  obj = [v10 allValues];
+  shareParticipantModelsByClientIdentifier = [(HMBCloudZone *)selfCopy shareParticipantModelsByClientIdentifier];
+  obj = [shareParticipantModelsByClientIdentifier allValues];
 
   v11 = [obj countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (v11)
@@ -6145,20 +6145,20 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
         }
 
         v14 = *(*(&v76 + 1) + 8 * i);
-        v15 = [v14 participant];
-        v16 = [v15 ckShareParticipant];
-        v17 = [v16 participantID];
-        v18 = [v66 objectForKeyedSubscript:v17];
+        participant = [v14 participant];
+        ckShareParticipant = [participant ckShareParticipant];
+        participantID = [ckShareParticipant participantID];
+        v18 = [v66 objectForKeyedSubscript:participantID];
 
         if (v18)
         {
-          v19 = [v15 ckShareParticipant];
-          v20 = [v19 hmbIsEqualToParticipant:v18];
+          ckShareParticipant2 = [participant ckShareParticipant];
+          v20 = [ckShareParticipant2 hmbIsEqualToParticipant:v18];
 
           if ((v20 & 1) == 0)
           {
             v21 = objc_autoreleasePoolPush();
-            v22 = v67;
+            v22 = selfCopy;
             v23 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
@@ -6166,7 +6166,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
               *buf = 138543874;
               v83 = v24;
               v84 = 2112;
-              v85 = v15;
+              v85 = participant;
               v86 = 2112;
               v87 = v18;
               _os_log_impl(&dword_22AD27000, v23, OS_LOG_TYPE_INFO, "%{public}@Updating CKShareParticipant on participant %@ to %@", buf, 0x20u);
@@ -6174,20 +6174,20 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
 
             objc_autoreleasePoolPop(v21);
             v25 = [HMBShareParticipant alloc];
-            v26 = [v15 clientIdentifier];
-            v27 = [(HMBShareParticipant *)v25 initWithCKShareParticipant:v18 clientIdentifier:v26];
+            clientIdentifier = [participant clientIdentifier];
+            v27 = [(HMBShareParticipant *)v25 initWithCKShareParticipant:v18 clientIdentifier:clientIdentifier];
 
             if (![(HMBShareParticipant *)v27 hasAccepted])
             {
-              v28 = [v15 pendingInvitation];
-              [(HMBShareParticipant *)v27 setPendingInvitation:v28];
+              pendingInvitation = [participant pendingInvitation];
+              [(HMBShareParticipant *)v27 setPendingInvitation:pendingInvitation];
             }
 
             v29 = [v14 copy];
             [v29 setParticipant:v27];
-            v30 = [(HMBCloudZone *)v22 shareParticipantModelsByClientIdentifier];
-            v31 = [v15 clientIdentifier];
-            [v30 setObject:v29 forKeyedSubscript:v31];
+            shareParticipantModelsByClientIdentifier2 = [(HMBCloudZone *)v22 shareParticipantModelsByClientIdentifier];
+            clientIdentifier2 = [participant clientIdentifier];
+            [shareParticipantModelsByClientIdentifier2 setObject:v29 forKeyedSubscript:clientIdentifier2];
 
             [v62 addObject:v29];
             [v61 addObject:v29];
@@ -6197,7 +6197,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
         else
         {
           v32 = objc_autoreleasePoolPush();
-          v33 = v67;
+          v33 = selfCopy;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
@@ -6205,17 +6205,17 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
             *buf = 138543618;
             v83 = v35;
             v84 = 2112;
-            v85 = v15;
+            v85 = participant;
             _os_log_impl(&dword_22AD27000, v34, OS_LOG_TYPE_INFO, "%{public}@Removing participant that is no longer on share: %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v32);
-          v36 = [(HMBCloudZone *)v33 shareParticipantModelsByClientIdentifier];
-          v37 = [v15 clientIdentifier];
-          [v36 setObject:0 forKeyedSubscript:v37];
+          shareParticipantModelsByClientIdentifier3 = [(HMBCloudZone *)v33 shareParticipantModelsByClientIdentifier];
+          clientIdentifier3 = [participant clientIdentifier];
+          [shareParticipantModelsByClientIdentifier3 setObject:0 forKeyedSubscript:clientIdentifier3];
 
-          v38 = [v14 hmbModelID];
-          [v64 addObject:v38];
+          hmbModelID = [v14 hmbModelID];
+          [array addObject:hmbModelID];
 
           [v63 addObject:v14];
         }
@@ -6227,14 +6227,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     while (v11);
   }
 
-  [(HMBCloudZone *)v67 setShareModel:v60];
-  v39 = [(HMBCloudZone *)v67 localZone];
-  v40 = [v39 update:v62 remove:v64];
+  [(HMBCloudZone *)selfCopy setShareModel:modelCopy];
+  localZone = [(HMBCloudZone *)selfCopy localZone];
+  v40 = [localZone update:v62 remove:array];
 
   if (v40)
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = v67;
+    v42 = selfCopy;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -6249,8 +6249,8 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     objc_autoreleasePoolPop(v41);
   }
 
-  os_unfair_lock_unlock((v67 + v59));
-  v45 = [(HMBCloudZone *)v67 delegate];
+  os_unfair_lock_unlock((selfCopy + v59));
+  delegate = [(HMBCloudZone *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
     v74 = 0u;
@@ -6271,9 +6271,9 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
             objc_enumerationMutation(v46);
           }
 
-          v50 = [*(*(&v72 + 1) + 8 * j) participant];
-          v51 = [v50 clientIdentifier];
-          [v45 cloudZone:v67 didUpdateParticipantWithClientIdentifier:v51];
+          participant2 = [*(*(&v72 + 1) + 8 * j) participant];
+          clientIdentifier4 = [participant2 clientIdentifier];
+          [delegate cloudZone:selfCopy didUpdateParticipantWithClientIdentifier:clientIdentifier4];
         }
 
         v47 = [v46 countByEnumeratingWithState:&v72 objects:v81 count:16];
@@ -6303,9 +6303,9 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
             objc_enumerationMutation(v52);
           }
 
-          v56 = [*(*(&v68 + 1) + 8 * k) participant];
-          v57 = [v56 clientIdentifier];
-          [v45 cloudZone:v67 didRemoveParticipantWithClientIdentifier:v57];
+          participant3 = [*(*(&v68 + 1) + 8 * k) participant];
+          clientIdentifier5 = [participant3 clientIdentifier];
+          [delegate cloudZone:selfCopy didRemoveParticipantWithClientIdentifier:clientIdentifier5];
         }
 
         v53 = [v52 countByEnumeratingWithState:&v68 objects:v80 count:16];
@@ -6318,12 +6318,12 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleUpdatedShareParticipantRecord:(id)a3 error:(id *)a4
+- (BOOL)handleUpdatedShareParticipantRecord:(id)record error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recordCopy = record;
   v26 = 0;
-  v7 = [(HMBCloudZone *)self decodeModelFromRecord:v6 externalRecordFields:0 source:2 error:&v26];
+  v7 = [(HMBCloudZone *)self decodeModelFromRecord:recordCopy externalRecordFields:0 source:2 error:&v26];
   v8 = v26;
   if (v7)
   {
@@ -6351,7 +6351,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -6367,9 +6367,9 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       }
 
       objc_autoreleasePoolPop(v19);
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
+        *error = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
       }
     }
   }
@@ -6377,7 +6377,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -6385,18 +6385,18 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       *buf = 138543874;
       v28 = v17;
       v29 = 2112;
-      v30 = v6;
+      v30 = recordCopy;
       v31 = 2112;
       v32 = v8;
       _os_log_impl(&dword_22AD27000, v16, OS_LOG_TYPE_ERROR, "%{public}@Unable to decode model from share participant record %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
-    if (a4)
+    if (error)
     {
       v18 = v8;
       isKindOfClass = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -6409,11 +6409,11 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   return isKindOfClass & 1;
 }
 
-- (BOOL)handleUpdatedShare:(id)a3 error:(id *)a4
+- (BOOL)handleUpdatedShare:(id)share error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMBCloudZone *)self decodeShareModelFromShare:v6];
+  shareCopy = share;
+  v7 = [(HMBCloudZone *)self decodeShareModelFromShare:shareCopy];
   if (v7)
   {
     [(HMBCloudZone *)self handleUpdatedShareModel:v7];
@@ -6422,7 +6422,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -6430,14 +6430,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v6;
+      v17 = shareCopy;
       _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unable to decode share model from share %@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
+      *error = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
     }
   }
 
@@ -6448,13 +6448,13 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
 - (void)initializeShareModels
 {
   v74 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(HMBCloudZone *)v2 localZone];
-  if (v3)
+  selfCopy = self;
+  localZone = [(HMBCloudZone *)selfCopy localZone];
+  if (localZone)
   {
-    v4 = [(HMBCloudZone *)v2 stateModelID];
+    stateModelID = [(HMBCloudZone *)selfCopy stateModelID];
     *v63 = 0;
-    v5 = [v3 fetchModelsWithParentModelID:v4 ofType:objc_opt_class() error:v63];
+    v5 = [localZone fetchModelsWithParentModelID:stateModelID ofType:objc_opt_class() error:v63];
     v6 = *v63;
 
     if (v5)
@@ -6462,24 +6462,24 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       if ([v5 count] >= 2)
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = v2;
+        v8 = selfCopy;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = HMFGetLogIdentifier();
-          v11 = [v5 hmbDescription];
+          hmbDescription = [v5 hmbDescription];
           *buf = 138543618;
           *&buf[4] = v10;
           *&buf[12] = 2112;
-          *&buf[14] = v11;
+          *&buf[14] = hmbDescription;
           _os_log_impl(&dword_22AD27000, v9, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly found more than one share model: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v7);
         v12 = [v5 na_map:&__block_literal_global_97];
-        v13 = [v12 allObjects];
+        allObjects = [v12 allObjects];
 
-        v14 = [v3 remove:v13];
+        v14 = [localZone remove:allObjects];
         if (v14)
         {
           v15 = objc_autoreleasePoolPush();
@@ -6503,12 +6503,12 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
         v5 = v19;
       }
 
-      v20 = [v5 anyObject];
+      anyObject = [v5 anyObject];
       v21 = objc_autoreleasePoolPush();
-      v22 = v2;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
-      if (v20)
+      if (anyObject)
       {
         if (v24)
         {
@@ -6516,7 +6516,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
           *buf = 138543618;
           *&buf[4] = v25;
           *&buf[12] = 2112;
-          *&buf[14] = v20;
+          *&buf[14] = anyObject;
           _os_log_impl(&dword_22AD27000, v23, OS_LOG_TYPE_INFO, "%{public}@Fetched existing share model: %@", buf, 0x16u);
         }
       }
@@ -6535,7 +6535,7 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = v2;
+      v31 = selfCopy;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -6548,14 +6548,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       }
 
       objc_autoreleasePoolPop(v30);
-      v20 = 0;
+      anyObject = 0;
     }
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v2;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -6566,24 +6566,24 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     }
 
     objc_autoreleasePoolPop(v26);
-    v20 = 0;
+    anyObject = 0;
   }
 
-  if (v20)
+  if (anyObject)
   {
-    v35 = v2;
-    v62 = v20;
-    v36 = [(HMBCloudZone *)v35 localZone];
-    if (v36)
+    v35 = selfCopy;
+    v62 = anyObject;
+    localZone2 = [(HMBCloudZone *)v35 localZone];
+    if (localZone2)
     {
-      v37 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v38 = [MEMORY[0x277CBEB58] set];
-      v39 = [(HMBCloudZone *)v35 stateModelID];
-      v61 = [v36 queryModelsWithParentModelID:v39 ofType:objc_opt_class()];
+      stateModelID2 = [(HMBCloudZone *)v35 stateModelID];
+      v61 = [localZone2 queryModelsWithParentModelID:stateModelID2 ofType:objc_opt_class()];
 
-      v40 = [v62 share];
-      v41 = [v40 participants];
-      v42 = [v41 na_dictionaryWithKeyGenerator:&__block_literal_global_100];
+      share = [v62 share];
+      participants = [share participants];
+      v42 = [participants na_dictionaryWithKeyGenerator:&__block_literal_global_100];
 
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
@@ -6593,14 +6593,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       v69 = v60;
       v43 = v35;
       v70 = v43;
-      v71 = v36;
+      v71 = localZone2;
       v44 = v38;
       v72 = v44;
-      v45 = v37;
+      v45 = dictionary;
       v73 = v45;
       [v61 enumerateObjectsUsingBlock:buf];
-      v46 = [v45 allValues];
-      v47 = [v46 na_map:&__block_literal_global_105];
+      allValues = [v45 allValues];
+      v47 = [allValues na_map:&__block_literal_global_105];
 
       v48 = objc_autoreleasePoolPush();
       v49 = v43;
@@ -6617,8 +6617,8 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
 
       objc_autoreleasePoolPop(v48);
       os_unfair_lock_lock_with_options();
-      v52 = [(os_unfair_lock_s *)v49 shareParticipantModelsByClientIdentifier];
-      [v52 addEntriesFromDictionary:v45];
+      shareParticipantModelsByClientIdentifier = [(os_unfair_lock_s *)v49 shareParticipantModelsByClientIdentifier];
+      [shareParticipantModelsByClientIdentifier addEntriesFromDictionary:v45];
 
       os_unfair_lock_unlock(v49 + 2);
       if ([v44 count])
@@ -6656,14 +6656,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (id)participantWithClientIdentifier:(id)a3
+- (id)participantWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMBCloudZone *)self shareParticipantModelsByClientIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 participant];
-  v8 = [v7 copy];
+  shareParticipantModelsByClientIdentifier = [(HMBCloudZone *)self shareParticipantModelsByClientIdentifier];
+  v6 = [shareParticipantModelsByClientIdentifier objectForKeyedSubscript:identifierCopy];
+  participant = [v6 participant];
+  v8 = [participant copy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 
@@ -6679,10 +6679,10 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(HMBCloudZone *)self shareParticipantModelsByClientIdentifier];
-  v5 = [v4 allValues];
+  shareParticipantModelsByClientIdentifier = [(HMBCloudZone *)self shareParticipantModelsByClientIdentifier];
+  allValues = [shareParticipantModelsByClientIdentifier allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -6692,14 +6692,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) participant];
-        [v3 addObject:v9];
+        participant = [*(*(&v13 + 1) + 8 * i) participant];
+        [v3 addObject:participant];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -6713,13 +6713,13 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
   return v10;
 }
 
-- (id)_revokeShareAccessForParticipant:(id)a3 usingShare:(id)a4
+- (id)_revokeShareAccessForParticipant:(id)participant usingShare:(id)share
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  shareCopy = share;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -6727,40 +6727,40 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
     *buf = 138543618;
     v30 = v11;
     v31 = 2112;
-    v32 = v6;
+    v32 = participantCopy;
     _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Revoking share access for participant: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  v12 = [(HMBCloudZone *)v9 shareParticipantModelsByClientIdentifier];
-  v13 = [v6 clientIdentifier];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  shareParticipantModelsByClientIdentifier = [(HMBCloudZone *)selfCopy shareParticipantModelsByClientIdentifier];
+  clientIdentifier = [participantCopy clientIdentifier];
+  v14 = [shareParticipantModelsByClientIdentifier objectForKeyedSubscript:clientIdentifier];
 
-  os_unfair_lock_unlock(&v9->_propertyLock);
+  os_unfair_lock_unlock(&selfCopy->_propertyLock);
   if (v14)
   {
-    v15 = [v6 ckShareParticipant];
-    v16 = __removeParticipantFromShare(v9, v15, v7);
+    ckShareParticipant = [participantCopy ckShareParticipant];
+    v16 = __removeParticipantFromShare(selfCopy, ckShareParticipant, shareCopy);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __67__HMBCloudZone_Share___revokeShareAccessForParticipant_usingShare___block_invoke;
     v27[3] = &unk_2786E1CD0;
-    v27[4] = v9;
+    v27[4] = selfCopy;
     v28 = v14;
     v17 = [v16 flatMap:v27];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __67__HMBCloudZone_Share___revokeShareAccessForParticipant_usingShare___block_invoke_78;
     v26[3] = &unk_2786E1E10;
-    v26[4] = v9;
+    v26[4] = selfCopy;
     v18 = [v17 addSuccessBlock:v26];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -6768,14 +6768,14 @@ id __48__HMBCloudZone_Share_Internal__createShareModel__block_invoke(uint64_t a1
       *buf = 138543618;
       v30 = v22;
       v31 = 2112;
-      v32 = v6;
+      v32 = participantCopy;
       _os_log_impl(&dword_22AD27000, v21, OS_LOG_TYPE_ERROR, "%{public}@Could not find participant model for participant %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v23 = MEMORY[0x277D2C900];
-    v15 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    v18 = [v23 futureWithError:v15];
+    ckShareParticipant = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
+    v18 = [v23 futureWithError:ckShareParticipant];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -6828,16 +6828,16 @@ void __67__HMBCloudZone_Share___revokeShareAccessForParticipant_usingShare___blo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)revokeShareAccessForParticipant:(id)a3
+- (id)revokeShareAccessForParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HMBCloudZone_Share__revokeShareAccessForParticipant___block_invoke;
   v8[3] = &unk_2786E2288;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = participantCopy;
+  v5 = participantCopy;
   v6 = [(HMBCloudZone *)self _addShareOperationAfterStartupWithName:@"Revoke Share Access" block:v8];
 
   return v6;
@@ -6858,14 +6858,14 @@ id __55__HMBCloudZone_Share__revokeShareAccessForParticipant___block_invoke(uint
   return v4;
 }
 
-- (id)_setWriteAccessEnabled:(BOOL)a3 forParticipant:(id)a4 usingShare:(id)a5
+- (id)_setWriteAccessEnabled:(BOOL)enabled forParticipant:(id)participant usingShare:(id)share
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  participantCopy = participant;
+  shareCopy = share;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -6876,35 +6876,35 @@ id __55__HMBCloudZone_Share__revokeShareAccessForParticipant___block_invoke(uint
     v40 = 2112;
     v41 = v14;
     v42 = 2112;
-    v43 = v8;
+    v43 = participantCopy;
     _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_INFO, "%{public}@Setting write access enabled to %@ for participant: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [v9 participants];
+  participants = [shareCopy participants];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __72__HMBCloudZone_Share___setWriteAccessEnabled_forParticipant_usingShare___block_invoke;
   v36[3] = &unk_2786E1DE8;
-  v16 = v8;
+  v16 = participantCopy;
   v37 = v16;
-  v17 = [v15 na_firstObjectPassingTest:v36];
+  v17 = [participants na_firstObjectPassingTest:v36];
 
   if (!v17)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = HMFGetLogIdentifier();
-      v29 = [v9 participants];
+      participants2 = [shareCopy participants];
       *buf = 138543874;
       v39 = v28;
       v40 = 2112;
       v41 = v16;
       v42 = 2112;
-      v43 = v29;
+      v43 = participants2;
       _os_log_impl(&dword_22AD27000, v27, OS_LOG_TYPE_ERROR, "%{public}@Could not find CKShareParticipant for participant %@. All CKShareParticipants: %@", buf, 0x20u);
     }
 
@@ -6915,7 +6915,7 @@ id __55__HMBCloudZone_Share__revokeShareAccessForParticipant___block_invoke(uint
     goto LABEL_15;
   }
 
-  if (v6)
+  if (enabledCopy)
   {
     v18 = 3;
   }
@@ -6928,12 +6928,12 @@ id __55__HMBCloudZone_Share__revokeShareAccessForParticipant___block_invoke(uint
   if ([v17 permission] != v18)
   {
     [v17 setPermission:v18];
-    v31 = [(HMBCloudZone *)v11 _pushUpdatedShare:v9];
+    v31 = [(HMBCloudZone *)selfCopy _pushUpdatedShare:shareCopy];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __72__HMBCloudZone_Share___setWriteAccessEnabled_forParticipant_usingShare___block_invoke_74;
     v35[3] = &unk_2786E1CA8;
-    v35[4] = v11;
+    v35[4] = selfCopy;
     v32 = [v31 flatMap:v35];
 LABEL_15:
     v24 = v32;
@@ -6942,7 +6942,7 @@ LABEL_15:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = v11;
+  v20 = selfCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -6957,7 +6957,7 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v19);
-  v24 = [MEMORY[0x277D2C900] futureWithResult:v9];
+  v24 = [MEMORY[0x277D2C900] futureWithResult:shareCopy];
 LABEL_16:
 
   v33 = *MEMORY[0x277D85DE8];
@@ -6998,17 +6998,17 @@ id __72__HMBCloudZone_Share___setWriteAccessEnabled_forParticipant_usingShare___
   return v8;
 }
 
-- (id)setWriteAccessEnabled:(BOOL)a3 forParticipant:(id)a4
+- (id)setWriteAccessEnabled:(BOOL)enabled forParticipant:(id)participant
 {
-  v6 = a4;
+  participantCopy = participant;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__HMBCloudZone_Share__setWriteAccessEnabled_forParticipant___block_invoke;
   v10[3] = &unk_2786E1DC0;
-  v12 = a3;
+  enabledCopy = enabled;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
+  v11 = participantCopy;
+  v7 = participantCopy;
   v8 = [(HMBCloudZone *)self _addShareOperationAfterStartupWithName:@"Set Write Access Enabled" block:v10];
 
   return v8;
@@ -7031,13 +7031,13 @@ id __60__HMBCloudZone_Share__setWriteAccessEnabled_forParticipant___block_invoke
   return v5;
 }
 
-- (id)_fetchInvitationWithContext:(id)a3 usingShare:(id)a4
+- (id)_fetchInvitationWithContext:(id)context usingShare:(id)share
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  shareCopy = share;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -7045,35 +7045,35 @@ id __60__HMBCloudZone_Share__setWriteAccessEnabled_forParticipant___block_invoke
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = contextCopy;
     _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_INFO, "%{public}@Fetching invitation with context: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMBCloudZone *)v9 cloudZoneID];
-  v13 = [v12 scope] == 2;
+  cloudZoneID = [(HMBCloudZone *)selfCopy cloudZoneID];
+  v13 = [cloudZoneID scope] == 2;
 
   if (v13)
   {
-    v14 = [v6 participantClientIdentifier];
-    v15 = [(HMBCloudZone *)v9 participantWithClientIdentifier:v14];
+    participantClientIdentifier = [contextCopy participantClientIdentifier];
+    v15 = [(HMBCloudZone *)selfCopy participantWithClientIdentifier:participantClientIdentifier];
 
     if (!v15)
     {
       goto LABEL_23;
     }
 
-    v16 = v6;
-    v17 = [v15 ckShareParticipant];
-    v18 = [v17 permission];
+    v16 = contextCopy;
+    ckShareParticipant = [v15 ckShareParticipant];
+    permission = [ckShareParticipant permission];
 
-    LODWORD(v17) = [v16 shouldGrantWriteAccess];
-    if (((v18 != 3) ^ v17))
+    LODWORD(ckShareParticipant) = [v16 shouldGrantWriteAccess];
+    if (((permission != 3) ^ ckShareParticipant))
     {
       if ([v15 hasAccepted])
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = v9;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -7093,12 +7093,12 @@ id __60__HMBCloudZone_Share__setWriteAccessEnabled_forParticipant___block_invoke
         goto LABEL_24;
       }
 
-      v38 = [v15 pendingInvitation];
+      pendingInvitation = [v15 pendingInvitation];
       v39 = objc_autoreleasePoolPush();
-      v40 = v9;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       v42 = os_log_type_enabled(v41, OS_LOG_TYPE_INFO);
-      if (v38)
+      if (pendingInvitation)
       {
         if (v42)
         {
@@ -7106,12 +7106,12 @@ id __60__HMBCloudZone_Share__setWriteAccessEnabled_forParticipant___block_invoke
           *buf = 138543618;
           *&buf[4] = v43;
           *&buf[12] = 2112;
-          *&buf[14] = v38;
+          *&buf[14] = pendingInvitation;
           _os_log_impl(&dword_22AD27000, v41, OS_LOG_TYPE_INFO, "%{public}@Returning existing pending invitation: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v39);
-        v25 = [MEMORY[0x277D2C900] futureWithResult:v38];
+        v25 = [MEMORY[0x277D2C900] futureWithResult:pendingInvitation];
 
         goto LABEL_24;
       }
@@ -7140,24 +7140,24 @@ LABEL_23:
       v63[3] = __Block_byref_object_copy__6375;
       v63[4] = __Block_byref_object_dispose__6376;
       v64 = 0;
-      v45 = [(HMBCloudZone *)v9 cloudDatabase];
-      v46 = [v6 lookupInfo];
-      v47 = [v45 fetchParticipantWithLookupInfo:v46];
+      cloudDatabase = [(HMBCloudZone *)selfCopy cloudDatabase];
+      lookupInfo = [contextCopy lookupInfo];
+      v47 = [cloudDatabase fetchParticipantWithLookupInfo:lookupInfo];
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __62__HMBCloudZone_Share___fetchInvitationWithContext_usingShare___block_invoke_64;
       v58[3] = &unk_2786E1CF8;
       v62 = buf;
-      v48 = v6;
+      v48 = contextCopy;
       v59 = v48;
-      v60 = v9;
-      v61 = v7;
+      v60 = selfCopy;
+      v61 = shareCopy;
       v49 = [v47 flatMap:v58];
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __62__HMBCloudZone_Share___fetchInvitationWithContext_usingShare___block_invoke_2;
       v54[3] = &unk_2786E1D48;
-      v54[4] = v9;
+      v54[4] = selfCopy;
       v56 = buf;
       v57 = v63;
       v55 = v48;
@@ -7176,7 +7176,7 @@ LABEL_23:
     }
 
     v31 = objc_autoreleasePoolPush();
-    v32 = v9;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
@@ -7193,7 +7193,7 @@ LABEL_23:
     objc_autoreleasePoolPop(v31);
     v35 = v32;
     v15 = v15;
-    v36 = v7;
+    v36 = shareCopy;
     v37 = -[HMBCloudZone _setWriteAccessEnabled:forParticipant:usingShare:](v35, "_setWriteAccessEnabled:forParticipant:usingShare:", [v16 shouldGrantWriteAccess], v15, v36);
 
     v65[0] = MEMORY[0x277D85DD0];
@@ -7208,7 +7208,7 @@ LABEL_23:
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v9;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -7410,16 +7410,16 @@ id __62__HMBCloudZone_Share___fetchInvitationWithContext_usingShare___block_invo
   return v35;
 }
 
-- (id)fetchInvitationWithContext:(id)a3
+- (id)fetchInvitationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__HMBCloudZone_Share__fetchInvitationWithContext___block_invoke;
   v8[3] = &unk_2786E2288;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = contextCopy;
+  v5 = contextCopy;
   v6 = [(HMBCloudZone *)self _addShareOperationAfterStartupWithName:@"Fetch Invitation" block:v8];
 
   return v6;
@@ -7440,16 +7440,16 @@ id __50__HMBCloudZone_Share__fetchInvitationWithContext___block_invoke(uint64_t 
   return v4;
 }
 
-- (id)fetchCloudShareIDForShareParticipantClientIdentifier:(id)a3
+- (id)fetchCloudShareIDForShareParticipantClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HMBCloudZone_Share__fetchCloudShareIDForShareParticipantClientIdentifier___block_invoke;
   v8[3] = &unk_2786E2288;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [(HMBCloudZone *)self _addShareOperationAfterStartupWithName:@"Fetch Cloud Share ID For Client Identifier" block:v8];
 
   return v6;
@@ -7669,26 +7669,26 @@ id __56__HMBCloudZone_Share__fetchOwnerParticipantCloudShareID__block_invoke_2(u
   return v14;
 }
 
-- (id)cloudMetadataForModel:(id)a3 usingEncoding:(unint64_t)a4
+- (id)cloudMetadataForModel:(id)model usingEncoding:(unint64_t)encoding
 {
   v16[5] = *MEMORY[0x277D85DE8];
   v15[0] = @"HM.device";
-  v6 = a3;
-  v7 = [(HMBCloudZone *)self deviceIdentifier];
-  v16[0] = v7;
+  modelCopy = model;
+  deviceIdentifier = [(HMBCloudZone *)self deviceIdentifier];
+  v16[0] = deviceIdentifier;
   v15[1] = @"HM.encoding";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:encoding];
   v16[1] = v8;
   v15[2] = @"HM.type";
-  v9 = [v6 hmbType];
-  v16[2] = v9;
+  hmbType = [modelCopy hmbType];
+  v16[2] = hmbType;
   v15[3] = @"HM.modelID";
-  v10 = [v6 hmbModelID];
-  v16[3] = v10;
+  hmbModelID = [modelCopy hmbModelID];
+  v16[3] = hmbModelID;
   v15[4] = @"HM.parentModelID";
-  v11 = [v6 hmbParentModelID];
+  hmbParentModelID = [modelCopy hmbParentModelID];
 
-  v16[4] = v11;
+  v16[4] = hmbParentModelID;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -7696,52 +7696,52 @@ id __56__HMBCloudZone_Share__fetchOwnerParticipantCloudShareID__block_invoke_2(u
   return v12;
 }
 
-- (BOOL)populateV4CloudRecord:(id)a3 withModel:(id)a4 metadataFieldData:(id)a5 startEncoding:(unint64_t)a6 endEncoding:(unint64_t)a7 encodingContext:(id)a8 error:(id *)a9
+- (BOOL)populateV4CloudRecord:(id)record withModel:(id)model metadataFieldData:(id)data startEncoding:(unint64_t)encoding endEncoding:(unint64_t)endEncoding encodingContext:(id)context error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v45 = a4;
-  v43 = a5;
-  v44 = a8;
-  v16 = [(HMBCloudZone *)self cloudDatabase];
-  if (a6 >= 2)
+  recordCopy = record;
+  modelCopy = model;
+  dataCopy = data;
+  contextCopy = context;
+  cloudDatabase = [(HMBCloudZone *)self cloudDatabase];
+  if (encoding >= 2)
   {
     v17 = 1;
     do
     {
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", v17];
-      v19 = [v16 configuration];
-      [v15 hmbSetObject:0 forKey:v18 encrypted:{objc_msgSend(v19, "isManateeContainer")}];
+      configuration = [cloudDatabase configuration];
+      [recordCopy hmbSetObject:0 forKey:v18 encrypted:{objc_msgSend(configuration, "isManateeContainer")}];
 
       ++v17;
     }
 
-    while (a6 != v17);
+    while (encoding != v17);
   }
 
-  if (a6 >= a7)
+  if (encoding >= endEncoding)
   {
     v21 = 0;
 LABEL_10:
-    v29 = [v16 configuration];
-    v30 = v43;
-    [v15 hmbSetObject:v43 forKey:@"k00" encrypted:{objc_msgSend(v29, "isManateeContainer")}];
+    configuration2 = [cloudDatabase configuration];
+    v30 = dataCopy;
+    [recordCopy hmbSetObject:dataCopy forKey:@"k00" encrypted:{objc_msgSend(configuration2, "isManateeContainer")}];
 
     v20 = 1;
   }
 
   else
   {
-    v41 = self;
+    selfCopy = self;
     v20 = 0;
     v21 = 0;
     while (1)
     {
       v22 = v21;
-      v23 = [v44 modelContainer];
+      modelContainer = [contextCopy modelContainer];
       v24 = [MEMORY[0x277CBEB98] set];
       v46 = v21;
-      v25 = [v23 dataFromModel:v45 encoding:a6 storageLocation:1 updatedModelIDs:v24 error:&v46];
+      v25 = [modelContainer dataFromModel:modelCopy encoding:encoding storageLocation:1 updatedModelIDs:v24 error:&v46];
       v21 = v46;
 
       if (!v25)
@@ -7749,34 +7749,34 @@ LABEL_10:
         break;
       }
 
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", a6];
-      v27 = [v25 hmbCompress];
-      v28 = [v16 configuration];
-      [v15 hmbSetObject:v27 forKey:v26 encrypted:{objc_msgSend(v28, "isManateeContainer")}];
+      encoding = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", encoding];
+      hmbCompress = [v25 hmbCompress];
+      configuration3 = [cloudDatabase configuration];
+      [recordCopy hmbSetObject:hmbCompress forKey:encoding encrypted:{objc_msgSend(configuration3, "isManateeContainer")}];
 
-      v20 = ++a6 >= a7;
-      if (a7 == a6)
+      v20 = ++encoding >= endEncoding;
+      if (endEncoding == encoding)
       {
         goto LABEL_10;
       }
     }
 
     v31 = objc_autoreleasePoolPush();
-    v32 = v41;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       v34 = HMFGetLogIdentifier();
-      [v45 hmbCanonicalType];
+      [modelCopy hmbCanonicalType];
       v35 = v42 = v31;
-      v36 = [v45 hmbModelID];
-      v37 = [v36 UUIDString];
+      hmbModelID = [modelCopy hmbModelID];
+      uUIDString = [hmbModelID UUIDString];
       *buf = 138544130;
       v48 = v34;
       v49 = 2112;
       v50 = v35;
       v51 = 2112;
-      v52 = v37;
+      v52 = uUIDString;
       v53 = 2112;
       v54 = v21;
       _os_log_impl(&dword_22AD27000, v33, OS_LOG_TYPE_ERROR, "%{public}@Unable to encode model (%@.%@): %@", buf, 0x2Au);
@@ -7785,13 +7785,13 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v31);
-    if (a9)
+    if (error)
     {
       v38 = v21;
-      *a9 = v21;
+      *error = v21;
     }
 
-    v30 = v43;
+    v30 = dataCopy;
   }
 
   v39 = *MEMORY[0x277D85DE8];

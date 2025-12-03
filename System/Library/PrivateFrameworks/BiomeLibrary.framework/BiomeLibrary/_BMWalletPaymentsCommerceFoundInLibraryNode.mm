@@ -14,44 +14,44 @@
 + (id)storeConfigurationForOrderEmail;
 + (id)storeConfigurationForTrackedOrder;
 + (id)storeConfigurationForTransaction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMWalletPaymentsCommerceFoundInLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ClassicOrder"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ClassicOrder"])
   {
-    v5 = [a1 ClassicOrder];
+    classicOrder = [self ClassicOrder];
 LABEL_11:
-    v6 = v5;
+    v6 = classicOrder;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"ExtractedOrder"])
+  if ([nameCopy isEqualToString:@"ExtractedOrder"])
   {
-    v5 = [a1 ExtractedOrder];
+    classicOrder = [self ExtractedOrder];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"OrderEmail"])
+  if ([nameCopy isEqualToString:@"OrderEmail"])
   {
-    v5 = [a1 OrderEmail];
+    classicOrder = [self OrderEmail];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"TrackedOrder"])
+  if ([nameCopy isEqualToString:@"TrackedOrder"])
   {
-    v5 = [a1 TrackedOrder];
+    classicOrder = [self TrackedOrder];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Transaction"])
+  if ([nameCopy isEqualToString:@"Transaction"])
   {
-    v5 = [a1 Transaction];
+    classicOrder = [self Transaction];
     goto LABEL_11;
   }
 
@@ -86,13 +86,13 @@ LABEL_12:
 
 + (id)configurationForTransaction
 {
-  v3 = [a1 storeConfigurationForTransaction];
-  v4 = [a1 syncPolicyForTransaction];
+  storeConfigurationForTransaction = [self storeConfigurationForTransaction];
+  syncPolicyForTransaction = [self syncPolicyForTransaction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A7A70774-0D38-47A8-A16A-6B6E34D439B5"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.Transaction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.Transaction" eventClass:objc_opt_class() storeConfig:storeConfigurationForTransaction syncPolicy:syncPolicyForTransaction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -108,13 +108,13 @@ LABEL_12:
 
 + (id)configurationForTrackedOrder
 {
-  v3 = [a1 storeConfigurationForTrackedOrder];
-  v4 = [a1 syncPolicyForTrackedOrder];
+  storeConfigurationForTrackedOrder = [self storeConfigurationForTrackedOrder];
+  syncPolicyForTrackedOrder = [self syncPolicyForTrackedOrder];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"AC249E13-C8DD-489B-9DB8-BE11B025E6B4"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.TrackedOrder" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.TrackedOrder" eventClass:objc_opt_class() storeConfig:storeConfigurationForTrackedOrder syncPolicy:syncPolicyForTrackedOrder legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -130,13 +130,13 @@ LABEL_12:
 
 + (id)configurationForOrderEmail
 {
-  v3 = [a1 storeConfigurationForOrderEmail];
-  v4 = [a1 syncPolicyForOrderEmail];
+  storeConfigurationForOrderEmail = [self storeConfigurationForOrderEmail];
+  syncPolicyForOrderEmail = [self syncPolicyForOrderEmail];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"83647A09-1519-4B2E-99F4-B765AA483C54"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.OrderEmail" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.OrderEmail" eventClass:objc_opt_class() storeConfig:storeConfigurationForOrderEmail syncPolicy:syncPolicyForOrderEmail legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -152,13 +152,13 @@ LABEL_12:
 
 + (id)configurationForExtractedOrder
 {
-  v3 = [a1 storeConfigurationForExtractedOrder];
-  v4 = [a1 syncPolicyForExtractedOrder];
+  storeConfigurationForExtractedOrder = [self storeConfigurationForExtractedOrder];
+  syncPolicyForExtractedOrder = [self syncPolicyForExtractedOrder];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4FE9805C-227A-4479-961F-A8F2E51256ED"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.ExtractedOrder" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.ExtractedOrder" eventClass:objc_opt_class() storeConfig:storeConfigurationForExtractedOrder syncPolicy:syncPolicyForExtractedOrder legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -174,13 +174,13 @@ LABEL_12:
 
 + (id)configurationForClassicOrder
 {
-  v3 = [a1 storeConfigurationForClassicOrder];
-  v4 = [a1 syncPolicyForClassicOrder];
+  storeConfigurationForClassicOrder = [self storeConfigurationForClassicOrder];
+  syncPolicyForClassicOrder = [self syncPolicyForClassicOrder];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4E93F4AC-0B75-4F0A-B090-27DC43B310FB"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.ClassicOrder" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"WalletPaymentsCommerce.FoundIn.ClassicOrder" eventClass:objc_opt_class() storeConfig:storeConfigurationForClassicOrder syncPolicy:syncPolicyForClassicOrder legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -197,7 +197,7 @@ LABEL_12:
 + (id)Transaction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTransaction];
+  configurationForTransaction = [self configurationForTransaction];
   v3 = +[BMWalletPaymentsCommerceTransaction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -209,7 +209,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"WalletPaymentsCommerce.FoundIn.Transaction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.Transaction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.Transaction" schema:v9 configuration:configurationForTransaction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -219,7 +219,7 @@ LABEL_12:
 + (id)TrackedOrder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTrackedOrder];
+  configurationForTrackedOrder = [self configurationForTrackedOrder];
   v3 = +[BMWalletPaymentsCommerceTrackedOrder columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -231,7 +231,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"WalletPaymentsCommerce.FoundIn.TrackedOrder" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.TrackedOrder" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.TrackedOrder" schema:v9 configuration:configurationForTrackedOrder];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -241,7 +241,7 @@ LABEL_12:
 + (id)OrderEmail
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForOrderEmail];
+  configurationForOrderEmail = [self configurationForOrderEmail];
   v3 = +[BMWalletPaymentsCommerceOrderEmail columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -253,7 +253,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"WalletPaymentsCommerce.FoundIn.OrderEmail" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.OrderEmail" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.OrderEmail" schema:v9 configuration:configurationForOrderEmail];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -263,7 +263,7 @@ LABEL_12:
 + (id)ExtractedOrder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForExtractedOrder];
+  configurationForExtractedOrder = [self configurationForExtractedOrder];
   v3 = +[BMWalletPaymentsCommerceExtractedOrder columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -275,7 +275,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"WalletPaymentsCommerce.FoundIn.ExtractedOrder" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.ExtractedOrder" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.ExtractedOrder" schema:v9 configuration:configurationForExtractedOrder];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -285,7 +285,7 @@ LABEL_12:
 + (id)ClassicOrder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForClassicOrder];
+  configurationForClassicOrder = [self configurationForClassicOrder];
   v3 = +[BMWalletPaymentsCommerceClassicOrder columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -297,7 +297,7 @@ LABEL_12:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"WalletPaymentsCommerce.FoundIn.ClassicOrder" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.ClassicOrder" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"WalletPaymentsCommerce.FoundIn.ClassicOrder" schema:v9 configuration:configurationForClassicOrder];
 
   v11 = *MEMORY[0x1E69E9840];
 

@@ -6,9 +6,9 @@
 
 - (double)CA_CGAffineTransformValue
 {
-  if (a1)
+  if (self)
   {
-    [a1 transformStruct];
+    [self transformStruct];
   }
 
   *a2 = 0u;

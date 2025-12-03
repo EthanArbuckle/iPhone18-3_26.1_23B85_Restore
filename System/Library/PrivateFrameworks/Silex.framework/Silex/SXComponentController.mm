@@ -1,62 +1,62 @@
 @interface SXComponentController
 - (CGRect)renderBounds;
-- (SXComponentController)initWithViewport:(id)a3 DOMObjectProvider:(id)a4;
+- (SXComponentController)initWithViewport:(id)viewport DOMObjectProvider:(id)provider;
 - (SXComponentHosting)host;
-- (id)componentViewForIdentifier:(id)a3;
-- (id)componentViewForPoint:(CGPoint)a3;
-- (id)componentViewForPoint:(CGPoint)a3 inComponents:(id)a4;
-- (id)componentViewsForRole:(int)a3;
-- (id)componentViewsForRole:(int)a3 forLayoutBlueprint:(id)a4;
-- (id)componentsInRect:(CGRect)a3;
-- (id)presentComponentBlueprint:(id)a3 inHost:(id)a4 columnLayout:(id)a5;
-- (void)addObserver:(id)a3;
+- (id)componentViewForIdentifier:(id)identifier;
+- (id)componentViewForPoint:(CGPoint)point;
+- (id)componentViewForPoint:(CGPoint)point inComponents:(id)components;
+- (id)componentViewsForRole:(int)role;
+- (id)componentViewsForRole:(int)role forLayoutBlueprint:(id)blueprint;
+- (id)componentsInRect:(CGRect)rect;
+- (id)presentComponentBlueprint:(id)blueprint inHost:(id)host columnLayout:(id)layout;
+- (void)addObserver:(id)observer;
 - (void)assistiveTechnologyStatusDidChange;
-- (void)fadeComponent:(id)a3 completion:(id)a4;
-- (void)integrateBlueprint:(id)a3 withCompletion:(id)a4;
-- (void)presentBlueprint:(id)a3 forParentComponentView:(id)a4 inHost:(id)a5;
-- (void)presentComponentsInBlueprint:(id)a3;
-- (void)provideInfosLayoutTo:(id)a3;
-- (void)removeComponentsInLayoutBlueprint:(id)a3 removedFromLayoutBlueprint:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)renderContentsIfNeededForComponents:(id)a3;
-- (void)updatePresentationStateForNestedComponentView:(id)a3 presentationState:(int64_t)a4;
-- (void)updatePresentationStateForNestedComponentViews:(id)a3 presentationState:(int64_t)a4;
-- (void)updateVisibilityStatesForComponentViews:(id)a3 parentComponent:(id)a4 withOffset:(CGPoint)a5;
-- (void)updateVisibilityStatesForComponentViews:(id)a3 toState:(int64_t)a4;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
-- (void)viewport:(id)a3 boundsDidChangeFromBounds:(CGRect)a4;
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4;
+- (void)fadeComponent:(id)component completion:(id)completion;
+- (void)integrateBlueprint:(id)blueprint withCompletion:(id)completion;
+- (void)presentBlueprint:(id)blueprint forParentComponentView:(id)view inHost:(id)host;
+- (void)presentComponentsInBlueprint:(id)blueprint;
+- (void)provideInfosLayoutTo:(id)to;
+- (void)removeComponentsInLayoutBlueprint:(id)blueprint removedFromLayoutBlueprint:(id)layoutBlueprint;
+- (void)removeObserver:(id)observer;
+- (void)renderContentsIfNeededForComponents:(id)components;
+- (void)updatePresentationStateForNestedComponentView:(id)view presentationState:(int64_t)state;
+- (void)updatePresentationStateForNestedComponentViews:(id)views presentationState:(int64_t)state;
+- (void)updateVisibilityStatesForComponentViews:(id)views parentComponent:(id)component withOffset:(CGPoint)offset;
+- (void)updateVisibilityStatesForComponentViews:(id)views toState:(int64_t)state;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
+- (void)viewport:(id)viewport boundsDidChangeFromBounds:(CGRect)bounds;
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds;
 @end
 
 @implementation SXComponentController
 
-- (SXComponentController)initWithViewport:(id)a3 DOMObjectProvider:(id)a4
+- (SXComponentController)initWithViewport:(id)viewport DOMObjectProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  viewportCopy = viewport;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = SXComponentController;
   v9 = [(SXComponentController *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewport, a3);
-    objc_storeStrong(&v10->_DOMObjectProvider, a4);
+    objc_storeStrong(&v9->_viewport, viewport);
+    objc_storeStrong(&v10->_DOMObjectProvider, provider);
     v11 = [MEMORY[0x1E696AC70] hashTableWithOptions:5];
     observers = v10->_observers;
     v10->_observers = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     mappedComponentViews = v10->_mappedComponentViews;
-    v10->_mappedComponentViews = v13;
+    v10->_mappedComponentViews = dictionary;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sortedComponentViews = v10->_sortedComponentViews;
-    v10->_sortedComponentViews = v15;
+    v10->_sortedComponentViews = array;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     nestedComponentViews = v10->_nestedComponentViews;
-    v10->_nestedComponentViews = v17;
+    v10->_nestedComponentViews = array2;
 
     [(SXViewport *)v10->_viewport addViewportChangeListener:v10 forOptions:14];
   }
@@ -64,40 +64,40 @@
   return v10;
 }
 
-- (void)integrateBlueprint:(id)a3 withCompletion:(id)a4
+- (void)integrateBlueprint:(id)blueprint withCompletion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  blueprintCopy = blueprint;
+  completionCopy = completion;
   [(SXComponentController *)self setIsPresenting:1];
-  v9 = [(SXComponentController *)self nestedComponentViews];
-  v10 = [v9 copy];
+  nestedComponentViews = [(SXComponentController *)self nestedComponentViews];
+  v10 = [nestedComponentViews copy];
 
-  [(SXComponentController *)self removeComponentsInLayoutBlueprint:self->_presentedBlueprint removedFromLayoutBlueprint:v7];
-  v11 = [(SXComponentController *)self host];
-  [(SXComponentController *)self presentBlueprint:v7 forParentComponentView:0 inHost:v11];
+  [(SXComponentController *)self removeComponentsInLayoutBlueprint:self->_presentedBlueprint removedFromLayoutBlueprint:blueprintCopy];
+  host = [(SXComponentController *)self host];
+  [(SXComponentController *)self presentBlueprint:blueprintCopy forParentComponentView:0 inHost:host];
 
-  objc_storeStrong(&self->_presentedBlueprint, a3);
-  [(SXComponentController *)self presentComponentsInBlueprint:v7];
+  objc_storeStrong(&self->_presentedBlueprint, blueprint);
+  [(SXComponentController *)self presentComponentsInBlueprint:blueprintCopy];
   self->_isPresented = 1;
-  v12 = [(SXComponentController *)self viewport];
-  v13 = [v12 appearState];
+  viewport = [(SXComponentController *)self viewport];
+  appearState = [viewport appearState];
 
-  if (v13)
+  if (appearState)
   {
-    v14 = [(SXComponentController *)self componentViews];
-    [(SXComponentController *)self updateVisibilityStatesForComponentViews:v14];
+    componentViews = [(SXComponentController *)self componentViews];
+    [(SXComponentController *)self updateVisibilityStatesForComponentViews:componentViews];
   }
 
-  v15 = [(SXComponentController *)self presentationAttributes];
-  v16 = [v15 fadeInComponents];
+  presentationAttributes = [(SXComponentController *)self presentationAttributes];
+  fadeInComponents = [presentationAttributes fadeInComponents];
 
-  v17 = [(SXComponentController *)self nestedComponentViews];
-  v18 = v17;
-  if (v16)
+  nestedComponentViews2 = [(SXComponentController *)self nestedComponentViews];
+  v18 = nestedComponentViews2;
+  if (fadeInComponents)
   {
-    v33 = v8;
-    v19 = [v17 mutableCopy];
+    v33 = completionCopy;
+    v19 = [nestedComponentViews2 mutableCopy];
 
     [v19 removeObjectsInArray:v10];
     v41 = 0u;
@@ -143,24 +143,24 @@
       while (v22);
     }
 
-    v8 = v33;
+    completionCopy = v33;
   }
 
   else
   {
-    [(SXComponentController *)self updatePresentationStateForNestedComponentViews:v17 presentationState:2];
+    [(SXComponentController *)self updatePresentationStateForNestedComponentViews:nestedComponentViews2 presentationState:2];
   }
 
-  v26 = [(SXComponentController *)self flattenedComponentViews];
-  [(SXComponentController *)self renderContentsIfNeededForComponents:v26];
+  flattenedComponentViews = [(SXComponentController *)self flattenedComponentViews];
+  [(SXComponentController *)self renderContentsIfNeededForComponents:flattenedComponentViews];
 
   [(SXComponentController *)self setIsPresenting:0];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = [(SXComponentController *)self observers];
-  v28 = [v27 copy];
+  observers = [(SXComponentController *)self observers];
+  v28 = [observers copy];
 
   v29 = [v28 countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v29)
@@ -185,21 +185,21 @@
     while (v30);
   }
 
-  v8[2](v8);
+  completionCopy[2](completionCopy);
 }
 
-- (void)presentBlueprint:(id)a3 forParentComponentView:(id)a4 inHost:(id)a5
+- (void)presentBlueprint:(id)blueprint forParentComponentView:(id)view inHost:(id)host
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v9 = a5;
-  v24 = [MEMORY[0x1E695DF70] array];
+  blueprintCopy = blueprint;
+  viewCopy = view;
+  hostCopy = host;
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v8 componentIdentifiers];
+  obj = [blueprintCopy componentIdentifiers];
   v10 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
@@ -214,10 +214,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v14 = [v8 componentBlueprintForComponentIdentifier:*(*(&v25 + 1) + 8 * i)];
-        v15 = [v8 layoutOptions];
-        v16 = [v15 columnLayout];
-        v17 = [(SXComponentController *)self presentComponentBlueprint:v14 inHost:v9 columnLayout:v16];
+        v14 = [blueprintCopy componentBlueprintForComponentIdentifier:*(*(&v25 + 1) + 8 * i)];
+        layoutOptions = [blueprintCopy layoutOptions];
+        columnLayout = [layoutOptions columnLayout];
+        v17 = [(SXComponentController *)self presentComponentBlueprint:v14 inHost:hostCopy columnLayout:columnLayout];
 
         if ([v14 hasValidLayout])
         {
@@ -225,14 +225,14 @@
           if (objc_opt_isKindOfClass())
           {
             v18 = v17;
-            v19 = [v14 layoutBlueprint];
-            [(SXComponentController *)self presentBlueprint:v19 forParentComponentView:v18 inHost:v18];
+            layoutBlueprint = [v14 layoutBlueprint];
+            [(SXComponentController *)self presentBlueprint:layoutBlueprint forParentComponentView:v18 inHost:v18];
           }
         }
 
         if (v17)
         {
-          [v24 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -242,94 +242,94 @@
     while (v11);
   }
 
-  if (v22)
+  if (viewCopy)
   {
-    v20 = v24;
-    [v22 setComponentViews:v24];
+    v20 = array;
+    [viewCopy setComponentViews:array];
   }
 
   else
   {
-    v21 = self;
-    v20 = v24;
-    [(SXComponentController *)v21 setNestedComponentViews:v24];
+    selfCopy = self;
+    v20 = array;
+    [(SXComponentController *)selfCopy setNestedComponentViews:array];
   }
 }
 
-- (void)fadeComponent:(id)a3 completion:(id)a4
+- (void)fadeComponent:(id)component completion:(id)completion
 {
   v5 = MEMORY[0x1E6979318];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  componentCopy = component;
   v11 = [v5 animationWithKeyPath:@"opacity"];
   [v11 setFromValue:&unk_1F538A4A8];
   v8 = MEMORY[0x1E696AD98];
-  [v7 alpha];
+  [componentCopy alpha];
   v9 = [v8 numberWithDouble:?];
   [v11 setToValue:v9];
 
   [v11 setDuration:0.3];
-  [MEMORY[0x1E6979518] setCompletionBlock:v6];
+  [MEMORY[0x1E6979518] setCompletionBlock:completionCopy];
 
-  v10 = [v7 layer];
+  layer = [componentCopy layer];
 
-  [v10 addAnimation:v11 forKey:@"opacity"];
+  [layer addAnimation:v11 forKey:@"opacity"];
 }
 
-- (id)presentComponentBlueprint:(id)a3 inHost:(id)a4 columnLayout:(id)a5
+- (id)presentComponentBlueprint:(id)blueprint inHost:(id)host columnLayout:(id)layout
 {
   v126 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SXComponentController *)self mappedComponentViews];
-  v12 = [v8 component];
-  v13 = [v12 identifier];
-  v14 = [v11 objectForKey:v13];
+  blueprintCopy = blueprint;
+  hostCopy = host;
+  layoutCopy = layout;
+  mappedComponentViews = [(SXComponentController *)self mappedComponentViews];
+  component = [blueprintCopy component];
+  identifier = [component identifier];
+  v14 = [mappedComponentViews objectForKey:identifier];
 
-  if ([v8 hasValidLayout] && (objc_msgSend(v8, "isHidden") & 1) == 0)
+  if ([blueprintCopy hasValidLayout] && (objc_msgSend(blueprintCopy, "isHidden") & 1) == 0)
   {
     if (!v14)
     {
-      v15 = [(SXComponentController *)self componentViewEngine];
-      v16 = [v8 component];
-      v14 = [v15 componentViewForComponent:v16];
+      componentViewEngine = [(SXComponentController *)self componentViewEngine];
+      component2 = [blueprintCopy component];
+      v14 = [componentViewEngine componentViewForComponent:component2];
 
       if (v14)
       {
-        [v14 setComponentHost:v9];
-        v17 = [v8 parentLayoutBlueprint];
-        v18 = [v17 componentIdentifiers];
-        v19 = [v8 component];
-        v20 = [v19 identifier];
-        [v14 setComponentIndex:{objc_msgSend(v18, "indexOfObject:", v20)}];
+        [v14 setComponentHost:hostCopy];
+        parentLayoutBlueprint = [blueprintCopy parentLayoutBlueprint];
+        componentIdentifiers = [parentLayoutBlueprint componentIdentifiers];
+        component3 = [blueprintCopy component];
+        identifier2 = [component3 identifier];
+        [v14 setComponentIndex:{objc_msgSend(componentIdentifiers, "indexOfObject:", identifier2)}];
 
-        v21 = [(SXComponentController *)self mappedComponentViews];
-        v22 = [v8 component];
-        v23 = [v22 identifier];
-        [v21 setObject:v14 forKey:v23];
+        mappedComponentViews2 = [(SXComponentController *)self mappedComponentViews];
+        component4 = [blueprintCopy component];
+        identifier3 = [component4 identifier];
+        [mappedComponentViews2 setObject:v14 forKey:identifier3];
 
-        v24 = [(SXComponentController *)self sortedComponentViews];
-        [v24 addObject:v14];
+        sortedComponentViews = [(SXComponentController *)self sortedComponentViews];
+        [sortedComponentViews addObject:v14];
       }
 
       [v14 configure];
     }
 
-    v25 = [v14 component];
-    if (!v25 || (v26 = v25, [v14 component], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "component"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqual:", v28), v28, v27, v26, (v29 & 1) == 0))
+    component5 = [v14 component];
+    if (!component5 || (v26 = component5, [v14 component], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(blueprintCopy, "component"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqual:", v28), v28, v27, v26, (v29 & 1) == 0))
     {
-      v30 = [v8 component];
-      [v14 loadComponent:v30];
+      component6 = [blueprintCopy component];
+      [v14 loadComponent:component6];
     }
 
-    [v8 absoluteFrame];
+    [blueprintCopy absoluteFrame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(SXComponentController *)self viewport];
-    [v39 contentFrame];
+    viewport = [(SXComponentController *)self viewport];
+    [viewport contentFrame];
     MinY = CGRectGetMinY(v128);
     v129.origin.x = v32;
     v129.origin.y = v34;
@@ -341,23 +341,23 @@
     width = v130.size.width;
     height = v130.size.height;
 
-    [v8 componentViewFrame];
+    [blueprintCopy componentViewFrame];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    v53 = [v8 parentLayoutBlueprint];
-    v54 = [v8 rootLayoutBlueprint];
+    parentLayoutBlueprint2 = [blueprintCopy parentLayoutBlueprint];
+    rootLayoutBlueprint = [blueprintCopy rootLayoutBlueprint];
 
-    if (v53 == v54)
+    if (parentLayoutBlueprint2 == rootLayoutBlueprint)
     {
-      [v8 componentViewFrame];
+      [blueprintCopy componentViewFrame];
       v56 = v55;
       v58 = v57;
       v60 = v59;
       v62 = v61;
-      v63 = [(SXComponentController *)self viewport];
-      [v63 contentFrame];
+      viewport2 = [(SXComponentController *)self viewport];
+      [viewport2 contentFrame];
       v64 = CGRectGetMinY(v131);
       v132.origin.x = v56;
       v132.origin.y = v58;
@@ -378,10 +378,10 @@
       v119 = v46;
     }
 
-    v120 = v9;
+    v120 = hostCopy;
     [v14 absoluteFrame];
     v67 = y == v66 && x == v65;
-    [v8 contentFrame];
+    [blueprintCopy contentFrame];
     v69 = v68;
     v71 = v70;
     v73 = v72;
@@ -396,39 +396,39 @@
     v134.size.width = v73;
     v134.size.height = v75;
     v80 = !CGRectEqualToRect(v134, v135);
-    v81 = [v8 componentState];
-    v82 = [v81 identifier];
-    v83 = [v14 state];
-    v84 = [v83 identifier];
-    v85 = [v82 isEqualToString:v84];
+    componentState = [blueprintCopy componentState];
+    identifier4 = [componentState identifier];
+    state = [v14 state];
+    identifier5 = [state identifier];
+    v85 = [identifier4 isEqualToString:identifier5];
 
-    v86 = [v8 componentState];
-    [v14 setState:v86];
+    componentState2 = [blueprintCopy componentState];
+    [v14 setState:componentState2];
 
     [v14 setAbsoluteFrame:{x, y, width, height}];
-    [v8 layoutMargins];
+    [blueprintCopy layoutMargins];
     [v14 setComponentLayoutMargins:?];
-    [v8 contentViewFrame];
+    [blueprintCopy contentViewFrame];
     v88 = v87;
     v90 = v89;
     v92 = v91;
     v94 = v93;
-    v95 = [v14 contentView];
-    [v95 setFrame:{v88, v90, v92, v94}];
+    contentView = [v14 contentView];
+    [contentView setFrame:{v88, v90, v92, v94}];
 
-    [v8 contentFrame];
+    [blueprintCopy contentFrame];
     [v14 setContentFrame:?];
-    [v8 backgroundViewFrame];
+    [blueprintCopy backgroundViewFrame];
     [v14 setBackgroundViewFrame:?];
-    [v8 backgroundViewFrame];
+    [blueprintCopy backgroundViewFrame];
     v97 = v96;
     v99 = v98;
     v101 = v100;
     v103 = v102;
-    v104 = [v14 backgroundView];
-    [v104 setFrame:{v97, v99, v101, v103}];
+    backgroundView = [v14 backgroundView];
+    [backgroundView setFrame:{v97, v99, v101, v103}];
 
-    [v8 borderInsets];
+    [blueprintCopy borderInsets];
     [v14 setBorderInsets:?];
     if ([v14 requiresThoroughFrameCalculations])
     {
@@ -440,7 +440,7 @@
       [v14 setFrame:{v119, v118, v117, v116}];
     }
 
-    [v14 setDocumentColumnLayout:v10];
+    [v14 setDocumentColumnLayout:layoutCopy];
     v105 = 0x10000;
     if (v85)
     {
@@ -458,8 +458,8 @@
     v124 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v107 = [v8 infoFromLayouting];
-    v108 = [v107 countByEnumeratingWithState:&v121 objects:v125 count:16];
+    infoFromLayouting = [blueprintCopy infoFromLayouting];
+    v108 = [infoFromLayouting countByEnumeratingWithState:&v121 objects:v125 count:16];
     if (v108)
     {
       v109 = v108;
@@ -470,37 +470,37 @@
         {
           if (*v122 != v110)
           {
-            objc_enumerationMutation(v107);
+            objc_enumerationMutation(infoFromLayouting);
           }
 
           v112 = *(*(&v121 + 1) + 8 * i);
-          v113 = [v8 infoFromLayouting];
-          v114 = [v113 objectForKeyedSubscript:v112];
+          infoFromLayouting2 = [blueprintCopy infoFromLayouting];
+          v114 = [infoFromLayouting2 objectForKeyedSubscript:v112];
 
           [v14 receivedInfo:v114 fromLayoutingPhaseWithIdentifier:v112];
         }
 
-        v109 = [v107 countByEnumeratingWithState:&v121 objects:v125 count:16];
+        v109 = [infoFromLayouting countByEnumeratingWithState:&v121 objects:v125 count:16];
       }
 
       while (v109);
     }
 
-    v9 = v120;
+    hostCopy = v120;
   }
 
   return v14;
 }
 
-- (void)presentComponentsInBlueprint:(id)a3
+- (void)presentComponentsInBlueprint:(id)blueprint
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = a3;
-  obj = [v19 componentIdentifiers];
+  blueprintCopy = blueprint;
+  obj = [blueprintCopy componentIdentifiers];
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -516,31 +516,31 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [v19 componentBlueprintForComponentIdentifier:*(*(&v20 + 1) + 8 * v8)];
-        v10 = [(SXComponentController *)self mappedComponentViews];
-        v11 = [v9 component];
-        v12 = [v11 identifier];
-        v13 = [v10 objectForKey:v12];
+        v9 = [blueprintCopy componentBlueprintForComponentIdentifier:*(*(&v20 + 1) + 8 * v8)];
+        mappedComponentViews = [(SXComponentController *)self mappedComponentViews];
+        component = [v9 component];
+        identifier = [component identifier];
+        v13 = [mappedComponentViews objectForKey:identifier];
 
         [v13 setPresentationState:1];
         v4 = v4 & 0xFFFFFFFFFF000000 | [v13 presentationChanges] & 0xFFFFFF;
         [v13 willPresentComponentWithChanges:v4];
         if (([v13 allowHierarchyRemoval] & 1) == 0)
         {
-          v14 = [v13 superview];
+          superview = [v13 superview];
 
-          if (!v14)
+          if (!superview)
           {
-            v15 = [v13 componentHost];
-            [v15 addComponentView:v13];
+            componentHost = [v13 componentHost];
+            [componentHost addComponentView:v13];
           }
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v9 layoutBlueprint];
-          [(SXComponentController *)self presentComponentsInBlueprint:v16];
+          layoutBlueprint = [v9 layoutBlueprint];
+          [(SXComponentController *)self presentComponentsInBlueprint:layoutBlueprint];
         }
 
         v3 = v3 & 0xFFFFFFFFFF000000 | [v13 presentationChanges] & 0xFFFFFF;
@@ -558,19 +558,19 @@
   }
 }
 
-- (void)removeComponentsInLayoutBlueprint:(id)a3 removedFromLayoutBlueprint:(id)a4
+- (void)removeComponentsInLayoutBlueprint:(id)blueprint removedFromLayoutBlueprint:(id)layoutBlueprint
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  blueprintCopy = blueprint;
+  layoutBlueprintCopy = layoutBlueprint;
+  if (blueprintCopy)
   {
     v8 = [MEMORY[0x1E695DFA8] set];
-    v9 = [v6 componentIdentifiers];
-    [v8 addObjectsFromArray:v9];
+    componentIdentifiers = [blueprintCopy componentIdentifiers];
+    [v8 addObjectsFromArray:componentIdentifiers];
 
-    v10 = [v7 componentIdentifiers];
-    [v8 addObjectsFromArray:v10];
+    componentIdentifiers2 = [layoutBlueprintCopy componentIdentifiers];
+    [v8 addObjectsFromArray:componentIdentifiers2];
 
     v31 = 0u;
     v32 = 0u;
@@ -591,50 +591,50 @@
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
-          v13 = [v6 componentBlueprintForComponentIdentifier:v12];
-          v14 = [v7 componentBlueprintForComponentIdentifier:v12];
+          v13 = [blueprintCopy componentBlueprintForComponentIdentifier:v12];
+          v14 = [layoutBlueprintCopy componentBlueprintForComponentIdentifier:v12];
           v15 = v14;
           if (!v14 || [v14 isHidden])
           {
             [(SXComponentController *)self mappedComponentViews];
-            v16 = v7;
-            v18 = v17 = v6;
+            v16 = layoutBlueprintCopy;
+            v18 = v17 = blueprintCopy;
             v19 = [v18 objectForKey:v12];
 
             [v19 discardContents];
             [v19 setPresentationState:0];
             [v19 setVisibilityState:2];
-            v20 = [v19 componentHost];
-            [v20 removeComponentView:v19];
+            componentHost = [v19 componentHost];
+            [componentHost removeComponentView:v19];
 
-            v21 = [(SXComponentController *)self mappedComponentViews];
-            [v21 removeObjectForKey:v12];
+            mappedComponentViews = [(SXComponentController *)self mappedComponentViews];
+            [mappedComponentViews removeObjectForKey:v12];
 
-            v6 = v17;
-            v7 = v16;
-            v22 = [(SXComponentController *)self sortedComponentViews];
-            [v22 removeObject:v19];
+            blueprintCopy = v17;
+            layoutBlueprintCopy = v16;
+            sortedComponentViews = [(SXComponentController *)self sortedComponentViews];
+            [sortedComponentViews removeObject:v19];
 
-            v23 = [(SXComponentController *)self nestedComponentViews];
-            [v23 removeObject:v19];
+            nestedComponentViews = [(SXComponentController *)self nestedComponentViews];
+            [nestedComponentViews removeObject:v19];
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [v13 layoutBlueprint];
+            layoutBlueprint = [v13 layoutBlueprint];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v25 = [v15 layoutBlueprint];
+              layoutBlueprint2 = [v15 layoutBlueprint];
             }
 
             else
             {
-              v25 = 0;
+              layoutBlueprint2 = 0;
             }
 
-            [(SXComponentController *)self removeComponentsInLayoutBlueprint:v24 removedFromLayoutBlueprint:v25];
+            [(SXComponentController *)self removeComponentsInLayoutBlueprint:layoutBlueprint removedFromLayoutBlueprint:layoutBlueprint2];
           }
         }
 
@@ -646,53 +646,53 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXComponentController *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SXComponentController *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXComponentController *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SXComponentController *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (id)componentsInRect:(CGRect)a3
+- (id)componentsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SXComponentController *)self presentedBlueprint];
-  v8 = [v7 componentsInRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  presentedBlueprint = [(SXComponentController *)self presentedBlueprint];
+  v8 = [presentedBlueprint componentsInRect:{x, y, width, height}];
 
   return v8;
 }
 
-- (id)componentViewForPoint:(CGPoint)a3
+- (id)componentViewForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SXComponentController *)self componentViews];
-  v7 = [(SXComponentController *)self componentViewForPoint:v6 inComponents:x, y];
+  y = point.y;
+  x = point.x;
+  componentViews = [(SXComponentController *)self componentViews];
+  v7 = [(SXComponentController *)self componentViewForPoint:componentViews inComponents:x, y];
 
   return v7;
 }
 
-- (id)componentViewForPoint:(CGPoint)a3 inComponents:(id)a4
+- (id)componentViewForPoint:(CGPoint)point inComponents:(id)components
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  componentsCopy = components;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [componentsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -704,7 +704,7 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -721,8 +721,8 @@
             v16 = v15;
             if (isKindOfClass)
             {
-              v17 = [v15 componentViews];
-              v18 = [(SXComponentController *)self componentViewForPoint:v17 inComponents:x, y];
+              componentViews = [v15 componentViews];
+              v18 = [(SXComponentController *)self componentViewForPoint:componentViews inComponents:x, y];
 
               if (v18)
               {
@@ -742,7 +742,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [componentsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -756,25 +756,25 @@
   return v10;
 }
 
-- (id)componentViewsForRole:(int)a3
+- (id)componentViewsForRole:(int)role
 {
-  v3 = *&a3;
-  v5 = [(SXComponentController *)self presentedBlueprint];
-  v6 = [(SXComponentController *)self componentViewsForRole:v3 forLayoutBlueprint:v5];
+  v3 = *&role;
+  presentedBlueprint = [(SXComponentController *)self presentedBlueprint];
+  v6 = [(SXComponentController *)self componentViewsForRole:v3 forLayoutBlueprint:presentedBlueprint];
 
   return v6;
 }
 
-- (id)componentViewsForRole:(int)a3 forLayoutBlueprint:(id)a4
+- (id)componentViewsForRole:(int)role forLayoutBlueprint:(id)blueprint
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SXComponentController *)self flattenedComponentViews];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  flattenedComponentViews = [(SXComponentController *)self flattenedComponentViews];
+  v8 = [flattenedComponentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -785,47 +785,47 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(flattenedComponentViews);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 classification];
-        v14 = [objc_opt_class() role];
+        classification = [v12 classification];
+        role = [objc_opt_class() role];
 
-        if (v14 == a3)
+        if (role == role)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [flattenedComponentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
-- (id)componentViewForIdentifier:(id)a3
+- (id)componentViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentController *)self mappedComponentViews];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  mappedComponentViews = [(SXComponentController *)self mappedComponentViews];
+  v6 = [mappedComponentViews objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (void)provideInfosLayoutTo:(id)a3
+- (void)provideInfosLayoutTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SXComponentController *)self flattenedComponentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  flattenedComponentViews = [(SXComponentController *)self flattenedComponentViews];
+  v6 = [flattenedComponentViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -837,33 +837,33 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(flattenedComponentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) provideInfosLayoutTo:v4];
+        [*(*(&v10 + 1) + 8 * v9++) provideInfosLayoutTo:toCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [flattenedComponentViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 appearState];
-  if (a4 && !v7)
+  viewportCopy = viewport;
+  appearState = [viewportCopy appearState];
+  if (state && !appearState)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(SXComponentController *)self flattenedComponentViews];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    flattenedComponentViews = [(SXComponentController *)self flattenedComponentViews];
+    v9 = [flattenedComponentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -874,7 +874,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(flattenedComponentViews);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -884,41 +884,41 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [flattenedComponentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [(SXComponentController *)self flattenedComponentViews];
-    [(SXComponentController *)self updateVisibilityStatesForComponentViews:v14 toState:2];
+    flattenedComponentViews2 = [(SXComponentController *)self flattenedComponentViews];
+    [(SXComponentController *)self updateVisibilityStatesForComponentViews:flattenedComponentViews2 toState:2];
     goto LABEL_15;
   }
 
-  if ([v6 appearState])
+  if ([viewportCopy appearState])
   {
-    v14 = [(SXComponentController *)self componentViews];
-    [(SXComponentController *)self renderContentsIfNeededForComponents:v14];
+    flattenedComponentViews2 = [(SXComponentController *)self componentViews];
+    [(SXComponentController *)self renderContentsIfNeededForComponents:flattenedComponentViews2];
 LABEL_15:
   }
 
-  if (!a4 && [v6 appearState])
+  if (!state && [viewportCopy appearState])
   {
-    v15 = [(SXComponentController *)self componentViews];
-    [(SXComponentController *)self updateVisibilityStatesForComponentViews:v15];
+    componentViews = [(SXComponentController *)self componentViews];
+    [(SXComponentController *)self updateVisibilityStatesForComponentViews:componentViews];
   }
 }
 
-- (void)viewport:(id)a3 boundsDidChangeFromBounds:(CGRect)a4
+- (void)viewport:(id)viewport boundsDidChangeFromBounds:(CGRect)bounds
 {
-  v5 = [(SXComponentController *)self flattenedComponentViews:a3];
+  v5 = [(SXComponentController *)self flattenedComponentViews:viewport];
   [(SXComponentController *)self renderContentsIfNeededForComponents:v5];
 }
 
 - (CGRect)renderBounds
 {
-  v3 = [(SXComponentController *)self viewport];
-  if ([v3 appearState] == 2)
+  viewport = [(SXComponentController *)self viewport];
+  if ([viewport appearState] == 2)
   {
     v4 = 1.0;
   }
@@ -928,12 +928,12 @@ LABEL_15:
     v4 = 0.0;
   }
 
-  v5 = [(SXComponentController *)self viewport];
-  [v5 bounds];
+  viewport2 = [(SXComponentController *)self viewport];
+  [viewport2 bounds];
   v7 = v6;
 
-  v8 = [(SXComponentController *)self viewport];
-  [v8 bounds];
+  viewport3 = [(SXComponentController *)self viewport];
+  [viewport3 bounds];
   v10 = v9;
   v12 = v11;
 
@@ -948,10 +948,10 @@ LABEL_15:
   return result;
 }
 
-- (void)renderContentsIfNeededForComponents:(id)a3
+- (void)renderContentsIfNeededForComponents:(id)components
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  componentsCopy = components;
   [(SXComponentController *)self renderBounds];
   v6 = v5;
   v8 = v7;
@@ -961,7 +961,7 @@ LABEL_15:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v13 = v4;
+  v13 = componentsCopy;
   v14 = [v13 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v14)
   {
@@ -990,25 +990,25 @@ LABEL_15:
         if (!v23 && ([v18 allowHierarchyRemoval] & 1) != 0)
         {
 LABEL_10:
-          v25 = [v18 superview];
-          if (v25)
+          superview = [v18 superview];
+          if (superview)
           {
-            v26 = v25;
-            v27 = [v18 allowHierarchyRemoval];
+            v26 = superview;
+            allowHierarchyRemoval = [v18 allowHierarchyRemoval];
 
-            if (v27)
+            if (allowHierarchyRemoval)
             {
-              v28 = [v18 componentHost];
-              [v28 removeComponentView:v18];
+              componentHost = [v18 componentHost];
+              [componentHost removeComponentView:v18];
             }
           }
 
           continue;
         }
 
-        v24 = [v18 superview];
+        superview2 = [v18 superview];
 
-        if (v24)
+        if (superview2)
         {
           if (!v23)
           {
@@ -1018,8 +1018,8 @@ LABEL_10:
 
         else
         {
-          v29 = [v18 componentHost];
-          [v29 addComponentView:v18];
+          componentHost2 = [v18 componentHost];
+          [componentHost2 addComponentView:v18];
 
           v36 = v18;
           v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
@@ -1031,9 +1031,9 @@ LABEL_10:
           }
         }
 
-        v31 = [v18 superview];
+        superview3 = [v18 superview];
 
-        if (v31)
+        if (superview3)
         {
           [v18 renderContentsIfNeeded];
         }
@@ -1046,27 +1046,27 @@ LABEL_10:
   }
 }
 
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds
 {
-  v5 = [(SXComponentController *)self viewport:a3];
-  v6 = [v5 appearState];
+  v5 = [(SXComponentController *)self viewport:viewport];
+  appearState = [v5 appearState];
 
-  if (v6)
+  if (appearState)
   {
-    v7 = [(SXComponentController *)self componentViews];
-    [(SXComponentController *)self updateVisibilityStatesForComponentViews:v7];
+    componentViews = [(SXComponentController *)self componentViews];
+    [(SXComponentController *)self updateVisibilityStatesForComponentViews:componentViews];
   }
 }
 
-- (void)updateVisibilityStatesForComponentViews:(id)a3 toState:(int64_t)a4
+- (void)updateVisibilityStatesForComponentViews:(id)views toState:(int64_t)state
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewsCopy = views;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [viewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1078,29 +1078,29 @@ LABEL_10:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewsCopy);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setVisibilityState:a4];
+        [*(*(&v10 + 1) + 8 * v9++) setVisibilityState:state];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [viewsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)updateVisibilityStatesForComponentViews:(id)a3 parentComponent:(id)a4 withOffset:(CGPoint)a5
+- (void)updateVisibilityStatesForComponentViews:(id)views parentComponent:(id)component withOffset:(CGPoint)offset
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  viewsCopy = views;
+  componentCopy = component;
   if ([(SXComponentController *)self isPresented])
   {
-    v9 = [(SXComponentController *)self viewport];
-    [v9 dynamicBounds];
+    viewport = [(SXComponentController *)self viewport];
+    [viewport dynamicBounds];
     v61 = v11;
     v62 = v10;
     v13 = v12;
@@ -1110,13 +1110,13 @@ LABEL_10:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v16 = v7;
+    v16 = viewsCopy;
     v17 = [v16 countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v17)
     {
       v18 = v17;
       v19 = *v64;
-      v21 = a5.y != 1.79769313e308 && v8 != 0;
+      v21 = offset.y != 1.79769313e308 && componentCopy != 0;
       v60 = v21;
       do
       {
@@ -1128,9 +1128,9 @@ LABEL_10:
           }
 
           v23 = *(*(&v63 + 1) + 8 * i);
-          v24 = [v23 superview];
+          superview = [v23 superview];
 
-          if (v24)
+          if (superview)
           {
             if (([v23 requiresThoroughFrameCalculations] & 1) != 0 || ((objc_msgSend(v23, "absoluteFrame"), v26 < v13) || (objc_msgSend(v23, "absoluteFrame"), v27 > v13 + v15)) && ((objc_msgSend(v23, "absoluteFrame"), v29 = v28, objc_msgSend(v23, "absoluteFrame"), v25 = v29 + v30, v29 + v30 <= v13) || (objc_msgSend(v23, "absoluteFrame", v25), v31 > v13)))
             {
@@ -1141,21 +1141,21 @@ LABEL_10:
                 v35 = v34;
                 v37 = v36;
                 v39 = v38;
-                v40 = [v8 contentView];
-                v41 = [v23 superview];
+                contentView = [componentCopy contentView];
+                superview2 = [v23 superview];
 
-                if (v40 == v41)
+                if (contentView == superview2)
                 {
-                  v44 = a5.x + v33;
-                  v46 = a5.y + v35;
+                  v44 = offset.x + v33;
+                  v46 = offset.y + v35;
                 }
 
                 else
                 {
                   if (v60)
                   {
-                    v42 = [v23 superview];
-                    [v8 convertRect:v42 fromView:{v33, v35, v37, v39}];
+                    superview3 = [v23 superview];
+                    [componentCopy convertRect:superview3 fromView:{v33, v35, v37, v39}];
                     v44 = v43;
                     v46 = v45;
                     v37 = v47;
@@ -1164,9 +1164,9 @@ LABEL_10:
 
                   else
                   {
-                    v42 = [(SXComponentController *)self viewport];
-                    v50 = [v23 superview];
-                    [v42 convertRect:v50 fromView:{v33, v35, v37, v39}];
+                    superview3 = [(SXComponentController *)self viewport];
+                    superview4 = [v23 superview];
+                    [superview3 convertRect:superview4 fromView:{v33, v35, v37, v39}];
                     v44 = v51;
                     v46 = v52;
                     v37 = v53;
@@ -1228,9 +1228,9 @@ LABEL_10:
             if (objc_opt_isKindOfClass())
             {
               v57 = v23;
-              v58 = [v57 componentViews];
+              componentViews = [v57 componentViews];
               [v57 absoluteFrame];
-              [(SXComponentController *)self updateVisibilityStatesForComponentViews:v58 parentComponent:v57 withOffset:?];
+              [(SXComponentController *)self updateVisibilityStatesForComponentViews:componentViews parentComponent:v57 withOffset:?];
             }
           }
         }
@@ -1250,8 +1250,8 @@ LABEL_10:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SXComponentController *)self flattenedComponentViews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  flattenedComponentViews = [(SXComponentController *)self flattenedComponentViews];
+  v4 = [flattenedComponentViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1263,32 +1263,32 @@ LABEL_10:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(flattenedComponentViews);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) assistiveTechnologyStatusDidChange];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [flattenedComponentViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SXComponentController *)self flattenedComponentViews];
-  [(SXComponentController *)self renderContentsIfNeededForComponents:v8];
+  flattenedComponentViews2 = [(SXComponentController *)self flattenedComponentViews];
+  [(SXComponentController *)self renderContentsIfNeededForComponents:flattenedComponentViews2];
 }
 
-- (void)updatePresentationStateForNestedComponentViews:(id)a3 presentationState:(int64_t)a4
+- (void)updatePresentationStateForNestedComponentViews:(id)views presentationState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewsCopy = views;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [viewsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1300,29 +1300,29 @@ LABEL_10:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewsCopy);
         }
 
-        [(SXComponentController *)self updatePresentationStateForNestedComponentView:*(*(&v11 + 1) + 8 * v10++) presentationState:a4];
+        [(SXComponentController *)self updatePresentationStateForNestedComponentView:*(*(&v11 + 1) + 8 * v10++) presentationState:state];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [viewsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)updatePresentationStateForNestedComponentView:(id)a3 presentationState:(int64_t)a4
+- (void)updatePresentationStateForNestedComponentView:(id)view presentationState:(int64_t)state
 {
-  v7 = a3;
-  [v7 setPresentationState:a4];
+  viewCopy = view;
+  [viewCopy setPresentationState:state];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v7 componentViews];
-    [(SXComponentController *)self updatePresentationStateForNestedComponentViews:v6 presentationState:a4];
+    componentViews = [viewCopy componentViews];
+    [(SXComponentController *)self updatePresentationStateForNestedComponentViews:componentViews presentationState:state];
   }
 }
 

@@ -2,7 +2,7 @@
 - (BOOL)isValid;
 - (id)getPostData;
 - (id)getUrl;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDCheckInRequest
@@ -16,14 +16,14 @@
     return 0;
   }
 
-  v3 = [(MSDCheckInRequest *)self serialNumber];
-  if (v3)
+  serialNumber = [(MSDCheckInRequest *)self serialNumber];
+  if (serialNumber)
   {
-    v4 = [(MSDCheckInRequest *)self osVersion];
-    if (v4)
+    osVersion = [(MSDCheckInRequest *)self osVersion];
+    if (osVersion)
     {
-      v5 = [(MSDCheckInRequest *)self language];
-      v6 = v5 != 0;
+      language = [(MSDCheckInRequest *)self language];
+      v6 = language != 0;
     }
 
     else
@@ -43,17 +43,17 @@
 - (id)getPostData
 {
   v14[0] = @"serial_number";
-  v3 = [(MSDCheckInRequest *)self serialNumber];
-  v15[0] = v3;
+  serialNumber = [(MSDCheckInRequest *)self serialNumber];
+  v15[0] = serialNumber;
   v14[1] = @"os_version";
-  v4 = [(MSDCheckInRequest *)self osVersion];
-  v15[1] = v4;
+  osVersion = [(MSDCheckInRequest *)self osVersion];
+  v15[1] = osVersion;
   v14[2] = @"language";
-  v5 = [(MSDCheckInRequest *)self language];
-  v15[2] = v5;
+  language = [(MSDCheckInRequest *)self language];
+  v15[2] = language;
   v14[3] = @"country";
-  v6 = [(MSDCheckInRequest *)self countryCode];
-  v15[3] = v6;
+  countryCode = [(MSDCheckInRequest *)self countryCode];
+  v15[3] = countryCode;
   v14[4] = @"has_factory_content";
   v7 = [NSNumber numberWithBool:[(MSDCheckInRequest *)self hasFactoryContent]];
   v15[4] = v7;
@@ -67,39 +67,39 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Request dictionary to check_in: %{public}@", &v12, 0xCu);
   }
 
-  v10 = [v8 convertToNSData];
+  convertToNSData = [v8 convertToNSData];
 
-  return v10;
+  return convertToNSData;
 }
 
 - (id)getUrl
 {
-  v2 = [(MSDCommandServerRequest *)self deviceUDID];
-  v3 = [NSString stringWithFormat:@"/api/device/1/%@/check_in", v2];
+  deviceUDID = [(MSDCommandServerRequest *)self deviceUDID];
+  v3 = [NSString stringWithFormat:@"/api/device/1/%@/check_in", deviceUDID];
 
   return v3;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v20.receiver = self;
   v20.super_class = MSDCheckInRequest;
-  v8 = [(MSDServerRequest *)&v20 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v20 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v13 = 0;
     v10 = 0;
-    v11 = v6;
+    v11 = errorCopy;
   }
 
   else
   {
-    v19 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v19];
+    v19 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v19];
     v11 = v19;
 
     if (v10)
@@ -147,9 +147,9 @@
     }
   }
 
-  v16 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v16)
+  if (!error2)
   {
     v18 = v11;
     sub_1000C1390(&v18, 3727744512, @"Unexpected server response.");

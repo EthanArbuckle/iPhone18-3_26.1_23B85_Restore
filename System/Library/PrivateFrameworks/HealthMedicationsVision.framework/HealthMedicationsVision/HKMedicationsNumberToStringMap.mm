@@ -1,7 +1,7 @@
 @interface HKMedicationsNumberToStringMap
 - (HKMedicationsNumberToStringMap)init;
-- (id)stringForKey:(int64_t)a3;
-- (void)setString:(id)a3 forKey:(int64_t)a4;
+- (id)stringForKey:(int64_t)key;
+- (void)setString:(id)string forKey:(int64_t)key;
 @end
 
 @implementation HKMedicationsNumberToStringMap
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (id)stringForKey:(int64_t)a3
+- (id)stringForKey:(int64_t)key
 {
   storage = self->_storage;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:key];
   v5 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setString:(id)a3 forKey:(int64_t)a4
+- (void)setString:(id)string forKey:(int64_t)key
 {
   storage = self->_storage;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  [(NSMutableDictionary *)storage setObject:v7 forKeyedSubscript:v8];
+  stringCopy = string;
+  v8 = [v6 numberWithInteger:key];
+  [(NSMutableDictionary *)storage setObject:stringCopy forKeyedSubscript:v8];
 }
 
 @end

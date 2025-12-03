@@ -1,15 +1,15 @@
 @interface PHASEMaterial
 - (PHASEMaterial)init;
 - (PHASEMaterial)initWithEngine:(PHASEEngine *)engine preset:(PHASEMaterialPreset)preset;
-- (PHASEMaterial)initWithEngine:(id)a3 preset:(int64_t)a4 soundReductionIndex:(id)a5 absorptionData:(id)a6 scatteringData:(id)a7;
-- (PHASEMaterial)initWithEngine:(id)a3 semantics:(id)a4;
-- (PHASEMaterial)initWithEngine:(id)a3 soundReductionIndex:(id)a4 absorptionData:(id)a5 scatteringData:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHASEMaterial)initWithEngine:(id)engine preset:(int64_t)preset soundReductionIndex:(id)index absorptionData:(id)data scatteringData:(id)scatteringData;
+- (PHASEMaterial)initWithEngine:(id)engine semantics:(id)semantics;
+- (PHASEMaterial)initWithEngine:(id)engine soundReductionIndex:(id)index absorptionData:(id)data scatteringData:(id)scatteringData;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAttenuationScale:(float)a3;
-- (void)setAttenuationShift:(float)a3;
-- (void)setAttenuationTilt:(float)a3;
-- (void)writeMaterialCoefs:(BOOL)a3;
+- (void)setAttenuationScale:(float)scale;
+- (void)setAttenuationShift:(float)shift;
+- (void)setAttenuationTilt:(float)tilt;
+- (void)writeMaterialCoefs:(BOOL)coefs;
 @end
 
 @implementation PHASEMaterial
@@ -25,7 +25,7 @@
 {
   v123 = *MEMORY[0x277D85DE8];
   v98 = engine;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7 = objc_opt_class();
   if (!v7)
   {
@@ -57,7 +57,7 @@
         v97 = v33;
         v34 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v35 = v104;
-        [v6 addEntriesFromDictionary:v34];
+        [dictionary addEntriesFromDictionary:v34];
 
         v36 = *MEMORY[0x277CE8788];
         v103 = 0;
@@ -65,13 +65,13 @@
         v37 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v38 = v103;
 
-        [v6 addEntriesFromDictionary:v37];
+        [dictionary addEntriesFromDictionary:v37];
         v14 = *MEMORY[0x277CE8790];
         v102 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Drywall_DoubleSheet" error:&v102];
         v16 = v102;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       case PHASEMaterialPresetGlass:
         v46 = *MEMORY[0x277CE8780];
@@ -79,7 +79,7 @@
         v97 = v46;
         v47 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v48 = v113;
-        [v6 addEntriesFromDictionary:v47];
+        [dictionary addEntriesFromDictionary:v47];
 
         v49 = *MEMORY[0x277CE8788];
         v112 = 0;
@@ -87,13 +87,13 @@
         v50 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v51 = v112;
 
-        [v6 addEntriesFromDictionary:v50];
+        [dictionary addEntriesFromDictionary:v50];
         v14 = *MEMORY[0x277CE8790];
         v111 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Window_SinglePane" error:&v111];
         v16 = v111;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       case PHASEMaterialPresetWood:
         v21 = *MEMORY[0x277CE8780];
@@ -101,7 +101,7 @@
         v97 = v21;
         v22 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v23 = v101;
-        [v6 addEntriesFromDictionary:v22];
+        [dictionary addEntriesFromDictionary:v22];
 
         v24 = *MEMORY[0x277CE8788];
         v100 = 0;
@@ -109,13 +109,13 @@
         v25 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v26 = v100;
 
-        [v6 addEntriesFromDictionary:v25];
+        [dictionary addEntriesFromDictionary:v25];
         v14 = *MEMORY[0x277CE8790];
         v99 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Wall_Wood_Medium_BT15 mm_150mm" error:&v99];
         v16 = v99;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       default:
         goto LABEL_16;
@@ -132,7 +132,7 @@
         v97 = v27;
         v28 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v29 = v110;
-        [v6 addEntriesFromDictionary:v28];
+        [dictionary addEntriesFromDictionary:v28];
 
         v30 = *MEMORY[0x277CE8788];
         v109 = 0;
@@ -140,13 +140,13 @@
         v31 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v32 = v109;
 
-        [v6 addEntriesFromDictionary:v31];
+        [dictionary addEntriesFromDictionary:v31];
         v14 = *MEMORY[0x277CE8790];
         v108 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Brickwork_General" error:&v108];
         v16 = v108;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       case PHASEMaterialPresetConcrete:
         v40 = *MEMORY[0x277CE8780];
@@ -154,7 +154,7 @@
         v97 = v40;
         v41 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v42 = v107;
-        [v6 addEntriesFromDictionary:v41];
+        [dictionary addEntriesFromDictionary:v41];
 
         v43 = *MEMORY[0x277CE8788];
         v106 = 0;
@@ -162,13 +162,13 @@
         v44 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v45 = v106;
 
-        [v6 addEntriesFromDictionary:v44];
+        [dictionary addEntriesFromDictionary:v44];
         v14 = *MEMORY[0x277CE8790];
         v105 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Wall_Concrete_Thickness_GT200mm" error:&v105];
         v16 = v105;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       case PHASEMaterialPresetCardboard:
         v8 = *MEMORY[0x277CE8780];
@@ -176,7 +176,7 @@
         v97 = v8;
         v9 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v10 = v116;
-        [v6 addEntriesFromDictionary:v9];
+        [dictionary addEntriesFromDictionary:v9];
 
         v11 = *MEMORY[0x277CE8788];
         v115 = 0;
@@ -184,13 +184,13 @@
         v12 = [MEMORY[0x277CE87B8] acousticParameters:? forMaterialName:? error:?];
         v13 = v115;
 
-        [v6 addEntriesFromDictionary:v12];
+        [dictionary addEntriesFromDictionary:v12];
         v14 = *MEMORY[0x277CE8790];
         v114 = 0;
         v15 = [MEMORY[0x277CE87B8] acousticParameters:v14 forMaterialName:@"Cardboard_3mm" error:&v114];
         v16 = v114;
 
-        [v6 addEntriesFromDictionary:v15];
+        [dictionary addEntriesFromDictionary:v15];
         break;
       default:
 LABEL_16:
@@ -213,13 +213,13 @@ LABEL_16:
     v53 = **(Phase::Logger::GetInstance(v52) + 448);
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
-      v54 = [v16 localizedDescription];
+      localizedDescription = [v16 localizedDescription];
       *buf = 136315650;
       v118 = "PHASEMaterial.mm";
       v119 = 1024;
       v120 = 687;
       v121 = 2112;
-      v122 = v54;
+      v122 = localizedDescription;
       _os_log_impl(&dword_23A302000, v53, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@] - Returning default material.", buf, 0x1Cu);
     }
 
@@ -231,27 +231,27 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  if (!v6)
+  if (!dictionary)
   {
     v59 = **(Phase::Logger::GetInstance(v52) + 448);
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
     {
-      v82 = [0 localizedDescription];
+      localizedDescription2 = [0 localizedDescription];
       *buf = 136315650;
       v118 = "PHASEMaterial.mm";
       v119 = 1024;
       v120 = 629;
       v121 = 2112;
-      v122 = v82;
+      v122 = localizedDescription2;
       _os_log_impl(&dword_23A302000, v59, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@]", buf, 0x1Cu);
     }
 
     goto LABEL_53;
   }
 
-  v59 = [v6 objectForKey:v97];
-  v60 = [v6 objectForKey:v96];
-  v61 = [v6 objectForKey:v14];
+  v59 = [dictionary objectForKey:v97];
+  v60 = [dictionary objectForKey:v96];
+  v61 = [dictionary objectForKey:v14];
   v95 = v61;
   v94 = v60;
   if (!v59)
@@ -260,13 +260,13 @@ LABEL_16:
     v83 = **(Phase::Logger::GetInstance(v61) + 448);
     if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
     {
-      v84 = [0 localizedDescription];
+      localizedDescription3 = [0 localizedDescription];
       *buf = 136315650;
       v118 = "PHASEMaterial.mm";
       v119 = 1024;
       v120 = 646;
       v121 = 2112;
-      v122 = v84;
+      v122 = localizedDescription3;
       _os_log_impl(&dword_23A302000, v83, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@]", buf, 0x1Cu);
     }
 
@@ -274,15 +274,15 @@ LABEL_16:
   }
 
   v62 = [PHASEAbsorptionData alloc];
-  v63 = [v59 absorptionReferenceData];
-  v64 = [v59 frequencyBands];
-  v65 = [(PHASEAbsorptionData *)v62 initWithAbsorptionCoefficients:v63 frequencyBands:v64];
-  [v6 setObject:v65 forKeyedSubscript:v97];
+  absorptionReferenceData = [v59 absorptionReferenceData];
+  frequencyBands = [v59 frequencyBands];
+  v65 = [(PHASEAbsorptionData *)v62 initWithAbsorptionCoefficients:absorptionReferenceData frequencyBands:frequencyBands];
+  [dictionary setObject:v65 forKeyedSubscript:v97];
 
-  v66 = [v6 objectForKeyedSubscript:v97];
-  LODWORD(v64) = v66 == 0;
+  v66 = [dictionary objectForKeyedSubscript:v97];
+  LODWORD(frequencyBands) = v66 == 0;
 
-  if (v64)
+  if (frequencyBands)
   {
     v85 = **(Phase::Logger::GetInstance(v67) + 448);
     if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -302,13 +302,13 @@ LABEL_16:
     v83 = **(Phase::Logger::GetInstance(v67) + 448);
     if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
     {
-      v86 = [0 localizedDescription];
+      localizedDescription4 = [0 localizedDescription];
       *buf = 136315650;
       v118 = "PHASEMaterial.mm";
       v119 = 1024;
       v120 = 663;
       v121 = 2112;
-      v122 = v86;
+      v122 = localizedDescription4;
       _os_log_impl(&dword_23A302000, v83, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@]", buf, 0x1Cu);
     }
 
@@ -316,20 +316,20 @@ LABEL_37:
 
 LABEL_53:
 LABEL_54:
-    v58 = 0;
+    selfCopy = 0;
     goto LABEL_55;
   }
 
   v68 = [PHASEScatteringData alloc];
-  v92 = [v94 scatteringReferenceData];
-  v69 = [v94 frequencyBands];
-  v70 = [(PHASEScatteringData *)v68 initWithScatteringCoefficients:v92 frequencyBands:v69];
-  [v6 setObject:v70 forKeyedSubscript:v96];
+  scatteringReferenceData = [v94 scatteringReferenceData];
+  frequencyBands2 = [v94 frequencyBands];
+  v70 = [(PHASEScatteringData *)v68 initWithScatteringCoefficients:scatteringReferenceData frequencyBands:frequencyBands2];
+  [dictionary setObject:v70 forKeyedSubscript:v96];
 
-  v71 = [v6 objectForKeyedSubscript:v96];
-  LODWORD(v69) = v71 == 0;
+  v71 = [dictionary objectForKeyedSubscript:v96];
+  LODWORD(frequencyBands2) = v71 == 0;
 
-  if (v69)
+  if (frequencyBands2)
   {
     v87 = **(Phase::Logger::GetInstance(v72) + 448);
     if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
@@ -349,13 +349,13 @@ LABEL_54:
     v88 = **(Phase::Logger::GetInstance(v72) + 448);
     if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
     {
-      v89 = [0 localizedDescription];
+      localizedDescription5 = [0 localizedDescription];
       *buf = 136315650;
       v118 = "PHASEMaterial.mm";
       v119 = 1024;
       v120 = 681;
       v121 = 2112;
-      v122 = v89;
+      v122 = localizedDescription5;
       _os_log_impl(&dword_23A302000, v88, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@]", buf, 0x1Cu);
     }
 
@@ -363,14 +363,14 @@ LABEL_54:
   }
 
   v73 = [PHASESoundReductionIndex alloc];
-  v93 = [(Phase::Logger *)v95 soundReductionIndexReferenceData];
-  v74 = [(Phase::Logger *)v95 frequencyBands];
-  v75 = [(Phase::Logger *)v95 materialDepth];
-  [v75 floatValue];
-  v76 = [(PHASESoundReductionIndex *)v73 initWithSoundReductionIndices:v93 frequencyBands:v74 measuredDepth:?];
-  [v6 setObject:v76 forKeyedSubscript:v14];
+  soundReductionIndexReferenceData = [(Phase::Logger *)v95 soundReductionIndexReferenceData];
+  frequencyBands3 = [(Phase::Logger *)v95 frequencyBands];
+  materialDepth = [(Phase::Logger *)v95 materialDepth];
+  [materialDepth floatValue];
+  v76 = [(PHASESoundReductionIndex *)v73 initWithSoundReductionIndices:soundReductionIndexReferenceData frequencyBands:frequencyBands3 measuredDepth:?];
+  [dictionary setObject:v76 forKeyedSubscript:v14];
 
-  v77 = [v6 objectForKeyedSubscript:v14];
+  v77 = [dictionary objectForKeyedSubscript:v14];
   LODWORD(v76) = v77 == 0;
 
   if (v76)
@@ -390,27 +390,27 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v79 = [v6 objectForKey:v14];
-  v80 = [v6 objectForKey:v97];
-  v81 = [v6 objectForKey:v96];
+  v79 = [dictionary objectForKey:v14];
+  v80 = [dictionary objectForKey:v97];
+  v81 = [dictionary objectForKey:v96];
   self = [(PHASEMaterial *)self initWithEngine:v98 preset:preset soundReductionIndex:v79 absorptionData:v80 scatteringData:v81];
 
 LABEL_24:
-  v58 = self;
+  selfCopy = self;
 LABEL_55:
 
-  return v58;
+  return selfCopy;
 }
 
-- (PHASEMaterial)initWithEngine:(id)a3 preset:(int64_t)a4 soundReductionIndex:(id)a5 absorptionData:(id)a6 scatteringData:(id)a7
+- (PHASEMaterial)initWithEngine:(id)engine preset:(int64_t)preset soundReductionIndex:(id)index absorptionData:(id)data scatteringData:(id)scatteringData
 {
   v26 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v13 && v14 && v15)
+  engineCopy = engine;
+  indexCopy = index;
+  dataCopy = data;
+  scatteringDataCopy = scatteringData;
+  v16 = scatteringDataCopy;
+  if (indexCopy && dataCopy && scatteringDataCopy)
   {
     v21.receiver = self;
     v21.super_class = PHASEMaterial;
@@ -418,11 +418,11 @@ LABEL_55:
     v18 = v17;
     if (v17)
     {
-      objc_storeWeak(&v17->_engine, v12);
-      v18->_preset = a4;
-      objc_storeStrong(&v18->_soundReductionIndex, a5);
-      objc_storeStrong(&v18->_absorptionData, a6);
-      objc_storeStrong(&v18->_scatteringData, a7);
+      objc_storeWeak(&v17->_engine, engineCopy);
+      v18->_preset = preset;
+      objc_storeStrong(&v18->_soundReductionIndex, index);
+      objc_storeStrong(&v18->_absorptionData, data);
+      objc_storeStrong(&v18->_scatteringData, scatteringData);
       *&v18->_attenuationScale = 1065353216;
       v18->_attenuationTilt = 0.0;
       [(PHASEMaterial *)v18 writeMaterialCoefs:1];
@@ -431,7 +431,7 @@ LABEL_55:
 
   else
   {
-    v19 = **(Phase::Logger::GetInstance(v15) + 448);
+    v19 = **(Phase::Logger::GetInstance(scatteringDataCopy) + 448);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
@@ -447,22 +447,22 @@ LABEL_55:
   return v18;
 }
 
-- (PHASEMaterial)initWithEngine:(id)a3 soundReductionIndex:(id)a4 absorptionData:(id)a5 scatteringData:(id)a6
+- (PHASEMaterial)initWithEngine:(id)engine soundReductionIndex:(id)index absorptionData:(id)data scatteringData:(id)scatteringData
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11 && v12 && v13)
+  engineCopy = engine;
+  indexCopy = index;
+  dataCopy = data;
+  scatteringDataCopy = scatteringData;
+  v14 = scatteringDataCopy;
+  if (indexCopy && dataCopy && scatteringDataCopy)
   {
     goto LABEL_22;
   }
 
   sGetFrequencies(__p);
-  if (v11)
+  if (indexCopy)
   {
-    if (v12)
+    if (dataCopy)
     {
       goto LABEL_6;
     }
@@ -477,7 +477,7 @@ LABEL_11:
       [v23 addObject:v27];
     }
 
-    v12 = [[PHASEAbsorptionData alloc] initWithAbsorptionCoefficients:v23];
+    dataCopy = [[PHASEAbsorptionData alloc] initWithAbsorptionCoefficients:v23];
 
     if (v14)
     {
@@ -499,9 +499,9 @@ LABEL_11:
 
   v21 = [PHASESoundReductionIndex alloc];
   LODWORD(v22) = 1041865114;
-  v11 = [(PHASESoundReductionIndex *)v21 initWithAttenuationCoefficients:v15 measuredDepth:v22];
+  indexCopy = [(PHASESoundReductionIndex *)v21 initWithAttenuationCoefficients:v15 measuredDepth:v22];
 
-  if (!v12)
+  if (!dataCopy)
   {
     goto LABEL_11;
   }
@@ -531,22 +531,22 @@ LABEL_17:
     operator delete(__p[0]);
   }
 
-  if (!v11 || !v12 || !v14)
+  if (!indexCopy || !dataCopy || !v14)
   {
     std::terminate();
   }
 
 LABEL_22:
-  v34 = [(PHASEMaterial *)self initWithEngine:v10 preset:1833136740 soundReductionIndex:v11 absorptionData:v12 scatteringData:v14];
+  v34 = [(PHASEMaterial *)self initWithEngine:engineCopy preset:1833136740 soundReductionIndex:indexCopy absorptionData:dataCopy scatteringData:v14];
 
   return v34;
 }
 
-- (PHASEMaterial)initWithEngine:(id)a3 semantics:(id)a4
+- (PHASEMaterial)initWithEngine:(id)engine semantics:(id)semantics
 {
   v105 = *MEMORY[0x277D85DE8];
-  v74 = a3;
-  v86 = a4;
+  engineCopy = engine;
+  semanticsCopy = semantics;
   if (!objc_opt_class())
   {
     v19 = **(Phase::Logger::GetInstance(0) + 448);
@@ -562,7 +562,7 @@ LABEL_22:
     v76 = +[PHASESoundReductionIndex objectForDefault];
     v87 = +[PHASEAbsorptionData objectForDefault];
     obj = +[PHASEScatteringData objectForDefault];
-    v18 = [(PHASEMaterial *)self initWithEngine:v74 soundReductionIndex:v76 absorptionData:v87 scatteringData:?];
+    v18 = [(PHASEMaterial *)self initWithEngine:engineCopy soundReductionIndex:v76 absorptionData:v87 scatteringData:?];
     self = v18;
     goto LABEL_67;
   }
@@ -580,7 +580,7 @@ LABEL_22:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  obj = [v86 allKeys];
+  obj = [semanticsCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v93 objects:v104 count:16];
   if (v6)
   {
@@ -601,19 +601,19 @@ LABEL_22:
         v12 = *(*(&v93 + 1) + 8 * i);
         if ([v12 isEqualToString:@"SurfaceMaterial"])
         {
-          v13 = [v86 objectForKeyedSubscript:v12];
+          v13 = [semanticsCopy objectForKeyedSubscript:v12];
           [v87 setObject:v13 forKey:v10];
         }
 
         else if ([v12 isEqualToString:@"ARMeshMaterialID"])
         {
-          v13 = [v86 objectForKeyedSubscript:v12];
+          v13 = [semanticsCopy objectForKeyedSubscript:v12];
           [v87 setObject:v13 forKey:v9];
         }
 
         else if ([v12 isEqualToString:@"Object"])
         {
-          v13 = [v86 objectForKeyedSubscript:v12];
+          v13 = [semanticsCopy objectForKeyedSubscript:v12];
           [v87 setObject:v13 forKey:v8];
         }
 
@@ -638,7 +638,7 @@ LABEL_22:
             goto LABEL_67;
           }
 
-          v13 = [v86 objectForKeyedSubscript:v12];
+          v13 = [semanticsCopy objectForKeyedSubscript:v12];
           [v87 setObject:v13 forKey:v83];
         }
       }
@@ -649,7 +649,7 @@ LABEL_22:
     while (v6);
   }
 
-  v15 = [MEMORY[0x277CBEAC0] dictionary];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
   v92 = 0;
   v84 = [MEMORY[0x277CE87B8] acousticParameters:v5 forSemanticLabels:v87 error:&v92];
   obj = v92;
@@ -659,13 +659,13 @@ LABEL_22:
     log = **(Phase::Logger::GetInstance(v16) + 448);
     if (os_log_type_enabled(&log->super, OS_LOG_TYPE_ERROR))
     {
-      v17 = [obj localizedDescription];
+      localizedDescription = [obj localizedDescription];
       *buf = 136315650;
       v99 = "PHASEMaterial.mm";
       v100 = 1024;
       v101 = 951;
       v102 = 2112;
-      v103 = v17;
+      v103 = localizedDescription;
       _os_log_impl(&dword_23A302000, &log->super, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: [%@]", buf, 0x1Cu);
     }
 
@@ -677,8 +677,8 @@ LABEL_22:
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v73 = [v84 allKeys];
-  v21 = [v73 countByEnumeratingWithState:&v88 objects:v97 count:16];
+  allKeys = [v84 allKeys];
+  v21 = [allKeys countByEnumeratingWithState:&v88 objects:v97 count:16];
   if (!v21)
   {
 
@@ -696,7 +696,7 @@ LABEL_29:
   {
     if (*v89 != v80)
     {
-      objc_enumerationMutation(v73);
+      objc_enumerationMutation(allKeys);
     }
 
     v23 = *(*(&v88 + 1) + 8 * v22);
@@ -722,8 +722,8 @@ LABEL_29:
       v25 = objc_opt_new();
       for (j = 0; ; ++j)
       {
-        v27 = [v24 frequencyBands];
-        v28 = [v27 count] > j;
+        frequencyBands = [v24 frequencyBands];
+        v28 = [frequencyBands count] > j;
 
         if (!v28)
         {
@@ -731,12 +731,12 @@ LABEL_29:
         }
 
         v29 = [PHASESubband alloc];
-        v30 = [v24 frequencyBands];
-        v31 = [v30 objectAtIndexedSubscript:j];
+        frequencyBands2 = [v24 frequencyBands];
+        v31 = [frequencyBands2 objectAtIndexedSubscript:j];
         [v31 floatValue];
         v33 = v32;
-        v34 = [v24 absorptionUserData];
-        v35 = [v34 objectAtIndexedSubscript:j];
+        absorptionUserData = [v24 absorptionUserData];
+        v35 = [absorptionUserData objectAtIndexedSubscript:j];
         [v35 floatValue];
         LODWORD(v37) = v36;
         LODWORD(v38) = v33;
@@ -744,7 +744,7 @@ LABEL_29:
         [v25 addObject:v39];
       }
 
-      v54 = log;
+      materialDepth = log;
       log = [[PHASEAbsorptionData alloc] initWithAbsorptionCoefficients:v25];
       goto LABEL_50;
     }
@@ -771,8 +771,8 @@ LABEL_29:
       v25 = objc_opt_new();
       for (k = 0; ; ++k)
       {
-        v41 = [v24 frequencyBands];
-        v42 = [v41 count] > k;
+        frequencyBands3 = [v24 frequencyBands];
+        v42 = [frequencyBands3 count] > k;
 
         if (!v42)
         {
@@ -780,12 +780,12 @@ LABEL_29:
         }
 
         v43 = [PHASESubband alloc];
-        v44 = [v24 frequencyBands];
-        v45 = [v44 objectAtIndexedSubscript:k];
+        frequencyBands4 = [v24 frequencyBands];
+        v45 = [frequencyBands4 objectAtIndexedSubscript:k];
         [v45 floatValue];
         v47 = v46;
-        v48 = [v24 scatteringUserData];
-        v49 = [v48 objectAtIndexedSubscript:k];
+        scatteringUserData = [v24 scatteringUserData];
+        v49 = [scatteringUserData objectAtIndexedSubscript:k];
         [v49 floatValue];
         LODWORD(v51) = v50;
         LODWORD(v52) = v47;
@@ -793,7 +793,7 @@ LABEL_29:
         [v25 addObject:v53];
       }
 
-      v54 = v72;
+      materialDepth = v72;
       v72 = [[PHASEScatteringData alloc] initWithScatteringCoefficients:v25];
       goto LABEL_50;
     }
@@ -810,30 +810,30 @@ LABEL_29:
       v25 = objc_opt_new();
       for (m = 0; ; ++m)
       {
-        v57 = [v24 frequencyBands];
-        v58 = [v57 count] > m;
+        frequencyBands5 = [v24 frequencyBands];
+        v58 = [frequencyBands5 count] > m;
 
         if (!v58)
         {
           break;
         }
 
-        v59 = [v24 soundReductionIndexUserData];
-        v60 = [v59 objectAtIndexedSubscript:m];
+        soundReductionIndexUserData = [v24 soundReductionIndexUserData];
+        v60 = [soundReductionIndexUserData objectAtIndexedSubscript:m];
         [v60 floatValue];
         expf(((fmaxf(v61, 0.0) * -10.0) / 10.0) * 0.11513);
 
         v62 = [PHASESubband alloc];
-        v63 = [v24 frequencyBands];
-        v64 = [v63 objectAtIndexedSubscript:m];
+        frequencyBands6 = [v24 frequencyBands];
+        v64 = [frequencyBands6 objectAtIndexedSubscript:m];
         [v64 floatValue];
         v65 = [PHASESubband initWithFrequency:v62 value:"initWithFrequency:value:"];
         [v25 addObject:v65];
       }
 
       v66 = [PHASESoundReductionIndex alloc];
-      v54 = [v24 materialDepth];
-      [v54 floatValue];
+      materialDepth = [v24 materialDepth];
+      [materialDepth floatValue];
       v67 = [(PHASESoundReductionIndex *)v66 initWithAttenuationCoefficients:v25 measuredDepth:?];
 
       v71 = v67;
@@ -842,13 +842,13 @@ LABEL_50:
 
     if (++v22 == v79)
     {
-      v21 = [v73 countByEnumeratingWithState:&v88 objects:v97 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v88 objects:v97 count:16];
       if (!v21)
       {
 
         if (log && v72 && v71)
         {
-          v18 = [(PHASEMaterial *)self initWithEngine:v74 soundReductionIndex:v71 absorptionData:log scatteringData:v72];
+          v18 = [(PHASEMaterial *)self initWithEngine:engineCopy soundReductionIndex:v71 absorptionData:log scatteringData:v72];
           self = v18;
           goto LABEL_65;
         }
@@ -885,9 +885,9 @@ LABEL_67:
   return v18;
 }
 
-- (void)writeMaterialCoefs:(BOOL)a3
+- (void)writeMaterialCoefs:(BOOL)coefs
 {
-  v3 = a3;
+  coefsCopy = coefs;
   v32[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   if (WeakRetained)
@@ -900,8 +900,8 @@ LABEL_67:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v7 = [(PHASESoundReductionIndex *)soundReductionIndex attenuationCoefficients];
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      attenuationCoefficients = [(PHASESoundReductionIndex *)soundReductionIndex attenuationCoefficients];
+      v8 = [attenuationCoefficients countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v8)
       {
         v9 = *v26;
@@ -911,7 +911,7 @@ LABEL_67:
           {
             if (*v26 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(attenuationCoefficients);
             }
 
             v11 = *(*(&v25 + 1) + 8 * i);
@@ -924,7 +924,7 @@ LABEL_67:
             [v5 addObject:v14];
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v8 = [attenuationCoefficients countByEnumeratingWithState:&v25 objects:v30 count:16];
         }
 
         while (v8);
@@ -936,10 +936,10 @@ LABEL_67:
     *&buf[8] = self->_soundReductionIndex;
     *&buf[16] = self->_absorptionData;
     *&buf[24] = self->_scatteringData;
-    if (v3)
+    if (coefsCopy)
     {
-      v16 = [WeakRetained implementation];
-      [(PHASEMaterial *)self setGeoMaterialHandle:(*(**(v16 + 368) + 32))(*(v16 + 368), buf)];
+      implementation = [WeakRetained implementation];
+      [(PHASEMaterial *)self setGeoMaterialHandle:(*(**(implementation + 368) + 32))(*(implementation + 368), buf)];
     }
 
     else
@@ -973,11 +973,11 @@ LABEL_67:
   }
 }
 
-- (void)setAttenuationScale:(float)a3
+- (void)setAttenuationScale:(float)scale
 {
-  v3 = a3;
+  scaleCopy = scale;
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0)
+  if (scale < 0.0)
   {
     v5 = **(Phase::Logger::GetInstance(self) + 448);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -987,25 +987,25 @@ LABEL_67:
       v8 = 1024;
       v9 = 1010;
       v10 = 2048;
-      v11 = v3;
+      v11 = scaleCopy;
       _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d Input multipler %2.2f for setattenuationScale must be non-negative. Clamping.", &v6, 0x1Cu);
     }
 
-    v3 = fmaxf(v3, 0.0);
+    scaleCopy = fmaxf(scaleCopy, 0.0);
   }
 
-  if (self->_attenuationScale != v3)
+  if (self->_attenuationScale != scaleCopy)
   {
-    self->_attenuationScale = v3;
+    self->_attenuationScale = scaleCopy;
     [(PHASEMaterial *)self writeMaterialCoefs:0];
   }
 }
 
-- (void)setAttenuationShift:(float)a3
+- (void)setAttenuationShift:(float)shift
 {
-  v3 = a3;
+  shiftCopy = shift;
   v12 = *MEMORY[0x277D85DE8];
-  if (fabsf(a3) > 1.0)
+  if (fabsf(shift) > 1.0)
   {
     v5 = **(Phase::Logger::GetInstance(self) + 448);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1015,25 +1015,25 @@ LABEL_67:
       v8 = 1024;
       v9 = 1026;
       v10 = 2048;
-      v11 = v3;
+      v11 = shiftCopy;
       _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d Input offset %2.2f for setattenuationShift is out-of-range. Clamping to [-1, 1].", &v6, 0x1Cu);
     }
 
-    v3 = fminf(fmaxf(v3, -1.0), 1.0);
+    shiftCopy = fminf(fmaxf(shiftCopy, -1.0), 1.0);
   }
 
-  if (self->_attenuationShift != v3)
+  if (self->_attenuationShift != shiftCopy)
   {
-    self->_attenuationShift = v3;
+    self->_attenuationShift = shiftCopy;
     [(PHASEMaterial *)self writeMaterialCoefs:0];
   }
 }
 
-- (void)setAttenuationTilt:(float)a3
+- (void)setAttenuationTilt:(float)tilt
 {
-  v3 = a3;
+  tiltCopy = tilt;
   v12 = *MEMORY[0x277D85DE8];
-  if (fabsf(a3) > 1.0)
+  if (fabsf(tilt) > 1.0)
   {
     v5 = **(Phase::Logger::GetInstance(self) + 448);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1043,29 +1043,29 @@ LABEL_67:
       v8 = 1024;
       v9 = 1041;
       v10 = 2048;
-      v11 = v3;
+      v11 = tiltCopy;
       _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d Input slope %2.2f for setattenuationTilt is out-of-range. Clamping to [-1, 1].", &v6, 0x1Cu);
     }
 
-    v3 = fminf(fmaxf(v3, -1.0), 1.0);
+    tiltCopy = fminf(fmaxf(tiltCopy, -1.0), 1.0);
   }
 
-  if (self->_attenuationTilt != v3)
+  if (self->_attenuationTilt != tiltCopy)
   {
-    self->_attenuationTilt = v3;
+    self->_attenuationTilt = tiltCopy;
     [(PHASEMaterial *)self writeMaterialCoefs:0];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v6 = [(PHASEMaterial *)self preset];
-  v7 = [(PHASEMaterial *)self soundReductionIndex];
-  v8 = [(PHASEMaterial *)self absorptionData];
-  v9 = [(PHASEMaterial *)self scatteringData];
-  v10 = [v4 initWithEngine:WeakRetained preset:v6 soundReductionIndex:v7 absorptionData:v8 scatteringData:v9];
+  preset = [(PHASEMaterial *)self preset];
+  soundReductionIndex = [(PHASEMaterial *)self soundReductionIndex];
+  absorptionData = [(PHASEMaterial *)self absorptionData];
+  scatteringData = [(PHASEMaterial *)self scatteringData];
+  v10 = [v4 initWithEngine:WeakRetained preset:preset soundReductionIndex:soundReductionIndex absorptionData:absorptionData scatteringData:scatteringData];
 
   [(PHASEMaterial *)self attenuationScale];
   [v10 setAttenuationScale:?];

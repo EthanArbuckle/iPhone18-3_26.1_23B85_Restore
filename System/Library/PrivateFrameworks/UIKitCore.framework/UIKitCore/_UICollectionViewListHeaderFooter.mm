@@ -1,53 +1,53 @@
 @interface _UICollectionViewListHeaderFooter
-- (CGSize)_contentTargetSizeForTargetSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 forUseWithSizeThatFits:(BOOL)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_contentTargetSizeForTargetSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority forUseWithSizeThatFits:(BOOL)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIEdgeInsets)_contentViewInsets;
-- (_UICollectionViewListHeaderFooter)initWithCoder:(id)a3;
-- (_UICollectionViewListHeaderFooter)initWithFrame:(CGRect)a3;
+- (_UICollectionViewListHeaderFooter)initWithCoder:(id)coder;
+- (_UICollectionViewListHeaderFooter)initWithFrame:(CGRect)frame;
 - (_UIContentViewConfiguration)_contentViewConfiguration;
 - (id)_backgroundViewConfigurationProvider;
 - (id)_contentViewConfigurationProvider;
 - (id)_defaultBackgroundViewConfigurationProvider;
-- (int64_t)_styleFromLayoutAttributes:(id)a3;
+- (int64_t)_styleFromLayoutAttributes:(id)attributes;
 - (unint64_t)_viewConfigurationState;
-- (void)_applyBackgroundViewConfiguration:(id)a3;
-- (void)_didUpdateFocusInContext:(id)a3;
+- (void)_applyBackgroundViewConfiguration:(id)configuration;
+- (void)_didUpdateFocusInContext:(id)context;
 - (void)_layoutContentView;
 - (void)_layoutSystemBackgroundView;
 - (void)_performConfigurationStateUpdate;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_resetBackgroundColor;
 - (void)_resetBackgroundViewConfiguration;
-- (void)_setAutomaticallyUpdatesBackgroundViewConfiguration:(BOOL)a3;
-- (void)_setAutomaticallyUpdatesContentViewConfiguration:(BOOL)a3;
-- (void)_setBackgroundViewConfiguration:(id)a3;
-- (void)_setBackgroundViewConfigurationProvider:(id)a3;
-- (void)_setContentViewConfiguration:(id)a3;
-- (void)_setContentViewConfigurationProvider:(id)a3;
-- (void)_setLayoutAttributes:(id)a3;
+- (void)_setAutomaticallyUpdatesBackgroundViewConfiguration:(BOOL)configuration;
+- (void)_setAutomaticallyUpdatesContentViewConfiguration:(BOOL)configuration;
+- (void)_setBackgroundViewConfiguration:(id)configuration;
+- (void)_setBackgroundViewConfigurationProvider:(id)provider;
+- (void)_setContentViewConfiguration:(id)configuration;
+- (void)_setContentViewConfigurationProvider:(id)provider;
+- (void)_setLayoutAttributes:(id)attributes;
 - (void)_setNeedsConfigurationStateUpdate;
-- (void)_updateBackgroundViewConfigurationForState:(unint64_t)a3;
+- (void)_updateBackgroundViewConfigurationForState:(unint64_t)state;
 - (void)_updateConstants;
-- (void)_updateContentViewConfigurationForState:(unint64_t)a3;
+- (void)_updateContentViewConfigurationForState:(unint64_t)state;
 - (void)_updateDefaultBackgroundAppearance;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentView:(id)view;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UICollectionViewListHeaderFooter
 
-- (_UICollectionViewListHeaderFooter)initWithFrame:(CGRect)a3
+- (_UICollectionViewListHeaderFooter)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UICollectionViewListHeaderFooter;
-  v3 = [(UICollectionReusableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc([objc_opt_class() _contentViewClass]);
@@ -61,15 +61,15 @@
   return v3;
 }
 
-- (_UICollectionViewListHeaderFooter)initWithCoder:(id)a3
+- (_UICollectionViewListHeaderFooter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UICollectionViewListHeaderFooter;
-  v5 = [(UICollectionReusableView *)&v11 initWithCoder:v4];
+  v5 = [(UICollectionReusableView *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIContentView"];
+    v6 = [coderCopy decodeObjectForKey:@"UIContentView"];
     contentView = v5->_contentView;
     v5->_contentView = v6;
 
@@ -92,28 +92,28 @@
   return v5;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = _UICollectionViewListHeaderFooter;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_systemBackgroundView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = _UICollectionViewListHeaderFooter;
-  [(UICollectionReusableView *)&v6 encodeWithCoder:v4];
+  [(UICollectionReusableView *)&v6 encodeWithCoder:coderCopy];
   contentView = self->_contentView;
   if (contentView)
   {
-    [v4 encodeObject:contentView forKey:@"UIContentView"];
+    [coderCopy encodeObject:contentView forKey:@"UIContentView"];
   }
 }
 
@@ -126,14 +126,14 @@
   [(_UICollectionViewListHeaderFooter *)self _setNeedsConfigurationStateUpdate];
 }
 
-- (void)_setLayoutAttributes:(id)a3
+- (void)_setLayoutAttributes:(id)attributes
 {
   v4 = *(&self->_headerFooterFlags + 2);
-  v5 = a3;
-  *(&self->_headerFooterFlags + 2) = *(&self->_headerFooterFlags + 1) & 0xFFF8 | [(_UICollectionViewListHeaderFooter *)self _styleFromLayoutAttributes:v5]& 7;
+  attributesCopy = attributes;
+  *(&self->_headerFooterFlags + 2) = *(&self->_headerFooterFlags + 1) & 0xFFF8 | [(_UICollectionViewListHeaderFooter *)self _styleFromLayoutAttributes:attributesCopy]& 7;
   v7.receiver = self;
   v7.super_class = _UICollectionViewListHeaderFooter;
-  [(UICollectionReusableView *)&v7 _setLayoutAttributes:v5];
+  [(UICollectionReusableView *)&v7 _setLayoutAttributes:attributesCopy];
 
   [(UIView *)self->_contentView bounds];
   if (CGRectEqualToRect(v8, *MEMORY[0x1E695F058]))
@@ -147,12 +147,12 @@
   }
 }
 
-- (int64_t)_styleFromLayoutAttributes:(id)a3
+- (int64_t)_styleFromLayoutAttributes:(id)attributes
 {
-  v3 = [(UICollectionViewLayoutAttributes *)a3 _existingListAttributes];
-  if (v3)
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributes _existingListAttributes];
+  if (_existingListAttributes)
   {
-    v4 = v3[2];
+    v4 = _existingListAttributes[2];
   }
 
   else
@@ -163,42 +163,42 @@
   return v4;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIView *)self isUserInteractionEnabled];
+  enabledCopy = enabled;
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
   v6.receiver = self;
   v6.super_class = _UICollectionViewListHeaderFooter;
-  [(UIView *)&v6 setUserInteractionEnabled:v3];
-  if (v5 != [(UIView *)self isUserInteractionEnabled])
+  [(UIView *)&v6 setUserInteractionEnabled:enabledCopy];
+  if (isUserInteractionEnabled != [(UIView *)self isUserInteractionEnabled])
   {
     [(_UICollectionViewListHeaderFooter *)self _setNeedsConfigurationStateUpdate];
   }
 }
 
-- (void)_setContentViewConfiguration:(id)a3
+- (void)_setContentViewConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   contentViewConfigurationClass = self->_contentViewConfigurationClass;
-  if (v5)
+  if (configurationCopy)
   {
     if ((*(&self->_headerFooterFlags + 1) & 0x100) != 0 && !self->_contentViewConfigurationProvider)
     {
-      v15 = v5;
-      v7 = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
-      v8 = [(UIView *)self traitCollection];
-      v9 = [v15 updatedConfigurationForState:v7 traitCollection:v8];
+      v15 = configurationCopy;
+      _viewConfigurationState = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
+      traitCollection = [(UIView *)self traitCollection];
+      v9 = [v15 updatedConfigurationForState:_viewConfigurationState traitCollection:traitCollection];
 
       if (!v9)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListHeaderFooter.m" lineNumber:143 description:{@"Updated configuration was nil for configuration: %@", v15}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListHeaderFooter.m" lineNumber:143 description:{@"Updated configuration was nil for configuration: %@", v15}];
       }
 
-      v5 = v9;
+      configurationCopy = v9;
     }
 
-    v16 = v5;
+    v16 = configurationCopy;
     if (contentViewConfigurationClass)
     {
       v10 = self->_contentViewConfigurationClass;
@@ -216,8 +216,8 @@
       self->_contentViewConfigurationClass = objc_opt_class();
     }
 
-    v13 = [v16 createContentView];
-    [(_UICollectionViewListHeaderFooter *)self setContentView:v13];
+    createContentView = [v16 createContentView];
+    [(_UICollectionViewListHeaderFooter *)self setContentView:createContentView];
 
     goto LABEL_14;
   }
@@ -239,20 +239,20 @@ LABEL_14:
 {
   if (self->_contentViewConfigurationClass)
   {
-    v3 = [(UIView *)self->_contentView configuration];
+    configuration = [(UIView *)self->_contentView configuration];
   }
 
   else
   {
-    v3 = 0;
+    configuration = 0;
   }
 
-  return v3;
+  return configuration;
 }
 
-- (void)_setAutomaticallyUpdatesContentViewConfiguration:(BOOL)a3
+- (void)_setAutomaticallyUpdatesContentViewConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
     v4 = &self->_headerFooterFlags + 1;
@@ -283,16 +283,16 @@ LABEL_14:
   *v4 = v5 & 0xFEFF;
 }
 
-- (void)_setContentViewConfigurationProvider:(id)a3
+- (void)_setContentViewConfigurationProvider:(id)provider
 {
-  if (self->_contentViewConfigurationProvider != a3)
+  if (self->_contentViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       *(&self->_headerFooterFlags + 2) &= ~0x100u;
     }
 
-    v4 = [a3 copy];
+    v4 = [provider copy];
     contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
     self->_contentViewConfigurationProvider = v4;
 
@@ -307,17 +307,17 @@ LABEL_14:
   return v2;
 }
 
-- (void)_updateContentViewConfigurationForState:(unint64_t)a3
+- (void)_updateContentViewConfigurationForState:(unint64_t)state
 {
   contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
   if (contentViewConfigurationProvider)
   {
-    v5 = contentViewConfigurationProvider[2](contentViewConfigurationProvider, a3);
+    v5 = contentViewConfigurationProvider[2](contentViewConfigurationProvider, state);
     v9 = v5;
-    v6 = self;
+    selfCopy2 = self;
 LABEL_3:
-    [(_UICollectionViewListHeaderFooter *)v6 _setContentViewConfiguration:v5];
-    v7 = v9;
+    [(_UICollectionViewListHeaderFooter *)selfCopy2 _setContentViewConfiguration:v5];
+    _contentViewConfiguration = v9;
     goto LABEL_4;
   }
 
@@ -326,11 +326,11 @@ LABEL_3:
     return;
   }
 
-  v7 = [(_UICollectionViewListHeaderFooter *)self _contentViewConfiguration];
-  if (v7)
+  _contentViewConfiguration = [(_UICollectionViewListHeaderFooter *)self _contentViewConfiguration];
+  if (_contentViewConfiguration)
   {
-    v8 = v7;
-    v6 = self;
+    v8 = _contentViewConfiguration;
+    selfCopy2 = self;
     v9 = v8;
     v5 = v8;
     goto LABEL_3;
@@ -339,32 +339,32 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)v7 setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
-    v5 = v7;
+    viewCopy = v7;
     if (v7)
     {
       [(UIView *)self addSubview:self->_contentView];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 }
 
-- (void)_setBackgroundViewConfiguration:(id)a3
+- (void)_setBackgroundViewConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
+  configurationCopy = configuration;
+  v5 = configurationCopy;
   v6 = *(&self->_headerFooterFlags + 2);
   v7 = (v6 >> 6) & 1;
-  if (v4)
+  if (configurationCopy)
   {
     v7 = 1;
   }
@@ -380,7 +380,7 @@ LABEL_4:
   }
 
   *(&self->_headerFooterFlags + 2) = v8 | v6 & 0xFFBF;
-  v9 = v4;
+  v9 = configurationCopy;
   if ((v6 & 0x20) == 0 && v7)
   {
     [(_UICollectionViewListHeaderFooter *)self _setBackgroundViewConfigurationProvider:0];
@@ -390,24 +390,24 @@ LABEL_4:
   [(_UICollectionViewListHeaderFooter *)self _applyBackgroundViewConfiguration:v5];
 }
 
-- (void)_applyBackgroundViewConfiguration:(id)a3
+- (void)_applyBackgroundViewConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   systemBackgroundView = self->_systemBackgroundView;
-  if (v5)
+  if (configurationCopy)
   {
-    v7 = v5;
+    v7 = configurationCopy;
     if ((*(&self->_headerFooterFlags + 1) & 0x80) != 0 && !self->_backgroundViewConfigurationProvider)
     {
-      v15 = v5;
-      v8 = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
-      v9 = [(UIView *)self traitCollection];
-      v10 = [(_UISystemBackgroundView *)v15 updatedConfigurationForState:v8 traitCollection:v9];
+      v15 = configurationCopy;
+      _viewConfigurationState = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
+      traitCollection = [(UIView *)self traitCollection];
+      v10 = [(_UISystemBackgroundView *)v15 updatedConfigurationForState:_viewConfigurationState traitCollection:traitCollection];
 
       if (!v10)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListHeaderFooter.m" lineNumber:236 description:{@"Updated configuration was nil for configuration: %@", v15}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListHeaderFooter.m" lineNumber:236 description:{@"Updated configuration was nil for configuration: %@", v15}];
       }
 
       v7 = v10;
@@ -446,9 +446,9 @@ LABEL_4:
   }
 }
 
-- (void)_setAutomaticallyUpdatesBackgroundViewConfiguration:(BOOL)a3
+- (void)_setAutomaticallyUpdatesBackgroundViewConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
     v4 = &self->_headerFooterFlags + 1;
@@ -479,11 +479,11 @@ LABEL_4:
   *v4 = v5 & 0xFF7F;
 }
 
-- (void)_setBackgroundViewConfigurationProvider:(id)a3
+- (void)_setBackgroundViewConfigurationProvider:(id)provider
 {
   v3 = *(&self->_headerFooterFlags + 2);
   v4 = (v3 >> 5) & 1;
-  if (a3)
+  if (provider)
   {
     v4 = 1;
   }
@@ -500,15 +500,15 @@ LABEL_4:
 
   v6 = v5 | v3 & 0xFFDF;
   *(&self->_headerFooterFlags + 2) = v6;
-  if (self->_backgroundViewConfigurationProvider != a3)
+  if (self->_backgroundViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       *(&self->_headerFooterFlags + 2) = v6 & 0xFF7F;
     }
 
-    v8 = a3;
-    v9 = [v8 copy];
+    providerCopy = provider;
+    v9 = [providerCopy copy];
     backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
     self->_backgroundViewConfigurationProvider = v9;
 
@@ -571,17 +571,17 @@ LABEL_4:
   [UIView _performSystemAppearanceModifications:v2];
 }
 
-- (void)_updateBackgroundViewConfigurationForState:(unint64_t)a3
+- (void)_updateBackgroundViewConfigurationForState:(unint64_t)state
 {
   backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
   if (backgroundViewConfigurationProvider)
   {
-    v5 = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, a3);
+    v5 = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, state);
     v9 = v5;
-    v6 = self;
+    selfCopy2 = self;
 LABEL_3:
-    [(_UICollectionViewListHeaderFooter *)v6 _applyBackgroundViewConfiguration:v5];
-    v7 = v9;
+    [(_UICollectionViewListHeaderFooter *)selfCopy2 _applyBackgroundViewConfiguration:v5];
+    _backgroundViewConfiguration = v9;
     goto LABEL_4;
   }
 
@@ -590,11 +590,11 @@ LABEL_3:
     return;
   }
 
-  v7 = [(_UICollectionViewListHeaderFooter *)self _backgroundViewConfiguration];
-  if (v7)
+  _backgroundViewConfiguration = [(_UICollectionViewListHeaderFooter *)self _backgroundViewConfiguration];
+  if (_backgroundViewConfiguration)
   {
-    v8 = v7;
-    v6 = self;
+    v8 = _backgroundViewConfiguration;
+    selfCopy2 = self;
     v9 = v8;
     v5 = v8;
     goto LABEL_3;
@@ -649,10 +649,10 @@ LABEL_4:
   {
     *(&self->_headerFooterFlags + 2) = v3 & 0xFFF7;
     v5 = _UISetCurrentFallbackEnvironment(self);
-    v6 = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
-    [(_UICollectionViewListHeaderFooter *)self _updateBackgroundViewConfigurationForState:v6];
-    [(_UICollectionViewListHeaderFooter *)self _updateContentViewConfigurationForState:v6];
-    [(_UICollectionViewListHeaderFooter *)self _updateViewConfigurationsWithState:v6];
+    _viewConfigurationState = [(_UICollectionViewListHeaderFooter *)self _viewConfigurationState];
+    [(_UICollectionViewListHeaderFooter *)self _updateBackgroundViewConfigurationForState:_viewConfigurationState];
+    [(_UICollectionViewListHeaderFooter *)self _updateContentViewConfigurationForState:_viewConfigurationState];
+    [(_UICollectionViewListHeaderFooter *)self _updateViewConfigurationsWithState:_viewConfigurationState];
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
       [(_UICollectionViewListHeaderFooter *)self _layoutSystemBackgroundView];
@@ -678,17 +678,17 @@ LABEL_4:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
     [(_UICollectionViewListHeaderFooter *)self _resetBackgroundViewConfiguration];
   }
 
   v5 = *(&self->_headerFooterFlags + 2);
   v6 = (v5 >> 4) & 1;
-  if (v4)
+  if (colorCopy)
   {
     v6 = 1;
   }
@@ -706,7 +706,7 @@ LABEL_4:
   *(&self->_headerFooterFlags + 2) = v7 | v5 & 0xFFEF;
   v8.receiver = self;
   v8.super_class = _UICollectionViewListHeaderFooter;
-  [(UIView *)&v8 setBackgroundColor:v4];
+  [(UIView *)&v8 setBackgroundColor:colorCopy];
 }
 
 - (void)layoutSubviews
@@ -735,19 +735,19 @@ LABEL_4:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UICollectionViewListHeaderFooter;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   [(_UICollectionViewListHeaderFooter *)self _updateConstants];
   [(_UICollectionViewListHeaderFooter *)self _setNeedsConfigurationStateUpdate];
 }
 
 - (void)_updateConstants
 {
-  v3 = [(UIView *)self traitCollection];
-  obj = _UITableConstantsForTraitCollection(v3);
+  traitCollection = [(UIView *)self traitCollection];
+  obj = _UITableConstantsForTraitCollection(traitCollection);
 
   v4 = obj;
   if (obj != self->_constants)
@@ -758,19 +758,19 @@ LABEL_4:
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v6.receiver = self;
   v6.super_class = _UICollectionViewListHeaderFooter;
   [(UIView *)&v6 setSemanticContentAttribute:?];
-  v5 = [(_UICollectionViewListHeaderFooter *)self contentView];
-  [v5 setSemanticContentAttribute:a3];
+  contentView = [(_UICollectionViewListHeaderFooter *)self contentView];
+  [contentView setSemanticContentAttribute:attribute];
 }
 
-- (CGSize)_contentTargetSizeForTargetSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 forUseWithSizeThatFits:(BOOL)a6
+- (CGSize)_contentTargetSizeForTargetSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority forUseWithSizeThatFits:(BOOL)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
   [(_UICollectionViewListHeaderFooter *)self _contentViewInsets];
   v14 = v13;
@@ -782,7 +782,7 @@ LABEL_4:
   {
     v19 = v11;
     v17 = 0.0;
-    if (a4 >= 1000.0)
+    if (priority >= 1000.0)
     {
       v20 = v12;
       v21 = *(__UILogGetCategoryCachedImpl("CollectionView", &_MergedGlobals_7_10) + 8);
@@ -795,7 +795,7 @@ LABEL_4:
         v31 = 2048;
         v32 = width;
         v33 = 2112;
-        v34 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "The _UICollectionViewListHeaderFooter's content view insets (left: %g, right: %g) exceed the _UICollectionViewListHeaderFooter's target width of %g with required fitting priority. Header/footer: %@", buf, 0x2Au);
       }
     }
@@ -804,7 +804,7 @@ LABEL_4:
   if (v18 < 0.0)
   {
     v18 = 0.0;
-    if (a5 >= 1000.0)
+    if (fittingPriority >= 1000.0)
     {
       v22 = *(__UILogGetCategoryCachedImpl("CollectionView", &qword_1ED49AD48) + 8);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -816,14 +816,14 @@ LABEL_4:
         v31 = 2048;
         v32 = v25;
         v33 = 2112;
-        v34 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "The _UICollectionViewListHeaderFooter's content view insets (top: %g, bottom: %g) exceed the _UICollectionViewListHeaderFooter's target height of %g with required fitting priority. Header/footer: %@", buf, 0x2Au);
       }
     }
   }
 
   v23 = 1.79769313e308;
-  if (a5 < 1000.0 && a6)
+  if (fittingPriority < 1000.0 && fits)
   {
     v24 = 1.79769313e308;
   }
@@ -833,7 +833,7 @@ LABEL_4:
     v24 = v18;
   }
 
-  if (a4 >= 1000.0 || !a6)
+  if (priority >= 1000.0 || !fits)
   {
     v23 = v17;
   }
@@ -843,10 +843,10 @@ LABEL_4:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v63 = *MEMORY[0x1E69E9840];
   [(_UICollectionViewListHeaderFooter *)self _performConfigurationStateUpdate];
   [(_UICollectionViewListHeaderFooter *)self _contentViewInsets];
@@ -857,70 +857,70 @@ LABEL_4:
   [(_UICollectionViewListHeaderFooter *)self _layoutContentView];
   if (!self->_contentViewConfigurationClass || ![(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints])
   {
-    v28 = self;
-    if ([(UIView *)v28 _wantsAutolayout])
+    selfCopy = self;
+    if ([(UIView *)selfCopy _wantsAutolayout])
     {
-      v29 = 1;
+      requiresConstraintBasedLayout = 1;
     }
 
     else
     {
-      v29 = [objc_opt_class() requiresConstraintBasedLayout];
+      requiresConstraintBasedLayout = [objc_opt_class() requiresConstraintBasedLayout];
     }
 
-    if (-[UIView _wantsAutolayout](v28->_contentView, "_wantsAutolayout") || [objc_opt_class() requiresConstraintBasedLayout])
+    if (-[UIView _wantsAutolayout](selfCopy->_contentView, "_wantsAutolayout") || [objc_opt_class() requiresConstraintBasedLayout])
     {
-      if (!v29 || (v32 = v28, ![(UIView *)v28 needsUpdateConstraints]) && (v32 = v28, [(UIView *)v28->_contentView translatesAutoresizingMaskIntoConstraints]))
+      if (!requiresConstraintBasedLayout || (v32 = selfCopy, ![(UIView *)selfCopy needsUpdateConstraints]) && (v32 = selfCopy, [(UIView *)selfCopy->_contentView translatesAutoresizingMaskIntoConstraints]))
       {
         has_internal_diagnostics = os_variant_has_internal_diagnostics();
-        v34 = [(UIView *)v28->_contentView translatesAutoresizingMaskIntoConstraints];
+        translatesAutoresizingMaskIntoConstraints = [(UIView *)selfCopy->_contentView translatesAutoresizingMaskIntoConstraints];
         if (has_internal_diagnostics)
         {
-          if (!v34)
+          if (!translatesAutoresizingMaskIntoConstraints)
           {
             v55 = __UIFaultDebugAssertLog();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
-              v62 = v28;
+              v62 = selfCopy;
               _os_log_fault_impl(&dword_188A29000, v55, OS_LOG_TYPE_FAULT, "contentView of _UICollectionViewListHeaderFooter has translatesAutoresizingMaskIntoConstraints false and is missing constraints to the header/footer, which will cause substandard performance in header/footer autosizing. Please leave the contentView's translatesAutoresizingMaskIntoConstraints true or else provide constraints between the contentView and the header/footer. %@", buf, 0xCu);
             }
           }
         }
 
-        else if (!v34)
+        else if (!translatesAutoresizingMaskIntoConstraints)
         {
           v56 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49AD50) + 8);
           if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v62 = v28;
+            v62 = selfCopy;
             _os_log_impl(&dword_188A29000, v56, OS_LOG_TYPE_ERROR, "contentView of _UICollectionViewListHeaderFooter has translatesAutoresizingMaskIntoConstraints false and is missing constraints to the header/footer, which will cause substandard performance in header/footer autosizing. Please leave the contentView's translatesAutoresizingMaskIntoConstraints true or else provide constraints between the contentView and the header/footer. %@", buf, 0xCu);
           }
         }
 
-        if ([(UIView *)v28->_contentView translatesAutoresizingMaskIntoConstraints])
+        if ([(UIView *)selfCopy->_contentView translatesAutoresizingMaskIntoConstraints])
         {
-          [(UIView *)v28->_contentView _setHostsLayoutEngine:1];
+          [(UIView *)selfCopy->_contentView _setHostsLayoutEngine:1];
         }
 
-        v32 = v28->_contentView;
+        v32 = selfCopy->_contentView;
       }
     }
 
     else
     {
-      v32 = v28;
-      if (!v29)
+      v32 = selfCopy;
+      if (!requiresConstraintBasedLayout)
       {
-        v59.receiver = v28;
+        v59.receiver = selfCopy;
         v59.super_class = _UICollectionViewListHeaderFooter;
-        *&v30 = a4;
-        *&v31 = a5;
+        *&v30 = priority;
+        *&v31 = fittingPriority;
         [(UIView *)&v59 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v30, v31];
         v26 = v48;
         v27 = v49;
-        v32 = v28;
+        v32 = selfCopy;
 LABEL_51:
 
         goto LABEL_52;
@@ -929,9 +929,9 @@ LABEL_51:
 
     [(UIView *)v32 _setWantsAutolayout];
     buf[0] = 1;
-    if (v13 == 0.0 && v11 == 0.0 && v17 == 0.0 && v15 == 0.0 || v32 != v28->_contentView)
+    if (v13 == 0.0 && v11 == 0.0 && v17 == 0.0 && v15 == 0.0 || v32 != selfCopy->_contentView)
     {
-      if (a5 == 50.0 && height == 0.0)
+      if (fittingPriority == 50.0 && height == 0.0)
       {
         v38 = buf;
       }
@@ -941,8 +941,8 @@ LABEL_51:
         v38 = 0;
       }
 
-      *&v35 = a4;
-      *&v36 = a5;
+      *&v35 = priority;
+      *&v36 = fittingPriority;
       [(UIView *)v32 _systemLayoutSizeFittingSize:v38 withHorizontalFittingPriority:width verticalFittingPriority:height hasIntentionallyCollapsedHeight:v35, v36];
       v26 = v39;
       v27 = v40;
@@ -950,10 +950,10 @@ LABEL_51:
 
     else
     {
-      *&v35 = a4;
-      *&v36 = a5;
-      [(_UICollectionViewListHeaderFooter *)v28 _contentTargetSizeForTargetSize:0 withHorizontalFittingPriority:width verticalFittingPriority:height forUseWithSizeThatFits:v35, v36];
-      if (v43 == 0.0 && a5 == 50.0)
+      *&v35 = priority;
+      *&v36 = fittingPriority;
+      [(_UICollectionViewListHeaderFooter *)selfCopy _contentTargetSizeForTargetSize:0 withHorizontalFittingPriority:width verticalFittingPriority:height forUseWithSizeThatFits:v35, v36];
+      if (v43 == 0.0 && fittingPriority == 50.0)
       {
         v45 = buf;
       }
@@ -970,14 +970,14 @@ LABEL_51:
 
     if (v27 == 0.0 && (buf[0] & 1) == 0)
     {
-      [(_UICollectionViewListHeaderFooter *)v28 sizeThatFits:width, height];
+      [(_UICollectionViewListHeaderFooter *)selfCopy sizeThatFits:width, height];
       v26 = v41;
       v27 = v42;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __119___UICollectionViewListHeaderFooter_systemLayoutSizeFittingSize_withHorizontalFittingPriority_verticalFittingPriority___block_invoke;
       block[3] = &unk_1E70F3590;
-      block[4] = v28;
+      block[4] = selfCopy;
       if (qword_1ED49AD58 != -1)
       {
         dispatch_once(&qword_1ED49AD58, block);
@@ -990,24 +990,24 @@ LABEL_51:
   v57 = v13;
   v58 = v11;
   v20 = v15;
-  *&v18 = a4;
-  *&v19 = a5;
+  *&v18 = priority;
+  *&v19 = fittingPriority;
   [(_UICollectionViewListHeaderFooter *)self _contentTargetSizeForTargetSize:1 withHorizontalFittingPriority:width verticalFittingPriority:height forUseWithSizeThatFits:v18, v19];
   [UIView systemLayoutSizeFittingSize:"systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:" withHorizontalFittingPriority:? verticalFittingPriority:?];
   v22 = v21;
   v24 = v23;
   v25 = self->_contentView;
-  if (a4 != 1000.0 && v22 > 2777777.0 || a5 != 1000.0 && v24 > 2777777.0)
+  if (priority != 1000.0 && v22 > 2777777.0 || fittingPriority != 1000.0 && v24 > 2777777.0)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _UIContentViewAssertValidFittingSize(UIView * _Nonnull __strong, CGSize, UILayoutPriority, UILayoutPriority)"}];
     v64.width = v22;
     v64.height = v24;
     v54 = NSStringFromCGSize(v64);
-    [v52 handleFailureInFunction:v53 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v54, v25}];
+    [currentHandler handleFailureInFunction:v53 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v54, v25}];
   }
 
-  if (a4 >= 1000.0)
+  if (priority >= 1000.0)
   {
     v26 = width;
   }
@@ -1017,7 +1017,7 @@ LABEL_51:
     v26 = v22 - (-v17 - v57);
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v27 = height;
   }
@@ -1035,10 +1035,10 @@ LABEL_52:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(_UICollectionViewListHeaderFooter *)self _performConfigurationStateUpdate];
   if (self->_contentViewConfigurationClass)
   {
@@ -1079,12 +1079,12 @@ LABEL_52:
   return result;
 }
 
-- (void)_didUpdateFocusInContext:(id)a3
+- (void)_didUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 previouslyFocusedView];
-  v6 = v5;
-  if (v5 == self)
+  contextCopy = context;
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v6 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
 
 LABEL_5:
@@ -1092,9 +1092,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v4 nextFocusedView];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v7 == self)
+  if (nextFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -1102,7 +1102,7 @@ LABEL_5:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = _UICollectionViewListHeaderFooter;
-  [(UIView *)&v8 _didUpdateFocusInContext:v4];
+  [(UIView *)&v8 _didUpdateFocusInContext:contextCopy];
 }
 
 - (UIEdgeInsets)_contentViewInsets

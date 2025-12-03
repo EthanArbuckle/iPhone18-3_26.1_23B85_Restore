@@ -1,36 +1,36 @@
 @interface RAPUserSearchInput
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)originAsString:(int)a3;
-- (int)StringAsOrigin:(id)a3;
+- (id)originAsString:(int)string;
+- (int)StringAsOrigin:(id)origin;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RAPUserSearchInput
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(RAPUserSearchInput *)self setSearchString:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(RAPUserSearchInput *)self setSingleLineAddressString:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
   placeMapItemStorage = self->_placeMapItemStorage;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (placeMapItemStorage)
   {
     if (!v6)
@@ -51,10 +51,10 @@
     [(RAPUserSearchInput *)self setPlaceMapItemStorage:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_11:
   completionStorage = self->_completionStorage;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (completionStorage)
   {
     if (!v8)
@@ -75,10 +75,10 @@ LABEL_11:
     [(RAPUserSearchInput *)self setCompletionStorage:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_17:
   coordinate = self->_coordinate;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   if (coordinate)
   {
     if (!v10)
@@ -99,18 +99,18 @@ LABEL_17:
     [(RAPUserSearchInput *)self setCoordinate:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_23:
-  if (v4[16])
+  if (fromCopy[16])
   {
-    self->_origin = v4[8];
+    self->_origin = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(RAPUserSearchInput *)self setFindMyHandleID:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 }
 
@@ -134,16 +134,16 @@ LABEL_23:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_findMyHandleID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   searchString = self->_searchString;
-  if (searchString | *(v4 + 6))
+  if (searchString | *(equalCopy + 6))
   {
     if (![(NSString *)searchString isEqual:?])
     {
@@ -152,7 +152,7 @@ LABEL_23:
   }
 
   singleLineAddressString = self->_singleLineAddressString;
-  if (singleLineAddressString | *(v4 + 7))
+  if (singleLineAddressString | *(equalCopy + 7))
   {
     if (![(NSString *)singleLineAddressString isEqual:?])
     {
@@ -161,7 +161,7 @@ LABEL_23:
   }
 
   placeMapItemStorage = self->_placeMapItemStorage;
-  if (placeMapItemStorage | *(v4 + 5))
+  if (placeMapItemStorage | *(equalCopy + 5))
   {
     if (![(GEOMapItemStorage *)placeMapItemStorage isEqual:?])
     {
@@ -170,7 +170,7 @@ LABEL_23:
   }
 
   completionStorage = self->_completionStorage;
-  if (completionStorage | *(v4 + 1))
+  if (completionStorage | *(equalCopy + 1))
   {
     if (![(GEOStorageCompletion *)completionStorage isEqual:?])
     {
@@ -179,7 +179,7 @@ LABEL_23:
   }
 
   coordinate = self->_coordinate;
-  if (coordinate | *(v4 + 2))
+  if (coordinate | *(equalCopy + 2))
   {
     if (![(GEOLatLng *)coordinate isEqual:?])
     {
@@ -189,13 +189,13 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_origin != *(v4 + 8))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_origin != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v11 = 0;
@@ -203,7 +203,7 @@ LABEL_19:
   }
 
   findMyHandleID = self->_findMyHandleID;
-  if (findMyHandleID | *(v4 + 3))
+  if (findMyHandleID | *(equalCopy + 3))
   {
     v11 = [(NSString *)findMyHandleID isEqual:?];
   }
@@ -218,26 +218,26 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_searchString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_searchString copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_singleLineAddressString copyWithZone:a3];
+  v8 = [(NSString *)self->_singleLineAddressString copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(GEOMapItemStorage *)self->_placeMapItemStorage copyWithZone:a3];
+  v10 = [(GEOMapItemStorage *)self->_placeMapItemStorage copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(GEOStorageCompletion *)self->_completionStorage copyWithZone:a3];
+  v12 = [(GEOStorageCompletion *)self->_completionStorage copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
-  v14 = [(GEOLatLng *)self->_coordinate copyWithZone:a3];
+  v14 = [(GEOLatLng *)self->_coordinate copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -247,104 +247,104 @@ LABEL_20:
     *(v5 + 64) |= 1u;
   }
 
-  v16 = [(NSString *)self->_findMyHandleID copyWithZone:a3];
+  v16 = [(NSString *)self->_findMyHandleID copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_searchString)
   {
-    [v4 setSearchString:?];
-    v4 = v5;
+    [toCopy setSearchString:?];
+    toCopy = v5;
   }
 
   if (self->_singleLineAddressString)
   {
     [v5 setSingleLineAddressString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_placeMapItemStorage)
   {
     [v5 setPlaceMapItemStorage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_completionStorage)
   {
     [v5 setCompletionStorage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_coordinate)
   {
     [v5 setCoordinate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_origin;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 8) = self->_origin;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_findMyHandleID)
   {
     [v5 setFindMyHandleID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_searchString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_singleLineAddressString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_placeMapItemStorage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_completionStorage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_coordinate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_findMyHandleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
@@ -367,22 +367,22 @@ LABEL_20:
   placeMapItemStorage = self->_placeMapItemStorage;
   if (placeMapItemStorage)
   {
-    v8 = [(GEOMapItemStorage *)placeMapItemStorage dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"placeMapItemStorage"];
+    dictionaryRepresentation = [(GEOMapItemStorage *)placeMapItemStorage dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"placeMapItemStorage"];
   }
 
   completionStorage = self->_completionStorage;
   if (completionStorage)
   {
-    v10 = [(GEOStorageCompletion *)completionStorage dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"completionStorage"];
+    dictionaryRepresentation2 = [(GEOStorageCompletion *)completionStorage dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"completionStorage"];
   }
 
   coordinate = self->_coordinate;
   if (coordinate)
   {
-    v12 = [(GEOLatLng *)coordinate dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"coordinate"];
+    dictionaryRepresentation3 = [(GEOLatLng *)coordinate dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"coordinate"];
   }
 
   if (*&self->_has)
@@ -415,31 +415,31 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = RAPUserSearchInput;
   v3 = [(RAPUserSearchInput *)&v7 description];
-  v4 = [(RAPUserSearchInput *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RAPUserSearchInput *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (int)StringAsOrigin:(id)a3
+- (int)StringAsOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OTHER"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT"])
+  else if ([originCopy isEqualToString:@"CONTACT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CURRENT_LOCATION"])
+  else if ([originCopy isEqualToString:@"CURRENT_LOCATION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DROPPED_PIN"])
+  else if ([originCopy isEqualToString:@"DROPPED_PIN"])
   {
     v4 = 3;
   }
@@ -452,16 +452,16 @@ LABEL_20:
   return v4;
 }
 
-- (id)originAsString:(int)a3
+- (id)originAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_101632E20[a3];
+    v4 = off_101632E20[string];
   }
 
   return v4;

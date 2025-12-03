@@ -1,32 +1,32 @@
 @interface RemoteViewController
-- (RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (RemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_passwordAccepted;
-- (void)_passwordPresented:(id)a3;
-- (void)_passwordRequested:(id)a3;
-- (void)_setupCancelled:(id)a3;
+- (void)_passwordPresented:(id)presented;
+- (void)_passwordRequested:(id)requested;
+- (void)_setupCancelled:(id)cancelled;
 - (void)_setupComplete;
 - (void)_setupFailed;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation RemoteViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_1000055E8;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100002D60(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100002D60(context, v6);
   sub_1000055A0(v6);
 }
 
@@ -38,15 +38,15 @@
   os_log(_:dso:log:type:_:)();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100003614(a3);
+  selfCopy = self;
+  sub_100003614(appear);
 }
 
 - (void)proxCardFlowWillPresent
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_100002CA0();
   if (v2)
   {
@@ -57,52 +57,52 @@
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003B94();
 }
 
 - (void)_setupComplete
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003F7C();
 }
 
-- (void)_setupCancelled:(id)a3
+- (void)_setupCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000404C(v4);
+  cancelledCopy = cancelled;
+  selfCopy = self;
+  sub_10000404C(cancelledCopy);
 }
 
 - (void)_setupFailed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004384();
 }
 
-- (void)_passwordRequested:(id)a3
+- (void)_passwordRequested:(id)requested
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000043E4(v4);
+  requestedCopy = requested;
+  selfCopy = self;
+  sub_1000043E4(requestedCopy);
 }
 
-- (void)_passwordPresented:(id)a3
+- (void)_passwordPresented:(id)presented
 {
-  v4 = a3;
-  v5 = self;
-  sub_100004780(v4);
+  presentedCopy = presented;
+  selfCopy = self;
+  sub_100004780(presentedCopy);
 }
 
 - (void)_passwordAccepted
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004D2C();
 }
 
-- (RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (RemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -114,8 +114,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100004E1C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100004E1C(v5, v7, bundle);
 }
 
 @end

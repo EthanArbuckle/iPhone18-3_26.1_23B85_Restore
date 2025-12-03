@@ -1,19 +1,19 @@
 @interface CSLPRFLiveActivitiesAppSettingsCustomization
-- (id)settingsForBundleIdentifier:(id)a3 fromAllSettings:(id)a4 handled:(BOOL *)a5;
+- (id)settingsForBundleIdentifier:(id)identifier fromAllSettings:(id)settings handled:(BOOL *)handled;
 @end
 
 @implementation CSLPRFLiveActivitiesAppSettingsCustomization
 
-- (id)settingsForBundleIdentifier:(id)a3 fromAllSettings:(id)a4 handled:(BOOL *)a5
+- (id)settingsForBundleIdentifier:(id)identifier fromAllSettings:(id)settings handled:(BOOL *)handled
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v36[0] = @"com.apple.NanoPhone";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  if (![v9 containsObject:v7])
+  if (![v9 containsObject:identifierCopy])
   {
-    v12 = [MEMORY[0x277CC1E70] bundleRecordWithApplicationIdentifier:v7 error:0];
+    v12 = [MEMORY[0x277CC1E70] bundleRecordWithApplicationIdentifier:identifierCopy error:0];
     if (v12)
     {
       v13 = objc_opt_class();
@@ -44,40 +44,40 @@
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v35 = v7;
+          v35 = identifierCopy;
           _os_log_impl(&dword_22CE92000, v17, OS_LOG_TYPE_INFO, "Live activities settings requested for: %@", buf, 0xCu);
         }
 
         v33 = v16;
         v18 = [CSLPRFApp appWithApplicationRecord:v16];
-        v19 = [v18 unionedBackgroundModes];
-        if ([v19 containsObject:@"audio"])
+        unionedBackgroundModes = [v18 unionedBackgroundModes];
+        if ([unionedBackgroundModes containsObject:@"audio"])
         {
           v20 = 0;
         }
 
         else
         {
-          v21 = [v18 bundleIdentifier];
-          v22 = [v21 isEqualToString:@"com.apple.NanoNowPlaying"];
+          bundleIdentifier = [v18 bundleIdentifier];
+          v22 = [bundleIdentifier isEqualToString:@"com.apple.NanoNowPlaying"];
 
           v20 = v22 ^ 1;
         }
 
-        v23 = [v18 unionedBackgroundModes];
-        if ([v23 containsObject:@"workout-processing"])
+        unionedBackgroundModes2 = [v18 unionedBackgroundModes];
+        if ([unionedBackgroundModes2 containsObject:@"workout-processing"])
         {
           v24 = 1;
         }
 
         else
         {
-          v25 = [v18 bundleIdentifier];
-          v24 = [v25 isEqualToString:@"com.apple.SessionTrackerApp"];
+          bundleIdentifier2 = [v18 bundleIdentifier];
+          v24 = [bundleIdentifier2 isEqualToString:@"com.apple.SessionTrackerApp"];
         }
 
-        v26 = [v18 unionedBackgroundModes];
-        v27 = [v26 containsObject:@"physical-therapy"];
+        unionedBackgroundModes3 = [v18 unionedBackgroundModes];
+        v27 = [unionedBackgroundModes3 containsObject:@"physical-therapy"];
 
         if (((v20 | v24) & 1) == 0 && (v27 & 1) == 0)
         {
@@ -91,8 +91,8 @@
           v29 = kAllMusicAppsBundleIdentifer;
 LABEL_29:
 
-          *a5 = 1;
-          v11 = [v8 objectForKey:*v29];
+          *handled = 1;
+          v11 = [settingsCopy objectForKey:*v29];
 
 LABEL_35:
           goto LABEL_36;
@@ -123,7 +123,7 @@ LABEL_35:
     }
 
     v11 = 0;
-    *a5 = 0;
+    *handled = 0;
     goto LABEL_35;
   }
 
@@ -131,12 +131,12 @@ LABEL_35:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v7;
+    v35 = identifierCopy;
     _os_log_impl(&dword_22CE92000, v10, OS_LOG_TYPE_INFO, "%@ is configured as a media app but will use app specific settings.", buf, 0xCu);
   }
 
   v11 = 0;
-  *a5 = 0;
+  *handled = 0;
 LABEL_36:
 
   v31 = *MEMORY[0x277D85DE8];

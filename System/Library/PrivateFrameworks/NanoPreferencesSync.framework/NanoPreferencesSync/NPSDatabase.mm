@@ -1,38 +1,38 @@
 @interface NPSDatabase
-- (BOOL)_openDBAtPath:(id)a3;
-- (BOOL)getMessageType:(int *)a3 forMessageID:(id)a4;
-- (BOOL)removeMessageFromMessageTypeTable:(id)a3;
-- (BOOL)setMessageType:(int)a3 forMessageID:(id)a4;
-- (NPSDatabase)initWithPath:(id)a3;
+- (BOOL)_openDBAtPath:(id)path;
+- (BOOL)getMessageType:(int *)type forMessageID:(id)d;
+- (BOOL)removeMessageFromMessageTypeTable:(id)table;
+- (BOOL)setMessageType:(int)type forMessageID:(id)d;
+- (NPSDatabase)initWithPath:(id)path;
 - (int)_getSchemaVersion;
 - (void)dealloc;
 - (void)flushStashedSettingsSyncData;
-- (void)getFileBackupDataForMessage:(id)a3 handler:(id)a4;
-- (void)getSettingsBackupDataForMessage:(id)a3 handler:(id)a4;
-- (void)getSettingsSyncDataForMessage:(id)a3 handler:(id)a4;
-- (void)getStashedSettingsSyncDataWithHandler:(id)a3;
+- (void)getFileBackupDataForMessage:(id)message handler:(id)handler;
+- (void)getSettingsBackupDataForMessage:(id)message handler:(id)handler;
+- (void)getSettingsSyncDataForMessage:(id)message handler:(id)handler;
+- (void)getStashedSettingsSyncDataWithHandler:(id)handler;
 - (void)invalidate;
-- (void)messageWasDelivered:(id)a3;
-- (void)messageWasPurged:(id)a3;
+- (void)messageWasDelivered:(id)delivered;
+- (void)messageWasPurged:(id)purged;
 - (void)purgePendingOutgoingMessages;
-- (void)sentFileBackupMessage:(id)a3 forFileAtPath:(id)a4;
-- (void)sentSettingsBackupMessage:(id)a3 forContainer:(id)a4 domain:(id)a5 keys:(id)a6;
-- (void)sentSettingsSyncMessage:(id)a3 forDomain:(id)a4 keys:(id)a5 cloudEnabled:(BOOL)a6;
-- (void)stashSettingsSyncData:(id)a3 forDomain:(id)a4 key:(id)a5 isTwoWaySync:(BOOL)a6 timestamp:(double)a7;
-- (void)untrackFileBackupMessageForFileAtPath:(id)a3;
-- (void)untrackSettingsBackupMessageForContainer:(id)a3 domain:(id)a4 keys:(id)a5;
-- (void)untrackSettingsSyncMessagesForDomain:(id)a3 keys:(id)a4 cloudEnabled:(BOOL)a5;
+- (void)sentFileBackupMessage:(id)message forFileAtPath:(id)path;
+- (void)sentSettingsBackupMessage:(id)message forContainer:(id)container domain:(id)domain keys:(id)keys;
+- (void)sentSettingsSyncMessage:(id)message forDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled;
+- (void)stashSettingsSyncData:(id)data forDomain:(id)domain key:(id)key isTwoWaySync:(BOOL)sync timestamp:(double)timestamp;
+- (void)untrackFileBackupMessageForFileAtPath:(id)path;
+- (void)untrackSettingsBackupMessageForContainer:(id)container domain:(id)domain keys:(id)keys;
+- (void)untrackSettingsSyncMessagesForDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled;
 @end
 
 @implementation NPSDatabase
 
-- (NPSDatabase)initWithPath:(id)a3
+- (NPSDatabase)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = NPSDatabase;
   v5 = [(NPSDatabase *)&v10 init];
-  if (v5 && ([v4 stringByStandardizingPath], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NPSDatabase _openDBAtPath:](v5, "_openDBAtPath:", v6), v6, !v7))
+  if (v5 && ([pathCopy stringByStandardizingPath], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NPSDatabase _openDBAtPath:](v5, "_openDBAtPath:", v6), v6, !v7))
   {
     v8 = 0;
   }
@@ -90,10 +90,10 @@
   }
 }
 
-- (BOOL)setMessageType:(int)a3 forMessageID:(id)a4
+- (BOOL)setMessageType:(int)type forMessageID:(id)d
 {
-  sub_100019E88(self->_setMessageTypeForMessageID, 1, a4);
-  sqlite3_bind_int(self->_setMessageTypeForMessageID, 2, a3);
+  sub_100019E88(self->_setMessageTypeForMessageID, 1, d);
+  sqlite3_bind_int(self->_setMessageTypeForMessageID, 2, type);
   v6 = sqlite3_step(self->_setMessageTypeForMessageID);
   sqlite3_reset(self->_setMessageTypeForMessageID);
   sqlite3_clear_bindings(self->_setMessageTypeForMessageID);
@@ -125,9 +125,9 @@
   return (v6 & 0xFFFFFFFE) == 100;
 }
 
-- (BOOL)getMessageType:(int *)a3 forMessageID:(id)a4
+- (BOOL)getMessageType:(int *)type forMessageID:(id)d
 {
-  sub_100019E88(self->_getMessageTypeForMessageID, 1, a4);
+  sub_100019E88(self->_getMessageTypeForMessageID, 1, d);
   v6 = sqlite3_step(self->_getMessageTypeForMessageID);
   if (v6 == 101)
   {
@@ -137,7 +137,7 @@
   v7 = v6;
   if (v6 == 100)
   {
-    *a3 = sqlite3_column_int(self->_getMessageTypeForMessageID, 0);
+    *type = sqlite3_column_int(self->_getMessageTypeForMessageID, 0);
     v8 = 1;
     goto LABEL_13;
   }
@@ -179,9 +179,9 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)removeMessageFromMessageTypeTable:(id)a3
+- (BOOL)removeMessageFromMessageTypeTable:(id)table
 {
-  sub_100019E88(self->_removeMessageFromMessageTypeTable, 1, a3);
+  sub_100019E88(self->_removeMessageFromMessageTypeTable, 1, table);
   v4 = sqlite3_step(self->_removeMessageFromMessageTypeTable);
   v5 = v4 & 0xFFFFFFFE;
   if ((v4 & 0xFFFFFFFE) != 0x64)
@@ -215,12 +215,12 @@ LABEL_13:
   return v5 == 100;
 }
 
-- (void)sentSettingsSyncMessage:(id)a3 forDomain:(id)a4 keys:(id)a5 cloudEnabled:(BOOL)a6
+- (void)sentSettingsSyncMessage:(id)message forDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  enabledCopy = enabled;
+  messageCopy = message;
+  domainCopy = domain;
+  keysCopy = keys;
   v13 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (!v13)
   {
@@ -228,7 +228,7 @@ LABEL_13:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v18 = v12;
+    v18 = keysCopy;
     v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v19)
     {
@@ -244,10 +244,10 @@ LABEL_13:
           }
 
           v23 = *(*(&v33 + 1) + 8 * i);
-          sub_100019E88(self->_setMessageIDForSettingSync, 1, v11);
+          sub_100019E88(self->_setMessageIDForSettingSync, 1, domainCopy);
           sub_100019E88(self->_setMessageIDForSettingSync, 2, v23);
-          sub_100019E88(self->_setMessageIDForSettingSync, 3, v10);
-          sqlite3_bind_int(self->_setMessageIDForSettingSync, 4, v6);
+          sub_100019E88(self->_setMessageIDForSettingSync, 3, messageCopy);
+          sqlite3_bind_int(self->_setMessageIDForSettingSync, 4, enabledCopy);
           v24 = sqlite3_step(self->_setMessageIDForSettingSync);
           sqlite3_reset(self->_setMessageIDForSettingSync);
           sqlite3_clear_bindings(self->_setMessageIDForSettingSync);
@@ -291,7 +291,7 @@ LABEL_13:
       }
     }
 
-    if (!v10 || [(NPSDatabase *)self setMessageType:0 forMessageID:v10, v33])
+    if (!messageCopy || [(NPSDatabase *)self setMessageType:0 forMessageID:messageCopy, v33])
     {
       v25 = sub_10001A5D0(self->_db, "COMMIT TRANSACTION", v33);
       if (!v25)
@@ -353,11 +353,11 @@ LABEL_13:
 LABEL_39:
 }
 
-- (void)untrackSettingsSyncMessagesForDomain:(id)a3 keys:(id)a4 cloudEnabled:(BOOL)a5
+- (void)untrackSettingsSyncMessagesForDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  domainCopy = domain;
+  keysCopy = keys;
   v10 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v10)
   {
@@ -391,7 +391,7 @@ LABEL_39:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = v9;
+    v17 = keysCopy;
     v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v18)
     {
@@ -407,9 +407,9 @@ LABEL_39:
           }
 
           v22 = *(*(&v32 + 1) + 8 * i);
-          sub_100019E88(self->_untrackSettingsSyncMessage, 1, v8);
+          sub_100019E88(self->_untrackSettingsSyncMessage, 1, domainCopy);
           sub_100019E88(self->_untrackSettingsSyncMessage, 2, v22);
-          sqlite3_bind_int(self->_untrackSettingsSyncMessage, 3, v5);
+          sqlite3_bind_int(self->_untrackSettingsSyncMessage, 3, enabledCopy);
           v23 = sqlite3_step(self->_untrackSettingsSyncMessage);
           sqlite3_reset(self->_untrackSettingsSyncMessage);
           sqlite3_clear_bindings(self->_untrackSettingsSyncMessage);
@@ -486,12 +486,12 @@ LABEL_39:
 LABEL_41:
 }
 
-- (void)sentSettingsBackupMessage:(id)a3 forContainer:(id)a4 domain:(id)a5 keys:(id)a6
+- (void)sentSettingsBackupMessage:(id)message forContainer:(id)container domain:(id)domain keys:(id)keys
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  containerCopy = container;
+  domainCopy = domain;
+  keysCopy = keys;
   v14 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v14)
   {
@@ -525,16 +525,16 @@ LABEL_41:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v36 = v13;
-    v19 = v13;
+    v36 = keysCopy;
+    v19 = keysCopy;
     v20 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
       v22 = *v38;
-      if (v11)
+      if (containerCopy)
       {
-        v23 = v11;
+        v23 = containerCopy;
       }
 
       else
@@ -544,7 +544,7 @@ LABEL_41:
 
       while (2)
       {
-        v24 = v11;
+        v24 = containerCopy;
         for (i = 0; i != v21; i = i + 1)
         {
           if (*v38 != v22)
@@ -554,9 +554,9 @@ LABEL_41:
 
           v26 = *(*(&v37 + 1) + 8 * i);
           sub_100019E88(self->_setMessageIDForSettingBackup, 1, v23);
-          sub_100019E88(self->_setMessageIDForSettingBackup, 2, v12);
+          sub_100019E88(self->_setMessageIDForSettingBackup, 2, domainCopy);
           sub_100019E88(self->_setMessageIDForSettingBackup, 3, v26);
-          sub_100019E88(self->_setMessageIDForSettingBackup, 4, v10);
+          sub_100019E88(self->_setMessageIDForSettingBackup, 4, messageCopy);
           v27 = sqlite3_step(self->_setMessageIDForSettingBackup);
           sqlite3_reset(self->_setMessageIDForSettingBackup);
           sqlite3_clear_bindings(self->_setMessageIDForSettingBackup);
@@ -579,7 +579,7 @@ LABEL_41:
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "SQL Error: (%d) %s", buf, 0x12u);
             }
 
-            v11 = v24;
+            containerCopy = v24;
             if (v27 >= 102 && v27 <= 0xEu && ((1 << v27) & 0x4D70) != 0)
             {
               sub_10001F0F8(v27);
@@ -592,7 +592,7 @@ LABEL_41:
         }
 
         v21 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
-        v11 = v24;
+        containerCopy = v24;
         if (v21)
         {
           continue;
@@ -602,17 +602,17 @@ LABEL_41:
       }
     }
 
-    if (v10 && ![(NPSDatabase *)self setMessageType:1 forMessageID:v10])
+    if (messageCopy && ![(NPSDatabase *)self setMessageType:1 forMessageID:messageCopy])
     {
       sub_10001A5D0(self->_db, "ROLLBACK TRANSACTION");
 LABEL_41:
-      v13 = v36;
+      keysCopy = v36;
     }
 
     else
     {
       v28 = sub_10001A5D0(self->_db, "COMMIT TRANSACTION");
-      v13 = v36;
+      keysCopy = v36;
       if (v28)
       {
         v29 = v28;
@@ -644,11 +644,11 @@ LABEL_41:
   }
 }
 
-- (void)untrackSettingsBackupMessageForContainer:(id)a3 domain:(id)a4 keys:(id)a5
+- (void)untrackSettingsBackupMessageForContainer:(id)container domain:(id)domain keys:(id)keys
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  domainCopy = domain;
+  keysCopy = keys;
   v11 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v11)
   {
@@ -682,7 +682,7 @@ LABEL_41:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = v10;
+    v16 = keysCopy;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
@@ -698,8 +698,8 @@ LABEL_41:
           }
 
           v21 = *(*(&v31 + 1) + 8 * i);
-          sub_100019E88(self->_untrackSettingsBackupMessage, 1, v8);
-          sub_100019E88(self->_untrackSettingsBackupMessage, 2, v9);
+          sub_100019E88(self->_untrackSettingsBackupMessage, 1, containerCopy);
+          sub_100019E88(self->_untrackSettingsBackupMessage, 2, domainCopy);
           sub_100019E88(self->_untrackSettingsBackupMessage, 3, v21);
           v22 = sqlite3_step(self->_untrackSettingsBackupMessage);
           sqlite3_reset(self->_untrackSettingsBackupMessage);
@@ -777,21 +777,21 @@ LABEL_41:
 LABEL_37:
 }
 
-- (void)sentFileBackupMessage:(id)a3 forFileAtPath:(id)a4
+- (void)sentFileBackupMessage:(id)message forFileAtPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  pathCopy = path;
   v8 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (!v8)
   {
-    sub_100019E88(self->_setMessageIDForFileBackup, 1, v7);
-    sub_100019E88(self->_setMessageIDForFileBackup, 2, v6);
+    sub_100019E88(self->_setMessageIDForFileBackup, 1, pathCopy);
+    sub_100019E88(self->_setMessageIDForFileBackup, 2, messageCopy);
     v15 = sqlite3_step(self->_setMessageIDForFileBackup);
     sqlite3_reset(self->_setMessageIDForFileBackup);
     sqlite3_clear_bindings(self->_setMessageIDForFileBackup);
     if ((v15 - 102) > 0xFFFFFFFD)
     {
-      if (v6 && ![(NPSDatabase *)self setMessageType:2 forMessageID:v6])
+      if (messageCopy && ![(NPSDatabase *)self setMessageType:2 forMessageID:messageCopy])
       {
 LABEL_30:
         sub_10001A5D0(self->_db, "ROLLBACK TRANSACTION", v21, v22);
@@ -874,9 +874,9 @@ LABEL_25:
 LABEL_31:
 }
 
-- (void)untrackFileBackupMessageForFileAtPath:(id)a3
+- (void)untrackFileBackupMessageForFileAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v5)
   {
@@ -906,7 +906,7 @@ LABEL_31:
     goto LABEL_29;
   }
 
-  sub_100019E88(self->_untrackFileBackupMessage, 1, v4);
+  sub_100019E88(self->_untrackFileBackupMessage, 1, pathCopy);
   v12 = sqlite3_step(self->_untrackFileBackupMessage);
   sqlite3_reset(self->_untrackFileBackupMessage);
   sqlite3_clear_bindings(self->_untrackFileBackupMessage);
@@ -965,9 +965,9 @@ LABEL_24:
 LABEL_29:
 }
 
-- (void)messageWasDelivered:(id)a3
+- (void)messageWasDelivered:(id)delivered
 {
-  v4 = a3;
+  deliveredCopy = delivered;
   v5 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v5)
   {
@@ -998,7 +998,7 @@ LABEL_29:
   }
 
   v25 = 0;
-  if ([(NPSDatabase *)self getMessageType:&v25 forMessageID:v4])
+  if ([(NPSDatabase *)self getMessageType:&v25 forMessageID:deliveredCopy])
   {
     if (v25 >= 3)
     {
@@ -1006,11 +1006,11 @@ LABEL_29:
     }
 
     v12 = *(&self->_untrackSettingsSyncForMessageID + v25);
-    sub_100019E88(v12, 1, v4);
+    sub_100019E88(v12, 1, deliveredCopy);
     v13 = sqlite3_step(v12);
     if ((v13 & 0xFFFFFFFE) == 0x64)
     {
-      if ([(NPSDatabase *)self removeMessageFromMessageTypeTable:v4])
+      if ([(NPSDatabase *)self removeMessageFromMessageTypeTable:deliveredCopy])
       {
         goto LABEL_32;
       }
@@ -1080,9 +1080,9 @@ LABEL_32:
 LABEL_43:
 }
 
-- (void)messageWasPurged:(id)a3
+- (void)messageWasPurged:(id)purged
 {
-  v4 = a3;
+  purgedCopy = purged;
   v5 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v5)
   {
@@ -1113,7 +1113,7 @@ LABEL_43:
   }
 
   v25 = 0;
-  if ([(NPSDatabase *)self getMessageType:&v25 forMessageID:v4])
+  if ([(NPSDatabase *)self getMessageType:&v25 forMessageID:purgedCopy])
   {
     if (v25 >= 3)
     {
@@ -1121,11 +1121,11 @@ LABEL_43:
     }
 
     v12 = *(&self->_setNullMessageIDForSettingSync + v25);
-    sub_100019E88(v12, 1, v4);
+    sub_100019E88(v12, 1, purgedCopy);
     v13 = sqlite3_step(v12);
     if ((v13 & 0xFFFFFFFE) == 0x64)
     {
-      if ([(NPSDatabase *)self removeMessageFromMessageTypeTable:v4])
+      if ([(NPSDatabase *)self removeMessageFromMessageTypeTable:purgedCopy])
       {
         goto LABEL_32;
       }
@@ -1195,15 +1195,15 @@ LABEL_32:
 LABEL_43:
 }
 
-- (void)getSettingsSyncDataForMessage:(id)a3 handler:(id)a4
+- (void)getSettingsSyncDataForMessage:(id)message handler:(id)handler
 {
-  v6 = a3;
-  v22 = a4;
-  v23 = v6;
-  if (v6)
+  messageCopy = message;
+  handlerCopy = handler;
+  v23 = messageCopy;
+  if (messageCopy)
   {
     getSettingsSyncForMessageID = self->_getSettingsSyncForMessageID;
-    sub_100019E88(getSettingsSyncForMessageID, 1, v6);
+    sub_100019E88(getSettingsSyncForMessageID, 1, messageCopy);
   }
 
   else
@@ -1249,7 +1249,7 @@ LABEL_43:
     }
 
     v14 = v13;
-    v15 = [v14 objectForKeyedSubscript:{v11, v22, v23}];
+    v15 = [v14 objectForKeyedSubscript:{v11, handlerCopy, v23}];
     if (!v15)
     {
       v15 = objc_opt_new();
@@ -1291,7 +1291,7 @@ LABEL_43:
   v26[1] = 3221225472;
   v26[2] = sub_10001C254;
   v26[3] = &unk_10003D210;
-  v20 = v22;
+  v20 = handlerCopy;
   v27 = v20;
   [v9 enumerateKeysAndObjectsUsingBlock:v26];
   v24[0] = _NSConcreteStackBlock;
@@ -1303,14 +1303,14 @@ LABEL_43:
   [v8 enumerateKeysAndObjectsUsingBlock:v24];
 }
 
-- (void)getSettingsBackupDataForMessage:(id)a3 handler:(id)a4
+- (void)getSettingsBackupDataForMessage:(id)message handler:(id)handler
 {
-  v6 = a3;
-  v20 = a4;
-  if (v6)
+  messageCopy = message;
+  handlerCopy = handler;
+  if (messageCopy)
   {
     getSettingsBackupForMessageID = self->_getSettingsBackupForMessageID;
-    sub_100019E88(getSettingsBackupForMessageID, 1, v6);
+    sub_100019E88(getSettingsBackupForMessageID, 1, messageCopy);
   }
 
   else
@@ -1384,19 +1384,19 @@ LABEL_43:
   v21[1] = 3221225472;
   v21[2] = sub_10001C554;
   v21[3] = &unk_10003D260;
-  v22 = v20;
-  v19 = v20;
+  v22 = handlerCopy;
+  v19 = handlerCopy;
   [v8 enumerateKeysAndObjectsUsingBlock:v21];
 }
 
-- (void)getFileBackupDataForMessage:(id)a3 handler:(id)a4
+- (void)getFileBackupDataForMessage:(id)message handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  messageCopy = message;
+  handlerCopy = handler;
+  if (messageCopy)
   {
     getFileBackupForMessageID = self->_getFileBackupForMessageID;
-    sub_100019E88(getFileBackupForMessageID, 1, v6);
+    sub_100019E88(getFileBackupForMessageID, 1, messageCopy);
   }
 
   else
@@ -1469,7 +1469,7 @@ LABEL_43:
           objc_enumerationMutation(v16);
         }
 
-        v7[2](v7, *(*(&v21 + 1) + 8 * i));
+        handlerCopy[2](handlerCopy, *(*(&v21 + 1) + 8 * i));
       }
 
       v18 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1479,12 +1479,12 @@ LABEL_43:
   }
 }
 
-- (void)stashSettingsSyncData:(id)a3 forDomain:(id)a4 key:(id)a5 isTwoWaySync:(BOOL)a6 timestamp:(double)a7
+- (void)stashSettingsSyncData:(id)data forDomain:(id)domain key:(id)key isTwoWaySync:(BOOL)sync timestamp:(double)timestamp
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  syncCopy = sync;
+  dataCopy = data;
+  domainCopy = domain;
+  keyCopy = key;
   v15 = sub_10001A5D0(self->_db, "BEGIN EXCLUSIVE TRANSACTION");
   if (v15)
   {
@@ -1514,10 +1514,10 @@ LABEL_43:
     goto LABEL_28;
   }
 
-  sub_100019E88(self->_stashSettingsSyncData, 1, v13);
-  sub_100019E88(self->_stashSettingsSyncData, 2, v14);
+  sub_100019E88(self->_stashSettingsSyncData, 1, domainCopy);
+  sub_100019E88(self->_stashSettingsSyncData, 2, keyCopy);
   stashSettingsSyncData = self->_stashSettingsSyncData;
-  v21 = v12;
+  v21 = dataCopy;
   v22 = v21;
   if (v21)
   {
@@ -1529,8 +1529,8 @@ LABEL_43:
     sqlite3_bind_null(stashSettingsSyncData, 3);
   }
 
-  sqlite3_bind_int(self->_stashSettingsSyncData, 4, v8);
-  sqlite3_bind_double(self->_stashSettingsSyncData, 5, a7);
+  sqlite3_bind_int(self->_stashSettingsSyncData, 4, syncCopy);
+  sqlite3_bind_double(self->_stashSettingsSyncData, 5, timestamp);
   v23 = sqlite3_step(self->_stashSettingsSyncData);
   if ((v23 - 102) > 0xFFFFFFFD)
   {
@@ -1589,9 +1589,9 @@ LABEL_23:
 LABEL_28:
 }
 
-- (void)getStashedSettingsSyncDataWithHandler:(id)a3
+- (void)getStashedSettingsSyncDataWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   while (1)
   {
     v5 = sqlite3_step(self->_getStashedSettingSyncData);
@@ -1626,7 +1626,7 @@ LABEL_28:
       v13.n128_f64[0] = 1.0;
     }
 
-    v4[2](v4, v6, v7, v11, v12, v13);
+    handlerCopy[2](handlerCopy, v6, v7, v11, v12, v13);
   }
 
   v14 = v5;
@@ -1962,10 +1962,10 @@ LABEL_27:
   return v3;
 }
 
-- (BOOL)_openDBAtPath:(id)a3
+- (BOOL)_openDBAtPath:(id)path
 {
-  v4 = a3;
-  v5 = sqlite3_open_v2([v4 fileSystemRepresentation], &self->_db, 4194310, 0);
+  pathCopy = path;
+  v5 = sqlite3_open_v2([pathCopy fileSystemRepresentation], &self->_db, 4194310, 0);
   if (v5 || !self->_db)
   {
     v6 = nps_daemon_log;
@@ -1983,7 +1983,7 @@ LABEL_27:
       }
 
       v155 = 138412802;
-      *v156 = v4;
+      *v156 = pathCopy;
       *&v156[8] = 1024;
       *&v156[10] = v5;
       v157 = 2080;
@@ -2006,19 +2006,19 @@ LABEL_27:
     }
   }
 
-  v11 = [v4 copy];
+  v11 = [pathCopy copy];
   path = self->_path;
   self->_path = v11;
 
   sub_10001A5D0(self->_db, "PRAGMA journal_mode=WAL;");
   sqlite3_busy_timeout(self->_db, 60000);
   sqlite3_extended_result_codes(self->_db, 1);
-  v13 = [(NPSDatabase *)self _getSchemaVersion];
-  if (v13 > 1)
+  _getSchemaVersion = [(NPSDatabase *)self _getSchemaVersion];
+  if (_getSchemaVersion > 1)
   {
-    if (v13 != 2)
+    if (_getSchemaVersion != 2)
     {
-      if (v13 != 3)
+      if (_getSchemaVersion != 3)
       {
         goto LABEL_26;
       }
@@ -2029,9 +2029,9 @@ LABEL_27:
 
   else
   {
-    if (v13)
+    if (_getSchemaVersion)
     {
-      if (v13 != 1)
+      if (_getSchemaVersion != 1)
       {
         goto LABEL_26;
       }

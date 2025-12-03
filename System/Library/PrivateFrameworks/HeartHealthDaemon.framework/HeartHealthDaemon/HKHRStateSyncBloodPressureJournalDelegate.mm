@@ -1,13 +1,13 @@
 @interface HKHRStateSyncBloodPressureJournalDelegate
-+ (BOOL)_fetchLocalJournals:(void *)a3 profile:(uint64_t)a4 transaction:(uint64_t *)a5 error:;
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:;
-+ (uint64_t)_persistCloudState:(void *)a3 profile:(void *)a4 error:;
-+ (uint64_t)_shouldUpdateWithMergedState:(uint64_t)a1 cloudState:(void *)a2 localState:(void *)a3 profile:(void *)a4 transaction:(void *)a5 error:(void *)a6;
-+ (uint64_t)_updateCodableSyncState:(uint64_t)a1 withMergeState:(void *)a2 profile:(void *)a3 error:(void *)a4;
-- (BOOL)persistCloudState:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)_fetchLocalJournals:(void *)journals profile:(uint64_t)profile transaction:(uint64_t *)transaction error:;
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:;
++ (uint64_t)_persistCloudState:(void *)state profile:(void *)profile error:;
++ (uint64_t)_shouldUpdateWithMergedState:(uint64_t)state cloudState:(void *)cloudState localState:(void *)localState profile:(void *)profile transaction:(void *)transaction error:(void *)error;
++ (uint64_t)_updateCodableSyncState:(uint64_t)state withMergeState:(void *)mergeState profile:(void *)profile error:(void *)error;
+- (BOOL)persistCloudState:(id)state profile:(id)profile error:(id *)error;
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error;
 - (NSString)description;
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HKHRStateSyncBloodPressureJournalDelegate
@@ -16,24 +16,24 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKHRStateSyncBloodPressureJournalDelegate *)self domain];
+  domain = [(HKHRStateSyncBloodPressureJournalDelegate *)self domain];
   v6 = [(HKHRStateSyncBloodPressureJournalDelegate *)self key];
-  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, domain, v6];
 
   return v7;
 }
 
-+ (BOOL)_fetchLocalJournals:(void *)a3 profile:(uint64_t)a4 transaction:(uint64_t *)a5 error:
++ (BOOL)_fetchLocalJournals:(void *)journals profile:(uint64_t)profile transaction:(uint64_t *)transaction error:
 {
-  v7 = a3;
+  journalsCopy = journals;
   objc_opt_self();
-  v8 = [v7 heartHealthProfileExtension];
+  heartHealthProfileExtension = [journalsCopy heartHealthProfileExtension];
 
-  v9 = [v8 bloodPressureJournalManager];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
-  v10 = [v9 bloodPressureJournalsWithError:a5];
-  v11 = *a5;
-  if (!*a5)
+  v10 = [bloodPressureJournalManager bloodPressureJournalsWithError:transaction];
+  v11 = *transaction;
+  if (!*transaction)
   {
     v12 = objc_alloc_init(MEMORY[0x277D10620]);
     v17[0] = MEMORY[0x277D85DD0];
@@ -43,8 +43,8 @@
     v18 = v12;
     v13 = v12;
     [v10 enumerateObjectsUsingBlock:v17];
-    v14 = [v13 bloodPressureJournalsCount];
-    if (a2 && v14)
+    bloodPressureJournalsCount = [v13 bloodPressureJournalsCount];
+    if (a2 && bloodPressureJournalsCount)
     {
       v15 = v13;
       *a2 = v13;
@@ -54,13 +54,13 @@
   return v11 == 0;
 }
 
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  stateCopy = state;
   v8 = objc_opt_self();
   v17 = 0;
-  v9 = [v7 decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v17 error:a5];
+  v9 = [stateCopy decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v17 error:profile];
 
   v10 = v17;
   v11 = 0;
@@ -70,11 +70,11 @@
     v12 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 bloodPressureJournalsCount];
+      bloodPressureJournalsCount = [v10 bloodPressureJournalsCount];
       *buf = 138412546;
       v19 = v8;
       v20 = 2048;
-      v21 = v13;
+      v21 = bloodPressureJournalsCount;
       _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%@] Decode %ld blood pressure journals for state sync", buf, 0x16u);
     }
 
@@ -91,12 +91,12 @@
   return v11;
 }
 
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  cloudStateCopy = cloudState;
+  localStateCopy = localState;
+  profileCopy = profile;
+  transactionCopy = transaction;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -109,38 +109,38 @@
     [HKHRStateSyncBloodPressureJournalDelegate shouldUpdateWithMergedState:cloudState:localState:profile:transaction:error:];
   }
 
-  v16 = [HKHRStateSyncBloodPressureJournalDelegate _shouldUpdateWithMergedState:a3 cloudState:v12 localState:v13 profile:v14 transaction:v15 error:?];
+  v16 = [HKHRStateSyncBloodPressureJournalDelegate _shouldUpdateWithMergedState:state cloudState:cloudStateCopy localState:localStateCopy profile:profileCopy transaction:transactionCopy error:?];
 
   return v16;
 }
 
-+ (uint64_t)_shouldUpdateWithMergedState:(uint64_t)a1 cloudState:(void *)a2 localState:(void *)a3 profile:(void *)a4 transaction:(void *)a5 error:(void *)a6
++ (uint64_t)_shouldUpdateWithMergedState:(uint64_t)state cloudState:(void *)cloudState localState:(void *)localState profile:(void *)profile transaction:(void *)transaction error:(void *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v36 = a5;
-  v35 = a6;
+  localStateCopy = localState;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  errorCopy = error;
   objc_opt_self();
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v15 = [v11 bloodPressureJournals];
+  bloodPressureJournals = [profileCopy bloodPressureJournals];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke;
   v70[3] = &unk_2786611C0;
   v16 = v12;
   v71 = v16;
-  [v15 enumerateObjectsUsingBlock:v70];
+  [bloodPressureJournals enumerateObjectsUsingBlock:v70];
 
-  v17 = [v10 bloodPressureJournals];
+  bloodPressureJournals2 = [localStateCopy bloodPressureJournals];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke_2;
   v68[3] = &unk_2786611C0;
   v18 = v13;
   v69 = v18;
-  [v17 enumerateObjectsUsingBlock:v68];
+  [bloodPressureJournals2 enumerateObjectsUsingBlock:v68];
 
   v64 = 0;
   v65 = &v64;
@@ -150,7 +150,7 @@
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  v19 = [v16 allValues];
+  allValues = [v16 allValues];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke_3;
@@ -161,9 +161,9 @@
   v57 = v21;
   v58 = &v60;
   v59 = &v64;
-  [v19 enumerateObjectsUsingBlock:v55];
+  [allValues enumerateObjectsUsingBlock:v55];
 
-  v22 = [v20 allValues];
+  allValues2 = [v20 allValues];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke_4;
@@ -171,7 +171,7 @@
   v23 = v21;
   v53 = v23;
   v54 = &v64;
-  [v22 enumerateObjectsUsingBlock:v52];
+  [allValues2 enumerateObjectsUsingBlock:v52];
 
   v46 = 0;
   v47 = &v46;
@@ -180,7 +180,7 @@
   v50 = __Block_byref_object_dispose__10;
   v51 = 0;
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v25 = [v23 allValues];
+  allValues3 = [v23 allValues];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke_327;
@@ -190,7 +190,7 @@
   v42 = v26;
   v44 = &v60;
   v45 = &v64;
-  [v25 enumerateObjectsUsingBlock:v41];
+  [allValues3 enumerateObjectsUsingBlock:v41];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -206,19 +206,19 @@
     [v28 addBloodPressureJournal:v29];
   }
 
-  v30 = [v27 allValues];
+  allValues4 = [v27 allValues];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __122__HKHRStateSyncBloodPressureJournalDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke_3_330;
   v37[3] = &unk_278661198;
   v31 = v28;
   v38 = v31;
-  [v30 enumerateObjectsUsingBlock:v37];
+  [allValues4 enumerateObjectsUsingBlock:v37];
 
-  if (a2)
+  if (cloudState)
   {
     v32 = v31;
-    *a2 = v31;
+    *cloudState = v31;
   }
 
   if (v61[3])
@@ -243,88 +243,88 @@
   return v33;
 }
 
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  mergeStateCopy = mergeState;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHRStateSyncBloodPressureJournalDelegate updateCodableSyncState:withMergeState:profile:error:];
   }
 
-  [HKHRStateSyncBloodPressureJournalDelegate _updateCodableSyncState:v8 withMergeState:v9 profile:v10 error:?];
+  [HKHRStateSyncBloodPressureJournalDelegate _updateCodableSyncState:stateCopy withMergeState:mergeStateCopy profile:profileCopy error:?];
 
   return 1;
 }
 
-+ (uint64_t)_updateCodableSyncState:(uint64_t)a1 withMergeState:(void *)a2 profile:(void *)a3 error:(void *)a4
++ (uint64_t)_updateCodableSyncState:(uint64_t)state withMergeState:(void *)mergeState profile:(void *)profile error:(void *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = a2;
+  profileCopy = profile;
+  errorCopy = error;
+  mergeStateCopy = mergeState;
   v9 = objc_opt_self();
   _HKInitializeLogging();
   v10 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 bloodPressureJournals];
+    bloodPressureJournals = [profileCopy bloodPressureJournals];
     v14 = 138543618;
     v15 = v9;
     v16 = 2048;
-    v17 = [v11 count];
+    v17 = [bloodPressureJournals count];
     _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set %ld blood pressure journals in cloud state for state sync", &v14, 0x16u);
   }
 
-  [v8 setCodableObject:v6 version:0 profile:v7];
+  [mergeStateCopy setCodableObject:profileCopy version:0 profile:errorCopy];
   v12 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)persistCloudState:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)persistCloudState:(id)state profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKHRStateSyncBloodPressureJournalDelegate persistCloudState:profile:error:];
   }
 
-  v9 = [HKHRStateSyncBloodPressureJournalDelegate _persistCloudState:v7 profile:v8 error:a5];
+  v9 = [HKHRStateSyncBloodPressureJournalDelegate _persistCloudState:stateCopy profile:profileCopy error:error];
 
   return v9;
 }
 
-+ (uint64_t)_persistCloudState:(void *)a3 profile:(void *)a4 error:
++ (uint64_t)_persistCloudState:(void *)state profile:(void *)profile error:
 {
   v27 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  stateCopy = state;
   v8 = objc_opt_self();
   _HKInitializeLogging();
   v9 = HKLogBloodPressureJournal();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 bloodPressureJournals];
+    bloodPressureJournals = [v6 bloodPressureJournals];
     *buf = 138412546;
     v24 = v8;
     v25 = 2048;
-    v26 = [v10 count];
+    v26 = [bloodPressureJournals count];
     _os_log_impl(&dword_229486000, v9, OS_LOG_TYPE_DEFAULT, "[%@] Persist %ld blood pressure journals for state sync", buf, 0x16u);
   }
 
-  v11 = [v6 bloodPressureJournals];
-  v12 = [v11 hk_map:&__block_literal_global_21];
+  bloodPressureJournals2 = [v6 bloodPressureJournals];
+  v12 = [bloodPressureJournals2 hk_map:&__block_literal_global_21];
 
-  v13 = [v7 heartHealthProfileExtension];
+  heartHealthProfileExtension = [stateCopy heartHealthProfileExtension];
 
-  v14 = [v13 bloodPressureJournalManager];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v22 = 0;
-  v15 = [v14 insertBloodPressureJournals:v12 error:&v22 onCommit:0 onRollback:0];
+  v15 = [bloodPressureJournalManager insertBloodPressureJournals:v12 error:&v22 onCommit:0 onRollback:0];
   v16 = v22;
   if ((v15 & 1) == 0)
   {
@@ -342,10 +342,10 @@
     v18 = v16;
     if (v18)
     {
-      if (a4)
+      if (profile)
       {
         v19 = v18;
-        *a4 = v18;
+        *profile = v18;
       }
 
       else

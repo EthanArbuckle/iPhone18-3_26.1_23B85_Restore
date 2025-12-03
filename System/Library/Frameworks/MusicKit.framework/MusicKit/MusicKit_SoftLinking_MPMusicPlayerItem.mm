@@ -1,20 +1,20 @@
 @interface MusicKit_SoftLinking_MPMusicPlayerItem
-+ (id)playerItemForMediaItem:(id)a3;
-- (id)_initWithMediaItem:(id)a3;
++ (id)playerItemForMediaItem:(id)item;
+- (id)_initWithMediaItem:(id)item;
 - (id)description;
-- (void)_initializeAdditionalAttributesWithMediaItem:(id)a3;
-- (void)_initializeArtworkCatalogWithMediaItem:(id)a3;
-- (void)_initializeBasicPropertiesWithMediaItem:(id)a3;
+- (void)_initializeAdditionalAttributesWithMediaItem:(id)item;
+- (void)_initializeArtworkCatalogWithMediaItem:(id)item;
+- (void)_initializeBasicPropertiesWithMediaItem:(id)item;
 @end
 
 @implementation MusicKit_SoftLinking_MPMusicPlayerItem
 
-+ (id)playerItemForMediaItem:(id)a3
++ (id)playerItemForMediaItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] _initWithMediaItem:v4];
+    itemCopy = item;
+    v5 = [[self alloc] _initWithMediaItem:itemCopy];
   }
 
   else
@@ -25,26 +25,26 @@
   return v5;
 }
 
-- (id)_initWithMediaItem:(id)a3
+- (id)_initWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = MusicKit_SoftLinking_MPMusicPlayerItem;
   v5 = [(MusicKit_SoftLinking_MPMusicPlayerItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v5 _initializeBasicPropertiesWithMediaItem:v4];
-    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v6 _initializeArtworkCatalogWithMediaItem:v4];
-    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v6 _initializeAdditionalAttributesWithMediaItem:v4];
+    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v5 _initializeBasicPropertiesWithMediaItem:itemCopy];
+    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v6 _initializeArtworkCatalogWithMediaItem:itemCopy];
+    [(MusicKit_SoftLinking_MPMusicPlayerItem *)v6 _initializeAdditionalAttributesWithMediaItem:itemCopy];
   }
 
   return v6;
 }
 
-- (void)_initializeBasicPropertiesWithMediaItem:(id)a3
+- (void)_initializeBasicPropertiesWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
   v18 = 0;
   v19 = &v18;
@@ -66,38 +66,38 @@
   _Block_object_dispose(&v18, 8);
   if (v5 == objc_opt_class())
   {
-    v8 = [v4 itemIdentifier];
+    itemIdentifier = [itemCopy itemIdentifier];
   }
 
   else
   {
-    v8 = 0;
+    itemIdentifier = 0;
   }
 
-  v9 = [v8 copy];
+  v9 = [itemIdentifier copy];
   identifier = self->_identifier;
   self->_identifier = v9;
 
-  v11 = [v4 title];
-  v12 = [v11 copy];
+  title = [itemCopy title];
+  v12 = [title copy];
   title = self->_title;
   self->_title = v12;
 
-  v14 = [v4 artist];
-  v15 = [v14 copy];
+  artist = [itemCopy artist];
+  v15 = [artist copy];
   subtitle = self->_subtitle;
   self->_subtitle = v15;
 }
 
-- (void)_initializeArtworkCatalogWithMediaItem:(id)a3
+- (void)_initializeArtworkCatalogWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
-  v23 = [v4 artworkCatalog];
+  artworkCatalog = [itemCopy artworkCatalog];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -119,8 +119,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
-    v8 = [v7 modelObject];
+    v7 = itemCopy;
+    modelObject = [v7 modelObject];
     if (objc_opt_respondsToSelector())
     {
       v29 = 0;
@@ -146,17 +146,17 @@
       v15[2] = __81__MusicKit_SoftLinking_MPMusicPlayerItem__initializeArtworkCatalogWithMediaItem___block_invoke;
       v15[3] = &unk_278229C78;
       v17 = &v18;
-      v16 = v8;
+      v16 = modelObject;
       [v9 performWithoutEnforcement:v15];
     }
 
     if (!v19[5])
     {
-      v11 = [v7 fallbackArtworkCatalogBlock];
-      v12 = v11;
-      if (v11)
+      fallbackArtworkCatalogBlock = [v7 fallbackArtworkCatalogBlock];
+      v12 = fallbackArtworkCatalogBlock;
+      if (fallbackArtworkCatalogBlock)
       {
-        v13 = (*(v11 + 16))(v11);
+        v13 = (*(fallbackArtworkCatalogBlock + 16))(fallbackArtworkCatalogBlock);
         v14 = v19[5];
         v19[5] = v13;
       }
@@ -167,26 +167,26 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_initializeAdditionalAttributesWithMediaItem:(id)a3
+- (void)_initializeAdditionalAttributesWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (_initializeAdditionalAttributesWithMediaItem__sMediaItemPropertiesOnceToken != -1)
   {
     [MusicKit_SoftLinking_MPMusicPlayerItem _initializeAdditionalAttributesWithMediaItem:];
   }
 
-  v107 = v4;
-  v5 = [v4 valuesForProperties:_initializeAdditionalAttributesWithMediaItem__sMediaItemProperties];
+  v107 = itemCopy;
+  v5 = [itemCopy valuesForProperties:_initializeAdditionalAttributesWithMediaItem__sMediaItemProperties];
   v6 = getMPMediaItemPropertyStoreID();
   v7 = [v5 objectForKey:v6];
 
   v106 = v7;
   if (_NSIsNSNumber())
   {
-    v8 = [v7 unsignedLongLongValue];
-    if (v8)
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
+    if (unsignedLongLongValue)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v8];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", unsignedLongLongValue];
       v10 = [[MusicKit_SoftLinking_CatalogID alloc] initWithValue:v9 kind:0];
 
       if (v10)
@@ -288,20 +288,20 @@ LABEL_18:
 
   if (_NSIsNSNumber())
   {
-    v33 = [v32 unsignedLongLongValue];
-    if (v33)
+    unsignedLongLongValue2 = [v32 unsignedLongLongValue];
+    if (unsignedLongLongValue2)
     {
-      v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v33];
+      unsignedLongLongValue2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", unsignedLongLongValue2];
     }
   }
 
   else
   {
-    v33 = 0;
+    unsignedLongLongValue2 = 0;
   }
 
-  v100 = v33;
-  v34 = [v33 copy];
+  v100 = unsignedLongLongValue2;
+  v34 = [unsignedLongLongValue2 copy];
   genreIdentifier = self->_genreIdentifier;
   self->_genreIdentifier = v34;
 
@@ -419,16 +419,16 @@ LABEL_18:
   v91 = v57;
   if (_NSIsNSNumber())
   {
-    v66 = [v65 BOOLValue];
+    bOOLValue = [v65 BOOLValue];
   }
 
   else
   {
-    v66 = 0;
+    bOOLValue = 0;
   }
 
   v95 = v47;
-  self->_isMusicVideo = v66;
+  self->_isMusicVideo = bOOLValue;
   v67 = getMPMediaItemPropertyVideoQuality();
   v68 = [v5 objectForKey:v67];
 
@@ -452,8 +452,8 @@ LABEL_18:
 
   if (_NSIsNSNumber())
   {
-    v74 = [v73 integerValue];
-    v75 = [MEMORY[0x277CCABB0] numberWithBool:v74 & 1];
+    integerValue = [v73 integerValue];
+    v75 = [MEMORY[0x277CCABB0] numberWithBool:integerValue & 1];
   }
 
   else
@@ -466,7 +466,7 @@ LABEL_18:
   self->_hasHDR = v76;
 
   v78 = &v112;
-  if (!v66)
+  if (!bOOLValue)
   {
     goto LABEL_59;
   }
@@ -515,19 +515,19 @@ LABEL_59:
   v82 = *v79;
   if (v108)
   {
-    v83 = v109;
+    value = v109;
   }
 
   else
   {
-    v83 = [(MusicKit_SoftLinking_CatalogID *)v110 value];
+    value = [(MusicKit_SoftLinking_CatalogID *)v110 value];
   }
 
-  v84 = v83;
+  v84 = value;
   v85 = 0;
   if (v82)
   {
-    if (v83)
+    if (value)
     {
       v85 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v85 setObject:v82 forKey:@"kind"];

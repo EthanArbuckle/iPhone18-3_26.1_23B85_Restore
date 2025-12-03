@@ -1,24 +1,24 @@
 @interface MPModelGenericObject
 - (MPModelObject)innermostModelObject;
 - (double)preferredArtworkAspectRatio;
-- (id)storeContentItemObjectPropertiesFor:(id)a3;
+- (id)storeContentItemObjectPropertiesFor:(id)for;
 @end
 
 @implementation MPModelGenericObject
 
-- (id)storeContentItemObjectPropertiesFor:(id)a3
+- (id)storeContentItemObjectPropertiesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(MPModelGenericObject *)v5 anyObject];
-  v7 = [v6 storeContentItemObjectPropertiesFor:v4];
+  forCopy = for;
+  selfCopy = self;
+  anyObject = [(MPModelGenericObject *)selfCopy anyObject];
+  v7 = [anyObject storeContentItemObjectPropertiesFor:forCopy];
 
   return v7;
 }
 
 - (MPModelObject)innermostModelObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MPModelGenericObject.innermostModelObject.getter();
 
   return v3;
@@ -26,15 +26,15 @@
 
 - (double)preferredArtworkAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = 1.0;
-  if ([(MPModelGenericObject *)v2 type]== &dword_0 + 1)
+  if ([(MPModelGenericObject *)selfCopy type]== &dword_0 + 1)
   {
-    v4 = [(MPModelGenericObject *)v2 song];
-    if (v4)
+    song = [(MPModelGenericObject *)selfCopy song];
+    if (song)
     {
-      v5 = v4;
-      [v4 preferredArtworkAspectRatio];
+      v5 = song;
+      [song preferredArtworkAspectRatio];
       v3 = v6;
     }
   }

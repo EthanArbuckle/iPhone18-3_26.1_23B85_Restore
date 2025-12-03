@@ -1,9 +1,9 @@
 @interface MTROTASoftwareUpdateProviderClusterQueryImageResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)init;
-- (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -48,35 +48,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams);
-  v5 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self status];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setStatus:v5];
+  status = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self status];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self delayedActionTime];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setDelayedActionTime:v6];
+  delayedActionTime = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self delayedActionTime];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setDelayedActionTime:delayedActionTime];
 
-  v7 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self imageURI];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setImageURI:v7];
+  imageURI = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self imageURI];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setImageURI:imageURI];
 
-  v8 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersion];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setSoftwareVersion:v8];
+  softwareVersion = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersion];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setSoftwareVersion:softwareVersion];
 
-  v9 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersionString];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setSoftwareVersionString:v9];
+  softwareVersionString = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersionString];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setSoftwareVersionString:softwareVersionString];
 
-  v10 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self updateToken];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setUpdateToken:v10];
+  updateToken = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self updateToken];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setUpdateToken:updateToken];
 
-  v11 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self userConsentNeeded];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setUserConsentNeeded:v11];
+  userConsentNeeded = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self userConsentNeeded];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setUserConsentNeeded:userConsentNeeded];
 
-  v12 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self metadataForRequestor];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setMetadataForRequestor:v12];
+  metadataForRequestor = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self metadataForRequestor];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setMetadataForRequestor:metadataForRequestor];
 
-  v13 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self timedInvokeTimeoutMs];
-  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setTimedInvokeTimeoutMs:v13];
+  timedInvokeTimeoutMs = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self timedInvokeTimeoutMs];
+  [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -150,7 +150,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROTASoftwareUpdateProviderClusterQueryImageResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROTASoftwareUpdateProviderClusterQueryImageResponseParams;
@@ -158,7 +158,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -174,14 +174,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setStatus:v5];
 
-  if (*(a3 + 4) == 1)
+  if (*(struct + 4) == 1)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 4)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 4)];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setDelayedActionTime:v6];
   }
 
@@ -190,15 +190,15 @@ LABEL_6:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setDelayedActionTime:0];
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(struct + 16) == 1)
   {
-    v7 = sub_238DE36B8(a3 + 16);
+    v7 = sub_238DE36B8(struct + 16);
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v7 length:v7[1] encoding:4];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setImageURI:v8];
 
-    v9 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self imageURI];
+    imageURI = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self imageURI];
 
-    if (!v9)
+    if (!imageURI)
     {
       v10 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
       v11 = 0x106E00000000;
@@ -213,9 +213,9 @@ LABEL_14:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setImageURI:0];
   }
 
-  if (*(a3 + 40) == 1)
+  if (*(struct + 40) == 1)
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 40)];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 40)];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setSoftwareVersion:v12];
   }
 
@@ -224,15 +224,15 @@ LABEL_14:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setSoftwareVersion:0];
   }
 
-  if (*(a3 + 48) == 1)
+  if (*(struct + 48) == 1)
   {
-    v13 = sub_238DE36B8(a3 + 48);
+    v13 = sub_238DE36B8(struct + 48);
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v13 length:v13[1] encoding:4];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setSoftwareVersionString:v14];
 
-    v15 = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersionString];
+    softwareVersionString = [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self softwareVersionString];
 
-    if (!v15)
+    if (!softwareVersionString)
     {
       v10 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
       v11 = 0x108000000000;
@@ -245,9 +245,9 @@ LABEL_14:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setSoftwareVersionString:0];
   }
 
-  if (*(a3 + 72) == 1)
+  if (*(struct + 72) == 1)
   {
-    v17 = sub_238DE36B8(a3 + 72);
+    v17 = sub_238DE36B8(struct + 72);
     v18 = [MEMORY[0x277CBEA90] dataWithBytes:*v17 length:v17[1]];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setUpdateToken:v18];
   }
@@ -257,9 +257,9 @@ LABEL_14:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setUpdateToken:0];
   }
 
-  if (*(a3 + 96) == 1)
+  if (*(struct + 96) == 1)
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 96)];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(struct + 96)];
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setUserConsentNeeded:v19];
   }
 
@@ -268,8 +268,8 @@ LABEL_14:
     [(MTROTASoftwareUpdateProviderClusterQueryImageResponseParams *)self setUserConsentNeeded:0];
   }
 
-  v21 = *(a3 + 104);
-  v20 = a3 + 104;
+  v21 = *(struct + 104);
+  v20 = struct + 104;
   if (v21 == 1)
   {
     v22 = sub_238DE36B8(v20);

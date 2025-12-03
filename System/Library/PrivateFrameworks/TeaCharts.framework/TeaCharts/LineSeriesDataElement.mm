@@ -1,6 +1,6 @@
 @interface LineSeriesDataElement
 - (CGRect)accessibilityFrame;
-- (_TtC9TeaChartsP33_9EE3010B3705A23DEDCE010A1E35708921LineSeriesDataElement)initWithAccessibilityContainer:(id)a3;
+- (_TtC9TeaChartsP33_9EE3010B3705A23DEDCE010A1E35708921LineSeriesDataElement)initWithAccessibilityContainer:(id)container;
 @end
 
 @implementation LineSeriesDataElement
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC9TeaChartsP33_9EE3010B3705A23DEDCE010A1E35708921LineSeriesDataElement)initWithAccessibilityContainer:(id)a3
+- (_TtC9TeaChartsP33_9EE3010B3705A23DEDCE010A1E35708921LineSeriesDataElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_26D1744D4();

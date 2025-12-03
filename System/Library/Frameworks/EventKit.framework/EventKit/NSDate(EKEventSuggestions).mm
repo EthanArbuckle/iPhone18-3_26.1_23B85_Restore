@@ -7,12 +7,12 @@
 
 - (id)nextDateMatchingTimeComponents
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:v2 timePartFromDate:a1 inCalendar:0];
-  if ([v3 isBeforeDate:v2])
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:date timePartFromDate:self inCalendar:0];
+  if ([v3 isBeforeDate:date])
   {
-    v4 = [v2 dateByAddingDays:1 inCalendar:0];
-    v5 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:v4 timePartFromDate:a1 inCalendar:0];
+    v4 = [date dateByAddingDays:1 inCalendar:0];
+    v5 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:v4 timePartFromDate:self inCalendar:0];
   }
 
   else
@@ -34,15 +34,15 @@
     _dateWithTimeZoneFormatter = v6;
 
     v8 = _dateWithTimeZoneFormatter;
-    v9 = [MEMORY[0x1E695DF58] currentLocale];
-    [v8 setLocale:v9];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v8 setLocale:currentLocale];
 
     [_dateWithTimeZoneFormatter setTimeStyle:1];
     v5 = _dateWithTimeZoneFormatter;
   }
 
   [v5 setTimeZone:v4];
-  v10 = [_dateWithTimeZoneFormatter stringFromDate:a1];
+  v10 = [_dateWithTimeZoneFormatter stringFromDate:self];
 
   return v10;
 }

@@ -1,5 +1,5 @@
 @interface UIViewAccessibility__MusicApplication__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -10,18 +10,18 @@
 
 @implementation UIViewAccessibility__MusicApplication__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController"];
-  [v3 validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController"];
+  [validationsCopy validateClass:@"MusicApplication.LibraryRecommendationBannerViewController" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
 }
 
 - (id)_axViewContainsSwitch
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXPublicPlaylistSwitchContainerView"];
+  accessibilityIdentification = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXPublicPlaylistSwitchContainerView"];
 
   if (v4)
   {
@@ -79,8 +79,8 @@ LABEL_13:
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXPublicPlaylistSwitchContainerView"];
+  accessibilityIdentification = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXPublicPlaylistSwitchContainerView"];
 
   if (v4)
   {
@@ -94,32 +94,32 @@ LABEL_13:
 
 - (id)accessibilityValue
 {
-  v3 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
-    v5 = [v4 accessibilityValue];
+    _axViewContainsSwitch2 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+    accessibilityValue = [_axViewContainsSwitch2 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIViewAccessibility__MusicApplication__UIKit;
-    v5 = [(UIViewAccessibility__MusicApplication__UIKit *)&v7 accessibilityValue];
+    accessibilityValue = [(UIViewAccessibility__MusicApplication__UIKit *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
-    [v4 accessibilityActivationPoint];
+    _axViewContainsSwitch2 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+    [_axViewContainsSwitch2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 
@@ -141,14 +141,14 @@ LABEL_13:
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
-    v5 = [v4 accessibilityTraits];
+    _axViewContainsSwitch2 = [(UIViewAccessibility__MusicApplication__UIKit *)self _axViewContainsSwitch];
+    accessibilityTraits = [_axViewContainsSwitch2 accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 
   else
@@ -161,26 +161,26 @@ LABEL_13:
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"AXRecommendationBannerView"];
+  array = [MEMORY[0x29EDB8DE8] array];
+  accessibilityIdentifier = [(UIViewAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"AXRecommendationBannerView"];
 
   if (v5)
   {
     v6 = [(UIViewAccessibility__MusicApplication__UIKit *)self _accessibilityFindViewAncestor:&__block_literal_global_10 startWithSelf:1];
-    v7 = [v6 _accessibilityViewController];
+    _accessibilityViewController = [v6 _accessibilityViewController];
 
-    v8 = [v7 safeValueForKey:@"accessibilityCloseButton"];
+    v8 = [_accessibilityViewController safeValueForKey:@"accessibilityCloseButton"];
     v9 = accessibilityMusicLocalizedString(@"close.recommendation.button");
     [v8 setAccessibilityLabel:v9];
 
     if (v8)
     {
-      [v3 axSafelyAddObject:v8];
+      [array axSafelyAddObject:v8];
     }
   }
 
-  return v3;
+  return array;
 }
 
 @end

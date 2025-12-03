@@ -2,24 +2,24 @@
 - (BOOL)isBaseFontNameUsed;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMTable
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v22 = *MEMORY[0x277D85DE8];
-  [a4 pushState:2];
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+  [parser pushState:2];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:node];
   v20.receiver = self;
   v20.super_class = EQKitMathMLMTable;
   v8 = [(EQKitMathMLMTable *)&v20 init];
   v9 = v8;
-  if (a4)
+  if (parser)
   {
-    if (a3)
+    if (node)
     {
       if (v8)
       {
@@ -57,7 +57,7 @@
     }
   }
 
-  [a4 popState];
+  [parser popState];
   return v9;
 }
 

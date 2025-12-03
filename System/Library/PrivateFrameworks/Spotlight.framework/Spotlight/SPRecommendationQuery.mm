@@ -1,33 +1,33 @@
 @interface SPRecommendationQuery
-- (id)buildSearchResultWithRecommendations:(id)a3 query:(id)a4;
-- (void)begin:(id)a3;
+- (id)buildSearchResultWithRecommendations:(id)recommendations query:(id)query;
+- (void)begin:(id)begin;
 - (void)start;
 @end
 
 @implementation SPRecommendationQuery
 
-- (void)begin:(id)a3
+- (void)begin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 query];
-  v6 = [v5 queryContext];
+  beginCopy = begin;
+  query = [beginCopy query];
+  queryContext = [query queryContext];
 
-  v7 = [v6 getTrimmedSearchString];
-  v8 = [v7 mutableCopy];
+  getTrimmedSearchString = [queryContext getTrimmedSearchString];
+  v8 = [getTrimmedSearchString mutableCopy];
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create("Query Queue", v10);
 
   v59[0] = 0;
-  v12 = [objc_alloc(MEMORY[0x277D657D8]) initWithLocale:v9 queue:v11 error:v59];
+  v12 = [objc_alloc(MEMORY[0x277D657D8]) initWithLocale:currentLocale queue:v11 error:v59];
   v13 = v59[0];
   if ([v12 isMusicRecEligible:v8])
   {
     v43 = v13;
     v14 = SSDefaultsGetResources();
     v15 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"6ee794d6-a63f-11ed-afa1-0242ac120002"];
-    [v14 logForTrigger:v15 queryID:{objc_msgSend(v6, "queryIdent")}];
+    [v14 logForTrigger:v15 queryID:{objc_msgSend(queryContext, "queryIdent")}];
 
     LODWORD(v14) = SSShowMusicRec();
     v16 = logForCSLogCategoryRecs();
@@ -60,8 +60,8 @@
       v19 = v18;
       v51 = v19;
       [v12 setCompletionHandler:v50];
-      v20 = [v4 query];
-      [v12 retrieveMusicWithQuery:v8 queryID:{objc_msgSend(v20, "queryIdent")}];
+      query2 = [beginCopy query];
+      [v12 retrieveMusicWithQuery:v8 queryID:{objc_msgSend(query2, "queryIdent")}];
 
       v21 = logForCSLogCategoryRecs();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -71,7 +71,7 @@
 
       dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
       v22 = logForCSLogCategoryRecs();
-      v42 = self;
+      selfCopy = self;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v49[0]) = 0;
@@ -79,18 +79,18 @@
       }
 
       v23 = SPLogForSPLogCategoryTelemetry();
-      v24 = [v4 externalID];
-      if (v24 && os_signpost_enabled(v23))
+      externalID = [beginCopy externalID];
+      if (externalID && os_signpost_enabled(v23))
       {
         LOWORD(v49[0]) = 0;
-        _os_signpost_emit_with_name_impl(&dword_26B71B000, v23, OS_SIGNPOST_INTERVAL_END, v24, "recommendationSpotlightLatency", " enableTelemetry=YES ", v49, 2u);
+        _os_signpost_emit_with_name_impl(&dword_26B71B000, v23, OS_SIGNPOST_INTERVAL_END, externalID, "recommendationSpotlightLatency", " enableTelemetry=YES ", v49, 2u);
       }
 
-      objc_initWeak(v49, v4);
+      objc_initWeak(v49, beginCopy);
       v25 = *(v54 + 5);
       if (v25 && [v25 count])
       {
-        v41 = [(SPRecommendationQuery *)v42 buildSearchResultWithRecommendations:*(v54 + 5) query:v4];
+        v41 = [(SPRecommendationQuery *)selfCopy buildSearchResultWithRecommendations:*(v54 + 5) query:beginCopy];
         v26 = objc_opt_new();
         [v26 setPinToTop:1];
         v27 = v26;
@@ -98,10 +98,10 @@
         [v27 setBundleIdentifier:*MEMORY[0x277D65B68]];
         [v27 setTitle:@"Apple Music"];
         [v27 setResults:v41];
-        v28 = [v4 query];
-        v29 = [v28 cancelled];
+        query3 = [beginCopy query];
+        cancelled = [query3 cancelled];
 
-        if (v29)
+        if (cancelled)
         {
           v30 = logForCSLogCategoryRecs();
           v13 = v43;
@@ -134,7 +134,7 @@
         v47[3] = __31__SPRecommendationQuery_begin___block_invoke_89;
         v47[4] = &unk_279CFE268;
         objc_copyWeak(&v48, v49);
-        v47[5] = v42;
+        v47[5] = selfCopy;
         md_tracing_dispatch_async_propagating();
 
         objc_destroyWeak(&v48);
@@ -154,11 +154,11 @@
       }
 
       v35 = SPLogForSPLogCategoryTelemetry();
-      v36 = [v4 externalID];
+      externalID2 = [beginCopy externalID];
       v13 = v43;
-      if (v36)
+      if (externalID2)
       {
-        v37 = v36;
+        v37 = externalID2;
         if (os_signpost_enabled(v35))
         {
           *buf = 0;
@@ -167,7 +167,7 @@
       }
 
       v38 = +[(SPQueryTask *)SPFederatedQueryTask];
-      v45 = v4;
+      v45 = beginCopy;
       md_tracing_dispatch_async_propagating();
 
       v19 = v45;
@@ -177,10 +177,10 @@
   else
   {
     v31 = SPLogForSPLogCategoryTelemetry();
-    v32 = [v4 externalID];
-    if (v32)
+    externalID3 = [beginCopy externalID];
+    if (externalID3)
     {
-      v33 = v32;
+      v33 = externalID3;
       if (os_signpost_enabled(v31))
       {
         *buf = 0;
@@ -189,7 +189,7 @@
     }
 
     v34 = +[(SPQueryTask *)SPFederatedQueryTask];
-    v44 = v4;
+    v44 = beginCopy;
     md_tracing_dispatch_async_propagating();
 
     v19 = v44;
@@ -239,42 +239,42 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildSearchResultWithRecommendations:(id)a3 query:(id)a4
+- (id)buildSearchResultWithRecommendations:(id)recommendations query:(id)query
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v58 = a4;
+  recommendationsCopy = recommendations;
+  queryCopy = query;
   v56 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-  v57 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = 0;
   v55 = *MEMORY[0x277D65B68];
-  v59 = v5;
+  v59 = recommendationsCopy;
   do
   {
-    if (v6 >= [v5 count])
+    if (v6 >= [recommendationsCopy count])
     {
       break;
     }
 
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [recommendationsCopy objectAtIndexedSubscript:v6];
     v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v7, "trackId")];
-    [v57 appendString:?];
-    [v57 appendString:@" "];
+    [string appendString:?];
+    [string appendString:@" "];
     v8 = objc_opt_new();
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"media:%ld", objc_msgSend(v7, "trackId")];
     [v8 setIdentifier:v9];
 
     v10 = MEMORY[0x277D4C690];
-    v11 = [v7 trackName];
-    v12 = [v10 textWithString:v11];
+    trackName = [v7 trackName];
+    v12 = [v10 textWithString:trackName];
     [v8 setTitle:v12];
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://music.apple.com/us/album/close-friends/%ld?i=%ld", objc_msgSend(v7, "collectionId"), objc_msgSend(v7, "trackId")];
     [v8 setCompletion:v13];
 
     v14 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v15 = [v8 completion];
-    v16 = [v14 initWithString:v15];
+    completion = [v8 completion];
+    v16 = [v14 initWithString:completion];
     [v8 setUrl:v16];
 
     [v8 setStoreIdentifier:@"278911476"];
@@ -285,8 +285,8 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
     [v8 setResultType:@"media"];
     [v8 setResultTemplate:@"generic"];
     [v8 setType:1];
-    v17 = [v58 query];
-    [v8 setQueryId:{objc_msgSend(v17, "queryIdent")}];
+    query = [queryCopy query];
+    [v8 setQueryId:{objc_msgSend(query, "queryIdent")}];
 
     v18 = objc_alloc_init(MEMORY[0x277D4C230]);
     v19 = objc_alloc_init(MEMORY[0x277D4C328]);
@@ -301,43 +301,43 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
     v22 = objc_alloc_init(MEMORY[0x277D4C550]);
     [v21 setPunchout:v22];
 
-    v23 = [v21 punchout];
-    [v23 setBundleIdentifier:@"com.apple.Music"];
+    punchout = [v21 punchout];
+    [punchout setBundleIdentifier:@"com.apple.Music"];
 
     v24 = [v8 url];
     v65 = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
-    v26 = [v21 punchout];
-    [v26 setUrls:v25];
+    punchout2 = [v21 punchout];
+    [punchout2 setUrls:v25];
 
     [v19 setType:@"detailed_row"];
     v27 = objc_alloc(MEMORY[0x277D4C6B8]);
     v28 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v29 = [v7 artworkURL];
-    v30 = [v28 initWithString:v29];
+    artworkURL = [v7 artworkURL];
+    v30 = [v28 initWithString:artworkURL];
     v31 = [v27 initWithURL:v30];
     [v19 setThumbnail:v31];
 
     v32 = objc_alloc_init(MEMORY[0x277D4C598]);
     [v19 setTitle:v32];
 
-    v33 = [v19 title];
-    [v33 setStarRating:0.0];
+    title = [v19 title];
+    [title setStarRating:0.0];
 
-    v34 = [v19 title];
-    [v34 setMaxLines:2];
+    title2 = [v19 title];
+    [title2 setMaxLines:2];
 
-    v35 = [v19 title];
-    v36 = [v7 trackName];
-    [v35 setText:v36];
+    title3 = [v19 title];
+    trackName2 = [v7 trackName];
+    [title3 setText:trackName2];
 
     v37 = objc_alloc_init(MEMORY[0x277D4C598]);
-    v38 = [v7 artistName];
-    [v37 setText:v38];
+    artistName = [v7 artistName];
+    [v37 setText:artistName];
 
     v39 = objc_alloc_init(MEMORY[0x277D4C598]);
-    v40 = [v7 collectionName];
-    [v39 setText:v40];
+    collectionName = [v7 collectionName];
+    [v39 setText:collectionName];
 
     v41 = objc_alloc_init(MEMORY[0x277D4C598]);
     [v41 setMaxLines:0];
@@ -346,12 +346,12 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
       [v41 setContentAdvisory:@"Explicit"];
     }
 
-    v42 = [v7 trackTimeMillis];
-    v5 = v59;
-    if (v42 >= 1000)
+    trackTimeMillis = [v7 trackTimeMillis];
+    recommendationsCopy = v59;
+    if (trackTimeMillis >= 1000)
     {
-      v43 = v42 / 1000;
-      if ((v42 / 1000) >> 7 <= 0x2A2)
+      v43 = trackTimeMillis / 1000;
+      if ((trackTimeMillis / 1000) >> 7 <= 0x2A2)
       {
         if (v43 >= 0xE10)
         {
@@ -366,13 +366,13 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
         v45 = objc_alloc_init(MEMORY[0x277D4C598]);
         [v19 setFootnote:v45];
 
-        v46 = [v19 footnote];
-        [v46 setText:v44];
+        footnote = [v19 footnote];
+        [footnote setText:v44];
 
-        v47 = [v19 footnote];
-        [v47 setMaxLines:1];
+        footnote2 = [v19 footnote];
+        [footnote2 setMaxLines:1];
 
-        v5 = v59;
+        recommendationsCopy = v59;
       }
     }
 
@@ -390,14 +390,14 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
 
   while (v6 != 3);
   v49 = os_log_create("com.apple.Spotlight", "recs");
-  v50 = [v58 query];
-  v51 = [v50 queryIdent];
+  query2 = [queryCopy query];
+  queryIdent = [query2 queryIdent];
 
-  if (v51 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v49))
+  if (queryIdent - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v49))
   {
     *buf = 138412290;
-    v63 = v57;
-    _os_signpost_emit_with_name_impl(&dword_26B71B000, v49, OS_SIGNPOST_EVENT, v51, "SRERenderingResults", "AdamIDs: %@", buf, 0xCu);
+    v63 = string;
+    _os_signpost_emit_with_name_impl(&dword_26B71B000, v49, OS_SIGNPOST_EVENT, queryIdent, "SRERenderingResults", "AdamIDs: %@", buf, 0xCu);
   }
 
   v52 = *MEMORY[0x277D85DE8];
@@ -412,17 +412,17 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
   [(SPKQuery *)&v21 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:8])
   {
-    v3 = [(SPKQuery *)self userQueryString];
-    v4 = [v3 mutableCopy];
+    userQueryString = [(SPKQuery *)self userQueryString];
+    v4 = [userQueryString mutableCopy];
 
     if (v4)
     {
-      v5 = [(SPKQuery *)self delegate];
-      if (([v5 isPeopleSearch] & 1) == 0 && !objc_msgSend(v5, "isScopedAppSearch"))
+      delegate = [(SPKQuery *)self delegate];
+      if (([delegate isPeopleSearch] & 1) == 0 && !objc_msgSend(delegate, "isScopedAppSearch"))
       {
-        v6 = [v5 query];
-        v7 = [v6 disabledBundles];
-        v8 = [v7 containsObject:@"com.apple.Music"];
+        query = [delegate query];
+        disabledBundles = [query disabledBundles];
+        v8 = [disabledBundles containsObject:@"com.apple.Music"];
 
         if (!v8)
         {
@@ -432,10 +432,10 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
           }
 
           v17 = SPLogForSPLogCategoryTelemetry();
-          v18 = [v5 externalID];
-          if (v18)
+          externalID = [delegate externalID];
+          if (externalID)
           {
-            v19 = v18;
+            v19 = externalID;
             if (os_signpost_enabled(v17))
             {
               *buf = 0;
@@ -443,7 +443,7 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
             }
           }
 
-          v5 = v5;
+          delegate = delegate;
           md_tracing_dispatch_async_propagating();
 
           goto LABEL_11;
@@ -458,19 +458,19 @@ void __31__SPRecommendationQuery_begin___block_invoke_2(uint64_t a1)
       }
 
       v10 = objc_alloc(MEMORY[0x277D65860]);
-      v11 = [(SPKQuery *)self queryGroupId];
-      v12 = [v10 initWithQueryID:v11 sourceKind:8 sections:MEMORY[0x277CBEBF8]];
-      v13 = [(SPKQuery *)self responseHandler];
-      (v13)[2](v13, v12);
+      queryGroupId = [(SPKQuery *)self queryGroupId];
+      v12 = [v10 initWithQueryID:queryGroupId sourceKind:8 sections:MEMORY[0x277CBEBF8]];
+      responseHandler = [(SPKQuery *)self responseHandler];
+      (responseHandler)[2](responseHandler, v12);
     }
 
     else
     {
       v14 = objc_alloc(MEMORY[0x277D65860]);
-      v15 = [(SPKQuery *)self queryGroupId];
-      v5 = [v14 initWithQueryID:v15 sourceKind:8 sections:MEMORY[0x277CBEBF8]];
-      v16 = [(SPKQuery *)self responseHandler];
-      (v16)[2](v16, v5);
+      queryGroupId2 = [(SPKQuery *)self queryGroupId];
+      delegate = [v14 initWithQueryID:queryGroupId2 sourceKind:8 sections:MEMORY[0x277CBEBF8]];
+      responseHandler2 = [(SPKQuery *)self responseHandler];
+      (responseHandler2)[2](responseHandler2, delegate);
     }
 
 LABEL_11:

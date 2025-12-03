@@ -1,51 +1,51 @@
 @interface KCPairingChannel
-+ (BOOL)_isRetryableNSURLError:(id)a3;
-+ (BOOL)retryable:(id)a3;
-+ (id)pairingChannelAcceptor:(id)a3;
-+ (id)pairingChannelCompressData:(id)a3;
-+ (id)pairingChannelDecompressData:(id)a3;
-+ (id)pairingChannelInitiator:(id)a3;
-- (BOOL)createTempPacketAndCheckSize:(id)a3 pcsItem:(id)a4 octagonData:(id)a5 keyForItem:(id)a6 error:(id *)a7;
++ (BOOL)_isRetryableNSURLError:(id)error;
++ (BOOL)retryable:(id)retryable;
++ (id)pairingChannelAcceptor:(id)acceptor;
++ (id)pairingChannelCompressData:(id)data;
++ (id)pairingChannelDecompressData:(id)data;
++ (id)pairingChannelInitiator:(id)initiator;
+- (BOOL)createTempPacketAndCheckSize:(id)size pcsItem:(id)item octagonData:(id)data keyForItem:(id)forItem error:(id *)error;
 - (BOOL)ensureControlChannel;
-- (BOOL)fetchEpoch:(id)a3 error:(id *)a4;
-- (BOOL)fetchPrepare:(id *)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)fetchVoucher:(id)a3 prepare:(id)a4 eventS:(id)a5 finishedPairing:(BOOL *)a6 maxCapability:(id)a7 error:(id *)a8;
-- (BOOL)isPacketSizeAcceptable:(id)a3 error:(id *)a4;
-- (BOOL)join:(id *)a3 voucher:(id)a4 eventS:(id)a5 setupPairingChannelSignPost:(octagon_signpost_s)a6 finishPairing:(BOOL *)a7 error:(id *)a8;
-- (BOOL)populateKeychainForTestingWithNumberOfKeychainItems:(int)a3;
-- (BOOL)populateKeychainWithLargeItemsForTestingWithCount:(int)a3;
-- (BOOL)populateKeychainWithTooLargeItemsForTestingWithCount:(int)a3;
-- (id)copySubsetFrom:(id)a3 begin:(unint64_t)a4 end:(unint64_t)a5;
-- (id)createPacket:(id)a3 results:(id)a4 endSession:(BOOL)a5;
-- (id)createTempPacket:(id)a3 pcsItem:(id)a4 octagonData:(id)a5 keyForItem:(id)a6;
-- (id)evaluateResults:(void *)a3;
-- (id)exchangePacket:(id)a3 complete:(BOOL *)a4 error:(id *)a5;
-- (id)fetchItemForPersistentRef:(id)a3 error:(id *)a4;
+- (BOOL)fetchEpoch:(id)epoch error:(id *)error;
+- (BOOL)fetchPrepare:(id *)prepare application:(id)application error:(id *)error;
+- (BOOL)fetchVoucher:(id)voucher prepare:(id)prepare eventS:(id)s finishedPairing:(BOOL *)pairing maxCapability:(id)capability error:(id *)error;
+- (BOOL)isPacketSizeAcceptable:(id)acceptable error:(id *)error;
+- (BOOL)join:(id *)join voucher:(id)voucher eventS:(id)s setupPairingChannelSignPost:(octagon_signpost_s)post finishPairing:(BOOL *)pairing error:(id *)error;
+- (BOOL)populateKeychainForTestingWithNumberOfKeychainItems:(int)items;
+- (BOOL)populateKeychainWithLargeItemsForTestingWithCount:(int)count;
+- (BOOL)populateKeychainWithTooLargeItemsForTestingWithCount:(int)count;
+- (id)copySubsetFrom:(id)from begin:(unint64_t)begin end:(unint64_t)end;
+- (id)createPacket:(id)packet results:(id)results endSession:(BOOL)session;
+- (id)createTempPacket:(id)packet pcsItem:(id)item octagonData:(id)data keyForItem:(id)forItem;
+- (id)evaluateResults:(void *)results;
+- (id)exchangePacket:(id)packet complete:(BOOL *)complete error:(id *)error;
+- (id)fetchItemForPersistentRef:(id)ref error:(id *)error;
 - (id)formNextPacket;
-- (id)updateItem:(id)a3;
+- (id)updateItem:(id)item;
 - (int)fetchCountOfReceivedItemsForTesting;
 - (int)fetchCountOfSentItemsForTesting;
-- (int)fetchPCSItemPersistentRefs:(const void *)a3 error:(id *)a4;
+- (int)fetchPCSItemPersistentRefs:(const void *)refs error:(id *)error;
 - (unint64_t)fetchNumberOfPCSKeychainItems;
 - (unint64_t)fetchSizeOfPacketForTesting;
-- (void)acceptorFirstOctagonPacket:(id)a3 reply:(id)a4 complete:(id)a5;
-- (void)acceptorFirstPacket:(id)a3 complete:(id)a4;
-- (void)acceptorPCSDataPacket:(id)a3 complete:(id)a4;
-- (void)acceptorSecondOctagonPacket:(id)a3 reply:(id)a4 complete:(id)a5;
-- (void)acceptorSecondPacket:(id)a3 complete:(id)a4;
-- (void)acceptorThirdPacket:(id)a3 complete:(id)a4;
-- (void)acceptorWaitForAck:(id)a3 complete:(id)a4;
-- (void)exchangePacket:(id)a3 complete:(id)a4;
-- (void)initiatorCompleteSecondPacketOctagon:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)initiatorCompleteSecondPacketWithSOS:(id)a3 complete:(id)a4;
-- (void)initiatorFirstPacket:(id)a3 complete:(id)a4;
-- (void)initiatorFourthPacket:(id)a3 complete:(id)a4;
-- (void)initiatorPCSDataPacket:(id)a3 complete:(id)a4;
-- (void)initiatorSecondPacket:(id)a3 complete:(id)a4;
-- (void)initiatorThirdPacket:(id)a3 complete:(id)a4;
-- (void)oneStepTooMany:(id)a3 complete:(id)a4;
-- (void)setNextStateError:(id)a3 complete:(id)a4;
-- (void)validateStart:(id)a3;
+- (void)acceptorFirstOctagonPacket:(id)packet reply:(id)reply complete:(id)complete;
+- (void)acceptorFirstPacket:(id)packet complete:(id)complete;
+- (void)acceptorPCSDataPacket:(id)packet complete:(id)complete;
+- (void)acceptorSecondOctagonPacket:(id)packet reply:(id)reply complete:(id)complete;
+- (void)acceptorSecondPacket:(id)packet complete:(id)complete;
+- (void)acceptorThirdPacket:(id)packet complete:(id)complete;
+- (void)acceptorWaitForAck:(id)ack complete:(id)complete;
+- (void)exchangePacket:(id)packet complete:(id)complete;
+- (void)initiatorCompleteSecondPacketOctagon:(id)octagon application:(id)application complete:(id)complete;
+- (void)initiatorCompleteSecondPacketWithSOS:(id)s complete:(id)complete;
+- (void)initiatorFirstPacket:(id)packet complete:(id)complete;
+- (void)initiatorFourthPacket:(id)packet complete:(id)complete;
+- (void)initiatorPCSDataPacket:(id)packet complete:(id)complete;
+- (void)initiatorSecondPacket:(id)packet complete:(id)complete;
+- (void)initiatorThirdPacket:(id)packet complete:(id)complete;
+- (void)oneStepTooMany:(id)many complete:(id)complete;
+- (void)setNextStateError:(id)error complete:(id)complete;
+- (void)validateStart:(id)start;
 - (void)waitForOctagonUpgrade;
 @end
 
@@ -53,10 +53,10 @@
 
 - (unint64_t)fetchSizeOfPacketForTesting
 {
-  v2 = [(KCPairingChannel *)self sizeOfPacket];
-  v3 = [v2 intValue];
+  sizeOfPacket = [(KCPairingChannel *)self sizeOfPacket];
+  intValue = [sizeOfPacket intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (unint64_t)fetchNumberOfPCSKeychainItems
@@ -93,7 +93,7 @@
   return v9;
 }
 
-- (BOOL)populateKeychainWithTooLargeItemsForTestingWithCount:(int)a3
+- (BOOL)populateKeychainWithTooLargeItemsForTestingWithCount:(int)count
 {
   v25[7] = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:0x400000];
@@ -102,7 +102,7 @@
     v5 = 0;
   }
 
-  else if (a3 < 1)
+  else if (count < 1)
   {
     v5 = 1;
   }
@@ -134,9 +134,9 @@
       v24[4] = v17;
       v24[5] = v16;
       v9 = MEMORY[0x277CCACA8];
-      v10 = [MEMORY[0x277CCAD78] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v9 stringWithFormat:@"%@-%d", v11, v6];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [v9 stringWithFormat:@"%@-%d", uUIDString, v6];
       v24[6] = v7;
       v25[5] = v12;
       v25[6] = v4;
@@ -148,14 +148,14 @@
       v6 = (v6 + 1);
     }
 
-    while (a3 != v6);
+    while (count != v6);
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (BOOL)populateKeychainWithLargeItemsForTestingWithCount:(int)a3
+- (BOOL)populateKeychainWithLargeItemsForTestingWithCount:(int)count
 {
   v25[7] = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:1625292];
@@ -164,7 +164,7 @@
     v5 = 0;
   }
 
-  else if (a3 < 1)
+  else if (count < 1)
   {
     v5 = 1;
   }
@@ -196,9 +196,9 @@
       v24[4] = v17;
       v24[5] = v16;
       v9 = MEMORY[0x277CCACA8];
-      v10 = [MEMORY[0x277CCAD78] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v9 stringWithFormat:@"%@-%d", v11, v6];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [v9 stringWithFormat:@"%@-%d", uUIDString, v6];
       v24[6] = v7;
       v25[5] = v12;
       v25[6] = v4;
@@ -210,17 +210,17 @@
       v6 = (v6 + 1);
     }
 
-    while (a3 != v6);
+    while (count != v6);
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (BOOL)populateKeychainForTestingWithNumberOfKeychainItems:(int)a3
+- (BOOL)populateKeychainForTestingWithNumberOfKeychainItems:(int)items
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (items < 1)
   {
     v5 = 1;
   }
@@ -252,9 +252,9 @@
       v24[4] = v17;
       v24[5] = v16;
       v8 = MEMORY[0x277CCACA8];
-      v9 = [MEMORY[0x277CCAD78] UUID];
-      v10 = [v9 UUIDString];
-      v11 = [v8 stringWithFormat:@"%@-%d", v10, v4];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v11 = [v8 stringWithFormat:@"%@-%d", uUIDString, v4];
       v25[5] = v11;
       v24[6] = v6;
       v12 = [@"zesty" dataUsingEncoding:4];
@@ -267,7 +267,7 @@
       v4 = (v4 + 1);
     }
 
-    while (a3 != v4);
+    while (items != v4);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -276,23 +276,23 @@
 
 - (int)fetchCountOfSentItemsForTesting
 {
-  v2 = [(KCPairingChannel *)self countOfSentItems];
-  v3 = [v2 intValue];
+  countOfSentItems = [(KCPairingChannel *)self countOfSentItems];
+  intValue = [countOfSentItems intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)fetchCountOfReceivedItemsForTesting
 {
-  v2 = [(KCPairingChannel *)self countOfReceivedItems];
-  v3 = [v2 intValue];
+  countOfReceivedItems = [(KCPairingChannel *)self countOfReceivedItems];
+  intValue = [countOfReceivedItems intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (id)exchangePacket:(id)a3 complete:(BOOL *)a4 error:(id *)a5
+- (id)exchangePacket:(id)packet complete:(BOOL *)complete error:(id *)error
 {
-  v8 = a3;
+  packetCopy = packet;
   v9 = dispatch_semaphore_create(0);
   v24 = 0;
   v25 = &v24;
@@ -311,15 +311,15 @@
   v13[2] = __50__KCPairingChannel_exchangePacket_complete_error___block_invoke;
   v13[3] = &unk_2788635E0;
   v16 = &v18;
-  v17 = a4;
+  completeCopy = complete;
   v15 = &v24;
   v10 = v9;
   v14 = v10;
-  [(KCPairingChannel *)self exchangePacket:v8 complete:v13];
+  [(KCPairingChannel *)self exchangePacket:packetCopy complete:v13];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
@@ -348,27 +348,27 @@ void __50__KCPairingChannel_exchangePacket_complete_error___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)exchangePacket:(id)a3 complete:(id)a4
+- (void)exchangePacket:(id)packet complete:(id)complete
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v8 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v22 = [(KCPairingChannel *)self counter];
+    counter = [(KCPairingChannel *)self counter];
     _os_log_impl(&dword_22EB09000, v8, OS_LOG_TYPE_DEFAULT, "Exchange packet: %u", buf, 8u);
   }
 
   [(KCPairingChannel *)self setCounter:[(KCPairingChannel *)self counter]+ 1];
-  if (!v6)
+  if (!packetCopy)
   {
     v12 = 0;
     goto LABEL_8;
   }
 
-  v9 = [objc_opt_class() pairingChannelDecompressData:v6];
+  v9 = [objc_opt_class() pairingChannelDecompressData:packetCopy];
   if (v9)
   {
     v10 = v9;
@@ -379,14 +379,14 @@ void __50__KCPairingChannel_exchangePacket_complete_error___block_invoke(uint64_
       v12 = v11;
 
 LABEL_8:
-      v13 = [(KCPairingChannel *)self nextState];
+      nextState = [(KCPairingChannel *)self nextState];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __44__KCPairingChannel_exchangePacket_complete___block_invoke;
       v18[3] = &unk_2788635B8;
       v18[4] = self;
-      v19 = v7;
-      (v13)[2](v13, v12, v18);
+      v19 = completeCopy;
+      (nextState)[2](nextState, v12, v18);
 
       goto LABEL_15;
     }
@@ -399,7 +399,7 @@ LABEL_8:
       _os_log_impl(&dword_22EB09000, v16, OS_LOG_TYPE_DEFAULT, "failed to deserialize", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 1, 0, v15);
+    (*(completeCopy + 2))(completeCopy, 1, 0, v15);
   }
 
   else
@@ -411,7 +411,7 @@ LABEL_8:
       _os_log_impl(&dword_22EB09000, v14, OS_LOG_TYPE_DEFAULT, "failed to decompress", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 1, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 1, 0, 0);
   }
 
 LABEL_15:
@@ -499,9 +499,9 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateStart:(id)a3
+- (void)validateStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if ([(KCPairingChannel *)self initiator])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -510,22 +510,22 @@ LABEL_16:
     block[2] = __34__KCPairingChannel_validateStart___block_invoke_3;
     block[3] = &unk_278863590;
     v6 = &v13;
-    v13 = v4;
-    v7 = v4;
+    v13 = startCopy;
+    v7 = startCopy;
     dispatch_async(v5, block);
   }
 
   else
   {
-    v8 = [(KCPairingChannel *)self connection];
+    connection = [(KCPairingChannel *)self connection];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __34__KCPairingChannel_validateStart___block_invoke;
     v16[3] = &unk_278863540;
     v6 = &v17;
-    v9 = v4;
+    v9 = startCopy;
     v17 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v16];
+    v10 = [connection remoteObjectProxyWithErrorHandler:v16];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __34__KCPairingChannel_validateStart___block_invoke_2;
@@ -540,9 +540,9 @@ LABEL_16:
 
 - (BOOL)ensureControlChannel
 {
-  v3 = [(KCPairingChannel *)self connection];
+  connection = [(KCPairingChannel *)self connection];
 
-  if (v3)
+  if (connection)
   {
     return 1;
   }
@@ -551,26 +551,26 @@ LABEL_16:
   v6 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.securityd.sos" options:0];
   [(KCPairingChannel *)self setConnection:v6];
 
-  v7 = [(KCPairingChannel *)self connection];
-  v4 = v7 != 0;
+  connection2 = [(KCPairingChannel *)self connection];
+  v4 = connection2 != 0;
 
-  if (v7)
+  if (connection2)
   {
-    v8 = [(KCPairingChannel *)self connection];
-    [v8 setRemoteObjectInterface:v5];
+    connection3 = [(KCPairingChannel *)self connection];
+    [connection3 setRemoteObjectInterface:v5];
 
-    v9 = [(KCPairingChannel *)self connection];
-    [v9 resume];
+    connection4 = [(KCPairingChannel *)self connection];
+    [connection4 resume];
   }
 
   return v4;
 }
 
-- (void)acceptorWaitForAck:(id)a3 complete:(id)a4
+- (void)acceptorWaitForAck:(id)ack complete:(id)complete
 {
   v42 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v6 = a4;
+  ackCopy = ack;
+  completeCopy = complete;
   v7 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -578,7 +578,7 @@ LABEL_16:
     _os_log_impl(&dword_22EB09000, v7, OS_LOG_TYPE_DEFAULT, "acceptor received ACK from initiator", buf, 2u);
   }
 
-  v8 = [v37 objectForKeyedSubscript:@"o"];
+  v8 = [ackCopy objectForKeyedSubscript:@"o"];
   v9 = v8 == 0;
 
   if (v9)
@@ -591,22 +591,22 @@ LABEL_16:
     }
 
     v18 = [AAFAnalyticsEventSecurity alloc];
-    v19 = [(KCPairingChannel *)self peerVersionContext];
-    v20 = [v19 altDSID];
-    v21 = [(KCPairingChannel *)self peerVersionContext];
-    v22 = [v21 flowID];
-    v23 = [(KCPairingChannel *)self peerVersionContext];
-    v24 = [v23 deviceSessionID];
+    peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+    altDSID = [peerVersionContext altDSID];
+    peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+    flowID = [peerVersionContext2 flowID];
+    peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID = [peerVersionContext3 deviceSessionID];
     LOBYTE(v35) = 1;
-    v10 = [(AAFAnalyticsEventSecurity *)v18 initWithKeychainCircleMetrics:0 altDSID:v20 flowID:v22 deviceSessionID:v24 eventName:@"com.apple.security.pairingEmptyOctagonPayload" testsAreEnabled:metricsAreEnabled canSendMetrics:v35 category:&unk_2843768F0];
+    v10 = [(AAFAnalyticsEventSecurity *)v18 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.pairingEmptyOctagonPayload" testsAreEnabled:metricsAreEnabled canSendMetrics:v35 category:&unk_2843768F0];
 
     [(AAFAnalyticsEventSecurity *)v10 sendMetricWithResult:0 error:0];
-    (*(v6 + 2))(v6, 1, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 1, 0, 0);
   }
 
   else
   {
-    v10 = [v37 objectForKeyedSubscript:@"o"];
+    v10 = [ackCopy objectForKeyedSubscript:@"o"];
     v36 = [(AAFAnalyticsEventSecurity *)v10 objectForKeyedSubscript:@"k"];
     v11 = secLogObjForScope("pairing");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -616,16 +616,16 @@ LABEL_16:
       _os_log_impl(&dword_22EB09000, v11, OS_LOG_TYPE_DEFAULT, "Received ack number: %@", buf, 0xCu);
     }
 
-    v12 = [(KCPairingChannel *)self ackNumber];
-    v13 = [v36 isEqualToNumber:v12];
+    ackNumber = [(KCPairingChannel *)self ackNumber];
+    v13 = [v36 isEqualToNumber:ackNumber];
 
     if (v13)
     {
-      v14 = [(KCPairingChannel *)self itemIndex];
-      v15 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
-      LODWORD(v14) = v14 < [v15 count];
+      itemIndex = [(KCPairingChannel *)self itemIndex];
+      allPCSItemPersistentRefs = [(KCPairingChannel *)self allPCSItemPersistentRefs];
+      LODWORD(itemIndex) = itemIndex < [allPCSItemPersistentRefs count];
 
-      if (v14)
+      if (itemIndex)
       {
         objc_initWeak(buf, self);
         v38[0] = MEMORY[0x277D85DD0];
@@ -634,8 +634,8 @@ LABEL_16:
         v38[3] = &unk_278863270;
         objc_copyWeak(&v39, buf);
         [(KCPairingChannel *)self setNextState:v38];
-        v16 = [(KCPairingChannel *)self formNextPacket];
-        (*(v6 + 2))(v6, 0, v16, 0);
+        formNextPacket = [(KCPairingChannel *)self formNextPacket];
+        (*(completeCopy + 2))(completeCopy, 0, formNextPacket, 0);
 
         objc_destroyWeak(&v39);
         objc_destroyWeak(buf);
@@ -644,7 +644,7 @@ LABEL_16:
       else
       {
         [(KCPairingChannel *)self setAllPCSItemPersistentRefs:0];
-        (*(v6 + 2))(v6, 1, 0, 0);
+        (*(completeCopy + 2))(completeCopy, 1, 0, 0);
       }
     }
 
@@ -658,17 +658,17 @@ LABEL_16:
       }
 
       v26 = [AAFAnalyticsEventSecurity alloc];
-      v27 = [(KCPairingChannel *)self peerVersionContext];
-      v28 = [v27 altDSID];
-      v29 = [(KCPairingChannel *)self peerVersionContext];
-      v30 = [v29 flowID];
-      v31 = [(KCPairingChannel *)self peerVersionContext];
-      v32 = [v31 deviceSessionID];
+      peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+      altDSID2 = [peerVersionContext4 altDSID];
+      peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+      flowID2 = [peerVersionContext5 flowID];
+      peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+      deviceSessionID2 = [peerVersionContext6 deviceSessionID];
       LOBYTE(v35) = 1;
-      v33 = [(AAFAnalyticsEventSecurity *)v26 initWithKeychainCircleMetrics:0 altDSID:v28 flowID:v30 deviceSessionID:v32 eventName:@"com.apple.security.pairingEmptyAckPayload" testsAreEnabled:metricsAreEnabled canSendMetrics:v35 category:&unk_2843768F0];
+      v33 = [(AAFAnalyticsEventSecurity *)v26 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:@"com.apple.security.pairingEmptyAckPayload" testsAreEnabled:metricsAreEnabled canSendMetrics:v35 category:&unk_2843768F0];
 
       [(AAFAnalyticsEventSecurity *)v33 sendMetricWithResult:0 error:0];
-      [(KCPairingChannel *)self acceptorPCSDataPacket:MEMORY[0x277CBEC10] complete:v6];
+      [(KCPairingChannel *)self acceptorPCSDataPacket:MEMORY[0x277CBEC10] complete:completeCopy];
     }
   }
 
@@ -686,8 +686,8 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
 - (id)formNextPacket
 {
   v3 = [(KCPairingChannel *)self itemIndex]+ 400;
-  v4 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
-  v5 = [v4 count];
+  allPCSItemPersistentRefs = [(KCPairingChannel *)self allPCSItemPersistentRefs];
+  v5 = [allPCSItemPersistentRefs count];
 
   if (v3 < v5)
   {
@@ -696,26 +696,26 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
 
   else
   {
-    v6 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
-    v7 = [v6 count];
+    allPCSItemPersistentRefs2 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
+    v7 = [allPCSItemPersistentRefs2 count];
   }
 
   v8 = v3 >= v5;
-  v9 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
-  v10 = [(KCPairingChannel *)self copySubsetFrom:v9 begin:[(KCPairingChannel *)self itemIndex] end:v7];
+  allPCSItemPersistentRefs3 = [(KCPairingChannel *)self allPCSItemPersistentRefs];
+  v10 = [(KCPairingChannel *)self copySubsetFrom:allPCSItemPersistentRefs3 begin:[(KCPairingChannel *)self itemIndex] end:v7];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(KCPairingChannel *)self ackNumber];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "integerValue") + 1}];
+  ackNumber = [(KCPairingChannel *)self ackNumber];
+  v13 = [v11 numberWithInteger:{objc_msgSend(ackNumber, "integerValue") + 1}];
   v14 = [(KCPairingChannel *)self createPacket:v13 results:v10 endSession:v8];
 
   return v14;
 }
 
-- (void)acceptorPCSDataPacket:(id)a3 complete:(id)a4
+- (void)acceptorPCSDataPacket:(id)packet complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v8 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -723,7 +723,7 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
     _os_log_impl(&dword_22EB09000, v8, OS_LOG_TYPE_DEFAULT, "acceptor packet will include pcs data", buf, 2u);
   }
 
-  v30 = v7;
+  v30 = completeCopy;
 
   objc_initWeak(buf, self);
   v34[0] = MEMORY[0x277D85DD0];
@@ -732,7 +732,7 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
   v34[3] = &unk_278863270;
   objc_copyWeak(&v35, buf);
   [(KCPairingChannel *)self setNextState:v34];
-  v29 = v6;
+  v29 = packetCopy;
   v32 = 0;
   cf = 0;
   v9 = [(KCPairingChannel *)self fetchPCSItemPersistentRefs:&cf error:&v32];
@@ -748,14 +748,14 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
     }
 
     v16 = [AAFAnalyticsEventSecurity alloc];
-    v17 = [(KCPairingChannel *)self peerVersionContext];
-    v18 = [v17 altDSID];
-    v19 = [(KCPairingChannel *)self peerVersionContext];
-    v20 = [v19 flowID];
-    v21 = [(KCPairingChannel *)self peerVersionContext];
-    v22 = [v21 deviceSessionID];
+    peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+    altDSID = [peerVersionContext altDSID];
+    peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+    flowID = [peerVersionContext2 flowID];
+    peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID = [peerVersionContext3 deviceSessionID];
     LOBYTE(v28) = 1;
-    v13 = [(AAFAnalyticsEventSecurity *)v16 initWithKeychainCircleMetrics:0 altDSID:v18 flowID:v20 deviceSessionID:v22 eventName:@"com.apple.security.pairingFailedFetchPCSItems" testsAreEnabled:metricsAreEnabled canSendMetrics:v28 category:&unk_2843768F0];
+    v13 = [(AAFAnalyticsEventSecurity *)v16 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.pairingFailedFetchPCSItems" testsAreEnabled:metricsAreEnabled canSendMetrics:v28 category:&unk_2843768F0];
 
     if (v11)
     {
@@ -769,13 +769,13 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
     }
 
     [(KCPairingChannel *)self setAckNumber:&unk_2843768C0];
-    v24 = [MEMORY[0x277CBEB38] dictionary];
-    v25 = [MEMORY[0x277CBEB38] dictionary];
-    [v25 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"e"];
-    v26 = [(KCPairingChannel *)self ackNumber];
-    [v25 setObject:v26 forKeyedSubscript:@"n"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"e"];
+    ackNumber = [(KCPairingChannel *)self ackNumber];
+    [dictionary2 setObject:ackNumber forKeyedSubscript:@"n"];
 
-    [v24 setObject:v25 forKeyedSubscript:@"o"];
+    [dictionary setObject:dictionary2 forKeyedSubscript:@"o"];
     v27 = cf;
     if (cf)
     {
@@ -783,7 +783,7 @@ void __48__KCPairingChannel_acceptorWaitForAck_complete___block_invoke(uint64_t 
       CFRelease(v27);
     }
 
-    v30[2](v30, 0, v24, v11);
+    v30[2](v30, 0, dictionary, v11);
 
     v12 = v30;
   }
@@ -814,14 +814,14 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
   [WeakRetained acceptorWaitForAck:v6 complete:v5];
 }
 
-- (int)fetchPCSItemPersistentRefs:(const void *)a3 error:(id *)a4
+- (int)fetchPCSItemPersistentRefs:(const void *)refs error:(id *)error
 {
   v28[7] = *MEMORY[0x277D85DE8];
-  v7 = [(KCPairingChannel *)self dsidForTest];
+  dsidForTest = [(KCPairingChannel *)self dsidForTest];
 
-  if (v7)
+  if (dsidForTest)
   {
-    v8 = [(KCPairingChannel *)self dsidForTest];
+    dsidForTest2 = [(KCPairingChannel *)self dsidForTest];
   }
 
   else
@@ -844,12 +844,12 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
 
     v10 = v9;
     _Block_object_dispose(&v23, 8);
-    v11 = [v9 defaultStore];
-    v12 = [v11 aa_primaryAppleAccount];
-    v8 = [v12 aa_personID];
+    defaultStore = [v9 defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    dsidForTest2 = [aa_primaryAppleAccount aa_personID];
   }
 
-  if (v8)
+  if (dsidForTest2)
   {
     v13 = *MEMORY[0x277CDC248];
     v14 = *MEMORY[0x277CDC5C8];
@@ -864,21 +864,21 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
     v27[4] = *MEMORY[0x277CDC118];
     v27[5] = v16;
     v17 = *MEMORY[0x277CDC430];
-    v28[4] = v8;
+    v28[4] = dsidForTest2;
     v28[5] = v17;
     v28[0] = v13;
     v28[1] = MEMORY[0x277CBEC38];
     v27[6] = *MEMORY[0x277CDC560];
     v28[6] = MEMORY[0x277CBEC38];
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:7];
-    v19 = SecItemCopyMatching(v18, a3);
+    v19 = SecItemCopyMatching(v18, refs);
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:11 description:@"failed to fetch dsid"];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:11 description:@"failed to fetch dsid"];
     }
 
     v19 = -26276;
@@ -888,22 +888,22 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
   return v19;
 }
 
-- (id)evaluateResults:(void *)a3
+- (id)evaluateResults:(void *)results
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = CFGetTypeID(a3);
+  v5 = CFGetTypeID(results);
   if (v5 == CFArrayGetTypeID())
   {
-    v6 = a3;
-    [(KCPairingChannel *)self setAllPCSItemPersistentRefs:v6];
-    if ([v6 count] < 0x191)
+    resultsCopy = results;
+    [(KCPairingChannel *)self setAllPCSItemPersistentRefs:resultsCopy];
+    if ([resultsCopy count] < 0x191)
     {
-      v8 = [(KCPairingChannel *)self createPacket:&unk_2843768C0 results:v6 endSession:1];
+      v8 = [(KCPairingChannel *)self createPacket:&unk_2843768C0 results:resultsCopy endSession:1];
     }
 
     else
     {
-      v7 = [(KCPairingChannel *)self copySubsetFrom:v6 begin:0 end:400];
+      v7 = [(KCPairingChannel *)self copySubsetFrom:resultsCopy begin:0 end:400];
 
       v8 = [(KCPairingChannel *)self createPacket:&unk_2843768C0 results:v7 endSession:0];
     }
@@ -915,7 +915,7 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = CFGetTypeID(a3);
+      v13 = CFGetTypeID(results);
       _os_log_impl(&dword_22EB09000, v9, OS_LOG_TYPE_DEFAULT, "acceptorPCSDataPacket: received unexpected return type from SecItemCopyMatching, typeID: %lu", &v12, 0xCu);
     }
 
@@ -927,54 +927,54 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
   return v8;
 }
 
-- (id)copySubsetFrom:(id)a3 begin:(unint64_t)a4 end:(unint64_t)a5
+- (id)copySubsetFrom:(id)from begin:(unint64_t)begin end:(unint64_t)end
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
-  if (a4 < a5)
+  fromCopy = from;
+  array = [MEMORY[0x277CBEB18] array];
+  if (begin < end)
   {
     v9 = 0;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:a4];
-      [v8 setObject:v10 atIndexedSubscript:v9];
+      v10 = [fromCopy objectAtIndexedSubscript:begin];
+      [array setObject:v10 atIndexedSubscript:v9];
 
       ++v9;
-      ++a4;
+      ++begin;
     }
 
-    while (a5 != a4);
+    while (end != begin);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)createPacket:(id)a3 results:(id)a4 endSession:(BOOL)a5
+- (id)createPacket:(id)packet results:(id)results endSession:(BOOL)session
 {
-  v5 = a5;
+  sessionCopy = session;
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  packetCopy = packet;
+  resultsCopy = results;
   [(KCPairingChannel *)self setCountOfSentItems:&unk_2843768A8];
-  v51 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v5)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary2;
+  if (sessionCopy)
   {
-    [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"e"];
+    [dictionary2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"e"];
   }
 
-  v52 = v8;
-  [(KCPairingChannel *)self setAckNumber:v8];
-  v12 = [(KCPairingChannel *)self ackNumber];
-  [v11 setObject:v12 forKeyedSubscript:@"n"];
+  v52 = packetCopy;
+  [(KCPairingChannel *)self setAckNumber:packetCopy];
+  ackNumber = [(KCPairingChannel *)self ackNumber];
+  [v11 setObject:ackNumber forKeyedSubscript:@"n"];
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v9;
+  obj = resultsCopy;
   v59 = [obj countByEnumeratingWithState:&v64 objects:v72 count:16];
   v14 = 0;
   if (!v59)
@@ -984,7 +984,7 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
 
   v57 = *v65;
   v58 = v11;
-  v53 = v13;
+  v53 = dictionary3;
   while (2)
   {
     for (i = 0; i != v59; ++i)
@@ -1018,22 +1018,22 @@ void __51__KCPairingChannel_acceptorPCSDataPacket_complete___block_invoke(uint64
         v33 = [(KCPairingChannel *)self updateItem:v34];
 
         v62 = 0;
-        v35 = [(KCPairingChannel *)self createTempPacketAndCheckSize:v13 pcsItem:v33 octagonData:v11 keyForItem:v18 error:&v62];
+        v35 = [(KCPairingChannel *)self createTempPacketAndCheckSize:dictionary3 pcsItem:v33 octagonData:v11 keyForItem:v18 error:&v62];
         v36 = v62;
         v32 = v36;
         if (v35 && v36 == 0)
         {
-          v38 = v13;
-          [(AAFAnalyticsEventSecurity *)v13 setObject:v33 forKeyedSubscript:v18];
+          v38 = dictionary3;
+          [(AAFAnalyticsEventSecurity *)dictionary3 setObject:v33 forKeyedSubscript:v18];
 LABEL_28:
           v22 = v60;
           v11 = v58;
-          v13 = v38;
+          dictionary3 = v38;
           v14 = v61 + 1;
           goto LABEL_29;
         }
 
-        v38 = v13;
+        v38 = dictionary3;
         if (v35)
         {
           v41 = secLogObjForScope("SecError");
@@ -1051,7 +1051,7 @@ LABEL_36:
 
         else
         {
-          if (![(AAFAnalyticsEventSecurity *)v13 count])
+          if (![(AAFAnalyticsEventSecurity *)dictionary3 count])
           {
             v39 = secLogObjForScope("pairing");
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -1110,22 +1110,22 @@ LABEL_38:
       }
 
       v24 = [AAFAnalyticsEventSecurity alloc];
-      v25 = [(KCPairingChannel *)self peerVersionContext];
-      v26 = [v25 altDSID];
-      v27 = [(KCPairingChannel *)self peerVersionContext];
-      v28 = [v27 flowID];
+      peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+      altDSID = [peerVersionContext altDSID];
+      peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+      flowID = [peerVersionContext2 flowID];
       [(KCPairingChannel *)self peerVersionContext];
       v30 = v29 = self;
-      v31 = [v30 deviceSessionID];
+      deviceSessionID = [v30 deviceSessionID];
       LOBYTE(v50) = 1;
-      v32 = [(AAFAnalyticsEventSecurity *)v24 initWithKeychainCircleMetrics:0 altDSID:v26 flowID:v28 deviceSessionID:v31 eventName:@"com.apple.security.pairingFailedToFetchItemForPersistentRef" testsAreEnabled:metricsAreEnabled canSendMetrics:v50 category:&unk_2843768F0];
+      v32 = [(AAFAnalyticsEventSecurity *)v24 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.pairingFailedToFetchItemForPersistentRef" testsAreEnabled:metricsAreEnabled canSendMetrics:v50 category:&unk_2843768F0];
 
       self = v29;
       [(AAFAnalyticsEventSecurity *)v32 sendMetricWithResult:0 error:v22];
       v33 = v60;
       v14 = v61;
       v11 = v58;
-      v13 = v53;
+      dictionary3 = v53;
       v18 = v55;
       v17 = v56;
 LABEL_29:
@@ -1147,50 +1147,50 @@ LABEL_39:
   v45 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
-    v46 = [(AAFAnalyticsEventSecurity *)v13 count];
+    v46 = [(AAFAnalyticsEventSecurity *)dictionary3 count];
     *buf = 134218242;
     v69 = v46;
     v70 = 2112;
-    v71 = v13;
+    v71 = dictionary3;
     _os_log_impl(&dword_22EB09000, v45, OS_LOG_TYPE_DEFAULT, "acceptor will send initiator (%lu) items: %@", buf, 0x16u);
   }
 
   [(KCPairingChannel *)self setItemIndex:[(KCPairingChannel *)self itemIndex]+ v14];
-  v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AAFAnalyticsEventSecurity count](v13, "count")}];
+  v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AAFAnalyticsEventSecurity count](dictionary3, "count")}];
   [(KCPairingChannel *)self setCountOfSentItems:v47];
 
-  [v11 setObject:v13 forKeyedSubscript:@"a"];
-  [v51 setObject:v11 forKeyedSubscript:@"o"];
+  [v11 setObject:dictionary3 forKeyedSubscript:@"a"];
+  [dictionary setObject:v11 forKeyedSubscript:@"o"];
 
   v48 = *MEMORY[0x277D85DE8];
 
-  return v51;
+  return dictionary;
 }
 
-- (id)fetchItemForPersistentRef:(id)a3 error:(id *)a4
+- (id)fetchItemForPersistentRef:(id)ref error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [v6 setObject:*MEMORY[0x277CDC248] forKeyedSubscript:*MEMORY[0x277CDC228]];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277CDC5F0]];
+  refCopy = ref;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:*MEMORY[0x277CDC248] forKeyedSubscript:*MEMORY[0x277CDC228]];
+  [dictionary setObject:refCopy forKeyedSubscript:*MEMORY[0x277CDC5F0]];
   v7 = MEMORY[0x277CBEC38];
-  [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC550]];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277CDC558]];
-  [v6 setObject:*MEMORY[0x277CDC438] forKeyedSubscript:*MEMORY[0x277CDC428]];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC550]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277CDC558]];
+  [dictionary setObject:*MEMORY[0x277CDC438] forKeyedSubscript:*MEMORY[0x277CDC428]];
   result = 0;
-  v8 = SecItemCopyMatching(v6, &result);
+  v8 = SecItemCopyMatching(dictionary, &result);
   if (v8 || !result)
   {
     v11 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v5;
+      v29 = refCopy;
       _os_log_impl(&dword_22EB09000, v11, OS_LOG_TYPE_DEFAULT, "fetchItemForPersistentRef: failed to fetch persistent ref: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = kKCPairingChannelErrorDomain;
@@ -1199,7 +1199,7 @@ LABEL_39:
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"SecItemCopyMatching: %d", v8];
       v33[0] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-      *a4 = [v12 errorWithDomain:v13 code:v14 userInfo:v16];
+      *error = [v12 errorWithDomain:v13 code:v14 userInfo:v16];
     }
   }
 
@@ -1217,20 +1217,20 @@ LABEL_39:
     {
       v18 = CFGetTypeID(result);
       *buf = 138412546;
-      v29 = v5;
+      v29 = refCopy;
       v30 = 2048;
       v31 = v18;
       _os_log_impl(&dword_22EB09000, v17, OS_LOG_TYPE_DEFAULT, "fetchItemForPersistentRef: unexpected keychain item type fetched for persistent ref: %@, type: %lu", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = kKCPairingChannelErrorDomain;
       v26 = *MEMORY[0x277CCA450];
       v27 = @"unexpected keychain item type fetched for persistent ref";
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      *a4 = [v19 errorWithDomain:v20 code:10 userInfo:v21];
+      *error = [v19 errorWithDomain:v20 code:10 userInfo:v21];
     }
   }
 
@@ -1249,35 +1249,35 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)createTempPacketAndCheckSize:(id)a3 pcsItem:(id)a4 octagonData:(id)a5 keyForItem:(id)a6 error:(id *)a7
+- (BOOL)createTempPacketAndCheckSize:(id)size pcsItem:(id)item octagonData:(id)data keyForItem:(id)forItem error:(id *)error
 {
-  v9 = [(KCPairingChannel *)self createTempPacket:a3 pcsItem:a4 octagonData:a5 keyForItem:a6];
-  LOBYTE(a7) = [(KCPairingChannel *)self isPacketSizeAcceptable:v9 error:a7];
+  v9 = [(KCPairingChannel *)self createTempPacket:size pcsItem:item octagonData:data keyForItem:forItem];
+  LOBYTE(error) = [(KCPairingChannel *)self isPacketSizeAcceptable:v9 error:error];
 
-  return a7;
+  return error;
 }
 
-- (id)createTempPacket:(id)a3 pcsItem:(id)a4 octagonData:(id)a5 keyForItem:(id)a6
+- (id)createTempPacket:(id)packet pcsItem:(id)item octagonData:(id)data keyForItem:(id)forItem
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 mutableCopy];
-  [v12 setObject:v11 forKeyedSubscript:v9];
+  forItemCopy = forItem;
+  dataCopy = data;
+  itemCopy = item;
+  v12 = [packet mutableCopy];
+  [v12 setObject:itemCopy forKeyedSubscript:forItemCopy];
 
-  v13 = [v10 mutableCopy];
+  v13 = [dataCopy mutableCopy];
   [v13 setObject:v12 forKeyedSubscript:@"a"];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  [v14 setObject:v13 forKeyedSubscript:@"o"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v13 forKeyedSubscript:@"o"];
 
-  return v14;
+  return dictionary;
 }
 
-- (BOOL)isPacketSizeAcceptable:(id)a3 error:(id *)a4
+- (BOOL)isPacketSizeAcceptable:(id)acceptable error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v17 = 0;
-  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v17];
+  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:acceptable format:200 options:0 error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -1315,7 +1315,7 @@ LABEL_12:
     _os_log_impl(&dword_22EB09000, v10, OS_LOG_TYPE_DEFAULT, "pairing: failed to serialize temp packet: %@", buf, 0xCu);
   }
 
-  if (!a4)
+  if (!error)
   {
     v12 = 0;
     goto LABEL_12;
@@ -1324,27 +1324,27 @@ LABEL_12:
   v11 = v8;
   v12 = 0;
   v13 = 0;
-  *a4 = v8;
+  *error = v8;
 LABEL_13:
 
   v15 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (id)updateItem:(id)a3
+- (id)updateItem:(id)item
 {
-  v3 = a3;
-  [v3 setObject:0 forKeyedSubscript:*MEMORY[0x277CDBEC0]];
-  [v3 setObject:*MEMORY[0x277CDC248] forKeyedSubscript:*MEMORY[0x277CDC228]];
+  itemCopy = item;
+  [itemCopy setObject:0 forKeyedSubscript:*MEMORY[0x277CDBEC0]];
+  [itemCopy setObject:*MEMORY[0x277CDC248] forKeyedSubscript:*MEMORY[0x277CDC228]];
 
-  return v3;
+  return itemCopy;
 }
 
-- (void)acceptorThirdPacket:(id)a3 complete:(id)a4
+- (void)acceptorThirdPacket:(id)packet complete:(id)complete
 {
   v59 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v6 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v7 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1378,17 +1378,17 @@ LABEL_13:
   }
 
   v15 = [AAFAnalyticsEventSecurity alloc];
-  v16 = [(KCPairingChannel *)self peerVersionContext];
-  v17 = [v16 altDSID];
-  v18 = [(KCPairingChannel *)self peerVersionContext];
-  v19 = [v18 flowID];
-  v20 = [(KCPairingChannel *)self peerVersionContext];
-  v21 = [v20 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v34) = 1;
-  v22 = [(AAFAnalyticsEventSecurity *)v15 initWithKeychainCircleMetrics:0 altDSID:v17 flowID:v19 deviceSessionID:v21 eventName:@"com.apple.security.acceptorCreatesPacket5" testsAreEnabled:metricsAreEnabled canSendMetrics:v34 category:&unk_2843768F0];
+  v22 = [(AAFAnalyticsEventSecurity *)v15 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.acceptorCreatesPacket5" testsAreEnabled:metricsAreEnabled canSendMetrics:v34 category:&unk_2843768F0];
 
-  v35 = [(KCPairingChannel *)self acceptorInitialSyncCredentialsFlags];
-  v38 = [(KCPairingChannel *)self connection];
+  acceptorInitialSyncCredentialsFlags = [(KCPairingChannel *)self acceptorInitialSyncCredentialsFlags];
+  connection = [(KCPairingChannel *)self connection];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __49__KCPairingChannel_acceptorThirdPacket_complete___block_invoke;
@@ -1398,15 +1398,15 @@ LABEL_13:
   v50 = buf;
   v23 = v22;
   v48 = v23;
-  v24 = v6;
+  v24 = completeCopy;
   v49 = v24;
-  v37 = [v38 remoteObjectProxyWithErrorHandler:v47];
-  v25 = [(KCPairingChannel *)self peerVersionContext];
-  v26 = [v25 altDSID];
-  v27 = [(KCPairingChannel *)self peerVersionContext];
-  v28 = [v27 flowID];
-  v29 = [(KCPairingChannel *)self peerVersionContext];
-  v30 = [v29 deviceSessionID];
+  v37 = [connection remoteObjectProxyWithErrorHandler:v47];
+  peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+  altDSID2 = [peerVersionContext4 altDSID];
+  peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+  flowID2 = [peerVersionContext5 flowID];
+  peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID2 = [peerVersionContext6 deviceSessionID];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __49__KCPairingChannel_acceptorThirdPacket_complete___block_invoke_292;
@@ -1416,10 +1416,10 @@ LABEL_13:
   v46 = v39;
   v31 = v23;
   v41 = v31;
-  v42 = self;
+  selfCopy = self;
   v32 = v24;
   v43 = v32;
-  [v37 initialSyncCredentials:v35 altDSID:v26 flowID:v28 deviceSessionID:v30 canSendMetrics:1 complete:v40];
+  [v37 initialSyncCredentials:acceptorInitialSyncCredentialsFlags altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:1 complete:v40];
 
   _Block_object_dispose(buf, 8);
   v33 = *MEMORY[0x277D85DE8];
@@ -1556,23 +1556,23 @@ void __49__KCPairingChannel_acceptorThirdPacket_complete___block_invoke_293(uint
   [WeakRetained acceptorPCSDataPacket:v6 complete:v5];
 }
 
-- (void)acceptorSecondOctagonPacket:(id)a3 reply:(id)a4 complete:(id)a5
+- (void)acceptorSecondOctagonPacket:(id)packet reply:(id)reply complete:(id)complete
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v42 = a4;
-  v9 = a5;
+  packetCopy = packet;
+  replyCopy = reply;
+  completeCopy = complete;
   v10 = [AAFAnalyticsEventSecurity alloc];
-  v11 = [(KCPairingChannel *)self peerVersionContext];
-  v12 = [v11 altDSID];
-  v13 = [(KCPairingChannel *)self peerVersionContext];
-  v14 = [v13 flowID];
-  v15 = [(KCPairingChannel *)self peerVersionContext];
-  v16 = [v15 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v38) = 1;
-  v17 = [(AAFAnalyticsEventSecurity *)v10 initWithKeychainCircleMetrics:0 altDSID:v12 flowID:v14 deviceSessionID:v16 eventName:@"com.apple.security.acceptorCreatesVoucher" testsAreEnabled:metricsAreEnabled canSendMetrics:v38 category:&unk_2843768F0];
+  v17 = [(AAFAnalyticsEventSecurity *)v10 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.acceptorCreatesVoucher" testsAreEnabled:metricsAreEnabled canSendMetrics:v38 category:&unk_2843768F0];
 
-  v18 = [v8 objectForKeyedSubscript:@"o"];
+  v18 = [packetCopy objectForKeyedSubscript:@"o"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1580,29 +1580,29 @@ void __49__KCPairingChannel_acceptorThirdPacket_complete___block_invoke_293(uint
     if ([(OTPairingMessage *)v19 hasPrepare])
     {
       v39 = v18;
-      v20 = [(OTPairingMessage *)v19 prepare];
+      prepare = [(OTPairingMessage *)v19 prepare];
       v44 = 0;
-      v21 = [(KCPairingChannel *)self peerVersionContext];
-      v22 = [v21 capability];
+      peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+      capability = [peerVersionContext4 capability];
 
-      if (v22)
+      if (capability)
       {
-        v23 = [(KCPairingChannel *)self peerVersionContext];
-        v24 = [v23 capability];
+        peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+        capability2 = [peerVersionContext5 capability];
       }
 
       else
       {
-        v24 = @"full";
+        capability2 = @"full";
       }
 
-      v40 = v9;
-      v41 = v8;
+      v40 = completeCopy;
+      v41 = packetCopy;
       v27 = secLogObjForScope(pairingScope);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v46 = v24;
+        v46 = capability2;
         _os_log_impl(&dword_22EB09000, v27, OS_LOG_TYPE_DEFAULT, "acceptor channel max capability set to %@", buf, 0xCu);
       }
 
@@ -1619,12 +1619,12 @@ void __49__KCPairingChannel_acceptorThirdPacket_complete___block_invoke_293(uint
         }
 
         v43 = 0;
-        v31 = [(KCPairingChannel *)self fetchVoucher:v42 prepare:v20 eventS:v17 finishedPairing:&v44 maxCapability:v24 error:&v43];
+        v31 = [(KCPairingChannel *)self fetchVoucher:replyCopy prepare:prepare eventS:v17 finishedPairing:&v44 maxCapability:capability2 error:&v43];
         v29 = v43;
         if (v31)
         {
-          v9 = v40;
-          (*(v40 + 2))(v40, v44, v42, 0);
+          completeCopy = v40;
+          (*(v40 + 2))(v40, v44, replyCopy, 0);
           goto LABEL_29;
         }
 
@@ -1679,12 +1679,12 @@ LABEL_27:
       _os_log_impl(&dword_22EB09000, v35, OS_LOG_TYPE_DEFAULT, v34, buf, v36);
 LABEL_28:
 
-      v9 = v40;
+      completeCopy = v40;
       (*(v40 + 2))(v40, 1, 0, v29);
 LABEL_29:
       v18 = v39;
 
-      v8 = v41;
+      packetCopy = v41;
     }
 
     else
@@ -1696,9 +1696,9 @@ LABEL_29:
         _os_log_impl(&dword_22EB09000, v26, OS_LOG_TYPE_DEFAULT, "ot-pairing: acceptorSecondOctagonPacket: no octagon message", buf, 2u);
       }
 
-      v20 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-      [(KCPairingChannel *)self setNextStateError:v20 complete:v9];
-      [(AAFAnalyticsEventSecurity *)v17 sendMetricWithResult:0 error:v20];
+      prepare = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
+      [(KCPairingChannel *)self setNextStateError:prepare complete:completeCopy];
+      [(AAFAnalyticsEventSecurity *)v17 sendMetricWithResult:0 error:prepare];
     }
   }
 
@@ -1712,19 +1712,19 @@ LABEL_29:
     }
 
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v19 complete:v9];
+    [(KCPairingChannel *)self setNextStateError:v19 complete:completeCopy];
     [(AAFAnalyticsEventSecurity *)v17 sendMetricWithResult:0 error:v19];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchVoucher:(id)a3 prepare:(id)a4 eventS:(id)a5 finishedPairing:(BOOL *)a6 maxCapability:(id)a7 error:(id *)a8
+- (BOOL)fetchVoucher:(id)voucher prepare:(id)prepare eventS:(id)s finishedPairing:(BOOL *)pairing maxCapability:(id)capability error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v30 = a7;
+  voucherCopy = voucher;
+  prepareCopy = prepare;
+  sCopy = s;
+  capabilityCopy = capability;
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -1736,35 +1736,35 @@ LABEL_29:
   v42 = __Block_byref_object_dispose_;
   v43 = 0;
   objc_initWeak(&location, self);
-  v28 = [(KCPairingChannel *)self otControl];
-  v26 = [(KCPairingChannel *)self controlArguments];
-  v25 = [(KCPairingChannel *)self joiningConfiguration];
-  v24 = [v13 peerID];
-  v15 = [v13 permanentInfo];
-  v16 = [v13 permanentInfoSig];
-  v17 = [v13 stableInfo];
-  v18 = [v13 stableInfoSig];
+  otControl = [(KCPairingChannel *)self otControl];
+  controlArguments = [(KCPairingChannel *)self controlArguments];
+  joiningConfiguration = [(KCPairingChannel *)self joiningConfiguration];
+  peerID = [prepareCopy peerID];
+  permanentInfo = [prepareCopy permanentInfo];
+  permanentInfoSig = [prepareCopy permanentInfoSig];
+  stableInfo = [prepareCopy stableInfo];
+  stableInfoSig = [prepareCopy stableInfoSig];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapability_error___block_invoke;
   v31[3] = &unk_2788634F0;
   v31[4] = self;
-  v23 = v14;
+  v23 = sCopy;
   v32 = v23;
   v34 = &v38;
   objc_copyWeak(v36, &location);
-  v22 = v12;
+  v22 = voucherCopy;
   v33 = v22;
   v35 = &v44;
-  v36[1] = a6;
-  [v28 rpcVoucherWithArguments:v26 configuration:v25 peerID:v24 permanentInfo:v15 permanentInfoSig:v16 stableInfo:v17 stableInfoSig:v18 maxCapability:v30 reply:v31];
+  v36[1] = pairing;
+  [otControl rpcVoucherWithArguments:controlArguments configuration:joiningConfiguration peerID:peerID permanentInfo:permanentInfo permanentInfoSig:permanentInfoSig stableInfo:stableInfo stableInfoSig:stableInfoSig maxCapability:capabilityCopy reply:v31];
 
-  if (a8)
+  if (error)
   {
     v19 = v39[5];
     if (v19)
     {
-      *a8 = v19;
+      *error = v19;
     }
   }
 
@@ -1931,11 +1931,11 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
   [WeakRetained acceptorPCSDataPacket:v6 complete:v5];
 }
 
-- (void)acceptorSecondPacket:(id)a3 complete:(id)a4
+- (void)acceptorSecondPacket:(id)packet complete:(id)complete
 {
   v82 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v45 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   objc_initWeak(&location, self);
   [(KCPairingChannel *)self setNextStateError:0 complete:0];
   v72[0] = 0;
@@ -1964,14 +1964,14 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
   }
 
   v13 = [AAFAnalyticsEventSecurity alloc];
-  v14 = [(KCPairingChannel *)self peerVersionContext];
-  v15 = [v14 altDSID];
-  v16 = [(KCPairingChannel *)self peerVersionContext];
-  v17 = [v16 flowID];
-  v18 = [(KCPairingChannel *)self peerVersionContext];
-  v19 = [v18 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v37) = 1;
-  v44 = [(AAFAnalyticsEventSecurity *)v13 initWithKeychainCircleMetrics:0 altDSID:v15 flowID:v17 deviceSessionID:v19 eventName:@"com.apple.security.acceptorCreatesPacket4" testsAreEnabled:metricsAreEnabled canSendMetrics:v37 category:&unk_2843768F0];
+  v44 = [(AAFAnalyticsEventSecurity *)v13 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.acceptorCreatesPacket4" testsAreEnabled:metricsAreEnabled canSendMetrics:v37 category:&unk_2843768F0];
 
   v20 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1985,8 +1985,8 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
   v78 = 0x3032000000;
   v79 = __Block_byref_object_copy_;
   v80 = __Block_byref_object_dispose_;
-  v81 = [MEMORY[0x277CBEB38] dictionary];
-  v21 = [v46 objectForKeyedSubscript:@"p"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v21 = [packetCopy objectForKeyedSubscript:@"p"];
   if ([(KCPairingChannel *)self sessionSupportsSOS]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v70[0] = 0;
@@ -2014,7 +2014,7 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
       _os_log_impl(&dword_22EB09000, v28, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PairingChannelAcceptorCircleJoiningBlob  enableTelemetry=YES ", v75, 0xCu);
     }
 
-    v41 = [(KCPairingChannel *)self connection];
+    connection = [(KCPairingChannel *)self connection];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __50__KCPairingChannel_acceptorSecondPacket_complete___block_invoke;
@@ -2027,15 +2027,15 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
     v65 = v72;
     v29 = v44;
     v62 = v29;
-    v30 = v45;
+    v30 = completeCopy;
     v63 = v30;
-    v39 = [v41 remoteObjectProxyWithErrorHandler:v61];
-    v40 = [(KCPairingChannel *)self peerVersionContext];
-    v38 = [v40 altDSID];
-    v31 = [(KCPairingChannel *)self peerVersionContext];
-    v32 = [v31 flowID];
-    v33 = [(KCPairingChannel *)self peerVersionContext];
-    v34 = [v33 deviceSessionID];
+    v39 = [connection remoteObjectProxyWithErrorHandler:v61];
+    peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+    altDSID2 = [peerVersionContext4 altDSID];
+    peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+    flowID2 = [peerVersionContext5 flowID];
+    peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID2 = [peerVersionContext6 deviceSessionID];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __50__KCPairingChannel_acceptorSecondPacket_complete___block_invoke_284;
@@ -2045,14 +2045,14 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
     v57 = v70;
     v53[4] = self;
     p_buf = &buf;
-    v54 = v46;
+    v54 = packetCopy;
     v59 = v72;
     v60[3] = v9;
     v60[4] = v43;
     v55 = v29;
     v56 = v30;
     objc_copyWeak(v60, &location);
-    [v39 circleJoiningBlob:v38 flowID:v32 deviceSessionID:v34 canSendMetrics:1 applicant:v21 complete:v53];
+    [v39 circleJoiningBlob:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:1 applicant:v21 complete:v53];
 
     objc_destroyWeak(v60);
     _Block_object_dispose(v70, 8);
@@ -2069,8 +2069,8 @@ void __84__KCPairingChannel_fetchVoucher_prepare_eventS_finishedPairing_maxCapab
     v51 = v9;
     v52 = v43;
     v48 = v44;
-    v49 = v45;
-    [(KCPairingChannel *)self acceptorSecondOctagonPacket:v46 reply:v35 complete:v47];
+    v49 = completeCopy;
+    [(KCPairingChannel *)self acceptorSecondOctagonPacket:packetCopy reply:v35 complete:v47];
   }
 
   _Block_object_dispose(&buf, 8);
@@ -2410,12 +2410,12 @@ void __50__KCPairingChannel_acceptorSecondPacket_complete___block_invoke_286(uin
   [WeakRetained acceptorThirdPacket:v6 complete:v5];
 }
 
-- (void)acceptorFirstOctagonPacket:(id)a3 reply:(id)a4 complete:(id)a5
+- (void)acceptorFirstOctagonPacket:(id)packet reply:(id)reply complete:(id)complete
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 objectForKeyedSubscript:@"o"];
+  replyCopy = reply;
+  completeCopy = complete;
+  v10 = [packet objectForKeyedSubscript:@"o"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2431,7 +2431,7 @@ LABEL_17:
 LABEL_18:
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v13 complete:v9];
+    [(KCPairingChannel *)self setNextStateError:v13 complete:completeCopy];
     goto LABEL_24;
   }
 
@@ -2464,11 +2464,11 @@ LABEL_18:
     }
 
     v25 = 0;
-    v16 = [(KCPairingChannel *)self fetchEpoch:v8 error:&v25];
+    v16 = [(KCPairingChannel *)self fetchEpoch:replyCopy error:&v25];
     v13 = v25;
     if (v16)
     {
-      (*(v9 + 2))(v9, 0, v8, 0);
+      (*(completeCopy + 2))(completeCopy, 0, replyCopy, 0);
       goto LABEL_24;
     }
 
@@ -2523,15 +2523,15 @@ LABEL_22:
   _os_log_impl(&dword_22EB09000, v20, OS_LOG_TYPE_DEFAULT, v19, buf, v21);
 LABEL_23:
 
-  (*(v9 + 2))(v9, 1, 0, v13);
+  (*(completeCopy + 2))(completeCopy, 1, 0, v13);
 LABEL_24:
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchEpoch:(id)a3 error:(id *)a4
+- (BOOL)fetchEpoch:(id)epoch error:(id *)error
 {
-  v6 = a3;
+  epochCopy = epoch;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2543,9 +2543,9 @@ LABEL_24:
   v24 = __Block_byref_object_dispose_;
   v25 = 0;
   objc_initWeak(&location, self);
-  v7 = [(KCPairingChannel *)self otControl];
-  v8 = [(KCPairingChannel *)self controlArguments];
-  v9 = [(KCPairingChannel *)self joiningConfiguration];
+  otControl = [(KCPairingChannel *)self otControl];
+  controlArguments = [(KCPairingChannel *)self controlArguments];
+  joiningConfiguration = [(KCPairingChannel *)self joiningConfiguration];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __37__KCPairingChannel_fetchEpoch_error___block_invoke;
@@ -2553,17 +2553,17 @@ LABEL_24:
   v14[4] = self;
   v16 = &v20;
   objc_copyWeak(&v18, &location);
-  v10 = v6;
+  v10 = epochCopy;
   v15 = v10;
   v17 = &v26;
-  [v7 rpcEpochWithArguments:v8 configuration:v9 reply:v14];
+  [otControl rpcEpochWithArguments:controlArguments configuration:joiningConfiguration reply:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v21[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -2678,11 +2678,11 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
   [WeakRetained acceptorSecondPacket:v6 complete:v5];
 }
 
-- (void)acceptorFirstPacket:(id)a3 complete:(id)a4
+- (void)acceptorFirstPacket:(id)packet complete:(id)complete
 {
   v124[1] = *MEMORY[0x277D85DE8];
-  v82 = a3;
-  v81 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   objc_initWeak(&location, self);
   v6 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2694,32 +2694,32 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
   [(KCPairingChannel *)self setNextStateError:0 complete:0];
   if ([(KCPairingChannel *)self sessionSupportsSOS]&& [(KCPairingChannel *)self sessionSupportsOctagon])
   {
-    v7 = 3;
+    sessionSupportsSOS = 3;
   }
 
   else if ([(KCPairingChannel *)self sessionSupportsOctagon])
   {
-    v7 = 2;
+    sessionSupportsSOS = 2;
   }
 
   else
   {
-    v7 = [(KCPairingChannel *)self sessionSupportsSOS];
+    sessionSupportsSOS = [(KCPairingChannel *)self sessionSupportsSOS];
   }
 
   v8 = [AAFAnalyticsEventSecurity alloc];
   v123 = @"supportedTrustSystem";
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:sessionSupportsSOS];
   v124[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v124 forKeys:&v123 count:1];
-  v11 = [(KCPairingChannel *)self peerVersionContext];
-  v12 = [v11 altDSID];
-  v13 = [(KCPairingChannel *)self peerVersionContext];
-  v14 = [v13 flowID];
-  v15 = [(KCPairingChannel *)self peerVersionContext];
-  v16 = [v15 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v72) = 1;
-  v17 = [(AAFAnalyticsEventSecurity *)v8 initWithKeychainCircleMetrics:v10 altDSID:v12 flowID:v14 deviceSessionID:v16 eventName:@"com.apple.security.acceptorCreatesPacket2" testsAreEnabled:metricsAreEnabled canSendMetrics:v72 category:&unk_2843768F0];
+  v17 = [(AAFAnalyticsEventSecurity *)v8 initWithKeychainCircleMetrics:v10 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.acceptorCreatesPacket2" testsAreEnabled:metricsAreEnabled canSendMetrics:v72 category:&unk_2843768F0];
 
   v112 = 0;
   v113 = &v112;
@@ -2756,7 +2756,7 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
     }
 
     v31 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:1 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v31 complete:v81];
+    [(KCPairingChannel *)self setNextStateError:v31 complete:completeCopy];
     [(AAFAnalyticsEventSecurity *)v17 sendMetricWithResult:0 error:v31];
     Nanoseconds = _OctagonSignpostGetNanoseconds();
     v39 = _OctagonSignpostLogSystem();
@@ -2769,8 +2769,8 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
       _os_signpost_emit_with_name_impl(&dword_22EB09000, v40, OS_SIGNPOST_INTERVAL_END, v19, "PairingChannelAcceptorMessage1", " OctagonSignpostNamePairingChannelAcceptorMessage1=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePairingChannelAcceptorMessage1}d ", buf, 8u);
     }
 
-    v42 = _OctagonSignpostLogSystem();
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    dictionary = _OctagonSignpostLogSystem();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
       v43 = *(v113 + 24);
@@ -2779,7 +2779,7 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
       *&buf[14] = Nanoseconds / 1000000000.0;
       *&buf[22] = 1026;
       LODWORD(v120) = v43;
-      _os_log_impl(&dword_22EB09000, v42, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PairingChannelAcceptorMessage1  OctagonSignpostNamePairingChannelAcceptorMessage1=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePairingChannelAcceptorMessage1}d ", buf, 0x1Cu);
+      _os_log_impl(&dword_22EB09000, dictionary, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PairingChannelAcceptorMessage1  OctagonSignpostNamePairingChannelAcceptorMessage1=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePairingChannelAcceptorMessage1}d ", buf, 0x1Cu);
     }
   }
 
@@ -2787,7 +2787,7 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
   {
     if ([(KCPairingChannel *)self sessionSupportsSOS])
     {
-      v26 = [v82 objectForKeyedSubscript:@"d"];
+      v26 = [packetCopy objectForKeyedSubscript:@"d"];
       v27 = v26 == 0;
 
       if (!v27)
@@ -2804,7 +2804,7 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
       }
     }
 
-    v29 = [v82 objectForKeyedSubscript:@"o"];
+    v29 = [packetCopy objectForKeyedSubscript:@"o"];
     v30 = v29 == 0;
 
     if (v30)
@@ -2820,7 +2820,7 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
       goto LABEL_47;
     }
 
-    v31 = [v82 objectForKeyedSubscript:@"o"];
+    v31 = [packetCopy objectForKeyedSubscript:@"o"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2836,10 +2836,10 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
               v33 = [v31 objectForKeyedSubscript:@"s"];
               if ([v33 isEqualToNumber:MEMORY[0x277CBEC38]])
               {
-                v34 = [(KCPairingChannel *)self peerVersionContext];
-                v35 = [v34 accountIsGuitarfish];
+                peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+                accountIsGuitarfish = [peerVersionContext4 accountIsGuitarfish];
 
-                if (v35)
+                if (accountIsGuitarfish)
                 {
                   [(KCPairingChannel *)self setAcceptorWillSendPCSData:1];
                 }
@@ -2855,10 +2855,10 @@ void __37__KCPairingChannel_fetchEpoch_error___block_invoke_281(uint64_t a1, voi
 
 LABEL_47:
       v31 = objc_alloc_init(MEMORY[0x277CDBD70]);
-      v42 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       if (CloudServicesLibraryCore() && getSecureBackupIsGuitarfishEnabledSymbolLoc() && soft_SecureBackupIsGuitarfishEnabled() && [(KCPairingChannel *)self acceptorWillSendPCSData])
       {
-        [v42 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"y"];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"y"];
       }
 
       v108 = 0;
@@ -2871,15 +2871,15 @@ LABEL_47:
       v120 = __Block_byref_object_copy_;
       v121 = __Block_byref_object_dispose_;
       v122 = 0;
-      v46 = [(KCPairingChannel *)self otControl];
-      v47 = [(KCPairingChannel *)self controlArguments];
+      otControl = [(KCPairingChannel *)self otControl];
+      controlArguments = [(KCPairingChannel *)self controlArguments];
       v107[0] = MEMORY[0x277D85DD0];
       v107[1] = 3221225472;
       v107[2] = __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke;
       v107[3] = &unk_278863450;
       v107[4] = &v108;
       v107[5] = buf;
-      [v46 fetchTrustStatus:v47 configuration:v31 reply:v107];
+      [otControl fetchTrustStatus:controlArguments configuration:v31 reply:v107];
 
       if (v109[3])
       {
@@ -2897,7 +2897,7 @@ LABEL_47:
           v50 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:8 description:{@"device cannot support pairing, not trusted in Octagon"}];
         }
 
-        v81[2](v81, 1, 0, v50);
+        completeCopy[2](completeCopy, 1, 0, v50);
         if (!v49)
         {
         }
@@ -2914,7 +2914,7 @@ LABEL_47:
           _os_log_impl(&dword_22EB09000, v51, OS_LOG_TYPE_DEFAULT, "pairing: failed to check trust status: %@", v117, 0xCu);
         }
 
-        v81[2](v81, 1, 0, *(*&buf[8] + 40));
+        completeCopy[2](completeCopy, 1, 0, *(*&buf[8] + 40));
       }
 
       else if ([(KCPairingChannel *)self sessionSupportsSOS])
@@ -2944,7 +2944,7 @@ LABEL_47:
         *&v117[8] = v117;
         *&v117[16] = 0x2020000000;
         LOBYTE(v118) = 0;
-        v78 = [(KCPairingChannel *)self connection];
+        connection = [(KCPairingChannel *)self connection];
         v98[0] = MEMORY[0x277D85DD0];
         v98[1] = 3221225472;
         v98[2] = __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_275;
@@ -2957,15 +2957,15 @@ LABEL_47:
         v102 = &v112;
         v74 = v17;
         v99 = v74;
-        v73 = v81;
+        v73 = completeCopy;
         v100 = v73;
-        v75 = [v78 remoteObjectProxyWithErrorHandler:v98];
-        v77 = [(KCPairingChannel *)self peerVersionContext];
-        v59 = [v77 altDSID];
-        v76 = [(KCPairingChannel *)self peerVersionContext];
-        v60 = [v76 flowID];
-        v61 = [(KCPairingChannel *)self peerVersionContext];
-        v62 = [v61 deviceSessionID];
+        v75 = [connection remoteObjectProxyWithErrorHandler:v98];
+        peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+        altDSID2 = [peerVersionContext5 altDSID];
+        peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+        flowID2 = [peerVersionContext6 flowID];
+        peerVersionContext7 = [(KCPairingChannel *)self peerVersionContext];
+        deviceSessionID2 = [peerVersionContext7 deviceSessionID];
         v89[0] = MEMORY[0x277D85DD0];
         v89[1] = 3221225472;
         v89[2] = __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_276;
@@ -2973,16 +2973,16 @@ LABEL_47:
         v95 = v117;
         v97[1] = spid;
         v97[2] = v79;
-        v90 = v42;
-        v91 = self;
-        v92 = v82;
+        v90 = dictionary;
+        selfCopy = self;
+        v92 = packetCopy;
         v96 = &v112;
         v97[3] = v19;
         v97[4] = v21;
         v93 = v74;
         v94 = v73;
         objc_copyWeak(v97, &location);
-        [v75 validatedStashedAccountCredential:v59 flowID:v60 deviceSessionID:v62 canSendMetrics:1 complete:v89];
+        [v75 validatedStashedAccountCredential:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:1 complete:v89];
 
         objc_destroyWeak(v97);
         _Block_object_dispose(v117, 8);
@@ -2998,8 +2998,8 @@ LABEL_47:
         v87 = v19;
         v88 = v21;
         v84 = v17;
-        v85 = v81;
-        [(KCPairingChannel *)self acceptorFirstOctagonPacket:v82 reply:v42 complete:v83];
+        v85 = completeCopy;
+        [(KCPairingChannel *)self acceptorFirstOctagonPacket:packetCopy reply:dictionary complete:v83];
       }
 
       else
@@ -3012,7 +3012,7 @@ LABEL_47:
         }
 
         v64 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:6 userInfo:0];
-        [(KCPairingChannel *)self setNextStateError:v64 complete:v81];
+        [(KCPairingChannel *)self setNextStateError:v64 complete:completeCopy];
         v65 = _OctagonSignpostGetNanoseconds();
         v66 = _OctagonSignpostLogSystem();
         v67 = v66;
@@ -3059,8 +3059,8 @@ LABEL_47:
       [v45 trigger];
     }
 
-    v42 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:9 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v42 complete:v81];
+    dictionary = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:9 userInfo:0];
+    [(KCPairingChannel *)self setNextStateError:dictionary complete:completeCopy];
   }
 
 LABEL_81:
@@ -3459,11 +3459,11 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initiatorPCSDataPacket:(id)a3 complete:(id)a4
+- (void)initiatorPCSDataPacket:(id)packet complete:(id)complete
 {
   v124 = *MEMORY[0x277D85DE8];
-  v83 = a3;
-  v82 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v5 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3472,7 +3472,7 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
   }
 
   [(KCPairingChannel *)self setCountOfReceivedItems:&unk_2843768A8];
-  v6 = [v83 objectForKeyedSubscript:@"o"];
+  v6 = [packetCopy objectForKeyedSubscript:@"o"];
   v7 = v6 == 0;
 
   if (v7)
@@ -3509,22 +3509,22 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
     }
 
     v52 = [AAFAnalyticsEventSecurity alloc];
-    v53 = [(KCPairingChannel *)self peerVersionContext];
-    v54 = [v53 altDSID];
-    v55 = [(KCPairingChannel *)self peerVersionContext];
-    v56 = [v55 flowID];
-    v57 = [(KCPairingChannel *)self peerVersionContext];
-    v58 = [v57 deviceSessionID];
+    peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+    altDSID = [peerVersionContext altDSID];
+    peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+    flowID = [peerVersionContext2 flowID];
+    peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID = [peerVersionContext3 deviceSessionID];
     LOBYTE(v79) = 1;
-    v84 = [(AAFAnalyticsEventSecurity *)v52 initWithKeychainCircleMetrics:0 altDSID:v54 flowID:v56 deviceSessionID:v58 eventName:@"com.apple.security.pairingDidNotReceivePCSData" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
+    v84 = [(AAFAnalyticsEventSecurity *)v52 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.pairingDidNotReceivePCSData" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
 
     [(AAFAnalyticsEventSecurity *)v84 sendMetricWithResult:0 error:0];
-    (*(v82 + 2))(v82, 1, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 1, 0, 0);
   }
 
   else
   {
-    v84 = [v83 objectForKeyedSubscript:@"o"];
+    v84 = [packetCopy objectForKeyedSubscript:@"o"];
     v80 = [(AAFAnalyticsEventSecurity *)v84 objectForKeyedSubscript:@"e"];
     v97 = [(AAFAnalyticsEventSecurity *)v84 objectForKeyedSubscript:@"a"];
     v81 = [(AAFAnalyticsEventSecurity *)v84 objectForKeyedSubscript:@"n"];
@@ -3619,14 +3619,14 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
             if (v27)
             {
               v28 = [AAFAnalyticsEventSecurity alloc];
-              v29 = [(KCPairingChannel *)self peerVersionContext];
-              v30 = [v29 altDSID];
-              v31 = [(KCPairingChannel *)self peerVersionContext];
-              v32 = [v31 flowID];
-              v33 = [(KCPairingChannel *)self peerVersionContext];
-              v34 = [v33 deviceSessionID];
+              peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+              altDSID2 = [peerVersionContext4 altDSID];
+              peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+              flowID2 = [peerVersionContext5 flowID];
+              peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+              deviceSessionID2 = [peerVersionContext6 deviceSessionID];
               LOBYTE(v79) = 1;
-              v35 = [(AAFAnalyticsEventSecurity *)v28 initWithKeychainCircleMetrics:0 altDSID:v30 flowID:v32 deviceSessionID:v34 eventName:@"com.apple.security.pairingFailedToUpdateItemInKeychain" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
+              v35 = [(AAFAnalyticsEventSecurity *)v28 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:@"com.apple.security.pairingFailedToUpdateItemInKeychain" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
 
               v36 = [MEMORY[0x277CCA9B8] errorWithDomain:v86 code:v27 description:@"SecItemUpdate: failed to update PCS item in the keychain"];
               [(AAFAnalyticsEventSecurity *)v35 sendMetricWithResult:0 error:v36];
@@ -3659,14 +3659,14 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
           else if (v15)
           {
             v38 = [AAFAnalyticsEventSecurity alloc];
-            v39 = [(KCPairingChannel *)self peerVersionContext];
-            v40 = [v39 altDSID];
-            v41 = [(KCPairingChannel *)self peerVersionContext];
-            v42 = [v41 flowID];
-            v43 = [(KCPairingChannel *)self peerVersionContext];
-            v44 = [v43 deviceSessionID];
+            peerVersionContext7 = [(KCPairingChannel *)self peerVersionContext];
+            altDSID3 = [peerVersionContext7 altDSID];
+            peerVersionContext8 = [(KCPairingChannel *)self peerVersionContext];
+            flowID3 = [peerVersionContext8 flowID];
+            peerVersionContext9 = [(KCPairingChannel *)self peerVersionContext];
+            deviceSessionID3 = [peerVersionContext9 deviceSessionID];
             LOBYTE(v79) = 1;
-            v45 = [(AAFAnalyticsEventSecurity *)v38 initWithKeychainCircleMetrics:0 altDSID:v40 flowID:v42 deviceSessionID:v44 eventName:@"com.apple.security.pairingFailedToAddItemToKeychain" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
+            v45 = [(AAFAnalyticsEventSecurity *)v38 initWithKeychainCircleMetrics:0 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 eventName:@"com.apple.security.pairingFailedToAddItemToKeychain" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
 
             v46 = [MEMORY[0x277CCA9B8] errorWithDomain:v86 code:v16 description:@"SecItemAdd: failed to add PCS item to the keychain"];
             [(AAFAnalyticsEventSecurity *)v45 sendMetricWithResult:0 error:v46];
@@ -3720,14 +3720,14 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
     v61 = [MEMORY[0x277CCABB0] numberWithInt:v99];
     v120[1] = v61;
     v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v120 forKeys:v119 count:2];
-    v63 = [(KCPairingChannel *)self peerVersionContext];
-    v64 = [v63 altDSID];
-    v65 = [(KCPairingChannel *)self peerVersionContext];
-    v66 = [v65 flowID];
-    v67 = [(KCPairingChannel *)self peerVersionContext];
-    v68 = [v67 deviceSessionID];
+    peerVersionContext10 = [(KCPairingChannel *)self peerVersionContext];
+    altDSID4 = [peerVersionContext10 altDSID];
+    peerVersionContext11 = [(KCPairingChannel *)self peerVersionContext];
+    flowID4 = [peerVersionContext11 flowID];
+    peerVersionContext12 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID4 = [peerVersionContext12 deviceSessionID];
     LOBYTE(v79) = 1;
-    v69 = [(AAFAnalyticsEventSecurity *)v59 initWithKeychainCircleMetrics:v62 altDSID:v64 flowID:v66 deviceSessionID:v68 eventName:@"com.apple.security.pairingImportKeychainResults" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
+    v69 = [(AAFAnalyticsEventSecurity *)v59 initWithKeychainCircleMetrics:v62 altDSID:altDSID4 flowID:flowID4 deviceSessionID:deviceSessionID4 eventName:@"com.apple.security.pairingImportKeychainResults" testsAreEnabled:metricsAreEnabled canSendMetrics:v79 category:&unk_2843768F0];
 
     [(AAFAnalyticsEventSecurity *)v69 sendMetricWithResult:v99 != 0 error:0];
     if ([v80 isEqualToNumber:MEMORY[0x277CBEC38]])
@@ -3770,7 +3770,7 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
       v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
       v118 = v73;
       v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
-      (*(v82 + 2))(v82, 1, v74, 0);
+      (*(completeCopy + 2))(completeCopy, 1, v74, 0);
     }
 
     else
@@ -3796,7 +3796,7 @@ void __49__KCPairingChannel_acceptorFirstPacket_complete___block_invoke_279(uint
       v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
       v114 = v76;
       v77 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-      (*(v82 + 2))(v82, 0, v77, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v77, 0);
 
       objc_destroyWeak(&v105);
       objc_destroyWeak(&result);
@@ -3814,11 +3814,11 @@ void __52__KCPairingChannel_initiatorPCSDataPacket_complete___block_invoke(uint6
   [WeakRetained initiatorPCSDataPacket:v6 complete:v5];
 }
 
-- (void)initiatorFourthPacket:(id)a3 complete:(id)a4
+- (void)initiatorFourthPacket:(id)packet complete:(id)complete
 {
   v72 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v42 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v5 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3851,17 +3851,17 @@ void __52__KCPairingChannel_initiatorPCSDataPacket_complete___block_invoke(uint6
   }
 
   v13 = [AAFAnalyticsEventSecurity alloc];
-  v14 = [(KCPairingChannel *)self peerVersionContext];
-  v15 = [v14 altDSID];
-  v16 = [(KCPairingChannel *)self peerVersionContext];
-  v17 = [v16 flowID];
-  v18 = [(KCPairingChannel *)self peerVersionContext];
-  v19 = [v18 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v41) = 1;
-  v20 = [(AAFAnalyticsEventSecurity *)v13 initWithKeychainCircleMetrics:0 altDSID:v15 flowID:v17 deviceSessionID:v19 eventName:@"com.apple.security.initiatorImportsInitialSyncData" testsAreEnabled:metricsAreEnabled canSendMetrics:v41 category:&unk_2843768F0];
+  v20 = [(AAFAnalyticsEventSecurity *)v13 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.initiatorImportsInitialSyncData" testsAreEnabled:metricsAreEnabled canSendMetrics:v41 category:&unk_2843768F0];
 
   [(KCPairingChannel *)self setNextStateError:0 complete:0];
-  v21 = [v43 objectForKeyedSubscript:@"d"];
+  v21 = [packetCopy objectForKeyedSubscript:@"d"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3880,7 +3880,7 @@ void __52__KCPairingChannel_initiatorPCSDataPacket_complete___block_invoke(uint6
       _os_log_impl(&dword_22EB09000, v24, OS_LOG_TYPE_DEFAULT, "importing %lu items", v66, 0xCu);
     }
 
-    v26 = [(KCPairingChannel *)self connection];
+    connection = [(KCPairingChannel *)self connection];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_248;
@@ -3890,9 +3890,9 @@ void __52__KCPairingChannel_initiatorPCSDataPacket_complete___block_invoke(uint6
     v54 = buf;
     v27 = v20;
     v52 = v27;
-    v28 = v42;
+    v28 = completeCopy;
     v53 = v28;
-    v29 = [v26 remoteObjectProxyWithErrorHandler:v51];
+    v29 = [connection remoteObjectProxyWithErrorHandler:v51];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_249;
@@ -3986,7 +3986,7 @@ void __52__KCPairingChannel_initiatorPCSDataPacket_complete___block_invoke(uint6
 
     else
     {
-      (*(v42 + 2))(v42, 1, 0, 0);
+      (*(completeCopy + 2))(completeCopy, 1, 0, 0);
     }
   }
 
@@ -4177,11 +4177,11 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
   [WeakRetained initiatorPCSDataPacket:v6 complete:v5];
 }
 
-- (void)initiatorThirdPacket:(id)a3 complete:(id)a4
+- (void)initiatorThirdPacket:(id)packet complete:(id)complete
 {
   v110 = *MEMORY[0x277D85DE8];
-  v83 = a3;
-  v81 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v6 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -4212,17 +4212,17 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
   }
 
   v14 = [AAFAnalyticsEventSecurity alloc];
-  v15 = [(KCPairingChannel *)self peerVersionContext];
-  v16 = [v15 altDSID];
-  v17 = [(KCPairingChannel *)self peerVersionContext];
-  v18 = [v17 flowID];
-  v19 = [(KCPairingChannel *)self peerVersionContext];
-  v20 = [v19 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v73) = 1;
-  v85 = [(AAFAnalyticsEventSecurity *)v14 initWithKeychainCircleMetrics:0 altDSID:v16 flowID:v18 deviceSessionID:v20 eventName:@"com.apple.security.initiatorJoinsTrustSystems" testsAreEnabled:metricsAreEnabled canSendMetrics:v73 category:&unk_2843768F0];
+  v85 = [(AAFAnalyticsEventSecurity *)v14 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.initiatorJoinsTrustSystems" testsAreEnabled:metricsAreEnabled canSendMetrics:v73 category:&unk_2843768F0];
 
   [(KCPairingChannel *)self setNextStateError:0 complete:0];
-  v84 = [v83 objectForKeyedSubscript:@"b"];
+  v84 = [packetCopy objectForKeyedSubscript:@"b"];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v108 = 0x2020000000;
@@ -4259,7 +4259,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
 
       v60 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:5 userInfo:0];
       [(AAFAnalyticsEventSecurity *)v85 sendMetricWithResult:0 error:v60];
-      v81[2](v81, 1, 0, v60);
+      completeCopy[2](completeCopy, 1, 0, v60);
       goto LABEL_61;
     }
 
@@ -4288,7 +4288,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
       _os_log_impl(&dword_22EB09000, v27, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PairingChannelInitiatorJoinSOS  enableTelemetry=YES ", v104, 0xCu);
     }
 
-    v76 = [(KCPairingChannel *)self connection];
+    connection = [(KCPairingChannel *)self connection];
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
     v94[2] = __50__KCPairingChannel_initiatorThirdPacket_complete___block_invoke;
@@ -4301,15 +4301,15 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
     p_buf = &buf;
     v28 = v85;
     v95 = v28;
-    v29 = v81;
+    v29 = completeCopy;
     v96 = v29;
-    v74 = [v76 remoteObjectProxyWithErrorHandler:v94];
-    v75 = [(KCPairingChannel *)self peerVersionContext];
-    v30 = [v75 altDSID];
-    v31 = [(KCPairingChannel *)self peerVersionContext];
-    v32 = [v31 flowID];
-    v33 = [(KCPairingChannel *)self peerVersionContext];
-    v34 = [v33 deviceSessionID];
+    v74 = [connection remoteObjectProxyWithErrorHandler:v94];
+    peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+    altDSID2 = [peerVersionContext4 altDSID];
+    peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+    flowID2 = [peerVersionContext5 flowID];
+    peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID2 = [peerVersionContext6 deviceSessionID];
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
     v88[2] = __50__KCPairingChannel_initiatorThirdPacket_complete___block_invoke_244;
@@ -4324,7 +4324,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
     v89 = v28;
     v90 = v29;
     objc_copyWeak(v93, &location);
-    [v74 joinCircleWithBlob:v84 altDSID:v30 flowID:v32 deviceSessionID:v34 canSendMetrics:1 version:1 complete:v88];
+    [v74 joinCircleWithBlob:v84 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:1 version:1 complete:v88];
 
     objc_destroyWeak(v93);
     _Block_object_dispose(v106, 8);
@@ -4332,7 +4332,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
 
   if ([(KCPairingChannel *)self sessionSupportsOctagon])
   {
-    v80 = [v83 objectForKeyedSubscript:@"o"];
+    v80 = [packetCopy objectForKeyedSubscript:@"o"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -4344,7 +4344,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
       }
 
       v45 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-      [(KCPairingChannel *)self setNextStateError:v45 complete:v81];
+      [(KCPairingChannel *)self setNextStateError:v45 complete:completeCopy];
       v46 = v45;
       v47 = _OctagonSignpostGetNanoseconds();
       v48 = _OctagonSignpostLogSystem();
@@ -4385,8 +4385,8 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
         _os_log_impl(&dword_22EB09000, v61, OS_LOG_TYPE_DEFAULT, "initiatorThirdPacket pairingMessage has no voucher", v106, 2u);
       }
 
-      v35 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-      [(KCPairingChannel *)self setNextStateError:v35 complete:v81];
+      voucher = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
+      [(KCPairingChannel *)self setNextStateError:voucher complete:completeCopy];
       v62 = _OctagonSignpostGetNanoseconds();
       v63 = _OctagonSignpostLogSystem();
       v64 = v63;
@@ -4411,11 +4411,11 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
         _os_log_impl(&dword_22EB09000, v66, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PairingChannelInitiatorMessage3  OctagonSignpostNamePairingChannelInitiatorMessage3=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePairingChannelInitiatorMessage3}d ", v106, 0x1Cu);
       }
 
-      [(AAFAnalyticsEventSecurity *)v85 sendMetricWithResult:0 error:v35];
+      [(AAFAnalyticsEventSecurity *)v85 sendMetricWithResult:0 error:voucher];
       goto LABEL_59;
     }
 
-    v35 = [(OTPairingMessage *)v77 voucher];
+    voucher = [(OTPairingMessage *)v77 voucher];
     v36 = 0;
     v37 = 0;
     v38 = 0;
@@ -4432,7 +4432,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
 
       v86 = 0;
       v87 = v36;
-      v40 = [(KCPairingChannel *)self join:&v87 voucher:v35 eventS:v85 setupPairingChannelSignPost:v10 finishPairing:v82 error:v104, &v86];
+      v40 = [(KCPairingChannel *)self join:&v87 voucher:voucher eventS:v85 setupPairingChannelSignPost:v10 finishPairing:v82 error:v104, &v86];
       v41 = v87;
 
       v37 = v86;
@@ -4481,7 +4481,7 @@ void __51__KCPairingChannel_initiatorFourthPacket_complete___block_invoke_250(ui
           _os_log_impl(&dword_22EB09000, v43, OS_LOG_TYPE_DEFAULT, "pairing: failed to join %d times, bailing.", v106, 8u);
         }
 
-        v81[2](v81, 1, 0, v37);
+        completeCopy[2](completeCopy, 1, 0, v37);
 LABEL_58:
 
 LABEL_59:
@@ -4499,7 +4499,7 @@ LABEL_61:
     v69 = v104[0];
     v70 = v41;
 LABEL_57:
-    (v81)[2](v81, v69 & 1, v70, v68);
+    (completeCopy)[2](completeCopy, v69 & 1, v70, v68);
     goto LABEL_58;
   }
 
@@ -4862,12 +4862,12 @@ void __50__KCPairingChannel_initiatorThirdPacket_complete___block_invoke_246(uin
   [WeakRetained initiatorPCSDataPacket:v6 complete:v5];
 }
 
-- (BOOL)join:(id *)a3 voucher:(id)a4 eventS:(id)a5 setupPairingChannelSignPost:(octagon_signpost_s)a6 finishPairing:(BOOL *)a7 error:(id *)a8
+- (BOOL)join:(id *)join voucher:(id)voucher eventS:(id)s setupPairingChannelSignPost:(octagon_signpost_s)post finishPairing:(BOOL *)pairing error:(id *)error
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a4;
-  v12 = a5;
+  var1 = post.var1;
+  var0 = post.var0;
+  voucherCopy = voucher;
+  sCopy = s;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -4889,11 +4889,11 @@ void __50__KCPairingChannel_initiatorThirdPacket_complete___block_invoke_246(uin
   v37 = __Block_byref_object_dispose_;
   v38 = 0;
   objc_initWeak(&location, self);
-  v13 = [(KCPairingChannel *)self otControl];
-  v14 = [(KCPairingChannel *)self controlArguments];
-  v15 = [(KCPairingChannel *)self joiningConfiguration];
-  v16 = [v11 voucher];
-  v17 = [v11 voucherSignature];
+  otControl = [(KCPairingChannel *)self otControl];
+  controlArguments = [(KCPairingChannel *)self controlArguments];
+  joiningConfiguration = [(KCPairingChannel *)self joiningConfiguration];
+  voucher = [voucherCopy voucher];
+  voucherSignature = [voucherCopy voucherSignature];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_finishPairing_error___block_invoke;
@@ -4902,27 +4902,27 @@ void __50__KCPairingChannel_initiatorThirdPacket_complete___block_invoke_246(uin
   v31[2] = var1;
   v25[4] = self;
   v27 = v39;
-  v18 = v12;
+  v18 = sCopy;
   v26 = v18;
   v28 = &v41;
   v29 = &v47;
   objc_copyWeak(v31, &location);
   v30 = &v33;
-  v31[3] = a7;
-  [v13 rpcJoinWithArguments:v14 configuration:v15 vouchData:v16 vouchSig:v17 reply:v25];
+  v31[3] = pairing;
+  [otControl rpcJoinWithArguments:controlArguments configuration:joiningConfiguration vouchData:voucher vouchSig:voucherSignature reply:v25];
 
-  if (a8)
+  if (error)
   {
     v19 = v42[5];
     if (v19)
     {
-      *a8 = v19;
+      *error = v19;
     }
   }
 
-  if (a3)
+  if (join)
   {
-    *a3 = v34[5];
+    *join = v34[5];
   }
 
   v20 = *(v48 + 24);
@@ -5170,12 +5170,12 @@ void __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_fini
   [WeakRetained initiatorPCSDataPacket:v6 complete:v5];
 }
 
-- (void)initiatorCompleteSecondPacketOctagon:(id)a3 application:(id)a4 complete:(id)a5
+- (void)initiatorCompleteSecondPacketOctagon:(id)octagon application:(id)application complete:(id)complete
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  octagonCopy = octagon;
+  applicationCopy = application;
+  completeCopy = complete;
   v11 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -5183,7 +5183,7 @@ void __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_fini
     _os_log_impl(&dword_22EB09000, v11, OS_LOG_TYPE_DEFAULT, "initiator complete second packet 2 with octagon", buf, 2u);
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"o"];
+  v12 = [octagonCopy objectForKeyedSubscript:@"o"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -5195,7 +5195,7 @@ void __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_fini
     }
 
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:4 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v14 complete:v10];
+    [(KCPairingChannel *)self setNextStateError:v14 complete:completeCopy];
     goto LABEL_24;
   }
 
@@ -5205,7 +5205,7 @@ void __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_fini
   do
   {
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v16 = secLogObjForScope(pairingScope);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -5215,14 +5215,14 @@ void __88__KCPairingChannel_join_voucher_eventS_setupPairingChannelSignPost_fini
     }
 
     v25 = 0;
-    v26 = v15;
-    v17 = [(KCPairingChannel *)self fetchPrepare:&v26 application:v9 error:&v25];
+    v26 = dictionary;
+    v17 = [(KCPairingChannel *)self fetchPrepare:&v26 application:applicationCopy error:&v25];
     v18 = v26;
 
     v14 = v25;
     if (v17)
     {
-      (*(v10 + 2))(v10, 0, v18, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v18, 0);
 LABEL_22:
 
       goto LABEL_23;
@@ -5242,7 +5242,7 @@ LABEL_22:
         _os_log_impl(&dword_22EB09000, v22, OS_LOG_TYPE_DEFAULT, "%s: Attempt %d, failed fetching prepare %@", buf, 0x1Cu);
       }
 
-      (*(v10 + 2))(v10, 1, 0, v14);
+      (*(completeCopy + 2))(completeCopy, 1, 0, v14);
       goto LABEL_22;
     }
 
@@ -5266,7 +5266,7 @@ LABEL_22:
     _os_log_impl(&dword_22EB09000, v20, OS_LOG_TYPE_DEFAULT, "pairing: failed to fetch prepare %d times, bailing.", buf, 8u);
   }
 
-  (*(v10 + 2))(v10, 1, 0, v14);
+  (*(completeCopy + 2))(completeCopy, 1, 0, v14);
 LABEL_23:
   v12 = v24;
 LABEL_24:
@@ -5274,9 +5274,9 @@ LABEL_24:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fetchPrepare:(id *)a3 application:(id)a4 error:(id *)a5
+- (BOOL)fetchPrepare:(id *)prepare application:(id)application error:(id *)error
 {
-  v8 = a4;
+  applicationCopy = application;
   objc_initWeak(&location, self);
   v35 = 0;
   v36 = &v35;
@@ -5294,9 +5294,9 @@ LABEL_24:
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v9 = [(KCPairingChannel *)self otControl];
-  v10 = [(KCPairingChannel *)self controlArguments];
-  v11 = [(KCPairingChannel *)self joiningConfiguration];
+  otControl = [(KCPairingChannel *)self otControl];
+  controlArguments = [(KCPairingChannel *)self controlArguments];
+  joiningConfiguration = [(KCPairingChannel *)self joiningConfiguration];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __51__KCPairingChannel_fetchPrepare_application_error___block_invoke;
@@ -5304,27 +5304,27 @@ LABEL_24:
   v17[4] = self;
   v19 = &v29;
   v20 = &v35;
-  v12 = v8;
+  v12 = applicationCopy;
   v18 = v12;
   v21 = &v23;
   objc_copyWeak(&v22, &location);
-  [v9 rpcPrepareIdentityAsApplicantWithArguments:v10 configuration:v11 reply:v17];
+  [otControl rpcPrepareIdentityAsApplicantWithArguments:controlArguments configuration:joiningConfiguration reply:v17];
 
-  if (a3)
+  if (prepare)
   {
     v13 = v24[5];
     if (v13)
     {
-      *a3 = v13;
+      *prepare = v13;
     }
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v30[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -5463,11 +5463,11 @@ void __51__KCPairingChannel_fetchPrepare_application_error___block_invoke_238(ui
   [WeakRetained initiatorThirdPacket:v6 complete:v5];
 }
 
-- (void)initiatorCompleteSecondPacketWithSOS:(id)a3 complete:(id)a4
+- (void)initiatorCompleteSecondPacketWithSOS:(id)s complete:(id)complete
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  completeCopy = complete;
   v8 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -5502,8 +5502,8 @@ void __51__KCPairingChannel_fetchPrepare_application_error___block_invoke_238(ui
     _os_log_impl(&dword_22EB09000, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PairingChannelInitiatorMakeSOSPeer  enableTelemetry=YES ", v45, 0xCu);
   }
 
-  v27 = v6;
-  v28 = [(KCPairingChannel *)self connection];
+  v27 = sCopy;
+  connection = [(KCPairingChannel *)self connection];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___block_invoke;
@@ -5511,15 +5511,15 @@ void __51__KCPairingChannel_fetchPrepare_application_error___block_invoke_238(ui
   v38 = v12;
   v39 = v29;
   v37 = buf;
-  v16 = v7;
+  v16 = completeCopy;
   v36 = v16;
-  v17 = [v28 remoteObjectProxyWithErrorHandler:v35];
-  v18 = [(KCPairingChannel *)self peerVersionContext];
-  v19 = [v18 altDSID];
-  v20 = [(KCPairingChannel *)self peerVersionContext];
-  v21 = [v20 flowID];
-  v22 = [(KCPairingChannel *)self peerVersionContext];
-  v23 = [v22 deviceSessionID];
+  v17 = [connection remoteObjectProxyWithErrorHandler:v35];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___block_invoke_231;
@@ -5533,7 +5533,7 @@ void __51__KCPairingChannel_fetchPrepare_application_error___block_invoke_238(ui
   v25 = v16;
   v32 = v25;
   objc_copyWeak(v34, &location);
-  [v17 myPeerInfo:v19 flowID:v21 deviceSessionID:v23 canSendMetrics:1 complete:v30];
+  [v17 myPeerInfo:altDSID flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:1 complete:v30];
 
   objc_destroyWeak(v34);
   _Block_object_dispose(buf, 8);
@@ -5669,11 +5669,11 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
   [WeakRetained initiatorThirdPacket:v6 complete:v5];
 }
 
-- (void)initiatorSecondPacket:(id)a3 complete:(id)a4
+- (void)initiatorSecondPacket:(id)packet complete:(id)complete
 {
   v92 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v54 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v6 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -5708,16 +5708,16 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
 
   v56 = v10;
   v14 = [AAFAnalyticsEventSecurity alloc];
-  v15 = [(KCPairingChannel *)self peerVersionContext];
-  v16 = [v15 altDSID];
-  v17 = [(KCPairingChannel *)self peerVersionContext];
-  v18 = [v17 flowID];
-  v19 = [(KCPairingChannel *)self peerVersionContext];
-  v20 = [v19 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v47) = 1;
-  v53 = [(AAFAnalyticsEventSecurity *)v14 initWithKeychainCircleMetrics:0 altDSID:v16 flowID:v18 deviceSessionID:v20 eventName:@"com.apple.security.initiatorCreatesPacket3" testsAreEnabled:metricsAreEnabled canSendMetrics:v47 category:&unk_2843768F0];
+  v53 = [(AAFAnalyticsEventSecurity *)v14 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.initiatorCreatesPacket3" testsAreEnabled:metricsAreEnabled canSendMetrics:v47 category:&unk_2843768F0];
 
-  v55 = [v57 objectForKeyedSubscript:@"o"];
+  v55 = [packetCopy objectForKeyedSubscript:@"o"];
   if (!v55)
   {
     v21 = secLogObjForScope("pairing");
@@ -5730,10 +5730,10 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
     [(KCPairingChannel *)self setSessionSupportsOctagon:0];
   }
 
-  v52 = [v57 objectForKeyedSubscript:@"c"];
+  v52 = [packetCopy objectForKeyedSubscript:@"c"];
   if (SOSCCIsSOSTrustAndSyncingEnabled())
   {
-    v22 = [v57 objectForKeyedSubscript:@"d"];
+    v22 = [packetCopy objectForKeyedSubscript:@"d"];
     v23 = v22 == 0;
 
     if (!v23)
@@ -5755,15 +5755,15 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
     {
       if (soft_SecureBackupIsGuitarfishEnabled())
       {
-        v25 = [(KCPairingChannel *)self peerVersionContext];
-        v26 = [v25 accountIsGuitarfish];
+        peerVersionContext4 = [(KCPairingChannel *)self peerVersionContext];
+        accountIsGuitarfish = [peerVersionContext4 accountIsGuitarfish];
 
-        if (v26)
+        if (accountIsGuitarfish)
         {
-          v27 = [v57 objectForKeyedSubscript:@"y"];
+          v27 = [packetCopy objectForKeyedSubscript:@"y"];
           if (v27)
           {
-            v28 = [v57 objectForKeyedSubscript:@"y"];
+            v28 = [packetCopy objectForKeyedSubscript:@"y"];
             v29 = [v28 isEqualToNumber:MEMORY[0x277CBEC38]];
 
             if (v29)
@@ -5810,7 +5810,7 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
       _os_log_impl(&dword_22EB09000, v37, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PairingChannelInitiatorStashAccountCredential  enableTelemetry=YES ", v87, 0xCu);
     }
 
-    v49 = [(KCPairingChannel *)self connection];
+    connection = [(KCPairingChannel *)self connection];
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke;
@@ -5823,15 +5823,15 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
     v78 = buf;
     v38 = v53;
     v75 = v38;
-    v39 = v54;
+    v39 = completeCopy;
     v76 = v39;
-    v48 = [v49 remoteObjectProxyWithErrorHandler:v74];
-    v40 = [(KCPairingChannel *)self peerVersionContext];
-    v41 = [v40 altDSID];
-    v42 = [(KCPairingChannel *)self peerVersionContext];
-    v43 = [v42 flowID];
-    v44 = [(KCPairingChannel *)self peerVersionContext];
-    v45 = [v44 deviceSessionID];
+    v48 = [connection remoteObjectProxyWithErrorHandler:v74];
+    peerVersionContext5 = [(KCPairingChannel *)self peerVersionContext];
+    altDSID2 = [peerVersionContext5 altDSID];
+    peerVersionContext6 = [(KCPairingChannel *)self peerVersionContext];
+    flowID2 = [peerVersionContext6 flowID];
+    peerVersionContext7 = [(KCPairingChannel *)self peerVersionContext];
+    deviceSessionID2 = [peerVersionContext7 deviceSessionID];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_225;
@@ -5845,8 +5845,8 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
     v70 = v34;
     v65 = v38;
     v67 = v39;
-    v66 = v57;
-    [v48 stashAccountCredential:v52 altDSID:v41 flowID:v43 deviceSessionID:v45 canSendMetrics:1 complete:v64];
+    v66 = packetCopy;
+    [v48 stashAccountCredential:v52 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 canSendMetrics:1 complete:v64];
 
     _Block_object_dispose(&v89, 8);
   }
@@ -5861,8 +5861,8 @@ void __66__KCPairingChannel_initiatorCompleteSecondPacketWithSOS_complete___bloc
     v62 = v56;
     v63 = v51;
     v59 = v53;
-    v60 = v54;
-    [(KCPairingChannel *)self initiatorCompleteSecondPacketOctagon:v57 application:0 complete:v58];
+    v60 = completeCopy;
+    [(KCPairingChannel *)self initiatorCompleteSecondPacketOctagon:packetCopy application:0 complete:v58];
   }
 
   _Block_object_dispose(buf, 8);
@@ -6181,11 +6181,11 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initiatorFirstPacket:(id)a3 complete:(id)a4
+- (void)initiatorFirstPacket:(id)packet complete:(id)complete
 {
   v89[1] = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v56 = a4;
+  packetCopy = packet;
+  completeCopy = complete;
   v6 = secLogObjForScope("pairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -6215,37 +6215,37 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
 
   if ([(KCPairingChannel *)self sessionSupportsSOS]&& [(KCPairingChannel *)self sessionSupportsOctagon])
   {
-    v11 = 3;
+    sessionSupportsSOS = 3;
   }
 
   else if ([(KCPairingChannel *)self sessionSupportsOctagon])
   {
-    v11 = 2;
+    sessionSupportsSOS = 2;
   }
 
   else
   {
-    v11 = [(KCPairingChannel *)self sessionSupportsSOS];
+    sessionSupportsSOS = [(KCPairingChannel *)self sessionSupportsSOS];
   }
 
   v12 = [AAFAnalyticsEventSecurity alloc];
   v88 = @"supportedTrustSystem";
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:sessionSupportsSOS];
   v89[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:&v88 count:1];
-  v15 = [(KCPairingChannel *)self peerVersionContext];
-  v16 = [v15 altDSID];
-  v17 = [(KCPairingChannel *)self peerVersionContext];
-  v18 = [v17 flowID];
-  v19 = [(KCPairingChannel *)self peerVersionContext];
-  v20 = [v19 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v53) = 1;
-  v21 = [(AAFAnalyticsEventSecurity *)v12 initWithKeychainCircleMetrics:v14 altDSID:v16 flowID:v18 deviceSessionID:v20 eventName:@"com.apple.security.initiatorCreatesPacket1" testsAreEnabled:metricsAreEnabled canSendMetrics:v53 category:&unk_2843768F0];
+  v21 = [(AAFAnalyticsEventSecurity *)v12 initWithKeychainCircleMetrics:v14 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.initiatorCreatesPacket1" testsAreEnabled:metricsAreEnabled canSendMetrics:v53 category:&unk_2843768F0];
 
   if (SOSCCIsSOSTrustAndSyncingEnabled() && ![(KCPairingChannel *)self ensureControlChannel])
   {
     v31 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:1 userInfo:0];
-    [(KCPairingChannel *)self setNextStateError:v31 complete:v56];
+    [(KCPairingChannel *)self setNextStateError:v31 complete:completeCopy];
     Nanoseconds = _OctagonSignpostGetNanoseconds();
     v33 = _OctagonSignpostLogSystem();
     v34 = v33;
@@ -6314,7 +6314,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
       v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:2];
       v82[1] = v50;
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:2];
-      (*(v56 + 2))(v56, 0, v51, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v51, 0);
     }
 
     else
@@ -6327,7 +6327,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
       v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
       v78[1] = v50;
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:2];
-      (*(v56 + 2))(v56, 0, v51, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v51, 0);
     }
 
     objc_destroyWeak(&v63);
@@ -6358,7 +6358,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
     }
 
     [(AAFAnalyticsEventSecurity *)v21 sendMetricWithResult:1 error:0];
-    (*(v56 + 2))(v56, 1, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 1, 0, 0);
   }
 
   else if ([(KCPairingChannel *)self sessionSupportsOctagon]&& ![(KCPairingChannel *)self sessionSupportsSOS])
@@ -6403,7 +6403,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:2];
       v74 = v42;
       v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-      (*(v56 + 2))(v56, 0, v43, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v43, 0);
     }
 
     else
@@ -6414,7 +6414,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
       v70 = v42;
       v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-      (*(v56 + 2))(v56, 0, v43, 0);
+      (*(completeCopy + 2))(completeCopy, 0, v43, 0);
     }
 
     objc_destroyWeak(&v61);
@@ -6456,7 +6456,7 @@ void __51__KCPairingChannel_initiatorSecondPacket_complete___block_invoke_228(ui
     v65 = @"d";
     v66 = MEMORY[0x277CBEC38];
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-    (*(v56 + 2))(v56, 0, v30, 0);
+    (*(completeCopy + 2))(completeCopy, 0, v30, 0);
 
     objc_destroyWeak(&v59);
     objc_destroyWeak(&location);
@@ -6492,24 +6492,24 @@ void __50__KCPairingChannel_initiatorFirstPacket_complete___block_invoke_224(uin
 - (void)waitForOctagonUpgrade
 {
   v3 = [AAFAnalyticsEventSecurity alloc];
-  v4 = [(KCPairingChannel *)self peerVersionContext];
-  v5 = [v4 altDSID];
-  v6 = [(KCPairingChannel *)self peerVersionContext];
-  v7 = [v6 flowID];
-  v8 = [(KCPairingChannel *)self peerVersionContext];
-  v9 = [v8 deviceSessionID];
+  peerVersionContext = [(KCPairingChannel *)self peerVersionContext];
+  altDSID = [peerVersionContext altDSID];
+  peerVersionContext2 = [(KCPairingChannel *)self peerVersionContext];
+  flowID = [peerVersionContext2 flowID];
+  peerVersionContext3 = [(KCPairingChannel *)self peerVersionContext];
+  deviceSessionID = [peerVersionContext3 deviceSessionID];
   LOBYTE(v14) = 1;
-  v10 = [(AAFAnalyticsEventSecurity *)v3 initWithKeychainCircleMetrics:0 altDSID:v5 flowID:v7 deviceSessionID:v9 eventName:@"com.apple.security.initiatorWaitsForUpgrade" testsAreEnabled:metricsAreEnabled canSendMetrics:v14 category:&unk_2843768F0];
+  v10 = [(AAFAnalyticsEventSecurity *)v3 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.initiatorWaitsForUpgrade" testsAreEnabled:metricsAreEnabled canSendMetrics:v14 category:&unk_2843768F0];
 
-  v11 = [(KCPairingChannel *)self otControl];
-  v12 = [(KCPairingChannel *)self controlArguments];
+  otControl = [(KCPairingChannel *)self otControl];
+  controlArguments = [(KCPairingChannel *)self controlArguments];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __41__KCPairingChannel_waitForOctagonUpgrade__block_invoke;
   v15[3] = &unk_278863298;
   v16 = v10;
   v13 = v10;
-  [v11 waitForOctagonUpgrade:v12 reply:v15];
+  [otControl waitForOctagonUpgrade:controlArguments reply:v15];
 }
 
 void __41__KCPairingChannel_waitForOctagonUpgrade__block_invoke(uint64_t a1, void *a2)
@@ -6543,11 +6543,11 @@ void __41__KCPairingChannel_waitForOctagonUpgrade__block_invoke(uint64_t a1, voi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNextStateError:(id)a3 complete:(id)a4
+- (void)setNextStateError:(id)error complete:(id)complete
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completeCopy = complete;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -6555,20 +6555,20 @@ void __41__KCPairingChannel_waitForOctagonUpgrade__block_invoke(uint64_t a1, voi
   v10[3] = &unk_278863270;
   objc_copyWeak(&v11, &location);
   [(KCPairingChannel *)self setNextState:v10];
-  if (v7)
+  if (completeCopy)
   {
-    if (v6)
+    if (errorCopy)
     {
       v8 = secLogObjForScope("SecError");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v6;
+        v14 = errorCopy;
         _os_log_impl(&dword_22EB09000, v8, OS_LOG_TYPE_DEFAULT, "pairingchannel: failed pairing with: %@", buf, 0xCu);
       }
     }
 
-    (*(v7 + 2))(v7, 0, 0, v6);
+    (*(completeCopy + 2))(completeCopy, 0, 0, errorCopy);
   }
 
   objc_destroyWeak(&v11);
@@ -6585,9 +6585,9 @@ void __47__KCPairingChannel_setNextStateError_complete___block_invoke(uint64_t a
   [WeakRetained oneStepTooMany:v6 complete:v5];
 }
 
-- (void)oneStepTooMany:(id)a3 complete:(id)a4
+- (void)oneStepTooMany:(id)many complete:(id)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v5 = secLogObjForScope("SecError");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -6596,7 +6596,7 @@ void __47__KCPairingChannel_setNextStateError_complete___block_invoke(uint64_t a
   }
 
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:kKCPairingChannelErrorDomain code:2 userInfo:0];
-  (*(v4 + 2))(v4, 0, 0, v6);
+  (*(completeCopy + 2))(completeCopy, 0, 0, v6);
 }
 
 void __44__KCPairingChannel_initAsInitiator_version___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6615,15 +6615,15 @@ void __44__KCPairingChannel_initAsInitiator_version___block_invoke_2(uint64_t a1
   [WeakRetained acceptorFirstPacket:v6 complete:v5];
 }
 
-+ (id)pairingChannelDecompressData:(id)a3
++ (id)pairingChannelDecompressData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (pairingChannelDecompressData__once != -1)
   {
     dispatch_once(&pairingChannelDecompressData__once, &__block_literal_global_214);
   }
 
-  v4 = [v3 length];
+  v4 = [dataCopy length];
   v5 = 0;
   while ((v4 & 0x8000000000000000) == 0)
   {
@@ -6631,10 +6631,10 @@ void __44__KCPairingChannel_initAsInitiator_version___block_invoke_2(uint64_t a1
     v6 = [MEMORY[0x277CBEB28] dataWithLength:v4];
 
     v5 = v6;
-    v7 = [v6 mutableBytes];
-    v8 = [v3 bytes];
-    v9 = [v3 length];
-    v10 = compression_decode_buffer(v7, v4, v8, v9, [pairingChannelDecompressData__scratch mutableBytes], COMPRESSION_LZFSE);
+    mutableBytes = [v6 mutableBytes];
+    bytes = [dataCopy bytes];
+    v9 = [dataCopy length];
+    v10 = compression_decode_buffer(mutableBytes, v4, bytes, v9, [pairingChannelDecompressData__scratch mutableBytes], COMPRESSION_LZFSE);
     if (!v10)
     {
       break;
@@ -6662,23 +6662,23 @@ uint64_t __49__KCPairingChannel_pairingChannelDecompressData___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)pairingChannelCompressData:(id)a3
++ (id)pairingChannelCompressData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (pairingChannelCompressData__once != -1)
   {
     dispatch_once(&pairingChannelCompressData__once, &__block_literal_global);
   }
 
-  v4 = [v3 length];
+  v4 = [dataCopy length];
   if (v4 <= 0xFFFFFFFFFFFFFF9BLL)
   {
     v6 = [MEMORY[0x277CBEB28] dataWithLength:v4 + 100];
-    v7 = [v6 mutableBytes];
+    mutableBytes = [v6 mutableBytes];
     v8 = [v6 length];
-    v9 = [v3 bytes];
-    v10 = [v3 length];
-    v11 = compression_encode_buffer(v7, v8, v9, v10, [pairingChannelCompressData__scratch mutableBytes], COMPRESSION_LZFSE);
+    bytes = [dataCopy bytes];
+    v10 = [dataCopy length];
+    v11 = compression_encode_buffer(mutableBytes, v8, bytes, v10, [pairingChannelCompressData__scratch mutableBytes], COMPRESSION_LZFSE);
     if (v11)
     {
       [v6 setLength:v11];
@@ -6706,27 +6706,27 @@ uint64_t __47__KCPairingChannel_pairingChannelCompressData___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)retryable:(id)a3
++ (BOOL)retryable:(id)retryable
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v3, "code") == 4097)
+  retryableCopy = retryable;
+  domain = [retryableCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(retryableCopy, "code") == 4097)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CDBDA8]] && objc_msgSend(v3, "code") == 56 || +[KCPairingChannel _isRetryableNSURLError:](KCPairingChannel, "_isRetryableNSURLError:", v3))
+    domain2 = [retryableCopy domain];
+    if ([domain2 isEqualToString:*MEMORY[0x277CDBDA8]] && objc_msgSend(retryableCopy, "code") == 56 || +[KCPairingChannel _isRetryableNSURLError:](KCPairingChannel, "_isRetryableNSURLError:", retryableCopy))
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 userInfo];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [retryableCopy userInfo];
+      v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = [KCPairingChannel _isRetryableNSURLError:v8];
     }
   }
@@ -6734,18 +6734,18 @@ uint64_t __47__KCPairingChannel_pairingChannelCompressData___block_invoke()
   return v5;
 }
 
-+ (BOOL)_isRetryableNSURLError:(id)a3
++ (BOOL)_isRetryableNSURLError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCA738]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    if ((v6 + 1009) <= 8)
+    code = [errorCopy code];
+    if ((code + 1009) <= 8)
     {
-      v7 = 0x111u >> (v6 - 15);
+      v7 = 0x111u >> (code - 15);
     }
 
     else
@@ -6762,18 +6762,18 @@ uint64_t __47__KCPairingChannel_pairingChannelCompressData___block_invoke()
   return v7 & 1;
 }
 
-+ (id)pairingChannelAcceptor:(id)a3
++ (id)pairingChannelAcceptor:(id)acceptor
 {
-  v3 = a3;
-  v4 = [[KCPairingChannel alloc] initAsInitiator:0 version:v3];
+  acceptorCopy = acceptor;
+  v4 = [[KCPairingChannel alloc] initAsInitiator:0 version:acceptorCopy];
 
   return v4;
 }
 
-+ (id)pairingChannelInitiator:(id)a3
++ (id)pairingChannelInitiator:(id)initiator
 {
-  v3 = a3;
-  v4 = [[KCPairingChannel alloc] initAsInitiator:1 version:v3];
+  initiatorCopy = initiator;
+  v4 = [[KCPairingChannel alloc] initAsInitiator:1 version:initiatorCopy];
 
   return v4;
 }

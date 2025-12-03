@@ -1,15 +1,15 @@
 @interface TSDSwatchRenderingResult
-+ (id)renderingResultWithForeground:(CGImage *)a3 background:(CGImage *)a4;
++ (id)renderingResultWithForeground:(CGImage *)foreground background:(CGImage *)background;
 - (void)dealloc;
 @end
 
 @implementation TSDSwatchRenderingResult
 
-+ (id)renderingResultWithForeground:(CGImage *)a3 background:(CGImage *)a4
++ (id)renderingResultWithForeground:(CGImage *)foreground background:(CGImage *)background
 {
   v6 = objc_alloc_init(TSDSwatchRenderingResult);
-  v6->foreground = CGImageRetain(a3);
-  v6->background = CGImageRetain(a4);
+  v6->foreground = CGImageRetain(foreground);
+  v6->background = CGImageRetain(background);
   return v6;
 }
 

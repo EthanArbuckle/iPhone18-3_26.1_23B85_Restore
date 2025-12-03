@@ -3,7 +3,7 @@
 - (BOOL)useBonjour;
 - (BOOL)useTLS;
 - (BOOL)useUDP;
-- (_MLNetworkOptions)initWithOptions:(id)a3;
+- (_MLNetworkOptions)initWithOptions:(id)options;
 - (const)localAddr;
 - (const)localPort;
 - (const)networkNameIdentifier;
@@ -14,10 +14,10 @@
 
 @implementation _MLNetworkOptions
 
-- (_MLNetworkOptions)initWithOptions:(id)a3
+- (_MLNetworkOptions)initWithOptions:(id)options
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = _MLNetworkOptions;
   v5 = [(_MLNetworkOptions *)&v23 init];
@@ -38,7 +38,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v4;
+    v10 = optionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
@@ -71,80 +71,80 @@
 
 - (BOOL)useAWDL
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkUseAWDLKey[0]];
-  v4 = [v3 BOOLValue];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkUseAWDLKey[0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)useBonjour
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkUseBonjourKey[0]];
-  v4 = [v3 BOOLValue];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkUseBonjourKey[0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)useUDP
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkUseUDPKey[0]];
-  v4 = [v3 BOOLValue];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkUseUDPKey[0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)useTLS
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkUseTLSKey[0]];
-  v4 = [v3 BOOLValue];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkUseTLSKey[0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)family
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkFamilyKey[0]];
-  v4 = [v3 unsignedIntegerValue];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkFamilyKey[0]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (const)psk
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkPskKey[0]];
-  v4 = [v3 UTF8String];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkPskKey[0]];
+  uTF8String = [v3 UTF8String];
 
-  return v4;
+  return uTF8String;
 }
 
 - (const)localAddr
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkLocalAddrKey[0]];
-  v4 = [v3 UTF8String];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkLocalAddrKey[0]];
+  uTF8String = [v3 UTF8String];
 
-  return v4;
+  return uTF8String;
 }
 
 - (const)localPort
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkLocalPortKey];
-  v4 = [v3 UTF8String];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkLocalPortKey];
+  uTF8String = [v3 UTF8String];
 
-  return v4;
+  return uTF8String;
 }
 
 - (const)networkNameIdentifier
 {
-  v3 = [(_MLNetworkOptions *)self networkOptions];
-  v4 = [v3 objectForKeyedSubscript:kMLNetworkNameIdentifierKey[0]];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v4 = [networkOptions objectForKeyedSubscript:kMLNetworkNameIdentifierKey[0]];
   v5 = [v4 isEqualToString:&stru_28744CC18];
 
   if (v5)
@@ -152,20 +152,20 @@
     return 0;
   }
 
-  v7 = [(_MLNetworkOptions *)self networkOptions];
-  v8 = [v7 objectForKeyedSubscript:kMLNetworkNameIdentifierKey[0]];
-  v9 = [v8 UTF8String];
+  networkOptions2 = [(_MLNetworkOptions *)self networkOptions];
+  v8 = [networkOptions2 objectForKeyedSubscript:kMLNetworkNameIdentifierKey[0]];
+  uTF8String = [v8 UTF8String];
 
-  return v9;
+  return uTF8String;
 }
 
 - (const)port
 {
-  v2 = [(_MLNetworkOptions *)self networkOptions];
-  v3 = [v2 objectForKeyedSubscript:kMLNetworkPortNumberKey[0]];
-  v4 = [v3 UTF8String];
+  networkOptions = [(_MLNetworkOptions *)self networkOptions];
+  v3 = [networkOptions objectForKeyedSubscript:kMLNetworkPortNumberKey[0]];
+  uTF8String = [v3 UTF8String];
 
-  return v4;
+  return uTF8String;
 }
 
 @end

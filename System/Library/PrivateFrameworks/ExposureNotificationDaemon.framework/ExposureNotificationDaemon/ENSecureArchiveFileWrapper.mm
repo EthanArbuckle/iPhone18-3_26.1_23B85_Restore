@@ -1,19 +1,19 @@
 @interface ENSecureArchiveFileWrapper
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)readObject:(id *)a3 ofClass:(Class)a4 error:(id *)a5;
-- (BOOL)readObject:(id *)a3 ofClasses:(id)a4 error:(id *)a5;
-- (BOOL)saveObject:(id)a3 error:(id *)a4;
-- (ENSecureArchiveFileWrapper)initWithPath:(id)a3;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)readObject:(id *)object ofClass:(Class)class error:(id *)error;
+- (BOOL)readObject:(id *)object ofClasses:(id)classes error:(id *)error;
+- (BOOL)saveObject:(id)object error:(id *)error;
+- (ENSecureArchiveFileWrapper)initWithPath:(id)path;
 - (uint64_t)close;
 - (void)close;
 @end
 
 @implementation ENSecureArchiveFileWrapper
 
-- (ENSecureArchiveFileWrapper)initWithPath:(id)a3
+- (ENSecureArchiveFileWrapper)initWithPath:(id)path
 {
-  v5 = a3;
-  if (![v5 length])
+  pathCopy = path;
+  if (![pathCopy length])
   {
     [(ENSecureArchiveFileWrapper *)a2 initWithPath:?];
   }
@@ -23,7 +23,7 @@
   v6 = [(ENSecureArchiveFileWrapper *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [pathCopy copy];
     path = v6->_path;
     v6->_path = v7;
 
@@ -33,7 +33,7 @@
   return v6;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   if ((self->_fileDescriptor & 0x80000000) == 0)
   {
@@ -43,7 +43,7 @@
   v6 = open_dprotected_np([(NSString *)self->_path fileSystemRepresentation], 514, 2, 0, 384);
   self->_fileDescriptor = v6;
   result = v6 >= 0;
-  if (a3 && v6 < 0)
+  if (error && v6 < 0)
   {
     if (*__error())
     {
@@ -55,7 +55,7 @@ LABEL_10:
         v9 = v8;
         v10 = v8;
         result = 0;
-        *a3 = v9;
+        *error = v9;
         return result;
       }
     }
@@ -86,10 +86,10 @@ LABEL_10:
   }
 }
 
-- (BOOL)readObject:(id *)a3 ofClasses:(id)a4 error:(id *)a5
+- (BOOL)readObject:(id *)object ofClasses:(id)classes error:(id *)error
 {
-  v8 = a4;
-  if ([(ENSecureArchiveFileWrapper *)self openWithError:a5])
+  classesCopy = classes;
+  if ([(ENSecureArchiveFileWrapper *)self openWithError:error])
   {
     v9 = objc_autoreleasePoolPush();
     v10 = [objc_alloc(MEMORY[0x277CCA9F0]) initWithFileDescriptor:self->_fileDescriptor closeOnDealloc:0];
@@ -107,7 +107,7 @@ LABEL_10:
         if ([v13 length])
         {
           v22 = v14;
-          v15 = [MEMORY[0x277CCAAC0] unarchivedObjectOfClasses:v8 fromData:v13 error:&v22];
+          v15 = [MEMORY[0x277CCAAC0] unarchivedObjectOfClasses:classesCopy fromData:v13 error:&v22];
           v16 = v22;
 
           v17 = 0;
@@ -131,7 +131,7 @@ LABEL_10:
       if (v15)
       {
         v20 = v15;
-        *a3 = v15;
+        *object = v15;
 LABEL_15:
         v18 = 1;
 LABEL_19:
@@ -142,12 +142,12 @@ LABEL_19:
       if (v17)
       {
         v15 = 0;
-        *a3 = 0;
+        *object = 0;
         goto LABEL_15;
       }
 
       v12 = v14;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -157,7 +157,7 @@ LABEL_19:
     {
 
       objc_autoreleasePoolPop(v9);
-      if (!a5)
+      if (!error)
       {
 LABEL_17:
         v15 = 0;
@@ -169,7 +169,7 @@ LABEL_17:
     v19 = v12;
     v15 = 0;
     v18 = 0;
-    *a5 = v12;
+    *error = v12;
 LABEL_18:
     v14 = v12;
     goto LABEL_19;
@@ -181,30 +181,30 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)readObject:(id *)a3 ofClass:(Class)a4 error:(id *)a5
+- (BOOL)readObject:(id *)object ofClass:(Class)class error:(id *)error
 {
-  v8 = [MEMORY[0x277CBEB90] setWithObject:a4];
-  LOBYTE(a5) = [(ENSecureArchiveFileWrapper *)self readObject:a3 ofClasses:v8 error:a5];
+  v8 = [MEMORY[0x277CBEB90] setWithObject:class];
+  LOBYTE(error) = [(ENSecureArchiveFileWrapper *)self readObject:object ofClasses:v8 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)saveObject:(id)a3 error:(id *)a4
+- (BOOL)saveObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ENSecureArchiveFileWrapper *)self openWithError:a4];
+  objectCopy = object;
+  v7 = [(ENSecureArchiveFileWrapper *)self openWithError:error];
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
     fileDescriptor = self->_fileDescriptor;
     v14 = 0;
-    v10 = [(ENSecureArchiveFileWrapper *)self _writeObject:v6 toFileDescriptor:fileDescriptor error:&v14];
+    v10 = [(ENSecureArchiveFileWrapper *)self _writeObject:objectCopy toFileDescriptor:fileDescriptor error:&v14];
     v11 = v14;
     objc_autoreleasePoolPop(v8);
-    if (a4 && !v10)
+    if (error && !v10)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -219,7 +219,7 @@ LABEL_20:
 
 - (uint64_t)close
 {
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v3 = *__error();
   return LogPrintF_safe();
 }

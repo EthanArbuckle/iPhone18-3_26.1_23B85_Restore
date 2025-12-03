@@ -2,10 +2,10 @@
 + (id)currentClient;
 - (UNOneTimeCodeClient)init;
 - (id)_init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)oneTimeCodeServiceConnection:(id)a3 detectedOneTimeCodes:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)oneTimeCodeServiceConnection:(id)connection detectedOneTimeCodes:(id)codes;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation UNOneTimeCodeClient
@@ -31,8 +31,8 @@ uint64_t __36__UNOneTimeCodeClient_currentClient__block_invoke()
 
 - (UNOneTimeCodeClient)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UNOneTimeCodeClient.m" lineNumber:36 description:@"use +currentClient"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UNOneTimeCodeClient.m" lineNumber:36 description:@"use +currentClient"];
 
   return 0;
 }
@@ -47,9 +47,9 @@ uint64_t __36__UNOneTimeCodeClient_currentClient__block_invoke()
   queue = v2->_queue;
   v2->_queue = v4;
 
-  v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   observers = v2->_observers;
-  v2->_observers = v6;
+  v2->_observers = weakObjectsHashTable;
 
   v8 = +[UNOneTimeCodeServiceConnection sharedInstance];
   [v8 addObserver:v2];
@@ -67,17 +67,17 @@ uint64_t __36__UNOneTimeCodeClient_currentClient__block_invoke()
   [(UNOneTimeCodeClient *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__UNOneTimeCodeClient_addObserver___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -88,31 +88,31 @@ void __35__UNOneTimeCodeClient_addObserver___block_invoke(uint64_t a1)
   [v1 registerForUpdates];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__UNOneTimeCodeClient_removeObserver___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)oneTimeCodeServiceConnection:(id)a3 detectedOneTimeCodes:(id)a4
+- (void)oneTimeCodeServiceConnection:(id)connection detectedOneTimeCodes:(id)codes
 {
-  v5 = a4;
+  codesCopy = codes;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__UNOneTimeCodeClient_oneTimeCodeServiceConnection_detectedOneTimeCodes___block_invoke;
   v8[3] = &unk_1E7CFF910;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = codesCopy;
+  v7 = codesCopy;
   dispatch_async(queue, v8);
 }
 

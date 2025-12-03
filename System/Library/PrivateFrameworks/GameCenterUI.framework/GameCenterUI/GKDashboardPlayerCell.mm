@@ -1,11 +1,11 @@
 @interface GKDashboardPlayerCell
 + (CGSize)defaultSize;
 - (void)awakeFromNib;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOnDarkBackground:(BOOL)a3;
-- (void)setPlayer:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStatusWithLastPlayedDate:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOnDarkBackground:(BOOL)background;
+- (void)setPlayer:(id)player;
+- (void)setSelected:(BOOL)selected;
+- (void)setStatusWithLastPlayedDate:(id)date;
 - (void)updateLabelColorForDashboard;
 @end
 
@@ -25,11 +25,11 @@
   v5.receiver = self;
   v5.super_class = GKDashboardPlayerCell;
   [(GKFocusHighlightingCollectionViewCell *)&v5 awakeFromNib];
-  v3 = [(UILabel *)self->_nameLabel textColor];
-  [(GKDashboardPlayerCell *)self setNameColor:v3];
+  textColor = [(UILabel *)self->_nameLabel textColor];
+  [(GKDashboardPlayerCell *)self setNameColor:textColor];
 
-  v4 = [(UILabel *)self->_statusLabel textColor];
-  [(GKDashboardPlayerCell *)self setStatusColor:v4];
+  textColor2 = [(UILabel *)self->_statusLabel textColor];
+  [(GKDashboardPlayerCell *)self setStatusColor:textColor2];
 
   [(NSLayoutConstraint *)self->_playerViewBottomToNameLabelTopConstraint constant];
   [(GKDashboardPlayerCell *)self setPlayerViewBottomToNameLabelTopConstant:?];
@@ -38,18 +38,18 @@
   [(UILabel *)self->_statusLabel setText:0];
 }
 
-- (void)setOnDarkBackground:(BOOL)a3
+- (void)setOnDarkBackground:(BOOL)background
 {
-  if (self->_onDarkBackground != a3)
+  if (self->_onDarkBackground != background)
   {
-    self->_onDarkBackground = a3;
-    if (a3)
+    self->_onDarkBackground = background;
+    if (background)
     {
-      v4 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)self->_nameLabel setTextColor:v4];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)self->_nameLabel setTextColor:whiteColor];
 
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)self->_statusLabel setTextColor:v7];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)self->_statusLabel setTextColor:whiteColor2];
     }
 
     else
@@ -63,36 +63,36 @@
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_player != v5)
+  playerCopy = player;
+  if (self->_player != playerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_player, a3);
+    v7 = playerCopy;
+    objc_storeStrong(&self->_player, player);
     [(GKDashboardPlayerShadowView *)self->_playerView setPlayer:v7];
     v6 = [(GKPlayer *)v7 displayNameWithOptions:0];
     [(GKDashboardPlayerCell *)self setNameText:v6];
 
-    v5 = v7;
+    playerCopy = v7;
   }
 }
 
-- (void)setStatusWithLastPlayedDate:(id)a3
+- (void)setStatusWithLastPlayedDate:(id)date
 {
-  v4 = [a3 _gkFormattedWhenStringWithOptions:0];
+  v4 = [date _gkFormattedWhenStringWithOptions:0];
   [(GKDashboardPlayerCell *)self setStatusText:v4];
 }
 
 - (void)updateLabelColorForDashboard
 {
-  v3 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(GKDashboardPlayerCell *)self setNameColor:v3];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(GKDashboardPlayerCell *)self setNameColor:tertiaryLabelColor];
 
   if (self->_onDarkBackground || ([(GKDashboardPlayerCell *)self isFocused]& 1) != 0)
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)self->_nameLabel setTextColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)self->_nameLabel setTextColor:whiteColor];
   }
 
   else
@@ -104,13 +104,13 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = GKDashboardPlayerCell;
   [(GKDashboardPlayerCell *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
@@ -120,20 +120,20 @@
     [(GKDashboardPlayerCell *)self defaultContentBackgroundColor];
   }
   v5 = ;
-  v6 = [(GKDashboardPlayerCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(GKDashboardPlayerCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = GKDashboardPlayerCell;
   [(GKDashboardPlayerCell *)&v8 setSelected:?];
-  v5 = [(GKDashboardPlayerCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKDashboardPlayerCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
@@ -143,8 +143,8 @@
     [(GKDashboardPlayerCell *)self defaultContentBackgroundColor];
   }
   v6 = ;
-  v7 = [(GKDashboardPlayerCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(GKDashboardPlayerCell *)self contentView];
+  [contentView setBackgroundColor:v6];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface CNiOSABAllContactsPredicate
-- (CNiOSABAllContactsPredicate)initWithCoder:(id)a3;
+- (CNiOSABAllContactsPredicate)initWithCoder:(id)coder;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABAllContactsPredicate
@@ -12,30 +12,30 @@
 {
   v2 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v3 = [v2 appendName:@"kind" object:@"-[CNContact predicateForAllContacts:]"];
-  v4 = [v2 build];
+  build = [v2 build];
 
-  return v4;
+  return build;
 }
 
-- (CNiOSABAllContactsPredicate)initWithCoder:(id)a3
+- (CNiOSABAllContactsPredicate)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CNiOSABAllContactsPredicate;
-  return [(CNPredicate *)&v4 initWithCoder:a3];
+  return [(CNPredicate *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CNiOSABAllContactsPredicate;
-  [(CNPredicate *)&v3 encodeWithCoder:a3];
+  [(CNPredicate *)&v3 encodeWithCoder:coder];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
-  v8 = [a4 sortOrder];
+  sortOrder = [request sortOrder];
 
-  return ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering(a3, 0, v8);
+  return ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering(book, 0, sortOrder);
 }
 
 - (unint64_t)hash

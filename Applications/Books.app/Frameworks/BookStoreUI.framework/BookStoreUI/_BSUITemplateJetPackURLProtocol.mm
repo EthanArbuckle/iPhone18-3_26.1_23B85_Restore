@@ -1,39 +1,39 @@
 @interface _BSUITemplateJetPackURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 - (void)startLoading;
 @end
 
 @implementation _BSUITemplateJetPackURLProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"jetpack"];
+  v3 = [request URL];
+  scheme = [v3 scheme];
+  v5 = [scheme isEqualToString:@"jetpack"];
 
   return v5;
 }
 
 - (void)startLoading
 {
-  v3 = [(_BSUITemplateJetPackURLProtocol *)self request];
-  v4 = [v3 URL];
+  request = [(_BSUITemplateJetPackURLProtocol *)self request];
+  v4 = [request URL];
 
   v5 = +[JSABridge sharedInstance];
-  v6 = [v5 currentPackage];
+  currentPackage = [v5 currentPackage];
 
-  v7 = [(_BSUITemplateJetPackURLProtocol *)self request];
-  v8 = [v7 URL];
-  v9 = [v8 path];
-  v10 = [v6 dataAtPath:v9];
+  request2 = [(_BSUITemplateJetPackURLProtocol *)self request];
+  v8 = [request2 URL];
+  path = [v8 path];
+  v10 = [currentPackage dataAtPath:path];
 
-  v11 = [(_BSUITemplateJetPackURLProtocol *)self client];
+  client = [(_BSUITemplateJetPackURLProtocol *)self client];
   if (v10)
   {
     v12 = [[NSURLResponse alloc] initWithURL:v4 MIMEType:@"application/octet-stream" expectedContentLength:objc_msgSend(v10 textEncodingName:{"length"), 0}];
-    [v11 URLProtocol:self didReceiveResponse:v12 cacheStoragePolicy:1];
-    [v11 URLProtocol:self didLoadData:v10];
-    [v11 URLProtocolDidFinishLoading:self];
+    [client URLProtocol:self didReceiveResponse:v12 cacheStoragePolicy:1];
+    [client URLProtocol:self didLoadData:v10];
+    [client URLProtocolDidFinishLoading:self];
     v13 = BSUITemplateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -48,7 +48,7 @@
   else
   {
     v14 = [NSError errorWithDomain:@"kBSUIJetPackURLProtocolErrorDomain" code:0 userInfo:0];
-    [v11 URLProtocol:self didFailWithError:v14];
+    [client URLProtocol:self didFailWithError:v14];
 
     v12 = BSUITemplateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
